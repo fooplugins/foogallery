@@ -1,0 +1,23 @@
+.foogallery a
+{
+    display: inline-block;
+    float: left;
+    margin: 10px;
+    text-align: center;
+    padding: 2px;
+    border: 1px solid #9D9B8B;
+    -webkit-box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    -moz-box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+    .foogallery a img
+    {
+        padding: 5px;
+        display: block;
+    }
+
+    .foogallery a:hover
+    {
+        opacity: 0.8;
+    }
