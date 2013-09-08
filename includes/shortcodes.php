@@ -12,7 +12,7 @@ if ( !class_exists( 'FooGallery_Shortcodes' ) ) {
 		}
 
 		function render_foogallery_shortcode($atts) {
-			global $foogallery_templates;
+			$foogallery_templates = foogallery_get_templates();
 
 			$template = '';
 

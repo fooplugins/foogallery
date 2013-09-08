@@ -1,0 +1,63 @@
+.foogallery-attachments-list .add-attachment {
+    background: #ddd;
+    box-shadow: 0 0 0 1px #ccc;
+    width: 150px;
+    position: relative;
+    float: left;
+    padding: 0;
+    margin: 0 10px 20px;
+    color: #464646;
+    list-style: none;
+    text-align: center;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+}
+
+.foogallery-attachments-list .add-attachment a {
+    display: table-cell;
+    vertical-align: middle;
+    height: 150px;
+    text-align: center;
+    width: 150px;
+    height: 100px;
+    padding-top:50px;
+    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAadEVYdFNvZnR3YXJlAFBhaW50Lk5FVCB2My41LjEwMPRyoQAAAvxJREFUeF7t2kFqG0EQhWGvcokcIOCzBXKDnCcQsK4QCGQbyBkCWQUCXmWV1DPuoqbm13TPSG6pPVp8wpRelbtaIraJ7g6Hw65hcU+wuCdY3BMs7gkW9wSLe4LFPSlfvDWfzE/z75XTjtpVOz9dwDvz21D4NdPO97qAz6G4Nw+6gD+puCePugB6YjduF0DFPbldABUTZUZGO7lqwOSBo6GdXDVg8sDR0E6uGjB54GhoJ1cNmDyweGPemy/m7zN9rZqeo55LoJ1cNWDyQNEfEt8N5UXPPf2xcQXofK4aMHmgXt0fhrKRMtfwTqCzuWrA5IF6i1OOKJv7e6NzuWrA5IFfDeWIsrm/NzqXqwZMHqh/7ChHlM39vdG5XDVg8sA1F/Bocn9vdC5XDZg88JuhHFE29/dG53LVgMkDPxjKEWVz/yk+PqPnjqFzuWrA5IGX+jGoxcvsNZcQzzRTDZg8UPRLztIl6Llz/iIUly9aLyH3TVQDJg8s9OrqLa5ff0tWP/ZUe6lXPmu5BOpz1YDJA3taWr6oXQL1uGrA5IG9tCxfLF0C5V01YPLAHtYsXxy7BMq6asDkgS9ty/IFXQLlXDVg8sAlOsCxV6JFy/LUt8Zk3qwA8oBj4uG3XELL8kK9a0zmzQogDyB0+DWX0Lq8UP8ak3mzAsgDsqXDt1zCmuWFZqwxmTcrgDwgajn80iWsXV7yDMpEi/ktA4o1h6dL2LK85DmUiRbzWwbIlsPHS9i6vMRzCGWixfyWAaccXr2n9Es+D2WixfzaAacevkX8fi1oRkQ9Tg/UFJVwj+XFD9eIZkTU4/RATZEyvZaXyQEb0IyIepweqCnqubzMDllBMyLqcXqgpkvKh6TM2dwugIoXdruAhDJno29wbR+U7H4BD7l4Yd0v4N5c04elu1+A6D8x9KHpXypeWFxeKHM2+ZuNCBcLqMdhcTC0dEQ9DouDoaUj6nFYHAwtHVGPw+JgaOmIehwWB0NLR9TjsDgYWjqiHofFwdDSEfU8O9z9B0Xsl/ttqhw+AAAAAElFTkSuQmCC) no-repeat center 25%;
+    color:#888;
+    font-weight: bold;
+    text-decoration: none;
+    opacity: 0.5;
+}
+
+.foogallery-attachments-list .add-attachment a:hover {
+    opacity: 1;
+}
+
+.foogallery-attachments-list .attachment-preview,
+.foogallery-attachments-list .attachment-preview .thumbnail {
+    width: 150px;
+    height: 150px;
+    cursor:move;
+}
+
+.foogallery-attachments-list .attachment.placeholder {
+    width: 150px;
+    height: 150px;
+    border: #1e8cbe 1px dashed;
+    background: #eee;
+}
+
+.foogallery-attachments-list .attachment {
+    border: transparent 1px solid;
+    box-shadow: none;
+}
+
+.foogallery-attachments-list .attachment.ui-sortable-helper {
+    opacity: 0.5;
+}
+
+.foogallery-attachments-list .attachment.ui-sortable-helper:hover .close {
+    display: none;
+}

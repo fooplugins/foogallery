@@ -967,3 +967,26 @@ if ( !class_exists( 'Foo_Plugin_Settings_v1_0' ) ) {
 		}
 	}
 }
+
+if ( !class_exists( 'Foo_Plugin_Metabox_v1_0') ) {
+    class Foo_Plugin_Metabox_v1_0 {
+        function get_meta($data, $key, $default) {
+            if (!is_array($data)) return $default;
+
+            $value = array_key_exists($key, $data) ? $data[$key] : NULL;
+
+            if ($value === NULL)
+                return $default;
+
+            return $value;
+        }
+
+        function is_checked($data, $key, $default = false) {
+            if (!is_array($data)) return $default;
+
+            return array_key_exists($key, $data);
+
+            return $default;
+        }
+    }
+}

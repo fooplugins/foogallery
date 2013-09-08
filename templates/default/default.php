@@ -27,7 +27,8 @@ if (!class_exists('FooGallery_DefaultTemplate')) {
 
 		function gallery_attachment($id) {
 			$size = $this->get_arg('size', 'thumbnail');
-			echo wp_get_attachment_link($id, $size, true) . "\n";
+            $link_to_image = $this->_gallery->link_to_image;
+			echo wp_get_attachment_link($id, $size, !$link_to_image) . "\n";
 		}
 	}
 }

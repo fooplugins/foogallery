@@ -35,4 +35,4 @@ require_once( 'class-foogallery.php' );
 register_activation_hook( __FILE__, array( 'FooGallery', 'activate' ) );
 register_deactivation_hook( __FILE__, array( 'FooGallery', 'deactivate' ) );
 
-FooGallery::set_instance( new FooGallery(__FILE__) );
+$GLOBALS['foogallery'] = new FooGallery(__FILE__);

@@ -81,6 +81,9 @@ if (!class_exists('FooGallery_Base_Template')) {
 			//if we have no attachments, then do nothing
 			if (!$this->_gallery->has_attachments()) return;
 
+            //load template dependencies
+
+
 			$this->render_gallery_start();
 
 			foreach ($this->_gallery->attachments(false) as $id=>$attachment) {
@@ -119,5 +122,9 @@ if (!class_exists('FooGallery_Base_Template')) {
 				$this->_gallery
 			);
 		}
+
+        function load_css() {
+
+        }
 	}
 }

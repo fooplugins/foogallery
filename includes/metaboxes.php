@@ -6,9 +6,10 @@
 
 if (!class_exists('FooGallery_MetaBoxes')) {
 
-    class FooGallery_MetaBoxes {
+    class FooGallery_MetaBoxes extends Foo_Plugin_Metabox_v1_0 {
 
 		private $_plugin_file;
+        private $_gallery;
 
 		function __construct($plugin_file) {
 
@@ -23,13 +24,39 @@ if (!class_exists('FooGallery_MetaBoxes')) {
 		function add_meta_boxes_to_gallery() {
 			add_meta_box(
 				'gallery_images',
-				__('Gallery Media', 'foogallery'),
+				__('Gallery Images', 'foogallery'),
 				array($this, 'render_gallery_media_metabox'),
 				FOOGALLERY_CPT_GALLERY,
 				'normal',
 				'high'
 			);
+
+            add_meta_box(
+                'gallery_settings',
+                __('Gallery Settings', 'foogallery'),
+                array($this, 'render_gallery_settings_metabox'),
+                FOOGALLERY_CPT_GALLERY,
+                'normal',
+                'high'
+            );
+
+            add_meta_box(
+                'gallery_help',
+                __('Gallery Help', 'foogallery'),
+                array($this, 'render_gallery_help_metabox'),
+                FOOGALLERY_CPT_GALLERY,
+                'normal',
+                'high'
+            );
 		}
+
+        function get_gallery($post) {
+            if ( !isset($this->_gallery) ) {
+                $this->_gallery = FooGallery_Gallery::get($post);
+            }
+
+            return $this->_gallery;
+        }
 
 		function save_gallery($post_id) {
 			// check autosave
@@ -57,81 +84,15 @@ if (!class_exists('FooGallery_MetaBoxes')) {
 			}
 		}
 
-		function render_gallery_media_metabox($post) {
-			$gallery = FooGallery_Gallery::get($post);
 
-			//wp_enqueue_script('jquery-ui');
+		function render_gallery_media_metabox($post) {
+			$gallery = $this->get_gallery($post);
 
 			wp_enqueue_media();
 
 			?>
 			<input type="hidden" name="<?php echo FOOGALLERY_CPT_GALLERY; ?>_nonce" id="<?php echo FOOGALLERY_CPT_GALLERY; ?>_nonce" value="<?php echo wp_create_nonce( plugin_basename($this->_plugin_file) ); ?>" />
 			<input type="hidden" name='foogallery_attachments' id="foogallery_attachments" value="<?php echo $gallery->attachments_meta; ?>" />
-			<style type="text/css">
-				.foogallery-attachments-list .add-attachment {
-					background: #ddd;
-					box-shadow: 0 0 0 1px #ccc;
-					width: 150px;
-					position: relative;
-					float: left;
-					padding: 0;
-					margin: 0 10px 20px;
-					color: #464646;
-					list-style: none;
-					text-align: center;
-					-webkit-user-select: none;
-					-moz-user-select: none;
-					-ms-user-select: none;
-					-o-user-select: none;
-					user-select: none;
-				}
-
-					.foogallery-attachments-list .add-attachment a {
-						display: table-cell;
-						vertical-align: middle;
-						height: 150px;
-						text-align: center;
-						width: 150px;
-						height: 100px;
-						padding-top:50px;
-						background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAadEVYdFNvZnR3YXJlAFBhaW50Lk5FVCB2My41LjEwMPRyoQAAAvxJREFUeF7t2kFqG0EQhWGvcokcIOCzBXKDnCcQsK4QCGQbyBkCWQUCXmWV1DPuoqbm13TPSG6pPVp8wpRelbtaIraJ7g6Hw65hcU+wuCdY3BMs7gkW9wSLe4LFPSlfvDWfzE/z75XTjtpVOz9dwDvz21D4NdPO97qAz6G4Nw+6gD+puCePugB6YjduF0DFPbldABUTZUZGO7lqwOSBo6GdXDVg8sDR0E6uGjB54GhoJ1cNmDyweGPemy/m7zN9rZqeo55LoJ1cNWDyQNEfEt8N5UXPPf2xcQXofK4aMHmgXt0fhrKRMtfwTqCzuWrA5IF6i1OOKJv7e6NzuWrA5IFfDeWIsrm/NzqXqwZMHqh/7ChHlM39vdG5XDVg8sA1F/Bocn9vdC5XDZg88JuhHFE29/dG53LVgMkDPxjKEWVz/yk+PqPnjqFzuWrA5IGX+jGoxcvsNZcQzzRTDZg8UPRLztIl6Llz/iIUly9aLyH3TVQDJg8s9OrqLa5ff0tWP/ZUe6lXPmu5BOpz1YDJA3taWr6oXQL1uGrA5IG9tCxfLF0C5V01YPLAHtYsXxy7BMq6asDkgS9ty/IFXQLlXDVg8sAlOsCxV6JFy/LUt8Zk3qwA8oBj4uG3XELL8kK9a0zmzQogDyB0+DWX0Lq8UP8ak3mzAsgDsqXDt1zCmuWFZqwxmTcrgDwgajn80iWsXV7yDMpEi/ktA4o1h6dL2LK85DmUiRbzWwbIlsPHS9i6vMRzCGWixfyWAaccXr2n9Es+D2WixfzaAacevkX8fi1oRkQ9Tg/UFJVwj+XFD9eIZkTU4/RATZEyvZaXyQEb0IyIepweqCnqubzMDllBMyLqcXqgpkvKh6TM2dwugIoXdruAhDJno29wbR+U7H4BD7l4Yd0v4N5c04elu1+A6D8x9KHpXypeWFxeKHM2+ZuNCBcLqMdhcTC0dEQ9DouDoaUj6nFYHAwtHVGPw+JgaOmIehwWB0NLR9TjsDgYWjqiHofFwdDSEfU8O9z9B0Xsl/ttqhw+AAAAAElFTkSuQmCC) no-repeat center 25%;
-						color:#888;
-						font-weight: bold;
-						text-decoration: none;
-						opacity: 0.5;
-					}
-
-						.foogallery-attachments-list .add-attachment a:hover {
-							opacity: 1;
-						}
-
-				.foogallery-attachments-list .attachment-preview,
-				.foogallery-attachments-list .attachment-preview .thumbnail {
-					width: 150px;
-					height: 150px;
-					cursor:move;
-				}
-
-				.foogallery-attachments-list .attachment.placeholder {
-					width: 150px;
-					height: 150px;
-					border: #1e8cbe 1px dashed;
-					background: #eee;
-				}
-
-				.foogallery-attachments-list .attachment {
-					border: transparent 1px solid;
-					box-shadow: none;
-				}
-
-				.foogallery-attachments-list .attachment.ui-sortable-helper {
-					opacity: 0.5;
-				}
-
-					.foogallery-attachments-list .attachment.ui-sortable-helper:hover .close {
-						display: none;
-					}
-			</style>
 			<div>
 				<ul class="foogallery-attachments-list">
 					<?php
@@ -171,5 +132,63 @@ if (!class_exists('FooGallery_MetaBoxes')) {
 		<?php
 
 		}
+
+        function render_gallery_settings_metabox($post) {
+            //gallery settings including:
+            //gallery images link to image or attachment page
+            //default template to use
+            $gallery = $this->get_gallery($post);
+            $available_templates = foogallery_get_templates();
+
+            ?>
+            <table class="foogallery-metabox-settings">
+                <tbody>
+                    <tr>
+                        <td>
+                            <label for="FooGallerySettings_DefaultTemplate">Default Template</label>
+                        </td>
+                        <td>
+                            <select id="FooGallerySettings_DefaultTemplate" name="foogallery[default_template]">
+                                <?php
+                                foreach($available_templates as $template){
+                                    $selected = ($gallery->default_template === $template->name) ? 'selected' : '';
+                                    echo "<option {$selected} value=\"{$template->name}\">{$template->name}</option>";
+                                }
+                                ?>
+                            </select>
+                            <small><?php _e('The default template that will be used when rendering the gallery. This can be override when the gallery is inserted into a page or post.','foogallery');?></small>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="FooGallerySettings_LinkToImage">Link To Image</label>
+                        </td>
+                        <td>
+                            <label for="FooGallerySettings_LinkToImage">
+                                <?php $checked = ($gallery->link_to_image) ? 'checked' : ''; ?>
+                                <input id="FooGallerySettings_LinkToImage" type="checkbox" name="foogallery[link_to_image]" value="on" <?php echo $checked ?>/>
+                                <small><?php _e('Should the images in the gallery link to the full size images. If not set, then the images will link to the attachment page.','foogallery');?></small>
+                            </label>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <?php
+        }
+
+        function render_gallery_help_metabox($post) {
+            $gallery = $this->get_gallery($post);
+
+            if ($gallery->is_published()) {
+                ?>
+                <p><?php _e('Paste the shortcode', 'foogallery'); ?> <code><?php echo $gallery->shortcode(); ?></code> <?php _e('into a post or page to show the gallery.', 'foogallery'); ?></p>
+                <?php
+            }
+            ?>
+            <p><?php _e('Add media to your gallery by clicking the "Add Images" button.','foogallery'); ?></p>
+            <p><?php _e('Remove an image from the gallery by hovering over the image and clicking the "x" that will appear.','foogallery'); ?></p>
+            <p><?php _e('You can set the featured image for the gallery. The featured image will represent the gallery in an album.','foogallery'); ?></p>
+            <?php
+        }
     }
 }

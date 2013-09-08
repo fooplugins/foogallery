@@ -24,6 +24,7 @@ if ( !class_exists( 'FooGallery' ) ) {
 
 	require_once( FOOGALLERY_PATH . 'includes/constants.php' );
 	require_once( FOOGALLERY_PATH . 'includes/Foo_Plugin_Base.php' );
+    require_once( FOOGALLERY_PATH . 'includes/functions.php' );
     require_once( FOOGALLERY_PATH . 'includes/admin_settings.php' );
     require_once( FOOGALLERY_PATH . 'includes/metaboxes.php' );
 	require_once( FOOGALLERY_PATH . 'includes/shortcodes.php' );
@@ -63,11 +64,9 @@ if ( !class_exists( 'FooGallery' ) ) {
 
             $this->register_post_types();
             $this->register_taxonomies();
-			$this->build_template_list();
         }
 
 		function build_template_list() {
-			global $foogallery_templates;
 
 			$default_templates = array(
 				'default' => array(
@@ -76,7 +75,7 @@ if ( !class_exists( 'FooGallery' ) ) {
 				)
 			);
 
-			$foogallery_templates = apply_filters('foogallery-template_list', $default_templates);
+			return apply_filters('foogallery-template_list', $default_templates);
 		}
 
 		function custom_media_string($strings,  $post){

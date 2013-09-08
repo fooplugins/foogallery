@@ -34,12 +34,17 @@ class FooGallery_Gallery extends stdClass {
 	 * @param $post
 	 */
 	private function load($post) {
+
 		$this->_post = $post;
 		$this->ID = $post->ID;
 		$this->slug = $post->post_name;
 		$this->name = $post->post_title;
 		$this->author = $post->post_author;
+        $this->post_status = $post->post_status;
 		$this->attachments_meta = get_post_meta($post->ID, FOOGALLERY_META_ATTACHMENTS, true);
+        $settings = get_post_meta($post->ID, FOOGALLERY_META_SETTINGS, true);
+        $this->link_to_image = $this->is_checked( $settings, 'link_to_image', true );
+        $this->default_template = $this->get_meta( $settings, 'default_template', 'default' );
 
 		do_action('foogallery_gallery_after_load', $this, $post);
 	}
@@ -65,8 +70,7 @@ class FooGallery_Gallery extends stdClass {
 			$args = array(
 				'name' => $slug,
 				'numberposts' => 1,
-				'post_type' => FOOGALLERY_CPT_GALLERY,
-				'post_status' => 'publish'
+				'post_type' => FOOGALLERY_CPT_GALLERY
 			);
 
 			$galleries = get_posts($args);
@@ -115,6 +119,25 @@ class FooGallery_Gallery extends stdClass {
 		return $gallery;
 	}
 
+    function get_meta($data, $key, $default) {
+        if (!is_array($data)) return $default;
+
+        $value = array_key_exists($key, $data) ? $data[$key] : NULL;
+
+        if ($value === NULL)
+            return $default;
+
+        return $value;
+    }
+
+    function is_checked($data, $key, $default = false) {
+        if (!is_array($data)) return $default;
+
+        return array_key_exists($key, $data);
+
+        return $default;
+    }
+
 	/**
 	 * Checks if the gallery has attachments
 	 * @return bool
@@ -129,9 +152,21 @@ class FooGallery_Gallery extends stdClass {
 		return false;
 	}
 
-	public function does_exist() {
+    /**
+     * Checks if the gallery exists
+     * @return bool
+     */
+    public function does_exist() {
 		return $this->ID > 0;
 	}
+
+    /**
+     * Returns true if the gallery is published
+     * @return bool
+     */
+    public function is_published() {
+       return $this->post_status === 'publish';
+    }
 
 	/**
 	 * Lazy load the attachments for the gallery
@@ -151,6 +186,10 @@ class FooGallery_Gallery extends stdClass {
 		}
 
 		return $this->_attachments;
+    }
+
+    public function shortcode() {
+        return '[' . FOOGALLERY_CPT_GALLERY . ' id="' . $this->ID . '"]';
     }
 
 }
