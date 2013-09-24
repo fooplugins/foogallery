@@ -12,23 +12,15 @@ if ( !class_exists( 'FooGallery_Shortcodes' ) ) {
 		}
 
 		function render_foogallery_shortcode($atts) {
-			$foogallery_templates = foogallery_get_templates();
-
-			$template = '';
-
 			$args = shortcode_atts( array(
 				'id' => 0,
 				'gallery' => '',
 				'template' => 'default'
 			), $atts, 'foogallery' );
 
-			extract( $args );
-
-			//get template instance
-			if ( array_key_exists( $template, $foogallery_templates ) ) {
-				$template_instance = $foogallery_templates[$template]['class'];
-				$template_instance->render( $args );
-			}
+            //create new instance of template engine
+            $engine = new FooGallery_Template_Engine( $args );
+            $engine->render();
 		}
 	}
 }

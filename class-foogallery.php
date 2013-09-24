@@ -27,6 +27,7 @@ if ( !class_exists( 'FooGallery' ) ) {
     require_once( FOOGALLERY_PATH . 'includes/functions.php' );
     require_once( FOOGALLERY_PATH . 'includes/admin_settings.php' );
     require_once( FOOGALLERY_PATH . 'includes/metaboxes.php' );
+    require_once( FOOGALLERY_PATH . 'includes/FooGallery_Template_Engine.php' );
 	require_once( FOOGALLERY_PATH . 'includes/shortcodes.php' );
 	require_once( FOOGALLERY_PATH . 'includes/templates.php' );
 
@@ -70,8 +71,7 @@ if ( !class_exists( 'FooGallery' ) ) {
 
 			$default_templates = array(
 				'default' => array(
-					'name' => 'Default',
-					'class' => new FooGallery_DefaultTemplate()
+					'name' => 'Default'
 				)
 			);
 

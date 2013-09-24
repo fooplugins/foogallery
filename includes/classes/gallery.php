@@ -175,13 +175,13 @@ class FooGallery_Gallery extends stdClass {
 	 *
 	 * @return array
 	 */
-	public function attachments($fetch = true) {
+	public function attachments() {
 		//lazy load the attachments for performance
 		if ( $this->_attachments === false ) {
 			$this->_attachments = array();
 
 			foreach ( explode(',', $this->attachments_meta) as $att_id) {
-				$this->_attachments[$att_id] = $fetch ? wp_get_attachment_image_src($att_id) : $att_id;
+				$this->_attachments[] = $att_id;
 			}
 		}
 

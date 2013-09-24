@@ -97,7 +97,9 @@ if (!class_exists('FooGallery_MetaBoxes')) {
 				<ul class="foogallery-attachments-list">
 					<?php
 					if ($gallery->has_attachments()) {
-						foreach ($gallery->attachments() as $id=>$attachment) {	?>
+						foreach ($gallery->attachments() as $attachment_id) {
+                            $attachment = wp_get_attachment_image_src($attachment_id);
+                            ?>
 					<li class="attachment details" data-attachment-id="<?php echo $id; ?>">
 						<div class="attachment-preview type-image">
 							<div class="thumbnail">
