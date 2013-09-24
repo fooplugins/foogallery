@@ -42,7 +42,7 @@ if ( !class_exists( 'FooGallery' ) ) {
 	 * @package FooGallery
 	 * @author  Brad Vincent <brad@fooplugins.com>
 	 */
-	class FooGallery extends Foo_Plugin_Base_v1_0 {
+	class FooGallery extends Foo_Plugin_Base_v1_1 {
 
 		/**
 		 * Initialize the plugin by setting localization, filters, and administration functions.

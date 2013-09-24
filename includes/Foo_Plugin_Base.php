@@ -3,15 +3,15 @@
  * Foo_PluginBase
  * A base class for WordPress plugins. This class makes it really easy and straight forward to create useful bug free plugins.
  * Simply inherit from Foo_PluginBase_v1_0
- * Version: 1.2
+ * Version: 1.1
  * Author: Brad Vincent
  * Author URI: http://fooplugins.com
  * License: GPL2
 */
 
-if ( !class_exists( 'Foo_Plugin_Base_v1_0' ) ) {
+if ( !class_exists( 'Foo_Plugin_Base_v1_1' ) ) {
 
-	abstract class Foo_Plugin_Base_v1_0 {
+	abstract class Foo_Plugin_Base_v1_1 {
 
 		/**
 		 * Unique identifier for your plugin.
@@ -33,13 +33,6 @@ if ( !class_exists( 'Foo_Plugin_Base_v1_0' ) ) {
 		 */
 		protected $plugin_version = false; //the version number of the plugin
 
-		/**
-		 * Instance of the plugin class.
-		 *
-		 * @var      object
-		 */
-		protected static $instance = null;
-
 		/* internal variables */
 		protected $plugin_file; //the filename of the plugin
 		protected $plugin_dir; //the folder path of the plugin
@@ -54,7 +47,7 @@ if ( !class_exists( 'Foo_Plugin_Base_v1_0' ) ) {
 		/** @var Foo_Plugin_Settings_v1_0 */
 		protected $_settings = false; //a ref to our settings helper class
 
-		/** @var Foo_Plugin_Options_v1_0 */
+		/** @var Foo_Plugin_Options_v1_1 */
 		protected $_options = false; //a ref to our options helper class
 
 		/** @var Foo_Plugin_Screen_v1_0 */
@@ -68,7 +61,7 @@ if ( !class_exists( 'Foo_Plugin_Base_v1_0' ) ) {
         }
 
         /*
-         * @return Foo_Plugin_Options_v1_0
+         * @return Foo_Plugin_Options_v1_1
          */
         public function options() {
             return $this->_options;
@@ -104,33 +97,6 @@ if ( !class_exists( 'Foo_Plugin_Base_v1_0' ) ) {
                 'url'     => $this->plugin_url
             );
         }
-
-		/**
-		 * Return an instance of this class.
-		 *
-		 * @return    object    A single instance of this class.
-		 */
-		final public static function get_instance() {
-
-			// If the single instance hasn't been set, throw an error
-			if ( null == self::$instance ) {
-				throw new Exception('The plugin instance has not been set!. Use the function \'set_instance\' to set a single instance of your plugin.');
-			}
-
-			return self::$instance;
-		}
-
-		final public static function set_instance($class_instance) {
-
-			// If the single instance has already been set, throw an error
-			if ( null !== self::$instance ) {
-				throw new Exception('The plugin function \'set_instance\' has been called more than once! You should only set the instance once per plugin.');
-			}
-
-			self::$instance = $class_instance;
-
-			return self::$instance;
-		}
 
 		/*
 		 * plugin constructor
@@ -211,7 +177,7 @@ if ( !class_exists( 'Foo_Plugin_Base_v1_0' ) ) {
 		function load_dependencies() {
 			$this->_utils    = new Foo_Utils_v1_0();
 			$this->_settings = new Foo_Plugin_Settings_v1_0($this->plugin_slug);
-			$this->_options  = new Foo_Plugin_Options_v1_0($this->plugin_slug);
+			$this->_options  = new Foo_Plugin_Options_v1_1($this->plugin_slug);
 			$this->_screen   = new Foo_Plugin_Screen_v1_0($this->plugin_slug);
 
 			do_action( $this->plugin_slug . '-load_dependencies' );
@@ -487,8 +453,8 @@ if ( !class_exists( 'Foo_Utils_v1_0' ) ) {
 	}
 }
 
-if ( !class_exists( 'Foo_Plugin_Options_v1_0' ) ) {
-	class Foo_Plugin_Options_v1_0 {
+if ( !class_exists( 'Foo_Plugin_Options_v1_1' ) ) {
+	class Foo_Plugin_Options_v1_1 {
 
 		protected $plugin_slug;
 
@@ -538,6 +504,14 @@ if ( !class_exists( 'Foo_Plugin_Options_v1_0' ) ) {
 				update_option( $this->plugin_slug, $options );
 			}
 		}
+
+        function get_int($key, $default = 0) {
+            return int_val( $this->get($key, $default) );
+        }
+
+        function get_float($key, $default = 0) {
+            return float_val( $this->get($key, $default) );
+        }
 	}
 }
 
