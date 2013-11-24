@@ -506,11 +506,11 @@ if ( !class_exists( 'Foo_Plugin_Options_v1_1' ) ) {
 		}
 
         function get_int($key, $default = 0) {
-            return int_val( $this->get($key, $default) );
+            return intval( $this->get($key, $default) );
         }
 
         function get_float($key, $default = 0) {
-            return float_val( $this->get($key, $default) );
+            return floatval( $this->get($key, $default) );
         }
 	}
 }
