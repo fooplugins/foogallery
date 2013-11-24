@@ -65,6 +65,15 @@ if ( !class_exists( 'FooGallery' ) ) {
 
             $this->register_post_types();
             $this->register_taxonomies();
+
+			if (is_admin()) {
+
+				add_action( 'admin_menu', array($this, 'register_menu_items') );
+
+				add_filter( 'manage_upload_columns', array($this, 'setup_media_columns') );
+
+				add_action( 'manage_media_custom_column', array($this, 'media_columns_content'), 10, 2 );
+			}
         }
 
 		function build_template_list() {
@@ -134,7 +143,7 @@ if ( !class_exists( 'FooGallery' ) ) {
                 'public' => false,
                 'rewrite' => false,
                 'show_ui' => true,
-                'show_in_menu' => true,
+                'show_in_menu' => false,
                 'supports' => array('title', 'thumbnail')
             ));
         }
@@ -165,6 +174,26 @@ if ( !class_exists( 'FooGallery' ) ) {
 
             register_taxonomy( FOOGALLERY_TAX_ALBUM, array( FOOGALLERY_CPT_GALLERY ), $args );
         }
+
+		function register_menu_items() {
+
+			add_media_page( __('Galleries', 'foogallery'), __('Galleries', 'foogallery'), 'upload_files', 'edit.php?post_type=' . FOOGALLERY_CPT_GALLERY);
+
+			add_media_page( __('Add Gallery', 'foogallery'), __('Add Gallery', 'foogallery'), 'upload_files', 'post-new.php?post_type=' . FOOGALLERY_CPT_GALLERY);
+
+		}
+
+		function setup_media_columns( $columns ) {
+
+			$columns['_galleries'] = __('Galleries', 'foogallery');
+
+			return $columns;
+
+		}
+
+		function media_columns_content( $column_name, $post_id ) {
+
+		}
 
 		function gallery_custom_columns($columns) {
 			$new_columns = array(
