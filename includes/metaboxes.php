@@ -6,7 +6,7 @@
 
 if (!class_exists('FooGallery_MetaBoxes')) {
 
-    class FooGallery_MetaBoxes extends Foo_Plugin_Metabox_v1_0 {
+    class FooGallery_MetaBoxes {
 
 		private $_plugin_file;
         private $_gallery;

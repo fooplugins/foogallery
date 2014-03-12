@@ -20,10 +20,8 @@
 
 if ( !class_exists( 'FooGallery' ) ) {
 
-	define('FOOGALLERY_PATH', plugin_dir_path( __FILE__ ));
-
 	require_once( FOOGALLERY_PATH . 'includes/constants.php' );
-	require_once( FOOGALLERY_PATH . 'includes/Foo_Plugin_Base.php' );
+	require_once( FOOGALLERY_PATH . 'includes/foopluginbase/bootstrapper.php' );
     require_once( FOOGALLERY_PATH . 'includes/functions.php' );
     require_once( FOOGALLERY_PATH . 'includes/admin_settings.php' );
     require_once( FOOGALLERY_PATH . 'includes/metaboxes.php' );
@@ -42,13 +40,13 @@ if ( !class_exists( 'FooGallery' ) ) {
 	 * @package FooGallery
 	 * @author  Brad Vincent <brad@fooplugins.com>
 	 */
-	class FooGallery extends Foo_Plugin_Base_v1_1 {
+	class FooGallery extends Foo_Plugin_Base_v2_0 {
 
 		/**
 		 * Initialize the plugin by setting localization, filters, and administration functions.
 		 */
-		function __construct($file) {
-			$this->init(  $file, 'foogallery', '1.0.0', 'FooGallery' );
+		function __construct() {
+			$this->init( FOOGALLERY_FILE, FOOGALLERY_SLUG, FOOGALLERY_VERSION, 'FooGallery' );
             add_action( 'init', array($this, 'init_foogallery') );
 			new FooGallery_Metaboxes(__FILE__);
 			new FooGallery_Shortcodes();
@@ -209,24 +207,6 @@ if ( !class_exists( 'FooGallery' ) ) {
 				$gallery = FooGallery_Gallery::get($post);
 				echo sizeof( $gallery->attachments(false) );
             }
-		}
-
-		/**
-		 * Fired when the plugin is activated.
-		 *
-		 * @param    boolean $network_wide    True if WPMU superadmin uses "Network Activate" action, false if WPMU is disabled or plugin is activated on an individual blog.
-		 */
-		public static function activate($network_wide) {
-			// TODO: create a sample gallery with some images
-		}
-
-		/**
-		 * Fired when the plugin is deactivated.
-		 *
-		 * @param    boolean $network_wide    True if WPMU superadmin uses "Network Deactivate" action, false if WPMU is disabled or plugin is deactivated on an individual blog.
-		 */
-		public static function deactivate($network_wide) {
-			//don't do anything on deactivate
 		}
 	}
 }

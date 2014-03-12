@@ -15,7 +15,7 @@
  * Plugin Name: FooGallery
  * Plugin URI:  https://github.com/fooplugins/foogallery
  * Description: Better Image Galleries for WordPress
- * Version:     1.0.0
+ * Version:     1.0.1
  * Author:      bradvin
  * Author URI:  http://fooplugins.com
  * Text Domain: foogallery
@@ -29,10 +29,11 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-require_once( 'class-foogallery.php' );
+define( 'FOOGALLERY_SLUG', 'foogallery' );
+define( 'FOOGALLERY_PATH', plugin_dir_path( __FILE__ ));
+define( 'FOOGALLERY_FILE', __FILE__ );
+define( 'FOOGALLERY_VERSION', '1.0.1' );
 
-// Register hooks that are fired when the plugin is activated, deactivated, and uninstalled, respectively.
-register_activation_hook( __FILE__, array( 'FooGallery', 'activate' ) );
-register_deactivation_hook( __FILE__, array( 'FooGallery', 'deactivate' ) );
+require_once( 'includes/class-foogallery.php' );
 
-$GLOBALS['foogallery'] = new FooGallery(__FILE__);
+$GLOBALS['foogallery'] = new FooGallery();
