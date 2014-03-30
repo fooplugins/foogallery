@@ -138,10 +138,9 @@ if (!class_exists('FooGallery_Template_Engine')) {
                 echo $html;
         }
 
-        /**
-         * @param $id int
-         * @param $attachment array
-         */
+		/**
+		 * @param $attachment_id
+		 */
         function render_gallery_attachment($attachment_id) {
             $size = $this->get_arg('size', 'thumbnail');
             $link_to_image = $this->get_arg('link_to_image', $this->_gallery->link_to_image);
