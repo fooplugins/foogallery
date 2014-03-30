@@ -109,13 +109,17 @@ if (!class_exists('FooGallery_MetaBoxes')) {
 							</div>
 							<a class="close media-modal-icon" href="#" title="<?php _e('Remove from gallery','foogallery'); ?>"><div class="media-modal-icon"></div></a>
 						</div>
+						<input type="text" value="" class="describe" data-setting="caption" placeholder="Caption this image…" />
 					</li>
 					<?php } } ?>
 					<li class="add-attachment">
 						<a href="#" data-uploader-title="<?php _e( 'Add Images To Gallery', 'foogallery' ); ?>"
 						   data-uploader-button-text="<?php _e( 'Add Images', 'foogallery' ); ?>"
 						   data-post-id="<?php echo $post->ID; ?>" class="upload_image_button"
-						   title="<?php _e( 'Add Images To Gallery', 'foogallery' ); ?>"><?php _e( 'Add Images', 'foogallery' ); ?></a>
+						   title="<?php _e( 'Add Images To Gallery', 'foogallery' ); ?>">
+							<div class="dashicons dashicons-format-gallery"></div>
+							<span><?php _e( 'Add Images', 'foogallery' ); ?></span>
+						</a>
 					</li>
 				</ul>
 				<div style="clear: both;"></div>
