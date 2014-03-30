@@ -134,8 +134,6 @@ class FooGallery_Gallery extends stdClass {
         if (!is_array($data)) return $default;
 
         return array_key_exists($key, $data);
-
-        return $default;
     }
 
 	/**
@@ -171,8 +169,6 @@ class FooGallery_Gallery extends stdClass {
 	/**
 	 * Lazy load the attachments for the gallery
 	 *
-	 * @param bool $fetch if true will fetch the attachment info
-	 *
 	 * @return array
 	 */
 	public function attachments() {
@@ -188,7 +184,12 @@ class FooGallery_Gallery extends stdClass {
 		return $this->_attachments;
     }
 
-    public function shortcode() {
+	/**
+	 * Output the shortcode for the gallery
+	 *
+	 * @return string
+	 */
+	public function shortcode() {
         return '[' . FOOGALLERY_CPT_GALLERY . ' id="' . $this->ID . '"]';
     }
 
