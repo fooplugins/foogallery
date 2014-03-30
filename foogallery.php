@@ -34,6 +34,6 @@ define( 'FOOGALLERY_PATH', plugin_dir_path( __FILE__ ));
 define( 'FOOGALLERY_FILE', __FILE__ );
 define( 'FOOGALLERY_VERSION', '1.0.1' );
 
-require_once( 'includes/class-foogallery.php' );
+require_once( 'includes/class-main.php' );
 
-$GLOBALS['foogallery'] = new FooGallery();
+FooGallery_Main::get_instance();

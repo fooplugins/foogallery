@@ -35,7 +35,7 @@ if (!class_exists('FooGallery_Template_Engine')) {
         /**
          * Lazy load the gallery based on either the id or slug
          *
-         * @return bool|FooGallery_Gallery
+         * @return bool|FooGallery
          */
         function get_gallery() {
             //if we have loaded the gallery object then return it quickly
@@ -44,16 +44,16 @@ if (!class_exists('FooGallery_Template_Engine')) {
             $id = intval( $this->get_arg('id'), 0 );
             if ($id > 0) {
                 //load gallery by ID
-                $this->_gallery = FooGallery_Gallery::get_by_id( $id );
+                $this->_gallery = FooGallery::get_by_id( $id );
             } else {
                 //take into account the cases where id is passed in via gallery attribute
                 $gallery = $this->get_arg('gallery', 0);
                 if (intval($gallery) > 0) {
                     //we have an id, so load
-                    $this->_gallery = FooGallery_Gallery::get_by_id( intval( $gallery ) );
+                    $this->_gallery = FooGallery::get_by_id( intval( $gallery ) );
                 }
                 //we are dealing with a gallery slug
-                $this->_gallery = FooGallery_Gallery::get_by_slug( $gallery );
+                $this->_gallery = FooGallery::get_by_slug( $gallery );
             }
 
             return $this->_gallery;

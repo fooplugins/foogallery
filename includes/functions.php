@@ -11,14 +11,12 @@
 
 if (!function_exists('foogallery_get_templates')) {
     function foogallery_get_templates() {
-        global $foogallery_templates;
+		$default_templates = array(
+			'default' => array(
+				'name' => 'Default'
+			)
+		);
 
-        if (!isset($foogallery_templates)) {
-            $foogallery = $GLOBALS['foogallery'];
-
-            $foogallery_templates = $foogallery->build_template_list();
-        }
-
-        return $foogallery_templates;
+		return apply_filters('foogallery-templates', $default_templates);
     }
 }

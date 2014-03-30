@@ -1,23 +1,19 @@
 <?php
 
 /*
- * FooGallery MetaBoxes
+ * FooGallery Admin MetaBoxes class
  */
 
-if (!class_exists('FooGallery_MetaBoxes')) {
+if (!class_exists('FooGallery_Admin_MetaBoxes')) {
 
-    class FooGallery_MetaBoxes {
+    class FooGallery_Admin_MetaBoxes {
 
-		private $_plugin_file;
         private $_gallery;
 
-		function __construct($plugin_file) {
-
-			$this->_plugin_file = $plugin_file;
-
+		function __construct() {
 			add_action('add_meta_boxes_' . FOOGALLERY_CPT_GALLERY, array($this, 'add_meta_boxes_to_gallery'));
 
-			//save extra post data
+			//save extra post data for a gallery
 			add_action('save_post', array(&$this, 'save_gallery'));
 		}
 
@@ -52,7 +48,7 @@ if (!class_exists('FooGallery_MetaBoxes')) {
 
         function get_gallery($post) {
             if ( !isset($this->_gallery) ) {
-                $this->_gallery = FooGallery_Gallery::get($post);
+                $this->_gallery = FooGallery::get($post);
             }
 
             return $this->_gallery;
@@ -66,7 +62,7 @@ if (!class_exists('FooGallery_MetaBoxes')) {
 
 			// verify nonce
 			if (array_key_exists(FOOGALLERY_CPT_GALLERY . '_nonce', $_POST) &&
-				wp_verify_nonce($_POST[FOOGALLERY_CPT_GALLERY . '_nonce'], plugin_basename($this->_plugin_file))
+				wp_verify_nonce($_POST[FOOGALLERY_CPT_GALLERY . '_nonce'], plugin_basename(FOOGALLERY_FILE))
 			) {
 				//if we get here, we are dealing with the Gallery custom post type
 
@@ -91,7 +87,7 @@ if (!class_exists('FooGallery_MetaBoxes')) {
 			wp_enqueue_media();
 
 			?>
-			<input type="hidden" name="<?php echo FOOGALLERY_CPT_GALLERY; ?>_nonce" id="<?php echo FOOGALLERY_CPT_GALLERY; ?>_nonce" value="<?php echo wp_create_nonce( plugin_basename($this->_plugin_file) ); ?>" />
+			<input type="hidden" name="<?php echo FOOGALLERY_CPT_GALLERY; ?>_nonce" id="<?php echo FOOGALLERY_CPT_GALLERY; ?>_nonce" value="<?php echo wp_create_nonce( plugin_basename(FOOGALLERY_FILE) ); ?>" />
 			<input type="hidden" name='foogallery_attachments' id="foogallery_attachments" value="<?php echo $gallery->attachments_meta; ?>" />
 			<div>
 				<ul class="foogallery-attachments-list">
