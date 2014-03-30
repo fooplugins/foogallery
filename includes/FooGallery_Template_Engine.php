@@ -66,7 +66,7 @@ if (!class_exists('FooGallery_Template_Engine')) {
          */
         function is_valid_gallery() {
             $gallery = $this->get_gallery();
-            return (isset($gallery) && $gallery !== false && $gallery->ID > 0);
+            return isset($gallery) && $gallery !== false && $gallery->does_exist();
         }
 
         /**

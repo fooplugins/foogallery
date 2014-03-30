@@ -22,4 +22,6 @@ if (!class_exists('FooGallery_Template_Default')) {
             wp_enqueue_style("foogallery-css-default", $url);
         }
 	}
+
+	new FooGallery_Template_Default();
 }

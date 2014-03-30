@@ -27,9 +27,9 @@ if ( !class_exists( 'FooGallery' ) ) {
     require_once( FOOGALLERY_PATH . 'includes/metaboxes.php' );
     require_once( FOOGALLERY_PATH . 'includes/FooGallery_Template_Engine.php' );
 	require_once( FOOGALLERY_PATH . 'includes/shortcodes.php' );
-	require_once( FOOGALLERY_PATH . 'includes/templates.php' );
     require_once( FOOGALLERY_PATH . 'includes/class-gallery.php' );
 
+	require_once( FOOGALLERY_PATH . 'templates/default/default.php' );
 
 	/**
 	 * FooGallery class.
