@@ -18,3 +18,7 @@ if ( ! defined( 'FOOGALLERY_META_SETTINGS' ) ) {
 if ( ! defined( 'FOOGALLERY_META_ATTACHMENTS' ) ) {
 	define('FOOGALLERY_META_ATTACHMENTS', 'foogallery_attachments');
 }
+
+if ( ! defined( 'FOOGALLERY_META_TEMPLATE' ) ) {
+	define('FOOGALLERY_META_TEMPLATE', 'foogallery_template');
+}
