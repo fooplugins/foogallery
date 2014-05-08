@@ -32,7 +32,7 @@ if ( ! class_exists( 'FooGallery_Admin_Columns' ) ) {
 			       array( 'icon' => '' ) +
 			       array_slice( $columns, 1, null, true ) +
 			       array(
-				       FOOGALLERY_CPT_GALLERY . '_count' => __( 'Images', 'foogallery' ),
+				       FOOGALLERY_CPT_GALLERY . '_count' => __( 'Media', 'foogallery' ),
 				       FOOGALLERY_CPT_GALLERY . '_shortcode' => __( 'Shortcode', 'foogallery' )
 			       );
 		}
@@ -43,7 +43,18 @@ if ( ! class_exists( 'FooGallery_Admin_Columns' ) ) {
 			switch ( $column ) {
 				case FOOGALLERY_CPT_GALLERY . '_count':
 					$gallery = FooGallery::get( $post );
-					echo sizeof( $gallery->attachments( false ) );
+					$count = sizeof( $gallery->attachments() );
+					switch ($count) {
+						case 0:
+							_e( 'No images yet!', 'foogallery' );
+							break;
+						case 1:
+							_e( '1 image', 'foogallery' );
+							break;
+						default:
+							echo sprintf( __( '%s images', 'foogallery' ), $count );
+							break;
+					}
 					break;
 				case FOOGALLERY_CPT_GALLERY . '_shortcode':
 					echo '<code>' . foogallery_build_gallery_shortcode( $post->ID ) . '</code>';
