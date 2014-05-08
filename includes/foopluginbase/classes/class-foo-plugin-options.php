@@ -4,14 +4,14 @@
  *
  * A helper class for storing all your plugin options as a single WP option. Multi-site friendly.
  *
- * Version: 2.0
+ * Version: 2.1
  * Author: Brad Vincent
  * Author URI: http://fooplugins.com
  * License: GPL2
 */
 
-if ( !class_exists( 'Foo_Plugin_Options_v2_0' ) ) {
-	class Foo_Plugin_Options_v2_0 {
+if ( !class_exists( 'Foo_Plugin_Options_v2_1' ) ) {
+	class Foo_Plugin_Options_v2_1 {
 
 		/**
 		 * @var string The name of the option that will be saved to the options table.
@@ -121,6 +121,23 @@ if ( !class_exists( 'Foo_Plugin_Options_v2_0' ) ) {
 					update_option( $this->option_name, $options );
 				}
 			}
+		}
+
+		/**
+		 * Used to determine if an option is checked (for checkbox options only).
+		 * @param string $key
+		 * @param bool $default
+		 *
+		 * @return bool
+		 */
+		function is_checked($key, $default = false) {
+			$options = $this->get_options();
+
+			if ($options) {
+				return array_key_exists($key, $options);
+			}
+
+			return $default;
 		}
 	}
 }

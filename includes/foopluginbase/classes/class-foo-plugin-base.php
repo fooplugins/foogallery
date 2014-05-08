@@ -7,15 +7,15 @@
  *  we append a version number to the class name. This avoids situations where multiple versions of the same class are loaded into memory and things no longer work as expected.
  *  This situation is extremely difficult to debug, and results in weird errors only when multiple plugins using the base class are activated on a single install
  *
- * Version: 2.0
+ * Version: 2.1
  * Author: Brad Vincent
  * Author URI: http://fooplugins.com
  * License: GPL2
 */
 
-if ( !class_exists( 'Foo_Plugin_Base_v2_0' ) ) {
+if ( !class_exists( 'Foo_Plugin_Base_v2_1' ) ) {
 
-	abstract class Foo_Plugin_Base_v2_0 {
+	abstract class Foo_Plugin_Base_v2_1 {
 
 		/**
 		 * Unique identifier for your plugin.
@@ -49,7 +49,7 @@ if ( !class_exists( 'Foo_Plugin_Base_v2_0' ) ) {
 		/** @var Foo_Plugin_Settings_v2_0 */
 		protected $_settings = false; //a ref to our settings helper class
 
-		/** @var Foo_Plugin_Options_v2_0 */
+		/** @var Foo_Plugin_Options_v2_1 */
 		protected $_options = false; //a ref to our options helper class
 
 		/*
@@ -60,7 +60,7 @@ if ( !class_exists( 'Foo_Plugin_Base_v2_0' ) ) {
 		}
 
 		/*
-		 * @return Foo_Plugin_Options_v2_0
+		 * @return Foo_Plugin_Options_v2_1
 		 */
 		public function options() {
 			return $this->_options;
@@ -143,23 +143,22 @@ if ( !class_exists( 'Foo_Plugin_Base_v2_0' ) ) {
 		function load_dependencies() {
 			//instantiate the classes
 			$this->_settings = new Foo_Plugin_Settings_v2_0($this->plugin_slug);
-			$this->_options  = new Foo_Plugin_Options_v2_0($this->plugin_slug);
+			$this->_options  = new Foo_Plugin_Options_v2_1($this->plugin_slug);
 
 			do_action( $this->plugin_slug . '-loaded_dependencies' );
 		}
 
 		/**
-		 * Load the plugin text domain for translation.
+		 * Loads the plugin language files for translation
 		 *
-		 * @since    1.0.0
+		 * @param string $languages_directory The default language directory location. Default location is /languages/
 		 */
-		public function load_plugin_textdomain() {
-
-			$domain = $this->plugin_slug;
-			$locale = apply_filters( 'plugin_locale', get_locale(), $domain );
-
-			load_textdomain( $domain, WP_LANG_DIR . '/' . $domain . '/' . $domain . '-' . $locale . '.mo' );
-			load_plugin_textdomain( $domain, false, $this->plugin_dir . '/languages/' );
+		public function load_plugin_textdomain($languages_directory = '/languages/') {
+			Foo_Plugin_TextDomain_v1_0::load_textdomain(
+				$this->plugin_file,
+				$this->plugin_slug,
+				$languages_directory
+			);
 		}
 
 		//wrapper around the apply_filters function that appends the plugin slug to the tag
@@ -333,11 +332,11 @@ if ( !class_exists( 'Foo_Plugin_Base_v2_0' ) ) {
 		}
 
 		function inline_styles() {
-			do_action( $this->plugin_slug . '-' . (is_admin() ? 'admin' : '') . '_inline_styles', $this );
+			do_action( $this->plugin_slug . (is_admin() ? '-admin' : '') . '_inline_styles', $this );
 		}
 
 		function inline_scripts() {
-			do_action( $this->plugin_slug . '-' . (is_admin() ? 'admin' : '') . '_inline_scripts', $this );
+			do_action( $this->plugin_slug . (is_admin() ? '-admin' : '') . '_inline_scripts', $this );
 		}
 	}
 }

@@ -5,7 +5,7 @@ Default settings page used by Foo_Plugin_Base
 global $wp_version, $wp_settings_sections, $wp_settings_fields;
 
 //need to make sure are included correctly
-if ( !isset($this) || !is_subclass_of($this, 'Foo_Plugin_Base_v2_0') ) {
+if ( !isset($this) || !is_subclass_of( $this, 'Foo_Plugin_Base_v2_1' ) ) {
 	throw new Exception("This settings view has not been included correctly!");
 }
 
@@ -23,14 +23,16 @@ $plugin_slug = $plugin_info['slug'];
             settings_errors();
         }
 
-        if ( !isset($wp_settings_sections) || !isset($wp_settings_sections[$plugin_slug]) )
+	if ( !isset($wp_settings_sections) || !isset($wp_settings_sections[$plugin_slug]) ) {
             return;
+	}
 
 		if ( !empty($summary) ) {
 			echo esc_html( $summary );
 		}
     ?>
-
+	<div id="<?php echo $plugin_slug; ?>-settings-wrapper">
+		<div id="<?php echo $plugin_slug; ?>-settings-main" class="postbox-container">
 	<form action="options.php" method="post">
 		<?php settings_fields($plugin_slug); ?>
                 <?php
@@ -45,7 +47,9 @@ $plugin_slug = $plugin_info['slug'];
                     foreach ($tabs as $tab) {
                         $class = $first ? "nav-tab nav-tab-active" : "nav-tab";
                         echo "<a href='#{$tab['id']}' class='$class'>{$tab['title']}</a>";
-                        if ($first) { $first = false; }
+							if ( $first ) {
+								$first = false;
+							}
                     }
                 ?>
                 </h2>
@@ -61,8 +65,9 @@ $plugin_slug = $plugin_info['slug'];
 							if (in_array($section['id'], $tab['sections'])) {
 								echo "<h3>{$section['title']}</h3>\n";
 								call_user_func($section['callback'], $section);
-								if ( !isset($wp_settings_fields) || !isset($wp_settings_fields[$plugin_slug]) || !isset($wp_settings_fields[$plugin_slug][$section['id']]) )
+								if ( !isset($wp_settings_fields) || !isset($wp_settings_fields[$plugin_slug]) || !isset($wp_settings_fields[$plugin_slug][$section['id']]) ) {
 									continue;
+								}
 								echo '<table class="form-table">';
 								do_settings_fields($plugin_slug, $section['id']);
 								echo '</table>';
@@ -70,7 +75,9 @@ $plugin_slug = $plugin_info['slug'];
 						}
 
                         echo "</div>";
-                        if ($first) { $first = false; }
+						if ( $first ) {
+							$first = false;
+						}
                     }
                 ?>
                 <?php
@@ -80,9 +87,18 @@ $plugin_slug = $plugin_info['slug'];
                 }
                 ?>
 		<p class="submit">
-			<input name="submit" class="button-primary" type="submit" value="<?php _e('Save Changes', $plugin_slug); ?>" />
-			<input name="<?php echo $plugin_slug; ?>[reset-defaults]" onclick="return confirm('<?php _e('Are you sure you want to restore all settings back to their default values?', $plugin_slug); ?>');" class="button-secondary" type="submit" value="<?php _e('Restore Defaults', $plugin_slug); ?>" />
+					<input name="submit" class="button-primary" type="submit"
+						   value="<?php _e( 'Save Changes', $plugin_slug ); ?>"/>
+					<input name="<?php echo $plugin_slug; ?>[reset-defaults]"
+						   onclick="return confirm('<?php _e( 'Are you sure you want to restore all settings back to their default values?', $plugin_slug ); ?>');"
+						   class="button-secondary" type="submit"
+						   value="<?php _e( 'Restore Defaults', $plugin_slug ); ?>"/>
 			<?php do_action($plugin_slug . '-settings_buttons') ?>
 		</p>
 	</form>
+		</div>
+		<div id="<?php echo $plugin_slug; ?>-settings-sidebar" class="postbox-container">
+			<?php do_action($plugin_slug . '-settings-sidebar'); ?>
+		</div>
+	</div>
 </div>
