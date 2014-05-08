@@ -8,11 +8,24 @@ if ( !class_exists( 'FooGallery_PostTypes_Taxonomies' ) ) {
 	class FooGallery_PostTypes_Taxonomies {
 
 		function __construct() {
-			add_action( 'init', array($this, 'register_post_types') );
-			add_action( 'init', array($this, 'register_taxonomies') );
+			add_action( 'init', array($this, 'register') );
 		}
 
-		function register_post_types() {
+		function register() {
+
+			$rewrite = $public = $show_in_menu = false;
+
+			if (foogallery_permalinks_enabled()) {
+				$public = true;
+				$rewrite = array(
+					'slug' => foogallery_permalink()
+				);
+			}
+
+			if ( !foogallery_use_media_menu() ) {
+				$show_in_menu = true;
+			}
+
 			register_post_type(FOOGALLERY_CPT_GALLERY, array(
 				'labels' => array(
 					'name' => __('Galleries', 'foogallery'),
@@ -29,39 +42,39 @@ if ( !class_exists( 'FooGallery_PostTypes_Taxonomies' ) ) {
 					'all_items' => __('Galleries', 'foogallery' )
 				),
 				'hierarchical' => false,
-				'public' => false,
-				'rewrite' => false,
+				'public' => $public,
+				'rewrite' => $rewrite,
 				'show_ui' => true,
-				'show_in_menu' => false,
+				'show_in_menu' => $show_in_menu,
+				'menu_position' => 30,
+				'menu_icon' => 'dashicons-format-gallery',
 				'supports' => array('title', 'thumbnail')
 			));
-		}
 
-		function register_taxonomies() {
-			$labels = array(
-				'name'              => __( 'Albums', 'foogallery' ),
-				'singular_name'     => __( 'Album', 'foogallery' ),
-				'search_items'      => __( 'Search Albums', 'foogallery' ),
-				'all_items'         => __( 'All Albums', 'foogallery' ),
-				'parent_item'       => __( 'Parent Album', 'foogallery' ),
-				'parent_item_colon' => __( 'Parent Album:', 'foogallery' ),
-				'edit_item'         => __( 'Edit Album', 'foogallery' ),
-				'update_item'       => __( 'Update Album', 'foogallery' ),
-				'add_new_item'      => __( 'Add New Album', 'foogallery' ),
-				'new_item_name'     => __( 'New Album Name', 'foogallery' ),
-				'menu_name'         => __( 'Albums', 'foogallery' ),
-			);
-
-			$args = array(
-				'hierarchical'      => true,
-				'labels'            => $labels,
-				'show_ui'           => true,
-				'show_admin_column' => true,
-				'query_var'         => true,
-				'rewrite'           => array( 'slug' => 'album' ),
-			);
-
-			register_taxonomy( FOOGALLERY_TAX_ALBUM, array( FOOGALLERY_CPT_GALLERY ), $args );
+//			$labels = array(
+//				'name'              => __( 'Albums', 'foogallery' ),
+//				'singular_name'     => __( 'Album', 'foogallery' ),
+//				'search_items'      => __( 'Search Albums', 'foogallery' ),
+//				'all_items'         => __( 'All Albums', 'foogallery' ),
+//				'parent_item'       => __( 'Parent Album', 'foogallery' ),
+//				'parent_item_colon' => __( 'Parent Album:', 'foogallery' ),
+//				'edit_item'         => __( 'Edit Album', 'foogallery' ),
+//				'update_item'       => __( 'Update Album', 'foogallery' ),
+//				'add_new_item'      => __( 'Add New Album', 'foogallery' ),
+//				'new_item_name'     => __( 'New Album Name', 'foogallery' ),
+//				'menu_name'         => __( 'Albums', 'foogallery' ),
+//			);
+//
+//			$args = array(
+//				'hierarchical'      => true,
+//				'labels'            => $labels,
+//				'show_ui'           => true,
+//				'show_admin_column' => true,
+//				'query_var'         => true,
+//				'rewrite'           => array( 'slug' => 'album' ),
+//			);
+//
+//			register_taxonomy( FOOGALLERY_TAX_ALBUM, array( FOOGALLERY_CPT_GALLERY ), $args );
 		}
 	}
 }
