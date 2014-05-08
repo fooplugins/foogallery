@@ -19,8 +19,8 @@ if ( !class_exists( 'FooGallery_Shortcodes' ) ) {
 			), $atts, 'foogallery' );
 
             //create new instance of template engine
-            $engine = new FooGallery_Template_Engine( $args );
-            $engine->render();
+            $engine = new FooGallery_Template_Loader();
+            $engine->render_template( $args );
 		}
 	}
 }
