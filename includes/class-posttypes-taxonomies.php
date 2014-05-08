@@ -8,7 +8,13 @@ if ( !class_exists( 'FooGallery_PostTypes_Taxonomies' ) ) {
 	class FooGallery_PostTypes_Taxonomies {
 
 		function __construct() {
+			//register the post types
 			add_action( 'init', array($this, 'register') );
+
+			// Update post type messages.
+			add_filter( 'post_updated_messages', array( $this, 'update_messages' ) );
+
+			add_filter( 'bulk_post_updated_messages', array( $this, 'update_bulk_messages' ), 10, 2 );
 		}
 
 		function register() {
@@ -75,6 +81,54 @@ if ( !class_exists( 'FooGallery_PostTypes_Taxonomies' ) ) {
 //			);
 //
 //			register_taxonomy( FOOGALLERY_TAX_ALBUM, array( FOOGALLERY_CPT_GALLERY ), $args );
+		}
+
+		/**
+		 * Customize the update messages for a gallery
+		 *
+		 * @since 1.0.0
+		 *
+		 * @global object $post    The current post object.
+		 * @param array $messages  Array of default post updated messages.
+		 * @return array $messages Amended array of post updated messages.
+		 */
+		public function update_messages( $messages ) {
+
+			global $post;
+
+			// Add our gallery messages
+			$messages[FOOGALLERY_CPT_GALLERY] = apply_filters( 'foogallery_update_messages',
+				array(
+					0  => '',
+					1  => __( 'Gallery updated.', 'foogallery' ),
+					2  => __( 'Gallery custom field updated.', 'foogallery' ),
+					3  => __( 'Gallery custom field deleted.', 'foogallery' ),
+					4  => __( 'Gallery updated.', 'foogallery' ),
+					5  => isset( $_GET['revision'] ) ? sprintf( __( 'Gallery restored to revision from %s.', 'foogallery' ), wp_post_revision_title( (int) $_GET['revision'], false ) ) : false,
+					6  => __( 'Gallery published.', 'foogallery' ),
+					7  => __( 'Gallery saved.', 'foogallery' ),
+					8  => __( 'Gallery submitted.', 'foogallery' ),
+					9  => sprintf( __( 'Gallery scheduled for: <strong>%1$s</strong>.', 'foogallery' ), date_i18n( __( 'M j, Y @ G:i' ), strtotime( $post->post_date ) ) ),
+					10 => __( 'Gallery draft updated.', 'foogallery' )
+				)
+			);
+
+			return $messages;
+
+		}
+
+		function update_bulk_messages( $bulk_messages, $bulk_counts ) {
+
+			$bulk_messages[FOOGALLERY_CPT_GALLERY] = array(
+				'updated'   => _n( '%s Gallery updated.', '%s Galleries updated.', $bulk_counts['updated'], 'foogallery' ),
+				'locked'    => _n( '%s Gallery not updated, somebody is editing it.', '%s Galleries not updated, somebody is editing them.', $bulk_counts['locked'], 'foogallery' ),
+				'deleted'   => _n( '%s Gallery permanently deleted.', '%s Galleries permanently deleted.', $bulk_counts['deleted'], 'foogallery' ),
+				'trashed'   => _n( '%s Gallery moved to the Trash.', '%s Galleries moved to the Trash.', $bulk_counts['trashed'], 'foogallery' ),
+				'untrashed' => _n( '%s Gallery restored from the Trash.', '%s Galleries restored from the Trash.', $bulk_counts['untrashed'], 'foogallery' ),
+			);
+
+			return $bulk_messages;
+
 		}
 	}
 }
