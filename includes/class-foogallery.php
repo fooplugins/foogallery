@@ -176,8 +176,10 @@ class FooGallery extends stdClass {
 		if ( $this->_attachments === false ) {
 			$this->_attachments = array();
 
-			foreach ( explode(',', $this->attachments_meta) as $att_id) {
-				$this->_attachments[] = $att_id;
+			if (!empty($this->attachments_meta)) {
+				foreach ( explode( ',', $this->attachments_meta ) as $att_id ) {
+					$this->_attachments[] = $att_id;
+				}
 			}
 		}
 
