@@ -1,0 +1,10 @@
+FooPluginBase Changelog
+=======================
+
+> Last updated 1 Apr 2014
+
+2014.04.01 - version 2.1
+* Refactored TextDomain loading into separate class
+* Added is_checked method onto Foo_Plugin_Options
+* Upgraded to use version of Foo_Plugin_Options_v2_1
+* Updated inline style and script action names
