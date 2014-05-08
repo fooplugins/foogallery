@@ -42,11 +42,9 @@ class FooGallery extends stdClass {
 		$this->author = $post->post_author;
         $this->post_status = $post->post_status;
 		$this->attachments_meta = get_post_meta($post->ID, FOOGALLERY_META_ATTACHMENTS, true);
-        $settings = get_post_meta($post->ID, FOOGALLERY_META_SETTINGS, true);
-        $this->link_to_image = $this->is_checked( $settings, 'link_to_image', true );
-        $this->default_template = $this->get_meta( $settings, 'default_template', 'default' );
-
-		do_action('FooGallery_after_load', $this, $post);
+		$this->gallery_template = get_post_meta($post->ID, FOOGALLERY_META_TEMPLATE, true);
+		$this->settings = get_post_meta($post->ID, FOOGALLERY_META_SETTINGS, true);
+		do_action('foogallery_FooGallery_after_load', $this, $post);
 	}
 
 	/**
@@ -103,6 +101,7 @@ class FooGallery extends stdClass {
 	public static function get_by_id($post_id) {
 		$gallery = new self();
 		$gallery->load_by_id($post_id);
+		if (!$gallery->does_exist()) return false;
 		return $gallery;
 	}
 
@@ -116,13 +115,14 @@ class FooGallery extends stdClass {
 	public static function get_by_slug($slug) {
 		$gallery = new self();
 		$gallery->load_by_slug($slug);
+		if (!$gallery->does_exist()) return false;
 		return $gallery;
 	}
 
-    function get_meta($data, $key, $default) {
-        if (!is_array($data)) return $default;
+    function get_meta($key, $default) {
+        if (!is_array($this->settings)) return $default;
 
-        $value = array_key_exists($key, $data) ? $data[$key] : NULL;
+        $value = array_key_exists($key, $this->settings) ? $this->settings[$key] : NULL;
 
         if ($value === NULL)
             return $default;
@@ -130,10 +130,10 @@ class FooGallery extends stdClass {
         return $value;
     }
 
-    function is_checked($data, $key, $default = false) {
-        if (!is_array($data)) return $default;
+    function is_checked($key, $default = false) {
+        if (!is_array($this->settings)) return $default;
 
-        return array_key_exists($key, $data);
+        return array_key_exists($key, $this->settings);
     }
 
 	/**
@@ -190,7 +190,7 @@ class FooGallery extends stdClass {
 	 * @return string
 	 */
 	public function shortcode() {
-        return '[' . FOOGALLERY_CPT_GALLERY . ' id="' . $this->ID . '"]';
+        return foogallery_build_gallery_shortcode( $this->ID );
     }
 
 }
