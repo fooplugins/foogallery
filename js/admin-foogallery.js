@@ -16,10 +16,23 @@
 
     FOOGALLERY.initAttachments = function() {
         var attachments = $('#foogallery_attachments').val();
-        FOOGALLERY.attachments = $.map( attachments.split(','), function(value) {
-            return parseInt(value, 10);
-        });
+		if (attachments) {
+			FOOGALLERY.attachments = $.map(attachments.split(','), function (value) {
+				return parseInt(value, 10);
+			});
+		}
     };
+
+	FOOGALLERY.initSettings = function() {
+		$('#FooGallerySettings_GalleryTemplate').change(function() {
+			var selectedTemplate = $(this).val();
+			//hide all template fields
+			$('.foogallery-metabox-settings .gallery_template_field').hide();
+			//show all fields for the selected template only
+			$('.foogallery-metabox-settings .gallery_template_field-' + selectedTemplate).show();
+		});
+
+	};
 
     FOOGALLERY.addAttachmentToGalleryList = function(attachment) {
 
@@ -41,16 +54,20 @@
         FOOGALLERY.calculateAttachmentIds();
     };
 
-    FOOGALLERY.removeAttachmentFromGalleryList = function($li) {
-        var id = $li.data('attachment-id'),
-            index = $.inArray(id, FOOGALLERY.attachments);
+    FOOGALLERY.removeAttachmentFromGalleryList = function(id) {
+        var index = $.inArray(id, FOOGALLERY.attachments);
         if (index !== -1) {
             FOOGALLERY.attachments.splice(index, 1);
         }
-        $li.remove();
+		$('[data-attachment-id="' + id + '"').remove();
 
         FOOGALLERY.calculateAttachmentIds();
     };
+
+	FOOGALLERY.showAttachmentInfoModal = function(id) {
+		FOOGALLERY.selected_attachment_id = id;
+		$('.upload_image_button').click();
+	};
 
     FOOGALLERY.adminReady = function () {
         $('.upload_image_button').on('click', function(e) {
@@ -105,16 +122,19 @@
 
         FOOGALLERY.initAttachments();
 
+		FOOGALLERY.initSettings();
+
         $('.foogallery-attachments-list')
-            .on('click' ,'a.close', function() {
-                var $selected = $(this).parents('li:first');
-                FOOGALLERY.removeAttachmentFromGalleryList($selected);
+            .on('click' ,'a.remove', function() {
+                var $selected = $(this).parents('li:first'),
+					attachment_id = $selected.data('attachment-id');
+                FOOGALLERY.removeAttachmentFromGalleryList(attachment_id);
             })
-            .on('dblclick', '.thumbnail', function() {
-                var $selected = $(this).parents('li:first');
-                FOOGALLERY.selected_attachment_id = $selected.data('attachment-id');
-                $('.upload_image_button').click();
-            })
+			.on('click' ,'a.info', function() {
+				var $selected = $(this).parents('li:first'),
+					attachment_id = $selected.data('attachment-id');
+				FOOGALLERY.showAttachmentInfoModal(attachment_id);
+			})
             .sortable({
                 items: 'li:not(.add-attachment)',
                 distance: 10,
@@ -129,8 +149,10 @@
 
 }(window.FOOGALLERY = window.FOOGALLERY || {}, jQuery));
 
-jQuery(function () {
-    FOOGALLERY.adminReady();
+jQuery(function ($) {
+	if ($('#foogallery_attachments').length > 0) {
+		FOOGALLERY.adminReady();
+	}
 });
 
 

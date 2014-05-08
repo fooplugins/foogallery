@@ -19,8 +19,8 @@ if (!class_exists('FooGallery_Admin_MetaBoxes')) {
 
 		function add_meta_boxes_to_gallery() {
 			add_meta_box(
-				'gallery_images',
-				__('Gallery Images', 'foogallery'),
+				'gallery_items',
+				__('Gallery Items', 'foogallery'),
 				array($this, 'render_gallery_media_metabox'),
 				FOOGALLERY_CPT_GALLERY,
 				'normal',
@@ -73,13 +73,20 @@ if (!class_exists('FooGallery_Admin_MetaBoxes')) {
 				//do nothing to all attachments that have stayed the same
 				//do this all in the gallery class
 
-				$attachments = apply_filters('foogallery_data_attachments', $_POST[FOOGALLERY_META_ATTACHMENTS]);
+				$attachments = apply_filters('foogallery_save_gallery_attachments', $_POST[FOOGALLERY_META_ATTACHMENTS]);
 				update_post_meta($post_id, FOOGALLERY_META_ATTACHMENTS, $attachments);
+
+				$settings = apply_filters('foogallery_save_gallery_settings', $_POST[FOOGALLERY_META_SETTINGS]);
+				if ( empty( $settings ) ) {
+					$settings = array();
+				}
+				update_post_meta($post_id, FOOGALLERY_META_TEMPLATE, $_POST[FOOGALLERY_META_TEMPLATE]);
+
+				update_post_meta($post_id, FOOGALLERY_META_SETTINGS, $settings);
 
 				do_action('foogallery_after_save_gallery', $post_id, $_POST);
 			}
 		}
-
 
 		function render_gallery_media_metabox($post) {
 			$gallery = $this->get_gallery($post);
@@ -95,84 +102,104 @@ if (!class_exists('FooGallery_Admin_MetaBoxes')) {
 					if ($gallery->has_attachments()) {
 						foreach ($gallery->attachments() as $attachment_id) {
                             $attachment = wp_get_attachment_image_src($attachment_id);
-                            ?>
-					<li class="attachment details" data-attachment-id="<?php echo $id; ?>">
-						<div class="attachment-preview type-image">
-							<div class="thumbnail">
-								<div class="centered">
-									<img width="<?php echo $attachment[1]; ?>" height="<?php echo $attachment[2]; ?>" src="<?php echo $attachment[0]; ?>" />
-								</div>
-							</div>
-							<a class="close media-modal-icon" href="#" title="<?php _e('Remove from gallery','foogallery'); ?>"><div class="media-modal-icon"></div></a>
-						</div>
-						<input type="text" value="" class="describe" data-setting="caption" placeholder="Caption this image…" />
-					</li>
-					<?php } } ?>
+							$this->render_gallery_item( $attachment_id, $attachment );
+						}
+					} ?>
 					<li class="add-attachment">
-						<a href="#" data-uploader-title="<?php _e( 'Add Images To Gallery', 'foogallery' ); ?>"
-						   data-uploader-button-text="<?php _e( 'Add Images', 'foogallery' ); ?>"
+						<a href="#" data-uploader-title="<?php _e( 'Add Media To Gallery', 'foogallery' ); ?>"
+						   data-uploader-button-text="<?php _e( 'Add Media', 'foogallery' ); ?>"
 						   data-post-id="<?php echo $post->ID; ?>" class="upload_image_button"
-						   title="<?php _e( 'Add Images To Gallery', 'foogallery' ); ?>">
+						   title="<?php _e( 'Add Media To Gallery', 'foogallery' ); ?>">
 							<div class="dashicons dashicons-format-gallery"></div>
-							<span><?php _e( 'Add Images', 'foogallery' ); ?></span>
+							<span><?php _e( 'Add Media', 'foogallery' ); ?></span>
 						</a>
 					</li>
 				</ul>
 				<div style="clear: both;"></div>
 			</div>
 			<textarea style="display: none" id="foogallery-attachment-template">
-<li class="attachment details">
-	<div class="attachment-preview type-image">
-		<div class="thumbnail">
-			<div class="centered">
-				<img />
-			</div>
-		</div>
-		<a class="close media-modal-icon" href="#" title="<?php _e('Remove from gallery','foogallery'); ?>"><div class="media-modal-icon"></div></a>
-	</div>
-</li></textarea>
+<?php $this->render_gallery_item(); ?>
+			</textarea>
 		<?php
 
 		}
+
+		function render_gallery_item($attachment_id = '', $attachment = array()) {
+			$data_attribute = empty($attachment_id) ? '' : "data-attachment-id=\"{$attachment_id}\"";
+			$img_tag = empty($attachment) ? '<img />' : "<img width=\"{$attachment[1]}\" height=\"{$attachment[2]}\" src=\"{$attachment[0]}\" />";
+?>
+			<li class="attachment details" <?php echo $data_attribute; ?>>
+				<div class="attachment-preview type-image">
+					<div class="thumbnail">
+						<div class="centered">
+							<?php echo $img_tag; ?>
+						</div>
+					</div>
+					<a class="info" href="#" title="<?php _e('Edit Info','foogallery'); ?>">
+						<span class="dashicons dashicons-info"></span>
+					</a>
+					<a class="remove" href="#" title="<?php _e('Remove from gallery','foogallery'); ?>">
+						<span class="dashicons dashicons-dismiss"></span>
+					</a>
+				</div>
+<!--				<input type="text" value="" class="describe" data-setting="caption" placeholder="Caption this image…" />-->
+			</li>
+<?php		}
 
         function render_gallery_settings_metabox($post) {
             //gallery settings including:
             //gallery images link to image or attachment page
             //default template to use
             $gallery = $this->get_gallery($post);
-            $available_templates = foogallery_get_templates();
-
+            $available_templates = foogallery_gallery_templates();
+	        $gallery_template = foogallery_default_gallery_template();
+	        if ( !empty($gallery->gallery_template) ) {
+		        $gallery_template = $gallery->gallery_template;
+	        }
             ?>
             <table class="foogallery-metabox-settings">
                 <tbody>
                     <tr>
                         <td>
-                            <label for="FooGallerySettings_DefaultTemplate">Default Template</label>
+                            <label for="FooGallerySettings_GalleryTemplate">Gallery Template</label>
                         </td>
                         <td>
-                            <select id="FooGallerySettings_DefaultTemplate" name="foogallery[default_template]">
+                            <select id="FooGallerySettings_GalleryTemplate" name="<?php echo FOOGALLERY_META_TEMPLATE; ?>">
                                 <?php
                                 foreach($available_templates as $template){
-                                    $selected = ($gallery->default_template === $template->name) ? 'selected' : '';
-                                    echo "<option {$selected} value=\"{$template->name}\">{$template->name}</option>";
+                                    $selected = ($gallery_template === $template['key']) ? 'selected' : '';
+                                    echo "<option {$selected} value=\"{$template['key']}\">{$template['name']}</option>";
                                 }
                                 ?>
                             </select>
-                            <small><?php _e('The default template that will be used when rendering the gallery. This can be override when the gallery is inserted into a page or post.','foogallery');?></small>
+                            <small><?php _e('The gallery template that will be used when the gallery is output to the frontend.','foogallery');?></small>
                         </td>
                     </tr>
-                    <tr>
-                        <td>
-                            <label for="FooGallerySettings_LinkToImage">Link To Image</label>
-                        </td>
-                        <td>
-                            <label for="FooGallerySettings_LinkToImage">
-                                <?php $checked = ($gallery->link_to_image) ? 'checked' : ''; ?>
-                                <input id="FooGallerySettings_LinkToImage" type="checkbox" name="foogallery[link_to_image]" value="on" <?php echo $checked ?>/>
-                                <small><?php _e('Should the images in the gallery link to the full size images. If not set, then the images will link to the attachment page.','foogallery');?></small>
-                            </label>
-                        </td>
-                    </tr>
+					<?php
+					foreach($available_templates as $template) {
+						$field_visibility = ($gallery_template !== $template['key']) ? 'style="display:none"' : '';
+						$section = '';
+						foreach ($template['fields'] as $field) {
+							if ( isset($field['section']) && $field['section'] !== $section ) {
+								$section = $field['section'];
+								?>
+					<tr class="gallery_template_field gallery_template_field-<?php echo $template['key']; ?>" <?php echo $field_visibility; ?>>
+						<td colspan="2"><h4><?php echo $section; ?></h4></td>
+					</tr>
+								<?php
+							}
+							?>
+					<tr class="gallery_template_field gallery_template_field-<?php echo $template['key']; ?>" <?php echo $field_visibility; ?>>
+						<td>
+							<label for="FooGallerySettings_<?php echo $template['key'] . '_' . $field['id']; ?>"><?php echo $field['title']; ?></label>
+						</td>
+						<td>
+							<?php $this->render_gallery_template_field( $field, $gallery, $template ); ?>
+						</td>
+						</tr><?php
+						}
+					}
+					?>
                 </tbody>
             </table>
             <?php
@@ -187,10 +214,116 @@ if (!class_exists('FooGallery_Admin_MetaBoxes')) {
                 <?php
             }
             ?>
-            <p><?php _e('Add media to your gallery by clicking the "Add Images" button.','foogallery'); ?></p>
-            <p><?php _e('Remove an image from the gallery by hovering over the image and clicking the "x" that will appear.','foogallery'); ?></p>
-            <p><?php _e('You can set the featured image for the gallery. The featured image will represent the gallery in an album.','foogallery'); ?></p>
+            <p><?php _e('Add media to your gallery by clicking the "Add Media" button.','foogallery'); ?></p>
+            <p><?php _e('Remove an item from the gallery by hovering over the image and clicking the "x" icon that appears.','foogallery'); ?></p>
             <?php
         }
+
+		/**
+		 * @param array $field
+		 * @param       $gallery FooGallery
+		 */
+		function render_gallery_template_field( $field = array(), $gallery, $template ) {
+			$template_key = $template['key'];
+
+			//only declare up front so no debug warnings are shown
+			$type = $id = $desc = $default = $placeholder = $choices = $class = $section = null;
+
+			extract( $field );
+
+			$id = $template_key . '_' . $id;
+
+			$field_value = $gallery->get_meta( $id, $default );
+
+			$field_class = empty($class) ? '' : ' class="' . $class . '"';
+
+			$choices = apply_filters('foogallery_render_gallery_template_field_choices', $choices, $field, $gallery );
+
+			//allow for customization
+			do_action( 'foogallery_render_gallery_template_field_before', $field , $gallery );
+
+			switch ( $type ) {
+
+				case 'html':
+					echo $desc;
+					break;
+
+				case 'checkbox':
+					if (isset($gallery->settings[$id]) && $gallery->settings[$id] == 'on') {
+						$field_value = 'on';
+					} else if (!isset($gallery->settings) && $default == 'on') {
+						$field_value = 'on';
+					} else {
+						$field_value = '';
+					}
+
+					$checked = 'on' === $field_value ? ' checked="checked"' : '';
+					echo '<input' . $field_class . ' type="checkbox" id="FooGallerySettings_' . $id . '" name="' . FOOGALLERY_META_SETTINGS . '[' . $id . ']" value="on"' . $checked . ' /> <small>' . $desc . '</small>';
+					break;
+
+				case 'select':
+					echo '<select' . $field_class . ' id="FooGallerySettings_' . $id . '" name="' . FOOGALLERY_META_SETTINGS . '[' . $id . ']">';
+					foreach ( $choices as $value => $label ) {
+						$selected = '';
+						if ( $field_value == $value ) {
+							$selected = ' selected="selected"';
+						}
+						echo '<option ' . $selected . ' value="' . $value . '">' . $label . '</option>';
+					}
+
+					echo '</select>';
+					break;
+
+				case 'radio':
+					$i = 0;
+					foreach ( $choices as $value => $label ) {
+						$selected = '';
+						if ( $field_value == $value ) {
+							$selected = ' checked="checked"';
+						}
+						echo '<input' . $field_class . $selected . ' type="radio" name="' . FOOGALLERY_META_SETTINGS . '[' . $id . ']"  id="FooGallerySettings_' . $id . $i . '" value="' . $value . '"> <label for="FooGallerySettings_' . $id . $i . '">' . $label . '</label>';
+						if ( $i < count( $choices ) - 1 ) {
+							echo '<br />';
+						}
+						$i++;
+					}
+
+					break;
+
+				case 'textarea':
+					echo '<textarea' . $field_class . ' id="FooGallerySettings_' . $id . '" name="' . FOOGALLERY_META_SETTINGS . '[' . $id . ']" placeholder="' . $placeholder . '">' . esc_attr( $field_value ) . '</textarea>';
+
+					break;
+
+				case 'text':
+					echo '<input class="regular-text ' . $class . '" type="text" id="FooGallerySettings_' . $id . '" name="' . FOOGALLERY_META_SETTINGS . '[' . $id . ']" placeholder="' . $placeholder . '" value="' . esc_attr( $field_value ) . '" />';
+
+					break;
+
+				case 'checkboxlist':
+					$i = 0;
+					foreach ( $choices as $value => $label ) {
+
+						$checked = '';
+						if ( isset($field_value[$value]) && $field_value[$value] == 'true' ) {
+							$checked = 'checked="checked"';
+						}
+
+						echo '<input' . $field_class . ' ' . $checked . ' type="checkbox" name="' . FOOGALLERY_META_SETTINGS . '[' . $id . '|' . $value . ']" id="FooGallerySettings_' . $id . $i . '" value="on"> <label for="FooGallerySettings_' . $id . $i . '">' . $label . '</label>';
+						if ( $i < count( $choices ) - 1 ) {
+							echo '<br />';
+						}
+						$i++;
+					}
+
+					break;
+
+				default:
+					do_action( 'foogallery_render_gallery_template_field_custom', $field , $gallery );
+					break;
+			}
+
+			do_action( 'foogallery_render_gallery_template_field_after', $field , $gallery );
+		}
     }
 }
