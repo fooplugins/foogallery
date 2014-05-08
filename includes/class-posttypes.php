@@ -3,17 +3,18 @@
  * FooGallery Custom Post Types and Custom Taxonomy Registration class
  */
 
-if ( !class_exists( 'FooGallery_PostTypes_Taxonomies' ) ) {
+if ( !class_exists( 'FooGallery_PostTypes' ) ) {
 
-	class FooGallery_PostTypes_Taxonomies {
+	class FooGallery_PostTypes {
 
 		function __construct() {
 			//register the post types
 			add_action( 'init', array($this, 'register') );
 
-			// Update post type messages.
+			//update post type messages
 			add_filter( 'post_updated_messages', array( $this, 'update_messages' ) );
 
+			//update post bulk messages
 			add_filter( 'bulk_post_updated_messages', array( $this, 'update_bulk_messages' ), 10, 2 );
 		}
 
@@ -86,8 +87,6 @@ if ( !class_exists( 'FooGallery_PostTypes_Taxonomies' ) ) {
 		/**
 		 * Customize the update messages for a gallery
 		 *
-		 * @since 1.0.0
-		 *
 		 * @global object $post    The current post object.
 		 * @param array $messages  Array of default post updated messages.
 		 * @return array $messages Amended array of post updated messages.
@@ -117,18 +116,27 @@ if ( !class_exists( 'FooGallery_PostTypes_Taxonomies' ) ) {
 
 		}
 
+		/**
+		 * Customize the bulk update messages for a gallery
+		 *
+		 * @param array $bulk_messages 	Array of default bulk updated messages.
+		 * @param array $bulk_counts	Array containing count of posts involved in the action.
+		 *
+		 * @return array mixed			Amended array of bulk updated messages.
+		 */
 		function update_bulk_messages( $bulk_messages, $bulk_counts ) {
 
-			$bulk_messages[FOOGALLERY_CPT_GALLERY] = array(
-				'updated'   => _n( '%s Gallery updated.', '%s Galleries updated.', $bulk_counts['updated'], 'foogallery' ),
-				'locked'    => _n( '%s Gallery not updated, somebody is editing it.', '%s Galleries not updated, somebody is editing them.', $bulk_counts['locked'], 'foogallery' ),
-				'deleted'   => _n( '%s Gallery permanently deleted.', '%s Galleries permanently deleted.', $bulk_counts['deleted'], 'foogallery' ),
-				'trashed'   => _n( '%s Gallery moved to the Trash.', '%s Galleries moved to the Trash.', $bulk_counts['trashed'], 'foogallery' ),
-				'untrashed' => _n( '%s Gallery restored from the Trash.', '%s Galleries restored from the Trash.', $bulk_counts['untrashed'], 'foogallery' ),
+			$bulk_messages[FOOGALLERY_CPT_GALLERY] = apply_filters( 'foogallery_bulk_post_updated_messages',
+				array(
+					'updated'   => _n( '%s Gallery updated.', '%s Galleries updated.', $bulk_counts['updated'], 'foogallery' ),
+					'locked'    => _n( '%s Gallery not updated, somebody is editing it.', '%s Galleries not updated, somebody is editing them.', $bulk_counts['locked'], 'foogallery' ),
+					'deleted'   => _n( '%s Gallery permanently deleted.', '%s Galleries permanently deleted.', $bulk_counts['deleted'], 'foogallery' ),
+					'trashed'   => _n( '%s Gallery moved to the Trash.', '%s Galleries moved to the Trash.', $bulk_counts['trashed'], 'foogallery' ),
+					'untrashed' => _n( '%s Gallery restored from the Trash.', '%s Galleries restored from the Trash.', $bulk_counts['untrashed'], 'foogallery' ),
+				)
 			);
 
 			return $bulk_messages;
-
 		}
 	}
 }

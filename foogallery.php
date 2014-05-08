@@ -89,8 +89,8 @@ if ( !class_exists( 'FooGallery_Plugin' ) ) {
 			//setup text domain
 			$this->load_plugin_textdomain();
 
-			//setup post types and taxonomies
-			new FooGallery_PostTypes_Taxonomies();
+			//setup gallery post type
+			new FooGallery_PostTypes();
 
 			if (is_admin()) {
 				new FooGallery_Admin();
