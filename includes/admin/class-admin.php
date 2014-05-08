@@ -13,7 +13,7 @@ if (!class_exists('FooGallery_Admin')) {
 			require_once( FOOGALLERY_PATH . 'includes/admin/class-menu.php' );
 			require_once( FOOGALLERY_PATH . 'includes/admin/class-columns.php' );
 
-			//add_action( 'init', array($this, 'init') );
+			add_action( 'init', array($this, 'init') );
 
 			new FooGallery_Admin_Settings();
 			new FooGallery_Admin_Menu();
@@ -22,9 +22,10 @@ if (!class_exists('FooGallery_Admin')) {
 		}
 
 		function init() {
-//			add_filter( 'media_upload_tabs', array($this, 'add_media_manager_tab') );
-//			add_action( 'media_upload_foo_gallery', array($this, 'media_manager_iframe_content') );
+			add_filter( 'media_upload_tabs', array($this, 'add_media_manager_tab') );
+			add_action( 'media_upload_foo_gallery', array($this, 'media_manager_iframe_content') );
 //			add_filter( 'media_view_strings', array($this, 'custom_media_string'), 10, 2);
+			add_filter( 'foogallery-has_settings_page', '__return_false' );
 		}
 
 		function custom_media_string($strings,  $post){

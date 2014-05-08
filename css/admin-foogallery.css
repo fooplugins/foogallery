@@ -23,14 +23,13 @@
     text-align: center;
     width: 150px;
     height: 150px;
-    color:#888;
+    color:#666;
     font-weight: bold;
     text-decoration: none;
-    opacity: 0.5;
 }
 
 	.foogallery-attachments-list .add-attachment a:hover {
-    	opacity: 1;
+		color:#444;
 	}
 
 		.foogallery-attachments-list .add-attachment a div.dashicons {
@@ -75,4 +74,41 @@
 	margin:0;
 	width: 150px;
 	font-size: 12px;
+}
+
+.foogallery-attachments-list .attachment .attachment-preview a {
+	display: none;
+	position: absolute;
+	padding: 0;
+	font-size: 20px;
+	line-height: 20px;
+	text-align: center;
+	text-decoration: none;
+	background-color: #444;
+	border-top-right-radius: 50%;
+	border-top-left-radius: 50%;
+	border-bottom-right-radius: 50%;
+	border-bottom-left-radius: 50%;
+}
+
+	.foogallery-attachments-list .attachment .attachment-preview:hover a {
+		display: block;
+	}
+
+	.foogallery-attachments-list .attachment .attachment-preview a span {
+		color:#fff;
+	}
+
+		.foogallery-attachments-list .attachment .attachment-preview a:hover span {
+			color:#ddd;
+		}
+
+.foogallery-attachments-list .attachment .attachment-preview a.remove {
+	top: 5px;
+	right: 5px;
+}
+
+.foogallery-attachments-list .attachment .attachment-preview a.info {
+	top: 5px;
+	left: 5px;
 }
