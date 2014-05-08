@@ -27,7 +27,7 @@ function foogallery_gallery_templates() {
 			array(
 				'id'      => 'link_to_image',
 				'title'   => __('Link To Image', 'foogallery'),
-				'desc'    => __('Should the images in the gallery link to the full size images. If not set, then the images will link to the attachment page.', 'foogallery'),
+				'desc'    => __('Should the gallery thumbnails link to the full size images. If not set, then the images will link to the attachment page.', 'foogallery'),
 				'default' => 'on' ,
 				'type'    => 'checkbox',
 				//'section' => __('Responsive Image Gallery Settings', 'foogallery'),
@@ -53,7 +53,7 @@ function foogallery_gallery_templates() {
 			array(
 				'id'      => 'link_to_image',
 				'title'   => __('Link To Image2', 'foogallery'),
-				'desc'    => __('Should the images in the gallery link to the full size images. If not set, then the images will link to the attachment page.', 'foogallery'),
+				'desc'    => __('Should the gallery thumbnails link to the full size images. If not set, then the images will link to the attachment page.', 'foogallery'),
 				'default' => 'on' ,
 				'type'    => 'checkbox',
 				//'section' => __('Responsive Image Gallery Settings', 'foogallery'),
