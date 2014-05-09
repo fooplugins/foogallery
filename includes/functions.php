@@ -17,8 +17,8 @@
 function foogallery_gallery_templates() {
 	$gallery_templates[] = array(
 		'key'         => 'default',
-		'name'        => 'Responsive Image Gallery',
-		'description' => __( 'The default image gallery template : clean and responsive and looks good in any theme.' ),
+		'name'        => __( 'Responsive Image Gallery', 'foogallery'),
+		'description' => __( 'The default image gallery template : clean and responsive and looks good in any theme.', 'foogallery'),
 		'author'      => 'FooPlugins',
 		'author_url'  => 'http://fooplugins.com',
 		'demo_url'    => 'http://fooplugins.com/plugins/foogallery',
@@ -43,8 +43,8 @@ function foogallery_gallery_templates() {
 
 	$gallery_templates[] = array(
 		'key'         => 'masonry',
-		'name'        => 'Masonry Image Gallery',
-		'description' => __( 'A masonry-style image gallery template' ),
+		'name'        => __( 'Masonry Image Gallery', 'foogallery'),
+		'description' => __( 'A masonry-style image gallery template', 'foogallery'),
 		'author'      => 'FooPlugins',
 		'author_url'  => 'http://fooplugins.com',
 		'demo_url'    => 'http://fooplugins.com/plugins/foogallery',
@@ -68,6 +68,15 @@ function foogallery_gallery_templates() {
 	);
 
 	return apply_filters( 'foogallery_gallery_templates', $gallery_templates );
+}
+
+/**
+ * Return the FooGallery extension API class
+ *
+ * @return
+ */
+function foogallery_extension_api() {
+
 }
 
 /**
@@ -147,7 +156,7 @@ function foogallery_get_default( $key ) {
 }
 
 /**
- * Returns the correct FooGallery help page within the admin
+ * Returns the FooGallery help page Url within the admin
  *
  * @return string The Url to the FooGallery help page in admin
  */
@@ -156,10 +165,19 @@ function foogallery_admin_help_url() {
 }
 
 /**
- * Returns the correct FooGallery settings page within the admin
+ * Returns the FooGallery settings page Url within the admin
  *
  * @return string The Url to the FooGallery settings page in admin
  */
 function foogallery_admin_settings_url() {
 	return esc_url( admin_url( add_query_arg( array( 'page' => 'foogallery-settings' ), 'index.php' ) ) );
+}
+
+/**
+ * Returns the FooGallery extensions page Url within the admin
+ *
+ * @return string The Url to the FooGallery extensions page in admin
+ */
+function foogallery_admin_extensions_url() {
+	return esc_url( admin_url( add_query_arg( array( 'page' => 'foogallery-extensions' ), 'index.php' ) ) );
 }
