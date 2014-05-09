@@ -8,11 +8,6 @@ if (!class_exists('FooGallery_Admin')) {
 	class FooGallery_Admin {
 
 		function __construct() {
-			require_once( FOOGALLERY_PATH . 'includes/admin/class-settings.php' );
-			require_once( FOOGALLERY_PATH . 'includes/admin/class-metaboxes.php' );
-			require_once( FOOGALLERY_PATH . 'includes/admin/class-menu.php' );
-			require_once( FOOGALLERY_PATH . 'includes/admin/class-columns.php' );
-
 			add_action( 'init', array($this, 'init') );
 
 			new FooGallery_Admin_Settings();
