@@ -27,8 +27,8 @@ $info = $instance->get_plugin_info();
 		<a class="nav-tab nav-tab-active" href="#">
 			<?php _e( "Getting Started", 'foogallery' ); ?>
 		</a>
-		<a class="nav-tab" href="<?php echo foogallery_admin_settings_url(); ?>">
-			<?php _e( 'Settings', 'foogallery' ); ?>
+		<a class="nav-tab" href="<?php echo foogallery_admin_extensions_url(); ?>">
+			<?php _e( 'Extensions', 'foogallery' ); ?>
 		</a>
 		<a class="nav-tab" href="#other">
 			<?php _e( 'Other Plugins', 'foogallery' ); ?>

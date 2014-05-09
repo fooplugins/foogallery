@@ -21,9 +21,12 @@ if (!class_exists('FooGallery_Admin_Menu')) {
 			} else {
 				//rely on the register_post_type call to add our main menu items
 				add_submenu_page( 'edit.php?post_type=foogallery', __( 'FooGallery Settings', 'foogallery' ), __( 'Settings', 'foogallery' ), 'manage_options', 'foogallery-settings', array($this, 'foogallery_settings') );
+				add_submenu_page( 'edit.php?post_type=foogallery', __( 'FooGallery Extensions', 'foogallery' ), __( 'Extensions', 'foogallery' ), 'manage_options', 'foogallery-extensions', array($this, 'foogallery_extensions') );
 				add_submenu_page( 'edit.php?post_type=foogallery', __( 'FooGallery Help', 'foogallery' ), __( 'Help', 'foogallery' ), 'manage_options', 'foogallery-help', array($this, 'foogallery_help') );
 
 			}
+
+			do_action( 'foogallery_admin_menu' );
 		}
 
 		function foogallery_settings() {
@@ -35,6 +38,10 @@ if (!class_exists('FooGallery_Admin_Menu')) {
 
 			$instance = FooGallery_Plugin::get_instance();
 			$instance->admin_settings_render_page();
+		}
+
+		function foogallery_extensions() {
+			require_once FOOGALLERY_PATH . 'includes/admin/view-extensions.php';
 		}
 
 		function foogallery_help() {
