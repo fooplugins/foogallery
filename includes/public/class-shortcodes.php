@@ -14,8 +14,7 @@ if ( !class_exists( 'FooGallery_Shortcodes' ) ) {
 		function render_foogallery_shortcode($atts) {
 			$args = shortcode_atts( array(
 				'id' => 0,
-				'gallery' => '',
-				'template' => 'default'
+				'gallery' => ''
 			), $atts, 'foogallery' );
 
             //create new instance of template engine
