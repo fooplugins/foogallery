@@ -21,7 +21,7 @@ if ( !function_exists( 'foo_check_php_version' ) ) {
 	function foo_check_php_version($plugin_title, $ver) {
 		$php_version = phpversion();
 		if ( version_compare( $php_version, $ver ) < 0 ) {
-			throw new Exception("$plugin_title requires at least version $ver of PHP. You are running an older version ($php_version). Please update!");
+			throw new Exception( "$plugin_title requires at least version $ver of PHP. You are running an older version ($php_version). Please update!" );
 		}
 	}
 }
@@ -39,7 +39,22 @@ if ( !function_exists( 'foo_check_wp_version' ) ) {
 	function foo_check_wp_version($plugin_title, $ver) {
 		global $wp_version;
 		if ( version_compare( $wp_version, $ver ) < 0 ) {
-			throw new Exception("$plugin_title requires at least version $ver of WordPress. You are running an older version ($wp_version). Please update!");
+			throw new Exception( "$plugin_title requires at least version $ver of WordPress. You are running an older version ($wp_version). Please update!" );
 		}
+	}
+}
+
+if ( !function_exists( 'foo_check_wp_version_at_least' ) ) {
+
+	/**
+	 * @TODO
+	 * @param $ver
+	 *
+	 * @return bool
+	 */
+	function foo_check_wp_version_at_least($ver) {
+		global $wp_version;
+
+		return version_compare( $wp_version, $ver ) >= 0;
 	}
 }
