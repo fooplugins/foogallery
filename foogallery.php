@@ -33,15 +33,15 @@
  */
 
 // If this file is called directly, abort.
-if ( ! defined( 'WPINC' ) ) {
+if ( !defined( 'WPINC' ) ) {
 	die;
 }
 
-define( 'FOOGALLERY_SLUG', 'foogallery' );
-define( 'FOOGALLERY_PATH', plugin_dir_path( __FILE__ ));
-define( 'FOOGALLERY_URL', plugin_dir_url( __FILE__ ));
-define( 'FOOGALLERY_FILE', __FILE__ );
-define( 'FOOGALLERY_VERSION', '1.0.1' );
+define('FOOGALLERY_SLUG', 'foogallery');
+define('FOOGALLERY_PATH', plugin_dir_path( __FILE__ ));
+define('FOOGALLERY_URL', plugin_dir_url( __FILE__ ));
+define('FOOGALLERY_FILE', __FILE__);
+define('FOOGALLERY_VERSION', '1.0.1');
 
 /**
  * FooGallery_Plugin class
@@ -53,10 +53,9 @@ define( 'FOOGALLERY_VERSION', '1.0.1' );
  * @copyright 2013 FooPlugins LLC
  */
 
-
 if ( !class_exists( 'FooGallery_Plugin' ) ) {
 
-	require_once( FOOGALLERY_PATH . 'includes/foopluginbase/bootstrapper.php' );
+	require_once(FOOGALLERY_PATH . 'includes/foopluginbase/bootstrapper.php');
 
 	/**
 	 * FooGallery_Plugin class.
@@ -64,14 +63,15 @@ if ( !class_exists( 'FooGallery_Plugin' ) ) {
 	 * @package FooGallery
 	 * @author  Brad Vincent <brad@fooplugins.com>
 	 */
-	class FooGallery_Plugin extends Foo_Plugin_Base_v2_1 {
+	class FooGallery_Plugin extends Foo_Plugin_Base_v2_2 {
 
 		private static $instance;
 
 		public static function get_instance() {
-			if ( ! isset( self::$instance ) && ! ( self::$instance instanceof FooGallery_Plugin ) ) {
+			if ( !isset(self::$instance) && !(self::$instance instanceof FooGallery_Plugin) ) {
 				self::$instance = new FooGallery_Plugin();
 			}
+
 			return self::$instance;
 		}
 
@@ -81,7 +81,7 @@ if ( !class_exists( 'FooGallery_Plugin' ) ) {
 		private function __construct() {
 
 			//include everything we need!
-			require_once( FOOGALLERY_PATH . 'includes/includes.php' );
+			require_once(FOOGALLERY_PATH . 'includes/includes.php');
 
 			//init FooPluginBase
 			$this->init( FOOGALLERY_FILE, FOOGALLERY_SLUG, FOOGALLERY_VERSION, 'FooGallery' );
@@ -92,7 +92,10 @@ if ( !class_exists( 'FooGallery_Plugin' ) ) {
 			//setup gallery post type
 			new FooGallery_PostTypes();
 
-			if (is_admin()) {
+			//load any extensions
+			new FooGallery_Extensions_Loader();
+
+			if ( is_admin() ) {
 				new FooGallery_Admin();
 			} else {
 				new FooGallery_Public();
