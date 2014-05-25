@@ -11,15 +11,28 @@ if (!class_exists('FooGallery_Admin_MetaBoxes')) {
         private $_gallery;
 
 		function __construct() {
-			add_action('add_meta_boxes_' . FOOGALLERY_CPT_GALLERY, array($this, 'add_meta_boxes_to_gallery'));
+			add_action('add_meta_boxes', array($this, 'add_meta_boxes_to_gallery'));
 
 			//save extra post data for a gallery
 			add_action('save_post', array(&$this, 'save_gallery'));
+
+			//whitelist metaboxes for our gallery postype
+			add_filter( 'foogallery_metabox_sanity', array($this, 'whitelist_metaboxes') );
+		}
+
+		function whitelist_metaboxes() {
+			return array(
+				FOOGALLERY_CPT_GALLERY => array(
+					'whitelist'  => array( 'submitdiv', 'slugdiv', 'postimagediv', 'foogallery_items', 'foogallery_settings', 'foogallery_help' ),
+					'contexts'   => array( 'normal', 'advanced', 'side' ),
+					'priorities' => array( 'high', 'core', 'default', 'low' )
+				)
+			);
 		}
 
 		function add_meta_boxes_to_gallery() {
 			add_meta_box(
-				'gallery_items',
+				'foogallery_items',
 				__('Gallery Items', 'foogallery'),
 				array($this, 'render_gallery_media_metabox'),
 				FOOGALLERY_CPT_GALLERY,
@@ -28,7 +41,7 @@ if (!class_exists('FooGallery_Admin_MetaBoxes')) {
 			);
 
             add_meta_box(
-                'gallery_settings',
+                'foogallery_settings',
                 __('Gallery Settings', 'foogallery'),
                 array($this, 'render_gallery_settings_metabox'),
                 FOOGALLERY_CPT_GALLERY,
@@ -37,7 +50,7 @@ if (!class_exists('FooGallery_Admin_MetaBoxes')) {
             );
 
             add_meta_box(
-                'gallery_help',
+                'foogallery_help',
                 __('Gallery Help', 'foogallery'),
                 array($this, 'render_gallery_help_metabox'),
                 FOOGALLERY_CPT_GALLERY,
