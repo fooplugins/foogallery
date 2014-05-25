@@ -5,34 +5,50 @@
 
 if (!class_exists('FooGallery_Admin_Menu')) {
 
+	define('FOOGALLERY_ADMIN_MENU_PARENT_SLUG', 'edit.php?post_type=foogallery');
+
 	class FooGallery_Admin_Menu {
+
 		function __construct() {
 			add_action( 'admin_menu', array($this, 'register_menu_items') );
 		}
 
 		function register_menu_items() {
-			if ( foogallery_use_media_menu() ) {
+			//we rely on the register_post_type call to add our main menu items
+			$parent_slug = apply_filters( 'foogallery_menu_parent_slug', FOOGALLERY_ADMIN_MENU_PARENT_SLUG );
 
-				add_media_page( __( 'Galleries', 'foogallery' ), __( 'Galleries', 'foogallery' ), 'upload_files', 'edit.php?post_type=' . FOOGALLERY_CPT_GALLERY );
-				add_media_page( __( 'Add Gallery', 'foogallery' ), __( 'Add Gallery', 'foogallery' ), 'upload_files', 'post-new.php?post_type=' . FOOGALLERY_CPT_GALLERY );
-				//add_media_page( __('Albums', 'foogallery'), __('Albums', 'foogallery'), 'upload_files', 'edit-tags.php?taxonomy=' . FOOGALLERY_TAX_ALBUM );
-				add_media_page( __( 'FooGallery Settings', 'foogallery' ), __( 'Gallery Settings', 'foogallery' ), 'manage_options', 'foogallery-settings', array($this, 'foogallery_settings') );
+			//allow extensions to add their own menu items beforehand
+			do_action( 'foogallery_admin_menu_before' );
 
-			} else {
-				//rely on the register_post_type call to add our main menu items
-				add_submenu_page( 'edit.php?post_type=foogallery', __( 'FooGallery Settings', 'foogallery' ), __( 'Settings', 'foogallery' ), 'manage_options', 'foogallery-settings', array($this, 'foogallery_settings') );
-				add_submenu_page( 'edit.php?post_type=foogallery', __( 'FooGallery Extensions', 'foogallery' ), __( 'Extensions', 'foogallery' ), 'manage_options', 'foogallery-extensions', array($this, 'foogallery_extensions') );
-				add_submenu_page( 'edit.php?post_type=foogallery', __( 'FooGallery Help', 'foogallery' ), __( 'Help', 'foogallery' ), 'manage_options', 'foogallery-help', array($this, 'foogallery_help') );
+			$menu_labels = apply_filters( 'foogallery_admin_menu_labels',
+				array(
+					array(
+						'page_title' => __( 'FooGallery Settings', 'foogallery' ),
+						'menu_title' => __( 'Settings', 'foogallery' )
+					),
+					array(
+						'page_title' => __( 'FooGallery Extensions', 'foogallery' ),
+						'menu_title' => __( 'Extensions', 'foogallery' )
+					),
+					array(
+						'page_title' => __( 'FooGallery Help', 'foogallery' ),
+						'menu_title' => __( 'Help', 'foogallery' )
+					)
+				)
+			);
 
-			}
+			add_submenu_page( $parent_slug, $menu_labels[0]['page_title'], $menu_labels[0]['menu_title'], 'manage_options', 'foogallery-settings', array($this, 'foogallery_settings') );
+			add_submenu_page( $parent_slug, $menu_labels[1]['page_title'], $menu_labels[1]['menu_title'], 'manage_options', 'foogallery-extensions', array($this, 'foogallery_extensions') );
+			add_submenu_page( $parent_slug, $menu_labels[2]['page_title'], $menu_labels[2]['menu_title'], 'manage_options', 'foogallery-help', array($this, 'foogallery_help') );
 
-			do_action( 'foogallery_admin_menu' );
+      		//allow extensions to add their own menu items afterwards
+			do_action( 'foogallery_admin_menu_after' );
 		}
 
 		function foogallery_settings() {
 			if( isset($_GET['settings-updated']) ) { ?>
 	<div id="message" class="updated">
-		<p><strong><?php _e('FooGallery settings updated.', 'foogallery') ?></strong></p>
+		<p><strong><?php _e('FooGallery settings updated.', 'foogallery'); ?></strong></p>
 	</div>
 			<?php }
 
