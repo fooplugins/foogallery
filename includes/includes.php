@@ -5,6 +5,13 @@ require_once( FOOGALLERY_PATH . 'includes/constants.php' );
 require_once( FOOGALLERY_PATH . 'includes/functions.php' );
 require_once( FOOGALLERY_PATH . 'includes/class-posttypes.php' );
 require_once( FOOGALLERY_PATH . 'includes/class-foogallery.php' );
+require_once( FOOGALLERY_PATH . 'includes/class-extensions-api.php' );
+require_once( FOOGALLERY_PATH . 'includes/class-extensions-loader.php' );
+require_once( FOOGALLERY_PATH . 'includes/class-extension-base.php' );
+
+//include bundled extensions
+require_once( FOOGALLERY_PATH . 'extensions/albums/class-albums-extension.php' );
+require_once( FOOGALLERY_PATH . 'extensions/default-templates/class-default-templates-extension.php' );
 
 if( is_admin() ) {
 	//only admin
