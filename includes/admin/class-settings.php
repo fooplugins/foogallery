@@ -6,23 +6,7 @@ if (!class_exists('FooGallery_Admin_Settings')) {
 
 		function __construct() {
 			add_filter( 'foogallery-admin_settings', array($this, 'create_settings') );
-			add_filter( 'foogallery-admin_print_scripts', array($this, 'load_scripts') );
 		}
-
-	    function load_scripts() {
-		    $load_script = false;
-
-		    //load the settings scripts if we are on the settings page
-			if ( foogallery_use_media_menu() ) {
-				$load_script = 'media_page_foogallery-settings' === foo_current_screen_id();
-			} else {
-				$load_script = 'foogallery_page_foogallery-settings' === foo_current_screen_id();
-			}
-
-		    if ( $load_script ) {
-			    FooGallery_Plugin::get_instance()->register_and_enqueue_js( 'admin-settings.js' );
-		    }
-	    }
 
         function create_settings() {
 
@@ -65,15 +49,6 @@ if (!class_exists('FooGallery_Admin_Settings')) {
 
 	        //region Advanced Tab
 	        $tabs['advanced'] = __('Advanced', 'foogallery');
-
-	        $settings[] = array(
-		        'id'      => 'use_media_menu',
-		        'title'   => __('Use Media Menu', 'foogallery'),
-		        'desc'    => __('Move all FooGallery menu items under the Media menu', 'foogallery'),
-		        'default' => foogallery_get_default( 'use_media_menu' ),
-		        'type'    => 'checkbox',
-		        'tab'     => 'advanced'
-	        );
 
 	        $example_url = '<br /><code>' . trailingslashit( site_url() ) . foogallery_permalink() . '/my-cool-gallery</code>';
 
