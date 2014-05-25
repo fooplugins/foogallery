@@ -2,44 +2,16 @@
 /**
  * Template loader for FooGallery
  *
- * Template loader based on Gamajo_Template_Loader
- *
  * @package FooGallery
  * @author  Brad vincent
  */
-class FooGallery_Template_Loader extends Gamajo_Template_Loader {
-
-	/**
-	 * Prefix for filter names.
-	 *
-	 * @since 1.0.0
-	 * @type string
-	 */
-	protected $filter_prefix = 'foogallery';
-
-	/**
-	 * Directory name where custom templates for foogallery should be found in the theme.
-	 *
-	 * @since 1.0.0
-	 * @type string
-	 */
-	protected $theme_template_directory = 'foogallery';
-
-	/**
-	 * Reference to the root directory path of foogallery.
-	 *
-	 * @since 1.0.0
-	 * @type string
-	 */
-	protected $plugin_directory = FOOGALLERY_PATH;
-
-	public function get_template_part( $slug, $name = null, $load = true ) {
-		//stop any developers from calling get_template_part directly on this class. Force them to use render_template
-		throw new Exception( __( 'You cannot call the "get_template_part" function directly inside FooGallery_Template_Loader. Rather use "render_template"render_template"', 'foogallery' ) );
-	}
-
+class FooGallery_Template_Loader {
 	/**
 	 * Locates and renders the gallery based on the template
+	 * Will look in the following locations
+	 *  wp-content/themes/{child-theme}/foogallery/gallery-{template}.php
+	 * 	wp-content/themes/{theme}/foogallery/gallery-{template}.php
+	 *  wp-content/plugins/foogallery/templates/gallery-{template}.php
 	 *
 	 * @param $args array       Arguments passed in from the shortcode
 	 */
@@ -48,47 +20,47 @@ class FooGallery_Template_Loader extends Gamajo_Template_Loader {
 		global $current_foogallery;
 		global $current_foogallery_arguments;
 
+		//set the arguments
 		$current_foogallery_arguments = $args;
+
+		//load our gallery
 		$current_foogallery = $this->find_gallery( $args );
 
-		$template_name = $this->get_arg( $args, 'template' );
+		//find the gallery template we will use to render the gallery
+		$template_name = $this->get_arg( $args, 'template',
+			$current_foogallery->gallery_template );
 
-		$template_location = $this->locate_gallery_template( $template_name );
+		//check if we have any attachments
+		if (!$current_foogallery->has_attachments()) {
+			//no attachments!
+			do_action("foogallery_template_no_attachments-($template_name)", $current_foogallery);
+		} else {
 
-		//if we have found something then load!
-		if ( $template_location ) {
-			load_template( $template_location, false );
-		}
-	}
+			//load any JS & CSS needed by the gallery
+			$loader = new Foo_Plugin_File_Loader_v1( FOOGALLERY_SLUG, FOOGALLERY_FILE, 'templates', FOOGALLERY_SLUG );
 
-	/**
-	 * Try to locate the template first. Will look in the following locations
-	 *  wp-content/themes/{theme}/foogallery/gallery-{template}.php
-	 *  wp-content/plugins/foogallery/templates/gallery-{template}.php
-	 *
-	 * @param $template_name string The name of the template we want to locatae
-	 *
-	 * @return string The location of the template file
-	 */
-	private function locate_gallery_template( $template_name ) {
-		$template_location = parent::get_template_part( 'gallery-' . $template_name, NULL, false );
+			if ( false !== ( $template_location = $loader->locate_file( "gallery-{$template_name}.php" ) ) ) {
 
-		if ( !$template_location ) {
-			//check if we are dealing with the default. To make sure we do not go into an infinite loop for some reason
-			if ( $template_name === foogallery_get_default( 'gallery_template' ) ) { return false; }
+				//we have found a template!
+				do_action("foogallery_template-($template_name)", $current_foogallery);
 
-			//we could not locate the template, so allow for a plugin to override the location
-			$template_location = apply_filters( 'foogallery_gallery_template_location', $template_name );
+				//try to include some JS
+				if ( false !== ( $js_location = $loader->locate_file( "gallery-{$template_name}.js" ) ) ) {
+					wp_enqueue_script( "foogallery-template-{$template_name}", $js_location['url'] );
+				}
 
-			if ( !$template_location ) {
-				//if no plugin overrode the location then let's use the default gallery template
-				return $this->locate_gallery_template( foogallery_get_default( 'gallery_template' ) );
+				//try to include some CSS
+				if ( false !== ( $css_location = $loader->locate_file( "gallery-{$template_name}.css" ) ) ) {
+					wp_enqueue_style( "foogallery-template-{$template_name}", $css_location['url'] );
+				}
+
+				//finally include the actual php template!
+				if ( $template_location ) {
+					load_template( $template_location['path'], false );
+				}
 			}
 		}
-
-		return $template_location;
 	}
-
 
 	/**
 	 * load the gallery based on either the id or slug, passed in via arguments
