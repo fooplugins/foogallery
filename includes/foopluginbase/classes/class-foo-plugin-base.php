@@ -7,15 +7,15 @@
  *  we append a version number to the class name. This avoids situations where multiple versions of the same class are loaded into memory and things no longer work as expected.
  *  This situation is extremely difficult to debug, and results in weird errors only when multiple plugins using the base class are activated on a single install
  *
- * Version: 2.1
+ * Version: 2.2
  * Author: Brad Vincent
  * Author URI: http://fooplugins.com
  * License: GPL2
 */
 
-if ( !class_exists( 'Foo_Plugin_Base_v2_1' ) ) {
+if ( !class_exists( 'Foo_Plugin_Base_v2_2' ) ) {
 
-	abstract class Foo_Plugin_Base_v2_1 {
+	abstract class Foo_Plugin_Base_v2_2 {
 
 		/**
 		 * Unique identifier for your plugin.
@@ -104,8 +104,8 @@ if ( !class_exists( 'Foo_Plugin_Base_v2_1' ) ) {
 			$this->plugin_title 	= $title !== false ? $title : foo_title_case( $this->plugin_slug );
 			$this->plugin_version = $version;
 
-			//load any plugin dependencies
-			$this->load_dependencies();
+			//instantiate our option class
+			$this->_options  = new Foo_Plugin_Options_v2_1($this->plugin_slug);
 
 			//check we are using php 5
 			foo_check_php_version( $this->plugin_title, '5.0.0' );
@@ -120,6 +120,12 @@ if ( !class_exists( 'Foo_Plugin_Base_v2_1' ) ) {
 			add_action( 'wp_footer', array($this, 'inline_scripts'), 200 );
 
 			if ( is_admin() ) {
+				//instantiate our settings class
+				$this->_settings = new Foo_Plugin_Settings_v2_0($this->plugin_slug);
+
+				//instantiate our metabox sanity class
+				new Foo_Plugin_Metabox_Sanity_v1($this->plugin_slug);
+
 				// Register any settings for the plugin
 				add_action( 'admin_init', array($this, 'admin_create_settings') );
 
@@ -137,15 +143,6 @@ if ( !class_exists( 'Foo_Plugin_Base_v2_1' ) ) {
 			}
 
 			do_action( $this->plugin_slug . '-' . (is_admin() ? 'admin' : '') . '_init' );
-		}
-
-		//load dependencies
-		function load_dependencies() {
-			//instantiate the classes
-			$this->_settings = new Foo_Plugin_Settings_v2_0($this->plugin_slug);
-			$this->_options  = new Foo_Plugin_Options_v2_1($this->plugin_slug);
-
-			do_action( $this->plugin_slug . '-loaded_dependencies' );
 		}
 
 		/**
