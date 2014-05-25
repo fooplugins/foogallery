@@ -54,7 +54,7 @@ function foogallery_permalink() {
 	return foogallery_get_setting( 'gallery_permalink' );
 }
 
-function foogallery_get_setting( $key ) {
+function foogallery_get_setting($key) {
 	$foogallery = FooGallery_Plugin::get_instance();
 
 	return $foogallery->options()->get( $key, foogallery_get_default( $key ) );
@@ -67,30 +67,31 @@ function foogallery_get_setting( $key ) {
  *
  * @return string
  */
-function foogallery_build_gallery_shortcode( $gallery_id ) {
+function foogallery_build_gallery_shortcode($gallery_id) {
 	return '[' . FOOGALLERY_CPT_GALLERY . ' id="' . $gallery_id . '"]';
 }
 
 /**
  * Helper method for getting default settings
  *
- * @param string $key   The default config key to retrieve.
+ * @param string $key The default config key to retrieve.
+ *
  * @return string       Key value on success, false on failure.
  */
-function foogallery_get_default( $key ) {
+function foogallery_get_default($key) {
 
 	$defaults = array(
-		'gallery_template'              => 'default',
-		'gallery_permalinks_enabled'    => false,
-		'gallery_permalink'             => 'gallery',
-		'lightbox'                      => 'none'
+		'gallery_template'           => 'default',
+		'gallery_permalinks_enabled' => false,
+		'gallery_permalink'          => 'gallery',
+		'lightbox'                   => 'none'
 	);
 
 	// A handy filter to override the defaults
 	$defaults = apply_filters( 'foogallery_defaults', $defaults );
 
 	// Return the key specified.
-	return isset( $defaults[$key] ) ? $defaults[$key] : false;
+	return isset($defaults[$key]) ? $defaults[$key] : false;
 }
 
 /**
@@ -99,7 +100,7 @@ function foogallery_get_default( $key ) {
  * @return string The Url to the FooGallery help page in admin
  */
 function foogallery_admin_help_url() {
-	return esc_url( admin_url( add_query_arg( array( 'page' => 'foogallery-help' ), 'index.php' ) ) );
+	return esc_url( admin_url( add_query_arg( array('page' => 'foogallery-help'), 'index.php' ) ) );
 }
 
 /**
@@ -108,7 +109,7 @@ function foogallery_admin_help_url() {
  * @return string The Url to the FooGallery settings page in admin
  */
 function foogallery_admin_settings_url() {
-	return esc_url( admin_url( add_query_arg( array( 'page' => 'foogallery-settings' ), 'index.php' ) ) );
+	return esc_url( admin_url( add_query_arg( array('page' => 'foogallery-settings'), 'index.php' ) ) );
 }
 
 /**
@@ -117,5 +118,5 @@ function foogallery_admin_settings_url() {
  * @return string The Url to the FooGallery extensions page in admin
  */
 function foogallery_admin_extensions_url() {
-	return esc_url( admin_url( add_query_arg( array( 'page' => 'foogallery-extensions' ), 'index.php' ) ) );
+	return esc_url( admin_url( add_query_arg( array('page' => 'foogallery-extensions'), 'index.php' ) ) );
 }
