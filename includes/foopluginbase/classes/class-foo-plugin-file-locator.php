@@ -11,7 +11,7 @@
  * @version   1.0.0
  */
 
-if ( ! class_exists( 'Foo_Plugin_File_Loader_v1' ) ) {
+if ( !class_exists( 'Foo_Plugin_File_Loader_v1' ) ) {
 
 	/**
 	 * File loader.
@@ -66,7 +66,8 @@ if ( ! class_exists( 'Foo_Plugin_File_Loader_v1' ) ) {
 			if ( empty($theme_file_directory) ) {
 				$theme_file_directory = $plugin_slug;
 			}
-			$this->theme_file_directory = $theme_file_directory;
+			$this->theme_file_directory  = $theme_file_directory;
+			$this->plugin_file_directory = $plugin_file_directory;
 		}
 
 		/**
@@ -93,8 +94,8 @@ if ( ! class_exists( 'Foo_Plugin_File_Loader_v1' ) ) {
 				$path = trailingslashit( $path_and_url['path'] );
 				if ( file_exists( $path . $filename ) ) {
 					$located = array(
-						'path' 	=> $path . $filename,
-						'url'	=> trailingslashit( $path_and_url['url'] ) . $filename
+						'path' => $path . $filename,
+						'url'  => trailingslashit( $path_and_url['url'] ) . $filename
 					);
 					break;
 				}
@@ -121,16 +122,16 @@ if ( ! class_exists( 'Foo_Plugin_File_Loader_v1' ) ) {
 		 * @return mixed|void
 		 */
 		protected function get_file_paths_and_urls() {
-			$theme_directory = trailingslashit( $this->$theme_file_directory );
+			$theme_directory = trailingslashit( $this->theme_file_directory );
 
 			$file_paths = array(
 				10  => array(
 					'path' => trailingslashit( get_template_directory() ) . $theme_directory,
-					'url' => trailingslashit( get_template_directory_uri() ) . $theme_directory
+					'url'  => trailingslashit( get_template_directory_uri() ) . $theme_directory
 				),
 				100 => array(
 					'path' => $this->get_plugin_file_dir(),
-					'url' => $this->get_plugin_file_url()
+					'url'  => $this->get_plugin_file_url()
 				)
 			);
 
@@ -138,7 +139,7 @@ if ( ! class_exists( 'Foo_Plugin_File_Loader_v1' ) ) {
 			if ( is_child_theme() ) {
 				$file_paths[1] = array(
 					'path' => trailingslashit( get_stylesheet_directory() ) . $theme_directory,
-					'url' => trailingslashit( get_stylesheet_directory_uri() ) . $theme_directory
+					'url'  => trailingslashit( get_stylesheet_directory_uri() ) . $theme_directory
 				);
 			}
 
@@ -153,6 +154,8 @@ if ( ! class_exists( 'Foo_Plugin_File_Loader_v1' ) ) {
 
 			// sort the file paths based on priority
 			ksort( $file_paths, SORT_NUMERIC );
+
+			return $file_paths;
 		}
 
 		/**
@@ -168,6 +171,11 @@ if ( ! class_exists( 'Foo_Plugin_File_Loader_v1' ) ) {
 			return trailingslashit( plugin_dir_path( $this->plugin_file ) ) . $this->plugin_file_directory;
 		}
 
+		/**
+		 * @TODO
+		 *
+		 * @return string
+		 */
 		protected function get_plugin_file_url() {
 			return trailingslashit( plugin_dir_url( $this->plugin_file ) ) . $this->plugin_file_directory;
 		}
