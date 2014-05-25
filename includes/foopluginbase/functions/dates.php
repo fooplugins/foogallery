@@ -1,4 +1,12 @@
 <?php
+/*
+ * Foo Functions - Dates
+ * A bunch of common and useful functions related to dates
+ *
+ * Author: Brad Vincent
+ * Author URI: http://fooplugins.com
+ * License: GPL2
+*/
 
 if ( !function_exists( 'foo_friendly_date' ) ) {
 
