@@ -15,7 +15,7 @@
  * Plugin Name: FooGallery
  * Plugin URI:  https://github.com/fooplugins/foogallery
  * Description: Better Image Galleries for WordPress
- * Version:     1.0.1
+ * Version:     1.1.1
  * Author:      bradvin
  * Author URI:  http://fooplugins.com
  * Text Domain: foogallery
@@ -41,7 +41,7 @@ define('FOOGALLERY_SLUG', 'foogallery');
 define('FOOGALLERY_PATH', plugin_dir_path( __FILE__ ));
 define('FOOGALLERY_URL', plugin_dir_url( __FILE__ ));
 define('FOOGALLERY_FILE', __FILE__);
-define('FOOGALLERY_VERSION', '1.0.1');
+define('FOOGALLERY_VERSION', '1.1.1');
 
 /**
  * FooGallery_Plugin class
@@ -81,7 +81,9 @@ if ( !class_exists( 'FooGallery_Plugin' ) ) {
 		private function __construct() {
 
 			//include everything we need!
-			require_once(FOOGALLERY_PATH . 'includes/includes.php');
+			require_once( FOOGALLERY_PATH . 'includes/includes.php' );
+
+			register_activation_hook( __FILE__, array( 'FooGallery_Plugin', 'activate' ) );
 
 			//init FooPluginBase
 			$this->init( FOOGALLERY_FILE, FOOGALLERY_SLUG, FOOGALLERY_VERSION, 'FooGallery' );
@@ -100,6 +102,79 @@ if ( !class_exists( 'FooGallery_Plugin' ) ) {
 			} else {
 				new FooGallery_Public();
 			}
+		}
+
+		/**
+		 * Fired when the plugin is activated.
+		 *
+		 * @since    1.0.0
+		 *
+		 * @param    boolean    $network_wide    True if WPMU superadmin uses
+		 *                                       "Network Activate" action, false if
+		 *                                       WPMU is disabled or plugin is
+		 *                                       activated on an individual blog.
+		 */
+		public static function activate( $network_wide ) {
+			if ( function_exists( 'is_multisite' ) && is_multisite() ) {
+
+				if ( $network_wide  ) {
+
+					// Get all blog ids
+					$blog_ids = self::get_blog_ids();
+
+					foreach ( $blog_ids as $blog_id ) {
+
+						switch_to_blog( $blog_id );
+						self::single_activate();
+					}
+
+					restore_current_blog();
+
+				} else {
+					self::single_activate();
+				}
+
+			} else {
+				self::single_activate();
+			}
+		}
+
+		/**
+		 * Fired for each blog when the plugin is activated.
+		 *
+		 * @since    1.0.0
+		 */
+		private static function single_activate() {
+			if ( false === get_option(FOOGALLERY_EXTENSIONS_AUTO_ACTIVATED_OPTIONS_KEY, false) ) {
+				$api = new FooGallery_Extensions_API();
+
+				$api->auto_activate_extensions();
+
+				update_option( FOOGALLERY_EXTENSIONS_AUTO_ACTIVATED_OPTIONS_KEY, true );
+			}
+		}
+
+		/**
+		 * Get all blog ids of blogs in the current network that are:
+		 * - not archived
+		 * - not spam
+		 * - not deleted
+		 *
+		 * @since    1.0.0
+		 *
+		 * @return   array|false    The blog ids, false if no matches.
+		 */
+		private static function get_blog_ids() {
+
+			global $wpdb;
+
+			// get an array of blog ids
+			$sql = "SELECT blog_id FROM $wpdb->blogs
+			WHERE archived = '0' AND spam = '0'
+			AND deleted = '0'";
+
+			return $wpdb->get_col( $sql );
+
 		}
 	}
 }
