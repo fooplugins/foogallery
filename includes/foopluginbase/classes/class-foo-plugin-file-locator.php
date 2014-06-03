@@ -1,7 +1,7 @@
 <?php
 /**
  * File Locator for Plugins.
- * Based on the Gamajo-Template-Loader by Gary Jones http://github.com/GaryJones/Gamajo-Template-Loader
+ * Based on ideas found in Gamajo-Template-Loader by Gary Jones http://github.com/GaryJones/Gamajo-Template-Loader
  *
  * @package   Foo_Plugin_Base
  * @author    Brad Vincent
@@ -11,14 +11,14 @@
  * @version   1.0.0
  */
 
-if ( !class_exists( 'Foo_Plugin_File_Loader_v1' ) ) {
+if ( !class_exists( 'Foo_Plugin_File_Locator_v1' ) ) {
 
 	/**
 	 * File loader.
 	 *
 	 * Create a new class that extends this one and override the properties.
 	 */
-	class Foo_Plugin_File_Loader_v1 {
+	class Foo_Plugin_File_Locator_v1 {
 
 		/**
 		 * Prefix for filter names.
@@ -58,6 +58,8 @@ if ( !class_exists( 'Foo_Plugin_File_Loader_v1' ) ) {
 		 */
 		protected $plugin_file_directory; // or includes/templates, etc.
 
+		protected $extra_locations = array();
+
 		public function __construct($plugin_slug, $plugin_file, $plugin_file_directory = '', $theme_file_directory = '') {
 			$this->plugin_file = $plugin_file;
 			$this->plugin_slug = $plugin_slug;
@@ -87,15 +89,15 @@ if ( !class_exists( 'Foo_Plugin_File_Loader_v1' ) ) {
 			// No file found yet
 			$located = false;
 
-			$possible_locations = $this->get_file_paths_and_urls();
+			$possible_locations = $this->get_locations();
 
 			// try locating the file by looping through the file paths
-			foreach ( $possible_locations as $path_and_url ) {
-				$path = trailingslashit( $path_and_url['path'] );
+			foreach ( $possible_locations as $location ) {
+				$path = trailingslashit( $location['path'] );
 				if ( file_exists( $path . $filename ) ) {
 					$located = array(
 						'path' => $path . $filename,
-						'url'  => trailingslashit( $path_and_url['url'] ) . $filename
+						'url'  => trailingslashit( $location['url'] ) . $filename
 					);
 					break;
 				}
@@ -121,27 +123,30 @@ if ( !class_exists( 'Foo_Plugin_File_Loader_v1' ) ) {
 		 *
 		 * @return mixed|void
 		 */
-		protected function get_file_paths_and_urls() {
+		protected function get_locations() {
 			$theme_directory = trailingslashit( $this->theme_file_directory );
 
-			$file_paths = array(
+			$locations = array(
 				10  => array(
 					'path' => trailingslashit( get_template_directory() ) . $theme_directory,
 					'url'  => trailingslashit( get_template_directory_uri() ) . $theme_directory
 				),
-				100 => array(
-					'path' => $this->get_plugin_file_dir(),
-					'url'  => $this->get_plugin_file_url()
+				1000 => array(
+					'path' => trailingslashit( plugin_dir_path( $this->plugin_file ) ) . $this->plugin_file_directory,
+					'url'  => trailingslashit( plugin_dir_url( $this->plugin_file ) ) . $this->plugin_file_directory
 				)
 			);
 
 			// Only add this conditionally, so non-child themes don't redundantly check active theme twice.
 			if ( is_child_theme() ) {
-				$file_paths[1] = array(
+				$locations[1] = array(
 					'path' => trailingslashit( get_stylesheet_directory() ) . $theme_directory,
 					'url'  => trailingslashit( get_stylesheet_directory_uri() ) . $theme_directory
 				);
 			}
+
+			//add any extra locations that may have been added
+			$locations = $locations + $this->extra_locations;
 
 			/**
 			 * Allow ordered list of template paths to be amended.
@@ -150,34 +155,16 @@ if ( !class_exists( 'Foo_Plugin_File_Loader_v1' ) ) {
 			 *
 			 * @param array $var Default is directory in child theme at index 1, parent theme at 10, and plugin at 100.
 			 */
-			$file_paths = apply_filters( $this->plugin_slug . '_file_paths_and_urls', $file_paths );
+			$locations = apply_filters( $this->plugin_slug . '_pickup_locations', $locations );
 
 			// sort the file paths based on priority
-			ksort( $file_paths, SORT_NUMERIC );
+			ksort( $locations, SORT_NUMERIC );
 
-			return $file_paths;
+			return $locations;
 		}
 
-		/**
-		 * Return the path to the templates directory in this plugin.
-		 *
-		 * May be overridden in subclass.
-		 *
-		 * @since 1.0.0
-		 *
-		 * @return string
-		 */
-		protected function get_plugin_file_dir() {
-			return trailingslashit( plugin_dir_path( $this->plugin_file ) ) . $this->plugin_file_directory;
-		}
-
-		/**
-		 * @TODO
-		 *
-		 * @return string
-		 */
-		protected function get_plugin_file_url() {
-			return trailingslashit( plugin_dir_url( $this->plugin_file ) ) . $this->plugin_file_directory;
+		public function add_location( $position, $location ) {
+			$this->extra_locations[$position] = $location;
 		}
 	}
 }
