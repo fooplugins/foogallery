@@ -25,13 +25,42 @@
 
 	FOOGALLERY.initSettings = function() {
 		$('#FooGallerySettings_GalleryTemplate').change(function() {
-			var selectedTemplate = $(this).val();
+			var $this = $(this),
+				selectedTemplate = $this.val(),
+				selectedPreviewCss = $this.find(":selected").data('preview-css');
+
 			//hide all template fields
-			$('.foogallery-metabox-settings .gallery_template_field').hide();
+			$('.foogallery-metabox-settings .gallery_template_field').not('.gallery_template_field_selector').hide();
+
 			//show all fields for the selected template only
 			$('.foogallery-metabox-settings .gallery_template_field-' + selectedTemplate).show();
+
+			//include a preview CSS if possible
+			FOOGALLERY.includePreviewCss();
+
+			//trigger a change so custom template js can do something
+			FOOGALLERY.triggerTemplateChangedEvent();
 		});
 
+		//include our selected preview CSS
+		FOOGALLERY.includePreviewCss();
+
+		//trigger this onload too!
+		FOOGALLERY.triggerTemplateChangedEvent();
+	};
+
+	FOOGALLERY.includePreviewCss = function() {
+		var selectedPreviewCss = $('#FooGallerySettings_GalleryTemplate').find(":selected").data('preview-css');
+
+		if ( selectedPreviewCss ) {
+			$('#foogallery-preview-css').remove();
+			$('head').append('<link id="foogallery-preview-css" rel="stylesheet" href="' + selectedPreviewCss +'" type="text/css" />');
+		}
+	};
+
+	FOOGALLERY.triggerTemplateChangedEvent = function() {
+		var selectedTemplate = $('#FooGallerySettings_GalleryTemplate').val();
+		$('body').trigger('foogallery-gallery-template-changed-' + selectedTemplate );
 	};
 
     FOOGALLERY.addAttachmentToGalleryList = function(attachment) {
@@ -40,7 +69,7 @@
 
         var $template = $($('#foogallery-attachment-template').val());
 
-        $template.data('attachment-id', attachment.id);
+        $template.attr('data-attachment-id', attachment.id);
 
         $template.find('img')
             .attr('src', attachment.src)
@@ -65,59 +94,64 @@
     };
 
 	FOOGALLERY.showAttachmentInfoModal = function(id) {
-		FOOGALLERY.selected_attachment_id = id;
-		$('.upload_image_button').click();
+		FOOGALLERY.openMediaModal( id );
+	};
+
+	FOOGALLERY.openMediaModal = function(selected_attachment_id) {
+		if (!selected_attachment_id) { selected_attachment_id = 0; }
+		FOOGALLERY.selected_attachment_id = selected_attachment_id;
+
+		//if the media frame already exists, reopen it.
+		if ( FOOGALLERY.media_uploader !== false ) {
+			// Open frame
+			FOOGALLERY.media_uploader.open();
+			return;
+		}
+
+		// Create the media frame.
+		FOOGALLERY.media_uploader = wp.media.frames.file_frame = wp.media({
+			title: $(this).data( 'uploader-title' ),
+			button: {
+				text: $(this).data( 'uploader-button-text' )
+			},
+			multiple: true  // Set to true to allow multiple files to be selected
+		});
+
+		// When an image is selected, run a callback.
+		FOOGALLERY.media_uploader
+			.on( 'select', function() {
+				var attachments = FOOGALLERY.media_uploader.state().get('selection').toJSON();
+
+				$.each(attachments, function(i, item) {
+					var attachment = {
+						id : item.id,
+						width: item.sizes.thumbnail.width,
+						height: item.sizes.thumbnail.height,
+						src: item.sizes.thumbnail.url
+					};
+
+					FOOGALLERY.addAttachmentToGalleryList(attachment);
+				});
+			})
+			.on( 'open', function() {
+				var selection = FOOGALLERY.media_uploader.state().get('selection');
+				selection.set();    //clear any previos selections
+
+				if (FOOGALLERY.selected_attachment_id > 0) {
+					var attachment = wp.media.attachment(FOOGALLERY.selected_attachment_id);
+					attachment.fetch();
+					selection.add( attachment ? [ attachment ] : [] );
+				}
+			});
+
+		// Finally, open the modal
+		FOOGALLERY.media_uploader.open();
 	};
 
     FOOGALLERY.adminReady = function () {
         $('.upload_image_button').on('click', function(e) {
             e.preventDefault();
-
-            //if the media frame already exists, reopen it.
-            if ( FOOGALLERY.media_uploader !== false ) {
-                // Open frame
-                FOOGALLERY.media_uploader.open();
-                return;
-            }
-
-            // Create the media frame.
-            FOOGALLERY.media_uploader = wp.media.frames.file_frame = wp.media({
-                title: $(this).data( 'uploader-title' ),
-                button: {
-                    text: $(this).data( 'uploader-button-text' )
-                },
-                multiple: true  // Set to true to allow multiple files to be selected
-            });
-
-            // When an image is selected, run a callback.
-            FOOGALLERY.media_uploader
-                .on( 'select', function() {
-                    var attachments = FOOGALLERY.media_uploader.state().get('selection').toJSON();
-
-                    $.each(attachments, function(i, item) {
-                        var attachment = {
-                            id : item.id,
-                            width: item.sizes.thumbnail.width,
-                            height: item.sizes.thumbnail.height,
-                            src: item.sizes.thumbnail.url
-                        };
-
-                        FOOGALLERY.addAttachmentToGalleryList(attachment);
-                    });
-                })
-                .on( 'open', function() {
-                    if (FOOGALLERY.selected_attachment_id > 0) {
-                        var selection = FOOGALLERY.media_uploader.state().get('selection');
-                        selection.set();    //clear any previos selections
-                        var attachment = wp.media.attachment(FOOGALLERY.selected_attachment_id);
-                        attachment.fetch();
-                        selection.add( attachment ? [ attachment ] : [] );
-                    }
-                    FOOGALLERY.selected_attachment_id = 0;
-                });
-
-            // Finally, open the modal
-            FOOGALLERY.media_uploader.open();
+			FOOGALLERY.openMediaModal();
         });
 
         FOOGALLERY.initAttachments();
@@ -150,11 +184,7 @@
 }(window.FOOGALLERY = window.FOOGALLERY || {}, jQuery));
 
 jQuery(function ($) {
-	if ($('#foogallery_attachments').length > 0) {
+	if ( $('#foogallery_attachments').length > 0 ) {
 		FOOGALLERY.adminReady();
 	}
 });
-
-
-
-
