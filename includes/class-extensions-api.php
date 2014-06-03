@@ -362,7 +362,7 @@ if ( !class_exists( 'FooGallery_Extensions_API' ) ) {
 				$this->add_to_activated_extensions( $extension );
 
 				//we are done, allow for extensions to do something after an extension is activated
-				do_action('foogallery_extension_activated', $slug);
+				do_action('foogallery_extension_activated-' . $slug);
 
 				//return our result
 				return apply_filters( 'foogallery_extensions_activate_success-' . $slug, array(
