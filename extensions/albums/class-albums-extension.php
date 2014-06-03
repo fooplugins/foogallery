@@ -3,14 +3,7 @@ if ( !class_exists( 'FooGallery_Albums_Extension' ) ) {
 
 	define('FOOGALLERY_TAX_ALBUM', 'foogallery-album');
 
-	class FooGallery_Albums_Extension extends FooGallery_Extension_Base {
-
-		protected $slug = 'albums';
-
-		function run() {
-			//hook up my album stuff here!
-			$this->setup_album_posttypes();
-		}
+	class FooGallery_Albums_Extension {
 
 		function setup_album_posttypes() {
 			$labels = array(

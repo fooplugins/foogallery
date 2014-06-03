@@ -12,7 +12,8 @@ if (!class_exists('FooGallery_Admin')) {
 
 			new FooGallery_Admin_Settings();
 			new FooGallery_Admin_Menu();
-			new FooGallery_Admin_MetaBoxes();
+			new FooGallery_Admin_Gallery_MetaBoxes();
+			new FooGallery_Admin_Gallery_MetaBox_Fields();
 			new FooGallery_Admin_Columns();
 		}
 

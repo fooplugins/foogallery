@@ -5,7 +5,7 @@
 
 if (!class_exists('FooGallery_Admin_Menu')) {
 
-	define('FOOGALLERY_ADMIN_MENU_PARENT_SLUG', 'edit.php?post_type=foogallery');
+
 
 	class FooGallery_Admin_Menu {
 
@@ -15,7 +15,7 @@ if (!class_exists('FooGallery_Admin_Menu')) {
 
 		function register_menu_items() {
 			//we rely on the register_post_type call to add our main menu items
-			$parent_slug = apply_filters( 'foogallery_menu_parent_slug', FOOGALLERY_ADMIN_MENU_PARENT_SLUG );
+			$parent_slug = foogallery_admin_menu_parent_slug();
 
 			//allow extensions to add their own menu items beforehand
 			do_action( 'foogallery_admin_menu_before' );

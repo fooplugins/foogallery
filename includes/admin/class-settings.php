@@ -20,8 +20,8 @@ if (!class_exists('FooGallery_Admin_Settings')) {
 
 	        $gallery_templates = foogallery_gallery_templates();
 	        $gallery_templates_choices = array();
-	        foreach($gallery_templates as $template) {
-		        $gallery_templates_choices[$template['key']] = $template['name'];
+	        foreach( $gallery_templates as $template ) {
+		        $gallery_templates_choices[$template['slug']] = $template['name'];
 	        }
 
 	        $settings[] = array(
