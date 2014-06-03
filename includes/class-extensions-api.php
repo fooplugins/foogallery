@@ -1,4 +1,7 @@
 <?php
+/**
+ * @TODO
+ */
 
 if ( !class_exists( 'FooGallery_Extensions_API' ) ) {
 
@@ -9,18 +12,39 @@ if ( !class_exists( 'FooGallery_Extensions_API' ) ) {
 	define('FOOGALLERY_EXTENSIONS_ACTIVATED_OPTIONS_KEY', 'foogallery_extensions_activated' );
 	define('FOOGALLERY_EXTENSIONS_ERRORS_OPTIONS_KEY', 'foogallery_extensions_errors' );
 	define('FOOGALLERY_EXTENSIONS_SLUGS_OPTIONS_KEY', 'foogallery_extensions_slugs' );
+	define('FOOGALLERY_EXTENSIONS_AUTO_ACTIVATED_OPTIONS_KEY', 'foogallery_extensions_auto_activated' );
 
+	/**
+	 * @TODO
+	 * Class FooGallery_Extensions_API
+	 */
 	class FooGallery_Extensions_API {
 
+		/**
+		 * @TODO
+		 * @var array
+		 */
 		private $extensions = false;
+
+		/**
+		 * @TODO
+		 * @var string
+		 */
 		private $error_message = false;
 
+		/**
+		 * @TODO
+		 * @param bool $load
+		 */
 		function __construct($load = false) {
 			if ( $load ) {
 				$this->load_available_extensions();
 			}
 		}
 
+		/**
+		 * @TODO
+		 */
 		private function load_available_extensions() {
 			if ( false === ( $this->extensions = get_transient( FOOGALLERY_EXTENSIONS_AVAILABLE_TRANSIENT_KEY ) ) ) {
 				// It wasn't there, so fetch the data and save the transient
@@ -31,6 +55,11 @@ if ( !class_exists( 'FooGallery_Extensions_API' ) ) {
 				} else {
 					$this->extensions = @json_decode( $response['body'], true );
 
+					if ( NULL === $this->extensions ) {
+						$this->error_message = 'There was a problem loading the extensions!';
+						return;
+					}
+
 					$this->determine_new_extensions( );
 
 					$expires = 60 * 60 * 24; //1 day
@@ -40,6 +69,9 @@ if ( !class_exists( 'FooGallery_Extensions_API' ) ) {
 			}
 		}
 
+		/**
+		 * @TODO
+		 */
 		private function determine_new_extensions() {
 			$previous_slugs = get_option ( FOOGALLERY_EXTENSIONS_SLUGS_OPTIONS_KEY );
 			if ( $previous_slugs ) {
@@ -55,21 +87,33 @@ if ( !class_exists( 'FooGallery_Extensions_API' ) ) {
 			}
 		}
 
+		/**
+		 * @TODO
+		 */
 		private function save_slugs_for_new_calculations() {
-			$slugs = array();
-			foreach ( $this->extensions as $extension ) {
-				$slugs[] = $extension['slug'];
-			}
-			if ( count ( $slugs ) > 0 ) {
-				update_option( FOOGALLERY_EXTENSIONS_SLUGS_OPTIONS_KEY, $slugs );
+			if ( is_array( $this->extensions ) ) {
+				$slugs = array();
+				foreach ( $this->extensions as $extension ) {
+					$slugs[] = $extension['slug'];
+				}
+				if ( count( $slugs ) > 0 ) {
+					update_option( FOOGALLERY_EXTENSIONS_SLUGS_OPTIONS_KEY, $slugs );
+				}
 			}
 		}
 
+		/**
+		 * @TODO
+		 */
 		public function reload() {
 			delete_transient( FOOGALLERY_EXTENSIONS_AVAILABLE_TRANSIENT_KEY );
 			$this->load_available_extensions();
 		}
 
+		/**
+		 * @TODO
+		 * @return array|bool
+		 */
 		function get_all() {
 			$this->error_message = false; //clear any errors
 
@@ -86,6 +130,10 @@ if ( !class_exists( 'FooGallery_Extensions_API' ) ) {
 			return $this->extensions;
 		}
 
+		/**
+		 * @TODO
+		 * @return mixed
+		 */
 		function get_all_categories() {
 			$categories['active'] = array(
 				'name' => __('Active', 'foogallery'),
@@ -115,6 +163,12 @@ if ( !class_exists( 'FooGallery_Extensions_API' ) ) {
 			return $categories;
 		}
 
+		/**
+		 * @TODO
+		 * @param $slug
+		 *
+		 * @return bool
+		 */
 		public function get_extension( $slug ) {
 			foreach ( $this->get_all() as $extension ) {
 				if ( $extension['slug'] === $slug ) {
@@ -124,6 +178,12 @@ if ( !class_exists( 'FooGallery_Extensions_API' ) ) {
 			return false;
 		}
 
+		/**
+		 * @TODO
+		 * @param $file
+		 *
+		 * @return bool
+		 */
 		public function get_extension_by_file( $file ) {
 			$file = basename( $file ); //normalize to just the filename
 
@@ -135,6 +195,13 @@ if ( !class_exists( 'FooGallery_Extensions_API' ) ) {
 			return false;
 		}
 
+		/**
+		 * @TODO
+		 * @param      $slug
+		 * @param bool $check_plugins
+		 *
+		 * @return bool
+		 */
 		public function is_active( $slug, $check_plugins = false ) {
 			$active_extensions = $this->get_active_extensions();
 
@@ -144,7 +211,20 @@ if ( !class_exists( 'FooGallery_Extensions_API' ) ) {
 			return false;
 		}
 
-		public function is_downloaded( $extension = false) {
+		/**
+		 * @TODO
+		 *
+		 * @param bool $extension
+		 *
+		 * @param bool $slug
+		 *
+		 * @return bool
+		 */
+		public function is_downloaded( $extension = false, $slug = false ) {
+			//allow you to pass in a slug rather
+			if ( !$extension && $slug !== false ) {
+				$extension = $this->get_extension( $slug );
+			}
 			if ( $extension ) {
 				//first check if the class exists
 				if ( class_exists( $extension['class'] ) ) {
@@ -158,6 +238,12 @@ if ( !class_exists( 'FooGallery_Extensions_API' ) ) {
 			return false;
 		}
 
+		/**
+		 * @TODO
+		 * @param $slug
+		 *
+		 * @return bool
+		 */
 		public function has_loading_errors( $slug ) {
 			$error_extensions = $this->get_error_extensions();
 
@@ -167,6 +253,10 @@ if ( !class_exists( 'FooGallery_Extensions_API' ) ) {
 			return false;
 		}
 
+		/**
+		 * @TODO
+		 * @param $plugin
+		 */
 		public function handle_wordpress_plugin_deactivation( $plugin ) {
 			$extension = $this->get_extension_by_file( $plugin );
 			if ( $extension ) {
@@ -175,6 +265,10 @@ if ( !class_exists( 'FooGallery_Extensions_API' ) ) {
 			}
 		}
 
+		/**
+		 * @TODO
+		 * @param $plugin
+		 */
 		public function handle_wordpress_plugin_activation( $plugin ) {
 			$extension = $this->get_extension_by_file( $plugin );
 			if ( $extension ) {
@@ -183,6 +277,14 @@ if ( !class_exists( 'FooGallery_Extensions_API' ) ) {
 			}
 		}
 
+		/**
+		 * @TODO
+		 * @param      $slug
+		 * @param bool $deactivate_wordpress_plugin
+		 * @param bool $error_loading
+		 *
+		 * @return array|mixed|void
+		 */
 		public function deactivate( $slug, $deactivate_wordpress_plugin = true, $error_loading = false ) {
 			$extension = $this->get_extension( $slug );
 			if ( $extension ) {
@@ -225,6 +327,14 @@ if ( !class_exists( 'FooGallery_Extensions_API' ) ) {
 			);
 		}
 
+		/**
+		 * @TODO
+		 *
+		 * @param      $slug
+		 * @param bool $activate_wordpress_plugin
+		 *
+		 * @return array|mixed|void
+		 */
 		public function activate( $slug, $activate_wordpress_plugin = true ) {
 			$extension = $this->get_extension( $slug );
 			if ( $extension ) {
@@ -249,11 +359,7 @@ if ( !class_exists( 'FooGallery_Extensions_API' ) ) {
 				$loader->load_extension( $slug, foo_safe_get( $extension, 'class', false ) );
 
 				//then add the extension to our saved option so that it can be loaded on startup
-				$active_extensions = $this->get_active_extensions();
-				if ( !array_key_exists( $slug, $active_extensions ) ) {
-					$active_extensions[$slug] = $extension['class'];
-					update_option( FOOGALLERY_EXTENSIONS_ACTIVATED_OPTIONS_KEY, $active_extensions );
-				}
+				$this->add_to_activated_extensions( $extension );
 
 				//we are done, allow for extensions to do something after an extension is activated
 				do_action('foogallery_extension_activated', $slug);
@@ -270,6 +376,12 @@ if ( !class_exists( 'FooGallery_Extensions_API' ) ) {
 			);
 		}
 
+		/**
+		 * @TODO
+		 * @param $extension
+		 *
+		 * @return array|bool
+		 */
 		private function find_wordpress_plugin( $extension ) {
 			$plugins = get_plugins();
 			foreach ( $plugins as $plugin_file=>$plugin ) {
@@ -284,6 +396,12 @@ if ( !class_exists( 'FooGallery_Extensions_API' ) ) {
 			return false;
 		}
 
+		/**
+		 * @TODO
+		 * @param $slug
+		 *
+		 * @return array|mixed|void
+		 */
 		public function download( $slug ) {
 			$extension = $this->get_extension( $slug );
 			if ( $extension ) {
@@ -351,14 +469,39 @@ if ( !class_exists( 'FooGallery_Extensions_API' ) ) {
 			);
 		}
 
+		/**
+		 * @TODO
+		 * @return mixed|void
+		 */
 		public function get_active_extensions() {
 			return get_option( FOOGALLERY_EXTENSIONS_ACTIVATED_OPTIONS_KEY, array() );
 		}
 
+		/**
+		 * @TODO
+		 * @return mixed|void
+		 */
 		public function get_error_extensions() {
 			return get_option( FOOGALLERY_EXTENSIONS_ERRORS_OPTIONS_KEY, array() );
 		}
 
+		/**
+		 * @TODO
+		 * @param $extension
+		 */
+		private function add_to_activated_extensions( $extension ) {
+			$slug = $extension['slug'];
+			$active_extensions = $this->get_active_extensions();
+			if ( !array_key_exists( $slug, $active_extensions ) ) {
+				$active_extensions[$slug] = $extension['class'];
+				update_option( FOOGALLERY_EXTENSIONS_ACTIVATED_OPTIONS_KEY, $active_extensions );
+			}
+		}
+
+		/**
+		 * @TODO
+		 * @param $slug
+		 */
 		private function add_to_error_extensions( $slug ) {
 			$error_extensions = $this->get_error_extensions();
 			if ( !in_array( $slug, $error_extensions ) ) {
@@ -367,11 +510,26 @@ if ( !class_exists( 'FooGallery_Extensions_API' ) ) {
 			}
 		}
 
+		/**
+		 * @TODO
+		 * @param $slug
+		 */
 		private function remove_from_error_extensions( $slug ) {
 			$error_extensions = $this->get_error_extensions();
 			if ( ( $key = array_search( $slug, $error_extensions ) ) !== false ) {
 				unset( $error_extensions[$key] );
 				update_option( FOOGALLERY_EXTENSIONS_ERRORS_OPTIONS_KEY, $error_extensions );
+			}
+		}
+
+		/**
+		 * @TODO
+		 */
+		public function auto_activate_extensions() {
+			foreach ( $this->get_all() as $extension ) {
+				if ( true === foo_safe_get( $extension, 'activated_by_default' ) ) {
+					$this->add_to_activated_extensions( $extension );
+				}
 			}
 		}
 	}
