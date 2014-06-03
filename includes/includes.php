@@ -12,6 +12,7 @@ require_once( FOOGALLERY_PATH . 'includes/class-extension-template-base.php' );
 //include bundled extensions
 require_once( FOOGALLERY_PATH . 'extensions/albums/class-albums-extension.php' );
 require_once( FOOGALLERY_PATH . 'extensions/default-templates/class-default-templates-extension.php' );
+require_once( FOOGALLERY_PATH . 'extensions/nextgen-importer/class-nextgen-gallery-importer-extension.php' );
 
 if( is_admin() ) {
 	//only admin
