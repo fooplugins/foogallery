@@ -7,7 +7,7 @@ require_once( FOOGALLERY_PATH . 'includes/class-posttypes.php' );
 require_once( FOOGALLERY_PATH . 'includes/class-foogallery.php' );
 require_once( FOOGALLERY_PATH . 'includes/class-extensions-api.php' );
 require_once( FOOGALLERY_PATH . 'includes/class-extensions-loader.php' );
-require_once( FOOGALLERY_PATH . 'includes/class-extension-base.php' );
+require_once( FOOGALLERY_PATH . 'includes/class-extension-template-base.php' );
 
 //include bundled extensions
 require_once( FOOGALLERY_PATH . 'extensions/albums/class-albums-extension.php' );
@@ -17,7 +17,8 @@ if( is_admin() ) {
 	//only admin
 	require_once( FOOGALLERY_PATH . 'includes/admin/class-admin.php' );
 	require_once( FOOGALLERY_PATH . 'includes/admin/class-settings.php' );
-	require_once( FOOGALLERY_PATH . 'includes/admin/class-metaboxes.php' );
+	require_once( FOOGALLERY_PATH . 'includes/admin/class-gallery-metaboxes.php' );
+	require_once( FOOGALLERY_PATH . 'includes/admin/class-gallery-metabox-fields.php' );
 	require_once( FOOGALLERY_PATH . 'includes/admin/class-menu.php' );
 	require_once( FOOGALLERY_PATH . 'includes/admin/class-columns.php' );
 
