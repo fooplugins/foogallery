@@ -1,0 +1,130 @@
+.foogallery-default a {
+    display: inline-block;
+    float: left;
+	margin-right: 5px;
+	margin-bottom: 5px;
+	overflow: hidden;
+}
+
+    .foogallery-default a img {
+		border-radius: 0;
+        display: block;
+    }
+
+/* Gutter widths */
+.foogallery-default.spacing-width-5 a {
+	margin-right: 5px;
+	margin-bottom: 5px;
+}
+
+.foogallery-default.spacing-width-10 a {
+	margin-right: 10px;
+	margin-bottom: 10px;
+}
+
+.foogallery-default.spacing-width-15 a {
+	margin-right: 15px;
+	margin-bottom: 15px;
+}
+
+.foogallery-default.spacing-width-20 a {
+	margin-right: 20px;
+	margin-bottom: 20px;
+}
+
+.foogallery-default.spacing-width-25 a {
+	margin-right: 25px;
+	margin-bottom: 25px;
+}
+
+/* Border styles */
+.foogallery-default.border-style-rounded a {
+	border-radius: 5px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+}
+
+.foogallery-default.border-style-square-white a {
+	border: 5px solid #FFF;
+	-webkit-box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+	-moz-box-shadow: 0 0 10px rgba(0,0,0,0.5);
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.foogallery-default.border-style-circle-white a {
+	border-radius: 50%;
+	-webkit-border-radius: 50%;
+	-moz-border-radius: 50%;
+	border: 5px solid #FFF;
+	-webkit-box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+	-moz-box-shadow: 0 0 10px rgba(0,0,0,0.5);
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.foogallery-default.border-style-circle-black a {
+	border-radius: 50%;
+	-webkit-border-radius: 50%;
+	-moz-border-radius: 50%;
+	border: 3px solid #000;
+	-webkit-box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+	-moz-box-shadow: 0 0 10px rgba(0,0,0,0.5);
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.foogallery-default.border-style-square-black a {
+	border: 3px solid #000;
+	-webkit-box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+	-moz-box-shadow: 0 0 10px rgba(0,0,0,0.5);
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.foogallery-default.border-style-inset a {
+	position: relative;
+	max-width: 100%;
+}
+
+.foogallery-default.border-style-inset a::before {
+	content: "";
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	box-shadow: inset 0 0 20px #000;
+	-moz-box-shadow: inset 0 0 20px #000;
+	-webkit-box-shadow: inset 0 0 20px #000;
+}
+
+/* Hover Effects */
+.foogallery-default.hover-effect-zoom a {
+	background:#000 url('img/zoom.png') no-repeat center center;
+}
+
+.foogallery-default.hover-effect-zoom2 a {
+	background:#000 url('img/zoom2.png') no-repeat center center;
+}
+
+.foogallery-default.hover-effect-zoom3 a {
+	background:#000 url('img/zoom3.png') no-repeat center center;
+}
+
+.foogallery-default.hover-effect-plus a {
+	background:#000 url('img/plus.png') no-repeat center center;
+}
+
+.foogallery-default.hover-effect-circle-plus a {
+	background:#000 url('img/circle-plus.png') no-repeat center center;
+}
+
+.foogallery-default.hover-effect-eye a {
+	background:#000 url('img/eye.png') no-repeat center center;
+}
+
+.foogallery-default.hover-effect-zoom a:hover img,
+.foogallery-default.hover-effect-zoom2 a:hover img,
+.foogallery-default.hover-effect-zoom3 a:hover img,
+.foogallery-default.hover-effect-plus a:hover img,
+.foogallery-default.hover-effect-circle-plus a:hover img,
+.foogallery-default.hover-effect-eye a:hover img {
+	opacity: 0.5;
+}

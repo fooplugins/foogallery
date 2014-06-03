@@ -16,9 +16,14 @@ if ( !foo_check_wp_version_at_least( '3.9' ) ) { ?>
 		});
 	</script>
 <?php } ?>
+<style>
+	#foogallery-gallery-<?php echo $current_foogallery->ID; ?> .item {
+		margin-bottom: 10px;
+	}
+</style>
 <div id="foogallery-gallery-<?php echo $current_foogallery->ID; ?>"
 	 class="foogallery-container foogallery-masonry js-masonry"
-	 data-masonry-options='{ "columnWidth": 200, "itemSelector": ".item" }'>
+	 data-masonry-options='{ "itemSelector": ".item", "gutter": 10 }'>
 	<?php foreach ( $current_foogallery->attachments() as $attachment_id ) {
 		echo '<div class="item">';
 		echo wp_get_attachment_link( $attachment_id, 'thumbnail', false );
