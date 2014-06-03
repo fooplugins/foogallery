@@ -26,15 +26,7 @@ if ( 'yes' === $show_message ) {
 		font-size:18px;
 		margin: 10px 0;
 	}
-	.spinner {
-		width: 16px;
-		height: 16px;
-		background: url(/wp-admin/images/wpspin_light.gif) no-repeat;
-	}
 </style>
-<script>
-
-</script>
 <div class="wrap about-wrap extensions-wrap">
 	<?php
 	if ( isset( $result ) ) { ?>
