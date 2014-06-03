@@ -11,7 +11,6 @@
 		"thumbnail": "/extensions/albums/foogallery-albums.png",
 		"tags": ["functionality"],
 		"source": "bundled",
-		"activated_by_default": false,
 		"css_class": "coming_soon"
 	},
 	{
@@ -22,24 +21,36 @@
 		"description": "The bundled gallery templates.",
 		"author": "FooPlugins",
 		"author_url": "http://fooplugins.com",
-		"thumbnail": "/assetts/extension_bg.png",
+		"thumbnail": "/assets/extension_bg.png",
 		"tags": ["template"],
 		"source": "bundled",
 		"activated_by_default": true
 	},
 	{
+		"slug": "polaroid_template",
+		"class": "FooGallery_Polaroid_Template_Extension",
+		"categories": ["Featured" , "Free"],
+		"file": "foogallery-polaroid-template.php",
+		"title": "Polaroid Template",
+		"description": "A cool retro Polaroid gallery layout",
+		"author": "FooPlugins",
+		"author_url": "http://fooplugins.com",
+		"thumbnail": "/assets/extension_bg.png",
+		"tags": ["template"],
+		"source": "repo"
+	},
+	{
 		"slug": "foobox-image-lightbox",
-		"class": "Foobox_Free_FooGallery_Extension",
+		"class": "FooGallery_FooBox_Free_Extension",
 		"categories": ["Featured" , "Free"],
 		"file": "foobox-free.php",
 		"title": "FooBox FREE",
 		"description": "The best lightbox for WordPress. Free",
 		"author": "FooPlugins",
 		"author_url": "http://fooplugins.com",
-		"thumbnail": "/assetts/extension_bg.png",
+		"thumbnail": "/assets/extension_bg.png",
 		"tags": ["lightbox"],
-		"source": "repo",
-		"activated_by_default": false
+		"source": "repo"
 	},
 	{
 		"slug": "foobox",
@@ -51,10 +62,9 @@
 		"price": "$27",
 		"author": "FooPlugins",
 		"author_url": "http://fooplugins.com",
-		"thumbnail": "/assetts/extension_bg.png",
+		"thumbnail": "/assets/extension_bg.png",
 		"tags": ["premium", "lightbox"],
 		"source": "fooplugins",
-		"activated_by_default": false,
 		"download_button": {
 			"text": "Buy - $27",
 			"target": "_blank",
@@ -71,7 +81,7 @@
 		"description": "Move FooGallery menu items underneath the Media menu rather",
 		"author": "FooPlugins",
 		"author_url": "http://fooplugins.com",
-		"thumbnail": "/assetts/extension_bg.png",
+		"thumbnail": "/assets/extension_bg.png",
 		"tags": ["admin"],
 		"source": "external"
 	},
@@ -84,7 +94,7 @@
 		"description": "I am not sure what this does, but its awesome!",
 		"author": "Bongo Muffin",
 		"author_url": "http://fooplugins.com",
-		"thumbnail": "/assetts/extension_bg.png",
+		"thumbnail": "/assets/extension_bg.png",
 		"tags": ["awesome", "template"],
 		"source": "external"
 	},
@@ -96,7 +106,7 @@
 		"description": "Imports all your existing NextGen galleries and albums",
 		"author": "FooPlugins",
 		"author_url": "http://fooplugins.com",
-		"thumbnail": "/assetts/extension_bg.png",
+		"thumbnail": "/assets/extension_bg.png",
 		"tags": ["tools"],
 		"source": "bundled"
 	},
@@ -109,7 +119,7 @@
 		"description": "Imports all your existing NextGen galleries and albums",
 		"author": "FooPlugins",
 		"author_url": "http://fooplugins.com",
-		"thumbnail": "/assetts/extension_bg.png",
+		"thumbnail": "/assets/extension_bg.png",
 		"tags": ["test"],
 		"source": "github",
 		"download_link": "https://github.com/bradvin/wordpress-admin-bookmarks/archive/master.zip"
@@ -123,7 +133,7 @@
 		"description": "Imports all your existing NextGen galleries and albums",
 		"author": "FooPlugins",
 		"author_url": "http://fooplugins.com",
-		"thumbnail": "/assetts/extension_bg.png",
+		"thumbnail": "/assets/extension_bg.png",
 		"source": "repo"
 	}
 ]
