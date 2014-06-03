@@ -100,10 +100,10 @@
 	},
 	{
 		"slug": "nextgen",
-		"class": "FooGallery_Nextgen_Importer_Extension",
-		"categories": ["Premium"],
+		"class": "FooGallery_Nextgen_Gallery_Importer_Extension",
+		"categories": ["Free"],
 		"title": "NextGen Importer",
-		"description": "Imports all your existing NextGen galleries and albums",
+		"description": "Imports all your existing NextGen galleries",
 		"author": "FooPlugins",
 		"author_url": "http://fooplugins.com",
 		"thumbnail": "/assets/extension_bg.png",
