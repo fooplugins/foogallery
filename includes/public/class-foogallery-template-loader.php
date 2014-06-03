@@ -21,6 +21,7 @@ class FooGallery_Template_Loader {
 		//do some work before we locate the template
 		global $current_foogallery;
 		global $current_foogallery_arguments;
+		global $current_foogallery_template;
 
 		//set the arguments
 		$current_foogallery_arguments = $args;
@@ -29,36 +30,40 @@ class FooGallery_Template_Loader {
 		$current_foogallery = $this->find_gallery( $args );
 
 		//find the gallery template we will use to render the gallery
-		$template_name = $this->get_arg( $args, 'template',
+		$current_foogallery_template = $this->get_arg( $args, 'template',
 			$current_foogallery->gallery_template );
 
 		//set a default if we have no gallery template
-		if ( empty($template_name) ) {
-			$template_name = foogallery_get_default( 'gallery_template' );
+		if ( empty($current_foogallery_template) ) {
+			$current_foogallery_template = foogallery_get_default( 'gallery_template' );
 		}
 
 		//check if we have any attachments
 		if ( !$current_foogallery->has_attachments() ) {
 			//no attachments!
-			do_action( "foogallery_template_no_attachments-($template_name)", $current_foogallery );
+			do_action( "foogallery_template_no_attachments-($current_foogallery_template)", $current_foogallery );
 		} else {
 
-			//load any JS & CSS needed by the gallery
-			$loader = new Foo_Plugin_File_Loader_v1( FOOGALLERY_SLUG, FOOGALLERY_FILE, 'templates', FOOGALLERY_SLUG );
+			//create locator instance
+			$instance_name = FOOGALLERY_SLUG . '_gallery_templates';
+			$loader = new Foo_Plugin_File_Locator_v1( $instance_name, FOOGALLERY_FILE, 'templates', FOOGALLERY_SLUG );
 
-			if ( false !== ($template_location = $loader->locate_file( "gallery-{$template_name}.php" )) ) {
+			//allow extensions to very easily add pickup locations for their files
+			$this->add_extension_pickup_locations( $loader, apply_filters( $instance_name . '_files', array() ) );
+
+			if ( false !== ($template_location = $loader->locate_file( "gallery-{$current_foogallery_template}.php" )) ) {
 
 				//we have found a template!
-				do_action( "foogallery_template-($template_name)", $current_foogallery );
+				do_action( "foogallery_template-($current_foogallery_template)", $current_foogallery );
 
 				//try to include some JS
-				if ( false !== ($js_location = $loader->locate_file( "gallery-{$template_name}.js" )) ) {
-					wp_enqueue_script( "foogallery-template-{$template_name}", $js_location['url'] );
+				if ( false !== ($js_location = $loader->locate_file( "gallery-{$current_foogallery_template}.js" )) ) {
+					wp_enqueue_script( "foogallery-template-{$current_foogallery_template}", $js_location['url'] );
 				}
 
 				//try to include some CSS
-				if ( false !== ($css_location = $loader->locate_file( "gallery-{$template_name}.css" )) ) {
-					wp_enqueue_style( "foogallery-template-{$template_name}", $css_location['url'] );
+				if ( false !== ($css_location = $loader->locate_file( "gallery-{$current_foogallery_template}.css" )) ) {
+					wp_enqueue_style( "foogallery-template-{$current_foogallery_template}", $css_location['url'] );
 				}
 
 				//finally include the actual php template!
@@ -68,6 +73,45 @@ class FooGallery_Template_Loader {
 			} else {
 				//we could not find a template!
 				echo __( 'No gallery template found!', 'foogallery' );
+			}
+		}
+	}
+
+	/**
+	 * Add pickup locations to the loader to make it easier for extensions
+	 *
+	 * @param $loader			Foo_Plugin_File_Locator_v1
+	 * @param $extension_files	array
+	 */
+	function add_extension_pickup_locations( $loader, $extension_files ) {
+		if ( count( $extension_files ) > 0 ) {
+			$position = 120;
+			foreach ( $extension_files as $file ) {
+
+				//add pickup location for php template
+				$loader->add_location( $position, array(
+					'path' => trailingslashit( plugin_dir_path( $file ) ),
+					'url'  => trailingslashit( plugin_dir_url( $file ) )
+				) );
+
+				$position++;
+
+				//add pickup location for extensions js folder
+				$loader->add_location( $position, array(
+					'path' => trailingslashit( plugin_dir_path( $file ) . 'js' ),
+					'url'  => trailingslashit( plugin_dir_url( $file ) . 'js' )
+				) );
+
+				$position++;
+
+				//add pickup location for extension css folder
+				$loader->add_location( $position, array(
+					'path' => trailingslashit( plugin_dir_path( $file ) . 'css' ),
+					'url'  => trailingslashit( plugin_dir_url( $file ) . 'css' )
+				) );
+
+				$position++;
+
 			}
 		}
 	}
