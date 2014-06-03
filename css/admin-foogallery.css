@@ -112,3 +112,50 @@
 	top: 5px;
 	left: 5px;
 }
+
+.spacer {
+	display: inline-block;
+	width:30px;
+}
+
+.gallery_template_field td {
+	padding-right: 20px;
+	padding-bottom: 20px;
+}
+
+.gallery_template_field th {
+	vertical-align: top;
+	text-align: left;
+	padding-top: 0.3em;
+}
+
+.foogallery_metabox_field-icon label {
+	display:inline-block;
+	margin-right:10px;
+	border:solid 3px transparent;
+	background:#aaa;
+	border-radius: 3px;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	padding:5px;
+	line-height: 0;
+}
+
+.foogallery_metabox_field-icon input:checked + label {
+	border:solid 3px #444;
+	background: #888;
+}
+
+.foogallery_metabox_field-icon label:hover {
+	border:solid 3px #444;
+}
+
+.foogallery-shortcode {
+	font-size: 1.2em;
+	cursor: pointer;
+}
+
+.foogallery-shortcode-message {
+	font-style: italic;
+	color: #369;
+}
