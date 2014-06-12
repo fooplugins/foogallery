@@ -17,6 +17,10 @@ $info = $instance->get_plugin_info();
 		width:109px;
 		height:200px;
 	}
+	.feature-section h2 {
+		margin-top: 0;
+	}
+
 </style>
 <div class="wrap about-wrap">
 	<h1><?php printf( __( 'Welcome to FooGallery %s', 'foogallery' ), $info['version'] ); ?></h1>
@@ -30,7 +34,7 @@ $info = $instance->get_plugin_info();
 		<a class="nav-tab" href="<?php echo foogallery_admin_extensions_url(); ?>">
 			<?php _e( 'Extensions', 'foogallery' ); ?>
 		</a>
-		<a class="nav-tab" href="#other">
+		<a class="nav-tab" href="http://fooplugins.com">
 			<?php _e( 'Other Plugins', 'foogallery' ); ?>
 		</a>
 	</h2>
@@ -39,9 +43,9 @@ $info = $instance->get_plugin_info();
 
 		<div class="feature-section">
 
-			<h3><?php _e( 'Creating Your First Gallery', 'foogallery' );?></h3>
-
 			<img src="<?php echo FOOGALLERY_URL . 'assets/screenshots/admin-edit-gallery.jpg'; ?>" class="foogallery-help-screenshot"/>
+
+			<h2><?php _e( 'Creating Your First Gallery', 'foogallery' );?></h2>
 
 			<h4><?php printf( __( '<a href="%s">Galleries &rarr; Add New</a>', 'foogallery' ), admin_url( 'post-new.php?post_type=foogallery' ) ); ?></h4>
 			<p><?php _e( 'To create your first gallery, simply click the Add New button or click the Add Gallery menu link. Then choose images from the media library to include in your gallery.', 'foogallery'); ?></p>
@@ -49,55 +53,59 @@ $info = $instance->get_plugin_info();
 			<h4><?php _e( 'Drag and Drop Reordering', 'foogallery' );?></h4>
 			<p><?php _e( 'Sort the images in your gallery simply by dragging them around.', 'foogallery' );?></p>
 
-			<h4><?php _e( 'Gallery Settings', 'foogallery' );?></h4>
-			<p><?php _e( 'Then choose how you want your gallery to look and function on the front-end. It could not be any easier!', 'foogallery' );?></p>
+			<h4><?php _e( 'Gallery Templates', 'foogallery' );?></h4>
+			<p><?php _e( 'Choose one of our built-in gallery templates or download one via our extension library.', 'foogallery' );?></p>
+
+			<h4><?php _e( 'Lightbox Support', 'foogallery' );?></h4>
+			<p><?php _e( 'Our default gallery template supports FooBox : our popular responsive image lightbox.', 'foogallery' );?></p>
+
 
 		</div>
 	</div>
 
+	<?php do_action('foogallery_admin_help_after_section_one'); ?>
 
 	<div class="changelog">
-		<h3><?php _e( 'Showing Off Your Gallery', 'foogallery' );?></h3>
 
 		<div class="feature-section">
+			<img src="<?php echo FOOGALLERY_URL . 'assets/screenshots/admin-insert-shortcode.jpg'; ?>" class="foogallery-help-screenshot"/>
 
-			<img src="<?php echo FOOGALLERY_URL . 'assets/screenshots/admin-insert-gallery.jpg'; ?>" class="foogallery-help-screenshot"/>
+			<h2><?php _e( 'Show Off Your Gallery', 'foogallery' );?></h2>
 
 			<h4><?php _e( 'The <em>[foogallery]</em> Short Code','foogallery' );?></h4>
-			<p><?php _e( 'Simply copy the shortcode code from the gallery listing page and paste it into your posts or pages. ', 'foogallery' );?></p>
+			<p><?php _e( 'Simply copy the shortcode code from the gallery listing page and paste it into your posts or pages.', 'foogallery' );?></p>
 
 			<h4><?php _e( 'Visual Editor Button', 'foogallery' );?></h4>
-			<p><?php _e( 'Or to make life even easier, you can insert a gallery using the Insert Gallery button inside the WordPress visual editor.', 'foogallery' );?></p>
+			<p><?php _e( 'Or to make life even easier, you can insert a gallery using the Add FooGallery button inside the WordPress visual editor.', 'foogallery' );?></p>
+
+			<h4><?php _e( 'Copy To Clipboard','foogallery' );?></h4>
+			<p><?php _e( 'We make your life easy! Just click the shortcodes and they get copied to your clipboard automatically. ', 'foogallery' );?></p>
 
 		</div>
 	</div>
 
+	<?php do_action('foogallery_admin_help_after_section_two'); ?>
+
 	<div class="changelog">
-		<h3><?php _e( 'Need Help?', 'foogallery' );?></h3>
 
 		<div class="feature-section">
 
-			<h4><?php _e( 'Phenomenal Support','foogallery' );?></h4>
-			<p><?php _e( 'We do our best to provide the best support we can. If you encounter a problem or have a question, post a question in the <a href="https://easydigitaldownloads.com/support">support forums</a>.', 'foogallery' );?></p>
+			<img src="<?php echo FOOGALLERY_URL . 'assets/screenshots/admin-extensions.jpg'; ?>" class="foogallery-help-screenshot"/>
 
-			<h4><?php _e( 'Need Even Faster Support?', 'foogallery' );?></h4>
-			<p><?php _e( 'Our <a href="https://easydigitaldownloads.com/support/pricing/">Priority Support forums</a> are there for customers that need faster and/or more in-depth assistance.', 'foogallery' );?></p>
+			<h2><?php _e( 'Create Your Own Extensions', 'foogallery' );?></h2>
 
-		</div>
-	</div>
+			<h4><?php _e( 'Easy To Code','foogallery' );?></h4>
+			<p><?php _e( 'We have done all the hard work to make your life easier. Creating an extension for FooGallery can be done in a couple lines of code.', 'foogallery' );?></p>
 
-	<div class="changelog">
-		<h3><?php _e( 'Stay Up to Date', 'foogallery' );?></h3>
+			<h4><?php _e( 'Actions and Filters', 'foogallery' );?></h4>
+			<p><?php _e( 'We coded FooGallery with extensibility in mind. There are hundreds of actions and filters and helper functions to change every aspect of the plugin.', 'foogallery' );?></p>
 
-		<div class="feature-section">
-
-			<h4><?php _e( 'Get Notified of Extension Releases','foogallery' );?></h4>
-			<p><?php _e( 'New extensions that make Easy Digital Downloads even more powerful are released nearly every single week. Subscribe to the newsletter to stay up to date with our latest releases. <a href="http://eepurl.com/kaerz" target="_blank">Signup now</a> to ensure you do not miss a release!', 'foogallery' );?></p>
-
-			<h4><?php _e( 'Get Alerted About New Tutorials', 'foogallery' );?></h4>
-			<p><?php _e( '<a href="http://eepurl.com/kaerz" target="_blank">Signup now</a> to hear about the latest tutorial releases that explain how to take Easy Digital Downloads further.', 'foogallery' );?></p>
+			<h4><?php _e( 'Host Anywhere', 'foogallery' );?></h4>
+			<p><?php _e( 'Host your extensions on the WordPress.org plugin repo, or GitHub, or even in your own Amazon S3 bucket. You have the power and choice!', 'foogallery' );?></p>
 
 		</div>
 	</div>
+
+	<?php do_action('foogallery_admin_help_after_section_three'); ?>
 
 </div>
