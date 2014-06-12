@@ -155,7 +155,11 @@
 	cursor: pointer;
 }
 
+.wp-list-table .foogallery-shortcode {
+	font-size: 1em;
+}
+
 .foogallery-shortcode-message {
 	font-style: italic;
-	color: #369;
+	color: #2EA2CC !important;
 }

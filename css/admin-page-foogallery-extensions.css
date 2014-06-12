@@ -49,10 +49,8 @@ div.foogallery-message-error {
 }
 
 .spinner {
-	float: left;
 	position: absolute;
-	left: -20px;
-	top: 12px;
+	margin-top: 15px;
 }
 
 .foogallery-extension-browser {
