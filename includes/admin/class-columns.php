@@ -7,6 +7,8 @@ if ( ! class_exists( 'FooGallery_Admin_Columns' ) ) {
 
 	class FooGallery_Admin_Columns {
 
+		private $include_clipboard_script = false;
+
 		function __construct() {
 			//add_filter( 'manage_upload_columns', array($this, 'setup_media_columns') );
 			//add_action( 'manage_media_custom_column', array($this, 'media_columns_content'), 10, 2 );
@@ -15,6 +17,7 @@ if ( ! class_exists( 'FooGallery_Admin_Columns' ) ) {
 				'gallery_custom_columns'
 			) );
 			add_action( 'manage_posts_custom_column', array( $this, 'gallery_custom_column_content' ) );
+			add_action( 'admin_footer', array($this, 'include_clipboard_script') );
 		}
 
 		function setup_media_columns( $columns ) {
@@ -43,28 +46,51 @@ if ( ! class_exists( 'FooGallery_Admin_Columns' ) ) {
 			switch ( $column ) {
 				case FOOGALLERY_CPT_GALLERY . '_count':
 					$gallery = FooGallery::get( $post );
-					$count = sizeof( $gallery->attachments() );
-					switch ($count) {
-						case 0:
-							_e( 'No images yet!', 'foogallery' );
-							break;
-						case 1:
-							_e( '1 image', 'foogallery' );
-							break;
-						default:
-							echo sprintf( __( '%s images', 'foogallery' ), $count );
-							break;
-					}
+					echo $gallery->image_count();
 					break;
 				case FOOGALLERY_CPT_GALLERY . '_shortcode':
-					echo '<code>' . foogallery_build_gallery_shortcode( $post->ID ) . '</code>';
+					$gallery = FooGallery::get( $post );
+					$shortcode = $gallery->shortcode();
+
+					echo '<code id="foogallery-copy-shortcode" data-clipboard-text="' . esc_attr( $shortcode ) . '"
+					  title="' . esc_attr__('Click to copy to your clipboard', 'foogallery') . '"
+					  class="foogallery-shortcode">' . $shortcode . '</code>';
+
+					$this->include_clipboard_script = true;
+
 					break;
 				case 'icon':
-					$post_thumbnail_id = get_post_thumbnail_id( $post->ID );
-					if ( $post_thumbnail_id && $thumb = wp_get_attachment_image( $post_thumbnail_id, array(80, 60), true ) ) {
-						echo $thumb;
+					$gallery = FooGallery::get( $post );
+					$img = $gallery->attachment_image_html( array(80, 60), true );
+					if ( $img ) {
+						echo $img;
 					}
 					break;
+			}
+		}
+
+		function include_clipboard_script() {
+			if ( $this->include_clipboard_script ) {
+				//zeroclipboard needed for copy to clipboard functionality
+				$url = FOOGALLERY_URL . 'lib/zeroclipboard/ZeroClipboard.min.js';
+				wp_enqueue_script( 'foogallery-zeroclipboard', $url, array('jquery'), FOOGALLERY_VERSION );
+
+				?>
+				<script>
+					jQuery(function($) {
+						var $el = $('.foogallery-shortcode');
+						ZeroClipboard.config({ moviePath: "<?php echo FOOGALLERY_URL; ?>lib/zeroclipboard/ZeroClipboard.swf" });
+						var client = new ZeroClipboard($el);
+
+						client.on( "load", function(client) {
+							client.on( "complete", function(client, args) {
+								$('.foogallery-shortcode-message').remove();
+								$(this).after('<p class="foogallery-shortcode-message"><?php _e( 'Shortcode copied to clipboard :)','foogallery' ); ?></p>');
+							} );
+						} );
+					});
+				</script>
+				<?php
 			}
 		}
 	}
