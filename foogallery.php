@@ -15,7 +15,7 @@
  * Plugin Name: FooGallery
  * Plugin URI:  https://github.com/fooplugins/foogallery
  * Description: Better Image Galleries for WordPress
- * Version:     1.1.1
+ * Version:     1.1.1 Beta
  * Author:      bradvin
  * Author URI:  http://fooplugins.com
  * Text Domain: foogallery
@@ -41,7 +41,7 @@ define('FOOGALLERY_SLUG', 'foogallery');
 define('FOOGALLERY_PATH', plugin_dir_path( __FILE__ ));
 define('FOOGALLERY_URL', plugin_dir_url( __FILE__ ));
 define('FOOGALLERY_FILE', __FILE__);
-define('FOOGALLERY_VERSION', '1.1.1');
+define('FOOGALLERY_VERSION', '1.1.1 Beta');
 
 /**
  * FooGallery_Plugin class
@@ -135,7 +135,7 @@ if ( !class_exists( 'FooGallery_Plugin' ) ) {
 				}
 
 			} else {
-				self::single_activate();
+				self::single_activate( false );
 			}
 		}
 
@@ -144,13 +144,18 @@ if ( !class_exists( 'FooGallery_Plugin' ) ) {
 		 *
 		 * @since    1.0.0
 		 */
-		private static function single_activate() {
+		private static function single_activate( $multisite = true ) {
 			if ( false === get_option(FOOGALLERY_EXTENSIONS_AUTO_ACTIVATED_OPTIONS_KEY, false) ) {
 				$api = new FooGallery_Extensions_API();
 
 				$api->auto_activate_extensions();
 
 				update_option( FOOGALLERY_EXTENSIONS_AUTO_ACTIVATED_OPTIONS_KEY, true );
+
+			}
+			if ( false === $multisite ) {
+				//Make sure we redirect to the welcome page
+				set_transient( FOOGALLERY_ACTIVATION_REDIRECT_TRANSIENT_KEY, true, 30 );
 			}
 		}
 
