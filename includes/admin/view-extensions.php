@@ -34,7 +34,7 @@ if ( 'yes' === $show_message ) {
 			<p><?php echo $result['message']; ?></p>
 		</div>
 	<?php } ?>
-	<h1><?php _e( 'FooGallery Extensions', 'foogallery' ); ?></h1>
+	<h1><?php _e( 'FooGallery Extensions', 'foogallery' ); ?><span class="spinner"></span></h1>
 
 	<div class="foogallery-text"><?php _e( 'Extensions make FooGallery even more awesome, without bloating the core plugin.', 'foogallery' ); ?></div>
 	<div class="foogallery-badge-foobot"></div>
@@ -50,7 +50,7 @@ if ( 'yes' === $show_message ) {
 			<input placeholder="<?php echo __('search...', 'foogallery'); ?>" type="search" id="extensions-search-input">
 		</div>
 		<div class="extension-reload">
-			<a class="button" href="<?php echo add_query_arg( 'action', 'reload' ); ?>"><span class="dashicons dashicons-update"></span> <?php _e('Reload', 'foogallery'); ?></a>
+			<a class="ext_action button" href="<?php echo add_query_arg( 'action', 'reload' ); ?>"><span class="dashicons dashicons-update"></span> <?php _e('Reload', 'foogallery'); ?></a>
 		</div>
 	</h2>
 </div>
@@ -60,12 +60,13 @@ if ( 'yes' === $show_message ) {
 		<?php foreach( $extensions as $extension ) {
 			$slug = $extension['slug'];
 			$classes = 'extension extension-' . $slug;
-			if ( $api->is_downloaded( $extension ) ) {
+			$downloaded = $api->is_downloaded( $extension );
+			if ( $downloaded ) {
 				$classes .= ' downloaded';
 			} else {
 				$classes .= ' download';
 			}
-			if ( $api->is_active( $slug, true ) ) {
+			if ( $downloaded && $api->is_active( $slug, true ) ) {
 				$classes .= ' active';
 			}
 			if ( $api->has_loading_errors( $slug ) ) {
@@ -102,7 +103,7 @@ if ( 'yes' === $show_message ) {
 				$download_button_target = isset( $download_button['target'] ) ? ' target="' . $download_button['target'] . '" ' : '';
 				$download_button_text = isset( $download_button['text'] ) ? __( $download_button['text'], 'foogallery' ) : '';
 				$download_button_confirm = isset( $download_button['confirm'] ) ? ' data-confirm="' .$download_button['confirm'] . '" ' : '';
-				$download_button_html = "<a class=\"button button-primary download\" {$download_button_target}href=\"{$download_button_href}\" >{$download_button_text}</a>";
+				$download_button_html = "<a class=\"ext_action button button-primary download\" {$download_button_target}href=\"{$download_button_href}\" >{$download_button_text}</a>";
 			}
 			?>
 		<div class="<?php echo $classes; ?>">
@@ -117,14 +118,13 @@ if ( 'yes' === $show_message ) {
 			<h3 class="search-me"><?php echo $extension['title'] . $tag_html; ?></h3>
 
 			<div class="extension-actions">
-				<span class="spinner"></span>
 				<?php if ( !empty( $download_button_html ) ) {
 					echo $download_button_html;
 				} else { ?>
-				<a class="button button-primary download" data-confirm="<?php _e('Are you sure you want to download this extension?', 'foogallery'); ?>" href="<?php echo $download_url; ?>"><?php _e('Download', 'foogallery'); ?></a>
+				<a class="ext_action button button-primary download" data-confirm="<?php _e('Are you sure you want to download this extension?', 'foogallery'); ?>" href="<?php echo $download_url; ?>"><?php _e('Download', 'foogallery'); ?></a>
 				<?php } ?>
-				<a class="button button-primary activate" href="<?php echo $activate_url; ?>"><?php _e('Activate', 'foogallery'); ?></a>
-				<a class="button button-secondary deactivate" href="<?php echo $deactivate_url; ?>"><?php _e('Deactivate', 'foogallery'); ?></a>
+				<a class="ext_action button button-primary activate" href="<?php echo $activate_url; ?>"><?php _e('Activate', 'foogallery'); ?></a>
+				<a class="ext_action button button-secondary deactivate" href="<?php echo $deactivate_url; ?>"><?php _e('Deactivate', 'foogallery'); ?></a>
 
 			</div>
 			<div class="banner active-banner"><?php _e('Activated', 'foogallery'); ?></div>

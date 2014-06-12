@@ -100,7 +100,7 @@ function foogallery_get_default($key) {
  * @return string The Url to the FooGallery help page in admin
  */
 function foogallery_admin_help_url() {
-	return esc_url( admin_url( add_query_arg( array('page' => 'foogallery-help'), 'index.php' ) ) );
+	return admin_url( add_query_arg( array('page' => 'foogallery-help'), foogallery_admin_menu_parent_slug() ) );
 }
 
 /**
@@ -109,7 +109,7 @@ function foogallery_admin_help_url() {
  * @return string The Url to the FooGallery settings page in admin
  */
 function foogallery_admin_settings_url() {
-	return esc_url( admin_url( add_query_arg( array('page' => 'foogallery-settings'), 'index.php' ) ) );
+	return admin_url( add_query_arg( array('page' => 'foogallery-settings'), foogallery_admin_menu_parent_slug() ) );
 }
 
 /**
@@ -118,7 +118,7 @@ function foogallery_admin_settings_url() {
  * @return string The Url to the FooGallery extensions page in admin
  */
 function foogallery_admin_extensions_url() {
-	return esc_url( admin_url( add_query_arg( array('page' => 'foogallery-extensions'), 'index.php' ) ) );
+	return admin_url( add_query_arg( array('page' => 'foogallery-extensions'), foogallery_admin_menu_parent_slug() ) );
 }
 
 /**
@@ -161,10 +161,22 @@ function foogallery_gallery_template_setting( $key, $default = false ) {
  * @return string
  */
 function foogallery_get_attachment_html( $attachment_id, $size = 'thumbnail', $link = 'image' ) {
+	$img = wp_get_attachment_image( $attachment_id, $size );
+
 	if ( 'none' === $link ) {
-		return wp_get_attachment_image( $attachment_id, $size );
+		return $img;
 	}
-	return wp_get_attachment_link( $attachment_id, $size, ( 'page' === $link ) );
+
+	if ( 'page' === $link ) {
+		$url = get_attachment_link( $attachment_id );
+	} else {
+		$attribs = wp_get_attachment_image_src( $attachment_id, 'full' );
+		$url = $attribs[0];
+	}
+
+	$title = get_the_title( $attachment_id );
+
+	return apply_filters( 'foogallery_get_attachment_html', "<a title='$title' href='$url'>$img</a>", $attachment_id, $size, $link );
 }
 
 /**
@@ -187,4 +199,50 @@ function foogallery_build_admin_menu_url( $extra_args = array() ) {
 		$url = add_query_arg( $extra_args, $url );
 	}
 	return $url;
+}
+
+/**
+ * @TODO
+ * @param $menu_title
+ * @param $capability
+ * @param $menu_slug
+ * @param $function
+ */
+function foogallery_add_submenu_page( $menu_title, $capability, $menu_slug, $function ) {
+	add_submenu_page(
+		foogallery_admin_menu_parent_slug(),
+		$menu_title,
+		$menu_title,
+		$capability,
+		$menu_slug,
+		$function
+	);
+}
+
+/**
+ * Returns all FooGallery galleries
+ *
+ * @return array(FooGallery) array of FooGallery galleries
+ */
+function foogallery_get_all_galleries() {
+	$gallery_posts = get_posts(
+		array(
+			'post_type'     => FOOGALLERY_CPT_GALLERY,
+			'post_status'	=> 'any',
+			'cache_results' => false,
+			'nopaging'      => true
+		)
+	);
+
+	if ( empty( $gallery_posts ) ) {
+		return false;
+	}
+
+	$galleries = array();
+
+	foreach ( $gallery_posts as $post ) {
+		$galleries[] = FooGallery::get( $post );
+	}
+
+	return $galleries;
 }

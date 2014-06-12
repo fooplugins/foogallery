@@ -528,7 +528,10 @@ if ( !class_exists( 'FooGallery_Extensions_API' ) ) {
 		public function auto_activate_extensions() {
 			foreach ( $this->get_all() as $extension ) {
 				if ( true === foo_safe_get( $extension, 'activated_by_default' ) ) {
-					$this->add_to_activated_extensions( $extension );
+					//check to see if the extension is downloaded
+					if ( $this->is_downloaded( $extension ) ) {
+						$this->add_to_activated_extensions( $extension );
+					}
 				}
 			}
 		}

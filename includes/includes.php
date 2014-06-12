@@ -18,6 +18,7 @@ if( is_admin() ) {
 	//only admin
 	require_once( FOOGALLERY_PATH . 'includes/admin/class-admin.php' );
 	require_once( FOOGALLERY_PATH . 'includes/admin/class-settings.php' );
+	require_once( FOOGALLERY_PATH . 'includes/admin/class-gallery-editor.php' );
 	require_once( FOOGALLERY_PATH . 'includes/admin/class-gallery-metaboxes.php' );
 	require_once( FOOGALLERY_PATH . 'includes/admin/class-gallery-metabox-fields.php' );
 	require_once( FOOGALLERY_PATH . 'includes/admin/class-menu.php' );
@@ -28,7 +29,6 @@ if( is_admin() ) {
 	require_once( FOOGALLERY_PATH . 'includes/public/class-public.php' );
 	require_once( FOOGALLERY_PATH . 'includes/public/class-shortcodes.php' );
 
-	//load Gamajo_Template_Loader files
-	require_once( FOOGALLERY_PATH . 'includes/public/class-gamajo-template-loader.php' );
+	//load Template Loader files
 	require_once( FOOGALLERY_PATH . 'includes/public/class-foogallery-template-loader.php' );
 }

@@ -5,7 +5,7 @@ if (!class_exists('FooGallery_Admin_Settings')) {
     class FooGallery_Admin_Settings {
 
 		function __construct() {
-			add_filter( 'foogallery-admin_settings', array($this, 'create_settings') );
+			add_filter( 'foogallery-admin_settings', array($this, 'create_settings'), 10, 2 );
 		}
 
         function create_settings() {
@@ -13,15 +13,10 @@ if (!class_exists('FooGallery_Admin_Settings')) {
 	        //region General Tab
 	        $tabs['general'] = __('General', 'foogallery');
 
-	        $sections['defaults'] = array(
-		        'tab' => 'general',
-		        'name' => __('Defaults', 'foogallery')
-	        );
-
 	        $gallery_templates = foogallery_gallery_templates();
 	        $gallery_templates_choices = array();
 	        foreach($gallery_templates as $template) {
-		        $gallery_templates_choices[$template['key']] = $template['name'];
+		        $gallery_templates_choices[$template['slug']] = $template['name'];
 	        }
 
 	        $settings[] = array(
@@ -35,17 +30,6 @@ if (!class_exists('FooGallery_Admin_Settings')) {
 	        );
 
 	        //endregion General
-
-			//region Templates Tab
-	        $tabs['templates'] = __('Templates', 'foogallery');
-
-			$settings[] = array(
-                'id'      => 'available_templates',
-                'title'   => '',
-                'type'    => 'templates',
-                'tab'     => 'templates'
-            );
-	        //endregion Templates
 
 	        //region Advanced Tab
 	        $tabs['advanced'] = __('Advanced', 'foogallery');
@@ -73,7 +57,7 @@ if (!class_exists('FooGallery_Admin_Settings')) {
 
 			return array(
 				'tabs' => $tabs,
-				'sections' => $sections,
+				'sections' => array(),
 				'settings' => $settings
 			);
         }

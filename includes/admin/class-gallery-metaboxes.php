@@ -231,32 +231,30 @@ if ( !class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 		function render_gallery_shortcode_metabox($post) {
 			$gallery = $this->get_gallery( $post );
 			$shortcode = $gallery->shortcode();
-			if ( $gallery->is_published() ) {
-				?>
-				<p>
-					<code id="foogallery-copy-shortcode" data-clipboard-text="<?php echo htmlspecialchars( $shortcode ); ?>"
-						  title="<?php _e('Click to copy to your clipboard', 'foogallery'); ?>"
-						  class="foogallery-shortcode"><?php echo $shortcode; ?></code>
-				</p>
-				<p>
-					<?php _e( 'Paste the above shortcode into a post or page to show the gallery. Simply click the shortcode to copy it to your clipboard.', 'foogallery' ); ?>
-				</p>
-				<script>
-					jQuery(function($) {
-						var $el = $('#foogallery-copy-shortcode');
-						ZeroClipboard.config({ moviePath: "<?php echo FOOGALLERY_URL; ?>lib/zeroclipboard/ZeroClipboard.swf" });
-						var client = new ZeroClipboard($el);
+			?>
+			<p>
+				<code id="foogallery-copy-shortcode" data-clipboard-text="<?php echo htmlspecialchars( $shortcode ); ?>"
+					  title="<?php _e('Click to copy to your clipboard', 'foogallery'); ?>"
+					  class="foogallery-shortcode"><?php echo $shortcode; ?></code>
+			</p>
+			<p>
+				<?php _e( 'Paste the above shortcode into a post or page to show the gallery. Simply click the shortcode to copy it to your clipboard.', 'foogallery' ); ?>
+			</p>
+			<script>
+				jQuery(function($) {
+					var $el = $('#foogallery-copy-shortcode');
+					ZeroClipboard.config({ moviePath: "<?php echo FOOGALLERY_URL; ?>lib/zeroclipboard/ZeroClipboard.swf" });
+					var client = new ZeroClipboard($el);
 
-						client.on( "load", function(client) {
-							client.on( "complete", function(client, args) {
-								$('.foogallery-shortcode-message').remove();
-								$el.after('<p class="foogallery-shortcode-message"><?php _e( 'Shortcode copied to clipboard :)','foogallery' ); ?></p>');
-							} );
+					client.on( "load", function(client) {
+						client.on( "complete", function(client, args) {
+							$('.foogallery-shortcode-message').remove();
+							$el.after('<p class="foogallery-shortcode-message"><?php _e( 'Shortcode copied to clipboard :)','foogallery' ); ?></p>');
 						} );
-					});
-				</script>
+					} );
+				});
+			</script>
 			<?php
-			}
 		}
 
 		function include_required_scripts() {

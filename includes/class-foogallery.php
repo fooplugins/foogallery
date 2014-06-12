@@ -195,4 +195,40 @@ class FooGallery extends stdClass {
         return foogallery_build_gallery_shortcode( $this->ID );
     }
 
+	public function find_attachment_id() {
+		$attachment_id = get_post_thumbnail_id( $this->ID );
+		//if no featured image could be found then get the first image
+		if ( !$attachment_id && $this->attachments() ) {
+			$attachment_id = array_shift( array_values( $this->attachments() ) );
+		}
+		return $attachment_id;
+	}
+
+	public function attachment_image_src( $size='thumbnail', $icon = false ) {
+		$attachment_id = $this->find_attachment_id();
+		if ( $attachment_id && $image_details = wp_get_attachment_image_src( $attachment_id, $size, $icon ) ) {
+			return array_shift( array_values( $image_details ) );
+		}
+		return false;
+	}
+
+	public function attachment_image_html( $size='thumbnail', $icon = false ) {
+		$attachment_id = $this->find_attachment_id();
+		if ( $attachment_id && $thumb = wp_get_attachment_image( $attachment_id, $size, $icon ) ) {
+			return $thumb;
+		}
+		return false;
+	}
+
+	public function image_count() {
+		$count = sizeof( $this->attachments() );
+		switch ($count) {
+			case 0:
+				return __( 'No images', 'foogallery' );
+			case 1:
+				return __( '1 image', 'foogallery' );
+			default:
+				return sprintf( __( '%s images', 'foogallery' ), $count );
+		}
+	}
 }

@@ -10,3 +10,4 @@ define('FOOGALLERY_META_TEMPLATE', 'foogallery_template');
 
 define('FOOGALLERY_ADMIN_MENU_PARENT_SLUG', 'edit.php?post_type=foogallery');
 define('FOOGALLERY_FOOBOX_FREE_EXTENSION_SLUG', 'foobox-image-lightbox');
+define('FOOGALLERY_ACTIVATION_REDIRECT_TRANSIENT_KEY', '_foogallery_activation_redirect');
