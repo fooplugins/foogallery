@@ -12,6 +12,7 @@ if (!class_exists('FooGallery_Admin')) {
 
 			new FooGallery_Admin_Settings();
 			new FooGallery_Admin_Menu();
+			new FooGallery_Admin_Gallery_Editor();
 			new FooGallery_Admin_Gallery_MetaBoxes();
 			new FooGallery_Admin_Gallery_MetaBox_Fields();
 			new FooGallery_Admin_Columns();
@@ -27,6 +28,7 @@ if (!class_exists('FooGallery_Admin')) {
 			add_action( 'foogallery-admin_print_styles', array($this, 'admin_print_styles') );
 			add_action( 'foogallery-admin_print_scripts', array($this, 'admin_print_scripts') );
 			add_action( 'admin_init', array($this, 'handle_extension_action') );
+			add_action( 'admin_init', array($this, 'redirect_on_activation') );
 		}
 
 		function handle_extension_action() {
@@ -169,6 +171,21 @@ if (!class_exists('FooGallery_Admin')) {
 			$page = safe_get_from_request( 'page' );
 			$foogallery = FooGallery_Plugin::get_instance();
 			$foogallery->register_and_enqueue_js( 'admin-page-' . $page . '.js' );
+		}
+
+		function redirect_on_activation() {
+			// Bail if no activation redirect
+			if ( ! get_transient( FOOGALLERY_ACTIVATION_REDIRECT_TRANSIENT_KEY ) )
+				return;
+
+			// Delete the redirect transient
+			delete_transient( FOOGALLERY_ACTIVATION_REDIRECT_TRANSIENT_KEY );
+
+			// Bail if activating from network, or bulk
+			if ( is_network_admin() || isset( $_GET['activate-multi'] ) )
+				return;
+
+			wp_safe_redirect( foogallery_admin_help_url() ); exit;
 		}
 	}
 }
