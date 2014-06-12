@@ -106,19 +106,25 @@ if ( !class_exists( 'FooGallery_Default_Templates_Extension' ) ) {
 				'thumbnail'   => FOOGALLERY_URL . 'templates/masonry/thumb.png',
 				'fields'	  => array(
 					array(
-						'id'      => 'link_to_image',
-						'title'   => __('Link To Image2', 'foogallery'),
-						'desc'    => __('Should the gallery thumbnails link to the full size images. If not set, then the images will link to the attachment page.', 'foogallery'),
-						'default' => 'on' ,
-						'type'    => 'checkbox',
-						//'section' => __('Responsive Image Gallery Settings', 'foogallery'),
+						'id'      => 'thumbnail_size',
+						'title'   => __('Thumbnail Size', 'foogallery'),
+						'desc'    => __('Choose the size of your thumbnails.', 'foogallery'),
+						'type'    => 'thumb_size',
+					),
+					array(
+						'id'      => 'thumbnail_link',
+						'title'   => __('Thumbnail Link', 'foogallery'),
+						'default' => 'image' ,
+						'type'    => 'thumb_link',
+						'spacer'  => '<span class="spacer"></span>',
+						'desc'	  => __('You can choose to either link each thumbnail to the full size image or to the image\'s attachment page.', 'foogallery')
 					),
 					array(
 						'id'      => 'lightbox',
-						'title'   => __('Lightbox2', 'foogallery'),
-						'desc'    => __('Choose which lightbox you want to use in the gallery.', 'foogallery'),
+						'title'   => __('Lightbox', 'foogallery'),
+						'desc'    => __('Choose which lightbox you want to display images with. The lightbox will only work if you set the thumbnail link to "Full Size Image".', 'foogallery'),
 						'type'    => 'lightbox',
-					),
+					)
 				)
 			);
 
