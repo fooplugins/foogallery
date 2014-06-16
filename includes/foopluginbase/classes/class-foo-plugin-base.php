@@ -293,7 +293,7 @@ if ( !class_exists( 'Foo_Plugin_Base_v2_2' ) ) {
 		function admin_plugin_listing_actions($links) {
 			if ( $this->has_admin_settings_page() ) {
 				// Add the 'Settings' link to the plugin page
-				$links[] = '<a href="options-general.php?page=' . $this->plugin_slug . '"><b>Settings</b></a>';
+				$links[] = '<a href="options-general.php?page=' . $this->plugin_slug . '"><b>' . __('Settings', $this->plugin_slug) .'</b></a>';
 			}
 
 			return apply_filters( $this->plugin_slug . '-plugin_action_links', $links );
