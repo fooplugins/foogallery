@@ -217,7 +217,7 @@ class FooGallery extends stdClass {
 		if ( $attachment_id && $thumb = wp_get_attachment_image( $attachment_id, $size, $icon ) ) {
 			return $thumb;
 		}
-		return false;
+		return '';
 	}
 
 	public function image_count() {
