@@ -1,23 +1,20 @@
 <?php
 
-if ( !class_exists( 'FooGallery_NextGen_Helper' ) ) {
+if ( ! class_exists( 'FooGallery_NextGen_Helper' ) ) {
 
 	class FooGallery_NextGen_Helper {
 
-		const NEXTGEN_TABLE_GALLERY = 'ngg_gallery';
-		const NEXTGEN_TABLE_PICTURES = 'ngg_pictures';
+		const NEXTGEN_TABLE_GALLERY          = 'ngg_gallery';
+		const NEXTGEN_TABLE_PICTURES         = 'ngg_pictures';
+		const NEXTGEN_OPTION_IMPORT_CURRENT  = 'foogallery_nextgen_import_current';
 		const NEXTGEN_OPTION_IMPORT_PROGRESS = 'foogallery_nextgen_import_progress';
-		const NEXTGEN_PROGRESS_NOT_STARTED = 'not_started';
-		const NEXTGEN_PROGRESS_STARTED = 'started';
-		const NEXTGEN_PROGRESS_COMPLETED = 'completed';
-		const NEXTGEN_PROGRESS_ERROR = 'error';
+		const NEXTGEN_OPTION_IMPORT_IN_PROGRESS  = 'foogallery_nextgen_importing';
 
 		/**
 		 * @TODO
 		 */
 		function is_nextgen_installed() {
-			return class_exists( 'C_NextGEN_Bootstrap' ) ||
-			class_exists( 'nggLoader' );
+			return class_exists( 'C_NextGEN_Bootstrap' ) || class_exists( 'nggLoader' );
 		}
 
 		function get_galleries() {
@@ -30,7 +27,7 @@ if ( !class_exists( 'FooGallery_NextGen_Helper' ) ) {
 from {$gallery_table}" );
 		}
 
-		function get_gallery($id) {
+		function get_gallery( $id ) {
 			global $wpdb;
 			$gallery_table = $wpdb->prefix . self::NEXTGEN_TABLE_GALLERY;
 			$picture_table = $wpdb->prefix . self::NEXTGEN_TABLE_PICTURES;
@@ -41,40 +38,104 @@ from {$gallery_table}
 where gid = %d", $id ) );
 		}
 
-		function get_gallery_images($id) {
+		function get_gallery_images( $id ) {
 			global $wpdb;
 			$picture_table = $wpdb->prefix . self::NEXTGEN_TABLE_PICTURES;
 
 			return $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$picture_table} WHERE galleryid = %d", $id ) );
 		}
 
-		function get_import_progress($id) {
+		/**
+		 * @param bool $id
+		 *
+		 * @return FooGallery_NextGen_Import_Progress
+		 */
+		function get_import_progress( $nextgen_gallery_id ) {
 			$progress = get_option( self::NEXTGEN_OPTION_IMPORT_PROGRESS );
 			if ( false !== $progress ) {
-				if ( array_key_exists( $id, $progress ) ) {
-					return $progress[$id];
+				if ( false !== $nextgen_gallery_id && array_key_exists( $nextgen_gallery_id, $progress ) ) {
+					return $progress[ $nextgen_gallery_id ];
 				}
 			}
 
-			return array(
-				'status'  => self::NEXTGEN_PROGRESS_NOT_STARTED,
-				'message' => __( 'Not imported', 'foogallery' )
-			);
+			return new FooGallery_NextGen_Import_Progress();
 		}
 
-		function set_import_progress($nextgen_gallery_id, $status, $message, $foogallery_id) {
-			$progress                      = get_option( self::NEXTGEN_OPTION_IMPORT_PROGRESS, array() );
-			$progress[$nextgen_gallery_id] = array(
-				'status'     => $status,
-				'message'    => $message,
-				'foogallery' => $foogallery_id
-			);
-			update_option( self::NEXTGEN_OPTION_IMPORT_PROGRESS, $progress );
+		function set_import_progress( $nextgen_gallery_id, FooGallery_NextGen_Import_Progress $progress ) {
+			$all_progress                        = get_option( self::NEXTGEN_OPTION_IMPORT_PROGRESS, array() );
+			$all_progress[ $nextgen_gallery_id ] = $progress;
+			update_option( self::NEXTGEN_OPTION_IMPORT_PROGRESS, $all_progress );
 		}
 
-		function import_picture($nextgen_gallery_path, $picture) {
-			$picture_url = trailingslashit( site_url() ) .
-				trailingslashit( $nextgen_gallery_path ) . $picture->filename;
+		function init_import_progress( $nextgen_gallery_id, $foogallery_title ) {
+			$progress = new FooGallery_NextGen_Import_Progress();
+			$progress->init( $nextgen_gallery_id, $foogallery_title );
+			$this->set_import_progress( $nextgen_gallery_id, $progress );
+		}
+
+		function start_import() {
+			delete_option( self::NEXTGEN_OPTION_IMPORT_CURRENT );
+			update_option( self::NEXTGEN_OPTION_IMPORT_IN_PROGRESS, true );
+		}
+
+		function cancel_import() {
+			delete_option( self::NEXTGEN_OPTION_IMPORT_CURRENT );
+			delete_option( self::NEXTGEN_OPTION_IMPORT_IN_PROGRESS );
+		}
+
+		function import_in_progress() {
+			return true === get_option( self::NEXTGEN_OPTION_IMPORT_IN_PROGRESS );
+		}
+
+		function continue_import() {
+			//get the current gallery being imported
+			$current_nextgen_id = get_option( self::NEXTGEN_OPTION_IMPORT_CURRENT, 0 );
+
+			if ( 0 === $current_nextgen_id ) {
+				//try and get the next gallery to import
+				$current_nextgen_id = $this->get_next_gallery_to_import();
+
+				//if we still have no current then do nothing
+				if ( 0 === $current_nextgen_id ) {
+					return;
+				} else {
+					update_option( self::NEXTGEN_OPTION_IMPORT_CURRENT, $current_nextgen_id );
+				}
+			}
+
+			$progress = $this->get_import_progress( $current_nextgen_id );
+
+			if ( !$progress->has_started() ) {
+				$progress->start();
+			}
+
+			//import the next picture
+			$progress->import_next_picture();
+
+			//update our progress
+			$this->set_import_progress( $current_nextgen_id, $progress );
+
+			//if the percentage complete is 100 then clear the current gallery
+			if ( $progress->is_completed() ) {
+				delete_option( self::NEXTGEN_OPTION_IMPORT_CURRENT );
+			}
+		}
+
+		function get_next_gallery_to_import() {
+			$nextgen_gallery_id = 0;
+			$all_progress       = get_option( self::NEXTGEN_OPTION_IMPORT_PROGRESS, array() );
+
+			foreach ( $all_progress as $id => $progress ) {
+				if ( $progress->can_import() ) {
+					$nextgen_gallery_id = $id;
+				}
+			}
+
+			return $nextgen_gallery_id;
+		}
+
+		function import_picture( $nextgen_gallery_path, $picture ) {
+			$picture_url = trailingslashit( site_url() ) . trailingslashit( $nextgen_gallery_path ) . $picture->filename;
 
 			$filename = basename( $picture_url );
 
@@ -94,7 +155,7 @@ where gid = %d", $id ) );
 			// Create attachment
 			$attachment = array(
 				'ID'             => 0,
-				'guid'           => $upload['url'],
+				'guid'           => $guid,
 				'post_title'     => $picture->alttext != '' ? $picture->alttext : $picture->image_slug,
 				'post_excerpt'   => $picture->description,
 				'post_content'   => $picture->description,
@@ -103,49 +164,122 @@ where gid = %d", $id ) );
 			);
 
 			// Include image.php so we can call wp_generate_attachment_metadata()
-			require_once(ABSPATH . 'wp-admin/includes/image.php');
+			require_once( ABSPATH . 'wp-admin/includes/image.php' );
 
 			// Insert the attachment
 			$attachment_id   = wp_insert_attachment( $attachment, $file, 0 );
 			$attachment_data = wp_generate_attachment_metadata( $attachment_id, $file );
 			wp_update_attachment_metadata( $attachment_id, $attachment_data );
 
-			// Save alt text in the post meta and increment counter
+			// Save alt text in the post meta
 			update_post_meta( $attachment_id, '_wp_attachment_image_alt', $picture->alttext );
 
 			return $attachment_id;
 		}
 
-		function import_gallery($nextgen_gallery_id, $foogallery_title) {
-			//load the gallery and pictures
-			$nextgen_gallery  = $this->get_gallery( $nextgen_gallery_id );
-			$nextgen_pictures = $this->get_gallery_images( $nextgen_gallery_id );
-
-			$attachment_ids = array();
-
-			//import all pictures from nextgen gallery into media attachments
-			foreach ( $nextgen_pictures as $picture ) {
-				$attachment_ids[] = $this->import_picture( $nextgen_gallery->path, $picture );
+		function render_import_form( $galleries = false ) {
+			if ( false === $galleries ) {
+				$galleries = $this->get_galleries();
 			}
+			$import_in_progress = $this->import_in_progress();
+			?>
+			<table class="wp-list-table widefat" cellspacing="0">
+				<thead>
+				<tr>
+					<th scope="col" id="cb" class="manage-column column-cb check-column">
+						<label class="screen-reader-text"
+						       for="cb-select-all-1"><?php _e( 'Select All', 'foogallery' ); ?></label>
+						<input id="cb-select-all-1" type="checkbox" checked="checked">
+					</th>
+					<th scope="col" class="manage-column">
+						<span><?php _e( 'NextGen Gallery', 'foogallery' ); ?></span>
+					</th>
+					<th scope="col" id="title" class="manage-column">
+						<span><?php _e( 'FooGallery Name', 'foogallery' ); ?></span>
+					</th>
+					<th scope="col" id="title" class="manage-column">
+						<span><?php _e( 'Import Progress', 'foogallery' ); ?></span>
+					</th>
+				</tr>
+				</thead>
+				<tbody>
+				<?php
+				$percentage_sum = 0;
+				$gallery_import_count = 0;
+				foreach ( $galleries as $gallery ) {
+					$progress    = $this->get_import_progress( $gallery->gid );
+					$in_progress = $progress->has_started() || $progress->queued_for_import();
+					$done        = $progress->is_completed();
+					if ( !$progress->not_started() ) {
+						$gallery_import_count++;
+						$percentage_sum += $progress->percentage_complete;
+					}
+					if ( $progress->foogallery_id > 0 ) {
+						$foogallery = FooGallery::get_by_id( $progress->foogallery_id );
+						$edit_link  = '<a href="' . admin_url( 'post.php?post=' . $progress->foogallery_id . '&action=edit' ) . '">' . $foogallery->name . '</a>';
+					}
+					?>
+					<tr>
+						<?php if ( $in_progress ) { ?>
+							<th>
+								<?php echo intval($progress->percentage_complete) . '%'; ?>
+							</th>
+						<?php } else if ( ! $done ) { ?>
+							<th scope="row" class="column-cb check-column">
+								<input name="nextgen-id[]" type="checkbox" checked="checked"
+								       value="<?php echo $gallery->gid; ?>">
+							</th>
+						<?php } else { ?>
+							<th>
 
-			//create an empty foogallery
-			$foogallery_args = array(
-				'post_title'  => $foogallery_title,
-				'post_type'   => FOOGALLERY_CPT_GALLERY,
-				'post_status' => 'publish'
-			);
-			$foogallery_id   = wp_insert_post( $foogallery_args );
+							</th>
+						<?php } ?>
+						<td>
+							<?php echo $gallery->title . sprintf( __( ' (%s images)', 'foogallery' ), $gallery->image_count ); ?>
+						</td>
+						<td>
+							<?php if ( $progress->foogallery_id > 0 ) {
+								echo $edit_link;
+							} else {
+								?>
+								<input name="foogallery-name-<?php echo $gallery->gid; ?>"
+								       value="<?php echo $gallery->title; ?>">
+							<?php } ?>
+						</td>
+						<td class="nextgen-import-progress nextgen-import-progress-<?php echo $progress->status; ?>">
+							<?php echo $progress->message(); ?>
+						</td>
+					</tr>
+				<?php
+				}
+				?>
+				</tbody>
+			</table>
+			<br/>
 
-			//link all attachments to foogallery
-			add_post_meta( $foogallery_id, FOOGALLERY_META_ATTACHMENTS, implode( $attachment_ids, ',' ), true );
-			//set a default gallery template
-			add_post_meta( $foogallery_id, FOOGALLERY_META_TEMPLATE, foogallery_default_gallery_template(), true );
-
-			//set the progress of the import for the gallery
-			$this->set_import_progress( $nextgen_gallery_id,
-				self::NEXTGEN_PROGRESS_COMPLETED,
-				sprintf( __( 'Done! %d image(s) imported', 'foogallery' ), count( $attachment_ids ) ),
-				$foogallery_id );
+			<?php
+			$overall_progress = $gallery_import_count == 0 ? 100 : $percentage_sum / $gallery_import_count;
+			echo '<input type="hidden" id="nextgen_import_progress" value="' . $overall_progress . '" />';
+			wp_nonce_field( 'foogallery_nextgen_import', 'foogallery_nextgen_import' );
+			wp_nonce_field( 'foogallery_nextgen_import_refresh', 'foogallery_nextgen_import_refresh', false );
+			wp_nonce_field( 'foogallery_nextgen_import_cancel', 'foogallery_nextgen_import_cancel', false );
+			if ( !$import_in_progress ) {
+				?>
+				<input type="submit" class="button-primary start_import"
+				       value="<?php _e( 'Start Import', 'foogallery' ); ?>">
+			<?php } else { ?>
+				<input type="submit" class="button-primary continue_import" value="<?php _e( 'Continue Import', 'foogallery' ); ?>">
+				<input type="submit" class="button cancel_import" value="<?php _e( 'Stop Import', 'foogallery' ); ?>">
+				<div id="import_spinner" style="width:20px">
+					<span class="spinner shown"></span>
+				</div>
+			<?php
+			}
+			if ( $import_in_progress ) {
+				echo '<div class="nextgen-import-progressbar">';
+				echo '<span style="width:' . $overall_progress . '%"></span>';
+				echo '</div>';
+			}
 		}
 	}
 }

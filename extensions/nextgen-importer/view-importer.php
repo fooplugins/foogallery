@@ -1,22 +1,22 @@
 <?php
 $nextgen = new FooGallery_NextGen_Helper();
 
-if ( isset($_POST['foogallery_nextgen_import']) && isset($_POST['nextgen-id']) ) {
-
-	if ( check_admin_referer( 'foogallery_nextgen_import', 'foogallery_nextgen_import' ) ) {
-		$nextgen_gallery_ids = $_POST['nextgen-id'];
-
-		$default_timeout = ini_get( 'max_execution_time' );
-		set_time_limit( 0 );
-
-		foreach ( $nextgen_gallery_ids as $gid ) {
-			$foogallery_title = stripslashes( $_POST['foogallery-name-' . $gid] );
-			$nextgen->import_gallery( $gid, $foogallery_title );
-		}
-
-		set_time_limit( $default_timeout );
-	}
-}
+//if ( isset($_POST['foogallery_nextgen_import']) && isset($_POST['nextgen-id']) ) {
+//
+//	if ( check_admin_referer( 'foogallery_nextgen_import', 'foogallery_nextgen_import' ) ) {
+//		$nextgen_gallery_ids = $_POST['nextgen-id'];
+//
+//		$default_timeout = ini_get( 'max_execution_time' );
+//		set_time_limit( 0 );
+//
+//		foreach ( $nextgen_gallery_ids as $gid ) {
+//			$foogallery_title = stripslashes( $_POST['foogallery-name-' . $gid] );
+//			$nextgen->import_gallery( $gid, $foogallery_title );
+//		}
+//
+//		set_time_limit( $default_timeout );
+//	}
+//}
 ?>
 <style>
 	.foogallery-badge-foobot {
@@ -53,12 +53,105 @@ if ( isset($_POST['foogallery_nextgen_import']) && isset($_POST['nextgen-id']) )
 		padding-left: 5px;
 		vertical-align: bottom;
 	}
+
+  .spinner-shown {
+    display: block !important;
+    margin: 0;
+    margin-top:-10px;
+    margin-left:-1px;
+  }
+
+  .nextgen-import-progress-not_started {
+    color: #f00 !important;
+  }
+
+  .nextgen-import-progress-started {
+    color: #f80 !important;
+  }
+
+  .nextgen-import-progress-completed {
+    color: #080 !important;
+  }
+
+	.nextgen-import-progress {
+		position: relative;
+		padding-right:10px;
+	}
+
+	.nextgen-import-progressbar-back {
+		display: inline-block;
+		background: #ddd;
+		height: 3px;
+		position: absolute;
+		bottom: 2px;
+		width:100%;
+	}
+
+	.nextgen-import-progressbar {
+		margin-top: 10px;
+		display: inline-block;
+		width:500px;
+		height:10px;
+		background:#ddd;
+		position: relative;
+	}
+
+	.nextgen-import-progressbar span {
+		position: absolute;
+		height:100%;
+		left:0;
+		background: #888;
+	}
 </style>
 <script>
 	jQuery(function ($) {
-		$('#do_import').click(function () {
+
+		function nextgen_ajax(action, success_callback) {
+			var data = jQuery("#nextgen_import_form").serialize();
+
+			$.ajax({
+				type: "POST",
+				url: ajaxurl,
+				data: data + "&action=" + action,
+				success: success_callback
+			});
+		}
+
+	    function nextgen_import_continue() {
+		    nextgen_ajax('foogallery_nextgen_import_refresh', function(data) {
+			    $('#nextgen_import_form').html(data);
+
+			    //check if we need to carry on polling
+			    var percentage = $('#nextgen_import_progress').val();
+			    if ( percentage < 100 ) {
+				    setTimeout(nextgen_import_continue, 500);
+			    }
+		    });
+	    }
+
+		$('#nextgen_import_form').on('click', '.start_import', function (e) {
+			e.preventDefault();
+
+			//show the spinner
 			$(this).hide();
 			$('#import_spinner .spinner').show();
+
+			nextgen_ajax('foogallery_nextgen_import', function (data) {
+				$('#nextgen_import_form').html(data);
+				setTimeout(nextgen_import_continue, 500);
+			});
+		});
+
+		$('#nextgen_import_form').on('click', '.continue_import', function(e) {
+			e.preventDefault();
+			nextgen_import_continue();
+		});
+
+		$('#nextgen_import_form').on('click', '.cancel_import', function(e) {
+			if (!confirm('<?php echo __('Are you sure you want to cancel?', 'foogallery'); ?>')) {
+				e.preventDefault();
+				return false;
+			}
 		});
 	});
 </script>
@@ -74,72 +167,8 @@ if ( isset($_POST['foogallery_nextgen_import']) && isset($_POST['nextgen-id']) )
 		_e( 'There are no NextGen galleries to import!', 'foogallery' );
 	} else {
 		?>
-		<form method="POST">
-			<table class="wp-list-table widefat" cellspacing="0">
-				<thead>
-				<tr>
-					<th scope="col" id="cb" class="manage-column column-cb check-column">
-						<label class="screen-reader-text"
-							   for="cb-select-all-1"><?php _e( 'Select All', 'foogallery' ); ?></label>
-						<input id="cb-select-all-1" type="checkbox" checked="checked">
-					</th>
-					<th scope="col" class="manage-column">
-						<span><?php _e( 'NextGen Gallery', 'foogallery' ); ?></span>
-					</th>
-					<th scope="col" id="title" class="manage-column">
-						<span><?php _e( 'FooGallery Name', 'foogallery' ); ?></span>
-					</th>
-					<th scope="col" id="title" class="manage-column">
-						<span><?php _e( 'Import Progress', 'foogallery' ); ?></span>
-					</th>
-				</tr>
-				</thead>
-				<tbody id="the-list">
-				<?php
-				foreach ( $galleries as $gallery ) {
-					$progress = $nextgen->get_import_progress( $gallery->gid );
-					$done     = isset($progress['foogallery']);
-					if ( $done ) {
-						$foogallery = FooGallery::get_by_id( $progress['foogallery'] );
-						$edit_link  = '<a href="' . admin_url( 'post.php?post=' . $progress['foogallery'] . '&action=edit' ) . '">' . $foogallery->name . '</a>';
-					}
-					?>
-					<tr>
-						<th scope="row" class="column-cb check-column">
-							<?php if ( !$done ) { ?>
-								<input name="nextgen-id[]" type="checkbox" checked="checked"
-									   value="<?php echo $gallery->gid; ?>">
-							<?php } ?>
-						</th>
-						<td>
-							<?php echo $gallery->title . sprintf( __( ' (%s images)', 'foogallery' ), $gallery->image_count ); ?>
-						</td>
-						<td>
-							<?php if ( $done ) {
-								echo $edit_link;
-							} else {
-								?>
-								<input name="foogallery-name-<?php echo $gallery->gid; ?>"
-									   value="<?php echo $gallery->title; ?>">
-							<?php } ?>
-						</td>
-						<td class="<?php echo $progress['status']; ?>">
-							<?php echo $progress['message']; ?>
-						</td>
-					</tr>
-				<?php
-				}
-				?>
-				</tbody>
-			</table>
-			<br/>
-			<?php wp_nonce_field( 'foogallery_nextgen_import', 'foogallery_nextgen_import' ); ?>
-			<input type="submit" class="button-primary" id="do_import"
-				   value="<?php _e( 'Start Import', 'foogallery' ); ?>">
-
-			<div id="import_spinner" style="width:20px">
-				<span class="spinner"></span>
-			</div>
+		<form id="nextgen_import_form" method="POST">
+			<?php $nextgen->render_import_form( $galleries ); ?>
 		</form>
 	<?php } ?>
 </div>
