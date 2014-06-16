@@ -5,10 +5,14 @@
 	FOOGALLERY.loadGalleries = function() {
 		$('.foogallery-modal-wrapper .spinner').css('display', 'inline-block');
 		$('.foogallery-modal-reload').hide();
+		var data = 'action=foogallery_load_galleries' +
+			'&foogallery_load_galleries=' + $('#foogallery_load_galleries').val() +
+			'&_wp_http_referer=' + $('input[name="_wp_http_referer"]').val();
+
 		$.ajax({
 			type: "POST",
 			url: ajaxurl,
-			data: "action=foogallery_load_galleries",
+			data: data,
 			success: function(data) {
 				$('.foogallery-attachment-container').html(data);
 				FOOGALLERY.clearSelection();

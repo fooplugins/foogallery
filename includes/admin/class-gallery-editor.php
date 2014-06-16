@@ -136,6 +136,7 @@ if ( !class_exists( 'FooGallery_Admin_Gallery_Editor' ) ) {
 				}
 
 			</style>
+			<?php wp_nonce_field( 'foogallery_load_galleries', 'foogallery_load_galleries', false ); ?>
 			<div class="foogallery-modal-wrapper" style="display: none;">
 				<div class="media-modal wp-core-ui">
 					<a class="media-modal-close" href="#"><span class="media-modal-icon"></span></a>
@@ -206,7 +207,9 @@ if ( !class_exists( 'FooGallery_Admin_Gallery_Editor' ) ) {
 		}
 
 		function ajax_galleries_html() {
-			echo $this->get_galleries_html_for_modal();
+			if ( check_admin_referer( 'foogallery_load_galleries', 'foogallery_load_galleries' ) ) {
+				echo $this->get_galleries_html_for_modal();
+			}
 			die();
 		}
 
