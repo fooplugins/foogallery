@@ -83,8 +83,14 @@ where gid = %d", $id ) );
 			delete_option( self::NEXTGEN_OPTION_IMPORT_IN_PROGRESS );
 		}
 
+		function reset_import() {
+			delete_option( self::NEXTGEN_OPTION_IMPORT_CURRENT );
+			delete_option( self::NEXTGEN_OPTION_IMPORT_IN_PROGRESS );
+			delete_option( self::NEXTGEN_OPTION_IMPORT_PROGRESS );
+		}
+
 		function import_in_progress() {
-			return true === get_option( self::NEXTGEN_OPTION_IMPORT_IN_PROGRESS );
+			return true == get_option( self::NEXTGEN_OPTION_IMPORT_IN_PROGRESS );
 		}
 
 		function continue_import() {
@@ -97,6 +103,7 @@ where gid = %d", $id ) );
 
 				//if we still have no current then do nothing
 				if ( 0 === $current_nextgen_id ) {
+					$this->cancel_import();
 					return;
 				} else {
 					update_option( self::NEXTGEN_OPTION_IMPORT_CURRENT, $current_nextgen_id );
@@ -132,6 +139,15 @@ where gid = %d", $id ) );
 			}
 
 			return $nextgen_gallery_id;
+		}
+
+		function ignore_previously_imported_galleries() {
+			$all_progress = get_option( self::NEXTGEN_OPTION_IMPORT_PROGRESS, array() );
+			foreach ( $all_progress as $id => $progress ) {
+				if ( $progress->is_completed() ) {
+					$progress->is_part_of_current_import = false;
+				}
+			}
 		}
 
 		function import_picture( $nextgen_gallery_path, $picture ) {
@@ -181,7 +197,9 @@ where gid = %d", $id ) );
 			if ( false === $galleries ) {
 				$galleries = $this->get_galleries();
 			}
-			$import_in_progress = $this->import_in_progress();
+			$has_imports = get_option( self::NEXTGEN_OPTION_IMPORT_PROGRESS );
+			$import_has_started = $this->import_in_progress();
+			$importing = $import_has_started && defined('DOING_AJAX') && DOING_AJAX;
 			?>
 			<table class="wp-list-table widefat" cellspacing="0">
 				<thead>
@@ -189,7 +207,7 @@ where gid = %d", $id ) );
 					<th scope="col" id="cb" class="manage-column column-cb check-column">
 						<label class="screen-reader-text"
 						       for="cb-select-all-1"><?php _e( 'Select All', 'foogallery' ); ?></label>
-						<input id="cb-select-all-1" type="checkbox" checked="checked">
+						<input id="cb-select-all-1" type="checkbox" <?php echo $importing ? 'disabled="disabled"' : ''; ?> checked="checked">
 					</th>
 					<th scope="col" class="manage-column">
 						<span><?php _e( 'NextGen Gallery', 'foogallery' ); ?></span>
@@ -204,29 +222,23 @@ where gid = %d", $id ) );
 				</thead>
 				<tbody>
 				<?php
-				$percentage_sum = 0;
-				$gallery_import_count = 0;
+				$total_images_to_import = 0;
+				$total_images_imported = 0;
 				foreach ( $galleries as $gallery ) {
 					$progress    = $this->get_import_progress( $gallery->gid );
-					$in_progress = $progress->has_started() || $progress->queued_for_import();
 					$done        = $progress->is_completed();
-					if ( !$progress->not_started() ) {
-						$gallery_import_count++;
-						$percentage_sum += $progress->percentage_complete;
+					if ( $progress->is_part_of_current_import ) {
+						$total_images_imported += count( $progress->attachments );
+						$total_images_to_import += $progress->import_count;
 					}
 					if ( $progress->foogallery_id > 0 ) {
 						$foogallery = FooGallery::get_by_id( $progress->foogallery_id );
 						$edit_link  = '<a href="' . admin_url( 'post.php?post=' . $progress->foogallery_id . '&action=edit' ) . '">' . $foogallery->name . '</a>';
-					}
-					?>
+					} ?>
 					<tr>
-						<?php if ( $in_progress ) { ?>
-							<th>
-								<?php echo intval($progress->percentage_complete) . '%'; ?>
-							</th>
-						<?php } else if ( ! $done ) { ?>
+						<?php if ( ! $done ) { ?>
 							<th scope="row" class="column-cb check-column">
-								<input name="nextgen-id[]" type="checkbox" checked="checked"
+								<input name="nextgen-id[]" type="checkbox" checked="checked" <?php echo $importing ? 'disabled="disabled"' : ''; ?>
 								       value="<?php echo $gallery->gid; ?>">
 							</th>
 						<?php } else { ?>
@@ -242,8 +254,7 @@ where gid = %d", $id ) );
 								echo $edit_link;
 							} else {
 								?>
-								<input name="foogallery-name-<?php echo $gallery->gid; ?>"
-								       value="<?php echo $gallery->title; ?>">
+								<input name="foogallery-name-<?php echo $gallery->gid; ?>" value="<?php echo $gallery->title; ?>">
 							<?php } ?>
 						</td>
 						<td class="nextgen-import-progress nextgen-import-progress-<?php echo $progress->status; ?>">
@@ -258,28 +269,38 @@ where gid = %d", $id ) );
 			<br/>
 
 			<?php
-			$overall_progress = $gallery_import_count == 0 ? 100 : $percentage_sum / $gallery_import_count;
+			$overall_progress = $total_images_to_import == 0 ? 100 : $total_images_imported / $total_images_to_import * 100;
 			echo '<input type="hidden" id="nextgen_import_progress" value="' . $overall_progress . '" />';
 			wp_nonce_field( 'foogallery_nextgen_import', 'foogallery_nextgen_import' );
 			wp_nonce_field( 'foogallery_nextgen_import_refresh', 'foogallery_nextgen_import_refresh', false );
 			wp_nonce_field( 'foogallery_nextgen_import_cancel', 'foogallery_nextgen_import_cancel', false );
-			if ( !$import_in_progress ) {
+			wp_nonce_field( 'foogallery_nextgen_import_reset', 'foogallery_nextgen_import_reset', false );
+			if ( !$import_has_started && !$importing ) {
 				?>
-				<input type="submit" class="button-primary start_import"
+				<input type="submit" class="button button-primary start_import"
 				       value="<?php _e( 'Start Import', 'foogallery' ); ?>">
+			<?php } else if ( $import_has_started && !$importing ) { ?>
+				<input type="submit" class="button button-primary continue_import" value="<?php _e( 'Resume Import', 'foogallery' ); ?>">
 			<?php } else { ?>
-				<input type="submit" class="button-primary continue_import" value="<?php _e( 'Continue Import', 'foogallery' ); ?>">
 				<input type="submit" class="button cancel_import" value="<?php _e( 'Stop Import', 'foogallery' ); ?>">
-				<div id="import_spinner" style="width:20px">
-					<span class="spinner shown"></span>
-				</div>
 			<?php
 			}
-			if ( $import_in_progress ) {
-				echo '<div class="nextgen-import-progressbar">';
-				echo '<span style="width:' . $overall_progress . '%"></span>';
-				echo '</div>';
-			}
+			if ( $has_imports && !$importing ) { ?>
+				<input type="submit" name="foogallery_nextgen_reset" class="button reset_import" value="<?php _e( 'Reset All Imports', 'foogallery' ); ?>">
+			<?php }
+			?>
+			<div id="import_spinner" style="width:20px">
+				<span class="spinner"></span>
+			</div>
+			<?php if ( $importing ) { ?>
+				<div class="nextgen-import-progressbar">
+					<span style="width:<?php echo $overall_progress; ?>%"></span>
+				</div>
+				<?php echo intval( $overall_progress ); ?>%
+				<div style="width:20px; display: inline-block;">
+					<span class="spinner shown"></span>
+				</div>
+			<?php }
 		}
 	}
 }

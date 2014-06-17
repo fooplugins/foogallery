@@ -23,11 +23,10 @@ if ( ! class_exists( 'FooGallery_Nextgen_Gallery_Importer_Extension' ) ) {
 
 				// Ajax calls for importing
 				add_action( 'wp_ajax_foogallery_nextgen_import', array( $this, 'ajax_nextgen_start_import' ) );
-				add_action( 'wp_ajax_foogallery_nextgen_import_refresh', array(
-						$this,
-						'ajax_nextgen_continue_import'
-					) );
+				add_action( 'wp_ajax_foogallery_nextgen_import_refresh', array(	$this, 'ajax_nextgen_continue_import') );
 				add_action( 'wp_ajax_foogallery_nextgen_import_cancel', array( $this, 'ajax_nextgen_cancel_import' ) );
+				add_action( 'wp_ajax_foogallery_nextgen_import_reset', array( $this, 'ajax_nextgen_reset_import' ) );
+
 			}
 		}
 
@@ -46,6 +45,8 @@ if ( ! class_exists( 'FooGallery_Nextgen_Gallery_Importer_Extension' ) ) {
 			if ( check_admin_referer( 'foogallery_nextgen_import', 'foogallery_nextgen_import' ) ) {
 
 				$nextgen = new FooGallery_NextGen_Helper();
+
+				$nextgen->ignore_previously_imported_galleries();
 
 				if ( array_key_exists( 'nextgen-id', $_POST ) ) {
 
@@ -96,8 +97,19 @@ if ( ! class_exists( 'FooGallery_Nextgen_Gallery_Importer_Extension' ) ) {
 				$nextgen->render_import_form();
 
 			}
+			die();
+		}
 
+		function ajax_nextgen_reset_import() {
+			if ( check_admin_referer( 'foogallery_nextgen_reset', 'foogallery_nextgen_reset' ) ) {
 
+				$nextgen = new FooGallery_NextGen_Helper();
+
+				$nextgen->reset_import();
+
+				$nextgen->render_import_form();
+
+			}
 			die();
 		}
 

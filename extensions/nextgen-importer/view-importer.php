@@ -1,34 +1,13 @@
 <?php
 $nextgen = new FooGallery_NextGen_Helper();
+if ( isset( $_POST['foogallery_nextgen_reset'] ) ) {
 
-//if ( isset($_POST['foogallery_nextgen_import']) && isset($_POST['nextgen-id']) ) {
-//
-//	if ( check_admin_referer( 'foogallery_nextgen_import', 'foogallery_nextgen_import' ) ) {
-//		$nextgen_gallery_ids = $_POST['nextgen-id'];
-//
-//		$default_timeout = ini_get( 'max_execution_time' );
-//		set_time_limit( 0 );
-//
-//		foreach ( $nextgen_gallery_ids as $gid ) {
-//			$foogallery_title = stripslashes( $_POST['foogallery-name-' . $gid] );
-//			$nextgen->import_gallery( $gid, $foogallery_title );
-//		}
-//
-//		set_time_limit( $default_timeout );
-//	}
-//}
+	if ( check_admin_referer( 'foogallery_nextgen_import_reset', 'foogallery_nextgen_import_reset' ) ) {
+		$nextgen->reset_import();
+	}
+}
 ?>
 <style>
-	.foogallery-badge-foobot {
-		position: absolute;
-		top: 5px;
-		right: 0;
-		background: url(<?php echo FOOGALLERY_URL; ?>assets/foobot_small.png) no-repeat;
-		width: 82px;
-		height: 150px;
-		z-index: 100;
-	}
-
 	.foogallery-help {
 		display: block;
 		line-height: 19px;
@@ -54,52 +33,36 @@ $nextgen = new FooGallery_NextGen_Helper();
 		vertical-align: bottom;
 	}
 
-  .spinner-shown {
-    display: block !important;
-    margin: 0;
-    margin-top:-10px;
-    margin-left:-1px;
-  }
-
-  .nextgen-import-progress-not_started {
-    color: #f00 !important;
-  }
-
-  .nextgen-import-progress-started {
-    color: #f80 !important;
-  }
-
-  .nextgen-import-progress-completed {
-    color: #080 !important;
-  }
-
-	.nextgen-import-progress {
-		position: relative;
-		padding-right:10px;
+	.spinner.shown {
+		display: inline !important;
+		margin: 0;
 	}
 
-	.nextgen-import-progressbar-back {
-		display: inline-block;
-		background: #ddd;
-		height: 3px;
-		position: absolute;
-		bottom: 2px;
-		width:100%;
+	.nextgen-import-progress-not_started {
+		color: #f00 !important;
+	}
+
+	.nextgen-import-progress-started {
+		color: #f80 !important;
+	}
+
+	.nextgen-import-progress-completed {
+		color: #080 !important;
 	}
 
 	.nextgen-import-progressbar {
 		margin-top: 10px;
 		display: inline-block;
-		width:500px;
-		height:10px;
-		background:#ddd;
+		width: 500px;
+		height: 10px;
+		background: #ddd;
 		position: relative;
 	}
 
 	.nextgen-import-progressbar span {
 		position: absolute;
-		height:100%;
-		left:0;
+		height: 100%;
+		left: 0;
 		background: #888;
 	}
 </style>
@@ -117,23 +80,29 @@ $nextgen = new FooGallery_NextGen_Helper();
 			});
 		}
 
-	    function nextgen_import_continue() {
-		    nextgen_ajax('foogallery_nextgen_import_refresh', function(data) {
-			    $('#nextgen_import_form').html(data);
+		function nextgen_import_continue(check_progress) {
+			nextgen_ajax('foogallery_nextgen_import_refresh', function (data) {
+				$('#nextgen_import_form').html(data);
 
-			    //check if we need to carry on polling
-			    var percentage = $('#nextgen_import_progress').val();
-			    if ( percentage < 100 ) {
-				    setTimeout(nextgen_import_continue, 500);
-			    }
-		    });
-	    }
+				check_progress = check_progress || true;
+
+				if (check_progress) {
+					//check if we need to carry on polling
+					var percentage = $('#nextgen_import_progress').val();
+					if (percentage < 100) {
+						setTimeout(nextgen_import_continue, 500);
+					} else {
+						nextgen_import_continue(false);
+					}
+				}
+			});
+		}
 
 		$('#nextgen_import_form').on('click', '.start_import', function (e) {
 			e.preventDefault();
 
 			//show the spinner
-			$(this).hide();
+			$('#nextgen_import_form .button').hide();
 			$('#import_spinner .spinner').show();
 
 			nextgen_ajax('foogallery_nextgen_import', function (data) {
@@ -142,13 +111,20 @@ $nextgen = new FooGallery_NextGen_Helper();
 			});
 		});
 
-		$('#nextgen_import_form').on('click', '.continue_import', function(e) {
+		$('#nextgen_import_form').on('click', '.continue_import', function (e) {
 			e.preventDefault();
 			nextgen_import_continue();
 		});
 
-		$('#nextgen_import_form').on('click', '.cancel_import', function(e) {
+		$('#nextgen_import_form').on('click', '.cancel_import', function (e) {
 			if (!confirm('<?php echo __('Are you sure you want to cancel?', 'foogallery'); ?>')) {
+				e.preventDefault();
+				return false;
+			}
+		});
+
+		$('#nextgen_import_form').on('click', '.reset_import', function (e) {
+			if (!confirm('<?php echo __('Are you sure you want to reset all NextGen import data? This may result in duplicate galleries and media attachments!', 'foogallery'); ?>')) {
 				e.preventDefault();
 				return false;
 			}
