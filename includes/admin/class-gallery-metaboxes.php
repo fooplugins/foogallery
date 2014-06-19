@@ -88,7 +88,8 @@ if ( !class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 				//do nothing to all attachments that have stayed the same
 				//do this all in the gallery class
 
-				$attachments = apply_filters( 'foogallery_save_gallery_attachments', $_POST[FOOGALLERY_META_ATTACHMENTS] );
+
+				$attachments = apply_filters( 'foogallery_save_gallery_attachments', explode( ',', $_POST[FOOGALLERY_META_ATTACHMENTS] ) );
 				update_post_meta( $post_id, FOOGALLERY_META_ATTACHMENTS, $attachments );
 
 				$settings = isset($_POST[FOOGALLERY_META_SETTINGS]) ?
@@ -114,14 +115,13 @@ if ( !class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 				   id="<?php echo FOOGALLERY_CPT_GALLERY; ?>_nonce"
 				   value="<?php echo wp_create_nonce( plugin_basename( FOOGALLERY_FILE ) ); ?>"/>
 			<input type="hidden" name='foogallery_attachments' id="foogallery_attachments"
-				   value="<?php echo $gallery->attachments_meta; ?>"/>
+				   value="<?php echo $gallery->attachment_id_csv(); ?>"/>
 			<div>
 				<ul class="foogallery-attachments-list">
 					<?php
 					if ( $gallery->has_attachments() ) {
-						foreach ( $gallery->attachments() as $attachment_id ) {
-							$attachment = wp_get_attachment_image_src( $attachment_id );
-							$this->render_gallery_item( $attachment_id, $attachment );
+						foreach ( $gallery->attachments() as $attachment ) {
+							$this->render_gallery_item( $attachment );
 						}
 					} ?>
 					<li class="add-attachment">
@@ -143,7 +143,14 @@ if ( !class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 
 		}
 
-		function render_gallery_item($attachment_id = '', $attachment = array()) {
+		function render_gallery_item($attachment_post = false) {
+			if ( $attachment_post != false ) {
+				$attachment_id = $attachment_post->ID;
+				$attachment = wp_get_attachment_image_src( $attachment_id );
+			} else {
+				$attachment_id = '';
+				$attachment = '';
+			}
 			$data_attribute = empty($attachment_id) ? '' : "data-attachment-id=\"{$attachment_id}\"";
 			$img_tag        = empty($attachment) ? '<img />' : "<img width=\"{$attachment[1]}\" height=\"{$attachment[2]}\" src=\"{$attachment[0]}\" />";
 			?>

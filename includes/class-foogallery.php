@@ -41,7 +41,7 @@ class FooGallery extends stdClass {
 		$this->name = $post->post_title;
 		$this->author = $post->post_author;
         $this->post_status = $post->post_status;
-		$this->attachments_meta = get_post_meta($post->ID, FOOGALLERY_META_ATTACHMENTS, true);
+		$this->attachment_ids = get_post_meta($post->ID, FOOGALLERY_META_ATTACHMENTS, true);
 		$this->gallery_template = get_post_meta($post->ID, FOOGALLERY_META_TEMPLATE, true);
 		$this->settings = get_post_meta($post->ID, FOOGALLERY_META_SETTINGS, true);
 		do_action('foogallery_FooGallery_after_load', $this, $post);
@@ -141,13 +141,7 @@ class FooGallery extends stdClass {
 	 * @return bool
 	 */
 	public function has_attachments() {
-		if ( $this->_attachments !== false ) {
-			return sizeof($this->_attachments) > 0;
-		} else if (!empty($this->attachments_meta)) {
-			return sizeof( explode( ',', $this->attachments_meta ) ) > 0;
-		}
-
-		return false;
+		return sizeof( $this->attachment_ids ) > 0;
 	}
 
     /**
@@ -167,6 +161,18 @@ class FooGallery extends stdClass {
     }
 
 	/**
+	 * Get a comma separated list of attachment ids
+	 * @return string
+	 */
+	public function attachment_id_csv() {
+		if ( is_array( $this->attachment_ids ) ) {
+			return implode( ',', $this->attachment_ids );
+		}
+
+		return '';
+	}
+
+	/**
 	 * Lazy load the attachments for the gallery
 	 *
 	 * @return array
@@ -176,10 +182,15 @@ class FooGallery extends stdClass {
 		if ( $this->_attachments === false ) {
 			$this->_attachments = array();
 
-			if (!empty($this->attachments_meta)) {
-				foreach ( explode( ',', $this->attachments_meta ) as $att_id ) {
-					$this->_attachments[] = $att_id;
-				}
+			if ( !empty( $this->attachment_ids ) ) {
+
+				$this->_attachments = get_posts( array(
+					'post_type' => 'attachment',
+					'posts_per_page' => -1,
+					'post__in' => $this->attachment_ids,
+					'orderby' => 'post__in'
+        		) );
+
 			}
 		}
 
@@ -198,8 +209,8 @@ class FooGallery extends stdClass {
 	public function find_attachment_id() {
 		$attachment_id = get_post_thumbnail_id( $this->ID );
 		//if no featured image could be found then get the first image
-		if ( !$attachment_id && $this->attachments() ) {
-			$attachment_id = array_shift( array_values( $this->attachments() ) );
+		if ( !$attachment_id && $this->attachment_ids ) {
+			$attachment_id = array_shift( array_values( $this->attachment_ids ) );
 		}
 		return $attachment_id;
 	}
@@ -214,7 +225,7 @@ class FooGallery extends stdClass {
 
 	public function attachment_image_html( $size='thumbnail', $icon = false ) {
 		$attachment_id = $this->find_attachment_id();
-		if ( $attachment_id && $thumb = wp_get_attachment_image( $attachment_id, $size, $icon ) ) {
+		if ( $attachment_id && $thumb = @wp_get_attachment_image( $attachment_id, $size, $icon ) ) {
 			return $thumb;
 		}
 		return '';
