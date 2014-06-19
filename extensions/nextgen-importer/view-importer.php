@@ -90,7 +90,7 @@ if ( isset( $_POST['foogallery_nextgen_reset'] ) ) {
 					//check if we need to carry on polling
 					var percentage = $('#nextgen_import_progress').val();
 					if (percentage < 100) {
-						setTimeout(nextgen_import_continue, 500);
+						nextgen_import_continue();
 					} else {
 						nextgen_import_continue(false);
 					}
@@ -107,7 +107,7 @@ if ( isset( $_POST['foogallery_nextgen_reset'] ) ) {
 
 			nextgen_ajax('foogallery_nextgen_import', function (data) {
 				$('#nextgen_import_form').html(data);
-				setTimeout(nextgen_import_continue, 500);
+				nextgen_import_continue();
 			});
 		});
 

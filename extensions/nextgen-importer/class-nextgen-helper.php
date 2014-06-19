@@ -6,9 +6,9 @@ if ( ! class_exists( 'FooGallery_NextGen_Helper' ) ) {
 
 		const NEXTGEN_TABLE_GALLERY          = 'ngg_gallery';
 		const NEXTGEN_TABLE_PICTURES         = 'ngg_pictures';
-		const NEXTGEN_OPTION_IMPORT_CURRENT  = 'foogallery_nextgen_import_current';
-		const NEXTGEN_OPTION_IMPORT_PROGRESS = 'foogallery_nextgen_import_progress';
-		const NEXTGEN_OPTION_IMPORT_IN_PROGRESS  = 'foogallery_nextgen_importing';
+		const NEXTGEN_OPTION_IMPORT_CURRENT  = 'foogallery_nextgen_import-current';
+		const NEXTGEN_OPTION_IMPORT_PROGRESS = 'foogallery_nextgen_import-progress';
+		const NEXTGEN_OPTION_IMPORT_IN_PROGRESS  = 'foogallery_nextgen_import-importing';
 
 		/**
 		 * @TODO
