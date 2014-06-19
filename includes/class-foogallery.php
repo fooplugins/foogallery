@@ -184,13 +184,14 @@ class FooGallery extends stdClass {
 
 			if ( !empty( $this->attachment_ids ) ) {
 
-				$this->_attachments = get_posts( array(
+				$attachments = get_posts( array(
 					'post_type' => 'attachment',
 					'posts_per_page' => -1,
 					'post__in' => $this->attachment_ids,
 					'orderby' => 'post__in'
         		) );
 
+				$this->_attachments = array_map( array('FooGalleryAttachment', 'get'), $attachments );
 			}
 		}
 
@@ -232,7 +233,7 @@ class FooGallery extends stdClass {
 	}
 
 	public function image_count() {
-		$count = sizeof( $this->attachments() );
+		$count = sizeof( $this->attachment_ids );
 		switch ($count) {
 			case 0:
 				return __( 'No images', 'foogallery' );

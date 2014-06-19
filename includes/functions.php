@@ -95,6 +95,15 @@ function foogallery_get_default($key) {
 }
 
 /**
+ * Returns the FooGallery Add Gallery Url within the admin
+ *
+ * @return string The Url to the FooGallery Add Gallery page in admin
+ */
+function foogallery_admin_add_gallery_url() {
+	return admin_url( 'post-new.php?post_type=' . FOOGALLERY_CPT_GALLERY );
+}
+
+/**
  * Returns the FooGallery help page Url within the admin
  *
  * @return string The Url to the FooGallery help page in admin
@@ -150,33 +159,6 @@ function foogallery_gallery_template_setting( $key, $default = false ) {
 	$value = apply_filters( 'foogallery_gallery_template_setting-' . $key, $value );
 
 	return $value;
-}
-
-/**
- * @TODO
- * @param        $attachment_id
- * @param string $size
- * @param string $link
- *
- * @return string
- */
-function foogallery_get_attachment_html( $attachment_id, $size = 'thumbnail', $link = 'image' ) {
-	$img = wp_get_attachment_image( $attachment_id, $size );
-
-	if ( 'none' === $link ) {
-		return $img;
-	}
-
-	if ( 'page' === $link ) {
-		$url = get_attachment_link( $attachment_id );
-	} else {
-		$attribs = wp_get_attachment_image_src( $attachment_id, 'full' );
-		$url = $attribs[0];
-	}
-
-	$title = get_the_title( $attachment_id );
-
-	return apply_filters( 'foogallery_get_attachment_html', "<a title='$title' href='$url'>$img</a>", $attachment_id, $size, $link );
 }
 
 /**

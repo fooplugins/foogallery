@@ -12,8 +12,8 @@ $hover_effect = foogallery_gallery_template_setting( 'hover-effect', 'hover-effe
 $border_style = foogallery_gallery_template_setting( 'border-style', 'border-style-square-white' );
 ?>
 <div class="foogallery-container foogallery-default foogallery-lightbox-<?php echo $lightbox; ?> <?php echo $spacing; ?> <?php echo $hover_effect; ?> <?php echo $border_style; ?>">
-	<?php foreach ( $current_foogallery->attachments() as $attachment_id ) {
-		echo foogallery_get_attachment_html( $attachment_id, $size, $link );
+	<?php foreach ( $current_foogallery->attachments() as $attachment ) {
+		echo $attachment->html( $size, $link );
 	} ?>
 	<div style="clear:both"></div>
 </div>
