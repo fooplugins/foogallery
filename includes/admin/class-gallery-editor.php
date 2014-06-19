@@ -74,6 +74,7 @@ if ( !class_exists( 'FooGallery_Admin_Gallery_Editor' ) ) {
 					-webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
 					-moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
 					box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+					overflow: hidden;
 				}
 
 				/* Stacks creted by the use of generated content */
@@ -100,6 +101,10 @@ if ( !class_exists( 'FooGallery_Admin_Gallery_Editor' ) ) {
 					transform: rotate(-2deg);
 				}
 
+				.foogallery-pile img {
+					height: 100%;
+				}
+
 				.foogallery-pile h3 {
 					background: #fff;
 					position: absolute;
@@ -124,15 +129,53 @@ if ( !class_exists( 'FooGallery_Admin_Gallery_Editor' ) ) {
 				.foogallery-gallery-select.selected::before {
 					content: "\f147";
 					display: inline-block;
-					font: 400 40px/1 dashicons;
+					font: normal 100px/110px 'dashicons';
 					position: absolute;
 					color: #FFF;
-					top: 80px;
-					lefT: 80px;
+					top: 40%;
+					left: 50%;
+					margin-left: -50px;
+					margin-top: -50px;
 					speak: none;
 					-webkit-font-smoothing: antialiased;
 					background: #1E8CBE;
 					border-radius: 50%;
+					width: 100px;
+					height: 100px;
+					z-index: 4;
+				}
+
+				.foogallery-add-gallery {
+					background: #444;
+				}
+
+				.foogallery-add-gallery span::after {
+					background: #ddd;
+					-webkit-border-radius: 50%;
+					border-radius: 50%;
+					display: inline-block;
+					content: '\f132';
+					-webkit-font-smoothing: antialiased;
+					font: normal 75px/115px 'dashicons';
+					width: 100px;
+					height: 100px;
+					vertical-align: middle;
+					text-align: center;
+					color: #999;
+					position: absolute;
+					top: 40%;
+					left: 50%;
+					margin-left: -50px;
+					margin-top: -50px;
+					padding: 0;
+					text-shadow: none;
+					z-index: 4;
+					text-indent: -4px;
+				}
+
+				.foogallery-add-gallery:hover span::after {
+					background: #1E8CBE;
+					color: #444;
 				}
 
 			</style>
@@ -165,14 +208,11 @@ if ( !class_exists( 'FooGallery_Admin_Gallery_Editor' ) ) {
 											</p>
 											<h3><?php _e( 'Add A Gallery', 'foogallery' ); ?></h3>
 											<p>
-												<?php _e( 'You can add a new gallery by clicking the "Add New Gallery" button below. It will open in a new window.', 'foogallery' ); ?>
+												<?php _e( 'You can add a new gallery by clicking the "Add New Gallery" tile on the left. It will open in a new window.', 'foogallery' ); ?>
 											</p>
 											<p>
 												<?php _e( 'Once you have finished adding a gallery, come back to this dialog and click the "Reload" button to see your newly created gallery.', 'foogallery' ); ?>
 											</p>
-											<a target="_blank" href="<?php echo admin_url( 'post-new.php?post_type=foogallery' ); ?>"
-											   class="button media-button button-large button-primary"
-											   title="<?php esc_attr_e( 'Add New Gallery', 'foogallery' ); ?>"><?php _e( 'Add New Gallery', 'foogallery' ); ?></a>
 										</div>
 										<!-- end .foogallery-meta-sidebar -->
 									</div>
@@ -218,24 +258,15 @@ if ( !class_exists( 'FooGallery_Admin_Gallery_Editor' ) ) {
 
 			ob_start();
 
-			if ( false === $galleries ) {
-			?>
-
-			<?php
-			}
-
 			foreach ( $galleries as $gallery ) {
-				$background_style = $gallery->attachment_image_src( array(200, 200) );
-				if ( $background_style ) {
-					$background_style = 'background: url(' . $background_style . ') no-repeat';
-				}
+				$img_src = $gallery->attachment_image_src( array(200, 200) );
 				$images = $gallery->image_count();
 				?>
 	<li class="foogallery-pile">
 		<div class="foogallery-gallery-select attachment-preview landscape" data-foogallery-id="<?php echo $gallery->ID; ?>">
-			<div class="thumbnail" style="display: table; <?php echo $background_style; ?>">
-				<div
-					style="display: table-cell; vertical-align: middle; text-align: center;">
+			<div class="thumbnail" style="display: table;">
+				<div style="display: table-cell; vertical-align: middle; text-align: center;">
+					<img src="<?php echo $img_src; ?>" />
 					<?php
 
 					$title = empty( $gallery->name ) ?
@@ -252,6 +283,19 @@ if ( !class_exists( 'FooGallery_Admin_Gallery_Editor' ) ) {
 		</div>
 	</li>
 <?php		}
+			?>
+			<li class="foogallery-pile">
+				<div class="foogallery-gallery-select attachment-preview landscape foogallery-add-gallery">
+					<a href="<?php echo foogallery_admin_add_gallery_url(); ?>" target="_blank" class="thumbnail" style="display: table;">
+						<div style="display: table-cell; vertical-align: middle; text-align: center;">
+							<span></span>
+							<h3><?php _e('Add New Gallery', 'foogallery'); ?></h3>
+						</div>
+					</a>
+				</div>
+			</li>
+			<?php
+
 			return ob_get_clean();
 		}
 	}

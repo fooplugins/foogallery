@@ -7,7 +7,7 @@
 		$('.foogallery-modal-reload').hide();
 		var data = 'action=foogallery_load_galleries' +
 			'&foogallery_load_galleries=' + $('#foogallery_load_galleries').val() +
-			'&_wp_http_referer=' + $('input[name="_wp_http_referer"]').val();
+			'&_wp_http_referer=' + encodeURIComponent($('input[name="_wp_http_referer"]').val());
 
 		$.ajax({
 			type: "POST",
@@ -48,9 +48,15 @@
 		});
 
 		$('.foogallery-modal-wrapper').on('click', '.foogallery-gallery-select', function(e) {
-			$('.foogallery-gallery-select').removeClass('selected');
-			$(this).addClass('selected');
-			FOOGALLERY.changeSelection();
+			var $this = $(this);
+			if ( $this.is('.foogallery-add-gallery') ) {
+				//if the add icon is click then do nothing
+				return;
+			} else {
+				$('.foogallery-gallery-select').removeClass('selected');
+				$(this).addClass('selected');
+				FOOGALLERY.changeSelection();
+			}
 		});
 
 		$('.foogallery-modal-insert').on('click', function(e) {
