@@ -88,6 +88,8 @@ if ( !class_exists( 'FooGallery_Admin' ) ) {
 
 			$links[] = '<a href="' . foogallery_admin_extensions_url() . '"><b>' . __( 'Extensions', 'foogallery' ) . '</b></a>';
 
+			$links[] = '<a href="' . foogallery_admin_help_url() . '"><b>' . __( 'Help', 'foogallery' ) . '</b></a>';
+
 			return $links;
 		}
 	}
