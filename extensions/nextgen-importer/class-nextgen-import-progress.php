@@ -20,7 +20,7 @@ if ( !class_exists( 'FooGallery_NextGen_Import_Progress' ) ) {
 			$this->nextgen_gallery = false;
 			$this->nextgen_pictures = array();
 			$this->status = self::PROGRESS_NOT_STARTED;
-			$this->is_part_of_current_import = true;
+			$this->is_part_of_current_import = false;
 		}
 
 		function init($nextgen_gallery_id, $foogallery_title) {
@@ -35,6 +35,8 @@ if ( !class_exists( 'FooGallery_NextGen_Import_Progress' ) ) {
 			$this->nextgen_pictures = $nextgen->get_gallery_images( $this->nextgen_gallery_id );
 
 			$this->import_count = count( $this->nextgen_pictures );
+
+			$this->is_part_of_current_import = true;
 		}
 
 		function message() {
@@ -108,10 +110,10 @@ if ( !class_exists( 'FooGallery_NextGen_Import_Progress' ) ) {
 			$attachment_ids = get_post_meta( $this->foogallery_id, FOOGALLERY_META_ATTACHMENTS, true );
 
 			if ( empty( $attachment_ids ) ) {
-				$attachment_ids = $attachment_id;
-			} else {
-				$attachment_ids .= ',' . $attachment_id;
+				$attachment_ids = array();
 			}
+
+			$attachment_ids[] = $attachment_id;
 
 			//link all attachments to foogallery
 			update_post_meta( $this->foogallery_id, FOOGALLERY_META_ATTACHMENTS, $attachment_ids );

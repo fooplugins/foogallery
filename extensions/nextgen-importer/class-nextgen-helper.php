@@ -128,17 +128,32 @@ where gid = %d", $id ) );
 			}
 		}
 
+		function get_overall_progress() {
+			$all_progress       = get_option( self::NEXTGEN_OPTION_IMPORT_PROGRESS, array() );
+			$total = 0;
+			$imported = 0;
+			foreach ( $all_progress as $id => $progress ) {
+				if ( $progress->is_part_of_current_import ) {
+					$total += $progress->import_count;
+					$imported += count( $progress->attachments );
+				}
+			}
+			if (0 === $total) {
+				return 100;
+			}
+			return  $imported / $total * 100;
+		}
+
 		function get_next_gallery_to_import() {
-			$nextgen_gallery_id = 0;
 			$all_progress       = get_option( self::NEXTGEN_OPTION_IMPORT_PROGRESS, array() );
 
 			foreach ( $all_progress as $id => $progress ) {
 				if ( $progress->can_import() ) {
-					$nextgen_gallery_id = $id;
+					return $id;
 				}
 			}
 
-			return $nextgen_gallery_id;
+			return 0;
 		}
 
 		function ignore_previously_imported_galleries() {
@@ -148,6 +163,7 @@ where gid = %d", $id ) );
 					$progress->is_part_of_current_import = false;
 				}
 			}
+			update_option( self::NEXTGEN_OPTION_IMPORT_PROGRESS, $all_progress );
 		}
 
 		function import_picture( $nextgen_gallery_path, $picture ) {
@@ -198,16 +214,21 @@ where gid = %d", $id ) );
 				$galleries = $this->get_galleries();
 			}
 			$has_imports = get_option( self::NEXTGEN_OPTION_IMPORT_PROGRESS );
+			$overall_progress = $this->get_overall_progress();
+			$all_imports_completed = 100 === $overall_progress;
 			$import_has_started = $this->import_in_progress();
 			$importing = $import_has_started && defined('DOING_AJAX') && DOING_AJAX;
+			$current_nextgen_id = get_option( self::NEXTGEN_OPTION_IMPORT_CURRENT, 0 );
 			?>
 			<table class="wp-list-table widefat" cellspacing="0">
 				<thead>
 				<tr>
 					<th scope="col" id="cb" class="manage-column column-cb check-column">
+						<?php if ( !$importing && $all_imports_completed ) { ?>
 						<label class="screen-reader-text"
 						       for="cb-select-all-1"><?php _e( 'Select All', 'foogallery' ); ?></label>
 						<input id="cb-select-all-1" type="checkbox" <?php echo $importing ? 'disabled="disabled"' : ''; ?> checked="checked">
+						<?php } ?>
 					</th>
 					<th scope="col" class="manage-column">
 						<span><?php _e( 'NextGen Gallery', 'foogallery' ); ?></span>
@@ -222,28 +243,24 @@ where gid = %d", $id ) );
 				</thead>
 				<tbody>
 				<?php
-				$total_images_to_import = 0;
-				$total_images_imported = 0;
 				foreach ( $galleries as $gallery ) {
 					$progress    = $this->get_import_progress( $gallery->gid );
 					$done        = $progress->is_completed();
-					if ( $progress->is_part_of_current_import ) {
-						$total_images_imported += count( $progress->attachments );
-						$total_images_to_import += $progress->import_count;
-					}
 					if ( $progress->foogallery_id > 0 ) {
 						$foogallery = FooGallery::get_by_id( $progress->foogallery_id );
 						$edit_link  = '<a href="' . admin_url( 'post.php?post=' . $progress->foogallery_id . '&action=edit' ) . '">' . $foogallery->name . '</a>';
 					} ?>
 					<tr>
-						<?php if ( ! $done ) { ?>
+						<?php if ( !$importing && !$done && $all_imports_completed ) { ?>
 							<th scope="row" class="column-cb check-column">
-								<input name="nextgen-id[]" type="checkbox" checked="checked" <?php echo $importing ? 'disabled="disabled"' : ''; ?>
-								       value="<?php echo $gallery->gid; ?>">
+								<input name="nextgen-id[]" type="checkbox" checked="checked" value="<?php echo $gallery->gid; ?>">
+							</th>
+						<?php } else if ( $importing && $gallery->gid == $current_nextgen_id ) { ?>
+							<th>
+								<div class="dashicons dashicons-arrow-right"></div>
 							</th>
 						<?php } else { ?>
 							<th>
-
 							</th>
 						<?php } ?>
 						<td>
@@ -269,7 +286,6 @@ where gid = %d", $id ) );
 			<br/>
 
 			<?php
-			$overall_progress = $total_images_to_import == 0 ? 100 : $total_images_imported / $total_images_to_import * 100;
 			echo '<input type="hidden" id="nextgen_import_progress" value="' . $overall_progress . '" />';
 			wp_nonce_field( 'foogallery_nextgen_import', 'foogallery_nextgen_import' );
 			wp_nonce_field( 'foogallery_nextgen_import_refresh', 'foogallery_nextgen_import_refresh', false );

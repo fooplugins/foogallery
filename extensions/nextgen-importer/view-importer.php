@@ -65,6 +65,11 @@ if ( isset( $_POST['foogallery_nextgen_reset'] ) ) {
 		left: 0;
 		background: #888;
 	}
+
+	#nextgen_import_form .dashicons-arrow-right {
+		font-size: 2em;
+		margin-top: -0.2em;
+	}
 </style>
 <script>
 	jQuery(function ($) {
@@ -80,19 +85,17 @@ if ( isset( $_POST['foogallery_nextgen_reset'] ) ) {
 			});
 		}
 
-		function nextgen_import_continue(check_progress) {
+		function nextgen_import_continue(dont_check_progress) {
 			nextgen_ajax('foogallery_nextgen_import_refresh', function (data) {
 				$('#nextgen_import_form').html(data);
 
-				check_progress = check_progress || true;
-
-				if (check_progress) {
+				if (dont_check_progress != true) {
 					//check if we need to carry on polling
-					var percentage = $('#nextgen_import_progress').val();
+					var percentage = parseInt($('#nextgen_import_progress').val());
 					if (percentage < 100) {
 						nextgen_import_continue();
 					} else {
-						nextgen_import_continue(false);
+						nextgen_import_continue(true);
 					}
 				}
 			});
