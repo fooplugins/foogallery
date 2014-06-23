@@ -135,9 +135,11 @@ if ( !class_exists( 'FooGallery_Extensions_API' ) ) {
 		 * @return mixed
 		 */
 		function get_all_categories() {
-			$categories['active'] = array(
-				'name' => __('Active', 'foogallery'),
-				'first' => true
+			$categories['all'] = array(
+				'name' => __('All', 'foogallery')
+			);
+			$categories['activated'] = array(
+				'name' => __('Active', 'foogallery')
 			);
 			$active = 0;
 			foreach ( $this->get_all() as $extension ) {
@@ -150,8 +152,7 @@ if ( !class_exists( 'FooGallery_Extensions_API' ) ) {
 					if ( empty( $first_category ) ) { $first_category = $category_slug; }
 					if ( !array_key_exists( $category_slug, $categories ) ) {
 						$categories[$category_slug] = array(
-							'name'  => $category_name,
-							'first' => false
+							'name'  => $category_name
 						);
 					}
 				}
@@ -244,11 +245,11 @@ if ( !class_exists( 'FooGallery_Extensions_API' ) ) {
 		 *
 		 * @return bool
 		 */
-		public function has_loading_errors( $slug ) {
+		public function has_errors( $slug ) {
 			$error_extensions = $this->get_error_extensions();
 
 			if ( $error_extensions ) {
-				return in_array( $slug, $error_extensions );
+				return array_key_exists( $slug, $error_extensions );
 			}
 			return false;
 		}
@@ -344,6 +345,20 @@ if ( !class_exists( 'FooGallery_Extensions_API' ) ) {
 				if ( $activate_wordpress_plugin && 'bundled' !== foo_safe_get( $extension, 'source', false ) ) {
 					//activate the plugin, WordPress style!
 					$plugin = $this->find_wordpress_plugin( $extension );
+
+					//check min version
+					$minimum_version = foo_safe_get($extension, 'minimum_version');
+					if ( !empty($minimum_version) ) {
+						$actual_version = $plugin['plugin']['Version'];
+						if ( version_compare( $actual_version, $minimum_version ) < 0 ) {
+							$this->add_to_error_extensions( $slug, sprintf( __('Requires %s version %s','foogallery'), $extension['title'], $minimum_version ) );
+							return array(
+								'message' => sprintf( __('The extension %s could not be activated, because you are using an outdated version! Please update %s to at least version %s.', 'foogallery'), $extension['title'], $extension['title'], $minimum_version ),
+								'type' => 'error'
+							);
+						}
+					}
+
 					if ( $plugin ) {
 						$failure = activate_plugin( $plugin['file'], '', false, true );
 						if (null !== $failure) {
@@ -485,6 +500,14 @@ if ( !class_exists( 'FooGallery_Extensions_API' ) ) {
 			return get_option( FOOGALLERY_EXTENSIONS_ERRORS_OPTIONS_KEY, array() );
 		}
 
+		public function get_error_message( $slug ) {
+			$error_extensions = $this->get_error_extensions();
+			if ( array_key_exists( $slug, $error_extensions ) ) {
+				return $error_extensions[$slug];
+			}
+			return '';
+		}
+
 		/**
 		 * @TODO
 		 * @param $extension
@@ -502,10 +525,13 @@ if ( !class_exists( 'FooGallery_Extensions_API' ) ) {
 		 * @TODO
 		 * @param $slug
 		 */
-		private function add_to_error_extensions( $slug ) {
+		private function add_to_error_extensions( $slug, $error_message = '' ) {
 			$error_extensions = $this->get_error_extensions();
-			if ( !in_array( $slug, $error_extensions ) ) {
-				$error_extensions[] = $slug;
+			if ( !array_key_exists( $slug, $error_extensions ) ) {
+				if ( empty($error_message) ) {
+					$error_message = __('Error loading extension!', 'foogallery');
+				}
+				$error_extensions[$slug] = $error_message;
 				update_option( FOOGALLERY_EXTENSIONS_ERRORS_OPTIONS_KEY, $error_extensions );
 			}
 		}
@@ -516,8 +542,8 @@ if ( !class_exists( 'FooGallery_Extensions_API' ) ) {
 		 */
 		private function remove_from_error_extensions( $slug ) {
 			$error_extensions = $this->get_error_extensions();
-			if ( ( $key = array_search( $slug, $error_extensions ) ) !== false ) {
-				unset( $error_extensions[$key] );
+			if ( array_key_exists( $slug, $error_extensions ) ) {
+				unset( $error_extensions[$slug] );
 				update_option( FOOGALLERY_EXTENSIONS_ERRORS_OPTIONS_KEY, $error_extensions );
 			}
 		}

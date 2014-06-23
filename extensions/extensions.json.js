@@ -38,13 +38,14 @@
 		"thumbnail": "/assets/extension_bg.png",
 		"tags": ["lightbox"],
 		"source": "repo",
-		"activated_by_default": true
+		"activated_by_default": true,
+		"minimum_version": "1.0.2.1"
 	},
 	{
 		"slug": "foobox",
-		"class": "Foobox_FooGallery_Extension",
+		"class": "FooGallery_FooBox_Extension",
 		"categories": ["Featured" , "Premium"],
-		"file": "foobox1.php",
+		"file": "foobox.php",
 		"title": "FooBox PRO",
 		"description": "The best lightbox for WordPress just got even better!",
 		"price": "$27",
@@ -59,7 +60,8 @@
 			"href": "http://fooplugins.com/plugins/foobox",
 			"confirm": false
 		},
-		"activated_by_default": true
+		"activated_by_default": true,
+		"minimum_version": "2.3.2"
 	},
 	{
 		"slug": "polaroid_template",

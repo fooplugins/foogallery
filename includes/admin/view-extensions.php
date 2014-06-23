@@ -42,8 +42,7 @@ if ( 'yes' === $show_message ) {
 	<h2 class="foo-nav-tabs nav-tab-wrapper">
 		<?php
 		foreach ( $categories as $category_slug=>$category ) {
-			$class = ( $category['first'] ) ? ' nav-tab-active' : '';
-			echo "<a href=\"#{$category_slug}\" class=\"nav-tab{$class}\">{$category['name']}</a>";
+			echo "<a href=\"#{$category_slug}\" class=\"nav-tab nav-tab-{$category_slug}\">{$category['name']}</a>";
 		} ?><a href="#build_your_own" class="nav-tab"><?php _e('Build Your Own', 'foogallery'); ?></a>
 		<div class="extension-search-box">
 			<label class="screen-reader-text" for="plugin-search-input">Search Extensions:</label>
@@ -59,7 +58,7 @@ if ( 'yes' === $show_message ) {
 	<div class="extensions">
 		<?php foreach( $extensions as $extension ) {
 			$slug = $extension['slug'];
-			$classes = 'extension extension-' . $slug;
+			$classes = 'extension all extension-' . $slug;
 			$downloaded = $api->is_downloaded( $extension );
 			if ( $downloaded ) {
 				$classes .= ' downloaded';
@@ -67,9 +66,9 @@ if ( 'yes' === $show_message ) {
 				$classes .= ' download';
 			}
 			if ( $downloaded && $api->is_active( $slug, true ) ) {
-				$classes .= ' active';
+				$classes .= ' activated';
 			}
-			if ( $api->has_loading_errors( $slug ) ) {
+			if ( $api->has_errors( $slug ) ) {
 				$classes .= ' has_error';
 			}
 			$tag_html = '';
@@ -128,9 +127,12 @@ if ( 'yes' === $show_message ) {
 
 			</div>
 			<div class="banner active-banner"><?php _e('Activated', 'foogallery'); ?></div>
-			<div class="banner error-banner"><?php _e('Error loading extension!', 'foogallery'); ?></div>
+			<div class="banner error-banner"><?php echo $api->get_error_message( $slug ); ?></div>
 			<div class="banner coming-soon-banner"><?php _e('Coming Soon!', 'foogallery'); ?></div>
 		</div>
 		<?php } ?>
+	</div>
+	<div class="extension-page extension-page-build_your_own">
+		<h2><?php _e('Build Your Own FooGallery Extension', 'foogallery'); ?></h2>
 	</div>
 </div>

@@ -220,11 +220,11 @@ div.foogallery-message-error {
 	-webkit-font-smoothing: antialiased;
 }
 
-.foogallery-extension-browser .extensions .extension.active .active-banner {
+.foogallery-extension-browser .extensions .extension.activated .active-banner {
 	background: #080;
 }
 
-.foogallery-extension-browser .extensions .extension.active .active-banner:before {
+.foogallery-extension-browser .extensions .extension.activated .active-banner:before {
 	content: "\f147";
 }
 
@@ -249,11 +249,11 @@ div.foogallery-message-error {
 	display: none;
 }
 
-.foogallery-extension-browser .extensions .extension.active .activate {
+.foogallery-extension-browser .extensions .extension.activated .activate {
 	display: none;
 }
 
-.foogallery-extension-browser .extensions .extension.active .deactivate {
+.foogallery-extension-browser .extensions .extension.activated .deactivate {
 	display: block;
 }
 
@@ -261,7 +261,7 @@ div.foogallery-message-error {
 	display: none;
 }
 
-.foogallery-extension-browser .extensions .extension.active .active-banner {
+.foogallery-extension-browser .extensions .extension.activated .active-banner {
 	display: block;
 }
 
@@ -282,5 +282,9 @@ div.foogallery-message-error {
 }
 
 .foogallery-extension-browser .extensions .extension.coming_soon .extension-actions {
+	display: none;
+}
+
+.foogallery-extension-browser .extension-page {
 	display: none;
 }

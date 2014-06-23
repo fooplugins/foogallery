@@ -82,11 +82,15 @@
 
 			var filter = $this.attr('href').replace('#', '');
 			$('.foogallery-extension-browser .extensions .extension').hide();
+			$('.foogallery-extension-browser .extension-page').hide();
 			$('.foogallery-extension-browser .extensions .' + filter).show();
+			$('.foogallery-extension-browser .extension-page-' + filter).show();
 		});
 
 		if (window.location.hash) {
 			$('a.nav-tab[href="' + window.location.hash + '"]').click();
+		} else {
+			$('a.nav-tab-all').click();
 		}
 
 		return false;
