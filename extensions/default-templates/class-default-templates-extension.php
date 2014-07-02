@@ -20,11 +20,6 @@ if ( !class_exists( 'FooGallery_Default_Templates_Extension' ) ) {
 			$gallery_templates[] = array(
 				'slug'        => 'default',
 				'name'        => __( 'Responsive Image Gallery', 'foogallery'),
-				'description' => __( 'The default image gallery template : clean and responsive and looks good in any theme.', 'foogallery'),
-				'author'      => 'FooPlugins',
-				'author_url'  => 'http://fooplugins.com',
-				'demo_url'    => 'http://fooplugins.com/plugins/foogallery',
-				'thumbnail'   => FOOGALLERY_URL . 'templates/default/thumb.png',
 				'preview_css' => FOOGALLERY_URL . 'extensions/default-templates/css/gallery-default.css',
 				'admin_js'	  => FOOGALLERY_URL . 'extensions/default-templates/js/admin-gallery-default.js',
 				'fields'	  => array(
@@ -37,7 +32,7 @@ if ( !class_exists( 'FooGallery_Default_Templates_Extension' ) ) {
 					array(
 						'id'      => 'thumbnail_link',
 						'title'   => __('Thumbnail Link', 'foogallery'),
-						'default' => 'image' ,
+						'default' => 'image',
 						'type'    => 'thumb_link',
 						'spacer'  => '<span class="spacer"></span>',
 						'desc'	  => __('You can choose to either link each thumbnail to the full size image or to the image\'s attachment page.', 'foogallery')
@@ -53,6 +48,7 @@ if ( !class_exists( 'FooGallery_Default_Templates_Extension' ) ) {
 						'title'   => __('Thumbnail Spacing', 'foogallery'),
 						'desc'    => __('The spacing or gap between images in the gallery.', 'foogallery'),
 						'type'    => 'select',
+						'default' => 'spacing-width-10',
 						'choices' => array(
 							'spacing-width-5' => __( '5 pixels', 'foogallery' ),
 							'spacing-width-10' => __( '10 pixels', 'foogallery' ),
@@ -62,19 +58,31 @@ if ( !class_exists( 'FooGallery_Default_Templates_Extension' ) ) {
 						)
 					),
 					array(
+						'id'      => 'alignment',
+						'title'   => __('Gallery Alignment', 'foogallery'),
+						'desc'    => __('The horizontal alignment of the thumbnails inside the gallery.', 'foogallery'),
+						'default' => 'alignment-center',
+						'type'    => 'select',
+						'choices' => array(
+							'alignment-left' => __( 'Left', 'foogallery' ),
+							'alignment-center' => __( 'Center', 'foogallery' ),
+							'alignment-right' => __( 'Right', 'foogallery' )
+						)
+					),
+					array(
 						'id'      => 'border-style',
 						'title'   => __('Border Style', 'foogallery'),
 						'desc'    => __('The border style for each thumbnail in the gallery.', 'foogallery'),
 						'type'    => 'icon',
 						'default' => 'border-style-square-white',
 						'choices' => array(
-							'border-style-square-white' => array('label' => 'Square white border with shadow', 'img' => FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_URL . 'assets/border-style-icon-square-white.png'),
-							'border-style-circle-white' => array('label' => 'Circular white border with shadow', 'img' => FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_URL . 'assets/border-style-icon-circle-white.png'),
-							'border-style-square-black' => array('label' => 'Square Black', 'img' => FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_URL . 'assets/border-style-icon-square-black.png'),
-							'border-style-circle-black' => array('label' => 'Circular Black', 'img' => FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_URL . 'assets/border-style-icon-circle-black.png'),
-							'border-style-inset' => array('label' => 'Square Inset', 'img' => FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_URL . 'assets/border-style-icon-square-inset.png'),
-							'border-style-rounded' => array('label' => 'Plain Rounded', 'img' => FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_URL . 'assets/border-style-icon-plain-rounded.png'),
-							'' => array('label' => 'Plain', 'img' => FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_URL . 'assets/border-style-icon-none.png'),
+							'border-style-square-white' => array('label' => __('Square white border with shadow' ,'foogallery'), 'img' => FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_URL . 'assets/border-style-icon-square-white.png'),
+							'border-style-circle-white' => array('label' => __('Circular white border with shadow' ,'foogallery'), 'img' => FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_URL . 'assets/border-style-icon-circle-white.png'),
+							'border-style-square-black' => array('label' => __('Square Black' ,'foogallery'), 'img' => FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_URL . 'assets/border-style-icon-square-black.png'),
+							'border-style-circle-black' => array('label' => __('Circular Black' ,'foogallery'), 'img' => FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_URL . 'assets/border-style-icon-circle-black.png'),
+							'border-style-inset' => array('label' => __('Square Inset' ,'foogallery'), 'img' => FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_URL . 'assets/border-style-icon-square-inset.png'),
+							'border-style-rounded' => array('label' => __('Plain Rounded' ,'foogallery'), 'img' => FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_URL . 'assets/border-style-icon-plain-rounded.png'),
+							'' => array('label' => __('Plain' ,'foogallery'), 'img' => FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_URL . 'assets/border-style-icon-none.png'),
 						)
 					),
 					array(
@@ -84,13 +92,13 @@ if ( !class_exists( 'FooGallery_Default_Templates_Extension' ) ) {
 						'type'    => 'icon',
 						'default' => 'hover-effect-zoom',
 						'choices' => array(
-							'hover-effect-zoom' => array('label' => 'Zoom', 'img' => FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_URL . 'assets/hover-effect-icon-zoom.png'),
-							'hover-effect-zoom2' => array('label' => 'Zoom 2', 'img' => FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_URL . 'assets/hover-effect-icon-zoom2.png'),
-							'hover-effect-zoom3' => array('label' => 'Zoom 3', 'img' => FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_URL . 'assets/hover-effect-icon-zoom3.png'),
-							'hover-effect-plus' => array('label' => 'Plus', 'img' => FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_URL . 'assets/hover-effect-icon-plus.png'),
-							'hover-effect-circle-plus' => array('label' => 'Cirlce Plus', 'img' => FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_URL . 'assets/hover-effect-icon-circle-plus.png'),
-							'hover-effect-eye' => array('label' => 'Eye', 'img' => FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_URL . 'assets/hover-effect-icon-eye.png'),
-							'' => array('label' => 'None', 'img' => FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_URL . 'assets/hover-effect-icon-none.png'),
+							'hover-effect-zoom' => array('label' => __('Zoom' ,'foogallery'), 'img' => FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_URL . 'assets/hover-effect-icon-zoom.png'),
+							'hover-effect-zoom2' => array('label' => __('Zoom 2' ,'foogallery'), 'img' => FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_URL . 'assets/hover-effect-icon-zoom2.png'),
+							'hover-effect-zoom3' => array('label' => __('Zoom 3' ,'foogallery'), 'img' => FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_URL . 'assets/hover-effect-icon-zoom3.png'),
+							'hover-effect-plus' => array('label' => __('Plus' ,'foogallery'), 'img' => FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_URL . 'assets/hover-effect-icon-plus.png'),
+							'hover-effect-circle-plus' => array('label' => __('Cirlce Plus' ,'foogallery'), 'img' => FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_URL . 'assets/hover-effect-icon-circle-plus.png'),
+							'hover-effect-eye' => array('label' => __('Eye' ,'foogallery'), 'img' => FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_URL . 'assets/hover-effect-icon-eye.png'),
+							'' => array('label' => __('None' ,'foogallery'), 'img' => FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_URL . 'assets/hover-effect-icon-none.png'),
 						)
 					)
 				)
@@ -99,11 +107,6 @@ if ( !class_exists( 'FooGallery_Default_Templates_Extension' ) ) {
 			$gallery_templates[] = array(
 				'slug'        => 'masonry',
 				'name'        => __( 'Masonry Image Gallery', 'foogallery'),
-				'description' => __( 'A masonry-style image gallery template', 'foogallery'),
-				'author'      => 'FooPlugins',
-				'author_url'  => 'http://fooplugins.com',
-				'demo_url'    => 'http://fooplugins.com/plugins/foogallery',
-				'thumbnail'   => FOOGALLERY_URL . 'templates/masonry/thumb.png',
 				'fields'	  => array(
 					array(
 						'id'      => 'thumbnail_size',

@@ -1,6 +1,5 @@
 .foogallery-default a {
     display: inline-block;
-    float: left;
 	margin-right: 5px;
 	margin-bottom: 5px;
 	overflow: hidden;
@@ -10,6 +9,19 @@
 		border-radius: 0;
         display: block;
     }
+
+/* Horizontal alignment */
+.foogallery-default.alignment-left {
+	text-align: left;
+}
+
+.foogallery-default.alignment-center {
+	text-align: center;
+}
+
+.foogallery-default.alignment-right {
+	text-align: right;
+}
 
 /* Gutter widths */
 .foogallery-default.spacing-width-5 a {
