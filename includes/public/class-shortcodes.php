@@ -9,6 +9,7 @@ if ( !class_exists( 'FooGallery_Shortcodes' ) ) {
 
 		function __construct() {
 			add_shortcode( 'foogallery', array($this, 'render_foogallery_shortcode') );
+			add_action( 'foogallery_load_template', array($this, 'handle_lightbox_field') );
 		}
 
 		function render_foogallery_shortcode($atts) {
@@ -23,6 +24,21 @@ if ( !class_exists( 'FooGallery_Shortcodes' ) ) {
             //create new instance of template engine
             $engine = new FooGallery_Template_Loader();
             $engine->render_template( $args );
+		}
+
+		/**
+		 * Handle a gallery that has a lightbox. This allows us to include any scripts or CSS that is needed for the lightbox
+		 *
+		 * @param $gallery FooGallery
+		 */
+		function handle_lightbox_field( $gallery ) {
+			if ( $gallery->gallery_template_has_field_of_type( 'lightbox' ) ) {
+				$lightbox = foogallery_gallery_template_setting( 'lightbox' );
+
+				if ( false != $lightbox ) {
+					do_action( "foogallery_template_lightbox-{$lightbox}", $gallery );
+				}
+			}
 		}
 	}
 }
