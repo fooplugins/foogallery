@@ -52,9 +52,10 @@ class FooGallery_Template_Loader {
 			$this->add_extension_pickup_locations( $loader, apply_filters( $instance_name . '_files', array() ) );
 
 			if ( false !== ($template_location = $loader->locate_file( "gallery-{$current_foogallery_template}.php" )) ) {
-
 				//we have found a template!
-				do_action( "foogallery_template-($current_foogallery_template)", $current_foogallery );
+
+				do_action( "foogallery_load_template", $current_foogallery );
+				do_action( "foogallery_load_template-($current_foogallery_template)", $current_foogallery );
 
 				//try to include some JS
 				if ( false !== ($js_location = $loader->locate_file( "gallery-{$current_foogallery_template}.js" )) ) {
