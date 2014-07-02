@@ -21,7 +21,7 @@ function foogallery_gallery_templates() {
 /**
  * Return the FooGallery extension API class
  *
- * @return
+ * @return FooGallery_Extensions_API
  */
 function foogallery_extensions_api() {
 	return new FooGallery_Extensions_API();
@@ -68,7 +68,16 @@ function foogallery_get_setting($key) {
  * @return string
  */
 function foogallery_build_gallery_shortcode($gallery_id) {
-	return '[' . FOOGALLERY_CPT_GALLERY . ' id="' . $gallery_id . '"]';
+	return '[' . foogallery_gallery_shortcode_tag() . ' id="' . $gallery_id . '"]';
+}
+
+/**
+ * Returns the gallery shortcode tag
+ *
+ * @return string
+ */
+function foogallery_gallery_shortcode_tag() {
+	return FOOGALLERY_CPT_GALLERY;
 }
 
 /**
@@ -227,4 +236,67 @@ function foogallery_get_all_galleries() {
 	}
 
 	return $galleries;
+}
+
+/**
+ * Parse some content and return an array of all gallery shortcodes that are used inside it
+ *
+ * @param $content The content to search for gallery shortcodes
+ *
+ * @return array An array of all the foogallery shortcodes found in the content
+ */
+function foogallery_extract_gallery_shortcodes($content) {
+	$shortcodes = array();
+
+	$regex_pattern = foogallery_gallery_shortcode_regex();
+	if ( preg_match_all( '/' . $regex_pattern . '/s', $content, $matches ) ) {
+		for ($i = 0; $i < count($matches[0]); ++$i) {
+			$shortcode = $matches[0][$i];
+			$args = $matches[3][$i];
+			$attribure_string = str_replace( " ", "&", trim( $args ) );
+			$attribure_string = str_replace( '"', '', $attribure_string );
+			$attributes = wp_parse_args( $attribure_string );
+			$id = 0;
+			if ( array_key_exists( 'id', $attributes ) ) {
+				$id           = intval( $attributes['id'] );
+				$shortcodes[$id] = $shortcode;
+			}
+		}
+	}
+
+	return $shortcodes;
+}
+
+function foogallery_gallery_shortcode_regex() {
+	$tag = foogallery_gallery_shortcode_tag();
+
+	return
+		'\\['                              // Opening bracket
+		. '(\\[?)'                           // 1: Optional second opening bracket for escaping shortcodes: [[tag]]
+		. "($tag)"                     // 2: Shortcode name
+		. '(?![\\w-])'                       // Not followed by word character or hyphen
+		. '('                                // 3: Unroll the loop: Inside the opening shortcode tag
+		.     '[^\\]\\/]*'                   // Not a closing bracket or forward slash
+		.     '(?:'
+		.         '\\/(?!\\])'               // A forward slash not followed by a closing bracket
+		.         '[^\\]\\/]*'               // Not a closing bracket or forward slash
+		.     ')*?'
+		. ')'
+		. '(?:'
+		.     '(\\/)'                        // 4: Self closing tag ...
+		.     '\\]'                          // ... and closing bracket
+		. '|'
+		.     '\\]'                          // Closing bracket
+		.     '(?:'
+		.         '('                        // 5: Unroll the loop: Optionally, anything between the opening and closing shortcode tags
+		.             '[^\\[]*+'             // Not an opening bracket
+		.             '(?:'
+		.                 '\\[(?!\\/\\2\\])' // An opening bracket not followed by the closing shortcode tag
+		.                 '[^\\[]*+'         // Not an opening bracket
+		.             ')*+'
+		.         ')'
+		.         '\\[\\/\\2\\]'             // Closing shortcode tag
+		.     ')?'
+		. ')'
+		. '(\\]?)';                          // 6: Optional second closing brocket for escaping shortcodes: [[tag]]
 }
