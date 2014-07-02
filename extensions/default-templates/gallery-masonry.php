@@ -4,6 +4,8 @@
  */
 global $current_foogallery;
 global $current_foogallery_arguments;
+$size = foogallery_gallery_template_setting( 'thumbnail_size', 'thumbnail' );
+$link = foogallery_gallery_template_setting( 'thumbnail_link', 'image' );
 wp_enqueue_script( 'masonry' );
 
 if ( !foo_check_wp_version_at_least( '3.9' ) ) { ?>
@@ -20,13 +22,21 @@ if ( !foo_check_wp_version_at_least( '3.9' ) ) { ?>
 	#foogallery-gallery-<?php echo $current_foogallery->ID; ?> .item {
 		margin-bottom: 10px;
 	}
+
+	#foogallery-gallery-<?php echo $current_foogallery->ID; ?> .item a:hover img {
+		-webkit-transform: scale(1.05);
+		-moz-transform: scale(1.05);
+		-o-transform: scale(1.05);
+		-ms-transform: scale(1.05);
+		transform: scale(1.05);
+	}
 </style>
 <div id="foogallery-gallery-<?php echo $current_foogallery->ID; ?>"
 	 class="foogallery-container foogallery-masonry js-masonry"
 	 data-masonry-options='{ "itemSelector": ".item", "gutter": 10 }'>
-	<?php foreach ( $current_foogallery->attachments() as $attachment_id ) {
+	<?php foreach ( $current_foogallery->attachments() as $attachment ) {
 		echo '<div class="item">';
-		echo wp_get_attachment_link( $attachment_id, 'thumbnail', false );
+		echo $attachment->html( $size, $link );
 		echo '</div>';
 	} ?>
 </div>
