@@ -43,7 +43,7 @@ if ( 'yes' === $show_message ) {
 		<?php
 		foreach ( $categories as $category_slug=>$category ) {
 			echo "<a href=\"#{$category_slug}\" class=\"nav-tab nav-tab-{$category_slug}\">{$category['name']}</a>";
-		} ?><a href="#build_your_own" class="nav-tab"><?php _e('Build Your Own', 'foogallery'); ?></a>
+		} ?>
 		<div class="extension-search-box">
 			<label class="screen-reader-text" for="plugin-search-input">Search Extensions:</label>
 			<input placeholder="<?php echo __('search...', 'foogallery'); ?>" type="search" id="extensions-search-input">
@@ -133,6 +133,6 @@ if ( 'yes' === $show_message ) {
 		<?php } ?>
 	</div>
 	<div class="extension-page extension-page-build_your_own">
-		<h2><?php _e('Build Your Own FooGallery Extension', 'foogallery'); ?></h2>
+		<?php include 'view-extensions-build-your-own.php'; ?>
 	</div>
 </div>

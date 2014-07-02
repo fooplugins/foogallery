@@ -1,0 +1,120 @@
+<?php
+/**
+ * FooGallery {name} Extension
+ *
+ * {desc}
+ *
+ * @package   {package}
+ * @author    {author}
+ * @license   GPL-2.0+
+ * @link      {author_link}
+ * @copyright 2014 {author}
+ *
+ * @wordpress-plugin
+ * Plugin Name: FooGallery - {name}
+ * Description: {desc}
+ * Version:     1.0.0
+ * Author:      {author}
+ * Author URI:  {author_link}
+ * License:     GPL-2.0+
+ * License URI: http://www.gnu.org/licenses/gpl-2.0.txt
+ */
+
+if ( !class_exists( '{package}' ) ) {
+
+	define('{constant}_URL', plugin_dir_url( __FILE__ ));
+	define('{constant}_VERSION', '1.0.0');
+
+	require_once( 'foogallery-{slug}-init.php' );
+
+	class {package} {
+		/**
+		 * Wire up everything we need to run the extension
+		 */
+		function __construct() {
+			add_filter( 'foogallery_gallery_templates', array( $this, 'add_template' ) );
+			add_filter( 'foogallery_gallery_templates_files', array( $this, 'register_myself' ) );
+		}
+
+		/**
+		 * Register myself so that all associated JS and CSS files can be found and automatically included
+		 * @param $extensions
+		 *
+		 * @return array
+		 */
+		function register_myself( $extensions ) {
+			$extensions[] = __FILE__;
+			return $extensions;
+		}
+
+		/**
+		 * Add our gallery template to the list of templates available for every gallery
+		 * @param $gallery_templates
+		 *
+		 * @return array
+		 */
+		function add_template( $gallery_templates ) {
+
+			$gallery_templates[] = array(
+				'slug'        => '{slug}',
+				'name'        => __( '{name}', '{plugin_slug}'),
+				'preview_css' => {constant}_URL . 'css/gallery-{slug}.css',
+				'admin_js'	  => {constant}_URL . 'js/admin-gallery-{slug}.js',
+				'fields'	  => array(
+					array(
+						'id'      => 'thumbnail_size',
+						'title'   => __('Thumbnail Size', '{plugin_slug}'),
+						'desc'    => __('Choose the size of your thumbs.', '{plugin_slug}'),
+						'type'    => 'thumb_size',
+					),
+					array(
+						'id'      => 'thumbnail_link',
+						'title'   => __('Thumbnail Link', '{plugin_slug}'),
+						'default' => 'image' ,
+						'type'    => 'thumb_link',
+						'spacer'  => '<span class="spacer"></span>',
+						'desc'	  => __('You can choose to either link each thumbnail to the full size image or to the image\'s attachment page.', '{plugin_slug}')
+					),
+					array(
+						'id'      => 'lightbox',
+						'title'   => __('Lightbox', '{plugin_slug}'),
+						'desc'    => __('Choose which lightbox you want to use in the gallery.', '{plugin_slug}'),
+						'type'    => 'lightbox',
+					),
+					array(
+						'id'      => 'alignment',
+						'title'   => __('Gallery Alignment', '{plugin_slug}'),
+						'desc'    => __('The horizontal alignment of the thumbnails inside the gallery.', '{plugin_slug}'),
+						'default' => 'alignment-center',
+						'type'    => 'select',
+						'choices' => array(
+							'alignment-left' => __( 'Left', '{plugin_slug}' ),
+							'alignment-center' => __( 'Center', '{plugin_slug}' ),
+							'alignment-right' => __( 'Right', '{plugin_slug}' )
+						)
+					)
+					//available field types available : html, checkbox, select, radio, textarea, text, checkboxlist, icon
+					//an example of a icon field used in the default gallery template
+					//array(
+					//	'id'      => 'border-style',
+					//	'title'   => __('Border Style', '{plugin_slug}'),
+					//	'desc'    => __('The border style for each thumbnail in the gallery.', '{plugin_slug}'),
+					//	'type'    => 'icon',
+					//	'default' => 'border-style-square-white',
+					//	'choices' => array(
+					//		'border-style-square-white' => array('label' => 'Square white border with shadow', 'img' => FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_URL . 'assets/border-style-icon-square-white.png'),
+					//		'border-style-circle-white' => array('label' => 'Circular white border with shadow', 'img' => FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_URL . 'assets/border-style-icon-circle-white.png'),
+					//		'border-style-square-black' => array('label' => 'Square Black', 'img' => FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_URL . 'assets/border-style-icon-square-black.png'),
+					//		'border-style-circle-black' => array('label' => 'Circular Black', 'img' => FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_URL . 'assets/border-style-icon-circle-black.png'),
+					//		'border-style-inset' => array('label' => 'Square Inset', 'img' => FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_URL . 'assets/border-style-icon-square-inset.png'),
+					//		'border-style-rounded' => array('label' => 'Plain Rounded', 'img' => FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_URL . 'assets/border-style-icon-plain-rounded.png'),
+					//		'' => array('label' => 'Plain', 'img' => FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_URL . 'assets/border-style-icon-none.png'),
+					//	)
+					//),
+				)
+			);
+
+			return $gallery_templates;
+		}
+	}
+}
