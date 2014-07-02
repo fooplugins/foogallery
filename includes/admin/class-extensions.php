@@ -94,14 +94,16 @@ if ( !class_exists( 'FooGallery_Admin_Extensions' ) ) {
 				die();
 			} else if ( $has_error ) {
 				$api = new FooGallery_Extensions_API();
-				$api->deactivate( $extension_slug, true, true );
+				$api->deactivate( $extension_slug, true, false );
 
 				$result = array(
-					'message' => __( 'The extension could not be activated. It generated a fatal error!', 'foogallery' ),
+					'message' => __( 'The extension could not be activated due to an error!', 'foogallery' ),
 					'type'    => 'error'
 				);
 
 				set_transient( FOOGALLERY_EXTENSIONS_MESSAGE_TRANSIENT_KEY, $result, 30 );
+
+				$api->add_to_error_extensions( $extension_slug, __('Activation Error!','foogallery') );
 
 				//first, remove unwanted query args
 				$redirect_url = remove_query_arg( array('extension', 'action', 'has_error') );
