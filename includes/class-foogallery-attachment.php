@@ -86,7 +86,7 @@ if (!class_exists('FooGalleryAttachment')) {
 
 			//if there is no link, then just return the image tag
 			if ( 'none' === $link ) {
-				return $img;
+				return apply_filters( 'foogallery_attachment_html_image', $img, $this, $size, $link );
 			}
 
 			if ( 'page' === $link ) {
@@ -96,7 +96,20 @@ if (!class_exists('FooGalleryAttachment')) {
 				$url = $this->url;
 			}
 
-			return apply_filters( 'foogallery_attachment_html', "<a title='{$this->title}' href='{$url}'>{$img}</a>", $this, $size, $link );
+			$attr['href'] = $url;
+			if ( !empty( $this->title ) ) {
+				$attr['title'] = $this->title;
+			}
+
+			$attr = apply_filters( 'foogallery_attachment_html_link_attributes', $attr, $this );
+			$attr = array_map( 'esc_attr', $attr );
+			$html = '<a ';
+			foreach ( $attr as $name => $value ) {
+				$html .= " $name=" . '"' . $value . '"';
+			}
+			$html .= ">{$img}</a>";
+
+			return apply_filters( 'foogallery_attachment_html_link', $html, $this, $size, $link );
 		}
 
 		function filter_attachment_image_attributes($attr) {
