@@ -1,0 +1,104 @@
+.mce-content-body div.foogallery-tinymce {
+	background-color: rgba(0, 0, 0, 0.1);
+	position: relative;
+	margin-bottom: 16px;
+	border: 1px solid rgba(0, 0, 0, 0);
+	width: 99.99%;
+	clear: both;
+	height: 200px;
+	text-align: center;
+}
+
+.mce-content-body div.foogallery-tinymce::after {
+	background: #efefef;
+	-webkit-border-radius: 50%;
+	border-radius: 50%;
+	display: inline-block;
+	content: "\f161";
+	-webkit-font-smoothing: antialiased;
+	font: normal 50px/100px 'dashicons';
+	width: 100px;
+	height: 100px;
+	vertical-align: middle;
+	text-align: center;
+	color: #999;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin-left: -50px;
+	margin-top: -50px;
+	padding: 0;
+	text-shadow: none;
+	z-index: 4;
+}
+
+.mce-content-body div.foogallery-tinymce.selected {
+	border-color: rgba(0, 0, 0, 0.3);
+}
+
+.mce-content-body div.foogallery-tinymce code {
+	padding-top: 5px;
+	display: inline-block;
+	font-weight: bold;
+	font-size: 1.5em;
+	color: #888;
+}
+
+.foogallery-pile {
+	position: relative;
+	z-index: 10;
+	float: left;
+	margin: 10px 20px 30px 20px !important;
+}
+/* Image styles */
+.foogallery-pile .foogallery-gallery-select { max-width: 100%; height: auto; vertical-align: bottom; border: 8px solid #fff;
+	-webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+	-moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+	overflow: hidden;
+}
+
+/* Stacks creted by the use of generated content */
+.foogallery-pile:before, .foogallery-pile:after { content: ""; width: 100%; height: 100%; position: absolute; border: 8px solid #fff; left: 0;
+	-webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+	-moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+/* 1st element in stack (behind image) */
+.foogallery-pile:before {
+	top: -3px; z-index: -10;
+	-webkit-transform: rotate(2deg);
+	-moz-transform: rotate(2deg);
+	transform: rotate(2deg);
+}
+/* 2nd element in stack (behind image) */
+.foogallery-pile:after {
+	top: -2px; z-index: -20;
+	-webkit-transform: rotate(-2deg);
+	-moz-transform: rotate(-2deg);
+	transform: rotate(-2deg);
+}
+
+.foogallery-pile img {
+	height: 100%;
+}
+
+.foogallery-pile h3 {
+	background: #fff;
+	position: absolute;
+	display: block;
+	bottom: 0px;
+	padding: 5px;
+	width: 100%;
+	box-sizing: border-box;
+	margin: 0;
+	opacity: 0.8;
+}
+
+.foogallery-pile h3 span {
+	display: block;
+	font-size: 0.6em;
+}

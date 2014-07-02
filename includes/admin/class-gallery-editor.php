@@ -15,8 +15,11 @@ if ( !class_exists( 'FooGallery_Admin_Gallery_Editor' ) ) {
 			//adds a media button to the editor
 			add_filter( 'media_buttons_context', array($this, 'add_media_button') );
 
+			//add a tinymce plugin
+			add_action( 'admin_head', array($this, 'add_tinymce_plugin') );
+
 			// Ajax calls for showing all galleries in the modal
-			add_action('wp_ajax_foogallery_load_galleries', array($this, 'ajax_galleries_html'));
+			add_action( 'wp_ajax_foogallery_load_galleries', array($this, 'ajax_galleries_html') );
 		}
 
 		/**
@@ -40,6 +43,49 @@ if ( !class_exists( 'FooGallery_Admin_Gallery_Editor' ) ) {
 
 			return $buttons;
 		}
+
+		/**
+		 * Adds our custom plugin to the tinyMCE editor
+		 */
+		public function add_tinymce_plugin() {
+			// check user permissions
+			if ( !current_user_can( 'edit_posts' ) && !current_user_can( 'edit_pages' ) ) {
+				return;
+			}
+			// check if WYSIWYG is enabled
+			if ( 'true' == get_user_option( 'rich_editing' ) ) {
+				add_filter( 'mce_external_plugins',  array($this, 'add_tinymce_js' ) );
+				add_filter( 'mce_css',  array($this, 'add_tinymce_css' ) );
+			}
+		}
+
+		/**
+		 * Include a plugin script into the editor
+		 * @param $plugin_array
+		 *
+		 * @return mixed
+		 */
+		public function add_tinymce_js( $plugin_array ) {
+			$plugin_array['foogallery'] = FOOGALLERY_URL . 'js/admin-tinymce.js';
+			return $plugin_array;
+		}
+
+		/**
+		 * Include a plugin script into the editor
+		 * @param $mce_css
+		 *
+		 * @return string
+		 */
+		public function add_tinymce_css( $mce_css ) {
+			if ( ! empty( $mce_css ) )
+				$mce_css .= ',';
+
+			$mce_css .= FOOGALLERY_URL . 'css/admin-tinymce.css';
+
+			return $mce_css;
+		}
+
+
 
 		/**
 		 * Renders the gallery modal for use in the editor
@@ -70,7 +116,10 @@ if ( !class_exists( 'FooGallery_Admin_Gallery_Editor' ) ) {
 					margin: 10px 20px 30px 20px !important;
 				}
 				/* Image styles */
-				.foogallery-pile .foogallery-gallery-select { max-width: 100%; height: auto; vertical-align: bottom; border: 8px solid #fff;
+				.foogallery-pile .foogallery-gallery-select {
+					max-width: 100%;
+					vertical-align: bottom;
+					border: 8px solid #fff;
 					-webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
 					-moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
 					box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
@@ -78,7 +127,13 @@ if ( !class_exists( 'FooGallery_Admin_Gallery_Editor' ) ) {
 				}
 
 				/* Stacks creted by the use of generated content */
-				.foogallery-pile:before, .foogallery-pile:after { content: ""; width: 100%; height: 100%; position: absolute; border: 8px solid #fff; left: 0;
+				.foogallery-pile:before, .foogallery-pile:after {
+					content: "";
+					width: 100%;
+					height: 100%;
+					position: absolute;
+					border: 8px solid #fff;
+					left: 0;
 					-webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
 					-moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
 					box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
