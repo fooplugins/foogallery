@@ -81,7 +81,12 @@ if ( isset( $_POST['foogallery_nextgen_reset'] ) ) {
 				type: "POST",
 				url: ajaxurl,
 				data: data + "&action=" + action,
-				success: success_callback
+				success: success_callback,
+				error: function() {
+					//something went wrong! Alert the user and reload the page
+					alert('<?php _e('Something went wrong with the import and the page will now reload. Once it has reloaded, click "Resume Import" to continue with the import.', 'foogallery'); ?>');
+					location.reload();
+				}
 			});
 		}
 
