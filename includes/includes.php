@@ -25,6 +25,8 @@ if ( is_admin() ) {
 	require_once(FOOGALLERY_PATH . 'includes/admin/class-gallery-metabox-fields.php');
 	require_once(FOOGALLERY_PATH . 'includes/admin/class-menu.php');
 	require_once(FOOGALLERY_PATH . 'includes/admin/class-columns.php');
+	require_once(FOOGALLERY_PATH . 'includes/admin/class-boilerplate-zip-generator.php');
+	require_once(FOOGALLERY_PATH . 'includes/admin/class-boilerplate-download-handler.php');
 
 } else {
 	//only front-end
