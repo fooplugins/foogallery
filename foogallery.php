@@ -15,21 +15,13 @@
  * Plugin Name: FooGallery
  * Plugin URI:  https://github.com/fooplugins/foogallery
  * Description: Better Image Galleries for WordPress
- * Version:     1.1.2 Beta
+ * Version:     1.1.6.1
  * Author:      bradvin
  * Author URI:  http://fooplugins.com
  * Text Domain: foogallery
  * License:     GPL-2.0+
  * License URI: http://www.gnu.org/licenses/gpl-2.0.txt
  * Domain Path: /lang
- */
-
-/*
- * TODO
- *
- * Add Gallery column to attachments in media gallery ('add to gallery' link directly from here)
- * Check out post attachments plugin to see how the images are shown for a post
- *
  */
 
 // If this file is called directly, abort.
@@ -41,7 +33,7 @@ define('FOOGALLERY_SLUG', 'foogallery');
 define('FOOGALLERY_PATH', plugin_dir_path( __FILE__ ));
 define('FOOGALLERY_URL', plugin_dir_url( __FILE__ ));
 define('FOOGALLERY_FILE', __FILE__);
-define('FOOGALLERY_VERSION', '1.1.2 Beta');
+define('FOOGALLERY_VERSION', '1.1.6.1');
 
 /**
  * FooGallery_Plugin class
