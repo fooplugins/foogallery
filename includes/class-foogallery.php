@@ -243,4 +243,53 @@ class FooGallery extends stdClass {
 				return sprintf( __( '%s images', 'foogallery' ), $count );
 		}
 	}
+
+	public function find_usages() {
+		return get_posts( array(
+			'post_type' => array('post','page'),
+			'post_status' => array('draft','publish'),
+			'posts_per_page' => -1,
+			'orderby' => 'post_type',
+			'meta_query' => array (
+				array (
+					'key' => FOOGALLERY_META_POST_USAGE,
+					'value' => $this->ID,
+					'compare' => 'IN'
+				)
+			)
+		) );
+	}
+
+	public function gallery_template_details() {
+		if ( !empty( $this->gallery_template ) ) {
+
+			foreach( foogallery_gallery_templates() as $template ) {
+				if ( $this->gallery_template == $template['slug'] ) {
+					return $template;
+				}
+			}
+		}
+
+		return false;
+	}
+
+	public function gallery_template_has_field_of_type( $field_type ) {
+		$gallery_template_details = $this->gallery_template_details();
+
+		if ( false != $gallery_template_details ) {
+			if ( array_key_exists( 'fields', $gallery_template_details ) ) {
+
+				foreach ( $gallery_template_details['fields'] as $field ) {
+
+					if ( $field_type == $field['type'] ) {
+						return true;
+					}
+
+				}
+
+			}
+		}
+
+		return false;
+	}
 }

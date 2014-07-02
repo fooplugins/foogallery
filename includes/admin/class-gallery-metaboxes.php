@@ -11,21 +11,29 @@ if ( !class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 		private $_gallery;
 
 		function __construct() {
+			//add our foogallery metaboxes
 			add_action( 'add_meta_boxes', array($this, 'add_meta_boxes_to_gallery') );
 
 			//save extra post data for a gallery
 			add_action( 'save_post', array($this, 'save_gallery') );
 
+			//save custom field on a page or post
+			add_Action( 'save_post', array($this, 'attach_gallery_to_post'), 10, 2 );
+
 			//whitelist metaboxes for our gallery postype
 			add_filter( 'foogallery_metabox_sanity', array($this, 'whitelist_metaboxes') );
 
+			//add scripts used by metaboxes
 			add_action( 'admin_enqueue_scripts', array( $this, 'include_required_scripts' ) );
+
+			// Ajax calls for creating a page for the gallery
+			add_action( 'wp_ajax_foogallery_create_gallery_page', array($this, 'ajax_create_gallery_page') );
 		}
 
 		function whitelist_metaboxes() {
 			return array(
 				FOOGALLERY_CPT_GALLERY => array(
-					'whitelist'  => array('submitdiv', 'slugdiv', 'postimagediv', 'foogallery_items', 'foogallery_settings', 'foogallery_help'),
+					'whitelist'  => array('submitdiv', 'slugdiv', 'postimagediv', 'foogallery_items', 'foogallery_settings', 'foogallery_help', 'foogallery_pages'),
 					'contexts'   => array('normal', 'advanced', 'side'),
 					'priorities' => array('high', 'core', 'default', 'low')
 				)
@@ -33,6 +41,8 @@ if ( !class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 		}
 
 		function add_meta_boxes_to_gallery() {
+			global $post;
+
 			add_meta_box(
 				'foogallery_items',
 				__( 'Gallery Items', 'foogallery' ),
@@ -59,6 +69,16 @@ if ( !class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 				'side',
 				'high'
 			);
+
+			if ( 'publish' == $post->post_status ) {
+				add_meta_box( 'foogallery_pages',
+					__( 'Gallery Usage', 'foogallery' ),
+					array($this, 'render_gallery_usage_metabox'),
+					FOOGALLERY_CPT_GALLERY,
+					'side',
+					'high'
+				);
+			}
 		}
 
 		function get_gallery($post) {
@@ -102,6 +122,29 @@ if ( !class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 				update_post_meta( $post_id, FOOGALLERY_META_SETTINGS, $settings );
 
 				do_action( 'foogallery_after_save_gallery', $post_id, $_POST );
+			}
+		}
+
+		function attach_gallery_to_post($post_id, $post) {
+
+			// check autosave
+			if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+				return $post_id;
+			}
+
+			//only do this check for a page or post
+			if ( 'post' == $post->post_type ||
+				'page' == $post->post_type) {
+
+				//first, clear any foogallery usages that the post might have
+				delete_post_meta( $post_id, FOOGALLERY_META_POST_USAGE );
+
+				//if the content contains the foogallery shortcode then add a custom field
+				$gallery_shortcodes = foogallery_extract_gallery_shortcodes( $post->post_content );
+
+				foreach ( $gallery_shortcodes as $id => $shortcode ) {
+					add_post_meta( $post_id, FOOGALLERY_META_POST_USAGE, $id, false );
+				}
 			}
 		}
 
@@ -239,10 +282,9 @@ if ( !class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 			$gallery = $this->get_gallery( $post );
 			$shortcode = $gallery->shortcode();
 			?>
-			<p>
+			<p class="foogallery-shortcode">
 				<code id="foogallery-copy-shortcode" data-clipboard-text="<?php echo htmlspecialchars( $shortcode ); ?>"
-					  title="<?php _e('Click to copy to your clipboard', 'foogallery'); ?>"
-					  class="foogallery-shortcode"><?php echo $shortcode; ?></code>
+					  title="<?php _e('Click to copy to your clipboard', 'foogallery'); ?>"><?php echo $shortcode; ?></code>
 			</p>
 			<p>
 				<?php _e( 'Paste the above shortcode into a post or page to show the gallery. Simply click the shortcode to copy it to your clipboard.', 'foogallery' ); ?>
@@ -264,8 +306,34 @@ if ( !class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 			<?php
 		}
 
-		function include_required_scripts() {
+		function render_gallery_usage_metabox($post) {
+			$gallery = $this->get_gallery( $post );
+			$posts = $gallery->find_usages();
+			if ( $posts && count($posts) > 0 ) { ?>
+				<p>
+					<?php _e( 'This gallery is used on the following posts or pages:', 'foogallery' ); ?>
+				</p>
+				<ul class="ul-disc">
+				<?php foreach ($posts as $post) {
+					edit_post_link( $post->post_title, '<li>', '</li>', $post->ID );
+				} ?>
+				</ul>
+			<?php } else { ?>
+				<p>
+					<?php _e( 'This gallery is not used on any pages or pages yet. Quickly create a page:', 'foogallery' ); ?>
+				</p>
+				<div class="foogallery_metabox_actions">
+					<button class="button button-primary button-large" id="foogallery_create_page"><?php _e('Create Gallery Page', 'foogallery'); ?></button>
+					<span id="foogallery_create_page_spinner" class="spinner"></span>
+					<?php wp_nonce_field( 'foogallery_create_gallery_page', 'foogallery_create_gallery_page_nonce', false ); ?>
+				</div>
+				<p>
+					<?php _e( 'A draft page will be created which includes the gallery shortcode in the content. The title of the page will be the same title as the gallery.', 'foogallery' ); ?>
+				</p>
+			<?php }
+		}
 
+		function include_required_scripts() {
 			//zeroclipboard needed for copy to clipboard functionality
 			$url = FOOGALLERY_URL . 'lib/zeroclipboard/ZeroClipboard.min.js';
 			wp_enqueue_script( 'foogallery-zeroclipboard', $url, array('jquery'), FOOGALLERY_VERSION );
@@ -277,6 +345,25 @@ if ( !class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 					wp_enqueue_script( 'foogallery-gallery-admin-' . $template['slug'], $admin_js, array('jquery'), FOOGALLERY_VERSION );
 				}
 			}
+		}
+
+		function ajax_create_gallery_page() {
+			if ( check_admin_referer( 'foogallery_create_gallery_page', 'foogallery_create_gallery_page_nonce' ) ) {
+
+				$foogallery_id = $_POST['foogallery_id'];
+
+				$foogallery = FooGallery::get_by_id( $foogallery_id );
+
+				$post = array(
+				  'post_content'   => $foogallery->shortcode(),
+				  'post_title'     => $foogallery->name,
+				  'post_status'    => 'draft',
+				  'post_type'      => 'page',
+				);
+
+				wp_insert_post( $post );
+			}
+			die();
 		}
 	}
 }

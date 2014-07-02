@@ -148,6 +148,28 @@
 		FOOGALLERY.media_uploader.open();
 	};
 
+	FOOGALLERY.initUsageMetabox = function() {
+		$('#foogallery_create_page').on('click', function(e) {
+			e.preventDefault();
+
+			$('#foogallery_create_page_spinner').css('display', 'inline-block');
+			var data = 'action=foogallery_create_gallery_page' +
+				'&foogallery_id=' + $('#post_ID').val() +
+				'&foogallery_create_gallery_page_nonce=' + $('#foogallery_create_gallery_page_nonce').val() +
+				'&_wp_http_referer=' + encodeURIComponent($('input[name="_wp_http_referer"]').val());
+
+			$.ajax({
+				type: "POST",
+				url: ajaxurl,
+				data: data,
+				success: function(data) {
+					//refresh page
+					location.reload();
+				}
+			});
+		});
+	};
+
     FOOGALLERY.adminReady = function () {
         $('.upload_image_button').on('click', function(e) {
             e.preventDefault();
@@ -157,6 +179,8 @@
         FOOGALLERY.initAttachments();
 
 		FOOGALLERY.initSettings();
+
+		FOOGALLERY.initUsageMetabox();
 
         $('.foogallery-attachments-list')
             .on('click' ,'a.remove', function() {
@@ -177,7 +201,6 @@
                     FOOGALLERY.calculateAttachmentIds();
                 }
             });
-
 
     };
 

@@ -7,6 +7,7 @@ define('FOOGALLERY_CPT_GALLERY', 'foogallery');
 define('FOOGALLERY_META_SETTINGS', 'foogallery_settings');
 define('FOOGALLERY_META_ATTACHMENTS', 'foogallery_attachments');
 define('FOOGALLERY_META_TEMPLATE', 'foogallery_template');
+define('FOOGALLERY_META_POST_USAGE', '_foogallery');
 
 define('FOOGALLERY_ADMIN_MENU_PARENT_SLUG', 'edit.php?post_type=foogallery');
 define('FOOGALLERY_FOOBOX_FREE_EXTENSION_SLUG', 'foobox-image-lightbox');
