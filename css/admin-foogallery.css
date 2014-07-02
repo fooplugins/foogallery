@@ -151,6 +151,11 @@
 }
 
 .foogallery-shortcode {
+	text-align: center;
+}
+
+.foogallery-shortcode code {
+	display: inline-block;
 	font-size: 1.2em;
 	cursor: pointer;
 }
