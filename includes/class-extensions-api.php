@@ -5,8 +5,8 @@
 
 if ( !class_exists( 'FooGallery_Extensions_API' ) ) {
 
-	//define('FOOGALLERY_EXTENSIONS_ENDPOINT', 'https://raw.githubusercontent.com/fooplugins/foogallery-extensions/master/README.md');
-	define('FOOGALLERY_EXTENSIONS_ENDPOINT', FOOGALLERY_URL . 'extensions/extensions.json.js');
+	define('FOOGALLERY_EXTENSIONS_ENDPOINT', 'https://raw.githubusercontent.com/fooplugins/foogallery-extensions/master/extensions.json');
+	//define('FOOGALLERY_EXTENSIONS_ENDPOINT', FOOGALLERY_URL . 'extensions/extensions.json.js');
 	define('FOOGALLERY_EXTENSIONS_AVAILABLE_TRANSIENT_KEY', 'foogallery_extensions_available');
 	define('FOOGALLERY_EXTENSIONS_MESSAGE_TRANSIENT_KEY', 'foogallery_extensions_message');
 	define('FOOGALLERY_EXTENSIONS_ACTIVATED_OPTIONS_KEY', 'foogallery_extensions_activated' );
@@ -127,7 +127,7 @@ if ( !class_exists( 'FooGallery_Extensions_API' ) ) {
 				return array();
 			}
 
-			return $this->extensions;
+			return apply_filters( 'foogallery_available_extensions', $this->extensions );
 		}
 
 		/**
@@ -157,6 +157,9 @@ if ( !class_exists( 'FooGallery_Extensions_API' ) ) {
 					}
 				}
 			}
+			$categories['build_your_own'] = array(
+				'name' => __('Build Your Own', 'foogallery')
+			);
 			if ( 0 == $active ) {
 				unset( $categories['active'] );
 				$categories[$first_category]['first'] = true;
@@ -346,21 +349,23 @@ if ( !class_exists( 'FooGallery_Extensions_API' ) ) {
 					//activate the plugin, WordPress style!
 					$plugin = $this->find_wordpress_plugin( $extension );
 
-					//check min version
-					$minimum_version = foo_safe_get($extension, 'minimum_version');
-					if ( !empty($minimum_version) ) {
-						$actual_version = $plugin['plugin']['Version'];
-						if ( version_compare( $actual_version, $minimum_version ) < 0 ) {
-							$this->add_to_error_extensions( $slug, sprintf( __('Requires %s version %s','foogallery'), $extension['title'], $minimum_version ) );
-							return array(
-								'message' => sprintf( __('The extension %s could not be activated, because you are using an outdated version! Please update %s to at least version %s.', 'foogallery'), $extension['title'], $extension['title'], $minimum_version ),
-								'type' => 'error'
-							);
-						}
-					}
-
 					if ( $plugin ) {
-						$failure = activate_plugin( $plugin['file'], '', false, true );
+
+						//check min version
+						$minimum_version = foo_safe_get($extension, 'minimum_version');
+						if ( !empty($minimum_version) ) {
+							$actual_version = $plugin['plugin']['Version'];
+							if ( version_compare( $actual_version, $minimum_version ) < 0 ) {
+								$this->add_to_error_extensions( $slug, sprintf( __('Requires %s version %s','foogallery'), $extension['title'], $minimum_version ) );
+								return array(
+									'message' => sprintf( __('The extension %s could not be activated, because you are using an outdated version! Please update %s to at least version %s.', 'foogallery'), $extension['title'], $extension['title'], $minimum_version ),
+									'type' => 'error'
+								);
+							}
+						}
+
+						//try to activate the plugin
+						$failure = activate_plugin( $plugin['file'], '', false, false );
 						if (null !== $failure) {
 							return apply_filters( 'foogallery_extensions_activate_failure-' . $slug, array(
 								'message' => sprintf( __('The extension %s could NOT be activated!', 'foogallery'), "<strong>{$extension['title']}</strong>" ),
@@ -525,7 +530,7 @@ if ( !class_exists( 'FooGallery_Extensions_API' ) ) {
 		 * @TODO
 		 * @param $slug
 		 */
-		private function add_to_error_extensions( $slug, $error_message = '' ) {
+		public function add_to_error_extensions( $slug, $error_message = '' ) {
 			$error_extensions = $this->get_error_extensions();
 			if ( !array_key_exists( $slug, $error_extensions ) ) {
 				if ( empty($error_message) ) {
