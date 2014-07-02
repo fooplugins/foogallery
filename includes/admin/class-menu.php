@@ -37,9 +37,11 @@ if (!class_exists('FooGallery_Admin_Menu')) {
 				)
 			);
 
-			add_submenu_page( $parent_slug, $menu_labels[0]['page_title'], $menu_labels[0]['menu_title'], 'manage_options', 'foogallery-settings', array($this, 'foogallery_settings') );
-			add_submenu_page( $parent_slug, $menu_labels[1]['page_title'], $menu_labels[1]['menu_title'], 'manage_options', 'foogallery-extensions', array($this, 'foogallery_extensions') );
-			add_submenu_page( $parent_slug, $menu_labels[2]['page_title'], $menu_labels[2]['menu_title'], 'manage_options', 'foogallery-help', array($this, 'foogallery_help') );
+			$capability = apply_filters('foogallery_admin_menu_capability', 'manage_options');
+
+			add_submenu_page( $parent_slug, $menu_labels[0]['page_title'], $menu_labels[0]['menu_title'], $capability, 'foogallery-settings', array($this, 'foogallery_settings') );
+			add_submenu_page( $parent_slug, $menu_labels[1]['page_title'], $menu_labels[1]['menu_title'], $capability, 'foogallery-extensions', array($this, 'foogallery_extensions') );
+			add_submenu_page( $parent_slug, $menu_labels[2]['page_title'], $menu_labels[2]['menu_title'], $capability, 'foogallery-help', array($this, 'foogallery_help') );
 
       		//allow extensions to add their own menu items afterwards
 			do_action( 'foogallery_admin_menu_after' );
