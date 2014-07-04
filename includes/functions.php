@@ -140,13 +140,13 @@ function foogallery_admin_extensions_url() {
 }
 
 /**
- * @TODO
- * @param      $key
- * @param bool $default
+ * Get a foogallery template setting for the current foogallery that is being output to the frontend
+ * @param string	$key
+ * @param string	$default
  *
  * @return bool
  */
-function foogallery_gallery_template_setting( $key, $default = false ) {
+function foogallery_gallery_template_setting( $key, $default = '' ) {
 	global $current_foogallery;
 	global $current_foogallery_arguments;
 	global $current_foogallery_template;
@@ -171,7 +171,7 @@ function foogallery_gallery_template_setting( $key, $default = false ) {
 }
 
 /**
- * @TODO
+ * Get the admin menu parent slug
  * @return string
  */
 function foogallery_admin_menu_parent_slug() {
@@ -179,7 +179,7 @@ function foogallery_admin_menu_parent_slug() {
 }
 
 /**
- * @TODO
+ * Helper function to build up the admin menu Url
  * @param array $extra_args
  *
  * @return string|void
@@ -193,7 +193,8 @@ function foogallery_build_admin_menu_url( $extra_args = array() ) {
 }
 
 /**
- * @TODO
+ * Helper function for adding a foogallery sub menu
+ *
  * @param $menu_title
  * @param $capability
  * @param $menu_slug
@@ -256,7 +257,6 @@ function foogallery_extract_gallery_shortcodes($content) {
 			$attribure_string = str_replace( " ", "&", trim( $args ) );
 			$attribure_string = str_replace( '"', '', $attribure_string );
 			$attributes = wp_parse_args( $attribure_string );
-			$id = 0;
 			if ( array_key_exists( 'id', $attributes ) ) {
 				$id           = intval( $attributes['id'] );
 				$shortcodes[$id] = $shortcode;
@@ -267,6 +267,11 @@ function foogallery_extract_gallery_shortcodes($content) {
 	return $shortcodes;
 }
 
+/**
+ * Build up the FooGallery shortcode regex
+ *
+ * @return string
+ */
 function foogallery_gallery_shortcode_regex() {
 	$tag = foogallery_gallery_shortcode_tag();
 
