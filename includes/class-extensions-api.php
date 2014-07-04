@@ -149,7 +149,7 @@ if ( !class_exists( 'FooGallery_Extensions_API' ) ) {
 				$category_names = $extension['categories'];
 				foreach ( $category_names as $category_name ) {
 					$category_slug = foo_convert_to_key( $category_name );
-					if ( empty( $first_category ) ) { $first_category = $category_slug; }
+
 					if ( !array_key_exists( $category_slug, $categories ) ) {
 						$categories[$category_slug] = array(
 							'name'  => $category_name
@@ -160,10 +160,6 @@ if ( !class_exists( 'FooGallery_Extensions_API' ) ) {
 			$categories['build_your_own'] = array(
 				'name' => __('Build Your Own', 'foogallery')
 			);
-			if ( 0 == $active ) {
-				unset( $categories['active'] );
-				$categories[$first_category]['first'] = true;
-			}
 			return $categories;
 		}
 
