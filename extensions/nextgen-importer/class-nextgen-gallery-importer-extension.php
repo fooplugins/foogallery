@@ -9,13 +9,16 @@ if ( ! class_exists( 'FooGallery_Nextgen_Gallery_Importer_Extension' ) ) {
 
 	class FooGallery_Nextgen_Gallery_Importer_Extension {
 
+		/**
+		 * @var FooGallery_NextGen_Helper
+		 */
 		private $nextgen;
 
 		function __construct() {
-			$nextgen = new FooGallery_NextGen_Helper();
+			$this->nextgen = new FooGallery_NextGen_Helper();
 
 			//only do anything if NextGen is installed
-			if ( $nextgen->is_nextgen_installed() ) {
+			if ( $this->nextgen->is_nextgen_installed() ) {
 				//hook into the foogallery menu
 				add_action( 'foogallery_admin_menu_after', array( $this, 'add_menu' ) );
 				add_action( 'foogallery_extension_activated-nextgen', array( $this, 'add_menu' ) );
@@ -26,7 +29,6 @@ if ( ! class_exists( 'FooGallery_Nextgen_Gallery_Importer_Extension' ) ) {
 				add_action( 'wp_ajax_foogallery_nextgen_import_refresh', array(	$this, 'ajax_nextgen_continue_import') );
 				add_action( 'wp_ajax_foogallery_nextgen_import_cancel', array( $this, 'ajax_nextgen_cancel_import' ) );
 				add_action( 'wp_ajax_foogallery_nextgen_import_reset', array( $this, 'ajax_nextgen_reset_import' ) );
-
 			}
 		}
 
@@ -44,9 +46,7 @@ if ( ! class_exists( 'FooGallery_Nextgen_Gallery_Importer_Extension' ) ) {
 		function ajax_nextgen_start_import() {
 			if ( check_admin_referer( 'foogallery_nextgen_import', 'foogallery_nextgen_import' ) ) {
 
-				$nextgen = new FooGallery_NextGen_Helper();
-
-				$nextgen->ignore_previously_imported_galleries();
+				$this->nextgen->ignore_previously_imported_galleries();
 
 				if ( array_key_exists( 'nextgen-id', $_POST ) ) {
 
@@ -56,17 +56,17 @@ if ( ! class_exists( 'FooGallery_Nextgen_Gallery_Importer_Extension' ) ) {
 						$foogallery_title = stripslashes( $_POST[ 'foogallery-name-' . $gid ] );
 
 						//init the start progress of the import for the gallery
-						$nextgen->init_import_progress( $gid, $foogallery_title );
+						$this->nextgen->init_import_progress( $gid, $foogallery_title );
 					}
 
-					$nextgen->start_import();
+					$this->nextgen->start_import();
 
 				} else {
 
 				}
 			}
 
-			$nextgen->render_import_form();
+			$this->nextgen->render_import_form();
 
 			die();
 
@@ -75,11 +75,9 @@ if ( ! class_exists( 'FooGallery_Nextgen_Gallery_Importer_Extension' ) ) {
 		function ajax_nextgen_continue_import() {
 			if ( check_admin_referer( 'foogallery_nextgen_import_refresh', 'foogallery_nextgen_import_refresh' ) ) {
 
-				$nextgen = new FooGallery_NextGen_Helper();
+				$this->nextgen->continue_import();
 
-				$nextgen->continue_import();
-
-				$nextgen->render_import_form();
+				$this->nextgen->render_import_form();
 
 			}
 
@@ -90,11 +88,9 @@ if ( ! class_exists( 'FooGallery_Nextgen_Gallery_Importer_Extension' ) ) {
 		function ajax_nextgen_cancel_import() {
 			if ( check_admin_referer( 'foogallery_nextgen_import_cancel', 'foogallery_nextgen_import_cancel' ) ) {
 
-				$nextgen = new FooGallery_NextGen_Helper();
+				$this->nextgen->cancel_import();
 
-				$nextgen->cancel_import();
-
-				$nextgen->render_import_form();
+				$this->nextgen->render_import_form();
 
 			}
 			die();
@@ -103,11 +99,9 @@ if ( ! class_exists( 'FooGallery_Nextgen_Gallery_Importer_Extension' ) ) {
 		function ajax_nextgen_reset_import() {
 			if ( check_admin_referer( 'foogallery_nextgen_reset', 'foogallery_nextgen_reset' ) ) {
 
-				$nextgen = new FooGallery_NextGen_Helper();
+				$this->nextgen->reset_import();
 
-				$nextgen->reset_import();
-
-				$nextgen->render_import_form();
+				$this->nextgen->render_import_form();
 
 			}
 			die();

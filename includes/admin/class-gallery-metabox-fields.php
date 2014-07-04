@@ -21,7 +21,7 @@ if ( !class_exists( 'FooGallery_Admin_Gallery_MetaBox_Fields' ) ) {
 			$template_slug = $template['slug'];
 
 			//only declare up front so no debug warnings are shown
-			$type = $id = $desc = $default = $placeholder = $choices = $class = $section = $spacer = null;
+			$type = $id = $desc = $default = $placeholder = $choices = $class = $spacer = null;
 
 			//allow for the field to be altered by extensions. Also used by the build-in fields, e.g. lightbox
 			$field = apply_filters( 'foogallery_alter_gallery_template_field', $field, $gallery );

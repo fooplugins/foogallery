@@ -169,11 +169,6 @@ where gid = %d", $id ) );
 		function import_picture( $nextgen_gallery_path, $picture ) {
 			$picture_url = trailingslashit( site_url() ) . trailingslashit( $nextgen_gallery_path ) . $picture->filename;
 
-			$filename = basename( $picture_url );
-
-			//@TODO
-			//try and find an existing attachment and return that immediately
-
 			// Get the contents of the picture
 			$response = wp_remote_get( $picture_url );
 			$contents = wp_remote_retrieve_body( $response );
@@ -246,6 +241,7 @@ where gid = %d", $id ) );
 				foreach ( $galleries as $gallery ) {
 					$progress    = $this->get_import_progress( $gallery->gid );
 					$done        = $progress->is_completed();
+					$edit_link	 = '';
 					if ( $progress->foogallery_id > 0 ) {
 						$foogallery = FooGallery::get_by_id( $progress->foogallery_id );
 						$edit_link  = '<a href="' . admin_url( 'post.php?post=' . $progress->foogallery_id . '&action=edit' ) . '">' . $foogallery->name . '</a>';

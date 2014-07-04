@@ -113,14 +113,15 @@ if ( !class_exists( 'FooGallery_Plugin' ) ) {
 
 					// Get all blog ids
 					$blog_ids = self::get_blog_ids();
+					if ( is_array( $blog_ids ) ) {
+						foreach ( $blog_ids as $blog_id ) {
 
-					foreach ( $blog_ids as $blog_id ) {
+							switch_to_blog( $blog_id );
+							self::single_activate();
+						}
 
-						switch_to_blog( $blog_id );
-						self::single_activate();
+						restore_current_blog();
 					}
-
-					restore_current_blog();
 
 				} else {
 					self::single_activate();
@@ -163,7 +164,7 @@ if ( !class_exists( 'FooGallery_Plugin' ) ) {
 		 */
 		private static function get_blog_ids() {
 
-			if ( function_exists( 'wp_get_sites') ) {
+			if ( function_exists( 'wp_get_sites' ) ) {
 
 				$sites = wp_get_sites();
 				$blog_ids = array();
