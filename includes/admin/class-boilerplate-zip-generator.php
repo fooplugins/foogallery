@@ -30,7 +30,7 @@ if ( !class_exists( 'FooGallery_Boilerplate_Zip_Generator' ) ) {
 
 			//check required args
 			if ( empty($this->options['name']) ) {
-				throw new Exception("Zip_Generator class requires a name in order to function!");
+				throw new Exception("FooGallery_Boilerplate_Zip_Generator class requires a name in order to function!");
 			}
 
 			$this->slug = sanitize_title_with_dashes( $this->options['name'] );
@@ -58,7 +58,7 @@ if ( !class_exists( 'FooGallery_Boilerplate_Zip_Generator' ) ) {
 		function generate() {
 			$zip = new ZipArchive;
 
-			$res = $zip->open( $this->options['zip_temp_filename'], ZipArchive::CREATE && ZipArchive::OVERWRITE );
+			$zip->open( $this->options['zip_temp_filename'], ZipArchive::CREATE && ZipArchive::OVERWRITE );
 
 			$source_path = realpath( $this->options['source_directory'] );
 
@@ -127,8 +127,6 @@ if ( !class_exists( 'FooGallery_Boilerplate_Zip_Generator' ) ) {
 			header( "Content-type: application/octet-stream" );
 			header( sprintf( 'Content-Disposition: attachment; filename="%s"', $this->options['download_filename'] ) );
 			header( "Content-Transfer-Encoding: binary" );
-			$size = filesize( $this->options['zip_temp_filename'] );
-			//header("Content-Length: \".$size.\"");
 
 			ob_clean();
 			flush();
