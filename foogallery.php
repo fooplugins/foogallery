@@ -163,15 +163,23 @@ if ( !class_exists( 'FooGallery_Plugin' ) ) {
 		 */
 		private static function get_blog_ids() {
 
-			global $wpdb;
+			if ( function_exists( 'wp_get_sites') ) {
 
-			// get an array of blog ids
-			$sql = "SELECT blog_id FROM $wpdb->blogs
-			WHERE archived = '0' AND spam = '0'
-			AND deleted = '0'";
+				$sites = wp_get_sites();
+				$blog_ids = array();
+				foreach ( $sites as $site ) {
+					$blog_ids[] = $site['blog_id'];
+				}
+				return $blog_ids;
+			} else {
+				//pre WP 3.7 - do this the old way!
+				global $wpdb;
 
-			return $wpdb->get_col( $sql );
+				// get an array of blog ids
+				$sql = "SELECT blog_id FROM $wpdb->blogs WHERE archived = '0' AND spam = '0' AND deleted = '0'";
 
+				return $wpdb->get_col( $sql );
+			}
 		}
 	}
 }
