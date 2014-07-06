@@ -20,6 +20,8 @@ if ( !class_exists( 'FooGallery_Admin_Gallery_Editor' ) ) {
 
 			// Ajax calls for showing all galleries in the modal
 			add_action( 'wp_ajax_foogallery_load_galleries', array($this, 'ajax_galleries_html') );
+
+			add_action( 'wp_ajax_foogallery_tinymce_load_info', array($this, 'ajax_get_gallery_info') );
 		}
 
 		/**
@@ -56,6 +58,7 @@ if ( !class_exists( 'FooGallery_Admin_Gallery_Editor' ) ) {
 			if ( 'true' == get_user_option( 'rich_editing' ) ) {
 				add_filter( 'mce_external_plugins',  array($this, 'add_tinymce_js' ) );
 				add_filter( 'mce_css',  array($this, 'add_tinymce_css' ) );
+				add_action( 'admin_footer', array($this, 'render_tinymce_nonce') );
 			}
 		}
 
@@ -80,11 +83,19 @@ if ( !class_exists( 'FooGallery_Admin_Gallery_Editor' ) ) {
 			if ( ! empty( $mce_css ) )
 				$mce_css .= ',';
 
-			$mce_css .= FOOGALLERY_URL . 'css/admin-tinymce.css';
+			$mce_css .= FOOGALLERY_URL . 'css/admin-tinymce.css'; // . urlencode( '?v=' + FOOGALLERY_VERSION );
 
 			return $mce_css;
 		}
 
+		/**
+		 * Renders a nonce field that is used in our AJAX calls for the visual editor
+		 */
+		public function render_tinymce_nonce() {
+			?>
+			<input id="foogallery-timnymce-action-nonce" type="hidden" value="<?php esc_url( wp_create_nonce( 'foogallery-timymce-nonce' ) ); ?>" />
+			<?php
+		}
 
 
 		/**
@@ -352,6 +363,33 @@ if ( !class_exists( 'FooGallery_Admin_Gallery_Editor' ) ) {
 			<?php
 
 			return ob_get_clean();
+		}
+
+		function ajax_get_gallery_info() {
+
+			$nonce = safe_get_from_request( 'nonce' );
+
+			wp_verify_nonce( $nonce, 'foogallery-timymce-nonce' );
+
+			$id = safe_get_from_request( 'foogallery_id' );
+
+			$gallery = FooGallery::get_by_id( $id );
+
+			$attachment_id = $gallery->find_attachment_id();
+
+			$image_src = wp_get_attachment_image_src( $attachment_id, 'thumbnail', true );
+
+			$json_array = array(
+				'id'    => $id,
+				'name'  => $gallery->name,
+				'count' => $gallery->image_count(),
+				'src'   => $image_src[0]
+			);
+
+			header( 'Content-type: application/json' );
+			echo json_encode( $json_array );
+
+			die();
 		}
 	}
 }
