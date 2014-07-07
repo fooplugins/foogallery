@@ -153,7 +153,6 @@ if ( !class_exists( 'FooGallery_Admin_Gallery_MetaBox_Fields' ) ) {
 			if ( $field ) {
 				switch ($field['type']) {
 					case 'thumb_size':
-						global $_wp_additional_image_sizes;
 						$field['type'] = 'select';
 						$field['choices'] = $this->get_thumb_size_choices();
 						break;
