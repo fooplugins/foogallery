@@ -23,6 +23,7 @@ if ( !class_exists( 'FooGallery_Admin' ) ) {
 			new FooGallery_Admin_Gallery_MetaBox_Fields();
 			new FooGallery_Admin_Columns();
 			new FooGallery_Admin_Extensions();
+			new FooGallery_Boilerplate_Download_Handler();
 		}
 
 		function init() {

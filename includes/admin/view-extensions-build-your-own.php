@@ -23,12 +23,7 @@ if ( !empty( $nonce ) && wp_verify_nonce( $nonce, 'foogallery_boilerplate' ) ) {
 		$boilerplate_error = __('Please fill in all form fields!', 'foogallery');
 	} else {
 
-		$action = $_POST['action'];
 
-		if ( 'download' === $action ) {
-			$handler = new FooGallery_Boilerplate_Download_Handler();
-			$handler->run( $boilerplate_name, $boilerplate_type, $boilerplate_desc, $boilerplate_author, $boilerplate_author_link );
-		}
 	}
 
 } else {

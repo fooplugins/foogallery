@@ -7,7 +7,33 @@ if ( !class_exists( 'FooGallery_Boilerplate_Download_Handler' ) ) {
 
 	class FooGallery_Boilerplate_Download_Handler {
 
+		function __construct() {
+			add_action( 'admin_init', array($this, 'listen_for_boilerplate_download'), 1 );
+		}
+
 		private $slug;
+
+		function listen_for_boilerplate_download() {
+			$nonce = safe_get_from_request( 'foogallery_boilerplate_nonce' );
+			$action = safe_get_from_request( 'action' );
+
+			if ( empty($nonce) || empty($action) ) {
+				return;
+			}
+
+			if ( !empty( $nonce ) && wp_verify_nonce( $nonce, 'foogallery_boilerplate' ) ) {
+
+				$boilerplate_type        = $_POST['boilerplate_type'];
+				$boilerplate_name        = $_POST['boilerplate_name'];
+				$boilerplate_desc        = $_POST['boilerplate_desc'];
+				$boilerplate_author      = $_POST['boilerplate_author'];
+				$boilerplate_author_link = $_POST['boilerplate_author_link'];
+
+				if ( 'download' === $action ) {
+					$this->run( $boilerplate_name, $boilerplate_type, $boilerplate_desc, $boilerplate_author, $boilerplate_author_link );
+				}
+			}
+		}
 
 		function run($boilerplate_name, $boilerplate_type, $boilerplate_desc, $boilerplate_author, $boilerplate_author_link) {
 			$this->slug = str_replace( ' ', '-', strtolower( $boilerplate_name ) );
