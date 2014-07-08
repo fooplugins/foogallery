@@ -121,7 +121,7 @@
 	}
 
 .mce-content-body div.foogallery-tinymce-view .foogallery-tinymce-title {
-	font-weight: bold;
+	font-family: "Open Sans", sans-serif;
 	font-size: 1.5em;
 	color: #888;
 	position: absolute;
@@ -131,10 +131,11 @@
 }
 
 .mce-content-body div.foogallery-tinymce-view .foogallery-tinymce-count {
+	font-family: "Open Sans", sans-serif;
 	font-size: 0.8em;
 	color: #888;
 	position: absolute;
-	bottom: 1em;
+	bottom: 0.6em;
 	width: 100%;
 	left: 0;
 }

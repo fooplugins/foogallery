@@ -117,28 +117,32 @@
 				node = event.target,
 				fg = getParentFooGallery( node );
 
-			function unselect() {
-				dom.removeClass( dom.select( 'div.foogallery-tinymce-selected' ), 'foogallery-tinymce-selected' );
-			}
+			// Don't trigger on right-click
+			if ( event.button !== 2 ) {
 
-			if ( fg ) {
-				//we have clicked somewhere in the foogallery element
-
-				if ( node.nodeName === 'A' && dom.hasClass( node, 'foogallery-tinymce-toolbar-edit' ) ) {
-					//alert('EDIT : ' + dom.getAttrib( fg, 'data-foogallery-id' ))
-				} else if ( node.nodeName === 'DIV' && dom.hasClass( node, 'foogallery-tinymce-toolbar-delete' ) ) {
-					//alert('DELETE : ' + dom.getAttrib( fg, 'data-foogallery-id' ))
-					dom.remove( fg );
-				} else {
-
-					if ( !dom.hasClass(fg, 'foogallery-tinymce-selected')) {
-						unselect();
-						dom.addClass(fg, 'foogallery-tinymce-selected');
-					}
-
+				function unselect() {
+					dom.removeClass(dom.select('div.foogallery-tinymce-selected'), 'foogallery-tinymce-selected');
 				}
-			} else {
-				unselect();
+
+				if (fg) {
+					//we have clicked somewhere in the foogallery element
+
+					if (node.nodeName === 'A' && dom.hasClass(node, 'foogallery-tinymce-toolbar-edit')) {
+						//alert('EDIT : ' + dom.getAttrib( fg, 'data-foogallery-id' ))
+					} else if (node.nodeName === 'DIV' && dom.hasClass(node, 'foogallery-tinymce-toolbar-delete')) {
+						//alert('DELETE : ' + dom.getAttrib( fg, 'data-foogallery-id' ))
+						dom.remove(fg);
+					} else {
+
+						if (!dom.hasClass(fg, 'foogallery-tinymce-selected')) {
+							unselect();
+							dom.addClass(fg, 'foogallery-tinymce-selected');
+						}
+
+					}
+				} else {
+					unselect();
+				}
 			}
 		});
 	});
