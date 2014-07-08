@@ -94,6 +94,8 @@ if ( !class_exists( 'FooGallery_Plugin' ) ) {
 			} else {
 				new FooGallery_Public();
 			}
+
+			new FooGallery_Thumbnails();
 		}
 
 		/**
