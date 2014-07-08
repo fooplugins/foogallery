@@ -305,3 +305,24 @@ function foogallery_gallery_shortcode_regex() {
 		. ')'
 		. '(\\]?)';                          // 6: Optional second closing brocket for escaping shortcodes: [[tag]]
 }
+
+/**
+ * Builds up a class attribute that can be used in a gallery template
+ * @param $gallery FooGallery
+ *
+ * @return string the classname based on the gallery and any extra attributes
+ */
+function foogallery_build_class_attribute( $gallery ) {
+	$classes[] = 'foogallery-container';
+	$classes[] = "foogallery-{$gallery->gallery_template}";
+	$num_args = func_num_args();
+
+	if ( $num_args > 1 ) {
+		$arg_list = func_get_args();
+		for ($i = 1; $i < $num_args; $i++) {
+			$classes[] = $arg_list[$i];
+		}
+	}
+
+	return implode( ' ', $classes );
+}

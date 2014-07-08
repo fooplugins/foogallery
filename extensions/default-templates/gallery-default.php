@@ -13,7 +13,7 @@ $hover_effect = foogallery_gallery_template_setting( 'hover-effect', 'hover-effe
 $border_style = foogallery_gallery_template_setting( 'border-style', 'border-style-square-white' );
 $alignment = foogallery_gallery_template_setting( 'alignment', 'alignment-center' );
 ?>
-<div class="foogallery-container foogallery-default foogallery-lightbox-<?php echo $lightbox; ?> <?php echo $spacing; ?> <?php echo $hover_effect; ?> <?php echo $border_style; ?> <?php echo $alignment; ?>">
+<div class="<?php echo foogallery_build_class_attribute( $current_foogallery, 'foogallery-lightbox-' . $lightbox, $spacing, $hover_effect, $border_style, $alignment); ?>">
 	<?php foreach ( $current_foogallery->attachments() as $attachment ) {
 		echo $attachment->html( $args );
 	} ?>

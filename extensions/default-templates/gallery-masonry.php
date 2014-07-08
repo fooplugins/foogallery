@@ -32,7 +32,7 @@ if ( !foo_check_wp_version_at_least( '3.9' ) ) { ?>
 	}
 </style>
 <div id="foogallery-gallery-<?php echo $current_foogallery->ID; ?>"
-	 class="foogallery-container foogallery-masonry js-masonry"
+	 class="<?php echo foogallery_build_class_attribute( $current_foogallery, 'js-masonry'); ?>"
 	 data-masonry-options='{ "itemSelector": ".item", "gutter": 10 }'>
 	<?php foreach ( $current_foogallery->attachments() as $attachment ) {
 		echo '<div class="item">';
