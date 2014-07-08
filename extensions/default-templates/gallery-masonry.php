@@ -20,8 +20,7 @@ if ( !foo_check_wp_version_at_least( '3.9' ) ) { ?>
 			$('#foogallery-gallery-<?php echo $current_foogallery->ID; ?>').masonry({
 				itemSelector: '.item',
 				columnWidth: <?php echo $width; ?>,
-				gutter: <?php echo $gutter_width; ?>,
-				transitionDuration: 0
+				gutter: <?php echo $gutter_width; ?>
 			});
 		});
 	</script>
@@ -42,7 +41,7 @@ if ( !foo_check_wp_version_at_least( '3.9' ) ) { ?>
 </style>
 <div id="foogallery-gallery-<?php echo $current_foogallery->ID; ?>"
 	 class="<?php echo foogallery_build_class_attribute( $current_foogallery, 'js-masonry', 'foogallery-lightbox-' . $lightbox); ?>"
-	 data-masonry-options='{ "itemSelector": ".item", "transitionDuration": 0, "gutter": <?php echo $gutter_width; ?> }'>
+	 data-masonry-options='{ "itemSelector": ".item", "gutter": <?php echo $gutter_width; ?> }'>
 	<?php foreach ( $current_foogallery->attachments() as $attachment ) {
 		echo '<div class="item">';
 		echo $attachment->html( $args );
