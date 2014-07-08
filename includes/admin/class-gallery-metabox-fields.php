@@ -30,7 +30,7 @@ if ( !class_exists( 'FooGallery_Admin_Gallery_MetaBox_Fields' ) ) {
 
 			$id = $template_slug . '_' . $id;
 
-			$field_value = $gallery->get_meta( $id, $default );
+			$field['value'] = $gallery->get_meta( $id, $default );
 
 			$field_class = empty($class) ? '' : ' class="' . $class . '"';
 
@@ -52,14 +52,14 @@ if ( !class_exists( 'FooGallery_Admin_Gallery_MetaBox_Fields' ) ) {
 
 				case 'checkbox':
 					if ( isset($gallery->settings[$id]) && $gallery->settings[$id] == 'on' ) {
-						$field_value = 'on';
+						$field['value'] = 'on';
 					} else if ( !isset($gallery->settings) && $default == 'on' ) {
-						$field_value = 'on';
+						$field['value'] = 'on';
 					} else {
-						$field_value = '';
+						$field['value'] = '';
 					}
 
-					$checked = 'on' === $field_value ? ' checked="checked"' : '';
+					$checked = 'on' === $field['value'] ? ' checked="checked"' : '';
 					echo '<input' . $field_class . ' type="checkbox" id="FooGallerySettings_' . $id . '" name="' . FOOGALLERY_META_SETTINGS . '[' . $id . ']" value="on"' . $checked . ' />';
 					break;
 
@@ -67,7 +67,7 @@ if ( !class_exists( 'FooGallery_Admin_Gallery_MetaBox_Fields' ) ) {
 					echo '<select' . $field_class . ' id="FooGallerySettings_' . $id . '" name="' . FOOGALLERY_META_SETTINGS . '[' . $id . ']">';
 					foreach ( $choices as $value => $label ) {
 						$selected = '';
-						if ( $field_value == $value ) {
+						if ( $field['value'] == $value ) {
 							$selected = ' selected="selected"';
 						}
 						echo '<option ' . $selected . ' value="' . $value . '">' . $label . '</option>';
@@ -81,7 +81,7 @@ if ( !class_exists( 'FooGallery_Admin_Gallery_MetaBox_Fields' ) ) {
 					$spacer = isset($spacer) ? $spacer : '<br />';
 					foreach ( $choices as $value => $label ) {
 						$selected = '';
-						if ( $field_value == $value ) {
+						if ( $field['value'] == $value ) {
 							$selected = ' checked="checked"';
 						}
 						echo '<input' . $field_class . $selected . ' type="radio" name="' . FOOGALLERY_META_SETTINGS . '[' . $id . ']"  id="FooGallerySettings_' . $id . $i . '" value="' . $value . '"> <label for="FooGallerySettings_' . $id . $i . '">' . $label . '</label>';
@@ -93,12 +93,12 @@ if ( !class_exists( 'FooGallery_Admin_Gallery_MetaBox_Fields' ) ) {
 					break;
 
 				case 'textarea':
-					echo '<textarea' . $field_class . ' id="FooGallerySettings_' . $id . '" name="' . FOOGALLERY_META_SETTINGS . '[' . $id . ']" placeholder="' . $placeholder . '">' . esc_attr( $field_value ) . '</textarea>';
+					echo '<textarea' . $field_class . ' id="FooGallerySettings_' . $id . '" name="' . FOOGALLERY_META_SETTINGS . '[' . $id . ']" placeholder="' . $placeholder . '">' . esc_attr( $field['value'] ) . '</textarea>';
 
 					break;
 
 				case 'text':
-					echo '<input class="regular-text ' . $class . '" type="text" id="FooGallerySettings_' . $id . '" name="' . FOOGALLERY_META_SETTINGS . '[' . $id . ']" placeholder="' . $placeholder . '" value="' . esc_attr( $field_value ) . '" />';
+					echo '<input class="regular-text ' . $class . '" type="text" id="FooGallerySettings_' . $id . '" name="' . FOOGALLERY_META_SETTINGS . '[' . $id . ']" placeholder="' . $placeholder . '" value="' . esc_attr( $field['value'] ) . '" />';
 
 					break;
 
@@ -107,7 +107,7 @@ if ( !class_exists( 'FooGallery_Admin_Gallery_MetaBox_Fields' ) ) {
 					foreach ( $choices as $value => $label ) {
 
 						$checked = '';
-						if ( isset($field_value[$value]) && $field_value[$value] == 'true' ) {
+						if ( isset($field['value'][$value]) && $field['value'][$value] == 'true' ) {
 							$checked = 'checked="checked"';
 						}
 
@@ -124,7 +124,7 @@ if ( !class_exists( 'FooGallery_Admin_Gallery_MetaBox_Fields' ) ) {
 					$input_name = FOOGALLERY_META_SETTINGS . '[' . $id . ']';
 					$icon_html = '';
 					foreach ( $choices as $value => $icon ) {
-						$selected = ( $field_value == $value ) ? ' checked="checked"' : '';
+						$selected = ( $field['value'] == $value ) ? ' checked="checked"' : '';
 						$icon_html .= '<input style="display:none" name="' . $input_name. '" id="FooGallerySettings_' . $id . $i . '" ' . $selected . ' type="radio" value="' . $value . '" tabindex="' . $i . '"/>';
 						$title = $icon['label'];
 						$img = $icon['img'];
@@ -135,9 +135,9 @@ if ( !class_exists( 'FooGallery_Admin_Gallery_MetaBox_Fields' ) ) {
 					break;
 
 				case 'thumb_size':
-					$width = is_array($field_value) ? $field_value['width'] : 150;
-					$height = is_array($field_value) ? $field_value['height'] : 150;
-					$crop = is_array($field_value) && array_key_exists('crop', $field_value) ? $field_value['crop'] : 0;
+					$width = is_array($field['value']) ? $field['value']['width'] : 150;
+					$height = is_array($field['value']) ? $field['value']['height'] : 150;
+					$crop = is_array($field['value']) && array_key_exists('crop', $field['value']) ? $field['value']['crop'] : 0;
 					$crop_checked = ($crop == 1) ? ' checked="checked"' : '';
 					echo '<label for="FooGallerySettings_' . $id . '_width">' . __('Width', 'foogallery') . '</label>';
 					echo '<input class="small-text" type="number" step="1" min="0" id="FooGallerySettings_' . $id . '_width" name="' . FOOGALLERY_META_SETTINGS . '[' . $id . '][width]" value="' . esc_attr( $width ) . '" />';
@@ -146,10 +146,10 @@ if ( !class_exists( 'FooGallery_Admin_Gallery_MetaBox_Fields' ) ) {
 					echo '<input name="' . FOOGALLERY_META_SETTINGS . '[' . $id . '][crop]" type="hidden" id="FooGallerySettings_' . $id . '_nocrop" value="0" />';
 					echo '<input name="' . FOOGALLERY_META_SETTINGS . '[' . $id . '][crop]" type="checkbox" id="FooGallerySettings_' . $id . '_crop" value="1"' . $crop_checked . '>';
 					echo '<label for="FooGallerySettings_' . $id . '_crop">' . __('Crop thumbnail to exact dimensions', 'foogallery') . '</label>';
-
 					break;
+
 				default:
-					do_action( 'foogallery_render_gallery_template_field_custom', $field, $gallery );
+					do_action( 'foogallery_render_gallery_template_field_custom', $field, $gallery, $template );
 					break;
 			}
 
@@ -226,7 +226,8 @@ if ( !class_exists( 'FooGallery_Admin_Gallery_MetaBox_Fields' ) ) {
 		function get_thumb_link_field_choices() {
 			return apply_filters('foogallery_gallery_template_field_thumb_links', array(
 				'image' => __('Full Size Image', 'foogallery'),
-				'page' => __('Image Attachment Page', 'foogallery')
+				'page' => __('Image Attachment Page', 'foogallery'),
+				'none' => __('Not linked', 'foogallery')
 			) );
 		}
 

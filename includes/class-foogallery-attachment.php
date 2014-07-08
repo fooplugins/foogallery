@@ -8,11 +8,11 @@ if (!class_exists('FooGalleryAttachment')) {
 
     class FooGalleryAttachment extends stdClass {
 		/**
-		 * private constructor
+		 * public constructor
 		 *
 		 * @param null $post
 		 */
-		private function __construct($post = NULL) {
+		public function __construct($post = NULL) {
 			$this->set_defaults();
 
 			if ($post !== NULL) {
@@ -104,12 +104,13 @@ if (!class_exists('FooGalleryAttachment')) {
 		 * @return string
 		 */
 		function html( $args = array() ) {
-			if ( 0 === $this->ID ) {
+			if ( empty ( $this->url ) )  {
 				return '';
 			}
 
 			$arg_defaults = array(
-				'link' => 'image'
+				'link' => 'image',
+				'custom_link' => '#'
 			);
 
 			$args = wp_parse_args( $args, $arg_defaults );
@@ -126,8 +127,10 @@ if (!class_exists('FooGalleryAttachment')) {
 			if ( 'page' === $link ) {
 				//get the URL to the attachment page
 				$url = get_attachment_link( $this->ID );
-			} else {
+			} else if ( 'image' === $link ) {
 				$url = $this->url;
+			} else if ( 'custom' === $link ) {
+				$url = $args['custom_link'];
 			}
 
 			$attr['href'] = $url;

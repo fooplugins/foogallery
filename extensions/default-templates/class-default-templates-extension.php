@@ -8,6 +8,7 @@ if ( !class_exists( 'FooGallery_Default_Templates_Extension' ) ) {
 		function __construct() {
 			add_filter( 'foogallery_gallery_templates', array( $this, 'add_default_templates' ) );
 			add_filter( 'foogallery_gallery_templates_files', array( $this, 'register_myself' ) );
+			add_action( 'foogallery_render_gallery_template_field_custom', array( $this, 'render_thumbnail_preview' ), 10, 3 );
 		}
 
 		function register_myself( $extensions ) {
@@ -28,6 +29,11 @@ if ( !class_exists( 'FooGallery_Default_Templates_Extension' ) ) {
 						'title'   => __('Thumbnail Size', 'foogallery'),
 						'desc'    => __('Choose the size of your thumbnails.', 'foogallery'),
 						'type'    => 'thumb_size',
+						'default' => array(
+							'width' => get_option( 'thumbnail_size_w' ),
+							'height' => get_option( 'thumbnail_size_h' ),
+							'crop' => true
+						)
 					),
 					array(
 						'id'      => 'thumbnail_link',
@@ -35,7 +41,7 @@ if ( !class_exists( 'FooGallery_Default_Templates_Extension' ) ) {
 						'default' => 'image',
 						'type'    => 'thumb_link',
 						'spacer'  => '<span class="spacer"></span>',
-						'desc'	  => __('You can choose to either link each thumbnail to the full size image or to the image\'s attachment page.', 'foogallery')
+						'desc'	  => __('You can choose to link each thumbnail to the full size image, or to the image\'s attachment page, or you can choose to not link to anything.', 'foogallery')
 					),
 					array(
 						'id'      => 'lightbox',
@@ -100,6 +106,12 @@ if ( !class_exists( 'FooGallery_Default_Templates_Extension' ) ) {
 							'hover-effect-eye' => array('label' => __('Eye' ,'foogallery'), 'img' => FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_URL . 'assets/hover-effect-icon-eye.png'),
 							'' => array('label' => __('None' ,'foogallery'), 'img' => FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_URL . 'assets/hover-effect-icon-none.png'),
 						)
+					),
+					array(
+						'id' => 'thumb_preview',
+						'title' => __('Thumbnail Preview', 'foogallery'),
+						'desc' => __('This is what your thumbnails will look like on the frontend', 'foogallery'),
+						'type' => 'thumb_preview'
 					)
 				)
 			);
@@ -120,7 +132,7 @@ if ( !class_exists( 'FooGallery_Default_Templates_Extension' ) ) {
 						'default' => 'image' ,
 						'type'    => 'thumb_link',
 						'spacer'  => '<span class="spacer"></span>',
-						'desc'	  => __('You can choose to either link each thumbnail to the full size image or to the image\'s attachment page.', 'foogallery')
+						'desc'	  => __('You can choose to link each thumbnail to the full size image, or to the image\'s attachment page, or you can choose to not link to anything.', 'foogallery')
 					),
 					array(
 						'id'      => 'lightbox',
@@ -134,5 +146,33 @@ if ( !class_exists( 'FooGallery_Default_Templates_Extension' ) ) {
 			return $gallery_templates;
 		}
 
+		/**
+		 * Renders the thumbnail preview field
+		 *
+		 * @param $field array
+		 * @param $gallery FooGallery
+		 * @param $template array
+		 */
+		function render_thumbnail_preview( $field, $gallery, $template ) {
+			if ( 'thumb_preview' == $field['type'] ) {
+				$args = $gallery->get_meta( 'default_thumbnail_size', array() );
+				//override the link so that it does not actually open an image
+				$args['link'] = 'custom';
+
+				$hover_effect =  $gallery->get_meta( 'default_hover-effect', 'hover-effect-zoom' );
+				$border_style =  $gallery->get_meta( 'default_border-style', 'border-style-square-white' );
+
+				$featured = $gallery->featured_attachment();
+
+				if ( false === $featured ) {
+					$featured = new FooGalleryAttachment();
+					$featured->url = FOOGALLERY_URL . 'assets/test_thumb_1.jpg';
+				}
+
+				echo '<div class="' . foogallery_build_class_attribute( $gallery, $hover_effect, $border_style, 'foogallery-thumbnail-preview' ) . '">';
+				echo $featured->html( $args );
+				echo '</div>';
+			}
+		}
 	}
 }

@@ -2,18 +2,11 @@
 
 	FOOGALLERY_DEF_TEMPLATE.setPreviewClasses = function() {
 
-		var $featuredImage = $('#set-post-thumbnail'),
+		var $previewImage = $('.foogallery-thumbnail-preview'),
 			border_style = $('input[name="foogallery_settings[default_border-style]"]:checked').val(),
 			hover_effect = $('input[name="foogallery_settings[default_hover-effect]"]:checked').val();
 
-		//only do this if we have set a featured image
-		if ( $featuredImage.find('img').length ) {
-			if ($featuredImage.parent().is('.foogallery-container')) {
-				$featuredImage.unwrap();	//remove previous!
-			}
-			//wrap!
-			$featuredImage.wrap('<div class="foogallery-container foogallery-default ' + hover_effect + ' ' + border_style + '"></div>');
-		}
+		$previewImage.attr('class' ,'foogallery-thumbnail-preview foogallery-container foogallery-default ' + hover_effect + ' ' + border_style);
 	};
 
 	FOOGALLERY_DEF_TEMPLATE.adminReady = function () {
@@ -23,6 +16,10 @@
 
 		$('input[name="foogallery_settings[default_border-style]"], input[name="foogallery_settings[default_hover-effect]"]').change(function() {
 			FOOGALLERY_DEF_TEMPLATE.setPreviewClasses();
+		});
+
+		$('.foogallery-thumbnail-preview').click(function(e) {
+			e.preventDefault();
 		});
 	};
 

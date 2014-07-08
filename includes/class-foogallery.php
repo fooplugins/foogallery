@@ -217,6 +217,21 @@ class FooGallery extends stdClass {
 		return $attachment_id;
 	}
 
+	/**
+	 * Gets the featured image FooGalleryAttachment object. If no featured image is set, then get back the first image in the gallery
+	 *
+	 * @return bool|FooGalleryAttachment
+	 */
+	public function featured_attachment() {
+		$attachment_id = $this->find_featured_attachment_id();
+
+		if ( $attachment_id ) {
+			return FooGalleryAttachment::get_by_id( $attachment_id );
+		}
+
+		return false;
+	}
+
 	public function featured_image_src( $size='thumbnail', $icon = false ) {
 		$attachment_id = $this->find_featured_attachment_id();
 		if ( $attachment_id && $image_details = wp_get_attachment_image_src( $attachment_id, $size, $icon ) ) {
