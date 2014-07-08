@@ -214,7 +214,7 @@ function foogallery_add_submenu_page( $menu_title, $capability, $menu_slug, $fun
 /**
  * Returns all FooGallery galleries
  *
- * @return array(FooGallery) array of FooGallery galleries
+ * @return FooGallery[] array of FooGallery galleries
  */
 function foogallery_get_all_galleries() {
 	$gallery_posts = get_posts(

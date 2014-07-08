@@ -61,7 +61,7 @@ if ( ! class_exists( 'FooGallery_Admin_Columns' ) ) {
 					break;
 				case 'icon':
 					$gallery = FooGallery::get( $post );
-					$img = $gallery->attachment_image_html( array(80, 60), true );
+					$img = $gallery->featured_image_html( array(80, 60), true );
 					if ( $img ) {
 						echo $img;
 					}

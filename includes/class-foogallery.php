@@ -207,8 +207,9 @@ class FooGallery extends stdClass {
         return foogallery_build_gallery_shortcode( $this->ID );
     }
 
-	public function find_attachment_id() {
+	public function find_featured_attachment_id() {
 		$attachment_id = get_post_thumbnail_id( $this->ID );
+
 		//if no featured image could be found then get the first image
 		if ( !$attachment_id && $this->attachment_ids ) {
 			$attachment_id = array_shift( array_values( $this->attachment_ids ) );
@@ -216,16 +217,24 @@ class FooGallery extends stdClass {
 		return $attachment_id;
 	}
 
-	public function attachment_image_src( $size='thumbnail', $icon = false ) {
-		$attachment_id = $this->find_attachment_id();
+	public function featured_image_src( $size='thumbnail', $icon = false ) {
+		$attachment_id = $this->find_featured_attachment_id();
 		if ( $attachment_id && $image_details = wp_get_attachment_image_src( $attachment_id, $size, $icon ) ) {
 			return array_shift( array_values( $image_details ) );
 		}
 		return false;
 	}
 
-	public function attachment_image_html( $size='thumbnail', $icon = false ) {
-		$attachment_id = $this->find_attachment_id();
+	/**
+	 * Get an HTML img element representing the featured image for the gallery
+	 *
+	 * @param string $size Optional, default is 'thumbnail'.
+	 * @param bool $icon Optional, default is false. Whether it is an icon.
+	 *
+	 * @return string HTML img element or empty string on failure.
+	 */
+	public function featured_image_html( $size='thumbnail', $icon = false ) {
+		$attachment_id = $this->find_featured_attachment_id();
 		if ( $attachment_id && $thumb = @wp_get_attachment_image( $attachment_id, $size, $icon ) ) {
 			return $thumb;
 		}

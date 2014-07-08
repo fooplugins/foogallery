@@ -325,7 +325,7 @@ if ( !class_exists( 'FooGallery_Admin_Gallery_Editor' ) ) {
 			ob_start();
 
 			foreach ( $galleries as $gallery ) {
-				$img_src = $gallery->attachment_image_src( array(200, 200) );
+				$img_src = $gallery->featured_image_src( array(200, 200) );
 				$images = $gallery->image_count();
 				?>
 	<li class="foogallery-pile">
@@ -375,15 +375,11 @@ if ( !class_exists( 'FooGallery_Admin_Gallery_Editor' ) ) {
 
 			$gallery = FooGallery::get_by_id( $id );
 
-			$attachment_id = $gallery->find_attachment_id();
-
-			$image_src = wp_get_attachment_image_src( $attachment_id, 'thumbnail', true );
-
 			$json_array = array(
 				'id'    => $id,
 				'name'  => $gallery->name,
 				'count' => $gallery->image_count(),
-				'src'   => $image_src[0]
+				'src'   => $gallery->featured_image_src( 'thumbnail', true )
 			);
 
 			header( 'Content-type: application/json' );
