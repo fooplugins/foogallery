@@ -4,8 +4,13 @@
  */
 global $current_foogallery;
 global $current_foogallery_arguments;
-$args = foogallery_gallery_template_setting( 'thumbnail_size', array() );
-$args['link'] = foogallery_gallery_template_setting( 'thumbnail_link', 'image' );
+$width = foogallery_gallery_template_setting( 'thumbnail_width', '150' );
+$args = array(
+	'width' => $width,
+	'height' => $width,
+ 	'link' => foogallery_gallery_template_setting( 'thumbnail_link', 'image' ),
+	'crop' => false
+);
 wp_enqueue_script( 'masonry' );
 
 if ( !foo_check_wp_version_at_least( '3.9' ) ) { ?>
@@ -13,7 +18,7 @@ if ( !foo_check_wp_version_at_least( '3.9' ) ) { ?>
 		jQuery(function ($) {
 			$('#foogallery-gallery-<?php echo $current_foogallery->ID; ?>').masonry({
 				itemSelector: '.item',
-				columnWidth: 160
+				columnWidth: <?php echo $width; ?>
 			});
 		});
 	</script>
