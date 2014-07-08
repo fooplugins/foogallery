@@ -131,6 +131,16 @@ if ( !class_exists( 'FooGallery_Default_Templates_Extension' ) ) {
 						'min'     => '0'
 					),
 					array(
+						'id'      => 'gutter_width',
+						'title'   => __('Gutter Width', 'foogallery'),
+						'desc'    => __('The spacing between your thumbnails.', 'foogallery'),
+						'type'    => 'number',
+						'class'   => 'small-text',
+						'default' => 10,
+						'step'    => '1',
+						'min'     => '0'
+					),
+					array(
 						'id'      => 'thumbnail_link',
 						'title'   => __('Thumbnail Link', 'foogallery'),
 						'default' => 'image' ,
