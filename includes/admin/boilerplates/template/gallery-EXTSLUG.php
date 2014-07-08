@@ -3,14 +3,19 @@
  * FooGallery {name} gallery template
  * This is the template that is run when a FooGallery shortcode is rendered to the frontend
  */
+//the current FooGallery that is currently being rendered to the frontend
 global $current_foogallery;
+//the current shortcode args
 global $current_foogallery_arguments;
-$size = foogallery_gallery_template_setting( 'thumbnail_size', 'thumbnail' );
-$link = foogallery_gallery_template_setting( 'thumbnail_link', 'image' );
+//get our thumbnail sizing args
+$args = foogallery_gallery_template_setting( 'thumbnail_size', 'thumbnail' );
+//add the link setting to the args
+$args['link'] = foogallery_gallery_template_setting( 'thumbnail_link', 'image' );
+//get which lightbox we want to use
 $lightbox = foogallery_gallery_template_setting( 'lightbox', 'unknown' );
 ?>
 <ul class="foogallery-container foogallery-{slug} foogallery-lightbox-<?php echo esc_attr($lightbox); ?>">
 	<?php foreach ( $current_foogallery->attachments() as $attachment ) {
-		echo '<li>' . $attachment->html( $size, $link ) . '</li>';
+		echo '<li>' . $attachment->html( $args ) . '</li>';
 	} ?>
 </ul>
