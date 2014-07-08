@@ -4,8 +4,8 @@
  */
 global $current_foogallery;
 global $current_foogallery_arguments;
-$size = foogallery_gallery_template_setting( 'thumbnail_size', 'thumbnail' );
-$link = foogallery_gallery_template_setting( 'thumbnail_link', 'image' );
+$args = foogallery_gallery_template_setting( 'thumbnail_size', array() );
+$args['link'] = foogallery_gallery_template_setting( 'thumbnail_link', 'image' );
 wp_enqueue_script( 'masonry' );
 
 if ( !foo_check_wp_version_at_least( '3.9' ) ) { ?>
@@ -36,7 +36,7 @@ if ( !foo_check_wp_version_at_least( '3.9' ) ) { ?>
 	 data-masonry-options='{ "itemSelector": ".item", "gutter": 10 }'>
 	<?php foreach ( $current_foogallery->attachments() as $attachment ) {
 		echo '<div class="item">';
-		echo $attachment->html( $size, $link );
+		echo $attachment->html( $args );
 		echo '</div>';
 	} ?>
 </div>

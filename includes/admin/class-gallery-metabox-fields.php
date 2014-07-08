@@ -134,6 +134,20 @@ if ( !class_exists( 'FooGallery_Admin_Gallery_MetaBox_Fields' ) ) {
 					echo $icon_html;
 					break;
 
+				case 'thumb_size':
+					$width = is_array($field_value) ? $field_value['width'] : 150;
+					$height = is_array($field_value) ? $field_value['height'] : 150;
+					$crop = is_array($field_value) && array_key_exists('crop', $field_value) ? $field_value['crop'] : 0;
+					$crop_checked = ($crop == 1) ? ' checked="checked"' : '';
+					echo '<label for="FooGallerySettings_' . $id . '_width">' . __('Width', 'foogallery') . '</label>';
+					echo '<input class="small-text" type="number" step="1" min="0" id="FooGallerySettings_' . $id . '_width" name="' . FOOGALLERY_META_SETTINGS . '[' . $id . '][width]" value="' . esc_attr( $width ) . '" />';
+					echo '<label for="FooGallerySettings_' . $id . '_width">' . __('Height', 'foogallery') . '</label>';
+					echo '<input class="small-text" type="number" step="1" min="0" id="FooGallerySettings_' . $id . '_height" name="' . FOOGALLERY_META_SETTINGS . '[' . $id . '][height]" value="' . esc_attr( $height ) . '" />';
+					echo '<input name="' . FOOGALLERY_META_SETTINGS . '[' . $id . '][crop]" type="hidden" id="FooGallerySettings_' . $id . '_nocrop" value="0" />';
+					echo '<input name="' . FOOGALLERY_META_SETTINGS . '[' . $id . '][crop]" type="checkbox" id="FooGallerySettings_' . $id . '_crop" value="1"' . $crop_checked . '>';
+					echo '<label for="FooGallerySettings_' . $id . '_crop">' . __('Crop thumbnail to exact dimensions', 'foogallery') . '</label>';
+
+					break;
 				default:
 					do_action( 'foogallery_render_gallery_template_field_custom', $field, $gallery );
 					break;
@@ -152,10 +166,10 @@ if ( !class_exists( 'FooGallery_Admin_Gallery_MetaBox_Fields' ) ) {
 		function alter_gallery_template_field( $field, $gallery ) {
 			if ( $field ) {
 				switch ($field['type']) {
-					case 'thumb_size':
-						$field['type'] = 'select';
-						$field['choices'] = $this->get_thumb_size_choices();
-						break;
+//					case 'thumb_size':
+//						$field['type'] = 'select';
+//						$field['choices'] = $this->get_thumb_size_choices();
+//						break;
 					case 'thumb_link':
 						$field['type'] = 'radio';
 						$field['choices'] = $this->get_thumb_link_field_choices();

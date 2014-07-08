@@ -111,7 +111,7 @@ if ( !class_exists( 'FooGallery_Default_Templates_Extension' ) ) {
 					array(
 						'id'      => 'thumbnail_size',
 						'title'   => __('Thumbnail Size', 'foogallery'),
-						'desc'    => __('Choose the size of your thumbnails.', 'foogallery'),
+						'desc'    => __('Choose the size of your thumbnails. Thumbnails will be generated on the fly and cached once generated.', 'foogallery'),
 						'type'    => 'thumb_size',
 					),
 					array(

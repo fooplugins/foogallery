@@ -150,6 +150,14 @@
 	border:solid 3px #444;
 }
 
+.foogallery_metabox_field-thumb_size label {
+	vertical-align: baseline;
+}
+
+.foogallery_metabox_field-thumb_size input[type="number"] {
+	margin-right: 10px;
+}
+
 .foogallery-shortcode {
 	text-align: center;
 }

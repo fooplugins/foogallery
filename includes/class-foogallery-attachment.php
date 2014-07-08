@@ -67,26 +67,60 @@ if (!class_exists('FooGalleryAttachment')) {
 		}
 
 		/**
+		 * Static function to load a FooGalleryAttachment instance by passing in an attachment_id
+		 * @static
+		 *
+		 * @param $attachment_id
+		 *
+		 * @return FooGalleryAttachment
+		 */
+		public static function get_by_id($attachment_id) {
+			$post = get_post($attachment_id);
+			return new self($post);
+		}
+
+		function html_img( $args = array() ) {
+			$attr['src'] = apply_filters( 'foogallery_attachment_resize_thumbnail', $this->url, $args, $this );
+
+			if ( !empty( $this->alt ) ) {
+				$attr['alt'] = $this->alt;
+			}
+
+			$attr = apply_filters( 'foogallery_attachment_html_image_attributes', $attr, $args, $this );
+			$attr = array_map( 'esc_attr', $attr );
+			$html = '<img ';
+			foreach ( $attr as $name => $value ) {
+				$html .= " $name=" . '"' . $value . '"';
+			}
+			$html .= " />";
+
+			return apply_filters( 'foogallery_attachment_html_image', $html, $args, $this );
+		}
+
+		/**
 		 * Returns HTML for the attachment
-		 * @param string $size
-		 * @param string $link
+		 * @param array $args
 		 *
 		 * @return string
 		 */
-		function html( $size = 'thumbnail', $link = 'image' ) {
+		function html( $args = array() ) {
 			if ( 0 === $this->ID ) {
 				return '';
 			}
 
-			add_filter( 'wp_get_attachment_image_attributes', array($this, 'filter_attachment_image_attributes'), 1, 2 );
+			$arg_defaults = array(
+				'link' => 'image'
+			);
 
-			$img = wp_get_attachment_image( $this->ID, $size );
+			$args = wp_parse_args( $args, $arg_defaults );
 
-			remove_filter( 'wp_get_attachment_image_attributes', array($this, 'filter_attachment_image_attributes'), 1 );
+			$link = $args['link'];
+
+			$img = $this->html_img( $args );
 
 			//if there is no link, then just return the image tag
 			if ( 'none' === $link ) {
-				return apply_filters( 'foogallery_attachment_html_image', $img, $this, $size, $link );
+				return $img;
 			}
 
 			if ( 'page' === $link ) {
@@ -101,7 +135,7 @@ if (!class_exists('FooGalleryAttachment')) {
 				$attr['title'] = $this->title;
 			}
 
-			$attr = apply_filters( 'foogallery_attachment_html_link_attributes', $attr, $this );
+			$attr = apply_filters( 'foogallery_attachment_html_link_attributes', $attr, $args, $this );
 			$attr = array_map( 'esc_attr', $attr );
 			$html = '<a ';
 			foreach ( $attr as $name => $value ) {
@@ -109,20 +143,7 @@ if (!class_exists('FooGalleryAttachment')) {
 			}
 			$html .= ">{$img}</a>";
 
-			return apply_filters( 'foogallery_attachment_html_link', $html, $this, $size, $link );
-		}
-
-		function filter_attachment_image_attributes($attr) {
-
-			if ( !empty( $this->alt ) ) {
-				$attr['alt'] = $this->alt;
-			}
-
-			if ( !empty( $this->title ) ) {
-				$attr['title'] = $this->title;
-			}
-
-			return $attr;
+			return apply_filters( 'foogallery_attachment_html_link', $html, $args, $this );
 		}
     }
 }
