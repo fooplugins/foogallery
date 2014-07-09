@@ -25,7 +25,7 @@ if ( !class_exists( 'FooGallery_Default_Templates_Extension' ) ) {
 				'admin_js'	  => FOOGALLERY_URL . 'extensions/default-templates/js/admin-gallery-default.js',
 				'fields'	  => array(
 					array(
-						'id'      => 'thumbnail_size',
+						'id'      => 'thumbnail_dimensions',
 						'title'   => __('Thumbnail Size', 'foogallery'),
 						'desc'    => __('Choose the size of your thumbnails.', 'foogallery'),
 						'type'    => 'thumb_size',
@@ -110,7 +110,7 @@ if ( !class_exists( 'FooGallery_Default_Templates_Extension' ) ) {
 					array(
 						'id' => 'thumb_preview',
 						'title' => __('Thumbnail Preview', 'foogallery'),
-						'desc' => __('This is what your thumbnails will look like on the frontend', 'foogallery'),
+						'desc' => __('This is what your gallery thumbnails will look like.', 'foogallery'),
 						'type' => 'thumb_preview'
 					)
 				)
@@ -169,7 +169,11 @@ if ( !class_exists( 'FooGallery_Default_Templates_Extension' ) ) {
 		 */
 		function render_thumbnail_preview( $field, $gallery, $template ) {
 			if ( 'thumb_preview' == $field['type'] ) {
-				$args = $gallery->get_meta( 'default_thumbnail_size', array() );
+				$args = $gallery->get_meta( 'default_thumbnail_dimensions', array(
+					'width' => get_option( 'thumbnail_size_w' ),
+					'height' => get_option( 'thumbnail_size_h' ),
+					'crop' => true
+				) );
 				//override the link so that it does not actually open an image
 				$args['link'] = 'custom';
 

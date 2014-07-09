@@ -4,7 +4,7 @@
  */
 global $current_foogallery;
 global $current_foogallery_arguments;
-$args = foogallery_gallery_template_setting( 'thumbnail_size', array() );
+$args = foogallery_gallery_template_setting( 'thumbnail_dimensions', array() );
 $args['link'] = foogallery_gallery_template_setting( 'thumbnail_link', 'image' );
 
 $lightbox = foogallery_gallery_template_setting( 'lightbox', 'unknown' );
