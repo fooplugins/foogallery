@@ -11,7 +11,7 @@ The result is an intuitive gallery creation and management experience with the a
 [View the FooGallery Homepage](http://foo.gallery/)
 
 FooGallery was designed to be the most developer-friendly gallery plugin available for WordPress.
-It was also built on top of a solid extension framework, which means different functional is separated out into different areas in the codebase.
+It was also built on top of a solid extension framework, which means different functionality is separated out into different areas in the codebase.
 It also means the core plugin is lightweight, but still allowing for the most flexibility.
 
 ###Features
