@@ -20,9 +20,9 @@ FooGallery was designed to be the most developer-friendly gallery plugin availab
 
 Features:
 
-*   Gallery custom post type
-*   Use built-in media library to manage images
-*   Drag n Drop reordering of images
+*	Gallery custom post type
+*	Use built-in media library to manage images
+*	Drag n Drop reordering of images
 *	Built-in gallery templates
 *	Built-in support for FooBox
 *	Built on an extension framework
