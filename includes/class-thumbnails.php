@@ -13,6 +13,7 @@ if ( !class_exists( 'FooGallery_Thumbnails' ) ) {
 		}
 
 		function resize( $original_image_src, $args, $thumbnail_object ) {
+
 			$arg_defaults = array(
 				'width'  => 0,
 				'height' => 0,
@@ -26,7 +27,8 @@ if ( !class_exists( 'FooGallery_Thumbnails' ) ) {
 			$crop = (bool)$args['crop'];
 
 			//check if we are trying to get back the default thumbnail that we already have
-			if ( $width == get_option( 'thumbnail_size_w' ) &&
+			if ( $thumbnail_object->ID > 0 &&
+				$width == get_option( 'thumbnail_size_w' ) &&
 				$height == get_option( 'thumbnail_size_h' ) &&
 				$crop == get_option( 'thumbnail_crop' ) ) {
 				$thumbnail_attributes = wp_get_attachment_image_src( $thumbnail_object->ID );
