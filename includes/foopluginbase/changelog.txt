@@ -1,9 +1,13 @@
 FooPluginBase Changelog
 =======================
 
-> Last updated 24 May 2014
+> Last updated 10 July 2014
 
-2014.05.24 - version 2.3
+2014.07.10 - version 2.3
+* reworked the action and filter names to be more standard
+* Upgraded settings to v2.1
+
+2014.05.24 - version 2.2.?
 * Added Foo_Plugin_File_Loader_v1 class to help locating files in current theme and plugin
 * Added Foo_Plugin_Metabox_Sanity_v1 class to help whitelist metaboxes for custom post types
 
