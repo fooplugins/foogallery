@@ -60,7 +60,7 @@
 	border: 5px solid #FFF;
 	-webkit-box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 	-moz-box-shadow: 0 0 10px rgba(0,0,0,0.5);
-	box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+	box-shadow: 0 1px 5px rgba(0, 0, 0, 0.5);
 }
 
 .foogallery-default.border-style-circle-white a {
@@ -70,7 +70,7 @@
 	border: 5px solid #FFF;
 	-webkit-box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 	-moz-box-shadow: 0 0 10px rgba(0,0,0,0.5);
-	box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+	box-shadow: 0 1px 5px rgba(0, 0, 0, 0.5);
 }
 
 .foogallery-default.border-style-circle-black a {
@@ -80,14 +80,14 @@
 	border: 3px solid #000;
 	-webkit-box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 	-moz-box-shadow: 0 0 10px rgba(0,0,0,0.5);
-	box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+	box-shadow: 0 1px 5px rgba(0, 0, 0, 0.5);
 }
 
 .foogallery-default.border-style-square-black a {
 	border: 3px solid #000;
 	-webkit-box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 	-moz-box-shadow: 0 0 10px rgba(0,0,0,0.5);
-	box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+	box-shadow: 0 1px 5px rgba(0, 0, 0, 0.5);
 }
 
 .foogallery-default.border-style-inset a {
