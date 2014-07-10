@@ -1,8 +1,8 @@
 <?php
 
-$link_actions_filters = 'http://foo.gallery/developers/actions_filters';
-$link_tutorial = 'http://foo.gallery/developers/extension_tutorial';
-$link_submit = 'http://foo.gallery/extensions/submit_yours';
+$link_actions_filters = 'http://foo.gallery/developers#actions_filters';
+$link_tutorial = 'http://foo.gallery/developers#extensions';
+$link_submit = 'http://foo.gallery/submit-extension/';
 
 $nonce = safe_get_from_request( 'foogallery_boilerplate_nonce' );
 
