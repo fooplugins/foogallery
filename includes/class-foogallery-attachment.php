@@ -135,8 +135,8 @@ if (!class_exists('FooGalleryAttachment')) {
 
 			$attr['href'] = $url;
 
-			if ( !empty( $this->title ) ) {
-				$attr['data-caption-title'] = $this->title;
+			if ( !empty( $this->caption ) ) {
+				$attr['data-caption-title'] = $this->caption;
 			}
 
 			if ( !empty( $this->description ) ) {
