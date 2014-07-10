@@ -9,11 +9,11 @@ if ( !class_exists( 'FooGallery_Admin_Extensions' ) ) {
 
 		function __construct() {
 			add_action( 'init', array($this, 'init') );
+			add_action( 'deactivated_plugin', array($this, 'handle_extensions_deactivation'), 10, 2 );
+			add_action( 'activated_plugin', array($this, 'handle_extensions_activation'), 10, 2 );
 		}
 
 		function init() {
-			add_action( 'deactivated_plugin', array($this, 'handle_extensions_deactivation'), 10, 2 );
-			add_action( 'activated_plugin', array($this, 'handle_extensions_activation'), 10, 2 );
 			add_action( 'admin_init', array($this, 'handle_extension_action') );
 			add_action( 'admin_init', array($this, 'redirect_on_activation') );
 		}
