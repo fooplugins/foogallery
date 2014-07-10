@@ -42,10 +42,10 @@ if (!class_exists('FooGalleryAttachment')) {
 		private function load($post) {
 			$this->_post = $post;
 			$this->ID = $post->ID;
-			$this->title = $post->post_title;
-			$this->caption = $post->post_excerpt;
-			$this->description = $post->post_content;
-			$this->alt = get_post_meta( $this->ID, '_wp_attachment_image_alt', true );
+			$this->title = trim( $post->post_title );
+			$this->caption = trim( $post->post_excerpt );
+			$this->description = trim( $post->post_content );
+			$this->alt = trim( get_post_meta( $this->ID, '_wp_attachment_image_alt', true ) );
 			$image_attributes = wp_get_attachment_image_src( $this->ID, 'full' );
 			if ( $image_attributes ) {
 				$this->url = $image_attributes[0];
