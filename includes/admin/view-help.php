@@ -24,7 +24,11 @@ $info = $instance->get_plugin_info();
 </style>
 <div class="wrap about-wrap">
 	<h1><?php printf( __( 'Welcome to FooGallery %s', 'foogallery' ), $info['version'] ); ?></h1>
-	<div class="about-text"><?php _e( 'Thank you for choosing FooGallery, the most intuitive gallery creation and management tool for WordPress!', 'foogallery' ); ?></div>
+	<div class="about-text">
+		<?php _e( 'Thank you for choosing FooGallery, the most intuitive and extensible gallery creation and management tool ever created for WordPress!', 'foogallery' ); ?>
+		-
+		<a href="http://foo.gallery" target="_blank"><?php _e('Visit our homepage', 'foogallery'); ?>.</a>
+	</div>
 	<div class="foogallery-badge-foobot"></div>
 
 	<h2 class="nav-tab-wrapper">
