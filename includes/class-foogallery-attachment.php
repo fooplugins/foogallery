@@ -134,8 +134,13 @@ if (!class_exists('FooGalleryAttachment')) {
 			}
 
 			$attr['href'] = $url;
+
 			if ( !empty( $this->title ) ) {
-				$attr['title'] = $this->title;
+				$attr['data-caption-title'] = $this->title;
+			}
+
+			if ( !empty( $this->description ) ) {
+				$attr['data-caption-desc'] = $this->description;
 			}
 
 			$attr = apply_filters( 'foogallery_attachment_html_link_attributes', $attr, $args, $this );
