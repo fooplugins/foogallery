@@ -44,7 +44,7 @@ class FooGallery extends stdClass {
 		$this->attachment_ids = get_post_meta($post->ID, FOOGALLERY_META_ATTACHMENTS, true);
 		$this->gallery_template = get_post_meta($post->ID, FOOGALLERY_META_TEMPLATE, true);
 		$this->settings = get_post_meta($post->ID, FOOGALLERY_META_SETTINGS, true);
-		do_action('foogallery_FooGallery_after_load', $this, $post);
+		do_action('foogallery_foogallery_instance_after_load', $this, $post);
 	}
 
 	/**
@@ -212,7 +212,8 @@ class FooGallery extends stdClass {
 
 		//if no featured image could be found then get the first image
 		if ( !$attachment_id && $this->attachment_ids ) {
-			$attachment_id = array_shift( array_values( $this->attachment_ids ) );
+			$attachment_id_values = array_values( $this->attachment_ids );
+			$attachment_id = array_shift( $attachment_id_values );
 		}
 		return $attachment_id;
 	}
@@ -235,7 +236,7 @@ class FooGallery extends stdClass {
 	public function featured_image_src( $size='thumbnail', $icon = false ) {
 		$attachment_id = $this->find_featured_attachment_id();
 		if ( $attachment_id && $image_details = wp_get_attachment_image_src( $attachment_id, $size, $icon ) ) {
-			return array_shift( array_values( $image_details ) );
+			return reset( $image_details );
 		}
 		return false;
 	}
