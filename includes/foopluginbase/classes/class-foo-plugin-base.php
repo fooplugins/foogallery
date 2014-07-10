@@ -7,15 +7,15 @@
  *  we append a version number to the class name. This avoids situations where multiple versions of the same class are loaded into memory and things no longer work as expected.
  *  This situation is extremely difficult to debug, and results in weird errors only when multiple plugins using the base class are activated on a single install
  *
- * Version: 2.2
+ * Version: 2.3
  * Author: Brad Vincent
  * Author URI: http://fooplugins.com
  * License: GPL2
 */
 
-if ( !class_exists( 'Foo_Plugin_Base_v2_2' ) ) {
+if ( !class_exists( 'Foo_Plugin_Base_v2_3' ) ) {
 
-	abstract class Foo_Plugin_Base_v2_2 {
+	abstract class Foo_Plugin_Base_v2_3 {
 
 		/**
 		 * Unique identifier for your plugin.
@@ -46,14 +46,14 @@ if ( !class_exists( 'Foo_Plugin_Base_v2_2' ) ) {
 
 		/* internal class dependencies */
 
-		/** @var Foo_Plugin_Settings_v2_0 */
+		/** @var Foo_Plugin_Settings_v2_1 */
 		protected $_settings = false; //a ref to our settings helper class
 
 		/** @var Foo_Plugin_Options_v2_1 */
 		protected $_options = false; //a ref to our options helper class
 
 		/*
-		 * @return Foo_Plugin_Settings_v2_0
+		 * @return Foo_Plugin_Settings_v2_1
 		 */
 		public function settings() {
 			return $this->_settings;
@@ -121,7 +121,7 @@ if ( !class_exists( 'Foo_Plugin_Base_v2_2' ) ) {
 
 			if ( is_admin() ) {
 				//instantiate our settings class
-				$this->_settings = new Foo_Plugin_Settings_v2_0($this->plugin_slug);
+				$this->_settings = new Foo_Plugin_Settings_v2_1($this->plugin_slug);
 
 				//instantiate our metabox sanity class
 				new Foo_Plugin_Metabox_Sanity_v1($this->plugin_slug);
@@ -142,7 +142,7 @@ if ( !class_exists( 'Foo_Plugin_Base_v2_2' ) ) {
 				add_action( 'admin_print_scripts', array($this, 'admin_print_scripts') );
 			}
 
-			do_action( $this->plugin_slug . '-' . (is_admin() ? 'admin' : '') . '_init' );
+			do_action( $this->plugin_slug . (is_admin() ? '_admin' : '') . '_init' );
 		}
 
 		/**
@@ -229,7 +229,7 @@ if ( !class_exists( 'Foo_Plugin_Base_v2_2' ) ) {
 
 		// register any options/settings we may want to store for this plugin
 		function admin_create_settings() {
-			$settings = apply_filters( $this->plugin_slug . '-admin_settings', false );
+			$settings = apply_filters( $this->plugin_slug . '_admin_settings', false );
 
 			$this->_settings->add_settings( $settings );
 		}
@@ -261,7 +261,7 @@ if ( !class_exists( 'Foo_Plugin_Base_v2_2' ) ) {
 			//finally try add any scripts for the current screen id /css/admin-screen-id.css
 			$this->register_and_enqueue_js( 'admin-' . foo_current_screen_id() . '.js' );
 
-			do_action( $this->plugin_slug . '-admin_print_scripts' );
+			do_action( $this->plugin_slug . '_admin_print_scripts' );
 		}
 
 		// register the admin stylesheets
@@ -287,7 +287,7 @@ if ( !class_exists( 'Foo_Plugin_Base_v2_2' ) ) {
 			//finally try add any styles for the current screen id /css/admin-screen-id.css
 			$this->register_and_enqueue_css( 'admin-' . foo_current_screen_id() . '.css' );
 
-			do_action( $this->plugin_slug . '-admin_print_styles' );
+			do_action( $this->plugin_slug . '_admin_print_styles' );
 		}
 
 		function admin_plugin_listing_actions($links) {
@@ -296,19 +296,19 @@ if ( !class_exists( 'Foo_Plugin_Base_v2_2' ) ) {
 				$links[] = '<a href="options-general.php?page=' . $this->plugin_slug . '"><b>' . __('Settings', $this->plugin_slug) .'</b></a>';
 			}
 
-			return apply_filters( $this->plugin_slug . '-plugin_action_links', $links );
+			return apply_filters( $this->plugin_slug . '_admin_plugin_action_links', $links );
 		}
 
 		function has_admin_settings_page() {
-			return apply_filters( $this->plugin_slug . '-has_settings_page', true );
+			return apply_filters( $this->plugin_slug . '_admin_has_settings_page', true );
 		}
 
 		// add a settings admin menu
 		function admin_settings_page_menu() {
 			if ( $this->has_admin_settings_page() ) {
 
-				$page_title = $this->apply_filters( 'settings_page_title', $this->plugin_title . __( ' Settings', $this->plugin_slug ) );
-				$menu_title = $this->apply_filters( 'settings_menu_title', $this->plugin_title );
+				$page_title = $this->apply_filters( $this->plugin_slug . '_admin_settings_page_title', $this->plugin_title . __( ' Settings', $this->plugin_slug ) );
+				$menu_title = $this->apply_filters( $this->plugin_slug . '_admin_settings_menu_title', $this->plugin_title );
 
 				add_options_page( $page_title, $menu_title, 'manage_options', $this->plugin_slug, array($this, 'admin_settings_render_page') );
 			}
@@ -325,15 +325,15 @@ if ( !class_exists( 'Foo_Plugin_Base_v2_2' ) ) {
 				include_once( $current_directory . 'views/settings.php');
 			}
 
-			do_action( $this->plugin_slug . '-admin_settings_render_page', $this->_settings );
+			do_action( $this->plugin_slug . '_admin_settings_render_page', $this->_settings );
 		}
 
 		function inline_styles() {
-			do_action( $this->plugin_slug . (is_admin() ? '-admin' : '') . '_inline_styles', $this );
+			do_action( $this->plugin_slug . (is_admin() ? '_admin' : '') . '_inline_styles', $this );
 		}
 
 		function inline_scripts() {
-			do_action( $this->plugin_slug . (is_admin() ? '-admin' : '') . '_inline_scripts', $this );
+			do_action( $this->plugin_slug . (is_admin() ? '_admin' : '') . '_inline_scripts', $this );
 		}
 	}
 }

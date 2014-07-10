@@ -175,7 +175,7 @@ function foogallery_gallery_template_setting( $key, $default = '' ) {
  * @return string
  */
 function foogallery_admin_menu_parent_slug() {
-	return apply_filters( 'foogallery_menu_parent_slug', FOOGALLERY_ADMIN_MENU_PARENT_SLUG );
+	return apply_filters( 'foogallery_admin_menu_parent_slug', FOOGALLERY_ADMIN_MENU_PARENT_SLUG );
 }
 
 /**

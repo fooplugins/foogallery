@@ -8,7 +8,7 @@ if (!class_exists('FooGallery_Admin_Settings')) {
 	class FooGallery_Admin_Settings {
 
 		function __construct() {
-			add_filter( 'foogallery-admin_settings', array($this, 'create_settings'), 10, 2 );
+			add_filter( 'foogallery_admin_settings', array($this, 'create_settings'), 10, 2 );
 		}
 
         function create_settings() {

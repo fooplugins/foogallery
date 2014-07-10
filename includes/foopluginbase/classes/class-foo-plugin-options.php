@@ -41,7 +41,7 @@ if ( !class_exists( 'Foo_Plugin_Options_v2_1' ) ) {
 			}
 
 			//get some defaults (if available)
-			$default_options = apply_filters( $this->option_name . '-default_options', array() );
+			$default_options = apply_filters( $this->option_name . '_default_options', array() );
 
 			//merge!
 			return wp_parse_args( $options, $default_options );

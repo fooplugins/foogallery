@@ -12,7 +12,8 @@ if ( !class_exists( 'FooGallery_Admin_Gallery_MetaBox_Fields' ) ) {
 		}
 
 		/**
-		 * @TODO
+		 * Renders a gallery template field into the gallery settings metabox for a FooGallery
+		 *
 		 * @param array $field
 		 * @param       $gallery FooGallery
 		 * @param       $template
@@ -164,7 +165,6 @@ if ( !class_exists( 'FooGallery_Admin_Gallery_MetaBox_Fields' ) ) {
 			if ( isset( $desc ) ) {
 				echo '<small>' . $desc . '</small>';
 			}
-
 
 			//allow for more customization
 			do_action( 'foogallery_render_gallery_template_field_after', $field, $gallery );

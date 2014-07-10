@@ -5,14 +5,14 @@ Default settings page used by Foo_Plugin_Base
 global $wp_version, $wp_settings_sections, $wp_settings_fields;
 
 //need to make sure are included correctly
-if ( !isset($this) || !is_subclass_of( $this, 'Foo_Plugin_Base_v2_2' ) ) {
+if ( !isset($this) || !is_subclass_of( $this, 'Foo_Plugin_Base_v2_3' ) ) {
 	throw new Exception("This settings view has not been included correctly!");
 }
 
-$summary = $this->apply_filters( 'settings_page_summary', '' );
 $tabs = $this->_settings->get_tabs();
 $plugin_info = $this->get_plugin_info();
 $plugin_slug = $plugin_info['slug'];
+$summary = $this->apply_filters( $plugin_slug . '_admin_settings_page_summary', '' );
 
 ?>
 <div class="wrap" id="<?php echo $plugin_slug; ?>-settings">
@@ -93,12 +93,12 @@ $plugin_slug = $plugin_info['slug'];
 						   onclick="return confirm('<?php _e( 'Are you sure you want to restore all settings back to their default values?', $plugin_slug ); ?>');"
 						   class="button-secondary" type="submit"
 						   value="<?php _e( 'Restore Defaults', $plugin_slug ); ?>"/>
-			<?php do_action($plugin_slug . '-settings_buttons') ?>
+			<?php do_action($plugin_slug . '_admin_settings_buttons') ?>
 		</p>
 	</form>
 		</div>
 		<div id="<?php echo $plugin_slug; ?>-settings-sidebar" class="postbox-container">
-			<?php do_action($plugin_slug . '-settings-sidebar'); ?>
+			<?php do_action($plugin_slug . '_admin_settings_sidebar'); ?>
 		</div>
 	</div>
 </div>

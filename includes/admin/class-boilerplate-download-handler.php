@@ -57,7 +57,7 @@ if ( !class_exists( 'FooGallery_Boilerplate_Download_Handler' ) ) {
 
 			//create the generator
 			$zip_generator = new FooGallery_Boilerplate_Zip_Generator( array(
-				'name'                 => $this->slug,
+				'name'                 => 'foogallery',
 				'process_extensions'   => array('php', 'css', 'js'),
 				'source_directory'     => FOOGALLERY_PATH . "/includes/admin/boilerplates/{$boilerplate_type}/",
 				'zip_root_directory'   => "foogallery-{$this->slug}-{$boilerplate_type}",

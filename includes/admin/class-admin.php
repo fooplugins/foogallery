@@ -33,11 +33,11 @@ if ( !class_exists( 'FooGallery_Admin' ) ) {
 //			add_action( 'media_upload_foo_gallery', array($this, 'media_manager_iframe_content') );
 //			add_filter( 'media_view_strings', array($this, 'custom_media_string'), 10, 2);
 
-			add_filter( 'foogallery-has_settings_page', '__return_false' );
-			add_action( 'foogallery-admin_print_styles', array($this, 'admin_print_styles') );
-			add_action( 'foogallery-admin_print_scripts', array($this, 'admin_print_scripts') );
+			add_filter( 'foogallery_admin_has_settings_page', '__return_false' );
+			add_action( 'foogallery_admin_print_styles', array($this, 'admin_print_styles') );
+			add_action( 'foogallery_admin_print_scripts', array($this, 'admin_print_scripts') );
 			// Add a links to the plugin listing
-			add_filter( 'plugin_action_links_' . plugin_basename( FOOGALLERY_FILE ), array($this, 'plugin_listing_links') );
+			add_filter( 'foogallery_admin_plugin_action_links', array($this, 'plugin_listing_links') );
 		}
 
 		/**

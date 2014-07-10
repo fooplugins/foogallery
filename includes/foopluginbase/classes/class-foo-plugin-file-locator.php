@@ -155,7 +155,7 @@ if ( !class_exists( 'Foo_Plugin_File_Locator_v1' ) ) {
 			 *
 			 * @param array $var Default is directory in child theme at index 1, parent theme at 10, and plugin at 100.
 			 */
-			$locations = apply_filters( $this->plugin_slug . '_pickup_locations', $locations );
+			$locations = apply_filters( $this->plugin_slug . '_file_locator_pickup_locations', $locations );
 
 			// sort the file paths based on priority
 			ksort( $locations, SORT_NUMERIC );

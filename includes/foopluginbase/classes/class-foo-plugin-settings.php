@@ -4,14 +4,14 @@
  *
  * A helpful class to handle settings for a plugin
  *
- * Version: 2.0
+ * Version: 2.1
  * Author: Brad Vincent
  * Author URI: http://fooplugins.com
  * License: GPL2
 */
 
-if ( !class_exists( 'Foo_Plugin_Settings_v2_0' ) ) {
-	class Foo_Plugin_Settings_v2_0 {
+if ( !class_exists( 'Foo_Plugin_Settings_v2_1' ) ) {
+	class Foo_Plugin_Settings_v2_1 {
 
 		protected $plugin_slug;
 
@@ -46,7 +46,7 @@ if ( !class_exists( 'Foo_Plugin_Settings_v2_0' ) ) {
 			if ( !$this->has_tab( $tab_id ) ) {
 
 				//pre action
-				do_action( $this->plugin_slug . '-before_settings_tab', $tab_id, $title );
+				do_action( $this->plugin_slug . '_admin_settings_before_tab', $tab_id, $title );
 
 				$tab = array(
 					'id'    => $tab_id,
@@ -56,7 +56,7 @@ if ( !class_exists( 'Foo_Plugin_Settings_v2_0' ) ) {
 				$this->_settings_tabs[$tab_id] = $tab;
 
 				//post action
-				do_action( $this->plugin_slug . '-after_settings_tab', $tab_id, $title );
+				do_action( $this->plugin_slug . '_admin_settings_after_tab', $tab_id, $title );
 			}
 		}
 
@@ -71,7 +71,7 @@ if ( !class_exists( 'Foo_Plugin_Settings_v2_0' ) ) {
 			if ( !$this->has_section( $section_id ) ) {
 
 				//pre action
-				do_action( $this->plugin_slug . '-before_settings_section', $section_id, $title, $desc );
+				do_action( $this->plugin_slug . '_admin_settings_before_section', $section_id, $title, $desc );
 
 				$section = array(
 					'id'    => $section_id,
@@ -87,7 +87,7 @@ if ( !class_exists( 'Foo_Plugin_Settings_v2_0' ) ) {
 				add_settings_section( $section_id, $title, $section_callback, $this->plugin_slug );
 
 				//post action
-				do_action( $this->plugin_slug . '-after_settings_section', $section_id, $title, $desc );
+				do_action( $this->plugin_slug . '_admin_settings_after_section', $section_id, $title, $desc );
 			}
 		}
 
@@ -188,12 +188,12 @@ if ( !class_exists( 'Foo_Plugin_Settings_v2_0' ) ) {
 				$this->add_section( $section_id, foo_title_case( $section ) );
 			}
 
-			do_action( $this->plugin_slug . '-before_setting', $args );
+			do_action( $this->plugin_slug . '_admin_settings_before_setting', $args );
 
 			//add the setting!
 			add_settings_field( $id, $title, array($this, 'render'), $this->plugin_slug, $section_id, $field_args );
 
-			do_action( $this->plugin_slug . '-after_setting', $args );
+			do_action( $this->plugin_slug . '_admin_settings_after_setting', $args );
 		}
 
 		// render HTML for individual settings
@@ -230,7 +230,7 @@ if ( !class_exists( 'Foo_Plugin_Settings_v2_0' ) ) {
 
 			$errors = get_settings_errors( $id );
 
-			do_action( $this->plugin_slug . '-before_settings_render', $args );
+			do_action( $this->plugin_slug . '_admin_settings_before_render_setting', $args );
 
 			switch ( $type ) {
 
@@ -330,11 +330,11 @@ if ( !class_exists( 'Foo_Plugin_Settings_v2_0' ) ) {
 					break;
 
 				default:
-					do_action( $this->plugin_slug . '-settings_custom_type_render', $args );
+					do_action( $this->plugin_slug . '_admin_settings_custom_type_render_setting', $args );
 					break;
 			}
 
-			do_action( $this->plugin_slug . '-after_settings_render', $args );
+			do_action( $this->plugin_slug . '_admin_settings_after_render_setting', $args );
 
 			if ( is_array( $errors ) ) {
 				foreach ( $errors as $error ) {

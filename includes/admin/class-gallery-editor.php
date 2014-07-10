@@ -375,11 +375,13 @@ if ( !class_exists( 'FooGallery_Admin_Gallery_Editor' ) ) {
 
 			$gallery = FooGallery::get_by_id( $id );
 
+			$image_src = $gallery->featured_image_src( 'thumbnail', true );
+
 			$json_array = array(
 				'id'    => $id,
 				'name'  => $gallery->name,
 				'count' => $gallery->image_count(),
-				'src'   => $gallery->featured_image_src( 'thumbnail', true )
+				'src'   => $image_src
 			);
 
 			header( 'Content-type: application/json' );

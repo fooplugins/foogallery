@@ -40,15 +40,15 @@ if ( !class_exists( 'FooGallery_Boilerplate_Zip_Generator' ) ) {
 			$this->options['zip_temp_filename'] = trailingslashit( $this->options['zip_temp_directory'] ) . sprintf( '%s-%s.zip', $this->slug, md5( print_r( $this->options['variables'], true ) ) );
 
 			if ( !empty($this->options['filename_filter']) ) {
-				add_filter( 'zip_generator_process_filename-' . $this->slug, $this->options['filename_filter'], 10, 2 );
+				add_filter( "{$this->slug}_zip_generator_process_filename", $this->options['filename_filter'], 10, 2 );
 			}
 
 			if ( !empty($this->options['file_contents_filter']) ) {
-				add_filter( 'zip_generator_process_file_contents-' . $this->slug, $this->options['file_contents_filter'], 10, 2 );
+				add_filter( "{$this->slug}_zip_generator_process_file_contents", $this->options['file_contents_filter'], 10, 2 );
 			}
 
 			if ( !empty($this->options['post_process_action']) ) {
-				add_action( 'zip_generator_post_process-' . $this->slug, $this->options['post_process_action'], 10, 2 );
+				add_action( "{$this->slug}_zip_generator_post_process", $this->options['post_process_action'], 10, 2 );
 			}
 		}
 
@@ -79,14 +79,14 @@ if ( !class_exists( 'FooGallery_Boilerplate_Zip_Generator' ) ) {
 
 				$zip_filename = ltrim( str_replace( $source_path, '', $zip_filepath ), '\\' );
 
-				$zip_filename = apply_filters( 'zip_generator_process_filename-' . $this->slug, $zip_filename );
+				$zip_filename = apply_filters( "{$this->slug}_zip_generator_process_filename", $zip_filename );
 
 				$contents = $this->process_file_contents( file_get_contents( $filename ), basename( $filename ) );
 
 				$zip->addFromString( trailingslashit( $this->options['zip_root_directory'] ) . $zip_filename, $contents );
 			}
 
-			do_action( 'zip_generator_post_process-' . $this->slug, $zip, $this->options );
+			do_action( "{$this->slug}_zip_generator_post_process", $zip, $this->options );
 
 			$zip->close();
 		}
@@ -109,7 +109,7 @@ if ( !class_exists( 'FooGallery_Boilerplate_Zip_Generator' ) ) {
 				$contents = preg_replace( '/(' . $key . ')/', $value, $contents );
 			}
 
-			$contents = apply_filters( 'zip_generator_process_file_contents-' . $this->slug, $contents, $filename );
+			$contents = apply_filters( "{$this->slug}_zip_generator_process_file_contents", $contents, $filename );
 
 			return $contents;
 		}

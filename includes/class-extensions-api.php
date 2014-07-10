@@ -293,10 +293,10 @@ if ( !class_exists( 'FooGallery_Extensions_API' ) ) {
 					if ( $plugin ) {
 						$failure = deactivate_plugins( $plugin['file'], true, false );
 						if (null !== $failure) {
-							return apply_filters( 'foogallery_extensions_deactivate_failure-' . $slug, array(
+							return array(
 								'message' => sprintf( __('The extension %s could NOT be deactivated!', 'foogallery'), "<strong>{$extension['title']}</strong>" ),
 								'type' => 'error'
-							) );
+							);
 						}
 					}
 				}
@@ -315,8 +315,10 @@ if ( !class_exists( 'FooGallery_Extensions_API' ) ) {
 					$this->add_to_error_extensions( $slug );
 				}
 
-				do_action('foogallery_extension_deactivated', $slug);
-				return apply_filters( 'foogallery_extensions_deactivate_success-' . $slug, array(
+				//we are done, allow for extensions to do something after an extension is activated
+				do_action('foogallery_extension_deactivated-' . $slug);
+
+				return apply_filters( 'foogallery_extensions_deactivated_message-' . $slug, array(
 					'message' => sprintf( __('The extension %s was successfully deactivated', 'foogallery'), "<strong>{$extension['title']}</strong>" ),
 					'type' => 'success'
 				) );
@@ -363,10 +365,10 @@ if ( !class_exists( 'FooGallery_Extensions_API' ) ) {
 						//try to activate the plugin
 						$failure = activate_plugin( $plugin['file'], '', false, false );
 						if (null !== $failure) {
-							return apply_filters( 'foogallery_extensions_activate_failure-' . $slug, array(
+							return array(
 								'message' => sprintf( __('The extension %s could NOT be activated!', 'foogallery'), "<strong>{$extension['title']}</strong>" ),
 								'type' => 'error'
-							) );
+							);
 						}
 					}
 				}
@@ -381,7 +383,7 @@ if ( !class_exists( 'FooGallery_Extensions_API' ) ) {
 				do_action('foogallery_extension_activated-' . $slug);
 
 				//return our result
-				return apply_filters( 'foogallery_extensions_activate_success-' . $slug, array(
+				return apply_filters( 'foogallery_extension_activated_message-' . $slug, array(
 					'message' => sprintf( __('The extension %s was successfully activated', 'foogallery'), "<strong>{$extension['title']}</strong>" ),
 					'type' => 'success'
 				) );
