@@ -76,7 +76,11 @@ if ( !class_exists( 'FooGallery_Boilerplate_Download_Handler' ) ) {
 		}
 
 		function process_zip_filename($filename) {
+			//replace slug
 			$new_filename = str_replace( 'EXTSLUG', $this->slug, $filename );
+			//rename to php
+			$new_filename = str_replace( '.php.txt', '.php', $new_filename );
+
 			return $new_filename;
 		}
 	}
