@@ -33,7 +33,7 @@ if ( !class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 		function whitelist_metaboxes() {
 			return array(
 				FOOGALLERY_CPT_GALLERY => array(
-					'whitelist'  => array('submitdiv', 'slugdiv', 'postimagediv', 'foogallery_items', 'foogallery_settings', 'foogallery_help', 'foogallery_pages'),
+					'whitelist'  => apply_filters( 'foogallery_metabox_sanity_foogallery', array('submitdiv', 'slugdiv', 'postimagediv', 'foogallery_items', 'foogallery_settings', 'foogallery_help', 'foogallery_pages') ),
 					'contexts'   => array('normal', 'advanced', 'side'),
 					'priorities' => array('high', 'core', 'default', 'low')
 				)
