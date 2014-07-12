@@ -5,15 +5,15 @@
 
 if ( !class_exists( 'FooGallery_Extensions_API' ) ) {
 
-	define('FOOGALLERY_EXTENSIONS_ENDPOINT', 'https://raw.githubusercontent.com/fooplugins/foogallery-extensions/master/extensions.json');
-	//define('FOOGALLERY_EXTENSIONS_ENDPOINT', FOOGALLERY_URL . 'extensions/extensions.json.js');
-	define('FOOGALLERY_EXTENSIONS_LOADING_ERRORS', 'foogallery_extensions_loading_errors');
-	define('FOOGALLERY_EXTENSIONS_AVAILABLE_TRANSIENT_KEY', 'foogallery_extensions_available');
-	define('FOOGALLERY_EXTENSIONS_MESSAGE_TRANSIENT_KEY', 'foogallery_extensions_message');
-	define('FOOGALLERY_EXTENSIONS_ACTIVATED_OPTIONS_KEY', 'foogallery_extensions_activated' );
-	define('FOOGALLERY_EXTENSIONS_ERRORS_OPTIONS_KEY', 'foogallery_extensions_errors' );
-	define('FOOGALLERY_EXTENSIONS_SLUGS_OPTIONS_KEY', 'foogallery_extensions_slugs' );
-	define('FOOGALLERY_EXTENSIONS_AUTO_ACTIVATED_OPTIONS_KEY', 'foogallery_extensions_auto_activated' );
+	define( 'FOOGALLERY_EXTENSIONS_ENDPOINT', 'https://raw.githubusercontent.com/fooplugins/foogallery-extensions/master/extensions.json' );
+	//define( 'FOOGALLERY_EXTENSIONS_ENDPOINT', FOOGALLERY_URL . 'extensions/extensions.json.js' );
+	define( 'FOOGALLERY_EXTENSIONS_LOADING_ERRORS', 'foogallery_extensions_loading_errors' );
+	define( 'FOOGALLERY_EXTENSIONS_AVAILABLE_TRANSIENT_KEY', 'foogallery_extensions_available' );
+	define( 'FOOGALLERY_EXTENSIONS_MESSAGE_TRANSIENT_KEY', 'foogallery_extensions_message' );
+	define( 'FOOGALLERY_EXTENSIONS_ACTIVATED_OPTIONS_KEY', 'foogallery_extensions_activated' );
+	define( 'FOOGALLERY_EXTENSIONS_ERRORS_OPTIONS_KEY', 'foogallery_extensions_errors' );
+	define( 'FOOGALLERY_EXTENSIONS_SLUGS_OPTIONS_KEY', 'foogallery_extensions_slugs' );
+	define( 'FOOGALLERY_EXTENSIONS_AUTO_ACTIVATED_OPTIONS_KEY', 'foogallery_extensions_auto_activated' );
 
 	/**
 	 * @TODO
@@ -49,7 +49,7 @@ if ( !class_exists( 'FooGallery_Extensions_API' ) ) {
 
 				//clear any previous state
 				delete_option( FOOGALLERY_EXTENSIONS_LOADING_ERRORS );
-				$this->extensions = false;
+				$this->extensions = null;
 				$expires = 60 * 60 * 24; //1 day
 
 				//fetch the data from our public list of extensions hosted on github
@@ -84,34 +84,35 @@ if ( !class_exists( 'FooGallery_Extensions_API' ) ) {
 		 * @return array
 		 */
 		private function default_extenions_in_case_of_emergency() {
+			$extensions = array();
 
 			//Our default gallery templates
-			$extensions[] = array (
+			$extensions[] = array(
 				'slug' => 'default_templates',
 				'class' => 'FooGallery_Default_Templates_Extension',
-				'categories' =>	array ('Featured', 'Free'),
+				'categories' =>	array( 'Featured', 'Free' ),
 				'title' => 'Default Templates',
 				'description' => 'The bundled gallery templates.',
 				'author' => 'FooPlugins',
 				'author_url' => 'http://fooplugins.com',
 				'thumbnail' => '/assets/extension_bg.png',
-				'tags' => array ('template'),
+				'tags' => array( 'template' ),
 				'source' => 'bundled',
 				'activated_by_default' => true
 			);
 
-			//The album extension - coming soon!
-//			$extensions[] =	array (
+//			The album extension - coming soon!
+//			$extensions[] =	array(
 //				'slug' => 'albums',
 //				'class' => 'FooGallery_Albums_Extension',
 //				'title' => 'Albums',
-//				'categories' =>	array ('Featured', 'Free'),
+//				'categories' =>	array( 'Featured', 'Free' ),
 //				'description' => 'Group your galleries into albums. Boom!',
 //				'html' => 'Group your galleries into albums. Boom!',
 //				'author' => 'FooPlugins',
 //				'author_url' => 'http://fooplugins.com',
 //				'thumbnail' => '/extensions/albums/foogallery-albums.png',
-//				'tags' => array ('functionality'),
+//				'tags' => array( 'functionality' ),
 //				'source' => 'bundled',
 //				'css_class' => 'coming_soon'
 //			);
@@ -120,24 +121,24 @@ if ( !class_exists( 'FooGallery_Extensions_API' ) ) {
 			$extensions[] = array (
 				'slug' => 'foobox-image-lightbox',
 				'class' => 'FooGallery_FooBox_Free_Extension',
-				'categories' => array ('Featured', 'Free'),
+				'categories' => array( 'Featured', 'Free' ),
 				'file' => 'foobox-free.php',
 				'title' => 'FooBox FREE',
 				'description' => 'The best lightbox for WordPress. Free',
 				'author' => 'FooPlugins',
 				'author_url' => 'http://fooplugins.com',
 				'thumbnail' => '/assets/extension_bg.png',
-				'tags' => array ('lightbox'),
+				'tags' => array( 'lightbox' ),
 				'source' => 'repo',
 				'activated_by_default' => true,
 				'minimum_version' => '1.0.2.1'
 			);
 
 			//FooBox premium
-			$extensions[] = array (
+			$extensions[] = array(
 				'slug' => 'foobox',
 				'class' => 'FooGallery_FooBox_Extension',
-				'categories' => array ('Featured', 'Premium'),
+				'categories' => array( 'Featured', 'Premium' ),
 				'file' => 'foobox.php',
 				'title' => 'FooBox PRO',
 				'description' => 'The best lightbox for WordPress just got even better!',
@@ -145,30 +146,30 @@ if ( !class_exists( 'FooGallery_Extensions_API' ) ) {
 				'author' => 'FooPlugins',
 				'author_url' => 'http://fooplugins.com',
 				'thumbnail' => '/assets/extension_bg.png',
-				'tags' => array ('premium', 'lightbox'),
+				'tags' => array( 'premium', 'lightbox' ),
 				'source' => 'fooplugins',
 				'download_button' =>
 					array (
 						'text' => 'Buy - $27',
 						'target' => '_blank',
 						'href' => 'http://fooplugins.com/plugins/foobox',
-						'confirm' => false,
+						'confirm' => false
 					),
 				'activated_by_default' => true,
 				'minimum_version' => '2.3.2'
 			);
 
 			//The NextGen importer
-			$extensions[] = array (
+			$extensions[] = array(
 				'slug' => 'nextgen',
 				'class' => 'FooGallery_Nextgen_Gallery_Importer_Extension',
-				'categories' => array ('Free'),
+				'categories' => array( 'Free' ),
 				'title' => 'NextGen Importer',
 				'description' => 'Imports all your existing NextGen galleries',
 				'author' => 'FooPlugins',
 				'author_url' => 'http://fooplugins.com',
 				'thumbnail' => '/assets/extension_bg.png',
-				'tags' => array ('tools'),
+				'tags' => array( 'tools' ),
 				'source' => 'bundled'
 			);
 
