@@ -78,17 +78,20 @@ if ( !class_exists( 'FooGallery_Admin_Extensions' ) ) {
 				$api = new FooGallery_Extensions_API();
 				$api->reload();
 
-				$result = array(
-					'message' => __( 'The extensions have been reloaded', 'foogallery' ),
-					'type'    => 'success'
-				);
-
-				set_transient( FOOGALLERY_EXTENSIONS_MESSAGE_TRANSIENT_KEY, $result, 30 );
-
 				//first, remove unwanted query args
 				$redirect_url = remove_query_arg( array('extension', 'action') );
-				//then add a query arg for our message
-				$redirect_url = add_query_arg( 'show_message', 'yes', $redirect_url );
+
+				if ( !$api->has_extension_loading_errors() ) {
+					$result = array(
+						'message' => __( 'The extensions have been reloaded', 'foogallery' ),
+						'type'    => 'success'
+					);
+
+					set_transient( FOOGALLERY_EXTENSIONS_MESSAGE_TRANSIENT_KEY, $result, 30 );
+
+					//then add a query arg for our message
+					$redirect_url = add_query_arg( 'show_message', 'yes', $redirect_url );
+				}
 
 				wp_redirect( $redirect_url );
 				die();

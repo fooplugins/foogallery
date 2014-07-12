@@ -7,6 +7,7 @@ if ( !class_exists( 'FooGallery_Extensions_API' ) ) {
 
 	define('FOOGALLERY_EXTENSIONS_ENDPOINT', 'https://raw.githubusercontent.com/fooplugins/foogallery-extensions/master/extensions.json');
 	//define('FOOGALLERY_EXTENSIONS_ENDPOINT', FOOGALLERY_URL . 'extensions/extensions.json.js');
+	define('FOOGALLERY_EXTENSIONS_LOADING_ERRORS', 'foogallery_extensions_loading_errors');
 	define('FOOGALLERY_EXTENSIONS_AVAILABLE_TRANSIENT_KEY', 'foogallery_extensions_available');
 	define('FOOGALLERY_EXTENSIONS_MESSAGE_TRANSIENT_KEY', 'foogallery_extensions_message');
 	define('FOOGALLERY_EXTENSIONS_ACTIVATED_OPTIONS_KEY', 'foogallery_extensions_activated' );
@@ -28,12 +29,6 @@ if ( !class_exists( 'FooGallery_Extensions_API' ) ) {
 
 		/**
 		 * @TODO
-		 * @var string
-		 */
-		private $error_message = false;
-
-		/**
-		 * @TODO
 		 * @param bool $load
 		 */
 		function __construct($load = false) {
@@ -42,31 +37,142 @@ if ( !class_exists( 'FooGallery_Extensions_API' ) ) {
 			}
 		}
 
+		public function has_extension_loading_errors() {
+			return get_option( FOOGALLERY_EXTENSIONS_LOADING_ERRORS );
+		}
+
 		/**
 		 * @TODO
 		 */
 		private function load_available_extensions() {
 			if ( false === ( $this->extensions = get_transient( FOOGALLERY_EXTENSIONS_AVAILABLE_TRANSIENT_KEY ) ) ) {
-				// It wasn't there, so fetch the data and save the transient
+
+				//clear any previous state
+				delete_option( FOOGALLERY_EXTENSIONS_LOADING_ERRORS );
+				$this->extensions = false;
+				$expires = 60 * 60 * 24; //1 day
+
+				//fetch the data from our public list of extensions hosted on github
 				$response = wp_remote_get( FOOGALLERY_EXTENSIONS_ENDPOINT );
 
-				if( is_wp_error( $response ) ) {
-					$this->error_message = $response->get_error_message();
-				} else {
+				if( !is_wp_error( $response ) ) {
 					$this->extensions = @json_decode( $response['body'], true );
 
-					if ( NULL === $this->extensions ) {
-						$this->error_message = 'There was a problem loading the extensions!';
-						return;
+					//if we got a valid list of extensions then calculate which are new and cache the result
+					if ( is_array( $this->extensions ) ) {
+						$this->determine_new_extensions( );
+						$this->save_slugs_for_new_calculations();
 					}
-
-					$this->determine_new_extensions( );
-
-					$expires = 60 * 60 * 24; //1 day
-					set_transient( FOOGALLERY_EXTENSIONS_AVAILABLE_TRANSIENT_KEY, $this->extensions, $expires );
-					$this->save_slugs_for_new_calculations();
 				}
+
+				if ( !is_array( $this->extensions ) ) {
+					//there was some problem getting a list of extensions. Could be a network error, or the extension json was malformed
+					update_option( FOOGALLERY_EXTENSIONS_LOADING_ERRORS, true );
+					$this->extensions = $this->default_extenions_in_case_of_emergency();
+					$expires = 5 * 60; //Only cache for 5 minutes if there are errors.
+				}
+
+				//Cache the result
+				set_transient( FOOGALLERY_EXTENSIONS_AVAILABLE_TRANSIENT_KEY, $this->extensions, $expires );
 			}
+		}
+
+		/**
+		 * Get an array of default extensions.
+		 * If for some reason, the extension list cannot be fetched from our public listing, we need to return the defaults so that the plugin can function offline
+		 *
+		 * @return array
+		 */
+		private function default_extenions_in_case_of_emergency() {
+
+			//Our default gallery templates
+			$extensions[] = array (
+				'slug' => 'default_templates',
+				'class' => 'FooGallery_Default_Templates_Extension',
+				'categories' =>	array ('Featured', 'Free'),
+				'title' => 'Default Templates',
+				'description' => 'The bundled gallery templates.',
+				'author' => 'FooPlugins',
+				'author_url' => 'http://fooplugins.com',
+				'thumbnail' => '/assets/extension_bg.png',
+				'tags' => array ('template'),
+				'source' => 'bundled',
+				'activated_by_default' => true
+			);
+
+			//The album extension - coming soon!
+//			$extensions[] =	array (
+//				'slug' => 'albums',
+//				'class' => 'FooGallery_Albums_Extension',
+//				'title' => 'Albums',
+//				'categories' =>	array ('Featured', 'Free'),
+//				'description' => 'Group your galleries into albums. Boom!',
+//				'html' => 'Group your galleries into albums. Boom!',
+//				'author' => 'FooPlugins',
+//				'author_url' => 'http://fooplugins.com',
+//				'thumbnail' => '/extensions/albums/foogallery-albums.png',
+//				'tags' => array ('functionality'),
+//				'source' => 'bundled',
+//				'css_class' => 'coming_soon'
+//			);
+
+			//FooBox lightbox
+			$extensions[] = array (
+				'slug' => 'foobox-image-lightbox',
+				'class' => 'FooGallery_FooBox_Free_Extension',
+				'categories' => array ('Featured', 'Free'),
+				'file' => 'foobox-free.php',
+				'title' => 'FooBox FREE',
+				'description' => 'The best lightbox for WordPress. Free',
+				'author' => 'FooPlugins',
+				'author_url' => 'http://fooplugins.com',
+				'thumbnail' => '/assets/extension_bg.png',
+				'tags' => array ('lightbox'),
+				'source' => 'repo',
+				'activated_by_default' => true,
+				'minimum_version' => '1.0.2.1'
+			);
+
+			//FooBox premium
+			$extensions[] = array (
+				'slug' => 'foobox',
+				'class' => 'FooGallery_FooBox_Extension',
+				'categories' => array ('Featured', 'Premium'),
+				'file' => 'foobox.php',
+				'title' => 'FooBox PRO',
+				'description' => 'The best lightbox for WordPress just got even better!',
+				'price' => '$27',
+				'author' => 'FooPlugins',
+				'author_url' => 'http://fooplugins.com',
+				'thumbnail' => '/assets/extension_bg.png',
+				'tags' => array ('premium', 'lightbox'),
+				'source' => 'fooplugins',
+				'download_button' =>
+					array (
+						'text' => 'Buy - $27',
+						'target' => '_blank',
+						'href' => 'http://fooplugins.com/plugins/foobox',
+						'confirm' => false,
+					),
+				'activated_by_default' => true,
+				'minimum_version' => '2.3.2'
+			);
+
+			//The NextGen importer
+			$extensions[] = array (
+				'slug' => 'nextgen',
+				'class' => 'FooGallery_Nextgen_Gallery_Importer_Extension',
+				'categories' => array ('Free'),
+				'title' => 'NextGen Importer',
+				'description' => 'Imports all your existing NextGen galleries',
+				'author' => 'FooPlugins',
+				'author_url' => 'http://fooplugins.com',
+				'thumbnail' => '/assets/extension_bg.png',
+				'tags' => array ('tools'),
+				'source' => 'bundled'
+			);
+
+			return $extensions;
 		}
 
 		/**
@@ -112,19 +218,13 @@ if ( !class_exists( 'FooGallery_Extensions_API' ) ) {
 
 		/**
 		 * @TODO
-		 * @return array|bool
+		 * @return array
 		 */
 		function get_all() {
-			$this->error_message = false; //clear any errors
 
 			//check if we need to load
 			if ( false === $this->extensions ) {
 				$this->load_available_extensions();
-			}
-
-			if ( !empty($this->error_message) ) {
-				//we have errors!
-				return array();
 			}
 
 			return apply_filters( 'foogallery_available_extensions', $this->extensions );

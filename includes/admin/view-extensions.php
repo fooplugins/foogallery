@@ -4,6 +4,8 @@ $api = new FooGallery_Extensions_API();
 
 $extensions = $api->get_all();
 
+$has_errors = $api->has_extension_loading_errors();
+
 $categories = $api->get_all_categories();
 
 $show_message = safe_get_from_request('show_message');
@@ -32,6 +34,11 @@ if ( 'yes' === $show_message ) {
 	if ( isset( $result ) ) { ?>
 		<div class="foogallery-message-<?php echo $result['type']; ?>">
 			<p><?php echo $result['message']; ?></p>
+		</div>
+	<?php }
+	if ( $has_errors ) { ?>
+		<div class="foogallery-message-error">
+			<p><?php _e( 'There was a problem loading all the public extensions! Only the default bundled extensions will be shown.', 'foogallery' ); ?></p>
 		</div>
 	<?php } ?>
 	<h1><?php _e( 'FooGallery Extensions', 'foogallery' ); ?><span class="spinner"></span></h1>
