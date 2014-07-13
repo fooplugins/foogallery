@@ -55,7 +55,7 @@ class FooGallery_Template_Loader {
 
 				//we have found a template!
 				do_action( "foogallery_located_template", $current_foogallery );
-				do_action( "foogallery_located_template-($current_foogallery_template)", $current_foogallery );
+				do_action( "foogallery_located_template-{$current_foogallery_template}", $current_foogallery );
 
 				//try to include some JS
 				if ( false !== ($js_location = $loader->locate_file( "gallery-{$current_foogallery_template}.js" )) ) {
