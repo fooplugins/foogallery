@@ -1,6 +1,6 @@
 <?php
 /**
- * FooGallery masonry gallery template
+ * FooGallery default responsive gallery template
  */
 global $current_foogallery;
 global $current_foogallery_arguments;
