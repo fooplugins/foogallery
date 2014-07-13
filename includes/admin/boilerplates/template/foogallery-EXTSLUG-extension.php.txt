@@ -34,6 +34,7 @@ if ( !class_exists( '{package}' ) ) {
 		function __construct() {
 			add_filter( 'foogallery_gallery_templates', array( $this, 'add_template' ) );
 			add_filter( 'foogallery_gallery_templates_files', array( $this, 'register_myself' ) );
+			add_filter( 'foogallery_located_template-{slug}', array( $this, 'enqueue_dependencies' ) );
 		}
 
 		/**
@@ -45,6 +46,17 @@ if ( !class_exists( '{package}' ) ) {
 		function register_myself( $extensions ) {
 			$extensions[] = __FILE__;
 			return $extensions;
+		}
+
+		/**
+		 * Enqueue any script or stylesheet file dependencies that your gallery template relies on
+		 */
+		function enqueue_dependencies() {
+			//$js = {constant}_URL . 'js/jquery.{slug}.js';
+			//wp_enqueue_script( '{slug}', $js, array('jquery'), {constant}_VERSION );
+
+			//$css = {constant}_URL . 'css/{slug}.css';
+			//wp_enqueue_style( '{slug}', $css, array(), {constant}_VERSION );
 		}
 
 		/**
@@ -66,6 +78,11 @@ if ( !class_exists( '{package}' ) ) {
 						'title'   => __('Thumbnail Size', '{plugin_slug}'),
 						'desc'    => __('Choose the size of your thumbs.', '{plugin_slug}'),
 						'type'    => 'thumb_size',
+						'default' => array(
+							'width' => get_option( 'thumbnail_size_w' ),
+							'height' => get_option( 'thumbnail_size_h' ),
+							'crop' => true
+						)
 					),
 					array(
 						'id'      => 'thumbnail_link',
@@ -79,7 +96,7 @@ if ( !class_exists( '{package}' ) ) {
 						'id'      => 'lightbox',
 						'title'   => __('Lightbox', '{plugin_slug}'),
 						'desc'    => __('Choose which lightbox you want to use in the gallery.', '{plugin_slug}'),
-						'type'    => 'lightbox',
+						'type'    => 'lightbox'
 					),
 					array(
 						'id'      => 'alignment',
