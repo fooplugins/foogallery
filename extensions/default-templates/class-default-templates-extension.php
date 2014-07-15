@@ -9,6 +9,7 @@ if ( !class_exists( 'FooGallery_Default_Templates_Extension' ) ) {
 			add_filter( 'foogallery_gallery_templates', array( $this, 'add_default_templates' ) );
 			add_filter( 'foogallery_gallery_templates_files', array( $this, 'register_myself' ) );
 			add_action( 'foogallery_render_gallery_template_field_custom', array( $this, 'render_thumbnail_preview' ), 10, 3 );
+			add_filter( 'foogallery_located_template-masonry', array( $this, 'enqueue_masonry_dependencies' ) );
 		}
 
 		function register_myself( $extensions ) {
@@ -191,6 +192,14 @@ if ( !class_exists( 'FooGallery_Default_Templates_Extension' ) ) {
 				echo $featured->html( $args );
 				echo '</div>';
 			}
+		}
+
+		/**
+		 * Enqueue scripts that the masonry gallery template relies on
+		 */
+		function enqueue_masonry_dependencies() {
+			$js = FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_URL . 'js/imagesloaded.pkgd.min.js';
+			wp_enqueue_script( 'imagesloaded', $js, array('masonry'), FOOGALLERY_VERSION );
 		}
 	}
 }
