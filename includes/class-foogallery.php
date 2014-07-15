@@ -40,8 +40,9 @@ class FooGallery extends stdClass {
 		$this->slug = $post->post_name;
 		$this->name = $post->post_title;
 		$this->author = $post->post_author;
-        $this->post_status = $post->post_status;
-		$this->attachment_ids = array_filter( get_post_meta( $this->ID, FOOGALLERY_META_ATTACHMENTS, true ) );
+		$this->post_status = $post->post_status;
+		$attachment_meta = get_post_meta( $this->ID, FOOGALLERY_META_ATTACHMENTS, true );
+		$this->attachment_ids = is_array( $attachment_meta ) ? array_filter( $attachment_meta ) : array();
 		$this->gallery_template = get_post_meta( $post->ID, FOOGALLERY_META_TEMPLATE, true );
 		$this->settings = get_post_meta( $post->ID, FOOGALLERY_META_SETTINGS, true );
 		do_action( 'foogallery_foogallery_instance_after_load', $this, $post );
