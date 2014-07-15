@@ -71,10 +71,7 @@
 
         $template.attr('data-attachment-id', attachment.id);
 
-        $template.find('img')
-            .attr('src', attachment.src)
-            .attr('width', attachment.width)
-            .attr('height', attachment.height);
+        $template.find('img').attr('src', attachment.src);
 
         $('.foogallery-attachments-list .add-attachment').before($template);
 
@@ -123,14 +120,16 @@
 				var attachments = FOOGALLERY.media_uploader.state().get('selection').toJSON();
 
 				$.each(attachments, function(i, item) {
-					var attachment = {
-						id : item.id,
-						width: item.sizes.thumbnail.width,
-						height: item.sizes.thumbnail.height,
-						src: item.sizes.thumbnail.url
-					};
+					if (item && item.id && item.sizes && item.sizes.thumbnail) {
+						var attachment = {
+							id: item.id,
+							src: item.sizes.thumbnail.url
+						};
 
-					FOOGALLERY.addAttachmentToGalleryList(attachment);
+						FOOGALLERY.addAttachmentToGalleryList(attachment);
+					} else {
+						//there was a problem adding the item! Move on to the next
+					}
 				});
 			})
 			.on( 'open', function() {
