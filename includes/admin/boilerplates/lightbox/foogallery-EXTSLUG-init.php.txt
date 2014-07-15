@@ -13,13 +13,13 @@ if ( !class_exists( '{package}_Init' ) ) {
 			$extensions[] = array(
 				'slug'=> '{slug}',
 				'class'=> '{package}',
-				'title'=> '{name}',
-				'description'=> '{desc}',
+				'title'=> __('{name}', '{plugin_slug}'),
+				'description'=> __('{desc}', '{plugin_slug}'),
 				'author'=> '{author}',
 				'author_url'=> '{author_link}',
-				'thumbnail'=> '/assets/extension_bg.png',
-				'categories'=> array('Build Your Own'),
-				'tags'=> array('{type}'),
+				'thumbnail'=> {constant}_URL . '/assets/extension_bg.png',
+				'tags'=> array( __('{type}', 'foogallery') ),	//use foogallery translations
+				'categories'=> array( __('Build Your Own', 'foogallery') ), //use foogallery translations
 				'source'=> 'generated'
 			);
 

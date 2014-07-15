@@ -17,7 +17,7 @@ if ( !class_exists( '{package}_Init' ) ) {
 				'description'=> __('{desc}', '{plugin_slug}'),
 				'author'=> '{author}',
 				'author_url'=> '{author_link}',
-				'thumbnail'=> '/assets/extension_bg.png',
+				'thumbnail'=> {constant}_URL . '/assets/extension_bg.png',
 				'tags'=> array( __('{type}', 'foogallery') ),	//use foogallery translations
 				'categories'=> array( __('Build Your Own', 'foogallery') ), //use foogallery translations
 				'source'=> 'generated'
