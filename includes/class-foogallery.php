@@ -26,6 +26,7 @@ class FooGallery extends stdClass {
 	private function set_defaults() {
 		$this->_post = NULL;
 		$this->ID = 0;
+		$this->attachment_ids = array();
 		$this->_attachments = false;
 	}
 
@@ -34,17 +35,16 @@ class FooGallery extends stdClass {
 	 * @param $post
 	 */
 	private function load($post) {
-
 		$this->_post = $post;
 		$this->ID = $post->ID;
 		$this->slug = $post->post_name;
 		$this->name = $post->post_title;
 		$this->author = $post->post_author;
         $this->post_status = $post->post_status;
-		$this->attachment_ids = get_post_meta($post->ID, FOOGALLERY_META_ATTACHMENTS, true);
-		$this->gallery_template = get_post_meta($post->ID, FOOGALLERY_META_TEMPLATE, true);
-		$this->settings = get_post_meta($post->ID, FOOGALLERY_META_SETTINGS, true);
-		do_action('foogallery_foogallery_instance_after_load', $this, $post);
+		$this->attachment_ids = array_filter( get_post_meta( $this->ID, FOOGALLERY_META_ATTACHMENTS, true ) );
+		$this->gallery_template = get_post_meta( $post->ID, FOOGALLERY_META_TEMPLATE, true );
+		$this->settings = get_post_meta( $post->ID, FOOGALLERY_META_SETTINGS, true );
+		do_action( 'foogallery_foogallery_instance_after_load', $this, $post );
 	}
 
 	/**
