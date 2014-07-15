@@ -334,15 +334,19 @@ if ( !class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 		}
 
 		function include_required_scripts() {
-			//zeroclipboard needed for copy to clipboard functionality
-			$url = FOOGALLERY_URL . 'lib/zeroclipboard/ZeroClipboard.min.js';
-			wp_enqueue_script( 'foogallery-zeroclipboard', $url, array('jquery'), FOOGALLERY_VERSION );
+			//only include scripts if we on the foogallery page
+			if ( FOOGALLERY_CPT_GALLERY == foo_current_screen_post_type() ) {
 
-			//include any admin js required for the templates
-			foreach ( foogallery_gallery_templates() as $template ) {
-				$admin_js = foo_safe_get( $template, 'admin_js' );
-				if ( $admin_js ) {
-					wp_enqueue_script( 'foogallery-gallery-admin-' . $template['slug'], $admin_js, array('jquery'), FOOGALLERY_VERSION );
+				//zeroclipboard needed for copy to clipboard functionality
+				$url = FOOGALLERY_URL . 'lib/zeroclipboard/ZeroClipboard.min.js';
+				wp_enqueue_script( 'foogallery-zeroclipboard', $url, array('jquery'), FOOGALLERY_VERSION );
+
+				//include any admin js required for the templates
+				foreach ( foogallery_gallery_templates() as $template ) {
+					$admin_js = foo_safe_get( $template, 'admin_js' );
+					if ( $admin_js ) {
+						wp_enqueue_script( 'foogallery-gallery-admin-' . $template['slug'], $admin_js, array('jquery'), FOOGALLERY_VERSION );
+					}
 				}
 			}
 		}
