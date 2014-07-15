@@ -12,18 +12,9 @@ $args = array(
 	'crop' => false
 );
 $lightbox = foogallery_gallery_template_setting( 'lightbox', 'unknown' );
-wp_enqueue_script( 'masonry' );
 
 if ( !foo_check_wp_version_at_least( '3.9' ) ) { ?>
-	<script>
-		jQuery(function ($) {
-			$('#foogallery-gallery-<?php echo $current_foogallery->ID; ?>').masonry({
-				itemSelector: '.item',
-				columnWidth: <?php echo $width; ?>,
-				gutter: <?php echo $gutter_width; ?>
-			});
-		});
-	</script>
+
 <?php } ?>
 <style>
 	#foogallery-gallery-<?php echo $current_foogallery->ID; ?> .item {
@@ -39,12 +30,25 @@ if ( !foo_check_wp_version_at_least( '3.9' ) ) { ?>
 		transform: scale(1.05);
 	}
 </style>
+<script>
+	jQuery(function ($) {
+		var $container<?php echo $current_foogallery->ID; ?> = $('#foogallery-gallery-<?php echo $current_foogallery->ID; ?>');
+		// initialize Masonry
+		$container<?php echo $current_foogallery->ID; ?>.masonry({
+			itemSelector: '.item',
+			columnWidth: <?php echo $width; ?>,
+			gutter: <?php echo $gutter_width; ?>
+		});
+		// layout Masonry again after all images have loaded
+		$container<?php echo $current_foogallery->ID; ?>.imagesLoaded( function() {
+			$container<?php echo $current_foogallery->ID; ?>.masonry();
+		});
+	});
+</script>
 <div id="foogallery-gallery-<?php echo $current_foogallery->ID; ?>"
-	 class="<?php echo foogallery_build_class_attribute( $current_foogallery, 'js-masonry', 'foogallery-lightbox-' . $lightbox); ?>"
-	 data-masonry-options='{ "itemSelector": ".item", "gutter": <?php echo $gutter_width; ?> }'>
-	<?php foreach ( $current_foogallery->attachments() as $attachment ) {
-		echo '<div class="item">';
-		echo $attachment->html( $args );
-		echo '</div>';
+	 class="<?php echo foogallery_build_class_attribute( $current_foogallery, 'foogallery-lightbox-' . $lightbox); ?>">
+<?php foreach ( $current_foogallery->attachments() as $attachment ) {
+		echo '	<div class="item">' . $attachment->html( $args )  . '</div>
+';
 	} ?>
 </div>
