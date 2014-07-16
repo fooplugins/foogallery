@@ -228,7 +228,25 @@ if ( !class_exists( 'FooGallery_Extensions_API' ) ) {
 				$this->load_available_extensions();
 			}
 
-			return apply_filters( 'foogallery_available_extensions', $this->extensions );
+			//get any extra extensions from plugins
+			$extra_extensions = apply_filters( 'foogallery_available_extensions', array() );
+
+			if ( count( $extra_extensions ) > 0 ) {
+				//get a list of slugs so we can determine duplicates!
+				$slugs = array();
+				foreach ( $this->extensions as $extension ) {
+					$slugs[] = $extension['slug'];
+				}
+
+				//only add if not a duplicate
+				foreach ( $extra_extensions as $extension ) {
+					if ( !in_array( $extension['slug'], $slugs ) ) {
+						$this->extensions[] = $extension;
+					}
+				}
+			}
+
+			return $this->extensions;
 		}
 
 		/**
