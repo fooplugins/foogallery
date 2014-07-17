@@ -177,3 +177,33 @@
 	font-style: italic;
 	color: #2EA2CC !important;
 }
+
+.foogallery-help {
+	position: relative;
+	display: block;
+	line-height: 19px;
+	padding: 11px 15px 11px 40px;
+	font-size: 14px;
+	text-align: left;
+	margin: 5px 0 20px 2px;
+	background-color: #fff;
+	border-left: 4px solid #1e8cbe;
+	-webkit-box-shadow: 0 1px 1px 0 rgba(0, 0, 0, .1);
+	box-shadow: 0 1px 1px 0 rgba(0, 0, 0, .1);
+}
+
+.foogallery-help:before {
+	content: "\f223";
+	font: 400 20px/1 dashicons !important;
+	speak: none;
+	color: #1e8cbe;
+	display: inline-block;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	vertical-align: bottom;
+	position: absolute;
+	left: 10px;
+	height: 100%;
+	margin-top: -10px;
+	top: 50%;
+}

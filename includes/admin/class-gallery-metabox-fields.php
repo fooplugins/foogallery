@@ -24,9 +24,6 @@ if ( !class_exists( 'FooGallery_Admin_Gallery_MetaBox_Fields' ) ) {
 			//only declare up front so no debug warnings are shown
 			$type = $id = $desc = $default = $placeholder = $choices = $class = $spacer = null;
 
-			//allow for the field to be altered by extensions. Also used by the build-in fields, e.g. lightbox
-			$field = apply_filters( 'foogallery_alter_gallery_template_field', $field, $gallery );
-
 			extract( $field );
 
 			$id = $template_slug . '_' . $id;
@@ -210,6 +207,10 @@ if ( !class_exists( 'FooGallery_Admin_Gallery_MetaBox_Fields' ) ) {
 							$field['choices'] = $lightboxes;
 						}
 						break;
+				}
+
+				if ( isset($field['help']) && $field['help'] ) {
+					$field['type'] = 'help';
 				}
 			}
 			return $field;
