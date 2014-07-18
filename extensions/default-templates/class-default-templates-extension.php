@@ -27,7 +27,7 @@ if ( !class_exists( 'FooGallery_Default_Templates_Extension' ) ) {
 				'fields'	  => array(
 					array(
 						'id'      => 'thumbnail_dimensions',
-						'title'   => __('Thumbnail Size', 'foogallery'),
+						'title'   => __('Size', 'foogallery'),
 						'desc'    => __('Choose the size of your thumbnails.', 'foogallery'),
 						'section' => __('Thumbnail Settings', 'foogallery'),
 						'type'    => 'thumb_size',
@@ -39,7 +39,7 @@ if ( !class_exists( 'FooGallery_Default_Templates_Extension' ) ) {
 					),
 					array(
 						'id'      => 'thumbnail_link',
-						'title'   => __('Thumbnail Link', 'foogallery'),
+						'title'   => __('Link', 'foogallery'),
 						'section' => __('Thumbnail Settings', 'foogallery'),
 						'default' => 'image',
 						'type'    => 'thumb_link',
@@ -47,45 +47,10 @@ if ( !class_exists( 'FooGallery_Default_Templates_Extension' ) ) {
 						'desc'	  => __('You can choose to link each thumbnail to the full size image, or to the image\'s attachment page, or you can choose to not link to anything.', 'foogallery')
 					),
 					array(
-						'id'      => 'lightbox',
-						'title'   => __('Lightbox', 'foogallery'),
-						'section' => __('Thumbnail Settings', 'foogallery'),
-						'desc'    => __('Choose which lightbox you want to display images with. The lightbox will only work if you set the thumbnail link to "Full Size Image".', 'foogallery'),
-						'type'    => 'lightbox',
-					),
-					array(
-						'id'      => 'spacing',
-						'title'   => __('Thumbnail Spacing', 'foogallery'),
-						'desc'    => __('The spacing or gap between images in the gallery.', 'foogallery'),
-						'type'    => 'select',
-						'section' => __('Gallery Look &amp; Feel', 'foogallery'),
-						'default' => 'spacing-width-10',
-						'choices' => array(
-							'spacing-width-5' => __( '5 pixels', 'foogallery' ),
-							'spacing-width-10' => __( '10 pixels', 'foogallery' ),
-							'spacing-width-15' => __( '15 pixels', 'foogallery' ),
-							'spacing-width-20' => __( '20 pixels', 'foogallery' ),
-							'spacing-width-25' => __( '25 pixels', 'foogallery' )
-						)
-					),
-					array(
-						'id'      => 'alignment',
-						'title'   => __('Gallery Alignment', 'foogallery'),
-						'desc'    => __('The horizontal alignment of the thumbnails inside the gallery.', 'foogallery'),
-						'section' => __('Gallery Look &amp; Feel', 'foogallery'),
-						'default' => 'alignment-center',
-						'type'    => 'select',
-						'choices' => array(
-							'alignment-left' => __( 'Left', 'foogallery' ),
-							'alignment-center' => __( 'Center', 'foogallery' ),
-							'alignment-right' => __( 'Right', 'foogallery' )
-						)
-					),
-					array(
 						'id'      => 'border-style',
 						'title'   => __('Border Style', 'foogallery'),
 						'desc'    => __('The border style for each thumbnail in the gallery.', 'foogallery'),
-						'section' => __('Gallery Look &amp; Feel', 'foogallery'),
+						'section' => __('Thumbnail Settings', 'foogallery'),
 						'type'    => 'icon',
 						'default' => 'border-style-square-white',
 						'choices' => array(
@@ -102,7 +67,7 @@ if ( !class_exists( 'FooGallery_Default_Templates_Extension' ) ) {
 						'id'      => 'hover-effect',
 						'title'   => __('Hover Effect', 'foogallery'),
 						'desc'    => __('A hover effect is shown when you hover over each thumbnail.', 'foogallery'),
-						'section' => __('Gallery Look &amp; Feel', 'foogallery'),
+						'section' => __('Thumbnail Settings', 'foogallery'),
 						'type'    => 'icon',
 						'default' => 'hover-effect-zoom',
 						'choices' => array(
@@ -117,10 +82,45 @@ if ( !class_exists( 'FooGallery_Default_Templates_Extension' ) ) {
 					),
 					array(
 						'id' => 'thumb_preview',
-						'title' => __('Thumbnail Preview', 'foogallery'),
+						'title' => __('Preview', 'foogallery'),
 						'desc' => __('This is what your gallery thumbnails will look like.', 'foogallery'),
-						'section' => __('Gallery Look &amp; Feel', 'foogallery'),
+						'section' => __('Thumbnail Settings', 'foogallery'),
 						'type' => 'thumb_preview'
+					),
+					array(
+						'id'      => 'lightbox',
+						'title'   => __('Lightbox', 'foogallery'),
+						'section' => __('Gallery Settings', 'foogallery'),
+						'desc'    => __('Choose which lightbox you want to use. The lightbox will only work if you set the thumbnail link to "Full Size Image".', 'foogallery'),
+						'type'    => 'lightbox',
+					),
+					array(
+						'id'      => 'spacing',
+						'title'   => __('Spacing', 'foogallery'),
+						'desc'    => __('The spacing or gap between thumbnails in the gallery.', 'foogallery'),
+						'type'    => 'select',
+						'section' => __('Gallery Settings', 'foogallery'),
+						'default' => 'spacing-width-10',
+						'choices' => array(
+							'spacing-width-5' => __( '5 pixels', 'foogallery' ),
+							'spacing-width-10' => __( '10 pixels', 'foogallery' ),
+							'spacing-width-15' => __( '15 pixels', 'foogallery' ),
+							'spacing-width-20' => __( '20 pixels', 'foogallery' ),
+							'spacing-width-25' => __( '25 pixels', 'foogallery' )
+						)
+					),
+					array(
+						'id'      => 'alignment',
+						'title'   => __('Alignment', 'foogallery'),
+						'desc'    => __('The horizontal alignment of the thumbnails inside the gallery.', 'foogallery'),
+						'section' => __('Gallery Settings', 'foogallery'),
+						'default' => 'alignment-center',
+						'type'    => 'select',
+						'choices' => array(
+							'alignment-left' => __( 'Left', 'foogallery' ),
+							'alignment-center' => __( 'Center', 'foogallery' ),
+							'alignment-right' => __( 'Right', 'foogallery' )
+						)
 					)
 				)
 			);
