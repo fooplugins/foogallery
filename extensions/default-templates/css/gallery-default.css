@@ -8,6 +8,8 @@
     .foogallery-default a img {
 		border-radius: 0;
         display: block;
+		-webkit-transition: none; 
+		transition: none;
     }
 
 /* Horizontal alignment */
