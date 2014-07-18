@@ -259,11 +259,11 @@ if ( !class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 						if ( isset($field['section']) && $field['section'] !== $section ) {
 							$section = $field['section'];
 							?>
-							<tr class="gallery_template_field gallery_template_field-<?php echo $template['slug']; ?>" <?php echo $field_visibility; ?>>
+							<tr class="gallery_template_field gallery_template_field-<?php echo $template['slug']; ?> gallery_template_field-<?php echo "{$template['slug']}-{$field['id']}"; ?>" <?php echo $field_visibility; ?>>
 								<td colspan="2"><h4><?php echo $section; ?></h4></td>
 							</tr>
 						<?php }	?>
-						<tr class="gallery_template_field gallery_template_field-<?php echo $template['slug']; ?>" <?php echo $field_visibility; ?>>
+						<tr class="gallery_template_field gallery_template_field-<?php echo $template['slug']; ?> gallery_template_field-<?php echo "{$template['slug']}-{$field['id']}"; ?>" <?php echo $field_visibility; ?>>
 							<?php if ( isset($field['type']) && 'help' == $field['type'] ) { ?>
 							<td colspan="2">
 								<div class="foogallery-help">
