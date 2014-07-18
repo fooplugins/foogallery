@@ -158,6 +158,45 @@ if ( !class_exists( 'FooGallery_Default_Templates_Extension' ) ) {
 				)
 			);
 
+			$gallery_templates[] = array(
+				'slug'        => 'simple_portfolio',
+				'name'        => __( 'Simple Portfolio', 'foogallery'),
+				'fields'	  => array(
+					array(
+						'id'	  => 'help',
+						'title'	  => __('Tip', 'foogallery'),
+						'type'	  => 'html',
+						'help'	  => true,
+						'desc'	  => __('The simple portfolio looks best when you have <strong>captions and descriptions</strong> set for every attachment in the gallery.<br />To change captions and descriptions, simply hover over the thumbnail above and click the "i" icon.', 'foogallery')
+					),
+					array(
+						'id'      => 'thumbnail_dimensions',
+						'title'   => __('Thumbnail Size', 'foogallery'),
+						'desc'    => __('Choose the size of your thumbnails.', 'foogallery'),
+						'type'    => 'thumb_size',
+						'default' => array(
+							'width' => 250,
+							'height' => 200,
+							'crop' => true
+						)
+					),
+					array(
+						'id'      => 'thumbnail_link',
+						'title'   => __('Thumbnail Link', 'foogallery'),
+						'default' => 'image',
+						'type'    => 'thumb_link',
+						'spacer'  => '<span class="spacer"></span>',
+						'desc'	  => __('You can choose to link each thumbnail to the full size image, or to the image\'s attachment page, or you can choose to not link to anything.', 'foogallery')
+					),
+					array(
+						'id'      => 'lightbox',
+						'title'   => __('Lightbox', 'foogallery'),
+						'desc'    => __('Choose which lightbox you want to display images with. The lightbox will only work if you set the thumbnail link to "Full Size Image".', 'foogallery'),
+						'type'    => 'lightbox',
+					)
+				)
+			);
+
 			return $gallery_templates;
 		}
 
