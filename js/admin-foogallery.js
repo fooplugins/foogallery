@@ -182,7 +182,8 @@
 		FOOGALLERY.initUsageMetabox();
 
         $('.foogallery-attachments-list')
-            .on('click' ,'a.remove', function() {
+            .on('click' ,'a.remove', function(e) {
+				e.preventDefault();
                 var $selected = $(this).parents('li:first'),
 					attachment_id = $selected.data('attachment-id');
                 FOOGALLERY.removeAttachmentFromGalleryList(attachment_id);
