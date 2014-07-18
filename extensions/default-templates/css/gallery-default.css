@@ -8,9 +8,16 @@
     .foogallery-default a img {
 		border-radius: 0;
         display: block;
+		-webkit-transition: none; 
+		transition: none;
     }
 
 /* Horizontal alignment */
+.foogallery-default,
+.foogallery-default a {
+	line-height: 0;
+	font-size: 0;
+}
 .foogallery-default.alignment-left {
 	text-align: left;
 }

@@ -128,7 +128,7 @@ if ( !class_exists( 'FooGallery_Default_Templates_Extension' ) ) {
 						'type'    => 'number',
 						'class'   => 'small-text',
 						'default' => 150,
-						'step'    => '10',
+						'step'    => '1',
 						'min'     => '0'
 					),
 					array(
