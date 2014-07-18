@@ -13,6 +13,10 @@
     }
 
 /* Horizontal alignment */
+.foogallery-default,
+.foogallery-default a {
+	line-height: 0;
+}
 .foogallery-default.alignment-left {
 	text-align: left;
 }
