@@ -85,7 +85,7 @@
         if (index !== -1) {
             FOOGALLERY.attachments.splice(index, 1);
         }
-		$('[data-attachment-id="' + id + '"').remove();
+		$('[data-attachment-id="' + id + '"]').remove();
 
         FOOGALLERY.calculateAttachmentIds();
     };
