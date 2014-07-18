@@ -186,7 +186,7 @@
 	font-size: 14px;
 	text-align: left;
 	margin: 5px 0 20px 2px;
-	background-color: #fff;
+	background-color: #F4F4FF;
 	border-left: 4px solid #1e8cbe;
 	-webkit-box-shadow: 0 1px 1px 0 rgba(0, 0, 0, .1);
 	box-shadow: 0 1px 1px 0 rgba(0, 0, 0, .1);
@@ -194,7 +194,7 @@
 
 .foogallery-help:before {
 	content: "\f223";
-	font: 400 20px/1 dashicons !important;
+	font: 400 30px/1 dashicons !important;
 	speak: none;
 	color: #1e8cbe;
 	display: inline-block;
@@ -202,9 +202,9 @@
 	-moz-osx-font-smoothing: grayscale;
 	vertical-align: bottom;
 	position: absolute;
-	left: 10px;
+	left: 5px;
 	height: 100%;
-	margin-top: -10px;
+	margin-top: -15px;
 	top: 50%;
 }
 
