@@ -226,6 +226,7 @@ if ( !class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 			if ( !empty($gallery->gallery_template) ) {
 				$gallery_template = $gallery->gallery_template;
 			}
+			$hide_help = 'on' == foogallery_get_setting('hide_gallery_template_help');
 			?>
 			<table class="foogallery-metabox-settings">
 				<tbody>
@@ -264,9 +265,13 @@ if ( !class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 							<tr class="<?php echo $class; ?>" <?php echo $field_visibility; ?>>
 								<td colspan="2"><h4><?php echo $section; ?></h4></td>
 							</tr>
-						<?php }	?>
+						<?php }
+						if (isset($field['type']) && 'help' == $field['type'] && $hide_help) {
+							continue; //skip help if the 'hide help' setting is turned on
+						}
+						?>
 						<tr class="<?php echo $class; ?>" <?php echo $field_visibility; ?>>
-							<?php if ( isset($field['type']) && 'help' == $field['type'] ) { ?>
+							<?php if ( isset($field['type']) && 'help' == $field['type']) { ?>
 							<td colspan="2">
 								<div class="foogallery-help">
 									<?php echo $field['desc']; ?>
