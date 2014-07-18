@@ -240,7 +240,9 @@ if ( !class_exists( 'FooGallery_Admin_Gallery_MetaBox_Fields' ) ) {
 		}
 
 		function get_lightbox_field_choices() {
-			return apply_filters( 'foogallery_gallery_template_field_lightboxes', array() );
+			$lightboxes = apply_filters( 'foogallery_gallery_template_field_lightboxes', array() );
+			$lightboxes['none'] = __( 'None', 'foogallery' );
+			return $lightboxes;
 		}
 	}
 }
