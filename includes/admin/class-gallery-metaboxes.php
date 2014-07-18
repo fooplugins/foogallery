@@ -256,14 +256,16 @@ if ( !class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 						//allow for the field to be altered by extensions. Also used by the build-in fields, e.g. lightbox
 						$field = apply_filters( 'foogallery_alter_gallery_template_field', $field, $gallery );
 
+						$class = "gallery_template_field gallery_template_field-{$template['slug']} gallery_template_field-{$template['slug']}-{$field['id']}";
+
 						if ( isset($field['section']) && $field['section'] !== $section ) {
 							$section = $field['section'];
 							?>
-							<tr class="gallery_template_field gallery_template_field-<?php echo $template['slug']; ?> gallery_template_field-<?php echo "{$template['slug']}-{$field['id']}"; ?>" <?php echo $field_visibility; ?>>
+							<tr class="<?php echo $class; ?>" <?php echo $field_visibility; ?>>
 								<td colspan="2"><h4><?php echo $section; ?></h4></td>
 							</tr>
 						<?php }	?>
-						<tr class="gallery_template_field gallery_template_field-<?php echo $template['slug']; ?> gallery_template_field-<?php echo "{$template['slug']}-{$field['id']}"; ?>" <?php echo $field_visibility; ?>>
+						<tr class="<?php echo $class; ?>" <?php echo $field_visibility; ?>>
 							<?php if ( isset($field['type']) && 'help' == $field['type'] ) { ?>
 							<td colspan="2">
 								<div class="foogallery-help">
