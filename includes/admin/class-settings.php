@@ -32,6 +32,14 @@ if (!class_exists('FooGallery_Admin_Settings')) {
 		        'tab'     => 'general'
 	        );
 
+			$settings[] = array(
+				'id'      => 'hide_gallery_template_help',
+				'title'   => __('Hide Gallery Template Help', 'foogallery'),
+				'desc'    => __('Some gallery templates show helpful tips, which are useful for new users. You can choose to hide these tips.', 'foogallery'),
+				'type'    => 'checkbox',
+				'tab'     => 'general'
+			);
+
 	        //endregion General
 
 //	        //region Advanced Tab

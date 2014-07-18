@@ -226,6 +226,7 @@ if ( !class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 			if ( !empty($gallery->gallery_template) ) {
 				$gallery_template = $gallery->gallery_template;
 			}
+			$hide_help = 'on' == foogallery_get_setting('hide_gallery_template_help');
 			?>
 			<table class="foogallery-metabox-settings">
 				<tbody>
@@ -252,24 +253,41 @@ if ( !class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 					$field_visibility = ($gallery_template !== $template['slug']) ? 'style="display:none"' : '';
 					$section          = '';
 					foreach ( $template['fields'] as $field ) {
+
+						//allow for the field to be altered by extensions. Also used by the build-in fields, e.g. lightbox
+						$field = apply_filters( 'foogallery_alter_gallery_template_field', $field, $gallery );
+
+						$class = "gallery_template_field gallery_template_field-{$template['slug']} gallery_template_field-{$template['slug']}-{$field['id']}";
+
 						if ( isset($field['section']) && $field['section'] !== $section ) {
 							$section = $field['section'];
 							?>
-							<tr class="gallery_template_field gallery_template_field-<?php echo $template['slug']; ?>" <?php echo $field_visibility; ?>>
+							<tr class="<?php echo $class; ?>" <?php echo $field_visibility; ?>>
 								<td colspan="2"><h4><?php echo $section; ?></h4></td>
 							</tr>
-						<?php
+						<?php }
+						if (isset($field['type']) && 'help' == $field['type'] && $hide_help) {
+							continue; //skip help if the 'hide help' setting is turned on
 						}
 						?>
-					<tr class="gallery_template_field gallery_template_field-<?php echo $template['slug']; ?>" <?php echo $field_visibility; ?>>
-						<th>
-							<label
-								for="FooGallerySettings_<?php echo $template['slug'] . '_' . $field['id']; ?>"><?php echo $field['title']; ?></label>
-						</th>
-						<td>
-							<?php do_action('foogallery_render_gallery_template_field', $field, $gallery, $template ); ?>
-						</td>
-						</tr><?php
+						<tr class="<?php echo $class; ?>" <?php echo $field_visibility; ?>>
+							<?php if ( isset($field['type']) && 'help' == $field['type']) { ?>
+							<td colspan="2">
+								<div class="foogallery-help">
+									<?php echo $field['desc']; ?>
+								</div>
+							</td>
+							<?php } else { ?>
+							<th>
+								<label
+									for="FooGallerySettings_<?php echo $template['slug'] . '_' . $field['id']; ?>"><?php echo $field['title']; ?></label>
+							</th>
+							<td>
+								<?php do_action('foogallery_render_gallery_template_field', $field, $gallery, $template ); ?>
+							</td>
+							<?php } ?>
+						</tr>
+					<?php
 					}
 				}
 				?>

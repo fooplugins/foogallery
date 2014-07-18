@@ -24,9 +24,6 @@ if ( !class_exists( 'FooGallery_Admin_Gallery_MetaBox_Fields' ) ) {
 			//only declare up front so no debug warnings are shown
 			$type = $id = $desc = $default = $placeholder = $choices = $class = $spacer = null;
 
-			//allow for the field to be altered by extensions. Also used by the build-in fields, e.g. lightbox
-			$field = apply_filters( 'foogallery_alter_gallery_template_field', $field, $gallery );
-
 			extract( $field );
 
 			$id = $template_slug . '_' . $id;
@@ -211,6 +208,10 @@ if ( !class_exists( 'FooGallery_Admin_Gallery_MetaBox_Fields' ) ) {
 						}
 						break;
 				}
+
+				if ( isset($field['help']) && $field['help'] ) {
+					$field['type'] = 'help';
+				}
 			}
 			return $field;
 		}
@@ -239,7 +240,9 @@ if ( !class_exists( 'FooGallery_Admin_Gallery_MetaBox_Fields' ) ) {
 		}
 
 		function get_lightbox_field_choices() {
-			return apply_filters( 'foogallery_gallery_template_field_lightboxes', array() );
+			$lightboxes = apply_filters( 'foogallery_gallery_template_field_lightboxes', array() );
+			$lightboxes['none'] = __( 'None', 'foogallery' );
+			return $lightboxes;
 		}
 	}
 }

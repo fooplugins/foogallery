@@ -1,1 +1,0 @@
-//FooGallery default template script
