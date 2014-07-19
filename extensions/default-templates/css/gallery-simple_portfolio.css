@@ -30,10 +30,10 @@
 	margin: 0;
 	padding: 10px 0;
 	border-bottom: solid 3px #333333;
-	text-indent: 10px;
 }
 
 .foogallery-simple_portfolio .bf-item > p {
-	font-size: 11px;
-	padding: 0 10px;
+	font-size: 0.8em;
+	text-align: justify;
+	margin: 5px 0;
 }
