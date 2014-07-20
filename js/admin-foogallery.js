@@ -108,6 +108,7 @@
 		// Create the media frame.
 		FOOGALLERY.media_uploader = wp.media.frames.file_frame = wp.media({
 			title: $(this).data( 'uploader-title' ),
+			//frame: 'post',
 			button: {
 				text: $(this).data( 'uploader-button-text' )
 			},
@@ -134,7 +135,7 @@
 			})
 			.on( 'open', function() {
 				var selection = FOOGALLERY.media_uploader.state().get('selection');
-				selection.set();    //clear any previos selections
+				if (selection) { selection.set(); }   //clear any previos selections
 
 				if (FOOGALLERY.selected_attachment_id > 0) {
 					var attachment = wp.media.attachment(FOOGALLERY.selected_attachment_id);
