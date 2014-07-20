@@ -3,7 +3,7 @@
  * FooGallery Admin class
  */
 
-if ( !class_exists( 'FooGallery_Admin' ) ) {
+if ( ! class_exists( 'FooGallery_Admin' ) ) {
 
 	/**
 	 * Class FooGallery_Admin
@@ -27,12 +27,6 @@ if ( !class_exists( 'FooGallery_Admin' ) ) {
 		}
 
 		function init() {
-
-			//the following will be implemented in a future version
-//			add_filter( 'media_upload_tabs', array($this, 'add_media_manager_tab') );
-//			add_action( 'media_upload_foo_gallery', array($this, 'media_manager_iframe_content') );
-//			add_filter( 'media_view_strings', array($this, 'custom_media_string'), 10, 2);
-
 			add_filter( 'foogallery_admin_has_settings_page', '__return_false' );
 			add_action( 'foogallery_admin_print_styles', array($this, 'admin_print_styles') );
 			add_action( 'foogallery_admin_print_scripts', array($this, 'admin_print_scripts') );
@@ -40,56 +34,6 @@ if ( !class_exists( 'FooGallery_Admin' ) ) {
 			add_filter( 'foogallery_admin_plugin_action_links', array($this, 'plugin_listing_links') );
 		}
 
-		/**
-		 * @param $strings
-		 * @param $post
-		 *
-		 * @return mixed
-		 */
-		function custom_media_string($strings, $post) {
-			$strings['customMenuTitle'] = __( 'Custom Menu Title', 'custom' );
-			$strings['customButton']    = __( 'Custom Button', 'custom' );
-
-			return $strings;
-		}
-
-		/**
-		 * @param $tabs
-		 *
-		 * @return array
-		 */
-		function add_media_manager_tab($tabs) {
-			$newtab = array('foo_gallery' => __( 'Insert FooGallery', '' ));
-
-			return array_merge( $tabs, $newtab );
-		}
-
-		function media_manager_iframe() {
-			return wp_iframe( array($this, 'media_manager_iframe_content') );
-		}
-
-		function media_manager_iframe_content() {
-			echo media_upload_header();
-			//echo 'Still under development!';
-
-			//return;
-			?>
-			<div class="media-frame-router">
-				<div class="media-router">
-					<a href="#" class="media-menu-item">Select Gallery</a>
-					<a href="#" class="media-menu-item active">Create New Gallery</a>
-				</div>
-			</div>
-			<div class="media-frame-toolbar">
-				<div class="media-toolbar">
-					<div class="media-toolbar-primary">
-						<a href="#" class="button media-button button-primary button-large media-button-insert"
-						   disabled="disabled">Insert into page</a>
-					</div>
-				</div>
-			</div>
-		<?php
-		}
 
 		function admin_print_styles() {
 			$page       = safe_get_from_request( 'page' );
