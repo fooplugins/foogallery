@@ -66,11 +66,11 @@ if (!class_exists('FooGallery_Admin_Settings')) {
 //	        );
 //	        //endregion Advanced
 
-			return array(
+			return apply_filters('foogallery_admin_settings_override', array(
 				'tabs' => $tabs,
 				'sections' => array(),
 				'settings' => $settings
-			);
+			) );
         }
     }
 }
