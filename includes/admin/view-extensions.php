@@ -13,6 +13,10 @@ $show_message = safe_get_from_request('show_message');
 if ( 'yes' === $show_message ) {
 	$result = get_transient( FOOGALLERY_EXTENSIONS_MESSAGE_TRANSIENT_KEY );
 }
+
+$tagline = apply_filters( 'foogallery_admin_extensions_tagline', sprintf( __( 'Extensions make %s even more awesome, without bloating the core plugin.', 'foogallery' ), foogallery_plugin_name() ) );
+$show_foobot = apply_filters( 'foogallery_admin_show_foobot', true );
+
 ?>
 <style>
 	.foogallery-badge-foobot {
@@ -41,10 +45,10 @@ if ( 'yes' === $show_message ) {
 			<p><?php _e( 'There was a problem loading all the public extensions! Only the default bundled extensions will be shown.', 'foogallery' ); ?></p>
 		</div>
 	<?php } ?>
-	<h1><?php _e( 'FooGallery Extensions', 'foogallery' ); ?><span class="spinner"></span></h1>
+	<h1><?php printf( __( '%s Extensions', 'foogallery' ), foogallery_plugin_name() ); ?><span class="spinner"></span></h1>
 
-	<div class="foogallery-text"><?php _e( 'Extensions make FooGallery even more awesome, without bloating the core plugin.', 'foogallery' ); ?></div>
-	<div class="foogallery-badge-foobot"></div>
+	<div class="foogallery-text"><?php echo $tagline; ?></div>
+	<?php if ( $show_foobot ) { ?><div class="foogallery-badge-foobot"></div><?php } ?>
 
 	<h2 class="foo-nav-tabs nav-tab-wrapper">
 		<?php
@@ -139,7 +143,11 @@ if ( 'yes' === $show_message ) {
 		</div>
 		<?php } ?>
 	</div>
+	<?php
+	$hide_build_your_own_tab = foogallery_get_setting('whitelabel_extensions_hide_build_your_own');
+	if ( 'on' != $hide_build_your_own_tab ) { ?>
 	<div class="extension-page extension-page-build_your_own">
 		<?php include 'view-extensions-build-your-own.php'; ?>
 	</div>
+	<?php } ?>
 </div>

@@ -40,8 +40,8 @@ if ( !class_exists( 'FooGallery_Admin_Gallery_Editor' ) ) {
 
 			$foogallery->register_and_enqueue_js( 'admin-foogallery-editor.js' );
 
-			$buttons .= '<a href="#" class="button foogallery-modal-trigger" title="' . esc_attr__( 'Add Gallery From FooGallery', 'foogallery' ) . '" style="padding-left: .4em;">';
-			$buttons .= '<span class="wp-media-buttons-icon dashicons dashicons-format-gallery"></span> ' . __( 'Add FooGallery', 'foogallery' ) . '</a>';
+			$buttons .= '<a href="#" class="button foogallery-modal-trigger" title="' . esc_attr( sprintf( __( 'Add Gallery From %s', 'foogallery' ), foogallery_plugin_name() ) ) . '" style="padding-left: .4em;">';
+			$buttons .= '<span class="wp-media-buttons-icon dashicons dashicons-format-gallery"></span> ' . sprintf( __( 'Add %s', 'foogallery' ), foogallery_plugin_name() ) . '</a>';
 
 			return $buttons;
 		}
@@ -336,13 +336,13 @@ if ( !class_exists( 'FooGallery_Admin_Gallery_Editor' ) ) {
 					<?php
 
 					$title = empty( $gallery->name ) ?
-						sprintf( __( 'FooGallery #%s', 'foogallery' ), $gallery->ID ) :
+						sprintf( __( '%s #%s', 'foogallery' ), foogallery_plugin_name(), $gallery->ID ) :
 						$gallery->name;
 
 					?>
 					<h3><?php echo $title; ?>
 						<span><?php echo $images; ?></span>
-						<code>[foogallery id="<?php echo $gallery->ID; ?>"]</code>
+						<code>[<?php echo foogallery_gallery_shortcode_tag(); ?> id="<?php echo $gallery->ID; ?>"]</code>
 					</h3>
 				</div>
 			</div>

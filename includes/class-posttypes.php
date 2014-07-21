@@ -33,7 +33,7 @@ if ( !class_exists( 'FooGallery_PostTypes' ) ) {
 						'search_items'       => __( 'Search Galleries', 'foogallery' ),
 						'not_found'          => __( 'No Galleries found', 'foogallery' ),
 						'not_found_in_trash' => __( 'No Galleries found in Trash', 'foogallery' ),
-						'menu_name'          => __( 'FooGallery', 'foogallery' ),
+						'menu_name'          => __( foogallery_plugin_name(), 'foogallery' ),
 						'all_items'          => __( 'Galleries', 'foogallery' )
 					),
 					'hierarchical'  => false,

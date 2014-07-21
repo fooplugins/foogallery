@@ -200,7 +200,7 @@ if ( !class_exists( 'FooGallery_Admin_Gallery_MetaBox_Fields' ) ) {
 									'action' => 'download'
 								));
 								$foobox_install_html = '<a target="_blank" href="' . $foobox_install_link . '">' . __('Download and activate FooBox FREE', 'foogallery') . '</a>';
-								$field['desc'] .= sprintf ( __('%s which works flawlessly with FooGallery.', 'foogallery'), $foobox_install_html );
+								$field['desc'] .= sprintf ( __('%s which works flawlessly with %s.', 'foogallery'), $foobox_install_html, foogallery_plugin_name() );
 							}
 						} else {
 							$field['type'] = 'select';

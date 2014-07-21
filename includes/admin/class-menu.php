@@ -23,15 +23,15 @@ if (!class_exists('FooGallery_Admin_Menu')) {
 			$menu_labels = apply_filters( 'foogallery_admin_menu_labels',
 				array(
 					array(
-						'page_title' => __( 'FooGallery Settings', 'foogallery' ),
+						'page_title' => sprintf( __( '%s Settings', 'foogallery' ), foogallery_plugin_name() ),
 						'menu_title' => __( 'Settings', 'foogallery' )
 					),
 					array(
-						'page_title' => __( 'FooGallery Extensions', 'foogallery' ),
+						'page_title' => sprintf( __( '%s Extensions', 'foogallery' ), foogallery_plugin_name() ),
 						'menu_title' => __( 'Extensions', 'foogallery' )
 					),
 					array(
-						'page_title' => __( 'FooGallery Help', 'foogallery' ),
+						'page_title' => sprintf( __( '%s Help', 'foogallery' ), foogallery_plugin_name() ),
 						'menu_title' => __( 'Help', 'foogallery' )
 					)
 				)
@@ -48,9 +48,9 @@ if (!class_exists('FooGallery_Admin_Menu')) {
 		}
 
 		function foogallery_settings() {
-			if( isset($_GET['settings-updated']) ) { ?>
+			if ( isset($_GET['settings-updated']) ) { ?>
 	<div id="message" class="updated">
-		<p><strong><?php _e('FooGallery settings updated.', 'foogallery'); ?></strong></p>
+		<p><strong><?php printf( __('%s settings updated.', 'foogallery'), foogallery_plugin_name() ); ?></strong></p>
 	</div>
 			<?php }
 

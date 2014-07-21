@@ -10,6 +10,14 @@
  */
 
 /**
+ * Returns the name of the plugin. (Allows the name to be overridden from extensions or functions.php)
+ * @return string
+ */
+function foogallery_plugin_name() {
+	return apply_filters( 'foogallery_plugin_name', 'FooGallery' );
+}
+
+/**
  * Return all the gallery templates used within FooGallery
  *
  * @return array
@@ -77,7 +85,7 @@ function foogallery_build_gallery_shortcode($gallery_id) {
  * @return string
  */
 function foogallery_gallery_shortcode_tag() {
-	return FOOGALLERY_CPT_GALLERY;
+	return apply_filters( 'foogallery_gallery_shortcode_tag', FOOGALLERY_CPT_GALLERY );
 }
 
 /**
