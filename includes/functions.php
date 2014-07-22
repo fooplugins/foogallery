@@ -284,9 +284,9 @@ function foogallery_gallery_shortcode_regex() {
 	$tag = foogallery_gallery_shortcode_tag();
 
 	return
-		'\\['                              // Opening bracket
+		'\\['                              	 // Opening bracket
 		. '(\\[?)'                           // 1: Optional second opening bracket for escaping shortcodes: [[tag]]
-		. "($tag)"                     // 2: Shortcode name
+		. "($tag)"                     		 // 2: Shortcode name
 		. '(?![\\w-])'                       // Not followed by word character or hyphen
 		. '('                                // 3: Unroll the loop: Inside the opening shortcode tag
 		.     '[^\\]\\/]*'                   // Not a closing bracket or forward slash
@@ -311,7 +311,7 @@ function foogallery_gallery_shortcode_regex() {
 		.         '\\[\\/\\2\\]'             // Closing shortcode tag
 		.     ')?'
 		. ')'
-		. '(\\]?)';                          // 6: Optional second closing brocket for escaping shortcodes: [[tag]]
+		. '(\\]?)';                          // 6: Optional second closing bracket for escaping shortcodes: [[tag]]
 }
 
 /**
