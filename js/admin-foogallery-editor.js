@@ -64,7 +64,7 @@
 			if ( $(this).attr('disabled') ) {
 				return;
 			}
-			var shortcode_tag = FOOGALLERY_SHORTCODE || 'foogallery',
+			var shortcode_tag = window.FOOGALLERY_SHORTCODE || 'foogallery',
 				shortcode = '[' + shortcode_tag + ' id="' + $('.foogallery-gallery-select.selected').data('foogallery-id') + '"]';
 			wp.media.editor.insert(shortcode);
 			$('.foogallery-modal-wrapper').hide();

@@ -20,7 +20,7 @@
 				return;
 			}
 
-			var shortcode_tag = FOOGALLERY_SHORTCODE || 'foogallery',
+			var shortcode_tag = window.FOOGALLERY_SHORTCODE || 'foogallery',
 				regexp = new RegExp('\\[' + shortcode_tag + '([^\\]]*)\\]', 'g');
 
 			event.content = event.content.replace( regexp, function( match ) {

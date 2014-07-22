@@ -70,7 +70,7 @@ if ( ! class_exists( 'FooGallery_Admin' ) ) {
 			if ( foogallery_gallery_shortcode_tag() != FOOGALLERY_CPT_GALLERY ) {
 				?>
 				<script type="text/javascript">
-					var FOOGALLERY_SHORTCODE = '<?php echo foogallery_gallery_shortcode_tag(); ?>';
+					window.FOOGALLERY_SHORTCODE = '<?php echo foogallery_gallery_shortcode_tag(); ?>';
 				</script>
 			<?php
 			}
