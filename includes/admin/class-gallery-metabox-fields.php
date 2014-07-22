@@ -96,7 +96,7 @@ if ( !class_exists( 'FooGallery_Admin_Gallery_MetaBox_Fields' ) ) {
 					break;
 
 				case 'text':
-					echo '<input' . $field_class . '" type="number" id="FooGallerySettings_' . $id . '" name="' . FOOGALLERY_META_SETTINGS . '[' . $id . ']" value="' . esc_attr( $field['value'] ) . '" />';
+					echo '<input' . $field_class . '" type="text" id="FooGallerySettings_' . $id . '" name="' . FOOGALLERY_META_SETTINGS . '[' . $id . ']" value="' . esc_attr( $field['value'] ) . '" />';
 
 					break;
 
