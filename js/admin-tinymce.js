@@ -20,7 +20,10 @@
 				return;
 			}
 
-			event.content = event.content.replace( /\[foogallery([^\]]*)\]/g, function( match ) {
+			var shortcode_tag = FOOGALLERY_SHORTCODE || 'foogallery',
+				regexp = new RegExp('\\[' + shortcode_tag + '([^\\]]*)\\]', 'g');
+
+			event.content = event.content.replace( regexp, function( match ) {
 
 				var data = window.encodeURIComponent( match ),
 					idRegex = / id=\"(.*?)\"/ig,

@@ -32,6 +32,9 @@ if ( ! class_exists( 'FooGallery_Admin' ) ) {
 			add_action( 'foogallery_admin_print_scripts', array($this, 'admin_print_scripts') );
 			// Add a links to the plugin listing
 			add_filter( 'foogallery_admin_plugin_action_links', array($this, 'plugin_listing_links') );
+
+			//output shortcode for javascript
+			add_action( 'admin_footer', array($this, 'output_shortcode_variable'), 200);
 		}
 
 
@@ -61,6 +64,16 @@ if ( ! class_exists( 'FooGallery_Admin' ) ) {
 			$links[] = '<a href="' . foogallery_admin_help_url() . '"><b>' . __( 'Help', 'foogallery' ) . '</b></a>';
 
 			return $links;
+		}
+
+		function output_shortcode_variable() {
+			if ( foogallery_gallery_shortcode_tag() != FOOGALLERY_CPT_GALLERY ) {
+				?>
+				<script type="text/javascript">
+					var FOOGALLERY_SHORTCODE = '<?php echo foogallery_gallery_shortcode_tag(); ?>';
+				</script>
+			<?php
+			}
 		}
 	}
 }
