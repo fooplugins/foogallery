@@ -229,7 +229,7 @@ where gid = %d", $id ) );
 						<span><?php _e( 'NextGen Gallery', 'foogallery' ); ?></span>
 					</th>
 					<th scope="col" id="title" class="manage-column">
-						<span><?php _e( 'FooGallery Name', 'foogallery' ); ?></span>
+						<span><?php printf( __( '%s Name', 'foogallery' ), foogallery_plugin_name() ); ?></span>
 					</th>
 					<th scope="col" id="title" class="manage-column">
 						<span><?php _e( 'Import Progress', 'foogallery' ); ?></span>

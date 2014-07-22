@@ -52,8 +52,10 @@ if ( !class_exists( 'FooGallery_Extensions_API' ) ) {
 				$this->extensions = null;
 				$expires = 60 * 60 * 24; //1 day
 
+				$extension_url = apply_filters('foogallery_extension_api_endpoint', FOOGALLERY_EXTENSIONS_ENDPOINT );
+
 				//fetch the data from our public list of extensions hosted on github
-				$response = wp_remote_get( FOOGALLERY_EXTENSIONS_ENDPOINT );
+				$response = wp_remote_get( $extension_url );
 
 				if( !is_wp_error( $response ) ) {
 					$this->extensions = @json_decode( $response['body'], true );
@@ -210,7 +212,7 @@ if ( !class_exists( 'FooGallery_Extensions_API' ) ) {
 		}
 
 		/**
-		 * @TODO
+		 * Reload the extensions from the public endpoint
 		 */
 		public function reload() {
 			delete_transient( FOOGALLERY_EXTENSIONS_AVAILABLE_TRANSIENT_KEY );
@@ -218,7 +220,7 @@ if ( !class_exists( 'FooGallery_Extensions_API' ) ) {
 		}
 
 		/**
-		 * @TODO
+		 * Get all loaded extensions
 		 * @return array
 		 */
 		function get_all() {
@@ -250,7 +252,7 @@ if ( !class_exists( 'FooGallery_Extensions_API' ) ) {
 		}
 
 		/**
-		 * @TODO
+		 * Returns a distinct array of categories that are used in the extensions
 		 * @return mixed
 		 */
 		function get_all_categories() {
@@ -279,7 +281,7 @@ if ( !class_exists( 'FooGallery_Extensions_API' ) ) {
 			$categories['build_your_own'] = array(
 				'name' => __('Build Your Own', 'foogallery')
 			);
-			return $categories;
+			return apply_filters( 'foogallery_extension_categories', $categories );
 		}
 
 		/**

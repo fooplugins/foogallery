@@ -8,8 +8,12 @@ if ( !class_exists( 'FooGallery_Shortcodes' ) ) {
 	class FooGallery_Shortcodes {
 
 		function __construct() {
-			add_shortcode( 'foogallery', array($this, 'render_foogallery_shortcode') );
+			add_action( 'init', array($this, 'init_shortcode') );
 			add_action( 'foogallery_load_template', array($this, 'handle_lightbox_field') );
+		}
+
+		function init_shortcode() {
+			add_shortcode( foogallery_gallery_shortcode_tag(), array($this, 'render_foogallery_shortcode') );
 		}
 
 		function render_foogallery_shortcode($atts) {

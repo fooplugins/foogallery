@@ -119,7 +119,9 @@ if ( ! class_exists( 'FooGallery_Nextgen_Gallery_Importer_Extension' ) ) {
 
 					<h4><?php _e( 'Import Galleries', 'foogallery' ); ?></h4>
 
-					<p><?php _e( 'Import all your NextGen galleries in a single click, or choose the galleries you would like to migrate over to FooGallery.', 'foogallery' ); ?></p>
+
+
+					<p><?php printf( __( 'Import all your NextGen galleries in a single click, or choose the galleries you would like to migrate over to %s.', 'foogallery' ), foogallery_plugin_name() ); ?></p>
 
 					<h4><?php _e( 'Import Images', 'foogallery' ); ?></h4>
 

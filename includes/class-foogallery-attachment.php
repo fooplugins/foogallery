@@ -86,6 +86,11 @@ if (!class_exists('FooGalleryAttachment')) {
 				$attr['alt'] = $this->alt;
 			}
 
+			//pull any custom attributes out the args
+			if ( isset( $args['image_attributes'] ) && is_array( $args['image_attributes'] ) ) {
+				$attr = array_merge( $attr, $args['image_attributes'] );
+			}
+
 			$attr = apply_filters( 'foogallery_attachment_html_image_attributes', $attr, $args, $this );
 			$attr = array_map( 'esc_attr', $attr );
 			$html = '<img ';
@@ -127,10 +132,10 @@ if (!class_exists('FooGalleryAttachment')) {
 			if ( 'page' === $link ) {
 				//get the URL to the attachment page
 				$url = get_attachment_link( $this->ID );
-			} else if ( 'image' === $link ) {
-				$url = $this->url;
 			} else if ( 'custom' === $link ) {
 				$url = $args['custom_link'];
+			} else {
+				$url = $this->url;
 			}
 
 			$attr['href'] = $url;
@@ -141,6 +146,11 @@ if (!class_exists('FooGalleryAttachment')) {
 
 			if ( !empty( $this->description ) ) {
 				$attr['data-caption-desc'] = $this->description;
+			}
+
+			//pull any custom attributes out the args
+			if ( isset( $args['link_attributes'] ) && is_array( $args['link_attributes'] ) ) {
+				$attr = array_merge( $attr, $args['link_attributes'] );
 			}
 
 			$attr = apply_filters( 'foogallery_attachment_html_link_attributes', $attr, $args, $this );

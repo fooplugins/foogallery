@@ -108,6 +108,7 @@
 		// Create the media frame.
 		FOOGALLERY.media_uploader = wp.media.frames.file_frame = wp.media({
 			title: $(this).data( 'uploader-title' ),
+			//frame: 'post',
 			button: {
 				text: $(this).data( 'uploader-button-text' )
 			},
@@ -134,7 +135,7 @@
 			})
 			.on( 'open', function() {
 				var selection = FOOGALLERY.media_uploader.state().get('selection');
-				selection.set();    //clear any previos selections
+				if (selection) { selection.set(); }   //clear any previos selections
 
 				if (FOOGALLERY.selected_attachment_id > 0) {
 					var attachment = wp.media.attachment(FOOGALLERY.selected_attachment_id);
@@ -182,7 +183,8 @@
 		FOOGALLERY.initUsageMetabox();
 
         $('.foogallery-attachments-list')
-            .on('click' ,'a.remove', function() {
+            .on('click' ,'a.remove', function(e) {
+				e.preventDefault();
                 var $selected = $(this).parents('li:first'),
 					attachment_id = $selected.data('attachment-id');
                 FOOGALLERY.removeAttachmentFromGalleryList(attachment_id);
