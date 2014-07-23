@@ -2,8 +2,8 @@
 Contributors: bradvin, fooplugins
 Donate link: http://fooplugins.com
 Tags: images,gallery,album,nextgen,photos,pictures,media,attachments
-Requires at least: 3.8
-Tested up to: 3.9
+Requires at least: 3.9
+Tested up to: 3.9.1
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -33,6 +33,13 @@ Features:
 *	Page usage metabox with one-click gallery page creation
 *	NextGen importer tool
 *	plus many, many more
+
+Built-in Gallery Templates
+
+*	Responsive Image Gallery
+*	Masonry Gallery
+*	Simple Portfolio
+*	Justified Gallery
 
 Extensions:
 
@@ -76,6 +83,11 @@ Hell, yes! Check out our [developer page](http://foo.gallery/developers/)
 4. Frontend example with default template
 
 == Changelog ==
+
+= 1.1.8 =
+* Added 2 new gallery templates
+* Added 10+ actions and filters for more customization
+* Countless bug fixes and enhancements
 
 = 1.1.7 =
 * first version!
