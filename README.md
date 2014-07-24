@@ -1,5 +1,6 @@
 FooGallery
 ==========
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/fooplugins/foogallery/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/fooplugins/foogallery/?branch=master)
 
 The Most Intuitive and Extensible Gallery Creation and Management Tool Ever Created for WordPress. Built to be simple for users and highly flexible for developers.
 
