@@ -123,24 +123,25 @@ class FooGallery extends stdClass {
 	}
 
     function get_meta( $key, $default ) {
-        if ( ! is_array( $this->settings ) ) {
+		if ( ! is_array( $this->settings ) ) {
 			return $default;
 		}
 
-        $value = array_key_exists( $key, $this->settings ) ? $this->settings[$key] : NULL;
+		$value = array_key_exists( $key, $this->settings ) ? $this->settings[$key] : NULL;
 
-        if ( $value === NULL )
-            return $default;
+		if ( $value === NULL ) {
+			return $default;
+		}
 
-        return $value;
+		return $value;
     }
 
-    function is_checked( $key, $default = false ) {
-        if ( ! is_array( $this->settings ) ) {
+	function is_checked( $key, $default = false ) {
+		if ( ! is_array( $this->settings ) ) {
 			return $default;
 		}
 
-        return array_key_exists( $key, $this->settings );
+		return array_key_exists( $key, $this->settings );
     }
 
 	/**
