@@ -517,7 +517,7 @@ if ( ! class_exists( 'FooGallery_Extensions_API' ) ) {
 
 		/**
 		 * @TODO
-		 * @param $extension
+		 * @param boolean $extension
 		 *
 		 * @return array|bool
 		 */

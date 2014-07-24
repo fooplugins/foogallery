@@ -46,7 +46,6 @@ where gid = %d", $id ) );
 		}
 
 		/**
-		 * @param bool $id
 		 *
 		 * @return FooGallery_NextGen_Import_Progress
 		 */
@@ -67,6 +66,10 @@ where gid = %d", $id ) );
 			update_option( self::NEXTGEN_OPTION_IMPORT_PROGRESS, $all_progress );
 		}
 
+		/**
+		 * @param int $nextgen_gallery_id
+		 * @param string $foogallery_title
+		 */
 		function init_import_progress( $nextgen_gallery_id, $foogallery_title ) {
 			$progress = new FooGallery_NextGen_Import_Progress();
 			$progress->init( $nextgen_gallery_id, $foogallery_title );

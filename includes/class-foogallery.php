@@ -109,7 +109,7 @@ class FooGallery extends stdClass {
 	/**
 	 * Static function to load a gallery instance by passing in a gallery slug
 	 *
-	 * @param $slug
+	 * @param string $slug
 	 *
 	 * @return FooGallery
 	 */
