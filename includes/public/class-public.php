@@ -3,7 +3,7 @@
  * FooGallery Public class
  */
 
-if (!class_exists('FooGallery_Public')) {
+if ( ! class_exists( 'FooGallery_Public' ) ) {
 
 	class FooGallery_Public {
 

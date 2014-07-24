@@ -8,12 +8,12 @@ $width = foogallery_gallery_template_setting( 'thumbnail_width', '150' );
 $gutter_width = foogallery_gallery_template_setting( 'gutter_width', '10' );
 $args = array(
 	'width' => $width,
- 	'link' => foogallery_gallery_template_setting( 'thumbnail_link', 'image' ),
-	'crop' => false
+	'link' => foogallery_gallery_template_setting( 'thumbnail_link', 'image' ),
+	'crop' => false,
 );
 $lightbox = foogallery_gallery_template_setting( 'lightbox', 'unknown' );
 
-if ( !foo_check_wp_version_at_least( '3.9' ) ) { ?>
+if ( ! foo_check_wp_version_at_least( '3.9' ) ) { ?>
 
 <?php } ?>
 <style>
@@ -46,7 +46,7 @@ if ( !foo_check_wp_version_at_least( '3.9' ) ) { ?>
 	});
 </script>
 <div id="foogallery-gallery-<?php echo $current_foogallery->ID; ?>"
-	 class="<?php echo foogallery_build_class_attribute( $current_foogallery, 'foogallery-lightbox-' . $lightbox); ?>">
+	 class="<?php echo foogallery_build_class_attribute( $current_foogallery, 'foogallery-lightbox-' . $lightbox ); ?>">
 <?php foreach ( $current_foogallery->attachments() as $attachment ) {
 		echo '	<div class="item">' . $attachment->html( $args )  . '</div>
 ';

@@ -1,7 +1,7 @@
 <?php
-if ( !class_exists( 'FooGallery_Albums_Extension' ) ) {
+if ( ! class_exists( 'FooGallery_Albums_Extension' ) ) {
 
-	define('FOOGALLERY_TAX_ALBUM', 'foogallery-album');
+	define( 'FOOGALLERY_TAX_ALBUM', 'foogallery-album' );
 
 	class FooGallery_Albums_Extension {
 
@@ -26,10 +26,10 @@ if ( !class_exists( 'FooGallery_Albums_Extension' ) ) {
 				'show_ui'           => true,
 				'show_admin_column' => true,
 				'query_var'         => true,
-				'rewrite'           => array('slug' => 'album'),
+				'rewrite'           => array( 'slug' => 'album', ),
 			);
 
-			register_taxonomy( FOOGALLERY_TAX_ALBUM, array(FOOGALLERY_CPT_GALLERY), $args );
+			register_taxonomy( FOOGALLERY_TAX_ALBUM, array( FOOGALLERY_CPT_GALLERY ), $args );
 		}
 	}
 }

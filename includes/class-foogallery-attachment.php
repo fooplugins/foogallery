@@ -4,19 +4,19 @@
  *
  * An easy to use wrapper class for a FooGallery Attachment
  */
-if (!class_exists('FooGalleryAttachment')) {
+if ( ! class_exists( 'FooGalleryAttachment' ) ) {
 
-    class FooGalleryAttachment extends stdClass {
+	class FooGalleryAttachment extends stdClass {
 		/**
 		 * public constructor
 		 *
 		 * @param null $post
 		 */
-		public function __construct($post = NULL) {
+		public function __construct( $post = NULL ) {
 			$this->set_defaults();
 
-			if ($post !== NULL) {
-				$this->load($post);
+			if ( $post !== NULL ) {
+				$this->load( $post );
 			}
 		}
 
@@ -39,7 +39,7 @@ if (!class_exists('FooGalleryAttachment')) {
 		 * private attachment load function
 		 * @param $post
 		 */
-		private function load($post) {
+		private function load( $post ) {
 			$this->_post = $post;
 			$this->ID = $post->ID;
 			$this->title = trim( $post->post_title );
@@ -62,8 +62,8 @@ if (!class_exists('FooGalleryAttachment')) {
 		 *
 		 * @return FooGalleryAttachment
 		 */
-		public static function get($post) {
-			return new self($post);
+		public static function get( $post ) {
+			return new self( $post );
 		}
 
 		/**
@@ -74,15 +74,15 @@ if (!class_exists('FooGalleryAttachment')) {
 		 *
 		 * @return FooGalleryAttachment
 		 */
-		public static function get_by_id($attachment_id) {
-			$post = get_post($attachment_id);
-			return new self($post);
+		public static function get_by_id( $attachment_id ) {
+			$post = get_post( $attachment_id );
+			return new self( $post );
 		}
 
 		function html_img( $args = array() ) {
 			$attr['src'] = apply_filters( 'foogallery_attachment_resize_thumbnail', $this->url, $args, $this );
 
-			if ( !empty( $this->alt ) ) {
+			if ( ! empty( $this->alt ) ) {
 				$attr['alt'] = $this->alt;
 			}
 
@@ -97,7 +97,7 @@ if (!class_exists('FooGalleryAttachment')) {
 			foreach ( $attr as $name => $value ) {
 				$html .= " $name=" . '"' . $value . '"';
 			}
-			$html .= " />";
+			$html .= ' />';
 
 			return apply_filters( 'foogallery_attachment_html_image', $html, $args, $this );
 		}
@@ -115,7 +115,7 @@ if (!class_exists('FooGalleryAttachment')) {
 
 			$arg_defaults = array(
 				'link' => 'image',
-				'custom_link' => '#'
+				'custom_link' => '#',
 			);
 
 			$args = wp_parse_args( $args, $arg_defaults );
@@ -140,7 +140,7 @@ if (!class_exists('FooGalleryAttachment')) {
 
 			$attr['href'] = $url;
 
-			if ( !empty( $this->caption ) ) {
+			if ( ! empty( $this->caption ) ) {
 				$attr['data-caption-title'] = $this->caption;
 			}
 
@@ -163,5 +163,5 @@ if (!class_exists('FooGalleryAttachment')) {
 
 			return apply_filters( 'foogallery_attachment_html_link', $html, $args, $this );
 		}
-    }
+	}
 }

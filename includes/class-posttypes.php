@@ -3,19 +3,19 @@
  * FooGallery Custom Post Types and Custom Taxonomy Registration class
  */
 
-if ( !class_exists( 'FooGallery_PostTypes' ) ) {
+if ( ! class_exists( 'FooGallery_PostTypes' ) ) {
 
 	class FooGallery_PostTypes {
 
 		function __construct() {
 			//register the post types
-			add_action( 'init', array($this, 'register') );
+			add_action( 'init', array( $this, 'register' ) );
 
 			//update post type messages
-			add_filter( 'post_updated_messages', array($this, 'update_messages') );
+			add_filter( 'post_updated_messages', array( $this, 'update_messages' ) );
 
 			//update post bulk messages
-			add_filter( 'bulk_post_updated_messages', array($this, 'update_bulk_messages'), 10, 2 );
+			add_filter( 'bulk_post_updated_messages', array( $this, 'update_bulk_messages' ), 10, 2 );
 		}
 
 		function register() {
@@ -43,7 +43,7 @@ if ( !class_exists( 'FooGallery_PostTypes' ) ) {
 					'show_in_menu'  => true,
 					'menu_position' => 30,
 					'menu_icon'     => 'dashicons-format-gallery',
-					'supports'      => array('title', 'thumbnail')
+					'supports'      => array( 'title', 'thumbnail', ),
 				)
 			);
 
@@ -59,7 +59,7 @@ if ( !class_exists( 'FooGallery_PostTypes' ) ) {
 		 *
 		 * @return array $messages Amended array of post updated messages.
 		 */
-		public function update_messages($messages) {
+		public function update_messages( $messages ) {
 
 			global $post;
 

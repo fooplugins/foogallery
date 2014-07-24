@@ -3,12 +3,12 @@
 /**
  * Boilerplate Download Handler for FooGallery
  */
-if ( !class_exists( 'FooGallery_Boilerplate_Download_Handler' ) ) {
+if ( ! class_exists( 'FooGallery_Boilerplate_Download_Handler' ) ) {
 
 	class FooGallery_Boilerplate_Download_Handler {
 
 		function __construct() {
-			add_action( 'admin_init', array($this, 'listen_for_boilerplate_download'), 1 );
+			add_action( 'admin_init', array( $this, 'listen_for_boilerplate_download' ), 1 );
 		}
 
 		private $slug;
@@ -21,7 +21,7 @@ if ( !class_exists( 'FooGallery_Boilerplate_Download_Handler' ) ) {
 				return;
 			}
 
-			if ( !empty( $nonce ) && wp_verify_nonce( $nonce, 'foogallery_boilerplate' ) ) {
+			if ( ! empty( $nonce ) && wp_verify_nonce( $nonce, 'foogallery_boilerplate' ) ) {
 
 				$boilerplate_type        = $_POST['boilerplate_type'];
 				$boilerplate_name        = $_POST['boilerplate_name'];
@@ -35,7 +35,7 @@ if ( !class_exists( 'FooGallery_Boilerplate_Download_Handler' ) ) {
 			}
 		}
 
-		function run($boilerplate_name, $boilerplate_type, $boilerplate_desc, $boilerplate_author, $boilerplate_author_link) {
+		function run( $boilerplate_name, $boilerplate_type, $boilerplate_desc, $boilerplate_author, $boilerplate_author_link ) {
 			$this->slug = str_replace( ' ', '-', strtolower( $boilerplate_name ) );
 			$package = str_replace( ' ', '_', foo_title_case( $boilerplate_name . ' ' . $boilerplate_type ) ) . '_FooGallery_Extension';
 			$constant = strtoupper( $package );
@@ -50,7 +50,7 @@ if ( !class_exists( 'FooGallery_Boilerplate_Download_Handler' ) ) {
 				'{type}'		=> $boilerplate_type,
 				'{desc}'        => $boilerplate_desc,
 				'{author}'      => $boilerplate_author,
-				'{author_link}' => $boilerplate_author_link
+				'{author_link}' => $boilerplate_author_link,
 			);
 
 			$upload_dir = wp_upload_dir();
@@ -58,13 +58,13 @@ if ( !class_exists( 'FooGallery_Boilerplate_Download_Handler' ) ) {
 			//create the generator
 			$zip_generator = new FooGallery_Boilerplate_Zip_Generator( array(
 				'name'                 => 'foogallery',
-				'process_extensions'   => array('php', 'css', 'js', 'txt'),
+				'process_extensions'   => array( 'php', 'css', 'js', 'txt', ),
 				'source_directory'     => FOOGALLERY_PATH . "/includes/admin/boilerplates/{$boilerplate_type}/",
 				'zip_root_directory'   => "foogallery-{$this->slug}-{$boilerplate_type}",
 				'download_filename'    => "foogallery-{$this->slug}-{$boilerplate_type}.zip",
-				'filename_filter'      => array($this, 'process_zip_filename'),
+				'filename_filter'      => array( $this, 'process_zip_filename' ),
 				'variables'            => $variables,
-				'zip_temp_directory'   => $upload_dir['path']
+				'zip_temp_directory'   => $upload_dir['path'],
 			));
 
 			//generate the zip file

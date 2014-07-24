@@ -4,7 +4,7 @@
  * FooGallery Admin Gallery MetaBoxes class
  */
 
-if ( !class_exists( 'FooGallery_Admin_Gallery_Editor' ) ) {
+if ( ! class_exists( 'FooGallery_Admin_Gallery_Editor' ) ) {
 
 	class FooGallery_Admin_Gallery_Editor {
 
@@ -13,15 +13,15 @@ if ( !class_exists( 'FooGallery_Admin_Gallery_Editor' ) ) {
 		 */
 		public function __construct() {
 			//adds a media button to the editor
-			add_filter( 'media_buttons_context', array($this, 'add_media_button') );
+			add_filter( 'media_buttons_context', array( $this, 'add_media_button' ) );
 
 			//add a tinymce plugin
-			add_action( 'admin_head', array($this, 'add_tinymce_plugin') );
+			add_action( 'admin_head', array( $this, 'add_tinymce_plugin' ) );
 
 			// Ajax calls for showing all galleries in the modal
-			add_action( 'wp_ajax_foogallery_load_galleries', array($this, 'ajax_galleries_html') );
+			add_action( 'wp_ajax_foogallery_load_galleries', array( $this, 'ajax_galleries_html' ) );
 
-			add_action( 'wp_ajax_foogallery_tinymce_load_info', array($this, 'ajax_get_gallery_info') );
+			add_action( 'wp_ajax_foogallery_tinymce_load_info', array( $this, 'ajax_get_gallery_info' ) );
 		}
 
 		/**
@@ -31,10 +31,10 @@ if ( !class_exists( 'FooGallery_Admin_Gallery_Editor' ) ) {
 		 *
 		 * @return string $buttons    the amended media buttons
 		 */
-		public function add_media_button($buttons) {
+		public function add_media_button( $buttons ) {
 
 			//render the gallery modal
-			add_action( 'admin_footer', array($this, 'render_gallery_modal') );
+			add_action( 'admin_footer', array( $this, 'render_gallery_modal' ) );
 
 			$foogallery = FooGallery_Plugin::get_instance();
 
@@ -51,14 +51,14 @@ if ( !class_exists( 'FooGallery_Admin_Gallery_Editor' ) ) {
 		 */
 		public function add_tinymce_plugin() {
 			// check user permissions
-			if ( !current_user_can( 'edit_posts' ) && !current_user_can( 'edit_pages' ) ) {
+			if ( ! current_user_can( 'edit_posts' ) && ! current_user_can( 'edit_pages' ) ) {
 				return;
 			}
 			// check if WYSIWYG is enabled
 			if ( 'true' == get_user_option( 'rich_editing' ) ) {
-				add_filter( 'mce_external_plugins',  array($this, 'add_tinymce_js' ) );
-				add_filter( 'mce_css',  array($this, 'add_tinymce_css' ) );
-				add_action( 'admin_footer', array($this, 'render_tinymce_nonce') );
+				add_filter( 'mce_external_plugins',  array( $this, 'add_tinymce_js' ) );
+				add_filter( 'mce_css',  array( $this, 'add_tinymce_css' ) );
+				add_action( 'admin_footer', array( $this, 'render_tinymce_nonce') );
 			}
 		}
 
@@ -80,8 +80,9 @@ if ( !class_exists( 'FooGallery_Admin_Gallery_Editor' ) ) {
 		 * @return string
 		 */
 		public function add_tinymce_css( $mce_css ) {
-			if ( ! empty( $mce_css ) )
+			if ( ! empty( $mce_css ) ) {
 				$mce_css .= ',';
+			}
 
 			$mce_css .= FOOGALLERY_URL . 'css/admin-tinymce.css'; // . urlencode( '?v=' + FOOGALLERY_VERSION );
 
@@ -256,14 +257,14 @@ if ( !class_exists( 'FooGallery_Admin_Gallery_Editor' ) ) {
 									<?php _e( 'Choose A Gallery To Insert', 'foogallery' ); ?>
 									<div class="foogallery-modal-reload-container">
 										<div class="spinner"></div>
-										<a class="foogallery-modal-reload button" href="#"><span class="dashicons dashicons-update"></span> <?php _e('Reload', 'foogallery'); ?></a>
+										<a class="foogallery-modal-reload button" href="#"><span class="dashicons dashicons-update"></span> <?php _e( 'Reload', 'foogallery' ); ?></a>
 									</div>
 								</h1>
 							</div>
 							<div class="media-frame-content">
 								<div class="attachments-browser">
 									<ul class="foogallery-attachment-container attachments" style="padding-left: 8px; top: 1em;">
-										<div class="foogallery-modal-loading"><?php _e('Loading galleries. Please wait...', 'foogallery'); ?></div>
+										<div class="foogallery-modal-loading"><?php _e( 'Loading galleries. Please wait...', 'foogallery' ); ?></div>
 									</ul>
 									<!-- end .foogallery-meta -->
 									<div class="media-sidebar">
@@ -381,7 +382,7 @@ if ( !class_exists( 'FooGallery_Admin_Gallery_Editor' ) ) {
 				'id'    => $id,
 				'name'  => $gallery->name,
 				'count' => $gallery->image_count(),
-				'src'   => $image_src
+				'src'   => $image_src,
 			);
 
 			header( 'Content-type: application/json' );

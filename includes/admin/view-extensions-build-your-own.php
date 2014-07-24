@@ -6,7 +6,7 @@ $link_submit = 'http://foo.gallery/submit-extension/';
 
 $nonce = safe_get_from_request( 'foogallery_boilerplate_nonce' );
 
-if ( !empty( $nonce ) && wp_verify_nonce( $nonce, 'foogallery_boilerplate' ) ) {
+if ( ! empty( $nonce ) && wp_verify_nonce( $nonce, 'foogallery_boilerplate' ) ) {
 
 	$boilerplate_type = $_POST['boilerplate_type'];
 	$boilerplate_name = $_POST['boilerplate_name'];
@@ -20,9 +20,8 @@ if ( !empty( $nonce ) && wp_verify_nonce( $nonce, 'foogallery_boilerplate' ) ) {
 		empty( $boilerplate_desc ) ||
 		empty( $boilerplate_author ) ||
 		empty( $boilerplate_author_link ) ) {
-		$boilerplate_error = __('Please fill in all form fields!', 'foogallery');
+		$boilerplate_error = __( 'Please fill in all form fields!', 'foogallery' );
 	} else {
-
 
 	}
 
@@ -30,7 +29,7 @@ if ( !empty( $nonce ) && wp_verify_nonce( $nonce, 'foogallery_boilerplate' ) ) {
 	$current_user = wp_get_current_user();
 	$boilerplate_name = __( 'Cool Thing', 'foogallery' );
 	$boilerplate_type = 'template';
-	$boilerplate_desc = __('A cool description about what your cool thing can do', 'foogallery' );
+	$boilerplate_desc = __( 'A cool description about what your cool thing can do', 'foogallery' );
 	$boilerplate_author = $current_user->user_firstname . ' ' . $current_user->user_lastname;
 	$boilerplate_author_link = site_url();
 }
@@ -110,15 +109,15 @@ if ( !empty( $nonce ) && wp_verify_nonce( $nonce, 'foogallery_boilerplate' ) ) {
 	<ul class="ul-disc">
 		<li><?php _e( 'An extension is essentially a WordPress plugin.', 'foogallery' ); ?></li>
 		<li><?php _e( 'Extension functionality must be wrapped in a PHP class. (This class is included when the extension is activated)', 'foogallery' ); ?></li>
-		<li><?php printf( __( 'There are several dozen actions and filters built in for you. (See all %s)', 'foogallery' ), '<a href="' . $link_actions_filters . '" target="_blank">' . __('FooGallery actions and filters', 'foogallery') . '</a>' ); ?></li>
-		<li><?php printf( __( 'Read our %s on how to build your own extension in 2	minutes.', 'foogallery'), '<a href="' . $link_tutorial . '" target="_blank">' . __('step-by-step tutorial', 'foogallery') . '</a>' ); ?></li>
+		<li><?php printf( __( 'There are several dozen actions and filters built in for you. (See all %s)', 'foogallery' ), '<a href="' . $link_actions_filters . '" target="_blank">' . __( 'FooGallery actions and filters', 'foogallery' ) . '</a>' ); ?></li>
+		<li><?php printf( __( 'Read our %s on how to build your own extension in 2	minutes.', 'foogallery' ), '<a href="' . $link_tutorial . '" target="_blank">' . __( 'step-by-step tutorial', 'foogallery' ) . '</a>' ); ?></li>
 	</ul>
 
 	<h2><?php _e( 'Submit Your Extension', 'foogallery' ); ?></h2>
 
 	<p><?php _e( 'Have you built your own extension that you are proud of? Do you want to share it with the community of FooGallery	users?', 'foogallery' ); ?></p>
 
-	<p><?php printf( __( '%s to get it listed in our extension store.', 'foogallery' ), '<a href="' . $link_submit . '" target="_blank">' . __('Follow these simple instructions', 'foogallery') . '</a>' ); ?></p>
+	<p><?php printf( __( '%s to get it listed in our extension store.', 'foogallery' ), '<a href="' . $link_submit . '" target="_blank">' . __( 'Follow these simple instructions', 'foogallery' ) . '</a>' ); ?></p>
 
 	<h2><?php _e( 'Extension Boilerplates', 'foogallery' ); ?></h2>
 
@@ -163,4 +162,3 @@ if ( !empty( $nonce ) && wp_verify_nonce( $nonce, 'foogallery_boilerplate' ) ) {
 		</div>
 	</form>
 </div>
-
