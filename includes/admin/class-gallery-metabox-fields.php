@@ -3,7 +3,7 @@
 if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Fields' ) ) {
 
 	class FooGallery_Admin_Gallery_MetaBox_Fields {
-		
+
 		function __construct() {
 			//handle some default field types that all templates can reuse
 			add_filter( 'foogallery_alter_gallery_template_field', array( $this, 'alter_gallery_template_field' ), 10, 2 );

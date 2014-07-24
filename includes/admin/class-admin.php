@@ -34,7 +34,7 @@ if ( ! class_exists( 'FooGallery_Admin' ) ) {
 			add_filter( 'foogallery_admin_plugin_action_links', array( $this, 'plugin_listing_links' ) );
 
 			//output shortcode for javascript
-			add_action( 'admin_footer', array( $this, 'output_shortcode_variable' ), 200);
+			add_action( 'admin_footer', array( $this, 'output_shortcode_variable' ), 200 );
 		}
 
 
