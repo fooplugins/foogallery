@@ -112,7 +112,7 @@ where gid = %d", $id ) );
 
 			$progress = $this->get_import_progress( $current_nextgen_id );
 
-			if ( !$progress->has_started() ) {
+			if ( ! $progress->has_started() ) {
 				$progress->start();
 			}
 
@@ -138,7 +138,7 @@ where gid = %d", $id ) );
 					$imported += count( $progress->attachments );
 				}
 			}
-			if (0 === $total) {
+			if ( 0 === $total ) {
 				return 100;
 			}
 			return  $imported / $total * 100;
@@ -187,7 +187,7 @@ where gid = %d", $id ) );
 				'post_excerpt'   => $picture->description,
 				'post_content'   => $picture->description,
 				'post_date'      => '',
-				'post_mime_type' => $file_type['type']
+				'post_mime_type' => $file_type['type'],
 			);
 
 			// Include image.php so we can call wp_generate_attachment_metadata()
@@ -219,7 +219,7 @@ where gid = %d", $id ) );
 				<thead>
 				<tr>
 					<th scope="col" id="cb" class="manage-column column-cb check-column">
-						<?php if ( !$importing && $all_imports_completed ) { ?>
+						<?php if ( ! $importing && $all_imports_completed ) { ?>
 						<label class="screen-reader-text"
 						       for="cb-select-all-1"><?php _e( 'Select All', 'foogallery' ); ?></label>
 						<input id="cb-select-all-1" type="checkbox" <?php echo $importing ? 'disabled="disabled"' : ''; ?> checked="checked">
@@ -247,7 +247,7 @@ where gid = %d", $id ) );
 						$edit_link  = '<a href="' . admin_url( 'post.php?post=' . $progress->foogallery_id . '&action=edit' ) . '">' . $foogallery->name . '</a>';
 					} ?>
 					<tr>
-						<?php if ( !$importing && !$done && $all_imports_completed ) { ?>
+						<?php if ( ! $importing && !$done && $all_imports_completed ) { ?>
 							<th scope="row" class="column-cb check-column">
 								<input name="nextgen-id[]" type="checkbox" checked="checked" value="<?php echo $gallery->gid; ?>">
 							</th>
@@ -287,7 +287,7 @@ where gid = %d", $id ) );
 			wp_nonce_field( 'foogallery_nextgen_import_refresh', 'foogallery_nextgen_import_refresh', false );
 			wp_nonce_field( 'foogallery_nextgen_import_cancel', 'foogallery_nextgen_import_cancel', false );
 			wp_nonce_field( 'foogallery_nextgen_import_reset', 'foogallery_nextgen_import_reset', false );
-			if ( !$import_has_started && !$importing ) {
+			if ( ! $import_has_started && !$importing ) {
 				?>
 				<input type="submit" class="button button-primary start_import"
 				       value="<?php _e( 'Start Import', 'foogallery' ); ?>">
@@ -297,7 +297,7 @@ where gid = %d", $id ) );
 				<input type="submit" class="button cancel_import" value="<?php _e( 'Stop Import', 'foogallery' ); ?>">
 			<?php
 			}
-			if ( $has_imports && !$importing ) { ?>
+			if ( $has_imports && ! $importing ) { ?>
 				<input type="submit" name="foogallery_nextgen_reset" class="button reset_import" value="<?php _e( 'Reset All Imports', 'foogallery' ); ?>">
 			<?php }
 			?>

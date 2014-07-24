@@ -25,15 +25,15 @@
  */
 
 // If this file is called directly, abort.
-if ( !defined( 'WPINC' ) ) {
+if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-define('FOOGALLERY_SLUG', 'foogallery');
-define('FOOGALLERY_PATH', plugin_dir_path( __FILE__ ));
-define('FOOGALLERY_URL', plugin_dir_url( __FILE__ ));
-define('FOOGALLERY_FILE', __FILE__);
-define('FOOGALLERY_VERSION', '1.1.8');
+define( 'FOOGALLERY_SLUG', 'foogallery' );
+define( 'FOOGALLERY_PATH', plugin_dir_path( __FILE__ ) );
+define( 'FOOGALLERY_URL', plugin_dir_url( __FILE__ ) );
+define( 'FOOGALLERY_FILE', __FILE__ );
+define( 'FOOGALLERY_VERSION', '1.1.8' );
 
 /**
  * FooGallery_Plugin class
@@ -45,9 +45,9 @@ define('FOOGALLERY_VERSION', '1.1.8');
  * @copyright 2013 FooPlugins LLC
  */
 
-if ( !class_exists( 'FooGallery_Plugin' ) ) {
+if ( ! class_exists( 'FooGallery_Plugin' ) ) {
 
-	require_once(FOOGALLERY_PATH . 'includes/foopluginbase/bootstrapper.php');
+	require_once( FOOGALLERY_PATH . 'includes/foopluginbase/bootstrapper.php' );
 
 	/**
 	 * FooGallery_Plugin class.
@@ -60,7 +60,7 @@ if ( !class_exists( 'FooGallery_Plugin' ) ) {
 		private static $instance;
 
 		public static function get_instance() {
-			if ( !isset(self::$instance) && !(self::$instance instanceof FooGallery_Plugin) ) {
+			if ( ! isset(self::$instance) && ! (self::$instance instanceof FooGallery_Plugin) ) {
 				self::$instance = new FooGallery_Plugin();
 			}
 
@@ -140,7 +140,7 @@ if ( !class_exists( 'FooGallery_Plugin' ) ) {
 		 * @since    1.0.0
 		 */
 		private static function single_activate( $multisite = true ) {
-			if ( false === get_option(FOOGALLERY_EXTENSIONS_AUTO_ACTIVATED_OPTIONS_KEY, false) ) {
+			if ( false === get_option( FOOGALLERY_EXTENSIONS_AUTO_ACTIVATED_OPTIONS_KEY, false ) ) {
 				$api = new FooGallery_Extensions_API();
 
 				$api->auto_activate_extensions();

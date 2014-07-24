@@ -59,7 +59,7 @@ if ( isset( $_POST['foogallery_nextgen_reset'] ) ) {
 				success: success_callback,
 				error: function() {
 					//something went wrong! Alert the user and reload the page
-					alert('<?php _e('Something went wrong with the import and the page will now reload. Once it has reloaded, click "Resume Import" to continue with the import.', 'foogallery'); ?>');
+					alert('<?php _e( 'Something went wrong with the import and the page will now reload. Once it has reloaded, click "Resume Import" to continue with the import.', 'foogallery' ); ?>');
 					location.reload();
 				}
 			});
@@ -100,14 +100,14 @@ if ( isset( $_POST['foogallery_nextgen_reset'] ) ) {
 		});
 
 		$('#nextgen_import_form').on('click', '.cancel_import', function (e) {
-			if (!confirm('<?php echo __('Are you sure you want to cancel?', 'foogallery'); ?>')) {
+			if (!confirm('<?php _e( 'Are you sure you want to cancel?', 'foogallery' ); ?>')) {
 				e.preventDefault();
 				return false;
 			}
 		});
 
 		$('#nextgen_import_form').on('click', '.reset_import', function (e) {
-			if (!confirm('<?php echo __('Are you sure you want to reset all NextGen import data? This may result in duplicate galleries and media attachments!', 'foogallery'); ?>')) {
+			if (!confirm('<?php _e( 'Are you sure you want to reset all NextGen import data? This may result in duplicate galleries and media attachments!', 'foogallery' ); ?>')) {
 				e.preventDefault();
 				return false;
 			}
@@ -122,7 +122,7 @@ if ( isset( $_POST['foogallery_nextgen_reset'] ) ) {
 	</div>
 	<?php
 	$galleries = $nextgen->get_galleries();
-	if ( !$galleries ) {
+	if ( ! $galleries ) {
 		_e( 'There are no NextGen galleries to import!', 'foogallery' );
 	} else {
 		?>

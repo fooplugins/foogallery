@@ -14,7 +14,7 @@ if ( ! class_exists( 'FooGallery_Admin' ) ) {
 		 *
 		 */
 		function __construct() {
-			add_action( 'init', array($this, 'init') );
+			add_action( 'init', array( $this, 'init' ) );
 
 			new FooGallery_Admin_Settings();
 			new FooGallery_Admin_Menu();
@@ -28,13 +28,13 @@ if ( ! class_exists( 'FooGallery_Admin' ) ) {
 
 		function init() {
 			add_filter( 'foogallery_admin_has_settings_page', '__return_false' );
-			add_action( 'foogallery_admin_print_styles', array($this, 'admin_print_styles') );
-			add_action( 'foogallery_admin_print_scripts', array($this, 'admin_print_scripts') );
+			add_action( 'foogallery_admin_print_styles', array( $this, 'admin_print_styles' ) );
+			add_action( 'foogallery_admin_print_scripts', array( $this, 'admin_print_scripts' ) );
 			// Add a links to the plugin listing
-			add_filter( 'foogallery_admin_plugin_action_links', array($this, 'plugin_listing_links') );
+			add_filter( 'foogallery_admin_plugin_action_links', array( $this, 'plugin_listing_links' ) );
 
 			//output shortcode for javascript
-			add_action( 'admin_footer', array($this, 'output_shortcode_variable'), 200);
+			add_action( 'admin_footer', array( $this, 'output_shortcode_variable' ), 200);
 		}
 
 
@@ -55,7 +55,7 @@ if ( ! class_exists( 'FooGallery_Admin' ) ) {
 		 *
 		 * @return array
 		 */
-		function plugin_listing_links($links) {
+		function plugin_listing_links( $links ) {
 			// Add a 'Settings' link to the plugin listing
 			$links[] = '<a href="' . foogallery_admin_settings_url() . '"><b>' . __( 'Settings', 'foogallery' ) . '</b></a>';
 

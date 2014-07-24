@@ -1,5 +1,5 @@
 <?php
-if (!class_exists('FooGallery_Extension_Template_Base')) {
+if ( ! class_exists( 'FooGallery_Extension_Template_Base' ) ) {
 
 	abstract class FooGallery_Extension_Template_Base {
 

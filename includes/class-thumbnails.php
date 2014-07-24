@@ -3,13 +3,13 @@
  * FooGallery Thumbnail Resizing class
  */
 
-if ( !class_exists( 'FooGallery_Thumbnails' ) ) {
+if ( ! class_exists( 'FooGallery_Thumbnails' ) ) {
 
 	class FooGallery_Thumbnails {
 
 		function __construct() {
 			//generate thumbs using WPThumb
-			add_filter( 'foogallery_attachment_resize_thumbnail', array($this, 'resize'), 10, 3 );
+			add_filter( 'foogallery_attachment_resize_thumbnail', array( $this, 'resize' ), 10, 3 );
 		}
 
 		function resize( $original_image_src, $args, $thumbnail_object ) {
@@ -17,7 +17,7 @@ if ( !class_exists( 'FooGallery_Thumbnails' ) ) {
 			$arg_defaults = array(
 				'width'  => 0,
 				'height' => 0,
-				'crop'   => true
+				'crop'   => true,
 			);
 
 			$args = wp_parse_args( $args, $arg_defaults );

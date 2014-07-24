@@ -1,6 +1,6 @@
 <?php
 
-if ( !class_exists( 'FooGallery_NextGen_Import_Progress' ) ) {
+if ( ! class_exists( 'FooGallery_NextGen_Import_Progress' ) ) {
 
 	class FooGallery_NextGen_Import_Progress extends stdClass {
 
@@ -23,7 +23,7 @@ if ( !class_exists( 'FooGallery_NextGen_Import_Progress' ) ) {
 			$this->is_part_of_current_import = false;
 		}
 
-		function init($nextgen_gallery_id, $foogallery_title) {
+		function init( $nextgen_gallery_id, $foogallery_title ) {
 			$this->nextgen_gallery_id = $nextgen_gallery_id;
 			$this->foogallery_title = $foogallery_title;
 			$this->status = self::PROGRESS_QUEUED;
@@ -40,12 +40,12 @@ if ( !class_exists( 'FooGallery_NextGen_Import_Progress' ) ) {
 		}
 
 		function message() {
-			switch ($this->status) {
+			switch ( $this->status ) {
 				case self::PROGRESS_NOT_STARTED:
-					return __('Not imported', 'foogallery');
+					return __( 'Not imported', 'foogallery' );
 					break;
 				case self::PROGRESS_QUEUED:
-					return __('Queued for import', 'foogallery');
+					return __( 'Queued for import', 'foogallery' );
 					break;
 				case self::PROGRESS_STARTED:
 					return sprintf( __( 'Imported %d of %d image(s)', 'foogallery' ),
@@ -56,7 +56,7 @@ if ( !class_exists( 'FooGallery_NextGen_Import_Progress' ) ) {
 					break;
 			}
 
-			return __('Unknown status!', 'foogallery');
+			return __( 'Unknown status!', 'foogallery' );
 		}
 
 		function queued_for_import() {
@@ -82,7 +82,7 @@ if ( !class_exists( 'FooGallery_NextGen_Import_Progress' ) ) {
 			$foogallery_args = array(
 				'post_title'  => $this->foogallery_title,
 				'post_type'   => FOOGALLERY_CPT_GALLERY,
-				'post_status' => 'publish'
+				'post_status' => 'publish',
 			);
 			$this->foogallery_id   = wp_insert_post( $foogallery_args );
 

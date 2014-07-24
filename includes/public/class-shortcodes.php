@@ -3,36 +3,36 @@
  * FooGallery Shortcodes
  */
 
-if ( !class_exists( 'FooGallery_Shortcodes' ) ) {
+if ( ! class_exists( 'FooGallery_Shortcodes' ) ) {
 
 	class FooGallery_Shortcodes {
 
 		function __construct() {
-			add_action( 'init', array($this, 'init_shortcode') );
-			add_action( 'foogallery_load_template', array($this, 'handle_lightbox_field') );
+			add_action( 'init', array( $this, 'init_shortcode' ) );
+			add_action( 'foogallery_load_template', array( $this, 'handle_lightbox_field' ) );
 		}
 
 		function init_shortcode() {
-			add_shortcode( foogallery_gallery_shortcode_tag(), array($this, 'render_foogallery_shortcode') );
+			add_shortcode( foogallery_gallery_shortcode_tag(), array( $this, 'render_foogallery_shortcode' ) );
 		}
 
-		function render_foogallery_shortcode($atts) {
+		function render_foogallery_shortcode( $atts ) {
 
 			$args = wp_parse_args( $atts, array(
-				'id' => 0,
-				'gallery' => ''
+				'id'      => 0,
+				'gallery' => '',
 			) );
 
 			$args = apply_filters( 'foogallery_shortcode_atts', $args );
 
-            //create new instance of template engine
-            $engine = new FooGallery_Template_Loader();
+			//create new instance of template engine
+			$engine = new FooGallery_Template_Loader();
 
 			ob_start();
 
-            $engine->render_template( $args );
+			$engine->render_template( $args );
 
-			$output_string=ob_get_contents();
+			$output_string = ob_get_contents();
 			ob_end_clean();
 			return $output_string;
 		}

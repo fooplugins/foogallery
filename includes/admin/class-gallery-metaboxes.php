@@ -4,7 +4,7 @@
  * FooGallery Admin Gallery MetaBoxes class
  */
 
-if ( !class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
+if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 
 	class FooGallery_Admin_Gallery_MetaBoxes {
 
@@ -12,30 +12,30 @@ if ( !class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 
 		function __construct() {
 			//add our foogallery metaboxes
-			add_action( 'add_meta_boxes', array($this, 'add_meta_boxes_to_gallery') );
+			add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes_to_gallery' ) );
 
 			//save extra post data for a gallery
-			add_action( 'save_post', array($this, 'save_gallery') );
+			add_action( 'save_post', array( $this, 'save_gallery' ) );
 
 			//save custom field on a page or post
-			add_Action( 'save_post', array($this, 'attach_gallery_to_post'), 10, 2 );
+			add_Action( 'save_post', array( $this, 'attach_gallery_to_post' ), 10, 2 );
 
 			//whitelist metaboxes for our gallery postype
-			add_filter( 'foogallery_metabox_sanity', array($this, 'whitelist_metaboxes') );
+			add_filter( 'foogallery_metabox_sanity', array( $this, 'whitelist_metaboxes' ) );
 
 			//add scripts used by metaboxes
 			add_action( 'admin_enqueue_scripts', array( $this, 'include_required_scripts' ) );
 
 			// Ajax calls for creating a page for the gallery
-			add_action( 'wp_ajax_foogallery_create_gallery_page', array($this, 'ajax_create_gallery_page') );
+			add_action( 'wp_ajax_foogallery_create_gallery_page', array( $this, 'ajax_create_gallery_page' ) );
 		}
 
 		function whitelist_metaboxes() {
 			return array(
 				FOOGALLERY_CPT_GALLERY => array(
-					'whitelist'  => apply_filters( 'foogallery_metabox_sanity_foogallery', array('submitdiv', 'slugdiv', 'postimagediv', 'foogallery_items', 'foogallery_settings', 'foogallery_help', 'foogallery_pages') ),
-					'contexts'   => array('normal', 'advanced', 'side'),
-					'priorities' => array('high', 'core', 'default', 'low')
+					'whitelist'  => apply_filters( 'foogallery_metabox_sanity_foogallery', array( 'submitdiv', 'slugdiv', 'postimagediv', 'foogallery_items', 'foogallery_settings', 'foogallery_help', 'foogallery_pages', ) ),
+					'contexts'   => array( 'normal', 'advanced', 'side', ),
+					'priorities' => array( 'high', 'core', 'default', 'low', ),
 				)
 			);
 		}
@@ -46,7 +46,7 @@ if ( !class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 			add_meta_box(
 				'foogallery_items',
 				__( 'Gallery Items', 'foogallery' ),
-				array($this, 'render_gallery_media_metabox'),
+				array( $this, 'render_gallery_media_metabox' ),
 				FOOGALLERY_CPT_GALLERY,
 				'normal',
 				'high'
@@ -55,7 +55,7 @@ if ( !class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 			add_meta_box(
 				'foogallery_settings',
 				__( 'Gallery Settings', 'foogallery' ),
-				array($this, 'render_gallery_settings_metabox'),
+				array( $this, 'render_gallery_settings_metabox' ),
 				FOOGALLERY_CPT_GALLERY,
 				'normal',
 				'high'
@@ -64,7 +64,7 @@ if ( !class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 			add_meta_box(
 				'foogallery_help',
 				__( 'Gallery Shortcode', 'foogallery' ),
-				array($this, 'render_gallery_shortcode_metabox'),
+				array( $this, 'render_gallery_shortcode_metabox' ),
 				FOOGALLERY_CPT_GALLERY,
 				'side',
 				'default'
@@ -73,7 +73,7 @@ if ( !class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 			if ( 'publish' == $post->post_status ) {
 				add_meta_box( 'foogallery_pages',
 					__( 'Gallery Usage', 'foogallery' ),
-					array($this, 'render_gallery_usage_metabox'),
+					array( $this, 'render_gallery_usage_metabox' ),
 					FOOGALLERY_CPT_GALLERY,
 					'side',
 					'default'
@@ -81,15 +81,15 @@ if ( !class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 			}
 		}
 
-		function get_gallery($post) {
-			if ( !isset($this->_gallery) ) {
+		function get_gallery( $post ) {
+			if ( ! isset($this->_gallery) ) {
 				$this->_gallery = FooGallery::get( $post );
 			}
 
 			return $this->_gallery;
 		}
 
-		function save_gallery($post_id) {
+		function save_gallery( $post_id ) {
 			// check autosave
 			if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
 				return $post_id;
@@ -125,7 +125,7 @@ if ( !class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 			}
 		}
 
-		function attach_gallery_to_post($post_id, $post) {
+		function attach_gallery_to_post( $post_id, $post ) {
 
 			// check autosave
 			if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
@@ -134,7 +134,7 @@ if ( !class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 
 			//only do this check for a page or post
 			if ( 'post' == $post->post_type ||
-				'page' == $post->post_type) {
+				'page' == $post->post_type ) {
 
 				//first, clear any foogallery usages that the post might have
 				delete_post_meta( $post_id, FOOGALLERY_META_POST_USAGE );
@@ -186,7 +186,7 @@ if ( !class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 
 		}
 
-		function render_gallery_item($attachment_post = false) {
+		function render_gallery_item( $attachment_post = false ) {
 			if ( $attachment_post != false ) {
 				$attachment_id = $attachment_post->ID;
 				$attachment = wp_get_attachment_image_src( $attachment_id );
@@ -216,7 +216,7 @@ if ( !class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 		<?php
 		}
 
-		function render_gallery_settings_metabox($post) {
+		function render_gallery_settings_metabox( $post ) {
 			//gallery settings including:
 			//gallery images link to image or attachment page
 			//default template to use
@@ -226,13 +226,13 @@ if ( !class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 			if ( !empty($gallery->gallery_template) ) {
 				$gallery_template = $gallery->gallery_template;
 			}
-			$hide_help = 'on' == foogallery_get_setting('hide_gallery_template_help');
+			$hide_help = 'on' == foogallery_get_setting( 'hide_gallery_template_help' );
 			?>
 			<table class="foogallery-metabox-settings">
 				<tbody>
 				<tr class="gallery_template_field gallery_template_field_selector">
 					<th>
-						<label for="FooGallerySettings_GalleryTemplate"><?php _e('Gallery Template', 'foogallery'); ?></label>
+						<label for="FooGallerySettings_GalleryTemplate"><?php _e( 'Gallery Template', 'foogallery' ); ?></label>
 					</th>
 					<td>
 						<select id="FooGallerySettings_GalleryTemplate" name="<?php echo FOOGALLERY_META_TEMPLATE; ?>">
@@ -271,7 +271,7 @@ if ( !class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 						}
 						?>
 						<tr class="<?php echo $class; ?>" <?php echo $field_visibility; ?>>
-							<?php if ( isset($field['type']) && 'help' == $field['type']) { ?>
+							<?php if ( isset($field['type']) && 'help' == $field['type'] ) { ?>
 							<td colspan="2">
 								<div class="foogallery-help">
 									<?php echo $field['desc']; ?>
@@ -283,7 +283,7 @@ if ( !class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 									for="FooGallerySettings_<?php echo $template['slug'] . '_' . $field['id']; ?>"><?php echo $field['title']; ?></label>
 							</th>
 							<td>
-								<?php do_action('foogallery_render_gallery_template_field', $field, $gallery, $template ); ?>
+								<?php do_action( 'foogallery_render_gallery_template_field', $field, $gallery, $template ); ?>
 							</td>
 							<?php } ?>
 						</tr>
@@ -296,13 +296,13 @@ if ( !class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 		<?php
 		}
 
-		function render_gallery_shortcode_metabox($post) {
+		function render_gallery_shortcode_metabox( $post ) {
 			$gallery = $this->get_gallery( $post );
 			$shortcode = $gallery->shortcode();
 			?>
 			<p class="foogallery-shortcode">
 				<code id="foogallery-copy-shortcode" data-clipboard-text="<?php echo htmlspecialchars( $shortcode ); ?>"
-					  title="<?php _e('Click to copy to your clipboard', 'foogallery'); ?>"><?php echo $shortcode; ?></code>
+					  title="<?php _e( 'Click to copy to your clipboard', 'foogallery' ); ?>"><?php echo $shortcode; ?></code>
 			</p>
 			<p>
 				<?php _e( 'Paste the above shortcode into a post or page to show the gallery. Simply click the shortcode to copy it to your clipboard.', 'foogallery' ); ?>
@@ -324,15 +324,15 @@ if ( !class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 			<?php
 		}
 
-		function render_gallery_usage_metabox($post) {
+		function render_gallery_usage_metabox( $post ) {
 			$gallery = $this->get_gallery( $post );
 			$posts = $gallery->find_usages();
-			if ( $posts && count($posts) > 0 ) { ?>
+			if ( $posts && count( $posts ) > 0 ) { ?>
 				<p>
 					<?php _e( 'This gallery is used on the following posts or pages:', 'foogallery' ); ?>
 				</p>
 				<ul class="ul-disc">
-				<?php foreach ($posts as $post) {
+				<?php foreach ( $posts as $post ) {
 					edit_post_link( $post->post_title, '<li>', '</li>', $post->ID );
 				} ?>
 				</ul>
@@ -341,7 +341,7 @@ if ( !class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 					<?php _e( 'This gallery is not used on any pages or pages yet. Quickly create a page:', 'foogallery' ); ?>
 				</p>
 				<div class="foogallery_metabox_actions">
-					<button class="button button-primary button-large" id="foogallery_create_page"><?php _e('Create Gallery Page', 'foogallery'); ?></button>
+					<button class="button button-primary button-large" id="foogallery_create_page"><?php _e( 'Create Gallery Page', 'foogallery' ); ?></button>
 					<span id="foogallery_create_page_spinner" class="spinner"></span>
 					<?php wp_nonce_field( 'foogallery_create_gallery_page', 'foogallery_create_gallery_page_nonce', false ); ?>
 				</div>
@@ -377,10 +377,10 @@ if ( !class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 				$foogallery = FooGallery::get_by_id( $foogallery_id );
 
 				$post = array(
-				  'post_content'   => $foogallery->shortcode(),
-				  'post_title'     => $foogallery->name,
-				  'post_status'    => 'draft',
-				  'post_type'      => 'page',
+					'post_content' => $foogallery->shortcode(),
+					'post_title'   => $foogallery->name,
+					'post_status'  => 'draft',
+					'post_type'    => 'page',
 				);
 
 				wp_insert_post( $post );
