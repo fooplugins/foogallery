@@ -92,7 +92,7 @@ if ( ! class_exists( 'FooGallery_PostTypes' ) ) {
 		 *
 		 * @return array mixed            Amended array of bulk updated messages.
 		 */
-		function update_bulk_messages($bulk_messages, $bulk_counts) {
+		function update_bulk_messages( $bulk_messages, $bulk_counts ) {
 
 			$bulk_messages[FOOGALLERY_CPT_GALLERY] = apply_filters( 'foogallery_gallery_posttype_bulk_update_messages',
 				array(

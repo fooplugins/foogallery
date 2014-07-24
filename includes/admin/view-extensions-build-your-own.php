@@ -154,11 +154,11 @@ if ( ! empty( $nonce ) && wp_verify_nonce( $nonce, 'foogallery_boilerplate' ) ) 
 		<div class="button-row">
 			<button name="action" class="button button-primary" value="download"><?php _e( 'Generate &amp; download .zip', 'foogallery' ); ?></button>
 			<!--<button name="action" class="button button-primary" value="install">Generate &amp; install now!</button>-->
-			<?php if ( !empty( $boilerplate_error ) ) {
+			<?php if ( ! empty( $boilerplate_error ) ) {
 				echo "<p class=\"boilerplate-error\">{$boilerplate_error}</p>";
 			} ?>
 			<?php wp_nonce_field( 'foogallery_boilerplate', 'foogallery_boilerplate_nonce' ); ?>
-			<p><?php _e('Once you have downloaded the zip file, install and activate it like a normal WordPress plugin so that it shows up in the list of extensions!', 'foogallery'); ?></p>
+			<p><?php _e( 'Once you have downloaded the zip file, install and activate it like a normal WordPress plugin so that it shows up in the list of extensions!', 'foogallery' ); ?></p>
 		</div>
 	</form>
 </div>

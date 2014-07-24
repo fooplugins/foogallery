@@ -11,26 +11,26 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 			add_filter( 'foogallery_admin_settings', array( $this, 'create_settings' ), 10, 2 );
 		}
 
-        function create_settings() {
+		function create_settings() {
 
-	        //region General Tab
-	        $tabs['general'] = __( 'General', 'foogallery' );
+			//region General Tab
+			$tabs['general'] = __( 'General', 'foogallery' );
 
 	        $gallery_templates = foogallery_gallery_templates();
-	        $gallery_templates_choices = array();
-	        foreach($gallery_templates as $template) {
-		        $gallery_templates_choices[$template['slug']] = $template['name'];
-	        }
+			$gallery_templates_choices = array();
+			foreach ( $gallery_templates as $template ) {
+				$gallery_templates_choices[ $template['slug'] ] = $template['name'];
+			}
 
-	        $settings[] = array(
-		        'id'      => 'gallery_template',
-		        'title'   => __( 'Default Gallery Template', 'foogallery' ),
-		        'desc'    => __( 'The default gallery template to use for new galleries', 'foogallery' ),
-		        'default' => foogallery_get_default( 'gallery_template' ) ,
-		        'type'    => 'select',
-		        'choices' => $gallery_templates_choices,
-		        'tab'     => 'general',
-	        );
+			$settings[] = array(
+				'id'      => 'gallery_template',
+				'title'   => __( 'Default Gallery Template', 'foogallery' ),
+				'desc'    => __( 'The default gallery template to use for new galleries', 'foogallery' ),
+				'default' => foogallery_get_default( 'gallery_template' ) ,
+				'type'    => 'select',
+				'choices' => $gallery_templates_choices,
+				'tab'     => 'general',
+			);
 
 			$settings[] = array(
 				'id'      => 'hide_gallery_template_help',
@@ -71,6 +71,6 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 				'sections' => array(),
 				'settings' => $settings,
 			) );
-        }
-    }
+		}
+	}
 }
