@@ -62,7 +62,10 @@ function foogallery_permalink() {
 	return foogallery_get_setting( 'gallery_permalink' );
 }
 
-function foogallery_get_setting($key) {
+/**
+ * @param string $key
+ */
+function foogallery_get_setting( $key ) {
 	$foogallery = FooGallery_Plugin::get_instance();
 
 	return $foogallery->options()->get( $key, foogallery_get_default( $key ) );
@@ -75,7 +78,7 @@ function foogallery_get_setting($key) {
  *
  * @return string
  */
-function foogallery_build_gallery_shortcode($gallery_id) {
+function foogallery_build_gallery_shortcode( $gallery_id ) {
 	return '[' . foogallery_gallery_shortcode_tag() . ' id="' . $gallery_id . '"]';
 }
 
@@ -95,20 +98,20 @@ function foogallery_gallery_shortcode_tag() {
  *
  * @return string       Key value on success, false on failure.
  */
-function foogallery_get_default($key) {
+function foogallery_get_default( $key ) {
 
 	$defaults = array(
 		'gallery_template'           => 'default',
 		'gallery_permalinks_enabled' => false,
 		'gallery_permalink'          => 'gallery',
-		'lightbox'                   => 'none'
+		'lightbox'                   => 'none',
 	);
 
 	// A handy filter to override the defaults
 	$defaults = apply_filters( 'foogallery_defaults', $defaults );
 
 	// Return the key specified.
-	return isset($defaults[$key]) ? $defaults[$key] : false;
+	return isset($defaults[ $key ]) ? $defaults[ $key ] : false;
 }
 
 /**
@@ -126,7 +129,7 @@ function foogallery_admin_add_gallery_url() {
  * @return string The Url to the FooGallery help page in admin
  */
 function foogallery_admin_help_url() {
-	return admin_url( add_query_arg( array('page' => 'foogallery-help'), foogallery_admin_menu_parent_slug() ) );
+	return admin_url( add_query_arg( array( 'page' => 'foogallery-help' ), foogallery_admin_menu_parent_slug() ) );
 }
 
 /**
@@ -135,7 +138,7 @@ function foogallery_admin_help_url() {
  * @return string The Url to the FooGallery settings page in admin
  */
 function foogallery_admin_settings_url() {
-	return admin_url( add_query_arg( array('page' => 'foogallery-settings'), foogallery_admin_menu_parent_slug() ) );
+	return admin_url( add_query_arg( array( 'page' => 'foogallery-settings' ), foogallery_admin_menu_parent_slug() ) );
 }
 
 /**
@@ -144,7 +147,7 @@ function foogallery_admin_settings_url() {
  * @return string The Url to the FooGallery extensions page in admin
  */
 function foogallery_admin_extensions_url() {
-	return admin_url( add_query_arg( array('page' => 'foogallery-extensions'), foogallery_admin_menu_parent_slug() ) );
+	return admin_url( add_query_arg( array( 'page' => 'foogallery-extensions' ), foogallery_admin_menu_parent_slug() ) );
 }
 
 /**
@@ -167,7 +170,7 @@ function foogallery_gallery_template_setting( $key, $default = '' ) {
 
 	} else if ( $current_foogallery->settings && array_key_exists( $settings_key, $current_foogallery->settings ) ) {
 		//then get the value out of the saved gallery settings
-		$value = $current_foogallery->settings[$settings_key];
+		$value = $current_foogallery->settings[ $settings_key ];
 	} else {
 		//otherwise set it to the default
 		$value = $default;
@@ -194,7 +197,7 @@ function foogallery_admin_menu_parent_slug() {
  */
 function foogallery_build_admin_menu_url( $extra_args = array() ) {
 	$url = admin_url( foogallery_admin_menu_parent_slug() );
-	if ( !empty( $extra_args ) ) {
+	if ( ! empty( $extra_args ) ) {
 		$url = add_query_arg( $extra_args, $url );
 	}
 	return $url;
@@ -204,8 +207,8 @@ function foogallery_build_admin_menu_url( $extra_args = array() ) {
  * Helper function for adding a foogallery sub menu
  *
  * @param $menu_title
- * @param $capability
- * @param $menu_slug
+ * @param string $capability
+ * @param string $menu_slug
  * @param $function
  */
 function foogallery_add_submenu_page( $menu_title, $capability, $menu_slug, $function ) {
@@ -230,7 +233,7 @@ function foogallery_get_all_galleries() {
 			'post_type'     => FOOGALLERY_CPT_GALLERY,
 			'post_status'	=> 'any',
 			'cache_results' => false,
-			'nopaging'      => true
+			'nopaging'      => true,
 		)
 	);
 
@@ -254,20 +257,20 @@ function foogallery_get_all_galleries() {
  *
  * @return array An array of all the foogallery shortcodes found in the content
  */
-function foogallery_extract_gallery_shortcodes($content) {
+function foogallery_extract_gallery_shortcodes( $content ) {
 	$shortcodes = array();
 
 	$regex_pattern = foogallery_gallery_shortcode_regex();
 	if ( preg_match_all( '/' . $regex_pattern . '/s', $content, $matches ) ) {
-		for ($i = 0; $i < count($matches[0]); ++$i) {
+		for ( $i = 0; $i < count( $matches[0] ); ++$i ) {
 			$shortcode = $matches[0][$i];
 			$args = $matches[3][$i];
-			$attribure_string = str_replace( " ", "&", trim( $args ) );
+			$attribure_string = str_replace( ' ', '&', trim( $args ) );
 			$attribure_string = str_replace( '"', '', $attribure_string );
 			$attributes = wp_parse_args( $attribure_string );
 			if ( array_key_exists( 'id', $attributes ) ) {
 				$id           = intval( $attributes['id'] );
-				$shortcodes[$id] = $shortcode;
+				$shortcodes[ $id ] = $shortcode;
 			}
 		}
 	}
@@ -327,7 +330,7 @@ function foogallery_build_class_attribute( $gallery ) {
 
 	if ( $num_args > 1 ) {
 		$arg_list = func_get_args();
-		for ($i = 1; $i < $num_args; $i++) {
+		for ( $i = 1; $i < $num_args; $i++ ) {
 			$classes[] = $arg_list[$i];
 		}
 	}

@@ -17,7 +17,7 @@ class FooGallery_Template_Loader {
 	 *
 	 * @param $args array       Arguments passed in from the shortcode
 	 */
-	public function render_template($args) {
+	public function render_template( $args ) {
 		//do some work before we locate the template
 		global $current_foogallery;
 		global $current_foogallery_arguments;
@@ -30,8 +30,7 @@ class FooGallery_Template_Loader {
 		$current_foogallery = $this->find_gallery( $args );
 
 		//find the gallery template we will use to render the gallery
-		$current_foogallery_template = $this->get_arg( $args, 'template',
-			$current_foogallery->gallery_template );
+		$current_foogallery_template = $this->get_arg( $args, 'template', $current_foogallery->gallery_template );
 
 		//set a default if we have no gallery template
 		if ( empty($current_foogallery_template) ) {
@@ -39,7 +38,7 @@ class FooGallery_Template_Loader {
 		}
 
 		//check if we have any attachments
-		if ( !$current_foogallery->has_attachments() ) {
+		if ( ! $current_foogallery->has_attachments() ) {
 			//no attachments!
 			do_action( "foogallery_template_no_attachments-($current_foogallery_template)", $current_foogallery );
 		} else {
@@ -54,7 +53,7 @@ class FooGallery_Template_Loader {
 			if ( false !== ($template_location = $loader->locate_file( "gallery-{$current_foogallery_template}.php" )) ) {
 
 				//we have found a template!
-				do_action( "foogallery_located_template", $current_foogallery );
+				do_action( 'foogallery_located_template', $current_foogallery );
 				do_action( "foogallery_located_template-{$current_foogallery_template}", $current_foogallery );
 
 				//try to include some JS
@@ -78,7 +77,7 @@ class FooGallery_Template_Loader {
 
 			} else {
 				//we could not find a template!
-				echo __( 'No gallery template found!', 'foogallery' );
+				_e( 'No gallery template found!', 'foogallery' );
 			}
 		}
 	}
@@ -86,8 +85,8 @@ class FooGallery_Template_Loader {
 	/**
 	 * Add pickup locations to the loader to make it easier for extensions
 	 *
-	 * @param $loader			Foo_Plugin_File_Locator_v1
-	 * @param $extension_files	array
+	 * @param $loader Foo_Plugin_File_Locator_v1
+	 * @param $extension_files array
 	 */
 	function add_extension_pickup_locations( $loader, $extension_files ) {
 		if ( count( $extension_files ) > 0 ) {
@@ -129,7 +128,7 @@ class FooGallery_Template_Loader {
 	 *
 	 * @return bool|FooGallery  The gallery object we want to render
 	 */
-	function find_gallery($args) {
+	function find_gallery( $args ) {
 
 		$id = intval( $this->get_arg( $args, 'id' ), 0 );
 
@@ -162,11 +161,11 @@ class FooGallery_Template_Loader {
 	 *
 	 * @return string
 	 */
-	function get_arg($args, $key, $default = '') {
-		if ( empty($args) || !array_key_exists( $key, $args ) ) {
+	function get_arg( $args, $key, $default = '' ) {
+		if ( empty($args) || ! array_key_exists( $key, $args ) ) {
 			return $default;
 		}
 
-		return $args[$key];
+		return $args[ $key ];
 	}
 }

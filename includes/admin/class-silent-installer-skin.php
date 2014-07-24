@@ -1,6 +1,6 @@
 <?php
 
-if ( !class_exists('WP_Upgrader_Skin' ) ) {
+if ( ! class_exists( 'WP_Upgrader_Skin' ) ) {
 	require_once ABSPATH . 'wp-admin/includes/class-wp-upgrader-skins.php';
 }
 

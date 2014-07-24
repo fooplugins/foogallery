@@ -6,7 +6,7 @@
  *  now rather just hook into 'foogallery_attachment_html_image_attributes-default'.
  */
 
-if ( !class_exists( 'FooGallery_Attachment_Filters' ) ) {
+if ( ! class_exists( 'FooGallery_Attachment_Filters' ) ) {
 	class FooGallery_Attachment_Filters {
 
 		function __construct() {

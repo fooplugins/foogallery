@@ -3,28 +3,28 @@
  * FooGallery Admin Extension class
  */
 
-if ( !class_exists( 'FooGallery_Admin_Extensions' ) ) {
+if ( ! class_exists( 'FooGallery_Admin_Extensions' ) ) {
 
 	class FooGallery_Admin_Extensions {
 
 		function __construct() {
-			add_action( 'init', array($this, 'init') );
-			add_action( 'deactivated_plugin', array($this, 'handle_extensions_deactivation'), 10, 2 );
-			add_action( 'activated_plugin', array($this, 'handle_extensions_activation'), 10, 2 );
+			add_action( 'init', array( $this, 'init' ) );
+			add_action( 'deactivated_plugin', array( $this, 'handle_extensions_deactivation' ), 10, 2 );
+			add_action( 'activated_plugin', array( $this, 'handle_extensions_activation' ), 10, 2 );
 		}
 
 		function init() {
-			add_action( 'admin_init', array($this, 'handle_extension_action') );
-			add_action( 'admin_init', array($this, 'redirect_on_activation') );
+			add_action( 'admin_init', array( $this, 'handle_extension_action' ) );
+			add_action( 'admin_init', array( $this, 'redirect_on_activation' ) );
 		}
 
-		function handle_extensions_deactivation($plugin, $network_deactivating) {
+		function handle_extensions_deactivation( $plugin, $network_deactivating ) {
 			//make sure that if we are dealing with a FooGallery extension, that we deactivate it too
 			$api = new FooGallery_Extensions_API();
 			$api->handle_wordpress_plugin_deactivation( $plugin );
 		}
 
-		function handle_extensions_activation($plugin, $network_deactivating) {
+		function handle_extensions_activation( $plugin, $network_deactivating ) {
 			//make sure that if we are dealing with a FooGallery extension, that we deactivate it too
 			$api = new FooGallery_Extensions_API();
 			$api->handle_wordpress_plugin_activation( $plugin );
@@ -63,7 +63,7 @@ if ( !class_exists( 'FooGallery_Admin_Extensions' ) ) {
 				}
 
 				//first, remove unwanted query args
-				$redirect_url = remove_query_arg( array('extension', 'action') );
+				$redirect_url = remove_query_arg( array( 'extension', 'action' ) );
 				//then add a query arg for our message
 				$redirect_url = add_query_arg( 'show_message', 'yes', $redirect_url );
 				//finally, allow extensions to override their own redirect
@@ -79,12 +79,12 @@ if ( !class_exists( 'FooGallery_Admin_Extensions' ) ) {
 				$api->reload();
 
 				//first, remove unwanted query args
-				$redirect_url = remove_query_arg( array('extension', 'action') );
+				$redirect_url = remove_query_arg( array( 'extension', 'action' ) );
 
-				if ( !$api->has_extension_loading_errors() ) {
+				if ( ! $api->has_extension_loading_errors() ) {
 					$result = array(
 						'message' => __( 'The extensions have been reloaded', 'foogallery' ),
-						'type'    => 'success'
+						'type'    => 'success',
 					);
 
 					set_transient( FOOGALLERY_EXTENSIONS_MESSAGE_TRANSIENT_KEY, $result, 30 );
@@ -101,15 +101,15 @@ if ( !class_exists( 'FooGallery_Admin_Extensions' ) ) {
 
 				$result = array(
 					'message' => __( 'The extension could not be activated due to an error!', 'foogallery' ),
-					'type'    => 'error'
+					'type'    => 'error',
 				);
 
 				set_transient( FOOGALLERY_EXTENSIONS_MESSAGE_TRANSIENT_KEY, $result, 30 );
 
-				$api->add_to_error_extensions( $extension_slug, __('Activation Error!','foogallery') );
+				$api->add_to_error_extensions( $extension_slug, __( 'Activation Error!', 'foogallery' ) );
 
 				//first, remove unwanted query args
-				$redirect_url = remove_query_arg( array('extension', 'action', 'has_error') );
+				$redirect_url = remove_query_arg( array( 'extension', 'action', 'has_error' ) );
 				//then add a query arg for our message
 				$redirect_url = add_query_arg( 'show_message', 'yes', $redirect_url );
 
@@ -119,7 +119,7 @@ if ( !class_exists( 'FooGallery_Admin_Extensions' ) ) {
 
 		function redirect_on_activation() {
 			// Bail if no activation redirect
-			if ( !get_transient( FOOGALLERY_ACTIVATION_REDIRECT_TRANSIENT_KEY ) ) {
+			if ( ! get_transient( FOOGALLERY_ACTIVATION_REDIRECT_TRANSIENT_KEY ) ) {
 				return;
 			}
 

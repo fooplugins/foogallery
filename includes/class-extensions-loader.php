@@ -1,10 +1,10 @@
 <?php
 
-if ( !class_exists( 'FooGallery_Extensions_Loader' ) ) {
+if ( ! class_exists( 'FooGallery_Extensions_Loader' ) ) {
 	class FooGallery_Extensions_Loader {
 
 		function __construct() {
-			add_action( 'plugins_loaded', array($this, 'load_active_extensions') );
+			add_action( 'plugins_loaded', array( $this, 'load_active_extensions' ) );
 		}
 
 		/**
@@ -25,11 +25,11 @@ if ( !class_exists( 'FooGallery_Extensions_Loader' ) ) {
 			if ( class_exists( $class ) ) {
 				$foogallery_currently_loading = $slug;
 				$instance = new $class();
-				$foogallery_extensions[$slug] = $instance;
+				$foogallery_extensions[ $slug ] = $instance;
 			}
 		}
 
-		function handle_load_exceptions($errno, $errstr, $errfile, $errline) {
+		function handle_load_exceptions( $errno, $errstr, $errfile, $errline ) {
 			global $foogallery_currently_loading;
 			$api = new FooGallery_Extensions_API();
 			$api->deactivate( $foogallery_currently_loading, false, true );

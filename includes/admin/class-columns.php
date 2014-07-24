@@ -10,14 +10,14 @@ if ( ! class_exists( 'FooGallery_Admin_Columns' ) ) {
 		private $include_clipboard_script = false;
 
 		function __construct() {
-			//add_filter( 'manage_upload_columns', array($this, 'setup_media_columns') );
-			//add_action( 'manage_media_custom_column', array($this, 'media_columns_content'), 10, 2 );
+			//add_filter( 'manage_upload_columns', array( $this, 'setup_media_columns ') );
+			//add_action( 'manage_media_custom_column', array( $this, 'media_columns_content' ), 10, 2 );
 			add_filter( 'manage_edit-' . FOOGALLERY_CPT_GALLERY . '_columns', array(
 				$this,
 				'gallery_custom_columns'
 			) );
 			add_action( 'manage_posts_custom_column', array( $this, 'gallery_custom_column_content' ) );
-			add_action( 'admin_footer', array($this, 'include_clipboard_script') );
+			add_action( 'admin_footer', array( $this, 'include_clipboard_script' ) );
 		}
 
 		function setup_media_columns( $columns ) {
@@ -32,11 +32,11 @@ if ( ! class_exists( 'FooGallery_Admin_Columns' ) ) {
 
 		function gallery_custom_columns( $columns ) {
 			return array_slice( $columns, 0, 1, true ) +
-			       array( 'icon' => '' ) +
-			       array_slice( $columns, 1, null, true ) +
-			       array(
-				       FOOGALLERY_CPT_GALLERY . '_count' => __( 'Media', 'foogallery' ),
-				       FOOGALLERY_CPT_GALLERY . '_shortcode' => __( 'Shortcode', 'foogallery' )
+					array( 'icon' => '' ) +
+					array_slice( $columns, 1, null, true ) +
+					array(
+						FOOGALLERY_CPT_GALLERY . '_count' => __( 'Media', 'foogallery' ),
+						FOOGALLERY_CPT_GALLERY . '_shortcode' => __( 'Shortcode', 'foogallery' ),
 			       );
 		}
 
@@ -53,7 +53,7 @@ if ( ! class_exists( 'FooGallery_Admin_Columns' ) ) {
 					$shortcode = $gallery->shortcode();
 
 					echo '<code id="foogallery-copy-shortcode" data-clipboard-text="' . esc_attr( $shortcode ) . '"
-					  title="' . esc_attr__('Click to copy to your clipboard', 'foogallery') . '"
+					  title="' . esc_attr__( 'Click to copy to your clipboard', 'foogallery' ) . '"
 					  class="foogallery-shortcode">' . $shortcode . '</code>';
 
 					$this->include_clipboard_script = true;
