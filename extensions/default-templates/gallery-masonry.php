@@ -13,9 +13,7 @@ $args = array(
 );
 $lightbox = foogallery_gallery_template_setting( 'lightbox', 'unknown' );
 
-if ( ! foo_check_wp_version_at_least( '3.9' ) ) { ?>
-
-<?php } ?>
+if ( ! foo_check_wp_version_at_least( '3.9' ) ) {} ?>
 <style>
 	#foogallery-gallery-<?php echo $current_foogallery->ID; ?> .item {
 		margin-bottom: <?php echo $gutter_width; ?>px;

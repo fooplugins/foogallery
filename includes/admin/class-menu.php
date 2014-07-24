@@ -46,15 +46,15 @@ if ( ! class_exists( 'FooGallery_Admin_Menu' ) ) {
 			add_submenu_page( $parent_slug, $menu_labels[1]['page_title'], $menu_labels[1]['menu_title'], $capability, 'foogallery-extensions', array( $this, 'foogallery_extensions' ) );
 			add_submenu_page( $parent_slug, $menu_labels[2]['page_title'], $menu_labels[2]['menu_title'], $capability, 'foogallery-help', array( $this, 'foogallery_help' ) );
 
-      		//allow extensions to add their own menu items afterwards
+			//allow extensions to add their own menu items afterwards
 			do_action( 'foogallery_admin_menu_after' );
 		}
 
 		function foogallery_settings() {
 			if ( isset($_GET['settings-updated']) ) { ?>
-	<div id="message" class="updated">
-		<p><strong><?php printf( __( '%s settings updated.', 'foogallery' ), foogallery_plugin_name() ); ?></strong></p>
-	</div>
+				<div id="message" class="updated">
+					<p><strong><?php printf( __( '%s settings updated.', 'foogallery' ), foogallery_plugin_name() ); ?></strong></p>
+				</div>
 			<?php }
 
 			$instance = FooGallery_Plugin::get_instance();

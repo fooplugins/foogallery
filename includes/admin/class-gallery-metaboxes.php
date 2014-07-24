@@ -108,7 +108,6 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 				//do nothing to all attachments that have stayed the same
 				//do this all in the gallery class
 
-
 				$attachments = apply_filters( 'foogallery_save_gallery_attachments', explode( ',', $_POST[FOOGALLERY_META_ATTACHMENTS] ) );
 				update_post_meta( $post_id, FOOGALLERY_META_ATTACHMENTS, $attachments );
 
@@ -148,7 +147,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 			}
 		}
 
-		function render_gallery_media_metabox($post) {
+		function render_gallery_media_metabox( $post ) {
 			$gallery = $this->get_gallery( $post );
 
 			wp_enqueue_media();
@@ -161,12 +160,12 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 				   value="<?php echo $gallery->attachment_id_csv(); ?>"/>
 			<div>
 				<ul class="foogallery-attachments-list">
-					<?php
-					if ( $gallery->has_attachments() ) {
-						foreach ( $gallery->attachments() as $attachment ) {
-							$this->render_gallery_item( $attachment );
-						}
-					} ?>
+				<?php
+				if ( $gallery->has_attachments() ) {
+					foreach ( $gallery->attachments() as $attachment ) {
+						$this->render_gallery_item( $attachment );
+					}
+				} ?>
 					<li class="add-attachment">
 						<a href="#" data-uploader-title="<?php _e( 'Add Media To Gallery', 'foogallery' ); ?>"
 						   data-uploader-button-text="<?php _e( 'Add Media', 'foogallery' ); ?>"
@@ -223,7 +222,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 			$gallery             = $this->get_gallery( $post );
 			$available_templates = foogallery_gallery_templates();
 			$gallery_template    = foogallery_default_gallery_template();
-			if ( !empty($gallery->gallery_template) ) {
+			if ( ! empty($gallery->gallery_template) ) {
 				$gallery_template = $gallery->gallery_template;
 			}
 			$hide_help = 'on' == foogallery_get_setting( 'hide_gallery_template_help' );

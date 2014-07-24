@@ -12,10 +12,10 @@ if ( ! class_exists( 'FooGalleryAttachment' ) ) {
 		 *
 		 * @param null $post
 		 */
-		public function __construct( $post = NULL ) {
+		public function __construct( $post = null ) {
 			$this->set_defaults();
 
-			if ( $post !== NULL ) {
+			if ( $post !== null ) {
 				$this->load( $post );
 			}
 		}
@@ -24,7 +24,7 @@ if ( ! class_exists( 'FooGalleryAttachment' ) ) {
 		 *  Sets the default when a new gallery is instantiated
 		 */
 		private function set_defaults() {
-			$this->_post = NULL;
+			$this->_post = null;
 			$this->ID = 0;
 			$this->title = '';
 			$this->caption = '';

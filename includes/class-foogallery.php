@@ -12,10 +12,10 @@ class FooGallery extends stdClass {
 	 *
 	 * @param null $post
 	 */
-	private function __construct( $post = NULL ) {
+	private function __construct( $post = null ) {
 		$this->set_defaults();
 
-		if ( $post !== NULL ) {
+		if ( $post !== null ) {
 			$this->load( $post );
 		}
 	}
@@ -24,7 +24,7 @@ class FooGallery extends stdClass {
 	 *  Sets the default when a new gallery is instantiated
 	 */
 	private function set_defaults() {
-		$this->_post = NULL;
+		$this->_post = null;
 		$this->ID = 0;
 		$this->attachment_ids = array();
 		$this->_attachments = false;
@@ -102,7 +102,9 @@ class FooGallery extends stdClass {
 	public static function get_by_id( $post_id ) {
 		$gallery = new self();
 		$gallery->load_by_id( $post_id );
-		if ( ! $gallery->does_exist() ) return false;
+		if ( ! $gallery->does_exist() ) {
+			return false;
+		}
 		return $gallery;
 	}
 
@@ -122,19 +124,19 @@ class FooGallery extends stdClass {
 		return $gallery;
 	}
 
-    function get_meta( $key, $default ) {
+	function get_meta( $key, $default ) {
 		if ( ! is_array( $this->settings ) ) {
 			return $default;
 		}
 
-		$value = array_key_exists( $key, $this->settings ) ? $this->settings[$key] : NULL;
+		$value = array_key_exists( $key, $this->settings ) ? $this->settings[ $key ] : null;
 
-		if ( $value === NULL ) {
+		if ( $value === null ) {
 			return $default;
 		}
 
 		return $value;
-    }
+	}
 
 	function is_checked( $key, $default = false ) {
 		if ( ! is_array( $this->settings ) ) {
@@ -142,7 +144,7 @@ class FooGallery extends stdClass {
 		}
 
 		return array_key_exists( $key, $this->settings );
-    }
+	}
 
 	/**
 	 * Checks if the gallery has attachments
@@ -257,7 +259,7 @@ class FooGallery extends stdClass {
 	 *
 	 * @return string HTML img element or empty string on failure.
 	 */
-	public function featured_image_html( $size='thumbnail', $icon = false ) {
+	public function featured_image_html( $size = 'thumbnail', $icon = false ) {
 		$attachment_id = $this->find_featured_attachment_id();
 		if ( $attachment_id && $thumb = @wp_get_attachment_image( $attachment_id, $size, $icon ) ) {
 			return $thumb;

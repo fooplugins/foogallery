@@ -9,7 +9,7 @@ if ( ! class_exists( 'FooGallery_Boilerplate_Zip_Generator' ) ) {
 		var $options = array();
 		var $slug = '';
 
-		function __construct($args = null) {
+		function __construct( $args = null ) {
 
 			$defaults = array(
 				'name'                 => '',

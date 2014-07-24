@@ -329,38 +329,37 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Editor' ) ) {
 				$img_src = $gallery->featured_image_src( array(200, 200) );
 				$images = $gallery->image_count();
 				?>
-	<li class="foogallery-pile">
-		<div class="foogallery-gallery-select attachment-preview landscape" data-foogallery-id="<?php echo $gallery->ID; ?>">
-			<div class="thumbnail" style="display: table;">
-				<div style="display: table-cell; vertical-align: middle; text-align: center;">
-					<img src="<?php echo $img_src; ?>" />
-					<?php
+				<li class="foogallery-pile">
+					<div class="foogallery-gallery-select attachment-preview landscape" data-foogallery-id="<?php echo $gallery->ID; ?>">
+						<div class="thumbnail" style="display: table;">
+							<div style="display: table-cell; vertical-align: middle; text-align: center;">
+								<img src="<?php echo $img_src; ?>" />
+								<?php
 
-					$title = empty( $gallery->name ) ?
-						sprintf( __( '%s #%s', 'foogallery' ), foogallery_plugin_name(), $gallery->ID ) :
-						$gallery->name;
+								$title = empty( $gallery->name ) ?
+									sprintf( __( '%s #%s', 'foogallery' ), foogallery_plugin_name(), $gallery->ID ) :
+									$gallery->name;
 
-					?>
-					<h3><?php echo $title; ?>
-						<span><?php echo $images; ?></span>
-						<code>[<?php echo foogallery_gallery_shortcode_tag(); ?> id="<?php echo $gallery->ID; ?>"]</code>
-					</h3>
-				</div>
-			</div>
-		</div>
-	</li>
-<?php		}
-			?>
-			<li class="foogallery-pile">
-				<div class="foogallery-gallery-select attachment-preview landscape foogallery-add-gallery">
-					<a href="<?php echo foogallery_admin_add_gallery_url(); ?>" target="_blank" class="thumbnail" style="display: table;">
-						<div style="display: table-cell; vertical-align: middle; text-align: center;">
-							<span></span>
-							<h3><?php _e('Add New Gallery', 'foogallery'); ?></h3>
+								?>
+								<h3><?php echo $title; ?>
+									<span><?php echo $images; ?></span>
+									<code>[<?php echo foogallery_gallery_shortcode_tag(); ?> id="<?php echo $gallery->ID; ?>"]</code>
+								</h3>
+							</div>
 						</div>
-					</a>
-				</div>
-			</li>
+					</div>
+				</li>
+				<?php } ?>
+				<li class="foogallery-pile">
+					<div class="foogallery-gallery-select attachment-preview landscape foogallery-add-gallery">
+						<a href="<?php echo foogallery_admin_add_gallery_url(); ?>" target="_blank" class="thumbnail" style="display: table;">
+							<div style="display: table-cell; vertical-align: middle; text-align: center;">
+								<span></span>
+								<h3><?php _e( 'Add New Gallery', 'foogallery' ); ?></h3>
+							</div>
+						</a>
+					</div>
+				</li>
 			<?php
 
 			return ob_get_clean();

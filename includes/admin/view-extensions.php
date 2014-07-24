@@ -1,11 +1,9 @@
 <?php
 $instance = FooGallery_Plugin::get_instance();
-$api = new FooGallery_Extensions_API();
+$api      = new FooGallery_Extensions_API();
 
 $extensions = $api->get_all();
-
 $has_errors = $api->has_extension_loading_errors();
-
 $categories = $api->get_all_categories();
 
 $show_message = safe_get_from_request( 'show_message' );
@@ -16,20 +14,19 @@ if ( 'yes' === $show_message ) {
 
 $tagline = apply_filters( 'foogallery_admin_extensions_tagline', sprintf( __( 'Extensions make %s even more awesome, without bloating the core plugin.', 'foogallery' ), foogallery_plugin_name() ) );
 $show_foobot = apply_filters( 'foogallery_admin_show_foobot', true );
-
 ?>
 <style>
 	.foogallery-badge-foobot {
 		position: absolute;
 		top: 5px;
 		right: 0;
-		background:url(<?php echo FOOGALLERY_URL; ?>assets/foobot_small.png) no-repeat;
-		width:82px;
-		height:150px;
+		background: url(<?php echo FOOGALLERY_URL; ?>assets/foobot_small.png) no-repeat;
+		width: 82px;
+		height: 150px;
 		z-index: 100;
 	}
 	.foogallery-text {
-		font-size:18px;
+		font-size: 18px;
 		margin: 10px 0;
 	}
 </style>
@@ -128,7 +125,7 @@ if ( $has_errors ) { ?>
 			<h3 class="search-me"><?php echo $extension['title'] . $tag_html; ?></h3>
 
 			<div class="extension-actions">
-				<?php if ( !empty( $download_button_html ) ) {
+				<?php if ( ! empty( $download_button_html ) ) {
 					echo $download_button_html;
 				} else { ?>
 				<a class="ext_action button button-primary download" data-confirm="<?php _e( 'Are you sure you want to download this extension?', 'foogallery' ); ?>" href="<?php echo $download_url; ?>"><?php _e( 'Download', 'foogallery' ); ?></a>

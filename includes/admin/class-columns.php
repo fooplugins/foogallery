@@ -37,7 +37,7 @@ if ( ! class_exists( 'FooGallery_Admin_Columns' ) ) {
 					array(
 						FOOGALLERY_CPT_GALLERY . '_count' => __( 'Media', 'foogallery' ),
 						FOOGALLERY_CPT_GALLERY . '_shortcode' => __( 'Shortcode', 'foogallery' ),
-			       );
+					);
 		}
 
 		function gallery_custom_column_content( $column ) {

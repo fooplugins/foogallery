@@ -75,7 +75,7 @@ if ( ! class_exists( 'FooGallery_Boilerplate_Download_Handler' ) ) {
 			die();
 		}
 
-		function process_zip_filename($filename) {
+		function process_zip_filename( $filename ) {
 			//replace slug
 			$new_filename = str_replace( 'EXTSLUG', $this->slug, $filename );
 			//rename to php

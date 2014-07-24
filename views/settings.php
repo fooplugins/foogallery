@@ -76,8 +76,8 @@ $plugin_slug = $settings_data['plugin_info']['slug'];
                 }
                 ?>
 		<p class="submit">
-			<input name="Submit" class="button-primary" type="submit" value="<?php _e('Save Changes', $plugin_slug); ?>" />
-                        <input name="<?php echo $plugin_slug; ?>[reset-defaults]" onclick="return confirm('<?php _e('Are you sure you want to restore all settings back to their default values?', $plugin_slug); ?>');" class="button-secondary" type="submit" value="<?php _e('Restore Defaults', $plugin_slug); ?>" />
+			<input name="Submit" class="button-primary" type="submit" value="<?php _e( 'Save Changes', $plugin_slug); ?>" />
+                        <input name="<?php echo $plugin_slug; ?>[reset-defaults]" onclick="return confirm('<?php _e( 'Are you sure you want to restore all settings back to their default values?', $plugin_slug); ?>');" class="button-secondary" type="submit" value="<?php _e( 'Restore Defaults', $plugin_slug); ?>" />
 		</p>
 	</form>
 </div>
