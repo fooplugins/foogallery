@@ -53,7 +53,7 @@ if ( ! class_exists( 'FooGallery_Admin' ) ) {
 		/**
 		 * @param $links
 		 *
-		 * @return array
+		 * @return string
 		 */
 		function plugin_listing_links( $links ) {
 			// Add a 'Settings' link to the plugin listing

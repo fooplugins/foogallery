@@ -93,8 +93,8 @@ if ( ! class_exists( 'FooGallery_Boilerplate_Zip_Generator' ) ) {
 
 		/**
 		 * Process the contents of an individual file
-		 * @param $contents
-		 * @param $filename
+		 * @param string $contents
+		 * @param string $filename
 		 *
 		 * @return string
 		 */

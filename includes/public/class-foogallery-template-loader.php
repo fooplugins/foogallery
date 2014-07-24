@@ -85,8 +85,8 @@ class FooGallery_Template_Loader {
 	/**
 	 * Add pickup locations to the loader to make it easier for extensions
 	 *
-	 * @param $loader			Foo_Plugin_File_Locator_v1
-	 * @param $extension_files	array
+	 * @param $loader Foo_Plugin_File_Locator_v1
+	 * @param $extension_files array
 	 */
 	function add_extension_pickup_locations( $loader, $extension_files ) {
 		if ( count( $extension_files ) > 0 ) {

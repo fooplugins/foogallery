@@ -62,6 +62,9 @@ function foogallery_permalink() {
 	return foogallery_get_setting( 'gallery_permalink' );
 }
 
+/**
+ * @param string $key
+ */
 function foogallery_get_setting( $key ) {
 	$foogallery = FooGallery_Plugin::get_instance();
 
@@ -204,8 +207,8 @@ function foogallery_build_admin_menu_url( $extra_args = array() ) {
  * Helper function for adding a foogallery sub menu
  *
  * @param $menu_title
- * @param $capability
- * @param $menu_slug
+ * @param string $capability
+ * @param string $menu_slug
  * @param $function
  */
 function foogallery_add_submenu_page( $menu_title, $capability, $menu_slug, $function ) {
