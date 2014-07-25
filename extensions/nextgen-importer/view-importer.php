@@ -124,8 +124,7 @@ if ( isset( $_POST['foogallery_nextgen_reset'] ) ) {
 	$galleries = $nextgen->get_galleries();
 	if ( ! $galleries ) {
 		_e( 'There are no NextGen galleries to import!', 'foogallery' );
-	} else {
-		?>
+	} else { ?>
 		<form id="nextgen_import_form" method="POST">
 			<?php $nextgen->render_import_form( $galleries ); ?>
 		</form>

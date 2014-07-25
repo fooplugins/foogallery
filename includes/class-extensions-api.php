@@ -586,7 +586,7 @@ if ( ! class_exists( 'FooGallery_Extensions_API' ) ) {
 				if ( 'process_failed' === $skin->feedback ) {
 					//we had an error along the way
 					return apply_filters( 'foogallery_extensions_download_failure-' . $slug, array(
-						'message' => sprintf( __('The extension %s could NOT be downloaded!', 'foogallery'), "<strong>{$extension['title']}</strong>" ),
+						'message' => sprintf( __( 'The extension %s could NOT be downloaded!', 'foogallery' ), "<strong>{$extension['title']}</strong>" ),
 						'type' => 'error'
 					) );
 				}
@@ -597,7 +597,7 @@ if ( ! class_exists( 'FooGallery_Extensions_API' ) ) {
 						"<strong>{$extension['title']}</strong>",
 						'<a href="' . add_query_arg( array(
 								'action' => 'activate',
-								'extension' => $slug, ) ) . '">' . __('Activate immediately', 'foogallery') . '</a>'
+								'extension' => $slug, ) ) . '">' . __( 'Activate immediately', 'foogallery' ) . '</a>'
 					),
 					'type' => 'success',
 				) );

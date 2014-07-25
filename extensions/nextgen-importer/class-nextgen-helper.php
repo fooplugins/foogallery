@@ -268,8 +268,7 @@ where gid = %d", $id ) );
 					<td>
 					<?php if ( $progress->foogallery_id > 0 ) {
 						echo $edit_link;
-					} else {
-						?>
+					} else { ?>
 						<input name="foogallery-name-<?php echo $gallery->gid; ?>" value="<?php echo $gallery->title; ?>">
 					<?php } ?>
 					</td>

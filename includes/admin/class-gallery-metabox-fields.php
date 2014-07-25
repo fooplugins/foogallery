@@ -141,10 +141,10 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Fields' ) ) {
 					break;
 
 				case 'thumb_size':
-					$width = is_array($field['value']) ? $field['value']['width'] : 150;
-					$height = is_array($field['value']) ? $field['value']['height'] : 150;
-					$crop = is_array($field['value']) && array_key_exists('crop', $field['value']) ? $field['value']['crop'] : 0;
-					$crop_checked = ($crop == 1) ? ' checked="checked"' : '';
+					$width = is_array( $field['value'] ) ? $field['value']['width'] : 150;
+					$height = is_array( $field['value'] ) ? $field['value']['height'] : 150;
+					$crop = is_array( $field['value'] ) && array_key_exists( 'crop', $field['value'] ) ? $field['value']['crop'] : 0;
+					$crop_checked = ( $crop == 1 ) ? ' checked="checked"' : '';
 					echo '<label for="FooGallerySettings_' . $id . '_width">' . __( 'Width', 'foogallery' ) . '</label>';
 					echo '<input class="small-text" type="number" step="1" min="0" id="FooGallerySettings_' . $id . '_width" name="' . FOOGALLERY_META_SETTINGS . '[' . $id . '][width]" value="' . esc_attr( $width ) . '" />';
 					echo '<label for="FooGallerySettings_' . $id . '_width">' . __( 'Height', 'foogallery' ) . '</label>';
@@ -201,7 +201,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Fields' ) ) {
 									'action' => 'download',
 								));
 								$foobox_install_html = '<a target="_blank" href="' . $foobox_install_link . '">' . __( 'Download and activate FooBox FREE', 'foogallery' ) . '</a>';
-								$field['desc'] .= sprintf ( __( '%s which works flawlessly with %s.', 'foogallery' ), $foobox_install_html, foogallery_plugin_name() );
+								$field['desc'] .= sprintf( __( '%s which works flawlessly with %s.', 'foogallery' ), $foobox_install_html, foogallery_plugin_name() );
 							}
 						} else {
 							$field['type'] = 'select';
@@ -222,10 +222,10 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Fields' ) ) {
 			$sizes = array();
 			foreach( get_intermediate_image_sizes() as $s ){
 				$sizes[ $s ] = array( 0, 0 );
-				if( in_array( $s, array( 'thumbnail', 'medium', 'large' ) ) ){
+				if ( in_array( $s, array( 'thumbnail', 'medium', 'large', ) ) ){
 					$sizes[ $s ] = $s . ' (' . get_option( $s . '_size_w' ) . 'x' . get_option( $s . '_size_h' ) . ')';
-				}else{
-					if( isset( $_wp_additional_image_sizes ) && isset( $_wp_additional_image_sizes[ $s ] ) )
+				} else {
+					if ( isset( $_wp_additional_image_sizes ) && isset( $_wp_additional_image_sizes[ $s ] ) )
 						$sizes[ $s ] = $s . ' (' . $_wp_additional_image_sizes[ $s ]['width'] . 'x' . $_wp_additional_image_sizes[ $s ]['height'] . ')';
 				}
 			}
@@ -234,9 +234,9 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Fields' ) ) {
 
 		function get_thumb_link_field_choices() {
 			return apply_filters( 'foogallery_gallery_template_field_thumb_links', array(
-				'image' => __( 'Full Size Image', 'foogallery'),
-				'page'  => __( 'Image Attachment Page', 'foogallery'),
-				'none'  => __( 'Not linked', 'foogallery'),
+				'image' => __( 'Full Size Image', 'foogallery' ),
+				'page'  => __( 'Image Attachment Page', 'foogallery' ),
+				'none'  => __( 'Not linked', 'foogallery' ),
 			) );
 		}
 

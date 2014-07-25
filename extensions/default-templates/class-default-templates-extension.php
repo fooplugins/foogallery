@@ -280,8 +280,8 @@ if ( ! class_exists( 'FooGallery_Default_Templates_Extension' ) ) {
 				//override the link so that it does not actually open an image
 				$args['link'] = 'custom';
 
-				$hover_effect =  $gallery->get_meta( 'default_hover-effect', 'hover-effect-zoom' );
-				$border_style =  $gallery->get_meta( 'default_border-style', 'border-style-square-white' );
+				$hover_effect = $gallery->get_meta( 'default_hover-effect', 'hover-effect-zoom' );
+				$border_style = $gallery->get_meta( 'default_border-style', 'border-style-square-white' );
 
 				$featured = $gallery->featured_attachment();
 
