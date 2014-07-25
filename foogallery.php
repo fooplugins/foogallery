@@ -2,8 +2,7 @@
 /**
  * FooGallery
  *
- * The goal of FooGallery is simple : To provide an easy-to-use and intuitive image gallery management solution.
- * Also, the plugin must utilize as much WordPress core functionality as possible!
+ * The Most Intuitive and Extensible Gallery Creation and Management Tool Ever Created for WordPress.
  *
  * @package   FooGallery
  * @author    Brad Vincent <brad@fooplugins.com>
