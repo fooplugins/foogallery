@@ -130,5 +130,4 @@ if ( ! class_exists( 'FooGallery_NextGen_Import_Progress' ) ) {
 			}
 		}
 	}
-
 }
