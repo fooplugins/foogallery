@@ -9,7 +9,6 @@ require_once( FOOGALLERY_PATH . 'includes/class-foogallery-attachment.php' );
 require_once( FOOGALLERY_PATH . 'includes/class-thumbnails.php' );
 require_once( FOOGALLERY_PATH . 'includes/class-extensions-api.php' );
 require_once( FOOGALLERY_PATH . 'includes/class-extensions-loader.php' );
-require_once( FOOGALLERY_PATH . 'includes/class-extension-template-base.php' );
 require_once( FOOGALLERY_PATH . 'includes/class-attachment-filters.php' );
 
 //check for WPThumb, include.
