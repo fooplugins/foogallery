@@ -15,6 +15,10 @@
 			return node && /foogallery-tinymce-view/.test( node.className );
 		}
 
+		function unselectFooGallery( dom ) {
+			dom.removeClass(dom.select('div.foogallery-tinymce-selected'), 'foogallery-tinymce-selected');
+		}
+
 		editor.on( 'BeforeSetContent', function( event ) {
 			if ( ! event.content ) {
 				return;
@@ -82,7 +86,6 @@
 							}
 							if (galleryImg && galleryImg.length) {
 								jQuery(galleryImg[0]).replaceWith('<img src="' + data.src + '" />');
-								//jQuery(galleryImg[0]).css('background', 'url("' + data.src + '") no-repeat');
 							}
 						}
 					});
@@ -123,9 +126,7 @@
 			// Don't trigger on right-click
 			if ( event.button !== 2 ) {
 
-				function unselect() {
-					dom.removeClass(dom.select('div.foogallery-tinymce-selected'), 'foogallery-tinymce-selected');
-				}
+
 
 				if (fg) {
 					//we have clicked somewhere in the foogallery element
@@ -138,13 +139,13 @@
 					} else {
 
 						if (!dom.hasClass(fg, 'foogallery-tinymce-selected')) {
-							unselect();
+							unselectFooGallery(dom);
 							dom.addClass(fg, 'foogallery-tinymce-selected');
 						}
 
 					}
 				} else {
-					unselect();
+					unselectFooGallery(dom);
 				}
 			}
 		});
