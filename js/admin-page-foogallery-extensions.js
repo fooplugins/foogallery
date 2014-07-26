@@ -1,5 +1,5 @@
 (function(FOOGALLERY, $, undefined) {
-	FOOGALLERY.extension_search_timer;
+	FOOGALLERY.extension_search_timer = false;
 	FOOGALLERY.extension_search_timer_delay = 300; // 0.6 seconds delay after last input
 
 	//hook up clicking the tag links above the extensions

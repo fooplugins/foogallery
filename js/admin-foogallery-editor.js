@@ -83,7 +83,7 @@
 	FOOGALLERY.clearSelection = function() {
 		$('.foogallery-gallery-select').removeClass('selected');
 		FOOGALLERY.changeSelection();
-	}
+	};
 
 	$(function() { //wait for ready
 		FOOGALLERY.bindEditorButton();
