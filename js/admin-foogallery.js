@@ -2,11 +2,11 @@
 
     FOOGALLERY.media_uploader = false;
     FOOGALLERY.previous_post_id = 0;
-    FOOGALLERY.attachments = new Array();
+    FOOGALLERY.attachments = [];
     FOOGALLERY.selected_attachment_id = 0;
 
     FOOGALLERY.calculateAttachmentIds = function() {
-        var sorted = new Array();
+        var sorted = [];
         $('.foogallery-attachments-list li:not(.add-attachment)').each(function() {
             sorted.push( $(this).data('attachment-id') );
         });
