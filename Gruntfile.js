@@ -18,7 +18,7 @@ module.exports = function(grunt) {
 		build: {
 			files: [{
 				expand: true,     // Enable dynamic expansion.
-				src: ['js/*.js', '!js/*.min.js' ], // Actual pattern(s) to match.
+				src: ['extensions/default-templates/js/*.js', '!extensions/default-templates/js/*.min.js' ], // Actual pattern(s) to match.
 				ext: '.min.js',   // Dest filepaths will have this extension.
 			}]
 		}
@@ -84,20 +84,6 @@ module.exports = function(grunt) {
 			],
 			dest: 'dist/foogallery/'
 		},
-
-		beta: {
-			src:  [
-				'**',
-				'!dist/**', //build directory
-				'!.git/**','!.gitignore','!.gitmodules', //git
-				'!node_modules/**','!Gruntfile.js','!package.json', //grunt
-				'!vendor/**',
-				'!*~',
-				'!CONTRIBUTING.md'
-			],
-			dest: process.env.EO_BETA_PLUGIN_DIR + '/<%= pkg.name %>/'
-		}
-
 	},
 
 	wp_readme_to_markdown: {
@@ -106,17 +92,6 @@ module.exports = function(grunt) {
 				'readme.md': 'readme.txt'
 			},
 		},
-	},
-
-	phpunit: {
-		classes: {
-			dir: 'tests/unit-tests'
-		},
-		options: {
-			bin: 'vendor/bin/phpunit',
-			bootstrap: 'tests/bootstrap.php',
-			colors: true
-		}
 	},
 
     checkrepo: {
@@ -215,9 +190,9 @@ module.exports = function(grunt) {
 
 });
 
-grunt.registerTask( 'test', [ 'phpunit', 'jshint' ] );
+grunt.registerTask( 'test', [ 'jshint' ] );
 
-grunt.registerTask( 'build', [ 'test', 'newer:uglify', 'pot', 'newer:po2mo', 'wp_readme_to_markdown', 'clean', 'copy' ] );
+grunt.registerTask( 'build', [ 'test', 'pot', 'newer:po2mo', 'wp_readme_to_markdown', 'clean', 'copy' ] );
 
 grunt.registerTask( 'deploy', [ 'checkbranch:master', 'checkrepo:deploy', 'build', 'wp_deploy',  'compress' ] );
 
