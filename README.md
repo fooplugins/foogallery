@@ -1,4 +1,4 @@
-=== FooGallery ===
+# FooGallery #
 **Contributors:** bradvin, fooplugins  
 **Donate link:** http://fooplugins.com  
 **Tags:** images,gallery,album,nextgen,photos,pictures,media,attachments  
@@ -10,7 +10,7 @@
 
 The Most Intuitive and Extensible Gallery Creation and Management Tool Ever Created for WordPress.
 
-== Description ==
+## Description ##
 
 Built to be simple for users and highly flexible for developers. Our #1 goal with FooGallery was to utilize as much of the core image and gallery handling functionality that is already built into WordPress as possible. The result is an intuitive gallery creation and management experience with the added benefit of the powerful features that FooGalley includes.
 
@@ -63,31 +63,39 @@ Contribute:
 FooGallery is hosted on [GitHub](https://github.com/fooplugins/foogallery). If you find an bug, please [create an issue](https://github.com/fooplugins/foogallery/issues).
 
 
-== Installation ==
+## Installation ##
 
 1. Upload `foogallery` folder to the `/wp-content/plugins/` directory
 2. Activate the plugin through the 'Plugins' menu in WordPress
 3. You will be redirected to the FooGallery Help page to get your started
 
-== Frequently Asked Questions ==
+## Frequently Asked Questions ##
 
-= Can I build an extension? =
+### Can I build an extension? ###
 
 Hell, yes! Check out our [developer page](http://foo.gallery/developers/)
 
-== Screenshots ==
+## Screenshots ##
 
-1. Gallery Edit Page
-2. Visual Shortcodes
-3. Gallery Picker
-4. Frontend example with default template
+### 1. Gallery Edit Page ###
+![Gallery Edit Page](http://s.wordpress.org/extend/plugins/foogallery/screenshot-1.png)
 
-== Changelog ==
+### 2. Visual Shortcodes ###
+![Visual Shortcodes](http://s.wordpress.org/extend/plugins/foogallery/screenshot-2.png)
 
-= 1.1.8 =
+### 3. Gallery Picker ###
+![Gallery Picker](http://s.wordpress.org/extend/plugins/foogallery/screenshot-3.png)
+
+### 4. Frontend example with default template ###
+![Frontend example with default template](http://s.wordpress.org/extend/plugins/foogallery/screenshot-4.png)
+
+
+## Changelog ##
+
+### 1.1.8 ###
 * Added 2 new gallery templates
 * Added 10+ actions and filters for more customization
 * Countless bug fixes and enhancements
 
-= 1.1.7 =
+### 1.1.7 ###
 * first version!
