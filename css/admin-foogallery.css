@@ -157,6 +157,9 @@
 .foogallery_metabox_field-thumb_size input[type="number"] {
 	margin-right: 10px;
 }
+#foogallery_pages ul.ul-disc span.editview {display: none;}
+#foogallery_pages ul.ul-disc li:hover span.editview {display: inline-block;}
+#foogallery_pages ul.ul-disc li span.edit a {color: red;}
 
 .foogallery-shortcode {
 	text-align: center;
