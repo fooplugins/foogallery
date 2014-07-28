@@ -332,7 +332,10 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 				</p>
 				<ul class="ul-disc">
 				<?php foreach ( $posts as $post ) {
-					edit_post_link( $post->post_title, '<li>', '</li>', $post->ID );
+					$url = get_permalink( $post->ID);
+					echo '<li>' . $post->post_title . '<br /><span class="editview">';
+					edit_post_link( 'Edit', '<span class="edit">', '</span> | ', $post->ID );
+					echo '<a href="' . $url . '" target="_blank">View</a></span></li>';
 				} ?>
 				</ul>
 			<?php } else { ?>
