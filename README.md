@@ -78,16 +78,16 @@ Hell, yes! Check out our [developer page](http://foo.gallery/developers/)
 ## Screenshots ##
 
 ### 1. Gallery Edit Page ###
-![Gallery Edit Page](http://s.wordpress.org/extend/plugins/foogallery/screenshot-1.png)
+![Gallery Edit Page](http://ps.w.org/foogallery/assets/screenshot-1.jpg)
 
 ### 2. Visual Shortcodes ###
-![Visual Shortcodes](http://s.wordpress.org/extend/plugins/foogallery/screenshot-2.png)
+![Visual Shortcodes](http://ps.w.org/foogallery/assets/screenshot-2.jpg)
 
 ### 3. Gallery Picker ###
-![Gallery Picker](http://s.wordpress.org/extend/plugins/foogallery/screenshot-3.png)
+![Gallery Picker](http://ps.w.org/foogallery/assets/screenshot-3.jpg)
 
 ### 4. Frontend example with default template ###
-![Frontend example with default template](http://s.wordpress.org/extend/plugins/foogallery/screenshot-4.png)
+![Frontend example with default template](http://ps.w.org/foogallery/assets/screenshot-4.jpg)
 
 
 ## Changelog ##
