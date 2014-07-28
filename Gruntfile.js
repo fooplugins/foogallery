@@ -93,6 +93,14 @@ module.exports = function (grunt) {
 				files: {
 					'readme.md': 'readme.txt'
 				}
+			},
+			options : {
+				banner: 'https://s3.amazonaws.com/foogallery/banner-772x250.jpg',
+				screenshots: {
+					enabled: true,
+					prefix: 'https://s3.amazonaws.com/foogallery/screenshot-',
+					suffix: '.jpg'
+				}
 			}
 		},
 
@@ -191,6 +199,8 @@ module.exports = function (grunt) {
 		}
 
 	});
+	
+	grunt.registerTask('readme', [ 'wp_readme_to_markdown' ]);
 
 	grunt.registerTask('test', [ 'jshint' ]);
 
