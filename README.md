@@ -1,3 +1,5 @@
++![Plugin Banner](https://s3.amazonaws.com/foogallery/banner-772x250.jpg)
+
 # FooGallery #
 **Contributors:** bradvin, fooplugins  
 **Donate link:** http://fooplugins.com  
@@ -60,8 +62,7 @@ Documentation:
 
 Contribute:
 
-FooGallery is hosted on [GitHub](https://github.com/fooplugins/foogallery). If you find an bug, please [create an issue](https://github.com/fooplugins/foogallery/issues).
-
+FooGallery is hosted on [GitHub](https://github.com/fooplugins/foogallery). If you find a bug, please [create an issue](https://github.com/fooplugins/foogallery/issues).
 
 ## Installation ##
 
@@ -78,16 +79,16 @@ Hell, yes! Check out our [developer page](http://foo.gallery/developers/)
 ## Screenshots ##
 
 ### 1. Gallery Edit Page ###
-![Gallery Edit Page](http://ps.w.org/foogallery/assets/screenshot-1.jpg)
+![Gallery Edit Page](https://s3.amazonaws.com/foogallery/screenshot-1.jpg)
 
 ### 2. Visual Shortcodes ###
-![Visual Shortcodes](http://ps.w.org/foogallery/assets/screenshot-2.jpg)
+![Visual Shortcodes](https://s3.amazonaws.com/foogallery/screenshot-2.jpg)
 
 ### 3. Gallery Picker ###
-![Gallery Picker](http://ps.w.org/foogallery/assets/screenshot-3.jpg)
+![Gallery Picker](https://s3.amazonaws.com/foogallery/screenshot-3.jpg)
 
 ### 4. Frontend example with default template ###
-![Frontend example with default template](http://ps.w.org/foogallery/assets/screenshot-4.jpg)
+![Frontend example with default template](https://s3.amazonaws.com/foogallery/screenshot-4.jpg)
 
 
 ## Changelog ##
