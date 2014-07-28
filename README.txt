@@ -60,8 +60,7 @@ Documentation:
 
 Contribute:
 
-FooGallery is hosted on [GitHub](https://github.com/fooplugins/foogallery). If you find an bug, please [create an issue](https://github.com/fooplugins/foogallery/issues).
-
+FooGallery is hosted on [GitHub](https://github.com/fooplugins/foogallery). If you find a bug, please [create an issue](https://github.com/fooplugins/foogallery/issues).
 
 == Installation ==
 
