@@ -1,5 +1,6 @@
-+![Plugin Banner](https://s3.amazonaws.com/foogallery/banner-772x250.jpg)
+![Plugin Banner](https://s3.amazonaws.com/foogallery/banner-772x250.jpg)
 
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/fooplugins/foogallery/badges/quality-score.png?b=develop)](https://scrutinizer-ci.com/g/fooplugins/foogallery/?branch=develop)
 # FooGallery #
 **Contributors:** bradvin, fooplugins  
 **Donate link:** http://fooplugins.com  
