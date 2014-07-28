@@ -96,6 +96,7 @@ module.exports = function (grunt) {
 			},
 			options : {
 				banner: 'https://s3.amazonaws.com/foogallery/banner-772x250.jpg',
+				afterBannerMarkdown: '[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/fooplugins/foogallery/badges/quality-score.png?b=develop)](https://scrutinizer-ci.com/g/fooplugins/foogallery/?branch=develop)',
 				screenshots: {
 					enabled: true,
 					prefix: 'https://s3.amazonaws.com/foogallery/screenshot-',
