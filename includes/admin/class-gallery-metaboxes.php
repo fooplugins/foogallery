@@ -360,6 +360,10 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 				//zeroclipboard needed for copy to clipboard functionality
 				$url = FOOGALLERY_URL . 'lib/zeroclipboard/ZeroClipboard.min.js';
 				wp_enqueue_script( 'foogallery-zeroclipboard', $url, array('jquery'), FOOGALLERY_VERSION );
+				
+				//minicolors needed for the colorpicker field
+				$url = FOOGALLERY_URL . 'js/admin-minicolors.js';
+				wp_enqueue_script( 'foogallery-minicolors', $url, array('jquery'), FOOGALLERY_VERSION );
 
 				//include any admin js required for the templates
 				foreach ( foogallery_gallery_templates() as $template ) {
