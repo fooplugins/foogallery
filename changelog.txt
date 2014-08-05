@@ -1,9 +1,0 @@
-FooGallery Changelog
-====================
-
-> Last updated 30 Mar 2014
-
-2014.03.30 - version 1.0.1
---------------------------
-* Upgraded to latest Foo_Plugin_Base
-* Using dashicon for add images tile
