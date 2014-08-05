@@ -12,7 +12,7 @@ $args['image_attributes'] = array(
 );
 $lightbox = foogallery_gallery_template_setting( 'lightbox', 'unknown' );
 ?>
-<div id="foogallery-gallery-<?php echo $current_foogallery->ID; ?>" class="<?php echo foogallery_build_class_attribute( $current_foogallery, 'foogallery-lightbox-' . $lightbox, 'brickfolio' ); ?>">
+<div class="<?php echo foogallery_build_class_attribute( $current_foogallery, 'foogallery-lightbox-' . $lightbox, 'brickfolio' ); ?>">
 <?php
 foreach ( $current_foogallery->attachments() as $attachment ) {
 	echo '<div class="bf-item" style="width:' . $args['width'] . 'px">';
