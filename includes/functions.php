@@ -227,18 +227,22 @@ function foogallery_add_submenu_page( $menu_title, $capability, $menu_slug, $fun
  *
  * @return FooGallery[] array of FooGallery galleries
  */
-function foogallery_get_all_galleries() {
-	$gallery_posts = get_posts(
-		array(
-			'post_type'     => FOOGALLERY_CPT_GALLERY,
-			'post_status'	=> 'any',
-			'cache_results' => false,
-			'nopaging'      => true,
-		)
+function foogallery_get_all_galleries( $excludes = false ) {
+	$args = array(
+		'post_type'     => FOOGALLERY_CPT_GALLERY,
+		'post_status'	=> 'any',
+		'cache_results' => false,
+		'nopaging'      => true,
 	);
 
+	if ( is_array( $excludes ) ) {
+		$args['post__not_in'] = $excludes;
+	}
+
+	$gallery_posts = get_posts( $args );
+
 	if ( empty( $gallery_posts ) ) {
-		return false;
+		return array();
 	}
 
 	$galleries = array();
