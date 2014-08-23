@@ -6,6 +6,7 @@
 if ( ! class_exists( 'FooGallery_Extensions_API' ) ) {
 
 	define( 'FOOGALLERY_EXTENSIONS_ENDPOINT', 'https://raw.githubusercontent.com/fooplugins/foogallery-extensions/master/extensions.json' );
+	define( 'FOOGALLERY_EXTENSIONS_FUTURE_ENDPOINT', 'https://raw.githubusercontent.com/fooplugins/foogallery-extensions/future/extensions.json' );
 	//define( 'FOOGALLERY_EXTENSIONS_ENDPOINT', FOOGALLERY_URL . 'extensions/extensions.json.js' );
 	define( 'FOOGALLERY_EXTENSIONS_LOADING_ERRORS', 'foogallery_extensions_loading_errors' );
 	define( 'FOOGALLERY_EXTENSIONS_AVAILABLE_TRANSIENT_KEY', 'foogallery_extensions_available' );
@@ -42,7 +43,19 @@ if ( ! class_exists( 'FooGallery_Extensions_API' ) ) {
 		}
 
 		/**
-		 * @TODO
+		 * Get back the extension endpoint based on a setting
+		 */
+		private function get_extensions_endpoint() {
+			if ( 'on' === foogallery_get_setting( 'use_future_endpoint' ) ) {
+				$extension_url = FOOGALLERY_EXTENSIONS_FUTURE_ENDPOINT;
+			} else {
+				$extension_url = FOOGALLERY_EXTENSIONS_ENDPOINT;
+			}
+			return apply_filters('foogallery_extension_api_endpoint', $extension_url );
+		}
+
+		/**
+		 * Load all available extensions from the public endpoint and store in a transient for later use
 		 */
 		private function load_available_extensions() {
 			if ( false === ( $this->extensions = get_transient( FOOGALLERY_EXTENSIONS_AVAILABLE_TRANSIENT_KEY ) ) ) {
@@ -52,7 +65,7 @@ if ( ! class_exists( 'FooGallery_Extensions_API' ) ) {
 				$this->extensions = null;
 				$expires = 60 * 60 * 24; //1 day
 
-				$extension_url = apply_filters('foogallery_extension_api_endpoint', FOOGALLERY_EXTENSIONS_ENDPOINT );
+				$extension_url = $this->get_extensions_endpoint();
 
 				//fetch the data from our public list of extensions hosted on github
 				$response = wp_remote_get( $extension_url );

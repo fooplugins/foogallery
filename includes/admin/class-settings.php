@@ -39,8 +39,22 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 				'type'    => 'checkbox',
 				'tab'     => 'general',
 			);
-
 			//endregion General
+
+	        //region Extensions Tab
+	        $tabs['extensions'] = __( 'Extensions', 'foogallery' );
+
+			$extensions_url = '<br />' . __('The default URL is ', 'foogallery') . '<code>' . FOOGALLERY_EXTENSIONS_ENDPOINT . '</code>';
+
+	        $settings[] = array(
+		        'id'      => 'use_future_endpoint',
+		        'title'   => __( 'Use Beta Endpoint', 'foogallery' ),
+		        'desc'    => __( 'The list of available extensions are pulled from an external URL. You can also pull from a "beta" endpoint which will sometimes contain beta extensions that are not publicly available.', 'foogallery' ),
+		        'type'    => 'checkbox',
+		        'tab'     => 'extensions',
+	        );
+
+	        //endregion Advanced
 
 //	        //region Advanced Tab
 //	        $tabs['advanced'] = __( 'Advanced', 'foogallery' );
