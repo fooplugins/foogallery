@@ -2,20 +2,20 @@
 
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/fooplugins/foogallery/badges/quality-score.png?b=develop)](https://scrutinizer-ci.com/g/fooplugins/foogallery/?branch=develop)
 # FooGallery #
-**Contributors:** bradvin, fooplugins  
-**Donate link:** http://fooplugins.com  
-**Tags:** images,gallery,album,nextgen,photos,pictures,media,attachments  
-**Requires at least:** 3.9  
-**Tested up to:** 3.9.1  
-**Stable tag:** trunk  
-**License:** GPLv2 or later  
-**License URI:** http://www.gnu.org/licenses/gpl-2.0.html  
+**Contributors:** bradvin, fooplugins
+**Donate link:** http://fooplugins.com
+**Tags:** images,gallery,album,nextgen,photos,pictures,media,attachments
+**Requires at least:** 3.9
+**Tested up to:** 3.9.1
+**Stable tag:** trunk
+**License:** GPLv2 or later
+**License URI:** http://www.gnu.org/licenses/gpl-2.0.html
 
 The Most Intuitive and Extensible Gallery Creation and Management Tool Ever Created for WordPress.
 
 ## Description ##
 
-Built to be simple for users and highly flexible for developers. Our #1 goal with FooGallery was to utilize as much of the core image and gallery handling functionality that is already built into WordPress as possible. The result is an intuitive gallery creation and management experience with the added benefit of the powerful features that FooGalley includes.
+Built to be simple for users and highly flexible for developers. Our #1 goal with FooGallery was to utilize as much of the core image and gallery handling functionality that is already built into WordPress as possible. The result is an intuitive gallery creation and management experience with the added benefit of the powerful features that FooGallery includes.
 
 [View the FooGallery Homepage](http://foo.gallery/)
 
@@ -48,8 +48,12 @@ Extensions:
 
 *	Default Gallery Templates (bundled)
 *	NextGen Gallery Importer (bundled)
+*	[Custom Branding](http://fooplugins.com/plugins/foogallery-branding/?utm_source=foogalleryplugin&utm_medium=foogallerylink&utm_campaign=foogallery_wprepo)
 *	[FooBox PRO Lightbox](http://fooplugins.com/plugins/foobox/?utm_source=foogalleryplugin&utm_medium=foogallerylink&utm_campaign=foogallery_wprepo)
 *	[FooBox FREE Lightbox](http://wordpress.org/plugins/foobox-image-lightbox)
+*	[Owl Carousel Template](http://wordpress.org/plugins/foogallery-owl-carousel-template/)
+*	[ZOOM Template](http://wordpress.org/plugins/foogallery-zoom-template/)
+*	[Thirsty Affiliates](http://wordpress.org/plugins/thirstyaffiliates-for-foogallery-extension/)
 *	[Polaroid Template](https://github.com/fooplugins/foogallery-polaroid-template)
 *	[Use Media Menu](https://github.com/fooplugins/foogallery-media-menu)
 *	Albums (coming soon)
