@@ -1,35 +1,39 @@
 <?php
 if ( ! class_exists( 'FooGallery_Albums_Extension' ) ) {
 
-	define( 'FOOGALLERY_TAX_ALBUM', 'foogallery-album' );
+	define( 'FOOGALLERY_ALBUM_PATH', plugin_dir_path( __FILE__ ) );
+	define( 'FOOGALLERY_ALBUM_URL', plugin_dir_url( __FILE__ ) );
+	define( 'FOOGALLERY_CPT_ALBUM', 'foogallery-album' );
+	define( 'FOOGALLERY_ALBUM_META_GALLERIES', 'foogallery_album_galleries' );
 
 	class FooGallery_Albums_Extension {
 
-		function setup_album_posttypes() {
-			$labels = array(
-				'name'              => __( 'Albums', 'foogallery' ),
-				'singular_name'     => __( 'Album', 'foogallery' ),
-				'search_items'      => __( 'Search Albums', 'foogallery' ),
-				'all_items'         => __( 'All Albums', 'foogallery' ),
-				'parent_item'       => __( 'Parent Album', 'foogallery' ),
-				'parent_item_colon' => __( 'Parent Album:', 'foogallery' ),
-				'edit_item'         => __( 'Edit Album', 'foogallery' ),
-				'update_item'       => __( 'Update Album', 'foogallery' ),
-				'add_new_item'      => __( 'Add New Album', 'foogallery' ),
-				'new_item_name'     => __( 'New Album Name', 'foogallery' ),
-				'menu_name'         => __( 'Albums', 'foogallery' ),
-			);
+		function __construct() {
+			$this->includes();
 
-			$args = array(
-				'hierarchical'      => true,
-				'labels'            => $labels,
-				'show_ui'           => true,
-				'show_admin_column' => true,
-				'query_var'         => true,
-				'rewrite'           => array( 'slug' => 'album', ),
-			);
-
-			register_taxonomy( FOOGALLERY_TAX_ALBUM, array( FOOGALLERY_CPT_GALLERY ), $args );
+			new FooGallery_Albums_PostTypes();
+			if ( is_admin() ) {
+				new FooGallery_Albums_Admin_Columns();
+				new FooGallery_Admin_Album_MetaBoxes();
+			}
 		}
+
+		function includes() {
+			require_once( FOOGALLERY_ALBUM_PATH . 'functions.php' );
+			require_once( FOOGALLERY_ALBUM_PATH . 'class-posttypes.php' );
+			require_once( FOOGALLERY_ALBUM_PATH . 'class-foogallery-album.php' );
+
+			if ( is_admin() ) {
+				//only admin
+				require_once( FOOGALLERY_ALBUM_PATH . 'admin/class-metaboxes.php' );
+				require_once( FOOGALLERY_ALBUM_PATH . 'admin/class-columns.php' );
+			} else {
+				//only front-end
+				//require_once( FOOGALLERY_ALBUM_PATH . 'public/class-shortcodes.php' );
+				//load Template \ Loader files
+				//require_once( FOOGALLERY_ALBUM_PATH . 'public/class-foogallery-template-loader.php' );
+			}
+		}
+
 	}
 }

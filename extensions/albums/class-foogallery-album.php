@@ -1,0 +1,177 @@
+<?php
+
+/**
+ * Class FooGalleryAlbum
+ *
+ * An easy to use wrapper class for a FooGallery Album post
+ */
+class FooGalleryAlbum extends stdClass {
+
+	/**
+	 * private constructor
+	 *
+	 * @param null $post
+	 */
+	private function __construct( $post = null ) {
+		$this->set_defaults();
+
+		if ( $post !== null ) {
+			$this->load( $post );
+		}
+	}
+
+	/**
+	 *  Sets the default when a new album is instantiated
+	 */
+	private function set_defaults() {
+		$this->_post = null;
+		$this->ID = 0;
+		$this->gallery_ids = array();
+		$this->_galleries = false;
+	}
+
+	/**
+	 * private gallery load function
+	 * @param $post
+	 */
+	private function load( $post ) {
+		$this->_post = $post;
+		$this->ID = $post->ID;
+		$this->slug = $post->post_name;
+		$this->name = $post->post_title;
+		$this->author = $post->post_author;
+		$this->post_status = $post->post_status;
+		$gallery_meta = get_post_meta( $this->ID, FOOGALLERY_ALBUM_META_GALLERIES, true );
+		$this->gallery_ids = is_array( $gallery_meta ) ? array_filter( $gallery_meta ) : array();
+		do_action( 'foogallery_foogallery-album_instance_after_load', $this, $post );
+	}
+
+	/**
+	 * private function to load a album by an id
+	 * @param $post_id
+	 */
+	private function load_by_id( $post_id ) {
+		$post = get_post( $post_id );
+		if ( $post ) {
+			$this->load( $post );
+		}
+	}
+
+	/**
+	 * Static function to load a Album instance by passing in a post object
+	 * @static
+	 *
+	 * @param $post
+	 *
+	 * @return FooGalleryAlbum
+	 */
+	public static function get( $post ) {
+		return new self( $post );
+	}
+
+	/**
+	 * Static function to load an Album instance by post id
+	 *
+	 * @param $post_id
+	 *
+	 * @return FooGalleryAlbum
+	 */
+	public static function get_by_id( $post_id ) {
+		$gallery = new self();
+		$gallery->load_by_id( $post_id );
+		if ( ! $gallery->does_exist() ) {
+			return false;
+		}
+		return $gallery;
+	}
+
+	/**
+	 * Checks if the album has galleries
+	 * @return bool
+	 */
+	public function has_galleries() {
+		return sizeof( $this->gallery_ids ) > 0;
+	}
+
+	/**
+	 * Checks if the album exists
+	 * @return bool
+	 */
+	public function does_exist() {
+		return $this->ID > 0;
+	}
+
+	/**
+	 * Returns true if the album is published
+	 * @return bool
+	 */
+	public function is_published() {
+		return $this->post_status === 'publish';
+	}
+
+	/**
+	 * Get a comma separated list of gallery ids
+	 * @return string
+	 */
+	public function gallery_id_csv() {
+		if ( is_array( $this->gallery_ids ) ) {
+			return implode( ',', $this->gallery_ids );
+		}
+
+		return '';
+	}
+
+	/**
+	 * Lazy load the attachments for the gallery
+	 *
+	 * @return array
+	 */
+	public function galleries() {
+		//lazy load the attachments for performance
+		if ( $this->_galleries === false ) {
+			$this->_galleries = array();
+
+			if ( ! empty( $this->gallery_ids ) ) {
+
+				$galleries = get_posts( array(
+					'post_type'      => FOOGALLERY_CPT_GALLERY,
+					'posts_per_page' => -1,
+					'post__in'       => $this->gallery_ids,
+					'orderby'        => 'post__in',
+				) );
+
+				$this->_galleries = array_map( array( 'FooGallery', 'get' ), $galleries );
+			}
+		}
+
+		return $this->_galleries;
+	}
+
+	function includes_gallery( $gallery_id ) {
+		if ( $this->has_galleries() ) {
+			return in_array( $gallery_id, $this->gallery_ids );
+		}
+		return false;
+	}
+
+	public function gallery_count() {
+		$count = sizeof( $this->gallery_ids );
+		switch ( $count ) {
+			case 0:
+				return __( 'No galleries', 'foogallery' );
+			case 1:
+				return __( '1 gallery', 'foogallery' );
+			default:
+				return sprintf( __( '%s galleries', 'foogallery' ), $count );
+		}
+	}
+
+	/**
+	 * Output the shortcode for the gallery
+	 *
+	 * @return string
+	 */
+	public function shortcode() {
+		return foogallery_build_album_shortcode( $this->ID );
+	}
+}
