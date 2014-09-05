@@ -5,6 +5,7 @@ if ( ! class_exists( 'FooGallery_Albums_Extension' ) ) {
 	define( 'FOOGALLERY_ALBUM_URL', plugin_dir_url( __FILE__ ) );
 	define( 'FOOGALLERY_CPT_ALBUM', 'foogallery-album' );
 	define( 'FOOGALLERY_ALBUM_META_GALLERIES', 'foogallery_album_galleries' );
+	define( 'FOOGALLERY_ALBUM_META_TEMPLATE', 'foogallery_album_template' );
 
 	class FooGallery_Albums_Extension {
 
@@ -16,6 +17,8 @@ if ( ! class_exists( 'FooGallery_Albums_Extension' ) ) {
 				new FooGallery_Albums_Admin_Columns();
 				new FooGallery_Admin_Album_MetaBoxes();
 			}
+
+			add_filter( 'foogallery_defaults', array( $this, 'apply_album_defaults' ) );
 		}
 
 		function includes() {
@@ -35,5 +38,8 @@ if ( ! class_exists( 'FooGallery_Albums_Extension' ) ) {
 			}
 		}
 
+		function apply_album_defaults( $defaults ) {
+			$defaults['album_template'] = 'default';
+		}
 	}
 }

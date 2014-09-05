@@ -53,6 +53,15 @@ if ( ! class_exists( 'FooGallery_Admin_Album_MetaBoxes' ) ) {
 			);
 
 			add_meta_box(
+				'foogalleryalbum_settings',
+				__( 'Settings', 'foogallery' ),
+				array( $this, 'render_settings_metabox' ),
+				FOOGALLERY_CPT_ALBUM,
+				'normal',
+				'high'
+			);
+
+			add_meta_box(
 				'foogalleryalbum_shortcode',
 				__( 'Album Shortcode', 'foogallery' ),
 				array( $this, 'render_shortcode_metabox' ),
@@ -146,8 +155,8 @@ if ( ! class_exists( 'FooGallery_Admin_Album_MetaBoxes' ) ) {
 		}
 
 		function render_shortcode_metabox( $post ) {
-			$gallery   = $this->get_album( $post );
-			$shortcode = $gallery->shortcode();
+			$album   = $this->get_album( $post );
+			$shortcode = $album->shortcode();
 			?>
 			<p class="foogallery-shortcode">
 				<code id="foogallery-copy-shortcode" data-clipboard-text="<?php echo htmlspecialchars( $shortcode ); ?>"
@@ -170,6 +179,38 @@ if ( ! class_exists( 'FooGallery_Admin_Album_MetaBoxes' ) ) {
 					});
 				});
 			</script>
+		<?php
+		}
+
+		function render_settings_metabox( $post ) {
+			$album   = $this->get_album( $post );
+			$available_templates = foogallery_album_templates();
+			$album_template    = foogallery_default_album_template();
+			if ( ! empty($album->album_template) ) {
+				$album_template = $album->album_template;
+			}
+			?>
+			<table class="foogallery-metabox-settings">
+				<tbody>
+				<tr class="gallery_template_field gallery_template_field_selector">
+					<th>
+						<label for="FooGallerySettings_AlbumTemplate"><?php _e( 'Album Template', 'foogallery' ); ?></label>
+					</th>
+					<td>
+						<select id="FooGallerySettings_AlbumTemplate" name="<?php echo FOOGALLERY_ALBUM_META_TEMPLATE; ?>">
+							<?php
+							foreach ( $available_templates as $template ) {
+								$selected = ($album_template === $template['slug']) ? 'selected' : '';
+								echo "<option {$selected} value=\"{$template['slug']}\">{$template['name']}</option>";
+							}
+							?>
+						</select>
+						<br />
+						<small><?php _e( 'The album template that will be used when the album is output to the frontend.', 'foogallery' ); ?></small>
+					</td>
+				</tr>
+				</tbody>
+			</table>
 		<?php
 		}
 
