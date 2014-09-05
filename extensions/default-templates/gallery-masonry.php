@@ -43,8 +43,7 @@ if ( ! foo_check_wp_version_at_least( '3.9' ) ) {} ?>
 		});
 	});
 </script>
-<div id="foogallery-gallery-<?php echo $current_foogallery->ID; ?>"
-	 class="<?php echo foogallery_build_class_attribute( $current_foogallery, 'foogallery-lightbox-' . $lightbox ); ?>">
+<div id="foogallery-gallery-<?php echo $current_foogallery->ID; ?>" class="<?php echo foogallery_build_class_attribute( $current_foogallery, 'foogallery-lightbox-' . $lightbox ); ?>">
 <?php foreach ( $current_foogallery->attachments() as $attachment ) {
 		echo '	<div class="item">' . $attachment->html( $args )  . '</div>
 ';
