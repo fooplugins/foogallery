@@ -3,7 +3,7 @@ Contributors: bradvin, fooplugins
 Donate link: http://fooplugins.com
 Tags: images,gallery,album,nextgen,photos,pictures,media,attachments
 Requires at least: 3.9
-Tested up to: 3.9.1
+Tested up to: 4.0
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -86,6 +86,12 @@ Hell, yes! Check out our [developer page](http://foo.gallery/developers/)
 4. Frontend example with default template
 
 == Changelog ==
+
+= 1.1.8.2 =
+* Fixed "edit gallery" CSS with WP 4.0
+
+= 1.1.8.1 =
+* Fixed "insert gallery" CSS with WP 4.0
 
 = 1.1.8 =
 * Added 2 new gallery templates

@@ -44,7 +44,7 @@ if ( ! class_exists( 'FooGallery_Default_Templates_Extension' ) ) {
 						'default' => 'image',
 						'type'    => 'thumb_link',
 						'spacer'  => '<span class="spacer"></span>',
-						'desc'	  => __( 'You can choose to link each thumbnail to the full size image, or to the image\'s attachment page, or you can choose to not link to anything.', 'foogallery' ),
+						'desc'	  => __( 'You can choose to link each thumbnail to the full size image, the image\'s attachment page, a custom URL, or you can choose to not link to anything.', 'foogallery' ),
 					),
 					array(
 						'id'      => 'border-style',

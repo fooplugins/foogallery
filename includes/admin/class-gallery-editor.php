@@ -121,13 +121,14 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Editor' ) ) {
 					display: inline-block;
 					margin-left: 5px;
 				}
+
 				.foogallery-pile {
 					position: relative;
 					z-index: 10;
 					float: left;
 					margin: 10px 20px 30px 20px !important;
 				}
-				/* Image styles */
+
 				.foogallery-pile .foogallery-gallery-select {
 					max-width: 100%;
 					vertical-align: bottom;
@@ -136,6 +137,9 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Editor' ) ) {
 					-moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
 					box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
 					overflow: hidden;
+					width: 200px;
+					height: 200px;
+					cursor: pointer;
 				}
 
 				/* Stacks creted by the use of generated content */
@@ -168,27 +172,6 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Editor' ) ) {
 					transform: rotate(-2deg);
 				}
 
-				.foogallery-pile img {
-					height: 100%;
-				}
-
-				.foogallery-pile h3 {
-					background: #fff;
-					position: absolute;
-					display: block;
-					bottom: 0px;
-					padding: 5px;
-					width: 100%;
-					box-sizing: border-box;
-					margin: 0;
-					opacity: 0.8;
-				}
-
-				.foogallery-pile h3 span {
-					display: block;
-					font-size: 0.6em;
-				}
-
 				.foogallery-gallery-select.selected {
 					border-color: #1E8CBE;
 				}
@@ -211,6 +194,27 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Editor' ) ) {
 					height: 100px;
 					z-index: 4;
 				}
+
+				.foogallery-gallery-select-inner {
+					opacity: 0.8;
+					position: absolute;
+					bottom: 8px;
+					left:8px;
+					right:8px;
+					padding: 5px;
+					background: #FFF;
+					text-align: center;
+				}
+
+					.foogallery-gallery-select-inner h3 {
+						display: block;
+						margin: 0;
+					}
+
+					.foogallery-gallery-select-inner span {
+						display: block;
+						font-size: 0.6em;
+					}
 
 				.foogallery-add-gallery {
 					background: #444;
@@ -330,31 +334,27 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Editor' ) ) {
 				$images = $gallery->image_count();
 				?>
 				<li class="foogallery-pile">
-					<div class="foogallery-gallery-select attachment-preview landscape" data-foogallery-id="<?php echo $gallery->ID; ?>">
-						<div class="thumbnail" style="display: table;">
-							<div style="display: table-cell; vertical-align: middle; text-align: center;">
-								<img src="<?php echo $img_src; ?>" />
-								<?php
+					<div class="foogallery-gallery-select" data-foogallery-id="<?php echo $gallery->ID; ?>" style="background: url('<?php echo $img_src; ?>') no-repeat">
+						<div class="foogallery-gallery-select-inner" >
+							<?php
 
-								$title = empty( $gallery->name ) ?
-									sprintf( __( '%s #%s', 'foogallery' ), foogallery_plugin_name(), $gallery->ID ) :
-									$gallery->name;
+							$title = empty( $gallery->name ) ?
+								sprintf( __( '%s #%s', 'foogallery' ), foogallery_plugin_name(), $gallery->ID ) :
+								$gallery->name;
 
-								?>
-								<h3><?php echo $title; ?>
-									<span><?php echo $images; ?></span>
-									<code>[<?php echo foogallery_gallery_shortcode_tag(); ?> id="<?php echo $gallery->ID; ?>"]</code>
-								</h3>
-							</div>
+							?>
+							<h3><?php echo $title; ?></h3>
+							<span><?php echo $images; ?></span>
+							<code>[<?php echo foogallery_gallery_shortcode_tag(); ?> id="<?php echo $gallery->ID; ?>"]</code>
 						</div>
 					</div>
 				</li>
 				<?php } ?>
 				<li class="foogallery-pile">
-					<div class="foogallery-gallery-select attachment-preview landscape foogallery-add-gallery">
+					<div class="foogallery-gallery-select foogallery-add-gallery">
 						<a href="<?php echo foogallery_admin_add_gallery_url(); ?>" target="_blank" class="thumbnail" style="display: table;">
-							<div style="display: table-cell; vertical-align: middle; text-align: center;">
-								<span></span>
+							<span></span>
+							<div class="foogallery-gallery-select-inner" >
 								<h3><?php _e( 'Add New Gallery', 'foogallery' ); ?></h3>
 							</div>
 						</a>

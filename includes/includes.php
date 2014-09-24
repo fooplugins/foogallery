@@ -22,6 +22,7 @@ require_once( FOOGALLERY_PATH . 'extensions/default-templates/class-default-temp
 require_once( FOOGALLERY_PATH . 'extensions/nextgen-importer/class-nextgen-gallery-importer-extension.php' );
 
 if ( is_admin() ) {
+
 	//only admin
 	require_once( FOOGALLERY_PATH . 'includes/admin/class-admin.php' );
 	require_once( FOOGALLERY_PATH . 'includes/admin/class-extensions.php' );
@@ -33,8 +34,10 @@ if ( is_admin() ) {
 	require_once( FOOGALLERY_PATH . 'includes/admin/class-columns.php' );
 	require_once( FOOGALLERY_PATH . 'includes/admin/class-boilerplate-zip-generator.php' );
 	require_once( FOOGALLERY_PATH . 'includes/admin/class-boilerplate-download-handler.php' );
+	require_once( FOOGALLERY_PATH . 'includes/admin/class-attachment-fields.php' );
 
 } else {
+
 	//only front-end
 	require_once( FOOGALLERY_PATH . 'includes/public/class-public.php' );
 	require_once( FOOGALLERY_PATH . 'includes/public/class-shortcodes.php' );

@@ -14,8 +14,8 @@
  * Plugin Name: FooGallery
  * Plugin URI:  https://github.com/fooplugins/foogallery
  * Description: Better Image Galleries for WordPress
- * Version:     1.1.8
- * Author:      bradvin
+ * Version:     1.1.8.2
+ * Author:      FooPlugins
  * Author URI:  http://fooplugins.com
  * Text Domain: foogallery
  * License:     GPL-2.0+
@@ -32,7 +32,7 @@ define( 'FOOGALLERY_SLUG', 'foogallery' );
 define( 'FOOGALLERY_PATH', plugin_dir_path( __FILE__ ) );
 define( 'FOOGALLERY_URL', plugin_dir_url( __FILE__ ) );
 define( 'FOOGALLERY_FILE', __FILE__ );
-define( 'FOOGALLERY_VERSION', '1.1.8' );
+define( 'FOOGALLERY_VERSION', '1.1.8.2' );
 
 /**
  * FooGallery_Plugin class

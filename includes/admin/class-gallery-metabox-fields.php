@@ -234,9 +234,10 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Fields' ) ) {
 
 		function get_thumb_link_field_choices() {
 			return apply_filters( 'foogallery_gallery_template_field_thumb_links', array(
-				'image' => __( 'Full Size Image', 'foogallery' ),
-				'page'  => __( 'Image Attachment Page', 'foogallery' ),
-				'none'  => __( 'Not linked', 'foogallery' ),
+				'image'  => __( 'Full Size Image', 'foogallery' ),
+				'page'   => __( 'Image Attachment Page', 'foogallery' ),
+				'custom' => __( 'Custom URL', 'foogallery' ),
+				'none'   => __( 'Not linked', 'foogallery' ),
 			) );
 		}
 

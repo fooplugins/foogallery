@@ -46,6 +46,10 @@ if ( ! class_exists( 'FooGalleryAttachment' ) ) {
 			$this->caption = trim( $post->post_excerpt );
 			$this->description = trim( $post->post_content );
 			$this->alt = trim( get_post_meta( $this->ID, '_wp_attachment_image_alt', true ) );
+			$this->custom_url = get_post_meta( $this->ID, '_foogallery_custom_url', true );
+			if ( empty( $this->custom_url ) ) {
+				$this->custom_url = '#';
+			}
 			$image_attributes = wp_get_attachment_image_src( $this->ID, 'full' );
 			if ( $image_attributes ) {
 				$this->url = $image_attributes[0];
@@ -115,7 +119,7 @@ if ( ! class_exists( 'FooGalleryAttachment' ) ) {
 
 			$arg_defaults = array(
 				'link' => 'image',
-				'custom_link' => '#',
+				'custom_link' => $this->custom_url
 			);
 
 			$args = wp_parse_args( $args, $arg_defaults );
