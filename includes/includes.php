@@ -14,6 +14,8 @@ require_once( FOOGALLERY_PATH . 'includes/class-attachment-filters.php' );
 //check for WPThumb, include.
 if ( ! class_exists( 'WP_Thumb' ) ) {
 	require_once( FOOGALLERY_PATH . 'includes/WPThumb/wpthumb.php' );
+	//do not let WPThumb override build-in WordPress functions like the_post_thumbnail
+	remove_filter( 'image_downsize', 'wpthumb_post_image', 99 );
 }
 
 //include bundled extensions
