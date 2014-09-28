@@ -32,6 +32,7 @@ if ( ! class_exists( 'FooGallery_Admin_Columns' ) ) {
 					array( 'icon' => '' ) +
 					array_slice( $columns, 1, null, true ) +
 					array(
+						FOOGALLERY_CPT_GALLERY . '_template' => __( 'Template', 'foogallery' ),
 						FOOGALLERY_CPT_GALLERY . '_count' => __( 'Media', 'foogallery' ),
 						FOOGALLERY_CPT_GALLERY . '_shortcode' => __( 'Shortcode', 'foogallery' ),
 					);
@@ -41,6 +42,14 @@ if ( ! class_exists( 'FooGallery_Admin_Columns' ) ) {
 			global $post;
 
 			switch ( $column ) {
+				case FOOGALLERY_CPT_GALLERY . '_template':
+					$gallery = FooGallery::get( $post );
+					$template = $gallery->gallery_template_details();
+					if ( false !== $template ) {
+						echo $template['name'];
+					}
+
+					break;
 				case FOOGALLERY_CPT_GALLERY . '_count':
 					$gallery = FooGallery::get( $post );
 					echo $gallery->image_count();
