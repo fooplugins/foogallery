@@ -140,7 +140,7 @@ class FooGallery_Template_Loader {
 		} else {
 
 			//take into account the cases where id is passed in via the 'gallery' attribute
-			$gallery = $this->get_arg( 'gallery', 0 );
+			$gallery = $this->get_arg( $args, 'gallery', 0 );
 
 			if ( intval( $gallery ) > 0 ) {
 				//we have an id, so load
