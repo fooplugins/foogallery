@@ -28,7 +28,16 @@ function foogallery_album_shortcode_tag() {
 function foogallery_album_templates() {
 	$album_templates[] = array(
 		'slug'        => 'default',
-		'name'        => __( 'Default Album Layout', 'foogallery' )
+		'name'        => __( 'Default Album Layout', 'foogallery' ),
+		'fields'	  => array(
+			array(
+				'id'      => 'back_to_album_text',
+				'title'   => __( '"Back To Album" Text', 'foogallery' ),
+				'desc'    => __( 'The text that is shown at the top of the album when a gallery is shown', 'foogallery' ),
+				'type'    => 'text',
+				'default' => '&laquo; back to album',
+			)
+		)
 	);
 
 	return apply_filters( 'foogallery_album_templates', $album_templates );

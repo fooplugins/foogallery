@@ -2,7 +2,7 @@
 	position: relative;
 	z-index: 10;
 	float: left;
-	margin: 10px 20px 30px 20px !important;
+	margin: 10px 15px 15px 10px !important;
 }
 /* Image styles */
 .foogallery-pile .foogallery-gallery-select {
@@ -73,25 +73,25 @@
 .foogallery-gallery-select.selected::before {
 	content: "\f147";
 	display: inline-block;
-	font: normal 100px/110px 'dashicons';
+	font: normal 60px/70px 'dashicons';
 	position: absolute;
 	color: #FFF;
 	top: 40%;
 	left: 50%;
-	margin-left: -50px;
-	margin-top: -50px;
+	margin-left: -30px;
+	margin-top: -30px;
 	-webkit-font-smoothing: antialiased;
 	background: #1E8CBE;
 	border-radius: 50%;
-	width: 100px;
-	height: 100px;
+	width: 60px;
+	height: 60px;
 	z-index: 4;
 }
 
 .attachment-preview {
 	position: relative;
-	width: 199px;
-	height: 199px;
+	width: 150px;
+	height: 150px;
 	-webkit-box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.1), inset 0 0 0 1px rgba(0, 0, 0, 0.05);
 	box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.1), inset 0 0 0 1px rgba(0, 0, 0, 0.05);
 	background: #EEE;
@@ -117,9 +117,9 @@
 	position: relative;
 	z-index: 10;
 	float: left;
-	margin: 10px 20px 30px 20px !important;
-	width: 215px;
-	height: 215px;
+	margin: 10px 15px 15px 10px !important;
+	width: 165px;
+	height: 165px;
 	border: #1e8cbe 1px dashed;
 	background: #eee;
 }
@@ -130,4 +130,44 @@
 
 .foogallery-album-gallery-list .foogallery-pile.ui-sortable-helper:hover .close {
 	display: none;
+}
+
+.gallery_template_field td {
+	padding-bottom: 20px;
+}
+
+.gallery_template_field th {
+	vertical-align: top;
+	text-align: left;
+	padding-top: 0.3em;
+	padding-right: 10px;
+}
+
+.foogallery_metabox_field-icon label {
+	display:inline-block;
+	margin-right:10px;
+	border:solid 3px transparent;
+	background:#aaa;
+	border-radius: 3px;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	padding:5px;
+	line-height: 0;
+}
+
+.foogallery_metabox_field-icon input:checked + label {
+	border:solid 3px #444;
+	background: #888;
+}
+
+.foogallery_metabox_field-icon label:hover {
+	border:solid 3px #444;
+}
+
+.foogallery_metabox_field-thumb_size label {
+	vertical-align: baseline;
+}
+
+.foogallery_metabox_field-thumb_size input[type="number"] {
+	margin-right: 10px;
 }

@@ -41,8 +41,10 @@ class FooGalleryAlbum extends stdClass {
 		$this->name = $post->post_title;
 		$this->author = $post->post_author;
 		$this->post_status = $post->post_status;
-		$gallery_meta = get_post_meta( $this->ID, FOOGALLERY_ALBUM_META_GALLERIES, true );
-		$this->gallery_ids = is_array( $gallery_meta ) ? array_filter( $gallery_meta ) : array();
+		$album_meta = get_post_meta( $this->ID, FOOGALLERY_ALBUM_META_GALLERIES, true );
+		$this->gallery_ids = is_array( $album_meta ) ? array_filter( $album_meta ) : array();
+		$this->album_template = get_post_meta( $post->ID, FOOGALLERY_ALBUM_META_TEMPLATE, true );
+		$this->settings = get_post_meta( $post->ID, FOOGALLERY_META_SETTINGS, true );
 		do_action( 'foogallery_foogallery-album_instance_after_load', $this, $post );
 	}
 
@@ -54,6 +56,27 @@ class FooGalleryAlbum extends stdClass {
 		$post = get_post( $post_id );
 		if ( $post ) {
 			$this->load( $post );
+		}
+	}
+
+	/**
+	 * private function to load a album by the slug.
+	 * Will be used when loading album shortcodes
+	 * @param $slug
+	 */
+	private function load_by_slug( $slug ) {
+		if ( ! empty( $slug ) ) {
+			$args = array(
+				'name'        => $slug,
+				'numberposts' => 1,
+				'post_type'   => FOOGALLERY_CPT_ALBUM,
+			);
+
+			$albums = get_posts( $args );
+
+			if ( $albums ) {
+				$this->load( $albums[0] );
+			}
 		}
 	}
 
@@ -77,12 +100,28 @@ class FooGalleryAlbum extends stdClass {
 	 * @return FooGalleryAlbum
 	 */
 	public static function get_by_id( $post_id ) {
-		$gallery = new self();
-		$gallery->load_by_id( $post_id );
-		if ( ! $gallery->does_exist() ) {
+		$album = new self();
+		$album->load_by_id( $post_id );
+		if ( ! $album->does_exist() ) {
 			return false;
 		}
-		return $gallery;
+		return $album;
+	}
+
+	/**
+	 * Static function to load a album instance by passing in a album slug
+	 *
+	 * @param string $slug
+	 *
+	 * @return FooGalleryAlbum
+	 */
+	public static function get_by_slug( $slug ) {
+		$album = new self();
+		$album->load_by_slug( $slug );
+		if ( ! $album->does_exist() ) {
+			return false;
+		}
+		return $album;
 	}
 
 	/**
@@ -173,5 +212,27 @@ class FooGalleryAlbum extends stdClass {
 	 */
 	public function shortcode() {
 		return foogallery_build_album_shortcode( $this->ID );
+	}
+
+	function get_meta( $key, $default ) {
+		if ( ! is_array( $this->settings ) ) {
+			return $default;
+		}
+
+		$value = array_key_exists( $key, $this->settings ) ? $this->settings[ $key ] : null;
+
+		if ( $value === null ) {
+			return $default;
+		}
+
+		return $value;
+	}
+
+	function is_checked( $key, $default = false ) {
+		if ( ! is_array( $this->settings ) ) {
+			return $default;
+		}
+
+		return array_key_exists( $key, $this->settings );
 	}
 }

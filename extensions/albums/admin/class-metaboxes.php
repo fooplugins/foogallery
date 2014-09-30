@@ -94,6 +94,15 @@ if ( ! class_exists( 'FooGallery_Admin_Album_MetaBoxes' ) ) {
 				$galleries = apply_filters( 'foogallery_save_album_galleries', explode( ',', $_POST[ FOOGALLERY_ALBUM_META_GALLERIES ] ) );
 				update_post_meta( $post_id, FOOGALLERY_ALBUM_META_GALLERIES, $galleries );
 
+				update_post_meta( $post_id, FOOGALLERY_ALBUM_META_TEMPLATE, $_POST[FOOGALLERY_ALBUM_META_TEMPLATE] );
+
+				$settings = isset($_POST[FOOGALLERY_META_SETTINGS]) ?
+					$_POST[FOOGALLERY_META_SETTINGS] : array();
+
+				$settings = apply_filters( 'foogallery_save_album_settings', $settings );
+
+				update_post_meta( $post_id, FOOGALLERY_META_SETTINGS, $settings );
+
 				do_action( 'foogallery_after_save_album', $post_id, $_POST );
 			}
 		}
@@ -123,7 +132,7 @@ if ( ! class_exists( 'FooGallery_Admin_Album_MetaBoxes' ) ) {
 				<ul class="foogallery-album-gallery-list">
 					<?php
 					foreach ( $galleries as $gallery ) {
-						$img_src  = $gallery->featured_image_src( array( 200, 200 ) );
+						$img_src  = $gallery->featured_image_src( array( 150, 150 ) );
 						$images   = $gallery->image_count();
 						$selected = $album->includes_gallery( $gallery->ID ) ? ' selected' : '';
 						?>
@@ -183,14 +192,18 @@ if ( ! class_exists( 'FooGallery_Admin_Album_MetaBoxes' ) ) {
 		}
 
 		function render_settings_metabox( $post ) {
-			$album   = $this->get_album( $post );
+			$album = $this->get_album( $post );
 			$available_templates = foogallery_album_templates();
-			$album_template    = foogallery_default_album_template();
+			$album_template = foogallery_default_album_template();
 			if ( ! empty($album->album_template) ) {
 				$album_template = $album->album_template;
 			}
+			if ( false === $album_template ) {
+				$album_template = $available_templates[0]['slug'];
+			}
+			$hide_help = 'on' == foogallery_get_setting( 'hide_gallery_template_help' );
 			?>
-			<table class="foogallery-metabox-settings">
+			<table class="foogallery-album-metabox-settings">
 				<tbody>
 				<tr class="gallery_template_field gallery_template_field_selector">
 					<th>
@@ -209,6 +222,48 @@ if ( ! class_exists( 'FooGallery_Admin_Album_MetaBoxes' ) ) {
 						<small><?php _e( 'The album template that will be used when the album is output to the frontend.', 'foogallery' ); ?></small>
 					</td>
 				</tr>
+				<?php
+				foreach ( $available_templates as $template ) {
+					$field_visibility = ($album_template !== $template['slug']) ? 'style="display:none"' : '';
+					$section          = '';
+					$fields = isset( $template['fields'] ) ? $template['fields'] : array();
+					foreach ( $fields as $field ) {
+						//allow for the field to be altered by extensions.
+						$field = apply_filters( 'foogallery_alter_album_template_field', $field, $album );
+
+						$class = "gallery_template_field gallery_template_field-{$template['slug']} gallery_template_field-{$template['slug']}-{$field['id']}";
+
+						if ( isset($field['section']) && $field['section'] !== $section ) {
+							$section = $field['section'];
+							?>
+							<tr class="<?php echo $class; ?>" <?php echo $field_visibility; ?>>
+								<td colspan="2"><h4><?php echo $section; ?></h4></td>
+							</tr>
+						<?php }
+						if (isset($field['type']) && 'help' == $field['type'] && $hide_help) {
+							continue; //skip help if the 'hide help' setting is turned on
+						}
+						?>
+						<tr class="<?php echo $class; ?>" <?php echo $field_visibility; ?>>
+							<?php if ( isset($field['type']) && 'help' == $field['type'] ) { ?>
+								<td colspan="2">
+									<div class="foogallery-help">
+										<?php echo $field['desc']; ?>
+									</div>
+								</td>
+							<?php } else { ?>
+								<th>
+									<label for="FooGallerySettings_<?php echo $template['slug'] . '_' . $field['id']; ?>"><?php echo $field['title']; ?></label>
+								</th>
+								<td>
+									<?php do_action( 'foogallery_render_gallery_template_field', $field, $album, $template ); ?>
+								</td>
+							<?php } ?>
+						</tr>
+					<?php
+					}
+				}
+				?>
 				</tbody>
 			</table>
 		<?php
