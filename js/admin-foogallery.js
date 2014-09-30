@@ -121,11 +121,19 @@
 				var attachments = FOOGALLERY.media_uploader.state().get('selection').toJSON();
 
 				$.each(attachments, function(i, item) {
-					if (item && item.id && item.sizes && item.sizes.thumbnail) {
-						var attachment = {
-							id: item.id,
-							src: item.sizes.thumbnail.url
-						};
+					if (item && item.id && item.sizes) {
+						if (item.sizes.thumbnail) {
+							var attachment = {
+								id: item.id,
+								src: item.sizes.thumbnail.url
+							};
+						} else {
+							//thumbnail could not be found for whatever reason
+							var attachment = {
+								id: item.id,
+								src: item.url
+							};
+						}
 
 						FOOGALLERY.addAttachmentToGalleryList(attachment);
 					} else {

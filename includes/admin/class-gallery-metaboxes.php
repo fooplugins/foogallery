@@ -194,7 +194,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 				$attachment = '';
 			}
 			$data_attribute = empty($attachment_id) ? '' : "data-attachment-id=\"{$attachment_id}\"";
-			$img_tag        = empty($attachment) ? '<img />' : "<img width=\"{$attachment[1]}\" height=\"{$attachment[2]}\" src=\"{$attachment[0]}\" />";
+			$img_tag        = empty($attachment) ? '<img width="150" height="150" />' : "<img width=\"150\" height=\"150\" src=\"{$attachment[0]}\" />";
 			?>
 			<li class="attachment details" <?php echo $data_attribute; ?>>
 				<div class="attachment-preview type-image">
