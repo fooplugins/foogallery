@@ -14,6 +14,13 @@
 					FOOGALLERYALBUM.changeSelection();
 				}
 			});
+
+		//init any colorpickers
+		$('.minicolors').minicolors({
+			position: 'top left',
+			theme: 'default',
+			opacity: false
+		});
 	};
 
 	FOOGALLERYALBUM.changeSelection = function() {

@@ -100,10 +100,10 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Fields' ) ) {
 					echo '<input' . $field_class . ' type="text" id="FooGallerySettings_' . $id . '" name="' . FOOGALLERY_META_SETTINGS . '[' . $id . ']" value="' . esc_attr( $field['value'] ) . '" />';
 
 					break;
-				
+
 				case 'colorpicker':
-					echo '<input class="minicolors"  type="text" id="FooGallerySettings_' . $id . '" name="' . FOOGALLERY_META_SETTINGS . '[' . $id . ']" value="' . esc_attr( $field['value'] ) . '" />';
-					
+					echo '<input class="minicolors" type="text" id="FooGallerySettings_' . $id . '" name="' . FOOGALLERY_META_SETTINGS . '[' . $id . ']" value="' . esc_attr( $field['value'] ) . '" />';
+
 					break;
 
 				case 'number':
@@ -172,7 +172,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Fields' ) ) {
 			//allow for more customization
 			do_action( 'foogallery_render_gallery_template_field_after', $field, $gallery );
 		}
-		
+
 		function alter_gallery_template_field( $field, $gallery ) {
 			if ( $field ) {
 				switch ( $field['type'] ) {

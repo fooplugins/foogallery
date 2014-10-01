@@ -355,15 +355,17 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 
 		function include_required_scripts() {
 			//only include scripts if we on the foogallery page
-			if ( FOOGALLERY_CPT_GALLERY == foo_current_screen_post_type() ) {
+			if ( FOOGALLERY_CPT_GALLERY === foo_current_screen_post_type() ) {
 
 				//zeroclipboard needed for copy to clipboard functionality
 				$url = FOOGALLERY_URL . 'lib/zeroclipboard/ZeroClipboard.min.js';
 				wp_enqueue_script( 'foogallery-zeroclipboard', $url, array('jquery'), FOOGALLERY_VERSION );
-				
+
 				//minicolors needed for the colorpicker field
-				$url = FOOGALLERY_URL . 'js/admin-minicolors.js';
+				$url = FOOGALLERY_URL . 'lib/minicolors/jquery.minicolors.min.js';
 				wp_enqueue_script( 'foogallery-minicolors', $url, array('jquery'), FOOGALLERY_VERSION );
+				$url = FOOGALLERY_URL . 'lib/minicolors/jquery.minicolors.css';
+				wp_enqueue_style( 'foogallery-minicolors', $url, array(), FOOGALLERY_VERSION );
 
 				//include any admin js required for the templates
 				foreach ( foogallery_gallery_templates() as $template ) {

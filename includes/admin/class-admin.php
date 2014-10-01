@@ -35,7 +35,6 @@ if ( ! class_exists( 'FooGallery_Admin' ) ) {
 			add_filter( 'foogallery_admin_plugin_action_links', array( $this, 'plugin_listing_links' ) );
 			//output shortcode for javascript
 			add_action( 'admin_footer', array( $this, 'output_shortcode_variable' ), 200 );
-			add_action( 'admin_footer', array( $this, 'equeue_fg_minicolors' ), 200 );
 		}
 
 
@@ -76,20 +75,5 @@ if ( ! class_exists( 'FooGallery_Admin' ) ) {
 			<?php
 			}
 		}
-		
-		function equeue_fg_minicolors() {
-		  if ( wp_script_is( 'jquery', 'done' ) ) {
-		?>
-		<script type="text/javascript">
-			jQuery('INPUT.minicolors').minicolors({
-				position: 'top left',
-				theme: 'default',
-				opacity: false,
-			});
-		</script>
-		<?php
-		}
-		}
-			
 	}
 }
