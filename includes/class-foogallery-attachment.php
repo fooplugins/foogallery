@@ -47,9 +47,7 @@ if ( ! class_exists( 'FooGalleryAttachment' ) ) {
 			$this->description = trim( $post->post_content );
 			$this->alt = trim( get_post_meta( $this->ID, '_wp_attachment_image_alt', true ) );
 			$this->custom_url = get_post_meta( $this->ID, '_foogallery_custom_url', true );
-			if ( empty( $this->custom_url ) ) {
-				$this->custom_url = '#';
-			}
+			$this->custom_target = get_post_meta( $this->ID, '_foogallery_custom_target', true );
 			$image_attributes = wp_get_attachment_image_src( $this->ID, 'full' );
 			if ( $image_attributes ) {
 				$this->url = $image_attributes[0];
@@ -142,7 +140,16 @@ if ( ! class_exists( 'FooGalleryAttachment' ) ) {
 				$url = $this->url;
 			}
 
+			//fallback for images that might not have a custom url
+			if ( empty( $url ) ) {
+				$url = $this->url;
+			}
+
 			$attr['href'] = $url;
+
+			if ( ! empty( $this->custom_target ) ) {
+				$attr['target'] = $this->custom_target;
+			}
 
 			if ( ! empty( $this->caption ) ) {
 				$attr['data-caption-title'] = $this->caption;

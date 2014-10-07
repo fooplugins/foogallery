@@ -14,26 +14,29 @@ if (!class_exists('FooGallery_Attachment_Fields')) {
         }
 
 	    public function get_custom_fields() {
+
+		    $target_options = apply_filters( 'foogallery_attachment_field_custom_target_options',  array(
+			    'default' => __( 'Default', 'foogallery' ),
+			    '_blank' => __( 'New tab (_blank)', 'foogallery' ),
+			    '_self' => __( 'Same tab (_self)', 'foogallery' ),
+			    'foobox' => __( 'FooBox', 'foogallery' )
+		    ) );
+
 		    $fields = array(
 			    'foogallery_custom_url' => array(
-					    'label'       => __( 'Custom URL', 'foogallery' ),
-					    'input'       => 'text', //other types are 'textarea', 'checkbox', 'radio', 'select',
-					    'helps'       => __( 'Point your attachment to a custom URL', 'foogallery' ),
-					    'exclusions'  => array( 'audio', 'video' ),
+				    'label'       =>  sprintf( __( '%s Custom URL', 'foogallery' ), foogallery_plugin_name() ),
+				    'input'       => 'text', //other types are 'textarea', 'checkbox', 'radio', 'select',
+				    'helps'       => __( 'Point your attachment to a custom URL', 'foogallery' ),
+				    'exclusions'  => array( 'audio', 'video' ),
+			    ),
 
-//                      example radio options
-//						'options' => array(
-//						    '0' => 0,
-//						    '1' => 1,
-//						    '2' => 2
-//		                )
-
-//                      example select options
-//					    'options' => array(
-//						    'portrait' => __( 'portrtait', 'foogallery' ),
-//						    'landscape' => __( 'landscape', 'foogallery' )
-//					    )
-				    )
+			    'foogallery_custom_target' => array(
+				    'label'       =>  sprintf( __( '%s Custom Target', 'foogallery' ), foogallery_plugin_name() ),
+				    'input'       => 'select',
+				    'helps'       => __( 'Set a custom target for your attachment', 'foogallery' ),
+				    'exclusions'  => array( 'audio', 'video' ),
+				    'options'     => $target_options
+			    )
 		    );
 
 		    return apply_filters( 'foogallery_attachment_custom_fields', $fields );
