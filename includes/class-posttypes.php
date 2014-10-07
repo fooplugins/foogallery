@@ -41,7 +41,6 @@ if ( ! class_exists( 'FooGallery_PostTypes' ) ) {
 					'rewrite'       => false,
 					'show_ui'       => true,
 					'show_in_menu'  => true,
-					'menu_position' => 30,
 					'menu_icon'     => 'dashicons-format-gallery',
 					'supports'      => array( 'title', 'thumbnail', ),
 				)
