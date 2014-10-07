@@ -159,6 +159,8 @@ if ( ! class_exists( 'FooGalleryAttachment' ) ) {
 				$attr['data-caption-desc'] = $this->description;
 			}
 
+			$attr['data-attachment-id'] = $this->ID;
+
 			//pull any custom attributes out the args
 			if ( isset( $args['link_attributes'] ) && is_array( $args['link_attributes'] ) ) {
 				$attr = array_merge( $attr, $args['link_attributes'] );
