@@ -35,7 +35,21 @@ function foogallery_album_templates() {
 				'title'   => __( '"Back To Album" Text', 'foogallery' ),
 				'desc'    => __( 'The text that is shown at the top of the album when a gallery is shown', 'foogallery' ),
 				'type'    => 'text',
-				'default' => '&laquo; back to album',
+				'default' => '&laquo; back to album'
+			),
+			array(
+				'id'      => 'title_bg',
+				'title'   => __( 'Title Background Color', 'foogallery' ),
+				'desc'    => __( 'The color of the title that overlays the album thumbnails', 'foogallery' ),
+				'type'    => 'colorpicker',
+				'default' => '#fff'
+			),
+			array(
+				'id'      => 'title_font_color',
+				'title'   => __( 'Title Text Color', 'foogallery' ),
+				'desc'    => __( 'The color of the title text that overlays the album thumbnails', 'foogallery' ),
+				'type'    => 'colorpicker',
+				'default' => ''
 			)
 		)
 	);

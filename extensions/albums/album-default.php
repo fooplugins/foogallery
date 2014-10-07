@@ -13,6 +13,18 @@ if ( !empty( $gallery ) ) {
 	echo '<h2>' . $foogallery->name . '</h2>';
 	echo do_shortcode('[foogallery id="' . $foogallery->ID . '"]');
 } else {
+	$title_bg = $current_foogallery_album->get_meta( 'title_bg', '' );
+	$title_font_color = $current_foogallery_album->get_meta( 'title_font_color', '' );
+	if ( !empty( $title_bg ) || !empty( $title_font_color ) ) {
+		echo '<style type="text/css">';
+		if ( !empty( $title_bg ) ) {
+			echo '.foogallery-album-gallery-list .foogallery-pile h3 { background: ' . $title_bg . ' !important; }';
+		}
+		if ( !empty( $title_font_color ) ) {
+			echo '.foogallery-album-gallery-list .foogallery-pile h3 { color: ' . $title_font_color . ' !important; }';
+		}
+		echo '</style>';
+	}
 ?>
 <div id="foogallery-album-<?php echo $current_foogallery_album->ID; ?>">
 	<ul class="foogallery-album-gallery-list">
