@@ -1,6 +1,6 @@
 <?php
 /*
- * FooGallery Shortcodes
+ * FooGallery Album Shortcode
  */
 
 if ( ! class_exists( 'FooGallery_Album_Shortcodes' ) ) {

@@ -12,11 +12,14 @@ if ( ! class_exists( 'FooGallery_Albums_Extension' ) ) {
 		function __construct() {
 			$this->includes();
 
+			new FooGallery_Album_Rewrite_Rules();
+
 			new FooGallery_Albums_PostTypes();
 			if ( is_admin() ) {
 				new FooGallery_Albums_Admin_Columns();
 				new FooGallery_Admin_Album_MetaBoxes();
 			} else {
+
 				new FooGallery_Album_Template_Loader();
 				new FooGallery_Album_Shortcodes();
 			}
@@ -28,6 +31,7 @@ if ( ! class_exists( 'FooGallery_Albums_Extension' ) ) {
 			require_once( FOOGALLERY_ALBUM_PATH . 'functions.php' );
 			require_once( FOOGALLERY_ALBUM_PATH . 'class-posttypes.php' );
 			require_once( FOOGALLERY_ALBUM_PATH . 'class-foogallery-album.php' );
+			require_once( FOOGALLERY_ALBUM_PATH . 'public/class-rewrite-rules.php' );
 
 			if ( is_admin() ) {
 				//only admin
@@ -36,9 +40,12 @@ if ( ! class_exists( 'FooGallery_Albums_Extension' ) ) {
 			} else {
 				//only front-end
 				require_once( FOOGALLERY_ALBUM_PATH . 'public/class-shortcodes.php' );
+
 				//load Template \ Loader files
 				require_once( FOOGALLERY_ALBUM_PATH . 'public/class-foogallery-album-template-loader.php' );
 			}
+
+
 		}
 
 		function apply_album_defaults( $defaults ) {

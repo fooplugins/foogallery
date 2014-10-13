@@ -65,3 +65,25 @@ function foogallery_album_templates() {
 function foogallery_default_album_template() {
 	return foogallery_get_setting( 'album_template' );
 }
+
+function foogallery_album_build_gallery_link( $gallery ) {
+	return apply_filters( 'foogallery_album_build_gallery_link', 'gallery/' . $gallery->slug );
+}
+
+function foogallery_album_get_current_gallery() {
+	$gallery = get_query_var( 'gallery' );
+
+	if ( empty( $gallery ) ) {
+		$gallery = safe_get_from_request( 'gallery' );
+	}
+
+	return apply_filters( 'foogallery_album_get_current_gallery', $gallery );
+}
+
+function foogallery_album_remove_gallery_from_link() {
+	$gallery = foogallery_album_get_current_gallery();
+
+	$url = untrailingslashit( remove_query_arg('gallery') );
+
+	return str_replace( 'gallery/' . $gallery, '', $url);
+}

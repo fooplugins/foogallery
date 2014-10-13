@@ -4,9 +4,10 @@
  */
 global $current_foogallery_album;
 global $current_foogallery_album_arguments;
-$gallery = safe_get_from_request( 'gallery' );
+$gallery = foogallery_album_get_current_gallery();;
 if ( !empty( $gallery ) ) {
-	$album_url = remove_query_arg('gallery');
+	$album_url = foogallery_album_remove_gallery_from_link();
+
 	echo '<p><a href="' . $album_url . '">' . $current_foogallery_album->get_meta( 'back_to_album_text', '&laquo; back to album' ) . '</a></p>';
 	$foogallery = FooGallery::get_by_slug( $gallery );
 
@@ -32,7 +33,7 @@ if ( !empty( $gallery ) ) {
 		foreach ( $current_foogallery_album->galleries() as $gallery ) {
 			$img_src  = $gallery->featured_image_src( array( 150, 150 ) );
 			$images   = $gallery->image_count();
-			$gallery_link = add_query_arg('gallery', $gallery->slug );
+			$gallery_link = foogallery_album_build_gallery_link( $gallery );
 			?>
 			<li>
 				<div class="foogallery-pile">
