@@ -194,6 +194,8 @@ class FooGallery extends stdClass {
 
 			if ( ! empty( $this->attachment_ids ) ) {
 
+				add_action( 'pre_get_posts', array( $this, 'force_gallery_ordering' ), 99 );
+
 				$attachments = get_posts( array(
 					'post_type'      => 'attachment',
 					'posts_per_page' => -1,
@@ -201,11 +203,27 @@ class FooGallery extends stdClass {
 					'orderby'        => 'post__in',
 				) );
 
+				remove_action( 'pre_get_posts', array( $this, 'force_gallery_ordering' ), 99 );
+
 				$this->_attachments = array_map( array( 'FooGalleryAttachment', 'get' ), $attachments );
 			}
 		}
 
 		return $this->_attachments;
+	}
+
+	/**
+	 * This forces the attachments to be fetched using the correct ordering.
+	 * Some plugins / themes override this globally for some reason, so this is a preventative measure to ensure sorting is correct
+	 * @param $query WP_Query
+	 */
+	public function force_gallery_ordering( $query ) {
+		//only care about attachments
+		if ( array_key_exists( 'post_type', $query->query ) &&
+		     'attachment' === $query->query['post_type'] ) {
+			$query->set( 'orderby', 'post__in' );
+			$query->set( 'order', 'ASC' );
+		}
 	}
 
 	/**
