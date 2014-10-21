@@ -171,3 +171,9 @@
 .foogallery_metabox_field-thumb_size input[type="number"] {
 	margin-right: 10px;
 }
+
+.gallery_template_field h4 {
+	font-size: 1.2em;
+	border-bottom: solid 1px #EEE;
+	padding-bottom: 5px;
+}

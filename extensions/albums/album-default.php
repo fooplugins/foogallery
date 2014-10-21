@@ -14,8 +14,9 @@ if ( !empty( $gallery ) ) {
 	echo '<h2>' . $foogallery->name . '</h2>';
 	echo do_shortcode('[foogallery id="' . $foogallery->ID . '"]');
 } else {
-	$title_bg = $current_foogallery_album->get_meta( 'title_bg', '' );
-	$title_font_color = $current_foogallery_album->get_meta( 'title_font_color', '' );
+	$title_bg = foogallery_album_template_setting( 'title_bg', '#ffffff' );
+	$title_font_color = foogallery_album_template_setting( 'title_font_color', '#000000' );
+	$args = foogallery_album_template_setting( 'thumbnail_dimensions', array() );
 	if ( !empty( $title_bg ) || !empty( $title_font_color ) ) {
 		echo '<style type="text/css">';
 		if ( !empty( $title_bg ) ) {
@@ -31,7 +32,8 @@ if ( !empty( $gallery ) ) {
 	<ul class="foogallery-album-gallery-list">
 		<?php
 		foreach ( $current_foogallery_album->galleries() as $gallery ) {
-			$img_src  = $gallery->featured_image_src( array( 150, 150 ) );
+			$attachment = $gallery->featured_attachment();
+			$img_html  = $attachment->html_img( $args );
 			$images   = $gallery->image_count();
 			$gallery_link = foogallery_album_build_gallery_link( $gallery );
 			?>
@@ -39,7 +41,7 @@ if ( !empty( $gallery ) ) {
 				<div class="foogallery-pile">
 					<div class="foogallery-pile-inner">
 						<a href="<?php echo $gallery_link; ?>">
-							<img src="<?php echo $img_src; ?>"/>
+							<?php echo $img_html; ?>
 							<?php
 
 							$title = empty( $gallery->name ) ?

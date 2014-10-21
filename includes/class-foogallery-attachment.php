@@ -93,6 +93,14 @@ if ( ! class_exists( 'FooGalleryAttachment' ) ) {
 				$attr = array_merge( $attr, $args['image_attributes'] );
 			}
 
+			//check for width and height args and add those to the image
+			if ( isset( $args['width'] ) && intval( $args['width'] ) > 0 ) {
+				$attr['width'] = $args['width'];
+			}
+			if ( isset( $args['height'] ) && intval( $args['height'] ) > 0 ) {
+				$attr['height'] = $args['height'];
+			}
+
 			$attr = apply_filters( 'foogallery_attachment_html_image_attributes', $attr, $args, $this );
 			$attr = array_map( 'esc_attr', $attr );
 			$html = '<img ';

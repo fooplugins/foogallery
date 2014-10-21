@@ -38,6 +38,18 @@ function foogallery_album_templates() {
 				'default' => '&laquo; back to album'
 			),
 			array(
+				'id'      => 'thumbnail_dimensions',
+				'title'   => __( 'Thumbnail Size', 'foogallery' ),
+				'desc'    => __( 'Choose the size of your gallery thumbnails.', 'foogallery' ),
+				'section' => __( 'Thumbnail Settings', 'foogallery' ),
+				'type'    => 'thumb_size',
+				'default' => array(
+					'width' => get_option( 'thumbnail_size_w' ),
+					'height' => get_option( 'thumbnail_size_h' ),
+					'crop' => true,
+				),
+			),
+			array(
 				'id'      => 'title_bg',
 				'title'   => __( 'Title Background Color', 'foogallery' ),
 				'desc'    => __( 'The color of the title that overlays the album thumbnails', 'foogallery' ),
@@ -49,7 +61,7 @@ function foogallery_album_templates() {
 				'title'   => __( 'Title Text Color', 'foogallery' ),
 				'desc'    => __( 'The color of the title text that overlays the album thumbnails', 'foogallery' ),
 				'type'    => 'colorpicker',
-				'default' => ''
+				'default' => '#000000'
 			)
 		)
 	);
@@ -86,4 +98,35 @@ function foogallery_album_remove_gallery_from_link() {
 	$url = untrailingslashit( remove_query_arg('gallery') );
 
 	return str_replace( 'gallery/' . $gallery, '', $url);
+}
+
+/**
+ * Get a foogallery album template setting for the current foogallery that is being output to the frontend
+ * @param string	$key
+ * @param string	$default
+ *
+ * @return bool
+ */
+function foogallery_album_template_setting( $key, $default = '' ) {
+	global $current_foogallery_album;
+	global $current_foogallery_album_arguments;
+	global $current_foogallery_album_template;
+
+	$settings_key = "{$current_foogallery_album_template}_{$key}";
+
+	if ( $current_foogallery_album_arguments && array_key_exists( $key, $current_foogallery_album_arguments ) ) {
+		//try to get the value from the arguments
+		$value = $current_foogallery_album_arguments[ $key ];
+
+	} else if ( $current_foogallery_album->settings && array_key_exists( $settings_key, $current_foogallery_album->settings ) ) {
+		//then get the value out of the saved gallery settings
+		$value = $current_foogallery_album->settings[ $settings_key ];
+	} else {
+		//otherwise set it to the default
+		$value = $default;
+	}
+
+	$value = apply_filters( 'foogallery_album_template_setting-' . $key, $value );
+
+	return $value;
 }

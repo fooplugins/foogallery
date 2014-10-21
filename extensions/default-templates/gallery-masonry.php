@@ -20,6 +20,13 @@ if ( ! foo_check_wp_version_at_least( '3.9' ) ) {} ?>
 		width: <?php echo $width; ?>px;
 	}
 
+	#foogallery-gallery-<?php echo $current_foogallery->ID; ?> .item a img {
+		transition: all 0.2s linear;
+		-webkit-transition: all 0.2s linear; /** Chrome & Safari **/
+		-moz-transition: all 0.2s linear; /** Firefox **/
+		-o-transition: all 0.2s linear; /** Opera **/
+	}
+
 	#foogallery-gallery-<?php echo $current_foogallery->ID; ?> .item a:hover img {
 		-webkit-transform: scale(1.05);
 		-moz-transform: scale(1.05);

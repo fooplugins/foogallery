@@ -219,8 +219,6 @@ class FooGalleryAlbum extends stdClass {
 			return $default;
 		}
 
-		$key = $this->album_template . '_' . $key;
-
 		$value = array_key_exists( $key, $this->settings ) ? $this->settings[ $key ] : null;
 
 		if ( $value === null ) {
