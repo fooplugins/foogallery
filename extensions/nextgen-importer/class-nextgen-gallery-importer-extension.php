@@ -6,6 +6,7 @@ if ( ! class_exists( 'FooGallery_Nextgen_Gallery_Importer_Extension' ) ) {
 
 	require_once 'class-nextgen-helper.php';
 	require_once 'class-nextgen-import-progress.php';
+	require_once 'class-nextgen-import-progress-album.php';
 
 	class FooGallery_Nextgen_Gallery_Importer_Extension {
 

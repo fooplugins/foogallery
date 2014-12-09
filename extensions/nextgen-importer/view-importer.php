@@ -8,6 +8,11 @@ if ( isset( $_POST['foogallery_nextgen_reset'] ) ) {
 }
 ?>
 <style>
+	.foo-nav-tabs a:focus {
+		-webkit-box-shadow: none;
+		box-shadow: none;
+	}
+
 	.spinner.shown {
 		display: inline !important;
 		margin: 0;
@@ -44,6 +49,10 @@ if ( isset( $_POST['foogallery_nextgen_reset'] ) ) {
 	#nextgen_import_form .dashicons-arrow-right {
 		font-size: 2em;
 		margin-top: -0.2em;
+	}
+
+	.nextgen_import_container {
+		margin-top: 10px;
 	}
 </style>
 <script>
@@ -112,14 +121,30 @@ if ( isset( $_POST['foogallery_nextgen_reset'] ) ) {
 				return false;
 			}
 		});
+
+		$('.foo-nav-tabs').on('click', 'a', function (e) {
+			$('.nextgen_import_container').hide();
+			var tab = $(this).data('tab');
+			$('#' + tab).show();
+			$('.nav-tab').removeClass('nav-tab-active');
+			$(this).addClass('nav-tab-active');
+		});
 	});
 </script>
 <div class="wrap about-wrap">
-	<h2><?php _e( 'NextGen Gallery Importer', 'foogallery' ); ?></h2>
+	<h2><?php _e( 'NextGen Gallery And Album Importer', 'foogallery' ); ?></h2>
 
 	<div class="foogallery-help">
-		<?php printf( __( 'Choose the NextGen galleries you want to import into %s. Please note that importing galleries with lots of images can take a while.', 'foogallery' ), foogallery_plugin_name() ); ?>
+		<?php printf( __( 'Choose the NextGen galleries and albums you want to import into %s.', 'foogallery' ), foogallery_plugin_name() ); ?><br />
+		<?php _e('Please note: importing large galleries with lots of images can take a while!', 'foogallery' ); ?>
 	</div>
+
+	<h2 class="foo-nav-tabs nav-tab-wrapper">
+		<a href="#galleries" data-tab="nextgen_import_galleries" class="nav-tab nav-tab-active"><?php _e('Galleries', 'foogallery'); ?></a>
+		<a href="#albums" data-tab="nextgen_import_albums" class="nav-tab"><?php _e('Albums', 'foogallery'); ?></a>
+	</h2>
+
+	<div class="nextgen_import_container" id="nextgen_import_galleries">
 	<?php
 	$galleries = $nextgen->get_galleries();
 	if ( ! $galleries ) {
@@ -129,4 +154,16 @@ if ( isset( $_POST['foogallery_nextgen_reset'] ) ) {
 			<?php $nextgen->render_import_form( $galleries ); ?>
 		</form>
 	<?php } ?>
+	</div>
+	<div class="nextgen_import_container" id="nextgen_import_albums" style="display: none">
+	<?php
+	$albums = $nextgen->get_albums();
+	if ( ! $albums ) {
+		_e( 'There are no NextGen albums to import!', 'foogallery' );
+	} else { ?>
+		<form id="nextgen_import_album_form" method="POST">
+			<?php $nextgen->render_album_import_form( $albums ); ?>
+		</form>
+	<?php } ?>
+	</div>
 </div>

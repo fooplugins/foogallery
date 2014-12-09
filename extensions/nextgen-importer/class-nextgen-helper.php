@@ -6,9 +6,14 @@ if ( ! class_exists( 'FooGallery_NextGen_Helper' ) ) {
 
 		const NEXTGEN_TABLE_GALLERY          = 'ngg_gallery';
 		const NEXTGEN_TABLE_PICTURES         = 'ngg_pictures';
+		const NEXTGEN_TABLE_ALBUMS           = 'ngg_album';
+
 		const NEXTGEN_OPTION_IMPORT_CURRENT  = 'foogallery_nextgen_import-current';
 		const NEXTGEN_OPTION_IMPORT_PROGRESS = 'foogallery_nextgen_import-progress';
 		const NEXTGEN_OPTION_IMPORT_IN_PROGRESS  = 'foogallery_nextgen_import-importing';
+
+		const NEXTGEN_OPTION_IMPORT_CURRENT_ALBUM  = 'foogallery_nextgen_import-current-album';
+		const NEXTGEN_OPTION_IMPORT_PROGRESS_ALBUM = 'foogallery_nextgen_import-progress-album';
 
 		/**
 		 * @TODO
@@ -25,6 +30,12 @@ if ( ! class_exists( 'FooGallery_NextGen_Helper' ) ) {
 			return $wpdb->get_results( "select gid, name, title, galdesc,
 (select count(*) from {$picture_table} where galleryid = gid) 'image_count'
 from {$gallery_table}" );
+		}
+
+		function get_albums() {
+			global $wpdb;
+			$album_table = $wpdb->prefix . self::NEXTGEN_TABLE_ALBUMS;
+			return $wpdb->get_results(" select * from {$album_table}");
 		}
 
 		function get_gallery( $id ) {
@@ -147,6 +158,22 @@ where gid = %d", $id ) );
 			return  $imported / $total * 100;
 		}
 
+		function get_overall_progress_for_albums() {
+			$all_progress       = get_option( self::NEXTGEN_OPTION_IMPORT_CURRENT_ALBUM, array() );
+			$total = 0;
+			$imported = 0;
+			foreach ( $all_progress as $id => $progress ) {
+				if ( $progress->is_part_of_current_import ) {
+					$total += $progress->import_count;
+					$imported += count( $progress->attachments );
+				}
+			}
+			if ( 0 === $total ) {
+				return 100;
+			}
+			return  $imported / $total * 100;
+		}
+
 		function get_next_gallery_to_import() {
 			$all_progress       = get_option( self::NEXTGEN_OPTION_IMPORT_PROGRESS, array() );
 
@@ -241,15 +268,22 @@ where gid = %d", $id ) );
 				</thead>
 				<tbody>
 			<?php
+			$counter = 0;
 			foreach ( $galleries as $gallery ) {
+				$counter++;
 				$progress    = $this->get_import_progress( $gallery->gid );
 				$done        = $progress->is_completed();
 				$edit_link	 = '';
+				$foogallery = false;
 				if ( $progress->foogallery_id > 0 ) {
 					$foogallery = FooGallery::get_by_id( $progress->foogallery_id );
-					$edit_link  = '<a href="' . admin_url( 'post.php?post=' . $progress->foogallery_id . '&action=edit' ) . '">' . $foogallery->name . '</a>';
+					if ( $foogallery ) {
+						$edit_link = '<a href="' . admin_url( 'post.php?post=' . $progress->foogallery_id . '&action=edit' ) . '">' . $foogallery->name . '</a>';
+					} else {
+						$done = false;
+					}
 				} ?>
-				<tr>
+				<tr class="<?php echo ($counter % 2 === 0) ? 'alternate' : ''; ?>">
 					<?php if ( ! $importing && ! $done && $all_imports_completed ) { ?>
 						<th scope="row" class="column-cb check-column">
 							<input name="nextgen-id[]" type="checkbox" checked="checked" value="<?php echo $gallery->gid; ?>">
@@ -266,7 +300,7 @@ where gid = %d", $id ) );
 						<?php echo $gallery->title . ' ' . sprintf( __( '(%s images)', 'foogallery' ), $gallery->image_count ); ?>
 					</td>
 					<td>
-					<?php if ( $progress->foogallery_id > 0 ) {
+					<?php if ( $foogallery ) {
 						echo $edit_link;
 					} else { ?>
 						<input name="foogallery-name-<?php echo $gallery->gid; ?>" value="<?php echo $gallery->title; ?>">
@@ -316,5 +350,152 @@ where gid = %d", $id ) );
 				</div>
 			<?php }
 		}
+
+		function render_album_import_form( $albums = false ) {
+			if ( false === $albums ) {
+				$albums = $this->get_albums();
+			}
+			$has_imports = get_option( self::NEXTGEN_OPTION_IMPORT_PROGRESS_ALBUM );
+			?>
+			<table class="wp-list-table widefat" cellspacing="0">
+				<thead>
+				<tr>
+					<th scope="col" class="manage-column">
+						<span><?php _e( 'NextGen Album', 'foogallery' ); ?></span>
+					</th>
+					<th scope="col" class="manage-column">
+						<span><?php _e( 'Album Name', 'foogallery' ); ?></span>
+					</th>
+					<th scope="col" class="manage-column">
+						<span><?php _e( 'NextGen Galleries', 'foogallery' ); ?></span>
+					</th>
+					<th scope="col" class="manage-column">
+						<span><?php _e( 'Import Options', 'foogallery' ); ?></span>
+					</th>
+				</tr>
+				</thead>
+				<tbody>
+				<?php
+				$counter = 0;
+				foreach ( $albums as $album ) {
+					$counter++;
+					$progress    = $this->get_import_progress_for_album( $album->id );
+					$done        = $progress->is_completed();
+					$edit_link	 = '';
+					$galleries   = $this->nextgen_unserialize( $album->sortorder );
+					$foogallery_album = false;
+					if ( $progress->foogallery_album_id > 0 ) {
+						$foogallery_album = FooGalleryAlbum::get_by_id( $progress->foogallery_album_id );
+						if ( $foogallery_album ) {
+							$edit_link = '<a href="' . admin_url( 'post.php?post=' . $progress->foogallery_album_id . '&action=edit' ) . '">' . $foogallery_album->name . '</a>';
+						} else {
+							$done = false;
+						}
+					} ?>
+					<tr class="<?php echo ($counter % 2 === 0) ? 'alternate' : ''; ?>">
+						<td>
+							<?php echo $album->name; ?>
+						</td>
+						<td>
+							<?php if ( $foogallery_album ) {
+								echo $edit_link;
+							} else { ?>
+								<input name="foogallery-name-<?php echo $album->id; ?>" value="<?php echo $album->name; ?>">
+							<?php } ?>
+						</td>
+						<td>
+							<ul class="ul-disc" style="margin: 0 0 0 20px;">
+							<?php
+							$import_gallery_count = 0;
+							foreach ( $galleries as $gallery_id ) {
+								$nextgen_gallery = $this->get_gallery( $gallery_id );
+								$gallery_progress = $this->get_import_progress( $gallery_id );
+								$gallery_completed = $gallery_progress->is_completed();
+								if ( $gallery_completed ) {
+									$import_gallery_count++;
+								}
+								echo '<li>';
+								echo $gallery_completed ? '' : '<span style="text-decoration:line-through">';
+								echo $nextgen_gallery->title;
+								echo $gallery_completed ? '' : '</span>';
+								echo ' (<span class="nextgen-import-progress-' . $gallery_progress->status . '">';
+								echo $gallery_completed ? 'imported' : 'not imported';
+								echo '</span>)</li>';
+							}
+							?>
+							</ul>
+						</td>
+						<td>
+							<span class="nextgen-import-progress nextgen-import-progress-<?php echo $progress->status; ?>">
+								<?php echo $progress->message(); ?>
+							</span>
+							<?php
+
+							echo '<br />';
+							if ( !$progress->is_completed() ) {
+								if ( $import_gallery_count > 0 ) {
+									echo '<input type="submit" class="button button-primary start_import" value="Import Album">';
+									echo '<br />';
+									if ( $import_gallery_count === count( $galleries ) ) {
+										_e( 'All galleries will be linked', 'foogallery' );
+									} else {
+										echo sprintf( __( '%d/%d galleries will be linked', 'foogallery' ), $import_gallery_count, count( $galleries ) );
+										echo '<br />';
+										_e ( '(Only previously imported galleries can be linked)', 'foogallery' );
+									}
+								} else {
+									_e( 'No galleries imported yet!!', 'foogallery' );
+								}
+							}
+
+							?>
+						</td>
+					</tr>
+				<?php
+				}
+				?>
+				</tbody>
+			</table>
+			<?php
+		}
+
+		function get_import_progress_for_album( $nextgen_gallery_album_id ) {
+			$progress = get_option( self::NEXTGEN_OPTION_IMPORT_PROGRESS_ALBUM );
+			if ( false !== $progress ) {
+				if ( false !== $nextgen_gallery_album_id && array_key_exists( $nextgen_gallery_album_id, $progress ) ) {
+					return $progress[ $nextgen_gallery_album_id ];
+				}
+			}
+
+			return new FooGallery_NextGen_Import_Progress_Album();
+		}
+
+		/**
+		 * Unserialize NextGEN data
+		 */
+		function nextgen_unserialize($value) {
+			$retval = NULL;
+
+			if ( is_string( $value ) ) {
+				$retval = stripcslashes( $value );
+
+				if ( strlen( $value ) > 1 ) {
+					// We can't always rely on base64_decode() or json_decode() to return FALSE as their documentation
+					// claims so check if $retval begins with a: as that indicates we have a serialized PHP object.
+					if ( strpos( $retval, 'a:' ) === 0 ) {
+						$er = error_reporting(0);
+						$retval = unserialize($value);
+						error_reporting($er);
+					} else {
+						// We use json_decode() here because PHP's unserialize() is not Unicode safe.
+						$retval = json_decode(base64_decode($retval), TRUE);
+					}
+				}
+			}
+
+			return $retval;
+		}
+
 	}
+
 }
