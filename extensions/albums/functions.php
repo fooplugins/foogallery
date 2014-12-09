@@ -28,7 +28,7 @@ function foogallery_album_shortcode_tag() {
 function foogallery_album_templates() {
 	$album_templates[] = array(
 		'slug'        => 'default',
-		'name'        => __( 'Default Album Layout', 'foogallery' ),
+		'name'        => __( 'Responsive Album Layout', 'foogallery' ),
 		'fields'	  => array(
 			array(
 				'id'      => 'back_to_album_text',
@@ -62,6 +62,78 @@ function foogallery_album_templates() {
 				'desc'    => __( 'The color of the title text that overlays the album thumbnails', 'foogallery' ),
 				'type'    => 'colorpicker',
 				'default' => '#000000'
+			)
+		)
+	);
+
+	$album_templates[] = array(
+		'slug'        => 'stack',
+		'name'        => __( 'All-In-One Stack Album', 'foogallery' ),
+		'fields'	  => array(
+			array(
+				'id'      => 'lightbox',
+				'title'   => __( 'Lightbox', 'foogallery' ),
+				'desc'    => __( 'Choose which lightbox you want to use to display images.', 'foogallery' ),
+				'type'    => 'lightbox',
+			),
+
+			array(
+				'id'      => 'thumbnail_dimensions',
+				'title'   => __( 'Thumbnail Size', 'foogallery' ),
+				'desc'    => __( 'Choose the size of your image stack thumbnails.', 'foogallery' ),
+				'section' => __( 'Thumbnail Settings', 'foogallery' ),
+				'type'    => 'thumb_size',
+				'default' => array(
+					'width' => get_option( 'thumbnail_size_w' ),
+					'height' => get_option( 'thumbnail_size_h' ),
+					'crop' => true,
+				),
+			),
+
+			array(
+				'id'      => 'random_angle',
+				'title'   => __( 'Thumbnail Rotation', 'foogallery' ),
+				'section' => __( 'Thumbnail Settings', 'foogallery' ),
+				'desc'    => __( 'Choose how thumbnails in each gallery are shown when clicking an image stack.', 'foogallery' ),
+				'type'    => 'radio',
+				'default' => 'false',
+				'choices' =>  array(
+					'false' => __( 'Normal', 'foogallery' ),
+					'true' => __( 'Random Angles', 'foogallery' )
+				)
+			),
+
+			array(
+				'id'      => 'gutter',
+				'title'   => __( 'Thumbnail Gutter', 'foogallery' ),
+				'section' => __( 'Thumbnail Settings', 'foogallery' ),
+				'desc'    => __( 'The spacing between each image stack.', 'foogallery' ),
+				'type'    => 'number',
+				'default' => 50
+			),
+
+			array(
+				'id'      => 'delay',
+				'title'   => __( 'Expand Delay', 'foogallery' ),
+				'section' => __( 'Thumbnail Settings', 'foogallery' ),
+				'desc'    => __( 'The delay between expanding each image on a image stack.', 'foogallery' ),
+				'type'    => 'number',
+				'default' => 0
+			),
+
+			array(
+				'id'      => 'pile_angles',
+				'title'   => __( 'Image Stack Angles', 'foogallery' ),
+				'section' => __( 'Thumbnail Settings', 'foogallery' ),
+				'desc'    => __( 'The angle of the images behind the thumbnail in each image stack.', 'foogallery' ),
+				'type'    => 'radio',
+				'default' => '1',
+				'choices' =>  array(
+					'1' => __( 'Low', 'foogallery' ),
+					'2' => __( 'Normal', 'foogallery' ),
+					'3' => __( 'More Than Normal', 'foogallery' ),
+					'5' => __( 'High', 'foogallery' ),
+				)
 			)
 		)
 	);
