@@ -25,11 +25,15 @@ if ( ! class_exists( 'FooGallery_Nextgen_Gallery_Importer_Extension' ) ) {
 				add_action( 'foogallery_extension_activated-nextgen', array( $this, 'add_menu' ) );
 				add_action( 'foogallery_admin_help_after_section_one', array( $this, 'show_nextgen_import_help' ) );
 
-				// Ajax calls for importing
+				// Ajax calls for importing galleries
 				add_action( 'wp_ajax_foogallery_nextgen_import', array( $this, 'ajax_nextgen_start_import' ) );
 				add_action( 'wp_ajax_foogallery_nextgen_import_refresh', array(	$this, 'ajax_nextgen_continue_import' ) );
 				add_action( 'wp_ajax_foogallery_nextgen_import_cancel', array( $this, 'ajax_nextgen_cancel_import' ) );
 				add_action( 'wp_ajax_foogallery_nextgen_import_reset', array( $this, 'ajax_nextgen_reset_import' ) );
+
+				// Ajax calls for importing albums
+				add_action( 'wp_ajax_foogallery_nextgen_album_import_reset', array( $this, 'ajax_nextgen_reset_album_import' ) );
+				add_action( 'wp_ajax_foogallery_nextgen_album_import', array( $this, 'ajax_nextgen_start_album_import' ) );
 			}
 		}
 
@@ -103,6 +107,38 @@ if ( ! class_exists( 'FooGallery_Nextgen_Gallery_Importer_Extension' ) ) {
 				$this->nextgen->reset_import();
 
 				$this->nextgen->render_import_form();
+
+			}
+			die();
+		}
+
+		function ajax_nextgen_start_album_import() {
+			if ( check_admin_referer( 'foogallery_nextgen_album_import', 'foogallery_nextgen_album_import' ) ) {
+
+				if ( array_key_exists( 'nextgen_album_id', $_POST ) ) {
+
+					$nextgen_album_id = $_POST['nextgen_album_id'];
+					$foogallery_album_title = stripslashes( $_POST[ 'foogallery_album_name' ] );
+
+					//import the album
+					$this->nextgen->import_album( $nextgen_album_id, $foogallery_album_title );
+
+				} else {
+
+				}
+			}
+
+			$this->nextgen->render_album_import_form();
+
+			die();
+		}
+
+		function ajax_nextgen_reset_album_import() {
+			if ( check_admin_referer( 'foogallery_nextgen_album_reset', 'foogallery_nextgen_album_reset' ) ) {
+
+				//$this->nextgen->reset_import();
+
+				$this->nextgen->render_album_import_form();
 
 			}
 			die();

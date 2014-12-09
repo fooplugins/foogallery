@@ -38,6 +38,13 @@ from {$gallery_table}" );
 			return $wpdb->get_results(" select * from {$album_table}");
 		}
 
+		function get_album( $id ) {
+			global $wpdb;
+			$album_table = $wpdb->prefix . self::NEXTGEN_TABLE_ALBUMS;
+
+			return $wpdb->get_row( $wpdb->prepare( "select * from {$album_table} where id = %d", $id ) );
+		}
+
 		function get_gallery( $id ) {
 			global $wpdb;
 			$gallery_table = $wpdb->prefix . self::NEXTGEN_TABLE_GALLERY;
@@ -158,21 +165,21 @@ where gid = %d", $id ) );
 			return  $imported / $total * 100;
 		}
 
-		function get_overall_progress_for_albums() {
-			$all_progress       = get_option( self::NEXTGEN_OPTION_IMPORT_CURRENT_ALBUM, array() );
-			$total = 0;
-			$imported = 0;
-			foreach ( $all_progress as $id => $progress ) {
-				if ( $progress->is_part_of_current_import ) {
-					$total += $progress->import_count;
-					$imported += count( $progress->attachments );
-				}
-			}
-			if ( 0 === $total ) {
-				return 100;
-			}
-			return  $imported / $total * 100;
-		}
+//		function get_overall_progress_for_albums() {
+//			$all_progress       = get_option( self::NEXTGEN_OPTION_IMPORT_CURRENT_ALBUM, array() );
+//			$total = 0;
+//			$imported = 0;
+//			foreach ( $all_progress as $id => $progress ) {
+//				if ( $progress->is_part_of_current_import ) {
+//					$total += $progress->import_count;
+//					$imported += count( $progress->attachments );
+//				}
+//			}
+//			if ( 0 === $total ) {
+//				return 100;
+//			}
+//			return  $imported / $total * 100;
+//		}
 
 		function get_next_gallery_to_import() {
 			$all_progress       = get_option( self::NEXTGEN_OPTION_IMPORT_PROGRESS, array() );
@@ -334,7 +341,7 @@ where gid = %d", $id ) );
 			<?php
 			}
 			if ( $has_imports && ! $importing ) { ?>
-				<input type="submit" name="foogallery_nextgen_reset" class="button reset_import" value="<?php _e( 'Reset All Imports', 'foogallery' ); ?>">
+				<input type="submit" name="foogallery_nextgen_reset" class="button reset_import" value="<?php _e( 'Reset All Gallery Imports', 'foogallery' ); ?>">
 			<?php }
 			?>
 			<div id="import_spinner" style="width:20px">
@@ -395,12 +402,13 @@ where gid = %d", $id ) );
 					<tr class="<?php echo ($counter % 2 === 0) ? 'alternate' : ''; ?>">
 						<td>
 							<?php echo $album->name; ?>
+							<input type="hidden" class="foogallery-album-id" value="<?php echo $album->id; ?>">
 						</td>
 						<td>
 							<?php if ( $foogallery_album ) {
 								echo $edit_link;
 							} else { ?>
-								<input name="foogallery-name-<?php echo $album->id; ?>" value="<?php echo $album->name; ?>">
+								<input class="foogallery-album-name" value="<?php echo $album->name; ?>">
 							<?php } ?>
 						</td>
 						<td>
@@ -434,7 +442,8 @@ where gid = %d", $id ) );
 							echo '<br />';
 							if ( !$progress->is_completed() ) {
 								if ( $import_gallery_count > 0 ) {
-									echo '<input type="submit" class="button button-primary start_import" value="Import Album">';
+									echo '<input type="submit" class="button button-primary start_album_import" value="Import Album">';
+									echo '<div class="inline" style="width:20px"><span class="spinner"></span></div>';
 									echo '<br />';
 									if ( $import_gallery_count === count( $galleries ) ) {
 										_e( 'All galleries will be linked', 'foogallery' );
@@ -457,6 +466,13 @@ where gid = %d", $id ) );
 				</tbody>
 			</table>
 			<?php
+			wp_nonce_field( 'foogallery_nextgen_album_reset', 'foogallery_nextgen_album_reset', false );
+			wp_nonce_field( 'foogallery_nextgen_album_import', 'foogallery_nextgen_album_import', false );
+
+			if ( $has_imports ) { ?>
+				<br />
+				<input type="submit" name="foogallery_nextgen_reset_album" class="button reset_album_import" value="<?php _e( 'Reset All Album Imports', 'foogallery' ); ?>">
+			<?php }
 		}
 
 		function get_import_progress_for_album( $nextgen_gallery_album_id ) {
@@ -468,6 +484,23 @@ where gid = %d", $id ) );
 			}
 
 			return new FooGallery_NextGen_Import_Progress_Album();
+		}
+
+		function import_album( $nextgen_gallery_album_id, $foogallery_album_name ) {
+			$progress = new FooGallery_NextGen_Import_Progress_Album();
+			$progress->nextgen_album_id = $nextgen_gallery_album_id;
+			$progress->foogallery_album_title = $foogallery_album_name;
+
+			//create a new foogallery album
+			$progress->import();
+
+			$overall_progress = get_option( self::NEXTGEN_OPTION_IMPORT_PROGRESS_ALBUM );
+			$overall_progress[ $nextgen_gallery_album_id ] = $progress;
+			update_option( self::NEXTGEN_OPTION_IMPORT_PROGRESS_ALBUM, $overall_progress );
+		}
+
+		function reset_album_import() {
+			delete_option( self::NEXTGEN_OPTION_IMPORT_PROGRESS_ALBUM );
 		}
 
 		/**
