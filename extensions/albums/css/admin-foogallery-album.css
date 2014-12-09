@@ -132,6 +132,10 @@
 	display: none;
 }
 
+.foogallery-album-gallery-list .attachment-preview:before {
+	padding-top: 0;
+}
+
 .gallery_template_field td {
 	padding-bottom: 20px;
 }
@@ -181,3 +185,4 @@
 .foogallery_metabox_field-number input[type="number"] {
 	width: 10em;
 }
+
