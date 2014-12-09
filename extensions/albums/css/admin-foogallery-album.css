@@ -177,3 +177,7 @@
 	border-bottom: solid 1px #EEE;
 	padding-bottom: 5px;
 }
+
+.foogallery_metabox_field-number input[type="number"] {
+	width: 10em;
+}

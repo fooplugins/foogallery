@@ -229,7 +229,7 @@ if ( ! class_exists( 'FooGallery_Admin_Album_MetaBoxes' ) ) {
 					$fields = isset( $template['fields'] ) ? $template['fields'] : array();
 					foreach ( $fields as $field ) {
 						//allow for the field to be altered by extensions.
-						$field = apply_filters( 'foogallery_alter_album_template_field', $field, $album );
+						$field = apply_filters( 'foogallery_alter_gallery_template_field', $field, $album );
 
 						$class = "gallery_template_field gallery_template_field-{$template['slug']} gallery_template_field-{$template['slug']}-{$field['id']}";
 

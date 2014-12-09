@@ -176,10 +176,6 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Fields' ) ) {
 		function alter_gallery_template_field( $field, $gallery ) {
 			if ( $field ) {
 				switch ( $field['type'] ) {
-//					case 'thumb_size':
-//						$field['type'] = 'select';
-//						$field['choices'] = $this->get_thumb_size_choices();
-//						break;
 					case 'thumb_link':
 						$field['type'] = 'radio';
 						$field['choices'] = $this->get_thumb_link_field_choices();
