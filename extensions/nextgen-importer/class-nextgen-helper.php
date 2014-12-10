@@ -416,19 +416,34 @@ where gid = %d", $id ) );
 							<?php
 							$import_gallery_count = 0;
 							foreach ( $galleries as $gallery_id ) {
-								$nextgen_gallery = $this->get_gallery( $gallery_id );
-								$gallery_progress = $this->get_import_progress( $gallery_id );
-								$gallery_completed = $gallery_progress->is_completed();
-								if ( $gallery_completed ) {
-									$import_gallery_count++;
+								if ( 'a' === substr( $gallery_id, 0, 1 ) ) {
+									//we are dealing with an album inside the album
+									$nested_album = $this->get_album( substr( $gallery_id, 1 ) );
+									if ( $nested_album ) {
+										echo '<li>';
+										echo __('[Album] ', 'foogallery');
+										echo ' <span style="text-decoration:line-through">';
+										echo $nested_album->name;
+										echo '</span>';
+										echo ' (<span class="nextgen-import-progress-' . FooGallery_NextGen_Import_Progress::PROGRESS_ERROR . '">';
+										echo __( 'nested albums not supported', 'foogallery' );
+										echo '</span>)</li>';
+									}
+								} else {
+									$nextgen_gallery = $this->get_gallery( $gallery_id );
+									echo '<li>';
+									$gallery_progress  = $this->get_import_progress( $gallery_id );
+									$gallery_completed = $gallery_progress->is_completed();
+									if ( $gallery_completed ) {
+										$import_gallery_count ++;
+									}
+									echo $gallery_completed ? '' : '<span style="text-decoration:line-through">';
+									echo $nextgen_gallery->title;
+									echo $gallery_completed ? '' : '</span>';
+									echo ' (<span class="nextgen-import-progress-' . $gallery_progress->status . '">';
+									echo $gallery_completed ? __( 'imported', 'foogallery' ) : __( 'not imported', 'foogallery' );
+									echo '</span>)</li>';
 								}
-								echo '<li>';
-								echo $gallery_completed ? '' : '<span style="text-decoration:line-through">';
-								echo $nextgen_gallery->title;
-								echo $gallery_completed ? '' : '</span>';
-								echo ' (<span class="nextgen-import-progress-' . $gallery_progress->status . '">';
-								echo $gallery_completed ? 'imported' : 'not imported';
-								echo '</span>)</li>';
 							}
 							?>
 							</ul>
