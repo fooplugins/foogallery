@@ -23,8 +23,12 @@ if ( isset( $_POST['foogallery_nextgen_reset'] ) ) {
 		margin: 0;
 	}
 
-	.nextgen-import-progress-not_started {
+	.nextgen-import-progress-error {
 		color: #f00 !important;
+	}
+
+	.nextgen-import-progress-not_started {
+		color: #f60 !important;
 	}
 
 	.nextgen-import-progress-started {
