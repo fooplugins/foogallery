@@ -62,7 +62,7 @@ if ( ! class_exists( 'FooGallery_Albums_PostTypes' ) ) {
 			global $post;
 
 			// Add our album messages
-			$messages[FOOGALLERY_CPT_GALLERY] = apply_filters( 'foogallery_album_posttype_update_messages',
+			$messages[FOOGALLERY_CPT_ALBUM] = apply_filters( 'foogallery_album_posttype_update_messages',
 				array(
 					0  => '',
 					1  => __( 'Album updated.', 'foogallery' ),
@@ -92,7 +92,7 @@ if ( ! class_exists( 'FooGallery_Albums_PostTypes' ) ) {
 		 */
 		function update_bulk_messages( $bulk_messages, $bulk_counts ) {
 
-			$bulk_messages[FOOGALLERY_CPT_GALLERY] = apply_filters( 'foogallery_album_posttype_bulk_update_messages',
+			$bulk_messages[FOOGALLERY_CPT_ALBUM] = apply_filters( 'foogallery_album_posttype_bulk_update_messages',
 				array(
 					'updated'   => _n( '%s Album updated.', '%s Albums updated.', $bulk_counts['updated'], 'foogallery' ),
 					'locked'    => _n( '%s Album not updated, somebody is editing it.', '%s Albums not updated, somebody is editing them.', $bulk_counts['locked'], 'foogallery' ),
