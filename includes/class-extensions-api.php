@@ -116,21 +116,19 @@ if ( ! class_exists( 'FooGallery_Extensions_API' ) ) {
 				'activated_by_default' => true,
 			);
 
-//			The album extension - coming soon!
-//			$extensions[] =	array(
-//				'slug' => 'albums',
-//				'class' => 'FooGallery_Albums_Extension',
-//				'title' => 'Albums',
-//				'categories' =>	array( 'Featured', 'Free' ),
-//				'description' => 'Group your galleries into albums. Boom!',
-//				'html' => 'Group your galleries into albums. Boom!',
-//				'author' => 'FooPlugins',
-//				'author_url' => 'http://fooplugins.com',
-//				'thumbnail' => '/extensions/albums/foogallery-albums.png',
-//				'tags' => array( 'functionality' ),
-//				'source' => 'bundled',
-//				'css_class' => 'coming_soon'
-//			);
+			$extensions[] =	array(
+				'slug' => 'albums',
+				'class' => 'FooGallery_Albums_Extension',
+				'title' => 'Albums',
+				'categories' =>	array( 'Featured', 'Free' ),
+				'description' => 'Group your galleries into albums. Boom!',
+				'html' => 'Group your galleries into albums. Boom!',
+				'author' => 'FooPlugins',
+				'author_url' => 'http://fooplugins.com',
+				'thumbnail' => '/extensions/albums/foogallery-albums.png',
+				'tags' => array( 'functionality' ),
+				'source' => 'bundled'
+			);
 
 			//FooBox lightbox
 			$extensions[] = array (
@@ -225,10 +223,17 @@ if ( ! class_exists( 'FooGallery_Extensions_API' ) ) {
 		}
 
 		/**
+		 * Clears the cached list of extensions
+		 */
+		public function clear_cached_extensions() {
+			delete_transient( FOOGALLERY_EXTENSIONS_AVAILABLE_TRANSIENT_KEY );
+		}
+
+		/**
 		 * Reload the extensions from the public endpoint
 		 */
 		public function reload() {
-			delete_transient( FOOGALLERY_EXTENSIONS_AVAILABLE_TRANSIENT_KEY );
+			$this->clear_cached_extensions();
 			$this->load_available_extensions();
 		}
 
