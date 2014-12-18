@@ -115,10 +115,12 @@ if ( ! class_exists( 'FooGalleryAttachment' ) ) {
 		/**
 		 * Returns HTML for the attachment
 		 * @param array $args
+		 * @param bool $output_image
+		 * @param bool $output_closing_tag
 		 *
 		 * @return string
 		 */
-		function html( $args = array() ) {
+		function html( $args = array(), $output_image = true, $output_closing_tag = true ) {
 			if ( empty ( $this->url ) )  {
 				return '';
 			}
@@ -180,7 +182,13 @@ if ( ! class_exists( 'FooGalleryAttachment' ) ) {
 			foreach ( $attr as $name => $value ) {
 				$html .= " $name=" . '"' . $value . '"';
 			}
-			$html .= ">{$img}</a>";
+			$html .= '>';
+			if ( $output_image ) {
+				$html .= $img;
+			}
+			if ( $output_closing_tag ) {
+				$html .= '</a>';
+			};
 
 			return apply_filters( 'foogallery_attachment_html_link', $html, $args, $this );
 		}
