@@ -5,6 +5,7 @@
 
 define( 'FOOGALLERY_CPT_GALLERY', 'foogallery' );
 define( 'FOOGALLERY_META_SETTINGS', 'foogallery_settings' );
+define( 'FOOGALLERY_META_CUSTOM_CSS', 'foogallery_custom_css' );
 define( 'FOOGALLERY_META_ATTACHMENTS', 'foogallery_attachments' );
 define( 'FOOGALLERY_META_TEMPLATE', 'foogallery_template' );
 define( 'FOOGALLERY_META_POST_USAGE', '_foogallery' );

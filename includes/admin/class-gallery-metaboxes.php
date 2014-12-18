@@ -33,7 +33,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 		function whitelist_metaboxes() {
 			return array(
 				FOOGALLERY_CPT_GALLERY => array(
-					'whitelist'  => apply_filters( 'foogallery_metabox_sanity_foogallery', array( 'submitdiv', 'slugdiv', 'postimagediv', 'foogallery_items', 'foogallery_settings', 'foogallery_help', 'foogallery_pages', ) ),
+					'whitelist'  => apply_filters( 'foogallery_metabox_sanity_foogallery', array( 'submitdiv', 'slugdiv', 'postimagediv', 'foogallery_items', 'foogallery_settings', 'foogallery_help', 'foogallery_pages', 'foogallery_customcss') ),
 					'contexts'   => array( 'normal', 'advanced', 'side', ),
 					'priorities' => array( 'high', 'core', 'default', 'low', ),
 				)
@@ -79,6 +79,15 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 					'default'
 				);
 			}
+
+			add_meta_box(
+				'foogallery_customcss',
+				__( 'Custom CSS', 'foogallery' ),
+				array( $this, 'render_customcss_metabox' ),
+				FOOGALLERY_CPT_GALLERY,
+				'normal',
+				'low'
+			);
 		}
 
 		function get_gallery( $post ) {
@@ -101,13 +110,6 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 			) {
 				//if we get here, we are dealing with the Gallery custom post type
 
-				//get previous attachments
-				//compare previous to current
-				//remove link to gallery from all attachments that have been removed
-				//add link to gallery for all attachments that have been added
-				//do nothing to all attachments that have stayed the same
-				//do this all in the gallery class
-
 				$attachments = apply_filters( 'foogallery_save_gallery_attachments', explode( ',', $_POST[FOOGALLERY_META_ATTACHMENTS] ) );
 				update_post_meta( $post_id, FOOGALLERY_META_ATTACHMENTS, $attachments );
 
@@ -119,6 +121,15 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 				update_post_meta( $post_id, FOOGALLERY_META_TEMPLATE, $_POST[FOOGALLERY_META_TEMPLATE] );
 
 				update_post_meta( $post_id, FOOGALLERY_META_SETTINGS, $settings );
+
+				$custom_css = isset($_POST[FOOGALLERY_META_CUSTOM_CSS]) ?
+					$_POST[FOOGALLERY_META_CUSTOM_CSS] : '';
+
+				if ( empty( $custom_css ) ) {
+					delete_post_meta( $post_id, FOOGALLERY_META_CUSTOM_CSS );
+				} else {
+					update_post_meta( $post_id, FOOGALLERY_META_CUSTOM_CSS, $custom_css );
+				}
 
 				do_action( 'foogallery_after_save_gallery', $post_id, $_POST );
 			}
@@ -375,6 +386,26 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 					}
 				}
 			}
+		}
+
+		function render_customcss_metabox( $post ) {
+			$gallery = $this->get_gallery( $post );
+			$custom_css = $gallery->custom_css;
+			$example = '<code>#foogallery-gallery-' . $post->ID . ' { }</code>';
+			?>
+			<p>
+				<?php printf( __( 'Add any custom CSS to target this specific gallery. For example %s', 'foogallery' ), $example ); ?>
+			</p>
+			<table id="table_styling" class="form-table">
+				<tbody>
+				<tr>
+					<td>
+						<textarea class="foogallery_metabox_custom_css" name="<?php echo FOOGALLERY_META_CUSTOM_CSS; ?>" type="text"><?php echo $custom_css; ?></textarea>
+					</td>
+				</tr>
+				</tbody>
+			</table>
+		<?php
 		}
 
 		function ajax_create_gallery_page() {

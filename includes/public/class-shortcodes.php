@@ -10,6 +10,7 @@ if ( ! class_exists( 'FooGallery_Shortcodes' ) ) {
 		function __construct() {
 			add_action( 'init', array( $this, 'init_shortcode' ) );
 			add_action( 'foogallery_load_template', array( $this, 'handle_lightbox_field' ) );
+			add_action( 'foogallery_loaded_template', array( $this, 'render_custom_css' ) );
 		}
 
 		function init_shortcode() {
@@ -49,6 +50,14 @@ if ( ! class_exists( 'FooGallery_Shortcodes' ) ) {
 				if ( false != $lightbox ) {
 					do_action( "foogallery_template_lightbox-{$lightbox}", $gallery );
 				}
+			}
+		}
+
+		function render_custom_css( $foogallery ) {
+			if ( !empty( $foogallery->custom_css ) ) {
+				echo '<style type="text/css">';
+				echo $foogallery->custom_css;
+				echo '</style>';
 			}
 		}
 	}
