@@ -110,7 +110,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Editor' ) ) {
 					display: inline-block;
 				}
 				.foogallery-modal-reload-container a.button {
-					margin-top:18px !important;
+					margin-top:15% !important;
 				}
 				.foogallery-modal-reload-container a span {
 					margin-top: 3px;
@@ -140,6 +140,8 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Editor' ) ) {
 					width: 200px;
 					height: 200px;
 					cursor: pointer;
+					background-position: center center;
+					background-size: cover !important;
 				}
 
 				/* Stacks creted by the use of generated content */
