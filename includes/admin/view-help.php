@@ -2,7 +2,7 @@
 $instance = FooGallery_Plugin::get_instance();
 $info = $instance->get_plugin_info();
 $title = apply_filters( 'foogallery_admin_help_title', sprintf( __( 'Welcome to %s %s', 'foogallery' ), foogallery_plugin_name(), $info['version'] ) );
-$tagline = apply_filters( 'foogallery_admin_help_tagline', sprintf( __( 'Thank you for choosing %s, the most intuitive and extensible gallery creation and management tool ever created for WordPress!', 'foogallery' ), foogallery_plugin_name() ) );
+$tagline = apply_filters( 'foogallery_admin_help_tagline', sprintf( __( 'Thank you for choosing %s, the most intuitive and extensible gallery creation and management tool ever created for WordPress! NOW WITH ALBUMS!', 'foogallery' ), foogallery_plugin_name() ) );
 $link = apply_filters( 'foogallery_admin_help_tagline_link', ' - <a href="http://foo.gallery" target="_blank">' . __( 'Visit our homepage', 'foogallery' ) . '</a>' );
 $show_foobot = apply_filters( 'foogallery_admin_show_foobot', true );
 $show_tabs = apply_filters( 'foogallery_admin_help_show_tabs', true );
