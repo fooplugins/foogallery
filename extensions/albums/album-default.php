@@ -8,7 +8,7 @@ $gallery = foogallery_album_get_current_gallery();;
 if ( !empty( $gallery ) ) {
 	$album_url = foogallery_album_remove_gallery_from_link();
 
-	echo '<p><a href="' . $album_url . '">' . $current_foogallery_album->get_meta( 'back_to_album_text', '&laquo; back to album' ) . '</a></p>';
+	echo '<p><a href="' . $album_url . '">' . foogallery_album_template_setting( 'back_to_album_text', '&laquo; back to album' ) . '</a></p>';
 	$foogallery = FooGallery::get_by_slug( $gallery );
 
 	echo '<h2>' . $foogallery->name . '</h2>';
