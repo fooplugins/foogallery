@@ -11,7 +11,6 @@ $gutter = foogallery_album_template_setting( 'gutter', '40' );
 $delay = foogallery_album_template_setting( 'delay', '0' );
 $pile_angles = foogallery_album_template_setting( 'pile_angles', '2' );
 ?>
-
 <div class="foogallery-container foogallery-stack-album foogallery-lightbox-<?php echo $lightbox; ?>">
 	<div class="topbar">
 		<span id="foogallery-stack-album-back-<?php echo $current_foogallery_album->ID; ?>" class="back">&larr;</span>
@@ -21,12 +20,8 @@ $pile_angles = foogallery_album_template_setting( 'pile_angles', '2' );
 		<?php
 		foreach ( $current_foogallery_album->galleries() as $gallery ) {
 			foreach ( $gallery->attachments() as $attachment ) {
-				$attachment_url = $attachment->custom_url;
-				if ( empty( $attachment_url ) ) {
-					$attachment_url = $attachment->url;
-				}
 				echo '<li data-pile="'. esc_attr($gallery->name) . '">';
-				echo '<a href="' . $attachment_url . '">';
+				echo $attachment->html( $args, false, false );
 				if ( $attachment->caption ) {
 					echo '<span class="tp-info"><span>' . $attachment->caption . '</span></span>';
 				}

@@ -241,6 +241,9 @@ if (!window.Modernizr) {
 				self.options.onLoad();
 				self._layout();
 				self._initEvents();
+				if (FOOBOX) {
+					FOOBOX.init();
+				}
 			} );
 
 		},
@@ -391,8 +394,8 @@ if (!window.Modernizr) {
 
 					var clone = $item.clone().get(0);
 					pile.elements.push( { el : clone, finalPosition : { left : 0, top : 0 } } );
-					$( clone ).appendTo( self.el );
-
+					var $clone = $(clone);
+					$clone.appendTo(self.el);
 				}
 
 			} );
@@ -422,7 +425,7 @@ if (!window.Modernizr) {
 						$el.css( extraStyle ).data( 'extraStyle', extraStyle );
 					}
 					else if( pile.substr( 0, 6 ) !== 'nopile' ) {
-						$el.data( 'front', true ).append( '<div class="tp-title"><span>' + pile + '</span><span>' + len + '</span></div>' );
+						$el.data( 'front', true ).append( '<div class="tp-title-cover"><div class="tp-title"><span>' + pile + '</span><span>' + len + '</span></div></div>' );
 					}
 
 					$el.css( styleCSS ).data( {
