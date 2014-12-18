@@ -241,7 +241,7 @@ if (!window.Modernizr) {
 				self.options.onLoad();
 				self._layout();
 				self._initEvents();
-				if (FOOBOX) {
+				if (typeof FOOBOX != 'undefined') {
 					FOOBOX.init();
 				}
 			} );
