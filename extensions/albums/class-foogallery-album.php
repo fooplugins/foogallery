@@ -45,6 +45,7 @@ class FooGalleryAlbum extends stdClass {
 		$this->gallery_ids = is_array( $album_meta ) ? array_filter( $album_meta ) : array();
 		$this->album_template = get_post_meta( $post->ID, FOOGALLERY_ALBUM_META_TEMPLATE, true );
 		$this->settings = get_post_meta( $post->ID, FOOGALLERY_META_SETTINGS, true );
+		$this->custom_css = get_post_meta( $post->ID, FOOGALLERY_META_CUSTOM_CSS, true );
 		do_action( 'foogallery_foogallery-album_instance_after_load', $this, $post );
 	}
 

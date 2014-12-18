@@ -9,6 +9,7 @@ if ( ! class_exists( 'FooGallery_Album_Shortcodes' ) ) {
 
 		function __construct() {
 			add_action( 'init', array( $this, 'init_shortcode' ) );
+			add_action( 'foogallery_loaded_album_template', array( $this, 'render_custom_css' ) );
 		}
 
 		function init_shortcode() {
@@ -34,6 +35,14 @@ if ( ! class_exists( 'FooGallery_Album_Shortcodes' ) ) {
 			$output_string = ob_get_contents();
 			ob_end_clean();
 			return $output_string;
+		}
+
+		function render_custom_css( $foogallery_album ) {
+			if ( !empty( $foogallery_album->custom_css ) ) {
+				echo '<style type="text/css">';
+				echo $foogallery_album->custom_css;
+				echo '</style>';
+			}
 		}
 	}
 }

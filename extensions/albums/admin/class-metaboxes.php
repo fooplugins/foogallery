@@ -62,6 +62,15 @@ if ( ! class_exists( 'FooGallery_Admin_Album_MetaBoxes' ) ) {
 			);
 
 			add_meta_box(
+				'foogalleryalbum_customcss',
+				__( 'Custom CSS', 'foogallery' ),
+				array( $this, 'render_customcss_metabox' ),
+				FOOGALLERY_CPT_ALBUM,
+				'normal',
+				'low'
+			);
+
+			add_meta_box(
 				'foogalleryalbum_shortcode',
 				__( 'Album Shortcode', 'foogallery' ),
 				array( $this, 'render_shortcode_metabox' ),
@@ -102,6 +111,15 @@ if ( ! class_exists( 'FooGallery_Admin_Album_MetaBoxes' ) ) {
 				$settings = apply_filters( 'foogallery_save_album_settings', $settings );
 
 				update_post_meta( $post_id, FOOGALLERY_META_SETTINGS, $settings );
+
+				$custom_css = isset($_POST[FOOGALLERY_META_CUSTOM_CSS]) ?
+					$_POST[FOOGALLERY_META_CUSTOM_CSS] : '';
+
+				if ( empty( $custom_css ) ) {
+					delete_post_meta( $post_id, FOOGALLERY_META_CUSTOM_CSS );
+				} else {
+					update_post_meta( $post_id, FOOGALLERY_META_CUSTOM_CSS, $custom_css );
+				}
 
 				do_action( 'foogallery_after_save_album', $post_id, $_POST );
 			}
@@ -264,6 +282,26 @@ if ( ! class_exists( 'FooGallery_Admin_Album_MetaBoxes' ) ) {
 					}
 				}
 				?>
+				</tbody>
+			</table>
+		<?php
+		}
+
+		function render_customcss_metabox( $post ) {
+			$album = $this->get_album( $post );
+			$custom_css = $album->custom_css;
+			$example = '<code>#foogallery-album-' . $post->ID . ' { }</code>';
+			?>
+			<p>
+				<?php printf( __( 'Add any custom CSS to target this specific album. For example %s', 'foogallery' ), $example ); ?>
+			</p>
+			<table id="table_styling" class="form-table">
+				<tbody>
+					<tr>
+						<td>
+							<textarea class="foogallery_metabox_custom_css" name="<?php echo FOOGALLERY_META_CUSTOM_CSS; ?>" type="text"><?php echo $custom_css; ?></textarea>
+						</td>
+					</tr>
 				</tbody>
 			</table>
 		<?php
