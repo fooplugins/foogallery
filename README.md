@@ -53,7 +53,7 @@ Built-in Gallery Templates
 Built-in Album Templates
 
 *	Responsive Album Layout
-*	All-in-one Stack Album
+*	All-in-one Stack Album (using a modified version of [Codrops' Stapel Plugin](https://github.com/codrops/Stapel))
 
 Extensions:
 
