@@ -341,3 +341,17 @@ function foogallery_build_class_attribute( $gallery ) {
 
 	return implode( ' ', $classes );
 }
+
+/**
+ * Render a foogallery
+ *
+ * @param $gallery_id int The id of the foogallery you want to render
+ */
+function foogallery_render_gallery( $gallery_id ) {
+	//create new instance of template engine
+	$engine = new FooGallery_Template_Loader();
+
+	$engine->render_template( array(
+		'id' => $gallery_id
+	) );
+}
