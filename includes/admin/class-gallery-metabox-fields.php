@@ -164,6 +164,10 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Fields' ) ) {
 					break;
 			}
 
+			if (!empty($suffix)) {
+				echo $suffix;
+			}
+
 			echo '</div>';
 			if ( isset( $desc ) ) {
 				echo '<small>' . $desc . '</small>';
