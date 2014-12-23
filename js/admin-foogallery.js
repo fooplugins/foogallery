@@ -213,6 +213,8 @@
 
 		//init any colorpickers
 		$('.colorpicker').spectrum({
+			preferredFormat: "rgb",
+			showInput: true,
 			clickoutFiresChange: true
 		});
     };

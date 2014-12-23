@@ -16,10 +16,10 @@
 			});
 
 		//init any colorpickers
-		$('.minicolors').minicolors({
-			position: 'top left',
-			theme: 'default',
-			opacity: false
+		$('.colorpicker').spectrum({
+			preferredFormat: "rgb",
+			showInput: true,
+			clickoutFiresChange: true
 		});
 	};
 

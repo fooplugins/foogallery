@@ -321,11 +321,11 @@ if ( ! class_exists( 'FooGallery_Admin_Album_MetaBoxes' ) ) {
 				$url = FOOGALLERY_URL . 'lib/zeroclipboard/ZeroClipboard.min.js';
 				wp_enqueue_script( 'foogallery-zeroclipboard', $url, array( 'jquery' ), FOOGALLERY_VERSION );
 
-				//minicolors needed for the colorpicker field
-				$url = FOOGALLERY_URL . 'lib/minicolors/jquery.minicolors.min.js';
-				wp_enqueue_script( 'foogallery-minicolors', $url, array('jquery'), FOOGALLERY_VERSION );
-				$url = FOOGALLERY_URL . 'lib/minicolors/jquery.minicolors.css';
-				wp_enqueue_style( 'foogallery-minicolors', $url, array(), FOOGALLERY_VERSION );
+				//spectrum needed for the colorpicker field
+				$url = FOOGALLERY_URL . 'lib/spectrum/spectrum.js';
+				wp_enqueue_script( 'foogallery-spectrum', $url, array('jquery'), FOOGALLERY_VERSION );
+				$url = FOOGALLERY_URL . 'lib/spectrum/spectrum.css';
+				wp_enqueue_style( 'foogallery-spectrum', $url, array(), FOOGALLERY_VERSION );
 			}
 		}
 	}
