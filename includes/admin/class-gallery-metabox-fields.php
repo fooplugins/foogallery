@@ -102,7 +102,10 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Fields' ) ) {
 					break;
 
 				case 'colorpicker':
-					echo '<input class="minicolors" type="text" id="FooGallerySettings_' . $id . '" name="' . FOOGALLERY_META_SETTINGS . '[' . $id . ']" value="' . esc_attr( $field['value'] ) . '" />';
+
+					$opacity_attribute = empty($opacity) ? '' : ' data-show-alpha="true"';
+
+					echo '<input ' . $opacity_attribute . ' class="colorpicker" type="text" id="FooGallerySettings_' . $id . '" name="' . FOOGALLERY_META_SETTINGS . '[' . $id . ']" value="' . esc_attr( $field['value'] ) . '" />';
 
 					break;
 

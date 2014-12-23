@@ -211,6 +211,10 @@
                 }
             });
 
+		//init any colorpickers
+		$('.colorpicker').spectrum({
+			clickoutFiresChange: true
+		});
     };
 
 }(window.FOOGALLERY = window.FOOGALLERY || {}, jQuery));
