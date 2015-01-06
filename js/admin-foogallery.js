@@ -23,30 +23,31 @@
 		}
     };
 
+	FOOGALLERY.settingsChanged = function() {
+		var selectedTemplate = $('#FooGallerySettings_GalleryTemplate').val();
+
+		//hide all template fields
+		$('.foogallery-metabox-settings .gallery_template_field').not('.gallery_template_field_selector').hide();
+
+		//show all fields for the selected template only
+		$('.foogallery-metabox-settings .gallery_template_field-' + selectedTemplate).show();
+
+		//include a preview CSS if possible
+		FOOGALLERY.includePreviewCss();
+
+		//trigger a change so custom template js can do something
+		FOOGALLERY.triggerTemplateChangedEvent();
+	};
+
 	FOOGALLERY.initSettings = function() {
-		$('#FooGallerySettings_GalleryTemplate').change(function() {
-			var $this = $(this),
-				selectedTemplate = $this.val(),
-				selectedPreviewCss = $this.find(":selected").data('preview-css');
-
-			//hide all template fields
-			$('.foogallery-metabox-settings .gallery_template_field').not('.gallery_template_field_selector').hide();
-
-			//show all fields for the selected template only
-			$('.foogallery-metabox-settings .gallery_template_field-' + selectedTemplate).show();
-
-			//include a preview CSS if possible
-			FOOGALLERY.includePreviewCss();
-
-			//trigger a change so custom template js can do something
-			FOOGALLERY.triggerTemplateChangedEvent();
-		});
+		$('#FooGallerySettings_GalleryTemplate').change(FOOGALLERY.settingsChanged);
 
 		//include our selected preview CSS
 		FOOGALLERY.includePreviewCss();
 
 		//trigger this onload too!
 		FOOGALLERY.triggerTemplateChangedEvent();
+		FOOGALLERY.settingsChanged();
 	};
 
 	FOOGALLERY.includePreviewCss = function() {
