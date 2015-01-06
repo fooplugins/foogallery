@@ -33,6 +33,8 @@ if ( ! class_exists( 'FooGalleryAttachment' ) ) {
 			$this->url = '';
 			$this->width = 0;
 			$this->height = 0;
+			$this->custom_url = '';
+			$this->custom_target = '';
 		}
 
 		/**
