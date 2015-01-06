@@ -46,9 +46,9 @@ Features:
 Built-in Gallery Templates
 
 *	Responsive Image Gallery
-*	Masonry Gallery
+*	Masonry Gallery ([http://masonry.desandro.com](http://masonry.desandro.com/))
 *	Simple Portfolio
-*	Justified Gallery
+*	Justified Gallery ([http://miromannino.github.io/Justified-Gallery](http://miromannino.github.io/Justified-Gallery/))
 
 Built-in Album Templates
 

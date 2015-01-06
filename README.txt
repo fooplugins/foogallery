@@ -43,9 +43,9 @@ Features:
 Built-in Gallery Templates
 
 *	Responsive Image Gallery
-*	Masonry Gallery
+*	Masonry Gallery ([http://masonry.desandro.com](http://masonry.desandro.com/))
 *	Simple Portfolio
-*	Justified Gallery
+*	Justified Gallery ([http://miromannino.github.io/Justified-Gallery](http://miromannino.github.io/Justified-Gallery/))
 
 Built-in Album Templates
 
@@ -102,6 +102,12 @@ Hell, yes! Check out our [developer page](http://foo.gallery/developers/)
 5. Album Edit Page
 
 == Changelog ==
+
+= 1.2.1 =
+* Fixed bug #45 - gallery fields not showing onload
+* replaced minicolors with spectrum colorpicker
+* Allow gallery fields to have a suffix
+* Added function to render galleries "foogallery_render_gallery( $gallery_id )"
 
 = 1.2.0 =
 * Added albums extension
