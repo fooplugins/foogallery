@@ -3,12 +3,19 @@
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/fooplugins/foogallery/badges/quality-score.png?b=develop)](https://scrutinizer-ci.com/g/fooplugins/foogallery/?branch=develop)
 # Foo Gallery #
 **Contributors:** bradvin, fooplugins
+
 **Donate link:** http://fooplugins.com
+
 **Tags:** images,gallery,album,nextgen,photos,pictures,media,attachments,image gallery
+
 **Requires at least:** 3.9
+
 **Tested up to:** 4.1
+
 **Stable tag:** trunk
+
 **License:** GPLv2 or later
+
 **License URI:** http://www.gnu.org/licenses/gpl-2.0.html
 
 Foo Gallery is the most intuitive and extensible gallery management tool ever created for WordPress. Now with albums!
