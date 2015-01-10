@@ -172,6 +172,14 @@ class FooGallery extends stdClass {
 	}
 
 	/**
+	 * Returns true if the gallery is newly created and not yet saved
+	 */
+	public function is_new() {
+		$settings = get_post_meta( $this->ID, FOOGALLERY_META_SETTINGS, true );
+		return empty( $settings );
+	}
+
+	/**
 	 * Get a comma separated list of attachment ids
 	 * @return string
 	 */
@@ -345,5 +353,16 @@ class FooGallery extends stdClass {
 		}
 
 		return false;
+	}
+
+	/**
+	 * Loads default settings from another gallery if it is set on the settings page
+	 */
+	public function load_default_settings_if_new() {
+		if ( $this->is_new() ) {
+			$default_gallery_id = foogallery_get_setting( 'default_gallery_settings' );
+			$this->gallery_template = get_post_meta( $default_gallery_id, FOOGALLERY_META_TEMPLATE, true );
+			$this->settings = get_post_meta( $default_gallery_id, FOOGALLERY_META_SETTINGS, true );
+		}
 	}
 }
