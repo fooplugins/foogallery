@@ -115,6 +115,13 @@ Hell, yes! Check out our [developer page](http://foo.gallery/developers/)
 
 ## Changelog ##
 
+### 1.2.1 ###
+* Added setting to choose default gallery to copy settings from
+* Fixed bug #45 - gallery fields not showing onload
+* replaced minicolors with spectrum colorpicker
+* Allow gallery fields to have a suffix
+* Added function to render galleries "foogallery_render_gallery( $gallery_id )"
+
 ### 1.2.0 ###
 * Added albums extension
 * Added custom CSS metaboxes
