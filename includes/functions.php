@@ -230,7 +230,7 @@ function foogallery_add_submenu_page( $menu_title, $capability, $menu_slug, $fun
 function foogallery_get_all_galleries( $excludes = false ) {
 	$args = array(
 		'post_type'     => FOOGALLERY_CPT_GALLERY,
-		'post_status'	=> 'any',
+		'post_status'	=> array( 'publish', 'draft' ),
 		'cache_results' => false,
 		'nopaging'      => true,
 	);
