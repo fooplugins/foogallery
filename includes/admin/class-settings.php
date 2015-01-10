@@ -39,6 +39,21 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 				'type'    => 'checkbox',
 				'tab'     => 'general',
 			);
+
+			$galleries = foogallery_get_all_galleries();
+			$gallery_choices = array();
+			foreach ( $galleries as $gallery ) {
+				$gallery_choices[ $gallery->ID ] = $gallery->name;
+			}
+
+			$settings[] = array(
+				'id'      => 'default_gallery_settings',
+				'title'   => __( 'Default Gallery Settings', 'foogallery' ),
+				'desc'    => __( 'When creating a new gallery, it can use the settings from an existing gallery as the default settings. This will save you time when creating many galleries that all have the same look and feel.', 'foogallery' ),
+				'type'    => 'select',
+				'choices' => $gallery_choices,
+				'tab'     => 'general',
+			);
 			//endregion General
 
 	        //region Extensions Tab

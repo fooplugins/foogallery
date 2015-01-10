@@ -165,22 +165,6 @@ where gid = %d", $id ) );
 			return  $imported / $total * 100;
 		}
 
-//		function get_overall_progress_for_albums() {
-//			$all_progress       = get_option( self::NEXTGEN_OPTION_IMPORT_CURRENT_ALBUM, array() );
-//			$total = 0;
-//			$imported = 0;
-//			foreach ( $all_progress as $id => $progress ) {
-//				if ( $progress->is_part_of_current_import ) {
-//					$total += $progress->import_count;
-//					$imported += count( $progress->attachments );
-//				}
-//			}
-//			if ( 0 === $total ) {
-//				return 100;
-//			}
-//			return  $imported / $total * 100;
-//		}
-
 		function get_next_gallery_to_import() {
 			$all_progress       = get_option( self::NEXTGEN_OPTION_IMPORT_PROGRESS, array() );
 

@@ -14,7 +14,7 @@ $args['link'] = foogallery_gallery_template_setting( 'thumbnail_link', 'image' )
 //get which lightbox we want to use
 $lightbox = foogallery_gallery_template_setting( 'lightbox', 'unknown' );
 ?>
-<ul class="foogallery-container foogallery-{slug} foogallery-lightbox-<?php echo esc_attr($lightbox); ?>">
+<ul id="foogallery-gallery-<?php echo $current_foogallery->ID; ?>" class="foogallery-container foogallery-{slug} foogallery-lightbox-<?php echo esc_attr($lightbox); ?>">
 	<?php foreach ( $current_foogallery->attachments() as $attachment ) {
 		echo '<li>' . $attachment->html( $args ) . '</li>';
 	} ?>

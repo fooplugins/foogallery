@@ -1,21 +1,32 @@
 ![Plugin Banner](https://s3.amazonaws.com/foogallery/banner-772x250.jpg)
 
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/fooplugins/foogallery/badges/quality-score.png?b=develop)](https://scrutinizer-ci.com/g/fooplugins/foogallery/?branch=develop)
-# FooGallery #
+# Foo Gallery #
 **Contributors:** bradvin, fooplugins
+
 **Donate link:** http://fooplugins.com
+
 **Tags:** images,gallery,album,nextgen,photos,pictures,media,attachments,image gallery
+
 **Requires at least:** 3.9
+
 **Tested up to:** 4.1
+
 **Stable tag:** trunk
+
 **License:** GPLv2 or later
+
 **License URI:** http://www.gnu.org/licenses/gpl-2.0.html
 
-The Most Intuitive and Extensible Gallery Creation and Management Tool Ever Created for WordPress. Now with Albums!
+Foo Gallery is the most intuitive and extensible gallery management tool ever created for WordPress. Now with albums!
 
 ## Description ##
 
-Built to be simple for users and highly flexible for developers. Our #1 goal with FooGallery was to utilize as much of the core image and gallery handling functionality that is already built into WordPress as possible. The result is an intuitive gallery creation and management experience with the added benefit of the powerful features that FooGallery includes.
+Foo Gallery allows for better image gallery management within WordPress. Built to be simple for users and highly flexible for developers.
+
+Our #1 goal with Foo Gallery was to utilize as much of the core image handling functionality that already exists in WordPress.
+
+The result is an intuitive gallery creation and management experience that is easy to use and lightweight and fast.
 
 [View the FooGallery Homepage](http://foo.gallery/)
 
@@ -23,7 +34,7 @@ FooGallery was designed to be the most developer-friendly gallery plugin availab
 
 ## NEW! Albums Now Available ##
 
-Albums are now built in as an extension. Simple head over to the extensions page and activate the albums extension. A new menu item will appear that allows you to add albums just as easily as galleries.
+Albums are now built in as an extension. Simply head over to the extensions page and activate the albums extension. A new menu item will appear that allows you to add albums just as easily as galleries.
 
 Features:
 
@@ -46,14 +57,14 @@ Features:
 Built-in Gallery Templates
 
 *	Responsive Image Gallery
-*	Masonry Gallery
+*	Masonry Gallery ([http://masonry.desandro.com](http://masonry.desandro.com/))
 *	Simple Portfolio
-*	Justified Gallery
+*	Justified Gallery ([http://miromannino.github.io/Justified-Gallery](http://miromannino.github.io/Justified-Gallery/))
 
 Built-in Album Templates
 
 *	Responsive Album Layout
-*	All-in-one Stack Album
+*	All-in-one Stack Album (using a modified version of [Codrops' Stapel Plugin](https://github.com/codrops/Stapel))
 
 Extensions:
 
@@ -114,6 +125,13 @@ Hell, yes! Check out our [developer page](http://foo.gallery/developers/)
 ![Album Edit Page](https://s3.amazonaws.com/foogallery/screenshot-5.jpg)
 
 ## Changelog ##
+
+### 1.2.1 ###
+* Added setting to choose default gallery to copy settings from
+* Fixed bug #45 - gallery fields not showing onload
+* replaced minicolors with spectrum colorpicker
+* Allow gallery fields to have a suffix
+* Added function to render galleries "foogallery_render_gallery( $gallery_id )"
 
 ### 1.2.0 ###
 * Added albums extension

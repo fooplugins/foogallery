@@ -102,7 +102,10 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Fields' ) ) {
 					break;
 
 				case 'colorpicker':
-					echo '<input class="minicolors" type="text" id="FooGallerySettings_' . $id . '" name="' . FOOGALLERY_META_SETTINGS . '[' . $id . ']" value="' . esc_attr( $field['value'] ) . '" />';
+
+					$opacity_attribute = empty($opacity) ? '' : ' data-show-alpha="true"';
+
+					echo '<input ' . $opacity_attribute . ' class="colorpicker" type="text" id="FooGallerySettings_' . $id . '" name="' . FOOGALLERY_META_SETTINGS . '[' . $id . ']" value="' . esc_attr( $field['value'] ) . '" />';
 
 					break;
 
@@ -162,6 +165,10 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Fields' ) ) {
 				default:
 					do_action( 'foogallery_render_gallery_template_field_custom', $field, $gallery, $template );
 					break;
+			}
+
+			if (!empty($suffix)) {
+				echo $suffix;
 			}
 
 			echo '</div>';
