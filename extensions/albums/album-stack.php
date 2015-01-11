@@ -21,6 +21,8 @@ $pile_angles = foogallery_album_template_setting( 'pile_angles', '2' );
 		foreach ( $current_foogallery_album->galleries() as $gallery ) {
 			foreach ( $gallery->attachments() as $attachment ) {
 				echo '<li data-pile="'. esc_attr($gallery->name) . '">';
+				$args['link_attributes']['rel'] = 'gallery[' . $gallery->ID . ']';
+				$args['link_attributes']['class'] = $lightbox;
 				echo $attachment->html( $args, false, false );
 				if ( $attachment->caption ) {
 					echo '<span class="tp-info"><span>' . $attachment->caption . '</span></span>';
