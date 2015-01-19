@@ -5,6 +5,10 @@
 global $current_foogallery_album;
 global $current_foogallery_album_arguments;
 $gallery = foogallery_album_get_current_gallery();;
+$no_images_text = foogallery_album_template_setting( 'no_images_text', false );
+$single_image_text = foogallery_album_template_setting( 'single_image_text', false );
+$images_text = foogallery_album_template_setting( 'images_text', false );
+
 if ( !empty( $gallery ) ) {
 	$album_url = foogallery_album_remove_gallery_from_link();
 
@@ -33,8 +37,8 @@ if ( !empty( $gallery ) ) {
 		<?php
 		foreach ( $current_foogallery_album->galleries() as $gallery ) {
 			$attachment = $gallery->featured_attachment();
-			$img_html  = $attachment->html_img( $args );
-			$images   = $gallery->image_count();
+			$img_html = $attachment->html_img( $args );
+			$images = $gallery->image_count( $no_images_text, $single_image_text, $images_text );
 			$gallery_link = foogallery_album_build_gallery_link( $gallery );
 			?>
 			<li>

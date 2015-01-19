@@ -294,15 +294,15 @@ class FooGallery extends stdClass {
 		return '';
 	}
 
-	public function image_count() {
+	public function image_count($no_images_text = false, $singular_text = false, $plural_text = false) {
 		$count = sizeof( $this->attachment_ids );
 		switch ( $count ) {
 			case 0:
-				return __( 'No images', 'foogallery' );
+				return $no_images_text === false ? __( 'No images', 'foogallery' ) : $no_images_text;
 			case 1:
-				return __( '1 image', 'foogallery' );
+				return $singular_text === false ? __( '1 image', 'foogallery' ) : $singular_text;
 			default:
-				return sprintf( __( '%s images', 'foogallery' ), $count );
+				return sprintf( $plural_text === false ?  __( '%s images', 'foogallery' ) : $plural_text, $count );
 		}
 	}
 

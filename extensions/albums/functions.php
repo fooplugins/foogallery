@@ -31,13 +31,6 @@ function foogallery_album_templates() {
 		'name'        => __( 'Responsive Album Layout', 'foogallery' ),
 		'fields'	  => array(
 			array(
-				'id'      => 'back_to_album_text',
-				'title'   => __( '"Back To Album" Text', 'foogallery' ),
-				'desc'    => __( 'The text that is shown at the top of the album when a gallery is shown', 'foogallery' ),
-				'type'    => 'text',
-				'default' => '&laquo; back to album'
-			),
-			array(
 				'id'      => 'thumbnail_dimensions',
 				'title'   => __( 'Thumbnail Size', 'foogallery' ),
 				'desc'    => __( 'Choose the size of your gallery thumbnails.', 'foogallery' ),
@@ -53,6 +46,7 @@ function foogallery_album_templates() {
 				'id'      => 'title_bg',
 				'title'   => __( 'Title Background Color', 'foogallery' ),
 				'desc'    => __( 'The color of the title that overlays the album thumbnails', 'foogallery' ),
+				'section' => __( 'Thumbnail Settings', 'foogallery' ),
 				'type'    => 'colorpicker',
 				'default' => '#fff'
 			),
@@ -60,8 +54,41 @@ function foogallery_album_templates() {
 				'id'      => 'title_font_color',
 				'title'   => __( 'Title Text Color', 'foogallery' ),
 				'desc'    => __( 'The color of the title text that overlays the album thumbnails', 'foogallery' ),
+				'section' => __( 'Thumbnail Settings', 'foogallery' ),
 				'type'    => 'colorpicker',
 				'default' => '#000000'
+			),
+			array(
+				'id'      => 'back_to_album_text',
+				'title'   => __( '"Back To Album" Text', 'foogallery' ),
+				'desc'    => __( 'The text that is shown at the top of the album when a gallery is shown', 'foogallery' ),
+				'section' => __( 'Language Settings', 'foogallery' ),
+				'type'    => 'text',
+				'default' => '&laquo; back to album'
+			),
+			array(
+				'id'      => 'no_images_text',
+				'title'   => __( '"No Images" Text', 'foogallery' ),
+				'desc'    => __( 'The text that is shown on the gallery caption when there are no images in the gallery.', 'foogallery' ),
+				'section' => __( 'Language Settings', 'foogallery' ),
+				'type'    => 'text',
+				'default' => 'No images'
+			),
+			array(
+				'id'      => 'single_image_text',
+				'title'   => __( '"1 Image" Text', 'foogallery' ),
+				'desc'    => __( 'The text that is shown on the gallery caption when there is a single image in the gallery.', 'foogallery' ),
+				'section' => __( 'Language Settings', 'foogallery' ),
+				'type'    => 'text',
+				'default' => '1 image'
+			),
+			array(
+				'id'      => 'images_text',
+				'title'   => __( '"X images" Text', 'foogallery' ),
+				'desc'    => __( 'The text that is shown on the gallery caption when there are many images in the gallery.', 'foogallery' ),
+				'section' => __( 'Language Settings', 'foogallery' ),
+				'type'    => 'text',
+				'default' => '%s images'
 			)
 		)
 	);
