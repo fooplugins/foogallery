@@ -16,6 +16,7 @@ if ( ! class_exists( 'FooGallery_Albums_Admin_Columns' ) ) {
 		}
 
 		function album_custom_columns( $columns ) {
+			$columns[FOOGALLERY_CPT_ALBUM . '_template'] = __( 'Template', 'foogallery' );
 			$columns[FOOGALLERY_CPT_ALBUM . '_galleries'] = __( 'Galleries', 'foogallery' );
 			$columns[FOOGALLERY_CPT_ALBUM . '_shortcode'] = __( 'Shortcode', 'foogallery' );
 
@@ -26,6 +27,13 @@ if ( ! class_exists( 'FooGallery_Albums_Admin_Columns' ) ) {
 			global $post;
 
 			switch ( $column ) {
+				case FOOGALLERY_CPT_ALBUM . '_template':
+					$album = FooGalleryAlbum::get( $post );
+					$template = $album->album_template_details();
+					if ( false !== $template ) {
+						echo $template['name'];
+					}
+					break;
 				case FOOGALLERY_CPT_ALBUM . '_galleries':
 					$album = FooGalleryAlbum::get( $post );
 					echo $album->gallery_count();
