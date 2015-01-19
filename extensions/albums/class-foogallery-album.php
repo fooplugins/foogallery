@@ -236,4 +236,17 @@ class FooGalleryAlbum extends stdClass {
 
 		return array_key_exists( $key, $this->settings );
 	}
+
+	public function album_template_details() {
+		if ( ! empty( $this->album_template ) ) {
+
+			foreach ( foogallery_album_templates() as $template ) {
+				if ( $this->album_template == $template['slug'] ) {
+					return $template;
+				}
+			}
+		}
+
+		return false;
+	}
 }
