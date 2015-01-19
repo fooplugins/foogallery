@@ -64,7 +64,7 @@
 }
 
 .foogallery-attachments-list li {
-	margin: 0 10px 10px 0;
+	margin: 0px 10px 10px 0px !important;
 }
 
 .foogallery-attachments-list .attachment.ui-sortable-helper {
