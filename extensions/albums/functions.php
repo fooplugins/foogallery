@@ -177,15 +177,30 @@ function foogallery_default_album_template() {
 	return foogallery_get_setting( 'album_template' );
 }
 
-function foogallery_album_build_gallery_link( $gallery ) {
-	return apply_filters( 'foogallery_album_build_gallery_link', 'gallery/' . $gallery->slug );
+function foogallery_album_build_gallery_link( $album, $gallery ) {
+	$slug = foogallery_album_gallery_url_slug();
+	$key = 'default_gallery_link_format';
+	$format = $album->get_meta( $key, 'default' );
+
+	if ( 'default' === $format ) {
+		$url = $slug . '/' . $gallery->slug;
+	} else {
+		$url = add_query_arg( $slug, $gallery->slug );
+	}
+	return apply_filters( 'foogallery_album_build_gallery_link', $url );
+}
+
+function foogallery_album_gallery_url_slug() {
+	return apply_filters( 'foogallery_album_gallery_url_slug', 'gallery' );
 }
 
 function foogallery_album_get_current_gallery() {
-	$gallery = get_query_var( 'gallery' );
+	$slug = foogallery_album_gallery_url_slug();
+
+	$gallery = get_query_var( $slug );
 
 	if ( empty( $gallery ) ) {
-		$gallery = safe_get_from_request( 'gallery' );
+		$gallery = safe_get_from_request( $slug );
 	}
 
 	return apply_filters( 'foogallery_album_get_current_gallery', $gallery );
@@ -193,10 +208,11 @@ function foogallery_album_get_current_gallery() {
 
 function foogallery_album_remove_gallery_from_link() {
 	$gallery = foogallery_album_get_current_gallery();
+	$slug = foogallery_album_gallery_url_slug();
 
-	$url = untrailingslashit( remove_query_arg('gallery') );
+	$url = untrailingslashit( remove_query_arg( $slug ) );
 
-	return str_replace( 'gallery/' . $gallery, '', $url);
+	return str_replace( $slug . '/' . $gallery, '', $url);
 }
 
 /**
