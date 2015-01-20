@@ -150,6 +150,13 @@ if ( ! class_exists( 'FooGallery_Default_Templates_Extension' ) ) {
 						'min'     => '0',
 					),
 					array(
+						'id'      => 'center_align',
+						'title'   => __( 'Center Align Images', 'foogallery' ),
+						'desc'    => __( 'Centers the images inside your Masonry gallery.', 'foogallery' ),
+						'type'    => 'checkbox',
+						'default' => false
+					),
+					array(
 						'id'      => 'thumbnail_link',
 						'title'   => __( 'Thumbnail Link', 'foogallery' ),
 						'default' => 'image' ,
