@@ -6,7 +6,7 @@ global $current_foogallery;
 global $current_foogallery_arguments;
 $width = foogallery_gallery_template_setting( 'thumbnail_width', '150' );
 $gutter_width = foogallery_gallery_template_setting( 'gutter_width', '10' );
-$center_align = 'on' === foogallery_gallery_template_setting( 'center_align', false );
+$center_align = 'center' === foogallery_gallery_template_setting( 'center_align', false );
 $args = array(
 	'width' => $width,
 	'link' => foogallery_gallery_template_setting( 'thumbnail_link', 'image' ),

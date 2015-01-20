@@ -151,10 +151,15 @@ if ( ! class_exists( 'FooGallery_Default_Templates_Extension' ) ) {
 					),
 					array(
 						'id'      => 'center_align',
-						'title'   => __( 'Center Align Images', 'foogallery' ),
-						'desc'    => __( 'Centers the images inside your Masonry gallery.', 'foogallery' ),
-						'type'    => 'checkbox',
-						'default' => false
+						'title'   => __( 'Image Alignment', 'foogallery' ),
+						'desc'    => __( 'You can choose to center align your images or leave them at the default.', 'foogallery' ),
+						'type'    => 'radio',
+						'choices' => array(
+							'default'  => __( 'Left Alignment', 'foogallery' ),
+							'center'   => __( 'Center Alignment', 'foogallery' )
+						),
+						'spacer'  => '<span class="spacer"></span>',
+						'default' => 'default'
 					),
 					array(
 						'id'      => 'thumbnail_link',
