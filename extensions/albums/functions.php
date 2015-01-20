@@ -85,10 +85,30 @@ function foogallery_album_templates() {
 			array(
 				'id'      => 'images_text',
 				'title'   => __( '"X images" Text', 'foogallery' ),
-				'desc'    => __( 'The text that is shown on the gallery caption when there are many images in the gallery.', 'foogallery' ),
+				'desc'    => __( 'The text that is shown on the gallery caption when there are many images in the gallery. "s%" will be replaced with the actual count.', 'foogallery' ),
 				'section' => __( 'Language Settings', 'foogallery' ),
 				'type'    => 'text',
 				'default' => '%s images'
+			),
+			array(
+				'id'      => 'gallery_link_format',
+				'title'   => __( 'Gallery Link Format', 'foogallery' ),
+				'desc'    => __( 'The format of the URL for each individual gallery in the album.', 'foogallery' ),
+				'section' => __( 'URL Settings', 'foogallery' ),
+				'type'    => 'radio',
+				'choices' =>  array(
+					'default' =>  __('Pretty, e.g. ', 'foogallery') . '<code>/page-with-album/gallery/some-gallery</code>',
+					'querystring' => __('Querystring e.g. ', 'foogallery') . '<code>/page-with-album?gallery=some-gallery</code>'
+				),
+				'default' => 'default'
+			),
+			array(
+				'id'	  => 'url_help',
+				'title'	  => __( 'Please Note', 'foogallery' ),
+				'section' => __( 'URL Settings', 'foogallery' ),
+				'type'	  => 'help',
+				'help'	  => true,
+				'desc'	  => __( 'If you are getting 404\'s when clicking on the album galleries, then change to the querystring format. To force your rewrite rules to flush, simply deactivate and activate the albums extension again.', 'foogallery' ),
 			)
 		)
 	);
