@@ -39,7 +39,7 @@ if ( !empty( $gallery ) ) {
 			$attachment = $gallery->featured_attachment();
 			$img_html = $attachment->html_img( $args );
 			$images = $gallery->image_count( $no_images_text, $single_image_text, $images_text );
-			$gallery_link = foogallery_album_build_gallery_link( $gallery );
+			$gallery_link = foogallery_album_build_gallery_link( $current_foogallery_album, $gallery );
 			?>
 			<li>
 				<div class="foogallery-pile">
