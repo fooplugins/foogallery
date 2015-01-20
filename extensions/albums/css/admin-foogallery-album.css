@@ -190,3 +190,33 @@
 	width: 100%;
 	height: 10em;
 }
+
+.foogallery-help {
+	position: relative;
+	display: block;
+	line-height: 19px;
+	padding: 11px 15px 11px 40px;
+	font-size: 14px;
+	text-align: left;
+	margin: 5px 0 20px 2px;
+	background-color: #F4F4FF;
+	border-left: 4px solid #1e8cbe;
+	-webkit-box-shadow: 0 1px 1px 0 rgba(0, 0, 0, .1);
+	box-shadow: 0 1px 1px 0 rgba(0, 0, 0, .1);
+}
+
+.foogallery-help:before {
+	content: "\f223";
+	font: 400 30px/1 dashicons !important;
+	speak: none;
+	color: #1e8cbe;
+	display: inline-block;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	vertical-align: bottom;
+	position: absolute;
+	left: 5px;
+	height: 100%;
+	margin-top: -15px;
+	top: 50%;
+}
