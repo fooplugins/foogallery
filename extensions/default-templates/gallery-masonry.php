@@ -7,6 +7,7 @@ global $current_foogallery_arguments;
 $width = foogallery_gallery_template_setting( 'thumbnail_width', '150' );
 $gutter_width = foogallery_gallery_template_setting( 'gutter_width', '10' );
 $center_align = 'center' === foogallery_gallery_template_setting( 'center_align', false );
+$hover_zoom = 'default' === foogallery_gallery_template_setting( 'hover_zoom', 'default' );
 $args = array(
 	'width' => $width,
 	'link' => foogallery_gallery_template_setting( 'thumbnail_link', 'image' ),
@@ -18,7 +19,7 @@ $lightbox = foogallery_gallery_template_setting( 'lightbox', 'unknown' ); ?>
 		margin-bottom: <?php echo $gutter_width; ?>px;
 		width: <?php echo $width; ?>px;
 	}
-
+	<?php if ( $hover_zoom ) { ?>
 	#foogallery-gallery-<?php echo $current_foogallery->ID; ?> .item a img {
 		transition: all 0.2s linear;
 		-webkit-transition: all 0.2s linear; /** Chrome & Safari **/
@@ -33,6 +34,7 @@ $lightbox = foogallery_gallery_template_setting( 'lightbox', 'unknown' ); ?>
 		-ms-transform: scale(1.05);
 		transform: scale(1.05);
 	}
+	<?php } ?>
 	<?php if ( $center_align ) { ?>
 	#foogallery-gallery-<?php echo $current_foogallery->ID; ?> {
 		margin: 0 auto;

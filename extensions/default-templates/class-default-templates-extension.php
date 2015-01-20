@@ -162,6 +162,18 @@ if ( ! class_exists( 'FooGallery_Default_Templates_Extension' ) ) {
 						'default' => 'default'
 					),
 					array(
+						'id'      => 'hover_zoom',
+						'title'   => __( 'Hover Zoom', 'foogallery' ),
+						'desc'    => __( 'The effect that is applied to images when you move your mouse over them.', 'foogallery' ),
+						'type'    => 'radio',
+						'choices' => array(
+							'default'  => __( 'Zoom Slightly', 'foogallery' ),
+							'center'   => __( 'No Zoom', 'foogallery' )
+						),
+						'spacer'  => '<span class="spacer"></span>',
+						'default' => 'default'
+					),
+					array(
 						'id'      => 'thumbnail_link',
 						'title'   => __( 'Thumbnail Link', 'foogallery' ),
 						'default' => 'image' ,
