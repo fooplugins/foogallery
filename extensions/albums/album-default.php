@@ -11,11 +11,11 @@ $images_text = foogallery_album_template_setting( 'images_text', false );
 
 if ( !empty( $gallery ) ) {
 	$album_url = foogallery_album_remove_gallery_from_link();
-
+	echo '<div class="foogallery-album-header">';
 	echo '<p><a href="' . $album_url . '">' . foogallery_album_template_setting( 'back_to_album_text', '&laquo; back to album' ) . '</a></p>';
 	$foogallery = FooGallery::get_by_slug( $gallery );
-
 	echo '<h2>' . $foogallery->name . '</h2>';
+	echo '</div>';
 	echo do_shortcode('[foogallery id="' . $foogallery->ID . '"]');
 } else {
 	$title_bg = foogallery_album_template_setting( 'title_bg', '#ffffff' );
