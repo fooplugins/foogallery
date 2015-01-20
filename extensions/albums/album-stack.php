@@ -25,7 +25,7 @@ $pile_angles = foogallery_album_template_setting( 'pile_angles', '2' );
 				$args['link_attributes']['class'] = apply_filters( 'foogallery_album_stack_link_class_name', $lightbox );
 				echo $attachment->html( $args, false, false );
 				if ( $attachment->caption ) {
-					echo '<span class="tp-info"><span>' . $attachment->caption . '</span></span>';
+					echo '<span class="tp-info"><span>' . wp_filter_nohtml_kses( $attachment->caption ) . '</span></span>';
 				}
 				echo $attachment->html_img( $args );
 				echo '</a>';
@@ -41,7 +41,7 @@ $pile_angles = foogallery_album_template_setting( 'pile_angles', '2' );
 		var $grid = $( '#foogallery-stack-album-<?php echo $current_foogallery_album->ID; ?>' ),
 			$name = $( '#foogallery-stack-album-gallery-<?php echo $current_foogallery_album->ID; ?>' ),
 			$close = $( '#foogallery-stack-album-back-<?php echo $current_foogallery_album->ID; ?>' ),
-			$loader = $( '<div class="loader"><i></i><i></i><i></i><i></i><i></i><i></i><span>Loading...</span></div>' ).insertBefore( $grid ),
+			$loader = $( '<div class="loader"><i></i><i></i><i></i><i></i><i></i><i></i></div>' ).insertBefore( $grid ),
 			stapel = $grid.stapel( {
 				delay : <?php echo $delay; ?>,
 				randomAngle : <?php echo $random_angle; ?>,
