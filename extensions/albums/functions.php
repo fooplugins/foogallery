@@ -100,8 +100,9 @@ function foogallery_album_templates() {
 					'default' =>  __('Pretty, e.g. ', 'foogallery') . '<code>/page-with-album/gallery/some-gallery</code>',
 					'querystring' => __('Querystring e.g. ', 'foogallery') . '<code>/page-with-album?gallery=some-gallery</code>'
 				),
-				'default' => 'default'
+				'default' => foogallery_determine_best_link_format_default()
 			),
+
 			array(
 				'id'	  => 'url_help',
 				'title'	  => __( 'Please Note', 'foogallery' ),
@@ -188,6 +189,17 @@ function foogallery_album_templates() {
 	return apply_filters( 'foogallery_album_templates', $album_templates );
 }
 
+function foogallery_determine_best_link_format_default() {
+	global $wp_rewrite;
+	if ( '' === $wp_rewrite->permalink_structure ) {
+		//we are using ?page_id
+		return 'querystring';
+	}
+
+	//we are using permalinks
+	return 'default';
+}
+
 /**
  * Returns the default album template
  *
@@ -202,8 +214,8 @@ function foogallery_album_build_gallery_link( $album, $gallery ) {
 	$key = 'default_gallery_link_format';
 	$format = $album->get_meta( $key, 'default' );
 
-	if ( 'default' === $format ) {
-		$url = $slug . '/' . $gallery->slug;
+	if ( 'default' === $format && 'default' === foogallery_determine_best_link_format_default() ) {
+		$url = untrailingslashit( get_permalink() . $slug . '/' . $gallery->slug );
 	} else {
 		$url = add_query_arg( $slug, $gallery->slug );
 	}
