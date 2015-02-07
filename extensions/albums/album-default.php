@@ -4,7 +4,7 @@
  */
 global $current_foogallery_album;
 global $current_foogallery_album_arguments;
-$gallery = foogallery_album_get_current_gallery();;
+$gallery = foogallery_album_get_current_gallery();
 $no_images_text = foogallery_album_template_setting( 'no_images_text', false );
 $single_image_text = foogallery_album_template_setting( 'single_image_text', false );
 $images_text = foogallery_album_template_setting( 'images_text', false );
