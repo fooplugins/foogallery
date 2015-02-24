@@ -8,6 +8,7 @@ $gallery = foogallery_album_get_current_gallery();
 $no_images_text = foogallery_album_template_setting( 'no_images_text', false );
 $single_image_text = foogallery_album_template_setting( 'single_image_text', false );
 $images_text = foogallery_album_template_setting( 'images_text', false );
+$alignment = foogallery_album_template_setting( 'alignment', 'alignment-left' );
 $foogallery = false;
 
 if ( !empty( $gallery ) ) {
@@ -21,7 +22,7 @@ if ( !empty( $gallery ) ) {
 
 if ( false !== $foogallery ) {
 	$album_url = foogallery_album_remove_gallery_from_link();
-	echo '<div class="foogallery-album-header">';
+	echo '<div id="' . $current_foogallery_album->slug . '" class="foogallery-album-header">';
 	echo '<p><a href="' . $album_url . '">' . foogallery_album_template_setting( 'back_to_album_text', '&laquo; back to album' ) . '</a></p>';
 	echo '<h2>' . $foogallery->name . '</h2>';
 	echo '</div>';
@@ -42,7 +43,7 @@ if ( false !== $foogallery ) {
 	}
 ?>
 <div id="foogallery-album-<?php echo $current_foogallery_album->ID; ?>">
-	<ul class="foogallery-album-gallery-list">
+	<ul class="foogallery-album-gallery-list <?php echo $alignment; ?>">
 		<?php
 		foreach ( $current_foogallery_album->galleries() as $gallery ) {
 			$attachment = $gallery->featured_attachment();

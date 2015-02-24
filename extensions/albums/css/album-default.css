@@ -55,7 +55,6 @@
 }
 
 .foogallery-album-gallery-list .foogallery-pile img {
-	height: 100%;
 }
 
 .foogallery-album-gallery-list .foogallery-pile h3 {
@@ -78,4 +77,16 @@
 
 .foogallery-album-gallery-list .foogallery-pile a {
 	position: relative;
+}
+
+.foogallery-album-gallery-list.alignment-left {
+	text-align: left;
+}
+
+.foogallery-album-gallery-list.alignment-center {
+	text-align: center;
+}
+
+.foogallery-album-gallery-list.alignment-right {
+	text-align: right;
 }

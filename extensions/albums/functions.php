@@ -59,6 +59,19 @@ function foogallery_album_templates() {
 				'default' => '#000000'
 			),
 			array(
+				'id'      => 'alignment',
+				'title'   => __( 'Alignment', 'foogallery' ),
+				'desc'    => __( 'The horizontal alignment of the gallery thumbnails inside the album.', 'foogallery' ),
+				'section' => __( 'Thumbnail Settings', 'foogallery' ),
+				'default' => 'alignment-left',
+				'type'    => 'select',
+				'choices' => array(
+					'alignment-left' => __( 'Left', 'foogallery' ),
+					'alignment-center' => __( 'Center', 'foogallery' ),
+					'alignment-right' => __( 'Right', 'foogallery' ),
+				)
+			),
+			array(
 				'id'      => 'back_to_album_text',
 				'title'   => __( '"Back To Album" Text', 'foogallery' ),
 				'desc'    => __( 'The text that is shown at the top of the album when a gallery is shown', 'foogallery' ),
@@ -102,7 +115,6 @@ function foogallery_album_templates() {
 				),
 				'default' => foogallery_determine_best_link_format_default()
 			),
-
 			array(
 				'id'	  => 'url_help',
 				'title'	  => __( 'Please Note', 'foogallery' ),
@@ -110,6 +122,18 @@ function foogallery_album_templates() {
 				'type'	  => 'help',
 				'help'	  => true,
 				'desc'	  => __( 'If you are getting 404\'s when clicking on the album galleries, then change to the querystring format. To force your rewrite rules to flush, simply deactivate and activate the albums extension again.', 'foogallery' ),
+			),
+			array(
+				'id'      => 'album_hash',
+				'title'   => __( 'Remember Scroll Position', 'foogallery' ),
+				'desc'    => __( 'When a gallery is loaded in your album, the page is refreshed which means the scroll position will be lost .', 'foogallery' ),
+				'section' => __( 'URL Settings', 'foogallery' ),
+				'type'    => 'radio',
+				'choices' =>  array(
+					'none' =>  __('Don\'t Remember', 'foogallery'),
+					'remember' => __('Remember Scroll Position', 'foogallery')
+				),
+				'default' => 'none'
 			)
 		)
 	);
@@ -219,6 +243,10 @@ function foogallery_album_build_gallery_link( $album, $gallery ) {
 	} else {
 		$url = add_query_arg( $slug, $gallery->slug );
 	}
+
+	//add the album hash if required
+	$url .= '#' . $album->slug;
+
 	return apply_filters( 'foogallery_album_build_gallery_link', $url );
 }
 
