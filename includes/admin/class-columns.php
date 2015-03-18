@@ -85,13 +85,13 @@ if ( ! class_exists( 'FooGallery_Admin_Columns' ) ) {
 				<script>
 					jQuery(function($) {
 						var $el = $('.foogallery-shortcode');
-						ZeroClipboard.config({ moviePath: "<?php echo FOOGALLERY_URL; ?>lib/zeroclipboard/ZeroClipboard.swf" });
+						ZeroClipboard.config({ swfPath: "<?php echo FOOGALLERY_URL; ?>lib/zeroclipboard/ZeroClipboard.swf", forceHandCursor: true });
 						var client = new ZeroClipboard($el);
 
-						client.on( "load", function(client) {
-							client.on( "complete", function(client, args) {
+						client.on( "ready", function() {
+							this.on( "aftercopy", function(e) {
 								$('.foogallery-shortcode-message').remove();
-								$(this).after('<p class="foogallery-shortcode-message"><?php _e( 'Shortcode copied to clipboard :)','foogallery' ); ?></p>');
+								$(e.target).after('<p class="foogallery-shortcode-message"><?php _e( 'Shortcode copied to clipboard :)','foogallery' ); ?></p>');
 							} );
 						} );
 					});
