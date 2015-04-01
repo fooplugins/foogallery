@@ -105,6 +105,8 @@ function foogallery_get_default( $key ) {
 		'gallery_permalinks_enabled' => false,
 		'gallery_permalink'          => 'gallery',
 		'lightbox'                   => 'none',
+		'thumb_jpeg_quality'         => '80',
+		'thumb_resize_animations'    => true
 	);
 
 	// A handy filter to override the defaults
