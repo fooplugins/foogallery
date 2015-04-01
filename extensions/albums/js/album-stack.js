@@ -402,10 +402,20 @@ if (!window.Modernizr) {
 
 		},
 		_setInitialStyle : function() {
+			//for( var pile in this.piles ) {
+			//var p = this.piles[pile];
 
-			for( var pile in this.piles ) {
+			var piles = [];
+			for (var name in this.piles){
+				if (!this.piles.hasOwnProperty(name)) continue;
+				piles.push(name);
+			}
 
-				var p = this.piles[pile];
+			//piles.sort();
+			for (var j =0, pile_len = piles.length; j < pile_len; j++){
+
+				var pile = piles[j],
+					p = this.piles[pile];
 
 				for( var i = 0, len = p.elements.length; i < len; ++i ) {
 
