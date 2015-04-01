@@ -59,8 +59,6 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 	        //region Extensions Tab
 	        $tabs['extensions'] = __( 'Extensions', 'foogallery' );
 
-			$extensions_url = '<br />' . __('The default URL is ', 'foogallery') . '<code>' . FOOGALLERY_EXTENSIONS_ENDPOINT . '</code>';
-
 	        $settings[] = array(
 		        'id'      => 'use_future_endpoint',
 		        'title'   => __( 'Use Beta Endpoint', 'foogallery' ),
@@ -69,7 +67,27 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 		        'tab'     => 'extensions',
 	        );
 
-	        //endregion Advanced
+			//region Thumbnail Tab
+			$tabs['thumb'] = __( 'Thumbnails', 'foogallery' );
+
+			$settings[] = array(
+				'id'      => 'thumb_jpeg_quality',
+				'title'   => __( 'JPEG Quality', 'foogallery' ),
+				'desc'    => __( 'The image quality to be used when resizing JPEG images.', 'foogallery' ),
+				'type'    => 'text',
+				'default' => '80',
+				'tab'     => 'thumb'
+			);
+
+			$settings[] = array(
+				'id'      => 'thumb_resize_animations',
+				'title'   => __( 'Resize Animated GIFs', 'foogallery' ),
+				'desc'    => __( 'Should animated gifs be resized or not. If enabled, only the first frame is used in the resize.', 'foogallery' ),
+				'type'    => 'checkbox',
+				'tab'     => 'thumb',
+			);
+
+			//endregion Thumbnail Tab
 
 //	        //region Advanced Tab
 //	        $tabs['advanced'] = __( 'Advanced', 'foogallery' );

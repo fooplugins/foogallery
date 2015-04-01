@@ -3,7 +3,7 @@
  * FooGallery Thumbnail Resizing class
  */
 
-if ( ! class_exists( 'FooGallery_Thumbnails' ) ) {
+if ( !class_exists( 'FooGallery_Thumbnails' ) ) {
 
 	class FooGallery_Thumbnails {
 
@@ -15,23 +15,23 @@ if ( ! class_exists( 'FooGallery_Thumbnails' ) ) {
 		function resize( $original_image_src, $args, $thumbnail_object ) {
 
 			$arg_defaults = array(
-				'width'  => 0,
-				'height' => 0,
-				'crop'   => true,
+				'width'                   => 0,
+				'height'                  => 0,
+				'crop'                    => true,
+				'jpeg_quality'            => intval( foogallery_get_setting( 'thumb_jpeg_quality' ) ),
+				'thumb_resize_animations' => foogallery_get_setting( 'thumb_resize_animations' )
 			);
 
 			$args = wp_parse_args( $args, $arg_defaults );
 
-			$width = (int)$args['width'];
+			$width  = (int)$args['width'];
 			$height = (int)$args['height'];
-			$crop = (bool)$args['crop'];
+			$crop   = (bool)$args['crop'];
 
 			//check if we are trying to get back the default thumbnail that we already have
-			if ( $thumbnail_object->ID > 0 &&
-				$width == get_option( 'thumbnail_size_w' ) &&
-				$height == get_option( 'thumbnail_size_h' ) &&
-				$crop == get_option( 'thumbnail_crop' ) ) {
+			if ( $thumbnail_object->ID > 0 && $width == get_option( 'thumbnail_size_w' ) && $height == get_option( 'thumbnail_size_h' ) && $crop == get_option( 'thumbnail_crop' ) ) {
 				$thumbnail_attributes = wp_get_attachment_image_src( $thumbnail_object->ID );
+
 				return $thumbnail_attributes[0];
 			}
 
