@@ -193,16 +193,21 @@ if ( ! class_exists( 'FooGallery_Admin_Album_MetaBoxes' ) ) {
 				<?php _e( 'Paste the above shortcode into a post or page to show the album. Simply click the shortcode to copy it to your clipboard.', 'foogallery' ); ?>
 			</p>
 			<script>
-				jQuery(function ($) {
+				jQuery(function($) {
 					var $el = $('#foogallery-copy-shortcode');
-					ZeroClipboard.config({moviePath: "<?php echo FOOGALLERY_URL; ?>lib/zeroclipboard/ZeroClipboard.swf"});
+					ZeroClipboard.config({ swfPath: "<?php echo FOOGALLERY_URL; ?>lib/zeroclipboard/ZeroClipboard.swf", forceHandCursor: true });
 					var client = new ZeroClipboard($el);
 
-					client.on("load", function (client) {
-						client.on("complete", function (client, args) {
+					client.on( "ready", function() {
+						this.on( "aftercopy", function() {
 							$('.foogallery-shortcode-message').remove();
-							$el.after('<p class="foogallery-shortcode-message"><?php _e( 'Shortcode copied to clipboard :)','foogallery' ); ?></p>');
-						});
+							$el.after('<p class="foogallery-shortcode-message"><?php _e( 'Shortcode copied to clipboard :)','foonav' ); ?></p>');
+						} );
+					} );
+
+					client.on("error", function(event) {
+						alert('error[name="' + event.name + '"]: ' + event.message);
+						ZeroClipboard.destroy();
 					});
 				});
 			</script>
