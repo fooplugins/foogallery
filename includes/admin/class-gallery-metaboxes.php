@@ -10,7 +10,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 
 		private $_gallery;
 
-		function __construct() {
+		public function __construct() {
 			//add our foogallery metaboxes
 			add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes_to_gallery' ) );
 
@@ -30,7 +30,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 			add_action( 'wp_ajax_foogallery_create_gallery_page', array( $this, 'ajax_create_gallery_page' ) );
 		}
 
-		function whitelist_metaboxes() {
+		public function whitelist_metaboxes() {
 			return array(
 				FOOGALLERY_CPT_GALLERY => array(
 					'whitelist'  => apply_filters( 'foogallery_metabox_sanity_foogallery',
@@ -51,7 +51,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 			);
 		}
 
-		function add_meta_boxes_to_gallery() {
+		public function add_meta_boxes_to_gallery() {
 			global $post;
 
 			add_meta_box(
@@ -110,7 +110,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 			);
 		}
 
-		function get_gallery( $post ) {
+		public function get_gallery( $post ) {
 			if ( ! isset($this->_gallery) ) {
 				$this->_gallery = FooGallery::get( $post );
 
@@ -121,7 +121,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 			return $this->_gallery;
 		}
 
-		function save_gallery( $post_id ) {
+		public function save_gallery( $post_id ) {
 			// check autosave
 			if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
 				return $post_id;
@@ -160,7 +160,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 			}
 		}
 
-		function attach_gallery_to_post( $post_id, $post ) {
+		public function attach_gallery_to_post( $post_id, $post ) {
 
 			// check autosave
 			if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
@@ -183,7 +183,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 			}
 		}
 
-		function render_gallery_media_metabox( $post ) {
+		public function render_gallery_media_metabox( $post ) {
 			$gallery = $this->get_gallery( $post );
 
 			wp_enqueue_media();
@@ -221,7 +221,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 
 		}
 
-		function render_gallery_item( $attachment_post = false ) {
+		public function render_gallery_item( $attachment_post = false ) {
 			if ( $attachment_post != false ) {
 				$attachment_id = $attachment_post->ID;
 				$attachment = wp_get_attachment_image_src( $attachment_id );
@@ -251,7 +251,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 		<?php
 		}
 
-		function render_gallery_settings_metabox( $post ) {
+		public function render_gallery_settings_metabox( $post ) {
 			//gallery settings including:
 			//gallery images link to image or attachment page
 			//default template to use
@@ -331,7 +331,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 		<?php
 		}
 
-		function render_gallery_shortcode_metabox( $post ) {
+		public function render_gallery_shortcode_metabox( $post ) {
 			$gallery = $this->get_gallery( $post );
 			$shortcode = $gallery->shortcode();
 			?>
@@ -364,7 +364,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 			<?php
 		}
 
-		function render_gallery_usage_metabox( $post ) {
+		public function render_gallery_usage_metabox( $post ) {
 			$gallery = $this->get_gallery( $post );
 			$posts = $gallery->find_usages();
 			if ( $posts && count( $posts ) > 0 ) { ?>
@@ -394,7 +394,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 			<?php }
 		}
 
-		function render_sorting_metabox( $post ) {
+		public function render_sorting_metabox( $post ) {
 			$gallery = $this->get_gallery( $post );
 			$sorting_options = foogallery_sorting_options(); ?>
 			<p>
@@ -409,7 +409,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 			}
 		}
 
-		function include_required_scripts() {
+		public function include_required_scripts() {
 			//only include scripts if we on the foogallery page
 			if ( FOOGALLERY_CPT_GALLERY === foo_current_screen_post_type() ) {
 
@@ -433,7 +433,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 			}
 		}
 
-		function render_customcss_metabox( $post ) {
+		public function render_customcss_metabox( $post ) {
 			$gallery = $this->get_gallery( $post );
 			$custom_css = $gallery->custom_css;
 			$example = '<code>#foogallery-gallery-' . $post->ID . ' { }</code>';
@@ -453,7 +453,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 		<?php
 		}
 
-		function ajax_create_gallery_page() {
+		public function ajax_create_gallery_page() {
 			if ( check_admin_referer( 'foogallery_create_gallery_page', 'foogallery_create_gallery_page_nonce' ) ) {
 
 				$foogallery_id = $_POST['foogallery_id'];
