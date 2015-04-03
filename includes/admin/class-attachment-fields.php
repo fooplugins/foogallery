@@ -9,8 +9,8 @@ if (!class_exists('FooGallery_Attachment_Fields')) {
     class FooGallery_Attachment_Fields {
 
         function __construct() {
-	        add_filter( 'attachment_fields_to_edit', array( $this, 'applyFilter' ), 9, 2 );
-	        add_filter( 'attachment_fields_to_save', array( $this, 'saveFields' ), 11, 2 );
+	        add_filter( 'attachment_fields_to_edit', array( $this, 'apply_filter' ), 9, 2 );
+	        add_filter( 'attachment_fields_to_save', array( $this, 'save_fields' ), 11, 2 );
         }
 
 	    public function get_custom_fields() {
@@ -42,7 +42,13 @@ if (!class_exists('FooGallery_Attachment_Fields')) {
 		    return apply_filters( 'foogallery_attachment_custom_fields', $fields );
 	    }
 
-	    public function applyFilter( $form_fields, $post = null ) {
+	    /**
+	     * @param      $form_fields
+	     * @param WP_Post $post
+	     *
+	     * @return mixed
+	     */
+	    public function apply_filter( $form_fields, $post = null ) {
 		    $custom_fields = $this->get_custom_fields();
 
 		    // If our fields array is not empty
@@ -151,7 +157,7 @@ if (!class_exists('FooGallery_Attachment_Fields')) {
 		    return $form_fields;
 	    }
 
-	    function saveFields( $post, $attachment ) {
+	    function save_fields( $post, $attachment ) {
 		    $custom_fields = $this->get_custom_fields();
 
 		    // If our fields array is not empty
