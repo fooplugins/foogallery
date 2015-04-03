@@ -106,7 +106,8 @@ function foogallery_get_default( $key ) {
 		'gallery_permalink'          => 'gallery',
 		'lightbox'                   => 'none',
 		'thumb_jpeg_quality'         => '80',
-		'thumb_resize_animations'    => true
+		'thumb_resize_animations'    => true,
+		'gallery_sorting'            => ''
 	);
 
 	// A handy filter to override the defaults

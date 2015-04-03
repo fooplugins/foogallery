@@ -396,7 +396,11 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 
 		public function render_sorting_metabox( $post ) {
 			$gallery = $this->get_gallery( $post );
-			$sorting_options = foogallery_sorting_options(); ?>
+			$sorting_options = foogallery_sorting_options();
+			if ( empty( $gallery->sorting ) ) {
+				$gallery->sorting = '';
+			}
+			?>
 			<p>
 				<?php _e('Change the way images are sorted within your gallery. By default, they are sorted in the order you see them.', 'foogallery'); ?>
 			</p>
