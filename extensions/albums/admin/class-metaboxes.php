@@ -45,7 +45,7 @@ if ( ! class_exists( 'FooGallery_Admin_Album_MetaBoxes' ) ) {
 		function add_meta_boxes() {
 			add_meta_box(
 				'foogalleryalbum_galleries',
-				__( 'Galleries', 'foogallery' ),
+				__( 'Galleries - drag n drop to reorder!', 'foogallery' ),
 				array( $this, 'render_gallery_metabox' ),
 				FOOGALLERY_CPT_ALBUM,
 				'normal',
@@ -78,6 +78,15 @@ if ( ! class_exists( 'FooGallery_Admin_Album_MetaBoxes' ) ) {
 				'side',
 				'default'
 			);
+
+			add_meta_box(
+				'foogalleryalbum_sorting',
+				__( 'Album Sorting', 'foogallery' ),
+				array( $this, 'render_sorting_metabox' ),
+				FOOGALLERY_CPT_ALBUM,
+				'side',
+				'default'
+			);
 		}
 
 		function get_album( $post ) {
@@ -104,6 +113,8 @@ if ( ! class_exists( 'FooGallery_Admin_Album_MetaBoxes' ) ) {
 				update_post_meta( $post_id, FOOGALLERY_ALBUM_META_GALLERIES, $galleries );
 
 				update_post_meta( $post_id, FOOGALLERY_ALBUM_META_TEMPLATE, $_POST[FOOGALLERY_ALBUM_META_TEMPLATE] );
+
+				update_post_meta( $post_id, FOOGALLERY_ALBUM_META_SORT, $_POST[FOOGALLERY_ALBUM_META_SORT] );
 
 				$settings = isset($_POST[FOOGALLERY_META_SETTINGS]) ?
 					$_POST[FOOGALLERY_META_SETTINGS] : array();
@@ -212,6 +223,21 @@ if ( ! class_exists( 'FooGallery_Admin_Album_MetaBoxes' ) ) {
 				});
 			</script>
 		<?php
+		}
+
+		function render_sorting_metabox( $post ) {
+			$album = $this->get_album( $post );
+			$sorting_options = foogallery_sorting_options(); ?>
+			<p>
+				<?php _e('Change the way galleries are sorted within your album. By default, they are sorted in the order you see them.', 'foogallery'); ?>
+			</p>
+			<?php
+			foreach ( $sorting_options as $sorting_key => $sorting_label ) { ?>
+				<p>
+				<input type="radio" value="<?php echo $sorting_key; ?>" <?php checked( $sorting_key === $album->sorting ); ?> id="FooGallerySettings_AlbumSort_<?php echo $sorting_key; ?>" name="<?php echo FOOGALLERY_ALBUM_META_SORT; ?>" />
+				<label for="FooGallerySettings_AlbumSort_<?php echo $sorting_key; ?>"><?php echo $sorting_label; ?></label>
+				</p><?php
+			}
 		}
 
 		function render_settings_metabox( $post ) {

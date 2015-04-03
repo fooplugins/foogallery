@@ -6,6 +6,7 @@ if ( ! class_exists( 'FooGallery_Albums_Extension' ) ) {
 	define( 'FOOGALLERY_CPT_ALBUM', 'foogallery-album' );
 	define( 'FOOGALLERY_ALBUM_META_GALLERIES', 'foogallery_album_galleries' );
 	define( 'FOOGALLERY_ALBUM_META_TEMPLATE', 'foogallery_album_template' );
+	define( 'FOOGALLERY_ALBUM_META_SORT', 'foogallery_album_sort' );
 
 	class FooGallery_Albums_Extension {
 

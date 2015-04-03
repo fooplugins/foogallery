@@ -46,6 +46,7 @@ class FooGalleryAlbum extends stdClass {
 		$this->album_template = get_post_meta( $post->ID, FOOGALLERY_ALBUM_META_TEMPLATE, true );
 		$this->settings = get_post_meta( $post->ID, FOOGALLERY_META_SETTINGS, true );
 		$this->custom_css = get_post_meta( $post->ID, FOOGALLERY_META_CUSTOM_CSS, true );
+		$this->sorting = get_post_meta( $post->ID, FOOGALLERY_ALBUM_META_SORT, true );
 		do_action( 'foogallery_foogallery-album_instance_after_load', $this, $post );
 	}
 
@@ -177,7 +178,8 @@ class FooGalleryAlbum extends stdClass {
 					'post_type'      => FOOGALLERY_CPT_GALLERY,
 					'posts_per_page' => -1,
 					'post__in'       => $this->gallery_ids,
-					'orderby'        => 'post__in',
+					'orderby'        => foogallery_sorting_get_posts_orderby_arg( $this->sorting ),
+					'order'          => foogallery_sorting_get_posts_order_arg( $this->sorting )
 				) );
 
 				$galleries = get_posts( $gallery_query_args );

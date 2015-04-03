@@ -357,3 +357,57 @@ function foogallery_render_gallery( $gallery_id ) {
 		'id' => $gallery_id
 	) );
 }
+
+/**
+ * Returns the available sorting options that can be chosen for galleries and albums
+ */
+function foogallery_sorting_options() {
+	return array(
+		'' => __('Default', 'foogallery'),
+		'date_desc' => __('Date created - newest first', 'foogallery'),
+		'date_asc' => __('Date created - oldest first', 'foogallery'),
+		'modified_desc' => __('Date modified - most recent first', 'foogallery'),
+		'modified_asc' => __('Date modified - most recent last', 'foogallery'),
+		'title_asc' => __('Title - alphabetically', 'foogallery'),
+		'title_desc' => __('Title - reverse', 'foogallery'),
+		'rand' => __('Random', 'foogallery')
+	);
+}
+
+function foogallery_sorting_get_posts_orderby_arg( $sorting_option ) {
+	$orderby_arg = 'post__in';
+
+	switch ( $sorting_option ) {
+		case 'date_desc':
+		case 'date_asc':
+			$orderby_arg = 'date';
+			break;
+		case 'modified_desc':
+		case 'modified_asc':
+			$orderby_arg = 'modified';
+			break;
+		case 'title_asc':
+		case 'title_desc':
+			$orderby_arg = 'title';
+			break;
+		case 'rand':
+			$orderby_arg = 'rand';
+			break;
+	}
+
+	return apply_filters( 'foogallery_sorting_get_posts_orderby_arg', $orderby_arg, $sorting_option );
+}
+
+function foogallery_sorting_get_posts_order_arg( $sorting_option ) {
+	$order_arg = 'DESC';
+
+	switch ( $sorting_option ) {
+		case 'date_asc':
+		case 'modified_asc':
+		case 'title_asc':
+		$order_arg = 'ASC';
+			break;
+	}
+
+	return apply_filters( 'foogallery_sorting_get_posts_order_arg', $order_arg, $sorting_option );
+}
