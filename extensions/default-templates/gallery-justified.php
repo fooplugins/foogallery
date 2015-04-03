@@ -21,7 +21,7 @@ $lightbox = foogallery_gallery_template_setting( 'lightbox', 'unknown' );
 </div>
 <script type="text/javascript">
 	jQuery(function(){
-		jQuery(".foogallery-justified").justifiedGallery({
+		jQuery("#foogallery-gallery-<?php echo $current_foogallery->ID; ?>").justifiedGallery({
 			rowHeight: <?php echo $height; ?>,
 			margins: <?php echo $margins; ?>,
 			captions: <?php echo $captions == 'on' ? 'true' : 'false'; ?>,
