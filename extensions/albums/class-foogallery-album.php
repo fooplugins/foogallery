@@ -173,12 +173,14 @@ class FooGalleryAlbum extends stdClass {
 
 			if ( ! empty( $this->gallery_ids ) ) {
 
-				$galleries = get_posts( array(
+				$gallery_query_args = apply_filters( 'foogallery_album_gallery_get_posts_args', array(
 					'post_type'      => FOOGALLERY_CPT_GALLERY,
 					'posts_per_page' => -1,
 					'post__in'       => $this->gallery_ids,
 					'orderby'        => 'post__in',
 				) );
+
+				$galleries = get_posts( $gallery_query_args );
 
 				$this->_galleries = array_map( array( 'FooGallery', 'get' ), $galleries );
 			}
