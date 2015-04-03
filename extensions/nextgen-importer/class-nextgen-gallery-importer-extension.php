@@ -18,11 +18,13 @@ if ( ! class_exists( 'FooGallery_Nextgen_Gallery_Importer_Extension' ) ) {
 		function __construct() {
 			$this->nextgen = new FooGallery_NextGen_Helper();
 
+			//always show the menu
+			add_action( 'foogallery_admin_menu_after', array( $this, 'add_menu' ) );
+			add_action( 'foogallery_extension_activated-nextgen', array( $this, 'add_menu' ) );
+
 			//only do anything if NextGen is installed
 			if ( $this->nextgen->is_nextgen_installed() ) {
 				//hook into the foogallery menu
-				add_action( 'foogallery_admin_menu_after', array( $this, 'add_menu' ) );
-				add_action( 'foogallery_extension_activated-nextgen', array( $this, 'add_menu' ) );
 				add_action( 'foogallery_admin_help_after_section_one', array( $this, 'show_nextgen_import_help' ) );
 
 				// Ajax calls for importing galleries
