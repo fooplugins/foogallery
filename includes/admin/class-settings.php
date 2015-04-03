@@ -33,6 +33,16 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 			);
 
 			$settings[] = array(
+				'id'      => 'gallery_sorting',
+				'title'   => __( 'Default Gallery Sorting', 'foogallery' ),
+				'desc'    => __( 'The default attachment sorting to use for new galleries', 'foogallery' ),
+				'default' => '',
+				'type'    => 'select',
+				'choices' => foogallery_sorting_options(),
+				'tab'     => 'general',
+			);
+
+			$settings[] = array(
 				'id'      => 'hide_gallery_template_help',
 				'title'   => __( 'Hide Gallery Template Help', 'foogallery' ),
 				'desc'    => __( 'Some gallery templates show helpful tips, which are useful for new users. You can choose to hide these tips.', 'foogallery' ),

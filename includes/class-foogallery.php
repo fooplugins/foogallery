@@ -367,6 +367,7 @@ class FooGallery extends stdClass {
 			$default_gallery_id = foogallery_get_setting( 'default_gallery_settings' );
 			$this->gallery_template = get_post_meta( $default_gallery_id, FOOGALLERY_META_TEMPLATE, true );
 			$this->settings = get_post_meta( $default_gallery_id, FOOGALLERY_META_SETTINGS, true );
+			$this->sorting = foogallery_get_setting( 'gallery_sorting' );
 		}
 	}
 }
