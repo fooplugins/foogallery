@@ -73,7 +73,7 @@ if ( $has_errors ) { ?>
 			} else {
 				$classes .= ' download';
 			}
-			if ( $downloaded && $api->is_active( $slug, true ) ) {
+			if ( $downloaded && $api->is_active( $slug ) ) {
 				$classes .= ' activated';
 			}
 			if ( $api->has_errors( $slug ) ) {

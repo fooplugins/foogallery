@@ -83,7 +83,13 @@ if ( ! class_exists( 'FooGalleryAttachment' ) ) {
 			return new self( $post );
 		}
 
-		function html_img( $args = array() ) {
+		/**
+		 * Returns the HTML img tag for the attachment
+		 * @param array $args
+		 *
+		 * @return string
+		 */
+		public function html_img( $args = array() ) {
 			$attr['src'] = apply_filters( 'foogallery_attachment_resize_thumbnail', $this->url, $args, $this );
 
 			if ( ! empty( $this->alt ) ) {
@@ -122,7 +128,7 @@ if ( ! class_exists( 'FooGalleryAttachment' ) ) {
 		 *
 		 * @return string
 		 */
-		function html( $args = array(), $output_image = true, $output_closing_tag = true ) {
+		public function html( $args = array(), $output_image = true, $output_closing_tag = true ) {
 			if ( empty ( $this->url ) )  {
 				return '';
 			}
@@ -156,6 +162,8 @@ if ( ! class_exists( 'FooGalleryAttachment' ) ) {
 			if ( empty( $url ) ) {
 				$url = $this->url;
 			}
+
+			$attr = array();
 
 			$attr['href'] = $url;
 
