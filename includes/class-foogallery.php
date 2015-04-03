@@ -46,6 +46,7 @@ class FooGallery extends stdClass {
 		$this->gallery_template = get_post_meta( $post->ID, FOOGALLERY_META_TEMPLATE, true );
 		$this->settings = get_post_meta( $post->ID, FOOGALLERY_META_SETTINGS, true );
 		$this->custom_css = get_post_meta( $post->ID, FOOGALLERY_META_CUSTOM_CSS, true );
+		$this->sorting = get_post_meta( $post->ID, FOOGALLERY_META_SORT, true );
 		do_action( 'foogallery_foogallery_instance_after_load', $this, $post );
 	}
 
@@ -205,12 +206,15 @@ class FooGallery extends stdClass {
 
 				add_action( 'pre_get_posts', array( $this, 'force_gallery_ordering' ), 99 );
 
-				$attachments = get_posts( array(
+				$attachment_query_args = apply_filters( 'foogallery_attachment_get_posts_args', array(
 					'post_type'      => 'attachment',
 					'posts_per_page' => -1,
 					'post__in'       => $this->attachment_ids,
-					'orderby'        => 'post__in',
+					'orderby'        => foogallery_sorting_get_posts_orderby_arg( $this->sorting ),
+					'order'          => foogallery_sorting_get_posts_order_arg( $this->sorting )
 				) );
+
+				$attachments = get_posts( $attachment_query_args );
 
 				remove_action( 'pre_get_posts', array( $this, 'force_gallery_ordering' ), 99 );
 
@@ -230,8 +234,8 @@ class FooGallery extends stdClass {
 		//only care about attachments
 		if ( array_key_exists( 'post_type', $query->query ) &&
 		     'attachment' === $query->query['post_type'] ) {
-			$query->set( 'orderby', 'post__in' );
-			$query->set( 'order', 'ASC' );
+			$query->set( 'orderby', foogallery_sorting_get_posts_orderby_arg( $this->sorting ) );
+			$query->set( 'order', foogallery_sorting_get_posts_order_arg( $this->sorting ) );
 		}
 	}
 

@@ -33,7 +33,18 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 		function whitelist_metaboxes() {
 			return array(
 				FOOGALLERY_CPT_GALLERY => array(
-					'whitelist'  => apply_filters( 'foogallery_metabox_sanity_foogallery', array( 'submitdiv', 'slugdiv', 'postimagediv', 'foogallery_items', 'foogallery_settings', 'foogallery_help', 'foogallery_pages', 'foogallery_customcss') ),
+					'whitelist'  => apply_filters( 'foogallery_metabox_sanity_foogallery',
+						array(
+							'submitdiv',
+							'slugdiv',
+							'postimagediv',
+							'foogallery_items',
+							'foogallery_settings',
+							'foogallery_help',
+							'foogallery_pages',
+							'foogallery_customcss',
+							'foogallery_sorting'
+						) ),
 					'contexts'   => array( 'normal', 'advanced', 'side', ),
 					'priorities' => array( 'high', 'core', 'default', 'low', ),
 				)
@@ -88,6 +99,15 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 				'normal',
 				'low'
 			);
+
+			add_meta_box(
+				'foogallery_sorting',
+				__( 'Gallery Sorting', 'foogallery' ),
+				array( $this, 'render_sorting_metabox' ),
+				FOOGALLERY_CPT_GALLERY,
+				'side',
+				'default'
+			);
 		}
 
 		function get_gallery( $post ) {
@@ -124,6 +144,8 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 				update_post_meta( $post_id, FOOGALLERY_META_TEMPLATE, $_POST[FOOGALLERY_META_TEMPLATE] );
 
 				update_post_meta( $post_id, FOOGALLERY_META_SETTINGS, $settings );
+
+				update_post_meta( $post_id, FOOGALLERY_META_SORT, $_POST[FOOGALLERY_META_SORT] );
 
 				$custom_css = isset($_POST[FOOGALLERY_META_CUSTOM_CSS]) ?
 					$_POST[FOOGALLERY_META_CUSTOM_CSS] : '';
@@ -370,6 +392,21 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 					<?php _e( 'A draft page will be created which includes the gallery shortcode in the content. The title of the page will be the same title as the gallery.', 'foogallery' ); ?>
 				</p>
 			<?php }
+		}
+
+		function render_sorting_metabox( $post ) {
+			$gallery = $this->get_gallery( $post );
+			$sorting_options = foogallery_sorting_options(); ?>
+			<p>
+				<?php _e('Change the way images are sorted within your gallery. By default, they are sorted in the order you see them.', 'foogallery'); ?>
+			</p>
+			<?php
+			foreach ( $sorting_options as $sorting_key => $sorting_label ) { ?>
+				<p>
+				<input type="radio" value="<?php echo $sorting_key; ?>" <?php checked( $sorting_key === $gallery->sorting ); ?> id="FooGallerySettings_GallerySort_<?php echo $sorting_key; ?>" name="<?php echo FOOGALLERY_META_SORT; ?>" />
+				<label for="FooGallerySettings_GallerySort_<?php echo $sorting_key; ?>"><?php echo $sorting_label; ?></label>
+				</p><?php
+			}
 		}
 
 		function include_required_scripts() {
