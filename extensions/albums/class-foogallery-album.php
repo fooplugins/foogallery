@@ -46,6 +46,7 @@ class FooGalleryAlbum extends stdClass {
 		$this->album_template = get_post_meta( $post->ID, FOOGALLERY_ALBUM_META_TEMPLATE, true );
 		$this->settings = get_post_meta( $post->ID, FOOGALLERY_META_SETTINGS, true );
 		$this->custom_css = get_post_meta( $post->ID, FOOGALLERY_META_CUSTOM_CSS, true );
+		$this->sorting = get_post_meta( $post->ID, FOOGALLERY_ALBUM_META_SORT, true );
 		do_action( 'foogallery_foogallery-album_instance_after_load', $this, $post );
 	}
 
@@ -173,12 +174,15 @@ class FooGalleryAlbum extends stdClass {
 
 			if ( ! empty( $this->gallery_ids ) ) {
 
-				$galleries = get_posts( array(
+				$gallery_query_args = apply_filters( 'foogallery_album_gallery_get_posts_args', array(
 					'post_type'      => FOOGALLERY_CPT_GALLERY,
 					'posts_per_page' => -1,
 					'post__in'       => $this->gallery_ids,
-					'orderby'        => 'post__in',
+					'orderby'        => foogallery_sorting_get_posts_orderby_arg( $this->sorting ),
+					'order'          => foogallery_sorting_get_posts_order_arg( $this->sorting )
 				) );
+
+				$galleries = get_posts( $gallery_query_args );
 
 				$this->_galleries = array_map( array( 'FooGallery', 'get' ), $galleries );
 			}
@@ -235,5 +239,18 @@ class FooGalleryAlbum extends stdClass {
 		}
 
 		return array_key_exists( $key, $this->settings );
+	}
+
+	public function album_template_details() {
+		if ( ! empty( $this->album_template ) ) {
+
+			foreach ( foogallery_album_templates() as $template ) {
+				if ( $this->album_template == $template['slug'] ) {
+					return $template;
+				}
+			}
+		}
+
+		return false;
 	}
 }

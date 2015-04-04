@@ -6,7 +6,7 @@ global $current_foogallery;
 global $current_foogallery_arguments;
 $height = foogallery_gallery_template_setting( 'row_height', '150' );
 $margins = foogallery_gallery_template_setting( 'margins', '1' );
-$captions = foogallery_gallery_template_setting( 'captions', 'on' );
+$captions = foogallery_gallery_template_setting( 'captions', 'on' ) == 'on';
 $gutter_width = foogallery_gallery_template_setting( 'gutter_width', '10' );
 $args = array(
 	'height' => $height,
@@ -16,15 +16,19 @@ $lightbox = foogallery_gallery_template_setting( 'lightbox', 'unknown' );
 ?>
 <div id="foogallery-gallery-<?php echo $current_foogallery->ID; ?>" class="<?php echo foogallery_build_class_attribute( $current_foogallery, 'foogallery-lightbox-' . $lightbox ); ?>">
 	<?php foreach ( $current_foogallery->attachments() as $attachment ) {
-		echo $attachment->html( $args );
+		echo $attachment->html( $args, true, false );
+		if ( $captions ) {
+			echo '<div class="caption">' . $attachment->caption . '</div>';
+		}
+		echo '</a>';
 	} ?>
 </div>
 <script type="text/javascript">
 	jQuery(function(){
-		jQuery(".foogallery-justified").justifiedGallery({
+		jQuery("#foogallery-gallery-<?php echo $current_foogallery->ID; ?>").justifiedGallery({
 			rowHeight: <?php echo $height; ?>,
 			margins: <?php echo $margins; ?>,
-			captions: <?php echo $captions == 'on' ? 'true' : 'false'; ?>,
+			captions: <?php echo $captions ? 'true' : 'false'; ?>,
 			cssAnimation: true,
 			sizeRangeSuffixes: {
 				'lt100':'',

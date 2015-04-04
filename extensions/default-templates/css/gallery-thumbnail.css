@@ -1,0 +1,192 @@
+.foogallery-thumbnail {
+
+}
+
+.foogallery-thumbnail a {
+    display: inline-block;
+	margin: 5px;
+	overflow: hidden;
+	position: relative;
+	border: 5px solid #fff;
+	-webkit-box-shadow: 1px 1px 1px 1px #ccc;
+	-moz-box-shadow: 1px 1px 1px 1px #ccc;
+	box-shadow: 1px 1px 1px 1px #ccc;
+}
+
+    .foogallery-thumbnail a img {
+		border-radius: 0;
+        display: block;
+		-webkit-transition: none;
+		transition: none;
+	}
+
+/* Positioning */
+.foogallery-thumbnail.position-block {
+	display: block;
+}
+
+.foogallery-thumbnail.position-float-left {
+	float: left;
+}
+
+.foogallery-thumbnail.position-float-right {
+	float: right;
+}
+
+/* Captions */
+.foogallery-thumbnail .thumbnail-caption {
+	position: absolute;
+	-webkit-transition: all 300ms ease-out;
+	-moz-transition: all 300ms ease-out;
+	-o-transition: all 300ms ease-out;
+	-ms-transition: all 300ms ease-out;
+	transition: all 300ms ease-out;
+	left: 0;
+	width: 100%;
+
+	background-color: rgba(255,0,0,0.5);
+	color: #fff;
+}
+
+.foogallery-thumbnail .thumbnail-caption h3 {
+	font-size: 1.1em;
+	margin: 0;
+	padding: 10px;
+}
+
+.foogallery-thumbnail .thumbnail-caption p {
+	font-size: 0.8em;
+	margin: 0;
+	padding: 0 10px 10px 10px;
+}
+
+/* simple caption */
+.foogallery-thumbnail.caption-simple .thumbnail-caption {
+	bottom: 0;
+}
+
+.foogallery-thumbnail.caption-slideup .thumbnail-caption {
+	bottom: auto;
+}
+
+/* slide up caption */
+.foogallery-thumbnail.caption-slideup a:hover .thumbnail-caption {
+	-moz-transform: translateY(-100%);
+	-o-transform: translateY(-100%);
+	-webkit-transform: translateY(-100%);
+	transform: translateY(-100%);
+}
+
+/* slidedown caption */
+.foogallery-thumbnail.caption-fall .thumbnail-caption {
+	height: 100%;
+	bottom: 100%;
+}
+
+.foogallery-thumbnail.caption-fall a:hover .thumbnail-caption {
+	-moz-transform: translateY(100%);
+	-o-transform: translateY(100%);
+	-webkit-transform: translateY(100%);
+	transform: translateY(100%);
+}
+
+/* slidedown caption */
+.foogallery-thumbnail.caption-fade .thumbnail-caption {
+	height: 100%;
+	opacity: 0;
+	bottom: 0;
+}
+
+.foogallery-thumbnail.caption-fade a:hover .thumbnail-caption {
+	opacity: 1;
+}
+
+/* push caption */
+.foogallery-thumbnail.caption-push .thumbnail-caption {
+	height: 100%;
+	left: 100%;
+	top:0;
+}
+
+.foogallery-thumbnail.caption-push a:hover .thumbnail-caption {
+	-moz-transform: translateX(-100%);
+	-o-transform: translateX(-100%);
+	-webkit-transform: translateX(-100%);
+	opacity: 1;
+	transform: translateX(-100%);
+}
+
+.foogallery-thumbnail.caption-push img {
+	-webkit-transition: all 300ms ease-out;
+	-moz-transition: all 300ms ease-out;
+	-o-transition: all 300ms ease-out;
+	-ms-transition: all 300ms ease-out;
+	transition: all 300ms ease-out;
+}
+
+.foogallery-thumbnail.caption-push a:hover img {
+	-moz-transform: translateX(-100%);
+	-o-transform: translateX(-100%);
+	-webkit-transform: translateX(-100%);
+	transform: translateX(-100%);
+}
+
+/* scale caption */
+.foogallery-thumbnail.caption-scale .thumbnail-caption {
+	top:0;
+	height: 100%;
+	opacity: 0;
+}
+
+.foogallery-thumbnail.caption-scale img,
+.foogallery-thumbnail.caption-scale .thumbnail-caption h3,
+.foogallery-thumbnail.caption-scale .thumbnail-caption p {
+	-webkit-transition: all 300ms ease-out;
+	-moz-transition: all 300ms ease-out;
+	-o-transition: all 300ms ease-out;
+	-ms-transition: all 300ms ease-out;
+	transition: all 300ms ease-out;
+}
+
+.foogallery-thumbnail.caption-scale a:hover img {
+	-moz-transform: scale(1.4);
+	-o-transform: scale(1.4);
+	-webkit-transform: scale(1.4);
+	transform: scale(1.4);
+}
+
+.foogallery-thumbnail.caption-scale .thumbnail-caption h3 {
+	-webkit-transition-delay: 300ms;
+	-moz-transition-delay: 300ms;
+	-o-transition-delay: 300ms;
+	-ms-transition-delay: 300ms;
+	transition-delay: 300ms;
+	-moz-transform: translateX(-100%);
+	-o-transform: translateX(-100%);
+	-webkit-transform: translateX(-100%);
+	transform: translateX(-100%);
+}
+
+.foogallery-thumbnail.caption-scale .thumbnail-caption p {
+	-webkit-transition-delay: 500ms;
+	-moz-transition-delay: 500ms;
+	-o-transition-delay: 500ms;
+	-ms-transition-delay: 500ms;
+	transition-delay: 500ms;
+	-moz-transform: translateX(-100%);
+	-o-transform: translateX(-100%);
+	-webkit-transform: translateX(-100%);
+	transform: translateX(-100%);
+}
+
+.foogallery-thumbnail.caption-scale a:hover .thumbnail-caption {
+	opacity: 1;
+}
+
+.foogallery-thumbnail.caption-scale a:hover .thumbnail-caption h3,
+.foogallery-thumbnail.caption-scale a:hover .thumbnail-caption p {
+	-moz-transform: translateX(0);
+	-o-transform: translateX(0);
+	-webkit-transform: translateX(0);
+	transform: translateX(0);
+}

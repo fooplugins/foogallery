@@ -10,7 +10,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 
 		private $_gallery;
 
-		function __construct() {
+		public function __construct() {
 			//add our foogallery metaboxes
 			add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes_to_gallery' ) );
 
@@ -30,17 +30,28 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 			add_action( 'wp_ajax_foogallery_create_gallery_page', array( $this, 'ajax_create_gallery_page' ) );
 		}
 
-		function whitelist_metaboxes() {
+		public function whitelist_metaboxes() {
 			return array(
 				FOOGALLERY_CPT_GALLERY => array(
-					'whitelist'  => apply_filters( 'foogallery_metabox_sanity_foogallery', array( 'submitdiv', 'slugdiv', 'postimagediv', 'foogallery_items', 'foogallery_settings', 'foogallery_help', 'foogallery_pages', 'foogallery_customcss') ),
+					'whitelist'  => apply_filters( 'foogallery_metabox_sanity_foogallery',
+						array(
+							'submitdiv',
+							'slugdiv',
+							'postimagediv',
+							'foogallery_items',
+							'foogallery_settings',
+							'foogallery_help',
+							'foogallery_pages',
+							'foogallery_customcss',
+							'foogallery_sorting'
+						) ),
 					'contexts'   => array( 'normal', 'advanced', 'side', ),
 					'priorities' => array( 'high', 'core', 'default', 'low', ),
 				)
 			);
 		}
 
-		function add_meta_boxes_to_gallery() {
+		public function add_meta_boxes_to_gallery() {
 			global $post;
 
 			add_meta_box(
@@ -88,9 +99,18 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 				'normal',
 				'low'
 			);
+
+			add_meta_box(
+				'foogallery_sorting',
+				__( 'Gallery Sorting', 'foogallery' ),
+				array( $this, 'render_sorting_metabox' ),
+				FOOGALLERY_CPT_GALLERY,
+				'side',
+				'default'
+			);
 		}
 
-		function get_gallery( $post ) {
+		public function get_gallery( $post ) {
 			if ( ! isset($this->_gallery) ) {
 				$this->_gallery = FooGallery::get( $post );
 
@@ -101,7 +121,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 			return $this->_gallery;
 		}
 
-		function save_gallery( $post_id ) {
+		public function save_gallery( $post_id ) {
 			// check autosave
 			if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
 				return $post_id;
@@ -125,6 +145,8 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 
 				update_post_meta( $post_id, FOOGALLERY_META_SETTINGS, $settings );
 
+				update_post_meta( $post_id, FOOGALLERY_META_SORT, $_POST[FOOGALLERY_META_SORT] );
+
 				$custom_css = isset($_POST[FOOGALLERY_META_CUSTOM_CSS]) ?
 					$_POST[FOOGALLERY_META_CUSTOM_CSS] : '';
 
@@ -138,7 +160,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 			}
 		}
 
-		function attach_gallery_to_post( $post_id, $post ) {
+		public function attach_gallery_to_post( $post_id, $post ) {
 
 			// check autosave
 			if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
@@ -161,7 +183,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 			}
 		}
 
-		function render_gallery_media_metabox( $post ) {
+		public function render_gallery_media_metabox( $post ) {
 			$gallery = $this->get_gallery( $post );
 
 			wp_enqueue_media();
@@ -199,7 +221,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 
 		}
 
-		function render_gallery_item( $attachment_post = false ) {
+		public function render_gallery_item( $attachment_post = false ) {
 			if ( $attachment_post != false ) {
 				$attachment_id = $attachment_post->ID;
 				$attachment = wp_get_attachment_image_src( $attachment_id );
@@ -229,7 +251,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 		<?php
 		}
 
-		function render_gallery_settings_metabox( $post ) {
+		public function render_gallery_settings_metabox( $post ) {
 			//gallery settings including:
 			//gallery images link to image or attachment page
 			//default template to use
@@ -309,7 +331,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 		<?php
 		}
 
-		function render_gallery_shortcode_metabox( $post ) {
+		public function render_gallery_shortcode_metabox( $post ) {
 			$gallery = $this->get_gallery( $post );
 			$shortcode = $gallery->shortcode();
 			?>
@@ -323,21 +345,26 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 			<script>
 				jQuery(function($) {
 					var $el = $('#foogallery-copy-shortcode');
-					ZeroClipboard.config({ moviePath: "<?php echo FOOGALLERY_URL; ?>lib/zeroclipboard/ZeroClipboard.swf" });
+					ZeroClipboard.config({ swfPath: "<?php echo FOOGALLERY_URL; ?>lib/zeroclipboard/ZeroClipboard.swf", forceHandCursor: true });
 					var client = new ZeroClipboard($el);
 
-					client.on( "load", function(client) {
-						client.on( "complete", function(client, args) {
+					client.on( "ready", function() {
+						this.on( "aftercopy", function() {
 							$('.foogallery-shortcode-message').remove();
-							$el.after('<p class="foogallery-shortcode-message"><?php _e( 'Shortcode copied to clipboard :)','foogallery' ); ?></p>');
+							$el.after('<p class="foogallery-shortcode-message"><?php _e( 'Shortcode copied to clipboard :)','foonav' ); ?></p>');
 						} );
 					} );
+
+					client.on("error", function(event) {
+						alert('error[name="' + event.name + '"]: ' + event.message);
+						ZeroClipboard.destroy();
+					});
 				});
 			</script>
 			<?php
 		}
 
-		function render_gallery_usage_metabox( $post ) {
+		public function render_gallery_usage_metabox( $post ) {
 			$gallery = $this->get_gallery( $post );
 			$posts = $gallery->find_usages();
 			if ( $posts && count( $posts ) > 0 ) { ?>
@@ -367,7 +394,26 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 			<?php }
 		}
 
-		function include_required_scripts() {
+		public function render_sorting_metabox( $post ) {
+			$gallery = $this->get_gallery( $post );
+			$sorting_options = foogallery_sorting_options();
+			if ( empty( $gallery->sorting ) ) {
+				$gallery->sorting = '';
+			}
+			?>
+			<p>
+				<?php _e('Change the way images are sorted within your gallery. By default, they are sorted in the order you see them.', 'foogallery'); ?>
+			</p>
+			<?php
+			foreach ( $sorting_options as $sorting_key => $sorting_label ) { ?>
+				<p>
+				<input type="radio" value="<?php echo $sorting_key; ?>" <?php checked( $sorting_key === $gallery->sorting ); ?> id="FooGallerySettings_GallerySort_<?php echo $sorting_key; ?>" name="<?php echo FOOGALLERY_META_SORT; ?>" />
+				<label for="FooGallerySettings_GallerySort_<?php echo $sorting_key; ?>"><?php echo $sorting_label; ?></label>
+				</p><?php
+			}
+		}
+
+		public function include_required_scripts() {
 			//only include scripts if we on the foogallery page
 			if ( FOOGALLERY_CPT_GALLERY === foo_current_screen_post_type() ) {
 
@@ -391,7 +437,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 			}
 		}
 
-		function render_customcss_metabox( $post ) {
+		public function render_customcss_metabox( $post ) {
 			$gallery = $this->get_gallery( $post );
 			$custom_css = $gallery->custom_css;
 			$example = '<code>#foogallery-gallery-' . $post->ID . ' { }</code>';
@@ -411,7 +457,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 		<?php
 		}
 
-		function ajax_create_gallery_page() {
+		public function ajax_create_gallery_page() {
 			if ( check_admin_referer( 'foogallery_create_gallery_page', 'foogallery_create_gallery_page_nonce' ) ) {
 
 				$foogallery_id = $_POST['foogallery_id'];

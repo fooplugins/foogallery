@@ -9,25 +9,13 @@ if ( ! class_exists( 'FooGallery_Admin_Columns' ) ) {
 
 		private $include_clipboard_script = false;
 
-		function __construct() {
-			//add_filter( 'manage_upload_columns', array( $this, 'setup_media_columns ') );
-			//add_action( 'manage_media_custom_column', array( $this, 'media_columns_content' ), 10, 2 );
+		public function __construct() {
 			add_filter( 'manage_edit-' . FOOGALLERY_CPT_GALLERY . '_columns', array( $this, 'gallery_custom_columns' ) );
 			add_action( 'manage_posts_custom_column', array( $this, 'gallery_custom_column_content' ) );
 			add_action( 'admin_footer', array( $this, 'include_clipboard_script' ) );
 		}
 
-		function setup_media_columns( $columns ) {
-			$columns['_galleries'] = __( 'Galleries', 'foogallery' );
-
-			return $columns;
-		}
-
-		function media_columns_content( $column_name, $post_id ) {
-
-		}
-
-		function gallery_custom_columns( $columns ) {
+		public function gallery_custom_columns( $columns ) {
 			return array_slice( $columns, 0, 1, true ) +
 					array( 'icon' => '' ) +
 					array_slice( $columns, 1, null, true ) +
@@ -38,7 +26,7 @@ if ( ! class_exists( 'FooGallery_Admin_Columns' ) ) {
 					);
 		}
 
-		function gallery_custom_column_content( $column ) {
+		public function gallery_custom_column_content( $column ) {
 			global $post;
 
 			switch ( $column ) {
@@ -75,7 +63,7 @@ if ( ! class_exists( 'FooGallery_Admin_Columns' ) ) {
 			}
 		}
 
-		function include_clipboard_script() {
+		public function include_clipboard_script() {
 			if ( $this->include_clipboard_script ) {
 				//zeroclipboard needed for copy to clipboard functionality
 				$url = FOOGALLERY_URL . 'lib/zeroclipboard/ZeroClipboard.min.js';
@@ -85,13 +73,13 @@ if ( ! class_exists( 'FooGallery_Admin_Columns' ) ) {
 				<script>
 					jQuery(function($) {
 						var $el = $('.foogallery-shortcode');
-						ZeroClipboard.config({ moviePath: "<?php echo FOOGALLERY_URL; ?>lib/zeroclipboard/ZeroClipboard.swf" });
+						ZeroClipboard.config({ swfPath: "<?php echo FOOGALLERY_URL; ?>lib/zeroclipboard/ZeroClipboard.swf", forceHandCursor: true });
 						var client = new ZeroClipboard($el);
 
-						client.on( "load", function(client) {
-							client.on( "complete", function(client, args) {
+						client.on( "ready", function() {
+							this.on( "aftercopy", function(e) {
 								$('.foogallery-shortcode-message').remove();
-								$(this).after('<p class="foogallery-shortcode-message"><?php _e( 'Shortcode copied to clipboard :)','foogallery' ); ?></p>');
+								$(e.target).after('<p class="foogallery-shortcode-message"><?php _e( 'Shortcode copied to clipboard :)','foogallery' ); ?></p>');
 							} );
 						} );
 					});

@@ -31,13 +31,6 @@ function foogallery_album_templates() {
 		'name'        => __( 'Responsive Album Layout', 'foogallery' ),
 		'fields'	  => array(
 			array(
-				'id'      => 'back_to_album_text',
-				'title'   => __( '"Back To Album" Text', 'foogallery' ),
-				'desc'    => __( 'The text that is shown at the top of the album when a gallery is shown', 'foogallery' ),
-				'type'    => 'text',
-				'default' => '&laquo; back to album'
-			),
-			array(
 				'id'      => 'thumbnail_dimensions',
 				'title'   => __( 'Thumbnail Size', 'foogallery' ),
 				'desc'    => __( 'Choose the size of your gallery thumbnails.', 'foogallery' ),
@@ -53,6 +46,7 @@ function foogallery_album_templates() {
 				'id'      => 'title_bg',
 				'title'   => __( 'Title Background Color', 'foogallery' ),
 				'desc'    => __( 'The color of the title that overlays the album thumbnails', 'foogallery' ),
+				'section' => __( 'Thumbnail Settings', 'foogallery' ),
 				'type'    => 'colorpicker',
 				'default' => '#fff'
 			),
@@ -60,8 +54,86 @@ function foogallery_album_templates() {
 				'id'      => 'title_font_color',
 				'title'   => __( 'Title Text Color', 'foogallery' ),
 				'desc'    => __( 'The color of the title text that overlays the album thumbnails', 'foogallery' ),
+				'section' => __( 'Thumbnail Settings', 'foogallery' ),
 				'type'    => 'colorpicker',
 				'default' => '#000000'
+			),
+			array(
+				'id'      => 'alignment',
+				'title'   => __( 'Alignment', 'foogallery' ),
+				'desc'    => __( 'The horizontal alignment of the gallery thumbnails inside the album.', 'foogallery' ),
+				'section' => __( 'Thumbnail Settings', 'foogallery' ),
+				'default' => 'alignment-left',
+				'type'    => 'select',
+				'choices' => array(
+					'alignment-left' => __( 'Left', 'foogallery' ),
+					'alignment-center' => __( 'Center', 'foogallery' ),
+					'alignment-right' => __( 'Right', 'foogallery' ),
+				)
+			),
+			array(
+				'id'      => 'back_to_album_text',
+				'title'   => __( '"Back To Album" Text', 'foogallery' ),
+				'desc'    => __( 'The text that is shown at the top of the album when a gallery is shown', 'foogallery' ),
+				'section' => __( 'Language Settings', 'foogallery' ),
+				'type'    => 'text',
+				'default' => '&laquo; back to album'
+			),
+			array(
+				'id'      => 'no_images_text',
+				'title'   => __( '"No Images" Text', 'foogallery' ),
+				'desc'    => __( 'The text that is shown on the gallery caption when there are no images in the gallery.', 'foogallery' ),
+				'section' => __( 'Language Settings', 'foogallery' ),
+				'type'    => 'text',
+				'default' => 'No images'
+			),
+			array(
+				'id'      => 'single_image_text',
+				'title'   => __( '"1 Image" Text', 'foogallery' ),
+				'desc'    => __( 'The text that is shown on the gallery caption when there is a single image in the gallery.', 'foogallery' ),
+				'section' => __( 'Language Settings', 'foogallery' ),
+				'type'    => 'text',
+				'default' => '1 image'
+			),
+			array(
+				'id'      => 'images_text',
+				'title'   => __( '"X images" Text', 'foogallery' ),
+				'desc'    => __( 'The text that is shown on the gallery caption when there are many images in the gallery. "s%" will be replaced with the actual count.', 'foogallery' ),
+				'section' => __( 'Language Settings', 'foogallery' ),
+				'type'    => 'text',
+				'default' => '%s images'
+			),
+			array(
+				'id'      => 'gallery_link_format',
+				'title'   => __( 'Gallery Link Format', 'foogallery' ),
+				'desc'    => __( 'The format of the URL for each individual gallery in the album.', 'foogallery' ),
+				'section' => __( 'URL Settings', 'foogallery' ),
+				'type'    => 'radio',
+				'choices' =>  array(
+					'default' =>  __('Pretty, e.g. ', 'foogallery') . '<code>/page-with-album/gallery/some-gallery</code>',
+					'querystring' => __('Querystring e.g. ', 'foogallery') . '<code>/page-with-album?gallery=some-gallery</code>'
+				),
+				'default' => foogallery_determine_best_link_format_default()
+			),
+			array(
+				'id'	  => 'url_help',
+				'title'	  => __( 'Please Note', 'foogallery' ),
+				'section' => __( 'URL Settings', 'foogallery' ),
+				'type'	  => 'help',
+				'help'	  => true,
+				'desc'	  => __( 'If you are getting 404\'s when clicking on the album galleries, then change to the querystring format. To force your rewrite rules to flush, simply deactivate and activate the albums extension again.', 'foogallery' ),
+			),
+			array(
+				'id'      => 'album_hash',
+				'title'   => __( 'Remember Scroll Position', 'foogallery' ),
+				'desc'    => __( 'When a gallery is loaded in your album, the page is refreshed which means the scroll position will be lost .', 'foogallery' ),
+				'section' => __( 'URL Settings', 'foogallery' ),
+				'type'    => 'radio',
+				'choices' =>  array(
+					'none' =>  __('Don\'t Remember', 'foogallery'),
+					'remember' => __('Remember Scroll Position', 'foogallery')
+				),
+				'default' => 'none'
 			)
 		)
 	);
@@ -141,6 +213,17 @@ function foogallery_album_templates() {
 	return apply_filters( 'foogallery_album_templates', $album_templates );
 }
 
+function foogallery_determine_best_link_format_default() {
+	global $wp_rewrite;
+	if ( '' === $wp_rewrite->permalink_structure ) {
+		//we are using ?page_id
+		return 'querystring';
+	}
+
+	//we are using permalinks
+	return 'default';
+}
+
 /**
  * Returns the default album template
  *
@@ -150,15 +233,34 @@ function foogallery_default_album_template() {
 	return foogallery_get_setting( 'album_template' );
 }
 
-function foogallery_album_build_gallery_link( $gallery ) {
-	return apply_filters( 'foogallery_album_build_gallery_link', 'gallery/' . $gallery->slug );
+function foogallery_album_build_gallery_link( $album, $gallery ) {
+	$slug = foogallery_album_gallery_url_slug();
+	$key = 'default_gallery_link_format';
+	$format = $album->get_meta( $key, 'default' );
+
+	if ( 'default' === $format && 'default' === foogallery_determine_best_link_format_default() ) {
+		$url = untrailingslashit( get_permalink() . $slug . '/' . $gallery->slug );
+	} else {
+		$url = add_query_arg( $slug, $gallery->slug );
+	}
+
+	//add the album hash if required
+	$url .= '#' . $album->slug;
+
+	return apply_filters( 'foogallery_album_build_gallery_link', $url );
+}
+
+function foogallery_album_gallery_url_slug() {
+	return apply_filters( 'foogallery_album_gallery_url_slug', 'gallery' );
 }
 
 function foogallery_album_get_current_gallery() {
-	$gallery = get_query_var( 'gallery' );
+	$slug = foogallery_album_gallery_url_slug();
+
+	$gallery = get_query_var( $slug );
 
 	if ( empty( $gallery ) ) {
-		$gallery = safe_get_from_request( 'gallery' );
+		$gallery = safe_get_from_request( $slug );
 	}
 
 	return apply_filters( 'foogallery_album_get_current_gallery', $gallery );
@@ -166,10 +268,11 @@ function foogallery_album_get_current_gallery() {
 
 function foogallery_album_remove_gallery_from_link() {
 	$gallery = foogallery_album_get_current_gallery();
+	$slug = foogallery_album_gallery_url_slug();
 
-	$url = untrailingslashit( remove_query_arg('gallery') );
+	$url = untrailingslashit( remove_query_arg( $slug ) );
 
-	return str_replace( 'gallery/' . $gallery, '', $url);
+	return str_replace( $slug . '/' . $gallery, '', $url);
 }
 
 /**

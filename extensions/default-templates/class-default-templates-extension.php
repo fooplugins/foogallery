@@ -150,6 +150,30 @@ if ( ! class_exists( 'FooGallery_Default_Templates_Extension' ) ) {
 						'min'     => '0',
 					),
 					array(
+						'id'      => 'center_align',
+						'title'   => __( 'Image Alignment', 'foogallery' ),
+						'desc'    => __( 'You can choose to center align your images or leave them at the default.', 'foogallery' ),
+						'type'    => 'radio',
+						'choices' => array(
+							'default'  => __( 'Left Alignment', 'foogallery' ),
+							'center'   => __( 'Center Alignment', 'foogallery' )
+						),
+						'spacer'  => '<span class="spacer"></span>',
+						'default' => 'default'
+					),
+					array(
+						'id'      => 'hover_zoom',
+						'title'   => __( 'Hover Zoom', 'foogallery' ),
+						'desc'    => __( 'The effect that is applied to images when you move your mouse over them.', 'foogallery' ),
+						'type'    => 'radio',
+						'choices' => array(
+							'default'  => __( 'Zoom Slightly', 'foogallery' ),
+							'center'   => __( 'No Zoom', 'foogallery' )
+						),
+						'spacer'  => '<span class="spacer"></span>',
+						'default' => 'default'
+					),
+					array(
 						'id'      => 'thumbnail_link',
 						'title'   => __( 'Thumbnail Link', 'foogallery' ),
 						'default' => 'image' ,
@@ -260,6 +284,109 @@ if ( ! class_exists( 'FooGallery_Default_Templates_Extension' ) ) {
 				),
 			);
 
+			$gallery_templates[] = array(
+				'slug'        => 'thumbnail',
+				'name'        => __( 'Single Thumbnail Gallery', 'foogallery' ),
+				'preview_css' => FOOGALLERY_URL . 'extensions/default-templates/css/gallery-thumbnail.css',
+				'admin_js'	  => FOOGALLERY_URL . 'extensions/default-templates/js/admin-gallery-thumbnail.js',
+				'fields'	  => array(
+					array(
+						'id'	  => 'help',
+						'type'	  => 'html',
+						'help'	  => true,
+						'desc'	  => __( 'This gallery template only shows a single thumbnail, but the true power shines through when the thumbnail is clicked, because then the lightbox takes over and the user can view all the images in the gallery.', 'foogallery' ),
+					),
+					array(
+						'id'      => 'thumbnail_dimensions',
+						'title'   => __( 'Size', 'foogallery' ),
+						'desc'    => __( 'Choose the size of your thumbnail.', 'foogallery' ),
+						'section' => __( 'Thumbnail Settings', 'foogallery' ),
+						'type'    => 'thumb_size',
+						'default' => array(
+							'width' => 250,
+							'height' => 200,
+							'crop' => true,
+						),
+					),
+					array(
+						'id'      => 'position',
+						'title'   => __( 'Position', 'foogallery' ),
+						'desc'    => __( 'The position of the thumbnail related to the content around it.', 'foogallery' ),
+						'section' => __( 'Thumbnail Settings', 'foogallery' ),
+						'default' => 'position-block',
+						'type'    => 'select',
+						'choices' => array(
+							'position-block' => __( 'Full Width (block)', 'foogallery' ),
+							'position-float-left' => __( 'Float Left', 'foogallery' ),
+							'position-float-right' => __( 'Float Right', 'foogallery' ),
+						)
+					),
+//					array(
+//						'id' => 'thumb_preview',
+//						'title' => __( 'Preview', 'foogallery' ),
+//						'desc' => __( 'This is what your thumbnail will look like.', 'foogallery' ),
+//						'section' => __( 'Thumbnail Settings', 'foogallery' ),
+//						'type' => 'thumb_preview',
+//					),
+					array(
+						'id'      => 'caption_style',
+						'title'   => __( 'Caption Style', 'foogallery' ),
+						'section' => __( 'Caption Settings', 'foogallery' ),
+						'desc'    => __( 'Choose which caption style you want to use.', 'foogallery' ),
+						'type'    => 'select',
+						'default' => 'simple',
+						'choices' => array(
+							'caption-simple' => __( 'Simple' , 'foogallery' ),
+							'caption-slideup' => __( 'Slide Up' , 'foogallery' ),
+							'caption-fall' => __( 'Fall Down' , 'foogallery' ),
+							'caption-fade' => __( 'Fade' , 'foogallery' ),
+							'caption-push' => __( 'Push From Left' , 'foogallery' ),
+							'caption-scale' => __( 'Scale' , 'foogallery' ),
+							'caption-none' => __( 'None' , 'foogallery' )
+						),
+					),
+					array(
+						'id'      => 'caption_bgcolor',
+						'title'   => __('Caption Background Color', 'foogallery-cube-gallery'),
+						'section' => __( 'Caption Settings', 'foogallery' ),
+						'desc'    => __('The color of the caption background.', 'foogallery-cube-gallery'),
+						'type'    => 'colorpicker',
+						'default' => 'rgba(0, 0, 0, 0.8)',
+						'opacity' => true
+					),
+					array(
+						'id'      => 'caption_color',
+						'title'   => __('Caption Text Color', 'foogallery-cube-gallery'),
+						'section' => __( 'Caption Settings', 'foogallery' ),
+						'desc'    => __('The color of the caption text.', 'foogallery-cube-gallery'),
+						'type'    => 'colorpicker',
+						'default' => 'rgb(255, 255, 255)'
+					),
+					array(
+						'id'      => 'caption_title',
+						'title'   => __('Caption Title', 'foogallery-cube-gallery'),
+						'section' => __( 'Caption Settings', 'foogallery' ),
+						'desc'    => __('Leave blank if you do not want a caption title.', 'foogallery-cube-gallery'),
+						'type'    => 'text'
+					),
+					array(
+						'id'      => 'caption_description',
+						'title'   => __('Caption Description', 'foogallery-cube-gallery'),
+						'section' => __( 'Caption Settings', 'foogallery' ),
+						'desc'    => __('Leave blank if you do not want a caption description.', 'foogallery-cube-gallery'),
+						'type'    => 'textarea'
+					),
+					array(
+						'id'      => 'lightbox',
+						'title'   => __( 'Lightbox', 'foogallery' ),
+						'section' => __( 'Gallery Settings', 'foogallery' ),
+						'desc'    => __( 'Choose which lightbox you want to use.', 'foogallery' ),
+						'type'    => 'lightbox',
+					)
+				)
+			);
+
+
 			return $gallery_templates;
 		}
 
@@ -301,7 +428,7 @@ if ( ! class_exists( 'FooGallery_Default_Templates_Extension' ) ) {
 		 */
 		function enqueue_masonry_dependencies() {
 			$js = FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_URL . 'js/imagesloaded.pkgd.min.js';
-			wp_enqueue_script( 'foogallery-imagesloaded', $js, array( 'masonry' ), FOOGALLERY_VERSION );
+			wp_enqueue_script( 'foogallery-imagesloaded', $js, array( 'masonry', 'jquery' ), FOOGALLERY_VERSION );
 		}
 	}
 }

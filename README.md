@@ -32,7 +32,7 @@ The result is an intuitive gallery creation and management experience that is ea
 
 FooGallery was designed to be the most developer-friendly gallery plugin available for WordPress. It was also built on top of a solid extension framework, which means different functionality is separated out into different areas in the codebase. It also means the core plugin is lightweight, but still allowing for the most flexibility.
 
-## NEW! Albums Now Available ##
+## Albums Built In! ##
 
 Albums are now built in as an extension. Simply head over to the extensions page and activate the albums extension. A new menu item will appear that allows you to add albums just as easily as galleries.
 
@@ -54,17 +54,19 @@ Features:
 *	NextGen importer tool (albums and galleries)
 *	plus many, many more
 
-Built-in Gallery Templates
+Gallery Templates
 
-*	Responsive Image Gallery
-*	Masonry Gallery ([http://masonry.desandro.com](http://masonry.desandro.com/))
-*	Simple Portfolio
-*	Justified Gallery ([http://miromannino.github.io/Justified-Gallery](http://miromannino.github.io/Justified-Gallery/))
+*	Responsive Image Gallery - [demo](http://foo.gallery/demos/responsive-image-gallery/)
+*	Masonry Gallery ([http://masonry.desandro.com](http://masonry.desandro.com/)) - [demo](http://foo.gallery/demos/masonry-image-gallery/)
+*	Simple Portfolio - [demo](http://foo.gallery/demos/simple-portfolio/)
+*	Justified Gallery ([http://miromannino.github.io/Justified-Gallery](http://miromannino.github.io/Justified-Gallery/)) - [demo](http://foo.gallery/demos/justified-gallery/)
+*	Single Thumbnail Gallery - [demo](http://foo.gallery/demos/single-thumbnail-gallery/)
+*	Cube Gallery - [demo](http://foo.gallery/demos/cube-gallery/) - [Buy Now!](http://fooplugins.com/plugins/cube-gallery-template/?utm_source=foogalleryplugin&utm_medium=foogallerylink&utm_campaign=foogallery_wprepo)
 
-Built-in Album Templates
+Album Templates
 
-*	Responsive Album Layout
-*	All-in-one Stack Album (using a modified version of [Codrops' Stapel Plugin](https://github.com/codrops/Stapel))
+*	Responsive Album Layout - [demo](http://foo.gallery/demos/responsive-album-layout/)
+*	All-in-one Stack Album - [demo](http://foo.gallery/demos/all-in-one-stack-album/)
 
 Extensions:
 
@@ -125,6 +127,12 @@ Hell, yes! Check out our [developer page](http://foo.gallery/developers/)
 ![Album Edit Page](https://s3.amazonaws.com/foogallery/screenshot-5.jpg)
 
 ## Changelog ##
+
+### 1.2.4 ###
+* Many album template updates, enhancements and fixes
+* Many gallery template tweaks and fixes
+* Sort order settings for galleries and albums
+* Added new Single Thumbnail Gallery template
 
 ### 1.2.1 ###
 * Added setting to choose default gallery to copy settings from

@@ -62,7 +62,7 @@ if ( ! class_exists( 'FooGallery_Extensions_API' ) ) {
 
 				//clear any previous state
 				delete_option( FOOGALLERY_EXTENSIONS_LOADING_ERRORS );
-				$this->extensions = null;
+				$this->extensions = array();
 				$expires = 60 * 60 * 24; //1 day
 
 				$extension_url = $this->get_extensions_endpoint();
@@ -337,11 +337,10 @@ if ( ! class_exists( 'FooGallery_Extensions_API' ) ) {
 		/**
 		 * @TODO
 		 * @param      $slug
-		 * @param bool $check_plugins
 		 *
 		 * @return bool
 		 */
-		public function is_active( $slug, $check_plugins = false ) {
+		public function is_active( $slug ) {
 			$active_extensions = $this->get_active_extensions();
 
 			if ( $active_extensions ) {

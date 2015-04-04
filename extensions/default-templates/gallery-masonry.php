@@ -6,20 +6,20 @@ global $current_foogallery;
 global $current_foogallery_arguments;
 $width = foogallery_gallery_template_setting( 'thumbnail_width', '150' );
 $gutter_width = foogallery_gallery_template_setting( 'gutter_width', '10' );
+$center_align = 'center' === foogallery_gallery_template_setting( 'center_align', false );
+$hover_zoom = 'default' === foogallery_gallery_template_setting( 'hover_zoom', 'default' );
 $args = array(
 	'width' => $width,
 	'link' => foogallery_gallery_template_setting( 'thumbnail_link', 'image' ),
 	'crop' => false,
 );
-$lightbox = foogallery_gallery_template_setting( 'lightbox', 'unknown' );
-
-if ( ! foo_check_wp_version_at_least( '3.9' ) ) {} ?>
+$lightbox = foogallery_gallery_template_setting( 'lightbox', 'unknown' ); ?>
 <style>
 	#foogallery-gallery-<?php echo $current_foogallery->ID; ?> .item {
 		margin-bottom: <?php echo $gutter_width; ?>px;
 		width: <?php echo $width; ?>px;
 	}
-
+	<?php if ( $hover_zoom ) { ?>
 	#foogallery-gallery-<?php echo $current_foogallery->ID; ?> .item a img {
 		transition: all 0.2s linear;
 		-webkit-transition: all 0.2s linear; /** Chrome & Safari **/
@@ -34,6 +34,12 @@ if ( ! foo_check_wp_version_at_least( '3.9' ) ) {} ?>
 		-ms-transform: scale(1.05);
 		transform: scale(1.05);
 	}
+	<?php } ?>
+	<?php if ( $center_align ) { ?>
+	#foogallery-gallery-<?php echo $current_foogallery->ID; ?> {
+		margin: 0 auto;
+	}
+	<?php } ?>
 </style>
 <script>
 	jQuery(function ($) {
@@ -42,7 +48,8 @@ if ( ! foo_check_wp_version_at_least( '3.9' ) ) {} ?>
 		$container<?php echo $current_foogallery->ID; ?>.masonry({
 			itemSelector: '.item',
 			columnWidth: <?php echo $width; ?>,
-			gutter: <?php echo $gutter_width; ?>
+			gutter: <?php echo $gutter_width; ?>,
+			isFitWidth: <?php echo $center_align ? 'true' : 'false'; ?>
 		});
 		// layout Masonry again after all images have loaded
 		$container<?php echo $current_foogallery->ID; ?>.imagesLoaded( function() {

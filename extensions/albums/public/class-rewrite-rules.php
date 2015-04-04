@@ -11,7 +11,7 @@ if (!class_exists('FooGallery_Album_Rewrite_Rules')) {
         }
 
 	    function add_gallery_endpoint() {
-		    add_rewrite_endpoint( 'gallery', EP_ALL );
+		    add_rewrite_endpoint( foogallery_album_gallery_url_slug(), EP_ALL );
 	    }
     }
 }

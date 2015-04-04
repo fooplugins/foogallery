@@ -10,7 +10,7 @@ if ( ! class_exists( 'FooGallery_Admin_Album_MetaBoxes' ) ) {
 
 		private $_album;
 
-		function __construct() {
+		public function __construct() {
 			//add our foogallery metaboxes
 			add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ) );
 
@@ -24,7 +24,7 @@ if ( ! class_exists( 'FooGallery_Admin_Album_MetaBoxes' ) ) {
 			add_action( 'admin_enqueue_scripts', array( $this, 'include_required_scripts' ) );
 		}
 
-		function whitelist_metaboxes() {
+		public function whitelist_metaboxes() {
 			return array(
 				FOOGALLERY_CPT_GALLERY => array(
 					'whitelist'  => apply_filters( 'foogallery_metabox_sanity_foogallery-album',
@@ -42,10 +42,10 @@ if ( ! class_exists( 'FooGallery_Admin_Album_MetaBoxes' ) ) {
 			);
 		}
 
-		function add_meta_boxes() {
+		public function add_meta_boxes() {
 			add_meta_box(
 				'foogalleryalbum_galleries',
-				__( 'Galleries', 'foogallery' ),
+				__( 'Galleries - drag n drop to reorder!', 'foogallery' ),
 				array( $this, 'render_gallery_metabox' ),
 				FOOGALLERY_CPT_ALBUM,
 				'normal',
@@ -78,9 +78,18 @@ if ( ! class_exists( 'FooGallery_Admin_Album_MetaBoxes' ) ) {
 				'side',
 				'default'
 			);
+
+			add_meta_box(
+				'foogalleryalbum_sorting',
+				__( 'Album Sorting', 'foogallery' ),
+				array( $this, 'render_sorting_metabox' ),
+				FOOGALLERY_CPT_ALBUM,
+				'side',
+				'default'
+			);
 		}
 
-		function get_album( $post ) {
+		public function get_album( $post ) {
 			if ( ! isset( $this->_album ) ) {
 				$this->_album = FooGalleryAlbum::get( $post );
 			}
@@ -88,7 +97,7 @@ if ( ! class_exists( 'FooGallery_Admin_Album_MetaBoxes' ) ) {
 			return $this->_album;
 		}
 
-		function save_album( $post_id ) {
+		public function save_album( $post_id ) {
 			// check autosave
 			if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
 				return $post_id;
@@ -104,6 +113,8 @@ if ( ! class_exists( 'FooGallery_Admin_Album_MetaBoxes' ) ) {
 				update_post_meta( $post_id, FOOGALLERY_ALBUM_META_GALLERIES, $galleries );
 
 				update_post_meta( $post_id, FOOGALLERY_ALBUM_META_TEMPLATE, $_POST[FOOGALLERY_ALBUM_META_TEMPLATE] );
+
+				update_post_meta( $post_id, FOOGALLERY_ALBUM_META_SORT, $_POST[FOOGALLERY_ALBUM_META_SORT] );
 
 				$settings = isset($_POST[FOOGALLERY_META_SETTINGS]) ?
 					$_POST[FOOGALLERY_META_SETTINGS] : array();
@@ -125,7 +136,7 @@ if ( ! class_exists( 'FooGallery_Admin_Album_MetaBoxes' ) ) {
 			}
 		}
 
-		function get_ordered_galleries( $album ) {
+		public function get_ordered_galleries( $album ) {
 
 			//get all other galleries
 			$galleries = foogallery_get_all_galleries( $album->gallery_ids );
@@ -135,7 +146,7 @@ if ( ! class_exists( 'FooGallery_Admin_Album_MetaBoxes' ) ) {
 			return array_merge( $album_galleries, $galleries );
 		}
 
-		function render_gallery_metabox( $post ) {
+		public function render_gallery_metabox( $post ) {
 			$album = $this->get_album( $post );
 
 			$galleries = $this->get_ordered_galleries( $album );
@@ -181,7 +192,7 @@ if ( ! class_exists( 'FooGallery_Admin_Album_MetaBoxes' ) ) {
 		<?php
 		}
 
-		function render_shortcode_metabox( $post ) {
+		public function render_shortcode_metabox( $post ) {
 			$album   = $this->get_album( $post );
 			$shortcode = $album->shortcode();
 			?>
@@ -193,23 +204,43 @@ if ( ! class_exists( 'FooGallery_Admin_Album_MetaBoxes' ) ) {
 				<?php _e( 'Paste the above shortcode into a post or page to show the album. Simply click the shortcode to copy it to your clipboard.', 'foogallery' ); ?>
 			</p>
 			<script>
-				jQuery(function ($) {
+				jQuery(function($) {
 					var $el = $('#foogallery-copy-shortcode');
-					ZeroClipboard.config({moviePath: "<?php echo FOOGALLERY_URL; ?>lib/zeroclipboard/ZeroClipboard.swf"});
+					ZeroClipboard.config({ swfPath: "<?php echo FOOGALLERY_URL; ?>lib/zeroclipboard/ZeroClipboard.swf", forceHandCursor: true });
 					var client = new ZeroClipboard($el);
 
-					client.on("load", function (client) {
-						client.on("complete", function (client, args) {
+					client.on( "ready", function() {
+						this.on( "aftercopy", function() {
 							$('.foogallery-shortcode-message').remove();
-							$el.after('<p class="foogallery-shortcode-message"><?php _e( 'Shortcode copied to clipboard :)','foogallery' ); ?></p>');
-						});
+							$el.after('<p class="foogallery-shortcode-message"><?php _e( 'Shortcode copied to clipboard :)','foonav' ); ?></p>');
+						} );
+					} );
+
+					client.on("error", function(event) {
+						alert('error[name="' + event.name + '"]: ' + event.message);
+						ZeroClipboard.destroy();
 					});
 				});
 			</script>
 		<?php
 		}
 
-		function render_settings_metabox( $post ) {
+		public function render_sorting_metabox( $post ) {
+			$album = $this->get_album( $post );
+			$sorting_options = foogallery_sorting_options(); ?>
+			<p>
+				<?php _e('Change the way galleries are sorted within your album. By default, they are sorted in the order you see them.', 'foogallery'); ?>
+			</p>
+			<?php
+			foreach ( $sorting_options as $sorting_key => $sorting_label ) { ?>
+				<p>
+				<input type="radio" value="<?php echo $sorting_key; ?>" <?php checked( $sorting_key === $album->sorting ); ?> id="FooGallerySettings_AlbumSort_<?php echo $sorting_key; ?>" name="<?php echo FOOGALLERY_ALBUM_META_SORT; ?>" />
+				<label for="FooGallerySettings_AlbumSort_<?php echo $sorting_key; ?>"><?php echo $sorting_label; ?></label>
+				</p><?php
+			}
+		}
+
+		public function render_settings_metabox( $post ) {
 			$album = $this->get_album( $post );
 			$available_templates = foogallery_album_templates();
 			$album_template = foogallery_default_album_template();
@@ -287,7 +318,7 @@ if ( ! class_exists( 'FooGallery_Admin_Album_MetaBoxes' ) ) {
 		<?php
 		}
 
-		function render_customcss_metabox( $post ) {
+		public function render_customcss_metabox( $post ) {
 			$album = $this->get_album( $post );
 			$custom_css = $album->custom_css;
 			$example = '<code>#foogallery-album-' . $post->ID . ' { }</code>';
@@ -307,7 +338,7 @@ if ( ! class_exists( 'FooGallery_Admin_Album_MetaBoxes' ) ) {
 		<?php
 		}
 
-		function include_required_scripts() {
+		public function include_required_scripts() {
 			if ( FOOGALLERY_CPT_ALBUM === foo_current_screen_post_type() ) {
 				//include album selection script
 				$url = FOOGALLERY_ALBUM_URL . 'js/admin-foogallery-album.js';

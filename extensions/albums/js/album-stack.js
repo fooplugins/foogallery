@@ -1,8 +1,8 @@
 /* Modernizr 2.8.3 (Custom Build) | MIT & BSD
  * Build: http://modernizr.com/download/#-csstransitions-prefixed-testprop-testallprops-domprefixes
  */
-if (!window.Modernizr) {
-	window.Modernizr=function(a,b,c){function w(a){i.cssText=a}function x(a,b){return w(prefixes.join(a+";")+(b||""))}function y(a,b){return typeof a===b}function z(a,b){return!!~(""+a).indexOf(b)}function A(a,b){for(var d in a){var e=a[d];if(!z(e,"-")&&i[e]!==c)return b=="pfx"?e:!0}return!1}function B(a,b,d){for(var e in a){var f=b[a[e]];if(f!==c)return d===!1?a[e]:y(f,"function")?f.bind(d||b):f}return!1}function C(a,b,c){var d=a.charAt(0).toUpperCase()+a.slice(1),e=(a+" "+m.join(d+" ")+d).split(" ");return y(b,"string")||y(b,"undefined")?A(e,b):(e=(a+" "+n.join(d+" ")+d).split(" "),B(e,b,c))}var d="2.8.3",e={},f=b.documentElement,g="modernizr",h=b.createElement(g),i=h.style,j,k={}.toString,l="Webkit Moz O ms",m=l.split(" "),n=l.toLowerCase().split(" "),o={},p={},q={},r=[],s=r.slice,t,u={}.hasOwnProperty,v;!y(u,"undefined")&&!y(u.call,"undefined")?v=function(a,b){return u.call(a,b)}:v=function(a,b){return b in a&&y(a.constructor.prototype[b],"undefined")},Function.prototype.bind||(Function.prototype.bind=function(b){var c=this;if(typeof c!="function")throw new TypeError;var d=s.call(arguments,1),e=function(){if(this instanceof e){var a=function(){};a.prototype=c.prototype;var f=new a,g=c.apply(f,d.concat(s.call(arguments)));return Object(g)===g?g:f}return c.apply(b,d.concat(s.call(arguments)))};return e}),o.csstransitions=function(){return C("transition")};for(var D in o)v(o,D)&&(t=D.toLowerCase(),e[t]=o[D](),r.push((e[t]?"":"no-")+t));return e.addTest=function(a,b){if(typeof a=="object")for(var d in a)v(a,d)&&e.addTest(d,a[d]);else{a=a.toLowerCase();if(e[a]!==c)return e;b=typeof b=="function"?b():b,typeof enableClasses!="undefined"&&enableClasses&&(f.className+=" "+(b?"":"no-")+a),e[a]=b}return e},w(""),h=j=null,e._version=d,e._domPrefixes=n,e._cssomPrefixes=m,e.testProp=function(a){return A([a])},e.testAllProps=C,e.prefixed=function(a,b,c){return b?C(a,b,c):C(a,"pfx")},e}(this,this.document);
+if (!window.FooGalleryStackAlbumModernizr) {
+	window.FooGalleryStackAlbumModernizr=function(a,b,c){function w(a){i.cssText=a}function x(a,b){return w(prefixes.join(a+";")+(b||""))}function y(a,b){return typeof a===b}function z(a,b){return!!~(""+a).indexOf(b)}function A(a,b){for(var d in a){var e=a[d];if(!z(e,"-")&&i[e]!==c)return b=="pfx"?e:!0}return!1}function B(a,b,d){for(var e in a){var f=b[a[e]];if(f!==c)return d===!1?a[e]:y(f,"function")?f.bind(d||b):f}return!1}function C(a,b,c){var d=a.charAt(0).toUpperCase()+a.slice(1),e=(a+" "+m.join(d+" ")+d).split(" ");return y(b,"string")||y(b,"undefined")?A(e,b):(e=(a+" "+n.join(d+" ")+d).split(" "),B(e,b,c))}var d="2.8.3",e={},f=b.documentElement,g="modernizr",h=b.createElement(g),i=h.style,j,k={}.toString,l="Webkit Moz O ms",m=l.split(" "),n=l.toLowerCase().split(" "),o={},p={},q={},r=[],s=r.slice,t,u={}.hasOwnProperty,v;!y(u,"undefined")&&!y(u.call,"undefined")?v=function(a,b){return u.call(a,b)}:v=function(a,b){return b in a&&y(a.constructor.prototype[b],"undefined")},Function.prototype.bind||(Function.prototype.bind=function(b){var c=this;if(typeof c!="function")throw new TypeError;var d=s.call(arguments,1),e=function(){if(this instanceof e){var a=function(){};a.prototype=c.prototype;var f=new a,g=c.apply(f,d.concat(s.call(arguments)));return Object(g)===g?g:f}return c.apply(b,d.concat(s.call(arguments)))};return e}),o.csstransitions=function(){return C("transition")};for(var D in o)v(o,D)&&(t=D.toLowerCase(),e[t]=o[D](),r.push((e[t]?"":"no-")+t));return e.addTest=function(a,b){if(typeof a=="object")for(var d in a)v(a,d)&&e.addTest(d,a[d]);else{a=a.toLowerCase();if(e[a]!==c)return e;b=typeof b=="function"?b():b,typeof enableClasses!="undefined"&&enableClasses&&(f.className+=" "+(b?"":"no-")+a),e[a]=b}return e},w(""),h=j=null,e._version=d,e._domPrefixes=n,e._cssomPrefixes=m,e.testProp=function(a){return A([a])},e.testAllProps=C,e.prefixed=function(a,b,c){return b?C(a,b,c):C(a,"pfx")},e}(this,this.document);
 }
 
 /**
@@ -184,7 +184,7 @@ if (!window.Modernizr) {
 
 	// global
 	var $window = $( window ),
-		Modernizr = window.Modernizr;
+		FooGalleryStackAlbumModernizr = window.FooGalleryStackAlbumModernizr;
 
 	$.Stapel = function( options, element ) {
 
@@ -250,7 +250,7 @@ if (!window.Modernizr) {
 		_config : function() {
 
 			// css transitions support
-			this.support = Modernizr.csstransitions;
+			this.support = FooGalleryStackAlbumModernizr.csstransitions;
 
 			var transEndEventNames = {
 					'WebkitTransition' : 'webkitTransitionEnd',
@@ -269,8 +269,8 @@ if (!window.Modernizr) {
 
 			if( this.support ) {
 
-				this.transEndEventName = transEndEventNames[ Modernizr.prefixed( 'transition' ) ] + '.cbpFWSlider';
-				this.transformName = transformNames[ Modernizr.prefixed( 'transform' ) ];
+				this.transEndEventName = transEndEventNames[ FooGalleryStackAlbumModernizr.prefixed( 'transition' ) ] + '.cbpFWSlider';
+				this.transformName = transformNames[ FooGalleryStackAlbumModernizr.prefixed( 'transform' ) ];
 
 			}
 
@@ -367,7 +367,8 @@ if (!window.Modernizr) {
 		},
 		_piles : function() {
 
-			this.piles = {};
+			var piles = {};
+			this.pilesArr = [];
 			var pile, self = this, idx = 0;
 			this.items.each( function() {
 
@@ -378,15 +379,18 @@ if (!window.Modernizr) {
 				for( var i = 0, total = attr.length; i < total; ++i ) {
 
 					var pileName = $.trim( attr[i] );
-					pile = self.piles[ pileName ];
+					pile = piles[ pileName ];
 
 					if( !pile ) {
 
-						pile = self.piles[ pileName ] = {
+						pile = piles[ pileName ] = {
+							name : pileName,
 							elements : [],
 							position : { left : 0, top : 0 },
 							index : idx
 						};
+
+						self.pilesArr.push(pile);
 
 						++idx;
 
@@ -402,10 +406,9 @@ if (!window.Modernizr) {
 
 		},
 		_setInitialStyle : function() {
+			for (var j =0, pile_len = this.pilesArr.length; j < pile_len; j++){
 
-			for( var pile in this.piles ) {
-
-				var p = this.piles[pile];
+				var p = this.pilesArr[j];
 
 				for( var i = 0, len = p.elements.length; i < len; ++i ) {
 
@@ -424,16 +427,16 @@ if (!window.Modernizr) {
 						var extraStyle = { visibility : 'hidden' };
 						$el.css( extraStyle ).data( 'extraStyle', extraStyle );
 					}
-					else if( pile.substr( 0, 6 ) !== 'nopile' ) {
-						$el.data( 'front', true ).append( '<div class="tp-title-cover"><div class="tp-title"><span>' + pile + '</span><span>' + len + '</span></div></div>' );
+					else if( p.name.substr( 0, 6 ) !== 'nopile' ) {
+						$el.data( 'front', true ).append( '<div class="tp-title-cover"><div class="tp-title"><span>' + p.name + '</span><span>' + len + '</span></div></div>' );
 					}
 
 					$el.css( styleCSS ).data( {
 						initialStyle : styleCSS,
-						pileName : pile,
+						pileName : p.name,
 						pileCount : len,
 						shadow : $el.css( 'box-shadow' ),
-						isPile : pile.substr( 0, 6 ) === 'nopile' ? false : true
+						isPile : p.name.substr( 0, 6 ) === 'nopile' ? false : true
 					} );
 
 				}
@@ -454,9 +457,13 @@ if (!window.Modernizr) {
 				l, t, ml = 0,
 				lastItemTop = 0;
 
-			for( var pile in this.piles ) {
+			for (var j =0, pile_len = this.pilesArr.length; j < pile_len; j++){
 
-				var p = this.piles[pile],
+				var p = this.pilesArr[j],
+
+			//for( var pile in this.piles ) {
+      //
+			//	var p = this.piles[pile],
 					stepW = this.itemSize.width + this.options.gutter,
 
 					accumIL = 0, accumIT = 0, il, it;
@@ -510,7 +517,7 @@ if (!window.Modernizr) {
 
 					var $el = $( elem.el );
 
-					if( pile !== this.pileName ) {
+					if(p.name !== this.pileName ) {
 
 						$el.css( { left : p.position.left, top : p.position.top } );
 
@@ -543,16 +550,23 @@ if (!window.Modernizr) {
 
 			// final style
 			var fs;
-			for( var pile in this.piles ) {
 
-				var p = this.piles[ pile ], cnt = 0;
+			for (var j =0, pile_len = this.pilesArr.length; j < pile_len; j++){
+
+				var p = this.pilesArr[j],
+
+			//for( var pile in this.piles ) {
+      //
+			//	var p = this.piles[ pile ],
+
+					cnt = 0;
 
 				for( var i = 0, len = p.elements.length; i < len; ++i ) {
 
 					var elem = p.elements[i],
 						$item = $( elem.el ),
 						$img = $item.find( 'img' ),
-						styleCSS = pile === this.pileName ? {
+						styleCSS = p.name === this.pileName ? {
 							zIndex : 9999,
 							visibility : 'visible',
 							transition : this.support ? 'left ' + this.options.pileAnimation.openSpeed + 'ms ' + ( ( len - i - 1 ) * this.options.delay ) + 'ms ' + this.options.pileAnimation.openEasing + ', top ' + this.options.pileAnimation.openSpeed + 'ms ' + ( ( len - i - 1 ) * this.options.delay ) + 'ms ' + this.options.pileAnimation.openEasing + ', ' + this.transformName + ' ' + this.options.pileAnimation.openSpeed + 'ms ' + ( ( len - i - 1 ) * this.options.delay ) + 'ms ' + this.options.pileAnimation.openEasing : 'none'
@@ -561,7 +575,7 @@ if (!window.Modernizr) {
 							transition : this.support ? 'opacity ' + this.options.otherPileAnimation.closeSpeed + 'ms ' + this.options.otherPileAnimation.closeEasing : 'none'
 						};
 
-					if( pile === this.pileName ) {
+					if( p.name === this.pileName ) {
 
 						if( $item.data( 'front' ) ) {
 							$item.find( 'div.tp-title' ).hide();
@@ -592,7 +606,7 @@ if (!window.Modernizr) {
 
 					var self = this;
 
-					pile === this.pileName ?
+					p.name === this.pileName ?
 						this._applyTransition( $item, fs, this.options.pileAnimation.openSpeed, function( evt ) {
 
 							var target = this.target || this.nodeName;
@@ -645,14 +659,20 @@ if (!window.Modernizr) {
 
 				// final style
 				var fs;
-				for( var pile in this.piles ) {
+				for (var j =0, pile_len = this.pilesArr.length; j < pile_len; j++){
 
-					var p = this.piles[ pile ], cnt = 0;
+					var p = this.pilesArr[j],
+
+				//for( var pile in this.piles ) {
+        //
+				//	var p = this.piles[ pile ],
+
+						cnt = 0;
 
 					for( var i = 0, len = p.elements.length; i < len; ++i ) {
 
 						var $item = $( p.elements[i].el ),
-							styleCSS = pile === this.pileName ? {
+							styleCSS = p.name === this.pileName ? {
 								transition : this.support ? 'left ' + this.options.pileAnimation.closeSpeed + 'ms ' + this.options.pileAnimation.closeEasing + ', top ' + this.options.pileAnimation.closeSpeed + 'ms ' + this.options.pileAnimation.closeEasing + ', ' + this.transformName + ' ' + this.options.pileAnimation.closeSpeed + 'ms ' + this.options.pileAnimation.closeEasing : 'none'
 							} : {
 								transition : this.support ? 'opacity ' + this.options.otherPileAnimation.openSpeed + 'ms ' + this.options.otherPileAnimation.openEasing : 'none'
@@ -662,7 +682,7 @@ if (!window.Modernizr) {
 
 						fs = p.position;
 
-						if( pile === this.pileName ) {
+						if(p.name === this.pileName ) {
 
 							$.extend( fs, $item.data( 'initialStyle' ) );
 
@@ -673,7 +693,7 @@ if (!window.Modernizr) {
 
 						}
 
-						pile === this.pileName ? this._applyTransition( $item, fs, this.options.pileAnimation.closeSpeed, function( evt ) {
+						p.name === this.pileName ? this._applyTransition( $item, fs, this.options.pileAnimation.closeSpeed, function( evt ) {
 
 							var target = this.target || this.nodeName;
 							if( target !== 'LI' ) {

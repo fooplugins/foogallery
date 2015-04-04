@@ -33,6 +33,16 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 			);
 
 			$settings[] = array(
+				'id'      => 'gallery_sorting',
+				'title'   => __( 'Default Gallery Sorting', 'foogallery' ),
+				'desc'    => __( 'The default attachment sorting to use for new galleries', 'foogallery' ),
+				'default' => '',
+				'type'    => 'select',
+				'choices' => foogallery_sorting_options(),
+				'tab'     => 'general',
+			);
+
+			$settings[] = array(
 				'id'      => 'hide_gallery_template_help',
 				'title'   => __( 'Hide Gallery Template Help', 'foogallery' ),
 				'desc'    => __( 'Some gallery templates show helpful tips, which are useful for new users. You can choose to hide these tips.', 'foogallery' ),
@@ -59,8 +69,6 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 	        //region Extensions Tab
 	        $tabs['extensions'] = __( 'Extensions', 'foogallery' );
 
-			$extensions_url = '<br />' . __('The default URL is ', 'foogallery') . '<code>' . FOOGALLERY_EXTENSIONS_ENDPOINT . '</code>';
-
 	        $settings[] = array(
 		        'id'      => 'use_future_endpoint',
 		        'title'   => __( 'Use Beta Endpoint', 'foogallery' ),
@@ -69,7 +77,27 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 		        'tab'     => 'extensions',
 	        );
 
-	        //endregion Advanced
+			//region Thumbnail Tab
+			$tabs['thumb'] = __( 'Thumbnails', 'foogallery' );
+
+			$settings[] = array(
+				'id'      => 'thumb_jpeg_quality',
+				'title'   => __( 'JPEG Quality', 'foogallery' ),
+				'desc'    => __( 'The image quality to be used when resizing JPEG images.', 'foogallery' ),
+				'type'    => 'text',
+				'default' => '80',
+				'tab'     => 'thumb'
+			);
+
+			$settings[] = array(
+				'id'      => 'thumb_resize_animations',
+				'title'   => __( 'Resize Animated GIFs', 'foogallery' ),
+				'desc'    => __( 'Should animated gifs be resized or not. If enabled, only the first frame is used in the resize.', 'foogallery' ),
+				'type'    => 'checkbox',
+				'tab'     => 'thumb',
+			);
+
+			//endregion Thumbnail Tab
 
 //	        //region Advanced Tab
 //	        $tabs['advanced'] = __( 'Advanced', 'foogallery' );
