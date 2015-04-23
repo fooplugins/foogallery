@@ -40,7 +40,7 @@ $show_extensions_section = apply_filters( 'foogallery_admin_help_show_extensions
 		<a class="nav-tab nav-tab-active" href="#">
 			<?php _e( 'Getting Started', 'foogallery' ); ?>
 		</a>
-		<a class="nav-tab" href="<?php echo foogallery_admin_extensions_url(); ?>">
+		<a class="nav-tab" href="<?php echo esc_url( foogallery_admin_extensions_url() ); ?>">
 			<?php _e( 'Extensions', 'foogallery' ); ?>
 		</a>
 		<a class="nav-tab" href="http://fooplugins.com">
@@ -56,7 +56,7 @@ $show_extensions_section = apply_filters( 'foogallery_admin_help_show_extensions
 
 			<h2><?php _e( 'Creating Your First Gallery', 'foogallery' );?></h2>
 
-			<h4><?php printf( __( '<a href="%s">Galleries &rarr; Add New</a>', 'foogallery' ), admin_url( 'post-new.php?post_type=foogallery' ) ); ?></h4>
+			<h4><?php printf( __( '<a href="%s">Galleries &rarr; Add New</a>', 'foogallery' ), esc_url ( admin_url( 'post-new.php?post_type=foogallery' ) ) ); ?></h4>
 			<p><?php _e( 'To create your first gallery, simply click the Add New button or click the Add Gallery menu link. Then choose images from the media library to include in your gallery.', 'foogallery' ); ?></p>
 
 			<h4><?php _e( 'Drag and Drop Reordering', 'foogallery' );?></h4>

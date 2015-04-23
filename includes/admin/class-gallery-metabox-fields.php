@@ -200,7 +200,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Fields' ) ) {
 									'extension' => FOOGALLERY_FOOBOX_FREE_EXTENSION_SLUG,
 									'action' => 'activate',
 								));
-								$field['desc'] .= '<a target="_blank" href="' . $foobox_install_link . '">' . __( 'Activate FooBox FREE right now!', 'foogallery' ) . '</a>';
+								$field['desc'] .= '<a target="_blank" href="' . esc_url( $foobox_install_link ). '">' . __( 'Activate FooBox FREE right now!', 'foogallery' ) . '</a>';
 							} else {
 								//we need to download it
 								$foobox_install_link = foogallery_build_admin_menu_url( array(
@@ -208,7 +208,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Fields' ) ) {
 									'extension' => FOOGALLERY_FOOBOX_FREE_EXTENSION_SLUG,
 									'action' => 'download',
 								));
-								$foobox_install_html = '<a target="_blank" href="' . $foobox_install_link . '">' . __( 'Download and activate FooBox FREE', 'foogallery' ) . '</a>';
+								$foobox_install_html = '<a target="_blank" href="' . esc_url( $foobox_install_link ) . '">' . __( 'Download and activate FooBox FREE', 'foogallery' ) . '</a>';
 								$field['desc'] .= sprintf( __( '%s which works flawlessly with %s.', 'foogallery' ), $foobox_install_html, foogallery_plugin_name() );
 							}
 						} else {

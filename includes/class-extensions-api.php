@@ -612,9 +612,9 @@ if ( ! class_exists( 'FooGallery_Extensions_API' ) ) {
 				return apply_filters( 'foogallery_extensions_download_success-' . $slug, array(
 					'message' => sprintf( __( 'The extension %s was successfully downloaded and can now be activated. %s', 'foogallery' ),
 						"<strong>{$extension['title']}</strong>",
-						'<a href="' . add_query_arg( array(
+						'<a href="' . esc_url( add_query_arg( array(
 								'action' => 'activate',
-								'extension' => $slug, ) ) . '">' . __( 'Activate immediately', 'foogallery' ) . '</a>'
+								'extension' => $slug, ) ) ) . '">' . __( 'Activate immediately', 'foogallery' ) . '</a>'
 					),
 					'type' => 'success',
 				) );

@@ -354,7 +354,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Editor' ) ) {
 				<?php } ?>
 				<li class="foogallery-pile">
 					<div class="foogallery-gallery-select foogallery-add-gallery">
-						<a href="<?php echo foogallery_admin_add_gallery_url(); ?>" target="_blank" class="thumbnail" style="display: table;">
+						<a href="<?php echo esc_url( foogallery_admin_add_gallery_url() ); ?>" target="_blank" class="thumbnail" style="display: table;">
 							<span></span>
 							<div class="foogallery-gallery-select-inner" >
 								<h3><?php _e( 'Add New Gallery', 'foogallery' ); ?></h3>

@@ -376,7 +376,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 					$url = get_permalink( $post->ID );
 					echo '<li>' . $post->post_title . ' <span class="row-actions">';
 					edit_post_link( __( 'Edit', 'foogallery' ), '<span class="edit">', ' | </span>', $post->ID );
-					echo '<span class="view"><a href="' . $url . '" target="_blank">' . __( 'View', 'foogallery' ) . '</a></span></li>';
+					echo '<span class="view"><a href="' . esc_url( $url ) . '" target="_blank">' . __( 'View', 'foogallery' ) . '</a></span></li>';
 				} ?>
 				</ul>
 			<?php } else { ?>

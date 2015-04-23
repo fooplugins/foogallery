@@ -15,7 +15,7 @@ $caption_color = foogallery_gallery_template_setting( 'caption_color', '#fff' );
 $featured_attachment = $current_foogallery->featured_attachment( $args );
 ?>
 <div id="foogallery-gallery-<?php echo $current_foogallery->ID; ?>" class="<?php echo foogallery_build_class_attribute( $current_foogallery, 'foogallery-lightbox-' . $lightbox, $caption_style, $position ); ?>">
-    <a href="<?php echo $featured_attachment->url; ?>">
+    <a href="<?php echo esc_url( $featured_attachment->url ); ?>">
         <?php echo $featured_attachment->html_img( $args ); ?>
         <span class="thumbnail-caption" style="background-color: <?php echo $caption_bgcolor; ?>; color:<?php echo $caption_color; ?>">
         <?php
