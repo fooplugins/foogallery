@@ -14,21 +14,17 @@ Foo Gallery is the most intuitive and extensible gallery management tool ever cr
 
 Foo Gallery allows for better image gallery management within WordPress. Built to be simple for users and highly flexible for developers.
 
-Our #1 goal with Foo Gallery was to utilize as much of the core image handling functionality that already exists in WordPress.
-
-The result is an intuitive gallery creation and management experience that is easy to use and lightweight and fast.
-
 [View the Foo Gallery Homepage & DEMO](http://foo.gallery/)
 
 Foo Gallery was designed to be the most developer-friendly gallery plugin available for WordPress. It was also built on top of a solid extension framework, which means different functionality is separated out into different areas in the codebase. It also means the core plugin is lightweight, but still allowing for the most flexibility.
 
-## Albums Built In! ##
+**Albums Built In**
 
 Albums are now built in as an extension. Simply head over to the extensions page and activate the albums extension. A new menu item will appear that allows you to add albums just as easily as galleries.
 
-Features:
+**Features**
 
-*   Albums now built-in! (Activate the albums extension)
+*	Albums now built-in! (Activate the albums extension)
 *	Gallery custom post type
 *	Use built-in media library to manage images
 *	Drag n Drop reordering of images and galleries
@@ -36,7 +32,7 @@ Features:
 *	Built-in support for FooBox
 *	Built-in Extensions Store
 *	Built on an extension framework
-*   Custom CSS for both galleries and albums
+*	Custom CSS for both galleries and albums
 *	Copy to clipboard shortcodes
 *	Visual shortcodes in rich text editor
 *	Gallery picker to insert shortcode
@@ -44,7 +40,7 @@ Features:
 *	NextGen importer tool (albums and galleries)
 *	plus many, many more
 
-Gallery Templates
+**Gallery Templates**
 
 *	Responsive Image Gallery - [demo](http://foo.gallery/demos/responsive-image-gallery/)
 *	Masonry Gallery ([http://masonry.desandro.com](http://masonry.desandro.com/)) - [demo](http://foo.gallery/demos/masonry-image-gallery/)
@@ -53,12 +49,12 @@ Gallery Templates
 *	Single Thumbnail Gallery - [demo](http://foo.gallery/demos/single-thumbnail-gallery/)
 *	Cube Gallery - [demo](http://foo.gallery/demos/cube-gallery/) - [Buy Now!](http://fooplugins.com/plugins/cube-gallery-template/?utm_source=foogalleryplugin&utm_medium=foogallerylink&utm_campaign=foogallery_wprepo)
 
-Album Templates
+**Album Templates**
 
 *	Responsive Album Layout - [demo](http://foo.gallery/demos/responsive-album-layout/)
 *	All-in-one Stack Album - [demo](http://foo.gallery/demos/all-in-one-stack-album/)
 
-Extensions:
+**Extensions**
 
 *	Albums (bundled)
 *	Default Gallery Templates (bundled)
@@ -74,13 +70,13 @@ Extensions:
 *	[Use Media Menu](https://github.com/fooplugins/foogallery-media-menu)
 *	Build your own!!!
 
-Documentation:
+**Documentation**
 
 *	[FooGallery 101](http://docs.fooplugins.com/foogallery/foogallery-101/)
 *	[Developer 101](http://docs.fooplugins.com/foogallery/foogallery-developers-101/)
 *	[Actions and Filters](http://docs.fooplugins.com/foogallery/actions-filters/)
 
-Contribute:
+**Contribute**
 
 FooGallery is hosted on [GitHub](https://github.com/fooplugins/foogallery). If you find a bug, please [create an issue](https://github.com/fooplugins/foogallery/issues).
 
