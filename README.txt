@@ -3,7 +3,7 @@ Contributors: bradvin, fooplugins
 Donate link: http://fooplugins.com
 Tags: images,gallery,album,nextgen,photos,pictures,media,attachments,image gallery
 Requires at least: 3.9
-Tested up to: 4.1
+Tested up to: 4.2
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -38,6 +38,7 @@ Albums are now built in as an extension. Simply head over to the extensions page
 *	Gallery picker to insert shortcode
 *	Page usage metabox with one-click gallery page creation
 *	NextGen importer tool (albums and galleries)
+*	Multisite Support
 *	plus many, many more
 
 **Gallery Templates**
@@ -105,6 +106,12 @@ Hell, yes! Check out our [developer page](http://foo.gallery/developers/)
 5. Album Edit Page
 
 == Changelog ==
+
+= 1.2.5 =
+* Fix for extensions being empty
+* Added support for Multi-site
+* Added esc_url to all places where url is rendered
+* Updated to latest Justified Gallery v3.5.4
 
 = 1.2.4 =
 * Many album template updates, enhancements and fixes
