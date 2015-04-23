@@ -62,13 +62,13 @@ if ( ! class_exists( 'FooGallery_Extensions_API' ) ) {
 
 				//clear any previous state
 				delete_option( FOOGALLERY_EXTENSIONS_LOADING_ERRORS );
-				$this->extensions = array();
+				$this->extensions = null;
 				$expires = 60 * 60 * 24; //1 day
 
 				$extension_url = $this->get_extensions_endpoint();
 
 				//fetch the data from our public list of extensions hosted on github
-				$response = wp_remote_get( $extension_url );
+				$response = wp_remote_get( $extension_url, array( 'sslverify' => false ) );
 
 				if( ! is_wp_error( $response ) ) {
 					$this->extensions = @json_decode( $response['body'], true );
