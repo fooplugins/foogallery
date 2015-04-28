@@ -321,13 +321,14 @@ if ( ! class_exists( 'FooGallery_Default_Templates_Extension' ) ) {
 							'position-float-right' => __( 'Float Right', 'foogallery' ),
 						)
 					),
-//					array(
-//						'id' => 'thumb_preview',
-//						'title' => __( 'Preview', 'foogallery' ),
-//						'desc' => __( 'This is what your thumbnail will look like.', 'foogallery' ),
-//						'section' => __( 'Thumbnail Settings', 'foogallery' ),
-//						'type' => 'thumb_preview',
-//					),
+					array(
+						'id'      => 'link_custom_url',
+						'title'   => __( 'Link To Custom URL', 'foogallery' ),
+						'section' => __( 'Thumbnail Settings', 'foogallery' ),
+						'default' => '',
+						'type'    => 'checkbox',
+						'desc'	  => __( 'You can link your thumbnails to Custom URL\'s (if they are set on your attachments). Fallback will be to the full size image.', 'foogallery' )
+					),
 					array(
 						'id'      => 'caption_style',
 						'title'   => __( 'Caption Style', 'foogallery' ),
