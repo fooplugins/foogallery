@@ -46,7 +46,8 @@
 }
 
 .foogallery-pile img {
-	height: 100%;
+	height: auto;
+	width: 100%;
 }
 
 .foogallery-pile h3 {
@@ -70,8 +71,12 @@
 	border-color: #1E8CBE;
 }
 
+.foogallery-gallery-select .thumbnail {
+    width: 100%;
+}
+
 .foogallery-gallery-select.selected::before {
-	content: "\f147";
+	content: "\f147" !important;
 	display: inline-block;
 	font: normal 60px/70px 'dashicons';
 	position: absolute;
@@ -80,6 +85,7 @@
 	left: 50%;
 	margin-left: -30px;
 	margin-top: -30px;
+	padding-top: 0 !important;
 	-webkit-font-smoothing: antialiased;
 	background: #1E8CBE;
 	border-radius: 50%;

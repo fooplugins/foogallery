@@ -46,31 +46,32 @@ if ( false !== $foogallery ) {
 	<ul class="foogallery-album-gallery-list <?php echo $alignment; ?>">
 		<?php
 		foreach ( $current_foogallery_album->galleries() as $gallery ) {
-			$attachment = $gallery->featured_attachment();
-			$img_html = $attachment->html_img( $args );
-			$images = $gallery->image_count( $no_images_text, $single_image_text, $images_text );
-			$gallery_link = foogallery_album_build_gallery_link( $current_foogallery_album, $gallery );
-			?>
-			<li>
-				<div class="foogallery-pile">
-					<div class="foogallery-pile-inner">
-						<a href="<?php echo $gallery_link; ?>">
-							<?php echo $img_html; ?>
-							<?php
+			if (!empty($gallery->attachment_ids)) {
+				$attachment = $gallery->featured_attachment();
+				$img_html = $attachment->html_img( $args );
+				$images = $gallery->image_count( $no_images_text, $single_image_text, $images_text );
+				$gallery_link = foogallery_album_build_gallery_link( $current_foogallery_album, $gallery );
+				?>
+				<li>
+					<div class="foogallery-pile">
+						<div class="foogallery-pile-inner">
+							<a href="<?php echo $gallery_link; ?>">
+								<?php echo $img_html; ?>
+								<?php
 
-							$title = empty( $gallery->name ) ?
-								sprintf( __( '%s #%s', 'foogallery' ), foogallery_plugin_name(), $gallery->ID ) :
-								$gallery->name;
+								$title = empty( $gallery->name ) ?
+									sprintf( __( '%s #%s', 'foogallery' ), foogallery_plugin_name(), $gallery->ID ) :
+									$gallery->name;
 
-							?>
-							<h3><?php echo $title; ?>
-								<span><?php echo $images; ?></span>
-							</h3>
-						</a>
+								?>
+								<h3><?php echo $title; ?>
+									<span><?php echo $images; ?></span>
+								</h3>
+							</a>
+						</div>
 					</div>
-				</div>
-			</li>
-
+				</li>
+			<?php } ?>
 		<?php } ?>
 	</ul>
 	<div style="clear: both;"></div>
