@@ -9,6 +9,7 @@ if ( ! class_exists( 'FooGallery_Public' ) ) {
 
 		function __construct() {
 			new FooGallery_Shortcodes();
+            new FooGallery_CSS_Load_Optimizer();
 		}
 
 	}

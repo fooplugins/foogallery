@@ -49,11 +49,7 @@ class FooGallery_Template_Loader {
 			} else {
 
 				//create locator instance
-				$instance_name = FOOGALLERY_SLUG . '_gallery_templates';
-				$loader        = new Foo_Plugin_File_Locator_v1( $instance_name, FOOGALLERY_FILE, 'templates', FOOGALLERY_SLUG );
-
-				//allow extensions to very easily add pickup locations for their files
-				$this->add_extension_pickup_locations( $loader, apply_filters( $instance_name . '_files', array() ) );
+                $loader = $this->create_locator_instance();
 
 				if ( false !== ( $template_location = $loader->locate_file( "gallery-{$current_foogallery_template}.php" ) ) ) {
 
@@ -64,11 +60,13 @@ class FooGallery_Template_Loader {
 					//try to include some JS
 					if ( false !== ( $js_location = $loader->locate_file( "gallery-{$current_foogallery_template}.js" ) ) ) {
 						wp_enqueue_script( "foogallery-template-{$current_foogallery_template}", $js_location['url'] );
+                        do_action( 'foogallery-template-enqueue-script', $current_foogallery_template, $js_location );
 					}
 
 					//try to include some CSS
 					if ( false !== ( $css_location = $loader->locate_file( "gallery-{$current_foogallery_template}.css" ) ) ) {
 						wp_enqueue_style( "foogallery-template-{$current_foogallery_template}", $css_location['url'] );
+                        do_action( 'foogallery-template-enqueue-style', $current_foogallery_template, $css_location );
 					}
 
 					//finally include the actual php template!
@@ -87,6 +85,21 @@ class FooGallery_Template_Loader {
 			}
 		}
 	}
+
+    /**
+     * Creates a locator instance used for including template files
+     *
+     *
+     */
+    public function create_locator_instance() {
+        $instance_name = FOOGALLERY_SLUG . '_gallery_templates';
+        $loader        = new Foo_Plugin_File_Locator_v1( $instance_name, FOOGALLERY_FILE, 'templates', FOOGALLERY_SLUG );
+
+        //allow extensions to very easily add pickup locations for their files
+        $this->add_extension_pickup_locations( $loader, apply_filters( $instance_name . '_files', array() ) );
+
+        return $loader;
+    }
 
 	/**
 	 * Add pickup locations to the loader to make it easier for extensions

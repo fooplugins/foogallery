@@ -171,15 +171,23 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 			if ( 'post' == $post->post_type ||
 				'page' == $post->post_type ) {
 
-				//first, clear any foogallery usages that the post might have
+                do_action( 'foogallery_start_attach_gallery_to_post', $post_id );
+
+				//Clear any foogallery usages that the post might have
 				delete_post_meta( $post_id, FOOGALLERY_META_POST_USAGE );
 
-				//if the content contains the foogallery shortcode then add a custom field
+				//get all foogallery shortcodes that are on the page/post
 				$gallery_shortcodes = foogallery_extract_gallery_shortcodes( $post->post_content );
 
-				foreach ( $gallery_shortcodes as $id => $shortcode ) {
-					add_post_meta( $post_id, FOOGALLERY_META_POST_USAGE, $id, false );
-				}
+                if ( is_array( $gallery_shortcodes ) && count( $gallery_shortcodes ) > 0 ) {
+
+                    foreach ( $gallery_shortcodes as $id => $shortcode ) {
+                        //if the content contains the foogallery shortcode then add a custom field
+                        add_post_meta( $post_id, FOOGALLERY_META_POST_USAGE, $id, false );
+
+                        do_action( 'foogallery_attach_gallery_to_post', $post_id, $id );
+                    }
+                }
 			}
 		}
 
