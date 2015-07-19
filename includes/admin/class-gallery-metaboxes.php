@@ -265,6 +265,14 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 			//default template to use
 			$gallery             = $this->get_gallery( $post );
 			$available_templates = foogallery_gallery_templates();
+
+			//check if we have no templates
+			if ( 0 === count( $available_templates ) ) {
+				//force the default template to activate if there are no other gallery templates
+				foogallery_activate_default_templates_extension();
+				$available_templates = foogallery_gallery_templates();
+			}
+
 			$gallery_template    = foogallery_default_gallery_template();
 			if ( ! empty($gallery->gallery_template) ) {
 				$gallery_template = $gallery->gallery_template;
