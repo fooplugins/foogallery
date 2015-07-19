@@ -39,5 +39,5 @@ $lightbox = foogallery_gallery_template_setting( 'lightbox', 'unknown' );
 				'lt1024':''
 			}
 		});
-	})
+	});
 </script>
