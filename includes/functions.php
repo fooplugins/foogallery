@@ -154,6 +154,15 @@ function foogallery_admin_extensions_url() {
 }
 
 /**
+ * Returns the FooGallery system info page Url within the admin
+ *
+ * @return string The Url to the FooGallery system info page in admin
+ */
+function foogallery_admin_systeminfo_url() {
+	return admin_url( add_query_arg( array( 'page' => 'foogallery-systeminfo' ), foogallery_admin_menu_parent_slug() ) );
+}
+
+/**
  * Get a foogallery template setting for the current foogallery that is being output to the frontend
  * @param string	$key
  * @param string	$default
@@ -363,7 +372,7 @@ function foogallery_render_gallery( $gallery_id ) {
  * Returns the available sorting options that can be chosen for galleries and albums
  */
 function foogallery_sorting_options() {
-	return array(
+	return apply_filters( 'foogallery_sorting_options', array(
 		'' => __('Default', 'foogallery'),
 		'date_desc' => __('Date created - newest first', 'foogallery'),
 		'date_asc' => __('Date created - oldest first', 'foogallery'),
@@ -372,7 +381,7 @@ function foogallery_sorting_options() {
 		'title_asc' => __('Title - alphabetically', 'foogallery'),
 		'title_desc' => __('Title - reverse', 'foogallery'),
 		'rand' => __('Random', 'foogallery')
-	);
+	) );
 }
 
 function foogallery_sorting_get_posts_orderby_arg( $sorting_option ) {
@@ -411,4 +420,20 @@ function foogallery_sorting_get_posts_order_arg( $sorting_option ) {
 	}
 
 	return apply_filters( 'foogallery_sorting_get_posts_order_arg', $order_arg, $sorting_option );
+}
+
+/**
+ * Activate the default templates extension when there are no gallery templates loaded
+ */
+function foogallery_activate_default_templates_extension() {
+	$api = foogallery_extensions_api();
+	$api->activate( 'default_templates' );
+
+//	global $foogallery_extensions;
+//	global $foogallery_currently_loading;
+//	if ( class_exists( 'FooGallery_Default_Templates_Extension' ) ) {
+//		$foogallery_currently_loading = 'default_templates';
+//		$instance = new FooGallery_Default_Templates_Extension();
+//		$foogallery_extensions[ 'default_templates' ] = $instance;
+//	}
 }

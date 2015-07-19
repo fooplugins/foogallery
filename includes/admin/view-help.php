@@ -46,6 +46,11 @@ $show_extensions_section = apply_filters( 'foogallery_admin_help_show_extensions
 		<a class="nav-tab" href="http://fooplugins.com">
 			<?php _e( 'Other Plugins', 'foogallery' ); ?>
 		</a>
+		<?php if ( current_user_can( 'activate_plugins' ) ) { ?>
+		<a class="nav-tab" href="<?php echo esc_url( foogallery_admin_systeminfo_url() ); ?>">
+			<?php _e( 'System Info', 'foogallery' ); ?>
+		</a>
+		<?php } ?>
 	</h2>
 	<?php } else { ?><hr /><?php } ?>
 	<div class="changelog">
