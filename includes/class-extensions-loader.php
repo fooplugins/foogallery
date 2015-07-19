@@ -17,6 +17,8 @@ if ( ! class_exists( 'FooGallery_Extensions_Loader' ) ) {
 			foreach ( $active_extensions as $slug => $class ) {
 				$this->load_extension( $slug, $class );
 			}
+
+			//What if no extensions were loaded?
 		}
 
 		function load_extension( $slug, $class ) {
