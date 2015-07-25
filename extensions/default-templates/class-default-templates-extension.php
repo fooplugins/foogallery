@@ -430,6 +430,9 @@ if ( ! class_exists( 'FooGallery_Default_Templates_Extension' ) ) {
 		function enqueue_masonry_dependencies() {
 			$js = FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_URL . 'js/imagesloaded.pkgd.min.js';
 			wp_enqueue_script( 'foogallery-imagesloaded', $js, array( 'masonry', 'jquery' ), FOOGALLERY_VERSION );
+
+			$css = FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_URL . 'css/foogallery-loading.css';
+			wp_enqueue_style( 'foogallery-loading', $css, array(), FOOGALLERY_VERSION );
 		}
 	}
 }

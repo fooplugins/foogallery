@@ -41,23 +41,7 @@ $lightbox = foogallery_gallery_template_setting( 'lightbox', 'unknown' ); ?>
 	}
 	<?php } ?>
 </style>
-<script>
-	jQuery(function ($) {
-		var $container<?php echo $current_foogallery->ID; ?> = $('#foogallery-gallery-<?php echo $current_foogallery->ID; ?>');
-		// initialize Masonry
-		$container<?php echo $current_foogallery->ID; ?>.masonry({
-			itemSelector: '.item',
-			columnWidth: <?php echo $width; ?>,
-			gutter: <?php echo $gutter_width; ?>,
-			isFitWidth: <?php echo $center_align ? 'true' : 'false'; ?>
-		});
-		// layout Masonry again after all images have loaded
-		$container<?php echo $current_foogallery->ID; ?>.imagesLoaded( function() {
-			$container<?php echo $current_foogallery->ID; ?>.masonry();
-		});
-	});
-</script>
-<div id="foogallery-gallery-<?php echo $current_foogallery->ID; ?>" class="<?php echo foogallery_build_class_attribute( $current_foogallery, 'foogallery-lightbox-' . $lightbox ); ?>">
+<div data-masonry-options='{ "itemSelector" : ".item", "columnWidth" : <?php echo $width; ?>, "gutter" : <?php echo $gutter_width; ?>, "isFitWidth" : <?php echo $center_align ? 'true' : 'false'; ?> }' id="foogallery-gallery-<?php echo $current_foogallery->ID; ?>" class="<?php echo foogallery_build_class_attribute( $current_foogallery, 'foogallery-lightbox-' . $lightbox, 'foogallery-loading' ); ?>">
 <?php foreach ( $current_foogallery->attachments() as $attachment ) {
 		echo '	<div class="item">' . $attachment->html( $args )  . '</div>
 ';
