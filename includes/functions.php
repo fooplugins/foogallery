@@ -428,12 +428,4 @@ function foogallery_sorting_get_posts_order_arg( $sorting_option ) {
 function foogallery_activate_default_templates_extension() {
 	$api = foogallery_extensions_api();
 	$api->activate( 'default_templates' );
-
-//	global $foogallery_extensions;
-//	global $foogallery_currently_loading;
-//	if ( class_exists( 'FooGallery_Default_Templates_Extension' ) ) {
-//		$foogallery_currently_loading = 'default_templates';
-//		$instance = new FooGallery_Default_Templates_Extension();
-//		$foogallery_extensions[ 'default_templates' ] = $instance;
-//	}
 }
