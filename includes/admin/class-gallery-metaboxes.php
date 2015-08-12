@@ -352,29 +352,26 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 			$shortcode = $gallery->shortcode();
 			?>
 			<p class="foogallery-shortcode">
-				<code id="foogallery-copy-shortcode" data-clipboard-text="<?php echo htmlspecialchars( $shortcode ); ?>"
-					  title="<?php _e( 'Click to copy to your clipboard', 'foogallery' ); ?>"><?php echo $shortcode; ?></code>
+				<input type="text" id="foogallery-copy-shortcode" size="<?php echo strlen( $shortcode ); ?>" value="<?php echo htmlspecialchars( $shortcode ); ?>" readonly="readonly" />
 			</p>
 			<p>
-				<?php _e( 'Paste the above shortcode into a post or page to show the gallery. Simply click the shortcode to copy it to your clipboard.', 'foogallery' ); ?>
+				<?php _e( 'Paste the above shortcode into a post or page to show the gallery.', 'foogallery' ); ?>
 			</p>
 			<script>
 				jQuery(function($) {
-					var $el = $('#foogallery-copy-shortcode');
-					ZeroClipboard.config({ swfPath: "<?php echo FOOGALLERY_URL; ?>lib/zeroclipboard/ZeroClipboard.swf", forceHandCursor: true });
-					var client = new ZeroClipboard($el);
-
-					client.on( "ready", function() {
-						this.on( "aftercopy", function() {
+					var shortcodeInput = document.querySelector('#foogallery-copy-shortcode');
+					shortcodeInput.addEventListener('click', function () {
+						// select the contents
+						shortcodeInput.select();
+						try {
+							document.execCommand('copy');
+							//show the copied message
 							$('.foogallery-shortcode-message').remove();
-							$el.after('<p class="foogallery-shortcode-message"><?php _e( 'Shortcode copied to clipboard :)','foonav' ); ?></p>');
-						} );
-					} );
-
-					client.on("error", function(event) {
-						alert('error[name="' + event.name + '"]: ' + event.message);
-						ZeroClipboard.destroy();
-					});
+							$(shortcodeInput).after('<p class="foogallery-shortcode-message"><?php _e( 'Shortcode copied to clipboard :)','foogallery' ); ?></p>');
+						} catch(err) {
+							console.log('Oops, unable to copy!');
+						}
+					}, false);
 				});
 			</script>
 			<?php
