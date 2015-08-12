@@ -8,7 +8,7 @@ if (!class_exists('class-css-load-optimizer.php')) {
 
         function __construct() {
             add_action( 'wp_enqueue_scripts', array( $this, 'include_gallery_css' ) );
-            add_action( 'foogallery-template-enqueue-style', array( $this, 'enqueue_foogallery_style' ), 10, 2 );
+            add_action( 'foogallery_template_enqueue_style', array( $this, 'enqueue_foogallery_style' ), 10, 2 );
         }
 
         /**
@@ -70,7 +70,7 @@ if (!class_exists('class-css-load-optimizer.php')) {
          * @param $css_location string The location array for the stylesheet
          */
         function enqueue_foogallery_style($foogallery_template, $css_location) {
-            global $wp_query, $enqueued_foogallery_styles;
+            global $wp_query, $enqueued_foogallery_styles, $current_foogallery_template;
 
             //we only want to do this if we are looking at a single post
             if ( !is_singular() ) {
@@ -82,7 +82,7 @@ if (!class_exists('class-css-load-optimizer.php')) {
                 $post_id = $wp_query->post->ID;
 
                 if ( $post_id ) {
-                    add_post_meta( $post_id, FOOGALLERY_META_POST_USAGE_CSS, array( $foogallery_template => $css_location['url'] ), false );
+                    add_post_meta( $post_id, FOOGALLERY_META_POST_USAGE_CSS, array( $foogallery_template => $css_location ), false );
                 }
             }
         }
