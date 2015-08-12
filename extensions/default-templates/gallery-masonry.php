@@ -41,7 +41,7 @@ $lightbox = foogallery_gallery_template_setting( 'lightbox', 'unknown' ); ?>
 	}
 	<?php } ?>
 </style>
-<div data-masonry-options='{ "itemSelector" : ".item", "columnWidth" : <?php echo $width; ?>, "gutter" : <?php echo $gutter_width; ?>, "isFitWidth" : <?php echo $center_align ? 'true' : 'false'; ?> }' id="foogallery-gallery-<?php echo $current_foogallery->ID; ?>" class="<?php echo foogallery_build_class_attribute( $current_foogallery, 'foogallery-lightbox-' . $lightbox, 'foogallery-loading' ); ?>">
+<div data-masonry-options='{ "itemSelector" : ".item", "columnWidth" : <?php echo $width; ?>, "gutter" : <?php echo $gutter_width; ?>, "isFitWidth" : <?php echo $center_align ? 'true' : 'false'; ?> }' id="foogallery-gallery-<?php echo $current_foogallery->ID; ?>" class="<?php echo foogallery_build_class_attribute( $current_foogallery, 'foogallery-lightbox-' . $lightbox, 'foogallery-masonry-loading' ); ?>">
 <?php foreach ( $current_foogallery->attachments() as $attachment ) {
 		echo '	<div class="item">' . $attachment->html( $args )  . '</div>
 ';

@@ -6,7 +6,7 @@ jQuery(function ($) {
     $('.foogallery-masonry').each(function() {
         var $gallery = $(this);
         $gallery.imagesLoaded( function() {
-            $gallery.addClass('loaded').masonry( $gallery.data('masonry-options') );
+            $gallery.removeClass('foogallery-masonry-loading').masonry( $gallery.data('masonry-options') );
         });
     });
 });
