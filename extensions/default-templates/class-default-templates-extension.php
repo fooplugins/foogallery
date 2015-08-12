@@ -2,6 +2,7 @@
 if ( ! class_exists( 'FooGallery_Default_Templates_Extension' ) ) {
 
 	define( 'FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_URL', plugin_dir_url( __FILE__ ) );
+	require_once( 'functions.php' );
 
 	class FooGallery_Default_Templates_Extension {
 
@@ -9,6 +10,7 @@ if ( ! class_exists( 'FooGallery_Default_Templates_Extension' ) ) {
 			add_filter( 'foogallery_gallery_templates', array( $this, 'add_default_templates' ) );
 			add_filter( 'foogallery_gallery_templates_files', array( $this, 'register_myself' ) );
 			add_action( 'foogallery_render_gallery_template_field_custom', array( $this, 'render_thumbnail_preview' ), 10, 3 );
+			add_filter( 'foogallery_located_template-default', array( $this, 'enqueue_default_dependencies' ) );
 			add_filter( 'foogallery_located_template-masonry', array( $this, 'enqueue_masonry_dependencies' ) );
 		}
 
@@ -425,14 +427,20 @@ if ( ! class_exists( 'FooGallery_Default_Templates_Extension' ) ) {
 		}
 
 		/**
+		 * Enqueue scripts that the default gallery template relies on
+		 */
+		function enqueue_default_dependencies() {
+			wp_enqueue_script( 'jquery' );
+			foogallery_enqueue_imagesloaded_script();
+		}
+
+		/**
 		 * Enqueue scripts that the masonry gallery template relies on
 		 */
 		function enqueue_masonry_dependencies() {
-			$js = FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_URL . 'js/imagesloaded.pkgd.min.js';
-			wp_enqueue_script( 'foogallery-imagesloaded', $js, array( 'masonry', 'jquery' ), FOOGALLERY_VERSION );
-
-			$css = FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_URL . 'css/foogallery-loading.css';
-			wp_enqueue_style( 'foogallery-loading', $css, array(), FOOGALLERY_VERSION );
+			wp_enqueue_script( 'jquery' );
+			wp_enqueue_script( 'masonry' );
+			foogallery_enqueue_imagesloaded_script();
 		}
 	}
 }
