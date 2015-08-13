@@ -16,6 +16,9 @@ $lightbox = foogallery_gallery_template_setting( 'lightbox', 'unknown' );
 ?>
 <div data-justified-options='{ "rowHeight": <?php echo $height; ?>, "margins": <?php echo $margins; ?>, "captions": <?php echo $captions ? 'true' : 'false'; ?> }' id="foogallery-gallery-<?php echo $current_foogallery->ID; ?>" class="<?php echo foogallery_build_class_attribute( $current_foogallery, 'foogallery-lightbox-' . $lightbox, 'foogallery-justified-loading' ); ?>">
 	<?php foreach ( $current_foogallery->attachments() as $attachment ) {
+		if ( empty( $attachment->alt ) ) {
+			$attachment->alt = $attachment->caption;
+		}
 		echo $attachment->html( $args );
 	} ?>
 </div>
