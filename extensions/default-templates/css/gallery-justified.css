@@ -10,3 +10,8 @@
 .foogallery-justified-loading {
     display:none;
 }
+
+/* hide empty captions */
+.justified-gallery a .caption:empty {
+    display: none;
+}
