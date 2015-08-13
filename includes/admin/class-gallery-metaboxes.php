@@ -361,9 +361,10 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 				jQuery(function($) {
 					var shortcodeInput = document.querySelector('#foogallery-copy-shortcode');
 					shortcodeInput.addEventListener('click', function () {
-						// select the contents
-						shortcodeInput.select();
 						try {
+							// select the contents
+							shortcodeInput.select();
+							//copy the selection
 							document.execCommand('copy');
 							//show the copied message
 							$('.foogallery-shortcode-message').remove();

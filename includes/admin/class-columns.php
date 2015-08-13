@@ -66,9 +66,10 @@ if ( ! class_exists( 'FooGallery_Admin_Columns' ) ) {
 				<script>
 					jQuery(function($) {
 						$('.foogallery-shortcode').click( function () {
-							// select the contents
-							this.select();
 							try {
+								//select the contents
+								this.select();
+								//copy the selection
 								document.execCommand('copy');
 								//show the copied message
 								$('.foogallery-shortcode-message').remove();
