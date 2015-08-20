@@ -27,6 +27,18 @@
 		"css_class": "coming_soon"
 	},
 	{
+		"slug": "media_categories",
+		"class": "FooGallery_Media_Categories_Extension",
+		"categories": ["Featured" , "Free"],
+		"title": "Media Categories",
+		"description": "Categorize Your Media.",
+		"author": "FooPlugins",
+		"author_url": "http://fooplugins.com",
+		"thumbnail": "/assets/extension_bg.png",
+		"tags": ["functionality"],
+		"source": "bundled"
+	},
+	{
 		"slug": "foobox-image-lightbox",
 		"class": "FooGallery_FooBox_Free_Extension",
 		"categories": ["Featured" , "Free"],
