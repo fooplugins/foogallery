@@ -430,11 +430,6 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 		public function include_required_scripts() {
 			//only include scripts if we on the foogallery page
 			if ( FOOGALLERY_CPT_GALLERY === foo_current_screen_post_type() ) {
-
-				//zeroclipboard needed for copy to clipboard functionality
-				$url = FOOGALLERY_URL . 'lib/zeroclipboard/ZeroClipboard.min.js';
-				wp_enqueue_script( 'foogallery-zeroclipboard', $url, array('jquery'), FOOGALLERY_VERSION );
-
 				//spectrum needed for the colorpicker field
 				$url = FOOGALLERY_URL . 'lib/spectrum/spectrum.js';
 				wp_enqueue_script( 'foogallery-spectrum', $url, array('jquery'), FOOGALLERY_VERSION );

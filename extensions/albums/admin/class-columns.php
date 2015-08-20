@@ -52,24 +52,22 @@ if ( ! class_exists( 'FooGallery_Albums_Admin_Columns' ) ) {
 		}
 
 		function include_clipboard_script() {
-			if ( $this->include_clipboard_script ) {
-				//zeroclipboard needed for copy to clipboard functionality
-				$url = FOOGALLERY_URL . 'lib/zeroclipboard/ZeroClipboard.min.js';
-				wp_enqueue_script( 'foogallery-zeroclipboard', $url, array('jquery'), FOOGALLERY_VERSION );
-
-				?>
+			if ( $this->include_clipboard_script ) { ?>
 				<script>
 					jQuery(function($) {
-						var $el = $('.foogallery-shortcode');
-						ZeroClipboard.config({ moviePath: "<?php echo FOOGALLERY_URL; ?>lib/zeroclipboard/ZeroClipboard.swf" });
-						var client = new ZeroClipboard($el);
-
-						client.on( "load", function(client) {
-							client.on( "complete", function(client, args) {
+						$('.foogallery-shortcode').click( function () {
+							try {
+								//select the contents
+								this.select();
+								//copy the selection
+								document.execCommand('copy');
+								//show the copied message
 								$('.foogallery-shortcode-message').remove();
 								$(this).after('<p class="foogallery-shortcode-message"><?php _e( 'Shortcode copied to clipboard :)','foogallery' ); ?></p>');
-							} );
-						} );
+							} catch(err) {
+								console.log('Oops, unable to copy!');
+							}
+						});
 					});
 				</script>
 				<?php
