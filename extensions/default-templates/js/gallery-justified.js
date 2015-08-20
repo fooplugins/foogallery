@@ -16,6 +16,8 @@ jQuery(function ($) {
         var options = $.extend( {
             cssAnimation: true,
             waitThumbnailsLoad: false,
+            lastRow: 'nojustify',
+            justifyThreshold: 0.5,
             sizeRangeSuffixes: {
                 'lt100':'',
                 'lt240':'',
