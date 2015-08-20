@@ -9,7 +9,7 @@ if (!class_exists('FooGallery_Attachment_Fields')) {
     class FooGallery_Attachment_Fields {
 
         function __construct() {
-	        add_filter( 'attachment_fields_to_edit', array( $this, 'apply_filter' ), 9, 2 );
+	        add_filter( 'attachment_fields_to_edit', array( $this, 'add_fields' ), 9, 2 );
 	        add_filter( 'attachment_fields_to_save', array( $this, 'save_fields' ), 11, 2 );
         }
 
@@ -48,7 +48,7 @@ if (!class_exists('FooGallery_Attachment_Fields')) {
 	     *
 	     * @return mixed
 	     */
-	    public function apply_filter( $form_fields, $post = null ) {
+	    public function add_fields( $form_fields, $post = null ) {
 		    $custom_fields = $this->get_custom_fields();
 
 		    // If our fields array is not empty
@@ -59,7 +59,7 @@ if (!class_exists('FooGallery_Attachment_Fields')) {
 				    // and is not one of the exclusions
 				    if ( !in_array( $post->post_mime_type, $values['exclusions'] ) ) {
 					    // We get the already saved field meta value
-					    $meta = get_post_meta( $post->ID, '_' . $field, true );
+					    $meta = apply_filters( 'foogallery_attachment_custom_field_value', get_post_meta( $post->ID, '_' . $field, true ), $post->ID, $field, $values );
 
 					    switch ( $values['input'] ) {
 						    default:
@@ -148,13 +148,13 @@ if (!class_exists('FooGallery_Attachment_Fields')) {
 					    $values['value'] = $meta;
 
 					    // We add our field into the $form_fields array
-					    $form_fields[$field] = $values;
+					    $form_fields[$field] = apply_filters( 'foogallery_attachment_field_' . $field, $values, $post->ID );
 				    }
 			    }
 		    }
 
 		    // We return the completed $form_fields array
-		    return $form_fields;
+		    return apply_filters( 'foogallery_attachment_add_fields', $form_fields );
 	    }
 
 	    function save_fields( $post, $attachment ) {
@@ -164,19 +164,31 @@ if (!class_exists('FooGallery_Attachment_Fields')) {
 		    if ( ! empty( $custom_fields ) ) {
 			    // We browse our set of options
 			    foreach ( $custom_fields as $field => $values ) {
-				    // If this field has been submitted (is present in the $attachment variable)
-				    if ( isset( $attachment[$field] ) ) {
-					    // If submitted field is empty
-					    // We add errors to the post object with the "error_text" parameter we set in the options
-					    if ( strlen( trim( $attachment[$field] ) ) == 0 )
-						    $post['errors'][$field]['errors'][] = __( $values['error_text'] );
-					    // Otherwise we update the custom field
-					    else
-						    update_post_meta( $post['ID'], '_' . $field, $attachment[$field] );
-				    }
-				    // Otherwise, we delete it if it already existed
-				    else {
-					    delete_post_meta( $post['ID'], $field );
+				    switch ( $values['input'] ) {
+					    case 'text':
+					    case 'textarea':
+					    case 'select':
+					    case 'radio':
+					    case 'checkbox':
+						    // If this field has been submitted (is present in the $attachment variable)
+						    if ( isset( $attachment[$field] ) ) {
+							    // If submitted field is empty
+							    // We add errors to the post object with the "error_text" parameter we set in the options
+							    if ( strlen( trim( $attachment[$field] ) ) == 0 ) {
+								    $post['errors'][ $field ]['errors'][] = __( $values['error_text'] );
+								    // Otherwise we update the custom field
+							    } else {
+								    update_post_meta( $post['ID'], '_' . $field, $attachment[ $field ] );
+							    }
+						    }
+						    // Otherwise, we delete it if it already existed
+						    else {
+							    delete_post_meta( $post['ID'], $field );
+						    }
+					        break;
+
+					    default:
+						    do_action( 'foogallery_attachment_save_field_' . $values['input'], $field, $values, $post, $attachment);
 				    }
 			    }
 		    }
