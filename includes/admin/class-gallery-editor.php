@@ -255,7 +255,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Editor' ) ) {
 			<?php wp_nonce_field( 'foogallery_load_galleries', 'foogallery_load_galleries', false ); ?>
 			<div class="foogallery-modal-wrapper" style="display: none;">
 				<div class="media-modal wp-core-ui">
-					<a class="media-modal-close" href="#"><span class="media-modal-icon"></span></a>
+					<button type="button" class="button-link media-modal-close"><span class="media-modal-icon"><span class="screen-reader-text">Close media panel</span></span></button>
 					<div class="media-modal-content">
 						<div class="media-frame wp-core-ui hide-menu hide-router foogallery-meta-wrap">
 							<div class="media-frame-title">

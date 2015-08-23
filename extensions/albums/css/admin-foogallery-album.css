@@ -71,8 +71,8 @@
 }
 
 .foogallery-gallery-select.selected::before {
-	content: "\f147";
-	display: inline-block;
+	content: "\f147" !important;
+	display: inline-block !important;
 	font: normal 60px/70px 'dashicons';
 	position: absolute;
 	color: #FFF;
@@ -86,6 +86,7 @@
 	width: 60px;
 	height: 60px;
 	z-index: 4;
+	padding-top:0 !important;
 }
 
 .attachment-preview {
@@ -133,7 +134,7 @@
 }
 
 .foogallery-album-gallery-list .attachment-preview:before {
-	padding-top: 0;
+	padding-top:0 !important;
 }
 
 .gallery_template_field td {
