@@ -351,6 +351,8 @@ function foogallery_build_class_attribute( $gallery ) {
 		}
 	}
 
+	$classes = apply_filters( 'foogallery_build_class_attribute', $classes );
+
 	return implode( ' ', $classes );
 }
 
