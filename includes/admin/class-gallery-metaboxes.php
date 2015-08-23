@@ -302,8 +302,13 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 				<?php
 				foreach ( $available_templates as $template ) {
 					$field_visibility = ($gallery_template !== $template['slug']) ? 'style="display:none"' : '';
-					$section          = '';
-					foreach ( $template['fields'] as $field ) {
+
+					//allow for extensions to override fields for every gallery template.
+					// Also passes the $template along so you can inspect and conditionally alter fields based on the template properties
+					$fields = apply_filters( 'foogallery_override_gallery_template_fields', $template['fields'], $template );
+
+					$section = '';
+					foreach ( $fields as $field ) {
 
 						//allow for the field to be altered by extensions. Also used by the build-in fields, e.g. lightbox
 						$field = apply_filters( 'foogallery_alter_gallery_template_field', $field, $gallery );
