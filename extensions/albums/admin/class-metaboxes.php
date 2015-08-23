@@ -197,11 +197,10 @@ if ( ! class_exists( 'FooGallery_Admin_Album_MetaBoxes' ) ) {
 			$shortcode = $album->shortcode();
 			?>
 			<p class="foogallery-shortcode">
-				<code id="foogallery-copy-shortcode" data-clipboard-text="<?php echo htmlspecialchars( $shortcode ); ?>"
-				      title="<?php _e( 'Click to copy to your clipboard', 'foogallery' ); ?>"><?php echo $shortcode; ?></code>
+				<input type="text" id="foogallery-copy-shortcode" size="<?php echo strlen( $shortcode ); ?>" value="<?php echo htmlspecialchars( $shortcode ); ?>" readonly="readonly" />
 			</p>
 			<p>
-				<?php _e( 'Paste the above shortcode into a post or page to show the album. Simply click the shortcode to copy it to your clipboard.', 'foogallery' ); ?>
+				<?php _e( 'Paste the above shortcode into a post or page to show the album.', 'foogallery' ); ?>
 			</p>
 			<script>
 				jQuery(function($) {
