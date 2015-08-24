@@ -404,7 +404,10 @@ class WP_Thumb {
 
 		// Create the image
 		$editor = wp_get_image_editor( $file_path, array( 'methods' => array( 'get_image' ) ) );
+		if ($this->getFileExtension() == 'jpg' || $this->getFileExtension() == 'jpeg') {
 
+			$editor->set_quality($this->args['jpeg_quality']);
+		}
 		/**
 		 * Workaround to preserve image blending when images are not specifically resized (smaller than dimensions for example)
 		 */
@@ -457,6 +460,10 @@ class WP_Thumb {
 		endif;
 
 		apply_filters( 'wpthumb_image_post', $editor, $this->args );
+
+		if ( is_a( $editor, 'WP_Thumb_Image_Editor_Imagick' ) ) {
+			$editor->stripImage();
+		}
 
 		$editor->save( $new_filepath );
 
@@ -767,8 +774,9 @@ function wpthumb_add_image_editors( $editors ) {
 
 	require_once( WP_THUMB_PATH . '/wpthumb.image-editor.php' );
 
-	$editors[] = 'WP_Thumb_Image_Editor_GD';
 	$editors[] = 'WP_Thumb_Image_Editor_Imagick';
+	$editors[] = 'WP_Thumb_Image_Editor_GD';
+
 
 	return $editors;
 }

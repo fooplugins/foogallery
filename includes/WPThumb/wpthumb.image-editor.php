@@ -28,4 +28,8 @@ class WP_Thumb_Image_Editor_Imagick extends WP_Image_Editor_Imagick {
 	public function update_size( $width = null, $height = null ) {
 		return parent::update_size( $width, $height );
 	}
+	public function stripImage( ) {
+		$this->image->stripImage();
+
+	}
 }
