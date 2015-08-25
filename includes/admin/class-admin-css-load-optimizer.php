@@ -43,11 +43,17 @@ if (!class_exists('class-css-load-optimizer.php')) {
                 $foogallery_templates_css[] = $template;
 
                 if ( false !== ( $css_location = $this->_locator->locate_file( "gallery-{$template}.css" ) ) ) {
-                    add_post_meta( $post_id, FOOGALLERY_META_POST_USAGE_CSS, array( $template => $css_location['url'] ), false );
+
+                    $style = array(
+                        'src' => $css_location['url'],
+                        'deps' => array(),
+                        'ver' => FOOGALLERY_VERSION,
+                        'media' => 'all'
+                    );
+
+                    add_post_meta( $post_id, FOOGALLERY_META_POST_USAGE_CSS, array( "foogallery-template-{$template}" => $style ), false );
                 }
             }
-
         }
-
     }
 }

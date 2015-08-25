@@ -8,7 +8,7 @@ if (!class_exists('class-css-load-optimizer.php')) {
 
         function __construct() {
             add_action( 'wp_enqueue_scripts', array( $this, 'include_gallery_css' ) );
-            add_action( 'foogallery_template_enqueue_style', array( $this, 'enqueue_foogallery_style' ), 10, 2 );
+            add_action( 'foogallery_enqueue_style', array( $this, 'persist_enqueued_style' ), 10, 5 );
         }
 
         /**
@@ -51,11 +51,16 @@ if (!class_exists('class-css-load-optimizer.php')) {
                 $css = get_post_meta($post_id, FOOGALLERY_META_POST_USAGE_CSS);
 
                 foreach ($css as $css_item) {
-                    foreach ($css_item as $template => $url) {
+                    foreach ($css_item as $handle => $style) {
                         //only enqueue the stylesheet once
-                        if ( !array_key_exists( $template, $enqueued_foogallery_styles ) ) {
-                            wp_enqueue_style("foogallery-template-{$template}", $url);
-                            $enqueued_foogallery_styles[$template] = $template;
+                        if ( !array_key_exists( $handle, $enqueued_foogallery_styles ) ) {
+                            if ( is_array( $style ) ) {
+                                wp_enqueue_style( $handle, $style['src'], $style['deps'], $style['ver'], $style['media'] );
+                            } else {
+                                wp_enqueue_style( $handle, $style );
+                            }
+
+                            $enqueued_foogallery_styles[$handle] = $handle;
                         }
                     }
                 }
@@ -66,11 +71,14 @@ if (!class_exists('class-css-load-optimizer.php')) {
          * Check to make sure we have added the stylesheets to our custom post meta field,
          * so that on next render the stylesheet will be added to the page header
          *
-         * @param $foogallery_template string The foogallery template that is trying to load stylesheets
-         * @param $css_location string The location array for the stylesheet
+         * @param $style_handle string The stylesheet handle
+         * @param $src string The location for the stylesheet
+         * @param array $deps
+         * @param bool $ver
+         * @param string $media
          */
-        function enqueue_foogallery_style($foogallery_template, $css_location) {
-            global $wp_query, $enqueued_foogallery_styles, $current_foogallery_template;
+        function persist_enqueued_style($style_handle, $src, $deps = array(), $ver = false, $media = 'all') {
+            global $wp_query, $enqueued_foogallery_styles;
 
             //we only want to do this if we are looking at a single post
             if ( !is_singular() ) {
@@ -78,11 +86,18 @@ if (!class_exists('class-css-load-optimizer.php')) {
             }
 
             //first check that the template has not been enqueued before
-            if ( is_array( $enqueued_foogallery_styles ) && !array_key_exists( $foogallery_template, $enqueued_foogallery_styles ) ) {
+            if ( is_array( $enqueued_foogallery_styles ) && !array_key_exists( $style_handle, $enqueued_foogallery_styles ) ) {
                 $post_id = $wp_query->post->ID;
 
                 if ( $post_id ) {
-                    add_post_meta( $post_id, FOOGALLERY_META_POST_USAGE_CSS, array( $foogallery_template => $css_location ), false );
+                    $style = array(
+                        'src' => $src,
+                        'deps' => $deps,
+                        'ver' => $ver,
+                        'media' => $media
+                    );
+
+                    add_post_meta( $post_id, FOOGALLERY_META_POST_USAGE_CSS, array( $style_handle => $style ), false );
                 }
             }
         }
