@@ -3,6 +3,10 @@
 	padding: 0 !important;
 }
 
+.foogallery-album-gallery-list li {
+	list-style-type: none !important;
+}
+
 .foogallery-album-gallery-list .foogallery-pile {
 	position: relative;
 	z-index: 10;
