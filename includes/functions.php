@@ -431,3 +431,17 @@ function foogallery_activate_default_templates_extension() {
 	$api = foogallery_extensions_api();
 	$api->activate( 'default_templates' );
 }
+
+/**
+ * Allow FooGallery to enqueue stylesheet and allow them to be enqueued in the head on the next page load
+ *
+ * @param $handle string
+ * @param $src string
+ * @param array $deps
+ * @param bool $ver
+ * @param string $media
+ */
+function foogallery_enqueue_style( $handle, $src, $deps = array(), $ver = false, $media = 'all' ) {
+	wp_enqueue_style( $handle, $src, $deps, $ver, $media );
+	do_action( 'foogallery_enqueue_style', $handle, $src, $deps, $ver, $media );
+}

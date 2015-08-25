@@ -65,8 +65,7 @@ class FooGallery_Template_Loader {
 
 					//try to include some CSS
 					if ( false !== ( $css_location = $loader->locate_file( "gallery-{$current_foogallery_template}.css" ) ) ) {
-						wp_enqueue_style( "foogallery-template-{$current_foogallery_template}", $css_location['url'] );
-                        do_action( 'foogallery_template_enqueue_style', $current_foogallery_template, $css_location['url'] );
+						foogallery_enqueue_style( "foogallery-template-{$current_foogallery_template}", $css_location['url'], array(), FOOGALLERY_VERSION );
 					}
 
 					//finally include the actual php template!

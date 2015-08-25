@@ -52,10 +52,10 @@ if ( !class_exists( '{package}' ) ) {
 		function add_required_files() {
 			//enqueue the lightbox script
 			wp_enqueue_script( '{slug}', {constant}_URL . 'js/lightbox-{slug}.js', array('jquery'), {constant}_VERSION );
-			//optionl : enqueu the init code to hook up your lightbox
+			//optional : enqueue the init code to hook up your lightbox
 			//wp_enqueue_script( '{slug}_init', {constant}_URL . 'js/lightbox-{slug}-init.js', array('{slug}'), {constant}_VERSION );
 			//enqueue the lightbox stylesheets
-			wp_enqueue_style( '{slug}', {constant}_URL . 'css/lightbox-{slug}.css', array(), {constant}_VERSION );
+			foogallery_enqueue_style( '{slug}', {constant}_URL . 'css/lightbox-{slug}.css', array(), {constant}_VERSION );
 		}
 
 		/**

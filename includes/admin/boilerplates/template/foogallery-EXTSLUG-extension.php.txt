@@ -56,7 +56,7 @@ if ( !class_exists( '{package}' ) ) {
 			//wp_enqueue_script( '{slug}', $js, array('jquery'), {constant}_VERSION );
 
 			//$css = {constant}_URL . 'css/{slug}.css';
-			//wp_enqueue_style( '{slug}', $css, array(), {constant}_VERSION );
+			//foogallery_enqueue_style( '{slug}', $css, array(), {constant}_VERSION );
 		}
 
 		/**
