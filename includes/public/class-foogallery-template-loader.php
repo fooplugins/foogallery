@@ -74,10 +74,15 @@ class FooGallery_Template_Loader {
 						load_template( $template_location['path'], false );
 					}
 
+					//cater for lightbox extensions needing to add styles and javascript
+					$lightbox = foogallery_gallery_template_setting( 'lightbox' );
+					if ( !empty( $lightbox ) ) {
+						do_action( "foogallery_template_lightbox-{$lightbox}", $current_foogallery );
+					}
+
 					//we have loaded all files, now let extensions do some stuff
 					do_action( "foogallery_loaded_template", $current_foogallery );
 					do_action( "foogallery_loaded_template-($current_foogallery_template)", $current_foogallery );
-
 				} else {
 					//we could not find a template!
 					_e( 'No gallery template found!', 'foogallery' );
