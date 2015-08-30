@@ -41,12 +41,8 @@ if ( ! class_exists( 'FooGallery_Albums_Admin_Columns' ) ) {
 				case FOOGALLERY_CPT_ALBUM . '_shortcode':
 					$album = FooGalleryAlbum::get( $post );
 					$shortcode = $album->shortcode();
-					echo '<code data-clipboard-text="' . esc_attr( $shortcode ) . '"
-					  title="' . esc_attr__( 'Click to copy to your clipboard', 'foogallery' ) . '"
-					  class="foogallery-shortcode">' . $shortcode . '</code>';
-
+					echo '<input type="text" readonly="readonly" size="' . strlen( $shortcode )  . '" value="' . esc_attr( $shortcode ) . '" class="foogallery-shortcode" />';
 					$this->include_clipboard_script = true;
-
 					break;
 			}
 		}
