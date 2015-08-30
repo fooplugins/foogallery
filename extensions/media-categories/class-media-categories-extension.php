@@ -33,7 +33,7 @@ if ( ! class_exists( 'FooGallery_Media_Categories_Extension' ) ) {
 				'update_item'       => __( 'Update Category', 'foogallery' ),
 				'add_new_item'      => __( 'Add New Category', 'foogallery' ),
 				'new_item_name'     => __( 'New Category Name', 'foogallery' ),
-				'menu_name'         => __( 'Category', 'foogallery' )
+				'menu_name'         => __( 'Categories', 'foogallery' )
 			);
 
 			$args = array(
