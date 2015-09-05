@@ -66,9 +66,24 @@ if ( ! class_exists( 'FooGallery_Default_Templates_Extension' ) ) {
 						)
 					),
 					array(
+						'id'      => 'hover-effect-type',
+						'title'   => __( 'Effect Type', 'foogallery' ),
+						'section' => __( 'Thumbnail Settings', 'foogallery' ),
+						'default' => '',
+						'type'    => 'radio',
+						'choices' => apply_filters( 'foogallery_gallery_template_hover-effect-types', array(
+							''  => __( 'Icon', 'foogallery' ),
+							'hover-effect-tint'   => __( 'Dark Tint', 'foogallery' ),
+							'hover-effect-color' => __( 'Colorize', 'foogallery' ),
+							'hover-effect-none' => __( 'None', 'foogallery' )
+						) ),
+						'spacer'  => '<span class="spacer"></span>',
+						'desc'	  => __( 'The type of hover effect the thumbnails will use.', 'foogallery' ),
+					),
+					array(
 						'id'      => 'hover-effect',
-						'title'   => __( 'Hover Effect', 'foogallery' ),
-						'desc'    => __( 'A hover effect is shown when you hover over each thumbnail.', 'foogallery' ),
+						'title'   => __( 'Icon Hover Effect', 'foogallery' ),
+						'desc'    => __( 'When the effect type of Icon is chosen, you can choose which icon is shown when you hover over each thumbnail.', 'foogallery' ),
 						'section' => __( 'Thumbnail Settings', 'foogallery' ),
 						'type'    => 'icon',
 						'default' => 'hover-effect-zoom',
@@ -78,8 +93,7 @@ if ( ! class_exists( 'FooGallery_Default_Templates_Extension' ) ) {
 							'hover-effect-zoom3' => array( 'label' => __( 'Zoom 3' , 'foogallery' ), 'img' => FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_URL . 'assets/hover-effect-icon-zoom3.png' ),
 							'hover-effect-plus' => array( 'label' => __( 'Plus' , 'foogallery' ), 'img' => FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_URL . 'assets/hover-effect-icon-plus.png' ),
 							'hover-effect-circle-plus' => array( 'label' => __( 'Cirlce Plus' , 'foogallery' ), 'img' => FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_URL . 'assets/hover-effect-icon-circle-plus.png' ),
-							'hover-effect-eye' => array( 'label' => __( 'Eye' , 'foogallery' ), 'img' => FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_URL . 'assets/hover-effect-icon-eye.png' ),
-							'' => array( 'label' => __( 'None' , 'foogallery' ), 'img' => FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_URL . 'assets/hover-effect-icon-none.png' ),
+							'hover-effect-eye' => array( 'label' => __( 'Eye' , 'foogallery' ), 'img' => FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_URL . 'assets/hover-effect-icon-eye.png' )
 						),
 					),
 					array(

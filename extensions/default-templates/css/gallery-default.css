@@ -132,37 +132,93 @@
 }
 
 /* Hover Effects */
-.foogallery-default.hover-effect-zoom a {
-	background:#000 url('img/zoom.png') no-repeat center center;
+
+.foogallery-default.hover-effect-zoom a,
+.foogallery-default.hover-effect-zoom2 a,
+.foogallery-default.hover-effect-zoom3 a,
+.foogallery-default.hover-effect-plus a,
+.foogallery-default.hover-effect-circle-plus a,
+.foogallery-default.hover-effect-eye a,
+.foogallery-default.hover-effect-tint {
+	position: relative;
 }
 
-.foogallery-default.hover-effect-zoom2 a {
-	background:#000 url('img/zoom2.png') no-repeat center center;
+.foogallery-default.hover-effect-zoom a:before,
+.foogallery-default.hover-effect-zoom2 a:before,
+.foogallery-default.hover-effect-zoom3 a:before,
+.foogallery-default.hover-effect-plus a:before,
+.foogallery-default.hover-effect-circle-plus a:before,
+.foogallery-default.hover-effect-eye a:before,
+.foogallery-default.hover-effect-tint a:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	background: none no-repeat center center;
+	-moz-transition: all .3s linear;
+	-webkit-transition: all .3s linear;
+	-ms-transition: all .3s linear;
+	-o-transition: all .3s linear;
+	transition: all .3s linear;
 }
 
-.foogallery-default.hover-effect-zoom3 a {
-	background:#000 url('img/zoom3.png') no-repeat center center;
+.foogallery-default.hover-effect-zoom a:hover:before {
+	background: rgba(0,0,0, 0.5) url('img/zoom.png') no-repeat center center;
 }
 
-.foogallery-default.hover-effect-plus a {
-	background:#000 url('img/plus.png') no-repeat center center;
+.foogallery-default.hover-effect-zoom2 a:hover:before {
+	background:rgba(0,0,0, 0.5) url('img/zoom2.png') no-repeat center center;
 }
 
-.foogallery-default.hover-effect-circle-plus a {
-	background:#000 url('img/circle-plus.png') no-repeat center center;
+.foogallery-default.hover-effect-zoom3 a:hover:before {
+	background:rgba(0,0,0, 0.5) url('img/zoom3.png') no-repeat center center;
 }
 
-.foogallery-default.hover-effect-eye a {
-	background:#000 url('img/eye.png') no-repeat center center;
+.foogallery-default.hover-effect-plus a:hover:before {
+	background:rgba(0,0,0, 0.5) url('img/plus.png') no-repeat center center;
 }
 
-.foogallery-default.hover-effect-zoom a:hover img,
-.foogallery-default.hover-effect-zoom2 a:hover img,
-.foogallery-default.hover-effect-zoom3 a:hover img,
-.foogallery-default.hover-effect-plus a:hover img,
-.foogallery-default.hover-effect-circle-plus a:hover img,
-.foogallery-default.hover-effect-eye a:hover img {
-	opacity: 0.5;
+.foogallery-default.hover-effect-circle-plus a:hover:before {
+	background:rgba(0,0,0, 0.5) url('img/circle-plus.png') no-repeat center center;
+}
+
+.foogallery-default.hover-effect-eye a:hover:before {
+	background:rgba(0,0,0, 0.5) url('img/eye.png') no-repeat center center;
+}
+
+.foogallery-default.hover-effect-tint a:hover:before {
+	background-image: none !important;
+	background-color:rgba(0,0,0, 0.5);
+}
+
+.foogallery-default.hover-effect-color a img {
+	background: none !important;
+	filter: url(filters.svg#grayscale); /* Firefox 3.5+ */
+	filter: gray; /* IE6-9 */
+	-webkit-filter: grayscale(1); /* Google Chrome & Safari 6+ */
+	-moz-transition: all .3s linear;
+	-webkit-transition: all .3s linear;
+	-ms-transition: all .3s linear;
+	-o-transition: all .3s linear;
+	transition: all .3s linear;
+}
+
+.foogallery-default.hover-effect-color a:hover img {
+	filter: none;
+	-webkit-filter: none;
+	opacity: 1 !important;
+}
+
+.foogallery-default.hover-effect-color a:hover:before {
+	background: none !important;
+}
+
+.foogallery-default.hover-effect-none a:before,
+.foogallery-default.hover-effect-none a:before:hover {
+	background: none !important;
 }
 
 /* Loading Styles */
