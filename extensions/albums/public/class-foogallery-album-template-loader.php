@@ -29,6 +29,11 @@ class FooGallery_Album_Template_Loader {
 		//load our album
 		$current_foogallery_album = $this->find_album( $args );
 
+		if ( false === $current_foogallery_album ) {
+			_e( 'Could not load the album!', 'foogallery' );
+			return;
+		}
+
 		//find the gallery template we will use to render the gallery
 		$current_foogallery_album_template = $this->get_arg( $args, 'template', $current_foogallery_album->album_template );
 
@@ -168,7 +173,9 @@ class FooGallery_Album_Template_Loader {
 	 * @return string
 	 */
 	function get_arg( $args, $key, $default = '' ) {
-		if ( empty($args) || ! array_key_exists( $key, $args ) ) {
+		if ( empty($args)
+		     || !is_array( $args )
+		     || !array_key_exists( $key, $args ) ) {
 			return $default;
 		}
 
