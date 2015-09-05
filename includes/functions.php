@@ -445,3 +445,26 @@ function foogallery_enqueue_style( $handle, $src, $deps = array(), $ver = false,
 	wp_enqueue_style( $handle, $src, $deps, $ver, $media );
 	do_action( 'foogallery_enqueue_style', $handle, $src, $deps, $ver, $media );
 }
+
+
+/**
+ * Returns all foogallery post objects that are attached to the post
+ *
+ * @param $post_id int The ID of the post
+ *
+ * @return array List of foogallery posts.
+ */
+function foogallery_get_galleries_attached_to_post( $post_id ) {
+	$gallery_ids = get_post_meta( $post_id, FOOGALLERY_META_POST_USAGE, false );
+
+	if ( !empty( $gallery_ids ) ) {
+		return get_posts( array(
+			'post_type'      => array( FOOGALLERY_CPT_GALLERY, ),
+			'post_status'    => array( 'draft', 'publish' ),
+			'posts_per_page' => -1,
+			'include'        => $gallery_ids
+		) );
+	}
+
+	return array();
+}
