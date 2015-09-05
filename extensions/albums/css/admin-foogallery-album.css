@@ -103,10 +103,23 @@
 	text-align: center;
 }
 
-.foogallery-shortcode code {
-	display: inline-block;
-	font-size: 1.1em;
+.foogallery-shortcode input {
 	cursor: pointer;
+	text-align: center;
+	padding: 10px;
+	font-family: "courier new", courier;
+	border: none;
+	box-shadow: none;
+	background: #efefef;
+}
+
+.wp-list-table .foogallery-shortcode {
+	cursor: pointer;
+	font-size: 1em;
+	border: none;
+	box-shadow: none;
+	background: #efefef;
+	font-family: "courier new", courier;
 }
 
 .foogallery-shortcode-message {
