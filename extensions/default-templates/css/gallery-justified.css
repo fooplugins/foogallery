@@ -15,3 +15,9 @@
 .justified-gallery a .caption:empty {
     display: none;
 }
+
+/* force no borders */
+.foogallery-justified a,
+.foogallery-justified a:hover {
+    border: none !important;
+}
