@@ -273,7 +273,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 				$available_templates = foogallery_gallery_templates();
 			}
 
-			$gallery_template    = foogallery_default_gallery_template();
+			$gallery_template = foogallery_default_gallery_template();
 			if ( ! empty($gallery->gallery_template) ) {
 				$gallery_template = $gallery->gallery_template;
 			}
@@ -433,8 +433,12 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 		}
 
 		public function include_required_scripts() {
-			//only include scripts if we on the foogallery page
-			if ( FOOGALLERY_CPT_GALLERY === foo_current_screen_post_type() ) {
+			$screen_id = foo_current_screen_id();
+
+			//only include scripts if we on the foogallery add/edit page
+			if ( FOOGALLERY_CPT_GALLERY === $screen_id ||
+			     'edit-' . FOOGALLERY_CPT_GALLERY === $screen_id ) {
+
 				//spectrum needed for the colorpicker field
 				$url = FOOGALLERY_URL . 'lib/spectrum/spectrum.js';
 				wp_enqueue_script( 'foogallery-spectrum', $url, array('jquery'), FOOGALLERY_VERSION );
