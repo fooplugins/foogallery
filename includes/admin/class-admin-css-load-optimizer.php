@@ -1,9 +1,9 @@
 <?php
 /**
- * Created by brad.
+ * FooGallery_Admin_CSS_Load_Optimizer class
  * Date: 23/06/2015
  */
-if (!class_exists('class-css-load-optimizer.php')) {
+if (!class_exists('FooGallery_Admin_CSS_Load_Optimizer')) {
 
     class FooGallery_Admin_CSS_Load_Optimizer {
 
@@ -12,6 +12,7 @@ if (!class_exists('class-css-load-optimizer.php')) {
         function __construct() {
             add_action( 'foogallery_start_attach_gallery_to_post', array( $this, 'start_attach_gallery_to_post' ) );
             add_action( 'foogallery_attach_gallery_to_post', array( $this, 'attach_shortcode_to_post' ), 10, 2 );
+            add_action( 'foogallery_after_save_gallery', array( $this, 'detach_gallery_from_all_posts' ), 10, 1 );
         }
 
         function start_attach_gallery_to_post( $post_id ) {
@@ -53,6 +54,15 @@ if (!class_exists('class-css-load-optimizer.php')) {
 
                     add_post_meta( $post_id, FOOGALLERY_META_POST_USAGE_CSS, array( "foogallery-template-{$template}" => $style ), false );
                 }
+            }
+        }
+
+        function detach_gallery_from_all_posts( $post_id ) {
+            $gallery = FooGallery::get_by_id( $post_id );
+            $posts = $gallery->find_usages();
+
+            foreach ( $posts as $post ) {
+                delete_post_meta( $post->ID, FOOGALLERY_META_POST_USAGE_CSS );
             }
         }
     }
