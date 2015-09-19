@@ -37,3 +37,13 @@
 	text-align: justify;
 	margin: 5px 0;
 }
+
+.foogallery-simple_portfolio .bf-item a {
+	display: inline-block;
+}
+
+/* force no borders */
+.foogallery-simple_portfolio .bf-item a,
+.foogallery-simple_portfolio .bf-item a:hover {
+	border: none !important;
+}
