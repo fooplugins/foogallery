@@ -67,7 +67,7 @@ if ( ! class_exists( 'FooGallery_Default_Templates_Extension' ) ) {
 					),
 					array(
 						'id'      => 'hover-effect-type',
-						'title'   => __( 'Effect Type', 'foogallery' ),
+						'title'   => __( 'Hover Effect Type', 'foogallery' ),
 						'section' => __( 'Thumbnail Settings', 'foogallery' ),
 						'default' => '',
 						'type'    => 'radio',
@@ -83,7 +83,7 @@ if ( ! class_exists( 'FooGallery_Default_Templates_Extension' ) ) {
 					array(
 						'id'      => 'hover-effect',
 						'title'   => __( 'Icon Hover Effect', 'foogallery' ),
-						'desc'    => __( 'When the effect type of Icon is chosen, you can choose which icon is shown when you hover over each thumbnail.', 'foogallery' ),
+						'desc'    => __( 'When the hover effect type of Icon is chosen, you can choose which icon is shown when you hover over each thumbnail.', 'foogallery' ),
 						'section' => __( 'Thumbnail Settings', 'foogallery' ),
 						'type'    => 'icon',
 						'default' => 'hover-effect-zoom',
