@@ -180,7 +180,7 @@ function foogallery_gallery_template_setting( $key, $default = '' ) {
 		//try to get the value from the arguments
 		$value = $current_foogallery_arguments[ $key ];
 
-	} else if ( $current_foogallery->settings && array_key_exists( $settings_key, $current_foogallery->settings ) ) {
+	} else if ( !empty( $current_foogallery ) && $current_foogallery->settings && array_key_exists( $settings_key, $current_foogallery->settings ) ) {
 		//then get the value out of the saved gallery settings
 		$value = $current_foogallery->settings[ $settings_key ];
 	} else {
