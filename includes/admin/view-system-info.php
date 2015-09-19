@@ -1,5 +1,5 @@
 <?php
-
+global $wp_version;
 /**
  * Get which version of GD is installed, if any.
  *
@@ -54,9 +54,13 @@ if ( current_user_can( 'activate_plugins' ) ) {
 		$plugins[] = $plugin;
 	}
 
+	$current_theme = wp_get_theme();
+
 	$debug_info = array(
-		__( 'Plugin version', 'foogallery' )      => $info['version'],
-		__( 'Plugin URL', 'foogallery' )          => $info['url'],
+		__( 'FooGallery version', 'foogallery' )      => $info['version'],
+		__( 'WordPress version', 'foogallery' )   => $wp_version,
+		__( 'Activated Theme', 'foogallery' )     => $current_theme['Name'],
+		__( 'WordPress URL', 'foogallery' )       => $info['url'],
 		__( 'PHP version', 'foogallery' )         => phpversion(),
 		__( 'PHP GD Loaded', 'foogallery' )       => extension_loaded( 'gd' ) && function_exists( 'gd_info' ) ? foogallery_gdversion() : __( 'Not found!', 'foogallery' ),
 		__( 'Extensions Endpoint', 'foogallery' ) => $api->get_extensions_endpoint(),
