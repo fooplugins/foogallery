@@ -184,7 +184,7 @@ if ( ! class_exists( 'FooGallery_Default_Templates_Extension' ) ) {
 						'type'    => 'radio',
 						'choices' => array(
 							'default'  => __( 'Zoom Slightly', 'foogallery' ),
-							'center'   => __( 'No Zoom', 'foogallery' )
+							'none'   => __( 'No Zoom', 'foogallery' )
 						),
 						'spacer'  => '<span class="spacer"></span>',
 						'default' => 'default'
