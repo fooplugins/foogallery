@@ -10,6 +10,9 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Fields' ) ) {
 
 			//render the different types of fields for our gallery settings
 			add_action( 'foogallery_render_gallery_template_field', array( $this, 'render_gallery_template_field' ), 10, 3 );
+
+			//allow changing of field values
+			add_filter( 'foogallery_render_gallery_template_field_value', array( $this, 'check_lightbox_value' ), 10, 4 );
 		}
 
 		/**
@@ -29,15 +32,13 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Fields' ) ) {
 
 			$id = $template_slug . '_' . $id;
 
-			$field['value'] = $gallery->get_meta( $id, $default );
+			$field['value'] = apply_filters( 'foogallery_render_gallery_template_field_value', $gallery->get_meta( $id, $default ), $field, $gallery, $template );
 
 			$field_class = empty($class) ? '' : ' class="' . $class . '"';
 
-			$choices = apply_filters( 'foogallery_render_gallery_template_field_choices', $choices, $field, $gallery );
+			$field['choices'] = apply_filters( 'foogallery_render_gallery_template_field_choices', $choices, $field, $gallery );
 
-			$field['choices'] = $choices;
-
-			//allow for customization
+			//allow for UI customization
 			do_action( 'foogallery_render_gallery_template_field_before', $field, $gallery );
 
 			echo '<div class="foogallery_metabox_field-' . $type . '">';
@@ -188,6 +189,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Fields' ) ) {
 						$field['choices'] = $this->get_thumb_link_field_choices();
 						break;
 					case 'lightbox':
+						$field['lightbox'] = true;
 						$lightboxes = $this->get_lightbox_field_choices();
 						if ( 0 === count( $lightboxes ) ) {
 							$field['type'] = 'html';
@@ -253,6 +255,28 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Fields' ) ) {
 			$lightboxes = apply_filters( 'foogallery_gallery_template_field_lightboxes', array() );
 			$lightboxes['none'] = __( 'None', 'foogallery' );
 			return $lightboxes;
+		}
+
+		/***
+		 * Check if we have a lightbox value from FooBox free and change it if foobox free is no longer active
+		 * @param $value
+		 * @param $field
+		 * @param $gallery
+		 * @param $template
+		 *
+		 * @return string
+		 */
+		function check_lightbox_value($value, $field, $gallery, $template) {
+
+			if ( isset( $field['lightbox'] ) ) {
+				if ( 'foobox-free' === $value ) {
+					if ( !class_exists( 'Foobox_Free' ) ) {
+						return 'foobox';
+					}
+				}
+			}
+
+			return $value;
 		}
 	}
 }
