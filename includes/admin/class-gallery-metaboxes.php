@@ -449,7 +449,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 				foreach ( foogallery_gallery_templates() as $template ) {
 					$admin_js = foo_safe_get( $template, 'admin_js' );
 					if ( $admin_js ) {
-						wp_enqueue_script( 'foogallery-gallery-admin-' . $template['slug'], $admin_js, array('jquery'), FOOGALLERY_VERSION );
+						wp_enqueue_script( 'foogallery-gallery-admin-' . $template['slug'], $admin_js, array('jquery', 'media-upload', 'jquery-ui-sortable'), FOOGALLERY_VERSION );
 					}
 				}
 			}
