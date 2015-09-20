@@ -27,6 +27,9 @@ require_once( FOOGALLERY_PATH . 'extensions/media-categories/class-media-categor
 //load Template Loader files
 require_once( FOOGALLERY_PATH . 'includes/public/class-foogallery-template-loader.php' );
 
+//Polylang Compatibility
+require_once( FOOGALLERY_PATH . 'includes/class-polylang-compatibility.php' );
+
 if ( is_admin() ) {
 
 	//only admin
