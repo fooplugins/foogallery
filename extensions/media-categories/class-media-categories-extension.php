@@ -12,10 +12,13 @@ if ( ! class_exists( 'FooGallery_Media_Categories_Extension' ) ) {
 		 */
 		function __construct() {
 			add_action( 'init', array( $this, 'add_categories_to_attachments' ) );
-			add_filter( 'foogallery_attachment_custom_fields', array( $this, 'add_media_category_field' ) );
-			add_filter( 'foogallery_attachment_add_fields', array( $this, 'remove_taxonomy_media_category_field' ) );
-			add_filter( 'foogallery_attachment_field_' . FOOGALLERY_MEDIA_CATEGORIES_EXTENSION_SLUG, array( $this, 'customize_media_category_field' ), 10, 2 );
-			add_filter( 'foogallery_attachment_save_field_' . FOOGALLERY_MEDIA_CATEGORIES_INPUT_TYPE, array( $this, 'save_media_category_field' ), 10, 4 );
+			if ( is_admin() ) {
+				add_filter( 'foogallery_attachment_custom_fields', array( $this, 'add_media_category_field' ) );
+				add_filter( 'foogallery_attachment_add_fields', array( $this, 'remove_taxonomy_media_category_field') );
+				add_filter( 'foogallery_attachment_field_' . FOOGALLERY_MEDIA_CATEGORIES_EXTENSION_SLUG, array( $this, 'customize_media_category_field'), 10, 2 );
+				add_filter( 'foogallery_attachment_save_field_' . FOOGALLERY_MEDIA_CATEGORIES_INPUT_TYPE, array( $this, 'save_media_category_field' ), 10, 4 );
+				add_action( 'restrict_manage_posts', array( $this, 'add_category_filter' ) );
+			}
 		}
 
 		/**
@@ -177,5 +180,58 @@ if ( ! class_exists( 'FooGallery_Media_Categories_Extension' ) ) {
 				}
 			}
 		}
+
+
+		/***
+		 *
+		 * Add a category filter
+		 */
+		function add_category_filter() {
+			global $pagenow;
+			if ( 'upload.php' == $pagenow ) {
+
+				$dropdown_options = array(
+					'taxonomy'        => FOOGALLERY_MEDIA_CATEGORIES_EXTENSION_TAXONOMY,
+					'show_option_all' => __( 'View all categories' ),
+					'hide_empty'      => false,
+					'hierarchical'    => true,
+					'orderby'         => 'name',
+					'show_count'      => true,
+					//'walker'          => new foogallery_walker_category_dropdown(),
+					'value'           => 'slug'
+				);
+
+				wp_dropdown_categories( $dropdown_options );
+			}
+		}
+	}
+}
+
+/** Custom walker for wp_dropdown_categories, based on https://gist.github.com/stephenh1988/2902509 */
+class foogallery_walker_category_dropdown extends Walker_CategoryDropdown{
+
+	function start_el( &$output, $category, $depth = 0, $args = array(), $id = 0 ) {
+		$pad = str_repeat( '&nbsp;', $depth * 3 );
+		$cat_name = apply_filters( 'list_cats', $category->name, $category );
+
+		if( ! isset( $args['value'] ) ) {
+			$args['value'] = ( $category->taxonomy != 'category' ? 'slug' : 'id' );
+		}
+
+		$value = ( $args['value']=='slug' ? $category->slug : $category->term_id );
+		if ( 0 == $args['selected'] && isset( $_GET['category_media'] ) && '' != $_GET['category_media'] ) {
+			$args['selected'] = $_GET['category_media'];
+		}
+
+		$output .= '<option class="level-' . $depth . '" value="' . $value . '"';
+		if ( $value === (string) $args['selected'] ) {
+			$output .= ' selected="selected"';
+		}
+		$output .= '>';
+		$output .= $pad . $cat_name;
+		if ( $args['show_count'] )
+			$output .= '&nbsp;&nbsp;(' . $category->count . ')';
+
+		$output .= "</option>\n";
 	}
 }
