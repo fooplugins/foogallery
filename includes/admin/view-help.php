@@ -2,7 +2,7 @@
 $instance = FooGallery_Plugin::get_instance();
 $info = $instance->get_plugin_info();
 $title = apply_filters( 'foogallery_admin_help_title', sprintf( __( 'Welcome to %s %s', 'foogallery' ), foogallery_plugin_name(), $info['version'] ) );
-$tagline = apply_filters( 'foogallery_admin_help_tagline', sprintf( __( 'Thank you for choosing %s, the most intuitive and extensible gallery creation and management tool ever created for WordPress! NOW WITH ALBUMS!', 'foogallery' ), foogallery_plugin_name() ) );
+$tagline = apply_filters( 'foogallery_admin_help_tagline', sprintf( __( 'Thank you for choosing %s, the most intuitive and extensible gallery creation and management tool ever created for WordPress!', 'foogallery' ), foogallery_plugin_name() ) );
 $link = apply_filters( 'foogallery_admin_help_tagline_link', ' - <a href="http://foo.gallery" target="_blank">' . __( 'Visit our homepage', 'foogallery' ) . '</a>' );
 $show_foobot = apply_filters( 'foogallery_admin_show_foobot', true );
 $show_tabs = apply_filters( 'foogallery_admin_help_show_tabs', true );
@@ -26,6 +26,10 @@ $show_extensions_section = apply_filters( 'foogallery_admin_help_show_extensions
 		margin-top: 0;
 	}
 
+	.about-wrap h2.nav-tab-wrapper {
+		margin-bottom: 20px;
+	}
+
 </style>
 <div class="wrap about-wrap">
 	<h1><?php echo $title; ?></h1>
@@ -40,12 +44,17 @@ $show_extensions_section = apply_filters( 'foogallery_admin_help_show_extensions
 		<a class="nav-tab nav-tab-active" href="#">
 			<?php _e( 'Getting Started', 'foogallery' ); ?>
 		</a>
-		<a class="nav-tab" href="<?php echo foogallery_admin_extensions_url(); ?>">
+		<a class="nav-tab" href="<?php echo esc_url( foogallery_admin_extensions_url() ); ?>">
 			<?php _e( 'Extensions', 'foogallery' ); ?>
 		</a>
 		<a class="nav-tab" href="http://fooplugins.com">
 			<?php _e( 'Other Plugins', 'foogallery' ); ?>
 		</a>
+		<?php if ( current_user_can( 'activate_plugins' ) ) { ?>
+		<a class="nav-tab" href="<?php echo esc_url( foogallery_admin_systeminfo_url() ); ?>">
+			<?php _e( 'System Info', 'foogallery' ); ?>
+		</a>
+		<?php } ?>
 	</h2>
 	<?php } else { ?><hr /><?php } ?>
 	<div class="changelog">
@@ -56,19 +65,22 @@ $show_extensions_section = apply_filters( 'foogallery_admin_help_show_extensions
 
 			<h2><?php _e( 'Creating Your First Gallery', 'foogallery' );?></h2>
 
-			<h4><?php printf( __( '<a href="%s">Galleries &rarr; Add New</a>', 'foogallery' ), admin_url( 'post-new.php?post_type=foogallery' ) ); ?></h4>
+			<h4><?php printf( __( '<a href="%s">Galleries &rarr; Add New</a>', 'foogallery' ), esc_url ( admin_url( 'post-new.php?post_type=foogallery' ) ) ); ?></h4>
 			<p><?php _e( 'To create your first gallery, simply click the Add New button or click the Add Gallery menu link. Then choose images from the media library to include in your gallery.', 'foogallery' ); ?></p>
-
-			<h4><?php _e( 'Drag and Drop Reordering', 'foogallery' );?></h4>
-			<p><?php _e( 'Sort the images in your gallery simply by dragging them around.', 'foogallery' );?></p>
 
 			<h4><?php _e( 'Gallery Templates', 'foogallery' );?></h4>
 			<p><?php _e( 'Choose one of our built-in gallery templates or download one via our extension library.', 'foogallery' );?></p>
 
 			<h4><?php _e( 'Lightbox Support', 'foogallery' );?></h4>
-			<p><?php _e( 'Our default gallery template supports FooBox : our popular responsive image lightbox.', 'foogallery' );?></p>
-
-
+			<p>
+				<?php _e( 'FooGallery works out of the box with FooBox, our popular responsive image lightbox.', 'foogallery' );?>
+				<a target="_blank" href="http://fooplugins.com/plugins/foobox"><?php _e( 'Purchase FooBox now!', 'foogallery' );?></a>
+			</p>
+			<h4><?php _e( 'Video Support', 'foogallery' );?></h4>
+			<p>
+				<?php _e( 'FooGallery now supports the creation of video galleries with the FooVideo premium extension!', 'foogallery' );?>
+				<a target="_blank" href="http://fooplugins.com/plugins/foovideo"><?php _e( 'Purchase FooVideo now!', 'foogallery' );?></a>
+			</p>
 		</div>
 	</div>
 

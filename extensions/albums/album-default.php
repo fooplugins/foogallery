@@ -23,7 +23,7 @@ if ( !empty( $gallery ) ) {
 if ( false !== $foogallery ) {
 	$album_url = foogallery_album_remove_gallery_from_link();
 	echo '<div id="' . $current_foogallery_album->slug . '" class="foogallery-album-header">';
-	echo '<p><a href="' . $album_url . '">' . foogallery_album_template_setting( 'back_to_album_text', '&laquo; back to album' ) . '</a></p>';
+	echo '<p><a href="' . esc_url( $album_url ) . '">' . foogallery_album_template_setting( 'back_to_album_text', '&laquo; back to album' ) . '</a></p>';
 	echo '<h2>' . $foogallery->name . '</h2>';
 	echo '</div>';
 	echo do_shortcode('[foogallery id="' . $foogallery->ID . '"]');
@@ -55,7 +55,7 @@ if ( false !== $foogallery ) {
 				<li>
 					<div class="foogallery-pile">
 						<div class="foogallery-pile-inner">
-							<a href="<?php echo $gallery_link; ?>">
+							<a href="<?php echo esc_url( $gallery_link ); ?>">
 								<?php echo $img_html; ?>
 								<?php
 

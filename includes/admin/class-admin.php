@@ -25,6 +25,7 @@ if ( ! class_exists( 'FooGallery_Admin' ) ) {
 			new FooGallery_Admin_Extensions();
 			new FooGallery_Boilerplate_Download_Handler();
 			new FooGallery_Attachment_Fields();
+            new FooGallery_Admin_CSS_Load_Optimizer();
 		}
 
 		function init() {
@@ -58,11 +59,11 @@ if ( ! class_exists( 'FooGallery_Admin' ) ) {
 		 */
 		function plugin_listing_links( $links ) {
 			// Add a 'Settings' link to the plugin listing
-			$links[] = '<a href="' . foogallery_admin_settings_url() . '"><b>' . __( 'Settings', 'foogallery' ) . '</b></a>';
+			$links[] = '<a href="' . esc_url( foogallery_admin_settings_url() ) . '"><b>' . __( 'Settings', 'foogallery' ) . '</b></a>';
 
-			$links[] = '<a href="' . foogallery_admin_extensions_url() . '"><b>' . __( 'Extensions', 'foogallery' ) . '</b></a>';
+			$links[] = '<a href="' . esc_url( foogallery_admin_extensions_url() ) . '"><b>' . __( 'Extensions', 'foogallery' ) . '</b></a>';
 
-			$links[] = '<a href="' . foogallery_admin_help_url() . '"><b>' . __( 'Help', 'foogallery' ) . '</b></a>';
+			$links[] = '<a href="' . esc_url( foogallery_admin_help_url() ) . '"><b>' . __( 'Help', 'foogallery' ) . '</b></a>';
 
 			return $links;
 		}

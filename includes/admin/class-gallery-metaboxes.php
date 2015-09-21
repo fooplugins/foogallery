@@ -171,15 +171,23 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 			if ( 'post' == $post->post_type ||
 				'page' == $post->post_type ) {
 
-				//first, clear any foogallery usages that the post might have
+                do_action( 'foogallery_start_attach_gallery_to_post', $post_id );
+
+				//Clear any foogallery usages that the post might have
 				delete_post_meta( $post_id, FOOGALLERY_META_POST_USAGE );
 
-				//if the content contains the foogallery shortcode then add a custom field
+				//get all foogallery shortcodes that are on the page/post
 				$gallery_shortcodes = foogallery_extract_gallery_shortcodes( $post->post_content );
 
-				foreach ( $gallery_shortcodes as $id => $shortcode ) {
-					add_post_meta( $post_id, FOOGALLERY_META_POST_USAGE, $id, false );
-				}
+                if ( is_array( $gallery_shortcodes ) && count( $gallery_shortcodes ) > 0 ) {
+
+                    foreach ( $gallery_shortcodes as $id => $shortcode ) {
+                        //if the content contains the foogallery shortcode then add a custom field
+                        add_post_meta( $post_id, FOOGALLERY_META_POST_USAGE, $id, false );
+
+                        do_action( 'foogallery_attach_gallery_to_post', $post_id, $id );
+                    }
+                }
 			}
 		}
 
@@ -257,7 +265,15 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 			//default template to use
 			$gallery             = $this->get_gallery( $post );
 			$available_templates = foogallery_gallery_templates();
-			$gallery_template    = foogallery_default_gallery_template();
+
+			//check if we have no templates
+			if ( 0 === count( $available_templates ) ) {
+				//force the default template to activate if there are no other gallery templates
+				foogallery_activate_default_templates_extension();
+				$available_templates = foogallery_gallery_templates();
+			}
+
+			$gallery_template = foogallery_default_gallery_template();
 			if ( ! empty($gallery->gallery_template) ) {
 				$gallery_template = $gallery->gallery_template;
 			}
@@ -286,8 +302,13 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 				<?php
 				foreach ( $available_templates as $template ) {
 					$field_visibility = ($gallery_template !== $template['slug']) ? 'style="display:none"' : '';
-					$section          = '';
-					foreach ( $template['fields'] as $field ) {
+
+					//allow for extensions to override fields for every gallery template.
+					// Also passes the $template along so you can inspect and conditionally alter fields based on the template properties
+					$fields = apply_filters( 'foogallery_override_gallery_template_fields', $template['fields'], $template );
+
+					$section = '';
+					foreach ( $fields as $field ) {
 
 						//allow for the field to be altered by extensions. Also used by the build-in fields, e.g. lightbox
 						$field = apply_filters( 'foogallery_alter_gallery_template_field', $field, $gallery );
@@ -336,29 +357,27 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 			$shortcode = $gallery->shortcode();
 			?>
 			<p class="foogallery-shortcode">
-				<code id="foogallery-copy-shortcode" data-clipboard-text="<?php echo htmlspecialchars( $shortcode ); ?>"
-					  title="<?php _e( 'Click to copy to your clipboard', 'foogallery' ); ?>"><?php echo $shortcode; ?></code>
+				<input type="text" id="foogallery-copy-shortcode" size="<?php echo strlen( $shortcode ); ?>" value="<?php echo htmlspecialchars( $shortcode ); ?>" readonly="readonly" />
 			</p>
 			<p>
-				<?php _e( 'Paste the above shortcode into a post or page to show the gallery. Simply click the shortcode to copy it to your clipboard.', 'foogallery' ); ?>
+				<?php _e( 'Paste the above shortcode into a post or page to show the gallery.', 'foogallery' ); ?>
 			</p>
 			<script>
 				jQuery(function($) {
-					var $el = $('#foogallery-copy-shortcode');
-					ZeroClipboard.config({ swfPath: "<?php echo FOOGALLERY_URL; ?>lib/zeroclipboard/ZeroClipboard.swf", forceHandCursor: true });
-					var client = new ZeroClipboard($el);
-
-					client.on( "ready", function() {
-						this.on( "aftercopy", function() {
+					var shortcodeInput = document.querySelector('#foogallery-copy-shortcode');
+					shortcodeInput.addEventListener('click', function () {
+						try {
+							// select the contents
+							shortcodeInput.select();
+							//copy the selection
+							document.execCommand('copy');
+							//show the copied message
 							$('.foogallery-shortcode-message').remove();
-							$el.after('<p class="foogallery-shortcode-message"><?php _e( 'Shortcode copied to clipboard :)','foonav' ); ?></p>');
-						} );
-					} );
-
-					client.on("error", function(event) {
-						alert('error[name="' + event.name + '"]: ' + event.message);
-						ZeroClipboard.destroy();
-					});
+							$(shortcodeInput).after('<p class="foogallery-shortcode-message"><?php _e( 'Shortcode copied to clipboard :)','foogallery' ); ?></p>');
+						} catch(err) {
+							console.log('Oops, unable to copy!');
+						}
+					}, false);
 				});
 			</script>
 			<?php
@@ -376,7 +395,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 					$url = get_permalink( $post->ID );
 					echo '<li>' . $post->post_title . ' <span class="row-actions">';
 					edit_post_link( __( 'Edit', 'foogallery' ), '<span class="edit">', ' | </span>', $post->ID );
-					echo '<span class="view"><a href="' . $url . '" target="_blank">' . __( 'View', 'foogallery' ) . '</a></span></li>';
+					echo '<span class="view"><a href="' . esc_url( $url ) . '" target="_blank">' . __( 'View', 'foogallery' ) . '</a></span></li>';
 				} ?>
 				</ul>
 			<?php } else { ?>
@@ -414,12 +433,11 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 		}
 
 		public function include_required_scripts() {
-			//only include scripts if we on the foogallery page
-			if ( FOOGALLERY_CPT_GALLERY === foo_current_screen_post_type() ) {
+			$screen_id = foo_current_screen_id();
 
-				//zeroclipboard needed for copy to clipboard functionality
-				$url = FOOGALLERY_URL . 'lib/zeroclipboard/ZeroClipboard.min.js';
-				wp_enqueue_script( 'foogallery-zeroclipboard', $url, array('jquery'), FOOGALLERY_VERSION );
+			//only include scripts if we on the foogallery add/edit page
+			if ( FOOGALLERY_CPT_GALLERY === $screen_id ||
+			     'edit-' . FOOGALLERY_CPT_GALLERY === $screen_id ) {
 
 				//spectrum needed for the colorpicker field
 				$url = FOOGALLERY_URL . 'lib/spectrum/spectrum.js';
@@ -431,7 +449,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 				foreach ( foogallery_gallery_templates() as $template ) {
 					$admin_js = foo_safe_get( $template, 'admin_js' );
 					if ( $admin_js ) {
-						wp_enqueue_script( 'foogallery-gallery-admin-' . $template['slug'], $admin_js, array('jquery'), FOOGALLERY_VERSION );
+						wp_enqueue_script( 'foogallery-gallery-admin-' . $template['slug'], $admin_js, array('jquery', 'media-upload', 'jquery-ui-sortable'), FOOGALLERY_VERSION );
 					}
 				}
 			}

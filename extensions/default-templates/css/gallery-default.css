@@ -1,3 +1,9 @@
+.foogallery-default:after {
+	content: '';
+	display: block;
+	clear: both;
+}
+
 .foogallery-default a {
     display: inline-block;
 	margin-right: 5px;
@@ -71,7 +77,7 @@
 
 .foogallery-default.border-style-square-white a,
 .foogallery-default.border-style-square-white.foogallery-link-none img {
-	border: 5px solid #FFF;
+	border: 5px solid #FFF !important;
 	-webkit-box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 	-moz-box-shadow: 0 0 10px rgba(0,0,0,0.5);
 	box-shadow: 0 1px 5px rgba(0, 0, 0, 0.5);
@@ -82,7 +88,7 @@
 	border-radius: 50%;
 	-webkit-border-radius: 50%;
 	-moz-border-radius: 50%;
-	border: 5px solid #FFF;
+	border: 5px solid #FFF !important;
 	-webkit-box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 	-moz-box-shadow: 0 0 10px rgba(0,0,0,0.5);
 	box-shadow: 0 1px 5px rgba(0, 0, 0, 0.5);
@@ -93,7 +99,7 @@
 	border-radius: 50%;
 	-webkit-border-radius: 50%;
 	-moz-border-radius: 50%;
-	border: 3px solid #000;
+	border: 3px solid #000 !important;
 	-webkit-box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 	-moz-box-shadow: 0 0 10px rgba(0,0,0,0.5);
 	box-shadow: 0 1px 5px rgba(0, 0, 0, 0.5);
@@ -101,7 +107,7 @@
 
 .foogallery-default.border-style-square-black a,
 .foogallery-default.border-style-square-black.foogallery-link-none img {
-	border: 3px solid #000;
+	border: 3px solid #000 !important;
 	-webkit-box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 	-moz-box-shadow: 0 0 10px rgba(0,0,0,0.5);
 	box-shadow: 0 1px 5px rgba(0, 0, 0, 0.5);
@@ -126,35 +132,102 @@
 }
 
 /* Hover Effects */
-.foogallery-default.hover-effect-zoom a {
-	background:#000 url('img/zoom.png') no-repeat center center;
+
+.foogallery-default.hover-effect-zoom a,
+.foogallery-default.hover-effect-zoom2 a,
+.foogallery-default.hover-effect-zoom3 a,
+.foogallery-default.hover-effect-plus a,
+.foogallery-default.hover-effect-circle-plus a,
+.foogallery-default.hover-effect-eye a,
+.foogallery-default.hover-effect-tint {
+	position: relative;
 }
 
-.foogallery-default.hover-effect-zoom2 a {
-	background:#000 url('img/zoom2.png') no-repeat center center;
+.foogallery-default.hover-effect-zoom a:before,
+.foogallery-default.hover-effect-zoom2 a:before,
+.foogallery-default.hover-effect-zoom3 a:before,
+.foogallery-default.hover-effect-plus a:before,
+.foogallery-default.hover-effect-circle-plus a:before,
+.foogallery-default.hover-effect-eye a:before,
+.foogallery-default.hover-effect-tint a:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	background: none no-repeat center center;
+	-moz-transition: all .3s linear;
+	-webkit-transition: all .3s linear;
+	-ms-transition: all .3s linear;
+	-o-transition: all .3s linear;
+	transition: all .3s linear;
 }
 
-.foogallery-default.hover-effect-zoom3 a {
-	background:#000 url('img/zoom3.png') no-repeat center center;
+.foogallery-default.hover-effect-zoom a:hover:before {
+	background: rgba(0,0,0, 0.5) url('img/zoom.png') no-repeat center center;
 }
 
-.foogallery-default.hover-effect-plus a {
-	background:#000 url('img/plus.png') no-repeat center center;
+.foogallery-default.hover-effect-zoom2 a:hover:before {
+	background:rgba(0,0,0, 0.5) url('img/zoom2.png') no-repeat center center;
 }
 
-.foogallery-default.hover-effect-circle-plus a {
-	background:#000 url('img/circle-plus.png') no-repeat center center;
+.foogallery-default.hover-effect-zoom3 a:hover:before {
+	background:rgba(0,0,0, 0.5) url('img/zoom3.png') no-repeat center center;
 }
 
-.foogallery-default.hover-effect-eye a {
-	background:#000 url('img/eye.png') no-repeat center center;
+.foogallery-default.hover-effect-plus a:hover:before {
+	background:rgba(0,0,0, 0.5) url('img/plus.png') no-repeat center center;
 }
 
-.foogallery-default.hover-effect-zoom a:hover img,
-.foogallery-default.hover-effect-zoom2 a:hover img,
-.foogallery-default.hover-effect-zoom3 a:hover img,
-.foogallery-default.hover-effect-plus a:hover img,
-.foogallery-default.hover-effect-circle-plus a:hover img,
-.foogallery-default.hover-effect-eye a:hover img {
-	opacity: 0.5;
+.foogallery-default.hover-effect-circle-plus a:hover:before {
+	background:rgba(0,0,0, 0.5) url('img/circle-plus.png') no-repeat center center;
+}
+
+.foogallery-default.hover-effect-eye a:hover:before {
+	background:rgba(0,0,0, 0.5) url('img/eye.png') no-repeat center center;
+}
+
+.foogallery-default.hover-effect-tint a:hover:before {
+	background-image: none !important;
+	background-color:rgba(0,0,0, 0.5);
+}
+
+.foogallery-default.hover-effect-color a img {
+	background: none !important;
+	filter: url(filters.svg#grayscale); /* Firefox 3.5+ */
+	filter: gray; /* IE6-9 */
+	-webkit-filter: grayscale(1); /* Google Chrome & Safari 6+ */
+	-moz-transition: all .3s linear;
+	-webkit-transition: all .3s linear;
+	-ms-transition: all .3s linear;
+	-o-transition: all .3s linear;
+	transition: all .3s linear;
+}
+
+.foogallery-default.hover-effect-color a:hover img {
+	filter: none;
+	-webkit-filter: none;
+	opacity: 1 !important;
+}
+
+.foogallery-default.hover-effect-color a:hover:before {
+	background: none !important;
+}
+
+.foogallery-default.hover-effect-none a:before,
+.foogallery-default.hover-effect-none a:before:hover {
+	background: none !important;
+}
+
+/* Loading Styles */
+.foogallery-default-loading {
+	min-height: 11px;
+	background: #fff url(data:image/gif;base64,R0lGODlhEAALAPQAAP///wAAANra2tDQ0Orq6gYGBgAAAC4uLoKCgmBgYLq6uiIiIkpKSoqKimRkZL6+viYmJgQEBE5OTubm5tjY2PT09Dg4ONzc3PLy8ra2tqCgoMrKyu7u7gAAAAAAAAAAACH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCwAAACwAAAAAEAALAAAFLSAgjmRpnqSgCuLKAq5AEIM4zDVw03ve27ifDgfkEYe04kDIDC5zrtYKRa2WQgAh+QQJCwAAACwAAAAAEAALAAAFJGBhGAVgnqhpHIeRvsDawqns0qeN5+y967tYLyicBYE7EYkYAgAh+QQJCwAAACwAAAAAEAALAAAFNiAgjothLOOIJAkiGgxjpGKiKMkbz7SN6zIawJcDwIK9W/HISxGBzdHTuBNOmcJVCyoUlk7CEAAh+QQJCwAAACwAAAAAEAALAAAFNSAgjqQIRRFUAo3jNGIkSdHqPI8Tz3V55zuaDacDyIQ+YrBH+hWPzJFzOQQaeavWi7oqnVIhACH5BAkLAAAALAAAAAAQAAsAAAUyICCOZGme1rJY5kRRk7hI0mJSVUXJtF3iOl7tltsBZsNfUegjAY3I5sgFY55KqdX1GgIAIfkECQsAAAAsAAAAABAACwAABTcgII5kaZ4kcV2EqLJipmnZhWGXaOOitm2aXQ4g7P2Ct2ER4AMul00kj5g0Al8tADY2y6C+4FIIACH5BAkLAAAALAAAAAAQAAsAAAUvICCOZGme5ERRk6iy7qpyHCVStA3gNa/7txxwlwv2isSacYUc+l4tADQGQ1mvpBAAIfkECQsAAAAsAAAAABAACwAABS8gII5kaZ7kRFGTqLLuqnIcJVK0DeA1r/u3HHCXC/aKxJpxhRz6Xi0ANAZDWa+kEAA7AAAAAAAAAAAA) no-repeat center center;
+}
+
+.foogallery-default-loading a,
+.foogallery-default-loading img {
+	display:none;
 }

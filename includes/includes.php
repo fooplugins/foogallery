@@ -22,6 +22,10 @@ if ( ! class_exists( 'WP_Thumb' ) ) {
 require_once( FOOGALLERY_PATH . 'extensions/albums/class-albums-extension.php' );
 require_once( FOOGALLERY_PATH . 'extensions/default-templates/class-default-templates-extension.php' );
 require_once( FOOGALLERY_PATH . 'extensions/nextgen-importer/class-nextgen-gallery-importer-extension.php' );
+require_once( FOOGALLERY_PATH . 'extensions/media-categories/class-media-categories-extension.php' );
+
+//load Template Loader files
+require_once( FOOGALLERY_PATH . 'includes/public/class-foogallery-template-loader.php' );
 
 if ( is_admin() ) {
 
@@ -37,13 +41,13 @@ if ( is_admin() ) {
 	require_once( FOOGALLERY_PATH . 'includes/admin/class-boilerplate-zip-generator.php' );
 	require_once( FOOGALLERY_PATH . 'includes/admin/class-boilerplate-download-handler.php' );
 	require_once( FOOGALLERY_PATH . 'includes/admin/class-attachment-fields.php' );
+    require_once( FOOGALLERY_PATH . 'includes/admin/class-admin-css-load-optimizer.php' );
 
 } else {
 
 	//only front-end
 	require_once( FOOGALLERY_PATH . 'includes/public/class-public.php' );
 	require_once( FOOGALLERY_PATH . 'includes/public/class-shortcodes.php' );
-
-	//load Template \Loader files
-	require_once( FOOGALLERY_PATH . 'includes/public/class-foogallery-template-loader.php' );
+    require_once( FOOGALLERY_PATH . 'includes/public/class-css-load-optimizer.php' );
+	require_once( FOOGALLERY_PATH . 'includes/public/class-admin-bar.php' );
 }

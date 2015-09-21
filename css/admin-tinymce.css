@@ -89,41 +89,14 @@
 	transform: rotate(4deg);
 }
 
-.mce-content-body div.foogallery-tinymce-view .foogallery-pile-inner-thumb {
-	display: table-cell;
-	vertical-align: middle;
-	text-align: center;
-	width: 150px;
-	height: 150px;
+.mce-content-body div.foogallery-tinymce-view .foogallery-pile-inner img {
+	max-width: 150px;
 }
-
-	.mce-content-body div.foogallery-tinymce-view div.foogallery-pile-inner-thumb::after {
-		background: #efefef;
-		-webkit-border-radius: 50%;
-		border-radius: 50%;
-		display: inline-block;
-		content: "\f161";
-		-webkit-font-smoothing: antialiased;
-		font: normal 50px/100px 'dashicons';
-		width: 100px;
-		height: 100px;
-		vertical-align: middle;
-		text-align: center;
-		color: #999;
-		position: absolute;
-		top: 50%;
-		left: 50%;
-		margin-left: -50px;
-		margin-top: -50px;
-		padding: 0;
-		text-shadow: none;
-		z-index: 4;
-	}
 
 .mce-content-body div.foogallery-tinymce-view .foogallery-tinymce-title {
 	font-family: "Open Sans", sans-serif;
-	font-size: 1.5em;
-	color: #888;
+	font-size: 1.2em;
+	color: #666;
 	position: absolute;
 	bottom: 1em;
 	width: 100%;
@@ -132,10 +105,10 @@
 
 .mce-content-body div.foogallery-tinymce-view .foogallery-tinymce-count {
 	font-family: "Open Sans", sans-serif;
-	font-size: 0.8em;
+	font-size: 0.7em;
 	color: #888;
 	position: absolute;
-	bottom: 0.6em;
+	bottom: 0.5em;
 	width: 100%;
 	left: 0;
 }

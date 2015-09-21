@@ -10,7 +10,7 @@
 
 **Requires at least:** 3.9
 
-**Tested up to:** 4.1
+**Tested up to:** 4.3.1
 
 **Stable tag:** trunk
 
@@ -30,15 +30,22 @@ The result is an intuitive gallery creation and management experience that is ea
 
 [View the FooGallery Homepage](http://foo.gallery/)
 
-FooGallery was designed to be the most developer-friendly gallery plugin available for WordPress. It was also built on top of a solid extension framework, which means different functionality is separated out into different areas in the codebase. It also means the core plugin is lightweight, but still allowing for the most flexibility.
+## Video Support ##
 
-## Albums Built In! ##
+Foo Gallery now supports the creation of video galleries with the [FooVideo premium extension](http://fooplugins.com/plugins/foovideo/?utm_source=foogalleryplugin&utm_medium=foogallerylink&utm_campaign=foogallery_wprepo)! Create galleries with both images and videos mixed!
+
+## Albums Built In ##
 
 Albums are now built in as an extension. Simply head over to the extensions page and activate the albums extension. A new menu item will appear that allows you to add albums just as easily as galleries.
 
+## Built For Developers ##
+
+FooGallery was designed to be the most developer-friendly gallery plugin available for WordPress. It was also built on top of a solid extension framework, which means different functionality is separated out into different areas in the codebase. It also means the core plugin is lightweight, but still allowing for the most flexibility.
+
 Features:
 
-*   Albums now built-in! (Activate the albums extension)
+*   Add videos to galleries (via the [FooVideo premium extension](http://fooplugins.com/plugins/foovideo/?utm_source=foogalleryplugin&utm_medium=foogallerylink&utm_campaign=foogallery_wprepo))
+*   Albums built-in! (Activate the albums extension)
 *	Gallery custom post type
 *	Use built-in media library to manage images
 *	Drag n Drop reordering of images and galleries
@@ -70,6 +77,7 @@ Album Templates
 
 Extensions:
 
+*   [FooVideo](http://fooplugins.com/plugins/foovideo/?utm_source=foogalleryplugin&utm_medium=foogallerylink&utm_campaign=foogallery_wprepo) **NEW!!**
 *	Albums (bundled)
 *	Default Gallery Templates (bundled)
 *	NextGen Gallery Importer (bundled)
@@ -101,6 +109,10 @@ FooGallery is hosted on [GitHub](https://github.com/fooplugins/foogallery). If y
 
 ## Frequently Asked Questions ##
 
+## Can I add videos to my galleries? ##
+
+Yes, you need to use the [FooVideo premium extension](http://fooplugins.com/plugins/foovideo/?utm_source=foogalleryplugin&utm_medium=foogallerylink&utm_campaign=foogallery_wprepo)
+
 ### How do I get albums working? ###
 
 Simply go to the FooGallery extensions page and activate the Albums extension. If you do not see a button to activate the albums extension, reload the extensions list by clicking the reload button.
@@ -127,6 +139,15 @@ Hell, yes! Check out our [developer page](http://foo.gallery/developers/)
 ![Album Edit Page](https://s3.amazonaws.com/foogallery/screenshot-5.jpg)
 
 ## Changelog ##
+
+### 1.2.6 ###
+* CSS load optimizations
+* Updates and tweaks on all built-in gallery templates
+* More robust extension loading
+* More robust upgrades to FooBox PRO
+* Improved copy-to-clipboard
+* Added more hover effects
+* Support for FooVideo
 
 ### 1.2.4 ###
 * Many album template updates, enhancements and fixes

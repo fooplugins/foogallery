@@ -2,6 +2,7 @@
 if ( ! class_exists( 'FooGallery_Default_Templates_Extension' ) ) {
 
 	define( 'FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_URL', plugin_dir_url( __FILE__ ) );
+	require_once( 'functions.php' );
 
 	class FooGallery_Default_Templates_Extension {
 
@@ -9,6 +10,7 @@ if ( ! class_exists( 'FooGallery_Default_Templates_Extension' ) ) {
 			add_filter( 'foogallery_gallery_templates', array( $this, 'add_default_templates' ) );
 			add_filter( 'foogallery_gallery_templates_files', array( $this, 'register_myself' ) );
 			add_action( 'foogallery_render_gallery_template_field_custom', array( $this, 'render_thumbnail_preview' ), 10, 3 );
+			add_filter( 'foogallery_located_template-default', array( $this, 'enqueue_default_dependencies' ) );
 			add_filter( 'foogallery_located_template-masonry', array( $this, 'enqueue_masonry_dependencies' ) );
 		}
 
@@ -64,9 +66,24 @@ if ( ! class_exists( 'FooGallery_Default_Templates_Extension' ) ) {
 						)
 					),
 					array(
+						'id'      => 'hover-effect-type',
+						'title'   => __( 'Hover Effect Type', 'foogallery' ),
+						'section' => __( 'Thumbnail Settings', 'foogallery' ),
+						'default' => '',
+						'type'    => 'radio',
+						'choices' => apply_filters( 'foogallery_gallery_template_hover-effect-types', array(
+							''  => __( 'Icon', 'foogallery' ),
+							'hover-effect-tint'   => __( 'Dark Tint', 'foogallery' ),
+							'hover-effect-color' => __( 'Colorize', 'foogallery' ),
+							'hover-effect-none' => __( 'None', 'foogallery' )
+						) ),
+						'spacer'  => '<span class="spacer"></span>',
+						'desc'	  => __( 'The type of hover effect the thumbnails will use.', 'foogallery' ),
+					),
+					array(
 						'id'      => 'hover-effect',
-						'title'   => __( 'Hover Effect', 'foogallery' ),
-						'desc'    => __( 'A hover effect is shown when you hover over each thumbnail.', 'foogallery' ),
+						'title'   => __( 'Icon Hover Effect', 'foogallery' ),
+						'desc'    => __( 'When the hover effect type of Icon is chosen, you can choose which icon is shown when you hover over each thumbnail.', 'foogallery' ),
 						'section' => __( 'Thumbnail Settings', 'foogallery' ),
 						'type'    => 'icon',
 						'default' => 'hover-effect-zoom',
@@ -76,8 +93,7 @@ if ( ! class_exists( 'FooGallery_Default_Templates_Extension' ) ) {
 							'hover-effect-zoom3' => array( 'label' => __( 'Zoom 3' , 'foogallery' ), 'img' => FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_URL . 'assets/hover-effect-icon-zoom3.png' ),
 							'hover-effect-plus' => array( 'label' => __( 'Plus' , 'foogallery' ), 'img' => FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_URL . 'assets/hover-effect-icon-plus.png' ),
 							'hover-effect-circle-plus' => array( 'label' => __( 'Cirlce Plus' , 'foogallery' ), 'img' => FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_URL . 'assets/hover-effect-icon-circle-plus.png' ),
-							'hover-effect-eye' => array( 'label' => __( 'Eye' , 'foogallery' ), 'img' => FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_URL . 'assets/hover-effect-icon-eye.png' ),
-							'' => array( 'label' => __( 'None' , 'foogallery' ), 'img' => FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_URL . 'assets/hover-effect-icon-none.png' ),
+							'hover-effect-eye' => array( 'label' => __( 'Eye' , 'foogallery' ), 'img' => FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_URL . 'assets/hover-effect-icon-eye.png' )
 						),
 					),
 					array(
@@ -168,7 +184,7 @@ if ( ! class_exists( 'FooGallery_Default_Templates_Extension' ) ) {
 						'type'    => 'radio',
 						'choices' => array(
 							'default'  => __( 'Zoom Slightly', 'foogallery' ),
-							'center'   => __( 'No Zoom', 'foogallery' )
+							'none'   => __( 'No Zoom', 'foogallery' )
 						),
 						'spacer'  => '<span class="spacer"></span>',
 						'default' => 'default'
@@ -321,13 +337,14 @@ if ( ! class_exists( 'FooGallery_Default_Templates_Extension' ) ) {
 							'position-float-right' => __( 'Float Right', 'foogallery' ),
 						)
 					),
-//					array(
-//						'id' => 'thumb_preview',
-//						'title' => __( 'Preview', 'foogallery' ),
-//						'desc' => __( 'This is what your thumbnail will look like.', 'foogallery' ),
-//						'section' => __( 'Thumbnail Settings', 'foogallery' ),
-//						'type' => 'thumb_preview',
-//					),
+					array(
+						'id'      => 'link_custom_url',
+						'title'   => __( 'Link To Custom URL', 'foogallery' ),
+						'section' => __( 'Thumbnail Settings', 'foogallery' ),
+						'default' => '',
+						'type'    => 'checkbox',
+						'desc'	  => __( 'You can link your thumbnails to Custom URL\'s (if they are set on your attachments). Fallback will be to the full size image.', 'foogallery' )
+					),
 					array(
 						'id'      => 'caption_style',
 						'title'   => __( 'Caption Style', 'foogallery' ),
@@ -424,11 +441,20 @@ if ( ! class_exists( 'FooGallery_Default_Templates_Extension' ) ) {
 		}
 
 		/**
+		 * Enqueue scripts that the default gallery template relies on
+		 */
+		function enqueue_default_dependencies() {
+			wp_enqueue_script( 'jquery' );
+			foogallery_enqueue_imagesloaded_script();
+		}
+
+		/**
 		 * Enqueue scripts that the masonry gallery template relies on
 		 */
 		function enqueue_masonry_dependencies() {
-			$js = FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_URL . 'js/imagesloaded.pkgd.min.js';
-			wp_enqueue_script( 'foogallery-imagesloaded', $js, array( 'masonry', 'jquery' ), FOOGALLERY_VERSION );
+			wp_enqueue_script( 'jquery' );
+			wp_enqueue_script( 'masonry' );
+			foogallery_enqueue_imagesloaded_script();
 		}
 	}
 }

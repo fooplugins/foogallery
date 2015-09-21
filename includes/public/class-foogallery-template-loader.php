@@ -49,11 +49,7 @@ class FooGallery_Template_Loader {
 			} else {
 
 				//create locator instance
-				$instance_name = FOOGALLERY_SLUG . '_gallery_templates';
-				$loader        = new Foo_Plugin_File_Locator_v1( $instance_name, FOOGALLERY_FILE, 'templates', FOOGALLERY_SLUG );
-
-				//allow extensions to very easily add pickup locations for their files
-				$this->add_extension_pickup_locations( $loader, apply_filters( $instance_name . '_files', array() ) );
+                $loader = $this->create_locator_instance();
 
 				if ( false !== ( $template_location = $loader->locate_file( "gallery-{$current_foogallery_template}.php" ) ) ) {
 
@@ -64,11 +60,12 @@ class FooGallery_Template_Loader {
 					//try to include some JS
 					if ( false !== ( $js_location = $loader->locate_file( "gallery-{$current_foogallery_template}.js" ) ) ) {
 						wp_enqueue_script( "foogallery-template-{$current_foogallery_template}", $js_location['url'] );
+                        do_action( 'foogallery_template_enqueue_script', $current_foogallery_template, $js_location['url'] );
 					}
 
 					//try to include some CSS
 					if ( false !== ( $css_location = $loader->locate_file( "gallery-{$current_foogallery_template}.css" ) ) ) {
-						wp_enqueue_style( "foogallery-template-{$current_foogallery_template}", $css_location['url'] );
+						foogallery_enqueue_style( "foogallery-template-{$current_foogallery_template}", $css_location['url'], array(), FOOGALLERY_VERSION );
 					}
 
 					//finally include the actual php template!
@@ -76,10 +73,15 @@ class FooGallery_Template_Loader {
 						load_template( $template_location['path'], false );
 					}
 
+					//cater for lightbox extensions needing to add styles and javascript
+					$lightbox = foogallery_gallery_template_setting( 'lightbox' );
+					if ( !empty( $lightbox ) ) {
+						do_action( "foogallery_template_lightbox-{$lightbox}", $current_foogallery );
+					}
+
 					//we have loaded all files, now let extensions do some stuff
 					do_action( "foogallery_loaded_template", $current_foogallery );
 					do_action( "foogallery_loaded_template-($current_foogallery_template)", $current_foogallery );
-
 				} else {
 					//we could not find a template!
 					_e( 'No gallery template found!', 'foogallery' );
@@ -87,6 +89,21 @@ class FooGallery_Template_Loader {
 			}
 		}
 	}
+
+    /**
+     * Creates a locator instance used for including template files
+     *
+     *
+     */
+    public function create_locator_instance() {
+        $instance_name = FOOGALLERY_SLUG . '_gallery_templates';
+        $loader        = new Foo_Plugin_File_Locator_v1( $instance_name, FOOGALLERY_FILE, 'templates', FOOGALLERY_SLUG );
+
+        //allow extensions to very easily add pickup locations for their files
+        $this->add_extension_pickup_locations( $loader, apply_filters( $instance_name . '_files', array() ) );
+
+        return $loader;
+    }
 
 	/**
 	 * Add pickup locations to the loader to make it easier for extensions

@@ -3,7 +3,7 @@
 (function(FOOGALLERY, $, undefined) {
 
 	FOOGALLERY.loadGalleries = function() {
-		$('.foogallery-modal-wrapper .spinner').css('display', 'inline-block');
+		$('.foogallery-modal-wrapper .spinner').addClass('is-active');
 		$('.foogallery-modal-reload').hide();
 		var data = 'action=foogallery_load_galleries' +
 			'&foogallery_load_galleries=' + $('#foogallery_load_galleries').val() +
@@ -18,7 +18,7 @@
 				FOOGALLERY.clearSelection();
 			},
 			complete: function() {
-				$('.foogallery-modal-wrapper .spinner').hide();
+				$('.foogallery-modal-wrapper .spinner').removeClass('is-active');
 				$('.foogallery-modal-reload').show();
 			}
 		});

@@ -19,7 +19,7 @@ if ( ! class_exists( 'FooGallery_Album_Shortcodes' ) ) {
 		function render_foogallery_album_shortcode( $atts ) {
 
 			$args = wp_parse_args( $atts, array(
-				'id'      => 0,
+				'id'    => 0,
 				'album' => '',
 			) );
 

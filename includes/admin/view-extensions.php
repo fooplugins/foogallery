@@ -57,7 +57,7 @@ if ( $has_errors ) { ?>
 			<input placeholder="<?php echo __( 'search...', 'foogallery' ); ?>" type="search" id="extensions-search-input">
 		</div>
 		<div class="extension-reload">
-			<a class="ext_action button" href="<?php echo add_query_arg( 'action', 'reload' ); ?>"><span class="dashicons dashicons-update"></span> <?php _e( 'Reload', 'foogallery' ); ?></a>
+			<a class="ext_action button" href="<?php echo esc_url( add_query_arg( 'action', 'reload' ) ); ?>"><span class="dashicons dashicons-update"></span> <?php _e( 'Reload', 'foogallery' ); ?></a>
 		</div>
 	</h2>
 </div>
@@ -106,7 +106,7 @@ if ( $has_errors ) { ?>
 			//check if we want to override the download button
 			if ( isset( $extension['download_button'] ) ) {
 				$download_button = $extension['download_button'];
-				$download_button_href = isset( $download_button['href'] ) ? $download_button['href'] : $download_url;
+				$download_button_href = esc_url( isset( $download_button['href'] ) ? $download_button['href'] : $download_url );
 				$download_button_target = isset( $download_button['target'] ) ? ' target="' . $download_button['target'] . '" ' : '';
 				$download_button_text = isset( $download_button['text'] ) ? __( $download_button['text'], 'foogallery' ) : '';
 				$download_button_confirm = isset( $download_button['confirm'] ) ? ' data-confirm="' .$download_button['confirm'] . '" ' : '';
@@ -119,7 +119,7 @@ if ( $has_errors ) { ?>
 
 			<div class="extension-details">
 				<p class="search-me"><?php echo $extension['description']; ?></p>
-				<a target="_blank" href="<?php echo $extension['author_url']; ?>">By <?php echo $extension['author']; ?></a>
+				<a target="_blank" href="<?php echo esc_url( $extension['author_url'] ); ?>">By <?php echo $extension['author']; ?></a>
 			</div>
 
 			<h3 class="search-me"><?php echo $extension['title'] . $tag_html; ?></h3>
@@ -128,10 +128,10 @@ if ( $has_errors ) { ?>
 				<?php if ( ! empty( $download_button_html ) ) {
 					echo $download_button_html;
 				} else { ?>
-				<a class="ext_action button button-primary download" data-confirm="<?php _e( 'Are you sure you want to download this extension?', 'foogallery' ); ?>" href="<?php echo $download_url; ?>"><?php _e( 'Download', 'foogallery' ); ?></a>
+				<a class="ext_action button button-primary download" data-confirm="<?php _e( 'Are you sure you want to download this extension?', 'foogallery' ); ?>" href="<?php echo esc_url( $download_url ); ?>"><?php _e( 'Download', 'foogallery' ); ?></a>
 				<?php } ?>
-				<a class="ext_action button button-primary activate" href="<?php echo $activate_url; ?>"><?php _e( 'Activate', 'foogallery' ); ?></a>
-				<a class="ext_action button button-secondary deactivate" href="<?php echo $deactivate_url; ?>"><?php _e( 'Deactivate', 'foogallery' ); ?></a>
+				<a class="ext_action button button-primary activate" href="<?php echo esc_url( $activate_url ); ?>"><?php _e( 'Activate', 'foogallery' ); ?></a>
+				<a class="ext_action button button-secondary deactivate" href="<?php echo esc_url( $deactivate_url ); ?>"><?php _e( 'Deactivate', 'foogallery' ); ?></a>
 
 			</div>
 			<div class="banner active-banner"><?php _e( 'Activated', 'foogallery' ); ?></div>

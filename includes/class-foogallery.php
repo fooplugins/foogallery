@@ -300,14 +300,17 @@ class FooGallery extends stdClass {
 
 	public function image_count($no_images_text = false, $singular_text = false, $plural_text = false) {
 		$count = sizeof( $this->attachment_ids );
+
 		switch ( $count ) {
 			case 0:
-				return $no_images_text === false ? __( 'No images', 'foogallery' ) : $no_images_text;
+				$count_text = $no_images_text === false ? __( 'No images', 'foogallery' ) : $no_images_text;
 			case 1:
-				return $singular_text === false ? __( '1 image', 'foogallery' ) : $singular_text;
+				$count_text = $singular_text === false ? __( '1 image', 'foogallery' ) : $singular_text;
 			default:
-				return sprintf( $plural_text === false ?  __( '%s images', 'foogallery' ) : $plural_text, $count );
+				$count_text = sprintf( $plural_text === false ?  __( '%s images', 'foogallery' ) : $plural_text, $count );
 		}
+
+		return apply_filters( 'foogallery_image_count', $count_text, $this );
 	}
 
 	public function find_usages() {

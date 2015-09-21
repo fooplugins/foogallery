@@ -108,12 +108,13 @@
 
 		// Create the media frame.
 		FOOGALLERY.media_uploader = wp.media.frames.file_frame = wp.media({
-			title: $(this).data( 'uploader-title' ),
+			title: FOOGALLERY.mediaModalTitle,
 			//frame: 'post',
 			button: {
-				text: $(this).data( 'uploader-button-text' )
+				text: FOOGALLERY.mediaModalButtonText
 			},
-			multiple: true  // Set to true to allow multiple files to be selected
+			multiple: 'add',  // Set to allow multiple files to be selected
+			toolbar:  'select'
 		});
 
 		// When an image is selected, run a callback.
@@ -150,6 +151,8 @@
 					var attachment = wp.media.attachment(FOOGALLERY.selected_attachment_id);
 					attachment.fetch();
 					selection.add( attachment ? [ attachment ] : [] );
+				} else {
+					//would be nice to have all previously added media selected
 				}
 			});
 
@@ -182,7 +185,9 @@
     FOOGALLERY.adminReady = function () {
         $('.upload_image_button').on('click', function(e) {
             e.preventDefault();
-			FOOGALLERY.openMediaModal();
+			FOOGALLERY.mediaModalTitle = $(this).data( 'uploader-title' );
+			FOOGALLERY.mediaModalButtonText = $(this).data( 'uploader-button-text' );
+			FOOGALLERY.openMediaModal(0);
         });
 
         FOOGALLERY.initAttachments();

@@ -14,7 +14,7 @@
  * Plugin Name: FooGallery
  * Plugin URI:  https://github.com/fooplugins/foogallery
  * Description: Better Image Galleries for WordPress
- * Version:     1.2.4
+ * Version:     1.2.6
  * Author:      FooPlugins
  * Author URI:  http://fooplugins.com
  * Text Domain: foogallery
@@ -32,7 +32,7 @@ define( 'FOOGALLERY_SLUG', 'foogallery' );
 define( 'FOOGALLERY_PATH', plugin_dir_path( __FILE__ ) );
 define( 'FOOGALLERY_URL', plugin_dir_url( __FILE__ ) );
 define( 'FOOGALLERY_FILE', __FILE__ );
-define( 'FOOGALLERY_VERSION', '1.2.4' );
+define( 'FOOGALLERY_VERSION', '1.2.6' );
 
 /**
  * FooGallery_Plugin class
@@ -90,11 +90,33 @@ if ( ! class_exists( 'FooGallery_Plugin' ) ) {
 
 			if ( is_admin() ) {
 				new FooGallery_Admin();
+				add_action( 'wpmu_new_blog', array( $this, 'set_default_extensions_for_multisite_network_activated' ) );
 			} else {
 				new FooGallery_Public();
 			}
 
 			new FooGallery_Thumbnails();
+		}
+
+		/**
+		 * Set default extensions when a new site is created in multisite and FooGallery is network activated
+		 *
+		 * @since 1.2.5
+		 *
+		 * @param int $blog_id The ID of the newly created site
+		 */
+		public function set_default_extensions_for_multisite_network_activated( $blog_id ) {
+			switch_to_blog( $blog_id );
+
+			if ( false === get_option( FOOGALLERY_EXTENSIONS_AUTO_ACTIVATED_OPTIONS_KEY, false ) ) {
+				$api = new FooGallery_Extensions_API();
+
+				$api->auto_activate_extensions();
+
+				update_option( FOOGALLERY_EXTENSIONS_AUTO_ACTIVATED_OPTIONS_KEY, true );
+			}
+
+			restore_current_blog();
 		}
 
 		/**

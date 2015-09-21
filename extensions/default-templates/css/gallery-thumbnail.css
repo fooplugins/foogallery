@@ -1,17 +1,17 @@
-.foogallery-thumbnail {
-
-}
-
 .foogallery-thumbnail a {
     display: inline-block;
 	margin: 5px;
 	overflow: hidden;
 	position: relative;
-	border: 5px solid #fff;
+	border: 5px solid #fff !important;
 	-webkit-box-shadow: 1px 1px 1px 1px #ccc;
 	-moz-box-shadow: 1px 1px 1px 1px #ccc;
 	box-shadow: 1px 1px 1px 1px #ccc;
 }
+
+	.foogallery-thumbnail a:hover {
+		border: 5px solid #fff !important;
+	}
 
     .foogallery-thumbnail a img {
 		border-radius: 0;
@@ -43,7 +43,6 @@
 	transition: all 300ms ease-out;
 	left: 0;
 	width: 100%;
-
 	background-color: rgba(255,0,0,0.5);
 	color: #fff;
 }
