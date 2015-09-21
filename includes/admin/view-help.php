@@ -2,7 +2,7 @@
 $instance = FooGallery_Plugin::get_instance();
 $info = $instance->get_plugin_info();
 $title = apply_filters( 'foogallery_admin_help_title', sprintf( __( 'Welcome to %s %s', 'foogallery' ), foogallery_plugin_name(), $info['version'] ) );
-$tagline = apply_filters( 'foogallery_admin_help_tagline', sprintf( __( 'Thank you for choosing %s, the most intuitive and extensible gallery creation and management tool ever created for WordPress! NOW WITH ALBUMS!', 'foogallery' ), foogallery_plugin_name() ) );
+$tagline = apply_filters( 'foogallery_admin_help_tagline', sprintf( __( 'Thank you for choosing %s, the most intuitive and extensible gallery creation and management tool ever created for WordPress!', 'foogallery' ), foogallery_plugin_name() ) );
 $link = apply_filters( 'foogallery_admin_help_tagline_link', ' - <a href="http://foo.gallery" target="_blank">' . __( 'Visit our homepage', 'foogallery' ) . '</a>' );
 $show_foobot = apply_filters( 'foogallery_admin_show_foobot', true );
 $show_tabs = apply_filters( 'foogallery_admin_help_show_tabs', true );
@@ -24,6 +24,10 @@ $show_extensions_section = apply_filters( 'foogallery_admin_help_show_extensions
 	}
 	.feature-section h2 {
 		margin-top: 0;
+	}
+
+	.about-wrap h2.nav-tab-wrapper {
+		margin-bottom: 20px;
 	}
 
 </style>
@@ -64,16 +68,19 @@ $show_extensions_section = apply_filters( 'foogallery_admin_help_show_extensions
 			<h4><?php printf( __( '<a href="%s">Galleries &rarr; Add New</a>', 'foogallery' ), esc_url ( admin_url( 'post-new.php?post_type=foogallery' ) ) ); ?></h4>
 			<p><?php _e( 'To create your first gallery, simply click the Add New button or click the Add Gallery menu link. Then choose images from the media library to include in your gallery.', 'foogallery' ); ?></p>
 
-			<h4><?php _e( 'Drag and Drop Reordering', 'foogallery' );?></h4>
-			<p><?php _e( 'Sort the images in your gallery simply by dragging them around.', 'foogallery' );?></p>
-
 			<h4><?php _e( 'Gallery Templates', 'foogallery' );?></h4>
 			<p><?php _e( 'Choose one of our built-in gallery templates or download one via our extension library.', 'foogallery' );?></p>
 
 			<h4><?php _e( 'Lightbox Support', 'foogallery' );?></h4>
-			<p><?php _e( 'Our default gallery template supports FooBox : our popular responsive image lightbox.', 'foogallery' );?></p>
-
-
+			<p>
+				<?php _e( 'FooGallery works out of the box with FooBox, our popular responsive image lightbox.', 'foogallery' );?>
+				<a target="_blank" href="http://fooplugins.com/plugins/foobox"><?php _e( 'Purchase FooBox now!', 'foogallery' );?></a>
+			</p>
+			<h4><?php _e( 'Video Support', 'foogallery' );?></h4>
+			<p>
+				<?php _e( 'FooGallery now supports the creation of video galleries with the FooVideo premium extension!', 'foogallery' );?>
+				<a target="_blank" href="http://fooplugins.com/plugins/foovideo"><?php _e( 'Purchase FooVideo now!', 'foogallery' );?></a>
+			</p>
 		</div>
 	</div>
 
