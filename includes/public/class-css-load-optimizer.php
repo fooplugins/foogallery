@@ -21,6 +21,8 @@ if (!class_exists('class-css-load-optimizer.php')) {
                 return array( $wp_query->post->ID );
             } else if ( is_array( $wp_query->posts ) ) {
                 return wp_list_pluck( $wp_query->posts, 'ID' );
+            } else {
+                return array();
             }
         }
 
