@@ -46,7 +46,8 @@
 }
 
 .foogallery-pile img {
-	height: 100%;
+	height: auto;
+	width: 100%;
 }
 
 .foogallery-pile h3 {
@@ -70,9 +71,13 @@
 	border-color: #1E8CBE;
 }
 
+.foogallery-gallery-select .thumbnail {
+    width: 100%;
+}
+
 .foogallery-gallery-select.selected::before {
 	content: "\f147" !important;
-	display: inline-block !important;
+	display: inline-block;
 	font: normal 60px/70px 'dashicons';
 	position: absolute;
 	color: #FFF;
@@ -80,13 +85,13 @@
 	left: 50%;
 	margin-left: -30px;
 	margin-top: -30px;
+	padding-top: 0 !important;
 	-webkit-font-smoothing: antialiased;
 	background: #1E8CBE;
 	border-radius: 50%;
 	width: 60px;
 	height: 60px;
 	z-index: 4;
-	padding-top:0 !important;
 }
 
 .attachment-preview {
@@ -103,23 +108,10 @@
 	text-align: center;
 }
 
-.foogallery-shortcode input {
+.foogallery-shortcode code {
+	display: inline-block;
+	font-size: 1.1em;
 	cursor: pointer;
-	text-align: center;
-	padding: 10px;
-	font-family: "courier new", courier;
-	border: none;
-	box-shadow: none;
-	background: #efefef;
-}
-
-.wp-list-table .foogallery-shortcode {
-	cursor: pointer;
-	font-size: 1em;
-	border: none;
-	box-shadow: none;
-	background: #efefef;
-	font-family: "courier new", courier;
 }
 
 .foogallery-shortcode-message {
@@ -147,7 +139,7 @@
 }
 
 .foogallery-album-gallery-list .attachment-preview:before {
-	padding-top:0 !important;
+	padding-top: 0;
 }
 
 .gallery_template_field td {
