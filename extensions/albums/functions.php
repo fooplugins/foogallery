@@ -239,7 +239,7 @@ function foogallery_album_build_gallery_link( $album, $gallery ) {
 	$format = $album->get_meta( $key, 'default' );
 
 	if ( 'default' === $format && 'default' === foogallery_determine_best_link_format_default() ) {
-		$url = untrailingslashit( untrailingslashit(get_permalink()) . '/' . $slug . '/' . $gallery->slug );
+		$url = untrailingslashit( get_permalink() . $slug . '/' . $gallery->slug );
 	} else {
 		$url = add_query_arg( $slug, $gallery->slug );
 	}
