@@ -48,6 +48,9 @@ if ( false !== $foogallery ) {
 		foreach ( $current_foogallery_album->galleries() as $gallery ) {
 			if (!empty($gallery->attachment_ids)) {
 				$attachment = $gallery->featured_attachment();
+
+				if ( false === $attachment ) continue;
+
 				$img_html = $attachment->html_img( $args );
 				$images = $gallery->image_count( $no_images_text, $single_image_text, $images_text );
 				$gallery_link = foogallery_album_build_gallery_link( $current_foogallery_album, $gallery );
