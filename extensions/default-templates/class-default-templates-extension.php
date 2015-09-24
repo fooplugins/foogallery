@@ -267,6 +267,14 @@ if ( ! class_exists( 'FooGallery_Default_Templates_Extension' ) ) {
 						'min'     => '0',
 					),
 					array(
+						'id'      => 'max_row_height',
+						'title'   => __( 'Max Row Height', 'foogallery' ),
+						'desc'    => __( 'A number (e.g 200) which specifies the maximum row height in pixels. A negative value for no limits. Alternatively, use a percentage (e.g. 200% which means that the row height cannot exceed 2 * rowHeight)', 'foogallery' ),
+						'type'    => 'text',
+						'class'   => 'small-text',
+						'default' => '200%'
+					),
+					array(
 						'id'      => 'margins',
 						'title'   => __( 'Margins', 'foogallery' ),
 						'desc'    => __( 'The spacing between your thumbnails.', 'foogallery' ),
@@ -282,6 +290,19 @@ if ( ! class_exists( 'FooGallery_Default_Templates_Extension' ) ) {
 						'desc'    => __( 'Show a caption when hovering over your thumbnails. (Set captions by adding either a title or alt text to an attachment)', 'foogallery' ),
 						'type'    => 'checkbox',
 						'default' => 'on',
+					),
+					array(
+						'id'      => 'caption_source',
+						'title'   => __( 'Caption Source', 'foogallery' ),
+						'desc'    => __( 'Pull captions from either the attachment Title, Caption or Alt Text.', 'foogallery' ),
+						'type'    => 'radio',
+						'default' => 'title',
+						'spacer'  => '<span class="spacer"></span>',
+						'choices' => array(
+							'title'  => __( 'Attachment Title', 'foogallery' ),
+							'caption'   => __( 'Attachment Caption', 'foogallery' ),
+							'alt'   => __( 'Attachment Alt Text', 'foogallery' )
+						)
 					),
 					array(
 						'id'      => 'thumbnail_link',
