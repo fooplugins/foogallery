@@ -123,6 +123,10 @@ Update now to support FooVideo and many other improvements!
 
 == Changelog ==
 
+= 1.2.7 =
+* Bug fixes for 1.2.6 release
+* Added 2 new settings to Justified Gallery template (maxRowHeight + Caption Source)
+
 = 1.2.6 =
 * CSS load optimizations
 * Updates and tweaks on all built-in gallery templates
