@@ -2,7 +2,9 @@
 if ( ! class_exists( 'FooGallery_Default_Templates_Extension' ) ) {
 
 	define( 'FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_URL', plugin_dir_url( __FILE__ ) );
-	require_once( 'functions.php' );
+	define( 'FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_PATH', plugin_dir_path( __FILE__ ) );
+
+	require_once( FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_PATH . 'functions.php' );
 
 	class FooGallery_Default_Templates_Extension {
 
