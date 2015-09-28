@@ -32,3 +32,8 @@
 .foogallery-masonry a:hover {
     border: none !important;
 }
+
+.foogallery-masonry .item {
+    line-height: 0;
+    font-size: 0;
+}
