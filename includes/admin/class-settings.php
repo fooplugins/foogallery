@@ -123,6 +123,33 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 //	        );
 //	        //endregion Advanced
 
+			//region Language Tab
+			$tabs['language'] = __( 'Language', 'foogallery' );
+
+			$settings[] = array(
+				'id'      => 'language_images_count_none_text',
+				'title'   => __( 'Image Count None Text', 'foogallery' ),
+				'type'    => 'text',
+				'default' => __( 'No images', 'foogallery' ),
+				'tab'     => 'language'
+			);
+
+			$settings[] = array(
+				'id'      => 'language_images_count_single_text',
+				'title'   => __( 'Image Count Single Text', 'foogallery' ),
+				'type'    => 'text',
+				'default' => __( '1 image', 'foogallery' ),
+				'tab'     => 'language'
+			);
+
+			$settings[] = array(
+				'id'      => 'language_images_count_plural_text',
+				'title'   => __( 'Image Count Many Text', 'foogallery' ),
+				'type'    => 'text',
+				'default' => __( '%s images', 'foogallery' ),
+				'tab'     => 'language'
+			);
+
 			return apply_filters( 'foogallery_admin_settings_override', array(
 				'tabs'     => $tabs,
 				'sections' => array(),

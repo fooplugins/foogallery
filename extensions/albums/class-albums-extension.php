@@ -19,6 +19,10 @@ if ( ! class_exists( 'FooGallery_Albums_Extension' ) ) {
 			if ( is_admin() ) {
 				new FooGallery_Albums_Admin_Columns();
 				new FooGallery_Admin_Album_MetaBoxes();
+
+				//add language settings
+				add_filter( 'foogallery_admin_settings_override', array( $this, 'include_album_language_settings' ) );
+
 			} else {
 
 				new FooGallery_Album_Template_Loader();
@@ -63,6 +67,18 @@ if ( ! class_exists( 'FooGallery_Albums_Extension' ) ) {
 			$rewrite->add_gallery_endpoint();
 
 			flush_rewrite_rules();
+		}
+
+		function include_album_language_settings( $settings ) {
+			$settings['settings'][] = array(
+				'id'      => 'language_back_to_album_text',
+				'title'   => __( 'Back To Album Text', 'foogallery' ),
+				'type'    => 'text',
+				'default' => __( '&laquo; back to album', 'foogallery' ),
+				'tab'     => 'language'
+			);
+
+			return $settings;
 		}
 	}
 }

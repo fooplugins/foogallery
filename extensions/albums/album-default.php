@@ -5,9 +5,6 @@
 global $current_foogallery_album;
 global $current_foogallery_album_arguments;
 $gallery = foogallery_album_get_current_gallery();
-$no_images_text = foogallery_album_template_setting( 'no_images_text', false );
-$single_image_text = foogallery_album_template_setting( 'single_image_text', false );
-$images_text = foogallery_album_template_setting( 'images_text', false );
 $alignment = foogallery_album_template_setting( 'alignment', 'alignment-left' );
 $foogallery = false;
 
@@ -23,7 +20,7 @@ if ( !empty( $gallery ) ) {
 if ( false !== $foogallery ) {
 	$album_url = foogallery_album_remove_gallery_from_link();
 	echo '<div id="' . $current_foogallery_album->slug . '" class="foogallery-album-header">';
-	echo '<p><a href="' . esc_url( $album_url ) . '">' . foogallery_album_template_setting( 'back_to_album_text', '&laquo; back to album' ) . '</a></p>';
+	echo '<p><a href="' . esc_url( $album_url ) . '">' . foogallery_get_setting( 'language_back_to_album_text', __( '&laquo; back to album', 'foogallery' ) ) . '</a></p>';
 	echo '<h2>' . $foogallery->name . '</h2>';
 	echo '</div>';
 	echo do_shortcode('[foogallery id="' . $foogallery->ID . '"]');
@@ -52,7 +49,7 @@ if ( false !== $foogallery ) {
 				if ( false === $attachment ) continue;
 
 				$img_html = $attachment->html_img( $args );
-				$images = $gallery->image_count( $no_images_text, $single_image_text, $images_text );
+				$images = $gallery->image_count();
 				$gallery_link = foogallery_album_build_gallery_link( $current_foogallery_album, $gallery );
 				?>
 				<li>
