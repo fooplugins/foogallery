@@ -704,7 +704,7 @@ function wpthumb_delete_cache_for_file( $file ) {
 
 	$upload_dir = wp_upload_dir();
 
-	$wpthumb = new WP_Thumb( $upload_dir['basedir'] . $file );
+	$wpthumb = new WP_Thumb( trailingslashit( $upload_dir['basedir'] ) . $file );
 
 	wpthumb_rmdir_recursive( $wpthumb->getCacheFileDirectory() );
 
