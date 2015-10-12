@@ -12,9 +12,10 @@ if ( strpos( $max_row_height, '%' ) !== false ) {
 $margins = foogallery_gallery_template_setting( 'margins', '1' );
 $captions = foogallery_gallery_template_setting( 'captions', '' ) == 'on';
 $gutter_width = foogallery_gallery_template_setting( 'gutter_width', '10' );
+$thumb_link = foogallery_gallery_template_setting( 'thumbnail_link', 'image' );
 $args = array(
 	'height' => $height,
-	'link' => foogallery_gallery_template_setting( 'thumbnail_link', 'image' )
+	'link' => $thumb_link
 );
 $lightbox = foogallery_gallery_template_setting( 'lightbox', 'unknown' );
 $caption_source = foogallery_gallery_template_setting( 'caption_source', 'title' );
@@ -26,6 +27,8 @@ $caption_source = foogallery_gallery_template_setting( 'caption_source', 'title'
 		} else if ( 'caption' == $caption_source ) {
 			$attachment->alt = $attachment->caption;
 		}
+		if ($thumb_link == 'none') echo "<div>"; //no link means wrap in <div>
 		echo $attachment->html( $args );
+		if ($thumb_link == 'none') echo "</div>"; //no link means wrap in <div>
 	} ?>
 </div>
