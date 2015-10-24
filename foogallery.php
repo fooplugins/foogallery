@@ -1,25 +1,13 @@
 <?php
 /**
- * FooGallery
- *
- * The Most Intuitive and Extensible Gallery Creation and Management Tool Ever Created for WordPress.
- *
- * @package   FooGallery
- * @author    Brad Vincent <brad@fooplugins.com>
- * @license   GPL-2.0+
- * @link      https://github.com/fooplugins/foogallery
- * @copyright 2013 FooPlugins LLC
- *
- * @wordpress-plugin
- * Plugin Name: FooGallery
- * Plugin URI:  https://github.com/fooplugins/foogallery
- * Description: Better Image Galleries for WordPress
+ * Plugin Name: Foo Gallery
+ * Description: Foo Gallery is the most intuitive and extensible gallery management tool ever created for WordPress
  * Version:     1.2.7
  * Author:      FooPlugins
+ * Plugin URI:  https://foo.gallery
  * Author URI:  http://fooplugins.com
  * Text Domain: foogallery
  * License:     GPL-2.0+
- * License URI: http://www.gnu.org/licenses/gpl-2.0.txt
  * Domain Path: /languages
  */
 
