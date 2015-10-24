@@ -476,3 +476,10 @@ function foogallery_get_galleries_attached_to_post( $post_id ) {
 
 	return array();
 }
+
+/**
+ * Clears all css load optimization post meta
+ */
+function foogallery_clear_all_css_load_optimizations() {
+	delete_post_meta_by_key( FOOGALLERY_META_POST_USAGE_CSS );
+}

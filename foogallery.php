@@ -167,12 +167,14 @@ if ( ! class_exists( 'FooGallery_Plugin' ) ) {
 				$api->auto_activate_extensions();
 
 				update_option( FOOGALLERY_EXTENSIONS_AUTO_ACTIVATED_OPTIONS_KEY, true );
-
 			}
 			if ( false === $multisite ) {
 				//Make sure we redirect to the welcome page
 				set_transient( FOOGALLERY_ACTIVATION_REDIRECT_TRANSIENT_KEY, true, 30 );
 			}
+
+			//we need to clear the foogallery css load optimizations when we update the plugin, to ensure the latest CSS files are loaded
+			foogallery_clear_all_css_load_optimizations();
 		}
 
 		/**
