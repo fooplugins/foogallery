@@ -244,6 +244,16 @@ if ( ! class_exists( 'FooGallery_Default_Templates_Extension' ) ) {
 						'desc'    => __( 'Choose which lightbox you want to display images with. The lightbox will only work if you set the thumbnail link to "Full Size Image".', 'foogallery' ),
 						'type'    => 'lightbox',
 					),
+					array(
+						'id'      => 'gutter',
+						'title'   => __( 'Gutter', 'foogallery' ),
+						'desc'    => __( 'The spacing between each thumbnail in the gallery.', 'foogallery' ),
+						'type'    => 'number',
+						'class'   => 'small-text',
+						'default' => 40,
+						'step'    => '1',
+						'min'     => '0',
+					)
 				),
 			);
 
