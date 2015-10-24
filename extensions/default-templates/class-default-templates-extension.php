@@ -397,33 +397,33 @@ if ( ! class_exists( 'FooGallery_Default_Templates_Extension' ) ) {
 					),
 					array(
 						'id'      => 'caption_bgcolor',
-						'title'   => __('Caption Background Color', 'foogallery-cube-gallery'),
+						'title'   => __('Caption Background Color', 'foogallery'),
 						'section' => __( 'Caption Settings', 'foogallery' ),
-						'desc'    => __('The color of the caption background.', 'foogallery-cube-gallery'),
+						'desc'    => __('The color of the caption background.', 'foogallery'),
 						'type'    => 'colorpicker',
 						'default' => 'rgba(0, 0, 0, 0.8)',
 						'opacity' => true
 					),
 					array(
 						'id'      => 'caption_color',
-						'title'   => __('Caption Text Color', 'foogallery-cube-gallery'),
+						'title'   => __('Caption Text Color', 'foogallery'),
 						'section' => __( 'Caption Settings', 'foogallery' ),
-						'desc'    => __('The color of the caption text.', 'foogallery-cube-gallery'),
+						'desc'    => __('The color of the caption text.', 'foogallery'),
 						'type'    => 'colorpicker',
 						'default' => 'rgb(255, 255, 255)'
 					),
 					array(
 						'id'      => 'caption_title',
-						'title'   => __('Caption Title', 'foogallery-cube-gallery'),
+						'title'   => __('Caption Title', 'foogallery'),
 						'section' => __( 'Caption Settings', 'foogallery' ),
-						'desc'    => __('Leave blank if you do not want a caption title.', 'foogallery-cube-gallery'),
+						'desc'    => __('Leave blank if you do not want a caption title.', 'foogallery'),
 						'type'    => 'text'
 					),
 					array(
 						'id'      => 'caption_description',
-						'title'   => __('Caption Description', 'foogallery-cube-gallery'),
+						'title'   => __('Caption Description', 'foogallery'),
 						'section' => __( 'Caption Settings', 'foogallery' ),
-						'desc'    => __('Leave blank if you do not want a caption description.', 'foogallery-cube-gallery'),
+						'desc'    => __('Leave blank if you do not want a caption description.', 'foogallery'),
 						'type'    => 'textarea'
 					),
 					array(
