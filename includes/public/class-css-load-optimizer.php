@@ -53,6 +53,7 @@ if (!class_exists('class-css-load-optimizer.php')) {
                 $css = get_post_meta($post_id, FOOGALLERY_META_POST_USAGE_CSS);
 
                 foreach ($css as $css_item) {
+                    if (!$css_item) continue;
                     foreach ($css_item as $handle => $style) {
                         //only enqueue the stylesheet once
                         if ( !array_key_exists( $handle, $enqueued_foogallery_styles ) ) {
