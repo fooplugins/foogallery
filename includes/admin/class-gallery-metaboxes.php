@@ -531,8 +531,9 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 
 				//loop through all images, get the full sized file
 				foreach ( $foogallery->attachments() as $attachment ) {
+					$meta_data = wp_get_attachment_metadata( $attachment->ID );
 
-					$file = wp_get_attachment_metadata( $attachment->ID )['file'];
+					$file = $meta_data['file'];
 
 					wpthumb_delete_cache_for_file( $file );
 				}
