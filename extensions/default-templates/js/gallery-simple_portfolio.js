@@ -19,7 +19,8 @@ function FooGallery_Simple_Portfolio_Ready(func) {
 
 FooGallery_Simple_Portfolio_Ready(function () {
 	jQuery('.foogallery-simple_portfolio').each(function() {
-		var gutterValue = jQuery(this).data('brickfolio-gutter') || 40;
+		var gutterValue = jQuery(this).data('brickfolio-gutter');
+		if (isNaN(gutterValue)) gutterValue = 40;
 		jQuery(this).brickfolio( { imageSelector : "img.bf-img:first", gutter : gutterValue} );
 	});
 });
