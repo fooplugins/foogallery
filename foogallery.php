@@ -85,9 +85,7 @@ if ( ! class_exists( 'FooGallery_Plugin' ) ) {
 
 			new FooGallery_Thumbnails();
 
-			if ( class_exists( 'Polylang' ) ) {
-				new FooGallery_Polylang_Compatibility();
-			}
+			new FooGallery_Polylang_Compatibility();
 		}
 
 		/**

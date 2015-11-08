@@ -9,11 +9,17 @@ if ( ! class_exists( 'FooGallery_Polylang_Compatibility' ) ) {
 	class FooGallery_Polylang_Compatibility {
 
 		function __construct() {
-			add_filter('pll_get_post_types', array( $this, 'add_foogallery_cpt' ), 10, 2 );
-			add_filter('pll_copy_post_metas', array( $this, 'ignore_foogallery_meta' ), 10, 2 );
 
-			//whitelist the Polylang metabox
-			add_filter('foogallery_metabox_sanity_foogallery', array( $this, 'add_pll_metaboxes' ) );
+			if ( class_exists( 'Polylang' ) ) {
+
+				add_filter( 'pll_get_post_types', array( $this, 'add_foogallery_cpt' ), 10, 2 );
+				add_filter( 'pll_copy_post_metas', array( $this, 'ignore_foogallery_meta' ), 10, 2 );
+
+				//whitelist the Polylang metabox
+				add_filter( 'foogallery_metabox_sanity_foogallery', array( $this, 'add_pll_metaboxes' ) );
+
+				add_action('admin_notices', array($this, 'admin_notice'));
+			}
 		}
 
 
