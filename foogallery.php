@@ -84,6 +84,8 @@ if ( ! class_exists( 'FooGallery_Plugin' ) ) {
 			}
 
 			new FooGallery_Thumbnails();
+
+			new FooGallery_Polylang_Compatibility();
 		}
 
 		/**
