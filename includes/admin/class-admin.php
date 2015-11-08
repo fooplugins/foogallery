@@ -15,7 +15,7 @@ if ( ! class_exists( 'FooGallery_Admin' ) ) {
 		 */
 		function __construct() {
 			add_action( 'init', array( $this, 'init' ) );
-
+			new FooGallery_Admin_Settings_Image_Optimization();
 			new FooGallery_Admin_Settings();
 			new FooGallery_Admin_Menu();
 			new FooGallery_Admin_Gallery_Editor();

@@ -39,3 +39,27 @@ jQuery(document).ready(function($) {
 
     $.admin_tabs.init();
 });
+
+//
+(function(FOOGALLERY, $, undefined) {
+
+    FOOGALLERY.loadImageOptimizationContent = function() {
+        var data = 'action=foogallery_get_image_optimization_info' +
+            '&_wpnonce=' + $('#foogallery_setting_image_optimization-nonce').val() +
+            '&_wp_http_referer=' + encodeURIComponent($('input[name="_wp_http_referer"]').val());
+
+        $.ajax({
+            type: "POST",
+            url: ajaxurl,
+            data: data,
+            success: function(data) {
+                $('#foogallery_settings_image_optimization_container').replaceWith(data);
+            }
+        });
+    };
+
+    $(function() { //wait for ready
+        FOOGALLERY.loadImageOptimizationContent();
+    });
+
+}(window.FOOGALLERY = window.FOOGALLERY || {}, jQuery));
