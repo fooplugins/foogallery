@@ -91,12 +91,12 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 		        'tab'     => 'extensions',
 	        );
 
-			//region Thumbnail Tab
-			$tabs['thumb'] = __( 'Thumbnails', 'foogallery' );
+			//region Images Tab
+			$tabs['thumb'] = __( 'Images', 'foogallery' );
 
 			$settings[] = array(
 				'id'      => 'thumb_jpeg_quality',
-				'title'   => __( 'JPEG Quality', 'foogallery' ),
+				'title'   => __( 'Thumbnail JPEG Quality', 'foogallery' ),
 				'desc'    => __( 'The image quality to be used when resizing JPEG images.', 'foogallery' ),
 				'type'    => 'text',
 				'default' => '80',
@@ -108,7 +108,7 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 				'title'   => __( 'Resize Animated GIFs', 'foogallery' ),
 				'desc'    => __( 'Should animated gifs be resized or not. If enabled, only the first frame is used in the resize.', 'foogallery' ),
 				'type'    => 'checkbox',
-				'tab'     => 'thumb',
+				'tab'     => 'thumb'
 			);
 
 			//endregion Thumbnail Tab
