@@ -30,6 +30,7 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 				'type'    => 'select',
 				'choices' => $gallery_templates_choices,
 				'tab'     => 'general',
+				'section' => __( 'Gallery Defaults', 'foogallery' )
 			);
 
 			$settings[] = array(
@@ -40,14 +41,7 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 				'type'    => 'select',
 				'choices' => foogallery_sorting_options(),
 				'tab'     => 'general',
-			);
-
-			$settings[] = array(
-				'id'      => 'hide_gallery_template_help',
-				'title'   => __( 'Hide Gallery Template Help', 'foogallery' ),
-				'desc'    => __( 'Some gallery templates show helpful tips, which are useful for new users. You can choose to hide these tips.', 'foogallery' ),
-				'type'    => 'checkbox',
-				'tab'     => 'general',
+				'section' => __( 'Gallery Defaults', 'foogallery' )
 			);
 
 			$galleries = foogallery_get_all_galleries();
@@ -63,7 +57,27 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 				'type'    => 'select',
 				'choices' => $gallery_choices,
 				'tab'     => 'general',
+				'section' => __( 'Gallery Defaults', 'foogallery' )
 			);
+
+			$settings[] = array(
+				'id'      => 'hide_gallery_template_help',
+				'title'   => __( 'Hide Gallery Template Help', 'foogallery' ),
+				'desc'    => __( 'Some gallery templates show helpful tips, which are useful for new users. You can choose to hide these tips.', 'foogallery' ),
+				'type'    => 'checkbox',
+				'tab'     => 'general',
+				'section' => __( 'Admin', 'foogallery' )
+			);
+
+			$settings[] = array(
+				'id'      => 'hide_editor_button',
+				'title'   => __( 'Hide WYSIWYG Editor Button', 'foogallery' ),
+				'desc'    => sprintf( __( 'If enabled, this will hide the "Add %s" button in the WYSIWYG editor.', 'foogallery' ), foogallery_plugin_name() ),
+				'type'    => 'checkbox',
+				'tab'     => 'general',
+				'section' => __( 'Admin', 'foogallery' )
+			);
+
 			//endregion General
 
 	        //region Extensions Tab
