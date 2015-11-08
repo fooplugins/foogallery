@@ -58,8 +58,39 @@ jQuery(document).ready(function($) {
         });
     };
 
+    FOOGALLERY.bindClearCssOptimizationButton = function() {
+        $('.foogallery_clear_css_optimizations').click(function(e) {
+            e.preventDefault();
+
+
+
+            var $button = $(this),
+                $spinner = $('#foogallery_clear_css_cache_spinner'),
+                data = 'action=foogallery_clear_css_optimizations' +
+                '&_wpnonce=' + $button.data('nonce') +
+                '&_wp_http_referer=' + encodeURIComponent($('input[name="_wp_http_referer"]').val());
+
+            $spinner.addClass('is-active');
+            $button.prop('disabled', true);
+
+            $.ajax({
+                type: "POST",
+                url: ajaxurl,
+                data: data,
+                success: function(data) {
+                    alert(data);
+                },
+                complete: function() {
+                    $spinner.removeClass('is-active');
+                    $button.prop('disabled', false);
+                }
+            });
+        });
+    };
+
     $(function() { //wait for ready
         FOOGALLERY.loadImageOptimizationContent();
+        FOOGALLERY.bindClearCssOptimizationButton();
     });
 
 }(window.FOOGALLERY = window.FOOGALLERY || {}, jQuery));

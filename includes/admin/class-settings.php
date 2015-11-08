@@ -9,6 +9,10 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 
 		function __construct() {
 			add_filter( 'foogallery_admin_settings', array( $this, 'create_settings' ), 10, 2 );
+			add_action( 'foogallery_admin_settings_custom_type_render_setting', array( $this, 'render_custom_setting_types' ) );
+
+			// Ajax calls for clearing CSS optimization cache
+			add_action( 'wp_ajax_foogallery_clear_css_optimizations', array( $this, 'ajax_clear_css_optimizations' ) );
 		}
 
 		function create_settings() {
@@ -90,6 +94,7 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 		        'type'    => 'checkbox',
 		        'tab'     => 'extensions',
 	        );
+			//endregion Extensions Tab
 
 			//region Images Tab
 			$tabs['thumb'] = __( 'Images', 'foogallery' );
@@ -100,6 +105,14 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 				'desc'    => __( 'The image quality to be used when resizing JPEG images.', 'foogallery' ),
 				'type'    => 'text',
 				'default' => '80',
+				'tab'     => 'thumb'
+			);
+
+			$settings[] = array(
+				'id'      => 'clear_css_optimizations',
+				'title'   => __( 'Clear CSS Cache', 'foogallery' ),
+				'desc'    => sprintf( __( '%s optimizes the way it loads gallery stylesheets to improve page performance. This can lead to the incorrect CSS being loaded in some cases. Use this button to clear all the CSS optimizations that have been cached across all galleries.', 'foogallery' ), foogallery_plugin_name() ),
+				'type'    => 'clear_optimization_button',
 				'tab'     => 'thumb'
 			);
 
@@ -163,12 +176,35 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 				'default' => __( '%s images', 'foogallery' ),
 				'tab'     => 'language'
 			);
+			//endregion Language Tab
 
 			return apply_filters( 'foogallery_admin_settings_override', array(
 				'tabs'     => $tabs,
 				'sections' => array(),
 				'settings' => $settings,
 			) );
+		}
+
+		/**
+		 * Render any custom setting types to the settings page
+		 */
+		function render_custom_setting_types( $args ) {
+			if ( 'clear_optimization_button' === $args['type'] ) { ?>
+				<input type="button" data-nonce="<?php echo esc_attr( wp_create_nonce( 'foogallery_clear_css_optimizations' ) ); ?>" class="button-primary foogallery_clear_css_optimizations" value="<?php _e( 'Clear CSS Optimization Cache', 'foogallery' ); ?>">
+				<span id="foogallery_clear_css_cache_spinner" style="position: absolute" class="spinner"></span>
+			<?php }
+		}
+
+		/**
+		 * AJAX endpoint for clearing all CSS optimizations
+		 */
+		function ajax_clear_css_optimizations() {
+			if ( check_admin_referer( 'foogallery_clear_css_optimizations' ) ) {
+				foogallery_clear_all_css_load_optimizations();
+
+				_e('The CSS optimization cache was successfully cleared!', 'foogallery' );
+				die();
+			}
 		}
 	}
 }
