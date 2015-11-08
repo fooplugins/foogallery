@@ -24,6 +24,10 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Editor' ) ) {
 			add_action( 'wp_ajax_foogallery_tinymce_load_info', array( $this, 'ajax_get_gallery_info' ) );
 		}
 
+		private function should_hide_editor_button() {
+			return 'on' == foogallery_get_setting( 'hide_editor_button' );
+		}
+
 		/**
 		 * Adds a gallery insert button into the editor
 		 *
@@ -32,6 +36,10 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Editor' ) ) {
 		 * @return string $buttons    the amended media buttons
 		 */
 		public function add_media_button( $buttons ) {
+
+			if ( $this->should_hide_editor_button() ) {
+				return $buttons;
+			}
 
 			//render the gallery modal
 			add_action( 'admin_footer', array( $this, 'render_gallery_modal' ) );
@@ -50,6 +58,12 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Editor' ) ) {
 		 * Adds our custom plugin to the tinyMCE editor
 		 */
 		public function add_tinymce_plugin() {
+
+			// get out if we do not want to add the button
+			if ( $this->should_hide_editor_button() ) {
+				return;
+			}
+
 			// check user permissions
 			if ( ! current_user_can( 'edit_posts' ) && ! current_user_can( 'edit_pages' ) ) {
 				return;
