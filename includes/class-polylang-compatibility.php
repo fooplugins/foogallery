@@ -73,5 +73,27 @@ if ( ! class_exists( 'FooGallery_Polylang_Compatibility' ) ) {
 
 			return $metas;
 		}
+
+		/**
+		 * Add an admin notice to FooGallery pages when Polylang setting media_support is set
+		 */
+		function admin_notice() {
+			if ( FOOGALLERY_CPT_GALLERY === foo_current_screen_post_type() ) {
+
+				$options = get_option('polylang');
+
+				if ( array_key_exists( 'media_support', $options ) && 1 === $options['media_support'] ) {
+					?>
+					<div class="notice error">
+						<p>
+							<strong><?php _e( 'FooGallery + Polylang Alert : ', 'foogallery' ); ?></strong>
+							<?php _e( 'We noticed that you have Polylang installed and you have chosen to activate languages and translations for media.', 'foogallery' ); ?><br />
+							<?php _e( 'This may cause empty galleries on translated pages! To disable this feature, please visit Settings -> Languages -> Settings Tab.', 'foogallery' ); ?>
+						</p>
+					</div>
+					<?php
+				}
+			}
+		}
 	}
 }
