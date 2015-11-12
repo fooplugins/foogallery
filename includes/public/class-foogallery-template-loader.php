@@ -34,6 +34,12 @@ class FooGallery_Template_Loader {
 			_e( 'The gallery was not found!', 'foogallery' );
 		} else {
 
+			//check if the gallery is password protected
+			if ( post_password_required( $current_foogallery->_post ) ) {
+				echo get_the_password_form( $current_foogallery->_post );
+				return;
+			}
+
 			//find the gallery template we will use to render the gallery
 			$current_foogallery_template = $this->get_arg( $args, 'template', $current_foogallery->gallery_template );
 
