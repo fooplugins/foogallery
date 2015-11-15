@@ -483,3 +483,8 @@ function foogallery_get_galleries_attached_to_post( $post_id ) {
 function foogallery_clear_all_css_load_optimizations() {
 	delete_post_meta_by_key( FOOGALLERY_META_POST_USAGE_CSS );
 }
+
+function foogallery_perform_version_check() {
+	$checker = new FooGallery_Version_Check();
+	$checker->perform_check();
+}

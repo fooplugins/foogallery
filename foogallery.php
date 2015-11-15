@@ -86,6 +86,9 @@ if ( ! class_exists( 'FooGallery_Plugin' ) ) {
 			new FooGallery_Thumbnails();
 
 			new FooGallery_Polylang_Compatibility();
+
+			$checker = new FooGallery_Version_Check();
+			$checker->wire_up_checker();
 		}
 
 		/**
@@ -163,8 +166,8 @@ if ( ! class_exists( 'FooGallery_Plugin' ) ) {
 				set_transient( FOOGALLERY_ACTIVATION_REDIRECT_TRANSIENT_KEY, true, 30 );
 			}
 
-			//we need to clear the foogallery css load optimizations when we update the plugin, to ensure the latest CSS files are loaded
-			foogallery_clear_all_css_load_optimizations();
+			//force a version check on activation to make sure housekeeping is performed
+			foogallery_perform_version_check();
 		}
 
 		/**
