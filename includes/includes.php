@@ -30,6 +30,8 @@ require_once( FOOGALLERY_PATH . 'includes/public/class-foogallery-template-loade
 //Polylang Compatibility
 require_once( FOOGALLERY_PATH . 'includes/class-polylang-compatibility.php' );
 
+require_once( FOOGALLERY_PATH . 'includes/class-version-check.php' );
+
 if ( is_admin() ) {
 
 	//only admin
