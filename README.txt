@@ -123,6 +123,14 @@ Update now to support FooVideo and many other improvements!
 
 == Changelog ==
 
+= 1.2.8 =
+* Works now with Polylang translation plugin
+* CSS Updates & enhancements to all gallery templates
+* Password protected galleries now work as expected
+* Ability to hide WYSIWYG editor button
+* Updated WPThumb
+* Multiple bug fixes and improvements
+
 = 1.2.7 =
 * Bug fixes for 1.2.6 release
 * Added 2 new settings to Justified Gallery template (maxRowHeight + Caption Source)
