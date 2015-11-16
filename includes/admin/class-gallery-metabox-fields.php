@@ -191,7 +191,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Fields' ) ) {
 					case 'lightbox':
 						$field['lightbox'] = true;
 						$lightboxes = $this->get_lightbox_field_choices();
-						if ( 0 === count( $lightboxes ) ) {
+						if ( 1 === count( $lightboxes ) && array_key_exists( 'none', $lightboxes ) ) {
 							$field['type'] = 'html';
 							$field['desc'] = '<strong>' . __( 'You have no lightbox extensions activated!', 'foogallery' ) . '</strong><br />';
 							$api = new FooGallery_Extensions_API();
