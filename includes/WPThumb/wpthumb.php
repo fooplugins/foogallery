@@ -329,12 +329,12 @@ class WP_Thumb {
 		if ( strpos( $this->getFilePath(), $upload_dir['basedir'] ) === 0 ) :
 
 			$subdir = dirname( str_replace( $upload_dir['basedir'], '', $this->getFilePath() ) );
-			$new_dir = $upload_dir['basedir'] . '/cache' . $subdir . '/' . $filename_nice;
+			$new_dir = $upload_dir['basedir'] . '/cache' . trailingslashit( $subdir ) . $filename_nice;
 
 		elseif ( strpos( $this->getFilePath(), WP_CONTENT_DIR ) === 0 ) :
 
 			$subdir = dirname( str_replace( WP_CONTENT_DIR, '', $this->getFilePath() ) );
-			$new_dir = $upload_dir['basedir'] . '/cache' . $subdir . '/' . $filename_nice;
+			$new_dir = $upload_dir['basedir'] . '/cache' . trailingslashit( $subdir ) . $filename_nice;
 
 		elseif ( strpos( $this->getFilePath(), self::get_home_path() ) === 0 ) :
 			$new_dir = $upload_dir['basedir'] . '/cache/local';
@@ -435,9 +435,12 @@ class WP_Thumb {
 
 		endif;
 
+		// Apply JPEG quality settings args
+		$editor->set_quality( $this->args['jpeg_quality'] );
+
 		apply_filters( 'wpthumb_image_pre', $editor, $this->args );
 
-		extract( $this->args );
+		if (is_array($this->args)) extract( $this->args );
 
 		// Cropping
 		if ( $crop && $crop_from_position && $crop_from_position !== array( 'center', 'center' ) ) :
@@ -631,14 +634,16 @@ function wpthumb_post_image( $null, $id, $args ) {
 	// native looks like 'thumbnail'
 	if ( is_string( $args ) && ! strpos( (string) $args, '=' ) ) {
 
-		// if there are no "special" wpthumb args, then we shouldn't bother creating a WP Thumb, just use the WordPress one
-		if ( $args === ( $args = apply_filters( 'wpthumb_create_args_from_size', $args ) ) )
+		$original_args = $args;
+
+		if ( $original_args === ( $args = apply_filters( 'wpthumb_create_args_from_size', $args ) ) ) {
 			return $null;
+		}
 	}
 
 	$args = wp_parse_args( $args );
 
-	if ( empty( $args[0] ) )
+	if ( ! empty( $args[0] ) )
 		$args['width'] = $args[0];
 
 	if ( ! empty( $args[1] ) )
@@ -699,7 +704,7 @@ function wpthumb_delete_cache_for_file( $file ) {
 
 	$upload_dir = wp_upload_dir();
 
-	$wpthumb = new WP_Thumb( $upload_dir['basedir'] . $file );
+	$wpthumb = new WP_Thumb( trailingslashit( $upload_dir['basedir'] ) . $file );
 
 	wpthumb_rmdir_recursive( $wpthumb->getCacheFileDirectory() );
 
@@ -767,10 +772,43 @@ function wpthumb_add_image_editors( $editors ) {
 
 	require_once( WP_THUMB_PATH . '/wpthumb.image-editor.php' );
 
-	$editors[] = 'WP_Thumb_Image_Editor_GD';
-	$editors[] = 'WP_Thumb_Image_Editor_Imagick';
+	$wpthumb_editors = array(
+		'WP_Thumb_Image_Editor_Imagick',
+		'WP_Thumb_Image_Editor_GD'
+	);
 
-	return $editors;
+	return array_unique( array_merge( $wpthumb_editors, $editors ) );
 }
 
 add_filter( 'wp_image_editors', 'wpthumb_add_image_editors' );
+
+function wpthumb_create_args_from_size( $args = '' ) {
+
+	$new_args = array();
+
+	if ( 'thumbnail' === $args ) {
+		$new_args = array(
+			'width'  => get_option( 'thumbnail_size_w' ),
+			'height' => get_option( 'thumbnail_size_h' ),
+			'crop'   => get_option( 'thumbnail_crop' ),
+		);
+	} elseif ( 'medium' === $args ) {
+		$new_args = array(
+			'width'  => get_option( 'medium_size_w' ),
+			'height' => get_option( 'medium_size_h' ),
+		);
+	} elseif ( 'large' === $args ) {
+		$new_args = array(
+			'width'  => get_option( 'large_size_w' ),
+			'height' => get_option( 'large_size_h' ),
+		);
+	}
+
+	if ( ! empty( $new_args ) && ! empty( $new_args['width'] ) && ! empty( $new_args['height'] ) ) {
+		return $new_args;
+	}
+
+	return $args;
+}
+
+add_filter( 'wpthumb_create_args_from_size', 'wpthumb_create_args_from_size' );

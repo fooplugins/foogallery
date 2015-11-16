@@ -40,6 +40,7 @@
 
 .foogallery-simple_portfolio .bf-item a {
 	display: inline-block;
+	line-height: 0;
 }
 
 /* force no borders */

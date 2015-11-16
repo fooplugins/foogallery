@@ -94,3 +94,9 @@
 .foogallery-album-gallery-list.alignment-right {
 	text-align: right;
 }
+
+/* force no borders */
+.foogallery-album-gallery-list .foogallery-pile a,
+.foogallery-album-gallery-list .foogallery-pile a:hover {
+	border: none !important;
+}

@@ -2,7 +2,9 @@
 if ( ! class_exists( 'FooGallery_Default_Templates_Extension' ) ) {
 
 	define( 'FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_URL', plugin_dir_url( __FILE__ ) );
-	require_once( 'functions.php' );
+	define( 'FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_PATH', plugin_dir_path( __FILE__ ) );
+
+	require_once( FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_PATH . 'functions.php' );
 
 	class FooGallery_Default_Templates_Extension {
 
@@ -242,6 +244,16 @@ if ( ! class_exists( 'FooGallery_Default_Templates_Extension' ) ) {
 						'desc'    => __( 'Choose which lightbox you want to display images with. The lightbox will only work if you set the thumbnail link to "Full Size Image".', 'foogallery' ),
 						'type'    => 'lightbox',
 					),
+					array(
+						'id'      => 'gutter',
+						'title'   => __( 'Gutter', 'foogallery' ),
+						'desc'    => __( 'The spacing between each thumbnail in the gallery.', 'foogallery' ),
+						'type'    => 'number',
+						'class'   => 'small-text',
+						'default' => 40,
+						'step'    => '1',
+						'min'     => '0',
+					)
 				),
 			);
 
@@ -257,9 +269,19 @@ if ( ! class_exists( 'FooGallery_Default_Templates_Extension' ) ) {
 						'desc'	  => __( 'The Justified Gallery template uses the popular <a href="http://miromannino.com/projects/justified-gallery/" target="_blank">Justified Gallery jQuery Plugin</a> under the hood. You can specify thumbnail captions by setting the alt text for your attachments.', 'foogallery' ),
 					),
 					array(
+						'id'      => 'thumb_height',
+						'title'   => __( 'Thumb Height', 'foogallery' ),
+						'desc'    => __( 'Choose the height of your thumbnails. Thumbnails will be generated on the fly and cached once generated.', 'foogallery' ),
+						'type'    => 'number',
+						'class'   => 'small-text',
+						'default' => 250,
+						'step'    => '10',
+						'min'     => '0',
+					),
+					array(
 						'id'      => 'row_height',
 						'title'   => __( 'Row Height', 'foogallery' ),
-						'desc'    => __( 'Choose the height of your thumbnails. Thumbnails will be generated on the fly and cached once generated.', 'foogallery' ),
+						'desc'    => __( 'The preferred height of your gallery rows. This can be different from the thumbnail height.', 'foogallery' ),
 						'type'    => 'number',
 						'class'   => 'small-text',
 						'default' => 150,
@@ -385,33 +407,33 @@ if ( ! class_exists( 'FooGallery_Default_Templates_Extension' ) ) {
 					),
 					array(
 						'id'      => 'caption_bgcolor',
-						'title'   => __('Caption Background Color', 'foogallery-cube-gallery'),
+						'title'   => __('Caption Background Color', 'foogallery'),
 						'section' => __( 'Caption Settings', 'foogallery' ),
-						'desc'    => __('The color of the caption background.', 'foogallery-cube-gallery'),
+						'desc'    => __('The color of the caption background.', 'foogallery'),
 						'type'    => 'colorpicker',
 						'default' => 'rgba(0, 0, 0, 0.8)',
 						'opacity' => true
 					),
 					array(
 						'id'      => 'caption_color',
-						'title'   => __('Caption Text Color', 'foogallery-cube-gallery'),
+						'title'   => __('Caption Text Color', 'foogallery'),
 						'section' => __( 'Caption Settings', 'foogallery' ),
-						'desc'    => __('The color of the caption text.', 'foogallery-cube-gallery'),
+						'desc'    => __('The color of the caption text.', 'foogallery'),
 						'type'    => 'colorpicker',
 						'default' => 'rgb(255, 255, 255)'
 					),
 					array(
 						'id'      => 'caption_title',
-						'title'   => __('Caption Title', 'foogallery-cube-gallery'),
+						'title'   => __('Caption Title', 'foogallery'),
 						'section' => __( 'Caption Settings', 'foogallery' ),
-						'desc'    => __('Leave blank if you do not want a caption title.', 'foogallery-cube-gallery'),
+						'desc'    => __('Leave blank if you do not want a caption title.', 'foogallery'),
 						'type'    => 'text'
 					),
 					array(
 						'id'      => 'caption_description',
-						'title'   => __('Caption Description', 'foogallery-cube-gallery'),
+						'title'   => __('Caption Description', 'foogallery'),
 						'section' => __( 'Caption Settings', 'foogallery' ),
-						'desc'    => __('Leave blank if you do not want a caption description.', 'foogallery-cube-gallery'),
+						'desc'    => __('Leave blank if you do not want a caption description.', 'foogallery'),
 						'type'    => 'textarea'
 					),
 					array(

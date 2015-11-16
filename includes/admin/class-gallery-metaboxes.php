@@ -28,6 +28,9 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 
 			// Ajax calls for creating a page for the gallery
 			add_action( 'wp_ajax_foogallery_create_gallery_page', array( $this, 'ajax_create_gallery_page' ) );
+
+			// Ajax call for clearing thumb cache for the gallery
+			add_action( 'wp_ajax_foogallery_clear_gallery_thumb_cache', array( $this, 'ajax_clear_gallery_thumb_cache' ) );
 		}
 
 		public function whitelist_metaboxes() {
@@ -43,7 +46,8 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 							'foogallery_help',
 							'foogallery_pages',
 							'foogallery_customcss',
-							'foogallery_sorting'
+							'foogallery_sorting',
+							'foogallery_thumb_cache'
 						) ),
 					'contexts'   => array( 'normal', 'advanced', 'side', ),
 					'priorities' => array( 'high', 'core', 'default', 'low', ),
@@ -104,6 +108,15 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 				'foogallery_sorting',
 				__( 'Gallery Sorting', 'foogallery' ),
 				array( $this, 'render_sorting_metabox' ),
+				FOOGALLERY_CPT_GALLERY,
+				'side',
+				'default'
+			);
+
+			add_meta_box(
+				'foogallery_thumb_cache',
+				__( 'Thumbnail Cache', 'foogallery' ),
+				array( $this, 'render_thumb_cache_metabox' ),
 				FOOGALLERY_CPT_GALLERY,
 				'side',
 				'default'
@@ -432,6 +445,19 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 			}
 		}
 
+		public function render_thumb_cache_metabox( $post ) {
+			?>
+			<p>
+				<?php _e( 'Clear all the previously cached thumbnails that have been generated for this gallery.', 'foogallery' ); ?>
+			</p>
+			<div class="foogallery_metabox_actions">
+				<button class="button button-primary button-large" id="foogallery_clear_thumb_cache"><?php _e( 'Clear Thumbnail Cache', 'foogallery' ); ?></button>
+				<span id="foogallery_clear_thumb_cache_spinner" class="spinner"></span>
+				<?php wp_nonce_field( 'foogallery_clear_gallery_thumb_cache', 'foogallery_clear_gallery_thumb_cache_nonce', false ); ?>
+			</div>
+			<?php
+		}
+
 		public function include_required_scripts() {
 			$screen_id = foo_current_screen_id();
 
@@ -491,6 +517,32 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 
 				wp_insert_post( $post );
 			}
+			die();
+		}
+
+		public function ajax_clear_gallery_thumb_cache() {
+			if ( check_admin_referer( 'foogallery_clear_gallery_thumb_cache', 'foogallery_clear_gallery_thumb_cache_nonce' ) ) {
+
+				$foogallery_id = $_POST['foogallery_id'];
+
+				$foogallery = FooGallery::get_by_id( $foogallery_id );
+
+				ob_start();
+
+				//loop through all images, get the full sized file
+				foreach ( $foogallery->attachments() as $attachment ) {
+					$meta_data = wp_get_attachment_metadata( $attachment->ID );
+
+					$file = $meta_data['file'];
+
+					wpthumb_delete_cache_for_file( $file );
+				}
+
+				ob_end_clean();
+
+				echo __( 'The thumbnail cache has been cleared!', 'foogallery' );
+			}
+
 			die();
 		}
 	}

@@ -27,12 +27,18 @@ require_once( FOOGALLERY_PATH . 'extensions/media-categories/class-media-categor
 //load Template Loader files
 require_once( FOOGALLERY_PATH . 'includes/public/class-foogallery-template-loader.php' );
 
+//Polylang Compatibility
+require_once( FOOGALLERY_PATH . 'includes/class-polylang-compatibility.php' );
+
+require_once( FOOGALLERY_PATH . 'includes/class-version-check.php' );
+
 if ( is_admin() ) {
 
 	//only admin
 	require_once( FOOGALLERY_PATH . 'includes/admin/class-admin.php' );
 	require_once( FOOGALLERY_PATH . 'includes/admin/class-extensions.php' );
 	require_once( FOOGALLERY_PATH . 'includes/admin/class-settings.php' );
+	require_once( FOOGALLERY_PATH . 'includes/admin/class-settings-image-optimization.php' );
 	require_once( FOOGALLERY_PATH . 'includes/admin/class-gallery-editor.php' );
 	require_once( FOOGALLERY_PATH . 'includes/admin/class-gallery-metaboxes.php' );
 	require_once( FOOGALLERY_PATH . 'includes/admin/class-gallery-metabox-fields.php' );

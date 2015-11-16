@@ -298,14 +298,20 @@ class FooGallery extends stdClass {
 		return '';
 	}
 
-	public function image_count($no_images_text = false, $singular_text = false, $plural_text = false) {
+	public function image_count() {
+		$no_images_text = foogallery_get_setting( 'language_images_count_none_text',   __( 'No images', 'foogallery' ) );
+		$singular_text  = foogallery_get_setting( 'language_images_count_single_text', __( '1 image', 'foogallery' ) );
+		$plural_text    = foogallery_get_setting( 'language_images_count_plural_text', __( '%s images', 'foogallery' ) );
+
 		$count = sizeof( $this->attachment_ids );
 
 		switch ( $count ) {
 			case 0:
 				$count_text = $no_images_text === false ? __( 'No images', 'foogallery' ) : $no_images_text;
+				break;
 			case 1:
 				$count_text = $singular_text === false ? __( '1 image', 'foogallery' ) : $singular_text;
+				break;
 			default:
 				$count_text = sprintf( $plural_text === false ?  __( '%s images', 'foogallery' ) : $plural_text, $count );
 		}

@@ -63,12 +63,18 @@ function foogallery_permalink() {
 }
 
 /**
- * @param string $key
+ * Return the FooGallery saved setting, or a default value
+ *
+ * @param string $key The key for the setting
+ *
+ * @param bool $default The default if no value is saved or found
+ *
+ * @return mixed
  */
-function foogallery_get_setting( $key ) {
+function foogallery_get_setting( $key, $default = false ) {
 	$foogallery = FooGallery_Plugin::get_instance();
 
-	return $foogallery->options()->get( $key, foogallery_get_default( $key ) );
+	return $foogallery->options()->get( $key, foogallery_get_default( $key, $default ) );
 }
 
 /**
@@ -96,9 +102,11 @@ function foogallery_gallery_shortcode_tag() {
  *
  * @param string $key The default config key to retrieve.
  *
- * @return string       Key value on success, false on failure.
+ * @param bool $default The default if no default is set or found
+ *
+ * @return string Key value on success, false on failure.
  */
-function foogallery_get_default( $key ) {
+function foogallery_get_default( $key, $default = false ) {
 
 	$defaults = array(
 		'gallery_template'           => 'default',
@@ -114,7 +122,7 @@ function foogallery_get_default( $key ) {
 	$defaults = apply_filters( 'foogallery_defaults', $defaults );
 
 	// Return the key specified.
-	return isset($defaults[ $key ]) ? $defaults[ $key ] : false;
+	return isset($defaults[ $key ]) ? $defaults[ $key ] : $default;
 }
 
 /**
@@ -467,4 +475,16 @@ function foogallery_get_galleries_attached_to_post( $post_id ) {
 	}
 
 	return array();
+}
+
+/**
+ * Clears all css load optimization post meta
+ */
+function foogallery_clear_all_css_load_optimizations() {
+	delete_post_meta_by_key( FOOGALLERY_META_POST_USAGE_CSS );
+}
+
+function foogallery_perform_version_check() {
+	$checker = new FooGallery_Version_Check();
+	$checker->perform_check();
 }

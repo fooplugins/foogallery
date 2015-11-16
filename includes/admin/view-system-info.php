@@ -60,7 +60,7 @@ if ( current_user_can( 'activate_plugins' ) ) {
 		__( 'FooGallery version', 'foogallery' )      => $info['version'],
 		__( 'WordPress version', 'foogallery' )   => $wp_version,
 		__( 'Activated Theme', 'foogallery' )     => $current_theme['Name'],
-		__( 'WordPress URL', 'foogallery' )       => $info['url'],
+		__( 'WordPress URL', 'foogallery' )       => get_site_url(),
 		__( 'PHP version', 'foogallery' )         => phpversion(),
 		__( 'PHP GD Loaded', 'foogallery' )       => extension_loaded( 'gd' ) && function_exists( 'gd_info' ) ? foogallery_gdversion() : __( 'Not found!', 'foogallery' ),
 		__( 'Extensions Endpoint', 'foogallery' ) => $api->get_extensions_endpoint(),
