@@ -1,0 +1,2535 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: FooGallery\n"
+"POT-Creation-Date: 2015-11-17 16:15+0330\n"
+"PO-Revision-Date: 2015-11-22 16:14+0330\n"
+"Last-Translator: \n"
+"Language-Team: Brad Vincent <brad@fooplugins.com>\n"
+"Language: fa_IR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.8.6\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
+"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
+"_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: extensions/albums/admin/class-columns.php:19
+#: includes/admin/class-columns.php:23
+msgid "Template"
+msgstr "فرم آماده"
+
+#: extensions/albums/admin/class-columns.php:20
+#: extensions/nextgen-importer/view-importer.php:188
+#: includes/class-posttypes.php:26 includes/class-posttypes.php:37
+msgid "Galleries"
+msgstr "گالری ها"
+
+#: extensions/albums/admin/class-columns.php:21
+#: includes/admin/class-columns.php:25
+msgid "Shortcode"
+msgstr "کد کوتاه"
+
+#: extensions/albums/admin/class-columns.php:62
+#: extensions/albums/admin/class-metaboxes.php:216
+#: includes/admin/class-columns.php:76
+#: includes/admin/class-gallery-metaboxes.php:376
+msgid "Shortcode copied to clipboard :)"
+msgstr "کد کوتاه در کلیپ برد شما ذخیره شد"
+
+#: extensions/albums/admin/class-metaboxes.php:48
+msgid "Galleries - drag n drop to reorder!"
+msgstr "گالری ها - مرتب سازی با کشیدن و رها کردن !"
+
+#: extensions/albums/admin/class-metaboxes.php:57
+#: includes/admin/class-admin.php:62 includes/admin/class-menu.php:30
+#: includes/foopluginbase/classes/class-foo-plugin-base.php:296
+msgid "Settings"
+msgstr "تنظیمات"
+
+#: extensions/albums/admin/class-metaboxes.php:66
+#: includes/admin/class-gallery-metaboxes.php:96
+msgid "Custom CSS"
+msgstr "استایل (CSS) سفارشی"
+
+#: extensions/albums/admin/class-metaboxes.php:75
+msgid "Album Shortcode"
+msgstr "کد کوتاه آلبوم"
+
+#: extensions/albums/admin/class-metaboxes.php:84
+msgid "Album Sorting"
+msgstr "مرتب کردن آلبوم ها"
+
+#: extensions/albums/admin/class-metaboxes.php:177
+#: extensions/albums/album-default.php:66
+#: includes/admin/class-gallery-editor.php:344
+#, php-format
+msgid "%s #%s"
+msgstr "%s #%s"
+
+#: extensions/albums/admin/class-metaboxes.php:203
+msgid "Paste the above shortcode into a post or page to show the album."
+msgstr ""
+"این  کد کوتاه را کپی کنید و در فرم  یا پست خود قرار دهید تا آلبوم در آنجا "
+"نشان داده شود."
+
+#: extensions/albums/admin/class-metaboxes.php:230
+msgid ""
+"Change the way galleries are sorted within your album. By default, they are "
+"sorted in the order you see them."
+msgstr ""
+"روشی که گالری ها در آلبوم ذخیره شده اند را عوض کنید. به صورت پیشفرض آن ها به "
+"ترتیبی ذخیره می شوند که شما آن ها را می بینید."
+
+#: extensions/albums/admin/class-metaboxes.php:257
+msgid "Album Template"
+msgstr "نمونه آماده آلبوم"
+
+#: extensions/albums/admin/class-metaboxes.php:269
+msgid ""
+"The album template that will be used when the album is output to the "
+"frontend."
+msgstr "نمونه آماده آلبومی که در خروجی شما استفاده خواهد شد."
+
+#: extensions/albums/admin/class-metaboxes.php:325
+#, php-format
+msgid "Add any custom CSS to target this specific album. For example %s"
+msgstr ""
+"هر نوع استایل سفارشی که می خواهید را در اینجا اضافه کنید که فقط برای این "
+"آلبوم استفاده شود. برای مثال : %s"
+
+#: extensions/albums/class-foogallery-album.php:205
+msgid "No galleries"
+msgstr "گالری موجود نیست"
+
+#: extensions/albums/class-foogallery-album.php:207
+msgid "1 gallery"
+msgstr "یک گالری"
+
+#: extensions/albums/class-foogallery-album.php:209
+#, php-format
+msgid "%s galleries"
+msgstr "%s گالری"
+
+#: extensions/albums/class-posttypes.php:26
+#: extensions/albums/class-posttypes.php:36
+#: extensions/albums/class-posttypes.php:37
+#: extensions/nextgen-importer/view-importer.php:189
+msgid "Albums"
+msgstr "آلبوم ها"
+
+#: extensions/albums/class-posttypes.php:27
+msgid "Album"
+msgstr "آلبوم"
+
+#: extensions/albums/class-posttypes.php:28
+msgid "Add Album"
+msgstr "اضافه کردن آلبوم"
+
+#: extensions/albums/class-posttypes.php:29
+msgid "Add New Album"
+msgstr "اضافه کردن آلبوم جدید"
+
+#: extensions/albums/class-posttypes.php:30
+msgid "Edit Album"
+msgstr "ویرایش آلبوم"
+
+#: extensions/albums/class-posttypes.php:31
+msgid "New Album"
+msgstr "آلبوم جدید"
+
+#: extensions/albums/class-posttypes.php:32
+msgid "View Album"
+msgstr "دیدن آلبوم"
+
+#: extensions/albums/class-posttypes.php:33
+msgid "Search Albums"
+msgstr "جستجو در میان آلبوم ها"
+
+#: extensions/albums/class-posttypes.php:34
+msgid "No Albums found"
+msgstr "آلبومی پیدا نشد"
+
+#: extensions/albums/class-posttypes.php:35
+msgid "No Albums found in Trash"
+msgstr "هیچ آلبومی در سطل آشغال نیست"
+
+#: extensions/albums/class-posttypes.php:68
+#: extensions/albums/class-posttypes.php:71
+msgid "Album updated."
+msgstr "آلبوم به روز شد"
+
+#: extensions/albums/class-posttypes.php:69
+msgid "Album custom field updated."
+msgstr "فیلد سفارشی آلبوم به روز شد"
+
+#: extensions/albums/class-posttypes.php:70
+msgid "Album custom field deleted."
+msgstr "فیلد سفارشی آلبوم پاک شد"
+
+#: extensions/albums/class-posttypes.php:72
+#, php-format
+msgid "Album restored to revision from %s."
+msgstr "آلبوم برای بازبینی از %s بازگردانده شد."
+
+#: extensions/albums/class-posttypes.php:73
+msgid "Album published."
+msgstr "آلبوم منتشر شد"
+
+#: extensions/albums/class-posttypes.php:74
+msgid "Album saved."
+msgstr "آلبوم ذخیره شد"
+
+#: extensions/albums/class-posttypes.php:75
+msgid "Album submitted."
+msgstr "آلبوم ارسال شد"
+
+#: extensions/albums/class-posttypes.php:76
+#, php-format
+msgid "Album scheduled for: <strong>%1$s</strong>."
+msgstr "آلبوم برای <strong>%1$s</strong> زمان بندی شد."
+
+#: extensions/albums/class-posttypes.php:76 includes/class-posttypes.php:77
+msgid "M j, Y @ G:i"
+msgstr "M j, Y @ G:i"
+
+#: extensions/albums/class-posttypes.php:77
+msgid "Album draft updated."
+msgstr "پیش نویس آلبوم ذخیره شد."
+
+#: extensions/albums/class-posttypes.php:97
+#, php-format
+msgid "%s Album updated."
+msgid_plural "%s Albums updated."
+msgstr[0] " آلبوم %s به روز شد."
+
+#: extensions/albums/class-posttypes.php:98
+#, php-format
+msgid "%s Album not updated, somebody is editing it."
+msgid_plural "%s Albums not updated, somebody is editing them."
+msgstr[0] " آلبوم %s قابل بروز رسانی نیست. کسی در حال ویرایش آن است ."
+
+#: extensions/albums/class-posttypes.php:99
+#, php-format
+msgid "%s Album permanently deleted."
+msgid_plural "%s Albums permanently deleted."
+msgstr[0] "آلبوم %s به شکل دائمی پاک شد."
+
+#: extensions/albums/class-posttypes.php:100
+#, php-format
+msgid "%s Album moved to the Trash."
+msgid_plural "%s Albums moved to the Trash."
+msgstr[0] "آلبوم %s به سطل آشغال فرستاده شد."
+
+#: extensions/albums/class-posttypes.php:101
+#, php-format
+msgid "%s Album restored from the Trash."
+msgid_plural "%s Albums restored from the Trash."
+msgstr[0] "آلبوم %s از سطل آشغال بازگردانده شد."
+
+#: extensions/albums/functions.php:31
+msgid "Responsive Album Layout"
+msgstr "شکل ظاهری واکنشگرا برای آلبوم"
+
+#: extensions/albums/functions.php:35 extensions/albums/functions.php:154
+#: extensions/default-templates/class-default-templates-extension.php:222
+msgid "Thumbnail Size"
+msgstr "اندازه تصویر بند انگشتی"
+
+#: extensions/albums/functions.php:36
+msgid "Choose the size of your gallery thumbnails."
+msgstr "اندازه تصاویر بند انگشتی گالری های خود را انتخاب نمایید"
+
+#: extensions/albums/functions.php:37 extensions/albums/functions.php:49
+#: extensions/albums/functions.php:57 extensions/albums/functions.php:65
+#: extensions/albums/functions.php:156 extensions/albums/functions.php:168
+#: extensions/albums/functions.php:181 extensions/albums/functions.php:190
+#: extensions/albums/functions.php:199
+#: extensions/default-templates/class-default-templates-extension.php:34
+#: extensions/default-templates/class-default-templates-extension.php:45
+#: extensions/default-templates/class-default-templates-extension.php:55
+#: extensions/default-templates/class-default-templates-extension.php:71
+#: extensions/default-templates/class-default-templates-extension.php:87
+#: extensions/default-templates/class-default-templates-extension.php:103
+#: extensions/default-templates/class-default-templates-extension.php:340
+#: extensions/default-templates/class-default-templates-extension.php:352
+#: extensions/default-templates/class-default-templates-extension.php:364
+msgid "Thumbnail Settings"
+msgstr "تنظیمات بند انگشتی"
+
+#: extensions/albums/functions.php:47
+msgid "Title Background Color"
+msgstr "رنگ پس زمینه عنوان"
+
+#: extensions/albums/functions.php:48
+msgid "The color of the title that overlays the album thumbnails"
+msgstr "رنگ عنوان که روی تصاویر بند انگشتی می نشیند"
+
+#: extensions/albums/functions.php:55
+msgid "Title Text Color"
+msgstr "رنگ نوشته عنوان"
+
+#: extensions/albums/functions.php:56
+msgid "The color of the title text that overlays the album thumbnails"
+msgstr "رنگ نوشته عنوان که روی تصاویر بند انگشتی می نشیند."
+
+#: extensions/albums/functions.php:63
+#: extensions/default-templates/class-default-templates-extension.php:130
+msgid "Alignment"
+msgstr "چینش"
+
+#: extensions/albums/functions.php:64
+msgid "The horizontal alignment of the gallery thumbnails inside the album."
+msgstr "چینش افقی برای تصاویر بند انگشتی موجود در آلبوم"
+
+#: extensions/albums/functions.php:69
+#: extensions/default-templates/class-default-templates-extension.php:136
+msgid "Left"
+msgstr "چپ"
+
+#: extensions/albums/functions.php:70
+#: extensions/default-templates/class-default-templates-extension.php:137
+msgid "Center"
+msgstr "میانه"
+
+#: extensions/albums/functions.php:71
+#: extensions/default-templates/class-default-templates-extension.php:138
+msgid "Right"
+msgstr "راست"
+
+#: extensions/albums/functions.php:76
+msgid "\"Back To Album\" Text"
+msgstr "متن \"بازگشت به آلبوم\""
+
+#: extensions/albums/functions.php:77
+msgid "The text that is shown at the top of the album when a gallery is shown"
+msgstr ""
+"متنی که در بالای آلبوم و در زمانی که گالری در حال نشان داده شدن است ، نشان "
+"داده خواهد شد."
+
+#: extensions/albums/functions.php:78 extensions/albums/functions.php:86
+#: extensions/albums/functions.php:94 extensions/albums/functions.php:102
+msgid "Language Settings"
+msgstr "تنظیمات زبان"
+
+#: extensions/albums/functions.php:84
+msgid "\"No Images\" Text"
+msgstr "متن \"هیچ تصویری نیست\""
+
+#: extensions/albums/functions.php:85
+msgid ""
+"The text that is shown on the gallery caption when there are no images in "
+"the gallery."
+msgstr "متنی که در گالری ، هنگامی که عکسی موجود نباشد ، نشان داده خواهد شد."
+
+#: extensions/albums/functions.php:92
+msgid "\"1 Image\" Text"
+msgstr "متن \"1 عکس\""
+
+#: extensions/albums/functions.php:93
+msgid ""
+"The text that is shown on the gallery caption when there is a single image "
+"in the gallery."
+msgstr ""
+"متنی که در گالری ، زمانی که تنها یک عکس در آن موجود باشد ، نشان داده می شود."
+
+#: extensions/albums/functions.php:100
+msgid "\"X images\" Text"
+msgstr "متن \" X عدد عکس\" "
+
+#: extensions/albums/functions.php:101
+msgid ""
+"The text that is shown on the gallery caption when there are many images in "
+"the gallery. \"s%\" will be replaced with the actual count."
+msgstr ""
+"متنی که در زمان وجود چندین عکس در گالری به نمایش در خواهد آمد ، \"%s\" با "
+"تعداد واقعی جایگزین خواهد شد."
+
+#: extensions/albums/functions.php:108
+msgid "Gallery Link Format"
+msgstr "فرمت لینک گالری"
+
+#: extensions/albums/functions.php:109
+msgid "The format of the URL for each individual gallery in the album."
+msgstr "فرمت پیوند یکتا برای هر گالری موجود در آلبوم."
+
+#: extensions/albums/functions.php:110 extensions/albums/functions.php:121
+#: extensions/albums/functions.php:130
+msgid "URL Settings"
+msgstr "تنظیمات پیوند های یکتا"
+
+#: extensions/albums/functions.php:113
+msgid "Pretty, e.g. "
+msgstr "برای مثال : زیبا"
+
+#: extensions/albums/functions.php:114
+msgid "Querystring e.g. "
+msgstr "برای مثال : رشته درخواست"
+
+#: extensions/albums/functions.php:120
+msgid "Please Note"
+msgstr "لطف توجه کنید"
+
+#: extensions/albums/functions.php:124
+msgid ""
+"If you are getting 404's when clicking on the album galleries, then change "
+"to the querystring format. To force your rewrite rules to flush, simply "
+"deactivate and activate the albums extension again."
+msgstr ""
+"اگر شما با کلیک کردن روی گالری های یک آلبوم به خطای 404 مواجه می شوید ، فرمت "
+"رشته درخواست را عوض کنید. برای مجبور کردن وردپرس به عوض کردن تنظیمات ، "
+"اکستنشن آلبوم ها را یک بار غیر فعال و دوباره فعال نمایید."
+
+#: extensions/albums/functions.php:128 extensions/albums/functions.php:134
+msgid "Remember Scroll Position"
+msgstr "موقعیت قرار داشتن اسکرول را به یاد داشته باش"
+
+#: extensions/albums/functions.php:129
+msgid ""
+"When a gallery is loaded in your album, the page is refreshed which means "
+"the scroll position will be lost ."
+msgstr ""
+"وقتی یک گالری در آلبوم شما بار گذاری شد، صفحه دوباره ریفرش خواهد شد. این "
+"بدان معناست که موقعیت کنونی اسکرول از دست خواهد رفت."
+
+#: extensions/albums/functions.php:133
+msgid "Don't Remember"
+msgstr "به خاطر نسپار"
+
+#: extensions/albums/functions.php:143
+msgid "All-In-One Stack Album"
+msgstr "انبار فراگیر آلبوم ها"
+
+#: extensions/albums/functions.php:147
+#: extensions/default-templates/class-default-templates-extension.php:108
+#: extensions/default-templates/class-default-templates-extension.php:202
+#: extensions/default-templates/class-default-templates-extension.php:241
+#: extensions/default-templates/class-default-templates-extension.php:317
+#: extensions/default-templates/class-default-templates-extension.php:419
+#: includes/admin/view-extensions-build-your-own.php:135
+msgid "Lightbox"
+msgstr "قاب عکس (لایت باکس)"
+
+#: extensions/albums/functions.php:148
+msgid "Choose which lightbox you want to use to display images."
+msgstr "انتخاب کنید از کدام قاب عکس برای نشان دادن عکس هایتان استفاده شود."
+
+#: extensions/albums/functions.php:155
+msgid "Choose the size of your image stack thumbnails."
+msgstr "اندازه بند انگشتی ها در انبار عکس را انتخاب کنید."
+
+#: extensions/albums/functions.php:167
+msgid "Thumbnail Rotation"
+msgstr "دوران دادن بند انگشتی ها"
+
+#: extensions/albums/functions.php:169
+msgid ""
+"Choose how thumbnails in each gallery are shown when clicking an image stack."
+msgstr ""
+"انتخاب کنید که هر تصویر بند انگشتی در هر گالری بعد از کلیک کردن روی تصاویر "
+"چگونه دیده شوند."
+
+#: extensions/albums/functions.php:173 extensions/albums/functions.php:205
+msgid "Normal"
+msgstr "معمولی"
+
+#: extensions/albums/functions.php:174
+msgid "Random Angles"
+msgstr "زاویه های تصادفی"
+
+#: extensions/albums/functions.php:180
+msgid "Thumbnail Gutter"
+msgstr "قطره قطره شدن بند انگشتی"
+
+#: extensions/albums/functions.php:182
+msgid "The spacing between each image stack."
+msgstr "فاصله بندی بین هر پشته تصاویر"
+
+#: extensions/albums/functions.php:189
+msgid "Expand Delay"
+msgstr "تاخیر در باز شدن"
+
+#: extensions/albums/functions.php:191
+msgid "The delay between expanding each image on a image stack."
+msgstr "فاصله بین باز شدن هر عکس در یک پشته عکس"
+
+#: extensions/albums/functions.php:198
+msgid "Image Stack Angles"
+msgstr "زاویه های تصاویر پشته"
+
+#: extensions/albums/functions.php:200
+msgid "The angle of the images behind the thumbnail in each image stack."
+msgstr "زاویه عکس پشت تصویر بند انگشتی در هر پشته تصویر."
+
+#: extensions/albums/functions.php:204
+msgid "Low"
+msgstr "کم"
+
+#: extensions/albums/functions.php:206
+msgid "More Than Normal"
+msgstr "بیش از حالت معمول"
+
+#: extensions/albums/functions.php:207
+msgid "High"
+msgstr "زیاد"
+
+#: extensions/albums/public/class-foogallery-album-template-loader.php:33
+msgid "Could not load the album!"
+msgstr "آلبوم بار گذاری نشد !"
+
+#: extensions/albums/public/class-foogallery-album-template-loader.php:91
+msgid "No album template found!"
+msgstr "هیچ نمونه آماده ای از آلبوم یافت نشد"
+
+#: extensions/default-templates/class-default-templates-extension.php:26
+msgid "Responsive Image Gallery"
+msgstr "گالری تصاویر واکنش گرا"
+
+#: extensions/default-templates/class-default-templates-extension.php:32
+#: extensions/default-templates/class-default-templates-extension.php:338
+msgid "Size"
+msgstr "اندازه"
+
+#: extensions/default-templates/class-default-templates-extension.php:33
+#: extensions/default-templates/class-default-templates-extension.php:223
+msgid "Choose the size of your thumbnails."
+msgstr "اندازه تصاویر بند انگشتی را انتخاب نمایید"
+
+#: extensions/default-templates/class-default-templates-extension.php:44
+msgid "Link"
+msgstr "لینک"
+
+#: extensions/default-templates/class-default-templates-extension.php:49
+msgid ""
+"You can choose to link each thumbnail to the full size image, the image's "
+"attachment page, a custom URL, or you can choose to not link to anything."
+msgstr ""
+"شما می توانید لینک هر بند انگشتی به تصویر کامل را انتخاب کنید ، صفحه رسانه "
+"عکس ، یک پیوند سفارشی و یا حتی می توانید این بندانگشتی ها را به هیچ چیزی "
+"پیوند ندهید."
+
+#: extensions/default-templates/class-default-templates-extension.php:53
+msgid "Border Style"
+msgstr "ریخت حاشیه ها و مرز ها"
+
+#: extensions/default-templates/class-default-templates-extension.php:54
+msgid "The border style for each thumbnail in the gallery."
+msgstr "ریخت حاشیه هر بند انگشتی در گالری"
+
+#: extensions/default-templates/class-default-templates-extension.php:59
+msgid "Square white border with shadow"
+msgstr "حاشیه سفید مربعی شکل به همراه سایه"
+
+#: extensions/default-templates/class-default-templates-extension.php:60
+msgid "Circular white border with shadow"
+msgstr "حاشیه سفید دایره ای شکل به همراه سایه"
+
+#: extensions/default-templates/class-default-templates-extension.php:61
+msgid "Square Black"
+msgstr "مربع سیاه"
+
+#: extensions/default-templates/class-default-templates-extension.php:62
+msgid "Circular Black"
+msgstr "دایره سیاه"
+
+#: extensions/default-templates/class-default-templates-extension.php:63
+msgid "Square Inset"
+msgstr "مربع داخلی"
+
+#: extensions/default-templates/class-default-templates-extension.php:64
+msgid "Plain Rounded"
+msgstr "تصویر معمولی با حاشیه های گرد"
+
+#: extensions/default-templates/class-default-templates-extension.php:65
+msgid "Plain"
+msgstr "تصویر ساده"
+
+#: extensions/default-templates/class-default-templates-extension.php:70
+msgid "Hover Effect Type"
+msgstr "نوع جلوه هاور"
+
+#: extensions/default-templates/class-default-templates-extension.php:75
+msgid "Icon"
+msgstr "آیکون"
+
+#: extensions/default-templates/class-default-templates-extension.php:76
+msgid "Dark Tint"
+msgstr "رنگ تیره"
+
+#: extensions/default-templates/class-default-templates-extension.php:77
+msgid "Colorize"
+msgstr "رنگی کردن"
+
+#: extensions/default-templates/class-default-templates-extension.php:78
+#: extensions/default-templates/class-default-templates-extension.php:383
+#: includes/admin/class-gallery-metabox-fields.php:256
+msgid "None"
+msgstr "هیچکدام"
+
+#: extensions/default-templates/class-default-templates-extension.php:81
+msgid "The type of hover effect the thumbnails will use."
+msgstr "نوعی از جلوه هاور که بندانگشتی ها استفاده خواهند کرد"
+
+#: extensions/default-templates/class-default-templates-extension.php:85
+msgid "Icon Hover Effect"
+msgstr "جلوه هاور آیکون"
+
+#: extensions/default-templates/class-default-templates-extension.php:86
+msgid ""
+"When the hover effect type of Icon is chosen, you can choose which icon is "
+"shown when you hover over each thumbnail."
+msgstr ""
+"وقتی نوع جلوه هاور آیکون انتخاب شد ، شما می توانید انتخاب کنید کدام آیکون در "
+"هنگام عبور از روی تصویر بند انگشتی نشان داده شود."
+
+#: extensions/default-templates/class-default-templates-extension.php:91
+msgid "Zoom"
+msgstr "بزرگ نمایی"
+
+#: extensions/default-templates/class-default-templates-extension.php:92
+msgid "Zoom 2"
+msgstr "بزرگنمایی 2"
+
+#: extensions/default-templates/class-default-templates-extension.php:93
+msgid "Zoom 3"
+msgstr "بزرگنمایی 3"
+
+#: extensions/default-templates/class-default-templates-extension.php:94
+msgid "Plus"
+msgstr "به علاوه"
+
+#: extensions/default-templates/class-default-templates-extension.php:95
+msgid "Cirlce Plus"
+msgstr "دایره +"
+
+#: extensions/default-templates/class-default-templates-extension.php:96
+msgid "Eye"
+msgstr "چشم"
+
+#: extensions/default-templates/class-default-templates-extension.php:101
+#: includes/admin/view-extensions-popup.php:53
+msgid "Preview"
+msgstr "پیش نمایش"
+
+#: extensions/default-templates/class-default-templates-extension.php:102
+msgid "This is what your gallery thumbnails will look like."
+msgstr "این چیزی است که بیننده از تصاویر بند انگشتی شما خواهد دید"
+
+#: extensions/default-templates/class-default-templates-extension.php:109
+#: extensions/default-templates/class-default-templates-extension.php:118
+#: extensions/default-templates/class-default-templates-extension.php:132
+#: extensions/default-templates/class-default-templates-extension.php:420
+#: includes/admin/class-gallery-metaboxes.php:68
+msgid "Gallery Settings"
+msgstr "تنظیمات گالری"
+
+#: extensions/default-templates/class-default-templates-extension.php:110
+msgid ""
+"Choose which lightbox you want to use. The lightbox will only work if you "
+"set the thumbnail link to \"Full Size Image\"."
+msgstr ""
+"انتخاب کنید می خواهید از کدام قاب عکس(لایت باکس) استفاده کنید. این قالب فقط "
+"وقتی نمایان خواهد شد که شما تصاویر بندانگشتی را به \"تصویر کامل\" خودشان "
+"لینک کرده باشید."
+
+#: extensions/default-templates/class-default-templates-extension.php:115
+msgid "Spacing"
+msgstr "فاصله ها"
+
+#: extensions/default-templates/class-default-templates-extension.php:116
+msgid "The spacing or gap between thumbnails in the gallery."
+msgstr "فاصله های بین تصاویر بند انگشتی در گالری"
+
+#: extensions/default-templates/class-default-templates-extension.php:121
+msgid "5 pixels"
+msgstr "5 پیکسل"
+
+#: extensions/default-templates/class-default-templates-extension.php:122
+msgid "10 pixels"
+msgstr "10 پیکسل"
+
+#: extensions/default-templates/class-default-templates-extension.php:123
+msgid "15 pixels"
+msgstr "15 پیکسل"
+
+#: extensions/default-templates/class-default-templates-extension.php:124
+msgid "20 pixels"
+msgstr "20 پیکسل"
+
+#: extensions/default-templates/class-default-templates-extension.php:125
+msgid "25 pixels"
+msgstr "25 پیکسل"
+
+#: extensions/default-templates/class-default-templates-extension.php:131
+msgid "The horizontal alignment of the thumbnails inside the gallery."
+msgstr "چینش افقی برای تصاویر بند انگشتی موجود در گالری"
+
+#: extensions/default-templates/class-default-templates-extension.php:146
+msgid "Masonry Image Gallery"
+msgstr "گالری تصاویر به شکل آجرچین"
+
+#: extensions/default-templates/class-default-templates-extension.php:150
+msgid "Thumbnail Width"
+msgstr "عرض عکس بند انگشتی"
+
+#: extensions/default-templates/class-default-templates-extension.php:151
+msgid ""
+"Choose the width of your thumbnails. Thumbnails will be generated on the fly "
+"and cached once generated."
+msgstr ""
+"عرض تصویر بند انگشتی را انتخاب کنید. این تصاویر بند انگشتی در همین جا تولید، "
+"ذخیره و کش خواهند شد."
+
+#: extensions/default-templates/class-default-templates-extension.php:160
+msgid "Gutter Width"
+msgstr "عرض شبکه "
+
+#: extensions/default-templates/class-default-templates-extension.php:161
+#: extensions/default-templates/class-default-templates-extension.php:280
+msgid "The spacing between your thumbnails."
+msgstr "فاصله های بین تصاویر بند انگشتی"
+
+#: extensions/default-templates/class-default-templates-extension.php:170
+msgid "Image Alignment"
+msgstr "چینش عکس ها"
+
+#: extensions/default-templates/class-default-templates-extension.php:171
+msgid ""
+"You can choose to center align your images or leave them at the default."
+msgstr ""
+"شما می توانید چینش میانه را برای تصاویر انتخاب کنید با این تنظیمات را "
+"رهاکنید تا به مقدار پیشفرض بمانند."
+
+#: extensions/default-templates/class-default-templates-extension.php:174
+msgid "Left Alignment"
+msgstr "چپ"
+
+#: extensions/default-templates/class-default-templates-extension.php:175
+msgid "Center Alignment"
+msgstr "میانه"
+
+#: extensions/default-templates/class-default-templates-extension.php:182
+msgid "Hover Zoom"
+msgstr "جلوه بزرگنمایی در هنگام هاور"
+
+#: extensions/default-templates/class-default-templates-extension.php:183
+msgid ""
+"The effect that is applied to images when you move your mouse over them."
+msgstr ""
+"این جلوه وقتی ایجاد می شود که شما نشانگر موس را از روی تصاویر عبور دهید."
+
+#: extensions/default-templates/class-default-templates-extension.php:186
+msgid "Zoom Slightly"
+msgstr "کمی بزرگ نمایی"
+
+#: extensions/default-templates/class-default-templates-extension.php:187
+msgid "No Zoom"
+msgstr "بدون بزرگ نمایی"
+
+#: extensions/default-templates/class-default-templates-extension.php:194
+#: extensions/default-templates/class-default-templates-extension.php:233
+#: extensions/default-templates/class-default-templates-extension.php:309
+msgid "Thumbnail Link"
+msgstr "لینک بند انگشتی"
+
+#: extensions/default-templates/class-default-templates-extension.php:198
+#: extensions/default-templates/class-default-templates-extension.php:237
+#: extensions/default-templates/class-default-templates-extension.php:313
+msgid ""
+"You can choose to link each thumbnail to the full size image, or to the "
+"image's attachment page, or you can choose to not link to anything."
+msgstr ""
+"شما می توانید لینک هر بند انگشتی به تصویر کامل را انتخاب کنید ، صفحه رسانه "
+"عکس ، یک پیوند سفارشی و یا حتی می توانید این بندانگشتی ها را به هیچ چیزی "
+"پیوند ندهید."
+
+#: extensions/default-templates/class-default-templates-extension.php:203
+#: extensions/default-templates/class-default-templates-extension.php:242
+#: extensions/default-templates/class-default-templates-extension.php:318
+msgid ""
+"Choose which lightbox you want to display images with. The lightbox will "
+"only work if you set the thumbnail link to \"Full Size Image\"."
+msgstr ""
+"انتخاب کنید می خواهید از کدام قاب عکس(لایت باکس) استفاده کنید. این قالب فقط "
+"وقتی نمایان خواهد شد که شما تصاویر بندانگشتی را به \"تصویر کامل\" خودشان "
+"لینک کرده باشید."
+
+#: extensions/default-templates/class-default-templates-extension.php:211
+msgid "Simple Portfolio"
+msgstr "این سبد (پرتفولیو) ساده"
+
+#: extensions/default-templates/class-default-templates-extension.php:215
+#: extensions/default-templates/class-default-templates-extension.php:254
+msgid "Tip"
+msgstr "ترفند"
+
+#: extensions/default-templates/class-default-templates-extension.php:218
+msgid ""
+"The Simple Portfolio template works best when you have <strong>captions and "
+"descriptions</strong> set for every attachment in the gallery.<br />To "
+"change captions and descriptions, simply hover over the thumbnail above and "
+"click the \"i\" icon."
+msgstr ""
+"نمونه آماده \"پورتفولیو ی ساده\" برای زمانی که شما <strong>عنوان ها و "
+"توضیحات</strong> جداگانه ای برای هر عکس در گالری دارید بهتر است.<br /> برای "
+"عوض کردن عنوان ها و توضیحات به سادگی نشانگر موس را روی بند انگشتی ببرید و "
+"روی \"i\" کلیک کنید."
+
+#: extensions/default-templates/class-default-templates-extension.php:250
+msgid "Justified Gallery"
+msgstr "گالری تنظیم شده"
+
+#: extensions/default-templates/class-default-templates-extension.php:257
+msgid ""
+"The Justified Gallery template uses the popular <a href=\"http://miromannino."
+"com/projects/justified-gallery/\" target=\"_blank\">Justified Gallery jQuery "
+"Plugin</a> under the hood. You can specify thumbnail captions by setting the "
+"alt text for your attachments."
+msgstr ""
+"نمون آماده \"گالری تنظیم شده\" در پشت صحنه از افزونه محبوب <a href=\"http://"
+"miromannino.com/projects/justified-gallery/\" target=\"_blank\">Justified "
+"Gallery jQuery Plugin</a> بهره می برد. شما می توانید عناوین بند انگشتی ها را "
+"در فیلد متن جایگرین در صفحه رسانه ها تغییر دهید."
+
+#: extensions/default-templates/class-default-templates-extension.php:261
+msgid "Row Height"
+msgstr "ارتفاع هر ردیف"
+
+#: extensions/default-templates/class-default-templates-extension.php:262
+msgid ""
+"Choose the height of your thumbnails. Thumbnails will be generated on the "
+"fly and cached once generated."
+msgstr ""
+"ارتفاع تصویر بند انگشتی را انتخاب کنید. این تصاویر بند انگشتی در همین جا "
+"تولید، ذخیره و کش خواهند شد."
+
+#: extensions/default-templates/class-default-templates-extension.php:271
+msgid "Max Row Height"
+msgstr "بیشترین ارتفاع هر ردیف"
+
+#: extensions/default-templates/class-default-templates-extension.php:272
+msgid ""
+"A number (e.g 200) which specifies the maximum row height in pixels. A "
+"negative value for no limits. Alternatively, use a percentage (e.g. 200% "
+"which means that the row height cannot exceed 2 * rowHeight)"
+msgstr ""
+"یک شماره (مثلا 200) که نشان دهنده حداکثر ارتفاع هر ردیف به پیکسل است. عدد "
+"منفی یعنی بدون محدودیت. به جای عدد می توانید از درصد هم استفاده کنید. (مثلا "
+"200% به این معناست که حداکثر ارتفاع هر ردیف نمی تواند از دو برابر ارتفاع "
+"فعلی بیشتر باشد)"
+
+#: extensions/default-templates/class-default-templates-extension.php:279
+msgid "Margins"
+msgstr "حاشیه ها"
+
+#: extensions/default-templates/class-default-templates-extension.php:289
+msgid "Show Captions"
+msgstr "عناوین را نشان بده"
+
+#: extensions/default-templates/class-default-templates-extension.php:290
+msgid ""
+"Show a caption when hovering over your thumbnails. (Set captions by adding "
+"either a title or alt text to an attachment)"
+msgstr ""
+"وقتی نشان گر موس از روی تصاویر بند انگشتی رد می شود ، عنوان آن ها را نشان "
+"بده . (عنوان ها را با قرار دادن توضیحات در قسمت عنوان یا توضیح در صفحه رسانه "
+"ای عکس اضافه کنید)"
+
+#: extensions/default-templates/class-default-templates-extension.php:296
+msgid "Caption Source"
+msgstr "منبع عناوین"
+
+#: extensions/default-templates/class-default-templates-extension.php:297
+msgid "Pull captions from either the attachment Title, Caption or Alt Text."
+msgstr "عنوان را از عنوان پیوست ، عنوان و یا نوشته جایگزین بردار."
+
+#: extensions/default-templates/class-default-templates-extension.php:302
+msgid "Attachment Title"
+msgstr "عنوان رسانه پیوست"
+
+#: extensions/default-templates/class-default-templates-extension.php:303
+msgid "Attachment Caption"
+msgstr "عنوان رسانه پیوست"
+
+#: extensions/default-templates/class-default-templates-extension.php:304
+msgid "Attachment Alt Text"
+msgstr "نوشته جایگزین در رسانه پیوست"
+
+#: extensions/default-templates/class-default-templates-extension.php:326
+msgid "Single Thumbnail Gallery"
+msgstr "گالری با یک تصویر بند انگشتی"
+
+#: extensions/default-templates/class-default-templates-extension.php:334
+msgid ""
+"This gallery template only shows a single thumbnail, but the true power "
+"shines through when the thumbnail is clicked, because then the lightbox "
+"takes over and the user can view all the images in the gallery."
+msgstr ""
+"این یک نمونه آماده از گالری است که تنها یک بند انگشتی دارد ، اما اصل قضیه "
+"وقتی است که روی این بند انگشتی کلیک کنید! چون آنوقت قاب عکس باز می شود و شما "
+"می توانید کل گالری را جلوی خودتان ببینید!"
+
+#: extensions/default-templates/class-default-templates-extension.php:339
+msgid "Choose the size of your thumbnail."
+msgstr "اندازه تصاویر بند انگشتی را انتخاب نمایید"
+
+#: extensions/default-templates/class-default-templates-extension.php:350
+msgid "Position"
+msgstr "موقعیت"
+
+#: extensions/default-templates/class-default-templates-extension.php:351
+msgid "The position of the thumbnail related to the content around it."
+msgstr "موقعیت تصویر بند انگشتی به محتوای اطرافش بستگی دارد."
+
+#: extensions/default-templates/class-default-templates-extension.php:356
+msgid "Full Width (block)"
+msgstr "عرض کامل (بلوک)"
+
+#: extensions/default-templates/class-default-templates-extension.php:357
+msgid "Float Left"
+msgstr "شناور چپ"
+
+#: extensions/default-templates/class-default-templates-extension.php:358
+msgid "Float Right"
+msgstr "شناور راست"
+
+#: extensions/default-templates/class-default-templates-extension.php:363
+msgid "Link To Custom URL"
+msgstr "پیوند به یک پیوند یکتای سفارشی"
+
+#: extensions/default-templates/class-default-templates-extension.php:367
+msgid ""
+"You can link your thumbnails to Custom URL's (if they are set on your "
+"attachments). Fallback will be to the full size image."
+msgstr ""
+"شما نمی توانید بند انگشتی ها را به آدرسی سفارشی پیوند بزنید (اگر به رسانه "
+"هایتان وصل شده اند)"
+
+#: extensions/default-templates/class-default-templates-extension.php:371
+msgid "Caption Style"
+msgstr "ریخت عنوان"
+
+#: extensions/default-templates/class-default-templates-extension.php:372
+#: extensions/default-templates/class-default-templates-extension.php:389
+#: extensions/default-templates/class-default-templates-extension.php:398
+#: extensions/default-templates/class-default-templates-extension.php:406
+#: extensions/default-templates/class-default-templates-extension.php:413
+msgid "Caption Settings"
+msgstr "تنظیمات عنوان"
+
+#: extensions/default-templates/class-default-templates-extension.php:373
+msgid "Choose which caption style you want to use."
+msgstr ""
+"انتخاب کنید که می خواهید چه نوع ریختی را برای عنوان عکس به کار گرفته شود."
+
+#: extensions/default-templates/class-default-templates-extension.php:377
+msgid "Simple"
+msgstr "ساده"
+
+#: extensions/default-templates/class-default-templates-extension.php:378
+msgid "Slide Up"
+msgstr "اسلاید به بابا"
+
+#: extensions/default-templates/class-default-templates-extension.php:379
+msgid "Fall Down"
+msgstr "افتادن به پایین"
+
+#: extensions/default-templates/class-default-templates-extension.php:380
+msgid "Fade"
+msgstr "محو شدن"
+
+#: extensions/default-templates/class-default-templates-extension.php:381
+msgid "Push From Left"
+msgstr "وارد شدن از چپ"
+
+#: extensions/default-templates/class-default-templates-extension.php:382
+msgid "Scale"
+msgstr "اندازه"
+
+#: extensions/default-templates/class-default-templates-extension.php:388
+msgid "Caption Background Color"
+msgstr "رنگ پس زمینه عنوان"
+
+#: extensions/default-templates/class-default-templates-extension.php:390
+msgid "The color of the caption background."
+msgstr "رنگ پس زمینه عنوان."
+
+#: extensions/default-templates/class-default-templates-extension.php:397
+msgid "Caption Text Color"
+msgstr "رنگ متن عنوان"
+
+#: extensions/default-templates/class-default-templates-extension.php:399
+msgid "The color of the caption text."
+msgstr "رنگ متن عنوان"
+
+#: extensions/default-templates/class-default-templates-extension.php:405
+msgid "Caption Title"
+msgstr "تیتر عنوان"
+
+#: extensions/default-templates/class-default-templates-extension.php:407
+msgid "Leave blank if you do not want a caption title."
+msgstr ""
+"اگر نمی خواهید برای عنوان یک تیتر انتخاب کنید ، این قسمت را خالی بگذارید."
+
+#: extensions/default-templates/class-default-templates-extension.php:412
+msgid "Caption Description"
+msgstr "توضیحات عنوان"
+
+#: extensions/default-templates/class-default-templates-extension.php:414
+msgid "Leave blank if you do not want a caption description."
+msgstr "اگر نمی خواهید برای عنوان یک توضیح بنویسید ، این قسمت را خالی بگذارید."
+
+#: extensions/default-templates/class-default-templates-extension.php:421
+msgid "Choose which lightbox you want to use."
+msgstr "انتخاب کنید از کدام قاب عکس استفاده شود."
+
+#: extensions/media-categories/class-media-categories-extension.php:29
+#: extensions/media-categories/class-media-categories-extension.php:39
+#: extensions/media-categories/class-media-categories-extension.php:77
+msgid "Categories"
+msgstr "دسته بندی ها"
+
+#: extensions/media-categories/class-media-categories-extension.php:30
+msgid "Category"
+msgstr "دسته بندی"
+
+#: extensions/media-categories/class-media-categories-extension.php:31
+msgid "Search Categories"
+msgstr "جستجو در دسته ها"
+
+#: extensions/media-categories/class-media-categories-extension.php:32
+msgid "All Categories"
+msgstr "همه دسته ها"
+
+#: extensions/media-categories/class-media-categories-extension.php:33
+msgid "Parent Category"
+msgstr "دسته بندی مادر"
+
+#: extensions/media-categories/class-media-categories-extension.php:34
+msgid "Parent Category:"
+msgstr "دسته بندی مادر :"
+
+#: extensions/media-categories/class-media-categories-extension.php:35
+msgid "Edit Category"
+msgstr "ویرایش دسته بندی"
+
+#: extensions/media-categories/class-media-categories-extension.php:36
+msgid "Update Category"
+msgstr "به روز رسانی دسته"
+
+#: extensions/media-categories/class-media-categories-extension.php:37
+msgid "Add New Category"
+msgstr "اضافه کردن دسته جدید"
+
+#: extensions/media-categories/class-media-categories-extension.php:38
+msgid "New Category Name"
+msgstr "نام دسته جدید"
+
+#: extensions/media-categories/class-media-categories-extension.php:79
+msgid "Categorize your attachments"
+msgstr "پیوست هایتان را دسته بندی کنید !"
+
+#: extensions/media-categories/class-media-categories-extension.php:140
+msgid "No Categories Available!"
+msgstr "هیچ دسته بندی در دسترس نیست!"
+
+#: extensions/media-categories/class-media-categories-extension.php:145
+msgid "Manage Categories"
+msgstr "مدیریت دسته ها"
+
+#: extensions/media-categories/class-media-categories-extension.php:179
+msgid "Error saving the categories for the attachment!"
+msgstr "خطا در ذخیره کردن دسته ها برای پیوست ها"
+
+#: extensions/media-categories/class-media-categories-extension.php:195
+msgid "View all categories"
+msgstr "دیدن همه دسته ها"
+
+#: extensions/nextgen-importer/class-nextgen-gallery-importer-extension.php:43
+msgid "NextGen Importer"
+msgstr "وارد کننده از NextGen گالری"
+
+#: extensions/nextgen-importer/class-nextgen-gallery-importer-extension.php:157
+msgid "Import Your NextGen Galleries"
+msgstr "گالری های ایجاد شده توسط NextGen را وارد کنید"
+
+#: extensions/nextgen-importer/class-nextgen-gallery-importer-extension.php:159
+msgid "Import Galleries"
+msgstr "وارد کردن گالری ها"
+
+#: extensions/nextgen-importer/class-nextgen-gallery-importer-extension.php:163
+#, php-format
+msgid ""
+"Import all your NextGen galleries in a single click, or choose the galleries "
+"you would like to migrate over to %s."
+msgstr ""
+"همه گالری هایی که توسط افزونه NextGen ایجاد کرده اید را با یک کلیک درون ریزی "
+"کنید یا انتخاب کنید دوست دارید کدام گالری ها به %s مهاجرت کنند."
+
+#: extensions/nextgen-importer/class-nextgen-gallery-importer-extension.php:165
+msgid "Import Images"
+msgstr "وارد کردن تصاویر"
+
+#: extensions/nextgen-importer/class-nextgen-gallery-importer-extension.php:167
+msgid ""
+"NextGen gallery images are imported into your WordPress media library, where "
+"they should be!"
+msgstr ""
+"تصاویر گالری های NextGen به مدیریت رسانه های وردپرس درون ریزی شدند. جایی که "
+"باید می بودند !"
+
+#: extensions/nextgen-importer/class-nextgen-helper.php:245
+msgid "Select All"
+msgstr "انتخاب همه"
+
+#: extensions/nextgen-importer/class-nextgen-helper.php:250
+msgid "NextGen Gallery"
+msgstr "NextGen Gallery"
+
+#: extensions/nextgen-importer/class-nextgen-helper.php:253
+#, php-format
+msgid "%s Name"
+msgstr "نام %s"
+
+#: extensions/nextgen-importer/class-nextgen-helper.php:256
+msgid "Import Progress"
+msgstr "پیشرفت فرآیند درون ریزی"
+
+#: extensions/nextgen-importer/class-nextgen-helper.php:291
+#, php-format
+msgid "(%s images)"
+msgstr "(%s عدد عکس)"
+
+#: extensions/nextgen-importer/class-nextgen-helper.php:320
+msgid "Start Import"
+msgstr "شروع فرآیند درون ریزی"
+
+#: extensions/nextgen-importer/class-nextgen-helper.php:322
+msgid "Resume Import"
+msgstr "ادامه فرآیند درون ریزی"
+
+#: extensions/nextgen-importer/class-nextgen-helper.php:324
+msgid "Stop Import"
+msgstr "توقف فرآیند درون ریزی"
+
+#: extensions/nextgen-importer/class-nextgen-helper.php:328
+msgid "Reset All Gallery Imports"
+msgstr "همه درون ریزی ها را ریست کن"
+
+#: extensions/nextgen-importer/class-nextgen-helper.php:355
+msgid "NextGen Album"
+msgstr "آلبوم NextGen"
+
+#: extensions/nextgen-importer/class-nextgen-helper.php:358
+msgid "Album Name"
+msgstr "نام آلبوم"
+
+#: extensions/nextgen-importer/class-nextgen-helper.php:361
+msgid "NextGen Galleries"
+msgstr "گالری های NextGen"
+
+#: extensions/nextgen-importer/class-nextgen-helper.php:364
+msgid "Import Options"
+msgstr "انتخاب های درون ریزی"
+
+#: extensions/nextgen-importer/class-nextgen-helper.php:408
+msgid "[Album] "
+msgstr "[آلبوم]"
+
+#: extensions/nextgen-importer/class-nextgen-helper.php:413
+msgid "nested albums not supported"
+msgstr "آلبوم های لایه ای (Nested) ساپورت نمی شوند."
+
+#: extensions/nextgen-importer/class-nextgen-helper.php:428
+msgid "imported"
+msgstr "درون ریزی شده"
+
+#: extensions/nextgen-importer/class-nextgen-helper.php:428
+msgid "not imported"
+msgstr "درون ریزی نشده"
+
+#: extensions/nextgen-importer/class-nextgen-helper.php:448
+msgid "All galleries will be linked"
+msgstr "همه گالری ها پیوند زده خواهند شد."
+
+#: extensions/nextgen-importer/class-nextgen-helper.php:450
+#, php-format
+msgid "%d/%d galleries will be linked"
+msgstr "%d / %d گالری ها پیوند زده خواهند شد."
+
+#: extensions/nextgen-importer/class-nextgen-helper.php:452
+msgid "(Only previously imported galleries can be linked)"
+msgstr "(فقط گالری هایی که قبلا درون ریزی شده اند پیوند زده خواهند شد)"
+
+#: extensions/nextgen-importer/class-nextgen-helper.php:455
+msgid "No galleries imported yet!!"
+msgstr "هنوز هیچ گالری درون ریزی نشده است !!"
+
+#: extensions/nextgen-importer/class-nextgen-helper.php:473
+msgid "Reset All Album Imports"
+msgstr "همه درون ریزی ها را ریست کن"
+
+#: extensions/nextgen-importer/class-nextgen-import-progress-album.php:23
+msgid "Album not imported"
+msgstr "آلبوم درون ریزی نشده"
+
+#: extensions/nextgen-importer/class-nextgen-import-progress-album.php:26
+#, php-format
+msgid "Done! %d galleries(s) linked"
+msgstr "تمام ! %d عدد گالری پیوند زده شد."
+
+#: extensions/nextgen-importer/class-nextgen-import-progress-album.php:30
+#: extensions/nextgen-importer/class-nextgen-import-progress.php:59
+msgid "Unknown status!"
+msgstr "وضعیت نامشخص!"
+
+#: extensions/nextgen-importer/class-nextgen-import-progress.php:45
+msgid "Not imported"
+msgstr "درون ریزی نشده"
+
+#: extensions/nextgen-importer/class-nextgen-import-progress.php:48
+msgid "Queued for import"
+msgstr "در صف برای درون ریزی"
+
+#: extensions/nextgen-importer/class-nextgen-import-progress.php:51
+#, php-format
+msgid "Imported %d of %d image(s)"
+msgstr "تعداد %d از %d عکس درون ریزی شده است."
+
+#: extensions/nextgen-importer/class-nextgen-import-progress.php:55
+#, php-format
+msgid "Done! %d image(s) imported"
+msgstr "تمام ! %d عدد عکس درون ریزی شد."
+
+#: extensions/nextgen-importer/view-importer.php:80
+msgid ""
+"Something went wrong with the import and the page will now reload. Once it "
+"has reloaded, click \"Resume Import\" to continue with the import."
+msgstr ""
+"اتفاقی در فرآیند درون ریزی افتاده است و برگه دوباره بارگذاری خواهد شد. وقتی "
+"بارگذاری به اتمام رسید ، روی \"ادامه درون ریزی\" کلیک کنید تا فرآیند ادامه "
+"پیدا کند."
+
+#: extensions/nextgen-importer/view-importer.php:121
+msgid "Are you sure you want to cancel?"
+msgstr "مطمئن هستید که می خواهید کنسل کنید ؟"
+
+#: extensions/nextgen-importer/view-importer.php:128
+msgid ""
+"Are you sure you want to reset all NextGen gallery import data? This may "
+"result in duplicate galleries and media attachments!"
+msgstr ""
+"آیا مطمئن هستید که می خواهید همه داده های درون ریزی شده از NextGen را ریست "
+"کنید ؟ این کار ممکن است باعث ایجاد گالری ها و رسانه های اضافی شود!"
+
+#: extensions/nextgen-importer/view-importer.php:135
+msgid ""
+"Are you sure you want to reset all NextGen album import data? This may "
+"result in duplicate albums if you decide to import again!"
+msgstr ""
+"آیا مطمئن هستید که می خواهید همه داده های وارد شده از NextGen را ریست کنید ؟ "
+"اگر بخواهید دوباره درون ریزی کنید ، ممکن است باعث ایحاد آلبوم های اضافی شود."
+
+#: extensions/nextgen-importer/view-importer.php:165
+msgid "Something went wrong with the import and the page will now reload."
+msgstr "اشتباهی در فرآیند درون ریزی رخ داد. صفحه دوباره بارگذاری خواهد شد."
+
+#: extensions/nextgen-importer/view-importer.php:185
+msgid "NextGen Gallery And Album Importer"
+msgstr "درون ریز NextGen Gallery & Album "
+
+#: extensions/nextgen-importer/view-importer.php:196
+msgid "There are no NextGen galleries to import!"
+msgstr "هیچ گالری NextGen پیدا نشد که درون ریزی شود !"
+
+#: extensions/nextgen-importer/view-importer.php:199
+msgid "Importing galleries is really simple:"
+msgstr "درون ریزی گالری ها خیلی ساده است :"
+
+#: extensions/nextgen-importer/view-importer.php:201
+#, php-format
+msgid ""
+"Choose the NextGen galleries you want to import into %s by checking their "
+"checkboxes."
+msgstr ""
+"هر گالری NextGen که می خواهید در %s درون ریزی کنید را با زدن تیک در محل خودش "
+"مشخص کنید."
+
+#: extensions/nextgen-importer/view-importer.php:202
+msgid "Click the Start Import button to start the import process."
+msgstr "دکمه \"شروع درون ریزی\" را بزنید تا فرآیند درون ریزی شروع شود."
+
+#: extensions/nextgen-importer/view-importer.php:203
+#, php-format
+msgid ""
+"Once a gallery is imported, you can click on the link under the %s Name "
+"column to edit the gallery."
+msgstr ""
+"هر وقت گالری درون ریزی شد. می توانید با کلیک کردن روی پیوند ستون نام %s ، "
+"گالری را ویرایش کنید."
+
+#: extensions/nextgen-importer/view-importer.php:205
+msgid ""
+"Please note: importing large galleries with lots of images can take a while!"
+msgstr ""
+"لطفا توجه کنید : درون ریزی کردن گالری های بزرگ با عکس های زیاد ممکن است مدتی "
+"زمان ببرد !"
+
+#: extensions/nextgen-importer/view-importer.php:217
+msgid "There are no NextGen albums to import!"
+msgstr "هیچ آلبوم NextGen پیدا نشد که درون ریزی شود !"
+
+#: extensions/nextgen-importer/view-importer.php:220
+msgid "Importing albums is also really simple:"
+msgstr "درون ریزی آلبوم ها خیلی ساده است :"
+
+#: extensions/nextgen-importer/view-importer.php:222
+msgid ""
+"For all the albums you wish to import, make sure all the galleries have been "
+"imported FIRST. If not, then go back to the Galleries tab."
+msgstr ""
+"برای تمام آلبوم هایی که دوست دارید درون ریزی کنید ، اطمینان حاصل کنید که "
+"ابتدا همه گالری ها درون ریزی شده اند. اگر نه ، به تب گالری ها برگردید."
+
+#: extensions/nextgen-importer/view-importer.php:223
+msgid ""
+"Click the Import Album button for each album to import the album and link "
+"all the galleries. If you do not see the button, then that means you first "
+"need to import the galleries."
+msgstr ""
+"برای هر آلبومی که می خواهید روی درون ریزی آلبوم کلیک کنید تا آلبوم و همه "
+"گالری های پیوند زده شده به آن درون ریزی شوند. اگر دکمه ای ندیدید به این "
+"معناست که شما ابتدا باید گالری ها را درون ریزی کنید."
+
+#: extensions/nextgen-importer/view-importer.php:224
+msgid ""
+"Once an album is imported, you can click on the link under the Album Name "
+"column to edit the album."
+msgstr ""
+"وقتی یک آلبوم درون ریزی شد ، شما می توانید در پیوند لینک زیر نام آلبوم در "
+"ستون مربوطه کلیک کنید تا آلبوم را ویرایش نمایید."
+
+#: includes/WPThumb/wpthumb.crop-from-position.php:54
+msgid "Crop Position"
+msgstr "مکان برش"
+
+#: includes/WPThumb/wpthumb.php:760
+msgid "WPThumb has detected a problem."
+msgstr "WPThumb یک مشکل پیدا کرده است."
+
+#: includes/WPThumb/wpthumb.php:760
+#, php-format
+msgid "The directory <code>%s</code> is not writable."
+msgstr "پوشه <code>%s</code> غیر قابل نوشتن است ."
+
+#: includes/WPThumb/wpthumb.watermark.php:192
+msgid "Watermark"
+msgstr "واتر مارک"
+
+#: includes/admin/class-admin.php:64 includes/admin/class-menu.php:34
+#: includes/admin/class-settings.php:70 includes/admin/view-help.php:48
+#: includes/admin/view-system-info.php:68
+msgid "Extensions"
+msgstr "اکستنشن ها"
+
+#: includes/admin/class-admin.php:66 includes/admin/class-menu.php:38
+msgid "Help"
+msgstr "کمک"
+
+#: includes/admin/class-attachment-fields.php:19 includes/functions.php:378
+msgid "Default"
+msgstr "پیشفرض"
+
+#: includes/admin/class-attachment-fields.php:20
+msgid "New tab (_blank)"
+msgstr "تب جدید (_blank)"
+
+#: includes/admin/class-attachment-fields.php:21
+msgid "Same tab (_self)"
+msgstr "همین تب (_self)"
+
+#: includes/admin/class-attachment-fields.php:22
+msgid "FooBox"
+msgstr "فوو باکس"
+
+#: includes/admin/class-attachment-fields.php:27
+#, php-format
+msgid "%s Custom URL"
+msgstr "پیوند یکتای سفارشی %s"
+
+#: includes/admin/class-attachment-fields.php:29
+msgid "Point your attachment to a custom URL"
+msgstr "ارسانه پیوست شده خود را به یک پیوند یکتای سفارشی نشانه بگیرید "
+
+#: includes/admin/class-attachment-fields.php:34
+#, php-format
+msgid "%s Custom Target"
+msgstr "هدف سفارشی %s"
+
+#: includes/admin/class-attachment-fields.php:36
+msgid "Set a custom target for your attachment"
+msgstr "یک هدف سفارشی برای رسانه پیوست شده در نظر بگیرید"
+
+#: includes/admin/class-columns.php:24
+msgid "Media"
+msgstr "رسانه"
+
+#: includes/admin/class-extensions.php:86
+msgid "The extensions have been reloaded"
+msgstr "اکستنشن دوباره بارگذاری شد"
+
+#: includes/admin/class-extensions.php:103
+msgid "The extension could not be activated due to an error!"
+msgstr "اکستنشن به دلیل یک خطا قادر به فعال شدن نیست !"
+
+#: includes/admin/class-extensions.php:109
+msgid "Activation Error!"
+msgstr "خطای فعال سازی !"
+
+#: includes/admin/class-gallery-editor.php:43
+#, php-format
+msgid "Add Gallery From %s"
+msgstr "اضافه کردن گالری از %s"
+
+#: includes/admin/class-gallery-editor.php:44
+#, php-format
+msgid "Add %s"
+msgstr "اضافه کردن %s"
+
+#: includes/admin/class-gallery-editor.php:263
+msgid "Choose A Gallery To Insert"
+msgstr "یک گالری برای گذاشتن در محتوا انتخاب کنید"
+
+#: includes/admin/class-gallery-editor.php:266
+#: includes/admin/view-extensions.php:60
+msgid "Reload"
+msgstr "بارگذاری دوباره"
+
+#: includes/admin/class-gallery-editor.php:273
+msgid "Loading galleries. Please wait..."
+msgstr "بارگذاری گالری ها ، لطفا شکیبا باشید ..."
+
+#: includes/admin/class-gallery-editor.php:278
+msgid "Select A Gallery"
+msgstr "یک گالری انتخاب کنید"
+
+#: includes/admin/class-gallery-editor.php:280
+msgid ""
+"Select a gallery by clicking it, and then click the \"Insert Gallery\" "
+"button to insert it into your content."
+msgstr ""
+"گالری را با کلیک روی آن انتخاب کنید، سپس با زدن دکمه \"گذاشتن گالری\" آن را "
+"در محتوا قرار دهید."
+
+#: includes/admin/class-gallery-editor.php:282
+msgid "Add A Gallery"
+msgstr "اضافه کردن گالری"
+
+#: includes/admin/class-gallery-editor.php:284
+msgid ""
+"You can add a new gallery by clicking the \"Add New Gallery\" tile on the "
+"left. It will open in a new window."
+msgstr ""
+"شما می توانید یک گالری جدید را با کلیک کردن روی عنوان \"اضافه کردن گالری جدید"
+"\" در قسمت چپ،اضافه کنید. این صفحه در پنجره ای جدید باز خواهد شد."
+
+#: includes/admin/class-gallery-editor.php:287
+msgid ""
+"Once you have finished adding a gallery, come back to this dialog and click "
+"the \"Reload\" button to see your newly created gallery."
+msgstr ""
+"وقتی که کار اضافه کردن یک گالری به اتمام رسید. به این قسمت برگردید و دکمه "
+"\"بارگذاری دوباره\" را برای دیدن گالری جدیدتان بزنید."
+
+#: includes/admin/class-gallery-editor.php:300
+msgid "Cancel"
+msgstr "کنسل کن"
+
+#: includes/admin/class-gallery-editor.php:304
+msgid "Insert Gallery"
+msgstr "گذاشتن گالری"
+
+#: includes/admin/class-gallery-editor.php:360 includes/class-posttypes.php:29
+msgid "Add New Gallery"
+msgstr "اضافه کردن یک گالری جدید"
+
+#: includes/admin/class-gallery-metabox-fields.php:157
+msgid "Width"
+msgstr "عرض"
+
+#: includes/admin/class-gallery-metabox-fields.php:159
+msgid "Height"
+msgstr "ارتفاع"
+
+#: includes/admin/class-gallery-metabox-fields.php:163
+msgid "Crop thumbnail to exact dimensions"
+msgstr "بند انگشتی را به اندازه های دقیقش ببر"
+
+#: includes/admin/class-gallery-metabox-fields.php:196
+msgid "You have no lightbox extensions activated!"
+msgstr "شما هیچ اکستنشن قاب عکس (لایت باکس) فعالی ندارید !"
+
+#: includes/admin/class-gallery-metabox-fields.php:205
+msgid "Activate FooBox FREE right now!"
+msgstr "FooBox رایگان را همین الان فعال کن !"
+
+#: includes/admin/class-gallery-metabox-fields.php:213
+msgid "Download and activate FooBox FREE"
+msgstr "دانلود و فعال سازی FooBox رایگان"
+
+#: includes/admin/class-gallery-metabox-fields.php:214
+#, php-format
+msgid "%s which works flawlessly with %s."
+msgstr "%s که بدون هیچ ایرادی با %s کار می کند."
+
+#: includes/admin/class-gallery-metabox-fields.php:247
+msgid "Full Size Image"
+msgstr "عکس در اندازه های کامل"
+
+#: includes/admin/class-gallery-metabox-fields.php:248
+msgid "Image Attachment Page"
+msgstr "صفحه رسانه ای عکس"
+
+#: includes/admin/class-gallery-metabox-fields.php:249
+msgid "Custom URL"
+msgstr "پیوند یکتای سفارشی"
+
+#: includes/admin/class-gallery-metabox-fields.php:250
+msgid "Not linked"
+msgstr "پیوند نشده"
+
+#: includes/admin/class-gallery-metaboxes.php:59
+msgid "Gallery Items"
+msgstr "آیتم های گالری"
+
+#: includes/admin/class-gallery-metaboxes.php:77
+msgid "Gallery Shortcode"
+msgstr "کد کوتاه گالری"
+
+#: includes/admin/class-gallery-metaboxes.php:86
+msgid "Gallery Usage"
+msgstr "استفاده از گالری"
+
+#: includes/admin/class-gallery-metaboxes.php:105
+msgid "Gallery Sorting"
+msgstr "مرتب کردن گالری ها"
+
+#: includes/admin/class-gallery-metaboxes.php:214
+#: includes/admin/class-gallery-metaboxes.php:217
+msgid "Add Media To Gallery"
+msgstr "اضافه کردن رسانه به گالری"
+
+#: includes/admin/class-gallery-metaboxes.php:215
+#: includes/admin/class-gallery-metaboxes.php:219
+msgid "Add Media"
+msgstr "اضافه کردن رسانه"
+
+#: includes/admin/class-gallery-metaboxes.php:250
+msgid "Edit Info"
+msgstr "ویرایش اطلاعات"
+
+#: includes/admin/class-gallery-metaboxes.php:253
+msgid "Remove from gallery"
+msgstr "پاک کردن از گالری"
+
+#: includes/admin/class-gallery-metaboxes.php:286
+#: includes/admin/view-extensions-build-your-own.php:134
+msgid "Gallery Template"
+msgstr "نمونه آماده گالری"
+
+#: includes/admin/class-gallery-metaboxes.php:299
+msgid ""
+"The gallery template that will be used when the gallery is output to the "
+"frontend."
+msgstr "نمونه آماده گالری که در خروجی شما استفاده خواهد شد."
+
+#: includes/admin/class-gallery-metaboxes.php:363
+msgid "Paste the above shortcode into a post or page to show the gallery."
+msgstr ""
+"این  کد کوتاه را کپی کنید و در فرم  یا پست خود قرار دهید تا گالری در آنجا "
+"نشان داده شود."
+
+#: includes/admin/class-gallery-metaboxes.php:391
+msgid "This gallery is used on the following posts or pages:"
+msgstr "گالری در این نوشته ها و یا برگه ها استفاده شده است:"
+
+#: includes/admin/class-gallery-metaboxes.php:397
+msgid "Edit"
+msgstr "ویرایش"
+
+#: includes/admin/class-gallery-metaboxes.php:398
+msgid "View"
+msgstr "دیدن"
+
+#: includes/admin/class-gallery-metaboxes.php:403
+msgid ""
+"This gallery is not used on any pages or pages yet. Quickly create a page:"
+msgstr ""
+"این گالری تا به حال در هیچ جایی استفاده نشده است. به سرعت یک برگه بسازید :"
+
+#: includes/admin/class-gallery-metaboxes.php:406
+msgid "Create Gallery Page"
+msgstr "ساخت برگه گالری"
+
+#: includes/admin/class-gallery-metaboxes.php:411
+msgid ""
+"A draft page will be created which includes the gallery shortcode in the "
+"content. The title of the page will be the same title as the gallery."
+msgstr ""
+"یک صفحه چرک نویس ایجاد خواهد شد که کد کوتاه گالری در آن قرار خواهد داشت. "
+"عنوان صفحه همه عنوان گالری خواهد بود."
+
+#: includes/admin/class-gallery-metaboxes.php:424
+msgid ""
+"Change the way images are sorted within your gallery. By default, they are "
+"sorted in the order you see them."
+msgstr ""
+"روشی که عکس ها در گالری ذخیره شده اند را عوض کنید. به صورت پیش فرض آن ها به "
+"ترتیبی ذخیره می شوند که شما آن ها را می بینید."
+
+#: includes/admin/class-gallery-metaboxes.php:464
+#, php-format
+msgid "Add any custom CSS to target this specific gallery. For example %s"
+msgstr ""
+"هر CSS سفارشی که خواستید را به قصد گالری خاصی قرار دهید. برای مثال : %s"
+
+#: includes/admin/class-menu.php:29
+#, php-format
+msgid "%s Settings"
+msgstr "تنظیمات %s"
+
+#: includes/admin/class-menu.php:33 includes/admin/view-extensions.php:45
+#, php-format
+msgid "%s Extensions"
+msgstr "اکستنشن های %s"
+
+#: includes/admin/class-menu.php:37
+#, php-format
+msgid "%s Help"
+msgstr "کمک %s"
+
+#: includes/admin/class-menu.php:41 includes/admin/view-system-info.php:38
+#, php-format
+msgid "%s System Information"
+msgstr "%s اطلاعات سیستم"
+
+#: includes/admin/class-menu.php:42 includes/admin/view-help.php:55
+msgid "System Info"
+msgstr "اطلاعات سیستم"
+
+#: includes/admin/class-menu.php:64
+#, php-format
+msgid "%s settings updated."
+msgstr "تنظیمات %s به روز رسانی شد."
+
+#: includes/admin/class-settings.php:17
+msgid "General"
+msgstr "عمومی"
+
+#: includes/admin/class-settings.php:27
+msgid "Default Gallery Template"
+msgstr "نمونه آماده پیشفرض برای گالری"
+
+#: includes/admin/class-settings.php:28
+msgid "The default gallery template to use for new galleries"
+msgstr "نمونه آماده پیشفرضی که برای گالری های جدید استفاده می شود"
+
+#: includes/admin/class-settings.php:37
+msgid "Default Gallery Sorting"
+msgstr "مرتب کردن پیشفرض گالری ها"
+
+#: includes/admin/class-settings.php:38
+msgid "The default attachment sorting to use for new galleries"
+msgstr "مرتب کردن پیش فرض پیوست ها برای استفاده در گالری های جدید"
+
+#: includes/admin/class-settings.php:47
+msgid "Hide Gallery Template Help"
+msgstr "گزینه کمک نمونه آماده گالری را پنهان کن"
+
+#: includes/admin/class-settings.php:48
+msgid ""
+"Some gallery templates show helpful tips, which are useful for new users. "
+"You can choose to hide these tips."
+msgstr ""
+"برخی از نمونه های آماده گالری ها ، ترفند های مفیدی را نشان می دهند که برای "
+"کاربران جدید کمک کننده است. می توانید انتخاب کنید که این ترفند ها را ببینید "
+"یا نه ."
+
+#: includes/admin/class-settings.php:61
+msgid "Default Gallery Settings"
+msgstr "تنظیمات پیشفرض گالری"
+
+#: includes/admin/class-settings.php:62
+msgid ""
+"When creating a new gallery, it can use the settings from an existing "
+"gallery as the default settings. This will save you time when creating many "
+"galleries that all have the same look and feel."
+msgstr ""
+"وقتی که گالری جدیدی درست می کنید ، این گالری می تواند از تنظیمات گالری های "
+"پیشین به عنوان پیشفرض استفاده کند. این گزینه وقتی به درد شما می خورد که می "
+"خواهید تعداد زیادی گالری همشکل و هم حس درست کنید."
+
+#: includes/admin/class-settings.php:74
+msgid "Use Beta Endpoint"
+msgstr "از قسمت پایانی بتا استفاده کن"
+
+#: includes/admin/class-settings.php:75
+msgid ""
+"The list of available extensions are pulled from an external URL. You can "
+"also pull from a \"beta\" endpoint which will sometimes contain beta "
+"extensions that are not publicly available."
+msgstr ""
+"لیست اکستنشن های در دسترس از یک پیوند بیرونی بیرون کشیده شده اند. همچنین شما "
+"می توانید این اطلاعات را از نقطه پایانی \"بتا\" که برخی وقت ها نسخه های بتای "
+"اکستنشن ها روی آن قرار می گیرد و عمومی نیست دریافت کنید."
+
+#: includes/admin/class-settings.php:81
+msgid "Thumbnails"
+msgstr "بند انگشتی ها"
+
+#: includes/admin/class-settings.php:85
+msgid "JPEG Quality"
+msgstr "کیفیت فشرده سازی JPEG"
+
+#: includes/admin/class-settings.php:86
+msgid "The image quality to be used when resizing JPEG images."
+msgstr "کیفیت تصویری که در هنگام تغییر اندازه عکس های JPEG در نظر دارید."
+
+#: includes/admin/class-settings.php:94
+msgid "Resize Animated GIFs"
+msgstr "GIF های متحرک را تغییر اندازه بده"
+
+#: includes/admin/class-settings.php:95
+msgid ""
+"Should animated gifs be resized or not. If enabled, only the first frame is "
+"used in the resize."
+msgstr ""
+"آیا می خواهید تصاویر متحرک (GIF) ها تغییر اندازه یابند یا نه ، اگر بله ، "
+"تنها اولین فریم تصویر برای تغییر اندازه استفاده می شود."
+
+#: includes/admin/view-extensions-build-your-own.php:23
+msgid "Please fill in all form fields!"
+msgstr "لطفا همه فیلد های فرم را کامل کنید !"
+
+#: includes/admin/view-extensions-build-your-own.php:30
+msgid "Cool Thing"
+msgstr "یه چیز باحال "
+
+#: includes/admin/view-extensions-build-your-own.php:32
+msgid "A cool description about what your cool thing can do"
+msgstr "یک توضیح باحال در مورد کارهایی که این چیز باحال می تواند انجام دهد"
+
+#: includes/admin/view-extensions-build-your-own.php:95
+msgid "Build Your Own FooGallery Extensions!"
+msgstr "اکستنشن های خودتان را بنویسید"
+
+#: includes/admin/view-extensions-build-your-own.php:97
+msgid ""
+"FooGallery was built with developers in mind. If you can build your own "
+"WordPress plugin, then you will have no problem building your own FooGallery "
+"extension."
+msgstr ""
+"فوو گالری با توجه به توسعه دهندگان نوشته شده است . اگر می توانید پلاگین "
+"وردپرس خودتان را بنویسید ، مطمئن باشید هیچ مشکلی در نوشتن اکستنشن برای "
+"فووگالری نخواهید داشت."
+
+#: includes/admin/view-extensions-build-your-own.php:99
+msgid "Extension Ideas"
+msgstr "ایده هایی برای اکستنشن ها"
+
+#: includes/admin/view-extensions-build-your-own.php:101
+msgid "Build your own unique Gallery Template."
+msgstr "یک نمونه یکتا برای گالری های خودتان بسازید"
+
+#: includes/admin/view-extensions-build-your-own.php:102
+msgid "Adding support for your favourite lightbox."
+msgstr "اضافه کردن حمایت از قاب عکس مورد علاقه شما"
+
+#: includes/admin/view-extensions-build-your-own.php:103
+msgid "Why not white-label FooGallery for your clients?"
+msgstr "فوو گالری بی نام و نشان برای مشتری های شما ، چرا که نه ؟"
+
+#: includes/admin/view-extensions-build-your-own.php:104
+msgid "Add your own options to the settings page?"
+msgstr "انتخاب های خودتان را به صفحه تنظیمات اضافه کنید !"
+
+#: includes/admin/view-extensions-build-your-own.php:106
+msgid ""
+"There is no limit to the number of ways you can change or alter FooGallery!"
+msgstr ""
+"هیچ محدودیتی در راه هایی که می توانی فوو گالری را برای خودتان تغییر دهید و "
+"سفارشی کنید نیست !"
+
+#: includes/admin/view-extensions-build-your-own.php:108
+msgid "Developer Tips"
+msgstr "ترفند هایی برای توسعه دهندگان"
+
+#: includes/admin/view-extensions-build-your-own.php:110
+msgid "An extension is essentially a WordPress plugin."
+msgstr "اکستنشن در واقع یک پلاگین وردپرس است ."
+
+#: includes/admin/view-extensions-build-your-own.php:111
+msgid ""
+"Extension functionality must be wrapped in a PHP class. (This class is "
+"included when the extension is activated)"
+msgstr ""
+"عملکرد های اکستنشن ها باید در یک کلاس PHP پیچیده شود (این کلاس وقتی اکستنشن "
+"فعال می شود فراخوانی می گردد)"
+
+#: includes/admin/view-extensions-build-your-own.php:112
+#, php-format
+msgid ""
+"There are several dozen actions and filters built in for you. (See all %s)"
+msgstr ""
+"چندین ده عدد اقدام و فیلتر هست که برای شما ساخته ایم (همه را %s ببینید)"
+
+#: includes/admin/view-extensions-build-your-own.php:112
+msgid "FooGallery actions and filters"
+msgstr "اقدام ها و فیلتر های فوو گالری"
+
+#: includes/admin/view-extensions-build-your-own.php:113
+#, php-format
+msgid "Read our %s on how to build your own extension in 2\tminutes."
+msgstr "%s ما را بخوانید تا ببینید چگونه می شود در 2 دقیقه یک اکستنشن نوشت."
+
+#: includes/admin/view-extensions-build-your-own.php:113
+msgid "step-by-step tutorial"
+msgstr "آموزش قدم به قدم"
+
+#: includes/admin/view-extensions-build-your-own.php:116
+msgid "Submit Your Extension"
+msgstr "اکستنشن خود را ارسال کنید"
+
+#: includes/admin/view-extensions-build-your-own.php:118
+msgid ""
+"Have you built your own extension that you are proud of? Do you want to "
+"share it with the community of FooGallery\tusers?"
+msgstr ""
+"آیا شما اکستنشن خودتان را نوشته اید و خیلی از این بابت به خودتان می بالید ؟ "
+"می خواهید آن را با جامعه استفاده کنندگان از فوو گالری به اشتراک بگذارید ؟"
+
+#: includes/admin/view-extensions-build-your-own.php:120
+#, php-format
+msgid "%s to get it listed in our extension store."
+msgstr "%s تا آن را در فروشگاه اکستنشن های ما لیست کنید."
+
+#: includes/admin/view-extensions-build-your-own.php:120
+msgid "Follow these simple instructions"
+msgstr "چند دستور ساده را دنبال کنید"
+
+#: includes/admin/view-extensions-build-your-own.php:122
+msgid "Extension Boilerplates"
+msgstr "اجاق های اکستنشن"
+
+#: includes/admin/view-extensions-build-your-own.php:124
+msgid ""
+"We really want to make it easy for you to get started and building your own "
+"extensions. Generate an extension boilerplate in seconds using the provided "
+"form."
+msgstr ""
+"ما واقعا می خواهیم ساختن اکستنشن های جدید برای شما راحت باشد. اکستنشن را در "
+"چند ثانیه و با فرم های اجاق اکستنشن درست کنید."
+
+#: includes/admin/view-extensions-build-your-own.php:129
+msgid "Extension Boilerplate Generator"
+msgstr "تولید کننده اجاق اکستنشن"
+
+#: includes/admin/view-extensions-build-your-own.php:132
+msgid "Type Of Extension"
+msgstr "نوع اکستنشن"
+
+#: includes/admin/view-extensions-build-your-own.php:139
+msgid "Name"
+msgstr "نام"
+
+#: includes/admin/view-extensions-build-your-own.php:143
+msgid "Description"
+msgstr "توضیحات"
+
+#: includes/admin/view-extensions-build-your-own.php:147
+msgid "Author Name"
+msgstr "نام نویسنده"
+
+#: includes/admin/view-extensions-build-your-own.php:151
+msgid "Author URL"
+msgstr "پیوند یکتای نویسنده"
+
+#: includes/admin/view-extensions-build-your-own.php:155
+msgid "Generate &amp; download .zip"
+msgstr "ساخت &amp; دانلود .zip"
+
+#: includes/admin/view-extensions-build-your-own.php:161
+msgid ""
+"Once you have downloaded the zip file, install and activate it like a normal "
+"WordPress plugin so that it shows up in the list of extensions!"
+msgstr ""
+"وقتی که شما فایل زیپ را دانلود کردید و سپس آن را مانند هر افزونه معمولی "
+"وردپرس دیگری نصب و فعال کردید، آن را در لیست اکستنشن ها خواهید دید."
+
+#: includes/admin/view-extensions-popup.php:5
+msgid "Show previous extension"
+msgstr "اکستنشن قبلی را نشان بده"
+
+#: includes/admin/view-extensions-popup.php:6
+msgid "Show next extension"
+msgstr "اکستنشن بعدی را نشان بده"
+
+#: includes/admin/view-extensions-popup.php:7
+msgid "Close overlay"
+msgstr "بستن همپوشانی"
+
+#: includes/admin/view-extensions-popup.php:20
+msgid "Current extension"
+msgstr "اکستنشن جاری"
+
+#: includes/admin/view-extensions-popup.php:22
+#, php-format
+msgid "Version: %s"
+msgstr "نگارش : %s"
+
+#: includes/admin/view-extensions-popup.php:23
+#, php-format
+msgid "By %s"
+msgstr "به وسیله %s"
+
+#: includes/admin/view-extensions-popup.php:27
+msgid "Update Available"
+msgstr "به روز رسانی جدیدی در درسترس است."
+
+#: includes/admin/view-extensions-popup.php:34
+#, php-format
+msgid "This is a child extension of %s."
+msgstr "این یک اکستنشن، کودک %s است ."
+
+#: includes/admin/view-extensions-popup.php:38
+msgid "Tags:"
+msgstr "برچسب ها :"
+
+#: includes/admin/view-extensions-popup.php:45
+msgid "Customize"
+msgstr "سفارشی سازی"
+
+#: includes/admin/view-extensions-popup.php:50
+#: includes/admin/view-extensions.php:133
+msgid "Activate"
+msgstr "فعال سازی"
+
+#: includes/admin/view-extensions-popup.php:52
+msgid "Live Preview"
+msgstr "پیش نمایش زنده"
+
+#: includes/admin/view-extensions-popup.php:57
+msgid "Delete"
+msgstr "پاک کردن"
+
+#: includes/admin/view-extensions.php:15
+#, php-format
+msgid "Extensions make %s even more awesome, without bloating the core plugin."
+msgstr ""
+"اکستنشن ها %s را حتی خیلی باحال تر هم می کنند! بدون این که روی هسته افزونه "
+"تاثیری بگذارند."
+
+#: includes/admin/view-extensions.php:42
+msgid ""
+"There was a problem loading all the public extensions! Only the default "
+"bundled extensions will be shown."
+msgstr ""
+"مشکلی در بارگذاری اکستنشن های عمومی به وجود آمده است ! تنها اکسنشن های "
+"پیشفرض موجود در افزونه نشان داده می شوند."
+
+#: includes/admin/view-extensions.php:57
+msgid "search..."
+msgstr "جستجو ..."
+
+#: includes/admin/view-extensions.php:131
+msgid "Are you sure you want to download this extension?"
+msgstr "آیا مطمئن هستید که می خواهید این اکستنشن را دانلود کنید ؟"
+
+#: includes/admin/view-extensions.php:131
+msgid "Download"
+msgstr "دانلود"
+
+#: includes/admin/view-extensions.php:134
+msgid "Deactivate"
+msgstr "غیر فعال کردن"
+
+#: includes/admin/view-extensions.php:137
+msgid "Activated"
+msgstr "فعال شد"
+
+#: includes/admin/view-extensions.php:139
+msgid "Coming Soon!"
+msgstr "به زودی ...!"
+
+#: includes/admin/view-help.php:4
+#, php-format
+msgid "Welcome to %s %s"
+msgstr "به %s  %s خوش آمدید"
+
+#: includes/admin/view-help.php:5
+#, php-format
+msgid ""
+"Thank you for choosing %s, the most intuitive and extensible gallery "
+"creation and management tool ever created for WordPress!"
+msgstr ""
+"از شما برای انتخاب %s ، کاربر پسند ترین و قابل گسترش ترین ابزار تولید و "
+"مدیریت گالری هایی که تا به حال برای وردپرس نوشته شده است سپاس گزاریم !"
+
+#: includes/admin/view-help.php:6
+msgid "Visit our homepage"
+msgstr "صفحه ما را ببینید."
+
+#: includes/admin/view-help.php:45
+msgid "Getting Started"
+msgstr "شروع کار"
+
+#: includes/admin/view-help.php:51
+msgid "Other Plugins"
+msgstr "بقیه افزونه ها"
+
+#: includes/admin/view-help.php:66
+msgid "Creating Your First Gallery"
+msgstr "ساختن اولین گالری خود"
+
+#: includes/admin/view-help.php:68
+#, php-format
+msgid "<a href=\"%s\">Galleries &rarr; Add New</a>"
+msgstr "<a href=\"%s\">اضافه کردن گالری های جدید</a>"
+
+#: includes/admin/view-help.php:69
+msgid ""
+"To create your first gallery, simply click the Add New button or click the "
+"Add Gallery menu link. Then choose images from the media library to include "
+"in your gallery."
+msgstr ""
+"برای ساخت اولین گالری خود ، به سادگی دکمه \"اضاف کردن جدید\" یا \"اضافه کردن "
+"گالری\" را از منو انتخاب کنید. سپس عکس هایتان را از کتابخانه وردپرس انتخاب "
+"کرده و در گالری بریزید."
+
+#: includes/admin/view-help.php:71 includes/admin/view-system-info.php:70
+msgid "Gallery Templates"
+msgstr "نمونه های آماده گالری"
+
+#: includes/admin/view-help.php:72
+msgid ""
+"Choose one of our built-in gallery templates or download one via our "
+"extension library."
+msgstr ""
+"یکی از نمونه های آماده گالری های ما را انتخاب کنید و یا یکی را از کتابخانه "
+"اکستنشن های ما دانلود کنید !"
+
+#: includes/admin/view-help.php:74
+msgid "Lightbox Support"
+msgstr "حمایت از قاب عکس (لایت باکس)"
+
+#: includes/admin/view-help.php:76
+msgid ""
+"FooGallery works out of the box with FooBox, our popular responsive image "
+"lightbox."
+msgstr "فووگالری به خوبی با FooBox - قاب عکس (لایت باکس) محبوب ما - کار می کند"
+
+#: includes/admin/view-help.php:77
+msgid "Purchase FooBox now!"
+msgstr "فوو باکس را همین الان بخر!"
+
+#: includes/admin/view-help.php:79
+msgid "Video Support"
+msgstr "ساپورت ویدیویی"
+
+#: includes/admin/view-help.php:81
+msgid ""
+"FooGallery now supports the creation of video galleries with the FooVideo "
+"premium extension!"
+msgstr ""
+"فووگالری با نصب اکستنشن FooVideo حالا ساخت گالری های ویدیویی را هم پشتیبانی "
+"می کند ! "
+
+#: includes/admin/view-help.php:82
+msgid "Purchase FooVideo now!"
+msgstr "فوو ویدیو را همین الان بخر !"
+
+#: includes/admin/view-help.php:94
+msgid "Show Off Your Gallery"
+msgstr "گالری خود را به نمایش بگذارید"
+
+#: includes/admin/view-help.php:96
+#, php-format
+msgid "The <em>[%s]</em> Short Code"
+msgstr "کد کوتاه  <em>[%s]</em>"
+
+#: includes/admin/view-help.php:97
+msgid ""
+"Simply copy the shortcode code from the gallery listing page and paste it "
+"into your posts or pages."
+msgstr ""
+"به سادگی کد کوتاه گالری را از لیست کپی کرده و آن را در صفحه ویرایش برگه یا "
+"نوشته در ویرایشگر دیداری پیست کنید."
+
+#: includes/admin/view-help.php:99
+msgid "Visual Editor Button"
+msgstr "دکمه ویرایشگر دیداری "
+
+#: includes/admin/view-help.php:100
+#, php-format
+msgid ""
+"Or to make life even easier, you can insert a gallery using the Add %s "
+"button inside the WordPress visual editor."
+msgstr ""
+"یا حتی برای راحت تر شدن کار ، می توانید گالری ها را با استفاده از دکمه اضافه "
+"کردن %s در ویرایشگر دیداری وردپرس ، اضافه کنید."
+
+#: includes/admin/view-help.php:102
+msgid "Copy To Clipboard"
+msgstr "کپی در کلیپ بورد"
+
+#: includes/admin/view-help.php:103
+msgid ""
+"We make your life easy! Just click the shortcodes and they get copied to "
+"your clipboard automatically. "
+msgstr ""
+"ما کار شما را راحت کرده ایم. فقط روی کدهای کوتاه کلیک کنید تا به شکل "
+"اتوماتیک روی کلیپ بورد شما کپی شوند."
+
+#: includes/admin/view-help.php:117
+msgid "Create Your Own Extensions"
+msgstr "اکستنشن های خودتان را بنویسید"
+
+#: includes/admin/view-help.php:119
+msgid "Easy To Code"
+msgstr "ساده برای کد نویسی"
+
+#: includes/admin/view-help.php:120
+#, php-format
+msgid ""
+"We have done all the hard work to make your life easier. Creating an "
+"extension for %s can be done in a couple lines of code."
+msgstr ""
+"ما همه کارهای سخت را انجام داده ایم تا زندگی شما را راحت تر کنیم. ساختن یک "
+"اکستنشن برای %s می تواند به سادگی و با چند خط کد انجام شود."
+
+#: includes/admin/view-help.php:122
+msgid "Actions and Filters"
+msgstr "اقدامات و فیلتر ها"
+
+#: includes/admin/view-help.php:123
+#, php-format
+msgid ""
+"We coded %s with extensibility in mind. There are hundreds of actions and "
+"filters and helper functions to change every aspect of the plugin."
+msgstr ""
+"ما %s را با رویکرد قابلیت افزایش نوشته ایم. صدها اقدام و فیلتر هست و نیز "
+"توابع کارگشا برای عوض کردن هر جنبه از افزونه در دسترس شما هست."
+
+#: includes/admin/view-help.php:125
+msgid "Host Anywhere"
+msgstr "هرجایی میزبانی کن"
+
+#: includes/admin/view-help.php:126
+msgid ""
+"Host your extensions on the WordPress.org plugin repo, or GitHub, or even in "
+"your own Amazon S3 bucket. You have the power and choice!"
+msgstr ""
+"اکستنشن هایت را در مخازن وردپرس یا گیت هاب میزبانی کن، حتی آن ها را در "
+"Amazon S3 میزبانی کن. تو قدرت و حق انتخاب داری !"
+
+#: includes/admin/view-system-info.php:39
+#, php-format
+msgid ""
+"Below is some information about your server configuration. You can use this "
+"info to help debug issues you may have with %s."
+msgstr ""
+"در زیر برخی از اطلاعات در مورد پیکربندی سرور میزبان شما آمده است . شما می "
+"توانید از این اطلاعات برای حل مشکلات به وجود آمده در کار با %s استفاده کنید."
+
+#: includes/admin/view-system-info.php:60
+msgid "FooGallery version"
+msgstr "نگارش فووگالری"
+
+#: includes/admin/view-system-info.php:61
+msgid "WordPress version"
+msgstr "نگارش وردپرس"
+
+#: includes/admin/view-system-info.php:62
+msgid "Activated Theme"
+msgstr "قالب فعال"
+
+#: includes/admin/view-system-info.php:63
+msgid "WordPress URL"
+msgstr "آدرس وردپرس نصب شده"
+
+#: includes/admin/view-system-info.php:64
+msgid "PHP version"
+msgstr "نگارش PHP"
+
+#: includes/admin/view-system-info.php:65
+msgid "PHP GD Loaded"
+msgstr "PHP GD در دسترس و بار گذاری شده است."
+
+#: includes/admin/view-system-info.php:65
+msgid "Not found!"
+msgstr "پیدا نشد!"
+
+#: includes/admin/view-system-info.php:66
+msgid "Extensions Endpoint"
+msgstr "نقطه پایانی اکستنشن ها"
+
+#: includes/admin/view-system-info.php:67
+msgid "Extensions Errors"
+msgstr "خطا های اکستنشن ها"
+
+#: includes/admin/view-system-info.php:67
+msgid "Nope, all good"
+msgstr "نه، همه چیز خوبه !"
+
+#: includes/admin/view-system-info.php:69
+msgid "Extensions Active"
+msgstr "اکستنشن های فعال"
+
+#: includes/admin/view-system-info.php:71
+msgid "Lightboxes"
+msgstr "قال عکس ها"
+
+#: includes/admin/view-system-info.php:72
+msgid "Active Plugins"
+msgstr "افزونه های فعال"
+
+#: includes/class-extensions-api.php:235
+msgid "new"
+msgstr "جدید"
+
+#: includes/class-extensions-api.php:320
+msgid "All"
+msgstr "همه"
+
+#: includes/class-extensions-api.php:323
+msgid "Active"
+msgstr "فعال"
+
+#: includes/class-extensions-api.php:342
+msgid "Build Your Own"
+msgstr "خودت بساز"
+
+#: includes/class-extensions-api.php:477
+#, php-format
+msgid "The extension %s could NOT be deactivated!"
+msgstr "اکستنشن %s نمی تواند غیرفعال شود."
+
+#: includes/class-extensions-api.php:502
+#, php-format
+msgid "The extension %s was successfully deactivated"
+msgstr "اکستنشن %s با موفقیت غیر فعال شد."
+
+#: includes/class-extensions-api.php:507 includes/class-extensions-api.php:572
+#: includes/class-extensions-api.php:665
+#, php-format
+msgid "Unknown extension : %s"
+msgstr "اکستنشن ناشناس : %s"
+
+#: includes/class-extensions-api.php:537
+#, php-format
+msgid "Requires %s version %s"
+msgstr "نیاز به %s نگارش %s"
+
+#: includes/class-extensions-api.php:539
+#, php-format
+msgid ""
+"The extension %s could not be activated, because you are using an outdated "
+"version! Please update %s to at least version %s."
+msgstr ""
+"اکستنشن %s قادر به فعالیت نیست. این بدین دلیل است که شما از نگارشی قدیمی "
+"استفاده می کنید ! لطفا %s را به آخرین نسخه اش یعنی %s بروز رسانی کنید."
+
+#: includes/class-extensions-api.php:549
+#, php-format
+msgid "The extension %s could NOT be activated!"
+msgstr "اکستنشن %s نمی تواند فعال شود."
+
+#: includes/class-extensions-api.php:567
+#, php-format
+msgid "The extension %s was successfully activated"
+msgstr "اکستنشن %s با موفقیت فعال شد."
+
+#: includes/class-extensions-api.php:619
+#, php-format
+msgid ""
+"Unable to connect to the WordPress.org plugin API to download %s. Full error "
+"log: %s"
+msgstr ""
+"عدم توانایی در اتصال به API های Wordpress.org برای دانلود %s . لاگ خطای "
+"کامل :%s"
+
+#: includes/class-extensions-api.php:633
+#, php-format
+msgid "The extension %s has no download link!"
+msgstr "اکستنشن %s هیچ پیوند دانلود مشخصی ندارد!"
+
+#: includes/class-extensions-api.php:648
+#, php-format
+msgid "The extension %s could NOT be downloaded!"
+msgstr "نتوانستیم اکستنشن %s را دانلود کنیم !"
+
+#: includes/class-extensions-api.php:655
+#, php-format
+msgid ""
+"The extension %s was successfully downloaded and can now be activated. %s"
+msgstr "اکستنشن %s با موفقیت دانلود شد و حالا می تواند فعال شود . %s"
+
+#: includes/class-extensions-api.php:659
+msgid "Activate immediately"
+msgstr "بی درنگ فعال کن"
+
+#: includes/class-extensions-api.php:715
+msgid "Error loading extension!"
+msgstr "خطا در بارگذاری اکستنشن"
+
+#: includes/class-foogallery.php:306
+msgid "No images"
+msgstr "بدون عکس"
+
+#: includes/class-foogallery.php:308
+msgid "1 image"
+msgstr "1 عکس"
+
+#: includes/class-foogallery.php:310
+#, php-format
+msgid "%s images"
+msgstr "%s عدد عکس"
+
+#: includes/class-posttypes.php:27
+msgid "Gallery"
+msgstr "گالری"
+
+#: includes/class-posttypes.php:28
+msgid "Add Gallery"
+msgstr "اضافه کردن گالری"
+
+#: includes/class-posttypes.php:30
+msgid "Edit Gallery"
+msgstr "ویرایش گالری"
+
+#: includes/class-posttypes.php:31
+msgid "New Gallery"
+msgstr "گالری جدید"
+
+#: includes/class-posttypes.php:32
+msgid "View Gallery"
+msgstr "دیدن گالری"
+
+#: includes/class-posttypes.php:33
+msgid "Search Galleries"
+msgstr "جستجو در میان گالری ها"
+
+#: includes/class-posttypes.php:34
+msgid "No Galleries found"
+msgstr "هیچ گالری پیدا نشد."
+
+#: includes/class-posttypes.php:35
+msgid "No Galleries found in Trash"
+msgstr "هیچ گالری در سطل آشغال نیست"
+
+#: includes/class-posttypes.php:69 includes/class-posttypes.php:72
+msgid "Gallery updated."
+msgstr "گالری به روز رسانی شد."
+
+#: includes/class-posttypes.php:70
+msgid "Gallery custom field updated."
+msgstr "فیلد سفارشی گالری به روز شد"
+
+#: includes/class-posttypes.php:71
+msgid "Gallery custom field deleted."
+msgstr "فیلد سفارشی گالری پاک شد"
+
+#: includes/class-posttypes.php:73
+#, php-format
+msgid "Gallery restored to revision from %s."
+msgstr "گالری برای بازبینی از %s بازگردانده شد."
+
+#: includes/class-posttypes.php:74
+msgid "Gallery published."
+msgstr "گالری منتشر شد"
+
+#: includes/class-posttypes.php:75
+msgid "Gallery saved."
+msgstr "گالری ذخیره شد"
+
+#: includes/class-posttypes.php:76
+msgid "Gallery submitted."
+msgstr "گالری  ارسال شد"
+
+#: includes/class-posttypes.php:77
+#, php-format
+msgid "Gallery scheduled for: <strong>%1$s</strong>."
+msgstr "گالری برای <strong>%1$s</strong> زمان بندی شد."
+
+#: includes/class-posttypes.php:78
+msgid "Gallery draft updated."
+msgstr "چک نویس گالری به روز رسانی شد."
+
+#: includes/class-posttypes.php:98
+#, php-format
+msgid "%s Gallery updated."
+msgid_plural "%s Galleries updated."
+msgstr[0] "گالری %s به روز رسانی شد."
+
+#: includes/class-posttypes.php:99
+#, php-format
+msgid "%s Gallery not updated, somebody is editing it."
+msgid_plural "%s Galleries not updated, somebody is editing them."
+msgstr[0] "گالری %s به روز رسانی نشد. کسی در حال ویرایش است."
+
+#: includes/class-posttypes.php:100
+#, php-format
+msgid "%s Gallery permanently deleted."
+msgid_plural "%s Galleries permanently deleted."
+msgstr[0] "%s گالری به شکل دائمی پاک شد."
+
+#: includes/class-posttypes.php:101
+#, php-format
+msgid "%s Gallery moved to the Trash."
+msgid_plural "%s Galleries moved to the Trash."
+msgstr[0] "%s گالری به سطل آشغال ریخته شد."
+
+#: includes/class-posttypes.php:102
+#, php-format
+msgid "%s Gallery restored from the Trash."
+msgid_plural "%s Galleries restored from the Trash."
+msgstr[0] "%s گالری از سطل آشغال بازگردانی شد."
+
+#: includes/foopluginbase/classes/class-foo-plugin-base.php:310
+msgid " Settings"
+msgstr "تنظیمات"
+
+#: includes/foopluginbase/classes/class-foo-plugin-settings.php:329
+msgid "Select An Image"
+msgstr "عکسی را انتخاب کنید"
+
+#: includes/foopluginbase/classes/class-foo-plugin-settings.php:329
+msgid "Select Image"
+msgstr "عکس را انتخاب کن"
+
+#: includes/foopluginbase/classes/class-foo-plugin-settings.php:361
+msgid "Settings restored to default values"
+msgstr "تنظیمات به حالت پیشفرض بازگشت داده شد"
+
+#: includes/foopluginbase/views/settings.php:91 views/settings.php:79
+msgid "Save Changes"
+msgstr "ذخیره سازی تغییرات"
+
+#: includes/foopluginbase/views/settings.php:93 views/settings.php:80
+msgid ""
+"Are you sure you want to restore all settings back to their default values?"
+msgstr ""
+"آیا مطمئن هستید که می خواهید همه تنظیمات را به حالت پیشفرض خود بازگردانید ؟"
+
+#: includes/foopluginbase/views/settings.php:95 views/settings.php:80
+msgid "Restore Defaults"
+msgstr "بازگرداندن به حالت پیشفرض"
+
+#: includes/functions.php:379
+msgid "Date created - newest first"
+msgstr "بر اساس تاریخ ایجاد - جدید ترین در ابتدا"
+
+#: includes/functions.php:380
+msgid "Date created - oldest first"
+msgstr "بر اساس تاریخ ایجاد - قدیمی ترین در ابتدا"
+
+#: includes/functions.php:381
+msgid "Date modified - most recent first"
+msgstr "بر اساس آخرین تغییر - آخرین در ابتدا"
+
+#: includes/functions.php:382
+msgid "Date modified - most recent last"
+msgstr "بر اساس آخرین تغییر - آخرین در انتها"
+
+#: includes/functions.php:383
+msgid "Title - alphabetically"
+msgstr "تیتر - الفبایی"
+
+#: includes/functions.php:384
+msgid "Title - reverse"
+msgstr "تیتر - برعکس الفبا"
+
+#: includes/functions.php:385
+msgid "Random"
+msgstr "تصادفی"
+
+#: includes/public/class-admin-bar.php:34
+msgid "Edit Galleries"
+msgstr "ویرایش گالری ها"
+
+#: includes/public/class-foogallery-template-loader.php:34
+msgid "The gallery was not found!"
+msgstr "گالری پیدا نشد !"
+
+#: includes/public/class-foogallery-template-loader.php:87
+msgid "No gallery template found!"
+msgstr "هیچ نمونه آماده ای از گالری یافت نشد"
+
+#~ msgid "Click to copy to your clipboard"
+#~ msgstr "کلیک کنید تا در کلیپ بورد شما ذخیره شود"
+
+#~ msgid ""
+#~ "Paste the above shortcode into a post or page to show the album. Simply "
+#~ "click the shortcode to copy it to your clipboard."
+#~ msgstr ""
+#~ "کد کوتاه بالا را در نوشته یا برگه پیست کنید تا آلبوم نشان داده شود. کافی "
+#~ "است روی کد کوتاه کلیک کنید تا کد برای شما کپی شود."
+
+#~ msgid "Hover Effect"
+#~ msgstr "جلوه هاور "
+
+#~ msgid "A hover effect is shown when you hover over each thumbnail."
+#~ msgstr ""
+#~ "جلوه هاور وقتی نمایان می شود که موس را از روی تصویر بند انگشتی بگذرانید !"
+
+#~ msgid "Single Thumb Gallery"
+#~ msgstr "گالری با یک تصویر بند انگشتی"
+
+#~ msgid "This is what your thumbnail will look like."
+#~ msgstr "این چیزی است که بیننده از تصاویر بند انگشتی شما خواهد دید"
+
+#~ msgid "Circle Plus"
+#~ msgstr "دایره +"
+
+#~ msgid "Background Color"
+#~ msgstr "رنگ پس زمینه"
+
+#~ msgid "Text Color"
+#~ msgstr "رنگ متن"
+
+#~ msgid ""
+#~ "Paste the above shortcode into a post or page to show the gallery. Simply "
+#~ "click the shortcode to copy it to your clipboard."
+#~ msgstr ""
+#~ "کد کوتاه بالا را در نوشته یا برگه پیست کنید تا گالری نشان داده شود. کافی "
+#~ "است روی کد کوتاه کلیک کنید تا کد برای شما کپی شود."
+
+#~ msgid "The default URL is "
+#~ msgstr "پیوند یکتای پیشفرض "
+
+#~ msgid ""
+#~ "Thank you for choosing %s, the most intuitive and extensible gallery "
+#~ "creation and management tool ever created for WordPress! NOW WITH ALBUMS!"
+#~ msgstr ""
+#~ "از شما برای انتخاب %s ، کارپسند ترین و قابل گسترش ترین ابزار تولید و "
+#~ "مدیریت گالری هایی که تا به حال برای وردپرس نوشته شده است سپاس گزاریم. "
+#~ "البته حالا با امکان آلبوم !"
+
+#~ msgid "Drag and Drop Reordering"
+#~ msgstr "مرتب سازی \"بکش و بنداز\""
+
+#~ msgid "Sort the images in your gallery simply by dragging them around."
+#~ msgstr ""
+#~ "عکس های درون گالری های خود را به سادگی و فقط با کشیدنشان به این سو و آن "
+#~ "شو مرتب کنید."
+
+#~ msgid ""
+#~ "Our default gallery template supports FooBox : our popular responsive "
+#~ "image lightbox."
+#~ msgstr ""
+#~ "نمونه آماده گالری های ما از FooBox حمایت می کند : قاب عکس (لایت باکس) "
+#~ "واکنش گرای محبوب ما !"
