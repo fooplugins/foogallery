@@ -13,10 +13,26 @@ function FooGallery_Default_Ready(func) {
 }
 
 FooGallery_Default_Ready(function () {
-    jQuery('.foogallery-default').each(function() {
-        var $gallery = jQuery(this);
-        $gallery.imagesLoaded( function() {
-            $gallery.removeClass('foogallery-default-loading');
-        });
+    var galleries = document.querySelectorAll('.foogallery-default'),
+        isElement = function(obj){
+            return typeof HTMLElement === 'object' ? obj instanceof HTMLElement : obj && typeof obj === 'object' && obj !== null && obj.nodeType === 1 && typeof obj.nodeName === 'string';
+        },
+        removeClass = function (elements, className) {
+            className = className || '';
+            var p = className.split(' '), _remove = function(el, classes) {
+                for (var i = 0, len = classes.length; i < len; i++) {
+                    el.className = el.className.replace(new RegExp('(\\s|^)' + classes[i] + '(\\s|$)'), ' ').replace(/^\s+|\s+$/g, '');
+                }
+            };
+            if (elements.length) {
+                for (var i = 0, len = elements.length; i < len; i++) {
+                    _remove(elements[i], p);
+                }
+            } else if (isElement(elements)) {
+                _remove(elements, p);
+            }
+        };
+    imagesLoaded(galleries, function() {
+        removeClass(galleries, 'foogallery-default-loading');
     });
 });
