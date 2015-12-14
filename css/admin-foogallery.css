@@ -223,9 +223,9 @@
 	vertical-align: bottom;
 	position: absolute;
 	left: 5px;
-	height: 100%;
 	margin-top: -15px;
 	top: 50%;
+	height: 1em;
 }
 
 .foogallery-metabox-settings {
