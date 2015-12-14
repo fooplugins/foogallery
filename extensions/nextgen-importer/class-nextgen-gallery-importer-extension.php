@@ -22,21 +22,18 @@ if ( ! class_exists( 'FooGallery_Nextgen_Gallery_Importer_Extension' ) ) {
 			add_action( 'foogallery_admin_menu_after', array( $this, 'add_menu' ) );
 			add_action( 'foogallery_extension_activated-nextgen', array( $this, 'add_menu' ) );
 
-			//only do anything if NextGen is installed
-			if ( $this->nextgen->is_nextgen_installed() ) {
-				//hook into the foogallery menu
-				add_action( 'foogallery_admin_help_after_section_one', array( $this, 'show_nextgen_import_help' ) );
+			//hook into the foogallery menu
+			add_action( 'foogallery_admin_help_after_section_one', array( $this, 'show_nextgen_import_help' ) );
 
-				// Ajax calls for importing galleries
-				add_action( 'wp_ajax_foogallery_nextgen_import', array( $this, 'ajax_nextgen_start_import' ) );
-				add_action( 'wp_ajax_foogallery_nextgen_import_refresh', array(	$this, 'ajax_nextgen_continue_import' ) );
-				add_action( 'wp_ajax_foogallery_nextgen_import_cancel', array( $this, 'ajax_nextgen_cancel_import' ) );
-				add_action( 'wp_ajax_foogallery_nextgen_import_reset', array( $this, 'ajax_nextgen_reset_import' ) );
+			// Ajax calls for importing galleries
+			add_action( 'wp_ajax_foogallery_nextgen_import', array( $this, 'ajax_nextgen_start_import' ) );
+			add_action( 'wp_ajax_foogallery_nextgen_import_refresh', array(	$this, 'ajax_nextgen_continue_import' ) );
+			add_action( 'wp_ajax_foogallery_nextgen_import_cancel', array( $this, 'ajax_nextgen_cancel_import' ) );
+			add_action( 'wp_ajax_foogallery_nextgen_import_reset', array( $this, 'ajax_nextgen_reset_import' ) );
 
-				// Ajax calls for importing albums
-				add_action( 'wp_ajax_foogallery_nextgen_album_import_reset', array( $this, 'ajax_nextgen_reset_album_import' ) );
-				add_action( 'wp_ajax_foogallery_nextgen_album_import', array( $this, 'ajax_nextgen_start_album_import' ) );
-			}
+			// Ajax calls for importing albums
+			add_action( 'wp_ajax_foogallery_nextgen_album_import_reset', array( $this, 'ajax_nextgen_reset_album_import' ) );
+			add_action( 'wp_ajax_foogallery_nextgen_album_import', array( $this, 'ajax_nextgen_start_album_import' ) );
 		}
 
 		function add_menu() {
