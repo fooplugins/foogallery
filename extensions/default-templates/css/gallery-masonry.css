@@ -37,3 +37,87 @@
     line-height: 0;
     font-size: 0;
 }
+
+/* 2 column layout */
+.foogallery-masonry.masonry-layout-2col .item {
+    margin-bottom: 1%;
+    width: 49%;
+}
+.foogallery-masonry.masonry-layout-2col .masonry-item-width {
+    width: 49%;
+}
+.foogallery-masonry.masonry-layout-2col .masonry-gutter-width {
+    width: 1%;
+}
+
+/* 3 column layout */
+.foogallery-masonry.masonry-layout-3col .item {
+    margin-bottom: 1%;
+    width: 32%;
+}
+.foogallery-masonry.masonry-layout-3col .masonry-item-width {
+    width: 32%;
+}
+.foogallery-masonry.masonry-layout-3col .masonry-gutter-width {
+    width: 1%;
+}
+
+/* 4 column layout */
+.foogallery-masonry.masonry-layout-4col .item {
+    margin-bottom: 1%;
+    width: 24%;
+}
+.foogallery-masonry.masonry-layout-4col .masonry-item-width {
+    width: 24%;
+}
+.foogallery-masonry.masonry-layout-4col .masonry-gutter-width {
+    width: 1%;
+}
+
+/* 5 column layout */
+.foogallery-masonry.masonry-layout-5col .item {
+    margin-bottom: 1%;
+    width: 19%;
+}
+.foogallery-masonry.masonry-layout-5col .masonry-item-width {
+    width: 19%;
+}
+.foogallery-masonry.masonry-layout-5col .masonry-gutter-width {
+    width: 1%;
+}
+
+/* Force 2 column layout < 480px */
+@media screen and (max-width: 480px) {
+    .foogallery-masonry.masonry-layout-5col .masonry-item-width,
+    .foogallery-masonry.masonry-layout-4col .masonry-item-width,
+    .foogallery-masonry.masonry-layout-3col .masonry-item-width,
+    .foogallery-masonry.masonry-layout-2col .masonry-item-width { width: 49%; }
+
+    .foogallery-masonry.masonry-layout-5col .item,
+    .foogallery-masonry.masonry-layout-4col .item,
+    .foogallery-masonry.masonry-layout-3col .item,
+    .foogallery-masonry.masonry-layout-2col .item { width: 49%; }
+
+    .foogallery-masonry.masonry-layout-5col .masonry-gutter-width,
+    .foogallery-masonry.masonry-layout-4col .masonry-gutter-width,
+    .foogallery-masonry.masonry-layout-3col .masonry-gutter-width,
+    .foogallery-masonry.masonry-layout-2col .masonry-gutter-width { width: 1%; }
+}
+
+/* Force 1 column layout < 320px */
+@media screen and (max-width: 320px) {
+    .foogallery-masonry.masonry-layout-5col .masonry-item-width,
+    .foogallery-masonry.masonry-layout-4col .masonry-item-width,
+    .foogallery-masonry.masonry-layout-3col .masonry-item-width,
+    .foogallery-masonry.masonry-layout-2col .masonry-item-width { width: 100%; }
+
+    .foogallery-masonry.masonry-layout-5col .item,
+    .foogallery-masonry.masonry-layout-4col .item,
+    .foogallery-masonry.masonry-layout-3col .item,
+    .foogallery-masonry.masonry-layout-2col .item { width: 100%; margin-bottom: 2%; }
+
+    .foogallery-masonry.masonry-layout-5col .masonry-gutter-width,
+    .foogallery-masonry.masonry-layout-4col .masonry-gutter-width,
+    .foogallery-masonry.masonry-layout-3col .masonry-gutter-width,
+    .foogallery-masonry.masonry-layout-2col .masonry-gutter-width { width: 0; }
+}
