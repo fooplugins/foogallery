@@ -158,9 +158,24 @@ if ( ! class_exists( 'FooGallery_Default_Templates_Extension' ) ) {
 						'min'     => '0',
 					),
 					array(
+						'id'      => 'layout',
+						'title'   => __( 'Masonry Layout', 'foogallery' ),
+						'desc'    => __( 'Choose a fixed width thumb layout, or responsive columns.', 'foogallery' ),
+						'type'    => 'radio',
+						'choices' => array(
+								'fixed'  => __( 'Fixed Width', 'foogallery' ),
+								'2col'   => __( '2 Columns', 'foogallery' ),
+								'3col'   => __( '3 Columns', 'foogallery' ),
+								'4col'   => __( '4 Columns', 'foogallery' ),
+								'5col'   => __( '5 Columns', 'foogallery' )
+						),
+						'spacer'  => '<span class="spacer"></span>',
+						'default' => 'fixed'
+					),
+					array(
 						'id'      => 'gutter_width',
 						'title'   => __( 'Gutter Width', 'foogallery' ),
-						'desc'    => __( 'The spacing between your thumbnails.', 'foogallery' ),
+						'desc'    => __( 'The spacing between your thumbnails. This is NOT applicable when using a column layout above!', 'foogallery' ),
 						'type'    => 'number',
 						'class'   => 'small-text',
 						'default' => 10,
@@ -170,7 +185,7 @@ if ( ! class_exists( 'FooGallery_Default_Templates_Extension' ) ) {
 					array(
 						'id'      => 'center_align',
 						'title'   => __( 'Image Alignment', 'foogallery' ),
-						'desc'    => __( 'You can choose to center align your images or leave them at the default.', 'foogallery' ),
+						'desc'    => __( 'You can choose to center align your images or leave them at the default. This is NOT applicable when using a column layout above!', 'foogallery' ),
 						'type'    => 'radio',
 						'choices' => array(
 							'default'  => __( 'Left Alignment', 'foogallery' ),
