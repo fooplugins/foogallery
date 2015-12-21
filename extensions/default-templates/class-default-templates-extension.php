@@ -146,6 +146,7 @@ if ( ! class_exists( 'FooGallery_Default_Templates_Extension' ) ) {
 			$gallery_templates[] = array(
 				'slug'        => 'masonry',
 				'name'        => __( 'Masonry Image Gallery', 'foogallery' ),
+				'admin_js'	  => FOOGALLERY_URL . 'extensions/default-templates/js/admin-gallery-masonry.js',
 				'fields'	  => array(
 					array(
 						'id'      => 'thumbnail_width',
@@ -175,7 +176,7 @@ if ( ! class_exists( 'FooGallery_Default_Templates_Extension' ) ) {
 					array(
 						'id'      => 'gutter_width',
 						'title'   => __( 'Gutter Width', 'foogallery' ),
-						'desc'    => __( 'The spacing between your thumbnails. This is NOT applicable when using a column layout above!', 'foogallery' ),
+						'desc'    => __( 'The spacing between your thumbnails. Only applicable when using a fixed layout!', 'foogallery' ),
 						'type'    => 'number',
 						'class'   => 'small-text',
 						'default' => 10,
@@ -185,7 +186,7 @@ if ( ! class_exists( 'FooGallery_Default_Templates_Extension' ) ) {
 					array(
 						'id'      => 'center_align',
 						'title'   => __( 'Image Alignment', 'foogallery' ),
-						'desc'    => __( 'You can choose to center align your images or leave them at the default. This is NOT applicable when using a column layout above!', 'foogallery' ),
+						'desc'    => __( 'You can choose to center align your images or leave them at the default. Only applicable when using a fixed layout!', 'foogallery' ),
 						'type'    => 'radio',
 						'choices' => array(
 							'default'  => __( 'Left Alignment', 'foogallery' ),
@@ -193,6 +194,19 @@ if ( ! class_exists( 'FooGallery_Default_Templates_Extension' ) ) {
 						),
 						'spacer'  => '<span class="spacer"></span>',
 						'default' => 'default'
+					),
+					array(
+						'id'      => 'gutter_percent',
+						'title'   => __( 'Gutter Size', 'foogallery' ),
+						'desc'    => __( 'Choose a gutter size when using responsive columns.', 'foogallery' ),
+						'type'    => 'radio',
+						'choices' => array(
+								'no-gutter'   => __( 'No Gutter', 'foogallery' ),
+								''  => __( 'Normal Size Gutter', 'foogallery' ),
+								'large-gutter'   => __( 'Larger Gutter', 'foogallery' )
+						),
+						'spacer'  => '<span class="spacer"></span>',
+						'default' => ''
 					),
 					array(
 						'id'      => 'hover_zoom',

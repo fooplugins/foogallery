@@ -38,53 +38,69 @@
     font-size: 0;
 }
 
-/* 2 column layout */
-.foogallery-masonry.masonry-layout-2col .item {
-    margin-bottom: 1%;
-    width: 49%;
-}
-.foogallery-masonry.masonry-layout-2col .masonry-item-width {
-    width: 49%;
-}
-.foogallery-masonry.masonry-layout-2col .masonry-gutter-width {
-    width: 1%;
-}
+/* 2 column layouts */
+/* 2 column layout - normal gutter */
+.foogallery-masonry.masonry-layout-2col .item { margin-bottom: 1%; width: 49%; }
+.foogallery-masonry.masonry-layout-2col .masonry-item-width { width: 49%; }
+.foogallery-masonry.masonry-layout-2col .masonry-gutter-width { width: 1%; }
 
-/* 3 column layout */
-.foogallery-masonry.masonry-layout-3col .item {
-    margin-bottom: 1%;
-    width: 32%;
-}
-.foogallery-masonry.masonry-layout-3col .masonry-item-width {
-    width: 32%;
-}
-.foogallery-masonry.masonry-layout-3col .masonry-gutter-width {
-    width: 1%;
-}
+/* 2 column layout - no gutter */
+.foogallery-masonry.masonry-layout-2col.no-gutter .item { margin-bottom: 0; width: 50%; }
+.foogallery-masonry.masonry-layout-2col.no-gutter .masonry-item-width { width: 50%; }
+.foogallery-masonry.masonry-layout-2col.no-gutter .masonry-gutter-width { width: 0; }
 
-/* 4 column layout */
-.foogallery-masonry.masonry-layout-4col .item {
-    margin-bottom: 1%;
-    width: 24%;
-}
-.foogallery-masonry.masonry-layout-4col .masonry-item-width {
-    width: 24%;
-}
-.foogallery-masonry.masonry-layout-4col .masonry-gutter-width {
-    width: 1%;
-}
+/* 2 column layout - large gutter */
+.foogallery-masonry.masonry-layout-2col.large-gutter .item { margin-bottom: 3%; width: 47%; }
+.foogallery-masonry.masonry-layout-2col.large-gutter .masonry-item-width { width: 47%; }
+.foogallery-masonry.masonry-layout-2col.large-gutter .masonry-gutter-width { width: 3%; }
 
-/* 5 column layout */
-.foogallery-masonry.masonry-layout-5col .item {
-    margin-bottom: 1%;
-    width: 19%;
-}
-.foogallery-masonry.masonry-layout-5col .masonry-item-width {
-    width: 19%;
-}
-.foogallery-masonry.masonry-layout-5col .masonry-gutter-width {
-    width: 1%;
-}
+/* 3 column layouts */
+/* 3 column layout - normal gutter */
+.foogallery-masonry.masonry-layout-3col .item { margin-bottom: 1%; width: 32%; }
+.foogallery-masonry.masonry-layout-3col .masonry-item-width { width: 32%; }
+.foogallery-masonry.masonry-layout-3col .masonry-gutter-width { width: 1%; }
+
+/* 3 column layout - no gutter */
+.foogallery-masonry.masonry-layout-3col.no-gutter .item { margin-bottom: 0; width: 33%; }
+.foogallery-masonry.masonry-layout-3col.no-gutter .masonry-item-width { width: 33%; }
+.foogallery-masonry.masonry-layout-3col.no-gutter .masonry-gutter-width { width: 0; }
+
+/* 3 column layout - large gutter */
+.foogallery-masonry.masonry-layout-3col.large-gutter .item { margin-bottom: 3%; width: 30%; }
+.foogallery-masonry.masonry-layout-3col.large-gutter .masonry-item-width { width: 30%; }
+.foogallery-masonry.masonry-layout-3col.large-gutter .masonry-gutter-width { width: 3%; }
+
+/* 4 column layouts */
+/* 4 column layout - normal gutter */
+.foogallery-masonry.masonry-layout-4col .item { margin-bottom: 1%; width: 24%; }
+.foogallery-masonry.masonry-layout-4col .masonry-item-width { width: 24%; }
+.foogallery-masonry.masonry-layout-4col .masonry-gutter-width { width: 1%; }
+
+/* 4 column layout - no gutter */
+.foogallery-masonry.masonry-layout-4col.no-gutter .item { margin-bottom: 0; width: 25%; }
+.foogallery-masonry.masonry-layout-4col.no-gutter .masonry-item-width { width: 25%; }
+.foogallery-masonry.masonry-layout-4col.no-gutter .masonry-gutter-width { width: 0; }
+
+/* 4 column layout - large gutter */
+.foogallery-masonry.masonry-layout-4col.large-gutter .item { margin-bottom: 3%; width: 22%; }
+.foogallery-masonry.masonry-layout-4col.large-gutter .masonry-item-width { width: 22%; }
+.foogallery-masonry.masonry-layout-4col.large-gutter .masonry-gutter-width { width: 3%; }
+
+/* 5 column layouts */
+/* 5 column layout - normal gutter */
+.foogallery-masonry.masonry-layout-5col .item { margin-bottom: 1%; width: 19%; }
+.foogallery-masonry.masonry-layout-5col .masonry-item-width { width: 19%; }
+.foogallery-masonry.masonry-layout-5col .masonry-gutter-width { width: 1%; }
+
+/* 5 column layout - no gutter */
+.foogallery-masonry.masonry-layout-5col.no-gutter .item { margin-bottom: 0; width: 20%; }
+.foogallery-masonry.masonry-layout-5col.no-gutter .masonry-item-width { width: 20%; }
+.foogallery-masonry.masonry-layout-5col.no-gutter .masonry-gutter-width { width: 0; }
+
+/* 5 column layout - large gutter */
+.foogallery-masonry.masonry-layout-5col.large-gutter .item { margin-bottom: 3%; width: 17%; }
+.foogallery-masonry.masonry-layout-5col.large-gutter .masonry-item-width { width: 17%; }
+.foogallery-masonry.masonry-layout-5col.large-gutter .masonry-gutter-width { width: 3%; }
 
 /* Force 2 column layout < 480px */
 @media screen and (max-width: 480px) {
