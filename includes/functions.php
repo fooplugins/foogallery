@@ -293,7 +293,7 @@ function foogallery_extract_gallery_shortcodes( $content ) {
 			$attribure_string = str_replace( '"', '', $attribure_string );
 			$attributes = wp_parse_args( $attribure_string );
 			if ( array_key_exists( 'id', $attributes ) ) {
-				$id           = intval( $attributes['id'] );
+				$id = intval( $attributes['id'] );
 				$shortcodes[ $id ] = $shortcode;
 			}
 		}
