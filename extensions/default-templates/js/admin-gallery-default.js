@@ -5,15 +5,23 @@
 		var $previewImage = $('.foogallery-thumbnail-preview'),
 			border_style = $('input[name="foogallery_settings[default_border-style]"]:checked').val(),
 			hover_effect = $('input[name="foogallery_settings[default_hover-effect]"]:checked').val(),
-		    hover_effect_type = $('input[name="foogallery_settings[default_hover-effect-type]"]:checked').val();
+		    hover_effect_type = $('input[name="foogallery_settings[default_hover-effect-type]"]:checked').val(),
+			caption_effect_type = $('input[name="foogallery_settings[default_caption-hover-effect]"]:checked').val();
 
-		$previewImage.attr('class' ,'foogallery-thumbnail-preview foogallery-container foogallery-default ' + hover_effect + ' ' + border_style + ' ' + hover_effect_type);
+		$previewImage.attr('class' ,'foogallery-thumbnail-preview foogallery-container foogallery-default ' + hover_effect + ' ' + border_style + ' ' + hover_effect_type + ' ' + caption_effect_type);
 
-		var $hoverEffectrow = $('.gallery_template_field-default-hover-effect');
+		var $hoverEffectrow = $('.gallery_template_field-default-hover-effect'),
+			$captionHoverRow = $('.gallery_template_field-default-caption-hover-effect');
+
 		if ( hover_effect_type === '' ) {
 			$hoverEffectrow.show();
+			$captionHoverRow.hide();
+		} else if ( hover_effect_type === 'hover-effect-caption' ) {
+			$captionHoverRow.show();
+			$hoverEffectrow.hide();
 		} else {
 			$hoverEffectrow.hide();
+			$captionHoverRow.hide();
 		}
 	};
 
@@ -22,7 +30,7 @@
 			FOOGALLERY_DEF_TEMPLATE.setPreviewClasses();
 		});
 
-		$('input[name="foogallery_settings[default_border-style]"], input[name="foogallery_settings[default_hover-effect]"], input[name="foogallery_settings[default_hover-effect-type]"]').change(function() {
+		$('input[name="foogallery_settings[default_border-style]"], input[name="foogallery_settings[default_hover-effect]"], input[name="foogallery_settings[default_hover-effect-type]"], input[name="foogallery_settings[default_caption-hover-effect]"]').change(function() {
 			FOOGALLERY_DEF_TEMPLATE.setPreviewClasses();
 		});
 

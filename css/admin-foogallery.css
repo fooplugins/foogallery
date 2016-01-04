@@ -247,3 +247,8 @@
 	box-shadow: none;
 	outline: 0;
 }
+
+.foogallery-thumbnail-preview {
+	display: inline-block;
+
+}

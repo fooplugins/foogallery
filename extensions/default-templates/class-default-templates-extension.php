@@ -77,6 +77,7 @@ if ( ! class_exists( 'FooGallery_Default_Templates_Extension' ) ) {
 							''  => __( 'Icon', 'foogallery' ),
 							'hover-effect-tint'   => __( 'Dark Tint', 'foogallery' ),
 							'hover-effect-color' => __( 'Colorize', 'foogallery' ),
+							'hover-effect-caption' => __( 'Caption', 'foogallery' ),
 							'hover-effect-none' => __( 'None', 'foogallery' )
 						) ),
 						'spacer'  => '<span class="spacer"></span>',
@@ -97,6 +98,21 @@ if ( ! class_exists( 'FooGallery_Default_Templates_Extension' ) ) {
 							'hover-effect-circle-plus' => array( 'label' => __( 'Cirlce Plus' , 'foogallery' ), 'img' => FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_URL . 'assets/hover-effect-icon-circle-plus.png' ),
 							'hover-effect-eye' => array( 'label' => __( 'Eye' , 'foogallery' ), 'img' => FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_URL . 'assets/hover-effect-icon-eye.png' )
 						),
+					),
+					array(
+						'id'      => 'caption-hover-effect',
+						'title'   => __( 'Caption Hover Effect', 'foogallery' ),
+						'section' => __( 'Thumbnail Settings', 'foogallery' ),
+						'default' => 'hover-caption-simple',
+						'type'    => 'radio',
+						'choices' => apply_filters( 'foogallery_gallery_template_caption-hover-effects', array(
+							'hover-caption-simple'  => __( 'Simple', 'foogallery' ),
+							'hover-caption-full-drop'   => __( 'Drop', 'foogallery' ),
+							'hover-caption-full-fade' => __( 'Fade In', 'foogallery' ),
+							'hover-caption-push' => __( 'Push', 'foogallery' ),
+							'hover-caption-simple-always' => __( 'Always Visible', 'foogallery' )
+						) ),
+						'spacer'  => '<span class="spacer"></span>'
 					),
 					array(
 						'id' => 'thumb_preview',
@@ -498,6 +514,8 @@ if ( ! class_exists( 'FooGallery_Default_Templates_Extension' ) ) {
 
 				$hover_effect = $gallery->get_meta( 'default_hover-effect', 'hover-effect-zoom' );
 				$border_style = $gallery->get_meta( 'default_border-style', 'border-style-square-white' );
+				$hover_effect_type = $gallery->get_meta( 'hover-effect-type', '' );
+				$caption_hover_effect = $gallery->get_meta( 'caption-hover-effect', 'hover-caption-simple' );
 
 				$featured = $gallery->featured_attachment();
 
@@ -506,8 +524,17 @@ if ( ! class_exists( 'FooGallery_Default_Templates_Extension' ) ) {
 					$featured->url = FOOGALLERY_URL . 'assets/test_thumb_1.jpg';
 				}
 
-				echo '<div class="' . foogallery_build_class_attribute( $gallery, $hover_effect, $border_style, 'foogallery-thumbnail-preview' ) . '">';
-				echo $featured->html( $args );
+				echo '<div class="' . foogallery_build_class_attribute( $gallery, $hover_effect, $border_style, $hover_effect_type, $caption_hover_effect, 'foogallery-thumbnail-preview' ) . '">';
+				echo $featured->html( $args, true, false );
+				echo '<div class="foogallery-caption">';
+				if ( $featured->caption ) {
+					echo '<h3>' . $featured->caption . '</h3>';
+				}
+				if ( $featured->description ) {
+					echo '<p>' . $featured->description . '</p>';
+				}
+				echo '</div>';
+				echo '</a>';
 				echo '</div>';
 			}
 		}

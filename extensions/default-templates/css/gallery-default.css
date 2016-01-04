@@ -223,6 +223,126 @@
 	background: none !important;
 }
 
+/* Caption Styles */
+
+.foogallery-default.hover-effect-caption a:before,
+.foogallery-default.hover-effect-caption a:before:hover {
+	background: none !important;
+}
+
+.foogallery-default .foogallery-caption {
+	display: none;
+	background-color: rgba(0,0,0,0.8);
+	position: absolute;
+	z-index: 100;
+	-webkit-transition: all 300ms ease-out;
+	-moz-transition: all 300ms ease-out;
+	-o-transition: all 300ms ease-out;
+	-ms-transition: all 300ms ease-out;
+	transition: all 300ms ease-out;
+	width: 100%;
+}
+
+.foogallery-default.hover-effect-caption .foogallery-caption h3 {
+	color: #fff;
+	font-size: 14px;
+}
+.foogallery-default.hover-effect-caption .foogallery-caption p {
+	color: #fff;
+	font-size: 10px;
+}
+
+.foogallery-default.hover-effect-caption.hover-caption-simple .foogallery-caption {
+	bottom: 0;
+	display: block;
+	left: 0;
+	text-align: center;
+	-moz-transform: translateY(100%);
+	-o-transform: translateY(100%);
+	-webkit-transform: translateY(100%);
+	transform: translateY(100%);
+}
+
+.foogallery-default.hover-effect-caption.hover-caption-simple a:hover .foogallery-caption {
+	-moz-transform: translateY(0);
+	-o-transform: translateY(0);
+	-webkit-transform: translateY(0);
+	transform: translateY(0);
+}
+
+.foogallery-default.hover-effect-caption.hover-caption-simple-always .foogallery-caption {
+	display: block;
+	left: 0;
+	bottom: 0;
+	text-align: center;
+}
+
+.foogallery-default.hover-effect-caption.hover-caption-full-drop .foogallery-caption {
+	display: block;
+	left: 0;
+	top: 0;
+	bottom: 0;
+	text-align: center;
+	-moz-transform: translateY(-100%);
+	-o-transform: translateY(-100%);
+	-webkit-transform: translateY(-100%);
+	transform: translateY(-100%);
+}
+
+.foogallery-default.hover-effect-caption.hover-caption-full-drop a:hover .foogallery-caption {
+	-moz-transform: translateY(0);
+	-o-transform: translateY(0);
+	-webkit-transform: translateY(0);
+	transform: translateY(0);
+}
+
+.foogallery-default.hover-effect-caption.hover-caption-full-fade .foogallery-caption {
+	display: block;
+	opacity: 0;
+	left: 0;
+	top: 0;
+	bottom: 0;
+	text-align: center;
+}
+
+.foogallery-default.hover-effect-caption.hover-caption-full-fade a:hover .foogallery-caption {
+	opacity: 1;
+}
+
+.foogallery-default.hover-effect-caption.hover-caption-push .foogallery-caption {
+	display: block;
+	left: 0;
+	top: 0;
+	bottom: 0;
+	text-align: center;
+	-moz-transform: translateX(100%);
+	-o-transform: translateX(100%);
+	-webkit-transform: translateX(100%);
+	transform: translateX(100%);
+}
+
+.foogallery-default.hover-effect-caption.hover-caption-push a:hover .foogallery-caption {
+	-moz-transform: translateY(0);
+	-o-transform: translateY(0);
+	-webkit-transform: translateY(0);
+	transform: translateY(0);
+}
+
+.foogallery-default.hover-effect-caption.hover-caption-push img {
+	-webkit-transition: all 300ms ease-out;
+	-moz-transition: all 300ms ease-out;
+	-o-transition: all 300ms ease-out;
+	-ms-transition: all 300ms ease-out;
+	transition: all 300ms ease-out;
+}
+
+.foogallery-default.hover-effect-caption.hover-caption-push a:hover img {
+	-moz-transform: translateX(-100%);
+	-o-transform: translateX(-100%);
+	-webkit-transform: translateX(-100%);
+	transform: translateX(-100%);
+}
+
 /* Loading Styles */
 .foogallery-default-loading {
 	min-height: 11px;
