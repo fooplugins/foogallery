@@ -18,7 +18,7 @@ if ( !class_exists( 'FooGallery_Thumbnails' ) ) {
 				'width'                   => 0,
 				'height'                  => 0,
 				'crop'                    => true,
-				'jpeg_quality'            => intval( foogallery_get_setting( 'thumb_jpeg_quality' ) ),
+				'jpeg_quality'            => foogallery_thumbnail_jpeg_quality(),
 				'thumb_resize_animations' => foogallery_get_setting( 'thumb_resize_animations' )
 			);
 
