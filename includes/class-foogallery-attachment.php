@@ -202,5 +202,31 @@ if ( ! class_exists( 'FooGalleryAttachment' ) ) {
 
 			return apply_filters( 'foogallery_attachment_html_link', $html, $args, $this );
 		}
+
+		/**
+		 * Returns generic html for captions
+		 *
+		 * @param $caption_content string Include title, desc, or both
+		 *
+		 * @return string
+		 */
+		public function html_caption( $caption_content ) {
+			$html = '';
+			$caption_html = array();
+			if ( $this->caption && ( 'title' === $caption_content || 'both' === $caption_content ) ) {
+				$caption_html[] = '<div class="foogallery-caption-title">' . $this->caption . '</div>';
+			}
+			if ( $this->description && ( 'desc' === $caption_content || 'both' === $caption_content ) ) {
+				$caption_html[] = '<div class="foogallery-caption-desc">' . $this->description . '</div>';
+			}
+
+			if ( count($caption_html) > 0 ) {
+				$html = '<div class="foogallery-caption">';
+				$html .= implode( $caption_html );
+				$html .= '</div>';
+			}
+
+			return apply_filters( 'foogallery_attachment_html_caption', $html, $caption_content, $this );
+		}
 	}
 }

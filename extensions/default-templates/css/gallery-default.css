@@ -19,11 +19,10 @@
     }
 
 /* Horizontal alignment */
-.foogallery-default,
-.foogallery-default a {
-	line-height: 0;
-	font-size: 0;
+.foogallery-default a img {
+	vertical-align: top;
 }
+
 .foogallery-default.alignment-left {
 	text-align: left;
 }
@@ -243,13 +242,14 @@
 	width: 100%;
 }
 
-.foogallery-default.hover-effect-caption .foogallery-caption h3 {
+.foogallery-default.hover-effect-caption .foogallery-caption-title,
+.foogallery-default.hover-effect-caption .foogallery-caption-desc {
 	color: #fff;
-	font-size: 14px;
+	font-size: 0.8em;
+	padding: 0.25em;
 }
-.foogallery-default.hover-effect-caption .foogallery-caption p {
-	color: #fff;
-	font-size: 10px;
+.foogallery-default.hover-effect-caption .foogallery-caption-title {
+	font-size: 1em;
 }
 
 .foogallery-default.hover-effect-caption.hover-caption-simple .foogallery-caption {

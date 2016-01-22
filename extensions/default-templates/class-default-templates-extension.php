@@ -101,7 +101,7 @@ if ( ! class_exists( 'FooGallery_Default_Templates_Extension' ) ) {
 					),
 					array(
 						'id'      => 'caption-hover-effect',
-						'title'   => __( 'Caption Hover Effect', 'foogallery' ),
+						'title'   => __( 'Caption Effect', 'foogallery' ),
 						'section' => __( 'Thumbnail Settings', 'foogallery' ),
 						'default' => 'hover-caption-simple',
 						'type'    => 'radio',
@@ -111,6 +111,19 @@ if ( ! class_exists( 'FooGallery_Default_Templates_Extension' ) ) {
 							'hover-caption-full-fade' => __( 'Fade In', 'foogallery' ),
 							'hover-caption-push' => __( 'Push', 'foogallery' ),
 							'hover-caption-simple-always' => __( 'Always Visible', 'foogallery' )
+						) ),
+						'spacer'  => '<span class="spacer"></span>'
+					),
+					array(
+						'id'      => 'caption-content',
+						'title'   => __( 'Caption Content', 'foogallery' ),
+						'section' => __( 'Thumbnail Settings', 'foogallery' ),
+						'default' => 'title',
+						'type'    => 'radio',
+						'choices' => apply_filters( 'foogallery_gallery_template_caption-content', array(
+							'title'  => __( 'Title Only', 'foogallery' ),
+							'desc'   => __( 'Description Only', 'foogallery' ),
+							'both' => __( 'Title and Description', 'foogallery' )
 						) ),
 						'spacer'  => '<span class="spacer"></span>'
 					),
@@ -526,14 +539,7 @@ if ( ! class_exists( 'FooGallery_Default_Templates_Extension' ) ) {
 
 				echo '<div class="' . foogallery_build_class_attribute( $gallery, $hover_effect, $border_style, $hover_effect_type, $caption_hover_effect, 'foogallery-thumbnail-preview' ) . '">';
 				echo $featured->html( $args, true, false );
-				echo '<div class="foogallery-caption">';
-				if ( $featured->caption ) {
-					echo '<h3>' . $featured->caption . '</h3>';
-				}
-				if ( $featured->description ) {
-					echo '<p>' . $featured->description . '</p>';
-				}
-				echo '</div>';
+				echo $featured->html_caption( 'both' );
 				echo '</a>';
 				echo '</div>';
 			}
