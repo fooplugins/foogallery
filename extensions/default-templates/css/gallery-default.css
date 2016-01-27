@@ -6,9 +6,8 @@
 
 .foogallery-default a {
     display: inline-block;
-	margin-right: 5px;
-	margin-bottom: 5px;
 	overflow: hidden;
+	vertical-align: top;
 }
 
     .foogallery-default a img {
@@ -240,6 +239,7 @@
 	-ms-transition: all 300ms ease-out;
 	transition: all 300ms ease-out;
 	width: 100%;
+	overflow: hidden;
 }
 
 .foogallery-default.hover-effect-caption .foogallery-caption-title,

@@ -149,6 +149,7 @@ if ( ! class_exists( 'FooGallery_Default_Templates_Extension' ) ) {
 						'section' => __( 'Gallery Settings', 'foogallery' ),
 						'default' => 'spacing-width-10',
 						'choices' => array(
+							'spacing-width-0' => __( '0 pixels', 'foogallery' ),
 							'spacing-width-5' => __( '5 pixels', 'foogallery' ),
 							'spacing-width-10' => __( '10 pixels', 'foogallery' ),
 							'spacing-width-15' => __( '15 pixels', 'foogallery' ),
