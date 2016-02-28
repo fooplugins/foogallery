@@ -65,6 +65,21 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 			);
 
 			$settings[] = array(
+				'id'      => 'caption_title_source',
+				'title'   => __( 'Caption Title Source', 'foogallery' ),
+				'desc'    => __( 'By default, image caption titles are pulled from the attachment "Caption" field. Alternatively, you can also choose to pull from the attachment "Title" field.', 'foogallery' ),
+				'type'    => 'select',
+				'choices' => array(
+					'caption' => __('Attachment Caption Field', 'foogallery'),
+					'title' => __('Attachment Title Field', 'foogallery')
+				),
+				'default' => 'caption',
+				'tab'     => 'general',
+				'section' => __( 'Captions', 'foogallery' ),
+				'spacer'  => '<span class="spacer"></span>'
+			);
+
+			$settings[] = array(
 				'id'      => 'hide_gallery_template_help',
 				'title'   => __( 'Hide Gallery Template Help', 'foogallery' ),
 				'desc'    => __( 'Some gallery templates show helpful tips, which are useful for new users. You can choose to hide these tips.', 'foogallery' ),
