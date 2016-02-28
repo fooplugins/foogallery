@@ -221,9 +221,9 @@ if ( ! class_exists( 'FooGalleryAttachment' ) ) {
 			}
 
 			if ( count($caption_html) > 0 ) {
-				$html = '<div class="foogallery-caption">';
+				$html = '<div class="foogallery-caption"><div class="foogallery-caption-inner">';
 				$html .= implode( $caption_html );
-				$html .= '</div>';
+				$html .= '</div></div>';
 			}
 
 			return apply_filters( 'foogallery_attachment_html_caption', $html, $caption_content, $this );
