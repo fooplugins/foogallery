@@ -523,13 +523,15 @@ if ( ! class_exists( 'FooGallery_Default_Templates_Extension' ) ) {
 					'height' => get_option( 'thumbnail_size_h' ),
 					'crop' => true
 				) );
+
 				//override the link so that it does not actually open an image
 				$args['link'] = 'custom';
+				$args['custom_link'] = '#preview';
 
 				$hover_effect = $gallery->get_meta( 'default_hover-effect', 'hover-effect-zoom' );
 				$border_style = $gallery->get_meta( 'default_border-style', 'border-style-square-white' );
-				$hover_effect_type = $gallery->get_meta( 'hover-effect-type', '' );
-				$caption_hover_effect = $gallery->get_meta( 'caption-hover-effect', 'hover-caption-simple' );
+				$hover_effect_type = $gallery->get_meta( 'default_hover-effect-type', '' );
+				$caption_hover_effect = $gallery->get_meta( 'default_caption-hover-effect', 'hover-caption-simple' );
 
 				$featured = $gallery->featured_attachment();
 
