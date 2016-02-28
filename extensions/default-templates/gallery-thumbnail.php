@@ -38,7 +38,7 @@ $args['link_attributes'] = array('rel' => 'foobox[' . $current_foogallery->ID . 
     <div style="display: none;">
     <?php foreach ( $current_foogallery->attachments() as $attachment ) {
         if ( $attachment->ID !== $featured_attachment->ID ) {
-            echo $attachment->html( $args );
+            echo $attachment->html( $args, false, true );
         }
     } ?>
     </div>
