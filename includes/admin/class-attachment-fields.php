@@ -173,8 +173,8 @@ if (!class_exists('FooGallery_Attachment_Fields')) {
 						    // If this field has been submitted (is present in the $attachment variable)
 						    if ( isset( $attachment[$field] ) ) {
 							    // If submitted field is empty
-							    // We add errors to the post object with the "error_text" parameter we set in the options
-							    if ( strlen( trim( $attachment[$field] ) ) == 0 ) {
+							    // We add errors to the post object with the "error_text" parameter if set in the options
+							    if ( strlen( trim( $attachment[$field] ) ) == 0 && isset( $values['error_text'] ) ) {
 								    $post['errors'][ $field ]['errors'][] = __( $values['error_text'] );
 								    // Otherwise we update the custom field
 							    } else {
