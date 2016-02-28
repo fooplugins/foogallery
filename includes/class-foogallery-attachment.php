@@ -167,7 +167,7 @@ if ( ! class_exists( 'FooGalleryAttachment' ) ) {
 
 			$attr['href'] = $url;
 
-			if ( ! empty( $this->custom_target ) ) {
+			if ( ! empty( $this->custom_target ) && 'default' !== $this->custom_target ) {
 				$attr['target'] = $this->custom_target;
 			}
 
