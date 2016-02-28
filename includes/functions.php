@@ -507,3 +507,37 @@ function foogallery_thumbnail_jpeg_quality() {
 
 	return $quality;
 }
+
+/**
+ * Returns the caption title source setting
+ *
+ * @return string
+ */
+function foogallery_caption_title_source() {
+	$source = foogallery_get_setting( 'caption_title_source', 'caption' );
+
+	if ( empty( $source ) ) {
+		$source = 'caption';
+	}
+
+	return $source;
+}
+
+/**
+ * Returns the attachment caption title based on the caption_title_source setting
+ *
+ * @param $attachment_post WP_Post
+ *
+ * @return string
+ */
+function foogallery_get_caption_title_for_attachment($attachment_post) {
+	$source = foogallery_caption_title_source();
+
+	if ( 'title' === $source ) {
+		$caption = trim( $attachment_post->post_title );
+	} else {
+		$caption = trim( $attachment_post->post_excerpt );
+	}
+
+	return apply_filters( 'foogallery_get_caption_title_for_attachment', $caption, $attachment_post );
+}
