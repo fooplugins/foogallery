@@ -2,7 +2,7 @@
 
 if ( !class_exists( 'FooGallery_Image_Viewer_Gallery_Template' ) ) {
 
-	define('FOOGALLERY_IMAGE_VIEWER_TEMPLATE_URL', plugin_dir_url( __FILE__ ));
+	define('FOOGALLERY_IMAGE_VIEWER_GALLERY_TEMPLATE_URL', plugin_dir_url( __FILE__ ));
 
 	class FooGallery_Image_Viewer_Gallery_Template {
 		/**
@@ -36,8 +36,8 @@ if ( !class_exists( 'FooGallery_Image_Viewer_Gallery_Template' ) ) {
 			$gallery_templates[] = array(
 				'slug'        => 'image-viewer',
 				'name'        => __( 'Image Viewer', 'foogallery-image-viewer'),
-				'preview_css' => FOOGALLERY_IMAGE_VIEWER_TEMPLATE_URL . 'css/gallery-image-viewer.css',
-				'admin_js'	  => FOOGALLERY_IMAGE_VIEWER_TEMPLATE_URL . 'js/admin-gallery-image-viewer.js',
+				'preview_css' => FOOGALLERY_IMAGE_VIEWER_GALLERY_TEMPLATE_URL . 'css/gallery-image-viewer.css',
+				'admin_js'	  => FOOGALLERY_IMAGE_VIEWER_GALLERY_TEMPLATE_URL . 'js/admin-gallery-image-viewer.js',
 				'fields'	  => array(
 					array(
 						'id'      => 'alignment',
@@ -145,12 +145,12 @@ if ( !class_exists( 'FooGallery_Image_Viewer_Gallery_Template' ) ) {
 						'type'    => 'icon',
 						'default' => 'hover-effect-zoom',
 						'choices' => array(
-							'hover-effect-zoom' => array( 'label' => __( 'Zoom' , 'foogallery' ), 'img' => FOOGALLERY_IMAGE_VIEWER_TEMPLATE_URL . 'assets/hover-effect-icon-zoom.png' ),
-							'hover-effect-zoom2' => array( 'label' => __( 'Zoom 2' , 'foogallery' ), 'img' => FOOGALLERY_IMAGE_VIEWER_TEMPLATE_URL . 'assets/hover-effect-icon-zoom2.png' ),
-							'hover-effect-zoom3' => array( 'label' => __( 'Zoom 3' , 'foogallery' ), 'img' => FOOGALLERY_IMAGE_VIEWER_TEMPLATE_URL . 'assets/hover-effect-icon-zoom3.png' ),
-							'hover-effect-plus' => array( 'label' => __( 'Plus' , 'foogallery' ), 'img' => FOOGALLERY_IMAGE_VIEWER_TEMPLATE_URL . 'assets/hover-effect-icon-plus.png' ),
-							'hover-effect-circle-plus' => array( 'label' => __( 'Circle Plus' , 'foogallery' ), 'img' => FOOGALLERY_IMAGE_VIEWER_TEMPLATE_URL . 'assets/hover-effect-icon-circle-plus.png' ),
-							'hover-effect-eye' => array( 'label' => __( 'Eye' , 'foogallery' ), 'img' => FOOGALLERY_IMAGE_VIEWER_TEMPLATE_URL . 'assets/hover-effect-icon-eye.png' )
+							'hover-effect-zoom' => array( 'label' => __( 'Zoom' , 'foogallery' ), 'img' => FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_SHARED_URL . 'img/admin/hover-effect-icon-zoom.png' ),
+							'hover-effect-zoom2' => array( 'label' => __( 'Zoom 2' , 'foogallery' ), 'img' => FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_SHARED_URL . 'img/admin/hover-effect-icon-zoom2.png' ),
+							'hover-effect-zoom3' => array( 'label' => __( 'Zoom 3' , 'foogallery' ), 'img' => FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_SHARED_URL . 'img/admin/hover-effect-icon-zoom3.png' ),
+							'hover-effect-plus' => array( 'label' => __( 'Plus' , 'foogallery' ), 'img' => FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_SHARED_URL . 'img/admin/hover-effect-icon-plus.png' ),
+							'hover-effect-circle-plus' => array( 'label' => __( 'Circle Plus' , 'foogallery' ), 'img' => FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_SHARED_URL . 'img/admin/hover-effect-icon-circle-plus.png' ),
+							'hover-effect-eye' => array( 'label' => __( 'Eye' , 'foogallery' ), 'img' => FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_SHARED_URL . 'img/admin/hover-effect-icon-eye.png' )
 						),
 					),
 					array(

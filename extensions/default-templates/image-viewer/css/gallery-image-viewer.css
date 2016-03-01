@@ -233,27 +233,27 @@
 }
 
 .foogallery-image-viewer.hover-effect-zoom a:hover:before {
-	background: rgba(0,0,0, 0.5) url('img/zoom.png') no-repeat center center;
+	background: rgba(0,0,0, 0.5) url('../../shared/img/zoom.png') no-repeat center center;
 }
 
 .foogallery-image-viewer.hover-effect-zoom2 a:hover:before {
-	background:rgba(0,0,0, 0.5) url('img/zoom2.png') no-repeat center center;
+	background:rgba(0,0,0, 0.5) url('../../shared/img/zoom2.png') no-repeat center center;
 }
 
 .foogallery-image-viewer.hover-effect-zoom3 a:hover:before {
-	background:rgba(0,0,0, 0.5) url('img/zoom3.png') no-repeat center center;
+	background:rgba(0,0,0, 0.5) url('../../shared/img/zoom3.png') no-repeat center center;
 }
 
 .foogallery-image-viewer.hover-effect-plus a:hover:before {
-	background:rgba(0,0,0, 0.5) url('img/plus.png') no-repeat center center;
+	background:rgba(0,0,0, 0.5) url('../../shared/img/plus.png') no-repeat center center;
 }
 
 .foogallery-image-viewer.hover-effect-circle-plus a:hover:before {
-	background:rgba(0,0,0, 0.5) url('img/circle-plus.png') no-repeat center center;
+	background:rgba(0,0,0, 0.5) url('../../shared/img/circle-plus.png') no-repeat center center;
 }
 
 .foogallery-image-viewer.hover-effect-eye a:hover:before {
-	background:rgba(0,0,0, 0.5) url('img/eye.png') no-repeat center center;
+	background:rgba(0,0,0, 0.5) url('../../shared/img/eye.png') no-repeat center center;
 }
 
 .foogallery-image-viewer.hover-effect-tint a:hover:before {
@@ -263,10 +263,13 @@
 
 .foogallery-image-viewer.hover-effect-color a img {
 	background: none !important;
-	-webkit-filter: grayscale(100%);
-	filter: gray;
+
+	background: none !important;
 	filter: grayscale(100%);
-	filter: url(img/filter.svg#greyscale);
+	-webkit-filter: grayscale(100%); /* For Webkit browsers */
+	filter: gray; /* For IE 6 - 9 */
+	filter: url(../../shared/img/filter.svg#greyscale); /* Firefox 10+, Firefox on Android */
+
 	-moz-transition: all .3s linear;
 	-webkit-transition: all .3s linear;
 	-o-transition: all .3s linear;
