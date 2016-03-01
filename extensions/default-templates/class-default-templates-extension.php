@@ -5,6 +5,7 @@ if ( ! class_exists( 'FooGallery_Default_Templates_Extension' ) ) {
 	define( 'FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_PATH', plugin_dir_path( __FILE__ ) );
 
 	require_once( FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_PATH . 'functions.php' );
+	require_once( FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_PATH . 'image-viewer/class-image-viewer-gallery-template.php' );
 
 	class FooGallery_Default_Templates_Extension {
 
@@ -14,6 +15,8 @@ if ( ! class_exists( 'FooGallery_Default_Templates_Extension' ) ) {
 			add_action( 'foogallery_render_gallery_template_field_custom', array( $this, 'render_thumbnail_preview' ), 10, 3 );
 			add_filter( 'foogallery_located_template-default', array( $this, 'enqueue_default_dependencies' ) );
 			add_filter( 'foogallery_located_template-masonry', array( $this, 'enqueue_masonry_dependencies' ) );
+
+			new FooGallery_Image_Viewer_Gallery_Template();
 		}
 
 		function register_myself( $extensions ) {
