@@ -175,7 +175,7 @@ if ( !class_exists( 'FooGallery_Default_Gallery_Template' ) ) {
 									'title' => __( 'Preview', 'foogallery' ),
 									'desc' => __( 'This is what your gallery thumbnails will look like.', 'foogallery' ),
 									'section' => __( 'Thumbnail Settings', 'foogallery' ),
-									'type' => 'thumb_preview',
+									'type' => 'default_thumb_preview',
 							)
 					)
 			);
@@ -191,7 +191,7 @@ if ( !class_exists( 'FooGallery_Default_Gallery_Template' ) ) {
 		 * @param $template array
 		 */
 		function render_thumbnail_preview( $field, $gallery, $template ) {
-			if ( 'thumb_preview' == $field['type'] ) {
+			if ( 'default_thumb_preview' == $field['type'] ) {
 				$args = $gallery->get_meta( 'default_thumbnail_dimensions', array(
 						'width' => get_option( 'thumbnail_size_w' ),
 						'height' => get_option( 'thumbnail_size_h' ),
@@ -214,7 +214,7 @@ if ( !class_exists( 'FooGallery_Default_Gallery_Template' ) ) {
 					$featured->url = FOOGALLERY_URL . 'assets/test_thumb_1.jpg';
 				}
 
-				echo '<div class="' . foogallery_build_class_attribute( $gallery, $hover_effect, $border_style, $hover_effect_type, $caption_hover_effect, 'foogallery-thumbnail-preview' ) . '">';
+				echo '<div class="foogallery-default-preview ' . foogallery_build_class_attribute( $gallery, $hover_effect, $border_style, $hover_effect_type, $caption_hover_effect, 'foogallery-thumbnail-preview' ) . '">';
 				echo $featured->html( $args, true, false );
 				echo $featured->html_caption( 'both' );
 				echo '</a>';
