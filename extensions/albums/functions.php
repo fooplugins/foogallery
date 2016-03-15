@@ -110,8 +110,8 @@ function foogallery_album_templates() {
 				'section' => __( 'URL Settings', 'foogallery' ),
 				'type'    => 'radio',
 				'choices' =>  array(
-					'default' =>  __('Pretty, e.g. ', 'foogallery') . '<code>/page-with-album/gallery/some-gallery</code>',
-					'querystring' => __('Querystring e.g. ', 'foogallery') . '<code>/page-with-album?gallery=some-gallery</code>'
+					'default' =>  __('Pretty, e.g. ', 'foogallery') . '<code>/page-with-album/' . foogallery_album_gallery_url_slug() . '/some-gallery</code>',
+					'querystring' => __('Querystring e.g. ', 'foogallery') . '<code>/page-with-album?' . foogallery_album_gallery_url_slug() . '=some-gallery</code>'
 				),
 				'default' => foogallery_determine_best_link_format_default()
 			),
