@@ -6,23 +6,33 @@
 			border_style = $('input[name="foogallery_settings[default_border-style]"]:checked').val(),
 			hover_effect = $('input[name="foogallery_settings[default_hover-effect]"]:checked').val(),
 		    hover_effect_type = $('input[name="foogallery_settings[default_hover-effect-type]"]:checked').val(),
-			caption_effect_type = $('input[name="foogallery_settings[default_caption-hover-effect]"]:checked').val();
-
-		$previewImage.attr('class' ,'foogallery-default-preview foogallery-container foogallery-default ' + hover_effect + ' ' + border_style + ' ' + hover_effect_type + ' ' + caption_effect_type);
+			caption_effect_type = $('input[name="foogallery_settings[default_caption-hover-effect]"]:checked').val(),
+			classNames = 'foogallery-default-preview foogallery-container foogallery-default ' + border_style + ' ' + hover_effect_type;
 
 		var $hoverEffectrow = $('.gallery_template_field-default-hover-effect'),
-			$captionHoverRow = $('.gallery_template_field-default-caption-hover-effect');
+			$captionHoverRow = $('.gallery_template_field-default-caption-hover-effect'),
+			$captionContentRow = $('.gallery_template_field-default-caption-content');
 
 		if ( hover_effect_type === '' ) {
+			//icon hover effect type
 			$hoverEffectrow.show();
 			$captionHoverRow.hide();
+			$captionContentRow.hide();
+			classNames += ' ' + hover_effect;
 		} else if ( hover_effect_type === 'hover-effect-caption' ) {
-			$captionHoverRow.show();
+			//caption hover effect type
 			$hoverEffectrow.hide();
+			$captionHoverRow.show();
+			$captionContentRow.show();
+			classNames += ' ' + caption_effect_type;
 		} else {
+			//no hover effect type
 			$hoverEffectrow.hide();
 			$captionHoverRow.hide();
+			$captionContentRow.hide();
 		}
+
+		$previewImage.attr('class' , classNames);
 	};
 
 	FOOGALLERY_DEF_TEMPLATE.showHideCaptionContent = function(){
