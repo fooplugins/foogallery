@@ -237,9 +237,11 @@ if ( !class_exists( 'FooGallery_Default_Gallery_Template' ) ) {
 		/**
 		 * Enqueue scripts that the default gallery template relies on
 		 */
-		function enqueue_dependencies() {
-			wp_enqueue_script( 'jquery' );
-			foogallery_enqueue_imagesloaded_script();
+		function enqueue_dependencies( $gallery ) {
+			if ( 'yes' === $gallery->get_meta( 'default_loading_animation', 'yes' ) ) {
+				wp_enqueue_script( 'jquery' );
+				foogallery_enqueue_imagesloaded_script();
+			}
 		}
 	}
 }
