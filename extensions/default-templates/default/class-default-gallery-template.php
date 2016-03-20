@@ -73,6 +73,18 @@ if ( !class_exists( 'FooGallery_Default_Gallery_Template' ) ) {
 									)
 							),
 							array(
+									'id'      => 'loading_animation',
+									'title'   => __( 'Loading Indicator', 'foogallery' ),
+									'default' => 'yes',
+									'type'    => 'radio',
+									'choices' => array(
+											'yes'  => __( 'Show Thumbnail Loading Indicator', 'foogallery' ),
+											'no'   => __( 'Disabled', 'foogallery' )
+									),
+									'spacer'  => '<span class="spacer"></span>',
+									'desc'	  => __( 'By default, an animated loading animation indicator is shown before the thumbnails have loaded. You can disable the loader if you want.', 'foogallery' ),
+							),
+							array(
 									'id'      => 'thumbnail_dimensions',
 									'title'   => __( 'Size', 'foogallery' ),
 									'desc'    => __( 'Choose the size of your thumbnails.', 'foogallery' ),
@@ -225,9 +237,11 @@ if ( !class_exists( 'FooGallery_Default_Gallery_Template' ) ) {
 		/**
 		 * Enqueue scripts that the default gallery template relies on
 		 */
-		function enqueue_dependencies() {
-			wp_enqueue_script( 'jquery' );
-			foogallery_enqueue_imagesloaded_script();
+		function enqueue_dependencies( $gallery ) {
+			if ( 'yes' === $gallery->get_meta( 'default_loading_animation', 'yes' ) ) {
+				wp_enqueue_script( 'jquery' );
+				foogallery_enqueue_imagesloaded_script();
+			}
 		}
 	}
 }
