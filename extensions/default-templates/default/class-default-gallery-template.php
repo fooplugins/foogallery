@@ -224,6 +224,8 @@ if ( !class_exists( 'FooGallery_Default_Gallery_Template' ) ) {
 				if ( false === $featured ) {
 					$featured = new FooGalleryAttachment();
 					$featured->url = FOOGALLERY_URL . 'assets/test_thumb_1.jpg';
+					$featured->caption = __( 'Caption Title', 'foogallery' );
+					$featured->description = __( 'Long Caption Description Text', 'foogallery' );
 				}
 
 				echo '<div class="foogallery-default-preview ' . foogallery_build_class_attribute( $gallery, $hover_effect, $border_style, $hover_effect_type, $caption_hover_effect, 'foogallery-thumbnail-preview' ) . '">';
