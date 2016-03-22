@@ -50,6 +50,7 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 
 			$galleries = foogallery_get_all_galleries();
 			$gallery_choices = array();
+			$gallery_choices[] = __( 'No default', 'foogallery' );
 			foreach ( $galleries as $gallery ) {
 				$gallery_choices[ $gallery->ID ] = $gallery->name;
 			}
