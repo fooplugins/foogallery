@@ -48,23 +48,39 @@ Foo Gallery was designed to be the most developer-friendly gallery plugin availa
 *	Multisite Support
 *	plus many, many more
 
-**Gallery Templates**
+**Gallery Demos**
 
 *	Responsive Image Gallery - [demo](http://foo.gallery/demos/responsive-image-gallery/)
-*	Masonry Gallery ([http://masonry.desandro.com](http://masonry.desandro.com/)) - [demo](http://foo.gallery/demos/masonry-image-gallery/)
+*	Image Viewer Gallery - [light demo](http://foo.gallery/demos/image-viewer-gallery/) - [dark demo](http://foo.gallery/demos/image-viewer-gallery-dark/)
+*	Masonry Gallery - [demo](http://foo.gallery/demos/masonry-image-gallery/)
 *	Simple Portfolio - [demo](http://foo.gallery/demos/simple-portfolio/)
 *	Justified Gallery ([http://miromannino.github.io/Justified-Gallery](http://miromannino.github.io/Justified-Gallery/)) - [demo](http://foo.gallery/demos/justified-gallery/)
 *	Single Thumbnail Gallery - [demo](http://foo.gallery/demos/single-thumbnail-gallery/)
+*	Polaroid Gallery - [demo](http://foo.gallery/demos/polaroid-image-gallery/)
 *	Cube Gallery - [demo](http://foo.gallery/demos/cube-gallery/) - [Buy Now!](http://fooplugins.com/plugins/cube-gallery-template/?utm_source=foogalleryplugin&utm_medium=foogallerylink&utm_campaign=foogallery_wprepo)
+*	Mixed (Images + Videos) - [demo](http://foo.gallery/demos/mixed/)
 
-**Album Templates**
+**Caption Demos**
+
+*	Simple Hover Captions - [demo](http://foo.gallery/demos/captions-simple-hover/)
+*	Always Visible Captions - [demo](http://foo.gallery/demos/responsive-image-gallery-captions/)
+*	Drop Captions - [demo](http://foo.gallery/demos/captions-drop/)
+*	Fade Captions - [demo](http://foo.gallery/demos/captions-fade/)
+*	Push Captions - [demo](http://foo.gallery/demos/captions-push/)
+
+**Album Demos**
 
 *	Responsive Album Layout - [demo](http://foo.gallery/demos/responsive-album-layout/)
 *	All-in-one Stack Album - [demo](http://foo.gallery/demos/all-in-one-stack-album/)
 
+**Videos Demos**
+
+*	Vertical Video Slider - [demo](http://foo.gallery/demos/video-slider-vertical/) - [full-width demo](http://foo.gallery/demos/video-slider-vertical-full-width/)
+*	Horizontal Video Slider - [demo](http://foo.gallery/demos/video-slider-horizontal/) - [custom colors](http://foo.gallery/demos/video-slider-custom-theme/)
+
 **Extensions**
 
-*   [FooVideo](http://fooplugins.com/plugins/foovideo/?utm_source=foogalleryplugin&utm_medium=foogallerylink&utm_campaign=foogallery_wprepo) **NEW!!**
+*   [FooVideo](http://fooplugins.com/plugins/foovideo/?utm_source=foogalleryplugin&utm_medium=foogallerylink&utm_campaign=foogallery_wprepo)
 *	Albums (bundled)
 *	Default Gallery Templates (bundled)
 *	NextGen Gallery and Album Importer (bundled)
@@ -122,6 +138,19 @@ Hell, yes! Check out our [developer page](http://foo.gallery/developers/)
 Update now to support FooVideo and many other improvements!
 
 == Changelog ==
+
+= 1.2.9 =
+* New : Added Image Viewer gallery template
+* New : Caption support for default template
+* New : Yoast SEO gallery image support!
+* New : Responsive options for Masonry gallery
+* New : change gallery URL slug for albums
+* New : setting to turn off loading animation in default gallery
+* New : French translation
+* Fix : Support for WP 4.4
+* Fix : All templates - moved all jQuery ready events to vanilla JS
+* Fix : Many gallery template tweaks
+* Fix : allow no default to be chosen in settings
 
 = 1.2.8 =
 * Works now with Polylang translation plugin
