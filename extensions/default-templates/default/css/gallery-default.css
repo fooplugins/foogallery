@@ -223,6 +223,10 @@
 
 /* Caption Styles */
 
+.foogallery-default.hover-effect-caption a {
+	position: relative;
+}
+
 .foogallery-default.hover-effect-caption a:before,
 .foogallery-default.hover-effect-caption a:before:hover {
 	background: none !important;
