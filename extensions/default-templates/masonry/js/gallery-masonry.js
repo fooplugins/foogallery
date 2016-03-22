@@ -6,10 +6,10 @@
 /**
  * Small ready function to circumvent external errors blocking jQuery's ready.
  * @param {Function} callback - The function to call when the document is ready.
- * @see http://www.dustindiaz.com/smallest-domready-ever
  */
 function FooGallery_Masonry_Ready(callback) {
-    document.readyState === 'loading' ? setTimeout(function () { FooGallery_Masonry_Ready(callback); }, 9) : callback();
+    if (Function('/*@cc_on return true@*/')() ? document.readyState === "complete" : document.readyState !== "loading") callback($);
+    else setTimeout(function () { FooGallery_Masonry_Ready(callback); }, 1);
 }
 
 FooGallery_Masonry_Ready(function () {

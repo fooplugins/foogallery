@@ -6,14 +6,14 @@
 /**
  * Small ready function to circumvent external errors blocking jQuery's ready.
  * @param {Function} callback - The function to call when the document is ready.
- * @see http://www.dustindiaz.com/smallest-domready-ever
  */
 function FooGallery_Default_Ready(callback) {
-    document.readyState === 'loading' ? setTimeout(function () { FooGallery_Default_Ready(callback); }, 9) : callback();
+    if (Function('/*@cc_on return true@*/')() ? document.readyState === "complete" : document.readyState !== "loading") callback($);
+    else setTimeout(function () { FooGallery_Default_Ready(callback); }, 1);
 }
 
 FooGallery_Default_Ready(function () {
-    var galleries = document.querySelectorAll('.foogallery-default'),
+    var galleries = document.querySelectorAll('.foogallery-default-loading'),
         isElement = function(obj){
             return typeof HTMLElement === 'object' ? obj instanceof HTMLElement : obj && typeof obj === 'object' && obj !== null && obj.nodeType === 1 && typeof obj.nodeName === 'string';
         },
@@ -32,7 +32,9 @@ FooGallery_Default_Ready(function () {
                 _remove(elements, p);
             }
         };
-    imagesLoaded(galleries, function() {
-        removeClass(galleries, 'foogallery-default-loading');
-    });
+    if (typeof(imagesLoaded) != 'undefined') {
+        imagesLoaded(galleries, function () {
+            removeClass(galleries, 'foogallery-default-loading');
+        });
+    }
 });

@@ -84,9 +84,17 @@
 			}
 		});
 	};
-
-	$(function(){
-		$('.foogallery-image-viewer').imageViewer();
-	});
-
 })(jQuery);
+
+/**
+ * Small ready function to circumvent external errors blocking jQuery's ready.
+ * @param {Function} callback - The function to call when the document is ready.
+ */
+function FooGallery_ImageViewer_Ready(callback) {
+	if (Function('/*@cc_on return true@*/')() ? document.readyState === "complete" : document.readyState !== "loading") callback($);
+	else setTimeout(function () { FooGallery_ImageViewer_Ready(callback); }, 1);
+}
+
+FooGallery_ImageViewer_Ready(function() {
+	jQuery('.foogallery-image-viewer').imageViewer();
+});
