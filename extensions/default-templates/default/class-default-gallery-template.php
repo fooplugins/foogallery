@@ -13,6 +13,7 @@ if ( !class_exists( 'FooGallery_Default_Gallery_Template' ) ) {
 			add_filter( 'foogallery_gallery_templates_files', array( $this, 'register_myself' ) );
 			add_action( 'foogallery_render_gallery_template_field_custom', array( $this, 'render_thumbnail_preview' ), 10, 3 );
 			add_filter( 'foogallery_located_template-default', array( $this, 'enqueue_dependencies' ) );
+			add_filter( 'foogallery_template_load_js-default', array( $this, 'can_enqueue_template_js' ), 10, 2 );
 		}
 
 		/**
@@ -244,6 +245,19 @@ if ( !class_exists( 'FooGallery_Default_Gallery_Template' ) ) {
 				wp_enqueue_script( 'jquery' );
 				foogallery_enqueue_imagesloaded_script();
 			}
+		}
+
+		/**
+		 * @param $include bool By default we will try to include the template JS
+		 * @param $gallery FooGallery the gallery instance we are loading
+		 *
+		 * @return bool if we want to try to include the template JS
+		 */
+		function can_enqueue_template_js( $include, $gallery ) {
+			if ( 'yes' === $gallery->get_meta( 'default_loading_animation', 'yes' ) ) {
+				return true;
+			}
+			return false;
 		}
 	}
 }
