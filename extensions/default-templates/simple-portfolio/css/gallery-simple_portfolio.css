@@ -13,15 +13,32 @@
 	background: transparent;
 }
 
-.foogallery-simple_portfolio.tiled .bf-item {
+.foogallery-simple_portfolio .bf-item {
+	display: none;
 	background-color: #FFF;
 	color: #333333;
-	-webkit-box-shadow: 0 3px 8px rgba(50, 50, 50, 0.50);
-	-moz-box-shadow:    0 3px 8px rgba(50, 50, 50, 0.50);
-	box-shadow:         0 3px 8px rgba(50, 50, 50, 0.50);
+}
+.foogallery-simple_portfolio.bf-loaded .bf-item {
+	display: inline-block;
 }
 
-.foogallery-simple_portfolio .bf-item > img {
+.foogallery-simple_portfolio .bf-item > a {
+	display: inline-block;
+	line-height: 0;
+}
+
+.foogallery-simple_portfolio .bf-item > a,
+.foogallery-simple_portfolio .bf-item > a:hover,
+.foogallery-simple_portfolio .bf-item > a:active,
+.foogallery-simple_portfolio .bf-item > a:visited,
+.foogallery-simple_portfolio .bf-item > a > img {
+	border: none;
+	outline: none;
+	text-decoration: none;
+	box-shadow: none;
+}
+
+.foogallery-simple_portfolio .bf-item > a > img {
 	display: block;
 	margin: 0;
 }
@@ -41,10 +58,4 @@
 .foogallery-simple_portfolio .bf-item a {
 	display: inline-block;
 	line-height: 0;
-}
-
-/* force no borders */
-.foogallery-simple_portfolio .bf-item a,
-.foogallery-simple_portfolio .bf-item a:hover {
-	border: none !important;
 }
