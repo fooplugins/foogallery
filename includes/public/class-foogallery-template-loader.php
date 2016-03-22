@@ -63,15 +63,19 @@ class FooGallery_Template_Loader {
 					do_action( 'foogallery_located_template', $current_foogallery );
 					do_action( "foogallery_located_template-{$current_foogallery_template}", $current_foogallery );
 
-					//try to include some JS
-					if ( false !== ( $js_location = $loader->locate_file( "gallery-{$current_foogallery_template}.js" ) ) ) {
-						wp_enqueue_script( "foogallery-template-{$current_foogallery_template}", $js_location['url'] );
-                        do_action( 'foogallery_template_enqueue_script', $current_foogallery_template, $js_location['url'] );
+					//try to include some JS, but allow template to opt-out based on some condition
+					if ( false !== apply_filters( "foogallery_template_load_js-{$current_foogallery_template}", true, $current_foogallery ) ) {
+						if ( false !== ( $js_location = $loader->locate_file( "gallery-{$current_foogallery_template}.js" ) ) ) {
+							wp_enqueue_script( "foogallery-template-{$current_foogallery_template}", $js_location['url'] );
+							do_action( 'foogallery_template_enqueue_script', $current_foogallery_template, $js_location['url'] );
+						}
 					}
 
-					//try to include some CSS
-					if ( false !== ( $css_location = $loader->locate_file( "gallery-{$current_foogallery_template}.css" ) ) ) {
-						foogallery_enqueue_style( "foogallery-template-{$current_foogallery_template}", $css_location['url'], array(), FOOGALLERY_VERSION );
+					//try to include some CSS, but allow template to opt-out based on some condition
+					if ( false !== apply_filters( "foogallery_template_load_css-{$current_foogallery_template}", true, $current_foogallery ) ) {
+						if ( false !== ( $css_location = $loader->locate_file( "gallery-{$current_foogallery_template}.css" ) ) ) {
+							foogallery_enqueue_style( "foogallery-template-{$current_foogallery_template}", $css_location['url'], array(), FOOGALLERY_VERSION );
+						}
 					}
 
 					//finally include the actual php template!
