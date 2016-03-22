@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Foo Gallery
  * Description: Foo Gallery is the most intuitive and extensible gallery management tool ever created for WordPress
- * Version:     1.2.8
+ * Version:     1.2.9
  * Author:      FooPlugins
  * Plugin URI:  https://foo.gallery
  * Author URI:  http://fooplugins.com
@@ -20,7 +20,7 @@ define( 'FOOGALLERY_SLUG', 'foogallery' );
 define( 'FOOGALLERY_PATH', plugin_dir_path( __FILE__ ) );
 define( 'FOOGALLERY_URL', plugin_dir_url( __FILE__ ) );
 define( 'FOOGALLERY_FILE', __FILE__ );
-define( 'FOOGALLERY_VERSION', '1.2.8' );
+define( 'FOOGALLERY_VERSION', '1.2.9' );
 
 /**
  * FooGallery_Plugin class
