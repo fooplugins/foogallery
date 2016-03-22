@@ -50,6 +50,7 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 
 			$galleries = foogallery_get_all_galleries();
 			$gallery_choices = array();
+			$gallery_choices[] = __( 'No default', 'foogallery' );
 			foreach ( $galleries as $gallery ) {
 				$gallery_choices[ $gallery->ID ] = $gallery->name;
 			}
@@ -62,6 +63,21 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 				'choices' => $gallery_choices,
 				'tab'     => 'general',
 				'section' => __( 'Gallery Defaults', 'foogallery' )
+			);
+
+			$settings[] = array(
+				'id'      => 'caption_title_source',
+				'title'   => __( 'Caption Title Source', 'foogallery' ),
+				'desc'    => __( 'By default, image caption titles are pulled from the attachment "Caption" field. Alternatively, you can also choose to pull from the attachment "Title" field.', 'foogallery' ),
+				'type'    => 'select',
+				'choices' => array(
+					'caption' => __('Attachment Caption Field', 'foogallery'),
+					'title' => __('Attachment Title Field', 'foogallery')
+				),
+				'default' => 'caption',
+				'tab'     => 'general',
+				'section' => __( 'Captions', 'foogallery' ),
+				'spacer'  => '<span class="spacer"></span>'
 			);
 
 			$settings[] = array(

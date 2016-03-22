@@ -6,9 +6,8 @@
 
 .foogallery-default a {
     display: inline-block;
-	margin-right: 5px;
-	margin-bottom: 5px;
 	overflow: hidden;
+	vertical-align: top;
 }
 
     .foogallery-default a img {
@@ -19,11 +18,10 @@
     }
 
 /* Horizontal alignment */
-.foogallery-default,
-.foogallery-default a {
-	line-height: 0;
-	font-size: 0;
+.foogallery-default a img {
+	vertical-align: top;
 }
+
 .foogallery-default.alignment-left {
 	text-align: left;
 }
@@ -166,27 +164,27 @@
 }
 
 .foogallery-default.hover-effect-zoom a:hover:before {
-	background: rgba(0,0,0, 0.5) url('img/zoom.png') no-repeat center center;
+	background: rgba(0,0,0, 0.5) url('../../shared/img/zoom.png') no-repeat center center;
 }
 
 .foogallery-default.hover-effect-zoom2 a:hover:before {
-	background:rgba(0,0,0, 0.5) url('img/zoom2.png') no-repeat center center;
+	background:rgba(0,0,0, 0.5) url('../../shared/img/zoom2.png') no-repeat center center;
 }
 
 .foogallery-default.hover-effect-zoom3 a:hover:before {
-	background:rgba(0,0,0, 0.5) url('img/zoom3.png') no-repeat center center;
+	background:rgba(0,0,0, 0.5) url('../../shared/img/zoom3.png') no-repeat center center;
 }
 
 .foogallery-default.hover-effect-plus a:hover:before {
-	background:rgba(0,0,0, 0.5) url('img/plus.png') no-repeat center center;
+	background:rgba(0,0,0, 0.5) url('../../shared/img/plus.png') no-repeat center center;
 }
 
 .foogallery-default.hover-effect-circle-plus a:hover:before {
-	background:rgba(0,0,0, 0.5) url('img/circle-plus.png') no-repeat center center;
+	background:rgba(0,0,0, 0.5) url('../../shared/img/circle-plus.png') no-repeat center center;
 }
 
 .foogallery-default.hover-effect-eye a:hover:before {
-	background:rgba(0,0,0, 0.5) url('img/eye.png') no-repeat center center;
+	background:rgba(0,0,0, 0.5) url('../../shared/img/eye.png') no-repeat center center;
 }
 
 .foogallery-default.hover-effect-tint a:hover:before {
@@ -196,9 +194,10 @@
 
 .foogallery-default.hover-effect-color a img {
 	background: none !important;
-	filter: url(filters.svg#grayscale); /* Firefox 3.5+ */
-	filter: gray; /* IE6-9 */
-	-webkit-filter: grayscale(1); /* Google Chrome & Safari 6+ */
+	filter: grayscale(100%);
+	-webkit-filter: grayscale(100%); /* For Webkit browsers */
+	filter: gray; /* For IE 6 - 9 */
+	filter: url(../../shared/img/filter.svg#greyscale); /* Firefox 10+, Firefox on Android */
 	-moz-transition: all .3s linear;
 	-webkit-transition: all .3s linear;
 	-ms-transition: all .3s linear;
@@ -209,6 +208,7 @@
 .foogallery-default.hover-effect-color a:hover img {
 	filter: none;
 	-webkit-filter: none;
+	filter: url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'grayscale\'><feColorMatrix type=\'matrix\' values=\'1 0 0 0 0, 0 1 0 0 0, 0 0 1 0 0, 0 0 0 1 0\'/></filter></svg>#grayscale");
 	opacity: 1 !important;
 }
 
@@ -219,6 +219,162 @@
 .foogallery-default.hover-effect-none a:before,
 .foogallery-default.hover-effect-none a:before:hover {
 	background: none !important;
+}
+
+/* Caption Styles */
+
+.foogallery-default.hover-effect-caption a {
+	position: relative;
+}
+
+.foogallery-default.hover-effect-caption a:before,
+.foogallery-default.hover-effect-caption a:before:hover {
+	background: none !important;
+}
+
+.foogallery-default .foogallery-caption {
+	display: none;
+	background-color: rgba(0,0,0,0.8);
+	position: absolute;
+	z-index: 100;
+	-webkit-transition: all 300ms ease-out;
+	-moz-transition: all 300ms ease-out;
+	-o-transition: all 300ms ease-out;
+	-ms-transition: all 300ms ease-out;
+	transition: all 300ms ease-out;
+	width: 100%;
+	overflow: hidden;
+}
+
+.foogallery-default.hover-effect-caption .foogallery-caption-title,
+.foogallery-default.hover-effect-caption .foogallery-caption-desc {
+	color: #fff;
+	font-size: 0.8em;
+	padding: 0.25em;
+}
+.foogallery-default.hover-effect-caption .foogallery-caption-title {
+	font-size: 1em;
+}
+
+.foogallery-default.hover-effect-caption.hover-caption-simple .foogallery-caption {
+	bottom: 0;
+	display: block;
+	left: 0;
+	text-align: center;
+	-moz-transform: translateY(100%);
+	-o-transform: translateY(100%);
+	-webkit-transform: translateY(100%);
+	transform: translateY(100%);
+}
+
+.foogallery-default.hover-effect-caption.hover-caption-simple a:hover .foogallery-caption {
+	-moz-transform: translateY(0);
+	-o-transform: translateY(0);
+	-webkit-transform: translateY(0);
+	transform: translateY(0);
+}
+
+.foogallery-default.hover-effect-caption.hover-caption-simple-always .foogallery-caption {
+	display: block;
+	left: 0;
+	bottom: 0;
+	text-align: center;
+}
+
+.foogallery-default.hover-effect-caption.hover-caption-full-drop .foogallery-caption {
+	display: block;
+	left: 0;
+	top: 0;
+	bottom: 0;
+	text-align: center;
+	-moz-transform: translateY(-100%);
+	-o-transform: translateY(-100%);
+	-webkit-transform: translateY(-100%);
+	transform: translateY(-100%);
+}
+
+.foogallery-default.hover-effect-caption.hover-caption-full-drop a:hover .foogallery-caption {
+	-moz-transform: translateY(0);
+	-o-transform: translateY(0);
+	-webkit-transform: translateY(0);
+	transform: translateY(0);
+}
+
+.foogallery-default.hover-effect-caption.hover-caption-full-drop .foogallery-caption-inner {
+	width: 100%;
+	position: absolute;
+	top: 50%;
+	left: 0;
+	-webkit-transform: translateY(-50%);
+	-ms-transform: translateY(-50%);
+	transform: translateY(-50%);
+}
+
+.foogallery-default.hover-effect-caption.hover-caption-full-fade .foogallery-caption {
+	display: block;
+	opacity: 0;
+	left: 0;
+	top: 0;
+	bottom: 0;
+	text-align: center;
+}
+
+.foogallery-default.hover-effect-caption.hover-caption-full-fade .foogallery-caption-inner {
+	width: 100%;
+	position: absolute;
+	top: 50%;
+	left: 0;
+	-webkit-transform: translateY(-50%);
+	-ms-transform: translateY(-50%);
+	transform: translateY(-50%);
+}
+
+.foogallery-default.hover-effect-caption.hover-caption-full-fade a:hover .foogallery-caption {
+	opacity: 1;
+}
+
+.foogallery-default.hover-effect-caption.hover-caption-push .foogallery-caption {
+	display: block;
+	left: 0;
+	top: 0;
+	bottom: 0;
+	text-align: center;
+	-moz-transform: translateX(100%);
+	-o-transform: translateX(100%);
+	-webkit-transform: translateX(100%);
+	transform: translateX(100%);
+}
+
+.foogallery-default.hover-effect-caption.hover-caption-push a:hover .foogallery-caption {
+	-moz-transform: translateY(0);
+	-o-transform: translateY(0);
+	-webkit-transform: translateY(0);
+	transform: translateY(0);
+}
+
+.foogallery-default.hover-effect-caption.hover-caption-push img {
+	-webkit-transition: all 300ms ease-out;
+	-moz-transition: all 300ms ease-out;
+	-o-transition: all 300ms ease-out;
+	-ms-transition: all 300ms ease-out;
+	transition: all 300ms ease-out;
+}
+
+.foogallery-default.hover-effect-caption.hover-caption-push a:hover img {
+	-moz-transform: translateX(-100%);
+	-o-transform: translateX(-100%);
+	-webkit-transform: translateX(-100%);
+	transform: translateX(-100%);
+}
+
+.foogallery-default.hover-effect-caption.hover-caption-push .foogallery-caption-inner {
+	width: 100%;
+	position: absolute;
+	top: 50%;
+	left: 0;
+	-webkit-transform: translateY(-50%);
+	-ms-transform: translateY(-50%);
+	transform: translateY(-50%);
 }
 
 /* Loading Styles */

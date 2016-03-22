@@ -293,7 +293,7 @@ function foogallery_extract_gallery_shortcodes( $content ) {
 			$attribure_string = str_replace( '"', '', $attribure_string );
 			$attributes = wp_parse_args( $attribure_string );
 			if ( array_key_exists( 'id', $attributes ) ) {
-				$id           = intval( $attributes['id'] );
+				$id = intval( $attributes['id'] );
 				$shortcodes[ $id ] = $shortcode;
 			}
 		}
@@ -484,7 +484,60 @@ function foogallery_clear_all_css_load_optimizations() {
 	delete_post_meta_by_key( FOOGALLERY_META_POST_USAGE_CSS );
 }
 
+/**
+ * Performs a check to see if the plugin has been updated, and perform any housekeeping if necessary
+ */
 function foogallery_perform_version_check() {
 	$checker = new FooGallery_Version_Check();
 	$checker->perform_check();
+}
+
+/**
+ * Returns the JPEG quality used when generating thumbnails
+ *
+ * @return int The quality value stored in settings
+ */
+function foogallery_thumbnail_jpeg_quality() {
+	$quality = intval( foogallery_get_setting( 'thumb_jpeg_quality' ) );
+
+	//check if we get an invalid value for whatever reason and if so return a default of 80
+	if ( $quality <= 0 ) {
+		$quality = 80;
+	}
+
+	return $quality;
+}
+
+/**
+ * Returns the caption title source setting
+ *
+ * @return string
+ */
+function foogallery_caption_title_source() {
+	$source = foogallery_get_setting( 'caption_title_source', 'caption' );
+
+	if ( empty( $source ) ) {
+		$source = 'caption';
+	}
+
+	return $source;
+}
+
+/**
+ * Returns the attachment caption title based on the caption_title_source setting
+ *
+ * @param $attachment_post WP_Post
+ *
+ * @return string
+ */
+function foogallery_get_caption_title_for_attachment($attachment_post) {
+	$source = foogallery_caption_title_source();
+
+	if ( 'title' === $source ) {
+		$caption = trim( $attachment_post->post_title );
+	} else {
+		$caption = trim( $attachment_post->post_excerpt );
+	}
+
+	return apply_filters( 'foogallery_get_caption_title_for_attachment', $caption, $attachment_post );
 }

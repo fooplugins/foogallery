@@ -45,7 +45,7 @@ if ( ! class_exists( 'FooGalleryAttachment' ) ) {
 			$this->_post = $post;
 			$this->ID = $post->ID;
 			$this->title = trim( $post->post_title );
-			$this->caption = trim( $post->post_excerpt );
+			$this->caption = foogallery_get_caption_title_for_attachment( $post );
 			$this->description = trim( $post->post_content );
 			$this->alt = trim( get_post_meta( $this->ID, '_wp_attachment_image_alt', true ) );
 			$this->custom_url = get_post_meta( $this->ID, '_foogallery_custom_url', true );
@@ -167,7 +167,7 @@ if ( ! class_exists( 'FooGalleryAttachment' ) ) {
 
 			$attr['href'] = $url;
 
-			if ( ! empty( $this->custom_target ) ) {
+			if ( ! empty( $this->custom_target ) && 'default' !== $this->custom_target ) {
 				$attr['target'] = $this->custom_target;
 			}
 
@@ -201,6 +201,32 @@ if ( ! class_exists( 'FooGalleryAttachment' ) ) {
 			};
 
 			return apply_filters( 'foogallery_attachment_html_link', $html, $args, $this );
+		}
+
+		/**
+		 * Returns generic html for captions
+		 *
+		 * @param $caption_content string Include title, desc, or both
+		 *
+		 * @return string
+		 */
+		public function html_caption( $caption_content ) {
+			$html = '';
+			$caption_html = array();
+			if ( $this->caption && ( 'title' === $caption_content || 'both' === $caption_content ) ) {
+				$caption_html[] = '<div class="foogallery-caption-title">' . $this->caption . '</div>';
+			}
+			if ( $this->description && ( 'desc' === $caption_content || 'both' === $caption_content ) ) {
+				$caption_html[] = '<div class="foogallery-caption-desc">' . $this->description . '</div>';
+			}
+
+			if ( count($caption_html) > 0 ) {
+				$html = '<div class="foogallery-caption"><div class="foogallery-caption-inner">';
+				$html .= implode( $caption_html );
+				$html .= '</div></div>';
+			}
+
+			return apply_filters( 'foogallery_attachment_html_caption', $html, $caption_content, $this );
 		}
 	}
 }

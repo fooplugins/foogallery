@@ -1,0 +1,292 @@
+.foogallery-image-viewer {
+	display: block;
+	font-family: 'Open Sans', 'Helvetica Neue', Arial, sans-serif;
+}
+
+.foogallery-image-viewer.alignment-left {
+	text-align: left;
+}
+
+.foogallery-image-viewer.alignment-center {
+	text-align: center;
+}
+
+.foogallery-image-viewer.alignment-right {
+	text-align: right;
+}
+.fiv-inner {
+	position: relative;
+	display: inline-block;
+	padding: 5px;
+	border-width: 1px;
+	border-style: solid;
+	border-radius: 3px;
+}
+
+.fiv-inner > .fiv-inner-container {
+	position: relative;
+	border-radius: 3px;
+	overflow: hidden;
+	border-width: 1px;
+	border-style: solid;
+}
+.foogallery-image-viewer > .fiv-inner > .fiv-inner-container > a,
+.foogallery-image-viewer > .fiv-inner > .fiv-inner-container > a:hover,
+.foogallery-image-viewer > .fiv-inner > .fiv-inner-container > a:active,
+.foogallery-image-viewer > .fiv-inner > .fiv-inner-container > a:visited {
+	position: relative;
+	display: none;
+	border: none;
+	outline: none;
+	text-decoration: none;
+	box-shadow: none;
+}
+.foogallery-image-viewer > .fiv-inner > .fiv-inner-container > a.fiv-active {
+	display: block;
+}
+.foogallery-image-viewer > .fiv-inner > .fiv-inner-container > a > img {
+	display: block;
+	max-width: 100%;
+	height: auto;
+	border: none;
+	outline: none;
+	text-decoration: none;
+}
+
+.foogallery-image-viewer > .fiv-inner > .fiv-ctrls {
+	display: block;
+	text-align: center;
+	font-size: 14px;
+	padding: 5px 0 0 0;
+	line-height: 34px;
+}
+.foogallery-image-viewer > .fiv-inner > .fiv-ctrls:after {
+	content: '';
+	display: block;
+	clear: both;
+}
+.foogallery-image-viewer > .fiv-inner > .fiv-ctrls > .fiv-prev,
+.foogallery-image-viewer > .fiv-inner > .fiv-ctrls > .fiv-next {
+	cursor: pointer;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	border-width: 1px;
+	border-style: solid;
+	min-width: 80px;
+	position: relative;
+	overflow: hidden;
+	border-radius: 3px;
+	transition: background-color .3s;
+}
+.foogallery-image-viewer > .fiv-inner > .fiv-ctrls > .fiv-prev:before,
+.foogallery-image-viewer > .fiv-inner > .fiv-ctrls > .fiv-next:before {
+	display: block;
+	position: absolute;
+	font-size: 24px;
+	line-height: 28px;
+	top:0;
+	left:0;
+	width: 100%;
+	transform: translateY(0);
+	transition: transform .3s;
+}
+.foogallery-image-viewer > .fiv-inner > .fiv-ctrls > .fiv-prev:hover:before,
+.foogallery-image-viewer > .fiv-inner > .fiv-ctrls > .fiv-next:hover:before {
+	transform: translateY(-100%);
+}
+.foogallery-image-viewer > .fiv-inner > .fiv-ctrls > .fiv-prev > span,
+.foogallery-image-viewer > .fiv-inner > .fiv-ctrls > .fiv-next > span {
+	display: block;
+	width: 100%;
+	transform: translateY(100%);
+	transition: transform .3s;
+}
+.foogallery-image-viewer > .fiv-inner > .fiv-ctrls > .fiv-prev:hover > span,
+.foogallery-image-viewer > .fiv-inner > .fiv-ctrls > .fiv-next:hover > span {
+	transform: translateY(0);
+}
+.foogallery-image-viewer > .fiv-inner > .fiv-ctrls > .fiv-prev {
+	float: left;
+}
+.foogallery-image-viewer > .fiv-inner > .fiv-ctrls > .fiv-prev:before {
+	content: '\2190';
+}
+.foogallery-image-viewer > .fiv-inner > .fiv-ctrls > .fiv-next {
+	float: right;
+}
+.foogallery-image-viewer > .fiv-inner > .fiv-ctrls > .fiv-next:before {
+	content: '\2192';
+}
+.foogallery-image-viewer > .fiv-inner > .fiv-ctrls > .fiv-count > span {
+	margin: 0 4px;
+}
+
+/* Theme - Default (Light) */
+.foogallery-image-viewer > .fiv-inner,
+.foogallery-image-viewer > .fiv-inner > .fiv-ctrls > .fiv-prev,
+.foogallery-image-viewer > .fiv-inner > .fiv-ctrls > .fiv-next {
+	background-color: #FFFFFF;
+	color: #1b1b1b;
+}
+.foogallery-image-viewer > .fiv-inner,
+.foogallery-image-viewer > .fiv-inner > .fiv-inner-container,
+.foogallery-image-viewer > .fiv-inner > .fiv-ctrls > .fiv-prev,
+.foogallery-image-viewer > .fiv-inner > .fiv-ctrls > .fiv-next {
+	border-color: #e6e6e6;
+}
+.foogallery-image-viewer > .fiv-inner > .fiv-ctrls > .fiv-prev:hover,
+.foogallery-image-viewer > .fiv-inner > .fiv-ctrls > .fiv-next:hover {
+	background-color: #F2F2F2;
+}
+
+/* Theme - Dark */
+.foogallery-image-viewer.fiv-dark > .fiv-inner,
+.foogallery-image-viewer.fiv-dark > .fiv-inner > .fiv-ctrls > .fiv-prev,
+.foogallery-image-viewer.fiv-dark > .fiv-inner > .fiv-ctrls > .fiv-next {
+	background-color: #151515;
+	color: #FFFFFF;
+}
+.foogallery-image-viewer.fiv-dark > .fiv-inner,
+.foogallery-image-viewer.fiv-dark > .fiv-inner > .fiv-inner-container,
+.foogallery-image-viewer.fiv-dark > .fiv-inner > .fiv-ctrls > .fiv-prev,
+.foogallery-image-viewer.fiv-dark > .fiv-inner > .fiv-ctrls > .fiv-next {
+	border-color: #2E2E2E;
+}
+.foogallery-image-viewer.fiv-dark > .fiv-inner > .fiv-ctrls > .fiv-prev:hover,
+.foogallery-image-viewer.fiv-dark > .fiv-inner > .fiv-ctrls > .fiv-next:hover {
+	background-color: #000000;
+}
+
+/* Captions */
+.foogallery-image-viewer .foogallery-caption {
+	position: absolute;
+	bottom: 10px;
+	left: 0;
+	z-index: 100;
+	overflow: hidden;
+	text-align: left;
+	padding: 10px 30px 10px 10px;
+
+	background: #000; /* Old browsers */
+	background: -moz-linear-gradient(left,  rgba(0,0,0,0.8) 0%,  rgba(0,0,0,0.8) 60%, rgba(0,0,0,0) 100%); /* FF3.6-15 */
+	background: -webkit-linear-gradient(left,  rgba(0,0,0,0.8) 0%,  rgba(0,0,0,0.8) 60%,rgba(0,0,0,0) 100%); /* Chrome10-25,Safari5.1-6 */
+	background: linear-gradient(to right,  rgba(0,0,0,0.8) 0%,  rgba(0,0,0,0.8) 60%,rgba(0,0,0,0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+}
+
+.foogallery-image-viewer .foogallery-caption-title,
+.foogallery-image-viewer .foogallery-caption-desc {
+	color: #fff;
+	font-size: 12px;
+}
+.foogallery-image-viewer .foogallery-caption-title {
+	font-size: 16px;
+}
+
+.foogallery-image-viewer .foogallery-caption-title+.foogallery-caption-desc {
+	margin-top: 3px;
+}
+
+/* Hover Effects */
+
+.foogallery-image-viewer.hover-effect-zoom a,
+.foogallery-image-viewer.hover-effect-zoom2 a,
+.foogallery-image-viewer.hover-effect-zoom3 a,
+.foogallery-image-viewer.hover-effect-plus a,
+.foogallery-image-viewer.hover-effect-circle-plus a,
+.foogallery-image-viewer.hover-effect-eye a,
+.foogallery-image-viewer.hover-effect-tint a {
+	position: relative;
+	display: inline-block;
+}
+
+.foogallery-image-viewer.hover-effect-zoom a img,
+.foogallery-image-viewer.hover-effect-zoom2 a img,
+.foogallery-image-viewer.hover-effect-zoom3 a img,
+.foogallery-image-viewer.hover-effect-plus a img,
+.foogallery-image-viewer.hover-effect-circle-plus a img,
+.foogallery-image-viewer.hover-effect-eye a img,
+.foogallery-image-viewer.hover-effect-tint a img {
+	display: block;
+}
+
+.foogallery-image-viewer.hover-effect-zoom a:before,
+.foogallery-image-viewer.hover-effect-zoom2 a:before,
+.foogallery-image-viewer.hover-effect-zoom3 a:before,
+.foogallery-image-viewer.hover-effect-plus a:before,
+.foogallery-image-viewer.hover-effect-circle-plus a:before,
+.foogallery-image-viewer.hover-effect-eye a:before,
+.foogallery-image-viewer.hover-effect-tint a:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	background: none no-repeat center center;
+	-webkit-transition: all .3s linear;
+	-moz-transition: all .3s linear;
+	-o-transition: all .3s linear;
+	transition: all .3s linear;
+}
+
+.foogallery-image-viewer.hover-effect-zoom a:hover:before {
+	background: rgba(0,0,0, 0.5) url('../../shared/img/zoom.png') no-repeat center center;
+}
+
+.foogallery-image-viewer.hover-effect-zoom2 a:hover:before {
+	background:rgba(0,0,0, 0.5) url('../../shared/img/zoom2.png') no-repeat center center;
+}
+
+.foogallery-image-viewer.hover-effect-zoom3 a:hover:before {
+	background:rgba(0,0,0, 0.5) url('../../shared/img/zoom3.png') no-repeat center center;
+}
+
+.foogallery-image-viewer.hover-effect-plus a:hover:before {
+	background:rgba(0,0,0, 0.5) url('../../shared/img/plus.png') no-repeat center center;
+}
+
+.foogallery-image-viewer.hover-effect-circle-plus a:hover:before {
+	background:rgba(0,0,0, 0.5) url('../../shared/img/circle-plus.png') no-repeat center center;
+}
+
+.foogallery-image-viewer.hover-effect-eye a:hover:before {
+	background:rgba(0,0,0, 0.5) url('../../shared/img/eye.png') no-repeat center center;
+}
+
+.foogallery-image-viewer.hover-effect-tint a:hover:before {
+	background-image: none !important;
+	background-color:rgba(0,0,0, 0.5);
+}
+
+.foogallery-image-viewer.hover-effect-color a img {
+	background: none !important;
+
+	background: none !important;
+	filter: grayscale(100%);
+	-webkit-filter: grayscale(100%); /* For Webkit browsers */
+	filter: gray; /* For IE 6 - 9 */
+	filter: url(../../shared/img/filter.svg#greyscale); /* Firefox 10+, Firefox on Android */
+
+	-moz-transition: all .3s linear;
+	-webkit-transition: all .3s linear;
+	-o-transition: all .3s linear;
+	transition: all .3s linear;
+}
+
+.foogallery-image-viewer.hover-effect-color a:hover img {
+	filter: none;
+	-webkit-filter: none;
+	opacity: 1 !important;
+}
+
+.foogallery-image-viewer.hover-effect-color a:hover:before {
+	background: none !important;
+}
+
+.foogallery-image-viewer.hover-effect-none a:before,
+.foogallery-image-viewer.hover-effect-none a:before:hover {
+	background: none !important;
+}

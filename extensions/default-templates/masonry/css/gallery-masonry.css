@@ -1,0 +1,140 @@
+/* Loading Styles */
+.foogallery-masonry-loading {
+    background: #fff url(data:image/gif;base64,R0lGODlhEAALAPQAAP///wAAANra2tDQ0Orq6gYGBgAAAC4uLoKCgmBgYLq6uiIiIkpKSoqKimRkZL6+viYmJgQEBE5OTubm5tjY2PT09Dg4ONzc3PLy8ra2tqCgoMrKyu7u7gAAAAAAAAAAACH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCwAAACwAAAAAEAALAAAFLSAgjmRpnqSgCuLKAq5AEIM4zDVw03ve27ifDgfkEYe04kDIDC5zrtYKRa2WQgAh+QQJCwAAACwAAAAAEAALAAAFJGBhGAVgnqhpHIeRvsDawqns0qeN5+y967tYLyicBYE7EYkYAgAh+QQJCwAAACwAAAAAEAALAAAFNiAgjothLOOIJAkiGgxjpGKiKMkbz7SN6zIawJcDwIK9W/HISxGBzdHTuBNOmcJVCyoUlk7CEAAh+QQJCwAAACwAAAAAEAALAAAFNSAgjqQIRRFUAo3jNGIkSdHqPI8Tz3V55zuaDacDyIQ+YrBH+hWPzJFzOQQaeavWi7oqnVIhACH5BAkLAAAALAAAAAAQAAsAAAUyICCOZGme1rJY5kRRk7hI0mJSVUXJtF3iOl7tltsBZsNfUegjAY3I5sgFY55KqdX1GgIAIfkECQsAAAAsAAAAABAACwAABTcgII5kaZ4kcV2EqLJipmnZhWGXaOOitm2aXQ4g7P2Ct2ER4AMul00kj5g0Al8tADY2y6C+4FIIACH5BAkLAAAALAAAAAAQAAsAAAUvICCOZGme5ERRk6iy7qpyHCVStA3gNa/7txxwlwv2isSacYUc+l4tADQGQ1mvpBAAIfkECQsAAAAsAAAAABAACwAABS8gII5kaZ7kRFGTqLLuqnIcJVK0DeA1r/u3HHCXC/aKxJpxhRz6Xi0ANAZDWa+kEAA7AAAAAAAAAAAA) no-repeat center center;
+    min-height: 11px;
+}
+
+.foogallery-masonry .item a {
+    display: inline-block;
+}
+
+.foogallery-masonry.foogallery-masonry-loading .item a,
+.foogallery-masonry.foogallery-masonry-loading .item img {
+    display:none;
+}
+
+.foogallery-masonry-hover-zoom-default .item a img {
+   transition: all 0.2s linear;
+   -webkit-transition: all 0.2s linear; /** Chrome & Safari **/
+   -moz-transition: all 0.2s linear; /** Firefox **/
+   -o-transition: all 0.2s linear; /** Opera **/
+}
+
+.foogallery-masonry-hover-zoom-default .item a:hover img {
+   -webkit-transform: scale(1.05);
+   -moz-transform: scale(1.05);
+   -o-transform: scale(1.05);
+   -ms-transform: scale(1.05);
+   transform: scale(1.05);
+}
+
+/* force no borders */
+.foogallery-masonry a,
+.foogallery-masonry a:hover {
+    border: none !important;
+}
+
+.foogallery-masonry .item {
+    line-height: 0;
+    font-size: 0;
+}
+
+/* 2 column layouts */
+/* 2 column layout - normal gutter */
+.foogallery-masonry.masonry-layout-2col .item { margin-bottom: 1%; width: 49%; }
+.foogallery-masonry.masonry-layout-2col .masonry-item-width { width: 49%; }
+.foogallery-masonry.masonry-layout-2col .masonry-gutter-width { width: 1%; }
+
+/* 2 column layout - no gutter */
+.foogallery-masonry.masonry-layout-2col.no-gutter .item { margin-bottom: 0; width: 50%; }
+.foogallery-masonry.masonry-layout-2col.no-gutter .masonry-item-width { width: 50%; }
+.foogallery-masonry.masonry-layout-2col.no-gutter .masonry-gutter-width { width: 0; }
+
+/* 2 column layout - large gutter */
+.foogallery-masonry.masonry-layout-2col.large-gutter .item { margin-bottom: 3%; width: 47%; }
+.foogallery-masonry.masonry-layout-2col.large-gutter .masonry-item-width { width: 47%; }
+.foogallery-masonry.masonry-layout-2col.large-gutter .masonry-gutter-width { width: 3%; }
+
+/* 3 column layouts */
+/* 3 column layout - normal gutter */
+.foogallery-masonry.masonry-layout-3col .item { margin-bottom: 1%; width: 32%; }
+.foogallery-masonry.masonry-layout-3col .masonry-item-width { width: 32%; }
+.foogallery-masonry.masonry-layout-3col .masonry-gutter-width { width: 1%; }
+
+/* 3 column layout - no gutter */
+.foogallery-masonry.masonry-layout-3col.no-gutter .item { margin-bottom: 0; width: 33%; }
+.foogallery-masonry.masonry-layout-3col.no-gutter .masonry-item-width { width: 33%; }
+.foogallery-masonry.masonry-layout-3col.no-gutter .masonry-gutter-width { width: 0; }
+
+/* 3 column layout - large gutter */
+.foogallery-masonry.masonry-layout-3col.large-gutter .item { margin-bottom: 3%; width: 30%; }
+.foogallery-masonry.masonry-layout-3col.large-gutter .masonry-item-width { width: 30%; }
+.foogallery-masonry.masonry-layout-3col.large-gutter .masonry-gutter-width { width: 3%; }
+
+/* 4 column layouts */
+/* 4 column layout - normal gutter */
+.foogallery-masonry.masonry-layout-4col .item { margin-bottom: 1%; width: 24%; }
+.foogallery-masonry.masonry-layout-4col .masonry-item-width { width: 24%; }
+.foogallery-masonry.masonry-layout-4col .masonry-gutter-width { width: 1%; }
+
+/* 4 column layout - no gutter */
+.foogallery-masonry.masonry-layout-4col.no-gutter .item { margin-bottom: 0; width: 25%; }
+.foogallery-masonry.masonry-layout-4col.no-gutter .masonry-item-width { width: 25%; }
+.foogallery-masonry.masonry-layout-4col.no-gutter .masonry-gutter-width { width: 0; }
+
+/* 4 column layout - large gutter */
+.foogallery-masonry.masonry-layout-4col.large-gutter .item { margin-bottom: 3%; width: 22%; }
+.foogallery-masonry.masonry-layout-4col.large-gutter .masonry-item-width { width: 22%; }
+.foogallery-masonry.masonry-layout-4col.large-gutter .masonry-gutter-width { width: 3%; }
+
+/* 5 column layouts */
+/* 5 column layout - normal gutter */
+.foogallery-masonry.masonry-layout-5col .item { margin-bottom: 1%; width: 19%; }
+.foogallery-masonry.masonry-layout-5col .masonry-item-width { width: 19%; }
+.foogallery-masonry.masonry-layout-5col .masonry-gutter-width { width: 1%; }
+
+/* 5 column layout - no gutter */
+.foogallery-masonry.masonry-layout-5col.no-gutter .item { margin-bottom: 0; width: 20%; }
+.foogallery-masonry.masonry-layout-5col.no-gutter .masonry-item-width { width: 20%; }
+.foogallery-masonry.masonry-layout-5col.no-gutter .masonry-gutter-width { width: 0; }
+
+/* 5 column layout - large gutter */
+.foogallery-masonry.masonry-layout-5col.large-gutter .item { margin-bottom: 3%; width: 17%; }
+.foogallery-masonry.masonry-layout-5col.large-gutter .masonry-item-width { width: 17%; }
+.foogallery-masonry.masonry-layout-5col.large-gutter .masonry-gutter-width { width: 3%; }
+
+/* Force 2 column layout < 480px */
+@media screen and (max-width: 480px) {
+    .foogallery-masonry.masonry-layout-5col .masonry-item-width,
+    .foogallery-masonry.masonry-layout-4col .masonry-item-width,
+    .foogallery-masonry.masonry-layout-3col .masonry-item-width,
+    .foogallery-masonry.masonry-layout-2col .masonry-item-width { width: 49%; }
+
+    .foogallery-masonry.masonry-layout-5col .item,
+    .foogallery-masonry.masonry-layout-4col .item,
+    .foogallery-masonry.masonry-layout-3col .item,
+    .foogallery-masonry.masonry-layout-2col .item { width: 49%; }
+
+    .foogallery-masonry.masonry-layout-5col .masonry-gutter-width,
+    .foogallery-masonry.masonry-layout-4col .masonry-gutter-width,
+    .foogallery-masonry.masonry-layout-3col .masonry-gutter-width,
+    .foogallery-masonry.masonry-layout-2col .masonry-gutter-width { width: 1%; }
+}
+
+/* Force 1 column layout < 320px */
+@media screen and (max-width: 320px) {
+    .foogallery-masonry.masonry-layout-5col .masonry-item-width,
+    .foogallery-masonry.masonry-layout-4col .masonry-item-width,
+    .foogallery-masonry.masonry-layout-3col .masonry-item-width,
+    .foogallery-masonry.masonry-layout-2col .masonry-item-width { width: 100%; }
+
+    .foogallery-masonry.masonry-layout-5col .item,
+    .foogallery-masonry.masonry-layout-4col .item,
+    .foogallery-masonry.masonry-layout-3col .item,
+    .foogallery-masonry.masonry-layout-2col .item { width: 100%; margin-bottom: 2%; }
+
+    .foogallery-masonry.masonry-layout-5col .masonry-gutter-width,
+    .foogallery-masonry.masonry-layout-4col .masonry-gutter-width,
+    .foogallery-masonry.masonry-layout-3col .masonry-gutter-width,
+    .foogallery-masonry.masonry-layout-2col .masonry-gutter-width { width: 0; }
+}

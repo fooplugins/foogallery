@@ -110,8 +110,8 @@ function foogallery_album_templates() {
 				'section' => __( 'URL Settings', 'foogallery' ),
 				'type'    => 'radio',
 				'choices' =>  array(
-					'default' =>  __('Pretty, e.g. ', 'foogallery') . '<code>/page-with-album/gallery/some-gallery</code>',
-					'querystring' => __('Querystring e.g. ', 'foogallery') . '<code>/page-with-album?gallery=some-gallery</code>'
+					'default' =>  __('Pretty, e.g. ', 'foogallery') . '<code>/page-with-album/' . foogallery_album_gallery_url_slug() . '/some-gallery</code>',
+					'querystring' => __('Querystring e.g. ', 'foogallery') . '<code>/page-with-album?' . foogallery_album_gallery_url_slug() . '=some-gallery</code>'
 				),
 				'default' => foogallery_determine_best_link_format_default()
 			),
@@ -244,14 +244,24 @@ function foogallery_album_build_gallery_link( $album, $gallery ) {
 		$url = add_query_arg( $slug, $gallery->slug );
 	}
 
-	//add the album hash if required
-	$url .= '#' . $album->slug;
+	$use_hash = $album->get_meta( 'default_album_hash', 'remember' );
+
+	if ( 'remember' === $use_hash ) {
+		//add the album hash if required
+		$url .= '#' . $album->slug;
+	}
 
 	return apply_filters( 'foogallery_album_build_gallery_link', $url );
 }
 
+/**
+ * Returns the gallery slug used when generating gallery URL's
+ *
+ * @return string
+ */
 function foogallery_album_gallery_url_slug() {
-	return apply_filters( 'foogallery_album_gallery_url_slug', 'gallery' );
+	$slug = foogallery_get_setting( 'album_gallery_slug', 'gallery' );
+	return apply_filters( 'foogallery_album_gallery_url_slug', $slug );
 }
 
 function foogallery_album_get_current_gallery() {
