@@ -76,6 +76,10 @@
 		$('.foogallery-thumbnail-preview').click(function(e) {
 			e.preventDefault();
 		});
+
+		//run when the page load for the first time too!
+		FOOGALLERY_DEF_TEMPLATE.setPreviewClasses();
+		FOOGALLERY_DEF_TEMPLATE.showHideCaptionContent();
 	};
 
 }(window.FOOGALLERY_DEF_TEMPLATE = window.FOOGALLERY_DEF_TEMPLATE || {}, jQuery));
