@@ -10,7 +10,7 @@
 
 **Requires at least:** 3.9
 
-**Tested up to:** 4.3.1
+**Tested up to:** 4.5
 
 **Stable tag:** trunk
 
