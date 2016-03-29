@@ -15,8 +15,6 @@
 
 .foogallery-simple_portfolio .bf-item {
 	display: none;
-	background-color: #FFF;
-	color: #333333;
 }
 .foogallery-simple_portfolio.bf-loaded .bf-item {
 	display: inline-block;
