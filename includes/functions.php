@@ -370,7 +370,9 @@ function foogallery_build_class_attribute( $gallery ) {
  * @param $gallery FooGallery
  */
 function foogallery_build_class_attribute_render_safe( $gallery ) {
-	echo esc_attr( foogallery_build_class_attribute( $gallery ) );
+	$args = func_get_args();
+	$result = call_user_func_array("foogallery_build_class_attribute", $args);
+	echo esc_attr( $result );
 }
 
 /**
