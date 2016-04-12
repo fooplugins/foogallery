@@ -53,9 +53,14 @@
 	FOOGALLERY.includePreviewCss = function() {
 		var selectedPreviewCss = $('#FooGallerySettings_GalleryTemplate').find(":selected").data('preview-css');
 
+		//remove any previously added preview css
+		$('link[data-foogallery-preview-css]').remove();
+
 		if ( selectedPreviewCss ) {
-			$('#foogallery-preview-css').remove();
-			$('head').append('<link id="foogallery-preview-css" rel="stylesheet" href="' + selectedPreviewCss +'" type="text/css" />');
+			var splitPreviewCss = selectedPreviewCss.split(',');
+			for (var i = 0, l = splitPreviewCss.length; i < l; i++) {
+				$('head').append('<link data-foogallery-preview-css rel="stylesheet" href="' + splitPreviewCss[i] + '" type="text/css" />');
+			}
 		}
 	};
 

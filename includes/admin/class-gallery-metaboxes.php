@@ -303,7 +303,18 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 							<?php
 							foreach ( $available_templates as $template ) {
 								$selected = ($gallery_template === $template['slug']) ? 'selected' : '';
-								$preview_css = isset( $template['preview_css'] ) ? ' data-preview-css="' . $template['preview_css'] . '" ' : '';
+
+								$preview_css = '';
+								if ( isset( $template['preview_css'] ) ) {
+									if ( is_array( $template['preview_css'] ) ) {
+										//dealing with an array of css files to include
+										$preview_css = implode( ',', $template['preview_css'] );
+									} else {
+										$preview_css = $template['preview_css'];
+									}
+								}
+								$preview_css = empty( $preview_css ) ? '' : ' data-preview-css="' . $preview_css . '" ';
+
 								echo "<option {$selected}{$preview_css} value=\"{$template['slug']}\">{$template['name']}</option>";
 							}
 							?>
