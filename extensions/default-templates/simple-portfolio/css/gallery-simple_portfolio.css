@@ -15,6 +15,9 @@
 
 .foogallery-simple_portfolio .bf-item {
 	display: none;
+	background-color: #FFF;
+	color: #333333;
+	max-width: 100%;
 }
 .foogallery-simple_portfolio.bf-loaded .bf-item {
 	display: inline-block;
@@ -39,6 +42,8 @@
 .foogallery-simple_portfolio .bf-item > a > img {
 	display: block;
 	margin: 0;
+	max-width: 100%;
+	height: auto;
 }
 
 .foogallery-simple_portfolio .bf-item > h4 {
