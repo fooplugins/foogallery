@@ -485,7 +485,13 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 				//include any admin js required for the templates
 				foreach ( foogallery_gallery_templates() as $template ) {
 					$admin_js = foo_safe_get( $template, 'admin_js' );
-					if ( $admin_js ) {
+					if ( is_array( $admin_js ) ) {
+						//dealing with an array of js files to include
+						foreach( $admin_js as $admin_js_key => $admin_js_src ) {
+							wp_enqueue_script( 'foogallery-gallery-admin-' . $template['slug'] . '-' . $admin_js_key, $admin_js_src, array('jquery', 'media-upload', 'jquery-ui-sortable'), FOOGALLERY_VERSION );
+						}
+					} else {
+						//dealing with a single js file to include
 						wp_enqueue_script( 'foogallery-gallery-admin-' . $template['slug'], $admin_js, array('jquery', 'media-upload', 'jquery-ui-sortable'), FOOGALLERY_VERSION );
 					}
 				}
