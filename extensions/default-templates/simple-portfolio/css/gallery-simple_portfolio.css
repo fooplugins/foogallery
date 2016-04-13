@@ -26,6 +26,7 @@
 .foogallery-simple_portfolio .bf-item > a {
 	display: inline-block;
 	line-height: 0;
+	max-width: 100%;
 }
 
 .foogallery-simple_portfolio .bf-item > a,
@@ -56,9 +57,4 @@
 	font-size: 0.8em;
 	text-align: justify;
 	margin: 5px 0;
-}
-
-.foogallery-simple_portfolio .bf-item a {
-	display: inline-block;
-	line-height: 0;
 }
