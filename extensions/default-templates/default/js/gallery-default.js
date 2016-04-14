@@ -35,6 +35,10 @@ FooGallery_Default_Ready(function () {
     if (typeof(imagesLoaded) != 'undefined') {
         imagesLoaded(galleries, function () {
             removeClass(galleries, 'foogallery-default-loading');
+
+            //force a resize event so certain themes can update their layout
+            if (window.fireEvent) window.fireEvent('onresize', document.createEventObject());
+            else if (window.dispatchEvent) window.dispatchEvent(new Event('resize'));
         });
     }
 });
