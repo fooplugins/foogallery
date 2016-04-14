@@ -78,6 +78,18 @@ if ( !class_exists( 'FooGallery_Simple_Portfolio_Gallery_Template' ) ) {
 									'default' => 40,
 									'step'    => '1',
 									'min'     => '0',
+							),
+							array(
+								'id'      => 'caption_position',
+								'title' => __('Caption Position', 'foogallery'),
+								'desc' => __('Where the captions are displayed in relation to the thumbnail.', 'foogallery'),
+								'default' => '',
+								'type'    => 'radio',
+								'spacer'  => '<span class="spacer"></span>',
+								'choices' => array(
+									'' => __( 'Below', 'foogallery' ),
+									'bf-captions-above' => __( 'Above', 'foogallery' )
+								)
 							)
 					),
 			);
