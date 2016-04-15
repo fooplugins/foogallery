@@ -11,6 +11,7 @@ if ( !class_exists( 'FooGallery_Simple_Portfolio_Gallery_Template' ) ) {
 		function __construct() {
 			add_filter( 'foogallery_gallery_templates', array( $this, 'add_template' ) );
 			add_filter( 'foogallery_gallery_templates_files', array( $this, 'register_myself' ) );
+			add_filter( 'foogallery_attachment_html_image_attributes', array( $this, 'strip_size' ), 99, 3 );
 		}
 
 		/**
@@ -77,11 +78,47 @@ if ( !class_exists( 'FooGallery_Simple_Portfolio_Gallery_Template' ) ) {
 									'default' => 40,
 									'step'    => '1',
 									'min'     => '0',
+							),
+							array(
+								'id'      => 'caption_position',
+								'title' => __('Caption Position', 'foogallery'),
+								'desc' => __('Where the captions are displayed in relation to the thumbnail.', 'foogallery'),
+								'default' => '',
+								'type'    => 'radio',
+								'spacer'  => '<span class="spacer"></span>',
+								'choices' => array(
+									'' => __( 'Below', 'foogallery' ),
+									'bf-captions-above' => __( 'Above', 'foogallery' )
+								)
 							)
 					),
 			);
 
 			return $gallery_templates;
+		}
+
+		/**
+		 * Simple portfolio relies on there being no width or height attributes on the IMG element so strip them out here.
+		 *
+		 * @param $attr
+		 * @param $args
+		 * @param $attachment
+		 *
+		 * @return mixed
+		 */
+		function strip_size($attr, $args, $attachment){
+			global $current_foogallery_template;
+
+			if ( 'simple_portfolio' === $current_foogallery_template ) {
+				if ( isset($attr['width']) ){
+					unset($attr['width']);
+				}
+				if ( isset($attr['height']) ){
+					unset($attr['height']);
+				}
+			}
+
+			return $attr;
 		}
 	}
 }

@@ -12,18 +12,31 @@ $args['image_attributes'] = array(
 );
 $lightbox = foogallery_gallery_template_setting( 'lightbox', 'unknown' );
 $gutter = foogallery_gallery_template_setting( 'gutter', 40 );
+$caption_position = foogallery_gallery_template_setting( 'caption_position', '' );
 ?>
-<div data-brickfolio-gutter="<?php echo $gutter; ?>" id="foogallery-gallery-<?php echo $current_foogallery->ID; ?>" class="<?php echo foogallery_build_class_attribute( $current_foogallery, 'foogallery-lightbox-' . $lightbox, 'brickfolio' ); ?>">
+<div data-brickfolio-gutter="<?php echo $gutter; ?>" id="foogallery-gallery-<?php echo $current_foogallery->ID; ?>" class="<?php echo foogallery_build_class_attribute( $current_foogallery, 'foogallery-lightbox-' . $lightbox, 'brickfolio', $caption_position ); ?>">
 <?php
 foreach ( $current_foogallery->attachments() as $attachment ) {
 	echo '<div class="bf-item" style="width:' . $args['width'] . 'px">';
-	echo $attachment->html( $args );
-	if ( $attachment->caption ) {
-		echo '<h4>' . $attachment->caption . '</h4>';
+	$caption = null;
+	if ( !empty($attachment->caption) && !empty($attachment->description) ){
+		$caption = '<div class="bf-caption">';
+		if ( !empty($attachment->caption) ) {
+			$caption .= '<h4>' . $attachment->caption . '</h4>';
+		}
+		if ( !empty($attachment->description) ) {
+			$caption .= '<p>' . $attachment->description . '</p>';
+		}
+		$caption .= '</div>';
 	}
-	if ( $attachment->description ) {
-		echo '<p>' . $attachment->description . '</p>';
+	if ( $caption_position === 'bf-captions-above' && !empty($caption) ){
+		echo $caption;
+		echo $attachment->html( $args );
+	} else {
+		echo $attachment->html( $args );
+		echo $caption;
 	}
+
 	echo '</div>';
 } ?>
 </div>
