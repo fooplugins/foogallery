@@ -20,7 +20,7 @@ $loading_animation = 'yes' === foogallery_gallery_template_setting( 'loading_ani
 if ( 'hover-effect-caption' === $hover_effect_type ) {
 	$hover_effect = '';
 }
-?><div id="foogallery-gallery-<?php echo $current_foogallery->ID; ?>" class="<?php echo foogallery_build_class_attribute( $current_foogallery, 'foogallery-link-' . $link, 'foogallery-lightbox-' . $lightbox, $spacing, $hover_effect, $hover_effect_type, $border_style, $alignment, $caption_hover_effect, $loading_animation ); ?>">
+?><div id="foogallery-gallery-<?php echo $current_foogallery->ID; ?>" class="<?php foogallery_build_class_attribute_render_safe( $current_foogallery, 'foogallery-link-' . $link, 'foogallery-lightbox-' . $lightbox, $spacing, $hover_effect, $hover_effect_type, $border_style, $alignment, $caption_hover_effect, $loading_animation ); ?>">
 	<?php foreach ( $current_foogallery->attachments() as $attachment ) {
 		echo $attachment->html( $args, true, false );
 		if ( 'hover-effect-caption' === $hover_effect_type ) {

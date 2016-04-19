@@ -365,6 +365,17 @@ function foogallery_build_class_attribute( $gallery ) {
 }
 
 /**
+ * Renders an escaped class attribute that can be used directly by gallery templates
+ *
+ * @param $gallery FooGallery
+ */
+function foogallery_build_class_attribute_render_safe( $gallery ) {
+	$args = func_get_args();
+	$result = call_user_func_array("foogallery_build_class_attribute", $args);
+	echo esc_attr( $result );
+}
+
+/**
  * Render a foogallery
  *
  * @param $gallery_id int The id of the foogallery you want to render
