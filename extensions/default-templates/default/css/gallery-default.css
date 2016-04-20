@@ -8,6 +8,7 @@
     display: inline-block;
 	overflow: hidden;
 	vertical-align: top;
+	max-width: 100%;
 }
 
     .foogallery-default a img {
@@ -15,6 +16,8 @@
         display: block;
 		-webkit-transition: none;
 		transition: none;
+			max-width: 100%;
+			height: auto;
     }
 
 /* Horizontal alignment */
