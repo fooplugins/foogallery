@@ -7,6 +7,7 @@
 	-webkit-box-shadow: 1px 1px 1px 1px #ccc;
 	-moz-box-shadow: 1px 1px 1px 1px #ccc;
 	box-shadow: 1px 1px 1px 1px #ccc;
+	max-width: 100%;
 }
 
 	.foogallery-thumbnail a:hover {
@@ -18,11 +19,14 @@
         display: block;
 		-webkit-transition: none;
 		transition: none;
+			max-width: 100%;
+			height: auto;
 	}
 
 /* Positioning */
 .foogallery-thumbnail.position-block {
 	display: block;
+	text-align: center;
 }
 
 .foogallery-thumbnail.position-float-left {
