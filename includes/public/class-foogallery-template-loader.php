@@ -75,7 +75,8 @@ class FooGallery_Template_Loader {
 					//try to include some CSS, but allow template to opt-out based on some condition
 					if ( false !== apply_filters( "foogallery_template_load_css-{$current_foogallery_template}", true, $current_foogallery ) ) {
 						if ( false !== ( $css_location = $loader->locate_file( "gallery-{$current_foogallery_template}.css" ) ) ) {
-							foogallery_enqueue_style( "foogallery-template-{$current_foogallery_template}", $css_location['url'], array(), FOOGALLERY_VERSION );
+							$css_deps = apply_filters( "foogallery_template_css_deps-{$current_foogallery_template}", array(), $current_foogallery );
+							foogallery_enqueue_style( "foogallery-template-{$current_foogallery_template}", $css_location['url'], $css_deps, FOOGALLERY_VERSION );
 						}
 					}
 
