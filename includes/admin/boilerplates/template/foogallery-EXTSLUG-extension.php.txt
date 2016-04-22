@@ -22,8 +22,12 @@
 
 if ( !class_exists( '{package}' ) ) {
 
+	define('{constant}_FILE', __FILE__ );
 	define('{constant}_URL', plugin_dir_url( __FILE__ ));
 	define('{constant}_VERSION', '1.0.0');
+	define('{constant}_PATH', plugin_dir_path( __FILE__ ));
+	define('{constant}_SLUG', 'foogallery-{slug}');
+	//define('{constant}_UPDATE_URL', 'http://fooplugins.com/api/{slug}/check');
 
 	require_once( 'foogallery-{slug}-init.php' );
 
