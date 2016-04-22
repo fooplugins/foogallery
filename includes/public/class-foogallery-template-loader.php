@@ -66,7 +66,8 @@ class FooGallery_Template_Loader {
 					//try to include some JS, but allow template to opt-out based on some condition
 					if ( false !== apply_filters( "foogallery_template_load_js-{$current_foogallery_template}", true, $current_foogallery ) ) {
 						if ( false !== ( $js_location = $loader->locate_file( "gallery-{$current_foogallery_template}.js" ) ) ) {
-							wp_enqueue_script( "foogallery-template-{$current_foogallery_template}", $js_location['url'] );
+							$js_deps = apply_filters( "foogallery_template_js_deps-{$current_foogallery_template}", array(), $current_foogallery );
+							wp_enqueue_script( "foogallery-template-{$current_foogallery_template}", $js_location['url'], $js_deps, FOOGALLERY_VERSION );
 							do_action( 'foogallery_template_enqueue_script', $current_foogallery_template, $js_location['url'] );
 						}
 					}
