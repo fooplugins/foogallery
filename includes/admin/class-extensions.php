@@ -35,7 +35,7 @@ if ( ! class_exists( 'FooGallery_Admin_Extensions' ) ) {
 			$extension_slug = safe_get_from_request( 'extension' );
 			$has_error      = safe_get_from_request( 'has_error' );
 
-			if ( $action && $extension_slug ) {
+			if ( ( 'download' === $action || 'activate' === $action || 'deactivate' === $action ) && $extension_slug ) {
 				$api = new FooGallery_Extensions_API();
 
 				$fatal_error_redirect = remove_query_arg( 'action' );
