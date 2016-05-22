@@ -40,6 +40,15 @@ if ( !class_exists( 'FooGallery_Thumbnails' ) ) {
 				$args['width'] = (int)get_option( 'thumbnail_size_w' );
 			}
 
+			if ( $thumbnail_object->ID > 0 ) {
+				$crop_from_position = get_post_meta( $thumbnail_object->ID, 'wpthumb_crop_pos', true );
+
+				if ( !empty( $crop_from_position ) ) {
+					$args['crop_from_position'] = $crop_from_position;
+				}
+			}
+
+
 			return wpthumb( $original_image_src, $args );
 		}
 	}
