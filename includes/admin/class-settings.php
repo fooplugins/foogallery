@@ -20,6 +20,15 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 			//region General Tab
 			$tabs['general'] = __( 'General', 'foogallery' );
 
+			$settings[] = array(
+				'id'      => 'clear_css_optimizations',
+				'title'   => __( 'Clear CSS Cache', 'foogallery' ),
+				'desc'    => sprintf( __( '%s optimizes the way it loads gallery stylesheets to improve page performance. This can lead to the incorrect CSS being loaded in some cases. Use this button to clear all the CSS optimizations that have been cached across all galleries.', 'foogallery' ), foogallery_plugin_name() ),
+				'type'    => 'clear_optimization_button',
+				'tab'     => 'general',
+				'section' => __( 'Cache', 'foogallery' )
+			);
+
 	        $gallery_templates = foogallery_gallery_templates();
 			$gallery_templates_choices = array();
 			foreach ( $gallery_templates as $template ) {
@@ -138,14 +147,6 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 				'desc'    => __( 'The image quality to be used when resizing JPEG images.', 'foogallery' ),
 				'type'    => 'text',
 				'default' => '80',
-				'tab'     => 'thumb'
-			);
-
-			$settings[] = array(
-				'id'      => 'clear_css_optimizations',
-				'title'   => __( 'Clear CSS Cache', 'foogallery' ),
-				'desc'    => sprintf( __( '%s optimizes the way it loads gallery stylesheets to improve page performance. This can lead to the incorrect CSS being loaded in some cases. Use this button to clear all the CSS optimizations that have been cached across all galleries.', 'foogallery' ), foogallery_plugin_name() ),
-				'type'    => 'clear_optimization_button',
 				'tab'     => 'thumb'
 			);
 
