@@ -24,14 +24,14 @@ if (!class_exists('FooGallery_Attachment_Fields')) {
 
 		    $fields = array(
 			    'foogallery_custom_url' => array(
-				    'label'       =>  sprintf( __( '%s Custom URL', 'foogallery' ), foogallery_plugin_name() ),
+				    'label'       =>  __( 'Custom URL', 'foogallery' ),
 				    'input'       => 'text', //other types are 'textarea', 'checkbox', 'radio', 'select',
 				    'helps'       => __( 'Point your attachment to a custom URL', 'foogallery' ),
 				    'exclusions'  => array( 'audio', 'video' ),
 			    ),
 
 			    'foogallery_custom_target' => array(
-				    'label'       =>  sprintf( __( '%s Custom Target', 'foogallery' ), foogallery_plugin_name() ),
+				    'label'       =>  __( 'Custom Target', 'foogallery' ),
 				    'input'       => 'select',
 				    'helps'       => __( 'Set a custom target for your attachment', 'foogallery' ),
 				    'exclusions'  => array( 'audio', 'video' ),
