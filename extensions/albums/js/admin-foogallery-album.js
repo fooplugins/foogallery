@@ -62,10 +62,34 @@
 		$('body').trigger('foogallery-album-template-changed-' + selectedTemplate );
 	};
 
+	FOOGALLERYALBUM.initAlbumInfoButtons = function() {
+		$('.foogallery-album-gallery-list .attachment-preview').on('click', 'a.info', function(e) {
+
+			e.preventDefault();
+
+			e.stopPropagation();
+
+			var $this = $(this),
+				$modal = $('.foogallery-album-info-modal');
+
+			$modal.find('.gallery-title').html( $this.data('gallery-title') );
+			$modal.find('.gallery-images').html( $this.data('gallery-images') );
+			$modal.find('.gallery-url').val( $this.data('gallery-url') );
+
+			$modal.show();
+		});
+
+		$('.foogallery-album-info-modal .media-modal-close').on('click', function() {
+			$('.foogallery-album-info-modal').hide();
+		});
+	};
+
 	$(function() { //wait for ready
 		FOOGALLERYALBUM.bindElements();
 
 		FOOGALLERYALBUM.initSettings();
+
+		FOOGALLERYALBUM.initAlbumInfoButtons();
 	});
 
 }(window.FOOGALLERYALBUM = window.FOOGALLERYALBUM || {}, jQuery));

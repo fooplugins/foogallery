@@ -158,12 +158,64 @@ if ( ! class_exists( 'FooGallery_Admin_Album_MetaBoxes' ) ) {
 			<input type="hidden" name='foogallery_album_galleries' id="foogallery_album_galleries"
 			       value="<?php echo $album->gallery_id_csv(); ?>"/>
 			<div>
+				<?php if ( !$album->has_galleries() ) { ?>
+					<div class="foogallery-album-error">
+						<?php _e( 'There are no galleries selected for your album yet! Click any gallery to add it to your album.', 'foogallery' ); ?>
+					</div>
+				<?php } ?>
+
+				<div class="foogallery-album-info-modal media-modal">
+					<div class="media-modal-content">
+						<div class="media-frame mode-select">
+							<div class="media-frame-title">
+								<h1><?php _e('Edit Gallery Details', 'foogallery'); ?></h1>
+							</div>
+							<div class="modal-content">
+								<div class="attachment-details">
+									<div class="album-info">
+
+										<label class="setting" data-setting="title">
+											<span class="name"><?php _e( 'Gallery Title', 'foogallery' ) ?></span>
+											<strong class="gallery-title"></strong>
+										</label>
+
+										<label class="setting" data-setting="title">
+											<span class="name"><?php _e( 'Media', 'foogallery' ); ?></span>
+											<strong class="gallery-images"></strong>
+										</label>
+
+										<label class="setting" data-setting="alt">
+											<span class="name"><?php _e( 'Gallery URL', 'foogallery' ); ?></span>
+											<input type="text" class="gallery-url">
+										</label>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="media-frame-toolbar">
+							<div class="media-toolbar">
+								<div class="media-toolbar-secondary"></div>
+								<div class="media-toolbar-primary search-form">
+									<button type="button" class="button media-button button-primary button-large media-button-select"><?php _e('Save Gallery Details', 'foogallery'); ?></button>
+								</div>
+							</div>
+						</div>
+					</div>
+					<button type="button" class="button-link media-modal-close">
+						<span class="media-modal-icon"><span class="screen-reader-text"><?php _e('Close media panel', 'foogallery'); ?></span></span>
+					</button>
+
+				</div>
+				<div class="foogallery-album-info-modal media-modal-backdrop"></div>
+
+
 				<ul class="foogallery-album-gallery-list">
 					<?php
 					foreach ( $galleries as $gallery ) {
 						$img_src  = $gallery->featured_image_src( array( 150, 150 ) );
 						$images   = $gallery->image_count();
 						$selected = $album->includes_gallery( $gallery->ID ) ? ' selected' : '';
+						$gallery_url = get_post_meta( $gallery->ID, 'gallery-url', true );
 						?>
 						<li class="foogallery-pile">
 							<div class="foogallery-gallery-select attachment-preview landscape<?php echo $selected; ?>"
@@ -183,6 +235,13 @@ if ( ! class_exists( 'FooGallery_Admin_Album_MetaBoxes' ) ) {
 										</h3>
 									</div>
 								</div>
+								<a class="info foogallery-album-info" href="#"
+								   title="<?php _e( 'Edit Album Info', 'foogallery' ); ?>"
+								   data-gallery-title="<?php echo $title; ?>"
+								   data-gallery-images="<?php echo $images; ?>"
+								   data-gallery-url="<?php echo $gallery_url; ?>">
+									<span class="dashicons dashicons-info"></span>
+								</a>
 							</div>
 						</li>
 					<?php } ?>
