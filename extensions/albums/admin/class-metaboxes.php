@@ -214,6 +214,7 @@ if ( ! class_exists( 'FooGallery_Admin_Album_MetaBoxes' ) ) {
 					foreach ( $galleries as $gallery ) {
 						$img_src  = $gallery->featured_image_src( array( 150, 150 ) );
 						$images   = $gallery->image_count();
+						$edit_url = get_edit_post_link( $gallery->ID );
 						$selected = $album->includes_gallery( $gallery->ID ) ? ' selected' : '';
 						$gallery_url = get_post_meta( $gallery->ID, 'gallery-url', true );
 						?>
@@ -240,6 +241,7 @@ if ( ! class_exists( 'FooGallery_Admin_Album_MetaBoxes' ) ) {
 								   data-gallery-title="<?php echo $title; ?>"
 								   data-gallery-images="<?php echo $images; ?>"
 								   data-gallery-url="<?php echo $gallery_url; ?>">
+								   data-gallery-edit-url="<?php echo $edit_url; ?>"
 									<span class="dashicons dashicons-info"></span>
 								</a>
 							</div>
