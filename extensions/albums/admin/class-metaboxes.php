@@ -206,7 +206,7 @@ if ( ! class_exists( 'FooGallery_Admin_Album_MetaBoxes' ) ) {
 					</button>
 
 				</div>
-				<div class="foogallery-album-info-modal media-modal-backdrop"></div>
+				<div class="foogallery-album-info-modal-backdrop media-modal-backdrop"></div>
 
 
 				<ul class="foogallery-album-gallery-list">
