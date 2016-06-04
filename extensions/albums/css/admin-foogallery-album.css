@@ -274,6 +274,10 @@
 	right: 200px;
 }
 
+.foogallery-album-info-modal-backdrop {
+	display: none;
+}
+
 .foogallery-album-info-modal .media-frame-title {
 	left:0;
 }

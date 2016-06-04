@@ -77,10 +77,12 @@
 			$modal.find('.gallery-url').val( $this.data('gallery-url') );
 
 			$modal.show();
+			$('.media-modal-backdrop').show();
 		});
 
 		$('.foogallery-album-info-modal .media-modal-close').on('click', function() {
 			$('.foogallery-album-info-modal').hide();
+			$('.media-modal-backdrop').hide();
 		});
 	};
 
