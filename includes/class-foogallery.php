@@ -319,6 +319,17 @@ class FooGallery extends stdClass {
 		return apply_filters( 'foogallery_image_count', $count_text, $this );
 	}
 
+	/**
+	 * Returns a safe name for the gallery, in case there has been no title set
+	 *
+	 * @return string
+	 */
+	public function safe_name() {
+		return empty( $this->name ) ?
+				sprintf( __( '%s #%s', 'foogallery' ), foogallery_plugin_name(), $this->ID ) :
+				$this->name;
+	}
+
 	public function find_usages() {
 		return get_posts( array(
 			'post_type'      => array( 'post', 'page', ),
@@ -346,6 +357,18 @@ class FooGallery extends stdClass {
 		}
 
 		return false;
+	}
+
+	/**
+	 * Returns the name of the gallery template
+	 * @return string|void
+	 */
+	public function gallery_template_name() {
+		$template = $this->gallery_template_details();
+		if ( false !== $template ) {
+			return $template['name'];
+		}
+		return __( 'Unknown', 'foogallery' );
 	}
 
 	public function gallery_template_has_field_of_type( $field_type ) {
