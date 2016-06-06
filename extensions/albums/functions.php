@@ -104,6 +104,19 @@ function foogallery_album_templates() {
 				'default' => '%s images'
 			),
 			array(
+				'id'      => 'gallery_link',
+				'title'   => __( 'Gallery Link', 'foogallery' ),
+				'section' => __( 'URL Settings', 'foogallery' ),
+				'default' => '',
+				'type'    => 'radio',
+				'spacer'  => '<span class="spacer"></span>',
+				'choices' =>  array(
+						'' =>  __('Default', 'foogallery'),
+						'custom_url' => __('Custom URL', 'foogallery')
+				),
+				'desc'	  => __( 'You can choose to link each gallery to the default embedded gallery, or you can choose to link to the gallery custom URL (if set).', 'foogallery' ),
+			),
+			array(
 				'id'      => 'gallery_link_format',
 				'title'   => __( 'Gallery Link Format', 'foogallery' ),
 				'desc'    => __( 'The format of the URL for each individual gallery in the album.', 'foogallery' ),
@@ -233,22 +246,39 @@ function foogallery_default_album_template() {
 	return foogallery_get_setting( 'album_template' );
 }
 
+/**
+ * Returns the gallery link url for an album
+ *
+ * @param $album FooGalleryAlbum
+ * @param $gallery FooGallery
+ *
+ * @return string
+ */
 function foogallery_album_build_gallery_link( $album, $gallery ) {
-	$slug = foogallery_album_gallery_url_slug();
-	$key = 'default_gallery_link_format';
-	$format = $album->get_meta( $key, 'default' );
+	//first check if we want to use custom URL's
+	$gallery_link = $album->get_meta( 'default_gallery_link', '' );
 
-	if ( 'default' === $format && 'default' === foogallery_determine_best_link_format_default() ) {
-		$url = untrailingslashit( trailingslashit( get_permalink() ) . $slug . '/' . $gallery->slug );
-	} else {
-		$url = add_query_arg( $slug, $gallery->slug );
+	if ( 'custom_url' === $gallery_link ) {
+		//check if the gallery has a custom url, and if so, then use it
+		$url = get_post_meta( $gallery->ID, 'custom_url', true );
 	}
 
-	$use_hash = $album->get_meta( 'default_album_hash', 'remember' );
+	if ( empty( $url ) ) {
+		$slug   = foogallery_album_gallery_url_slug();
+		$format = $album->get_meta( 'default_gallery_link_format', 'default' );
 
-	if ( 'remember' === $use_hash ) {
-		//add the album hash if required
-		$url .= '#' . $album->slug;
+		if ( 'default' === $format && 'default' === foogallery_determine_best_link_format_default() ) {
+			$url = untrailingslashit( trailingslashit( get_permalink() ) . $slug . '/' . $gallery->slug );
+		} else {
+			$url = add_query_arg( $slug, $gallery->slug );
+		}
+
+		$use_hash = $album->get_meta( 'default_album_hash', 'remember' );
+
+		if ( 'remember' === $use_hash ) {
+			//add the album hash if required
+			$url .= '#' . $album->slug;
+		}
 	}
 
 	return apply_filters( 'foogallery_album_build_gallery_link', $url );
@@ -262,6 +292,30 @@ function foogallery_album_build_gallery_link( $album, $gallery ) {
 function foogallery_album_gallery_url_slug() {
 	$slug = foogallery_get_setting( 'album_gallery_slug', 'gallery' );
 	return apply_filters( 'foogallery_album_gallery_url_slug', $slug );
+}
+
+/**
+ * Returns the gallery link target for an album
+ *
+ * @param $album FooGalleryAlbum
+ * @param $gallery FooGallery
+ *
+ * @return string
+ */
+function foogallery_album_build_gallery_link_target( $album, $gallery ) {
+	//first check if we want to use custom URL's
+	$gallery_link = $album->get_meta( 'default_gallery_link', '' );
+
+	if ( 'custom_url' === $gallery_link ) {
+		//check if the gallery has a custom target, and if so, then use it
+		$target = get_post_meta( $gallery->ID, 'custom_target', true );
+	}
+
+	if ( empty( $target ) ) {
+		$target = '_self';
+	}
+
+	return apply_filters( 'foogallery_album_build_gallery_link_target', $target );
 }
 
 function foogallery_album_get_current_gallery() {
