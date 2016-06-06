@@ -270,46 +270,101 @@
 	display: none;
 	top: 20%;
 	bottom: 20%;
-	left: 200px;
-	right: 200px;
+	left: 30%;
+	right: 30%;
 }
+
+	.foogallery-album-info-modal .media-frame-title {
+		left:0;
+	}
+
+		.foogallery-album-info-modal .media-frame-title h1 {
+			float: left;
+		}
+
+		.foogallery-album-info-modal .media-frame-title .spinner {
+			float:left;
+			margin: 15px 0;
+		}
+
+	.foogallery-album-info-modal .close {
+		position: absolute;
+		top: 20px;
+		right: 20px;
+		cursor: pointer;
+		font-size: 20px;
+	}
+
+	.foogallery-album-info-modal .modal-content {
+		position: absolute;
+		top: 50px;
+		left: 0;
+		right: 0;
+		bottom: 61px;
+		height: auto;
+		width: auto;
+		margin: 0;
+		overflow: auto;
+		background: #fff;
+		border-top: 1px solid #ddd;
+		border-bottom: 1px solid #ddd;
+		padding: 20px;
+		min-width: 400px;
+	}
+
+	.foogallery-album-info-modal .gallery-details,
+	.foogallery-album-info-modal .gallery-details table {
+		width: 100%;
+	}
+
+		.foogallery-album-info-modal .gallery-details th {
+			vertical-align: top;
+		}
+
+			.foogallery-album-info-modal .gallery-details th label {
+				box-sizing: border-box;
+				float: right;
+				padding: 6px 0px;
+				margin-right: 20px;
+				font-weight: normal;
+			}
+
+		.foogallery-album-info-modal .gallery-details td input,
+		.foogallery-album-info-modal .gallery-details td textarea,
+		.foogallery-album-info-modal .gallery-details td select {
+			width: 100%;
+		}
+
+		.foogallery-album-info-modal .gallery-details td select {
+			line-height: inherit;
+			padding: 6px 8px;
+			height: inherit;
+		}
+
+		.foogallery-album-info-modal .gallery-details td .help {
+			margin-top: 0;
+			font-size: 0.8em;
+		}
+
+	.foogallery-album-info-modal .media-toolbar .spinner {
+		margin-top: 20px;
+		margin-right: 0;
+	}
+
+	.foogallery-album-info-modal .media-frame-toolbar {
+		left: 0;
+	}
+
+		.foogallery-album-info-modal .media-frame-toolbar .media-toolbar-secondary {
+			line-height: 60px;
+			font-weight: bold;
+		}
 
 .foogallery-album-info-modal-backdrop {
 	display: none;
 }
 
-.foogallery-album-info-modal .media-frame-title {
-	left:0;
-}
-
-.foogallery-album-info-modal .close {
-	position: absolute;
-	top: 20px;
-	right: 20px;
-	cursor: pointer;
-	font-size: 20px;
-}
-
-.foogallery-album-info-modal .modal-content {
-	position: absolute;
-	top: 50px;
-	left: 0;
-	right: 0;
-	bottom: 61px;
-	height: auto;
-	width: auto;
-	margin: 0;
-	overflow: auto;
-	background: #fff;
-	border-top: 1px solid #ddd;
-	border-bottom: 1px solid #ddd;
-	padding: 20px;
-}
-
-.foogallery-album-info-modal .album-info .setting strong {
-	box-sizing: border-box;
-	margin: 1px;
-	width: 65%;
-	float: right;
-	padding: 6px 0px;
+.spacer {
+	display: inline-block;
+	width:30px;
 }

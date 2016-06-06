@@ -21,6 +21,8 @@
 			showInput: true,
 			clickoutFiresChange: true
 		});
+
+		$('.foogallery-album-info-modal').prependTo('body');
 	};
 
 	FOOGALLERYALBUM.changeSelection = function() {
@@ -70,14 +72,63 @@
 			e.stopPropagation();
 
 			var $this = $(this),
-				$modal = $('.foogallery-album-info-modal');
+				$modal = $('.foogallery-album-info-modal'),
+				$spinner = $modal.find('.media-frame-title .spinner'),
+				$nonce = $modal.find('#foogallery_album_gallery_details_nonce'),
+				$details = $modal.find('.gallery-details'),
+				data = 'action=foogallery_get_gallery_details' +
+					'&foogallery_id=' + $this.data('gallery-id') +
+					'&_wpnonce=' + $nonce.val() +
+					'&_wp_http_referer=' + encodeURIComponent($('input[name="_wp_http_referer"]').val());
 
-			$modal.find('.gallery-title').html( $this.data('gallery-title') );
-			$modal.find('.gallery-images').html( $this.data('gallery-images') );
-			$modal.find('.gallery-url').val( $this.data('gallery-url') );
+			$details.html( $details.data('loading') + $this.data('gallery-title') + '...' );
+			$spinner.addClass('is-active');
+
+			$.ajax({
+				type: "POST",
+				url: ajaxurl,
+				data: data,
+				success: function(data) {
+					$details.html(data);
+				},
+				complete: function() {
+					$spinner.removeClass('is-active');
+				}
+			});
 
 			$modal.show();
 			$('.media-modal-backdrop').show();
+		});
+
+		$('.foogallery-album-info-modal .gallery-details-save').on('click', function(e) {
+			e.preventDefault();
+
+			var $this = $(this),
+				$modal = $('.foogallery-album-info-modal'),
+				$spinner = $modal.find('.media-frame-toolbar .spinner'),
+				$nonce = $modal.find('#foogallery_album_gallery_details_nonce'),
+				$form = $modal.find('form[name="foogallery_gallery_details"]'),
+				data = 'action=foogallery_save_gallery_details' +
+						'&_wpnonce=' + $nonce.val() +
+						'&_wp_http_referer=' + encodeURIComponent($('input[name="_wp_http_referer"]').val()) +
+						'& ' + $form.serialize();
+
+			$this.attr('disabled', 'disabled');
+			$spinner.addClass('is-active');
+
+			$.ajax({
+				type: "POST",
+				url: ajaxurl,
+				data: data,
+				success: function() {
+					$('.foogallery-album-info-modal').hide();
+					$('.media-modal-backdrop').hide();
+				},
+				complete: function() {
+					$spinner.removeClass('is-active');
+					$this.removeAttr('disabled');
+				}
+			});
 		});
 
 		$('.foogallery-album-info-modal .media-modal-close').on('click', function() {
