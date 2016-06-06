@@ -45,7 +45,7 @@ if ( ! class_exists( 'FooGallery_Admin_Album_MetaBoxes' ) ) {
 		public function add_meta_boxes() {
 			add_meta_box(
 				'foogalleryalbum_galleries',
-				__( 'Galleries - drag n drop to reorder!', 'foogallery' ),
+				__( 'Galleries - click a gallery to add it to your album.', 'foogallery' ),
 				array( $this, 'render_gallery_metabox' ),
 				FOOGALLERY_CPT_ALBUM,
 				'normal',
