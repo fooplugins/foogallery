@@ -40,27 +40,38 @@ if ( !class_exists( 'FooGallery_Justified_Gallery_Template' ) ) {
 									'title'	  => __( 'Tip', 'foogallery' ),
 									'type'	  => 'html',
 									'help'	  => true,
-									'desc'	  => __( 'The Justified Gallery template uses the popular <a href="http://miromannino.com/projects/justified-gallery/" target="_blank">Justified Gallery jQuery Plugin</a> under the hood. You can specify thumbnail captions by setting the alt text for your attachments.', 'foogallery' ),
+									'desc'	  => __( 'The Justified Gallery template uses the popular <a href="http://miromannino.com/projects/justified-gallery/" target="_blank">Justified Gallery jQuery Plugin</a> under the hood. You can specify thumbnail captions by setting the alt text for your attachments. Use a small thumb height for lightning fast page loading, larger thumbnails will be loaded afterwards depening on chosen alternates.', 'foogallery' ),
 							),
 							array(
-									'id'      => 'thumb_height',
-									'title'   => __( 'Thumb Height', 'foogallery' ),
-									'desc'    => __( 'Choose the height of your thumbnails. Thumbnails will be generated on the fly and cached once generated.', 'foogallery' ),
-									'type'    => 'number',
-									'class'   => 'small-text',
-									'default' => 250,
-									'step'    => '10',
-									'min'     => '0',
+									'id'      => 'thumb_initial',
+									'title'   => __( 'Initial Thumb', 'foogallery' ),
+									'desc'    => __( 'Choose initial thumbnails to be loaded. Should be roughly matching your row height or smaller. ', 'foogallery' ),
+									'type'    => 'select',
+									'choices' => $this->get_thumb_size_choices_filtered()
+							),
+							array(
+									'id'		=> 'thumb_sizes',
+									'title'		=> __( 'Alternate thumb sizes', 'foogallery' ),
+									'desc'		=> __( 'Alternate thumbnail sizes that will be loaded after loading the initial thumbnail. Will be used if larger thumbnails could be used in your gallery.', 'foogallery' ),
+									'type'		=> 'checkboxlist',
+									'choices' => $this->get_thumb_size_choices_filtered()
 							),
 							array(
 									'id'      => 'row_height',
 									'title'   => __( 'Row Height', 'foogallery' ),
-									'desc'    => __( 'The preferred height of your gallery rows. This can be different from the thumbnail height.', 'foogallery' ),
+									'desc'    => __( 'The preferred height of your gallery rows. This can be different from the thumbnail height, but should roughly match it.', 'foogallery' ),
 									'type'    => 'number',
 									'class'   => 'small-text',
 									'default' => 150,
 									'step'    => '10',
 									'min'     => '0',
+							),
+							array(
+									'id'      => 'fixed_height',
+									'title'   => __( 'Fixed Row height', 'foogallery' ),
+									'desc'    => __( 'Fix rows at the specified row height ("Max Row Height" is not used). Depending on aspect ratio the images could be cropped.', 'foogallery' ),
+									'type'    => 'checkbox',
+									'default' => 'off',
 							),
 							array(
 									'id'      => 'max_row_height',
@@ -69,6 +80,19 @@ if ( !class_exists( 'FooGallery_Justified_Gallery_Template' ) ) {
 									'type'    => 'text',
 									'class'   => 'small-text',
 									'default' => '200%'
+							),
+							array(
+									'id'      => 'last_row',
+									'title'   => __( 'Last Row', 'foogallery' ),
+									'desc'    => __( 'Sets display options for the last row if not enough images exist to fill the row.', 'foogallery' ),
+									'type'    => 'radio',
+									'default' => 'justify',
+									'spacer'  => '<span class="spacer"></span>',
+									'choices' => array(
+											'justify'  => __( 'Justify', 'foogallery' ),
+											'nojustify'   => __( 'No Justify', 'foogallery' ),
+											'hide'   => __( 'Hide', 'foogallery' )
+									)
 							),
 							array(
 									'id'      => 'margins',
@@ -118,6 +142,46 @@ if ( !class_exists( 'FooGallery_Justified_Gallery_Template' ) ) {
 			);
 
 			return $gallery_templates;
+		}
+		
+		function get_thumb_size_choices_filtered() {
+			global $_wp_additional_image_sizes;
+			$sizes = array();
+			foreach( get_intermediate_image_sizes() as $s ){
+				if ( in_array( $s, array( 'thumbnail', 'medium', 'large', ) ) ){
+					$sizes[ $s ]['width'] = get_option( $s . '_size_w' );
+					$sizes[ $s ]['height'] = get_option( $s . '_size_h' );
+					$sizes[ $s ]['crop'] = (bool) get_option( $s . '_crop' );
+				} elseif ( isset( $_wp_additional_image_sizes[ $s ] ) ) {
+						$sizes[ $s ] = array(
+										'width' => $_wp_additional_image_sizes[ $s ]['width'],
+										'height' => $_wp_additional_image_sizes[ $s ]['height'],
+										'crop' => (bool) $_wp_additional_image_sizes[ $s ]['crop'],
+										);
+				}
+			}
+			
+			//order by height
+			if (!function_exists('sortbyheight')) {
+				function sortbyheight($a, $b) {
+					if ($a['height'] == $b['height']) {
+						return 0;
+					}
+					return ($a['height'] < $b['height']) ? -1 : 1;
+				}
+			}
+			uasort($sizes, "sortbyheight");
+			
+			$sizesfiltered = array();
+			
+			//filter sizes to only include non-cropped and width 9999
+			foreach ($sizes as $key => $value) {
+				if ( !$value['crop'] == 1 && $value['width'] == '9999') {
+					$sizesfiltered[$key] = ucwords($key) . " (" . $value['width'] . " x " . $value['height'] . ") ";
+				}
+			}
+			
+			return $sizesfiltered;
 		}
 	}
 }
