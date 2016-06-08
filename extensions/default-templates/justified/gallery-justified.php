@@ -1,12 +1,21 @@
 <?php
 /**
- * FooGallery justufued gallery template
+ * FooGallery justified gallery template
  */
 global $current_foogallery;
 global $current_foogallery_arguments;
-$height = foogallery_gallery_template_setting( 'thumb_height', '250' );
-$row_height = foogallery_gallery_template_setting( 'row_height', '150' );
+
+//use custom overrides
+//TODO this should be done in a nicer fashion
+require_once( 'class-justified-gallery-overrides.php' );
+new JustifiedOverrides();
+
+$height = foogallery_gallery_template_setting( 'thumb_initial', '250' );
+$row_height = foogallery_gallery_template_setting( 'row_height', '150' )
+
 $max_row_height = foogallery_gallery_template_setting( 'max_row_height', '200%' );
+$last_row = foogallery_gallery_template_setting( 'last_row', 'justify' );
+$fixed_height = foogallery_gallery_template_setting( 'fixed_height', '' ) == 'on';
 if ( strpos( $max_row_height, '%' ) !== false ) {
 	$max_row_height = '"' . $max_row_height . '"';
 }
@@ -20,7 +29,8 @@ $args = array(
 $lightbox = foogallery_gallery_template_setting( 'lightbox', 'unknown' );
 $caption_source = foogallery_gallery_template_setting( 'caption_source', 'title' );
 ?>
-<div data-justified-options='{ "rowHeight": <?php echo $row_height; ?>, "maxRowHeight": <?php echo $max_row_height; ?>, "margins": <?php echo $margins; ?>, "captions": <?php echo $captions ? 'true' : 'false'; ?> }' id="foogallery-gallery-<?php echo $current_foogallery->ID; ?>" class="<?php echo foogallery_build_class_attribute( $current_foogallery, 'foogallery-lightbox-' . $lightbox, 'foogallery-justified-loading' ); ?>">
+
+<div data-justified-options='{ "rowHeight": <?php echo $row_height; ?>, "maxRowHeight": <?php echo $max_row_height; ?>, "lastRow": "<?php echo $last_row; ?>", "fixedHeight": <?php echo $fixed_height ? 'true' : 'false'; ?>, "margins": <?php echo $margins; ?>, "captions": <?php echo $captions ? 'true' : 'false'; ?> }' id="foogallery-gallery-<?php echo $current_foogallery->ID; ?>" class="<?php echo foogallery_build_class_attribute( $current_foogallery, 'foogallery-lightbox-' . $lightbox, 'foogallery-justified-loading' ); ?>">
 	<?php foreach ( $current_foogallery->attachments() as $attachment ) {
 		if ( 'title' == $caption_source ) {
 			$attachment->alt = $attachment->title;
