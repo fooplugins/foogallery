@@ -31,7 +31,6 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Fields' ) ) {
 			extract( $field );
 
 			$id = $template_slug . '_' . $id;
-
 			$field['value'] = apply_filters( 'foogallery_render_gallery_template_field_value', $gallery->get_meta( $id, $default ), $field, $gallery, $template );
 
 			$field_class = empty($class) ? '' : ' class="' . $class . '"';
@@ -116,17 +115,16 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Fields' ) ) {
 					echo '<input class="regular-text ' . $class . '" type="number" step="' . $step . '" min="' . $min .'" id="FooGallerySettings_' . $id . '" name="' . FOOGALLERY_META_SETTINGS . '[' . $id . ']" placeholder="' . $placeholder . '" value="' . esc_attr( $field['value'] ) . '" />';
 
 					break;
-
 				case 'checkboxlist':
 					$i = 0;
 					foreach ( $choices as $value => $label ) {
 
 						$checked = '';
-						if ( isset($field['value'][$value]) && $field['value'][$value] == 'true' ) {
+						if (!is_null($field['value']) && in_array($value, $field['value'])) {
 							$checked = 'checked="checked"';
 						}
 
-						echo '<input' . $field_class . ' ' . $checked . ' type="checkbox" name="' . FOOGALLERY_META_SETTINGS . '[' . $id . '|' . $value . ']" id="FooGallerySettings_' . $id . $i . '" value="on"> <label for="FooGallerySettings_' . $id . $i . '">' . $label . '</label>';
+						echo '<input' . $field_class . ' ' . $checked . ' type="checkbox" name="' . FOOGALLERY_META_SETTINGS . '[' . $id . ']['.$i.']" id="FooGallerySettings_' . $id . $i . '" value="'.$value.'"> <label for="FooGallerySettings_' . $id . $i . '">' . $label . '</label>';
 						if ( $i < count( $choices ) - 1 ) {
 							echo '<br />';
 						}
