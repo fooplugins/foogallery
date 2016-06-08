@@ -35,6 +35,7 @@ if ( ! class_exists( 'FooGalleryAttachment' ) ) {
 			$this->height = 0;
 			$this->custom_url = '';
 			$this->custom_target = '';
+			$this->sizes = array();
 		}
 
 		/**
@@ -55,6 +56,13 @@ if ( ! class_exists( 'FooGalleryAttachment' ) ) {
 				$this->url = $image_attributes[0];
 				$this->width = $image_attributes[1];
 				$this->height = $image_attributes[2];
+				if( $sizes = get_intermediate_image_sizes() ) {	
+					foreach( $sizes as $size_label ) {
+						$img_src = wp_get_attachment_image_src( $this->ID, $size_label );
+						$this->sizes[$size_label] = array('url' => $img_src[0], 'width' => $img_src[1], 'height' => $img_src[2]);
+					}
+					
+				}
 			}
 		}
 
@@ -90,8 +98,9 @@ if ( ! class_exists( 'FooGalleryAttachment' ) ) {
 		 * @return string
 		 */
 		public function html_img( $args = array() ) {
+			
 			$attr['src'] = apply_filters( 'foogallery_attachment_resize_thumbnail', $this->url, $args, $this );
-
+					
 			if ( ! empty( $this->alt ) ) {
 				$attr['alt'] = $this->alt;
 			}
@@ -108,12 +117,13 @@ if ( ! class_exists( 'FooGalleryAttachment' ) ) {
 			if ( isset( $args['height'] ) && intval( $args['height'] ) > 0 ) {
 				$attr['height'] = $args['height'];
 			}
-
+			
 			$attr = apply_filters( 'foogallery_attachment_html_image_attributes', $attr, $args, $this );
 			$attr = array_map( 'esc_attr', $attr );
-			$html = '<img ';
+						
+			$html = "<img ";
 			foreach ( $attr as $name => $value ) {
-				$html .= " $name=" . '"' . $value . '"';
+				$html .= " $name='" . $value . "'";
 			}
 			$html .= ' />';
 
@@ -188,6 +198,7 @@ if ( ! class_exists( 'FooGalleryAttachment' ) ) {
 
 			$attr = apply_filters( 'foogallery_attachment_html_link_attributes', $attr, $args, $this );
 			$attr = array_map( 'esc_attr', $attr );
+			
 			$html = '<a ';
 			foreach ( $attr as $name => $value ) {
 				$html .= " $name=" . '"' . $value . '"';
