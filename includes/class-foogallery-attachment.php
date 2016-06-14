@@ -179,10 +179,6 @@ if ( ! class_exists( 'FooGalleryAttachment' ) ) {
 				}
 			}
 
-			if ( ! empty( $this->custom_target ) && 'default' !== $this->custom_target ) {
-				$attr['target'] = $this->custom_target;
-			}
-
 			if ( ! empty( $this->caption ) ) {
 				$attr['data-caption-title'] = $this->caption;
 			}
