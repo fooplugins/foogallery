@@ -122,16 +122,17 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Editor' ) ) {
 			<style>
 				.foogallery-modal-reload-container {
 					display: inline-block;
+					margin-left: 10px;
 				}
 				.foogallery-modal-reload-container a.button {
-					margin-top:15% !important;
+					margin-top:10px !important;
 				}
 				.foogallery-modal-reload-container a span {
 					margin-top: 3px;
 				}
 				.foogallery-modal-reload-container .spinner {
 					position: absolute;
-					top: 20px;
+					top: 15px;
 					display: inline-block;
 					margin-left: 5px;
 				}
