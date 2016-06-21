@@ -146,6 +146,22 @@ Update now to support FooVideo and many other improvements!
 
 ## Changelog ##
 
+### 1.2.10 ###
+
+* New : support for multiple admin JS and CSS assets for gallery templates
+* New : Added setting to choose Caption Description source
+* New : Crop position can be chosen for attachments
+* New : Albums gallery details modal for setting a gallery URL
+* New : Better shortcode preview in editor
+* New : Editor button now supported if multiple editors exist
+* Fix : Better No-Link support for gallery templates
+* Fix : Compatible with Unyson plugin
+* Fix : Compatible with Advanced Custom Fields
+* Fix : Simple Portfolio fixes and tweaks
+* Fix : ImageViewer fixes and better browser compatibility
+* Fix : Changed assets enqueue version to rather use extension version
+* Fix : Album URL fix for permalinks with no trailing slashes
+
 ### 1.2.9 ###
 * New : Added Image Viewer gallery template
 * New : Caption support for default template
