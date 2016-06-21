@@ -13,7 +13,6 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Editor' ) ) {
 		 */
 		public function __construct() {
 			//adds a media button to the editor
-			//add_filter( 'media_buttons_context', array( $this, 'add_media_button' ) );
 			add_action( 'media_buttons', array( $this, 'add_media_button') );
 
 			//add a tinymce plugin
