@@ -41,7 +41,7 @@ if ( 'fiv-custom' === $theme ) {?>
 	}
 </style>
 <?php } ?>
-<div id="foogallery-gallery-<?php echo $current_foogallery->ID; ?>" class="<?php echo foogallery_build_class_attribute( $current_foogallery, 'foogallery-link-' . $link, 'foogallery-lightbox-' . $lightbox, $theme, $hover_effect, $hover_effect_type, $alignment ); ?>">
+<div id="foogallery-gallery-<?php echo $current_foogallery->ID; ?>" class="<?php foogallery_build_class_attribute_render_safe( $current_foogallery, 'foogallery-link-' . $link, 'foogallery-lightbox-' . $lightbox, $theme, $hover_effect, $hover_effect_type, $alignment ); ?>">
 	<div class="fiv-inner">
 		<div class="fiv-inner-container">
 			<?php foreach ( $attachments as $attachment ) {

@@ -4,3 +4,4 @@ documentation
 dist
 vendor
 node_modules
+.DS_Store

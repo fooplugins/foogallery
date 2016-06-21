@@ -32,11 +32,7 @@ if ( ! class_exists( 'FooGallery_Admin_Columns' ) ) {
 			switch ( $column ) {
 				case FOOGALLERY_CPT_GALLERY . '_template':
 					$gallery = FooGallery::get( $post );
-					$template = $gallery->gallery_template_details();
-					if ( false !== $template ) {
-						echo $template['name'];
-					}
-
+					echo $gallery->gallery_template_name();
 					break;
 				case FOOGALLERY_CPT_GALLERY . '_count':
 					$gallery = FooGallery::get( $post );

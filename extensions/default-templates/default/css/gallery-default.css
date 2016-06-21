@@ -8,6 +8,7 @@
     display: inline-block;
 	overflow: hidden;
 	vertical-align: top;
+	max-width: 100%;
 }
 
     .foogallery-default a img {
@@ -15,6 +16,8 @@
         display: block;
 		-webkit-transition: none;
 		transition: none;
+			max-width: 100%;
+			height: auto;
     }
 
 /* Horizontal alignment */
@@ -35,54 +38,46 @@
 }
 
 /* Gutter widths */
-.foogallery-default.spacing-width-5 a,
-.foogallery-default.spacing-width-5.foogallery-link-none img {
+.foogallery-default.spacing-width-5 a {
 	margin-right: 5px;
 	margin-bottom: 5px;
 }
 
-.foogallery-default.spacing-width-10 a,
-.foogallery-default.spacing-width-10.foogallery-link-none img {
+.foogallery-default.spacing-width-10 a {
 	margin-right: 10px;
 	margin-bottom: 10px;
 }
 
-.foogallery-default.spacing-width-15 a,
-.foogallery-default.spacing-width-15.foogallery-link-none img {
+.foogallery-default.spacing-width-15 a {
 	margin-right: 15px;
 	margin-bottom: 15px;
 }
 
-.foogallery-default.spacing-width-20 a,
-.foogallery-default.spacing-width-20.foogallery-link-none img {
+.foogallery-default.spacing-width-20 a {
 	margin-right: 20px;
 	margin-bottom: 20px;
 }
 
-.foogallery-default.spacing-width-25 a,
-.foogallery-default.spacing-width-25.foogallery-link-none img {
+.foogallery-default.spacing-width-25 a {
 	margin-right: 25px;
 	margin-bottom: 25px;
 }
 
 /* Border styles */
-.foogallery-default.border-style-rounded a,
-.foogallery-default.border-style-rounded.foogallery-link-none img {
+.foogallery-default.border-style-rounded a {
 	border-radius: 5px;
 	-webkit-border-radius: 5px;
 	-moz-border-radius: 5px;
 }
 
-.foogallery-default.border-style-square-white a,
-.foogallery-default.border-style-square-white.foogallery-link-none img {
+.foogallery-default.border-style-square-white a {
 	border: 5px solid #FFF !important;
 	-webkit-box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 	-moz-box-shadow: 0 0 10px rgba(0,0,0,0.5);
 	box-shadow: 0 1px 5px rgba(0, 0, 0, 0.5);
 }
 
-.foogallery-default.border-style-circle-white a,
-.foogallery-default.border-style-circle-white.foogallery-link-none img {
+.foogallery-default.border-style-circle-white a {
 	border-radius: 50%;
 	-webkit-border-radius: 50%;
 	-moz-border-radius: 50%;
@@ -92,8 +87,7 @@
 	box-shadow: 0 1px 5px rgba(0, 0, 0, 0.5);
 }
 
-.foogallery-default.border-style-circle-black a,
-.foogallery-default.border-style-circle-black.foogallery-link-none img {
+.foogallery-default.border-style-circle-black a {
 	border-radius: 50%;
 	-webkit-border-radius: 50%;
 	-moz-border-radius: 50%;
@@ -103,8 +97,7 @@
 	box-shadow: 0 1px 5px rgba(0, 0, 0, 0.5);
 }
 
-.foogallery-default.border-style-square-black a,
-.foogallery-default.border-style-square-black.foogallery-link-none img {
+.foogallery-default.border-style-square-black a {
 	border: 3px solid #000 !important;
 	-webkit-box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 	-moz-box-shadow: 0 0 10px rgba(0,0,0,0.5);

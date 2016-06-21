@@ -3,7 +3,7 @@ Contributors: bradvin, fooplugins
 Donate link: http://fooplugins.com
 Tags: gallery, galleries, wordpress gallery, add gallery, image, images, image gallery, photo, photos, photo gallery, photogallery, photoset, responsive, responsive gallery, responsive image gallery, responsive wordpress photo gallery, picture, pictures, picture gallery, add pictures, album, albums, photo album, photo albums, photoalbum, picture album, picture albums, add album, media, media gallery, attachments, media uploader, thumbs, thumbnails, thumbnail gallery, masonry, masonry gallery, masonry image gallery, portfolio, image portfolio, design portfolio, justified gallery, justified image gallery, brickfolio, ajax, video, videos, video gallery, video lightbox, youtube, vimeo, foobox, lightbox, responsive lightbox, gallery lightbox, image lightbox, wordpress gallery, wordpress photo gallery, wordpress image gallery, wp gallery, wp image gallery, free gallery, best free gallery, best gallery, best gallery plugin, best responsive gallery, best image gallery plugin, best wp gallery, photography, photographer
 Requires at least: 3.9
-Tested up to: 4.3.1
+Tested up to: 4.5
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -138,6 +138,22 @@ Hell, yes! Check out our [developer page](http://foo.gallery/developers/)
 Update now to support FooVideo and many other improvements!
 
 == Changelog ==
+
+= 1.2.10 =
+
+* New : support for multiple admin JS and CSS assets for gallery templates
+* New : Added setting to choose Caption Description source
+* New : Crop position can be chosen for attachments
+* New : Albums gallery details modal for setting a gallery URL
+* New : Better shortcode preview in editor
+* New : Editor button now supported if multiple editors exist
+* Fix : Better No-Link support for gallery templates
+* Fix : Compatible with Unyson plugin
+* Fix : Compatible with Advanced Custom Fields
+* Fix : Simple Portfolio fixes and tweaks
+* Fix : ImageViewer fixes and better browser compatibility
+* Fix : Changed assets enqueue version to rather use extension version
+* Fix : Album URL fix for permalinks with no trailing slashes
 
 = 1.2.9 =
 * New : Added Image Viewer gallery template

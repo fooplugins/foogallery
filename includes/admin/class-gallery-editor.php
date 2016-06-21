@@ -13,7 +13,8 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Editor' ) ) {
 		 */
 		public function __construct() {
 			//adds a media button to the editor
-			add_filter( 'media_buttons_context', array( $this, 'add_media_button' ) );
+			//add_filter( 'media_buttons_context', array( $this, 'add_media_button' ) );
+			add_action( 'media_buttons', array( $this, 'add_media_button') );
 
 			//add a tinymce plugin
 			add_action( 'admin_head', array( $this, 'add_tinymce_plugin' ) );
@@ -31,27 +32,30 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Editor' ) ) {
 		/**
 		 * Adds a gallery insert button into the editor
 		 *
-		 * @param string $buttons the existing media buttons
+		 * @param string $editor_id the instance id of the current editor
 		 *
 		 * @return string $buttons    the amended media buttons
 		 */
-		public function add_media_button( $buttons ) {
+		public function add_media_button( $editor_id ) {
 
 			if ( $this->should_hide_editor_button() ) {
-				return $buttons;
+				return;
 			}
 
 			//render the gallery modal
 			add_action( 'admin_footer', array( $this, 'render_gallery_modal' ) );
 
 			$foogallery = FooGallery_Plugin::get_instance();
-
 			$foogallery->register_and_enqueue_js( 'admin-foogallery-editor.js' );
 
-			$buttons .= '<a href="#" class="button foogallery-modal-trigger" title="' . esc_attr( sprintf( __( 'Add Gallery From %s', 'foogallery' ), foogallery_plugin_name() ) ) . '" style="padding-left: .4em;">';
-			$buttons .= '<span class="wp-media-buttons-icon dashicons dashicons-format-gallery"></span> ' . sprintf( __( 'Add %s', 'foogallery' ), foogallery_plugin_name() ) . '</a>';
-
-			return $buttons;
+			?>
+				<button type="button" class="button foogallery-modal-trigger"
+					title="<?php esc_attr_e( sprintf( __( 'Add Gallery From %s', 'foogallery' ), foogallery_plugin_name() ) ); ?>"
+					style="padding-left: .4em;"
+					data-editor="<?php esc_attr_e( $editor_id ); ?>">
+					<span class="wp-media-buttons-icon dashicons dashicons-format-gallery"></span> <?php echo sprintf( __( 'Add %s', 'foogallery' ), foogallery_plugin_name() ); ?>
+				</button>
+			<?php
 		}
 
 		/**
@@ -122,16 +126,17 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Editor' ) ) {
 			<style>
 				.foogallery-modal-reload-container {
 					display: inline-block;
+					margin-left: 10px;
 				}
 				.foogallery-modal-reload-container a.button {
-					margin-top:15% !important;
+					margin-top:10px !important;
 				}
 				.foogallery-modal-reload-container a span {
 					margin-top: 3px;
 				}
 				.foogallery-modal-reload-container .spinner {
 					position: absolute;
-					top: 20px;
+					top: 15px;
 					display: inline-block;
 					margin-left: 5px;
 				}

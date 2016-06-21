@@ -22,6 +22,15 @@ if ( ! class_exists( 'FooGallery_Admin_Album_MetaBoxes' ) ) {
 
 			//add scripts used by metaboxes
 			add_action( 'admin_enqueue_scripts', array( $this, 'include_required_scripts' ) );
+
+			// Ajax call for getting gallery details
+			add_action( 'wp_ajax_foogallery_get_gallery_details', array( $this, 'ajax_get_gallery_details' ) );
+
+			// Ajax call for saving gallery details
+			add_action( 'wp_ajax_foogallery_save_gallery_details', array( $this, 'ajax_save_gallery_details' ) );
+
+			// Save details for the gallery
+			add_action( 'foogallery_album_gallery_details_save', array( $this, 'gallery_details_save' ), 10, 3 );
 		}
 
 		public function whitelist_metaboxes() {
@@ -45,7 +54,7 @@ if ( ! class_exists( 'FooGallery_Admin_Album_MetaBoxes' ) ) {
 		public function add_meta_boxes() {
 			add_meta_box(
 				'foogalleryalbum_galleries',
-				__( 'Galleries - drag n drop to reorder!', 'foogallery' ),
+				__( 'Galleries - click a gallery to add it to your album.', 'foogallery' ),
 				array( $this, 'render_gallery_metabox' ),
 				FOOGALLERY_CPT_ALBUM,
 				'normal',
@@ -158,31 +167,64 @@ if ( ! class_exists( 'FooGallery_Admin_Album_MetaBoxes' ) ) {
 			<input type="hidden" name='foogallery_album_galleries' id="foogallery_album_galleries"
 			       value="<?php echo $album->gallery_id_csv(); ?>"/>
 			<div>
+				<?php if ( !$album->has_galleries() ) { ?>
+					<div class="foogallery-album-error">
+						<?php _e( 'There are no galleries selected for your album yet! Click any gallery to add it to your album.', 'foogallery' ); ?>
+					</div>
+				<?php } ?>
+
+				<div class="foogallery-album-info-modal media-modal">
+					<div class="media-modal-content">
+						<div class="media-frame mode-select">
+							<div class="media-frame-title">
+								<h1><?php _e('Edit Gallery Details', 'foogallery'); ?></h1>
+								<span class="spinner is-active"></span>
+							</div>
+							<div class="modal-content">
+								<?php wp_nonce_field( 'foogallery_album_gallery_details', 'foogallery_album_gallery_details_nonce', false ); ?>
+								<div class="gallery-details" data-loading="<?php _e( 'Loading details for ', 'foogallery' ); ?>"></div>
+							</div>
+						</div>
+						<div class="media-frame-toolbar">
+							<div class="media-toolbar">
+								<div class="media-toolbar-secondary"></div>
+								<div class="media-toolbar-primary search-form">
+									<button type="button" class="button media-button button-primary button-large media-button-select gallery-details-save"><?php _e('Save Gallery Details', 'foogallery'); ?></button>
+									<span class="spinner"></span>
+								</div>
+							</div>
+						</div>
+					</div>
+					<button type="button" class="button-link media-modal-close">
+						<span class="media-modal-icon"><span class="screen-reader-text"><?php _e('Close media panel', 'foogallery'); ?></span></span>
+					</button>
+
+				</div>
+				<div class="foogallery-album-info-modal-backdrop media-modal-backdrop"></div>
+
+
 				<ul class="foogallery-album-gallery-list">
 					<?php
 					foreach ( $galleries as $gallery ) {
 						$img_src  = $gallery->featured_image_src( array( 150, 150 ) );
 						$images   = $gallery->image_count();
 						$selected = $album->includes_gallery( $gallery->ID ) ? ' selected' : '';
+						$title = $gallery->safe_name();
 						?>
 						<li class="foogallery-pile">
-							<div class="foogallery-gallery-select attachment-preview landscape<?php echo $selected; ?>"
-							     data-foogallery-id="<?php echo $gallery->ID; ?>">
+							<div class="foogallery-gallery-select attachment-preview landscape<?php echo $selected; ?>" data-foogallery-id="<?php echo $gallery->ID; ?>">
 								<div class="thumbnail" style="display: table;">
 									<div style="display: table-cell; vertical-align: middle; text-align: center;">
 										<img src="<?php echo $img_src; ?>"/>
-										<?php
-
-										$title = empty( $gallery->name ) ?
-											sprintf( __( '%s #%s', 'foogallery' ), foogallery_plugin_name(), $gallery->ID ) :
-											$gallery->name;
-
-										?>
 										<h3><?php echo $title; ?>
 											<span><?php echo $images; ?></span>
 										</h3>
 									</div>
 								</div>
+								<a class="info foogallery-album-info" href="#"
+								   title="<?php _e( 'Edit Album Info', 'foogallery' ); ?>"
+								   data-gallery-title="<?php echo $title; ?>"
+								   data-gallery-id="<?php echo $gallery->ID; ?>"><span class="dashicons dashicons-info"></span></a>
 							</div>
 						</li>
 					<?php } ?>
@@ -352,6 +394,183 @@ if ( ! class_exists( 'FooGallery_Admin_Album_MetaBoxes' ) ) {
 				$url = FOOGALLERY_URL . 'lib/spectrum/spectrum.css';
 				wp_enqueue_style( 'foogallery-spectrum', $url, array(), FOOGALLERY_VERSION );
 			}
+		}
+
+		public function ajax_get_gallery_details() {
+			if ( check_admin_referer( 'foogallery_album_gallery_details' ) ) {
+				$foogallery_id = $_POST['foogallery_id'];
+				$gallery = FooGallery::get_by_id( $foogallery_id );
+
+				if ( false !== $gallery ) {
+					$fields = $this->get_gallery_detail_fields( $gallery ); ?>
+					<form name="foogallery_gallery_details">
+					<input type="hidden" name="foogallery_id" id="foogallery_id" value="<?php echo $foogallery_id; ?>" />
+					<table class="gallery-detail-fields">
+						<tbody>
+							<?php foreach ( $fields as $field => $values ) {
+								$value = get_post_meta( $gallery->ID, $field, true );
+								$input_id = 'foogallery-gallery-detail-fields-' . $field;
+								switch ( $values['input'] ) {
+									case 'text':
+										$values['html'] = '<input type="text" id="' . $input_id . '" name="' . $field . '" value="' . $value . '" />';
+										break;
+
+									case 'textarea':
+										$values['html'] = '<textarea id="' . $input_id . '" name="' . $field . '">' . $value . '</textarea>';
+										break;
+
+									case 'select':
+										$html = '<select id="' . $input_id . '" name="' . $field . '">';
+
+										// If options array is passed
+										if ( isset( $values['options'] ) ) {
+											// Browse and add the options
+											foreach ( $values['options'] as $k => $v ) {
+												// Set the option selected or not
+												if ( $value == $k )
+													$selected = ' selected="selected"';
+												else
+													$selected = '';
+
+												$html .= '<option' . $selected . ' value="' . $k . '">' . $v . '</option>';
+											}
+										}
+
+										$html .= '</select>';
+
+										// Set the html content
+										$values['html'] = $html;
+
+										break;
+
+									case 'checkbox':
+
+										// Set the checkbox checked or not
+										if ( $value == 'on' )
+											$checked = ' checked="checked"';
+										else
+											$checked = '';
+
+										$html = '<input' . $checked . ' type="checkbox" name="' . $field . ']" id="' . $input_id . '" />';
+
+										$values['html'] = $html;
+
+										break;
+
+									case 'radio':
+
+										$html = '';
+
+										if ( ! empty( $values['options'] ) ) {
+											$i = 0;
+
+											foreach ( $values['options'] as $k => $v ) {
+												if ( $value == $k )
+													$checked = ' checked="checked"';
+												else
+													$checked = '';
+
+												$html .= '<input' . $checked . ' value="' . $k . '" type="radio" name="' . $field . ']" id="' . sanitize_key( $field . '_' . $i ) . '" /> <label for="' . sanitize_key( $field . '_' . $i ) . '">' . $v . '</label><br />';
+												$i++;
+											}
+										}
+
+										$values['html'] = $html;
+
+										break;
+								} ?>
+							<tr class="foogallery-gallery-detail-fields-<?php echo $field; ?>">
+								<th scope="row" class="label">
+									<label for="foogallery-gallery-detail-fields-<?php echo $field; ?>"><?php echo $values['label']; ?></label>
+								</th>
+								<td>
+									<?php echo $values['html']; ?>
+									<?php if ( !empty( $values['help'] ) ) { ?><p class="help"><?php echo $values['help']; ?></p><?php } ?>
+								</td>
+							</tr>
+							<?php } ?>
+						</tbody>
+					</table>
+					</form><?php
+				} else {
+					echo '<h2>' . __( 'Invalid Gallery!', 'foogallery' ) . '</h2>';
+				}
+			}
+			die();
+		}
+
+		public function ajax_save_gallery_details() {
+			if ( check_admin_referer( 'foogallery_album_gallery_details' ) ) {
+				$foogallery_id = $_POST['foogallery_id'];
+				$gallery       = FooGallery::get_by_id( $foogallery_id );
+				if ( false !== $gallery ) {
+					$fields = $this->get_gallery_detail_fields( $gallery );
+
+					foreach ( $fields as $field => $values ) {
+						//for every field, save some info
+						do_action( 'foogallery_album_gallery_details_save', $field, $values, $gallery );
+					}
+				}
+			}
+		}
+
+		public function gallery_details_save($field, $field_args, $gallery) {
+			if ( 'custom_url' === $field || 'custom_target' === $field ) {
+				$value = $_POST[$field];
+				update_post_meta( $gallery->ID, $field, $value );
+			}
+		}
+
+		/**
+		 * Get the fields that we want to edit for a gallery from the album management page
+		 * @param $gallery FooGallery
+		 *
+		 * @return mixed|void
+		 */
+		public function get_gallery_detail_fields($gallery) {
+
+			$target_options = apply_filters( 'foogallery_gallery_detail_fields_custom_target_options',  array(
+				'default' => __( 'Default', 'foogallery' ),
+				'_blank' => __( 'New tab (_blank)', 'foogallery' ),
+				'_self' => __( 'Same tab (_self)', 'foogallery' )
+			) );
+
+			$edit_url = get_edit_post_link( $gallery->ID );
+
+			$fields = array(
+				'gallery_title' => array(
+					'label' => __( 'Gallery Title', 'foogallery' ),
+					'input' => 'html',
+					'html'  => '<strong>' . $gallery->safe_name() . ' <a href="' . $edit_url . '" target="_blank">' . __( 'Edit Gallery', 'foogallery' ) . '</a></strong>',
+				),
+
+				'gallery_template' => array(
+					'label' => __( 'Gallery Template', 'foogallery' ),
+					'input' => 'html',
+					'html'  => '<strong>' . $gallery->gallery_template_name() . '</strong>',
+				),
+
+				'gallery_media' => array(
+					'label' => __( 'Media', 'foogallery' ),
+					'input' => 'html',
+					'html'  => '<strong>' . $gallery->image_count() . '</strong>'
+				),
+
+				'custom_url' => array(
+					'label' =>  __( 'Custom URL', 'foogallery' ),
+					'input' => 'text',
+					'help'  => __( 'Point your gallery to a custom URL', 'foogallery' )
+				),
+
+				'custom_target' => array(
+					'label'   =>  __( 'Custom Target', 'foogallery' ),
+					'input'   => 'select',
+					'help'    => __( 'Set a custom target for your gallery', 'foogallery' ),
+					'options' => $target_options
+				)
+			);
+
+			return apply_filters( 'foogallery_gallery_detail_fields', $fields );
 		}
 	}
 }

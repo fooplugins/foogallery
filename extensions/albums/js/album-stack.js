@@ -533,6 +533,10 @@ if (!window.FooGalleryStackAlbumModernizr) {
 
 			}
 
+			if( ml === 0 ) {
+				ml = Math.ceil( ( this.elWidth - accumL + this.options.gutter ) / 2 );
+			}
+
 			// the position of the items will influence the final margin left value and height for the ul
 			// center the ul
 			lastItemTop = this.spread ? lastItemTop : accumT;

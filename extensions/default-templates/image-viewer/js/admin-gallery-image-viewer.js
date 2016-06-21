@@ -38,7 +38,10 @@
 			$styles.remove();
 		}
 
-		$previewImage.attr('class' ,'foogallery-image-viewer-preview foogallery-container foogallery-image-viewer ' + hover_effect + ' ' + hover_effect_type + ' ' + theme);
+		$previewImage.attr('class' ,'foogallery-image-viewer-preview foogallery-container foogallery-image-viewer ' + theme);
+		if (hover_effect_type !== 'hover-effect-none'){
+			$previewImage.addClass(hover_effect_type + ' ' + hover_effect);
+		}
 
 		var $hoverEffectrow = $('.gallery_template_field-image-viewer-hover-effect');
 		if ( hover_effect_type === '' ) {

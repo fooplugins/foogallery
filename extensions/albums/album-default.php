@@ -51,11 +51,12 @@ if ( false !== $foogallery ) {
 				$img_html = $attachment->html_img( $args );
 				$images = $gallery->image_count();
 				$gallery_link = foogallery_album_build_gallery_link( $current_foogallery_album, $gallery );
+				$gallery_link_target = foogallery_album_build_gallery_link_target( $current_foogallery_album, $gallery );
 				?>
 				<li>
 					<div class="foogallery-pile">
 						<div class="foogallery-pile-inner">
-							<a href="<?php echo esc_url( $gallery_link ); ?>">
+							<a href="<?php echo esc_url( $gallery_link ); ?>" target="<?php echo $gallery_link_target; ?>">
 								<?php echo $img_html; ?>
 								<?php
 

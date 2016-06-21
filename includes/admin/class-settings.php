@@ -20,6 +20,15 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 			//region General Tab
 			$tabs['general'] = __( 'General', 'foogallery' );
 
+			$settings[] = array(
+				'id'      => 'clear_css_optimizations',
+				'title'   => __( 'Clear CSS Cache', 'foogallery' ),
+				'desc'    => sprintf( __( '%s optimizes the way it loads gallery stylesheets to improve page performance. This can lead to the incorrect CSS being loaded in some cases. Use this button to clear all the CSS optimizations that have been cached across all galleries.', 'foogallery' ), foogallery_plugin_name() ),
+				'type'    => 'clear_optimization_button',
+				'tab'     => 'general',
+				'section' => __( 'Cache', 'foogallery' )
+			);
+
 	        $gallery_templates = foogallery_gallery_templates();
 			$gallery_templates_choices = array();
 			foreach ( $gallery_templates as $template ) {
@@ -81,6 +90,23 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 			);
 
 			$settings[] = array(
+					'id'      => 'caption_desc_source',
+					'title'   => __( 'Caption Description Source', 'foogallery' ),
+					'desc'    => __( 'By default, image caption descriptions are pulled from the attachment "Description" field. Alternatively, you can choose to use other fields.', 'foogallery' ),
+					'type'    => 'select',
+					'choices' => array(
+							'desc' => __('Attachment Description Field', 'foogallery'),
+							'title' => __('Attachment Title Field', 'foogallery'),
+							'caption' => __('Attachment Caption Field', 'foogallery'),
+							'alt' => __('Attachment Alt Field', 'foogallery')
+					),
+					'default' => 'desc',
+					'tab'     => 'general',
+					'section' => __( 'Captions', 'foogallery' ),
+					'spacer'  => '<span class="spacer"></span>'
+			);
+
+			$settings[] = array(
 				'id'      => 'hide_gallery_template_help',
 				'title'   => __( 'Hide Gallery Template Help', 'foogallery' ),
 				'desc'    => __( 'Some gallery templates show helpful tips, which are useful for new users. You can choose to hide these tips.', 'foogallery' ),
@@ -121,14 +147,6 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 				'desc'    => __( 'The image quality to be used when resizing JPEG images.', 'foogallery' ),
 				'type'    => 'text',
 				'default' => '80',
-				'tab'     => 'thumb'
-			);
-
-			$settings[] = array(
-				'id'      => 'clear_css_optimizations',
-				'title'   => __( 'Clear CSS Cache', 'foogallery' ),
-				'desc'    => sprintf( __( '%s optimizes the way it loads gallery stylesheets to improve page performance. This can lead to the incorrect CSS being loaded in some cases. Use this button to clear all the CSS optimizations that have been cached across all galleries.', 'foogallery' ), foogallery_plugin_name() ),
-				'type'    => 'clear_optimization_button',
 				'tab'     => 'thumb'
 			);
 
