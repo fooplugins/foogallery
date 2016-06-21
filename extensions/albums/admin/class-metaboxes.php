@@ -444,7 +444,6 @@ if ( ! class_exists( 'FooGallery_Admin_Album_MetaBoxes' ) ) {
 										break;
 
 									case 'checkbox':
-
 										// Set the checkbox checked or not
 										if ( $value == 'on' )
 											$checked = ' checked="checked"';
@@ -458,7 +457,6 @@ if ( ! class_exists( 'FooGallery_Admin_Album_MetaBoxes' ) ) {
 										break;
 
 									case 'radio':
-
 										$html = '';
 
 										if ( ! empty( $values['options'] ) ) {
