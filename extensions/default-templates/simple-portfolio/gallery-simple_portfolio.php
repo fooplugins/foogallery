@@ -14,7 +14,7 @@ $lightbox = foogallery_gallery_template_setting( 'lightbox', 'unknown' );
 $gutter = foogallery_gallery_template_setting( 'gutter', 40 );
 $caption_position = foogallery_gallery_template_setting( 'caption_position', '' );
 ?>
-<div data-brickfolio-gutter="<?php echo $gutter; ?>" id="foogallery-gallery-<?php echo $current_foogallery->ID; ?>" class="<?php foogallery_build_class_attribute_render( $current_foogallery, 'foogallery-lightbox-' . $lightbox, 'brickfolio', $caption_position ); ?>">
+<div data-brickfolio-gutter="<?php echo $gutter; ?>" id="foogallery-gallery-<?php echo $current_foogallery->ID; ?>" class="<?php foogallery_build_class_attribute_render_safe( $current_foogallery, 'foogallery-lightbox-' . $lightbox, 'brickfolio', $caption_position ); ?>">
 <?php
 foreach ( $current_foogallery->attachments() as $attachment ) {
 	echo '<div class="bf-item" style="width:' . $args['width'] . 'px">';
