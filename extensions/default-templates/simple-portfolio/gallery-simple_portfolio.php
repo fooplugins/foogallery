@@ -19,7 +19,7 @@ $caption_position = foogallery_gallery_template_setting( 'caption_position', '' 
 foreach ( $current_foogallery->attachments() as $attachment ) {
 	echo '<div class="bf-item" style="width:' . $args['width'] . 'px">';
 	$caption = null;
-	if ( !empty($attachment->caption) && !empty($attachment->description) ){
+	if ( !empty($attachment->caption) || !empty($attachment->description) ) {
 		$caption = '<div class="bf-caption">';
 		if ( !empty($attachment->caption) ) {
 			$caption .= '<h4>' . $attachment->caption . '</h4>';
@@ -36,7 +36,6 @@ foreach ( $current_foogallery->attachments() as $attachment ) {
 		echo $attachment->html( $args );
 		echo $caption;
 	}
-
 	echo '</div>';
 } ?>
 </div>
