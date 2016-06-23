@@ -146,6 +146,14 @@ Update now to support FooVideo and many other improvements!
 
 ## Changelog ##
 
+### 1.2.12 ###
+
+* Fix : Simple Portfolio missing captions fix
+
+### 1.2.11 ###
+
+* Fix : Simple Portfolio undefined function fix
+
 ### 1.2.10 ###
 
 * New : support for multiple admin JS and CSS assets for gallery templates

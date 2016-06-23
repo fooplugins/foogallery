@@ -3,7 +3,7 @@ Contributors: bradvin, fooplugins
 Donate link: http://fooplugins.com
 Tags: gallery, galleries, wordpress gallery, add gallery, image, images, image gallery, photo, photos, photo gallery, photogallery, photoset, responsive, responsive gallery, responsive image gallery, responsive wordpress photo gallery, picture, pictures, picture gallery, add pictures, album, albums, photo album, photo albums, photoalbum, picture album, picture albums, add album, media, media gallery, attachments, media uploader, thumbs, thumbnails, thumbnail gallery, masonry, masonry gallery, masonry image gallery, portfolio, image portfolio, design portfolio, justified gallery, justified image gallery, brickfolio, ajax, video, videos, video gallery, video lightbox, youtube, vimeo, foobox, lightbox, responsive lightbox, gallery lightbox, image lightbox, wordpress gallery, wordpress photo gallery, wordpress image gallery, wp gallery, wp image gallery, free gallery, best free gallery, best gallery, best gallery plugin, best responsive gallery, best image gallery plugin, best wp gallery, photography, photographer
 Requires at least: 3.9
-Tested up to: 4.5.2
+Tested up to: 4.5.3
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -138,6 +138,14 @@ Hell, yes! Check out our [developer page](http://foo.gallery/developers/)
 Update now to support FooVideo and many other improvements!
 
 == Changelog ==
+
+= 1.2.12 =
+
+* Fix : Simple Portfolio missing captions fix
+
+= 1.2.11 =
+
+* Fix : Simple Portfolio undefined function fix
 
 = 1.2.10 =
 
