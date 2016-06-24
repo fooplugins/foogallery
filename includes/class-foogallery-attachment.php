@@ -231,5 +231,16 @@ if ( ! class_exists( 'FooGalleryAttachment' ) ) {
 
 			return apply_filters( 'foogallery_attachment_html_caption', $html, $caption_content, $this );
 		}
+		
+		/**
+	         * Returns responsive image html
+	         *
+	         * @param $size string Set size, defaults to full
+	         * 
+	         * @return string
+	         */
+	        public function responsive($size = 'full'){
+	            return wp_get_attachment_image( $this->ID, $size );
+	        }
 	}
 }
