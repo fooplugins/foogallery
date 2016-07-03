@@ -17,7 +17,8 @@ $hover_effect_type = foogallery_gallery_template_setting( 'hover-effect-type', '
 $caption_hover_effect = foogallery_gallery_template_setting( 'caption-hover-effect', 'hover-caption-simple' );
 $caption_content = foogallery_gallery_template_setting( 'caption-content', 'title' );
 $loading_animation = 'yes' === foogallery_gallery_template_setting( 'loading_animation', 'yes' ) ? 'foogallery-default-loading' : '';
-if ( 'hover-effect-caption' === $hover_effect_type ) {
+if ( 'hover-effect-caption' === $hover_effect_type ||
+		'hover-effect-none' === $hover_effect_type ) {
 	$hover_effect = '';
 }
 ?><div id="foogallery-gallery-<?php echo $current_foogallery->ID; ?>" class="<?php foogallery_build_class_attribute_render_safe( $current_foogallery, 'foogallery-link-' . $link, 'foogallery-lightbox-' . $lightbox, $spacing, $hover_effect, $hover_effect_type, $border_style, $alignment, $caption_hover_effect, $loading_animation ); ?>">

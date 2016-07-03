@@ -70,14 +70,16 @@
 	-moz-border-radius: 5px;
 }
 
-.foogallery-default.border-style-square-white a {
+.foogallery-default.border-style-square-white a,
+.foogallery-default.border-style-square-white a:hover {
 	border: 5px solid #FFF !important;
 	-webkit-box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 	-moz-box-shadow: 0 0 10px rgba(0,0,0,0.5);
 	box-shadow: 0 1px 5px rgba(0, 0, 0, 0.5);
 }
 
-.foogallery-default.border-style-circle-white a {
+.foogallery-default.border-style-circle-white a,
+.foogallery-default.border-style-circle-white a:hover {
 	border-radius: 50%;
 	-webkit-border-radius: 50%;
 	-moz-border-radius: 50%;
@@ -87,7 +89,8 @@
 	box-shadow: 0 1px 5px rgba(0, 0, 0, 0.5);
 }
 
-.foogallery-default.border-style-circle-black a {
+.foogallery-default.border-style-circle-black a,
+.foogallery-default.border-style-circle-black a:hover {
 	border-radius: 50%;
 	-webkit-border-radius: 50%;
 	-moz-border-radius: 50%;
@@ -97,7 +100,8 @@
 	box-shadow: 0 1px 5px rgba(0, 0, 0, 0.5);
 }
 
-.foogallery-default.border-style-square-black a {
+.foogallery-default.border-style-square-black a,
+.foogallery-default.border-style-square-black a:hover {
 	border: 3px solid #000 !important;
 	-webkit-box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 	-moz-box-shadow: 0 0 10px rgba(0,0,0,0.5);
