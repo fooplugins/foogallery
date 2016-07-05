@@ -151,6 +151,14 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 			);
 
 			$settings[] = array(
+					'id'      => 'use_original_thumbs',
+					'title'   => __( 'Use Original Thumbnails', 'foogallery' ),
+					'desc'    => __( 'Allow for the original thumbnails to be used when possible. This can be useful if your thumbs are animated gifs.', 'foogallery' ),
+					'type'    => 'checkbox',
+					'tab'     => 'thumb'
+			);
+
+			$settings[] = array(
 				'id'      => 'thumb_resize_animations',
 				'title'   => __( 'Resize Animated GIFs', 'foogallery' ),
 				'desc'    => __( 'Should animated gifs be resized or not. If enabled, only the first frame is used in the resize.', 'foogallery' ),
