@@ -534,6 +534,16 @@ class WP_Thumb {
 	}
 
 	/**
+	 * Returns the error
+	 *
+	 * @access public
+	 * @return null
+	 */
+	public function error() {
+		return empty( $this->error ) ? null : $this->error;
+	}
+
+	/**
 	 * Return the finished image
 	 *
 	 * If there was an error, return the original
