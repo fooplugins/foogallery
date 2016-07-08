@@ -45,8 +45,52 @@ if ( !class_exists( 'FooGallery_Thumbnails' ) ) {
 				}
 			}
 
-
 			return wpthumb( $original_image_src, $args );
+		}
+
+		function run_tests() {
+			$test_image_url = FOOGALLERY_URL . '/assets/test_thumb_1.jpg';
+			$thumb_width = get_option( 'thumbnail_size_w' );
+			$thumb_height = get_option( 'thumbnail_size_h' );
+
+			$test1_args = array(
+				'width'                   => 20,
+				'height'                  => 20,
+				'crop'                    => true,
+				'jpeg_quality'            => foogallery_thumbnail_jpeg_quality()
+			);
+			$thumb1 = new WP_Thumb( $test_image_url, $test1_args );
+			$results[] = array(
+				'thumb' => $thumb1->returnImage(),
+				'error' => $thumb1->error(),
+			);
+
+			$test2_args = array(
+					'width'                   => 50,
+					'height'                  => 80,
+					'crop'                    => true,
+					'crop_from_position'	  => 'right,center',
+					'jpeg_quality'            => foogallery_thumbnail_jpeg_quality()
+			);
+			$thumb2 = new WP_Thumb( $test_image_url, $test2_args );
+			$results[] = array(
+					'thumb' => $thumb2->returnImage(),
+					'error' => $thumb2->error(),
+			);
+
+			$test3_args = array(
+				'width'                   => $thumb_width,
+				'height'                  => $thumb_height,
+				'crop'                    => true,
+				'jpeg_quality'            => foogallery_thumbnail_jpeg_quality()
+			);
+			$thumb3 = new WP_Thumb( $test_image_url, $test3_args );
+			$results[] = array(
+				'thumb' => $thumb3->returnImage(),
+				'error' => $thumb3->error(),
+			);
+
+			return $results;
 		}
 	}
 }

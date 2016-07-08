@@ -594,3 +594,36 @@ function foogallery_get_caption_desc_for_attachment($attachment_post) {
 
 	return apply_filters( 'foogallery_get_caption_desc_for_attachment', $caption, $attachment_post );
 }
+
+/**
+ * Runs thumbnail tests and outputs results in a table format
+ */
+function foogallery_output_thumbnail_generation_results() {
+	$thumbs = new FooGallery_Thumbnails();
+	try {
+		$results = $thumbs->run_tests();
+		$count   = 1;
+		$errors  = 0;
+		echo '<table><tr><th>' . __( 'Test #', 'foogallery' ) . '</th><th>' . __( 'Thumbnail', 'foogallery' ) . '</th><th>' . __( 'Error', 'foogallery' ) . '</th></tr>';
+		foreach ( $results as $result ) {
+			echo '<tr><td>' . $count . '</td><td><img src="' . $result['thumb'] . '" /></td><td>';
+			if ( isset( $result['error'] ) ) {
+				var_dump( $result['error'] );
+				$errors++;
+			} else {
+				echo __( 'None', 'foogallery' );
+			}
+			echo '</td></tr>';
+			$count ++;
+		}
+		echo "</table>";
+		if ( 0 === $errors ) {
+			echo __( 'No errors found.', 'foogallery' );
+		} else {
+			echo '<strong>' . __( 'ERRORS FOUND!', 'foogallery' ) . '</strong>';
+		}
+	}
+	catch (Exception $e) {
+		echo 'ERROR: ' . $e->getMessage();
+	}
+}
