@@ -6,8 +6,8 @@
 		$('.foogallery-modal-wrapper .spinner').addClass('is-active');
 		$('.foogallery-modal-reload').hide();
 		var data = 'action=foogallery_load_galleries' +
-			'&foogallery_load_galleries=' + $('#foogallery_load_galleries').val() +
-			'&_wp_http_referer=' + encodeURIComponent($('input[name="_wp_http_referer"]').val());
+				'&foogallery_load_galleries=' + $('#foogallery_load_galleries').val() +
+				'&_wp_http_referer=' + encodeURIComponent($('input[name="_wp_http_referer"]').val());
 
 		$.ajax({
 			type: "POST",
@@ -67,11 +67,11 @@
 				return;
 			}
 			var shortcode_tag = window.FOOGALLERY_SHORTCODE || 'foogallery',
-				shortcode = '[' + shortcode_tag + ' id="' + $('.foogallery-gallery-select.selected').data('foogallery-id') + '"]';
+					shortcode = '[' + shortcode_tag + ' id="' + $('.foogallery-gallery-select.selected').data('foogallery-id') + '"]';
 
 			var editor = tinyMCE.get(FOOGALLERY.activeEditor);
 			if (editor) {
-				editor.setContent(shortcode, {format : 'raw'});
+				editor.execCommand('mceInsertContent', false, shortcode);
 			} else {
 				wp.media.editor.insert(shortcode);
 			}
