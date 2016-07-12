@@ -41,7 +41,11 @@ FooGallery_Justified_Ready(function () {
 
         //force a resize event so certain themes can update their layout
         if (window.fireEvent && document.createEventObject) window.fireEvent('onresize', document.createEventObject());
-        else if (window.dispatchEvent) window.dispatchEvent(new Event('resize'));
+        else if (window.dispatchEvent) {
+            if (Event.prototype.initEvent) {
+                var evt = window.document.createEvent('UIEvents'); evt.initUIEvent('resize', true, false, window, 0); window.dispatchEvent(evt);
+            } else window.dispatchEvent(new Event('resize'));
+        }
     });
 });
 
