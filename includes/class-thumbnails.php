@@ -69,12 +69,17 @@ if ( !class_exists( 'FooGallery_Thumbnails' ) ) {
 			);
 			$test_thumb = new WP_Thumb( $test_image_url, $test_args );
             $generated_thumb = $test_thumb->returnImage();
+            $success = $test_image_url !== $generated_thumb;
 
-			return array(
-			    'success' => $test_image_url !== $generated_thumb,
+			$test_results = array(
+			    'success' => $success,
 				'thumb' => $generated_thumb,
 				'error' => $test_thumb->error(),
 			);
+
+            do_action( 'foogallery_thumbnail_generation_test', $test_results );
+
+            return $test_results;
 		}
 	}
 }
