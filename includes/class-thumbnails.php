@@ -14,6 +14,8 @@ if ( !class_exists( 'FooGallery_Thumbnails' ) ) {
 
 		function resize( $original_image_src, $args, $thumbnail_object ) {
 
+		    global $foogallery_last_generated_thumb_url;
+
 			$arg_defaults = array(
 				'width'                   => 0,
 				'height'                  => 0,
@@ -45,7 +47,10 @@ if ( !class_exists( 'FooGallery_Thumbnails' ) ) {
 				}
 			}
 
-			return wpthumb( $original_image_src, $args );
+			//save the generated thumb url to a global so that we can use it later if needed
+            $foogallery_last_generated_thumb_url = wpthumb( $original_image_src, $args );
+
+            return $foogallery_last_generated_thumb_url;
 		}
 
 		function run_thumbnail_generation_tests() {
