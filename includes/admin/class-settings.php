@@ -13,6 +13,7 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 
 			// Ajax calls for clearing CSS optimization cache
 			add_action( 'wp_ajax_foogallery_clear_css_optimizations', array( $this, 'ajax_clear_css_optimizations' ) );
+			add_action( 'wp_ajax_foogallery_thumb_generation_test', array( $this, 'ajax_thumb_generation_test' ) );
 		}
 
 		function create_settings() {
@@ -166,6 +167,14 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 				'tab'     => 'thumb'
 			);
 
+			$settings[] = array(
+				'id'      => 'thumb_generation_test',
+				'title'   => __( 'Thumbnail Generation Test', 'foogallery' ),
+				'desc'    => sprintf( __( 'Test to see if %s can generate the thumbnails it needs.', 'foogallery' ), foogallery_plugin_name() ),
+				'type'    => 'thumb_generation_test',
+				'tab'     => 'thumb'
+			);
+
 			//endregion Thumbnail Tab
 
 //	        //region Advanced Tab
@@ -234,6 +243,11 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 			if ( 'clear_optimization_button' === $args['type'] ) { ?>
 				<input type="button" data-nonce="<?php echo esc_attr( wp_create_nonce( 'foogallery_clear_css_optimizations' ) ); ?>" class="button-primary foogallery_clear_css_optimizations" value="<?php _e( 'Clear CSS Optimization Cache', 'foogallery' ); ?>">
 				<span id="foogallery_clear_css_cache_spinner" style="position: absolute" class="spinner"></span>
+			<?php } else if ( 'thumb_generation_test' === $args['type'] ) { ?>
+				<div id="foogallery_thumb_generation_test_container">
+					<input type="button" data-nonce="<?php echo esc_attr( wp_create_nonce( 'foogallery_thumb_generation_test' ) ); ?>" class="button-primary foogallery_thumb_generation_test" value="<?php _e( 'Run Tests', 'foogallery' ); ?>">
+					<span id="foogallery_thumb_generation_test_spinner" style="position: absolute" class="spinner"></span>
+				</div>
 			<?php }
 		}
 
@@ -245,6 +259,16 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 				foogallery_clear_all_css_load_optimizations();
 
 				_e('The CSS optimization cache was successfully cleared!', 'foogallery' );
+				die();
+			}
+		}
+
+		/**
+		 * AJAX endpoint for testing thumbnail generation using WPThumb
+		 */
+		function ajax_thumb_generation_test() {
+			if ( check_admin_referer( 'foogallery_thumb_generation_test' ) ) {
+				foogallery_output_thumbnail_generation_results();
 				die();
 			}
 		}

@@ -48,6 +48,7 @@ if ( is_admin() ) {
 	require_once( FOOGALLERY_PATH . 'includes/admin/class-boilerplate-download-handler.php' );
 	require_once( FOOGALLERY_PATH . 'includes/admin/class-attachment-fields.php' );
     require_once( FOOGALLERY_PATH . 'includes/admin/class-admin-css-load-optimizer.php' );
+    require_once( FOOGALLERY_PATH . 'includes/admin/class-admin-notices.php' );
 
 } else {
 
