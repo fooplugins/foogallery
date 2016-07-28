@@ -8,6 +8,12 @@
     display: inline-block;
 }
 
+.foogallery-masonry .item a  img {
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+}
+
 .foogallery-masonry.foogallery-masonry-loading .item a,
 .foogallery-masonry.foogallery-masonry-loading .item img {
     display:none;
