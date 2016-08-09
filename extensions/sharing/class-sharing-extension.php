@@ -8,12 +8,14 @@ if ( ! class_exists( 'FooGallery_Sharing_Extension' ) ) {
 	define( 'FOOGALLERY_SHARING_PATH', plugin_dir_path( __FILE__ ) );
 	define( 'FOOGALLERY_SHARING_URL', plugin_dir_url( __FILE__ ) );
 	define( 'FOOGALLERY_SHARING_PARAM', 'fooshare' );
+    define( 'FOOGALLERY_SHARING_ARG', '__foo');
 
 	class FooGallery_Sharing_Extension {
 
 		function __construct() {
 			require_once( FOOGALLERY_SHARING_PATH . 'functions.php' );
 			$this->setup_networks();
+            $this->setup_listeners();
 
 			if ( is_admin() ) {
 				//add some global settings for albums
@@ -23,8 +25,8 @@ if ( ! class_exists( 'FooGallery_Sharing_Extension' ) ) {
 //				new FooGallery_Sharing_Networks();
 			}
 
-			add_action( 'template_redirect', array($this, 'listen_for_sharing') );
-			add_action( 'template_redirect', array($this, 'listen_for_crawler') );
+
+
 
 //			add_filter( 'foogallery_defaults', array( $this, 'apply_album_defaults' ) );
 //			add_action( 'foogallery_extension_activated-albums', array( $this, 'flush_rewrite_rules' ) );
@@ -49,6 +51,14 @@ if ( ! class_exists( 'FooGallery_Sharing_Extension' ) ) {
 			new FooGallery_Sharing_Network_Twitter();
 		}
 
+		function setup_listeners() {
+            require_once( FOOGALLERY_SHARING_PATH . '/listeners/class-listener-sharer.php' );
+            require_once( FOOGALLERY_SHARING_PATH . '/listeners/class-listener-crawler.php' );
+
+            new FooGallery_Sharing_Listener_Crawler();
+            new FooGallery_Sharing_Listener_Sharer();
+        }
+
 		function add_sharing_settings( $settings ) {
 			$settings['tabs']['sharing'] = __( 'Social Sharing', 'foogallery' );
 
@@ -62,43 +72,6 @@ if ( ! class_exists( 'FooGallery_Sharing_Extension' ) ) {
 			);
 
 			return $settings;
-		}
-
-		function listen_for_sharing() {
-			global $wp_query;
-
-			//make sure we are dealing with a share
-			if ( empty($wp_query->query_vars[FOOGALLERY_SHARING_PARAM]) ) {
-				return;
-			}
-
-
-
-		}
-
-		function listen_for_crawler() {
-			global $wp_query;
-
-			//make sure we are dealing with a share
-			if ( empty($wp_query->query_vars[FOOGALLERY_SHARING_PARAM]) ) {
-				return;
-			}
-
-			if ( strtolower( $_SERVER['REQUEST_METHOD'] ) === 'get' ) { // crawlers only make GET requests
-				foreach ( foogallery_sharing_supported_networks() as $name => $attributes ) {
-					if ( array_key_exists( 'ua_regex', $attributes ) ) {
-						//check for a user agent match
-						if ( preg_match( $attributes['ua_regex'], $_SERVER['HTTP_USER_AGENT'] ) ) {
-							// then check if an id can be extracted from the request
-							$id = foogallery_sharing_extract_share_request();
-							if ( $id !== false ) {
-								do_action( 'foogallery_sharing_crawler_handle_request', $id, $this );
-								return;
-							}
-						}
-					}
-				}
-			}
 		}
 	}
 }
