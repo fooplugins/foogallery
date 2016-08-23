@@ -17,3 +17,4 @@ define( 'FOOGALLERY_FOOBOX_FREE_EXTENSION_SLUG', 'foobox-image-lightbox' );
 define( 'FOOGALLERY_ACTIVATION_REDIRECT_TRANSIENT_KEY', '_foogallery_activation_redirect' );
 
 define( 'FOOGALLERY_OPTION_VERSION', 'foogallery-version' );
+define( 'FOOGALLERY_OPTION_THUMB_TEST', 'foogallery-thumb-test' );

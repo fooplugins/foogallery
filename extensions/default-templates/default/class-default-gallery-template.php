@@ -224,7 +224,7 @@ if ( !class_exists( 'FooGallery_Default_Gallery_Template' ) ) {
 
 				if ( false === $featured ) {
 					$featured = new FooGalleryAttachment();
-					$featured->url = FOOGALLERY_URL . 'assets/test_thumb_1.jpg';
+					$featured->url = foogallery_test_thumb_url();
 					$featured->caption = __( 'Caption Title', 'foogallery' );
 					$featured->description = __( 'Long Caption Description Text', 'foogallery' );
 				}

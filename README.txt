@@ -141,6 +141,11 @@ Update now to support FooVideo and many other improvements!
 
 == Changelog ==
 
+= 1.2.14 =
+
+* Fix : Masonry layout issues in WP 4.6
+* Fix : Media attachment fields not updating
+
 = 1.2.13 =
 
 * Fix : Shortcode replacing content in visual editor

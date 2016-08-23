@@ -594,3 +594,31 @@ function foogallery_get_caption_desc_for_attachment($attachment_post) {
 
 	return apply_filters( 'foogallery_get_caption_desc_for_attachment', $caption, $attachment_post );
 }
+
+/**
+ * Runs thumbnail tests and outputs results in a table format
+ */
+function foogallery_output_thumbnail_generation_results() {
+	$thumbs = new FooGallery_Thumbnails();
+	try {
+		$results = $thumbs->run_thumbnail_generation_tests();
+        if ( $results['success'] ) {
+            echo '<span style="color:#0c0">' . __('Thumbnail generation test ran successfully.', 'foogallery') . '</span>';
+        } else {
+            echo '<span style="color:#c00">' . __('Thumbnail generation test failed!', 'foogallery') . '</span>';
+            var_dump( $results['error'] );
+        }
+	}
+	catch (Exception $e) {
+		echo 'Exception: ' . $e->getMessage();
+	}
+}
+
+/**
+ * Returns the URL to the test image
+ *
+ * @return string
+ */
+function foogallery_test_thumb_url() {
+    return apply_filters( 'foogallery_test_thumb_url', FOOGALLERY_URL . 'assets/test_thumb_1.jpg' );
+}
