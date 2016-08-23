@@ -17,6 +17,7 @@ FooGallery_Masonry_Ready(function () {
         var $gallery = jQuery(this);
         $gallery.imagesLoaded( function() {
             $gallery.removeClass('foogallery-masonry-loading').masonry( $gallery.data('masonry-options') );
+            $gallery.masonry('layout');
 
             //force a resize event so certain themes can update their layout
             if (window.fireEvent && document.createEventObject) window.fireEvent('onresize', document.createEventObject());
