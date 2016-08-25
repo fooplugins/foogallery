@@ -141,10 +141,13 @@ Update now to support FooVideo and many other improvements!
 
 == Changelog ==
 
-= 1.2.14 =
+= 1.2.15 =
 
+* Fix : Album admin CSS issues in WP 4.6
 * Fix : Masonry layout issues in WP 4.6
 * Fix : Media attachment fields not updating
+* Fix : Better support for IE10
+* New : Thumbnail generation test admin notice and settings
 
 = 1.2.13 =
 
