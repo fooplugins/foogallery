@@ -40,19 +40,19 @@ if ( !class_exists( 'FooGallery_Justified_Gallery_Template' ) ) {
 									'title'	  => __( 'Tip', 'foogallery' ),
 									'type'	  => 'html',
 									'help'	  => true,
-									'desc'	  => __( 'The Justified Gallery template uses the popular <a href="http://miromannino.com/projects/justified-gallery/" target="_blank">Justified Gallery jQuery Plugin</a> under the hood. You can specify thumbnail captions by setting the alt text for your attachments. Use a small thumb height for lightning fast page loading, larger thumbnails will be loaded afterwards depening on chosen alternates.', 'foogallery' ),
+									'desc'	  => __( 'The Justified Gallery template uses the popular <a href="http://miromannino.com/projects/justified-gallery/" target="_blank">Justified Gallery jQuery Plugin</a> under the hood. You can specify thumbnail captions by setting the alt text for your attachments. Use a small thumb height for lightning fast page loading, larger thumbnails will be loaded afterwards depening on chosen alternates.<br><br>Make sure to have thumbnails in your theme with a width of 9999 to be able to choose an Initial thumb.', 'foogallery' ),
 							),
 							array(
 									'id'      => 'thumb_initial',
 									'title'   => __( 'Initial Thumb', 'foogallery' ),
-									'desc'    => __( 'Choose initial thumbnails to be loaded. Should be roughly matching your row height or smaller. ', 'foogallery' ),
+									'desc'    => __( 'Choose initial thumbnails to be loaded. Should be roughly matching your row height or smaller. Needs to have a width of 9999.', 'foogallery' ),
 									'type'    => 'select',
 									'choices' => $this->get_thumb_size_choices_filtered()
 							),
 							array(
 									'id'		=> 'thumb_sizes',
 									'title'		=> __( 'Alternate thumb sizes', 'foogallery' ),
-									'desc'		=> __( 'Alternate thumbnail sizes that will be loaded after loading the initial thumbnail. Will be used if larger thumbnails could be used in your gallery.', 'foogallery' ),
+									'desc'		=> __( 'Alternate thumbnail sizes that will be loaded after loading the initial thumbnail. Will be used if larger thumbnails could be used in your gallery. Will only display thumbnails with a width of 9999', 'foogallery' ),
 									'type'		=> 'checkboxlist',
 									'choices' => $this->get_thumb_size_choices_filtered()
 							),
