@@ -57,13 +57,15 @@ if (!class_exists('class-css-load-optimizer.php')) {
                     foreach ($css_item as $handle => $style) {
                         //only enqueue the stylesheet once
                         if ( !array_key_exists( $handle, $enqueued_foogallery_styles ) ) {
+                            $cache_buster_key = $handle;
                             if ( is_array( $style ) ) {
+                                $cache_buster_key = $this->create_cache_buster_key( $handle, $style['ver'], array_key_exists( 'site', $style ) ? $style['site'] : '' );
                                 wp_enqueue_style( $handle, $style['src'], $style['deps'], $style['ver'], $style['media'] );
                             } else {
                                 wp_enqueue_style( $handle, $style );
                             }
 
-                            $enqueued_foogallery_styles[$handle] = $handle;
+                            $enqueued_foogallery_styles[$handle] = $cache_buster_key;
                         }
                     }
                 }
@@ -84,25 +86,69 @@ if (!class_exists('class-css-load-optimizer.php')) {
             global $wp_query, $enqueued_foogallery_styles;
 
             //we only want to do this if we are looking at a single post
-            if ( !is_singular() ) {
+            if ( ! is_singular() ) {
                 return;
             }
 
-            //first check that the template has not been enqueued before
-            if ( is_array( $enqueued_foogallery_styles ) && !array_key_exists( $style_handle, $enqueued_foogallery_styles ) ) {
-                $post_id = $wp_query->post->ID;
+            $post_id = $wp_query->post->ID;
+            if ( $post_id ) {
 
-                if ( $post_id ) {
+                //check if the saved stylesheet needs to be cache busted
+                if ( is_array( $enqueued_foogallery_styles ) && array_key_exists( $style_handle, $enqueued_foogallery_styles ) ) {
+                    $registered_cache_buster_key = $enqueued_foogallery_styles[$style_handle];
+
+                    //generate the key we want
+                    $cache_buster_key = $this->create_cache_buster_key( $style_handle, $ver, home_url() );
+
+                    if ( $registered_cache_buster_key !== $cache_buster_key ) {
+                        //we need to bust this cached stylesheet!
+                        $style = $this->get_old_style_post_meta_value( $post_id, $style_handle );
+
+                        if ( false !== $style ) {
+                            delete_post_meta( $post_id, FOOGALLERY_META_POST_USAGE_CSS, array( $style_handle => $style ) );
+
+                            //unset the handle from, to force the save of the post meta
+                            unset( $enqueued_foogallery_styles[$style_handle] );
+                        }
+                    }
+                }
+
+                //first check that the template has not been enqueued before
+                if ( is_array( $enqueued_foogallery_styles ) && ! array_key_exists( $style_handle, $enqueued_foogallery_styles ) ) {
+
                     $style = array(
-                        'src' => $src,
-                        'deps' => $deps,
-                        'ver' => $ver,
-                        'media' => $media
+                        'src'   => $src,
+                        'deps'  => $deps,
+                        'ver'   => $ver,
+                        'media' => $media,
+                        'site'  => home_url()
                     );
 
                     add_post_meta( $post_id, FOOGALLERY_META_POST_USAGE_CSS, array( $style_handle => $style ), false );
                 }
             }
+        }
+
+        function create_cache_buster_key( $name, $version, $site = '' ) {
+            return "{$site}::{$name}_{$version}";
+        }
+
+        function get_old_style_post_meta_value( $post_id, $handle_to_find ) {
+            $css = get_post_meta($post_id, FOOGALLERY_META_POST_USAGE_CSS);
+
+            foreach ($css as $css_item) {
+                if ( ! $css_item ) {
+                    continue;
+                }
+                foreach ( $css_item as $handle => $style ) {
+                    //only enqueue the stylesheet once
+                    if ( $handle_to_find === $handle ) {
+                        return $style;
+                    }
+                }
+            }
+
+            return false;
         }
     }
 }

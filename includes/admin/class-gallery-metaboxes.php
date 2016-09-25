@@ -303,7 +303,18 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 							<?php
 							foreach ( $available_templates as $template ) {
 								$selected = ($gallery_template === $template['slug']) ? 'selected' : '';
-								$preview_css = isset( $template['preview_css'] ) ? ' data-preview-css="' . $template['preview_css'] . '" ' : '';
+
+								$preview_css = '';
+								if ( isset( $template['preview_css'] ) ) {
+									if ( is_array( $template['preview_css'] ) ) {
+										//dealing with an array of css files to include
+										$preview_css = implode( ',', $template['preview_css'] );
+									} else {
+										$preview_css = $template['preview_css'];
+									}
+								}
+								$preview_css = empty( $preview_css ) ? '' : ' data-preview-css="' . $preview_css . '" ';
+
 								echo "<option {$selected}{$preview_css} value=\"{$template['slug']}\">{$template['name']}</option>";
 							}
 							?>
@@ -474,7 +485,13 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 				//include any admin js required for the templates
 				foreach ( foogallery_gallery_templates() as $template ) {
 					$admin_js = foo_safe_get( $template, 'admin_js' );
-					if ( $admin_js ) {
+					if ( is_array( $admin_js ) ) {
+						//dealing with an array of js files to include
+						foreach( $admin_js as $admin_js_key => $admin_js_src ) {
+							wp_enqueue_script( 'foogallery-gallery-admin-' . $template['slug'] . '-' . $admin_js_key, $admin_js_src, array('jquery', 'media-upload', 'jquery-ui-sortable'), FOOGALLERY_VERSION );
+						}
+					} else {
+						//dealing with a single js file to include
 						wp_enqueue_script( 'foogallery-gallery-admin-' . $template['slug'], $admin_js, array('jquery', 'media-upload', 'jquery-ui-sortable'), FOOGALLERY_VERSION );
 					}
 				}

@@ -6,11 +6,8 @@
  *
  */
 function wpthumb_add_crop_from_position_admin_hooks() {
-
-	if ( current_theme_supports( 'wpthumb-crop-from-position' ) ) {
-		add_filter( 'attachment_fields_to_edit', 'wpthumb_media_form_crop_position', 10, 2 );
-		add_filter( 'attachment_fields_to_save', 'wpthumb_media_form_crop_position_save', 10, 2 );
-	}
+	add_filter( 'attachment_fields_to_edit', 'wpthumb_media_form_crop_position', 10, 2 );
+	add_filter( 'attachment_fields_to_save', 'wpthumb_media_form_crop_position_save', 10, 2 );
 }
 add_action( 'init', 'wpthumb_add_crop_from_position_admin_hooks' );
 
@@ -74,7 +71,7 @@ function wpthumb_media_form_crop_position( $fields, $post ) {
 function wpthumb_media_form_crop_position_save( $post, $attachment ) {
 
 	if ( ! isset( $attachment['wpthumb_crop_pos'] ) ) {
-		return;
+		return $post;
 	}
 
 	if ( $attachment['wpthumb_crop_pos'] == 'center,center' ) {

@@ -47,7 +47,7 @@ if ( ! class_exists( 'FooGalleryAttachment' ) ) {
 			$this->ID = $post->ID;
 			$this->title = trim( $post->post_title );
 			$this->caption = foogallery_get_caption_title_for_attachment( $post );
-			$this->description = trim( $post->post_content );
+			$this->description = foogallery_get_caption_desc_for_attachment( $post );
 			$this->alt = trim( get_post_meta( $this->ID, '_wp_attachment_image_alt', true ) );
 			$this->custom_url = get_post_meta( $this->ID, '_foogallery_custom_url', true );
 			$this->custom_target = get_post_meta( $this->ID, '_foogallery_custom_target', true );
@@ -154,10 +154,11 @@ if ( ! class_exists( 'FooGalleryAttachment' ) ) {
 
 			$img = $this->html_img( $args );
 
-			//if there is no link, then just return the image tag
-			if ( 'none' === $link ) {
-				return $img;
-			}
+			/* 12 Apr 2016 - PLEASE NOTE
+			We no longer just return the image html when "no link" option is chosen.
+			It was decided that it is better to return an anchor link with no href or target attributes.
+			This results in more standardized HTML output for better CSS and JS code
+			*/
 
 			if ( 'page' === $link ) {
 				//get the URL to the attachment page
@@ -175,10 +176,12 @@ if ( ! class_exists( 'FooGalleryAttachment' ) ) {
 
 			$attr = array();
 
-			$attr['href'] = $url;
-
-			if ( ! empty( $this->custom_target ) && 'default' !== $this->custom_target ) {
-				$attr['target'] = $this->custom_target;
+			//only add href and target attributes to the anchor if the link is NOT set to 'none'
+			if ( $link !== 'none' ){
+				$attr['href'] = $url;
+				if ( ! empty( $this->custom_target ) && 'default' !== $this->custom_target ) {
+					$attr['target'] = $this->custom_target;
+				}
 			}
 
 			if ( ! empty( $this->caption ) ) {

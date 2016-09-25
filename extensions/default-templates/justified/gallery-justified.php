@@ -30,7 +30,7 @@ $lightbox = foogallery_gallery_template_setting( 'lightbox', 'unknown' );
 $caption_source = foogallery_gallery_template_setting( 'caption_source', 'title' );
 ?>
 
-<div data-justified-options='{ "rowHeight": <?php echo $row_height; ?>, "maxRowHeight": <?php echo $max_row_height; ?>, "lastRow": "<?php echo $last_row; ?>", "fixedHeight": <?php echo $fixed_height ? 'true' : 'false'; ?>, "margins": <?php echo $margins; ?>, "captions": <?php echo $captions ? 'true' : 'false'; ?> }' id="foogallery-gallery-<?php echo $current_foogallery->ID; ?>" class="<?php echo foogallery_build_class_attribute( $current_foogallery, 'foogallery-lightbox-' . $lightbox, 'foogallery-justified-loading' ); ?>">
+<div data-justified-options='{ "rowHeight": <?php echo $row_height; ?>, "maxRowHeight": <?php echo $max_row_height; ?>, "lastRow": "<?php echo $last_row; ?>", "fixedHeight": <?php echo $fixed_height ? 'true' : 'false'; ?>, "margins": <?php echo $margins; ?>, "captions": <?php echo $captions ? 'true' : 'false'; ?> }' id="foogallery-gallery-<?php echo $current_foogallery->ID; ?>" class="<?php foogallery_build_class_attribute_render_safe( $current_foogallery, 'foogallery-lightbox-' . $lightbox, 'foogallery-justified-loading' ); ?>">
 	<?php foreach ( $current_foogallery->attachments() as $attachment ) {
 		if ( 'title' == $caption_source ) {
 			$attachment->alt = $attachment->title;

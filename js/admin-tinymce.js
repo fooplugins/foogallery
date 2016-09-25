@@ -31,7 +31,7 @@
 
 				var data = window.encodeURIComponent( match ),
 					idRegex = / id=\"(.*?)\"/ig,
-					idMatch = idRegex.exec( match),
+					idMatch = idRegex.exec(match),
 					id = idMatch ? idMatch[1] : 0;
 
 				return '<div class="foogallery-tinymce-view mceNonEditable" data-foogallery="' + data + '" contenteditable="false" data-mce-resize="false" data-mce-placeholder="1" data-foogallery-id="' + id + '">' +
@@ -41,11 +41,11 @@
 					'  </div>' +
 					'  <div class="foogallery-pile">' +
 					'    <div class="foogallery-pile-inner">' +
-					'      <div class="foogallery-pile-inner-thumb">&nbsp;</div>' +
+					'      <div class="foogallery-pile-inner-thumb"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJYAAACWCAMAAAAL34HQAAAAn1BMVEXu7u7u7u7u7u7XKwzv+PrXLQ7u7u3v+vvv9vjge2nYNxru8fHv+/3jk4TXLxHXMRPfblnlopbourHZPCDv8vPv9PXmqJ3XKAju6+vYNBbpxb7cWEDYOBvcVTzt4N7kmYvv/P7u6ejgeGXr1tLpwbrdXUbbUTjaRyzWIwPw/v/hgG7dYErs3Nnln5LjjX3eaFPt5OPZQibr2NTq0MvnsKa2nujkAAAAAnRSTlPx5atUCzMAAAKjSURBVHja7dtbc6IwGMZxm0CCgIEuICKoyCJiu7XH7//ZNrGd7V7Uzj4eJszs+7vKjDf/eRkih2F0MxogHcUGaERZlPWOshCUhaAsBGUhKAtBWQjKQlAWgrIQlIWgLARlISgLQVkIykJQFoKyEJSFoCwEZSEoC0FZCMqySejXwmyAbiiLsv4iPE+wM1wpK2zbkJ3hKlminlfVvD55XtfJEuE8USqZhyd2XSmrNlWmq2YnuUqWMFU8HnPTJRjsOlnmCLr5I3Ma7p5yHC+fFRg7PStXV3lZ4+p57QKDAS6bZXYqLW0TFT2us9ksFU2kkjYVGrCLXTjLe40XZVluElUVi01plqXvq8QsF/Grx3DnZ4nsZZsrV4v8wtcLQxWFHx0W+fYlA+Z1uWnJfe4X0RGFn+8lw52f5TRcNe2PL7WN4o3DAJfLGnO+2jlf2q04H9vLmkiRSsORqWCf5MRyljcf3xlN6+muNDMCYTvLqW97rrn9qtZZy1/G2vq0nHDq+lrFH0IRzDbJ8/Nz9SYd+1m8MPJDVsejKMqnofUsOY0SQz1InbVQenKu/SwZPP189xSwAWWJIPMOUjakLL1IPwwrK7gr7434KR1QVhCUvavxZJkNKmujfK3YDjery5VSA9i3TNa9qrRD1uO267rtmyMHkLXoc62vlilbH8ys/yeaM3E6WRkP60A3GgO4sBFCOHVoSCb+sJy12pmeD+Enu1enKp7efmkaK1tZcpJXET8iqvKJnTufdNn17lF9p09M3PlZIlvu46P2S+DuFc/6tkt6R0mwCs/6Juy7n0D/1wNwyvpHlIWgLKvok1zK+kBZCMpCUBaCshCUhaAsBGUhKAtBWQjKQlAWgrIQlIWgLARlISgLQVkIykJQFoKyEJSFoCyrRr8BcFXgyRdssmUAAAAASUVORK5CYII=" /></div>' +
 					'    </div>' +
 					'  </div>' +
 					'  <div class="foogallery-tinymce-title">&nbsp;</div>' +
-					'  <div class="foogallery-tinymce-count">&nbsp;</div>' +
+					'  <div class="foogallery-tinymce-count">' + match + '</div>' +
 					'</div>';
 			});
 		});

@@ -13,12 +13,22 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 
 			// Ajax calls for clearing CSS optimization cache
 			add_action( 'wp_ajax_foogallery_clear_css_optimizations', array( $this, 'ajax_clear_css_optimizations' ) );
+			add_action( 'wp_ajax_foogallery_thumb_generation_test', array( $this, 'ajax_thumb_generation_test' ) );
 		}
 
 		function create_settings() {
 
 			//region General Tab
 			$tabs['general'] = __( 'General', 'foogallery' );
+
+			$settings[] = array(
+				'id'      => 'clear_css_optimizations',
+				'title'   => __( 'Clear CSS Cache', 'foogallery' ),
+				'desc'    => sprintf( __( '%s optimizes the way it loads gallery stylesheets to improve page performance. This can lead to the incorrect CSS being loaded in some cases. Use this button to clear all the CSS optimizations that have been cached across all galleries.', 'foogallery' ), foogallery_plugin_name() ),
+				'type'    => 'clear_optimization_button',
+				'tab'     => 'general',
+				'section' => __( 'Cache', 'foogallery' )
+			);
 
 	        $gallery_templates = foogallery_gallery_templates();
 			$gallery_templates_choices = array();
@@ -81,6 +91,23 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 			);
 
 			$settings[] = array(
+					'id'      => 'caption_desc_source',
+					'title'   => __( 'Caption Description Source', 'foogallery' ),
+					'desc'    => __( 'By default, image caption descriptions are pulled from the attachment "Description" field. Alternatively, you can choose to use other fields.', 'foogallery' ),
+					'type'    => 'select',
+					'choices' => array(
+							'desc' => __('Attachment Description Field', 'foogallery'),
+							'title' => __('Attachment Title Field', 'foogallery'),
+							'caption' => __('Attachment Caption Field', 'foogallery'),
+							'alt' => __('Attachment Alt Field', 'foogallery')
+					),
+					'default' => 'desc',
+					'tab'     => 'general',
+					'section' => __( 'Captions', 'foogallery' ),
+					'spacer'  => '<span class="spacer"></span>'
+			);
+
+			$settings[] = array(
 				'id'      => 'hide_gallery_template_help',
 				'title'   => __( 'Hide Gallery Template Help', 'foogallery' ),
 				'desc'    => __( 'Some gallery templates show helpful tips, which are useful for new users. You can choose to hide these tips.', 'foogallery' ),
@@ -125,11 +152,11 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 			);
 
 			$settings[] = array(
-				'id'      => 'clear_css_optimizations',
-				'title'   => __( 'Clear CSS Cache', 'foogallery' ),
-				'desc'    => sprintf( __( '%s optimizes the way it loads gallery stylesheets to improve page performance. This can lead to the incorrect CSS being loaded in some cases. Use this button to clear all the CSS optimizations that have been cached across all galleries.', 'foogallery' ), foogallery_plugin_name() ),
-				'type'    => 'clear_optimization_button',
-				'tab'     => 'thumb'
+					'id'      => 'use_original_thumbs',
+					'title'   => __( 'Use Original Thumbnails', 'foogallery' ),
+					'desc'    => __( 'Allow for the original thumbnails to be used when possible. This can be useful if your thumbs are animated gifs.', 'foogallery' ),
+					'type'    => 'checkbox',
+					'tab'     => 'thumb'
 			);
 
 			$settings[] = array(
@@ -137,6 +164,14 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 				'title'   => __( 'Resize Animated GIFs', 'foogallery' ),
 				'desc'    => __( 'Should animated gifs be resized or not. If enabled, only the first frame is used in the resize.', 'foogallery' ),
 				'type'    => 'checkbox',
+				'tab'     => 'thumb'
+			);
+
+			$settings[] = array(
+				'id'      => 'thumb_generation_test',
+				'title'   => __( 'Thumbnail Generation Test', 'foogallery' ),
+				'desc'    => sprintf( __( 'Test to see if %s can generate the thumbnails it needs.', 'foogallery' ), foogallery_plugin_name() ),
+				'type'    => 'thumb_generation_test',
 				'tab'     => 'thumb'
 			);
 
@@ -208,6 +243,11 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 			if ( 'clear_optimization_button' === $args['type'] ) { ?>
 				<input type="button" data-nonce="<?php echo esc_attr( wp_create_nonce( 'foogallery_clear_css_optimizations' ) ); ?>" class="button-primary foogallery_clear_css_optimizations" value="<?php _e( 'Clear CSS Optimization Cache', 'foogallery' ); ?>">
 				<span id="foogallery_clear_css_cache_spinner" style="position: absolute" class="spinner"></span>
+			<?php } else if ( 'thumb_generation_test' === $args['type'] ) { ?>
+				<div id="foogallery_thumb_generation_test_container">
+					<input type="button" data-nonce="<?php echo esc_attr( wp_create_nonce( 'foogallery_thumb_generation_test' ) ); ?>" class="button-primary foogallery_thumb_generation_test" value="<?php _e( 'Run Tests', 'foogallery' ); ?>">
+					<span id="foogallery_thumb_generation_test_spinner" style="position: absolute" class="spinner"></span>
+				</div>
 			<?php }
 		}
 
@@ -219,6 +259,16 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 				foogallery_clear_all_css_load_optimizations();
 
 				_e('The CSS optimization cache was successfully cleared!', 'foogallery' );
+				die();
+			}
+		}
+
+		/**
+		 * AJAX endpoint for testing thumbnail generation using WPThumb
+		 */
+		function ajax_thumb_generation_test() {
+			if ( check_admin_referer( 'foogallery_thumb_generation_test' ) ) {
+				foogallery_output_thumbnail_generation_results();
 				die();
 			}
 		}

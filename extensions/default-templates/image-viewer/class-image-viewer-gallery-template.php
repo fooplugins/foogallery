@@ -12,6 +12,7 @@ if ( !class_exists( 'FooGallery_Image_Viewer_Gallery_Template' ) ) {
 			add_filter( 'foogallery_gallery_templates', array( $this, 'add_template' ) );
 			add_filter( 'foogallery_gallery_templates_files', array( $this, 'register_myself' ) );
 			add_action( 'foogallery_render_gallery_template_field_custom', array( $this, 'render_thumbnail_preview' ), 10, 3 );
+			add_filter( 'foogallery_attachment_html_image_attributes', array( $this, 'strip_size' ), 99, 3 );
 		}
 
 		/**
@@ -173,6 +174,27 @@ if ( !class_exists( 'FooGallery_Image_Viewer_Gallery_Template' ) ) {
 						'desc' => __( 'This is what your gallery will look like.', 'foogallery' ),
 						'section' => __( 'Thumbnail Settings', 'foogallery' ),
 						'type' => 'image_viewer_preview',
+					),
+					array(
+						'id'      => 'text-prev',
+						'title'   => __( '"Prev" Text', 'foogallery' ),
+						'section' => __( 'Language Settings', 'foogallery' ),
+						'type'    => 'text',
+						'default' =>  __('Prev', 'foogallery')
+					),
+					array(
+						'id'      => 'text-of',
+						'title'   => __( '"of" Text', 'foogallery' ),
+						'section' => __( 'Language Settings', 'foogallery' ),
+						'type'    => 'text',
+						'default' =>  __('of', 'foogallery')
+					),
+					array(
+						'id'      => 'text-next',
+						'title'   => __( '"Next" Text', 'foogallery' ),
+						'section' => __( 'Language Settings', 'foogallery' ),
+						'type'    => 'text',
+						'default' =>  __('Next', 'foogallery')
 					)
 				)
 			);
@@ -196,6 +218,9 @@ if ( !class_exists( 'FooGallery_Image_Viewer_Gallery_Template' ) ) {
 
 				$hover_effect = $gallery->get_meta( 'image-viewer_hover-effect', 'hover-effect-zoom' );
 				$hover_effect_type = $gallery->get_meta( 'image-viewer_hover-effect-type', '' );
+				$text_prev = $gallery->get_meta( 'image-viewer_text-prev', __('Prev', 'foogallery') );
+				$text_of = $gallery->get_meta( 'image-viewer_text-of', __('of', 'foogallery') );
+				$text_next = $gallery->get_meta( 'image-viewer_text-next', __('Next', 'foogallery') );
 
 				$featured = $gallery->featured_attachment();
 
@@ -214,13 +239,37 @@ if ( !class_exists( 'FooGallery_Image_Viewer_Gallery_Template' ) ) {
 						?>
 					</div>
 					<div class="fiv-ctrls">
-						<div class="fiv-prev"><span><?php echo __('Prev') ?></span></div>
-						<label class="fiv-count"><span class="fiv-count-current">1</span><?php echo __('of') ?><span>1</span></label>
-						<div class="fiv-next"><span><?php echo __('Next') ?></span></div>
+						<div class="fiv-prev"><span><?php echo $text_prev; ?></span></div>
+						<label class="fiv-count"><span class="fiv-count-current">1</span><?php echo $text_of; ?><span>1</span></label>
+						<div class="fiv-next"><span><?php echo $text_next; ?></span></div>
 					</div>
 				</div>
 				</div><?php
 			}
+		}
+
+		/**
+		 * Image viewer relies on there being no width or height attributes on the IMG element so strip them out here.
+		 *
+		 * @param $attr
+		 * @param $args
+		 * @param $attachment
+		 *
+		 * @return mixed
+		 */
+		function strip_size($attr, $args, $attachment){
+			global $current_foogallery_template;
+
+			if ( 'image-viewer' === $current_foogallery_template ) {
+				if ( isset($attr['width']) ){
+					unset($attr['width']);
+				}
+				if ( isset($attr['height']) ){
+					unset($attr['height']);
+				}
+			}
+
+			return $attr;
 		}
 	}
 }

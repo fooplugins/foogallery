@@ -10,7 +10,7 @@
 
 **Requires at least:** 3.9
 
-**Tested up to:** 4.3.1
+**Tested up to:** 4.5.2
 
 **Stable tag:** trunk
 
@@ -62,6 +62,7 @@ Foo Gallery was designed to be the most developer-friendly gallery plugin availa
 **Gallery Demos**
 
 *	Responsive Image Gallery - [demo](http://foo.gallery/demos/responsive-image-gallery/)
+*	FooGrid Image Gallery - [light demo](http://foo.gallery/demos/foogrid-light/) - [dark demo](http://foo.gallery/demos/foogrid-dark/)
 *	Image Viewer Gallery - [light demo](http://foo.gallery/demos/image-viewer-gallery/) - [dark demo](http://foo.gallery/demos/image-viewer-gallery-dark/)
 *	Masonry Gallery - [demo](http://foo.gallery/demos/masonry-image-gallery/)
 *	Simple Portfolio - [demo](http://foo.gallery/demos/simple-portfolio/)
@@ -95,6 +96,7 @@ Foo Gallery was designed to be the most developer-friendly gallery plugin availa
 *	Albums (bundled)
 *	Default Gallery Templates (bundled)
 *	NextGen Gallery and Album Importer (bundled)
+*	[FooGrid Gallery](http://fooplugins.com/plugins/foogrid/?utm_source=foogalleryplugin&utm_medium=foogallerylink&utm_campaign=foogallery_wprepo)
 *	[Cube Gallery](http://fooplugins.com/plugins/cube-gallery-template/?utm_source=foogalleryplugin&utm_medium=foogallerylink&utm_campaign=foogallery_wprepo)
 *	[Custom Branding](http://fooplugins.com/plugins/foogallery-branding/?utm_source=foogalleryplugin&utm_medium=foogallerylink&utm_campaign=foogallery_wprepo)
 *	[FooBox PRO Lightbox](http://fooplugins.com/plugins/foobox/?utm_source=foogalleryplugin&utm_medium=foogallerylink&utm_campaign=foogallery_wprepo)
@@ -145,6 +147,45 @@ Hell, yes! Check out our [developer page](http://foo.gallery/developers/)
 Update now to support FooVideo and many other improvements!
 
 ## Changelog ##
+
+### 1.2.15 ###
+
+* Fix : Album admin CSS issues in WP 4.6
+* Fix : Masonry layout issues in WP 4.6
+* Fix : Media attachment fields not updating
+* Fix : Better support for IE10
+* New : Thumbnail generation test admin notice and settings
+
+### 1.2.13 ###
+
+* Fix : Shortcode replacing content in visual editor
+* Fix : Gallery hover effect of None being ignored
+* New : ImageViewer language settings for 'Prev', 'Next' & 'of'
+* New : Setting to use original thumbnails if available
+
+### 1.2.12 ###
+
+* Fix : Simple Portfolio missing captions fix
+
+### 1.2.11 ###
+
+* Fix : Simple Portfolio undefined function fix
+
+### 1.2.10 ###
+
+* New : support for multiple admin JS and CSS assets for gallery templates
+* New : Added setting to choose Caption Description source
+* New : Crop position can be chosen for attachments
+* New : Albums gallery details modal for setting a gallery URL
+* New : Better shortcode preview in editor
+* New : Editor button now supported if multiple editors exist
+* Fix : Better No-Link support for gallery templates
+* Fix : Compatible with Unyson plugin
+* Fix : Compatible with Advanced Custom Fields
+* Fix : Simple Portfolio fixes and tweaks
+* Fix : ImageViewer fixes and better browser compatibility
+* Fix : Changed assets enqueue version to rather use extension version
+* Fix : Album URL fix for permalinks with no trailing slashes
 
 ### 1.2.9 ###
 * New : Added Image Viewer gallery template

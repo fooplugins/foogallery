@@ -22,7 +22,7 @@ if ( foogallery_gallery_template_setting( 'link_custom_url', '' ) == 'on' ) {
 }
 $args['link_attributes'] = array('rel' => 'foobox[' . $current_foogallery->ID . ']');
 ?>
-<div id="foogallery-gallery-<?php echo $current_foogallery->ID; ?>" class="<?php echo foogallery_build_class_attribute( $current_foogallery, 'foogallery-lightbox-' . $lightbox, $caption_style, $position ); ?>">
+<div id="foogallery-gallery-<?php echo $current_foogallery->ID; ?>" class="<?php foogallery_build_class_attribute_render_safe( $current_foogallery, 'foogallery-lightbox-' . $lightbox, $caption_style, $position ); ?>">
     <?php echo $featured_attachment->html( $args, false, false ); ?>
         <?php echo $featured_attachment->html_img( $args ); ?>
         <span class="thumbnail-caption" style="background-color: <?php echo $caption_bgcolor; ?>; color:<?php echo $caption_color; ?>">

@@ -19,6 +19,9 @@ $hover_effect = foogallery_gallery_template_setting( 'hover-effect', 'hover-effe
 $hover_effect_type = foogallery_gallery_template_setting( 'hover-effect-type', '' );
 $caption_content = foogallery_gallery_template_setting( 'caption-content', 'none' );
 $alignment = foogallery_gallery_template_setting( 'alignment', 'alignment-center' );
+$text_prev = foogallery_gallery_template_setting( 'text-prev', __('Prev', 'foogallery') );
+$text_of = foogallery_gallery_template_setting( 'text-of', __('of', 'foogallery') );
+$text_next = foogallery_gallery_template_setting( 'text-next', __('Next', 'foogallery') );
 $attachments = $current_foogallery->attachments();
 if ( 'fiv-custom' === $theme ) {?>
 <style>
@@ -41,7 +44,7 @@ if ( 'fiv-custom' === $theme ) {?>
 	}
 </style>
 <?php } ?>
-<div id="foogallery-gallery-<?php echo $current_foogallery->ID; ?>" class="<?php echo foogallery_build_class_attribute( $current_foogallery, 'foogallery-link-' . $link, 'foogallery-lightbox-' . $lightbox, $theme, $hover_effect, $hover_effect_type, $alignment ); ?>">
+<div id="foogallery-gallery-<?php echo $current_foogallery->ID; ?>" class="<?php foogallery_build_class_attribute_render_safe( $current_foogallery, 'foogallery-link-' . $link, 'foogallery-lightbox-' . $lightbox, $theme, $hover_effect, $hover_effect_type, $alignment ); ?>">
 	<div class="fiv-inner">
 		<div class="fiv-inner-container">
 			<?php foreach ( $attachments as $attachment ) {
@@ -53,9 +56,9 @@ if ( 'fiv-custom' === $theme ) {?>
 			} ?>
 		</div>
 		<div class="fiv-ctrls">
-			<div class="fiv-prev"><span><?php echo __('Prev', 'foogallery') ?></span></div>
-			<label class="fiv-count"><span class="fiv-count-current">1</span><?php echo __('of', 'foogallery') ?><span><?php echo count($attachments) ?></span></label>
-			<div class="fiv-next"><span><?php echo __('Next', 'foogallery') ?></span></div>
+			<div class="fiv-prev"><span><?php echo $text_prev; ?></span></div>
+			<label class="fiv-count"><span class="fiv-count-current">1</span><?php echo $text_of; ?><span><?php echo count($attachments) ?></span></label>
+			<div class="fiv-next"><span><?php echo $text_next; ?></span></div>
 		</div>
 	</div>
 </div>

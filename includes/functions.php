@@ -365,6 +365,17 @@ function foogallery_build_class_attribute( $gallery ) {
 }
 
 /**
+ * Renders an escaped class attribute that can be used directly by gallery templates
+ *
+ * @param $gallery FooGallery
+ */
+function foogallery_build_class_attribute_render_safe( $gallery ) {
+	$args = func_get_args();
+	$result = call_user_func_array("foogallery_build_class_attribute", $args);
+	echo esc_attr( $result );
+}
+
+/**
  * Render a foogallery
  *
  * @param $gallery_id int The id of the foogallery you want to render
@@ -540,4 +551,74 @@ function foogallery_get_caption_title_for_attachment($attachment_post) {
 	}
 
 	return apply_filters( 'foogallery_get_caption_title_for_attachment', $caption, $attachment_post );
+}
+
+/**
+ * Returns the caption description source setting
+ *
+ * @return string
+ */
+function foogallery_caption_desc_source() {
+	$source = foogallery_get_setting( 'caption_desc_source', 'desc' );
+
+	if ( empty( $source ) ) {
+		$source = 'desc';
+	}
+
+	return $source;
+}
+
+/**
+ * Returns the attachment caption description based on the caption_desc_source setting
+ *
+ * @param $attachment_post WP_Post
+ *
+ * @return string
+ */
+function foogallery_get_caption_desc_for_attachment($attachment_post) {
+	$source = foogallery_caption_desc_source();
+
+	switch ( $source ) {
+		case 'title':
+			$caption = trim( $attachment_post->post_title );
+			break;
+		case 'caption':
+			$caption = trim( $attachment_post->post_excerpt );
+			break;
+		case 'alt':
+			$caption = trim( get_post_meta( $attachment_post->ID, '_wp_attachment_image_alt', true ) );
+			break;
+		default:
+			$caption = trim( $attachment_post->post_content );
+	}
+
+	return apply_filters( 'foogallery_get_caption_desc_for_attachment', $caption, $attachment_post );
+}
+
+/**
+ * Runs thumbnail tests and outputs results in a table format
+ */
+function foogallery_output_thumbnail_generation_results() {
+	$thumbs = new FooGallery_Thumbnails();
+	try {
+		$results = $thumbs->run_thumbnail_generation_tests();
+        if ( $results['success'] ) {
+            echo '<span style="color:#0c0">' . __('Thumbnail generation test ran successfully.', 'foogallery') . '</span>';
+        } else {
+            echo '<span style="color:#c00">' . __('Thumbnail generation test failed!', 'foogallery') . '</span>';
+            var_dump( $results['error'] );
+        }
+	}
+	catch (Exception $e) {
+		echo 'Exception: ' . $e->getMessage();
+	}
+}
+
+/**
+ * Returns the URL to the test image
+ *
+ * @return string
+ */
+function foogallery_test_thumb_url() {
+    return apply_filters( 'foogallery_test_thumb_url', FOOGALLERY_URL . 'assets/test_thumb_1.jpg' );
 }

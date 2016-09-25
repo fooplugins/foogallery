@@ -234,3 +234,137 @@
 	margin-top: -15px;
 	top: 50%;
 }
+
+.foogallery-album-error {
+	padding: 11px 15px;
+	font-size: 14px;
+	text-align: left;
+	border-left: 4px solid #dc3232;
+	-webkit-box-shadow: 0 1px 1px 0 rgba(0,0,0,.1);
+	box-shadow: 1px 1px 1px 1px rgba(0,0,0,.1);
+}
+
+.foogallery-album-gallery-list .attachment-preview a.info {
+	display: none;
+	position: absolute;
+	padding: 0;
+	font-size: 20px;
+	line-height: 20px;
+	text-align: center;
+	text-decoration: none;
+	background-color: #444;
+	border-top-right-radius: 50%;
+	border-top-left-radius: 50%;
+	border-bottom-right-radius: 50%;
+	border-bottom-left-radius: 50%;
+	color: #fff;
+	top: 5px;
+	left: 5px;
+}
+
+.foogallery-album-gallery-list .attachment-preview:hover a.info {
+	display: block;
+}
+
+.foogallery-album-info-modal {
+	display: none;
+	top: 20%;
+	bottom: 20%;
+	left: 30%;
+	right: 30%;
+}
+
+	.foogallery-album-info-modal .media-frame-title {
+		left:0;
+	}
+
+		.foogallery-album-info-modal .media-frame-title h1 {
+			float: left;
+		}
+
+		.foogallery-album-info-modal .media-frame-title .spinner {
+			float:left;
+			margin: 15px 0;
+		}
+
+	.foogallery-album-info-modal .close {
+		position: absolute;
+		top: 20px;
+		right: 20px;
+		cursor: pointer;
+		font-size: 20px;
+	}
+
+	.foogallery-album-info-modal .modal-content {
+		position: absolute;
+		top: 50px;
+		left: 0;
+		right: 0;
+		bottom: 61px;
+		height: auto;
+		width: auto;
+		margin: 0;
+		overflow: auto;
+		background: #fff;
+		border-top: 1px solid #ddd;
+		border-bottom: 1px solid #ddd;
+		padding: 20px;
+		min-width: 400px;
+	}
+
+	.foogallery-album-info-modal .gallery-details,
+	.foogallery-album-info-modal .gallery-details table {
+		width: 100%;
+	}
+
+		.foogallery-album-info-modal .gallery-details th {
+			vertical-align: top;
+		}
+
+			.foogallery-album-info-modal .gallery-details th label {
+				box-sizing: border-box;
+				float: right;
+				padding: 6px 0px;
+				margin-right: 20px;
+				font-weight: normal;
+			}
+
+		.foogallery-album-info-modal .gallery-details td input,
+		.foogallery-album-info-modal .gallery-details td textarea,
+		.foogallery-album-info-modal .gallery-details td select {
+			width: 100%;
+		}
+
+		.foogallery-album-info-modal .gallery-details td select {
+			line-height: inherit;
+			padding: 6px 8px;
+			height: inherit;
+		}
+
+		.foogallery-album-info-modal .gallery-details td .help {
+			margin-top: 0;
+			font-size: 0.8em;
+		}
+
+	.foogallery-album-info-modal .media-toolbar .spinner {
+		margin-top: 20px;
+		margin-right: 0;
+	}
+
+	.foogallery-album-info-modal .media-frame-toolbar {
+		left: 0;
+	}
+
+		.foogallery-album-info-modal .media-frame-toolbar .media-toolbar-secondary {
+			line-height: 60px;
+			font-weight: bold;
+		}
+
+.foogallery-album-info-modal-backdrop {
+	display: none;
+}
+
+.spacer {
+	display: inline-block;
+	width:30px;
+}
