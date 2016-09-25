@@ -11,7 +11,7 @@ require_once( 'class-justified-gallery-overrides.php' );
 new JustifiedOverrides();
 
 $height = foogallery_gallery_template_setting( 'thumb_initial', '250' );
-$row_height = foogallery_gallery_template_setting( 'row_height', '150' )
+$row_height = foogallery_gallery_template_setting( 'row_height', '150' );
 
 $max_row_height = foogallery_gallery_template_setting( 'max_row_height', '200%' );
 $last_row = foogallery_gallery_template_setting( 'last_row', 'justify' );
