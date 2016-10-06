@@ -33,6 +33,9 @@ if (!class_exists('FooGallery_Admin_CSS_Load_Optimizer')) {
 
             //load the foogallery, so we can get the template that is used
             $foogallery = FooGallery::get_by_id( $foogallery_id );
+
+            if ( false === $foogallery ) return;
+
             $template = $foogallery->gallery_template;
 
             //check to see if we have already added this template's stylesheet
