@@ -26,6 +26,8 @@ if ( ! class_exists( 'FooGallery_Yoast_Seo_Sitemap_Support' ) ) {
 				//load each gallery
 				$gallery = FooGallery::get_by_id( $gallery_id );
 
+                if ( false === $gallery ) continue;
+
 				//add each image to the sitemap image array
 				foreach ( $gallery->attachments() as $attachment ) {
 					$image = array(
