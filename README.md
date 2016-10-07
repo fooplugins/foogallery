@@ -10,7 +10,7 @@
 
 **Requires at least:** 3.9
 
-**Tested up to:** 4.5.2
+**Tested up to:** 4.6.1
 
 **Stable tag:** trunk
 
@@ -147,6 +147,11 @@ Hell, yes! Check out our [developer page](http://foo.gallery/developers/)
 Update now to support FooVideo and many other improvements!
 
 ## Changelog ##
+
+### 1.2.16 ###
+
+* Fix : Yoast SEO Sitemaps fatal error with deleted galleries
+* Fix : Updating pages with deleted galleries throws php warnings
 
 ### 1.2.15 ###
 
