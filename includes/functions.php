@@ -630,7 +630,9 @@ function foogallery_test_thumb_url() {
  * @return array
  */
 function foogallery_gallery_datasources() {
-	$datasources[] = foogallery_default_datasource();
+	$default_datasource = foogallery_default_datasource();
+
+	$datasources[$default_datasource] = 'FooGalleryDatasource_MediaLibrary';
 
 	return apply_filters( 'foogallery_gallery_datasources', $datasources );
 }
@@ -642,4 +644,20 @@ function foogallery_gallery_datasources() {
  */
 function foogallery_default_datasource() {
 	return foogallery_get_default( 'datasource', 'media_library' );
+}
+
+/**
+ * Instantiates a FooGallery datasource based on a datasource name
+ *
+ * @param $datasource_name string
+ *
+ * @return IFooGalleryDatasource
+ */
+function foogallery_instantiate_datasource( $datasource_name ) {
+	$datasources = foogallery_gallery_datasources();
+	if ( array_key_exists( $datasource_name, $datasources ) ) {
+		return new $datasources[$datasource_name];
+	}
+
+	return new FooGalleryDatasource_MediaLibrary();
 }
