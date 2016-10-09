@@ -28,6 +28,7 @@ class FooGallery extends stdClass {
 		$this->ID = 0;
 		$this->attachment_ids = array();
 		$this->_attachments = false;
+		$this->datasource = foogallery_default_datasource();
 	}
 
 	/**
@@ -41,13 +42,28 @@ class FooGallery extends stdClass {
 		$this->name = $post->post_title;
 		$this->author = $post->post_author;
 		$this->post_status = $post->post_status;
-		$attachment_meta = get_post_meta( $this->ID, FOOGALLERY_META_ATTACHMENTS, true );
+
+		$attachment_meta = get_post_meta( $post->ID, FOOGALLERY_META_ATTACHMENTS, true );
 		$this->attachment_ids = is_array( $attachment_meta ) ? array_filter( $attachment_meta ) : array();
-		$this->gallery_template = get_post_meta( $post->ID, FOOGALLERY_META_TEMPLATE, true );
-		$this->settings = get_post_meta( $post->ID, FOOGALLERY_META_SETTINGS, true );
-		$this->custom_css = get_post_meta( $post->ID, FOOGALLERY_META_CUSTOM_CSS, true );
-		$this->sorting = get_post_meta( $post->ID, FOOGALLERY_META_SORT, true );
+
+		$this->load_meta( $post->ID );
+
 		do_action( 'foogallery_foogallery_instance_after_load', $this, $post );
+	}
+
+	/**
+	 * private meta data load function
+	 * @param $post_id int
+	 */
+	private function load_meta( $post_id ) {
+		$this->gallery_template = get_post_meta( $post_id, FOOGALLERY_META_TEMPLATE, true );
+		$this->settings = get_post_meta( $post_id, FOOGALLERY_META_SETTINGS, true );
+		$this->custom_css = get_post_meta( $post_id, FOOGALLERY_META_CUSTOM_CSS, true );
+		$this->sorting = get_post_meta( $post_id, FOOGALLERY_META_SORT, true );
+		$this->datasource = get_post_meta( $post_id, FOOGALLERY_META_DATASOURCE, true );
+		if ( empty( $this->datasource ) ) {
+			$this->datasource = foogallery_default_datasource();
+		}
 	}
 
 	/**
@@ -99,7 +115,7 @@ class FooGallery extends stdClass {
 	 *
 	 * @param $post_id
 	 *
-	 * @return FooGallery
+	 * @return FooGallery | boolean
 	 */
 	public static function get_by_id( $post_id ) {
 		$gallery = new self();
@@ -115,7 +131,7 @@ class FooGallery extends stdClass {
 	 *
 	 * @param string $slug
 	 *
-	 * @return FooGallery
+	 * @return FooGallery | boolean
 	 */
 	public static function get_by_slug( $slug ) {
 		$gallery = new self();
@@ -149,11 +165,19 @@ class FooGallery extends stdClass {
 	}
 
 	/**
+	 * Returns the number of attachments in the current gallery
+	 * @return int
+	 */
+	public function attachment_count() {
+		return sizeof( $this->attachment_ids );
+	}
+
+	/**
 	 * Checks if the gallery has attachments
 	 * @return bool
 	 */
 	public function has_attachments() {
-		return sizeof( $this->attachment_ids ) > 0;
+		return $this->attachment_count() > 0;
 	}
 
 	/**
@@ -376,18 +400,13 @@ class FooGallery extends stdClass {
 
 		if ( false != $gallery_template_details ) {
 			if ( array_key_exists( 'fields', $gallery_template_details ) ) {
-
 				foreach ( $gallery_template_details['fields'] as $field ) {
-
 					if ( $field_type == $field['type'] ) {
 						return true;
 					}
-
 				}
-
 			}
 		}
-
 		return false;
 	}
 
@@ -397,9 +416,8 @@ class FooGallery extends stdClass {
 	public function load_default_settings_if_new() {
 		if ( $this->is_new() ) {
 			$default_gallery_id = foogallery_get_setting( 'default_gallery_settings' );
-			$this->gallery_template = get_post_meta( $default_gallery_id, FOOGALLERY_META_TEMPLATE, true );
-			$this->settings = get_post_meta( $default_gallery_id, FOOGALLERY_META_SETTINGS, true );
-			$this->sorting = foogallery_get_setting( 'gallery_sorting' );
+			//loads all meta data from the default gallery
+			$this->load_meta( $default_gallery_id );
 		}
 	}
 }

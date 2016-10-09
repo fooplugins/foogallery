@@ -115,7 +115,8 @@ function foogallery_get_default( $key, $default = false ) {
 		'lightbox'                   => 'none',
 		'thumb_jpeg_quality'         => '80',
 		'thumb_resize_animations'    => true,
-		'gallery_sorting'            => ''
+		'gallery_sorting'            => '',
+		'datasource'				 => 'media_library'
 	);
 
 	// A handy filter to override the defaults
@@ -621,4 +622,24 @@ function foogallery_output_thumbnail_generation_results() {
  */
 function foogallery_test_thumb_url() {
     return apply_filters( 'foogallery_test_thumb_url', FOOGALLERY_URL . 'assets/test_thumb_1.jpg' );
+}
+
+/**
+ * Return all the gallery datasources used within FooGallery
+ *
+ * @return array
+ */
+function foogallery_gallery_datasources() {
+	$datasources[] = foogallery_default_datasource();
+
+	return apply_filters( 'foogallery_gallery_datasources', $datasources );
+}
+
+/**
+ * Returns the default gallery datasource
+ *
+ * @return string
+ */
+function foogallery_default_datasource() {
+	return foogallery_get_default( 'datasource', 'media_library' );
 }
