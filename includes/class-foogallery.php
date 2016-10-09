@@ -28,7 +28,8 @@ class FooGallery extends stdClass {
 		$this->ID = 0;
 		$this->attachment_ids = array();
 		$this->_attachments = false;
-		$this->datasource = foogallery_default_datasource();
+		$this->datasource_name = foogallery_default_datasource();
+		$this->_datasource = false;
 	}
 
 	/**
@@ -60,9 +61,9 @@ class FooGallery extends stdClass {
 		$this->settings = get_post_meta( $post_id, FOOGALLERY_META_SETTINGS, true );
 		$this->custom_css = get_post_meta( $post_id, FOOGALLERY_META_CUSTOM_CSS, true );
 		$this->sorting = get_post_meta( $post_id, FOOGALLERY_META_SORT, true );
-		$this->datasource = get_post_meta( $post_id, FOOGALLERY_META_DATASOURCE, true );
-		if ( empty( $this->datasource ) ) {
-			$this->datasource = foogallery_default_datasource();
+		$this->datasource_name = get_post_meta( $post_id, FOOGALLERY_META_DATASOURCE, true );
+		if ( empty( $this->datasource_name ) ) {
+			$this->datasource_name = foogallery_default_datasource();
 		}
 	}
 
@@ -419,5 +420,20 @@ class FooGallery extends stdClass {
 			//loads all meta data from the default gallery
 			$this->load_meta( $default_gallery_id );
 		}
+	}
+
+	/**
+	 * Returns the current gallery datasource object
+	 *
+	 * @returns IFooGalleryDatasource
+	 */
+	public function datasource() {
+		//lazy load the datasource only when needed
+		if ( $this->_datasource === false ) {
+			$this->_datasource = foogallery_instantiate_datasource( $this->datasource_name );
+			$this->_datasource->setGallery( $this );
+		}
+
+		return $this->_datasource;
 	}
 }
