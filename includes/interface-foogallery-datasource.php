@@ -17,7 +17,7 @@ if ( ! interface_exists( 'IFooGalleryDatasource' ) ) {
 		 * Returns the number of images/videos in the datasource
 		 * @return int
 		 */
-		public function count();
+		public function getCount();
 
 		/**
 		 * Returns an array of FooGalleryAttachments from the datasource
@@ -30,6 +30,14 @@ if ( ! interface_exists( 'IFooGalleryDatasource' ) ) {
 		 * @return FooGalleryAttachment
 		 */
 		public function getFeaturedAttachment();
+
+		/**
+		 * Returns a serialized string that represents the media in the datasource.
+		 * This string is persisted when saving a FooGallery
+		 *
+		 * @return string
+		 */
+		public function getSerializedData();
 
 		//attachment_count
 		//attachment_id_csv
