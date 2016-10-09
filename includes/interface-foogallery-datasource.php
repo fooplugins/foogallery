@@ -27,7 +27,7 @@ if ( ! interface_exists( 'IFooGalleryDatasource' ) ) {
 
 		/**
 		 * Returns the featured FooGalleryAttachment from the datasource
-		 * @return FooGalleryAttachment
+		 * @return bool|FooGalleryAttachment
 		 */
 		public function getFeaturedAttachment();
 

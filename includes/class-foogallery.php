@@ -170,7 +170,7 @@ class FooGallery extends stdClass {
 	 * @return int
 	 */
 	public function attachment_count() {
-		return sizeof( $this->attachment_ids );
+		return $this->datasource()->count();
 	}
 
 	/**
@@ -210,11 +210,7 @@ class FooGallery extends stdClass {
 	 * @return string
 	 */
 	public function attachment_id_csv() {
-		if ( is_array( $this->attachment_ids ) ) {
-			return implode( ',', $this->attachment_ids );
-		}
-
-		return '';
+		return $this->datasource()->getSerializedData();
 	}
 
 	/**
@@ -225,43 +221,21 @@ class FooGallery extends stdClass {
 	public function attachments() {
 		//lazy load the attachments for performance
 		if ( $this->_attachments === false ) {
-			$this->_attachments = array();
-
-			if ( ! empty( $this->attachment_ids ) ) {
-
-				add_action( 'pre_get_posts', array( $this, 'force_gallery_ordering' ), 99 );
-
-				$attachment_query_args = apply_filters( 'foogallery_attachment_get_posts_args', array(
-					'post_type'      => 'attachment',
-					'posts_per_page' => -1,
-					'post__in'       => $this->attachment_ids,
-					'orderby'        => foogallery_sorting_get_posts_orderby_arg( $this->sorting ),
-					'order'          => foogallery_sorting_get_posts_order_arg( $this->sorting )
-				) );
-
-				$attachments = get_posts( $attachment_query_args );
-
-				remove_action( 'pre_get_posts', array( $this, 'force_gallery_ordering' ), 99 );
-
-				$this->_attachments = array_map( array( 'FooGalleryAttachment', 'get' ), $attachments );
-			}
+			$this->_attachments = $this->datasource()->getAttachments();
 		}
 
 		return $this->_attachments;
 	}
 
 	/**
+	 * @deprecated 1.3.0 This is now moved into the datasource implementation
+	 *
 	 * This forces the attachments to be fetched using the correct ordering.
 	 * Some plugins / themes override this globally for some reason, so this is a preventative measure to ensure sorting is correct
 	 * @param $query WP_Query
 	 */
 	public function force_gallery_ordering( $query ) {
-		//only care about attachments
-		if ( array_key_exists( 'post_type', $query->query ) &&
-		     'attachment' === $query->query['post_type'] ) {
-			$query->set( 'orderby', foogallery_sorting_get_posts_orderby_arg( $this->sorting ) );
-			$query->set( 'order', foogallery_sorting_get_posts_order_arg( $this->sorting ) );
-		}
+		_deprecated_function( __FUNCTION__, '1.3.0' );
 	}
 
 	/**
@@ -328,7 +302,7 @@ class FooGallery extends stdClass {
 		$singular_text  = foogallery_get_setting( 'language_images_count_single_text', __( '1 image', 'foogallery' ) );
 		$plural_text    = foogallery_get_setting( 'language_images_count_plural_text', __( '%s images', 'foogallery' ) );
 
-		$count = sizeof( $this->attachment_ids );
+		$count = $this->attachment_count();
 
 		switch ( $count ) {
 			case 0:
