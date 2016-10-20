@@ -170,7 +170,7 @@ class FooGallery extends stdClass {
 	 * @return int
 	 */
 	public function attachment_count() {
-		return $this->datasource()->count();
+		return $this->datasource()->getCount();
 	}
 
 	/**
