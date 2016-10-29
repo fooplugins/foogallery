@@ -84,13 +84,23 @@ if ( ! class_exists( 'FooGalleryAttachment' ) ) {
 		}
 
 		/**
+		 * Returns the image source only
+		 *
+		 * @param array $args
+		 * @return string
+		 */
+		public function html_img_src( $args = array() ) {
+			return apply_filters( 'foogallery_attachment_resize_thumbnail', $this->url, $args, $this );
+		}
+
+		/**
 		 * Returns the HTML img tag for the attachment
 		 * @param array $args
 		 *
 		 * @return string
 		 */
 		public function html_img( $args = array() ) {
-			$attr['src'] = apply_filters( 'foogallery_attachment_resize_thumbnail', $this->url, $args, $this );
+			$attr['src'] = $this->html_img_src( $args );
 
 			if ( ! empty( $this->alt ) ) {
 				$attr['alt'] = $this->alt;
