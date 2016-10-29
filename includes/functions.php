@@ -698,7 +698,7 @@ function foogallery_image_placeholder_html( $args ) {
 /**
  * Returns the thumbnail html for the featured attachment for a gallery.
  * If no featured attachment can be found, then a placeholder image src is returned instead
- * 
+ *
  * @param FooGallery $gallery
  * @param array $args
  *

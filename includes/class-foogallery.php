@@ -247,15 +247,15 @@ class FooGallery extends stdClass {
 		return foogallery_build_gallery_shortcode( $this->ID );
 	}
 
+	/**
+	 * @deprecated 1.3.0 This is now moved into the datasource implementation
+	 *
+	 * @return int|mixed|string
+	 */
 	public function find_featured_attachment_id() {
-		$attachment_id = get_post_thumbnail_id( $this->ID );
+		_deprecated_function( __FUNCTION__, '1.3.0' );
 
-		//if no featured image could be found then get the first image
-		if ( ! $attachment_id && $this->attachment_ids ) {
-			$attachment_id_values = array_values( $this->attachment_ids );
-			$attachment_id = array_shift( $attachment_id_values );
-		}
-		return $attachment_id;
+		return 0;
 	}
 
 	/**
@@ -267,15 +267,23 @@ class FooGallery extends stdClass {
 		return $this->datasource()->getFeaturedAttachment();
 	}
 
+	/**
+	 * @deprecated 1.3.0 This is now moved into the datasource implementation
+	 *
+	 * @param string $size
+	 * @param bool   $icon
+	 *
+	 * @return bool
+	 */
 	public function featured_image_src( $size = 'thumbnail', $icon = false ) {
-		$attachment_id = $this->find_featured_attachment_id();
-		if ( $attachment_id && $image_details = wp_get_attachment_image_src( $attachment_id, $size, $icon ) ) {
-			return reset( $image_details );
-		}
+		_deprecated_function( __FUNCTION__, '1.3.0' );
+
 		return false;
 	}
 
 	/**
+	 * @deprecated 1.3.0 This is now moved into the datasource implementation
+	 *
 	 * Get an HTML img element representing the featured image for the gallery
 	 *
 	 * @param string $size Optional, default is 'thumbnail'.
@@ -284,10 +292,8 @@ class FooGallery extends stdClass {
 	 * @return string HTML img element or empty string on failure.
 	 */
 	public function featured_image_html( $size = 'thumbnail', $icon = false ) {
-		$attachment_id = $this->find_featured_attachment_id();
-		if ( $attachment_id && $thumb = @wp_get_attachment_image( $attachment_id, $size, $icon ) ) {
-			return $thumb;
-		}
+		_deprecated_function( __FUNCTION__, '1.3.0' );
+
 		return '';
 	}
 
