@@ -49,7 +49,7 @@ if ( ! class_exists( 'FooGallery_Admin_Columns' ) ) {
 					break;
 				case 'icon':
 					$gallery = FooGallery::get( $post );
-					$html_img = foogallery_find_featured_attachment_thumbnail_html_for_gallery( $gallery, array(
+					$html_img = foogallery_find_featured_attachment_thumbnail_html( $gallery, array(
 						'width' => 60,
 						'height' => 60,
 						'force_use_original_thumb' => true
