@@ -350,7 +350,11 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Editor' ) ) {
 			ob_start();
 
 			foreach ( $galleries as $gallery ) {
-				$img_src = $gallery->featured_image_src( array(200, 200) );
+				$img_src = foogallery_find_featured_attachment_thumbnail_src( $gallery, array(
+					'width' => get_option( 'thumbnail_size_w' ),
+					'height' => get_option( 'thumbnail_size_h' ),
+					'force_use_original_thumb' => true
+				) );
 				$images = $gallery->image_count();
 				?>
 				<li class="foogallery-pile">
@@ -395,7 +399,11 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Editor' ) ) {
 
 			$gallery = FooGallery::get_by_id( $id );
 
-			$image_src = $gallery->featured_image_src( 'thumbnail', true );
+			$image_src = foogallery_find_featured_attachment_thumbnail_src( $gallery, array(
+				'width' => get_option( 'thumbnail_size_w' ),
+				'height' => get_option( 'thumbnail_size_h' ),
+				'force_use_original_thumb' => true
+			) );
 
 			$json_array = array(
 				'id'    => $id,
