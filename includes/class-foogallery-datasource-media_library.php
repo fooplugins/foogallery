@@ -99,9 +99,24 @@ if ( ! class_exists( 'FooGalleryDatasource_MediaLibrary' ) ) {
 		 * @return bool|FooGalleryAttachment
 		 */
 		public function getFeaturedAttachment() {
-			// TODO: Implement getFeaturedAttachment() method.
+            $attachment_id = $this->find_featured_attachment_id();
+
+            if ( $attachment_id ) {
+                return FooGalleryAttachment::get_by_id( $attachment_id );
+            }
+
+            return false;
 		}
 
+        private function find_featured_attachment_id() {
+            $attachment_id = get_post_thumbnail_id( $this->foogallery->ID );
 
+            //if no featured image could be found then get the first image
+            if ( ! $attachment_id && $this->foogallery->attachment_ids ) {
+                $attachment_id_values = array_values( $this->foogallery->attachment_ids );
+                $attachment_id = array_shift( $attachment_id_values );
+            }
+            return $attachment_id;
+        }
 	}
 }

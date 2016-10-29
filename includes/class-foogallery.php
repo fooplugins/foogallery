@@ -264,13 +264,7 @@ class FooGallery extends stdClass {
 	 * @return bool|FooGalleryAttachment
 	 */
 	public function featured_attachment() {
-		$attachment_id = $this->find_featured_attachment_id();
-
-		if ( $attachment_id ) {
-			return FooGalleryAttachment::get_by_id( $attachment_id );
-		}
-
-		return false;
+		return $this->datasource()->getFeaturedAttachment();
 	}
 
 	public function featured_image_src( $size = 'thumbnail', $icon = false ) {
