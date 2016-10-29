@@ -74,7 +74,7 @@ if ( !class_exists( 'FooGallery_Thumbnails' ) ) {
 			$test_results = array(
 			    'success' => $success,
 				'thumb' => $generated_thumb,
-				'error' => $test_thumb->error(),
+				'error' => $test_thumb->errored() ? $test_thumb->error : '',
 			);
 
             do_action( 'foogallery_thumbnail_generation_test', $test_results );
