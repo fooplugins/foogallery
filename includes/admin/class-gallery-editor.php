@@ -278,7 +278,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Editor' ) ) {
 						<div class="media-frame wp-core-ui hide-menu hide-router foogallery-meta-wrap">
 							<div class="media-frame-title">
 								<h1>
-									<?php _e( 'Choose A Gallery To Insert', 'foogallery' ); ?>
+									<?php _e( 'Choose a Gallery to Insert', 'foogallery' ); ?>
 									<div class="foogallery-modal-reload-container">
 										<div class="spinner"></div>
 										<a class="foogallery-modal-reload button" href="#"><span class="dashicons dashicons-update"></span> <?php _e( 'Reload', 'foogallery' ); ?></a>
@@ -288,7 +288,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Editor' ) ) {
 							<div class="media-frame-content">
 								<div class="attachments-browser">
 									<ul class="foogallery-attachment-container attachments" style="padding-left: 8px; top: 1em;">
-										<div class="foogallery-modal-loading"><?php _e( 'Loading galleries. Please wait...', 'foogallery' ); ?></div>
+										<div class="foogallery-modal-loading"><?php _e( 'Loading galleries...', 'foogallery' ); ?></div>
 									</ul>
 									<!-- end .foogallery-meta -->
 									<div class="media-sidebar">
