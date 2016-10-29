@@ -661,3 +661,92 @@ function foogallery_instantiate_datasource( $datasource_name ) {
 
 	return new FooGalleryDatasource_MediaLibrary();
 }
+
+/**
+ * Returns the src to the built-in image placeholder
+ * @return string
+ */
+function foogallery_image_placeholder_src() {
+	return apply_filters( 'foogallery_image_placeholder_src', FOOGALLERY_URL . 'assets/image-placeholder.png' );
+}
+
+/**
+ * Returns the image html for the built-in image placeholder
+ *
+ * @param array $args
+ *
+ * @return string
+ */
+function foogallery_image_placeholder_html( $args ) {
+	if ( !isset( $args ) ) {
+		$args = array(
+			'width' => 150,
+			'height' => 150
+		);
+	}
+
+	$args['src'] = foogallery_image_placeholder_src();
+	$args = array_map( 'esc_attr', $args );
+	$html = '<img ';
+	foreach ( $args as $name => $value ) {
+		$html .= " $name=" . '"' . $value . '"';
+	}
+	$html .= ' />';
+	return apply_filters( 'foogallery_image_placeholder_html', $html, $args );
+}
+
+/**
+ * Returns the thumbnail html for the featured attachment for a gallery.
+ * If no featured attachment can be found, then a placeholder image src is returned instead
+ * 
+ * @param FooGallery $gallery
+ * @param array $args
+ *
+ * @return string
+ */
+function foogallery_find_featured_attachment_thumbnail_html( $gallery, $args ){
+	if ( !isset( $gallery ) ) return '';
+
+	if ( !isset( $args ) ) {
+		$args = array(
+			'width' => 150,
+			'height' => 150
+		);
+	}
+
+	$featuredAttachment = $gallery->featured_attachment();
+	if ( $featuredAttachment ) {
+		return $featuredAttachment->html_img( $args );
+	} else {
+		//if we have no featured attachment, then use the built-in image placeholder
+		return foogallery_image_placeholder_html( $args );
+	}
+}
+
+/**
+ * Returns the thumbnail src for the featured attachment for a gallery.
+ * If no featured attachment can be found, then a placeholder image src is returned instead
+ *
+*@param FooGallery $gallery
+ * @param array $args
+ *
+ * @return string
+ */
+function foogallery_find_featured_attachment_thumbnail_src( $gallery, $args ){
+	if ( !isset( $gallery ) ) return '';
+
+	if ( !isset( $args ) ) {
+		$args = array(
+			'width' => 150,
+			'height' => 150
+		);
+	}
+
+	$featuredAttachment = $gallery->featured_attachment();
+	if ( $featuredAttachment ) {
+		return $featuredAttachment->html_img_src( $args );
+	} else {
+		//if we have no featured attachment, then use the built-in image placeholder
+		return foogallery_image_placeholder_src();
+	}
+}
