@@ -72,38 +72,6 @@ function foogallery_album_templates() {
 				)
 			),
 			array(
-				'id'      => 'back_to_album_text',
-				'title'   => __( '"Back To Album" Text', 'foogallery' ),
-				'desc'    => __( 'The text that is shown at the top of the album when a gallery is shown', 'foogallery' ),
-				'section' => __( 'Language Settings', 'foogallery' ),
-				'type'    => 'text',
-				'default' => '&laquo; back to album'
-			),
-			array(
-				'id'      => 'no_images_text',
-				'title'   => __( '"No Images" Text', 'foogallery' ),
-				'desc'    => __( 'The text that is shown on the gallery caption when there are no images in the gallery.', 'foogallery' ),
-				'section' => __( 'Language Settings', 'foogallery' ),
-				'type'    => 'text',
-				'default' => 'No images'
-			),
-			array(
-				'id'      => 'single_image_text',
-				'title'   => __( '"1 Image" Text', 'foogallery' ),
-				'desc'    => __( 'The text that is shown on the gallery caption when there is a single image in the gallery.', 'foogallery' ),
-				'section' => __( 'Language Settings', 'foogallery' ),
-				'type'    => 'text',
-				'default' => '1 image'
-			),
-			array(
-				'id'      => 'images_text',
-				'title'   => __( '"X images" Text', 'foogallery' ),
-				'desc'    => __( 'The text that is shown on the gallery caption when there are many images in the gallery. "s%" will be replaced with the actual count.', 'foogallery' ),
-				'section' => __( 'Language Settings', 'foogallery' ),
-				'type'    => 'text',
-				'default' => '%s images'
-			),
-			array(
 				'id'      => 'gallery_link',
 				'title'   => __( 'Gallery Link', 'foogallery' ),
 				'section' => __( 'URL Settings', 'foogallery' ),

@@ -32,6 +32,10 @@ require_once( FOOGALLERY_PATH . 'includes/class-polylang-compatibility.php' );
 
 require_once( FOOGALLERY_PATH . 'includes/class-version-check.php' );
 
+//Datasource includes
+require_once( FOOGALLERY_PATH . 'includes/interface-foogallery-datasource.php' );
+require_once( FOOGALLERY_PATH . 'includes/class-foogallery-datasource-media_library.php' );
+
 if ( is_admin() ) {
 
 	//only admin
