@@ -60,7 +60,7 @@ if ( current_user_can( 'activate_plugins' ) ) {
 	$settings = $foogallery->options()->get_all();
 
 	$debug_info = array(
-		__( 'FooGallery version', 'foogallery' )      => $info['version'],
+		__( 'FooGallery version', 'foogallery' )  => $info['version'],
 		__( 'WordPress version', 'foogallery' )   => $wp_version,
 		__( 'Activated Theme', 'foogallery' )     => $current_theme['Name'],
 		__( 'WordPress URL', 'foogallery' )       => get_site_url(),
@@ -74,6 +74,7 @@ if ( current_user_can( 'activate_plugins' ) ) {
 		__( 'Lightboxes', 'foogallery' )          => apply_filters( 'foogallery_gallery_template_field_lightboxes', array() ),
 		__( 'Settings', 'foogallery' )            => $settings,
 		__( 'Active Plugins', 'foogallery' )      => $plugins,
+		__( 'Server Mime Types', 'foogallery' )	  => wp_get_mime_types()
 	);
 
 	$debug_info = apply_filters( 'foogallery_admin_debug_info', $debug_info );
