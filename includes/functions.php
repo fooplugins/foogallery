@@ -608,6 +608,7 @@ function foogallery_output_thumbnail_generation_results() {
         } else {
             echo '<span style="color:#c00">' . __('Thumbnail generation test failed!', 'foogallery') . '</span>';
             var_dump( $results['error'] );
+			var_dump( $results['file_info'] );
         }
 	}
 	catch (Exception $e) {

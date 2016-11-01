@@ -82,11 +82,13 @@ if ( !class_exists( 'FooGallery_Thumbnails' ) ) {
 			$test_thumb = new WP_Thumb( $test_image_url, $test_args );
             $generated_thumb = $test_thumb->returnImage();
             $success = $test_image_url !== $generated_thumb;
+			$file_info = wp_check_filetype( $test_image_url );
 
 			$test_results = array(
 			    'success' => $success,
 				'thumb' => $generated_thumb,
 				'error' => $test_thumb->errored() ? $test_thumb->error : '',
+				'file_info' => $file_info
 			);
 
             do_action( 'foogallery_thumbnail_generation_test', $test_results );
