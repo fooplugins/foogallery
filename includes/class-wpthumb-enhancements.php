@@ -4,19 +4,26 @@
  * Date: 7 Nov 2016
  *
  * Some themes include a filter to override the ORDER of the image editors to be used,
- *  so that the GD library is used as a preference over the Imagick library.
- *  This is acceptable, but WPThumb requires it's own overrides of the
- *  WP_Image_Editor_GD and WP_Image_Editor_Imagick classes (set in wpthumb.php
- *  'wpthumb_add_image_editors' function). The theme's filter runs after the WPThumb
- *  filter, so the override classes needed by WPThumb are ignored. This stops WPThumb
- *  from working at all. To get around this we need to override the image editors
- *  later (priority 999) and "force" the usage of the WPThumb override classes,
- *  while still preserving the order set by the theme author, or server administrator.
+ * so that the GD library is used as a preference over the Imagick library.
+ * This is acceptable, but WPThumb requires it's own overrides of the WP_Image_Editor_GD
+ * and WP_Image_Editor_Imagick classes (set in wpthumb.php 'wpthumb_add_image_editors'
+ * function). An example of this filter code is:
+ *
+ *   add_filter( 'wp_image_editors', 'change_graphic_lib' );
+ *   function change_graphic_lib($array) {
+ *     return array( 'WP_Image_Editor_GD', 'WP_Image_Editor_Imagick' );
+ *   }
+ *
+ * The theme's filter runs after the WPThumb filter, so the override classes needed
+ * by WPThumb are ignored. This stops WPThumb from working altogether. To get around
+ * this we need to override the image editors later (priority 999) and "force" the
+ * usage of the WPThumb override classes, while still preserving the order set by the
+ * theme author, or server administrator.
  *
  * The hosting provider's decision to use GD over Imagick is usually due to a timeout
- *  that occurs when large images are uploaded to the media library. The PHP setting
- *  for memory on the server could be too low, and this causes Imagick to timeout.
- *  Switching to GD usually fixes the problem, without needing to change memory limits.
+ * that occurs when large images are uploaded to the media library. The PHP setting
+ * for memory on the server could be too low, and this causes Imagick to timeout.
+ * Switching to GD usually fixes the problem, without needing to change memory limits.
  *
  */
 if ( ! class_exists( 'FooGallery_WPThumb_Enhancements' ) ) {
@@ -57,4 +64,3 @@ if ( ! class_exists( 'FooGallery_WPThumb_Enhancements' ) ) {
         }
     }
 }
-
