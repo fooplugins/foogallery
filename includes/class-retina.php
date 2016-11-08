@@ -22,9 +22,9 @@ if ( !class_exists( 'FooGallery_Retina' ) ) {
 
             if ( $current_foogallery && $current_foogallery->gallery_template ) {
 
-                //first check if the gallery template supports Retina thumbs
+                //TODO : first check if the gallery template supports Retina thumbs
 
-                //Then get the retina settings, e.g. 2x, 3x, 4x
+                //TODO : Then get the retina settings, e.g. 2x, 3x, 4x
 
                 //apply scaling to the width and height attributes
                 $args['width']  = (int)$args['width'] * 2;
