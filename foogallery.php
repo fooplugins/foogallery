@@ -87,6 +87,8 @@ if ( ! class_exists( 'FooGallery_Plugin' ) ) {
 
 			new FooGallery_Polylang_Compatibility();
 
+            new FooGallery_WPThumb_Enhancements();
+
 			$checker = new FooGallery_Version_Check();
 			$checker->wire_up_checker();
 		}

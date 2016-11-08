@@ -17,6 +17,8 @@ if ( ! class_exists( 'WP_Thumb' ) ) {
 	//do not let WPThumb override build-in WordPress functions like the_post_thumbnail
 	remove_filter( 'image_downsize', 'wpthumb_post_image', 99 );
 }
+require_once( FOOGALLERY_PATH . 'includes/class-wpthumb-enhancements.php' );
+
 
 //include bundled extensions
 require_once( FOOGALLERY_PATH . 'extensions/albums/class-albums-extension.php' );
