@@ -47,7 +47,8 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 							'foogallery_pages',
 							'foogallery_customcss',
 							'foogallery_sorting',
-							'foogallery_thumb_cache'
+							'foogallery_thumb_cache',
+							'foogallery_retina'
 						) ),
 					'contexts'   => array( 'normal', 'advanced', 'side', ),
 					'priorities' => array( 'high', 'core', 'default', 'low', ),
@@ -102,6 +103,15 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 				FOOGALLERY_CPT_GALLERY,
 				'normal',
 				'low'
+			);
+
+			add_meta_box(
+				'foogallery_retina',
+				__( 'Retina Support', 'foogallery' ),
+				array( $this, 'render_retina_metabox' ),
+				FOOGALLERY_CPT_GALLERY,
+				'side',
+				'default'
 			);
 
 			add_meta_box(
@@ -168,6 +178,8 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 				} else {
 					update_post_meta( $post_id, FOOGALLERY_META_CUSTOM_CSS, $custom_css );
 				}
+
+				update_post_meta( $post_id, FOOGALLERY_META_RETINA, $_POST[FOOGALLERY_META_RETINA] );
 
 				do_action( 'foogallery_after_save_gallery', $post_id, $_POST );
 			}
@@ -454,6 +466,31 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 				<label for="FooGallerySettings_GallerySort_<?php echo $sorting_key; ?>"><?php echo $sorting_label; ?></label>
 				</p><?php
 			}
+		}
+
+		public function render_retina_metabox( $post ) {
+			$gallery = $this->get_gallery( $post );
+			$retina_options = foogallery_retina_options();
+			if ( empty( $gallery->retina ) ) {
+				$gallery->retina = array();
+			}
+			?>
+			<p>
+				<?php _e('Add retina support to this gallery by choosing the different pixel densities you want to enable.', 'foogallery'); ?>
+			</p>
+			<?php
+			foreach ( $retina_options as $retina_key => $retina_label ) {
+				$checked = array_key_exists( $retina_key, $gallery->retina ) ? ('true' === $gallery->retina[$retina_key]) : false;
+				?>
+				<p>
+				<input type="checkbox" value="true" <?php checked( $checked ); ?> id="FooGallerySettings_GallerySort_<?php echo $retina_key; ?>" name="<?php echo FOOGALLERY_META_RETINA; ?>[<?php echo $retina_key; ?>]" />
+				<label for="FooGallerySettings_GalleryRetina_<?php echo $retina_key; ?>"><?php echo $retina_label; ?></label>
+				</p><?php
+			} ?>
+			<p class="foogallery-help">
+				<?php _e('PLEASE NOTE : thumbnails will be generated for each of the pixel densities chosen, which will increase your website\'s storage space!', 'foogallery'); ?>
+			</p>
+			<?php
 		}
 
 		public function render_thumb_cache_metabox( $post ) {
