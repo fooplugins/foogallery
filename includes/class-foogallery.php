@@ -65,6 +65,7 @@ class FooGallery extends stdClass {
 		if ( empty( $this->datasource_name ) ) {
 			$this->datasource_name = foogallery_default_datasource();
 		}
+        $this->retina = get_post_meta( $post_id, FOOGALLERY_META_RETINA, true );
 	}
 
 	/**
