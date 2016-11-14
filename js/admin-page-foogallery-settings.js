@@ -115,10 +115,40 @@ jQuery(document).ready(function($) {
         });
     };
 
+    FOOGALLERY.bindApplyRetinaDefaults = function() {
+        $('.foogallery_apply_retina_support').click(function(e) {
+            e.preventDefault();
+
+            var $button = $(this),
+                $container = $('#foogallery_apply_retina_support_container'),
+                $spinner = $('#foogallery_apply_retina_support_spinner'),
+                data = 'action=foogallery_thumb_generation_test' +
+                    '&_wpnonce=' + $button.data('nonce') +
+                    '&_wp_http_referer=' + encodeURIComponent($('input[name="_wp_http_referer"]').val());
+
+            $spinner.addClass('is-active');
+            $button.prop('disabled', true);
+
+            $.ajax({
+                type: "POST",
+                url: ajaxurl,
+                data: data,
+                success: function(data) {
+                    $container.html(data);
+                },
+                complete: function() {
+                    $spinner.removeClass('is-active');
+                    $button.prop('disabled', false);
+                }
+            });
+        });
+    };
+
     $(function() { //wait for ready
         FOOGALLERY.loadImageOptimizationContent();
         FOOGALLERY.bindClearCssOptimizationButton();
         FOOGALLERY.bindTestThumbnailButton();
+        FOOGALLERY.bindApplyRetinaDefaults();
     });
 
 }(window.FOOGALLERY = window.FOOGALLERY || {}, jQuery));
