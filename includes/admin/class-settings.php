@@ -271,7 +271,7 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 
 				//build up a list of retina options and add them to a hidden input
 				// so we can get the values on the client
-				$input_
+				//$input_
 				foreach( foogallery_retina_options() as $retina_option ) {
 
 				}
