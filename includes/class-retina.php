@@ -22,16 +22,39 @@ if ( !class_exists( 'FooGallery_Retina' ) ) {
 
             if ( $current_foogallery && $current_foogallery->gallery_template ) {
 
-                //TODO : first check if the gallery template supports Retina thumbs
+                //first check if the gallery template supports Retina thumbs
+                if ( $current_foogallery->retina ) {
+                    $srcset = array();
 
-                //TODO : Then get the retina settings, e.g. 2x, 3x, 4x
+                    $original_width = intval( $args['width'] );
+                    $original_height = intval( $args['height'] );
 
-                //apply scaling to the width and height attributes
-                $args['width']  = (int)$args['width'] * 2;
-                $args['height'] = (int)$args['height'] * 2;
+                    foreach ( foogallery_retina_options() as $pixel_density ) {
+                        $pixel_density_supported = array_key_exists( $pixel_density, $current_foogallery->retina ) ? ('true' === $current_foogallery->retina[$pixel_density]) : false;
 
-                //build up the retina attributes
-                $attr['srcset'] = $attachment->html_img_src( $args ) . ' ' . $args['width'] . 'w';
+                        if ( $pixel_density_supported ) {
+                            $pixel_density_int = intval( str_replace( 'x', '', $pixel_density ) );
+
+                            //apply scaling to the width and height attributes
+                            $retina_width  = $original_width * $pixel_density_int;
+                            $retina_height = $original_height * $pixel_density_int;
+
+                            //if the new dimensions are smaller than the full size image dimensions then allow the retina thumb
+                            if ( $retina_width < $attachment->width &&
+                                $retina_height < $attachment->height ) {
+                                $args['width'] = $retina_width;
+                                $args['height'] = $retina_height;
+
+                                //build up the retina attributes
+                                $srcset[] = $attachment->html_img_src( $args ) . ' ' . $retina_width . 'w';
+                            }
+                        }
+                    }
+
+                    if ( count( $srcset ) ) {
+                        $attr['srcset'] = implode( ',', $srcset );
+                    }
+                }
             }
 
             return $attr;
