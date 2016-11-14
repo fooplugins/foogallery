@@ -10,12 +10,18 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 		function __construct() {
 			add_filter( 'foogallery_admin_settings', array( $this, 'create_settings' ), 10, 2 );
 			add_action( 'foogallery_admin_settings_custom_type_render_setting', array( $this, 'render_custom_setting_types' ) );
+			add_action( 'foogallery_admin_settings_after_render_setting', array( $this, 'after_render_setting' ) );
 
 			// Ajax calls for clearing CSS optimization cache
 			add_action( 'wp_ajax_foogallery_clear_css_optimizations', array( $this, 'ajax_clear_css_optimizations' ) );
 			add_action( 'wp_ajax_foogallery_thumb_generation_test', array( $this, 'ajax_thumb_generation_test' ) );
+			add_action( 'wp_ajax_foogallery_apply_retina_defaults', array( $this, 'ajax_apply_retina_defaults' ) );
 		}
 
+		/**
+		 * Create the settings for FooGallery
+		 * @return array
+		 */
 		function create_settings() {
 
 			//region General Tab
@@ -152,6 +158,15 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 			);
 
 			$settings[] = array(
+				'id'      => 'default_retina_support',
+				'title'   => __( 'Default Retina Support', 'foogallery' ),
+				'desc'    => __( 'Default retina support for all new galleries that are created. This can also be overridden for each gallery.', 'foogallery' ),
+				'type'    => 'checkboxlist',
+				'choices' => foogallery_retina_options(),
+				'tab'     => 'thumb'
+			);
+
+			$settings[] = array(
 					'id'      => 'use_original_thumbs',
 					'title'   => __( 'Use Original Thumbnails', 'foogallery' ),
 					'desc'    => __( 'Allow for the original thumbnails to be used when possible. This can be useful if your thumbs are animated gifs.', 'foogallery' ),
@@ -251,6 +266,23 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 			<?php }
 		}
 
+		function after_render_setting( $args ) {
+			if ( 'default_retina_support' === $args['id'] ) {
+
+				//build up a list of retina options and add them to a hidden input
+				// so we can get the values on the client
+				$input_
+				foreach( foogallery_retina_options() as $retina_option ) {
+
+				}
+
+				?><div id="foogallery_apply_retina_support_container">
+					<input type="button" data-nonce="<?php echo esc_attr( wp_create_nonce( 'foogallery_apply_retina_support' ) ); ?>" class="button-primary foogallery_apply_retina_support" value="<?php _e( 'Apply Defaults to all Galleries', 'foogallery' ); ?>">
+					<span id="foogallery_apply_retina_support_spinner" style="position: absolute" class="spinner"></span>
+				</div>
+			<?php }
+		}
+
 		/**
 		 * AJAX endpoint for clearing all CSS optimizations
 		 */
@@ -269,6 +301,16 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 		function ajax_thumb_generation_test() {
 			if ( check_admin_referer( 'foogallery_thumb_generation_test' ) ) {
 				foogallery_output_thumbnail_generation_results();
+				die();
+			}
+		}
+
+		/**
+		 * AJAX endpoint for applying the retina defaults to all galleries
+		 */
+		function ajax_apply_retina_defaults() {
+			if ( check_admin_referer( 'foogallery_apply_retina_defaults' ) ) {
+
 				die();
 			}
 		}
