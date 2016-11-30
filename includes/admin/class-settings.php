@@ -271,13 +271,15 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 
 				//build up a list of retina options and add them to a hidden input
 				// so we can get the values on the client
-				$input_
+				$input_ids = array();
+				$count = 0;
 				foreach( foogallery_retina_options() as $retina_option ) {
-
+					$input_ids[] = '#default_retina_support' . $count;
+					$count++;
 				}
-
+				$nonce = wp_create_nonce( 'foogallery_apply_retina_defaults' );
 				?><div id="foogallery_apply_retina_support_container">
-					<input type="button" data-nonce="<?php echo esc_attr( wp_create_nonce( 'foogallery_apply_retina_support' ) ); ?>" class="button-primary foogallery_apply_retina_support" value="<?php _e( 'Apply Defaults to all Galleries', 'foogallery' ); ?>">
+					<input type="button" data-inputs="<?php echo implode( ',', $input_ids ); ?>" data-nonce="<?php echo esc_attr( $nonce ); ?>" class="button-primary foogallery_apply_retina_support" value="<?php _e( 'Apply Defaults to all Galleries', 'foogallery' ); ?>">
 					<span id="foogallery_apply_retina_support_spinner" style="position: absolute" class="spinner"></span>
 				</div>
 			<?php }
@@ -310,6 +312,34 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 		 */
 		function ajax_apply_retina_defaults() {
 			if ( check_admin_referer( 'foogallery_apply_retina_defaults' ) ) {
+
+				$defaults = $_POST['defaults'];
+
+				//extract the settings using a regex
+				$regex = '/foogallery\[default_retina_support\|(?<setting>.+?)\]/';
+
+				preg_match_all($regex, $defaults, $matches);
+
+				$gallery_retina_settings = array();
+
+				if ( isset( $matches[1] ) ) {
+					foreach ( $matches[1] as $match ) {
+						$gallery_retina_settings[$match] = "true";
+					}
+				}
+
+				//go through all galleries and update the retina settings
+				$galleries = foogallery_get_all_galleries();
+				$gallery_update_count = 0;
+				foreach ( $galleries as $gallery ) {
+					update_post_meta( $gallery->ID, FOOGALLERY_META_RETINA, $gallery_retina_settings );
+					$gallery_update_count++;
+				}
+
+				echo sprintf( _n(
+					'1 FooGallery successfully updated to use the default retina settings.',
+					'%s FooGalleries successfully updated to use the default retina settings.',
+					$gallery_update_count, 'foogallery' ), $gallery_update_count );
 
 				die();
 			}
