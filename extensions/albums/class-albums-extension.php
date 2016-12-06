@@ -58,6 +58,8 @@ if ( ! class_exists( 'FooGallery_Albums_Extension' ) ) {
 
 		function apply_album_defaults( $defaults ) {
 			$defaults['album_template'] = 'default';
+
+			return $defaults;
 		}
 
 		function register_myself( $extensions ) {
