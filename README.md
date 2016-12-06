@@ -27,6 +27,10 @@ Foo Gallery allows for better image and video gallery management within WordPres
 
 [View the Foo Gallery Homepage & DEMO](http://foo.gallery/)
 
+**Retina Support**
+
+Foo Gallery now comes with built-in support for higher quality thumbnails on retina-enabled displays. No more blurry thumbnails, just crisp thumbnails that look amazing on all devices.
+
 **Video Support**
 
 Foo Gallery now supports the creation of video galleries with the [FooVideo premium extension](http://fooplugins.com/plugins/foovideo/?utm_source=foogalleryplugin&utm_medium=foogallerylink&utm_campaign=foogallery_wprepo)! Create galleries with both images and videos mixed!
@@ -41,6 +45,7 @@ Foo Gallery was designed to be the most developer-friendly gallery plugin availa
 
 **Features**
 
+*   Retina thumbnail support
 *   Add videos to galleries (via the [FooVideo premium extension](http://fooplugins.com/plugins/foovideo/?utm_source=foogalleryplugin&utm_medium=foogallerylink&utm_campaign=foogallery_wprepo))
 *	Albums built-in! (Activate the albums extension)
 *	Gallery custom post type
@@ -126,6 +131,10 @@ FooGallery is hosted on [GitHub](https://github.com/fooplugins/foogallery). If y
 
 ## Frequently Asked Questions ##
 
+### Why are my thumbnails so blurry? ###
+
+Have you enabled retina support for your galleries? Displays with retina support can show better quality thumbnails when retina support is enabled. To enable retina support, edit the gallery and locate the Retina Support metabox.
+
 ### Can I add videos to my galleries? ###
 
 Yes, you need to use the [FooVideo premium extension](http://fooplugins.com/plugins/foovideo/?utm_source=foogalleryplugin&utm_medium=foogallerylink&utm_campaign=foogallery_wprepo)
@@ -147,6 +156,14 @@ Hell, yes! Check out our [developer page](http://foo.gallery/developers/)
 Update now to support FooVideo and many other improvements!
 
 ## Changelog ##
+
+### 1.2.17 ###
+
+* New : Retina support - metabox per gallery and default settings
+* New : Attachment datasources - backend changes for how images are used in a gallery. (This will allow for new external sources in the future)
+* New : Caption color settings in Simple portfolio gallery template
+* New : Updated to latest Justified Gallery
+* Fix : Better wpthumb compatibility
 
 ### 1.2.16 ###
 

@@ -1,9 +1,9 @@
 === Foo Gallery ===
 Contributors: bradvin, fooplugins
 Donate link: http://fooplugins.com
-Tags: gallery, galleries, wordpress gallery, add gallery, image, images, image gallery, photo, photos, photo gallery, photogallery, photoset, responsive, responsive gallery, responsive image gallery, responsive wordpress photo gallery, picture, pictures, picture gallery, add pictures, album, albums, photo album, photo albums, photoalbum, picture album, picture albums, add album, media, media gallery, attachments, media uploader, thumbs, thumbnails, thumbnail gallery, masonry, masonry gallery, masonry image gallery, portfolio, image portfolio, design portfolio, justified gallery, justified image gallery, brickfolio, ajax, video, videos, video gallery, video lightbox, youtube, vimeo, foobox, lightbox, responsive lightbox, gallery lightbox, image lightbox, wordpress gallery, wordpress photo gallery, wordpress image gallery, wp gallery, wp image gallery, free gallery, best free gallery, best gallery, best gallery plugin, best responsive gallery, best image gallery plugin, best wp gallery, photography, photographer
+Tags: gallery, image gallery, photo gallery, responsive, album, media gallery, masonry gallery, portfolio, justified image gallery, video gallery, photography, photographer, retina
 Requires at least: 3.9
-Tested up to: 4.6.1
+Tested up to: 4.7
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -15,6 +15,10 @@ Foo Gallery is the most intuitive and extensible gallery management tool ever cr
 Foo Gallery allows for better image and video gallery management within WordPress. Built to be simple for users and highly flexible for developers.
 
 [View the Foo Gallery Homepage & DEMO](http://foo.gallery/)
+
+**Retina Support**
+
+Foo Gallery now comes with built-in support for higher quality thumbnails on retina-enabled displays. No more blurry thumbnails, just crisp thumbnails that look amazing on all devices.
 
 **Video Support**
 
@@ -30,6 +34,7 @@ Foo Gallery was designed to be the most developer-friendly gallery plugin availa
 
 **Features**
 
+*   Retina thumbnail support
 *   Add videos to galleries (via the [FooVideo premium extension](http://fooplugins.com/plugins/foovideo/?utm_source=foogalleryplugin&utm_medium=foogallerylink&utm_campaign=foogallery_wprepo))
 *	Albums built-in! (Activate the albums extension)
 *	Gallery custom post type
@@ -115,6 +120,10 @@ FooGallery is hosted on [GitHub](https://github.com/fooplugins/foogallery). If y
 
 == Frequently Asked Questions ==
 
+= Why are my thumbnails so blurry? =
+
+Have you enabled retina support for your galleries? Displays with retina support can show better quality thumbnails when retina support is enabled. To enable retina support, edit the gallery and locate the Retina Support metabox.
+
 = Can I add videos to my galleries? =
 
 Yes, you need to use the [FooVideo premium extension](http://fooplugins.com/plugins/foovideo/?utm_source=foogalleryplugin&utm_medium=foogallerylink&utm_campaign=foogallery_wprepo)
@@ -140,6 +149,14 @@ Hell, yes! Check out our [developer page](http://foo.gallery/developers/)
 Update now to support FooVideo and many other improvements!
 
 == Changelog ==
+
+= 1.2.17 =
+
+* New : Retina support - metabox per gallery and default settings
+* New : Attachment datasources - backend changes for how images are used in a gallery. (This will allow for new external sources in the future)
+* New : Caption color settings in Simple portfolio gallery template
+* New : Updated to latest Justified Gallery
+* Fix : Better wpthumb compatibility
 
 = 1.2.16 =
 
