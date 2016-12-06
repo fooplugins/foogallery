@@ -23,7 +23,6 @@ require_once( FOOGALLERY_PATH . 'extensions/albums/class-albums-extension.php' )
 require_once( FOOGALLERY_PATH . 'extensions/default-templates/class-default-templates-extension.php' );
 require_once( FOOGALLERY_PATH . 'extensions/nextgen-importer/class-nextgen-gallery-importer-extension.php' );
 require_once( FOOGALLERY_PATH . 'extensions/media-categories/class-media-categories-extension.php' );
-require_once( FOOGALLERY_PATH . 'extensions/sharing/class-sharing-extension.php' );
 
 //load Template Loader files
 require_once( FOOGALLERY_PATH . 'includes/public/class-foogallery-template-loader.php' );
