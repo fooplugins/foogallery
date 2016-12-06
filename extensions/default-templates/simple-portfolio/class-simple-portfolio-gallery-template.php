@@ -83,6 +83,7 @@ if ( !class_exists( 'FooGallery_Simple_Portfolio_Gallery_Template' ) ) {
 								'id'      => 'caption_position',
 								'title' => __('Caption Position', 'foogallery'),
 								'desc' => __('Where the captions are displayed in relation to the thumbnail.', 'foogallery'),
+								'section' => __( 'Caption Settings', 'foogallery' ),
 								'default' => '',
 								'type'    => 'radio',
 								'spacer'  => '<span class="spacer"></span>',
@@ -90,6 +91,22 @@ if ( !class_exists( 'FooGallery_Simple_Portfolio_Gallery_Template' ) ) {
 									'' => __( 'Below', 'foogallery' ),
 									'bf-captions-above' => __( 'Above', 'foogallery' )
 								)
+							),
+							array(
+								'id'      => 'caption_bg_color',
+								'title'   => __( 'Caption Background Color', 'foogallery' ),
+								'section' => __( 'Caption Settings', 'foogallery' ),
+								'type'    => 'colorpicker',
+								'default' => '#fff',
+								'opacity' => true
+							),
+							array(
+								'id'      => 'caption_text_color',
+								'title'   => __( 'Caption Text Color', 'foogallery' ),
+								'section' => __( 'Caption Settings', 'foogallery' ),
+								'type'    => 'colorpicker',
+								'default' => '#333',
+								'opacity' => true
 							)
 					),
 			);

@@ -28,6 +28,8 @@ class FooGallery extends stdClass {
 		$this->ID = 0;
 		$this->attachment_ids = array();
 		$this->_attachments = false;
+		$this->datasource_name = foogallery_default_datasource();
+		$this->_datasource = false;
 	}
 
 	/**
@@ -41,13 +43,29 @@ class FooGallery extends stdClass {
 		$this->name = $post->post_title;
 		$this->author = $post->post_author;
 		$this->post_status = $post->post_status;
-		$attachment_meta = get_post_meta( $this->ID, FOOGALLERY_META_ATTACHMENTS, true );
+
+		$attachment_meta = get_post_meta( $post->ID, FOOGALLERY_META_ATTACHMENTS, true );
 		$this->attachment_ids = is_array( $attachment_meta ) ? array_filter( $attachment_meta ) : array();
-		$this->gallery_template = get_post_meta( $post->ID, FOOGALLERY_META_TEMPLATE, true );
-		$this->settings = get_post_meta( $post->ID, FOOGALLERY_META_SETTINGS, true );
-		$this->custom_css = get_post_meta( $post->ID, FOOGALLERY_META_CUSTOM_CSS, true );
-		$this->sorting = get_post_meta( $post->ID, FOOGALLERY_META_SORT, true );
+
+		$this->load_meta( $post->ID );
+
 		do_action( 'foogallery_foogallery_instance_after_load', $this, $post );
+	}
+
+	/**
+	 * private meta data load function
+	 * @param $post_id int
+	 */
+	private function load_meta( $post_id ) {
+		$this->gallery_template = get_post_meta( $post_id, FOOGALLERY_META_TEMPLATE, true );
+		$this->settings = get_post_meta( $post_id, FOOGALLERY_META_SETTINGS, true );
+		$this->custom_css = get_post_meta( $post_id, FOOGALLERY_META_CUSTOM_CSS, true );
+		$this->sorting = get_post_meta( $post_id, FOOGALLERY_META_SORT, true );
+		$this->datasource_name = get_post_meta( $post_id, FOOGALLERY_META_DATASOURCE, true );
+		if ( empty( $this->datasource_name ) ) {
+			$this->datasource_name = foogallery_default_datasource();
+		}
+        $this->retina = get_post_meta( $post_id, FOOGALLERY_META_RETINA, true );
 	}
 
 	/**
@@ -99,7 +117,7 @@ class FooGallery extends stdClass {
 	 *
 	 * @param $post_id
 	 *
-	 * @return FooGallery
+	 * @return FooGallery | boolean
 	 */
 	public static function get_by_id( $post_id ) {
 		$gallery = new self();
@@ -115,7 +133,7 @@ class FooGallery extends stdClass {
 	 *
 	 * @param string $slug
 	 *
-	 * @return FooGallery
+	 * @return FooGallery | boolean
 	 */
 	public static function get_by_slug( $slug ) {
 		$gallery = new self();
@@ -149,11 +167,19 @@ class FooGallery extends stdClass {
 	}
 
 	/**
+	 * Returns the number of attachments in the current gallery
+	 * @return int
+	 */
+	public function attachment_count() {
+		return $this->datasource()->getCount();
+	}
+
+	/**
 	 * Checks if the gallery has attachments
 	 * @return bool
 	 */
 	public function has_attachments() {
-		return sizeof( $this->attachment_ids ) > 0;
+		return $this->attachment_count() > 0;
 	}
 
 	/**
@@ -185,11 +211,7 @@ class FooGallery extends stdClass {
 	 * @return string
 	 */
 	public function attachment_id_csv() {
-		if ( is_array( $this->attachment_ids ) ) {
-			return implode( ',', $this->attachment_ids );
-		}
-
-		return '';
+		return $this->datasource()->getSerializedData();
 	}
 
 	/**
@@ -200,43 +222,21 @@ class FooGallery extends stdClass {
 	public function attachments() {
 		//lazy load the attachments for performance
 		if ( $this->_attachments === false ) {
-			$this->_attachments = array();
-
-			if ( ! empty( $this->attachment_ids ) ) {
-
-				add_action( 'pre_get_posts', array( $this, 'force_gallery_ordering' ), 99 );
-
-				$attachment_query_args = apply_filters( 'foogallery_attachment_get_posts_args', array(
-					'post_type'      => 'attachment',
-					'posts_per_page' => -1,
-					'post__in'       => $this->attachment_ids,
-					'orderby'        => foogallery_sorting_get_posts_orderby_arg( $this->sorting ),
-					'order'          => foogallery_sorting_get_posts_order_arg( $this->sorting )
-				) );
-
-				$attachments = get_posts( $attachment_query_args );
-
-				remove_action( 'pre_get_posts', array( $this, 'force_gallery_ordering' ), 99 );
-
-				$this->_attachments = array_map( array( 'FooGalleryAttachment', 'get' ), $attachments );
-			}
+			$this->_attachments = $this->datasource()->getAttachments();
 		}
 
 		return $this->_attachments;
 	}
 
 	/**
+	 * @deprecated 1.3.0 This is now moved into the datasource implementation
+	 *
 	 * This forces the attachments to be fetched using the correct ordering.
 	 * Some plugins / themes override this globally for some reason, so this is a preventative measure to ensure sorting is correct
 	 * @param $query WP_Query
 	 */
 	public function force_gallery_ordering( $query ) {
-		//only care about attachments
-		if ( array_key_exists( 'post_type', $query->query ) &&
-		     'attachment' === $query->query['post_type'] ) {
-			$query->set( 'orderby', foogallery_sorting_get_posts_orderby_arg( $this->sorting ) );
-			$query->set( 'order', foogallery_sorting_get_posts_order_arg( $this->sorting ) );
-		}
+		_deprecated_function( __FUNCTION__, '1.3.0' );
 	}
 
 	/**
@@ -248,15 +248,15 @@ class FooGallery extends stdClass {
 		return foogallery_build_gallery_shortcode( $this->ID );
 	}
 
+	/**
+	 * @deprecated 1.3.0 This is now moved into the datasource implementation
+	 *
+	 * @return int|mixed|string
+	 */
 	public function find_featured_attachment_id() {
-		$attachment_id = get_post_thumbnail_id( $this->ID );
+		_deprecated_function( __FUNCTION__, '1.3.0' );
 
-		//if no featured image could be found then get the first image
-		if ( ! $attachment_id && $this->attachment_ids ) {
-			$attachment_id_values = array_values( $this->attachment_ids );
-			$attachment_id = array_shift( $attachment_id_values );
-		}
-		return $attachment_id;
+		return 0;
 	}
 
 	/**
@@ -265,24 +265,26 @@ class FooGallery extends stdClass {
 	 * @return bool|FooGalleryAttachment
 	 */
 	public function featured_attachment() {
-		$attachment_id = $this->find_featured_attachment_id();
-
-		if ( $attachment_id ) {
-			return FooGalleryAttachment::get_by_id( $attachment_id );
-		}
-
-		return false;
+		return $this->datasource()->getFeaturedAttachment();
 	}
 
+	/**
+	 * @deprecated 1.3.0 This is now moved into the datasource implementation
+	 *
+	 * @param string $size
+	 * @param bool   $icon
+	 *
+	 * @return bool
+	 */
 	public function featured_image_src( $size = 'thumbnail', $icon = false ) {
-		$attachment_id = $this->find_featured_attachment_id();
-		if ( $attachment_id && $image_details = wp_get_attachment_image_src( $attachment_id, $size, $icon ) ) {
-			return reset( $image_details );
-		}
+		_deprecated_function( __FUNCTION__, '1.3.0' );
+
 		return false;
 	}
 
 	/**
+	 * @deprecated 1.3.0 This is now moved into the datasource implementation
+	 *
 	 * Get an HTML img element representing the featured image for the gallery
 	 *
 	 * @param string $size Optional, default is 'thumbnail'.
@@ -291,10 +293,8 @@ class FooGallery extends stdClass {
 	 * @return string HTML img element or empty string on failure.
 	 */
 	public function featured_image_html( $size = 'thumbnail', $icon = false ) {
-		$attachment_id = $this->find_featured_attachment_id();
-		if ( $attachment_id && $thumb = @wp_get_attachment_image( $attachment_id, $size, $icon ) ) {
-			return $thumb;
-		}
+		_deprecated_function( __FUNCTION__, '1.3.0' );
+
 		return '';
 	}
 
@@ -303,7 +303,7 @@ class FooGallery extends stdClass {
 		$singular_text  = foogallery_get_setting( 'language_images_count_single_text', __( '1 image', 'foogallery' ) );
 		$plural_text    = foogallery_get_setting( 'language_images_count_plural_text', __( '%s images', 'foogallery' ) );
 
-		$count = sizeof( $this->attachment_ids );
+		$count = $this->attachment_count();
 
 		switch ( $count ) {
 			case 0:
@@ -376,18 +376,13 @@ class FooGallery extends stdClass {
 
 		if ( false != $gallery_template_details ) {
 			if ( array_key_exists( 'fields', $gallery_template_details ) ) {
-
 				foreach ( $gallery_template_details['fields'] as $field ) {
-
 					if ( $field_type == $field['type'] ) {
 						return true;
 					}
-
 				}
-
 			}
 		}
-
 		return false;
 	}
 
@@ -397,9 +392,23 @@ class FooGallery extends stdClass {
 	public function load_default_settings_if_new() {
 		if ( $this->is_new() ) {
 			$default_gallery_id = foogallery_get_setting( 'default_gallery_settings' );
-			$this->gallery_template = get_post_meta( $default_gallery_id, FOOGALLERY_META_TEMPLATE, true );
-			$this->settings = get_post_meta( $default_gallery_id, FOOGALLERY_META_SETTINGS, true );
-			$this->sorting = foogallery_get_setting( 'gallery_sorting' );
+			//loads all meta data from the default gallery
+			$this->load_meta( $default_gallery_id );
 		}
+	}
+
+	/**
+	 * Returns the current gallery datasource object
+	 *
+	 * @returns IFooGalleryDatasource
+	 */
+	public function datasource() {
+		//lazy load the datasource only when needed
+		if ( $this->_datasource === false ) {
+			$this->_datasource = foogallery_instantiate_datasource( $this->datasource_name );
+			$this->_datasource->setGallery( $this );
+		}
+
+		return $this->_datasource;
 	}
 }

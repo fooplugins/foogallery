@@ -115,7 +115,8 @@ function foogallery_get_default( $key, $default = false ) {
 		'lightbox'                   => 'none',
 		'thumb_jpeg_quality'         => '80',
 		'thumb_resize_animations'    => true,
-		'gallery_sorting'            => ''
+		'gallery_sorting'            => '',
+		'datasource'				 => 'media_library'
 	);
 
 	// A handy filter to override the defaults
@@ -607,6 +608,7 @@ function foogallery_output_thumbnail_generation_results() {
         } else {
             echo '<span style="color:#c00">' . __('Thumbnail generation test failed!', 'foogallery') . '</span>';
             var_dump( $results['error'] );
+			var_dump( $results['file_info'] );
         }
 	}
 	catch (Exception $e) {
@@ -621,4 +623,142 @@ function foogallery_output_thumbnail_generation_results() {
  */
 function foogallery_test_thumb_url() {
     return apply_filters( 'foogallery_test_thumb_url', FOOGALLERY_URL . 'assets/test_thumb_1.jpg' );
+}
+
+/**
+ * Return all the gallery datasources used within FooGallery
+ *
+ * @return array
+ */
+function foogallery_gallery_datasources() {
+	$default_datasource = foogallery_default_datasource();
+
+	$datasources[$default_datasource] = 'FooGalleryDatasource_MediaLibrary';
+
+	return apply_filters( 'foogallery_gallery_datasources', $datasources );
+}
+
+/**
+ * Returns the default gallery datasource
+ *
+ * @return string
+ */
+function foogallery_default_datasource() {
+	return foogallery_get_default( 'datasource', 'media_library' );
+}
+
+/**
+ * Instantiates a FooGallery datasource based on a datasource name
+ *
+ * @param $datasource_name string
+ *
+ * @return IFooGalleryDatasource
+ */
+function foogallery_instantiate_datasource( $datasource_name ) {
+	$datasources = foogallery_gallery_datasources();
+	if ( array_key_exists( $datasource_name, $datasources ) ) {
+		return new $datasources[$datasource_name];
+	}
+
+	return new FooGalleryDatasource_MediaLibrary();
+}
+
+/**
+ * Returns the src to the built-in image placeholder
+ * @return string
+ */
+function foogallery_image_placeholder_src() {
+	return apply_filters( 'foogallery_image_placeholder_src', FOOGALLERY_URL . 'assets/image-placeholder.png' );
+}
+
+/**
+ * Returns the image html for the built-in image placeholder
+ *
+ * @param array $args
+ *
+ * @return string
+ */
+function foogallery_image_placeholder_html( $args ) {
+	if ( !isset( $args ) ) {
+		$args = array(
+			'width' => 150,
+			'height' => 150
+		);
+	}
+
+	$args['src'] = foogallery_image_placeholder_src();
+	$args = array_map( 'esc_attr', $args );
+	$html = '<img ';
+	foreach ( $args as $name => $value ) {
+		$html .= " $name=" . '"' . $value . '"';
+	}
+	$html .= ' />';
+	return apply_filters( 'foogallery_image_placeholder_html', $html, $args );
+}
+
+/**
+ * Returns the thumbnail html for the featured attachment for a gallery.
+ * If no featured attachment can be found, then a placeholder image src is returned instead
+ *
+ * @param FooGallery $gallery
+ * @param array $args
+ *
+ * @return string
+ */
+function foogallery_find_featured_attachment_thumbnail_html( $gallery, $args = null ){
+	if ( !isset( $gallery ) ) return '';
+
+	if ( !isset( $args ) ) {
+		$args = array(
+			'width' => 150,
+			'height' => 150
+		);
+	}
+
+	$featuredAttachment = $gallery->featured_attachment();
+	if ( $featuredAttachment ) {
+		return $featuredAttachment->html_img( $args );
+	} else {
+		//if we have no featured attachment, then use the built-in image placeholder
+		return foogallery_image_placeholder_html( $args );
+	}
+}
+
+/**
+ * Returns the thumbnail src for the featured attachment for a gallery.
+ * If no featured attachment can be found, then a placeholder image src is returned instead
+ *
+ * @param FooGallery $gallery
+ * @param array $args
+ *
+ * @return string
+ */
+function foogallery_find_featured_attachment_thumbnail_src( $gallery, $args = null ){
+	if ( !isset( $gallery ) ) return '';
+
+	if ( !isset( $args ) ) {
+		$args = array(
+			'width' => 150,
+			'height' => 150
+		);
+	}
+
+	$featuredAttachment = $gallery->featured_attachment();
+	if ( $featuredAttachment ) {
+		return $featuredAttachment->html_img_src( $args );
+	} else {
+		//if we have no featured attachment, then use the built-in image placeholder
+		return foogallery_image_placeholder_src();
+	}
+}
+
+/**
+ * Returns the available retina options that can be chosen
+ */
+function foogallery_retina_options() {
+    return apply_filters( 'foogallery_retina_options', array(
+        '2x' => __('2x', 'foogallery'),
+        '3x' => __('3x', 'foogallery'),
+        '4x' => __('4x', 'foogallery')
+    ) );
 }

@@ -38,7 +38,7 @@ $small_screen = $width + $gutter_width + $gutter_width;
 	}
 	<?php } ?>
 </style>
-<div data-masonry-options='{ "itemSelector" : ".item", "percentPosition" : "true", "columnWidth" : "#foogallery-gallery-<?php echo $current_foogallery->ID; ?> .masonry-item-width", "gutter" : "#foogallery-gallery-<?php echo $current_foogallery->ID; ?> .masonry-gutter-width", "isFitWidth" : <?php echo $center_align ? 'true' : 'false'; ?> }' id="foogallery-gallery-<?php echo $current_foogallery->ID; ?>" class="<?php foogallery_build_class_attribute_render_safe( $current_foogallery, 'foogallery-lightbox-' . $lightbox, $hover_zoom_class, 'masonry-layout-' . $layout, $gutter_percent, 'foogallery-masonry-loading' ); ?>">
+<div data-masonry-options='{ "itemSelector" : ".item", <?php echo 'fixed' === $layout ? '' : '"percentPosition": "true",'; ?> "columnWidth" : "#foogallery-gallery-<?php echo $current_foogallery->ID; ?> .masonry-item-width", "gutter" : "#foogallery-gallery-<?php echo $current_foogallery->ID; ?> .masonry-gutter-width", "isFitWidth" : <?php echo ( $center_align && 'fixed' === $layout ) ? 'true' : 'false'; ?> }' id="foogallery-gallery-<?php echo $current_foogallery->ID; ?>" class="<?php foogallery_build_class_attribute_render_safe( $current_foogallery, 'foogallery-lightbox-' . $lightbox, $hover_zoom_class, 'masonry-layout-' . $layout, $gutter_percent, 'foogallery-masonry-loading' ); ?>">
 	<div class="masonry-item-width"></div>
 	<div class="masonry-gutter-width"></div>
 <?php foreach ( $current_foogallery->attachments() as $attachment ) {

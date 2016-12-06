@@ -10,6 +10,7 @@ require_once( FOOGALLERY_PATH . 'includes/class-thumbnails.php' );
 require_once( FOOGALLERY_PATH . 'includes/class-extensions-api.php' );
 require_once( FOOGALLERY_PATH . 'includes/class-extensions-loader.php' );
 require_once( FOOGALLERY_PATH . 'includes/class-attachment-filters.php' );
+require_once( FOOGALLERY_PATH . 'includes/class-retina.php' );
 
 //check for WPThumb, include.
 if ( ! class_exists( 'WP_Thumb' ) ) {
@@ -17,6 +18,8 @@ if ( ! class_exists( 'WP_Thumb' ) ) {
 	//do not let WPThumb override build-in WordPress functions like the_post_thumbnail
 	remove_filter( 'image_downsize', 'wpthumb_post_image', 99 );
 }
+require_once( FOOGALLERY_PATH . 'includes/class-wpthumb-enhancements.php' );
+
 
 //include bundled extensions
 require_once( FOOGALLERY_PATH . 'extensions/albums/class-albums-extension.php' );
@@ -31,6 +34,10 @@ require_once( FOOGALLERY_PATH . 'includes/public/class-foogallery-template-loade
 require_once( FOOGALLERY_PATH . 'includes/class-polylang-compatibility.php' );
 
 require_once( FOOGALLERY_PATH . 'includes/class-version-check.php' );
+
+//Datasource includes
+require_once( FOOGALLERY_PATH . 'includes/interface-foogallery-datasource.php' );
+require_once( FOOGALLERY_PATH . 'includes/class-foogallery-datasource-media_library.php' );
 
 if ( is_admin() ) {
 

@@ -13,6 +13,19 @@ $args['image_attributes'] = array(
 $lightbox = foogallery_gallery_template_setting( 'lightbox', 'unknown' );
 $gutter = foogallery_gallery_template_setting( 'gutter', 40 );
 $caption_position = foogallery_gallery_template_setting( 'caption_position', '' );
+
+$caption_bg_color = foogallery_gallery_template_setting( 'caption_bg_color', '#ffffff' );
+$caption_text_color = foogallery_gallery_template_setting( 'caption_text_color', '#000000' );
+if ( !empty( $caption_bg_color ) || !empty( $caption_text_color ) ) {
+	echo '<style type="text/css">';
+	if ( !empty( $caption_bg_color ) ) {
+		echo '#foogallery-gallery-' . $current_foogallery->ID . '.foogallery-simple_portfolio .bf-item { background: ' . $caption_bg_color . '; }';
+	}
+	if ( !empty( $caption_text_color ) ) {
+		echo '#foogallery-gallery-' . $current_foogallery->ID . '.foogallery-simple_portfolio .bf-item { color: ' . $caption_text_color . '; }';
+	}
+	echo '</style>';
+}
 ?>
 <div data-brickfolio-gutter="<?php echo $gutter; ?>" id="foogallery-gallery-<?php echo $current_foogallery->ID; ?>" class="<?php foogallery_build_class_attribute_render_safe( $current_foogallery, 'foogallery-lightbox-' . $lightbox, 'brickfolio', $caption_position ); ?>">
 <?php

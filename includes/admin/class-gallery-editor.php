@@ -278,7 +278,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Editor' ) ) {
 						<div class="media-frame wp-core-ui hide-menu hide-router foogallery-meta-wrap">
 							<div class="media-frame-title">
 								<h1>
-									<?php _e( 'Choose A Gallery To Insert', 'foogallery' ); ?>
+									<?php _e( 'Choose a Gallery to Insert', 'foogallery' ); ?>
 									<div class="foogallery-modal-reload-container">
 										<div class="spinner"></div>
 										<a class="foogallery-modal-reload button" href="#"><span class="dashicons dashicons-update"></span> <?php _e( 'Reload', 'foogallery' ); ?></a>
@@ -288,7 +288,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Editor' ) ) {
 							<div class="media-frame-content">
 								<div class="attachments-browser">
 									<ul class="foogallery-attachment-container attachments" style="padding-left: 8px; top: 1em;">
-										<div class="foogallery-modal-loading"><?php _e( 'Loading galleries. Please wait...', 'foogallery' ); ?></div>
+										<div class="foogallery-modal-loading"><?php _e( 'Loading galleries...', 'foogallery' ); ?></div>
 									</ul>
 									<!-- end .foogallery-meta -->
 									<div class="media-sidebar">
@@ -350,7 +350,11 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Editor' ) ) {
 			ob_start();
 
 			foreach ( $galleries as $gallery ) {
-				$img_src = $gallery->featured_image_src( array(200, 200) );
+				$img_src = foogallery_find_featured_attachment_thumbnail_src( $gallery, array(
+					'width' => get_option( 'thumbnail_size_w' ),
+					'height' => get_option( 'thumbnail_size_h' ),
+					'force_use_original_thumb' => true
+				) );
 				$images = $gallery->image_count();
 				?>
 				<li class="foogallery-pile">
@@ -395,7 +399,11 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Editor' ) ) {
 
 			$gallery = FooGallery::get_by_id( $id );
 
-			$image_src = $gallery->featured_image_src( 'thumbnail', true );
+			$image_src = foogallery_find_featured_attachment_thumbnail_src( $gallery, array(
+				'width' => get_option( 'thumbnail_size_w' ),
+				'height' => get_option( 'thumbnail_size_h' ),
+				'force_use_original_thumb' => true
+			) );
 
 			$json_array = array(
 				'id'    => $id,

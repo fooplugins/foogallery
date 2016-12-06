@@ -208,7 +208,7 @@ if ( ! class_exists( 'FooGallery_Admin_Album_MetaBoxes' ) ) {
 				<ul class="foogallery-album-gallery-list">
 					<?php
 					foreach ( $galleries as $gallery ) {
-						$img_src  = $gallery->featured_image_src( array( 150, 150 ) );
+						$img_src  = foogallery_find_featured_attachment_thumbnail_src( $gallery );
 						$images   = $gallery->image_count();
 						$selected = $album->includes_gallery( $gallery->ID ) ? ' selected' : '';
 						$title = $gallery->safe_name();
