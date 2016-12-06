@@ -122,9 +122,18 @@ jQuery(document).ready(function($) {
             var $button = $(this),
                 $container = $('#foogallery_apply_retina_support_container'),
                 $spinner = $('#foogallery_apply_retina_support_spinner'),
-                data = 'action=foogallery_thumb_generation_test' +
+                data = 'action=foogallery_apply_retina_defaults' +
                     '&_wpnonce=' + $button.data('nonce') +
                     '&_wp_http_referer=' + encodeURIComponent($('input[name="_wp_http_referer"]').val());
+
+            var selected = [];
+            $( $button.data('inputs') ).each(function() {
+                if ($(this).is(":checked")) {
+                    selected.push($(this).attr('name'));
+                }
+            });
+
+            data += '&defaults=' + selected;
 
             $spinner.addClass('is-active');
             $button.prop('disabled', true);
