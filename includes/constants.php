@@ -12,6 +12,7 @@ define( 'FOOGALLERY_META_SORT', 'foogallery_sort' );
 define( 'FOOGALLERY_META_DATASOURCE', 'foogallery_datasource' );
 define( 'FOOGALLERY_META_POST_USAGE', '_foogallery' );
 define( 'FOOGALLERY_META_POST_USAGE_CSS', '_foogallery_css' );
+define( 'FOOGALLERY_META_RETINA', 'foogallery_retina' );
 
 define( 'FOOGALLERY_ADMIN_MENU_PARENT_SLUG', 'edit.php?post_type=foogallery' );
 define( 'FOOGALLERY_FOOBOX_FREE_EXTENSION_SLUG', 'foobox-image-lightbox' );

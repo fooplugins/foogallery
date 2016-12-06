@@ -10,6 +10,7 @@ require_once( FOOGALLERY_PATH . 'includes/class-thumbnails.php' );
 require_once( FOOGALLERY_PATH . 'includes/class-extensions-api.php' );
 require_once( FOOGALLERY_PATH . 'includes/class-extensions-loader.php' );
 require_once( FOOGALLERY_PATH . 'includes/class-attachment-filters.php' );
+require_once( FOOGALLERY_PATH . 'includes/class-retina.php' );
 
 //check for WPThumb, include.
 if ( ! class_exists( 'WP_Thumb' ) ) {

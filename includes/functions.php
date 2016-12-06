@@ -728,7 +728,7 @@ function foogallery_find_featured_attachment_thumbnail_html( $gallery, $args = n
  * Returns the thumbnail src for the featured attachment for a gallery.
  * If no featured attachment can be found, then a placeholder image src is returned instead
  *
-*@param FooGallery $gallery
+ * @param FooGallery $gallery
  * @param array $args
  *
  * @return string
@@ -750,4 +750,15 @@ function foogallery_find_featured_attachment_thumbnail_src( $gallery, $args = nu
 		//if we have no featured attachment, then use the built-in image placeholder
 		return foogallery_image_placeholder_src();
 	}
+}
+
+/**
+ * Returns the available retina options that can be chosen
+ */
+function foogallery_retina_options() {
+    return apply_filters( 'foogallery_retina_options', array(
+        '2x' => __('2x', 'foogallery'),
+        '3x' => __('3x', 'foogallery'),
+        '4x' => __('4x', 'foogallery')
+    ) );
 }
