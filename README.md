@@ -6,7 +6,7 @@
 
 **Donate link:** http://fooplugins.com
 
-**Tags:** gallery, galleries, wordpress gallery, add gallery, image, images, image gallery, photo, photos, photo gallery, photogallery, photoset, responsive, responsive gallery, responsive image gallery, responsive wordpress photo gallery, picture, pictures, picture gallery, add pictures, album, albums, photo album, photo albums, photoalbum, picture album, picture albums, add album, media, media gallery, attachments, media uploader, thumbs, thumbnails, thumbnail gallery, masonry, masonry gallery, masonry image gallery, portfolio, image portfolio, design portfolio, justified gallery, justified image gallery, brickfolio, ajax, video, videos, video gallery, video lightbox, youtube, vimeo, foobox, lightbox, responsive lightbox, gallery lightbox, image lightbox, wordpress gallery, wordpress photo gallery, wordpress image gallery, wp gallery, wp image gallery, free gallery, best free gallery, best gallery, best gallery plugin, best responsive gallery, best image gallery plugin, best wp gallery, photography, photographer
+**Tags:** gallery, image gallery, photo gallery, responsive, album, media gallery, masonry gallery, portfolio, justified image gallery, video gallery, photography, photographer, retina
 
 **Requires at least:** 3.9
 
@@ -156,6 +156,10 @@ Hell, yes! Check out our [developer page](http://foo.gallery/developers/)
 Update now to support FooVideo and many other improvements!
 
 ## Changelog ##
+
+### 1.2.18 ###
+
+* Fix : Handle no settings in retina metabox
 
 ### 1.2.17 ###
 
