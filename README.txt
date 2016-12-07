@@ -150,6 +150,10 @@ Update now to support FooVideo and many other improvements!
 
 == Changelog ==
 
+= 1.2.18 =
+
+* Fix : Handle no settings in retina metabox
+
 = 1.2.17 =
 
 * New : Retina support - metabox per gallery and default settings
