@@ -472,7 +472,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 			$gallery = $this->get_gallery( $post );
 			$retina_options = foogallery_retina_options();
 			if ( empty( $gallery->retina ) ) {
-				$gallery->retina = foogallery_get_setting( 'default_retina_support' );
+				$gallery->retina = foogallery_get_setting( 'default_retina_support', array() );
 			}
 			?>
 			<p>
