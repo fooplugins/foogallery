@@ -169,7 +169,7 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 			$settings[] = array(
 					'id'      => 'use_original_thumbs',
 					'title'   => __( 'Use Original Thumbnails', 'foogallery' ),
-					'desc'    => __( 'Allow for the original thumbnails to be used when possible. This can be useful if your thumbs are animated gifs.', 'foogallery' ),
+					'desc'    => __( 'Allow for the original thumbnails to be used when possible. This can be useful if your thumbs are animated gifs.<br/>PLEASE NOTE : this will only work if your gallery thumbnail sizes are identical to your thumbnail sizes under Settings -> Media.', 'foogallery' ),
 					'type'    => 'checkbox',
 					'tab'     => 'thumb'
 			);
