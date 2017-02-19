@@ -27,7 +27,10 @@ if ( ! class_exists( 'class-foogallery-animated-gif-support.php' ) ) {
 			$filetype = wp_check_filetype( $original_image_src );
 
 			if ( is_array( $filetype ) && array_key_exists( 'ext', $filetype ) && 'gif' === $filetype['ext'] ) {
-				$args['force_use_original_image'] = true;
+
+				if ( 'on' === foogallery_get_setting( 'animated_gif_use_original_image' ) ) {
+					$args['force_use_original_image'] = true;
+				}
 			}
 
 			return $args;

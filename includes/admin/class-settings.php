@@ -183,6 +183,14 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 			);
 
 			$settings[] = array(
+				'id'      => 'animated_gif_use_original_image',
+				'title'   => __( 'Show Animated Thumbnails', 'foogallery' ),
+				'desc'    => __( 'If animated GIFs are used, then show the original GIF as the thumbnail.', 'foogallery' ),
+				'type'    => 'checkbox',
+				'tab'     => 'thumb'
+			);
+
+			$settings[] = array(
 				'id'      => 'thumb_generation_test',
 				'title'   => __( 'Thumbnail Generation Test', 'foogallery' ),
 				'desc'    => sprintf( __( 'Test to see if %s can generate the thumbnails it needs.', 'foogallery' ), foogallery_plugin_name() ),
