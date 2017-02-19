@@ -20,7 +20,6 @@ if ( ! class_exists( 'WP_Thumb' ) ) {
 }
 require_once( FOOGALLERY_PATH . 'includes/class-wpthumb-enhancements.php' );
 
-
 //include bundled extensions
 require_once( FOOGALLERY_PATH . 'extensions/albums/class-albums-extension.php' );
 require_once( FOOGALLERY_PATH . 'extensions/default-templates/class-default-templates-extension.php' );
@@ -34,6 +33,8 @@ require_once( FOOGALLERY_PATH . 'includes/public/class-foogallery-template-loade
 require_once( FOOGALLERY_PATH . 'includes/class-polylang-compatibility.php' );
 
 require_once( FOOGALLERY_PATH . 'includes/class-version-check.php' );
+
+require_once( FOOGALLERY_PATH . 'includes/class-foogallery-animated-gif-support.php' );
 
 //Datasource includes
 require_once( FOOGALLERY_PATH . 'includes/interface-foogallery-datasource.php' );
