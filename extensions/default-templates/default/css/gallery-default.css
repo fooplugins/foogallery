@@ -184,6 +184,43 @@
 	background:rgba(0,0,0, 0.5) url('../../shared/img/eye.png') no-repeat center center;
 }
 
+/* @2x Images (Pixel Ratio of 1.25+) */
+@media only screen and (-o-min-device-pixel-ratio: 5/4),
+only screen and (-webkit-min-device-pixel-ratio: 1.25),
+only screen and (min-device-pixel-ratio: 1.25),
+only screen and (min-resolution: 1.25dppx) {
+
+	.foogallery-default.hover-effect-zoom a:hover:before {
+		background-image: url('../../shared/img/zoom@2x.png');
+		background-size: 32px 32px;
+	}
+
+	.foogallery-default.hover-effect-zoom2 a:hover:before {
+		background-image: url('../../shared/img/zoom2@2x.png');
+		background-size: 32px 32px;
+	}
+
+	.foogallery-default.hover-effect-zoom3 a:hover:before {
+		background-image: url('../../shared/img/zoom3@2x.png');
+		background-size: 32px 32px;
+	}
+
+	.foogallery-default.hover-effect-plus a:hover:before{
+		background-image: url('../../shared/img/plus@2x.png');
+		background-size: 32px 32px;
+	}
+
+	.foogallery-default.hover-effect-circle-plus a:hover:before {
+		background-image: url('../../shared/img/circle-plus@2x.png');
+		background-size: 32px 32px;
+	}
+
+	.foogallery-default.hover-effect-eye a:hover:before {
+		background-image: url('../../shared/img/eye@2x.png');
+		background-size: 32px 32px;
+	}
+}
+
 .foogallery-default.hover-effect-tint a:hover:before {
 	background-image: none !important;
 	background-color:rgba(0,0,0, 0.5);
