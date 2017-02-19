@@ -169,7 +169,7 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 			$settings[] = array(
 					'id'      => 'use_original_thumbs',
 					'title'   => __( 'Use Original Thumbnails', 'foogallery' ),
-					'desc'    => __( 'Allow for the original thumbnails to be used when possible. This can be useful if your thumbs are animated gifs.', 'foogallery' ),
+					'desc'    => __( 'Allow for the original thumbnails to be used when possible. This can be useful if your thumbs are animated gifs.<br/>PLEASE NOTE : this will only work if your gallery thumbnail sizes are identical to your thumbnail sizes under Settings -> Media.', 'foogallery' ),
 					'type'    => 'checkbox',
 					'tab'     => 'thumb'
 			);
@@ -178,6 +178,14 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 				'id'      => 'thumb_resize_animations',
 				'title'   => __( 'Resize Animated GIFs', 'foogallery' ),
 				'desc'    => __( 'Should animated gifs be resized or not. If enabled, only the first frame is used in the resize.', 'foogallery' ),
+				'type'    => 'checkbox',
+				'tab'     => 'thumb'
+			);
+
+			$settings[] = array(
+				'id'      => 'animated_gif_use_original_image',
+				'title'   => __( 'Show Animated Thumbnails', 'foogallery' ),
+				'desc'    => __( 'If animated GIFs are used, then show the original GIF as the thumbnail.', 'foogallery' ),
 				'type'    => 'checkbox',
 				'tab'     => 'thumb'
 			);

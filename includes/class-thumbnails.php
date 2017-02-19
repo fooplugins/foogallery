@@ -26,11 +26,23 @@ if ( !class_exists( 'FooGallery_Thumbnails' ) ) {
 
 			$args = wp_parse_args( $args, $arg_defaults );
 
+			//allow for plugins to change the thumbnail creation args
+			$args = apply_filters( 'foogallery_thumbnail_resize_args', $args, $original_image_src, $thumbnail_object );
+
 			$width  = (int)$args['width'];
 			$height = (int)$args['height'];
 			$crop   = (bool)$args['crop'];
 
-			//we can force the use of the original WP icon by passing through args individually
+			//we can force the use of the originally uploaded full-size image
+			$force_use_original_image = isset( $args['force_use_original_image'] ) && true === $args['force_use_original_image'];
+
+			if ( $force_use_original_image ) {
+				$fullsize = wp_get_attachment_image_src( $thumbnail_object->ID, 'fullsize' );
+
+				return $fullsize[0];
+			}
+
+			//we can force the use of the original WP icon or WP-generated thumb by passing through args individually
 			$force_use_original_thumb = isset( $args['force_use_original_thumb'] ) && true === $args['force_use_original_thumb'];
 
 			if ( $force_use_original_thumb ) {
