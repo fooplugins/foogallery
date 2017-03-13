@@ -26,8 +26,27 @@ if ( !class_exists( 'FooGallery_Retina' ) ) {
                 if ( $current_foogallery->retina ) {
                     $srcset = array();
 
-                    $original_width = intval( $args['width'] );
-                    $original_height = intval( $args['height'] );
+					//get the original thumb dimensions
+					$original_thumb_width = array_key_exists( 'width', $args ) ? intval( $args['width'] ) : 0;
+					$original_thumb_height = array_key_exists( 'height', $args ) ? intval( $args['height'] ) : 0;
+
+					//get the original full size image dimensions
+					$original_width = $attachment->width;
+					$original_height = $attachment->height;
+
+					//if we do not have a width, we need to calculate one
+					if ( 0 === $original_thumb_width ) {
+						//find closest ratio multiple to image size
+						if( $original_width > $original_height ) {
+							//landscape
+							$ratio = $original_width / $original_height;
+							$original_thumb_width = intval( $original_thumb_height * $ratio );
+						}else{
+							//portrait
+							$ratio = $original_height / $original_width;
+							$original_thumb_width = intval( $original_thumb_height / $ratio );
+						}
+					}
 
                     foreach ( foogallery_retina_options() as $pixel_density ) {
                         $pixel_density_supported = array_key_exists( $pixel_density, $current_foogallery->retina ) ? ('true' === $current_foogallery->retina[$pixel_density]) : false;
@@ -36,12 +55,12 @@ if ( !class_exists( 'FooGallery_Retina' ) ) {
                             $pixel_density_int = intval( str_replace( 'x', '', $pixel_density ) );
 
                             //apply scaling to the width and height attributes
-                            $retina_width  = $original_width * $pixel_density_int;
-                            $retina_height = $original_height * $pixel_density_int;
+                            $retina_width  = $original_thumb_width * $pixel_density_int;
+                            $retina_height = $original_thumb_height * $pixel_density_int;
 
                             //if the new dimensions are smaller than the full size image dimensions then allow the retina thumb
-                            if ( $retina_width < $attachment->width &&
-                                $retina_height < $attachment->height ) {
+                            if ( $retina_width < $original_width &&
+                                $retina_height < $original_height ) {
                                 $args['width'] = $retina_width;
                                 $args['height'] = $retina_height;
 
