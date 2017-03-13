@@ -71,6 +71,11 @@ if ( !class_exists( 'FooGallery_Thumbnails' ) ) {
 				}
 			}
 
+			//remove invalid resize args
+			if ( array_key_exists( 'height', $args ) && 0 === $args['height'] ) {
+				unset( $args['height'] );
+			}
+
 			//save the generated thumb url to a global so that we can use it later if needed
             $foogallery_last_generated_thumb_url = wpthumb( $original_image_src, $args );
 
