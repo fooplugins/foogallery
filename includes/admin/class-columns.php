@@ -23,6 +23,7 @@ if ( ! class_exists( 'FooGallery_Admin_Columns' ) ) {
 						FOOGALLERY_CPT_GALLERY . '_template' => __( 'Template', 'foogallery' ),
 						FOOGALLERY_CPT_GALLERY . '_count' => __( 'Media', 'foogallery' ),
 						FOOGALLERY_CPT_GALLERY . '_shortcode' => __( 'Shortcode', 'foogallery' ),
+						FOOGALLERY_CPT_GALLERY . '_usage' => __( 'Usage', 'foogallery' ),
 					);
 		}
 
@@ -56,6 +57,19 @@ if ( ! class_exists( 'FooGallery_Admin_Columns' ) ) {
 					) );
 					if ( $html_img ) {
 						echo $html_img;
+					}
+					break;
+				case FOOGALLERY_CPT_GALLERY . '_usage':
+					$gallery = FooGallery::get( $post );
+					$posts = $gallery->find_usages();
+					if ( $posts && count( $posts ) > 0 ) {
+						echo '<ul class="ul-disc">';
+						foreach ( $posts as $post ) {
+							echo edit_post_link( $post->post_title, '<li>', '</li>', $post->ID );
+						}
+						echo '</ul>';
+					} else {
+						_e( 'Not used!', 'foogallery' );
 					}
 					break;
 			}
