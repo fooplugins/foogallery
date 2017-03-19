@@ -685,9 +685,10 @@ if ( ! class_exists( 'FooGallery_Extensions_API' ) ) {
 				$upgrader->install( $download_link );
 
 				if ( 'process_failed' === $skin->feedback ) {
+					$error_message = is_wp_error( $skin->result ) ? $skin->result->get_error_message() : __( 'Unknown!', 'foogallery' );
 					//we had an error along the way
 					return apply_filters( 'foogallery_extensions_download_failure-' . $slug, array(
-						'message' => sprintf( __( 'The extension %s could NOT be downloaded!', 'foogallery' ), "<strong>{$extension['title']}</strong>" ),
+						'message' => sprintf( __( 'The extension %s could NOT be downloaded! Error : %s', 'foogallery' ), "<strong>{$extension['title']}</strong>", $error_message ),
 						'type' => 'error'
 					) );
 				}
