@@ -510,7 +510,7 @@ if ( ! class_exists( 'FooGallery_Extensions_API' ) ) {
 		public function deactivate( $slug, $deactivate_wordpress_plugin = true, $error_loading = false ) {
 			$extension = $this->get_extension( $slug );
 			if ( $extension ) {
-				if ( $deactivate_wordpress_plugin && 'bundled' === foo_safe_get( $extension, 'source', false ) ) {
+				if ( $deactivate_wordpress_plugin && 'bundled' !== foo_safe_get( $extension, 'source', false ) ) {
 					$plugin = $this->find_wordpress_plugin( $extension );
 					if ( $plugin ) {
 						$failure = deactivate_plugins( $plugin['file'], true, false );
