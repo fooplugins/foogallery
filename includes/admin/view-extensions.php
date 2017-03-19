@@ -2,7 +2,7 @@
 $instance = FooGallery_Plugin::get_instance();
 $api      = new FooGallery_Extensions_API();
 
-$extensions = $api->get_all();
+$extensions = $api->get_all_for_view();
 $has_errors = $api->has_extension_loading_errors();
 $categories = $api->get_all_categories();
 

@@ -300,6 +300,40 @@ if ( ! class_exists( 'FooGallery_Extensions_API' ) ) {
 			return $this->extensions;
 		}
 
+
+		/**
+		 * return a list of all extensions for the extension view.
+		 * This list could be changed based on other plugin
+		 */
+		function get_all_for_view() {
+			$extensions = $this->get_all();
+
+			//loop through all active extensions and remove any other extensions if required based on the 'remove_if_active' property
+			$active_extensions = $this->get_active_extensions();
+
+			foreach ( $active_extensions as $active_extension => $active_extension_class ) {
+				$extension = $this->get_extension( $active_extension );
+
+				if ( isset( $extension['remove_if_active'] ) ) {
+
+					foreach ( $extension['remove_if_active'] as $extension_slug_to_remove ) {
+
+						$extension_to_remove = $this->get_extension( $extension_slug_to_remove );
+
+						if ( $extension_to_remove ) {
+							$extension_to_remove_key = array_search( $extension_to_remove, $extensions );
+							if (false !== $extension_to_remove_key) {
+								unset( $extensions[$extension_to_remove_key] );
+							}
+						}
+					}
+				}
+			}
+
+			$extensions = apply_filters( 'foogallery_extensions_for_view', $extensions );
+
+			return $extensions;
+		}
 		/**
 		 * Get all loaded extensions slugs
 		 * @return array
