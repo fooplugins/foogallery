@@ -13,8 +13,10 @@
 		});
 	};
 
-	FOOGALLERY.showSpinner = function() {
-		$('.spinner').show();
+	FOOGALLERY.showSpinner = function($btn) {
+		var $container = $btn.parents('.extension:first');
+		$container.addClass('updating');
+		$container.find('.banner:first').html($btn.data('banner-text'));
 	};
 
 	//show the spinner when performing actions
@@ -37,7 +39,7 @@
 
 			if (confirmMsg) {
 				if (confirm(confirmMsg)) {
-					FOOGALLERY.showSpinner();
+					FOOGALLERY.showSpinner($btn);
 					$btn.addClass('disabled');
 				} else {
 					e.preventDefault();
@@ -45,7 +47,7 @@
 				}
 			} else {
 				//otherwise just show the spinner while redirecting
-				FOOGALLERY.showSpinner();
+				FOOGALLERY.showSpinner($btn);
 				$btn.addClass('disabled');
 			}
 		});

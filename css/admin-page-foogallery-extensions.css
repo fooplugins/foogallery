@@ -15,21 +15,38 @@
 .extension-search-box {
 	display: inline-block;
 	margin-left: 20px;
+	float: left;
 }
 
 	.extension-search-box #extensions-search-input {
-		width: 10em;
+		position: relative;
+		top: -4px;
+		margin: 0;
+		width: 280px;
+		font-size: 16px;
+		font-weight: 300;
+		line-height: 1.4em;
 	}
 
 .extension-reload {
+	float: left;
 	display: inline-block;
 	margin-left: 20px;
+	vertical-align: middle;
+}
+
+.extension-reload .button {
 	vertical-align: middle;
 }
 
 	.extension-reload span.dashicons {
 		vertical-align: middle;
 		font-size: 18px;
+	}
+
+	.extension-reload .button.disabled span.dashicons {
+		-webkit-animation: rotation 2s infinite linear;
+		animation: rotation 2s infinite linear;
 	}
 
 div.foogallery-message-success {
@@ -210,21 +227,25 @@ div.foogallery-message-error {
 	overflow: hidden;
 }
 
+.foogallery-extension-browser .extensions .extension .banner:empty {
+	display: none;
+}
+
 .foogallery-extension-browser .extensions .extension .banner:before {
 	display: inline-block;
-	font: 400 40px/1 dashicons;
-	top: 5px;
-	left: 0;
+	font: 400 30px/1 dashicons;
+	top: 10px;
+	left: 10px;
 	position: absolute;
 	speak: none;
 	-webkit-font-smoothing: antialiased;
 }
 
-.foogallery-extension-browser .extensions .extension.activated .active-banner {
+.foogallery-extension-browser .extensions .extension.activated .banner {
 	background: #080;
 }
 
-.foogallery-extension-browser .extensions .extension.activated .active-banner:before {
+.foogallery-extension-browser .extensions .extension.activated .banner:before {
 	content: "\f147";
 }
 
@@ -232,8 +253,18 @@ div.foogallery-message-error {
 	background: #800;
 }
 
-.foogallery-extension-browser .extensions .extension.has_error .error-banner:before {
+.foogallery-extension-browser .extensions .extension.has_error .banner:before {
 	content: "\f158";
+}
+
+.foogallery-extension-browser .extensions .extension.updating .banner {
+	background: #888;
+}
+
+.foogallery-extension-browser .extensions .extension.updating .banner:before {
+	content: "\f463";
+	-webkit-animation: rotation 2s infinite linear;
+	animation: rotation 2s infinite linear;
 }
 
 .foogallery-extension-browser .extensions .extension .activate,
@@ -257,32 +288,8 @@ div.foogallery-message-error {
 	display: block;
 }
 
-.foogallery-extension-browser .extensions .extension .banner {
-	display: none;
-}
-
-.foogallery-extension-browser .extensions .extension.activated .active-banner {
+.foogallery-extension-browser .extensions .extension.activated .updating {
 	display: block;
-}
-
-.foogallery-extension-browser .extensions .extension.has_error .error-banner {
-	display: block;
-}
-
-.foogallery-extension-browser .extensions .extension.coming_soon .coming-soon-banner {
-	display: block;
-}
-
-.foogallery-extension-browser .extensions .extension.coming_soon .banner {
-	background: #0074A2;
-}
-
-.foogallery-extension-browser .extensions .extension.coming_soon .coming-soon-banner:before {
-	content: "\f469";
-}
-
-.foogallery-extension-browser .extensions .extension.coming_soon .extension-actions {
-	display: none;
 }
 
 .foogallery-extension-browser .extension-page {
