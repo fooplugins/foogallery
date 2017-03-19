@@ -699,6 +699,10 @@ if ( ! class_exists( 'FooGallery_Extensions_API' ) ) {
 
 				if ( 'process_failed' === $skin->feedback ) {
 					$error_message = is_wp_error( $skin->result ) ? $skin->result->get_error_message() : __( 'Unknown!', 'foogallery' );
+
+					//save the error message for the extension
+					$this->add_to_error_extensions( $slug, sprintf( __('Could not be downloaded! Error : %s', 'foogallery' ), $error_message ) );
+
 					//we had an error along the way
 					return apply_filters( 'foogallery_extensions_download_failure-' . $slug, array(
 						'message' => sprintf( __( 'The extension %s could NOT be downloaded! Error : %s', 'foogallery' ), "<strong>{$extension['title']}</strong>", $error_message ),
@@ -766,10 +770,15 @@ if ( ! class_exists( 'FooGallery_Extensions_API' ) ) {
 		 */
 		public function add_to_error_extensions( $slug, $error_message = '' ) {
 			$error_extensions = $this->get_error_extensions();
-			if ( ! array_key_exists( $slug, $error_extensions ) ) {
-				if ( empty($error_message) ) {
-					$error_message = __( 'Error loading extension!', 'foogallery' );
-				}
+
+			if ( empty($error_message) ) {
+				$error_message = __( 'Error loading extension!', 'foogallery' );
+			}
+
+			if ( array_key_exists( $slug, $error_extensions ) &&
+				$error_message === $error_extensions[$slug]) {
+				//do nothing!
+			} else {
 				$error_extensions[$slug] = $error_message;
 				update_option( FOOGALLERY_EXTENSIONS_ERRORS_OPTIONS_KEY, $error_extensions );
 			}
