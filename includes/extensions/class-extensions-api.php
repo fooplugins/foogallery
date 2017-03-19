@@ -161,29 +161,12 @@ if ( ! class_exists( 'FooGallery_Extensions_API' ) ) {
 				'source' => 'bundled'
 			);
 
-			//FooBox lightbox
-			$extensions[] = array (
-				'slug' => 'foobox-image-lightbox',
-				'class' => 'FooGallery_FooBox_Free_Extension',
-				'categories' => array( 'Featured', 'Free', ),
-				'file' => 'foobox-free.php',
-				'title' => 'FooBox FREE',
-				'description' => 'The best lightbox for WordPress. Free',
-				'author' => 'FooPlugins',
-				'author_url' => 'http://fooplugins.com',
-				'thumbnail' => '/assets/extension_bg.png',
-				'tags' => array( 'lightbox' ),
-				'source' => 'repo',
-				'activated_by_default' => true,
-				'minimum_version' => '1.0.2.1',
-			);
-
 			//FooBox premium
 			$extensions[] = array(
 				'slug' => 'foobox',
 				'class' => 'FooGallery_FooBox_Extension',
 				'categories' => array( 'Featured', 'Premium' ),
-				'file' => 'foobox.php',
+				'file' => 'foobox-free.php',
 				'title' => 'FooBox PRO',
 				'description' => 'The best lightbox for WordPress just got even better!',
 				'price' => '$27',
@@ -201,6 +184,24 @@ if ( ! class_exists( 'FooGallery_Extensions_API' ) ) {
 					),
 				'activated_by_default' => true,
 				'minimum_version' => '2.3.2',
+				'remove_if_active' => array('foobox-image-lightbox')
+			);
+
+			//FooBox lightbox
+			$extensions[] = array (
+				'slug' => 'foobox-image-lightbox',
+				'class' => 'FooGallery_FooBox_Free_Extension',
+				'categories' => array( 'Featured', 'Free', ),
+				'file' => 'foobox-free.php',
+				'title' => 'FooBox FREE',
+				'description' => 'The best lightbox for WordPress. Free',
+				'author' => 'FooPlugins',
+				'author_url' => 'http://fooplugins.com',
+				'thumbnail' => '/assets/extension_bg.png',
+				'tags' => array( 'lightbox' ),
+				'source' => 'repo',
+				'activated_by_default' => true,
+				'minimum_version' => '1.0.2.1',
 			);
 
 			//The NextGen importer
