@@ -386,7 +386,14 @@ if ( ! class_exists( 'FooGallery_Extensions_API' ) ) {
 			$active_extensions = $this->get_active_extensions();
 
 			if ( $active_extensions ) {
-				return array_key_exists( $slug, $active_extensions );
+
+				if ( array_key_exists( $slug, $active_extensions ) ) {
+
+					$extension = $this->get_extension( $slug );
+
+					//check if the class exists
+					return $extension && class_exists( $extension['class'] );
+				}
 			}
 			return false;
 		}
