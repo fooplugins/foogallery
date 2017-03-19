@@ -383,19 +383,19 @@ if ( ! class_exists( 'FooGallery_Extensions_API' ) ) {
 		 * @return bool
 		 */
 		public function is_active( $slug ) {
-			$active_extensions = $this->get_active_extensions();
+			global $foogallery_extensions;
 
-			if ( $active_extensions ) {
-
-				if ( array_key_exists( $slug, $active_extensions ) ) {
-
-					$extension = $this->get_extension( $slug );
-
-					//check if the class exists
-					return $extension && class_exists( $extension['class'] );
+			//first check if the extension class was loaded into memory
+			if ( $foogallery_extensions ) {
+				if ( array_key_exists( $slug, $foogallery_extensions ) ) {
+					return true;
 				}
 			}
-			return false;
+
+			//if we cannot find the extension class in memory, then check to see if the extension plugin is activated
+			$extension = $this->get_extension( $slug );
+			$plugin = $this->find_wordpress_plugin( $extension );
+			return $plugin && $plugin['active'];
 		}
 
 		/**
