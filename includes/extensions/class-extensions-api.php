@@ -307,24 +307,37 @@ if ( ! class_exists( 'FooGallery_Extensions_API' ) ) {
 		 * This list could be changed based on other plugin
 		 */
 		function get_all_for_view() {
-			$extensions = $this->get_all();
+			$all_extensions = $this->get_all();
+			$extensions = array();
+
+			//add all extensions to an array using the slug as the array key
+			foreach ( $all_extensions as $extension ) {
+
+				//remove any bundled extensions that are activated_by_default = true
+				if ( isset( $extension['activated_by_default'] ) &&
+					true === $extension['activated_by_default'] &&
+					isset( $extension['source'] ) &&
+					'bundled' === $extension['source']) {
+					//do not include a bundled extension that is activated by default
+				} else {
+					$extensions[ $extension['slug'] ] = $extension;
+				}
+			}
 
 			//loop through all active extensions and remove any other extensions if required based on the 'remove_if_active' property
 			$active_extensions = $this->get_active_extensions();
 
 			foreach ( $active_extensions as $active_extension => $active_extension_class ) {
-				$extension = $this->get_extension( $active_extension );
+				if ( array_key_exists( $active_extension, $extensions ) ) {
+					$extension = $extensions[$active_extension];
 
-				if ( isset( $extension['remove_if_active'] ) ) {
+					//check if we need to remove any other extensions from the list
+					if ( isset( $extension['remove_if_active'] ) ) {
 
-					foreach ( $extension['remove_if_active'] as $extension_slug_to_remove ) {
+						foreach ( $extension['remove_if_active'] as $extension_slug_to_remove ) {
 
-						$extension_to_remove = $this->get_extension( $extension_slug_to_remove );
-
-						if ( $extension_to_remove ) {
-							$extension_to_remove_key = array_search( $extension_to_remove, $extensions );
-							if (false !== $extension_to_remove_key) {
-								unset( $extensions[$extension_to_remove_key] );
+							if ( array_key_exists( $extension_slug_to_remove, $extensions ) ) {
+								unset( $extensions[ $extension_slug_to_remove ] );
 							}
 						}
 					}
