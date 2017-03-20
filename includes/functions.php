@@ -762,3 +762,44 @@ function foogallery_retina_options() {
         '4x' => __('4x', 'foogallery')
     ) );
 }
+
+/**
+ * Does a full uninstall of the plugin including all data and settings!
+ */
+function foogallery_uninstall() {
+
+	if ( !current_user_can( 'install_plugins' ) ) exit;
+
+	//delete all gallery posts first
+	global $wpdb;
+	$query = "SELECT p.ID FROM {$wpdb->posts} AS p WHERE p.post_type IN (%s)";
+	$gallery_post_ids = $wpdb->get_col( $wpdb->prepare( $query, FOOGALLERY_CPT_GALLERY ) );
+
+	if ( !empty( $gallery_post_ids ) ) {
+		$deleted = 0;
+		foreach ( $gallery_post_ids as $post_id ) {
+			$del = wp_delete_post( $post_id );
+			if ( false !== $del ) {
+				++$deleted;
+			}
+		}
+	}
+
+	//delete all options
+	if ( is_network_admin() ) {
+		delete_site_option( FOOGALLERY_SLUG );
+	} else {
+		delete_option( FOOGALLERY_SLUG );
+	}
+	delete_option( FOOGALLERY_OPTION_VERSION );
+	delete_option( FOOGALLERY_OPTION_THUMB_TEST );
+	delete_option( FOOGALLERY_EXTENSIONS_SLUGS_OPTIONS_KEY );
+	delete_option( FOOGALLERY_EXTENSIONS_LOADING_ERRORS );
+	delete_option( FOOGALLERY_EXTENSIONS_LOADING_ERRORS_RESPONSE );
+	delete_option( FOOGALLERY_EXTENSIONS_SLUGS_OPTIONS_KEY );
+	delete_option( FOOGALLERY_EXTENSIONS_ACTIVATED_OPTIONS_KEY );
+	delete_option( FOOGALLERY_EXTENSIONS_ERRORS_OPTIONS_KEY );
+
+	//let any extensions clean up after themselves
+	do_action( 'foogallery_uninstall' );
+}
