@@ -337,3 +337,25 @@ function foogallery_album_template_setting( $key, $default = '' ) {
 
 	return $value;
 }
+
+/**
+ * uninstall all albums and setting for albums
+ */
+function foogallery_album_uninstall() {
+	if ( !current_user_can( 'install_plugins' ) ) exit;
+
+	//delete all albums posts
+	global $wpdb;
+	$query = "SELECT p.ID FROM {$wpdb->posts} AS p WHERE p.post_type IN (%s)";
+	$gallery_post_ids = $wpdb->get_col( $wpdb->prepare( $query, FOOGALLERY_CPT_ALBUM ) );
+
+	if ( !empty( $gallery_post_ids ) ) {
+		$deleted = 0;
+		foreach ( $gallery_post_ids as $post_id ) {
+			$del = wp_delete_post( $post_id );
+			if ( false !== $del ) {
+				++$deleted;
+			}
+		}
+	}
+}

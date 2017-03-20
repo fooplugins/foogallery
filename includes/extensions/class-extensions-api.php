@@ -161,29 +161,12 @@ if ( ! class_exists( 'FooGallery_Extensions_API' ) ) {
 				'source' => 'bundled'
 			);
 
-			//FooBox lightbox
-			$extensions[] = array (
-				'slug' => 'foobox-image-lightbox',
-				'class' => 'FooGallery_FooBox_Free_Extension',
-				'categories' => array( 'Featured', 'Free', ),
-				'file' => 'foobox-free.php',
-				'title' => 'FooBox FREE',
-				'description' => 'The best lightbox for WordPress. Free',
-				'author' => 'FooPlugins',
-				'author_url' => 'http://fooplugins.com',
-				'thumbnail' => '/assets/extension_bg.png',
-				'tags' => array( 'lightbox' ),
-				'source' => 'repo',
-				'activated_by_default' => true,
-				'minimum_version' => '1.0.2.1',
-			);
-
 			//FooBox premium
 			$extensions[] = array(
 				'slug' => 'foobox',
 				'class' => 'FooGallery_FooBox_Extension',
 				'categories' => array( 'Featured', 'Premium' ),
-				'file' => 'foobox.php',
+				'file' => 'foobox-free.php',
 				'title' => 'FooBox PRO',
 				'description' => 'The best lightbox for WordPress just got even better!',
 				'price' => '$27',
@@ -201,6 +184,24 @@ if ( ! class_exists( 'FooGallery_Extensions_API' ) ) {
 					),
 				'activated_by_default' => true,
 				'minimum_version' => '2.3.2',
+				'remove_if_active' => array('foobox-image-lightbox')
+			);
+
+			//FooBox lightbox
+			$extensions[] = array (
+				'slug' => 'foobox-image-lightbox',
+				'class' => 'FooGallery_FooBox_Free_Extension',
+				'categories' => array( 'Featured', 'Free', ),
+				'file' => 'foobox-free.php',
+				'title' => 'FooBox FREE',
+				'description' => 'The best lightbox for WordPress. Free',
+				'author' => 'FooPlugins',
+				'author_url' => 'http://fooplugins.com',
+				'thumbnail' => '/assets/extension_bg.png',
+				'tags' => array( 'lightbox' ),
+				'source' => 'repo',
+				'activated_by_default' => true,
+				'minimum_version' => '1.0.2.1',
 			);
 
 			//The NextGen importer
@@ -300,6 +301,53 @@ if ( ! class_exists( 'FooGallery_Extensions_API' ) ) {
 			return $this->extensions;
 		}
 
+
+		/**
+		 * return a list of all extensions for the extension view.
+		 * This list could be changed based on other plugin
+		 */
+		function get_all_for_view() {
+			$all_extensions = $this->get_all();
+			$extensions = array();
+
+			//add all extensions to an array using the slug as the array key
+			foreach ( $all_extensions as $extension ) {
+
+				//remove any bundled extensions that are activated_by_default = true
+				if ( isset( $extension['activated_by_default'] ) &&
+					true === $extension['activated_by_default'] &&
+					isset( $extension['source'] ) &&
+					'bundled' === $extension['source']) {
+					//do not include a bundled extension that is activated by default
+				} else {
+					$extensions[ $extension['slug'] ] = $extension;
+				}
+			}
+
+			//loop through all active extensions and remove any other extensions if required based on the 'remove_if_active' property
+			$active_extensions = $this->get_active_extensions();
+
+			foreach ( $active_extensions as $active_extension => $active_extension_class ) {
+				if ( array_key_exists( $active_extension, $extensions ) ) {
+					$extension = $extensions[$active_extension];
+
+					//check if we need to remove any other extensions from the list
+					if ( isset( $extension['remove_if_active'] ) ) {
+
+						foreach ( $extension['remove_if_active'] as $extension_slug_to_remove ) {
+
+							if ( array_key_exists( $extension_slug_to_remove, $extensions ) ) {
+								unset( $extensions[ $extension_slug_to_remove ] );
+							}
+						}
+					}
+				}
+			}
+
+			$extensions = apply_filters( 'foogallery_extensions_for_view', $extensions );
+
+			return $extensions;
+		}
 		/**
 		 * Get all loaded extensions slugs
 		 * @return array
@@ -383,12 +431,19 @@ if ( ! class_exists( 'FooGallery_Extensions_API' ) ) {
 		 * @return bool
 		 */
 		public function is_active( $slug ) {
-			$active_extensions = $this->get_active_extensions();
+			global $foogallery_extensions;
 
-			if ( $active_extensions ) {
-				return array_key_exists( $slug, $active_extensions );
+			//first check if the extension class was loaded into memory
+			if ( $foogallery_extensions ) {
+				if ( array_key_exists( $slug, $foogallery_extensions ) ) {
+					return true;
+				}
 			}
-			return false;
+
+			//if we cannot find the extension class in memory, then check to see if the extension plugin is activated
+			$extension = $this->get_extension( $slug );
+			$plugin = $this->find_wordpress_plugin( $extension );
+			return $plugin && $plugin['active'];
 		}
 
 		/**
@@ -468,7 +523,7 @@ if ( ! class_exists( 'FooGallery_Extensions_API' ) ) {
 		public function deactivate( $slug, $deactivate_wordpress_plugin = true, $error_loading = false ) {
 			$extension = $this->get_extension( $slug );
 			if ( $extension ) {
-				if ( $deactivate_wordpress_plugin && 'bundled' === foo_safe_get( $extension, 'source', false ) ) {
+				if ( $deactivate_wordpress_plugin && 'bundled' !== foo_safe_get( $extension, 'source', false ) ) {
 					$plugin = $this->find_wordpress_plugin( $extension );
 					if ( $plugin ) {
 						$failure = deactivate_plugins( $plugin['file'], true, false );
@@ -643,9 +698,14 @@ if ( ! class_exists( 'FooGallery_Extensions_API' ) ) {
 				$upgrader->install( $download_link );
 
 				if ( 'process_failed' === $skin->feedback ) {
+					$error_message = is_wp_error( $skin->result ) ? $skin->result->get_error_message() : __( 'Unknown!', 'foogallery' );
+
+					//save the error message for the extension
+					$this->add_to_error_extensions( $slug, sprintf( __('Could not be downloaded! Error : %s', 'foogallery' ), $error_message ) );
+
 					//we had an error along the way
 					return apply_filters( 'foogallery_extensions_download_failure-' . $slug, array(
-						'message' => sprintf( __( 'The extension %s could NOT be downloaded!', 'foogallery' ), "<strong>{$extension['title']}</strong>" ),
+						'message' => sprintf( __( 'The extension %s could NOT be downloaded! Error : %s', 'foogallery' ), "<strong>{$extension['title']}</strong>", $error_message ),
 						'type' => 'error'
 					) );
 				}
@@ -710,10 +770,15 @@ if ( ! class_exists( 'FooGallery_Extensions_API' ) ) {
 		 */
 		public function add_to_error_extensions( $slug, $error_message = '' ) {
 			$error_extensions = $this->get_error_extensions();
-			if ( ! array_key_exists( $slug, $error_extensions ) ) {
-				if ( empty($error_message) ) {
-					$error_message = __( 'Error loading extension!', 'foogallery' );
-				}
+
+			if ( empty($error_message) ) {
+				$error_message = __( 'Error loading extension!', 'foogallery' );
+			}
+
+			if ( array_key_exists( $slug, $error_extensions ) &&
+				$error_message === $error_extensions[$slug]) {
+				//do nothing!
+			} else {
 				$error_extensions[$slug] = $error_message;
 				update_option( FOOGALLERY_EXTENSIONS_ERRORS_OPTIONS_KEY, $error_extensions );
 			}

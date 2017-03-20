@@ -7,8 +7,9 @@ require_once( FOOGALLERY_PATH . 'includes/class-posttypes.php' );
 require_once( FOOGALLERY_PATH . 'includes/class-foogallery.php' );
 require_once( FOOGALLERY_PATH . 'includes/class-foogallery-attachment.php' );
 require_once( FOOGALLERY_PATH . 'includes/class-thumbnails.php' );
-require_once( FOOGALLERY_PATH . 'includes/class-extensions-api.php' );
-require_once( FOOGALLERY_PATH . 'includes/class-extensions-loader.php' );
+require_once( FOOGALLERY_PATH . 'includes/extensions/class-extension.php' );
+require_once( FOOGALLERY_PATH . 'includes/extensions/class-extensions-api.php' );
+require_once( FOOGALLERY_PATH . 'includes/extensions/class-extensions-loader.php' );
 require_once( FOOGALLERY_PATH . 'includes/class-attachment-filters.php' );
 require_once( FOOGALLERY_PATH . 'includes/class-retina.php' );
 

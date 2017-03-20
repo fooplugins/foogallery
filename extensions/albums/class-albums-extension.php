@@ -26,6 +26,8 @@ if ( ! class_exists( 'FooGallery_Albums_Extension' ) ) {
 				//add some global settings for albums
 				add_filter( 'foogallery_admin_settings_override', array($this, 'add_album_settings' ) );
 
+				add_action( 'foogallery_uninstall', array($this, 'uninstall' ) );
+
 			} else {
 
 				new FooGallery_Album_Template_Loader();
@@ -100,6 +102,10 @@ if ( ! class_exists( 'FooGallery_Albums_Extension' ) ) {
 			);
 
 			return $settings;
+		}
+
+		function uninstall() {
+			foogallery_album_uninstall();
 		}
 	}
 }
