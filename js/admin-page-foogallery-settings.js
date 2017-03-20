@@ -63,6 +63,7 @@ jQuery(document).ready(function($) {
             e.preventDefault();
 
             var $button = $(this),
+                $container = $('#foogallery_clear_css_optimizations_container'),
                 $spinner = $('#foogallery_clear_css_cache_spinner'),
                 data = 'action=foogallery_clear_css_optimizations' +
                 '&_wpnonce=' + $button.data('nonce') +
@@ -76,7 +77,7 @@ jQuery(document).ready(function($) {
                 url: ajaxurl,
                 data: data,
                 success: function(data) {
-                    alert(data);
+                    $container.html(data);
                 },
                 complete: function() {
                     $spinner.removeClass('is-active');
@@ -158,6 +159,7 @@ jQuery(document).ready(function($) {
             e.preventDefault();
 
             var $button = $(this),
+                $container = $('#foogallery_uninstall_container'),
                 $spinner = $('#foogallery_uninstall_spinner'),
                 data = 'action=foogallery_uninstall' +
                     '&_wpnonce=' + $button.data('nonce') +
@@ -171,7 +173,36 @@ jQuery(document).ready(function($) {
                 url: ajaxurl,
                 data: data,
                 success: function(data) {
-                    alert(data);
+                    $container.html(data);
+                },
+                complete: function() {
+                    $spinner.removeClass('is-active');
+                    $button.prop('disabled', false);
+                }
+            });
+        });
+    };
+
+    FOOGALLERY.bindClearHTMLCacheButton = function() {
+        $('.foogallery_clear_html_cache').click(function(e) {
+            e.preventDefault();
+
+            var $button = $(this),
+                $container = $('#foogallery_clear_html_cache_container'),
+                $spinner = $('#foogallery_clear_html_cache_spinner'),
+                data = 'action=foogallery_clear_html_cache' +
+                    '&_wpnonce=' + $button.data('nonce') +
+                    '&_wp_http_referer=' + encodeURIComponent($('input[name="_wp_http_referer"]').val());
+
+            $spinner.addClass('is-active');
+            $button.prop('disabled', true);
+
+            $.ajax({
+                type: "POST",
+                url: ajaxurl,
+                data: data,
+                success: function(data) {
+                    $container.html(data);
                 },
                 complete: function() {
                     $spinner.removeClass('is-active');
@@ -187,6 +218,7 @@ jQuery(document).ready(function($) {
         FOOGALLERY.bindTestThumbnailButton();
         FOOGALLERY.bindApplyRetinaDefaults();
         FOOGALLERY.bindUninstallButton();
+        FOOGALLERY.bindClearHTMLCacheButton();
     });
 
 }(window.FOOGALLERY = window.FOOGALLERY || {}, jQuery));

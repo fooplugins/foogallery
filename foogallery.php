@@ -95,6 +95,8 @@ if ( ! class_exists( 'FooGallery_Plugin' ) ) {
 
 			new FooGallery_Animated_Gif_Support();
 
+			new FooGallery_Cache();
+
 			$checker = new FooGallery_Version_Check();
 			$checker->wire_up_checker();
 		}

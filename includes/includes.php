@@ -34,8 +34,8 @@ require_once( FOOGALLERY_PATH . 'includes/public/class-foogallery-template-loade
 require_once( FOOGALLERY_PATH . 'includes/class-polylang-compatibility.php' );
 
 require_once( FOOGALLERY_PATH . 'includes/class-version-check.php' );
-
 require_once( FOOGALLERY_PATH . 'includes/class-foogallery-animated-gif-support.php' );
+require_once( FOOGALLERY_PATH . 'includes/class-foogallery-cache.php' );
 
 //Datasource includes
 require_once( FOOGALLERY_PATH . 'includes/interface-foogallery-datasource.php' );
