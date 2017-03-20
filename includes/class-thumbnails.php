@@ -90,17 +90,18 @@ if ( !class_exists( 'FooGallery_Thumbnails' ) ) {
 		function run_thumbnail_generation_tests() {
             $test_image_url = foogallery_test_thumb_url();
 
-            //first, clear any previous cached files
-            $thumb = new WP_Thumb( $test_image_url );
-            wpthumb_rmdir_recursive( $thumb->getCacheFileDirectory() );
-
-            //next, generate a thumbnail
+			//next, generate a thumbnail
 			$test_args = array(
 				'width'                   => 20,
 				'height'                  => 20,
 				'crop'                    => true,
 				'jpeg_quality'            => foogallery_thumbnail_jpeg_quality()
 			);
+
+            //first, clear any previous cached files
+            $thumb = new WP_Thumb( $test_image_url, $test_args );
+            wpthumb_rmdir_recursive( $thumb->getCacheFileDirectory() );
+
 			$test_thumb = new WP_Thumb( $test_image_url, $test_args );
             $generated_thumb = $test_thumb->returnImage();
             $success = $test_image_url !== $generated_thumb;
