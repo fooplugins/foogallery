@@ -10,7 +10,7 @@ if ( ! class_exists( 'FooGallery_Cache' ) ) {
 		function __construct() {
 			if ( is_admin() ) {
 				//intercept the gallery save and save the html output to post meta
-				add_action( 'foogallery_after_save_gallery', array( $this, 'cache_gallery_html_output' ), 10, 2 );
+				add_action( 'foogallery_after_save_gallery', array( $this, 'cache_gallery_html_output_after_save' ), 10, 2 );
 
 				//add some settings to allow the clearing and disabling of the cache
 				add_filter( 'foogallery_admin_settings_override', array( $this, 'add_cache_settings' ) );
@@ -27,12 +27,21 @@ if ( ! class_exists( 'FooGallery_Cache' ) ) {
 		}
 
 		/**
-		 * Save the HTML output of the gallery to post meta so that it can be used in future requests
+		 * Save the HTML output of the gallery after the gallery has been saved
 		 *
 		 * @param $post_id
 		 * @param $form_post
 		 */
-		function cache_gallery_html_output( $post_id, $form_post ) {
+		function cache_gallery_html_output_after_save( $post_id, $form_post ) {
+			$this->cache_gallery_html_output( $post_id );
+		}
+
+		/**
+		 * Save the HTML output of the gallery to post meta so that it can be used in future requests
+		 *
+		 * @param $foogallery_id
+		 */
+		function cache_gallery_html_output( $foogallery_id ) {
 			//check if caching is disabled and quit early
 			if ( 'on' === foogallery_get_setting( 'disable_html_cache' ) ) {
 				return;
@@ -44,12 +53,12 @@ if ( ! class_exists( 'FooGallery_Cache' ) ) {
 
 			//capture the html output
 			ob_start();
-			foogallery_render_gallery( $post_id );
+			foogallery_render_gallery( $foogallery_id );
 			$gallery_html = ob_get_contents();
 			ob_end_clean();
 
 			//save the output to post meta for later use
-			update_post_meta( $post_id, FOOGALLERY_META_CACHE, $gallery_html );
+			update_post_meta( $foogallery_id, FOOGALLERY_META_CACHE, $gallery_html );
 
 			$foogallery_force_gallery_cache = false;
 		}
@@ -80,6 +89,9 @@ if ( ! class_exists( 'FooGallery_Cache' ) ) {
 				//output the cached gallery html
 				echo $gallery_cache;
 				return true; //return that we will override
+			} else {
+				//we should cache the result for next time
+				$this->cache_gallery_html_output( $gallery->ID );
 			}
 
 			return false;
