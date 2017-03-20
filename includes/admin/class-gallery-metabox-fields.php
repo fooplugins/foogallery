@@ -195,7 +195,15 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Fields' ) ) {
 							$field['type'] = 'html';
 							$field['desc'] = '<strong>' . __( 'You have no lightbox extensions activated!', 'foogallery' ) . '</strong><br />';
 							$api = new FooGallery_Extensions_API();
-							if ( $api->is_downloaded( false, FOOGALLERY_FOOBOX_FREE_EXTENSION_SLUG ) ) {
+							if ( $api->is_downloaded( false, FOOGALLERY_FOOBOX_PRO_EXTENSION_SLUG ) ) {
+								//just need to activate it
+								$foobox_install_link = foogallery_build_admin_menu_url( array(
+									'page' => 'foogallery-extensions',
+									'extension' => FOOGALLERY_FOOBOX_PRO_EXTENSION_SLUG,
+									'action' => 'activate',
+								));
+								$field['desc'] .= '<a target="_blank" href="' . esc_url( $foobox_install_link ). '">' . __( 'Activate FooBox right now!', 'foogallery' ) . '</a>';
+							} else if ( $api->is_downloaded( false, FOOGALLERY_FOOBOX_FREE_EXTENSION_SLUG ) ) {
 								//just need to activate it
 								$foobox_install_link = foogallery_build_admin_menu_url( array(
 									'page' => 'foogallery-extensions',
