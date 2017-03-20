@@ -13,7 +13,7 @@ if ( !class_exists( 'FooGallery_Thumbnails' ) ) {
 		}
 
 		function resize( $original_image_src, $args, $thumbnail_object ) {
-
+			global $current_foogallery;
 		    global $foogallery_last_generated_thumb_url;
 
 			$arg_defaults = array(
@@ -21,8 +21,13 @@ if ( !class_exists( 'FooGallery_Thumbnails' ) ) {
 				'height'                  => 0,
 				'crop'                    => true,
 				'jpeg_quality'            => foogallery_thumbnail_jpeg_quality(),
-				'thumb_resize_animations' => foogallery_get_setting( 'thumb_resize_animations' )
+				'thumb_resize_animations' => foogallery_get_setting( 'thumb_resize_animations' ),
+				'foogallery_attachment_id'=> $thumbnail_object->ID
 			);
+
+			if ( isset( $current_foogallery ) ) {
+				$arg_defaults['foogallery_id'] = $current_foogallery->ID;
+			}
 
 			$args = wp_parse_args( $args, $arg_defaults );
 
