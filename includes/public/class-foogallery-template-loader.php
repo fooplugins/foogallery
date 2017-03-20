@@ -84,7 +84,7 @@ class FooGallery_Template_Loader {
 
 					//finally include the actual php template!
 					if ( $template_location ) {
-						load_template( $template_location['path'], false );
+						$this->load_gallery_template( $current_foogallery, $template_location['path'] );
 					}
 
 					//cater for lightbox extensions needing to add styles and javascript
@@ -102,6 +102,25 @@ class FooGallery_Template_Loader {
 				}
 			}
 		}
+	}
+
+	/***
+	 * Loads a gallery template location and wraps the calls so that it can be intercepted
+	 *
+	 * @param FooGallery $gallery
+	 * @param string $template_location
+	 */
+	function load_gallery_template($gallery, $template_location) {
+
+		$override_load_template = apply_filters( 'foogallery_load_gallery_template', false, $gallery, $template_location );
+
+		if ( $override_load_template ) {
+			//if we have overridden the loading of the template, then we can exit without doing anything further
+			return;
+		}
+
+		//if we get to this point, then we need to load the template as per normal
+		load_template( $template_location, false );
 	}
 
     /**
