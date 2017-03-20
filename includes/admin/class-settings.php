@@ -278,8 +278,10 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 		 */
 		function render_custom_setting_types( $args ) {
 			if ( 'clear_optimization_button' === $args['type'] ) { ?>
-				<input type="button" data-nonce="<?php echo esc_attr( wp_create_nonce( 'foogallery_clear_css_optimizations' ) ); ?>" class="button-primary foogallery_clear_css_optimizations" value="<?php _e( 'Clear CSS Optimization Cache', 'foogallery' ); ?>">
-				<span id="foogallery_clear_css_cache_spinner" style="position: absolute" class="spinner"></span>
+				<div id="foogallery_clear_css_optimizations_container">
+					<input type="button" data-nonce="<?php echo esc_attr( wp_create_nonce( 'foogallery_clear_css_optimizations' ) ); ?>" class="button-primary foogallery_clear_css_optimizations" value="<?php _e( 'Clear CSS Optimization Cache', 'foogallery' ); ?>">
+					<span id="foogallery_clear_css_cache_spinner" style="position: absolute" class="spinner"></span>
+				</div>
 			<?php } else if ( 'uninstall' === $args['type'] ) { ?>
 				<div id="foogallery_uninstall_container">
 					<input type="button" data-nonce="<?php echo esc_attr( wp_create_nonce( 'foogallery_uninstall' ) ); ?>" class="button-primary foogallery_uninstall" value="<?php _e( 'Run Full Uninstall', 'foogallery' ); ?>">
