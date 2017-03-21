@@ -22,7 +22,6 @@ if ( ! class_exists( 'FooGallery_Cache' ) ) {
 				add_action( 'wp_ajax_foogallery_clear_html_cache', array( $this, 'ajax_clear_all_caches' ) );
 			}
 
-
 			add_filter( 'foogallery_load_gallery_template', array( $this, 'fetch_gallery_html_from_cache' ), 10, 3 );
 		}
 
@@ -85,7 +84,7 @@ if ( ! class_exists( 'FooGallery_Cache' ) ) {
 
 			$gallery_cache = get_post_meta( $gallery->ID, FOOGALLERY_META_CACHE, true );
 
-			if ( !empty( $gallery_cache ) ) {
+			if ( !empty( $gallery_cache ) && is_string( $gallery_cache ) ) {
 				//output the cached gallery html
 				echo $gallery_cache;
 				return true; //return that we will override
