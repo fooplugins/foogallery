@@ -13,6 +13,7 @@ if ( ! class_exists( 'FooGallery_Thumbnail_Dimensions' ) ) {
 			}
 
 			add_filter( 'foogallery_attachment_load', array( $this, 'load_thumbnail_dimensions' ), 10, 2 );
+			add_filter( 'foogallery_attachment_html_image_attributes', array( $this, 'include_thumb_dimension_attributes' ), 10, 3 );
 		}
 
 		/**
@@ -50,6 +51,13 @@ if ( ! class_exists( 'FooGallery_Thumbnail_Dimensions' ) ) {
 			}
 		}
 
+		/**
+		 * Load the thumb dimension attributes onto the attachment
+		 * @param $foogallery_attachment
+		 * @param $foogallery
+		 *
+		 * @return mixed
+		 */
 		function load_thumbnail_dimensions( $foogallery_attachment, $foogallery ) {
 			$size = get_post_meta( $foogallery_attachment->ID, FOOGALLERY_META_THUMB_DIMENSIONS, true );
 			if ( $size && array_key_exists( $foogallery->ID, $size ) ) {
@@ -57,10 +65,32 @@ if ( ! class_exists( 'FooGallery_Thumbnail_Dimensions' ) ) {
 
 				$foogallery_attachment->foogallery_id = $foogallery->ID;
 				$foogallery_attachment->thumb_width = $size['width'];
-				$foogallery_attachment->thumb_height = $size['width'];
+				$foogallery_attachment->thumb_height = $size['height'];
 			}
 
 			return $foogallery_attachment;
+		}
+
+		/**
+		 * Include the thumb dimension html attributes in the rendered HTML
+		 *
+		 * @param $attr
+		 * @param $args
+		 * @param $foogallery_attachment
+		 *
+		 * @return array
+		 */
+		function include_thumb_dimension_attributes( $attr, $args, $foogallery_attachment ) {
+			if ( isset( $foogallery_attachment->foogallery_id ) ) {
+				if ( $foogallery_attachment->thumb_width > 0 ) {
+					$attr['width'] = $foogallery_attachment->thumb_width;
+				}
+				if ( $foogallery_attachment->thumb_height > 0 ) {
+					$attr['height'] = $foogallery_attachment->thumb_height;
+				}
+			}
+
+			return $attr;
 		}
 	}
 }
