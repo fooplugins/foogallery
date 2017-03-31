@@ -155,6 +155,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 				wp_verify_nonce( $_POST[FOOGALLERY_CPT_GALLERY . '_nonce'], plugin_basename( FOOGALLERY_FILE ) )
 			) {
 				//if we get here, we are dealing with the Gallery custom post type
+				do_action( 'foogallery_before_save_gallery', $post_id, $_POST );
 
 				$attachments = apply_filters( 'foogallery_save_gallery_attachments', explode( ',', $_POST[FOOGALLERY_META_ATTACHMENTS] ) );
 				update_post_meta( $post_id, FOOGALLERY_META_ATTACHMENTS, $attachments );

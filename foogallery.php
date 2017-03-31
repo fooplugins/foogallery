@@ -97,6 +97,8 @@ if ( ! class_exists( 'FooGallery_Plugin' ) ) {
 
 			new FooGallery_Cache();
 
+			new FooGallery_Thumbnail_Dimensions();
+
 			$checker = new FooGallery_Version_Check();
 			$checker->wire_up_checker();
 		}
