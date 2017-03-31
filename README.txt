@@ -1,18 +1,18 @@
-=== Foo Gallery ===
+=== FooGallery - Image Gallery WordPress Plugin ===
 Contributors: bradvin, fooplugins
 Donate link: http://fooplugins.com
 Tags: gallery, image gallery, photo gallery, responsive, album, media gallery, masonry gallery, portfolio, justified image gallery, video gallery, photography, photographer, retina
 Requires at least: 3.9
-Tested up to: 4.7
+Tested up to: 4.7.3
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Foo Gallery is the most intuitive and extensible gallery management tool ever created for WordPress.
+FooGallery is the best image gallery plugin for WordPress. Why? Stunning gallery layouts, responsive, retina-ready, lightning fast, easy to use.
 
 == Description ==
 
-Foo Gallery allows for better image and video gallery management within WordPress. Built to be simple for users and highly flexible for developers.
+FooGallery is the best image gallery plugin for WordPress. Why? Stunning gallery layouts, responsive, retina-ready, lightning fast, easy to use. Built to be highly configurable and extensible for developers or freelancers.
 
 [View the Foo Gallery Homepage & DEMO](http://foo.gallery/)
 
