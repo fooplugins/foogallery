@@ -145,7 +145,10 @@ if ( ! class_exists( 'FooGalleryAttachment' ) ) {
 
 			$arg_defaults = array(
 				'link' => 'image',
-				'custom_link' => $this->custom_url
+				'custom_link' => $this->custom_url,
+				'link_attributes' => array(
+					'class' => 'foogallery-thumb foogallery-item-inner'
+				)
 			);
 
 			$args = wp_parse_args( $args, $arg_defaults );
