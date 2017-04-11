@@ -366,14 +366,26 @@ function foogallery_build_class_attribute( $gallery ) {
 }
 
 /**
+ * Builds up a SAFE class attribute that can be used in a gallery template
+ * @param $gallery FooGallery
+ *
+ * @return string the classname based on the gallery and any extra attributes
+ */
+function foogallery_build_class_attribute_safe( $gallery ) {
+	$args = func_get_args();
+	$result = call_user_func_array("foogallery_build_class_attribute", $args);
+	return esc_attr( $result );
+}
+
+/**
  * Renders an escaped class attribute that can be used directly by gallery templates
  *
  * @param $gallery FooGallery
  */
 function foogallery_build_class_attribute_render_safe( $gallery ) {
 	$args = func_get_args();
-	$result = call_user_func_array("foogallery_build_class_attribute", $args);
-	echo esc_attr( $result );
+	$result = call_user_func_array("foogallery_build_class_attribute_safe", $args);
+	echo $result;
 }
 
 /**
