@@ -11,6 +11,11 @@ if ( !class_exists( 'FooGallery_Thumbnail_Gallery_Template' ) ) {
 		function __construct() {
 			add_filter( 'foogallery_gallery_templates', array( $this, 'add_template' ) );
 			add_filter( 'foogallery_gallery_templates_files', array( $this, 'register_myself' ) );
+
+			add_filter( 'foogallery_located_template-thumbnail', array( $this, 'enqueue_dependencies' ) );
+
+			//add extra fields to the templates
+			add_filter( 'foogallery_override_gallery_template_fields-thumbnail', array( $this, 'add_common_thumbnail_fields' ), 10, 2 );
 		}
 
 		/**
@@ -34,6 +39,7 @@ if ( !class_exists( 'FooGallery_Thumbnail_Gallery_Template' ) ) {
 			$gallery_templates[] = array(
 					'slug'        => 'thumbnail',
 					'name'        => __( 'Single Thumbnail Gallery', 'foogallery' ),
+					'lazyload_support' => true,
 					'preview_css' => FOOGALLERY_THUMBNAIL_GALLERY_TEMPLATE_URL . 'css/gallery-thumbnail.css',
 					'admin_js'	  => FOOGALLERY_THUMBNAIL_GALLERY_TEMPLATE_URL . 'js/admin-gallery-thumbnail.js',
 					'fields'	  => array(
@@ -135,6 +141,38 @@ if ( !class_exists( 'FooGallery_Thumbnail_Gallery_Template' ) ) {
 			);
 
 			return $gallery_templates;
+		}
+
+		/**
+		 * Enqueue scripts that the masonry gallery template relies on
+		 */
+		function enqueue_dependencies() {
+			wp_enqueue_script( 'jquery' );
+
+			//enqueue core files
+			foogallery_enqueue_core_gallery_template_style();
+			foogallery_enqueue_core_gallery_template_script();
+
+			$css = FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_URL . 'thumbnail/css/foogallery.single-thumbnail.min.css';
+			wp_enqueue_style( 'foogallery-thumbnail', $css, array(), FOOGALLERY_VERSION );
+
+			$js = FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_URL . 'thumbnail/js/foogallery.single-thumbnail.min.js';
+			wp_enqueue_script( 'foogallery-thumbnail', $js, array(), FOOGALLERY_VERSION );
+		}
+
+		/**
+		 * Add thumbnail fields to the gallery template
+		 *
+		 * @uses "foogallery_override_gallery_template_fields"
+		 * @param $fields
+		 * @param $template
+		 *
+		 * @return array
+		 */
+		function add_common_thumbnail_fields( $fields, $template ) {
+			$fields = array_merge( $fields, foogallery_get_gallery_template_common_thumbnail_fields($template) );
+
+			return $fields;
 		}
 	}
 }
