@@ -11,8 +11,12 @@ if ( !class_exists( 'FooGallery_Justified_Gallery_Template' ) ) {
 		function __construct() {
 			add_filter( 'foogallery_gallery_templates', array( $this, 'add_template' ) );
 			add_filter( 'foogallery_gallery_templates_files', array( $this, 'register_myself' ) );
-
 			add_filter( 'foogallery_template_thumbnail_dimensions-justified', array( $this, 'get_thumbnail_dimensions' ), 10, 2 );
+
+			//add extra fields to the templates
+			add_filter( 'foogallery_override_gallery_template_fields-justified', array( $this, 'add_common_thumbnail_fields' ), 10, 2 );
+
+			add_action( 'foogallery_located_template-justified', array( $this, 'enqueue_dependencies' ) );
 		}
 
 		/**
@@ -36,14 +40,8 @@ if ( !class_exists( 'FooGallery_Justified_Gallery_Template' ) ) {
 			$gallery_templates[] = array(
 					'slug'        => 'justified',
 					'name'        => __( 'Justified Gallery', 'foogallery' ),
+					'lazyload_support' => true,
 					'fields'	  => array(
-							array(
-									'id'	  => 'help',
-									'title'	  => __( 'Tip', 'foogallery' ),
-									'type'	  => 'html',
-									'help'	  => true,
-									'desc'	  => __( 'The Justified Gallery template uses the popular <a href="http://miromannino.com/projects/justified-gallery/" target="_blank">Justified Gallery jQuery Plugin</a> under the hood. You can specify thumbnail captions by setting the alt text for your attachments.', 'foogallery' ),
-							),
 							array(
 									'id'      => 'thumb_height',
 									'title'   => __( 'Thumb Height', 'foogallery' ),
@@ -137,6 +135,38 @@ if ( !class_exists( 'FooGallery_Justified_Gallery_Template' ) ) {
 				'width'  => 0,
 				'crop'   => false
 			);
+		}
+
+		/**
+		 * Add thumbnail fields to the gallery template
+		 *
+		 * @uses "foogallery_override_gallery_template_fields"
+		 * @param $fields
+		 * @param $template
+		 *
+		 * @return array
+		 */
+		function add_common_thumbnail_fields( $fields, $template ) {
+			$fields = array_merge( $fields, foogallery_get_gallery_template_common_thumbnail_fields($template) );
+
+			return $fields;
+		}
+
+		/**
+		 * Enqueue scripts that the default gallery template relies on
+		 */
+		function enqueue_dependencies( $gallery ) {
+			wp_enqueue_script( 'jquery' );
+
+			//enqueue core files
+			foogallery_enqueue_core_gallery_template_style();
+			foogallery_enqueue_core_gallery_template_script();
+
+			$css = FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_URL . 'justified/css/foogallery.justified.min.css';
+			wp_enqueue_style( 'foogallery-justified', $css, array(), FOOGALLERY_VERSION );
+
+			$js = FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_URL . 'justified/js/foogallery.justified.min.js';
+			wp_enqueue_script( 'foogallery-justified', $js, array(), FOOGALLERY_VERSION );
 		}
 	}
 }
