@@ -14,15 +14,16 @@ $link = foogallery_gallery_template_setting( 'thumbnail_link', 'image' );
 $args['link'] = $link;
 //get which lightbox we want to use
 $lightbox = foogallery_gallery_template_setting( 'lightbox', 'unknown' );
+
 $theme = foogallery_gallery_template_setting( 'theme', '' );
-$hover_effect = foogallery_gallery_template_setting( 'hover-effect', 'hover-effect-zoom' );
 $hover_effect_type = foogallery_gallery_template_setting( 'hover-effect-type', '' );
-$caption_content = foogallery_gallery_template_setting( 'caption-content', 'none' );
 $alignment = foogallery_gallery_template_setting( 'alignment', 'alignment-center' );
 $text_prev = foogallery_gallery_template_setting( 'text-prev', __('Prev', 'foogallery') );
 $text_of = foogallery_gallery_template_setting( 'text-of', __('of', 'foogallery') );
 $text_next = foogallery_gallery_template_setting( 'text-next', __('Next', 'foogallery') );
 $attachments = $current_foogallery->attachments();
+$foogallery_imageviewer_classes = foogallery_build_class_attribute_safe( $current_foogallery, 'foogallery-link-' . $link, 'foogallery-lightbox-' . $lightbox, $theme, $alignment );
+$foogallery_imageviewer_attributes = foogallery_build_container_attributes_safe( $current_foogallery, array( 'class' => $foogallery_imageviewer_classes ) );
 if ( 'fiv-custom' === $theme ) {?>
 <style>
 	/* Theme - Custom */
@@ -44,15 +45,17 @@ if ( 'fiv-custom' === $theme ) {?>
 	}
 </style>
 <?php } ?>
-<div id="foogallery-gallery-<?php echo $current_foogallery->ID; ?>" class="<?php foogallery_build_class_attribute_render_safe( $current_foogallery, 'foogallery-link-' . $link, 'foogallery-lightbox-' . $lightbox, $theme, $hover_effect, $hover_effect_type, $alignment ); ?>">
+<div <?php echo $foogallery_imageviewer_attributes; ?>>
 	<div class="fiv-inner">
 		<div class="fiv-inner-container">
 			<?php foreach ( $attachments as $attachment ) {
+				echo '<div class="foogallery-item">';
 				echo $attachment->html( $args, true, false );
-				if ($caption_content !== 'none'){
+				if ( 'hover-effect-caption' === $hover_effect_type ) {
 					echo $attachment->html_caption( $caption_content );
 				}
 				echo '</a>';
+				echo '</div>';
 			} ?>
 		</div>
 		<div class="fiv-ctrls">
