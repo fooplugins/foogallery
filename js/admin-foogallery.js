@@ -261,3 +261,5 @@ jQuery(function ($) {
 		FOOGALLERY.adminReady();
 	}
 });
+
+!function(a){a(function(){a(".foogallery-vertical-tab").on("click",function(b){b.preventDefault();var c=a(this),d=c.closest(".foogallery-settings"),e=c.data("name");d.find(".foogallery-tab-active").removeClass("foogallery-tab-active"),d.find('[data-name="'+e+'"]').addClass("foogallery-tab-active")})})}(jQuery);

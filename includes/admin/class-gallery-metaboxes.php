@@ -286,6 +286,39 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 		}
 
 		public function render_gallery_settings_metabox( $post ) {
+			?>
+
+			<div class="foogallery-settings">
+				<div class="foogallery-vertical-tabs">
+					<div class="foogallery-vertical-tab foogallery-tab-active" data-name="general">
+						<span class="dashicons dashicons-admin-tools"></span>
+						<span class="foogallery-tab-text">General</span>
+					</div>
+					<div class="foogallery-vertical-tab" data-name="advanced">
+						<span class="dashicons dashicons-admin-generic"></span>
+						<span class="foogallery-tab-text">Advanced</span>
+					</div>
+					<div class="foogallery-vertical-tab" data-name="video">
+						<span class="dashicons dashicons-format-video"></span>
+						<span class="foogallery-tab-text">Video</span>
+					</div>
+				</div>
+				<div class="foogallery-tab-contents">
+					<div class="foogallery-tab-content foogallery-tab-active" data-name="general">
+
+					</div>
+					<div class="foogallery-tab-content" data-name="advanced">
+
+					</div>
+					<div class="foogallery-tab-content" data-name="video">
+
+					</div>
+				</div>
+			</div>
+
+			<?php
+
+
 			//gallery settings including:
 			//gallery images link to image or attachment page
 			//default template to use
