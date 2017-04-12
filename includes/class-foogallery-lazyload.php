@@ -13,10 +13,17 @@ if ( ! class_exists( 'FooGallery_LazyLoad' ) ) {
 				add_filter( 'foogallery_override_gallery_template_fields', array( $this, 'add_lazyload_fields' ), 10, 2 );
 			}
 
+			//adds the lazyload property to a FooGallery
 			add_action( 'foogallery_foogallery_instance_after_load', array( $this, 'determine_lazyload' ), 10, 2 );
 
 			//change the image src attribute to data attributes if lazy loading is enabled
-			add_filter('foogallery_attachment_html_image_attributes', array($this, 'change_src_attributes'), 99, 3);
+			add_filter( 'foogallery_attachment_html_image_attributes', array($this, 'change_src_attributes'), 99, 3);
+
+			//add the lazy load attributes to the gallery container
+			add_filter( 'foogallery_build_container_attributes', array( $this, 'add_lazyload_attributes' ), 10, 2 );
+
+			//add the appropriate lazy load class
+			add_filter( 'foogallery_build_class_attribute', array( $this, 'add_lazyload_class' ), 10, 2 );
 		}
 
 		/**
@@ -72,19 +79,55 @@ if ( ! class_exists( 'FooGallery_LazyLoad' ) ) {
 		function change_src_attributes($attr, $args, $attachment) {
 			global $current_foogallery;
 
-			if ( true === $current_foogallery->lazyload) {
-				//rename src => data-src
-				$src = $attr['src'];
-				unset( $attr['src'] );
-				$attr['data-src'] = $src;
+			if ( isset( $current_foogallery->lazyload) && true === $current_foogallery->lazyload) {
 
-				//rename srcset => data-srcset
-				$src = $attr['srcset'];
-				unset( $attr['srcset'] );
-				$attr['data-srcset'] = $src;
+				if ( isset( $attr['src'] ) ) {
+					//rename src => data-src
+					$src = $attr['src'];
+					unset( $attr['src'] );
+					$attr['data-src'] = $src;
+				}
+
+				if ( isset( $attr['srcset'] ) ) {
+					//rename srcset => data-srcset
+					$src = $attr['srcset'];
+					unset( $attr['srcset'] );
+					$attr['data-srcset'] = $src;
+				}
 			}
 
 			return $attr;
+		}
+
+
+		/**
+		 * Add the required lazy load attributes onto the gallery container div
+		 *
+		 * @param $attributes array
+		 * @param $gallery FooGallery
+		 *
+		 * @return array
+		 */
+		function add_lazyload_attributes($attributes, $gallery) {
+			if ( isset( $gallery->lazyload) && true === $gallery->lazyload) {
+				$attributes['data-loader-options'] = '{\'lazy\':true}';
+			}
+			return $attributes;
+		}
+
+		/**
+		 * Add the required lazy load class to the gallery
+		 *
+		 * @param $classes array
+		 * @param $gallery FooGallery
+		 *
+		 * @return array
+		 */
+		function add_lazyload_class($classes, $gallery) {
+			if ( isset( $gallery->lazyload) && true === $gallery->lazyload) {
+				$classes[] = apply_filters( 'foogallery_lazyload_class', 'loaded-fade-in' );
+			}
+			return $classes;
 		}
 	}
 }
