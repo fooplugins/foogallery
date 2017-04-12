@@ -351,6 +351,22 @@ function foogallery_gallery_shortcode_regex() {
 function foogallery_build_class_attribute( $gallery ) {
 	$classes[] = 'foogallery-container';
 	$classes[] = "foogallery-{$gallery->gallery_template}";
+
+	//get some default classes from common gallery settings
+	$border_style = $gallery->get_meta( "{$gallery->gallery_template}_border-style", '' );
+	$hover_effect_type = $gallery->get_meta( "{$gallery->gallery_template}_hover-effect-type", '' );
+	$hover_icon = $gallery->get_meta( "{$gallery->gallery_template}_hover-effect", '' );
+	$caption_hover_effect = $gallery->get_meta( "{$gallery->gallery_template}_caption-hover-effect", 'hover-caption-simple' );
+	$caption_content = $gallery->get_meta( "{$gallery->gallery_template}_caption-content", 'title' );
+	if ( 'hover-effect-caption' === $hover_effect_type || 'hover-effect-none' === $hover_effect_type ) {
+		$hover_icon = '';
+	}
+	$classes[] = $border_style;
+	$classes[] = $hover_effect_type;
+	$classes[] = $hover_icon;
+	$classes[] = $caption_hover_effect;
+	$classes[] = $caption_content;
+
 	$num_args = func_num_args();
 
 	if ( $num_args > 1 ) {
@@ -360,7 +376,7 @@ function foogallery_build_class_attribute( $gallery ) {
 		}
 	}
 
-	$classes = apply_filters( 'foogallery_build_class_attribute', $classes );
+	$classes = apply_filters( 'foogallery_build_class_attribute', $classes, $gallery );
 
 	return implode( ' ', $classes );
 }
@@ -386,6 +402,35 @@ function foogallery_build_class_attribute_render_safe( $gallery ) {
 	$args = func_get_args();
 	$result = call_user_func_array("foogallery_build_class_attribute_safe", $args);
 	echo $result;
+}
+
+/**
+ * Builds up the attributes that are appended to a gallery template container
+ *
+ * @param $gallery    FooGallery
+ * @param $attributes array
+ *
+ * @return string
+ */
+function foogallery_build_container_attributes_safe( $gallery, $attributes ) {
+
+	//add the default gallery id
+	$attributes['id'] = 'foogallery-gallery-' . $gallery->ID;
+
+	//allow others to add their own attributes globally
+	$attributes = apply_filters( 'foogallery_build_container_attributes', $attributes, $gallery );
+
+	//allow others to add their own attributes for a specific gallery template
+	$attributes = apply_filters( 'foogallery_build_container_attributes-' . $gallery->gallery_template, $attributes, $gallery );
+
+	//clean up the attributes to make them safe for output
+	$html = '';
+	foreach( $attributes as $key=>$value) {
+		$safe_value = esc_attr( $value );
+		$html .= "{$key}=\"{$safe_value}\" ";
+	}
+
+	return $html;
 }
 
 /**
