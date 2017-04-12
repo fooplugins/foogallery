@@ -43,7 +43,9 @@ function foogallery_enqueue_core_gallery_template_script() {
  *
  * @return array
  */
-function foogallery_get_gallery_template_common_thumbnail_fields($template) {
+function foogallery_get_gallery_template_common_thumbnail_fields($gallery_template) {
+
+	$template = $gallery_template['slug'];
 
 	$border_style_choices = apply_filters( "foogallery_gallery_template_common_thumbnail_fields_border_style_choices-{$template}",  array(
 		'border-style-square-white' => array( 'label' => __( 'Square white border with shadow' , 'foogallery' ), 'img' => FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_SHARED_URL . 'img/admin/border-style-icon-square-white.png' ),
