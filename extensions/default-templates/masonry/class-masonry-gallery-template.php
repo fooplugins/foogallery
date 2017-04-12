@@ -14,6 +14,9 @@ if ( !class_exists( 'FooGallery_Masonry_Gallery_Template' ) ) {
 			add_filter( 'foogallery_located_template-masonry', array( $this, 'enqueue_dependencies' ) );
 
 			add_filter( 'foogallery_template_thumbnail_dimensions-masonry', array( $this, 'get_thumbnail_dimensions' ), 10, 2 );
+
+			//add extra fields to the templates
+			add_filter( 'foogallery_override_gallery_template_fields-masonry', array( $this, 'add_common_thumbnail_fields' ), 10, 2 );
 		}
 
 		/**
@@ -37,6 +40,7 @@ if ( !class_exists( 'FooGallery_Masonry_Gallery_Template' ) ) {
 			$gallery_templates[] = array(
 					'slug'        => 'masonry',
 					'name'        => __( 'Masonry Image Gallery', 'foogallery' ),
+					'lazyload_support' => true,
 					'admin_js'	  => FOOGALLERY_MASONRY_GALLERY_TEMPLATE_URL . 'js/admin-gallery-masonry.js',
 					'fields'	  => array(
 							array(
@@ -100,18 +104,6 @@ if ( !class_exists( 'FooGallery_Masonry_Gallery_Template' ) ) {
 									'default' => ''
 							),
 							array(
-									'id'      => 'hover_zoom',
-									'title'   => __( 'Hover Zoom', 'foogallery' ),
-									'desc'    => __( 'The effect that is applied to images when you move your mouse over them.', 'foogallery' ),
-									'type'    => 'radio',
-									'choices' => array(
-											'default'  => __( 'Zoom Slightly', 'foogallery' ),
-											'none'   => __( 'No Zoom', 'foogallery' )
-									),
-									'spacer'  => '<span class="spacer"></span>',
-									'default' => 'default'
-							),
-							array(
 									'id'      => 'thumbnail_link',
 									'title'   => __( 'Thumbnail Link', 'foogallery' ),
 									'default' => 'image' ,
@@ -138,7 +130,16 @@ if ( !class_exists( 'FooGallery_Masonry_Gallery_Template' ) ) {
 		function enqueue_dependencies() {
 			wp_enqueue_script( 'jquery' );
 			wp_enqueue_script( 'masonry' );
-			foogallery_enqueue_imagesloaded_script();
+
+			//enqueue core files
+			foogallery_enqueue_core_gallery_template_style();
+			foogallery_enqueue_core_gallery_template_script();
+
+			$css = FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_URL . 'masonry/css/foogallery.masonry.min.css';
+			wp_enqueue_style( 'foogallery-masonry', $css, array(), FOOGALLERY_VERSION );
+
+			$js = FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_URL . 'masonry/js/foogallery.masonry.min.js';
+			wp_enqueue_script( 'foogallery-masonry', $js, array(), FOOGALLERY_VERSION );
 		}
 
 		/**
@@ -156,6 +157,21 @@ if ( !class_exists( 'FooGallery_Masonry_Gallery_Template' ) ) {
 				'width'  => intval( $width ),
 				'crop'   => false
 			);
+		}
+
+		/**
+		 * Add thumbnail fields to the gallery template
+		 *
+		 * @uses "foogallery_override_gallery_template_fields"
+		 * @param $fields
+		 * @param $template
+		 *
+		 * @return array
+		 */
+		function add_common_thumbnail_fields( $fields, $template ) {
+			$fields = array_merge( $fields, foogallery_get_gallery_template_common_thumbnail_fields($template) );
+
+			return $fields;
 		}
 	}
 }
