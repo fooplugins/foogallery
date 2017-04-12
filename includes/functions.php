@@ -357,7 +357,7 @@ function foogallery_build_class_attribute( $gallery ) {
 	$hover_effect_type = $gallery->get_meta( "{$gallery->gallery_template}_hover-effect-type", '' );
 	$hover_icon = $gallery->get_meta( "{$gallery->gallery_template}_hover-effect", '' );
 	$caption_hover_effect = $gallery->get_meta( "{$gallery->gallery_template}_caption-hover-effect", 'hover-caption-simple' );
-	$caption_content = $gallery->get_meta( "{$gallery->gallery_template}_caption-content", 'title' );
+	//$caption_content = $gallery->get_meta( "{$gallery->gallery_template}_caption-content", 'title' );
 	if ( 'hover-effect-caption' === $hover_effect_type || 'hover-effect-none' === $hover_effect_type ) {
 		$hover_icon = '';
 	}
@@ -365,7 +365,7 @@ function foogallery_build_class_attribute( $gallery ) {
 	$classes[] = $hover_effect_type;
 	$classes[] = $hover_icon;
 	$classes[] = $caption_hover_effect;
-	$classes[] = $caption_content;
+	//$classes[] = $caption_content;
 
 	$num_args = func_num_args();
 
