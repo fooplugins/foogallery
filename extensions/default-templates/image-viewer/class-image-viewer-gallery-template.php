@@ -18,7 +18,6 @@ if ( !class_exists( 'FooGallery_Image_Viewer_Gallery_Template' ) ) {
 
 			add_filter( 'foogallery_gallery_templates_files', array( $this, 'register_myself' ) );
 			add_action( 'foogallery_render_gallery_template_field_custom', array( $this, 'render_thumbnail_preview' ), 10, 3 );
-//			add_filter( 'foogallery_attachment_html_image_attributes', array( $this, 'strip_size' ), 99, 3 );
 
 			add_filter( 'foogallery_template_thumbnail_dimensions-image-viewer', array( $this, 'get_thumbnail_dimensions' ), 10, 2 );
 		}
@@ -235,30 +234,6 @@ if ( !class_exists( 'FooGallery_Image_Viewer_Gallery_Template' ) ) {
 				</div>
 				</div><?php
 			}
-		}
-
-		/**
-		 * Image viewer relies on there being no width or height attributes on the IMG element so strip them out here.
-		 *
-		 * @param $attr
-		 * @param $args
-		 * @param $attachment
-		 *
-		 * @return mixed
-		 */
-		function strip_size($attr, $args, $attachment){
-			global $current_foogallery_template;
-
-			if ( 'image-viewer' === $current_foogallery_template ) {
-				if ( isset($attr['width']) ){
-					unset($attr['width']);
-				}
-				if ( isset($attr['height']) ){
-					unset($attr['height']);
-				}
-			}
-
-			return $attr;
 		}
 
 		/**

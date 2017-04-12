@@ -12,6 +12,8 @@ $args = foogallery_gallery_template_setting( 'thumbnail_size', 'thumbnail' );
 //add the link setting to the args
 $link = foogallery_gallery_template_setting( 'thumbnail_link', 'image' );
 $args['link'] = $link;
+//add the necessary classes to the anchors
+$args['link_attributes'] = array( 'class' => 'foogallery-thumb foogallery-item-inner' );
 //get which lightbox we want to use
 $lightbox = foogallery_gallery_template_setting( 'lightbox', 'unknown' );
 

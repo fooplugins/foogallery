@@ -14,19 +14,19 @@ $args = array(
 	'width' => $width,
 	'link' => $thumbnail_link,
 	'crop' => false,
+	'link_attributes' => array( 'class' => 'foogallery-thumb foogallery-item-inner' )
 );
 $lightbox = foogallery_gallery_template_setting( 'lightbox', 'unknown' );
 $hover_effect_type = foogallery_gallery_template_setting( 'hover-effect-type', '' );
 $small_screen = $width + $gutter_width + $gutter_width;
 $column_layout = $layout !== 'fixed';
+$column_width = '"#foogallery-gallery-' . $current_foogallery->ID . ' .masonry-item-width"';
 if ( $column_layout ) {
-	$column_width = '"#foogallery-gallery-' . $current_foogallery->ID . ' .masonry-item-width"';
 	$gutter = '"#foogallery-gallery-' . $current_foogallery->ID . ' .masonry-gutter-width"';
 } else {
-	$column_width = $width;
 	$gutter = $gutter_width;
 }
-$foogallery_masonry_classes = foogallery_build_class_attribute_safe( $current_foogallery, 'foogallery-lightbox-' . $lightbox );
+$foogallery_masonry_classes = foogallery_build_class_attribute_safe( $current_foogallery, 'foogallery-lightbox-' . $lightbox, 'masonry-layout-' . $layout );
 $foogallery_masonry_attributes = foogallery_build_container_attributes_safe( $current_foogallery, array( 'class' => $foogallery_masonry_classes ) );
 ?>
 <style>
@@ -40,6 +40,8 @@ $foogallery_masonry_attributes = foogallery_build_container_attributes_safe( $cu
 	<?php if ( $column_layout ) { ?>
 	<div class="masonry-item-width"></div>
 	<div class="masonry-gutter-width"></div>
+	<?php } else { ?>
+	<div class="masonry-item-width" style="width:<?php echo $width; ?>px"></div>
 	<?php } ?>
 	<?php foreach ( $current_foogallery->attachments() as $attachment ) {
 		echo '<div class="foogallery-item">';

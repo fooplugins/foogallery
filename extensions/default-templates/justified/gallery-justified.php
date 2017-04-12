@@ -14,7 +14,8 @@ $margins = foogallery_gallery_template_setting( 'margins', '1' );
 $gutter_width = foogallery_gallery_template_setting( 'gutter_width', '10' );
 $args = array(
 	'height' => $height,
-	'link' => foogallery_gallery_template_setting( 'thumbnail_link', 'image' )
+	'link' => foogallery_gallery_template_setting( 'thumbnail_link', 'image' ),
+	'link_attributes' => array( 'class' => 'foogallery-thumb foogallery-item-inner' )
 );
 $lightbox = foogallery_gallery_template_setting( 'lightbox', 'unknown' );
 $hover_effect_type = foogallery_gallery_template_setting( 'hover-effect-type', '' );

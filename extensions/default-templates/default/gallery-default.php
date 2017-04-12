@@ -7,7 +7,8 @@ global $current_foogallery_arguments;
 $args = foogallery_gallery_template_setting( 'thumbnail_dimensions', array() );
 $link = foogallery_gallery_template_setting( 'thumbnail_link', 'image' );
 $args['link'] = $link;
-
+//add the necessary classes to the anchors
+$args['link_attributes'] = array( 'class' => 'foogallery-thumb foogallery-item-inner' );
 $lightbox = foogallery_gallery_template_setting( 'lightbox', 'unknown' );
 $spacing = foogallery_gallery_template_setting( 'spacing', '' );
 $alignment = foogallery_gallery_template_setting( 'alignment', 'alignment-center' );
