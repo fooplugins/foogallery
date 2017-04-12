@@ -11,7 +11,11 @@ if ( !class_exists( 'FooGallery_Simple_Portfolio_Gallery_Template' ) ) {
 		function __construct() {
 			add_filter( 'foogallery_gallery_templates', array( $this, 'add_template' ) );
 			add_filter( 'foogallery_gallery_templates_files', array( $this, 'register_myself' ) );
-			add_filter( 'foogallery_attachment_html_image_attributes', array( $this, 'strip_size' ), 99, 3 );
+
+			add_filter( 'foogallery_located_template-simple_portfolio', array( $this, 'enqueue_dependencies' ) );
+
+			//add extra fields to the templates
+			add_filter( 'foogallery_override_gallery_template_fields-simple_portfolio', array( $this, 'add_common_thumbnail_fields' ), 10, 2 );
 		}
 
 		/**
@@ -36,6 +40,7 @@ if ( !class_exists( 'FooGallery_Simple_Portfolio_Gallery_Template' ) ) {
 			$gallery_templates[] = array(
 					'slug'        => 'simple_portfolio',
 					'name'        => __( 'Simple Portfolio', 'foogallery' ),
+					'lazyload_support' => true,
 					'fields'	  => array(
 							array(
 									'id'	  => 'help',
@@ -115,27 +120,35 @@ if ( !class_exists( 'FooGallery_Simple_Portfolio_Gallery_Template' ) ) {
 		}
 
 		/**
-		 * Simple portfolio relies on there being no width or height attributes on the IMG element so strip them out here.
-		 *
-		 * @param $attr
-		 * @param $args
-		 * @param $attachment
-		 *
-		 * @return mixed
+		 * Enqueue scripts that the masonry gallery template relies on
 		 */
-		function strip_size($attr, $args, $attachment){
-			global $current_foogallery_template;
+		function enqueue_dependencies() {
+			wp_enqueue_script( 'jquery' );
 
-			if ( 'simple_portfolio' === $current_foogallery_template ) {
-				if ( isset($attr['width']) ){
-					unset($attr['width']);
-				}
-				if ( isset($attr['height']) ){
-					unset($attr['height']);
-				}
-			}
+			//enqueue core files
+			foogallery_enqueue_core_gallery_template_style();
+			foogallery_enqueue_core_gallery_template_script();
 
-			return $attr;
+			$css = FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_URL . 'simple-portfolio/css/foogallery.simple-portfolio.min.css';
+			wp_enqueue_style( 'foogallery-simple_portfolio', $css, array(), FOOGALLERY_VERSION );
+
+			$js = FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_URL . 'simple-portfolio/js/foogallery.simple-portfolio.min.js';
+			wp_enqueue_script( 'foogallery-simple_portfolio', $js, array(), FOOGALLERY_VERSION );
+		}
+
+		/**
+		 * Add thumbnail fields to the gallery template
+		 *
+		 * @uses "foogallery_override_gallery_template_fields"
+		 * @param $fields
+		 * @param $template
+		 *
+		 * @return array
+		 */
+		function add_common_thumbnail_fields( $fields, $template ) {
+			$fields = array_merge( $fields, foogallery_get_gallery_template_common_thumbnail_fields($template) );
+
+			return $fields;
 		}
 	}
 }

@@ -8,8 +8,9 @@ $args = foogallery_gallery_template_setting( 'thumbnail_dimensions', array() );
 $args['link'] = foogallery_gallery_template_setting( 'thumbnail_link', 'image' );
 $args['image_attributes'] = array(
 	'class'  => 'bf-img',
-	'height' => $args['height'],
+	'height' => $args['height']
 );
+$args['link_attributes'] = array( 'class' => 'foogallery-thumb' );
 $lightbox = foogallery_gallery_template_setting( 'lightbox', 'unknown' );
 $gutter = foogallery_gallery_template_setting( 'gutter', 40 );
 $caption_position = foogallery_gallery_template_setting( 'caption_position', '' );
@@ -19,21 +20,23 @@ $caption_text_color = foogallery_gallery_template_setting( 'caption_text_color',
 if ( !empty( $caption_bg_color ) || !empty( $caption_text_color ) ) {
 	echo '<style type="text/css">';
 	if ( !empty( $caption_bg_color ) ) {
-		echo '#foogallery-gallery-' . $current_foogallery->ID . '.foogallery-simple_portfolio .bf-item { background: ' . $caption_bg_color . '; }';
+		echo '#foogallery-gallery-' . $current_foogallery->ID . '.foogallery-simple_portfolio .foogallery-item-inner { background: ' . $caption_bg_color . '; }';
 	}
 	if ( !empty( $caption_text_color ) ) {
-		echo '#foogallery-gallery-' . $current_foogallery->ID . '.foogallery-simple_portfolio .bf-item { color: ' . $caption_text_color . '; }';
+		echo '#foogallery-gallery-' . $current_foogallery->ID . '.foogallery-simple_portfolio .foogallery-item-inner { color: ' . $caption_text_color . '; }';
 	}
 	echo '</style>';
 }
-?>
-<div data-brickfolio-gutter="<?php echo $gutter; ?>" id="foogallery-gallery-<?php echo $current_foogallery->ID; ?>" class="<?php foogallery_build_class_attribute_render_safe( $current_foogallery, 'foogallery-lightbox-' . $lightbox, 'brickfolio', $caption_position ); ?>">
+$caption_position_class = 'bf-captions-above' === $caption_position ? 'fg-sp-captions-above' : '';
+$foogallery_simple_portfolio_classes = foogallery_build_class_attribute_safe( $current_foogallery, 'foogallery-lightbox-' . $lightbox, $caption_position_class, 'foogallery-simple-portfolio' );
+$foogallery_simple_portfolio_attributes = foogallery_build_container_attributes_safe( $current_foogallery, array( 'class' => $foogallery_simple_portfolio_classes ) );
+?><div data-simple-portfolio-options='{"gutter":<?php echo $gutter; ?>}' <?php echo $foogallery_simple_portfolio_attributes; ?>>
 <?php
 foreach ( $current_foogallery->attachments() as $attachment ) {
-	echo '<div class="bf-item" style="width:' . $args['width'] . 'px">';
+	echo '<div class="foogallery-item"><div class="foogallery-item-inner">';
 	$caption = null;
 	if ( !empty($attachment->caption) || !empty($attachment->description) ) {
-		$caption = '<div class="bf-caption">';
+		$caption = '<div class="fg-sp-caption">';
 		if ( !empty($attachment->caption) ) {
 			$caption .= '<h4>' . $attachment->caption . '</h4>';
 		}
@@ -49,6 +52,6 @@ foreach ( $current_foogallery->attachments() as $attachment ) {
 		echo $attachment->html( $args );
 		echo $caption;
 	}
-	echo '</div>';
+	echo '</div></div>';
 } ?>
 </div>
