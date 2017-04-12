@@ -71,6 +71,7 @@ function foogallery_get_gallery_template_common_thumbnail_fields($gallery_templa
 		'hover-effect-tint'   => __( 'Dark Tint', 'foogallery' ),
 		'hover-effect-color' => __( 'Colorize', 'foogallery' ),
 		'hover-effect-caption' => __( 'Caption', 'foogallery' ),
+		'hover-effect-scale' => __( 'Scale', 'foogallery' ),
 		'hover-effect-none' => __( 'None', 'foogallery' )
 	) );
 	$fields[] = array(
