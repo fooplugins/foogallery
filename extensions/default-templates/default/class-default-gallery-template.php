@@ -18,7 +18,6 @@ if ( !class_exists( 'FooGallery_Default_Gallery_Template' ) ) {
 
 			add_filter( 'foogallery_gallery_templates_files', array( $this, 'register_myself' ) );
 			add_action( 'foogallery_render_gallery_template_field_custom', array( $this, 'render_thumbnail_preview' ), 10, 3 );
-			add_filter( 'foogallery_located_template-default', array( $this, 'enqueue_dependencies' ) );
 			add_filter( 'foogallery_template_load_js-default', array( $this, 'can_enqueue_template_js' ), 10, 2 );
 		}
 
@@ -174,7 +173,7 @@ if ( !class_exists( 'FooGallery_Default_Gallery_Template' ) ) {
 					$featured->description = __( 'Long Caption Description Text', 'foogallery' );
 				}
 
-				echo '<div class="foogallery-default-preview ' . foogallery_build_class_attribute( $gallery, $hover_effect, $border_style, $hover_effect_type, $caption_hover_effect, 'foogallery-thumbnail-preview' ) . '">';
+				echo '<div class="foogallery-default-preview ' . foogallery_build_class_attribute_safe( $gallery, $hover_effect, $border_style, $hover_effect_type, $caption_hover_effect, 'foogallery-thumbnail-preview' ) . '">';
 				echo $featured->html( $args, true, false );
 				echo $featured->html_caption( 'both' );
 				echo '</a>';
