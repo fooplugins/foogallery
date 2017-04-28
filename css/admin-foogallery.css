@@ -174,6 +174,7 @@
 
 .foogallery_metabox_field-thumb_size input[type="number"] {
 	margin-right: 10px;
+	margin-left: 10px;
 }
 
 #foogallery_pages ul li:hover .row-actions { visibility: visible; }
@@ -210,10 +211,10 @@
 	position: relative;
 	display: block;
 	line-height: 19px;
-	padding: 11px 15px 11px 40px;
+	padding: 11px 10px 11px 40px;
 	font-size: 14px;
 	text-align: left;
-	margin: 5px 0 20px 2px;
+	margin: 5px 0 0 2px;
 	background-color: #F4F4FF;
 	border-left: 4px solid #1e8cbe;
 	-webkit-box-shadow: 0 1px 1px 0 rgba(0, 0, 0, .1);
