@@ -246,6 +246,8 @@
 	content: '';
 }
 
+/** <gallery settings styling overrides> **/
+
 .foogallery-metabox-settings {
 	width: 100%;
 	border-collapse: collapse;
@@ -253,8 +255,8 @@
 
 .foogallery-metabox-settings th {
 	font-weight: normal;
-	padding: 10px 5px;
-	min-width: 150px;
+	padding: 10px;
+	width: 180px;
 }
 
 .foogallery-metabox-settings tr {
@@ -277,6 +279,13 @@
 .foogallery-thumbsize-crop {
 	margin-top: 10px;
 }
+
+.foogallery_metabox_field-radio input[type="checkbox"],
+.foogallery_metabox_field-radio input[type="radio"] {
+	margin: 0 0 10px 0;
+}
+
+/** </gallery settings styling overrides> **/
 
 .foogallery_metabox_custom_css {
 	width: 100%;
