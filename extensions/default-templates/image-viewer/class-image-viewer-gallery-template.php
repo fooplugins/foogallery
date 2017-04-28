@@ -168,9 +168,7 @@ if ( !class_exists( 'FooGallery_Image_Viewer_Gallery_Template' ) ) {
 		 * @return array
 		 */
 		function add_common_thumbnail_fields( $fields, $template ) {
-			$fields = array_merge( $fields, foogallery_get_gallery_template_common_thumbnail_fields($template) );
-
-			return $fields;
+			return apply_filters( 'foogallery_gallery_template_common_thumbnail_fields', $fields );
 		}
 
 		/**
