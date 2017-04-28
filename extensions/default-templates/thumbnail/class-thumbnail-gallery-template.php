@@ -154,10 +154,10 @@ if ( !class_exists( 'FooGallery_Thumbnail_Gallery_Template' ) ) {
 			foogallery_enqueue_core_gallery_template_script();
 
 			$css = FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_URL . 'thumbnail/css/foogallery.single-thumbnail.min.css';
-			wp_enqueue_style( 'foogallery-thumbnail', $css, array(), FOOGALLERY_VERSION );
+			wp_enqueue_style( 'foogallery-thumbnail', $css, array( 'foogallery-core' ), FOOGALLERY_VERSION );
 
 			$js = FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_URL . 'thumbnail/js/foogallery.single-thumbnail.min.js';
-			wp_enqueue_script( 'foogallery-thumbnail', $js, array(), FOOGALLERY_VERSION );
+			wp_enqueue_script( 'foogallery-thumbnail', $js, array( 'foogallery-core' ), FOOGALLERY_VERSION );
 		}
 
 		/**

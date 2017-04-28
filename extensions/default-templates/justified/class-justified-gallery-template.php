@@ -163,10 +163,10 @@ if ( !class_exists( 'FooGallery_Justified_Gallery_Template' ) ) {
 			foogallery_enqueue_core_gallery_template_script();
 
 			$css = FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_URL . 'justified/css/foogallery.justified.min.css';
-			wp_enqueue_style( 'foogallery-justified', $css, array(), FOOGALLERY_VERSION );
+			wp_enqueue_style( 'foogallery-justified', $css, array( 'foogallery-core' ), FOOGALLERY_VERSION );
 
 			$js = FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_URL . 'justified/js/foogallery.justified.min.js';
-			wp_enqueue_script( 'foogallery-justified', $js, array(), FOOGALLERY_VERSION );
+			wp_enqueue_script( 'foogallery-justified', $js, array( 'foogallery-core' ), FOOGALLERY_VERSION );
 		}
 	}
 }

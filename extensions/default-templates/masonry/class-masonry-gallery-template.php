@@ -136,10 +136,10 @@ if ( !class_exists( 'FooGallery_Masonry_Gallery_Template' ) ) {
 			foogallery_enqueue_core_gallery_template_script();
 
 			$css = FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_URL . 'masonry/css/foogallery.masonry.min.css';
-			wp_enqueue_style( 'foogallery-masonry', $css, array(), FOOGALLERY_VERSION );
+			wp_enqueue_style( 'foogallery-masonry', $css, array( 'foogallery-core' ), FOOGALLERY_VERSION );
 
 			$js = FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_URL . 'masonry/js/foogallery.masonry.min.js';
-			wp_enqueue_script( 'foogallery-masonry', $js, array(), FOOGALLERY_VERSION );
+			wp_enqueue_script( 'foogallery-masonry', $js, array( 'foogallery-core' ), FOOGALLERY_VERSION );
 		}
 
 		/**

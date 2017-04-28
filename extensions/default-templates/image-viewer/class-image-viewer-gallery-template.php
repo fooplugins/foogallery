@@ -184,10 +184,10 @@ if ( !class_exists( 'FooGallery_Image_Viewer_Gallery_Template' ) ) {
 			foogallery_enqueue_core_gallery_template_script();
 
 			$css = FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_URL . 'image-viewer/css/foogallery.image-viewer.min.css';
-			wp_enqueue_style( 'foogallery-image-viewer', $css, array(), FOOGALLERY_VERSION );
+			wp_enqueue_style( 'foogallery-image-viewer', $css, array( 'foogallery-core' ), FOOGALLERY_VERSION );
 
 			$js = FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_URL . 'image-viewer/js/foogallery.image-viewer.min.js';
-			wp_enqueue_script( 'foogallery-image-viewer', $js, array(), FOOGALLERY_VERSION );
+			wp_enqueue_script( 'foogallery-image-viewer', $js, array( 'foogallery-core' ), FOOGALLERY_VERSION );
 		}
 
 		function render_thumbnail_preview( $field, $gallery, $template ) {
