@@ -114,6 +114,9 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings' ) ) {
                 'type'    => 'radio',
                 'choices' => $hover_effect_type_choices,
                 'desc'	  => __( 'Choose what will happen when you hover over a thumbnail', 'foogallery' ),
+                'row_data'=> array(
+                    'data-foogallery-value-selector' => 'input:checked'
+                )
             );
 
             $hover_effect_choices = apply_filters( 'foogallery_gallery_template_common_thumbnail_fields_hover_effect_choices', array(
@@ -131,7 +134,12 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings' ) ) {
                 'section' => __( 'Look &amp; Feel', 'foogallery' ),
                 'type'    => 'icon',
                 'default' => 'hover-effect-zoom',
-                'choices' => $hover_effect_choices
+                'choices' => $hover_effect_choices,
+                'row_data'=> array(
+                    'data-foogallery-hidden' => true,
+                    'data-foogallery-show-when-field' => 'hover-effect-type',
+                    'data-foogallery-show-when-field-value' => ''
+                )
             );
 
             $caption_hover_effect_choices = apply_filters( 'foogallery_gallery_template_common_thumbnail_fields_caption_hover_effect_choices', array(
@@ -148,7 +156,12 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings' ) ) {
                 'section' => __( 'Look &amp; Feel', 'foogallery' ),
                 'default' => 'hover-caption-simple',
                 'type'    => 'radio',
-                'choices' => $caption_hover_effect_choices
+                'choices' => $caption_hover_effect_choices,
+                'row_data'=> array(
+                    'data-foogallery-hidden' => true,
+                    'data-foogallery-show-when-field' => 'hover-effect-type',
+                    'data-foogallery-show-when-field-value' => 'hover-effect-caption'
+                )
             );
 
             $caption_content_choices = apply_filters( 'foogallery_gallery_template_common_thumbnail_fields_caption_content_choices', array(
@@ -163,7 +176,12 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings' ) ) {
                 'section' => __( 'Look &amp; Feel', 'foogallery' ),
                 'default' => 'title',
                 'type'    => 'radio',
-                'choices' => $caption_content_choices
+                'choices' => $caption_content_choices,
+                'row_data'=> array(
+                    'data-foogallery-hidden' => true,
+                    'data-foogallery-show-when-field' => 'hover-effect-type',
+                    'data-foogallery-show-when-field-value' => 'hover-effect-caption'
+                )
             );
 
             return $fields;
