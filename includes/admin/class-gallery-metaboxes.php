@@ -286,10 +286,9 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 		}
 
 		public function render_gallery_settings_metabox( $post ) {
-
             $gallery = FooGallery::get( $post );
 
-            $settings = new FooGallery_Admin_Gallery_MetaBox_Settings( $gallery );
+            $settings = new FooGallery_Admin_Gallery_MetaBox_Settings_Helper( $gallery );
 
             $settings->render_hidden_gallery_template_selector();
 
