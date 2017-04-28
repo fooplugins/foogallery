@@ -60,11 +60,19 @@ function foogallery_get_gallery_template_common_thumbnail_fields($gallery_templa
 		'id'      => 'border-style',
 		'title'   => __( 'Border Style', 'foogallery' ),
 		'desc'    => __( 'The border style for each thumbnail in the gallery.', 'foogallery' ),
-		'section' => __( 'Thumbnail Settings', 'foogallery' ),
+		'section' => __( 'Look &amp; Feel', 'foogallery' ),
 		'type'    => 'icon',
 		'default' => 'border-style-square-white',
 		'choices' => $border_style_choices
 	);
+
+    $fields[] = array(
+        'id'      => 'hover-effect-help',
+        'title'   => __( 'Hover Effect Help', 'foogallery' ),
+        'desc'    => __( 'Captions can be enabled by choosing the "Captions" hover effect below.', 'foogallery' ),
+        'section' => __( 'Look &amp; Feel', 'foogallery' ),
+        'type'    => 'help'
+    );
 
 	$hover_effect_type_choices = apply_filters( "foogallery_gallery_template_common_thumbnail_fields_hover_effect_type_choices-{$template}", array(
 		''  => __( 'Icon', 'foogallery' ),
@@ -77,11 +85,10 @@ function foogallery_get_gallery_template_common_thumbnail_fields($gallery_templa
 	$fields[] = array(
 		'id'      => 'hover-effect-type',
 		'title'   => __( 'Hover Effect Type', 'foogallery' ),
-		'section' => __( 'Thumbnail Settings', 'foogallery' ),
+        'section' => __( 'Look &amp; Feel', 'foogallery' ),
 		'default' => '',
 		'type'    => 'radio',
 		'choices' => $hover_effect_type_choices,
-		'spacer'  => '<span class="spacer"></span>',
 		'desc'	  => __( 'The type of hover effect the thumbnails will use.', 'foogallery' ),
 	);
 
@@ -97,7 +104,7 @@ function foogallery_get_gallery_template_common_thumbnail_fields($gallery_templa
 		'id'      => 'hover-effect',
 		'title'   => __( 'Icon Hover Effect', 'foogallery' ),
 		'desc'    => __( 'When the hover effect type of Icon is chosen, you can choose which icon is shown when you hover over each thumbnail.', 'foogallery' ),
-		'section' => __( 'Thumbnail Settings', 'foogallery' ),
+        'section' => __( 'Look &amp; Feel', 'foogallery' ),
 		'type'    => 'icon',
 		'default' => 'hover-effect-zoom',
 		'choices' => $hover_effect_choices
@@ -113,11 +120,10 @@ function foogallery_get_gallery_template_common_thumbnail_fields($gallery_templa
 	$fields[] = array(
 		'id'      => 'caption-hover-effect',
 		'title'   => __( 'Caption Effect', 'foogallery' ),
-		'section' => __( 'Thumbnail Settings', 'foogallery' ),
+        'section' => __( 'Look &amp; Feel', 'foogallery' ),
 		'default' => 'hover-caption-simple',
 		'type'    => 'radio',
-		'choices' => $caption_hover_effect_choices,
-		'spacer'  => '<span class="spacer"></span>'
+		'choices' => $caption_hover_effect_choices
 	);
 
 	$caption_content_choices = apply_filters( "foogallery_gallery_template_common_thumbnail_fields_caption_content_choices-{$template}", array(
@@ -128,11 +134,10 @@ function foogallery_get_gallery_template_common_thumbnail_fields($gallery_templa
 	$fields[] = array(
 		'id'      => 'caption-content',
 		'title'   => __( 'Caption Content', 'foogallery' ),
-		'section' => __( 'Thumbnail Settings', 'foogallery' ),
+        'section' => __( 'Look &amp; Feel', 'foogallery' ),
 		'default' => 'title',
 		'type'    => 'radio',
-		'choices' => $caption_content_choices,
-		'spacer'  => '<span class="spacer"></span>'
+		'choices' => $caption_content_choices
 	);
 
 	return $fields;

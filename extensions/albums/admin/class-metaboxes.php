@@ -322,7 +322,7 @@ if ( ! class_exists( 'FooGallery_Admin_Album_MetaBoxes' ) ) {
 						//allow for the field to be altered by extensions.
 						$field = apply_filters( 'foogallery_alter_gallery_template_field', $field, $album );
 
-						$class = "gallery_template_field gallery_template_field-{$template['slug']} gallery_template_field-{$template['slug']}-{$field['id']}";
+						$class ="foogallery_template_field foogallery_template_field-{$template['slug']} foogallery_template_field-{$template['slug']}-{$field['id']}";
 
 						if ( isset($field['section']) && $field['section'] !== $section ) {
 							$section = $field['section'];

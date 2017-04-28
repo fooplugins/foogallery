@@ -13,6 +13,8 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Fields' ) ) {
 
 			//allow changing of field values
 			add_filter( 'foogallery_render_gallery_template_field_value', array( $this, 'check_lightbox_value' ), 10, 4 );
+
+			add_filter( 'foogallery_gallery_settings_metabox_section_icon', array( $this, 'add_section_icons') );
 		}
 
 		/**
@@ -158,9 +160,9 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Fields' ) ) {
 					echo '<input class="small-text" type="number" step="1" min="0" id="FooGallerySettings_' . $id . '_width" name="' . FOOGALLERY_META_SETTINGS . '[' . $id . '][width]" value="' . esc_attr( $width ) . '" />';
 					echo '<label for="FooGallerySettings_' . $id . '_width">' . __( 'Height', 'foogallery' ) . '</label>';
 					echo '<input class="small-text" type="number" step="1" min="0" id="FooGallerySettings_' . $id . '_height" name="' . FOOGALLERY_META_SETTINGS . '[' . $id . '][height]" value="' . esc_attr( $height ) . '" />';
-					echo '<input name="' . FOOGALLERY_META_SETTINGS . '[' . $id . '][crop]" type="hidden" id="FooGallerySettings_' . $id . '_nocrop" value="0" />';
+					echo '<div class="foogallery-thumbsize-crop"><input name="' . FOOGALLERY_META_SETTINGS . '[' . $id . '][crop]" type="hidden" id="FooGallerySettings_' . $id . '_nocrop" value="0" />';
 					echo '<input name="' . FOOGALLERY_META_SETTINGS . '[' . $id . '][crop]" type="checkbox" id="FooGallerySettings_' . $id . '_crop" value="1"' . $crop_checked . '>';
-					echo '<label for="FooGallerySettings_' . $id . '_crop">' . __( 'Crop thumbnail to exact dimensions', 'foogallery' ) . '</label>';
+					echo '<label for="FooGallerySettings_' . $id . '_crop">' . __( 'Crop thumbnail to exact dimensions', 'foogallery' ) . '</label></div>';
 					break;
 
 				default:
@@ -173,9 +175,6 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Fields' ) ) {
 			}
 
 			echo '</div>';
-			if ( isset( $desc ) ) {
-				echo '<small>' . $desc . '</small>';
-			}
 
 			//allow for more customization
 			do_action( 'foogallery_render_gallery_template_field_after', $field, $gallery );
@@ -286,5 +285,27 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Fields' ) ) {
 
 			return $value;
 		}
+
+        /**
+         * Returns the Dashicon that can be used in the settings tabs
+         * @param $section_slug
+         * @return string
+         */
+		function add_section_icons( $section_slug ) {
+		    switch ( $section_slug ) {
+                case 'general':
+                    return 'dashicons-admin-tools';
+                    break;
+                case 'advanced':
+                    return 'dashicons-admin-generic';
+                    break;
+                case 'look &amp; feel':
+                    return 'dashicons-images-alt2';
+                    break;
+                case 'video':
+                    return 'dashicons-format-video';
+            }
+		    return 'dashicons-admin-tools';
+        }
 	}
 }

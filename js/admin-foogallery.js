@@ -27,10 +27,10 @@
 		var selectedTemplate = $('#FooGallerySettings_GalleryTemplate').val();
 
 		//hide all template fields
-		$('.foogallery-metabox-settings .gallery_template_field').not('.gallery_template_field_selector').hide();
+		$('.foogallery-settings-container').not('.foogallery-settings-container-'+selectedTemplate).hide();
 
 		//show all fields for the selected template only
-		$('.foogallery-metabox-settings .gallery_template_field-' + selectedTemplate).show();
+		$('.foogallery-settings-container-' + selectedTemplate).show();
 
 		//include a preview CSS if possible
 		FOOGALLERY.includePreviewCss();
@@ -40,6 +40,24 @@
 	};
 
 	FOOGALLERY.initSettings = function() {
+		//move the template selector into the metabox heading
+        $('.foogallery-template-selector').appendTo( '#foogallery_settings .hndle span' ).removeClass('hidden');
+
+        $( function() {
+            // Prevent inputs in meta box headings opening/closing contents.
+            $( '#foogallery_settings' ).find( '.hndle' ).unbind( 'click.postboxes' );
+
+            $( '#foogallery_settings' ).on( 'click', '.hndle', function( event ) {
+
+                // If the user clicks on some form input inside the h3 the box should not be toggled.
+                if ( $( event.target ).filter( 'input, option, label, select' ).length ) {
+                    return;
+                }
+
+                $( '#foogallery_settings' ).toggleClass( 'closed' );
+            });
+        });
+
 		$('#FooGallerySettings_GalleryTemplate').change(FOOGALLERY.settingsChanged);
 
 		//include our selected preview CSS

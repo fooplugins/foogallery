@@ -46,16 +46,39 @@ if ( !class_exists( 'FooGallery_Default_Gallery_Template' ) ) {
 				'preview_css' => FOOGALLERY_DEFAULT_GALLERY_TEMPLATE_URL . 'css/gallery-default.css',
 				'admin_js'	  => FOOGALLERY_DEFAULT_GALLERY_TEMPLATE_URL . 'js/admin-gallery-default.js',
 				'fields'	  => array(
+                    array(
+                        'id'      => 'thumbnail_dimensions',
+                        'title'   => __( 'Thumb Size', 'foogallery' ),
+                        'desc'    => __( 'Choose the size of your thumbnails.', 'foogallery' ),
+                        'section' => __( 'General', 'foogallery' ),
+                        'type'    => 'thumb_size',
+                        'default' => array(
+                            'width' => get_option( 'thumbnail_size_w' ),
+                            'height' => get_option( 'thumbnail_size_h' ),
+                            'crop' => true,
+                        ),
+                    ),
+                    array(
+                        'id'      => 'thumbnail_link',
+                        'title'   => __( 'Thumb Link', 'foogallery' ),
+                        'section' => __( 'General', 'foogallery' ),
+                        'default' => 'image',
+                        'type'    => 'thumb_link',
+//						'spacer'  => '<span class="spacer"></span>',
+                        'desc'	  => __( 'You can choose to link each thumbnail to the full size image, the image\'s attachment page, a custom URL, or you can choose to not link to anything.', 'foogallery' ),
+                    ),
 					array(
 						'id'      => 'lightbox',
 						'title'   => __( 'Lightbox', 'foogallery' ),
 						'desc'    => __( 'Choose which lightbox you want to use. The lightbox will only work if you set the thumbnail link to "Full Size Image".', 'foogallery' ),
+                        'section' => __( 'General', 'foogallery' ),
 						'type'    => 'lightbox',
 					),
 					array(
 						'id'      => 'spacing',
 						'title'   => __( 'Spacing', 'foogallery' ),
 						'desc'    => __( 'The spacing or gap between thumbnails in the gallery.', 'foogallery' ),
+                        'section' => __( 'Look &amp; Feel', 'foogallery' ),
 						'type'    => 'select',
 						'default' => 'spacing-width-10',
 						'choices' => array(
@@ -65,12 +88,13 @@ if ( !class_exists( 'FooGallery_Default_Gallery_Template' ) ) {
 							'spacing-width-15' => __( '15 pixels', 'foogallery' ),
 							'spacing-width-20' => __( '20 pixels', 'foogallery' ),
 							'spacing-width-25' => __( '25 pixels', 'foogallery' ),
-						),
+						)
 					),
 					array(
 						'id'      => 'alignment',
 						'title'   => __( 'Alignment', 'foogallery' ),
 						'desc'    => __( 'The horizontal alignment of the thumbnails inside the gallery.', 'foogallery' ),
+                        'section' => __( 'Look &amp; Feel', 'foogallery' ),
 						'default' => 'alignment-center',
 						'type'    => 'select',
 						'choices' => array(
@@ -88,30 +112,10 @@ if ( !class_exists( 'FooGallery_Default_Gallery_Template' ) ) {
 							'yes'  => __( 'Show Thumbnail Loading Indicator', 'foogallery' ),
 							'no'   => __( 'Disabled', 'foogallery' )
 						),
-						'spacer'  => '<span class="spacer"></span>',
+//						'spacer'  => '<span class="spacer"></span>',
 						'desc'	  => __( 'By default, an animated loading animation indicator is shown before the thumbnails have loaded. You can disable the loader if you want.', 'foogallery' ),
+                        'section' => __( 'Advanced', 'foogallery' )
 					),
-					array(
-						'id'      => 'thumbnail_dimensions',
-						'title'   => __( 'Size', 'foogallery' ),
-						'desc'    => __( 'Choose the size of your thumbnails.', 'foogallery' ),
-						'section' => __( 'Thumbnail Settings', 'foogallery' ),
-						'type'    => 'thumb_size',
-						'default' => array(
-							'width' => get_option( 'thumbnail_size_w' ),
-							'height' => get_option( 'thumbnail_size_h' ),
-							'crop' => true,
-						),
-					),
-					array(
-						'id'      => 'thumbnail_link',
-						'title'   => __( 'Link', 'foogallery' ),
-						'section' => __( 'Thumbnail Settings', 'foogallery' ),
-						'default' => 'image',
-						'type'    => 'thumb_link',
-						'spacer'  => '<span class="spacer"></span>',
-						'desc'	  => __( 'You can choose to link each thumbnail to the full size image, the image\'s attachment page, a custom URL, or you can choose to not link to anything.', 'foogallery' ),
-					)
 //					array(
 //						'id' => 'thumb_preview',
 //						'title' => __( 'Preview', 'foogallery' ),
