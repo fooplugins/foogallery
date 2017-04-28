@@ -83,7 +83,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings' ) ) {
             $fields[] = array(
                 'id'      => 'border-style',
                 'title'   => __( 'Border Style', 'foogallery' ),
-                'desc'    => __( 'The border style for each thumbnail in the gallery.', 'foogallery' ),
+                'desc'    => __( 'The border style applied to each thumbnail', 'foogallery' ),
                 'section' => __( 'Look &amp; Feel', 'foogallery' ),
                 'type'    => 'icon',
                 'default' => 'border-style-square-white',
@@ -93,7 +93,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings' ) ) {
             $fields[] = array(
                 'id'      => 'hover-effect-help',
                 'title'   => __( 'Hover Effect Help', 'foogallery' ),
-                'desc'    => __( 'Captions can be enabled by choosing the "Captions" hover effect below.', 'foogallery' ),
+                'desc'    => __( 'Captions can be enabled by choosing the "Caption" hover effect below.', 'foogallery' ),
                 'section' => __( 'Look &amp; Feel', 'foogallery' ),
                 'type'    => 'help'
             );
@@ -108,12 +108,12 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings' ) ) {
             ) );
             $fields[] = array(
                 'id'      => 'hover-effect-type',
-                'title'   => __( 'Hover Effect Type', 'foogallery' ),
+                'title'   => __( 'Hover Effect', 'foogallery' ),
                 'section' => __( 'Look &amp; Feel', 'foogallery' ),
                 'default' => '',
                 'type'    => 'radio',
                 'choices' => $hover_effect_type_choices,
-                'desc'	  => __( 'The type of hover effect the thumbnails will use.', 'foogallery' ),
+                'desc'	  => __( 'Choose what will happen when you hover over a thumbnail', 'foogallery' ),
             );
 
             $hover_effect_choices = apply_filters( 'foogallery_gallery_template_common_thumbnail_fields_hover_effect_choices', array(
@@ -126,8 +126,8 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings' ) ) {
             ) );
             $fields[] = array(
                 'id'      => 'hover-effect',
-                'title'   => __( 'Icon Hover Effect', 'foogallery' ),
-                'desc'    => __( 'When the hover effect type of Icon is chosen, you can choose which icon is shown when you hover over each thumbnail.', 'foogallery' ),
+                'title'   => __( 'Hover Icon', 'foogallery' ),
+                'desc'    => __( 'Choose which icon is shown when you hover over a thumbnail', 'foogallery' ),
                 'section' => __( 'Look &amp; Feel', 'foogallery' ),
                 'type'    => 'icon',
                 'default' => 'hover-effect-zoom',
@@ -143,7 +143,8 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings' ) ) {
             ) );
             $fields[] = array(
                 'id'      => 'caption-hover-effect',
-                'title'   => __( 'Caption Effect', 'foogallery' ),
+                'title'   => __( 'Caption Type', 'foogallery' ),
+                'desc'    => __( 'Choose what the captions will look like and how they will work', 'foogallery' ),
                 'section' => __( 'Look &amp; Feel', 'foogallery' ),
                 'default' => 'hover-caption-simple',
                 'type'    => 'radio',
@@ -158,6 +159,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings' ) ) {
             $fields[] = array(
                 'id'      => 'caption-content',
                 'title'   => __( 'Caption Content', 'foogallery' ),
+                'desc'    => __( 'Choose what is used for your caption content', 'foogallery' ),
                 'section' => __( 'Look &amp; Feel', 'foogallery' ),
                 'default' => 'title',
                 'type'    => 'radio',
