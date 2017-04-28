@@ -24,7 +24,7 @@
     };
 
 	FOOGALLERY.settingsChanged = function() {
-		var selectedTemplate = $('#FooGallerySettings_GalleryTemplate').val();
+		var selectedTemplate = FOOGALLERY.getSelectedTemplate();
 
 		//hide all template fields
 		$('.foogallery-settings-container').not('.foogallery-settings-container-'+selectedTemplate).hide();
@@ -37,6 +37,29 @@
 
 		//trigger a change so custom template js can do something
 		FOOGALLERY.triggerTemplateChangedEvent();
+
+		//make sure the fields that should be hidden or shown are doing what they need to do
+		FOOGALLERY.handleSettingsShowRules();
+	};
+
+	FOOGALLERY.handleSettingsShowRules = function() {
+		var selectedTemplate = FOOGALLERY.getSelectedTemplate();
+
+		//hide any fields that need to be hidden initially
+		$('.foogallery_template_field_template-' + selectedTemplate + '[data-foogallery-hidden]').hide();
+
+		$('.foogallery_template_field_template-' + selectedTemplate + '[data-foogallery-show-when-field]').each(function(index, item) {
+			var fieldId = $(item).data('foogallery-show-when-field'),
+				fieldValue = $(item).data('foogallery-show-when-field-value'),
+				$field_row = $('.foogallery_template_field_template_id-' + selectedTemplate + '-' + fieldId),
+				$field_selector = $field_row.data('foogallery-value-selector'),
+				$field = $field_row.find($field_selector),
+				actualFieldValue = $field.val();
+
+			if ( actualFieldValue === fieldValue ) {
+				$(item).show();
+			}
+		});
 	};
 
 	FOOGALLERY.initSettings = function() {
@@ -60,12 +83,15 @@
 
 		$('#FooGallerySettings_GalleryTemplate').change(FOOGALLERY.settingsChanged);
 
-		//include our selected preview CSS
-		FOOGALLERY.includePreviewCss();
+		//NEED TO HOOK INTO INPUT CHANGES
+		$('.foogallery-metabox-settings input:radio').change(FOOGALLERY.handleSettingsShowRules);
 
 		//trigger this onload too!
-		FOOGALLERY.triggerTemplateChangedEvent();
 		FOOGALLERY.settingsChanged();
+	};
+
+	FOOGALLERY.getSelectedTemplate = function() {
+		return $('#FooGallerySettings_GalleryTemplate').val();
 	};
 
 	FOOGALLERY.includePreviewCss = function() {
@@ -83,8 +109,7 @@
 	};
 
 	FOOGALLERY.triggerTemplateChangedEvent = function() {
-		var selectedTemplate = $('#FooGallerySettings_GalleryTemplate').val();
-		$('body').trigger('foogallery-gallery-template-changed-' + selectedTemplate );
+		$('body').trigger('foogallery-gallery-template-changed-' + FOOGALLERY.getSelectedTemplate() );
 	};
 
     FOOGALLERY.addAttachmentToGalleryList = function(attachment) {
