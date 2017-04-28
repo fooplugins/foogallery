@@ -78,9 +78,16 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings_Helper' ) ) {
 				<?php
 				foreach ( $section['fields'] as $field ) {
 					$field_type = isset( $field['type'] ) ? $field['type'] : 'unknown';
-					$field_class ="foogallery_template_field foogallery_template_field_type-{$field_type} foogallery_template_field-{$template['slug']} foogallery_template_field-{$template['slug']}-{$field['id']}";
+					$field_class ="foogallery_template_field foogallery_template_field_type-{$field_type} foogallery_template_field_id-{$field['id']} foogallery_template_field_template-{$template['slug']} foogallery_template_field_template_id-{$template['slug']}-{$field['id']}";
+					$field_row_data_html = '';
+					if ( isset( $field['row_data'] ) ) {
+						$field_row_data = array_map( 'esc_attr', $field['row_data'] );
+						foreach ( $field_row_data as $field_row_data_name => $field_row_data_value ) {
+							$field_row_data_html .= " $field_row_data_name=" . '"' . $field_row_data_value . '"';
+						}
+					}
 					?>
-					<tr class="<?php echo $field_class; ?>">
+					<tr class="<?php echo $field_class; ?>"<?php echo $field_row_data_html; ?>>
 						<?php if ( 'help' == $field_type ) { ?>
 							<td colspan="2">
 								<div class="foogallery-help">
