@@ -53,6 +53,7 @@ if ( is_admin() ) {
 	require_once( FOOGALLERY_PATH . 'includes/admin/class-gallery-editor.php' );
 	require_once( FOOGALLERY_PATH . 'includes/admin/class-gallery-metaboxes.php' );
 	require_once( FOOGALLERY_PATH . 'includes/admin/class-gallery-metabox-fields.php' );
+    require_once( FOOGALLERY_PATH . 'includes/admin/class-gallery-metabox-settings.php' );
 	require_once( FOOGALLERY_PATH . 'includes/admin/class-menu.php' );
 	require_once( FOOGALLERY_PATH . 'includes/admin/class-columns.php' );
 	require_once( FOOGALLERY_PATH . 'includes/admin/class-boilerplate-zip-generator.php' );

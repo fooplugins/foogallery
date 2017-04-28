@@ -286,144 +286,14 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 		}
 
 		public function render_gallery_settings_metabox( $post ) {
-			?>
 
-			<div class="foogallery-settings">
-				<div class="foogallery-vertical-tabs">
-					<div class="foogallery-vertical-tab foogallery-tab-active" data-name="general">
-						<span class="dashicons dashicons-admin-tools"></span>
-						<span class="foogallery-tab-text">General</span>
-					</div>
-					<div class="foogallery-vertical-tab" data-name="advanced">
-						<span class="dashicons dashicons-admin-generic"></span>
-						<span class="foogallery-tab-text">Advanced</span>
-					</div>
-					<div class="foogallery-vertical-tab" data-name="video">
-						<span class="dashicons dashicons-format-video"></span>
-						<span class="foogallery-tab-text">Video</span>
-					</div>
-				</div>
-				<div class="foogallery-tab-contents">
-					<div class="foogallery-tab-content foogallery-tab-active" data-name="general">
+            $gallery = FooGallery::get( $post );
 
-					</div>
-					<div class="foogallery-tab-content" data-name="advanced">
+            $settings = new FooGallery_Admin_Gallery_MetaBox_Settings( $gallery );
 
-					</div>
-					<div class="foogallery-tab-content" data-name="video">
+            $settings->render_hidden_gallery_template_selector();
 
-					</div>
-				</div>
-			</div>
-
-			<?php
-
-
-			//gallery settings including:
-			//gallery images link to image or attachment page
-			//default template to use
-			$gallery             = $this->get_gallery( $post );
-			$available_templates = foogallery_gallery_templates();
-
-			//check if we have no templates
-			if ( 0 === count( $available_templates ) ) {
-				//force the default template to activate if there are no other gallery templates
-				foogallery_activate_default_templates_extension();
-				$available_templates = foogallery_gallery_templates();
-			}
-
-			$gallery_template = foogallery_default_gallery_template();
-			if ( ! empty($gallery->gallery_template) ) {
-				$gallery_template = $gallery->gallery_template;
-			}
-			$hide_help = 'on' == foogallery_get_setting( 'hide_gallery_template_help' );
-			?>
-			<table class="foogallery-metabox-settings">
-				<tbody>
-				<tr class="gallery_template_field gallery_template_field_selector">
-					<th>
-						<label for="FooGallerySettings_GalleryTemplate"><?php _e( 'Gallery Template', 'foogallery' ); ?></label>
-					</th>
-					<td>
-						<select id="FooGallerySettings_GalleryTemplate" name="<?php echo FOOGALLERY_META_TEMPLATE; ?>">
-							<?php
-							foreach ( $available_templates as $template ) {
-								$selected = ($gallery_template === $template['slug']) ? 'selected' : '';
-
-								$preview_css = '';
-								if ( isset( $template['preview_css'] ) ) {
-									if ( is_array( $template['preview_css'] ) ) {
-										//dealing with an array of css files to include
-										$preview_css = implode( ',', $template['preview_css'] );
-									} else {
-										$preview_css = $template['preview_css'];
-									}
-								}
-								$preview_css = empty( $preview_css ) ? '' : ' data-preview-css="' . $preview_css . '" ';
-
-								echo "<option {$selected}{$preview_css} value=\"{$template['slug']}\">{$template['name']}</option>";
-							}
-							?>
-						</select>
-						<br />
-						<small><?php _e( 'The gallery template that will be used when the gallery is output to the frontend.', 'foogallery' ); ?></small>
-					</td>
-				</tr>
-				<?php
-				foreach ( $available_templates as $template ) {
-					$field_visibility = ($gallery_template !== $template['slug']) ? 'style="display:none"' : '';
-
-					//allow for extensions to override fields for every gallery template.
-					// Also passes the $template along so you can inspect and conditionally alter fields based on the template properties
-					$fields = apply_filters( 'foogallery_override_gallery_template_fields', $template['fields'], $template );
-
-					//allow for extensions to override fields for every gallery template.
-					// Also passes the $template along so you can inspect and conditionally alter fields based on the template properties
-					$fields = apply_filters( "foogallery_override_gallery_template_fields-{$template['slug']}", $fields, $template );
-
-					$section = '';
-					foreach ( $fields as $field ) {
-
-						//allow for the field to be altered by extensions. Also used by the build-in fields, e.g. lightbox
-						$field = apply_filters( 'foogallery_alter_gallery_template_field', $field, $gallery );
-
-						$class = "gallery_template_field gallery_template_field-{$template['slug']} gallery_template_field-{$template['slug']}-{$field['id']}";
-
-						if ( isset($field['section']) && $field['section'] !== $section ) {
-							$section = $field['section'];
-							?>
-							<tr class="<?php echo $class; ?>" <?php echo $field_visibility; ?>>
-								<td colspan="2"><h4><?php echo $section; ?></h4></td>
-							</tr>
-						<?php }
-						if (isset($field['type']) && 'help' == $field['type'] && $hide_help) {
-							continue; //skip help if the 'hide help' setting is turned on
-						}
-						?>
-						<tr class="<?php echo $class; ?>" <?php echo $field_visibility; ?>>
-							<?php if ( isset($field['type']) && 'help' == $field['type'] ) { ?>
-							<td colspan="2">
-								<div class="foogallery-help">
-									<?php echo $field['desc']; ?>
-								</div>
-							</td>
-							<?php } else { ?>
-							<th>
-								<label
-									for="FooGallerySettings_<?php echo $template['slug'] . '_' . $field['id']; ?>"><?php echo $field['title']; ?></label>
-							</th>
-							<td>
-								<?php do_action( 'foogallery_render_gallery_template_field', $field, $gallery, $template ); ?>
-							</td>
-							<?php } ?>
-						</tr>
-					<?php
-					}
-				}
-				?>
-				</tbody>
-			</table>
-		<?php
+            $settings->render_gallery_settings();
 		}
 
 		public function render_gallery_shortcode_metabox( $post ) {
