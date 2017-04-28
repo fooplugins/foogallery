@@ -123,20 +123,28 @@
 	width:30px;
 }
 
-.gallery_template_field td {
+.foogallery_template_field td {
 	padding-bottom: 20px;
 }
 
-.gallery_template_field th {
+.foogallery_template_field th {
 	vertical-align: top;
 	text-align: left;
 	padding-top: 0.3em;
 	padding-right: 10px;
 }
 
-.gallery_template_field textarea {
+.foogallery_template_field textarea {
 	min-width: 500px;
 	min-height: 100px;
+}
+
+.foogallery_template_field.foogallery_template_field_type-help {
+	border-bottom: none;
+}
+
+.foogallery_template_field.foogallery_template_field_type-help td {
+	padding-bottom: 0;
 }
 
 .foogallery_metabox_field-icon label {
