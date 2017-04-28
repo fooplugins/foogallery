@@ -13,8 +13,6 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Fields' ) ) {
 
 			//allow changing of field values
 			add_filter( 'foogallery_render_gallery_template_field_value', array( $this, 'check_lightbox_value' ), 10, 4 );
-
-			add_filter( 'foogallery_gallery_settings_metabox_section_icon', array( $this, 'add_section_icons') );
 		}
 
 		/**
@@ -285,27 +283,5 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Fields' ) ) {
 
 			return $value;
 		}
-
-        /**
-         * Returns the Dashicon that can be used in the settings tabs
-         * @param $section_slug
-         * @return string
-         */
-		function add_section_icons( $section_slug ) {
-		    switch ( $section_slug ) {
-                case 'general':
-                    return 'dashicons-admin-tools';
-                    break;
-                case 'advanced':
-                    return 'dashicons-admin-generic';
-                    break;
-                case 'look &amp; feel':
-                    return 'dashicons-images-alt2';
-                    break;
-                case 'video':
-                    return 'dashicons-format-video';
-            }
-		    return 'dashicons-admin-tools';
-        }
 	}
 }
