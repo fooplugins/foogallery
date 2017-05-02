@@ -40,7 +40,7 @@ if ( ! class_exists( 'FooGallery_LazyLoad' ) ) {
 				$fields[] = array(
 					'id'      => 'lazyload',
 					'title'   => __( 'Lazy Loading', 'foogallery' ),
-					'desc'    => __( 'Lazy loading means images in your gallery are only loaded when they are visible in browser. This significantly improves page loading times.', 'foogallery' ),
+					'desc'    => __( 'Lazy loading means images in your gallery are only loaded when they become visible in the browser. This significantly improves page loading times.', 'foogallery' ),
 					'section' => __( 'Advanced', 'foogallery' ),
 					'type'    => 'radio',
 					'choices' => array(

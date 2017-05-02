@@ -64,7 +64,6 @@ if ( !class_exists( 'FooGallery_Default_Gallery_Template' ) ) {
                         'section' => __( 'General', 'foogallery' ),
                         'default' => 'image',
                         'type'    => 'thumb_link',
-//						'spacer'  => '<span class="spacer"></span>',
                         'desc'	  => __( 'You can choose to link each thumbnail to the full size image, the image\'s attachment page, a custom URL, or you can choose to not link to anything.', 'foogallery' ),
                     ),
 					array(
@@ -112,7 +111,6 @@ if ( !class_exists( 'FooGallery_Default_Gallery_Template' ) ) {
 							'yes'  => __( 'Show Thumbnail Loading Indicator', 'foogallery' ),
 							'no'   => __( 'Disabled', 'foogallery' )
 						),
-//						'spacer'  => '<span class="spacer"></span>',
 						'desc'	  => __( 'By default, an animated loading animation indicator is shown before the thumbnails have loaded. You can disable the loader if you want.', 'foogallery' ),
                         'section' => __( 'Advanced', 'foogallery' )
 					),
