@@ -49,15 +49,21 @@
 		$('.foogallery_template_field_template-' + selectedTemplate + '[data-foogallery-hidden]').hide();
 
 		$('.foogallery_template_field_template-' + selectedTemplate + '[data-foogallery-show-when-field]').each(function(index, item) {
-			var fieldId = $(item).data('foogallery-show-when-field'),
-				fieldValue = $(item).data('foogallery-show-when-field-value'),
+			var $item = $(item),
+				fieldId = $item.data('foogallery-show-when-field'),
+				fieldValue = $item.data('foogallery-show-when-field-value'),
+                fieldOperator = $item.data('foogallery-show-when-field-operator'),
 				$field_row = $('.foogallery_template_field_template_id-' + selectedTemplate + '-' + fieldId),
 				$field_selector = $field_row.data('foogallery-value-selector'),
 				$field = $field_row.find($field_selector),
 				actualFieldValue = $field.val();
 
-			if ( actualFieldValue === fieldValue ) {
-				$(item).show();
+			if ( fieldOperator === '!==' ) {
+				if ( actualFieldValue !== fieldValue ) {
+                    $item.show();
+                }
+            } else if ( actualFieldValue === fieldValue ) {
+                $item.show();
 			}
 		});
 	};
@@ -83,8 +89,13 @@
 
 		$('#FooGallerySettings_GalleryTemplate').change(FOOGALLERY.settingsChanged);
 
-		//NEED TO HOOK INTO INPUT CHANGES
-		$('.foogallery-metabox-settings input:radio').change(FOOGALLERY.handleSettingsShowRules);
+		//hook into settings fields changes
+		$('.foogallery-metabox-settings .foogallery_template_field[data-foogallery-change-selector]').each(function(index, item) {
+			var $item = $(item),
+				selector = $item.data('foogallery-change-selector');
+
+            $item.find(selector).change(FOOGALLERY.handleSettingsShowRules);
+        });
 
 		//trigger this onload too!
 		FOOGALLERY.settingsChanged();
