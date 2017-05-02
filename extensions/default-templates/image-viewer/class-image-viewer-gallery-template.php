@@ -43,112 +43,162 @@ if ( !class_exists( 'FooGallery_Image_Viewer_Gallery_Template' ) ) {
 
 			$gallery_templates[] = array(
 				'slug'        => 'image-viewer',
-				'name'        => __( 'Image Viewer', 'foogallery-image-viewer'),
+				'name'        => __( 'Image Viewer', 'foogallery' ),
 				'lazyload_support' => true,
 				'preview_css' => FOOGALLERY_IMAGE_VIEWER_GALLERY_TEMPLATE_URL . 'css/gallery-image-viewer.css',
 				'admin_js'	  => FOOGALLERY_IMAGE_VIEWER_GALLERY_TEMPLATE_URL . 'js/admin-gallery-image-viewer.js',
 				'fields'	  => array(
-					array(
-						'id'      => 'alignment',
-						'title'   => __( 'Alignment', 'foogallery' ),
-						'desc'    => __( 'The horizontal alignment of the thumbnails inside the gallery.', 'foogallery' ),
-						'default' => 'alignment-center',
-						'type'    => 'select',
-						'choices' => array(
-							'alignment-left' => __( 'Left', 'foogallery' ),
-							'alignment-center' => __( 'Center', 'foogallery' ),
-							'alignment-right' => __( 'Right', 'foogallery' ),
-						)
-					),
-					array(
-						'id'      => 'lightbox',
-						'title'   => __('Lightbox', 'foogallery-image-viewer'),
-						'desc'    => __('Choose which lightbox you want to use in the gallery.', 'foogallery-image-viewer'),
-						'type'    => 'lightbox'
-					),
+                    array(
+                        'id'      => 'thumbnail_size',
+                        'title'   => __( 'Thumb Size', 'foogallery' ),
+                        'section' => __( 'General', 'foogallery' ),
+                        'desc'    => __( 'Choose the size of your thumbnails', 'foogallery' ),
+                        'type'    => 'thumb_size',
+                        'default' => array(
+                            'width' => 640,
+                            'height' => 360,
+                            'crop' => true
+                        )
+                    ),
+                    array(
+                        'id'      => 'thumbnail_link',
+                        'title'   => __( 'Thumb Link', 'foogallery' ),
+                        'section' => __( 'General', 'foogallery' ),
+                        'default' => 'image' ,
+                        'type'    => 'thumb_link',
+                        'desc'	  => __( 'You can choose to either link each thumbnail to the full size image or to the image\'s attachment page', 'foogallery')
+                    ),
+                    array(
+                        'id'      => 'lightbox',
+                        'title'   => __( 'Lightbox', 'foogallery' ),
+                        'section' => __( 'General', 'foogallery' ),
+                        'desc'    => __( 'Choose which lightbox you want to use in the gallery', 'foogallery' ),
+                        'type'    => 'lightbox'
+                    ),
 					array(
 						'id'      => 'theme',
-						'title'   => __('Theme', 'foogallery'),
-						'default' => '',
+						'title'   => __( 'Theme', 'foogallery' ),
+                        'section' => __( 'Look &amp; Feel', 'foogallery' ),
+                        'desc'    => __( 'Choose which theme your Image Viewer gallery will use. If you choose "custom", then you will need to choose colors too', 'foogallery' ),
+                        'default' => '',
 						'type'    => 'radio',
 						'spacer'  => '<span class="spacer"></span>',
 						'choices' => array(
 							'' => __( 'Light', 'foogallery' ),
 							'fiv-dark' => __( 'Dark', 'foogallery' ),
 							'fiv-custom' => __( 'Custom', 'foogallery' )
-						)
+						),
+                        'row_data'=> array(
+                            'data-foogallery-change-selector' => 'input:radio',
+                            'data-foogallery-value-selector' => 'input:checked'
+                        )
 					),
+                    array(
+                        'id'      => 'custom-theme-help',
+                        'title'   => __( 'Custom Theme Help', 'foogallery' ),
+                        'desc'    => __( 'By choosing a custom theme means you need to decide on the colors the custom theme will use.', 'foogallery' ),
+                        'section' => __( 'Look &amp; Feel', 'foogallery' ),
+                        'type'    => 'help',
+                        'row_data'=> array(
+                            'data-foogallery-hidden' => true,
+                            'data-foogallery-show-when-field' => 'theme',
+                            'data-foogallery-show-when-field-value' => 'fiv-custom'
+                        )
+                    ),
 					array(
 						'id'      => 'theme_custom_bgcolor',
 						'title'   => __('Background Color', 'foogallery'),
-						'section' => __( 'Custom Theme Colors', 'foogallery' ),
+                        'desc'    => __( 'Choose a background color for your custom theme', 'foogallery' ),
+                        'section' => __( 'Look &amp; Feel', 'foogallery' ),
 						'type'    => 'colorpicker',
 						'default' => '#FFFFFF',
-						'opacity' => true
+						'opacity' => true,
+                        'row_data'=> array(
+                            'data-foogallery-hidden' => true,
+                            'data-foogallery-show-when-field' => 'theme',
+                            'data-foogallery-show-when-field-value' => 'fiv-custom'
+                        )
 					),
 					array(
 						'id'      => 'theme_custom_textcolor',
 						'title'   => __('Text Color', 'foogallery'),
-						'section' => __( 'Custom Theme Colors', 'foogallery' ),
+                        'desc'    => __( 'Choose a text color for your custom theme', 'foogallery' ),
+                        'section' => __( 'Look &amp; Feel', 'foogallery' ),
 						'type'    => 'colorpicker',
 						'default' => '#1b1b1b',
-						'opacity' => true
+						'opacity' => true,
+                        'row_data'=> array(
+                            'data-foogallery-hidden' => true,
+                            'data-foogallery-show-when-field' => 'theme',
+                            'data-foogallery-show-when-field-value' => 'fiv-custom'
+                        )
 					),
 					array(
 						'id'      => 'theme_custom_hovercolor',
 						'title'   => __('Hover BG Color', 'foogallery'),
-						'section' => __( 'Custom Theme Colors', 'foogallery' ),
+                        'desc'    => __( 'Choose a hover background color for your custom theme', 'foogallery' ),
+                        'section' => __( 'Look &amp; Feel', 'foogallery' ),
 						'type'    => 'colorpicker',
 						'default' => '#F2F2F2',
-						'opacity' => true
+						'opacity' => true,
+                        'row_data'=> array(
+                            'data-foogallery-hidden' => true,
+                            'data-foogallery-show-when-field' => 'theme',
+                            'data-foogallery-show-when-field-value' => 'fiv-custom'
+                        )
 					),
 					array(
 						'id'      => 'theme_custom_bordercolor',
 						'title'   => __('Border Color', 'foogallery'),
-						'section' => __( 'Custom Theme Colors', 'foogallery' ),
+                        'desc'    => __( 'Choose a border color for your custom theme', 'foogallery' ),
+                        'section' => __( 'Look &amp; Feel', 'foogallery' ),
 						'type'    => 'colorpicker',
 						'default' => '#e6e6e6',
-						'opacity' => true
+						'opacity' => true,
+                        'row_data'=> array(
+                            'data-foogallery-hidden' => true,
+                            'data-foogallery-show-when-field' => 'theme',
+                            'data-foogallery-show-when-field-value' => 'fiv-custom'
+                        )
 					),
-					array(
-						'id'      => 'thumbnail_size',
-						'title'   => __('Thumbnail Size', 'foogallery-image-viewer'),
-						'section' => __( 'Thumbnail Settings', 'foogallery' ),
-						'desc'    => __('Choose the size of your thumbs.', 'foogallery-image-viewer'),
-						'type'    => 'thumb_size',
-						'default' => array(
-							'width' => 640,
-							'height' => 360,
-							'crop' => true
-						)
-					),
-					array(
-						'id'      => 'thumbnail_link',
-						'title'   => __('Thumbnail Link', 'foogallery-image-viewer'),
-						'section' => __( 'Thumbnail Settings', 'foogallery' ),
-						'default' => 'image' ,
-						'type'    => 'thumb_link',
-						'spacer'  => '<span class="spacer"></span>',
-						'desc'	  => __('You can choose to either link each thumbnail to the full size image or to the image\'s attachment page.', 'foogallery-image-viewer')
-					),
+                    array(
+                        'id'      => 'alignment',
+                        'title'   => __( 'Alignment', 'foogallery' ),
+                        'section' => __( 'Look &amp; Feel', 'foogallery' ),
+                        'desc'    => __( 'The horizontal alignment of the thumbnails inside the gallery', 'foogallery' ),
+                        'default' => 'alignment-center',
+                        'type'    => 'select',
+                        'choices' => array(
+                            'alignment-left' => __( 'Left', 'foogallery' ),
+                            'alignment-center' => __( 'Center', 'foogallery' ),
+                            'alignment-right' => __( 'Right', 'foogallery' ),
+                        )
+                    ),
+                    array(
+                        'id'      => 'language-help',
+                        'title'   => __( 'Language Help', 'foogallery' ),
+                        'desc'    => __( 'This gallery template shows the below items of text. Change them to suit your preference or language.', 'foogallery' ),
+                        'section' => __( 'Language', 'foogallery' ),
+                        'type'    => 'help'
+                    ),
 					array(
 						'id'      => 'text-prev',
 						'title'   => __( '"Prev" Text', 'foogallery' ),
-						'section' => __( 'Language Settings', 'foogallery' ),
+						'section' => __( 'Language', 'foogallery' ),
 						'type'    => 'text',
 						'default' =>  __('Prev', 'foogallery')
 					),
 					array(
 						'id'      => 'text-of',
 						'title'   => __( '"of" Text', 'foogallery' ),
-						'section' => __( 'Language Settings', 'foogallery' ),
+						'section' => __( 'Language', 'foogallery' ),
 						'type'    => 'text',
 						'default' =>  __('of', 'foogallery')
 					),
 					array(
 						'id'      => 'text-next',
 						'title'   => __( '"Next" Text', 'foogallery' ),
-						'section' => __( 'Language Settings', 'foogallery' ),
+						'section' => __( 'Language', 'foogallery' ),
 						'type'    => 'text',
 						'default' =>  __('Next', 'foogallery')
 					)
