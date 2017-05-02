@@ -101,8 +101,6 @@ if ( ! class_exists( 'FooGallery_Plugin' ) ) {
 
 			new FooGallery_Thumbnail_Dimensions();
 
-			new FooGallery_Admin_Gallery_MetaBox_Settings();
-
 			$checker = new FooGallery_Version_Check();
 			$checker->wire_up_checker();
 		}
