@@ -147,6 +147,10 @@
 	padding-bottom: 0;
 }
 
+.foogallery_template_field.foogallery_template_field_type-icon td {
+	padding-bottom: 0;
+}
+
 .foogallery_metabox_field-icon label {
 	display:inline-block;
 	margin-right:10px;
@@ -157,6 +161,7 @@
 	-webkit-border-radius: 3px;
 	padding:5px;
 	line-height: 0;
+	margin-bottom: 10px;
 }
 
 .foogallery_metabox_field-icon input:checked + label {
@@ -175,6 +180,12 @@
 .foogallery_metabox_field-thumb_size input[type="number"] {
 	margin-right: 10px;
 	margin-left: 10px;
+}
+
+.foogallery_template_field_type-text input.small-text {
+	width: 65px;
+	height: 28px;
+	line-height: 1;
 }
 
 #foogallery_pages ul li:hover .row-actions { visibility: visible; }
