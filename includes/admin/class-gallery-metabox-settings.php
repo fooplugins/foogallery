@@ -115,6 +115,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings' ) ) {
                 'choices' => $hover_effect_type_choices,
                 'desc'	  => __( 'Choose what will happen when you hover over a thumbnail', 'foogallery' ),
                 'row_data'=> array(
+                    'data-foogallery-change-selector' => 'input:radio',
                     'data-foogallery-value-selector' => 'input:checked'
                 )
             );
