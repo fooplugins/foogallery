@@ -1,7 +1,7 @@
 ![Plugin Banner](https://s3.amazonaws.com/foogallery/banner-772x250.jpg)
 
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/fooplugins/foogallery/badges/quality-score.png?b=develop)](https://scrutinizer-ci.com/g/fooplugins/foogallery/?branch=develop)
-# Foo Gallery #
+# FooGallery - Image Gallery WordPress Plugin #
 **Contributors:** bradvin, fooplugins
 
 **Donate link:** http://fooplugins.com
@@ -10,7 +10,7 @@
 
 **Requires at least:** 3.9
 
-**Tested up to:** 4.6.1
+**Tested up to:** 4.7.4
 
 **Stable tag:** trunk
 
@@ -18,12 +18,11 @@
 
 **License URI:** http://www.gnu.org/licenses/gpl-2.0.html
 
-
-Foo Gallery is the most intuitive and extensible gallery management tool ever created for WordPress.
+FooGallery is the best image gallery plugin for WordPress. Why? Stunning gallery layouts, responsive, retina-ready, lightning fast, easy to use.
 
 ## Description ##
 
-Foo Gallery allows for better image and video gallery management within WordPress. Built to be simple for users and highly flexible for developers.
+FooGallery is the best image gallery plugin for WordPress. Why? Stunning gallery layouts, responsive, retina-ready, lightning fast, easy to use. Built to be highly configurable and extensible for developers or freelancers.
 
 [View the Foo Gallery Homepage & DEMO](http://foo.gallery/)
 
@@ -156,6 +155,19 @@ Hell, yes! Check out our [developer page](http://foo.gallery/developers/)
 Update now to support FooVideo and many other improvements!
 
 ## Changelog ##
+
+### 1.2.19 ###
+
+* New : Gallery output caching! Saves database requests improving load time
+* New : Gallery usage column in admin gallery listing
+* New : Better support for animated gifs
+* New : Hover icons retina support
+* New : Uninstall button on settings
+* New : Save thumb dimensions per attachment. (needed in future versions)
+* Fix : Extensions refactor and many issues resolved
+* Fix : Better retina support for all templates
+* Fix : Colorize / Greyscale CSS filters
+* Fix : Even better wpthumb compatibility
 
 ### 1.2.18 ###
 
