@@ -490,8 +490,8 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 				$checked = array_key_exists( $retina_key, $gallery->retina ) ? ('true' === $gallery->retina[$retina_key]) : false;
 				?>
 				<p>
-				<input type="checkbox" value="true" <?php checked( $checked ); ?> id="FooGallerySettings_GallerySort_<?php echo $retina_key; ?>" name="<?php echo FOOGALLERY_META_RETINA; ?>[<?php echo $retina_key; ?>]" />
-				<label for="FooGallerySettings_GalleryRetina_<?php echo $retina_key; ?>"><?php echo $retina_label; ?></label>
+				<input type="checkbox" value="true" <?php checked( $checked ); ?> id="FooGallerySettings_Retina_<?php echo $retina_key; ?>" name="<?php echo FOOGALLERY_META_RETINA; ?>[<?php echo $retina_key; ?>]" />
+				<label for="FooGallerySettings_Retina_<?php echo $retina_key; ?>"><?php echo $retina_label; ?></label>
 				</p><?php
 			} ?>
 			<p class="foogallery-help">
