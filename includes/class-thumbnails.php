@@ -60,8 +60,13 @@ if ( !class_exists( 'FooGallery_Thumbnails' ) ) {
 			$use_original_thumbs = ( isset( $args['use_original_thumbs'] ) && true === $args['use_original_thumbs'] ) || 'on' === foogallery_get_setting( 'use_original_thumbs' );
 
 			if ( $use_original_thumbs ) {
+
+				$option_thumbnail_size_w = get_option( 'thumbnail_size_w' );
+				$option_thumbnail_size_h = get_option( 'thumbnail_size_h' );
+				$option_thumbnail_crop = get_option( 'thumbnail_crop' );
+
 				//check if we are trying to get back the default thumbnail that we already have
-				if ( $thumbnail_object->ID > 0 && $width == get_option( 'thumbnail_size_w' ) && $height == get_option( 'thumbnail_size_h' ) && $crop == get_option( 'thumbnail_crop' ) ) {
+				if ( $thumbnail_object->ID > 0 && $width == $option_thumbnail_size_w && $height == $option_thumbnail_size_h && $crop == $option_thumbnail_crop ) {
 					$thumbnail_attributes = wp_get_attachment_image_src( $thumbnail_object->ID );
 
 					return $thumbnail_attributes[0];
