@@ -64,7 +64,7 @@ if ( ! class_exists( 'FooGallery_Thumbnail_Dimensions' ) ) {
 		 */
 		function load_thumbnail_dimensions( $foogallery_attachment, $foogallery ) {
 			$size = get_post_meta( $foogallery_attachment->ID, FOOGALLERY_META_THUMB_DIMENSIONS, true );
-			if ( $size && array_key_exists( $foogallery->ID, $size ) ) {
+			if ( isset( $size ) && is_array( $size ) && array_key_exists( $foogallery->ID, $size ) ) {
 				$size = $size[$foogallery->ID];
 
 				$foogallery_attachment->foogallery_id = $foogallery->ID;
