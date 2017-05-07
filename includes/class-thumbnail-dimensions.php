@@ -30,24 +30,28 @@ if ( ! class_exists( 'FooGallery_Thumbnail_Dimensions' ) ) {
 
 			$thumbnail_dimensions = apply_filters( 'foogallery_template_thumbnail_dimensions-' . $gallery_template, $foogallery->get_meta( $setting_key, false ), $foogallery );
 
-			foreach ( $foogallery->attachments() as $attachment ) {
+			if ( isset( $thumbnail_dimensions ) && is_array( $thumbnail_dimensions ) ) {
+
 				//$thumbnail_dimensions
-				$thumb_width = (int) $thumbnail_dimensions['width'];
+				$thumb_width  = (int) $thumbnail_dimensions['width'];
 				$thumb_height = (int) $thumbnail_dimensions['height'];
-				$thumb_crop = (bool) $thumbnail_dimensions['crop'];
+				$thumb_crop   = (bool) $thumbnail_dimensions['crop'];
 
-				$size_array = image_resize_dimensions( $attachment->width, $attachment->height, $thumb_width, $thumb_height, $thumb_crop );
+				foreach ( $foogallery->attachments() as $attachment ) {
 
-				$size = array(
-					'width'  => $size_array[4],
-					'height' => $size_array[5]
-				);
+					$size_array = image_resize_dimensions( $attachment->width, $attachment->height, $thumb_width, $thumb_height, $thumb_crop );
 
-				$existing_size = get_post_meta( $attachment->ID, FOOGALLERY_META_THUMB_DIMENSIONS, true );
-				$existing_size[$foogallery->ID] = $size;
+					$size = array(
+						'width'  => $size_array[4],
+						'height' => $size_array[5]
+					);
 
-				//save the post meta against the attachment
-				update_post_meta( $attachment->ID, FOOGALLERY_META_THUMB_DIMENSIONS, $existing_size );
+					$existing_size                  = get_post_meta( $attachment->ID, FOOGALLERY_META_THUMB_DIMENSIONS, true );
+					$existing_size[$foogallery->ID] = $size;
+
+					//save the post meta against the attachment
+					update_post_meta( $attachment->ID, FOOGALLERY_META_THUMB_DIMENSIONS, $existing_size );
+				}
 			}
 		}
 
