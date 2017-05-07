@@ -283,7 +283,7 @@ if ( !class_exists( 'FooGallery_Image_Viewer_Gallery_Template' ) ) {
 		 * @return mixed
 		 */
 		function get_thumbnail_dimensions( $dimensions, $foogallery ) {
-			$dimensions = $foogallery->get_meta( 'thumbnail_size', false );
+			$dimensions = $foogallery->get_meta( 'image-viewer_thumbnail_size', false );
 			return $dimensions;
 		}
 	}
