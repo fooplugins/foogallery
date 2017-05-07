@@ -10,6 +10,18 @@ if ( !class_exists( 'FooGallery_Thumbnails' ) ) {
 		function __construct() {
 			//generate thumbs using WPThumb
 			add_filter( 'foogallery_attachment_resize_thumbnail', array( $this, 'resize' ), 10, 3 );
+
+			add_filter( 'foogallery_thumbnail_resize_args', array( $this, 'check_for_force_original_thumb') );
+		}
+
+		function check_for_force_original_thumb( $args ){
+			global $current_foogallery;
+
+			if ( isset( $current_foogallery ) ) {
+				$args['force_use_original_thumb'] = $current_foogallery->force_use_original_thumbs;
+			}
+
+			return $args;
 		}
 
 		function resize( $original_image_src, $args, $thumbnail_object ) {

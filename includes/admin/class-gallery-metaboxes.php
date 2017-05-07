@@ -47,7 +47,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 							'foogallery_pages',
 							'foogallery_customcss',
 							'foogallery_sorting',
-							'foogallery_thumb_cache',
+							'foogallery_thumb_settings',
 							'foogallery_retina'
 						) ),
 					'contexts'   => array( 'normal', 'advanced', 'side', ),
@@ -124,9 +124,9 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 			);
 
 			add_meta_box(
-				'foogallery_thumb_cache',
-				__( 'Thumbnail Cache', 'foogallery' ),
-				array( $this, 'render_thumb_cache_metabox' ),
+				'foogallery_thumb_settings',
+				__( 'Thumbnails', 'foogallery' ),
+				array( $this, 'render_thumb_settings_metabox' ),
 				FOOGALLERY_CPT_GALLERY,
 				'side',
 				'default'
@@ -181,6 +181,12 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 				}
 
 				update_post_meta( $post_id, FOOGALLERY_META_RETINA, $_POST[FOOGALLERY_META_RETINA] );
+
+				if ( isset( $_POST[FOOGALLERY_META_FORCE_ORIGINAL_THUMBS] ) ) {
+					update_post_meta( $post_id, FOOGALLERY_META_FORCE_ORIGINAL_THUMBS, $_POST[FOOGALLERY_META_FORCE_ORIGINAL_THUMBS] );
+				} else {
+					delete_post_meta( $post_id, FOOGALLERY_META_FORCE_ORIGINAL_THUMBS );
+				}
 
 				do_action( 'foogallery_after_save_gallery', $post_id, $_POST );
 			}
@@ -494,8 +500,10 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 			<?php
 		}
 
-		public function render_thumb_cache_metabox( $post ) {
-			?>
+		public function render_thumb_settings_metabox( $post ) {
+			$gallery = $this->get_gallery( $post );
+			$force_use_original_thumbs = get_post_meta( $post->ID, FOOGALLERY_META_FORCE_ORIGINAL_THUMBS, true );
+			$checked = 'true' === $force_use_original_thumbs; ?>
 			<p>
 				<?php _e( 'Clear all the previously cached thumbnails that have been generated for this gallery.', 'foogallery' ); ?>
 			</p>
@@ -504,6 +512,10 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 				<span id="foogallery_clear_thumb_cache_spinner" class="spinner"></span>
 				<?php wp_nonce_field( 'foogallery_clear_gallery_thumb_cache', 'foogallery_clear_gallery_thumb_cache_nonce', false ); ?>
 			</div>
+			<p>
+				<input type="checkbox" value="true" <?php checked( $checked ); ?> id="FooGallerySettings_ForceOriginalThumbs" name="<?php echo FOOGALLERY_META_FORCE_ORIGINAL_THUMBS; ?>" />
+				<label for="FooGallerySettings_ForceOriginalThumbs"><?php _e('Force Original Thumbs', 'foogallery'); ?></label>
+			</p>
 			<?php
 		}
 
