@@ -74,10 +74,15 @@ if ( ! class_exists( 'FooGalleryDatasource_MediaLibrary' ) ) {
 
 				remove_action( 'pre_get_posts', array( $this, 'force_gallery_ordering' ), 99 );
 
-				$attachments = array_map( array( 'FooGalleryAttachment', 'get' ), $attachment_posts );
+				$attachments = array_map( array( $this, 'build_attachment' ), $attachment_posts );
 			}
 
 			return $attachments;
+		}
+
+		function build_attachment( $attachment_post ) {
+			$attachment = apply_filters( 'foogallery_attachment_load', FooGalleryAttachment::get( $attachment_post ), $this->foogallery );
+			return $attachment;
 		}
 
 		/**

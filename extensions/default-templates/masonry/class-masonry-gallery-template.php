@@ -12,6 +12,8 @@ if ( !class_exists( 'FooGallery_Masonry_Gallery_Template' ) ) {
 			add_filter( 'foogallery_gallery_templates', array( $this, 'add_template' ) );
 			add_filter( 'foogallery_gallery_templates_files', array( $this, 'register_myself' ) );
 			add_filter( 'foogallery_located_template-masonry', array( $this, 'enqueue_dependencies' ) );
+
+			add_filter( 'foogallery_template_thumbnail_dimensions-masonry', array( $this, 'get_thumbnail_dimensions' ), 10, 2 );
 		}
 
 		/**
@@ -137,6 +139,23 @@ if ( !class_exists( 'FooGallery_Masonry_Gallery_Template' ) ) {
 			wp_enqueue_script( 'jquery' );
 			wp_enqueue_script( 'masonry' );
 			foogallery_enqueue_imagesloaded_script();
+		}
+
+		/**
+		 * Get the thumb dimensions arguments saved for the gallery for this gallery template
+		 *
+		 * @param array $dimensions
+		 * @param FooGallery $foogallery
+		 *
+		 * @return mixed
+		 */
+		function get_thumbnail_dimensions( $dimensions, $foogallery ) {
+			$width = $foogallery->get_meta( 'masonry_thumbnail_width', false );
+			return array(
+				'height' => 0,
+				'width'  => intval( $width ),
+				'crop'   => false
+			);
 		}
 	}
 }

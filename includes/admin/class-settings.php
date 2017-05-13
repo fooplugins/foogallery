@@ -12,10 +12,11 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 			add_action( 'foogallery_admin_settings_custom_type_render_setting', array( $this, 'render_custom_setting_types' ) );
 			add_action( 'foogallery_admin_settings_after_render_setting', array( $this, 'after_render_setting' ) );
 
-			// Ajax calls for clearing CSS optimization cache
+			// Ajax calls
 			add_action( 'wp_ajax_foogallery_clear_css_optimizations', array( $this, 'ajax_clear_css_optimizations' ) );
 			add_action( 'wp_ajax_foogallery_thumb_generation_test', array( $this, 'ajax_thumb_generation_test' ) );
 			add_action( 'wp_ajax_foogallery_apply_retina_defaults', array( $this, 'ajax_apply_retina_defaults' ) );
+			add_action( 'wp_ajax_foogallery_uninstall', array( $this, 'ajax_uninstall' ) );
 		}
 
 		/**
@@ -169,7 +170,7 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 			$settings[] = array(
 					'id'      => 'use_original_thumbs',
 					'title'   => __( 'Use Original Thumbnails', 'foogallery' ),
-					'desc'    => __( 'Allow for the original thumbnails to be used when possible. This can be useful if your thumbs are animated gifs.', 'foogallery' ),
+					'desc'    => __( 'Allow for the original thumbnails to be used when possible. This can be useful if your thumbs are animated gifs.<br/>PLEASE NOTE : this will only work if your gallery thumbnail sizes are identical to your thumbnail sizes under Settings -> Media.', 'foogallery' ),
 					'type'    => 'checkbox',
 					'tab'     => 'thumb'
 			);
@@ -178,6 +179,14 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 				'id'      => 'thumb_resize_animations',
 				'title'   => __( 'Resize Animated GIFs', 'foogallery' ),
 				'desc'    => __( 'Should animated gifs be resized or not. If enabled, only the first frame is used in the resize.', 'foogallery' ),
+				'type'    => 'checkbox',
+				'tab'     => 'thumb'
+			);
+
+			$settings[] = array(
+				'id'      => 'animated_gif_use_original_image',
+				'title'   => __( 'Show Animated Thumbnails', 'foogallery' ),
+				'desc'    => __( 'If animated GIFs are used, then show the original GIF as the thumbnail.', 'foogallery' ),
 				'type'    => 'checkbox',
 				'tab'     => 'thumb'
 			);
@@ -244,6 +253,19 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 			);
 			//endregion Language Tab
 
+			//region Uninstall Tab
+			$tabs['uninstall'] = __( 'Uninstall', 'foogallery' );
+
+			$settings[] = array(
+				'id'      => 'uninstall',
+				'title'   => __( 'Full Uninstall', 'foogallery' ),
+				'desc'    => sprintf( __( 'Run a full uninstall of %s, which includes removing all galleries, settings and metadata. This basically removes all traces of the plugin from your system. Please be careful - there is no undo!', 'foogallery' ), foogallery_plugin_name() ),
+				'type'    => 'uninstall',
+				'tab'     => 'uninstall'
+			);
+
+			//endregion Uninstall Tab
+
 			return apply_filters( 'foogallery_admin_settings_override', array(
 				'tabs'     => $tabs,
 				'sections' => array(),
@@ -256,8 +278,15 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 		 */
 		function render_custom_setting_types( $args ) {
 			if ( 'clear_optimization_button' === $args['type'] ) { ?>
-				<input type="button" data-nonce="<?php echo esc_attr( wp_create_nonce( 'foogallery_clear_css_optimizations' ) ); ?>" class="button-primary foogallery_clear_css_optimizations" value="<?php _e( 'Clear CSS Optimization Cache', 'foogallery' ); ?>">
-				<span id="foogallery_clear_css_cache_spinner" style="position: absolute" class="spinner"></span>
+				<div id="foogallery_clear_css_optimizations_container">
+					<input type="button" data-nonce="<?php echo esc_attr( wp_create_nonce( 'foogallery_clear_css_optimizations' ) ); ?>" class="button-primary foogallery_clear_css_optimizations" value="<?php _e( 'Clear CSS Optimization Cache', 'foogallery' ); ?>">
+					<span id="foogallery_clear_css_cache_spinner" style="position: absolute" class="spinner"></span>
+				</div>
+			<?php } else if ( 'uninstall' === $args['type'] ) { ?>
+				<div id="foogallery_uninstall_container">
+					<input type="button" data-nonce="<?php echo esc_attr( wp_create_nonce( 'foogallery_uninstall' ) ); ?>" class="button-primary foogallery_uninstall" value="<?php _e( 'Run Full Uninstall', 'foogallery' ); ?>">
+					<span id="foogallery_uninstall_spinner" style="position: absolute" class="spinner"></span>
+				</div>
 			<?php } else if ( 'thumb_generation_test' === $args['type'] ) { ?>
 				<div id="foogallery_thumb_generation_test_container">
 					<input type="button" data-nonce="<?php echo esc_attr( wp_create_nonce( 'foogallery_thumb_generation_test' ) ); ?>" class="button-primary foogallery_thumb_generation_test" value="<?php _e( 'Run Tests', 'foogallery' ); ?>">
@@ -337,10 +366,19 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 				}
 
 				echo sprintf( _n(
-					'1 FooGallery successfully updated to use the default retina settings.',
-					'%s FooGalleries successfully updated to use the default retina settings.',
+					'1 gallery successfully updated to use the default retina settings.',
+					'%s galleries successfully updated to use the default retina settings.',
 					$gallery_update_count, 'foogallery' ), $gallery_update_count );
 
+				die();
+			}
+		}
+
+		function ajax_uninstall() {
+			if ( check_admin_referer( 'foogallery_uninstall' ) && current_user_can( 'install_plugins' ) ) {
+				foogallery_uninstall();
+
+				_e('All traces of the plugin were removed from your system!', 'foogallery' );
 				die();
 			}
 		}
