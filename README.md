@@ -156,6 +156,11 @@ Update now to support FooVideo and many other improvements!
 
 ## Changelog ##
 
+### 1.2.20 ###
+
+* New : Force Use Original thumb setting on gallery edit page
+* Fix : PHP warning from thumbnail class since 1.2.19
+
 ### 1.2.19 ###
 
 * New : Gallery output caching! Saves database requests improving load time
