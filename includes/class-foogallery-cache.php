@@ -20,6 +20,8 @@ if ( ! class_exists( 'FooGallery_Cache' ) ) {
 
 				// Ajax call for clearing HTML cache
 				add_action( 'wp_ajax_foogallery_clear_html_cache', array( $this, 'ajax_clear_all_caches' ) );
+
+				add_action( 'foogallery_admin_new_version_detected', array( $this, 'clear_cache_on_update' ) );
 			}
 
 			add_filter( 'foogallery_load_gallery_template', array( $this, 'fetch_gallery_html_from_cache' ), 10, 3 );
@@ -147,15 +149,25 @@ if ( ! class_exists( 'FooGallery_Cache' ) ) {
 		function ajax_clear_all_caches() {
 			if ( check_admin_referer( 'foogallery_clear_html_cache' ) ) {
 
-				$galleries = foogallery_get_all_galleries();
-
-				foreach( $galleries as $gallery ) {
-					delete_post_meta( $gallery->ID, FOOGALLERY_META_CACHE );
-				}
+				$this->clear_all_gallery_caches();
 
 				_e('The cache for all galleries has been cleared!', 'foogallery' );
 				die();
 			}
+		}
+
+		/**
+		 * Clears all caches for all galleries
+		 */
+		function clear_all_gallery_caches() {
+			delete_post_meta_by_key( FOOGALLERY_META_CACHE );
+		}
+
+		/**
+		 * Clear all caches when the plugin has been updated. This is to account for changes in the HTML when a new version is released.
+		 */
+		function clear_cache_on_update() {
+			$this->clear_all_gallery_caches();
 		}
 	}
 }
