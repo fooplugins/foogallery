@@ -111,13 +111,14 @@ if ( !class_exists( 'FooGallery_Masonry_Gallery_Template' ) ) {
                     array(
                         'id'      => 'center_align',
                         'title'   => __( 'Alignment', 'foogallery' ),
-                        'desc'    => __( 'You can choose to center align your images or leave them at the default. Only applicable when using a fixed layout!', 'foogallery' ),
+                        'desc'    => __( 'You can choose to center align your images or leave them at the default (left). Only applicable when using a fixed layout!', 'foogallery' ),
                         'section' => __( 'Look &amp; Feel', 'foogallery' ),
-                        'type'    => 'radio',
+						'type'    => 'radio',
+						'spacer'  => '<span class="spacer"></span>',
                         'choices' => array(
-                            'default'  => __( 'Left Alignment', 'foogallery' ),
-                            'center'   => __( 'Center Alignment', 'foogallery' ),
-                            'right'   => __( 'Right Alignment', 'foogallery' )
+                            'default'  => __( 'Left', 'foogallery' ),
+                            'center'   => __( 'Center', 'foogallery' ),
+                            'right'   => __( 'Right', 'foogallery' )
                         ),
                         'default' => 'default'
                     ),

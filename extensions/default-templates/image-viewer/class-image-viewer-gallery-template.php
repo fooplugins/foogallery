@@ -167,7 +167,8 @@ if ( !class_exists( 'FooGallery_Image_Viewer_Gallery_Template' ) ) {
                         'section' => __( 'Look &amp; Feel', 'foogallery' ),
                         'desc'    => __( 'The horizontal alignment of the thumbnails inside the gallery', 'foogallery' ),
                         'default' => 'alignment-center',
-                        'type'    => 'select',
+						'type'    => 'radio',
+						'spacer'  => '<span class="spacer"></span>',
                         'choices' => array(
                             'alignment-left' => __( 'Left', 'foogallery' ),
                             'alignment-center' => __( 'Center', 'foogallery' ),

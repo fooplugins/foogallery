@@ -95,7 +95,8 @@ if ( !class_exists( 'FooGallery_Default_Gallery_Template' ) ) {
 						'desc'    => __( 'The horizontal alignment of the thumbnails inside the gallery.', 'foogallery' ),
                         'section' => __( 'Look &amp; Feel', 'foogallery' ),
 						'default' => 'alignment-center',
-						'type'    => 'select',
+						'type'    => 'radio',
+						'spacer'  => '<span class="spacer"></span>',
 						'choices' => array(
 							'alignment-left' => __( 'Left', 'foogallery' ),
 							'alignment-center' => __( 'Center', 'foogallery' ),
