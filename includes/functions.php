@@ -860,3 +860,23 @@ function foogallery_uninstall() {
 	//let any extensions clean up after themselves
 	do_action( 'foogallery_uninstall' );
 }
+
+/**
+ * Returns an attachment field friendly name, based on a field name that is passed in
+ *
+ * @param $field
+ *
+ * @return string
+ */
+function foogallery_get_attachment_field_friendly_name( $field ) {
+	switch ( $field ) {
+		case 'title':
+			return __( 'Attachment Title', 'foogallery' );
+		case 'caption':
+			return __( 'Attachment Caption', 'foogallery' );
+		case 'desc':
+			return __( 'Attachment Description', 'foogallery' );
+		case 'alt':
+			return __( 'Attachment Alt', 'foogallery' );
+	}
+}

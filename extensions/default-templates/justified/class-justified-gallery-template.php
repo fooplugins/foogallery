@@ -91,20 +91,7 @@ if ( !class_exists( 'FooGallery_Justified_Gallery_Template' ) ) {
 //									'type'    => 'checkbox',
 //									'default' => 'on',
 //							),
-                    array(
-                        'id'      => 'caption_source',
-                        'title'   => __( 'Caption Title Source', 'foogallery' ),
-                        'desc'    => __( 'Pull captions from either the attachment Title, Caption or Alt Text.', 'foogallery' ),
-                        'section' => __( 'Advanced', 'foogallery' ),
-                        'type'    => 'radio',
-                        'default' => 'title',
-                        'choices' => array(
-                            'title'  => __( 'Attachment Title', 'foogallery' ),
-                            'caption'   => __( 'Attachment Caption', 'foogallery' ),
-                            'alt'   => __( 'Attachment Alt Text', 'foogallery' ),
-                            'desc'   => __( 'Attachment Description', 'foogallery' )
-                        )
-                    ),
+
                     array(
                         'id'      => 'thumbnail_link',
                         'title'   => __( 'Thumbnail Link', 'foogallery' ),

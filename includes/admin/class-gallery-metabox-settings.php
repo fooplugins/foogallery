@@ -185,6 +185,43 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings' ) ) {
                 )
             );
 
+			$settings_link = sprintf( '<a target="blank" href="%s">%s</a>', foogallery_admin_settings_url(), __('settings', 'foogallery') );
+			$caption_title_source = foogallery_get_setting( 'caption_title_source', 'caption' );
+
+			$fields[] = array(
+				'id'      => 'caption_source',
+				'title'   => __( 'Caption Title Source', 'foogallery' ),
+				'desc'    => __( 'Decide where caption titles are pulled from. By default, what is saved under general settings will be used, but it can be overridden per gallery', 'foogallery' ),
+				'section' => __( 'Advanced', 'foogallery' ),
+				'type'    => 'radio',
+				'default' => '',
+				'choices' => array(
+					''        => sprintf( __( '%s (as per %s)', 'foogallery' ), foogallery_get_attachment_field_friendly_name( $caption_title_source ), $settings_link ),
+					'title'   => foogallery_get_attachment_field_friendly_name( 'title' ),
+					'caption' => foogallery_get_attachment_field_friendly_name( 'caption' ),
+					'alt'     => foogallery_get_attachment_field_friendly_name( 'alt' ),
+					'desc'    => foogallery_get_attachment_field_friendly_name( 'desc' )
+				)
+			);
+
+			$caption_desc_source = foogallery_get_setting( 'caption_desc_source', 'desc' );
+
+			$fields[] = array(
+				'id'      => 'caption_desc_source',
+				'title'   => __( 'Caption Desc. Source', 'foogallery' ),
+				'desc'    => __( 'Decide where captions descriptions are pulled from. By default, the general settings are used, but it can be overridden per gallery', 'foogallery' ),
+				'section' => __( 'Advanced', 'foogallery' ),
+				'type'    => 'radio',
+				'default' => '',
+				'choices' => array(
+					''        => sprintf( __( '%s (as per %s)', 'foogallery' ), foogallery_get_attachment_field_friendly_name( $caption_desc_source ), $settings_link ),
+					'title'   => foogallery_get_attachment_field_friendly_name( 'title' ),
+					'caption' => foogallery_get_attachment_field_friendly_name( 'caption' ),
+					'alt'     => foogallery_get_attachment_field_friendly_name( 'alt' ),
+					'desc'    => foogallery_get_attachment_field_friendly_name( 'desc' )
+				)
+			);
+
             return $fields;
         }
     }

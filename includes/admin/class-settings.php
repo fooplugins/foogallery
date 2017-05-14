@@ -85,11 +85,13 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 			$settings[] = array(
 				'id'      => 'caption_title_source',
 				'title'   => __( 'Caption Title Source', 'foogallery' ),
-				'desc'    => __( 'By default, image caption titles are pulled from the attachment "Caption" field. Alternatively, you can also choose to pull from the attachment "Title" field.', 'foogallery' ),
+				'desc'    => __( 'By default, image caption titles are pulled from the attachment "Caption" field. Alternatively, you can choose to use other fields.', 'foogallery' ),
 				'type'    => 'select',
 				'choices' => array(
-					'caption' => __('Attachment Caption Field', 'foogallery'),
-					'title' => __('Attachment Title Field', 'foogallery')
+					'title'   => foogallery_get_attachment_field_friendly_name( 'title' ),
+					'caption' => foogallery_get_attachment_field_friendly_name( 'caption' ),
+					'alt'     => foogallery_get_attachment_field_friendly_name( 'alt' ),
+					'desc'    => foogallery_get_attachment_field_friendly_name( 'desc' )
 				),
 				'default' => 'caption',
 				'tab'     => 'general',
@@ -98,20 +100,20 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 			);
 
 			$settings[] = array(
-					'id'      => 'caption_desc_source',
-					'title'   => __( 'Caption Description Source', 'foogallery' ),
-					'desc'    => __( 'By default, image caption descriptions are pulled from the attachment "Description" field. Alternatively, you can choose to use other fields.', 'foogallery' ),
-					'type'    => 'select',
-					'choices' => array(
-							'desc' => __('Attachment Description Field', 'foogallery'),
-							'title' => __('Attachment Title Field', 'foogallery'),
-							'caption' => __('Attachment Caption Field', 'foogallery'),
-							'alt' => __('Attachment Alt Field', 'foogallery')
-					),
-					'default' => 'desc',
-					'tab'     => 'general',
-					'section' => __( 'Captions', 'foogallery' ),
-					'spacer'  => '<span class="spacer"></span>'
+				'id'      => 'caption_desc_source',
+				'title'   => __( 'Caption Description Source', 'foogallery' ),
+				'desc'    => __( 'By default, image caption descriptions are pulled from the attachment "Description" field. Alternatively, you can choose to use other fields.', 'foogallery' ),
+				'type'    => 'select',
+				'choices' => array(
+					'title'   => foogallery_get_attachment_field_friendly_name( 'title' ),
+					'caption' => foogallery_get_attachment_field_friendly_name( 'caption' ),
+					'alt'     => foogallery_get_attachment_field_friendly_name( 'alt' ),
+					'desc'    => foogallery_get_attachment_field_friendly_name( 'desc' )
+				),
+				'default' => 'desc',
+				'tab'     => 'general',
+				'section' => __( 'Captions', 'foogallery' ),
+				'spacer'  => '<span class="spacer"></span>'
 			);
 
 			$settings[] = array(
