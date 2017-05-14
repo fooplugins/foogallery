@@ -14,7 +14,7 @@ $spacing = foogallery_gallery_template_setting( 'spacing', '' );
 $alignment = foogallery_gallery_template_setting( 'alignment', 'alignment-center' );
 $loading_animation = 'yes' === foogallery_gallery_template_setting( 'loading_animation', 'yes' ) ? 'loading-icon-default' : '';
 $hover_effect_type = foogallery_gallery_template_setting( 'hover-effect-type', '' );
-
+$caption_content = foogallery_gallery_template_setting( 'caption-content', 'title' );
 $foogallery_default_classes = foogallery_build_class_attribute_safe( $current_foogallery, 'foogallery-link-' . $link, 'foogallery-lightbox-' . $lightbox, $spacing, $alignment, $loading_animation );
 $foogallery_default_attributes = foogallery_build_container_attributes_safe( $current_foogallery, array( 'class' => $foogallery_default_classes ) );
 ?><div <?php echo $foogallery_default_attributes; ?>>
