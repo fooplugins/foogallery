@@ -39,10 +39,12 @@ function foogallery_fs() {
 			'has_addons'        => false,
 			'has_paid_plans'    => false,
 			'menu'              => array(
-				'slug'       => 'edit.php?post_type=' . FOOGALLERY_CPT_GALLERY,
-				'first-path' => 'admin.php?page=' . FOOGALLERY_SLUG,
+				'slug'       => 'edit.php?post_type=foogallery',
+				'first-path' => 'edit.php?post_type=foogallery&page=foogallery-help',
+				'account'    => false,
 				'contact'    => false,
-			)
+				'support'    => false,
+			),
 		) );
 	}
 
