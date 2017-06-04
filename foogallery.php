@@ -22,6 +22,39 @@ define( 'FOOGALLERY_URL', plugin_dir_url( __FILE__ ) );
 define( 'FOOGALLERY_FILE', __FILE__ );
 define( 'FOOGALLERY_VERSION', '1.2.20' );
 
+// Create a helper function for easy SDK access.
+function foogallery_fs() {
+	global $foogallery_fs;
+
+	if ( ! isset( $foogallery_fs ) ) {
+		// Include Freemius SDK.
+		require_once dirname(__FILE__) . '/freemius/start.php';
+
+		$foogallery_fs = fs_dynamic_init( array(
+			'id'                => '843',
+			'slug'              => 'foogallery',
+			'type'              => 'plugin',
+			'public_key'        => 'pk_d87616455a835af1d0658699d0192',
+			'is_premium'        => false,
+			'has_addons'        => false,
+			'has_paid_plans'    => false,
+			'menu'              => array(
+				'slug'       => 'edit.php?post_type=' . FOOGALLERY_CPT_GALLERY,
+				'first-path' => 'admin.php?page=' . FOOGALLERY_SLUG,
+				'contact'    => false,
+			)
+		) );
+	}
+
+	return $foogallery_fs;
+}
+
+// Init Freemius.
+foogallery_fs();
+
+// Signal that SDK was initiated.
+do_action( 'foogallery_fs_loaded' );
+
 /**
  * FooGallery_Plugin class
  *
