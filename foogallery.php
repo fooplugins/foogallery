@@ -1,8 +1,8 @@
 <?php
 /**
- * Plugin Name: Foo Gallery
- * Description: Foo Gallery is the most intuitive and extensible gallery management tool ever created for WordPress
- * Version:     1.2.20
+ * Plugin Name: FooGallery
+ * Description: FooGallery is the most intuitive and extensible gallery management tool ever created for WordPress
+ * Version:     1.3.0
  * Author:      FooPlugins
  * Plugin URI:  https://foo.gallery
  * Author URI:  http://fooplugins.com
