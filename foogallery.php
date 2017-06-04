@@ -136,6 +136,8 @@ if ( ! class_exists( 'FooGallery_Plugin' ) ) {
 
 			new FooGallery_Responsive_Lightbox_dFactory_Support();
 
+			new FooGallery_Attachment_Custom_Class();
+
 			$checker = new FooGallery_Version_Check();
 			$checker->wire_up_checker();
 		}

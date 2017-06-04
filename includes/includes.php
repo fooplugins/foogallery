@@ -38,6 +38,7 @@ require_once( FOOGALLERY_PATH . 'includes/class-foogallery-animated-gif-support.
 require_once( FOOGALLERY_PATH . 'includes/class-foogallery-cache.php' );
 require_once( FOOGALLERY_PATH . 'includes/class-thumbnail-dimensions.php' );
 require_once( FOOGALLERY_PATH . 'includes/class-responsive-lightbox-dfactory-support.php' );
+require_once( FOOGALLERY_PATH . 'includes/class-foogallery-attachment-custom-class.php' );
 
 //Datasource includes
 require_once( FOOGALLERY_PATH . 'includes/interface-foogallery-datasource.php' );
