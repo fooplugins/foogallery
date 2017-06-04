@@ -264,3 +264,7 @@
 #foogallery_apply_retina_support_container {
 	margin-top: 5px;
 }
+
+.widefat th.column-icon {
+	width: 60px;
+}
