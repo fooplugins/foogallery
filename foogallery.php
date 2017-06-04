@@ -1,8 +1,8 @@
 <?php
 /**
- * Plugin Name: Foo Gallery
- * Description: Foo Gallery is the most intuitive and extensible gallery management tool ever created for WordPress
- * Version:     1.2.20
+ * Plugin Name: FooGallery
+ * Description: FooGallery is the most intuitive and extensible gallery management tool ever created for WordPress
+ * Version:     1.3.0
  * Author:      FooPlugins
  * Plugin URI:  https://foo.gallery
  * Author URI:  http://fooplugins.com
@@ -20,7 +20,42 @@ define( 'FOOGALLERY_SLUG', 'foogallery' );
 define( 'FOOGALLERY_PATH', plugin_dir_path( __FILE__ ) );
 define( 'FOOGALLERY_URL', plugin_dir_url( __FILE__ ) );
 define( 'FOOGALLERY_FILE', __FILE__ );
-define( 'FOOGALLERY_VERSION', '1.2.20' );
+define( 'FOOGALLERY_VERSION', '1.3.0' );
+
+// Create a helper function for easy SDK access.
+function foogallery_fs() {
+	global $foogallery_fs;
+
+	if ( ! isset( $foogallery_fs ) ) {
+		// Include Freemius SDK.
+		require_once dirname(__FILE__) . '/freemius/start.php';
+
+		$foogallery_fs = fs_dynamic_init( array(
+			'id'                => '843',
+			'slug'              => 'foogallery',
+			'type'              => 'plugin',
+			'public_key'        => 'pk_d87616455a835af1d0658699d0192',
+			'is_premium'        => false,
+			'has_addons'        => false,
+			'has_paid_plans'    => false,
+			'menu'              => array(
+				'slug'       => 'edit.php?post_type=foogallery',
+				'first-path' => 'edit.php?post_type=foogallery&page=foogallery-help',
+				'account'    => false,
+				'contact'    => false,
+				'support'    => false,
+			),
+		) );
+	}
+
+	return $foogallery_fs;
+}
+
+// Init Freemius.
+foogallery_fs();
+
+// Signal that SDK was initiated.
+do_action( 'foogallery_fs_loaded' );
 
 /**
  * FooGallery_Plugin class
