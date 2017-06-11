@@ -21,6 +21,7 @@ define( 'FOOGALLERY_PATH', plugin_dir_path( __FILE__ ) );
 define( 'FOOGALLERY_URL', plugin_dir_url( __FILE__ ) );
 define( 'FOOGALLERY_FILE', __FILE__ );
 define( 'FOOGALLERY_VERSION', '1.3.1' );
+require_once( FOOGALLERY_PATH . 'includes/constants.php' );
 
 // Create a helper function for easy SDK access.
 function foogallery_fs() {
