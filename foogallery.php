@@ -115,6 +115,8 @@ if ( ! class_exists( 'FooGallery_Plugin' ) ) {
 			if ( is_admin() ) {
 				new FooGallery_Admin();
 				add_action( 'wpmu_new_blog', array( $this, 'set_default_extensions_for_multisite_network_activated' ) );
+				add_action( 'admin_page_access_denied', array( $this, 'check_for_access_denied' ) );
+				foogallery_fs()->add_filter( 'connect_message_on_update', array( $this, 'override_connect_message_on_update' ), 10, 6 );
 			} else {
 				new FooGallery_Public();
 			}
@@ -141,6 +143,34 @@ if ( ! class_exists( 'FooGallery_Plugin' ) ) {
 
 			$checker = new FooGallery_Version_Check();
 			$checker->wire_up_checker();
+		}
+
+		/**
+		 * Checks for the access denied page after we have activated/updated the plugin
+		 */
+		function check_for_access_denied() {
+			global $plugin_page;
+
+			if ( FOOGALLERY_ADMIN_MENU_HELP_SLUG === $plugin_page ) {
+				fs_redirect( 'admin.php?page=' . FOOGALLERY_ADMIN_MENU_HELP_SLUG );
+			}
+		}
+
+		/**
+		 *
+		 */
+		function override_connect_message_on_update( $original, $first_name, $plugin_name, $login, $link, $freemius_link ) {
+
+			return
+				sprintf( __( 'Hey %s', 'foogallery' ), $first_name ) . '<br>' .
+				sprintf(
+					__( '<h2>Thank you for updating to %1$s v%5$s!</h2>Our goal with this update is to make %1$s the best gallery plugin for WordPress, but we need your help!<br><br>We have introduced this opt-in so that you can help us improve %1$s by simply clicking <strong>Allow &amp; Continue</strong>.<br><br>If you opt-in, some data about your usage of %1$s will be sent to %4$s. If you skip this, that\'s okay! %1$s will still work just fine.', 'foogallery' ),
+					'<b>' . $plugin_name . '</b>',
+					'<b>' . $login . '</b>',
+					$link,
+					$freemius_link,
+					FOOGALLERY_VERSION
+				);
 		}
 
 		/**
