@@ -42,7 +42,7 @@ function foogallery_fs() {
 			'has_paid_plans'    => false,
 			'menu'              => array(
 				'slug'       => 'edit.php?post_type=' . FOOGALLERY_CPT_GALLERY,
-				'first-path' => 'admin.php?page=' . FOOGALLERY_ADMIN_MENU_HELP_SLUG,
+				'first-path' => 'edit.php?post_type=' . FOOGALLERY_CPT_GALLERY . '&page=' . FOOGALLERY_ADMIN_MENU_HELP_SLUG,
 				'account'    => false,
 				'contact'    => false,
 				'support'    => false,
