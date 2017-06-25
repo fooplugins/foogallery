@@ -59,6 +59,11 @@ if ( current_user_can( 'activate_plugins' ) ) {
 	$foogallery = FooGallery_Plugin::get_instance();
 	$settings = $foogallery->options()->get_all();
 
+	$stream_wrappers = stream_get_wrappers();
+
+	$test_image_url_scheme = parse_url( foogallery_test_thumb_url() ,PHP_URL_SCHEME );
+	$home_url_scheme = parse_url( home_url() ,PHP_URL_SCHEME );
+
 	$debug_info = array(
 		__( 'FooGallery version', 'foogallery' )  => $info['version'],
 		__( 'WordPress version', 'foogallery' )   => $wp_version,
@@ -66,6 +71,10 @@ if ( current_user_can( 'activate_plugins' ) ) {
 		__( 'WordPress URL', 'foogallery' )       => get_site_url(),
 		__( 'PHP version', 'foogallery' )         => phpversion(),
 		__( 'PHP GD Loaded', 'foogallery' )       => extension_loaded( 'gd' ) && function_exists( 'gd_info' ) ? foogallery_gdversion() : __( 'Not found!', 'foogallery' ),
+		__( 'PHP Open SSL', 'foogallery' )        => extension_loaded( 'openssl' ) ? __( 'Loaded', 'foogallery' ) : __( 'Not found!', 'foogallery' ),
+		__( 'PHP HTTP Wrapper', 'foogallery' )    => in_array( 'http', $stream_wrappers ) ? __( 'Found', 'foogallery' ) : __( 'Not found!', 'foogallery' ),
+		__( 'PHP HTTPS Wrapper', 'foogallery' )   => in_array( 'https', $stream_wrappers ) ? __( 'Found', 'foogallery' ) : __( 'Not found!', 'foogallery' ),
+		__( 'HTTPS Mismatch', 'foogallery' )      => $test_image_url_scheme === $home_url_scheme ? __( 'None', 'foogallery' ) : __( 'There is a protocol mismatch between your site URL and the actual URL!', 'foogallery' ),
 		__( 'Extensions Endpoint', 'foogallery' ) => $api->get_extensions_endpoint(),
 		__( 'Extensions Errors', 'foogallery' )   => $api->has_extension_loading_errors() == true ? $api->get_extension_loading_errors_response() : __( 'Nope, all good', 'foogallery' ),
 		__( 'Extensions', 'foogallery' )          => $extension_slugs,
