@@ -73,8 +73,7 @@ if ( current_user_can( 'activate_plugins' ) ) {
 		__( 'Gallery Templates', 'foogallery' )   => $template_slugs,
 		__( 'Lightboxes', 'foogallery' )          => apply_filters( 'foogallery_gallery_template_field_lightboxes', array() ),
 		__( 'Settings', 'foogallery' )            => $settings,
-		__( 'Active Plugins', 'foogallery' )      => $plugins,
-		__( 'Server Mime Types', 'foogallery' )	  => wp_get_mime_types()
+		__( 'Active Plugins', 'foogallery' )      => $plugins
 	);
 
 	$debug_info = apply_filters( 'foogallery_admin_debug_info', $debug_info );
