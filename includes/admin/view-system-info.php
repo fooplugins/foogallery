@@ -63,26 +63,29 @@ if ( current_user_can( 'activate_plugins' ) ) {
 
 	$test_image_url_scheme = parse_url( foogallery_test_thumb_url() ,PHP_URL_SCHEME );
 	$home_url_scheme = parse_url( home_url() ,PHP_URL_SCHEME );
+	$image_file_contents = file_get_contents( foogallery_test_thumb_url() );
 
 	$debug_info = array(
-		__( 'FooGallery version', 'foogallery' )  => $info['version'],
-		__( 'WordPress version', 'foogallery' )   => $wp_version,
-		__( 'Activated Theme', 'foogallery' )     => $current_theme['Name'],
-		__( 'WordPress URL', 'foogallery' )       => get_site_url(),
-		__( 'PHP version', 'foogallery' )         => phpversion(),
-		__( 'PHP GD Loaded', 'foogallery' )       => extension_loaded( 'gd' ) && function_exists( 'gd_info' ) ? foogallery_gdversion() : __( 'Not found!', 'foogallery' ),
-		__( 'PHP Open SSL', 'foogallery' )        => extension_loaded( 'openssl' ) ? __( 'Loaded', 'foogallery' ) : __( 'Not found!', 'foogallery' ),
-		__( 'PHP HTTP Wrapper', 'foogallery' )    => in_array( 'http', $stream_wrappers ) ? __( 'Found', 'foogallery' ) : __( 'Not found!', 'foogallery' ),
-		__( 'PHP HTTPS Wrapper', 'foogallery' )   => in_array( 'https', $stream_wrappers ) ? __( 'Found', 'foogallery' ) : __( 'Not found!', 'foogallery' ),
-		__( 'HTTPS Mismatch', 'foogallery' )      => $test_image_url_scheme === $home_url_scheme ? __( 'None', 'foogallery' ) : __( 'There is a protocol mismatch between your site URL and the actual URL!', 'foogallery' ),
-		__( 'Extensions Endpoint', 'foogallery' ) => $api->get_extensions_endpoint(),
-		__( 'Extensions Errors', 'foogallery' )   => $api->has_extension_loading_errors() == true ? $api->get_extension_loading_errors_response() : __( 'Nope, all good', 'foogallery' ),
-		__( 'Extensions', 'foogallery' )          => $extension_slugs,
-		__( 'Extensions Active', 'foogallery' )   => array_keys( $api->get_active_extensions() ),
-		__( 'Gallery Templates', 'foogallery' )   => $template_slugs,
-		__( 'Lightboxes', 'foogallery' )          => apply_filters( 'foogallery_gallery_template_field_lightboxes', array() ),
-		__( 'Settings', 'foogallery' )            => $settings,
-		__( 'Active Plugins', 'foogallery' )      => $plugins
+		__( 'FooGallery version', 'foogallery' )  			=> $info['version'],
+		__( 'WordPress version', 'foogallery' )   			=> $wp_version,
+		__( 'Activated Theme', 'foogallery' )     			=> $current_theme['Name'],
+		__( 'WordPress URL', 'foogallery' )       			=> get_site_url(),
+		__( 'PHP version', 'foogallery' )         			=> phpversion(),
+		__( 'PHP GD', 'foogallery' )              			=> extension_loaded( 'gd' ) && function_exists( 'gd_info' ) ? __( 'Loaded', 'foogallery' ) . ' (V' . foogallery_gdversion() . ')' : __( 'Not found!', 'foogallery' ),
+		__( 'PHP Open SSL', 'foogallery' )        			=> extension_loaded( 'openssl' ) ? __( 'Loaded', 'foogallery' ) : __( 'Not found!', 'foogallery' ),
+		__( 'PHP HTTP Wrapper', 'foogallery' )    			=> in_array( 'http', $stream_wrappers ) ? __( 'Found', 'foogallery' ) : __( 'Not found!', 'foogallery' ),
+		__( 'PHP HTTPS Wrapper', 'foogallery' )   			=> in_array( 'https', $stream_wrappers ) ? __( 'Found', 'foogallery' ) : __( 'Not found!', 'foogallery' ),
+		__( 'HTTPS Mismatch', 'foogallery' )      			=> $test_image_url_scheme === $home_url_scheme ? __( 'None', 'foogallery' ) : __( 'There is a protocol mismatch between your site URL and the actual URL!', 'foogallery' ),
+		__( 'PHP Config[allow_url_fopen]', 'foogallery' ) 	=> ini_get( 'allow_url_fopen' ),
+		__( 'PHP Config[allow_url_include]', 'foogallery' ) => ini_get( 'allow_url_fopen' ),
+		__( 'Extensions Endpoint', 'foogallery' ) 			=> $api->get_extensions_endpoint(),
+		__( 'Extensions Errors', 'foogallery' )   			=> $api->has_extension_loading_errors() == true ? $api->get_extension_loading_errors_response() : __( 'Nope, all good', 'foogallery' ),
+		__( 'Extensions', 'foogallery' )          			=> $extension_slugs,
+		__( 'Extensions Active', 'foogallery' )   			=> array_keys( $api->get_active_extensions() ),
+		__( 'Gallery Templates', 'foogallery' )   			=> $template_slugs,
+		__( 'Lightboxes', 'foogallery' )          			=> apply_filters( 'foogallery_gallery_template_field_lightboxes', array() ),
+		__( 'Settings', 'foogallery' )            			=> $settings,
+		__( 'Active Plugins', 'foogallery' )      			=> $plugins
 	);
 
 	$debug_info = apply_filters( 'foogallery_admin_debug_info', $debug_info );
