@@ -17,6 +17,9 @@ $lightbox = foogallery_gallery_template_setting( 'lightbox', 'unknown' );
 $theme = foogallery_gallery_template_setting( 'theme', '' );
 $hover_effect = foogallery_gallery_template_setting( 'hover-effect', 'hover-effect-zoom' );
 $hover_effect_type = foogallery_gallery_template_setting( 'hover-effect-type', '' );
+if ( 'hover-effect-none' === $hover_effect_type ) {
+	$hover_effect = '';
+}
 $caption_content = foogallery_gallery_template_setting( 'caption-content', 'none' );
 $alignment = foogallery_gallery_template_setting( 'alignment', 'alignment-center' );
 $text_prev = foogallery_gallery_template_setting( 'text-prev', __('Prev', 'foogallery') );
