@@ -2,7 +2,7 @@
 /**
  * Plugin Name: FooGallery
  * Description: FooGallery is the most intuitive and extensible gallery management tool ever created for WordPress
- * Version:     1.3.3
+ * Version:     1.3.6
  * Author:      FooPlugins
  * Plugin URI:  https://foo.gallery
  * Author URI:  http://fooplugins.com
@@ -16,68 +16,62 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-define( 'FOOGALLERY_SLUG', 'foogallery' );
-define( 'FOOGALLERY_PATH', plugin_dir_path( __FILE__ ) );
-define( 'FOOGALLERY_URL', plugin_dir_url( __FILE__ ) );
-define( 'FOOGALLERY_FILE', __FILE__ );
-define( 'FOOGALLERY_VERSION', '1.3.3' );
+if ( ! class_exists( 'FooGallery_Plugin' ) ) {
 
-require_once( FOOGALLERY_PATH . 'includes/constants.php' );
+	define( 'FOOGALLERY_SLUG', 'foogallery' );
+	define( 'FOOGALLERY_PATH', plugin_dir_path( __FILE__ ) );
+	define( 'FOOGALLERY_URL', plugin_dir_url( __FILE__ ) );
+	define( 'FOOGALLERY_FILE', __FILE__ );
+	define( 'FOOGALLERY_VERSION', '1.3.6' );
 
-// Create a helper function for easy SDK access.
-function foogallery_fs() {
-	global $foogallery_fs;
+	require_once( FOOGALLERY_PATH . 'includes/constants.php' );
 
-	if ( ! isset( $foogallery_fs ) ) {
-		// Include Freemius SDK.
-		require_once dirname(__FILE__) . '/freemius/start.php';
+	// Create a helper function for easy SDK access.
+	function foogallery_fs() {
+		global $foogallery_fs;
 
-		$foogallery_fs = fs_dynamic_init( array(
-			'id'                => '843',
-			'slug'              => 'foogallery',
-			'type'              => 'plugin',
-			'public_key'        => 'pk_d87616455a835af1d0658699d0192',
-			'is_premium'        => false,
-			'has_addons'        => false,
-			'has_paid_plans'    => false,
-			'menu'              => array(
-				'slug'       => 'edit.php?post_type=' . FOOGALLERY_CPT_GALLERY,
-				'first-path' => 'edit.php?post_type=' . FOOGALLERY_CPT_GALLERY . '&page=' . FOOGALLERY_ADMIN_MENU_HELP_SLUG,
-				'account'    => false,
-				'contact'    => false,
-				'support'    => false,
-			),
-		) );
+		if ( ! isset( $foogallery_fs ) ) {
+			// Include Freemius SDK.
+			require_once dirname(__FILE__) . '/freemius/start.php';
+
+			$foogallery_fs = fs_dynamic_init( array(
+				'id'                => '843',
+				'slug'              => 'foogallery',
+				'type'              => 'plugin',
+				'public_key'        => 'pk_d87616455a835af1d0658699d0192',
+				'is_premium'        => false,
+				'has_addons'        => false,
+				'has_paid_plans'    => false,
+				'menu'              => array(
+					'slug'       => 'edit.php?post_type=' . FOOGALLERY_CPT_GALLERY,
+					'first-path' => 'edit.php?post_type=' . FOOGALLERY_CPT_GALLERY . '&page=' . FOOGALLERY_ADMIN_MENU_HELP_SLUG,
+					'account'    => false,
+					'contact'    => false,
+					'support'    => false,
+				),
+			) );
+		}
+
+		return $foogallery_fs;
 	}
 
-	return $foogallery_fs;
-}
+	// Init Freemius.
+	foogallery_fs();
 
-// Init Freemius.
-foogallery_fs();
+	// Signal that SDK was initiated.
+	do_action( 'foogallery_fs_loaded' );
 
-// Signal that SDK was initiated.
-do_action( 'foogallery_fs_loaded' );
-
-/**
- * FooGallery_Plugin class
- *
- * @package   FooGallery
- * @author    Brad Vincent <brad@fooplugins.com>
- * @license   GPL-2.0+
- * @link      https://github.com/fooplugins/foogallery
- * @copyright 2013 FooPlugins LLC
- */
-
-if ( ! class_exists( 'FooGallery_Plugin' ) ) {
 
 	require_once( FOOGALLERY_PATH . 'includes/foopluginbase/bootstrapper.php' );
 
 	/**
-	 * FooGallery_Plugin class.
+	 * FooGallery_Plugin class
 	 *
-	 * @package FooGallery
-	 * @author  Brad Vincent <brad@fooplugins.com>
+	 * @package   FooGallery
+	 * @author    Brad Vincent <brad@fooplugins.com>
+	 * @license   GPL-2.0+
+	 * @link      https://github.com/fooplugins/foogallery
+	 * @copyright 2013 FooPlugins LLC
 	 */
 	class FooGallery_Plugin extends Foo_Plugin_Base_v2_3 {
 
