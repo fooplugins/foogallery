@@ -25,6 +25,25 @@ if ( ! class_exists( 'FooGallery_Cache' ) ) {
 			}
 
 			add_filter( 'foogallery_load_gallery_template', array( $this, 'fetch_gallery_html_from_cache' ), 10, 3 );
+
+			add_filter( 'foogallery_html_cache_disabled', array( $this, 'disable_html_cache' ), 10, 3 );
+		}
+
+		/**
+		 * Override if the gallery html cache is disabled
+		 *
+		 * @param $disabled bool
+		 * @param $gallery FooGallery
+		 * @return bool
+		 */
+		function disable_html_cache( $disabled, $gallery ) {
+
+			//check if the gallery sorting is random
+			if ( 'rand' === $gallery->sorting ) {
+				$disabled = true;
+			}
+
+			return $disabled;
 		}
 
 		/**
@@ -81,6 +100,11 @@ if ( ! class_exists( 'FooGallery_Cache' ) ) {
 
 			//check if caching is disabled and quit early
 			if ( 'on' === foogallery_get_setting( 'disable_html_cache' ) ) {
+				return false;
+			}
+
+			//allow extensions of others disable the html cache
+			if ( apply_filters( 'foogallery_html_cache_disabled', false, $gallery ) ) {
 				return false;
 			}
 
