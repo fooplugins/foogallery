@@ -24,3 +24,5 @@ define( 'FOOGALLERY_ACTIVATION_REDIRECT_TRANSIENT_KEY', '_foogallery_activation_
 
 define( 'FOOGALLERY_OPTION_VERSION', 'foogallery-version' );
 define( 'FOOGALLERY_OPTION_THUMB_TEST', 'foogallery-thumb-test' );
+
+define( 'FOOGALLERY_ADMIN_MENU_HELP_SLUG', 'foogallery-help' );

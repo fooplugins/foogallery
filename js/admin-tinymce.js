@@ -133,6 +133,8 @@
 
 					if (node.nodeName === 'A' && dom.hasClass(node, 'foogallery-tinymce-toolbar-edit')) {
 						//alert('EDIT : ' + dom.getAttrib( fg, 'data-foogallery-id' ))
+						var win = window.open(node.href, '_blank');
+						win.focus();
 					} else if (node.nodeName === 'DIV' && dom.hasClass(node, 'foogallery-tinymce-toolbar-delete')) {
 						//alert('DELETE : ' + dom.getAttrib( fg, 'data-foogallery-id' ))
 						dom.remove(fg);

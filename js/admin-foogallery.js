@@ -150,7 +150,10 @@
 			})
 			.on( 'open', function() {
 				var selection = FOOGALLERY.media_uploader.state().get('selection');
-				if (selection) { selection.set(); }   //clear any previos selections
+				if (selection) {
+					//clear any previous selections
+					selection.reset();
+				}
 
 				if (FOOGALLERY.selected_attachment_id > 0) {
 					var attachment = wp.media.attachment(FOOGALLERY.selected_attachment_id);

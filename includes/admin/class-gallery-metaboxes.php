@@ -180,7 +180,11 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 					update_post_meta( $post_id, FOOGALLERY_META_CUSTOM_CSS, $custom_css );
 				}
 
-				update_post_meta( $post_id, FOOGALLERY_META_RETINA, $_POST[FOOGALLERY_META_RETINA] );
+				if ( isset( $_POST[FOOGALLERY_META_RETINA] ) ) {
+					update_post_meta( $post_id, FOOGALLERY_META_RETINA, $_POST[FOOGALLERY_META_RETINA] );
+				} else {
+					delete_post_meta( $post_id, FOOGALLERY_META_RETINA );
+				}
 
 				if ( isset( $_POST[FOOGALLERY_META_FORCE_ORIGINAL_THUMBS] ) ) {
 					update_post_meta( $post_id, FOOGALLERY_META_FORCE_ORIGINAL_THUMBS, $_POST[FOOGALLERY_META_FORCE_ORIGINAL_THUMBS] );
@@ -472,7 +476,11 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 				<input type="radio" value="<?php echo $sorting_key; ?>" <?php checked( $sorting_key === $gallery->sorting ); ?> id="FooGallerySettings_GallerySort_<?php echo $sorting_key; ?>" name="<?php echo FOOGALLERY_META_SORT; ?>" />
 				<label for="FooGallerySettings_GallerySort_<?php echo $sorting_key; ?>"><?php echo $sorting_label; ?></label>
 				</p><?php
-			}
+			} ?>
+			<p class="foogallery-help">
+				<?php _e('PLEASE NOTE : sorting randomly will force HTML Caching for the gallery to be disabled.', 'foogallery'); ?>
+			</p>
+			<?php
 		}
 
 		public function render_retina_metabox( $post ) {
