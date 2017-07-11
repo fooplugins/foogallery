@@ -316,6 +316,10 @@
 	margin-top: 5px;
 }
 
+.widefat th.column-icon {
+	width: 60px;
+}
+
 #foogallery_settings .inside {
 	margin: 0;
 	padding: 0;

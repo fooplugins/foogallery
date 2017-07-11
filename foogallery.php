@@ -1,8 +1,8 @@
 <?php
 /**
- * Plugin Name: Foo Gallery
- * Description: Foo Gallery is the most intuitive and extensible gallery management tool ever created for WordPress
- * Version:     1.2.20
+ * Plugin Name: FooGallery
+ * Description: FooGallery is the most intuitive and extensible gallery management tool ever created for WordPress
+ * Version:     1.3.6
  * Author:      FooPlugins
  * Plugin URI:  https://foo.gallery
  * Author URI:  http://fooplugins.com
@@ -16,31 +16,62 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-define( 'FOOGALLERY_SLUG', 'foogallery' );
-define( 'FOOGALLERY_PATH', plugin_dir_path( __FILE__ ) );
-define( 'FOOGALLERY_URL', plugin_dir_url( __FILE__ ) );
-define( 'FOOGALLERY_FILE', __FILE__ );
-define( 'FOOGALLERY_VERSION', '1.2.20' );
-
-/**
- * FooGallery_Plugin class
- *
- * @package   FooGallery
- * @author    Brad Vincent <brad@fooplugins.com>
- * @license   GPL-2.0+
- * @link      https://github.com/fooplugins/foogallery
- * @copyright 2013 FooPlugins LLC
- */
-
 if ( ! class_exists( 'FooGallery_Plugin' ) ) {
+
+	define( 'FOOGALLERY_SLUG', 'foogallery' );
+	define( 'FOOGALLERY_PATH', plugin_dir_path( __FILE__ ) );
+	define( 'FOOGALLERY_URL', plugin_dir_url( __FILE__ ) );
+	define( 'FOOGALLERY_FILE', __FILE__ );
+	define( 'FOOGALLERY_VERSION', '1.3.6' );
+
+	require_once( FOOGALLERY_PATH . 'includes/constants.php' );
+
+	// Create a helper function for easy SDK access.
+	function foogallery_fs() {
+		global $foogallery_fs;
+
+		if ( ! isset( $foogallery_fs ) ) {
+			// Include Freemius SDK.
+			require_once dirname(__FILE__) . '/freemius/start.php';
+
+			$foogallery_fs = fs_dynamic_init( array(
+				'id'                => '843',
+				'slug'              => 'foogallery',
+				'type'              => 'plugin',
+				'public_key'        => 'pk_d87616455a835af1d0658699d0192',
+				'is_premium'        => false,
+				'has_addons'        => false,
+				'has_paid_plans'    => false,
+				'menu'              => array(
+					'slug'       => 'edit.php?post_type=' . FOOGALLERY_CPT_GALLERY,
+					'first-path' => 'edit.php?post_type=' . FOOGALLERY_CPT_GALLERY . '&page=' . FOOGALLERY_ADMIN_MENU_HELP_SLUG,
+					'account'    => false,
+					'contact'    => false,
+					'support'    => false,
+				),
+			) );
+		}
+
+		return $foogallery_fs;
+	}
+
+	// Init Freemius.
+	foogallery_fs();
+
+	// Signal that SDK was initiated.
+	do_action( 'foogallery_fs_loaded' );
+
 
 	require_once( FOOGALLERY_PATH . 'includes/foopluginbase/bootstrapper.php' );
 
 	/**
-	 * FooGallery_Plugin class.
+	 * FooGallery_Plugin class
 	 *
-	 * @package FooGallery
-	 * @author  Brad Vincent <brad@fooplugins.com>
+	 * @package   FooGallery
+	 * @author    Brad Vincent <brad@fooplugins.com>
+	 * @license   GPL-2.0+
+	 * @link      https://github.com/fooplugins/foogallery
+	 * @copyright 2013 FooPlugins LLC
 	 */
 	class FooGallery_Plugin extends Foo_Plugin_Base_v2_3 {
 
@@ -79,6 +110,8 @@ if ( ! class_exists( 'FooGallery_Plugin' ) ) {
 			if ( is_admin() ) {
 				new FooGallery_Admin();
 				add_action( 'wpmu_new_blog', array( $this, 'set_default_extensions_for_multisite_network_activated' ) );
+				add_action( 'admin_page_access_denied', array( $this, 'check_for_access_denied' ) );
+				foogallery_fs()->add_filter( 'connect_message_on_update', array( $this, 'override_connect_message_on_update' ), 10, 6 );
 			} else {
 				new FooGallery_Public();
 			}
@@ -103,8 +136,38 @@ if ( ! class_exists( 'FooGallery_Plugin' ) ) {
 
 			new FooGallery_Responsive_Lightbox_dFactory_Support();
 
+			new FooGallery_Attachment_Custom_Class();
+
 			$checker = new FooGallery_Version_Check();
 			$checker->wire_up_checker();
+		}
+
+		/**
+		 * Checks for the access denied page after we have activated/updated the plugin
+		 */
+		function check_for_access_denied() {
+			global $plugin_page;
+
+			if ( FOOGALLERY_ADMIN_MENU_HELP_SLUG === $plugin_page ) {
+				fs_redirect( 'admin.php?page=' . FOOGALLERY_ADMIN_MENU_HELP_SLUG );
+			}
+		}
+
+		/**
+		 *
+		 */
+		function override_connect_message_on_update( $original, $first_name, $plugin_name, $login, $link, $freemius_link ) {
+
+			return
+				sprintf( __( 'Hey %s', 'foogallery' ), $first_name ) . '<br>' .
+				sprintf(
+					__( '<h2>Thank you for updating to %1$s v%5$s!</h2>Our goal with this update is to make %1$s the best gallery plugin for WordPress, but we need your help!<br><br>We have introduced this opt-in so that you can help us improve %1$s by simply clicking <strong>Allow &amp; Continue</strong>.<br><br>If you opt-in, some data about your usage of %1$s will be sent to %4$s. If you skip this, that\'s okay! %1$s will still work just fine.', 'foogallery' ),
+					'<b>' . $plugin_name . '</b>',
+					'<b>' . $login . '</b>',
+					$link,
+					$freemius_link,
+					FOOGALLERY_VERSION
+				);
 		}
 
 		/**

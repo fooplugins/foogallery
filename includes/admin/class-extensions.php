@@ -15,7 +15,7 @@ if ( ! class_exists( 'FooGallery_Admin_Extensions' ) ) {
 
 		function init() {
 			add_action( 'admin_init', array( $this, 'handle_extension_action' ) );
-			add_action( 'admin_init', array( $this, 'redirect_on_activation' ) );
+			//add_action( 'admin_init', array( $this, 'redirect_on_activation' ) );
 		}
 
 		function handle_extensions_deactivation( $plugin, $network_deactivating ) {

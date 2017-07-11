@@ -10,7 +10,7 @@
 
 **Requires at least:** 3.9
 
-**Tested up to:** 4.7.4
+**Tested up to:** 4.8
 
 **Stable tag:** trunk
 
@@ -155,6 +155,16 @@ Hell, yes! Check out our [developer page](http://foo.gallery/developers/)
 Update now to support FooVideo and many other improvements!
 
 ## Changelog ##
+
+### 1.3.6 ###
+
+* New : Freemius integration!
+* New : Added support for the Responsive Lightbox by dFactory
+* New : New custom class field for an attachment
+* New : Added more system info for better debugging when there are server issues
+* Fix : Visual editor FooGallery edit button
+* Fix : Image Viewer hover effect none now works as expected
+* Fix : Disable HTML caching for randomly ordered galleries
 
 ### 1.2.20 ###
 
