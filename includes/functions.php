@@ -349,6 +349,7 @@ function foogallery_gallery_shortcode_regex() {
  * @return string the classname based on the gallery and any extra attributes
  */
 function foogallery_build_class_attribute( $gallery ) {
+	$classes[] = 'foogallery';
 	$classes[] = 'foogallery-container';
 	$classes[] = "foogallery-{$gallery->gallery_template}";
 
