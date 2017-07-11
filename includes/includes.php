@@ -3,6 +3,7 @@
 //common includes
 require_once( FOOGALLERY_PATH . 'includes/constants.php' );
 require_once( FOOGALLERY_PATH . 'includes/functions.php' );
+require_once( FOOGALLERY_PATH . 'includes/render-functions.php' );
 require_once( FOOGALLERY_PATH . 'includes/class-posttypes.php' );
 require_once( FOOGALLERY_PATH . 'includes/class-foogallery.php' );
 require_once( FOOGALLERY_PATH . 'includes/class-foogallery-attachment.php' );
