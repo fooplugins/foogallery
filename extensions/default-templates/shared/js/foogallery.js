@@ -58,9 +58,9 @@
 );
 /*!
 * FooGallery.utils - Contains common utility methods and classes used in our plugins.
-* @version 0.0.1
+* @version 0.0.3
 * @link https://github.com/steveush/foo-utils#readme
-* @copyright Steve Usher 2016
+* @copyright Steve Usher 2017
 * @license Released under the GPL-3.0 license.
 */
 /**
@@ -111,7 +111,7 @@
 		 * @name version
 		 * @type {string}
 		 */
-		version: '0.0.1',
+		version: '0.0.3',
 	};
 
 	/**
@@ -179,11 +179,15 @@
 		return 0;
 	};
 
-	var exists = !!window.FooGallery.utils; // does the namespace already exist?
-	if (!exists){
-		// if it doesn't exist register it
-		window.FooGallery.utils = utils;
-	} else if (exists){
+	function __exists(){
+		try {
+			return !!window.FooGallery.utils; // does the namespace already exist?
+		} catch(err) {
+			return false;
+		}
+	}
+
+	if (__exists()){
 		// if it already exists always log a warning as there may be version conflicts as the following code always ensures the latest version is loaded
 		if (utils.versionCompare(utils.version, window.FooGallery.utils.version) > 0){
 			// if it exists but it's an old version replace it
@@ -193,6 +197,9 @@
 			// otherwise its a newer version so do nothing
 			console.warn("A newer version of FooGallery.utils (" + window.FooGallery.utils.version + ") already exists in the page, version " + utils.version + " will not register itself.");
 		}
+	} else {
+		// if it doesn't exist register it
+		window.FooGallery.utils = utils;
 	}
 
 	// at this point there will always be a FooGallery.utils namespace registered to the global scope.
@@ -200,7 +207,7 @@
 })(jQuery);
 (function ($, _){
 	// only register methods if this version is the current version
-	if (_.version !== '0.0.1') return;
+	if (_.version !== '0.0.3') return;
 
 	/**
 	 * @summary Contains common type checking utility methods.
@@ -554,7 +561,7 @@
 );
 (function($, _, _is){
 	// only register methods if this version is the current version
-	if (_.version !== '0.0.1') return;
+	if (_.version !== '0.0.3') return;
 
 	/**
 	 * @memberof FooGallery.utils
@@ -830,7 +837,6 @@
 		return _is.fn(ctx) ? ctx : null;
 	};
 
-
 	/**
 	 * @summary Enqueues methods using the given `name` from all supplied `objects` and executes each in order with the given arguments.
 	 * @memberof FooGallery.utils.fn
@@ -839,7 +845,7 @@
 	 * @param {string} name - The name of the method to execute.
 	 * @param {*} [arg1] - The first argument to call the method with.
 	 * @param {...*} [argN] - Any additional arguments for the method.
-	 * @returns {jQuery.Promise} If `resolved` the first argument supplied to any success callbacks is an array of all returned value(s). These values are encapsulated within their own array as if the method returned a promise it could be resolved with more than one argument.
+	 * @returns {Promise} If `resolved` the first argument supplied to any success callbacks is an array of all returned value(s). These values are encapsulated within their own array as if the method returned a promise it could be resolved with more than one argument.
 	 *
 	 * If `rejected` any fail callbacks are supplied the arguments the promise was rejected with plus an additional one appended by this method, an array of all objects that have already had their methods run. This allows you to perform rollback operations if required after a failure. The last object in this array would contain the method that raised the error.
 	 * @description This method allows an array of `objects` that implement a common set of methods to be executed in a supplied order. Each method in the queue is only executed after the successful completion of the previous. Success is evaluated as the method did not throw an error and if it returned a promise it was resolved.
@@ -1019,6 +1025,69 @@
 		return def;
 	};
 
+	/**
+	 * @summary Waits for the outcome of all promises regardless of failure and resolves supplying the results of just those that succeeded.
+	 * @memberof FooGallery.utils.fn
+	 * @function when
+	 * @param {Promise[]} promises - The array of promises to wait for.
+	 * @returns {Promise}
+	 */
+	_.fn.when = function(promises){
+		if (!_is.array(promises) || _is.empty(promises)) return $.when();
+		var d = $.Deferred(), results = [], remaining = promises.length;
+		for(var i = 0; i < promises.length; i++){
+			promises[i].then(function(res){
+				results.push(res); // on success, add to results
+			}).always(function(){
+				remaining--; // always mark as finished
+				if(!remaining) d.resolve(results);
+			})
+		}
+		return d.promise(); // return a promise on the remaining values
+	};
+
+	/**
+	 * @summary Return a promise rejected using the supplied args.
+	 * @memberof FooGallery.utils.fn
+	 * @function rejectWith
+	 * @param {*} [arg1] - The first argument to reject the promise with.
+	 * @param {...*} [argN] - Any additional arguments to reject the promise with.
+	 * @returns {Promise}
+	 */
+	_.fn.rejectWith = function(arg1, argN){
+		var def = $.Deferred(), args = _.fn.arg2arr(arguments);
+		return def.reject.apply(def, args).promise();
+	};
+
+	/**
+	 * @summary Return a promise resolved using the supplied args.
+	 * @memberof FooGallery.utils.fn
+	 * @function resolveWith
+	 * @param {*} [arg1] - The first argument to resolve the promise with.
+	 * @param {...*} [argN] - Any additional arguments to resolve the promise with.
+	 * @returns {Promise}
+	 */
+	_.fn.resolveWith = function(arg1, argN){
+		var def = $.Deferred(), args = _.fn.arg2arr(arguments);
+		return def.resolve.apply(def, args).promise();
+	};
+
+	/**
+	 * @summary A resolved promise object.
+	 * @memberof FooGallery.utils.fn
+	 * @name resolved
+	 * @type {Promise}
+	 */
+	_.fn.resolved = $.Deferred().resolve().promise();
+
+	/**
+	 * @summary A rejected promise object.
+	 * @memberof FooGallery.utils.fn
+	 * @name resolved
+	 * @type {Promise}
+	 */
+	_.fn.rejected = $.Deferred().reject().promise();
+
 })(
 	// dependencies
 	FooGallery.utils.$,
@@ -1027,7 +1096,7 @@
 );
 (function(_, _is){
 	// only register methods if this version is the current version
-	if (_.version !== '0.0.1') return;
+	if (_.version !== '0.0.3') return;
 
 	/**
 	 * @summary Contains common url utility methods.
@@ -1157,7 +1226,7 @@
 );
 (function (_, _is, _fn) {
 	// only register methods if this version is the current version
-	if (_.version !== '0.0.1') return;
+	if (_.version !== '0.0.3') return;
 
 	/**
 	 * @summary Contains common string utility methods.
@@ -1472,7 +1541,7 @@
 );
 (function($, _, _is, _fn, _str){
 	// only register methods if this version is the current version
-	if (_.version !== '0.0.1') return;
+	if (_.version !== '0.0.3') return;
 
 	/**
 	 * @summary Contains common object utility methods.
@@ -1526,14 +1595,12 @@
 	 * console.log( options ); // => {"enabled": true, "arr": [4,5,6], "something": 123}
 	 */
 	_.obj.extend = function(target, object, objectN){
-		if (!_is.object(target) || !_is.object(object)) return target;
+		target = _is.object(target) ? target : {};
 		var objects = _fn.arg2arr(arguments);
-		target = objects.shift();
-
+		objects.shift();
 		$.each(objects, function(i, object){
 			_.obj.merge(target, object);
 		});
-
 		return target;
 	};
 
@@ -1557,9 +1624,9 @@
 	 * console.log( _obj.merge( target, object ) ); // => {"name": "My Object", "enabled": true, "arr": [4,5,6], "something": 123}
 	 */
 	_.obj.merge = function(target, object){
-		if (!_is.object(target) || !_is.object(object)) return target;
-		var prop;
-		for (prop in object) {
+		target = _is.object(target) ? target : {};
+		object = _is.object(object) ? object : {};
+		for (var prop in object) {
 			if (object.hasOwnProperty(prop)) {
 				if (_is.object(object[prop])) {
 					target[prop] = _is.object(target[prop]) ? target[prop] : {};
@@ -1696,9 +1763,10 @@
 				$.each(parts, function(i, part){
 					if (i === last){
 						value = object[part];
-					} else if (_is.object(object[part])) {
+					} else if (_is.hash(object[part])) {
 						object = object[part];
 					} else {
+						// exit early
 						return false;
 					}
 				});
@@ -1713,10 +1781,8 @@
 			$.each(parts, function(i, part){
 				if (i === last){
 					object[part] = value;
-				} else if (_is.object(object[part])) {
-					object = object[part];
 				} else {
-					return false;
+					object = _is.hash(object[part]) ? object[part] : (object[part] = {});
 				}
 			});
 		} else if (!_is.undef(object[name])){
@@ -1807,9 +1873,36 @@
 );
 (function($, _, _is){
 	// only register methods if this version is the current version
-	if (_.version !== '0.0.1') return;
+	if (_.version !== '0.0.3') return;
 
 	// any methods that have dependencies but don't fall into a specific subset or namespace can be added here
+
+	/**
+	 * @summary The callback for the {@link FooGallery.utils.ready} method.
+	 * @callback FooGallery.utils~readyCallback
+	 * @param {jQuery} $ - The instance of jQuery the plugin was registered with.
+	 * @this window
+	 * @see Take a look at the {@link FooGallery.utils.ready} method for example usage.
+	 */
+
+	/**
+	 * @summary Waits for the DOM to be accessible and then executes the supplied callback.
+	 * @memberof FooGallery.utils
+	 * @function ready
+	 * @param {FooGallery.utils~readyCallback} callback - The function to execute once the DOM is accessible.
+	 * @example {@caption This method can be used as a replacement for the jQuery ready callback to avoid an error in another script stopping our scripts from running.}
+	 * FooGallery.utils.ready(function($){
+	 * 	// do something
+	 * });
+	 */
+	_.ready = function (callback) {
+		function onready(){
+			try { callback.call(window, _.$); }
+			catch(err) { console.error(err); }
+		}
+		if (Function('/*@cc_on return true@*/')() ? document.readyState === "complete" : document.readyState !== "loading") onready();
+		else document.addEventListener('DOMContentLoaded', onready, false);
+	};
 
 	// A variable to hold the last number used to generate an ID in the current page.
 	var uniqueId = 0;
@@ -1879,7 +1972,7 @@
 );
 (function($, _, _is){
 	// only register methods if this version is the current version
-	if (_.version !== '0.0.1') return;
+	if (_.version !== '0.0.3') return;
 
 	/**
 	 * @summary Contains common utility methods and members for the CSS transition property.
@@ -1986,7 +2079,6 @@
 	 * @description This method lets us use CSS transitions by toggling a class and using the `transitionend` event to perform additional actions once the transition has completed across all browsers. In browsers that do not support transitions this method would behave the same as if just calling jQuery's `.toggleClass` method.
 	 *
 	 * The last parameter `timeout` is used to create a timer that behaves as a safety net in case the `transitionend` event is never raised and ensures the deferred returned by this method is resolved or rejected within a specified time.
-	 * @see {@link jQuery.fn.fooTransition} for more details on the jQuery plugin.
 	 * @see {@link https://developer.mozilla.org/en/docs/Web/CSS/transition-duration|transition-duration - CSS | MDN} for more information on the `transition-duration` CSS property.
 	 */
 	_.transition.start = function($element, className, state, timeout){
@@ -2033,30 +2125,6 @@
 		return deferred;
 	};
 
-	/**
-	 * @summary Add or remove one or more class names that trigger a transition and perform an action once it ends.
-	 * @memberof external:"jQuery.fn"
-	 * @instance
-	 * @function fooTransition
-	 * @param {string} className - One or more class names (separated by spaces) to be toggled that starts the transition.
-	 * @param {boolean} state - A Boolean (not just truthy/falsy) value to determine whether the class should be added or removed.
-	 * @param {function} callback - A function to call once the transition is complete.
-	 * @param {number} [timeout] - The maximum time, in milliseconds, to wait for the `transitionend` event to be raised. If not provided this will be automatically set to the elements `transition-duration` property plus an extra 50 milliseconds.
-	 * @returns {jQuery}
-	 * @description This exposes the {@link FooGallery.utils.transition.start} method as a jQuery plugin.
-	 * @example
-	 * jQuery( ".selector" ).fooTransition( "expand", true, function(){
-	 * 	// do something once the transition is complete
-	 * } );
-	 * @this jQuery
-	 * @see {@link FooGallery.utils.transition.start} for more details on the underlying function.
-	 * @see {@link https://developer.mozilla.org/en/docs/Web/CSS/transition-duration|transition-duration - CSS | MDN} for more information on the `transition-duration` CSS property.
-	 */
-	$.fn.fooTransition = function(className, state, callback, timeout){
-		_.transition.start(this, className, state, timeout).then(callback);
-		return this;
-	};
-
 })(
 	// dependencies
 	FooGallery.utils.$,
@@ -2065,7 +2133,7 @@
 );
 (function ($, _, _is, _obj, _fn) {
 	// only register methods if this version is the current version
-	if (_.version !== '0.0.1') return;
+	if (_.version !== '0.0.3') return;
 
 	/**
 	 * @summary A base class providing some helper methods for prototypal inheritance.
@@ -2203,9 +2271,111 @@
 	FooGallery.utils.obj,
 	FooGallery.utils.fn
 );
+(function($, _, _is){
+	// only register methods if this version is the current version
+	if (_.version !== '0.0.3') return;
+
+	_.Bounds = _.Class.extend(/** @lends FooGallery.utils.Bounds */{
+		/**
+		 * @summary A simple bounding rectangle class.
+		 * @memberof FooGallery.utils
+		 * @constructs Bounds
+		 * @augments FooGallery.utils.Class
+		 * @borrows FooGallery.utils.Class.extend as extend
+		 * @borrows FooGallery.utils.Class.override as override
+		 */
+		construct: function(){
+			var self = this;
+			self.top = 0;
+			self.right = 0;
+			self.bottom = 0;
+			self.left = 0;
+			self.width = 0;
+			self.height = 0;
+		},
+		/**
+		 * @summary Inflate the bounds by the specified amount.
+		 * @memberof FooGallery.utils.Bounds#
+		 * @function inflate
+		 * @param {number} amount - A positive number will expand the bounds while a negative one will shrink it.
+		 * @returns {FooGallery.utils.Bounds}
+		 */
+		inflate: function(amount){
+			var self = this;
+			if (_is.number(amount)){
+				self.top -= amount;
+				self.right += amount;
+				self.bottom += amount;
+				self.left -= amount;
+				self.width += amount * 2;
+				self.height += amount * 2;
+			}
+			return self;
+		},
+		/**
+		 * @summary Checks if the supplied bounds object intersects with this one.
+		 * @memberof FooGallery.utils.Bounds#
+		 * @function intersects
+		 * @param {FooGallery.utils.Bounds} bounds - The bounds to check.
+		 * @returns {boolean}
+		 */
+		intersects: function(bounds){
+			var self = this;
+			return self.left <= bounds.right && bounds.left <= self.right && self.top <= bounds.bottom && bounds.top <= self.bottom;
+		}
+	});
+
+	var __$window;
+	/**
+	 * @summary Gets the bounding rectangle of the current viewport.
+	 * @memberof FooGallery.utils
+	 * @function getViewportBounds
+	 * @param {number} [inflate] - An amount to inflate the bounds by. A positive number will expand the bounds outside of the visible viewport while a negative one would shrink it.
+	 * @returns {FooGallery.utils.Bounds}
+	 */
+	_.getViewportBounds = function(inflate){
+		if (!__$window) __$window = $(window);
+		var bounds = new _.Bounds();
+		bounds.top = __$window.scrollTop();
+		bounds.left = __$window.scrollLeft();
+		bounds.width = __$window.width();
+		bounds.height = __$window.height();
+		bounds.right = bounds.left + bounds.width;
+		bounds.bottom = bounds.top + bounds.height;
+		bounds.inflate(inflate);
+		return bounds;
+	};
+
+	/**
+	 * @summary Get the bounding rectangle for the supplied element.
+	 * @memberof FooGallery.utils
+	 * @function getElementBounds
+	 * @param {(jQuery|HTMLElement|string)} element - The jQuery wrapper around the element, the element itself, or a CSS selector to retrieve the element with.
+	 * @returns {FooGallery.utils.Bounds}
+	 */
+	_.getElementBounds = function(element){
+		if (!_is.jq(element)) element = $(element);
+		var bounds = new _.Bounds();
+		if (element.length !== 0){
+			var offset = element.offset();
+			bounds.top = offset.top;
+			bounds.left = offset.left;
+			bounds.width = element.width();
+			bounds.height = element.height();
+		}
+		bounds.right = bounds.left + bounds.width;
+		bounds.bottom = bounds.top + bounds.height;
+		return bounds;
+	};
+
+})(
+	FooGallery.utils.$,
+	FooGallery.utils,
+	FooGallery.utils.is
+);
 (function($, _, _is, _fn){
 	// only register methods if this version is the current version
-	if (_.version !== '0.0.1') return;
+	if (_.version !== '0.0.3') return;
 
 	_.Factory = _.Class.extend(/** @lends FooGallery.utils.Factory */{
 		/**
@@ -2529,7 +2699,7 @@
 );
 (function(_, _fn, _str){
 	// only register methods if this version is the current version
-	if (_.version !== '0.0.1') return;
+	if (_.version !== '0.0.3') return;
 
 	_.Debugger = _.Class.extend(/** @lends FooGallery.utils.Debugger */{
 		/**
@@ -2628,7 +2798,7 @@
 );
 (function($, _, _is){
 	// only register methods if this version is the current version
-	if (_.version !== '0.0.1') return;
+	if (_.version !== '0.0.3') return;
 
 	_.Throttle = _.Class.extend(/** @lends FooGallery.utils.Throttle */{
 		/**
@@ -2740,646 +2910,3663 @@
 	FooGallery.utils,
 	FooGallery.utils.is
 );
-(function($, _, _is){
+(function($, _, _utils, _is, _fn){
+
+	_.debug = new _utils.Debugger("__FooGallery__");
 
 	/**
-	 * @summary The callback for the {@link FooGallery.ready} method.
-	 * @callback FooGallery~readyCallback
-	 * @param {jQuery} $ - The instance of jQuery the plugin was registered with.
-	 * @this window
-	 * @see Take a look at the {@link FooGallery.ready} method for example usage.
+	 * @summary Simple utility method to convert space delimited strings of CSS class names into a CSS selector.
+	 * @memberof FooGallery.utils
+	 * @function selectify
+	 * @param {(string|string[]|object)} classes - A single space delimited string of CSS class names to convert or an array of them with each item being included in the selector using the OR (`,`) syntax as a separator. If an object is supplied the result will be an object with the same property names but the values converted to selectors.
+	 * @returns {(object|string)}
 	 */
-
-	/**
-	 * @summary Waits for the DOM to be accessible and then executes the supplied callback.
-	 * @memberof FooGallery
-	 * @function ready
-	 * @param {FooGallery~readyCallback} callback - The function to execute once the DOM is accessible.
-	 * @example {@caption This method can be used as a replacement for the jQuery ready callback and is used by all FooGallery plugins to avoid an error in another script stopping our plugins from running.}
-	 * FooGallery.ready(function($){
-	 * 	$(".foogallery-container").fgImageViewer();
-	 * });
-	 */
-	_.ready = function (callback) {
-		function onready(){
-			try { callback.call(window, _.$); }
-			catch(err) { console.error(err); }
+	_utils.selectify = function(classes){
+		if (_is.hash(classes)){
+			var result = {}, selector;
+			for (var name in classes){
+				if (!classes.hasOwnProperty(name)) continue;
+				if (selector = _utils.selectify(classes[name])){
+					result[name] = selector;
+				}
+			}
+			return result;
 		}
-		if (Function('/*@cc_on return true@*/')() ? document.readyState === "complete" : document.readyState !== "loading") onready();
-		else document.addEventListener('DOMContentLoaded', onready, false);
+		if (_is.string(classes) || _is.array(classes)){
+			if (_is.string(classes)) classes = [classes];
+			return $.map(classes, function(str){
+				return _is.string(str) ? "." + str.split(/\s/g).join(".") : null;
+			}).join(",");
+		}
+		return null;
 	};
 
 	/**
-	 * @summary Gets all images from the supplied target that have a `width` and `height` attribute set.
+	 * @summary The url of an empty 1x1 pixel image used as the default value for the `placeholder` and `error` {@link FooGallery.defaults|options}.
 	 * @memberof FooGallery
-	 * @function getImages
-	 * @param {(jQuery|HTMLElement|string)} target - The jQuery object, selector or the HTMLElement of either the `.foogallery-container`, `.foogallery-thumb` or just the actual `img` element.
+	 * @name emptyImage
+	 * @type {string}
+	 * @default "data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+	 */
+	_.emptyImage = "data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==";
+
+	/**
+	 * @summary The name to use when getting or setting an instance of a {@link FooGallery.Template|template} on an element using jQuery's `.data()` method.
+	 * @memberof FooGallery
+	 * @name dataTemplate
+	 * @type {string}
+	 * @default "__FooGallery__"
+	 */
+	_.dataTemplate = "__FooGallery__";
+
+	/**
+	 * @summary The name to use when getting or setting an instance of a {@link FooGallery.Item|item} on an element using jQuery's `.data()` method.
+	 * @memberof FooGallery
+	 * @name dataItem
+	 * @type {string}
+	 * @default "__FooGalleryItem__"
+	 */
+	_.dataItem = "__FooGalleryItem__";
+
+	_.init = function(options, element){
+		return _.template.make(options, element).initialize();
+	};
+
+	_.initAll = function(options){
+		return _fn.when($(".foogallery").map(function(i, element){
+			return _.init(options, element);
+		}).get());
+	};
+
+	_.parseSrc = function(src, srcWidth, srcHeight, srcset, renderWidth, renderHeight){
+		if (!_is.string(src)) return null;
+		// if there is no srcset just return the src
+		if (!_is.string(srcset)) return src;
+
+		// parse the srcset into objects containing the url, width, height and pixel density for each supplied source
+		var list = $.map(srcset.replace(/(\s[\d.]+[whx]),/g, '$1 @,@ ').split(' @,@ '), function (val) {
+			return {
+				url: /^\s*(\S*)/.exec(val)[1],
+				w: parseFloat((/\S\s+(\d+)w/.exec(val) || [0, Infinity])[1]),
+				h: parseFloat((/\S\s+(\d+)h/.exec(val) || [0, Infinity])[1]),
+				x: parseFloat((/\S\s+([\d.]+)x/.exec(val) || [0, 1])[1])
+			};
+		});
+
+		// if there is no items parsed from the srcset then just return the src
+		if (!list.length) return src;
+
+		// add the current src into the mix by inspecting the first parsed item to figure out how to handle it
+		list.unshift({
+			url: src,
+			w: list[0].w !== Infinity && list[0].h === Infinity ? srcWidth : Infinity,
+			h: list[0].h !== Infinity && list[0].w === Infinity ? srcHeight : Infinity,
+			x: 1
+		});
+
+		// get the current viewport info and use it to determine the correct src to load
+		var dpr = window.devicePixelRatio || 1,
+			area = {w: renderWidth * dpr, h: renderHeight * dpr, x: dpr},
+			property;
+
+		// first check each of the viewport properties against the max values of the same properties in our src array
+		// only src's with a property greater than the viewport or equal to the max are kept
+		for (property in area) {
+			if (!area.hasOwnProperty(property)) continue;
+			list = $.grep(list, (function (prop, limit) {
+				return function (item) {
+					return item[prop] >= area[prop] || item[prop] === limit;
+				};
+			})(property, Math.max.apply(null, $.map(list, function (item) {
+				return item[property];
+			}))));
+		}
+
+		// next reduce our src array by comparing the viewport properties against the minimum values of the same properties of each src
+		// only src's with a property equal to the minimum are kept
+		for (property in area) {
+			if (!area.hasOwnProperty(property)) continue;
+			list = $.grep(list, (function (prop, limit) {
+				return function (item) {
+					return item[prop] === limit;
+				};
+			})(property, Math.min.apply(null, $.map(list, function (item) {
+				return item[property];
+			}))));
+		}
+
+		// return the first url as it is the best match for the current viewport
+		return list[0].url;
+	};
+
+	/**
+	 * @summary Expose FooGallery as a jQuery plugin.
+	 * @memberof external:"jQuery.fn"#
+	 * @function foogallery
+	 * @param {object} [options] - The options to supply to FooGallery.
+	 * @param {external:"jQuery.fn"~readyCallback} [ready] - A callback executed once each template initialized is ready.
 	 * @returns {jQuery}
+	 * @example {@caption The below shows using this method in its simplest form, initializing a template on pre-existing elements.}{@lang html}
+	 * <!-- The container element for the template -->
+	 * <div id="gallery-1" class="foogallery">
+	 *   <!-- A single item -->
+	 *   <div class="fg-item" data-id="[item.id]">
+	 *     <div class="fg-item-inner">
+	 *       <a class="fg-thumb" href="[item.href]">
+	 *         <img class="fg-image" width="[item.width]" height="[item.height]"
+	 *         	title="[item.title]" alt="[item.description]"
+	 *         	data-src="[item.src]"
+	 *         	data-srcset="[item.srcset]" />
+	 *         <!-- Optional caption markup -->
+	 *         <div class="fg-caption">
+	 *         	<div class="fg-caption-inner">
+	 *         	 <div class="fg-caption-title">[item.title]</div>
+	 *         	 <div class="fg-caption-desc">[item.description]</div>
+	 *         	</div>
+	 *         </div>
+	 *       </a>
+	 *     </div>
+	 *   </div>
+	 *   <!-- Any number of additional items -->
+	 * </div>
+	 * <script>
+	 * 	jQuery(function($){
+	 * 		$("#gallery-1").foogallery();
+	 * 	});
+	 * </script>
+	 * @example {@caption Options can be supplied directly to the `.foogallery()` method or by supplying them using the `data-foogallery` attribute. If supplied using the attribute the value must follow [valid JSON syntax](http://en.wikipedia.org/wiki/JSON#Data_types.2C_syntax_and_example) including quoted property names. If the same option is supplied in both locations as it is below, the value from the attribute overrides the value supplied to the method, in this case `lazy` would be `true`.}{@lang html}
+	 * <!-- Supplying the options using the attribute -->
+	 * <div id="gallery-1" class="foogallery fg-responsive" data-foogallery='{"lazy": true}'>
+	 * 	<!-- Items -->
+	 * </div>
+	 * <script>
+	 * 	jQuery(function($){
+	 * 		// Supply the options directly to the method
+	 * 		$("#gallery-1").foogallery({
+	 * 			lazy: false
+	 * 		});
+	 * 	});
+	 * </script>
 	 */
-	_.getImages = function(target){
-		var $target = $(target), $images = $();
-		if ($target.is("img[width][height]")){
-			$images = $target;
-		} else if ($target.is(".foogallery-thumb")){
-			$images = $target.find("img[width][height]");
-		} else if ($target.is(".foogallery-container")){
-			$images = $target.find(".foogallery-thumb img[width][height]");
-		}
-		return $images;
-	};
-
-	/**
-	 * @summary Sets an inline CSS width and height value for the provided target images calculated from there `width` and `height` attributes.
-	 * @memberof FooGallery
-	 * @function addSize
-	 * @param {(jQuery|HTMLElement|string)} target - The jQuery object, selector or the HTMLElement of either the `.foogallery-container`, `.foogallery-thumb` or just the actual `img` element.
-	 * @param {boolean} [checkContainer=false] - Whether or not to check the `.foogallery-container` parents' width when determining the widths of the images.
-	 * @description This method is used on page load to calculate a CSS `width` and `height` for images that have yet to be loaded. This is done to avoid layout jumps and is needed as for responsive images to work in most layouts they must have a CSS `width` of `100%` and a `height` of `auto`. This allows the browser to automatically calculate the height to display the image without causing any stretching.
-	 * The problem with this approach is that it leads to layout jumps as before the image is loaded and the browser can determine its size it is simply displayed in the page as a 0 height block at 100% width of its' container. This method fixes this issue by setting a CSS `width` and `height` for all images supplied.
-	 */
-	_.addSize = function(target, checkContainer){
-		checkContainer = _is.boolean(checkContainer) ? checkContainer : false;
-		var $images = _.getImages(target);
-		if ($images.length){
-			$images.each(function(i, img){
-				var $img = $(img), w = parseFloat($img.attr("width")), h = parseFloat($img.attr("height"));
-				// if we have a base width and height to work with
-				if (!isNaN(w) && !isNaN(h)){
-					// figure out the max image width and calculate the height the image should be displayed as
-					var width = $img.outerWidth();
-					if (checkContainer){
-						width = $img.closest(".foogallery-container").parent().innerWidth();
-						width = width > w ? w : width;
-					}
-					var ratio = width / w, height = h * ratio;
-					// actually set the inline css on the image
-					$img.css({width: width,height: height});
+	$.fn.foogallery = function(options, ready){
+		return this.filter(".foogallery").each(function(i, element){
+			_.template.make(options, element).initialize().then(function(template){
+				if (_is.fn(ready)){
+					ready(template);
 				}
 			});
-		}
+		});
 	};
 
 	/**
-	 * @summary Sets an inline CSS width and height value for the provided target images calculated from there `width` and `height` attributes.
-	 * @memberof external:"jQuery.fn"
-	 * @instance
-	 * @function fgAddSize
-	 * @param {boolean} [checkContainer=false] - Whether or not to check the `.foogallery-container` parents' width when determining the widths of the images.
-	 * @returns {jQuery}
-	 * @description This exposes the {@link FooGallery.addSize} method as a jQuery plugin.
-	 * @see {@link FooGallery.addSize} for more information.
+	 * @summary If supplied this method is executed after each template is initialized.
+	 * @callback external:"jQuery.fn"~readyCallback
+	 * @param {FooGallery.Template} template - The template that was initialized.
+	 * @example {@caption The below shows an example of supplying this callback to the `.foogallery()` method.}
+	 * jQuery(".foogallery").foogallery({
+	 * 	// Options here
+	 * }, function(template){
+	 * 	// Called after each template is initialized on the matched elements
+	 * });
 	 */
-	$.fn.fgAddSize = function(checkContainer){
-		_.addSize(this, checkContainer);
-		return this;
-	};
-
-	/**
-	 * @summary Removes any inline CSS width and height value for the provided target images.
-	 * @memberof FooGallery
-	 * @function removeSize
-	 * @param {(jQuery|HTMLElement|string)} target - The jQuery object, selector or the HTMLElement of either the `.foogallery-container`, `.foogallery-thumb` or just the actual `img` element.
-	 */
-	_.removeSize = function(target){
-		var $images = _.getImages(target);
-		if ($images.length){
-			$images.css({width: '',height: ''});
-		}
-	};
-
-	/**
-	 * @summary A utility method wrapping the {@link FooGallery.removeSize} method.
-	 * @memberof external:"jQuery.fn"
-	 * @instance
-	 * @function fgRemoveSize
-	 * @returns {jQuery}
-	 * @see {@link FooGallery.removeSize} for more information.
-	 */
-	$.fn.fgRemoveSize = function(){
-		_.removeSize(this);
-		return this;
-	};
-
 
 })(
 	FooGallery.$,
 	FooGallery,
-	FooGallery.utils.is
+	FooGallery.utils,
+	FooGallery.utils.is,
+	FooGallery.utils.fn
 );
-(function($, _, _utils, _is){
+(function($, _, _utils, _is, _fn, _obj){
 
-	_.Loader = _utils.Class.extend(/** @lends FooGallery.Loader */{
+	_.TemplateFactory = _utils.Factory.extend(/** @lends FooGallery.TemplateFactory */{
 		/**
-		 * @summary The core class for the loading for images.
+		 * @summary A factory for galleries allowing them to be easily registered and created.
 		 * @memberof FooGallery
-		 * @constructs Loader
-		 * @param {(HTMLElement|jQuery)} target - The HTMLElement, jQuery object of a single image or container of a gallery.
-		 * @param {FooGallery.Loader~Options} options
-		 * @augments FooGallery.utils.Class
+		 * @constructs TemplateFactory
+		 * @description The plugin makes use of an instance of this class exposed as {@link FooGallery.template}.
+		 * @augments FooGallery.utils.Factory
 		 * @borrows FooGallery.utils.Class.extend as extend
 		 * @borrows FooGallery.utils.Class.override as override
 		 */
-		construct: function(target, options){
+		construct: function(){
 			/**
-			 * @summary The jQuery wrapper around the target element.
-			 * @memberof FooGallery.Loader#
-			 * @name $target
-			 * @type {jQuery}
-			 */
-			this.$target = $(target);
-			/**
-			 * @summary An object containing the combined default and user supplied options.
-			 * @memberof FooGallery.Loader#
-			 * @name options
-			 * @type {FooGallery.Loader~Options}
-			 */
-			this.options = $.extend(true, {}, _.Loader.defaults, options);
-			/**
-			 * @summary The selector used to exclude images that are currently loading.
-			 * @memberof FooGallery.Loader#
-			 * @name loadingSelector
-			 * @type {string}
+			 * @summary An object containing all registered galleries.
+			 * @memberof FooGallery.TemplateFactory#
+			 * @name registered
+			 * @type {Object.<string, Object>}
 			 * @readonly
+			 * @example {@caption The following shows the structure of this object. The `<name>` placeholders would be the name the class was registered with.}
+			 * {
+			 * 	"<name>": {
+			 * 		"name": <string>,
+			 * 		"klass": <function>,
+			 * 		"test": <function>,
+			 * 		"priority": <number>
+			 * 	},
+			 * 	"<name>": {
+			 * 		"name": <string>,
+			 * 		"klass": <function>,
+			 * 		"test": <function>,
+			 * 		"priority": <number>
+			 * 	},
+			 * 	...
+			 * }
 			 */
-			this.loadingSelector = "."+this.options.loadingClass;
-			/**
-			 * @summary The selector used to exclude images that are already loaded.
-			 * @memberof FooGallery.Loader#
-			 * @name loadedSelector
-			 * @type {string}
-			 * @readonly
-			 */
-			this.loadedSelector = "."+this.options.loadedClass;
-			/**
-			 * @summary The selector used to exclude images that have thrown an error.
-			 * @memberof FooGallery.Loader#
-			 * @name errorSelector
-			 * @type {string}
-			 * @readonly
-			 */
-			this.errorSelector = "."+this.options.errorClass;
-			/**
-			 * @summary The selector used to find images within a container.
-			 * @memberof FooGallery.Loader#
-			 * @name imgSelector
-			 * @type {string}
-			 * @readonly
-			 */
-			this.imgSelector = "img["+this.options.attrSrc+"]";
-			/**
-			 * @summary The id of the timeout used to delay the initial init of the plugin.
-			 * @memberof FooGallery.Loader#
-			 * @name _delay
-			 * @type {?number}
-			 * @private
-			 */
-			this._delay = null;
-			/**
-			 * @summary The id of the timeout used to throttle code execution on scroll.
-			 * @memberof FooGallery.Loader#
-			 * @name _throttle
-			 * @type {?number}
-			 * @private
-			 */
-			this._throttle = new _utils.Throttle( this.options.throttle );
+			this.registered = {};
 		},
 		/**
-		 * @summary Initializes the plugin binding events and performing an initial check.
-		 * @memberof FooGallery.Loader#
-		 * @function init
-		 * @returns {Promise}
+		 * @summary Registers a template constructor with the factory using the given `name` and `test` function.
+		 * @memberof FooGallery.TemplateFactory#
+		 * @function register
+		 * @param {string} name - The friendly name of the class.
+		 * @param {FooGallery.Template} template - The template constructor to register.
+		 * @param {object} options - The default options for the template.
+		 * @param {object} [classes={}] - The CSS classes for the template.
+		 * @param {object} [il8n={}] - The il8n strings for the template.
+		 * @param {number} [priority=0] - This determines the index for the class when using either the {@link FooGallery.TemplateFactory#load|load} or {@link FooGallery.TemplateFactory#names|names} methods, a higher value equals a lower index.
+		 * @returns {boolean} `true` if the `klass` was successfully registered.
 		 */
-		init: function(){
+		register: function(name, template, options, classes, il8n, priority){
+			var self = this, result = self._super(name, template, priority);
+			if (result){
+				var reg = self.registered;
+				reg[name].opt = _is.hash(options) ? options : {};
+				reg[name].cls = _is.hash(classes) ? classes : {};
+				reg[name].il8n = _is.hash(il8n) ? il8n : {};
+			}
+			return result;
+		},
+		/**
+		 * @summary Create a new instance of a registered template from the supplied `element` and `options`.
+		 * @memberof FooGallery.TemplateFactory#
+		 * @function make
+		 * @param {(object|FooGallery~Options)} [options] - The options for the template. If not supplied this will fall back to using the {@link FooGallery.defaults|defaults}.
+		 * @param {(jQuery|HTMLElement|string)} [element] - The jQuery object, HTMLElement or selector of the template element to create. If not supplied the {@link FooGallery~Options#type|type} options' value is used.
+		 * @returns {FooGallery.Template}
+		 */
+		// make: function(options, element){
+		// 	options = _.options(options, element.data("foogallery"));
+		// 	element = _is.jq(element) ? element : $(element);
+		// 	var self = this, names = self.names(true);
+		// 	if (_is.empty(names)) return null;
+		// 	var reg = self.registered;
+		// 	if (element.length > 0){
+		// 		for (var i = 0, l = names.length; i < l; i++) {
+		// 			if (!reg.hasOwnProperty(names[i]) || !_is.fn(reg[names[i]].test)) continue;
+		// 			if (reg[names[i]].test(element, options)) {
+		// 				options.type = names[i];
+		// 				break;
+		// 			}
+		// 		}
+		// 	}
+		// 	if (_is.hash(options[options.type])){
+		// 		options.custom = _obj.extend({}, options[options.type], options.custom);
+		// 	}
+		// 	return self._super(options.type, options, element);
+		// },
+		make: function(options, element){
+			element = _is.jq(element) ? element : $(element);
+			var self = this, type = self.type(options, element);
+			if (!self.contains(type)) return null;
+			options = self.options(type, options);
+			return self._super(type, options, element);
+		},
+		type: function(options, element){
+			element = _is.jq(element) ? element : $(element);
+			var self = this, type = _is.hash(options) && _is.hash(options) && _is.string(options.type) && self.contains(options.type) ? options.type : "default";
+			if (type === "default" && element.length > 0){
+				var reg = self.registered, names = self.names(true);
+				for (var i = 0, l = names.length; i < l; i++) {
+					if (!reg.hasOwnProperty(names[i])) continue;
+					var name = names[i], cls = reg[name].cls;
+					if (!_is.string(cls.container)) continue;
+					var selector = _utils.selectify(cls.container);
+					if (element.is(selector)) {
+						type = names[i];
+						break;
+					}
+				}
+			}
+			return type;
+		},
+		configure: function(name, options, classes, il8n){
 			var self = this;
-			return $.Deferred(function (def) {
-				// store the initial delays' timeout id
-				self._delay = setTimeout(function () {
-					// clear the timeout id as it's no longer needed
-					self._delay = null;
-					if (self.options.lazy){
-						// bind to the window's scroll event to perform additional checks when scrolled
-						$(window).on("scroll.lazy", {self: self}, self.onscroll);
-					}
-					// perform the initial check to see if any images need to be loaded
-					self.check().then(function(){
-						// if an oninit callback is provided, call it
-						if (_is.fn(self.options.oninit)){
-							self.options.oninit.call(self);
-						}
-						// finish up by resolving the deferred
-						def.resolve();
-					}).fail(def.reject);
-				}, self.options.delay);
-			}).promise();
-		},
-		/**
-		 * @summary Destroys the plugin unbinding events and clearing any delayed checks.
-		 * @memberof FooGallery.Loader#
-		 * @function destroy
-		 */
-		destroy: function(){
-			$(window).off("scroll.lazy", this.onscroll);
-			if (_is.number(this._delay)){
-				clearTimeout(this._delay);
-			}
-			if (_is.number(this._throttle)){
-				clearTimeout(this._throttle);
+			if (self.contains(name)){
+				var reg = self.registered;
+				_obj.extend(reg[name].opt, options);
+				_obj.extend(reg[name].cls, classes);
+				_obj.extend(reg[name].il8n, il8n);
 			}
 		},
-		/**
-		 * @summary Handles the windows' scroll event to perform additional checking as required.
-		 * @memberof FooGallery.Loader#
-		 * @function onscroll
-		 * @param {jQuery.Event} e
-		 */
-		onscroll: function(e){
-			var self = e.data.self;
-			self._throttle.limit(function(){
-				self.check();
-			});
-		},
-		/**
-		 * @summary Checks if any images need to be loaded and if required loads them.
-		 * @memberof FooGallery.Loader#
-		 * @function check
-		 * @returns {Promise}
-		 */
-		check: function(){
-			var self = this;
-			return $.Deferred(function (def) {
-				var batch= [], loading = [],
-					// get an array of target elements to check
-					targets = self.$target.not(self.loadingSelector).not(self.loadedSelector).not(self.errorSelector).get();
+		options: function(name, options){
+			options = _is.hash(options) ? options : {};
+			var self = this, reg = self.registered,
+				def = reg["default"].opt,
+				cls = reg["default"].cls,
+				il8n = reg["default"].il8n;
 
-				// for each element
-				for (var ti = 0, tl = targets.length, $target; ti < tl; ti++){
-					$target = $(targets[ti]);
-					var $container = null;
-					// if the element is not an image
-					if ($target.prop("tagName").toLowerCase() !== "img"){
-						// find the images within it
-						var $found = $target.find(self.imgSelector).not(self.loadingSelector).not(self.loadedSelector).not(self.errorSelector);
-						if ($found.length === 0){
-							// if nothing is found add the loaded class onto the original target element
-							self.options.classTarget($target).add($target).addClass(self.options.loadedClass);
-							continue;
-						} else {
-							// otherwise set the $container variable to use later and update the $target to the found images
-							$container = $target;
-							$target = $found;
-						}
-					}
-					if (self.options.lazy){
-						// now that we have an array of elements to use, check there bounds against that of the viewport
-						var check = $target.get(), vb = self.getViewportBounds();
-						for (var ci = 0, cl = check.length, eb; ci < cl; ci++){
-							eb = self.getElementBounds(check[ci]);
-							if (self.intersect(vb, eb)){
-								batch.push(check[ci]);
-							}
-						}
-					} else {
-						batch = $target.get();
-					}
-				}
-				if (batch.length > 0){
-					if (_is.fn(self.options.onbeforebatch)){
-						self.options.onbeforebatch.call(self, batch);
-					}
-					for (var bi = 0, bl = batch.length; bi < bl; bi++){
-						loading.push(self.load(batch[bi]));
-					}
-					$.when.apply($, loading).promise().done(function(){
-						var images = Array.prototype.slice.call(arguments);
-						($container ? $container : $target).trigger("lazy_batch", [images]);
-						if (_is.fn(self.options.onbatch)){
-							self.options.onbatch.call(self, images);
-						}
-						def.resolve();
-					});
-				} else {
-					def.resolve();
-				}
-			}).promise();
-		},
-		/**
-		 * @summary Loads the supplied image taking into account the `srcset` attribute as specified in the options.
-		 * @memberof FooGallery.Loader#
-		 * @function load
-		 * @param {HTMLImageElement} img - The image element to load.
-		 * @returns {Promise}
-		 */
-		load: function(img){
-			var self = this;
-			return $.Deferred(function(def){
-				if (_is.fn(self.options.onbeforeload)){
-					self.options.onbeforeload.call(self, img);
-				}
-				var $img = $(img);
-				self.options.classTarget($img).add($img).addClass(self.options.loadingClass);
-				var src = self.parse($img);
-				/**
-				 * @summary Handles the onerror callback for the image supplied to the load method.
-				 * @ignore
-				 */
-				function onerror(){
-					// first remove the set callbacks to avoid duplicate calls for the same image
-					img.onload = img.onerror = null;
-					// remove the loading class, add the error class and trigger the "lazy_error" event
-					self.options.classTarget($img).add($img).removeClass(self.options.loadingClass).addClass(self.options.errorClass);
-					$img.trigger("lazy_error", [img]);
-					// if an onerror callback is provided, call it
-					if (_is.fn(self.options.onerror)){
-						self.options.onerror.call(self, img);
-					}
-					// if a custom error image is provided, use it
-					if (_is.string(self.options.errorImage)){
-						img.src = self.options.errorImage;
-					}
-					// as we handle the error we always resolve the deferred to prevent a single image causing the failure of an entire batch
-					def.resolve(img);
-				}
-
-				// handle the onload callback
-				img.onload = function(){
-					// first remove the set callbacks to avoid duplicate calls for the same image
-					img.onload = img.onerror = null;
-					// remove the loading class, add the loaded class and trigger the "lazy_load" event
-					self.options.classTarget($img).add($img).removeClass(self.options.loadingClass).addClass(self.options.loadedClass);
-					$img.trigger("lazy_load", [img]);
-					// if an onload callback is provided, call it
-					if (_is.fn(self.options.onload)){
-						self.options.onload.call(self, img);
-					}
-					// resolve the deferred
-					def.resolve(img);
-				};
-				// handle the onerror callback
-				img.onerror = onerror;
-				// set everything in motion by setting the src
-				img.src = src;
-			});
-		},
-		/**
-		 * @summary Parses the supplied jQuery image object taking into account both the `src` and `srcset` attributes and returns the correct url to load.
-		 * @memberof FooGallery.Loader#
-		 * @function parse
-		 * @param {jQuery} $img - The jQuery wrapper around the image to parse.
-		 * @returns {string}
-		 */
-		parse: function($img){
-			var self = this,
-				src = $img.attr(self.options.attrSrc),
-				srcset = $img.attr(self.options.attrSrcset);
-
-			// if there is no srcset just return the src
-			if (!_is.string(srcset)) return src;
-
-			// parse the srcset into objects containing the url, width, height and pixel density for each supplied source
-			var list = $.map(srcset.replace(/(\s[\d.]+[whx]),/g, '$1 @,@ ').split(' @,@ '), function (item) {
-				return {
-					url: self.options.regexUrl.exec(item)[1],
-					w: parseFloat((self.options.regexWidth.exec(item) || [0, Infinity])[1]),
-					h: parseFloat((self.options.regexHeight.exec(item) || [0, Infinity])[1]),
-					x: parseFloat((self.options.regexDpr.exec(item) || [0, 1])[1])
-				};
-			});
-
-			// if there is no items parsed from the srcset then just return the src
-			if (!list.length) return src;
-
-			// add the current src into the mix by inspecting the first parsed item to figure out how to handle it
-			var x = list[0].w === Infinity && list[0].h === Infinity,
-				aw = parseFloat($img.attr("width")),
-				w = x ? Infinity : (isNaN(aw) ? $img.width() : aw);
-
-			list.unshift({
-				url: src,
-				w: w,
-				h: Infinity,
-				x: 1
-			});
-
-			// get the current viewport info and use it to determine the correct src to load
-			var viewport = self.getViewportInfo(), property;
-
-			// first check each of the viewport properties against the max values of the same properties in our src array
-			// only src's with a property greater than the viewport or equal to the max are kept
-			for (property in viewport){
-				if (!viewport.hasOwnProperty(property)) continue;
-				list = $.grep(list, (function(prop, limit){
-					return function(item){
-						return item[prop] >= viewport[prop] || item[prop] === limit;
-					};
-				})(property, self.reduce(list, property, "max")));
+			options = _.paging.merge(options);
+			if (name !== "default" && self.contains(name)){
+				options = _obj.extend({}, def, reg[name].opt, options);
+				options.cls = _obj.extend({}, cls, reg[name].cls, options.cls);
+				options.il8n = _obj.extend({}, il8n, reg[name].il8n, options.il8n);
+			} else {
+				options = _obj.extend({}, def, options);
+				options.cls = _obj.extend({}, cls, options.cls);
+				options.il8n = _obj.extend({}, il8n, options.il8n);
 			}
-
-			// next reduce our src array by comparing the viewport properties against the minimum values of the same properties of each src
-			// only src's with a property equal to the minimum are kept
-			for (property in viewport){
-				if (!viewport.hasOwnProperty(property)) continue;
-				list = $.grep(list, (function(prop, limit){
-					return function(item){
-						return item[prop] === limit;
-					};
-				})(property, self.reduce(list, property, "min")));
-			}
-
-			// return the first url as it is the best match for the current viewport
-			return list[0].url;
-		},
-		/**
-		 * @summary Gets the width, height and pixel density of the current viewport.
-		 * @memberof FooGallery.Loader#
-		 * @function getViewportInfo
-		 * @returns {FooGallery.Loader~ViewportInfo}
-		 */
-		getViewportInfo: function(){
-			return {
-				w: window.innerWidth || document.documentElement.clientWidth,
-				h: window.innerHeight || document.documentElement.clientHeight,
-				x: window.devicePixelRatio || 1
-			};
-		},
-		/**
-		 * @summary Gets a bounding rectangle for the current viewport taking into account the scroll position.
-		 * @memberof FooGallery.Loader#
-		 * @function getViewportBounds
-		 * @returns {FooGallery.Loader~Bounds}
-		 */
-		getViewportBounds: function(){
-			var rect = document.body.getBoundingClientRect(),
-				y = _is.undef(window.scrollY) ? document.documentElement.scrollTop : window.scrollY,
-				x = _is.undef(window.scrollX) ? document.documentElement.scrollLeft : window.scrollX;
-			return {
-				top: rect.top + y,
-				right: rect.right + x,
-				bottom: rect.bottom + y,
-				left: rect.left + x
-			};
-		},
-		/**
-		 * @summary Gets a bounding rectangle for the supplied element.
-		 * @memberof FooGallery.Loader#
-		 * @function getElementBounds
-		 * @param {HTMLElement} element - The element to retrieve the bounds rectangle for.
-		 * @returns {FooGallery.Loader~Bounds}
-		 */
-		getElementBounds: function(element){
-			var rect = element.getBoundingClientRect();
-			return {
-				top: rect.top - this.options.offset,
-				right: rect.right + this.options.offset,
-				bottom: rect.bottom + this.options.offset,
-				left: rect.left - this.options.offset
-			};
-		},
-		/**
-		 * @summary Checks if the two supplied bounding rectangles intersect.
-		 * @memberof FooGallery.Loader#
-		 * @function intersect
-		 * @param {FooGallery.Loader~Bounds} b1 - The first bounds rectangle to use.
-		 * @param {FooGallery.Loader~Bounds} b2 - The second bounds rectangle to check against the first.
-		 * @returns {boolean}
-		 */
-		intersect: function(b1, b2){
-			return !(b2.left > b1.right || b2.right < b1.left || b2.top > b1.bottom || b2.bottom < b1.top);
-		},
-		/**
-		 * @summary Reduces the supplied array of {@link FooGallery.Loader~Srcset} objects to just a single one using the specified property and `Math` function.
-		 * @param {Array.<FooGallery.Loader~Srcset>} list - The array of parsed `srcset` values to reduce.
-		 * @param {string} prop - The property of each object to use in the comparison.
-		 * @param {string} fnName - The name of the `Math` function to use to perform the comparison, this should be either `"min"` or `"max"`.
-		 * @returns {number}
-		 */
-		reduce: function(list, prop, fnName){
-			return Math[fnName].apply(null, $.map(list, function(item){
-				return item[prop];
-			}));
+			return options;
 		}
 	});
 
 	/**
-	 * @summary The default options for the plugin.
-	 * @memberof FooGallery.Loader
-	 * @name defaults
-	 * @type {FooGallery.Loader~Options}
+	 * @summary The factory used to register and create the various template types of FooGallery.
+	 * @memberof FooGallery
+	 * @name template
+	 * @type {FooGallery.TemplateFactory}
 	 */
-	_.Loader.defaults = {
-		lazy: false,
-		loadingClass: "foogallery-loading",
-		loadedClass: "foogallery-loaded",
-		errorClass: "foogallery-error",
-		classTarget: function ($img) {
-			return $img.closest(".foogallery-item");
+	_.template = new _.TemplateFactory();
+
+})(
+	FooGallery.$,
+	FooGallery,
+	FooGallery.utils,
+	FooGallery.utils.is,
+	FooGallery.utils.fn,
+	FooGallery.utils.obj
+);
+(function(_, _utils, _is, _fn, _obj){
+
+	_.PagingFactory = _utils.Factory.extend(/** @lends FooGallery.PagingFactory */{
+		/**
+		 * @summary A factory for paging types allowing them to be easily registered and created.
+		 * @memberof FooGallery
+		 * @constructs PagingFactory
+		 * @description The plugin makes use of an instance of this class exposed as {@link FooGallery.paging}.
+		 * @augments FooGallery.Factory
+		 * @borrows FooGallery.Factory.extend as extend
+		 * @borrows FooGallery.Factory.override as override
+		 */
+		construct: function(){
+			/**
+			 * @summary An object containing all registered paging types.
+			 * @memberof FooGallery.PagingFactory#
+			 * @name registered
+			 * @type {Object.<string, Object>}
+			 * @readonly
+			 * @example {@caption The following shows the structure of this object. The `<name>` placeholders would be the name the class was registered with.}
+			 * {
+			 * 	"<name>": {
+			 * 		"name": <string>,
+			 * 		"klass": <function>,
+			 * 		"ctrl": <function>,
+			 * 		"priority": <number>
+			 * 	},
+			 * 	"<name>": {
+			 * 		"name": <string>,
+			 * 		"klass": <function>,
+			 * 		"ctrl": <function>,
+			 * 		"priority": <number>
+			 * 	},
+			 * 	...
+			 * }
+			 */
+			this.registered = {};
 		},
-		throttle: 50,
-		timeout: 30000,
-		offset: 400,
-		delay: 100,
-		errorImage: "data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==",
-		oninit: null,
-		onbeforeload: null,
-		onload: null,
-		onerror: null,
-		onbeforebatch: null,
-		onbatch: null,
-		attrSrcset: "data-srcset",
-		attrSrc: "data-src",
-		regexUrl: /^\s*(\S*)/,
-		regexWidth: /\S\s+(\d+)w/,
-		regexHeight: /\S\s+(\d+)h/,
-		regexDpr: /\S\s+([\d.]+)x/
-	};
+		/**
+		 * @summary Registers a paging `type` constructor with the factory using the given `name` and `test` function.
+		 * @memberof FooGallery.PagingFactory#
+		 * @function register
+		 * @param {string} name - The friendly name of the class.
+		 * @param {FooGallery.Paging} type - The paging type constructor to register.
+		 * @param {FooGallery.PagingControl} [ctrl] - An optional control to register for the paging type.
+		 * @param {object} [options={}] - The default options for the paging type.
+		 * @param {object} [classes={}] - The CSS classes for the paging type.
+		 * @param {object} [il8n={}] - The il8n strings for the paging type.
+		 * @param {number} [priority=0] - This determines the index for the class when using either the {@link FooGallery.PagingFactory#load|load} or {@link FooGallery.PagingFactory#names|names} methods, a higher value equals a lower index.
+		 * @returns {boolean} `true` if the `klass` was successfully registered.
+		 */
+		register: function(name, type, ctrl, options, classes, il8n, priority){
+			var self = this, result = self._super(name, type, priority);
+			if (result){
+				var reg = self.registered;
+				reg[name].ctrl = _is.fn(ctrl) ? ctrl : null;
+				reg[name].opt = _is.hash(options) ? options : {};
+				reg[name].cls = _is.hash(classes) ? classes : {};
+				reg[name].il8n = _is.hash(il8n) ? il8n : {};
+			}
+			return result;
+		},
+		// /**
+		//  * @summary Create a new instance of a registered paging type for the supplied `template`.
+		//  * @memberof FooGallery.PagingFactory#
+		//  * @function make
+		//  * @param {FooGallery.Template} template - The template creating the new instance.
+		//  * @returns {FooGallery.Paging}
+		//  */
+		// make: function(template){
+		// 	var self = this, paging, type;
+		// 	if (!(template instanceof _.Template) || !_is.hash(paging = template.opt.paging) || !self.contains(type = paging.type) || type === "default") return null;
+		// 	var reg = self.registered;
+		// 	template.opt.paging = _obj.extend({}, reg["default"].opt, reg[type].opt, template.opt.paging);
+		// 	template.cls.paging = _obj.extend({}, reg["default"].cls, reg[type].cls, template.cls.paging);
+		// 	template.il8n.paging = _obj.extend({}, reg["default"].il8n, reg[type].il8n, template.il8n.paging);
+		// 	template.sel.paging = _utils.selectify(template.cls.paging);
+		// 	return self._super(type, template);
+		// },
+		type: function(options){
+			var self = this, opt;
+			return _is.hash(options) && _is.hash(opt = options.paging) && _is.string(opt.type) && self.contains(opt.type) ? opt.type : null;
+		},
+		merge: function(options){
+			options = _is.hash(options) ? options : {};
+			var self = this, type = self.type(options),
+				reg = self.registered,
+				def = reg["default"].opt,
+				def_cls = reg["default"].cls,
+				def_il8n = reg["default"].il8n,
+				opt = _is.hash(options.paging) ? options.paging : {},
+				cls = _is.hash(options.cls) && _is.hash(options.cls.paging) ? options.cls.paging : {},
+				il8n = _is.hash(options.il8n) && _is.hash(options.il8n.paging) ? options.il8n.paging : {};
+
+			if (type !== "default" && self.contains(type)){
+				options.paging = _obj.extend({}, def, reg[type].opt, opt, {type: type});
+				options.cls = _obj.extend({}, {paging: def_cls}, {paging: reg[type].cls}, {paging: cls});
+				options.il8n = _obj.extend({}, {paging: def_il8n}, {paging: reg[type].il8n}, {paging: il8n});
+			} else {
+				options.paging = _obj.extend({}, def, opt, {type: type});
+				options.cls = _obj.extend({}, {paging: def_cls}, {paging: cls});
+				options.il8n = _obj.extend({}, {paging: def_il8n}, {paging: il8n});
+			}
+			return options;
+		},
+		configure: function(name, options, classes, il8n){
+			var self = this;
+			if (self.contains(name)){
+				var reg = self.registered;
+				_obj.extend(reg[name].opt, options);
+				_obj.extend(reg[name].cls, classes);
+				_obj.extend(reg[name].il8n, il8n);
+			}
+		},
+		options: function(name, options){
+			options = _is.hash(options) ? options : {};
+			var self = this,
+				reg = self.registered,
+				def = reg["default"].opt,
+				def_cls = reg["default"].cls,
+				def_il8n = reg["default"].il8n,
+				opt = _is.hash(options.paging) ? options.paging : {},
+				cls = _is.hash(options.cls) && _is.hash(options.cls.paging) ? options.cls.paging : {},
+				il8n = _is.hash(options.il8n) && _is.hash(options.il8n.paging) ? options.il8n.paging : {};
+
+			if (name !== "default" && self.contains(name)){
+				options.paging = _obj.extend({}, def, reg[name].opt, opt, {type: name});
+				options.cls = _obj.extend({}, {paging: def_cls}, {paging: reg[name].cls}, {paging: cls});
+				options.il8n = _obj.extend({}, {paging: def_il8n}, {paging: reg[name].il8n}, {paging: il8n});
+			} else {
+				options.paging = _obj.extend({}, def, opt, {type: name});
+				options.cls = _obj.extend({}, {paging: def_cls}, {paging: cls});
+				options.il8n = _obj.extend({}, {paging: def_il8n}, {paging: il8n});
+			}
+			return options;
+		},
+		/**
+		 * @summary Checks if the factory contains a control registered using the supplied `name`.
+		 * @memberof FooGallery.PagingFactory#
+		 * @function hasCtrl
+		 * @param {string} name - The friendly name of the class.
+		 * @returns {boolean}
+		 */
+		hasCtrl: function(name){
+			var self = this, reg = self.registered[name];
+			return _is.hash(reg) && _is.fn(reg.ctrl);
+		},
+		/**
+		 * @summary Create a new instance of a control class registered with the supplied `name` and arguments.
+		 * @memberof FooGallery.PagingFactory#
+		 * @function makeCtrl
+		 * @param {string} name - The friendly name of the class.
+		 * @param {FooGallery.Template} template - The template creating the control.
+		 * @param {FooGallery.Paging} parent - The parent paging class creating the control.
+		 * @param {string} position - The position the control will be displayed at.
+		 * @returns {?FooGallery.PagingControl}
+		 */
+		makeCtrl: function(name, template, parent, position){
+			var self = this, reg = self.registered[name];
+			if (_is.hash(reg) && _is.fn(reg.ctrl)){
+				return new reg.ctrl(template, parent, position);
+			}
+			return null;
+		}
+	});
 
 	/**
-	 * @summary Initialize loading on the matched elements using the supplied options.
-	 * @memberof external:"jQuery.fn"
-	 * @instance
-	 * @function fgLoader
-	 * @param {FooGallery.Loader~Options} [options] - The options to supply to the plugin.
-	 * @returns {jQuery}
-	 * @description This exposes the {@link FooGallery.Loader} class as a jQuery plugin.
-	 * @example
-	 * jQuery( function( $ ){
-	 * 	$( ".foogallery-container" ).fgLoader({
-	 * 		onbeforeload: function( image ){
-	 * 			// do something with the supplied HTMLImageElement before it is loaded
-	 * 		},
-	 * 		onload: function( image ){
-	 * 			// do something with the supplied HTMLImageElement after it is loaded
-	 * 		},
-	 * 		onbatch: function( images ){
-	 * 			// do something with the supplied array of HTMLImageElements once they have either loaded or errored
-	 * 		}
-	 * 	});
-	 * } );
-	 * @see {@link FooGallery.Loader} for more details on the underlying class.
+	 * @summary The factory used to register and create the various paging types of FooGallery.
+	 * @memberof FooGallery
+	 * @name paging
+	 * @type {FooGallery.PagingFactory}
 	 */
-	$.fn.fgLoader = function(options){
-		return this.each(function(){
-			var lazy = $.data(this, "__FooGalleryLoader__");
-			if (lazy){
-				lazy.destroy();
+	_.paging = new _.PagingFactory();
+
+})(
+	FooGallery,
+	FooGallery.utils,
+	FooGallery.utils.is,
+	FooGallery.utils.fn,
+	FooGallery.utils.obj
+);
+(function($, _, _utils, _is, _fn, _str){
+
+	_.Template = _utils.Class.extend(/** @lends FooGallery.Template */{
+		/**
+		 * @summary The primary class for FooGallery, this controls the flow of the plugin across all templates.
+		 * @memberof FooGallery
+		 * @constructs Template
+		 * @param {FooGallery~Options} [options] - The options for the template.
+		 * @param {jQuery} [element] - The jQuery object of the templates' container element. If not supplied one will be created within the `parent` element supplied to the {@link FooGallery.Template#initialize|initialize} method.
+		 * @augments FooGallery.utils.Class
+		 * @borrows FooGallery.utils.Class.extend as extend
+		 * @borrows FooGallery.utils.Class.override as override
+		 */
+		construct: function(options, element){
+			var self = this;
+			/**
+			 * @summary The jQuery object for the template container.
+			 * @memberof FooGallery.Template#
+			 * @name $el
+			 * @type {jQuery}
+			 */
+			self.$el = _is.jq(element) ? element : $(element);
+			/**
+			 * @summary The options for the template.
+			 * @memberof FooGallery.Template#
+			 * @name opt
+			 * @type {FooGallery~Options}
+			 */
+			self.opt = options;
+			/**
+			 * @summary Any custom options for the template.
+			 * @memberof FooGallery.Template#
+			 * @name template
+			 * @type {object}
+			 */
+			self.template = options.template;
+			/**
+			 * @summary The ID for the template.
+			 * @memberof FooGallery.Template#
+			 * @name id
+			 * @type {string}
+			 */
+			self.id = self.$el.prop("id") || options.id;
+			/**
+			 * @summary Whether or not the template created its' own container element.
+			 * @memberof FooGallery.Template#
+			 * @name createdSelf
+			 * @type {boolean}
+			 */
+			self.createdSelf = false;
+			/**
+			 * @summary The CSS classes for the template.
+			 * @memberof FooGallery.Template#
+			 * @name cls
+			 * @type {FooGallery~CSSClasses}
+			 */
+			self.cls = options.cls;
+			/**
+			 * @summary The il8n strings for the template.
+			 * @memberof FooGallery.Template#
+			 * @name il8n
+			 * @type {FooGallery~il8n}
+			 */
+			self.il8n = options.il8n;
+			/**
+			 * @summary The CSS selectors for the template.
+			 * @memberof FooGallery.Template#
+			 * @name sel
+			 * @type {FooGallery~CSSSelectors}
+			 */
+			self.sel = _utils.selectify(self.cls);
+			/**
+			 * @summary The item manager for the template.
+			 * @memberof FooGallery.Template#
+			 * @name items
+			 * @type {FooGallery.Items}
+			 */
+			self.items = _.components.make("items", self);
+			/**
+			 * @summary The page manager for the template.
+			 * @memberof FooGallery.Template#
+			 * @name pages
+			 * @type {?FooGallery.Paging}
+			 */
+			self.pages = _.paging.make(options.paging.type, self);
+			/**
+			 * @summary The state manager for the template.
+			 * @memberof FooGallery.Template#
+			 * @name state
+			 * @type {FooGallery.State}
+			 */
+			self.state = _.components.make("state", self);
+			/**
+			 * @summary The throttle used by the template to limit expensive code execution.
+			 * @memberof FooGallery.Template#
+			 * @name _throttle
+			 * @type {?FooGallery.utils.Throttle}
+			 * @private
+			 */
+			self._throttle = new _utils.Throttle(self.opt.throttle);
+			/**
+			 * @summary The promise object returned by the {@link FooGallery.Template#initialize|initialize} method.
+			 * @memberof FooGallery.Template#
+			 * @name _initialize
+			 * @type {?Promise}
+			 * @private
+			 */
+			self._initialize = null;
+		},
+
+		// ################
+		// ## Initialize ##
+		// ################
+
+		/**
+		 * @summary Initialize the template.
+		 * @memberof FooGallery.Template#
+		 * @function initialize
+		 * @param {(jQuery|HTMLElement|string)} [parent] - If no element was supplied to the constructor you must supply a parent element for the template to append itself to. This can be a jQuery object, HTMLElement or a CSS selector.
+		 * @returns {Promise.<FooGallery.Template>}
+		 * @description Once resolved all options, objects and elements required by the template have been parsed or created and the initial load is complete.
+		 * @fires FooGallery.Template~"pre-init.foogallery"
+		 * @fires FooGallery.Template~"init.foogallery"
+		 * @fires FooGallery.Template~"post-init.foogallery"
+		 * @fires FooGallery.Template~"ready.foogallery"
+		 */
+		initialize: function(parent){
+			var self = this;
+			if (_is.promise(self._initialize)) return self._initialize;
+			parent = _is.jq(parent) ? parent : $(parent);
+			return self._initialize = $.Deferred(function(def){
+				if (parent.length === 0 && self.$el.parent().length === 0){
+					return _fn.rejectWith("A parent element is required.");
+				}
+				if (self.$el.length === 0){
+					self.$el = self.create();
+					self.createdSelf = true;
+				}
+				if (parent.length > 0){
+					self.$el.appendTo(parent);
+				}
+				var queue = $.Deferred(), existing;
+				if (self.$el.length > 0 && (existing = self.$el.data(_.dataTemplate)) instanceof _.Template){
+					queue.then(function(){
+						existing.destroy();
+					});
+				}
+				queue.then(function(){
+					// at this point we have our container element free of pre-existing instances so let's bind any event listeners supplied by the .on option
+					if (!_is.empty(self.opt.on)){
+						self.$el.on(self.opt.on);
+					}
+
+					/**
+					 * @summary Raised before the template is fully initialized.
+					 * @event FooGallery.Template~"pre-init.foogallery"
+					 * @type {jQuery.Event}
+					 * @param {jQuery.Event} event - The jQuery.Event object for the current event.
+					 * @param {FooGallery.Template} template - The template raising the event.
+					 * @returns {Promise} Resolved once the pre-initialization work is complete, rejected if an error occurs or execution is prevented.
+					 * @description At this point in the initialization chain the {@link FooGallery.Template#opt|opt} property has not undergone any additional parsing and is just the result of the {@link FooGallery.defaults|default options} being extended with any user supplied ones.
+					 * @example {@caption To listen for this event and perform some action when it occurs you would bind to it as follows.}
+					 * $(".foogallery").foogallery({
+					 * 	on: {
+					 * 		"pre-init.foogallery": function(event, template){
+					 * 			// do something
+					 * 		}
+					 * 	}
+					 * });
+					 * @example {@caption Calling the `preventDefault` method on the `event` object will prevent the template being initialized.}
+					 * $(".foogallery").foogallery({
+					 * 	on: {
+					 * 		"pre-init.foogallery": function(event, template){
+					 * 			if ("some condition"){
+					 * 				// stop the template being initialized
+					 * 				event.preventDefault();
+					 * 			}
+					 * 		}
+					 * 	}
+					 * });
+					 */
+					var e = self.raise("pre-init");
+					if (e.preventDefault()) return _fn.rejectWith("pre-init default prevented");
+				}).then(function(){
+					// checks the delay option and if it is greater than 0 waits for that amount of time before continuing
+					if (self.opt.delay <= 0) return _fn.resolved;
+					return $.Deferred(function(wait){
+						self._delay = setTimeout(function () {
+							self._delay = null;
+							wait.resolve();
+						}, self.opt.delay);
+					}).promise();
+				}).then(function(){
+					/**
+					 * @summary Raised before the template is initialized but after any pre-initialization work is complete.
+					 * @event FooGallery.Template~"init.foogallery"
+					 * @type {jQuery.Event}
+					 * @param {jQuery.Event} event - The jQuery.Event object for the current event.
+					 * @param {FooGallery.Template} template - The template raising the event.
+					 * @returns {Promise} Resolved once the initialization work is complete, rejected if an error occurs or execution is prevented.
+					 * @description At this point in the initialization chain all additional option parsing has been completed but the base components such as the items or state are not yet initialized.
+					 * @example {@caption To listen for this event and perform some action when it occurs you would bind to it as follows.}
+					 * $(".foogallery").foogallery({
+					 * 	on: {
+					 * 		"init.foogallery": function(event, template){
+					 * 			// do something
+					 * 		}
+					 * 	}
+					 * });
+					 * @example {@caption Calling the `preventDefault` method on the `event` object will prevent the template being initialized.}
+					 * $(".foogallery").foogallery({
+					 * 	on: {
+					 * 		"init.foogallery": function(event, template){
+					 * 			if ("some condition"){
+					 * 				// stop the template being initialized
+					 * 				event.preventDefault();
+					 * 			}
+					 * 		}
+					 * 	}
+					 * });
+					 * @example {@caption You can also prevent the default logic and replace it with your own by calling the `preventDefault` method on the `event` object and returning a promise.}
+					 * $(".foogallery").foogallery({
+					 * 	on: {
+					 * 		"init.foogallery": function(event, template){
+					 * 			// stop the default logic
+					 * 			event.preventDefault();
+					 * 			// you can execute the default logic by calling the handler directly yourself
+					 * 			// var promise = template.onInit();
+					 * 			// replace the default logic with your own
+					 * 			return Promise;
+					 * 		}
+					 * 	}
+					 * });
+					 */
+					var e = self.raise("init");
+					if (e.preventDefault()) return _fn.rejectWith("init default prevented");
+					return self.items.fetch().then(function(){
+						if (self.pages) self.pages.build();
+					});
+				}).then(function(){
+					/**
+					 * @summary Raised after the template is initialized but before any post-initialization work is complete.
+					 * @event FooGallery.Template~"post-init.foogallery"
+					 * @type {jQuery.Event}
+					 * @param {jQuery.Event} event - The jQuery.Event object for the current event.
+					 * @param {FooGallery.Template} template - The template raising the event.
+					 * @returns {Promise} Resolved once the post-initialization work is complete, rejected if an error occurs or execution is prevented.
+					 * @description At this point in the initialization chain all options, objects and elements required by the template have been parsed or created however the initial state has not been set yet and no items have been loaded.
+					 * @example {@caption To listen for this event and perform some action when it occurs you would bind to it as follows.}
+					 * $(".foogallery").foogallery({
+					 * 	on: {
+					 * 		"post-init.foogallery": function(event, template){
+					 * 			// do something
+					 * 		}
+					 * 	}
+					 * });
+					 * @example {@caption Calling the `preventDefault` method on the `event` object will prevent the template being initialized.}
+					 * $(".foogallery").foogallery({
+					 * 	on: {
+					 * 		"post-init.foogallery": function(event, template){
+					 * 			if ("some condition"){
+					 * 				// stop the template being initialized
+					 * 				event.preventDefault();
+					 * 			}
+					 * 		}
+					 * 	}
+					 * });
+					 * @example {@caption You can also prevent the default logic and replace it with your own by calling the `preventDefault` method on the `event` object and returning a promise.}
+					 * $(".foogallery").foogallery({
+					 * 	on: {
+					 * 		"post-init.foogallery": function(event, template){
+					 * 			// stop the default logic
+					 * 			event.preventDefault();
+					 * 			// you can execute the default logic by calling the handler directly yourself
+					 * 			// var promise = template.onPostInit();
+					 * 			// replace the default logic with your own
+					 * 			return Promise;
+					 * 		}
+					 * 	}
+					 * });
+					 */
+					var e = self.raise("post-init");
+					if (e.preventDefault()) return _fn.rejectWith("post-init default prevented");
+					self.$el.data(_.dataTemplate, self);
+					var state = self.state.parse();
+					self.state.set(_is.empty(state) ? self.state.initial() : state);
+					return self.loadAvailable().then(function(){
+						$(window).on("scroll.foogallery", {self: self}, self.onWindowScroll)
+							.on("popstate.foogallery", {self: self}, self.onWindowPopState);
+					});
+				}).then(function(){
+					/**
+					 * @summary Raised after the template is fully initialized and is ready to be interacted with.
+					 * @event FooGallery.Template~"ready.foogallery"
+					 * @type {jQuery.Event}
+					 * @param {jQuery.Event} event - The jQuery.Event object for the current event.
+					 * @param {FooGallery.Template} template - The template raising the event.
+					 * @description This event is raised after all post-initialization work such as setting the initial state and performing the first load are completed.
+					 * @example {@caption To listen for this event and perform some action when it occurs you would bind to it as follows.}
+					 * $(".foogallery").foogallery({
+					 * 	on: {
+					 * 		"ready.foogallery": function(event, template){
+					 * 			// do something
+					 * 		}
+					 * 	}
+					 * });
+					 */
+					self.raise("ready");
+					def.resolve(self);
+				}).fail(function(err){
+					console.log("initialize failed", self, err);
+					self.destroy();
+					def.reject(err);
+				});
+				queue.resolve();
+			});
+		},
+		/**
+		 * @summary Create a new container element for the template returning the jQuery object.
+		 * @memberof FooGallery.Template#
+		 * @function create
+		 * @returns {jQuery} A jQuery object to use as the container for the template.
+		 * @description This method is called from within the {@link FooGallery.Template#initialize|initialize} method only if a container element is required.
+		 * @example {@caption The below shows an example of what the returned jQuery objects' outer HTML would look like.}{@lang html}
+		 * <div id="{options.id}" class="{options.cls.container} {options.classes}">
+		 * </div>
+		 */
+		create: function(){
+			var self = this;
+			return $("<div/>", {"id": self.id, "class": self.cls.container}).addClass(self.opt.classes);
+		},
+
+		// #############
+		// ## Destroy ##
+		// #############
+
+		/**
+		 * @summary Destroy the template.
+		 * @memberof FooGallery.Template#
+		 * @function destroy
+		 * @description Once this method is called it can not be stopped and the template will be destroyed.
+		 * @fires FooGallery.Template~"destroy.foogallery"
+		 */
+		destroy: function(){
+			var self = this;
+			/**
+			 * @summary Raised before the template is destroyed.
+			 * @event FooGallery.Template~"destroy.foogallery"
+			 * @type {jQuery.Event}
+			 * @param {jQuery.Event} event - The jQuery.Event object for the current event.
+			 * @param {FooGallery.Template} template - The template raising the event.
+			 * @example {@caption To listen for this event and perform some action when it occurs you would bind to it as follows.}
+			 * $(".foogallery").foogallery({
+			 * 	on: {
+			 * 		"destroy.foogallery": function(event, template){
+			 * 			// do something
+			 * 		}
+			 * 	}
+			 * });
+			 */
+			self.raise("destroy");
+			if (!_is.empty(self.opt.on)){
+				self.$el.off(self.opt.on);
 			}
-			lazy = new _.Loader(this, options);
-			lazy.init();
-			$.data(this, "__FooGalleryLoader__", lazy);
-		});
-	};
+			$(window).off("popstate.foogallery", self.onWindowPopState)
+				.off("scroll.foogallery", self.onWindowScroll);
+			self.state.destroy();
+			if (self.pages) self.pages.destroy();
+			self.items.destroy();
+			self.$el.removeData(_.dataTemplate);
+			if (self.createdSelf){
+				self.$el.remove();
+			}
+			self.$el = self.state = self.items = self.pages = null;
+		},
+
+		// ################
+		// ## Load Items ##
+		// ################
+
+		/**
+		 * @summary Check if any available items need to be loaded and loads them.
+		 * @memberof FooGallery.Template#
+		 * @function loadAvailable
+		 * @returns {Promise<FooGallery.Item[]>} Resolves with an array of {@link FooGallery.Item|items} as the first argument. If no items are loaded this array is empty.
+		 */
+		loadAvailable: function(){
+			var self = this, items;
+			if (self.pages){
+				items = self.pages.available();
+			} else {
+				items = self.items.available();
+			}
+			return self.items.load(items);
+		},
+
+		// #############
+		// ## Utility ##
+		// #############
+
+		/**
+		 * @summary Raises the supplied `eventName` on the template {@link FooGallery.Template#$el|element}.
+		 * @memberof FooGallery.Template#
+		 * @function raise
+		 * @param {string} eventName - The name of the event to raise.
+		 * @param {Array} [args] - An additional arguments to supply to the listeners for the event.
+		 * @returns {?jQuery.Event} The jQuery.Event object or null if no `eventName` was supplied.
+		 * @description This method also executes any listeners set on the template object itself. These listeners are not bound to the element but are executed after the event is raised but before any default logic is executed. The names of these listeners use the following convention; prefix the `eventName` with `"on-"` and then camel-case the result. e.g. `"pre-init"` becomes `onPreInit`.
+		 * @example {@caption The following displays a listener for the `"pre-init.foogallery"` event in a sub-classed template.}
+		 * FooGallery.MyTemplate = FooGallery.Template.extend({
+		 * 	onPreInit: function(event, template){
+		 * 		// do something
+		 * 	}
+		 * });
+		 */
+		raise: function (eventName, args) {
+			if (!_is.string(eventName) || _is.empty(eventName)) return null;
+			args = _is.array(args) ? args : [];
+			var self = this,
+				name = eventName.split(".")[0],
+				listener = _str.camel("on-" + name),
+				event = $.Event(name + ".foogallery");
+			args.unshift(self); // add self
+			self.$el.trigger(event, args);
+			if (_is.fn(self[listener])){
+				args.unshift(event); // add event
+				self[listener].apply(self.$el.get(0), args);
+			}
+			_.debug.logf("{id}|{name}:", {id: self.id, name: name}, args);
+			return event;
+		},
+
+		// ###############
+		// ## Listeners ##
+		// ###############
+
+		/**
+		 * @summary Listens for the windows popstate event and performs any actions required by the template.
+		 * @memberof FooGallery.Template#
+		 * @function onWindowPopState
+		 * @param {jQuery.Event} e - The jQuery.Event object for the event.
+		 * @private
+		 */
+		onWindowPopState: function(e){
+			var self = e.data.self, state = e.originalEvent.state;
+			if (!_is.empty(state) && state.id === self.id){
+				self.state.set(state);
+				self.loadAvailable();
+			}
+		},
+		/**
+		 * @summary Listens for the windows scroll event and performs any checks required by the template.
+		 * @memberof FooGallery.Template#
+		 * @function onWindowScroll
+		 * @param {jQuery.Event} e - The jQuery.Event object for the event.
+		 * @private
+		 */
+		onWindowScroll: function(e){
+			var self = e.data.self;
+			self._throttle.limit(function(){
+				self.loadAvailable();
+			});
+		}
+	});
+
+	_.template.register("default", _.Template, {
+		id: null,
+		type: "default",
+		classes: "",
+		on: {},
+		lazy: true,
+		viewport: 200,
+		items: [],
+		delay: 100,
+		throttle: 50,
+		timeout: 60000,
+		srcset: "data-srcset",
+		src: "data-src",
+		placeholder: _.emptyImage,
+		error: _.emptyImage,
+		template: {}
+	}, {
+		container: "foogallery"
+	}, {
+
+	}, -100);
+
+	/**
+	 * @summary An object containing all default template options.
+	 * @typedef {object} FooGallery.Template~Options
+	 * @property {?string} [id=null] - The id for the template. This is only required if creating a template without a pre-existing container element that has an `id` attribute.
+	 * @property {string} [type="default"] - The type of template to load. If no container element exists to parse the type from this must be supplied so the correct type of template is loaded.
+	 * @property {string} [classes=""] - A space delimited string of any additional CSS classes to append to the container element of the template.
+	 * @property {object} [on={}] - An object containing any template events to bind to.
+	 * @property {boolean} [lazy=true] - Whether or not to enable lazy loading of images.
+	 * @property {number} [viewport=200] - The number of pixels to inflate the viewport by when checking to lazy load items.
+	 * @property {(FooGallery.Item~Options[]|FooGallery.Item[]| string)} [items=[]] - An array of items to load when required. A url can be provided and the items will be fetched using an ajax call, the response should be a properly formatted JSON array of {@link FooGallery.Item~Options|item} object.
+	 * @property {number} [delay=100] - The number of milliseconds to delay the initialization of a template.
+	 * @property {number} [throttle=50] - The number of milliseconds to wait once scrolling has stopped before performing any work.
+	 * @property {number} [timeout=60000] - The number of milliseconds to wait before forcing a timeout when loading items.
+	 * @property {string} [src="data-src"] - The name of the attribute to retrieve an images src url from.
+	 * @property {string} [srcset="data-srcset"] - The name of the attribute to retrieve an images srcset url from.
+	 * @property {string} [placeholder] - The url to an image to use as a placeholder prior to an image being loaded.
+	 * @property {string} [error] - The url to an image to use in case an item fails to load.
+	 * @property {object} [template={}] - An object containing any additional custom options for the template.
+	 * @property {FooGallery.Template~CSSClasses} [cls] - An object containing all CSS classes for the template.
+	 * @property {FooGallery.Template~CSSSelectors} [sel] - An object containing all CSS selectors for the template.
+	 * @property {FooGallery.Template~il8n} [il8n] - An object containing all il8n strings for the template.
+	 * @property {FooGallery.Item~Options} [item] - An object containing the default values for all items.
+	 * @property {FooGallery.State~Options} [state] - An object containing the state options for the template.
+	 * @property {FooGallery.Paging~Options} [paging] - An object containing the default paging options for the template.
+	 */
+
+	/**
+	 * @summary An object containing all CSS classes for the default template.
+	 * @typedef {object} FooGallery.Template~CSSClasses
+	 * @property {string} [container="foogallery"] - The base CSS class names to apply to the container element.
+	 * @property {FooGallery.Item~CSSClasses} [item] - A simple object containing the CSS classes used by an item.
+	 */
+
+	/**
+	 * @summary An object containing all il8n strings for the default template.
+	 * @typedef {object} FooGallery.Template~il8n
+	 */
+
+	/**
+	 * @summary An object containing all CSS selectors for the default template.
+	 * @typedef {object} FooGallery.Template~CSSSelectors
+	 * @property {string} [container=".foogallery"] - The selector for the base CSS class names for the container element.
+	 * @property {FooGallery.Item~CSSSelectors} [item] - An object containing the CSS selectors for an item.
+	 * @description This object is automatically generated from a {@link FooGallery.Template~CSSClasses|classes} object and its properties mirror those except the space delimited string of class names is converted into a CSS selector.
+	 */
+
+})(
+	FooGallery.$,
+	FooGallery,
+	FooGallery.utils,
+	FooGallery.utils.is,
+	FooGallery.utils.fn,
+	FooGallery.utils.str
+);
+
+
+(function(_, _utils){
+
+	_.Component = _utils.Class.extend(/** @lend FooGallery.Component */{
+		/**
+		 * @summary The base class for all child components of a {@link FooGallery.Template|template}.
+		 * @memberof FooGallery
+		 * @constructs Component
+		 * @param {FooGallery.Template} template - The template creating the component.
+		 * @augments FooGallery.utils.Class
+		 * @borrows FooGallery.utils.Class.extend as extend
+		 * @borrows FooGallery.utils.Class.override as override
+		 */
+		construct: function(template){
+			/**
+			 * @summary The template that created this component.
+			 * @memberof FooGallery.Component#
+			 * @name tmpl
+			 * @type {FooGallery.Template}
+			 */
+			this.tmpl = template;
+		},
+		/**
+		 * @summary Destroy the component making it ready for garbage collection.
+		 * @memberof FooGallery.Component#
+		 * @function destroy
+		 */
+		destroy: function(){
+			this.tmpl = null;
+		}
+	});
+
+	/**
+	 * @summary A factory for registering and creating basic gallery components.
+	 * @memberof FooGallery
+	 * @name components
+	 * @type {FooGallery.utils.Factory}
+	 */
+	_.components = new _utils.Factory();
+
+})(
+	FooGallery,
+	FooGallery.utils
+);
+(function($, _, _is, _str){
+
+	_.State = _.Component.extend(/** @lends FooGallery.State */{
+		/**
+		 * @summary This class manages all the getting and setting of its' parent templates' state.
+		 * @memberof FooGallery
+		 * @constructs State
+		 * @param {FooGallery.Template} template - The template to manage the state for.
+		 * @augments FooGallery.Component
+		 * @borrows FooGallery.utils.Class.extend as extend
+		 * @borrows FooGallery.utils.Class.override as override
+		 */
+		construct: function(template){
+			var self = this;
+			/**
+			 * @ignore
+			 * @memberof FooGallery.State#
+			 * @function _super
+			 */
+			self._super(template);
+			/**
+			 * @summary Whether or not the history API is enabled in the current browser.
+			 * @memberof FooGallery.State#
+			 * @name apiEnabled
+			 * @type {boolean}
+			 * @readonly
+			 */
+			self.apiEnabled = !!window.history && !!history.replaceState;
+			/**
+			 * @summary The state specific options for the template.
+			 * @memberof FooGallery.State#
+			 * @name opt
+			 * @type {FooGallery.State~Options}
+			 */
+			self.opt = self.tmpl.opt.state;
+			/**
+			 * @summary Whether or not the component is enabled.
+			 * @memberof FooGallery.State#
+			 * @name enabled
+			 * @type {boolean}
+			 */
+			self.enabled = self.opt.enabled;
+			/**
+			 * @summary Which method of the history API to use by default when updating the state.
+			 * @memberof FooGallery.State#
+			 * @name pushOrReplace
+			 * @type {string}
+			 * @default "replace"
+			 */
+			self.pushOrReplace = self.isPushOrReplace(self.opt.pushOrReplace) ? self.opt.pushOrReplace : "replace";
+
+			var id = _str.escapeRegExp(self.tmpl.id),
+				values = _str.escapeRegExp(self.opt.values),
+				pair = _str.escapeRegExp(self.opt.pair);
+			/**
+			 * @summary An object containing regular expressions used to test and parse a hash value into a state object.
+			 * @memberof FooGallery.State#
+			 * @name regex
+			 * @type {{exists: RegExp, values: RegExp}}
+			 * @readonly
+			 * @description The regular expressions contained within this object are specific to this template and are created using the template {@link FooGallery.Template#id|id} and the delimiters from the {@link FooGallery.State#opt|options}.
+			 */
+			self.regex = {
+				exists: new RegExp("^#"+id+"\\"+values+".+?"),
+				values: new RegExp("(\\w+)"+pair+"([^"+values+"]+)", "g")
+			};
+		},
+		/**
+		 * @summary Destroy the component clearing any current state from the url and preparing it for garbage collection.
+		 * @memberof FooGallery.State#
+		 * @function destroy
+		 */
+		destroy: function(){
+			var self = this;
+			self.clear();
+			self.opt = self.regex = {};
+			self._super();
+		},
+		/**
+		 * @summary Check if the supplied value is `"push"` or `"replace"`.
+		 * @memberof FooGallery.State#
+		 * @function isPushOrReplace
+		 * @param {*} value - The value to check.
+		 * @returns {boolean}
+		 */
+		isPushOrReplace: function(value){
+			return $.inArray(value, ["push","replace"]) !== -1;
+		},
+		/**
+		 * @summary Check if the current url contains state for this template.
+		 * @memberof FooGallery.State#
+		 * @function exists
+		 * @returns {boolean}
+		 */
+		exists: function(){
+			return this.regex.exists.test(location.hash) && this.regex.values.test(location.hash);
+		},
+		/**
+		 * @summary Parse the current url returning an object containing all values for the template.
+		 * @memberof FooGallery.State#
+		 * @function parse
+		 * @returns {object}
+		 * @description This method always returns an object, if successful the object contains properties otherwise it is just a plain empty object. For this method to be successful the current template {@link FooGallery.Template#id|id} must match the one from the url.
+		 */
+		parse: function(){
+			var self = this, state = {};
+			if (self.exists()){
+				if (self.enabled){
+					state.id = self.tmpl.id;
+					var pairs = location.hash.match(self.regex.values);
+					$.each(pairs, function(i, pair){
+						var parts = pair.split(self.opt.pair);
+						if (parts.length === 2){
+							state[parts[0]] = parts[1].indexOf(self.opt.array) === -1
+								? decodeURIComponent(parts[1])
+								: $.map(parts[1].split(self.opt.array), function(part){ return decodeURIComponent(part); });
+							if (_is.string(state[parts[0]]) && !isNaN(state[parts[0]])){
+								state[parts[0]] = parseInt(state[parts[0]]);
+							}
+						}
+					});
+				} else {
+					// if we're here it means there is a hash on the url but the option is disabled so remove it
+					if (self.apiEnabled){
+						history.replaceState(null, "", location.pathname + location.search);
+					} else {
+						location.hash = "#";
+					}
+				}
+			}
+			return state;
+		},
+		/**
+		 * @summary Converts the supplied state object into a string value to use as a hash.
+		 * @memberof FooGallery.State#
+		 * @function hashify
+		 * @param {object} state - The object to hashify.
+		 * @returns {string}
+		 */
+		hashify: function(state){
+			var self = this;
+			if (_is.hash(state)){
+				var hash = [];
+				$.each(state, function(name, value){
+					if (!_is.empty(value) && name !== "id"){
+						if (_is.array(value)){
+							value = $.map(value, function(part){ return encodeURIComponent(part); }).join("+");
+						} else {
+							value = encodeURIComponent(value);
+						}
+						hash.push(name + self.opt.pair + value);
+					}
+				});
+				if (hash.length > 0){
+					hash.unshift("#"+self.tmpl.id);
+				}
+				return hash.join(self.opt.values);
+			}
+			return "";
+		},
+		/**
+		 * @summary Replace the current state with the one supplied.
+		 * @memberof FooGallery.State#
+		 * @function replace
+		 * @param {object} state - The state to replace the current with.
+		 */
+		replace: function(state){
+			var self = this;
+			if (self.enabled && self.apiEnabled){
+				state.id = self.tmpl.id;
+				var hash = self.hashify(state), empty = _is.empty(hash);
+				history.replaceState(empty ? null : state, "", empty ? location.pathname + location.search : hash);
+			}
+		},
+		/**
+		 * @summary Push the supplied `state` into the browser history.
+		 * @memberof FooGallery.State#
+		 * @function push
+		 * @param {object} state - The state to push.
+		 */
+		push: function(state){
+			var self = this;
+			if (self.enabled && self.apiEnabled){
+				state.id = self.tmpl.id;
+				var hash = self.hashify(state), empty = _is.empty(hash);
+				history.pushState(empty ? null : state, "", empty ? location.pathname + location.search : hash);
+			}
+		},
+		/**
+		 * @summary Update the browser history using the supplied `state`.
+		 * @memberof FooGallery.State#
+		 * @function update
+		 * @param {object} state - The state to update.
+		 * @param {string} [pushOrReplace] - The method to use to update the state. If not supplied this falls back to the value of the {@link FooGallery.State#pushOrReplace|pushOrReplace} property.
+		 */
+		update: function(state, pushOrReplace){
+			var self = this;
+			if (self.enabled && self.apiEnabled){
+				pushOrReplace = self.isPushOrReplace(pushOrReplace) ? pushOrReplace : self.pushOrReplace;
+				self[pushOrReplace](state);
+			}
+		},
+		/**
+		 * @summary Clear the template state from the current browser history if it exists.
+		 * @memberof FooGallery.State#
+		 * @function clear
+		 */
+		clear: function(){
+			if (this.exists()) this.replace({});
+		},
+		/**
+		 * @summary Get the initial start up state of the template.
+		 * @memberof FooGallery.State#
+		 * @function initial
+		 * @returns {FooGallery~State}
+		 * @description This method returns an initial start up state from the template options.
+		 */
+		initial: function(){
+			var self = this, tmpl = self.tmpl, state = {};
+			if (tmpl.pages && tmpl.pages.current > 1) state.p = tmpl.pages.current;
+			return state;
+		},
+		/**
+		 * @summary Get the current state of the template.
+		 * @memberof FooGallery.State#
+		 * @function get
+		 * @param {FooGallery.Item} [item] - If supplied the items' {@link FooGallery.Item#id|id} is included in the resulting state object.
+		 * @returns {FooGallery~State}
+		 * @description This method does not parse the history or url it returns the current state of the template itself. To parse the current url use the {@link FooGallery.State#parse|parse} method instead.
+		 */
+		get: function(item){
+			var self = this, tmpl = self.tmpl, state = {};
+			if (item instanceof _.Item) state.i = item.id;
+			if (tmpl.pages && tmpl.pages.isValid(tmpl.pages.current)){
+				state.p = tmpl.pages.current;
+			}
+			return state;
+		},
+		/**
+		 * @summary Set the current state of the template.
+		 * @memberof FooGallery.State#
+		 * @function set
+		 * @param {FooGallery~State} state - The state to set the template to.
+		 * @description This method does not set the history or url it sets the current state of the template itself. To update the url use the {@link FooGallery.State#update|update} method instead.
+		 */
+		set: function(state){
+			var self = this, tmpl = self.tmpl;
+			if (_is.hash(state)){
+				tmpl.items.reset();
+				var item = tmpl.items.get(state.i);
+				if (tmpl.pages){
+					tmpl.pages.rebuild();
+					var page = tmpl.pages.number(state.p);
+					if (item && !tmpl.pages.contains(page, item)){
+						page = tmpl.pages.find(item);
+						page = page !== 0 ? page : 1;
+					}
+					tmpl.pages.set(page, !_is.empty(state), false);
+					if (item && tmpl.pages.contains(page, item)){
+						item.scrollTo();
+					}
+				} else {
+					tmpl.items.detach(tmpl.items.all());
+					tmpl.items.create(tmpl.items.available(), true);
+					if (item){
+						item.scrollTo();
+					}
+				}
+				if (!_is.empty(state.i)){
+					state.i = null;
+					self.replace(state);
+				}
+			}
+		},
+	});
+
+	_.template.configure("default", {
+		state: {
+			enabled: false,
+			pushOrReplace: "replace",
+			values: "/",
+			pair: ":",
+			array: "+"
+		}
+	});
+
+	// register the component
+	_.components.register("state", _.State);
+
+	/**
+	 * @summary An object containing the state options for the template.
+	 * @typedef {object} FooGallery.State~Options
+	 * @property {boolean} [enabled=false] - Whether or not state is enabled for the template.
+	 * @property {string} [pushOrReplace="replace"] - Which method of the history API to use by default when updating the state.
+	 * @property {string} [values="/"] - The delimiter used between key value pairs in the hash.
+	 * @property {string} [pair=":"] - The delimiter used between a key and a value in the hash.
+	 * @property {string} [array="+"] - The delimiter used for array values in the hash.
+	 */
+
+	/**
+	 * @summary An object used to store the state of a template.
+	 * @typedef {object} FooGallery~State
+	 * @property {number} [p] - The current page number.
+	 * @property {?string} [i] - The currently selected item.
+	 */
+
+})(
+	FooGallery.$,
+	FooGallery,
+	FooGallery.utils.is,
+	FooGallery.utils.str
+);
+(function($, _, _utils, _is, _fn, _obj){
+
+	_.Item = _.Component.extend(/** @lends FooGallery.Item */{
+		/**
+		 * @summary The base class for an item.
+		 * @memberof FooGallery
+		 * @constructs Item
+		 * @param {FooGallery.Template} template - The template this item belongs to.
+		 * @param {FooGallery.Item~Options} [options] - The options to initialize the item with.
+		 * @augments FooGallery.Component
+		 * @borrows FooGallery.utils.Class.extend as extend
+		 * @borrows FooGallery.utils.Class.override as override
+		 */
+		construct: function(template, options){
+			var self = this;
+			/**
+			 * @ignore
+			 * @memberof FooGallery.Item#
+			 * @function _super
+			 */
+			self._super(template);
+			self.cls = template.cls.item;
+			self.il8n = template.il8n.item;
+			self.sel = template.sel.item;
+			/**
+			 * @summary Whether or not the items' elements are appended to the template.
+			 * @memberof FooGallery.Item#
+			 * @name isAttached
+			 * @type {boolean}
+			 * @readonly
+			 */
+			self.isAttached = false;
+			/**
+			 * @summary Whether or not the items' elements are created and can be used.
+			 * @memberof FooGallery.Item#
+			 * @name isCreated
+			 * @type {boolean}
+			 * @readonly
+			 */
+			self.isCreated = false;
+			/**
+			 * @summary Whether or not the items' image is currently loading.
+			 * @memberof FooGallery.Item#
+			 * @name isLoading
+			 * @type {boolean}
+			 * @readonly
+			 */
+			self.isLoading = false;
+			/**
+			 * @summary Whether or not the items' image has been loaded.
+			 * @memberof FooGallery.Item#
+			 * @name isLoaded
+			 * @type {boolean}
+			 * @readonly
+			 */
+			self.isLoaded = false;
+			/**
+			 * @summary Whether or not the items' image threw an error while loading.
+			 * @memberof FooGallery.Item#
+			 * @name isError
+			 * @type {boolean}
+			 * @readonly
+			 */
+			self.isError = false;
+			/**
+			 * @memberof FooGallery.Item#
+			 * @name $el
+			 * @type {?jQuery}
+			 */
+			self.$el = null;
+			/**
+			 * @memberof FooGallery.Item#
+			 * @name $inner
+			 * @type {?jQuery}
+			 */
+			self.$inner = null;
+			/**
+			 * @memberof FooGallery.Item#
+			 * @name $anchor
+			 * @type {?jQuery}
+			 */
+			self.$anchor = null;
+			/**
+			 * @memberof FooGallery.Item#
+			 * @name $image
+			 * @type {?jQuery}
+			 */
+			self.$image = null;
+			/**
+			 * @memberof FooGallery.Item#
+			 * @name $caption
+			 * @type {?jQuery}
+			 */
+			self.$caption = null;
+
+			options = _obj.extend({}, template.opt.item, options);
+
+			/**
+			 * @memberof FooGallery.Item#
+			 * @name id
+			 * @type {string}
+			 */
+			self.id = options.id;
+			/**
+			 * @memberof FooGallery.Item#
+			 * @name href
+			 * @type {string}
+			 */
+			self.href = options.href;
+			/**
+			 * @memberof FooGallery.Item#
+			 * @name src
+			 * @type {string}
+			 */
+			self.src = options.src;
+			/**
+			 * @memberof FooGallery.Item#
+			 * @name srcset
+			 * @type {string}
+			 */
+			self.srcset = options.srcset;
+			/**
+			 * @memberof FooGallery.Item#
+			 * @name width
+			 * @type {number}
+			 */
+			self.width = options.width;
+			/**
+			 * @memberof FooGallery.Item#
+			 * @name height
+			 * @type {number}
+			 */
+			self.height = options.height;
+			/**
+			 * @memberof FooGallery.Item#
+			 * @name title
+			 * @type {string}
+			 */
+			self.title = options.title;
+			/**
+			 * @memberof FooGallery.Item#
+			 * @name description
+			 * @type {string}
+			 */
+			self.description = options.description;
+			/**
+			 * @memberof FooGallery.Item#
+			 * @name attrItem
+			 * @type {FooGallery.Item~Attributes}
+			 */
+			self.attr = options.attr;
+			/**
+			 * @memberof FooGallery.Item#
+			 * @name tags
+			 * @type {string[]}
+			 */
+			self.tags = options.tags;
+			/**
+			 * @memberof FooGallery.Item#
+			 * @name maxWidth
+			 * @type {?FooGallery.Item~maxWidthCallback}
+			 */
+			self.maxWidth = options.maxWidth;
+			/**
+			 * @summary The cached result of the last call to the {@link FooGallery.Item#getThumbUrl|getThumbUrl} method.
+			 * @memberof FooGallery.Item#
+			 * @name _thumbUrl
+			 * @type {string}
+			 * @private
+			 */
+			self._thumbUrl = null;
+			/**
+			 * @summary This property is used to store the promise created when loading an item for the first time.
+			 * @memberof FooGallery.Item#
+			 * @name _load
+			 * @type {?Promise}
+			 * @private
+			 */
+			self._load = null;
+		},
+		/**
+		 * @summary Destroy the item preparing it for garbage collection.
+		 * @memberof FooGallery.Item#
+		 * @function destroy
+		 */
+		destroy: function(){
+			var self = this;
+			/**
+			 * @summary Raised when a template destroys an item.
+			 * @event FooGallery.Template~"destroy-item.foogallery"
+			 * @type {jQuery.Event}
+			 * @param {jQuery.Event} event - The jQuery.Event object for the current event.
+			 * @param {FooGallery.Template} template - The template raising the event.
+			 * @param {FooGallery.Item} item - The item to destroy.
+			 * @returns {boolean} `true` if the {@link FooGallery.Item|`item`} has been successfully destroyed.
+			 * @example {@caption To listen for this event and perform some action when it occurs you would bind to it as follows.}
+			 * $(".foogallery").foogallery({
+			 * 	on: {
+			 * 		"destroy-item.foogallery": function(event, template, item){
+			 * 			// do something
+			 * 		}
+			 * 	}
+			 * });
+			 * @example {@caption Calling the `preventDefault` method on the `event` object will prevent the `item` being destroyed.}
+			 * $(".foogallery").foogallery({
+			 * 	on: {
+			 * 		"destroy-item.foogallery": function(event, template, item){
+			 * 			if ("some condition"){
+			 * 				// stop the item being destroyed
+			 * 				event.preventDefault();
+			 * 			}
+			 * 		}
+			 * 	}
+			 * });
+			 * @example {@caption You can also prevent the default logic and replace it with your own by calling the `preventDefault` method on the `event` object.}
+			 * $(".foogallery").foogallery({
+			 * 	on: {
+			 * 		"destroy-item.foogallery": function(event, template, item){
+			 * 			// stop the default logic
+			 * 			event.preventDefault();
+			 * 			// replacing it with your own destroying the item yourself
+			 * 			item.$el.off(".foogallery").remove();
+			 * 			item.$el = null;
+			 * 			...
+			 * 			// once all destroy work is complete you must set tmpl to null
+			 * 			item.tmpl = null;
+			 * 		}
+			 * 	}
+			 * });
+			 */
+			var e = self.tmpl.raise("destroy-item");
+			if (!e.isDefaultPrevented()){
+				self._super();
+			}
+			return self.tmpl === null;
+		},
+		/**
+		 * @summary Parse the supplied element updating the current items' properties.
+		 * @memberof FooGallery.Item#
+		 * @function parse
+		 * @param {(jQuery|HTMLElement|string)} element - The element to parse.
+		 * @returns {boolean}
+		 * @fires FooGallery.Template~"parse-item.foogallery"
+		 * @fires FooGallery.Template~"parsed-item.foogallery"
+		 */
+		parse: function(element){
+			var self = this, o = self.tmpl.opt, cls = self.cls, sel = self.sel, $el = $(element);
+			/**
+			 * @summary Raised when an item needs to parse properties from an element.
+			 * @event FooGallery.Template~"parse-item.foogallery"
+			 * @type {jQuery.Event}
+			 * @param {jQuery.Event} event - The jQuery.Event object for the current event.
+			 * @param {FooGallery.Template} template - The template raising the event.
+			 * @param {FooGallery.Item} item - The item to populate.
+			 * @param {jQuery} $element - The jQuery object of the element to parse.
+			 * @example {@caption To listen for this event and perform some action when it occurs you would bind to it as follows.}
+			 * $(".foogallery").foogallery({
+			 * 	on: {
+			 * 		"parse-item.foogallery": function(event, template, item, $element){
+			 * 			// do something
+			 * 		}
+			 * 	}
+			 * });
+			 * @example {@caption Calling the `preventDefault` method on the `event` object will prevent the `item` properties being parsed from the `element`.}
+			 * $(".foogallery").foogallery({
+			 * 	on: {
+			 * 		"parse-item.foogallery": function(event, template, item, $element){
+			 * 			if ("some condition"){
+			 * 				// stop the item being parsed
+			 * 				event.preventDefault();
+			 * 			}
+			 * 		}
+			 * 	}
+			 * });
+			 * @example {@caption You can also prevent the default logic and replace it with your own by calling the `preventDefault` method on the `event` object and then populating the `item` properties from the `element`.}
+			 * $(".foogallery").foogallery({
+			 * 	on: {
+			 * 		"parse-item.foogallery": function(event, template, item, $element){
+			 * 			// stop the default logic
+			 * 			event.preventDefault();
+			 * 			// replacing it with your own setting each property of the item yourself
+			 * 			item.$el = $element;
+			 * 			...
+			 * 			// once all properties are set you must set isParsed to true
+			 * 			item.isParsed = true;
+			 * 		}
+			 * 	}
+			 * });
+			 */
+			var e = self.tmpl.raise("parse-item", [self, $el]);
+			if (!e.isDefaultPrevented() && (self.isCreated = $el.is(sel.elem))){
+				self.$el = $el.data(_.dataItem, self);
+				self.$inner = self.$el.find(sel.inner);
+				self.$anchor = self.$el.find(sel.anchor).on("click.foogallery", {self: self}, self.onAnchorClick);
+				self.$image = self.$anchor.find(sel.image);
+				self.$caption = self.$el.find(sel.caption.elem);
+				self.isAttached = self.$el.parent().length > 0;
+				self.isLoading = self.$el.is(sel.loading);
+				self.isLoaded = self.$el.is(sel.loaded);
+				self.isError = self.$el.is(sel.error);
+				self.id = self.$el.data("id");
+				self.tags = self.$el.data("tags");
+				self.href = self.$anchor.attr("href");
+				self.src = self.$image.attr(o.src);
+				self.srcset = self.$image.attr(o.srcset);
+				self.width = parseInt(self.$image.attr("width"));
+				self.height = parseInt(self.$image.attr("height"));
+				self.title = self.$image.attr("title");
+				self.description = self.$image.attr("alt");
+				// if the image has no src url then set the placeholder
+				if (_is.empty(self.$image.prop("src"))){
+					self.$image.prop("src", o.placeholder);
+				}
+				if (self.isCreated && self.isAttached && !self.isLoading && !self.isLoaded && !self.isError){
+					self.$el.addClass(cls.idle);
+				}
+				self.fix();
+				self.isParsed = true;
+				// We don't load the attributes when parsing as they are only ever used to create an item and if you're parsing it's already created.
+			}
+			if (self.isParsed){
+				/**
+				 * @summary Raised after an item has been parsed from an element.
+				 * @event FooGallery.Template~"parsed-item.foogallery"
+				 * @type {jQuery.Event}
+				 * @param {jQuery.Event} event - The jQuery.Event object for the current event.
+				 * @param {FooGallery.Template} template - The template raising the event.
+				 * @param {FooGallery.Item} item - The item that was parsed.
+				 * @param {jQuery} $element - The jQuery object of the element that was parsed.
+				 * @example {@caption To listen for this event and perform some action when it occurs you would bind to it as follows.}
+				 * $(".foogallery").foogallery({
+				 * 	on: {
+				 * 		"parsed-item.foogallery": function(event, template, item, $element){
+				 * 			// do something
+				 * 		}
+				 * 	}
+				 * });
+				 */
+				self.tmpl.raise("parsed-item", [self]);
+			}
+			return self.isParsed;
+		},
+		/**
+		 * @summary Create the items' DOM elements and populate the corresponding properties.
+		 * @memberof FooGallery.Item#
+		 * @function create
+		 * @returns {boolean}
+		 * @fires FooGallery.Template~"create-item.foogallery"
+		 * @fires FooGallery.Template~"created-item.foogallery"
+		 */
+		create: function(){
+			var self = this;
+			if (!self.isCreated && _is.string(self.href) && _is.string(self.src) && _is.number(self.width) && _is.number(self.height)){
+				/**
+				 * @summary Raised when an item needs to create its' elements.
+				 * @event FooGallery.Template~"create-item.foogallery"
+				 * @type {jQuery.Event}
+				 * @param {jQuery.Event} event - The jQuery.Event object for the current event.
+				 * @param {FooGallery.Template} template - The template raising the event.
+				 * @param {FooGallery.Item} item - The item to create the elements for.
+				 * @example {@caption To listen for this event and perform some action when it occurs you would bind to it as follows.}
+				 * $(".foogallery").foogallery({
+				 * 	on: {
+				 * 		"create-item.foogallery": function(event, template, item){
+				 * 			// do something
+				 * 		}
+				 * 	}
+				 * });
+				 * @example {@caption Calling the `preventDefault` method on the `event` object will prevent the `item` being created.}
+				 * $(".foogallery").foogallery({
+				 * 	on: {
+				 * 		"create-item.foogallery": function(event, template, item){
+				 * 			if ("some condition"){
+				 * 				// stop the item being created
+				 * 				event.preventDefault();
+				 * 			}
+				 * 		}
+				 * 	}
+				 * });
+				 * @example {@caption You can also prevent the default logic and replace it with your own by calling the `preventDefault` method on the `event` object.}
+				 * $(".foogallery").foogallery({
+				 * 	on: {
+				 * 		"create-item.foogallery": function(event, template, item){
+				 * 			// stop the default logic
+				 * 			event.preventDefault();
+				 * 			// replacing it with your own creating each element property of the item yourself
+				 * 			item.$el = $("<div/>");
+				 * 			...
+				 * 			// once all elements are created you must set isCreated to true
+				 * 			item.isCreated = true;
+				 * 		}
+				 * 	}
+				 * });
+				 */
+				var e = self.tmpl.raise("create-item", [self]);
+				if (!e.isDefaultPrevented()){
+					var o = self.tmpl.opt, cls = self.cls, attr = self.attr;
+					attr.elem["class"] = cls.elem + " " + cls.idle;
+					attr.elem["data-id"] = self.id;
+					if (!_is.empty(self.tags)){
+						attr.elem["data-tags"] = JSON.stringify(self.tags);
+					}
+
+					attr.inner["class"] = cls.inner;
+
+					attr.anchor["class"] = cls.anchor;
+					attr.anchor["href"] = self.href;
+
+					attr.image["class"] = cls.image;
+					attr.image["src"] = o.placeholder;
+					attr.image[o.src] = self.src;
+					attr.image[o.srcset] = self.srcset;
+					attr.image["width"] = self.width;
+					attr.image["height"] = self.height;
+					attr.image["title"] = self.title;
+					attr.image["alt"] = self.description;
+
+					self.$el = $("<div/>").attr(attr.elem).data(_.dataItem, self);
+					self.$inner = $("<div/>").attr(attr.inner).appendTo(self.$el);
+					self.$anchor = $("<a/>").attr(attr.anchor).appendTo(self.$inner).on("click.foogallery", {self: self}, self.onAnchorClick);
+					self.$image = $("<img/>").attr(attr.image).appendTo(self.$anchor);
+
+					var hasTitle = !_is.empty(self.title), hasDesc = !_is.empty(self.description);
+					if (hasTitle || hasDesc){
+						cls = self.cls.caption;
+						attr = self.attr.caption;
+						attr.elem["class"] = cls.elem;
+						attr.inner["class"] = cls.inner;
+						attr.title["class"] = cls.title;
+						attr.description["class"] = cls.description;
+						self.$caption = $("<div/>").attr(attr.elem);
+						var $inner = $("<div/>").attr(attr.inner).appendTo(self.$caption);
+						if (hasTitle){
+							$inner.append($("<div/>").attr(attr.title).html(self.title));
+						}
+						if (hasDesc){
+							$inner.append($("<div/>").attr(attr.description).html(self.description));
+						}
+						self.$caption.appendTo(self.$anchor);
+					}
+					self.isCreated = true;
+				}
+				if (self.isCreated){
+					/**
+					 * @summary Raised after an items' elements have been created.
+					 * @event FooGallery.Template~"created-item.foogallery"
+					 * @type {jQuery.Event}
+					 * @param {jQuery.Event} event - The jQuery.Event object for the current event.
+					 * @param {FooGallery.Template} template - The template raising the event.
+					 * @param {FooGallery.Item} item - The item that was created.
+					 * @example {@caption To listen for this event and perform some action when it occurs you would bind to it as follows.}
+					 * $(".foogallery").foogallery({
+					 * 	on: {
+					 * 		"created-item.foogallery": function(event, template, item){
+					 * 			// do something
+					 * 		}
+					 * 	}
+					 * });
+					 */
+					self.tmpl.raise("created-item", [self]);
+				}
+			}
+			return self.isCreated;
+		},
+		/**
+		 * @summary Append the item to the current template.
+		 * @memberof FooGallery.Item#
+		 * @function append
+		 * @returns {boolean}
+		 * @fires FooGallery.Template~"append-item.foogallery"
+		 * @fires FooGallery.Template~"appended-item.foogallery"
+		 */
+		append: function(){
+			var self = this;
+			if (self.isCreated && !self.isAttached){
+				/**
+				 * @summary Raised when an item needs to append its elements to the template.
+				 * @event FooGallery.Template~"append-item.foogallery"
+				 * @type {jQuery.Event}
+				 * @param {jQuery.Event} event - The jQuery.Event object for the current event.
+				 * @param {FooGallery.Template} template - The template raising the event.
+				 * @param {FooGallery.Item} item - The item to append to the template.
+				 * @example {@caption To listen for this event and perform some action when it occurs you would bind to it as follows.}
+				 * $(".foogallery").foogallery({
+				 * 	on: {
+				 * 		"append-item.foogallery": function(event, template, item){
+				 * 			// do something
+				 * 		}
+				 * 	}
+				 * });
+				 * @example {@caption Calling the `preventDefault` method on the `event` object will prevent the `item` being appended.}
+				 * $(".foogallery").foogallery({
+				 * 	on: {
+				 * 		"append-item.foogallery": function(event, template, item){
+				 * 			if ("some condition"){
+				 * 				// stop the item being appended
+				 * 				event.preventDefault();
+				 * 			}
+				 * 		}
+				 * 	}
+				 * });
+				 * @example {@caption You can also prevent the default logic and replace it with your own by calling the `preventDefault` method on the `event` object.}
+				 * $(".foogallery").foogallery({
+				 * 	on: {
+				 * 		"append-item.foogallery": function(event, template, item){
+				 * 			// stop the default logic
+				 * 			event.preventDefault();
+				 * 			// replacing it with your own appending the item to the template
+				 * 			item.$el.appendTo(template.$el);
+				 * 			...
+				 * 			// once the item is appended you must set isAttached to true
+				 * 			item.isAttached = true;
+				 * 		}
+				 * 	}
+				 * });
+				 */
+				var e = self.tmpl.raise("append-item", [self]);
+				if (!e.isDefaultPrevented()){
+					self.tmpl.$el.append(self.$el);
+					self.fix();
+					self.isAttached = true;
+				}
+				if (self.isAttached){
+					/**
+					 * @summary Raised after an item has appended its' elements to the template.
+					 * @event FooGallery.Template~"appended-item.foogallery"
+					 * @type {jQuery.Event}
+					 * @param {jQuery.Event} event - The jQuery.Event object for the current event.
+					 * @param {FooGallery.Template} template - The template raising the event.
+					 * @param {FooGallery.Item} item - The item that was appended.
+					 * @example {@caption To listen for this event and perform some action when it occurs you would bind to it as follows.}
+					 * $(".foogallery").foogallery({
+					 * 	on: {
+					 * 		"appended-item.foogallery": function(event, template, item){
+					 * 			// do something
+					 * 		}
+					 * 	}
+					 * });
+					 */
+					self.tmpl.raise("appended-item", [self]);
+				}
+			}
+			return self.isAttached;
+		},
+		/**
+		 * @summary Detach the item from the current template preserving its' data and events.
+		 * @memberof FooGallery.Item#
+		 * @function detach
+		 * @returns {boolean}
+		 */
+		detach: function(){
+			var self = this;
+			if (self.isCreated && self.isAttached){
+				/**
+				 * @summary Raised when an item needs to detach its' elements from the template.
+				 * @event FooGallery.Template~"detach-item.foogallery"
+				 * @type {jQuery.Event}
+				 * @param {jQuery.Event} event - The jQuery.Event object for the current event.
+				 * @param {FooGallery.Template} template - The template raising the event.
+				 * @param {FooGallery.Item} item - The item to detach from the template.
+				 * @example {@caption To listen for this event and perform some action when it occurs you would bind to it as follows.}
+				 * $(".foogallery").foogallery({
+				 * 	on: {
+				 * 		"detach-item.foogallery": function(event, template, item){
+				 * 			// do something
+				 * 		}
+				 * 	}
+				 * });
+				 * @example {@caption Calling the `preventDefault` method on the `event` object will prevent the `item` being detached.}
+				 * $(".foogallery").foogallery({
+				 * 	on: {
+				 * 		"detach-item.foogallery": function(event, template, item){
+				 * 			if ("some condition"){
+				 * 				// stop the item being detached
+				 * 				event.preventDefault();
+				 * 			}
+				 * 		}
+				 * 	}
+				 * });
+				 * @example {@caption You can also prevent the default logic and replace it with your own by calling the `preventDefault` method on the `event` object.}
+				 * $(".foogallery").foogallery({
+				 * 	on: {
+				 * 		"detach-item.foogallery": function(event, template, item){
+				 * 			// stop the default logic
+				 * 			event.preventDefault();
+				 * 			// replacing it with your own detaching the item from the template
+				 * 			item.$el.detach();
+				 * 			...
+				 * 			// once the item is detached you must set isAttached to false
+				 * 			item.isAttached = false;
+				 * 		}
+				 * 	}
+				 * });
+				 */
+				var e = self.tmpl.raise("detach-item", [self]);
+				if (!e.isDefaultPrevented()){
+					self.$el.detach();
+					self.unfix();
+					self.isAttached = false;
+				}
+				if (!self.isAttached){
+					/**
+					 * @summary Raised after an item has detached its' elements from the template.
+					 * @event FooGallery.Template~"detached-item.foogallery"
+					 * @type {jQuery.Event}
+					 * @param {jQuery.Event} event - The jQuery.Event object for the current event.
+					 * @param {FooGallery.Template} template - The template raising the event.
+					 * @param {FooGallery.Item} item - The item that was detached.
+					 * @example {@caption To listen for this event and perform some action when it occurs you would bind to it as follows.}
+					 * $(".foogallery").foogallery({
+					 * 	on: {
+					 * 		"detached-item.foogallery": function(event, template, item){
+					 * 			// do something
+					 * 		}
+					 * 	}
+					 * });
+					 */
+					self.tmpl.raise("detached-item", [self]);
+				}
+			}
+			return !self.isAttached;
+		},
+		/**
+		 * @summary Load the items' {@link FooGallery.Item#$image|$image}.
+		 * @memberof FooGallery.Item#
+		 * @function load
+		 * @returns {Promise.<FooGallery.Item>}
+		 */
+		load: function(){
+			var self = this;
+			if (_is.promise(self._load)) return self._load;
+			if (!self.isCreated || !self.isAttached) return _fn.rejectWith("not created or attached");
+			var e = self.tmpl.raise("load-item", [self]);
+			if (e.isDefaultPrevented()) return _fn.rejectWith("default prevented");
+			return self._load = $.Deferred(function (def) {
+				var cls = self.cls, img = self.$image.get(0);
+				self.isLoading = true;
+				self.$el.removeClass(cls.idle).removeClass(cls.loaded).removeClass(cls.error).addClass(cls.loading);
+				// if Firefox reset to empty src or else the onload and onerror callbacks are executed immediately
+				if (!_is.undef(window.InstallTrigger)) img.src = "";
+				img.onload = function () {
+					img.onload = img.onerror = null;
+					self.isLoading = false;
+					self.isLoaded = true;
+					self.$el.removeClass(cls.loading).addClass(cls.loaded);
+					self.unfix();
+					self.tmpl.raise("loaded-item", [self]);
+					def.resolve(self);
+				};
+				img.onerror = function () {
+					img.onload = img.onerror = null;
+					self.isLoading = false;
+					self.isError = true;
+					self.$el.removeClass(cls.loading).addClass(cls.error);
+					if (_is.string(self.tmpl.opt.error)) {
+						self.$image.prop("src", self.tmpl.opt.error);
+					}
+					self.tmpl.raise("error-item", [self]);
+					def.reject(self);
+				};
+				// set everything in motion by setting the src
+				img.src = self.getThumbUrl();
+			}).promise();
+		},
+		/**
+		 * @summary Attempts to set a inline width and height on the {@link FooGallery.Item#$image|$image} to prevent layout jumps.
+		 * @memberof FooGallery.Item#
+		 * @function fix
+		 * @returns {FooGallery.Item}
+		 */
+		fix: function(){
+			var self = this;
+			if (self.isCreated && !self.isLoading && !self.isLoaded && !self.isError){
+				var w = self.width, h = self.height;
+				// if we have a base width and height to work with
+				if (!isNaN(w) && !isNaN(h)){
+					// figure out the max image width and calculate the height the image should be displayed as
+					var width = _is.fn(self.maxWidth) ? self.maxWidth(self) : self.$image.width();
+					var ratio = width / w, height = h * ratio;
+					// actually set the inline css on the image
+					self.$image.css({width: width,height: height});
+				}
+			}
+			return self;
+		},
+		/**
+		 * @summary Removes any inline width and height values set on the {@link FooGallery.Item#$image|$image}.
+		 * @memberof FooGallery.Item#
+		 * @function unfix
+		 * @returns {FooGallery.Item}
+		 */
+		unfix: function(){
+			var self = this;
+			if (self.isCreated) self.$image.css({width: '',height: ''});
+			return self;
+		},
+		/**
+		 * @summary Inspect the `src` and `srcset` properties to determine which url to load for the thumb.
+		 * @memberof FooGallery.Item#
+		 * @function getThumbUrl
+		 * @param {boolean} [refresh=false] - Whether or not to force refreshing of the cached value.
+		 * @returns {string}
+		 */
+		getThumbUrl: function(refresh){
+			refresh = _is.boolean(refresh) ? refresh : false;
+			var self = this;
+			if (!refresh && _is.string(self._thumbUrl)) return self._thumbUrl;
+			return self._thumbUrl = _.parseSrc(self.src, self.width, self.height, self.srcset, self.$anchor.innerWidth(), self.$anchor.innerHeight());
+		},
+		/**
+		 * @summary Scroll the item into the center of the viewport.
+		 * @memberof FooGallery.Item#
+		 * @function scrollTo
+		 */
+		scrollTo: function(align){
+			var self = this;
+			if (self.isAttached){
+				var ib = self.bounds(), vb = _utils.getViewportBounds();
+				switch(align){
+					case "top": // attempts to center the item horizontally but aligns the top with the middle of the viewport
+						ib.left += (ib.width / 2) - (vb.width / 2);
+						ib.top -= (vb.height / 5);
+						break;
+					default: // attempts to center the item in the viewport
+						ib.left += (ib.width / 2) - (vb.width / 2);
+						ib.top += (ib.height / 2) - (vb.height / 2);
+						break;
+				}
+				window.scrollTo(ib.left, ib.top);
+			}
+			return self;
+		},
+		/**
+		 * @summary Get the bounds for the item.
+		 * @memberof FooGallery.Item#
+		 * @function bounds
+		 * @returns {?FooGallery.utils.Bounds}
+		 */
+		bounds: function(){
+			return this.isAttached ? _utils.getElementBounds(this.$el) : null;
+		},
+		/**
+		 * @summary Checks if the item bounds intersects the supplied bounds.
+		 * @memberof FooGallery.Item#
+		 * @function intersects
+		 * @param {FooGallery.utils.Bounds} bounds - The bounds to check.
+		 * @returns {boolean}
+		 */
+		intersects: function(bounds){
+			return this.isAttached ? this.bounds().intersects(bounds) : false;
+		},
+		/**
+		 * @summary Listens for the click event on the {@link FooGallery.Item#$anchor|$anchor} element.
+		 * @memberof FooGallery.Item#
+		 * @function onAnchorClick
+		 * @param {jQuery.Event} e - The jQuery.Event object for the click event.
+		 * @private
+		 */
+		onAnchorClick: function(e){
+			var self = e.data.self,
+				state = self.tmpl.state.get(self);
+			self.tmpl.state.update(state);
+		}
+	});
+
+	/**
+	 * @summary Called when setting an items' image size to prevent layout jumps.
+	 * @callback FooGallery.Item~maxWidthCallback
+	 * @param {FooGallery.Item} item - The item to determine the maxWidth for.
+	 * @returns {number} Returns the maximum width allowed for the {@link FooGallery.Item#$image|$image} element.
+	 * @example {@caption An example of the default behavior this callback replaces would look like the below.}
+	 * {
+	 * 	"maxWidth": function(item){
+	 * 		return item.$image.outerWidth();
+	 * 	}
+	 * }
+	 */
+
+	/**
+	 * @summary A simple object containing an items' default values.
+	 * @typedef {object} FooGallery.Item~Options
+	 * @property {?string} [id=null] - The `data-id` attribute for the outer element.
+	 * @property {?string} [href=null] - The `href` attribute for the anchor element.
+	 * @property {?string} [src=null] - The `src` attribute for the image element.
+	 * @property {?string} [srcset=null] - The `srcset` attribute for the image element.
+	 * @property {number} [width=0] - The width of the image.
+	 * @property {number} [height=0] - The height of the image.
+	 * @property {?string} [title=null] - The title for the image.
+	 * @property {?string} [description=null] - The description for the image.
+	 * @property {string[]} [tags=[]] - The `data-tags` attribute for the outer element.
+	 * @property {?FooGallery.Item~maxWidthCallback} [maxWidth=null] - Called when setting an items' image size. If not supplied the images outer width is used.
+	 * @property {FooGallery.Item~Attributes} [attr] - Additional attributes to apply to the items' elements.
+	 */
+	_.template.configure("default", {
+		item: {
+			id: "",
+			href: "",
+			src: "",
+			srcset: "",
+			width: 0,
+			height: 0,
+			title: "",
+			description: "",
+			tags: [],
+			maxWidth: null,
+			attr: {
+				elem: {},
+				inner: {},
+				anchor: {},
+				image: {},
+				caption: {
+					elem: {},
+					inner: {},
+					title: {},
+					description: {}
+				}
+			}
+		}
+	}, {
+		item: {
+			elem: "fg-item",
+			inner: "fg-item-inner",
+			anchor: "fg-thumb",
+			image: "fg-image",
+			idle: "fg-idle",
+			loading: "fg-loading",
+			loaded: "fg-loaded",
+			error: "fg-error",
+			caption: {
+				elem: "fg-caption",
+				inner: "fg-caption-inner",
+				title: "fg-caption-title",
+				description: "fg-caption-desc"
+			}
+		}
+	});
+
+	_.components.register("item", _.Item);
 
 	// ######################
 	// ## Type Definitions ##
 	// ######################
 
 	/**
-	 * @summary The options for the plugin.
-	 * @typedef {object} FooGallery.Loader~Options
-	 * @property {string} [loadedClass="foogallery-lazy-loaded"] - The CSS class applied to an image once it has been loaded.
-	 * @property {string} [errorClass="foogallery-lazy-error"] - The CSS class applied to an image if an error occurs loading it.
-	 * @property {string} [loadingClass="foogallery-lazy-loading"] - The CSS class applied to an image while it is being loaded.
-	 * @property {number} [throttle=50] - The number of milliseconds to wait once scrolling has stopped before checking for images.
-	 * @property {number} [timeout=30000] - The number of seconds to wait before forcing a timeout while loading.
-	 * @property {number} [offset=300] - The maximum number of pixels off screen before an image is loaded.
-	 * @property {number} [delay=100] - The number of milliseconds to delay the initialization of the plugin.
-	 * @property {string} [errorImage=null] - A url to an error image to use in case of failure to load an image.
-	 * @property {function} [oninit=null] - A callback to execute once the plugin is initialized.
-	 * @property {function} [onload=null] - A callback to execute whenever the plugin loads an image.
-	 * @property {function} [onerror=null] - A callback to execute whenever an image fails to load.
-	 * @property {function} [onbatch=null] - A callback to execute whenever the plugin has completed loading a batch of images.
-	 * @property {string} [attrSrc="data-src"] - The name of the attribute to retrieve the `src` url from.
-	 * @property {string} [attrSrcset="data-srcset"] - The name of the attribute to retrieve the `srcset` value from.
-	 * @property {RegExp} [regexUrl="/^\s*(\S*)/"] - The regular expression used to parse a url from a `srcset` value.
-	 * @property {RegExp} [regexWidth="/\S\s+(\d+)w/"] - The regular expression used to parse a width from a `srcset` value.
-	 * @property {RegExp} [regexHeight="/\S\s+(\d+)h/"] - The regular expression used to parse a height from a `srcset` value.
-	 * @property {RegExp} [regexDpr="/\S\s+([\d.]+)x/"] - The regular expression used to parse a device pixel ratio from a `srcset` value.
+	 * @summary A simple object containing the CSS classes used by an item.
+	 * @typedef {object} FooGallery.Item~CSSClasses
+	 * @property {string} [elem="fg-item"] - The CSS class for the outer containing `div` element of an item.
+	 * @property {string} [inner="fg-item-inner"] - The CSS class for the inner containing `div` element of an item.
+	 * @property {string} [anchor="fg-thumb"] - The CSS class for the `a` element of an item.
+	 * @property {string} [image="fg-image"] - The CSS class for the `img` element of an item.
+	 * @property {string} [loading="fg-idle"] - The CSS class applied to an item that is waiting to be loaded.
+	 * @property {string} [loading="fg-loading"] - The CSS class applied to an item while it is loading.
+	 * @property {string} [loaded="fg-loaded"] - The CSS class applied to an item once it is loaded.
+	 * @property {string} [error="fg-error"] - The CSS class applied to an item if it throws an error while loading.
+	 * @property {object} [caption] - A simple object containing the CSS classes used by an items' caption.
+	 * @property {string} [caption.elem="fg-caption"] - The CSS class for the outer containing `div` element of a caption.
+	 * @property {string} [caption.inner="fg-caption-inner"] - The CSS class for the inner containing `div` element of a caption.
+	 * @property {string} [caption.title="fg-caption-title"] - The CSS class for the title `div` element of a caption.
+	 * @property {string} [caption.description="fg-caption-desc"] - The CSS class for the description `div` element of a caption.
+	 */
+	/**
+	 * @summary A simple object used to store any additional attributes to apply to an items' elements.
+	 * @typedef {object} FooGallery.Item~Attributes
+	 * @property {object} [elem={}] - The attributes to apply to the items' outer `<div/>` element.
+	 * @property {object} [inner={}] - The attributes to apply to the items' inner element.
+	 * @property {object} [anchor={}] - The attributes to apply to the items' anchor element.
+	 * @property {object} [image={}] - The attributes to apply to the items' image element.
+	 * @property {object} [caption] - A simple object used to store any additional attributes to apply to an items' caption elements.
+	 * @property {object} [caption.elem={}] - The attributes to apply to the captions' outer `<div/>` element.
+	 * @property {object} [caption.inner={}] - The attributes to apply to the captions' inner element.
+	 * @property {object} [caption.title={}] - The attributes to apply to the captions' title element.
+	 * @property {object} [caption.description={}] - The attributes to apply to the captions' description element.
 	 */
 
-	/**
-	 * @summary A simple object used to represent an elements or viewports bounding rectangle.
-	 * @typedef {object} FooGallery.Loader~Bounds
-	 * @property {number} top - The top value of the bounds rectangle.
-	 * @property {number} right - The right value of the bounds rectangle.
-	 * @property {number} bottom - The bottom value of the bounds rectangle.
-	 * @property {number} left - The left value of the bounds rectangle.
-	 */
+})(
+	FooGallery.$,
+	FooGallery,
+	FooGallery.utils,
+	FooGallery.utils.is,
+	FooGallery.utils.fn,
+	FooGallery.utils.obj
+);
+(function($, _, _utils, _is, _fn){
 
-	/**
-	 * @summary A simple object used to represent the current viewports required information.
-	 * @typedef {object} FooGallery.Loader~ViewportInfo
-	 * @property {number} w - The width of the current viewport.
-	 * @property {number} h - The height of the current viewport.
-	 * @property {number} [x=1] - The pixel density of the current viewport.
-	 */
+	_.Items = _.Component.extend(/** @lends FooGallery.Items */{
+		/**
+		 * @summary This class controls everything related to items and serves as the base class for the various paging types.
+		 * @memberof FooGallery
+		 * @constructs Items
+		 * @param {FooGallery.Template} template - The template for this component.
+		 * @augments FooGallery.Component
+		 * @borrows FooGallery.utils.Class.extend as extend
+		 * @borrows FooGallery.utils.Class.override as override
+		 */
+		construct: function(template){
+			var self = this;
+			/**
+			 * @ignore
+			 * @memberof FooGallery.Items#
+			 * @function _super
+			 */
+			self._super(template);
+			self.idMap = {};
+			self._fetched = null;
+			self._arr = [];
+			self._available = [];
+		},
+		destroy: function(){
+			var self = this, items = self.all(), destroyed = [];
+			if (items.length > 0) {
+				/**
+				 * @summary Raised before the template destroys its' items.
+				 * @event FooGallery.Template~"destroy-items.foogallery"
+				 * @type {jQuery.Event}
+				 * @param {jQuery.Event} event - The jQuery.Event object for the current event.
+				 * @param {FooGallery.Template} template - The template raising the event.
+				 * @param {FooGallery.Item[]} items - The array of items about to be destroyed.
+				 * @example {@caption To listen for this event and perform some action when it occurs you would bind to it as follows.}
+				 * $(".foogallery").foogallery({
+				 * 	on: {
+				 * 		"destroy-items.foogallery": function(event, template, items){
+				 * 			// do something
+				 * 		}
+				 * 	}
+				 * });
+				 */
+				self.tmpl.raise("destroy-items", [items]);
+				destroyed = $.map(items, function(item){
+					return item.destroy() ? item : null;
+				});
+				/**
+				 * @summary Raised after the template has destroyed items.
+				 * @event FooGallery.Template~"destroyed-items.foogallery"
+				 * @type {jQuery.Event}
+				 * @param {jQuery.Event} event - The jQuery.Event object for the current event.
+				 * @param {FooGallery.Template} template - The template raising the event.
+				 * @param {FooGallery.Item[]} items - The array of items destroyed.
+				 * @example {@caption To listen for this event and perform some action when it occurs you would bind to it as follows.}
+				 * $(".foogallery").foogallery({
+				 * 	on: {
+				 * 		"destroyed-items.foogallery": function(event, template, items){
+				 * 			// do something
+				 * 		}
+				 * 	}
+				 * });
+				 */
+				if (destroyed.length > 0) self.tmpl.raise("destroyed-items", [destroyed]);
+				// should we handle a case where the destroyed.length != items.length??
+			}
+			self.idMap = {};
+			self._fetched = null;
+			self._arr = [];
+			self._available = [];
+			self._super();
+		},
+		fetch: function(refresh){
+			var self = this;
+			if (!refresh && _is.promise(self._fetched)) return self._fetched;
+			var fg = self.tmpl, selectors = fg.sel,
+				option = fg.opt.items,
+				def = $.Deferred();
 
-	/**
-	 * @summary A simple object used to represent a parsed `srcset` value.
-	 * @typedef {object} FooGallery.Loader~Srcset
-	 * @property {string} url - The url to the image.
-	 * @property {number} [w=Infinity] - If using the `w` syntax this will contain the specified width.
-	 * @property {number} [h=Infinity] - If using the `h` syntax this will contain the specified height.
-	 * @property {number} [x=1] - If using the `x` syntax this will contain the specified pixel density.
-	 */
+			var items = self.make(fg.$el.find(selectors.item.elem));
+
+			if (!_is.empty(option)){
+				if (_is.array(option)){
+					items.push.apply(items, self.make(option));
+					def.resolve(items);
+				} else if (_is.string(option)){
+					$.get(option).then(function(response){
+						items.push.apply(items, self.make(response));
+						def.resolve(items);
+					}, function( jqXHR, textStatus, errorThrown ){
+						console.log("FooGallery: GET items error.", option, jqXHR, textStatus, errorThrown);
+						def.resolve(items);
+					});
+				} else {
+					def.resolve(items);
+				}
+			} else {
+				items.push.apply(items, self.make(window[fg.id + "-items"]));
+				def.resolve(items);
+			}
+			def.then(function(items){
+				self._arr = items;
+				self.idMap = self.createIdMap(items);
+				self.setAvailable(self.all());
+			});
+			return self._fetched = def.promise();
+		},
+		all: function(){
+			return this._arr.slice();
+		},
+		available: function(){
+			return this._available.slice();
+		},
+		get: function(id){
+			return !_is.empty(id) && !!this.idMap[id] ? this.idMap[id] : null;
+		},
+		setAvailable: function(items){
+			this._available = _is.array(items) ? items : [];
+		},
+		reset: function(){
+			this.setAvailable(this.all());
+		},
+		/**
+		 * @summary Filter the supplied `items` and return only those that can be loaded.
+		 * @memberof FooGallery.Items#
+		 * @function loadable
+		 * @param {FooGallery.Item[]} items - The items to filter.
+		 * @returns {FooGallery.Item[]}
+		 */
+		loadable: function(items){
+			var self = this, opt = self.tmpl.opt, viewport;
+			if (opt.lazy){
+				viewport = _utils.getViewportBounds(opt.viewport);
+			}
+			return _is.array(items) ? $.map(items, function(item){
+				return item.isCreated && item.isAttached && !item.isLoading && !item.isLoaded && !item.isError && (!opt.lazy || (opt.lazy && item.intersects(viewport))) ? item : null;
+			}) : [];
+		},
+		/**
+		 * @summary Filter the supplied `items` and return only those that can be created.
+		 * @memberof FooGallery.Items#
+		 * @function creatable
+		 * @param {FooGallery.Item[]} items - The items to filter.
+		 * @returns {FooGallery.Item[]}
+		 */
+		creatable: function(items){
+			return _is.array(items) ? $.map(items, function(item){
+				return item instanceof _.Item && !item.isCreated ? item : null;
+			}) : [];
+		},
+		/**
+		 * @summary Filter the supplied `items` and return only those that can be appended.
+		 * @memberof FooGallery.Items#
+		 * @function appendable
+		 * @param {FooGallery.Item[]} items - The items to filter.
+		 * @returns {FooGallery.Item[]}
+		 */
+		appendable: function(items){
+			return _is.array(items) ? $.map(items, function(item){
+					return item instanceof _.Item && item.isCreated && !item.isAttached ? item : null;
+				}) : [];
+		},
+		/**
+		 * @summary Filter the supplied `items` and return only those that can be detached.
+		 * @memberof FooGallery.Items#
+		 * @function detachable
+		 * @param {FooGallery.Item[]} items - The items to filter.
+		 * @returns {FooGallery.Item[]}
+		 */
+		detachable: function(items){
+			return _is.array(items) ? $.map(items, function(item){
+				return item instanceof _.Item && item.isCreated && item.isAttached ? item : null;
+			}) : [];
+		},
+		/**
+		 * @summary Get a single jQuery object containing all the supplied items' elements.
+		 * @memberof FooGallery.Items#
+		 * @function jquerify
+		 * @param {FooGallery.Item[]} items - The items to get a jQuery object for.
+		 * @returns {jQuery}
+		 */
+		jquerify: function(items){
+			return $($.map(items, function (item) {
+				return item.$el.get();
+			}));
+		},
+		/**
+		 * @summary Makes a jQuery object, NodeList or an array of elements or item options, into an array of {@link FooGallery.Item|item} objects.
+		 * @memberof FooGallery.Items#
+		 * @function make
+		 * @param {(jQuery|NodeList|Node[]|FooGallery.Item~Options[])} items - The value to convert into an array of items.
+		 * @returns {FooGallery.Item[]} The array of items successfully made.
+		 * @fires FooGallery.Template~"make-items.foogallery"
+		 * @fires FooGallery.Template~"made-items.foogallery"
+		 * @fires FooGallery.Template~"parsed-items.foogallery"
+		 */
+		make: function(items){
+			var self = this, made = [];
+			if (_is.jq(items) || _is.array(items)){
+				var parsed = [], arr = $.makeArray(items);
+				if (arr.length === 0) return made;
+				/**
+				 * @summary Raised before the template makes an array of elements or item options into an array of {@link FooGallery.Item|item} objects.
+				 * @event FooGallery.Template~"make-items.foogallery"
+				 * @type {jQuery.Event}
+				 * @param {jQuery.Event} event - The jQuery.Event object for the current event.
+				 * @param {FooGallery.Template} template - The template raising the event.
+				 * @param {(HTMLElement[]|FooGallery.Item~Options[])} items - The array of Nodes or item options.
+				 * @returns {(HTMLElement[]|FooGallery.Item~Options[])} A filtered list of items to make.
+				 * @example {@caption To listen for this event and perform some action when it occurs you would bind to it as follows.}
+				 * $(".foogallery").foogallery({
+				 * 	on: {
+				 * 		"make-items.foogallery": function(event, template, items){
+				 * 			// do something
+				 * 		}
+				 * 	}
+				 * });
+				 * @example {@caption Calling the `preventDefault` method on the `event` object will prevent any items being made.}
+				 * $(".foogallery").foogallery({
+				 * 	on: {
+				 * 		"make-items.foogallery": function(event, template, items){
+				 * 			if ("some condition"){
+				 * 				// stop any items being made
+				 * 				event.preventDefault();
+				 * 			}
+				 * 		}
+				 * 	}
+				 * });
+				 */
+				var e = self.tmpl.raise("make-items", [arr]);
+				if (!e.isDefaultPrevented()){
+					made = $.map(arr, function(obj){
+						var item = _.components.make("item", self.tmpl, _is.hash(obj) ? obj : {});
+						if (_is.element(obj)){
+							if (item.parse(obj)){
+								parsed.push(item);
+								return item;
+							}
+							return null;
+						}
+						return item;
+					});
+				}
+
+				/**
+				 * @summary Raised after the template has made an array of {@link FooGallery.Item|item} objects.
+				 * @event FooGallery.Template~"made-items.foogallery"
+				 * @type {jQuery.Event}
+				 * @param {jQuery.Event} event - The jQuery.Event object for the current event.
+				 * @param {FooGallery.Template} template - The template raising the event.
+				 * @param {FooGallery.Item[]} items - The array of items made, this includes parsed items.
+				 * @example {@caption To listen for this event and perform some action when it occurs you would bind to it as follows.}
+				 * $(".foogallery").foogallery({
+				 * 	on: {
+				 * 		"made-items.foogallery": function(event, template, items){
+				 * 			// do something
+				 * 		}
+				 * 	}
+				 * });
+				 */
+				if (made.length > 0) self.tmpl.raise("made-items", [made]);
+
+				/**
+				 * @summary Raised after the template has parsed any elements into an array of {@link FooGallery.Item|item} objects.
+				 * @event FooGallery.Template~"parsed-items.foogallery"
+				 * @type {jQuery.Event}
+				 * @param {jQuery.Event} event - The jQuery.Event object for the current event.
+				 * @param {FooGallery.Template} template - The template raising the event.
+				 * @param {FooGallery.Item[]} items - The array of items parsed.
+				 * @example {@caption To listen for this event and perform some action when it occurs you would bind to it as follows.}
+				 * $(".foogallery").foogallery({
+				 * 	on: {
+				 * 		"parsed-items.foogallery": function(event, template, items){
+				 * 			// do something
+				 * 		}
+				 * 	}
+				 * });
+				 */
+				if (parsed.length > 0) self.tmpl.raise("parsed-items", [parsed]);
+			}
+			return made;
+		},
+		/**
+		 * @summary Create each of the supplied {@link FooGallery.Item|`items`} elements.
+		 * @memberof FooGallery.Items#
+		 * @function create
+		 * @param {FooGallery.Item[]} items - The array of items to create.
+		 * @param {boolean} [append=false] - Whether or not to automatically append the item after it is created.
+		 * @returns {FooGallery.Item[]} The array of items that were created or if `append` is `true` the array of items that were appended.
+		 * @description This will only create and/or append items that are not already created and/or appended so it is safe to call without worrying about the items' pre-existing state.
+		 * @fires FooGallery.Template~"create-items.foogallery"
+		 * @fires FooGallery.Template~"created-items.foogallery"
+		 * @fires FooGallery.Template~"append-items.foogallery"
+		 * @fires FooGallery.Template~"appended-items.foogallery"
+		 */
+		create: function(items, append){
+			var self = this, created = [], creatable = self.creatable(items);
+			if (creatable.length > 0) {
+				/**
+				 * @summary Raised before the template creates the `items` elements.
+				 * @event FooGallery.Template~"create-items.foogallery"
+				 * @type {jQuery.Event}
+				 * @param {jQuery.Event} event - The jQuery.Event object for the current event.
+				 * @param {FooGallery.Template} template - The template raising the event.
+				 * @param {FooGallery.Item[]} items - The array of items to create.
+				 * @param {boolean} [append=false] - Whether or not to automatically append the item after it is created.
+				 * @example {@caption To listen for this event and perform some action when it occurs you would bind to it as follows.}
+				 * $(".foogallery").foogallery({
+				 * 	on: {
+				 * 		"create-items.foogallery": function(event, template, items){
+				 * 			// do something
+				 * 		}
+				 * 	}
+				 * });
+				 * @example {@caption Calling the `preventDefault` method on the `event` object will prevent any items being created.}
+				 * $(".foogallery").foogallery({
+				 * 	on: {
+				 * 		"create-items.foogallery": function(event, template, items){
+				 * 			if ("some condition"){
+				 * 				// stop any items being created
+				 * 				event.preventDefault();
+				 * 			}
+				 * 		}
+				 * 	}
+				 * });
+				 */
+				var e = self.tmpl.raise("create-items", [creatable]);
+				if (!e.isDefaultPrevented()){
+					created = $.map(creatable, function(item){
+						return item.create() ? item : null;
+					});
+				}
+				/**
+				 * @summary Raised after the template has created the `items` elements.
+				 * @event FooGallery.Template~"created-items.foogallery"
+				 * @type {jQuery.Event}
+				 * @param {jQuery.Event} event - The jQuery.Event object for the current event.
+				 * @param {FooGallery.Template} template - The template raising the event.
+				 * @param {FooGallery.Item[]} items - The array of items created.
+				 * @example {@caption To listen for this event and perform some action when it occurs you would bind to it as follows.}
+				 * $(".foogallery").foogallery({
+				 * 	on: {
+				 * 		"created-items.foogallery": function(event, template, items){
+				 * 			// do something
+				 * 		}
+				 * 	}
+				 * });
+				 */
+				if (created.length > 0) self.tmpl.raise("created-items", [created]);
+			}
+			if (_is.boolean(append) ? append : false) return self.append(items);
+			return created;
+		},
+		/**
+		 * @summary Append each of the supplied {@link FooGallery.Item|`items`} to the template.
+		 * @memberof FooGallery.Items#
+		 * @function append
+		 * @param {FooGallery.Item[]} items - The array of items to append.
+		 * @returns {FooGallery.Item[]} The array of items that were appended.
+		 * @fires FooGallery.Template~"append-items.foogallery"
+		 * @fires FooGallery.Template~"appended-items.foogallery"
+		 */
+		append: function(items){
+			var self = this, appended = [], appendable = self.appendable(items);
+			if (appendable.length > 0) {
+				/**
+				 * @summary Raised before the template appends any items to itself.
+				 * @event FooGallery.Template~"append-items.foogallery"
+				 * @type {jQuery.Event}
+				 * @param {jQuery.Event} event - The jQuery.Event object for the current event.
+				 * @param {FooGallery.Template} template - The template raising the event.
+				 * @param {FooGallery.Item[]} items - The array of items to append.
+				 * @example {@caption To listen for this event and perform some action when it occurs you would bind to it as follows.}
+				 * $(".foogallery").foogallery({
+				 * 	on: {
+				 * 		"append-items.foogallery": function(event, template, items){
+				 * 			// do something
+				 * 		}
+				 * 	}
+				 * });
+				 * @example {@caption Calling the `preventDefault` method on the `event` object will prevent any items being appended.}
+				 * $(".foogallery").foogallery({
+				 * 	on: {
+				 * 		"append-items.foogallery": function(event, template, items){
+				 * 			if ("some condition"){
+				 * 				// stop any items being appended
+				 * 				event.preventDefault();
+				 * 			}
+				 * 		}
+				 * 	}
+				 * });
+				 */
+				var e = self.tmpl.raise("append-items", [appendable]);
+				if (!e.isDefaultPrevented()){
+					appended = $.map(appendable, function(item){
+						return item.append() ? item : null;
+					});
+				}
+				/**
+				 * @summary Raised after the template has appended items to itself.
+				 * @event FooGallery.Template~"appended-items.foogallery"
+				 * @type {jQuery.Event}
+				 * @param {jQuery.Event} event - The jQuery.Event object for the current event.
+				 * @param {FooGallery.Template} template - The template raising the event.
+				 * @param {FooGallery.Item[]} items - The array of items appended.
+				 * @example {@caption To listen for this event and perform some action when it occurs you would bind to it as follows.}
+				 * $(".foogallery").foogallery({
+					 * 	on: {
+					 * 		"appended-items.foogallery": function(event, template, items){
+					 * 			// do something
+					 * 		}
+					 * 	}
+					 * });
+				 */
+				if (appended.length > 0) self.tmpl.raise("appended-items", [appended]);
+			}
+			return appended;
+		},
+		/**
+		 * @summary Detach each of the supplied {@link FooGallery.Item|`items`} from the template.
+		 * @memberof FooGallery.Items#
+		 * @function detach
+		 * @param {FooGallery.Item[]} items - The array of items to detach.
+		 * @returns {FooGallery.Item[]} The array of items that were detached.
+		 * @fires FooGallery.Template~"detach-items.foogallery"
+		 * @fires FooGallery.Template~"detached-items.foogallery"
+		 */
+		detach: function(items){
+			var self = this, detached = [], detachable = self.detachable(items);
+			if (detachable.length > 0) {
+				/**
+				 * @summary Raised before the template detaches any items from itself.
+				 * @event FooGallery.Template~"detach-items.foogallery"
+				 * @type {jQuery.Event}
+				 * @param {jQuery.Event} event - The jQuery.Event object for the current event.
+				 * @param {FooGallery.Template} template - The template raising the event.
+				 * @param {FooGallery.Item[]} items - The array of items to detach.
+				 * @example {@caption To listen for this event and perform some action when it occurs you would bind to it as follows.}
+				 * $(".foogallery").foogallery({
+				 * 	on: {
+				 * 		"detach-items.foogallery": function(event, template, items){
+				 * 			// do something
+				 * 		}
+				 * 	}
+				 * });
+				 * @example {@caption Calling the `preventDefault` method on the `event` object will prevent any items being detached.}
+				 * $(".foogallery").foogallery({
+				 * 	on: {
+				 * 		"detach-items.foogallery": function(event, template, items){
+				 * 			if ("some condition"){
+				 * 				// stop any items being detached
+				 * 				event.preventDefault();
+				 * 			}
+				 * 		}
+				 * 	}
+				 * });
+				 */
+				var e = self.tmpl.raise("detach-items", [detachable]);
+				if (!e.isDefaultPrevented()){
+					detached = $.map(detachable, function(item){
+						return item.detach() ? item : null;
+					});
+				}
+				/**
+				 * @summary Raised after the template has detached items from itself.
+				 * @event FooGallery.Template~"detached-items.foogallery"
+				 * @type {jQuery.Event}
+				 * @param {jQuery.Event} event - The jQuery.Event object for the current event.
+				 * @param {FooGallery.Template} template - The template raising the event.
+				 * @param {FooGallery.Item[]} items - The array of items detached.
+				 * @example {@caption To listen for this event and perform some action when it occurs you would bind to it as follows.}
+				 * $(".foogallery").foogallery({
+					 * 	on: {
+					 * 		"detached-items.foogallery": function(event, template, items){
+					 * 			// do something
+					 * 		}
+					 * 	}
+					 * });
+				 */
+				if (detached.length > 0) self.tmpl.raise("detached-items", [detached]);
+			}
+			return detached;
+		},
+		/**
+		 * @summary Load each of the supplied `items` images.
+		 * @memberof FooGallery.Items#
+		 * @function load
+		 * @param {FooGallery.Item[]} items - The array of items to load.
+		 * @returns {Promise<FooGallery.Item[]>} Resolved with an array of {@link FooGallery.Item|items} as the first argument. If no items are loaded this array is empty.
+		 * @fires FooGallery.Template~"load-items.foogallery"
+		 * @fires FooGallery.Template~"loaded-items.foogallery"
+		 */
+		load: function(items){
+			var self = this;
+			items = self.loadable(items);
+			if (items.length > 0){
+				/**
+				 * @summary Raised before the template loads any items.
+				 * @event FooGallery.Template~"load-items.foogallery"
+				 * @type {jQuery.Event}
+				 * @param {jQuery.Event} event - The jQuery.Event object for the current event.
+				 * @param {FooGallery.Template} template - The template raising the event.
+				 * @param {FooGallery.Item[]} items - The array of items to load.
+				 * @example {@caption To listen for this event and perform some action when it occurs you would bind to it as follows.}
+				 * $(".foogallery").foogallery({
+				 * 	on: {
+				 * 		"load-items.foogallery": function(event, template, items){
+				 * 			// do something
+				 * 		}
+				 * 	}
+				 * });
+				 * @example {@caption Calling the `preventDefault` method on the `event` object will prevent any `items` being loaded.}
+				 * $(".foogallery").foogallery({
+				 * 	on: {
+				 * 		"load-items.foogallery": function(event, template, items){
+				 * 			if ("some condition"){
+				 * 				// stop any items being loaded
+				 * 				event.preventDefault();
+				 * 			}
+				 * 		}
+				 * 	}
+				 * });
+				 */
+				var e = self.tmpl.raise("load-items", [items]);
+				if (!e.isDefaultPrevented()){
+					var loading = $.map(items, function(item){
+						return item.load();
+					});
+					return _fn.when(loading).done(function(loaded) {
+						/**
+						 * @summary Raised after the template has loaded items.
+						 * @event FooGallery.Template~"loaded-items.foogallery"
+						 * @type {jQuery.Event}
+						 * @param {jQuery.Event} event - The jQuery.Event object for the current event.
+						 * @param {FooGallery.Template} template - The template raising the event.
+						 * @param {FooGallery.Item[]} items - The array of items that were loaded.
+						 * @example {@caption To listen for this event and perform some action when it occurs you would bind to it as follows.}
+						 * $(".foogallery").foogallery({
+						 * 	on: {
+						 * 		"loaded-items.foogallery": function(event, template, items){
+						 * 			// do something
+						 * 		}
+						 * 	}
+						 * });
+						 */
+						self.tmpl.raise("loaded-items", [loaded]);
+					});
+				}
+			}
+			return _fn.resolveWith([]);
+		},
+		createIdMap: function(items){
+			var map = {};
+			$.each(items, function(i, item){
+				if (_is.empty(item.id)) item.id = "" + (i + 1);
+				map[item.id] = item;
+			});
+			return map;
+		}
+	});
+
+	_.components.register("items", _.Items);
+
+})(
+	FooGallery.$,
+	FooGallery,
+	FooGallery.utils,
+	FooGallery.utils.is,
+	FooGallery.utils.fn,
+	FooGallery.utils.str
+);
+(function($, _, _utils, _is){
+
+	_.Paging = _.Component.extend({
+		construct: function(template){
+			var self = this;
+			/**
+			 * @ignore
+			 * @memberof FooGallery.Paging#
+			 * @function _super
+			 */
+			self._super(template);
+			self.opt = self.tmpl.opt.paging;
+			self.cls = self.tmpl.cls.paging;
+			self.il8n = self.tmpl.il8n.paging;
+			self.sel = self.tmpl.sel.paging;
+			self.pushOrReplace = self.opt.pushOrReplace;
+			self.type = self.opt.type;
+			self.theme = self.opt.theme;
+			self.size = self.opt.size;
+			self.position = self.opt.position;
+			self.scrollToTop = self.opt.scrollToTop;
+			self.current = 0;
+			self.total = 0;
+			self.ctrls = [];
+			self._arr = [];
+		},
+		destroy: function(){
+			var self = this;
+			self._arr.splice(0, self._arr.length);
+			$.each(self.ctrls.splice(0, self.ctrls.length), function(i, control){
+				control.destroy();
+			});
+			self._super();
+		},
+		build: function(){
+			var self = this, items = self.tmpl.items.available();
+			self.total = self.size > 0 && items.length > 0 ? Math.ceil(items.length / self.size) : 1;
+			if (self.total <= 1){
+				self._arr.push(items);
+			} else {
+				for (var i = 0; i < self.total; i++){
+					self._arr.push(items.splice(0, self.size));
+				}
+			}
+			if (_.paging.hasCtrl(self.type)){
+				var pos = self.position, top, bottom;
+				if (pos === "both" || pos === "top"){
+					top = _.paging.makeCtrl(self.type, self.tmpl, self, "top");
+					if (top.create()){
+						top.append();
+						self.ctrls.push(top);
+					}
+				}
+				if (pos === "both" || pos === "bottom"){
+					bottom = _.paging.makeCtrl(self.type, self.tmpl, self, "bottom");
+					if (bottom.create()){
+						bottom.append();
+						self.ctrls.push(bottom);
+					}
+				}
+			}
+		},
+		rebuild: function(){
+			var self = this;
+			self.current = 0;
+			self.total = 0;
+			self._arr.splice(0, self._arr.length);
+			$.each(self.ctrls.splice(0, self.ctrls.length), function(i, control){
+				control.destroy();
+			});
+			self.build();
+		},
+		all: function(){
+			return this._arr.slice();
+		},
+		available: function(){
+			return this.get(this.current);
+		},
+		controls: function(pageNumber){
+			var self = this;
+			if (self.isValid(pageNumber)){
+				$.each(self.ctrls, function(i, control){
+					control.update(pageNumber);
+				});
+			}
+		},
+		isValid: function(pageNumber){
+			return _is.number(pageNumber) && pageNumber > 0 && pageNumber <= this.total;
+		},
+		number: function(value){
+			return this.isValid(value) ? value : (this.current === 0 ? 1 : this.current);
+		},
+		create: function(pageNumber){
+			var self = this;
+			pageNumber = self.number(pageNumber);
+			for (var i = 0, l = self._arr.length, index = pageNumber - 1; i < l; i++) {
+				if (i === index) self.tmpl.items.create(self._arr[i], true);
+				else self.tmpl.items.detach(self._arr[i]);
+			}
+			self.current = pageNumber;
+		},
+		get: function(pageNumber){
+			var self = this;
+			if (self.isValid(pageNumber)){
+				pageNumber = self.number(pageNumber);
+				return self._arr[pageNumber - 1];
+			}
+			return [];
+		},
+		set: function(pageNumber, scroll, updateState){
+			var self = this;
+			if (self.isValid(pageNumber)){
+				self.controls(pageNumber);
+				var num = self.number(pageNumber), state;
+				if (num !== self.current) {
+					updateState = _is.boolean(updateState) ? updateState : true;
+					if (updateState && self.current === 1 && !self.tmpl.state.exists()){
+						state = self.tmpl.state.get();
+						self.tmpl.state.update(state, self.pushOrReplace);
+					}
+					self.create(num);
+					if (updateState){
+						state = self.tmpl.state.get();
+						self.tmpl.state.update(state, self.pushOrReplace);
+					}
+					if (self.scrollToTop && _is.boolean(scroll) ? scroll : false) {
+						var page = self.get(self.current);
+						if (page.length > 0){
+							page[0].scrollTo("top");
+						}
+					}
+					return true;
+				}
+			}
+			return false;
+		},
+		find: function(item){
+			var self = this;
+			for (var i = 0, l = self._arr.length; i < l; i++) {
+				if ($.inArray(item, self._arr[i]) !== -1) {
+					return i + 1;
+				}
+			}
+			return 0;
+		},
+		contains: function(pageNumber, item){
+			var items = this.get(pageNumber);
+			return $.inArray(item, items) !== -1;
+		},
+		first: function(){
+			this.goto(1);
+		},
+		last: function(){
+			this.goto(this._arr.length);
+		},
+		prev: function(){
+			this.goto(this.current - 1);
+		},
+		next: function(){
+			this.goto(this.current + 1);
+		},
+		goto: function(pageNumber){
+			var self = this;
+			if (self.set(pageNumber, true)){
+				self.tmpl.loadAvailable();
+			}
+		}
+	});
+
+	_.PagingControl = _.Component.extend({
+		construct: function(template, parent, position){
+			var self = this;
+			self._super(template);
+			self.pages = parent;
+			self.position = position;
+			self.$container = null;
+		},
+		create: function(){
+			var self = this;
+			self.$container = $("<nav/>", {"class": self.pages.cls.container}).addClass(self.pages.theme);
+			return true;
+		},
+		destroy: function(){
+			var self = this;
+			self.$container.remove();
+			self.$container = null;
+		},
+		append: function(){
+			var self = this;
+			if (self.position === "top"){
+				self.$container.insertBefore(self.tmpl.$el);
+			} else {
+				self.$container.insertAfter(self.tmpl.$el);
+			}
+		},
+		update: function(pageNumber){}
+	});
+
+	_.paging.register("default", _.Paging, null, {
+		type: "none",
+		theme: "fg-light",
+		size: 30,
+		pushOrReplace: "push",
+		position: "none",
+		scrollToTop: true
+	}, {
+		container: "fg-paging-container"
+	}, null, -100);
+
+})(
+	FooGallery.$,
+	FooGallery,
+	FooGallery.utils,
+	FooGallery.utils.is
+);
+(function($, _, _utils, _is){
+
+	_.Infinite = _.Paging.extend({
+		construct: function(template){
+			var self = this;
+			self._super(template);
+			self.distance = self.opt.distance;
+			self._created = [];
+		},
+		build: function(items){
+			this._super(items);
+			this._created = [];
+		},
+		available: function(){
+			var self = this, items = [], page = self.get(self.current);
+			if (!_is.empty(page)){
+				var vb = _utils.getViewportBounds(), ib = page[page.length - 1].bounds();
+				if (ib.top - vb.bottom < self.distance){
+					self.set(self.current + 1, false);
+				}
+			}
+			for (var pg = self.current - 3; pg <= self.current; pg++){
+				if (self.isValid(pg)){
+					items.push.apply(items, self.get(pg));
+				}
+			}
+			return items;
+		},
+		create: function(pageNumber){
+			var self = this;
+			pageNumber = self.number(pageNumber);
+			for (var i = 0; i < pageNumber; i++){
+				if ($.inArray(i, self._created) === -1){
+					self.tmpl.items.create(self._arr[i], true);
+					self._created.push(i);
+				}
+			}
+			self.current = pageNumber;
+		}
+	});
+
+	_.paging.register("infinite", _.Infinite, null, {
+		type: "infinite",
+		pushOrReplace: "replace",
+		distance: 200
+	});
+
+
+})(
+	FooGallery.$,
+	FooGallery,
+	FooGallery.utils,
+	FooGallery.utils.is
+);
+(function($, _, _utils, _is){
+
+	_.LoadMore = _.Infinite.extend({
+		construct: function(template){
+			this._super(template);
+			this.amount = this.opt.amount;
+			this._count = this.opt.amount;
+		},
+		build: function(items){
+			this._super(items);
+			this._count = this.amount;
+		},
+		available: function(){
+			var self = this, items = [], page = self.get(self.current);
+			if (!_is.empty(page)){
+				var vb = _utils.getViewportBounds(), ib = page[page.length - 1].bounds();
+				if (ib.top - vb.bottom < self.distance){
+					var pageNumber = self.current + 1;
+					if (self.isValid(pageNumber) && self._count < self.amount){
+						self._count++;
+						self.set(pageNumber, false);
+					}
+					if (self.current === self.total){
+						if (!_is.empty(self.ctrls)){
+							$.each(self.ctrls.splice(0, self.ctrls.length), function(i, control){
+								control.destroy();
+							});
+						}
+					}
+				}
+			}
+			for (var pg = self.current - 3; pg <= self.current; pg++){
+				if (self.isValid(pg)){
+					items.push.apply(items, self.get(pg));
+				}
+			}
+			return items;
+		},
+		loadMore: function(){
+			var self = this;
+			self._count = 0;
+			self.tmpl.loadAvailable();
+		}
+	});
+
+	_.LoadMoreControl = _.PagingControl.extend({
+		construct: function(template, parent, position){
+			this._super(template, parent, position);
+			this.$container = $();
+			this.$button = $();
+		},
+		create: function(){
+			var self = this;
+			self.$container = $("<nav/>", {"class": self.pages.cls.container}).addClass(self.pages.theme);
+			self.$button = $("<button/>", {"class": self.pages.cls.button, "type": "button"}).html(self.pages.il8n.button)
+				.on("click.foogallery", {self: self}, self.onButtonClick)
+				.appendTo(self.$container);
+			return true;
+		},
+		destroy: function(){
+			var self = this;
+			self.$button.off("click.foogallery", self.onButtonClick);
+			self.$container.remove();
+			self.$container = $();
+			self.$button = $();
+		},
+		append: function(){
+			var self = this;
+			if (self.position === "top"){
+				self.$container.insertBefore(self.tmpl.$el);
+			} else {
+				self.$container.insertAfter(self.tmpl.$el);
+			}
+		},
+		onButtonClick: function(e){
+			e.preventDefault();
+			e.data.self.pages.loadMore();
+		}
+	});
+
+	_.paging.register("loadMore", _.LoadMore, _.LoadMoreControl, {
+		type: "loadMore",
+		position: "bottom",
+		pushOrReplace: "replace",
+		amount: 1,
+		distance: 200
+	}, {
+		button: "fg-load-more"
+	}, {
+		button: "Load More"
+	});
+
+
+})(
+	FooGallery.$,
+	FooGallery,
+	FooGallery.utils,
+	FooGallery.utils.is
+);
+(function($, _, _utils, _is){
+
+	_.Dots = _.Paging.extend({});
+
+	_.DotsControl = _.PagingControl.extend({
+		construct: function(template, parent, position){
+			this._super(template, parent, position);
+			this.$container = $();
+			this.$list = $();
+			this.$items = $();
+		},
+		create: function(){
+			var self = this, cls = self.pages.cls, il8n = self.pages.il8n,
+				items = [], $list = $("<ul/>", {"class": cls.list});
+
+			for (var i = 0, l = self.pages.total, $item; i < l; i++){
+				items.push($item = self.createItem(i + 1, il8n.page));
+				$list.append($item);
+			}
+			self.$list = $list;
+			self.$container = $("<nav/>", {"class": cls.container}).addClass(self.pages.theme).append($list);
+			self.$items = $($.map(items, function($item){ return $item.get(); }));
+			return true;
+		},
+		append: function(){
+			var self = this;
+			if (self.position === "top"){
+				self.$container.insertBefore(self.tmpl.$el);
+			} else {
+				self.$container.insertAfter(self.tmpl.$el);
+			}
+		},
+		destroy: function(){
+			var self = this, sel = self.pages.sel;
+			self.$list.find(sel.link).off("click.foogallery", self.onLinkClick);
+			self.$container.remove();
+			self.$container = $();
+			self.$list = $();
+			self.$items = $();
+		},
+		update: function(pageNumber){
+			this.setSelected(pageNumber - 1);
+		},
+		setSelected: function(index){
+			var self = this, cls = self.pages.cls, il8n = self.pages.il8n, sel = self.pages.sel;
+			// first find any previous selected items and deselect them
+			self.$items.filter(sel.selected).removeClass(cls.selected).each(function (i, el) {
+				// we need to revert the original items screen-reader text if it existed as being selected sets it to the value of the labels.current option
+				var $item = $(el), label = $item.data("label"), $sr = $item.find(sel.reader);
+				// if we have an original value and a screen-reader element then update it
+				if (_is.string(label) && $sr.length !== 0) {
+					$sr.html(label);
+				}
+			});
+			// next find the newly selected item and set it as selected
+			self.$items.eq(index).addClass(cls.selected).each(function (i, el) {
+				// we need to update the items screen-reader text to appropriately show it as selected using the value of the labels.current option
+				var $item = $(el), $sr = $item.find(sel.reader), label = $sr.html();
+				// if we have a current label to backup and a screen-reader element then update it
+				if (_is.string(label) && $sr.length !== 0) {
+					// store the original screen-reader text so we can revert it later
+					$item.data("label", label);
+					$sr.html(il8n.current);
+				}
+			});
+		},
+		/**
+		 * @summary Create and return a jQuery object containing a single `li` and its' link.
+		 * @memberof FooGallery.DotsControl#
+		 * @function createItem
+		 * @param {(number|string)} pageNumber - The page number for the item.
+		 * @param {string} [label=""] - The label that is displayed when hovering over an item.
+		 * @param {string} [text=""] - The text to display for the item, if not supplied this defaults to the `pageNumber` value.
+		 * @param {string} [classNames=""] - A space separated list of CSS class names to apply to the item.
+		 * @param {string} [sr=""] - The text to use for screen readers, if not supplied this defaults to the `label` value.
+		 * @returns {jQuery}
+		 */
+		createItem: function(pageNumber, label, text, classNames, sr){
+			text = _is.string(text) ? text : pageNumber;
+			label = _is.string(label) ? label : "";
+			var self = this, opt = self.pages.opt, cls = self.pages.cls;
+			var $link = $("<a/>", {"class": cls.link, "href": "#page-" + pageNumber}).html(text).on("click.foogallery", {self: self, page: pageNumber}, self.onLinkClick);
+			if (!_is.empty(label)){
+				$link.attr("title", label.replace(/\{PAGE}/g, pageNumber).replace(/\{LIMIT}/g, opt.limit + ""));
+			}
+			sr = _is.string(sr) ? sr : label;
+			if (!_is.empty(sr)){
+				$link.prepend($("<span/>", {"class":cls.reader, text: sr.replace(/\{PAGE}/g, "").replace(/\{LIMIT}/g, opt.limit + "")}));
+			}
+			var $item = $("<li/>", {"class": cls.item}).append($link);
+			classNames = _is.string(classNames) ? classNames : "";
+			if (!_is.empty(classNames)){
+				$item.addClass(classNames);
+			}
+			return $item;
+		},
+		/**
+		 * @summary Handles the click event of the dots links.
+		 * @memberof FooGallery.DotsControl#
+		 * @function onLinkClick
+		 * @param {jQuery.Event} e - The jQuery.Event object for the click event.
+		 * @private
+		 */
+		onLinkClick: function(e){
+			e.preventDefault();
+			var self = e.data.self, page = e.data.page, sel = self.pages.sel;
+			// this check should not be required as we use the CSS pointer-events: none; property on disabled links but just in case test for the class here
+			if (!$(this).closest(sel.item).is(sel.disabled)){
+				self.pages.set(page, true);
+				self.tmpl.loadAvailable();
+			}
+		}
+	});
+
+	_.paging.register("dots", _.Dots, _.DotsControl, {
+		type: "dots",
+		position: "both",
+		pushOrReplace: "push"
+	}, {
+		list: "fg-dots",
+		item: "fg-dot-item",
+		link: "fg-dot-link",
+		disabled: "fg-disabled",
+		selected: "fg-selected",
+		visible: "fg-visible",
+		reader: "fg-sr-only"
+	}, {
+		current: "Current page",
+		page: "Page {PAGE}"
+	});
+
+})(
+	FooGallery.$,
+	FooGallery,
+	FooGallery.utils,
+	FooGallery.utils.is
+);
+(function($, _, _utils, _is){
+
+	_.Pagination = _.Dots.extend({
+		construct: function(template){
+			this._super(template);
+			this.limit = this.opt.limit;
+			this.showFirstLast = this.opt.showFirstLast;
+			this.showPrevNext = this.opt.showPrevNext;
+			this.showPrevNextMore = this.opt.limit === 0 ? false : this.opt.showPrevNextMore;
+			this.pageKeywords = ["first","prev","prevMore","nextMore","next","last"];
+			this.sel.firstPrev = [this.sel.first, this.sel.prev].join(",");
+			this.sel.nextLast = [this.sel.next, this.sel.last].join(",");
+			this.range = {
+				index: -1,
+				start: -1,
+				end: -1,
+				changed: false,
+				selected: false
+			};
+		},
+		build: function(items){
+			this._super(items);
+			this.range = {
+				index: -1,
+				start: -1,
+				end: -1,
+				changed: false,
+				selected: false
+			};
+		},
+		controls: function(pageNumber){
+			var self = this;
+			if (self.isValid(pageNumber)){
+				self.range = self.getControlRange(pageNumber);
+				$.each(self.ctrls, function(i, control){
+					control.update(self.range);
+				});
+			}
+		},
+		isValid: function(pageNumber){
+			return this._super(pageNumber) || this.isKeyword(pageNumber);
+		},
+		isKeyword: function(pageNumber){
+			return _is.string(pageNumber) && $.inArray(pageNumber, this.pageKeywords) !== -1;
+		},
+		number: function(value){
+			var self = this;
+			if (value === "first") value = 1;
+			if (value === "prev") value = self.current - 1;
+			if (value === "next") value = self.current + 1;
+			if (value === "last") value = self.total;
+			if (value === "prevMore" || value === "nextMore") value = self.current;
+			return self._super(value);
+		},
+		getControlRange: function(pageNumber){
+			var self = this;
+			switch(pageNumber){
+				case "prevMore":
+					return self._range(self.range.start - 1, false, false);
+				case "nextMore":
+					return self._range(self.range.end + 1, true, false);
+				default:
+					pageNumber = self.number(pageNumber);
+					return self._range(pageNumber - 1, pageNumber <= self.current)
+			}
+		},
+		_range: function(index, leftMost, selected){
+			var self = this, range = {
+				index: index,
+				start: self.range.start,
+				end: self.range.end,
+				changed: false,
+				selected: _is.boolean(selected) ? selected : true
+			};
+			// if we have less pages than the limit or there is no limit
+			if (self.total <= self.limit || self.limit === 0){
+				// then set the range so that all page links are displayed
+				range.start = 0;
+				range.end = self.total - 1;
+			}
+			// else if the goto index falls outside the current range
+			else if (index < range.start || index > range.end) {
+				// then calculate the correct range to display
+				var max = index + (self.limit - 1),
+					min = index - (self.limit - 1);
+
+				// if the goto index is to be displayed as the left most page link
+				if (leftMost) {
+					// then check that the right most item falls within the actual number of pages
+					range.start = index;
+					range.end = max;
+					while (range.end > self.total) {
+						// adjust the visible range so that the right most item is not greater than maximum page
+						range.start -= 1;
+						range.end -= 1;
+					}
+				}
+				// else if the goto index is to be displayed as the right most page link
+				else {
+					// then check that the left most item falls within the actual number of pages
+					range.start = min;
+					range.end = index;
+					while (range.start < 0) {
+						// adjust the visible range so that the left most item is not less than the minimum page
+						range.start += 1;
+						range.end += 1;
+					}
+				}
+			}
+			// if the current visible range of links has changed
+			if (range.changed = range.start !== self.range.start || range.end !== self.range.end){
+				// then cache the range for the next time this method is called
+				self.range = range;
+			}
+			return range;
+		}
+	});
+
+	_.PaginationControl = _.DotsControl.extend({
+		construct: function(template, parent, position){
+			this._super(template, parent, position);
+			this.$buttons = $();
+		},
+		create: function(){
+			var self = this;
+			if (self._super()){
+				var displayAll = self.pages.total <= self.pages.limit || self.pages.limit === 0,
+					buttons = [], $button;
+
+				if (!displayAll && self.pages.showPrevNextMore){
+					buttons.push($button = self.createButton("prevMore"));
+					self.$list.prepend($button);
+				}
+				if (self.pages.showPrevNext){
+					buttons.push($button = self.createButton("prev"));
+					self.$list.prepend($button);
+				}
+				if (self.pages.showFirstLast){
+					buttons.push($button = self.createButton("first"));
+					self.$list.prepend($button);
+				}
+				if (!displayAll && self.pages.showPrevNextMore){
+					buttons.push($button = self.createButton("nextMore"));
+					self.$list.append($button);
+				}
+				if (self.pages.showPrevNext){
+					buttons.push($button = self.createButton("next"));
+					self.$list.append($button);
+				}
+				if (self.pages.showFirstLast){
+					buttons.push($button = self.createButton("last"));
+					self.$list.append($button);
+				}
+				self.$buttons = $($.map(buttons, function($button){ return $button.get(); }));
+
+				return true;
+			}
+			return false;
+		},
+		destroy: function(){
+			this._super();
+			this.$buttons = $();
+		},
+		update: function(range){
+			var self = this, sel = self.pages.sel;
+			// if the range changed update the visible links
+			if (range.changed) {
+				self.setVisible(range.start, range.end);
+			}
+			// if the range index is selected
+			if (range.selected) {
+				// then update the items as required
+				self.setSelected(range.index);
+
+				// if this is the first page then we need to disable the first and prev buttons
+				self.toggleDisabled(self.$buttons.filter(sel.firstPrev), range.index <= 0);
+				// if this is the last page we need to disable the next and last buttons
+				self.toggleDisabled(self.$buttons.filter(sel.nextLast), range.index >= self.pages.total - 1);
+			}
+			// if the visible range starts with the first page then we need to disable the prev more button
+			self.toggleDisabled(self.$buttons.filter(sel.prevMore), range.start <= 0);
+			// if the visible range ends with the last page then we need to disable the next more button
+			self.toggleDisabled(self.$buttons.filter(sel.nextMore), range.end >= self.pages.total - 1);
+		},
+		setVisible: function(start, end){
+			var self = this, cls = self.pages.cls;
+			// when we slice we add + 1 to the upper limit of the range as $.slice does not include the end index in the result
+			self.$items.removeClass(cls.visible).slice(start, end + 1).addClass(cls.visible);
+		},
+		toggleDisabled: function($buttons, state){
+			var self = this, cls = self.pages.cls, sel = self.pages.sel;
+			if (state) {
+				$buttons.addClass(cls.disabled).find(sel.link).attr("tabindex", -1);
+			} else {
+				$buttons.removeClass(cls.disabled).find(sel.link).removeAttr("tabindex");
+			}
+		},
+		/**
+		 * @summary Create and return a jQuery object containing a single `li` and its' button.
+		 * @memberof FooGallery.PaginationControl#
+		 * @function createButton
+		 * @param {string} keyword - One of the page keywords; `"first"`, `"prev"`, `"prevMore"`, `"nextMore"`, `"next"` or `"last"`.
+		 * @returns {jQuery}
+		 */
+		createButton: function(keyword){
+			var self = this, cls = self.pages.cls, il8n = self.pages.il8n;
+			return self.createItem(keyword, il8n.labels[keyword], il8n.buttons[keyword], cls.button + " " + cls[keyword]);
+		}
+	});
+
+	_.paging.register("pagination", _.Pagination, _.PaginationControl, {
+		type: "pagination",
+		position: "both",
+		pushOrReplace: "push",
+		limit: 5,
+		showPrevNext: true,
+		showFirstLast: true,
+		showPrevNextMore: true
+	}, {
+		list: "fg-pages",
+		item: "fg-page-item",
+		button: "fg-page-button",
+		link: "fg-page-link",
+		first: "fg-page-first",
+		prev: "fg-page-prev",
+		prevMore: "fg-page-prev-more",
+		nextMore: "fg-page-next-more",
+		next: "fg-page-next",
+		last: "fg-page-last",
+		disabled: "fg-disabled",
+		selected: "fg-selected",
+		visible: "fg-visible",
+		reader: "fg-sr-only"
+	}, {
+		buttons: {
+			first: "&laquo;",
+			prev: "&lsaquo;",
+			next: "&rsaquo;",
+			last: "&raquo;",
+			prevMore: "&hellip;",
+			nextMore: "&hellip;"
+		},
+		labels: {
+			current: "Current page",
+			page: "Page {PAGE}",
+			first: "First page",
+			prev: "Previous page",
+			next: "Next page",
+			last: "Last page",
+			prevMore: "Select from previous {LIMIT} pages",
+			nextMore: "Select from next {LIMIT} pages"
+		}
+	});
 
 })(
 	FooGallery.$,
