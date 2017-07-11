@@ -3743,10 +3743,9 @@
 					self.$el.data(_.dataTemplate, self);
 					var state = self.state.parse();
 					self.state.set(_is.empty(state) ? self.state.initial() : state);
-					return self.loadAvailable().then(function(){
-						$(window).on("scroll.foogallery", {self: self}, self.onWindowScroll)
-							.on("popstate.foogallery", {self: self}, self.onWindowPopState);
-					});
+					$(window).on("scroll.foogallery", {self: self}, self.onWindowScroll)
+						.on("popstate.foogallery", {self: self}, self.onWindowPopState);
+					return self.loadAvailable();
 				}).then(function(){
 					/**
 					 * @summary Raised after the template is fully initialized and is ready to be interacted with.
@@ -4773,7 +4772,7 @@
 					attr.image["alt"] = self.description;
 
 					self.$el = $("<div/>").attr(attr.elem).data(_.dataItem, self);
-					self.$inner = $("<div/>").attr(attr.inner).appendTo(self.$el);
+					self.$inner = $("<figure/>").attr(attr.inner).appendTo(self.$el);
 					self.$anchor = $("<a/>").attr(attr.anchor).appendTo(self.$inner).on("click.foogallery", {self: self}, self.onAnchorClick);
 					self.$image = $("<img/>").attr(attr.image).appendTo(self.$anchor);
 
@@ -4785,7 +4784,7 @@
 						attr.inner["class"] = cls.inner;
 						attr.title["class"] = cls.title;
 						attr.description["class"] = cls.description;
-						self.$caption = $("<div/>").attr(attr.elem);
+						self.$caption = $("<figcaption/>").attr(attr.elem).on("click.foogallery", {self: self}, self.onCaptionClick);
 						var $inner = $("<div/>").attr(attr.inner).appendTo(self.$caption);
 						if (hasTitle){
 							$inner.append($("<div/>").attr(attr.title).html(self.title));
@@ -4793,7 +4792,7 @@
 						if (hasDesc){
 							$inner.append($("<div/>").attr(attr.description).html(self.description));
 						}
-						self.$caption.appendTo(self.$anchor);
+						self.$caption.appendTo(self.$inner);
 					}
 					self.isCreated = true;
 				}
@@ -5107,7 +5106,7 @@
 			return this.isAttached ? this.bounds().intersects(bounds) : false;
 		},
 		/**
-		 * @summary Listens for the click event on the {@link FooGallery.Item#$anchor|$anchor} element.
+		 * @summary Listens for the click event on the {@link FooGallery.Item#$anchor|$anchor} element and updates the state if enabled.
 		 * @memberof FooGallery.Item#
 		 * @function onAnchorClick
 		 * @param {jQuery.Event} e - The jQuery.Event object for the click event.
@@ -5117,6 +5116,19 @@
 			var self = e.data.self,
 				state = self.tmpl.state.get(self);
 			self.tmpl.state.update(state);
+		},
+		/**
+		 * @summary Listens for the click event on the {@link FooGallery.Item#$caption|$caption} element and redirects it to the anchor if required.
+		 * @memberof FooGallery.Item#
+		 * @function onCaptionClick
+		 * @param {jQuery.Event} e - The jQuery.Event object for the click event.
+		 * @private
+		 */
+		onCaptionClick: function(e){
+			var self = e.data.self;
+			if ($(e.target).is(self.sel.caption.all)){
+				self.$anchor.trigger(e);
+			}
 		}
 	});
 
@@ -5261,6 +5273,9 @@
 			self._fetched = null;
 			self._arr = [];
 			self._available = [];
+			// add the .all caption selector
+			var cls = self.tmpl.cls.item.caption;
+			self.tmpl.sel.item.caption.all = _utils.selectify([cls.elem, cls.inner, cls.title, cls.description]);
 		},
 		destroy: function(){
 			var self = this, items = self.all(), destroyed = [];
