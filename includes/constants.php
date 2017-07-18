@@ -26,3 +26,6 @@ define( 'FOOGALLERY_OPTION_VERSION', 'foogallery-version' );
 define( 'FOOGALLERY_OPTION_THUMB_TEST', 'foogallery-thumb-test' );
 
 define( 'FOOGALLERY_ADMIN_MENU_HELP_SLUG', 'foogallery-help' );
+define( 'FOOGALLERY_ADMIN_MENU_SETTINGS_SLUG', 'foogallery-settings' );
+define( 'FOOGALLERY_ADMIN_MENU_EXTENSIONS_SLUG', 'foogallery-extensions' );
+define( 'FOOGALLERY_ADMIN_MENU_SYSTEMINFO_SLUG', 'foogallery-systeminfo' );
