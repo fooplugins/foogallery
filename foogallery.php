@@ -146,8 +146,11 @@ if ( ! class_exists( 'FooGallery_Plugin' ) ) {
 		function check_for_access_denied() {
 			global $plugin_page;
 
-			if ( FOOGALLERY_ADMIN_MENU_HELP_SLUG === $plugin_page ) {
-				fs_redirect( 'admin.php?page=' . FOOGALLERY_ADMIN_MENU_HELP_SLUG );
+			if ( FOOGALLERY_ADMIN_MENU_HELP_SLUG === $plugin_page ||
+				FOOGALLERY_ADMIN_MENU_SETTINGS_SLUG === $plugin_page ||
+				FOOGALLERY_ADMIN_MENU_EXTENSIONS_SLUG === $plugin_page ||
+				FOOGALLERY_ADMIN_MENU_SYSTEMINFO_SLUG === $plugin_page) {
+				fs_redirect( 'admin.php?page=' . FOOGALLERY_SLUG );
 			}
 		}
 
