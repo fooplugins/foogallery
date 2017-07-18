@@ -13,8 +13,7 @@ $thumbnail_link = foogallery_gallery_template_setting( 'thumbnail_link', 'image'
 $args = array(
 	'width' => $width,
 	'link' => $thumbnail_link,
-	'crop' => false,
-	'link_attributes' => array( 'class' => 'foogallery-thumb foogallery-item-inner' )
+	'crop' => false
 );
 $lightbox = foogallery_gallery_template_setting( 'lightbox', 'unknown' );
 $hover_effect_type = foogallery_gallery_template_setting( 'hover-effect-type', '' );

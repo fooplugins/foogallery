@@ -20,10 +20,10 @@ $caption_text_color = foogallery_gallery_template_setting( 'caption_text_color',
 if ( !empty( $caption_bg_color ) || !empty( $caption_text_color ) ) {
 	echo '<style type="text/css">';
 	if ( !empty( $caption_bg_color ) ) {
-		echo '#foogallery-gallery-' . $current_foogallery->ID . '.foogallery-simple_portfolio .foogallery-item-inner { background: ' . $caption_bg_color . '; }';
+		echo '#foogallery-gallery-' . $current_foogallery->ID . '.foogallery-simple_portfolio a { background: ' . $caption_bg_color . '; }';
 	}
 	if ( !empty( $caption_text_color ) ) {
-		echo '#foogallery-gallery-' . $current_foogallery->ID . '.foogallery-simple_portfolio .foogallery-item-inner { color: ' . $caption_text_color . '; }';
+		echo '#foogallery-gallery-' . $current_foogallery->ID . '.foogallery-simple_portfolio a { color: ' . $caption_text_color . '; }';
 	}
 	echo '</style>';
 }
