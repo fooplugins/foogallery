@@ -7,8 +7,6 @@ global $current_foogallery_arguments;
 $args = foogallery_gallery_template_setting( 'thumbnail_dimensions', array() );
 $link = foogallery_gallery_template_setting( 'thumbnail_link', 'image' );
 $args['link'] = $link;
-//add the necessary classes to the anchors
-$args['link_attributes'] = array( 'class' => 'foogallery-thumb foogallery-item-inner' );
 $lightbox = foogallery_gallery_template_setting( 'lightbox', 'unknown' );
 $spacing = foogallery_gallery_template_setting( 'spacing', '' );
 $alignment = foogallery_gallery_template_setting( 'alignment', 'alignment-center' );
@@ -19,12 +17,13 @@ $foogallery_default_classes = foogallery_build_class_attribute_safe( $current_fo
 $foogallery_default_attributes = foogallery_build_container_attributes_safe( $current_foogallery, array( 'class' => $foogallery_default_classes ) );
 ?><div <?php echo $foogallery_default_attributes; ?>>
 	<?php foreach ( $current_foogallery->attachments() as $attachment ) {
-		echo '<div class="foogallery-item">';
-		echo $attachment->html( $args, true, false );
-		if ( 'hover-effect-caption' === $hover_effect_type ) {
-			echo $attachment->html_caption( $caption_content );
-		}
-		echo '</a>';
-		echo '</div>';
+        echo foogallery_attachment_html( $attachment, $args, $caption_content );
+//		echo '<div class="foogallery-item">';
+//		echo $attachment->html( $args, true, false );
+//		if ( 'hover-effect-caption' === $hover_effect_type ) {
+//			echo $attachment->html_caption( $caption_content );
+//		}
+//		echo '</a>';
+//		echo '</div>';
 	} ?>
 </div>
