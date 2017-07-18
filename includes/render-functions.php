@@ -32,12 +32,16 @@ function foogallery_attachment_html_image_src( $foogallery_attachment, $args = a
  *
  * @return string
  */
-function foogallery_attachment_html_image_full( $foogallery_attachment, $args = array() ) {
+function foogallery_attachment_html_image( $foogallery_attachment, $args = array() ) {
 	$attr['data-src'] = foogallery_attachment_html_image_src( $foogallery_attachment, $args );
 
-	if ( ! empty( $this->alt ) ) {
-		$attr['alt'] = $this->alt;
+	if ( ! empty( $foogallery_attachment->alt ) ) {
+		$attr['alt'] = $foogallery_attachment->alt;
 	}
+
+    if ( ! empty( $foogallery_attachment->caption ) ) {
+        $attr['title'] = $foogallery_attachment->caption;
+    }
 
 	//pull any custom attributes out the args
 	if ( isset( $args['image_attributes'] ) && is_array( $args['image_attributes'] ) ) {
@@ -53,6 +57,13 @@ function foogallery_attachment_html_image_full( $foogallery_attachment, $args = 
 	}
 
 	$attr = apply_filters( 'foogallery_attachment_html_image_attributes', $attr, $args, $foogallery_attachment );
+
+    if ( array_key_exists( 'class', $attr ) ) {
+        $attr['class'] .= ' fg-image';
+    } else {
+        $attr['class'] = 'fg-image';
+    }
+
 	$attr = array_map( 'esc_attr', $attr );
 	$html = '<img ';
 	foreach ( $attr as $name => $value ) {
@@ -61,6 +72,83 @@ function foogallery_attachment_html_image_full( $foogallery_attachment, $args = 
 	$html .= ' />';
 
 	return apply_filters( 'foogallery_attachment_html_image', $html, $args, $foogallery_attachment );
+}
+
+/**
+ * Returns the attachment anchor HTML opening tag
+ *
+ * @param FooGalleryAttachment $foogallery_attachment
+ * @param array $args
+ * @param bool $output_image
+ * @param bool $output_closing_tag
+ *
+ * @return string
+ */
+function foogallery_attachment_html_anchor_opening( $foogallery_attachment, $args = array() ) {
+    $arg_defaults = array(
+        'link' => 'image',
+        'custom_link' => $foogallery_attachment->custom_url
+    );
+
+    $args = wp_parse_args( $args, $arg_defaults );
+
+    $link = $args['link'];
+
+    if ( 'page' === $link ) {
+        //get the URL to the attachment page
+        $url = get_attachment_link( $foogallery_attachment->ID );
+    } else if ( 'custom' === $link ) {
+        $url = $args['custom_link'];
+    } else {
+        $url = $foogallery_attachment->url;
+    }
+
+    //fallback for images that might not have a custom url
+    if ( empty( $url ) ) {
+        $url = $foogallery_attachment->url;
+    }
+
+    $attr = array();
+
+    //only add href and target attributes to the anchor if the link is NOT set to 'none'
+    if ( $link !== 'none' ){
+        $attr['href'] = $url;
+        if ( ! empty( $foogallery_attachment->custom_target ) && 'default' !== $foogallery_attachment->custom_target ) {
+            $attr['target'] = $foogallery_attachment->custom_target;
+        }
+    }
+
+    if ( ! empty( $foogallery_attachment->caption ) ) {
+        $attr['data-caption-title'] = $foogallery_attachment->caption;
+    }
+
+    if ( !empty( $foogallery_attachment->description ) ) {
+        $attr['data-caption-desc'] = $foogallery_attachment->description;
+    }
+
+    $attr['data-attachment-id'] = $foogallery_attachment->ID;
+
+    //pull any custom attributes out the args
+    if ( isset( $args['link_attributes'] ) && is_array( $args['link_attributes'] ) ) {
+        $attr = array_merge( $attr, $args['link_attributes'] );
+    }
+
+    $attr = apply_filters( 'foogallery_attachment_html_link_attributes', $attr, $args, $foogallery_attachment );
+
+    if ( array_key_exists( 'class', $attr ) ) {
+        $attr['class'] .= ' fg-thumb';
+    } else {
+        $attr['class'] = 'fg-thumb';
+    }
+
+    $attr = array_map( 'esc_attr', $attr );
+    $html = '<a ';
+    foreach ( $attr as $name => $value ) {
+        $html .= " $name=" . '"' . $value . '"';
+    }
+    $html .= '>';
+
+    return apply_filters( 'foogallery_attachment_html_anchor_opening', $html, $args, $foogallery_attachment );
 }
 
 /**
@@ -74,75 +162,21 @@ function foogallery_attachment_html_image_full( $foogallery_attachment, $args = 
  * @return string
  */
 function foogallery_attachment_html_anchor( $foogallery_attachment, $args = array(), $output_image = true, $output_closing_tag = true ) {
-	if ( empty ( $this->url ) )  {
+	if ( empty ( $foogallery_attachment->url ) )  {
 		return '';
 	}
 
-	$arg_defaults = array(
-		'link' => 'image',
-		'custom_link' => $this->custom_url
-	);
+    $html = foogallery_attachment_html_anchor_opening( $foogallery_attachment, $args );
 
-	$args = wp_parse_args( $args, $arg_defaults );
-
-	$link = $args['link'];
-
-	$img = $this->html_img( $args );
-
-	if ( 'page' === $link ) {
-		//get the URL to the attachment page
-		$url = get_attachment_link( $this->ID );
-	} else if ( 'custom' === $link ) {
-		$url = $args['custom_link'];
-	} else {
-		$url = $this->url;
-	}
-
-	//fallback for images that might not have a custom url
-	if ( empty( $url ) ) {
-		$url = $this->url;
-	}
-
-	$attr = array();
-
-	//only add href and target attributes to the anchor if the link is NOT set to 'none'
-	if ( $link !== 'none' ){
-		$attr['href'] = $url;
-		if ( ! empty( $this->custom_target ) && 'default' !== $this->custom_target ) {
-			$attr['target'] = $this->custom_target;
-		}
-	}
-
-	if ( ! empty( $this->caption ) ) {
-		$attr['data-caption-title'] = $this->caption;
-	}
-
-	if ( !empty( $this->description ) ) {
-		$attr['data-caption-desc'] = $this->description;
-	}
-
-	$attr['data-attachment-id'] = $this->ID;
-
-	//pull any custom attributes out the args
-	if ( isset( $args['link_attributes'] ) && is_array( $args['link_attributes'] ) ) {
-		$attr = array_merge( $attr, $args['link_attributes'] );
-	}
-
-	$attr = apply_filters( 'foogallery_attachment_html_link_attributes', $attr, $args, $foogallery_attachment );
-	$attr = array_map( 'esc_attr', $attr );
-	$html = '<a ';
-	foreach ( $attr as $name => $value ) {
-		$html .= " $name=" . '"' . $value . '"';
-	}
-	$html .= '>';
 	if ( $output_image ) {
-		$html .= $img;
+		$html .= foogallery_attachment_html_image( $foogallery_attachment, $args );;
 	}
+
 	if ( $output_closing_tag ) {
 		$html .= '</a>';
-	};
+	}
 
-	return apply_filters( 'foogallery_attachment_html_link', $html, $args, $foogallery_attachment );
+	return apply_filters( 'foogallery_attachment_html_anchor', $html, $args, $foogallery_attachment );
 }
 
 /**
@@ -153,21 +187,41 @@ function foogallery_attachment_html_anchor( $foogallery_attachment, $args = arra
  *
  * @return string
  */
-function foogallery_attachment_html_caption( $foogallery_attachment, $caption_content ) {
-	$html = '';
-	$caption_html = array();
-	if ( $foogallery_attachment->caption && ( 'title' === $caption_content || 'both' === $caption_content ) ) {
-		$caption_html[] = '<div class="foogallery-caption-title">' . $this->caption . '</div>';
-	}
-	if ( $foogallery_attachment->description && ( 'desc' === $caption_content || 'both' === $caption_content ) ) {
-		$caption_html[] = '<div class="foogallery-caption-desc">' . $this->description . '</div>';
-	}
+function foogallery_attachment_html_caption( $foogallery_attachment, $caption_content = 'both' ) {
+    $html = '';
+    $caption_html = array();
+    if ( $foogallery_attachment->caption && ( 'title' === $caption_content || 'both' === $caption_content ) ) {
+        $caption_html[] = '<div class="fg-caption-title">' . $foogallery_attachment->caption . '</div>';
+    }
+    if ( $foogallery_attachment->description && ( 'desc' === $caption_content || 'both' === $caption_content ) ) {
+        $caption_html[] = '<div class="fg-caption-desc">' . $foogallery_attachment->description . '</div>';
+    }
 
-	if ( count($caption_html) > 0 ) {
-		$html = '<div class="foogallery-caption"><div class="foogallery-caption-inner">';
-		$html .= implode( $caption_html );
-		$html .= '</div></div>';
-	}
+    if ( count($caption_html) > 0 ) {
+        $html = '<figcaption class="fg-caption"><div class="fg-caption-inner">';
+        $html .= implode( $caption_html );
+        $html .= '</div></figcaption>';
+    }
 
-	return apply_filters( 'foogallery_attachment_html_caption', $html, $caption_content, $this );
+    return apply_filters( 'foogallery_attachment_html_caption', $html, $caption_content, $foogallery_attachment );
 }
+
+/**
+ * Returns generic html for an attachment
+ *
+ * @param FooGalleryAttachment $foogallery_attachment
+ * @param array $args
+ * @param $caption_content string Include title, desc, or both
+ *
+ * @return string
+ */
+function foogallery_attachment_html( $foogallery_attachment, $args = array(), $caption_content = 'both' ) {
+    $html = '<div class="fg-item"><figure class="fg-item-inner">';
+    $html .= foogallery_attachment_html_anchor_opening( $foogallery_attachment, $args );
+    $html .= foogallery_attachment_html_image( $foogallery_attachment, $args );
+    $html .= '</a>';
+    $html .= foogallery_attachment_html_caption( $foogallery_attachment, $caption_content );
+    $html .= '</figure></div>';
+    return $html;
+}
+
