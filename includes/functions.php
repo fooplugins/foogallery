@@ -351,7 +351,8 @@ function foogallery_gallery_shortcode_regex() {
 function foogallery_build_class_attribute( $gallery ) {
 	$classes[] = 'foogallery';
 	$classes[] = 'foogallery-container';
-	$classes[] = "foogallery-{$gallery->gallery_template}";
+	$classes[] = "fg-{$gallery->gallery_template}";
+    $classes[] = 'fg-light fg-responsive fg-border-thick fg-shadow-large fg-loading-default';
 
 	//get some default classes from common gallery settings
 	$border_style = $gallery->get_meta( "{$gallery->gallery_template}_border-style", '' );
@@ -417,6 +418,9 @@ function foogallery_build_container_attributes_safe( $gallery, $attributes ) {
 
 	//add the default gallery id
 	$attributes['id'] = 'foogallery-gallery-' . $gallery->ID;
+
+	//add the standard data-foogallery attribute so that the JS initializes correctly
+    $attributes['data-foogallery'] = $gallery->ID;
 
 	//allow others to add their own attributes globally
 	$attributes = apply_filters( 'foogallery_build_container_attributes', $attributes, $gallery );
