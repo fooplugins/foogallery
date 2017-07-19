@@ -67,6 +67,7 @@ class FooGallery extends stdClass {
 		}
         $this->retina = get_post_meta( $post_id, FOOGALLERY_META_RETINA, true );
 		$this->force_use_original_thumbs = 'true' === get_post_meta( $post_id, FOOGALLERY_META_FORCE_ORIGINAL_THUMBS, true );
+		$this->settings_version = get_post_meta( $post_id, FOOGALLERY_META_SETTINGS_VERSION, true );
 	}
 
 	/**

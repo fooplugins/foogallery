@@ -13,6 +13,7 @@ require_once( FOOGALLERY_PATH . 'includes/extensions/class-extensions-api.php' )
 require_once( FOOGALLERY_PATH . 'includes/extensions/class-extensions-loader.php' );
 require_once( FOOGALLERY_PATH . 'includes/class-attachment-filters.php' );
 require_once( FOOGALLERY_PATH . 'includes/class-retina.php' );
+require_once( FOOGALLERY_PATH . 'includes/class-foogallery-upgrade.php' );
 
 //check for WPThumb, include.
 if ( ! class_exists( 'WP_Thumb' ) ) {
@@ -56,22 +57,22 @@ if ( is_admin() ) {
 	require_once( FOOGALLERY_PATH . 'includes/admin/class-gallery-editor.php' );
 	require_once( FOOGALLERY_PATH . 'includes/admin/class-gallery-metaboxes.php' );
 	require_once( FOOGALLERY_PATH . 'includes/admin/class-gallery-metabox-fields.php' );
-    	require_once( FOOGALLERY_PATH . 'includes/admin/class-gallery-metabox-settings.php' );
+	require_once( FOOGALLERY_PATH . 'includes/admin/class-gallery-metabox-settings.php' );
 	require_once( FOOGALLERY_PATH . 'includes/admin/class-gallery-metabox-settings-helper.php' );
 	require_once( FOOGALLERY_PATH . 'includes/admin/class-menu.php' );
 	require_once( FOOGALLERY_PATH . 'includes/admin/class-columns.php' );
 	require_once( FOOGALLERY_PATH . 'includes/admin/class-boilerplate-zip-generator.php' );
 	require_once( FOOGALLERY_PATH . 'includes/admin/class-boilerplate-download-handler.php' );
 	require_once( FOOGALLERY_PATH . 'includes/admin/class-attachment-fields.php' );
-    	require_once( FOOGALLERY_PATH . 'includes/admin/class-admin-css-load-optimizer.php' );
-    	require_once( FOOGALLERY_PATH . 'includes/admin/class-admin-notices.php' );
+	require_once( FOOGALLERY_PATH . 'includes/admin/class-admin-css-load-optimizer.php' );
+	require_once( FOOGALLERY_PATH . 'includes/admin/class-admin-notices.php' );
 
 } else {
 
 	//only front-end
 	require_once( FOOGALLERY_PATH . 'includes/public/class-public.php' );
 	require_once( FOOGALLERY_PATH . 'includes/public/class-shortcodes.php' );
-    	require_once( FOOGALLERY_PATH . 'includes/public/class-css-load-optimizer.php' );
+	require_once( FOOGALLERY_PATH . 'includes/public/class-css-load-optimizer.php' );
 	require_once( FOOGALLERY_PATH . 'includes/public/class-admin-bar.php' );
 	require_once( FOOGALLERY_PATH . 'includes/public/class-yoast-seo-sitemaps.php' );
 }

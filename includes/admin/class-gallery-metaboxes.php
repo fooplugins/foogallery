@@ -192,6 +192,8 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 					delete_post_meta( $post_id, FOOGALLERY_META_FORCE_ORIGINAL_THUMBS );
 				}
 
+				update_post_meta( $post_id, FOOGALLERY_META_SETTINGS_VERSION, FOOGALLERY_SETTINGS_VERSION );
+
 				do_action( 'foogallery_after_save_gallery', $post_id, $_POST );
 			}
 		}

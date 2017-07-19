@@ -23,6 +23,7 @@ if ( ! class_exists( 'FooGallery_Plugin' ) ) {
 	define( 'FOOGALLERY_URL', plugin_dir_url( __FILE__ ) );
 	define( 'FOOGALLERY_FILE', __FILE__ );
 	define( 'FOOGALLERY_VERSION', '1.3.7' );
+	define( 'FOOGALLERY_SETTINGS_VERSION', '2' );
 
 	require_once( FOOGALLERY_PATH . 'includes/constants.php' );
 
@@ -137,6 +138,8 @@ if ( ! class_exists( 'FooGallery_Plugin' ) ) {
 			new FooGallery_Responsive_Lightbox_dFactory_Support();
 
 			new FooGallery_Attachment_Custom_Class();
+
+			new FooGallery_Upgrade();
 
 			$checker = new FooGallery_Version_Check();
 			$checker->wire_up_checker();

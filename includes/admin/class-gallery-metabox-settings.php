@@ -80,6 +80,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings' ) ) {
                 'border-style-rounded' => array( 'label' => __( 'Plain Rounded' , 'foogallery' ), 'img' => FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_SHARED_URL . 'img/admin/border-style-icon-plain-rounded.png' ),
                 '' => array( 'label' => __( 'Plain' , 'foogallery' ), 'img' => FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_SHARED_URL . 'img/admin/border-style-icon-none.png' ),
             ) );
+
             $fields[] = array(
                 'id'      => 'border-style',
                 'title'   => __( 'Border Style', 'foogallery' ),
