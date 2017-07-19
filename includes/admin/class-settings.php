@@ -65,11 +65,26 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 				'section' => __( 'Gallery Defaults', 'foogallery' )
 			);
 
-			$galleries = foogallery_get_all_galleries();
+			$gallery_posts = get_posts( array(
+				'post_type'     => FOOGALLERY_CPT_GALLERY,
+				'post_status'	=> array( 'publish', 'draft' ),
+				'cache_results' => false,
+				'nopaging'      => true,
+			) );
+
+			$galleries = array();
+
+			foreach ( $gallery_posts as $post ) {
+				$galleries[] = array(
+					'ID' => $post->ID,
+					'name' => $post->post_title
+				);
+			}
+
 			$gallery_choices = array();
 			$gallery_choices[] = __( 'No default', 'foogallery' );
 			foreach ( $galleries as $gallery ) {
-				$gallery_choices[ $gallery->ID ] = $gallery->name;
+				$gallery_choices[ $gallery['ID'] ] = $gallery['name'];
 			}
 
 			$settings[] = array(

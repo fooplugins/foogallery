@@ -127,7 +127,7 @@ if ( !class_exists( 'Foo_Plugin_Base_v2_3' ) ) {
 				new Foo_Plugin_Metabox_Sanity_v1($this->plugin_slug);
 
 				// Register any settings for the plugin
-				add_action( 'admin_init', array($this, 'admin_create_settings') );
+				//add_action( 'admin_init', array($this, 'admin_create_settings') );
 
 				// Add a settings page menu item
 				add_action( 'admin_menu', array($this, 'admin_settings_page_menu') );

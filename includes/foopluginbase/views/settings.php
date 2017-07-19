@@ -9,6 +9,8 @@ if ( !isset($this) || !is_subclass_of( $this, 'Foo_Plugin_Base_v2_3' ) ) {
 	throw new Exception("This settings view has not been included correctly!");
 }
 
+$this->admin_create_settings();
+
 $tabs = $this->_settings->get_tabs();
 $plugin_info = $this->get_plugin_info();
 $plugin_slug = $plugin_info['slug'];
