@@ -79,14 +79,14 @@ if ( !class_exists( 'FooGallery_Default_Gallery_Template' ) ) {
 						'desc'    => __( 'The spacing or gap between thumbnails in the gallery.', 'foogallery' ),
                         'section' => __( 'Look &amp; Feel', 'foogallery' ),
 						'type'    => 'select',
-						'default' => 'spacing-width-10',
+						'default' => 'fg-gutter-10',
 						'choices' => array(
-							'spacing-width-0' => __( '0 pixels', 'foogallery' ),
-							'spacing-width-5' => __( '5 pixels', 'foogallery' ),
-							'spacing-width-10' => __( '10 pixels', 'foogallery' ),
-							'spacing-width-15' => __( '15 pixels', 'foogallery' ),
-							'spacing-width-20' => __( '20 pixels', 'foogallery' ),
-							'spacing-width-25' => __( '25 pixels', 'foogallery' ),
+							'fg-gutter-0' => __( '0 pixels', 'foogallery' ),
+							'fg-gutter-5' => __( '5 pixels', 'foogallery' ),
+							'fg-gutter-10' => __( '10 pixels', 'foogallery' ),
+							'fg-gutter-15' => __( '15 pixels', 'foogallery' ),
+							'fg-gutter-20' => __( '20 pixels', 'foogallery' ),
+							'fg-gutter-25' => __( '25 pixels', 'foogallery' ),
 						)
 					),
 					array(
@@ -94,13 +94,13 @@ if ( !class_exists( 'FooGallery_Default_Gallery_Template' ) ) {
 						'title'   => __( 'Alignment', 'foogallery' ),
 						'desc'    => __( 'The horizontal alignment of the thumbnails inside the gallery.', 'foogallery' ),
                         'section' => __( 'Look &amp; Feel', 'foogallery' ),
-						'default' => 'alignment-center',
+						'default' => 'fg-center',
 						'type'    => 'radio',
 						'spacer'  => '<span class="spacer"></span>',
 						'choices' => array(
-							'alignment-left' => __( 'Left', 'foogallery' ),
-							'alignment-center' => __( 'Center', 'foogallery' ),
-							'alignment-right' => __( 'Right', 'foogallery' ),
+							'fg-left' => __( 'Left', 'foogallery' ),
+							'fg-center' => __( 'Center', 'foogallery' ),
+							'fg-right' => __( 'Right', 'foogallery' ),
 						)
 					),
 					array(
