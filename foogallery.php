@@ -2,7 +2,7 @@
 /**
  * Plugin Name: FooGallery
  * Description: FooGallery is the most intuitive and extensible gallery management tool ever created for WordPress
- * Version:     1.3.6
+ * Version:     1.3.7
  * Author:      FooPlugins
  * Plugin URI:  https://foo.gallery
  * Author URI:  http://fooplugins.com
@@ -22,7 +22,7 @@ if ( ! class_exists( 'FooGallery_Plugin' ) ) {
 	define( 'FOOGALLERY_PATH', plugin_dir_path( __FILE__ ) );
 	define( 'FOOGALLERY_URL', plugin_dir_url( __FILE__ ) );
 	define( 'FOOGALLERY_FILE', __FILE__ );
-	define( 'FOOGALLERY_VERSION', '1.3.6' );
+	define( 'FOOGALLERY_VERSION', '1.3.7' );
 
 	require_once( FOOGALLERY_PATH . 'includes/constants.php' );
 
@@ -148,8 +148,11 @@ if ( ! class_exists( 'FooGallery_Plugin' ) ) {
 		function check_for_access_denied() {
 			global $plugin_page;
 
-			if ( FOOGALLERY_ADMIN_MENU_HELP_SLUG === $plugin_page ) {
-				fs_redirect( 'admin.php?page=' . FOOGALLERY_ADMIN_MENU_HELP_SLUG );
+			if ( FOOGALLERY_ADMIN_MENU_HELP_SLUG === $plugin_page ||
+				FOOGALLERY_ADMIN_MENU_SETTINGS_SLUG === $plugin_page ||
+				FOOGALLERY_ADMIN_MENU_EXTENSIONS_SLUG === $plugin_page ||
+				FOOGALLERY_ADMIN_MENU_SYSTEMINFO_SLUG === $plugin_page) {
+				fs_redirect( 'admin.php?page=' . FOOGALLERY_SLUG );
 			}
 		}
 

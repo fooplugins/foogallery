@@ -156,6 +156,10 @@ Update now to support FooVideo and many other improvements!
 
 ## Changelog ##
 
+### 1.3.7 ###
+
+* Fix : Activation redirect bug showing "Sorry, you are not allowed to access this page."
+
 ### 1.3.6 ###
 
 * New : Freemius integration!
