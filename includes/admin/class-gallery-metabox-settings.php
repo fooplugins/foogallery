@@ -71,6 +71,20 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings' ) ) {
          */
         function add_gallery_template_common_thumbnail_fields( $fields ) {
 
+			$fields[] = array(
+				'id'      => 'theme',
+				'title'   => __( 'Theme', 'foogallery' ),
+				'desc'    => __( 'The overall appearance of the items in the gallery, affecting the border, background, font and shadow colors.', 'foogallery' ),
+				'section' => __( 'Look &amp; Feel', 'foogallery' ),
+				'type'    => 'radio',
+				'default' => 'fg-light',
+				'spacer'  => '<span class="spacer"></span>',
+				'choices' => array(
+					'fg-light' => __( 'Light', 'foogallery' ),
+					'fg-dark'  => __( 'Dark', 'foogallery' )
+				)
+			);
+
             $border_style_choices = apply_filters( 'foogallery_gallery_template_common_thumbnail_fields_border_style_choices',  array(
                 'border-style-square-white' => array( 'label' => __( 'Square white border with shadow' , 'foogallery' ), 'img' => FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_SHARED_URL . 'img/admin/border-style-icon-square-white.png' ),
                 'border-style-circle-white' => array( 'label' => __( 'Circular white border with shadow' , 'foogallery' ), 'img' => FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_SHARED_URL . 'img/admin/border-style-icon-circle-white.png' ),
@@ -90,6 +104,72 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings' ) ) {
                 'default' => 'border-style-square-white',
                 'choices' => $border_style_choices
             );
+
+			$fields[] = array(
+				'id'      => 'border-size',
+				'title'   => __( 'Border Size', 'foogallery' ),
+				'desc'    => __( 'The border size applied to each thumbnail', 'foogallery' ),
+				'section' => __( 'Look &amp; Feel', 'foogallery' ),
+				'type'    => 'radio',
+				'spacer'  => '<span class="spacer"></span>',
+				'default' => 'fg-border-thin',
+				'choices' => array(
+					''  => __( 'None', 'foogallery' ),
+					'fg-border-thin'  => __( 'Thin', 'foogallery' ),
+					'fg-border-medium'  => __( 'Medium', 'foogallery' ),
+					'fg-border-thick'  => __( 'Thick', 'foogallery' ),
+				)
+			);
+
+			$fields[] = array(
+				'id'      => 'rounded-corners',
+				'title'   => __( 'Rounded Corners', 'foogallery' ),
+				'desc'    => __( 'The border radius, or rounded corners applied to each thumbnail', 'foogallery' ),
+				'section' => __( 'Look &amp; Feel', 'foogallery' ),
+				'type'    => 'radio',
+				'spacer'  => '<span class="spacer"></span>',
+				'default' => '',
+				'choices' => array(
+					''  => __( 'None', 'foogallery' ),
+					'fg-round-small'  => __( 'Small', 'foogallery' ),
+					'fg-round-medium'  => __( 'Medium', 'foogallery' ),
+					'fg-round-large'  => __( 'Large', 'foogallery' ),
+					'fg-round-full'  => __( 'Full', 'foogallery' ),
+				)
+			);
+
+			$fields[] = array(
+				'id'      => 'drop-shadow',
+				'title'   => __( 'Drop Shadow', 'foogallery' ),
+				'desc'    => __( 'The outer or drop shadow applied to each thumbnail', 'foogallery' ),
+				'section' => __( 'Look &amp; Feel', 'foogallery' ),
+				'type'    => 'radio',
+				'spacer'  => '<span class="spacer"></span>',
+				'default' => 'fg-shadow-inset-outline',
+				'choices' => array(
+					''  => __( 'None', 'foogallery' ),
+					'fg-shadow-inset-outline'  => __( 'Outline', 'foogallery' ),
+					'fg-shadow-inset-small'  => __( 'Small', 'foogallery' ),
+					'fg-shadow-inset-medium'  => __( 'Medium', 'foogallery' ),
+					'fg-shadow-inset-large'  => __( 'Large', 'foogallery' ),
+				)
+			);
+
+			$fields[] = array(
+				'id'      => 'inset-shadow',
+				'title'   => __( 'Inner Shadow', 'foogallery' ),
+				'desc'    => __( 'The inner shadow applied to each thumbnail', 'foogallery' ),
+				'section' => __( 'Look &amp; Feel', 'foogallery' ),
+				'type'    => 'radio',
+				'spacer'  => '<span class="spacer"></span>',
+				'default' => '',
+				'choices' => array(
+					''  => __( 'None', 'foogallery' ),
+					'fg-shadow-inset-small'  => __( 'Small', 'foogallery' ),
+					'fg-shadow-inset-medium'  => __( 'Medium', 'foogallery' ),
+					'fg-shadow-inset-large'  => __( 'Large', 'foogallery' ),
+				)
+			);
 
             $fields[] = array(
                 'id'      => 'hover-effect-help',
@@ -165,6 +245,28 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings' ) ) {
                     'data-foogallery-show-when-field-value' => 'hover-effect-caption'
                 )
             );
+
+			$fields[] = array(
+				'id'      => 'loading_animation',
+				'title'   => __( 'Loading Animation', 'foogallery' ),
+				'default' => 'fg-loading-default',
+				'type'    => 'radio',
+				'choices' => array(
+					'fg-loading-default'  => __( 'Default', 'foogallery' ),
+					'fg-loading-ellipsis'  => __( 'Ellipsis', 'foogallery' ),
+					'fg-loading-gears'  => __( 'Gears', 'foogallery' ),
+					'fg-loading-hourglass'  => __( 'Hourglass', 'foogallery' ),
+					'fg-loading-reload'  => __( 'Reload', 'foogallery' ),
+					'fg-loading-ripple'  => __( 'Ripple', 'foogallery' ),
+					'fg-loading-bars'  => __( 'Bars', 'foogallery' ),
+					'fg-loading-spin'  => __( 'Spin', 'foogallery' ),
+					'fg-loading-squares'  => __( 'Squares', 'foogallery' ),
+					'fg-loading-cube'  => __( 'Cube', 'foogallery' ),
+					''   => __( 'None', 'foogallery' )
+				),
+				'desc'	  => __( 'By default, an animated loading animation indicator is shown before the thumbnails have loaded. You can disable the loader if you want.', 'foogallery' ),
+				'section' => __( 'Advanced', 'foogallery' )
+			);
 
             $caption_content_choices = apply_filters( 'foogallery_gallery_template_common_thumbnail_fields_caption_content_choices', array(
                 'title'  => __( 'Title Only', 'foogallery' ),

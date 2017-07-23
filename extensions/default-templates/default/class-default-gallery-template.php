@@ -81,7 +81,7 @@ if ( !class_exists( 'FooGallery_Default_Gallery_Template' ) ) {
 						'type'    => 'select',
 						'default' => 'fg-gutter-10',
 						'choices' => array(
-							'fg-gutter-0' => __( '0 pixels', 'foogallery' ),
+							'fg-gutter-0' => __( 'none', 'foogallery' ),
 							'fg-gutter-5' => __( '5 pixels', 'foogallery' ),
 							'fg-gutter-10' => __( '10 pixels', 'foogallery' ),
 							'fg-gutter-15' => __( '15 pixels', 'foogallery' ),
@@ -102,18 +102,6 @@ if ( !class_exists( 'FooGallery_Default_Gallery_Template' ) ) {
 							'fg-center' => __( 'Center', 'foogallery' ),
 							'fg-right' => __( 'Right', 'foogallery' ),
 						)
-					),
-					array(
-						'id'      => 'loading_animation',
-						'title'   => __( 'Loading Indicator', 'foogallery' ),
-						'default' => 'yes',
-						'type'    => 'radio',
-						'choices' => array(
-							'yes'  => __( 'Show Thumbnail Loading Indicator', 'foogallery' ),
-							'no'   => __( 'Disabled', 'foogallery' )
-						),
-						'desc'	  => __( 'By default, an animated loading animation indicator is shown before the thumbnails have loaded. You can disable the loader if you want.', 'foogallery' ),
-                        'section' => __( 'Advanced', 'foogallery' )
 					),
 //					array(
 //						'id' => 'thumb_preview',

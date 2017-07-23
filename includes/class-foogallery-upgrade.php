@@ -19,12 +19,12 @@ if ( ! class_exists( 'FooGallery_Upgrade' ) ) {
 		 * @param $post
 		 */
 		function upgrade_gallery( $foogallery, $post ) {
-			if ( FOOGALLERY_SETTINGS_VERSION !== $foogallery->settings_version ) {
+			//if ( FOOGALLERY_SETTINGS_VERSION !== $foogallery->settings_version ) {
 				$this->perform_gallery_settings_upgrade( $foogallery );
 
 				//update the settings version for the gallery
 				//update_post_meta( $post->ID, FOOGALLERY_META_SETTINGS_VERSION, FOOGALLERY_SETTINGS_VERSION );
-			}
+			//}
 		}
 
 		function perform_gallery_settings_upgrade( $foogallery ) {
@@ -36,7 +36,9 @@ if ( ! class_exists( 'FooGallery_Upgrade' ) ) {
 					'new' => array(
 						array ( 'id' => 'theme', 'value' => 'fg-light' ),
 						array ( 'id' => 'border-size', 'value' => 'fg-border-thin' ),
-						array ( 'id' => 'drop-shadow', 'value' => 'fg-shadow-small' )
+						array ( 'id' => 'drop-shadow', 'value' => 'fg-shadow-small' ),
+						array ( 'id' => 'rounded-corners', 'value' => '' ),
+						array ( 'id' => 'inset-shadow', 'value' => '' ),
 					)
 				),
 				array(
@@ -46,7 +48,8 @@ if ( ! class_exists( 'FooGallery_Upgrade' ) ) {
 						array ( 'id' => 'theme', 'value' => 'fg-light' ),
 						array ( 'id' => 'border-size', 'value' => 'fg-border-thin' ),
 						array ( 'id' => 'drop-shadow', 'value' => 'fg-shadow-small' ),
-						array ( 'id' => 'rounded-corners', 'value' => 'fg-round-full' )
+						array ( 'id' => 'rounded-corners', 'value' => 'fg-round-full' ),
+						array ( 'id' => 'inset-shadow', 'value' => '' ),
 					)
 				),
 				array(
@@ -55,7 +58,9 @@ if ( ! class_exists( 'FooGallery_Upgrade' ) ) {
 					'new' => array(
 						array ( 'id' => 'theme', 'value' => 'fg-dark' ),
 						array ( 'id' => 'border-size', 'value' => 'fg-border-thin' ),
-						array ( 'id' => 'drop-shadow', 'value' => 'fg-shadow-small' )
+						array ( 'id' => 'drop-shadow', 'value' => 'fg-shadow-small' ),
+						array ( 'id' => 'rounded-corners', 'value' => '' ),
+						array ( 'id' => 'inset-shadow', 'value' => '' ),
 					)
 				),
 				array(
@@ -65,7 +70,8 @@ if ( ! class_exists( 'FooGallery_Upgrade' ) ) {
 						array ( 'id' => 'theme', 'value' => 'fg-dark' ),
 						array ( 'id' => 'border-size', 'value' => 'fg-border-thin' ),
 						array ( 'id' => 'drop-shadow', 'value' => 'fg-shadow-small' ),
-						array ( 'id' => 'rounded-corners', 'value' => 'fg-round-full' )
+						array ( 'id' => 'rounded-corners', 'value' => 'fg-round-full' ),
+						array ( 'id' => 'inset-shadow', 'value' => '' ),
 					)
 				),
 				array(
@@ -73,7 +79,10 @@ if ( ! class_exists( 'FooGallery_Upgrade' ) ) {
 					'value' => 'border-style-inset',
 					'new' => array(
 						array ( 'id' => 'theme', 'value' => 'fg-light' ),
-						array ( 'id' => 'inset-shadow', 'value' => 'fg-shadow-inset-large' )
+						array ( 'id' => 'border-size', 'value' => '' ),
+						array ( 'id' => 'drop-shadow', 'value' => 'fg-shadow-small' ),
+						array ( 'id' => 'rounded-corners', 'value' => '' ),
+						array ( 'id' => 'inset-shadow', 'value' => 'fg-shadow-inset-large' ),
 					)
 				),
 				array(
@@ -81,9 +90,24 @@ if ( ! class_exists( 'FooGallery_Upgrade' ) ) {
 					'value' => 'border-style-rounded',
 					'new' => array(
 						array ( 'id' => 'theme', 'value' => 'fg-light' ),
-						array ( 'id' => 'rounded-corners', 'value' => 'fg-round-small' )
+						array ( 'id' => 'border-size', 'value' => '' ),
+						array ( 'id' => 'drop-shadow', 'value' => '' ),
+						array ( 'id' => 'rounded-corners', 'value' => 'fg-round-small' ),
+						array ( 'id' => 'inset-shadow', 'value' => '' ),
 					)
 				),
+				array(
+					'id' => 'border-style',
+					'value' => '',
+					'new' => array(
+						array ( 'id' => 'theme', 'value' => 'fg-light' ),
+						array ( 'id' => 'border-size', 'value' => '' ),
+						array ( 'id' => 'drop-shadow', 'value' => '' ),
+						array ( 'id' => 'rounded-corners', 'value' => '' ),
+						array ( 'id' => 'inset-shadow', 'value' => '' ),
+					)
+				),
+
 				array(
 					'id' => 'spacing',
 					'value' => 'spacing-width-0',
@@ -148,6 +172,22 @@ if ( ! class_exists( 'FooGallery_Upgrade' ) ) {
 						array ( 'id' => 'alignment', 'value' => 'fg-right' )
 					)
 				),
+
+				array(
+					'id' => 'loading_animation',
+					'value' => 'yes',
+					'new' => array(
+						array ( 'id' => 'loading_animation', 'value' => 'fg-loading-default' )
+					)
+				),
+				array(
+					'id' => 'loading_animation',
+					'value' => 'no',
+					'new' => array(
+						array ( 'id' => 'loading_animation', 'value' => 'fg-loading-none' )
+					)
+				),
+
 			);
 
 			//upgrade all template settings
