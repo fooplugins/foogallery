@@ -48,9 +48,9 @@ if ( !class_exists( 'FooGallery_Default_Gallery_Template' ) ) {
 				'fields'	  => array(
                     array(
                         'id'      => 'thumbnail_dimensions',
-                        'title'   => __( 'Thumb Size', 'foogallery' ),
+                        'title'   => __( 'Thumbnail Size', 'foogallery' ),
                         'desc'    => __( 'Choose the size of your thumbnails.', 'foogallery' ),
-                        'section' => __( 'General', 'foogallery' ),
+                        'section' => __( 'Thumbnails', 'foogallery' ),
                         'type'    => 'thumb_size',
                         'default' => array(
                             'width' => get_option( 'thumbnail_size_w' ),
@@ -60,8 +60,8 @@ if ( !class_exists( 'FooGallery_Default_Gallery_Template' ) ) {
                     ),
                     array(
                         'id'      => 'thumbnail_link',
-                        'title'   => __( 'Thumb Link', 'foogallery' ),
-                        'section' => __( 'General', 'foogallery' ),
+                        'title'   => __( 'Link To', 'foogallery' ),
+                        'section' => __( 'Thumbnails', 'foogallery' ),
                         'default' => 'image',
                         'type'    => 'thumb_link',
                         'desc'	  => __( 'You can choose to link each thumbnail to the full size image, the image\'s attachment page, a custom URL, or you can choose to not link to anything.', 'foogallery' ),
@@ -69,15 +69,15 @@ if ( !class_exists( 'FooGallery_Default_Gallery_Template' ) ) {
 					array(
 						'id'      => 'lightbox',
 						'title'   => __( 'Lightbox', 'foogallery' ),
-						'desc'    => __( 'Choose which lightbox you want to use. The lightbox will only work if you set the thumbnail link to "Full Size Image".', 'foogallery' ),
-                        'section' => __( 'General', 'foogallery' ),
-						'type'    => 'lightbox',
+						'desc'    => __( 'Choose which lightbox you want to use. The lightbox will generally only work if you set the thumbnail link to "Full Size Image".', 'foogallery' ),
+                        'section' => __( 'Thumbnails', 'foogallery' ),
+						'type'    => 'lightbox'
 					),
 					array(
 						'id'      => 'spacing',
 						'title'   => __( 'Spacing', 'foogallery' ),
 						'desc'    => __( 'The spacing or gap between thumbnails in the gallery.', 'foogallery' ),
-                        'section' => __( 'Look &amp; Feel', 'foogallery' ),
+                        'section' => __( 'Thumbnails', 'foogallery' ),
 						'type'    => 'select',
 						'default' => 'fg-gutter-10',
 						'choices' => array(
@@ -93,7 +93,7 @@ if ( !class_exists( 'FooGallery_Default_Gallery_Template' ) ) {
 						'id'      => 'alignment',
 						'title'   => __( 'Alignment', 'foogallery' ),
 						'desc'    => __( 'The horizontal alignment of the thumbnails inside the gallery.', 'foogallery' ),
-                        'section' => __( 'Look &amp; Feel', 'foogallery' ),
+                        'section' => __( 'Thumbnails', 'foogallery' ),
 						'default' => 'fg-center',
 						'type'    => 'radio',
 						'spacer'  => '<span class="spacer"></span>',

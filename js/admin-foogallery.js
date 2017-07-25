@@ -55,16 +55,20 @@
                 fieldOperator = $item.data('foogallery-show-when-field-operator'),
 				$field_row = $('.foogallery_template_field_template_id-' + selectedTemplate + '-' + fieldId),
 				$field_selector = $field_row.data('foogallery-value-selector'),
-				$field = $field_row.find($field_selector),
-				actualFieldValue = $field.val();
+				field_value_attribute = $field_row.data('foogallery-value-attribute'),
+				$field = $field_row.find($field_selector);
 
-			if ( fieldOperator === '!==' ) {
-				if ( actualFieldValue !== fieldValue ) {
-                    $item.show();
-                }
-            } else if ( actualFieldValue === fieldValue ) {
-                $item.show();
-			}
+			$field.each(function() {
+				var actualFieldValue = field_value_attribute ? $(this).attr(field_value_attribute) : $(this).val();
+
+				if ( fieldOperator === '!==' ) {
+					if ( actualFieldValue !== fieldValue ) {
+						$item.show();
+					}
+				} else if ( actualFieldValue === fieldValue ) {
+					$item.show();
+				}
+			});
 		});
 	};
 

@@ -41,10 +41,11 @@ if ( ! class_exists( 'FooGallery_LazyLoad' ) ) {
 					'id'      => 'lazyload',
 					'title'   => __( 'Lazy Loading', 'foogallery' ),
 					'desc'    => __( 'Lazy loading means images in your gallery are only loaded when they become visible in the browser. This significantly improves page loading times.', 'foogallery' ),
-					'section' => __( 'Advanced', 'foogallery' ),
+					'section' => __( 'Thumbnails', 'foogallery' ),
+					'spacer'  => '<span class="spacer"></span>',
 					'type'    => 'radio',
 					'choices' => array(
-						'yes'  => __( 'Enable Lazy Loading', 'foogallery' ),
+						'yes'  => __( 'Enabled', 'foogallery' ),
 						'no'   => __( 'Disabled', 'foogallery' )
 					)
 				);

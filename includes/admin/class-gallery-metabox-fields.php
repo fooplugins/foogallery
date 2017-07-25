@@ -126,7 +126,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Fields' ) ) {
 							$checked = 'checked="checked"';
 						}
 
-						echo '<input' . $field_class . ' ' . $checked . ' type="checkbox" name="' . FOOGALLERY_META_SETTINGS . '[' . $id . '|' . $value . ']" id="FooGallerySettings_' . $id . $i . '" value="on"> <label for="FooGallerySettings_' . $id . $i . '">' . $label . '</label>';
+						echo '<input' . $field_class . ' ' . $checked . ' type="checkbox" name="' . FOOGALLERY_META_SETTINGS . '[' . $id . '|' . $value . ']" id="FooGallerySettings_' . $id . $i . '" value="on" data-value="' . $value . '"> <label for="FooGallerySettings_' . $id . $i . '">' . $label . '</label>';
 						if ( $i < count( $choices ) - 1 ) {
 							echo '<br />';
 						}
@@ -249,7 +249,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Fields' ) ) {
 
 		function get_thumb_link_field_choices() {
 			return apply_filters( 'foogallery_gallery_template_field_thumb_links', array(
-				'image'  => __( 'Full Size Image', 'foogallery' ),
+				'image'  => __( 'Full Size Image (Lightbox)', 'foogallery' ),
 				'page'   => __( 'Image Attachment Page', 'foogallery' ),
 				'custom' => __( 'Custom URL', 'foogallery' ),
 				'none'   => __( 'Not linked', 'foogallery' ),

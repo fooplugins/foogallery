@@ -278,9 +278,15 @@
 	padding: 10px;
 }
 
-.foogallery_metabox_field-radio > input, .foogallery_metabox_field-radio > label {
+.foogallery_metabox_field-radio > input,
+.foogallery_metabox_field-radio > label {
 	margin-bottom: 10px;
 	display: inline-block;
+}
+
+.foogallery_metabox_field-radio input[type="checkbox"],
+.foogallery_metabox_field-radio input[type="radio"] {
+	margin: 0 0 10px 0;
 }
 
 .foogallery_metabox_field-select select {
@@ -291,8 +297,13 @@
 	margin-top: 10px;
 }
 
-.foogallery_metabox_field-radio input[type="checkbox"],
-.foogallery_metabox_field-radio input[type="radio"] {
+.foogallery_metabox_field-checkboxlist > input,
+.foogallery_metabox_field-checkboxlist > label {
+	margin-bottom: 10px;
+	display: inline-block;
+}
+
+.foogallery_metabox_field-checkboxlist input[type="checkbox"] {
 	margin: 0 0 10px 0;
 }
 
