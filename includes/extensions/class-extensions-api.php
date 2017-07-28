@@ -70,6 +70,9 @@ if ( ! class_exists( 'FooGallery_Extensions_API' ) ) {
 			} else {
 				$extension_url = FOOGALLERY_EXTENSIONS_ENDPOINT;
 			}
+			//make sure we always get the latest version!
+			$extension_url .= '?v=' . wp_generate_password();
+
 			return apply_filters('foogallery_extension_api_endpoint', $extension_url );
 		}
 
@@ -309,6 +312,7 @@ if ( ! class_exists( 'FooGallery_Extensions_API' ) ) {
 		function get_all_for_view() {
 			$all_extensions = $this->get_all();
 			$extensions = array();
+			$active_extensions = array();
 
 			//add all extensions to an array using the slug as the array key
 			foreach ( $all_extensions as $extension ) {
@@ -322,23 +326,21 @@ if ( ! class_exists( 'FooGallery_Extensions_API' ) ) {
 				} else {
 					$extensions[ $extension['slug'] ] = $extension;
 				}
+
+				//build up a list of active extensions
+				if ( $this->is_active( $extension['slug'] ) ) {
+					$active_extensions[$extension['slug']] = $extension;
+				}
 			}
 
 			//loop through all active extensions and remove any other extensions if required based on the 'remove_if_active' property
-			$active_extensions = $this->get_active_extensions();
+			foreach ( $active_extensions as $active_extension_slug => $active_extension ) {
+				//check if we need to remove any other extensions from the list
+				if ( isset( $active_extension['remove_if_active'] ) ) {
 
-			foreach ( $active_extensions as $active_extension => $active_extension_class ) {
-				if ( array_key_exists( $active_extension, $extensions ) ) {
-					$extension = $extensions[$active_extension];
-
-					//check if we need to remove any other extensions from the list
-					if ( isset( $extension['remove_if_active'] ) ) {
-
-						foreach ( $extension['remove_if_active'] as $extension_slug_to_remove ) {
-
-							if ( array_key_exists( $extension_slug_to_remove, $extensions ) ) {
-								unset( $extensions[ $extension_slug_to_remove ] );
-							}
+					foreach ( $active_extension['remove_if_active'] as $extension_slug_to_remove ) {
+						if ( array_key_exists( $extension_slug_to_remove, $extensions ) ) {
+							unset( $extensions[ $extension_slug_to_remove ] );
 						}
 					}
 				}
@@ -442,8 +444,8 @@ if ( ! class_exists( 'FooGallery_Extensions_API' ) ) {
 
 			//if we cannot find the extension class in memory, then check to see if the extension plugin is activated
 			$extension = $this->get_extension( $slug );
-			$plugin = $this->find_wordpress_plugin( $extension );
-			return $plugin && $plugin['active'];
+			$plugin = $this->find_active_wordpress_plugin( $extension );
+			return $plugin;
 		}
 
 		/**
@@ -651,6 +653,25 @@ if ( ! class_exists( 'FooGallery_Extensions_API' ) ) {
 
 		/**
 		 * @TODO
+		 * @param boolean $extension
+		 *
+		 * @return array|bool
+		 */
+		private function find_active_wordpress_plugin( $extension ) {
+			$plugins = get_plugins();
+			foreach ( $plugins as $plugin_file => $plugin ) {
+				if ( is_plugin_active( $plugin_file ) && isset($extension['file']) && foo_ends_with( $plugin_file, $extension['file'] ) ) {
+					return array(
+						'file' => $plugin_file,
+						'plugin' => $plugin
+					);
+				}
+			}
+			return false;
+		}
+
+		/**
+		 * @TODO
 		 * @param $slug
 		 *
 		 * @return array|mixed|void
@@ -732,6 +753,7 @@ if ( ! class_exists( 'FooGallery_Extensions_API' ) ) {
 		 * @return mixed|void
 		 */
 		public function get_active_extensions() {
+			//should we not rather get back all plugins that are active?
 			return get_option( FOOGALLERY_EXTENSIONS_ACTIVATED_OPTIONS_KEY, array() );
 		}
 
