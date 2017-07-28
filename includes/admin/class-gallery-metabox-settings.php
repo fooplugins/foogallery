@@ -157,7 +157,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings' ) ) {
 				'title'   => __( 'Loading Icon', 'foogallery' ),
 				'default' => 'fg-loading-default',
 				'type'    => 'select',
-				'choices' => array(
+				'choices' => apply_filters( 'foogallery_gallery_template_common_thumbnail_fields_loading_animation_choices', array(
 					'fg-loading-default'  => __( 'Default', 'foogallery' ),
 					'fg-loading-ellipsis'  => __( 'Ellipsis', 'foogallery' ),
 					'fg-loading-gears'  => __( 'Gears', 'foogallery' ),
@@ -169,7 +169,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings' ) ) {
 					'fg-loading-squares'  => __( 'Squares', 'foogallery' ),
 					'fg-loading-cube'  => __( 'Cube', 'foogallery' ),
 					''   => __( 'None', 'foogallery' )
-				),
+				)),
 				'desc'	  => __( 'An animated loading icon can be shown while the thumbnails are busy loading.', 'foogallery' ),
 				'section' => __( 'Style', 'foogallery' )
 			);

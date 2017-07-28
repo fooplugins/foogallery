@@ -122,11 +122,11 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Fields' ) ) {
 					foreach ( $choices as $value => $label ) {
 
 						$checked = '';
-						if ( isset($field['value'][$value]) && $field['value'][$value] == 'true' ) {
+						if ( isset($field['value'][$value]) && $field['value'][$value] == $value ) {
 							$checked = 'checked="checked"';
 						}
 
-						echo '<input' . $field_class . ' ' . $checked . ' type="checkbox" name="' . FOOGALLERY_META_SETTINGS . '[' . $id . '|' . $value . ']" id="FooGallerySettings_' . $id . $i . '" value="on" data-value="' . $value . '"> <label for="FooGallerySettings_' . $id . $i . '">' . $label . '</label>';
+						echo '<input' . $field_class . ' ' . $checked . ' type="checkbox" name="' . FOOGALLERY_META_SETTINGS . '[' . $id . '][' . $value . ']" id="FooGallerySettings_' . $id . $i . '" value="' . $value . '" data-value="' . $value . '"> <label for="FooGallerySettings_' . $id . $i . '">' . $label . '</label>';
 						if ( $i < count( $choices ) - 1 ) {
 							echo '<br />';
 						}

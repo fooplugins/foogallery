@@ -190,6 +190,56 @@ if ( ! class_exists( 'FooGallery_Upgrade' ) ) {
 
 
 				array(
+					'id' => 'hover-effect-type',
+					'value' => '', //Icon
+					'new' => array(
+						array ( 'id' => 'caption_theme', 'value' => 'fg-custom' ),
+						array ( 'id' => 'caption_type', 'value' => 'fg-caption-hover' ),
+						array ( 'id' => 'caption_hover_effect', 'value' => 'fg-hover-fade'),
+						array ( 'id' => 'caption_content', 'value' => 'icon')
+					)
+				),
+
+				array(
+					'id' => 'hover-effect-type',
+					'value' => 'hover-effect-tint', //Dark Tint
+					'new' => array(
+						array ( 'id' => 'caption_theme', 'value' => 'fg-custom' ),
+						array ( 'id' => 'caption_type', 'value' => 'fg-caption-hover' ),
+						array ( 'id' => 'caption_hover_effect', 'value' => 'fg-hover-fade')
+					)
+				),
+
+				array(
+					'id' => 'hover-effect-type',
+					'value' => 'hover-effect-color', //Colorize
+					'new' => array(
+						array ( 'id' => 'caption_theme', 'value' => 'fg-custom' ),
+						array ( 'id' => 'caption_type', 'value' => 'fg-caption-hover' )
+					)
+				),
+
+				array(
+					'id' => 'hover-effect-type',
+					'value' => 'hover-effect-none', //None
+					'new' => array(
+						array ( 'id' => 'caption_theme', 'value' => 'fg-custom' ),
+						array ( 'id' => 'caption_type', 'value' => 'fg-caption-hover' )
+					)
+				),
+
+				array(
+					'id' => 'hover-effect-type',
+					'value' => 'hover-effect-caption', //Caption
+					'new' => array(
+						array ( 'id' => 'caption_theme', 'value' => 'fg-custom' ),
+						array ( 'id' => 'caption_type', 'value' => 'fg-caption-hover' )
+					)
+				),
+
+
+
+				array(
 					'id' => 'caption-hover-effect',
 					'value' => 'hover-caption-simple',
 					'new' => array(
@@ -226,50 +276,6 @@ if ( ! class_exists( 'FooGallery_Upgrade' ) ) {
 						array ( 'id' => 'caption_theme', 'value' => 'fg-custom' )
 					)
 				),
-
-				array(
-					'id' => 'hover-effect-type',
-					'value' => '', //Icon
-					'new' => array(
-						array ( 'id' => 'caption_type', 'value' => 'fg-caption-hover' ),
-						array ( 'id' => 'caption_hover_effect', 'value' => 'fg-hover-fade')
-					)
-				),
-
-				array(
-					'id' => 'hover-effect-type',
-					'value' => 'hover-effect-tint', //Dark Tint
-					'new' => array(
-						array ( 'id' => 'caption_type', 'value' => 'fg-caption-hover' ),
-						array ( 'id' => 'caption_hover_effect', 'value' => 'fg-hover-fade')
-					)
-				),
-
-				array(
-					'id' => 'hover-effect-type',
-					'value' => 'hover-effect-color', //Colorize
-					'new' => array(
-						array ( 'id' => 'caption_type', 'value' => 'fg-caption-hover' )
-					)
-				),
-
-				array(
-					'id' => 'hover-effect-type',
-					'value' => 'hover-effect-none', //None
-					'new' => array(
-						array ( 'id' => 'caption_type', 'value' => 'fg-caption-hover' )
-					)
-				),
-
-				array(
-					'id' => 'hover-effect-type',
-					'value' => 'hover-effect-caption', //Caption
-					'new' => array(
-						array ( 'id' => 'caption_type', 'value' => 'fg-caption-hover' )
-					)
-				),
-
-
 			);
 
 			//upgrade all template settings
