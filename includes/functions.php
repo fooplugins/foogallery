@@ -352,22 +352,20 @@ function foogallery_build_class_attribute( $gallery ) {
 	$classes[] = 'foogallery';
 	$classes[] = 'foogallery-container';
 	$classes[] = "fg-{$gallery->gallery_template}";
-    $classes[] = 'fg-light fg-responsive fg-border-thick fg-shadow-large fg-loading-default';
+    //for testing : $classes[] = 'fg-light fg-responsive fg-border-thick fg-shadow-large fg-loading-default';
 
 	//get some default classes from common gallery settings
-	$border_style = $gallery->get_meta( "{$gallery->gallery_template}_border-style", '' );
-	$hover_effect_type = $gallery->get_meta( "{$gallery->gallery_template}_hover-effect-type", '' );
-	$hover_icon = $gallery->get_meta( "{$gallery->gallery_template}_hover-effect", '' );
-	$caption_hover_effect = $gallery->get_meta( "{$gallery->gallery_template}_caption-hover-effect", 'hover-caption-simple' );
-	//$caption_content = $gallery->get_meta( "{$gallery->gallery_template}_caption-content", 'title' );
-	if ( 'hover-effect-caption' === $hover_effect_type || 'hover-effect-none' === $hover_effect_type ) {
-		$hover_icon = '';
-	}
-	$classes[] = $border_style;
-	$classes[] = $hover_effect_type;
-	$classes[] = $hover_icon;
-	$classes[] = $caption_hover_effect;
-	//$classes[] = $caption_content;
+	$classes[] = $gallery->get_meta( "{$gallery->gallery_template}_theme", 'fg-light' );
+	$classes[] = $gallery->get_meta( "{$gallery->gallery_template}_border-size", 'fg-border-thin' );
+	$classes[] = $gallery->get_meta( "{$gallery->gallery_template}_rounded-corners", '' );
+	$classes[] = $gallery->get_meta( "{$gallery->gallery_template}_drop-shadow", 'fg-shadow-inset-outline' );
+	$classes[] = $gallery->get_meta( "{$gallery->gallery_template}_inset-shadow", '' );
+	$classes[] = $gallery->get_meta( "{$gallery->gallery_template}_loading_animation", 'fg-loading-default' );
+
+	$classes[] = $gallery->get_meta( "{$gallery->gallery_template}_caption_theme", 'fg-custom' );
+	$classes[] = $gallery->get_meta( "{$gallery->gallery_template}_caption_type", 'fg-caption-hover' );
+	$classes[] = $gallery->get_meta( "{$gallery->gallery_template}_caption_hover_icon", 'fg-hover-zoom' );
+	$classes[] = $gallery->get_meta( "{$gallery->gallery_template}_caption_hover_effect", 'fg-hover-fade' );
 
 	$num_args = func_num_args();
 
