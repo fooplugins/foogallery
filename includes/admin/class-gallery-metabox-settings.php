@@ -183,23 +183,21 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings' ) ) {
 //                'type'    => 'help'
 //            );
 
-			$caption_theme_choices = apply_filters( 'foogallery_gallery_template_common_thumbnail_fields_caption_theme_choices', array(
-				''  => __( 'None', 'foogallery' ),
-				'fg-custom'  => __( 'Custom', 'foogallery' ),
-				'fg-sadie'   => __( 'Sadie', 'foogallery' ),
-				'fg-layla'   => __( 'Layla', 'foogallery' ),
-				'fg-oscar'   => __( 'Oscar', 'foogallery' ),
-				'fg-sarah'   => __( 'Sarah', 'foogallery' ),
-				'fg-goliath' => __( 'Goliath', 'foogallery' ),
-			) );
-
 			$fields[] = array(
 				'id'      => 'caption_theme',
 				'title'   => __( 'Caption Theme', 'foogallery' ),
 				'section' => __( 'Captions', 'foogallery' ),
 				'default' => 'fg-custom',
 				'type'    => 'radio',
-				'choices' => $caption_theme_choices,
+				'choices' => apply_filters( 'foogallery_gallery_template_common_thumbnail_fields_caption_theme_choices', array(
+					''  => __( 'None', 'foogallery' ),
+					'fg-custom'  => __( 'Custom', 'foogallery' ),
+					'fg-sadie'   => __( 'Sadie', 'foogallery' ),
+					'fg-layla'   => __( 'Layla', 'foogallery' ),
+					'fg-oscar'   => __( 'Oscar', 'foogallery' ),
+					'fg-sarah'   => __( 'Sarah', 'foogallery' ),
+					'fg-goliath' => __( 'Goliath', 'foogallery' ),
+				) ),
 				'spacer'  => '<span class="spacer"></span>',
 				'desc'	  => __( 'The theme that is applied to the captions.', 'foogallery' ),
 				'row_data'=> array(
@@ -207,12 +205,6 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings' ) ) {
 					'data-foogallery-value-selector' => 'input:checked'
 				)
 			);
-
-			$caption_type_choices = apply_filters( 'foogallery_gallery_template_common_thumbnail_fields_caption_type_choices', array(
-				''  => __( 'None', 'foogallery' ),
-				'fg-caption-hover'   => __( 'On Hover', 'foogallery' ),
-				'fg-caption-always' => __( 'Always Visible', 'foogallery' )
-			) );
 
 			$fields[] = array(
 				'id'      => 'caption_type',
@@ -222,14 +214,12 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings' ) ) {
 				'section' => __( 'Captions', 'foogallery' ),
 				'default' => 'fg-caption-hover',
 				'type'    => 'radio',
-				'choices' => $caption_type_choices
+				'choices' => apply_filters( 'foogallery_gallery_template_common_thumbnail_fields_caption_type_choices', array(
+					''  => __( 'None', 'foogallery' ),
+					'fg-caption-hover'   => __( 'On Hover', 'foogallery' ),
+					'fg-caption-always' => __( 'Always Visible', 'foogallery' )
+				) )
 			);
-
-			$caption_content_choices = apply_filters( 'foogallery_gallery_template_common_thumbnail_fields_caption_content_choices', array(
-				'icon' => __( 'Icon', 'foogallery' ),
-				'title'  => __( 'Title', 'foogallery' ),
-				'desc'   => __( 'Description', 'foogallery' )
-			) );
 
 			$fields[] = array(
 				'id'      => 'caption_content',
@@ -238,29 +228,17 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings' ) ) {
 				'section' => __( 'Captions', 'foogallery' ),
 				'default' => 'title',
 				'type'    => 'checkboxlist',
-				'choices' => $caption_content_choices,
+				'choices' => apply_filters( 'foogallery_gallery_template_common_thumbnail_fields_caption_content_choices', array(
+					'icon' => __( 'Icon', 'foogallery' ),
+					'title'  => __( 'Title', 'foogallery' ),
+					'desc'   => __( 'Description', 'foogallery' )
+				) ),
 				'row_data'=> array(
 					'data-foogallery-change-selector' => 'input:checkbox',
 					'data-foogallery-value-selector' => 'input:checked',
 					'data-foogallery-value-attribute' => 'data-value',
 				)
-				//                'row_data'=> array(
-				//                    'data-foogallery-hidden' => true,
-				//                    'data-foogallery-show-when-field' => 'hover-effect-type',
-				//                    'data-foogallery-show-when-field-value' => 'hover-effect-caption'
-				//                )
 			);
-
-			$caption_hover_icon_choices = apply_filters( 'foogallery_gallery_template_common_thumbnail_fields_caption_hover_icon_choices', array(
-				'' => array( 'label' => __( 'None' , 'foogallery' ), 'img' => FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_SHARED_URL . 'img/admin/hover-effect-icon-none.png' ),
-				'fg-hover-zoom' => array( 'label' => __( 'Zoom' , 'foogallery' ), 'img' => FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_SHARED_URL . 'img/admin/hover-effect-icon-zoom.png' ),
-				'fg-hover-zoom2' => array( 'label' => __( 'Zoom 2' , 'foogallery' ), 'img' => FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_SHARED_URL . 'img/admin/hover-effect-icon-zoom2.png' ),
-				'fg-hover-zoom3' => array( 'label' => __( 'Zoom 3' , 'foogallery' ), 'img' => FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_SHARED_URL . 'img/admin/hover-effect-icon-zoom3.png' ),
-				'fg-hover-plus' => array( 'label' => __( 'Plus' , 'foogallery' ), 'img' => FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_SHARED_URL . 'img/admin/hover-effect-icon-plus.png' ),
-				'fg-hover-circle-plus' => array( 'label' => __( 'Cirlce Plus' , 'foogallery' ), 'img' => FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_SHARED_URL . 'img/admin/hover-effect-icon-circle-plus.png' ),
-				'fg-hover-eye' => array( 'label' => __( 'Eye' , 'foogallery' ), 'img' => FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_SHARED_URL . 'img/admin/hover-effect-icon-eye.png' ),
-				'fg-hover-external' => array( 'label' => __( 'External' , 'foogallery' ), 'img' => FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_SHARED_URL . 'img/admin/hover-effect-icon-external.png' )
-			) );
 
 			$fields[] = array(
 				'id'      => 'caption_hover_icon',
@@ -268,8 +246,17 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings' ) ) {
 				'desc'    => __( 'Choose which icon is shown when you hover over a thumbnail', 'foogallery' ),
 				'section' => __( 'Captions', 'foogallery' ),
 				'type'    => 'icon',
-				'default' => 'hover-effect-zoom',
-				'choices' => $caption_hover_icon_choices,
+				'default' => 'fg-hover-zoom',
+				'choices' => apply_filters( 'foogallery_gallery_template_common_thumbnail_fields_caption_hover_icon_choices', array(
+					'' => array( 'label' => __( 'None' , 'foogallery' ), 'img' => FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_SHARED_URL . 'img/admin/hover-effect-icon-none.png' ),
+					'fg-hover-zoom' => array( 'label' => __( 'Zoom' , 'foogallery' ), 'img' => FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_SHARED_URL . 'img/admin/hover-effect-icon-zoom.png' ),
+					'fg-hover-zoom2' => array( 'label' => __( 'Zoom 2' , 'foogallery' ), 'img' => FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_SHARED_URL . 'img/admin/hover-effect-icon-zoom2.png' ),
+					'fg-hover-zoom3' => array( 'label' => __( 'Zoom 3' , 'foogallery' ), 'img' => FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_SHARED_URL . 'img/admin/hover-effect-icon-zoom3.png' ),
+					'fg-hover-plus' => array( 'label' => __( 'Plus' , 'foogallery' ), 'img' => FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_SHARED_URL . 'img/admin/hover-effect-icon-plus.png' ),
+					'fg-hover-circle-plus' => array( 'label' => __( 'Cirlce Plus' , 'foogallery' ), 'img' => FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_SHARED_URL . 'img/admin/hover-effect-icon-circle-plus.png' ),
+					'fg-hover-eye' => array( 'label' => __( 'Eye' , 'foogallery' ), 'img' => FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_SHARED_URL . 'img/admin/hover-effect-icon-eye.png' ),
+					'fg-hover-external' => array( 'label' => __( 'External' , 'foogallery' ), 'img' => FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_SHARED_URL . 'img/admin/hover-effect-icon-external.png' )
+				) ),
 				'row_data'=> array(
 					'data-foogallery-hidden' => true,
 					'data-foogallery-show-when-field' => 'caption_content',
@@ -277,25 +264,23 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings' ) ) {
 				)
 			);
 
-            $caption_hover_effect_choices = apply_filters( 'foogallery_gallery_template_common_thumbnail_fields_caption_hover_effect_choices', array(
-                'fg-hover-fade'  => __( 'Fade', 'foogallery' ),
-                'fg-hover-slide-up'   => __( 'Slide Up', 'foogallery' ),
-                'fg-hover-slide-down' => __( 'Slide Down', 'foogallery' ),
-                'fg-hover-slide-left' => __( 'Slide Left', 'foogallery' ),
-                'fg-hover-slide-right' => __( 'Slide Right', 'foogallery' ),
-                'fg-hover-push' => __( 'Push', 'foogallery' ),
-				'fg-hover-colorize' => __( 'Colorize', 'foogallery' ),
-				'fg-hover-grayscale' => __( 'Greyscale', 'foogallery' ),
-				'fg-hover-scale' => __( 'Scale', 'foogallery' ),
-            ) );
-
             $fields[] = array(
                 'id'      => 'caption_hover_effect',
                 'title'   => __( 'Hover Effect', 'foogallery' ),
                 'section' => __( 'Captions', 'foogallery' ),
                 'default' => 'fg-hover-fade',
                 'type'    => 'select',
-                'choices' => $caption_hover_effect_choices,
+                'choices' => apply_filters( 'foogallery_gallery_template_common_thumbnail_fields_caption_hover_effect_choices', array(
+					'fg-hover-fade'  => __( 'Fade', 'foogallery' ),
+					'fg-hover-slide-up'   => __( 'Slide Up', 'foogallery' ),
+					'fg-hover-slide-down' => __( 'Slide Down', 'foogallery' ),
+					'fg-hover-slide-left' => __( 'Slide Left', 'foogallery' ),
+					'fg-hover-slide-right' => __( 'Slide Right', 'foogallery' ),
+					'fg-hover-push' => __( 'Push', 'foogallery' ),
+					'fg-hover-colorize' => __( 'Colorize', 'foogallery' ),
+					'fg-hover-grayscale' => __( 'Greyscale', 'foogallery' ),
+					'fg-hover-scale' => __( 'Scale', 'foogallery' ),
+				) ),
                 'desc'	  => __( 'Choose what will happen when you hover over a thumbnail', 'foogallery' ),
                 'row_data'=> array(
                     'data-foogallery-change-selector' => 'input:radio',
