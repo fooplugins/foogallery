@@ -18,12 +18,5 @@ $foogallery_default_attributes = foogallery_build_container_attributes_safe( $cu
 ?><div <?php echo $foogallery_default_attributes; ?>>
 	<?php foreach ( $current_foogallery->attachments() as $attachment ) {
         echo foogallery_attachment_html( $attachment, $args, $caption_content );
-//		echo '<div class="foogallery-item">';
-//		echo $attachment->html( $args, true, false );
-//		if ( 'hover-effect-caption' === $hover_effect_type ) {
-//			echo $attachment->html_caption( $caption_content );
-//		}
-//		echo '</a>';
-//		echo '</div>';
 	} ?>
 </div>
