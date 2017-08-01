@@ -3190,26 +3190,6 @@
 		 * @param {(jQuery|HTMLElement|string)} [element] - The jQuery object, HTMLElement or selector of the template element to create. If not supplied the {@link FooGallery~Options#type|type} options' value is used.
 		 * @returns {FooGallery.Template}
 		 */
-		// make: function(options, element){
-		// 	options = _.options(options, element.data("foogallery"));
-		// 	element = _is.jq(element) ? element : $(element);
-		// 	var self = this, names = self.names(true);
-		// 	if (_is.empty(names)) return null;
-		// 	var reg = self.registered;
-		// 	if (element.length > 0){
-		// 		for (var i = 0, l = names.length; i < l; i++) {
-		// 			if (!reg.hasOwnProperty(names[i]) || !_is.fn(reg[names[i]].test)) continue;
-		// 			if (reg[names[i]].test(element, options)) {
-		// 				options.type = names[i];
-		// 				break;
-		// 			}
-		// 		}
-		// 	}
-		// 	if (_is.hash(options[options.type])){
-		// 		options.custom = _obj.extend({}, options[options.type], options.custom);
-		// 	}
-		// 	return self._super(options.type, options, element);
-		// },
 		make: function(options, element){
 			element = _is.jq(element) ? element : $(element);
 			var self = this, type = self.type(options, element);
@@ -3219,8 +3199,8 @@
 		},
 		type: function(options, element){
 			element = _is.jq(element) ? element : $(element);
-			var self = this, type = _is.hash(options) && _is.hash(options) && _is.string(options.type) && self.contains(options.type) ? options.type : "default";
-			if (type === "default" && element.length > 0){
+			var self = this, type = _is.hash(options) && _is.hash(options) && _is.string(options.type) && self.contains(options.type) ? options.type : "core";
+			if (type === "core" && element.length > 0){
 				var reg = self.registered, names = self.names(true);
 				for (var i = 0, l = names.length; i < l; i++) {
 					if (!reg.hasOwnProperty(names[i])) continue;
@@ -3247,12 +3227,12 @@
 		options: function(name, options){
 			options = _is.hash(options) ? options : {};
 			var self = this, reg = self.registered,
-				def = reg["default"].opt,
-				cls = reg["default"].cls,
-				il8n = reg["default"].il8n;
+				def = reg["core"].opt,
+				cls = reg["core"].cls,
+				il8n = reg["core"].il8n;
 
 			options = _.paging.merge(options);
-			if (name !== "default" && self.contains(name)){
+			if (name !== "core" && self.contains(name)){
 				options = _obj.extend({}, def, reg[name].opt, options);
 				options.cls = _obj.extend({}, cls, reg[name].cls, options.cls);
 				options.il8n = _obj.extend({}, il8n, reg[name].il8n, options.il8n);
@@ -3926,9 +3906,9 @@
 		}
 	});
 
-	_.template.register("default", _.Template, {
+	_.template.register("core", _.Template, {
 		id: null,
-		type: "default",
+		type: "core",
 		classes: "",
 		on: {},
 		lazy: true,
@@ -3939,8 +3919,6 @@
 		timeout: 60000,
 		srcset: "data-srcset",
 		src: "data-src",
-		placeholder: _.emptyImage,
-		error: _.emptyImage,
 		template: {}
 	}, {
 		container: "foogallery"
@@ -3949,10 +3927,10 @@
 	}, -100);
 
 	/**
-	 * @summary An object containing all default template options.
+	 * @summary An object containing all the core template options.
 	 * @typedef {object} FooGallery.Template~Options
 	 * @property {?string} [id=null] - The id for the template. This is only required if creating a template without a pre-existing container element that has an `id` attribute.
-	 * @property {string} [type="default"] - The type of template to load. If no container element exists to parse the type from this must be supplied so the correct type of template is loaded.
+	 * @property {string} [type="core"] - The type of template to load. If no container element exists to parse the type from this must be supplied so the correct type of template is loaded.
 	 * @property {string} [classes=""] - A space delimited string of any additional CSS classes to append to the container element of the template.
 	 * @property {object} [on={}] - An object containing any template events to bind to.
 	 * @property {boolean} [lazy=true] - Whether or not to enable lazy loading of images.
@@ -3963,8 +3941,6 @@
 	 * @property {number} [timeout=60000] - The number of milliseconds to wait before forcing a timeout when loading items.
 	 * @property {string} [src="data-src"] - The name of the attribute to retrieve an images src url from.
 	 * @property {string} [srcset="data-srcset"] - The name of the attribute to retrieve an images srcset url from.
-	 * @property {string} [placeholder] - The url to an image to use as a placeholder prior to an image being loaded.
-	 * @property {string} [error] - The url to an image to use in case an item fails to load.
 	 * @property {object} [template={}] - An object containing any additional custom options for the template.
 	 * @property {FooGallery.Template~CSSClasses} [cls] - An object containing all CSS classes for the template.
 	 * @property {FooGallery.Template~CSSSelectors} [sel] - An object containing all CSS selectors for the template.
@@ -3975,19 +3951,19 @@
 	 */
 
 	/**
-	 * @summary An object containing all CSS classes for the default template.
+	 * @summary An object containing all CSS classes for the core template.
 	 * @typedef {object} FooGallery.Template~CSSClasses
 	 * @property {string} [container="foogallery"] - The base CSS class names to apply to the container element.
 	 * @property {FooGallery.Item~CSSClasses} [item] - A simple object containing the CSS classes used by an item.
 	 */
 
 	/**
-	 * @summary An object containing all il8n strings for the default template.
+	 * @summary An object containing all il8n strings for the core template.
 	 * @typedef {object} FooGallery.Template~il8n
 	 */
 
 	/**
-	 * @summary An object containing all CSS selectors for the default template.
+	 * @summary An object containing all CSS selectors for the core template.
 	 * @typedef {object} FooGallery.Template~CSSSelectors
 	 * @property {string} [container=".foogallery"] - The selector for the base CSS class names for the container element.
 	 * @property {FooGallery.Item~CSSSelectors} [item] - An object containing the CSS selectors for an item.
@@ -4323,7 +4299,7 @@
 		},
 	});
 
-	_.template.configure("default", {
+	_.template.configure("core", {
 		state: {
 			enabled: false,
 			pushOrReplace: "replace",
@@ -4500,10 +4476,22 @@
 			self.title = options.title;
 			/**
 			 * @memberof FooGallery.Item#
+			 * @name alt
+			 * @type {string}
+			 */
+			self.alt = options.alt;
+			/**
+			 * @memberof FooGallery.Item#
+			 * @name caption
+			 * @type {string}
+			 */
+			self.caption = _is.empty(options.caption) ? self.title : options.caption;
+			/**
+			 * @memberof FooGallery.Item#
 			 * @name description
 			 * @type {string}
 			 */
-			self.description = options.description;
+			self.description = _is.empty(options.description) ? self.alt : options.description;
 			/**
 			 * @memberof FooGallery.Item#
 			 * @name attrItem
@@ -4659,18 +4647,23 @@
 				self.isLoading = self.$el.is(sel.loading);
 				self.isLoaded = self.$el.is(sel.loaded);
 				self.isError = self.$el.is(sel.error);
-				self.id = self.$el.data("id");
-				self.tags = self.$el.data("tags");
+				self.id = self.$anchor.data("id");
+				self.tags = self.$anchor.data("tags");
 				self.href = self.$anchor.attr("href");
 				self.src = self.$image.attr(o.src);
 				self.srcset = self.$image.attr(o.srcset);
 				self.width = parseInt(self.$image.attr("width"));
 				self.height = parseInt(self.$image.attr("height"));
 				self.title = self.$image.attr("title");
-				self.description = self.$image.attr("alt");
+				self.alt = self.$image.attr("alt");
+				self.caption = self.$anchor.data("title");
+				self.description = self.$anchor.data("description");
+				// if the caption or description are not provided set there values to the title and alt respectively
+				if (_is.empty(self.caption)) self.caption = self.title;
+				if (_is.empty(self.description)) self.description = self.alt;
 				// if the image has no src url then set the placeholder
 				if (_is.empty(self.$image.prop("src"))){
-					self.$image.prop("src", o.placeholder);
+					self.$image.prop("src", self.tmpl.items.placeholder(self.width, self.height));
 				}
 				if (self.isCreated && self.isAttached && !self.isLoading && !self.isLoaded && !self.isError){
 					self.$el.addClass(cls.idle);
@@ -4757,31 +4750,33 @@
 				if (!e.isDefaultPrevented()){
 					var o = self.tmpl.opt, cls = self.cls, attr = self.attr;
 					attr.elem["class"] = cls.elem + " " + cls.idle;
-					attr.elem["data-id"] = self.id;
-					if (!_is.empty(self.tags)){
-						attr.elem["data-tags"] = JSON.stringify(self.tags);
-					}
 
 					attr.inner["class"] = cls.inner;
 
 					attr.anchor["class"] = cls.anchor;
 					attr.anchor["href"] = self.href;
+					attr.anchor["data-id"] = self.id;
+					attr.anchor["data-title"] = self.caption;
+					attr.anchor["data-description"] = self.description;
+					if (!_is.empty(self.tags)){
+						attr.anchor["data-tags"] = JSON.stringify(self.tags);
+					}
 
 					attr.image["class"] = cls.image;
-					attr.image["src"] = o.placeholder;
+					attr.image["src"] = self.tmpl.items.placeholder(self.width, self.height);
 					attr.image[o.src] = self.src;
 					attr.image[o.srcset] = self.srcset;
 					attr.image["width"] = self.width;
 					attr.image["height"] = self.height;
 					attr.image["title"] = self.title;
-					attr.image["alt"] = self.description;
+					attr.image["alt"] = self.alt;
 
 					self.$el = $("<div/>").attr(attr.elem).data(_.dataItem, self);
 					self.$inner = $("<figure/>").attr(attr.inner).appendTo(self.$el);
 					self.$anchor = $("<a/>").attr(attr.anchor).appendTo(self.$inner).on("click.foogallery", {self: self}, self.onAnchorClick);
 					self.$image = $("<img/>").attr(attr.image).appendTo(self.$anchor);
 
-					var hasTitle = !_is.empty(self.title), hasDesc = !_is.empty(self.description);
+					var hasTitle = !_is.empty(self.caption), hasDesc = !_is.empty(self.description);
 					if (hasTitle || hasDesc){
 						cls = self.cls.caption;
 						attr = self.attr.caption;
@@ -4792,7 +4787,7 @@
 						self.$caption = $("<figcaption/>").attr(attr.elem).on("click.foogallery", {self: self}, self.onCaptionClick);
 						var $inner = $("<div/>").attr(attr.inner).appendTo(self.$caption);
 						if (hasTitle){
-							$inner.append($("<div/>").attr(attr.title).html(self.title));
+							$inner.append($("<div/>").attr(attr.title).html(self.caption));
 						}
 						if (hasDesc){
 							$inner.append($("<div/>").attr(attr.description).html(self.description));
@@ -4994,7 +4989,7 @@
 			var e = self.tmpl.raise("load-item", [self]);
 			if (e.isDefaultPrevented()) return _fn.rejectWith("default prevented");
 			return self._load = $.Deferred(function (def) {
-				var cls = self.cls, img = self.$image.get(0);
+				var cls = self.cls, img = self.$image.get(0), placeholder = img.src;
 				self.isLoading = true;
 				self.$el.removeClass(cls.idle).removeClass(cls.loaded).removeClass(cls.error).addClass(cls.loading);
 				// if Firefox reset to empty src or else the onload and onerror callbacks are executed immediately
@@ -5013,8 +5008,8 @@
 					self.isLoading = false;
 					self.isError = true;
 					self.$el.removeClass(cls.loading).addClass(cls.error);
-					if (_is.string(self.tmpl.opt.error)) {
-						self.$image.prop("src", self.tmpl.opt.error);
+					if (_is.string(placeholder)) {
+						self.$image.prop("src", placeholder);
 					}
 					self.tmpl.raise("error-item", [self]);
 					def.reject(self);
@@ -5159,13 +5154,15 @@
 	 * @property {?string} [srcset=null] - The `srcset` attribute for the image element.
 	 * @property {number} [width=0] - The width of the image.
 	 * @property {number} [height=0] - The height of the image.
-	 * @property {?string} [title=null] - The title for the image.
-	 * @property {?string} [description=null] - The description for the image.
+	 * @property {?string} [title=null] - The title for the image. This should be plain text.
+	 * @property {?string} [alt=null] - The alt for the image. This should be plain text.
+	 * @property {?string} [caption=null] - The caption for the image. This can contain HTML content.
+	 * @property {?string} [description=null] - The description for the image. This can contain HTML content.
 	 * @property {string[]} [tags=[]] - The `data-tags` attribute for the outer element.
 	 * @property {?FooGallery.Item~maxWidthCallback} [maxWidth=null] - Called when setting an items' image size. If not supplied the images outer width is used.
 	 * @property {FooGallery.Item~Attributes} [attr] - Additional attributes to apply to the items' elements.
 	 */
-	_.template.configure("default", {
+	_.template.configure("core", {
 		item: {
 			id: "",
 			href: "",
@@ -5174,6 +5171,8 @@
 			width: 0,
 			height: 0,
 			title: "",
+			alt: "",
+			caption: "",
 			description: "",
 			tags: [],
 			maxWidth: null,
@@ -5278,6 +5277,7 @@
 			self._fetched = null;
 			self._arr = [];
 			self._available = [];
+			self._canvas = document.createElement("canvas");
 			// add the .all caption selector
 			var cls = self.tmpl.cls.item.caption;
 			self.tmpl.sel.item.caption.all = _utils.selectify([cls.elem, cls.inner, cls.title, cls.description]);
@@ -5325,7 +5325,7 @@
 				// should we handle a case where the destroyed.length != items.length??
 			}
 			self.idMap = {};
-			self._fetched = null;
+			self._canvas = self._fetched = null;
 			self._arr = [];
 			self._available = [];
 			self._super();
@@ -5379,6 +5379,14 @@
 		},
 		reset: function(){
 			this.setAvailable(this.all());
+		},
+		placeholder: function(width, height){
+			if (this._canvas && this._canvas.toDataURL && _is.number(width) && _is.number(height)){
+				this._canvas.width = width;
+				this._canvas.height = height;
+				return this._canvas.toDataURL();
+			}
+			return _.emptyImage;
 		},
 		/**
 		 * @summary Filter the supplied `items` and return only those that can be loaded.
