@@ -146,6 +146,24 @@ class FooGallery extends stdClass {
 		return $gallery;
 	}
 
+	/**
+	 * Get a setting using the current template and meta key
+	 * @param $key
+	 * @param $default
+	 *
+	 * @return mixed|null
+	 */
+	function get_setting( $key, $default ) {
+		return $this->get_meta( "{$this->gallery_template}_$key", $default );
+	}
+
+	/**
+	 * Get a meta value using a full key
+	 * @param $key
+	 * @param $default
+	 *
+	 * @return mixed|null
+	 */
 	function get_meta( $key, $default ) {
 		if ( ! is_array( $this->settings ) ) {
 			return $default;
