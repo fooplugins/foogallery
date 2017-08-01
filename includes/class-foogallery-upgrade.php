@@ -278,29 +278,33 @@ if ( ! class_exists( 'FooGallery_Upgrade' ) ) {
 				),
 			);
 
-			//upgrade all template settings
-			foreach ( foogallery_gallery_templates() as $template ) {
+			if ( $foogallery->settings ) {
 
-				foreach ( $mappings as $mapping ) {
+				//upgrade all template settings
+				foreach ( foogallery_gallery_templates() as $template ) {
 
-					$settings_key = "{$template['slug']}_{$mapping['id']}";
+					foreach ( $mappings as $mapping ) {
 
-					//check if the settings exists
-					if ( array_key_exists( $settings_key, $foogallery->settings ) ) {
+						$settings_key = "{$template['slug']}_{$mapping['id']}";
 
-						$old_settings_value = $foogallery->settings[$settings_key];
+						//check if the settings exists
+						if ( array_key_exists( $settings_key, $foogallery->settings ) ) {
 
-						if ( $mapping['value'] === $old_settings_value ) {
-							//we have found a match!
+							$old_settings_value = $foogallery->settings[$settings_key];
 
-							foreach ( $mapping['new'] as $setting_to_create ) {
-								$new_setting_key = "{$template['slug']}_{$setting_to_create['id']}";
-								$new_setting_value = $setting_to_create['value'];
-								$foogallery->settings[$new_setting_key] = $new_setting_value;
+							if ( $mapping['value'] === $old_settings_value ) {
+								//we have found a match!
+
+								foreach ( $mapping['new'] as $setting_to_create ) {
+									$new_setting_key                        = "{$template['slug']}_{$setting_to_create['id']}";
+									$new_setting_value                      = $setting_to_create['value'];
+									$foogallery->settings[$new_setting_key] = $new_setting_value;
+								}
 							}
 						}
 					}
 				}
+
 			}
 		}
 	}
