@@ -355,17 +355,18 @@ function foogallery_build_class_attribute( $gallery ) {
     //for testing : $classes[] = 'fg-light fg-responsive fg-border-thick fg-shadow-large fg-loading-default';
 
 	//get some default classes from common gallery settings
-	$classes[] = $gallery->get_meta( "{$gallery->gallery_template}_theme", 'fg-light' );
-	$classes[] = $gallery->get_meta( "{$gallery->gallery_template}_border-size", 'fg-border-thin' );
-	$classes[] = $gallery->get_meta( "{$gallery->gallery_template}_rounded-corners", '' );
-	$classes[] = $gallery->get_meta( "{$gallery->gallery_template}_drop-shadow", 'fg-shadow-inset-outline' );
-	$classes[] = $gallery->get_meta( "{$gallery->gallery_template}_inset-shadow", '' );
-	$classes[] = $gallery->get_meta( "{$gallery->gallery_template}_loading_animation", 'fg-loading-default' );
+	$classes[] = $gallery->get_setting( 'theme', 'fg-light' );
+	$classes[] = $gallery->get_setting( 'border-size', 'fg-border-thin' );
+	$classes[] = $gallery->get_setting( 'rounded-corners', '' );
+	$classes[] = $gallery->get_setting( 'drop-shadow', 'fg-shadow-outline' );
+	$classes[] = $gallery->get_setting( 'inset-shadow', '' );
+	$classes[] = $gallery->get_setting( 'loading_animation', 'fg-loading-default' );
+	$classes[] = $gallery->get_setting( 'hover_effect', '' );
 
-	$classes[] = $gallery->get_meta( "{$gallery->gallery_template}_caption_theme", 'fg-custom' );
-	$classes[] = $gallery->get_meta( "{$gallery->gallery_template}_caption_type", 'fg-caption-hover' );
-	$classes[] = $gallery->get_meta( "{$gallery->gallery_template}_caption_hover_icon", 'fg-hover-zoom' );
-	$classes[] = $gallery->get_meta( "{$gallery->gallery_template}_caption_hover_effect", 'fg-hover-fade' );
+	$classes[] = $gallery->get_setting( 'caption_theme', 'fg-custom' );
+	$classes[] = $gallery->get_setting( 'caption_type', 'fg-caption-hover' );
+	$classes[] = $gallery->get_setting( 'caption_hover_icon', 'fg-hover-zoom' );
+	$classes[] = $gallery->get_setting( 'caption_hover_effect', 'fg-hover-fade' );
 
 	$num_args = func_num_args();
 
