@@ -8,10 +8,10 @@ if ( ! class_exists( 'FooGallery_LazyLoad' ) ) {
 	class FooGallery_LazyLoad {
 
 		function __construct() {
-			if ( is_admin() ) {
-				//add extra fields to the templates that support lazy loading
-				add_filter( 'foogallery_override_gallery_template_fields', array( $this, 'add_lazyload_fields' ), 10, 2 );
-			}
+//			if ( is_admin() ) {
+//				//add extra fields to the templates that support lazy loading
+//				add_filter( 'foogallery_override_gallery_template_fields', array( $this, 'add_lazyload_fields' ), 10, 2 );
+//			}
 
 			//adds the lazyload property to a FooGallery
 			add_action( 'foogallery_foogallery_instance_after_load', array( $this, 'determine_lazyload' ), 10, 2 );
@@ -61,13 +61,14 @@ if ( ! class_exists( 'FooGallery_LazyLoad' ) ) {
 		 * @param $post
 		 */
 		function determine_lazyload( $foogallery, $post ) {
-			$gallery_template = $foogallery->gallery_template;
+			//always enable lazyload by default
+			$lazy_load = true;
 
-			$setting_key = "{$gallery_template}_lazyload";
-
-			if ( 'yes' === $foogallery->get_meta( $setting_key, 'yes' ) ) {
-				$foogallery->lazyload = true;
+			if ( true === foogallery_get_setting( 'disable_lazy_load', false ) ) {
+				$lazy_load = false;
 			}
+
+			$foogallery->lazyload = apply_filters( 'foogallery_lazy_load', $lazy_load, $foogallery );
 		}
 
 		/**
