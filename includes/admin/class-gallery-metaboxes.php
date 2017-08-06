@@ -43,6 +43,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 							'postimagediv',
 							'foogallery_items',
 							'foogallery_settings',
+							'foogallery_preview',
 							'foogallery_help',
 							'foogallery_pages',
 							'foogallery_customcss',
@@ -72,6 +73,15 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 				'foogallery_settings',
 				__( 'Gallery Settings', 'foogallery' ),
 				array( $this, 'render_gallery_settings_metabox' ),
+				FOOGALLERY_CPT_GALLERY,
+				'normal',
+				'high'
+			);
+
+			add_meta_box(
+				'foogallery_preview',
+				__( 'Gallery Preview', 'foogallery' ),
+				array( $this, 'render_gallery_preview_metabox' ),
 				FOOGALLERY_CPT_GALLERY,
 				'normal',
 				'high'
@@ -305,6 +315,12 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
             $settings->render_hidden_gallery_template_selector();
 
             $settings->render_gallery_settings();
+		}
+
+		public function render_gallery_preview_metabox( $post ) {
+			$gallery = $this->get_gallery( $post );
+
+			foogallery_render_gallery( $gallery->ID );
 		}
 
 		public function render_gallery_shortcode_metabox( $post ) {
