@@ -5,11 +5,9 @@ Default settings page used by Foo_Plugin_Base
 global $wp_version, $wp_settings_sections, $wp_settings_fields;
 
 //need to make sure are included correctly
-if ( !isset($this) || !is_subclass_of( $this, 'Foo_Plugin_Base_v2_3' ) ) {
+if ( !isset($this) || !is_subclass_of( $this, 'Foo_Plugin_Base_v2_4' ) ) {
 	throw new Exception("This settings view has not been included correctly!");
 }
-
-$this->admin_create_settings();
 
 $tabs = $this->_settings->get_tabs();
 $plugin_info = $this->get_plugin_info();

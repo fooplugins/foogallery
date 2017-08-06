@@ -7,15 +7,15 @@
  *  we append a version number to the class name. This avoids situations where multiple versions of the same class are loaded into memory and things no longer work as expected.
  *  This situation is extremely difficult to debug, and results in weird errors only when multiple plugins using the base class are activated on a single install
  *
- * Version: 2.3
+ * Version: 2.4
  * Author: Brad Vincent
  * Author URI: http://fooplugins.com
  * License: GPL2
 */
 
-if ( !class_exists( 'Foo_Plugin_Base_v2_3' ) ) {
+if ( !class_exists( 'Foo_Plugin_Base_v2_4' ) ) {
 
-	abstract class Foo_Plugin_Base_v2_3 {
+	abstract class Foo_Plugin_Base_v2_4 {
 
 		/**
 		 * Unique identifier for your plugin.
@@ -46,14 +46,14 @@ if ( !class_exists( 'Foo_Plugin_Base_v2_3' ) ) {
 
 		/* internal class dependencies */
 
-		/** @var Foo_Plugin_Settings_v2_1 */
+		/** @var Foo_Plugin_Settings_v2_2 */
 		protected $_settings = false; //a ref to our settings helper class
 
 		/** @var Foo_Plugin_Options_v2_1 */
 		protected $_options = false; //a ref to our options helper class
 
 		/*
-		 * @return Foo_Plugin_Settings_v2_1
+		 * @return Foo_Plugin_Settings_v2_2
 		 */
 		public function settings() {
 			return $this->_settings;
@@ -121,13 +121,10 @@ if ( !class_exists( 'Foo_Plugin_Base_v2_3' ) ) {
 
 			if ( is_admin() ) {
 				//instantiate our settings class
-				$this->_settings = new Foo_Plugin_Settings_v2_1($this->plugin_slug);
+				$this->_settings = new Foo_Plugin_Settings_v2_2($this->plugin_slug);
 
 				//instantiate our metabox sanity class
 				new Foo_Plugin_Metabox_Sanity_v1($this->plugin_slug);
-
-				// Register any settings for the plugin
-				//add_action( 'admin_init', array($this, 'admin_create_settings') );
 
 				// Add a settings page menu item
 				add_action( 'admin_menu', array($this, 'admin_settings_page_menu') );
@@ -227,13 +224,6 @@ if ( !class_exists( 'Foo_Plugin_Base_v2_3' ) ) {
 			return $h;
 		}
 
-		// register any options/settings we may want to store for this plugin
-		function admin_create_settings() {
-			$settings = apply_filters( $this->plugin_slug . '_admin_settings', false );
-
-			$this->_settings->add_settings( $settings );
-		}
-
 		// enqueue the admin scripts
 		function admin_print_scripts() {
 
@@ -307,6 +297,8 @@ if ( !class_exists( 'Foo_Plugin_Base_v2_3' ) ) {
 		function admin_settings_page_menu() {
 			if ( $this->has_admin_settings_page() ) {
 
+				register_setting( $this->plugin_slug, $this->plugin_slug );
+
 				$page_title = $this->apply_filters( $this->plugin_slug . '_admin_settings_page_title', $this->plugin_title . __( ' Settings', $this->plugin_slug ) );
 				$menu_title = $this->apply_filters( $this->plugin_slug . '_admin_settings_menu_title', $this->plugin_title );
 
@@ -316,6 +308,9 @@ if ( !class_exists( 'Foo_Plugin_Base_v2_3' ) ) {
 
 		// render the setting page
 		function admin_settings_render_page() {
+			$settings = apply_filters( $this->plugin_slug . '_admin_settings', false );
+			$this->_settings->add_settings( $settings );
+
 			$current_directory = trailingslashit(dirname(plugin_dir_path( __FILE__ )));
 
 			//check if a settings.php file exists in the views folder. If so then include it

@@ -74,7 +74,7 @@ if ( ! class_exists( 'FooGallery_Plugin' ) ) {
 	 * @link      https://github.com/fooplugins/foogallery
 	 * @copyright 2013 FooPlugins LLC
 	 */
-	class FooGallery_Plugin extends Foo_Plugin_Base_v2_3 {
+	class FooGallery_Plugin extends Foo_Plugin_Base_v2_4 {
 
 		private static $instance;
 
