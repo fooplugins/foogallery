@@ -35,10 +35,10 @@ if ( ! class_exists( 'FooGallery_Upgrade' ) ) {
 					'value' => 'border-style-square-white',
 					'new' => array(
 						array ( 'id' => 'theme', 'value' => 'fg-light' ),
-						array ( 'id' => 'border-size', 'value' => 'fg-border-thin' ),
-						array ( 'id' => 'drop-shadow', 'value' => 'fg-shadow-small' ),
-						array ( 'id' => 'rounded-corners', 'value' => '' ),
-						array ( 'id' => 'inset-shadow', 'value' => '' ),
+						array ( 'id' => 'border_size', 'value' => 'fg-border-thin' ),
+						array ( 'id' => 'drop_shadow', 'value' => 'fg-shadow-small' ),
+						array ( 'id' => 'rounded_corners', 'value' => '' ),
+						array ( 'id' => 'inner_shadow', 'value' => '' ),
 					)
 				),
 				array(
@@ -46,10 +46,10 @@ if ( ! class_exists( 'FooGallery_Upgrade' ) ) {
 					'value' => 'border-style-circle-white',
 					'new' => array(
 						array ( 'id' => 'theme', 'value' => 'fg-light' ),
-						array ( 'id' => 'border-size', 'value' => 'fg-border-thin' ),
-						array ( 'id' => 'drop-shadow', 'value' => 'fg-shadow-small' ),
-						array ( 'id' => 'rounded-corners', 'value' => 'fg-round-full' ),
-						array ( 'id' => 'inset-shadow', 'value' => '' ),
+						array ( 'id' => 'border_size', 'value' => 'fg-border-thin' ),
+						array ( 'id' => 'drop_shadow', 'value' => 'fg-shadow-small' ),
+						array ( 'id' => 'rounded_corners', 'value' => 'fg-round-full' ),
+						array ( 'id' => 'inner_shadow', 'value' => '' ),
 					)
 				),
 				array(
@@ -57,10 +57,10 @@ if ( ! class_exists( 'FooGallery_Upgrade' ) ) {
 					'value' => 'border-style-square-black',
 					'new' => array(
 						array ( 'id' => 'theme', 'value' => 'fg-dark' ),
-						array ( 'id' => 'border-size', 'value' => 'fg-border-thin' ),
-						array ( 'id' => 'drop-shadow', 'value' => 'fg-shadow-small' ),
-						array ( 'id' => 'rounded-corners', 'value' => '' ),
-						array ( 'id' => 'inset-shadow', 'value' => '' ),
+						array ( 'id' => 'border_size', 'value' => 'fg-border-thin' ),
+						array ( 'id' => 'drop_shadow', 'value' => 'fg-shadow-small' ),
+						array ( 'id' => 'rounded_corners', 'value' => '' ),
+						array ( 'id' => 'inner_shadow', 'value' => '' ),
 					)
 				),
 				array(
@@ -68,10 +68,10 @@ if ( ! class_exists( 'FooGallery_Upgrade' ) ) {
 					'value' => 'border-style-circle-black',
 					'new' => array(
 						array ( 'id' => 'theme', 'value' => 'fg-dark' ),
-						array ( 'id' => 'border-size', 'value' => 'fg-border-thin' ),
-						array ( 'id' => 'drop-shadow', 'value' => 'fg-shadow-small' ),
-						array ( 'id' => 'rounded-corners', 'value' => 'fg-round-full' ),
-						array ( 'id' => 'inset-shadow', 'value' => '' ),
+						array ( 'id' => 'border_size', 'value' => 'fg-border-thin' ),
+						array ( 'id' => 'drop_shadow', 'value' => 'fg-shadow-small' ),
+						array ( 'id' => 'rounded_corners', 'value' => 'fg-round-full' ),
+						array ( 'id' => 'inner_shadow', 'value' => '' ),
 					)
 				),
 				array(
@@ -79,10 +79,10 @@ if ( ! class_exists( 'FooGallery_Upgrade' ) ) {
 					'value' => 'border-style-inset',
 					'new' => array(
 						array ( 'id' => 'theme', 'value' => 'fg-light' ),
-						array ( 'id' => 'border-size', 'value' => '' ),
-						array ( 'id' => 'drop-shadow', 'value' => 'fg-shadow-small' ),
-						array ( 'id' => 'rounded-corners', 'value' => '' ),
-						array ( 'id' => 'inset-shadow', 'value' => 'fg-shadow-inset-large' ),
+						array ( 'id' => 'border_size', 'value' => '' ),
+						array ( 'id' => 'drop_shadow', 'value' => 'fg-shadow-small' ),
+						array ( 'id' => 'rounded_corners', 'value' => '' ),
+						array ( 'id' => 'inner_shadow', 'value' => 'fg-shadow-inset-large' ),
 					)
 				),
 				array(
@@ -90,10 +90,10 @@ if ( ! class_exists( 'FooGallery_Upgrade' ) ) {
 					'value' => 'border-style-rounded',
 					'new' => array(
 						array ( 'id' => 'theme', 'value' => 'fg-light' ),
-						array ( 'id' => 'border-size', 'value' => '' ),
-						array ( 'id' => 'drop-shadow', 'value' => '' ),
-						array ( 'id' => 'rounded-corners', 'value' => 'fg-round-small' ),
-						array ( 'id' => 'inset-shadow', 'value' => '' ),
+						array ( 'id' => 'border_size', 'value' => '' ),
+						array ( 'id' => 'drop_shadow', 'value' => '' ),
+						array ( 'id' => 'rounded_corners', 'value' => 'fg-round-small' ),
+						array ( 'id' => 'inner_shadow', 'value' => '' ),
 					)
 				),
 				array(
@@ -101,10 +101,10 @@ if ( ! class_exists( 'FooGallery_Upgrade' ) ) {
 					'value' => '',
 					'new' => array(
 						array ( 'id' => 'theme', 'value' => 'fg-light' ),
-						array ( 'id' => 'border-size', 'value' => '' ),
-						array ( 'id' => 'drop-shadow', 'value' => '' ),
-						array ( 'id' => 'rounded-corners', 'value' => '' ),
-						array ( 'id' => 'inset-shadow', 'value' => '' ),
+						array ( 'id' => 'border_size', 'value' => '' ),
+						array ( 'id' => 'drop_shadow', 'value' => '' ),
+						array ( 'id' => 'rounded_corners', 'value' => '' ),
+						array ( 'id' => 'inner_shadow', 'value' => '' ),
 					)
 				),
 
@@ -177,14 +177,14 @@ if ( ! class_exists( 'FooGallery_Upgrade' ) ) {
 					'id' => 'loading_animation',
 					'value' => 'yes',
 					'new' => array(
-						array ( 'id' => 'loading_animation', 'value' => 'fg-loading-default' )
+						array ( 'id' => 'loading_icon', 'value' => 'fg-loading-default' )
 					)
 				),
 				array(
 					'id' => 'loading_animation',
 					'value' => 'no',
 					'new' => array(
-						array ( 'id' => 'loading_animation', 'value' => 'fg-loading-none' )
+						array ( 'id' => 'loading_icon', 'value' => 'fg-loading-none' )
 					)
 				),
 
@@ -193,10 +193,11 @@ if ( ! class_exists( 'FooGallery_Upgrade' ) ) {
 					'id' => 'hover-effect-type',
 					'value' => '', //Icon
 					'new' => array(
-						array ( 'id' => 'caption_theme', 'value' => 'fg-custom' ),
-						array ( 'id' => 'caption_type', 'value' => 'fg-caption-hover' ),
-						array ( 'id' => 'caption_hover_effect', 'value' => 'fg-hover-fade'),
-						array ( 'id' => 'caption_content', 'value' => 'icon')
+						array ( 'id' => 'caption_preset', 'value' => 'fg-custom' ),
+						array ( 'id' => 'caption_hover_effect', 'value' => 'fg-caption-always' ),
+						array ( 'id' => 'caption_icon', 'value' => 'fg-hover-zoom' ),
+						array ( 'id' => 'caption_title', 'value' => 'none' ),
+						array ( 'id' => 'caption_desc', 'value' => 'none' )
 					)
 				),
 
@@ -204,9 +205,8 @@ if ( ! class_exists( 'FooGallery_Upgrade' ) ) {
 					'id' => 'hover-effect-type',
 					'value' => 'hover-effect-tint', //Dark Tint
 					'new' => array(
-						array ( 'id' => 'caption_theme', 'value' => 'fg-custom' ),
-						array ( 'id' => 'caption_type', 'value' => 'fg-caption-hover' ),
-						array ( 'id' => 'caption_hover_effect', 'value' => 'fg-hover-fade')
+						array ( 'id' => 'caption_preset', 'value' => '' ),
+						array ( 'id' => 'hover_effect', 'value' => 'fg-hover-tint' )
 					)
 				),
 
@@ -214,8 +214,8 @@ if ( ! class_exists( 'FooGallery_Upgrade' ) ) {
 					'id' => 'hover-effect-type',
 					'value' => 'hover-effect-color', //Colorize
 					'new' => array(
-						array ( 'id' => 'caption_theme', 'value' => 'fg-custom' ),
-						array ( 'id' => 'caption_type', 'value' => 'fg-caption-hover' )
+						array ( 'id' => 'caption_preset', 'value' => '' ),
+						array ( 'id' => 'hover_effect', 'value' => 'fg-hover-colorize' )
 					)
 				),
 
@@ -223,8 +223,7 @@ if ( ! class_exists( 'FooGallery_Upgrade' ) ) {
 					'id' => 'hover-effect-type',
 					'value' => 'hover-effect-none', //None
 					'new' => array(
-						array ( 'id' => 'caption_theme', 'value' => 'fg-custom' ),
-						array ( 'id' => 'caption_type', 'value' => 'fg-caption-hover' )
+						array ( 'id' => 'caption_preset', 'value' => '' )
 					)
 				),
 
@@ -232,48 +231,139 @@ if ( ! class_exists( 'FooGallery_Upgrade' ) ) {
 					'id' => 'hover-effect-type',
 					'value' => 'hover-effect-caption', //Caption
 					'new' => array(
-						array ( 'id' => 'caption_theme', 'value' => 'fg-custom' ),
-						array ( 'id' => 'caption_type', 'value' => 'fg-caption-hover' )
+						array ( 'id' => 'caption_preset', 'value' => 'fg-custom' ),
+						array ( 'id' => 'caption_hover_effect', 'value' => 'fg-caption-hover fg-hover-fade' )
 					)
 				),
 
+				array(
+					'id' => 'hover-effect',
+					'value' => 'hover-effect-zoom',
+					'new' => array(
+						array ( 'id' => 'caption_preset', 'value' => 'fg-custom' ),
+						array ( 'id' => 'caption_hover_effect', 'value' => 'fg-caption-hover fg-hover-fade' ),
+						array ( 'id' => 'caption_icon', 'value' => 'fg-hover-zoom' )
+					)
+				),
 
+				array(
+					'id' => 'hover-effect',
+					'value' => 'hover-effect-zoom2',
+					'new' => array(
+						array ( 'id' => 'caption_preset', 'value' => 'fg-custom' ),
+						array ( 'id' => 'caption_hover_effect', 'value' => 'fg-caption-hover fg-hover-fade' ),
+						array ( 'id' => 'caption_icon', 'value' => 'fg-hover-zoom2' )
+					)
+				),
+
+				array(
+					'id' => 'hover-effect',
+					'value' => 'hover-effect-zoom3',
+					'new' => array(
+						array ( 'id' => 'caption_preset', 'value' => 'fg-custom' ),
+						array ( 'id' => 'caption_hover_effect', 'value' => 'fg-caption-hover fg-hover-fade' ),
+						array ( 'id' => 'caption_icon', 'value' => 'fg-hover-zoom3' )
+					)
+				),
+
+				array(
+					'id' => 'hover-effect',
+					'value' => 'hover-effect-plus',
+					'new' => array(
+						array ( 'id' => 'caption_preset', 'value' => 'fg-custom' ),
+						array ( 'id' => 'caption_hover_effect', 'value' => 'fg-caption-hover fg-hover-fade' ),
+						array ( 'id' => 'caption_icon', 'value' => 'fg-hover-plus' )
+					)
+				),
+
+				array(
+					'id' => 'hover-effect',
+					'value' => 'hover-effect-circle-plus',
+					'new' => array(
+						array ( 'id' => 'caption_preset', 'value' => 'fg-custom' ),
+						array ( 'id' => 'caption_hover_effect', 'value' => 'fg-caption-hover fg-hover-fade' ),
+						array ( 'id' => 'caption_icon', 'value' => 'fg-hover-circle-plus' )
+					)
+				),
+
+				array(
+					'id' => 'hover-effect',
+					'value' => 'hover-effect-eye',
+					'new' => array(
+						array ( 'id' => 'caption_preset', 'value' => 'fg-custom' ),
+						array ( 'id' => 'caption_hover_effect', 'value' => 'fg-caption-hover fg-hover-fade' ),
+						array ( 'id' => 'caption_icon', 'value' => 'fg-hover-eye' )
+					)
+				),
 
 				array(
 					'id' => 'caption-hover-effect',
 					'value' => 'hover-caption-simple',
 					'new' => array(
-						array ( 'id' => 'caption_theme', 'value' => 'fg-custom' ),
-						array ( 'id' => 'caption_type', 'value' => 'fg-caption-hover' )
+						array ( 'id' => 'caption_preset', 'value' => 'fg-custom' ),
+						array ( 'id' => 'caption_hover_effect', 'value' => 'fg-caption-hover fg-hover-slide-up' ),
+						array ( 'id' => 'caption_icon', 'value' => '' )
 					)
 				),
 				array(
 					'id' => 'caption-hover-effect',
 					'value' => 'hover-caption-full-drop',
 					'new' => array(
-						array ( 'id' => 'caption_theme', 'value' => 'fg-custom' ),
-						array ( 'id' => 'caption_hover_effect', 'value' => 'fg-hover-slide-down')
+						array ( 'id' => 'caption_preset', 'value' => 'fg-custom' ),
+						array ( 'id' => 'caption_hover_effect', 'value' => 'fg-caption-hover fg-hover-slide-down' ),
+						array ( 'id' => 'caption_icon', 'value' => '' )
 					)
 				),
 				array(
 					'id' => 'caption-hover-effect',
 					'value' => 'hover-caption-full-fade',
 					'new' => array(
-						array ( 'id' => 'caption_theme', 'value' => 'fg-custom' )
+						array ( 'id' => 'caption_preset', 'value' => 'fg-custom' ),
+						array ( 'id' => 'caption_hover_effect', 'value' => 'fg-caption-hover fg-hover-fade' ),
+						array ( 'id' => 'caption_icon', 'value' => '' )
 					)
 				),
 				array(
 					'id' => 'caption-hover-effect',
 					'value' => 'hover-caption-push',
 					'new' => array(
-						array ( 'id' => 'caption_theme', 'value' => 'fg-custom' )
+						array ( 'id' => 'caption_preset', 'value' => 'fg-custom' ),
+						array ( 'id' => 'caption_hover_effect', 'value' => 'fg-caption-hover fg-hover-push' ),
+						array ( 'id' => 'caption_icon', 'value' => '' )
 					)
 				),
 				array(
 					'id' => 'caption-hover-effect',
 					'value' => 'hover-caption-simple-always',
 					'new' => array(
-						array ( 'id' => 'caption_theme', 'value' => 'fg-custom' )
+						array ( 'id' => 'caption_preset', 'value' => 'fg-custom' ),
+						array ( 'id' => 'caption_hover_effect', 'value' => 'fg-caption-always' ),
+						array ( 'id' => 'caption_icon', 'value' => '' )
+					)
+				),
+
+				array(
+					'id' => 'caption-content',
+					'value' => 'title',
+					'new' => array(
+						array ( 'id' => 'caption_title', 'value' => '' ),
+						array ( 'id' => 'caption_desc', 'value' => 'none' )
+					)
+				),
+				array(
+					'id' => 'caption-content',
+					'value' => 'desc',
+					'new' => array(
+						array ( 'id' => 'caption_title', 'value' => 'none' ),
+						array ( 'id' => 'caption_desc', 'value' => '' )
+					)
+				),
+				array(
+					'id' => 'caption-content',
+					'value' => 'both',
+					'new' => array(
+						array ( 'id' => 'caption_title', 'value' => '' ),
+						array ( 'id' => 'caption_desc', 'value' => '' )
 					)
 				),
 			);

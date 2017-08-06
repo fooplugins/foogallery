@@ -349,6 +349,7 @@ function foogallery_gallery_shortcode_regex() {
  * @return string the classname based on the gallery and any extra attributes
  */
 function foogallery_build_class_attribute( $gallery ) {
+
 	$classes[] = 'foogallery';
 	$classes[] = 'foogallery-container';
 	$classes[] = "fg-{$gallery->gallery_template}";
@@ -356,17 +357,24 @@ function foogallery_build_class_attribute( $gallery ) {
 
 	//get some default classes from common gallery settings
 	$classes[] = $gallery->get_setting( 'theme', 'fg-light' );
-	$classes[] = $gallery->get_setting( 'border-size', 'fg-border-thin' );
-	$classes[] = $gallery->get_setting( 'rounded-corners', '' );
-	$classes[] = $gallery->get_setting( 'drop-shadow', 'fg-shadow-outline' );
-	$classes[] = $gallery->get_setting( 'inset-shadow', '' );
-	$classes[] = $gallery->get_setting( 'loading_animation', 'fg-loading-default' );
-	$classes[] = $gallery->get_setting( 'hover_effect', '' );
+	$classes[] = $gallery->get_setting( 'border_size', 'fg-border-thin' );
+	$classes[] = $gallery->get_setting( 'rounded_corners', '' );
+	$classes[] = $gallery->get_setting( 'drop_shadow', 'fg-shadow-outline' );
+	$classes[] = $gallery->get_setting( 'inner_shadow', '' );
+	$classes[] = $gallery->get_setting( 'loading_icon', 'fg-loading-default' );
 
-	$classes[] = $gallery->get_setting( 'caption_theme', 'fg-custom' );
-	$classes[] = $gallery->get_setting( 'caption_type', 'fg-caption-hover' );
-	$classes[] = $gallery->get_setting( 'caption_hover_icon', 'fg-hover-zoom' );
-	$classes[] = $gallery->get_setting( 'caption_hover_effect', 'fg-hover-fade' );
+	$caption_preset = $gallery->get_setting( 'hover_effect_preset', 'fg-custom' );
+
+	$classes[] = $caption_preset;
+
+	//only set these caption classes if custom preset is selected
+	if ( 'fg-custom' === $caption_preset ) {
+		$classes[] = $gallery->get_setting( 'hover_effect_color' , '' );
+		$classes[] = $gallery->get_setting( 'hover_effect_scale' , '' );
+		$classes[] = $gallery->get_setting( 'hover_effect_caption_visibility', 'fg-caption-hover' );
+		$classes[] = $gallery->get_setting( 'hover_effect_transition', 'fg-hover-fade' );
+		$classes[] = $gallery->get_setting( 'hover_effect_icon', 'fg-hover-zoom' );
+	}
 
 	$num_args = func_num_args();
 

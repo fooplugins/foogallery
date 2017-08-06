@@ -21,7 +21,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings' ) ) {
             //set default settings tab icons
             add_filter( 'foogallery_gallery_settings_metabox_section_icon', array( $this, 'add_section_icons') );
 
-            add_filter( 'foogallery_gallery_template_common_thumbnail_fields', array( $this, 'add_gallery_template_common_thumbnail_fields' ) );
+            add_filter( 'foogallery_gallery_template_common_thumbnail_fields', array( $this, 'add_gallery_template_common_thumbnail_fields' ), 8 );
         }
 
         /***
@@ -35,9 +35,16 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings' ) ) {
                 if ( is_object( $screen ) && FOOGALLERY_CPT_GALLERY == $screen->post_type ){
 
                     // Register, enqueue scripts and styles here
-                    wp_enqueue_script( 'foogallery-admin-settings', FOOGALLERY_URL . '/js/foogallery.admin.min.js', FOOGALLERY_VERSION, 'jquery' );
+                    wp_enqueue_script( 'foogallery-admin-settings', FOOGALLERY_URL . '/js/foogallery.admin.min.js', array('jquery'), FOOGALLERY_VERSION );
 
-                    wp_enqueue_style( 'foogallery-admin-settings', FOOGALLERY_URL . '/css/foogallery.admin.min.css', FOOGALLERY_VERSION );
+                    wp_enqueue_style( 'foogallery-admin-settings', FOOGALLERY_URL . '/css/foogallery.admin.min.css', array(), FOOGALLERY_VERSION );
+
+					foogallery_enqueue_core_gallery_template_style();
+
+					foogallery_enqueue_core_gallery_template_script();
+
+					wp_enqueue_style( 'foogallery-core-admin-settings', FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_SHARED_URL  . 'css/admin-foogallery.css', array(), FOOGALLERY_VERSION );
+
                 }
             }
         }
@@ -50,16 +57,15 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings' ) ) {
         function add_section_icons( $section_slug ) {
             switch ( $section_slug ) {
                 case 'general':
-                    return 'dashicons-admin-tools';
-                    break;
+                    return 'dashicons-format-image';
                 case 'advanced':
                     return 'dashicons-admin-generic';
-                    break;
-                case 'look &amp; feel':
-                    return 'dashicons-images-alt2';
-                    break;
+                case 'appearance':
+                    return 'dashicons-admin-appearance';
                 case 'video':
                     return 'dashicons-format-video';
+				case 'hover effects':
+					return 'dashicons-admin-tools';
             }
             return 'dashicons-admin-tools';
         }
@@ -71,12 +77,12 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings' ) ) {
          */
         function add_gallery_template_common_thumbnail_fields( $fields ) {
 
-			//region Style Fields
+			//region Appearance Fields
 			$fields[] = array(
 				'id'      => 'theme',
 				'title'   => __( 'Theme', 'foogallery' ),
 				'desc'    => __( 'The overall appearance of the items in the gallery, affecting the border, background, font and shadow colors.', 'foogallery' ),
-				'section' => __( 'Style', 'foogallery' ),
+				'section' => __( 'Appearance', 'foogallery' ),
 				'type'    => 'radio',
 				'default' => 'fg-light',
 				'spacer'  => '<span class="spacer"></span>',
@@ -87,10 +93,10 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings' ) ) {
 			);
 
 			$fields[] = array(
-				'id'      => 'border-size',
+				'id'      => 'border_size',
 				'title'   => __( 'Border Size', 'foogallery' ),
 				'desc'    => __( 'The border size applied to each thumbnail', 'foogallery' ),
-				'section' => __( 'Style', 'foogallery' ),
+				'section' => __( 'Appearance', 'foogallery' ),
 				'type'    => 'radio',
 				'spacer'  => '<span class="spacer"></span>',
 				'default' => 'fg-border-thin',
@@ -103,10 +109,10 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings' ) ) {
 			);
 
 			$fields[] = array(
-				'id'      => 'rounded-corners',
+				'id'      => 'rounded_corners',
 				'title'   => __( 'Rounded Corners', 'foogallery' ),
 				'desc'    => __( 'The border radius, or rounded corners applied to each thumbnail', 'foogallery' ),
-				'section' => __( 'Style', 'foogallery' ),
+				'section' => __( 'Appearance', 'foogallery' ),
 				'type'    => 'radio',
 				'spacer'  => '<span class="spacer"></span>',
 				'default' => '',
@@ -120,10 +126,10 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings' ) ) {
 			);
 
 			$fields[] = array(
-				'id'      => 'drop-shadow',
+				'id'      => 'drop_shadow',
 				'title'   => __( 'Drop Shadow', 'foogallery' ),
 				'desc'    => __( 'The outer or drop shadow applied to each thumbnail', 'foogallery' ),
-				'section' => __( 'Style', 'foogallery' ),
+				'section' => __( 'Appearance', 'foogallery' ),
 				'type'    => 'radio',
 				'spacer'  => '<span class="spacer"></span>',
 				'default' => 'fg-shadow-outline',
@@ -137,10 +143,10 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings' ) ) {
 			);
 
 			$fields[] = array(
-				'id'      => 'inset-shadow',
+				'id'      => 'inner_shadow',
 				'title'   => __( 'Inner Shadow', 'foogallery' ),
 				'desc'    => __( 'The inner shadow applied to each thumbnail', 'foogallery' ),
-				'section' => __( 'Style', 'foogallery' ),
+				'section' => __( 'Appearance', 'foogallery' ),
 				'type'    => 'radio',
 				'spacer'  => '<span class="spacer"></span>',
 				'default' => '',
@@ -153,54 +159,41 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings' ) ) {
 			);
 
 			$fields[] = array(
-				'id'      => 'loading_animation',
+				'id'      => 'loading_icon',
 				'title'   => __( 'Loading Icon', 'foogallery' ),
-				'default' => 'fg-loading-default',
-				'type'    => 'select',
-				'choices' => apply_filters( 'foogallery_gallery_template_common_thumbnail_fields_loading_animation_choices', array(
-					'fg-loading-default'  => __( 'Default', 'foogallery' ),
-					'fg-loading-ellipsis'  => __( 'Ellipsis', 'foogallery' ),
-					'fg-loading-gears'  => __( 'Gears', 'foogallery' ),
-					'fg-loading-hourglass'  => __( 'Hourglass', 'foogallery' ),
-					'fg-loading-reload'  => __( 'Reload', 'foogallery' ),
-					'fg-loading-ripple'  => __( 'Ripple', 'foogallery' ),
-					'fg-loading-bars'  => __( 'Bars', 'foogallery' ),
-					'fg-loading-spin'  => __( 'Spin', 'foogallery' ),
-					'fg-loading-squares'  => __( 'Squares', 'foogallery' ),
-					'fg-loading-cube'  => __( 'Cube', 'foogallery' ),
-					''   => __( 'None', 'foogallery' )
-				)),
 				'desc'	  => __( 'An animated loading icon can be shown while the thumbnails are busy loading.', 'foogallery' ),
-				'section' => __( 'Style', 'foogallery' )
-			);
-
-			$fields[] = array(
-				'id'      => 'hover_effect',
-				'title'   => __( 'Hover Effect', 'foogallery' ),
-				'section' => __( 'Style', 'foogallery' ),
-				'default' => 'fg-hover-fade',
-				'type'    => 'checkboxlist',
-				'choices' => apply_filters( 'foogallery_gallery_template_common_thumbnail_fields_hover_effect_choices', array(
-					'fg-hover-colorize' => __( 'Colorize', 'foogallery' ),
-					'fg-hover-grayscale' => __( 'Greyscale', 'foogallery' ),
-					'fg-hover-scale' => __( 'Scale', 'foogallery' ),
-				) ),
-				'desc'	  => __( 'Choose an effect to apply when you hover over a thumbnail', 'foogallery' )
+				'section' => __( 'Appearance', 'foogallery' ),
+				'default' => 'fg-loading-default',
+				'type'    => 'htmlicon',
+				'choices' => apply_filters( 'foogallery_gallery_template_common_thumbnail_fields_loading_icon_choices', array(
+					''                     => array( 'label' => __( 'None', 'foogallery' ), 'html' => '<div class="foogallery-setting-loading_icon"></div>' ),
+					'fg-loading-default'   => array( 'label' => __( 'Default', 'foogallery' ), 'html' => '<div class="foogallery-setting-loading_icon fg-loading-default"></div>' ),
+					'fg-loading-ellipsis'  => array( 'label' => __( 'Ellipsis', 'foogallery' ), 'html' => '<div class="foogallery-setting-loading_icon fg-loading-ellipsis"></div>' ),
+					'fg-loading-gears'     => array( 'label' => __( 'Gears', 'foogallery' ), 'html' => '<div class="foogallery-setting-loading_icon fg-loading-gears"></div>' ),
+					'fg-loading-hourglass' => array( 'label' => __( 'Hourglass', 'foogallery' ), 'html' => '<div class="foogallery-setting-loading_icon fg-loading-hourglass"></div>' ),
+					'fg-loading-reload'    => array( 'label' => __( 'Reload', 'foogallery' ), 'html' => '<div class="foogallery-setting-loading_icon fg-loading-reload"></div>' ),
+					'fg-loading-ripple'    => array( 'label' => __( 'Ripple', 'foogallery' ), 'html' => '<div class="foogallery-setting-loading_icon fg-loading-ripple"></div>' ),
+					'fg-loading-bars'      => array( 'label' => __( 'Bars', 'foogallery' ), 'html' => '<div class="foogallery-setting-loading_icon fg-loading-bars"></div>' ),
+					'fg-loading-spin'      => array( 'label' => __( 'Spin', 'foogallery' ), 'html' => '<div class="foogallery-setting-loading_icon fg-loading-spin"></div>' ),
+					'fg-loading-squares'   => array( 'label' => __( 'Squares', 'foogallery' ), 'html' => '<div class="foogallery-setting-loading_icon fg-loading-squares"></div>' ),
+					'fg-loading-cube'      => array( 'label' => __( 'Cube', 'foogallery' ), 'html' => '<div class="foogallery-setting-loading_icon fg-loading-cube"></div>' ),
+				)),
 			);
 			//endregion
 
-//            $fields[] = array(
-//                'id'      => 'hover-effect-help',
-//                'title'   => __( 'Hover Effect Help', 'foogallery' ),
-//                'desc'    => __( 'Captions can be enabled by choosing the "Caption" hover effect below.', 'foogallery' ),
-//                'section' => __( 'Look &amp; Feel', 'foogallery' ),
-//                'type'    => 'help'
-//            );
+			//region Hover Effects Fields
+			$fields[] = array(
+				'id'      => 'hover_effect_help',
+				'title'   => __( 'Hover Effect Help', 'foogallery' ),
+				'desc'    => __( 'A preset provides a stylish and pre-defined look &amp; feel for when you hover over the thumbnails.', 'foogallery' ),
+				'section' => __( 'Hover Effects', 'foogallery' ),
+				'type'    => 'help'
+			);
 
 			$fields[] = array(
-				'id'      => 'caption_theme',
-				'title'   => __( 'Caption Preset', 'foogallery' ),
-				'section' => __( 'Captions', 'foogallery' ),
+				'id'      => 'hover_effect_preset',
+				'title'   => __( 'Preset', 'foogallery' ),
+				'section' => __( 'Hover Effects', 'foogallery' ),
 				'default' => 'fg-custom',
 				'type'    => 'radio',
 				'choices' => apply_filters( 'foogallery_gallery_template_common_thumbnail_fields_caption_theme_choices', array(
@@ -210,146 +203,168 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings' ) ) {
 					'fg-oscar'   => __( 'Oscar', 'foogallery' ),
 					'fg-sarah'   => __( 'Sarah', 'foogallery' ),
 					'fg-goliath' => __( 'Goliath', 'foogallery' ),
+					'fg-custom'  => __( 'Custom', 'foogallery' ),
 				) ),
 				'spacer'  => '<span class="spacer"></span>',
-				'desc'	  => __( 'The preset that is applied to the captions. If you want to define your own custom captions, then choose None.', 'foogallery' ),
+				'desc'	  => __( 'A preset styling that is used for the captions. If you want to define your own custom captions, then choose Custom.', 'foogallery' ),
 				'row_data'=> array(
 					'data-foogallery-change-selector' => 'input:radio',
 					'data-foogallery-value-selector' => 'input:checked'
 				)
 			);
 
-//			$fields[] = array(
-//				'id'      => 'caption_type',
-//				'title'   => __( 'Caption Mode', 'foogallery' ),
-//				'desc'    => __( 'Choose when your captions will be shown.', 'foogallery' ),
-//				'spacer'  => '<span class="spacer"></span>',
-//				'section' => __( 'Captions', 'foogallery' ),
-//				'default' => 'fg-caption-hover',
-//				'type'    => 'radio',
-//				'choices' => apply_filters( 'foogallery_gallery_template_common_thumbnail_fields_caption_type_choices', array(
-//					''  => __( 'No Captions', 'foogallery' ),
-//					'fg-caption-hover'   => __( 'Show On Hover', 'foogallery' ),
-//					'fg-caption-always' => __( 'Always Visible', 'foogallery' )
-//				) )
-//			);
-
 			$fields[] = array(
-				'id'      => 'caption_hover_effect',
-				'title'   => __( 'Caption Mode', 'foogallery' ),
-				'section' => __( 'Captions', 'foogallery' ),
-				'default' => 'fg-caption-hover fg-hover-fade',
+				'id'      => 'hover_effect_color',
+				'title'   => __( 'Color Effect', 'foogallery' ),
+				'section' => __( 'Hover Effects', 'foogallery' ),
+				'default' => '',
+				'spacer'  => '<span class="spacer"></span>',
 				'type'    => 'radio',
-				'choices' => apply_filters( 'foogallery_gallery_template_common_thumbnail_fields_caption_hover_effect_choices', array(
-					'fg-caption-always' => __( 'Always Visible', 'foogallery' ),
-					'fg-caption-hover'  => __( 'Instant', 'foogallery' ),
-					'fg-caption-hover fg-hover-fade'  => __( 'Fade', 'foogallery' ),
-					'fg-caption-hover fg-hover-slide-up'   => __( 'Slide Up', 'foogallery' ),
-					'fg-caption-hover fg-hover-slide-down' => __( 'Slide Down', 'foogallery' ),
-					'fg-caption-hover fg-hover-slide-left' => __( 'Slide Left', 'foogallery' ),
-					'fg-caption-hover fg-hover-slide-right' => __( 'Slide Right', 'foogallery' ),
-					'fg-caption-hover fg-hover-push' => __( 'Push', 'foogallery' )
+				'choices' => apply_filters( 'foogallery_gallery_template_common_thumbnail_fields_hover_effect_choices', array(
+					'' => __( 'None', 'foogallery' ),
+					'fg-hover-colorize' => __( 'Colorize', 'foogallery' ),
+					'fg-hover-grayscale' => __( 'Greyscale', 'foogallery' ),
 				) ),
-				'desc'	  => __( 'Choose what will happen when you hover over a thumbnail', 'foogallery' ),
+				'desc'	  => __( 'Choose an color effect that is applied when you hover over a thumbnail.', 'foogallery' ),
 				'row_data'=> array(
 					'data-foogallery-hidden' => true,
-					'data-foogallery-show-when-field' => 'caption_theme',
-					'data-foogallery-show-when-field-value' => ''
+					'data-foogallery-show-when-field' => 'hover_effect_preset',
+					'data-foogallery-show-when-field-value' => 'fg-custom'
 				)
 			);
 
 			$fields[] = array(
-				'id'      => 'caption_hover_icon',
-				'title'   => __( 'Caption Icon', 'foogallery' ),
-				'desc'    => __( 'Choose which icon is shown when you hover over a thumbnail', 'foogallery' ),
-				'section' => __( 'Captions', 'foogallery' ),
-				'type'    => 'icon',
-				'default' => 'fg-hover-zoom',
-				'choices' => apply_filters( 'foogallery_gallery_template_common_thumbnail_fields_caption_hover_icon_choices', array(
-					'fg-hover-zoom' => array( 'label' => __( 'Zoom' , 'foogallery' ), 'img' => FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_SHARED_URL . 'img/admin/hover-effect-icon-zoom.png' ),
-					'fg-hover-zoom2' => array( 'label' => __( 'Zoom 2' , 'foogallery' ), 'img' => FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_SHARED_URL . 'img/admin/hover-effect-icon-zoom2.png' ),
-					'fg-hover-zoom3' => array( 'label' => __( 'Zoom 3' , 'foogallery' ), 'img' => FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_SHARED_URL . 'img/admin/hover-effect-icon-zoom3.png' ),
-					'fg-hover-plus' => array( 'label' => __( 'Plus' , 'foogallery' ), 'img' => FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_SHARED_URL . 'img/admin/hover-effect-icon-plus.png' ),
-					'fg-hover-circle-plus' => array( 'label' => __( 'Cirlce Plus' , 'foogallery' ), 'img' => FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_SHARED_URL . 'img/admin/hover-effect-icon-circle-plus.png' ),
-					'fg-hover-eye' => array( 'label' => __( 'Eye' , 'foogallery' ), 'img' => FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_SHARED_URL . 'img/admin/hover-effect-icon-eye.png' ),
-					'fg-hover-external' => array( 'label' => __( 'External' , 'foogallery' ), 'img' => FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_SHARED_URL . 'img/admin/hover-effect-icon-external.png' ),
-					'' => array( 'label' => __( 'None' , 'foogallery' ), 'img' => FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_SHARED_URL . 'img/admin/hover-effect-icon-none.png' ),
+				'id'      => 'hover_effect_scale',
+				'title'   => __( 'Scaling Effect', 'foogallery' ),
+				'section' => __( 'Hover Effects', 'foogallery' ),
+				'default' => '',
+				'spacer'  => '<span class="spacer"></span>',
+				'type'    => 'radio',
+				'choices' => apply_filters( 'foogallery_gallery_template_common_thumbnail_fields_hover_effect_choices', array(
+					'' => __( 'None', 'foogallery' ),
+					'fg-hover-scale' => __( 'Scaled', 'foogallery' ),
 				) ),
+				'desc'	  => __( 'Apply a slight scaling effect when hovering over a thumbnail.', 'foogallery' ),
 				'row_data'=> array(
 					'data-foogallery-hidden' => true,
-					'data-foogallery-show-when-field' => 'caption_theme',
-					'data-foogallery-show-when-field-value' => ''
+					'data-foogallery-show-when-field' => 'hover_effect_preset',
+					'data-foogallery-show-when-field-value' => 'fg-custom'
 				)
 			);
 
-//			$fields[] = array(
-//				'id'      => 'caption_content',
-//				'title'   => __( 'Caption Content', 'foogallery' ),
-//				'desc'    => __( 'Choose what is used for your caption content', 'foogallery' ),
-//				'section' => __( 'Captions', 'foogallery' ),
-//				'default' => 'title',
-//				'type'    => 'checkboxlist',
-//				'choices' => apply_filters( 'foogallery_gallery_template_common_thumbnail_fields_caption_content_choices', array(
-//					'icon' => __( 'Icon', 'foogallery' ),
-//					'title'  => __( 'Title', 'foogallery' ),
-//					'desc'   => __( 'Description', 'foogallery' )
-//				) ),
-//				'row_data'=> array(
-//					'data-foogallery-change-selector' => 'input:checkbox',
-//					'data-foogallery-value-selector' => 'input:checked',
-//					'data-foogallery-value-attribute' => 'data-value',
-//				)
-//			);
+			$fields[] = array(
+				'id'      => 'hover_effect_caption_visibility',
+				'title'   => __( 'Caption Visibility', 'foogallery' ),
+				'section' => __( 'Hover Effects', 'foogallery' ),
+				'default' => 'fg-caption-hover',
+				'spacer'  => '<span class="spacer"></span>',
+				'type'    => 'radio',
+				'choices' => apply_filters( 'foogallery_gallery_template_common_thumbnail_fields_hover_effect_choices', array(
+					'' => __( 'None', 'foogallery' ),
+					'fg-caption-hover' => __( 'On Hover', 'foogallery' ),
+					'fg-caption-always' => __( 'Always Visible', 'foogallery' ),
+				) ),
+				'desc'	  => __( 'Choose how the captions will be displayed.', 'foogallery' ),
+				'row_data'=> array(
+					'data-foogallery-hidden' => true,
+					'data-foogallery-show-when-field' => 'hover_effect_preset',
+					'data-foogallery-show-when-field-value' => 'fg-custom'
+				)
+			);
 
+			$fields[] = array(
+				'id'      => 'hover_effect_transition',
+				'title'   => __( 'Transition', 'foogallery' ),
+				'section' => __( 'Hover Effects', 'foogallery' ),
+				'default' => 'fg-hover-fade',
+				'type'    => 'select',
+				'choices' => apply_filters( 'foogallery_gallery_template_common_thumbnail_fields_caption_hover_effect_choices', array(
+					'fg-hover-instant'  => __( 'Instant', 'foogallery' ),
+					'fg-hover-fade'  => __( 'Fade', 'foogallery' ),
+					'fg-hover-slide-up'   => __( 'Slide Up', 'foogallery' ),
+					'fg-hover-slide-down' => __( 'Slide Down', 'foogallery' ),
+					'fg-hover-slide-left' => __( 'Slide Left', 'foogallery' ),
+					'fg-hover-slide-right' => __( 'Slide Right', 'foogallery' ),
+					'fg-hover-push' => __( 'Push', 'foogallery' )
+				) ),
+				'desc'	  => __( 'Choose what effect is used to show the caption when you hover over a thumbnail', 'foogallery' ),
+				'row_data'=> array(
+					'data-foogallery-hidden' => true,
+					'data-foogallery-show-when-field' => 'hover_effect_preset',
+					'data-foogallery-show-when-field-value' => 'fg-custom'
+				)
+			);
+
+			$fields[] = array(
+				'id'      => 'hover_effect_icon',
+				'title'   => __( 'Icon', 'foogallery' ),
+				'desc'    => __( 'Choose which icon is shown with the caption when you hover over a thumbnail', 'foogallery' ),
+				'section' => __( 'Hover Effects', 'foogallery' ),
+				'type'    => 'htmlicon',
+				'default' => 'fg-hover-zoom',
+				'choices' => apply_filters( 'foogallery_gallery_template_common_thumbnail_fields_caption_icon_choices', array(
+					'' => array( 'label' => __( 'None' , 'foogallery' ), 'html' => '<div class="foogallery-setting-caption_icon"></div>' ),
+					'fg-hover-zoom' => array( 'label' => __( 'Zoom' , 'foogallery' ), 'html' => '<div class="foogallery-setting-caption_icon fg-hover-zoom"></div>' ),
+					'fg-hover-zoom2' => array( 'label' => __( 'Zoom 2' , 'foogallery' ), 'html' => '<div class="foogallery-setting-caption_icon fg-hover-zoom2"></div>' ),
+					'fg-hover-zoom3' => array( 'label' => __( 'Zoom 3' , 'foogallery' ), 'html' => '<div class="foogallery-setting-caption_icon fg-hover-zoom3"></div>' ),
+					'fg-hover-plus' => array( 'label' => __( 'Plus' , 'foogallery' ), 'html' => '<div class="foogallery-setting-caption_icon fg-hover-plus"></div>' ),
+					'fg-hover-circle-plus' => array( 'label' => __( 'Circle Plus' , 'foogallery' ), 'html' => '<div class="foogallery-setting-caption_icon fg-hover-circle-plus"></div>' ),
+					'fg-hover-eye' => array( 'label' => __( 'Eye' , 'foogallery' ), 'html' => '<div class="foogallery-setting-caption_icon fg-hover-eye"></div>' ),
+					'fg-hover-external' => array( 'label' => __( 'External' , 'foogallery' ), 'html' => '<div class="foogallery-setting-caption_icon fg-hover-external"></div>' ),
+				) ),
+				'row_data'=> array(
+					'data-foogallery-hidden' => true,
+					'data-foogallery-show-when-field' => 'hover_effect_preset',
+					'data-foogallery-show-when-field-value' => 'fg-custom'
+				)
+			);
 
 			$settings_link = sprintf( '<a target="blank" href="%s">%s</a>', foogallery_admin_settings_url(), __('settings', 'foogallery') );
-			$caption_title_source = foogallery_get_setting( 'caption_title_source', 'caption' );
 
 			$fields[] = array(
-				'id'      => 'caption_title_source',
-				'title'   => __( 'Caption Title', 'foogallery' ),
+				'id'      => 'hover_effect_title',
+				'title'   => __( 'Title', 'foogallery' ),
 				'desc'    => __( 'Decide where caption titles are pulled from. By default, what is saved under general settings will be used, but it can be overridden per gallery', 'foogallery' ),
-				'section' => __( 'Captions', 'foogallery' ),
+				'section' => __( 'Hover Effects', 'foogallery' ),
 				'type'    => 'radio',
 				'default' => '',
 				'choices' => array(
-					''        => __( 'Default (as per settings)', 'foogallery' ),
+					'none'    => __( 'None', 'foogallery' ),
+					''        => sprintf( __( 'Default (as per %s)', 'foogallery' ), $settings_link ),
 					'title'   => foogallery_get_attachment_field_friendly_name( 'title' ),
 					'caption' => foogallery_get_attachment_field_friendly_name( 'caption' ),
 					'alt'     => foogallery_get_attachment_field_friendly_name( 'alt' ),
 					'desc'    => foogallery_get_attachment_field_friendly_name( 'desc' ),
-					'none'    => __( 'Hidden', 'foogallery' )
 				),
 				'row_data'=> array(
 					'data-foogallery-hidden' => true,
-					'data-foogallery-show-when-field' => 'caption_theme',
-					'data-foogallery-show-when-field-value' => ''
+					'data-foogallery-show-when-field' => 'hover_effect_preset',
+					'data-foogallery-show-when-field-value' => 'fg-custom'
 				)
 			);
-
-			$caption_desc_source = foogallery_get_setting( 'caption_desc_source', 'desc' );
 
 			$fields[] = array(
-				'id'      => 'caption_desc_source',
-				'title'   => __( 'Caption Description', 'foogallery' ),
+				'id'      => 'hover_effect_desc',
+				'title'   => __( 'Description', 'foogallery' ),
 				'desc'    => __( 'Decide where captions descriptions are pulled from. By default, the general settings are used, but it can be overridden per gallery', 'foogallery' ),
-				'section' => __( 'Captions', 'foogallery' ),
+				'section' => __( 'Hover Effects', 'foogallery' ),
 				'type'    => 'radio',
 				'default' => '',
 				'choices' => array(
-					''        => __( 'Default (as per settings)', 'foogallery' ),
+					'none'    => __( 'None', 'foogallery' ),
+					''        => sprintf( __( 'Default (as per %s)', 'foogallery' ), $settings_link ),
 					'title'   => foogallery_get_attachment_field_friendly_name( 'title' ),
 					'caption' => foogallery_get_attachment_field_friendly_name( 'caption' ),
 					'alt'     => foogallery_get_attachment_field_friendly_name( 'alt' ),
 					'desc'    => foogallery_get_attachment_field_friendly_name( 'desc' ),
-					'none'    => __( 'Hidden', 'foogallery' )
 				),
 				'row_data'=> array(
 					'data-foogallery-hidden' => true,
-					'data-foogallery-show-when-field' => 'caption_theme',
-					'data-foogallery-show-when-field-value' => ''
+					'data-foogallery-show-when-field' => 'hover_effect_preset',
+					'data-foogallery-show-when-field-value' => 'fg-custom'
 				)
 			);
+			//endregion Hover Effects Fields
 
             return $fields;
         }

@@ -43,14 +43,13 @@ if ( !class_exists( 'FooGallery_Default_Gallery_Template' ) ) {
 				'slug'        => 'default',
 				'name'        => __( 'Responsive Image Gallery', 'foogallery' ),
 				'lazyload_support' => true,
-				'preview_css' => FOOGALLERY_DEFAULT_GALLERY_TEMPLATE_URL . 'css/gallery-default.css',
 				'admin_js'	  => FOOGALLERY_DEFAULT_GALLERY_TEMPLATE_URL . 'js/admin-gallery-default.js',
 				'fields'	  => array(
                     array(
                         'id'      => 'thumbnail_dimensions',
                         'title'   => __( 'Thumbnail Size', 'foogallery' ),
                         'desc'    => __( 'Choose the size of your thumbnails.', 'foogallery' ),
-                        'section' => __( 'Thumbnails', 'foogallery' ),
+                        'section' => __( 'General', 'foogallery' ),
                         'type'    => 'thumb_size',
                         'default' => array(
                             'width' => get_option( 'thumbnail_size_w' ),
@@ -61,7 +60,7 @@ if ( !class_exists( 'FooGallery_Default_Gallery_Template' ) ) {
                     array(
                         'id'      => 'thumbnail_link',
                         'title'   => __( 'Link To', 'foogallery' ),
-                        'section' => __( 'Thumbnails', 'foogallery' ),
+                        'section' => __( 'General', 'foogallery' ),
                         'default' => 'image',
                         'type'    => 'thumb_link',
                         'desc'	  => __( 'You can choose to link each thumbnail to the full size image, the image\'s attachment page, a custom URL, or you can choose to not link to anything.', 'foogallery' ),
@@ -70,14 +69,14 @@ if ( !class_exists( 'FooGallery_Default_Gallery_Template' ) ) {
 						'id'      => 'lightbox',
 						'title'   => __( 'Lightbox', 'foogallery' ),
 						'desc'    => __( 'Choose which lightbox you want to use. The lightbox will generally only work if you set the thumbnail link to "Full Size Image".', 'foogallery' ),
-                        'section' => __( 'Thumbnails', 'foogallery' ),
+                        'section' => __( 'General', 'foogallery' ),
 						'type'    => 'lightbox'
 					),
 					array(
 						'id'      => 'spacing',
 						'title'   => __( 'Spacing', 'foogallery' ),
 						'desc'    => __( 'The spacing or gap between thumbnails in the gallery.', 'foogallery' ),
-                        'section' => __( 'Thumbnails', 'foogallery' ),
+                        'section' => __( 'General', 'foogallery' ),
 						'type'    => 'select',
 						'default' => 'fg-gutter-10',
 						'choices' => array(
@@ -93,7 +92,7 @@ if ( !class_exists( 'FooGallery_Default_Gallery_Template' ) ) {
 						'id'      => 'alignment',
 						'title'   => __( 'Alignment', 'foogallery' ),
 						'desc'    => __( 'The horizontal alignment of the thumbnails inside the gallery.', 'foogallery' ),
-                        'section' => __( 'Thumbnails', 'foogallery' ),
+                        'section' => __( 'General', 'foogallery' ),
 						'default' => 'fg-center',
 						'type'    => 'radio',
 						'spacer'  => '<span class="spacer"></span>',
