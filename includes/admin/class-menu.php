@@ -73,11 +73,15 @@ if ( ! class_exists( 'FooGallery_Admin_Menu' ) ) {
 				}
 			}
 
-			if ( $show_reset_message ) { ?>
+			if ( $show_reset_message ) {
+				do_action( 'foogallery_settings_reset' );
+				?>
 				<div id="message" class="updated">
 					<p><strong><?php printf( __( '%s settings reset to defaults.', 'foogallery' ), foogallery_plugin_name() ); ?></strong></p>
 				</div>
-			<?php } else if ( isset($_GET['settings-updated']) ) { ?>
+			<?php } else if ( isset($_GET['settings-updated']) ) {
+				do_action( 'foogallery_settings_updated' );
+				?>
 				<div id="message" class="updated">
 					<p><strong><?php printf( __( '%s settings updated.', 'foogallery' ), foogallery_plugin_name() ); ?></strong></p>
 				</div>

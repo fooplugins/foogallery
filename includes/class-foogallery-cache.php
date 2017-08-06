@@ -22,6 +22,10 @@ if ( ! class_exists( 'FooGallery_Cache' ) ) {
 				add_action( 'wp_ajax_foogallery_clear_html_cache', array( $this, 'ajax_clear_all_caches' ) );
 
 				add_action( 'foogallery_admin_new_version_detected', array( $this, 'clear_cache_on_update' ) );
+
+				//clear the gallery caches when settings are updated or reset
+				add_action( 'foogallery_settings_updated', array( $this, 'clear_all_gallery_caches' ) );
+				add_action( 'foogallery_settings_reset', array( $this, 'clear_all_gallery_caches' ) );
 			}
 
 			add_filter( 'foogallery_load_gallery_template', array( $this, 'fetch_gallery_html_from_cache' ), 10, 3 );
