@@ -149,6 +149,21 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Fields' ) ) {
 					echo $icon_html;
 					break;
 
+				case 'htmlicon':
+					$i = 0;
+					$input_name = FOOGALLERY_META_SETTINGS . '[' . $id . ']';
+					$icon_html = '';
+					foreach ( $choices as $value => $icon ) {
+						$selected = ( $field['value'] == $value ) ? ' checked="checked"' : '';
+						$icon_html .= '<input style="display:none" name="' . $input_name. '" id="FooGallerySettings_' . $id . $i . '" ' . $selected . ' type="radio" value="' . $value . '" tabindex="' . $i . '"/>';
+						$title = $icon['label'];
+						$html = $icon['html'];
+						$icon_html .= '<label for="FooGallerySettings_' . $id . $i . '" data-balloon-length="small" data-balloon-pos="down" data-balloon="' . $title . '">' . $html . '</label>';
+						$i++;
+					}
+					echo $icon_html;
+					break;
+
 				case 'thumb_size':
 					$width = is_array( $field['value'] ) ? $field['value']['width'] : 150;
 					$height = is_array( $field['value'] ) ? $field['value']['height'] : 150;
