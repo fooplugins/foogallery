@@ -183,27 +183,48 @@ function foogallery_attachment_html_anchor( $foogallery_attachment, $args = arra
  * Returns generic html for captions
  *
  * @param FooGalleryAttachment $foogallery_attachment
- * @param $caption_content string Include title, desc, or both
+ * @param array $args
  *
  * @return string
  */
-function foogallery_attachment_html_caption( $foogallery_attachment, $caption_content = 'both' ) {
-    $html = '';
-    $caption_html = array();
-    if ( $foogallery_attachment->caption && ( 'title' === $caption_content || 'both' === $caption_content ) ) {
-        $caption_html[] = '<div class="fg-caption-title">' . $foogallery_attachment->caption . '</div>';
-    }
-    if ( $foogallery_attachment->description && ( 'desc' === $caption_content || 'both' === $caption_content ) ) {
-        $caption_html[] = '<div class="fg-caption-desc">' . $foogallery_attachment->description . '</div>';
-    }
+function foogallery_attachment_html_caption( $foogallery_attachment, $args = array() ) {
 
-    if ( count($caption_html) > 0 ) {
-        $html = '<figcaption class="fg-caption"><div class="fg-caption-inner">';
-        $html .= implode( $caption_html );
-        $html .= '</div></figcaption>';
-    }
+	$preset = foogallery_gallery_template_setting( 'caption_preset', 'fg-custom' );
 
-    return apply_filters( 'foogallery_attachment_html_caption', $html, $caption_content, $foogallery_attachment );
+	$html = '';
+
+	if ( 'none' !== $preset ) {
+		$caption_html = array();
+
+		$caption_title =  foogallery_gallery_template_setting( 'hover_effect_title', '' );
+		$caption_desc =  foogallery_gallery_template_setting( 'hover_effect_desc', '' );
+
+		if ( 'fg-custom' === $preset ) {
+
+			$show_caption_title = $caption_title !== 'none';
+			$show_caption_desc = $caption_desc !== 'none';
+
+		} else {
+			//always show both title and desc for the presets
+			$show_caption_title = true;
+			$show_caption_desc = true;
+		}
+
+		if ( $foogallery_attachment->caption && $show_caption_title ) {
+			$caption_html[] = '<div class="fg-caption-title">' . $foogallery_attachment->caption . '</div>';
+		}
+		if ( $foogallery_attachment->description && $show_caption_desc ) {
+			$caption_html[] = '<div class="fg-caption-desc">' . $foogallery_attachment->description . '</div>';
+		}
+
+		$html = '<figcaption class="fg-caption"><div class="fg-caption-inner">';
+		if ( count( $caption_html ) > 0 ) {
+			$html .= implode( $caption_html );
+		}
+		$html .= '</div></figcaption>';
+	}
+
+    return apply_filters( 'foogallery_attachment_html_caption', $html, $foogallery_attachment, $args );
 }
 
 /**
@@ -215,12 +236,12 @@ function foogallery_attachment_html_caption( $foogallery_attachment, $caption_co
  *
  * @return string
  */
-function foogallery_attachment_html( $foogallery_attachment, $args = array(), $caption_content = 'both' ) {
+function foogallery_attachment_html( $foogallery_attachment, $args = array() ) {
     $html = '<div class="fg-item"><figure class="fg-item-inner">';
     $html .= foogallery_attachment_html_anchor_opening( $foogallery_attachment, $args );
     $html .= foogallery_attachment_html_image( $foogallery_attachment, $args );
     $html .= '</a>';
-    $html .= foogallery_attachment_html_caption( $foogallery_attachment, $caption_content );
+    $html .= foogallery_attachment_html_caption( $foogallery_attachment, $args );
     $html .= '</figure></div>';
     return $html;
 }
