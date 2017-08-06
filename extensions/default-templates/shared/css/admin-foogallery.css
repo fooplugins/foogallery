@@ -1,0 +1,76 @@
+.foogallery-setting-caption_icon,
+.foogallery-setting-loading_icon {
+	content: "";
+	display: inline-block;
+	position: relative;
+	width: 32px;
+	height: 32px;
+	margin: 0;
+	background: transparent no-repeat center center;
+	background-size: 32px 32px;
+	vertical-align: middle;
+}
+.foogallery-setting-caption_icon.fg-hover-zoom {
+	background-image: url('../img/zoom.png');
+}
+.foogallery-setting-caption_icon.fg-hover-zoom2 {
+	background-image: url('../img/zoom2.png');
+}
+.foogallery-setting-caption_icon.fg-hover-zoom3 {
+	background-image: url('../img/zoom3.png');
+}
+.foogallery-setting-caption_icon.fg-hover-plus {
+	background-image: url('../img/plus.png');
+}
+.foogallery-setting-caption_icon.fg-hover-circle-plus {
+	background-image: url('../img/circle-plus.png');
+}
+.foogallery-setting-caption_icon.fg-hover-eye {
+	background-image: url('../img/eye.png');
+}
+.foogallery-setting-caption_icon.fg-hover-external {
+	background-image: url('../img/external.png');
+}
+
+.foogallery_template_field_type-htmlicon.foogallery_template_field_id-loading_icon td label {
+	background-color: #eee;
+}
+
+.foogallery_template_field_type-htmlicon.foogallery_template_field_id-loading_icon td input:checked + label {
+	background-color: #eee;
+}
+
+.foogallery-setting-loading_icon.fg-loading-default {
+	background-image: url('../img/loading-default.gif');
+}
+.foogallery-setting-loading_icon.fg-loading-ellipsis {
+	background-image: url('../img/loading-ellipsis.gif');
+}
+.foogallery-setting-loading_icon.fg-loading-gears {
+	background-image: url('../img/loading-gears.gif');
+}
+.foogallery-setting-loading_icon.fg-loading-hourglass {
+	background-image: url('../img/loading-hourglass.gif');
+}
+.foogallery-setting-loading_icon.fg-loading-reload {
+	background-image: url('../img/loading-reload.gif');
+}
+.foogallery-setting-loading_icon.fg-loading-ripple {
+	background-image: url('../img/loading-ripple.gif');
+}
+.foogallery-setting-loading_icon.fg-loading-bars {
+	background-image: url('../img/loading-bars.gif');
+}
+.foogallery-setting-loading_icon.fg-loading-spin {
+	background-image: url('../img/loading-spin.gif');
+}
+.foogallery-setting-loading_icon.fg-loading-squares {
+	background-image: url('../img/loading-squares.gif');
+}
+.foogallery-setting-loading_icon.fg-loading-cube {
+	background-image: url('../img/loading-cube.gif');
+}
+
+.fg-item-inner {
+	margin: 0;
+}
