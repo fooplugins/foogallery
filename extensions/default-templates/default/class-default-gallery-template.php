@@ -86,7 +86,10 @@ if ( !class_exists( 'FooGallery_Default_Gallery_Template' ) ) {
 							'fg-gutter-15' => __( '15 pixels', 'foogallery' ),
 							'fg-gutter-20' => __( '20 pixels', 'foogallery' ),
 							'fg-gutter-25' => __( '25 pixels', 'foogallery' ),
-						)
+						),
+                        'row_data'=> array(
+                            'data-foogallery-change-selector' => 'input:radio'
+                        )
 					),
 					array(
 						'id'      => 'alignment',
@@ -100,7 +103,10 @@ if ( !class_exists( 'FooGallery_Default_Gallery_Template' ) ) {
 							'fg-left' => __( 'Left', 'foogallery' ),
 							'fg-center' => __( 'Center', 'foogallery' ),
 							'fg-right' => __( 'Right', 'foogallery' ),
-						)
+						),
+                        'row_data'=> array(
+                            'data-foogallery-change-selector' => 'input:radio'
+                        )
 					),
 //					array(
 //						'id' => 'thumb_preview',

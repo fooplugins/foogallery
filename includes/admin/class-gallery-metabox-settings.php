@@ -89,7 +89,10 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings' ) ) {
 				'choices' => array(
 					'fg-light' => __( 'Light', 'foogallery' ),
 					'fg-dark'  => __( 'Dark', 'foogallery' )
-				)
+				),
+                'row_data'=> array(
+                    'data-foogallery-change-selector' => 'input:radio'
+                )
 			);
 
 			$fields[] = array(
@@ -105,7 +108,10 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings' ) ) {
 					'fg-border-thin'  => __( 'Thin', 'foogallery' ),
 					'fg-border-medium'  => __( 'Medium', 'foogallery' ),
 					'fg-border-thick'  => __( 'Thick', 'foogallery' ),
-				)
+				),
+                'row_data'=> array(
+                    'data-foogallery-change-selector' => 'input:radio'
+                )
 			);
 
 			$fields[] = array(
@@ -122,7 +128,10 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings' ) ) {
 					'fg-round-medium'  => __( 'Medium', 'foogallery' ),
 					'fg-round-large'  => __( 'Large', 'foogallery' ),
 					'fg-round-full'  => __( 'Full', 'foogallery' ),
-				)
+				),
+                'row_data'=> array(
+                    'data-foogallery-change-selector' => 'input:radio'
+                )
 			);
 
 			$fields[] = array(
@@ -139,7 +148,10 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings' ) ) {
 					'fg-shadow-small'  => __( 'Small', 'foogallery' ),
 					'fg-shadow-medium'  => __( 'Medium', 'foogallery' ),
 					'fg-shadow-large'  => __( 'Large', 'foogallery' ),
-				)
+				),
+                'row_data'=> array(
+                    'data-foogallery-change-selector' => 'input:radio'
+                )
 			);
 
 			$fields[] = array(
@@ -155,7 +167,10 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings' ) ) {
 					'fg-shadow-inset-small'  => __( 'Small', 'foogallery' ),
 					'fg-shadow-inset-medium'  => __( 'Medium', 'foogallery' ),
 					'fg-shadow-inset-large'  => __( 'Large', 'foogallery' ),
-				)
+				),
+                'row_data'=> array(
+                    'data-foogallery-change-selector' => 'input:radio'
+                )
 			);
 
 			$fields[] = array(
@@ -178,6 +193,9 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings' ) ) {
 					'fg-loading-squares'   => array( 'label' => __( 'Squares', 'foogallery' ), 'html' => '<div class="foogallery-setting-loading_icon fg-loading-squares"></div>' ),
 					'fg-loading-cube'      => array( 'label' => __( 'Cube', 'foogallery' ), 'html' => '<div class="foogallery-setting-loading_icon fg-loading-cube"></div>' ),
 				)),
+                'row_data'=> array(
+                    'data-foogallery-change-selector' => 'input:radio'
+                )
 			);
 			//endregion
 
@@ -196,7 +214,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings' ) ) {
 				'section' => __( 'Hover Effects', 'foogallery' ),
 				'default' => 'fg-custom',
 				'type'    => 'radio',
-				'choices' => apply_filters( 'foogallery_gallery_template_common_thumbnail_fields_caption_theme_choices', array(
+				'choices' => apply_filters( 'foogallery_gallery_template_common_thumbnail_fields_hover_effect_preset_choices', array(
 					''  => __( 'None', 'foogallery' ),
 					'fg-sadie'   => __( 'Sadie', 'foogallery' ),
 					'fg-layla'   => __( 'Layla', 'foogallery' ),
@@ -220,13 +238,14 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings' ) ) {
 				'default' => '',
 				'spacer'  => '<span class="spacer"></span>',
 				'type'    => 'radio',
-				'choices' => apply_filters( 'foogallery_gallery_template_common_thumbnail_fields_hover_effect_choices', array(
+				'choices' => apply_filters( 'foogallery_gallery_template_common_thumbnail_fields_hover_effect_color_choices', array(
 					'' => __( 'None', 'foogallery' ),
 					'fg-hover-colorize' => __( 'Colorize', 'foogallery' ),
 					'fg-hover-grayscale' => __( 'Greyscale', 'foogallery' ),
 				) ),
 				'desc'	  => __( 'Choose an color effect that is applied when you hover over a thumbnail.', 'foogallery' ),
 				'row_data'=> array(
+                    'data-foogallery-change-selector' => 'input:radio',
 					'data-foogallery-hidden' => true,
 					'data-foogallery-show-when-field' => 'hover_effect_preset',
 					'data-foogallery-show-when-field-value' => 'fg-custom'
@@ -240,12 +259,13 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings' ) ) {
 				'default' => '',
 				'spacer'  => '<span class="spacer"></span>',
 				'type'    => 'radio',
-				'choices' => apply_filters( 'foogallery_gallery_template_common_thumbnail_fields_hover_effect_choices', array(
+				'choices' => apply_filters( 'foogallery_gallery_template_common_thumbnail_fields_hover_effect_scale_choices', array(
 					'' => __( 'None', 'foogallery' ),
 					'fg-hover-scale' => __( 'Scaled', 'foogallery' ),
 				) ),
 				'desc'	  => __( 'Apply a slight scaling effect when hovering over a thumbnail.', 'foogallery' ),
 				'row_data'=> array(
+                    'data-foogallery-change-selector' => 'input:radio',
 					'data-foogallery-hidden' => true,
 					'data-foogallery-show-when-field' => 'hover_effect_preset',
 					'data-foogallery-show-when-field-value' => 'fg-custom'
@@ -259,13 +279,14 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings' ) ) {
 				'default' => 'fg-caption-hover',
 				'spacer'  => '<span class="spacer"></span>',
 				'type'    => 'radio',
-				'choices' => apply_filters( 'foogallery_gallery_template_common_thumbnail_fields_hover_effect_choices', array(
+				'choices' => apply_filters( 'foogallery_gallery_template_common_thumbnail_fields_hover_effect_caption_visibility_choices', array(
 					'' => __( 'None', 'foogallery' ),
 					'fg-caption-hover' => __( 'On Hover', 'foogallery' ),
 					'fg-caption-always' => __( 'Always Visible', 'foogallery' ),
 				) ),
 				'desc'	  => __( 'Choose how the captions will be displayed.', 'foogallery' ),
 				'row_data'=> array(
+                    'data-foogallery-change-selector' => 'input:radio',
 					'data-foogallery-hidden' => true,
 					'data-foogallery-show-when-field' => 'hover_effect_preset',
 					'data-foogallery-show-when-field-value' => 'fg-custom'
@@ -278,7 +299,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings' ) ) {
 				'section' => __( 'Hover Effects', 'foogallery' ),
 				'default' => 'fg-hover-fade',
 				'type'    => 'select',
-				'choices' => apply_filters( 'foogallery_gallery_template_common_thumbnail_fields_caption_hover_effect_choices', array(
+				'choices' => apply_filters( 'foogallery_gallery_template_common_thumbnail_fields_hover_effect_transition_choices', array(
 					'fg-hover-instant'  => __( 'Instant', 'foogallery' ),
 					'fg-hover-fade'  => __( 'Fade', 'foogallery' ),
 					'fg-hover-slide-up'   => __( 'Slide Up', 'foogallery' ),
@@ -289,6 +310,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings' ) ) {
 				) ),
 				'desc'	  => __( 'Choose what effect is used to show the caption when you hover over a thumbnail', 'foogallery' ),
 				'row_data'=> array(
+                    'data-foogallery-change-selector' => 'select',
 					'data-foogallery-hidden' => true,
 					'data-foogallery-show-when-field' => 'hover_effect_preset',
 					'data-foogallery-show-when-field-value' => 'fg-custom'
@@ -302,7 +324,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings' ) ) {
 				'section' => __( 'Hover Effects', 'foogallery' ),
 				'type'    => 'htmlicon',
 				'default' => 'fg-hover-zoom',
-				'choices' => apply_filters( 'foogallery_gallery_template_common_thumbnail_fields_caption_icon_choices', array(
+				'choices' => apply_filters( 'foogallery_gallery_template_common_thumbnail_fields_hover_effect_icon_choices', array(
 					'' => array( 'label' => __( 'None' , 'foogallery' ), 'html' => '<div class="foogallery-setting-caption_icon"></div>' ),
 					'fg-hover-zoom' => array( 'label' => __( 'Zoom' , 'foogallery' ), 'html' => '<div class="foogallery-setting-caption_icon fg-hover-zoom"></div>' ),
 					'fg-hover-zoom2' => array( 'label' => __( 'Zoom 2' , 'foogallery' ), 'html' => '<div class="foogallery-setting-caption_icon fg-hover-zoom2"></div>' ),
@@ -313,6 +335,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings' ) ) {
 					'fg-hover-external' => array( 'label' => __( 'External' , 'foogallery' ), 'html' => '<div class="foogallery-setting-caption_icon fg-hover-external"></div>' ),
 				) ),
 				'row_data'=> array(
+                    'data-foogallery-change-selector' => 'input:radio',
 					'data-foogallery-hidden' => true,
 					'data-foogallery-show-when-field' => 'hover_effect_preset',
 					'data-foogallery-show-when-field-value' => 'fg-custom'
@@ -337,6 +360,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings' ) ) {
 					'desc'    => foogallery_get_attachment_field_friendly_name( 'desc' ),
 				),
 				'row_data'=> array(
+                    'data-foogallery-change-selector' => 'input:radio',
 					'data-foogallery-hidden' => true,
 					'data-foogallery-show-when-field' => 'hover_effect_preset',
 					'data-foogallery-show-when-field-value' => 'fg-custom'
@@ -359,6 +383,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings' ) ) {
 					'desc'    => foogallery_get_attachment_field_friendly_name( 'desc' ),
 				),
 				'row_data'=> array(
+                    'data-foogallery-change-selector' => 'input:radio',
 					'data-foogallery-hidden' => true,
 					'data-foogallery-show-when-field' => 'hover_effect_preset',
 					'data-foogallery-show-when-field-value' => 'fg-custom'

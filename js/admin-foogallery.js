@@ -23,7 +23,7 @@
 		}
     };
 
-	FOOGALLERY.settingsChanged = function() {
+	FOOGALLERY.galleryTemplateChanged = function() {
 		var selectedTemplate = FOOGALLERY.getSelectedTemplate();
 
 		//hide all template fields
@@ -40,6 +40,21 @@
 
 		//make sure the fields that should be hidden or shown are doing what they need to do
 		FOOGALLERY.handleSettingsShowRules();
+	};
+
+	FOOGALLERY.handleSettingFieldChange = function() {
+        FOOGALLERY.handleSettingsShowRules();
+        FOOGALLERY.updateGalleryPreview();
+	};
+
+	FOOGALLERY.updateGalleryPreview = function() {
+        //foogallery_settings[default_theme]
+
+        var selectedTemplate = FOOGALLERY.getSelectedTemplate();
+
+        var theme = $('input[name="foogallery_settings[' + selectedTemplate + '_theme]"]:checked').val();
+
+        //alert(theme);
 	};
 
 	FOOGALLERY.handleSettingsShowRules = function() {
@@ -91,18 +106,18 @@
             });
         });
 
-		$('#FooGallerySettings_GalleryTemplate').change(FOOGALLERY.settingsChanged);
+		$('#FooGallerySettings_GalleryTemplate').change(FOOGALLERY.galleryTemplateChanged);
 
 		//hook into settings fields changes
 		$('.foogallery-metabox-settings .foogallery_template_field[data-foogallery-change-selector]').each(function(index, item) {
 			var $item = $(item),
 				selector = $item.data('foogallery-change-selector');
 
-            $item.find(selector).change(FOOGALLERY.handleSettingsShowRules);
+            $item.find(selector).change(FOOGALLERY.handleSettingFieldChange);
         });
 
 		//trigger this onload too!
-		FOOGALLERY.settingsChanged();
+		FOOGALLERY.galleryTemplateChanged();
 	};
 
 	FOOGALLERY.getSelectedTemplate = function() {
