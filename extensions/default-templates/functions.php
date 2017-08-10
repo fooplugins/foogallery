@@ -16,5 +16,5 @@ function foogallery_enqueue_core_gallery_template_style() {
  */
 function foogallery_enqueue_core_gallery_template_script() {
 	$js = FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_SHARED_URL . 'js/foogallery.min.js';
-	wp_enqueue_script( 'foogallery-core', $js, array(), FOOGALLERY_VERSION );
+	wp_enqueue_script( 'foogallery-core', $js, array('jquery'), FOOGALLERY_VERSION );
 }

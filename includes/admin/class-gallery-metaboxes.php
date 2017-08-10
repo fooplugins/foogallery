@@ -458,6 +458,12 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 			if ( FOOGALLERY_CPT_GALLERY === $screen_id ||
 			     'edit-' . FOOGALLERY_CPT_GALLERY === $screen_id ) {
 
+				//enqueue any dependencies from extensions or gallery templates
+				do_action( 'foogallery_enqueue_preview_dependencies' );
+				//add core foogallery files for preview
+				foogallery_enqueue_core_gallery_template_style();
+				foogallery_enqueue_core_gallery_template_script();
+
 				//spectrum needed for the colorpicker field
 				$url = FOOGALLERY_URL . 'lib/spectrum/spectrum.js';
 				wp_enqueue_script( 'foogallery-spectrum', $url, array('jquery'), FOOGALLERY_VERSION );
