@@ -17,8 +17,6 @@ if ( !class_exists( 'FooGallery_Default_Gallery_Template' ) ) {
 			add_action( 'foogallery_located_template-default', array( $this, 'enqueue_dependencies' ) );
 
 			add_filter( 'foogallery_gallery_templates_files', array( $this, 'register_myself' ) );
-			add_action( 'foogallery_render_gallery_template_field_custom', array( $this, 'render_thumbnail_preview' ), 10, 3 );
-			add_filter( 'foogallery_template_load_js-default', array( $this, 'can_enqueue_template_js' ), 10, 2 );
 		}
 
 		/**
@@ -43,7 +41,6 @@ if ( !class_exists( 'FooGallery_Default_Gallery_Template' ) ) {
 				'slug'        => 'default',
 				'name'        => __( 'Responsive Image Gallery', 'foogallery' ),
 				'lazyload_support' => true,
-				'admin_js'	  => FOOGALLERY_DEFAULT_GALLERY_TEMPLATE_URL . 'js/admin-gallery-default.js',
 				'fields'	  => array(
                     array(
                         'id'      => 'thumbnail_dimensions',
@@ -89,8 +86,7 @@ if ( !class_exists( 'FooGallery_Default_Gallery_Template' ) ) {
 						),
                         'row_data'=> array(
                             'data-foogallery-change-selector' => 'select',
-                            'data-foogallery-preview-class-selector' => 'select',
-                            'data-foogallery-preview-strip-classes' => 'fg-gutter-0 fg-gutter-5 fg-gutter-10 fg-gutter-15 fg-gutter-20 fg-gutter-25'
+							'data-foogallery-preview' => 'true'
                         )
 					),
 					array(
@@ -108,8 +104,7 @@ if ( !class_exists( 'FooGallery_Default_Gallery_Template' ) ) {
 						),
                         'row_data'=> array(
                             'data-foogallery-change-selector' => 'input:radio',
-                            'data-foogallery-preview-class-selector' => 'input:radio:checked',
-                            'data-foogallery-preview-strip-classes' => 'fg-left fg-center fg-right'
+							'data-foogallery-preview' => 'class'
                         )
 					)
 				)
@@ -132,79 +127,12 @@ if ( !class_exists( 'FooGallery_Default_Gallery_Template' ) ) {
 		}
 
 		/**
-		 * Renders the thumbnail preview field
-		 *
-		 * @param $field array
-		 * @param $gallery FooGallery
-		 * @param $template array
-		 */
-		function render_thumbnail_preview( $field, $gallery, $template ) {
-			if ( 'default_thumb_preview' == $field['type'] ) {
-				$args = $gallery->get_meta( 'default_thumbnail_dimensions', array(
-						'width' => get_option( 'thumbnail_size_w' ),
-						'height' => get_option( 'thumbnail_size_h' ),
-						'crop' => true
-				) );
-
-				//override the link so that it does not actually open an image
-				$args['link'] = 'custom';
-				$args['custom_link'] = '#preview';
-
-				$hover_effect = $gallery->get_meta( 'default_hover-effect', 'hover-effect-zoom' );
-				$border_style = $gallery->get_meta( 'default_border-style', 'border-style-square-white' );
-				$hover_effect_type = $gallery->get_meta( 'default_hover-effect-type', '' );
-				$caption_hover_effect = $gallery->get_meta( 'default_caption-hover-effect', 'hover-caption-simple' );
-
-				$featured = $gallery->featured_attachment();
-
-				if ( false === $featured ) {
-					$featured = new FooGalleryAttachment();
-					$featured->url = foogallery_test_thumb_url();
-					$featured->caption = __( 'Caption Title', 'foogallery' );
-					$featured->description = __( 'Long Caption Description Text', 'foogallery' );
-				}
-
-				echo '<div class="foogallery-default-preview ' . foogallery_build_class_attribute_safe( $gallery, $hover_effect, $border_style, $hover_effect_type, $caption_hover_effect, 'foogallery-thumbnail-preview' ) . '">';
-				echo $featured->html( $args, true, false );
-				echo $featured->html_caption( 'both' );
-				echo '</a>';
-				echo '</div>';
-			}
-		}
-
-		/**
 		 * Enqueue scripts that the default gallery template relies on
 		 */
 		function enqueue_dependencies( $gallery ) {
-			wp_enqueue_script( 'jquery' );
-
-			//how do we handle loading animations
-//			if ( 'yes' === $gallery->get_meta( 'default_loading_animation', 'yes' ) ) {
-//				foogallery_enqueue_imagesloaded_script();
-//			}
-
 			//enqueue core files
 			foogallery_enqueue_core_gallery_template_style();
 			foogallery_enqueue_core_gallery_template_script();
-
-			$css = FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_URL . 'default/css/foogallery.default.min.css';
-			wp_enqueue_style( 'foogallery-default', $css, array( 'foogallery-core' ), FOOGALLERY_VERSION );
-
-			$js = FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_URL . 'default/js/foogallery.default.min.js';
-			wp_enqueue_script( 'foogallery-default', $js, array( 'foogallery-core' ), FOOGALLERY_VERSION );
-		}
-
-		/**
-		 * @param $include bool By default we will try to include the template JS
-		 * @param $gallery FooGallery the gallery instance we are loading
-		 *
-		 * @return bool if we want to try to include the template JS
-		 */
-		function can_enqueue_template_js( $include, $gallery ) {
-			if ( 'yes' === $gallery->get_meta( 'default_loading_animation', 'yes' ) ) {
-				return true;
-			}
-			return false;
 		}
 	}
 }
