@@ -20,7 +20,7 @@ if ( ! class_exists( 'FooGallery_LazyLoad' ) ) {
 			add_filter( 'foogallery_attachment_html_image_attributes', array($this, 'change_src_attributes'), 99, 3);
 
 			//add the lazy load attributes to the gallery container
-			add_filter( 'foogallery_build_container_attributes', array( $this, 'add_lazyload_attributes' ), 10, 2 );
+			add_filter( 'foogallery_build_container_data_options', array( $this, 'add_lazyload_options' ), 10, 3 );
 
 			//add the appropriate lazy load class
 			add_filter( 'foogallery_build_class_attribute', array( $this, 'add_lazyload_class' ), 10, 2 );
@@ -102,18 +102,18 @@ if ( ! class_exists( 'FooGallery_LazyLoad' ) ) {
 
 
 		/**
-		 * Add the required lazy load attributes onto the gallery container div
+		 * Add the required lazy load options if needed
 		 *
 		 * @param $attributes array
 		 * @param $gallery FooGallery
 		 *
 		 * @return array
 		 */
-		function add_lazyload_attributes($attributes, $gallery) {
+		function add_lazyload_options($options, $gallery, $attributes) {
 			if ( isset( $gallery->lazyload) && true === $gallery->lazyload) {
-				$attributes['data-loader-options'] = '{\'lazy\':true}';
+				$options['lazy'] = true;
 			}
-			return $attributes;
+			return $options;
 		}
 
 		/**
