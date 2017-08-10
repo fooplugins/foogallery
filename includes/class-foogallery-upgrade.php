@@ -378,6 +378,82 @@ if ( ! class_exists( 'FooGallery_Upgrade' ) ) {
 						array ( 'id' => 'hover_effect_desc', 'value' => '' )
 					)
 				),
+
+				//masonry layout mappings
+				array(
+					'id' => 'layout',
+					'value' => '2col',
+					'new' => array(
+						array ( 'id' => 'layout', 'value' => 'col2' )
+					)
+				),
+
+				array(
+					'id' => 'layout',
+					'value' => '3col',
+					'new' => array(
+						array ( 'id' => 'layout', 'value' => 'col3' )
+					)
+				),
+
+				array(
+					'id' => 'layout',
+					'value' => '4col',
+					'new' => array(
+						array ( 'id' => 'layout', 'value' => 'col4' )
+					)
+				),
+
+				array(
+					'id' => 'layout',
+					'value' => '5col',
+					'new' => array(
+						array ( 'id' => 'layout', 'value' => 'col5' )
+					)
+				),
+
+				array(
+					'id' => 'gutter_percent',
+					'value' => 'no-gutter',
+					'new' => array(
+						array ( 'id' => 'gutter_percent', 'value' => 'fg-gutter-none' )
+					)
+				),
+
+				array(
+					'id' => 'gutter_percent',
+					'value' => 'large-gutter',
+					'new' => array(
+						array ( 'id' => 'gutter_percent', 'value' => 'fg-gutter-large' )
+					)
+				),
+
+				array(
+					'id' => 'center_align',
+					'value' => 'default',
+					'new' => array(
+						array ( 'id' => 'alignment', 'value' => '' )
+					)
+				),
+
+				array(
+					'id' => 'center_align',
+					'value' => 'center',
+					'new' => array(
+						array ( 'id' => 'alignment', 'value' => 'fg-center' )
+					)
+				),
+
+				array(
+					'id' => 'center_align',
+					'value' => 'default',
+					'new' => array(
+						array ( 'id' => 'alignment', 'value' => '' )
+					)
+				),
+
+
+
 			);
 
 			if ( $foogallery->settings ) {
