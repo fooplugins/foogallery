@@ -88,7 +88,9 @@ if ( !class_exists( 'FooGallery_Default_Gallery_Template' ) ) {
 							'fg-gutter-25' => __( '25 pixels', 'foogallery' ),
 						),
                         'row_data'=> array(
-                            'data-foogallery-change-selector' => 'input:radio'
+                            'data-foogallery-change-selector' => 'select',
+                            'data-foogallery-preview-class-selector' => 'select',
+                            'data-foogallery-preview-strip-classes' => 'fg-gutter-0 fg-gutter-5 fg-gutter-10 fg-gutter-15 fg-gutter-20 fg-gutter-25'
                         )
 					),
 					array(
@@ -105,16 +107,11 @@ if ( !class_exists( 'FooGallery_Default_Gallery_Template' ) ) {
 							'fg-right' => __( 'Right', 'foogallery' ),
 						),
                         'row_data'=> array(
-                            'data-foogallery-change-selector' => 'input:radio'
+                            'data-foogallery-change-selector' => 'input:radio',
+                            'data-foogallery-preview-class-selector' => 'input:radio:checked',
+                            'data-foogallery-preview-strip-classes' => 'fg-left fg-center fg-right'
                         )
-					),
-//					array(
-//						'id' => 'thumb_preview',
-//						'title' => __( 'Preview', 'foogallery' ),
-//						'desc' => __( 'This is what your gallery thumbnails will look like.', 'foogallery' ),
-//						'section' => __( 'Thumbnail Settings', 'foogallery' ),
-//						'type' => 'default_thumb_preview',
-//					)
+					)
 				)
 			);
 

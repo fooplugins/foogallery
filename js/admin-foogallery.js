@@ -42,19 +42,20 @@
 		FOOGALLERY.handleSettingsShowRules();
 	};
 
-	FOOGALLERY.handleSettingFieldChange = function() {
+	FOOGALLERY.handleSettingFieldChange = function($fieldContainer) {
         FOOGALLERY.handleSettingsShowRules();
-        FOOGALLERY.updateGalleryPreview();
+        FOOGALLERY.updateGalleryPreview($fieldContainer);
 	};
 
-	FOOGALLERY.updateGalleryPreview = function() {
-        //foogallery_settings[default_theme]
+	FOOGALLERY.updateGalleryPreview = function($fieldContainer) {
+        var selector = $fieldContainer.data('foogallery-preview-class-selector');
 
-        var selectedTemplate = FOOGALLERY.getSelectedTemplate();
+        if (selector) {
+			var strip = $fieldContainer.data('foogallery-preview-strip-classes'),
+				value = $fieldContainer.find(selector).val();
 
-        var theme = $('input[name="foogallery_settings[' + selectedTemplate + '_theme]"]:checked').val();
-
-        //alert(theme);
+			$('#foogallery_preview .foogallery').removeClass(strip).addClass(value);
+		}
 	};
 
 	FOOGALLERY.handleSettingsShowRules = function() {
@@ -110,10 +111,12 @@
 
 		//hook into settings fields changes
 		$('.foogallery-metabox-settings .foogallery_template_field[data-foogallery-change-selector]').each(function(index, item) {
-			var $item = $(item),
-				selector = $item.data('foogallery-change-selector');
+			var $fieldContainer = $(item),
+				selector = $fieldContainer.data('foogallery-change-selector');
 
-            $item.find(selector).change(FOOGALLERY.handleSettingFieldChange);
+            $fieldContainer.find(selector).change(function() {
+            	FOOGALLERY.handleSettingFieldChange($fieldContainer);
+            });
         });
 
 		//trigger this onload too!

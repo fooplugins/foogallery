@@ -91,7 +91,9 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings' ) ) {
 					'fg-dark'  => __( 'Dark', 'foogallery' )
 				),
                 'row_data'=> array(
-                    'data-foogallery-change-selector' => 'input:radio'
+                    'data-foogallery-change-selector' => 'input:radio',
+                    'data-foogallery-preview-class-selector' => 'input:radio:checked',
+                    'data-foogallery-preview-strip-classes' => 'fg-light fg-dark'
                 )
 			);
 
@@ -110,7 +112,9 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings' ) ) {
 					'fg-border-thick'  => __( 'Thick', 'foogallery' ),
 				),
                 'row_data'=> array(
-                    'data-foogallery-change-selector' => 'input:radio'
+                    'data-foogallery-change-selector' => 'input:radio',
+                    'data-foogallery-preview-class-selector' => 'input:radio:checked',
+                    'data-foogallery-preview-strip-classes' => 'fg-border-thin fg-border-medium fg-border-thick'
                 )
 			);
 
@@ -130,7 +134,9 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings' ) ) {
 					'fg-round-full'  => __( 'Full', 'foogallery' ),
 				),
                 'row_data'=> array(
-                    'data-foogallery-change-selector' => 'input:radio'
+                    'data-foogallery-change-selector' => 'input:radio',
+                    'data-foogallery-preview-class-selector' => 'input:radio:checked',
+                    'data-foogallery-preview-strip-classes' => 'fg-round-small fg-round-medium fg-round-large fg-round-full'
                 )
 			);
 
@@ -150,7 +156,9 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings' ) ) {
 					'fg-shadow-large'  => __( 'Large', 'foogallery' ),
 				),
                 'row_data'=> array(
-                    'data-foogallery-change-selector' => 'input:radio'
+                    'data-foogallery-change-selector' => 'input:radio',
+                    'data-foogallery-preview-class-selector' => 'input:radio:checked',
+                    'data-foogallery-preview-strip-classes' => 'fg-shadow-outline fg-shadow-small fg-shadow-medium fg-shadow-large'
                 )
 			);
 
@@ -169,7 +177,9 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings' ) ) {
 					'fg-shadow-inset-large'  => __( 'Large', 'foogallery' ),
 				),
                 'row_data'=> array(
-                    'data-foogallery-change-selector' => 'input:radio'
+                    'data-foogallery-change-selector' => 'input:radio',
+                    'data-foogallery-preview-class-selector' => 'input:radio:checked',
+                    'data-foogallery-preview-strip-classes' => 'fg-shadow-inset-small fg-shadow-inset-medium fg-shadow-inset-large'
                 )
 			);
 
@@ -194,7 +204,9 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings' ) ) {
 					'fg-loading-cube'      => array( 'label' => __( 'Cube', 'foogallery' ), 'html' => '<div class="foogallery-setting-loading_icon fg-loading-cube"></div>' ),
 				)),
                 'row_data'=> array(
-                    'data-foogallery-change-selector' => 'input:radio'
+                    'data-foogallery-change-selector' => 'input:radio',
+                    'data-foogallery-preview-class-selector' => 'input:radio:checked',
+                    'data-foogallery-preview-strip-classes' => 'fg-loading-default fg-loading-ellipsis fg-loading-gears fg-loading-hourglass fg-loading-reload fg-loading-ripple fg-loading-bars fg-loading-spin fg-loading-squares fg-loading-cube'
                 )
 			);
 			//endregion
@@ -227,7 +239,9 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings' ) ) {
 				'desc'	  => __( 'A preset styling that is used for the captions. If you want to define your own custom captions, then choose Custom.', 'foogallery' ),
 				'row_data'=> array(
 					'data-foogallery-change-selector' => 'input:radio',
-					'data-foogallery-value-selector' => 'input:checked'
+					'data-foogallery-value-selector' => 'input:checked',
+                    'data-foogallery-preview-class-selector' => 'input:radio:checked',
+                    'data-foogallery-preview-strip-classes' => 'fg-sadie fg-layla fg-oscar fg-sarah fg-goliath fg-custom fg-caption-hover fg-caption-always'
 				)
 			);
 
@@ -248,7 +262,9 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings' ) ) {
                     'data-foogallery-change-selector' => 'input:radio',
 					'data-foogallery-hidden' => true,
 					'data-foogallery-show-when-field' => 'hover_effect_preset',
-					'data-foogallery-show-when-field-value' => 'fg-custom'
+					'data-foogallery-show-when-field-value' => 'fg-custom',
+                    'data-foogallery-preview-class-selector' => 'input:radio:checked',
+                    'data-foogallery-preview-strip-classes' => 'fg-hover-colorize fg-hover-grayscale'
 				)
 			);
 
@@ -268,7 +284,9 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings' ) ) {
                     'data-foogallery-change-selector' => 'input:radio',
 					'data-foogallery-hidden' => true,
 					'data-foogallery-show-when-field' => 'hover_effect_preset',
-					'data-foogallery-show-when-field-value' => 'fg-custom'
+					'data-foogallery-show-when-field-value' => 'fg-custom',
+                    'data-foogallery-preview-class-selector' => 'input:radio:checked',
+                    'data-foogallery-preview-strip-classes' => 'fg-hover-scale'
 				)
 			);
 
@@ -289,7 +307,9 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings' ) ) {
                     'data-foogallery-change-selector' => 'input:radio',
 					'data-foogallery-hidden' => true,
 					'data-foogallery-show-when-field' => 'hover_effect_preset',
-					'data-foogallery-show-when-field-value' => 'fg-custom'
+					'data-foogallery-show-when-field-value' => 'fg-custom',
+                    'data-foogallery-preview-class-selector' => 'input:radio:checked',
+                    'data-foogallery-preview-strip-classes' => 'fg-caption-hover fg-caption-always'
 				)
 			);
 
@@ -313,7 +333,9 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings' ) ) {
                     'data-foogallery-change-selector' => 'select',
 					'data-foogallery-hidden' => true,
 					'data-foogallery-show-when-field' => 'hover_effect_preset',
-					'data-foogallery-show-when-field-value' => 'fg-custom'
+					'data-foogallery-show-when-field-value' => 'fg-custom',
+                    'data-foogallery-preview-class-selector' => 'select',
+                    'data-foogallery-preview-strip-classes' => 'fg-hover-instant fg-hover-fade fg-hover-slide-up fg-hover-slide-down fg-hover-slide-left fg-hover-slide-right fg-hover-push'
 				)
 			);
 
@@ -338,7 +360,9 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings' ) ) {
                     'data-foogallery-change-selector' => 'input:radio',
 					'data-foogallery-hidden' => true,
 					'data-foogallery-show-when-field' => 'hover_effect_preset',
-					'data-foogallery-show-when-field-value' => 'fg-custom'
+					'data-foogallery-show-when-field-value' => 'fg-custom',
+                    'data-foogallery-preview-class-selector' => 'input:radio:checked',
+                    'data-foogallery-preview-strip-classes' => 'fg-hover-zoom fg-hover-zoom2 fg-hover-zoom3 fg-hover-plus fg-hover-circle-plus fg-hover-eye fg-hover-external'
 				)
 			);
 

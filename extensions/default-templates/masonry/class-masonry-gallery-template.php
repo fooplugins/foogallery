@@ -70,7 +70,7 @@ if ( !class_exists( 'FooGallery_Masonry_Gallery_Template' ) ) {
                         'default' => 'fixed',
                         'row_data'=> array(
                             'data-foogallery-change-selector' => 'input:radio',
-                            'data-foogallery-value-selector' => 'input:checked'
+                            'data-foogallery-value-selector' s=> 'input:checked'
                         )
                     ),
                     array(
