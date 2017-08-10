@@ -36,15 +36,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings' ) ) {
 
                     // Register, enqueue scripts and styles here
                     wp_enqueue_script( 'foogallery-admin-settings', FOOGALLERY_URL . '/js/foogallery.admin.min.js', array('jquery'), FOOGALLERY_VERSION );
-
                     wp_enqueue_style( 'foogallery-admin-settings', FOOGALLERY_URL . '/css/foogallery.admin.min.css', array(), FOOGALLERY_VERSION );
-
-					foogallery_enqueue_core_gallery_template_style();
-
-					foogallery_enqueue_core_gallery_template_script();
-
-					wp_enqueue_style( 'foogallery-core-admin-settings', FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_SHARED_URL  . 'css/admin-foogallery.css', array(), FOOGALLERY_VERSION );
-
                 }
             }
         }
@@ -92,8 +84,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings' ) ) {
 				),
                 'row_data'=> array(
                     'data-foogallery-change-selector' => 'input:radio',
-                    'data-foogallery-preview-class-selector' => 'input:radio:checked',
-                    'data-foogallery-preview-strip-classes' => 'fg-light fg-dark'
+					'data-foogallery-preview' => 'class'
                 )
 			);
 
@@ -113,8 +104,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings' ) ) {
 				),
                 'row_data'=> array(
                     'data-foogallery-change-selector' => 'input:radio',
-                    'data-foogallery-preview-class-selector' => 'input:radio:checked',
-                    'data-foogallery-preview-strip-classes' => 'fg-border-thin fg-border-medium fg-border-thick'
+					'data-foogallery-preview' => 'class'
                 )
 			);
 
@@ -135,8 +125,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings' ) ) {
 				),
                 'row_data'=> array(
                     'data-foogallery-change-selector' => 'input:radio',
-                    'data-foogallery-preview-class-selector' => 'input:radio:checked',
-                    'data-foogallery-preview-strip-classes' => 'fg-round-small fg-round-medium fg-round-large fg-round-full'
+					'data-foogallery-preview' => 'class'
                 )
 			);
 
@@ -157,8 +146,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings' ) ) {
 				),
                 'row_data'=> array(
                     'data-foogallery-change-selector' => 'input:radio',
-                    'data-foogallery-preview-class-selector' => 'input:radio:checked',
-                    'data-foogallery-preview-strip-classes' => 'fg-shadow-outline fg-shadow-small fg-shadow-medium fg-shadow-large'
+					'data-foogallery-preview' => 'class'
                 )
 			);
 
@@ -178,8 +166,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings' ) ) {
 				),
                 'row_data'=> array(
                     'data-foogallery-change-selector' => 'input:radio',
-                    'data-foogallery-preview-class-selector' => 'input:radio:checked',
-                    'data-foogallery-preview-strip-classes' => 'fg-shadow-inset-small fg-shadow-inset-medium fg-shadow-inset-large'
+					'data-foogallery-preview' => 'class'
                 )
 			);
 
@@ -205,8 +192,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings' ) ) {
 				)),
                 'row_data'=> array(
                     'data-foogallery-change-selector' => 'input:radio',
-                    'data-foogallery-preview-class-selector' => 'input:radio:checked',
-                    'data-foogallery-preview-strip-classes' => 'fg-loading-default fg-loading-ellipsis fg-loading-gears fg-loading-hourglass fg-loading-reload fg-loading-ripple fg-loading-bars fg-loading-spin fg-loading-squares fg-loading-cube'
+					'data-foogallery-preview' => 'class'
                 )
 			);
 			//endregion
@@ -228,11 +214,11 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings' ) ) {
 				'type'    => 'radio',
 				'choices' => apply_filters( 'foogallery_gallery_template_common_thumbnail_fields_hover_effect_preset_choices', array(
 					''  => __( 'None', 'foogallery' ),
-					'fg-sadie'   => __( 'Sadie', 'foogallery' ),
-					'fg-layla'   => __( 'Layla', 'foogallery' ),
-					'fg-oscar'   => __( 'Oscar', 'foogallery' ),
-					'fg-sarah'   => __( 'Sarah', 'foogallery' ),
-					'fg-goliath' => __( 'Goliath', 'foogallery' ),
+					'fg-preset fg-sadie'   => __( 'Sadie', 'foogallery' ),
+					'fg-preset fg-layla'   => __( 'Layla', 'foogallery' ),
+					'fg-preset fg-oscar'   => __( 'Oscar', 'foogallery' ),
+					'fg-preset fg-sarah'   => __( 'Sarah', 'foogallery' ),
+					'fg-preset fg-goliath' => __( 'Goliath', 'foogallery' ),
 					'fg-custom'  => __( 'Custom', 'foogallery' ),
 				) ),
 				'spacer'  => '<span class="spacer"></span>',
@@ -240,8 +226,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings' ) ) {
 				'row_data'=> array(
 					'data-foogallery-change-selector' => 'input:radio',
 					'data-foogallery-value-selector' => 'input:checked',
-                    'data-foogallery-preview-class-selector' => 'input:radio:checked',
-                    'data-foogallery-preview-strip-classes' => 'fg-sadie fg-layla fg-oscar fg-sarah fg-goliath fg-custom fg-caption-hover fg-caption-always'
+					'data-foogallery-preview' => 'class'
 				)
 			);
 
@@ -263,8 +248,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings' ) ) {
 					'data-foogallery-hidden' => true,
 					'data-foogallery-show-when-field' => 'hover_effect_preset',
 					'data-foogallery-show-when-field-value' => 'fg-custom',
-                    'data-foogallery-preview-class-selector' => 'input:radio:checked',
-                    'data-foogallery-preview-strip-classes' => 'fg-hover-colorize fg-hover-grayscale'
+					'data-foogallery-preview' => 'class'
 				)
 			);
 
@@ -285,8 +269,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings' ) ) {
 					'data-foogallery-hidden' => true,
 					'data-foogallery-show-when-field' => 'hover_effect_preset',
 					'data-foogallery-show-when-field-value' => 'fg-custom',
-                    'data-foogallery-preview-class-selector' => 'input:radio:checked',
-                    'data-foogallery-preview-strip-classes' => 'fg-hover-scale'
+					'data-foogallery-preview' => 'class'
 				)
 			);
 
@@ -308,8 +291,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings' ) ) {
 					'data-foogallery-hidden' => true,
 					'data-foogallery-show-when-field' => 'hover_effect_preset',
 					'data-foogallery-show-when-field-value' => 'fg-custom',
-                    'data-foogallery-preview-class-selector' => 'input:radio:checked',
-                    'data-foogallery-preview-strip-classes' => 'fg-caption-hover fg-caption-always'
+					'data-foogallery-preview' => 'class'
 				)
 			);
 
@@ -334,8 +316,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings' ) ) {
 					'data-foogallery-hidden' => true,
 					'data-foogallery-show-when-field' => 'hover_effect_preset',
 					'data-foogallery-show-when-field-value' => 'fg-custom',
-                    'data-foogallery-preview-class-selector' => 'select',
-                    'data-foogallery-preview-strip-classes' => 'fg-hover-instant fg-hover-fade fg-hover-slide-up fg-hover-slide-down fg-hover-slide-left fg-hover-slide-right fg-hover-push'
+					'data-foogallery-preview' => 'class'
 				)
 			);
 
@@ -361,8 +342,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings' ) ) {
 					'data-foogallery-hidden' => true,
 					'data-foogallery-show-when-field' => 'hover_effect_preset',
 					'data-foogallery-show-when-field-value' => 'fg-custom',
-                    'data-foogallery-preview-class-selector' => 'input:radio:checked',
-                    'data-foogallery-preview-strip-classes' => 'fg-hover-zoom fg-hover-zoom2 fg-hover-zoom3 fg-hover-plus fg-hover-circle-plus fg-hover-eye fg-hover-external'
+					'data-foogallery-preview' => 'class'
 				)
 			);
 
