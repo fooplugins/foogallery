@@ -23,14 +23,20 @@
 		}
     };
 
-	FOOGALLERY.galleryTemplateChanged = function() {
-		var selectedTemplate = FOOGALLERY.getSelectedTemplate();
+	FOOGALLERY.galleryTemplateChanged = function(reloadPreview) {
+		var selectedTemplate = FOOGALLERY.getSelectedTemplate(),
+			$settingsToShow = $('.foogallery-settings-container-' + selectedTemplate),
+			$settingsToHide = $('.foogallery-settings-container').not($settingsToShow);
 
 		//hide all template fields
-		$('.foogallery-settings-container').not('.foogallery-settings-container-'+selectedTemplate).hide();
+		$settingsToHide.hide()
+			.removeClass('foogallery-settings-container-active')
+			.find(':input').attr('disabled', true);
 
 		//show all fields for the selected template only
-		$('.foogallery-settings-container-' + selectedTemplate).show();
+		$settingsToShow.show()
+			.addClass('foogallery-settings-container-active')
+			.find(':input').removeAttr('disabled');
 
 		//include a preview CSS if possible
 		FOOGALLERY.includePreviewCss();
@@ -38,51 +44,71 @@
 		//trigger a change so custom template js can do something
 		FOOGALLERY.triggerTemplateChangedEvent();
 
+		FOOGALLERY.handleSettingFieldChange(reloadPreview);
+	};
+
+	FOOGALLERY.handleSettingFieldChange = function(reloadPreview) {
+
 		//make sure the fields that should be hidden or shown are doing what they need to do
-		FOOGALLERY.handleSettingsShowRules();
-	};
-
-	FOOGALLERY.handleSettingFieldChange = function($fieldContainer) {
         FOOGALLERY.handleSettingsShowRules();
-        FOOGALLERY.updateGalleryPreview($fieldContainer);
+
+		if (reloadPreview) {
+			//update the gallery preview
+			FOOGALLERY.updateGalleryPreview();
+		}
 	};
 
-	FOOGALLERY.updateGalleryPreview = function($fieldContainer) {
-        var selector = $fieldContainer.data('foogallery-preview-class-selector');
+	FOOGALLERY.updateGalleryPreview = function() {
+		var $preview = $('#foogallery_preview .foogallery');
 
-        if (selector) {
-			var strip = $fieldContainer.data('foogallery-preview-strip-classes'),
-				value = $fieldContainer.find(selector).val();
+		//build up the container class
+		var $classFields = $('.foogallery-settings-container-active .foogallery-metabox-settings .foogallery_template_field[data-foogallery-preview="class"]');
 
-			$('#foogallery_preview .foogallery').removeClass(strip).addClass(value);
+		if ($classFields.length) {
+
+			var array = $classFields.find(' :input').serializeArray(),
+				selectedTemplate = FOOGALLERY.getSelectedTemplate(),
+				classes = $.map(array, function (item) {
+					return item.value;
+				}).concat(['foogallery', 'fg-' + selectedTemplate]).join(' ');
+
+			$preview.attr('class', classes);
 		}
+
+		$('body').trigger('foogallery-gallery-preview-updated-' + FOOGALLERY.getSelectedTemplate() );
 	};
 
 	FOOGALLERY.handleSettingsShowRules = function() {
 		var selectedTemplate = FOOGALLERY.getSelectedTemplate();
 
 		//hide any fields that need to be hidden initially
-		$('.foogallery_template_field_template-' + selectedTemplate + '[data-foogallery-hidden]').hide();
+		$('.foogallery-settings-container-active .foogallery_template_field[data-foogallery-hidden]').hide()
+			.addClass('foogallery_template_field_template_hidden')
+			.find(':input').attr('disabled', true);
 
-		$('.foogallery_template_field_template-' + selectedTemplate + '[data-foogallery-show-when-field]').each(function(index, item) {
+		$('.foogallery-settings-container-active .foogallery_template_field[data-foogallery-show-when-field]').each(function(index, item) {
 			var $item = $(item),
 				fieldId = $item.data('foogallery-show-when-field'),
 				fieldValue = $item.data('foogallery-show-when-field-value'),
                 fieldOperator = $item.data('foogallery-show-when-field-operator'),
-				$field_row = $('.foogallery_template_field_template_id-' + selectedTemplate + '-' + fieldId),
-				$field_selector = $field_row.data('foogallery-value-selector'),
-				field_value_attribute = $field_row.data('foogallery-value-attribute'),
-				$field = $field_row.find($field_selector);
+				$fieldRow = $('.foogallery_template_field_template_id-' + selectedTemplate + '-' + fieldId),
+				$fieldSelector = $fieldRow.data('foogallery-value-selector'),
+				fieldValueAttribute = $fieldRow.data('foogallery-value-attribute'),
+				$field = $fieldRow.find($fieldSelector);
 
 			$field.each(function() {
-				var actualFieldValue = field_value_attribute ? $(this).attr(field_value_attribute) : $(this).val();
+				var actualFieldValue = fieldValueAttribute ? $(this).attr(fieldValueAttribute) : $(this).val();
 
 				if ( fieldOperator === '!==' ) {
 					if ( actualFieldValue !== fieldValue ) {
-						$item.show();
+						$item.show()
+							.removeClass('foogallery_template_field_template_hidden')
+							.find(':input').removeAttr('disabled');
 					}
 				} else if ( actualFieldValue === fieldValue ) {
-					$item.show();
+					$item.show()
+						.removeClass('foogallery_template_field_template_hidden')
+						.find(':input').removeAttr('disabled');
 				}
 			});
 		});
@@ -107,7 +133,9 @@
             });
         });
 
-		$('#FooGallerySettings_GalleryTemplate').change(FOOGALLERY.galleryTemplateChanged);
+		$('#FooGallerySettings_GalleryTemplate').change(function() {
+			FOOGALLERY.galleryTemplateChanged(true);
+		});
 
 		//hook into settings fields changes
 		$('.foogallery-metabox-settings .foogallery_template_field[data-foogallery-change-selector]').each(function(index, item) {
@@ -115,12 +143,12 @@
 				selector = $fieldContainer.data('foogallery-change-selector');
 
             $fieldContainer.find(selector).change(function() {
-            	FOOGALLERY.handleSettingFieldChange($fieldContainer);
-            });
+            	FOOGALLERY.handleSettingFieldChange(true);
+			});
         });
 
 		//trigger this onload too!
-		FOOGALLERY.galleryTemplateChanged();
+		FOOGALLERY.galleryTemplateChanged(false);
 	};
 
 	FOOGALLERY.getSelectedTemplate = function() {
