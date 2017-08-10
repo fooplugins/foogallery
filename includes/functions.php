@@ -427,7 +427,7 @@ function foogallery_build_container_attributes_safe( $gallery, $attributes ) {
 	$attributes['id'] = 'foogallery-gallery-' . $gallery->ID;
 
 	//add the standard data-foogallery attribute so that the JS initializes correctly
-    $attributes['data-foogallery'] = $gallery->ID;
+    $attributes['data-foogallery'] = foogallery_build_container_data_options( $gallery, $attributes );
 
 	//allow others to add their own attributes globally
 	$attributes = apply_filters( 'foogallery_build_container_attributes', $attributes, $gallery );
@@ -443,6 +443,20 @@ function foogallery_build_container_attributes_safe( $gallery, $attributes ) {
 	}
 
 	return $html;
+}
+
+/**
+ * Builds up the data-foogallery attribute options that is used by the core javascript
+ *
+ * @param $gallery
+ * @param $attributes
+ *
+ * @return string
+ */
+function foogallery_build_container_data_options( $gallery, $attributes ) {
+	$options = apply_filters( 'foogallery_build_container_data_options', array(), $gallery, $attributes );
+
+	return json_encode( $options );
 }
 
 /**
