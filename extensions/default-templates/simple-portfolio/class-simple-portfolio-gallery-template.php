@@ -126,17 +126,9 @@ if ( !class_exists( 'FooGallery_Simple_Portfolio_Gallery_Template' ) ) {
 		 * Enqueue scripts that the masonry gallery template relies on
 		 */
 		function enqueue_dependencies() {
-			wp_enqueue_script( 'jquery' );
-
 			//enqueue core files
 			foogallery_enqueue_core_gallery_template_style();
 			foogallery_enqueue_core_gallery_template_script();
-
-			$css = FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_URL . 'simple-portfolio/css/foogallery.simple-portfolio.min.css';
-			wp_enqueue_style( 'foogallery-simple_portfolio', $css, array( 'foogallery-core' ), FOOGALLERY_VERSION );
-
-			$js = FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_URL . 'simple-portfolio/js/foogallery.simple-portfolio.min.js';
-			wp_enqueue_script( 'foogallery-simple_portfolio', $js, array( 'foogallery-core' ), FOOGALLERY_VERSION );
 		}
 
 		/**

@@ -17,7 +17,6 @@ if ( !class_exists( 'FooGallery_Image_Viewer_Gallery_Template' ) ) {
 			add_action( 'foogallery_located_template-image-viewer', array( $this, 'enqueue_dependencies' ) );
 
 			add_filter( 'foogallery_gallery_templates_files', array( $this, 'register_myself' ) );
-			add_action( 'foogallery_render_gallery_template_field_custom', array( $this, 'render_thumbnail_preview' ), 10, 3 );
 
 			add_filter( 'foogallery_template_thumbnail_dimensions-image-viewer', array( $this, 'get_thumbnail_dimensions' ), 10, 2 );
 		}
@@ -45,8 +44,6 @@ if ( !class_exists( 'FooGallery_Image_Viewer_Gallery_Template' ) ) {
 				'slug'        => 'image-viewer',
 				'name'        => __( 'Image Viewer', 'foogallery' ),
 				'lazyload_support' => true,
-				'preview_css' => FOOGALLERY_IMAGE_VIEWER_GALLERY_TEMPLATE_URL . 'css/gallery-image-viewer.css',
-				'admin_js'	  => FOOGALLERY_IMAGE_VIEWER_GALLERY_TEMPLATE_URL . 'js/admin-gallery-image-viewer.js',
 				'fields'	  => array(
                     array(
                         'id'      => 'thumbnail_size',
@@ -226,63 +223,9 @@ if ( !class_exists( 'FooGallery_Image_Viewer_Gallery_Template' ) ) {
 		 * Enqueue scripts that the default gallery template relies on
 		 */
 		function enqueue_dependencies( $gallery ) {
-			wp_enqueue_script( 'jquery' );
-
 			//enqueue core files
 			foogallery_enqueue_core_gallery_template_style();
 			foogallery_enqueue_core_gallery_template_script();
-
-			$css = FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_URL . 'image-viewer/css/foogallery.image-viewer.min.css';
-			wp_enqueue_style( 'foogallery-image-viewer', $css, array( 'foogallery-core' ), FOOGALLERY_VERSION );
-
-			$js = FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_URL . 'image-viewer/js/foogallery.image-viewer.min.js';
-			wp_enqueue_script( 'foogallery-image-viewer', $js, array( 'foogallery-core' ), FOOGALLERY_VERSION );
-		}
-
-		function render_thumbnail_preview( $field, $gallery, $template ) {
-			if ( 'image_viewer_preview' == $field['type'] ) {
-				$args = $gallery->get_meta( 'thumbnail_size', array(
-						'width' => 640,
-						'height' => 360,
-						'crop' => true
-				) );
-				//override the link so that it does not actually open an image
-				$args['link'] = 'custom';
-				$args['custom_link'] = '#preview';
-				$args['link_attributes'] = array(
-						'class' => 'fiv-active'
-				);
-
-				$hover_effect = $gallery->get_meta( 'image-viewer_hover-effect', 'hover-effect-zoom' );
-				$hover_effect_type = $gallery->get_meta( 'image-viewer_hover-effect-type', '' );
-				$text_prev = $gallery->get_meta( 'image-viewer_text-prev', __('Prev', 'foogallery') );
-				$text_of = $gallery->get_meta( 'image-viewer_text-of', __('of', 'foogallery') );
-				$text_next = $gallery->get_meta( 'image-viewer_text-next', __('Next', 'foogallery') );
-
-				$featured = $gallery->featured_attachment();
-
-				if ( false === $featured ) {
-					$featured = new FooGalleryAttachment();
-					$featured->url = FOOGALLERY_URL . 'assets/test_thumb_1.jpg';
-				}
-
-				?><div class="foogallery-image-viewer-preview <?php echo foogallery_build_class_attribute( $gallery, $hover_effect, $hover_effect_type ); ?>">
-				<div class="fiv-inner">
-					<div class="fiv-inner-container">
-						<?php
-						echo $featured->html( $args, true, false );
-						echo $featured->html_caption( 'both' );
-						echo '</a>';
-						?>
-					</div>
-					<div class="fiv-ctrls">
-						<div class="fiv-prev"><span><?php echo $text_prev; ?></span></div>
-						<label class="fiv-count"><span class="fiv-count-current">1</span><?php echo $text_of; ?><span>1</span></label>
-						<div class="fiv-next"><span><?php echo $text_next; ?></span></div>
-					</div>
-				</div>
-				</div><?php
-			}
 		}
 
 		/**

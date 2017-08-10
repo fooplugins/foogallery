@@ -40,8 +40,6 @@ if ( !class_exists( 'FooGallery_Thumbnail_Gallery_Template' ) ) {
                 'slug'        => 'thumbnail',
                 'name'        => __( 'Single Thumbnail Gallery', 'foogallery' ),
                 'lazyload_support' => true,
-                'preview_css' => FOOGALLERY_THUMBNAIL_GALLERY_TEMPLATE_URL . 'css/gallery-thumbnail.css',
-                'admin_js'	  => FOOGALLERY_THUMBNAIL_GALLERY_TEMPLATE_URL . 'js/admin-gallery-thumbnail.js',
                 'fields'	  => array(
                     array(
                         'id'	  => 'help',
@@ -148,17 +146,9 @@ if ( !class_exists( 'FooGallery_Thumbnail_Gallery_Template' ) ) {
 		 * Enqueue scripts that the masonry gallery template relies on
 		 */
 		function enqueue_dependencies() {
-			wp_enqueue_script( 'jquery' );
-
 			//enqueue core files
 			foogallery_enqueue_core_gallery_template_style();
 			foogallery_enqueue_core_gallery_template_script();
-
-			$css = FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_URL . 'thumbnail/css/foogallery.single-thumbnail.min.css';
-			wp_enqueue_style( 'foogallery-thumbnail', $css, array( 'foogallery-core' ), FOOGALLERY_VERSION );
-
-			$js = FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_URL . 'thumbnail/js/foogallery.single-thumbnail.min.js';
-			wp_enqueue_script( 'foogallery-thumbnail', $js, array( 'foogallery-core' ), FOOGALLERY_VERSION );
 		}
 
 		/**
