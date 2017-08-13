@@ -433,19 +433,22 @@ if ( ! class_exists( 'FooGallery_Extensions_API' ) ) {
 		 * @return bool
 		 */
 		public function is_active( $slug ) {
-			global $foogallery_extensions;
+			$active_extensions = $this->get_active_extensions();
+			return array_key_exists( $slug, $active_extensions );
 
-			//first check if the extension class was loaded into memory
-			if ( $foogallery_extensions ) {
-				if ( array_key_exists( $slug, $foogallery_extensions ) ) {
-					return true;
-				}
-			}
-
-			//if we cannot find the extension class in memory, then check to see if the extension plugin is activated
-			$extension = $this->get_extension( $slug );
-			$plugin = $this->find_active_wordpress_plugin( $extension );
-			return $plugin;
+//			global $foogallery_extensions;
+//
+//			//first check if the extension class was loaded into memory
+//			if ( $foogallery_extensions ) {
+//				if ( array_key_exists( $slug, $foogallery_extensions ) ) {
+//					return true;
+//				}
+//			}
+//
+//			//if we cannot find the extension class in memory, then check to see if the extension plugin is activated
+//			$extension = $this->get_extension( $slug );
+//			$plugin = $this->find_active_wordpress_plugin( $extension );
+//			return $plugin;
 		}
 
 		/**
