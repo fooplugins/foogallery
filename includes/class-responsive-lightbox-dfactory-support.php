@@ -23,7 +23,12 @@ if ( ! class_exists( 'FooGallery_Responsive_Lightbox_dFactory_Support' ) ) {
 		 * @since 1.2.21
 		 */
 		function add_lightbox($lightboxes) {
-			$lightboxes['dfactory'] = __( 'Responsive Lightbox by dFactory', 'foogallery' );
+			$option_text = __( 'Responsive Lightbox by dFactory', 'foogallery' );
+			if ( !class_exists( 'Responsive_Lightbox' ) ) {
+				$option_text .= __( ' (Not installed!)', 'foogallery' );
+			}
+
+			$lightboxes['dfactory'] = $option_text;
 			return $lightboxes;
 		}
 

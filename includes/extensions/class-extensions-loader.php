@@ -24,7 +24,10 @@ if ( ! class_exists( 'FooGallery_Extensions_Loader' ) ) {
 		function load_extension( $slug, $class ) {
 			global $foogallery_extensions;
 			global $foogallery_currently_loading;
-			if ( class_exists( $class ) ) {
+			if ( is_null( $foogallery_extensions ) ) {
+				$foogallery_extensions = array();
+			}
+			if ( class_exists( $class ) && !array_key_exists( $slug, $foogallery_extensions ) ) {
 				$foogallery_currently_loading = $slug;
 				$instance = new $class();
 				$foogallery_extensions[ $slug ] = $instance;
