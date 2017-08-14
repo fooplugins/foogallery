@@ -43,7 +43,7 @@ if ( !class_exists( 'FooGallery_Default_Gallery_Template' ) ) {
 							array(
 									'id'      => 'lightbox',
 									'title'   => __( 'Lightbox', 'foogallery' ),
-									'desc'    => __( 'Choose which lightbox you want to use. The lightbox will only work if you set the thumbnail link to "Full Size Image".', 'foogallery' ),
+									'desc'    => __( 'Choose which lightbox you want to use. The lightbox will only work if you set the thumbnail link to "Full Size Image".<br>PLEASE NOTE: Lightbox plugins are not bundled and need to be installed separately.', 'foogallery' ),
 									'type'    => 'lightbox',
 							),
 							array(
