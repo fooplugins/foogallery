@@ -150,6 +150,12 @@ Update now to support FooVideo and many other improvements!
 
 == Changelog ==
 
+= 1.3.8 =
+
+* New : Built in support for FooBox, fixing a lot of issues where FooBox option is not available
+* Fix : More reliable extension active status on extensions listing
+* Fix : More obvious wording for 3rd party plugins when they are not installed
+
 = 1.3.7 =
 
 * Fix : Activation redirect bug showing "Sorry, you are not allowed to access this page."
