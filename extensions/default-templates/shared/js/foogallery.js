@@ -6716,6 +6716,11 @@
 			 */
 			this.masonry = null;
 			/**
+			 *
+			 * @type {HTMLStyleElement}
+			 */
+			this.style = null;
+			/**
 			 * @summary The CSS classes for the Masonry template.
 			 * @memberof FooGallery.MasonryTemplate#
 			 * @name cls
@@ -6728,24 +6733,12 @@
 			 * @type {FooGallery.MasonryTemplate~CSSSelectors}
 			 */
 		},
-		/**
-		 * @summary Create a new container element for the template returning the jQuery object.
-		 * @memberof FooGallery.MasonryTemplate#
-		 * @function create
-		 * @returns {jQuery}
-		 * @protected
-		 * @example {@caption The following displays the raw HTML output by this method.}{@lang html}
-		 * <div id="{current template id}" class="foogallery fg-masonry {additional classes}">
-		 *   <div class="fg-column-width"></div>
-		 *   <div class="fg-gutter-width"></div>
-		 * </div>
-		 */
-		create: function(){
+		createStylesheet: function(){
 			var self = this;
-			return self._super().append(
-				$("<div/>").addClass(self.cls.columnWidth),
-				$("<div/>").addClass(self.cls.gutterWidth)
-			);
+			self.style = document.createElement("style");
+			self.style.appendChild(document.createTextNode(""));
+			document.head.appendChild(self.style);
+			return self.style.sheet;
 		},
 		/**
 		 * @summary Listens for the {@link FooGallery.Template~event:"pre-init.foogallery"|`pre-init.foogallery`} event.
@@ -6776,30 +6769,61 @@
 			self.template.itemSelector = sel.item.elem;
 			// remove any layout classes and then apply only the current to the container
 			self.$el.removeClass(cls.layouts).addClass(cls.layout[self.template.layout]);
-			// if the columnWidth element does not exist create it
-			if (self.$el.find(sel.columnWidth).length === 0){
-				self.$el.prepend($("<div/>").addClass(self.cls.columnWidth));
+
+			// if this is a column layout make sure we have the column and gutter size elements
+			if (!fixed){
+				// if the columnWidth element does not exist create it
+				if (self.$el.find(sel.columnWidth).length === 0){
+					self.$el.prepend($("<div/>").addClass(self.cls.columnWidth));
+				}
+				self.template.columnWidth = sel.columnWidth;
+				// if the gutterWidth element does not exist create it
+				if (self.$el.find(sel.gutterWidth).length === 0){
+					self.$el.prepend($("<div/>").addClass(self.cls.gutterWidth));
+				}
+				self.template.gutter = sel.gutterWidth;
 			}
-			// if the gutterWidth element does not exist create it
-			if (self.$el.find(sel.gutterWidth).length === 0){
-				self.$el.prepend($("<div/>").addClass(self.cls.gutterWidth));
-			}
-			// if this is a fixed layout and a number value is supplied as the columnWidth option
-			if (fixed && _is.number(self.template.columnWidth)){
-				// then set the width on the columnWidth element
-				self.$el.find(sel.columnWidth).width(self.template.columnWidth);
-			}
-			// update the columnWidth value to be the selector
-			self.template.columnWidth = sel.columnWidth;
-			// if this is a fixed layout and a number value is supplied as the gutter option
+
+			// if this is a fixed layout and a number value is supplied as the gutter option then
+			// make sure to vertically space the items using  a CSS class and the same value
 			if (fixed && _is.number(self.template.gutter)){
-				// then set the width on the gutterWidth element
-				self.$el.find(sel.gutterWidth).width(self.template.gutter);
+				var sheet = self.createStylesheet(),
+						rule = '#' + self.id + self.sel.container + ' ' + self.sel.item.elem + ' { margin-bottom: ' + self.template.gutter + 'px; }';
+				sheet.insertRule(rule , 0);
 			}
-			// update the gutterWidth value to be the selector
-			self.template.gutter = sel.gutterWidth;
+
+
+			// // if this is a fixed layout and a number value is supplied as the columnWidth option
+			// if (fixed && _is.number(self.template.columnWidth)){
+			// 	// then set the width on the columnWidth element
+			// 	self.$el.find(sel.columnWidth).width(self.template.columnWidth);
+			// }
+			// // update the columnWidth value to be the selector
+			// self.template.columnWidth = sel.columnWidth;
+			// // if this is a fixed layout and a number value is supplied as the gutter option
+			// if (fixed && _is.number(self.template.gutter)){
+			// 	// then set the width on the gutterWidth element
+			// 	self.$el.find(sel.gutterWidth).width(self.template.gutter);
+			// 	var sheet = self.createStylesheet(),
+			// 			rule = '#' + self.id + self.sel.container + ' ' + self.sel.item.elem + ' { margin-bottom: ' + self.template.gutter + 'px; }';
+			// 	sheet.insertRule(rule , 0);
+			// }
+			// // update the gutterWidth value to be the selector
+			// self.template.gutter = sel.gutterWidth;
 			// create the actual instance of Masonry
+
 			self.masonry = new Masonry( self.$el.get(0), self.template );
+		},
+		onDestroy: function(event, self){
+			self.$el.find(self.sel.columnWidth).remove();
+			self.$el.find(self.sel.gutterWidth).remove();
+			if (self.masonry instanceof Masonry){
+				self.masonry.destroy();
+			}
+			if (self.style && self.style.parentNode){
+				self.style.parentNode.removeChild(self.style);
+			}
+			self.masonry = self.style = null;
 		},
 		/**
 		 * @summary Listens for the {@link FooGallery.Template~event:"parsed-items.foogallery"|`parsed-items.foogallery`} event.
