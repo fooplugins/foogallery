@@ -43,7 +43,6 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 							'postimagediv',
 							'foogallery_items',
 							'foogallery_settings',
-							'foogallery_preview',
 							'foogallery_help',
 							'foogallery_pages',
 							'foogallery_customcss',
@@ -73,15 +72,6 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 				'foogallery_settings',
 				__( 'Gallery Settings', 'foogallery' ),
 				array( $this, 'render_gallery_settings_metabox' ),
-				FOOGALLERY_CPT_GALLERY,
-				'normal',
-				'high'
-			);
-
-			add_meta_box(
-				'foogallery_preview',
-				__( 'Gallery Preview', 'foogallery' ),
-				array( $this, 'render_gallery_preview_metabox' ),
 				FOOGALLERY_CPT_GALLERY,
 				'normal',
 				'high'
@@ -167,15 +157,17 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 				//if we get here, we are dealing with the Gallery custom post type
 				do_action( 'foogallery_before_save_gallery', $post_id, $_POST );
 
-				$attachments = apply_filters( 'foogallery_save_gallery_attachments', explode( ',', $_POST[FOOGALLERY_META_ATTACHMENTS] ) );
+				$attachments = apply_filters( 'foogallery_save_gallery_attachments', explode( ',', $_POST[FOOGALLERY_META_ATTACHMENTS] ), $post_id, $_POST );
 				update_post_meta( $post_id, FOOGALLERY_META_ATTACHMENTS, $attachments );
+
+				$gallery_template = $_POST[FOOGALLERY_META_TEMPLATE];
+				update_post_meta( $post_id, FOOGALLERY_META_TEMPLATE, $gallery_template );
 
 				$settings = isset($_POST[FOOGALLERY_META_SETTINGS]) ?
 					$_POST[FOOGALLERY_META_SETTINGS] : array();
 
-				$settings = apply_filters( 'foogallery_save_gallery_settings', $settings );
-
-				update_post_meta( $post_id, FOOGALLERY_META_TEMPLATE, $_POST[FOOGALLERY_META_TEMPLATE] );
+				$settings = apply_filters( 'foogallery_save_gallery_settings', $settings, $post_id, $_POST );
+				$settings = apply_filters( 'foogallery_save_gallery_settings-'. $gallery_template, $settings, $post_id, $_POST );
 
 				update_post_meta( $post_id, FOOGALLERY_META_SETTINGS, $settings );
 
@@ -245,34 +237,54 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 			wp_enqueue_media();
 
 			?>
-			<input type="hidden" name="<?php echo FOOGALLERY_CPT_GALLERY; ?>_nonce"
-				   id="<?php echo FOOGALLERY_CPT_GALLERY; ?>_nonce"
-				   value="<?php echo wp_create_nonce( plugin_basename( FOOGALLERY_FILE ) ); ?>"/>
-			<input type="hidden" name='foogallery_attachments' id="foogallery_attachments"
-				   value="<?php echo $gallery->attachment_id_csv(); ?>"/>
-			<div>
-				<ul class="foogallery-attachments-list">
+			<div class="hidden foogallery-items-view-switch-container">
+				<div class="foogallery-items-view-switch">
+					<a href="#manage" data-container=".foogallery-items-view-manage" class="current1"><?php _e('Manage Items', 'foogallery'); ?></a>
+					<a href="#preview" data-container=".foogallery-items-view-preview" class="current"><?php _e('Gallery Preview', 'foogallery'); ?></a>
+				</div>
+				<span id="foogallery_preview_spinner" class="spinner"></span>
+			</div>
+
+			<div class="foogallery-items-view foogallery-items-view-manage hidden">
+				<input type="hidden" name="<?php echo FOOGALLERY_CPT_GALLERY; ?>_nonce"
+					   id="<?php echo FOOGALLERY_CPT_GALLERY; ?>_nonce"
+					   value="<?php echo wp_create_nonce( plugin_basename( FOOGALLERY_FILE ) ); ?>"/>
+				<input type="hidden" name='foogallery_attachments' id="foogallery_attachments"
+					   value="<?php echo $gallery->attachment_id_csv(); ?>"/>
+				<div>
+					<ul class="foogallery-attachments-list">
+					<?php
+					if ( $gallery->has_attachments() ) {
+						foreach ( $gallery->attachments() as $attachment ) {
+							$this->render_gallery_item( $attachment );
+						}
+					} ?>
+						<li class="add-attachment">
+							<a href="#" data-uploader-title="<?php _e( 'Add Media To Gallery', 'foogallery' ); ?>"
+							   data-uploader-button-text="<?php _e( 'Add Media', 'foogallery' ); ?>"
+							   data-post-id="<?php echo $post->ID; ?>" class="upload_image_button"
+							   title="<?php _e( 'Add Media To Gallery', 'foogallery' ); ?>">
+								<div class="dashicons dashicons-format-gallery"></div>
+								<span><?php _e( 'Add Media', 'foogallery' ); ?></span>
+							</a>
+						</li>
+					</ul>
+					<div style="clear: both;"></div>
+				</div>
+				<textarea style="display: none" id="foogallery-attachment-template">
+					<?php $this->render_gallery_item(); ?>
+				</textarea>
+			</div>
+			<div class="foogallery-items-view foogallery-items-view-preview">
+				<div class="foogallery_preview_container">
 				<?php
 				if ( $gallery->has_attachments() ) {
-					foreach ( $gallery->attachments() as $attachment ) {
-						$this->render_gallery_item( $attachment );
-					}
-				} ?>
-					<li class="add-attachment">
-						<a href="#" data-uploader-title="<?php _e( 'Add Media To Gallery', 'foogallery' ); ?>"
-						   data-uploader-button-text="<?php _e( 'Add Media', 'foogallery' ); ?>"
-						   data-post-id="<?php echo $post->ID; ?>" class="upload_image_button"
-						   title="<?php _e( 'Add Media To Gallery', 'foogallery' ); ?>">
-							<div class="dashicons dashicons-format-gallery"></div>
-							<span><?php _e( 'Add Media', 'foogallery' ); ?></span>
-						</a>
-					</li>
-				</ul>
-				<div style="clear: both;"></div>
+					foogallery_render_gallery( $gallery->ID );
+				}
+				?>
+				</div>
+				<?php wp_nonce_field( 'foogallery_preview', 'foogallery_preview', false ); ?>
 			</div>
-			<textarea style="display: none" id="foogallery-attachment-template">
-				<?php $this->render_gallery_item(); ?>
-			</textarea>
 		<?php
 
 		}
@@ -317,18 +329,12 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
             $settings->render_gallery_settings();
 		}
 
-		public function render_gallery_preview_metabox( $post ) {
-			$gallery = $this->get_gallery( $post );
-
-			foogallery_render_gallery( $gallery->ID );
-		}
-
 		public function render_gallery_shortcode_metabox( $post ) {
 			$gallery = $this->get_gallery( $post );
 			$shortcode = $gallery->shortcode();
 			?>
 			<p class="foogallery-shortcode">
-				<input type="text" id="foogallery-copy-shortcode" size="<?php echo strlen( $shortcode ); ?>" value="<?php echo htmlspecialchars( $shortcode ); ?>" readonly="readonly" />
+				<input type="text" id="foogallery-copy-shortcode" size="<?php echo strlen( $shortcode ) + 2; ?>" value="<?php echo htmlspecialchars( $shortcode ); ?>" readonly="readonly" />
 			</p>
 			<p>
 				<?php _e( 'Paste the above shortcode into a post or page to show the gallery.', 'foogallery' ); ?>
