@@ -30,6 +30,7 @@ class FooGallery extends stdClass {
 		$this->_attachments = false;
 		$this->datasource_name = foogallery_default_datasource();
 		$this->_datasource = false;
+		$this->settings = array();
 	}
 
 	/**
@@ -100,6 +101,28 @@ class FooGallery extends stdClass {
 				$this->load( $galleries[0] );
 			}
 		}
+	}
+
+	/**
+	 * Static function to build a dynamic gallery that does not exist in the database
+	 * @param $template
+	 * @param $attachment_ids
+	 *
+	 * @return FooGallery
+	 */
+	public static function dynamic( $template, $attachment_ids ) {
+		$gallery = new self( null );
+
+		$gallery->gallery_template = $template;
+		$gallery->attachment_ids = $attachment_ids;
+
+		//loads all meta data from the default gallery
+		$default_gallery_id = foogallery_get_setting( 'default_gallery_settings' );
+		if ( $default_gallery_id > 0 ) {
+			$gallery->load_meta( $default_gallery_id );
+		}
+
+		return $gallery;
 	}
 
 	/**
