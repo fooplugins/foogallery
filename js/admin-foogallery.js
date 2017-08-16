@@ -59,7 +59,7 @@
 	};
 
 	FOOGALLERY.updateGalleryPreview = function() {
-		var $preview = $('#foogallery_preview .foogallery');
+		var $preview = $('.foogallery_preview_container .foogallery');
 
 		//build up the container class
 		var $classFields = $('.foogallery-settings-container-active .foogallery-metabox-settings .foogallery_template_field[data-foogallery-preview="class"]');
@@ -118,20 +118,59 @@
 		//move the template selector into the metabox heading
         $('.foogallery-template-selector').appendTo( '#foogallery_settings .hndle span' ).removeClass('hidden');
 
-        $( function() {
-            // Prevent inputs in meta box headings opening/closing contents.
-            $( '#foogallery_settings' ).find( '.hndle' ).unbind( 'click.postboxes' );
+		//move the items switch selector into the metabox heading
+		$('.foogallery-items-view-switch-container').appendTo( '#foogallery_items .hndle span' ).removeClass('hidden');
 
-            $( '#foogallery_settings' ).on( 'click', '.hndle', function( event ) {
+		$('.foogallery-items-view-switch-container a').click(function(e) {
+			e.preventDefault();
 
-                // If the user clicks on some form input inside the h3 the box should not be toggled.
-                if ( $( event.target ).filter( 'input, option, label, select' ).length ) {
-                    return;
-                }
+			var $currentButton = $('.foogallery-items-view-switch-container a.current'),
+				currentSelector = $currentButton.data('container'),
+				$nextButton = $(this),
+				nextSelector = $nextButton.data('container');
 
-                $( '#foogallery_settings' ).toggleClass( 'closed' );
-            });
-        });
+			//toggle the views
+			$(currentSelector).hide();
+			$(nextSelector).show();
+
+			//toggle the switch button
+			$currentButton.removeClass('current');
+			$nextButton.addClass('current');
+
+			if ( $('.foogallery_preview_container').is(':visible') ) {
+				FOOGALLERY.updateGalleryPreview();
+			}
+		});
+
+		$(function() {
+
+			// Prevent inputs in settings meta box headings opening/closing contents.
+			$( '#foogallery_settings' ).find( '.hndle' ).unbind( 'click.postboxes' );
+
+			$( '#foogallery_settings' ).on( 'click', '.hndle', function( event ) {
+
+				// If the user clicks on some form input inside the h3 the box should not be toggled.
+				if ( $( event.target ).filter( 'input, option, label, select' ).length ) {
+					return;
+				}
+
+				$( '#foogallery_settings' ).toggleClass( 'closed' );
+			});
+
+			// Prevent inputs in items meta box headings opening/closing contents.
+			$( '#foogallery_items' ).find( '.hndle' ).unbind( 'click.postboxes' );
+
+			$( '#foogallery_items' ).on( 'click', '.hndle', function( event ) {
+
+				// If the user clicks on some form input inside the h3 the box should not be toggled.
+				if ( $( event.target ).filter( 'input, option, label, select' ).length ) {
+					return;
+				}
+
+				$( '#foogallery_items' ).toggleClass( 'closed' );
+			});
+		});
+
 
 		$('#FooGallerySettings_GalleryTemplate').change(function() {
 			FOOGALLERY.galleryTemplateChanged(true);
@@ -313,6 +352,24 @@
 					$('#foogallery_clear_thumb_cache_spinner').removeClass('is-active');
 				}
 			});
+		});
+	};
+
+	FOOGALLERY.refreshPreviewFromShortcode = function() {
+		$('#foogallery_preview_spinner').addClass('is-active');
+		var data = 'action=foogallery_clear_gallery_thumb_cache' +
+			'&foogallery_id=' + $('#post_ID').val() +
+			'&foogallery_clear_gallery_thumb_cache_nonce=' + $('#foogallery_clear_gallery_thumb_cache_nonce').val() +
+			'&_wp_http_referer=' + encodeURIComponent($('input[name="_wp_http_referer"]').val());
+
+		$.ajax({
+			type: "POST",
+			url: ajaxurl,
+			data: data,
+			success: function(data) {
+				alert(data);
+				$('#foogallery_clear_thumb_cache_spinner').removeClass('is-active');
+			}
 		});
 	};
 
