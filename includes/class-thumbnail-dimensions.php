@@ -86,6 +86,15 @@ if ( ! class_exists( 'FooGallery_Thumbnail_Dimensions' ) ) {
 		 */
 		function include_thumb_dimension_attributes( $attr, $args, $foogallery_attachment ) {
 			if ( isset( $foogallery_attachment->foogallery_id ) ) {
+				//do a check to see if the values have changed
+
+				if ( $foogallery_attachment->thumb_width > 0 && array_key_exists( 'width', $attr ) ) {
+					if ( intval( $attr['width'] ) !== $foogallery_attachment->thumb_width ) {
+						//we need to recalculate dimensions
+					}
+				}
+
+
 				if ( $foogallery_attachment->thumb_width > 0 ) {
 					$attr['width'] = $foogallery_attachment->thumb_width;
 				}

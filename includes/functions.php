@@ -353,7 +353,6 @@ function foogallery_build_class_attribute( $gallery ) {
 	$classes[] = 'foogallery';
 	$classes[] = 'foogallery-container';
 	$classes[] = "fg-{$gallery->gallery_template}";
-    //for testing : $classes[] = 'fg-light fg-responsive fg-border-thick fg-shadow-large fg-loading-default';
 
 	//get some default classes from common gallery settings
 	$classes[] = $gallery->get_setting( 'theme', 'fg-light' );
@@ -455,6 +454,8 @@ function foogallery_build_container_attributes_safe( $gallery, $attributes ) {
  */
 function foogallery_build_container_data_options( $gallery, $attributes ) {
 	$options = apply_filters( 'foogallery_build_container_data_options', array(), $gallery, $attributes );
+
+	$options = apply_filters( 'foogallery_build_container_data_options-'. $gallery->gallery_template, $options, $gallery, $attributes );
 
 	return json_encode( $options );
 }
