@@ -13,7 +13,6 @@ $spacing = foogallery_gallery_template_setting( 'spacing', '' );
 $alignment = foogallery_gallery_template_setting( 'alignment', 'fg-center' );
 
 $foogallery_default_classes = foogallery_build_class_attribute_safe( $current_foogallery, 'foogallery-lightbox-' . $lightbox, $spacing, $alignment );
-
 $foogallery_default_attributes = foogallery_build_container_attributes_safe( $current_foogallery, array( 'class' => $foogallery_default_classes ) );
 
 ?><div <?php echo $foogallery_default_attributes; ?>>

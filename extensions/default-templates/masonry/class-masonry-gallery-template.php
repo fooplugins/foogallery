@@ -22,7 +22,7 @@ if ( !class_exists( 'FooGallery_Masonry_Gallery_Template' ) ) {
 			add_filter( 'foogallery_override_gallery_template_fields-masonry', array( $this, 'add_common_thumbnail_fields' ), 10, 2 );
 
 			//add the data options needed for masonry
-			add_filter( 'foogallery_build_container_data_options', array( $this, 'add_masonry_options' ), 10, 3 );
+			add_filter( 'foogallery_build_container_data_options-masonry', array( $this, 'add_masonry_options' ), 10, 3 );
 		}
 
 		/**
@@ -96,7 +96,6 @@ if ( !class_exists( 'FooGallery_Masonry_Gallery_Template' ) ) {
                             'data-foogallery-show-when-field' => 'layout',
                             'data-foogallery-show-when-field-value' => 'fixed',
 							'data-foogallery-preview' => 'data',
-							'data-foogallery-preview-value-path' => 'template.gutter'
                         )
                     ),
                     array(

@@ -17,6 +17,9 @@ if ( !class_exists( 'FooGallery_Justified_Gallery_Template' ) ) {
 			add_filter( 'foogallery_override_gallery_template_fields-justified', array( $this, 'add_common_thumbnail_fields' ), 10, 2 );
 
 			add_action( 'foogallery_located_template-justified', array( $this, 'enqueue_dependencies' ) );
+
+			//add the data options needed for justified
+			add_filter( 'foogallery_build_container_data_options-justified', array( $this, 'add_justified_options' ), 10, 3 );
 		}
 
 		/**
@@ -63,6 +66,11 @@ if ( !class_exists( 'FooGallery_Justified_Gallery_Template' ) ) {
                         'default' => 150,
                         'step'    => '10',
                         'min'     => '0',
+						'row_data'=> array(
+							'data-foogallery-change-selector' => 'input',
+							'data-foogallery-value-selector' => 'input',
+							'data-foogallery-preview' => 'data',
+						)
                     ),
                     array(
                         'id'      => 'max_row_height',
@@ -71,27 +79,29 @@ if ( !class_exists( 'FooGallery_Justified_Gallery_Template' ) ) {
                         'section' => __( 'General', 'foogallery' ),
                         'type'    => 'text',
                         'class'   => 'small-text',
-                        'default' => '200%'
+                        'default' => '200%',
+						'row_data'=> array(
+							'data-foogallery-change-selector' => 'input',
+							'data-foogallery-value-selector' => 'input',
+							'data-foogallery-preview' => 'data',
+						)
                     ),
                     array(
                         'id'      => 'margins',
                         'title'   => __( 'Margins', 'foogallery' ),
                         'desc'    => __( 'The spacing between your thumbnails.', 'foogallery' ),
-                        'section' => __( 'Look &amp; Feel', 'foogallery' ),
+						'section' => __( 'General', 'foogallery' ),
                         'type'    => 'number',
                         'class'   => 'small-text',
                         'default' => 1,
                         'step'    => '1',
                         'min'     => '0',
+						'row_data'=> array(
+							'data-foogallery-change-selector' => 'input',
+							'data-foogallery-value-selector' => 'input',
+							'data-foogallery-preview' => 'data',
+						)
                     ),
-//							array(
-//									'id'      => 'captions',
-//									'title'   => __( 'Show Captions', 'foogallery' ),
-//									'desc'    => __( 'Show a caption when hovering over your thumbnails. (Set captions by adding either a title or alt text to an attachment)', 'foogallery' ),
-//									'type'    => 'checkbox',
-//									'default' => 'on',
-//							),
-
                     array(
                         'id'      => 'thumbnail_link',
                         'title'   => __( 'Thumbnail Link', 'foogallery' ),
@@ -150,6 +160,32 @@ if ( !class_exists( 'FooGallery_Justified_Gallery_Template' ) ) {
 			//enqueue core files
 			foogallery_enqueue_core_gallery_template_style();
 			foogallery_enqueue_core_gallery_template_script();
+		}
+
+		/**
+		 * Add the required justified options if needed
+		 *
+		 * @param $options
+		 * @param $gallery    FooGallery
+		 *
+		 * @param $attributes array
+		 *
+		 * @return array
+		 */
+		function add_justified_options($options, $gallery, $attributes) {
+
+			$row_height = foogallery_gallery_template_setting( 'row_height', '150' );
+			$max_row_height = foogallery_gallery_template_setting( 'max_row_height', '200%' );
+			if ( strpos( $max_row_height, '%' ) === false ) {
+				$max_row_height = intval( $max_row_height );
+			}
+			$margins = foogallery_gallery_template_setting( 'margins', '1' );
+
+			$options['template']['rowHeight'] = intval($row_height);
+			$options['template']['maxRowHeight'] = $max_row_height;
+			$options['template']['margins'] = intval($margins);
+
+			return $options;
 		}
 	}
 }

@@ -19,6 +19,9 @@ if ( !class_exists( 'FooGallery_Image_Viewer_Gallery_Template' ) ) {
 			add_filter( 'foogallery_gallery_templates_files', array( $this, 'register_myself' ) );
 
 			add_filter( 'foogallery_template_thumbnail_dimensions-image-viewer', array( $this, 'get_thumbnail_dimensions' ), 10, 2 );
+
+			//override specific settings when saving the gallery
+			add_filter( 'foogallery_save_gallery_settings-image-viewer', array( $this, 'override_settings'), 10, 3 );
 		}
 
 		/**
@@ -72,131 +75,49 @@ if ( !class_exists( 'FooGallery_Image_Viewer_Gallery_Template' ) ) {
                         'desc'    => __( 'Choose which lightbox you want to use in the gallery', 'foogallery' ),
                         'type'    => 'lightbox'
                     ),
-					array(
-						'id'      => 'theme',
-						'title'   => __( 'Theme', 'foogallery' ),
-                        'section' => __( 'Look &amp; Feel', 'foogallery' ),
-                        'desc'    => __( 'Choose which theme your Image Viewer gallery will use. If you choose "custom", then you will need to choose colors too', 'foogallery' ),
-                        'default' => '',
-						'type'    => 'radio',
-						'spacer'  => '<span class="spacer"></span>',
-						'choices' => array(
-							'' => __( 'Light', 'foogallery' ),
-							'fiv-dark' => __( 'Dark', 'foogallery' ),
-							'fiv-custom' => __( 'Custom', 'foogallery' )
-						),
-                        'row_data'=> array(
-                            'data-foogallery-change-selector' => 'input:radio',
-                            'data-foogallery-value-selector' => 'input:checked'
-                        )
-					),
-                    array(
-                        'id'      => 'custom-theme-help',
-                        'title'   => __( 'Custom Theme Help', 'foogallery' ),
-                        'desc'    => __( 'By choosing a custom theme means you need to decide on the colors the custom theme will use.', 'foogallery' ),
-                        'section' => __( 'Look &amp; Feel', 'foogallery' ),
-                        'type'    => 'help',
-                        'row_data'=> array(
-                            'data-foogallery-hidden' => true,
-                            'data-foogallery-show-when-field' => 'theme',
-                            'data-foogallery-show-when-field-value' => 'fiv-custom'
-                        )
-                    ),
-					array(
-						'id'      => 'theme_custom_bgcolor',
-						'title'   => __('Background Color', 'foogallery'),
-                        'desc'    => __( 'Choose a background color for your custom theme', 'foogallery' ),
-                        'section' => __( 'Look &amp; Feel', 'foogallery' ),
-						'type'    => 'colorpicker',
-						'default' => '#FFFFFF',
-						'opacity' => true,
-                        'row_data'=> array(
-                            'data-foogallery-hidden' => true,
-                            'data-foogallery-show-when-field' => 'theme',
-                            'data-foogallery-show-when-field-value' => 'fiv-custom'
-                        )
-					),
-					array(
-						'id'      => 'theme_custom_textcolor',
-						'title'   => __('Text Color', 'foogallery'),
-                        'desc'    => __( 'Choose a text color for your custom theme', 'foogallery' ),
-                        'section' => __( 'Look &amp; Feel', 'foogallery' ),
-						'type'    => 'colorpicker',
-						'default' => '#1b1b1b',
-						'opacity' => true,
-                        'row_data'=> array(
-                            'data-foogallery-hidden' => true,
-                            'data-foogallery-show-when-field' => 'theme',
-                            'data-foogallery-show-when-field-value' => 'fiv-custom'
-                        )
-					),
-					array(
-						'id'      => 'theme_custom_hovercolor',
-						'title'   => __('Hover BG Color', 'foogallery'),
-                        'desc'    => __( 'Choose a hover background color for your custom theme', 'foogallery' ),
-                        'section' => __( 'Look &amp; Feel', 'foogallery' ),
-						'type'    => 'colorpicker',
-						'default' => '#F2F2F2',
-						'opacity' => true,
-                        'row_data'=> array(
-                            'data-foogallery-hidden' => true,
-                            'data-foogallery-show-when-field' => 'theme',
-                            'data-foogallery-show-when-field-value' => 'fiv-custom'
-                        )
-					),
-					array(
-						'id'      => 'theme_custom_bordercolor',
-						'title'   => __('Border Color', 'foogallery'),
-                        'desc'    => __( 'Choose a border color for your custom theme', 'foogallery' ),
-                        'section' => __( 'Look &amp; Feel', 'foogallery' ),
-						'type'    => 'colorpicker',
-						'default' => '#e6e6e6',
-						'opacity' => true,
-                        'row_data'=> array(
-                            'data-foogallery-hidden' => true,
-                            'data-foogallery-show-when-field' => 'theme',
-                            'data-foogallery-show-when-field-value' => 'fiv-custom'
-                        )
-					),
                     array(
                         'id'      => 'alignment',
                         'title'   => __( 'Alignment', 'foogallery' ),
-                        'section' => __( 'Look &amp; Feel', 'foogallery' ),
+						'section' => __( 'General', 'foogallery' ),
                         'desc'    => __( 'The horizontal alignment of the thumbnails inside the gallery', 'foogallery' ),
-                        'default' => 'alignment-center',
+                        'default' => 'fg-center',
 						'type'    => 'radio',
 						'spacer'  => '<span class="spacer"></span>',
                         'choices' => array(
-                            'alignment-left' => __( 'Left', 'foogallery' ),
-                            'alignment-center' => __( 'Center', 'foogallery' ),
-                            'alignment-right' => __( 'Right', 'foogallery' ),
-                        )
+                            'fg-left' => __( 'Left', 'foogallery' ),
+                            'fg-center' => __( 'Center', 'foogallery' ),
+                            'fg-right' => __( 'Right', 'foogallery' ),
+                        ),
+						'row_data'=> array(
+							'data-foogallery-change-selector' => 'input:radio',
+							'data-foogallery-preview' => 'class'
+						)
                     ),
                     array(
                         'id'      => 'language-help',
                         'title'   => __( 'Language Help', 'foogallery' ),
                         'desc'    => __( 'This gallery template shows the below items of text. Change them to suit your preference or language.', 'foogallery' ),
-                        'section' => __( 'Language', 'foogallery' ),
+						'section' => __( 'General', 'foogallery' ),
                         'type'    => 'help'
                     ),
 					array(
 						'id'      => 'text-prev',
 						'title'   => __( '"Prev" Text', 'foogallery' ),
-						'section' => __( 'Language', 'foogallery' ),
+						'section' => __( 'General', 'foogallery' ),
 						'type'    => 'text',
 						'default' =>  __('Prev', 'foogallery')
 					),
 					array(
 						'id'      => 'text-of',
 						'title'   => __( '"of" Text', 'foogallery' ),
-						'section' => __( 'Language', 'foogallery' ),
+						'section' => __( 'General', 'foogallery' ),
 						'type'    => 'text',
 						'default' =>  __('of', 'foogallery')
 					),
 					array(
 						'id'      => 'text-next',
 						'title'   => __( '"Next" Text', 'foogallery' ),
-						'section' => __( 'Language', 'foogallery' ),
+						'section' => __( 'General', 'foogallery' ),
 						'type'    => 'text',
 						'default' =>  __('Next', 'foogallery')
 					)
@@ -216,7 +137,21 @@ if ( !class_exists( 'FooGallery_Image_Viewer_Gallery_Template' ) ) {
 		 * @return array
 		 */
 		function add_common_thumbnail_fields( $fields, $template ) {
-			return apply_filters( 'foogallery_gallery_template_common_thumbnail_fields', $fields );
+			$updated_fields = apply_filters( 'foogallery_gallery_template_common_thumbnail_fields', $fields );
+
+			//update specific fields
+			foreach ($updated_fields as &$field) {
+				if ( 'rounded_corners' === $field['id'] ) {
+					$field['choices'] = array(
+						''  => __( 'None', 'foogallery' ),
+						'fg-round-small'  => __( 'Small', 'foogallery' ),
+						'fg-round-medium'  => __( 'Medium', 'foogallery' ),
+						'fg-round-large'  => __( 'Large', 'foogallery' ),
+					);
+				}
+			}
+
+			return $updated_fields;
 		}
 
 		/**
@@ -239,6 +174,23 @@ if ( !class_exists( 'FooGallery_Image_Viewer_Gallery_Template' ) ) {
 		function get_thumbnail_dimensions( $dimensions, $foogallery ) {
 			$dimensions = $foogallery->get_meta( 'image-viewer_thumbnail_size', false );
 			return $dimensions;
+		}
+
+		/**
+		 * Override specific settings so that the gallery template will always work
+		 *
+		 * @param $settings
+		 * @param $post_id
+		 * @param $form_data
+		 *
+		 * @return mixed
+		 */
+		function override_settings($settings, $post_id, $form_data) {
+			if ( 'fg-round-full' === $settings['image-viewer_rounded_corners'] ) {
+				$settings['image-viewer_rounded_corners'] = 'fg-round-large';
+			}
+
+			return $settings;
 		}
 	}
 }

@@ -3043,7 +3043,7 @@
 	 * @summary Expose FooGallery as a jQuery plugin.
 	 * @memberof external:"jQuery.fn"#
 	 * @function foogallery
-	 * @param {object} [options] - The options to supply to FooGallery.
+	 * @param {(object|string)} [options] - The options to supply to FooGallery or one of the supported method names.
 	 * @param {external:"jQuery.fn"~readyCallback} [ready] - A callback executed once each template initialized is ready.
 	 * @returns {jQuery}
 	 * @example {@caption The below shows using this method in its simplest form, initializing a template on pre-existing elements.}{@lang html}
@@ -3090,11 +3090,25 @@
 	 */
 	$.fn.foogallery = function(options, ready){
 		return this.filter(".foogallery").each(function(i, element){
-			_.template.make(options, element).initialize().then(function(template){
-				if (_is.fn(ready)){
-					ready(template);
+			if (_is.string(options)){
+				var template = $.data(element, _.dataTemplate);
+				if (template instanceof _.Template){
+					switch (options){
+						case "layout":
+							template.layout();
+							return;
+						case "destroy":
+							template.destroy();
+							return;
+					}
 				}
-			});
+			} else {
+				_.template.make(options, element).initialize().then(function(template){
+					if (_is.fn(ready)){
+						ready(template);
+					}
+				});
+			}
 		});
 	};
 
@@ -3731,6 +3745,24 @@
 					self.state.set(_is.empty(state) ? self.state.initial() : state);
 					$(window).on("scroll.foogallery", {self: self}, self.onWindowScroll)
 						.on("popstate.foogallery", {self: self}, self.onWindowPopState);
+				}).then(function(){
+					/**
+					 * @summary Raised after the template is fully initialized but before the first load occurs.
+					 * @event FooGallery.Template~"first-load.foogallery"
+					 * @type {jQuery.Event}
+					 * @param {jQuery.Event} event - The jQuery.Event object for the current event.
+					 * @param {FooGallery.Template} template - The template raising the event.
+					 * @description This event is raised after all post-initialization work such as setting the initial state is performed but before the first load of items takes place.
+					 * @example {@caption To listen for this event and perform some action when it occurs you would bind to it as follows.}
+					 * $(".foogallery").foogallery({
+					 * 	on: {
+					 * 		"first-load.foogallery": function(event, template){
+					 * 			// do something
+					 * 		}
+					 * 	}
+					 * });
+					 */
+					self.raise("first-load");
 					return self.loadAvailable();
 				}).then(function(){
 					/**
@@ -3803,14 +3835,30 @@
 			 * });
 			 */
 			self.raise("destroy");
-			if (!_is.empty(self.opt.on)){
-				self.$el.off(self.opt.on);
-			}
 			$(window).off("popstate.foogallery", self.onWindowPopState)
 				.off("scroll.foogallery", self.onWindowScroll);
 			self.state.destroy();
 			if (self.pages) self.pages.destroy();
 			self.items.destroy();
+			if (!_is.empty(self.opt.on)){
+				self.$el.off(self.opt.on);
+			}
+			/**
+			 * @summary Raised after the template has been destroyed.
+			 * @event FooGallery.Template~"destroyed.foogallery"
+			 * @type {jQuery.Event}
+			 * @param {jQuery.Event} event - The jQuery.Event object for the current event.
+			 * @param {FooGallery.Template} template - The template raising the event.
+			 * @example {@caption To listen for this event and perform some action when it occurs you would bind to it as follows.}
+			 * $(".foogallery").foogallery({
+			 * 	on: {
+			 * 		"destroyed.foogallery": function(event, template){
+			 * 			// do something
+			 * 		}
+			 * 	}
+			 * });
+			 */
+			self.raise("destroyed");
 			self.$el.removeData(_.dataTemplate);
 			if (self.createdSelf){
 				self.$el.remove();
@@ -3866,12 +3914,34 @@
 				event = $.Event(name + ".foogallery");
 			args.unshift(self); // add self
 			self.$el.trigger(event, args);
+			_.debug.logf("{id}|{name}:", {id: self.id, name: name}, args);
 			if (_is.fn(self[listener])){
 				args.unshift(event); // add event
 				self[listener].apply(self.$el.get(0), args);
 			}
-			_.debug.logf("{id}|{name}:", {id: self.id, name: name}, args);
 			return event;
+		},
+
+		layout: function(){
+			var self = this;
+			if (self._initialize === null) return;
+			/**
+			 * @summary Raised when the templates' {@link FooGallery.Template#layout|layout} method is called.
+			 * @event FooGallery.Template~"layout.foogallery"
+			 * @type {jQuery.Event}
+			 * @param {jQuery.Event} event - The jQuery.Event object for the current event.
+			 * @param {FooGallery.Template} template - The template raising the event.
+			 * @description This allows templates to perform layout if required for example when visibility changes.
+			 * @example {@caption To listen for this event and perform some action when it occurs you would bind to it as follows.}
+			 * $(".foogallery").foogallery({
+			 * 	on: {
+			 * 		"layout.foogallery": function(event, template){
+			 * 			// do something
+			 * 		}
+			 * 	}
+			 * });
+			 */
+			self.raise("layout");
 		},
 
 		// ###############
@@ -4401,6 +4471,14 @@
 			 */
 			self.isError = false;
 			/**
+			 * @summary Whether or not this item was parsed from an existing DOM element.
+			 * @memberof FooGallery.Item#
+			 * @name isParsed
+			 * @type {boolean}
+			 * @readonly
+			 */
+			self.isParsed = false;
+			/**
 			 * @memberof FooGallery.Item#
 			 * @name $el
 			 * @type {?jQuery}
@@ -4580,6 +4658,11 @@
 			 */
 			var e = self.tmpl.raise("destroy-item");
 			if (!e.isDefaultPrevented()){
+				if (self.isParsed && !self.isAttached){
+					self.append();
+				} else if (!self.isParsed && self.isAttached) {
+					self.detach();
+				}
 				self._super();
 			}
 			return self.tmpl === null;
@@ -5933,9 +6016,11 @@
 		create: function(pageNumber){
 			var self = this;
 			pageNumber = self.number(pageNumber);
-			for (var i = 0, l = self._arr.length, index = pageNumber - 1; i < l; i++) {
-				if (i === index) self.tmpl.items.create(self._arr[i], true);
-				else self.tmpl.items.detach(self._arr[i]);
+			var index = pageNumber - 1;
+			self.tmpl.items.create(self._arr[index], true);
+			for (var i = 0, l = self._arr.length; i < l; i++) {
+				if (i === index) continue;
+				self.tmpl.items.detach(self._arr[i]);
 			}
 			self.current = pageNumber;
 		},
@@ -6720,6 +6805,7 @@
 			 * @type {HTMLStyleElement}
 			 */
 			this.style = null;
+			this.$columnWidth = null;
 			/**
 			 * @summary The CSS classes for the Masonry template.
 			 * @memberof FooGallery.MasonryTemplate#
@@ -6770,47 +6856,30 @@
 			// remove any layout classes and then apply only the current to the container
 			self.$el.removeClass(cls.layouts).addClass(cls.layout[self.template.layout]);
 
-			// if this is a column layout make sure we have the column and gutter size elements
 			if (!fixed){
-				// if the columnWidth element does not exist create it
-				if (self.$el.find(sel.columnWidth).length === 0){
-					self.$el.prepend($("<div/>").addClass(self.cls.columnWidth));
-				}
-				self.template.columnWidth = sel.columnWidth;
 				// if the gutterWidth element does not exist create it
 				if (self.$el.find(sel.gutterWidth).length === 0){
-					self.$el.prepend($("<div/>").addClass(self.cls.gutterWidth));
+					self.$el.prepend($("<div/>").addClass(cls.gutterWidth));
 				}
 				self.template.gutter = sel.gutterWidth;
 			}
+
+			// if the columnWidth element does not exist create it
+			if (self.$el.find(sel.columnWidth).length === 0){
+				self.$el.prepend($("<div/>").addClass(cls.columnWidth));
+			}
+			if (_is.number(self.template.columnWidth)){
+				self.$el.find(sel.columnWidth).width(self.template.columnWidth);
+			}
+			self.template.columnWidth = sel.columnWidth;
 
 			// if this is a fixed layout and a number value is supplied as the gutter option then
 			// make sure to vertically space the items using  a CSS class and the same value
 			if (fixed && _is.number(self.template.gutter)){
 				var sheet = self.createStylesheet(),
-						rule = '#' + self.id + self.sel.container + ' ' + self.sel.item.elem + ' { margin-bottom: ' + self.template.gutter + 'px; }';
+						rule = '#' + self.id + sel.container + ' ' + sel.item.elem + ' { margin-bottom: ' + self.template.gutter + 'px; }';
 				sheet.insertRule(rule , 0);
 			}
-
-
-			// // if this is a fixed layout and a number value is supplied as the columnWidth option
-			// if (fixed && _is.number(self.template.columnWidth)){
-			// 	// then set the width on the columnWidth element
-			// 	self.$el.find(sel.columnWidth).width(self.template.columnWidth);
-			// }
-			// // update the columnWidth value to be the selector
-			// self.template.columnWidth = sel.columnWidth;
-			// // if this is a fixed layout and a number value is supplied as the gutter option
-			// if (fixed && _is.number(self.template.gutter)){
-			// 	// then set the width on the gutterWidth element
-			// 	self.$el.find(sel.gutterWidth).width(self.template.gutter);
-			// 	var sheet = self.createStylesheet(),
-			// 			rule = '#' + self.id + self.sel.container + ' ' + self.sel.item.elem + ' { margin-bottom: ' + self.template.gutter + 'px; }';
-			// 	sheet.insertRule(rule , 0);
-			// }
-			// // update the gutterWidth value to be the selector
-			// self.template.gutter = sel.gutterWidth;
-			// create the actual instance of Masonry
 
 			self.masonry = new Masonry( self.$el.get(0), self.template );
 		},
@@ -6823,7 +6892,9 @@
 			if (self.style && self.style.parentNode){
 				self.style.parentNode.removeChild(self.style);
 			}
-			self.masonry = self.style = null;
+		},
+		onLayout: function(event, self){
+			self.masonry.layout();
 		},
 		/**
 		 * @summary Listens for the {@link FooGallery.Template~event:"parsed-items.foogallery"|`parsed-items.foogallery`} event.
@@ -6994,10 +7065,14 @@
 		},
 		destroy: function(){
 			$(window).off("resize.justified");
+			$.each(this._items, function(i, item){
+				item.$item.removeAttr("style").removeClass("fg-positioned");
+			});
+			this.$el.removeAttr("style");
 		},
 		parse: function(){
 			var self = this;
-			return self._items = self.$el.find(self.options.itemSelector).map(function(i, el){
+			return self._items = self.$el.find(self.options.itemSelector).removeAttr("style").removeClass("fg-positioned").map(function(i, el){
 				var $item = $(el),
 					width = $item.outerWidth(),
 					height = $item.outerHeight(),
@@ -7221,6 +7296,12 @@
 		onInit: function(event, self){
 			self.justified.init();
 		},
+		onDestroy: function(event, self){
+			self.justified.destroy();
+		},
+		onLayout: function(event, self){
+			self.justified.layout( true );
+		},
 		onParsedItems: function(event, self, items){
 			self.justified.layout();
 		},
@@ -7256,10 +7337,14 @@
 		},
 		destroy: function(){
 			$(window).off("resize.portfolio");
+			$.each(this._items, function(i, item){
+				item.$item.removeAttr("style").removeClass("fg-positioned");
+			});
+			this.$el.removeAttr("style");
 		},
 		parse: function(){
 			var self = this;
-			return self._items = self.$el.find(".fg-item").map(function(i, el){
+			return self._items = self.$el.find(".fg-item").removeAttr("style").removeClass("fg-positioned").map(function(i, el){
 				var $item = $(el),
 					$thumb = $item.find(".fg-thumb"),
 					$img = $thumb.find(".fg-image");
@@ -7426,25 +7511,21 @@
 
 	_.PortfolioTemplate = _.Template.extend({
 		construct: function(element, options){
-			var self = this;
-			self._super(element, options);
-			self.isCaptionTop = self.template.captionTop;
+			this._super(element, options);
+
+			this.portfolio = null;
 		},
 		onPreInit: function(event, self){
-			self.isCaptionTop = !self.template.captionTop ? self.$el.hasClass("fg-captions-top") : self.template.captionTop;
 			self.portfolio = new _.Portfolio( self.$el.get(0), self.template );
 		},
 		onInit: function(event, self){
 			self.portfolio.init();
 		},
-		onCreatedItem: function(event, self, item){
-			if (item.isCreated && item.$caption.length > 0){
-				if (self.isCaptionTop){
-					item.$caption.insertBefore(item.$anchor);
-				} else {
-					item.$caption.insertAfter(item.$anchor);
-				}
-			}
+		onDestroy: function(event, self){
+			self.portfolio.destroy();
+		},
+		onLayout: function(event, self){
+			self.portfolio.layout( true );
 		},
 		onParsedItems: function(event, self, items){
 			self.portfolio.layout();
@@ -7457,208 +7538,11 @@
 		}
 	});
 
-	_.template.register("portfolio", _.PortfolioTemplate, {
-		captionTop: false
+	_.template.register("simple_portfolio", _.PortfolioTemplate, {
+		gutter: 40
 	}, {
-		container: "foogallery fg-portfolio"
+		container: "foogallery fg-simple_portfolio"
 	});
-
-})(
-	FooGallery.$,
-	FooGallery,
-	FooGallery.utils
-);
-(function($, _, _utils){
-
-	_.ImageViewer = _utils.Class.extend(/** @lends FooGallery.ImageViewer */{
-		/**
-		 * @summary The main class for the Image Viewer template for FooGallery.
-		 * @memberof FooGallery
-		 * @constructs ImageViewer
-		 * @param {(HTMLElement|jQuery|string)} element - The element to initialize the plugin on.
-		 * @param {FooGallery.ImageViewer~Options} options - The options to initialize the plugin with.
-		 * @augments FooGallery.utils.Class
-		 * @borrows FooGallery.utils.Class.extend as extend
-		 * @borrows FooGallery.utils.Class.override as override
-		 */
-		construct: function(element, options){
-			/**
-			 * @summary The options for the plugin.
-			 * @memberof FooGallery.ImageViewer#
-			 * @name options
-			 * @type {FooGallery.ImageViewer~Options}
-			 * @description This property holds a copy of any user supplied options merged with the defaults.
-			 */
-			this.options = $.extend(true, {}, _.ImageViewer.defaults, options);
-			/**
-			 * @summary The jQuery object wrapping the templates items.
-			 * @memberof FooGallery.ImageViewer#
-			 * @name $el
-			 * @type {jQuery}
-			 * @description This is the outer most element that wraps all the templates items and is generally the `foogallery` element.
-			 */
-			this.$el = $(element);
-			/**
-			 * @summary The jQuery object containing all items for the plugin.
-			 * @memberof FooGallery.ImageViewer#
-			 * @name $items
-			 * @type {jQuery}
-			 */
-			this.$items = this.$el.find('.fiv-inner-container > .fg-item');
-			/**
-			 * @summary The jQuery object that displays the current image count.
-			 * @memberof FooGallery.ImageViewer#
-			 * @name $current
-			 * @type {jQuery}
-			 */
-			this.$current = this.$el.find('.fiv-count-current');
-			/**
-			 * @summary The jQuery object for the previous button.
-			 * @memberof FooGallery.ImageViewer#
-			 * @name $prev
-			 * @type {jQuery}
-			 */
-			this.$prev = this.$el.find('.fiv-prev');
-			/**
-			 * @summary The jQuery object for the next button.
-			 * @memberof FooGallery.ImageViewer#
-			 * @name $next
-			 * @type {jQuery}
-			 */
-			this.$next = this.$el.find('.fiv-next');
-		},
-		/**
-		 * @summary Initialize the plugin performing initial binding of events and setting up of CSS classes.
-		 * @memberof FooGallery.ImageViewer#
-		 * @function init
-		 */
-		init: function(){
-			if (this.options.attachFooBox) {
-				this.$el.on('foobox.previous', {self: this}, this.onFooBoxPrev)
-					.on('foobox.next', {self: this}, this.onFooBoxNext);
-			}
-			this.$prev.on('click', {self: this}, this.onPrevClick);
-			this.$next.on('click', {self: this}, this.onNextClick);
-			this.$items.removeClass('fiv-active').first().addClass('fiv-active');
-		},
-		/**
-		 * @summary Destroy the plugin cleaning up any bound events.
-		 * @memberof FooGallery.ImageViewer#
-		 * @function destroy
-		 */
-		destroy: function(){
-			if (this.options.attachFooBox) {
-				this.$el.off('foobox.previous', this.onFooBoxPrev).off('foobox.next', this.onFooBoxNext);
-			}
-			this.$prev.off('click', this.onPrevClick);
-			this.$next.off('click', this.onNextClick);
-		},
-		/**
-		 * @summary Navigate to the previous item in the collection.
-		 * @memberof FooGallery.ImageViewer#
-		 * @function prev
-		 * @description If there is a previous item in the collection calling this method will navigate to it displaying its' image and updating the current image count.
-		 */
-		prev: function(){
-			var $current = this.$items.filter('.fiv-active').removeClass('fiv-active'),
-				$prev = $current.prev();
-
-			if ($prev.length === 0) $prev = this.$items.last();
-			$prev.addClass('fiv-active');
-			this.$current.text($prev.index() + 1);
-		},
-		/**
-		 * @summary Navigate to the next item in the collection.
-		 * @memberof FooGallery.ImageViewer#
-		 * @function next
-		 * @description If there is a next item in the collection calling this method will navigate to it displaying its' image and updating the current image count.
-		 */
-		next: function(){
-			var $current = this.$items.filter('.fiv-active').removeClass('fiv-active'),
-				$next = $current.next();
-
-			if ($next.length === 0) $next = this.$items.first();
-			$next.addClass('fiv-active');
-			this.$current.text($next.index() + 1);
-		},
-		/**
-		 * @summary Handles the `"foobox.previous"` event allowing the plugin to remain in sync with what is displayed in the lightbox.
-		 * @memberof FooGallery.ImageViewer#
-		 * @function onFooBoxPrev
-		 * @param {jQuery.Event} e - The jQuery.Event object for the event.
-		 */
-		onFooBoxPrev: function(e){
-			e.data.self.prev();
-		},
-		/**
-		 * @summary Handles the `"foobox.next"` event allowing the plugin to remain in sync with what is displayed in the lightbox.
-		 * @memberof FooGallery.ImageViewer#
-		 * @function onFooBoxNext
-		 * @param {jQuery.Event} e - The jQuery.Event object for the event.
-		 */
-		onFooBoxNext: function(e){
-			e.data.self.next();
-		},
-		/**
-		 * @summary Handles the `"click"` event of the previous button.
-		 * @memberof FooGallery.ImageViewer#
-		 * @function onPrevClick
-		 * @param {jQuery.Event} e - The jQuery.Event object for the event.
-		 */
-		onPrevClick: function(e){
-			e.preventDefault();
-			e.stopPropagation();
-			e.data.self.prev();
-		},
-		/**
-		 * @summary Handles the `"click"` event of the next button.
-		 * @memberof FooGallery.ImageViewer#
-		 * @function onNextClick
-		 * @param {jQuery.Event} e - The jQuery.Event object for the event.
-		 */
-		onNextClick: function(e){
-			e.preventDefault();
-			e.stopPropagation();
-			e.data.self.next();
-		}
-	});
-
-	/**
-	 * @summary The defaults for the plugin.
-	 * @memberof FooGallery.ImageViewer
-	 * @name defaults
-	 * @type {FooGallery.ImageViewer~Options}
-	 */
-	_.ImageViewer.defaults = {
-		attachFooBox: true
-	};
-
-	/**
-	 * @summary Initializes the Image Viewer plugin on the matched elements using the supplied options.
-	 * @memberof external:"jQuery.fn"
-	 * @instance
-	 * @function fgImageViewer
-	 * @param {FooGallery.ImageViewer~Options} options - The options to initialize the plugin with.
-	 * @returns {jQuery}
-	 */
-	$.fn.fgImageViewer = function(options){
-		return this.each(function(){
-			var fiv = $.data(this, "__FooGalleryImageViewer__");
-			if (fiv){
-				fiv.destroy();
-			}
-			fiv = new _.ImageViewer(this, options);
-			fiv.init();
-			$.data(this, "__FooGalleryImageViewer__", fiv);
-		});
-	};
-
-	/**
-	 * @summary The options for the plugin.
-	 * @typedef {object} FooGallery.ImageViewer~Options
-	 * @property {boolean} [attachFooBox=true] - Whether or not to bind to FooBox's previous and next events and keep the plugin in sync with the lightbox.
-	 */
-
 
 })(
 	FooGallery.$,
@@ -7701,28 +7585,55 @@
 // })(
 // 	FooGallery
 // );
-(function($, _, _utils){
+(function ($, _, _utils, _obj) {
 
 	_.ImageViewerTemplate = _.Template.extend({
-		construct: function(options, element){
-			options = options || {};
-			options.paging = options.paging || {};
-			options.paging.pushOrReplace = "replace";
-			options.paging.theme = "fg-light";
-			options.paging.type = "default";
-			options.paging.size = 1;
-			options.paging.position = "none";
-			options.paging.scrollToTop = false;
-
-			this._super(options, element);
+		construct: function (options, element) {
+			this._super(_obj.extend({}, options, {
+				paging: {
+					pushOrReplace: "replace",
+					theme: "fg-light",
+					type: "default",
+					size: 1,
+					position: "none",
+					scrollToTop: false
+				}
+			}), element);
 			/**
-			 * @summary The current Image Viewer instance for the template.
+			 * @summary The jQuery object containing the inner element that wraps all items.
 			 * @memberof FooGallery.ImageViewerTemplate#
-			 * @name masonry
-			 * @type {?FooGallery.ImageViewer}
-			 * @description This value is `null` until after the {@link FooGallery.Template~event:"pre-init.foogallery"|`pre-init.foogallery`} event has been raised.
+			 * @name $inner
+			 * @type {jQuery}
 			 */
-			this.viewer = null;
+			this.$inner = this.$el.find('.fiv-inner-container');
+			/**
+			 * @summary The jQuery object that displays the current image count.
+			 * @memberof FooGallery.ImageViewerTemplate#
+			 * @name $current
+			 * @type {jQuery}
+			 */
+			this.$current = this.$el.find('.fiv-count-current');
+			/**
+			 * @summary The jQuery object that displays the current image count.
+			 * @memberof FooGallery.ImageViewerTemplate#
+			 * @name $current
+			 * @type {jQuery}
+			 */
+			this.$total = this.$el.find('.fiv-count-total');
+			/**
+			 * @summary The jQuery object for the previous button.
+			 * @memberof FooGallery.ImageViewerTemplate#
+			 * @name $prev
+			 * @type {jQuery}
+			 */
+			this.$prev = this.$el.find('.fiv-prev');
+			/**
+			 * @summary The jQuery object for the next button.
+			 * @memberof FooGallery.ImageViewerTemplate#
+			 * @name $next
+			 * @type {jQuery}
+			 */
+			this.$next = this.$el.find('.fiv-next');
 			/**
 			 * @summary The CSS classes for the Image Viewer template.
 			 * @memberof FooGallery.ImageViewerTemplate#
@@ -7736,26 +7647,142 @@
 			 * @type {FooGallery.ImageViewerTemplate~CSSSelectors}
 			 */
 		},
-		onPreInit: function(event, self){
-			self.viewer = new _.ImageViewer( self.$el.get(0), self.template );
+		onInit: function (event, self) {
+			if (self.template.attachFooBox) {
+				self.$el.on('foobox.previous', {self: self}, self.onFooBoxPrev)
+						.on('foobox.next', {self: self}, self.onFooBoxNext);
+			}
+			self.$prev.on('click', {self: self}, self.onPrevClick);
+			self.$next.on('click', {self: self}, self.onNextClick);
 		},
-		onInit: function(event, self){
-			self.viewer.init();
+		onFirstLoad: function(event, self){
+			self.update();
 		},
-		onAppendItem: function(event, self, item){
+		/**
+		 * @summary Destroy the plugin cleaning up any bound events.
+		 * @memberof FooGallery.ImageViewerTemplate#
+		 * @function onDestroy
+		 */
+		onDestroy: function (event, self) {
+			if (self.template.attachFooBox) {
+				self.$el.off({
+					'foobox.previous': self.onFooBoxPrev,
+					'foobox.next': self.onFooBoxNext
+				});
+			}
+			self.$prev.off('click', self.onPrevClick);
+			self.$next.off('click', self.onNextClick);
+		},
+		onAppendItem: function (event, self, item) {
 			event.preventDefault();
-			self.$el.find(".fiv-inner-container").append(item.$el);
+			self.$inner.append(item.$el);
 			item.fix();
 			item.isAttached = true;
+		},
+		update: function(){
+			if (this.pages){
+				this.$current.text(this.pages.current);
+				this.$total.text(this.pages.total);
+			}
+		},
+		/**
+		 * @summary Navigate to the previous item in the collection.
+		 * @memberof FooGallery.ImageViewerTemplate#
+		 * @function prev
+		 * @description If there is a previous item in the collection calling this method will navigate to it displaying its' image and updating the current image count.
+		 */
+		prev: function () {
+			if (this.pages){
+				this.pages.prev();
+				this.update();
+			}
+		},
+		/**
+		 * @summary Navigate to the next item in the collection.
+		 * @memberof FooGallery.ImageViewerTemplate#
+		 * @function next
+		 * @description If there is a next item in the collection calling this method will navigate to it displaying its' image and updating the current image count.
+		 */
+		next: function () {
+			if (this.pages){
+				this.pages.next();
+				this.update();
+			}
+		},
+		/**
+		 * @summary Handles the `"foobox.previous"` event allowing the plugin to remain in sync with what is displayed in the lightbox.
+		 * @memberof FooGallery.ImageViewerTemplate#
+		 * @function onFooBoxPrev
+		 * @param {jQuery.Event} e - The jQuery.Event object for the event.
+		 */
+		onFooBoxPrev: function (e) {
+			e.data.self.prev();
+		},
+		/**
+		 * @summary Handles the `"foobox.next"` event allowing the plugin to remain in sync with what is displayed in the lightbox.
+		 * @memberof FooGallery.ImageViewerTemplate#
+		 * @function onFooBoxNext
+		 * @param {jQuery.Event} e - The jQuery.Event object for the event.
+		 */
+		onFooBoxNext: function (e) {
+			e.data.self.next();
+		},
+		/**
+		 * @summary Handles the `"click"` event of the previous button.
+		 * @memberof FooGallery.ImageViewerTemplate#
+		 * @function onPrevClick
+		 * @param {jQuery.Event} e - The jQuery.Event object for the event.
+		 */
+		onPrevClick: function (e) {
+			e.preventDefault();
+			e.stopPropagation();
+			e.data.self.prev();
+		},
+		/**
+		 * @summary Handles the `"click"` event of the next button.
+		 * @memberof FooGallery.ImageViewerTemplate#
+		 * @function onNextClick
+		 * @param {jQuery.Event} e - The jQuery.Event object for the event.
+		 */
+		onNextClick: function (e) {
+			e.preventDefault();
+			e.stopPropagation();
+			e.data.self.next();
 		}
 	});
 
-	_.template.register("image-viewer", _.ImageViewerTemplate, null, {
+	_.template.register("image-viewer", _.ImageViewerTemplate, {
+		template: {
+			attachFooBox: false
+		}
+	}, {
 		container: "foogallery fg-image-viewer"
 	});
 
 })(
 		FooGallery.$,
 		FooGallery,
-		FooGallery.utils
+		FooGallery.utils,
+		FooGallery.utils.obj
+);
+(function($, _, _obj){
+
+	_.ThumbnailTemplate = _.Template.extend({
+		construct: function (options, element) {
+			this._super(_obj.extend({}, options, {
+				paging: {
+					type: "none"
+				}
+			}), element);
+		}
+	});
+
+	_.template.register("thumbnail", _.ThumbnailTemplate, null, {
+		container: "foogallery fg-thumbnail"
+	});
+
+})(
+		FooGallery.$,
+		FooGallery,
+		FooGallery.utils.obj
 );

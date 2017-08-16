@@ -67,7 +67,22 @@ if ( !class_exists( 'FooGallery_Default_Gallery_Template' ) ) {
 						'title'   => __( 'Lightbox', 'foogallery' ),
 						'desc'    => __( 'Choose which lightbox you want to use. The lightbox will generally only work if you set the thumbnail link to "Full Size Image".', 'foogallery' ),
                         'section' => __( 'General', 'foogallery' ),
-						'type'    => 'lightbox'
+						'type'    => 'lightbox',
+						'row_data'=> array(
+							'data-foogallery-change-selector' => 'select'
+						)
+					),
+					array(
+						'id'      => 'lightbox_foobox_help',
+						'title'   => __( 'FooBox Help', 'foogallery' ),
+						'desc'    => __( 'The FooBox lightbox is a separate plugin.', 'foogallery' ),
+						'section' => __( 'General', 'foogallery' ),
+						'type'    => 'help',
+						'row_data'=> array(
+							'data-foogallery-hidden' => true,
+							'data-foogallery-show-when-field' => 'lightbox',
+							'data-foogallery-show-when-field-value' => 'foobox'
+						)
 					),
 					array(
 						'id'      => 'spacing',
@@ -86,7 +101,7 @@ if ( !class_exists( 'FooGallery_Default_Gallery_Template' ) ) {
 						),
                         'row_data'=> array(
                             'data-foogallery-change-selector' => 'select',
-							'data-foogallery-preview' => 'true'
+							'data-foogallery-preview' => 'class'
                         )
 					),
 					array(

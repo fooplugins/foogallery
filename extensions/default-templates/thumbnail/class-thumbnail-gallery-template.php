@@ -68,10 +68,14 @@ if ( !class_exists( 'FooGallery_Thumbnail_Gallery_Template' ) ) {
                         'default' => 'position-block',
                         'type'    => 'select',
                         'choices' => array(
-                            'position-block' => __( 'Full Width (block)', 'foogallery' ),
-                            'position-float-left' => __( 'Float Left', 'foogallery' ),
-                            'position-float-right' => __( 'Float Right', 'foogallery' ),
-                        )
+                            'fg-center' => __( 'Full Width (block)', 'foogallery' ),
+                            'fg-left' => __( 'Float Left', 'foogallery' ),
+                            'fg-right' => __( 'Float Right', 'foogallery' ),
+                        ),
+						'row_data'=> array(
+							'data-foogallery-change-selector' => 'select',
+							'data-foogallery-preview' => 'class'
+						)
                     ),
                     array(
                         'id'      => 'link_custom_url',
@@ -106,33 +110,16 @@ if ( !class_exists( 'FooGallery_Thumbnail_Gallery_Template' ) ) {
                         ),
                     ),
                     array(
-                        'id'      => 'caption_bgcolor',
-                        'title'   => __('Caption Background Color', 'foogallery'),
-                        'section' => __( 'Captions', 'foogallery' ),
-                        'desc'    => __('The color of the caption background.', 'foogallery'),
-                        'type'    => 'colorpicker',
-                        'default' => 'rgba(0, 0, 0, 0.8)',
-                        'opacity' => true
-                    ),
-                    array(
-                        'id'      => 'caption_color',
-                        'title'   => __('Caption Text Color', 'foogallery'),
-                        'section' => __( 'Captions', 'foogallery' ),
-                        'desc'    => __('The color of the caption text.', 'foogallery'),
-                        'type'    => 'colorpicker',
-                        'default' => 'rgb(255, 255, 255)'
-                    ),
-                    array(
                         'id'      => 'caption_title',
                         'title'   => __('Caption Title', 'foogallery'),
-                        'section' => __( 'Captions', 'foogallery' ),
+						'section' => __( 'General', 'foogallery' ),
                         'desc'    => __('Leave blank if you do not want a caption title.', 'foogallery'),
                         'type'    => 'text'
                     ),
                     array(
                         'id'      => 'caption_description',
                         'title'   => __('Caption Description', 'foogallery'),
-                        'section' => __( 'Captions', 'foogallery' ),
+						'section' => __( 'General', 'foogallery' ),
                         'desc'    => __('Leave blank if you do not want a caption description.', 'foogallery'),
                         'type'    => 'textarea'
                     )
