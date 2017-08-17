@@ -54,7 +54,7 @@
 
 		if (reloadPreview) {
 			//update the gallery preview
-			FOOGALLERY.updateGalleryPreview();
+			FOOGALLERY.reloadGalleryPreview();
 		}
 	};
 
@@ -76,6 +76,36 @@
 		}
 
 		$('body').trigger('foogallery-gallery-preview-updated-' + FOOGALLERY.getSelectedTemplate() );
+	};
+
+	FOOGALLERY.reloadGalleryPreview = function() {
+		//build up all the data to generate a preview
+        var $shortcodeFields = $('.foogallery-settings-container-active .foogallery-metabox-settings .foogallery_template_field[data-foogallery-preview="shortcode"]');
+
+        if ($shortcodeFields.length) {
+            var array = $shortcodeFields.find(' :input').serializeArray(),
+                data = $.map(array, function (item) {
+                    return item.value;
+                }).join(' ');
+        }
+
+        $('#foogallery_preview_spinner').addClass('is-active');
+        var data = 'action=foogallery_preview' +
+            '&foogallery_id=' + $('#post_ID').val() +
+			'&foogallery_shortcode_data=' + data +
+            '&foogallery_preview_nonce=' + $('#foogallery_preview').val() +
+            '&_wp_http_referer=' + encodeURIComponent($('input[name="_wp_http_referer"]').val());
+
+        $.ajax({
+            type: "POST",
+            url: ajaxurl,
+            data: data,
+            success: function(data) {
+                //updated the preview
+				$('.foogallery_preview_container').html(data);
+                $('#foogallery_preview_spinner').removeClass('is-active');
+            }
+        });
 	};
 
 	FOOGALLERY.handleSettingsShowRules = function() {
@@ -352,24 +382,6 @@
 					$('#foogallery_clear_thumb_cache_spinner').removeClass('is-active');
 				}
 			});
-		});
-	};
-
-	FOOGALLERY.refreshPreviewFromShortcode = function() {
-		$('#foogallery_preview_spinner').addClass('is-active');
-		var data = 'action=foogallery_clear_gallery_thumb_cache' +
-			'&foogallery_id=' + $('#post_ID').val() +
-			'&foogallery_clear_gallery_thumb_cache_nonce=' + $('#foogallery_clear_gallery_thumb_cache_nonce').val() +
-			'&_wp_http_referer=' + encodeURIComponent($('input[name="_wp_http_referer"]').val());
-
-		$.ajax({
-			type: "POST",
-			url: ajaxurl,
-			data: data,
-			success: function(data) {
-				alert(data);
-				$('#foogallery_clear_thumb_cache_spinner').removeClass('is-active');
-			}
 		});
 	};
 
