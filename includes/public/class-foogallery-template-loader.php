@@ -48,6 +48,11 @@ class FooGallery_Template_Loader {
 			$current_foogallery_template = foogallery_get_default( 'gallery_template' );
 		}
 
+		//override the template if needed
+		if ( $current_foogallery->gallery_template !== $current_foogallery_template ) {
+			$current_foogallery->gallery_template = $current_foogallery_template;
+		}
+
 		//potentially override attachment_ids from arguments
 		$attachment_ids = $this->get_arg( $args, 'attachment_ids', false );
 		if ( $attachment_ids ) {
