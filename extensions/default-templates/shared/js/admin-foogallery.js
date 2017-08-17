@@ -58,5 +58,13 @@ jQuery(function ($) {
 
 		FOOGALLERY.initFooGallery(options);
 	});
+
+	$('body').on('foogallery-gallery-preview-updated-image-viewer', function() {
+		FOOGALLERY.initFooGallery({});
+	});
+
+	$('body').on('foogallery-gallery-preview-updated-thumbnail', function() {
+		FOOGALLERY.initFooGallery({});
+	});
 });
 

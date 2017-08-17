@@ -20,6 +20,12 @@ if ( !class_exists( 'FooGallery_Justified_Gallery_Template' ) ) {
 
 			//add the data options needed for justified
 			add_filter( 'foogallery_build_container_data_options-justified', array( $this, 'add_justified_options' ), 10, 3 );
+
+			//build up any preview arguments
+			add_filter( 'foogallery_preview_arguments-justified', array( $this, 'preview_arguments' ), 10, 2 );
+
+			//build up the thumb dimensions from some arguments
+			add_filter( 'foogallery_calculate_thumbnail_dimensions-justified', array( $this, 'build_thumbnail_dimensions_from_arguments' ), 10, 2 );
 		}
 
 		/**
@@ -55,6 +61,9 @@ if ( !class_exists( 'FooGallery_Justified_Gallery_Template' ) ) {
                         'default' => 250,
                         'step'    => '10',
                         'min'     => '0',
+						'row_data'=> array(
+							'data-foogallery-preview' => 'shortcode'
+						)
                     ),
                     array(
                         'id'      => 'row_height',
@@ -186,6 +195,35 @@ if ( !class_exists( 'FooGallery_Justified_Gallery_Template' ) ) {
 			$options['template']['margins'] = intval($margins);
 
 			return $options;
+		}
+
+		/**
+		 * Build up a arguments used in the preview of the gallery
+		 * @param $args
+		 * @param $post_data
+		 *
+		 * @return mixed
+		 */
+		function preview_arguments( $args, $post_data ) {
+			$args['thumbnail_height'] = $post_data['foogallery_settings']['justified_thumb_height'];
+
+			return $args;
+		}
+
+		/**
+		 * Builds thumb dimensions from arguments
+		 *
+		 * @param array $dimensions
+		 * @param array $arguments
+		 *
+		 * @return mixed
+		 */
+		function build_thumbnail_dimensions_from_arguments( $dimensions, $arguments ) {
+			return array(
+				'height' => intval( $arguments['thumbnail_height'] ),
+				'width'  => 0,
+				'crop'   => false
+			);
 		}
 	}
 }

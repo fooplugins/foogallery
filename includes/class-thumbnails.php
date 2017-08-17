@@ -46,6 +46,13 @@ if ( !class_exists( 'FooGallery_Thumbnails' ) ) {
 			//allow for plugins to change the thumbnail creation args
 			$args = apply_filters( 'foogallery_thumbnail_resize_args', $args, $original_image_src, $thumbnail_object );
 
+			//check the current arguments passed in by the shortcode
+			global $current_foogallery_arguments;
+			if ( isset( $current_foogallery_arguments ) && isset( $current_foogallery_arguments['template'] ) ) {
+				$thumbnail_args = apply_filters( 'foogallery_calculate_thumbnail_dimensions-' . $current_foogallery_arguments['template'], $args, $current_foogallery_arguments );
+				$args = wp_parse_args( $thumbnail_args, $args );
+			}
+
 			$width  = (int)$args['width'];
 			$height = (int)$args['height'];
 			$crop   = (bool)$args['crop'];

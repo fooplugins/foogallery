@@ -463,15 +463,18 @@ function foogallery_build_container_data_options( $gallery, $attributes ) {
 /**
  * Render a foogallery
  *
- * @param $gallery_id int The id of the foogallery you want to render
+ * @param       $gallery_id int The id of the foogallery you want to render
+ * @param array $args
  */
-function foogallery_render_gallery( $gallery_id ) {
+function foogallery_render_gallery( $gallery_id, $args = array()) {
 	//create new instance of template engine
 	$engine = new FooGallery_Template_Loader();
 
-	$engine->render_template( array(
+	$shortcode_args = wp_parse_args( $args, array(
 		'id' => $gallery_id
 	) );
+
+	$engine->render_template( $shortcode_args );
 }
 
 /**

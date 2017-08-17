@@ -374,7 +374,8 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings' ) ) {
                     'data-foogallery-change-selector' => 'input:radio',
 					'data-foogallery-hidden' => true,
 					'data-foogallery-show-when-field' => 'hover_effect_preset',
-					'data-foogallery-show-when-field-value' => 'fg-custom'
+					'data-foogallery-show-when-field-value' => 'fg-custom',
+					'data-foogallery-preview' => 'shortcode'
 				)
 			);
 
@@ -397,7 +398,8 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings' ) ) {
                     'data-foogallery-change-selector' => 'input:radio',
 					'data-foogallery-hidden' => true,
 					'data-foogallery-show-when-field' => 'hover_effect_preset',
-					'data-foogallery-show-when-field-value' => 'fg-custom'
+					'data-foogallery-show-when-field-value' => 'fg-custom',
+					'data-foogallery-preview' => 'shortcode'
 				)
 			);
 			//endregion Hover Effects Fields

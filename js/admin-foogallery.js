@@ -44,7 +44,9 @@
 		//trigger a change so custom template js can do something
 		FOOGALLERY.triggerTemplateChangedEvent();
 
-		FOOGALLERY.handleSettingFieldChange(reloadPreview);
+		if (reloadPreview) {
+			FOOGALLERY.reloadGalleryPreview();
+		}
 	};
 
 	FOOGALLERY.handleSettingFieldChange = function(reloadPreview) {
@@ -54,7 +56,7 @@
 
 		if (reloadPreview) {
 			//update the gallery preview
-			FOOGALLERY.reloadGalleryPreview();
+			FOOGALLERY.updateGalleryPreview();
 		}
 	};
 
@@ -80,30 +82,35 @@
 
 	FOOGALLERY.reloadGalleryPreview = function() {
 		//build up all the data to generate a preview
-        var $shortcodeFields = $('.foogallery-settings-container-active .foogallery-metabox-settings .foogallery_template_field[data-foogallery-preview="shortcode"]');
+        var $shortcodeFields = $('.foogallery-settings-container-active .foogallery-metabox-settings .foogallery_template_field[data-foogallery-preview="shortcode"]'),
+			data = {};
 
         if ($shortcodeFields.length) {
-            var array = $shortcodeFields.find(' :input').serializeArray(),
-                data = $.map(array, function (item) {
-                    return item.value;
-                }).join(' ');
+			data = $shortcodeFields.find(' :input').serializeArray();
         }
 
-        $('#foogallery_preview_spinner').addClass('is-active');
-        var data = 'action=foogallery_preview' +
-            '&foogallery_id=' + $('#post_ID').val() +
-			'&foogallery_shortcode_data=' + data +
-            '&foogallery_preview_nonce=' + $('#foogallery_preview').val() +
-            '&_wp_http_referer=' + encodeURIComponent($('input[name="_wp_http_referer"]').val());
+        //add additional data for the preview
+		data.push({name: 'foogallery_id', value: $('#post_ID').val()});
+		data.push({name: 'foogallery_template', value: FOOGALLERY.getSelectedTemplate()});
+		data.push({name: 'foogallery_attachments', value: $('#foogallery_attachments').val()});
 
+		//add data needed for the ajax call
+		data.push({name: 'action', value: 'foogallery_preview'});
+		data.push({name: 'foogallery_preview_nonce', value: $('#foogallery_preview').val()});
+		data.push({name: '_wp_http_referer', value: encodeURIComponent($('input[name="_wp_http_referer"]').val())});
+
+        $('#foogallery_preview_spinner').addClass('is-active');
         $.ajax({
             type: "POST",
             url: ajaxurl,
             data: data,
+			//dataType: "json",
             success: function(data) {
                 //updated the preview
 				$('.foogallery_preview_container').html(data);
                 $('#foogallery_preview_spinner').removeClass('is-active');
+
+				FOOGALLERY.handleSettingFieldChange(true);
             }
         });
 	};

@@ -22,6 +22,12 @@ if ( !class_exists( 'FooGallery_Image_Viewer_Gallery_Template' ) ) {
 
 			//override specific settings when saving the gallery
 			add_filter( 'foogallery_save_gallery_settings-image-viewer', array( $this, 'override_settings'), 10, 3 );
+
+			//build up any preview arguments
+			add_filter( 'foogallery_preview_arguments-image-viewer', array( $this, 'preview_arguments' ), 10, 2 );
+
+			//build up the thumb dimensions from some arguments
+			add_filter( 'foogallery_calculate_thumbnail_dimensions-image-viewer', array( $this, 'build_thumbnail_dimensions_from_arguments' ), 10, 2 );
 		}
 
 		/**
@@ -58,7 +64,10 @@ if ( !class_exists( 'FooGallery_Image_Viewer_Gallery_Template' ) ) {
                             'width' => 640,
                             'height' => 360,
                             'crop' => true
-                        )
+                        ),
+						'row_data'=> array(
+							'data-foogallery-preview' => 'shortcode'
+						)
                     ),
                     array(
                         'id'      => 'thumbnail_link',
@@ -105,21 +114,30 @@ if ( !class_exists( 'FooGallery_Image_Viewer_Gallery_Template' ) ) {
 						'title'   => __( '"Prev" Text', 'foogallery' ),
 						'section' => __( 'General', 'foogallery' ),
 						'type'    => 'text',
-						'default' =>  __('Prev', 'foogallery')
+						'default' =>  __('Prev', 'foogallery'),
+						'row_data'=> array(
+							'data-foogallery-preview' => 'shortcode'
+						)
 					),
 					array(
 						'id'      => 'text-of',
 						'title'   => __( '"of" Text', 'foogallery' ),
 						'section' => __( 'General', 'foogallery' ),
 						'type'    => 'text',
-						'default' =>  __('of', 'foogallery')
+						'default' =>  __('of', 'foogallery'),
+						'row_data'=> array(
+							'data-foogallery-preview' => 'shortcode'
+						)
 					),
 					array(
 						'id'      => 'text-next',
 						'title'   => __( '"Next" Text', 'foogallery' ),
 						'section' => __( 'General', 'foogallery' ),
 						'type'    => 'text',
-						'default' =>  __('Next', 'foogallery')
+						'default' =>  __('Next', 'foogallery'),
+						'row_data'=> array(
+							'data-foogallery-preview' => 'shortcode'
+						)
 					)
 				)
 			);
@@ -191,6 +209,37 @@ if ( !class_exists( 'FooGallery_Image_Viewer_Gallery_Template' ) ) {
 			}
 
 			return $settings;
+		}
+
+		/**
+		 * Build up a arguments used in the preview of the gallery
+		 * @param $args
+		 * @param $post_data
+		 *
+		 * @return mixed
+		 */
+		function preview_arguments( $args, $post_data ) {
+			$args['thumbnail_width'] = $post_data['foogallery_settings']['image-viewer_thumbnail_dimensions']['width'];
+			$args['thumbnail_height'] = $post_data['foogallery_settings']['image-viewer_thumbnail_dimensions']['height'];
+			$args['thumbnail_crop'] = isset( $post_data['foogallery_settings']['image-viewer_thumbnail_dimensions']['crop'] ) ? '1' : '0';
+
+			return $args;
+		}
+
+		/**
+		 * Builds thumb dimensions from arguments
+		 *
+		 * @param array $dimensions
+		 * @param array $arguments
+		 *
+		 * @return mixed
+		 */
+		function build_thumbnail_dimensions_from_arguments( $dimensions, $arguments ) {
+			return array(
+				'height' => intval( $arguments['thumbnail_height'] ),
+				'width'  => intval( $arguments['thumbnail_width'] ),
+				'crop'   => $arguments['thumbnail_crop'] === '1'
+			);
 		}
 	}
 }

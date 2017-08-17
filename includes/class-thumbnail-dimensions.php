@@ -28,7 +28,9 @@ if ( ! class_exists( 'FooGallery_Thumbnail_Dimensions' ) ) {
 
 			$setting_key = "{$gallery_template}_thumbnail_dimensions";
 
-			$thumbnail_dimensions = apply_filters( 'foogallery_template_thumbnail_dimensions-' . $gallery_template, $foogallery->get_meta( $setting_key, false ), $foogallery );
+			$default_thumbnail_dimensions = $foogallery->get_meta( $setting_key, false );
+
+			$thumbnail_dimensions = apply_filters( 'foogallery_template_thumbnail_dimensions-' . $gallery_template, $default_thumbnail_dimensions, $foogallery );
 
 			if ( isset( $thumbnail_dimensions ) && is_array( $thumbnail_dimensions ) ) {
 
@@ -85,16 +87,28 @@ if ( ! class_exists( 'FooGallery_Thumbnail_Dimensions' ) ) {
 		 * @return array
 		 */
 		function include_thumb_dimension_attributes( $attr, $args, $foogallery_attachment ) {
-			if ( isset( $foogallery_attachment->foogallery_id ) ) {
-				//do a check to see if the values have changed
+			//do a check to see if the template has changed
+			global $current_foogallery_arguments;
+			global $current_foogallery;
+			if ( isset( $current_foogallery_arguments ) && isset( $current_foogallery_arguments['template'] ) ) {
 
-				if ( $foogallery_attachment->thumb_width > 0 && array_key_exists( 'width', $attr ) ) {
-					if ( intval( $attr['width'] ) !== $foogallery_attachment->thumb_width ) {
-						//we need to recalculate dimensions
-					}
+				//we need to calculate new dynamic dimensions for the thumb
+				$thumbnail_dimensions = apply_filters( 'foogallery_calculate_thumbnail_dimensions-' . $current_foogallery_arguments['template'], false, $current_foogallery_arguments );
+
+				if ( $thumbnail_dimensions ) {
+					//$thumbnail_dimensions
+					$thumb_width  = (int) $thumbnail_dimensions['width'];
+					$thumb_height = (int) $thumbnail_dimensions['height'];
+					$thumb_crop   = (bool) $thumbnail_dimensions['crop'];
+
+					$size_array                          = image_resize_dimensions( $foogallery_attachment->width, $foogallery_attachment->height, $thumb_width, $thumb_height, $thumb_crop );
+					$foogallery_attachment->foogallery_id = $current_foogallery->ID;
+					$foogallery_attachment->thumb_width  = $size_array[4];
+					$foogallery_attachment->thumb_height = $size_array[5];
 				}
+			}
 
-
+			if ( isset( $foogallery_attachment->foogallery_id ) ) {
 				if ( $foogallery_attachment->thumb_width > 0 ) {
 					$attr['width'] = $foogallery_attachment->thumb_width;
 				}
