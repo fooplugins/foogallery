@@ -8,23 +8,15 @@ if ( ! class_exists( 'FooGallery_Upgrade' ) ) {
 	class FooGallery_Upgrade {
 
 		function __construct() {
-			//intercept the gallery load and check if we need to upgrade a gallery
-			add_action( 'foogallery_foogallery_instance_after_load', array( $this, 'upgrade_gallery' ), 10, 2 );
+			add_action( 'foogallery_admin_new_version_detected', array( $this, 'upgrade_all_galleries' ) );
 		}
 
-		/**
-		 * Checks if the gallery needs to be upgraded based on the settings version
-		 *
-		 * @param $foogallery FooGallery
-		 * @param $post
-		 */
-		function upgrade_gallery( $foogallery, $post ) {
-			//if ( FOOGALLERY_SETTINGS_VERSION !== $foogallery->settings_version ) {
-				$this->perform_gallery_settings_upgrade( $foogallery );
+		function upgrade_all_galleries() {
+			$galleries = foogallery_get_all_galleries();
 
-				//update the settings version for the gallery
-				//update_post_meta( $post->ID, FOOGALLERY_META_SETTINGS_VERSION, FOOGALLERY_SETTINGS_VERSION );
-			//}
+			foreach ( $galleries as $gallery ) {
+				$this->perform_gallery_settings_upgrade( $gallery );
+			}
 		}
 
 		function perform_gallery_settings_upgrade( $foogallery ) {
@@ -587,7 +579,14 @@ if ( ! class_exists( 'FooGallery_Upgrade' ) ) {
 
 			);
 
-			if ( $foogallery->settings ) {
+			$new_settings = get_post_meta( $foogallery->ID, FOOGALLERY_META_SETTINGS, true );
+			$old_settings = get_post_meta( $foogallery->ID, FOOGALLERY_META_SETTINGS_OLD, true );
+
+			//only upgrade galleries that need to be
+			if ( !is_array($new_settings) ) {
+
+				//start with the old settings
+				$new_settings = $old_settings;
 
 				//upgrade all template settings
 				foreach ( foogallery_gallery_templates() as $template ) {
@@ -597,23 +596,24 @@ if ( ! class_exists( 'FooGallery_Upgrade' ) ) {
 						$settings_key = "{$template['slug']}_{$mapping['id']}";
 
 						//check if the settings exists
-						if ( array_key_exists( $settings_key, $foogallery->settings ) ) {
+						if ( array_key_exists( $settings_key, $old_settings ) ) {
 
-							$old_settings_value = $foogallery->settings[$settings_key];
+							$old_settings_value = $old_settings[$settings_key];
 
 							if ( $mapping['value'] === $old_settings_value ) {
 								//we have found a match!
 
 								foreach ( $mapping['new'] as $setting_to_create ) {
-									$new_setting_key                        = "{$template['slug']}_{$setting_to_create['id']}";
-									$new_setting_value                      = $setting_to_create['value'];
-									$foogallery->settings[$new_setting_key] = $new_setting_value;
+									$new_setting_key                = "{$template['slug']}_{$setting_to_create['id']}";
+									$new_setting_value              = $setting_to_create['value'];
+									$new_settings[$new_setting_key] = $new_setting_value;
 								}
 							}
 						}
 					}
 				}
 
+				add_post_meta( $foogallery->ID, FOOGALLERY_META_SETTINGS, $new_settings, true );
 			}
 		}
 	}
