@@ -16,7 +16,6 @@ define( 'FOOGALLERY_META_RETINA', 'foogallery_retina' );
 define( 'FOOGALLERY_META_CACHE', 'foogallery_cache' );
 define( 'FOOGALLERY_META_THUMB_DIMENSIONS', 'foogallery_thumb_dimensions' );
 define( 'FOOGALLERY_META_FORCE_ORIGINAL_THUMBS', 'foogallery_force_original_thumbs' );
-define( 'FOOGALLERY_META_SETTINGS_VERSION', '_foogallery_settings_version' );
 
 define( 'FOOGALLERY_ADMIN_MENU_PARENT_SLUG', 'edit.php?post_type=foogallery' );
 define( 'FOOGALLERY_FOOBOX_PRO_EXTENSION_SLUG', 'foobox' );
