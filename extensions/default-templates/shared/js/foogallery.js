@@ -4726,7 +4726,7 @@
 				self.$inner = self.$el.find(sel.inner);
 				self.$anchor = self.$el.find(sel.anchor).on("click.foogallery", {self: self}, self.onAnchorClick);
 				self.$image = self.$anchor.find(sel.image);
-				self.$caption = self.$el.find(sel.caption.elem);
+				self.$caption = self.$el.find(sel.caption.elem).on("click.foogallery", {self: self}, self.onCaptionClick);
 				self.isAttached = self.$el.parent().length > 0;
 				self.isLoading = self.$el.is(sel.loading);
 				self.isLoaded = self.$el.is(sel.loaded);
