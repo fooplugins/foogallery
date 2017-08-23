@@ -86,6 +86,10 @@ only screen and (min-resolution: 2.25dppx) {
 	outline: 0;
 	text-decoration: none;
 	z-index: 5;
+	max-width: none;
+	max-height: none;
+	width: auto;
+	height: auto;
 }
 .foogallery .fg-loaded .fg-thumb {
 	z-index: 6;

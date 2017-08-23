@@ -3695,94 +3695,94 @@
 					if (e.preventDefault()) return _fn.rejectWith("init default prevented");
 					return self.items.fetch().then(function(){
 						if (self.pages) self.pages.build();
+
+						/**
+						 * @summary Raised after the template is initialized but before any post-initialization work is complete.
+						 * @event FooGallery.Template~"post-init.foogallery"
+						 * @type {jQuery.Event}
+						 * @param {jQuery.Event} event - The jQuery.Event object for the current event.
+						 * @param {FooGallery.Template} template - The template raising the event.
+						 * @returns {Promise} Resolved once the post-initialization work is complete, rejected if an error occurs or execution is prevented.
+						 * @description At this point in the initialization chain all options, objects and elements required by the template have been parsed or created however the initial state has not been set yet and no items have been loaded.
+						 * @example {@caption To listen for this event and perform some action when it occurs you would bind to it as follows.}
+						 * $(".foogallery").foogallery({
+						 * 	on: {
+						 * 		"post-init.foogallery": function(event, template){
+						 * 			// do something
+						 * 		}
+						 * 	}
+						 * });
+						 * @example {@caption Calling the `preventDefault` method on the `event` object will prevent the template being initialized.}
+						 * $(".foogallery").foogallery({
+						 * 	on: {
+						 * 		"post-init.foogallery": function(event, template){
+						 * 			if ("some condition"){
+						 * 				// stop the template being initialized
+						 * 				event.preventDefault();
+						 * 			}
+						 * 		}
+						 * 	}
+						 * });
+						 * @example {@caption You can also prevent the default logic and replace it with your own by calling the `preventDefault` method on the `event` object and returning a promise.}
+						 * $(".foogallery").foogallery({
+						 * 	on: {
+						 * 		"post-init.foogallery": function(event, template){
+						 * 			// stop the default logic
+						 * 			event.preventDefault();
+						 * 			// you can execute the default logic by calling the handler directly yourself
+						 * 			// var promise = template.onPostInit();
+						 * 			// replace the default logic with your own
+						 * 			return Promise;
+						 * 		}
+						 * 	}
+						 * });
+						 */
+						var e = self.raise("post-init");
+						if (e.preventDefault()) return _fn.rejectWith("post-init default prevented");
+						self.$el.data(_.dataTemplate, self);
+						var state = self.state.parse();
+						self.state.set(_is.empty(state) ? self.state.initial() : state);
+						$(window).on("scroll.foogallery", {self: self}, self.onWindowScroll)
+								.on("popstate.foogallery", {self: self}, self.onWindowPopState);
+
+						/**
+						 * @summary Raised after the template is fully initialized but before the first load occurs.
+						 * @event FooGallery.Template~"first-load.foogallery"
+						 * @type {jQuery.Event}
+						 * @param {jQuery.Event} event - The jQuery.Event object for the current event.
+						 * @param {FooGallery.Template} template - The template raising the event.
+						 * @description This event is raised after all post-initialization work such as setting the initial state is performed but before the first load of items takes place.
+						 * @example {@caption To listen for this event and perform some action when it occurs you would bind to it as follows.}
+						 * $(".foogallery").foogallery({
+						 * 	on: {
+						 * 		"first-load.foogallery": function(event, template){
+						 * 			// do something
+						 * 		}
+						 * 	}
+						 * });
+						 */
+						self.raise("first-load");
+						return self.loadAvailable().then(function(){
+							/**
+							 * @summary Raised after the template is fully initialized and is ready to be interacted with.
+							 * @event FooGallery.Template~"ready.foogallery"
+							 * @type {jQuery.Event}
+							 * @param {jQuery.Event} event - The jQuery.Event object for the current event.
+							 * @param {FooGallery.Template} template - The template raising the event.
+							 * @description This event is raised after all post-initialization work such as setting the initial state and performing the first load are completed.
+							 * @example {@caption To listen for this event and perform some action when it occurs you would bind to it as follows.}
+							 * $(".foogallery").foogallery({
+							 * 	on: {
+							 * 		"ready.foogallery": function(event, template){
+							 * 			// do something
+							 * 		}
+							 * 	}
+							 * });
+							 */
+							self.raise("ready");
+							def.resolve(self);
+						});
 					});
-				}).then(function(){
-					/**
-					 * @summary Raised after the template is initialized but before any post-initialization work is complete.
-					 * @event FooGallery.Template~"post-init.foogallery"
-					 * @type {jQuery.Event}
-					 * @param {jQuery.Event} event - The jQuery.Event object for the current event.
-					 * @param {FooGallery.Template} template - The template raising the event.
-					 * @returns {Promise} Resolved once the post-initialization work is complete, rejected if an error occurs or execution is prevented.
-					 * @description At this point in the initialization chain all options, objects and elements required by the template have been parsed or created however the initial state has not been set yet and no items have been loaded.
-					 * @example {@caption To listen for this event and perform some action when it occurs you would bind to it as follows.}
-					 * $(".foogallery").foogallery({
-					 * 	on: {
-					 * 		"post-init.foogallery": function(event, template){
-					 * 			// do something
-					 * 		}
-					 * 	}
-					 * });
-					 * @example {@caption Calling the `preventDefault` method on the `event` object will prevent the template being initialized.}
-					 * $(".foogallery").foogallery({
-					 * 	on: {
-					 * 		"post-init.foogallery": function(event, template){
-					 * 			if ("some condition"){
-					 * 				// stop the template being initialized
-					 * 				event.preventDefault();
-					 * 			}
-					 * 		}
-					 * 	}
-					 * });
-					 * @example {@caption You can also prevent the default logic and replace it with your own by calling the `preventDefault` method on the `event` object and returning a promise.}
-					 * $(".foogallery").foogallery({
-					 * 	on: {
-					 * 		"post-init.foogallery": function(event, template){
-					 * 			// stop the default logic
-					 * 			event.preventDefault();
-					 * 			// you can execute the default logic by calling the handler directly yourself
-					 * 			// var promise = template.onPostInit();
-					 * 			// replace the default logic with your own
-					 * 			return Promise;
-					 * 		}
-					 * 	}
-					 * });
-					 */
-					var e = self.raise("post-init");
-					if (e.preventDefault()) return _fn.rejectWith("post-init default prevented");
-					self.$el.data(_.dataTemplate, self);
-					var state = self.state.parse();
-					self.state.set(_is.empty(state) ? self.state.initial() : state);
-					$(window).on("scroll.foogallery", {self: self}, self.onWindowScroll)
-						.on("popstate.foogallery", {self: self}, self.onWindowPopState);
-				}).then(function(){
-					/**
-					 * @summary Raised after the template is fully initialized but before the first load occurs.
-					 * @event FooGallery.Template~"first-load.foogallery"
-					 * @type {jQuery.Event}
-					 * @param {jQuery.Event} event - The jQuery.Event object for the current event.
-					 * @param {FooGallery.Template} template - The template raising the event.
-					 * @description This event is raised after all post-initialization work such as setting the initial state is performed but before the first load of items takes place.
-					 * @example {@caption To listen for this event and perform some action when it occurs you would bind to it as follows.}
-					 * $(".foogallery").foogallery({
-					 * 	on: {
-					 * 		"first-load.foogallery": function(event, template){
-					 * 			// do something
-					 * 		}
-					 * 	}
-					 * });
-					 */
-					self.raise("first-load");
-					return self.loadAvailable();
-				}).then(function(){
-					/**
-					 * @summary Raised after the template is fully initialized and is ready to be interacted with.
-					 * @event FooGallery.Template~"ready.foogallery"
-					 * @type {jQuery.Event}
-					 * @param {jQuery.Event} event - The jQuery.Event object for the current event.
-					 * @param {FooGallery.Template} template - The template raising the event.
-					 * @description This event is raised after all post-initialization work such as setting the initial state and performing the first load are completed.
-					 * @example {@caption To listen for this event and perform some action when it occurs you would bind to it as follows.}
-					 * $(".foogallery").foogallery({
-					 * 	on: {
-					 * 		"ready.foogallery": function(event, template){
-					 * 			// do something
-					 * 		}
-					 * 	}
-					 * });
-					 */
-					self.raise("ready");
-					def.resolve(self);
 				}).fail(function(err){
 					console.log("initialize failed", self, err);
 					self.destroy();
@@ -3883,7 +3883,8 @@
 			} else {
 				items = self.items.available();
 			}
-			return self.items.load(items);
+			var p = self.items.load(items);
+			return p;
 		},
 
 		// #############
@@ -5116,6 +5117,7 @@
 				if (!isNaN(w) && !isNaN(h)){
 					// figure out the max image width and calculate the height the image should be displayed as
 					var width = _is.fn(self.maxWidth) ? self.maxWidth(self) : self.$image.width();
+					if (width <= 0) width = w;
 					var ratio = width / w, height = h * ratio;
 					// actually set the inline css on the image
 					self.$image.css({width: width,height: height});
