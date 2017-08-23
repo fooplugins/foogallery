@@ -279,18 +279,26 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 			);
 			//endregion Language Tab
 
-			//region Uninstall Tab
-			$tabs['uninstall'] = __( 'Uninstall', 'foogallery' );
+			//region Advanced Tab
+			$tabs['advanced'] = __( 'Advanced', 'foogallery' );
+
+			$settings[] = array(
+				'id'      => 'enable_debugging',
+				'title'   => __( 'Enable Debugging', 'foogallery' ),
+				'desc'    => sprintf( __( 'Helps to debug problems and diagnose issues. Enable debugging if you need support for an issue you are having.', 'foogallery' ), foogallery_plugin_name() ),
+				'type'    => 'checkbox',
+				'tab'     => 'advanced'
+			);
 
 			$settings[] = array(
 				'id'      => 'uninstall',
 				'title'   => __( 'Full Uninstall', 'foogallery' ),
 				'desc'    => sprintf( __( 'Run a full uninstall of %s, which includes removing all galleries, settings and metadata. This basically removes all traces of the plugin from your system. Please be careful - there is no undo!', 'foogallery' ), foogallery_plugin_name() ),
 				'type'    => 'uninstall',
-				'tab'     => 'uninstall'
+				'tab'     => 'advanced'
 			);
 
-			//endregion Uninstall Tab
+			//endregion Advanced Tab
 
 			return apply_filters( 'foogallery_admin_settings_override', array(
 				'tabs'     => $tabs,
