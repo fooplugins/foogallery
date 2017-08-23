@@ -140,7 +140,7 @@ if ( !class_exists( 'FooGallery_Masonry_Gallery_Template' ) ) {
                             ''  => __( 'Left', 'foogallery' ),
                             'fg-center'   => __( 'Center', 'foogallery' )
                         ),
-                        'default' => 'default',
+                        'default' => 'fg-center',
 						'row_data'=> array(
 							'data-foogallery-hidden' => true,
 							'data-foogallery-show-when-field' => 'layout',

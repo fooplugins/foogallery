@@ -437,12 +437,21 @@ if ( ! class_exists( 'FooGallery_Upgrade' ) ) {
 				),
 
 				array(
-					'id' => 'center_align',
+					'id' => 'hover_zoom',
 					'value' => 'default',
 					'new' => array(
-						array ( 'id' => 'alignment', 'value' => '' )
+						array ( 'id' => 'hover_effect_scale', 'value' => 'fg-hover-scale' )
 					)
 				),
+
+				array(
+					'id' => 'hover_zoom',
+					'value' => 'none',
+					'new' => array(
+						array ( 'id' => 'hover_effect_scale', 'value' => '' )
+					)
+				),
+
 
 				//image viewer upgrades
 				array(
