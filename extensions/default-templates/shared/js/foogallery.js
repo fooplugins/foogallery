@@ -5212,8 +5212,8 @@
 		 */
 		onCaptionClick: function(e){
 			var self = e.data.self;
-			if ($(e.target).is(self.sel.caption.all)){
-				self.$anchor.trigger(e);
+			if ($(e.target).is(self.sel.caption.all) && self.$anchor.length > 0){
+				self.$anchor.get(0).click();
 			}
 		}
 	});
