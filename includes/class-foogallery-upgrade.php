@@ -622,6 +622,33 @@ if ( ! class_exists( 'FooGallery_Upgrade' ) ) {
 					}
 				}
 
+				//template specific settings overrides
+
+				if ( 'image-viewer' === $foogallery->template ) {
+					$new_settings['image-viewer_theme'] = 'fg-light';
+					$new_settings['image-viewer_border_size'] = '';
+					$new_settings['image-viewer_drop_shadow'] = '';
+					$new_settings['image-viewer_rounded_corners'] = '';
+					$new_settings['image-viewer_inner_shadow'] = '';
+				}
+
+				if ( 'justified' === $foogallery->template ) {
+					$new_settings['image-viewer_theme'] = 'fg-light';
+					$new_settings['image-viewer_border_size'] = '';
+					$new_settings['image-viewer_drop_shadow'] = '';
+					$new_settings['image-viewer_rounded_corners'] = '';
+					$new_settings['image-viewer_inner_shadow'] = '';
+				}
+
+				if ( 'masonry' === $foogallery->template ) {
+					$new_settings['image-viewer_theme'] = 'fg-light';
+					$new_settings['image-viewer_border_size'] = '';
+					$new_settings['image-viewer_drop_shadow'] = '';
+					$new_settings['image-viewer_rounded_corners'] = '';
+					$new_settings['image-viewer_inner_shadow'] = '';
+				}
+
+
 				add_post_meta( $foogallery->ID, FOOGALLERY_META_SETTINGS, $new_settings, true );
 			}
 		}
