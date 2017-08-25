@@ -21,9 +21,6 @@ if ( ! class_exists( 'FooGallery_LazyLoad' ) ) {
 
 			//add the lazy load attributes to the gallery container
 			add_filter( 'foogallery_build_container_data_options', array( $this, 'add_lazyload_options' ), 10, 3 );
-
-			//add the appropriate lazy load class
-			add_filter( 'foogallery_build_class_attribute', array( $this, 'add_lazyload_class' ), 10, 2 );
 		}
 
 		/**
@@ -114,21 +111,6 @@ if ( ! class_exists( 'FooGallery_LazyLoad' ) ) {
 				$options['lazy'] = true;
 			}
 			return $options;
-		}
-
-		/**
-		 * Add the required lazy load class to the gallery
-		 *
-		 * @param $classes array
-		 * @param $gallery FooGallery
-		 *
-		 * @return array
-		 */
-		function add_lazyload_class($classes, $gallery) {
-			if ( isset( $gallery->lazyload) && true === $gallery->lazyload) {
-				$classes[] = apply_filters( 'foogallery_lazyload_class', 'loaded-fade-in' );
-			}
-			return $classes;
 		}
 	}
 }
