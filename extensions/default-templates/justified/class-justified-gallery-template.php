@@ -205,7 +205,7 @@ if ( !class_exists( 'FooGallery_Justified_Gallery_Template' ) ) {
 		 * @return mixed
 		 */
 		function preview_arguments( $args, $post_data ) {
-			$args['thumbnail_height'] = $post_data['foogallery_settings']['justified_thumb_height'];
+			$args['thumbnail_height'] = $post_data[FOOGALLERY_META_SETTINGS]['justified_thumb_height'];
 
 			return $args;
 		}

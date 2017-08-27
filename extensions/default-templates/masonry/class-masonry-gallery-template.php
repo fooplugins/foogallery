@@ -248,7 +248,7 @@ if ( !class_exists( 'FooGallery_Masonry_Gallery_Template' ) ) {
 		 * @return mixed
 		 */
 		function preview_arguments( $args, $post_data ) {
-			$args['thumbnail_width'] = $post_data['foogallery_settings']['masonry_thumbnail_width'];
+			$args['thumbnail_width'] = $post_data[FOOGALLERY_META_SETTINGS]['masonry_thumbnail_width'];
 
 			return $args;
 		}

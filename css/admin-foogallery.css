@@ -430,3 +430,19 @@ button[data-balloon]{overflow:visible}[data-balloon]{position:relative}[data-bal
 	.foogallery-items-view-switch a+a {
 		margin-left: -1px;
 	}
+
+.foogallery_preview_container {
+	position: relative;
+}
+
+.foogallery_preview_container.loading:after {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background: #fff;
+	opacity: 0.8;
+	z-index: 159900;
+}

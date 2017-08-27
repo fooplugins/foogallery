@@ -235,18 +235,21 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 		public function render_gallery_media_metabox( $post ) {
 			$gallery = $this->get_gallery( $post );
 
+			$mode = $gallery->get_meta( 'foogallery_items_view', 'manage' );
+
 			wp_enqueue_media();
 
 			?>
 			<div class="hidden foogallery-items-view-switch-container">
 				<div class="foogallery-items-view-switch">
-					<a href="#manage" data-container=".foogallery-items-view-manage" class="current1"><?php _e('Manage Items', 'foogallery'); ?></a>
-					<a href="#preview" data-container=".foogallery-items-view-preview" class="current"><?php _e('Gallery Preview', 'foogallery'); ?></a>
+					<a href="#manage" data-value="manage" data-container=".foogallery-items-view-manage" class="<?php echo $mode==='manage' ? 'current' : ''; ?>"><?php _e('Manage Items', 'foogallery'); ?></a>
+					<a href="#preview" data-value="preview" data-container=".foogallery-items-view-preview" class="<?php echo $mode==='preview' ? 'current' : ''; ?>"><?php _e('Gallery Preview', 'foogallery'); ?></a>
 				</div>
 				<span id="foogallery_preview_spinner" class="spinner"></span>
+                <input type="hidden" id="foogallery_items_view_input" name="<?php echo FOOGALLERY_META_SETTINGS . '[foogallery_items_view]'; ?>" />
 			</div>
 
-			<div class="foogallery-items-view foogallery-items-view-manage hidden">
+			<div class="foogallery-items-view foogallery-items-view-manage <?php echo $mode==='manage' ? '' : 'hidden'; ?>">
 				<input type="hidden" name="<?php echo FOOGALLERY_CPT_GALLERY; ?>_nonce"
 					   id="<?php echo FOOGALLERY_CPT_GALLERY; ?>_nonce"
 					   value="<?php echo wp_create_nonce( plugin_basename( FOOGALLERY_FILE ) ); ?>"/>
@@ -276,7 +279,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 					<?php $this->render_gallery_item(); ?>
 				</textarea>
 			</div>
-			<div class="foogallery-items-view foogallery-items-view-preview">
+			<div class="foogallery-items-view foogallery-items-view-preview <?php echo $mode==='preview' ? '' : 'hidden'; ?>">
 				<div class="foogallery_preview_container">
 				<?php
 				if ( $gallery->has_attachments() ) {

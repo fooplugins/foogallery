@@ -219,9 +219,9 @@ if ( !class_exists( 'FooGallery_Image_Viewer_Gallery_Template' ) ) {
 		 * @return mixed
 		 */
 		function preview_arguments( $args, $post_data ) {
-			$args['thumbnail_width'] = $post_data['foogallery_settings']['image-viewer_thumbnail_dimensions']['width'];
-			$args['thumbnail_height'] = $post_data['foogallery_settings']['image-viewer_thumbnail_dimensions']['height'];
-			$args['thumbnail_crop'] = isset( $post_data['foogallery_settings']['image-viewer_thumbnail_dimensions']['crop'] ) ? '1' : '0';
+			$args['thumbnail_width'] = $post_data[FOOGALLERY_META_SETTINGS]['image-viewer_thumbnail_dimensions']['width'];
+			$args['thumbnail_height'] = $post_data[FOOGALLERY_META_SETTINGS]['image-viewer_thumbnail_dimensions']['height'];
+			$args['thumbnail_crop'] = isset( $post_data[FOOGALLERY_META_SETTINGS]['image-viewer_thumbnail_dimensions']['crop'] ) ? '1' : '0';
 
 			return $args;
 		}

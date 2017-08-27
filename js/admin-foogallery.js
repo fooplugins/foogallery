@@ -100,6 +100,7 @@
 		data.push({name: '_wp_http_referer', value: encodeURIComponent($('input[name="_wp_http_referer"]').val())});
 
         $('#foogallery_preview_spinner').addClass('is-active');
+        $('.foogallery_preview_container').addClass('loading');
         $.ajax({
             type: "POST",
             url: ajaxurl,
@@ -109,6 +110,7 @@
                 //updated the preview
 				$('.foogallery_preview_container').html(data);
                 $('#foogallery_preview_spinner').removeClass('is-active');
+                $('.foogallery_preview_container').removeClass('loading');
 
 				FOOGALLERY.handleSettingFieldChange(true);
             }
@@ -164,7 +166,8 @@
 			var $currentButton = $('.foogallery-items-view-switch-container a.current'),
 				currentSelector = $currentButton.data('container'),
 				$nextButton = $(this),
-				nextSelector = $nextButton.data('container');
+				nextSelector = $nextButton.data('container'),
+				value = $nextButton.data('value');
 
 			//toggle the views
 			$(currentSelector).hide();
@@ -173,6 +176,9 @@
 			//toggle the switch button
 			$currentButton.removeClass('current');
 			$nextButton.addClass('current');
+
+			//set the input so that it is saved
+			$('#foogallery_items_view_input').val(value);
 
 			if ( $('.foogallery_preview_container').is(':visible') ) {
 				FOOGALLERY.updateGalleryPreview();
@@ -220,6 +226,10 @@
 
             $fieldContainer.find(selector).change(function() {
             	FOOGALLERY.handleSettingFieldChange(true);
+
+                if ( $fieldContainer.data('foogallery-preview') == 'shortcode' ) {
+                    FOOGALLERY.reloadGalleryPreview();
+                }
 			});
         });
 
