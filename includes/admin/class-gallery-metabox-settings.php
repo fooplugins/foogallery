@@ -80,7 +80,8 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings' ) ) {
 				'spacer'  => '<span class="spacer"></span>',
 				'choices' => array(
 					'fg-light' => __( 'Light', 'foogallery' ),
-					'fg-dark'  => __( 'Dark', 'foogallery' )
+					'fg-dark'  => __( 'Dark', 'foogallery' ),
+					'fg-custom'  => __( 'Custom', 'foogallery' )
 				),
                 'row_data'=> array(
                     'data-foogallery-change-selector' => 'input:radio',
@@ -194,6 +195,32 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings' ) ) {
                     'data-foogallery-change-selector' => 'input:radio',
 					'data-foogallery-preview' => 'class'
                 )
+			);
+
+			$fields[] = array(
+				'id'      => 'loaded_effect',
+				'title'   => __( 'Loaded Effect', 'foogallery' ),
+				'desc'	  => __( 'The animation effect used to display the thumbnail, once it has loaded.', 'foogallery' ),
+				'section' => __( 'Appearance', 'foogallery' ),
+				'default' => 'fg-loaded-fade-in',
+				'type'    => 'select',
+				'choices' => apply_filters( 'foogallery_gallery_template_common_thumbnail_fields_loaded_effect_choices', array(
+					''                      => __( 'None', 'foogallery' ),
+					'fg-loaded-fade-in'     => __( 'Fade In', 'foogallery' ),
+					'fg-loaded-slide-up'    => __( 'Slide Up', 'foogallery' ),
+					'fg-loaded-slide-down'  => __( 'Slide Down', 'foogallery' ),
+					'fg-loaded-slide-left'  => __( 'Slide Left', 'foogallery' ),
+					'fg-loaded-slide-right' => __( 'Slide Right', 'foogallery' ),
+					'fg-loaded-scale-up'    => __( 'Scale Up', 'foogallery' ),
+					'fg-loaded-swing-down'  => __( 'Swing Down', 'foogallery' ),
+					'fg-loaded-drop'        => __( 'Drop', 'foogallery' ),
+					'fg-loaded-fly'         => __( 'Fly', 'foogallery' ),
+					'fg-loaded-flip'        => __( 'Flip', 'foogallery' ),
+				)),
+				'row_data'=> array(
+					'data-foogallery-change-selector' => 'input:radio',
+					'data-foogallery-preview' => 'class'
+				)
 			);
 			//endregion
 

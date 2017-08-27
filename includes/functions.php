@@ -361,6 +361,8 @@ function foogallery_build_class_attribute( $gallery ) {
 	$classes[] = $gallery->get_setting( 'drop_shadow', 'fg-shadow-outline' );
 	$classes[] = $gallery->get_setting( 'inner_shadow', '' );
 	$classes[] = $gallery->get_setting( 'loading_icon', 'fg-loading-default' );
+	$classes[] = $gallery->get_setting( 'loaded_effect', 'fg-loaded-fade-in' );
+
 
 	$caption_preset = $gallery->get_setting( 'hover_effect_preset', 'fg-custom' );
 
