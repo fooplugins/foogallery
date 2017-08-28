@@ -4591,6 +4591,30 @@
 			 */
 			self.maxWidth = options.maxWidth;
 			/**
+			 * @memberof FooGallery.Item#
+			 * @name maxCaptionLength
+			 * @type {number}
+			 */
+			self.maxCaptionLength = options.maxCaptionLength;
+			/**
+			 * @memberof FooGallery.Item#
+			 * @name maxDescriptionLength
+			 * @type {number}
+			 */
+			self.maxDescriptionLength = options.maxDescriptionLength;
+			/**
+			 * @memberof FooGallery.Item#
+			 * @name showCaptionTitle
+			 * @type {boolean}
+			 */
+			self.showCaptionTitle = options.showCaptionTitle;
+			/**
+			 * @memberof FooGallery.Item#
+			 * @name showCaptionDescription
+			 * @type {boolean}
+			 */
+			self.showCaptionDescription = options.showCaptionDescription;
+			/**
 			 * @summary The cached result of the last call to the {@link FooGallery.Item#getThumbUrl|getThumbUrl} method.
 			 * @memberof FooGallery.Item#
 			 * @name _thumbUrl
@@ -4746,6 +4770,17 @@
 				// if the caption or description are not provided set there values to the title and alt respectively
 				if (_is.empty(self.caption)) self.caption = self.title;
 				if (_is.empty(self.description)) self.description = self.alt;
+				// enforce the max lengths for the caption and description
+				if (_is.number(self.maxCaptionLength) && self.maxCaptionLength  > 0 && !_is.empty(self.caption) && _is.string(self.caption) && self.caption.length > self.maxCaptionLength){
+					self.$caption.find(sel.caption.title).html(self.caption.substr(0, self.maxCaptionLength) + "&hellip;");
+				}
+				if (_is.number(self.maxDescriptionLength) && self.maxDescriptionLength  > 0 && !_is.empty(self.description) && _is.string(self.description) && self.description.length > self.maxDescriptionLength){
+					self.$caption.find(sel.caption.description).html(self.description.substr(0, self.maxDescriptionLength) + "&hellip;");
+				}
+				// check if the item has a loader
+				if (self.$el.find(sel.loader).length === 0){
+					self.$el.append($("<div/>", {"class": cls.loader}));
+				}
 				// if the image has no src url then set the placeholder
 				if (_is.empty(self.$image.prop("src"))){
 					self.$image.prop("src", self.tmpl.items.placeholder(self.width, self.height));
@@ -4861,23 +4896,41 @@
 					self.$anchor = $("<a/>").attr(attr.anchor).appendTo(self.$inner).on("click.foogallery", {self: self}, self.onAnchorClick);
 					self.$image = $("<img/>").attr(attr.image).appendTo(self.$anchor);
 
+					cls = self.cls.caption;
+					attr = self.attr.caption;
+					attr.elem["class"] = cls.elem;
+					self.$caption = $("<figcaption/>").attr(attr.elem).on("click.foogallery", {self: self}, self.onCaptionClick);
 					var hasTitle = !_is.empty(self.caption), hasDesc = !_is.empty(self.description);
 					if (hasTitle || hasDesc){
-						cls = self.cls.caption;
-						attr = self.attr.caption;
-						attr.elem["class"] = cls.elem;
 						attr.inner["class"] = cls.inner;
 						attr.title["class"] = cls.title;
 						attr.description["class"] = cls.description;
-						self.$caption = $("<figcaption/>").attr(attr.elem).on("click.foogallery", {self: self}, self.onCaptionClick);
 						var $inner = $("<div/>").attr(attr.inner).appendTo(self.$caption);
 						if (hasTitle){
-							$inner.append($("<div/>").attr(attr.title).html(self.caption));
+							var $title;
+							// enforce the max length for the caption
+							if (_is.number(self.maxCaptionLength) && self.maxCaptionLength  > 0 && _is.string(self.caption) && self.caption.length > self.maxCaptionLength){
+								$title = $("<div/>").attr(attr.title).html(self.caption.substr(0, self.maxCaptionLength) + "&hellip;");
+							} else {
+								$title = $("<div/>").attr(attr.title).html(self.caption);
+							}
+							$inner.append($title);
 						}
 						if (hasDesc){
-							$inner.append($("<div/>").attr(attr.description).html(self.description));
+							var $desc;
+							// enforce the max length for the description
+							if (_is.number(self.maxDescriptionLength) && self.maxDescriptionLength  > 0 && _is.string(self.description) && self.description.length > self.maxDescriptionLength){
+								$desc = $("<div/>").attr(attr.description).html(self.description.substr(0, self.maxDescriptionLength) + "&hellip;");
+							} else {
+								$desc = $("<div/>").attr(attr.description).html(self.description);
+							}
+							$inner.append($desc);
 						}
-						self.$caption.appendTo(self.$inner);
+					}
+					self.$caption.appendTo(self.$inner);
+					// check if the item has a loader
+					if (self.$el.find(self.sel.loader).length === 0){
+						self.$el.append($("<div/>", {"class": self.cls.loader}));
 					}
 					self.isCreated = true;
 				}
@@ -5073,10 +5126,10 @@
 			if (!self.isCreated || !self.isAttached) return _fn.rejectWith("not created or attached");
 			var e = self.tmpl.raise("load-item", [self]);
 			if (e.isDefaultPrevented()) return _fn.rejectWith("default prevented");
+			var cls = self.cls, img = self.$image.get(0), placeholder = img.src;
+			self.isLoading = true;
+			self.$el.removeClass(cls.idle).removeClass(cls.loaded).removeClass(cls.error).addClass(cls.loading);
 			return self._load = $.Deferred(function (def) {
-				var cls = self.cls, img = self.$image.get(0), placeholder = img.src;
-				self.isLoading = true;
-				self.$el.removeClass(cls.idle).removeClass(cls.loaded).removeClass(cls.error).addClass(cls.loading);
 				// if Firefox reset to empty src or else the onload and onerror callbacks are executed immediately
 				if (!_is.undef(window.InstallTrigger)) img.src = "";
 				img.onload = function () {
@@ -5246,6 +5299,10 @@
 	 * @property {?string} [description=null] - The description for the image. This can contain HTML content.
 	 * @property {string[]} [tags=[]] - The `data-tags` attribute for the outer element.
 	 * @property {?FooGallery.Item~maxWidthCallback} [maxWidth=null] - Called when setting an items' image size. If not supplied the images outer width is used.
+	 * @property {number} [maxCaptionLength=0] - The max length of the title for the caption.
+	 * @property {number} [maxDescriptionLength=0] - The max length of the description for the caption.
+	 * @property {boolean} [showCaptionTitle=true] - Whether or not the caption title should be displayed.
+	 * @property {boolean} [showCaptionDescription=true] - Whether or not the caption description should be displayed.
 	 * @property {FooGallery.Item~Attributes} [attr] - Additional attributes to apply to the items' elements.
 	 */
 	_.template.configure("core", {
@@ -5262,6 +5319,10 @@
 			description: "",
 			tags: [],
 			maxWidth: null,
+			maxCaptionLength: 0,
+			maxDescriptionLength: 0,
+			showCaptionTitle: true,
+			showCaptionDescription: true,
 			attr: {
 				elem: {},
 				inner: {},
@@ -5281,6 +5342,7 @@
 			inner: "fg-item-inner",
 			anchor: "fg-thumb",
 			image: "fg-image",
+			loader: "fg-loader",
 			idle: "fg-idle",
 			loading: "fg-loading",
 			loaded: "fg-loaded",
