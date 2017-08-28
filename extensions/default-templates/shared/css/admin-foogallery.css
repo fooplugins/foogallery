@@ -3,11 +3,11 @@
 	content: "";
 	display: inline-block;
 	position: relative;
-	width: 32px;
-	height: 32px;
+	width: 40px;
+	height: 40px;
 	margin: 0;
 	background: transparent no-repeat center center;
-	background-size: 32px 32px;
+	background-size: 40px 40px;
 	vertical-align: middle;
 }
 .foogallery-setting-caption_icon.fg-hover-zoom {
@@ -40,35 +40,37 @@
 	background-color: #eee;
 }
 
-.foogallery-setting-loading_icon.fg-loading-default {
-	background-image: url('../img/loading-default.gif');
+.foogallery-setting-loading_icon .fg-loader {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translateX(-50%) translateY(-50%);
+	width: 1em;
+	height: 1em;
+	font-size: 5px;
 }
-.foogallery-setting-loading_icon.fg-loading-ellipsis {
-	background-image: url('../img/loading-ellipsis.gif');
+
+.foogallery-setting-loading_icon.fg-loading-bars .fg-loader {
+	font-size: 4px;
+	width: 1em;
+	height: 4em;
 }
-.foogallery-setting-loading_icon.fg-loading-gears {
-	background-image: url('../img/loading-gears.gif');
+
+.foogallery-setting-loading_icon.fg-loading-partial .fg-loader {
+	font-size: 4px;
+	width: 10em;
+	height: 10em;
 }
-.foogallery-setting-loading_icon.fg-loading-hourglass {
-	background-image: url('../img/loading-hourglass.gif');
+
+.foogallery-setting-loading_icon.fg-loading-pulse .fg-loader {
+	font-size: 4px;
+	width: 2.5em;
+	height: 2.5em;
+	transform: translateX(-50%) translateY(-150%);
 }
-.foogallery-setting-loading_icon.fg-loading-reload {
-	background-image: url('../img/loading-reload.gif');
-}
-.foogallery-setting-loading_icon.fg-loading-ripple {
-	background-image: url('../img/loading-ripple.gif');
-}
-.foogallery-setting-loading_icon.fg-loading-bars {
-	background-image: url('../img/loading-bars.gif');
-}
-.foogallery-setting-loading_icon.fg-loading-spin {
-	background-image: url('../img/loading-spin.gif');
-}
-.foogallery-setting-loading_icon.fg-loading-squares {
-	background-image: url('../img/loading-squares.gif');
-}
-.foogallery-setting-loading_icon.fg-loading-cube {
-	background-image: url('../img/loading-cube.gif');
+
+.foogallery-setting-loading_icon.fg-loading-trail .fg-loader {
+	font-size: 20px;
 }
 
 .fg-item-inner {
