@@ -42,6 +42,7 @@ require_once( FOOGALLERY_PATH . 'includes/class-thumbnail-dimensions.php' );
 require_once( FOOGALLERY_PATH . 'includes/class-foobox-support.php' );
 require_once( FOOGALLERY_PATH . 'includes/class-responsive-lightbox-dfactory-support.php' );
 require_once( FOOGALLERY_PATH . 'includes/class-foogallery-lazyload.php' );
+require_once( FOOGALLERY_PATH . 'includes/class-foogallery-paging.php' );
 require_once( FOOGALLERY_PATH . 'includes/class-foogallery-attachment-custom-class.php' );
 
 //Datasource includes

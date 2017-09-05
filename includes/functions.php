@@ -27,6 +27,22 @@ function foogallery_gallery_templates() {
 }
 
 /**
+ * Return a specific gallery template based on the slug
+ * @param $slug
+ *
+ * @return bool|array
+ */
+function foogallery_get_gallery_template( $slug ) {
+	foreach ( foogallery_gallery_templates() as $template ) {
+		if ( $slug == $template['slug'] ) {
+			return $template;
+		}
+	}
+
+	return false;
+}
+
+/**
  * Return the FooGallery extension API class
  *
  * @return FooGallery_Extensions_API

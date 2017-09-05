@@ -572,6 +572,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 					'attachment_ids' => $_POST['foogallery_attachments']
 				);
 
+				$args = apply_filters( 'foogallery_preview_arguments', $args, $_POST, $template );
 				$args = apply_filters( 'foogallery_preview_arguments-' . $template, $args, $_POST );
 
 				foogallery_render_gallery( $foogallery_id, $args );

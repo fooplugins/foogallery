@@ -225,11 +225,11 @@
 				selector = $fieldContainer.data('foogallery-change-selector');
 
             $fieldContainer.find(selector).change(function() {
-            	FOOGALLERY.handleSettingFieldChange(true);
-
                 if ( $fieldContainer.data('foogallery-preview') == 'shortcode' ) {
                     FOOGALLERY.reloadGalleryPreview();
-                }
+                } else {
+					FOOGALLERY.handleSettingFieldChange(true);
+				}
 			});
         });
 

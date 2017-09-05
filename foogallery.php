@@ -134,6 +134,8 @@ if ( ! class_exists( 'FooGallery_Plugin' ) ) {
 
 			new FooGallery_LazyLoad();
 
+			new FooGallery_Paging();
+
 			new FooGallery_Thumbnail_Dimensions();
 
 			new FooGallery_FooBox_Support();
