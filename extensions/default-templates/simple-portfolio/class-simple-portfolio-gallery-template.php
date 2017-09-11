@@ -52,6 +52,7 @@ if ( !class_exists( 'FooGallery_Simple_Portfolio_Gallery_Template' ) ) {
                 'slug'        => 'simple_portfolio',
                 'name'        => __( 'Simple Portfolio', 'foogallery' ),
                 'lazyload_support' => true,
+				'paging_support' => true,
                 'fields'	  => array(
                     array(
                         'id'	  => 'help',

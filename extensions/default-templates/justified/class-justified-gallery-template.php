@@ -50,6 +50,7 @@ if ( !class_exists( 'FooGallery_Justified_Gallery_Template' ) ) {
                 'slug'        => 'justified',
                 'name'        => __( 'Justified Gallery', 'foogallery' ),
                 'lazyload_support' => true,
+				'paging_support' => true,
                 'fields'	  => array(
                     array(
                         'id'      => 'thumb_height',

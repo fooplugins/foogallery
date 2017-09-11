@@ -53,6 +53,7 @@ if ( !class_exists( 'FooGallery_Masonry_Gallery_Template' ) ) {
                 'slug'        => 'masonry',
                 'name'        => __( 'Masonry Image Gallery', 'foogallery' ),
                 'lazyload_support' => true,
+				'paging_support' => true,
                 'fields'	  => array(
                     array(
                         'id'      => 'thumbnail_width',
