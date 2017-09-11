@@ -2674,10 +2674,14 @@ only screen and (min-resolution: 2.25dppx) {
 	text-decoration: none;
 	border: 1px solid transparent;
 	border-radius: 4px;
+	box-shadow: none;
+	outline: none;
 }
 .fg-paging-container .fg-page-item:hover .fg-page-link,
 .fg-paging-container .fg-page-item:focus .fg-page-link {
 	text-decoration: none;
+	box-shadow: none;
+	outline: none;
 }
 .fg-paging-container .fg-page-item.fg-disabled .fg-page-link,
 .fg-paging-container .fg-page-item.fg-selected .fg-page-link {

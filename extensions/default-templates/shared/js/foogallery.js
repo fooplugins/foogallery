@@ -6023,13 +6023,14 @@
 			self.total = self.size > 0 && items.length > 0 ? Math.ceil(items.length / self.size) : 1;
 			if (self.total <= 1){
 				self._arr.push(items);
+				self.tmpl.items.detach(self._arr[0]);
 			} else {
 				for (var i = 0; i < self.total; i++){
 					self._arr.push(items.splice(0, self.size));
 					self.tmpl.items.detach(self._arr[i]);
 				}
 			}
-			if (_.paging.hasCtrl(self.type)){
+			if (self.total > 1 && _.paging.hasCtrl(self.type)){
 				var pos = self.position, top, bottom;
 				if (pos === "both" || pos === "top"){
 					top = _.paging.makeCtrl(self.type, self.tmpl, self, "top");
@@ -6224,11 +6225,6 @@
 					return self.available();
 				}
 			}
-			// for (var pg = self.current - 3; pg <= self.current; pg++){
-			// 	if (self.isValid(pg)){
-			// 		items.push.apply(items, self.get(pg));
-			// 	}
-			// }
 			for (var i = 0, l = self._created.length, num; i < l; i++){
 				num = i + 1;
 				page = self.get(num);
@@ -6279,18 +6275,6 @@
 			this._count = this.amount;
 		},
 		available: function(){
-			// var self = this, items = [], page = self.get(self.current);
-			// if (!_is.empty(page)){
-			// 	var vb = _utils.getViewportBounds(), ib = page[page.length - 1].bounds();
-			// 	if (ib.top - vb.bottom < self.distance){
-			// 		var pageNumber = self.current + 1;
-			// 		if (self.isValid(pageNumber) && self._count < self.amount){
-			// 			self._count++;
-			// 			self.set(pageNumber, false);
-			// 		}
-			// 	}
-			// }
-
 			var self = this, items = [], page = self.get(self.current), viewport = _utils.getViewportBounds(), last, first;
 			if (!_is.empty(page) && self._created.length !== self.total){
 				last = page[page.length - 1].bounds();
