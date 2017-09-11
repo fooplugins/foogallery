@@ -35,12 +35,13 @@ if ( ! class_exists( 'FooGallery_Paging' ) ) {
 			if ( $template && array_key_exists( 'paging_support', $template ) && true === $template['paging_support'] ) {
 				$fields[] = array(
 					'id'      => 'paging_type',
-					'title'   => __( 'Paging', 'foogallery' ),
+					'title'   => __( 'Paging Type', 'foogallery' ),
 					'desc'    => __( 'Add paging to a large gallery.', 'foogallery' ),
 					'section' => __( 'Paging', 'foogallery' ),
 					'spacer'  => '<span class="spacer"></span>',
 					'type'    => 'radio',
-					'choices' => apply_filters( 'foogallery_gallery_template_paging_choices', array(
+					'default' => 'dots',
+					'choices' => apply_filters( 'foogallery_gallery_template_paging_type_choices', array(
 						''  => __( 'None', 'foogallery' ),
 						'dots'   => __( 'Dots', 'foogallery' ),
 						'pagination'   => __( 'Pagination', 'foogallery' ),
@@ -48,6 +49,169 @@ if ( ! class_exists( 'FooGallery_Paging' ) ) {
 						'loadMore'   => __( 'Load More', 'foogallery' )
 					) ),
 					'row_data'=> array(
+						'data-foogallery-change-selector' => 'input',
+						'data-foogallery-preview' => 'shortcode',
+						'data-foogallery-value-selector' => 'input:checked',
+					)
+				);
+
+				$fields[] = array(
+					'id'      => 'paging_size',
+					'title'   => __( 'Paging Size', 'foogallery' ),
+					'desc'    => __( 'The size of your pages.', 'foogallery' ),
+					'section' => __( 'Paging', 'foogallery' ),
+					'type'    => 'number',
+					'class'   => 'small-text',
+					'default' => 30,
+					'step'    => '1',
+					'min'     => '0',
+					'row_data'=> array(
+						'data-foogallery-change-selector' => 'input',
+						'data-foogallery-preview' => 'shortcode'
+					)
+				);
+
+				$fields[] = array(
+					'id'      => 'paging_position',
+					'title'   => __( 'Position', 'foogallery' ),
+					'desc'    => __( 'The position of the paging for either dots or pagination.', 'foogallery' ),
+					'section' => __( 'Paging', 'foogallery' ),
+					'spacer'  => '<span class="spacer"></span>',
+					'type'    => 'radio',
+					'default' => 'both',
+					'choices' => apply_filters( 'foogallery_gallery_template_paging_position_choices', array(
+						''  => __( 'None', 'foogallery' ),
+						'top'   => __( 'Top', 'foogallery' ),
+						'bottom'   => __( 'Bottom', 'foogallery' ),
+						'both'   => __( 'Both', 'foogallery' )
+					) ),
+					'row_data'=> array(
+						'data-foogallery-hidden' => true,
+						'data-foogallery-show-when-field-operator' => 'regex',
+						'data-foogallery-show-when-field' => 'paging_type',
+						'data-foogallery-show-when-field-value' => 'dots|pagination',
+						'data-foogallery-change-selector' => 'input',
+						'data-foogallery-preview' => 'shortcode'
+					)
+				);
+
+				$fields[] = array(
+					'id'      => 'paging_theme',
+					'title'   => __( 'Theme', 'foogallery' ),
+					'desc'    => __( 'The theme used for paging.', 'foogallery' ),
+					'section' => __( 'Paging', 'foogallery' ),
+					'spacer'  => '<span class="spacer"></span>',
+					'type'    => 'radio',
+					'default' => 'fg-light',
+					'choices' => apply_filters( 'foogallery_gallery_template_paging_position_choices', array(
+						'fg-light'  => __( 'Light', 'foogallery' ),
+						'fg-dark'   => __( 'Dark', 'foogallery' ),
+					) ),
+					'row_data'=> array(
+						'data-foogallery-change-selector' => 'input',
+						'data-foogallery-preview' => 'shortcode'
+					)
+				);
+
+				$fields[] = array(
+					'id'      => 'paging_scroll',
+					'title'   => __( 'Scroll To Top', 'foogallery' ),
+					'desc'    => __( 'Whether or not it should scroll to the top of the gallery when paging is changed.', 'foogallery' ),
+					'section' => __( 'Paging', 'foogallery' ),
+					'type'    => 'radio',
+					'spacer'  => '<span class="spacer"></span>',
+					'default' => 'true',
+					'choices' => array(
+						'true'  => __( 'Yes', 'foogallery' ),
+						'false'  => __( 'No', 'foogallery' ),
+					),
+					'row_data'=> array(
+						'data-foogallery-hidden' => true,
+						'data-foogallery-show-when-field-operator' => 'regex',
+						'data-foogallery-show-when-field' => 'paging_type',
+						'data-foogallery-show-when-field-value' => 'dots|pagination',
+						'data-foogallery-change-selector' => 'input',
+						'data-foogallery-preview' => 'shortcode'
+					)
+				);
+
+				$fields[] = array(
+					'id'      => 'paging_limit',
+					'title'   => __( 'Paging Limit', 'foogallery' ),
+					'desc'    => __( 'The maximum number of page links to display for the gallery.', 'foogallery' ),
+					'section' => __( 'Paging', 'foogallery' ),
+					'type'    => 'number',
+					'class'   => 'small-text',
+					'default' => 5,
+					'step'    => '1',
+					'min'     => '0',
+					'row_data'=> array(
+						'data-foogallery-hidden' => true,
+						'data-foogallery-show-when-field' => 'paging_type',
+						'data-foogallery-show-when-field-value' => 'pagination',
+						'data-foogallery-change-selector' => 'input',
+						'data-foogallery-preview' => 'shortcode'
+					)
+				);
+
+				$fields[] = array(
+					'id'      => 'paging_showFirstLast',
+					'title'   => __( 'First &amp; Last Buttons', 'foogallery' ),
+					'desc'    => __( 'Whether or not to show the first &amp; last buttons for pagination.', 'foogallery' ),
+					'section' => __( 'Paging', 'foogallery' ),
+					'type'    => 'radio',
+					'spacer'  => '<span class="spacer"></span>',
+					'default' => 'true',
+					'choices' => array(
+						'true'  => __( 'Show', 'foogallery' ),
+						'false'  => __( 'Hide', 'foogallery' ),
+					),
+					'row_data'=> array(
+						'data-foogallery-hidden' => true,
+						'data-foogallery-show-when-field' => 'paging_type',
+						'data-foogallery-show-when-field-value' => 'pagination',
+						'data-foogallery-change-selector' => 'input',
+						'data-foogallery-preview' => 'shortcode'
+					)
+				);
+
+				$fields[] = array(
+					'id'      => 'paging_showPrevNext',
+					'title'   => __( 'Prev &amp; Next Buttons', 'foogallery' ),
+					'desc'    => __( 'Whether or not to show the previous &amp; next buttons for pagination.', 'foogallery' ),
+					'section' => __( 'Paging', 'foogallery' ),
+					'type'    => 'radio',
+					'spacer'  => '<span class="spacer"></span>',
+					'default' => 'true',
+					'choices' => array(
+						'true'  => __( 'Show', 'foogallery' ),
+						'false'  => __( 'Hide', 'foogallery' ),
+					),
+					'row_data'=> array(
+						'data-foogallery-hidden' => true,
+						'data-foogallery-show-when-field' => 'paging_type',
+						'data-foogallery-show-when-field-value' => 'pagination',
+						'data-foogallery-change-selector' => 'input',
+						'data-foogallery-preview' => 'shortcode'
+					)
+				);
+
+				$fields[] = array(
+					'id'      => 'paging_showPrevNextMore',
+					'title'   => __( 'More Buttons', 'foogallery' ),
+					'desc'    => __( 'Whether or not to show the previous &amp; next more buttons for pagination.', 'foogallery' ),
+					'section' => __( 'Paging', 'foogallery' ),
+					'type'    => 'radio',
+					'spacer'  => '<span class="spacer"></span>',
+					'default' => 'true',
+					'choices' => array(
+						'true'  => __( 'Show', 'foogallery' ),
+						'false'  => __( 'Hide', 'foogallery' ),
+					),
+					'row_data'=> array(
+						'data-foogallery-hidden' => true,
+						'data-foogallery-show-when-field' => 'paging_type',
+						'data-foogallery-show-when-field-value' => 'pagination',
 						'data-foogallery-change-selector' => 'input',
 						'data-foogallery-preview' => 'shortcode'
 					)
@@ -82,22 +246,46 @@ if ( ! class_exists( 'FooGallery_Paging' ) ) {
 			if ( isset( $gallery->paging ) && true === $gallery->paging) {
 
 				//check if we have arguments from the shortcode and override the saved settings
-				global $current_foogallery_arguments;
-				if ( isset( $current_foogallery_arguments ) && isset( $current_foogallery_arguments['paging'] ) ) {
-					$paging = $current_foogallery_arguments['paging'];
-				} else {
-					$paging = $gallery->get_setting( 'paging_type', '' );
-				}
+				$paging = $this->get_foogallery_argument( $gallery, 'paging_type', 'paging', '' );
 
-				$options['paging'] = array(
-					'type' => $paging,
-					'theme' => 'fg-light',
-					'size' => 3,
-					'position' => 'both',
-					'scrollToTop' => true
-				);
+				if ( '' !== $paging ) {
+					$paging_position = $this->get_foogallery_argument( $gallery, 'paging_position', 'paging_position', 'both' );
+					$paging_theme    = $this->get_foogallery_argument( $gallery, 'paging_theme', 'paging_theme', 'fg-light' );
+					$paging_size     = intval( $this->get_foogallery_argument( $gallery, 'paging_size', 'paging_size', '30' ) );
+					$paging_scroll   = $this->get_foogallery_argument( $gallery, 'paging_scroll', 'paging_scroll', 'true' ) === 'true';
+
+					//force bottom position for infinite and loadMore paging
+					if ( 'infinite' === $paging || 'loadMore' === $paging ) {
+						$paging_position = 'bottom';
+					}
+
+					$options['paging'] = array(
+						'type'        => $paging,
+						'theme'       => $paging_theme,
+						'size'        => $paging_size,
+						'position'    => $paging_position,
+						'scrollToTop' => $paging_scroll
+					);
+
+					if ( 'pagination' === $paging ) {
+						$options['paging']['limit'] = intval( $this->get_foogallery_argument( $gallery, 'paging_limit', 'paging_limit', '5' ) );;
+						$options['paging']['showFirstLast'] = $this->get_foogallery_argument( $gallery, 'paging_showFirstLast', 'paging_showFirstLast', 'true' ) === 'true';;
+						$options['paging']['showPrevNext'] = $this->get_foogallery_argument( $gallery, 'paging_showPrevNext', 'paging_showPrevNext', 'true' ) === 'true';;
+						$options['paging']['showPrevNextMore'] = $this->get_foogallery_argument( $gallery, 'paging_showPrevNextMore', 'paging_showPrevNextMore', 'true' ) === 'true';;
+					}
+				}
 			}
 			return $options;
+		}
+
+		private function get_foogallery_argument( $gallery, $setting_id, $argument_name, $default_value ) {
+			global $current_foogallery_arguments;
+
+			if ( isset( $current_foogallery_arguments ) && isset( $current_foogallery_arguments[$argument_name] ) ) {
+				return $current_foogallery_arguments[$argument_name];
+			} else {
+				return $gallery->get_setting( $setting_id, $default_value );
+			}
 		}
 
 		/**
@@ -111,11 +299,19 @@ if ( ! class_exists( 'FooGallery_Paging' ) ) {
 		 */
 		function preview_arguments( $args, $post_data, $template ) {
 			$template_data = foogallery_get_gallery_template( $template );
-			$post_key = $template. '_paging_type';
 
 			//check the template supports paging
 			if ( $template_data && array_key_exists( 'paging_support', $template_data ) && true === $template_data['paging_support'] ) {
-				$args['paging'] = $post_data[FOOGALLERY_META_SETTINGS][$post_key];
+				$args['paging'] = $post_data[FOOGALLERY_META_SETTINGS][$template. '_paging_type'];
+				$args['paging_position'] = $post_data[FOOGALLERY_META_SETTINGS][$template. '_paging_position'];
+				$args['paging_theme'] = $post_data[FOOGALLERY_META_SETTINGS][$template. '_paging_theme'];
+				$args['paging_size'] = $post_data[FOOGALLERY_META_SETTINGS][$template. '_paging_size'];
+				$args['paging_scroll'] = $post_data[FOOGALLERY_META_SETTINGS][$template. '_paging_scroll'];
+
+				$args['paging_limit'] = $post_data[FOOGALLERY_META_SETTINGS][$template. '_paging_limit'];
+				$args['paging_showFirstLast'] = $post_data[FOOGALLERY_META_SETTINGS][$template. '_paging_showFirstLast'];
+				$args['paging_showPrevNext'] = $post_data[FOOGALLERY_META_SETTINGS][$template. '_paging_showPrevNext'];
+				$args['paging_showPrevNextMore'] = $post_data[FOOGALLERY_META_SETTINGS][$template. '_paging_showPrevNextMore'];
 			}
 
 			return $args;

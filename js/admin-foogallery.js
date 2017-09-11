@@ -139,7 +139,14 @@
 				var actualFieldValue = fieldValueAttribute ? $(this).attr(fieldValueAttribute) : $(this).val();
 
 				if ( fieldOperator === '!==' ) {
-					if ( actualFieldValue !== fieldValue ) {
+					if (actualFieldValue !== fieldValue) {
+						$item.show()
+							.removeClass('foogallery_template_field_template_hidden')
+							.find(':input').removeAttr('disabled');
+					}
+				} else if ( fieldOperator === 'regex' ) {
+					var re = new RegExp(fieldValue);
+					if ( re.test(actualFieldValue) ) {
 						$item.show()
 							.removeClass('foogallery_template_field_template_hidden')
 							.find(':input').removeAttr('disabled');
@@ -235,6 +242,9 @@
 
 		//trigger this onload too!
 		FOOGALLERY.galleryTemplateChanged(false);
+
+		//force hidden field state to be correct on load
+		FOOGALLERY.handleSettingFieldChange(false);
 	};
 
 	FOOGALLERY.getSelectedTemplate = function() {
