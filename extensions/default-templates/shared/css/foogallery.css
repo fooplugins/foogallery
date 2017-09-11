@@ -2457,6 +2457,11 @@ only screen and (min-resolution: 2.25dppx) {
 .foogallery.fg-caption-hover.fg-hover-slide-right .fg-caption {
 	transform: translateX(-100%);
 }
+.fg-paging-container, .fg-paging-container * {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
 .fg-paging-container {
 	display: block;
 	padding: 15px;

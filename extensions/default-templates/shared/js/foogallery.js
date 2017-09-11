@@ -3694,7 +3694,6 @@
 					var e = self.raise("init");
 					if (e.preventDefault()) return _fn.rejectWith("init default prevented");
 					return self.items.fetch().then(function(){
-						if (self.pages) self.pages.build();
 
 						/**
 						 * @summary Raised after the template is initialized but before any post-initialization work is complete.
@@ -6027,6 +6026,7 @@
 			} else {
 				for (var i = 0; i < self.total; i++){
 					self._arr.push(items.splice(0, self.size));
+					self.tmpl.items.detach(self._arr[i]);
 				}
 			}
 			if (_.paging.hasCtrl(self.type)){
@@ -6216,16 +6216,26 @@
 			this._created = [];
 		},
 		available: function(){
-			var self = this, items = [], page = self.get(self.current);
-			if (!_is.empty(page)){
-				var vb = _utils.getViewportBounds(), ib = page[page.length - 1].bounds();
-				if (ib.top - vb.bottom < self.distance){
+			var self = this, items = [], page = self.get(self.current), viewport = _utils.getViewportBounds(), last, first;
+			if (!_is.empty(page) && self._created.length !== self.total){
+				last = page[page.length - 1].bounds();
+				if (last.top - viewport.bottom < self.distance){
 					self.set(self.current + 1, false);
+					return self.available();
 				}
 			}
-			for (var pg = self.current - 3; pg <= self.current; pg++){
-				if (self.isValid(pg)){
-					items.push.apply(items, self.get(pg));
+			// for (var pg = self.current - 3; pg <= self.current; pg++){
+			// 	if (self.isValid(pg)){
+			// 		items.push.apply(items, self.get(pg));
+			// 	}
+			// }
+			for (var i = 0, l = self._created.length, num; i < l; i++){
+				num = i + 1;
+				page = self.get(num);
+				first = page[0].bounds();
+				last = page[page.length - 1].bounds();
+				if (last.top - viewport.bottom < self.distance || first.bottom - viewport.top < self.distance){
+					items.push.apply(items, page);
 				}
 			}
 			return items;
@@ -6269,27 +6279,44 @@
 			this._count = this.amount;
 		},
 		available: function(){
-			var self = this, items = [], page = self.get(self.current);
-			if (!_is.empty(page)){
-				var vb = _utils.getViewportBounds(), ib = page[page.length - 1].bounds();
-				if (ib.top - vb.bottom < self.distance){
+			// var self = this, items = [], page = self.get(self.current);
+			// if (!_is.empty(page)){
+			// 	var vb = _utils.getViewportBounds(), ib = page[page.length - 1].bounds();
+			// 	if (ib.top - vb.bottom < self.distance){
+			// 		var pageNumber = self.current + 1;
+			// 		if (self.isValid(pageNumber) && self._count < self.amount){
+			// 			self._count++;
+			// 			self.set(pageNumber, false);
+			// 		}
+			// 	}
+			// }
+
+			var self = this, items = [], page = self.get(self.current), viewport = _utils.getViewportBounds(), last, first;
+			if (!_is.empty(page) && self._created.length !== self.total){
+				last = page[page.length - 1].bounds();
+				if (last.top - viewport.bottom < self.distance){
 					var pageNumber = self.current + 1;
 					if (self.isValid(pageNumber) && self._count < self.amount){
 						self._count++;
 						self.set(pageNumber, false);
-					}
-					if (self.current === self.total){
-						if (!_is.empty(self.ctrls)){
-							$.each(self.ctrls.splice(0, self.ctrls.length), function(i, control){
-								control.destroy();
-							});
-						}
+						return self.available();
 					}
 				}
 			}
-			for (var pg = self.current - 3; pg <= self.current; pg++){
-				if (self.isValid(pg)){
-					items.push.apply(items, self.get(pg));
+			if (self._created.length === self.total){
+				if (!_is.empty(self.ctrls)){
+					$.each(self.ctrls.splice(0, self.ctrls.length), function(i, control){
+						control.destroy();
+					});
+				}
+			}
+			for (var i = 0, l = self._created.length, num; i < l; i++){
+				num = i + 1;
+				page = self.get(num);
+				first = page[0].bounds();
+				last = page[page.length - 1].bounds();
+				if (last.top - viewport.bottom < self.distance || first.bottom - viewport.top < self.distance){
+					items.push.apply(items, page);
 				}
 			}
 			return items;
