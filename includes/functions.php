@@ -370,29 +370,6 @@ function foogallery_build_class_attribute( $gallery ) {
 	$classes[] = 'foogallery-container';
 	$classes[] = "fg-{$gallery->gallery_template}";
 
-	//get some default classes from common gallery settings
-	$classes[] = $gallery->get_setting( 'theme', 'fg-light' );
-	$classes[] = $gallery->get_setting( 'border_size', 'fg-border-thin' );
-	$classes[] = $gallery->get_setting( 'rounded_corners', '' );
-	$classes[] = $gallery->get_setting( 'drop_shadow', 'fg-shadow-outline' );
-	$classes[] = $gallery->get_setting( 'inner_shadow', '' );
-	$classes[] = $gallery->get_setting( 'loading_icon', 'fg-loading-default' );
-	$classes[] = $gallery->get_setting( 'loaded_effect', 'fg-loaded-fade-in' );
-
-
-	$caption_preset = $gallery->get_setting( 'hover_effect_preset', 'fg-custom' );
-
-	$classes[] = $caption_preset;
-
-	//only set these caption classes if custom preset is selected
-	if ( 'fg-custom' === $caption_preset ) {
-		$classes[] = $gallery->get_setting( 'hover_effect_color' , '' );
-		$classes[] = $gallery->get_setting( 'hover_effect_scale' , '' );
-		$classes[] = $gallery->get_setting( 'hover_effect_caption_visibility', 'fg-caption-hover' );
-		$classes[] = $gallery->get_setting( 'hover_effect_transition', 'fg-hover-fade' );
-		$classes[] = $gallery->get_setting( 'hover_effect_icon', 'fg-hover-zoom' );
-	}
-
 	$num_args = func_num_args();
 
 	if ( $num_args > 1 ) {

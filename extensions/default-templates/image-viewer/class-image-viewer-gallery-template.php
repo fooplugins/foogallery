@@ -52,6 +52,7 @@ if ( !class_exists( 'FooGallery_Image_Viewer_Gallery_Template' ) ) {
 			$gallery_templates[] = array(
 				'slug'        => 'image-viewer',
 				'name'        => __( 'Image Viewer', 'foogallery' ),
+				'common_fields_support' => true,
 				'lazyload_support' => true,
 				'fields'	  => array(
                     array(
@@ -66,6 +67,7 @@ if ( !class_exists( 'FooGallery_Image_Viewer_Gallery_Template' ) ) {
                             'crop' => true
                         ),
 						'row_data'=> array(
+							'data-foogallery-change-selector' => 'input',
 							'data-foogallery-preview' => 'shortcode'
 						)
                     ),
@@ -155,21 +157,15 @@ if ( !class_exists( 'FooGallery_Image_Viewer_Gallery_Template' ) ) {
 		 * @return array
 		 */
 		function add_common_thumbnail_fields( $fields, $template ) {
-			$updated_fields = apply_filters( 'foogallery_gallery_template_common_thumbnail_fields', $fields );
 
 			//update specific fields
-			foreach ($updated_fields as &$field) {
+			foreach ($fields as &$field) {
 				if ( 'rounded_corners' === $field['id'] ) {
-					$field['choices'] = array(
-						''  => __( 'None', 'foogallery' ),
-						'fg-round-small'  => __( 'Small', 'foogallery' ),
-						'fg-round-medium'  => __( 'Medium', 'foogallery' ),
-						'fg-round-large'  => __( 'Large', 'foogallery' ),
-					);
+					unset( $field['choices']['fg-round-full'] );
 				}
 			}
 
-			return $updated_fields;
+			return $fields;
 		}
 
 		/**
@@ -219,9 +215,9 @@ if ( !class_exists( 'FooGallery_Image_Viewer_Gallery_Template' ) ) {
 		 * @return mixed
 		 */
 		function preview_arguments( $args, $post_data ) {
-			$args['thumbnail_width'] = $post_data[FOOGALLERY_META_SETTINGS]['image-viewer_thumbnail_dimensions']['width'];
-			$args['thumbnail_height'] = $post_data[FOOGALLERY_META_SETTINGS]['image-viewer_thumbnail_dimensions']['height'];
-			$args['thumbnail_crop'] = isset( $post_data[FOOGALLERY_META_SETTINGS]['image-viewer_thumbnail_dimensions']['crop'] ) ? '1' : '0';
+			$args['thumbnail_width'] = $post_data[FOOGALLERY_META_SETTINGS]['image-viewer_thumbnail_size']['width'];
+			$args['thumbnail_height'] = $post_data[FOOGALLERY_META_SETTINGS]['image-viewer_thumbnail_size']['height'];
+			$args['thumbnail_crop'] = isset( $post_data[FOOGALLERY_META_SETTINGS]['image-viewer_thumbnail_size']['crop'] ) ? '1' : '0';
 
 			return $args;
 		}

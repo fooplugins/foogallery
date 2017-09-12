@@ -18,9 +18,6 @@ if ( !class_exists( 'FooGallery_Masonry_Gallery_Template' ) ) {
 
 			add_filter( 'foogallery_template_thumbnail_dimensions-masonry', array( $this, 'get_thumbnail_dimensions' ), 10, 2 );
 
-			//add extra fields to the templates
-			add_filter( 'foogallery_override_gallery_template_fields-masonry', array( $this, 'add_common_thumbnail_fields' ), 10, 2 );
-
 			//add the data options needed for masonry
 			add_filter( 'foogallery_build_container_data_options-masonry', array( $this, 'add_masonry_options' ), 10, 3 );
 
@@ -52,6 +49,7 @@ if ( !class_exists( 'FooGallery_Masonry_Gallery_Template' ) ) {
 			$gallery_templates[] = array(
                 'slug'        => 'masonry',
                 'name'        => __( 'Masonry Image Gallery', 'foogallery' ),
+				'common_fields_support' => true,
                 'lazyload_support' => true,
 				'paging_support' => true,
                 'fields'	  => array(
@@ -204,20 +202,6 @@ if ( !class_exists( 'FooGallery_Masonry_Gallery_Template' ) ) {
 				'crop'   => false
 			);
 		}
-
-		/**
-		 * Add thumbnail fields to the gallery template
-		 *
-		 * @uses "foogallery_override_gallery_template_fields"
-		 * @param $fields
-		 * @param $template
-		 *
-		 * @return array
-		 */
-		function add_common_thumbnail_fields( $fields, $template ) {
-			return apply_filters( 'foogallery_gallery_template_common_thumbnail_fields', $fields );
-		}
-
 
 		/**
 		 * Add the required masonry options if needed

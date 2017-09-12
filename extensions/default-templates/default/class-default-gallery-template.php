@@ -11,9 +11,6 @@ if ( !class_exists( 'FooGallery_Default_Gallery_Template' ) ) {
 		function __construct() {
 			add_filter( 'foogallery_gallery_templates', array( $this, 'add_template' ) );
 
-			//add extra fields to the templates
-			add_filter( 'foogallery_override_gallery_template_fields-default', array( $this, 'add_common_thumbnail_fields' ), 10, 2 );
-
 			add_action( 'foogallery_located_template-default', array( $this, 'enqueue_dependencies' ) );
 
 			add_filter( 'foogallery_gallery_templates_files', array( $this, 'register_myself' ) );
@@ -46,6 +43,7 @@ if ( !class_exists( 'FooGallery_Default_Gallery_Template' ) ) {
 			$gallery_templates[] = array(
 				'slug'        => 'default',
 				'name'        => __( 'Responsive Image Gallery', 'foogallery' ),
+				'common_fields_support' => true,
 				'paging_support' => true,
 				'lazyload_support' => true,
 				'fields'	  => array(
@@ -137,19 +135,6 @@ if ( !class_exists( 'FooGallery_Default_Gallery_Template' ) ) {
 			);
 
 			return $gallery_templates;
-		}
-
-		/**
-		 * Add thumbnail fields to the gallery template
-		 *
-		 * @uses "foogallery_override_gallery_template_fields"
-		 * @param $fields
-		 * @param $template
-		 *
-		 * @return array
-		 */
-		function add_common_thumbnail_fields( $fields, $template ) {
-			return apply_filters( 'foogallery_gallery_template_common_thumbnail_fields', $fields );
 		}
 
 		/**

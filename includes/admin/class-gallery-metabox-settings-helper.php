@@ -144,13 +144,13 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings_Helper' ) ) {
 
 			$fields = $template['fields'];
 
-			// Allow for extensions to override fields for a specific gallery template.
-			// Also passes the $template along so you can inspect and conditionally alter fields based on the template properties
-			$fields = apply_filters( "foogallery_override_gallery_template_fields-{$template['slug']}", $fields, $template );
-
 			// Allow for extensions to override fields for every gallery template.
 			// Also passes the $template along so you can inspect and conditionally alter fields based on the template properties
 			$fields = apply_filters( 'foogallery_override_gallery_template_fields', $fields, $template );
+
+			// Allow for extensions to override fields for a specific gallery template.
+			// Also passes the $template along so you can inspect and conditionally alter fields based on the template properties
+			$fields = apply_filters( "foogallery_override_gallery_template_fields-{$template['slug']}", $fields, $template );
 
 			//create a sections array and fill it with fields
 			$sections = array();

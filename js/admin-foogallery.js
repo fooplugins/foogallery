@@ -136,22 +136,27 @@
 				$field = $fieldRow.find($fieldSelector);
 
 			$field.each(function() {
-				var actualFieldValue = fieldValueAttribute ? $(this).attr(fieldValueAttribute) : $(this).val();
+				var actualFieldValue = fieldValueAttribute ? $(this).attr(fieldValueAttribute) : $(this).val(),
+					showField = false;
 
 				if ( fieldOperator === '!==' ) {
 					if (actualFieldValue !== fieldValue) {
-						$item.show()
-							.removeClass('foogallery_template_field_template_hidden')
-							.find(':input').removeAttr('disabled');
+						showField = true;
 					}
 				} else if ( fieldOperator === 'regex' ) {
 					var re = new RegExp(fieldValue);
 					if ( re.test(actualFieldValue) ) {
-						$item.show()
-							.removeClass('foogallery_template_field_template_hidden')
-							.find(':input').removeAttr('disabled');
+						showField = true;
+					}
+				} else if ( fieldOperator === 'indexOf' ) {
+					if ( actualFieldValue.indexOf(fieldValue) !== -1 ) {
+						showField = true;
 					}
 				} else if ( actualFieldValue === fieldValue ) {
+					showField = true;
+				}
+
+				if (showField) {
 					$item.show()
 						.removeClass('foogallery_template_field_template_hidden')
 						.find(':input').removeAttr('disabled');

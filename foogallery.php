@@ -132,6 +132,8 @@ if ( ! class_exists( 'FooGallery_Plugin' ) ) {
 
 			new FooGallery_Cache();
 
+			new FooGallery_Common_Fields();
+
 			new FooGallery_LazyLoad();
 
 			new FooGallery_Paging();

@@ -51,6 +51,7 @@ if ( !class_exists( 'FooGallery_Simple_Portfolio_Gallery_Template' ) ) {
 			$gallery_templates[] = array(
                 'slug'        => 'simple_portfolio',
                 'name'        => __( 'Simple Portfolio', 'foogallery' ),
+				'common_fields_support' => true,
                 'lazyload_support' => true,
 				'paging_support' => true,
                 'fields'	  => array(
@@ -151,10 +152,8 @@ if ( !class_exists( 'FooGallery_Simple_Portfolio_Gallery_Template' ) ) {
 		 * @return array
 		 */
 		function add_common_thumbnail_fields( $fields, $template ) {
-			$updated_fields = apply_filters( 'foogallery_gallery_template_common_thumbnail_fields', $fields );
-
 			//update specific fields
-			foreach ($updated_fields as &$field) {
+			foreach ($fields as &$field) {
 				if ( 'hover_effect_preset' === $field['id'] ) {
 					$field['default'] = 'fg-custom';
 					$field['choices'] = array(
@@ -176,10 +175,14 @@ if ( !class_exists( 'FooGallery_Simple_Portfolio_Gallery_Template' ) ) {
 						'data-foogallery-hidden' => true,
 						'data-foogallery-preview' => 'class'
 					);
+				} else if ( 'hover_effect_help' == $field['id'] ) {
+					$field['row_data'] = array(
+						'data-foogallery-hidden' => true
+					);
 				}
 			}
 
-			return $updated_fields;
+			return $fields;
 		}
 
 		/**

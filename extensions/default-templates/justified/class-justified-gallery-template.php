@@ -13,9 +13,6 @@ if ( !class_exists( 'FooGallery_Justified_Gallery_Template' ) ) {
 			add_filter( 'foogallery_gallery_templates_files', array( $this, 'register_myself' ) );
 			add_filter( 'foogallery_template_thumbnail_dimensions-justified', array( $this, 'get_thumbnail_dimensions' ), 10, 2 );
 
-			//add extra fields to the templates
-			add_filter( 'foogallery_override_gallery_template_fields-justified', array( $this, 'add_common_thumbnail_fields' ), 10, 2 );
-
 			add_action( 'foogallery_located_template-justified', array( $this, 'enqueue_dependencies' ) );
 
 			//add the data options needed for justified
@@ -49,6 +46,7 @@ if ( !class_exists( 'FooGallery_Justified_Gallery_Template' ) ) {
 			$gallery_templates[] = array(
                 'slug'        => 'justified',
                 'name'        => __( 'Justified Gallery', 'foogallery' ),
+				'common_fields_support' => true,
                 'lazyload_support' => true,
 				'paging_support' => true,
                 'fields'	  => array(
@@ -148,19 +146,6 @@ if ( !class_exists( 'FooGallery_Justified_Gallery_Template' ) ) {
 				'width'  => 0,
 				'crop'   => false
 			);
-		}
-
-		/**
-		 * Add thumbnail fields to the gallery template
-		 *
-		 * @uses "foogallery_override_gallery_template_fields"
-		 * @param $fields
-		 * @param $template
-		 *
-		 * @return array
-		 */
-		function add_common_thumbnail_fields( $fields, $template ) {
-			return apply_filters( 'foogallery_gallery_template_common_thumbnail_fields', $fields );
 		}
 
 		/**

@@ -14,9 +14,6 @@ if ( !class_exists( 'FooGallery_Thumbnail_Gallery_Template' ) ) {
 
 			add_filter( 'foogallery_located_template-thumbnail', array( $this, 'enqueue_dependencies' ) );
 
-			//add extra fields to the templates
-			add_filter( 'foogallery_override_gallery_template_fields-thumbnail', array( $this, 'add_common_thumbnail_fields' ), 10, 2 );
-
 			//build up any preview arguments
 			add_filter( 'foogallery_preview_arguments-thumbnail', array( $this, 'preview_arguments' ), 10, 2 );
 
@@ -145,19 +142,6 @@ if ( !class_exists( 'FooGallery_Thumbnail_Gallery_Template' ) ) {
 			//enqueue core files
 			foogallery_enqueue_core_gallery_template_style();
 			foogallery_enqueue_core_gallery_template_script();
-		}
-
-		/**
-		 * Add thumbnail fields to the gallery template
-		 *
-		 * @uses "foogallery_override_gallery_template_fields"
-		 * @param $fields
-		 * @param $template
-		 *
-		 * @return array
-		 */
-		function add_common_thumbnail_fields( $fields, $template ) {
-			return apply_filters( 'foogallery_gallery_template_common_thumbnail_fields', $fields );
 		}
 
 		/**
