@@ -51,6 +51,7 @@ if ( !class_exists( 'FooGallery_Simple_Portfolio_Gallery_Template' ) ) {
 			$gallery_templates[] = array(
                 'slug'        => 'simple_portfolio',
                 'name'        => __( 'Simple Portfolio', 'foogallery' ),
+				'preview_support' => true,
 				'common_fields_support' => true,
                 'lazyload_support' => true,
 				'paging_support' => true,

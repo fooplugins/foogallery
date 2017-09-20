@@ -572,15 +572,26 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 				$foogallery_id = $_POST['foogallery_id'];
 
 				$template = $_POST['foogallery_template'];
-				$args = array(
-					'template' => $template,
-					'attachment_ids' => $_POST['foogallery_attachments']
-				);
 
-				$args = apply_filters( 'foogallery_preview_arguments', $args, $_POST, $template );
-				$args = apply_filters( 'foogallery_preview_arguments-' . $template, $args, $_POST );
+				//check that the template supports previews
+				$gallery_template = foogallery_get_gallery_template( $template );
+				if ( isset( $gallery_template['preview_support'] ) && true === $gallery_template['preview_support'] ) {
 
-				foogallery_render_gallery( $foogallery_id, $args );
+					$args = array(
+						'template'       => $template,
+						'attachment_ids' => $_POST['foogallery_attachments']
+					);
+
+					$args = apply_filters( 'foogallery_preview_arguments', $args, $_POST, $template );
+					$args = apply_filters( 'foogallery_preview_arguments-' . $template, $args, $_POST );
+
+					foogallery_render_gallery( $foogallery_id, $args );
+				} else {
+					echo '<div style="padding:20px 50px 50px 50px; text-align: center">';
+					echo '<h3>' . __( 'Preview not available!', 'foogallery' ) . '</h3>';
+					echo __('Sorry, but this gallery template does not support live previews. Please update the gallery in order to see what the gallery will look like.', 'foogallery' );
+					echo '</div>';
+				}
 			}
 
 			die();

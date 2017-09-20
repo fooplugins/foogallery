@@ -46,6 +46,7 @@ if ( !class_exists( 'FooGallery_Justified_Gallery_Template' ) ) {
 			$gallery_templates[] = array(
                 'slug'        => 'justified',
                 'name'        => __( 'Justified Gallery', 'foogallery' ),
+				'preview_support' => true,
 				'common_fields_support' => true,
                 'lazyload_support' => true,
 				'paging_support' => true,

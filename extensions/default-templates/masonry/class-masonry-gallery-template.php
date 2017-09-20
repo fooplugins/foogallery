@@ -49,6 +49,7 @@ if ( !class_exists( 'FooGallery_Masonry_Gallery_Template' ) ) {
 			$gallery_templates[] = array(
                 'slug'        => 'masonry',
                 'name'        => __( 'Masonry Image Gallery', 'foogallery' ),
+				'preview_support' => true,
 				'common_fields_support' => true,
                 'lazyload_support' => true,
 				'paging_support' => true,

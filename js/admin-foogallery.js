@@ -83,7 +83,7 @@
 	FOOGALLERY.reloadGalleryPreview = function() {
 		//build up all the data to generate a preview
         var $shortcodeFields = $('.foogallery-settings-container-active .foogallery-metabox-settings .foogallery_template_field[data-foogallery-preview="shortcode"]'),
-			data = {};
+			data = [];
 
         if ($shortcodeFields.length) {
 			data = $shortcodeFields.find(' :input').serializeArray();

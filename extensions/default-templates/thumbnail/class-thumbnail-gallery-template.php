@@ -42,6 +42,7 @@ if ( !class_exists( 'FooGallery_Thumbnail_Gallery_Template' ) ) {
 			$gallery_templates[] = array(
                 'slug'        => 'thumbnail',
                 'name'        => __( 'Single Thumbnail Gallery', 'foogallery' ),
+				'preview_support' => true,
 				'common_fields_support' => true,
                 'lazyload_support' => true,
 				'mandatory_classes' => 'fg-thumbnail',

@@ -43,6 +43,7 @@ if ( !class_exists( 'FooGallery_Default_Gallery_Template' ) ) {
 			$gallery_templates[] = array(
 				'slug'        => 'default',
 				'name'        => __( 'Responsive Image Gallery', 'foogallery' ),
+				'preview_support' => true,
 				'common_fields_support' => true,
 				'paging_support' => true,
 				'lazyload_support' => true,

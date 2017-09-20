@@ -54,6 +54,7 @@ if ( !class_exists( 'FooGallery_Polaroid_Gallery_Template' ) ) {
 			$gallery_templates[] = array(
                 'slug'        => 'polaroid_new',
                 'name'        => __( 'Polaroid', 'foogallery' ),
+				'preview_support' => true,
 				'common_fields_support' => true,
                 'lazyload_support' => true,
 				'paging_support' => true,

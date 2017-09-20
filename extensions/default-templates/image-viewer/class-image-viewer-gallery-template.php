@@ -52,6 +52,7 @@ if ( !class_exists( 'FooGallery_Image_Viewer_Gallery_Template' ) ) {
 			$gallery_templates[] = array(
 				'slug'        => 'image-viewer',
 				'name'        => __( 'Image Viewer', 'foogallery' ),
+				'preview_support' => true,
 				'common_fields_support' => true,
 				'lazyload_support' => true,
 				'mandatory_classes' => 'fg-image-viewer',
