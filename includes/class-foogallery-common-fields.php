@@ -383,7 +383,7 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 					'id'       => 'hover_effect_title',
 					'title'    => __( 'Title', 'foogallery' ),
 					'desc'     => __( 'Decide where caption titles are pulled from. By default, what is saved under general settings will be used, but it can be overridden per gallery', 'foogallery' ),
-					'section'  => __( 'Hover Effects', 'foogallery' ),
+					'section'  => __( 'Captions', 'foogallery' ),
 					'type'     => 'radio',
 					'default'  => '',
 					'choices'  => array(
@@ -396,9 +396,6 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 					),
 					'row_data' => array(
 						'data-foogallery-change-selector'       => 'input:radio',
-						'data-foogallery-hidden'                => true,
-						'data-foogallery-show-when-field'       => 'hover_effect_preset',
-						'data-foogallery-show-when-field-value' => 'fg-custom',
 						'data-foogallery-preview'               => 'shortcode'
 					)
 				);
@@ -407,7 +404,7 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 					'id'       => 'hover_effect_desc',
 					'title'    => __( 'Description', 'foogallery' ),
 					'desc'     => __( 'Decide where captions descriptions are pulled from. By default, the general settings are used, but it can be overridden per gallery', 'foogallery' ),
-					'section'  => __( 'Hover Effects', 'foogallery' ),
+					'section'  => __( 'Captions', 'foogallery' ),
 					'type'     => 'radio',
 					'default'  => '',
 					'choices'  => array(
@@ -420,9 +417,6 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 					),
 					'row_data' => array(
 						'data-foogallery-change-selector'       => 'input:radio',
-						'data-foogallery-hidden'                => true,
-						'data-foogallery-show-when-field'       => 'hover_effect_preset',
-						'data-foogallery-show-when-field-value' => 'fg-custom',
 						'data-foogallery-preview'               => 'shortcode'
 					)
 				);
@@ -445,6 +439,9 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 
 			//check the template supports paging
 			if ( $template_data && array_key_exists( 'common_fields_support', $template_data ) && true === $template_data['common_fields_support'] ) {
+
+				//add the gallery template core class
+				$classes[] = 'fg-' . $gallery->gallery_template;
 
 				//get some default classes from common gallery settings
 				$classes[] = $gallery->get_setting( 'theme', 'fg-light' );

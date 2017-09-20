@@ -42,7 +42,9 @@ if ( !class_exists( 'FooGallery_Thumbnail_Gallery_Template' ) ) {
 			$gallery_templates[] = array(
                 'slug'        => 'thumbnail',
                 'name'        => __( 'Single Thumbnail Gallery', 'foogallery' ),
+				'common_fields_support' => true,
                 'lazyload_support' => true,
+				'mandatory_classes' => 'fg-thumbnail',
                 'fields'	  => array(
                     array(
                         'id'	  => 'help',
@@ -97,23 +99,6 @@ if ( !class_exists( 'FooGallery_Thumbnail_Gallery_Template' ) ) {
                         'section' => __( 'General', 'foogallery' ),
                         'desc'    => __( 'Choose which lightbox you want to use.', 'foogallery' ),
                         'type'    => 'lightbox',
-                    ),
-                    array(
-                        'id'      => 'caption_style',
-                        'title'   => __( 'Caption Style', 'foogallery' ),
-                        'section' => __( 'Captions', 'foogallery' ),
-                        'desc'    => __( 'Choose which caption style you want to use.', 'foogallery' ),
-                        'type'    => 'select',
-                        'default' => 'simple',
-                        'choices' => array(
-                            'caption-simple' => __( 'Simple' , 'foogallery' ),
-                            'caption-slideup' => __( 'Slide Up' , 'foogallery' ),
-                            'caption-fall' => __( 'Fall Down' , 'foogallery' ),
-                            'caption-fade' => __( 'Fade' , 'foogallery' ),
-                            'caption-push' => __( 'Push From Left' , 'foogallery' ),
-                            'caption-scale' => __( 'Scale' , 'foogallery' ),
-                            'caption-none' => __( 'None' , 'foogallery' )
-                        ),
                     ),
                     array(
                         'id'      => 'caption_title',

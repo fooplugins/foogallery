@@ -49,6 +49,7 @@ if ( !class_exists( 'FooGallery_Justified_Gallery_Template' ) ) {
 				'common_fields_support' => true,
                 'lazyload_support' => true,
 				'paging_support' => true,
+				'mandatory_classes' => 'fg-justified',
                 'fields'	  => array(
                     array(
                         'id'      => 'thumb_height',

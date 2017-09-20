@@ -69,10 +69,10 @@
 		if ($classFields.length) {
 
 			var array = $classFields.find(' :input').serializeArray(),
-				selectedTemplate = FOOGALLERY.getSelectedTemplate(),
+				mandatory_classes = $('#FooGallerySettings_GalleryTemplate').find(":selected").data('mandatory-classes'),
 				classes = $.map(array, function (item) {
 					return item.value;
-				}).concat(['foogallery', 'fg-' + selectedTemplate]).join(' ');
+				}).concat(['foogallery', mandatory_classes]).join(' ');
 
 			$preview.attr('class', classes);
 		}

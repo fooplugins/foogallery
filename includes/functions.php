@@ -368,7 +368,7 @@ function foogallery_build_class_attribute( $gallery ) {
 
 	$classes[] = 'foogallery';
 	$classes[] = 'foogallery-container';
-	$classes[] = "fg-{$gallery->gallery_template}";
+	$classes[] = "foogallery-{$gallery->gallery_template}";
 
 	$num_args = func_num_args();
 

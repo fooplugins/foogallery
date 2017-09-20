@@ -199,7 +199,12 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings_Helper' ) ) {
 						}
 						$preview_css = empty( $preview_css ) ? '' : ' data-preview-css="' . $preview_css . '" ';
 
-						echo "<option {$selected}{$preview_css} value=\"{$template['slug']}\">{$template['name']}</option>";
+						$mandatory_classes = '';
+						if ( isset( $template['mandatory_classes'] ) ) {
+							$mandatory_classes = ' data-mandatory-classes="' . $template['mandatory_classes'] . '" ';
+						}
+
+						echo "<option {$selected}{$preview_css}{$mandatory_classes} value=\"{$template['slug']}\">{$template['name']}</option>";
 					}
 					?>
                 </select>

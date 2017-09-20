@@ -54,6 +54,7 @@ if ( !class_exists( 'FooGallery_Image_Viewer_Gallery_Template' ) ) {
 				'name'        => __( 'Image Viewer', 'foogallery' ),
 				'common_fields_support' => true,
 				'lazyload_support' => true,
+				'mandatory_classes' => 'fg-image-viewer',
 				'fields'	  => array(
                     array(
                         'id'      => 'thumbnail_size',

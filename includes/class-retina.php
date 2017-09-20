@@ -23,7 +23,7 @@ if ( !class_exists( 'FooGallery_Retina' ) ) {
             if ( $current_foogallery && $current_foogallery->gallery_template ) {
 
                 //first check if the gallery template supports Retina thumbs
-                if ( $current_foogallery->retina ) {
+                if ( isset($current_foogallery->retina) && true === $current_foogallery->retina ) {
                     $srcset = array();
 
 					//get the original thumb dimensions

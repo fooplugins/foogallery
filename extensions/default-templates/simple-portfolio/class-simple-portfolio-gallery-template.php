@@ -54,6 +54,7 @@ if ( !class_exists( 'FooGallery_Simple_Portfolio_Gallery_Template' ) ) {
 				'common_fields_support' => true,
                 'lazyload_support' => true,
 				'paging_support' => true,
+				'mandatory_classes' => 'fg-simple_portfolio',
                 'fields'	  => array(
                     array(
                         'id'	  => 'help',
@@ -75,6 +76,7 @@ if ( !class_exists( 'FooGallery_Simple_Portfolio_Gallery_Template' ) ) {
                             'crop' => true,
                         ),
 						'row_data'=> array(
+							'data-foogallery-change-selector' => 'input',
 							'data-foogallery-preview' => 'shortcode'
 						)
                     ),
@@ -113,7 +115,7 @@ if ( !class_exists( 'FooGallery_Simple_Portfolio_Gallery_Template' ) ) {
                         'id'      => 'caption_position',
                         'title' => __('Caption Position', 'foogallery'),
                         'desc' => __('Where the captions are displayed in relation to the thumbnail.', 'foogallery'),
-						'section' => __( 'General', 'foogallery' ),
+						'section' => __( 'Captions', 'foogallery' ),
                         'default' => '',
                         'type'    => 'radio',
                         'spacer'  => '<span class="spacer"></span>',
@@ -134,7 +136,7 @@ if ( !class_exists( 'FooGallery_Simple_Portfolio_Gallery_Template' ) ) {
 		}
 
 		/**
-		 * Enqueue scripts that the masonry gallery template relies on
+		 * Enqueue scripts that the simple portfolio template relies on
 		 */
 		function enqueue_dependencies() {
 			//enqueue core files
@@ -157,7 +159,7 @@ if ( !class_exists( 'FooGallery_Simple_Portfolio_Gallery_Template' ) ) {
 				if ( 'hover_effect_preset' === $field['id'] ) {
 					$field['default'] = 'fg-custom';
 					$field['choices'] = array(
-						'fg-custom'  => __( 'Custom', 'foogallery' ),
+						'fg-custom'  => __( 'Standard', 'foogallery' ),
 					);
 					$field['row_data'] = array(
 						'data-foogallery-hidden' => true,

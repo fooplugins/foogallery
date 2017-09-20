@@ -56,6 +56,8 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings' ) ) {
                     return 'dashicons-format-video';
 				case 'hover effects':
 					return 'dashicons-admin-tools';
+				case 'captions':
+					return 'dashicons-testimonial';
             }
             return 'dashicons-admin-tools';
         }
