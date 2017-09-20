@@ -237,6 +237,10 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 
 			$mode = $gallery->get_meta( 'foogallery_items_view', 'manage' );
 
+			if ( empty($mode) ) {
+				$mode = 'manage';
+			}
+
 			wp_enqueue_media();
 
 			?>
@@ -246,7 +250,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 					<a href="#preview" data-value="preview" data-container=".foogallery-items-view-preview" class="<?php echo $mode==='preview' ? 'current' : ''; ?>"><?php _e('Gallery Preview', 'foogallery'); ?></a>
 				</div>
 				<span id="foogallery_preview_spinner" class="spinner"></span>
-                <input type="hidden" id="foogallery_items_view_input" name="<?php echo FOOGALLERY_META_SETTINGS . '[foogallery_items_view]'; ?>" />
+                <input type="hidden" id="foogallery_items_view_input" value="<?php echo $mode; ?>" name="<?php echo FOOGALLERY_META_SETTINGS . '[foogallery_items_view]'; ?>" />
 			</div>
 
 			<div class="foogallery-items-view foogallery-items-view-manage <?php echo $mode==='manage' ? '' : 'hidden'; ?>">
@@ -287,6 +291,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 				}
 				?>
 				</div>
+				<div style="clear: both"></div>
 				<?php wp_nonce_field( 'foogallery_preview', 'foogallery_preview', false ); ?>
 			</div>
 		<?php
