@@ -1081,8 +1081,8 @@ only screen and (min-resolution: 2.25dppx) {
 	background-color: #333;
 }
 .foogallery.fg-preset.fg-goliath .fg-item-inner:hover .fg-thumb {
-	-webkit-transform: translateY(-60px);
-	transform: translateY(-60px);
+	-webkit-transform: translateY(-40px);
+	transform: translateY(-40px);
 }
 .foogallery.fg-preset.fg-goliath .fg-image {
 	opacity: 1;
@@ -1097,10 +1097,10 @@ only screen and (min-resolution: 2.25dppx) {
 	text-align: left;
 }
 .foogallery.fg-preset.fg-goliath .fg-caption-inner {
-	border: solid 20px transparent;
-	border-top-width: 6px;
-	border-bottom-width: 6px;
-	height: 60px;
+	border: solid 10px transparent;
+	border-top-width: 2px;
+	border-bottom-width: 2px;
+	height: 40px;
 	position: absolute;
 	top: auto;
 	left: 0;
@@ -1118,8 +1118,8 @@ only screen and (min-resolution: 2.25dppx) {
 }
 
 .foogallery.fg-preset.fg-goliath .fg-caption-title {
-	-webkit-transform: translateY(-100%) translateY(-18px);
-	transform: translateY(-100%) translateY(-18px);
+	-webkit-transform: translateY(-100%) translateY(-10px);
+	transform: translateY(-100%) translateY(-10px);
 }
 
 .foogallery.fg-preset.fg-goliath .fg-caption-desc {
@@ -1130,7 +1130,7 @@ only screen and (min-resolution: 2.25dppx) {
 	opacity: 0;
 	-webkit-transition: opacity 0.35s;
 	transition: opacity 0.35s;
-	line-height: 1.3;
+	line-height: 1.2;
 }
 .foogallery.fg-preset.fg-goliath .fg-item-inner:hover .fg-caption-desc {
 	opacity: 1;
@@ -1241,7 +1241,7 @@ only screen and (min-resolution: 2.25dppx) {
 }
 
 .foogallery.fg-preset.fg-jazz .fg-caption-inner {
-	border: solid 25px transparent;
+	border: solid 15px transparent;
 	position: absolute;
 	top: 50%;
 	left: 0;
@@ -1315,10 +1315,10 @@ only screen and (min-resolution: 2.25dppx) {
 	box-sizing: border-box;
 }
 .foogallery.fg-preset.fg-layla .fg-caption:before {
-	top: 25px;
-	right: 10px;
-	bottom: 25px;
-	left: 10px;
+	top: 15px;
+	right: 5px;
+	bottom: 15px;
+	left: 5px;
 	border-top: 1px solid #fff;
 	border-bottom: 1px solid #fff;
 	-webkit-transform: scale(0,1);
@@ -1329,10 +1329,10 @@ only screen and (min-resolution: 2.25dppx) {
 	transform-origin: 0 0;
 }
 .foogallery.fg-preset.fg-layla .fg-caption:after {
-	top: 10px;
-	right: 25px;
-	bottom: 10px;
-	left: 25px;
+	top: 5px;
+	right: 15px;
+	bottom: 5px;
+	left: 15px;
 	border-right: 1px solid #fff;
 	border-left: 1px solid #fff;
 	-webkit-transform: scale(1,0);
@@ -1352,7 +1352,7 @@ only screen and (min-resolution: 2.25dppx) {
 }
 
 .foogallery.fg-preset.fg-layla .fg-caption-inner {
-	border: solid 25px transparent;
+	border: solid 15px transparent;
 }
 .foogallery.fg-preset.fg-layla .fg-caption-title {
 	position: relative;
@@ -1454,7 +1454,7 @@ only screen and (min-resolution: 2.25dppx) {
 }
 
 .foogallery.fg-preset.fg-lily .fg-caption-inner {
-	border: solid 15px transparent;
+	border: solid 10px transparent;
 	position: absolute;
 	bottom: 0;
 	left: 0;
@@ -1462,7 +1462,7 @@ only screen and (min-resolution: 2.25dppx) {
 	max-height: 100%;
 	-webkit-transition: -webkit-transform 0.35s;
 	transition: transform 0.35s;
-	transform: translateY(100%) translateY(-15px) translateY(-40px);
+	transform: translateY(100%) translateY(-10px) translateY(-30px);
 }
 .foogallery.fg-preset.fg-lily .fg-item-inner:hover .fg-caption-inner {
 	-webkit-transform: translateY(0);
@@ -1519,10 +1519,10 @@ only screen and (min-resolution: 2.25dppx) {
 
 .foogallery.fg-preset.fg-ming .fg-caption:before {
 	position: absolute;
-	top: 20px;
-	right: 20px;
-	bottom: 20px;
-	left: 20px;
+	top: 10px;
+	right: 10px;
+	bottom: 10px;
+	left: 10px;
 	border: 2px solid #fff;
 	box-shadow: 0 0 0 30px rgba(255,255,255,0.2);
 	content: '';
@@ -1539,7 +1539,7 @@ only screen and (min-resolution: 2.25dppx) {
 }
 
 .foogallery.fg-preset.fg-ming .fg-caption-inner {
-	border: solid 20px transparent;
+	border: solid 10px transparent;
 }
 
 .foogallery.fg-preset.fg-ming .fg-caption-title {
@@ -1627,10 +1627,10 @@ only screen and (min-resolution: 2.25dppx) {
 
 .foogallery.fg-preset.fg-oscar .fg-caption:before {
 	position: absolute;
-	top: 20px;
-	right: 20px;
-	bottom: 20px;
-	left: 20px;
+	top: 10px;
+	right: 10px;
+	bottom: 10px;
+	left: 10px;
 	border: 1px solid #fff;
 	content: '';
 	opacity: 0;
@@ -1646,7 +1646,7 @@ only screen and (min-resolution: 2.25dppx) {
 }
 
 .foogallery.fg-preset.fg-oscar .fg-caption-inner {
-	border: solid 25px transparent;
+	border: solid 15px transparent;
 }
 
 .foogallery.fg-preset.fg-oscar .fg-caption-title {
@@ -1794,7 +1794,7 @@ only screen and (min-resolution: 2.25dppx) {
 }
 
 .foogallery.fg-preset.fg-sarah .fg-caption-inner {
-	border: solid 15px transparent;
+	border: solid 10px transparent;
 }
 
 .foogallery.fg-preset.fg-sarah .fg-caption-title {
@@ -1873,7 +1873,7 @@ only screen and (min-resolution: 2.25dppx) {
 }
 
 .foogallery.fg-preset.fg-selena .fg-caption-inner {
-	border: solid 15px transparent;
+	border: solid 10px transparent;
 }
 
 .foogallery.fg-preset.fg-selena .fg-caption-title {
@@ -1956,8 +1956,8 @@ only screen and (min-resolution: 2.25dppx) {
 }
 
 .foogallery.fg-preset.fg-steve .fg-caption-inner {
-	border: solid 20px transparent;
-	border-top-width: 80px;
+	border: solid 10px transparent;
+	border-top-width: 60px;
 	overflow: visible;
 }
 
@@ -2054,31 +2054,31 @@ only screen and (min-resolution: 2.25dppx) {
 	transform: translateY(0);
 }
 .foogallery.fg-preset.fg-zoe .fg-item-inner:hover .fg-thumb {
-	-webkit-transform: translateY(-60px);
-	transform: translateY(-60px);
+	-webkit-transform: translateY(-40px);
+	transform: translateY(-40px);
 }
 
 .foogallery.fg-preset.fg-zoe .fg-caption-inner {
 	position: absolute;
 	top: 0;
 	left: 0;
-	border: solid 15px transparent;
-	border-bottom-width: 75px;
+	border: solid 10px transparent;
+	border-bottom-width: 50px;
 	overflow: visible;
 }
 
 .foogallery.fg-preset.fg-zoe .fg-caption-title {
 	position: absolute;
 	width: 100%;
-	bottom: -15px;
-	-webkit-transform: translateY(100%) translateY(75px) translateY(-50%);
-	transform: translateY(100%) translateY(75px) translateY(-50%);
+	bottom: -10px;
+	-webkit-transform: translateY(100%) translateY(50px) translateY(-50%);
+	transform: translateY(100%) translateY(50px) translateY(-50%);
 	-webkit-transition: -webkit-transform 0.35s;
 	transition: transform 0.35s;
 }
 .foogallery.fg-preset.fg-zoe .fg-item-inner:hover .fg-caption-title {
-	-webkit-transform: translateY(100%) translateY(30px) translateY(-50%);
-	transform: translateY(100%) translateY(30px) translateY(-50%);
+	-webkit-transform: translateY(100%) translateY(20px) translateY(-50%);
+	transform: translateY(100%) translateY(20px) translateY(-50%);
 }
 
 .foogallery.fg-preset.fg-zoe .fg-caption-desc {
@@ -3164,7 +3164,6 @@ only screen and (min-resolution: 2.25dppx) {
 .fg-simple_portfolio {
 	box-sizing: border-box;
 	position: relative;
-	font-family: sans-serif;
 	font-size: 16px;
 	margin: 0 auto;
 	padding: 0;
@@ -3302,6 +3301,92 @@ only screen and (min-resolution: 2.25dppx) {
 	border-width: 0 0 15px 0;
 }
 .fg-simple_portfolio.fg-border-thick .fg-caption-title+.fg-caption-desc {
+	margin-top: 10px;
+}
+/* Polaroid */
+.foogallery.fg-preset.fg-polaroid .fg-item {
+	-webkit-backface-visibility: hidden;
+	backface-visibility: hidden;
+	-webkit-transition: -webkit-transform 0.35s, background-color 0.65s;
+	transition: transform 0.35s, background-color 0.65s;
+}
+.foogallery.fg-preset.fg-polaroid .fg-item:nth-child(2n+1) {
+	-webkit-transform: rotate(3deg);
+	transform: rotate(3deg);
+}
+.foogallery.fg-preset.fg-polaroid .fg-item:nth-child(2n) {
+	-webkit-transform: rotate(-3deg);
+	transform: rotate(-3deg);
+}
+.foogallery.fg-preset.fg-polaroid .fg-item:nth-child(3n) {
+	-webkit-transform: rotate(1deg);
+	transform: rotate(1deg);
+}
+.foogallery.fg-preset.fg-polaroid .fg-item:nth-child(5n) {
+	-webkit-transform: rotate(-2deg);
+	transform: rotate(-2deg);
+}
+
+.foogallery.fg-preset.fg-polaroid .fg-item:hover {
+	-webkit-transform: rotate(0);
+	transform: rotate(0);
+}
+
+.foogallery.fg-preset.fg-polaroid .fg-caption {
+	position: relative;
+	width: auto;
+	font-family: "Segoe Print Regular",-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+}
+
+.foogallery.fg-preset.fg-polaroid .fg-caption-inner,
+.foogallery.fg-preset.fg-polaroid .fg-caption-title {
+	position: relative;
+	width: auto;
+}
+.foogallery.fg-preset.fg-polaroid .fg-caption-title {
+	text-align: center;
+}
+.foogallery.fg-preset.fg-polaroid .fg-caption-desc {
+	display: none;
+}
+
+/* Themes */
+.foogallery.fg-preset.fg-polaroid .fg-caption-title,
+.foogallery.fg-light.fg-preset.fg-polaroid .fg-caption-title {
+	color: #333;
+}
+.foogallery.fg-dark.fg-preset.fg-polaroid .fg-caption-title {
+	color: #FFF;
+}
+
+/* Handle Border Sizing */
+.foogallery.fg-preset.fg-polaroid .fg-caption {
+	border-style: solid;
+	border-color: transparent;
+	border-width: 10px;
+}
+.foogallery.fg-preset.fg-polaroid .fg-caption-title+.fg-caption-desc {
+	margin-top: 5px;
+}
+.foogallery.fg-preset.fg-polaroid.fg-border-thin .fg-caption {
+	border-width: 10px 5px 5px 5px;
+}
+.foogallery.fg-preset.fg-polaroid.fg-captions-top.fg-border-thin .fg-caption {
+	border-width: 5px 5px 10px 5px;
+}
+.foogallery.fg-preset.fg-polaroid.fg-border-medium .fg-caption {
+	border-width: 10px 0 0 0;
+}
+.foogallery.fg-preset.fg-polaroid.fg-captions-top.fg-border-medium .fg-caption {
+	border-width: 0 0 10px 0;
+}
+.foogallery.fg-preset.fg-polaroid.fg-border-thick .fg-caption {
+	border-width: 15px 0 0 0;
+}
+.foogallery.fg-preset.fg-polaroid.fg-captions-top.fg-border-thick .fg-caption {
+	border-width: 0 0 15px 0;
+}
+.foogallery.fg-preset.fg-polaroid.fg-border-thick .fg-caption-title+.fg-caption-desc {
 	margin-top: 10px;
 }
 /* Base styles */
