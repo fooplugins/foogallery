@@ -76,8 +76,13 @@ if ( ! class_exists( 'FooGallery_LazyLoad' ) ) {
 		 */
 		function change_src_attributes($attr, $args, $attachment) {
 			global $current_foogallery;
+			global $current_foogallery_template;
 
-			if ( isset( $current_foogallery->lazyload) && true === $current_foogallery->lazyload) {
+			$lazyload_support = isset($current_foogallery_template['lazyload_support']) &&
+                true === $current_foogallery_template['lazyload_support'];
+
+			if ( $lazyload_support &&
+                isset( $current_foogallery->lazyload) && true === $current_foogallery->lazyload) {
 
 				if ( isset( $attr['src'] ) ) {
 					//rename src => data-src
