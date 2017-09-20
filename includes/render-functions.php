@@ -227,6 +227,16 @@ function foogallery_attachment_html_caption( $foogallery_attachment, $args = arr
     return apply_filters( 'foogallery_attachment_html_caption', $html, $foogallery_attachment, $args );
 }
 
+function foogallery_attachment_html_item_opening($foogallery_attachment, $args = array() ) {
+
+	$classes[] = 'fg-item';
+
+	$classes = apply_filters( 'foogallery_attachment_html_item_classes', $classes, $foogallery_attachment, $args );
+
+	$html = '<div class="' . implode( ' ', $classes ) . '"><figure class="fg-item-inner">';
+	return apply_filters( 'foogallery_attachment_html_item_opening', $html, $foogallery_attachment, $args );
+}
+
 /**
  * Returns generic html for an attachment
  *
@@ -237,7 +247,7 @@ function foogallery_attachment_html_caption( $foogallery_attachment, $args = arr
  * @return string
  */
 function foogallery_attachment_html( $foogallery_attachment, $args = array() ) {
-    $html = '<div class="fg-item"><figure class="fg-item-inner">';
+    $html = foogallery_attachment_html_item_opening( $foogallery_attachment, $args );
     $html .= foogallery_attachment_html_anchor_opening( $foogallery_attachment, $args );
     $html .= foogallery_attachment_html_image( $foogallery_attachment, $args );
     $html .= '</a>';

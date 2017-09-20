@@ -148,6 +148,8 @@ if ( ! class_exists( 'FooGallery_Plugin' ) ) {
 
 			new FooGallery_Upgrade();
 
+			new FooGallery_Extensions_Compatibility();
+
 			$checker = new FooGallery_Version_Check();
 			$checker->wire_up_checker();
 		}

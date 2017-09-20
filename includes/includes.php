@@ -45,6 +45,7 @@ require_once( FOOGALLERY_PATH . 'includes/class-foogallery-common-fields.php' );
 require_once( FOOGALLERY_PATH . 'includes/class-foogallery-lazyload.php' );
 require_once( FOOGALLERY_PATH . 'includes/class-foogallery-paging.php' );
 require_once( FOOGALLERY_PATH . 'includes/class-foogallery-attachment-custom-class.php' );
+require_once( FOOGALLERY_PATH . 'includes/class-foogallery-extensions-compatibility.php' );
 
 //Datasource includes
 require_once( FOOGALLERY_PATH . 'includes/interface-foogallery-datasource.php' );
