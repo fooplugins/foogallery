@@ -14,6 +14,7 @@ if ( ! class_exists( 'FooGallery_Default_Templates_Extension' ) ) {
 	require_once( FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_PATH . 'masonry/class-masonry-gallery-template.php' );
 	require_once( FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_PATH . 'simple-portfolio/class-simple-portfolio-gallery-template.php' );
 	require_once( FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_PATH . 'thumbnail/class-thumbnail-gallery-template.php' );
+	require_once( FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_PATH . 'polaroid/class-polaroid-gallery-template.php' );
 
 	class FooGallery_Default_Templates_Extension {
 
@@ -24,6 +25,7 @@ if ( ! class_exists( 'FooGallery_Default_Templates_Extension' ) ) {
 			new FooGallery_Masonry_Gallery_Template();
 			new FooGallery_Simple_Portfolio_Gallery_Template();
 			new FooGallery_Thumbnail_Gallery_Template();
+			new FooGallery_Polaroid_Gallery_Template();
 
 			add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_assets' ) );
 		}
