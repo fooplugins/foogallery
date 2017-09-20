@@ -8,30 +8,15 @@
 }(window.FOOGALLERY = window.FOOGALLERY || {}, jQuery));
 
 jQuery(function ($) {
-
-	//handle any masonry preview changes
-	$('body').on('foogallery-gallery-preview-updated-masonry', function() {
+	//handle any preview changes
+	$('body').on('foogallery-gallery-preview-updated-masonry ' +
+		'foogallery-gallery-preview-updated-default ' +
+		'foogallery-gallery-preview-updated-justified ' +
+		'foogallery-gallery-preview-updated-simple_portfolio ' +
+		'foogallery-gallery-preview-updated-image-viewer ' +
+		'foogallery-gallery-preview-updated-thumbnail ' +
+		'foogallery-gallery-preview-updated-polaroid_new', function() {
 		FOOGALLERY.initFooGallery();
 	} );
-
-	$('body').on('foogallery-gallery-preview-updated-default', function() {
-		FOOGALLERY.initFooGallery({});
-	});
-
-	$('body').on('foogallery-gallery-preview-updated-justified', function() {
-		FOOGALLERY.initFooGallery();
-	});
-
-	$('body').on('foogallery-gallery-preview-updated-simple_portfolio', function() {
-		FOOGALLERY.initFooGallery();
-	});
-
-	$('body').on('foogallery-gallery-preview-updated-image-viewer', function() {
-		FOOGALLERY.initFooGallery({});
-	});
-
-	$('body').on('foogallery-gallery-preview-updated-thumbnail', function() {
-		FOOGALLERY.initFooGallery({});
-	});
 });
 
