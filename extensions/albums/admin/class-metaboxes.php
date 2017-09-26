@@ -296,7 +296,7 @@ if ( ! class_exists( 'FooGallery_Admin_Album_MetaBoxes' ) ) {
 			?>
 			<table class="foogallery-album-metabox-settings">
 				<tbody>
-				<tr class="gallery_template_field gallery_template_field_selector">
+				<tr class="foogallery_template_field foogallery_template_field_selector">
 					<th>
 						<label for="FooGallerySettings_AlbumTemplate"><?php _e( 'Album Template', 'foogallery' ); ?></label>
 					</th>

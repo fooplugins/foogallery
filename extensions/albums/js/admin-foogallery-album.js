@@ -46,13 +46,13 @@
 				selectedTemplate = $this.val();
 
 			//hide all template fields
-			$('.foogallery-album-metabox-settings .gallery_template_field').not('.gallery_template_field_selector').hide();
+			$('.foogallery-album-metabox-settings .foogallery_template_field').not('.foogallery_template_field_selector').hide();
 
 			//show all fields for the selected template only
-			$('.foogallery-album-metabox-settings .gallery_template_field-' + selectedTemplate).show();
+			$('.foogallery-album-metabox-settings .foogallery_template_field-' + selectedTemplate).show();
 
 			//trigger a change so custom template js can do something
-			FOOGALLERY.triggerTemplateChangedEvent();
+			FOOGALLERYALBUM.triggerTemplateChangedEvent();
 		});
 
 		//trigger this onload too!
