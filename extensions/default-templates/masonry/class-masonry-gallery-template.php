@@ -54,6 +54,7 @@ if ( !class_exists( 'FooGallery_Masonry_Gallery_Template' ) ) {
                 'lazyload_support' => true,
 				'paging_support' => true,
 				'mandatory_classes' => 'fg-masonry',
+				'thumbnail_dimensions' => true,
                 'fields'	  => array(
                     array(
                         'id'      => 'thumbnail_width',

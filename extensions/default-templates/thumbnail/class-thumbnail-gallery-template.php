@@ -46,6 +46,7 @@ if ( !class_exists( 'FooGallery_Thumbnail_Gallery_Template' ) ) {
 				'common_fields_support' => true,
                 'lazyload_support' => true,
 				'mandatory_classes' => 'fg-thumbnail',
+				'thumbnail_dimensions' => true,
                 'fields'	  => array(
                     array(
                         'id'	  => 'help',

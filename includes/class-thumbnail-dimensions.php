@@ -26,33 +26,38 @@ if ( ! class_exists( 'FooGallery_Thumbnail_Dimensions' ) ) {
 
 			$gallery_template = $foogallery->gallery_template;
 
-			$setting_key = "{$gallery_template}_thumbnail_dimensions";
+			$template_data = foogallery_get_gallery_template( $gallery_template );
 
-			$default_thumbnail_dimensions = $foogallery->get_meta( $setting_key, false );
+			if ( $template_data && array_key_exists( 'thumbnail_dimensions', $template_data ) && true === $template_data['thumbnail_dimensions'] ) {
 
-			$thumbnail_dimensions = apply_filters( 'foogallery_template_thumbnail_dimensions-' . $gallery_template, $default_thumbnail_dimensions, $foogallery );
+				$setting_key = "{$gallery_template}_thumbnail_dimensions";
 
-			if ( isset( $thumbnail_dimensions ) && is_array( $thumbnail_dimensions ) ) {
+				$default_thumbnail_dimensions = $foogallery->get_meta( $setting_key, false );
 
-				//$thumbnail_dimensions
-				$thumb_width  = (int) $thumbnail_dimensions['width'];
-				$thumb_height = (int) $thumbnail_dimensions['height'];
-				$thumb_crop   = (bool) $thumbnail_dimensions['crop'];
+				$thumbnail_dimensions = apply_filters( 'foogallery_template_thumbnail_dimensions-' . $gallery_template, $default_thumbnail_dimensions, $foogallery );
 
-				foreach ( $foogallery->attachments() as $attachment ) {
+				if ( isset( $thumbnail_dimensions ) && is_array( $thumbnail_dimensions ) ) {
 
-					$size_array = image_resize_dimensions( $attachment->width, $attachment->height, $thumb_width, $thumb_height, $thumb_crop );
+					//$thumbnail_dimensions
+					$thumb_width  = (int) $thumbnail_dimensions['width'];
+					$thumb_height = (int) $thumbnail_dimensions['height'];
+					$thumb_crop   = (bool) $thumbnail_dimensions['crop'];
 
-					$size = array(
-						'width'  => $size_array[4],
-						'height' => $size_array[5]
-					);
+					foreach ( $foogallery->attachments() as $attachment ) {
 
-					$existing_size                  = get_post_meta( $attachment->ID, FOOGALLERY_META_THUMB_DIMENSIONS, true );
-					$existing_size[$foogallery->ID] = $size;
+						$size_array = image_resize_dimensions( $attachment->width, $attachment->height, $thumb_width, $thumb_height, $thumb_crop );
 
-					//save the post meta against the attachment
-					update_post_meta( $attachment->ID, FOOGALLERY_META_THUMB_DIMENSIONS, $existing_size );
+						$size = array(
+							'width'  => $size_array[4],
+							'height' => $size_array[5]
+						);
+
+						$existing_size                  = get_post_meta( $attachment->ID, FOOGALLERY_META_THUMB_DIMENSIONS, true );
+						$existing_size[$foogallery->ID] = $size;
+
+						//save the post meta against the attachment
+						update_post_meta( $attachment->ID, FOOGALLERY_META_THUMB_DIMENSIONS, $existing_size );
+					}
 				}
 			}
 		}
@@ -65,13 +70,20 @@ if ( ! class_exists( 'FooGallery_Thumbnail_Dimensions' ) ) {
 		 * @return mixed
 		 */
 		function load_thumbnail_dimensions( $foogallery_attachment, $foogallery ) {
-			$size = get_post_meta( $foogallery_attachment->ID, FOOGALLERY_META_THUMB_DIMENSIONS, true );
-			if ( isset( $size ) && is_array( $size ) && array_key_exists( $foogallery->ID, $size ) ) {
-				$size = $size[$foogallery->ID];
+			$gallery_template = $foogallery->gallery_template;
 
-				$foogallery_attachment->foogallery_id = $foogallery->ID;
-				$foogallery_attachment->thumb_width = $size['width'];
-				$foogallery_attachment->thumb_height = $size['height'];
+			$template_data = foogallery_get_gallery_template( $gallery_template );
+
+			if ( $template_data && array_key_exists( 'thumbnail_dimensions', $template_data ) && true === $template_data['thumbnail_dimensions'] ) {
+
+				$size = get_post_meta( $foogallery_attachment->ID, FOOGALLERY_META_THUMB_DIMENSIONS, true );
+				if ( isset( $size ) && is_array( $size ) && array_key_exists( $foogallery->ID, $size ) ) {
+					$size = $size[$foogallery->ID];
+
+					$foogallery_attachment->foogallery_id = $foogallery->ID;
+					$foogallery_attachment->thumb_width   = $size['width'];
+					$foogallery_attachment->thumb_height  = $size['height'];
+				}
 			}
 
 			return $foogallery_attachment;
@@ -90,30 +102,33 @@ if ( ! class_exists( 'FooGallery_Thumbnail_Dimensions' ) ) {
 			//do a check to see if the template has changed
 			global $current_foogallery_arguments;
 			global $current_foogallery;
-			if ( isset( $current_foogallery_arguments ) && isset( $current_foogallery_arguments['template'] ) ) {
+			//check if we are dealing with a gallery. This check ensures this is not done for albums
+			if ( isset( $current_foogallery ) ) {
 
-				//we need to calculate new dynamic dimensions for the thumb
-				$thumbnail_dimensions = apply_filters( 'foogallery_calculate_thumbnail_dimensions-' . $current_foogallery_arguments['template'], false, $current_foogallery_arguments );
+				if ( isset( $current_foogallery_arguments ) && isset( $current_foogallery_arguments['template'] ) ) {
+					//we need to calculate new dynamic dimensions for the thumb
+					$thumbnail_dimensions = apply_filters( 'foogallery_calculate_thumbnail_dimensions-' . $current_foogallery_arguments['template'], false, $current_foogallery_arguments );
 
-				if ( $thumbnail_dimensions ) {
-					//$thumbnail_dimensions
-					$thumb_width  = (int) $thumbnail_dimensions['width'];
-					$thumb_height = (int) $thumbnail_dimensions['height'];
-					$thumb_crop   = (bool) $thumbnail_dimensions['crop'];
+					if ( $thumbnail_dimensions ) {
+						//$thumbnail_dimensions
+						$thumb_width  = (int) $thumbnail_dimensions['width'];
+						$thumb_height = (int) $thumbnail_dimensions['height'];
+						$thumb_crop   = (bool) $thumbnail_dimensions['crop'];
 
-					$size_array                          = image_resize_dimensions( $foogallery_attachment->width, $foogallery_attachment->height, $thumb_width, $thumb_height, $thumb_crop );
-					$foogallery_attachment->foogallery_id = $current_foogallery->ID;
-					$foogallery_attachment->thumb_width  = $size_array[4];
-					$foogallery_attachment->thumb_height = $size_array[5];
+						$size_array                           = image_resize_dimensions( $foogallery_attachment->width, $foogallery_attachment->height, $thumb_width, $thumb_height, $thumb_crop );
+						$foogallery_attachment->foogallery_id = $current_foogallery->ID;
+						$foogallery_attachment->thumb_width   = $size_array[4];
+						$foogallery_attachment->thumb_height  = $size_array[5];
+					}
 				}
-			}
 
-			if ( isset( $foogallery_attachment->foogallery_id ) ) {
-				if ( $foogallery_attachment->thumb_width > 0 ) {
-					$attr['width'] = $foogallery_attachment->thumb_width;
-				}
-				if ( $foogallery_attachment->thumb_height > 0 ) {
-					$attr['height'] = $foogallery_attachment->thumb_height;
+				if ( isset( $foogallery_attachment->foogallery_id ) ) {
+					if ( $foogallery_attachment->thumb_width > 0 ) {
+						$attr['width'] = $foogallery_attachment->thumb_width;
+					}
+					if ( $foogallery_attachment->thumb_height > 0 ) {
+						$attr['height'] = $foogallery_attachment->thumb_height;
+					}
 				}
 			}
 

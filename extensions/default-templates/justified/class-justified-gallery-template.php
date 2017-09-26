@@ -51,6 +51,7 @@ if ( !class_exists( 'FooGallery_Justified_Gallery_Template' ) ) {
                 'lazyload_support' => true,
 				'paging_support' => true,
 				'mandatory_classes' => 'fg-justified',
+				'thumbnail_dimensions' => true,
                 'fields'	  => array(
                     array(
                         'id'      => 'thumb_height',
