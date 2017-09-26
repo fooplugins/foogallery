@@ -151,8 +151,10 @@ if ( !class_exists( 'FooGallery_Polaroid_Gallery_Template' ) ) {
 		 * @return array
 		 */
 		function add_common_thumbnail_fields( $fields, $template ) {
+			$fields_to_remove = array();
+
 			//update specific fields
-			foreach ($fields as &$field) {
+			foreach ($fields as $key => &$field) {
 				if ( 'hover_effect_preset' === $field['id'] ) {
 					$field['default'] = 'fg-custom';
 					$field['choices'] = array(
@@ -178,7 +180,13 @@ if ( !class_exists( 'FooGallery_Polaroid_Gallery_Template' ) ) {
 					$field['row_data'] = array(
 						'data-foogallery-hidden' => true
 					);
+				} else if ( 'hover_effect_scale' == $field['id'] ) {
+					$fields_to_remove[] = $key;
 				}
+			}
+
+			foreach ($fields_to_remove as $key) {
+				unset($fields[$key]);
 			}
 
 			return $fields;
