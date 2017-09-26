@@ -228,8 +228,10 @@ if ( ! class_exists( 'FooGallery_Paging' ) ) {
 		 * @param $post
 		 */
 		function determine_paging( $foogallery, $post ) {
-			//always disable paging by default
-			$paging = $foogallery->get_setting( 'paging_type', '' ) !== '';
+			$template_data = foogallery_get_gallery_template( $foogallery->gallery_template );
+
+			//check the template supports paging
+			$paging = $template_data && array_key_exists( 'paging_support', $template_data ) && true === $template_data['paging_support'];
 
 			$foogallery->paging = apply_filters( 'foogallery_paging', $paging, $foogallery );
 		}
