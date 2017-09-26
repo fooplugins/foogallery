@@ -40,7 +40,7 @@ if ( ! class_exists( 'FooGallery_Paging' ) ) {
 					'section' => __( 'Paging', 'foogallery' ),
 					'spacer'  => '<span class="spacer"></span>',
 					'type'    => 'radio',
-					'default' => 'dots',
+					'default' => '',
 					'choices' => apply_filters( 'foogallery_gallery_template_paging_type_choices', array(
 						''  => __( 'None', 'foogallery' ),
 						'dots'   => __( 'Dots', 'foogallery' ),
