@@ -10,7 +10,7 @@ function foogallery_enqueue_core_gallery_template_style() {
 	$filename = foogallery_get_setting( 'enable_debugging', false ) ? '' : '.min';
 
 	$css = FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_SHARED_URL . 'css/foogallery' . $filename . '.css';
-	wp_enqueue_style( 'foogallery-core', $css, array(), FOOGALLERY_VERSION );
+	foogallery_enqueue_style( 'foogallery-core', $css, array(), FOOGALLERY_VERSION );
 }
 
 /**
