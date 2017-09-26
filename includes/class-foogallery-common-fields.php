@@ -328,16 +328,14 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 					'section'  => __( 'Hover Effects', 'foogallery' ),
 					'default'  => 'fg-hover-fade',
 					'type'     => 'select',
-					'choices'  => apply_filters(
-						'foogallery_gallery_template_common_thumbnail_fields_hover_effect_transition_choices', array(
+					'choices'  => apply_filters( 'foogallery_gallery_template_common_thumbnail_fields_hover_effect_transition_choices', array(
 						'fg-hover-instant'     => __( 'Instant', 'foogallery' ),
 						'fg-hover-fade'        => __( 'Fade', 'foogallery' ),
 						'fg-hover-slide-up'    => __( 'Slide Up', 'foogallery' ),
 						'fg-hover-slide-down'  => __( 'Slide Down', 'foogallery' ),
 						'fg-hover-slide-left'  => __( 'Slide Left', 'foogallery' ),
 						'fg-hover-slide-right' => __( 'Slide Right', 'foogallery' ),
-						'fg-hover-push'        => __( 'Push', 'foogallery' )
-					)
+						'fg-hover-push'        => __( 'Push', 'foogallery' ) )
 					),
 					'desc'     => __( 'Choose what effect is used to show the caption when you hover over a thumbnail', 'foogallery' ),
 					'row_data' => array(
@@ -356,8 +354,7 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 					'section'  => __( 'Hover Effects', 'foogallery' ),
 					'type'     => 'htmlicon',
 					'default'  => 'fg-hover-zoom',
-					'choices'  => apply_filters(
-						'foogallery_gallery_template_common_thumbnail_fields_hover_effect_icon_choices', array(
+					'choices'  => apply_filters( 'foogallery_gallery_template_common_thumbnail_fields_hover_effect_icon_choices', array(
 						''                     => array( 'label' => __( 'None', 'foogallery' ), 'html' => '<div class="foogallery-setting-caption_icon"></div>' ),
 						'fg-hover-zoom'        => array( 'label' => __( 'Zoom', 'foogallery' ), 'html' => '<div class="foogallery-setting-caption_icon fg-hover-zoom"></div>' ),
 						'fg-hover-zoom2'       => array( 'label' => __( 'Zoom 2', 'foogallery' ), 'html' => '<div class="foogallery-setting-caption_icon fg-hover-zoom2"></div>' ),
@@ -365,8 +362,7 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 						'fg-hover-plus'        => array( 'label' => __( 'Plus', 'foogallery' ), 'html' => '<div class="foogallery-setting-caption_icon fg-hover-plus"></div>' ),
 						'fg-hover-circle-plus' => array( 'label' => __( 'Circle Plus', 'foogallery' ), 'html' => '<div class="foogallery-setting-caption_icon fg-hover-circle-plus"></div>' ),
 						'fg-hover-eye'         => array( 'label' => __( 'Eye', 'foogallery' ), 'html' => '<div class="foogallery-setting-caption_icon fg-hover-eye"></div>' ),
-						'fg-hover-external'    => array( 'label' => __( 'External', 'foogallery' ), 'html' => '<div class="foogallery-setting-caption_icon fg-hover-external"></div>' ),
-					)
+						'fg-hover-external'    => array( 'label' => __( 'External', 'foogallery' ), 'html' => '<div class="foogallery-setting-caption_icon fg-hover-external"></div>' ), )
 					),
 					'row_data' => array(
 						'data-foogallery-change-selector'       => 'input:radio',
@@ -376,7 +372,9 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 						'data-foogallery-preview'               => 'class'
 					)
 				);
+				//endregion Hover Effects Fields
 
+				//region Caption Fields
 				$settings_link = sprintf( '<a target="blank" href="%s">%s</a>', foogallery_admin_settings_url(), __( 'settings', 'foogallery' ) );
 
 				$fields[] = array(
@@ -420,7 +418,64 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 						'data-foogallery-preview'               => 'shortcode'
 					)
 				);
-				//endregion Hover Effects Fields
+
+				$fields[] = array(
+					'id'      => 'captions_limit_length',
+					'title'   => __( 'Limit Caption Length', 'foogallery' ),
+					'desc'    => __( 'You can limit the length of caption title and descriptions in the thumbnails. This will NOT limit the length of captions from within the lightbox.', 'foogallery' ),
+					'section' => __( 'Captions', 'foogallery' ),
+					'default' => '',
+					'type'    => 'radio',
+					'spacer'  => '<span class="spacer"></span>',
+					'choices' => array(
+						'' => __( 'No', 'foogallery' ),
+						'yes' => __( 'Yes', 'foogallery' ),
+					),
+					'row_data'=> array(
+						'data-foogallery-change-selector' => 'input:radio',
+						'data-foogallery-preview' => 'class',
+						'data-foogallery-value-selector'  => 'input:checked',
+					)
+				);
+
+				$fields[] = array(
+					'id'      => 'caption_title_length',
+					'title'   => __( 'Max Title Length', 'foogallery' ),
+					'desc'	  => __( 'A max length of zero will not apply a limit.', 'foogallery '),
+					'section' => __( 'Captions', 'foogallery' ),
+					'type'    => 'number',
+					'class'   => 'small-text',
+					'default' => 0,
+					'step'    => '1',
+					'min'     => '0',
+					'row_data' => array(
+						'data-foogallery-change-selector'       => 'input',
+						'data-foogallery-hidden'                => true,
+						'data-foogallery-show-when-field'       => 'captions_limit_length',
+						'data-foogallery-show-when-field-value' => 'yes',
+						'data-foogallery-preview'               => 'shortcode'
+					)
+				);
+
+				$fields[] = array(
+					'id'      => 'caption_desc_length',
+					'title'   => __( 'Max Desc Length', 'foogallery' ),
+					'desc'	  => __( 'A max length of zero will not apply a limit.', 'foogallery '),
+					'section' => __( 'Captions', 'foogallery' ),
+					'type'    => 'number',
+					'class'   => 'small-text',
+					'default' => 0,
+					'step'    => '1',
+					'min'     => '0',
+					'row_data' => array(
+						'data-foogallery-change-selector'       => 'input',
+						'data-foogallery-hidden'                => true,
+						'data-foogallery-show-when-field'       => 'captions_limit_length',
+						'data-foogallery-show-when-field-value' => 'yes',
+						'data-foogallery-preview'               => 'shortcode'
+					)
+				);
+				//endregion
 
 			}
 			return $fields;
