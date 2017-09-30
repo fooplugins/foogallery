@@ -236,7 +236,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 
 			$mode = $gallery->get_meta( 'foogallery_items_view', 'manage' );
 
-			if ( empty($mode) ) {
+			if ( empty($mode) || $gallery->is_new() ) {
 				$mode = 'manage';
 			}
 
