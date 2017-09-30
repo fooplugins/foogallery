@@ -34,6 +34,9 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 
 			// Ajax call for generating a gallery preview
 			add_action( 'wp_ajax_foogallery_preview', array( $this, 'ajax_gallery_preview' ) );
+
+			//handle previews that have no attachments
+			add_action( 'foogallery_template_no_attachments', array( $this, 'preview_no_attachments' ) );
 		}
 
 		public function whitelist_metaboxes() {
@@ -287,6 +290,8 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 				<?php
 				if ( $gallery->has_attachments() ) {
 					foogallery_render_gallery( $gallery->ID );
+				} else {
+					$this->render_empty_gallery_preview();
 				}
 				?>
 				</div>
@@ -294,7 +299,12 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 				<?php wp_nonce_field( 'foogallery_preview', 'foogallery_preview', false ); ?>
 			</div>
 		<?php
+		}
 
+		public function render_empty_gallery_preview() {
+			echo '<div class="foogallery-preview-empty" style="padding:20px; text-align: center">';
+			echo '<h3>' . __( 'Please add media to your gallery to see a preview!', 'foogallery' ) . '</h3>';
+			echo '</div>';
 		}
 
 		public function render_gallery_item( $attachment_post = false ) {
@@ -601,6 +611,19 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 			}
 
 			die();
+		}
+
+		/**
+		 * Handle gallery previews where there are no attachments
+		 *
+		 * @param $foogallery FooGallery
+		 */
+		public function preview_no_attachments( $foogallery ) {
+			global $foogallery_gallery_preview;
+
+			if ( isset( $foogallery_gallery_preview ) && true === $foogallery_gallery_preview ) {
+				$this->render_empty_gallery_preview();
+			}
 		}
 	}
 }
