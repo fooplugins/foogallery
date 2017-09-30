@@ -63,6 +63,7 @@ class FooGallery_Template_Loader {
 		if ( ! $current_foogallery->has_attachments() ) {
 			//no attachments!
 			do_action( "foogallery_template_no_attachments-($current_foogallery_template)", $current_foogallery );
+			do_action( "foogallery_template_no_attachments", $current_foogallery );
 		} else {
 
 			//create locator instance
