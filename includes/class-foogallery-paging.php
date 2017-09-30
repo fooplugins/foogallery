@@ -16,7 +16,7 @@ if ( ! class_exists( 'FooGallery_Paging' ) ) {
 			}
 
 			//adds the paging property to a FooGallery
-			add_action( 'foogallery_foogallery_instance_after_load', array( $this, 'determine_paging' ), 10, 2 );
+			add_action( 'foogallery_located_template', array( $this, 'determine_paging' ), 10, 2 );
 
 			//add the paging attributes to the gallery container
 			add_filter( 'foogallery_build_container_data_options', array( $this, 'add_paging_options' ), 10, 3 );
@@ -225,9 +225,8 @@ if ( ! class_exists( 'FooGallery_Paging' ) ) {
 		 * Determine if the gallery has paging enabled
 		 *
 		 * @param $foogallery FooGallery
-		 * @param $post
 		 */
-		function determine_paging( $foogallery, $post ) {
+		function determine_paging( $foogallery ) {
 			$template_data = foogallery_get_gallery_template( $foogallery->gallery_template );
 
 			//check the template supports paging
