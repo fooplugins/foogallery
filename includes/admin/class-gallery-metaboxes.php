@@ -576,6 +576,10 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 				$gallery_template = foogallery_get_gallery_template( $template );
 				if ( isset( $gallery_template['preview_support'] ) && true === $gallery_template['preview_support'] ) {
 
+					global $foogallery_gallery_preview;
+
+					$foogallery_gallery_preview = true;
+
 					$args = array(
 						'template'       => $template,
 						'attachment_ids' => $_POST['foogallery_attachments']
@@ -585,6 +589,9 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 					$args = apply_filters( 'foogallery_preview_arguments-' . $template, $args, $_POST );
 
 					foogallery_render_gallery( $foogallery_id, $args );
+
+					$foogallery_gallery_preview = false;
+
 				} else {
 					echo '<div style="padding:20px 50px 50px 50px; text-align: center">';
 					echo '<h3>' . __( 'Preview not available!', 'foogallery' ) . '</h3>';
