@@ -12,6 +12,8 @@
         });
 
         $('#foogallery_attachments').val( sorted.join(',') );
+
+		$('.foogallery_preview_container').addClass('foogallery-preview-force-refresh');
     };
 
     FOOGALLERY.initAttachments = function() {
@@ -105,12 +107,12 @@
             type: "POST",
             url: ajaxurl,
             data: data,
-			//dataType: "json",
+			cache: false,
             success: function(data) {
                 //updated the preview
 				$('.foogallery_preview_container').html(data);
                 $('#foogallery_preview_spinner').removeClass('is-active');
-                $('.foogallery_preview_container').removeClass('loading');
+                $('.foogallery_preview_container').removeClass('loading foogallery-preview-force-refresh');
 
 				FOOGALLERY.handleSettingFieldChange(true);
             }
@@ -194,6 +196,12 @@
 
 			if ( $('.foogallery_preview_container').is(':visible') ) {
 				FOOGALLERY.updateGalleryPreview();
+
+				//check if there is no preview
+				if ( !$.trim( $('.foogallery_preview_container').html() ) ||
+					$( '.foogallery_preview_container.foogallery-preview-force-refresh').length > 0 ) {
+					FOOGALLERY.reloadGalleryPreview();
+				}
 			}
 		});
 
@@ -296,7 +304,7 @@
         if (index !== -1) {
             FOOGALLERY.attachments.splice(index, 1);
         }
-		$('[data-attachment-id="' + id + '"]').remove();
+		$('.foogallery-attachments-list [data-attachment-id="' + id + '"]').remove();
 
         FOOGALLERY.calculateAttachmentIds();
     };
