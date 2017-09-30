@@ -12,7 +12,7 @@ if ( ! class_exists( 'FooGallery_Admin_Album_MetaBoxes' ) ) {
 
 		public function __construct() {
 			//add our foogallery metaboxes
-			add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ) );
+			add_action( 'add_meta_boxes_' . FOOGALLERY_CPT_ALBUM, array( $this, 'add_meta_boxes' ) );
 
 			//save extra post data for a gallery
 			add_action( 'save_post', array( $this, 'save_album' ) );
@@ -51,7 +51,7 @@ if ( ! class_exists( 'FooGallery_Admin_Album_MetaBoxes' ) ) {
 			);
 		}
 
-		public function add_meta_boxes() {
+		public function add_meta_boxes( $post ) {
 			add_meta_box(
 				'foogalleryalbum_galleries',
 				__( 'Galleries - click a gallery to add it to your album.', 'foogallery' ),

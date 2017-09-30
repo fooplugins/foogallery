@@ -12,7 +12,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 
 		public function __construct() {
 			//add our foogallery metaboxes
-			add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes_to_gallery' ) );
+			add_action( 'add_meta_boxes_' . FOOGALLERY_CPT_GALLERY, array( $this, 'add_meta_boxes_to_gallery' ) );
 
 			//save extra post data for a gallery
 			add_action( 'save_post', array( $this, 'save_gallery' ) );
@@ -59,8 +59,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 			);
 		}
 
-		public function add_meta_boxes_to_gallery() {
-			global $post;
+		public function add_meta_boxes_to_gallery( $post ) {
 
 			add_meta_box(
 				'foogallery_items',
