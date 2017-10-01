@@ -196,8 +196,8 @@ function foogallery_attachment_html_caption( $foogallery_attachment, $args = arr
 	if ( 'none' !== $preset ) {
 		$caption_html = array();
 
-		$caption_title =  foogallery_gallery_template_setting( 'hover_effect_title', '' );
-		$caption_desc =  foogallery_gallery_template_setting( 'hover_effect_desc', '' );
+		$caption_title =  foogallery_gallery_template_setting( 'caption_title', '' );
+		$caption_desc =  foogallery_gallery_template_setting( 'caption_desc', '' );
 
 		if ( 'fg-custom' === $preset ) {
 

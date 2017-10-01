@@ -189,8 +189,8 @@ if ( ! class_exists( 'FooGallery_Upgrade' ) ) {
 						array ( 'id' => 'hover_effect_caption_visibility', 'value' => 'fg-caption-hover' ),
                         array ( 'id' => 'hover_effect_transition', 'value' => 'fg-hover-fade' ),
 						array ( 'id' => 'hover_effect_icon', 'value' => 'fg-hover-zoom' ),
-						array ( 'id' => 'hover_effect_title', 'value' => 'none' ),
-						array ( 'id' => 'hover_effect_desc', 'value' => 'none' )
+						array ( 'id' => 'caption_title', 'value' => 'none' ),
+						array ( 'id' => 'caption_desc', 'value' => 'none' )
 					)
 				),
 
@@ -350,24 +350,24 @@ if ( ! class_exists( 'FooGallery_Upgrade' ) ) {
 					'id' => 'caption-content',
 					'value' => 'title',
 					'new' => array(
-						array ( 'id' => 'hover_effect_title', 'value' => '' ),
-						array ( 'id' => 'hover_effect_desc', 'value' => 'none' )
+						array ( 'id' => 'caption_title', 'value' => '' ),
+						array ( 'id' => 'caption_desc', 'value' => 'none' )
 					)
 				),
 				array(
 					'id' => 'caption-content',
 					'value' => 'desc',
 					'new' => array(
-						array ( 'id' => 'hover_effect_title', 'value' => 'none' ),
-						array ( 'id' => 'hover_effect_desc', 'value' => '' )
+						array ( 'id' => 'caption_title', 'value' => 'none' ),
+						array ( 'id' => 'caption_desc', 'value' => '' )
 					)
 				),
 				array(
 					'id' => 'caption-content',
 					'value' => 'both',
 					'new' => array(
-						array ( 'id' => 'hover_effect_title', 'value' => '' ),
-						array ( 'id' => 'hover_effect_desc', 'value' => '' )
+						array ( 'id' => 'caption_title', 'value' => '' ),
+						array ( 'id' => 'caption_desc', 'value' => '' )
 					)
 				),
 
