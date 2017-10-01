@@ -105,7 +105,7 @@ if ( !class_exists( 'FooGallery_Polaroid_Gallery_Template' ) ) {
 						'row_data'=> array(
 							'data-foogallery-change-selector' => 'input',
 							'data-foogallery-value-selector' => 'input',
-							'data-foogallery-preview' => 'data',
+							'data-foogallery-preview' => 'shortcode',
 						)
                     ),
                     array(
@@ -235,7 +235,7 @@ if ( !class_exists( 'FooGallery_Polaroid_Gallery_Template' ) ) {
 			$args['thumbnail_width'] = $post_data[FOOGALLERY_META_SETTINGS]['polaroid_new_thumbnail_dimensions']['width'];
 			$args['thumbnail_height'] = $post_data[FOOGALLERY_META_SETTINGS]['polaroid_new_thumbnail_dimensions']['height'];
 			$args['thumbnail_crop'] = isset( $post_data[FOOGALLERY_META_SETTINGS]['polaroid_new_thumbnail_dimensions']['crop'] ) ? '1' : '0';
-
+			$args['gutter'] = $post_data[FOOGALLERY_META_SETTINGS]['polaroid_new_gutter'];
 			return $args;
 		}
 

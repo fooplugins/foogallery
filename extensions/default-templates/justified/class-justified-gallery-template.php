@@ -64,7 +64,8 @@ if ( !class_exists( 'FooGallery_Justified_Gallery_Template' ) ) {
                         'step'    => '10',
                         'min'     => '0',
 						'row_data'=> array(
-							'data-foogallery-preview' => 'shortcode'
+							'data-foogallery-preview' => 'shortcode',
+							'data-foogallery-change-selector' => 'input',
 						)
                     ),
                     array(
@@ -80,7 +81,7 @@ if ( !class_exists( 'FooGallery_Justified_Gallery_Template' ) ) {
 						'row_data'=> array(
 							'data-foogallery-change-selector' => 'input',
 							'data-foogallery-value-selector' => 'input',
-							'data-foogallery-preview' => 'data',
+							'data-foogallery-preview' => 'shortcode',
 						)
                     ),
                     array(
@@ -94,7 +95,7 @@ if ( !class_exists( 'FooGallery_Justified_Gallery_Template' ) ) {
 						'row_data'=> array(
 							'data-foogallery-change-selector' => 'input',
 							'data-foogallery-value-selector' => 'input',
-							'data-foogallery-preview' => 'data',
+							'data-foogallery-preview' => 'shortcode',
 						)
                     ),
                     array(
@@ -110,7 +111,7 @@ if ( !class_exists( 'FooGallery_Justified_Gallery_Template' ) ) {
 						'row_data'=> array(
 							'data-foogallery-change-selector' => 'input',
 							'data-foogallery-value-selector' => 'input',
-							'data-foogallery-preview' => 'data',
+							'data-foogallery-preview' => 'shortcode',
 						)
                     ),
                     array(
@@ -195,7 +196,9 @@ if ( !class_exists( 'FooGallery_Justified_Gallery_Template' ) ) {
 		 */
 		function preview_arguments( $args, $post_data ) {
 			$args['thumbnail_height'] = $post_data[FOOGALLERY_META_SETTINGS]['justified_thumb_height'];
-
+			$args['row_height'] = $post_data[FOOGALLERY_META_SETTINGS]['justified_row_height'];
+			$args['max_row_height'] = $post_data[FOOGALLERY_META_SETTINGS]['justified_max_row_height'];
+			$args['margins'] = $post_data[FOOGALLERY_META_SETTINGS]['justified_margins'];
 			return $args;
 		}
 

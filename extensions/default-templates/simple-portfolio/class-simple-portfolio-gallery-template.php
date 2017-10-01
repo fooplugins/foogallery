@@ -110,7 +110,7 @@ if ( !class_exists( 'FooGallery_Simple_Portfolio_Gallery_Template' ) ) {
 						'row_data'=> array(
 							'data-foogallery-change-selector' => 'input',
 							'data-foogallery-value-selector' => 'input',
-							'data-foogallery-preview' => 'data',
+							'data-foogallery-preview' => 'shortcode',
 						)
                     ),
                     array(
@@ -232,7 +232,7 @@ if ( !class_exists( 'FooGallery_Simple_Portfolio_Gallery_Template' ) ) {
 			$args['thumbnail_width'] = $post_data[FOOGALLERY_META_SETTINGS]['simple_portfolio_thumbnail_dimensions']['width'];
 			$args['thumbnail_height'] = $post_data[FOOGALLERY_META_SETTINGS]['simple_portfolio_thumbnail_dimensions']['height'];
 			$args['thumbnail_crop'] = isset( $post_data[FOOGALLERY_META_SETTINGS]['simple_portfolio_thumbnail_dimensions']['crop'] ) ? '1' : '0';
-
+			$args['gutter'] = $post_data[FOOGALLERY_META_SETTINGS]['simple_portfolio_gutter'];
 			return $args;
 		}
 

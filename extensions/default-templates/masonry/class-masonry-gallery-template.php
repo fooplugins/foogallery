@@ -87,7 +87,7 @@ if ( !class_exists( 'FooGallery_Masonry_Gallery_Template' ) ) {
                         'row_data'=> array(
                             'data-foogallery-change-selector' => 'input:radio',
                             'data-foogallery-value-selector' => 'input:checked',
-							'data-foogallery-preview' => 'data'
+							'data-foogallery-preview' => 'shortcode'
                         )
                     ),
                     array(
@@ -106,7 +106,7 @@ if ( !class_exists( 'FooGallery_Masonry_Gallery_Template' ) ) {
 							'data-foogallery-value-selector' => 'input',
                             'data-foogallery-show-when-field' => 'layout',
                             'data-foogallery-show-when-field-value' => 'fixed',
-							'data-foogallery-preview' => 'data',
+							'data-foogallery-preview' => 'shortcode',
                         )
                     ),
                     array(
@@ -237,7 +237,8 @@ if ( !class_exists( 'FooGallery_Masonry_Gallery_Template' ) ) {
 		 */
 		function preview_arguments( $args, $post_data ) {
 			$args['thumbnail_width'] = $post_data[FOOGALLERY_META_SETTINGS]['masonry_thumbnail_width'];
-
+			$args['layout'] = $post_data[FOOGALLERY_META_SETTINGS]['masonry_layout'];
+			$args['gutter_width'] = $post_data[FOOGALLERY_META_SETTINGS]['masonry_gutter_width'];
 			return $args;
 		}
 
