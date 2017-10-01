@@ -620,17 +620,28 @@ function foogallery_caption_title_source() {
 /**
  * Returns the attachment caption title based on the caption_title_source setting
  *
- * @param $attachment_post WP_Post
+ * @param WP_Post $attachment_post
+ * @param bool $source
  *
  * @return string
  */
-function foogallery_get_caption_title_for_attachment($attachment_post) {
-	$source = foogallery_caption_title_source();
+function foogallery_get_caption_title_for_attachment($attachment_post, $source = false) {
+	if ( false === $source ) {
+		$source = foogallery_caption_title_source();
+	}
 
-	if ( 'title' === $source ) {
-		$caption = trim( $attachment_post->post_title );
-	} else {
-		$caption = trim( $attachment_post->post_excerpt );
+	switch ( $source ) {
+		case 'title':
+			$caption = trim( $attachment_post->post_title );
+			break;
+		case 'desc':
+			$caption = trim( $attachment_post->post_content );
+			break;
+		case 'alt':
+			$caption = trim( get_post_meta( $attachment_post->ID, '_wp_attachment_image_alt', true ) );
+			break;
+		default:
+			$caption = trim( $attachment_post->post_excerpt );
 	}
 
 	return apply_filters( 'foogallery_get_caption_title_for_attachment', $caption, $attachment_post );
@@ -654,12 +665,15 @@ function foogallery_caption_desc_source() {
 /**
  * Returns the attachment caption description based on the caption_desc_source setting
  *
- * @param $attachment_post WP_Post
+ * @param WP_Post $attachment_post
+ * @param bool $source
  *
  * @return string
  */
-function foogallery_get_caption_desc_for_attachment($attachment_post) {
-	$source = foogallery_caption_desc_source();
+function foogallery_get_caption_desc_for_attachment($attachment_post, $source = false) {
+	if ( false === $source ) {
+		$source = foogallery_caption_desc_source();
+	}
 
 	switch ( $source ) {
 		case 'title':

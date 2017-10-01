@@ -210,11 +210,14 @@ function foogallery_attachment_html_caption( $foogallery_attachment, $args = arr
 			$show_caption_desc = true;
 		}
 
+		$caption_title = foogallery_get_caption_title_for_attachment( $foogallery_attachment->_post, $caption_title );
+		$caption_desc = foogallery_get_caption_desc_for_attachment( $foogallery_attachment->_post, $caption_desc );
+
 		if ( $foogallery_attachment->caption && $show_caption_title ) {
-			$caption_html[] = '<div class="fg-caption-title">' . $foogallery_attachment->caption . '</div>';
+			$caption_html[] = '<div class="fg-caption-title">' . $caption_title . '</div>';
 		}
 		if ( $foogallery_attachment->description && $show_caption_desc ) {
-			$caption_html[] = '<div class="fg-caption-desc">' . $foogallery_attachment->description . '</div>';
+			$caption_html[] = '<div class="fg-caption-desc">' . $caption_desc . '</div>';
 		}
 
 		$html = '<figcaption class="fg-caption"><div class="fg-caption-inner">';

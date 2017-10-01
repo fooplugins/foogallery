@@ -11,6 +11,12 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 			//build up class attributes
 			add_filter( 'foogallery_build_class_attribute', array( $this, 'add_common_fields_class_attributes' ), 10, 2 );
 
+			//add common data options
+			add_filter( 'foogallery_build_container_data_options', array( $this, 'add_caption_data_options' ), 10, 3 );
+
+			//build up any preview arguments
+			add_filter( 'foogallery_preview_arguments', array( $this, 'preview_arguments' ), 10, 3 );
+
 			if ( is_admin() ) {
 				//add common fields to the templates that support it
 				add_filter( 'foogallery_override_gallery_template_fields', array( $this, 'add_common_fields' ), 10, 2 );
@@ -375,10 +381,18 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 				//endregion Hover Effects Fields
 
 				//region Caption Fields
+				$fields[] = array(
+					'id'      => 'captions_help',
+					'title'   => __( 'Captions Help', 'foogallery' ),
+					'desc'    => __( 'You can change when captions are shown using the "Hover Effects -> Caption Visibility" setting .', 'foogallery' ),
+					'section' => __( 'Captions', 'foogallery' ),
+					'type'    => 'help'
+				);
+
 				$settings_link = sprintf( '<a target="blank" href="%s">%s</a>', foogallery_admin_settings_url(), __( 'settings', 'foogallery' ) );
 
 				$fields[] = array(
-					'id'       => 'hover_effect_title',
+					'id'       => 'caption_title',
 					'title'    => __( 'Title', 'foogallery' ),
 					'desc'     => __( 'Decide where caption titles are pulled from. By default, what is saved under general settings will be used, but it can be overridden per gallery', 'foogallery' ),
 					'section'  => __( 'Captions', 'foogallery' ),
@@ -399,7 +413,7 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 				);
 
 				$fields[] = array(
-					'id'       => 'hover_effect_desc',
+					'id'       => 'caption_desc',
 					'title'    => __( 'Description', 'foogallery' ),
 					'desc'     => __( 'Decide where captions descriptions are pulled from. By default, the general settings are used, but it can be overridden per gallery', 'foogallery' ),
 					'section'  => __( 'Captions', 'foogallery' ),
@@ -433,7 +447,7 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 					),
 					'row_data'=> array(
 						'data-foogallery-change-selector' => 'input:radio',
-						'data-foogallery-preview' => 'class',
+						'data-foogallery-preview' => 'shortcode',
 						'data-foogallery-value-selector'  => 'input:checked',
 					)
 				);
@@ -492,7 +506,7 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 		function add_common_fields_class_attributes( $classes, $gallery ) {
 			$template_data = foogallery_get_gallery_template( $gallery->gallery_template );
 
-			//check the template supports paging
+			//check the template supports common fields
 			if ( $template_data && array_key_exists( 'common_fields_support', $template_data ) && true === $template_data['common_fields_support'] ) {
 
 				//add the gallery template core class
@@ -525,6 +539,57 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 			}
 
 			return $classes;
+		}
+
+		/**
+		 * Add the required data options for captions
+		 *
+		 * @param $options
+		 * @param $gallery    FooGallery
+		 *
+		 * @param $attributes array
+		 *
+		 * @return array
+		 */
+		function add_caption_data_options($options, $gallery, $attributes) {
+			$template_data = foogallery_get_gallery_template( $gallery->gallery_template );
+
+			//check the template supports common fields
+			if ( $template_data && array_key_exists( 'common_fields_support', $template_data ) && true === $template_data['common_fields_support'] ) {
+
+				$caption_title = foogallery_gallery_template_setting( 'caption_title', '' );
+				$caption_desc  = foogallery_gallery_template_setting( 'caption_desc', '' );
+
+				$options['item']['showCaptionTitle']       = $caption_title != 'none';
+				$options['item']['showCaptionDescription'] = $caption_desc != 'none';
+
+				$captions_limit_length = foogallery_gallery_template_setting( 'captions_limit_length', '' );
+
+				if ( 'yes' === $captions_limit_length ) {
+					$caption_title_length                    = foogallery_gallery_template_setting( 'caption_title_length', '0' );
+					$caption_desc_length                     = foogallery_gallery_template_setting( 'caption_desc_length', '0' );
+					$options['item']['maxCaptionLength']     = intval( $caption_title_length );
+					$options['item']['maxDescriptionLength'] = intval( $caption_desc_length );
+				}
+			}
+			return $options;
+		}
+
+		/**
+		 * Build up a arguments used in the preview of the gallery
+		 * @param $args
+		 * @param $post_data
+		 * @param $template
+		 *
+		 * @return mixed
+		 */
+		function preview_arguments( $args, $post_data, $template ) {
+			$args['caption_title'] = $post_data[FOOGALLERY_META_SETTINGS][$template . '_caption_title'];
+			$args['caption_desc'] = $post_data[FOOGALLERY_META_SETTINGS][$template . '_caption_desc'];
+			$args['captions_limit_length'] = $post_data[FOOGALLERY_META_SETTINGS][$template . '_captions_limit_length'];
+			$args['caption_title_length'] = $post_data[FOOGALLERY_META_SETTINGS][$template . '_caption_title_length'];
+			$args['caption_desc_length'] = $post_data[FOOGALLERY_META_SETTINGS][$template . '_caption_desc_length'];
+			return $args;
 		}
 	}
 }
