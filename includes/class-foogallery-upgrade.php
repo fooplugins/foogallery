@@ -592,7 +592,7 @@ if ( ! class_exists( 'FooGallery_Upgrade' ) ) {
 			$old_settings = get_post_meta( $foogallery->ID, FOOGALLERY_META_SETTINGS_OLD, true );
 
 			//only upgrade galleries that need to be
-			if ( !is_array($new_settings) ) {
+			if ( !is_array($new_settings) && is_array($old_settings) ) {
 
 				//start with the old settings
 				$new_settings = $old_settings;
@@ -623,8 +623,7 @@ if ( ! class_exists( 'FooGallery_Upgrade' ) ) {
 				}
 
 				//template specific settings overrides
-
-				if ( 'image-viewer' === $foogallery->template ) {
+				if ( 'image-viewer' === $foogallery->gallery_template ) {
 					$new_settings['image-viewer_theme'] = 'fg-light';
 					$new_settings['image-viewer_border_size'] = '';
 					$new_settings['image-viewer_drop_shadow'] = '';
@@ -632,7 +631,7 @@ if ( ! class_exists( 'FooGallery_Upgrade' ) ) {
 					$new_settings['image-viewer_inner_shadow'] = '';
 				}
 
-				if ( 'justified' === $foogallery->template ) {
+				if ( 'justified' === $foogallery->gallery_template ) {
 					$new_settings['image-viewer_theme'] = 'fg-light';
 					$new_settings['image-viewer_border_size'] = '';
 					$new_settings['image-viewer_drop_shadow'] = '';
@@ -640,14 +639,13 @@ if ( ! class_exists( 'FooGallery_Upgrade' ) ) {
 					$new_settings['image-viewer_inner_shadow'] = '';
 				}
 
-				if ( 'masonry' === $foogallery->template ) {
+				if ( 'masonry' === $foogallery->gallery_template ) {
 					$new_settings['image-viewer_theme'] = 'fg-light';
 					$new_settings['image-viewer_border_size'] = '';
 					$new_settings['image-viewer_drop_shadow'] = '';
 					$new_settings['image-viewer_rounded_corners'] = '';
 					$new_settings['image-viewer_inner_shadow'] = '';
 				}
-
 
 				add_post_meta( $foogallery->ID, FOOGALLERY_META_SETTINGS, $new_settings, true );
 			}
