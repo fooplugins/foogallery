@@ -43,10 +43,7 @@ if ( ! class_exists( 'FooGallery_Paging' ) ) {
 					'default' => '',
 					'choices' => apply_filters( 'foogallery_gallery_template_paging_type_choices', array(
 						''  => __( 'None', 'foogallery' ),
-						'dots'   => __( 'Dots', 'foogallery' ),
-						'pagination'   => __( 'Pagination', 'foogallery' ),
-						'infinite'   => __( 'Infinite Scroll', 'foogallery' ),
-						'loadMore'   => __( 'Load More', 'foogallery' )
+						'dots'   => __( 'Dots', 'foogallery' )
 					) ),
 					'row_data'=> array(
 						'data-foogallery-change-selector' => 'input',
