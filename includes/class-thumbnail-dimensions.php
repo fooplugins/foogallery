@@ -9,7 +9,7 @@ if ( ! class_exists( 'FooGallery_Thumbnail_Dimensions' ) ) {
 
 		function __construct() {
 			if ( is_admin() ) {
-				add_action( 'foogallery_after_save_gallery', array( $this, 'calculate_thumbnail_dimensions' ), 9, 2 );
+				add_action( 'foogallery_after_save_gallery', array( $this, 'after_save_calculate_thumbnail_dimensions' ), 9, 2 );
 			}
 
 			add_filter( 'foogallery_attachment_load', array( $this, 'load_thumbnail_dimensions' ), 10, 2 );
@@ -17,17 +17,17 @@ if ( ! class_exists( 'FooGallery_Thumbnail_Dimensions' ) ) {
 		}
 
 		/**
-		 * Calculate the exact thumb size for the gallery and save the meta data
-		 * @param $post_id
-		 * @param $form_post
+		 * Calculate the exact thumb size for the gallery and save the meta data for each attachment
+		 * @param $foogallery_id
 		 */
-		function calculate_thumbnail_dimensions( $post_id, $form_post ) {
-			$foogallery = FooGallery::get_by_id( $post_id );
+		function calculate_thumbnail_dimensions( $foogallery_id ) {
+			$foogallery = FooGallery::get_by_id( $foogallery_id );
 
 			$gallery_template = $foogallery->gallery_template;
 
 			$template_data = foogallery_get_gallery_template( $gallery_template );
 
+			//check if the template supports thumbnail dimensions
 			if ( $template_data && array_key_exists( 'thumbnail_dimensions', $template_data ) && true === $template_data['thumbnail_dimensions'] ) {
 
 				$setting_key = "{$gallery_template}_thumbnail_dimensions";
@@ -60,6 +60,15 @@ if ( ! class_exists( 'FooGallery_Thumbnail_Dimensions' ) ) {
 					}
 				}
 			}
+		}
+
+		/**
+		 * Calculate the exact thumb size for the gallery and save the meta data
+		 * @param $post_id
+		 * @param $form_post
+		 */
+		function after_save_calculate_thumbnail_dimensions( $post_id, $form_post ) {
+			$this->calculate_thumbnail_dimensions( $post_id );
 		}
 
 		/**
