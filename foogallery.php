@@ -1,14 +1,16 @@
 <?php
-/**
- * Plugin Name: FooGallery
- * Description: FooGallery is the most intuitive and extensible gallery management tool ever created for WordPress
- * Version:     1.3.18
- * Author:      FooPlugins
- * Plugin URI:  https://foo.gallery
- * Author URI:  http://fooplugins.com
- * Text Domain: foogallery
- * License:     GPL-2.0+
- * Domain Path: /languages
+/*
+Plugin Name: FooGallery
+Description: FooGallery is the most intuitive and extensible gallery management tool ever created for WordPress
+Version:     1.3.19
+Author:      FooPlugins
+Plugin URI:  https://foo.gallery
+Author URI:  http://fooplugins.com
+Text Domain: foogallery
+License:     GPL-2.0+
+Domain Path: /languages
+
+@fs_premium_only /pro/
  */
 
 // If this file is called directly, abort.
@@ -22,7 +24,7 @@ if ( ! class_exists( 'FooGallery_Plugin' ) ) {
 	define( 'FOOGALLERY_PATH', plugin_dir_path( __FILE__ ) );
 	define( 'FOOGALLERY_URL', plugin_dir_url( __FILE__ ) );
 	define( 'FOOGALLERY_FILE', __FILE__ );
-	define( 'FOOGALLERY_VERSION', '1.3.18' );
+	define( 'FOOGALLERY_VERSION', '1.3.19' );
 	define( 'FOOGALLERY_SETTINGS_VERSION', '2' );
 
 	require_once( FOOGALLERY_PATH . 'includes/constants.php' );
@@ -40,9 +42,13 @@ if ( ! class_exists( 'FooGallery_Plugin' ) ) {
 				'slug'              => 'foogallery',
 				'type'              => 'plugin',
 				'public_key'        => 'pk_d87616455a835af1d0658699d0192',
-				'is_premium'        => false,
+				'is_premium'        => true,
 				'has_addons'        => false,
-				'has_paid_plans'    => false,
+				'has_paid_plans'    => true,
+				'trial'               => array(
+					'days'               => 7,
+					'is_require_payment' => false,
+				),
 				'menu'              => array(
 					'slug'       => 'edit.php?post_type=' . FOOGALLERY_CPT_GALLERY,
 					'first-path' => 'edit.php?post_type=' . FOOGALLERY_CPT_GALLERY . '&page=' . FOOGALLERY_ADMIN_MENU_HELP_SLUG,
@@ -152,6 +158,14 @@ if ( ! class_exists( 'FooGallery_Plugin' ) ) {
 
 			$checker = new FooGallery_Version_Check();
 			$checker->wire_up_checker();
+
+			if ( foogallery_fs()->is__premium_only() ) {
+				if ( foogallery_fs()->can_use_premium_code() ) {
+					require_once FOOGALLERY_PATH . 'pro/foogallery-pro.php';
+
+					new FooGallery_Pro();
+				}
+			}
 		}
 
 		/**
