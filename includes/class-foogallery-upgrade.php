@@ -684,7 +684,18 @@ if ( ! class_exists( 'FooGallery_Upgrade' ) ) {
 					$new_settings['image-viewer_inner_shadow'] = '';
 				}
 
+				//save the new settings
 				add_post_meta( $foogallery->ID, FOOGALLERY_META_SETTINGS, $new_settings, true );
+
+				//clear any cache that may be saved for the gallery
+				delete_post_meta( $foogallery->ID, FOOGALLERY_META_CACHE );
+
+				//clear any previously calculated thumb dimensions
+				delete_post_meta( $foogallery->ID, FOOGALLERY_META_THUMB_DIMENSIONS );
+
+				//calculate new thumb dimensions if needed
+				$thumb_dimensions = new FooGallery_Thumbnail_Dimensions();
+				$thumb_dimensions->calculate_thumbnail_dimensions( $foogallery->ID );
 			}
 		}
 	}
