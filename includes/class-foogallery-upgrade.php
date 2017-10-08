@@ -9,6 +9,43 @@ if ( ! class_exists( 'FooGallery_Upgrade' ) ) {
 
 		function __construct() {
 			add_action( 'foogallery_admin_new_version_detected', array( $this, 'upgrade_all_galleries' ) );
+
+			add_filter( 'foogallery_admin_settings_override', array( $this, 'add_force_upgrade_setting' ) );
+			add_action( 'foogallery_admin_settings_custom_type_render_setting', array( $this, 'render_force_upgrades_settings' ) );
+			add_action( 'wp_ajax_foogallery_force_upgrade', array( $this, 'ajax_force_upgrade' ) );
+		}
+
+		function ajax_force_upgrade() {
+			if ( check_admin_referer( 'foogallery_force_upgrade' ) && current_user_can( 'install_plugins' ) ) {
+
+				//clear any and all previous upgrades!
+				delete_post_meta_by_key( '_foogallery_settings' );
+				$this->upgrade_all_galleries();
+
+				_e('The BETA upgrade process has been run!', 'foogallery' );
+				die();
+			}
+		}
+
+		function add_force_upgrade_setting( $settings ) {
+			$settings['settings'][] = array(
+				'id'      => 'force_upgrade',
+				'title'   => __( 'Force Upgrade', 'foogallery' ),
+				'desc'    => sprintf( __( 'Force the BETA upgrade process to run. This may sometimes be needed if the upgrade did not run automatically. Any changes you have made to galleries after updating will be lost. THERE IS NO UNDO.', 'foogallery' ), foogallery_plugin_name() ),
+				'type'    => 'force_upgrade',
+				'tab'     => 'advanced'
+			);
+
+			return $settings;
+		}
+
+		function render_force_upgrades_settings( $args ) {
+			if ( 'force_upgrade' === $args['type'] ) { ?>
+				<div class="foogallery_settings_ajax_container">
+					<input type="button" data-action="foogallery_force_upgrade" data-confirm="<?php _e('Are you sure? Any changes you have made since updating will be lost. There is no undo!', 'foogallery'); ?>" data-response="replace_container" data-nonce="<?php echo esc_attr( wp_create_nonce( 'foogallery_force_upgrade' ) ); ?>" class="button-primary foogallery_settings_ajax foogallery_force_upgrade" value="<?php _e( 'Run Upgrade Process', 'foogallery' ); ?>">
+					<span style="position: absolute" class="spinner"></span>
+				</div>
+			<?php }
 		}
 
 		function upgrade_all_galleries() {
