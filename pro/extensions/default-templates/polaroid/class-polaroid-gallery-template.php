@@ -9,7 +9,7 @@ if ( !class_exists( 'FooGallery_Polaroid_Gallery_Template' ) ) {
 		 * Wire up everything we need to run the extension
 		 */
 		function __construct() {
-			add_filter( 'foogallery_gallery_templates', array( $this, 'add_template' ) );
+			add_filter( 'foogallery_gallery_templates', array( $this, 'add_template' ), 99, 1 );
 			add_filter( 'foogallery_gallery_templates_files', array( $this, 'register_myself' ) );
 
 			add_filter( 'foogallery_template_load_css-polaroid_new', '__return_false' );
@@ -53,7 +53,7 @@ if ( !class_exists( 'FooGallery_Polaroid_Gallery_Template' ) ) {
 		function add_template( $gallery_templates ) {
 			$gallery_templates[] = array(
                 'slug'        => 'polaroid_new',
-                'name'        => __( 'Polaroid', 'foogallery' ),
+                'name'        => __( 'Polaroid PRO', 'foogallery' ),
 				'preview_support' => true,
 				'common_fields_support' => true,
                 'lazyload_support' => true,
