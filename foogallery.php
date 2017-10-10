@@ -52,7 +52,7 @@ if ( ! class_exists( 'FooGallery_Plugin' ) ) {
 				'menu'              => array(
 					'slug'       => 'edit.php?post_type=' . FOOGALLERY_CPT_GALLERY,
 					'first-path' => 'edit.php?post_type=' . FOOGALLERY_CPT_GALLERY . '&page=' . FOOGALLERY_ADMIN_MENU_HELP_SLUG,
-					'account'    => false,
+					'account'    => true,
 					'contact'    => false,
 					'support'    => false,
 				),
