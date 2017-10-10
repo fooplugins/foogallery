@@ -34,7 +34,7 @@ if ( ! class_exists( 'FooGallery_Pro_Default_Templates' ) ) {
 		 */
 		function pro_core_gallery_script( $url ){
 			$filename = foogallery_get_setting( 'enable_debugging', false ) ? '' : '.min';
-			return FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_SHARED_URL . 'js/foogallery' . $filename . '.js';
+			return FOOGALLERY_PRO_DEFAULT_TEMPLATES_SHARED_URL . 'js/foogallery' . $filename . '.js';
 		}
 	}
 }

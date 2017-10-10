@@ -17,7 +17,7 @@ if ( ! class_exists( 'FooGallery_Pro_Paging' ) ) {
 		 *
 		 * @return mixed
 		 */
-		function add_pro_hover_presets( $choices ) {
+		function add_pro_paging_choices( $choices ) {
 			$choices['pagination'] = __( 'Pagination', 'foogallery' );
 			$choices['infinite'] = __( 'Infinite Scroll', 'foogallery' );
 			$choices['loadMore'] = __( 'Load More', 'foogallery' );
