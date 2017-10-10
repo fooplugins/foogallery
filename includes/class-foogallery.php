@@ -73,16 +73,12 @@ class FooGallery extends stdClass {
 	private function load_settings( $post_id ) {
 		$settings = get_post_meta( $post_id, FOOGALLERY_META_SETTINGS, true );
 
+		//the gallery is considered new if the template has not been set
+		$is_new = empty( $this->gallery_template );
+
 		//if we have no settings, and the gallery is not new, then upgrade settings
-		if ( empty( $settings ) && ! empty( $this->gallery_template ) ) {
-
-			$old_settings = get_post_meta( $post_id, FOOGALLERY_META_SETTINGS_OLD, true );
-
-			//we have old settings - so upgrade them!!!
-			if ( !empty( $old_settings ) ) {
-				$upgrade_helper = new FooGallery_Upgrade_Helper();
-				$upgrade_helper->perform_gallery_settings_upgrade( $this );
-			}
+		if ( empty( $settings ) && !$is_new ) {
+			$settings = apply_filters( 'foogallery_settings_upgrade', $settings, $this );
 		}
 
 		return $settings;
