@@ -13,6 +13,58 @@ if ( ! class_exists( 'FooGallery_Upgrade' ) ) {
 			add_filter( 'foogallery_admin_settings_override', array( $this, 'add_force_upgrade_setting' ) );
 			add_action( 'foogallery_admin_settings_custom_type_render_setting', array( $this, 'render_force_upgrades_settings' ) );
 			add_action( 'wp_ajax_foogallery_force_upgrade', array( $this, 'ajax_force_upgrade' ) );
+
+			add_action( 'add_meta_boxes_' . FOOGALLERY_CPT_GALLERY, array( $this, 'add_meta_boxes_to_gallery' ) );
+		}
+
+		public function add_meta_boxes_to_gallery( $post ) {
+
+			if ( foogallery_get_setting( 'enable_debugging' ) ) {
+				add_meta_box(
+					'foogallery_upgrade_debug',
+					__( 'Settings Upgrade Debugging', 'foogallery' ),
+					array( $this, 'render_upgrade_debug_metabox' ),
+					FOOGALLERY_CPT_GALLERY,
+					'normal',
+					'low'
+				);
+			}
+		}
+
+		public function render_upgrade_debug_metabox( $post ) {
+			$gallery = FooGallery::get( $post );
+
+			if ( $gallery->is_new() ) {
+				return;
+			}
+
+			$old_settings = get_post_meta( $gallery->ID, FOOGALLERY_META_SETTINGS_OLD, true );
+			$new_settings = get_post_meta( $gallery->ID, FOOGALLERY_META_SETTINGS, true );
+			$upgrade_helper = new FooGallery_Upgrade_Helper();
+			$upgrade_settings = $upgrade_helper->build_new_settings( $gallery );
+
+			ksort( $old_settings );
+			ksort( $new_settings );
+			ksort( $upgrade_settings );
+			?>
+			<style>
+				#foogallery_upgrade_debug .inside { overflow: scroll; }
+				#foogallery_upgrade_debug table { font-size: 0.8em; }
+				#foogallery_upgrade_debug td { vertical-align: top; }
+			</style>
+			<table>
+				<tr>
+					<td><h3>Old Settings</h3></td>
+					<td><h3>New Settings</h3></td>
+					<td><h3>Upgrade Settings</h3></td>
+				</tr>
+				<tr>
+					<td><?php var_dump( $old_settings ); ?></td>
+					<td><?php var_dump( $new_settings ); ?></td>
+					<td><?php var_dump( $upgrade_settings ); ?></td>
+				</tr>
+			</table>
+			<?php
 		}
 
 		function ajax_force_upgrade() {
@@ -52,12 +104,42 @@ if ( ! class_exists( 'FooGallery_Upgrade' ) ) {
 			$galleries = foogallery_get_all_galleries();
 
 			foreach ( $galleries as $gallery ) {
-				$this->perform_gallery_settings_upgrade( $gallery );
+				$new_settings = get_post_meta( $gallery->ID, FOOGALLERY_META_SETTINGS, true );
+				$old_settings = get_post_meta( $gallery->ID, FOOGALLERY_META_SETTINGS_OLD, true );
+
+				//only upgrade galleries that need to be
+				if ( !is_array($new_settings) && is_array($old_settings) ) {
+					$upgrade_helper = new FooGallery_Upgrade_Helper();
+					$upgrade_helper->perform_gallery_settings_upgrade( $gallery );
+				}
 			}
 		}
+	}
+}
+
+if ( ! class_exists( 'FooGallery_Upgrade_Helper' ) ) {
+
+	class FooGallery_Upgrade_Helper {
 
 		function perform_gallery_settings_upgrade( $foogallery ) {
+			//build up the new settings
+			$new_settings = $this->build_new_settings( $foogallery );
 
+			//save the new settings
+			add_post_meta( $foogallery->ID, FOOGALLERY_META_SETTINGS, $new_settings, true );
+
+			//clear any cache that may be saved for the gallery
+			delete_post_meta( $foogallery->ID, FOOGALLERY_META_CACHE );
+
+			//clear any previously calculated thumb dimensions
+			delete_post_meta( $foogallery->ID, FOOGALLERY_META_THUMB_DIMENSIONS );
+
+			//calculate new thumb dimensions if needed
+			$thumb_dimensions = new FooGallery_Thumbnail_Dimensions();
+			$thumb_dimensions->calculate_thumbnail_dimensions( $foogallery->ID );
+		}
+
+		function build_new_settings( $foogallery ) {
 			$mappings = array(
 				array(
 					'id' => 'border-style',
@@ -224,7 +306,7 @@ if ( ! class_exists( 'FooGallery_Upgrade' ) ) {
 					'new' => array(
 						array ( 'id' => 'hover_effect_preset', 'value' => 'fg-custom' ),
 						array ( 'id' => 'hover_effect_caption_visibility', 'value' => 'fg-caption-hover' ),
-                        array ( 'id' => 'hover_effect_transition', 'value' => 'fg-hover-fade' ),
+						array ( 'id' => 'hover_effect_transition', 'value' => 'fg-hover-fade' ),
 						array ( 'id' => 'hover_effect_icon', 'value' => 'fg-hover-zoom' ),
 						array ( 'id' => 'caption_title', 'value' => 'none' ),
 						array ( 'id' => 'caption_desc', 'value' => 'none' )
@@ -262,8 +344,8 @@ if ( ! class_exists( 'FooGallery_Upgrade' ) ) {
 					'value' => 'hover-effect-caption', //Caption
 					'new' => array(
 						array ( 'id' => 'hover_effect_preset', 'value' => 'fg-custom' ),
-                        array ( 'id' => 'hover_effect_caption_visibility', 'value' => 'fg-caption-hover' ),
-                        array ( 'id' => 'hover_effect_transition', 'value' => 'fg-hover-fade' ),
+						array ( 'id' => 'hover_effect_caption_visibility', 'value' => 'fg-caption-hover' ),
+						array ( 'id' => 'hover_effect_transition', 'value' => 'fg-hover-fade' ),
 					)
 				),
 
@@ -272,8 +354,8 @@ if ( ! class_exists( 'FooGallery_Upgrade' ) ) {
 					'value' => 'hover-effect-zoom',
 					'new' => array(
 						array ( 'id' => 'hover_effect_preset', 'value' => 'fg-custom' ),
-                        array ( 'id' => 'hover_effect_caption_visibility', 'value' => 'fg-caption-hover' ),
-                        array ( 'id' => 'hover_effect_transition', 'value' => 'fg-hover-fade' ),
+						array ( 'id' => 'hover_effect_caption_visibility', 'value' => 'fg-caption-hover' ),
+						array ( 'id' => 'hover_effect_transition', 'value' => 'fg-hover-fade' ),
 						array ( 'id' => 'hover_effect_icon', 'value' => 'fg-hover-zoom' )
 					)
 				),
@@ -283,8 +365,8 @@ if ( ! class_exists( 'FooGallery_Upgrade' ) ) {
 					'value' => 'hover-effect-zoom2',
 					'new' => array(
 						array ( 'id' => 'hover_effect_preset', 'value' => 'fg-custom' ),
-                        array ( 'id' => 'hover_effect_caption_visibility', 'value' => 'fg-caption-hover' ),
-                        array ( 'id' => 'hover_effect_transition', 'value' => 'fg-hover-fade' ),
+						array ( 'id' => 'hover_effect_caption_visibility', 'value' => 'fg-caption-hover' ),
+						array ( 'id' => 'hover_effect_transition', 'value' => 'fg-hover-fade' ),
 						array ( 'id' => 'hover_effect_icon', 'value' => 'fg-hover-zoom2' )
 					)
 				),
@@ -294,8 +376,8 @@ if ( ! class_exists( 'FooGallery_Upgrade' ) ) {
 					'value' => 'hover-effect-zoom3',
 					'new' => array(
 						array ( 'id' => 'hover_effect_preset', 'value' => 'fg-custom' ),
-                        array ( 'id' => 'hover_effect_caption_visibility', 'value' => 'fg-caption-hover' ),
-                        array ( 'id' => 'hover_effect_transition', 'value' => 'fg-hover-fade' ),
+						array ( 'id' => 'hover_effect_caption_visibility', 'value' => 'fg-caption-hover' ),
+						array ( 'id' => 'hover_effect_transition', 'value' => 'fg-hover-fade' ),
 						array ( 'id' => 'hover_effect_icon', 'value' => 'fg-hover-zoom3' )
 					)
 				),
@@ -305,8 +387,8 @@ if ( ! class_exists( 'FooGallery_Upgrade' ) ) {
 					'value' => 'hover-effect-plus',
 					'new' => array(
 						array ( 'id' => 'hover_effect_preset', 'value' => 'fg-custom' ),
-                        array ( 'id' => 'hover_effect_caption_visibility', 'value' => 'fg-caption-hover' ),
-                        array ( 'id' => 'hover_effect_transition', 'value' => 'fg-hover-fade' ),
+						array ( 'id' => 'hover_effect_caption_visibility', 'value' => 'fg-caption-hover' ),
+						array ( 'id' => 'hover_effect_transition', 'value' => 'fg-hover-fade' ),
 						array ( 'id' => 'hover_effect_icon', 'value' => 'fg-hover-plus' )
 					)
 				),
@@ -316,8 +398,8 @@ if ( ! class_exists( 'FooGallery_Upgrade' ) ) {
 					'value' => 'hover-effect-circle-plus',
 					'new' => array(
 						array ( 'id' => 'hover_effect_preset', 'value' => 'fg-custom' ),
-                        array ( 'id' => 'hover_effect_caption_visibility', 'value' => 'fg-caption-hover' ),
-                        array ( 'id' => 'hover_effect_transition', 'value' => 'fg-hover-fade' ),
+						array ( 'id' => 'hover_effect_caption_visibility', 'value' => 'fg-caption-hover' ),
+						array ( 'id' => 'hover_effect_transition', 'value' => 'fg-hover-fade' ),
 						array ( 'id' => 'hover_effect_icon', 'value' => 'fg-hover-circle-plus' )
 					)
 				),
@@ -327,8 +409,8 @@ if ( ! class_exists( 'FooGallery_Upgrade' ) ) {
 					'value' => 'hover-effect-eye',
 					'new' => array(
 						array ( 'id' => 'hover_effect_preset', 'value' => 'fg-custom' ),
-                        array ( 'id' => 'hover_effect_caption_visibility', 'value' => 'fg-caption-hover' ),
-                        array ( 'id' => 'hover_effect_transition', 'value' => 'fg-hover-fade' ),
+						array ( 'id' => 'hover_effect_caption_visibility', 'value' => 'fg-caption-hover' ),
+						array ( 'id' => 'hover_effect_transition', 'value' => 'fg-hover-fade' ),
 						array ( 'id' => 'hover_effect_icon', 'value' => 'fg-hover-eye' )
 					)
 				),
@@ -338,8 +420,8 @@ if ( ! class_exists( 'FooGallery_Upgrade' ) ) {
 					'value' => 'hover-caption-simple',
 					'new' => array(
 						array ( 'id' => 'hover_effect_preset', 'value' => 'fg-custom' ),
-                        array ( 'id' => 'hover_effect_caption_visibility', 'value' => 'fg-caption-hover' ),
-                        array ( 'id' => 'hover_effect_transition', 'value' => 'fg-hover-fade' ),
+						array ( 'id' => 'hover_effect_caption_visibility', 'value' => 'fg-caption-hover' ),
+						array ( 'id' => 'hover_effect_transition', 'value' => 'fg-hover-fade' ),
 						array ( 'id' => 'hover_effect_icon', 'value' => '' )
 					)
 				),
@@ -348,8 +430,8 @@ if ( ! class_exists( 'FooGallery_Upgrade' ) ) {
 					'value' => 'hover-caption-full-drop',
 					'new' => array(
 						array ( 'id' => 'hover_effect_preset', 'value' => 'fg-custom' ),
-                        array ( 'id' => 'hover_effect_caption_visibility', 'value' => 'fg-caption-hover' ),
-                        array ( 'id' => 'hover_effect_transition', 'value' => 'fg-hover-slide-down' ),
+						array ( 'id' => 'hover_effect_caption_visibility', 'value' => 'fg-caption-hover' ),
+						array ( 'id' => 'hover_effect_transition', 'value' => 'fg-hover-slide-down' ),
 						array ( 'id' => 'hover_effect_icon', 'value' => '' )
 					)
 				),
@@ -358,8 +440,8 @@ if ( ! class_exists( 'FooGallery_Upgrade' ) ) {
 					'value' => 'hover-caption-full-fade',
 					'new' => array(
 						array ( 'id' => 'hover_effect_preset', 'value' => 'fg-custom' ),
-                        array ( 'id' => 'hover_effect_caption_visibility', 'value' => 'fg-caption-hover' ),
-                        array ( 'id' => 'hover_effect_transition', 'value' => 'fg-hover-fade' ),
+						array ( 'id' => 'hover_effect_caption_visibility', 'value' => 'fg-caption-hover' ),
+						array ( 'id' => 'hover_effect_transition', 'value' => 'fg-hover-fade' ),
 						array ( 'id' => 'hover_effect_icon', 'value' => '' )
 					)
 				),
@@ -368,8 +450,8 @@ if ( ! class_exists( 'FooGallery_Upgrade' ) ) {
 					'value' => 'hover-caption-push',
 					'new' => array(
 						array ( 'id' => 'hover_effect_preset', 'value' => 'fg-custom' ),
-                        array ( 'id' => 'hover_effect_caption_visibility', 'value' => 'fg-caption-hover' ),
-                        array ( 'id' => 'hover_effect_transition', 'value' => 'fg-hover-push' ),
+						array ( 'id' => 'hover_effect_caption_visibility', 'value' => 'fg-caption-hover' ),
+						array ( 'id' => 'hover_effect_transition', 'value' => 'fg-hover-push' ),
 						array ( 'id' => 'hover_effect_icon', 'value' => '' )
 					)
 				),
@@ -378,7 +460,7 @@ if ( ! class_exists( 'FooGallery_Upgrade' ) ) {
 					'value' => 'hover-caption-simple-always',
 					'new' => array(
 						array ( 'id' => 'hover_effect_preset', 'value' => 'fg-custom' ),
-                        array ( 'id' => 'hover_effect_caption_visibility', 'value' => 'fg-caption-always' ),
+						array ( 'id' => 'hover_effect_caption_visibility', 'value' => 'fg-caption-always' ),
 						array ( 'id' => 'hover_effect_icon', 'value' => '' )
 					)
 				),
@@ -625,78 +707,62 @@ if ( ! class_exists( 'FooGallery_Upgrade' ) ) {
 
 			);
 
-			$new_settings = get_post_meta( $foogallery->ID, FOOGALLERY_META_SETTINGS, true );
 			$old_settings = get_post_meta( $foogallery->ID, FOOGALLERY_META_SETTINGS_OLD, true );
 
-			//only upgrade galleries that need to be
-			if ( !is_array($new_settings) && is_array($old_settings) ) {
+			//start with the old settings
+			$new_settings = $old_settings;
 
-				//start with the old settings
-				$new_settings = $old_settings;
+			//upgrade all template settings
+			foreach ( foogallery_gallery_templates() as $template ) {
 
-				//upgrade all template settings
-				foreach ( foogallery_gallery_templates() as $template ) {
+				foreach ( $mappings as $mapping ) {
 
-					foreach ( $mappings as $mapping ) {
+					$settings_key = "{$template['slug']}_{$mapping['id']}";
 
-						$settings_key = "{$template['slug']}_{$mapping['id']}";
+					//check if the settings exists
+					if ( array_key_exists( $settings_key, $old_settings ) ) {
 
-						//check if the settings exists
-						if ( array_key_exists( $settings_key, $old_settings ) ) {
+						$old_settings_value = $old_settings[$settings_key];
 
-							$old_settings_value = $old_settings[$settings_key];
+						if ( $mapping['value'] === $old_settings_value ) {
+							//we have found a match!
 
-							if ( $mapping['value'] === $old_settings_value ) {
-								//we have found a match!
-
-								foreach ( $mapping['new'] as $setting_to_create ) {
-									$new_setting_key                = "{$template['slug']}_{$setting_to_create['id']}";
-									$new_setting_value              = $setting_to_create['value'];
-									$new_settings[$new_setting_key] = $new_setting_value;
-								}
+							foreach ( $mapping['new'] as $setting_to_create ) {
+								$new_setting_key                = "{$template['slug']}_{$setting_to_create['id']}";
+								$new_setting_value              = $setting_to_create['value'];
+								$new_settings[$new_setting_key] = $new_setting_value;
 							}
 						}
 					}
 				}
-
-				//template specific settings overrides
-				if ( 'image-viewer' === $foogallery->gallery_template ) {
-					$new_settings['image-viewer_theme'] = 'fg-light';
-					$new_settings['image-viewer_border_size'] = '';
-					$new_settings['image-viewer_drop_shadow'] = '';
-					$new_settings['image-viewer_rounded_corners'] = '';
-					$new_settings['image-viewer_inner_shadow'] = '';
-				}
-
-				if ( 'justified' === $foogallery->gallery_template ) {
-					$new_settings['image-viewer_theme'] = 'fg-light';
-					$new_settings['image-viewer_border_size'] = '';
-					$new_settings['image-viewer_drop_shadow'] = '';
-					$new_settings['image-viewer_rounded_corners'] = '';
-					$new_settings['image-viewer_inner_shadow'] = '';
-				}
-
-				if ( 'masonry' === $foogallery->gallery_template ) {
-					$new_settings['image-viewer_theme'] = 'fg-light';
-					$new_settings['image-viewer_border_size'] = '';
-					$new_settings['image-viewer_drop_shadow'] = '';
-					$new_settings['image-viewer_rounded_corners'] = '';
-					$new_settings['image-viewer_inner_shadow'] = '';
-				}
-
-				//save the new settings
-				add_post_meta( $foogallery->ID, FOOGALLERY_META_SETTINGS, $new_settings, true );
-
-				//clear any cache that may be saved for the gallery
-				delete_post_meta( $foogallery->ID, FOOGALLERY_META_CACHE );
-
-				//clear any previously calculated thumb dimensions
-				delete_post_meta( $foogallery->ID, FOOGALLERY_META_THUMB_DIMENSIONS );
-
-				//calculate new thumb dimensions if needed
-				$thumb_dimensions = new FooGallery_Thumbnail_Dimensions();
-				$thumb_dimensions->calculate_thumbnail_dimensions( $foogallery->ID );
 			}
+
+			//template specific settings overrides
+			if ( 'image-viewer' === $foogallery->gallery_template ) {
+				$new_settings['image-viewer_theme'] = 'fg-light';
+				$new_settings['image-viewer_border_size'] = '';
+				$new_settings['image-viewer_drop_shadow'] = '';
+				$new_settings['image-viewer_rounded_corners'] = '';
+				$new_settings['image-viewer_inner_shadow'] = '';
+			}
+
+			if ( 'justified' === $foogallery->gallery_template ) {
+				$new_settings['image-viewer_theme'] = 'fg-light';
+				$new_settings['image-viewer_border_size'] = '';
+				$new_settings['image-viewer_drop_shadow'] = '';
+				$new_settings['image-viewer_rounded_corners'] = '';
+				$new_settings['image-viewer_inner_shadow'] = '';
+			}
+
+			if ( 'masonry' === $foogallery->gallery_template ) {
+				$new_settings['image-viewer_theme'] = 'fg-light';
+				$new_settings['image-viewer_border_size'] = '';
+				$new_settings['image-viewer_drop_shadow'] = '';
+				$new_settings['image-viewer_rounded_corners'] = '';
+				$new_settings['image-viewer_inner_shadow'] = '';
+			}
+
+			return $new_settings;
 		}
 	}
 }

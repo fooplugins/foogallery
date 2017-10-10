@@ -527,7 +527,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 				</tr>
 				</tbody>
 			</table>
-		<?php
+			<?php
 		}
 
 		public function ajax_create_gallery_page() {
