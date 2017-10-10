@@ -59,7 +59,7 @@ class FooGallery extends stdClass {
 	 */
 	private function load_meta( $post_id ) {
 		$this->gallery_template = get_post_meta( $post_id, FOOGALLERY_META_TEMPLATE, true );
-		$this->settings = get_post_meta( $post_id, FOOGALLERY_META_SETTINGS, true );
+		$this->settings = $this->load_settings( $post_id );
 		$this->custom_css = get_post_meta( $post_id, FOOGALLERY_META_CUSTOM_CSS, true );
 		$this->sorting = get_post_meta( $post_id, FOOGALLERY_META_SORT, true );
 		$this->datasource_name = get_post_meta( $post_id, FOOGALLERY_META_DATASOURCE, true );
@@ -68,6 +68,24 @@ class FooGallery extends stdClass {
 		}
         $this->retina = get_post_meta( $post_id, FOOGALLERY_META_RETINA, true );
 		$this->force_use_original_thumbs = 'true' === get_post_meta( $post_id, FOOGALLERY_META_FORCE_ORIGINAL_THUMBS, true );
+	}
+
+	private function load_settings( $post_id ) {
+		$settings = get_post_meta( $post_id, FOOGALLERY_META_SETTINGS, true );
+
+		//if we have no settings, and the gallery is not new, then upgrade settings
+		if ( empty( $settings ) && ! empty( $this->gallery_template ) ) {
+
+			$old_settings = get_post_meta( $post_id, FOOGALLERY_META_SETTINGS_OLD, true );
+
+			//we have old settings - so upgrade them!!!
+			if ( !empty( $old_settings ) ) {
+				$upgrade_helper = new FooGallery_Upgrade_Helper();
+				$upgrade_helper->perform_gallery_settings_upgrade( $this );
+			}
+		}
+
+		return $settings;
 	}
 
 	/**
@@ -244,8 +262,8 @@ class FooGallery extends stdClass {
 	 * Returns true if the gallery is newly created and not yet saved
 	 */
 	public function is_new() {
-		$settings = get_post_meta( $this->ID, FOOGALLERY_META_SETTINGS, true );
-		return empty( $settings );
+		$template = get_post_meta( $this->ID, FOOGALLERY_META_TEMPLATE, true );
+		return empty( $template );
 	}
 
 	/**
