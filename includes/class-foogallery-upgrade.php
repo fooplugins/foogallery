@@ -365,6 +365,55 @@ if ( ! class_exists( 'FooGallery_Upgrade_Helper' ) ) {
 				),
 
 				array(
+					'id' => 'caption-hover-effect',
+					'value' => 'hover-caption-simple',
+					'new' => array(
+						array ( 'id' => 'hover_effect_preset', 'value' => 'fg-custom' ),
+						array ( 'id' => 'hover_effect_caption_visibility', 'value' => 'fg-caption-hover' ),
+						array ( 'id' => 'hover_effect_transition', 'value' => 'fg-hover-fade' ),
+						array ( 'id' => 'hover_effect_icon', 'value' => '' )
+					)
+				),
+				array(
+					'id' => 'caption-hover-effect',
+					'value' => 'hover-caption-full-drop',
+					'new' => array(
+						array ( 'id' => 'hover_effect_preset', 'value' => 'fg-custom' ),
+						array ( 'id' => 'hover_effect_caption_visibility', 'value' => 'fg-caption-hover' ),
+						array ( 'id' => 'hover_effect_transition', 'value' => 'fg-hover-slide-down' ),
+						array ( 'id' => 'hover_effect_icon', 'value' => '' )
+					)
+				),
+				array(
+					'id' => 'caption-hover-effect',
+					'value' => 'hover-caption-full-fade',
+					'new' => array(
+						array ( 'id' => 'hover_effect_preset', 'value' => 'fg-custom' ),
+						array ( 'id' => 'hover_effect_caption_visibility', 'value' => 'fg-caption-hover' ),
+						array ( 'id' => 'hover_effect_transition', 'value' => 'fg-hover-fade' ),
+						array ( 'id' => 'hover_effect_icon', 'value' => '' )
+					)
+				),
+				array(
+					'id' => 'caption-hover-effect',
+					'value' => 'hover-caption-push',
+					'new' => array(
+						array ( 'id' => 'hover_effect_preset', 'value' => 'fg-custom' ),
+						array ( 'id' => 'hover_effect_caption_visibility', 'value' => 'fg-caption-hover' ),
+						array ( 'id' => 'hover_effect_transition', 'value' => 'fg-hover-push' ),
+						array ( 'id' => 'hover_effect_icon', 'value' => '' )
+					)
+				),
+				array(
+					'id' => 'caption-hover-effect',
+					'value' => 'hover-caption-simple-always',
+					'new' => array(
+						array ( 'id' => 'hover_effect_preset', 'value' => 'fg-custom' ),
+						array ( 'id' => 'hover_effect_caption_visibility', 'value' => 'fg-caption-always' ),
+						array ( 'id' => 'hover_effect_icon', 'value' => '' )
+					)
+				),
+				array(
 					'id' => 'hover-effect',
 					'value' => 'hover-effect-zoom',
 					'new' => array(
@@ -427,56 +476,6 @@ if ( ! class_exists( 'FooGallery_Upgrade_Helper' ) ) {
 						array ( 'id' => 'hover_effect_caption_visibility', 'value' => 'fg-caption-hover' ),
 						array ( 'id' => 'hover_effect_transition', 'value' => 'fg-hover-fade' ),
 						array ( 'id' => 'hover_effect_icon', 'value' => 'fg-hover-eye' )
-					)
-				),
-
-				array(
-					'id' => 'caption-hover-effect',
-					'value' => 'hover-caption-simple',
-					'new' => array(
-						array ( 'id' => 'hover_effect_preset', 'value' => 'fg-custom' ),
-						array ( 'id' => 'hover_effect_caption_visibility', 'value' => 'fg-caption-hover' ),
-						array ( 'id' => 'hover_effect_transition', 'value' => 'fg-hover-fade' ),
-						array ( 'id' => 'hover_effect_icon', 'value' => '' )
-					)
-				),
-				array(
-					'id' => 'caption-hover-effect',
-					'value' => 'hover-caption-full-drop',
-					'new' => array(
-						array ( 'id' => 'hover_effect_preset', 'value' => 'fg-custom' ),
-						array ( 'id' => 'hover_effect_caption_visibility', 'value' => 'fg-caption-hover' ),
-						array ( 'id' => 'hover_effect_transition', 'value' => 'fg-hover-slide-down' ),
-						array ( 'id' => 'hover_effect_icon', 'value' => '' )
-					)
-				),
-				array(
-					'id' => 'caption-hover-effect',
-					'value' => 'hover-caption-full-fade',
-					'new' => array(
-						array ( 'id' => 'hover_effect_preset', 'value' => 'fg-custom' ),
-						array ( 'id' => 'hover_effect_caption_visibility', 'value' => 'fg-caption-hover' ),
-						array ( 'id' => 'hover_effect_transition', 'value' => 'fg-hover-fade' ),
-						array ( 'id' => 'hover_effect_icon', 'value' => '' )
-					)
-				),
-				array(
-					'id' => 'caption-hover-effect',
-					'value' => 'hover-caption-push',
-					'new' => array(
-						array ( 'id' => 'hover_effect_preset', 'value' => 'fg-custom' ),
-						array ( 'id' => 'hover_effect_caption_visibility', 'value' => 'fg-caption-hover' ),
-						array ( 'id' => 'hover_effect_transition', 'value' => 'fg-hover-push' ),
-						array ( 'id' => 'hover_effect_icon', 'value' => '' )
-					)
-				),
-				array(
-					'id' => 'caption-hover-effect',
-					'value' => 'hover-caption-simple-always',
-					'new' => array(
-						array ( 'id' => 'hover_effect_preset', 'value' => 'fg-custom' ),
-						array ( 'id' => 'hover_effect_caption_visibility', 'value' => 'fg-caption-always' ),
-						array ( 'id' => 'hover_effect_icon', 'value' => '' )
 					)
 				),
 
