@@ -125,8 +125,8 @@ if ( ! class_exists( 'FooGallery_Admin_Album_MetaBoxes' ) ) {
 
 				update_post_meta( $post_id, FOOGALLERY_ALBUM_META_SORT, $_POST[FOOGALLERY_ALBUM_META_SORT] );
 
-				$settings = isset($_POST[FOOGALLERY_META_SETTINGS_OLD]) ?
-					$_POST[FOOGALLERY_META_SETTINGS_OLD] : array();
+				$settings = isset($_POST['_foogallery_settings']) ?
+					$_POST['_foogallery_settings'] : array();
 
 				$settings = apply_filters( 'foogallery_save_album_settings', $settings );
 
