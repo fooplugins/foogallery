@@ -84,10 +84,17 @@ if ( ! class_exists( 'FooGallery_NextGen_Import_Progress' ) ) {
 				'post_type'   => FOOGALLERY_CPT_GALLERY,
 				'post_status' => 'publish',
 			);
-			$this->foogallery_id   = wp_insert_post( $foogallery_args );
+			$this->foogallery_id = wp_insert_post( $foogallery_args );
 
 			//set a default gallery template
 			add_post_meta( $this->foogallery_id, FOOGALLERY_META_TEMPLATE, foogallery_default_gallery_template(), true );
+
+			//set default settings if there are any
+            $default_gallery_id = foogallery_get_setting( 'default_gallery_settings' );
+            if ( $default_gallery_id ) {
+                $settings = get_post_meta( $default_gallery_id, FOOGALLERY_META_SETTINGS, true );
+                add_post_meta( $this->foogallery_id, FOOGALLERY_META_SETTINGS, $settings, true );
+            }
 		}
 
 		function can_import() {
