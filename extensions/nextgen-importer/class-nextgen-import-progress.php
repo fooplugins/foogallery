@@ -36,6 +36,11 @@ if ( ! class_exists( 'FooGallery_NextGen_Import_Progress' ) ) {
 
 			$this->import_count = count( $this->nextgen_pictures );
 
+			//check for zero images
+			if ( 0 === $this->import_count ) {
+				$this->status = self::PROGRESS_ERROR;
+			}
+
 			$this->is_part_of_current_import = true;
 		}
 
@@ -53,6 +58,13 @@ if ( ! class_exists( 'FooGallery_NextGen_Import_Progress' ) ) {
 					break;
 				case self::PROGRESS_COMPLETED:
 					return sprintf( __( 'Done! %d image(s) imported', 'foogallery' ), $this->import_count );
+					break;
+				case self::PROGRESS_ERROR:
+					if ( 0 === $this->import_count ) {
+						return __( 'No images to import!', 'foogallery' );
+					} else {
+						return __( 'Error while importing!', 'foogallery' );
+					}
 					break;
 			}
 
@@ -84,7 +96,7 @@ if ( ! class_exists( 'FooGallery_NextGen_Import_Progress' ) ) {
 				'post_type'   => FOOGALLERY_CPT_GALLERY,
 				'post_status' => 'publish',
 			);
-			$this->foogallery_id   = wp_insert_post( $foogallery_args );
+			$this->foogallery_id = wp_insert_post( $foogallery_args );
 
 			//set a default gallery template
 			add_post_meta( $this->foogallery_id, FOOGALLERY_META_TEMPLATE, foogallery_default_gallery_template(), true );
@@ -122,7 +134,9 @@ if ( ! class_exists( 'FooGallery_NextGen_Import_Progress' ) ) {
 			$this->attachments[] = $attachment_id;
 
 			//update our percentage complete
-			$this->percentage_complete = count( $this->attachments ) / $this->import_count * 100;
+			if ( $this->import_count > 0 ) {
+				$this->percentage_complete = count( $this->attachments ) / $this->import_count * 100;
+			}
 
 			//update our status if 100%
 			if ( 100 === $this->percentage_complete ) {
