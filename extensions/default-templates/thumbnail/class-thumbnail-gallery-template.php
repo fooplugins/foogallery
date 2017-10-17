@@ -101,6 +101,7 @@ if ( !class_exists( 'FooGallery_Thumbnail_Gallery_Template' ) ) {
                         'section' => __( 'General', 'foogallery' ),
                         'desc'    => __( 'Choose which lightbox you want to use.', 'foogallery' ),
                         'type'    => 'lightbox',
+                        'default' => 'none',
                     ),
                     array(
                         'id'      => 'caption_title',

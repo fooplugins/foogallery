@@ -87,6 +87,7 @@ if ( !class_exists( 'FooGallery_Image_Viewer_Gallery_Template' ) ) {
                         'title'   => __( 'Lightbox', 'foogallery' ),
                         'section' => __( 'General', 'foogallery' ),
                         'desc'    => __( 'Choose which lightbox you want to use in the gallery', 'foogallery' ),
+                        'default' => 'none',
                         'type'    => 'lightbox'
                     ),
                     array(

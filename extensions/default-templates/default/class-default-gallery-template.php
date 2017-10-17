@@ -80,6 +80,7 @@ if ( !class_exists( 'FooGallery_Default_Gallery_Template' ) ) {
 						'desc'    => __( 'Choose which lightbox you want to use. The lightbox will generally only work if you set the thumbnail link to "Full Size Image".', 'foogallery' ),
                         'section' => __( 'General', 'foogallery' ),
 						'type'    => 'lightbox',
+                        'default' => 'none',
 						'row_data'=> array(
 							'data-foogallery-change-selector' => 'select'
 						)
