@@ -5,14 +5,8 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Fields' ) ) {
 	class FooGallery_Admin_Gallery_MetaBox_Fields {
 
 		function __construct() {
-			//handle some default field types that all templates can reuse
-			add_filter( 'foogallery_alter_gallery_template_field', array( $this, 'alter_gallery_template_field' ), 10, 2 );
-
 			//render the different types of fields for our gallery settings
 			add_action( 'foogallery_render_gallery_template_field', array( $this, 'render_gallery_template_field' ), 10, 3 );
-
-			//allow changing of field values
-			add_filter( 'foogallery_render_gallery_template_field_value', array( $this, 'check_lightbox_value' ), 10, 4 );
 		}
 
 		/**
@@ -191,112 +185,6 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Fields' ) ) {
 
 			//allow for more customization
 			do_action( 'foogallery_render_gallery_template_field_after', $field, $gallery );
-		}
-
-		function alter_gallery_template_field( $field, $gallery ) {
-			if ( $field ) {
-				switch ( $field['type'] ) {
-					case 'thumb_link':
-						$field['type'] = 'radio';
-						$field['choices'] = $this->get_thumb_link_field_choices();
-						break;
-					case 'lightbox':
-						$field['lightbox'] = true;
-						$lightboxes = $this->get_lightbox_field_choices();
-						if ( 1 === count( $lightboxes ) && array_key_exists( 'none', $lightboxes ) ) {
-							$field['type'] = 'html';
-							$field['desc'] = '<strong>' . __( 'You have no lightbox extensions activated!', 'foogallery' ) . '</strong><br />';
-							$api = new FooGallery_Extensions_API();
-							if ( $api->is_downloaded( false, FOOGALLERY_FOOBOX_PRO_EXTENSION_SLUG ) ) {
-								//just need to activate it
-								$foobox_install_link = foogallery_build_admin_menu_url( array(
-									'page' => 'foogallery-extensions',
-									'extension' => FOOGALLERY_FOOBOX_PRO_EXTENSION_SLUG,
-									'action' => 'activate',
-								));
-								$field['desc'] .= '<a target="_blank" href="' . esc_url( $foobox_install_link ). '">' . __( 'Activate FooBox right now!', 'foogallery' ) . '</a>';
-							} else if ( $api->is_downloaded( false, FOOGALLERY_FOOBOX_FREE_EXTENSION_SLUG ) ) {
-								//just need to activate it
-								$foobox_install_link = foogallery_build_admin_menu_url( array(
-									'page' => 'foogallery-extensions',
-									'extension' => FOOGALLERY_FOOBOX_FREE_EXTENSION_SLUG,
-									'action' => 'activate',
-								));
-								$field['desc'] .= '<a target="_blank" href="' . esc_url( $foobox_install_link ). '">' . __( 'Activate FooBox FREE right now!', 'foogallery' ) . '</a>';
-							} else {
-								//we need to download it
-								$foobox_install_link = foogallery_build_admin_menu_url( array(
-									'page' => 'foogallery-extensions',
-									'extension' => FOOGALLERY_FOOBOX_FREE_EXTENSION_SLUG,
-									'action' => 'download',
-								));
-								$foobox_install_html = '<a target="_blank" href="' . esc_url( $foobox_install_link ) . '">' . __( 'Download and activate FooBox FREE', 'foogallery' ) . '</a>';
-								$field['desc'] .= sprintf( __( '%s which works flawlessly with %s.', 'foogallery' ), $foobox_install_html, foogallery_plugin_name() );
-							}
-						} else {
-							$field['type'] = 'select';
-							$field['choices'] = $lightboxes;
-						}
-						break;
-				}
-
-				if ( isset($field['help']) && $field['help'] ) {
-					$field['type'] = 'help';
-				}
-			}
-			return $field;
-		}
-
-		function get_thumb_size_choices() {
-			global $_wp_additional_image_sizes;
-			$sizes = array();
-			foreach( get_intermediate_image_sizes() as $s ){
-				$sizes[ $s ] = array( 0, 0 );
-				if ( in_array( $s, array( 'thumbnail', 'medium', 'large', ) ) ){
-					$sizes[ $s ] = $s . ' (' . get_option( $s . '_size_w' ) . 'x' . get_option( $s . '_size_h' ) . ')';
-				} else {
-					if ( isset( $_wp_additional_image_sizes ) && isset( $_wp_additional_image_sizes[ $s ] ) )
-						$sizes[ $s ] = $s . ' (' . $_wp_additional_image_sizes[ $s ]['width'] . 'x' . $_wp_additional_image_sizes[ $s ]['height'] . ')';
-				}
-			}
-			return $sizes;
-		}
-
-		function get_thumb_link_field_choices() {
-			return apply_filters( 'foogallery_gallery_template_field_thumb_links', array(
-				'image'  => __( 'Full Size Image (Lightbox)', 'foogallery' ),
-				'page'   => __( 'Image Attachment Page', 'foogallery' ),
-				'custom' => __( 'Custom URL', 'foogallery' ),
-				'none'   => __( 'Not linked', 'foogallery' ),
-			) );
-		}
-
-		function get_lightbox_field_choices() {
-			$lightboxes = apply_filters( 'foogallery_gallery_template_field_lightboxes', array() );
-			$lightboxes['none'] = __( 'None', 'foogallery' );
-			return $lightboxes;
-		}
-
-		/***
-		 * Check if we have a lightbox value from FooBox free and change it if foobox free is no longer active
-		 * @param $value
-		 * @param $field
-		 * @param $gallery
-		 * @param $template
-		 *
-		 * @return string
-		 */
-		function check_lightbox_value($value, $field, $gallery, $template) {
-
-			if ( isset( $field['lightbox'] ) ) {
-				if ( 'foobox-free' === $value ) {
-					if ( !class_exists( 'Foobox_Free' ) ) {
-						return 'foobox';
-					}
-				}
-			}
-
-			return $value;
 		}
 	}
 }

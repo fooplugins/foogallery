@@ -919,3 +919,77 @@ function foogallery_get_attachment_field_friendly_name( $field ) {
 			return __( 'Attachment Alt', 'foogallery' );
 	}
 }
+
+/**
+ * Returns the fields for a specific gallery template
+ *
+ * @param $template mixed
+ * @return mixed
+ */
+function foogallery_get_fields_for_template( $template ) {
+
+    if ( is_string( $template ) ) {
+        $template = foogallery_get_gallery_template( $template );
+    }
+
+    $fields = $template['fields'];
+
+    // Allow for extensions to override fields for every gallery template.
+    // Also passes the $template along so you can inspect and conditionally alter fields based on the template properties
+    $fields = apply_filters( 'foogallery_override_gallery_template_fields', $fields, $template );
+
+    // Allow for extensions to override fields for a specific gallery template.
+    // Also passes the $template along so you can inspect and conditionally alter fields based on the template properties
+    $fields = apply_filters( "foogallery_override_gallery_template_fields-{$template['slug']}", $fields, $template );
+
+    foreach ( $fields as &$field ) {
+        //allow for the field to be altered by extensions. Also used by the build-in fields, e.g. lightbox
+        $field = apply_filters( 'foogallery_alter_gallery_template_field', $field, $template['slug'] );
+    }
+
+    return $fields;
+}
+
+/**
+ * Builds default settings for the supplied gallery template
+ *
+ * @param $template_name
+ * @return array
+ */
+function foogallery_build_default_settings_for_gallery_template( $template_name ) {
+    $fields = foogallery_get_fields_for_template( $template_name );
+    $settings = array();
+
+    //loop through the fields and build up an array of keys and default values
+    foreach( $fields as $field ) {
+        $default = array_key_exists( 'default', $field ) ? $field['default'] : false;
+        if ( !empty( $default ) ) {
+            $settings["{$template_name}_{$field['id']}"] = $default;
+        }
+    }
+
+    return $settings;
+}
+
+/**
+ * Returns the choices used for the thumb link field type
+ * @return array
+ */
+function foogallery_gallery_template_field_thumb_link_choices() {
+    return apply_filters( 'foogallery_gallery_template_field_thumb_links', array(
+        'image'  => __( 'Full Size Image (Lightbox)', 'foogallery' ),
+        'page'   => __( 'Image Attachment Page', 'foogallery' ),
+        'custom' => __( 'Custom URL', 'foogallery' ),
+        'none'   => __( 'Not linked', 'foogallery' ),
+    ) );
+}
+
+/**
+ * Returns the choices used for the lightbox field type
+ * @return array
+ */
+function foogallery_gallery_template_field_lightbox_choices() {
+    $lightboxes = apply_filters( 'foogallery_gallery_template_field_lightboxes', array() );
+    $lightboxes['none'] = __( 'None', 'foogallery' );
+    return $lightboxes;
+}

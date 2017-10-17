@@ -96,6 +96,7 @@ if ( !class_exists( 'FooGallery_Simple_Portfolio_Gallery_Template' ) ) {
                         'desc'    => __( 'Choose which lightbox you want to display images with. The lightbox will only work if you set the thumbnail link to "Full Size Image".', 'foogallery' ),
                         'section' => __( 'General', 'foogallery' ),
                         'type'    => 'lightbox',
+                        'default' => 'none',
                     ),
                     array(
                         'id'      => 'gutter',

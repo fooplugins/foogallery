@@ -142,21 +142,11 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings_Helper' ) ) {
 		 */
 		private function build_model_for_template($template) {
 
-			$fields = $template['fields'];
-
-			// Allow for extensions to override fields for every gallery template.
-			// Also passes the $template along so you can inspect and conditionally alter fields based on the template properties
-			$fields = apply_filters( 'foogallery_override_gallery_template_fields', $fields, $template );
-
-			// Allow for extensions to override fields for a specific gallery template.
-			// Also passes the $template along so you can inspect and conditionally alter fields based on the template properties
-			$fields = apply_filters( "foogallery_override_gallery_template_fields-{$template['slug']}", $fields, $template );
+		    $fields = foogallery_get_fields_for_template( $template );
 
 			//create a sections array and fill it with fields
 			$sections = array();
 			foreach ( $fields as $field ) {
-				//allow for the field to be altered by extensions. Also used by the build-in fields, e.g. lightbox
-				$field = apply_filters( 'foogallery_alter_gallery_template_field', $field, $this->gallery );
 
 				if (isset($field['type']) && 'help' == $field['type'] && $this->hide_help) {
 					continue; //skip help if the 'hide help' setting is turned on
