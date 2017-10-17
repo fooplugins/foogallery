@@ -4,9 +4,9 @@
  * Original author: Victor De la Rocha
  * Date: 28/11/2015
  */
-if ( ! class_exists( 'FooGalleryPagination' ) ) {
+if ( ! class_exists( 'FooGalleryNextGenPagination' ) ) {
 
-	class FooGalleryPagination {
+	class FooGalleryNextGenPagination {
 
 		/* Default values */
 		var $item_count = 100;

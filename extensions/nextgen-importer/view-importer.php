@@ -94,6 +94,10 @@ if ( isset( $_POST['foogallery_nextgen_reset'] ) ) {
 		color: #888;
 	}
 
+	.foogallery-help {
+		margin-bottom: 10px;
+	}
+
 </style>
 <script>
 	jQuery(function ($) {

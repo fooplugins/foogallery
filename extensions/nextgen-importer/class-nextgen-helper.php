@@ -260,7 +260,7 @@ where gid = %d", $id ) );
 				<tbody>
 			<?php
 
-			require_once( FOOGALLERY_PATH . 'includes/class-foogallery-pagination.php' );
+			require_once(  plugin_dir_path( __FILE__ ) . 'class-nextgen-pagination.php' );
 
 			$url = add_query_arg( 'page', 'foogallery-nextgen-importer' );
 			$page = 1;
@@ -273,16 +273,21 @@ where gid = %d", $id ) );
 				$page = $_GET['paged'];
 			}
 
-			$pagination = new FooGalleryPagination();
-			$pagination->items( count($galleries) );
-			$pagination->limit(20); // Limit entries per page
+			$gallery_count = count($galleries);
+			$page_size = 10;
+
+			$pagination = new FooGalleryNextGenPagination();
+			$pagination->items( $gallery_count );
+			$pagination->limit( $page_size ); // Limit entries per page
 			$pagination->url = $url;
 			$pagination->currentPage( $page );
 			$pagination->calculate();
 
 			for ($counter = $pagination->start; $counter <= $pagination->end; $counter++ ) {
+				if ( $counter >= $gallery_count ) {
+					break;
+				}
 				$gallery = $galleries[$counter];
-				//$counter++;
 				$progress    = $this->get_import_progress( $gallery->gid );
 				$done        = $progress->is_completed();
 				$edit_link	 = '';
