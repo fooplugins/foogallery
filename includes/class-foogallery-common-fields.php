@@ -8,7 +8,10 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 	class FooGallery_Common_Fields {
 
 		function __construct() {
-			//build up class attributes
+            //handle some default field types that all templates can reuse
+            add_filter( 'foogallery_alter_gallery_template_field', array( $this, 'alter_gallery_template_field' ), 10, 2 );
+
+            //build up class attributes
 			add_filter( 'foogallery_build_class_attribute', array( $this, 'add_common_fields_class_attributes' ), 10, 2 );
 
 			//add common data options
@@ -17,14 +20,33 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 			//build up any preview arguments
 			add_filter( 'foogallery_preview_arguments', array( $this, 'preview_arguments' ), 10, 3 );
 
-			if ( is_admin() ) {
-				//add common fields to the templates that support it
-				add_filter( 'foogallery_override_gallery_template_fields', array( $this, 'add_common_fields' ), 10, 2 );
-			}
+            //add common fields to the templates that support it
+            add_filter( 'foogallery_override_gallery_template_fields', array( $this, 'add_common_fields' ), 10, 2 );
 		}
 
+        function alter_gallery_template_field( $field, $gallery ) {
+            if ( $field ) {
+                switch ( $field['type'] ) {
+                    case 'thumb_link':
+                        $field['type'] = 'radio';
+                        $field['choices'] = foogallery_gallery_template_field_thumb_link_choices();
+                        break;
+                    case 'lightbox':
+                        $field['lightbox'] = true;
+                        $field['type'] = 'select';
+                        $field['choices'] = foogallery_gallery_template_field_lightbox_choices();
+                        break;
+                }
+
+                if ( isset($field['help']) && $field['help'] ) {
+                    $field['type'] = 'help';
+                }
+            }
+            return $field;
+        }
+
 		/**
-		 * Add common fields to the gallery template
+		 * Add common fields to the gallery template if supported
 		 *
 		 * @param $fields
 		 * @param $template
