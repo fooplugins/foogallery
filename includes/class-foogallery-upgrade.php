@@ -52,13 +52,13 @@ if ( ! class_exists( 'FooGallery_Upgrade' ) ) {
 			}
 
 			$old_settings = get_post_meta( $gallery->ID, FOOGALLERY_META_SETTINGS_OLD, true );
-			$new_settings = get_post_meta( $gallery->ID, FOOGALLERY_META_SETTINGS, true );
+			$new_settings = $gallery->settings; // get_post_meta( $gallery->ID, FOOGALLERY_META_SETTINGS, true );
 			$upgrade_helper = new FooGallery_Upgrade_Helper();
 			$upgrade_settings = $upgrade_helper->build_new_settings( $gallery );
 
-			ksort( $old_settings );
-			ksort( $new_settings );
-			ksort( $upgrade_settings );
+			if ( is_array( $old_settings ) ) { ksort( $old_settings ); }
+            if ( is_array( $new_settings ) ) { ksort( $new_settings ); }
+            if ( is_array( $upgrade_settings ) ) { ksort( $upgrade_settings ); }
 			?>
 			<style>
 				#foogallery_upgrade_debug .inside { overflow: scroll; }
@@ -138,18 +138,21 @@ if ( ! class_exists( 'FooGallery_Upgrade_Helper' ) ) {
 			//build up the new settings
 			$new_settings = $this->build_new_settings( $foogallery );
 
-			//save the new settings
-			add_post_meta( $foogallery->ID, FOOGALLERY_META_SETTINGS, $new_settings, true );
+			if ( !empty( $new_settings ) ) {
 
-			//clear any cache that may be saved for the gallery
-			delete_post_meta( $foogallery->ID, FOOGALLERY_META_CACHE );
+                //save the new settings
+                add_post_meta($foogallery->ID, FOOGALLERY_META_SETTINGS, $new_settings, true);
 
-			//clear any previously calculated thumb dimensions
-			delete_post_meta( $foogallery->ID, FOOGALLERY_META_THUMB_DIMENSIONS );
+                //clear any cache that may be saved for the gallery
+                delete_post_meta($foogallery->ID, FOOGALLERY_META_CACHE);
 
-			//calculate new thumb dimensions if needed
-			$thumb_dimensions = new FooGallery_Thumbnail_Dimensions();
-			$thumb_dimensions->calculate_thumbnail_dimensions( $foogallery->ID );
+                //clear any previously calculated thumb dimensions
+                delete_post_meta($foogallery->ID, FOOGALLERY_META_THUMB_DIMENSIONS);
+
+                //calculate new thumb dimensions if needed
+                $thumb_dimensions = new FooGallery_Thumbnail_Dimensions();
+                $thumb_dimensions->calculate_thumbnail_dimensions($foogallery->ID);
+            }
 
 			return $new_settings;
 		}
@@ -722,6 +725,10 @@ if ( ! class_exists( 'FooGallery_Upgrade_Helper' ) ) {
 			);
 
 			$old_settings = get_post_meta( $foogallery->ID, FOOGALLERY_META_SETTINGS_OLD, true );
+
+			if ( empty( $old_settings ) ) {
+			    return $old_settings;
+            }
 
 			//start with the old settings
 			$new_settings = $old_settings;
