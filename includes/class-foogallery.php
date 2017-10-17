@@ -76,10 +76,17 @@ class FooGallery extends stdClass {
 		//the gallery is considered new if the template has not been set
 		$is_new = empty( $this->gallery_template );
 
-		//if we have no settings, and the gallery is not new, then upgrade settings
+		//if we have no settings, and the gallery is not new, then allow for an upgrade
 		if ( empty( $settings ) && !$is_new ) {
 			$settings = apply_filters( 'foogallery_settings_upgrade', $settings, $this );
 		}
+
+		//if we still have no settings, then get default settings for the gallery template
+        if ( empty( $settings ) && !$is_new ) {
+		    $settings = foogallery_build_default_settings_for_gallery_template( $this->gallery_template );
+
+            $settings = apply_filters('foogallery_default_settings-' . $this->gallery_template, $settings, $this);
+        }
 
 		return $settings;
 	}
