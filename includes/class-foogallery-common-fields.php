@@ -229,7 +229,7 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 					'type'     => 'radio',
 					'choices'  => apply_filters(
 						'foogallery_gallery_template_common_thumbnail_fields_hover_effect_preset_choices', array(
-						''                     => __( 'None', 'foogallery' ),
+						''          => __( 'None', 'foogallery' ),
 						'fg-custom' => __( 'Custom', 'foogallery' ),
 					)
 					),
