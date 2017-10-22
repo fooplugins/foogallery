@@ -118,7 +118,7 @@ if ( !class_exists( 'FooGallery_Simple_Portfolio_Gallery_Template' ) ) {
                         'id'      => 'caption_position',
                         'title' => __('Caption Position', 'foogallery'),
                         'desc' => __('Where the captions are displayed in relation to the thumbnail.', 'foogallery'),
-						'section' => __( 'Captions', 'foogallery' ),
+						'section' => __( 'General', 'foogallery' ),
                         'default' => '',
                         'type'    => 'radio',
                         'spacer'  => '<span class="spacer"></span>',
@@ -159,18 +159,7 @@ if ( !class_exists( 'FooGallery_Simple_Portfolio_Gallery_Template' ) ) {
 		function add_common_thumbnail_fields( $fields, $template ) {
 			//update specific fields
 			foreach ($fields as &$field) {
-				if ( 'hover_effect_preset' === $field['id'] ) {
-					$field['default'] = 'fg-custom';
-					$field['choices'] = array(
-						'fg-custom'  => __( 'Standard', 'foogallery' ),
-					);
-					$field['row_data'] = array(
-						'data-foogallery-hidden' => true,
-						'data-foogallery-change-selector' => 'input:radio',
-						'data-foogallery-value-selector' => 'input:checked',
-						'data-foogallery-preview' => 'class'
-					);
-				} else if ( 'hover_effect_caption_visibility' === $field['id'] ) {
+				if ( 'hover_effect_caption_visibility' === $field['id'] ) {
 					$field['default'] = 'fg-caption-always';
 					$field['choices'] = array(
 						'fg-caption-always' => __( 'Always Visible', 'foogallery' ),
@@ -180,7 +169,8 @@ if ( !class_exists( 'FooGallery_Simple_Portfolio_Gallery_Template' ) ) {
 						'data-foogallery-hidden' => true,
 						'data-foogallery-preview' => 'class'
 					);
-				} else if ( 'hover_effect_help' == $field['id'] ) {
+				} else if ( 'hover_effect_help' == $field['id'] ||
+                            'captions_help' == $field['id']) {
 					$field['row_data'] = array(
 						'data-foogallery-hidden' => true
 					);
