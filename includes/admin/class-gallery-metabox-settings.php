@@ -58,6 +58,8 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings' ) ) {
 					return 'dashicons-admin-tools';
 				case 'captions':
 					return 'dashicons-testimonial';
+                case 'paging':
+                    return 'dashicons-admin-page';
             }
             return 'dashicons-admin-tools';
         }
