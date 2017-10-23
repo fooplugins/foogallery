@@ -743,6 +743,19 @@ only screen and (min-resolution: 2.25dppx) {
 	opacity: 1;
 	text-align: left;
 }
+
+/* On Hover */
+.foogallery.fg-caption-hover .fg-caption .fg-caption-inner {
+	width: 100%;
+	max-height: 100%;
+	position: absolute;
+	top: 50%;
+	left: 0;
+	transform: translateY(-50%);
+}
+.foogallery.fg-caption-hover .fg-item .fg-thumb:before {
+	display: none;
+}
 /* Icon & Overlay */
 .foogallery.fg-hover-zoom 				.fg-thumb:before,
 .foogallery.fg-hover-zoom2 				.fg-thumb:before,
@@ -800,7 +813,7 @@ only screen and (min-resolution: 2.25dppx) {
 	position: relative;
 	width: 32px;
 	height: 32px;
-	margin: 0 0 5px 0;
+	margin: 10px 0 5px 0;
 	background: transparent no-repeat center center;
 	background-size: 32px 32px;
 	vertical-align: middle;
@@ -982,16 +995,6 @@ only screen and (min-resolution: 2.25dppx) {
 	visibility: visible;
 	opacity: 1;
 }
-.foogallery.fg-caption-hover.fg-hover-colorize .fg-caption-inner {
-	width: 100%;
-	position: absolute;
-	top: 50%;
-	left: 0;
-	transform: translateY(-50%);
-}
-.foogallery.fg-caption-hover.fg-hover-colorize .fg-thumb:before {
-	display: none;
-}
 /* Fade */
 .foogallery.fg-hover-fade .fg-thumb:before,
 .foogallery.fg-caption-hover.fg-hover-fade .fg-caption {
@@ -1005,16 +1008,6 @@ only screen and (min-resolution: 2.25dppx) {
 .foogallery.fg-caption-hover.fg-hover-fade .fg-item-inner:hover .fg-caption {
 	visibility: visible;
 	opacity: 1;
-}
-.foogallery.fg-caption-hover.fg-hover-fade .fg-caption-inner {
-	width: 100%;
-	position: absolute;
-	top: 50%;
-	left: 0;
-	transform: translateY(-50%);
-}
-.foogallery.fg-caption-hover.fg-hover-fade .fg-thumb:before {
-	display: none;
 }
 /* Grayscale */
 .foogallery.fg-hover-grayscale .fg-image {
@@ -1046,16 +1039,6 @@ only screen and (min-resolution: 2.25dppx) {
 	visibility: visible;
 	opacity: 1;
 }
-.foogallery.fg-caption-hover.fg-hover-grayscale .fg-caption-inner {
-	width: 100%;
-	position: absolute;
-	top: 50%;
-	left: 0;
-	transform: translateY(-50%);
-}
-.foogallery.fg-caption-hover.fg-hover-grayscale .fg-thumb:before {
-	display: none;
-}
 /* Instant */
 .foogallery.fg-hover-instant .fg-thumb:before,
 .foogallery.fg-caption-hover.fg-hover-instant .fg-caption {
@@ -1069,16 +1052,6 @@ only screen and (min-resolution: 2.25dppx) {
 .foogallery.fg-caption-hover.fg-hover-instant .fg-item-inner:hover .fg-caption {
 	visibility: visible;
 	opacity: 1;
-}
-.foogallery.fg-caption-hover.fg-hover-instant .fg-caption-inner {
-	width: 100%;
-	position: absolute;
-	top: 50%;
-	left: 0;
-	transform: translateY(-50%);
-}
-.foogallery.fg-caption-hover.fg-hover-instant .fg-thumb:before {
-	display: none;
 }
 /* Push */
 .foogallery.fg-hover-push .fg-thumb:before,
@@ -1102,16 +1075,6 @@ only screen and (min-resolution: 2.25dppx) {
 .foogallery.fg-caption-hover.fg-hover-push .fg-item-inner:hover .fg-thumb {
 	transform: translateX(-100%);
 }
-.foogallery.fg-caption-hover.fg-hover-push .fg-item-inner .fg-caption-inner {
-	width: 100%;
-	position: absolute;
-	top: 50%;
-	left: 0;
-	transform: translateY(-50%);
-}
-.foogallery.fg-caption-hover.fg-hover-push .fg-thumb:before {
-	display: none;
-}
 /* Scale */
 .foogallery.fg-hover-scale .fg-item {
 	transition-property: transform;
@@ -1134,16 +1097,6 @@ only screen and (min-resolution: 2.25dppx) {
 .foogallery.fg-caption-hover.fg-hover-scale .fg-item-inner:hover .fg-caption {
 	visibility: visible;
 	opacity: 1;
-}
-.foogallery.fg-caption-hover.fg-hover-scale .fg-caption-inner {
-	width: 100%;
-	position: absolute;
-	top: 50%;
-	left: 0;
-	transform: translateY(-50%);
-}
-.foogallery.fg-caption-hover.fg-hover-scale .fg-thumb:before {
-	display: none;
 }
 /* Slide */
 .foogallery.fg-hover-slide-up .fg-thumb:before,
@@ -1171,22 +1124,6 @@ only screen and (min-resolution: 2.25dppx) {
 .foogallery.fg-hover-slide-right .fg-item-inner:hover .fg-thumb:before,
 .foogallery.fg-caption-hover.fg-hover-slide-right .fg-item-inner:hover .fg-caption {
 	transform: translateY(0) translateX(0);
-}
-.foogallery.fg-caption-hover.fg-hover-slide-up .fg-caption-inner,
-.foogallery.fg-caption-hover.fg-hover-slide-down .fg-caption-inner,
-.foogallery.fg-caption-hover.fg-hover-slide-left .fg-caption-inner,
-.foogallery.fg-caption-hover.fg-hover-slide-right .fg-caption-inner {
-	width: 100%;
-	position: absolute;
-	top: 50%;
-	left: 0;
-	transform: translateY(-50%);
-}
-.foogallery.fg-caption-hover.fg-hover-slide-up .fg-thumb:before,
-.foogallery.fg-caption-hover.fg-hover-slide-down .fg-thumb:before,
-.foogallery.fg-caption-hover.fg-hover-slide-left .fg-thumb:before,
-.foogallery.fg-caption-hover.fg-hover-slide-right .fg-thumb:before {
-	display: none;
 }
 
 
