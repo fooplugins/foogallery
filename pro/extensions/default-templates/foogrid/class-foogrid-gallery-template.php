@@ -33,6 +33,24 @@ if ( !class_exists( 'FooGallery_FooGrid_Gallery_Template' ) ) {
 			add_filter( 'foogallery_gallery_templates', array( $this, 'add_template' ), 100, 1 );
 			add_filter( 'foogallery_gallery_templates_files', array( $this, 'register_myself' ) );
 			add_filter( 'foogallery_located_template-foogridpro', array( $this, 'enqueue_dependencies' ) );
+
+			//get thumbnail dimensions
+			add_filter( 'foogallery_template_thumbnail_dimensions-foogridpro', array( $this, 'get_thumbnail_dimensions' ), 10, 2 );
+
+			add_filter( 'foogallery_template_load_css-foogridpro', '__return_false' );
+			add_filter( 'foogallery_template_load_js-foogridpro', '__return_false' );
+
+			//add the data options needed for polaroid
+			add_filter( 'foogallery_build_container_data_options-foogridpro', array( $this, 'add_data_options' ), 10, 3 );
+
+			//override specific settings when saving the gallery
+			add_filter( 'foogallery_save_gallery_settings-foogridpro', array( $this, 'override_settings'), 10, 3 );
+
+			//build up any preview arguments
+			add_filter( 'foogallery_preview_arguments-foogridpro', array( $this, 'preview_arguments' ), 10, 2 );
+
+			//build up the thumb dimensions from some arguments
+			add_filter( 'foogallery_calculate_thumbnail_dimensions-foogridpro', array( $this, 'build_thumbnail_dimensions_from_arguments' ), 10, 2 );
 		}
 
 		/**
@@ -72,6 +90,7 @@ if ( !class_exists( 'FooGallery_FooGrid_Gallery_Template' ) ) {
                 'lazyload_support' => true,
                 'paging_support' => true,
                 'thumbnail_dimensions' => true,
+				'mandatory_classes' => 'foogrid',
 				'fields'	  => array(
 					array(
 						'id'      => 'thumbnail_size',
@@ -82,6 +101,10 @@ if ( !class_exists( 'FooGallery_FooGrid_Gallery_Template' ) ) {
 							'width' => 320,
 							'height' => 180,
 							'crop' => true
+						),
+						'row_data'=> array(
+							'data-foogallery-change-selector' => 'input',
+							'data-foogallery-preview' => 'shortcode'
 						)
 					),
 					array(
@@ -91,19 +114,19 @@ if ( !class_exists( 'FooGallery_FooGrid_Gallery_Template' ) ) {
 						'type'    => 'thumb_link',
 						'desc'	  => __('You can choose to either link each thumbnail to the full size image or to the image\'s attachment page.', 'foogallery')
 					),
-					array(
-						'id'      => 'theme',
-						'section' => __( 'General', 'foogallery' ),
-						'title' => __('Theme', 'foogallery'),
-						'desc' => __('The theme for the content viewer.', 'foogallery'),
-						'default' => '',
-						'type'    => 'radio',
-						'spacer'  => '<span class="spacer"></span>',
-						'choices' => array(
-							'' => __( 'Dark (Default)', 'foogallery' ),
-							'foogrid-light' => __( 'Light', 'foogallery' )
-						)
-					),
+//					array(
+//						'id'      => 'theme',
+//						'section' => __( 'General', 'foogallery' ),
+//						'title' => __('Theme', 'foogallery'),
+//						'desc' => __('The theme for the content viewer.', 'foogallery'),
+//						'default' => '',
+//						'type'    => 'radio',
+//						'spacer'  => '<span class="spacer"></span>',
+//						'choices' => array(
+//							'' => __( 'Dark (Default)', 'foogallery' ),
+//							'foogrid-light' => __( 'Light', 'foogallery' )
+//						)
+//					),
 					array(
 						'id'      => 'transition',
 						'section' => __( 'General', 'foogallery' ),
@@ -117,6 +140,11 @@ if ( !class_exists( 'FooGallery_FooGrid_Gallery_Template' ) ) {
 							'foogrid-transition-horizontal' => __( 'Horizontal', 'foogallery' ),
 							'foogrid-transition-vertical' => __( 'Vertical', 'foogallery' ),
 							'' => __( 'None', 'foogallery' )
+						),
+						'row_data'=> array(
+							'data-foogallery-change-selector' => 'input',
+							'data-foogallery-value-selector' => 'input:checked',
+							'data-foogallery-preview' => 'class'
 						)
 					),
 					array(
@@ -130,6 +158,11 @@ if ( !class_exists( 'FooGallery_FooGrid_Gallery_Template' ) ) {
 						'choices' => array(
 							'yes' => __( 'Yes', 'foogallery' ),
 							'no' => __( 'No', 'foogallery' )
+						),
+						'row_data'=> array(
+							'data-foogallery-change-selector' => 'input',
+							'data-foogallery-value-selector' => 'input:checked',
+							'data-foogallery-preview' => 'shortcode'
 						)
 					),
 					array(
@@ -147,20 +180,30 @@ if ( !class_exists( 'FooGallery_FooGrid_Gallery_Template' ) ) {
 							'foogrid-cols-6' => __( '6 Columns', 'foogallery' ),
 							'foogrid-cols-7' => __( '7 Columns', 'foogallery' ),
 							'foogrid-cols-8' => __( '8 Columns', 'foogallery' )
+						),
+						'row_data'=> array(
+							'data-foogallery-change-selector' => 'select',
+							'data-foogallery-value-selector' => 'option:selected',
+							'data-foogallery-preview' => 'class'
 						)
 					),
 					array(
 						'id'      => 'captions',
 						'section' => __( 'General', 'foogallery' ),
-						'title'   => __('Captions', 'foogallery'),
-						'desc' => __('The position of captions or no captions at all. * The caption will automatically switch to below the item on small screen sizes.', 'foogallery'),
+						'title'   => __('Stage Caption', 'foogallery'),
+						'desc' => __('The position of caption in the stage or no captions at all. * The caption will automatically switch to below the item on small screen sizes.', 'foogallery'),
 						'default' => 'foogrid-caption-below',
 						'type'    => 'radio',
 						'spacer'  => '<span class="spacer"></span>',
 						'choices' => array(
 							'foogrid-caption-below' => __( 'Below', 'foogallery' ),
-							//'foogrid-caption-right' => __( 'Right', 'foogallery' ),
+							'foogrid-caption-right' => __( 'Right', 'foogallery' ),
 							'' => __( 'None', 'foogallery' )
+						),
+						'row_data'=> array(
+							'data-foogallery-change-selector' => 'input',
+							'data-foogallery-value-selector' => 'input:checked',
+							'data-foogallery-preview' => 'class'
 						)
 					),
 					array(
@@ -174,6 +217,11 @@ if ( !class_exists( 'FooGallery_FooGrid_Gallery_Template' ) ) {
 						'choices' => array(
 							'yes' => __( 'Yes', 'foogallery' ),
 							'no' => __( 'No', 'foogallery' )
+						),
+						'row_data'=> array(
+							'data-foogallery-change-selector' => 'input',
+							'data-foogallery-value-selector' => 'input:checked',
+							'data-foogallery-preview' => 'shortcode'
 						)
 					),
 					array(
@@ -187,6 +235,11 @@ if ( !class_exists( 'FooGallery_FooGrid_Gallery_Template' ) ) {
 						'choices' => array(
 							'yes' => __( 'Yes', 'foogallery' ),
 							'no' => __( 'No', 'foogallery' )
+						),
+						'row_data'=> array(
+							'data-foogallery-change-selector' => 'input',
+							'data-foogallery-value-selector' => 'input:checked',
+							'data-foogallery-preview' => 'shortcode'
 						)
 					),
 					array(
@@ -194,13 +247,99 @@ if ( !class_exists( 'FooGallery_FooGrid_Gallery_Template' ) ) {
 						'section' => __( 'General', 'foogallery' ),
 						'title' => __('Scroll Offset', 'foogallery'),
 						'desc' => __('The amount to offset scrolling by. * This can be used to counter fixed headers.', 'foogallery'),
+						'class'   => 'small-text',
 						'type' => 'number',
-						'default' => 0
-					)
+						'default' => 0,
+						'row_data'=> array(
+							'data-foogallery-change-selector' => 'input',
+							'data-foogallery-value-selector' => 'input',
+							'data-foogallery-preview' => 'shortcode'
+						)
+					),
 				)
 			);
 
 			return $gallery_templates;
+		}
+
+		/**
+		 * Add the required data options if needed
+		 *
+		 * @param $options
+		 * @param $gallery    FooGallery
+		 *
+		 * @param $attributes array
+		 *
+		 * @return array
+		 */
+		function add_data_options($options, $gallery, $attributes) {
+			$loop = foogallery_gallery_template_setting( 'loop', 'yes' ) === 'yes';
+			$scroll = foogallery_gallery_template_setting( 'transition', 'yes' ) === 'yes';
+			$scroll_smooth = foogallery_gallery_template_setting( 'transition', 'yes' ) === 'yes';
+			$scroll_offset = foogallery_gallery_template_setting( 'scroll_offset', 0 );
+
+			$options['template']['loop'] = $loop;
+			$options['template']['scroll'] = $scroll;
+			$options['template']['scroll_smooth'] = $scroll_smooth;
+			$options['template']['scroll_offset'] = intval( $scroll_offset );
+
+			return $options;
+		}
+
+		/**
+		 * Override specific settings so that the gallery template will always work
+		 *
+		 * @param $settings
+		 * @param $post_id
+		 * @param $form_data
+		 *
+		 * @return mixed
+		 */
+		function override_settings($settings, $post_id, $form_data) {
+			return $settings;
+		}
+
+		/**
+		 * Build up a arguments used in the preview of the gallery
+		 * @param $args
+		 * @param $post_data
+		 *
+		 * @return mixed
+		 */
+		function preview_arguments( $args, $post_data ) {
+			$args['thumbnail_width'] = $post_data[FOOGALLERY_META_SETTINGS]['foogridpro_thumbnail_size']['width'];
+			$args['thumbnail_height'] = $post_data[FOOGALLERY_META_SETTINGS]['foogridpro_thumbnail_size']['height'];
+			$args['thumbnail_crop'] = isset( $post_data[FOOGALLERY_META_SETTINGS]['foogridpro_thumbnail_size']['crop'] ) ? '1' : '0';
+			return $args;
+		}
+
+		/**
+		 * Builds thumb dimensions from arguments
+		 *
+		 * @param array $dimensions
+		 * @param array $arguments
+		 *
+		 * @return mixed
+		 */
+		function build_thumbnail_dimensions_from_arguments( $dimensions, $arguments ) {
+			return array(
+				'height' => intval( $arguments['thumbnail_height'] ),
+				'width'  => intval( $arguments['thumbnail_width'] ),
+				'crop'   => $arguments['thumbnail_crop'] === '1'
+			);
+		}
+
+		/**
+		 * Get the thumb dimensions arguments saved for the gallery for this gallery template
+		 *
+		 * @param array $dimensions
+		 * @param FooGallery $foogallery
+		 *
+		 * @return mixed
+		 */
+		function get_thumbnail_dimensions( $dimensions, $foogallery ) {
+			$dimensions = $foogallery->get_meta( 'foogridpro_thumbnail_size', false );
+			return $dimensions;
 		}
 	}
 }
