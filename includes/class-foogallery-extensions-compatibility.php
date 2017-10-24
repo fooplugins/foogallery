@@ -12,10 +12,7 @@ if ( ! class_exists( 'FooGallery_Extensions_Compatibility' ) ) {
     class FooGallery_Extensions_Compatibility {
 
         function __construct() {
-        	//FooVideo overrides
-        	if ( class_exists( 'Foo_Video' ) ) {
-				add_filter( 'foogallery_attachment_html_item_classes', array( $this, 'add_video_class_to_item' ), 10, 3 );
-			}
+			add_filter( 'foogallery_attachment_html_item_classes', array( $this, 'add_video_class_to_item' ), 10, 3 );
         }
 
 		/**
@@ -26,19 +23,20 @@ if ( ! class_exists( 'FooGallery_Extensions_Compatibility' ) ) {
 		 * @return mixed
 		 */
 		public function add_video_class_to_item( $classes, $foogallery_attachment, $args ) {
+			if ( class_exists( 'Foo_Video' ) ) {
 
-			$video_info = get_post_meta( $foogallery_attachment->ID, FOO_VIDEO_POST_META, true );
-			if ( $video_info && isset( $video_info['id'] ) ) {
-				//we are dealing with a video
-				$classes[] = 'fg-video';
+				$video_info = get_post_meta( $foogallery_attachment->ID, FOO_VIDEO_POST_META, true );
+				if ( $video_info && isset( $video_info['id'] ) ) {
+					//we are dealing with a video
+					$classes[] = 'fg-video';
 
-				//include a specific css file to override issues with video hover effects
-				$css = FOOGALLERY_URL . 'css/foogallery-foovideo-overrides.css';
-				foogallery_enqueue_style( 'foogallery_foovideo_overrides', $css, array(), FOOGALLERY_VERSION );
+					//include a specific css file to override issues with video hover effects
+					$css = FOOGALLERY_URL . 'css/foogallery-foovideo-overrides.css';
+					foogallery_enqueue_style( 'foogallery_foovideo_overrides', $css, array(), FOOGALLERY_VERSION );
+				}
+
+				return $classes;
 			}
-
-			return $classes;
 		}
-
     }
 }

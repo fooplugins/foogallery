@@ -31,6 +31,7 @@
 	transition-duration: 300ms;
 	transition-property: opacity,visibility,background-color;
 	transform: translateY(0) translateX(0) translateZ(0);
+	z-index: 8;
 }
 .video-icon-sticky.foogallery-container.video-icon-default .fg-video .fg-item-inner:hover .fg-thumb:before,
 .video-icon-sticky.foogallery-container.video-icon-1 .fg-video .fg-item-inner:hover .fg-thumb:before,
