@@ -520,6 +520,7 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 			if ( $template_data && array_key_exists( 'common_fields_support', $template_data ) && true === $template_data['common_fields_support'] ) {
 
 				//add the gallery template core class
+				$classes[] = 'fg-common-fields';
 				$classes[] = 'fg-' . $gallery->gallery_template;
 
 				//get some default classes from common gallery settings

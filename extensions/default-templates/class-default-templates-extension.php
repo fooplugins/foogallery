@@ -39,7 +39,6 @@ if ( ! class_exists( 'FooGallery_Default_Templates_Extension' ) ) {
 				if ( is_object( $screen ) && FOOGALLERY_CPT_GALLERY == $screen->post_type ){
 
 					// Register, enqueue scripts and styles here
-					wp_enqueue_script( 'foogallery-core-admin-settings', FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_SHARED_URL . 'js/admin-foogallery.js', array('jquery'), FOOGALLERY_VERSION );
 					wp_enqueue_style( 'foogallery-core-admin-settings', FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_SHARED_URL  . 'css/admin-foogallery.css', array(), FOOGALLERY_VERSION );
 				}
 			}

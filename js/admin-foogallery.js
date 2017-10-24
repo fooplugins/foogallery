@@ -79,7 +79,13 @@
 			$preview.attr('class', classes);
 		}
 
-		$('body').trigger('foogallery-gallery-preview-updated-' + FOOGALLERY.getSelectedTemplate() );
+		//this allows any extensions to hook into the template change event
+		$('body').trigger('foogallery-gallery-preview-updated' + FOOGALLERY.getSelectedTemplate() );
+
+		//this handles all built-in templates that use the FooGallery core client side JS
+		if ( $preview.hasClass('fg-common-fields') ) {
+			$preview.foogallery();
+		}
 	};
 
 	FOOGALLERY.reloadGalleryPreview = function() {
