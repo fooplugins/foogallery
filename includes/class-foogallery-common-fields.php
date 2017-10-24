@@ -26,17 +26,20 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 
         function alter_gallery_template_field( $field, $gallery ) {
             if ( $field ) {
-                switch ( $field['type'] ) {
-                    case 'thumb_link':
-                        $field['type'] = 'radio';
-                        $field['choices'] = foogallery_gallery_template_field_thumb_link_choices();
-                        break;
-                    case 'lightbox':
-                        $field['lightbox'] = true;
-                        $field['type'] = 'select';
-                        $field['choices'] = foogallery_gallery_template_field_lightbox_choices();
-                        break;
-                }
+
+            	if ( isset( $field['type'] ) ) {
+					switch ( $field['type'] ) {
+						case 'thumb_link':
+							$field['type']    = 'radio';
+							$field['choices'] = foogallery_gallery_template_field_thumb_link_choices();
+							break;
+						case 'lightbox':
+							$field['lightbox'] = true;
+							$field['type']     = 'select';
+							$field['choices']  = foogallery_gallery_template_field_lightbox_choices();
+							break;
+					}
+				}
 
                 if ( isset($field['help']) && $field['help'] ) {
                     $field['type'] = 'help';
