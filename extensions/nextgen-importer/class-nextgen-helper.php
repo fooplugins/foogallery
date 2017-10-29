@@ -265,16 +265,21 @@ where gid = %d", $id ) );
 			$url = add_query_arg( 'page', 'foogallery-nextgen-importer' );
 			$page = 1;
 			if ( defined( 'DOING_AJAX' ) ) {
-				$url = wp_get_referer();
-				$parts = parse_url($url);
-				parse_str( $parts['query'], $query );
-				$page = $query['paged'];
+				if ( isset( $_POST['foogallery_nextgen_import_paged'] ) ) {
+					$url = $_POST['foogallery_nextgen_import_url'];
+					$page = $_POST['foogallery_nextgen_import_paged'];
+				} else {
+					$url = wp_get_referer();
+					$parts = parse_url($url);
+					parse_str( $parts['query'], $query );
+					$page = $query['paged'];
+				}
 			} elseif ( isset( $_GET['paged'] ) ) {
 				$page = $_GET['paged'];
 			}
-
+			$url = add_query_arg( 'paged', $page, $url );
 			$gallery_count = count($galleries);
-			$page_size = 10;
+			$page_size = apply_filters( 'foogallery_nextgen_import_page_size', 10);
 
 			$pagination = new FooGalleryNextGenPagination();
 			$pagination->items( $gallery_count );
@@ -342,8 +347,8 @@ where gid = %d", $id ) );
 
 			<?php
 			//hidden fields used for pagination
-			echo '<input type="hidden" id="foogallery_nextgen_import_paged" value="' . $page . '" />';
-			echo '<input type="hidden" id="foogallery_nextgen_import_url" value="' . esc_url( $url ) . '" />';
+			echo '<input type="hidden" name="foogallery_nextgen_import_paged" value="' . esc_attr( $page ) . '" />';
+			echo '<input type="hidden" name="foogallery_nextgen_import_url" value="' . esc_url( $url ) . '" />';
 
 			echo '<input type="hidden" id="nextgen_import_progress" value="' . $overall_progress . '" />';
 			wp_nonce_field( 'foogallery_nextgen_import', 'foogallery_nextgen_import' );
