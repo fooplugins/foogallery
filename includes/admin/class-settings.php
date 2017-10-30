@@ -29,15 +29,6 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 			$tabs['general'] = __( 'General', 'foogallery' );
 
 			$settings[] = array(
-				'id'      => 'disable_lazy_load',
-				'title'   => __( 'Disable Lazy Loading', 'foogallery' ),
-				'desc'    => __( 'By default, thumbnails are lazy loaded, in gallery templates that support it. You can choose to disable lazy loading for debugging purposes. It is NOT recommended.', 'foogallery' ),
-				'type'    => 'checkbox',
-				'tab'     => 'general',
-				'section' => __( 'Lazy Loading', 'foogallery' )
-			);
-
-			$settings[] = array(
 				'id'      => 'clear_css_optimizations',
 				'title'   => __( 'Clear CSS Cache', 'foogallery' ),
 				'desc'    => sprintf( __( '%s optimizes the way it loads gallery stylesheets to improve page performance. This can lead to the incorrect CSS being loaded in some cases. Use this button to clear all the CSS optimizations that have been cached across all galleries.', 'foogallery' ), foogallery_plugin_name() ),
