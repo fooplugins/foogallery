@@ -33,7 +33,7 @@ function foogallery_attachment_html_image_src( $foogallery_attachment, $args = a
  * @return string
  */
 function foogallery_attachment_html_image( $foogallery_attachment, $args = array() ) {
-	$attr['data-src'] = foogallery_attachment_html_image_src( $foogallery_attachment, $args );
+	$attr['src'] = foogallery_attachment_html_image_src( $foogallery_attachment, $args );
 
 	if ( ! empty( $foogallery_attachment->alt ) ) {
 		$attr['alt'] = $foogallery_attachment->alt;
