@@ -83,7 +83,7 @@
 		$('body').trigger('foogallery-gallery-preview-updated' + FOOGALLERY.getSelectedTemplate() );
 
 		//this handles all built-in templates that use the FooGallery core client side JS
-		if ( $preview.hasClass('fg-common-fields') ) {
+		if ( $preview.data('fg-common-fields') ) {
 			$preview.foogallery();
 		}
 	};

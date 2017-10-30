@@ -14,6 +14,9 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
             //build up class attributes
 			add_filter( 'foogallery_build_class_attribute', array( $this, 'add_common_fields_class_attributes' ), 10, 2 );
 
+			//add our common field data attribute
+			add_filter( 'foogallery_build_container_attributes', array( $this, 'add_common_fields_data_attribute' ), 10, 2 );
+
 			//add common data options
 			add_filter( 'foogallery_build_container_data_options', array( $this, 'add_caption_data_options' ), 10, 3 );
 
@@ -523,7 +526,6 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 			if ( $template_data && array_key_exists( 'common_fields_support', $template_data ) && true === $template_data['common_fields_support'] ) {
 
 				//add the gallery template core class
-				$classes[] = 'fg-common-fields';
 				$classes[] = 'fg-' . $gallery->gallery_template;
 
 				//get some default classes from common gallery settings
@@ -604,6 +606,25 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 			$args['caption_title_length'] = $post_data[FOOGALLERY_META_SETTINGS][$template . '_caption_title_length'];
 			$args['caption_desc_length'] = $post_data[FOOGALLERY_META_SETTINGS][$template . '_caption_desc_length'];
 			return $args;
+		}
+
+		/**
+		 * Build up the gallery data attributes for the common fields
+		 *
+		 * @param $attributes array
+		 * @param $gallery FooGallery
+		 *
+		 * @return array
+		 */
+		function add_common_fields_data_attribute( $attributes, $gallery ) {
+			$template_data = foogallery_get_gallery_template( $gallery->gallery_template );
+
+			//check the template supports common fields
+			if ( $template_data && array_key_exists( 'common_fields_support', $template_data ) && true === $template_data['common_fields_support'] ) {
+				$attributes['data-fg-common-fields'] = true;
+			}
+
+			return $attributes;
 		}
 	}
 }
