@@ -289,6 +289,14 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 				'tab'     => 'advanced'
 			);
 
+//			$settings[] = array(
+//				'id'      => 'force_https',
+//				'title'   => __( 'Force HTTPS', 'foogallery' ),
+//				'desc'    => __( 'Force all thumbnails to use HTTPS protocol.', 'foogallery' ),
+//				'type'    => 'checkbox',
+//				'tab'     => 'advanced'
+//			);
+
 			//endregion Advanced Tab
 
 			return apply_filters( 'foogallery_admin_settings_override', array(
