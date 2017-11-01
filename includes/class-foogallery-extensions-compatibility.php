@@ -24,7 +24,6 @@ if ( ! class_exists( 'FooGallery_Extensions_Compatibility' ) ) {
 		 */
 		public function add_video_class_to_item( $classes, $foogallery_attachment, $args ) {
 			if ( class_exists( 'Foo_Video' ) ) {
-
 				$video_info = get_post_meta( $foogallery_attachment->ID, FOO_VIDEO_POST_META, true );
 				if ( $video_info && isset( $video_info['id'] ) ) {
 					//we are dealing with a video
@@ -34,9 +33,9 @@ if ( ! class_exists( 'FooGallery_Extensions_Compatibility' ) ) {
 					$css = FOOGALLERY_URL . 'css/foogallery-foovideo-overrides.css';
 					foogallery_enqueue_style( 'foogallery_foovideo_overrides', $css, array(), FOOGALLERY_VERSION );
 				}
-
-				return $classes;
 			}
+
+            return $classes;
 		}
     }
 }
