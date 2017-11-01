@@ -236,7 +236,12 @@ function foogallery_attachment_html_item_opening($foogallery_attachment, $args =
 
 	$classes = apply_filters( 'foogallery_attachment_html_item_classes', $classes, $foogallery_attachment, $args );
 
-	$html = '<div class="' . implode( ' ', $classes ) . '"><figure class="fg-item-inner">';
+	$class_list = '';
+	if ( is_array( $classes ) ) {
+        $class_list = implode( ' ', $classes );
+    }
+
+	$html = '<div class="' . $class_list . '"><figure class="fg-item-inner">';
 	return apply_filters( 'foogallery_attachment_html_item_opening', $html, $foogallery_attachment, $args );
 }
 
