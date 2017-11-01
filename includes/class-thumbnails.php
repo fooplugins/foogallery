@@ -108,6 +108,8 @@ if ( !class_exists( 'FooGallery_Thumbnails' ) ) {
 			//save the generated thumb url to a global so that we can use it later if needed
             $foogallery_last_generated_thumb_url = wpthumb( $original_image_src, $args );
 
+			//TODO : get 'Force HTTPS' setting and replace all occurrences of http:// with https://
+
             return $foogallery_last_generated_thumb_url;
 		}
 

@@ -196,13 +196,17 @@ function foogallery_attachment_html_caption( $foogallery_attachment, $args = arr
 	if ( 'none' !== $preset ) {
 		$caption_html = array();
 
-		$caption_title =  foogallery_gallery_template_setting( 'caption_title', '' );
-		$caption_desc =  foogallery_gallery_template_setting( 'caption_desc', '' );
+		$caption_title_source =  foogallery_gallery_template_setting( 'caption_title', '' );
+		$caption_desc_source =  foogallery_gallery_template_setting( 'caption_desc', '' );
+
+		//if we need to use the settings, then make sure our source is false
+		if ( '' === $caption_title_source ) { $caption_title_source = false; }
+		if ( '' === $caption_desc_source ) { $caption_desc_source = false; }
 
 		if ( 'fg-custom' === $preset ) {
 
-			$show_caption_title = $caption_title !== 'none';
-			$show_caption_desc = $caption_desc !== 'none';
+			$show_caption_title = $caption_title_source !== 'none';
+			$show_caption_desc = $caption_desc_source !== 'none';
 
 		} else {
 			//always show both title and desc for the presets
@@ -210,13 +214,14 @@ function foogallery_attachment_html_caption( $foogallery_attachment, $args = arr
 			$show_caption_desc = true;
 		}
 
-		$caption_title = foogallery_get_caption_title_for_attachment( $foogallery_attachment->_post, $caption_title );
-		$caption_desc = foogallery_get_caption_desc_for_attachment( $foogallery_attachment->_post, $caption_desc );
+		//get the correct captions
+		$caption_title = foogallery_get_caption_title_for_attachment( $foogallery_attachment->_post, $caption_title_source );
+		$caption_desc = foogallery_get_caption_desc_for_attachment( $foogallery_attachment->_post, $caption_desc_source );
 
-		if ( $foogallery_attachment->caption && $show_caption_title ) {
+		if ( $caption_title && $show_caption_title ) {
 			$caption_html[] = '<div class="fg-caption-title">' . $caption_title . '</div>';
 		}
-		if ( $foogallery_attachment->description && $show_caption_desc ) {
+		if ( $caption_desc && $show_caption_desc ) {
 			$caption_html[] = '<div class="fg-caption-desc">' . $caption_desc . '</div>';
 		}
 
