@@ -51,19 +51,22 @@
 		}
 	};
 
-	FOOGALLERY.handleSettingFieldChange = function(reloadPreview) {
+	FOOGALLERY.handleSettingFieldChange = function(reloadPreview, setContainerHeight) {
 
 		//make sure the fields that should be hidden or shown are doing what they need to do
         FOOGALLERY.handleSettingsShowRules();
 
-		if (reloadPreview) {
-			//update the gallery preview
-			FOOGALLERY.updateGalleryPreview();
-		}
+		//update the gallery preview
+		FOOGALLERY.updateGalleryPreview(reloadPreview, setContainerHeight);
 	};
 
-	FOOGALLERY.updateGalleryPreview = function() {
-		var $preview = $('.foogallery_preview_container .foogallery');
+	FOOGALLERY.updateGalleryPreview = function( initGallery, setContainerHeight ) {
+		var $preview = $('.foogallery_preview_container .foogallery'),
+			$preview_container = $('.foogallery_preview_container');
+
+		if ( setContainerHeight ) {
+			//$preview_container.css('height', $preview_container.height());
+		}
 
 		//build up the container class
 		var $classFields = $('.foogallery-settings-container-active .foogallery-metabox-settings .foogallery_template_field[data-foogallery-preview="class"]');
@@ -84,7 +87,14 @@
 
 		//this handles all built-in templates that use the FooGallery core client side JS
 		if ( $preview.data('fg-common-fields') ) {
-			$preview.foogallery();
+			if ( initGallery || FOOGALLERY.getSelectedTemplate() === 'masonry' ) {
+				$preview.foogallery( {}, function() {
+					$preview_container.css( 'height', '' );
+				} );
+			} else {
+				$preview.foogallery( 'layout' );
+				$preview_container.css( 'height', '' );
+			}
 		}
 	};
 
@@ -120,7 +130,7 @@
                 $('#foogallery_preview_spinner').removeClass('is-active');
                 $('.foogallery_preview_container').removeClass('loading foogallery-preview-force-refresh');
 
-				FOOGALLERY.handleSettingFieldChange(true);
+				FOOGALLERY.handleSettingFieldChange(true, false);
             }
         });
 	};
@@ -201,7 +211,7 @@
 			$('#foogallery_items_view_input').val(value);
 
 			if ( $('.foogallery_preview_container').is(':visible') ) {
-				FOOGALLERY.updateGalleryPreview();
+				FOOGALLERY.updateGalleryPreview(true, false);
 
 				//check if there is no preview
 				if ( !$.trim( $('.foogallery_preview_container').html() ) ||
@@ -251,10 +261,10 @@
 				selector = $fieldContainer.data('foogallery-change-selector');
 
             $fieldContainer.find(selector).change(function() {
-                if ( $fieldContainer.data('foogallery-preview') == 'shortcode' ) {
+                if ( $fieldContainer.data('foogallery-preview') === 'shortcode' ) {
                     FOOGALLERY.reloadGalleryPreview();
                 } else {
-					FOOGALLERY.handleSettingFieldChange(true);
+					FOOGALLERY.handleSettingFieldChange( $fieldContainer.data('foogallery-preview') !== 'class', true );
 				}
 			});
         });
@@ -263,7 +273,7 @@
 		FOOGALLERY.galleryTemplateChanged(false);
 
 		//force hidden field state to be correct on load
-		FOOGALLERY.handleSettingFieldChange(false);
+		FOOGALLERY.handleSettingFieldChange(true, false);
 	};
 
 	FOOGALLERY.getSelectedTemplate = function() {
