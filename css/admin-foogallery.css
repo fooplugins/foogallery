@@ -446,3 +446,8 @@ button[data-balloon]{overflow:visible}[data-balloon]{position:relative}[data-bal
 	opacity: 0.8;
 	z-index: 159900;
 }
+
+.fs-submenu-item.foogallery {
+	font-size: 13px;
+	line-height: 1.2;
+}
