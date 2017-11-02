@@ -408,7 +408,7 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 				$settings_link = sprintf( '<a target="blank" href="%s">%s</a>', foogallery_admin_settings_url(), __( 'settings', 'foogallery' ) );
 
 				$fields[] = array(
-					'id'       => 'caption_title',
+					'id'       => 'caption_title_source',
 					'title'    => __( 'Title', 'foogallery' ),
 					'desc'     => __( 'Decide where caption titles are pulled from. By default, what is saved under general settings will be used, but it can be overridden per gallery', 'foogallery' ),
 					'section'  => __( 'Captions', 'foogallery' ),
@@ -573,8 +573,8 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 			//check the template supports common fields
 			if ( $template_data && array_key_exists( 'common_fields_support', $template_data ) && true === $template_data['common_fields_support'] ) {
 
-				$caption_title = foogallery_gallery_template_setting( 'caption_title', '' );
-				$caption_desc  = foogallery_gallery_template_setting( 'caption_desc', '' );
+				$caption_title = foogallery_gallery_template_setting( 'caption_title_source', '' );
+				$caption_desc  = foogallery_gallery_template_setting( 'caption_desc_source', '' );
 
 				$options['item']['showCaptionTitle']       = $caption_title != 'none';
 				$options['item']['showCaptionDescription'] = $caption_desc != 'none';
@@ -600,8 +600,8 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 		 * @return mixed
 		 */
 		function preview_arguments( $args, $post_data, $template ) {
-			$args['caption_title'] = $post_data[FOOGALLERY_META_SETTINGS][$template . '_caption_title'];
-			$args['caption_desc'] = $post_data[FOOGALLERY_META_SETTINGS][$template . '_caption_desc'];
+			$args['caption_title_source'] = $post_data[FOOGALLERY_META_SETTINGS][$template . '_caption_title_source'];
+			$args['caption_desc_source'] = $post_data[FOOGALLERY_META_SETTINGS][$template . '_caption_desc_source'];
 			$args['captions_limit_length'] = $post_data[FOOGALLERY_META_SETTINGS][$template . '_captions_limit_length'];
 			$args['caption_title_length'] = $post_data[FOOGALLERY_META_SETTINGS][$template . '_caption_title_length'];
 			$args['caption_desc_length'] = $post_data[FOOGALLERY_META_SETTINGS][$template . '_caption_desc_length'];

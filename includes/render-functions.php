@@ -196,27 +196,50 @@ function foogallery_attachment_html_caption( $foogallery_attachment, $args = arr
 	if ( 'none' !== $preset ) {
 		$caption_html = array();
 
-		$caption_title_source =  foogallery_gallery_template_setting( 'caption_title', '' );
-		$caption_desc_source =  foogallery_gallery_template_setting( 'caption_desc', '' );
+		$show_caption_title = false;
+		$show_caption_desc = false;
 
-		//if we need to use the settings, then make sure our source is false
-		if ( '' === $caption_title_source ) { $caption_title_source = false; }
-		if ( '' === $caption_desc_source ) { $caption_desc_source = false; }
-
-		if ( 'fg-custom' === $preset ) {
-
-			$show_caption_title = $caption_title_source !== 'none';
-			$show_caption_desc = $caption_desc_source !== 'none';
-
-		} else {
-			//always show both title and desc for the presets
+		//check if we have provided overrides for the caption title
+		if ( isset( $args['override_caption_title'] ) ) {
+			$caption_title = $args['override_caption_title'];
 			$show_caption_title = true;
-			$show_caption_desc = true;
+		} else {
+			$caption_title_source = foogallery_gallery_template_setting( 'caption_title_source', '' );
+
+			//if we need to use the settings, then make sure our source is false
+			if ( empty( $caption_title_source ) ) { $caption_title_source = false; }
+
+			if ( 'fg-custom' === $preset ) {
+				$show_caption_title = $caption_title_source !== 'none';
+			} else {
+				//always show both title and desc for the presets
+				$show_caption_title = true;
+			}
+
+			//get the correct captions
+			$caption_title = foogallery_get_caption_title_for_attachment( $foogallery_attachment->_post, $caption_title_source );
 		}
 
-		//get the correct captions
-		$caption_title = foogallery_get_caption_title_for_attachment( $foogallery_attachment->_post, $caption_title_source );
-		$caption_desc = foogallery_get_caption_desc_for_attachment( $foogallery_attachment->_post, $caption_desc_source );
+		//check if we have provided overrides for the caption description
+		if ( isset( $args['override_caption_desc'] ) ) {
+			$caption_desc = $args['override_caption_desc'];
+			$show_caption_desc = true;
+		} else {
+
+			$caption_desc_source = foogallery_gallery_template_setting( 'caption_desc_source', '' );
+
+			//if we need to use the settings, then make sure our source is false
+			if ( empty( $caption_desc_source ) ) { $caption_desc_source = false; }
+
+			if ( 'fg-custom' === $preset ) {
+				$show_caption_desc = $caption_desc_source !== 'none';
+			} else {
+				//always show both title and desc for the presets
+				$show_caption_desc = true;
+			}
+
+			$caption_desc = foogallery_get_caption_desc_for_attachment( $foogallery_attachment->_post, $caption_desc_source );
+		}
 
 		if ( $caption_title && $show_caption_title ) {
 			$caption_html[] = '<div class="fg-caption-title">' . $caption_title . '</div>';

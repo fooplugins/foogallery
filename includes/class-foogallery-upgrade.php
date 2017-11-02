@@ -326,8 +326,8 @@ if ( ! class_exists( 'FooGallery_Upgrade_Helper' ) ) {
 						array ( 'id' => 'hover_effect_caption_visibility', 'value' => '' ),
 						array ( 'id' => 'hover_effect_transition', 'value' => 'fg-hover-fade' ),
 						array ( 'id' => 'hover_effect_icon', 'value' => 'fg-hover-zoom' ),
-						array ( 'id' => 'caption_title', 'value' => 'none' ),
-						array ( 'id' => 'caption_desc', 'value' => 'none' )
+						array ( 'id' => 'caption_title_source', 'value' => 'none' ),
+						array ( 'id' => 'caption_desc_source', 'value' => 'none' )
 					)
 				),
 
@@ -494,24 +494,24 @@ if ( ! class_exists( 'FooGallery_Upgrade_Helper' ) ) {
 					'id' => 'caption-content',
 					'value' => 'title',
 					'new' => array(
-						array ( 'id' => 'caption_title', 'value' => '' ),
-						array ( 'id' => 'caption_desc', 'value' => 'none' )
+						array ( 'id' => 'caption_title_source', 'value' => '' ),
+						array ( 'id' => 'caption_desc_source', 'value' => 'none' )
 					)
 				),
 				array(
 					'id' => 'caption-content',
 					'value' => 'desc',
 					'new' => array(
-						array ( 'id' => 'caption_title', 'value' => 'none' ),
-						array ( 'id' => 'caption_desc', 'value' => '' )
+						array ( 'id' => 'caption_title_source', 'value' => 'none' ),
+						array ( 'id' => 'caption_desc_source', 'value' => '' )
 					)
 				),
 				array(
 					'id' => 'caption-content',
 					'value' => 'both',
 					'new' => array(
-						array ( 'id' => 'caption_title', 'value' => '' ),
-						array ( 'id' => 'caption_desc', 'value' => '' )
+						array ( 'id' => 'caption_title_source', 'value' => '' ),
+						array ( 'id' => 'caption_desc_source', 'value' => '' )
 					)
 				),
 
