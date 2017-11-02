@@ -121,6 +121,7 @@ if ( !class_exists( 'FooGallery_Image_Viewer_Gallery_Template' ) ) {
 						'type'    => 'text',
 						'default' =>  __('Prev', 'foogallery'),
 						'row_data'=> array(
+							'data-foogallery-change-selector' => 'input',
 							'data-foogallery-preview' => 'shortcode'
 						)
 					),
@@ -131,6 +132,7 @@ if ( !class_exists( 'FooGallery_Image_Viewer_Gallery_Template' ) ) {
 						'type'    => 'text',
 						'default' =>  __('of', 'foogallery'),
 						'row_data'=> array(
+							'data-foogallery-change-selector' => 'input',
 							'data-foogallery-preview' => 'shortcode'
 						)
 					),
@@ -141,6 +143,7 @@ if ( !class_exists( 'FooGallery_Image_Viewer_Gallery_Template' ) ) {
 						'type'    => 'text',
 						'default' =>  __('Next', 'foogallery'),
 						'row_data'=> array(
+							'data-foogallery-change-selector' => 'input',
 							'data-foogallery-preview' => 'shortcode'
 						)
 					)
@@ -223,6 +226,9 @@ if ( !class_exists( 'FooGallery_Image_Viewer_Gallery_Template' ) ) {
 		 */
 		function preview_arguments( $args, $post_data ) {
 			$args['thumbnail_size'] = $post_data[FOOGALLERY_META_SETTINGS]['image-viewer_thumbnail_size'];
+			$args['text-prev'] = $post_data[FOOGALLERY_META_SETTINGS]['image-viewer_text-prev'];
+			$args['text-of'] = $post_data[FOOGALLERY_META_SETTINGS]['image-viewer_text-of'];
+			$args['text-next'] = $post_data[FOOGALLERY_META_SETTINGS]['image-viewer_text-next'];
 			return $args;
 		}
 

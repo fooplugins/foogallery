@@ -67,6 +67,7 @@ if ( !class_exists( 'FooGallery_Masonry_Gallery_Template' ) ) {
                         'step'    => '1',
                         'min'     => '0',
 						'row_data'=> array(
+							'data-foogallery-change-selector' => 'input',
 							'data-foogallery-preview' => 'shortcode'
 						)
                     ),

@@ -12,8 +12,8 @@ $position = foogallery_gallery_template_setting( 'position', 'fg-center' );
 $caption_bgcolor = foogallery_gallery_template_setting( 'caption_bgcolor', 'rgba(0, 0, 0, 0.8)' );
 $caption_color = foogallery_gallery_template_setting( 'caption_color', '#fff' );
 $featured_attachment = $current_foogallery->featured_attachment( $args );
-$args['override_caption_title'] = foogallery_gallery_template_setting( 'caption_title', '' );
-$args['override_caption_desc'] = foogallery_gallery_template_setting( 'caption_description', '' );
+$args['override_caption_title'] = $featured_attachment->caption = foogallery_gallery_template_setting( 'caption_title', '' );
+$args['override_caption_desc'] = $featured_attachment->description = foogallery_gallery_template_setting( 'caption_description', '' );
 
 $thumb_url = $featured_attachment->url;
 if ( foogallery_gallery_template_setting( 'link_custom_url', '' ) == 'on' ) {

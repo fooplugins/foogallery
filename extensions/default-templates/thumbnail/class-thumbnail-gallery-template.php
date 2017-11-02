@@ -108,8 +108,8 @@ if ( !class_exists( 'FooGallery_Thumbnail_Gallery_Template' ) ) {
                     ),
                     array(
                         'id'      => 'caption_title',
-                        'title'   => __('Caption Title', 'foogallery'),
-						'section' => __( 'General', 'foogallery' ),
+                        'title'   => __('Override Title', 'foogallery'),
+						'section' => __( 'Captions', 'foogallery' ),
                         'desc'    => __('Leave blank if you do not want a caption title.', 'foogallery'),
                         'type'    => 'text',
 						'row_data'=> array(
@@ -119,8 +119,8 @@ if ( !class_exists( 'FooGallery_Thumbnail_Gallery_Template' ) ) {
                     ),
                     array(
                         'id'      => 'caption_description',
-                        'title'   => __('Caption Description', 'foogallery'),
-						'section' => __( 'General', 'foogallery' ),
+                        'title'   => __('Override Description', 'foogallery'),
+						'section' => __( 'Captions', 'foogallery' ),
                         'desc'    => __('Leave blank if you do not want a caption description.', 'foogallery'),
                         'type'    => 'textarea',
 						'row_data'=> array(

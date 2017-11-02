@@ -120,7 +120,7 @@ if ( !class_exists( 'FooGallery_Simple_Portfolio_Gallery_Template' ) ) {
                         'id'      => 'caption_position',
                         'title' => __('Caption Position', 'foogallery'),
                         'desc' => __('Where the captions are displayed in relation to the thumbnail.', 'foogallery'),
-						'section' => __( 'General', 'foogallery' ),
+						'section' => __( 'Captions', 'foogallery' ),
                         'default' => '',
                         'type'    => 'radio',
                         'spacer'  => '<span class="spacer"></span>',
