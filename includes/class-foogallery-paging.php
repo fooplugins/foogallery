@@ -54,17 +54,21 @@ if ( ! class_exists( 'FooGallery_Paging' ) ) {
 
 				$fields[] = array(
 					'id'      => 'paging_size',
-					'title'   => __( 'Paging Size', 'foogallery' ),
+					'title'   => __( 'Page Size', 'foogallery' ),
 					'desc'    => __( 'The size of your pages.', 'foogallery' ),
 					'section' => __( 'Paging', 'foogallery' ),
 					'type'    => 'number',
 					'class'   => 'small-text',
-					'default' => 30,
+					'default' => 20,
 					'step'    => '1',
 					'min'     => '0',
 					'row_data'=> array(
 						'data-foogallery-change-selector' => 'input',
-						'data-foogallery-preview' => 'shortcode'
+						'data-foogallery-preview' => 'shortcode',
+						'data-foogallery-hidden'                   => true,
+						'data-foogallery-show-when-field'          => 'paging_type',
+						'data-foogallery-show-when-field-operator' => '!==',
+						'data-foogallery-show-when-field-value'    => '',
 					)
 				);
 
@@ -106,7 +110,11 @@ if ( ! class_exists( 'FooGallery_Paging' ) ) {
 					) ),
 					'row_data'=> array(
 						'data-foogallery-change-selector' => 'input',
-						'data-foogallery-preview' => 'shortcode'
+						'data-foogallery-preview' => 'shortcode',
+						'data-foogallery-hidden'                   => true,
+						'data-foogallery-show-when-field'          => 'paging_type',
+						'data-foogallery-show-when-field-operator' => '!==',
+						'data-foogallery-show-when-field-value'    => '',
 					)
 				);
 
