@@ -172,6 +172,15 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Fields' ) ) {
 					echo '<label for="FooGallerySettings_' . $id . '_crop">' . __( 'Crop thumbnail to exact dimensions', 'foogallery' ) . '</label></div>';
 					break;
 
+				case 'thumb_size_no_crop':
+					$width = is_array( $field['value'] ) ? $field['value']['width'] : 150;
+					$height = is_array( $field['value'] ) ? $field['value']['height'] : 150;
+					echo '<label for="FooGallerySettings_' . $id . '_width">' . __( 'Width', 'foogallery' ) . '</label>';
+					echo '<input class="small-text" type="number" step="1" min="0" id="FooGallerySettings_' . $id . '_width" name="' . FOOGALLERY_META_SETTINGS . '[' . $id . '][width]" value="' . esc_attr( $width ) . '" />';
+					echo '<label for="FooGallerySettings_' . $id . '_width">' . __( 'Height', 'foogallery' ) . '</label>';
+					echo '<input class="small-text" type="number" step="1" min="0" id="FooGallerySettings_' . $id . '_height" name="' . FOOGALLERY_META_SETTINGS . '[' . $id . '][height]" value="' . esc_attr( $height ) . '" />';
+					break;
+
 				default:
 					do_action( 'foogallery_render_gallery_template_field_custom', $field, $gallery, $template );
 					break;
