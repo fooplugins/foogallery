@@ -65,6 +65,19 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 
 				//region Appearance Fields
 				$fields[] = array(
+					'id'      => 'theme_custom_help',
+					'title'   => __( 'Theme Help', 'foogallery' ),
+					'desc'    => __( 'If you choose to use the Custom theme, then you will need to provide your own Custom CSS in order to style the gallery to suit your needs.', 'foogallery' ),
+					'section' => __( 'Appearance', 'foogallery' ),
+					'type'    => 'help',
+					'row_data' => array(
+						'data-foogallery-hidden' 				   => true,
+						'data-foogallery-show-when-field'          => 'theme',
+						'data-foogallery-show-when-field-value'    => 'fg-custom',
+					)
+				);
+
+				$fields[] = array(
 					'id'       => 'theme',
 					'title'    => __( 'Theme', 'foogallery' ),
 					'desc'     => __( 'The overall appearance of the items in the gallery, affecting the border, background, font and shadow colors.', 'foogallery' ),
@@ -79,6 +92,7 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 					),
 					'row_data' => array(
 						'data-foogallery-change-selector' => 'input:radio',
+						'data-foogallery-value-selector'  => 'input:checked',
 						'data-foogallery-preview'         => 'class'
 					)
 				);
@@ -224,7 +238,10 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 					'title'   => __( 'Hover Effect Help', 'foogallery' ),
 					'desc'    => __( 'A preset provides a stylish and pre-defined look &amp; feel for when you hover over the thumbnails.', 'foogallery' ),
 					'section' => __( 'Hover Effects', 'foogallery' ),
-					'type'    => 'help'
+					'type'    => 'help',
+					'row_data' => array(
+						'data-foogallery-hidden' => true,
+					)
 				);
 
 				$fields[] = array(
@@ -242,6 +259,7 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 					'spacer'   => '<span class="spacer"></span>',
 					'desc'     => __( 'A preset styling that is used for the captions. If you want to define your own custom captions, then choose Custom.', 'foogallery' ),
 					'row_data' => array(
+						'data-foogallery-hidden'          => true,
 						'data-foogallery-change-selector' => 'input:radio',
 						'data-foogallery-value-selector'  => 'input:checked',
 						'data-foogallery-preview'         => 'class'
