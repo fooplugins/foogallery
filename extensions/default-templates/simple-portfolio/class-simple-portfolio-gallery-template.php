@@ -28,6 +28,9 @@ if ( !class_exists( 'FooGallery_Simple_Portfolio_Gallery_Template' ) ) {
 
 			//build up the thumb dimensions from some arguments
 			add_filter( 'foogallery_calculate_thumbnail_dimensions-simple_portfolio', array( $this, 'build_thumbnail_dimensions_from_arguments' ), 10, 2 );
+
+			//build up the thumb dimensions on save
+			add_filter( 'foogallery_template_thumbnail_dimensions-simple_portfolio', array( $this, 'get_thumbnail_dimensions' ), 10, 2 );
 		}
 
 		/**
@@ -71,11 +74,10 @@ if ( !class_exists( 'FooGallery_Simple_Portfolio_Gallery_Template' ) ) {
                         'title'   => __( 'Thumbnail Size', 'foogallery' ),
                         'desc'    => __( 'Choose the size of your thumbnails.', 'foogallery' ),
                         'section' => __( 'General', 'foogallery' ),
-                        'type'    => 'thumb_size',
+                        'type'    => 'thumb_size_no_crop',
                         'default' => array(
                             'width' => 250,
-                            'height' => 200,
-                            'crop' => true,
+                            'height' => 200
                         ),
 						'row_data'=> array(
 							'data-foogallery-change-selector' => 'input',
@@ -220,9 +222,7 @@ if ( !class_exists( 'FooGallery_Simple_Portfolio_Gallery_Template' ) ) {
 		 * @return mixed
 		 */
 		function preview_arguments( $args, $post_data ) {
-			$args['thumbnail_width'] = $post_data[FOOGALLERY_META_SETTINGS]['simple_portfolio_thumbnail_dimensions']['width'];
-			$args['thumbnail_height'] = $post_data[FOOGALLERY_META_SETTINGS]['simple_portfolio_thumbnail_dimensions']['height'];
-			$args['thumbnail_crop'] = isset( $post_data[FOOGALLERY_META_SETTINGS]['simple_portfolio_thumbnail_dimensions']['crop'] ) ? '1' : '0';
+			$args['thumbnail_dimensions'] = $post_data[FOOGALLERY_META_SETTINGS]['simple_portfolio_thumbnail_dimensions'];
 			$args['gutter'] = $post_data[FOOGALLERY_META_SETTINGS]['simple_portfolio_gutter'];
 			return $args;
 		}
@@ -237,10 +237,27 @@ if ( !class_exists( 'FooGallery_Simple_Portfolio_Gallery_Template' ) ) {
 		 */
 		function build_thumbnail_dimensions_from_arguments( $dimensions, $arguments ) {
 			return array(
-				'height' => intval( $arguments['thumbnail_height'] ),
-				'width'  => intval( $arguments['thumbnail_width'] ),
-				'crop'   => $arguments['thumbnail_crop'] === '1'
+				'height' => intval( $arguments['thumbnail_dimensions']['height'] ),
+				'width'  => intval( $arguments['thumbnail_dimensions']['width'] ),
+				'crop'   => '1'
 			);
+		}
+
+		/**
+		 * Get the thumb dimensions arguments saved for the gallery for this gallery template
+		 *
+		 * @param array $dimensions
+		 * @param FooGallery $foogallery
+		 *
+		 * @return mixed
+		 */
+		function get_thumbnail_dimensions( $dimensions, $foogallery ) {
+			$dimensions = $foogallery->get_meta( 'simple_portfolio_thumbnail_dimensions', array(
+				'width' => 250,
+				'height' => 200
+			) );
+			$dimensions['crop'] = true;
+			return $dimensions;
 		}
 	}
 }

@@ -63,11 +63,10 @@ if ( !class_exists( 'FooGallery_Image_Viewer_Gallery_Template' ) ) {
                         'title'   => __( 'Thumb Size', 'foogallery' ),
                         'section' => __( 'General', 'foogallery' ),
                         'desc'    => __( 'Choose the size of your thumbnails', 'foogallery' ),
-                        'type'    => 'thumb_size',
+                        'type'    => 'thumb_size_no_crop',
                         'default' => array(
                             'width' => 640,
-                            'height' => 360,
-                            'crop' => true
+                            'height' => 360
                         ),
 						'row_data'=> array(
 							'data-foogallery-change-selector' => 'input',
@@ -190,7 +189,11 @@ if ( !class_exists( 'FooGallery_Image_Viewer_Gallery_Template' ) ) {
 		 * @return mixed
 		 */
 		function get_thumbnail_dimensions( $dimensions, $foogallery ) {
-			$dimensions = $foogallery->get_meta( 'image-viewer_thumbnail_size', false );
+			$dimensions = $foogallery->get_meta( 'image-viewer_thumbnail_size', array(
+				'width' => 640,
+				'height' => 360
+			) );
+			$dimensions['crop'] = true;
 			return $dimensions;
 		}
 
@@ -219,10 +222,7 @@ if ( !class_exists( 'FooGallery_Image_Viewer_Gallery_Template' ) ) {
 		 * @return mixed
 		 */
 		function preview_arguments( $args, $post_data ) {
-			$args['thumbnail_width'] = $post_data[FOOGALLERY_META_SETTINGS]['image-viewer_thumbnail_size']['width'];
-			$args['thumbnail_height'] = $post_data[FOOGALLERY_META_SETTINGS]['image-viewer_thumbnail_size']['height'];
-			$args['thumbnail_crop'] = isset( $post_data[FOOGALLERY_META_SETTINGS]['image-viewer_thumbnail_size']['crop'] ) ? '1' : '0';
-
+			$args['thumbnail_size'] = $post_data[FOOGALLERY_META_SETTINGS]['image-viewer_thumbnail_size'];
 			return $args;
 		}
 
@@ -236,9 +236,9 @@ if ( !class_exists( 'FooGallery_Image_Viewer_Gallery_Template' ) ) {
 		 */
 		function build_thumbnail_dimensions_from_arguments( $dimensions, $arguments ) {
 			return array(
-				'height' => intval( $arguments['thumbnail_height'] ),
-				'width'  => intval( $arguments['thumbnail_width'] ),
-				'crop'   => $arguments['thumbnail_crop'] === '1'
+				'height' => intval( $arguments['thumbnail_size']['height'] ),
+				'width'  => intval( $arguments['thumbnail_size']['width'] ),
+				'crop'   => '1'
 			);
 		}
 	}

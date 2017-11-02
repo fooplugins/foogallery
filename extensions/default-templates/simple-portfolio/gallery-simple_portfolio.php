@@ -6,6 +6,7 @@ global $current_foogallery;
 global $current_foogallery_arguments;
 
 $args = foogallery_gallery_template_setting( 'thumbnail_dimensions', array() );
+$args['crop'] = '1'; //we now force thumbs to be cropped
 $args['link'] = foogallery_gallery_template_setting( 'thumbnail_link', 'image' );
 $args['image_attributes'] = array(
 	'class'  => 'bf-img',

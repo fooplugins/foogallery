@@ -6,7 +6,7 @@ global $current_foogallery;
 global $current_foogallery_arguments;
 
 $args = foogallery_gallery_template_setting( 'thumbnail_dimensions', array() );
-
+$args['crop'] = '1'; //we now force thumbs to be cropped
 $args['link'] = foogallery_gallery_template_setting( 'thumbnail_link', 'image' );
 $lightbox = foogallery_gallery_template_setting( 'lightbox', 'unknown' );
 $spacing = foogallery_gallery_template_setting( 'spacing', 'spacing-width-10' );

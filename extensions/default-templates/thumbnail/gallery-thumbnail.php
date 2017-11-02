@@ -5,14 +5,15 @@
 global $current_foogallery;
 global $current_foogallery_arguments;
 $args = foogallery_gallery_template_setting( 'thumbnail_dimensions', array() );
+$args['crop'] = '1'; //we now force thumbs to be cropped
 $lightbox = foogallery_gallery_template_setting( 'lightbox', 'unknown' );
-$position = foogallery_gallery_template_setting( 'position', 'position-block' );
+$position = foogallery_gallery_template_setting( 'position', 'fg-center' );
 
 $caption_bgcolor = foogallery_gallery_template_setting( 'caption_bgcolor', 'rgba(0, 0, 0, 0.8)' );
 $caption_color = foogallery_gallery_template_setting( 'caption_color', '#fff' );
 $featured_attachment = $current_foogallery->featured_attachment( $args );
-$featured_attachment->caption = foogallery_gallery_template_setting( 'caption_title', '' );
-$featured_attachment->description = foogallery_gallery_template_setting( 'caption_description', '' );
+$args['override_caption_title'] = foogallery_gallery_template_setting( 'caption_title', '' );
+$args['override_caption_desc'] = foogallery_gallery_template_setting( 'caption_description', '' );
 
 $thumb_url = $featured_attachment->url;
 if ( foogallery_gallery_template_setting( 'link_custom_url', '' ) == 'on' ) {
@@ -24,7 +25,7 @@ if ( foogallery_gallery_template_setting( 'link_custom_url', '' ) == 'on' ) {
 $args['link_attributes'] = array(
     'rel' => 'foobox[' . $current_foogallery->ID . ']'
 );
-$foogallery_single_thumbnail_classes = foogallery_build_class_attribute_safe( $current_foogallery, 'foogallery-single-thumbnail', 'foogallery-lightbox-' . $lightbox );
+$foogallery_single_thumbnail_classes = foogallery_build_class_attribute_safe( $current_foogallery, 'foogallery-single-thumbnail', 'foogallery-lightbox-' . $lightbox, $position );
 $foogallery_single_thumbnail_attributes = foogallery_build_container_attributes_safe( $current_foogallery, array( 'class' => $foogallery_single_thumbnail_classes ) );
 ?>
 <div <?php echo $foogallery_single_thumbnail_attributes; ?>>

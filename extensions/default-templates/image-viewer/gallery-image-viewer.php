@@ -9,6 +9,7 @@ global $current_foogallery;
 global $current_foogallery_arguments;
 //get our thumbnail sizing args
 $args = foogallery_gallery_template_setting( 'thumbnail_size', 'thumbnail' );
+$args['crop'] = '1'; //we now force thumbs to be cropped
 //add the link setting to the args
 $link = foogallery_gallery_template_setting( 'thumbnail_link', 'image' );
 $args['link'] = $link;
