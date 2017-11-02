@@ -6970,6 +6970,9 @@
 
 			self.masonry = new Masonry( self.$el.get(0), self.template );
 		},
+		onReady: function(event, self){
+			self.masonry.layout();
+		},
 		onDestroy: function(event, self){
 			self.$el.find(self.sel.columnWidth).remove();
 			self.$el.find(self.sel.gutterWidth).remove();
