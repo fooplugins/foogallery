@@ -4770,8 +4770,8 @@
 				self.height = parseInt(self.$image.attr("height"));
 				self.title = self.$image.attr("title");
 				self.alt = self.$image.attr("alt");
-				self.caption = self.$anchor.data("title");
-				self.description = self.$anchor.data("description");
+				self.caption = self.$anchor.data("title") || self.$anchor.data("captionTitle");
+				self.description = self.$anchor.data("description") || self.$anchor.data("captionDesc");
 				// if the caption or description are not provided set there values to the title and alt respectively
 				if (_is.empty(self.caption)) self.caption = self.title;
 				if (_is.empty(self.description)) self.description = self.alt;
@@ -6941,7 +6941,7 @@
 		rowHeight: 150,
 		maxRowHeight: "200%",
 		margins: 0,
-		lastRow: "nojustify",
+		lastRow: "center",
 		justifyThreshold: 0.5
 	};
 
