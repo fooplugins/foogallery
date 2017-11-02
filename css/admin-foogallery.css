@@ -433,6 +433,7 @@ button[data-balloon]{overflow:visible}[data-balloon]{position:relative}[data-bal
 
 .foogallery_preview_container {
 	position: relative;
+	padding: 10px;
 }
 
 .foogallery_preview_container.loading:after {
@@ -450,4 +451,12 @@ button[data-balloon]{overflow:visible}[data-balloon]{position:relative}[data-bal
 .fs-submenu-item.foogallery {
 	font-size: 13px;
 	line-height: 1.2;
+}
+
+.foogallery_template_field_type-thumb_size_no_crop input.small-text+label {
+	margin-left: 10px;
+}
+
+.foogallery_template_field_type-thumb_size_no_crop label+input {
+	margin-left: 5px;
 }
