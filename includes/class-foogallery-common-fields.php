@@ -25,6 +25,9 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 
             //add common fields to the templates that support it
             add_filter( 'foogallery_override_gallery_template_fields', array( $this, 'add_common_fields' ), 10, 2 );
+
+            //check that we are no longer on pro and have previously used a preset or a loaded effect
+            add_filter( 'foogallery_render_gallery_template_field_value', array( $this, 'check_downgrade_values' ), 10, 4 );
 		}
 
         function alter_gallery_template_field( $field, $gallery ) {
@@ -635,5 +638,27 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 
 			return $attributes;
 		}
+
+        /***
+         * Check if we have a value from FooBox free and change it if foobox free is no longer active
+         * @param $value
+         * @param $field
+         * @param $gallery
+         * @param $template
+         *
+         * @return string
+         */
+        function check_downgrade_values($value, $field, $gallery, $template) {
+
+            if ( isset( $field['type'] ) ) {
+                if ( 'hover_effect_preset' === $field['id'] || 'loaded_effect' === $field['type'] ) {
+                    if ( !array_key_exists( $value, $field['choices'] ) ) {
+                        $value = $field['default'];
+                    }
+                }
+            }
+
+            return $value;
+        }
 	}
 }
