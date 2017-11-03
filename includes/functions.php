@@ -718,7 +718,7 @@ function foogallery_output_thumbnail_generation_results() {
  * @return string
  */
 function foogallery_test_thumb_url() {
-    return apply_filters( 'foogallery_test_thumb_url', FOOGALLERY_URL . 'assets/test_thumb_1.jpg' );
+    return apply_filters( 'foogallery_test_thumb_url', FOOGALLERY_URL . 'assets/logo.png' );
 }
 
 /**
