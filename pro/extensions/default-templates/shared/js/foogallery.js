@@ -3571,6 +3571,10 @@
 			 * @private
 			 */
 			self._initialize = null;
+			self.initializing = false;
+			self.initialized = false;
+			self.destroying = false;
+			self.destroyed = false;
 		},
 
 		// ################
@@ -3594,8 +3598,10 @@
 			if (_is.promise(self._initialize)) return self._initialize;
 			parent = _is.jq(parent) ? parent : $(parent);
 			return self._initialize = $.Deferred(function(def){
+				self.initializing = true;
 				if (parent.length === 0 && self.$el.parent().length === 0){
-					return _fn.rejectWith("A parent element is required.");
+					def.reject("A parent element is required.");
+					return;
 				}
 				if (self.$el.length === 0){
 					self.$el = self.create();
@@ -3607,10 +3613,15 @@
 				var queue = $.Deferred(), existing;
 				if (self.$el.length > 0 && (existing = self.$el.data(_.dataTemplate)) instanceof _.Template){
 					queue.then(function(){
-						existing.destroy();
+						return existing.destroy().then(function(){
+							self.$el.data(_.dataTemplate, self);
+						});
 					});
+				} else {
+					self.$el.data(_.dataTemplate, self);
 				}
 				queue.then(function(){
+					if (self.destroying) return _fn.rejectWith("destroy in progress");
 					// at this point we have our container element free of pre-existing instances so let's bind any event listeners supplied by the .on option
 					if (!_is.empty(self.opt.on)){
 						self.$el.on(self.opt.on);
@@ -3647,6 +3658,7 @@
 					var e = self.raise("pre-init");
 					if (e.isDefaultPrevented()) return _fn.rejectWith("pre-init default prevented");
 				}).then(function(){
+					if (self.destroying) return _fn.rejectWith("destroy in progress");
 					// checks the delay option and if it is greater than 0 waits for that amount of time before continuing
 					if (self.opt.delay <= 0) return _fn.resolved;
 					return $.Deferred(function(wait){
@@ -3656,6 +3668,7 @@
 						}, self.opt.delay);
 					}).promise();
 				}).then(function(){
+					if (self.destroying) return _fn.rejectWith("destroy in progress");
 					/**
 					 * @summary Raised before the template is initialized but after any pre-initialization work is complete.
 					 * @event FooGallery.Template~"init.foogallery"
@@ -3699,26 +3712,27 @@
 					 */
 					var e = self.raise("init");
 					if (e.isDefaultPrevented()) return _fn.rejectWith("init default prevented");
-					return self.items.fetch().then(function(){
-
-						/**
-						 * @summary Raised after the template is initialized but before any post-initialization work is complete.
-						 * @event FooGallery.Template~"post-init.foogallery"
-						 * @type {jQuery.Event}
-						 * @param {jQuery.Event} event - The jQuery.Event object for the current event.
-						 * @param {FooGallery.Template} template - The template raising the event.
-						 * @returns {Promise} Resolved once the post-initialization work is complete, rejected if an error occurs or execution is prevented.
-						 * @description At this point in the initialization chain all options, objects and elements required by the template have been parsed or created however the initial state has not been set yet and no items have been loaded.
-						 * @example {@caption To listen for this event and perform some action when it occurs you would bind to it as follows.}
-						 * $(".foogallery").foogallery({
+					return self.items.fetch();
+				}).then(function(){
+					if (self.destroying) return _fn.rejectWith("destroy in progress");
+					/**
+					 * @summary Raised after the template is initialized but before any post-initialization work is complete.
+					 * @event FooGallery.Template~"post-init.foogallery"
+					 * @type {jQuery.Event}
+					 * @param {jQuery.Event} event - The jQuery.Event object for the current event.
+					 * @param {FooGallery.Template} template - The template raising the event.
+					 * @returns {Promise} Resolved once the post-initialization work is complete, rejected if an error occurs or execution is prevented.
+					 * @description At this point in the initialization chain all options, objects and elements required by the template have been parsed or created however the initial state has not been set yet and no items have been loaded.
+					 * @example {@caption To listen for this event and perform some action when it occurs you would bind to it as follows.}
+					 * $(".foogallery").foogallery({
 						 * 	on: {
 						 * 		"post-init.foogallery": function(event, template){
 						 * 			// do something
 						 * 		}
 						 * 	}
 						 * });
-						 * @example {@caption Calling the `preventDefault` method on the `event` object will prevent the template being initialized.}
-						 * $(".foogallery").foogallery({
+					 * @example {@caption Calling the `preventDefault` method on the `event` object will prevent the template being initialized.}
+					 * $(".foogallery").foogallery({
 						 * 	on: {
 						 * 		"post-init.foogallery": function(event, template){
 						 * 			if ("some condition"){
@@ -3728,8 +3742,8 @@
 						 * 		}
 						 * 	}
 						 * });
-						 * @example {@caption You can also prevent the default logic and replace it with your own by calling the `preventDefault` method on the `event` object and returning a promise.}
-						 * $(".foogallery").foogallery({
+					 * @example {@caption You can also prevent the default logic and replace it with your own by calling the `preventDefault` method on the `event` object and returning a promise.}
+					 * $(".foogallery").foogallery({
 						 * 	on: {
 						 * 		"post-init.foogallery": function(event, template){
 						 * 			// stop the default logic
@@ -3741,59 +3755,62 @@
 						 * 		}
 						 * 	}
 						 * });
-						 */
-						var e = self.raise("post-init");
-						if (e.isDefaultPrevented()) return _fn.rejectWith("post-init default prevented");
-						self.$el.data(_.dataTemplate, self);
-						var state = self.state.parse();
-						self.state.set(_is.empty(state) ? self.state.initial() : state);
-						$(window).on("scroll.foogallery", {self: self}, self.onWindowScroll)
-								.on("popstate.foogallery", {self: self}, self.onWindowPopState);
-
-						/**
-						 * @summary Raised after the template is fully initialized but before the first load occurs.
-						 * @event FooGallery.Template~"first-load.foogallery"
-						 * @type {jQuery.Event}
-						 * @param {jQuery.Event} event - The jQuery.Event object for the current event.
-						 * @param {FooGallery.Template} template - The template raising the event.
-						 * @description This event is raised after all post-initialization work such as setting the initial state is performed but before the first load of items takes place.
-						 * @example {@caption To listen for this event and perform some action when it occurs you would bind to it as follows.}
-						 * $(".foogallery").foogallery({
+					 */
+					var e = self.raise("post-init");
+					if (e.isDefaultPrevented()) return _fn.rejectWith("post-init default prevented");
+					var state = self.state.parse();
+					self.state.set(_is.empty(state) ? self.state.initial() : state);
+					$(window).on("scroll.foogallery", {self: self}, self.onWindowScroll)
+							.on("popstate.foogallery", {self: self}, self.onWindowPopState);
+				}).then(function(){
+					if (self.destroying) return _fn.rejectWith("destroy in progress");
+					/**
+					 * @summary Raised after the template is fully initialized but before the first load occurs.
+					 * @event FooGallery.Template~"first-load.foogallery"
+					 * @type {jQuery.Event}
+					 * @param {jQuery.Event} event - The jQuery.Event object for the current event.
+					 * @param {FooGallery.Template} template - The template raising the event.
+					 * @description This event is raised after all post-initialization work such as setting the initial state is performed but before the first load of items takes place.
+					 * @example {@caption To listen for this event and perform some action when it occurs you would bind to it as follows.}
+					 * $(".foogallery").foogallery({
 						 * 	on: {
 						 * 		"first-load.foogallery": function(event, template){
 						 * 			// do something
 						 * 		}
 						 * 	}
 						 * });
-						 */
-						self.raise("first-load");
-						return self.loadAvailable().then(function(){
-							/**
-							 * @summary Raised after the template is fully initialized and is ready to be interacted with.
-							 * @event FooGallery.Template~"ready.foogallery"
-							 * @type {jQuery.Event}
-							 * @param {jQuery.Event} event - The jQuery.Event object for the current event.
-							 * @param {FooGallery.Template} template - The template raising the event.
-							 * @description This event is raised after all post-initialization work such as setting the initial state and performing the first load are completed.
-							 * @example {@caption To listen for this event and perform some action when it occurs you would bind to it as follows.}
-							 * $(".foogallery").foogallery({
+					 */
+					self.raise("first-load");
+					return self.loadAvailable();
+				}).then(function(){
+					if (self.destroying) return _fn.rejectWith("destroy in progress");
+					self.initializing = false;
+					self.initialized = true;
+					/**
+					 * @summary Raised after the template is fully initialized and is ready to be interacted with.
+					 * @event FooGallery.Template~"ready.foogallery"
+					 * @type {jQuery.Event}
+					 * @param {jQuery.Event} event - The jQuery.Event object for the current event.
+					 * @param {FooGallery.Template} template - The template raising the event.
+					 * @description This event is raised after all post-initialization work such as setting the initial state and performing the first load are completed.
+					 * @example {@caption To listen for this event and perform some action when it occurs you would bind to it as follows.}
+					 * $(".foogallery").foogallery({
 							 * 	on: {
 							 * 		"ready.foogallery": function(event, template){
 							 * 			// do something
 							 * 		}
 							 * 	}
 							 * });
-							 */
-							self.raise("ready");
-							def.resolve(self);
-						});
-					});
+					 */
+					self.raise("ready");
+					def.resolve(self);
 				}).fail(function(err){
-					console.log("initialize failed", self, err);
-					self.destroy();
 					def.reject(err);
 				});
 				queue.resolve();
+			}).promise().fail(function(err){
+				console.log("initialize failed", self, err);
+				self.destroy();
 			});
 		},
 		/**
@@ -3819,11 +3836,34 @@
 		 * @summary Destroy the template.
 		 * @memberof FooGallery.Template#
 		 * @function destroy
+		 * @returns {Promise}
 		 * @description Once this method is called it can not be stopped and the template will be destroyed.
 		 * @fires FooGallery.Template~"destroy.foogallery"
 		 */
 		destroy: function(){
 			var self = this;
+			if (self.destroyed) return _fn.resolved;
+			self.destroying = true;
+			if (self.initializing && _is.promise(self._initialize)){
+				return self._initialize.always(function(){
+					self.destroying = false;
+					self._destroy();
+				});
+			} else {
+				self.destroying = false;
+				self._destroy();
+			}
+			return _fn.resolved;
+		},
+		/**
+		 * @summary Destroy the template.
+		 * @memberof FooGallery.Template#
+		 * @function _destroy
+		 * @private
+		 */
+		_destroy: function(){
+			var self = this;
+			if (self.destroyed) return;
 			/**
 			 * @summary Raised before the template is destroyed.
 			 * @event FooGallery.Template~"destroy.foogallery"
@@ -3841,7 +3881,7 @@
 			 */
 			self.raise("destroy");
 			$(window).off("popstate.foogallery", self.onWindowPopState)
-				.off("scroll.foogallery", self.onWindowScroll);
+					.off("scroll.foogallery", self.onWindowScroll);
 			self.state.destroy();
 			if (self.pages) self.pages.destroy();
 			self.items.destroy();
@@ -3869,6 +3909,9 @@
 				self.$el.remove();
 			}
 			self.$el = self.state = self.items = self.pages = null;
+			self.destroyed = true;
+			self.initializing = false;
+			self.initialized = false;
 		},
 
 		// ################
