@@ -27,6 +27,22 @@ function foogallery_gallery_templates() {
 }
 
 /**
+ * Return a specific gallery template based on the slug
+ * @param $slug
+ *
+ * @return bool|array
+ */
+function foogallery_get_gallery_template( $slug ) {
+	foreach ( foogallery_gallery_templates() as $template ) {
+		if ( $slug == $template['slug'] ) {
+			return $template;
+		}
+	}
+
+	return false;
+}
+
+/**
  * Return the FooGallery extension API class
  *
  * @return FooGallery_Extensions_API
@@ -349,8 +365,11 @@ function foogallery_gallery_shortcode_regex() {
  * @return string the classname based on the gallery and any extra attributes
  */
 function foogallery_build_class_attribute( $gallery ) {
+
+	$classes[] = 'foogallery';
 	$classes[] = 'foogallery-container';
 	$classes[] = "foogallery-{$gallery->gallery_template}";
+
 	$num_args = func_num_args();
 
 	if ( $num_args > 1 ) {
@@ -360,9 +379,21 @@ function foogallery_build_class_attribute( $gallery ) {
 		}
 	}
 
-	$classes = apply_filters( 'foogallery_build_class_attribute', $classes );
+	$classes = apply_filters( 'foogallery_build_class_attribute', $classes, $gallery );
 
 	return implode( ' ', $classes );
+}
+
+/**
+ * Builds up a SAFE class attribute that can be used in a gallery template
+ * @param $gallery FooGallery
+ *
+ * @return string the classname based on the gallery and any extra attributes
+ */
+function foogallery_build_class_attribute_safe( $gallery ) {
+	$args = func_get_args();
+	$result = call_user_func_array("foogallery_build_class_attribute", $args);
+	return esc_attr( $result );
 }
 
 /**
@@ -372,22 +403,73 @@ function foogallery_build_class_attribute( $gallery ) {
  */
 function foogallery_build_class_attribute_render_safe( $gallery ) {
 	$args = func_get_args();
-	$result = call_user_func_array("foogallery_build_class_attribute", $args);
-	echo esc_attr( $result );
+	$result = call_user_func_array("foogallery_build_class_attribute_safe", $args);
+	echo $result;
+}
+
+/**
+ * Builds up the attributes that are appended to a gallery template container
+ *
+ * @param $gallery    FooGallery
+ * @param $attributes array
+ *
+ * @return string
+ */
+function foogallery_build_container_attributes_safe( $gallery, $attributes ) {
+
+	//add the default gallery id
+	$attributes['id'] = 'foogallery-gallery-' . $gallery->ID;
+
+	//add the standard data-foogallery attribute so that the JS initializes correctly
+    $attributes['data-foogallery'] = foogallery_build_container_data_options( $gallery, $attributes );
+
+	//allow others to add their own attributes globally
+	$attributes = apply_filters( 'foogallery_build_container_attributes', $attributes, $gallery );
+
+	//allow others to add their own attributes for a specific gallery template
+	$attributes = apply_filters( 'foogallery_build_container_attributes-' . $gallery->gallery_template, $attributes, $gallery );
+
+	//clean up the attributes to make them safe for output
+	$html = '';
+	foreach( $attributes as $key=>$value) {
+		$safe_value = esc_attr( $value );
+		$html .= "{$key}=\"{$safe_value}\" ";
+	}
+
+	return $html;
+}
+
+/**
+ * Builds up the data-foogallery attribute options that is used by the core javascript
+ *
+ * @param $gallery
+ * @param $attributes
+ *
+ * @return string
+ */
+function foogallery_build_container_data_options( $gallery, $attributes ) {
+	$options = apply_filters( 'foogallery_build_container_data_options', array(), $gallery, $attributes );
+
+	$options = apply_filters( 'foogallery_build_container_data_options-'. $gallery->gallery_template, $options, $gallery, $attributes );
+
+	return json_encode( $options );
 }
 
 /**
  * Render a foogallery
  *
- * @param $gallery_id int The id of the foogallery you want to render
+ * @param       $gallery_id int The id of the foogallery you want to render
+ * @param array $args
  */
-function foogallery_render_gallery( $gallery_id ) {
+function foogallery_render_gallery( $gallery_id, $args = array()) {
 	//create new instance of template engine
 	$engine = new FooGallery_Template_Loader();
 
-	$engine->render_template( array(
+	$shortcode_args = wp_parse_args( $args, array(
 		'id' => $gallery_id
 	) );
+
+	$engine->render_template( $shortcode_args );
 }
 
 /**
@@ -538,17 +620,28 @@ function foogallery_caption_title_source() {
 /**
  * Returns the attachment caption title based on the caption_title_source setting
  *
- * @param $attachment_post WP_Post
+ * @param WP_Post $attachment_post
+ * @param bool $source
  *
  * @return string
  */
-function foogallery_get_caption_title_for_attachment($attachment_post) {
-	$source = foogallery_caption_title_source();
+function foogallery_get_caption_title_for_attachment($attachment_post, $source = false) {
+	if ( false === $source ) {
+		$source = foogallery_caption_title_source();
+	}
 
-	if ( 'title' === $source ) {
-		$caption = trim( $attachment_post->post_title );
-	} else {
-		$caption = trim( $attachment_post->post_excerpt );
+	switch ( $source ) {
+		case 'title':
+			$caption = trim( $attachment_post->post_title );
+			break;
+		case 'desc':
+			$caption = trim( $attachment_post->post_content );
+			break;
+		case 'alt':
+			$caption = trim( get_post_meta( $attachment_post->ID, '_wp_attachment_image_alt', true ) );
+			break;
+		default:
+			$caption = trim( $attachment_post->post_excerpt );
 	}
 
 	return apply_filters( 'foogallery_get_caption_title_for_attachment', $caption, $attachment_post );
@@ -572,12 +665,15 @@ function foogallery_caption_desc_source() {
 /**
  * Returns the attachment caption description based on the caption_desc_source setting
  *
- * @param $attachment_post WP_Post
+ * @param WP_Post $attachment_post
+ * @param bool $source
  *
  * @return string
  */
-function foogallery_get_caption_desc_for_attachment($attachment_post) {
-	$source = foogallery_caption_desc_source();
+function foogallery_get_caption_desc_for_attachment($attachment_post, $source = false) {
+	if ( false === $source ) {
+		$source = foogallery_caption_desc_source();
+	}
 
 	switch ( $source ) {
 		case 'title':
@@ -802,4 +898,98 @@ function foogallery_uninstall() {
 
 	//let any extensions clean up after themselves
 	do_action( 'foogallery_uninstall' );
+}
+
+/**
+ * Returns an attachment field friendly name, based on a field name that is passed in
+ *
+ * @param $field
+ *
+ * @return string
+ */
+function foogallery_get_attachment_field_friendly_name( $field ) {
+	switch ( $field ) {
+		case 'title':
+			return __( 'Attachment Title', 'foogallery' );
+		case 'caption':
+			return __( 'Attachment Caption', 'foogallery' );
+		case 'desc':
+			return __( 'Attachment Description', 'foogallery' );
+		case 'alt':
+			return __( 'Attachment Alt', 'foogallery' );
+	}
+}
+
+/**
+ * Returns the fields for a specific gallery template
+ *
+ * @param $template mixed
+ * @return mixed
+ */
+function foogallery_get_fields_for_template( $template ) {
+
+    if ( is_string( $template ) ) {
+        $template = foogallery_get_gallery_template( $template );
+    }
+
+    $fields = $template['fields'];
+
+    // Allow for extensions to override fields for every gallery template.
+    // Also passes the $template along so you can inspect and conditionally alter fields based on the template properties
+    $fields = apply_filters( 'foogallery_override_gallery_template_fields', $fields, $template );
+
+    // Allow for extensions to override fields for a specific gallery template.
+    // Also passes the $template along so you can inspect and conditionally alter fields based on the template properties
+    $fields = apply_filters( "foogallery_override_gallery_template_fields-{$template['slug']}", $fields, $template );
+
+    foreach ( $fields as &$field ) {
+        //allow for the field to be altered by extensions. Also used by the build-in fields, e.g. lightbox
+        $field = apply_filters( 'foogallery_alter_gallery_template_field', $field, $template['slug'] );
+    }
+
+    return $fields;
+}
+
+/**
+ * Builds default settings for the supplied gallery template
+ *
+ * @param $template_name
+ * @return array
+ */
+function foogallery_build_default_settings_for_gallery_template( $template_name ) {
+    $fields = foogallery_get_fields_for_template( $template_name );
+    $settings = array();
+
+    //loop through the fields and build up an array of keys and default values
+    foreach( $fields as $field ) {
+        $default = array_key_exists( 'default', $field ) ? $field['default'] : false;
+        if ( !empty( $default ) ) {
+            $settings["{$template_name}_{$field['id']}"] = $default;
+        }
+    }
+
+    return $settings;
+}
+
+/**
+ * Returns the choices used for the thumb link field type
+ * @return array
+ */
+function foogallery_gallery_template_field_thumb_link_choices() {
+    return apply_filters( 'foogallery_gallery_template_field_thumb_links', array(
+        'image'  => __( 'Full Size Image (Lightbox)', 'foogallery' ),
+        'page'   => __( 'Image Attachment Page', 'foogallery' ),
+        'custom' => __( 'Custom URL', 'foogallery' ),
+        'none'   => __( 'Not linked', 'foogallery' ),
+    ) );
+}
+
+/**
+ * Returns the choices used for the lightbox field type
+ * @return array
+ */
+function foogallery_gallery_template_field_lightbox_choices() {
+    $lightboxes = apply_filters( 'foogallery_gallery_template_field_lightboxes', array() );
+    $lightboxes['none'] = __( 'None', 'foogallery' );
+    return $lightboxes;
 }

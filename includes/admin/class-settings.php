@@ -65,11 +65,26 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 				'section' => __( 'Gallery Defaults', 'foogallery' )
 			);
 
-			$galleries = foogallery_get_all_galleries();
+			$gallery_posts = get_posts( array(
+				'post_type'     => FOOGALLERY_CPT_GALLERY,
+				'post_status'	=> array( 'publish', 'draft' ),
+				'cache_results' => false,
+				'nopaging'      => true,
+			) );
+
+			$galleries = array();
+
+			foreach ( $gallery_posts as $post ) {
+				$galleries[] = array(
+					'ID' => $post->ID,
+					'name' => $post->post_title
+				);
+			}
+
 			$gallery_choices = array();
 			$gallery_choices[] = __( 'No default', 'foogallery' );
 			foreach ( $galleries as $gallery ) {
-				$gallery_choices[ $gallery->ID ] = $gallery->name;
+				$gallery_choices[ $gallery['ID'] ] = $gallery['name'];
 			}
 
 			$settings[] = array(
@@ -85,11 +100,13 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 			$settings[] = array(
 				'id'      => 'caption_title_source',
 				'title'   => __( 'Caption Title Source', 'foogallery' ),
-				'desc'    => __( 'By default, image caption titles are pulled from the attachment "Caption" field. Alternatively, you can also choose to pull from the attachment "Title" field.', 'foogallery' ),
+				'desc'    => __( 'By default, image caption titles are pulled from the attachment "Caption" field. Alternatively, you can choose to use other fields.', 'foogallery' ),
 				'type'    => 'select',
 				'choices' => array(
-					'caption' => __('Attachment Caption Field', 'foogallery'),
-					'title' => __('Attachment Title Field', 'foogallery')
+					'title'   => foogallery_get_attachment_field_friendly_name( 'title' ),
+					'caption' => foogallery_get_attachment_field_friendly_name( 'caption' ),
+					'alt'     => foogallery_get_attachment_field_friendly_name( 'alt' ),
+					'desc'    => foogallery_get_attachment_field_friendly_name( 'desc' )
 				),
 				'default' => 'caption',
 				'tab'     => 'general',
@@ -98,20 +115,20 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 			);
 
 			$settings[] = array(
-					'id'      => 'caption_desc_source',
-					'title'   => __( 'Caption Description Source', 'foogallery' ),
-					'desc'    => __( 'By default, image caption descriptions are pulled from the attachment "Description" field. Alternatively, you can choose to use other fields.', 'foogallery' ),
-					'type'    => 'select',
-					'choices' => array(
-							'desc' => __('Attachment Description Field', 'foogallery'),
-							'title' => __('Attachment Title Field', 'foogallery'),
-							'caption' => __('Attachment Caption Field', 'foogallery'),
-							'alt' => __('Attachment Alt Field', 'foogallery')
-					),
-					'default' => 'desc',
-					'tab'     => 'general',
-					'section' => __( 'Captions', 'foogallery' ),
-					'spacer'  => '<span class="spacer"></span>'
+				'id'      => 'caption_desc_source',
+				'title'   => __( 'Caption Description Source', 'foogallery' ),
+				'desc'    => __( 'By default, image caption descriptions are pulled from the attachment "Description" field. Alternatively, you can choose to use other fields.', 'foogallery' ),
+				'type'    => 'select',
+				'choices' => array(
+					'title'   => foogallery_get_attachment_field_friendly_name( 'title' ),
+					'caption' => foogallery_get_attachment_field_friendly_name( 'caption' ),
+					'alt'     => foogallery_get_attachment_field_friendly_name( 'alt' ),
+					'desc'    => foogallery_get_attachment_field_friendly_name( 'desc' )
+				),
+				'default' => 'desc',
+				'tab'     => 'general',
+				'section' => __( 'Captions', 'foogallery' ),
+				'spacer'  => '<span class="spacer"></span>'
 			);
 
 			$settings[] = array(
@@ -253,18 +270,34 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 			);
 			//endregion Language Tab
 
-			//region Uninstall Tab
-			$tabs['uninstall'] = __( 'Uninstall', 'foogallery' );
+			//region Advanced Tab
+			$tabs['advanced'] = __( 'Advanced', 'foogallery' );
+
+			$settings[] = array(
+				'id'      => 'enable_debugging',
+				'title'   => __( 'Enable Debugging', 'foogallery' ),
+				'desc'    => sprintf( __( 'Helps to debug problems and diagnose issues. Enable debugging if you need support for an issue you are having.', 'foogallery' ), foogallery_plugin_name() ),
+				'type'    => 'checkbox',
+				'tab'     => 'advanced'
+			);
 
 			$settings[] = array(
 				'id'      => 'uninstall',
 				'title'   => __( 'Full Uninstall', 'foogallery' ),
 				'desc'    => sprintf( __( 'Run a full uninstall of %s, which includes removing all galleries, settings and metadata. This basically removes all traces of the plugin from your system. Please be careful - there is no undo!', 'foogallery' ), foogallery_plugin_name() ),
 				'type'    => 'uninstall',
-				'tab'     => 'uninstall'
+				'tab'     => 'advanced'
 			);
 
-			//endregion Uninstall Tab
+//			$settings[] = array(
+//				'id'      => 'force_https',
+//				'title'   => __( 'Force HTTPS', 'foogallery' ),
+//				'desc'    => __( 'Force all thumbnails to use HTTPS protocol.', 'foogallery' ),
+//				'type'    => 'checkbox',
+//				'tab'     => 'advanced'
+//			);
+
+			//endregion Advanced Tab
 
 			return apply_filters( 'foogallery_admin_settings_override', array(
 				'tabs'     => $tabs,

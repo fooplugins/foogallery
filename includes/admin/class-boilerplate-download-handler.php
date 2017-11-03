@@ -79,7 +79,7 @@ if ( ! class_exists( 'FooGallery_Boilerplate_Download_Handler' ) ) {
 			//replace slug
 			$new_filename = str_replace( 'EXTSLUG', $this->slug, $filename );
 			//rename to php
-			$new_filename = str_replace( '.php.txt', '.php', $new_filename );
+			$new_filename = str_replace( '.txt', '.php', $new_filename );
 
 			return $new_filename;
 		}

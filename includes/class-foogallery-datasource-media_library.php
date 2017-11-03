@@ -21,12 +21,7 @@ if ( ! class_exists( 'FooGalleryDatasource_MediaLibrary' ) ) {
 		}
 
 		function __construct() {
-			//attachment_count
-			//attachment_id_csv
-			//attachments
-			//find_featured_attachment_id
-			//featured_attachment
-			//featured_image_html
+			add_filter( 'foogallery_attachment_get_posts_args', array( $this, 'apply_query_args' ) );
 		}
 
 		/**
@@ -78,6 +73,22 @@ if ( ! class_exists( 'FooGalleryDatasource_MediaLibrary' ) ) {
 			}
 
 			return $attachments;
+		}
+
+		function apply_query_args( $query_args ) {
+			global $current_foogallery_arguments;
+
+			//check if a limit has been applied
+			if ( isset( $current_foogallery_arguments ) && isset( $current_foogallery_arguments['limit'] ) ) {
+				$query_args['posts_per_page'] = $current_foogallery_arguments['limit'];
+			}
+
+			//check if an offset has been applied
+			if ( isset( $current_foogallery_arguments ) && isset( $current_foogallery_arguments['offset'] ) ) {
+				$query_args['offset'] = $current_foogallery_arguments['offset'];
+			}
+
+			return $query_args;
 		}
 
 		function build_attachment( $attachment_post ) {

@@ -22,6 +22,10 @@ if ( ! class_exists( 'FooGallery_Cache' ) ) {
 				add_action( 'wp_ajax_foogallery_clear_html_cache', array( $this, 'ajax_clear_all_caches' ) );
 
 				add_action( 'foogallery_admin_new_version_detected', array( $this, 'clear_cache_on_update' ) );
+
+				//clear the gallery caches when settings are updated or reset
+				add_action( 'foogallery_settings_updated', array( $this, 'clear_all_gallery_caches' ) );
+				add_action( 'foogallery_settings_reset', array( $this, 'clear_all_gallery_caches' ) );
 			}
 
 			add_filter( 'foogallery_load_gallery_template', array( $this, 'fetch_gallery_html_from_cache' ), 10, 3 );
@@ -62,8 +66,10 @@ if ( ! class_exists( 'FooGallery_Cache' ) ) {
 		 * @param $foogallery_id
 		 */
 		function cache_gallery_html_output( $foogallery_id ) {
+			$caching_enabled = $this->is_caching_enabled();
+
 			//check if caching is disabled and quit early
-			if ( 'on' === foogallery_get_setting( 'disable_html_cache' ) ) {
+			if ( $caching_enabled ) {
 				return;
 			}
 
@@ -77,10 +83,28 @@ if ( ! class_exists( 'FooGallery_Cache' ) ) {
 			$gallery_html = ob_get_contents();
 			ob_end_clean();
 
-			//save the output to post meta for later use
-			update_post_meta( $foogallery_id, FOOGALLERY_META_CACHE, $gallery_html );
+			if ( $caching_enabled ) {
+				//save the output to post meta for later use
+				update_post_meta( $foogallery_id, FOOGALLERY_META_CACHE, $gallery_html );
+			}
 
 			$foogallery_force_gallery_cache = false;
+		}
+
+		function is_caching_enabled() {
+			global $foogallery_gallery_preview;
+
+			//never cache if showing a preview
+			if ( isset( $foogallery_gallery_preview ) && true === $foogallery_gallery_preview ) {
+				return false;
+			}
+
+			//next, check the settings
+			if ( 'on' === foogallery_get_setting( 'disable_html_cache' ) ) {
+				return true;
+			}
+
+			return false;
 		}
 
 		/**
@@ -99,7 +123,7 @@ if ( ! class_exists( 'FooGallery_Cache' ) ) {
 			}
 
 			//check if caching is disabled and quit early
-			if ( 'on' === foogallery_get_setting( 'disable_html_cache' ) ) {
+			if ( !$this->is_caching_enabled() ) {
 				return false;
 			}
 

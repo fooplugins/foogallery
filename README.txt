@@ -34,8 +34,8 @@ Foo Gallery was designed to be the most developer-friendly gallery plugin availa
 
 **Features**
 
-*   Retina thumbnail support
-*   Add videos to galleries (via the [FooVideo premium extension](http://fooplugins.com/plugins/foovideo/?utm_source=foogalleryplugin&utm_medium=foogallerylink&utm_campaign=foogallery_wprepo))
+*	Retina thumbnail support
+*	Add videos to galleries (via the [FooVideo premium extension](http://fooplugins.com/plugins/foovideo/?utm_source=foogalleryplugin&utm_medium=foogallerylink&utm_campaign=foogallery_wprepo))
 *	Albums built-in! (Activate the albums extension)
 *	Gallery custom post type
 *	Use built-in media library to manage images
@@ -86,7 +86,7 @@ Foo Gallery was designed to be the most developer-friendly gallery plugin availa
 
 **Extensions**
 
-*   [FooVideo](http://fooplugins.com/plugins/foovideo/?utm_source=foogalleryplugin&utm_medium=foogallerylink&utm_campaign=foogallery_wprepo)
+*	[FooVideo](http://fooplugins.com/plugins/foovideo/?utm_source=foogalleryplugin&utm_medium=foogallerylink&utm_campaign=foogallery_wprepo)
 *	Albums (bundled)
 *	Default Gallery Templates (bundled)
 *	NextGen Gallery and Album Importer (bundled)

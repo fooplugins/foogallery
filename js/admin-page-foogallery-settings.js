@@ -212,6 +212,49 @@ jQuery(document).ready(function($) {
         });
     };
 
+    //find all generic foogallery ajax buttons and bind them
+    FOOGALLERY.bindSettingsAjaxButtons = function () {
+        $('.foogallery_settings_ajax').click(function(e) {
+            e.preventDefault();
+
+            var $button = $(this),
+                $container = $button.parents('.foogallery_settings_ajax_container:first'),
+                $spinner = $container.find('.spinner'),
+                response = $button.data('response'),
+                confirmMessage = $button.data('confirm'),
+                confirmResult = true,
+                data = 'action=' + $button.data('action') +
+                    '&_wpnonce=' + $button.data('nonce') +
+                    '&_wp_http_referer=' + encodeURIComponent($('input[name="_wp_http_referer"]').val());
+
+            if ( confirmMessage ) {
+                confirmResult = confirm( confirmMessage );
+            };
+
+            if ( confirmResult ) {
+                $spinner.addClass('is-active');
+                $button.prop('disabled', true);
+
+                $.ajax({
+                    type    : "POST",
+                    url     : ajaxurl,
+                    data    : data,
+                    success : function (data) {
+                        if (response === 'replace_container') {
+                            $container.html(data);
+                        } else if (response === 'alert') {
+                            alert(data);
+                        }
+                    },
+                    complete: function () {
+                        $spinner.removeClass('is-active');
+                        $button.prop('disabled', false);
+                    }
+                });
+            }
+        });
+    };
+
     $(function() { //wait for ready
         FOOGALLERY.loadImageOptimizationContent();
         FOOGALLERY.bindClearCssOptimizationButton();
@@ -219,6 +262,8 @@ jQuery(document).ready(function($) {
         FOOGALLERY.bindApplyRetinaDefaults();
         FOOGALLERY.bindUninstallButton();
         FOOGALLERY.bindClearHTMLCacheButton();
+
+        FOOGALLERY.bindSettingsAjaxButtons();
     });
 
 }(window.FOOGALLERY = window.FOOGALLERY || {}, jQuery));

@@ -32,74 +32,85 @@ class FooGallery_Template_Loader {
 		if ( false === $current_foogallery ) {
 			//we could not find the gallery!
 			_e( 'The gallery was not found!', 'foogallery' );
+			return;
+		}
+
+		//check if the gallery is password protected
+		if ( post_password_required( $current_foogallery->_post ) ) {
+			echo get_the_password_form( $current_foogallery->_post );
+			return;
+		}
+
+		//find the gallery template we will use to render the gallery
+		$current_foogallery_template = $this->get_arg( $args, 'template', $current_foogallery->gallery_template );
+		//set a default if we have no gallery template
+		if ( empty( $current_foogallery_template ) ) {
+			$current_foogallery_template = foogallery_get_default( 'gallery_template' );
+		}
+
+		//override the template if needed
+		if ( $current_foogallery->gallery_template !== $current_foogallery_template ) {
+			$current_foogallery->gallery_template = $current_foogallery_template;
+		}
+
+		//potentially override attachment_ids from arguments
+		$attachment_ids = $this->get_arg( $args, 'attachment_ids', false );
+		if ( $attachment_ids ) {
+			$current_foogallery->attachment_ids = explode( ',', $attachment_ids );
+		}
+
+		//check if we have any attachments
+		if ( ! $current_foogallery->has_attachments() ) {
+			//no attachments!
+			do_action( "foogallery_template_no_attachments-($current_foogallery_template)", $current_foogallery );
+			do_action( "foogallery_template_no_attachments", $current_foogallery );
 		} else {
 
-			//check if the gallery is password protected
-			if ( post_password_required( $current_foogallery->_post ) ) {
-				echo get_the_password_form( $current_foogallery->_post );
-				return;
-			}
+			//create locator instance
+			$loader = $this->create_locator_instance();
 
-			//find the gallery template we will use to render the gallery
-			$current_foogallery_template = $this->get_arg( $args, 'template', $current_foogallery->gallery_template );
+			if ( false !== ( $template_location = $loader->locate_file( "gallery-{$current_foogallery_template}.php" ) ) ) {
 
-			//set a default if we have no gallery template
-			if ( empty( $current_foogallery_template ) ) {
-				$current_foogallery_template = foogallery_get_default( 'gallery_template' );
-			}
+				//we have found a template!
+				do_action( 'foogallery_located_template', $current_foogallery );
+				do_action( "foogallery_located_template-{$current_foogallery_template}", $current_foogallery );
 
-			//check if we have any attachments
-			if ( ! $current_foogallery->has_attachments() ) {
-				//no attachments!
-				do_action( "foogallery_template_no_attachments-($current_foogallery_template)", $current_foogallery );
-			} else {
-
-				//create locator instance
-                $loader = $this->create_locator_instance();
-
-				if ( false !== ( $template_location = $loader->locate_file( "gallery-{$current_foogallery_template}.php" ) ) ) {
-
-					//we have found a template!
-					do_action( 'foogallery_located_template', $current_foogallery );
-					do_action( "foogallery_located_template-{$current_foogallery_template}", $current_foogallery );
-
-					//try to include some JS, but allow template to opt-out based on some condition
-					if ( false !== apply_filters( "foogallery_template_load_js-{$current_foogallery_template}", true, $current_foogallery ) ) {
-						if ( false !== ( $js_location = $loader->locate_file( "gallery-{$current_foogallery_template}.js" ) ) ) {
-							$js_deps = apply_filters( "foogallery_template_js_deps-{$current_foogallery_template}", array(), $current_foogallery );
-							$js_ver = apply_filters( "foogallery_template_js_ver-{$current_foogallery_template}", FOOGALLERY_VERSION, $current_foogallery );
-							wp_enqueue_script( "foogallery-template-{$current_foogallery_template}", $js_location['url'], $js_deps, $js_ver );
-							do_action( 'foogallery_template_enqueue_script', $current_foogallery_template, $js_location['url'] );
-						}
+				//try to include some JS, but allow template to opt-out based on some condition
+				if ( false !== apply_filters( "foogallery_template_load_js-{$current_foogallery_template}", true, $current_foogallery ) ) {
+					if ( false !== ( $js_location = $loader->locate_file( "gallery-{$current_foogallery_template}.js" ) ) ) {
+						$js_deps = apply_filters( "foogallery_template_js_deps-{$current_foogallery_template}", array(), $current_foogallery );
+						$js_ver = apply_filters( "foogallery_template_js_ver-{$current_foogallery_template}", FOOGALLERY_VERSION, $current_foogallery );
+						wp_enqueue_script( "foogallery-template-{$current_foogallery_template}", $js_location['url'], $js_deps, $js_ver );
+						do_action( 'foogallery_template_enqueue_script', $current_foogallery_template, $js_location['url'] );
 					}
-
-					//try to include some CSS, but allow template to opt-out based on some condition
-					if ( false !== apply_filters( "foogallery_template_load_css-{$current_foogallery_template}", true, $current_foogallery ) ) {
-						if ( false !== ( $css_location = $loader->locate_file( "gallery-{$current_foogallery_template}.css" ) ) ) {
-							$css_deps = apply_filters( "foogallery_template_css_deps-{$current_foogallery_template}", array(), $current_foogallery );
-							$css_ver = apply_filters( "foogallery_template_css_ver-{$current_foogallery_template}", FOOGALLERY_VERSION, $current_foogallery );
-							foogallery_enqueue_style( "foogallery-template-{$current_foogallery_template}", $css_location['url'], $css_deps, $css_ver );
-						}
-					}
-
-					//finally include the actual php template!
-					if ( $template_location ) {
-						$this->load_gallery_template( $current_foogallery, $template_location['path'] );
-					}
-
-					//cater for lightbox extensions needing to add styles and javascript
-					$lightbox = foogallery_gallery_template_setting( 'lightbox' );
-					if ( !empty( $lightbox ) ) {
-						do_action( "foogallery_template_lightbox-{$lightbox}", $current_foogallery );
-					}
-
-					//we have loaded all files, now let extensions do some stuff
-					do_action( "foogallery_loaded_template", $current_foogallery );
-					do_action( "foogallery_loaded_template-($current_foogallery_template)", $current_foogallery );
-				} else {
-					//we could not find a template!
-					_e( 'No gallery template found!', 'foogallery' );
 				}
+
+				//try to include some CSS, but allow template to opt-out based on some condition
+				if ( false !== apply_filters( "foogallery_template_load_css-{$current_foogallery_template}", true, $current_foogallery ) ) {
+					if ( false !== ( $css_location = $loader->locate_file( "gallery-{$current_foogallery_template}.css" ) ) ) {
+						$css_deps = apply_filters( "foogallery_template_css_deps-{$current_foogallery_template}", array(), $current_foogallery );
+						$css_ver = apply_filters( "foogallery_template_css_ver-{$current_foogallery_template}", FOOGALLERY_VERSION, $current_foogallery );
+						foogallery_enqueue_style( "foogallery-template-{$current_foogallery_template}", $css_location['url'], $css_deps, $css_ver );
+					}
+				}
+
+				//finally include the actual php template!
+				if ( $template_location ) {
+					$this->load_gallery_template( $current_foogallery, $template_location['path'] );
+				}
+
+				//cater for lightbox extensions needing to add styles and javascript
+				$lightbox = foogallery_gallery_template_setting( 'lightbox' );
+				if ( !empty( $lightbox ) ) {
+					do_action( "foogallery_template_lightbox-{$lightbox}", $current_foogallery );
+				}
+
+				//we have loaded all files, now let extensions do some stuff
+				do_action( "foogallery_loaded_template", $current_foogallery );
+				do_action( "foogallery_loaded_template-($current_foogallery_template)", $current_foogallery );
+			} else {
+				//we could not find a template!
+				_e( 'No gallery template found!', 'foogallery' );
 			}
 		}
 	}
@@ -187,25 +198,33 @@ class FooGallery_Template_Loader {
 	function find_gallery( $args ) {
 
 		$id = intval( $this->get_arg( $args, 'id' ), 0 );
+		$gallery = $this->get_arg( $args, 'gallery', 0 );
 
 		if ( $id > 0 ) {
-
 			//load gallery by ID
 			return FooGallery::get_by_id( $id );
+		}
 
-		} else {
-
-			//take into account the cases where id is passed in via the 'gallery' attribute
-			$gallery = $this->get_arg( $args, 'gallery', 0 );
-
-			if ( intval( $gallery ) > 0 ) {
-				//we have an id, so load
-				return FooGallery::get_by_id( intval( $gallery ) );
-			}
-
+		//take into account the cases where id is passed in via the 'gallery' attribute
+		if ( intval( $gallery ) > 0 ) {
+			//we have an id, so load
+			return FooGallery::get_by_id( intval( $gallery ) );
+		} else if ( !empty( $gallery ) ) {
 			//we are dealing with a slug
 			return FooGallery::get_by_slug( $gallery );
 		}
+
+		//if we get here then we have no id or gallery attribute, so try to build a dynamic gallery
+
+		//we can only build up a dynamic gallery if attachment_ids are passed in
+		$attachment_ids = $this->get_arg( $args, 'attachment_ids', false );
+
+		if ( $attachment_ids ) {
+			$template = $this->get_arg( $args, 'template', foogallery_get_default( 'gallery_template' ) );
+			return FooGallery::dynamic( $template, explode( ',', $attachment_ids) );
+		}
+
+		return false;
 	}
 
 	/**

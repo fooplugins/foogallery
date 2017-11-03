@@ -10,8 +10,8 @@
  * License: GPL2
 */
 
-if ( !class_exists( 'Foo_Plugin_Settings_v2_1' ) ) {
-	class Foo_Plugin_Settings_v2_1 {
+if ( !class_exists( 'Foo_Plugin_Settings_v2_2' ) ) {
+	class Foo_Plugin_Settings_v2_2 {
 
 		protected $plugin_slug;
 
@@ -22,6 +22,8 @@ if ( !class_exists( 'Foo_Plugin_Settings_v2_1' ) ) {
 
 		function __construct($plugin_slug) {
 			$this->plugin_slug = $plugin_slug;
+
+			$this->register_settings();
 		}
 
 		function get_tabs() {
@@ -133,6 +135,10 @@ if ( !class_exists( 'Foo_Plugin_Settings_v2_1' ) ) {
 			}
 		}
 
+		function register_settings() {
+			register_setting( $this->plugin_slug, $this->plugin_slug, array( 'sanitize_callback' => array($this, 'validate') ) );
+		}
+
 		// add a settings field
 		function add_setting($args = array()) {
 
@@ -164,11 +170,6 @@ if ( !class_exists( 'Foo_Plugin_Settings_v2_1' ) ) {
 				'label_for'   => $id,
 				'class'       => $class
 			);
-
-			if ( count( $this->_settings ) == 0 ) {
-				//only do this once
-				register_setting( $this->plugin_slug, $this->plugin_slug, array($this, 'validate') );
-			}
 
 			$this->_settings[] = $args;
 
@@ -353,8 +354,6 @@ if ( !class_exists( 'Foo_Plugin_Settings_v2_1' ) ) {
 			//check to see if the options were reset
 			if ( isset ($input['reset-defaults']) ) {
 				delete_option( $this->plugin_slug );
-				delete_option( $this->plugin_slug . '_valid' );
-				delete_option( $this->plugin_slug . '_valid_expires' );
 				add_settings_error(
 					'reset',
 					'reset_error',

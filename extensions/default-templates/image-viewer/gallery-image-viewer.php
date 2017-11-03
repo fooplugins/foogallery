@@ -9,58 +9,32 @@ global $current_foogallery;
 global $current_foogallery_arguments;
 //get our thumbnail sizing args
 $args = foogallery_gallery_template_setting( 'thumbnail_size', 'thumbnail' );
+$args['crop'] = '1'; //we now force thumbs to be cropped
 //add the link setting to the args
 $link = foogallery_gallery_template_setting( 'thumbnail_link', 'image' );
 $args['link'] = $link;
 //get which lightbox we want to use
 $lightbox = foogallery_gallery_template_setting( 'lightbox', 'unknown' );
-$theme = foogallery_gallery_template_setting( 'theme', '' );
-$hover_effect = foogallery_gallery_template_setting( 'hover-effect', 'hover-effect-zoom' );
-$hover_effect_type = foogallery_gallery_template_setting( 'hover-effect-type', '' );
-if ( 'hover-effect-none' === $hover_effect_type ) {
-	$hover_effect = '';
-}
-$caption_content = foogallery_gallery_template_setting( 'caption-content', 'none' );
-$alignment = foogallery_gallery_template_setting( 'alignment', 'alignment-center' );
+
+$alignment = foogallery_gallery_template_setting( 'alignment', 'fg-center' );
 $text_prev = foogallery_gallery_template_setting( 'text-prev', __('Prev', 'foogallery') );
 $text_of = foogallery_gallery_template_setting( 'text-of', __('of', 'foogallery') );
 $text_next = foogallery_gallery_template_setting( 'text-next', __('Next', 'foogallery') );
+
 $attachments = $current_foogallery->attachments();
-if ( 'fiv-custom' === $theme ) {?>
-<style>
-	/* Theme - Custom */
-	#foogallery-gallery-<?php echo $current_foogallery->ID; ?>.fiv-custom > .fiv-inner,
-	#foogallery-gallery-<?php echo $current_foogallery->ID; ?>.fiv-custom > .fiv-inner > .fiv-ctrls > .fiv-prev,
-	#foogallery-gallery-<?php echo $current_foogallery->ID; ?>.fiv-custom > .fiv-inner > .fiv-ctrls > .fiv-next {
-		background-color: <?php echo foogallery_gallery_template_setting( 'theme_custom_bgcolor', '#ffffff' ); ?>;
-		color: <?php echo foogallery_gallery_template_setting( 'theme_custom_textcolor', '#1b1b1b' ); ?>;
-	}
-	#foogallery-gallery-<?php echo $current_foogallery->ID; ?>.fiv-custom > .fiv-inner,
-	#foogallery-gallery-<?php echo $current_foogallery->ID; ?>.fiv-custom > .fiv-inner > .fiv-inner-container,
-	#foogallery-gallery-<?php echo $current_foogallery->ID; ?>.fiv-custom > .fiv-inner > .fiv-ctrls > .fiv-prev,
-	#foogallery-gallery-<?php echo $current_foogallery->ID; ?>.fiv-custom > .fiv-inner > .fiv-ctrls > .fiv-next {
-		border-color: <?php echo foogallery_gallery_template_setting( 'theme_custom_bordercolor', '#e6e6e6' ); ?>;
-	}
-	#foogallery-gallery-<?php echo $current_foogallery->ID; ?>.fiv-custom > .fiv-inner > .fiv-ctrls > .fiv-prev:hover,
-	#foogallery-gallery-<?php echo $current_foogallery->ID; ?>.fiv-custom > .fiv-inner > .fiv-ctrls > .fiv-next:hover {
-		background-color: <?php echo foogallery_gallery_template_setting( 'theme_custom_hovercolor', '#F2F2F2' ); ?>;
-	}
-</style>
-<?php } ?>
-<div id="foogallery-gallery-<?php echo $current_foogallery->ID; ?>" class="<?php foogallery_build_class_attribute_render_safe( $current_foogallery, 'foogallery-link-' . $link, 'foogallery-lightbox-' . $lightbox, $theme, $hover_effect, $hover_effect_type, $alignment ); ?>">
+
+$foogallery_imageviewer_classes = foogallery_build_class_attribute_safe( $current_foogallery, 'foogallery-link-' . $link, 'foogallery-lightbox-' . $lightbox, $alignment );
+$foogallery_imageviewer_attributes = foogallery_build_container_attributes_safe( $current_foogallery, array( 'class' => $foogallery_imageviewer_classes ) );
+?><div <?php echo $foogallery_imageviewer_attributes; ?>>
 	<div class="fiv-inner">
 		<div class="fiv-inner-container">
 			<?php foreach ( $attachments as $attachment ) {
-				echo $attachment->html( $args, true, false );
-				if ($caption_content !== 'none'){
-					echo $attachment->html_caption( $caption_content );
-				}
-				echo '</a>';
+				echo foogallery_attachment_html( $attachment, $args );
 			} ?>
 		</div>
 		<div class="fiv-ctrls">
 			<div class="fiv-prev"><span><?php echo $text_prev; ?></span></div>
-			<label class="fiv-count"><span class="fiv-count-current">1</span><?php echo $text_of; ?><span><?php echo count($attachments) ?></span></label>
+			<label class="fiv-count"><span class="fiv-count-current">1</span><?php echo $text_of; ?><span class="fiv-count-total"><?php echo count($attachments) ?></span></label>
 			<div class="fiv-next"><span><?php echo $text_next; ?></span></div>
 		</div>
 	</div>

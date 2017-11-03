@@ -11,6 +11,17 @@ if ( !class_exists( 'FooGallery_Thumbnail_Gallery_Template' ) ) {
 		function __construct() {
 			add_filter( 'foogallery_gallery_templates', array( $this, 'add_template' ) );
 			add_filter( 'foogallery_gallery_templates_files', array( $this, 'register_myself' ) );
+
+			add_filter( 'foogallery_located_template-thumbnail', array( $this, 'enqueue_dependencies' ) );
+
+			//build up any preview arguments
+			add_filter( 'foogallery_preview_arguments-thumbnail', array( $this, 'preview_arguments' ), 10, 2 );
+
+			//build up the thumb dimensions from some arguments
+			add_filter( 'foogallery_calculate_thumbnail_dimensions-thumbnail', array( $this, 'build_thumbnail_dimensions_from_arguments' ), 10, 2 );
+
+			//build up the thumb dimensions on save
+			add_filter( 'foogallery_template_thumbnail_dimensions-thumbnail', array( $this, 'get_thumbnail_dimensions' ), 10, 2 );
 		}
 
 		/**
@@ -32,109 +43,151 @@ if ( !class_exists( 'FooGallery_Thumbnail_Gallery_Template' ) ) {
 		 */
 		function add_template( $gallery_templates ) {
 			$gallery_templates[] = array(
-					'slug'        => 'thumbnail',
-					'name'        => __( 'Single Thumbnail Gallery', 'foogallery' ),
-					'preview_css' => FOOGALLERY_THUMBNAIL_GALLERY_TEMPLATE_URL . 'css/gallery-thumbnail.css',
-					'admin_js'	  => FOOGALLERY_THUMBNAIL_GALLERY_TEMPLATE_URL . 'js/admin-gallery-thumbnail.js',
-					'fields'	  => array(
-							array(
-									'id'	  => 'help',
-									'type'	  => 'html',
-									'help'	  => true,
-									'desc'	  => __( 'This gallery template only shows a single thumbnail, but the true power shines through when the thumbnail is clicked, because then the lightbox takes over and the user can view all the images in the gallery.', 'foogallery' ),
-							),
-							array(
-									'id'      => 'thumbnail_dimensions',
-									'title'   => __( 'Size', 'foogallery' ),
-									'desc'    => __( 'Choose the size of your thumbnail.', 'foogallery' ),
-									'section' => __( 'Thumbnail Settings', 'foogallery' ),
-									'type'    => 'thumb_size',
-									'default' => array(
-											'width' => 250,
-											'height' => 200,
-											'crop' => true,
-									),
-							),
-							array(
-									'id'      => 'position',
-									'title'   => __( 'Position', 'foogallery' ),
-									'desc'    => __( 'The position of the thumbnail related to the content around it.', 'foogallery' ),
-									'section' => __( 'Thumbnail Settings', 'foogallery' ),
-									'default' => 'position-block',
-									'type'    => 'select',
-									'choices' => array(
-											'position-block' => __( 'Full Width (block)', 'foogallery' ),
-											'position-float-left' => __( 'Float Left', 'foogallery' ),
-											'position-float-right' => __( 'Float Right', 'foogallery' ),
-									)
-							),
-							array(
-									'id'      => 'link_custom_url',
-									'title'   => __( 'Link To Custom URL', 'foogallery' ),
-									'section' => __( 'Thumbnail Settings', 'foogallery' ),
-									'default' => '',
-									'type'    => 'checkbox',
-									'desc'	  => __( 'You can link your thumbnails to Custom URL\'s (if they are set on your attachments). Fallback will be to the full size image.', 'foogallery' )
-							),
-							array(
-									'id'      => 'caption_style',
-									'title'   => __( 'Caption Style', 'foogallery' ),
-									'section' => __( 'Caption Settings', 'foogallery' ),
-									'desc'    => __( 'Choose which caption style you want to use.', 'foogallery' ),
-									'type'    => 'select',
-									'default' => 'simple',
-									'choices' => array(
-											'caption-simple' => __( 'Simple' , 'foogallery' ),
-											'caption-slideup' => __( 'Slide Up' , 'foogallery' ),
-											'caption-fall' => __( 'Fall Down' , 'foogallery' ),
-											'caption-fade' => __( 'Fade' , 'foogallery' ),
-											'caption-push' => __( 'Push From Left' , 'foogallery' ),
-											'caption-scale' => __( 'Scale' , 'foogallery' ),
-											'caption-none' => __( 'None' , 'foogallery' )
-									),
-							),
-							array(
-									'id'      => 'caption_bgcolor',
-									'title'   => __('Caption Background Color', 'foogallery'),
-									'section' => __( 'Caption Settings', 'foogallery' ),
-									'desc'    => __('The color of the caption background.', 'foogallery'),
-									'type'    => 'colorpicker',
-									'default' => 'rgba(0, 0, 0, 0.8)',
-									'opacity' => true
-							),
-							array(
-									'id'      => 'caption_color',
-									'title'   => __('Caption Text Color', 'foogallery'),
-									'section' => __( 'Caption Settings', 'foogallery' ),
-									'desc'    => __('The color of the caption text.', 'foogallery'),
-									'type'    => 'colorpicker',
-									'default' => 'rgb(255, 255, 255)'
-							),
-							array(
-									'id'      => 'caption_title',
-									'title'   => __('Caption Title', 'foogallery'),
-									'section' => __( 'Caption Settings', 'foogallery' ),
-									'desc'    => __('Leave blank if you do not want a caption title.', 'foogallery'),
-									'type'    => 'text'
-							),
-							array(
-									'id'      => 'caption_description',
-									'title'   => __('Caption Description', 'foogallery'),
-									'section' => __( 'Caption Settings', 'foogallery' ),
-									'desc'    => __('Leave blank if you do not want a caption description.', 'foogallery'),
-									'type'    => 'textarea'
-							),
-							array(
-									'id'      => 'lightbox',
-									'title'   => __( 'Lightbox', 'foogallery' ),
-									'section' => __( 'Gallery Settings', 'foogallery' ),
-									'desc'    => __( 'Choose which lightbox you want to use.', 'foogallery' ),
-									'type'    => 'lightbox',
-							)
-					)
+                'slug'        => 'thumbnail',
+                'name'        => __( 'Single Thumbnail Gallery', 'foogallery' ),
+				'preview_support' => true,
+				'common_fields_support' => true,
+                'lazyload_support' => true,
+				'mandatory_classes' => 'fg-thumbnail',
+				'thumbnail_dimensions' => true,
+                'fields'	  => array(
+                    array(
+                        'id'	  => 'help',
+                        'type'	  => 'html',
+                        'section' => __( 'General', 'foogallery' ),
+                        'help'	  => true,
+                        'desc'	  => __( 'This gallery template only shows a single thumbnail, but the true power shines through when the thumbnail is clicked, because then the lightbox takes over and the user can view all the images in the gallery.', 'foogallery' ),
+                    ),
+                    array(
+                        'id'      => 'thumbnail_dimensions',
+                        'title'   => __( 'Size', 'foogallery' ),
+                        'desc'    => __( 'Choose the size of your thumbnail.', 'foogallery' ),
+                        'section' => __( 'General', 'foogallery' ),
+                        'type'    => 'thumb_size_no_crop',
+                        'default' => array(
+                            'width' => 250,
+                            'height' => 200
+                        ),
+						'row_data'=> array(
+							'data-foogallery-change-selector' => 'input',
+							'data-foogallery-preview' => 'shortcode'
+						)
+                    ),
+                    array(
+                        'id'      => 'position',
+                        'title'   => __( 'Position', 'foogallery' ),
+                        'desc'    => __( 'The position of the thumbnail related to the content around it.', 'foogallery' ),
+                        'section' => __( 'General', 'foogallery' ),
+                        'default' => 'position-block',
+                        'type'    => 'select',
+                        'choices' => array(
+                            'fg-center' => __( 'Full Width (block)', 'foogallery' ),
+                            'fg-left' => __( 'Float Left', 'foogallery' ),
+                            'fg-right' => __( 'Float Right', 'foogallery' ),
+                        ),
+						'row_data'=> array(
+							'data-foogallery-change-selector' => 'select',
+							'data-foogallery-preview' => 'class'
+						)
+                    ),
+                    array(
+                        'id'      => 'link_custom_url',
+                        'title'   => __( 'Link To Custom URL', 'foogallery' ),
+                        'section' => __( 'General', 'foogallery' ),
+                        'default' => '',
+                        'type'    => 'checkbox',
+                        'desc'	  => __( 'You can link your thumbnails to Custom URL\'s (if they are set on your attachments). Fallback will be to the full size image.', 'foogallery' )
+                    ),
+                    array(
+                        'id'      => 'lightbox',
+                        'title'   => __( 'Lightbox', 'foogallery' ),
+                        'section' => __( 'General', 'foogallery' ),
+                        'desc'    => __( 'Choose which lightbox you want to use.', 'foogallery' ),
+                        'type'    => 'lightbox',
+                        'default' => 'none',
+                    ),
+                    array(
+                        'id'      => 'caption_title',
+                        'title'   => __('Override Title', 'foogallery'),
+						'section' => __( 'Captions', 'foogallery' ),
+                        'desc'    => __('Leave blank if you do not want a caption title.', 'foogallery'),
+                        'type'    => 'text',
+						'row_data'=> array(
+							'data-foogallery-change-selector' => 'input',
+							'data-foogallery-preview' => 'shortcode'
+						)
+                    ),
+                    array(
+                        'id'      => 'caption_description',
+                        'title'   => __('Override Description', 'foogallery'),
+						'section' => __( 'Captions', 'foogallery' ),
+                        'desc'    => __('Leave blank if you do not want a caption description.', 'foogallery'),
+                        'type'    => 'textarea',
+						'row_data'=> array(
+							'data-foogallery-change-selector' => 'textarea',
+							'data-foogallery-preview' => 'shortcode'
+						)
+                    )
+                )
 			);
 
 			return $gallery_templates;
+		}
+
+		/**
+		 * Enqueue scripts that the masonry gallery template relies on
+		 */
+		function enqueue_dependencies() {
+			//enqueue core files
+			foogallery_enqueue_core_gallery_template_style();
+			foogallery_enqueue_core_gallery_template_script();
+		}
+
+		/**
+		 * Build up a arguments used in the preview of the gallery
+		 * @param $args
+		 * @param $post_data
+		 *
+		 * @return mixed
+		 */
+		function preview_arguments( $args, $post_data ) {
+			$args['thumbnail_dimensions'] = $post_data[FOOGALLERY_META_SETTINGS]['thumbnail_thumbnail_dimensions'];
+			$args['caption_title'] = $post_data[FOOGALLERY_META_SETTINGS]['thumbnail_caption_title'];
+			$args['caption_description'] = $post_data[FOOGALLERY_META_SETTINGS]['thumbnail_caption_description'];
+			return $args;
+		}
+
+		/**
+		 * Builds thumb dimensions from arguments
+		 *
+		 * @param array $dimensions
+		 * @param array $arguments
+		 *
+		 * @return mixed
+		 */
+		function build_thumbnail_dimensions_from_arguments( $dimensions, $arguments ) {
+			return array(
+				'height' => intval( $arguments['thumbnail_dimensions']['height'] ),
+				'width'  => intval( $arguments['thumbnail_dimensions']['width'] ),
+				'crop'   => '1'
+			);
+		}
+
+		/**
+		 * Get the thumb dimensions arguments saved for the gallery for this gallery template
+		 *
+		 * @param array $dimensions
+		 * @param FooGallery $foogallery
+		 *
+		 * @return mixed
+		 */
+		function get_thumbnail_dimensions( $dimensions, $foogallery ) {
+			$dimensions = $foogallery->get_meta( 'thumbnail_thumbnail_dimensions', array(
+				'width' => get_option( 'thumbnail_size_w' ),
+				'height' => get_option( 'thumbnail_size_h' )
+			) );
+			$dimensions['crop'] = true;
+			return $dimensions;
 		}
 	}
 }

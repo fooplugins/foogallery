@@ -1,14 +1,16 @@
 <?php
-/**
- * Plugin Name: FooGallery
- * Description: FooGallery is the most intuitive and extensible gallery management tool ever created for WordPress
- * Version:     1.3.8
- * Author:      FooPlugins
- * Plugin URI:  https://foo.gallery
- * Author URI:  http://fooplugins.com
- * Text Domain: foogallery
- * License:     GPL-2.0+
- * Domain Path: /languages
+/*
+Plugin Name: FooGallery
+Description: FooGallery is the most intuitive and extensible gallery management tool ever created for WordPress
+Version:     1.3.26
+Author:      FooPlugins
+Plugin URI:  https://foo.gallery
+Author URI:  http://fooplugins.com
+Text Domain: foogallery
+License:     GPL-2.0+
+Domain Path: /languages
+
+@fs_premium_only /pro/
  */
 
 // If this file is called directly, abort.
@@ -22,7 +24,8 @@ if ( ! class_exists( 'FooGallery_Plugin' ) ) {
 	define( 'FOOGALLERY_PATH', plugin_dir_path( __FILE__ ) );
 	define( 'FOOGALLERY_URL', plugin_dir_url( __FILE__ ) );
 	define( 'FOOGALLERY_FILE', __FILE__ );
-	define( 'FOOGALLERY_VERSION', '1.3.8' );
+	define( 'FOOGALLERY_VERSION', '1.3.26' );
+	define( 'FOOGALLERY_SETTINGS_VERSION', '2' );
 
 	require_once( FOOGALLERY_PATH . 'includes/constants.php' );
 
@@ -39,13 +42,17 @@ if ( ! class_exists( 'FooGallery_Plugin' ) ) {
 				'slug'              => 'foogallery',
 				'type'              => 'plugin',
 				'public_key'        => 'pk_d87616455a835af1d0658699d0192',
-				'is_premium'        => false,
+				'is_premium'        => true,
 				'has_addons'        => false,
-				'has_paid_plans'    => false,
+				'has_paid_plans'    => true,
+				'trial'               => array(
+					'days'               => 7,
+					'is_require_payment' => false,
+				),
 				'menu'              => array(
 					'slug'       => 'edit.php?post_type=' . FOOGALLERY_CPT_GALLERY,
 					'first-path' => 'edit.php?post_type=' . FOOGALLERY_CPT_GALLERY . '&page=' . FOOGALLERY_ADMIN_MENU_HELP_SLUG,
-					'account'    => false,
+					'account'    => true,
 					'contact'    => false,
 					'support'    => false,
 				),
@@ -73,7 +80,7 @@ if ( ! class_exists( 'FooGallery_Plugin' ) ) {
 	 * @link      https://github.com/fooplugins/foogallery
 	 * @copyright 2013 FooPlugins LLC
 	 */
-	class FooGallery_Plugin extends Foo_Plugin_Base_v2_3 {
+	class FooGallery_Plugin extends Foo_Plugin_Base_v2_4 {
 
 		private static $instance;
 
@@ -112,6 +119,7 @@ if ( ! class_exists( 'FooGallery_Plugin' ) ) {
 				add_action( 'wpmu_new_blog', array( $this, 'set_default_extensions_for_multisite_network_activated' ) );
 				add_action( 'admin_page_access_denied', array( $this, 'check_for_access_denied' ) );
 				foogallery_fs()->add_filter( 'connect_message_on_update', array( $this, 'override_connect_message_on_update' ), 10, 6 );
+				add_action( 'foogallery_admin_menu_before', array( $this, 'add_freemius_activation_menu' ) );
 			} else {
 				new FooGallery_Public();
 			}
@@ -130,6 +138,12 @@ if ( ! class_exists( 'FooGallery_Plugin' ) ) {
 
 			new FooGallery_Cache();
 
+			new FooGallery_Common_Fields();
+
+			new FooGallery_LazyLoad();
+
+			new FooGallery_Paging();
+
 			new FooGallery_Thumbnail_Dimensions();
 
 			new FooGallery_FooBox_Support();
@@ -138,8 +152,20 @@ if ( ! class_exists( 'FooGallery_Plugin' ) ) {
 
 			new FooGallery_Attachment_Custom_Class();
 
+			new FooGallery_Upgrade();
+
+			new FooGallery_Extensions_Compatibility();
+
 			$checker = new FooGallery_Version_Check();
 			$checker->wire_up_checker();
+
+			if ( foogallery_fs()->is__premium_only() ) {
+				if ( foogallery_fs()->can_use_premium_code() ) {
+					require_once FOOGALLERY_PATH . 'pro/foogallery-pro.php';
+
+					new FooGallery_Pro();
+				}
+			}
 		}
 
 		/**
@@ -171,6 +197,23 @@ if ( ! class_exists( 'FooGallery_Plugin' ) ) {
 					$freemius_link,
 					FOOGALLERY_VERSION
 				);
+		}
+
+		function add_freemius_activation_menu() {
+			global $foogallery_fs;
+
+			$parent_slug = foogallery_admin_menu_parent_slug();
+
+			if ( ! $foogallery_fs->is_registered() ) {
+				add_submenu_page(
+					$parent_slug,
+					__( 'FooGallery Opt-In', 'foogallery' ),
+					__( 'Activation', 'foogallery' ),
+					'manage_options',
+					'foogallery-optin',
+					array( $foogallery_fs, '_connect_page_render' )
+				);
+			}
 		}
 
 		/**
