@@ -214,15 +214,6 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 						'foogallery_gallery_template_common_thumbnail_fields_loaded_effect_choices', array(
 						''                      => __( 'None', 'foogallery' ),
 						'fg-loaded-fade-in'     => __( 'Fade In', 'foogallery' ),
-						'fg-loaded-slide-up'    => __( 'Slide Up', 'foogallery' ),
-						'fg-loaded-slide-down'  => __( 'Slide Down', 'foogallery' ),
-						'fg-loaded-slide-left'  => __( 'Slide Left', 'foogallery' ),
-						'fg-loaded-slide-right' => __( 'Slide Right', 'foogallery' ),
-						'fg-loaded-scale-up'    => __( 'Scale Up', 'foogallery' ),
-						'fg-loaded-swing-down'  => __( 'Swing Down', 'foogallery' ),
-						'fg-loaded-drop'        => __( 'Drop', 'foogallery' ),
-						'fg-loaded-fly'         => __( 'Fly', 'foogallery' ),
-						'fg-loaded-flip'        => __( 'Flip', 'foogallery' ),
 					)
 					),
 					'row_data' => array(
