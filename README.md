@@ -10,7 +10,7 @@
 
 **Requires at least:** 3.9
 
-**Tested up to:** 4.8
+**Tested up to:** 4.8.3
 
 **Stable tag:** trunk
 
@@ -21,6 +21,8 @@
 FooGallery is the best image gallery plugin for WordPress. Why? Stunning gallery layouts, responsive, retina-ready, lightning fast, easy to use.
 
 ## Description ##
+
+**Major changes in 1.3.28**
 
 FooGallery is the best image gallery plugin for WordPress. Why? Stunning gallery layouts, responsive, retina-ready, lightning fast, easy to use. Built to be highly configurable and extensible for developers or freelancers.
 

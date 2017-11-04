@@ -3,7 +3,7 @@ Contributors: bradvin, fooplugins
 Donate link: http://fooplugins.com
 Tags: gallery, image gallery, photo gallery, responsive, album, media gallery, masonry gallery, portfolio, justified image gallery, video gallery, photography, photographer, retina
 Requires at least: 3.9
-Tested up to: 4.8
+Tested up to: 4.8.3
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -15,6 +15,10 @@ FooGallery is the best image gallery plugin for WordPress. Why? Stunning gallery
 FooGallery is the best image gallery plugin for WordPress. Why? Stunning gallery layouts, responsive, retina-ready, lightning fast, easy to use. Built to be highly configurable and extensible for developers or freelancers.
 
 [View the Foo Gallery Homepage & DEMO](http://foo.gallery/)
+
+**Major changes in 1.3.28!**
+
+There have been major updates to the gallery templates in v1.3.28. If you have updated, please test your galleries.
 
 **Retina Support**
 
@@ -34,45 +38,43 @@ Foo Gallery was designed to be the most developer-friendly gallery plugin availa
 
 **Features**
 
+*   Lazy loading
+*   Simple Pagination (dots)
+*   Live previews in admin
 *	Retina thumbnail support
 *	Add videos to galleries (via the [FooVideo premium extension](http://fooplugins.com/plugins/foovideo/?utm_source=foogalleryplugin&utm_medium=foogallerylink&utm_campaign=foogallery_wprepo))
 *	Albums built-in! (Activate the albums extension)
-*	Gallery custom post type
 *	Use built-in media library to manage images
 *	Drag n Drop reordering of images and galleries
-*	Built-in gallery templates
-*	Built-in support for FooBox
-*	Built-in Extensions Store
-*	Built on an extension framework
+*	Beautiful gallery templates
 *	Custom CSS for both galleries and albums
 *	Copy to clipboard shortcodes
 *	Visual shortcodes in rich text editor
-*	Gallery picker to insert shortcode
+*	Gallery picker to insert shortcodes
 *	Page usage metabox with one-click gallery page creation
 *	NextGen importer tool (albums and galleries)
 *	Multisite Support
 *	plus many, many more
 
+**PRO Features**
+
+*   Polaroid PRO Gallery Template
+*   Grid PRO Gallery Template
+*   Advanced Pagination
+*   Infinite Scroll
+*   Multiple Loaded Effects
+*   Multiple hover effects presets
+*   More on the way!
+
 **Gallery Demos**
 
 *	Responsive Image Gallery - [demo](http://foo.gallery/demos/responsive-image-gallery/)
-*	FooGrid Image Gallery - [light demo](http://foo.gallery/demos/foogrid-light/) - [dark demo](http://foo.gallery/demos/foogrid-dark/)
 *	Image Viewer Gallery - [light demo](http://foo.gallery/demos/image-viewer-gallery/) - [dark demo](http://foo.gallery/demos/image-viewer-gallery-dark/)
 *	Masonry Gallery - [demo](http://foo.gallery/demos/masonry-image-gallery/)
 *	Simple Portfolio - [demo](http://foo.gallery/demos/simple-portfolio/)
-*	Justified Gallery ([http://miromannino.github.io/Justified-Gallery](http://miromannino.github.io/Justified-Gallery/)) - [demo](http://foo.gallery/demos/justified-gallery/)
+*	Justified Gallery - [demo](http://foo.gallery/demos/justified-gallery/)
 *	Single Thumbnail Gallery - [demo](http://foo.gallery/demos/single-thumbnail-gallery/)
-*	Polaroid Gallery - [demo](http://foo.gallery/demos/polaroid-image-gallery/)
-*	Cube Gallery - [demo](http://foo.gallery/demos/cube-gallery/) - [Buy Now!](http://fooplugins.com/plugins/cube-gallery-template/?utm_source=foogalleryplugin&utm_medium=foogallerylink&utm_campaign=foogallery_wprepo)
 *	Mixed (Images + Videos) - [demo](http://foo.gallery/demos/mixed/)
-
-**Caption Demos**
-
-*	Simple Hover Captions - [demo](http://foo.gallery/demos/captions-simple-hover/)
-*	Always Visible Captions - [demo](http://foo.gallery/demos/responsive-image-gallery-captions/)
-*	Drop Captions - [demo](http://foo.gallery/demos/captions-drop/)
-*	Fade Captions - [demo](http://foo.gallery/demos/captions-fade/)
-*	Push Captions - [demo](http://foo.gallery/demos/captions-push/)
 
 **Album Demos**
 
@@ -90,15 +92,10 @@ Foo Gallery was designed to be the most developer-friendly gallery plugin availa
 *	Albums (bundled)
 *	Default Gallery Templates (bundled)
 *	NextGen Gallery and Album Importer (bundled)
-*	[FooGrid Gallery](http://fooplugins.com/plugins/foogrid/?utm_source=foogalleryplugin&utm_medium=foogallerylink&utm_campaign=foogallery_wprepo)
-*	[Cube Gallery](http://fooplugins.com/plugins/cube-gallery-template/?utm_source=foogalleryplugin&utm_medium=foogallerylink&utm_campaign=foogallery_wprepo)
 *	[Custom Branding](http://fooplugins.com/plugins/foogallery-branding/?utm_source=foogalleryplugin&utm_medium=foogallerylink&utm_campaign=foogallery_wprepo)
 *	[FooBox PRO Lightbox](http://fooplugins.com/plugins/foobox/?utm_source=foogalleryplugin&utm_medium=foogallerylink&utm_campaign=foogallery_wprepo)
 *	[FooBox FREE Lightbox](http://wordpress.org/plugins/foobox-image-lightbox)
-*	[Owl Carousel Template](http://wordpress.org/plugins/foogallery-owl-carousel-template/)
 *	[ZOOM Template](http://wordpress.org/plugins/foogallery-zoom-template/)
-*	[Thirsty Affiliates](http://wordpress.org/plugins/thirstyaffiliates-for-foogallery-extension/)
-*	[Polaroid Template](https://github.com/fooplugins/foogallery-polaroid-template)
 *	[Use Media Menu](https://github.com/fooplugins/foogallery-media-menu)
 *	Build your own!!!
 
@@ -149,6 +146,14 @@ Hell, yes! Check out our [developer page](http://foo.gallery/developers/)
 Update now to support FooVideo and many other improvements!
 
 == Changelog ==
+
+= 1.3.28 =
+
+* Complete rewrite of the built-in gallery templates
+* New : lazy loading
+* New : simple pagination
+* New : Live Previews when editing a gallery
+* 260+ updates, changes and bug fixes
 
 = 1.3.8 =
 
