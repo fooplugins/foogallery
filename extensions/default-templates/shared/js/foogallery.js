@@ -7006,6 +7006,9 @@
 		onInit: function(event, self){
 			self.justified.init();
 		},
+		onReady: function(event, self){
+			self.justified.layout( true );
+		},
 		onDestroy: function(event, self){
 			self.justified.destroy();
 		},

@@ -2443,6 +2443,8 @@ only screen and (min-resolution: 2.25dppx) {
 	background-image: none;
 	border: 1px solid transparent;
 	border-radius: 4px;
+	box-shadow: none;
+	outline: none;
 }
 
 /* Light - Default */
@@ -2503,6 +2505,7 @@ only screen and (min-resolution: 2.25dppx) {
 	font-size: 0;
 	outline: none;
 	color: transparent;
+	box-shadow: none;
 }
 .fg-paging-container .fg-dot-item .fg-dot-link:before {
 	content: "";

@@ -1211,6 +1211,7 @@ only screen and (min-resolution: 2.25dppx) {
 	font-size: 0;
 	outline: none;
 	color: transparent;
+	box-shadow: none;
 }
 .fg-paging-container .fg-dot-item .fg-dot-link:before {
 	content: "";
