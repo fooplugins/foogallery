@@ -802,7 +802,7 @@ function foogallery_image_placeholder_html( $args ) {
  * @return string
  */
 function foogallery_find_featured_attachment_thumbnail_html( $gallery, $args = null ){
-	if ( !isset( $gallery ) ) return '';
+    if ( !isset( $gallery ) || false === $gallery ) return '';
 
 	if ( !isset( $args ) ) {
 		$args = array(
@@ -830,7 +830,7 @@ function foogallery_find_featured_attachment_thumbnail_html( $gallery, $args = n
  * @return string
  */
 function foogallery_find_featured_attachment_thumbnail_src( $gallery, $args = null ){
-	if ( !isset( $gallery ) ) return '';
+	if ( !isset( $gallery ) || false === $gallery ) return '';
 
 	if ( !isset( $args ) ) {
 		$args = array(
