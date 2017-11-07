@@ -50,7 +50,7 @@ class FooGallery extends stdClass {
 
 		$this->load_meta( $post->ID );
 
-		do_action( 'foogallery_foogallery_instance_after_load', $this, $post );
+		do_action( 'foogallery_instance_after_load', $this, $post );
 	}
 
 	/**
