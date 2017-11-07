@@ -3610,9 +3610,9 @@
 				if (parent.length > 0){
 					self.$el.appendTo(parent);
 				}
-				var queue = $.Deferred(), existing;
+				var queue = $.Deferred(), promise = queue.promise(), existing;
 				if (self.$el.length > 0 && (existing = self.$el.data(_.dataTemplate)) instanceof _.Template){
-					queue.then(function(){
+					promise = promise.then(function(){
 						return existing.destroy().then(function(){
 							self.$el.data(_.dataTemplate, self);
 						});
@@ -3620,7 +3620,7 @@
 				} else {
 					self.$el.data(_.dataTemplate, self);
 				}
-				queue.then(function(){
+				promise.then(function(){
 					if (self.destroying) return _fn.rejectWith("destroy in progress");
 					// at this point we have our container element free of pre-existing instances so let's bind any event listeners supplied by the .on option
 					if (!_is.empty(self.opt.on)){
@@ -3852,16 +3852,19 @@
 			var self = this;
 			if (self.destroyed) return _fn.resolved;
 			self.destroying = true;
-			if (self.initializing && _is.promise(self._initialize)){
-				return self._initialize.always(function(){
+			return $.Deferred(function(def){
+				if (self.initializing && _is.promise(self._initialize)){
+					self._initialize.always(function(){
+						self.destroying = false;
+						self._destroy();
+						def.resolve();
+					});
+				} else {
 					self.destroying = false;
 					self._destroy();
-				});
-			} else {
-				self.destroying = false;
-				self._destroy();
-			}
-			return _fn.resolved;
+					def.resolve();
+				}
+			}).promise();
 		},
 		/**
 		 * @summary Destroy the template.
