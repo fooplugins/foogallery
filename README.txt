@@ -1,5 +1,5 @@
 === FooGallery - Image Gallery WordPress Plugin ===
-Contributors: bradvin, fooplugins
+Contributors: bradvin, steveush, fooplugins
 Donate link: http://fooplugins.com
 Tags: gallery, image gallery, photo gallery, responsive, album, media gallery, masonry gallery, portfolio, justified image gallery, video gallery, photography, photographer, retina
 Requires at least: 3.9
@@ -16,9 +16,9 @@ FooGallery is the best image gallery plugin for WordPress. Why? Stunning gallery
 
 [View the Foo Gallery Homepage & DEMO](http://foo.gallery/)
 
-**Major changes in 1.3.28!**
+**Major changes in 1.4.1!**
 
-There have been major updates to the gallery templates in v1.3.28. If you have updated, please test your galleries.
+There have been major updates to the gallery templates in v1.4.1. If you have updated, please test your galleries.
 
 **Retina Support**
 
@@ -146,6 +146,20 @@ Hell, yes! Check out our [developer page](http://foo.gallery/developers/)
 Update now to support FooVideo and many other improvements!
 
 == Changelog ==
+
+= 1.4.2 =
+
+* Fix : Justify gallery template issues
+* Fix : Masonry gallery template issues
+* Fix : Caption description not hidden when supposed to
+* Fix : Complete rework of thumbnail dimension logic!
+* Fix : Redirection bug on activation
+* Fix : Added checks for galleries causing PHP warnings
+* New : Last Row setting in Justify gallery template
+* New : Alignment setting in Simple Portfolio gallery template
+* New : Added more checks after load to ensure gallery layout is correct
+* Updated to Freemius SDK 1.2.2.10
+* Updated to latest client side JS and CSS
 
 = 1.3.28 =
 

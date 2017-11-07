@@ -2,7 +2,7 @@
 
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/fooplugins/foogallery/badges/quality-score.png?b=develop)](https://scrutinizer-ci.com/g/fooplugins/foogallery/?branch=develop)
 # FooGallery - Image Gallery WordPress Plugin #
-**Contributors:** bradvin, fooplugins
+**Contributors:** bradvin, steveush, fooplugins
 
 **Donate link:** http://fooplugins.com
 
@@ -22,7 +22,7 @@ FooGallery is the best image gallery plugin for WordPress. Why? Stunning gallery
 
 ## Description ##
 
-**Major changes in 1.3.28**
+**Major changes in 1.4.1**
 
 FooGallery is the best image gallery plugin for WordPress. Why? Stunning gallery layouts, responsive, retina-ready, lightning fast, easy to use. Built to be highly configurable and extensible for developers or freelancers.
 
@@ -157,6 +157,28 @@ Hell, yes! Check out our [developer page](http://foo.gallery/developers/)
 Update now to support FooVideo and many other improvements!
 
 ## Changelog ##
+
+### 1.4.2 ###
+
+* Fix : Justify gallery template issues
+* Fix : Masonry gallery template issues
+* Fix : Caption description not hidden when supposed to
+* Fix : Complete rework of thumbnail dimension logic!
+* Fix : Redirection bug on activation
+* Fix : Added checks for galleries causing PHP warnings
+* New : Last Row setting in Justify gallery template
+* New : Alignment setting in Simple Portfolio gallery template
+* New : Added more checks after load to ensure gallery layout is correct
+* Updated to Freemius SDK 1.2.2.10
+* Updated to latest client side JS and CSS
+
+### 1.3.28 ###
+
+* Complete rewrite of the built-in gallery templates
+* New : lazy loading
+* New : simple pagination
+* New : Live Previews when editing a gallery
+* 260+ updates, changes and bug fixes
 
 ### 1.3.8 ###
 
