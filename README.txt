@@ -147,7 +147,7 @@ Update now to support FooVideo and many other improvements!
 
 == Changelog ==
 
-= 1.4.2 =
+= 1.4.3 =
 
 * Fix : Justify gallery template issues
 * Fix : Masonry gallery template issues
@@ -155,9 +155,11 @@ Update now to support FooVideo and many other improvements!
 * Fix : Complete rework of thumbnail dimension logic!
 * Fix : Redirection bug on activation
 * Fix : Added checks for galleries causing PHP warnings
+* Fix : Multisite warnings on activation
 * New : Last Row setting in Justify gallery template
 * New : Alignment setting in Simple Portfolio gallery template
 * New : Added more checks after load to ensure gallery layout is correct
+* New : Added lazy loading advanced setting
 * Updated to Freemius SDK 1.2.2.10
 * Updated to latest client side JS and CSS
 
