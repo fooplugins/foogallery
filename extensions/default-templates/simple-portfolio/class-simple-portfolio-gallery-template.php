@@ -117,6 +117,25 @@ if ( !class_exists( 'FooGallery_Simple_Portfolio_Gallery_Template' ) ) {
 						)
                     ),
                     array(
+                        'id'      => 'align',
+                        'title'   => __( 'Alignment', 'foogallery' ),
+                        'desc'    => __( 'The horizontal alignment of the thumbnails inside the gallery.', 'foogallery' ),
+                        'section' => __( 'General', 'foogallery' ),
+                        'type'    => 'radio',
+                        'spacer'  => '<span class="spacer"></span>',
+                        'default' => 'center',
+                        'choices' => array(
+                            'left' => __( 'Left', 'foogallery' ),
+                            'center' => __( 'Center', 'foogallery' ),
+                            'right' => __( 'Right', 'foogallery' ),
+                        ),
+                        'row_data'=> array(
+                            'data-foogallery-change-selector' => 'input:radio',
+                            'data-foogallery-value-selector' => 'input:checked',
+                            'data-foogallery-preview' => 'shortcode',
+                        )
+                    ),
+                    array(
                         'id'      => 'caption_position',
                         'title' => __('Caption Position', 'foogallery'),
                         'desc' => __('Where the captions are displayed in relation to the thumbnail.', 'foogallery'),
@@ -195,6 +214,9 @@ if ( !class_exists( 'FooGallery_Simple_Portfolio_Gallery_Template' ) ) {
 		function add_data_options($options, $gallery, $attributes) {
 			$gutter = foogallery_gallery_template_setting( 'gutter', 40 );
 			$options['template']['gutter'] = intval($gutter);
+
+			$align = foogallery_gallery_template_setting( 'align', 'center' );
+            $options['template']['align'] = $align;
 			return $options;
 		}
 
@@ -224,6 +246,7 @@ if ( !class_exists( 'FooGallery_Simple_Portfolio_Gallery_Template' ) ) {
 		function preview_arguments( $args, $post_data ) {
 			$args['thumbnail_dimensions'] = $post_data[FOOGALLERY_META_SETTINGS]['simple_portfolio_thumbnail_dimensions'];
 			$args['gutter'] = $post_data[FOOGALLERY_META_SETTINGS]['simple_portfolio_gutter'];
+            $args['align'] = $post_data[FOOGALLERY_META_SETTINGS]['simple_portfolio_align'];
 			return $args;
 		}
 
