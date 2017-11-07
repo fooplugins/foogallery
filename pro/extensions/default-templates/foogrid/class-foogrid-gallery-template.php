@@ -51,6 +51,11 @@ if ( !class_exists( 'FooGallery_FooGrid_Gallery_Template' ) ) {
 
 			//build up the thumb dimensions from some arguments
 			add_filter( 'foogallery_calculate_thumbnail_dimensions-foogridpro', array( $this, 'build_thumbnail_dimensions_from_arguments' ), 10, 2 );
+
+			//check if the old FooGrid is installed
+			if ( is_admin() ) {
+                add_action( 'admin_notices', array( $this, 'display_foogrid_notice') );
+            }
 		}
 
 		/**
@@ -344,5 +349,24 @@ if ( !class_exists( 'FooGallery_FooGrid_Gallery_Template' ) ) {
 			$dimensions = $foogallery->get_meta( 'foogridpro_thumbnail_size', false );
 			return $dimensions;
 		}
+
+        /**
+         * Display a message if the FooGrid extension is also installed
+         */
+		function display_foogrid_notice() {
+		    if ( class_exists('FooGrid_Template_FooGallery_Extension') ) {
+                ?>
+                <div class="notice error">
+                    <p>
+                        <strong><?php _e('FooGrid Extension Redundant!', 'foogallery'); ?></strong><br/>
+                        <?php _e('You have both FooGallery PRO and the FooGrid extension activated. FooGallery PRO includes the Grid PRO gallery template, which makes the FooGrid extension redundant.', 'foogallery'); ?>
+                        <br/>
+                        <?php _e('Please edit all galleries that use the FooGrid gallery template and change them to use the Grid PRO gallery template. Once this is done, you can delete the FooGrid extension.', 'foogallery'); ?>
+                        <br/>
+                    </p>
+                </div>
+                <?php
+            }
+        }
 	}
 }

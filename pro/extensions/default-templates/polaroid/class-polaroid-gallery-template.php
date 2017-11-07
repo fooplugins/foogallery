@@ -35,6 +35,11 @@ if ( !class_exists( 'FooGallery_Polaroid_Gallery_Template' ) ) {
             //build up the thumb dimensions on save
             add_filter( 'foogallery_template_thumbnail_dimensions-polaroid_new', array( $this, 'get_thumbnail_dimensions' ), 10, 2 );
 
+            //check if the old Polaroid is installed
+            if ( is_admin() ) {
+                add_action( 'admin_notices', array( $this, 'display_polaroid_notice') );
+            }
+
         }
 
 		/**
@@ -275,6 +280,25 @@ if ( !class_exists( 'FooGallery_Polaroid_Gallery_Template' ) ) {
             ) );
             $dimensions['crop'] = true;
             return $dimensions;
+        }
+
+        /**
+         * Display a message if the Polaroid extension is also installed
+         */
+        function display_polaroid_notice() {
+            if ( class_exists('FooGallery_Polaroid_Template_Extension') ) {
+                ?>
+                <div class="notice error">
+                    <p>
+                        <strong><?php _e('Polaroid Extension Redundant!', 'foogallery'); ?></strong><br/>
+                        <?php _e('You have both FooGallery PRO and the old Polaroid extension activated. FooGallery PRO includes the Polaroid PRO gallery template, which makes the free Polaroid extension redundant.', 'foogallery'); ?>
+                        <br/>
+                        <?php _e('Please edit all galleries that use the old Polaroid gallery template and change them to use the Polaroid PRO gallery template. Once this is done, you can delete the free Polaroid extension.', 'foogallery'); ?>
+                        <br/>
+                    </p>
+                </div>
+                <?php
+            }
         }
 	}
 }
