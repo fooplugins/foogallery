@@ -307,12 +307,12 @@ if ( ! class_exists( 'FooGallery_Plugin' ) ) {
 		 */
 		private static function get_blog_ids() {
 
-			if ( function_exists( 'wp_get_sites' ) ) {
+			if ( function_exists( 'get_sites' ) ) {
 
-				$sites = wp_get_sites();
+				$sites = get_sites();
 				$blog_ids = array();
-				foreach ( $sites as $site ) {
-					$blog_ids[] = $site['blog_id'];
+                foreach ( $sites as $site ) {
+                    $blog_ids[] = $site->blog_id;
 				}
 				return $blog_ids;
 			} else {
