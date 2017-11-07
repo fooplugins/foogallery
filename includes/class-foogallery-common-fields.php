@@ -441,7 +441,7 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 				);
 
 				$fields[] = array(
-					'id'       => 'caption_desc',
+					'id'       => 'caption_desc_source',
 					'title'    => __( 'Description', 'foogallery' ),
 					'desc'     => __( 'Decide where captions descriptions are pulled from. By default, the general settings are used, but it can be overridden per gallery', 'foogallery' ),
 					'section'  => __( 'Captions', 'foogallery' ),
