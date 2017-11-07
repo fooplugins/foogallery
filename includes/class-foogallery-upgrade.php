@@ -151,7 +151,6 @@ if ( ! class_exists( 'FooGallery_Upgrade_Helper' ) ) {
 
                 //calculate new thumb dimensions if needed
                 $thumb_dimensions = new FooGallery_Thumbnail_Dimensions();
-                $thumb_dimensions->calculate_thumbnail_dimensions($foogallery->ID);
             }
 
 			return $new_settings;
