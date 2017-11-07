@@ -130,6 +130,28 @@ if ( !class_exists( 'FooGallery_Justified_Gallery_Template' ) ) {
                         'default' => 'none',
                         'type'    => 'lightbox',
                     ),
+                    array(
+                        'id'      => 'lastrow',
+                        'title'   => __( 'Last Row', 'foogallery' ),
+                        'desc'    => __( 'What should be done with the last row in the gallery?', 'foogallery' ),
+                        'section' => __( 'General', 'foogallery' ),
+                        'type'    => 'radio',
+                        'spacer'  => '<span class="spacer"></span>',
+                        'default' => 'center',
+                        'choices' => array(
+                            'hide' => __( 'Hide', 'foogallery' ),
+                            'justify' => __( 'Justify', 'foogallery' ),
+                            'nojustify' => __( 'No Justify', 'foogallery' ),
+                            'right' => __( 'Right', 'foogallery' ),
+                            'center' => __( 'Center', 'foogallery' ),
+                            'left' => __( 'Left', 'foogallery' ),
+                        ),
+                        'row_data'=> array(
+                            'data-foogallery-change-selector' => 'input:radio',
+                            'data-foogallery-value-selector' => 'input:checked',
+                            'data-foogallery-preview' => 'shortcode',
+                        )
+                    ),
                 ),
 			);
 
@@ -180,10 +202,12 @@ if ( !class_exists( 'FooGallery_Justified_Gallery_Template' ) ) {
 				$max_row_height = intval( $max_row_height );
 			}
 			$margins = foogallery_gallery_template_setting( 'margins', '1' );
+			$lastRow = foogallery_gallery_template_setting( 'lastrow', 'center' );
 
 			$options['template']['rowHeight'] = intval($row_height);
 			$options['template']['maxRowHeight'] = $max_row_height;
 			$options['template']['margins'] = intval($margins);
+            $options['template']['lastRow'] = $lastRow;
 
 			return $options;
 		}
@@ -200,6 +224,7 @@ if ( !class_exists( 'FooGallery_Justified_Gallery_Template' ) ) {
 			$args['row_height'] = $post_data[FOOGALLERY_META_SETTINGS]['justified_row_height'];
 			$args['max_row_height'] = $post_data[FOOGALLERY_META_SETTINGS]['justified_max_row_height'];
 			$args['margins'] = $post_data[FOOGALLERY_META_SETTINGS]['justified_margins'];
+            $args['lastrow'] = $post_data[FOOGALLERY_META_SETTINGS]['justified_lastrow'];
 			return $args;
 		}
 
