@@ -3786,6 +3786,14 @@
 					if (self.destroying) return _fn.rejectWith("destroy in progress");
 					self.initializing = false;
 					self.initialized = true;
+
+					// performed purely to re-check if any items need to be loaded after content has possibly shifted
+					self._check(200);
+					self._check(500);
+					self._check(1000);
+					self._check(2000);
+					self._check(5000);
+
 					/**
 					 * @summary Raised after the template is fully initialized and is ready to be interacted with.
 					 * @event FooGallery.Template~"ready.foogallery"
@@ -3931,8 +3939,23 @@
 			} else {
 				items = self.items.available();
 			}
-			var p = self.items.load(items);
-			return p;
+			return self.items.load(items);
+		},
+
+		/**
+		 * @summary Check if any available items need to be loaded and loads them.
+		 * @memberof FooGallery.Template#
+		 * @function _check
+		 * @private
+		 */
+		_check: function(delay){
+			delay = _is.number(delay) ? delay : 0;
+			var self = this;
+			setTimeout(function(){
+				if (self.initialized && (!self.destroying || !self.destroyed)){
+					self.loadAvailable();
+				}
+			}, delay);
 		},
 
 		// #############
@@ -6590,6 +6613,12 @@
 
 			self.masonry = new Masonry( self.$el.get(0), self.template );
 		},
+		onInit: function(event, self){
+			self.masonry.layout();
+		},
+		onPostInit: function(event, self){
+			self.masonry.layout();
+		},
 		onReady: function(event, self){
 			self.masonry.layout();
 		},
@@ -7006,8 +7035,11 @@
 		onInit: function(event, self){
 			self.justified.init();
 		},
+		onPostInit: function(event, self){
+			self.justified.layout();
+		},
 		onReady: function(event, self){
-			self.justified.layout( true );
+			self.justified.layout();
 		},
 		onDestroy: function(event, self){
 			self.justified.destroy();
