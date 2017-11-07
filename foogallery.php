@@ -178,7 +178,7 @@ if ( ! class_exists( 'FooGallery_Plugin' ) ) {
 				FOOGALLERY_ADMIN_MENU_SETTINGS_SLUG === $plugin_page ||
 				FOOGALLERY_ADMIN_MENU_EXTENSIONS_SLUG === $plugin_page ||
 				FOOGALLERY_ADMIN_MENU_SYSTEMINFO_SLUG === $plugin_page) {
-				fs_redirect( 'admin.php?page=' . FOOGALLERY_SLUG );
+				//fs_redirect( 'admin.php?page=' . FOOGALLERY_SLUG );
 			}
 		}
 
