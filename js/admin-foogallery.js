@@ -65,7 +65,7 @@
 			$preview_container = $('.foogallery_preview_container');
 
 		if ( setContainerHeight ) {
-			//$preview_container.css('height', $preview_container.height());
+			$preview_container.css('height', $preview_container.height());
 		}
 
 		//build up the container class
