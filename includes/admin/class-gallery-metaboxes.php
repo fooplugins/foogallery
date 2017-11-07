@@ -592,7 +592,8 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 
 					$args = array(
 						'template'       => $template,
-						'attachment_ids' => $_POST['foogallery_attachments']
+						'attachment_ids' => $_POST['foogallery_attachments'],
+                        'preview'        => true
 					);
 
 					$args = apply_filters( 'foogallery_preview_arguments', $args, $_POST, $template );
