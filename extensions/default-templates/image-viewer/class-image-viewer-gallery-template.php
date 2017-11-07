@@ -241,11 +241,14 @@ if ( !class_exists( 'FooGallery_Image_Viewer_Gallery_Template' ) ) {
 		 * @return mixed
 		 */
 		function build_thumbnail_dimensions_from_arguments( $dimensions, $arguments ) {
-			return array(
-				'height' => intval( $arguments['thumbnail_size']['height'] ),
-				'width'  => intval( $arguments['thumbnail_size']['width'] ),
-				'crop'   => '1'
-			);
+            if ( array_key_exists( 'thumbnail_size', $arguments) ) {
+                return array(
+                    'height' => intval($arguments['thumbnail_size']['height']),
+                    'width' => intval($arguments['thumbnail_size']['width']),
+                    'crop' => '1'
+                );
+            }
+            return null;
 		}
 	}
 }

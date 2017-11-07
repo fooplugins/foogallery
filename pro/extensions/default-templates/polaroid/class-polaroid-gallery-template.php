@@ -31,7 +31,11 @@ if ( !class_exists( 'FooGallery_Polaroid_Gallery_Template' ) ) {
 
 			//build up the thumb dimensions from some arguments
 			add_filter( 'foogallery_calculate_thumbnail_dimensions-polaroid_new', array( $this, 'build_thumbnail_dimensions_from_arguments' ), 10, 2 );
-		}
+
+            //build up the thumb dimensions on save
+            add_filter( 'foogallery_template_thumbnail_dimensions-polaroid_new', array( $this, 'get_thumbnail_dimensions' ), 10, 2 );
+
+        }
 
 		/**
 		 * Register myself so that all associated JS and CSS files can be found and automatically included
@@ -232,11 +236,9 @@ if ( !class_exists( 'FooGallery_Polaroid_Gallery_Template' ) ) {
 		 * @return mixed
 		 */
 		function preview_arguments( $args, $post_data ) {
-			$args['thumbnail_width'] = $post_data[FOOGALLERY_META_SETTINGS]['polaroid_new_thumbnail_dimensions']['width'];
-			$args['thumbnail_height'] = $post_data[FOOGALLERY_META_SETTINGS]['polaroid_new_thumbnail_dimensions']['height'];
-			$args['thumbnail_crop'] = isset( $post_data[FOOGALLERY_META_SETTINGS]['polaroid_new_thumbnail_dimensions']['crop'] ) ? '1' : '0';
-			$args['gutter'] = $post_data[FOOGALLERY_META_SETTINGS]['polaroid_new_gutter'];
-			return $args;
+            $args['thumbnail_dimensions'] = $post_data[FOOGALLERY_META_SETTINGS]['polaroid_new_thumbnail_dimensions'];
+            $args['gutter'] = $post_data[FOOGALLERY_META_SETTINGS]['polaroid_new_gutter'];
+            return $args;
 		}
 
 		/**
@@ -248,11 +250,31 @@ if ( !class_exists( 'FooGallery_Polaroid_Gallery_Template' ) ) {
 		 * @return mixed
 		 */
 		function build_thumbnail_dimensions_from_arguments( $dimensions, $arguments ) {
-			return array(
-				'height' => intval( $arguments['thumbnail_height'] ),
-				'width'  => intval( $arguments['thumbnail_width'] ),
-				'crop'   => $arguments['thumbnail_crop'] === '1'
-			);
+            if ( array_key_exists( 'thumbnail_dimensions', $arguments) ) {
+                return array(
+                    'height' => intval($arguments['thumbnail_dimensions']['height']),
+                    'width' => intval($arguments['thumbnail_dimensions']['width']),
+                    'crop' => '1'
+                );
+            }
+            return null;
 		}
+
+        /**
+         * Get the thumb dimensions arguments saved for the gallery for this gallery template
+         *
+         * @param array $dimensions
+         * @param FooGallery $foogallery
+         *
+         * @return mixed
+         */
+        function get_thumbnail_dimensions( $dimensions, $foogallery ) {
+            $dimensions = $foogallery->get_meta( 'polaroid_new_thumbnail_dimensions', array(
+                'width' => 250,
+                'height' => 200
+            ) );
+            $dimensions['crop'] = true;
+            return $dimensions;
+        }
 	}
 }

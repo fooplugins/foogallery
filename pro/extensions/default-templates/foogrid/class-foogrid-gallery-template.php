@@ -322,11 +322,14 @@ if ( !class_exists( 'FooGallery_FooGrid_Gallery_Template' ) ) {
 		 * @return mixed
 		 */
 		function build_thumbnail_dimensions_from_arguments( $dimensions, $arguments ) {
-			return array(
-				'height' => intval( $arguments['thumbnail_height'] ),
-				'width'  => intval( $arguments['thumbnail_width'] ),
-				'crop'   => $arguments['thumbnail_crop'] === '1'
-			);
+            if ( array_key_exists( 'thumbnail_height', $arguments) ) {
+                return array(
+                    'height' => intval($arguments['thumbnail_height']),
+                    'width' => intval($arguments['thumbnail_width']),
+                    'crop' => $arguments['thumbnail_crop'] === '1'
+                );
+            }
+            return null;
 		}
 
 		/**

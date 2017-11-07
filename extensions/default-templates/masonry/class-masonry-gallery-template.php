@@ -253,11 +253,14 @@ if ( !class_exists( 'FooGallery_Masonry_Gallery_Template' ) ) {
 		 * @return mixed
 		 */
 		function build_thumbnail_dimensions_from_arguments( $dimensions, $arguments ) {
-			return array(
-				'height' => 0,
-				'width'  => intval( $arguments['thumbnail_width'] ),
-				'crop'   => false
-			);
+            if ( array_key_exists( 'thumbnail_width', $arguments) ) {
+                return array(
+                    'height' => 0,
+                    'width' => intval($arguments['thumbnail_width']),
+                    'crop' => false
+                );
+            }
+            return null;
 		}
 	}
 }
