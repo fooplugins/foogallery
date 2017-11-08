@@ -69,7 +69,7 @@ if ( ! class_exists( 'FooGallery_Cache' ) ) {
 			$caching_enabled = $this->is_caching_enabled();
 
 			//check if caching is disabled and quit early
-			if ( $caching_enabled ) {
+			if ( !$caching_enabled ) {
 				return;
 			}
 
@@ -92,15 +92,26 @@ if ( ! class_exists( 'FooGallery_Cache' ) ) {
 		}
 
 		function is_caching_enabled() {
-			global $foogallery_gallery_preview;
+            global $current_foogallery_arguments;
 
-			//never cache if showing a preview
-			if ( isset( $foogallery_gallery_preview ) && true === $foogallery_gallery_preview ) {
-				return false;
-			}
+			//do some checks if we are using arguments
+			if ( isset( $current_foogallery_arguments ) ) {
+
+                //never cache if showing a preview
+                if ( array_key_exists( 'preview', $current_foogallery_arguments ) &&
+                    true === $current_foogallery_arguments['preview'] ) {
+                    return false;
+                }
+
+                //never cache if we are passing in extra arguments via the shortcode
+                $array_keys = array_keys( $current_foogallery_arguments );
+			    if ( $array_keys != array( 'id', 'gallery' ) ) {
+                    return false;
+                }
+            }
 
 			//next, check the settings
-			if ( 'on' === foogallery_get_setting( 'disable_html_cache' ) ) {
+			if ( 'on' === foogallery_get_setting( 'enable_html_cache' ) ) {
 				return true;
 			}
 
@@ -155,9 +166,9 @@ if ( ! class_exists( 'FooGallery_Cache' ) ) {
 		function add_cache_settings( $settings ) {
 
 			$cache_settings[] = array(
-				'id'      => 'disable_html_cache',
-				'title'   => __( 'Disable HTML Cache', 'foogallery' ),
-				'desc'    => __( 'The gallery HTML is cached by default. You can choose to disable the cache for debugging purposes. It is NOT recommended.', 'foogallery' ),
+				'id'      => 'enable_html_cache',
+				'title'   => __( 'Enable HTML Cache', 'foogallery' ),
+				'desc'    => __( 'The gallery HTML that is generated can be cached. This can reduce the number of calls to the database when displaying a gallery and can increase site performance.', 'foogallery' ),
 				'type'    => 'checkbox',
 				'tab'     => 'general',
 				'section' => __( 'Cache', 'foogallery' )
@@ -166,7 +177,7 @@ if ( ! class_exists( 'FooGallery_Cache' ) ) {
 			$cache_settings[] = array(
 				'id'      => 'clear_html_cache',
 				'title'   => __( 'Clear HTML Cache', 'foogallery' ),
-				'desc'    => sprintf( __( '%s caches the gallery HTML output to improve page performance. Use this button to clear the gallery HTML that has been cached across all galleries.', 'foogallery' ), foogallery_plugin_name() ),
+				'desc'    => __( 'If you enable the HTML cache, then you can use this button to clear the gallery HTML that has been cached for all galleries.', 'foogallery' ),
 				'type'    => 'clear_gallery_cache_button',
 				'tab'     => 'general',
 				'section' => __( 'Cache', 'foogallery' )
