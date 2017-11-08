@@ -148,9 +148,6 @@ if ( ! class_exists( 'FooGallery_Upgrade_Helper' ) ) {
 
                 //clear any previously calculated thumb dimensions
                 delete_post_meta($foogallery->ID, FOOGALLERY_META_THUMB_DIMENSIONS);
-
-                //calculate new thumb dimensions if needed
-                $thumb_dimensions = new FooGallery_Thumbnail_Dimensions();
             }
 
 			return $new_settings;
