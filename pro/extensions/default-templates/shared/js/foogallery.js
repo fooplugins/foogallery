@@ -3556,14 +3556,6 @@
 			 */
 			self.state = _.components.make("state", self);
 			/**
-			 * @summary The throttle used by the template to limit expensive code execution.
-			 * @memberof FooGallery.Template#
-			 * @name _throttle
-			 * @type {?FooGallery.utils.Throttle}
-			 * @private
-			 */
-			self._throttle = new _utils.Throttle(self.opt.throttle);
-			/**
 			 * @summary The promise object returned by the {@link FooGallery.Template#initialize|initialize} method.
 			 * @memberof FooGallery.Template#
 			 * @name _initialize
@@ -3760,7 +3752,7 @@
 					if (e.isDefaultPrevented()) return _fn.rejectWith("post-init default prevented");
 					var state = self.state.parse();
 					self.state.set(_is.empty(state) ? self.state.initial() : state);
-					$(window).on("scroll.foogallery", {self: self}, self.onWindowScroll)
+					$(window).on("scroll.foogallery", {self: self}, self.throttle(self.onWindowScroll, self.opt.throttle))
 							.on("popstate.foogallery", {self: self}, self.onWindowPopState);
 				}).then(function(){
 					if (self.destroying) return _fn.rejectWith("destroy in progress");
@@ -3892,7 +3884,7 @@
 			 */
 			self.raise("destroy");
 			$(window).off("popstate.foogallery", self.onWindowPopState)
-					.off("scroll.foogallery", self.onWindowScroll);
+					.off("scroll.foogallery");
 			self.state.destroy();
 			if (self.pages) self.pages.destroy();
 			self.items.destroy();
@@ -4019,6 +4011,25 @@
 			self.raise("layout");
 		},
 
+		/**
+		 * @summary Throttles the supplied function to only execute once every N milliseconds.
+		 * @memberof FooGallery.Template#
+		 * @function throttle
+		 * @param {Function} fn - The function to throttle.
+		 * @param {number} wait - The number of milliseconds to wait before allowing execution.
+		 * @returns {Function}
+		 */
+		throttle: function(fn, wait){
+			var time = Date.now();
+			return function() {
+				if ((time + wait - Date.now()) < 0) {
+					var args = _fn.arg2arr(arguments);
+					fn.apply(this, args);
+					time = Date.now();
+				}
+			}
+		},
+
 		// ###############
 		// ## Listeners ##
 		// ###############
@@ -4046,9 +4057,7 @@
 		 */
 		onWindowScroll: function(e){
 			var self = e.data.self;
-			self._throttle.limit(function(){
-				self.loadAvailable();
-			});
+			self.loadAvailable();
 		}
 	});
 
@@ -7124,6 +7133,9 @@
 		 */
 		onDetachedItems: function(event, self, items){
 			self.masonry.layout();
+		},
+		onLoadedItems: function(event, self, items){
+			self.masonry.layout();
 		}
 	});
 
@@ -7462,10 +7474,10 @@
 			self.justified.init();
 		},
 		onPostInit: function(event, self){
-			self.justified.layout();
+			self.justified.layout( true );
 		},
 		onReady: function(event, self){
-			self.justified.layout();
+			self.justified.layout( true );
 		},
 		onDestroy: function(event, self){
 			self.justified.destroy();
@@ -7474,7 +7486,7 @@
 			self.justified.layout( true );
 		},
 		onParsedItems: function(event, self, items){
-			self.justified.layout();
+			self.justified.layout( true );
 		},
 		onAppendedItems: function(event, self, items){
 			self.justified.layout( true );
