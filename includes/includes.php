@@ -14,6 +14,7 @@ require_once( FOOGALLERY_PATH . 'includes/extensions/class-extensions-loader.php
 require_once( FOOGALLERY_PATH . 'includes/class-attachment-filters.php' );
 require_once( FOOGALLERY_PATH . 'includes/class-retina.php' );
 require_once( FOOGALLERY_PATH . 'includes/class-foogallery-upgrade.php' );
+require_once( FOOGALLERY_PATH . 'includes/class-foogallery-widget.php' );
 
 //check for WPThumb, include.
 if ( ! class_exists( 'WP_Thumb' ) ) {

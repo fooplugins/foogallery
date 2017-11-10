@@ -159,6 +159,8 @@ if ( ! class_exists( 'FooGallery_Plugin' ) ) {
 			$checker = new FooGallery_Version_Check();
 			$checker->wire_up_checker();
 
+            new FooGallery_Widget_Init();
+
 			if ( foogallery_fs()->is__premium_only() ) {
 				if ( foogallery_fs()->can_use_premium_code() ) {
 					require_once FOOGALLERY_PATH . 'pro/foogallery-pro.php';
