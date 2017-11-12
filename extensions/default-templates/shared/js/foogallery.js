@@ -3131,7 +3131,7 @@
 	 */
 
 	// this automatically initializes all templates on page load
-	_utils.ready(function () {
+	$(function () {
 		$('[id^="foogallery-"]').foogallery();
 	});
 
