@@ -147,6 +147,15 @@ Update now to support FooVideo and many other improvements!
 
 == Changelog ==
 
+= 1.4.6 =
+
+* Fix : conflicts with other scripts or plugins using data-src attributes
+* Fix : script moved back to use jQuery ready event, to avoid some conflicts
+* New : Global setting to disable lazy loading for all galleries
+* New : FooGallery Widget!
+* New : Admin notice for Autoptomize users to delete cache on updates
+* Update to latest client side JS
+
 = 1.4.5 =
 
 * Fix : Lazy loading - scrolling galleries in certain scenarios were not loading thumbs
