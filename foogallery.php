@@ -161,6 +161,9 @@ if ( ! class_exists( 'FooGallery_Plugin' ) ) {
 
             new FooGallery_Widget_Init();
 
+            //include the default templates no matter what!
+            new FooGallery_Default_Templates();
+
 			if ( foogallery_fs()->is__premium_only() ) {
 				if ( foogallery_fs()->can_use_premium_code() ) {
 					require_once FOOGALLERY_PATH . 'pro/foogallery-pro.php';
