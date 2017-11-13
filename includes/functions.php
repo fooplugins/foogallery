@@ -527,11 +527,13 @@ function foogallery_sorting_get_posts_order_arg( $sorting_option ) {
 }
 
 /**
+ * @deprecated 1.4.7 Default templates loaded by default and no longer activated via extension
+ *
  * Activate the default templates extension when there are no gallery templates loaded
  */
 function foogallery_activate_default_templates_extension() {
-	$api = foogallery_extensions_api();
-	$api->activate( 'default_templates' );
+    //no longer needed but left in case any 3rd party extensions call this function
+    _deprecated_function( __FUNCTION__, '1.4.7' );
 }
 
 /**
