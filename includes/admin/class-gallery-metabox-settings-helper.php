@@ -33,13 +33,6 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings_Helper' ) ) {
 
 			$this->gallery_templates = foogallery_gallery_templates();
 
-			//check if we have no templates
-			if ( 0 === count( $this->gallery_templates ) ) {
-				//force the default template to activate if there are no other gallery templates
-				foogallery_activate_default_templates_extension();
-				$this->gallery_templates = foogallery_gallery_templates();
-			}
-
 			$this->current_gallery_template = foogallery_default_gallery_template();
 			if ( ! empty($this->gallery->gallery_template) ) {
 				$this->current_gallery_template = $this->gallery->gallery_template;
