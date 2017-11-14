@@ -3130,11 +3130,6 @@
 	 * });
 	 */
 
-	// this automatically initializes all templates on page load
-	$(function () {
-		$('[id^="foogallery-"]').foogallery();
-	});
-
 })(
 	FooGallery.$,
 	FooGallery,
@@ -7600,4 +7595,15 @@
 		FooGallery.$,
 		FooGallery,
 		FooGallery.utils.obj
+);
+(function($){
+
+	// this automatically initializes all templates on page load
+	$(function () {
+		$('[id^="foogallery-"]').foogallery();
+	});
+
+})(
+		FooGallery.$,
+		FooGallery
 );

@@ -2885,6 +2885,9 @@ only screen and (min-resolution: 2.25dppx) {
 .fg-masonry.fg-masonry-fixed .fg-thumb {
 	display: inline-block;
 }
+.fg-masonry.fg-masonry-fixed .fg-image {
+	max-width: 100%;
+}
 
 .fg-masonry .fg-column-width {
 	display: inline-block;
