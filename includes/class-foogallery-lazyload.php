@@ -80,14 +80,14 @@ if ( ! class_exists( 'FooGallery_LazyLoad' ) ) {
                         //rename src => data-src
                         $src = $attr['src'];
                         unset($attr['src']);
-                        $attr['data-fg-src'] = $src;
+                        $attr['data-src-fg'] = $src;
                     }
 
                     if (isset($attr['srcset'])) {
                         //rename srcset => data-srcset
                         $src = $attr['srcset'];
                         unset($attr['srcset']);
-                        $attr['data-fg-srcset'] = $src;
+                        $attr['data-srcset-fg'] = $src;
                     }
                 }
             }
@@ -108,8 +108,8 @@ if ( ! class_exists( 'FooGallery_LazyLoad' ) ) {
         {
             if ( isset( $gallery->lazyload_support ) && true === $gallery->lazyload_support ) {
                 $options['lazy'] = $gallery->lazyload_enabled && !$gallery->lazyload_forced_disabled;
-                $options['src'] = 'data-fg-src';
-                $options['srcset'] = 'data-fg-srcset';
+                $options['src'] = 'data-src-fg';
+                $options['srcset'] = 'data-srcset-fg';
             }
             return $options;
         }
