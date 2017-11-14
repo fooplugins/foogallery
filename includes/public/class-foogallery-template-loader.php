@@ -113,6 +113,11 @@ class FooGallery_Template_Loader {
 				_e( 'No gallery template found!', 'foogallery' );
 			}
 		}
+
+		//cleanup globals in case there are multiple galleries on a page
+        $current_foogallery = null;
+        $current_foogallery_arguments = null;
+        $current_foogallery_template = null;
 	}
 
 	/***
