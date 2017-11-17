@@ -5,7 +5,9 @@
 global $current_foogallery;
 global $current_foogallery_arguments;
 $args = foogallery_gallery_template_setting( 'thumbnail_dimensions', array() );
-$args['crop'] = '1'; //we now force thumbs to be cropped
+if ( !array_key_exists( 'crop', $args ) ) {
+    $args['crop'] = '1'; //we now force thumbs to be cropped by default
+}
 $lightbox = foogallery_gallery_template_setting( 'lightbox', 'unknown' );
 $position = foogallery_gallery_template_setting( 'position', 'fg-center' );
 
