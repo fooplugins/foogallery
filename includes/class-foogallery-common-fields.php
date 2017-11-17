@@ -202,6 +202,7 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 					),
 					'row_data' => array(
 						'data-foogallery-change-selector' => 'input:radio',
+                        'data-foogallery-value-selector'  => 'input:checked',
 						'data-foogallery-preview'         => 'class'
 					)
 				);
@@ -220,7 +221,8 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 					)
 					),
 					'row_data' => array(
-						'data-foogallery-change-selector' => 'input:radio',
+						'data-foogallery-change-selector' => 'select',
+                        'data-foogallery-value-selector'  => 'select option:selected',
 						'data-foogallery-preview'         => 'class'
 					)
 				);
