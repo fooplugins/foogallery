@@ -3130,11 +3130,6 @@
 	 * });
 	 */
 
-	// this automatically initializes all templates on page load
-	$(function () {
-		$('[id^="foogallery-"]').foogallery();
-	});
-
 })(
 	FooGallery.$,
 	FooGallery,
@@ -7248,12 +7243,25 @@
 			this.$el.removeAttr("style");
 		},
 		parse: function(){
-			var self = this;
-			return self._items = self.$el.find(self.options.itemSelector).removeAttr("style").removeClass("fg-positioned").map(function(i, el){
-				var $item = $(el),
-					width = $item.outerWidth(),
-					height = $item.outerHeight(),
-					ratio = self.options.rowHeight / height;
+			var self = this, visible = self.$el.is(':visible'),
+					$test = $('<div/>', {'class': self.$el.attr('class')}).css({
+						position: 'absolute',
+						top: 0,
+						left: -9999,
+						visibility: 'hidden'
+					}).appendTo('body');
+			self._items = self.$el.find(self.options.itemSelector).removeAttr("style").removeClass("fg-positioned").map(function(i, el){
+				var $item = $(el), width = 0, height = 0, ratio;
+				if (!visible){
+					var $clone = $item.clone();
+					$clone.appendTo($test);
+					width = $clone.outerWidth();
+					height = $clone.outerHeight();
+				} else {
+					width = $item.outerWidth();
+					height = $item.outerHeight();
+				}
+				ratio = self.options.rowHeight / height;
 
 				return {
 					index: i,
@@ -7264,10 +7272,19 @@
 					$item: $item
 				};
 			}).get();
+			$test.remove();
+			return self._items;
 		},
 		round: function(value){
 			return Math.round(value);
 			//return Math.round(value*2) / 2;
+		},
+		getContainerWidth: function(){
+			var self = this, visible = self.$el.is(':visible');
+			if (!visible){
+				return self.$el.parents(':visible:first').width();
+			}
+			return self.$el.width();
 		},
 		layout: function(refresh, autoCorrect){
 			refresh = _is.boolean(refresh) ? refresh : false;
@@ -7278,7 +7295,7 @@
 			}
 
 			var self = this,
-				containerWidth = self.$el.width(),
+				containerWidth = self.getContainerWidth(),
 				rows = self.rows(containerWidth),
 				offsetTop = 0;
 
@@ -7294,7 +7311,7 @@
 			self.$el.height(offsetTop);
 			// if our layout caused the container width to get smaller
 			// i.e. makes a scrollbar appear then layout again to account for it
-			if (autoCorrect && self.$el.width() < containerWidth){
+			if (autoCorrect && self.getContainerWidth() < containerWidth){
 				self.layout(false, false);
 			}
 		},
@@ -7526,25 +7543,52 @@
 			this.$el.removeAttr("style");
 		},
 		parse: function(){
-			var self = this;
-			return self._items = self.$el.find(".fg-item").removeAttr("style").removeClass("fg-positioned").map(function(i, el){
+			var self = this, visible = self.$el.is(':visible'),
+					$test = $('<div/>', {'class': self.$el.attr('class')}).css({
+						position: 'absolute',
+						top: 0,
+						left: -9999,
+						visibility: 'hidden'
+					}).appendTo('body');
+			self._items = self.$el.find(".fg-item").removeAttr("style").removeClass("fg-positioned").map(function(i, el){
 				var $item = $(el),
-					$thumb = $item.find(".fg-thumb"),
-					$img = $thumb.find(".fg-image");
-				$item.find(".fg-caption").css("max-width", $img.width());
+						$thumb = $item.find(".fg-thumb"),
+						$img = $item.find(".fg-image"),
+						width = 0, height = 0;
+				$item.find(".fg-caption").css("max-width", parseFloat($img.attr("width")));
+				$img.css({ width: $img.attr("width"), height: $img.attr("height") });
+				if (!visible){
+					var $clone = $item.clone();
+					$clone.appendTo($test);
+					width = $clone.outerWidth();
+					height = $clone.outerHeight();
+				} else {
+					width = $item.outerWidth();
+					height = $item.outerHeight();
+				}
+				$img.css({ width: '', height: '' });
 				return {
 					index: i,
-					width: $item.outerWidth(),
-					height: $item.outerHeight(),
+					width: width,
+					height: height,
 					top: 0,
 					left: 0,
 					$item: $item,
 					$thumb: $thumb
 				};
 			}).get();
+			$test.remove();
+			return self._items;
 		},
 		round: function(value){
 			return Math.round(value*2) / 2;
+		},
+		getContainerWidth: function(){
+			var self = this, visible = self.$el.is(':visible');
+			if (!visible){
+				return self.$el.parents(':visible:first').width();
+			}
+			return self.$el.width();
 		},
 		layout: function(refresh, autoCorrect){
 			refresh = _is.boolean(refresh) ? refresh : false;
@@ -7555,7 +7599,7 @@
 			}
 
 			var self = this,
-				containerWidth = self.$el.width(),
+				containerWidth = self.getContainerWidth(),
 				rows = self.rows(containerWidth),
 				offsetTop = 0;
 
@@ -7567,7 +7611,7 @@
 			self.$el.height(offsetTop);
 			// if our layout caused the container width to get smaller
 			// i.e. makes a scrollbar appear then layout again to account for it
-			if (autoCorrect && self.$el.width() < containerWidth){
+			if (autoCorrect && self.getContainerWidth() < containerWidth){
 				self.layout(false, false);
 			}
 		},
@@ -7704,6 +7748,12 @@
 		onInit: function(event, self){
 			self.portfolio.init();
 		},
+		onPostInit: function(event, self){
+			self.portfolio.layout( true );
+		},
+		onReady: function(event, self){
+			self.portfolio.layout( true );
+		},
 		onDestroy: function(event, self){
 			self.portfolio.destroy();
 		},
@@ -7711,7 +7761,7 @@
 			self.portfolio.layout( true );
 		},
 		onParsedItems: function(event, self, items){
-			self.portfolio.layout();
+			self.portfolio.layout( true );
 		},
 		onAppendedItems: function(event, self, items){
 			self.portfolio.layout( true );
@@ -9105,4 +9155,15 @@
 		FooGallery.$,
 		FooGallery,
 		FooGallery.utils
+);
+(function($){
+
+	// this automatically initializes all templates on page load
+	$(function () {
+		$('[id^="foogallery-"]').foogallery();
+	});
+
+})(
+		FooGallery.$,
+		FooGallery
 );

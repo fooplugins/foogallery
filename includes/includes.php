@@ -14,6 +14,7 @@ require_once( FOOGALLERY_PATH . 'includes/extensions/class-extensions-loader.php
 require_once( FOOGALLERY_PATH . 'includes/class-attachment-filters.php' );
 require_once( FOOGALLERY_PATH . 'includes/class-retina.php' );
 require_once( FOOGALLERY_PATH . 'includes/class-foogallery-upgrade.php' );
+require_once( FOOGALLERY_PATH . 'includes/class-foogallery-widget.php' );
 
 //check for WPThumb, include.
 if ( ! class_exists( 'WP_Thumb' ) ) {
@@ -25,7 +26,8 @@ require_once( FOOGALLERY_PATH . 'includes/class-wpthumb-enhancements.php' );
 
 //include bundled extensions
 require_once( FOOGALLERY_PATH . 'extensions/albums/class-albums-extension.php' );
-require_once( FOOGALLERY_PATH . 'extensions/default-templates/class-default-templates-extension.php' );
+require_once( FOOGALLERY_PATH . 'extensions/default-templates/class-default-templates-extension.php' ); //Legacy!
+require_once( FOOGALLERY_PATH . 'extensions/default-templates/class-default-templates.php' );
 require_once( FOOGALLERY_PATH . 'extensions/nextgen-importer/class-nextgen-gallery-importer-extension.php' );
 require_once( FOOGALLERY_PATH . 'extensions/media-categories/class-media-categories-extension.php' );
 
@@ -70,6 +72,7 @@ if ( is_admin() ) {
 	require_once( FOOGALLERY_PATH . 'includes/admin/class-attachment-fields.php' );
 	require_once( FOOGALLERY_PATH . 'includes/admin/class-admin-css-load-optimizer.php' );
 	require_once( FOOGALLERY_PATH . 'includes/admin/class-admin-notices.php' );
+    require_once( FOOGALLERY_PATH . 'includes/admin/class-autoptimize-support.php' );
 
 } else {
 

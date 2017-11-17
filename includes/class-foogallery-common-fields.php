@@ -202,6 +202,7 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 					),
 					'row_data' => array(
 						'data-foogallery-change-selector' => 'input:radio',
+                        'data-foogallery-value-selector'  => 'input:checked',
 						'data-foogallery-preview'         => 'class'
 					)
 				);
@@ -220,7 +221,8 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 					)
 					),
 					'row_data' => array(
-						'data-foogallery-change-selector' => 'input:radio',
+						'data-foogallery-change-selector' => 'select',
+                        'data-foogallery-value-selector'  => 'select option:selected',
 						'data-foogallery-preview'         => 'class'
 					)
 				);
@@ -523,6 +525,16 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 			return $fields;
 		}
 
+		function get_setting_from_gallery( $gallery, $key, $default ) {
+		    global $current_foogallery;
+
+		    if ( isset( $current_foogallery ) && $current_foogallery === $gallery ) {
+		        return foogallery_gallery_template_setting( $key, $default );
+            }
+
+		    return $gallery->get_setting( $key, $default );
+        }
+
 		/**
 		 * Build up the gallery class attribute for the common fields
 		 *
@@ -541,28 +553,28 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 				$classes[] = 'fg-' . $gallery->gallery_template;
 
 				//get some default classes from common gallery settings
-				$classes[] = $gallery->get_setting( 'theme', 'fg-light' );
-				$classes[] = $gallery->get_setting( 'border_size', 'fg-border-thin' );
-				$classes[] = $gallery->get_setting( 'rounded_corners', '' );
-				$classes[] = $gallery->get_setting( 'drop_shadow', 'fg-shadow-outline' );
-				$classes[] = $gallery->get_setting( 'inner_shadow', '' );
-				$classes[] = $gallery->get_setting( 'loading_icon', 'fg-loading-default' );
-				$classes[] = $gallery->get_setting( 'loaded_effect', 'fg-loaded-fade-in' );
+				$classes[] = $this->get_setting_from_gallery( $gallery, 'theme', 'fg-light' );
+				$classes[] = $this->get_setting_from_gallery( $gallery, 'border_size', 'fg-border-thin' );
+				$classes[] = $this->get_setting_from_gallery( $gallery, 'rounded_corners', '' );
+				$classes[] = $this->get_setting_from_gallery( $gallery, 'drop_shadow', 'fg-shadow-outline' );
+				$classes[] = $this->get_setting_from_gallery( $gallery, 'inner_shadow', '' );
+				$classes[] = $this->get_setting_from_gallery( $gallery, 'loading_icon', 'fg-loading-default' );
+				$classes[] = $this->get_setting_from_gallery( $gallery, 'loaded_effect', 'fg-loaded-fade-in' );
 
-				$caption_preset = $gallery->get_setting( 'hover_effect_preset', 'fg-custom' );
+				$caption_preset = $this->get_setting_from_gallery( $gallery,'hover_effect_preset', 'fg-custom' );
 
 				$classes[] = $caption_preset;
 
 				if ( 'fg-custom' === $caption_preset ) {
 					//only set these caption classes if custom preset is selected
-					$classes[] = $gallery->get_setting( 'hover_effect_color', '' );
-					$classes[] = $gallery->get_setting( 'hover_effect_scale', '' );
-					$classes[] = $gallery->get_setting( 'hover_effect_caption_visibility', 'fg-caption-hover' );
-					$classes[] = $gallery->get_setting( 'hover_effect_transition', 'fg-hover-fade' );
-					$classes[] = $gallery->get_setting( 'hover_effect_icon', 'fg-hover-zoom' );
+					$classes[] = $this->get_setting_from_gallery( $gallery, 'hover_effect_color', '' );
+					$classes[] = $this->get_setting_from_gallery( $gallery, 'hover_effect_scale', '' );
+					$classes[] = $this->get_setting_from_gallery( $gallery, 'hover_effect_caption_visibility', 'fg-caption-hover' );
+					$classes[] = $this->get_setting_from_gallery( $gallery, 'hover_effect_transition', 'fg-hover-fade' );
+					$classes[] = $this->get_setting_from_gallery( $gallery, 'hover_effect_icon', 'fg-hover-zoom' );
 				} else if ( strpos( $caption_preset, 'fg-preset' ) !== false ) {
 					//set a preset size
-					$classes[] = $gallery->get_setting( 'hover_effect_preset_size', 'fg-preset-small' );
+					$classes[] = $this->get_setting_from_gallery( $gallery, 'hover_effect_preset_size', 'fg-preset-small' );
 				}
 			}
 

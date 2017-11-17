@@ -22,7 +22,21 @@ if ( !class_exists( 'FooGallery_Thumbnail_Gallery_Template' ) ) {
 
 			//build up the thumb dimensions on save
 			add_filter( 'foogallery_template_thumbnail_dimensions-thumbnail', array( $this, 'get_thumbnail_dimensions' ), 10, 2 );
+
+			//alter the crop value if needed
+			add_filter( 'foogallery_render_gallery_template_field_value', array( $this, 'alter_field_value'), 10, 4 );
 		}
+
+		function alter_field_value( $value, $field, $gallery, $template ) {
+		    //only do something if we are dealing with the thumbnail_dimensions field in this template
+		    if ( 'thumbnail' === $template['slug'] && 'thumbnail_dimensions' === $field['id'] ) {
+		        if ( !array_key_exists( 'crop', $value ) ) {
+                    $value['crop'] = true;
+                }
+            }
+
+		    return $value;
+        }
 
 		/**
 		 * Register myself so that all associated JS and CSS files can be found and automatically included
@@ -63,10 +77,11 @@ if ( !class_exists( 'FooGallery_Thumbnail_Gallery_Template' ) ) {
                         'title'   => __( 'Size', 'foogallery' ),
                         'desc'    => __( 'Choose the size of your thumbnail.', 'foogallery' ),
                         'section' => __( 'General', 'foogallery' ),
-                        'type'    => 'thumb_size_no_crop',
+                        'type'    => 'thumb_size',
                         'default' => array(
                             'width' => 250,
-                            'height' => 200
+                            'height' => 200,
+                            'crop' => true
                         ),
 						'row_data'=> array(
 							'data-foogallery-change-selector' => 'input',
@@ -170,7 +185,7 @@ if ( !class_exists( 'FooGallery_Thumbnail_Gallery_Template' ) ) {
                 return array(
                     'height' => intval($arguments['thumbnail_dimensions']['height']),
                     'width' => intval($arguments['thumbnail_dimensions']['width']),
-                    'crop' => '1'
+                    'crop' => $arguments['thumbnail_dimensions']['crop']
                 );
             }
             return null;
@@ -187,9 +202,12 @@ if ( !class_exists( 'FooGallery_Thumbnail_Gallery_Template' ) ) {
 		function get_thumbnail_dimensions( $dimensions, $foogallery ) {
 			$dimensions = $foogallery->get_meta( 'thumbnail_thumbnail_dimensions', array(
 				'width' => get_option( 'thumbnail_size_w' ),
-				'height' => get_option( 'thumbnail_size_h' )
+				'height' => get_option( 'thumbnail_size_h' ),
+                'crop' => true
 			) );
-			$dimensions['crop'] = true;
+			if ( !array_key_exists( 'crop', $dimensions ) ) {
+			    $dimensions['crop'] = true;
+            }
 			return $dimensions;
 		}
 	}

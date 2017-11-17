@@ -64,10 +64,10 @@ function foogallery_attachment_html_image( $foogallery_attachment, $args = array
         $attr['class'] = 'fg-image';
     }
 
-	$attr = array_map( 'esc_attr', $attr );
 	$html = '<img ';
 	foreach ( $attr as $name => $value ) {
-		$html .= " $name=" . '"' . $value . '"';
+        $name = str_replace(' ', '', $name); //ensure we have no spaces!
+		$html .= " $name=" . '"' . esc_attr($value) . '"';
 	}
 	$html .= ' />';
 

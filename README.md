@@ -22,11 +22,13 @@ FooGallery is the best image gallery plugin for WordPress. Why? Stunning gallery
 
 ## Description ##
 
-**Major changes in 1.4.1**
-
 FooGallery is the best image gallery plugin for WordPress. Why? Stunning gallery layouts, responsive, retina-ready, lightning fast, easy to use. Built to be highly configurable and extensible for developers or freelancers.
 
 [View the Foo Gallery Homepage & DEMO](http://foo.gallery/)
+
+**Major changes in 1.4.1!**
+
+There have been major updates to the gallery templates in v1.4.1. If you have updated, please test your galleries.
 
 **Retina Support**
 
@@ -158,7 +160,20 @@ Update now to support FooVideo and many other improvements!
 
 ## Changelog ##
 
-### 1.4.2 ###
+### 1.4.5 ###
+
+* Fix : Lazy loading - scrolling galleries in certain scenarios were not loading thumbs
+* Fix : Galleries that were hidden on page load were not displaying correctly when shown
+* Fix : Default gallery settings were not being applied to new galleries
+* New : shortcode arguments applied to gallery for common fields
+* New : HTML caching is disabled by default now!
+* Updated to latest client side JS and CSS
+
+### 1.4.4 ###
+
+* Fix : upgrade was calling underfined function
+
+### 1.4.3 ###
 
 * Fix : Justify gallery template issues
 * Fix : Masonry gallery template issues

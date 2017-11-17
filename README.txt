@@ -3,7 +3,7 @@ Contributors: bradvin, steveush, fooplugins
 Donate link: http://fooplugins.com
 Tags: gallery, image gallery, photo gallery, responsive, album, media gallery, masonry gallery, portfolio, justified image gallery, video gallery, photography, photographer, retina
 Requires at least: 3.9
-Tested up to: 4.8.3
+Tested up to: 4.9
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -146,6 +146,35 @@ Hell, yes! Check out our [developer page](http://foo.gallery/developers/)
 Update now to support FooVideo and many other improvements!
 
 == Changelog ==
+
+= 1.4.7 =
+
+* Fix : conflicts with WP Rocket CDN features
+* Fix : conflicts with themes or plugins deferring script loading
+* New : Auto-loading of default templates
+* Update to latest client side JS
+
+= 1.4.6 =
+
+* Fix : conflicts with other scripts or plugins using data-src attributes
+* Fix : script moved back to use jQuery ready event, to avoid some conflicts
+* New : Global setting to disable lazy loading for all galleries
+* New : FooGallery Widget!
+* New : Admin notice for Autoptomize users to delete cache on updates
+* Update to latest client side JS
+
+= 1.4.5 =
+
+* Fix : Lazy loading - scrolling galleries in certain scenarios were not loading thumbs
+* Fix : Galleries that were hidden on page load were not displaying correctly when shown
+* Fix : Default gallery settings were not being applied to new galleries
+* New : shortcode arguments applied to gallery for common fields
+* New : HTML caching is disabled by default now!
+* Updated to latest client side JS and CSS
+
+= 1.4.4 =
+
+* Fix : upgrade was calling underfined function
 
 = 1.4.3 =
 

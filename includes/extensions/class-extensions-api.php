@@ -135,21 +135,6 @@ if ( ! class_exists( 'FooGallery_Extensions_API' ) ) {
 		private function default_extenions_in_case_of_emergency() {
 			$extensions = array();
 
-			//Our default gallery templates
-			$extensions[] = array(
-				'slug'        => 'default_templates',
-				'class'       => 'FooGallery_Default_Templates_Extension',
-				'categories'  => array( 'Featured', 'Free', ),
-				'title'       => 'Default Templates',
-				'description' => 'The bundled gallery templates.',
-				'author'      => 'FooPlugins',
-				'author_url'  => 'http://fooplugins.com',
-				'thumbnail'   => '/assets/extension_bg.png',
-				'tags'        => array( 'template', ),
-				'source'      => 'bundled',
-				'activated_by_default' => true,
-			);
-
 			$extensions[] =	array(
 				'slug' => 'albums',
 				'class' => 'FooGallery_Albums_Extension',
