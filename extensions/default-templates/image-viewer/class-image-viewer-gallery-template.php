@@ -28,7 +28,22 @@ if ( !class_exists( 'FooGallery_Image_Viewer_Gallery_Template' ) ) {
 
 			//build up the thumb dimensions from some arguments
 			add_filter( 'foogallery_calculate_thumbnail_dimensions-image-viewer', array( $this, 'build_thumbnail_dimensions_from_arguments' ), 10, 2 );
-		}
+
+            //alter the crop value if needed
+            add_filter( 'foogallery_render_gallery_template_field_value', array( $this, 'alter_field_value'), 10, 4 );
+
+        }
+
+        function alter_field_value( $value, $field, $gallery, $template ) {
+            //only do something if we are dealing with the thumbnail_dimensions field in this template
+            if ( 'image-viewer' === $template['slug'] && 'thumbnail_size' === $field['id'] ) {
+                if ( !array_key_exists( 'crop', $value ) ) {
+                    $value['crop'] = true;
+                }
+            }
+
+            return $value;
+        }
 
 		/**
 		 * Register myself so that all associated JS and CSS files can be found and automatically included
@@ -59,14 +74,22 @@ if ( !class_exists( 'FooGallery_Image_Viewer_Gallery_Template' ) ) {
 				'thumbnail_dimensions' => true,
 				'fields'	  => array(
                     array(
+                        'id'      => 'thumbnail-help',
+                        'title'   => __( 'Thumbnail Help', 'foogallery' ),
+                        'desc'    => __( 'It is recommended to crop your thumbnails, so that your gallery remains a constant size. If you do not crop, then the size of the gallery could potentially change for each thumbnail.', 'foogallery' ),
+                        'section' => __( 'General', 'foogallery' ),
+                        'type'    => 'help'
+                    ),
+                    array(
                         'id'      => 'thumbnail_size',
                         'title'   => __( 'Thumb Size', 'foogallery' ),
                         'section' => __( 'General', 'foogallery' ),
                         'desc'    => __( 'Choose the size of your thumbnails', 'foogallery' ),
-                        'type'    => 'thumb_size_no_crop',
+                        'type'    => 'thumb_size',
                         'default' => array(
                             'width' => 640,
-                            'height' => 360
+                            'height' => 360,
+                            'crop' => true
                         ),
 						'row_data'=> array(
 							'data-foogallery-change-selector' => 'input',
@@ -194,9 +217,12 @@ if ( !class_exists( 'FooGallery_Image_Viewer_Gallery_Template' ) ) {
 		function get_thumbnail_dimensions( $dimensions, $foogallery ) {
 			$dimensions = $foogallery->get_meta( 'image-viewer_thumbnail_size', array(
 				'width' => 640,
-				'height' => 360
+				'height' => 360,
+                'crop' => true
 			) );
-			$dimensions['crop'] = true;
+            if ( !array_key_exists( 'crop', $dimensions ) ) {
+                $dimensions['crop'] = true;
+            }
 			return $dimensions;
 		}
 
@@ -245,7 +271,7 @@ if ( !class_exists( 'FooGallery_Image_Viewer_Gallery_Template' ) ) {
                 return array(
                     'height' => intval($arguments['thumbnail_size']['height']),
                     'width' => intval($arguments['thumbnail_size']['width']),
-                    'crop' => '1'
+                    'crop' => $arguments['thumbnail_size']['crop']
                 );
             }
             return null;
