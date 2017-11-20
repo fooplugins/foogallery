@@ -45,7 +45,7 @@ if ( ! class_exists( 'FooGallery_Pro_Bulk_Copy' ) ) {
                         vertical-align: top;
                     }
                 </style>
-                <form class=".foogallery-bulk-copy-settings">
+                <form class="foogallery-bulk-copy-settings">
                 <table class="foogallery-metabox-settings">
                     <tr class="foogallery_template_field">
                         <th>
