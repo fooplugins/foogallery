@@ -147,6 +147,11 @@ Update now to support FooVideo and many other improvements!
 
 == Changelog ==
 
+= 1.4.8 =
+* New : added custom ready event setting for overcoming 3rd party jQuery exceptions
+* New : added crop thumbnail option to 'Single Thumbnail' and 'Image Viewer' templates
+* Update to latest client side JS
+
 = 1.4.7 =
 
 * Fix : conflicts with WP Rocket CDN features
