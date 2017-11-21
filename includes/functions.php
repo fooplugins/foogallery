@@ -995,3 +995,24 @@ function foogallery_gallery_template_field_lightbox_choices() {
     $lightboxes['none'] = __( 'None', 'foogallery' );
     return $lightboxes;
 }
+
+
+if ( !function_exists('wp_get_raw_referer') ) {
+	/**
+	 * Retrieves unvalidated referer from '_wp_http_referer' or HTTP referer.
+	 *
+	 * Do not use for redirects, use {@see wp_get_referer()} instead.
+	 *
+	 * @since 1.4.9
+	 * @return string|false Referer URL on success, false on failure.
+	 */
+	function wp_get_raw_referer() {
+		if ( ! empty( $_REQUEST['_wp_http_referer'] ) ) {
+			return wp_unslash( $_REQUEST['_wp_http_referer'] );
+		} else if ( ! empty( $_SERVER['HTTP_REFERER'] ) ) {
+			return wp_unslash( $_SERVER['HTTP_REFERER'] );
+		}
+
+		return false;
+	}
+}
