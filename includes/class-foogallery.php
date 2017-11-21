@@ -30,6 +30,7 @@ class FooGallery extends stdClass {
 		$this->_attachments = false;
 		$this->datasource_name = foogallery_default_datasource();
 		$this->_datasource = false;
+		$this->settings = array();
 	}
 
 	/**
@@ -49,7 +50,7 @@ class FooGallery extends stdClass {
 
 		$this->load_meta( $post->ID );
 
-		do_action( 'foogallery_foogallery_instance_after_load', $this, $post );
+		do_action( 'foogallery_instance_after_load', $this, $post );
 	}
 
 	/**
@@ -58,7 +59,7 @@ class FooGallery extends stdClass {
 	 */
 	private function load_meta( $post_id ) {
 		$this->gallery_template = get_post_meta( $post_id, FOOGALLERY_META_TEMPLATE, true );
-		$this->settings = get_post_meta( $post_id, FOOGALLERY_META_SETTINGS, true );
+		$this->settings = $this->load_settings( $post_id );
 		$this->custom_css = get_post_meta( $post_id, FOOGALLERY_META_CUSTOM_CSS, true );
 		$this->sorting = get_post_meta( $post_id, FOOGALLERY_META_SORT, true );
 		$this->datasource_name = get_post_meta( $post_id, FOOGALLERY_META_DATASOURCE, true );
@@ -67,6 +68,27 @@ class FooGallery extends stdClass {
 		}
         $this->retina = get_post_meta( $post_id, FOOGALLERY_META_RETINA, true );
 		$this->force_use_original_thumbs = 'true' === get_post_meta( $post_id, FOOGALLERY_META_FORCE_ORIGINAL_THUMBS, true );
+	}
+
+	private function load_settings( $post_id ) {
+		$settings = get_post_meta( $post_id, FOOGALLERY_META_SETTINGS, true );
+
+		//the gallery is considered new if the template has not been set
+		$is_new = empty( $this->gallery_template );
+
+		//if we have no settings, and the gallery is not new, then allow for an upgrade
+		if ( empty( $settings ) && !$is_new ) {
+			$settings = apply_filters( 'foogallery_settings_upgrade', $settings, $this );
+		}
+
+		//if we still have no settings, then get default settings for the gallery template
+        if ( empty( $settings ) && !$is_new ) {
+		    $settings = foogallery_build_default_settings_for_gallery_template( $this->gallery_template );
+
+            $settings = apply_filters('foogallery_default_settings-' . $this->gallery_template, $settings, $this);
+        }
+
+		return $settings;
 	}
 
 	/**
@@ -99,6 +121,28 @@ class FooGallery extends stdClass {
 				$this->load( $galleries[0] );
 			}
 		}
+	}
+
+	/**
+	 * Static function to build a dynamic gallery that does not exist in the database
+	 * @param $template
+	 * @param $attachment_ids
+	 *
+	 * @return FooGallery
+	 */
+	public static function dynamic( $template, $attachment_ids ) {
+		$gallery = new self( null );
+
+		$gallery->gallery_template = $template;
+		$gallery->attachment_ids = $attachment_ids;
+
+		//loads all meta data from the default gallery
+		$default_gallery_id = foogallery_get_setting( 'default_gallery_settings' );
+		if ( $default_gallery_id > 0 ) {
+			$gallery->load_meta( $default_gallery_id );
+		}
+
+		return $gallery;
 	}
 
 	/**
@@ -145,6 +189,24 @@ class FooGallery extends stdClass {
 		return $gallery;
 	}
 
+	/**
+	 * Get a setting using the current template and meta key
+	 * @param $key
+	 * @param $default
+	 *
+	 * @return mixed|null
+	 */
+	function get_setting( $key, $default ) {
+		return $this->get_meta( "{$this->gallery_template}_$key", $default );
+	}
+
+	/**
+	 * Get a meta value using a full key
+	 * @param $key
+	 * @param $default
+	 *
+	 * @return mixed|null
+	 */
 	function get_meta( $key, $default ) {
 		if ( ! is_array( $this->settings ) ) {
 			return $default;
@@ -203,8 +265,8 @@ class FooGallery extends stdClass {
 	 * Returns true if the gallery is newly created and not yet saved
 	 */
 	public function is_new() {
-		$settings = get_post_meta( $this->ID, FOOGALLERY_META_SETTINGS, true );
-		return empty( $settings );
+		$template = get_post_meta( $this->ID, FOOGALLERY_META_TEMPLATE, true );
+		return empty( $template );
 	}
 
 	/**

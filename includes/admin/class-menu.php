@@ -59,7 +59,29 @@ if ( ! class_exists( 'FooGallery_Admin_Menu' ) ) {
 		}
 
 		function foogallery_settings() {
-			if ( isset($_GET['settings-updated']) ) { ?>
+
+			$admin_errors = get_transient( 'settings_errors' );
+			$show_reset_message = false;
+
+			if ( is_array( $admin_errors ) ) {
+				//try to find a reset 'error'
+				foreach ( $admin_errors as $error ) {
+					if ( 'reset' === $error['setting'] ) {
+						$show_reset_message = true;
+						break;
+					}
+				}
+			}
+
+			if ( $show_reset_message ) {
+				do_action( 'foogallery_settings_reset' );
+				?>
+				<div id="message" class="updated">
+					<p><strong><?php printf( __( '%s settings reset to defaults.', 'foogallery' ), foogallery_plugin_name() ); ?></strong></p>
+				</div>
+			<?php } else if ( isset($_GET['settings-updated']) ) {
+				do_action( 'foogallery_settings_updated' );
+				?>
 				<div id="message" class="updated">
 					<p><strong><?php printf( __( '%s settings updated.', 'foogallery' ), foogallery_plugin_name() ); ?></strong></p>
 				</div>

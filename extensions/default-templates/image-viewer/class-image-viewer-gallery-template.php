@@ -10,12 +10,40 @@ if ( !class_exists( 'FooGallery_Image_Viewer_Gallery_Template' ) ) {
 		 */
 		function __construct() {
 			add_filter( 'foogallery_gallery_templates', array( $this, 'add_template' ) );
+
+			//add extra fields to the templates
+			add_filter( 'foogallery_override_gallery_template_fields-image-viewer', array( $this, 'add_common_thumbnail_fields' ), 10, 2 );
+
+			add_action( 'foogallery_located_template-image-viewer', array( $this, 'enqueue_dependencies' ) );
+
 			add_filter( 'foogallery_gallery_templates_files', array( $this, 'register_myself' ) );
-			add_action( 'foogallery_render_gallery_template_field_custom', array( $this, 'render_thumbnail_preview' ), 10, 3 );
-			add_filter( 'foogallery_attachment_html_image_attributes', array( $this, 'strip_size' ), 99, 3 );
 
 			add_filter( 'foogallery_template_thumbnail_dimensions-image-viewer', array( $this, 'get_thumbnail_dimensions' ), 10, 2 );
-		}
+
+			//override specific settings when saving the gallery
+			add_filter( 'foogallery_save_gallery_settings-image-viewer', array( $this, 'override_settings'), 10, 3 );
+
+			//build up any preview arguments
+			add_filter( 'foogallery_preview_arguments-image-viewer', array( $this, 'preview_arguments' ), 10, 2 );
+
+			//build up the thumb dimensions from some arguments
+			add_filter( 'foogallery_calculate_thumbnail_dimensions-image-viewer', array( $this, 'build_thumbnail_dimensions_from_arguments' ), 10, 2 );
+
+            //alter the crop value if needed
+            add_filter( 'foogallery_render_gallery_template_field_value', array( $this, 'alter_field_value'), 10, 4 );
+
+        }
+
+        function alter_field_value( $value, $field, $gallery, $template ) {
+            //only do something if we are dealing with the thumbnail_dimensions field in this template
+            if ( 'image-viewer' === $template['slug'] && 'thumbnail_size' === $field['id'] ) {
+                if ( !array_key_exists( 'crop', $value ) ) {
+                    $value['crop'] = true;
+                }
+            }
+
+            return $value;
+        }
 
 		/**
 		 * Register myself so that all associated JS and CSS files can be found and automatically included
@@ -38,165 +66,109 @@ if ( !class_exists( 'FooGallery_Image_Viewer_Gallery_Template' ) ) {
 
 			$gallery_templates[] = array(
 				'slug'        => 'image-viewer',
-				'name'        => __( 'Image Viewer', 'foogallery-image-viewer'),
-				'preview_css' => FOOGALLERY_IMAGE_VIEWER_GALLERY_TEMPLATE_URL . 'css/gallery-image-viewer.css',
-				'admin_js'	  => FOOGALLERY_IMAGE_VIEWER_GALLERY_TEMPLATE_URL . 'js/admin-gallery-image-viewer.js',
+				'name'        => __( 'Image Viewer', 'foogallery' ),
+				'preview_support' => true,
+				'common_fields_support' => true,
+				'lazyload_support' => true,
+				'mandatory_classes' => 'fg-image-viewer',
+				'thumbnail_dimensions' => true,
 				'fields'	  => array(
-					array(
-						'id'      => 'alignment',
-						'title'   => __( 'Alignment', 'foogallery' ),
-						'desc'    => __( 'The horizontal alignment of the thumbnails inside the gallery.', 'foogallery' ),
-						'default' => 'alignment-center',
-						'type'    => 'select',
-						'choices' => array(
-							'alignment-left' => __( 'Left', 'foogallery' ),
-							'alignment-center' => __( 'Center', 'foogallery' ),
-							'alignment-right' => __( 'Right', 'foogallery' ),
+                    array(
+                        'id'      => 'thumbnail-help',
+                        'title'   => __( 'Thumbnail Help', 'foogallery' ),
+                        'desc'    => __( 'It is recommended to crop your thumbnails, so that your gallery remains a constant size. If you do not crop, then the size of the gallery could potentially change for each thumbnail.', 'foogallery' ),
+                        'section' => __( 'General', 'foogallery' ),
+                        'type'    => 'help'
+                    ),
+                    array(
+                        'id'      => 'thumbnail_size',
+                        'title'   => __( 'Thumb Size', 'foogallery' ),
+                        'section' => __( 'General', 'foogallery' ),
+                        'desc'    => __( 'Choose the size of your thumbnails', 'foogallery' ),
+                        'type'    => 'thumb_size',
+                        'default' => array(
+                            'width' => 640,
+                            'height' => 360,
+                            'crop' => true
+                        ),
+						'row_data'=> array(
+							'data-foogallery-change-selector' => 'input',
+							'data-foogallery-preview' => 'shortcode'
 						)
-					),
-					array(
-						'id'      => 'lightbox',
-						'title'   => __('Lightbox', 'foogallery-image-viewer'),
-						'desc'    => __('Choose which lightbox you want to use in the gallery.', 'foogallery-image-viewer'),
-						'type'    => 'lightbox'
-					),
-					array(
-						'id'      => 'theme',
-						'title'   => __('Theme', 'foogallery'),
-						'default' => '',
+                    ),
+                    array(
+                        'id'      => 'thumbnail_link',
+                        'title'   => __( 'Thumb Link', 'foogallery' ),
+                        'section' => __( 'General', 'foogallery' ),
+                        'default' => 'image' ,
+                        'type'    => 'thumb_link',
+                        'desc'	  => __( 'You can choose to either link each thumbnail to the full size image or to the image\'s attachment page', 'foogallery')
+                    ),
+                    array(
+                        'id'      => 'lightbox',
+                        'title'   => __( 'Lightbox', 'foogallery' ),
+                        'section' => __( 'General', 'foogallery' ),
+                        'desc'    => __( 'Choose which lightbox you want to use in the gallery', 'foogallery' ),
+                        'default' => 'none',
+                        'type'    => 'lightbox'
+                    ),
+                    array(
+                        'id'      => 'alignment',
+                        'title'   => __( 'Alignment', 'foogallery' ),
+						'section' => __( 'General', 'foogallery' ),
+                        'desc'    => __( 'The horizontal alignment of the thumbnails inside the gallery', 'foogallery' ),
+                        'default' => 'fg-center',
 						'type'    => 'radio',
 						'spacer'  => '<span class="spacer"></span>',
-						'choices' => array(
-							'' => __( 'Light', 'foogallery' ),
-							'fiv-dark' => __( 'Dark', 'foogallery' ),
-							'fiv-custom' => __( 'Custom', 'foogallery' )
+                        'choices' => array(
+                            'fg-left' => __( 'Left', 'foogallery' ),
+                            'fg-center' => __( 'Center', 'foogallery' ),
+                            'fg-right' => __( 'Right', 'foogallery' ),
+                        ),
+						'row_data'=> array(
+							'data-foogallery-change-selector' => 'input:radio',
+							'data-foogallery-preview' => 'class'
 						)
-					),
-					array(
-						'id'      => 'theme_custom_bgcolor',
-						'title'   => __('Background Color', 'foogallery'),
-						'section' => __( 'Custom Theme Colors', 'foogallery' ),
-						'type'    => 'colorpicker',
-						'default' => '#FFFFFF',
-						'opacity' => true
-					),
-					array(
-						'id'      => 'theme_custom_textcolor',
-						'title'   => __('Text Color', 'foogallery'),
-						'section' => __( 'Custom Theme Colors', 'foogallery' ),
-						'type'    => 'colorpicker',
-						'default' => '#1b1b1b',
-						'opacity' => true
-					),
-					array(
-						'id'      => 'theme_custom_hovercolor',
-						'title'   => __('Hover BG Color', 'foogallery'),
-						'section' => __( 'Custom Theme Colors', 'foogallery' ),
-						'type'    => 'colorpicker',
-						'default' => '#F2F2F2',
-						'opacity' => true
-					),
-					array(
-						'id'      => 'theme_custom_bordercolor',
-						'title'   => __('Border Color', 'foogallery'),
-						'section' => __( 'Custom Theme Colors', 'foogallery' ),
-						'type'    => 'colorpicker',
-						'default' => '#e6e6e6',
-						'opacity' => true
-					),
-					array(
-						'id'      => 'thumbnail_size',
-						'title'   => __('Thumbnail Size', 'foogallery-image-viewer'),
-						'section' => __( 'Thumbnail Settings', 'foogallery' ),
-						'desc'    => __('Choose the size of your thumbs.', 'foogallery-image-viewer'),
-						'type'    => 'thumb_size',
-						'default' => array(
-							'width' => 640,
-							'height' => 360,
-							'crop' => true
-						)
-					),
-					array(
-						'id'      => 'thumbnail_link',
-						'title'   => __('Thumbnail Link', 'foogallery-image-viewer'),
-						'section' => __( 'Thumbnail Settings', 'foogallery' ),
-						'default' => 'image' ,
-						'type'    => 'thumb_link',
-						'spacer'  => '<span class="spacer"></span>',
-						'desc'	  => __('You can choose to either link each thumbnail to the full size image or to the image\'s attachment page.', 'foogallery-image-viewer')
-					),
-					array(
-						'id'      => 'hover-effect-type',
-						'title'   => __( 'Hover Effect Type', 'foogallery' ),
-						'section' => __( 'Thumbnail Settings', 'foogallery' ),
-						'default' => '',
-						'type'    => 'radio',
-						'choices' => apply_filters( 'foogallery_gallery_template_hover-effect-types', array(
-							''  => __( 'Icon', 'foogallery' ),
-							'hover-effect-tint'   => __( 'Dark Tint', 'foogallery' ),
-							'hover-effect-color' => __( 'Colorize', 'foogallery' ),
-							'hover-effect-none' => __( 'None', 'foogallery' )
-						) ),
-						'spacer'  => '<span class="spacer"></span>',
-						'desc'	  => __( 'The type of hover effect the thumbnails will use.', 'foogallery' )
-					),
-					array(
-						'id'      => 'hover-effect',
-						'title'   => __( 'Icon Hover Effect', 'foogallery' ),
-						'desc'    => __( 'When the hover effect type of Icon is chosen, you can choose which icon is shown when you hover over each thumbnail.', 'foogallery' ),
-						'section' => __( 'Thumbnail Settings', 'foogallery' ),
-						'type'    => 'icon',
-						'default' => 'hover-effect-zoom',
-						'choices' => array(
-							'hover-effect-zoom' => array( 'label' => __( 'Zoom' , 'foogallery' ), 'img' => FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_SHARED_URL . 'img/admin/hover-effect-icon-zoom.png' ),
-							'hover-effect-zoom2' => array( 'label' => __( 'Zoom 2' , 'foogallery' ), 'img' => FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_SHARED_URL . 'img/admin/hover-effect-icon-zoom2.png' ),
-							'hover-effect-zoom3' => array( 'label' => __( 'Zoom 3' , 'foogallery' ), 'img' => FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_SHARED_URL . 'img/admin/hover-effect-icon-zoom3.png' ),
-							'hover-effect-plus' => array( 'label' => __( 'Plus' , 'foogallery' ), 'img' => FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_SHARED_URL . 'img/admin/hover-effect-icon-plus.png' ),
-							'hover-effect-circle-plus' => array( 'label' => __( 'Circle Plus' , 'foogallery' ), 'img' => FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_SHARED_URL . 'img/admin/hover-effect-icon-circle-plus.png' ),
-							'hover-effect-eye' => array( 'label' => __( 'Eye' , 'foogallery' ), 'img' => FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_SHARED_URL . 'img/admin/hover-effect-icon-eye.png' )
-						),
-					),
-					array(
-						'id'      => 'caption-content',
-						'title'   => __( 'Caption Content', 'foogallery' ),
-						'section' => __( 'Thumbnail Settings', 'foogallery' ),
-						'default' => 'title',
-						'type'    => 'radio',
-						'choices' => apply_filters( 'foogallery_gallery_template_caption-content', array(
-							'none'  => __( 'None', 'foogallery' ),
-							'title'  => __( 'Title Only', 'foogallery' ),
-							'desc'   => __( 'Description Only', 'foogallery' ),
-							'both' => __( 'Title and Description', 'foogallery' )
-						) ),
-						'spacer'  => '<span class="spacer"></span>'
-					),
-					array(
-						'id' => 'thumb_preview',
-						'title' => __( 'Preview', 'foogallery' ),
-						'desc' => __( 'This is what your gallery will look like.', 'foogallery' ),
-						'section' => __( 'Thumbnail Settings', 'foogallery' ),
-						'type' => 'image_viewer_preview',
-					),
+                    ),
+                    array(
+                        'id'      => 'language-help',
+                        'title'   => __( 'Language Help', 'foogallery' ),
+                        'desc'    => __( 'This gallery template shows the below items of text. Change them to suit your preference or language.', 'foogallery' ),
+						'section' => __( 'General', 'foogallery' ),
+                        'type'    => 'help'
+                    ),
 					array(
 						'id'      => 'text-prev',
 						'title'   => __( '"Prev" Text', 'foogallery' ),
-						'section' => __( 'Language Settings', 'foogallery' ),
+						'section' => __( 'General', 'foogallery' ),
 						'type'    => 'text',
-						'default' =>  __('Prev', 'foogallery')
+						'default' =>  __('Prev', 'foogallery'),
+						'row_data'=> array(
+							'data-foogallery-change-selector' => 'input',
+							'data-foogallery-preview' => 'shortcode'
+						)
 					),
 					array(
 						'id'      => 'text-of',
 						'title'   => __( '"of" Text', 'foogallery' ),
-						'section' => __( 'Language Settings', 'foogallery' ),
+						'section' => __( 'General', 'foogallery' ),
 						'type'    => 'text',
-						'default' =>  __('of', 'foogallery')
+						'default' =>  __('of', 'foogallery'),
+						'row_data'=> array(
+							'data-foogallery-change-selector' => 'input',
+							'data-foogallery-preview' => 'shortcode'
+						)
 					),
 					array(
 						'id'      => 'text-next',
 						'title'   => __( '"Next" Text', 'foogallery' ),
-						'section' => __( 'Language Settings', 'foogallery' ),
+						'section' => __( 'General', 'foogallery' ),
 						'type'    => 'text',
-						'default' =>  __('Next', 'foogallery')
+						'default' =>  __('Next', 'foogallery'),
+						'row_data'=> array(
+							'data-foogallery-change-selector' => 'input',
+							'data-foogallery-preview' => 'shortcode'
+						)
 					)
 				)
 			);
@@ -204,74 +176,34 @@ if ( !class_exists( 'FooGallery_Image_Viewer_Gallery_Template' ) ) {
 			return $gallery_templates;
 		}
 
-		function render_thumbnail_preview( $field, $gallery, $template ) {
-			if ( 'image_viewer_preview' == $field['type'] ) {
-				$args = $gallery->get_meta( 'thumbnail_size', array(
-						'width' => 640,
-						'height' => 360,
-						'crop' => true
-				) );
-				//override the link so that it does not actually open an image
-				$args['link'] = 'custom';
-				$args['custom_link'] = '#preview';
-				$args['link_attributes'] = array(
-						'class' => 'fiv-active'
-				);
+		/**
+		 * Add thumbnail fields to the gallery template
+		 *
+		 * @uses "foogallery_override_gallery_template_fields"
+		 * @param $fields
+		 * @param $template
+		 *
+		 * @return array
+		 */
+		function add_common_thumbnail_fields( $fields, $template ) {
 
-				$hover_effect = $gallery->get_meta( 'image-viewer_hover-effect', 'hover-effect-zoom' );
-				$hover_effect_type = $gallery->get_meta( 'image-viewer_hover-effect-type', '' );
-				$text_prev = $gallery->get_meta( 'image-viewer_text-prev', __('Prev', 'foogallery') );
-				$text_of = $gallery->get_meta( 'image-viewer_text-of', __('of', 'foogallery') );
-				$text_next = $gallery->get_meta( 'image-viewer_text-next', __('Next', 'foogallery') );
-
-				$featured = $gallery->featured_attachment();
-
-				if ( false === $featured ) {
-					$featured = new FooGalleryAttachment();
-					$featured->url = FOOGALLERY_URL . 'assets/test_thumb_1.jpg';
+			//update specific fields
+			foreach ($fields as &$field) {
+				if ( 'rounded_corners' === $field['id'] ) {
+					unset( $field['choices']['fg-round-full'] );
 				}
-
-				?><div class="foogallery-image-viewer-preview <?php echo foogallery_build_class_attribute( $gallery, $hover_effect, $hover_effect_type ); ?>">
-				<div class="fiv-inner">
-					<div class="fiv-inner-container">
-						<?php
-						echo $featured->html( $args, true, false );
-						echo $featured->html_caption( 'both' );
-						echo '</a>';
-						?>
-					</div>
-					<div class="fiv-ctrls">
-						<div class="fiv-prev"><span><?php echo $text_prev; ?></span></div>
-						<label class="fiv-count"><span class="fiv-count-current">1</span><?php echo $text_of; ?><span>1</span></label>
-						<div class="fiv-next"><span><?php echo $text_next; ?></span></div>
-					</div>
-				</div>
-				</div><?php
 			}
+
+			return $fields;
 		}
 
 		/**
-		 * Image viewer relies on there being no width or height attributes on the IMG element so strip them out here.
-		 *
-		 * @param $attr
-		 * @param $args
-		 * @param $attachment
-		 *
-		 * @return mixed
+		 * Enqueue scripts that the default gallery template relies on
 		 */
-		function strip_size($attr, $args, $attachment){
-			global $current_foogallery_template;
-
-			if ( 'image-viewer' === $current_foogallery_template ) {
-				if ( isset($attr['width']) ){
-					unset($attr['width']);
-				}
-				if ( isset($attr['height']) ){
-					unset($attr['height']);
-				}
-			}
-
-			return $attr;
+		function enqueue_dependencies( $gallery ) {
+			//enqueue core files
+			foogallery_enqueue_core_gallery_template_style();
+			foogallery_enqueue_core_gallery_template_script();
 		}
 
 		/**
@@ -283,8 +215,66 @@ if ( !class_exists( 'FooGallery_Image_Viewer_Gallery_Template' ) ) {
 		 * @return mixed
 		 */
 		function get_thumbnail_dimensions( $dimensions, $foogallery ) {
-			$dimensions = $foogallery->get_meta( 'image-viewer_thumbnail_size', false );
+			$dimensions = $foogallery->get_meta( 'image-viewer_thumbnail_size', array(
+				'width' => 640,
+				'height' => 360,
+                'crop' => true
+			) );
+            if ( !array_key_exists( 'crop', $dimensions ) ) {
+                $dimensions['crop'] = true;
+            }
 			return $dimensions;
+		}
+
+		/**
+		 * Override specific settings so that the gallery template will always work
+		 *
+		 * @param $settings
+		 * @param $post_id
+		 * @param $form_data
+		 *
+		 * @return mixed
+		 */
+		function override_settings($settings, $post_id, $form_data) {
+			if ( 'fg-round-full' === $settings['image-viewer_rounded_corners'] ) {
+				$settings['image-viewer_rounded_corners'] = 'fg-round-large';
+			}
+
+			return $settings;
+		}
+
+		/**
+		 * Build up a arguments used in the preview of the gallery
+		 * @param $args
+		 * @param $post_data
+		 *
+		 * @return mixed
+		 */
+		function preview_arguments( $args, $post_data ) {
+			$args['thumbnail_size'] = $post_data[FOOGALLERY_META_SETTINGS]['image-viewer_thumbnail_size'];
+			$args['text-prev'] = $post_data[FOOGALLERY_META_SETTINGS]['image-viewer_text-prev'];
+			$args['text-of'] = $post_data[FOOGALLERY_META_SETTINGS]['image-viewer_text-of'];
+			$args['text-next'] = $post_data[FOOGALLERY_META_SETTINGS]['image-viewer_text-next'];
+			return $args;
+		}
+
+		/**
+		 * Builds thumb dimensions from arguments
+		 *
+		 * @param array $dimensions
+		 * @param array $arguments
+		 *
+		 * @return mixed
+		 */
+		function build_thumbnail_dimensions_from_arguments( $dimensions, $arguments ) {
+            if ( array_key_exists( 'thumbnail_size', $arguments) ) {
+                return array(
+                    'height' => intval($arguments['thumbnail_size']['height']),
+                    'width' => intval($arguments['thumbnail_size']['width']),
+                    'crop' => $arguments['thumbnail_size']['crop']
+                );
+            }
+            return null;
 		}
 	}
 }

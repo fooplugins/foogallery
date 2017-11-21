@@ -10,10 +10,19 @@ if ( !class_exists( 'FooGallery_Default_Gallery_Template' ) ) {
 		 */
 		function __construct() {
 			add_filter( 'foogallery_gallery_templates', array( $this, 'add_template' ) );
+
+			add_action( 'foogallery_located_template-default', array( $this, 'enqueue_dependencies' ) );
+
 			add_filter( 'foogallery_gallery_templates_files', array( $this, 'register_myself' ) );
-			add_action( 'foogallery_render_gallery_template_field_custom', array( $this, 'render_thumbnail_preview' ), 10, 3 );
-			add_filter( 'foogallery_located_template-default', array( $this, 'enqueue_dependencies' ) );
-			add_filter( 'foogallery_template_load_js-default', array( $this, 'can_enqueue_template_js' ), 10, 2 );
+
+			//build up any preview arguments
+			add_filter( 'foogallery_preview_arguments-default', array( $this, 'preview_arguments' ), 10, 2 );
+
+			//build up the thumb dimensions from some arguments
+			add_filter( 'foogallery_calculate_thumbnail_dimensions-default', array( $this, 'build_thumbnail_dimensions_from_arguments' ), 10, 2 );
+
+			//build up the thumb dimensions on save
+			add_filter( 'foogallery_template_thumbnail_dimensions-default', array( $this, 'get_thumbnail_dimensions' ), 10, 2 );
 		}
 
 		/**
@@ -35,229 +44,160 @@ if ( !class_exists( 'FooGallery_Default_Gallery_Template' ) ) {
 		 */
 		function add_template( $gallery_templates ) {
 			$gallery_templates[] = array(
-					'slug'        => 'default',
-					'name'        => __( 'Responsive Image Gallery', 'foogallery' ),
-					'preview_css' => FOOGALLERY_DEFAULT_GALLERY_TEMPLATE_URL . 'css/gallery-default.css',
-					'admin_js'	  => FOOGALLERY_DEFAULT_GALLERY_TEMPLATE_URL . 'js/admin-gallery-default.js',
-					'fields'	  => array(
-							array(
-									'id'      => 'lightbox',
-									'title'   => __( 'Lightbox', 'foogallery' ),
-									'desc'    => __( 'Choose which lightbox you want to use. The lightbox will only work if you set the thumbnail link to "Full Size Image".<br>PLEASE NOTE: Lightbox plugins are not bundled and need to be installed separately.', 'foogallery' ),
-									'type'    => 'lightbox',
-							),
-							array(
-									'id'      => 'spacing',
-									'title'   => __( 'Spacing', 'foogallery' ),
-									'desc'    => __( 'The spacing or gap between thumbnails in the gallery.', 'foogallery' ),
-									'type'    => 'select',
-									'default' => 'spacing-width-10',
-									'choices' => array(
-											'spacing-width-0' => __( '0 pixels', 'foogallery' ),
-											'spacing-width-5' => __( '5 pixels', 'foogallery' ),
-											'spacing-width-10' => __( '10 pixels', 'foogallery' ),
-											'spacing-width-15' => __( '15 pixels', 'foogallery' ),
-											'spacing-width-20' => __( '20 pixels', 'foogallery' ),
-											'spacing-width-25' => __( '25 pixels', 'foogallery' ),
-									),
-							),
-							array(
-									'id'      => 'alignment',
-									'title'   => __( 'Alignment', 'foogallery' ),
-									'desc'    => __( 'The horizontal alignment of the thumbnails inside the gallery.', 'foogallery' ),
-									'default' => 'alignment-center',
-									'type'    => 'select',
-									'choices' => array(
-											'alignment-left' => __( 'Left', 'foogallery' ),
-											'alignment-center' => __( 'Center', 'foogallery' ),
-											'alignment-right' => __( 'Right', 'foogallery' ),
-									)
-							),
-							array(
-									'id'      => 'loading_animation',
-									'title'   => __( 'Loading Indicator', 'foogallery' ),
-									'default' => 'yes',
-									'type'    => 'radio',
-									'choices' => array(
-											'yes'  => __( 'Show Thumbnail Loading Indicator', 'foogallery' ),
-											'no'   => __( 'Disabled', 'foogallery' )
-									),
-									'spacer'  => '<span class="spacer"></span>',
-									'desc'	  => __( 'By default, an animated loading animation indicator is shown before the thumbnails have loaded. You can disable the loader if you want.', 'foogallery' ),
-							),
-							array(
-									'id'      => 'thumbnail_dimensions',
-									'title'   => __( 'Size', 'foogallery' ),
-									'desc'    => __( 'Choose the size of your thumbnails.', 'foogallery' ),
-									'section' => __( 'Thumbnail Settings', 'foogallery' ),
-									'type'    => 'thumb_size',
-									'default' => array(
-											'width' => get_option( 'thumbnail_size_w' ),
-											'height' => get_option( 'thumbnail_size_h' ),
-											'crop' => true,
-									),
-							),
-							array(
-									'id'      => 'thumbnail_link',
-									'title'   => __( 'Link', 'foogallery' ),
-									'section' => __( 'Thumbnail Settings', 'foogallery' ),
-									'default' => 'image',
-									'type'    => 'thumb_link',
-									'spacer'  => '<span class="spacer"></span>',
-									'desc'	  => __( 'You can choose to link each thumbnail to the full size image, the image\'s attachment page, a custom URL, or you can choose to not link to anything.', 'foogallery' ),
-							),
-							array(
-									'id'      => 'border-style',
-									'title'   => __( 'Border Style', 'foogallery' ),
-									'desc'    => __( 'The border style for each thumbnail in the gallery.', 'foogallery' ),
-									'section' => __( 'Thumbnail Settings', 'foogallery' ),
-									'type'    => 'icon',
-									'default' => 'border-style-square-white',
-									'choices' => array(
-											'border-style-square-white' => array( 'label' => __( 'Square white border with shadow' , 'foogallery' ), 'img' => FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_SHARED_URL . 'img/admin/border-style-icon-square-white.png' ),
-											'border-style-circle-white' => array( 'label' => __( 'Circular white border with shadow' , 'foogallery' ), 'img' => FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_SHARED_URL . 'img/admin/border-style-icon-circle-white.png' ),
-											'border-style-square-black' => array( 'label' => __( 'Square Black' , 'foogallery' ), 'img' => FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_SHARED_URL . 'img/admin/border-style-icon-square-black.png' ),
-											'border-style-circle-black' => array( 'label' => __( 'Circular Black' , 'foogallery' ), 'img' => FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_SHARED_URL . 'img/admin/border-style-icon-circle-black.png' ),
-											'border-style-inset' => array( 'label' => __( 'Square Inset' , 'foogallery' ), 'img' => FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_SHARED_URL . 'img/admin/border-style-icon-square-inset.png' ),
-											'border-style-rounded' => array( 'label' => __( 'Plain Rounded' , 'foogallery' ), 'img' => FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_SHARED_URL . 'img/admin/border-style-icon-plain-rounded.png' ),
-											'' => array( 'label' => __( 'Plain' , 'foogallery' ), 'img' => FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_SHARED_URL . 'img/admin/border-style-icon-none.png' ),
-									)
-							),
-							array(
-									'id'      => 'hover-effect-type',
-									'title'   => __( 'Hover Effect Type', 'foogallery' ),
-									'section' => __( 'Thumbnail Settings', 'foogallery' ),
-									'default' => '',
-									'type'    => 'radio',
-									'choices' => apply_filters( 'foogallery_gallery_template_hover-effect-types', array(
-											''  => __( 'Icon', 'foogallery' ),
-											'hover-effect-tint'   => __( 'Dark Tint', 'foogallery' ),
-											'hover-effect-color' => __( 'Colorize', 'foogallery' ),
-											'hover-effect-caption' => __( 'Caption', 'foogallery' ),
-											'hover-effect-none' => __( 'None', 'foogallery' )
-									) ),
-									'spacer'  => '<span class="spacer"></span>',
-									'desc'	  => __( 'The type of hover effect the thumbnails will use.', 'foogallery' ),
-							),
-							array(
-									'id'      => 'hover-effect',
-									'title'   => __( 'Icon Hover Effect', 'foogallery' ),
-									'desc'    => __( 'When the hover effect type of Icon is chosen, you can choose which icon is shown when you hover over each thumbnail.', 'foogallery' ),
-									'section' => __( 'Thumbnail Settings', 'foogallery' ),
-									'type'    => 'icon',
-									'default' => 'hover-effect-zoom',
-									'choices' => array(
-											'hover-effect-zoom' => array( 'label' => __( 'Zoom' , 'foogallery' ), 'img' => FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_SHARED_URL . 'img/admin/hover-effect-icon-zoom.png' ),
-											'hover-effect-zoom2' => array( 'label' => __( 'Zoom 2' , 'foogallery' ), 'img' => FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_SHARED_URL . 'img/admin/hover-effect-icon-zoom2.png' ),
-											'hover-effect-zoom3' => array( 'label' => __( 'Zoom 3' , 'foogallery' ), 'img' => FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_SHARED_URL . 'img/admin/hover-effect-icon-zoom3.png' ),
-											'hover-effect-plus' => array( 'label' => __( 'Plus' , 'foogallery' ), 'img' => FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_SHARED_URL . 'img/admin/hover-effect-icon-plus.png' ),
-											'hover-effect-circle-plus' => array( 'label' => __( 'Cirlce Plus' , 'foogallery' ), 'img' => FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_SHARED_URL . 'img/admin/hover-effect-icon-circle-plus.png' ),
-											'hover-effect-eye' => array( 'label' => __( 'Eye' , 'foogallery' ), 'img' => FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_SHARED_URL . 'img/admin/hover-effect-icon-eye.png' )
-									),
-							),
-							array(
-									'id'      => 'caption-hover-effect',
-									'title'   => __( 'Caption Effect', 'foogallery' ),
-									'section' => __( 'Thumbnail Settings', 'foogallery' ),
-									'default' => 'hover-caption-simple',
-									'type'    => 'radio',
-									'choices' => apply_filters( 'foogallery_gallery_template_caption-hover-effects', array(
-											'hover-caption-simple'  => __( 'Simple', 'foogallery' ),
-											'hover-caption-full-drop'   => __( 'Drop', 'foogallery' ),
-											'hover-caption-full-fade' => __( 'Fade In', 'foogallery' ),
-											'hover-caption-push' => __( 'Push', 'foogallery' ),
-											'hover-caption-simple-always' => __( 'Always Visible', 'foogallery' )
-									) ),
-									'spacer'  => '<span class="spacer"></span>'
-							),
-							array(
-									'id'      => 'caption-content',
-									'title'   => __( 'Caption Content', 'foogallery' ),
-									'section' => __( 'Thumbnail Settings', 'foogallery' ),
-									'default' => 'title',
-									'type'    => 'radio',
-									'choices' => apply_filters( 'foogallery_gallery_template_caption-content', array(
-											'title'  => __( 'Title Only', 'foogallery' ),
-											'desc'   => __( 'Description Only', 'foogallery' ),
-											'both' => __( 'Title and Description', 'foogallery' )
-									) ),
-									'spacer'  => '<span class="spacer"></span>'
-							),
-							array(
-									'id' => 'thumb_preview',
-									'title' => __( 'Preview', 'foogallery' ),
-									'desc' => __( 'This is what your gallery thumbnails will look like.', 'foogallery' ),
-									'section' => __( 'Thumbnail Settings', 'foogallery' ),
-									'type' => 'default_thumb_preview',
-							)
+				'slug'        => 'default',
+				'name'        => __( 'Responsive Image Gallery', 'foogallery' ),
+				'preview_support' => true,
+				'common_fields_support' => true,
+				'paging_support' => true,
+				'lazyload_support' => true,
+				'mandatory_classes' => 'fg-default',
+				'thumbnail_dimensions' => true,
+				'fields'	  => array(
+                    array(
+                        'id'      => 'thumbnail_dimensions',
+                        'title'   => __( 'Thumbnail Size', 'foogallery' ),
+                        'desc'    => __( 'Choose the size of your thumbnails.', 'foogallery' ),
+                        'section' => __( 'General', 'foogallery' ),
+                        'type'    => 'thumb_size_no_crop',
+                        'default' => array(
+                            'width' => get_option( 'thumbnail_size_w' ),
+                            'height' => get_option( 'thumbnail_size_h' ),
+                        ),
+						'row_data'=> array(
+                            'data-foogallery-change-selector' => 'input',
+							'data-foogallery-preview' => 'shortcode'
+						)
+                    ),
+                    array(
+                        'id'      => 'thumbnail_link',
+                        'title'   => __( 'Link To', 'foogallery' ),
+                        'section' => __( 'General', 'foogallery' ),
+                        'default' => 'image',
+                        'type'    => 'thumb_link',
+                        'desc'	  => __( 'You can choose to link each thumbnail to the full size image, the image\'s attachment page, a custom URL, or you can choose to not link to anything.', 'foogallery' ),
+                    ),
+					array(
+						'id'      => 'lightbox',
+						'title'   => __( 'Lightbox', 'foogallery' ),
+						'desc'    => __( 'Choose which lightbox you want to use. The lightbox will generally only work if you set the thumbnail link to "Full Size Image".', 'foogallery' ),
+                        'section' => __( 'General', 'foogallery' ),
+						'type'    => 'lightbox',
+                        'default' => 'none',
+						'row_data'=> array(
+							'data-foogallery-change-selector' => 'select'
+						)
+					),
+					array(
+						'id'      => 'lightbox_foobox_help',
+						'title'   => __( 'FooBox Help', 'foogallery' ),
+						'desc'    => __( 'The FooBox lightbox is a separate plugin.', 'foogallery' ),
+						'section' => __( 'General', 'foogallery' ),
+						'type'    => 'help',
+						'row_data'=> array(
+							'data-foogallery-hidden' => true,
+							'data-foogallery-show-when-field' => 'lightbox',
+							'data-foogallery-show-when-field-value' => 'foobox'
+						)
+					),
+					array(
+						'id'      => 'spacing',
+						'title'   => __( 'Spacing', 'foogallery' ),
+						'desc'    => __( 'The spacing or gap between thumbnails in the gallery.', 'foogallery' ),
+                        'section' => __( 'General', 'foogallery' ),
+						'type'    => 'select',
+						'default' => 'fg-gutter-10',
+						'choices' => array(
+							'fg-gutter-0' => __( 'none', 'foogallery' ),
+							'fg-gutter-5' => __( '5 pixels', 'foogallery' ),
+							'fg-gutter-10' => __( '10 pixels', 'foogallery' ),
+							'fg-gutter-15' => __( '15 pixels', 'foogallery' ),
+							'fg-gutter-20' => __( '20 pixels', 'foogallery' ),
+							'fg-gutter-25' => __( '25 pixels', 'foogallery' ),
+						),
+                        'row_data'=> array(
+                            'data-foogallery-change-selector' => 'select',
+							'data-foogallery-preview' => 'class'
+                        )
+					),
+					array(
+						'id'      => 'alignment',
+						'title'   => __( 'Alignment', 'foogallery' ),
+						'desc'    => __( 'The horizontal alignment of the thumbnails inside the gallery.', 'foogallery' ),
+                        'section' => __( 'General', 'foogallery' ),
+						'default' => 'fg-center',
+						'type'    => 'radio',
+						'spacer'  => '<span class="spacer"></span>',
+						'choices' => array(
+							'fg-left' => __( 'Left', 'foogallery' ),
+							'fg-center' => __( 'Center', 'foogallery' ),
+							'fg-right' => __( 'Right', 'foogallery' ),
+						),
+                        'row_data'=> array(
+                            'data-foogallery-change-selector' => 'input:radio',
+							'data-foogallery-preview' => 'class'
+                        )
 					)
+				)
 			);
 
 			return $gallery_templates;
 		}
 
 		/**
-		 * Renders the thumbnail preview field
-		 *
-		 * @param $field array
-		 * @param $gallery FooGallery
-		 * @param $template array
-		 */
-		function render_thumbnail_preview( $field, $gallery, $template ) {
-			if ( 'default_thumb_preview' == $field['type'] ) {
-				$args = $gallery->get_meta( 'default_thumbnail_dimensions', array(
-						'width' => get_option( 'thumbnail_size_w' ),
-						'height' => get_option( 'thumbnail_size_h' ),
-						'crop' => true
-				) );
-
-				//override the link so that it does not actually open an image
-				$args['link'] = 'custom';
-				$args['custom_link'] = '#preview';
-
-				$hover_effect = $gallery->get_meta( 'default_hover-effect', 'hover-effect-zoom' );
-				$border_style = $gallery->get_meta( 'default_border-style', 'border-style-square-white' );
-				$hover_effect_type = $gallery->get_meta( 'default_hover-effect-type', '' );
-				$caption_hover_effect = $gallery->get_meta( 'default_caption-hover-effect', 'hover-caption-simple' );
-
-				$featured = $gallery->featured_attachment();
-
-				if ( false === $featured ) {
-					$featured = new FooGalleryAttachment();
-					$featured->url = foogallery_test_thumb_url();
-					$featured->caption = __( 'Caption Title', 'foogallery' );
-					$featured->description = __( 'Long Caption Description Text', 'foogallery' );
-				}
-
-				echo '<div class="foogallery-default-preview ' . foogallery_build_class_attribute( $gallery, $hover_effect, $border_style, $hover_effect_type, $caption_hover_effect, 'foogallery-thumbnail-preview' ) . '">';
-				echo $featured->html( $args, true, false );
-				echo $featured->html_caption( 'both' );
-				echo '</a>';
-				echo '</div>';
-			}
-		}
-
-		/**
 		 * Enqueue scripts that the default gallery template relies on
 		 */
 		function enqueue_dependencies( $gallery ) {
-			if ( 'yes' === $gallery->get_meta( 'default_loading_animation', 'yes' ) ) {
-				wp_enqueue_script( 'jquery' );
-				foogallery_enqueue_imagesloaded_script();
-			}
+			//enqueue core files
+			foogallery_enqueue_core_gallery_template_style();
+			foogallery_enqueue_core_gallery_template_script();
 		}
 
 		/**
-		 * @param $include bool By default we will try to include the template JS
-		 * @param $gallery FooGallery the gallery instance we are loading
+		 * Build up a arguments used in the preview of the gallery
+		 * @param $args
+		 * @param $post_data
 		 *
-		 * @return bool if we want to try to include the template JS
+		 * @return mixed
 		 */
-		function can_enqueue_template_js( $include, $gallery ) {
-			if ( 'yes' === $gallery->get_meta( 'default_loading_animation', 'yes' ) ) {
-				return true;
-			}
-			return false;
+		function preview_arguments( $args, $post_data ) {
+			$args['thumbnail_dimensions'] = $post_data[FOOGALLERY_META_SETTINGS]['default_thumbnail_dimensions'];
+			return $args;
+		}
+
+		/**
+		 * Builds thumb dimensions from arguments
+		 *
+		 * @param array $dimensions
+		 * @param array $arguments
+		 *
+		 * @return mixed
+		 */
+		function build_thumbnail_dimensions_from_arguments( $dimensions, $arguments ) {
+            if ( array_key_exists( 'thumbnail_dimensions', $arguments) ) {
+                return array(
+                    'height' => intval($arguments['thumbnail_dimensions']['height']),
+                    'width' => intval($arguments['thumbnail_dimensions']['width']),
+                    'crop' => '1'
+                );
+            }
+            return null;
+		}
+
+		/**
+		 * Get the thumb dimensions arguments saved for the gallery for this gallery template
+		 *
+		 * @param array $dimensions
+		 * @param FooGallery $foogallery
+		 *
+		 * @return mixed
+		 */
+		function get_thumbnail_dimensions( $dimensions, $foogallery ) {
+			$dimensions = $foogallery->get_meta( 'default_thumbnail_dimensions', array(
+				'width' => get_option( 'thumbnail_size_w' ),
+				'height' => get_option( 'thumbnail_size_h' )
+			) );
+			$dimensions['crop'] = true;
+			return $dimensions;
 		}
 	}
 }

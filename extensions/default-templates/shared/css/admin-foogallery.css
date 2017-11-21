@@ -1,0 +1,78 @@
+.foogallery-setting-caption_icon,
+.foogallery-setting-loading_icon {
+	content: "";
+	display: inline-block;
+	position: relative;
+	width: 40px;
+	height: 40px;
+	margin: 0;
+	background: transparent no-repeat center center;
+	background-size: 40px 40px;
+	vertical-align: middle;
+}
+.foogallery-setting-caption_icon.fg-hover-zoom {
+	background-image: url('../img/zoom.png');
+}
+.foogallery-setting-caption_icon.fg-hover-zoom2 {
+	background-image: url('../img/zoom2.png');
+}
+.foogallery-setting-caption_icon.fg-hover-zoom3 {
+	background-image: url('../img/zoom3.png');
+}
+.foogallery-setting-caption_icon.fg-hover-plus {
+	background-image: url('../img/plus.png');
+}
+.foogallery-setting-caption_icon.fg-hover-circle-plus {
+	background-image: url('../img/circle-plus.png');
+}
+.foogallery-setting-caption_icon.fg-hover-eye {
+	background-image: url('../img/eye.png');
+}
+.foogallery-setting-caption_icon.fg-hover-external {
+	background-image: url('../img/external.png');
+}
+
+.foogallery_template_field_type-htmlicon.foogallery_template_field_id-loading_icon td label {
+	background-color: #eee;
+}
+
+.foogallery_template_field_type-htmlicon.foogallery_template_field_id-loading_icon td input:checked + label {
+	background-color: #eee;
+}
+
+.foogallery-setting-loading_icon .fg-loader {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translateX(-50%) translateY(-50%);
+	width: 1em;
+	height: 1em;
+	font-size: 5px;
+}
+
+.foogallery-setting-loading_icon.fg-loading-bars .fg-loader {
+	font-size: 4px;
+	width: 1em;
+	height: 4em;
+}
+
+.foogallery-setting-loading_icon.fg-loading-partial .fg-loader {
+	font-size: 4px;
+	width: 10em;
+	height: 10em;
+}
+
+.foogallery-setting-loading_icon.fg-loading-pulse .fg-loader {
+	font-size: 4px;
+	width: 2.5em;
+	height: 2.5em;
+	transform: translateX(-50%) translateY(-150%);
+}
+
+.foogallery-setting-loading_icon.fg-loading-trail .fg-loader {
+	font-size: 20px;
+}
+
+.fg-item-inner {
+	margin: 0;
+}

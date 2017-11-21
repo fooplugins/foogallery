@@ -27,9 +27,10 @@ if ( ! class_exists( 'FooGallery_NextGen_Helper' ) ) {
 			$gallery_table = $wpdb->prefix . self::NEXTGEN_TABLE_GALLERY;
 			$picture_table = $wpdb->prefix . self::NEXTGEN_TABLE_PICTURES;
 
-			return $wpdb->get_results( "select gid, name, title, galdesc,
-(select count(*) from {$picture_table} where galleryid = gid) 'image_count'
-from {$gallery_table}" );
+			return $wpdb->get_results( "select gal.gid, gal.name, gal.title, gal.galdesc, count(pic.pid) 'image_count'
+from {$gallery_table} gal
+   join {$picture_table} pic on gal.gid = pic.galleryid
+group by gal.gid, gal.name, gal.title, gal.galdesc" );
 		}
 
 		function get_albums() {
@@ -241,9 +242,8 @@ where gid = %d", $id ) );
 				<tr>
 					<th scope="col" id="cb" class="manage-column column-cb check-column">
 						<?php if ( ! $importing && $all_imports_completed ) { ?>
-						<label class="screen-reader-text"
-						       for="cb-select-all-1"><?php _e( 'Select All', 'foogallery' ); ?></label>
-						<input id="cb-select-all-1" type="checkbox" <?php echo $importing ? 'disabled="disabled"' : ''; ?> checked="checked">
+						<label class="screen-reader-text" for="cb-select-all-1"><?php _e( 'Select All', 'foogallery' ); ?></label>
+						<input id="cb-select-all-1" type="checkbox" <?php echo $importing ? 'disabled="disabled"' : ''; ?> checked="checked" />
 						<?php } ?>
 					</th>
 					<th scope="col" class="manage-column">
@@ -259,9 +259,40 @@ where gid = %d", $id ) );
 				</thead>
 				<tbody>
 			<?php
-			$counter = 0;
-			foreach ( $galleries as $gallery ) {
-				$counter++;
+
+			require_once(  plugin_dir_path( __FILE__ ) . 'class-nextgen-pagination.php' );
+
+			$url = add_query_arg( 'page', 'foogallery-nextgen-importer' );
+			$page = 1;
+			if ( defined( 'DOING_AJAX' ) ) {
+				if ( isset( $_POST['foogallery_nextgen_import_paged'] ) ) {
+					$url = $_POST['foogallery_nextgen_import_url'];
+					$page = $_POST['foogallery_nextgen_import_paged'];
+				} else {
+					$url = wp_get_referer();
+					$parts = parse_url($url);
+					parse_str( $parts['query'], $query );
+					$page = $query['paged'];
+				}
+			} elseif ( isset( $_GET['paged'] ) ) {
+				$page = $_GET['paged'];
+			}
+			$url = add_query_arg( 'paged', $page, $url );
+			$gallery_count = count($galleries);
+			$page_size = apply_filters( 'foogallery_nextgen_import_page_size', 10);
+
+			$pagination = new FooGalleryNextGenPagination();
+			$pagination->items( $gallery_count );
+			$pagination->limit( $page_size ); // Limit entries per page
+			$pagination->url = $url;
+			$pagination->currentPage( $page );
+			$pagination->calculate();
+
+			for ($counter = $pagination->start; $counter <= $pagination->end; $counter++ ) {
+				if ( $counter >= $gallery_count ) {
+					break;
+				}
+				$gallery = $galleries[$counter];
 				$progress    = $this->get_import_progress( $gallery->gid );
 				$done        = $progress->is_completed();
 				$edit_link	 = '';
@@ -288,7 +319,9 @@ where gid = %d", $id ) );
 						</th>
 					<?php } ?>
 					<td>
-						<?php echo $gallery->title . ' ' . sprintf( __( '(%s images)', 'foogallery' ), $gallery->image_count ); ?>
+						<?php echo $gallery->gid . '. '; ?>
+						<strong><?php echo $gallery->title; ?></strong>
+						<?php echo ' ' . sprintf( __( '(%s images)', 'foogallery' ), $gallery->image_count ); ?>
 					</td>
 					<td>
 					<?php if ( $foogallery ) {
@@ -306,9 +339,17 @@ where gid = %d", $id ) );
 			?>
 				</tbody>
 			</table>
-			<br/>
+			<div class="tablenav bottom">
+				<div class="tablenav-pages">
+					<?php echo $pagination->render(); ?>
+				</div>
+			</div>
 
 			<?php
+			//hidden fields used for pagination
+			echo '<input type="hidden" name="foogallery_nextgen_import_paged" value="' . esc_attr( $page ) . '" />';
+			echo '<input type="hidden" name="foogallery_nextgen_import_url" value="' . esc_url( $url ) . '" />';
+
 			echo '<input type="hidden" id="nextgen_import_progress" value="' . $overall_progress . '" />';
 			wp_nonce_field( 'foogallery_nextgen_import', 'foogallery_nextgen_import' );
 			wp_nonce_field( 'foogallery_nextgen_import_refresh', 'foogallery_nextgen_import_refresh', false );
@@ -399,35 +440,39 @@ where gid = %d", $id ) );
 							<ul class="ul-disc" style="margin: 0 0 0 20px;">
 							<?php
 							$import_gallery_count = 0;
-							foreach ( $galleries as $gallery_id ) {
-								if ( 'a' === substr( $gallery_id, 0, 1 ) ) {
-									//we are dealing with an album inside the album
-									$nested_album = $this->get_album( substr( $gallery_id, 1 ) );
-									if ( $nested_album ) {
+							if ( is_array( $galleries ) ) {
+								foreach ( $galleries as $gallery_id ) {
+									if ( 'a' === substr( $gallery_id, 0, 1 ) ) {
+										//we are dealing with an album inside the album
+										$nested_album = $this->get_album( substr( $gallery_id, 1 ) );
+										if ( $nested_album ) {
+											echo '<li>';
+											echo __( '[Album] ', 'foogallery' );
+											echo ' <span style="text-decoration:line-through">';
+											echo $nested_album->name;
+											echo '</span>';
+											echo ' (<span class="nextgen-import-progress-' . FooGallery_NextGen_Import_Progress::PROGRESS_ERROR . '">';
+											echo __( 'nested albums not supported', 'foogallery' );
+											echo '</span>)</li>';
+										}
+									} else {
+										$nextgen_gallery = $this->get_gallery( $gallery_id );
 										echo '<li>';
-										echo __('[Album] ', 'foogallery');
-										echo ' <span style="text-decoration:line-through">';
-										echo $nested_album->name;
-										echo '</span>';
-										echo ' (<span class="nextgen-import-progress-' . FooGallery_NextGen_Import_Progress::PROGRESS_ERROR . '">';
-										echo __( 'nested albums not supported', 'foogallery' );
+										$gallery_progress  = $this->get_import_progress( $gallery_id );
+										$gallery_completed = $gallery_progress->is_completed();
+										if ( $gallery_completed ) {
+											$import_gallery_count ++;
+										}
+										echo $gallery_completed ? '' : '<span style="text-decoration:line-through">';
+										echo $nextgen_gallery->title;
+										echo $gallery_completed ? '' : '</span>';
+										echo ' (<span class="nextgen-import-progress-' . $gallery_progress->status . '">';
+										echo $gallery_completed ? __( 'imported', 'foogallery' ) : __( 'not imported', 'foogallery' );
 										echo '</span>)</li>';
 									}
-								} else {
-									$nextgen_gallery = $this->get_gallery( $gallery_id );
-									echo '<li>';
-									$gallery_progress  = $this->get_import_progress( $gallery_id );
-									$gallery_completed = $gallery_progress->is_completed();
-									if ( $gallery_completed ) {
-										$import_gallery_count ++;
-									}
-									echo $gallery_completed ? '' : '<span style="text-decoration:line-through">';
-									echo $nextgen_gallery->title;
-									echo $gallery_completed ? '' : '</span>';
-									echo ' (<span class="nextgen-import-progress-' . $gallery_progress->status . '">';
-									echo $gallery_completed ? __( 'imported', 'foogallery' ) : __( 'not imported', 'foogallery' );
-									echo '</span>)</li>';
 								}
+							} else {
+								_e('No galleries in album!');
 							}
 							?>
 							</ul>

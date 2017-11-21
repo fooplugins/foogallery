@@ -12,7 +12,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 
 		public function __construct() {
 			//add our foogallery metaboxes
-			add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes_to_gallery' ) );
+			add_action( 'add_meta_boxes_' . FOOGALLERY_CPT_GALLERY, array( $this, 'add_meta_boxes_to_gallery' ) );
 
 			//save extra post data for a gallery
 			add_action( 'save_post', array( $this, 'save_gallery' ) );
@@ -31,6 +31,12 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 
 			// Ajax call for clearing thumb cache for the gallery
 			add_action( 'wp_ajax_foogallery_clear_gallery_thumb_cache', array( $this, 'ajax_clear_gallery_thumb_cache' ) );
+
+			// Ajax call for generating a gallery preview
+			add_action( 'wp_ajax_foogallery_preview', array( $this, 'ajax_gallery_preview' ) );
+
+			//handle previews that have no attachments
+			add_action( 'foogallery_template_no_attachments', array( $this, 'preview_no_attachments' ) );
 		}
 
 		public function whitelist_metaboxes() {
@@ -56,8 +62,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 			);
 		}
 
-		public function add_meta_boxes_to_gallery() {
-			global $post;
+		public function add_meta_boxes_to_gallery( $post ) {
 
 			add_meta_box(
 				'foogallery_items',
@@ -157,15 +162,17 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 				//if we get here, we are dealing with the Gallery custom post type
 				do_action( 'foogallery_before_save_gallery', $post_id, $_POST );
 
-				$attachments = apply_filters( 'foogallery_save_gallery_attachments', explode( ',', $_POST[FOOGALLERY_META_ATTACHMENTS] ) );
+				$attachments = apply_filters( 'foogallery_save_gallery_attachments', explode( ',', $_POST[FOOGALLERY_META_ATTACHMENTS] ), $post_id, $_POST );
 				update_post_meta( $post_id, FOOGALLERY_META_ATTACHMENTS, $attachments );
+
+				$gallery_template = $_POST[FOOGALLERY_META_TEMPLATE];
+				update_post_meta( $post_id, FOOGALLERY_META_TEMPLATE, $gallery_template );
 
 				$settings = isset($_POST[FOOGALLERY_META_SETTINGS]) ?
 					$_POST[FOOGALLERY_META_SETTINGS] : array();
 
-				$settings = apply_filters( 'foogallery_save_gallery_settings', $settings );
-
-				update_post_meta( $post_id, FOOGALLERY_META_TEMPLATE, $_POST[FOOGALLERY_META_TEMPLATE] );
+				$settings = apply_filters( 'foogallery_save_gallery_settings', $settings, $post_id, $_POST );
+				$settings = apply_filters( 'foogallery_save_gallery_settings-'. $gallery_template, $settings, $post_id, $_POST );
 
 				update_post_meta( $post_id, FOOGALLERY_META_SETTINGS, $settings );
 
@@ -230,39 +237,74 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 		public function render_gallery_media_metabox( $post ) {
 			$gallery = $this->get_gallery( $post );
 
+			$mode = $gallery->get_meta( 'foogallery_items_view', 'manage' );
+
+			if ( empty($mode) || $gallery->is_new() ) {
+				$mode = 'manage';
+			}
+
 			wp_enqueue_media();
 
 			?>
-			<input type="hidden" name="<?php echo FOOGALLERY_CPT_GALLERY; ?>_nonce"
-				   id="<?php echo FOOGALLERY_CPT_GALLERY; ?>_nonce"
-				   value="<?php echo wp_create_nonce( plugin_basename( FOOGALLERY_FILE ) ); ?>"/>
-			<input type="hidden" name='foogallery_attachments' id="foogallery_attachments"
-				   value="<?php echo $gallery->attachment_id_csv(); ?>"/>
-			<div>
-				<ul class="foogallery-attachments-list">
+			<div class="hidden foogallery-items-view-switch-container">
+				<div class="foogallery-items-view-switch">
+					<a href="#manage" data-value="manage" data-container=".foogallery-items-view-manage" class="<?php echo $mode==='manage' ? 'current' : ''; ?>"><?php _e('Manage Items', 'foogallery'); ?></a>
+					<a href="#preview" data-value="preview" data-container=".foogallery-items-view-preview" class="<?php echo $mode==='preview' ? 'current' : ''; ?>"><?php _e('Gallery Preview', 'foogallery'); ?></a>
+				</div>
+				<span id="foogallery_preview_spinner" class="spinner"></span>
+                <input type="hidden" id="foogallery_items_view_input" value="<?php echo $mode; ?>" name="<?php echo FOOGALLERY_META_SETTINGS . '[foogallery_items_view]'; ?>" />
+			</div>
+
+			<div class="foogallery-items-view foogallery-items-view-manage <?php echo $mode==='manage' ? '' : 'hidden'; ?>">
+				<input type="hidden" name="<?php echo FOOGALLERY_CPT_GALLERY; ?>_nonce"
+					   id="<?php echo FOOGALLERY_CPT_GALLERY; ?>_nonce"
+					   value="<?php echo wp_create_nonce( plugin_basename( FOOGALLERY_FILE ) ); ?>"/>
+				<input type="hidden" name='foogallery_attachments' id="foogallery_attachments"
+					   value="<?php echo $gallery->attachment_id_csv(); ?>"/>
+				<div>
+					<ul class="foogallery-attachments-list">
+					<?php
+					if ( $gallery->has_attachments() ) {
+						foreach ( $gallery->attachments() as $attachment ) {
+							$this->render_gallery_item( $attachment );
+						}
+					} ?>
+						<li class="add-attachment">
+							<a href="#" data-uploader-title="<?php _e( 'Add Media To Gallery', 'foogallery' ); ?>"
+							   data-uploader-button-text="<?php _e( 'Add Media', 'foogallery' ); ?>"
+							   data-post-id="<?php echo $post->ID; ?>" class="upload_image_button"
+							   title="<?php _e( 'Add Media To Gallery', 'foogallery' ); ?>">
+								<div class="dashicons dashicons-format-gallery"></div>
+								<span><?php _e( 'Add Media', 'foogallery' ); ?></span>
+							</a>
+						</li>
+					</ul>
+					<div style="clear: both;"></div>
+				</div>
+				<textarea style="display: none" id="foogallery-attachment-template">
+					<?php $this->render_gallery_item(); ?>
+				</textarea>
+			</div>
+			<div class="foogallery-items-view foogallery-items-view-preview <?php echo $mode==='preview' ? '' : 'hidden'; ?>">
+				<div class="foogallery_preview_container">
 				<?php
 				if ( $gallery->has_attachments() ) {
-					foreach ( $gallery->attachments() as $attachment ) {
-						$this->render_gallery_item( $attachment );
-					}
-				} ?>
-					<li class="add-attachment">
-						<a href="#" data-uploader-title="<?php _e( 'Add Media To Gallery', 'foogallery' ); ?>"
-						   data-uploader-button-text="<?php _e( 'Add Media', 'foogallery' ); ?>"
-						   data-post-id="<?php echo $post->ID; ?>" class="upload_image_button"
-						   title="<?php _e( 'Add Media To Gallery', 'foogallery' ); ?>">
-							<div class="dashicons dashicons-format-gallery"></div>
-							<span><?php _e( 'Add Media', 'foogallery' ); ?></span>
-						</a>
-					</li>
-				</ul>
-				<div style="clear: both;"></div>
+					foogallery_render_gallery( $gallery->ID );
+				} else {
+					$this->render_empty_gallery_preview();
+				}
+				?>
+				</div>
+				<div style="clear: both"></div>
+				<?php wp_nonce_field( 'foogallery_preview', 'foogallery_preview', false ); ?>
 			</div>
-			<textarea style="display: none" id="foogallery-attachment-template">
-				<?php $this->render_gallery_item(); ?>
-			</textarea>
 		<?php
+		}
 
+		public function render_empty_gallery_preview() {
+			echo '<div class="foogallery-preview-empty" style="padding:20px; text-align: center">';
+			echo '<h3>' . __( 'Please add media to your gallery to see a preview!', 'foogallery' ) . '</h3>';
+			echo '</div>';
 		}
 
 		public function render_gallery_item( $attachment_post = false ) {
@@ -296,107 +338,13 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 		}
 
 		public function render_gallery_settings_metabox( $post ) {
-			//gallery settings including:
-			//gallery images link to image or attachment page
-			//default template to use
-			$gallery             = $this->get_gallery( $post );
-			$available_templates = foogallery_gallery_templates();
+            $gallery = $this->get_gallery( $post );
 
-			//check if we have no templates
-			if ( 0 === count( $available_templates ) ) {
-				//force the default template to activate if there are no other gallery templates
-				foogallery_activate_default_templates_extension();
-				$available_templates = foogallery_gallery_templates();
-			}
+            $settings = new FooGallery_Admin_Gallery_MetaBox_Settings_Helper( $gallery );
 
-			$gallery_template = foogallery_default_gallery_template();
-			if ( ! empty($gallery->gallery_template) ) {
-				$gallery_template = $gallery->gallery_template;
-			}
-			$hide_help = 'on' == foogallery_get_setting( 'hide_gallery_template_help' );
-			?>
-			<table class="foogallery-metabox-settings">
-				<tbody>
-				<tr class="gallery_template_field gallery_template_field_selector">
-					<th>
-						<label for="FooGallerySettings_GalleryTemplate"><?php _e( 'Gallery Template', 'foogallery' ); ?></label>
-					</th>
-					<td>
-						<select id="FooGallerySettings_GalleryTemplate" name="<?php echo FOOGALLERY_META_TEMPLATE; ?>">
-							<?php
-							foreach ( $available_templates as $template ) {
-								$selected = ($gallery_template === $template['slug']) ? 'selected' : '';
+            $settings->render_hidden_gallery_template_selector();
 
-								$preview_css = '';
-								if ( isset( $template['preview_css'] ) ) {
-									if ( is_array( $template['preview_css'] ) ) {
-										//dealing with an array of css files to include
-										$preview_css = implode( ',', $template['preview_css'] );
-									} else {
-										$preview_css = $template['preview_css'];
-									}
-								}
-								$preview_css = empty( $preview_css ) ? '' : ' data-preview-css="' . $preview_css . '" ';
-
-								echo "<option {$selected}{$preview_css} value=\"{$template['slug']}\">{$template['name']}</option>";
-							}
-							?>
-						</select>
-						<br />
-						<small><?php _e( 'The gallery template that will be used when the gallery is output to the frontend.', 'foogallery' ); ?></small>
-					</td>
-				</tr>
-				<?php
-				foreach ( $available_templates as $template ) {
-					$field_visibility = ($gallery_template !== $template['slug']) ? 'style="display:none"' : '';
-
-					//allow for extensions to override fields for every gallery template.
-					// Also passes the $template along so you can inspect and conditionally alter fields based on the template properties
-					$fields = apply_filters( 'foogallery_override_gallery_template_fields', $template['fields'], $template );
-
-					$section = '';
-					foreach ( $fields as $field ) {
-
-						//allow for the field to be altered by extensions. Also used by the build-in fields, e.g. lightbox
-						$field = apply_filters( 'foogallery_alter_gallery_template_field', $field, $gallery );
-
-						$class = "gallery_template_field gallery_template_field-{$template['slug']} gallery_template_field-{$template['slug']}-{$field['id']}";
-
-						if ( isset($field['section']) && $field['section'] !== $section ) {
-							$section = $field['section'];
-							?>
-							<tr class="<?php echo $class; ?>" <?php echo $field_visibility; ?>>
-								<td colspan="2"><h4><?php echo $section; ?></h4></td>
-							</tr>
-						<?php }
-						if (isset($field['type']) && 'help' == $field['type'] && $hide_help) {
-							continue; //skip help if the 'hide help' setting is turned on
-						}
-						?>
-						<tr class="<?php echo $class; ?>" <?php echo $field_visibility; ?>>
-							<?php if ( isset($field['type']) && 'help' == $field['type'] ) { ?>
-							<td colspan="2">
-								<div class="foogallery-help">
-									<?php echo $field['desc']; ?>
-								</div>
-							</td>
-							<?php } else { ?>
-							<th>
-								<label
-									for="FooGallerySettings_<?php echo $template['slug'] . '_' . $field['id']; ?>"><?php echo $field['title']; ?></label>
-							</th>
-							<td>
-								<?php do_action( 'foogallery_render_gallery_template_field', $field, $gallery, $template ); ?>
-							</td>
-							<?php } ?>
-						</tr>
-					<?php
-					}
-				}
-				?>
-				</tbody>
-			</table>
-		<?php
+            $settings->render_gallery_settings();
 		}
 
 		public function render_gallery_shortcode_metabox( $post ) {
@@ -404,7 +352,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 			$shortcode = $gallery->shortcode();
 			?>
 			<p class="foogallery-shortcode">
-				<input type="text" id="foogallery-copy-shortcode" size="<?php echo strlen( $shortcode ); ?>" value="<?php echo htmlspecialchars( $shortcode ); ?>" readonly="readonly" />
+				<input type="text" id="foogallery-copy-shortcode" size="<?php echo strlen( $shortcode ) + 2; ?>" value="<?php echo htmlspecialchars( $shortcode ); ?>" readonly="readonly" />
 			</p>
 			<p>
 				<?php _e( 'Paste the above shortcode into a post or page to show the gallery.', 'foogallery' ); ?>
@@ -534,6 +482,12 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 			if ( FOOGALLERY_CPT_GALLERY === $screen_id ||
 			     'edit-' . FOOGALLERY_CPT_GALLERY === $screen_id ) {
 
+				//enqueue any dependencies from extensions or gallery templates
+				do_action( 'foogallery_enqueue_preview_dependencies' );
+				//add core foogallery files for preview
+				foogallery_enqueue_core_gallery_template_style();
+				foogallery_enqueue_core_gallery_template_script();
+
 				//spectrum needed for the colorpicker field
 				$url = FOOGALLERY_URL . 'lib/spectrum/spectrum.js';
 				wp_enqueue_script( 'foogallery-spectrum', $url, array('jquery'), FOOGALLERY_VERSION );
@@ -573,7 +527,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 				</tr>
 				</tbody>
 			</table>
-		<?php
+			<?php
 		}
 
 		public function ajax_create_gallery_page() {
@@ -619,6 +573,58 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 			}
 
 			die();
+		}
+
+		public function ajax_gallery_preview() {
+			if ( check_admin_referer( 'foogallery_preview', 'foogallery_preview_nonce' ) ) {
+
+				$foogallery_id = $_POST['foogallery_id'];
+
+				$template = $_POST['foogallery_template'];
+
+				//check that the template supports previews
+				$gallery_template = foogallery_get_gallery_template( $template );
+				if ( isset( $gallery_template['preview_support'] ) && true === $gallery_template['preview_support'] ) {
+
+					global $foogallery_gallery_preview;
+
+					$foogallery_gallery_preview = true;
+
+					$args = array(
+						'template'       => $template,
+						'attachment_ids' => $_POST['foogallery_attachments'],
+                        'preview'        => true
+					);
+
+					$args = apply_filters( 'foogallery_preview_arguments', $args, $_POST, $template );
+					$args = apply_filters( 'foogallery_preview_arguments-' . $template, $args, $_POST );
+
+					foogallery_render_gallery( $foogallery_id, $args );
+
+					$foogallery_gallery_preview = false;
+
+				} else {
+					echo '<div style="padding:20px 50px 50px 50px; text-align: center">';
+					echo '<h3>' . __( 'Preview not available!', 'foogallery' ) . '</h3>';
+					echo __('Sorry, but this gallery template does not support live previews. Please update the gallery in order to see what the gallery will look like.', 'foogallery' );
+					echo '</div>';
+				}
+			}
+
+			die();
+		}
+
+		/**
+		 * Handle gallery previews where there are no attachments
+		 *
+		 * @param $foogallery FooGallery
+		 */
+		public function preview_no_attachments( $foogallery ) {
+			global $foogallery_gallery_preview;
+
+			if ( isset( $foogallery_gallery_preview ) && true === $foogallery_gallery_preview ) {
+				$this->render_empty_gallery_preview();
+			}
 		}
 	}
 }

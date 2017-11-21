@@ -2,7 +2,7 @@
 	/**
 	 * @package     Freemius
 	 * @copyright   Copyright (c) 2015, Freemius, Inc.
-	 * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+	 * @license     https://www.gnu.org/licenses/gpl-3.0.html GNU General Public License Version 3
 	 * @since       1.0.3
 	 */
 
@@ -42,9 +42,9 @@
 		 * @param bool|object $entity
 		 */
 		function __construct( $entity = false ) {
-			if ( ! ( $entity instanceof stdClass ) ) {
-				return;
-			}
+            if ( ! ( $entity instanceof stdClass ) && ! ( $entity instanceof FS_Entity ) ) {
+                return;
+            }
 
 			$props = fs_get_object_public_vars( $this );
 

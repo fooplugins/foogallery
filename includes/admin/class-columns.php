@@ -8,6 +8,7 @@ if ( ! class_exists( 'FooGallery_Admin_Columns' ) ) {
 	class FooGallery_Admin_Columns {
 
 		private $include_clipboard_script = false;
+		private $_foogallery = false;
 
 		public function __construct() {
 			add_filter( 'manage_edit-' . FOOGALLERY_CPT_GALLERY . '_columns', array( $this, 'gallery_custom_columns' ) );
@@ -27,20 +28,30 @@ if ( ! class_exists( 'FooGallery_Admin_Columns' ) ) {
 					);
 		}
 
+		private function get_local_gallery( $post ) {
+			if ( false === $this->_foogallery ) {
+				$this->_foogallery = FooGallery::get( $post );
+			} else if ( $this->_foogallery->ID !== $post->ID) {
+				$this->_foogallery = FooGallery::get( $post );
+			}
+
+			return $this->_foogallery;
+		}
+
 		public function gallery_custom_column_content( $column ) {
 			global $post;
 
 			switch ( $column ) {
 				case FOOGALLERY_CPT_GALLERY . '_template':
-					$gallery = FooGallery::get( $post );
+					$gallery = $this->get_local_gallery( $post );
 					echo $gallery->gallery_template_name();
 					break;
 				case FOOGALLERY_CPT_GALLERY . '_count':
-					$gallery = FooGallery::get( $post );
+					$gallery = $this->get_local_gallery( $post );
 					echo $gallery->image_count();
 					break;
 				case FOOGALLERY_CPT_GALLERY . '_shortcode':
-					$gallery = FooGallery::get( $post );
+					$gallery = $this->get_local_gallery( $post );
 					$shortcode = $gallery->shortcode();
 
 					echo '<input type="text" readonly="readonly" size="' . strlen( $shortcode )  . '" value="' . esc_attr( $shortcode ) . '" class="foogallery-shortcode" />';
@@ -49,7 +60,7 @@ if ( ! class_exists( 'FooGallery_Admin_Columns' ) ) {
 
 					break;
 				case 'icon':
-					$gallery = FooGallery::get( $post );
+					$gallery = $this->get_local_gallery( $post );
 					$html_img = foogallery_find_featured_attachment_thumbnail_html( $gallery, array(
 						'width' => 60,
 						'height' => 60,
@@ -60,7 +71,7 @@ if ( ! class_exists( 'FooGallery_Admin_Columns' ) ) {
 					}
 					break;
 				case FOOGALLERY_CPT_GALLERY . '_usage':
-					$gallery = FooGallery::get( $post );
+					$gallery = $this->get_local_gallery( $post );
 					$posts = $gallery->find_usages();
 					if ( $posts && count( $posts ) > 0 ) {
 						echo '<ul class="ul-disc">';
