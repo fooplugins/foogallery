@@ -6315,7 +6315,7 @@
 				page = self.get(num);
 				first = page[0].bounds();
 				last = page[page.length - 1].bounds();
-				if (last.top - viewport.bottom < self.distance || first.bottom - viewport.top < self.distance){
+				if (first.top - viewport.bottom < self.distance || last.bottom - viewport.top < self.distance){
 					items.push.apply(items, page);
 				}
 			}
@@ -6384,7 +6384,7 @@
 				page = self.get(num);
 				first = page[0].bounds();
 				last = page[page.length - 1].bounds();
-				if (last.top - viewport.bottom < self.distance || first.bottom - viewport.top < self.distance){
+				if (first.top - viewport.bottom < self.distance || last.bottom - viewport.top < self.distance){
 					items.push.apply(items, page);
 				}
 			}
@@ -9158,13 +9158,27 @@
 );
 (function($, _utils){
 
+	function foobox_integration(e, tmpl){
+		if (tmpl.$el.is(".foogallery-lightbox-foobox, .foogallery-lightbox-foobox-free")){
+			$("body").trigger("post-load");
+		}
+	}
+
 	// this automatically initializes all templates on page load
 	$(function () {
-		$('[id^="foogallery-"]:not(.fg-ready)').foogallery();
+		$('[id^="foogallery-"]:not(.fg-ready)').foogallery({
+			on: {
+				"after-page-change.foogallery": foobox_integration
+			}
+		});
 	});
 
 	_utils.ready(function(){
-		$('[id^="foogallery-"].fg-ready').foogallery();
+		$('[id^="foogallery-"].fg-ready').foogallery({
+			on: {
+				"after-page-change.foogallery": foobox_integration
+			}
+		});
 	});
 
 })(
