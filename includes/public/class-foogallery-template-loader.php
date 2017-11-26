@@ -15,7 +15,7 @@ class FooGallery_Template_Loader {
 	 *    wp-content/themes/{theme}/foogallery/gallery-{template}.php
 	 *  wp-content/plugins/foogallery/templates/gallery-{template}.php
 	 *
-	 * @param $args array       Arguments passed in from the shortcode
+	 * @param      $args array       Arguments passed in from the shortcode
 	 */
 	public function render_template( $args ) {
 		//do some work before we locate the template
@@ -114,10 +114,12 @@ class FooGallery_Template_Loader {
 			}
 		}
 
-		//cleanup globals in case there are multiple galleries on a page
-        $current_foogallery = null;
-        $current_foogallery_arguments = null;
-        $current_foogallery_template = null;
+		if ( apply_filters( 'foogallery_render_template_clear_globals', true ) ) {
+			//cleanup globals in case there are multiple galleries on a page
+			$current_foogallery           = null;
+			$current_foogallery_arguments = null;
+			$current_foogallery_template  = null;
+		}
 	}
 
 	/***
