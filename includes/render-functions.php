@@ -363,3 +363,44 @@ function foogallery_attachment_html( $foogallery_attachment, $args = array() ) {
     return $html;
 }
 
+/**
+ * Build up a JSON string for a FooGallery Attachment
+ *
+ * @param FooGalleryAttachment $foogallery_attachment
+ * @param array $args
+ *
+ * @since 1.4.9
+ *
+ * @returns string
+ */
+function foogallery_build_json_from_attachment( $foogallery_attachment, $args = array() ) {
+	if ( isset( $foogallery_attachment ) ) {
+
+		$anchor_attributes = foogallery_build_attachment_html_anchor_attributes( $foogallery_attachment, $args );
+		$image_attributes = foogallery_build_attachment_html_image_attributes( $foogallery_attachment, $args );
+		$captions = foogallery_build_attachment_html_caption( $foogallery_attachment, $args );
+
+
+		$json = array(
+			"href"   => $anchor_attributes['href'],
+			"src"    => $image_attributes['src'],
+			"srcset" => $image_attributes['srcset'],
+			"width"  => $image_attributes['width'],
+			"height" => $image_attributes['height'],
+			"title"  => $foogallery_attachment->title,
+			"alt"	 => $foogallery_attachment->alt,
+			"caption"=> $captions['title'],
+			"description" => $captions['desc'],
+	//    	"attr" => new stdClass()
+	//		"anchor": {
+	//			"data-attachment-id": 1234,
+	//            "data-caption-title": "FooBox specific title",
+	//            "data-caption-desc": "FooBox specific description"
+	//        }
+		);
+
+		return json_encode( $json );
+	}
+
+	return '';
+}
