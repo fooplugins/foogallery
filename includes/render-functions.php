@@ -53,7 +53,7 @@ function foogallery_attachment_html_image( $foogallery_attachment, $args = array
  *
  * @since 1.4.9
  *
- * @return string
+ * @return array
  */
 function foogallery_build_attachment_html_image_attributes( $foogallery_attachment, $args = array() ) {
 	$attr['src'] = foogallery_attachment_html_image_src( $foogallery_attachment, $args );
@@ -380,27 +380,50 @@ function foogallery_build_json_from_attachment( $foogallery_attachment, $args = 
 		$image_attributes = foogallery_build_attachment_html_image_attributes( $foogallery_attachment, $args );
 		$captions = foogallery_build_attachment_html_caption( $foogallery_attachment, $args );
 
+		if ( array_key_exists( 'src', $image_attributes ) ) {
+		    $src = $image_attributes['src'];
+        } else if ( array_key_exists( 'data-src-fg', $image_attributes ) ) {
+		    $src = $image_attributes['data-src-fg'];
+        }
 
-		$json = array(
-			"href"   => $anchor_attributes['href'],
-			"src"    => $image_attributes['src'],
-			"srcset" => $image_attributes['srcset'],
-			"width"  => $image_attributes['width'],
-			"height" => $image_attributes['height'],
-			"title"  => $foogallery_attachment->title,
-			"alt"	 => $foogallery_attachment->alt,
-			"caption"=> $captions['title'],
-			"description" => $captions['desc'],
-	//    	"attr" => new stdClass()
-	//		"anchor": {
-	//			"data-attachment-id": 1234,
-	//            "data-caption-title": "FooBox specific title",
-	//            "data-caption-desc": "FooBox specific description"
-	//        }
-		);
+        if ( array_key_exists( 'srcset', $image_attributes ) ) {
+            $srcset = $image_attributes['srcset'];
+        } else if ( array_key_exists( 'data-srcset-fg', $image_attributes ) ) {
+            $srcset = $image_attributes['data-srcset-fg'];
+        }
 
-		return json_encode( $json );
+        $json_object = new stdClass();
+        $json_object->href      = $anchor_attributes['href'];
+        $json_object->src       = $src;
+        $json_object->srcset    = $srcset;
+        if ( array_key_exists( 'width', $image_attributes ) ) {
+            $json_object->width = $image_attributes['width'];
+        }
+        if ( array_key_exists( 'height', $image_attributes ) ) {
+            $json_object->height = $image_attributes['height'];
+        }
+        $json_object->title     = $foogallery_attachment->title;
+        $json_object->alt       = $foogallery_attachment->alt;
+
+        $json_object_attr_anchor = new stdClass();
+        $json_object_attr_anchor->{'data-attachment-id'} = $foogallery_attachment->ID;
+
+        if ( $captions !== false ) {
+            if ( array_key_exists( 'title', $captions ) ) {
+                $json_object->caption = $json_object_attr_anchor->{'data-caption-title'} = $captions['title'];
+
+            }
+            if ( array_key_exists( 'desc', $captions ) ) {
+                $json_object->description = $json_object_attr_anchor->{'data-caption-desc'} = $captions['desc'];
+            }
+        }
+
+        $json_object->attr = new stdClass();
+        $json_object->attr->anchor = $json_object_attr_anchor;
+
+		return json_encode( $json_object );
 	}
 
 	return '';
 }
+
