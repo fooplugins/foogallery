@@ -33,7 +33,7 @@ $foogallery_single_thumbnail_attributes = foogallery_build_container_attributes_
 <div <?php echo $foogallery_single_thumbnail_attributes; ?>>
     <?php echo foogallery_attachment_html( $featured_attachment, $args ); ?>
     <div class="fg-st-hidden">
-    <?php foreach ( $current_foogallery->attachments() as $attachment ) {
+    <?php foreach ( foogallery_current_gallery_attachments_for_rendering() as $attachment ) {
         if ( $attachment->ID !== $featured_attachment->ID ) {
             echo $attachment->html( $args, false, true );
         }

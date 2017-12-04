@@ -30,7 +30,7 @@ $foogallery_imageviewer_attributes = foogallery_build_container_attributes_safe(
 ?><div <?php echo $foogallery_imageviewer_attributes; ?>>
 	<div class="fiv-inner">
 		<div class="fiv-inner-container">
-			<?php foreach ( $attachments as $attachment ) {
+			<?php foreach ( foogallery_current_gallery_attachments_for_rendering() as $attachment ) {
 				echo foogallery_attachment_html( $attachment, $args );
 			} ?>
 		</div>
