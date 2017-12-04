@@ -1016,3 +1016,22 @@ if ( !function_exists('wp_get_raw_referer') ) {
 		return false;
 	}
 }
+
+
+/**
+ * Return the attachments for the currently displayed gallery
+ *
+ * @return array
+ */
+function foogallery_current_gallery_attachments_for_rendering() {
+    global $current_foogallery;
+
+    $attachments = apply_filters( 'foogallery_gallery_attachments_override_for_rendering', false, $current_foogallery );
+
+    if ( $attachments !== false) {
+        return $attachments;
+    }
+
+    //by default, return all attachments
+    return $current_foogallery->attachments();
+}
