@@ -53,7 +53,7 @@ if ( !class_exists( 'FooGallery_Autoptimize_Support' ) ) {
             </script>
             <div class="foogallery-autoptimize-notice notice error is-dismissible">
                 <p>
-                    <strong><?php _e( 'FooBox + Autoptimize : ', 'foobox-image-lightbox' ); ?></strong>
+                    <strong><?php _e( 'FooGallery + Autoptimize : ', 'foobox-image-lightbox' ); ?></strong>
                     <?php _e( 'We noticed that you have the Autoptimize plugin installed. After updating FooGallery, please make sure you delete the Autoptimize cache from the admin bar above to make sure your galleries continue to display correctly.' ); ?>
             </div>
             <?php
