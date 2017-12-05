@@ -4,11 +4,7 @@
  */
 global $current_foogallery;
 global $current_foogallery_arguments;
-$args = array(
-	'width' => foogallery_gallery_template_setting( 'thumbnail_width', '150' ),
-	'link' => foogallery_gallery_template_setting( 'thumbnail_link', 'image' ),
-	'crop' => false
-);
+
 $lightbox = foogallery_gallery_template_setting( 'lightbox', 'unknown' );
 $alignment = foogallery_gallery_template_setting( 'alignment', 'fg-center' );
 $layout = foogallery_gallery_template_setting( 'layout', 'fixed' );
@@ -21,6 +17,6 @@ $foogallery_masonry_attributes = foogallery_build_container_attributes_safe( $cu
 ?>
 <div <?php echo $foogallery_masonry_attributes; ?>>
 	<?php foreach ( foogallery_current_gallery_attachments_for_rendering() as $attachment ) {
-		echo foogallery_attachment_html( $attachment, $args );
+		echo foogallery_attachment_html( $attachment );
 	} ?>
 </div>

@@ -32,6 +32,8 @@ if ( !class_exists( 'FooGallery_Image_Viewer_Gallery_Template' ) ) {
             //alter the crop value if needed
             add_filter( 'foogallery_render_gallery_template_field_value', array( $this, 'alter_field_value'), 10, 4 );
 
+            //build up the arguments needed for rendering this template
+            add_filter( 'foogallery_gallery_template_arguments-image-viewer', array( $this, 'build_gallery_template_arguments' ) );
         }
 
         function alter_field_value( $value, $field, $gallery, $template ) {
@@ -276,5 +278,21 @@ if ( !class_exists( 'FooGallery_Image_Viewer_Gallery_Template' ) ) {
             }
             return null;
 		}
+
+        /**
+         * Build up the arguments needed for rendering this gallery template
+         *
+         * @param $args
+         * @return array
+         */
+        function build_gallery_template_arguments( $args ) {
+            $args = foogallery_gallery_template_setting( 'thumbnail_size', 'thumbnail' );
+            if ( !array_key_exists( 'crop', $args ) ) {
+                $args['crop'] = '1'; //we now force thumbs to be cropped by default
+            }
+            $args['link'] = foogallery_gallery_template_setting( 'thumbnail_link', 'image' );
+
+            return $args;
+        }
 	}
 }

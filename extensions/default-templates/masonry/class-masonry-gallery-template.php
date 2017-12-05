@@ -26,7 +26,10 @@ if ( !class_exists( 'FooGallery_Masonry_Gallery_Template' ) ) {
 
 			//build up the thumb dimensions from some arguments
 			add_filter( 'foogallery_calculate_thumbnail_dimensions-masonry', array( $this, 'build_thumbnail_dimensions_from_arguments' ), 10, 2 );
-		}
+
+            //build up the arguments needed for rendering this template
+            add_filter( 'foogallery_gallery_template_arguments-masonry', array( $this, 'build_gallery_template_arguments' ) );
+        }
 
 		/**
 		 * Register myself so that all associated JS and CSS files can be found and automatically included
@@ -262,5 +265,21 @@ if ( !class_exists( 'FooGallery_Masonry_Gallery_Template' ) ) {
             }
             return null;
 		}
+
+        /**
+         * Build up the arguments needed for rendering this gallery template
+         *
+         * @param $args
+         * @return array
+         */
+        function build_gallery_template_arguments( $args ) {
+            $args = array(
+                'width' => foogallery_gallery_template_setting( 'thumbnail_width', '150' ),
+                'link' => foogallery_gallery_template_setting( 'thumbnail_link', 'image' ),
+                'crop' => false
+            );
+
+            return $args;
+        }
 	}
 }
