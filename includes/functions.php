@@ -1017,7 +1017,6 @@ if ( !function_exists('wp_get_raw_referer') ) {
 	}
 }
 
-
 /**
  * Return the attachments for the currently displayed gallery
  *

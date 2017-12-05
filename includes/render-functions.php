@@ -354,6 +354,12 @@ function foogallery_attachment_html_item_opening($foogallery_attachment, $args =
  * @return string
  */
 function foogallery_attachment_html( $foogallery_attachment, $args = array() ) {
+
+    //check if no arguments were passed in, and build them up if so
+    if ( empty( $args ) ) {
+        $args = foogallery_gallery_template_arguments();
+    }
+
     $html = foogallery_attachment_html_item_opening( $foogallery_attachment, $args );
     $html .= foogallery_attachment_html_anchor_opening( $foogallery_attachment, $args );
     $html .= foogallery_attachment_html_image( $foogallery_attachment, $args );
@@ -361,6 +367,17 @@ function foogallery_attachment_html( $foogallery_attachment, $args = array() ) {
     $html .= foogallery_attachment_html_caption( $foogallery_attachment, $args );
     $html .= '</figure></div>';
     return $html;
+}
+
+/**
+ * Get the foogallery template arguments for the current foogallery that is being output to the frontend
+ *
+ * @return array
+ */
+function foogallery_gallery_template_arguments() {
+    global $current_foogallery_template;
+
+    return apply_filters( 'foogallery_gallery_template_arguments-' . $current_foogallery_template, array() );
 }
 
 /**
@@ -375,6 +392,11 @@ function foogallery_attachment_html( $foogallery_attachment, $args = array() ) {
  */
 function foogallery_build_json_from_attachment( $foogallery_attachment, $args = array() ) {
 	if ( isset( $foogallery_attachment ) ) {
+
+	    //check if no arguments were passed in, and build them up if so
+	    if ( empty( $args ) ) {
+            $args = foogallery_gallery_template_arguments();
+        }
 
 		$anchor_attributes = foogallery_build_attachment_html_anchor_attributes( $foogallery_attachment, $args );
 		$image_attributes = foogallery_build_attachment_html_image_attributes( $foogallery_attachment, $args );
@@ -394,8 +416,12 @@ function foogallery_build_json_from_attachment( $foogallery_attachment, $args = 
 
         $json_object = new stdClass();
         $json_object->href      = $anchor_attributes['href'];
-        $json_object->src       = $src;
-        $json_object->srcset    = $srcset;
+        if ( isset( $src ) ) {
+            $json_object->src = $src;
+        }
+        if ( isset( $srcset ) ) {
+            $json_object->srcset = $srcset;
+        }
         if ( array_key_exists( 'width', $image_attributes ) ) {
             $json_object->width = $image_attributes['width'];
         }

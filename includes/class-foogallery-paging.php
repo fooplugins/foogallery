@@ -345,8 +345,10 @@ if ( ! class_exists( 'FooGallery_Paging' ) ) {
 
                 if ( $page_size > 0 ) {
 
+                    $attachments = $gallery->attachments();
+
                     //return the first N attachments for the gallery
-                    return array_splice( $gallery->attachments(), 0, $page_size );
+                    return array_splice( $attachments, 0, $page_size );
 
                 }
             }
@@ -364,6 +366,8 @@ if ( ! class_exists( 'FooGallery_Paging' ) ) {
                 $page_size = isset($gallery->paging_options) && array_key_exists('size', $gallery->paging_options) ? $gallery->paging_options['size'] : 0;
 
                 if ($page_size > 0) {
+                    //build up the arguments from the gallery template
+
                     $attachments = array_slice( $gallery->attachments(), $page_size );
                     $attachments_json = array_map( 'foogallery_build_json_from_attachment', $attachments );
 
