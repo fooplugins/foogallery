@@ -3,7 +3,7 @@ Contributors: bradvin, steveush, fooplugins
 Donate link: http://fooplugins.com
 Tags: gallery, image gallery, photo gallery, responsive, album, media gallery, masonry gallery, portfolio, justified image gallery, video gallery, photography, photographer, retina
 Requires at least: 3.9
-Tested up to: 4.9
+Tested up to: 4.9.1
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -52,8 +52,9 @@ Foo Gallery was designed to be the most developer-friendly gallery plugin availa
 *	Visual shortcodes in rich text editor
 *	Gallery picker to insert shortcodes
 *	Page usage metabox with one-click gallery page creation
-*	NextGen importer tool (albums and galleries)
+*	NextGen importer tool (albums and galleries and shortcodes)
 *	Multisite Support
+*	PHP 7 compatible
 *	plus many, many more
 
 **PRO Features**
