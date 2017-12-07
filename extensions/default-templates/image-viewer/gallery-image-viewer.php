@@ -15,7 +15,7 @@ $alignment = foogallery_gallery_template_setting( 'alignment', 'fg-center' );
 $text_prev = foogallery_gallery_template_setting( 'text-prev', __('Prev', 'foogallery') );
 $text_of = foogallery_gallery_template_setting( 'text-of', __('of', 'foogallery') );
 $text_next = foogallery_gallery_template_setting( 'text-next', __('Next', 'foogallery') );
-
+$link = foogallery_gallery_template_setting( 'thumbnail_link', 'image' );
 $foogallery_imageviewer_classes = foogallery_build_class_attribute_safe( $current_foogallery, 'foogallery-link-' . $link, 'foogallery-lightbox-' . $lightbox, $alignment );
 $foogallery_imageviewer_attributes = foogallery_build_container_attributes_safe( $current_foogallery, array( 'class' => $foogallery_imageviewer_classes ) );
 ?><div <?php echo $foogallery_imageviewer_attributes; ?>>
