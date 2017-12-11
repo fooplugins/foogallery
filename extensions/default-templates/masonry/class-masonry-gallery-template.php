@@ -29,6 +29,9 @@ if ( !class_exists( 'FooGallery_Masonry_Gallery_Template' ) ) {
 
             //build up the arguments needed for rendering this template
             add_filter( 'foogallery_gallery_template_arguments-masonry', array( $this, 'build_gallery_template_arguments' ) );
+
+            //add extra fields to the templates
+            add_filter( 'foogallery_override_gallery_template_fields-masonry', array( $this, 'add_masonry_fields' ), 10, 2 );
         }
 
 		/**
@@ -280,6 +283,26 @@ if ( !class_exists( 'FooGallery_Masonry_Gallery_Template' ) ) {
             );
 
             return $args;
+        }
+
+        /**
+         * Add masonry-specific fields to the gallery template
+         *
+         * @uses "foogallery_override_gallery_template_fields"
+         * @param $fields
+         * @param $template
+         *
+         * @return array
+         */
+        function add_masonry_fields( $fields, $template ) {
+            //update specific fields
+            foreach ($fields as &$field) {
+                if ( 'hover_effect_caption_visibility' === $field['id'] ) {
+                    $field['choices']['fg-captions-bottom'] = __( 'Below Thumbnail', 'foogallery' );
+                }
+            }
+
+            return $fields;
         }
 	}
 }
