@@ -32,6 +32,9 @@ if ( !class_exists( 'FooGallery_Masonry_Gallery_Template' ) ) {
 
             //add extra fields to the templates
             add_filter( 'foogallery_override_gallery_template_fields-masonry', array( $this, 'add_masonry_fields' ), 10, 2 );
+
+			//remove the captions if the captions are below thumbs
+			add_filter( 'foogallery_build_attachment_html_caption', array( $this, 'remove_captions' ), 10, 3 );
         }
 
 		/**
@@ -304,5 +307,25 @@ if ( !class_exists( 'FooGallery_Masonry_Gallery_Template' ) ) {
 
             return $fields;
         }
+
+        function remove_captions( $captions, $foogallery_attachment, $args ) {
+			global $current_foogallery_template;
+
+        	//check if masonry
+			if ( 'masonry' === $current_foogallery_template ) {
+
+				$hover_effect_caption_visibility = foogallery_gallery_template_setting( 'hover_effect_caption_visibility', 'fg-caption-hover' );
+
+				//check if captions are set to show below the thumbs
+				if ( 'fg-captions-bottom' === $hover_effect_caption_visibility ) {
+					//if we have no captions then do not output captions at all
+					if ( !array_key_exists( 'title', $captions ) && !array_key_exists( 'desc', $captions ) ) {
+						$captions = false;
+					}
+				}
+			}
+
+        	return $captions;
+		}
 	}
 }
