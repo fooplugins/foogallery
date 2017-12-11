@@ -41,7 +41,7 @@ if ( ! class_exists( 'FooGallery_Attachment_Taxonomies' ) ) {
                 'hierarchical'      => false,
                 'query_var'         => true,
                 'rewrite'           => false,
-                'show_admin_column' => 'true'
+                'show_admin_column' => false
             );
 
             register_taxonomy( FOOGALLERY_ATTACHMENT_TAXONOMY_TAG, 'attachment', $args );
@@ -73,7 +73,7 @@ if ( ! class_exists( 'FooGallery_Attachment_Taxonomies' ) ) {
             $fields[FOOGALLERY_ATTACHMENT_TAXONOMY_TAG] = array(
                 'label'   => __( 'Tags', 'foogallery' ),
                 'input'   => FOOGALLERY_ATTACHMENT_TAXONOMY_TAG,
-                'helps'   => __( 'Categorize your attachments', 'foogallery' ),
+                'helps'   => __( 'Tag your attachments', 'foogallery' ),
                 'options' => $media_tags,
                 'exclusions'  => array()
             );
