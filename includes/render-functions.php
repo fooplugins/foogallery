@@ -284,10 +284,11 @@ function foogallery_build_attachment_html_caption( $foogallery_attachment, $args
 			$captions['desc'] = $caption_desc;
 		}
 
-		return $captions;
+	} else {
+		$captions = false;
 	}
 
-	return false;
+	return apply_filters( 'foogallery_build_attachment_html_caption', $captions, $foogallery_attachment, $args );
 }
 
 /**
