@@ -25,7 +25,7 @@ if ( !class_exists( 'FooGallery_Thumbnail_Gallery_Template' ) ) {
 
 			//alter the crop value if needed
 			add_filter( 'foogallery_render_gallery_template_field_value', array( $this, 'alter_field_value'), 10, 4 );
-		}
+        }
 
 		function alter_field_value( $value, $field, $gallery, $template ) {
 		    //only do something if we are dealing with the thumbnail_dimensions field in this template

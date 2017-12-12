@@ -20,6 +20,12 @@ if ( ! class_exists( 'FooGallery_Paging' ) ) {
 
 			//add the paging attributes to the gallery container
 			add_filter( 'foogallery_build_container_data_options', array( $this, 'add_paging_options' ), 10, 3 );
+
+			//limit the number of attachments returned when rendering a gallery
+            add_filter( 'foogallery_gallery_attachments_override_for_rendering', array( $this, 'attachments_override' ), 10, 3 );
+
+            //output a script block with the rest of the attachments as json
+            add_action( 'foogallery_loaded_template', array( $this, 'output_paging_script_block' ) );
 		}
 
 		/**
@@ -265,7 +271,7 @@ if ( ! class_exists( 'FooGallery_Paging' ) ) {
 						$paging_position = 'bottom';
 					}
 
-					$options['paging'] = array(
+                    $paging_options = array(
 						'type'        => $paging,
 						'theme'       => $paging_theme,
 						'size'        => $paging_size,
@@ -274,11 +280,13 @@ if ( ! class_exists( 'FooGallery_Paging' ) ) {
 					);
 
 					if ( 'pagination' === $paging ) {
-						$options['paging']['limit'] = intval( $this->get_foogallery_argument( $gallery, 'paging_limit', 'paging_limit', '5' ) );;
-						$options['paging']['showFirstLast'] = $this->get_foogallery_argument( $gallery, 'paging_showFirstLast', 'paging_showFirstLast', 'true' ) === 'true';;
-						$options['paging']['showPrevNext'] = $this->get_foogallery_argument( $gallery, 'paging_showPrevNext', 'paging_showPrevNext', 'true' ) === 'true';;
-						$options['paging']['showPrevNextMore'] = $this->get_foogallery_argument( $gallery, 'paging_showPrevNextMore', 'paging_showPrevNextMore', 'true' ) === 'true';;
+                        $paging_options['limit'] = intval( $this->get_foogallery_argument( $gallery, 'paging_limit', 'paging_limit', '5' ) );;
+						$paging_options['showFirstLast'] = $this->get_foogallery_argument( $gallery, 'paging_showFirstLast', 'paging_showFirstLast', 'true' ) === 'true';;
+						$paging_options['showPrevNext'] = $this->get_foogallery_argument( $gallery, 'paging_showPrevNext', 'paging_showPrevNext', 'true' ) === 'true';;
+						$paging_options['showPrevNextMore'] = $this->get_foogallery_argument( $gallery, 'paging_showPrevNextMore', 'paging_showPrevNextMore', 'true' ) === 'true';;
 					}
+
+                    $options['paging'] = $gallery->paging_options = $paging_options;
 				}
 			}
 			return $options;
@@ -322,5 +330,54 @@ if ( ! class_exists( 'FooGallery_Paging' ) ) {
 
 			return $args;
 		}
+
+        /**
+         * Override the attachments returned for rendering a paginated gallery
+         *
+         * @param bool $override
+         * @param FooGallery $gallery
+         * @return bool|array
+         */
+		function attachments_override( $override, $gallery ) {
+
+            if ( isset( $gallery->paging ) && true === $gallery->paging ) {
+                $page_size = isset( $gallery->paging_options ) && array_key_exists( 'size', $gallery->paging_options ) ? $gallery->paging_options['size'] : 0;
+
+                if ( $page_size > 0 ) {
+
+                    $attachments = $gallery->attachments();
+
+                    //return the first N attachments for the gallery
+                    return array_splice( $attachments, 0, $page_size );
+
+                }
+            }
+
+            return $override;
+        }
+
+        /**
+         * Output a script block with all the gallery attachments as json
+         *
+         * @param FooGallery $gallery
+         */
+        function output_paging_script_block( $gallery ) {
+            if ( isset( $gallery->paging ) && true === $gallery->paging ) {
+                $page_size = isset($gallery->paging_options) && array_key_exists('size', $gallery->paging_options) ? $gallery->paging_options['size'] : 0;
+
+                if ($page_size > 0) {
+                    //build up the arguments from the gallery template
+
+                    $attachments = array_slice( $gallery->attachments(), $page_size );
+                    $attachments_json = array_map( 'foogallery_build_json_from_attachment', $attachments );
+
+                    echo '<script type="text/javascript">';
+                    echo '  window["foogallery-gallery-' .$gallery->ID . '-items"] = [';
+                    echo implode( ', ', $attachments_json );
+                    echo '  ];';
+                    echo '</script>';
+                }
+            }
+        }
 	}
 }

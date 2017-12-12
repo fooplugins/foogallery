@@ -23,6 +23,9 @@ if ( !class_exists( 'FooGallery_Default_Gallery_Template' ) ) {
 
 			//build up the thumb dimensions on save
 			add_filter( 'foogallery_template_thumbnail_dimensions-default', array( $this, 'get_thumbnail_dimensions' ), 10, 2 );
+
+			//build up the arguments needed for rendering this template
+			add_filter( 'foogallery_gallery_template_arguments-default', array( $this, 'build_gallery_template_arguments' ) );
 		}
 
 		/**
@@ -199,5 +202,19 @@ if ( !class_exists( 'FooGallery_Default_Gallery_Template' ) ) {
 			$dimensions['crop'] = true;
 			return $dimensions;
 		}
+
+        /**
+         * Build up the arguments needed for rendering this gallery template
+         *
+         * @param $args
+         * @return array
+         */
+		function build_gallery_template_arguments( $args ) {
+            $args = foogallery_gallery_template_setting( 'thumbnail_dimensions', array() );
+            $args['crop'] = '1'; //we now force thumbs to be cropped
+            $args['link'] = foogallery_gallery_template_setting( 'thumbnail_link', 'image' );
+
+            return $args;
+        }
 	}
 }

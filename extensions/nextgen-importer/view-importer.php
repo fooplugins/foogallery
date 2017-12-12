@@ -203,6 +203,64 @@ if ( isset( $_POST['foogallery_nextgen_reset'] ) ) {
 			});
 		});
 
+		$('#nextgen_import_shortcodes').on('click', '.find-shortcodes', function (e) {
+			e.preventDefault();
+
+			//show the spinner
+			$('#nextgen_import_shortcodes .spinner').addClass('is-active');
+
+			var data = {
+				action: 'foogallery_nextgen_find_shortcodes',
+				'_wpnonce' : $('#foogallery_nextgen_find_shortcodes').val()
+			};
+
+			$.ajax({
+				type: "POST",
+				url: ajaxurl,
+				data: data,
+				success: function(data) {
+					$('#nextgen_import_shortcodes_container').html(data);
+				},
+				complete: function() {
+					$('#nextgen_import_shortcodes .spinner').removeClass('is-active');
+				},
+				error: function() {
+					//something went wrong! Alert the user and reload the page
+					alert('<?php _e( 'Something went wrong with finding shortcodes, so the page will now reload.', 'foogallery' ); ?>');
+					location.reload();
+				}
+			});
+		});
+
+		$('#nextgen_import_shortcodes').on('click', '.replace-shortcodes', function (e) {
+			e.preventDefault();
+
+			//show the spinner
+			$('#nextgen_import_shortcodes .spinner').addClass('is-active');
+
+			var data = {
+				action: 'foogallery_nextgen_replace_shortcodes',
+				'_wpnonce' : $('#foogallery_nextgen_replace_shortcodes').val()
+			};
+
+			$.ajax({
+				type: "POST",
+				url: ajaxurl,
+				data: data,
+				success: function(data) {
+					$('#nextgen_import_shortcodes_container').html(data);
+				},
+				complete: function() {
+					$('#nextgen_import_shortcodes .spinner').removeClass('is-active');
+				},
+				error: function() {
+					//something went wrong! Alert the user and reload the page
+					alert('<?php _e( 'Something went wrong with replacing shortcodes, so the page will now reload.', 'foogallery' ); ?>');
+					location.reload();
+				}
+			});
+		});
+
 		$('.foo-nav-tabs').on('click', 'a', function (e) {
 			$('.nextgen_import_container').hide();
 			var tab = $(this).data('tab');
@@ -235,6 +293,7 @@ if ( isset( $_POST['foogallery_nextgen_reset'] ) ) {
 	<h2 class="foo-nav-tabs nav-tab-wrapper">
 		<a href="#galleries" data-tab="nextgen_import_galleries" class="nav-tab nav-tab-active"><?php _e('Galleries', 'foogallery'); ?><?php echo $gallery_count; ?></a>
 		<a href="#albums" data-tab="nextgen_import_albums" class="nav-tab"><?php _e('Albums', 'foogallery'); ?><?php echo $album_count; ?></a>
+		<a href="#shortcodes" data-tab="nextgen_import_shortcodes" class="nav-tab"><?php _e('Shortcodes', 'foogallery'); ?></a>
 	</h2>
 
 	<div class="nextgen_import_container" id="nextgen_import_galleries">
@@ -276,5 +335,16 @@ if ( isset( $_POST['foogallery_nextgen_reset'] ) ) {
 		</form>
 	<?php } ?>
 	</div>
-
+	<div class="nextgen_import_container" id="nextgen_import_shortcodes" style="display: none">
+		<div class="foogallery-help">
+			<?php _e('Replacing NextGen shortcodes will only work with galleries that have already been imported.', 'foogallery' ); ?>
+			<br/>
+			<?php _e('Supported NextGen shortcodes: [ngg_images], [nggallery], [slideshow], [imagebrowse]', 'foogallery' ); ?>
+		</div>
+		<div id="nextgen_import_shortcodes_container">
+			<input type="submit" class="button button-primary find-shortcodes" value="<?php _e( 'Find Shortcodes', 'foogallery' ); ?>">
+			<?php wp_nonce_field( 'foogallery_nextgen_find_shortcodes', 'foogallery_nextgen_find_shortcodes' ); ?>
+			<div style="width:40px; position: absolute;"><span class="spinner"></span></div>
+		</div>
+	</div>
 </div>

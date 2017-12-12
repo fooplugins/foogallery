@@ -40,6 +40,8 @@ if ( !class_exists( 'FooGallery_Polaroid_Gallery_Template' ) ) {
                 add_action( 'admin_notices', array( $this, 'display_polaroid_notice') );
             }
 
+            //build up the arguments needed for rendering this template
+            add_filter( 'foogallery_gallery_template_arguments-polaroid_new', array( $this, 'build_gallery_template_arguments' ) );
         }
 
 		/**
@@ -322,6 +324,24 @@ if ( !class_exists( 'FooGallery_Polaroid_Gallery_Template' ) ) {
                 </div>
                 <?php
             }
+        }
+
+        /**
+         * Build up the arguments needed for rendering this gallery template
+         *
+         * @param $args
+         * @return array
+         */
+        function build_gallery_template_arguments( $args ) {
+            $args = foogallery_gallery_template_setting( 'thumbnail_dimensions', array() );
+            $args['link'] = foogallery_gallery_template_setting( 'thumbnail_link', 'image' );
+            $args['image_attributes'] = array(
+                'class'  => 'bf-img',
+                'height' => $args['height']
+            );
+            $args['link_attributes'] = array( 'class' => 'foogallery-thumb' );
+
+            return $args;
         }
 	}
 }
