@@ -42,10 +42,11 @@ Foo Gallery was designed to be the most developer-friendly gallery plugin availa
 
 **Features**
 
-*   Lazy loading
-*   Simple Pagination (dots)
-*   Live previews in admin
+*	Lazy loading
+*	Simple Pagination (dots)
+*	Live previews in admin
 *	Retina thumbnail support
+*	Gallery Widget
 *	Add videos to galleries (via the [FooVideo premium extension](http://fooplugins.com/plugins/foovideo/?utm_source=foogalleryplugin&utm_medium=foogallerylink&utm_campaign=foogallery_wprepo))
 *	Albums built-in! (Activate the albums extension)
 *	Use built-in media library to manage images
