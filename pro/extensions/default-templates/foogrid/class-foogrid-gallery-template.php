@@ -56,7 +56,10 @@ if ( !class_exists( 'FooGallery_FooGrid_Gallery_Template' ) ) {
 			if ( is_admin() ) {
                 add_action( 'admin_notices', array( $this, 'display_foogrid_notice') );
             }
-		}
+
+            //build up the arguments needed for rendering this template
+            add_filter( 'foogallery_gallery_template_arguments-foogridpro', array( $this, 'build_gallery_template_arguments' ) );
+        }
 
 		/**
 		 * Register myself so that all associated JS and CSS files can be found and automatically included
@@ -367,6 +370,19 @@ if ( !class_exists( 'FooGallery_FooGrid_Gallery_Template' ) ) {
                 </div>
                 <?php
             }
+        }
+
+        /**
+         * Build up the arguments needed for rendering this gallery template
+         *
+         * @param $args
+         * @return array
+         */
+        function build_gallery_template_arguments( $args ) {
+            $args = foogallery_gallery_template_setting( 'thumbnail_size', array() );
+            $args['link'] = foogallery_gallery_template_setting( 'thumbnail_link', 'image' );
+
+            return $args;
         }
 	}
 }

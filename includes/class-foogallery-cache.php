@@ -31,6 +31,8 @@ if ( ! class_exists( 'FooGallery_Cache' ) ) {
 			add_filter( 'foogallery_load_gallery_template', array( $this, 'fetch_gallery_html_from_cache' ), 10, 3 );
 
 			add_filter( 'foogallery_html_cache_disabled', array( $this, 'disable_html_cache' ), 10, 3 );
+
+			add_filter( 'foogallery_render_template_clear_globals' , array( $this, 'render_template_clear_globals' ) );
 		}
 
 		/**
@@ -227,6 +229,22 @@ if ( ! class_exists( 'FooGallery_Cache' ) ) {
 		 */
 		function clear_cache_on_update() {
 			$this->clear_all_gallery_caches();
+		}
+
+		/**
+		 * Determine if the globals should be cleared when rendering a gallery
+		 *
+		 * @param $clear
+		 *
+		 * @return bool
+		 */
+		function render_template_clear_globals( $clear ) {
+			global $foogallery_force_gallery_cache;
+			if ( $foogallery_force_gallery_cache ) {
+				return false;
+			}
+
+			return $clear;
 		}
 	}
 }

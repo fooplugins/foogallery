@@ -58,7 +58,7 @@
 );
 /*!
 * FooGallery.utils - Contains common utility methods and classes used in our plugins.
-* @version 0.0.5
+* @version 0.0.6
 * @link https://github.com/steveush/foo-utils#readme
 * @copyright Steve Usher 2017
 * @license Released under the GPL-3.0 license.
@@ -111,7 +111,7 @@
 		 * @name version
 		 * @type {string}
 		 */
-		version: '0.0.5',
+		version: '0.0.6',
 	};
 
 	/**
@@ -207,7 +207,7 @@
 })(jQuery);
 (function ($, _){
 	// only register methods if this version is the current version
-	if (_.version !== '0.0.5') return;
+	if (_.version !== '0.0.6') return;
 
 	/**
 	 * @summary Contains common type checking utility methods.
@@ -561,7 +561,7 @@
 );
 (function($, _, _is){
 	// only register methods if this version is the current version
-	if (_.version !== '0.0.5') return;
+	if (_.version !== '0.0.6') return;
 
 	/**
 	 * @memberof FooGallery.utils
@@ -1096,7 +1096,7 @@
 );
 (function(_, _is){
 	// only register methods if this version is the current version
-	if (_.version !== '0.0.5') return;
+	if (_.version !== '0.0.6') return;
 
 	/**
 	 * @summary Contains common url utility methods.
@@ -1231,7 +1231,7 @@
 );
 (function (_, _is, _fn) {
 	// only register methods if this version is the current version
-	if (_.version !== '0.0.5') return;
+	if (_.version !== '0.0.6') return;
 
 	/**
 	 * @summary Contains common string utility methods.
@@ -1546,7 +1546,7 @@
 );
 (function($, _, _is, _fn, _str){
 	// only register methods if this version is the current version
-	if (_.version !== '0.0.5') return;
+	if (_.version !== '0.0.6') return;
 
 	/**
 	 * @summary Contains common object utility methods.
@@ -1878,7 +1878,7 @@
 );
 (function($, _, _is){
 	// only register methods if this version is the current version
-	if (_.version !== '0.0.5') return;
+	if (_.version !== '0.0.6') return;
 
 	// any methods that have dependencies but don't fall into a specific subset or namespace can be added here
 
@@ -1977,7 +1977,7 @@
 );
 (function($, _, _is){
 	// only register methods if this version is the current version
-	if (_.version !== '0.0.5') return;
+	if (_.version !== '0.0.6') return;
 
 	/**
 	 * @summary Contains common utility methods and members for the CSS transition property.
@@ -2139,7 +2139,7 @@
 );
 (function ($, _, _is, _obj, _fn) {
 	// only register methods if this version is the current version
-	if (_.version !== '0.0.5') return;
+	if (_.version !== '0.0.6') return;
 
 	/**
 	 * @summary A base class providing some helper methods for prototypal inheritance.
@@ -2279,7 +2279,7 @@
 );
 (function($, _, _is){
 	// only register methods if this version is the current version
-	if (_.version !== '0.0.5') return;
+	if (_.version !== '0.0.6') return;
 
 	_.Bounds = _.Class.extend(/** @lends FooGallery.utils.Bounds */{
 		/**
@@ -2381,7 +2381,7 @@
 );
 (function($, _, _is, _fn){
 	// only register methods if this version is the current version
-	if (_.version !== '0.0.5') return;
+	if (_.version !== '0.0.6') return;
 
 	_.Factory = _.Class.extend(/** @lends FooGallery.utils.Factory */{
 		/**
@@ -2705,7 +2705,13 @@
 );
 (function(_, _fn, _str){
 	// only register methods if this version is the current version
-	if (_.version !== '0.0.5') return;
+	if (_.version !== '0.0.6') return;
+
+	// this is done to handle Content Security in Chrome and other browsers blocking access to the localStorage object under certain configurations.
+	// see: https://www.chromium.org/for-testers/bug-reporting-guidelines/uncaught-securityerror-failed-to-read-the-localstorage-property-from-window-access-is-denied-for-this-document
+	var localAvailable = false;
+	try { localAvailable = !!window.localStorage; }
+	catch (err){ localAvailable = false; }
 
 	_.Debugger = _.Class.extend(/** @lends FooGallery.utils.Debugger */{
 		/**
@@ -2733,7 +2739,7 @@
 			 * @readonly
 			 * @description The value for this property is synced with the current state stored in `localStorage` and should never set from outside of this class.
 			 */
-			this.enabled = !!localStorage.getItem(this.key);
+			this.enabled = localAvailable ? !!localStorage.getItem(this.key) : false;
 		},
 		/**
 		 * @summary Enable the debugger causing additional info to be logged to the console.
@@ -2746,6 +2752,7 @@
 		 * d.log( "I am logged!" );
 		 */
 		enable: function(){
+			if (!localAvailable) return;
 			this.enabled = true;
 			localStorage.setItem(this.key, this.enabled);
 		},
@@ -2762,6 +2769,7 @@
 		 * d.log( "Never logged" );
 		 */
 		disable: function(){
+			if (!localAvailable) return;
 			this.enabled = false;
 			localStorage.removeItem(this.key);
 		},
@@ -2804,7 +2812,7 @@
 );
 (function($, _, _is){
 	// only register methods if this version is the current version
-	if (_.version !== '0.0.5') return;
+	if (_.version !== '0.0.6') return;
 
 	_.Throttle = _.Class.extend(/** @lends FooGallery.utils.Throttle */{
 		/**
@@ -6315,7 +6323,7 @@
 				page = self.get(num);
 				first = page[0].bounds();
 				last = page[page.length - 1].bounds();
-				if (last.top - viewport.bottom < self.distance || first.bottom - viewport.top < self.distance){
+				if (first.top - viewport.bottom < self.distance || last.bottom - viewport.top < self.distance){
 					items.push.apply(items, page);
 				}
 			}
@@ -6384,7 +6392,7 @@
 				page = self.get(num);
 				first = page[0].bounds();
 				last = page[page.length - 1].bounds();
-				if (last.top - viewport.bottom < self.distance || first.bottom - viewport.top < self.distance){
+				if (first.top - viewport.bottom < self.distance || last.bottom - viewport.top < self.distance){
 					items.push.apply(items, page);
 				}
 			}
@@ -6962,7 +6970,7 @@
 			this.masonry = null;
 			/**
 			 *
-			 * @type {HTMLStyleElement}
+			 * @type {?HTMLStyleElement}
 			 */
 			this.style = null;
 			this.$columnWidth = null;
@@ -6979,11 +6987,19 @@
 			 * @type {FooGallery.MasonryTemplate~CSSSelectors}
 			 */
 		},
-		createStylesheet: function(){
+		/**
+		 * @summary Creates or gets the CSS stylesheet element for this template instance.
+		 * @memberof FooGallery.MasonryTemplate#
+		 * @function getStylesheet
+		 * @returns {CSSStyleSheet}
+		 */
+		getStylesheet: function(){
 			var self = this;
-			self.style = document.createElement("style");
-			self.style.appendChild(document.createTextNode(""));
-			document.head.appendChild(self.style);
+			if (self.style === null){
+				self.style = document.createElement("style");
+				self.style.appendChild(document.createTextNode(""));
+				document.head.appendChild(self.style);
+			}
 			return self.style.sheet;
 		},
 		/**
@@ -7008,7 +7024,7 @@
 				self.template.layout = "col4";
 			}
 			// configure the base masonry options depending on the layout
-			var fixed = self.template.layout === "fixed";
+			var fixed = self.template.layout === "fixed", sheet, rule;
 			self.template.isFitWidth = fixed;
 			self.template.percentPosition = !fixed;
 			self.template.transitionDuration = 0;
@@ -7028,16 +7044,19 @@
 			if (self.$el.find(sel.columnWidth).length === 0){
 				self.$el.prepend($("<div/>").addClass(cls.columnWidth));
 			}
-			if (_is.number(self.template.columnWidth)){
-				self.$el.find(sel.columnWidth).width(self.template.columnWidth);
+			if (fixed && _is.number(self.template.columnWidth)){
+				var $columnWidth = self.$el.find(sel.columnWidth).width(self.template.columnWidth);
+				sheet = self.getStylesheet();
+				rule = '#' + self.id + sel.container + ' ' + sel.item.elem + ' { width: ' + $columnWidth.outerWidth() + 'px; }';
+				sheet.insertRule(rule , 0);
 			}
 			self.template.columnWidth = sel.columnWidth;
 
 			// if this is a fixed layout and a number value is supplied as the gutter option then
 			// make sure to vertically space the items using  a CSS class and the same value
 			if (fixed && _is.number(self.template.gutter)){
-				var sheet = self.createStylesheet(),
-						rule = '#' + self.id + sel.container + ' ' + sel.item.elem + ' { margin-bottom: ' + self.template.gutter + 'px; }';
+				sheet = self.getStylesheet();
+				rule = '#' + self.id + sel.container + ' ' + sel.item.elem + ' { margin-bottom: ' + self.template.gutter + 'px; }';
 				sheet.insertRule(rule , 0);
 			}
 
@@ -9156,14 +9175,33 @@
 		FooGallery,
 		FooGallery.utils
 );
-(function($){
+(function($, _utils, _is){
+
+	function wp_integration(e, tmpl, current, prev){
+		if ((e.type === "after-page-change" && prev !== 0) || e.type === "ready"){
+			$("body").trigger("post-load");
+		}
+	}
 
 	// this automatically initializes all templates on page load
 	$(function () {
-		$('[id^="foogallery-"]').foogallery();
+		$('[id^="foogallery-"]:not(.fg-ready)').foogallery({
+			on: {
+				"ready.foogallery after-page-change.foogallery": wp_integration
+			}
+		});
+	});
+
+	_utils.ready(function(){
+		$('[id^="foogallery-"].fg-ready').foogallery({
+			on: {
+				"ready.foogallery after-page-change.foogallery": wp_integration
+			}
+		});
 	});
 
 })(
 		FooGallery.$,
-		FooGallery
+		FooGallery.utils,
+		FooGallery.utils.is
 );

@@ -273,6 +273,14 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 			//region Advanced Tab
 			$tabs['advanced'] = __( 'Advanced', 'foogallery' );
 
+            $settings[] = array(
+                'id'      => 'enable_custom_ready',
+                'title'   => __( 'Custom Ready Event', 'foogallery' ),
+                'desc'    => sprintf( __( 'By default the jQuery ready event is used, but there are sometimes unavoidable javascript errors on the page, which could result in the default gallery templates not initializing correctly. Enable this setting to use a built-in custom ready event to overcome this if needed.', 'foogallery' ), foogallery_plugin_name() ),
+                'type'    => 'checkbox',
+                'tab'     => 'advanced'
+            );
+
 			$settings[] = array(
 				'id'      => 'enable_debugging',
 				'title'   => __( 'Enable Debugging', 'foogallery' ),

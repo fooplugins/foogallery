@@ -31,7 +31,10 @@ if ( !class_exists( 'FooGallery_Simple_Portfolio_Gallery_Template' ) ) {
 
 			//build up the thumb dimensions on save
 			add_filter( 'foogallery_template_thumbnail_dimensions-simple_portfolio', array( $this, 'get_thumbnail_dimensions' ), 10, 2 );
-		}
+
+            //build up the arguments needed for rendering this template
+            add_filter( 'foogallery_gallery_template_arguments-simple_portfolio', array( $this, 'build_gallery_template_arguments' ) );
+        }
 
 		/**
 		 * Register myself so that all associated JS and CSS files can be found and automatically included
@@ -285,5 +288,24 @@ if ( !class_exists( 'FooGallery_Simple_Portfolio_Gallery_Template' ) ) {
 			$dimensions['crop'] = true;
 			return $dimensions;
 		}
+
+        /**
+         * Build up the arguments needed for rendering this gallery template
+         *
+         * @param $args
+         * @return array
+         */
+        function build_gallery_template_arguments( $args ) {
+            $args = foogallery_gallery_template_setting( 'thumbnail_dimensions', array() );
+            $args['crop'] = '1'; //we now force thumbs to be cropped
+            $args['link'] = foogallery_gallery_template_setting( 'thumbnail_link', 'image' );
+            $args['image_attributes'] = array(
+                'class'  => 'bf-img',
+                'height' => $args['height']
+            );
+            $args['link_attributes'] = array( 'class' => 'foogallery-thumb' );
+
+            return $args;
+        }
 	}
 }

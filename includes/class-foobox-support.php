@@ -24,7 +24,7 @@ if ( !class_exists( 'FooGallery_FooBox_Support' ) ) {
 				//FooBox PRO specific functionality
 
 				//only add FooBox PRO functionality after FooBox version 1.2.29
-				if ( defined( FOOBOX_BASE_VERSION ) && version_compare( FOOBOX_BASE_VERSION, '1.2.29', '>' ) ) {
+				if ( defined( 'FOOBOX_BASE_VERSION' ) && version_compare( FOOBOX_BASE_VERSION, '1.2.29', '>' ) ) {
 					add_filter( 'foogallery_attachment_custom_fields', array($this, 'add_panning_fields' ) );
 					add_filter( 'foogallery_attachment_html_link_attributes', array( $this, 'add_panning_attributes' ), 10, 3 );
 				}

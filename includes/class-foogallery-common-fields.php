@@ -576,6 +576,10 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 					//set a preset size
 					$classes[] = $this->get_setting_from_gallery( $gallery, 'hover_effect_preset_size', 'fg-preset-small' );
 				}
+
+				if ( foogallery_get_setting( 'enable_custom_ready' ) ) {
+                    $classes[] = 'fg-ready';
+                }
 			}
 
 			return $classes;

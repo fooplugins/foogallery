@@ -5,6 +5,7 @@
 
 .foogallery-album-gallery-list li {
 	list-style-type: none !important;
+	display: inline-block;
 }
 
 .foogallery-album-gallery-list .foogallery-pile {
@@ -14,7 +15,7 @@
 	margin: 10px 15px 15px 10px !important;
 }
 
-/* Stacks creted by the use of generated content */
+/* Stacks created by the use of generated content */
 .foogallery-album-gallery-list .foogallery-pile:before,
 .foogallery-album-gallery-list .foogallery-pile:after {
 	content: "";

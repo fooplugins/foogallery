@@ -3,7 +3,7 @@ Contributors: bradvin, steveush, fooplugins
 Donate link: http://fooplugins.com
 Tags: gallery, image gallery, photo gallery, responsive, album, media gallery, masonry gallery, portfolio, justified image gallery, video gallery, photography, photographer, retina
 Requires at least: 3.9
-Tested up to: 4.9
+Tested up to: 4.9.1
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -19,6 +19,10 @@ FooGallery is the best image gallery plugin for WordPress. Why? Stunning gallery
 **Major changes in 1.4.1!**
 
 There have been major updates to the gallery templates in v1.4.1. If you have updated, please test your galleries.
+
+**PHP 7 Compatible**
+
+FooGallery has been tried and tested on servers running PHP 7.
 
 **Retina Support**
 
@@ -38,10 +42,11 @@ Foo Gallery was designed to be the most developer-friendly gallery plugin availa
 
 **Features**
 
-*   Lazy loading
-*   Simple Pagination (dots)
-*   Live previews in admin
+*	Lazy loading
+*	Simple Pagination (dots)
+*	Live previews in admin
 *	Retina thumbnail support
+*	Gallery Widget
 *	Add videos to galleries (via the [FooVideo premium extension](http://fooplugins.com/plugins/foovideo/?utm_source=foogalleryplugin&utm_medium=foogallerylink&utm_campaign=foogallery_wprepo))
 *	Albums built-in! (Activate the albums extension)
 *	Use built-in media library to manage images
@@ -52,8 +57,9 @@ Foo Gallery was designed to be the most developer-friendly gallery plugin availa
 *	Visual shortcodes in rich text editor
 *	Gallery picker to insert shortcodes
 *	Page usage metabox with one-click gallery page creation
-*	NextGen importer tool (albums and galleries)
+*	NextGen importer tool (albums and galleries and shortcodes)
 *	Multisite Support
+*	PHP 7 compatible
 *	plus many, many more
 
 **PRO Features**
@@ -146,6 +152,18 @@ Hell, yes! Check out our [developer page](http://foo.gallery/developers/)
 Update now to support FooVideo and many other improvements!
 
 == Changelog ==
+
+= 1.4.12 =
+* New : NextGen importer now includes shortcode replacement
+* New : Masonry gallery supports captions below thumbnails
+* New : Performance improvements for very large galleries (1000+ images)
+* Fix : Bugs fixes for paging, FooBox and more
+* Update to latest client side JS 1.0.18
+
+= 1.4.8 =
+* New : added custom ready event setting for overcoming 3rd party jQuery exceptions
+* New : added crop thumbnail option to 'Single Thumbnail' and 'Image Viewer' templates
+* Update to latest client side JS
 
 = 1.4.7 =
 
