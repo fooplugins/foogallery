@@ -39,11 +39,18 @@ if ( ! class_exists( 'FooGallery_Pro_Gallery_Shortcode_Override' ) ) {
             $override_enabled = foogallery_get_setting( 'override_gallery_shortcode');
 
             if ($override_enabled  === 'on') {
-                $shortcode_instance = new FooGallery_Shortcodes();
-
                 $attr['attachment_ids'] = $attr['ids'];
 
-                return $shortcode_instance->render_foogallery_shortcode( $attr );
+				//create new instance of template engine
+				$engine = new FooGallery_Template_Loader();
+
+				ob_start();
+
+				$engine->render_template( $attr );
+
+				$output_string = ob_get_contents();
+				ob_end_clean();
+				return $output_string;
             }
 
             return '';
