@@ -61,7 +61,11 @@ if ( ! class_exists( 'FooGallery_Pro_Bulk_Copy' ) ) {
             die();
         }
 
-        private function run_bulk_copy($foogallery_id, $settings = false, $destination = false, $galleries = array()) {
+        private function run_bulk_copy($foogallery_id, $settings, $destination = false, $galleries = array()) {
+
+            if ( false === $settings ) {
+                return __('No settings were selected to be copied!', 'foogallery');
+            }
 
             $args = array(
                 'post_type'     => FOOGALLERY_CPT_GALLERY,
@@ -79,16 +83,34 @@ if ( ! class_exists( 'FooGallery_Pro_Bulk_Copy' ) ) {
 
             $gallery_posts = get_posts( $args );
 
-            $gallery_template = get_post_meta( $foogallery_id, FOOGALLERY_META_TEMPLATE, true );
-            $settings = get_post_meta( $foogallery_id, FOOGALLERY_META_SETTINGS, true );
-            $custom_css = get_post_meta( $foogallery_id, FOOGALLERY_META_CUSTOM_CSS, true );
-            $sorting = get_post_meta( $foogallery_id, FOOGALLERY_META_SORT, true );
-            $retina = get_post_meta( $foogallery_id, FOOGALLERY_META_RETINA, true );
+            $source_gallery_template = get_post_meta( $foogallery_id, FOOGALLERY_META_TEMPLATE, true );
+            $source_settings = get_post_meta( $foogallery_id, FOOGALLERY_META_SETTINGS, true );
+            $source_sorting = get_post_meta( $foogallery_id, FOOGALLERY_META_SORT, true );
+            $source_retina = get_post_meta( $foogallery_id, FOOGALLERY_META_RETINA, true );
+            $source_custom_css = get_post_meta( $foogallery_id, FOOGALLERY_META_CUSTOM_CSS, true );
 
             $count = 0;
             foreach ( $gallery_posts as $post ) {
-                $count++;
+
                 //override the post meta for the gallery
+                if ( array_key_exists(FOOGALLERY_META_SETTINGS, $settings) ) {
+                    update_post_meta( $post->ID, FOOGALLERY_META_TEMPLATE, $source_gallery_template );
+                    update_post_meta( $post->ID, FOOGALLERY_META_SETTINGS, $source_settings );
+                }
+
+                if ( array_key_exists(FOOGALLERY_META_SORT, $settings) ) {
+                    update_post_meta( $post->ID, FOOGALLERY_META_SORT, $source_sorting );
+                }
+
+                if ( array_key_exists(FOOGALLERY_META_RETINA, $settings) ) {
+                    update_post_meta( $post->ID, FOOGALLERY_META_RETINA, $source_retina );
+                }
+
+                if ( array_key_exists(FOOGALLERY_META_CUSTOM_CSS, $settings) ) {
+                    update_post_meta( $post->ID, FOOGALLERY_META_CUSTOM_CSS, $source_custom_css );
+                }
+
+                $count++;
             }
 
             return sprintf( __( 'Successfully copied settings to %d galleries.', 'foogallery' ), $count );
@@ -97,7 +119,6 @@ if ( ! class_exists( 'FooGallery_Pro_Bulk_Copy' ) ) {
         public function output_bulk_copy_form($foogallery_id, $settings = false, $destination = false, $galleries = array(), $errors = array()) {
             //check if we need to set some defaults
             if ( false === $settings ) {
-                $settings[FOOGALLERY_META_TEMPLATE] = FOOGALLERY_META_TEMPLATE;
                 $settings[FOOGALLERY_META_SETTINGS] = FOOGALLERY_META_SETTINGS;
                 $settings[FOOGALLERY_META_RETINA] = FOOGALLERY_META_RETINA;
                 $settings[FOOGALLERY_META_SORT] = FOOGALLERY_META_SORT;
@@ -117,11 +138,8 @@ if ( ! class_exists( 'FooGallery_Pro_Bulk_Copy' ) ) {
                                 <div class="foogallery_bulk_copy_error"><?php echo $errors['settings']; ?></div>
                             <?php } ?>
                             <div class="foogallery_metabox_field-radio">
-                                <input <?php echo (array_key_exists(FOOGALLERY_META_TEMPLATE, $settings) ? 'checked="checked"' : ''); ?> type="checkbox" name="foogallery_bulk_copy[settings][<?php echo FOOGALLERY_META_TEMPLATE; ?>]" id="FooGalleryBulkCopy_Settings_Template" value="<?php echo FOOGALLERY_META_TEMPLATE; ?>">
-                                <label for="FooGalleryBulkCopy_Settings_Template"><?php _e('Gallery Template', 'foogallery'); ?></label><br>
-
                                 <input <?php echo (array_key_exists(FOOGALLERY_META_SETTINGS, $settings) ? 'checked="checked"' : ''); ?> type="checkbox" name="foogallery_bulk_copy[settings][<?php echo FOOGALLERY_META_SETTINGS; ?>]" id="FooGalleryBulkCopy_Settings_Template" value="<?php echo FOOGALLERY_META_SETTINGS; ?>">
-                                <label for="FooGalleryBulkCopy_Settings_Template"><?php _e('Template Settings', 'foogallery'); ?></label><br>
+                                <label for="FooGalleryBulkCopy_Settings_Template"><?php _e('Gallery Template & Settings', 'foogallery'); ?></label><br>
 
                                 <input <?php echo (array_key_exists(FOOGALLERY_META_RETINA, $settings) ? 'checked="checked"' : ''); ?> type="checkbox" name="foogallery_bulk_copy[settings][<?php echo FOOGALLERY_META_RETINA; ?>]" id="FooGalleryBulkCopy_Settings_Retina" value="<?php echo FOOGALLERY_META_RETINA; ?>">
                                 <label for="FooGalleryBulkCopy_Settings_Retina"><?php _e('Retina Settings', 'foogallery'); ?></label><br>
