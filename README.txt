@@ -154,6 +154,7 @@ Update now to support FooVideo and many other improvements!
 == Changelog ==
 
 = 1.4.12 =
+
 * New : NextGen importer now includes shortcode replacement
 * New : Masonry gallery supports captions below thumbnails
 * New : Performance improvements for very large galleries (1000+ images)
@@ -161,6 +162,7 @@ Update now to support FooVideo and many other improvements!
 * Update to latest client side JS 1.0.18
 
 = 1.4.8 =
+
 * New : added custom ready event setting for overcoming 3rd party jQuery exceptions
 * New : added crop thumbnail option to 'Single Thumbnail' and 'Image Viewer' templates
 * Update to latest client side JS
