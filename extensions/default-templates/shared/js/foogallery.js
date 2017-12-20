@@ -6547,7 +6547,7 @@
 			this.masonry = null;
 			/**
 			 *
-			 * @type {HTMLStyleElement}
+			 * @type {?HTMLStyleElement}
 			 */
 			this.style = null;
 			this.$columnWidth = null;
@@ -6564,11 +6564,19 @@
 			 * @type {FooGallery.MasonryTemplate~CSSSelectors}
 			 */
 		},
-		createStylesheet: function(){
+		/**
+		 * @summary Creates or gets the CSS stylesheet element for this template instance.
+		 * @memberof FooGallery.MasonryTemplate#
+		 * @function getStylesheet
+		 * @returns {CSSStyleSheet}
+		 */
+		getStylesheet: function(){
 			var self = this;
-			self.style = document.createElement("style");
-			self.style.appendChild(document.createTextNode(""));
-			document.head.appendChild(self.style);
+			if (self.style === null){
+				self.style = document.createElement("style");
+				self.style.appendChild(document.createTextNode(""));
+				document.head.appendChild(self.style);
+			}
 			return self.style.sheet;
 		},
 		/**
@@ -6593,7 +6601,7 @@
 				self.template.layout = "col4";
 			}
 			// configure the base masonry options depending on the layout
-			var fixed = self.template.layout === "fixed";
+			var fixed = self.template.layout === "fixed", sheet, rule;
 			self.template.isFitWidth = fixed;
 			self.template.percentPosition = !fixed;
 			self.template.transitionDuration = 0;
@@ -6613,16 +6621,19 @@
 			if (self.$el.find(sel.columnWidth).length === 0){
 				self.$el.prepend($("<div/>").addClass(cls.columnWidth));
 			}
-			if (_is.number(self.template.columnWidth)){
-				self.$el.find(sel.columnWidth).width(self.template.columnWidth);
+			if (fixed && _is.number(self.template.columnWidth)){
+				var $columnWidth = self.$el.find(sel.columnWidth).width(self.template.columnWidth);
+				sheet = self.getStylesheet();
+				rule = '#' + self.id + sel.container + ' ' + sel.item.elem + ' { width: ' + $columnWidth.outerWidth() + 'px; }';
+				sheet.insertRule(rule , 0);
 			}
 			self.template.columnWidth = sel.columnWidth;
 
 			// if this is a fixed layout and a number value is supplied as the gutter option then
 			// make sure to vertically space the items using  a CSS class and the same value
 			if (fixed && _is.number(self.template.gutter)){
-				var sheet = self.createStylesheet(),
-						rule = '#' + self.id + sel.container + ' ' + sel.item.elem + ' { margin-bottom: ' + self.template.gutter + 'px; }';
+				sheet = self.getStylesheet();
+				rule = '#' + self.id + sel.container + ' ' + sel.item.elem + ' { margin-bottom: ' + self.template.gutter + 'px; }';
 				sheet.insertRule(rule , 0);
 			}
 

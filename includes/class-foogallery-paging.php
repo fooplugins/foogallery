@@ -227,6 +227,29 @@ if ( ! class_exists( 'FooGallery_Paging' ) ) {
 						'data-foogallery-preview' => 'shortcode'
 					)
 				);
+
+				$fields[] = array(
+					'id'      => 'paging_output',
+					'title'   => __( 'Paging Output', 'foogallery' ),
+					'desc'    => __( 'How the paging items are output. We recommend that very large galleries output as JSON.', 'foogallery' ),
+					'section' => __( 'Paging', 'foogallery' ),
+					'spacer'  => '<span class="spacer"></span>',
+					'type'    => 'radio',
+					'default' => '',
+					'choices' => apply_filters( 'foogallery_gallery_template_paging_output_choices', array(
+						''  => __( 'JSON', 'foogallery' ),
+						'html'   => __( 'HTML', 'foogallery' )
+					) ),
+					'row_data'=> array(
+						'data-foogallery-change-selector' => 'input',
+						'data-foogallery-preview' => 'shortcode',
+						'data-foogallery-value-selector' => 'input:checked',
+						'data-foogallery-hidden'                   => true,
+						'data-foogallery-show-when-field'          => 'paging_type',
+						'data-foogallery-show-when-field-operator' => '!==',
+						'data-foogallery-show-when-field-value'    => '',
+					)
+				);
 			}
 
 			return $fields;
@@ -321,6 +344,7 @@ if ( ! class_exists( 'FooGallery_Paging' ) ) {
 				$args['paging_theme'] = $post_data[FOOGALLERY_META_SETTINGS][$template. '_paging_theme'];
 				$args['paging_size'] = $post_data[FOOGALLERY_META_SETTINGS][$template. '_paging_size'];
 				$args['paging_scroll'] = $post_data[FOOGALLERY_META_SETTINGS][$template. '_paging_scroll'];
+				$args['paging_output'] = $post_data[FOOGALLERY_META_SETTINGS][$template. '_paging_output'];
 
 				$args['paging_limit'] = $post_data[FOOGALLERY_META_SETTINGS][$template. '_paging_limit'];
 				$args['paging_showFirstLast'] = $post_data[FOOGALLERY_META_SETTINGS][$template. '_paging_showFirstLast'];
@@ -329,6 +353,20 @@ if ( ! class_exists( 'FooGallery_Paging' ) ) {
 			}
 
 			return $args;
+		}
+
+		/**
+		 * Checks if the gallery output is JSON
+		 *
+		 * @param FooGallery $gallery
+		 * @return bool
+		 */
+		function is_paging_output_json($gallery) {
+			if ( isset( $gallery->paging ) && true === $gallery->paging ) {
+				$paging_output = $this->get_foogallery_argument( $gallery, 'paging_output', 'paging_output', '' );
+				return '' === $paging_output;
+			}
+			return false;
 		}
 
         /**
@@ -340,7 +378,8 @@ if ( ! class_exists( 'FooGallery_Paging' ) ) {
          */
 		function attachments_override( $override, $gallery ) {
 
-            if ( isset( $gallery->paging ) && true === $gallery->paging ) {
+            if ( $this->is_paging_output_json( $gallery ) ) {
+
                 $page_size = isset( $gallery->paging_options ) && array_key_exists( 'size', $gallery->paging_options ) ? $gallery->paging_options['size'] : 0;
 
                 if ( $page_size > 0 ) {
@@ -362,7 +401,9 @@ if ( ! class_exists( 'FooGallery_Paging' ) ) {
          * @param FooGallery $gallery
          */
         function output_paging_script_block( $gallery ) {
-            if ( isset( $gallery->paging ) && true === $gallery->paging ) {
+
+			if ( $this->is_paging_output_json( $gallery ) ) {
+
                 $page_size = isset($gallery->paging_options) && array_key_exists('size', $gallery->paging_options) ? $gallery->paging_options['size'] : 0;
 
                 if ($page_size > 0) {

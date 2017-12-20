@@ -31,6 +31,9 @@ class FooGallery extends stdClass {
 		$this->datasource_name = foogallery_default_datasource();
 		$this->_datasource = false;
 		$this->settings = array();
+		$this->sorting = '';
+		$this->force_use_original_thumbs = false;
+		$this->retina = array();
 	}
 
 	/**

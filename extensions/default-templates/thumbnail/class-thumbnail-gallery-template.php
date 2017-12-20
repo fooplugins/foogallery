@@ -93,12 +93,14 @@ if ( !class_exists( 'FooGallery_Thumbnail_Gallery_Template' ) ) {
                         'title'   => __( 'Position', 'foogallery' ),
                         'desc'    => __( 'The position of the thumbnail related to the content around it.', 'foogallery' ),
                         'section' => __( 'General', 'foogallery' ),
-                        'default' => 'position-block',
+                        'default' => 'fg-center',
                         'type'    => 'select',
                         'choices' => array(
-                            'fg-center' => __( 'Full Width (block)', 'foogallery' ),
-                            'fg-left' => __( 'Float Left', 'foogallery' ),
-                            'fg-right' => __( 'Float Right', 'foogallery' ),
+                            'fg-center' => __( 'Full Center', 'foogallery' ),
+							'fg-left' => __( 'Full Left', 'foogallery' ),
+							'fg-right' => __( 'Full Right', 'foogallery' ),
+							'fg-float-left' => __( 'Float Left', 'foogallery' ),
+                            'fg-float-right' => __( 'Float Right', 'foogallery' ),
                         ),
 						'row_data'=> array(
 							'data-foogallery-change-selector' => 'select',

@@ -56,7 +56,10 @@ class FooGallery_Template_Loader {
 		//potentially override attachment_ids from arguments
 		$attachment_ids = $this->get_arg( $args, 'attachment_ids', false );
 		if ( $attachment_ids ) {
-			$current_foogallery->attachment_ids = explode( ',', $attachment_ids );
+            if ( !is_array( $attachment_ids ) ) {
+                $attachment_ids = explode( ',', $attachment_ids);
+            }
+			$current_foogallery->attachment_ids = $attachment_ids;
 		}
 
 		//check if we have any attachments
@@ -228,7 +231,11 @@ class FooGallery_Template_Loader {
 
 		if ( $attachment_ids ) {
 			$template = $this->get_arg( $args, 'template', foogallery_get_default( 'gallery_template' ) );
-			return FooGallery::dynamic( $template, explode( ',', $attachment_ids) );
+
+			if ( !is_array( $attachment_ids ) ) {
+                $attachment_ids = explode( ',', $attachment_ids);
+            }
+			return FooGallery::dynamic( $template, $attachment_ids );
 		}
 
 		return false;

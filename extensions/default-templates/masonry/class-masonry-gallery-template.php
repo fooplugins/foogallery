@@ -29,6 +29,12 @@ if ( !class_exists( 'FooGallery_Masonry_Gallery_Template' ) ) {
 
             //build up the arguments needed for rendering this template
             add_filter( 'foogallery_gallery_template_arguments-masonry', array( $this, 'build_gallery_template_arguments' ) );
+
+            //add extra fields to the templates
+            add_filter( 'foogallery_override_gallery_template_fields-masonry', array( $this, 'add_masonry_fields' ), 10, 2 );
+
+			//remove the captions if the captions are below thumbs
+			add_filter( 'foogallery_build_attachment_html_caption', array( $this, 'remove_captions' ), 10, 3 );
         }
 
 		/**
@@ -281,5 +287,45 @@ if ( !class_exists( 'FooGallery_Masonry_Gallery_Template' ) ) {
 
             return $args;
         }
+
+        /**
+         * Add masonry-specific fields to the gallery template
+         *
+         * @uses "foogallery_override_gallery_template_fields"
+         * @param $fields
+         * @param $template
+         *
+         * @return array
+         */
+        function add_masonry_fields( $fields, $template ) {
+            //update specific fields
+            foreach ($fields as &$field) {
+                if ( 'hover_effect_caption_visibility' === $field['id'] ) {
+                    $field['choices']['fg-captions-bottom'] = __( 'Below Thumbnail', 'foogallery' );
+                }
+            }
+
+            return $fields;
+        }
+
+        function remove_captions( $captions, $foogallery_attachment, $args ) {
+			global $current_foogallery_template;
+
+        	//check if masonry
+			if ( 'masonry' === $current_foogallery_template ) {
+
+				$hover_effect_caption_visibility = foogallery_gallery_template_setting( 'hover_effect_caption_visibility', 'fg-caption-hover' );
+
+				//check if captions are set to show below the thumbs
+				if ( 'fg-captions-bottom' === $hover_effect_caption_visibility ) {
+					//if we have no captions then do not output captions at all
+					if ( !array_key_exists( 'title', $captions ) && !array_key_exists( 'desc', $captions ) ) {
+						$captions = false;
+					}
+				}
+			}
+
+        	return $captions;
+		}
 	}
 }
