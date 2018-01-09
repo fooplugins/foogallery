@@ -16,10 +16,6 @@ FooGallery is the best image gallery plugin for WordPress. Why? Stunning gallery
 
 [View the FooGallery Homepage & DEMO](http://foo.gallery/)
 
-**Major changes in 1.4.1!**
-
-There have been major updates to the gallery templates in v1.4.1. If you have updated, please test your galleries.
-
 **PHP 7 Compatible**
 
 FooGallery has been tried and tested on servers running PHP 7.
@@ -64,15 +60,16 @@ FooGallery was designed to be the most developer-friendly gallery plugin availab
 
 **PRO Features**
 
+*   11 Beautiful Hover Effect Presets
 *   Polaroid PRO Gallery Template
 *   Grid PRO Gallery Template
 *   Advanced Pagination
 *   Infinite Scroll
 *   Multiple Loaded Effects
-*   Multiple hover effects presets
+*   Bulk Copy Gallery Settings
 *   More on the way!
 
-**Gallery Demos**
+**Demos**
 
 *	Responsive Image Gallery - [demo](http://foo.gallery/demos/responsive-image-gallery/)
 *	Image Viewer Gallery - [light demo](http://foo.gallery/demos/image-viewer-gallery/) - [dark demo](http://foo.gallery/demos/image-viewer-gallery-dark/)
@@ -80,7 +77,7 @@ FooGallery was designed to be the most developer-friendly gallery plugin availab
 *	Simple Portfolio - [demo](http://foo.gallery/demos/simple-portfolio/)
 *	Justified Gallery - [demo](http://foo.gallery/demos/justified-gallery/)
 *	Single Thumbnail Gallery - [demo](http://foo.gallery/demos/single-thumbnail-gallery/)
-*	Mixed (Images + Videos) - [demo](http://foo.gallery/demos/mixed/)
+*	[More Demos](http://foo.gallery/demos)
 
 **Album Demos**
 
@@ -152,6 +149,13 @@ Hell, yes! Check out our [developer page](http://foo.gallery/developers/)
 Update now to support FooVideo and many other improvements!
 
 == Changelog ==
+
+= 1.4.14 =
+
+* Fix : All-In-One stack album now uses the gallery featured image
+* Added more position options for Single Thumbnail Gallery
+* Added paging output setting
+* Update to latest client side JS 1.0.19
 
 = 1.4.12 =
 
