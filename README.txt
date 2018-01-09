@@ -14,7 +14,7 @@ FooGallery is the best image gallery plugin for WordPress. Why? Stunning gallery
 
 FooGallery is the best image gallery plugin for WordPress. Why? Stunning gallery layouts, responsive, retina-ready, lightning fast, easy to use. Built to be highly configurable and extensible for developers or freelancers.
 
-[View the Foo Gallery Homepage & DEMO](http://foo.gallery/)
+[View the FooGallery Homepage & DEMO](http://foo.gallery/)
 
 **Major changes in 1.4.1!**
 
@@ -26,11 +26,11 @@ FooGallery has been tried and tested on servers running PHP 7.
 
 **Retina Support**
 
-Foo Gallery now comes with built-in support for higher quality thumbnails on retina-enabled displays. No more blurry thumbnails, just crisp thumbnails that look amazing on all devices.
+FooGallery now comes with built-in support for higher quality thumbnails on retina-enabled displays. No more blurry thumbnails, just crisp thumbnails that look amazing on all devices.
 
 **Video Support**
 
-Foo Gallery now supports the creation of video galleries with the [FooVideo premium extension](http://fooplugins.com/plugins/foovideo/?utm_source=foogalleryplugin&utm_medium=foogallerylink&utm_campaign=foogallery_wprepo)! Create galleries with both images and videos mixed!
+FooGallery now supports the creation of video galleries with the [FooVideo premium extension](http://fooplugins.com/plugins/foovideo/?utm_source=foogalleryplugin&utm_medium=foogallerylink&utm_campaign=foogallery_wprepo)! Create galleries with both images and videos mixed!
 
 **Albums Built In**
 
@@ -38,7 +38,7 @@ Albums are now built in as an extension. Simply head over to the extensions page
 
 **Built For Developers**
 
-Foo Gallery was designed to be the most developer-friendly gallery plugin available for WordPress. It was also built on top of a solid extension framework, which means different functionality is separated out into different areas in the codebase. It also means the core plugin is lightweight, but still allowing for the most flexibility.
+FooGallery was designed to be the most developer-friendly gallery plugin available for WordPress. It was also built on top of a solid extension framework, which means different functionality is separated out into different areas in the codebase. It also means the core plugin is lightweight, but still allowing for the most flexibility.
 
 **Features**
 
