@@ -10,6 +10,18 @@ $random_angle = foogallery_album_template_setting( 'random_angle', 'false' );
 $gutter = foogallery_album_template_setting( 'gutter', '40' );
 $delay = foogallery_album_template_setting( 'delay', '0' );
 $pile_angles = foogallery_album_template_setting( 'pile_angles', '2' );
+function foogallery_album_all_in_one_stack_render_gallery_attachment( $gallery, $attachment, $args, $lightbox ) {
+	echo '<li data-pile="'. esc_attr($gallery->name) . '">';
+	$args['link_attributes']['rel'] = 'gallery[' . $gallery->ID . ']';
+	$args['link_attributes']['class'] = apply_filters( 'foogallery_album_stack_link_class_name', $lightbox );
+	echo $attachment->html( $args, false, false );
+	if ( $attachment->caption ) {
+		echo '<span class="tp-info"><span>' . wp_filter_nohtml_kses( $attachment->caption ) . '</span></span>';
+	}
+	echo $attachment->html_img( $args );
+	echo '</a>';
+	echo '</li>';
+}
 ?>
 <div id="foogallery-album-<?php echo $current_foogallery_album->ID; ?>" class="foogallery-container foogallery-stack-album">
 	<div class="topbar">
@@ -19,18 +31,15 @@ $pile_angles = foogallery_album_template_setting( 'pile_angles', '2' );
 	<ul id="foogallery-stack-album-<?php echo $current_foogallery_album->ID; ?>" class="tp-grid">
 		<?php
 		foreach ( $current_foogallery_album->galleries() as $gallery ) {
+			$featured_image = $gallery->featured_attachment();
+
 			foreach ( $gallery->attachments() as $attachment ) {
-				echo '<li data-pile="'. esc_attr($gallery->name) . '">';
-				$args['link_attributes']['rel'] = 'gallery[' . $gallery->ID . ']';
-				$args['link_attributes']['class'] = apply_filters( 'foogallery_album_stack_link_class_name', $lightbox );
-				echo $attachment->html( $args, false, false );
-				if ( $attachment->caption ) {
-					echo '<span class="tp-info"><span>' . wp_filter_nohtml_kses( $attachment->caption ) . '</span></span>';
+				if ( $featured_image->ID !== $attachment->ID ) {
+					//force the featured image to be last!
+					foogallery_album_all_in_one_stack_render_gallery_attachment( $gallery, $attachment, $args, $lightbox );
 				}
-				echo $attachment->html_img( $args );
-				echo '</a>';
-				echo '</li>';
 			}
+			foogallery_album_all_in_one_stack_render_gallery_attachment( $gallery, $featured_image, $args, $lightbox );
 		}
 		?>
 	</ul>

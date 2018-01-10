@@ -101,14 +101,18 @@
 	FOOGALLERY.reloadGalleryPreview = function() {
 		//build up all the data to generate a preview
         var $shortcodeFields = $('.foogallery-settings-container-active .foogallery-metabox-settings .foogallery_template_field[data-foogallery-preview="shortcode"]'),
-			data = [];
+			data = [],
+			foogallery_id = $('#post_ID').val();
 
         if ($shortcodeFields.length) {
 			data = $shortcodeFields.find(' :input').serializeArray();
         }
 
+        //clear any items just in case
+		window['foogallery-gallery-' + foogallery_id + '-items'] = null;
+
         //add additional data for the preview
-		data.push({name: 'foogallery_id', value: $('#post_ID').val()});
+		data.push({name: 'foogallery_id', value: foogallery_id});
 		data.push({name: 'foogallery_template', value: FOOGALLERY.getSelectedTemplate()});
 		data.push({name: 'foogallery_attachments', value: $('#foogallery_attachments').val()});
 

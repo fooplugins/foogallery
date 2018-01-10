@@ -3215,7 +3215,7 @@
 		 */
 		make: function(options, element){
 			element = _is.jq(element) ? element : $(element);
-			options = _obj.merge(options, element.data("foogallery"));
+			options = _obj.extend({}, options, element.data("foogallery"));
 			var self = this, type = self.type(options, element);
 			if (!self.contains(type)) return null;
 			options = self.options(type, options);
@@ -3249,21 +3249,23 @@
 			}
 		},
 		options: function(name, options){
-			options = _is.hash(options) ? options : {};
+			options = _obj.extend({}, options);
 			var self = this, reg = self.registered,
-				def = reg["core"].opt,
-				cls = reg["core"].cls,
-				il8n = reg["core"].il8n;
+					def = reg["core"].opt,
+					cls = reg["core"].cls,
+					il8n = reg["core"].il8n;
 
+			if (!_is.hash(options.cls)) options.cls = {};
+			if (!_is.hash(options.il8n)) options.il8n = {};
 			options = _.paging.merge(options);
 			if (name !== "core" && self.contains(name)){
 				options = _obj.extend({}, def, reg[name].opt, options);
-				options.cls = _obj.extend({}, cls, reg[name].cls, options.cls);
-				options.il8n = _obj.extend({}, il8n, reg[name].il8n, options.il8n);
+				options.cls = _obj.extend(options.cls, cls, reg[name].cls, options.cls);
+				options.il8n = _obj.extend(options.il8n, il8n, reg[name].il8n, options.il8n);
 			} else {
 				options = _obj.extend({}, def, options);
-				options.cls = _obj.extend({}, cls, options.cls);
-				options.il8n = _obj.extend({}, il8n, options.il8n);
+				options.cls = _obj.extend(options.cls, cls, options.cls);
+				options.il8n = _obj.extend(options.il8n, il8n, options.il8n);
 			}
 			return options;
 		}
@@ -3278,12 +3280,12 @@
 	_.template = new _.TemplateFactory();
 
 })(
-	FooGallery.$,
-	FooGallery,
-	FooGallery.utils,
-	FooGallery.utils.is,
-	FooGallery.utils.fn,
-	FooGallery.utils.obj
+		FooGallery.$,
+		FooGallery,
+		FooGallery.utils,
+		FooGallery.utils.is,
+		FooGallery.utils.fn,
+		FooGallery.utils.obj
 );
 (function(_, _utils, _is, _fn, _obj){
 
@@ -3347,46 +3349,31 @@
 			}
 			return result;
 		},
-		// /**
-		//  * @summary Create a new instance of a registered paging type for the supplied `template`.
-		//  * @memberof FooGallery.PagingFactory#
-		//  * @function make
-		//  * @param {FooGallery.Template} template - The template creating the new instance.
-		//  * @returns {FooGallery.Paging}
-		//  */
-		// make: function(template){
-		// 	var self = this, paging, type;
-		// 	if (!(template instanceof _.Template) || !_is.hash(paging = template.opt.paging) || !self.contains(type = paging.type) || type === "default") return null;
-		// 	var reg = self.registered;
-		// 	template.opt.paging = _obj.extend({}, reg["default"].opt, reg[type].opt, template.opt.paging);
-		// 	template.cls.paging = _obj.extend({}, reg["default"].cls, reg[type].cls, template.cls.paging);
-		// 	template.il8n.paging = _obj.extend({}, reg["default"].il8n, reg[type].il8n, template.il8n.paging);
-		// 	template.sel.paging = _utils.selectify(template.cls.paging);
-		// 	return self._super(type, template);
-		// },
 		type: function(options){
 			var self = this, opt;
 			return _is.hash(options) && _is.hash(opt = options.paging) && _is.string(opt.type) && self.contains(opt.type) ? opt.type : null;
 		},
 		merge: function(options){
-			options = _is.hash(options) ? options : {};
+			options = _obj.extend({}, options);
 			var self = this, type = self.type(options),
-				reg = self.registered,
-				def = reg["default"].opt,
-				def_cls = reg["default"].cls,
-				def_il8n = reg["default"].il8n,
-				opt = _is.hash(options.paging) ? options.paging : {},
-				cls = _is.hash(options.cls) && _is.hash(options.cls.paging) ? options.cls.paging : {},
-				il8n = _is.hash(options.il8n) && _is.hash(options.il8n.paging) ? options.il8n.paging : {};
+					reg = self.registered,
+					def = reg["default"].opt,
+					def_cls = reg["default"].cls,
+					def_il8n = reg["default"].il8n,
+					opt = _is.hash(options.paging) ? options.paging : {},
+					cls = _is.hash(options.cls) && _is.hash(options.cls.paging) ? options.cls.paging : {},
+					il8n = _is.hash(options.il8n) && _is.hash(options.il8n.paging) ? options.il8n.paging : {};
 
+			if (!_is.hash(options.cls)) options.cls = {};
+			if (!_is.hash(options.il8n)) options.il8n = {};
 			if (type !== "default" && self.contains(type)){
 				options.paging = _obj.extend({}, def, reg[type].opt, opt, {type: type});
-				options.cls = _obj.extend({}, {paging: def_cls}, {paging: reg[type].cls}, {paging: cls});
-				options.il8n = _obj.extend({}, {paging: def_il8n}, {paging: reg[type].il8n}, {paging: il8n});
+				options.cls = _obj.extend(options.cls, {paging: def_cls}, {paging: reg[type].cls}, {paging: cls});
+				options.il8n = _obj.extend(options.il8n, {paging: def_il8n}, {paging: reg[type].il8n}, {paging: il8n});
 			} else {
 				options.paging = _obj.extend({}, def, opt, {type: type});
-				options.cls = _obj.extend({}, {paging: def_cls}, {paging: cls});
-				options.il8n = _obj.extend({}, {paging: def_il8n}, {paging: il8n});
+				options.cls = _obj.extend(options.cls, {paging: def_cls}, {paging: cls});
+				options.il8n = _obj.extend(options.il8n, {paging: def_il8n}, {paging: il8n});
 			}
 			return options;
 		},
@@ -3398,28 +3385,6 @@
 				_obj.extend(reg[name].cls, classes);
 				_obj.extend(reg[name].il8n, il8n);
 			}
-		},
-		options: function(name, options){
-			options = _is.hash(options) ? options : {};
-			var self = this,
-				reg = self.registered,
-				def = reg["default"].opt,
-				def_cls = reg["default"].cls,
-				def_il8n = reg["default"].il8n,
-				opt = _is.hash(options.paging) ? options.paging : {},
-				cls = _is.hash(options.cls) && _is.hash(options.cls.paging) ? options.cls.paging : {},
-				il8n = _is.hash(options.il8n) && _is.hash(options.il8n.paging) ? options.il8n.paging : {};
-
-			if (name !== "default" && self.contains(name)){
-				options.paging = _obj.extend({}, def, reg[name].opt, opt, {type: name});
-				options.cls = _obj.extend({}, {paging: def_cls}, {paging: reg[name].cls}, {paging: cls});
-				options.il8n = _obj.extend({}, {paging: def_il8n}, {paging: reg[name].il8n}, {paging: il8n});
-			} else {
-				options.paging = _obj.extend({}, def, opt, {type: name});
-				options.cls = _obj.extend({}, {paging: def_cls}, {paging: cls});
-				options.il8n = _obj.extend({}, {paging: def_il8n}, {paging: il8n});
-			}
-			return options;
 		},
 		/**
 		 * @summary Checks if the factory contains a control registered using the supplied `name`.
@@ -3460,11 +3425,11 @@
 	_.paging = new _.PagingFactory();
 
 })(
-	FooGallery,
-	FooGallery.utils,
-	FooGallery.utils.is,
-	FooGallery.utils.fn,
-	FooGallery.utils.obj
+		FooGallery,
+		FooGallery.utils,
+		FooGallery.utils.is,
+		FooGallery.utils.fn,
+		FooGallery.utils.obj
 );
 (function($, _, _utils, _is, _fn, _str){
 

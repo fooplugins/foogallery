@@ -23,7 +23,7 @@ if ( ! class_exists( 'FooGallery_Attachment_Custom_Class' ) ) {
 			$fields['foogallery_custom_class'] = array(
 				'label'       =>  __( 'Custom Class', 'foogallery' ),
 				'input'       => 'text',
-				'helps'       => __( 'Add extra classed to your attachment', 'foogallery' ),
+				'helps'       => __( 'Add extra classes to the attachment', 'foogallery' ),
 				'exclusions'  => array( 'audio', 'video' ),
 			);
 
