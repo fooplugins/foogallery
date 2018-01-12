@@ -150,6 +150,10 @@ Update now to support FooVideo and many other improvements!
 
 == Changelog ==
 
+= 1.4.15 =
+
+* Fix : All-In-One stack album fatal error when 2 albums on same page
+
 = 1.4.14 =
 
 * Fix : All-In-One stack album now uses the gallery featured image
