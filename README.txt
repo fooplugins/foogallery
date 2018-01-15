@@ -14,11 +14,7 @@ FooGallery is the best image gallery plugin for WordPress. Why? Stunning gallery
 
 FooGallery is the best image gallery plugin for WordPress. Why? Stunning gallery layouts, responsive, retina-ready, lightning fast, easy to use. Built to be highly configurable and extensible for developers or freelancers.
 
-[View the Foo Gallery Homepage & DEMO](http://foo.gallery/)
-
-**Major changes in 1.4.1!**
-
-There have been major updates to the gallery templates in v1.4.1. If you have updated, please test your galleries.
+[View the FooGallery Homepage & DEMO](http://foo.gallery/)
 
 **PHP 7 Compatible**
 
@@ -26,11 +22,11 @@ FooGallery has been tried and tested on servers running PHP 7.
 
 **Retina Support**
 
-Foo Gallery now comes with built-in support for higher quality thumbnails on retina-enabled displays. No more blurry thumbnails, just crisp thumbnails that look amazing on all devices.
+FooGallery now comes with built-in support for higher quality thumbnails on retina-enabled displays. No more blurry thumbnails, just crisp thumbnails that look amazing on all devices.
 
 **Video Support**
 
-Foo Gallery now supports the creation of video galleries with the [FooVideo premium extension](http://fooplugins.com/plugins/foovideo/?utm_source=foogalleryplugin&utm_medium=foogallerylink&utm_campaign=foogallery_wprepo)! Create galleries with both images and videos mixed!
+FooGallery now supports the creation of video galleries with the [FooVideo premium extension](http://fooplugins.com/plugins/foovideo/?utm_source=foogalleryplugin&utm_medium=foogallerylink&utm_campaign=foogallery_wprepo)! Create galleries with both images and videos mixed!
 
 **Albums Built In**
 
@@ -38,7 +34,7 @@ Albums are now built in as an extension. Simply head over to the extensions page
 
 **Built For Developers**
 
-Foo Gallery was designed to be the most developer-friendly gallery plugin available for WordPress. It was also built on top of a solid extension framework, which means different functionality is separated out into different areas in the codebase. It also means the core plugin is lightweight, but still allowing for the most flexibility.
+FooGallery was designed to be the most developer-friendly gallery plugin available for WordPress. It was also built on top of a solid extension framework, which means different functionality is separated out into different areas in the codebase. It also means the core plugin is lightweight, but still allowing for the most flexibility.
 
 **Features**
 
@@ -64,15 +60,16 @@ Foo Gallery was designed to be the most developer-friendly gallery plugin availa
 
 **PRO Features**
 
+*   11 Beautiful Hover Effect Presets
 *   Polaroid PRO Gallery Template
 *   Grid PRO Gallery Template
 *   Advanced Pagination
 *   Infinite Scroll
 *   Multiple Loaded Effects
-*   Multiple hover effects presets
+*   Bulk Copy Gallery Settings
 *   More on the way!
 
-**Gallery Demos**
+**Demos**
 
 *	Responsive Image Gallery - [demo](http://foo.gallery/demos/responsive-image-gallery/)
 *	Image Viewer Gallery - [light demo](http://foo.gallery/demos/image-viewer-gallery/) - [dark demo](http://foo.gallery/demos/image-viewer-gallery-dark/)
@@ -80,7 +77,7 @@ Foo Gallery was designed to be the most developer-friendly gallery plugin availa
 *	Simple Portfolio - [demo](http://foo.gallery/demos/simple-portfolio/)
 *	Justified Gallery - [demo](http://foo.gallery/demos/justified-gallery/)
 *	Single Thumbnail Gallery - [demo](http://foo.gallery/demos/single-thumbnail-gallery/)
-*	Mixed (Images + Videos) - [demo](http://foo.gallery/demos/mixed/)
+*	[More Demos](http://foo.gallery/demos)
 
 **Album Demos**
 
@@ -152,6 +149,17 @@ Hell, yes! Check out our [developer page](http://foo.gallery/developers/)
 Update now to support FooVideo and many other improvements!
 
 == Changelog ==
+
+= 1.4.15 =
+
+* Fix : All-In-One stack album fatal error when 2 albums on same page
+
+= 1.4.14 =
+
+* Fix : All-In-One stack album now uses the gallery featured image
+* Added more position options for Single Thumbnail Gallery
+* Added paging output setting
+* Update to latest client side JS 1.0.19
 
 = 1.4.12 =
 

@@ -253,7 +253,7 @@ function foogallery_add_submenu_page( $menu_title, $capability, $menu_slug, $fun
 		foogallery_admin_menu_parent_slug(),
 		$menu_title,
 		$menu_title,
-		$capability,
+        apply_filters( 'foogallery_admin_menu_capability', $capability ),
 		$menu_slug,
 		$function
 	);

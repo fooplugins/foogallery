@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Foo Gallery\n"
+"Project-Id-Version: FooGallery\n"
 "POT-Creation-Date: 2015-11-30 18:57+0100\n"
 "PO-Revision-Date: 2015-11-30 19:07+0100\n"
 "Last-Translator: Jonathan Donzallaz <jonathan.donzallaz@gmail.com>\n"
@@ -2626,7 +2626,7 @@ msgid "No gallery template found!"
 msgstr "Aucun modèle de galerie trouvé."
 
 #. Plugin Name of the plugin/theme
-msgid "Foo Gallery"
+msgid "FooGallery"
 msgstr ""
 
 #. Plugin URI of the plugin/theme
@@ -2635,10 +2635,10 @@ msgstr ""
 
 #. Description of the plugin/theme
 msgid ""
-"Foo Gallery is the most intuitive and extensible gallery management tool "
+"FooGallery is the most intuitive and extensible gallery management tool "
 "ever created for WordPress"
 msgstr ""
-"Foo Gallery est l'outil de création et de gestion de galeries le plus "
+"FooGallery est l'outil de création et de gestion de galeries le plus "
 "intuitif et extensible créé pour WordPress"
 
 #. Author of the plugin/theme
