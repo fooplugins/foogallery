@@ -3257,7 +3257,9 @@
 
 			if (!_is.hash(options.cls)) options.cls = {};
 			if (!_is.hash(options.il8n)) options.il8n = {};
-			options = _.paging.merge(options);
+			if (!_is.undef(_.filtering)) options = _.filtering.merge(options);
+			if (!_is.undef(_.paging)) options = _.paging.merge(options);
+
 			if (name !== "core" && self.contains(name)){
 				options = _obj.extend({}, def, reg[name].opt, options);
 				options.cls = _obj.extend(options.cls, cls, reg[name].cls, options.cls);
@@ -3431,6 +3433,150 @@
 		FooGallery.utils.fn,
 		FooGallery.utils.obj
 );
+(function(_, _utils, _is, _fn, _obj){
+
+	_.FilteringFactory = _utils.Factory.extend(/** @lends FooGallery.FilteringFactory */{
+		/**
+		 * @summary A factory for filtering types allowing them to be easily registered and created.
+		 * @memberof FooGallery
+		 * @constructs FilteringFactory
+		 * @description The plugin makes use of an instance of this class exposed as {@link FooGallery.filtering}.
+		 * @augments FooGallery.Factory
+		 * @borrows FooGallery.Factory.extend as extend
+		 * @borrows FooGallery.Factory.override as override
+		 */
+		construct: function(){
+			/**
+			 * @summary An object containing all registered filtering types.
+			 * @memberof FooGallery.FilteringFactory#
+			 * @name registered
+			 * @type {Object.<string, Object>}
+			 * @readonly
+			 * @example {@caption The following shows the structure of this object. The `<name>` placeholders would be the name the class was registered with.}
+			 * {
+			 * 	"<name>": {
+			 * 		"name": <string>,
+			 * 		"klass": <function>,
+			 * 		"ctrl": <function>,
+			 * 		"priority": <number>
+			 * 	},
+			 * 	"<name>": {
+			 * 		"name": <string>,
+			 * 		"klass": <function>,
+			 * 		"ctrl": <function>,
+			 * 		"priority": <number>
+			 * 	},
+			 * 	...
+			 * }
+			 */
+			this.registered = {};
+		},
+		/**
+		 * @summary Registers a filtering `type` constructor with the factory using the given `name` and `test` function.
+		 * @memberof FooGallery.FilteringFactory#
+		 * @function register
+		 * @param {string} name - The friendly name of the class.
+		 * @param {FooGallery.Filtering} type - The filtering type constructor to register.
+		 * @param {FooGallery.FilteringControl} [ctrl] - An optional control to register for the filtering type.
+		 * @param {object} [options={}] - The default options for the filtering type.
+		 * @param {object} [classes={}] - The CSS classes for the filtering type.
+		 * @param {object} [il8n={}] - The il8n strings for the filtering type.
+		 * @param {number} [priority=0] - This determines the index for the class when using either the {@link FooGallery.FilteringFactory#load|load} or {@link FooGallery.FilteringFactory#names|names} methods, a higher value equals a lower index.
+		 * @returns {boolean} `true` if the `klass` was successfully registered.
+		 */
+		register: function(name, type, ctrl, options, classes, il8n, priority){
+			var self = this, result = self._super(name, type, priority);
+			if (result){
+				var reg = self.registered;
+				reg[name].ctrl = _is.fn(ctrl) ? ctrl : null;
+				reg[name].opt = _is.hash(options) ? options : {};
+				reg[name].cls = _is.hash(classes) ? classes : {};
+				reg[name].il8n = _is.hash(il8n) ? il8n : {};
+			}
+			return result;
+		},
+		type: function(options){
+			var self = this, opt;
+			return _is.hash(options) && _is.hash(opt = options.filtering) && _is.string(opt.type) && self.contains(opt.type) ? opt.type : null;
+		},
+		merge: function(options){
+			options = _obj.extend({}, options);
+			var self = this, type = self.type(options),
+				reg = self.registered,
+				def = reg["default"].opt,
+				def_cls = reg["default"].cls,
+				def_il8n = reg["default"].il8n,
+				opt = _is.hash(options.filtering) ? options.filtering : {},
+				cls = _is.hash(options.cls) && _is.hash(options.cls.filtering) ? options.cls.filtering : {},
+				il8n = _is.hash(options.il8n) && _is.hash(options.il8n.filtering) ? options.il8n.filtering : {};
+
+			if (!_is.hash(options.cls)) options.cls = {};
+			if (!_is.hash(options.il8n)) options.il8n = {};
+			if (type !== "default" && self.contains(type)){
+				options.filtering = _obj.extend({}, def, reg[type].opt, opt, {type: type});
+				options.cls = _obj.extend(options.cls, {filtering: def_cls}, {filtering: reg[type].cls}, {filtering: cls});
+				options.il8n = _obj.extend(options.il8n, {filtering: def_il8n}, {filtering: reg[type].il8n}, {filtering: il8n});
+			} else {
+				options.filtering = _obj.extend({}, def, opt, {type: type});
+				options.cls = _obj.extend(options.cls, {filtering: def_cls}, {filtering: cls});
+				options.il8n = _obj.extend(options.il8n, {filtering: def_il8n}, {filtering: il8n});
+			}
+			return options;
+		},
+		configure: function(name, options, classes, il8n){
+			var self = this;
+			if (self.contains(name)){
+				var reg = self.registered;
+				_obj.extend(reg[name].opt, options);
+				_obj.extend(reg[name].cls, classes);
+				_obj.extend(reg[name].il8n, il8n);
+			}
+		},
+		/**
+		 * @summary Checks if the factory contains a control registered using the supplied `name`.
+		 * @memberof FooGallery.FilteringFactory#
+		 * @function hasCtrl
+		 * @param {string} name - The friendly name of the class.
+		 * @returns {boolean}
+		 */
+		hasCtrl: function(name){
+			var self = this, reg = self.registered[name];
+			return _is.hash(reg) && _is.fn(reg.ctrl);
+		},
+		/**
+		 * @summary Create a new instance of a control class registered with the supplied `name` and arguments.
+		 * @memberof FooGallery.FilteringFactory#
+		 * @function makeCtrl
+		 * @param {string} name - The friendly name of the class.
+		 * @param {FooGallery.Template} template - The template creating the control.
+		 * @param {FooGallery.Filtering} parent - The parent filtering class creating the control.
+		 * @param {string} position - The position the control will be displayed at.
+		 * @returns {?FooGallery.FilteringControl}
+		 */
+		makeCtrl: function(name, template, parent, position){
+			var self = this, reg = self.registered[name];
+			if (_is.hash(reg) && _is.fn(reg.ctrl)){
+				return new reg.ctrl(template, parent, position);
+			}
+			return null;
+		}
+	});
+
+	/**
+	 * @summary The factory used to register and create the various filtering types of FooGallery.
+	 * @memberof FooGallery
+	 * @name filtering
+	 * @type {FooGallery.FilteringFactory}
+	 */
+	_.filtering = new _.FilteringFactory();
+
+})(
+	FooGallery,
+	FooGallery.utils,
+	FooGallery.utils.is,
+	FooGallery.utils.fn,
+	FooGallery.utils.obj
+);
 (function($, _, _utils, _is, _fn, _str){
 
 	_.Template = _utils.Class.extend(/** @lends FooGallery.Template */{
@@ -3515,7 +3661,14 @@
 			 * @name pages
 			 * @type {?FooGallery.Paging}
 			 */
-			self.pages = _.paging.make(options.paging.type, self);
+			self.pages = !_is.undef(_.paging) ? _.paging.make(options.paging.type, self) : null;
+			/**
+			 * @summary The page manager for the template.
+			 * @memberof FooGallery.Template#
+			 * @name filter
+			 * @type {?FooGallery.Filtering}
+			 */
+			self.filter = !_is.undef(_.filtering) ? _.filtering.make(options.filtering.type, self) : null;
 			/**
 			 * @summary The state manager for the template.
 			 * @memberof FooGallery.Template#
@@ -3890,19 +4043,24 @@
 		// ################
 
 		/**
+		 * @summary Gets all available items.
+		 * @description This takes into account if paging is enabled and will return only the current pages' items.
+		 * @memberof FooGallery.Template#
+		 * @function getAvailable
+		 * @returns {FooGallery.Item[]} An array of {@link FooGallery.Item|items}.
+		 */
+		getAvailable: function(){
+			return this.pages ? this.pages.available() : this.items.available();
+		},
+
+		/**
 		 * @summary Check if any available items need to be loaded and loads them.
 		 * @memberof FooGallery.Template#
 		 * @function loadAvailable
 		 * @returns {Promise<FooGallery.Item[]>} Resolves with an array of {@link FooGallery.Item|items} as the first argument. If no items are loaded this array is empty.
 		 */
 		loadAvailable: function(){
-			var self = this, items;
-			if (self.pages){
-				items = self.pages.available();
-			} else {
-				items = self.items.available();
-			}
-			return self.items.load(items);
+			return this.items.load(this.getAvailable());
 		},
 
 		/**
@@ -4365,6 +4523,7 @@
 		 */
 		initial: function(){
 			var self = this, tmpl = self.tmpl, state = {};
+			if (tmpl.filter && !_is.empty(tmpl.filter.current)) state.f = tmpl.filter.current;
 			if (tmpl.pages && tmpl.pages.current > 1) state.p = tmpl.pages.current;
 			return state;
 		},
@@ -4379,6 +4538,9 @@
 		get: function(item){
 			var self = this, tmpl = self.tmpl, state = {};
 			if (item instanceof _.Item) state.i = item.id;
+			if (tmpl.filter && !_is.empty(tmpl.filter.current)){
+				state.f = tmpl.filter.current;
+			}
 			if (tmpl.pages && tmpl.pages.isValid(tmpl.pages.current)){
 				state.p = tmpl.pages.current;
 			}
@@ -4396,6 +4558,11 @@
 			if (_is.hash(state)){
 				tmpl.items.reset();
 				var item = tmpl.items.get(state.i);
+				if (tmpl.filter){
+					tmpl.filter.rebuild();
+					var tags = !_is.empty(state.f) ? state.f : [];
+					tmpl.filter.set(tags, false);
+				}
 				if (tmpl.pages){
 					tmpl.pages.rebuild();
 					var page = tmpl.pages.number(state.p);
@@ -4449,6 +4616,7 @@
 	 * @summary An object used to store the state of a template.
 	 * @typedef {object} FooGallery~State
 	 * @property {number} [p] - The current page number.
+	 * @property {string[]} [f] - The current filter array.
 	 * @property {?string} [i] - The currently selected item.
 	 */
 
@@ -6152,7 +6320,6 @@
 		set: function(pageNumber, scroll, updateState){
 			var self = this;
 			if (self.isValid(pageNumber)){
-				self.controls(pageNumber);
 				var num = self.number(pageNumber), state;
 				if (num !== self.current) {
 					var prev = self.current, setPage = function(){
@@ -6161,6 +6328,7 @@
 							state = self.tmpl.state.get();
 							self.tmpl.state.update(state, self.pushOrReplace);
 						}
+						self.controls(pageNumber);
 						self.create(num);
 						if (updateState){
 							state = self.tmpl.state.get();
@@ -6820,6 +6988,404 @@
 	FooGallery,
 	FooGallery.utils,
 	FooGallery.utils.is
+);
+(function($, _, _utils, _is){
+
+	_.Filtering = _.Component.extend({
+		construct: function(template){
+			var self = this;
+			/**
+			 * @ignore
+			 * @memberof FooGallery.Filtering#
+			 * @function _super
+			 */
+			self._super(template);
+			self.opt = self.tmpl.opt.filtering;
+			self.cls = self.tmpl.cls.filtering;
+			self.il8n = self.tmpl.il8n.filtering;
+			self.sel = self.tmpl.sel.filtering;
+			self.pushOrReplace = self.opt.pushOrReplace;
+			self.type = self.opt.type;
+			self.theme = self.opt.theme;
+
+			self.position = self.opt.position;
+			self.mode = self.opt.mode;
+
+			self.min = self.opt.min;
+			self.limit = self.opt.limit;
+			self.showCount = self.opt.showCount;
+
+			self.adjustSize = self.opt.adjustSize;
+			self.smallest = self.opt.smallest;
+			self.largest = self.opt.largest;
+
+			self.adjustOpacity = self.opt.adjustOpacity;
+			self.lightest = self.opt.lightest;
+			self.darkest = self.opt.darkest;
+
+			self.tags = [];
+			self.current = [];
+			self.ctrls = [];
+		},
+		destroy: function(){
+			var self = this;
+			self.tags.splice(0, self.tags.length);
+			$.each(self.ctrls.splice(0, self.ctrls.length), function(i, control){
+				control.destroy();
+			});
+			self._super();
+		},
+		count: function(items, tags){
+			items = _is.array(items) ? items : [];
+			tags = _is.array(tags) ? tags : [];
+			var result = {}, generate = tags.length === 0;
+			for (var i = 0, l = items.length, t; i < l; i++){
+				if (!_is.empty(t = items[i].tags)){
+					for (var j = 0, jl = t.length, tag; j < jl; j++){
+						if (!_is.empty(tag = t[j]) && (generate || (!generate && $.inArray(tag, tags) != -1))){
+							if (_is.number(result[tag])){
+								result[tag]++;
+							} else {
+								result[tag] = 1;
+							}
+						}
+					}
+				}
+			}
+			for (var k = 0, kl = tags.length; k < kl; k++){
+				if (!result.hasOwnProperty(tags[k])) result[tags[k]] = 0;
+			}
+			return result;
+		},
+		build: function(){
+			var self = this, items = self.tmpl.items.all();
+			if (items.length > 0){
+				// first get a count of every tag available from all items
+				var counts = self.count(items, self.opt.tags), min = Infinity, max = 0;
+				for (var prop in counts){
+					if (counts.hasOwnProperty(prop)){
+						var count = counts[prop];
+						if (self.min <= 0 || (self.min > 0 && count > self.min)){
+							self.tags.push({value: prop, count: count, percent: 1, size: self.largest, opacity: self.darkest});
+							if (count < min) min = count;
+							if (count > max) max = count;
+						}
+					}
+				}
+
+				// if there's a limit set, remove other tags
+				if (self.limit > 0 && self.tags.length > self.limit){
+					self.tags.sort(function(a, b){
+						return b.count - a.count;
+					});
+					self.tags = self.tags.slice(0, self.limit);
+				}
+
+				// if adjustSize or adjustOpacity is enabled, calculate a percentage value used to calculate the appropriate font size and opacity
+				if (self.adjustSize === true || self.adjustOpacity === true){
+					var fontRange = self.largest - self.smallest;
+					var opacityRange = self.darkest - self.lightest;
+					for (var i = 0, l = self.tags.length, tag; i < l; i++){
+						tag = self.tags[i];
+						tag.percent = (tag.count - min) / (max - min);
+						tag.size = self.adjustSize ? Math.round((fontRange * tag.percent) + self.smallest) : self.largest;
+						tag.opacity = self.adjustOpacity ? (opacityRange * tag.percent) + self.lightest : self.darkest;
+					}
+				}
+
+				// finally sort the tags by name
+				self.tags.sort(function(a, b){
+					var aTag = a.value.toUpperCase(), bTag = b.value.toUpperCase();
+					if (aTag < bTag) return -1;
+					if (aTag > bTag) return 1;
+					return 0;
+				});
+
+			}
+
+			if (self.tags.length > 0 && _.filtering.hasCtrl(self.type)){
+				var pos = self.position, top, bottom;
+				if (pos === "both" || pos === "top"){
+					top = _.filtering.makeCtrl(self.type, self.tmpl, self, "top");
+					if (top.create()){
+						top.append();
+						self.ctrls.push(top);
+					}
+				}
+				if (pos === "both" || pos === "bottom"){
+					bottom = _.filtering.makeCtrl(self.type, self.tmpl, self, "bottom");
+					if (bottom.create()){
+						bottom.append();
+						self.ctrls.push(bottom);
+					}
+				}
+			}
+		},
+		rebuild: function(){
+			var self = this;
+			self.tags.splice(0, self.tags.length);
+			$.each(self.ctrls.splice(0, self.ctrls.length), function(i, control){
+				control.destroy();
+			});
+			self.build();
+		},
+		controls: function(tags){
+			var self = this;
+			$.each(self.ctrls, function(i, control){
+				control.update(tags);
+			});
+		},
+		set: function(tags, updateState){
+			if (_is.string(tags)) tags = tags.split(' ');
+			if (!_is.array(tags)) tags = [];
+			var self = this, state;
+			if (!self.arraysEqual(self.current, tags)){
+				var prev = self.current.slice(), setFilter = function(){
+					updateState = _is.boolean(updateState) ? updateState : true;
+					if (updateState && !self.tmpl.state.exists()){
+						state = self.tmpl.state.get();
+						self.tmpl.state.update(state, self.pushOrReplace);
+					}
+					self.tmpl.items.detach(self.tmpl.getAvailable());
+					//self.tmpl.items.filter(tags, self.intersect);
+
+					self.controls(tags);
+
+					if (_is.empty(tags)){
+						self.tmpl.items.reset();
+					} else {
+						var items = self.tmpl.items.all();
+						if (self.mode === 'intersect'){
+							items = $.map(items, function(item) {
+								return _is.array(item.tags) && tags.every(function(tag){
+									return item.tags.indexOf(tag) >= 0;
+								}) ? item : null;
+							});
+						} else {
+							items = $.map(items, function(item) {
+								return _is.array(item.tags) && item.tags.some(function(tag){
+									return tags.indexOf(tag) >= 0;
+								}) ? item : null;
+							});
+						}
+						self.tmpl.items.setAvailable(items);
+					}
+					self.current = tags.slice();
+
+					if (updateState){
+						state = self.tmpl.state.get();
+						self.tmpl.state.update(state, self.pushOrReplace);
+					}
+
+					self.tmpl.raise("after-filter-change", [self.current, prev]);
+				};
+				var e = self.tmpl.raise("before-filter-change", [self.current, tags, setFilter]);
+				if (e.isDefaultPrevented()) return false;
+				setFilter();
+				return true;
+			}
+			return false;
+		},
+		arraysEqual: function(arr1, arr2){
+			if(arr1.length !== arr2.length)
+				return false;
+			arr1.sort();
+			arr2.sort();
+			for(var i = arr1.length; i--;) {
+				if(arr1[i] !== arr2[i])
+					return false;
+			}
+			return true;
+		},
+		apply: function(tags){
+			var self = this, paged = !!self.tmpl.pages;
+			if (self.set(tags, !paged)){
+				if (paged){
+					self.tmpl.pages.rebuild();
+					self.tmpl.pages.set(1);
+				} else {
+					self.tmpl.items.create(self.tmpl.items.available(), true);
+				}
+				self.tmpl.loadAvailable();
+			}
+		}
+	});
+
+	_.FilteringControl = _.Component.extend({
+		construct: function(template, parent, position){
+			var self = this;
+			self._super(template);
+			self.filter = parent;
+			self.position = position;
+			self.$container = null;
+		},
+		create: function(){
+			var self = this;
+			self.$container = $("<nav/>", {"class": self.filter.cls.container}).addClass(self.filter.theme);
+			return true;
+		},
+		destroy: function(){
+			var self = this;
+			self.$container.remove();
+			self.$container = null;
+		},
+		append: function(){
+			var self = this;
+			if (self.position === "top"){
+				self.$container.insertBefore(self.tmpl.$el);
+			} else {
+				self.$container.insertAfter(self.tmpl.$el);
+			}
+		},
+		update: function(tags){}
+	});
+
+	_.filtering.register("default", _.Filtering, null, {
+		type: "none",
+		theme: "fg-light",
+		pushOrReplace: "push",
+		position: "none",
+		mode: "single",
+		tags: [],
+		min: 0,
+		limit: 0,
+		showCount: false,
+		adjustSize: false,
+		adjustOpacity: false,
+		smallest: 12,
+		largest: 16,
+		lightest: 0.5,
+		darkest: 1
+	}, {
+		container: "fg-filtering-container"
+	}, null, -100);
+
+})(
+		FooGallery.$,
+		FooGallery,
+		FooGallery.utils,
+		FooGallery.utils.is
+);
+(function($, _, _utils, _is){
+
+	_.Tags = _.Filtering.extend({});
+
+	_.TagsControl = _.FilteringControl.extend({
+		construct: function(template, parent, position){
+			this._super(template, parent, position);
+			this.$container = $();
+			this.$list = $();
+			this.$items = $();
+		},
+		create: function(){
+			var self = this, cls = self.filter.cls, il8n = self.filter.il8n,
+					items = [], $list = $("<ul/>", {"class": cls.list}), $item;
+
+			items.push($item = self.createItem({
+				value: "",
+				count: self.tmpl.items.all().length,
+				percent: 1,
+				size: self.filter.largest,
+				opacity: self.filter.darkest
+			}, il8n.all));
+			$list.append($item.addClass(cls.selected));
+
+			for (var i = 0, l = self.filter.tags.length; i < l; i++){
+				items.push($item = self.createItem(self.filter.tags[i]));
+				$list.append($item);
+			}
+
+			self.$list = $list;
+			self.$container = $("<nav/>", {"class": cls.container}).addClass(self.filter.theme).append($list);
+			if (self.filter.showCount === true){
+				self.$container.addClass(cls.showCount);
+			}
+			self.$items = $($.map(items, function($item){ return $item.get(); }));
+			return true;
+		},
+		destroy: function(){
+			var self = this;
+			self.$container.remove();
+			self.$container = null;
+		},
+		append: function(){
+			var self = this;
+			if (self.position === "top"){
+				self.$container.insertBefore(self.tmpl.$el);
+			} else {
+				self.$container.insertAfter(self.tmpl.$el);
+			}
+		},
+		update: function(tags){
+			var self = this, cls = self.filter.cls;
+			self.$items.removeClass(cls.selected);
+			self.$items.each(function(){
+				var $item = $(this), tag = $item.data("tag"), empty = _is.empty(tag);
+				$item.toggleClass(cls.selected, (empty && _is.empty(tags)) || (!empty && $.inArray(tag, tags) !== -1));
+			});
+		},
+		createItem: function(tag, text){
+			var self = this, cls = self.filter.cls,
+					$li = $("<li/>", {"class": cls.item}).attr("data-tag", tag.value),
+					$link = $("<a/>", {"href": "#tag-" + tag.value, "class": cls.link})
+							.on("click.foogallery", {self: self, tag: tag}, self.onLinkClick)
+							.css("font-size", tag.size)
+							.css("opacity", tag.opacity)
+							.append($("<span/>", {"text": _is.string(text) ? text : tag.value, "class": cls.text}))
+							.appendTo($li);
+
+			if (self.filter.showCount === true){
+				$link.append($("<span/>", {"text": tag.count, "class": cls.count}));
+			}
+			return $li;
+		},
+		onLinkClick: function(e){
+			e.preventDefault();
+			var self = e.data.self, tag = e.data.tag, tags = [], i;
+			if (!_is.empty(tag.value)){
+				switch (self.filter.mode){
+					case "union":
+					case "intersect":
+						tags = self.filter.current.slice();
+						i = $.inArray(tag.value, tags);
+						if (i === -1){
+							tags.push(tag.value);
+						} else {
+							tags.splice(i, 1);
+						}
+						break;
+					case "single":
+					default:
+						tags = [tag.value];
+						break;
+				}
+			}
+			self.filter.apply(tags);
+		}
+	});
+
+	_.filtering.register("tags", _.Tags, _.TagsControl, {
+		type: "tags",
+		position: "top",
+		pushOrReplace: "push"
+	}, {
+		showCount: "fg-show-count",
+		list: "fg-tag-list",
+		item: "fg-tag-item",
+		link: "fg-tag-link",
+		text: "fg-tag-text",
+		count: "fg-tag-count",
+		selected: "fg-selected"
+	}, {
+		all: "All",
+		none: "No items found."
+	}, -100);
+
+})(
+		FooGallery.$,
+		FooGallery,
+		FooGallery.utils,
+		FooGallery.utils.is
 );
 (function($, _, _utils){
 
