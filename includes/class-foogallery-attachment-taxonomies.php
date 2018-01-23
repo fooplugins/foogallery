@@ -6,6 +6,8 @@ if ( ! class_exists( 'FooGallery_Attachment_Taxonomies' ) ) {
 
     class FooGallery_Attachment_Taxonomies {
 
+    	private $cached_terms = array();
+
         /**
          * Class Constructor
          */function __construct() {
@@ -17,15 +19,12 @@ if ( ! class_exists( 'FooGallery_Attachment_Taxonomies' ) ) {
                 add_filter( 'manage_media_columns', array( $this, 'change_attachment_column_names' ) );
                 add_filter( 'manage_edit-foogallery_attachment_tag_columns', array( $this, 'clean_column_names' ), 999 );
                 add_filter( 'manage_edit-foogallery_attachment_collection_columns', array( $this, 'clean_column_names' ), 999 );
-                add_filter( 'foogallery_attachment_add_fields', array( $this, 'remove_taxonomy_fields') );
+                //add_filter( 'foogallery_attachment_add_fields', array( $this, 'remove_taxonomy_fields') );
                 add_action( 'restrict_manage_posts', array( $this, 'add_collection_filter' ) );
 
-                add_filter( 'foogallery_attachment_custom_fields', array( $this, 'add_media_tag_field' ) );
-                add_filter( 'foogallery_attachment_field_taxonomy_tag', array( $this, 'customize_media_tag_field'), 10, 2 );
-                add_filter( 'foogallery_attachment_save_field_taxonomy_tag', array( $this, 'save_media_tag_field' ), 10, 4 );
-
-
-
+                add_filter( 'foogallery_attachment_custom_fields_with_post', array( $this, 'add_taxonomy_fields' ), 10, 2 );
+                //add_filter( 'foogallery_attachment_field_taxonomy_tag', array( $this, 'customize_media_tag_field'), 10, 2 );
+                //add_filter( 'foogallery_attachment_save_field_taxonomy_tag', array( $this, 'save_media_tag_field' ), 10, 4 );
             }
         }
 
@@ -120,7 +119,7 @@ if ( ! class_exists( 'FooGallery_Attachment_Taxonomies' ) ) {
                 'rewrite'           => false,
                 'show_admin_column' => false,
                 'show_in_menu'      => false,
-                'update_count_callback' => '_update_post_term_count' //array( $this, 'update_taxonomy_tag_count' )
+                'update_count_callback' => '_update_generic_term_count'
             );
 
             register_taxonomy( FOOGALLERY_ATTACHMENT_TAXONOMY_TAG, 'attachment', $tag_args );
@@ -144,68 +143,99 @@ if ( ! class_exists( 'FooGallery_Attachment_Taxonomies' ) ) {
                 'rewrite'           => false,
                 'show_admin_column' => true,
                 'show_in_menu'      => false,
-                'update_count_callback' => '_update_post_term_count'
+                'update_count_callback' => '_update_generic_term_count'
             );
 
             register_taxonomy( FOOGALLERY_ATTACHMENT_TAXONOMY_COLLECTION, 'attachment', $collection_args );
         }
 
         /**
-         * Function for updating the 'tag' taxonomy count.  What this does is update the count of a specific term
-         * by the number of attachments that have been given the term.
-         * We're just updating the count with no specifics for simplicity.
-         *
-         * See the _update_post_term_count() function in WordPress for more info.
-         *
-         * @param array $terms List of Term taxonomy IDs
-         * @param object $taxonomy Current taxonomy object of terms
-         */
-        function update_taxonomy_tag_count( $terms, $taxonomy ) {
-            global $wpdb;
-
-            foreach ( (array) $terms as $term ) {
-
-                $count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM $wpdb->term_relationships WHERE term_taxonomy_id = %d", $term ) );
-
-                do_action( 'edit_term_taxonomy', $term, $taxonomy );
-                $wpdb->update( $wpdb->term_taxonomy, compact( 'count' ), array( 'term_taxonomy_id' => $term ) );
-                do_action( 'edited_term_taxonomy', $term, $taxonomy );
-            }
-        }
-
-        /**
-         * Add a new tag field to the attachments
+         * Add the taxonomy fields to the attachment
          *
          * @param $fields array All fields that will be added to the media modal
+		 * @param $post
          *
          * @return mixed
          */
-        function add_media_tag_field( $fields ) {
-            $args = array(
-                'orderby'    => 'name',
-                'order'      => 'ASC',
-                'hide_empty' => false
-            );
+        function add_taxonomy_fields( $fields, $post ) {
 
-            //pull all terms
-            $terms = get_terms( FOOGALLERY_ATTACHMENT_TAXONOMY_TAG, $args );
+			$fields[FOOGALLERY_ATTACHMENT_TAXONOMY_TAG] = array(
+				'show_in_edit' => false,
+				'input' => 'html',
+				'html' => $this->build_taxonomy_html( FOOGALLERY_ATTACHMENT_TAXONOMY_TAG, $post ),
+				'label' => __( 'Tags', 'foogallery' )
+			);
 
-            $media_tags = array();
-
-            foreach ( $terms as $term ) {
-                $media_tags[ $term->term_id ] = $term->name;
-            }
-
-            $fields[FOOGALLERY_ATTACHMENT_TAXONOMY_TAG] = array(
-                'label'   => __( 'Tags', 'foogallery' ),
-                'input'   => FOOGALLERY_ATTACHMENT_TAXONOMY_TAG,
-                'helps'   => __( 'Tag your attachments', 'foogallery' ),
-                'options' => $media_tags,
-                'exclusions'  => array()
-            );
+			$fields[FOOGALLERY_ATTACHMENT_TAXONOMY_COLLECTION] = array(
+				'show_in_edit' => false,
+				'input' => 'html',
+				'html' => $this->build_taxonomy_html( FOOGALLERY_ATTACHMENT_TAXONOMY_COLLECTION, $post ),
+				'label' => __( 'Collections', 'foogallery' )
+			);
 
             return $fields;
         }
+
+		/**
+		 * Build up a taxonomy field HTML
+		 *
+		 * @param $taxonomy
+		 * @param $post
+		 *
+		 * @return array
+		 */
+        function build_taxonomy_html( $taxonomy, $post ) {
+			//$terms_slugs = wp_get_post_terms( $post->ID, $taxonomy, 'ids' );
+			$terms_slugs = array();
+
+			$html = '<input type="text" id="attachments-' . $post->ID .'-' . $taxonomy . '" name="attachments[' . $post->ID .'][' . $taxonomy . ']" value="' . implode(',', $terms_slugs) . '" />';
+
+			return $html;
+		}
+
+		/**
+		 * Get terms sorted by hierarchy in a recursive way
+		 *
+		 * @param  string $taxonomy The taxonomy name
+		 * @param  array $args The arguments which should be passed to the get_terms function
+		 * @param  int $parent The terms parent id (for recursive usage)
+		 * @param  int $level The current level (for recursive usage)
+		 * @param  array $parents An array with all the parent terms (for recursive usage)
+		 *
+		 * @return array $terms_all An array with all the terms for this taxonomy
+		 */
+		function build_terms_recursive($taxonomy, $args = array(), $parent = 0, $level = 1, $parents = array()) {
+			//check if the taxonomy terms have already been built up
+			if ( 0 === $parent && array_key_exists( $taxonomy, $this->cached_terms ) ) {
+				return $this->cached_terms[$taxonomy];
+			}
+
+			$terms_all = array();
+
+			$args['parent'] = $args['child_of'] = $parent;
+
+			$terms = get_terms($taxonomy, $args);
+
+			foreach($terms as $term) {
+				$term->level = $level;
+				$term->parents = $parents;
+				$term_parents = $parents;
+				$term_parents[] = $term->name;
+				$terms_all[] = $term;
+				$terms_sub = $this->build_terms_recursive($taxonomy, $args, $term->term_id, $level + 1, $term_parents);
+
+				if(!empty($terms_sub)) {
+					$terms_all = array_merge($terms_all, $terms_sub);
+				}
+			}
+
+			//cache what we have built up
+			if ( 0 === $parent && !array_key_exists( $taxonomy, $this->cached_terms ) ) {
+				$this->cached_terms[$taxonomy] = $terms_all;
+			}
+
+			return $terms_all;
+		}
 
         /**
          * Remove the automatically added attachments fields
@@ -331,34 +361,5 @@ if ( ! class_exists( 'FooGallery_Attachment_Taxonomies' ) ) {
                 wp_dropdown_categories( $dropdown_options );
             }
         }
-    }
-}
-
-/** Custom walker for wp_dropdown_categories, based on https://gist.github.com/stephenh1988/2902509 */
-class foogallery_walker_category_dropdown extends Walker_CategoryDropdown{
-
-    function start_el( &$output, $category, $depth = 0, $args = array(), $id = 0 ) {
-        $pad = str_repeat( '&nbsp;', $depth * 3 );
-        $cat_name = apply_filters( 'list_cats', $category->name, $category );
-
-        if( ! isset( $args['value'] ) ) {
-            $args['value'] = ( $category->taxonomy != 'category' ? 'slug' : 'id' );
-        }
-
-        $value = ( $args['value']=='slug' ? $category->slug : $category->term_id );
-        if ( 0 == $args['selected'] && isset( $_GET['category_media'] ) && '' != $_GET['category_media'] ) {
-            $args['selected'] = $_GET['category_media'];
-        }
-
-        $output .= '<option class="level-' . $depth . '" value="' . $value . '"';
-        if ( $value === (string) $args['selected'] ) {
-            $output .= ' selected="selected"';
-        }
-        $output .= '>';
-        $output .= $pad . $cat_name;
-        if ( $args['show_count'] )
-            $output .= '&nbsp;&nbsp;(' . $category->count . ')';
-
-        $output .= "</option>\n";
     }
 }
