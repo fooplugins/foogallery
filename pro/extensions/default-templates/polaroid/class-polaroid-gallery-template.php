@@ -71,6 +71,7 @@ if ( !class_exists( 'FooGallery_Polaroid_Gallery_Template' ) ) {
 				'paging_support' => true,
 				'mandatory_classes' => 'fg-simple_portfolio fg-preset fg-polaroid',
 				'thumbnail_dimensions' => true,
+				'filtering_support' => true,
                 'fields'	  => array(
                     array(
                         'id'      => 'thumbnail_dimensions',
