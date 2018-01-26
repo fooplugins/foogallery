@@ -99,6 +99,9 @@
 	};
 
 	FOOGALLERY.reloadGalleryPreview = function() {
+		//immediately update the settings
+		FOOGALLERY.handleSettingFieldChange(true, false);
+
 		//build up all the data to generate a preview
         var $shortcodeFields = $('.foogallery-settings-container-active .foogallery-metabox-settings .foogallery_template_field[data-foogallery-preview="shortcode"]'),
 			data = [],
@@ -133,8 +136,6 @@
 				$('.foogallery_preview_container').html(data);
                 $('#foogallery_preview_spinner').removeClass('is-active');
                 $('.foogallery_preview_container').removeClass('loading foogallery-preview-force-refresh');
-
-				FOOGALLERY.handleSettingFieldChange(true, false);
             }
         });
 	};
