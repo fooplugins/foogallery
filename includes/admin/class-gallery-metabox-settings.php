@@ -61,7 +61,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings' ) ) {
                 case 'paging':
                     return 'dashicons-admin-page';
             }
-            return 'dashicons-admin-tools';
+            return $section_slug;
         }
     }
 }

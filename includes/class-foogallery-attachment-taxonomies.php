@@ -20,9 +20,9 @@ if ( ! class_exists( 'FooGallery_Attachment_Taxonomies' ) ) {
                 add_filter( 'manage_edit-foogallery_attachment_tag_columns', array( $this, 'clean_column_names' ), 999 );
                 add_filter( 'manage_edit-foogallery_attachment_collection_columns', array( $this, 'clean_column_names' ), 999 );
                 //add_filter( 'foogallery_attachment_add_fields', array( $this, 'remove_taxonomy_fields') );
-                add_action( 'restrict_manage_posts', array( $this, 'add_collection_filter' ) );
+                //add_action( 'restrict_manage_posts', array( $this, 'add_collection_filter' ) );
 
-                add_filter( 'foogallery_attachment_custom_fields_with_post', array( $this, 'add_taxonomy_fields' ), 10, 2 );
+                //add_filter( 'foogallery_attachment_custom_fields_with_post', array( $this, 'add_taxonomy_fields' ), 10, 2 );
                 //add_filter( 'foogallery_attachment_field_taxonomy_tag', array( $this, 'customize_media_tag_field'), 10, 2 );
                 //add_filter( 'foogallery_attachment_save_field_taxonomy_tag', array( $this, 'save_media_tag_field' ), 10, 4 );
             }
