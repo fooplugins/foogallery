@@ -4007,6 +4007,7 @@
 			$(window).off("popstate.foogallery", self.onWindowPopState)
 					.off("scroll.foogallery");
 			self.state.destroy();
+			if (self.filter) self.filter.destroy();
 			if (self.pages) self.pages.destroy();
 			self.items.destroy();
 			if (!_is.empty(self.opt.on)){
@@ -7304,9 +7305,12 @@
 			return true;
 		},
 		destroy: function(){
-			var self = this;
+			var self = this, sel = self.filter.sel;
+			self.$list.find(sel.link).off("click.foogallery", self.onLinkClick);
 			self.$container.remove();
-			self.$container = null;
+			self.$container = $();
+			self.$list = $();
+			self.$items = $();
 		},
 		append: function(){
 			var self = this;
