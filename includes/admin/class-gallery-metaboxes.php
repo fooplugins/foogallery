@@ -494,6 +494,9 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 				$url = FOOGALLERY_URL . 'lib/spectrum/spectrum.css';
 				wp_enqueue_style( 'foogallery-spectrum', $url, array(), FOOGALLERY_VERSION );
 
+				//make sure we have jquery UI sortable enqueued
+				wp_enqueue_script( 'jquery-ui-sortable');
+
 				//include any admin js required for the templates
 				foreach ( foogallery_gallery_templates() as $template ) {
 					$admin_js = foo_safe_get( $template, 'admin_js' );
