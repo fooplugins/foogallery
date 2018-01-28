@@ -14,6 +14,8 @@ if ( 'yes' === $show_message ) {
 
 $tagline = apply_filters( 'foogallery_admin_extensions_tagline', sprintf( __( 'Extensions make %s even more awesome, without bloating the core plugin.', 'foogallery' ), foogallery_plugin_name() ) );
 $show_foobot = apply_filters( 'foogallery_admin_show_foobot', true );
+
+wp_enqueue_script( 'freemius-checkout', 'https://checkout.freemius.com/checkout.min.js', array('jquery') );
 ?>
 <style>
 	.foogallery-badge-foobot {
@@ -68,9 +70,9 @@ if ( $has_errors ) { ?>
 			$slug = $extension['slug'];
 			$classes = array('extension', 'all', 'extension-' . $slug);
 
-			$downloaded = $api->is_downloaded( $extension );
-			$is_active = $api->is_active( $slug );
-			$has_errors = $api->has_errors( $slug );
+			$downloaded = isset( $extension['downloaded'] ) && true === $extension['downloaded'];
+			$is_active = isset( $extension['is_active'] ) && true === $extension['is_active'];
+			$has_errors = isset( $extension['has_errors'] ) && true === $extension['has_errors'];
 
 			$banner_text = '';
 
@@ -127,6 +129,17 @@ if ( $has_errors ) { ?>
 				$download_button_confirm = isset( $download_button['confirm'] ) ? ' data-confirm="' .$download_button['confirm'] . '" ' : '';
 				$download_button_html = "<a class=\"ext_action button button-primary download\" {$download_button_banner_text} {$download_button_target} href=\"{$download_button_href}\" >{$download_button_text}</a>";
 			}
+
+			//build up a freemius buy button
+			if ( isset( $extension['freemius_button'] ) ) {
+				$freemius_button = $extension['freemius_button'];
+				$freemius_button_text = isset( $freemius_button['text'] ) ? __( $freemius_button['text'], 'foogallery' ) : '';
+				$plugin_id = esc_attr( $freemius_button['plugin_id'] );
+				$plan_id = esc_attr( $freemius_button['plan_id'] );
+				$public_key = esc_attr( $freemius_button['public_key'] );
+
+				$download_button_html = "<a class=\"ext_action button button-primary download freemius-checkout\" data-freemius-plugin-id=\"{$plugin_id}\" data-freemius-plan-id=\"{$plan_id}\" data-freemius-public-key=\"{$public_key}\" href=\"#freemius\" >{$freemius_button_text}</a>";
+			}
 			?>
 		<div class="<?php echo implode(' ', $classes); ?>">
 
@@ -160,3 +173,22 @@ if ( $has_errors ) { ?>
 	</div>
 	<?php } ?>
 </div>
+<script>
+	jQuery(function($){
+		$('.freemius-checkout').on('click', function (e) {
+			window['freemius_handler_' + $(this).data('freemius-slug')] = FS.Checkout.configure({
+				plugin_id: $(this).data('freemius-plugin-id'),
+				plan_id: $(this).data('freemius-plan-id'),
+				public_key: $(this).data('freemius-public-key')
+			}).open({
+				name     : 'FooVideo',
+				licenses : 1,
+				// You can consume the response for after purchase logic.
+				success  : function (response) {
+					alert(response.user.email);
+				}
+			});
+			e.preventDefault();
+		});
+	});
+</script>
