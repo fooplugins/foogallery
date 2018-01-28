@@ -159,7 +159,7 @@ Update now to support FooVideo and many other improvements!
 * Fix : All-In-One stack album now uses the gallery featured image
 * Added more position options for Single Thumbnail Gallery
 * Added paging output setting
-* Update to latest client side JS 1.0.19
+* Update to latest client side JS 1.0.20
 
 = 1.4.12 =
 

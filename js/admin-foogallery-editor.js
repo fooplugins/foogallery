@@ -26,7 +26,7 @@
 
 	//hook up the extensions search
 	FOOGALLERY.bindEditorButton = function() {
-		$('.foogallery-modal-trigger').on('click', function(e) {
+		$(document).on('click', '.foogallery-modal-trigger', function(e) {
 			e.preventDefault();
 			//set the active editor
 			FOOGALLERY.activeEditor = $(this).data('editor');

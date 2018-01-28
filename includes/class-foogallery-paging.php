@@ -8,7 +8,7 @@ if ( ! class_exists( 'FooGallery_Paging' ) ) {
 
 		function __construct() {
 			if ( is_admin() ) {
-				//add extra fields to the templates that support lazy loading
+				//add extra fields to the templates that support paging
 				add_filter( 'foogallery_override_gallery_template_fields', array( $this, 'add_paging_fields' ), 10, 2 );
 
 				//build up any preview arguments
