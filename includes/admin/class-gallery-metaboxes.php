@@ -97,7 +97,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 					array( $this, 'render_gallery_usage_metabox' ),
 					FOOGALLERY_CPT_GALLERY,
 					'side',
-					'default'
+					'high'
 				);
 			}
 
