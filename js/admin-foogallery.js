@@ -99,8 +99,11 @@
 	};
 
 	FOOGALLERY.reloadGalleryPreview = function() {
-		//immediately update the settings
-		FOOGALLERY.handleSettingFieldChange(true, false);
+		//make sure the fields that should be hidden or shown are doing what they need to do
+		FOOGALLERY.handleSettingsShowRules();
+
+		//set the preview height so there is no jump
+		$('.foogallery_preview_container').css('height', $preview_container.height());
 
 		//build up all the data to generate a preview
         var $shortcodeFields = $('.foogallery-settings-container-active .foogallery-metabox-settings .foogallery_template_field[data-foogallery-preview="shortcode"]'),
@@ -136,6 +139,8 @@
 				$('.foogallery_preview_container').html(data);
                 $('#foogallery_preview_spinner').removeClass('is-active');
                 $('.foogallery_preview_container').removeClass('loading foogallery-preview-force-refresh');
+
+				FOOGALLERY.updateGalleryPreview(true, true);
             }
         });
 	};
