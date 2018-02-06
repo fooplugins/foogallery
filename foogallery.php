@@ -189,15 +189,14 @@ if ( ! class_exists( 'FooGallery_Plugin' ) ) {
 				'author' => 'FooPlugins',
 				'author_url' => 'http://fooplugins.com',
 				'thumbnail' => 'https://s3.amazonaws.com/foogallery/extensions/foogallerypro.png',
-				'tags' => array( 'premium', 'lightbox', ),
+				'tags' => array( 'premium' ),
 				'source' => 'fooplugins',
-				'freemius_button' =>
-					array(
-						'text' => 'Buy',
-						'plugin_id' => '843',
-						'plan_id' => '2090',
-						'public_key' => 'pk_d87616455a835af1d0658699d0192'
-					),
+				"download_button" => array(
+					"text" => "Start FREE Trial",
+					"target" => "_self",
+					"href" => foogallery_fs()->checkout_url( WP_FS__PERIOD_ANNUALLY, true ),
+					"confirm" => false
+				)
 			);
 
 			array_unshift( $extensions, $extension );
