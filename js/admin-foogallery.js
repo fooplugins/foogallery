@@ -103,7 +103,7 @@
 		FOOGALLERY.handleSettingsShowRules();
 
 		//set the preview height so there is no jump
-		$('.foogallery_preview_container').css('height', $preview_container.height());
+		$('.foogallery_preview_container').css('height', $('.foogallery_preview_container').height());
 
 		//build up all the data to generate a preview
         var $shortcodeFields = $('.foogallery-settings-container-active .foogallery-metabox-settings .foogallery_template_field[data-foogallery-preview="shortcode"]'),
