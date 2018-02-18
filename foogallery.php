@@ -43,7 +43,6 @@ if ( ! class_exists( 'FooGallery_Plugin' ) ) {
 				'type'              => 'plugin',
 				'public_key'        => 'pk_d87616455a835af1d0658699d0192',
 				'is_premium'        => true,
-				'has_addons'        => true,
 				'has_paid_plans'    => true,
 				'trial'               => array(
 					'days'               => 7,
