@@ -300,7 +300,16 @@ if ( ! class_exists( 'FooGallery_Extensions_API' ) ) {
 			$active_extensions = array();
 
 			//add all extensions to an array using the slug as the array key
-			foreach ( $all_extensions as $extension ) {
+			foreach ( $all_extensions as &$extension ) {
+				$active = $this->is_active( $extension['slug'], true );
+				$extension['downloaded'] = $active || $this->is_downloaded( $extension );
+				$extension['is_active'] = $active;
+				$extension['has_errors'] = $this->has_errors( $extension['slug'] );
+
+				//build up a list of active extensions
+				if ( $active ) {
+					$active_extensions[$extension['slug']] = $extension;
+				}
 
 				//remove any bundled extensions that are activated_by_default = true
 				if ( isset( $extension['activated_by_default'] ) &&
@@ -310,11 +319,6 @@ if ( ! class_exists( 'FooGallery_Extensions_API' ) ) {
 					//do not include a bundled extension that is activated by default
 				} else {
 					$extensions[ $extension['slug'] ] = $extension;
-				}
-
-				//build up a list of active extensions
-				if ( $this->is_active( $extension['slug'] ) ) {
-					$active_extensions[$extension['slug']] = $extension;
 				}
 			}
 
@@ -417,9 +421,33 @@ if ( ! class_exists( 'FooGallery_Extensions_API' ) ) {
 		 *
 		 * @return bool
 		 */
-		public function is_active( $slug ) {
+		public function is_active( $slug, $perform_active_check = false ) {
 			$active_extensions = $this->get_active_extensions();
-			return array_key_exists( $slug, $active_extensions );
+			if ( array_key_exists( $slug, $active_extensions ) ) {
+				//it has been previously activated through the extensions page
+				return true;
+			}
+
+			if ( $perform_active_check ) {
+				$extension = $this->get_extension( $slug );
+
+				//if we have an 'plugin_active_class' attribute and that class exists, it means our plugin must be active
+				if ( isset( $extension['plugin_active_class'] ) ) {
+					if ( class_exists( $extension['plugin_active_class'] ) ) {
+						return true;
+					}
+				}
+
+				//if we cannot find the extension class in memory, then check to see if the extension plugin is activated
+				if ( isset( $extension['perform_plugin_active_check'] ) && true === $extension['perform_plugin_active_check'] &&
+					isset( $extension['file'] ) ) {
+					$plugin = $this->find_active_wordpress_plugin( $extension );
+
+					return $plugin !== false;
+				}
+			}
+
+			return false;
 
 //			global $foogallery_extensions;
 //

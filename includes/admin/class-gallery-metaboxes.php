@@ -97,7 +97,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 					array( $this, 'render_gallery_usage_metabox' ),
 					FOOGALLERY_CPT_GALLERY,
 					'side',
-					'default'
+					'high'
 				);
 			}
 
@@ -493,6 +493,9 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 				wp_enqueue_script( 'foogallery-spectrum', $url, array('jquery'), FOOGALLERY_VERSION );
 				$url = FOOGALLERY_URL . 'lib/spectrum/spectrum.css';
 				wp_enqueue_style( 'foogallery-spectrum', $url, array(), FOOGALLERY_VERSION );
+
+				//make sure we have jquery UI sortable enqueued
+				wp_enqueue_script( 'jquery-ui-sortable');
 
 				//include any admin js required for the templates
 				foreach ( foogallery_gallery_templates() as $template ) {

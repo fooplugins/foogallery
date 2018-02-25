@@ -63,7 +63,9 @@ if (!window.FooGalleryStackAlbumModernizr) {
 	// ======================= imagesLoaded Plugin ===============================
 	// https://github.com/desandro/imagesloaded
 
-	// $('#my-container').imagesLoaded(myFunction)
+	// renamed from imagesLoaded to foogalleryImagesLoaded to avoid conflicts
+
+	// $('#my-container').foogalleryImagesLoaded(myFunction)
 	// execute a callback when all images have loaded.
 	// needed because .load() doesn't work on cached images
 
@@ -76,7 +78,7 @@ if (!window.FooGalleryStackAlbumModernizr) {
 	// blank image data-uri bypasses webkit log warning (thx doug jones)
 	var BLANK = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==';
 
-	$.fn.imagesLoaded = function( callback ) {
+	$.fn.foogalleryImagesLoaded = function( callback ) {
 		var $this = this,
 			deferred = $.isFunction($.Deferred) ? $.Deferred() : 0,
 			hasNotify = $.isFunction(deferred.notify),
@@ -130,7 +132,7 @@ if (!window.FooGalleryStackAlbumModernizr) {
 			}
 
 			// cache image and its state for future calls
-			$.data( img, 'imagesLoaded', { isBroken: isBroken, src: img.src } );
+			$.data( img, 'foogalleryImagesLoaded', { isBroken: isBroken, src: img.src } );
 
 			// trigger deferred progress method if present
 			if ( hasNotify ) {
@@ -140,7 +142,7 @@ if (!window.FooGalleryStackAlbumModernizr) {
 			// call doneLoading and clean listeners if all images are loaded
 			if ( $images.length === loaded.length ){
 				setTimeout( doneLoading );
-				$images.unbind( '.imagesLoaded' );
+				$images.unbind( '.foogalleryImagesLoaded' );
 			}
 		}
 
@@ -148,7 +150,7 @@ if (!window.FooGalleryStackAlbumModernizr) {
 		if ( !$images.length ) {
 			doneLoading();
 		} else {
-			$images.bind( 'load.imagesLoaded error.imagesLoaded', function( event ){
+			$images.bind( 'load.foogalleryImagesLoaded error.foogalleryImagesLoaded', function( event ){
 				// trigger imgLoaded
 				imgLoaded( event.target, event.type === 'error' );
 			}).each( function( i, el ) {
@@ -156,7 +158,7 @@ if (!window.FooGalleryStackAlbumModernizr) {
 
 				// find out if this image has been already checked for status
 				// if it was, and src has not changed, call imgLoaded on it
-				var cached = $.data( el, 'imagesLoaded' );
+				var cached = $.data( el, 'foogalleryImagesLoaded' );
 				if ( cached && cached.src === src ) {
 					imgLoaded( el, cached.isBroken );
 					return;
@@ -237,7 +239,7 @@ if (!window.FooGalleryStackAlbumModernizr) {
 
 			// preload images
 			var self = this;
-			this.el.imagesLoaded( function() {
+			this.el.foogalleryImagesLoaded( function() {
 				self.options.onLoad();
 				self._layout();
 				self._initEvents();
@@ -408,27 +410,33 @@ if (!window.FooGalleryStackAlbumModernizr) {
 		_setInitialStyle : function() {
 			for (var j =0, pile_len = this.pilesArr.length; j < pile_len; j++){
 
-				var p = this.pilesArr[j];
+				var p = this.pilesArr[j], featured = false, $el, styleCSS;
+				for (var k = 0, kl = p.elements.length; k < kl; k++){
+					if ( $( p.elements[k].el ).data('featured') ){
+						featured = true;
+						break;
+					}
+				}
 
 				for( var i = 0, len = p.elements.length; i < len; ++i ) {
 
-					var $el = $( p.elements[i].el ),
-						styleCSS = { transform : 'rotate(0deg)' };
+					$el = $( p.elements[i].el );
+					styleCSS = { transform : 'rotate(0deg)' };
 
 					this._applyInitialTransition( $el );
 
-					if( i === len - 2 ) {
+					if ( p.name.substr( 0, 6 ) !== 'nopile' && ( $el.data('featured') || ( !featured && i === 0 ) ) ){
+						$el.css({ zIndex: 9999 }).data( 'front', true ).append( '<div class="tp-title-cover"><div class="tp-title"><span>' + p.name + '</span><span>' + len + '</span></div></div>' );
+					}
+					else if( i === len - 2 ) {
 						styleCSS = { transform : 'rotate(' + this.options.pileAngles + 'deg)' };
 					}
 					else if( i === len - 3 ) {
 						styleCSS = { transform : 'rotate(-' + this.options.pileAngles + 'deg)' };
 					}
-					else if( i !== len - 1 ) {
+					else {
 						var extraStyle = { visibility : 'hidden' };
 						$el.css( extraStyle ).data( 'extraStyle', extraStyle );
-					}
-					else if( p.name.substr( 0, 6 ) !== 'nopile' ) {
-						$el.data( 'front', true ).append( '<div class="tp-title-cover"><div class="tp-title"><span>' + p.name + '</span><span>' + len + '</span></div></div>' );
 					}
 
 					$el.css( styleCSS ).data( {
@@ -436,7 +444,7 @@ if (!window.FooGalleryStackAlbumModernizr) {
 						pileName : p.name,
 						pileCount : len,
 						shadow : $el.css( 'box-shadow' ),
-						isPile : p.name.substr( 0, 6 ) === 'nopile' ? false : true
+						isPile : p.name.substr(0, 6) !== 'nopile'
 					} );
 
 				}
@@ -461,9 +469,9 @@ if (!window.FooGalleryStackAlbumModernizr) {
 
 				var p = this.pilesArr[j],
 
-			//for( var pile in this.piles ) {
-      //
-			//	var p = this.piles[pile],
+					//for( var pile in this.piles ) {
+					//
+					//	var p = this.piles[pile],
 					stepW = this.itemSize.width + this.options.gutter,
 
 					accumIL = 0, accumIT = 0, il, it;
@@ -540,8 +548,9 @@ if (!window.FooGalleryStackAlbumModernizr) {
 			// the position of the items will influence the final margin left value and height for the ul
 			// center the ul
 			lastItemTop = this.spread ? lastItemTop : accumT;
+			this.marginLeft = ml;
 			this.el.css( {
-				marginLeft : ml,
+				marginLeft : this.marginLeft,
 				height : lastItemTop + this.itemSize.height
 			} );
 
@@ -553,23 +562,17 @@ if (!window.FooGalleryStackAlbumModernizr) {
 			}
 
 			// final style
-			var fs;
+			var fs, rowWidth = 0;
 
 			for (var j =0, pile_len = this.pilesArr.length; j < pile_len; j++){
 
 				var p = this.pilesArr[j],
-
-			//for( var pile in this.piles ) {
-      //
-			//	var p = this.piles[ pile ],
-
 					cnt = 0;
 
 				for( var i = 0, len = p.elements.length; i < len; ++i ) {
 
 					var elem = p.elements[i],
 						$item = $( elem.el ),
-						$img = $item.find( 'img' ),
 						styleCSS = p.name === this.pileName ? {
 							zIndex : 9999,
 							visibility : 'visible',
@@ -581,12 +584,13 @@ if (!window.FooGalleryStackAlbumModernizr) {
 
 					if( p.name === this.pileName ) {
 
-						if( $item.data( 'front' ) ) {
-							$item.find( 'div.tp-title' ).hide();
+						if (elem.finalPosition.top === 0){
+							if (rowWidth > 0) rowWidth += this.options.gutter;
+							rowWidth += this.itemSize.width;
 						}
 
-						if( i < len - 1  ) {
-							$img.css( 'visibility', 'visible' );
+						if( $item.data( 'front' ) ) {
+							$item.find( 'div.tp-title' ).hide();
 						}
 
 						fs = elem.finalPosition;
@@ -601,9 +605,6 @@ if (!window.FooGalleryStackAlbumModernizr) {
 							$item.css( 'box-shadow', 'none' );
 						}
 
-					}
-					else if( i < len - 1  ) {
-						$img.css( 'visibility', 'hidden' );
 					}
 
 					$item.css( styleCSS );
@@ -645,7 +646,11 @@ if (!window.FooGalleryStackAlbumModernizr) {
 
 			}
 
-			this.el.css( 'height', fs.top + this.itemSize.height );
+			//this.el.css( 'height', fs.top + this.itemSize.height );
+			this.el.css({
+				marginLeft: Math.ceil((this.elWidth - rowWidth) / 2),
+				height: fs.top + this.itemSize.height
+			});
 
 		},
 		_closePile : function() {
@@ -666,11 +671,6 @@ if (!window.FooGalleryStackAlbumModernizr) {
 				for (var j =0, pile_len = this.pilesArr.length; j < pile_len; j++){
 
 					var p = this.pilesArr[j],
-
-				//for( var pile in this.piles ) {
-        //
-				//	var p = this.piles[ pile ],
-
 						cnt = 0;
 
 					for( var i = 0, len = p.elements.length; i < len; ++i ) {
@@ -704,7 +704,7 @@ if (!window.FooGalleryStackAlbumModernizr) {
 								return;
 							}
 
-							var $el = $( this ), extraStyle = $el.data( 'extraStyle' );
+							var $el = $( this ), extraStyle = $el.data( 'extraStyle' ), initialStyle = $el.data( 'initialStyle' );
 
 							// hack: remove box-shadow while animating to prevent the shadow stack effect
 							$el.css( 'box-shadow', $el.data( 'shadow' ) );
@@ -714,7 +714,7 @@ if (!window.FooGalleryStackAlbumModernizr) {
 								self._applyInitialTransition( $el );
 							}
 							else {
-								$el.css( $el.data( 'initialStyle' ) );
+								$el.css( initialStyle );
 							}
 
 							if( extraStyle ) {
@@ -725,6 +725,8 @@ if (!window.FooGalleryStackAlbumModernizr) {
 
 							if( $el.data( 'front' ) ) {
 								$el.find( 'div.tp-title' ).show();
+							} else {
+								$el.css({visibility: 'hidden', zIndex: 1});
 							}
 
 							if( cnt === $el.data( 'pileCount' ) ) {
@@ -739,9 +741,10 @@ if (!window.FooGalleryStackAlbumModernizr) {
 							}
 
 							var $el = $( this );
-
-							if( $el.index() < len - 1  ) {
-								$el.find( 'img' ).css( 'visibility', 'visible' );
+							if( $el.data( 'front' ) ) {
+								$el.find( 'div.tp-title' ).show();
+							} else {
+								$el.css({visibility: 'hidden', zIndex: 1});
 							}
 
 							if( self.support ) {
@@ -759,7 +762,11 @@ if (!window.FooGalleryStackAlbumModernizr) {
 				this.pileName = '';
 
 				// update ul height
-				this.el.css( 'height', fs.top + this.itemSize.height );
+				//this.el.css( 'height', fs.top + this.itemSize.height );
+				this.el.css({
+					marginLeft: this.marginLeft,
+					height: fs.top + this.itemSize.height
+				});
 
 			}
 
@@ -820,7 +827,7 @@ if (!window.FooGalleryStackAlbumModernizr) {
 				if ( !instance ) {
 
 					logError( "cannot call methods on stapel prior to initialization; " +
-					"attempted to call method '" + options + "'" );
+						"attempted to call method '" + options + "'" );
 					return;
 
 				}

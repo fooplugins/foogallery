@@ -2,7 +2,7 @@
 /*
 Plugin Name: FooGallery
 Description: FooGallery is the most intuitive and extensible gallery management tool ever created for WordPress
-Version:     1.4.15
+Version:     1.4.17
 Author:      FooPlugins
 Plugin URI:  https://foo.gallery
 Author URI:  http://fooplugins.com
@@ -24,7 +24,7 @@ if ( ! class_exists( 'FooGallery_Plugin' ) ) {
 	define( 'FOOGALLERY_PATH', plugin_dir_path( __FILE__ ) );
 	define( 'FOOGALLERY_URL', plugin_dir_url( __FILE__ ) );
 	define( 'FOOGALLERY_FILE', __FILE__ );
-	define( 'FOOGALLERY_VERSION', '1.4.15' );
+	define( 'FOOGALLERY_VERSION', '1.4.17' );
 	define( 'FOOGALLERY_SETTINGS_VERSION', '2' );
 
 	require_once( FOOGALLERY_PATH . 'includes/constants.php' );
@@ -43,7 +43,7 @@ if ( ! class_exists( 'FooGallery_Plugin' ) ) {
 				'type'              => 'plugin',
 				'public_key'        => 'pk_d87616455a835af1d0658699d0192',
 				'is_premium'        => true,
-				'has_addons'        => false,
+				'has_addons'        => true,
 				'has_paid_plans'    => true,
 				'trial'               => array(
 					'days'               => 7,
@@ -119,6 +119,8 @@ if ( ! class_exists( 'FooGallery_Plugin' ) ) {
 				add_action( 'wpmu_new_blog', array( $this, 'set_default_extensions_for_multisite_network_activated' ) );
 				add_action( 'admin_page_access_denied', array( $this, 'check_for_access_denied' ) );
 				foogallery_fs()->add_filter( 'connect_message_on_update', array( $this, 'override_connect_message_on_update' ), 10, 6 );
+				foogallery_fs()->add_filter( 'is_submenu_visible', array( $this, 'is_submenu_visible' ), 10, 2 );
+				foogallery_fs()->add_filter( 'hide_account_tabs', '__return_true' );
 				add_action( 'foogallery_admin_menu_before', array( $this, 'add_freemius_activation_menu' ) );
 			} else {
 				new FooGallery_Public();
@@ -172,7 +174,36 @@ if ( ! class_exists( 'FooGallery_Plugin' ) ) {
 
 					new FooGallery_Pro();
 				}
+			} else {
+				add_filter( 'foogallery_extensions_for_view', array( $this, 'add_foogallery_pro_extension' ) );
 			}
+		}
+
+		function add_foogallery_pro_extension( $extensions ) {
+
+			$extension = array(
+				'slug' => 'foogallery-pro',
+				'class' => 'FooGallery_Pro',
+				'categories' => array( 'Featured', 'Premium' ),
+				'title' => 'FooGallery Pro',
+				'description' => 'The best gallery plugin for WordPress just got even better!',
+				'price' => '$49',
+				'author' => 'FooPlugins',
+				'author_url' => 'http://fooplugins.com',
+				'thumbnail' => 'https://s3.amazonaws.com/foogallery/extensions/foogallerypro.png',
+				'tags' => array( 'premium' ),
+				'source' => 'fooplugins',
+				"download_button" => array(
+					"text" => "Start FREE Trial",
+					"target" => "_self",
+					"href" => foogallery_fs()->checkout_url( WP_FS__PERIOD_ANNUALLY, true ),
+					"confirm" => false
+				)
+			);
+
+			array_unshift( $extensions, $extension );
+
+			return $extensions;
 		}
 
 		/**
@@ -221,6 +252,14 @@ if ( ! class_exists( 'FooGallery_Plugin' ) ) {
 					array( $foogallery_fs, '_connect_page_render' )
 				);
 			}
+		}
+
+		function is_submenu_visible( $visible, $id ) {
+			if ( 'addons' === $id ) {
+				//hide addons submenu for now
+				$visible = false;
+			}
+			return $visible;
 		}
 
 		/**
