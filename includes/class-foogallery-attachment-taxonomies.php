@@ -10,7 +10,8 @@ if ( ! class_exists( 'FooGallery_Attachment_Taxonomies' ) ) {
 
         /**
          * Class Constructor
-         */function __construct() {
+         */
+        function __construct() {
             add_action( 'init', array( $this, 'add_taxonomies' ) );
 
             if ( is_admin() ) {
@@ -19,6 +20,13 @@ if ( ! class_exists( 'FooGallery_Attachment_Taxonomies' ) ) {
                 add_filter( 'manage_media_columns', array( $this, 'change_attachment_column_names' ) );
                 add_filter( 'manage_edit-foogallery_attachment_tag_columns', array( $this, 'clean_column_names' ), 999 );
                 add_filter( 'manage_edit-foogallery_attachment_collection_columns', array( $this, 'clean_column_names' ), 999 );
+
+				//make the attachment taxonomies awesome
+				add_action( 'admin_head', array( $this, 'add_custom_js' ) );
+				add_filter( 'attachment_fields_to_edit', array( $this, 'inject_code_into_field' ), 10, 2 );
+				add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_js' ) );
+
+
                 //add_filter( 'foogallery_attachment_add_fields', array( $this, 'remove_taxonomy_fields') );
                 //add_action( 'restrict_manage_posts', array( $this, 'add_collection_filter' ) );
 
@@ -27,6 +35,126 @@ if ( ! class_exists( 'FooGallery_Attachment_Taxonomies' ) ) {
                 //add_filter( 'foogallery_attachment_save_field_taxonomy_tag', array( $this, 'save_media_tag_field' ), 10, 4 );
             }
         }
+
+		/**
+		 * Enqueue admin script and styles
+		 *
+		 * @since 1.0.0
+		 * @access public
+		 * @static
+		 */
+		public function enqueue_js() {
+			global $pagenow, $mode;
+
+			$should_add = wp_script_is('media-views') || ($pagenow === 'upload.php' && $mode === 'grid');
+
+			if( !$should_add ) {
+				return;
+			}
+
+//			// Enqueue filters script
+//			if(Property::$has_filter) {
+//				wp_enqueue_script(
+//					'f4-media-taxonomies-filter',
+//					F4_MT_URL . 'Core/Assets/js/filter.js',
+//					array(),
+//					false,
+//					true
+//				);
+//			}
+
+			//enqueue selectize assets
+			wp_enqueue_script( 'foogallery-selectize-core', FOOGALLERY_URL . 'lib/selectize/selectize.min.js', array('jquery'), FOOGALLERY_VERSION );
+			wp_enqueue_script( 'foogallery-selectize', FOOGALLERY_URL . 'lib/selectize/foogallery.selectize.js', array('foogallery-selectize-core'), FOOGALLERY_VERSION );
+			wp_enqueue_style( 'foogallery-selectize', FOOGALLERY_URL . 'lib/selectize/selectize.css', array(), FOOGALLERY_VERSION );
+
+//			wp_enqueue_script(
+//				'f4-media-taxonomies-assignment',
+//				F4_MT_URL . 'Core/Assets/js/assignment.js',
+//				array(),
+//				false,
+//				true
+//			);
+		}
+
+		/**
+		 * Add fields to attachment
+		 *
+		 * @since 1.0.0
+		 * @access public
+		 * @static
+		 * @param array $fields An array with all fields to edit
+		 * @param object $post An object for the current post
+		 * @return array $fields An array with all fields to edit
+		 */
+		public function inject_code_into_field($fields, $post) {
+			if ( array_key_exists( FOOGALLERY_ATTACHMENT_TAXONOMY_TAG, $fields ) ) {
+
+				$value = trim( $fields[FOOGALLERY_ATTACHMENT_TAXONOMY_TAG]['value'] );
+
+				$fields[FOOGALLERY_ATTACHMENT_TAXONOMY_TAG] = array(
+					'show_in_edit' => false,
+					'input' => 'html',
+					'html' => $this->build_taxonomy_html( FOOGALLERY_ATTACHMENT_TAXONOMY_TAG, $post, $value ),
+					'label' => __( 'Media Tags', 'foogallery' )
+				);
+			}
+
+			if ( array_key_exists( FOOGALLERY_ATTACHMENT_TAXONOMY_COLLECTION, $fields ) ) {
+
+				$value = $fields[FOOGALLERY_ATTACHMENT_TAXONOMY_COLLECTION]['value'];
+
+//				$fields[FOOGALLERY_ATTACHMENT_TAXONOMY_TAG] = array(
+//					'show_in_edit' => false,
+//					'input' => 'html',
+//					'html' => $this->build_taxonomy_html( FOOGALLERY_ATTACHMENT_TAXONOMY_TAG, $post, $value ),
+//					'label' => __( 'Media Tags', 'foogallery' )
+//				);
+			}
+
+			return $fields;
+		}
+
+		/**
+		 * Add custom js into admin head so that we can build up decent taxonomy selectize controls
+		 *
+		 * @since 1.0.0
+		 * @access public
+		 * @static
+		 */
+		public function add_custom_js() {
+			global $pagenow, $mode;
+
+			$should_add = wp_script_is('media-views') || ($pagenow === 'upload.php' && $mode === 'grid');
+
+			if( !$should_add ) {
+				return;
+			}
+
+			$taxonomy_data[FOOGALLERY_ATTACHMENT_TAXONOMY_TAG] = array(
+				'slug' => FOOGALLERY_ATTACHMENT_TAXONOMY_TAG,
+				'terms' => $this->build_terms_recursive(FOOGALLERY_ATTACHMENT_TAXONOMY_TAG, array('hide_empty' => false)),
+				'query_var' => true,
+				'labels' => array(
+					'placeholder' => __( 'Select tags, or add a new tag...', 'foogallery' ),
+					'add' => __( 'Add new tag', 'foogallery' )
+				),
+			);
+
+			$taxonomy_data[FOOGALLERY_ATTACHMENT_TAXONOMY_COLLECTION] = array(
+				'slug' => FOOGALLERY_ATTACHMENT_TAXONOMY_COLLECTION,
+				'terms' => $this->build_terms_recursive(FOOGALLERY_ATTACHMENT_TAXONOMY_COLLECTION, array('hide_empty' => false)),
+				'query_var' => true,
+				'labels' => array(
+					'placeholder' => __( 'Select collections, or add a new collection...', 'foogallery' ),
+					'add' => __( 'Add new collection', 'foogallery' )
+				),
+			);
+
+			echo '<script type="text/javascript">
+			window.FOOGALLERY_TAXONOMY_DATA = ' . json_encode($taxonomy_data) . ';
+		</script>';
+		}
 
         function change_attachment_column_names( $columns ) {
 
@@ -38,7 +166,7 @@ if ( ! class_exists( 'FooGallery_Attachment_Taxonomies' ) ) {
         }
 
         /**
-         * Clean up the taxonomy columns
+         * Clean up the taxonomy columns for WP Seo plugin
          *
          * @param $columns
          * @return mixed
@@ -56,7 +184,7 @@ if ( ! class_exists( 'FooGallery_Attachment_Taxonomies' ) ) {
         }
 
         /**
-         * Add the menu items under the FooGalleru main menu
+         * Add the menu items under the FooGallery main menu
          */
         function add_menu_items() {
             foogallery_add_submenu_page(
@@ -75,12 +203,12 @@ if ( ! class_exists( 'FooGallery_Attachment_Taxonomies' ) ) {
         }
 
         /**
-         * Make sure the tqaxonomy menu items are highlighted
+         * Make sure the taxonomy menu items are highlighted
          * @param $parent_file
          * @return mixed
          */
         function set_current_menu( $parent_file ) {
-            global $submenu_file, $current_screen, $pagenow;
+            global $submenu_file, $current_screen;
 
             if ( $current_screen->post_type == FOOGALLERY_CPT_GALLERY ) {
 
@@ -92,6 +220,7 @@ if ( ! class_exists( 'FooGallery_Attachment_Taxonomies' ) ) {
                     $submenu_file = 'edit-tags.php?taxonomy=' . FOOGALLERY_ATTACHMENT_TAXONOMY_COLLECTION . '&post_type=' . FOOGALLERY_CPT_GALLERY;
                 }
             }
+
             return $parent_file;
         }
 
@@ -184,12 +313,12 @@ if ( ! class_exists( 'FooGallery_Attachment_Taxonomies' ) ) {
 		 *
 		 * @return array
 		 */
-        function build_taxonomy_html( $taxonomy, $post ) {
-			//$terms_slugs = wp_get_post_terms( $post->ID, $taxonomy, 'ids' );
-			$terms_slugs = array();
+        function build_taxonomy_html( $taxonomy, $post, $value ) {
 
-			$html = '<input type="text" id="attachments-' . $post->ID .'-' . $taxonomy . '" name="attachments[' . $post->ID .'][' . $taxonomy . ']" value="' . implode(',', $terms_slugs) . '" />';
-
+			$html = '<input type="text" id="attachments-' . $post->ID .'-' . $taxonomy . '" name="attachments[' . $post->ID .'][' . $taxonomy . ']" value="' . $value . '" />';
+			$html .= '<script type="script/javascript">
+				FOOGALLERY_SELECTIZE(\'#attachments-' . $post->ID .'-' . $taxonomy . '\', \'' . $taxonomy .'\');
+				</script>';
 			return $html;
 		}
 

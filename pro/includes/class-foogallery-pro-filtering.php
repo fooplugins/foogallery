@@ -468,8 +468,12 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 					$options['filtering']        = $gallery->filtering_options = $filtering_options;
 					$gallery->filtering_taxonomy = $this->get_foogallery_argument( $gallery, 'filtering_taxonomy', 'filtering_taxonomy', FOOGALLERY_ATTACHMENT_TAXONOMY_TAG );
 
-					$filtering_all_text = foogallery_get_setting( 'language_filtering_all', __( 'All', 'foogallery' ) );
-					if ( __( 'All', 'foogallery' ) !== $filtering_all_text ) {
+					$filtering_all_text_default = __( 'All', 'foogallery' );
+					$filtering_all_text = foogallery_get_setting( 'language_filtering_all', $filtering_all_text_default );
+					if ( empty( $filtering_all_text ) ) {
+						$filtering_all_text = $filtering_all_text_default;
+					}
+					if ( $filtering_all_text_default !== $filtering_all_text ) {
 						if ( !array_key_exists( 'il8n', $options ) ) {
 							$options['il8n'] = array();
 						}
