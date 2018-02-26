@@ -57,8 +57,7 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 			if ( $template && array_key_exists( 'filtering_support', $template ) && true === $template['filtering_support'] ) {
 				$fields[] = array(
 					'id'       => 'filtering_type',
-					'title'    => __( 'Filtering Type', 'foogallery' ),
-					'desc'     => __( 'Which type of filtering do you want to use in the gallery.', 'foogallery' ),
+					'title'    => __( 'Filtering', 'foogallery' ),
 					'section'  => __( 'Filtering', 'foogallery' ),
 					'spacer'   => '<span class="spacer"></span>',
 					'type'     => 'radio',
@@ -66,8 +65,8 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 					'choices'  => apply_filters(
 						'foogallery_gallery_template_filtering_type_choices', array(
 						''        => __( 'None', 'foogallery' ),
-						'default' => __( 'Buttons', 'foogallery' ),
-						'tags'    => __( 'Tags', 'foogallery' )
+						'simple' => __( 'Simple', 'foogallery' ),
+						'advanced'    => __( 'Advanced', 'foogallery' )
 					)
 					),
 					'row_data' => array(
@@ -105,19 +104,16 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 				$fields[] = array(
 					'id'       => 'filtering_position',
 					'title'    => __( 'Position', 'foogallery' ),
-					'desc'     => __( 'The position of the filtering.', 'foogallery' ),
+					'desc'     => __( 'The position of the filters relative to the gallery.', 'foogallery' ),
 					'section'  => __( 'Filtering', 'foogallery' ),
 					'spacer'   => '<span class="spacer"></span>',
 					'type'     => 'radio',
 					'default'  => 'top',
-					'choices'  => apply_filters(
-						'foogallery_gallery_template_filtering_position_choices', array(
-						''       => __( 'None', 'foogallery' ),
+					'choices'  => apply_filters( 'foogallery_gallery_template_filtering_position_choices', array(
 						'top'    => __( 'Top', 'foogallery' ),
 						'bottom' => __( 'Bottom', 'foogallery' ),
 						'both'   => __( 'Both', 'foogallery' )
-					)
-					),
+					) ),
 					'row_data' => array(
 						'data-foogallery-hidden'                   => true,
 						'data-foogallery-show-when-field-operator' => '!==',
@@ -145,9 +141,9 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 					),
 					'row_data' => array(
 						'data-foogallery-hidden'                   => true,
-						'data-foogallery-show-when-field-operator' => '!==',
+						'data-foogallery-show-when-field-operator' => '===',
 						'data-foogallery-show-when-field'          => 'filtering_type',
-						'data-foogallery-show-when-field-value'    => '',
+						'data-foogallery-show-when-field-value'    => 'advanced',
 						'data-foogallery-change-selector'          => 'input',
 						'data-foogallery-preview'                  => 'shortcode'
 					)
@@ -169,9 +165,9 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 					),
 					'row_data' => array(
 						'data-foogallery-hidden'                   => true,
-						'data-foogallery-show-when-field-operator' => '!==',
+						'data-foogallery-show-when-field-operator' => '===',
 						'data-foogallery-show-when-field'          => 'filtering_type',
-						'data-foogallery-show-when-field-value'    => '',
+						'data-foogallery-show-when-field-value'    => 'advanced',
 						'data-foogallery-change-selector'          => 'input',
 						'data-foogallery-preview'                  => 'shortcode'
 					)
@@ -192,8 +188,8 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 						'data-foogallery-preview'                  => 'shortcode',
 						'data-foogallery-hidden'                   => true,
 						'data-foogallery-show-when-field'          => 'filtering_type',
-						'data-foogallery-show-when-field-operator' => '!==',
-						'data-foogallery-show-when-field-value'    => '',
+						'data-foogallery-show-when-field-operator' => '===',
+						'data-foogallery-show-when-field-value'    => 'advanced',
 					)
 				);
 
@@ -212,8 +208,8 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 						'data-foogallery-preview'                  => 'shortcode',
 						'data-foogallery-hidden'                   => true,
 						'data-foogallery-show-when-field'          => 'filtering_type',
-						'data-foogallery-show-when-field-operator' => '!==',
-						'data-foogallery-show-when-field-value'    => '',
+						'data-foogallery-show-when-field-operator' => '===',
+						'data-foogallery-show-when-field-value'    => 'advanced',
 					)
 				);
 
@@ -236,8 +232,8 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 						'data-foogallery-preview'                  => 'shortcode',
 						'data-foogallery-hidden'                   => true,
 						'data-foogallery-show-when-field'          => 'filtering_type',
-						'data-foogallery-show-when-field-operator' => '!==',
-						'data-foogallery-show-when-field-value'    => '',
+						'data-foogallery-show-when-field-operator' => '===',
+						'data-foogallery-show-when-field-value'    => 'advanced',
 					)
 				);
 
@@ -261,8 +257,8 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 						'data-foogallery-preview'                  => 'shortcode',
 						'data-foogallery-hidden'                   => true,
 						'data-foogallery-show-when-field'          => 'filtering_type',
-						'data-foogallery-show-when-field-operator' => '!==',
-						'data-foogallery-show-when-field-value'    => '',
+						'data-foogallery-show-when-field-operator' => '===',
+						'data-foogallery-show-when-field-value'    => 'advanced',
 					)
 				);
 
@@ -326,8 +322,8 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 						'data-foogallery-preview'                  => 'shortcode',
 						'data-foogallery-hidden'                   => true,
 						'data-foogallery-show-when-field'          => 'filtering_type',
-						'data-foogallery-show-when-field-operator' => '!==',
-						'data-foogallery-show-when-field-value'    => '',
+						'data-foogallery-show-when-field-operator' => '===',
+						'data-foogallery-show-when-field-value'    => 'advanced',
 					)
 				);
 
@@ -417,9 +413,9 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 			$template_data = foogallery_get_gallery_template( $foogallery->gallery_template );
 
 			//check the template supports filtering
-			$paging = $template_data && array_key_exists( 'filtering_support', $template_data ) && true === $template_data['filtering_support'];
+			$filtering = $template_data && array_key_exists( 'filtering_support', $template_data ) && true === $template_data['filtering_support'];
 
-			$foogallery->filtering = apply_filters( 'foogallery_filtering', $paging, $foogallery );
+			$foogallery->filtering = apply_filters( 'foogallery_filtering', $filtering, $foogallery );
 		}
 
 		/**
@@ -437,30 +433,35 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 				$filtering = $this->get_foogallery_argument( $gallery, 'filtering_type', 'filtering_type', '' );
 
 				if ( '' !== $filtering ) {
-					$filtering_show_count     = $this->get_foogallery_argument( $gallery, 'filtering_show_count', 'filtering_show_count', '' ) === 'true';
-					$filtering_adjust_size    = $this->get_foogallery_argument( $gallery, 'filtering_adjust_size', 'filtering_adjust_size', 'no' ) === 'yes';
-					$filtering_adjust_opacity = $this->get_foogallery_argument( $gallery, 'filtering_adjust_opacity', 'filtering_adjust_opacity', 'no' ) === 'yes';
 
 					$filtering_options = array(
-						'type'          => $filtering,
+						'type'          => 'default',
 						'position'      => $this->get_foogallery_argument( $gallery, 'filtering_position', 'filtering_position', 'top' ),
-						'pushOrReplace' => $this->get_foogallery_argument( $gallery, 'filtering_push', 'filtering_push', 'push' ),
-						'mode'          => $this->get_foogallery_argument( $gallery, 'filtering_mode', 'filtering_mode', 'single' ),
-						'min'           => intval( $this->get_foogallery_argument( $gallery, 'filtering_min', 'filtering_min', '0' ) ),
-						'limit'         => intval( $this->get_foogallery_argument( $gallery, 'filtering_limit', 'filtering_limit', '0' ) ),
-						'showCount'     => $filtering_show_count,
-						'adjustSize'    => $filtering_adjust_size,
-						'adjustOpacity' => $filtering_adjust_opacity,
 					);
 
-					if ( $filtering_adjust_size ) {
-						$filtering_options['smallest'] = intval( $this->get_foogallery_argument( $gallery, 'filtering_adjust_size_smallest', 'filtering_adjust_size_smallest', '12' ) );
-						$filtering_options['largest']  = intval( $this->get_foogallery_argument( $gallery, 'filtering_adjust_size_largest', 'filtering_adjust_size_largest', '16' ) );
-					}
+					if ( 'advanced' === $filtering ) {
 
-					if ( $filtering_adjust_size ) {
-						$filtering_options['lightest'] = intval( $this->get_foogallery_argument( $gallery, 'filtering_adjust_opacity_lightest', 'filtering_adjust_opacity_lightest', '0.5' ) );
-						$filtering_options['darkest']  = intval( $this->get_foogallery_argument( $gallery, 'filtering_adjust_opacity_darkest', 'filtering_adjust_opacity_darkest', '1' ) );
+						$filtering_show_count = $this->get_foogallery_argument( $gallery, 'filtering_show_count', 'filtering_show_count', '' ) === 'true';
+
+						$filtering_options['pushOrReplace'] = $this->get_foogallery_argument( $gallery, 'filtering_push', 'filtering_push', 'push' );
+						$filtering_options['mode'         ] = $this->get_foogallery_argument( $gallery, 'filtering_mode', 'filtering_mode', 'single' );
+						$filtering_options['min'          ] = intval( $this->get_foogallery_argument( $gallery, 'filtering_min', 'filtering_min', '0' ) );
+						$filtering_options['limit'        ] = intval( $this->get_foogallery_argument( $gallery, 'filtering_limit', 'filtering_limit', '0' ) );
+						$filtering_options['showCount'    ] = $filtering_show_count;
+
+						$filtering_adjust_size    = $this->get_foogallery_argument( $gallery, 'filtering_adjust_size', 'filtering_adjust_size', 'no' ) === 'yes';
+						if ( $filtering_adjust_size ) {
+							$filtering_options['adjustSize'] = $filtering_adjust_size;
+							$filtering_options['smallest'] = intval( $this->get_foogallery_argument( $gallery, 'filtering_adjust_size_smallest', 'filtering_adjust_size_smallest', '12' ) );
+							$filtering_options['largest']  = intval( $this->get_foogallery_argument( $gallery, 'filtering_adjust_size_largest', 'filtering_adjust_size_largest', '16' ) );
+						}
+
+						$filtering_adjust_opacity = $this->get_foogallery_argument( $gallery, 'filtering_adjust_opacity', 'filtering_adjust_opacity', 'no' ) === 'yes';
+						if ( $filtering_adjust_size ) {
+							$filtering_options['adjustOpacity'] = $filtering_adjust_opacity;
+							$filtering_options['lightest'] = intval( $this->get_foogallery_argument( $gallery, 'filtering_adjust_opacity_lightest', 'filtering_adjust_opacity_lightest', '0.5' ) );
+							$filtering_options['darkest']  = intval( $this->get_foogallery_argument( $gallery, 'filtering_adjust_opacity_darkest', 'filtering_adjust_opacity_darkest', '1' ) );
+						}
 					}
 
 					$options['filtering']        = $gallery->filtering_options = $filtering_options;
