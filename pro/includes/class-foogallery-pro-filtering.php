@@ -16,6 +16,9 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 
 				//build up any preview arguments
 				add_filter( 'foogallery_preview_arguments', array( $this, 'preview_arguments' ), 10, 3 );
+
+				//add a global setting to change the All filter
+				add_filter( 'foogallery_admin_settings_override', array( $this, 'add_language_settings' ) );
 			}
 
 			//adds the filtering property to a FooGallery
@@ -76,6 +79,28 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 					)
 				);
 
+				$fields[] = array(
+					'id'      => 'filtering_theme',
+					'title'   => __( 'Theme', 'foogallery' ),
+					'desc'    => __( 'The theme used for filtering.', 'foogallery' ),
+					'section' => __( 'Filtering', 'foogallery' ),
+					'spacer'  => '<span class="spacer"></span>',
+					'type'    => 'radio',
+					'default' => 'fg-light',
+					'choices' => apply_filters( 'foogallery_gallery_template_filtering_theme_choices', array(
+						'fg-light'  => __( 'Light', 'foogallery' ),
+						'fg-dark'   => __( 'Dark', 'foogallery' ),
+					) ),
+					'row_data' => array(
+						'data-foogallery-hidden'                   => true,
+						'data-foogallery-show-when-field-operator' => '!==',
+						'data-foogallery-show-when-field'          => 'filtering_type',
+						'data-foogallery-show-when-field-value'    => '',
+						'data-foogallery-change-selector'          => 'input',
+						'data-foogallery-preview'                  => 'shortcode'
+					)
+				);
+
 				$taxonomy_objects = get_object_taxonomies( 'attachment', 'objects' );
 				$taxonomy_choices = array();
 				foreach ( $taxonomy_objects as $taxonomy_object ) {
@@ -84,8 +109,8 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 
 				$fields[] = array(
 					'id'       => 'filtering_taxonomy',
-					'title'    => __( 'Taxonomy', 'foogallery' ),
-					'desc'     => __( 'The attachment taxonomy used for filtering.', 'foogallery' ),
+					'title'    => __( 'Filtering Source', 'foogallery' ),
+					'desc'     => __( 'What will be used as the source for your gallery filters. All attachment taxonomies will be listed.', 'foogallery' ),
 					'section'  => __( 'Filtering', 'foogallery' ),
 					'spacer'   => '<span class="spacer"></span>',
 					'type'     => 'radio',
@@ -135,8 +160,8 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 					'choices'  => apply_filters(
 						'foogallery_gallery_template_filtering_mode_choices', array(
 						'single'    => __( 'Default', 'foogallery' ),
-						'Union'     => __( 'OR', 'foogallery' ),
-						'Intersect' => __( 'AND', 'foogallery' )
+						'union'     => __( 'OR', 'foogallery' ),
+						'intersect' => __( 'AND', 'foogallery' )
 					)
 					),
 					'row_data' => array(
@@ -277,7 +302,7 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 						'data-foogallery-preview'                  => 'shortcode',
 						'data-foogallery-hidden'                   => true,
 						'data-foogallery-show-when-field'          => 'filtering_adjust_size',
-						'data-foogallery-show-when-field-operator' => '==',
+						'data-foogallery-show-when-field-operator' => '===',
 						'data-foogallery-show-when-field-value'    => 'yes',
 					)
 				);
@@ -297,7 +322,7 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 						'data-foogallery-preview'                  => 'shortcode',
 						'data-foogallery-hidden'                   => true,
 						'data-foogallery-show-when-field'          => 'filtering_adjust_size',
-						'data-foogallery-show-when-field-operator' => '==',
+						'data-foogallery-show-when-field-operator' => '===',
 						'data-foogallery-show-when-field-value'    => 'yes',
 					)
 				);
@@ -342,7 +367,7 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 						'data-foogallery-preview'                  => 'shortcode',
 						'data-foogallery-hidden'                   => true,
 						'data-foogallery-show-when-field'          => 'filtering_adjust_opacity',
-						'data-foogallery-show-when-field-operator' => '==',
+						'data-foogallery-show-when-field-operator' => '===',
 						'data-foogallery-show-when-field-value'    => 'yes',
 					)
 				);
@@ -362,7 +387,7 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 						'data-foogallery-preview'                  => 'shortcode',
 						'data-foogallery-hidden'                   => true,
 						'data-foogallery-show-when-field'          => 'filtering_adjust_opacity',
-						'data-foogallery-show-when-field-operator' => '==',
+						'data-foogallery-show-when-field-operator' => '===',
 						'data-foogallery-show-when-field-value'    => 'yes',
 					)
 				);
@@ -386,6 +411,7 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 			//check the template supports filtering
 			if ( $template_data && array_key_exists( 'filtering_support', $template_data ) && true === $template_data['filtering_support'] ) {
 				$args['filtering_type']                    = $post_data[FOOGALLERY_META_SETTINGS][$template . '_filtering_type'];
+				$args['filtering_theme']                   = $post_data[FOOGALLERY_META_SETTINGS][$template . '_filtering_theme'];
 				$args['filtering_taxonomy']                = $post_data[FOOGALLERY_META_SETTINGS][$template . '_filtering_taxonomy'];
 				$args['filtering_position']                = $post_data[FOOGALLERY_META_SETTINGS][$template . '_filtering_position'];
 				$args['filtering_mode']                    = $post_data[FOOGALLERY_META_SETTINGS][$template . '_filtering_mode'];
@@ -435,8 +461,9 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 				if ( '' !== $filtering ) {
 
 					$filtering_options = array(
-						'type'          => 'default',
-						'position'      => $this->get_foogallery_argument( $gallery, 'filtering_position', 'filtering_position', 'top' ),
+						'type'     => 'tags',
+						'position' => $this->get_foogallery_argument( $gallery, 'filtering_position', 'filtering_position', 'top' ),
+						'theme'    => $this->get_foogallery_argument( $gallery, 'filtering_theme', 'filtering_theme', 'fg-light' ),
 					);
 
 					if ( 'advanced' === $filtering ) {
@@ -459,19 +486,39 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 						$filtering_adjust_opacity = $this->get_foogallery_argument( $gallery, 'filtering_adjust_opacity', 'filtering_adjust_opacity', 'no' ) === 'yes';
 						if ( $filtering_adjust_size ) {
 							$filtering_options['adjustOpacity'] = $filtering_adjust_opacity;
-							$filtering_options['lightest'] = intval( $this->get_foogallery_argument( $gallery, 'filtering_adjust_opacity_lightest', 'filtering_adjust_opacity_lightest', '0.5' ) );
+							$filtering_options['lightest'] = $this->get_foogallery_argument( $gallery, 'filtering_adjust_opacity_lightest', 'filtering_adjust_opacity_lightest', '0.5' );
 							$filtering_options['darkest']  = intval( $this->get_foogallery_argument( $gallery, 'filtering_adjust_opacity_darkest', 'filtering_adjust_opacity_darkest', '1' ) );
 						}
 					}
 
 					$options['filtering']        = $gallery->filtering_options = $filtering_options;
 					$gallery->filtering_taxonomy = $this->get_foogallery_argument( $gallery, 'filtering_taxonomy', 'filtering_taxonomy', FOOGALLERY_ATTACHMENT_TAXONOMY_TAG );
+
+					$filtering_all_text = foogallery_get_setting( 'language_filtering_all', __( 'All', 'foogallery' ) );
+					if ( __( 'All', 'foogallery' ) !== $filtering_all_text ) {
+						if ( !array_key_exists( 'il8n', $options ) ) {
+							$options['il8n'] = array();
+						}
+
+						$options['il8n']['filtering'] = array(
+							'all' => $filtering_all_text
+						);
+					}
 				}
 			}
 
 			return $options;
 		}
 
+		/**
+		 * Private helper function to get the value of a setting for a gallery
+		 * @param $gallery
+		 * @param $setting_id
+		 * @param $argument_name
+		 * @param $default_value
+		 *
+		 * @return mixed
+		 */
 		private function get_foogallery_argument( $gallery, $setting_id, $argument_name, $default_value ) {
 			global $current_foogallery_arguments;
 
@@ -505,6 +552,25 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 			}
 
 			return $attr;
+		}
+
+		/**
+		 * Add global setting to override the "All" text used in the filtering
+		 * @param $settings
+		 *
+		 * @return mixed
+		 */
+		public function add_language_settings( $settings ) {
+
+			$settings['settings'][] = array(
+				'id'      => 'language_filtering_all',
+				'title'   => __( 'Filtering All Text', 'foogallery' ),
+				'type'    => 'text',
+				'default' => __( 'All', 'foogallery' ),
+				'tab'     => 'language'
+			);
+
+			return $settings;
 		}
 	}
 }
