@@ -175,30 +175,6 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 				);
 
 				$fields[] = array(
-					'id'       => 'filtering_push',
-					'title'    => __( 'Push', 'foogallery' ),
-					'desc'     => __( 'Whether to push or replace when using filtering.', 'foogallery' ),
-					'section'  => __( 'Filtering', 'foogallery' ),
-					'spacer'   => '<span class="spacer"></span>',
-					'type'     => 'radio',
-					'default'  => 'push',
-					'choices'  => apply_filters(
-						'foogallery_gallery_template_filtering_push_choices', array(
-						'push'    => __( 'Push', 'foogallery' ),
-						'replace' => __( 'Replace', 'foogallery' )
-					)
-					),
-					'row_data' => array(
-						'data-foogallery-hidden'                   => true,
-						'data-foogallery-show-when-field-operator' => '===',
-						'data-foogallery-show-when-field'          => 'filtering_type',
-						'data-foogallery-show-when-field-value'    => 'advanced',
-						'data-foogallery-change-selector'          => 'input',
-						'data-foogallery-preview'                  => 'shortcode'
-					)
-				);
-
-				$fields[] = array(
 					'id'       => 'filtering_min',
 					'title'    => __( 'Minimum', 'foogallery' ),
 					'desc'     => __( 'The minimum count before a filter is shown, 0 = disabled and all are shown.', 'foogallery' ),
@@ -415,7 +391,6 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 				$args['filtering_taxonomy']                = $post_data[FOOGALLERY_META_SETTINGS][$template . '_filtering_taxonomy'];
 				$args['filtering_position']                = $post_data[FOOGALLERY_META_SETTINGS][$template . '_filtering_position'];
 				$args['filtering_mode']                    = $post_data[FOOGALLERY_META_SETTINGS][$template . '_filtering_mode'];
-				$args['filtering_push']                    = $post_data[FOOGALLERY_META_SETTINGS][$template . '_filtering_push'];
 				$args['filtering_min']                     = $post_data[FOOGALLERY_META_SETTINGS][$template . '_filtering_min'];
 				$args['filtering_limit']                   = $post_data[FOOGALLERY_META_SETTINGS][$template . '_filtering_limit'];
 				$args['filtering_show_count']              = $post_data[FOOGALLERY_META_SETTINGS][$template . '_filtering_show_count'];
@@ -470,7 +445,6 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 
 						$filtering_show_count = $this->get_foogallery_argument( $gallery, 'filtering_show_count', 'filtering_show_count', '' ) === 'true';
 
-						$filtering_options['pushOrReplace'] = $this->get_foogallery_argument( $gallery, 'filtering_push', 'filtering_push', 'push' );
 						$filtering_options['mode'         ] = $this->get_foogallery_argument( $gallery, 'filtering_mode', 'filtering_mode', 'single' );
 						$filtering_options['min'          ] = intval( $this->get_foogallery_argument( $gallery, 'filtering_min', 'filtering_min', '0' ) );
 						$filtering_options['limit'        ] = intval( $this->get_foogallery_argument( $gallery, 'filtering_limit', 'filtering_limit', '0' ) );
