@@ -110,7 +110,7 @@ if ( ! class_exists( 'FooGallery_Paging' ) ) {
 					'spacer'  => '<span class="spacer"></span>',
 					'type'    => 'radio',
 					'default' => 'fg-light',
-					'choices' => apply_filters( 'foogallery_gallery_template_paging_position_choices', array(
+					'choices' => apply_filters( 'foogallery_gallery_template_paging_theme_choices', array(
 						'fg-light'  => __( 'Light', 'foogallery' ),
 						'fg-dark'   => __( 'Dark', 'foogallery' ),
 					) ),
