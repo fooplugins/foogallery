@@ -3257,9 +3257,7 @@
 
 			if (!_is.hash(options.cls)) options.cls = {};
 			if (!_is.hash(options.il8n)) options.il8n = {};
-			if (!_is.undef(_.filtering)) options = _.filtering.merge(options);
-			if (!_is.undef(_.paging)) options = _.paging.merge(options);
-
+			options = _.paging.merge(options);
 			if (name !== "core" && self.contains(name)){
 				options = _obj.extend({}, def, reg[name].opt, options);
 				options.cls = _obj.extend(options.cls, cls, reg[name].cls, options.cls);
@@ -3517,14 +3515,7 @@
 			 * @name pages
 			 * @type {?FooGallery.Paging}
 			 */
-			self.pages = !_is.undef(_.paging) ? _.paging.make(options.paging.type, self) : null;
-			/**
-			 * @summary The page manager for the template.
-			 * @memberof FooGallery.Template#
-			 * @name filter
-			 * @type {?FooGallery.Filtering}
-			 */
-			self.filter = !_is.undef(_.filtering) ? _.filtering.make(options.filtering.type, self) : null;
+			self.pages = _.paging.make(options.paging.type, self);
 			/**
 			 * @summary The state manager for the template.
 			 * @memberof FooGallery.Template#
@@ -3863,7 +3854,6 @@
 			$(window).off("popstate.foogallery", self.onWindowPopState)
 					.off("scroll.foogallery");
 			self.state.destroy();
-			if (self.filter) self.filter.destroy();
 			if (self.pages) self.pages.destroy();
 			self.items.destroy();
 			if (!_is.empty(self.opt.on)){
@@ -3900,24 +3890,19 @@
 		// ################
 
 		/**
-		 * @summary Gets all available items.
-		 * @description This takes into account if paging is enabled and will return only the current pages' items.
-		 * @memberof FooGallery.Template#
-		 * @function getAvailable
-		 * @returns {FooGallery.Item[]} An array of {@link FooGallery.Item|items}.
-		 */
-		getAvailable: function(){
-			return this.pages ? this.pages.available() : this.items.available();
-		},
-
-		/**
 		 * @summary Check if any available items need to be loaded and loads them.
 		 * @memberof FooGallery.Template#
 		 * @function loadAvailable
 		 * @returns {Promise<FooGallery.Item[]>} Resolves with an array of {@link FooGallery.Item|items} as the first argument. If no items are loaded this array is empty.
 		 */
 		loadAvailable: function(){
-			return this.items.load(this.getAvailable());
+			var self = this, items;
+			if (self.pages){
+				items = self.pages.available();
+			} else {
+				items = self.items.available();
+			}
+			return self.items.load(items);
 		},
 
 		/**
@@ -4380,7 +4365,6 @@
 		 */
 		initial: function(){
 			var self = this, tmpl = self.tmpl, state = {};
-			if (tmpl.filter && !_is.empty(tmpl.filter.current)) state.f = tmpl.filter.current;
 			if (tmpl.pages && tmpl.pages.current > 1) state.p = tmpl.pages.current;
 			return state;
 		},
@@ -4395,9 +4379,6 @@
 		get: function(item){
 			var self = this, tmpl = self.tmpl, state = {};
 			if (item instanceof _.Item) state.i = item.id;
-			if (tmpl.filter && !_is.empty(tmpl.filter.current)){
-				state.f = tmpl.filter.current;
-			}
 			if (tmpl.pages && tmpl.pages.isValid(tmpl.pages.current)){
 				state.p = tmpl.pages.current;
 			}
@@ -4415,11 +4396,6 @@
 			if (_is.hash(state)){
 				tmpl.items.reset();
 				var item = tmpl.items.get(state.i);
-				if (tmpl.filter){
-					tmpl.filter.rebuild();
-					var tags = !_is.empty(state.f) ? state.f : [];
-					tmpl.filter.set(tags, false);
-				}
 				if (tmpl.pages){
 					tmpl.pages.rebuild();
 					var page = tmpl.pages.number(state.p);
@@ -4473,7 +4449,6 @@
 	 * @summary An object used to store the state of a template.
 	 * @typedef {object} FooGallery~State
 	 * @property {number} [p] - The current page number.
-	 * @property {string[]} [f] - The current filter array.
 	 * @property {?string} [i] - The currently selected item.
 	 */
 
@@ -6177,6 +6152,7 @@
 		set: function(pageNumber, scroll, updateState){
 			var self = this;
 			if (self.isValid(pageNumber)){
+				self.controls(pageNumber);
 				var num = self.number(pageNumber), state;
 				if (num !== self.current) {
 					var prev = self.current, setPage = function(){
@@ -6185,7 +6161,6 @@
 							state = self.tmpl.state.get();
 							self.tmpl.state.update(state, self.pushOrReplace);
 						}
-						self.controls(pageNumber);
 						self.create(num);
 						if (updateState){
 							state = self.tmpl.state.get();
