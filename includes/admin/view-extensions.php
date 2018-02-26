@@ -68,27 +68,11 @@ if ( $has_errors ) { ?>
 			$slug = $extension['slug'];
 			$classes = array('extension', 'all', 'extension-' . $slug);
 
-			$downloaded = $api->is_downloaded( $extension );
-			$is_active = $api->is_active( $slug );
-			$has_errors = $api->has_errors( $slug );
+			$downloaded = isset( $extension['downloaded'] ) && true === $extension['downloaded'];
+			$is_active = isset( $extension['is_active'] ) && true === $extension['is_active'];
+			$has_errors = isset( $extension['has_errors'] ) && true === $extension['has_errors'];
 
 			$banner_text = '';
-
-			if ( $downloaded ) {
-				$classes[] = 'downloaded';
-			} else {
-				$classes[] = 'download';
-			}
-
-			if ( $downloaded && $is_active ) {
-				$classes[] = 'activated';
-				$banner_text = __( 'Activated', 'foogallery' );
-			}
-
-			if ( $has_errors ) {
-				$classes[] = 'has_error';
-				$banner_text = $api->get_error_message( $slug );
-			}
 
 			$tag_html = '';
 			if ( isset( $extension['tags'] ) ) {
@@ -127,6 +111,36 @@ if ( $has_errors ) { ?>
 				$download_button_confirm = isset( $download_button['confirm'] ) ? ' data-confirm="' .$download_button['confirm'] . '" ' : '';
 				$download_button_html = "<a class=\"ext_action button button-primary download\" {$download_button_banner_text} {$download_button_target} href=\"{$download_button_href}\" >{$download_button_text}</a>";
 			}
+
+			//build up a freemius buy button
+			if ( isset( $extension['freemius_button'] ) ) {
+				$downloaded = $is_active = false;
+				$freemius_button = $extension['freemius_button'];
+				$freemius_button_text = isset( $freemius_button['text'] ) ? __( $freemius_button['text'], 'foogallery' ) : '';
+				$plugin_id = esc_attr( $freemius_button['plugin_id'] );
+				$pricing_id = esc_attr( $freemius_button['pricing_id'] );
+
+				$href = foogallery_fs()->addon_checkout_url( $plugin_id, $pricing_id );
+
+				$download_button_html = "<a class=\"ext_action button button-primary download\" href=\"{$href}\" >{$freemius_button_text}</a>";
+			}
+
+			if ( $downloaded ) {
+				$classes[] = 'downloaded';
+			} else {
+				$classes[] = 'download';
+			}
+
+			if ( $downloaded && $is_active ) {
+				$classes[] = 'activated';
+				$banner_text = __( 'Activated', 'foogallery' );
+			}
+
+			if ( $has_errors ) {
+				$classes[] = 'has_error';
+				$banner_text = $api->get_error_message( $slug );
+			}
+
 			?>
 		<div class="<?php echo implode(' ', $classes); ?>">
 
