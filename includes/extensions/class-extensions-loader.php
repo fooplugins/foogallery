@@ -15,8 +15,9 @@ if ( ! class_exists( 'FooGallery_Extensions_Loader' ) ) {
 			$action = foo_safe_get( $_POST, 'action');
 			if ( 'deactivate' === $action || 'heartbeat' === $action ) { return; }
 
-			if ( ! function_exists( 'get_current_screen' ) )
-				return;
+			if ( ! function_exists( 'get_current_screen' ) ) {
+				require_once(ABSPATH . 'wp-admin/includes/screen.php');
+			}
 
 			$api               = new FooGallery_Extensions_API();
 			$active_extensions = $api->get_active_extensions();
