@@ -23,15 +23,12 @@ if ( ! class_exists( 'FooGallery_Attachment_Taxonomies' ) ) {
 
 				//make the attachment taxonomies awesome
 				add_action( 'admin_head', array( $this, 'add_custom_js' ) );
-				add_filter( 'attachment_fields_to_edit', array( $this, 'inject_code_into_field' ), 10, 2 );
+				add_filter( 'attachment_fields_to_edit', array( $this, 'add_taxonomy_fields' ), 10, 2 );
 				add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_js' ) );
 
 
-                //add_filter( 'foogallery_attachment_add_fields', array( $this, 'remove_taxonomy_fields') );
                 //add_action( 'restrict_manage_posts', array( $this, 'add_collection_filter' ) );
 
-                //add_filter( 'foogallery_attachment_custom_fields_with_post', array( $this, 'add_taxonomy_fields' ), 10, 2 );
-                //add_filter( 'foogallery_attachment_field_taxonomy_tag', array( $this, 'customize_media_tag_field'), 10, 2 );
                 //add_filter( 'foogallery_attachment_save_field_taxonomy_tag', array( $this, 'save_media_tag_field' ), 10, 4 );
             }
         }
@@ -52,29 +49,10 @@ if ( ! class_exists( 'FooGallery_Attachment_Taxonomies' ) ) {
 				return;
 			}
 
-//			// Enqueue filters script
-//			if(Property::$has_filter) {
-//				wp_enqueue_script(
-//					'f4-media-taxonomies-filter',
-//					F4_MT_URL . 'Core/Assets/js/filter.js',
-//					array(),
-//					false,
-//					true
-//				);
-//			}
-
 			//enqueue selectize assets
 			wp_enqueue_script( 'foogallery-selectize-core', FOOGALLERY_URL . 'lib/selectize/selectize.min.js', array('jquery'), FOOGALLERY_VERSION );
 			wp_enqueue_script( 'foogallery-selectize', FOOGALLERY_URL . 'lib/selectize/foogallery.selectize.js', array('foogallery-selectize-core'), FOOGALLERY_VERSION );
 			wp_enqueue_style( 'foogallery-selectize', FOOGALLERY_URL . 'lib/selectize/selectize.css', array(), FOOGALLERY_VERSION );
-
-//			wp_enqueue_script(
-//				'f4-media-taxonomies-assignment',
-//				F4_MT_URL . 'Core/Assets/js/assignment.js',
-//				array(),
-//				false,
-//				true
-//			);
 		}
 
 		/**
@@ -87,7 +65,7 @@ if ( ! class_exists( 'FooGallery_Attachment_Taxonomies' ) ) {
 		 * @param object $post An object for the current post
 		 * @return array $fields An array with all fields to edit
 		 */
-		public function inject_code_into_field($fields, $post) {
+		public function add_taxonomy_fields($fields, $post) {
 			if ( array_key_exists( FOOGALLERY_ATTACHMENT_TAXONOMY_TAG, $fields ) ) {
 
 				$value = trim( $fields[FOOGALLERY_ATTACHMENT_TAXONOMY_TAG]['value'] );
@@ -104,12 +82,12 @@ if ( ! class_exists( 'FooGallery_Attachment_Taxonomies' ) ) {
 
 				$value = $fields[FOOGALLERY_ATTACHMENT_TAXONOMY_COLLECTION]['value'];
 
-//				$fields[FOOGALLERY_ATTACHMENT_TAXONOMY_TAG] = array(
-//					'show_in_edit' => false,
-//					'input' => 'html',
-//					'html' => $this->build_taxonomy_html( FOOGALLERY_ATTACHMENT_TAXONOMY_TAG, $post, $value ),
-//					'label' => __( 'Media Tags', 'foogallery' )
-//				);
+				$fields[FOOGALLERY_ATTACHMENT_TAXONOMY_COLLECTION] = array(
+					'show_in_edit' => false,
+					'input' => 'html',
+					'html' => $this->build_taxonomy_html( FOOGALLERY_ATTACHMENT_TAXONOMY_COLLECTION, $post, $value ),
+					'label' => __( 'Media Collections', 'foogallery' )
+				);
 			}
 
 			return $fields;
@@ -278,33 +256,6 @@ if ( ! class_exists( 'FooGallery_Attachment_Taxonomies' ) ) {
             register_taxonomy( FOOGALLERY_ATTACHMENT_TAXONOMY_COLLECTION, 'attachment', $collection_args );
         }
 
-        /**
-         * Add the taxonomy fields to the attachment
-         *
-         * @param $fields array All fields that will be added to the media modal
-		 * @param $post
-         *
-         * @return mixed
-         */
-        function add_taxonomy_fields( $fields, $post ) {
-
-			$fields[FOOGALLERY_ATTACHMENT_TAXONOMY_TAG] = array(
-				'show_in_edit' => false,
-				'input' => 'html',
-				'html' => $this->build_taxonomy_html( FOOGALLERY_ATTACHMENT_TAXONOMY_TAG, $post ),
-				'label' => __( 'Tags', 'foogallery' )
-			);
-
-			$fields[FOOGALLERY_ATTACHMENT_TAXONOMY_COLLECTION] = array(
-				'show_in_edit' => false,
-				'input' => 'html',
-				'html' => $this->build_taxonomy_html( FOOGALLERY_ATTACHMENT_TAXONOMY_COLLECTION, $post ),
-				'label' => __( 'Collections', 'foogallery' )
-			);
-
-            return $fields;
-        }
-
 		/**
 		 * Build up a taxonomy field HTML
 		 *
@@ -367,76 +318,6 @@ if ( ! class_exists( 'FooGallery_Attachment_Taxonomies' ) ) {
 		}
 
         /**
-         * Remove the automatically added attachments fields
-         * @param $fields
-         *
-         * @return mixed
-         */
-        function remove_taxonomy_fields( $fields ) {
-            if ( array_key_exists( FOOGALLERY_ATTACHMENT_TAXONOMY_TAG, $fields ) ) {
-                unset( $fields[FOOGALLERY_ATTACHMENT_TAXONOMY_TAG] );
-            }
-
-            if ( array_key_exists( FOOGALLERY_ATTACHMENT_TAXONOMY_COLLECTION, $fields ) ) {
-                unset( $fields[FOOGALLERY_ATTACHMENT_TAXONOMY_COLLECTION] );
-            }
-
-            return $fields;
-        }
-
-        /**
-         * Customize the media tag field to make sure we output a checkboxlist
-         * @param $field_values
-         *
-         * @return mixed
-         */
-        function customize_media_tag_field( $field_values, $post_id ) {
-
-            $media_tags = array();
-
-            //get the terms linked to the attachment
-            $terms = get_the_terms( $post_id, FOOGALLERY_ATTACHMENT_TAXONOMY_TAG );
-            if ( $terms && ! is_wp_error( $terms ) ) {
-                foreach ( $terms as $term ) {
-                    $media_tags[ $term->term_id ] = $term->name;
-                }
-            }
-
-            //set to html
-            $field_values['input'] = 'html';
-
-            $html = '';
-            $i = 0;
-
-            if ( ! empty( $field_values['options'] ) ) {
-
-                foreach ( $field_values['options'] as $k => $v ) {
-                    if ( array_key_exists( $k, $media_tags ) ) {
-                        $checked = ' checked="checked"';
-                    } else {
-                        $checked = '';
-                    }
-
-                    $html .= '<input' . $checked . ' value="' . $k . '" type="checkbox" name="attachments[' . $post_id . '][' . FOOGALLERY_ATTACHMENT_TAXONOMY_TAG . '][' . $k . ']" id="' . sanitize_key( FOOGALLERY_ATTACHMENT_TAXONOMY_TAG . '_' . $post_id . '_' . $i ) . '" /> <label for="' . sanitize_key( FOOGALLERY_ATTACHMENT_TAXONOMY_TAG . '_' . $post_id . '_' . $i ) . '">' . $v . '</label> ';
-                    $i++;
-                }
-            }
-
-            if ( 0 === $i ) {
-                $html .= __( 'No Tags Available!', 'foogallery' );
-            }
-
-            $html .= '<style>.compat-field-foogallery_media_tags .field input {margin-right: 0px;} .compat-field-foogallery_media_tags .field label {vertical-align: bottom; margin-right: 10px;}</style>';
-
-            $html .= '<br /><a target="_blank" href="' . admin_url( 'edit-tags.php?taxonomy=' . FOOGALLERY_ATTACHMENT_TAXONOMY_TAG . '&post_type=attachment' ) . '">' . __( 'Manage Tags', 'foogallery' ) . '</a>';
-
-            $field_values['value'] = '';
-            $field_values['html'] = $html;
-
-            return $field_values;
-        }
-
-        /**
          * Save the tags for the attachment
          *
          * @param $field
@@ -466,7 +347,6 @@ if ( ! class_exists( 'FooGallery_Attachment_Taxonomies' ) ) {
                 }
             }
         }
-
 
         /***
          *

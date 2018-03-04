@@ -90,6 +90,7 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 					'choices' => apply_filters( 'foogallery_gallery_template_filtering_theme_choices', array(
 						'fg-light'  => __( 'Light', 'foogallery' ),
 						'fg-dark'   => __( 'Dark', 'foogallery' ),
+						'fg-custom' => __( 'Custom', 'foogallery' ),
 					) ),
 					'row_data' => array(
 						'data-foogallery-hidden'                   => true,
@@ -151,17 +152,17 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 
 				$fields[] = array(
 					'id'       => 'filtering_mode',
-					'title'    => __( 'Mode', 'foogallery' ),
-					'desc'     => __( 'The mode used when filtering.', 'foogallery' ),
+					'title'    => __( 'Selection Mode', 'foogallery' ),
+					'desc'     => __( 'The selection mode to use when filtering. Single will allow you to choose a single filter at a time. Multiple will allow you to filter using more than 1 filter, and then you can choose either a union (OR) or intersect (AND) mode.', 'foogallery' ),
 					'section'  => __( 'Filtering', 'foogallery' ),
 					'spacer'   => '<span class="spacer"></span>',
 					'type'     => 'radio',
 					'default'  => 'single',
 					'choices'  => apply_filters(
 						'foogallery_gallery_template_filtering_mode_choices', array(
-						'single'    => __( 'Default', 'foogallery' ),
-						'union'     => __( 'OR', 'foogallery' ),
-						'intersect' => __( 'AND', 'foogallery' )
+						'single'    => __( 'Single', 'foogallery' ),
+						'union'     => __( 'Multiple (OR)', 'foogallery' ),
+						'intersect' => __( 'Multiple (AND)', 'foogallery' )
 					)
 					),
 					'row_data' => array(
