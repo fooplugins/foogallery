@@ -29,7 +29,8 @@ if ( isset( $_POST['foogallery_demo_content_generate'] ) ) {
 	<h2><?php _e( 'FooGallery Demo Content Generator', 'foogallery' ); ?></h2>
 
 	<div class="foogallery-help">
-		<?php printf( __( '%d galleries will be generated when you click the Generate button below.', 'foogallery' ), $gallery_count ); ?>
+		<?php _e( 'Search for images and generate galleries below. Use multiple keywords to ensure you find enough images.', 'foogallery' ); ?>
+		<?php printf( __( 'Images are provided by %s', 'foogallery' ), '<a href="https://pixabay.com/" target="_blank">Pixabay</a>.' ); ?>
 	</div>
 
 	<form id="nextgen_import_form" method="POST">
@@ -42,4 +43,8 @@ if ( isset( $_POST['foogallery_demo_content_generate'] ) ) {
 		<?php echo $message; ?>
 	</p>
 	<?php } ?>
+
+	<p>
+
+	</p>
 </div>

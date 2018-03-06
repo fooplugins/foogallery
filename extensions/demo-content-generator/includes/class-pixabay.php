@@ -52,16 +52,21 @@ class FooGallery_PixabayClient {
 	/**
 	 * Get Data from Pixabay API
 	 *
+	 * @param        $key
+	 * @param        $query
+	 * @param string $image_type
+	 * @param string $response_group
+	 *
 	 * @return mixed
 	 */
-	public function search( $key, $query )
+	public function search( $key, $query, $image_type = 'photo', $response_group = 'high_resolution', $safesearch = 'true')
 	{
-		$options['key'] = $key;
-		$options['q'] = $query;
-
 		$url = add_query_arg( array(
 			'key' => $key,
 			'q' => $query,
+			'image_type' => $image_type,
+			'response_group' => $response_group,
+			'safesearch' => $safesearch
 		), self::API_ROOT );
 
 		$transient_key = 'foogallery-pixabay-' . esc_attr($query);
