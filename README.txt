@@ -150,6 +150,10 @@ Update now to support FooVideo and many other improvements!
 
 == Changelog ==
 
+= 1.4.18 =
+
+* New : default crop position setting for attachments
+
 = 1.4.17 =
 
 * Speed up gallery previews in wp-admin

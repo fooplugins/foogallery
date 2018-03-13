@@ -58,9 +58,9 @@
 );
 /*!
 * FooGallery.utils - Contains common utility methods and classes used in our plugins.
-* @version 0.0.6
+* @version 0.0.8
 * @link https://github.com/steveush/foo-utils#readme
-* @copyright Steve Usher 2017
+* @copyright Steve Usher 2018
 * @license Released under the GPL-3.0 license.
 */
 /**
@@ -111,7 +111,7 @@
 		 * @name version
 		 * @type {string}
 		 */
-		version: '0.0.6',
+		version: '0.0.8',
 	};
 
 	/**
@@ -207,7 +207,7 @@
 })(jQuery);
 (function ($, _){
 	// only register methods if this version is the current version
-	if (_.version !== '0.0.6') return;
+	if (_.version !== '0.0.8') return;
 
 	/**
 	 * @summary Contains common type checking utility methods.
@@ -561,7 +561,7 @@
 );
 (function($, _, _is){
 	// only register methods if this version is the current version
-	if (_.version !== '0.0.6') return;
+	if (_.version !== '0.0.8') return;
 
 	/**
 	 * @memberof FooGallery.utils
@@ -1096,7 +1096,7 @@
 );
 (function(_, _is){
 	// only register methods if this version is the current version
-	if (_.version !== '0.0.6') return;
+	if (_.version !== '0.0.8') return;
 
 	/**
 	 * @summary Contains common url utility methods.
@@ -1182,7 +1182,7 @@
 	 * console.log( _url.param( search, "v", "2" ) ); // => "?wmode=opaque&autoplay=1&v=2"
 	 */
 	_.url.param = function(search, key, value){
-		if (!_is.string(search) || _is.empty(search) || !_is.string(key) || _is.empty(key)) return search;
+		if (!_is.string(search) || !_is.string(key) || _is.empty(key)) return search;
 		var regex, match, result, param;
 		if (_is.undef(value)){
 			regex = new RegExp('[?|&]' + key + '=([^&;]+?)(&|#|;|$)'); // regex to match the key and it's value but only capture the value
@@ -1199,7 +1199,7 @@
 			result = search.replace(regex, '$1' + param); // replace any existing instance of the key with the new value
 			// If nothing was replaced, then add the new param to the end
 			if (result === search && !regex.test(result)) { // if no replacement occurred and the parameter is not currently in the result then add it
-				result += '&' + param;
+				result += (result.indexOf("?") !== -1 ? '&' : '?') + param;
 			}
 		}
 		return result;
@@ -1231,7 +1231,7 @@
 );
 (function (_, _is, _fn) {
 	// only register methods if this version is the current version
-	if (_.version !== '0.0.6') return;
+	if (_.version !== '0.0.8') return;
 
 	/**
 	 * @summary Contains common string utility methods.
@@ -1546,7 +1546,7 @@
 );
 (function($, _, _is, _fn, _str){
 	// only register methods if this version is the current version
-	if (_.version !== '0.0.6') return;
+	if (_.version !== '0.0.8') return;
 
 	/**
 	 * @summary Contains common object utility methods.
@@ -1629,12 +1629,12 @@
 	 * console.log( _obj.merge( target, object ) ); // => {"name": "My Object", "enabled": true, "arr": [4,5,6], "something": 123}
 	 */
 	_.obj.merge = function(target, object){
-		target = _is.object(target) ? target : {};
-		object = _is.object(object) ? object : {};
+		target = _is.hash(target) ? target : {};
+		object = _is.hash(object) ? object : {};
 		for (var prop in object) {
 			if (object.hasOwnProperty(prop)) {
-				if (_is.object(object[prop])) {
-					target[prop] = _is.object(target[prop]) ? target[prop] : {};
+				if (_is.hash(object[prop])) {
+					target[prop] = _is.hash(target[prop]) ? target[prop] : {};
 					_.obj.merge(target[prop], object[prop]);
 				} else if (_is.array(object[prop])) {
 					target[prop] = object[prop].slice();
@@ -1878,7 +1878,7 @@
 );
 (function($, _, _is){
 	// only register methods if this version is the current version
-	if (_.version !== '0.0.6') return;
+	if (_.version !== '0.0.8') return;
 
 	// any methods that have dependencies but don't fall into a specific subset or namespace can be added here
 
@@ -1977,7 +1977,7 @@
 );
 (function($, _, _is){
 	// only register methods if this version is the current version
-	if (_.version !== '0.0.6') return;
+	if (_.version !== '0.0.8') return;
 
 	/**
 	 * @summary Contains common utility methods and members for the CSS transition property.
@@ -2073,11 +2073,18 @@
 	};
 
 	/**
+	 * @summary The callback function to execute when starting a transition.
+	 * @callback FooGallery.utils.transition~startCallback
+	 * @param {jQuery} $element - The element to start the transition on.
+	 * @this Element
+	 */
+
+	/**
 	 * @summary Start a transition by toggling the supplied `className` on the `$element`.
 	 * @memberof FooGallery.utils.transition
 	 * @function start
 	 * @param {jQuery} $element - The jQuery element to start the transition on.
-	 * @param {string} className - One or more class names (separated by spaces) to be toggled that starts the transition.
+	 * @param {(string|FooGallery.utils.transition~startCallback)} classNameOrFunc - One or more class names (separated by spaces) to be toggled or a function that performs the required actions to start the transition.
 	 * @param {boolean} [state] - A Boolean (not just truthy/falsy) value to determine whether the class should be added or removed.
 	 * @param {number} [timeout] - The maximum time, in milliseconds, to wait for the `transitionend` event to be raised. If not provided this will be automatically set to the elements `transition-duration` property plus an extra 50 milliseconds.
 	 * @returns {Promise}
@@ -2086,7 +2093,7 @@
 	 * The last parameter `timeout` is used to create a timer that behaves as a safety net in case the `transitionend` event is never raised and ensures the deferred returned by this method is resolved or rejected within a specified time.
 	 * @see {@link https://developer.mozilla.org/en/docs/Web/CSS/transition-duration|transition-duration - CSS | MDN} for more information on the `transition-duration` CSS property.
 	 */
-	_.transition.start = function($element, className, state, timeout){
+	_.transition.start = function($element, classNameOrFunc, state, timeout){
 		var deferred = $.Deferred();
 
 		$element = $element.first();
@@ -2121,7 +2128,11 @@
 
 		setTimeout(function(){
 			// This is executed inside of a 20ms timeout to allow the binding of the event handler above to actually happen before the class is toggled
-			$element.toggleClass(className, state);
+			if (_is.fn(classNameOrFunc)){
+				classNameOrFunc.apply($element.get(0), [$element]);
+			} else {
+				$element.toggleClass(classNameOrFunc, state);
+			}
 			if (!_.transition.supported){
 				// If the browser doesn't support transitions then just resolve the deferred
 				deferred.resolve();
@@ -2139,7 +2150,7 @@
 );
 (function ($, _, _is, _obj, _fn) {
 	// only register methods if this version is the current version
-	if (_.version !== '0.0.6') return;
+	if (_.version !== '0.0.8') return;
 
 	/**
 	 * @summary A base class providing some helper methods for prototypal inheritance.
@@ -2279,7 +2290,7 @@
 );
 (function($, _, _is){
 	// only register methods if this version is the current version
-	if (_.version !== '0.0.6') return;
+	if (_.version !== '0.0.8') return;
 
 	_.Bounds = _.Class.extend(/** @lends FooGallery.utils.Bounds */{
 		/**
@@ -2381,7 +2392,7 @@
 );
 (function($, _, _is, _fn){
 	// only register methods if this version is the current version
-	if (_.version !== '0.0.6') return;
+	if (_.version !== '0.0.8') return;
 
 	_.Factory = _.Class.extend(/** @lends FooGallery.utils.Factory */{
 		/**
@@ -2705,7 +2716,7 @@
 );
 (function(_, _fn, _str){
 	// only register methods if this version is the current version
-	if (_.version !== '0.0.6') return;
+	if (_.version !== '0.0.8') return;
 
 	// this is done to handle Content Security in Chrome and other browsers blocking access to the localStorage object under certain configurations.
 	// see: https://www.chromium.org/for-testers/bug-reporting-guidelines/uncaught-securityerror-failed-to-read-the-localstorage-property-from-window-access-is-denied-for-this-document
@@ -2812,7 +2823,7 @@
 );
 (function($, _, _is){
 	// only register methods if this version is the current version
-	if (_.version !== '0.0.6') return;
+	if (_.version !== '0.0.8') return;
 
 	_.Throttle = _.Class.extend(/** @lends FooGallery.utils.Throttle */{
 		/**
@@ -3262,12 +3273,12 @@
 
 			if (name !== "core" && self.contains(name)){
 				options = _obj.extend({}, def, reg[name].opt, options);
-				options.cls = _obj.extend(options.cls, cls, reg[name].cls, options.cls);
-				options.il8n = _obj.extend(options.il8n, il8n, reg[name].il8n, options.il8n);
+				options.cls = _obj.extend({}, cls, reg[name].cls, options.cls);
+				options.il8n = _obj.extend({}, il8n, reg[name].il8n, options.il8n);
 			} else {
 				options = _obj.extend({}, def, options);
-				options.cls = _obj.extend(options.cls, cls, options.cls);
-				options.il8n = _obj.extend(options.il8n, il8n, options.il8n);
+				options.cls = _obj.extend({}, cls, options.cls);
+				options.il8n = _obj.extend({}, il8n, options.il8n);
 			}
 			return options;
 		}
@@ -3363,8 +3374,8 @@
 					def_cls = reg["default"].cls,
 					def_il8n = reg["default"].il8n,
 					opt = _is.hash(options.paging) ? options.paging : {},
-					cls = _is.hash(options.cls) && _is.hash(options.cls.paging) ? options.cls.paging : {},
-					il8n = _is.hash(options.il8n) && _is.hash(options.il8n.paging) ? options.il8n.paging : {};
+					cls = _is.hash(options.cls) && _is.hash(options.cls.paging) ? _obj.extend({}, options.cls.paging) : {},
+					il8n = _is.hash(options.il8n) && _is.hash(options.il8n.paging) ? _obj.extend({}, options.il8n.paging) : {};
 
 			if (!_is.hash(options.cls)) options.cls = {};
 			if (!_is.hash(options.il8n)) options.il8n = {};
@@ -3863,6 +3874,7 @@
 			$(window).off("popstate.foogallery", self.onWindowPopState)
 					.off("scroll.foogallery");
 			self.state.destroy();
+			if (self.filter) self.filter.destroy();
 			if (self.pages) self.pages.destroy();
 			self.items.destroy();
 			if (!_is.empty(self.opt.on)){
@@ -7511,7 +7523,11 @@
 		 */
 		prev: function () {
 			if (this.pages){
-				this.pages.prev();
+				if (this.template.loop && this.pages.current === 1){
+					this.pages.last();
+				} else {
+					this.pages.prev();
+				}
 				this.update();
 			}
 		},
@@ -7523,7 +7539,11 @@
 		 */
 		next: function () {
 			if (this.pages){
-				this.pages.next();
+				if (this.template.loop && this.pages.current === this.pages.total){
+					this.pages.first();
+				} else {
+					this.pages.next();
+				}
 				this.update();
 			}
 		},
@@ -7571,7 +7591,8 @@
 
 	_.template.register("image-viewer", _.ImageViewerTemplate, {
 		template: {
-			attachFooBox: false
+			attachFooBox: false,
+			loop: false
 		}
 	}, {
 		container: "foogallery fg-image-viewer"
@@ -7607,26 +7628,24 @@
 (function($, _utils, _is){
 
 	function wp_integration(e, tmpl, current, prev){
-		if ((e.type === "after-page-change" && prev !== 0) || e.type === "ready"){
+		if (tmpl.initialized && (e.type === "after-page-change" || e.type === "ready" || (e.type === "after-filter-change" && !tmpl.pages))){
 			$("body").trigger("post-load");
 		}
 	}
 
+	var config = {
+		on: {
+			"ready.foogallery after-page-change.foogallery after-filter-change.foogallery": wp_integration
+		}
+	};
+
 	// this automatically initializes all templates on page load
 	$(function () {
-		$('[id^="foogallery-"]:not(.fg-ready)').foogallery({
-			on: {
-				"ready.foogallery after-page-change.foogallery": wp_integration
-			}
-		});
+		$('[id^="foogallery-"]:not(.fg-ready)').foogallery(config);
 	});
 
 	_utils.ready(function(){
-		$('[id^="foogallery-"].fg-ready').foogallery({
-			on: {
-				"ready.foogallery after-page-change.foogallery": wp_integration
-			}
-		});
+		$('[id^="foogallery-"].fg-ready').foogallery(config);
 	});
 
 })(

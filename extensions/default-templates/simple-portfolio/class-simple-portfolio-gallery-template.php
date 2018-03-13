@@ -63,6 +63,7 @@ if ( !class_exists( 'FooGallery_Simple_Portfolio_Gallery_Template' ) ) {
 				'paging_support' => true,
 				'mandatory_classes' => 'fg-simple_portfolio',
 				'thumbnail_dimensions' => true,
+				'filtering_support' => true,
                 'fields'	  => array(
                     array(
                         'id'	  => 'help',
