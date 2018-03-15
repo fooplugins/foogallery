@@ -27,8 +27,8 @@ if ( ! class_exists( 'FooGallery_Attachment_Taxonomies' ) ) {
                 add_filter( 'attachment_fields_to_save', array( $this, 'save_fields' ), 10, 2 );
 				add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_js' ), 99 );
 
+				//ajax actions from the media modal
                 add_action( 'wp_ajax_foogallery-taxonomies-add-term', array( $this, 'ajax_add_term' ) );
-
                 add_action( 'wp_ajax_foogallery-taxonomies-save-terms', array( $this, 'ajax_save_terms' ) );
 
                 //add_filter( 'foogallery_attachment_add_fields', array( $this, 'remove_taxonomy_fields') );
@@ -45,15 +45,17 @@ if ( ! class_exists( 'FooGallery_Attachment_Taxonomies' ) ) {
          *
          * @since 1.4.19
          */
-        public function ajax_save_terms() {
-            $attachment_id = $_POST['attachment_id'];
-            $terms = $_POST['terms'];
-            $taxonomy = $_POST['taxonomy'];
+        public function ajax_save_terms()
+        {
+            $nonce = $_POST['nonce'];
+            if (wp_verify_nonce($nonce, 'foogallery-attachment-taxonomy')) {
 
-            $result = wp_set_object_terms( $attachment_id, array_map( 'trim', preg_split( '/,+/', $terms ) ), $taxonomy, false );
+                $attachment_id = $_POST['attachment_id'];
+                $terms = $_POST['terms'];
+                $taxonomy = $_POST['taxonomy'];
 
-
-
+                $result = wp_set_object_terms($attachment_id, array_map('trim', preg_split('/,+/', $terms)), $taxonomy, false);
+            }
             die();
         }
 
@@ -64,23 +66,27 @@ if ( ! class_exists( 'FooGallery_Attachment_Taxonomies' ) ) {
          * @access public
          */
         public function ajax_add_term() {
-            $new_term = wp_insert_term($_POST['term_label'], $_POST['taxonomy']);
+            $nonce = $_POST['nonce'];
+            if (wp_verify_nonce($nonce, 'foogallery-attachment-taxonomy')) {
 
-            if(is_wp_error($new_term)) {
-                die();
-            }
+                $new_term = wp_insert_term($_POST['term_label'], $_POST['taxonomy']);
 
-            $new_term_obj = null;
+                if (is_wp_error($new_term)) {
+                    die();
+                }
 
-            if ( isset( $new_term['term_id'] ) ) {
-                $new_term_obj = get_term( $new_term['term_id'] );
-            }
+                $new_term_obj = null;
 
-            if ( !is_wp_error( $new_term_obj ) ) {
-                wp_send_json( array(
-                    'new_term' => $new_term_obj,
-                    'all_terms' => $this->build_terms_recursive( $_POST['taxonomy'], array('hide_empty' => false) )
-                ) );
+                if (isset($new_term['term_id'])) {
+                    $new_term_obj = get_term($new_term['term_id']);
+                }
+
+                if (!is_wp_error($new_term_obj)) {
+                    wp_send_json(array(
+                        'new_term' => $new_term_obj,
+                        'all_terms' => $this->build_terms_recursive($_POST['taxonomy'], array('hide_empty' => false))
+                    ));
+                }
             }
 
             die();
@@ -212,6 +218,8 @@ if ( ! class_exists( 'FooGallery_Attachment_Taxonomies' ) ) {
 					'add' => __( 'Add new collection', 'foogallery' )
 				),
 			);
+
+			$taxonomy_data['nonce'] = wp_create_nonce( 'foogallery-attachment-taxonomy' );
 
 			echo '<script type="text/javascript">
 			window.FOOGALLERY_TAXONOMY_DATA = ' . json_encode($taxonomy_data) . ';
