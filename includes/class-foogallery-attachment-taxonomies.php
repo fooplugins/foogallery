@@ -384,7 +384,6 @@ if ( ! class_exists( 'FooGallery_Attachment_Taxonomies' ) ) {
 		 * @return array
 		 */
         function build_taxonomy_html( $taxonomy, $post, $value ) {
-            //$html = '<input type="hidden" id="foogallery-attachment-nonce_' . $taxonomy . '" value="' . wp_create_nonce( 'foogallery-attachment-nonce_' . $taxonomy ) . '" />';
 			$html = '<input type="text" data-attachment_id="' . $post->ID . '" class="foogallery-attachment-ignore-change" id="attachments-' . $post->ID .'-' . $taxonomy . '" name="attachments-' . $post->ID .'-' . $taxonomy . '" value="' . $value . '" />';
 			$html .= '<script type="script/javascript">
 				FOOGALLERY_SELECTIZE(\'#attachments-' . $post->ID .'-' . $taxonomy . '\', \'' . $taxonomy .'\');
