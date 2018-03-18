@@ -49,6 +49,11 @@
             }
             original.save.apply(this, arguments);
         }
+
+        // initialize: function() {
+        //     original.initialize.apply( this, arguments );
+        //     this.stopListening( this.model, 'change:compat', this.render );
+        // }
     });
 
     // if you want to sanitize the data being sent back to the server we can override the original
