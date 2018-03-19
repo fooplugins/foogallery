@@ -305,6 +305,14 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 //				'tab'     => 'advanced'
 //			);
 
+			$settings[] = array(
+				'id'      => 'disable_attachment_taxonomies',
+				'title'   => __( 'Disable Attachment Taxonomies', 'foogallery' ),
+				'desc'    => sprintf( __( 'Disables the %s attachment taxonomies (Media Tags and Media Collections).', 'foogallery' ), foogallery_plugin_name() ),
+				'type'    => 'checkbox',
+				'tab'     => 'advanced'
+			);
+
 			//endregion Advanced Tab
 
 			return apply_filters( 'foogallery_admin_settings_override', array(

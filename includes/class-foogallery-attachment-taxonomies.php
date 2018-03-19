@@ -12,27 +12,37 @@ if ( ! class_exists( 'FooGallery_Attachment_Taxonomies' ) ) {
          * Class Constructor
          */
         function __construct() {
-            add_action( 'init', array( $this, 'add_taxonomies' ) );
+			add_action( 'init', array( $this, 'init_all' ), 11 );
+        }
 
-            if ( is_admin() ) {
-                add_action( 'admin_menu', array( $this, 'add_menu_items' ), 1 );
-                add_filter( 'parent_file', array( $this, 'set_current_menu' ) );
-                add_filter( 'manage_media_columns', array( $this, 'change_attachment_column_names' ) );
-                add_filter( 'manage_edit-foogallery_attachment_tag_columns', array( $this, 'clean_column_names' ), 999 );
-                add_filter( 'manage_edit-foogallery_attachment_collection_columns', array( $this, 'clean_column_names' ), 999 );
+		/**
+		 * Initialize all the hooks if the taxonomies are not disabled
+		 */
+        function init_all() {
+			if ( foogallery_get_setting( 'disable_attachment_taxonomies' ) === 'on' ) {
+				return;
+			}
+
+			$this->add_taxonomies();
+
+			if ( is_admin() ) {
+				add_action( 'admin_menu', array( $this, 'add_menu_items' ), 1 );
+				add_filter( 'parent_file', array( $this, 'set_current_menu' ) );
+				add_filter( 'manage_media_columns', array( $this, 'change_attachment_column_names' ) );
+				add_filter( 'manage_edit-foogallery_attachment_tag_columns', array( $this, 'clean_column_names' ), 999 );
+				add_filter( 'manage_edit-foogallery_attachment_collection_columns', array( $this, 'clean_column_names' ), 999 );
 
 				//make the attachment taxonomies awesome
 				add_action( 'admin_head', array( $this, 'include_inline_taxonomy_data_script' ) );
 				add_filter( 'attachment_fields_to_edit', array( $this, 'inject_code_into_field' ), 10, 2 );
-                //add_filter( 'attachment_fields_to_save', array( $this, 'save_fields' ), 10, 2 );
+				//add_filter( 'attachment_fields_to_save', array( $this, 'save_fields' ), 10, 2 );
 				add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_js' ), 99 );
 
 				//ajax actions from the media modal
-                add_action( 'wp_ajax_foogallery-taxonomies-add-term', array( $this, 'ajax_add_term' ) );
-                add_action( 'wp_ajax_foogallery-taxonomies-save-terms', array( $this, 'ajax_save_terms' ) );
-            }
-        }
-
+				add_action( 'wp_ajax_foogallery-taxonomies-add-term', array( $this, 'ajax_add_term' ) );
+				add_action( 'wp_ajax_foogallery-taxonomies-save-terms', array( $this, 'ajax_save_terms' ) );
+			}
+		}
         /**
          * Save terms for an attachment
          *
@@ -275,6 +285,10 @@ if ( ! class_exists( 'FooGallery_Attachment_Taxonomies' ) ) {
          * Register the taxonomies for attachments
          */
         function add_taxonomies() {
+
+//			if ( foogallery_get_setting( 'disable_attachment_taxonomies') === 'on' ) {
+//				return;
+//			}
 
             $tag_args = array(
                 'labels'            => array(
