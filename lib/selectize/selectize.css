@@ -77,18 +77,19 @@
   z-index: 1;
   /* fixes ie bug (see #392) */
   position: absolute;
+  opacity: 0.6;
   top: 0;
   right: 0;
   bottom: 0;
   width: 17px;
   text-align: center;
   font-weight: bold;
-  font-size: 12px;
+  font-size: 13px;
   color: inherit;
   text-decoration: none;
   vertical-align: middle;
   display: inline-block;
-  padding: 2px 0 0 0;
+  padding: 1px 0 0 0;
   border-left: 1px solid #d0d0d0;
   -webkit-border-radius: 0 2px 2px 0;
   -moz-border-radius: 0 2px 2px 0;
@@ -351,3 +352,22 @@
 .selectize-dropdown-content .parent-label {
   color: #BBBBBB;
 }
+
+.selectize-control.loading:before {
+  content: "";
+  position: absolute;
+  display: inline;
+  background: url(/wp-admin/images/spinner.gif) no-repeat;
+  background-size: 20px 20px;
+  background-position: right;
+  opacity: 0.5;
+  filter: alpha(opacity=50);
+  width: 100%;
+  height: 100%;
+  margin-left: -5px;
+}
+
+.selectize-control.loading .selectize-input {
+  background: transparent;
+}
+

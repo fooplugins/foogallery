@@ -21,17 +21,15 @@ if ( ! class_exists( 'FooGallery_Attachment_Taxonomies' ) ) {
                 add_filter( 'manage_edit-foogallery_attachment_tag_columns', array( $this, 'clean_column_names' ), 999 );
                 add_filter( 'manage_edit-foogallery_attachment_collection_columns', array( $this, 'clean_column_names' ), 999 );
 
-		//make the attachment taxonomies awesome
-		add_action( 'admin_head', array( $this, 'include_inline_taxonomy_data_script' ) );
-		add_filter( 'attachment_fields_to_edit', array( $this, 'inject_code_into_field' ), 10, 2 );
-                add_filter( 'attachment_fields_to_save', array( $this, 'save_fields' ), 10, 2 );
-		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_js' ), 99 );
+				//make the attachment taxonomies awesome
+				add_action( 'admin_head', array( $this, 'include_inline_taxonomy_data_script' ) );
+				add_filter( 'attachment_fields_to_edit', array( $this, 'inject_code_into_field' ), 10, 2 );
+                //add_filter( 'attachment_fields_to_save', array( $this, 'save_fields' ), 10, 2 );
+				add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_js' ), 99 );
 
-		//ajax actions from the media modal
+				//ajax actions from the media modal
                 add_action( 'wp_ajax_foogallery-taxonomies-add-term', array( $this, 'ajax_add_term' ) );
                 add_action( 'wp_ajax_foogallery-taxonomies-save-terms', array( $this, 'ajax_save_terms' ) );
-                //add_action( 'restrict_manage_posts', array( $this, 'add_collection_filter' ) );
-               //add_filter( 'foogallery_attachment_save_field_taxonomy_tag', array( $this, 'save_media_tag_field' ), 10, 4 );
             }
         }
 
@@ -50,6 +48,12 @@ if ( ! class_exists( 'FooGallery_Attachment_Taxonomies' ) ) {
                 $taxonomy = $_POST['taxonomy'];
 
                 $result = wp_set_object_terms($attachment_id, array_map('trim', preg_split('/,+/', $terms)), $taxonomy, false);
+
+				clean_post_cache($attachment_id);
+
+				if ( !is_wp_error( $result ) ) {
+					wp_send_json( $terms );
+				}
             }
             die();
         }
@@ -116,9 +120,6 @@ if ( ! class_exists( 'FooGallery_Attachment_Taxonomies' ) ) {
 
 			//enqueue media attachment autosave script
             wp_enqueue_script( 'foogallery-attachment-autosave', FOOGALLERY_URL . 'js/admin-foogallery-attachment-autosave.js', ['media-views']);
-
-
-
 		}
 
 		/**
@@ -333,7 +334,7 @@ if ( ! class_exists( 'FooGallery_Attachment_Taxonomies' ) ) {
 		 * @return array
 		 */
         function build_taxonomy_html( $taxonomy, $post, $value ) {
-			$html = '<input type="text" data-attachment_id="' . $post->ID . '" class="foogallery-attachment-ignore-change" id="attachments-' . $post->ID .'-' . $taxonomy . '" name="attachments-' . $post->ID .'-' . $taxonomy . '" value="' . $value . '" />';
+			$html = '<input type="text" data-attachment_id="' . $post->ID . '" class="foogallery-attachment-ignore-change" id="attachments-' . $post->ID .'-' . $taxonomy . '" name="attachments-' . $post->ID .'-' . $taxonomy . '" value="' . $value . '" data-original-value="' . $value . '" />';
 			$html .= '<script type="script/javascript">
 				FOOGALLERY_SELECTIZE(\'#attachments-' . $post->ID .'-' . $taxonomy . '\', \'' . $taxonomy .'\');
 				</script>';
@@ -383,59 +384,5 @@ if ( ! class_exists( 'FooGallery_Attachment_Taxonomies' ) ) {
 
 			return $terms_all;
 		}
-
-        /**
-         * Save the tags for the attachment
-         *
-         * @param $field
-         * @param $values
-         * @param $post
-         * @param $attachment
-         */
-        function save_media_tag_field($field, $values, $post, $attachment) {
-            $post_id = $post['ID'];
-
-            //first clear any tags for the post
-            wp_delete_object_term_relationships( $post_id, FOOGALLERY_ATTACHMENT_TAXONOMY_TAG );
-
-            $tag_ids = $attachment[ $field ];
-
-            if ( !empty( $tag_ids ) ) {
-                //clean tag ids
-                $tag_ids = array_keys( $tag_ids );
-                $tag_ids = array_map( 'intval', $tag_ids );
-                $tag_ids = array_unique( $tag_ids );
-
-                $term_taxonomy_ids = wp_set_object_terms( $post_id, $tag_ids, FOOGALLERY_ATTACHMENT_TAXONOMY_TAG );
-
-                if ( is_wp_error( $term_taxonomy_ids ) ) {
-                    // There was an error somewhere and the terms couldn't be set.
-                    $post['errors'][ $field ]['errors'][] = __( 'Error saving the tags for the attachment!', 'foogallery' );
-                }
-            }
-        }
-
-        /***
-         *
-         * Add a tag filter to the attachments listing page
-         */
-        function add_collection_filter() {
-            global $pagenow;
-            if ( 'upload.php' == $pagenow ) {
-
-                $dropdown_options = array(
-                    'taxonomy'        => FOOGALLERY_ATTACHMENT_TAXONOMY_COLLECTION,
-                    'show_option_all' => __( 'All Collections' ),
-                    'hide_empty'      => false,
-                    'hierarchical'    => true,
-                    'orderby'         => 'name',
-                    'show_count'      => true,
-                    'walker'          => new foogallery_walker_category_dropdown(),
-                    'value'           => 'slug'
-                );
-
-                wp_dropdown_categories( $dropdown_options );
-            }
-        }
     }
 }
