@@ -70,7 +70,7 @@ if (!class_exists('FooGallery_Attachment_Fields')) {
 				    // and is not one of the exclusions
 				    if ( !in_array( $post->post_mime_type, $values['exclusions'] ) ) {
 					    // We get the already saved field meta value
-					    $meta = ''; //apply_filters( 'foogallery_attachment_custom_field_value', get_post_meta( $post->ID, '_' . $field, true ), $post->ID, $field, $values );
+					    $meta = apply_filters( 'foogallery_attachment_custom_field_value', get_post_meta( $post->ID, '_' . $field, true ), $post->ID, $field, $values );
 
 					    switch ( $values['input'] ) {
 						    default:
