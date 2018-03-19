@@ -151,19 +151,33 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 				);
 
 				$fields[] = array(
+					'id'      => 'filtering_mode_help',
+					'title'   => __( 'Selection Mode Help', 'foogallery' ),
+					'desc'    => __( 'The default selection mode is Single, which allows you to choose a single filter at a time. You can also choose to filter by more than 1 filter by selecting Multiple. Multiple supports either a union (OR) or an intersect (AND) mode.', 'foogallery' ),
+					'section' => __( 'Filtering', 'foogallery' ),
+					'type'    => 'help',
+					'row_data' => array(
+						'data-foogallery-hidden' => true,
+						'data-foogallery-show-when-field-operator' => '===',
+						'data-foogallery-show-when-field'          => 'filtering_type',
+						'data-foogallery-show-when-field-value'    => 'advanced',
+					)
+				);
+
+				$fields[] = array(
 					'id'       => 'filtering_mode',
 					'title'    => __( 'Selection Mode', 'foogallery' ),
-					'desc'     => __( 'The selection mode to use when filtering. Single will allow you to choose a single filter at a time. Multiple will allow you to filter using more than 1 filter, and then you can choose either a union (OR) or intersect (AND) mode.', 'foogallery' ),
+					'desc'     => __( 'The selection mode to use when filtering.', 'foogallery' ),
 					'section'  => __( 'Filtering', 'foogallery' ),
 					'spacer'   => '<span class="spacer"></span>',
 					'type'     => 'radio',
 					'default'  => 'single',
-					'choices'  => apply_filters(
+					'choices'  => apply_filters (
 						'foogallery_gallery_template_filtering_mode_choices', array(
-						'single'    => __( 'Single', 'foogallery' ),
-						'union'     => __( 'Multiple (OR)', 'foogallery' ),
-						'intersect' => __( 'Multiple (AND)', 'foogallery' )
-					)
+							'single'    => __( 'Single', 'foogallery' ),
+							'union'     => __( 'Multiple (OR)', 'foogallery' ),
+							'intersect' => __( 'Multiple (AND)', 'foogallery' )
+						)
 					),
 					'row_data' => array(
 						'data-foogallery-hidden'                   => true,
