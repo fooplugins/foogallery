@@ -1,10 +1,10 @@
 <?php
-if ( ! class_exists( 'FooGallery_Attachment_Taxonomies' ) ) {
+if ( ! class_exists( 'FooGallery_Pro_Attachment_Taxonomies' ) ) {
 
     define( 'FOOGALLERY_ATTACHMENT_TAXONOMY_TAG', 'foogallery_attachment_tag' );
     define( 'FOOGALLERY_ATTACHMENT_TAXONOMY_COLLECTION', 'foogallery_attachment_collection' );
 
-    class FooGallery_Attachment_Taxonomies {
+    class FooGallery_Pro_Attachment_Taxonomies {
 
     	private $cached_terms = array();
 
@@ -13,7 +13,28 @@ if ( ! class_exists( 'FooGallery_Attachment_Taxonomies' ) ) {
          */
         function __construct() {
 			add_action( 'init', array( $this, 'init_all' ), 11 );
+			add_action( 'foogallery_admin_settings_override', array( $this, 'add_admin_setting' ) );
         }
+
+		/**
+		 * Adds a setting to disable all FooGallery taxonomies
+		 *
+		 * @param $settings
+		 *
+		 * @return mixed
+		 */
+        function add_admin_setting($settings) {
+
+			$settings['settings'][] = array(
+				'id'      => 'disable_attachment_taxonomies',
+				'title'   => __( 'Disable Attachment Taxonomies', 'foogallery' ),
+				'desc'    => sprintf( __( 'Disables the %s attachment taxonomies (Media Tags and Media Collections).', 'foogallery' ), foogallery_plugin_name() ),
+				'type'    => 'checkbox',
+				'tab'     => 'advanced'
+			);
+
+        	return $settings;
+		}
 
 		/**
 		 * Initialize all the hooks if the taxonomies are not disabled

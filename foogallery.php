@@ -167,8 +167,6 @@ if ( ! class_exists( 'FooGallery_Plugin' ) ) {
             //include the default templates no matter what!
             new FooGallery_Default_Templates();
 
-            new FooGallery_Attachment_Taxonomies();
-
 			if ( foogallery_fs()->is__premium_only() ) {
 				if ( foogallery_fs()->can_use_premium_code() ) {
 					require_once FOOGALLERY_PATH . 'pro/foogallery-pro.php';
