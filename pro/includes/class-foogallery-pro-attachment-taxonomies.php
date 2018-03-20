@@ -307,10 +307,6 @@ if ( ! class_exists( 'FooGallery_Pro_Attachment_Taxonomies' ) ) {
          */
         function add_taxonomies() {
 
-//			if ( foogallery_get_setting( 'disable_attachment_taxonomies') === 'on' ) {
-//				return;
-//			}
-
             $tag_args = array(
                 'labels'            => array(
                     'name'              => __( 'Media Tags', 'foogallery' ),
