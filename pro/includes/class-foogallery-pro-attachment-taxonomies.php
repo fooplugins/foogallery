@@ -2,7 +2,7 @@
 if ( ! class_exists( 'FooGallery_Pro_Attachment_Taxonomies' ) ) {
 
     define( 'FOOGALLERY_ATTACHMENT_TAXONOMY_TAG', 'foogallery_attachment_tag' );
-    define( 'FOOGALLERY_ATTACHMENT_TAXONOMY_COLLECTION', 'foogallery_attachment_collection' );
+    define( 'FOOGALLERY_ATTACHMENT_TAXONOMY_CATEGORY', 'foogallery_attachment_category' );
 
     class FooGallery_Pro_Attachment_Taxonomies {
 
@@ -28,7 +28,7 @@ if ( ! class_exists( 'FooGallery_Pro_Attachment_Taxonomies' ) ) {
 			$settings['settings'][] = array(
 				'id'      => 'disable_attachment_taxonomies',
 				'title'   => __( 'Disable Attachment Taxonomies', 'foogallery' ),
-				'desc'    => sprintf( __( 'Disables the %s attachment taxonomies (Media Tags and Media Collections).', 'foogallery' ), foogallery_plugin_name() ),
+				'desc'    => sprintf( __( 'Disables the %s attachment taxonomies (Media Tags and Media Categories).', 'foogallery' ), foogallery_plugin_name() ),
 				'type'    => 'checkbox',
 				'tab'     => 'advanced'
 			);
@@ -51,7 +51,7 @@ if ( ! class_exists( 'FooGallery_Pro_Attachment_Taxonomies' ) ) {
 				add_filter( 'parent_file', array( $this, 'set_current_menu' ) );
 				add_filter( 'manage_media_columns', array( $this, 'change_attachment_column_names' ) );
 				add_filter( 'manage_edit-foogallery_attachment_tag_columns', array( $this, 'clean_column_names' ), 999 );
-				add_filter( 'manage_edit-foogallery_attachment_collection_columns', array( $this, 'clean_column_names' ), 999 );
+				add_filter( 'manage_edit-foogallery_attachment_category_columns', array( $this, 'clean_column_names' ), 999 );
 
 				//make the attachment taxonomies awesome
 				add_action( 'admin_head', array( $this, 'include_inline_taxonomy_data_script' ) );
@@ -176,15 +176,15 @@ if ( ! class_exists( 'FooGallery_Pro_Attachment_Taxonomies' ) ) {
 				);
 			}
 
-			if ( array_key_exists( FOOGALLERY_ATTACHMENT_TAXONOMY_COLLECTION, $fields ) ) {
+			if ( array_key_exists( FOOGALLERY_ATTACHMENT_TAXONOMY_CATEGORY, $fields ) ) {
 
-				$value = trim( $fields[FOOGALLERY_ATTACHMENT_TAXONOMY_COLLECTION]['value'] );
+				$value = trim( $fields[FOOGALLERY_ATTACHMENT_TAXONOMY_CATEGORY]['value'] );
 
-				$fields[FOOGALLERY_ATTACHMENT_TAXONOMY_COLLECTION] = array(
+				$fields[FOOGALLERY_ATTACHMENT_TAXONOMY_CATEGORY] = array(
 					'show_in_edit' => false,
 					'input' => 'html',
-					'html' => $this->build_taxonomy_html( FOOGALLERY_ATTACHMENT_TAXONOMY_COLLECTION, $post, $value ),
-					'label' => __( 'Media Collections', 'foogallery' )
+					'html' => $this->build_taxonomy_html( FOOGALLERY_ATTACHMENT_TAXONOMY_CATEGORY, $post, $value ),
+					'label' => __( 'Media Categories', 'foogallery' )
 				);
 			}
 
@@ -217,13 +217,13 @@ if ( ! class_exists( 'FooGallery_Pro_Attachment_Taxonomies' ) ) {
 				),
 			);
 
-			$taxonomy_data[FOOGALLERY_ATTACHMENT_TAXONOMY_COLLECTION] = array(
-				'slug' => FOOGALLERY_ATTACHMENT_TAXONOMY_COLLECTION,
-				'terms' => $this->build_terms_recursive(FOOGALLERY_ATTACHMENT_TAXONOMY_COLLECTION, array('hide_empty' => false)),
+			$taxonomy_data[FOOGALLERY_ATTACHMENT_TAXONOMY_CATEGORY] = array(
+				'slug' => FOOGALLERY_ATTACHMENT_TAXONOMY_CATEGORY,
+				'terms' => $this->build_terms_recursive(FOOGALLERY_ATTACHMENT_TAXONOMY_CATEGORY, array('hide_empty' => false)),
 				'query_var' => true,
 				'labels' => array(
-					'placeholder' => __( 'Select collections, or add a new collection...', 'foogallery' ),
-					'add' => __( 'Add new collection', 'foogallery' )
+					'placeholder' => __( 'Select categories, or add a new category...', 'foogallery' ),
+					'add' => __( 'Add new category', 'foogallery' )
 				),
 			);
 
@@ -236,8 +236,8 @@ if ( ! class_exists( 'FooGallery_Pro_Attachment_Taxonomies' ) ) {
 
         function change_attachment_column_names( $columns ) {
 
-             if ( array_key_exists( 'taxonomy-foogallery_attachment_collection', $columns ) ) {
-                 $columns['taxonomy-foogallery_attachment_collection'] = __('Collections', 'foogallery');
+             if ( array_key_exists( 'taxonomy-foogallery_attachment_category', $columns ) ) {
+                 $columns['taxonomy-foogallery_attachment_category'] = __('Categories', 'foogallery');
              }
 
              return $columns;
@@ -273,9 +273,9 @@ if ( ! class_exists( 'FooGallery_Pro_Attachment_Taxonomies' ) ) {
             );
 
             foogallery_add_submenu_page(
-                __( 'Media Collections', 'foogallery' ),
+                __( 'Media Categories', 'foogallery' ),
                 'manage_options',
-                'edit-tags.php?taxonomy=' . FOOGALLERY_ATTACHMENT_TAXONOMY_COLLECTION . '&post_type=' . FOOGALLERY_CPT_GALLERY,
+                'edit-tags.php?taxonomy=' . FOOGALLERY_ATTACHMENT_TAXONOMY_CATEGORY . '&post_type=' . FOOGALLERY_CPT_GALLERY,
                 null
             );
         }
@@ -294,8 +294,8 @@ if ( ! class_exists( 'FooGallery_Pro_Attachment_Taxonomies' ) ) {
                     $submenu_file = 'edit-tags.php?taxonomy=' . FOOGALLERY_ATTACHMENT_TAXONOMY_TAG . '&post_type=' . FOOGALLERY_CPT_GALLERY;
                 }
 
-                if ( 'edit-foogallery_attachment_collection' === $current_screen->id ) {
-                    $submenu_file = 'edit-tags.php?taxonomy=' . FOOGALLERY_ATTACHMENT_TAXONOMY_COLLECTION . '&post_type=' . FOOGALLERY_CPT_GALLERY;
+                if ( 'edit-foogallery_attachment_category' === $current_screen->id ) {
+                    $submenu_file = 'edit-tags.php?taxonomy=' . FOOGALLERY_ATTACHMENT_TAXONOMY_CATEGORY . '&post_type=' . FOOGALLERY_CPT_GALLERY;
                 }
             }
 
@@ -335,19 +335,19 @@ if ( ! class_exists( 'FooGallery_Pro_Attachment_Taxonomies' ) ) {
 
             register_taxonomy( FOOGALLERY_ATTACHMENT_TAXONOMY_TAG, 'attachment', $tag_args );
 
-            $collection_args = array(
+            $category_args = array(
                 'labels'            => array(
-                    'name'              => __( 'Media Collections', 'foogallery' ),
-                    'singular_name'     => __( 'Collection', 'foogallery' ),
-                    'search_items'      => __( 'Search Collections', 'foogallery' ),
-                    'all_items'         => __( 'All Collections', 'foogallery' ),
-                    'parent_item'       => __( 'Parent Collection', 'foogallery' ),
-                    'parent_item_colon' => __( 'Parent Collection:', 'foogallery' ),
-                    'edit_item'         => __( 'Edit Collection', 'foogallery' ),
-                    'update_item'       => __( 'Update Collection', 'foogallery' ),
-                    'add_new_item'      => __( 'Add New Collection', 'foogallery' ),
-                    'new_item_name'     => __( 'New Collection Name', 'foogallery' ),
-                    'menu_name'         => __( 'Media Collections', 'foogallery' )
+                    'name'              => __( 'Media Categories', 'foogallery' ),
+                    'singular_name'     => __( 'Category', 'foogallery' ),
+                    'search_items'      => __( 'Search Categories', 'foogallery' ),
+                    'all_items'         => __( 'All Categories', 'foogallery' ),
+                    'parent_item'       => __( 'Parent Category', 'foogallery' ),
+                    'parent_item_colon' => __( 'Parent Category:', 'foogallery' ),
+                    'edit_item'         => __( 'Edit Category', 'foogallery' ),
+                    'update_item'       => __( 'Update Category', 'foogallery' ),
+                    'add_new_item'      => __( 'Add New Category', 'foogallery' ),
+                    'new_item_name'     => __( 'New Category Name', 'foogallery' ),
+                    'menu_name'         => __( 'Media Categories', 'foogallery' )
                 ),
                 'hierarchical'      => true,
                 'query_var'         => true,
@@ -357,7 +357,7 @@ if ( ! class_exists( 'FooGallery_Pro_Attachment_Taxonomies' ) ) {
                 'update_count_callback' => '_update_generic_term_count'
             );
 
-            register_taxonomy( FOOGALLERY_ATTACHMENT_TAXONOMY_COLLECTION, 'attachment', $collection_args );
+            register_taxonomy( FOOGALLERY_ATTACHMENT_TAXONOMY_CATEGORY, 'attachment', $category_args );
         }
 
 		/**
