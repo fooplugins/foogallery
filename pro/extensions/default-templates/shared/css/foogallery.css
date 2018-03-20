@@ -3445,7 +3445,7 @@ only screen and (min-resolution: 2.25dppx) {
 	text-align: left;
 }
 .fg-simple_portfolio .fg-caption-desc {
-	text-align: justify;
+	text-align: left;
 }
 .fg-simple_portfolio.fg-light .fg-caption,
 .fg-simple_portfolio.fg-dark .fg-caption {
@@ -3483,7 +3483,7 @@ only screen and (min-resolution: 2.25dppx) {
 
 /* Handle Border Sizing */
 .fg-simple_portfolio .fg-caption {
-	border-width: 10px;
+	border-width: 0;
 }
 .fg-simple_portfolio .fg-caption-title+.fg-caption-desc {
 	margin-top: 5px;

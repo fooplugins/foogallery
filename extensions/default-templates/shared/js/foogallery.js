@@ -2935,7 +2935,7 @@
 	FooGallery.utils,
 	FooGallery.utils.is
 );
-(function($, _, _utils, _is, _fn){
+(function ($, _, _utils, _is, _fn) {
 
 	_.debug = new _utils.Debugger("__FooGallery__");
 
@@ -2946,20 +2946,21 @@
 	 * @param {(string|string[]|object)} classes - A single space delimited string of CSS class names to convert or an array of them with each item being included in the selector using the OR (`,`) syntax as a separator. If an object is supplied the result will be an object with the same property names but the values converted to selectors.
 	 * @returns {(object|string)}
 	 */
-	_utils.selectify = function(classes){
-		if (_is.hash(classes)){
+	_utils.selectify = function (classes) {
+		if (_is.empty(classes)) return null;
+		if (_is.hash(classes)) {
 			var result = {}, selector;
-			for (var name in classes){
+			for (var name in classes) {
 				if (!classes.hasOwnProperty(name)) continue;
-				if (selector = _utils.selectify(classes[name])){
+				if (selector = _utils.selectify(classes[name])) {
 					result[name] = selector;
 				}
 			}
 			return result;
 		}
-		if (_is.string(classes) || _is.array(classes)){
+		if (_is.string(classes) || _is.array(classes)) {
 			if (_is.string(classes)) classes = [classes];
-			return $.map(classes, function(str){
+			return $.map(classes, function (str) {
 				return _is.string(str) ? "." + str.split(/\s/g).join(".") : null;
 			}).join(",");
 		}
@@ -2993,17 +2994,17 @@
 	 */
 	_.dataItem = "__FooGalleryItem__";
 
-	_.init = function(options, element){
+	_.init = function (options, element) {
 		return _.template.make(options, element).initialize();
 	};
 
-	_.initAll = function(options){
-		return _fn.when($(".foogallery").map(function(i, element){
+	_.initAll = function (options) {
+		return _fn.when($(".foogallery").map(function (i, element) {
 			return _.init(options, element);
 		}).get());
 	};
 
-	_.parseSrc = function(src, srcWidth, srcHeight, srcset, renderWidth, renderHeight){
+	_.parseSrc = function (src, srcWidth, srcHeight, srcset, renderWidth, renderHeight) {
 		if (!_is.string(src)) return null;
 		// if there is no srcset just return the src
 		if (!_is.string(srcset)) return src;
@@ -3031,8 +3032,8 @@
 
 		// get the current viewport info and use it to determine the correct src to load
 		var dpr = window.devicePixelRatio || 1,
-			area = {w: renderWidth * dpr, h: renderHeight * dpr, x: dpr},
-			property;
+				area = {w: renderWidth * dpr, h: renderHeight * dpr, x: dpr},
+				property;
 
 		// first check each of the viewport properties against the max values of the same properties in our src array
 		// only src's with a property greater than the viewport or equal to the max are kept
@@ -3079,15 +3080,15 @@
 	 *     <div class="fg-item-inner">
 	 *       <a class="fg-thumb" href="[item.href]">
 	 *         <img class="fg-image" width="[item.width]" height="[item.height]"
-	 *         	title="[item.title]" alt="[item.description]"
-	 *         	data-src="[item.src]"
-	 *         	data-srcset="[item.srcset]" />
+	 *          title="[item.title]" alt="[item.description]"
+	 *          data-src="[item.src]"
+	 *          data-srcset="[item.srcset]" />
 	 *         <!-- Optional caption markup -->
 	 *         <div class="fg-caption">
-	 *         	<div class="fg-caption-inner">
-	 *         	 <div class="fg-caption-title">[item.title]</div>
-	 *         	 <div class="fg-caption-desc">[item.description]</div>
-	 *         	</div>
+	 *          <div class="fg-caption-inner">
+	 *           <div class="fg-caption-title">[item.title]</div>
+	 *           <div class="fg-caption-desc">[item.description]</div>
+	 *          </div>
 	 *         </div>
 	 *       </a>
 	 *     </div>
@@ -3095,17 +3096,17 @@
 	 *   <!-- Any number of additional items -->
 	 * </div>
 	 * <script>
-	 * 	jQuery(function($){
+	 *  jQuery(function($){
 	 * 		$("#gallery-1").foogallery();
 	 * 	});
 	 * </script>
 	 * @example {@caption Options can be supplied directly to the `.foogallery()` method or by supplying them using the `data-foogallery` attribute. If supplied using the attribute the value must follow [valid JSON syntax](http://en.wikipedia.org/wiki/JSON#Data_types.2C_syntax_and_example) including quoted property names. If the same option is supplied in both locations as it is below, the value from the attribute overrides the value supplied to the method, in this case `lazy` would be `true`.}{@lang html}
 	 * <!-- Supplying the options using the attribute -->
 	 * <div id="gallery-1" class="foogallery fg-responsive" data-foogallery='{"lazy": true}'>
-	 * 	<!-- Items -->
+	 *  <!-- Items -->
 	 * </div>
 	 * <script>
-	 * 	jQuery(function($){
+	 *  jQuery(function($){
 	 * 		// Supply the options directly to the method
 	 * 		$("#gallery-1").foogallery({
 	 * 			lazy: false
@@ -3113,12 +3114,12 @@
 	 * 	});
 	 * </script>
 	 */
-	$.fn.foogallery = function(options, ready){
-		return this.filter(".foogallery").each(function(i, element){
-			if (_is.string(options)){
+	$.fn.foogallery = function (options, ready) {
+		return this.each(function (i, element) {
+			if (_is.string(options)) {
 				var template = $.data(element, _.dataTemplate);
-				if (template instanceof _.Template){
-					switch (options){
+				if (template instanceof _.Template) {
+					switch (options) {
 						case "layout":
 							template.layout();
 							return;
@@ -3128,8 +3129,8 @@
 					}
 				}
 			} else {
-				_.template.make(options, element).initialize().then(function(template){
-					if (_is.fn(ready)){
+				_.template.make(options, element).initialize().then(function (template) {
+					if (_is.fn(ready)) {
 						ready(template);
 					}
 				});
@@ -3150,13 +3151,13 @@
 	 */
 
 })(
-	FooGallery.$,
-	FooGallery,
-	FooGallery.utils,
-	FooGallery.utils.is,
-	FooGallery.utils.fn
+		FooGallery.$,
+		FooGallery,
+		FooGallery.utils,
+		FooGallery.utils.is,
+		FooGallery.utils.fn
 );
-(function($, _, _utils, _is, _fn, _obj){
+(function ($, _, _utils, _is, _fn, _obj) {
 
 	_.TemplateFactory = _utils.Factory.extend(/** @lends FooGallery.TemplateFactory */{
 		/**
@@ -3168,7 +3169,7 @@
 		 * @borrows FooGallery.utils.Class.extend as extend
 		 * @borrows FooGallery.utils.Class.override as override
 		 */
-		construct: function(){
+		construct: function () {
 			/**
 			 * @summary An object containing all registered galleries.
 			 * @memberof FooGallery.TemplateFactory#
@@ -3206,9 +3207,9 @@
 		 * @param {number} [priority=0] - This determines the index for the class when using either the {@link FooGallery.TemplateFactory#load|load} or {@link FooGallery.TemplateFactory#names|names} methods, a higher value equals a lower index.
 		 * @returns {boolean} `true` if the `klass` was successfully registered.
 		 */
-		register: function(name, template, options, classes, il8n, priority){
+		register: function (name, template, options, classes, il8n, priority) {
 			var self = this, result = self._super(name, template, priority);
-			if (result){
+			if (result) {
 				var reg = self.registered;
 				reg[name].opt = _is.hash(options) ? options : {};
 				reg[name].cls = _is.hash(classes) ? classes : {};
@@ -3224,7 +3225,7 @@
 		 * @param {(jQuery|HTMLElement|string)} [element] - The jQuery object, HTMLElement or selector of the template element to create. If not supplied the {@link FooGallery~Options#type|type} options' value is used.
 		 * @returns {FooGallery.Template}
 		 */
-		make: function(options, element){
+		make: function (options, element) {
 			element = _is.jq(element) ? element : $(element);
 			options = _obj.extend({}, options, element.data("foogallery"));
 			var self = this, type = self.type(options, element);
@@ -3232,10 +3233,10 @@
 			options = self.options(type, options);
 			return self._super(type, options, element);
 		},
-		type: function(options, element){
+		type: function (options, element) {
 			element = _is.jq(element) ? element : $(element);
 			var self = this, type = _is.hash(options) && _is.hash(options) && _is.string(options.type) && self.contains(options.type) ? options.type : "core";
-			if (type === "core" && element.length > 0){
+			if (type === "core" && element.length > 0) {
 				var reg = self.registered, names = self.names(true);
 				for (var i = 0, l = names.length; i < l; i++) {
 					if (!reg.hasOwnProperty(names[i])) continue;
@@ -3250,17 +3251,17 @@
 			}
 			return type;
 		},
-		configure: function(name, options, classes, il8n){
+		configure: function (name, options, classes, il8n) {
 			var self = this;
-			if (self.contains(name)){
+			if (self.contains(name)) {
 				var reg = self.registered;
 				_obj.extend(reg[name].opt, options);
 				_obj.extend(reg[name].cls, classes);
 				_obj.extend(reg[name].il8n, il8n);
 			}
 		},
-		options: function(name, options){
-			options = _obj.extend({}, options);
+		options: function (name, options) {
+			options = _obj.extend({type: name}, options);
 			var self = this, reg = self.registered,
 					def = reg["core"].opt,
 					cls = reg["core"].cls,
@@ -3271,7 +3272,7 @@
 			if (!_is.undef(_.filtering)) options = _.filtering.merge(options);
 			if (!_is.undef(_.paging)) options = _.paging.merge(options);
 
-			if (name !== "core" && self.contains(name)){
+			if (name !== "core" && self.contains(name)) {
 				options = _obj.extend({}, def, reg[name].opt, options);
 				options.cls = _obj.extend({}, cls, reg[name].cls, options.cls);
 				options.il8n = _obj.extend({}, il8n, reg[name].il8n, options.il8n);
@@ -3444,7 +3445,9 @@
 		FooGallery.utils.fn,
 		FooGallery.utils.obj
 );
-(function($, _, _utils, _is, _fn, _str){
+(function ($, _, _utils, _is, _fn, _str) {
+
+	var instance = 0;
 
 	_.Template = _utils.Class.extend(/** @lends FooGallery.Template */{
 		/**
@@ -3457,8 +3460,15 @@
 		 * @borrows FooGallery.utils.Class.extend as extend
 		 * @borrows FooGallery.utils.Class.override as override
 		 */
-		construct: function(options, element){
+		construct: function (options, element) {
 			var self = this;
+			/**
+			 * @summary An instance specific namespace to use when binding events to global objects that could be shared across multiple galleries.
+			 * @memberof FooGallery.Template#
+			 * @name namespace
+			 * @type {string}
+			 */
+			self.namespace = ".foogallery-" + (++instance);
 			/**
 			 * @summary The jQuery object for the template container.
 			 * @memberof FooGallery.Template#
@@ -3487,13 +3497,6 @@
 			 * @type {string}
 			 */
 			self.id = self.$el.prop("id") || options.id;
-			/**
-			 * @summary Whether or not the template created its' own container element.
-			 * @memberof FooGallery.Template#
-			 * @name createdSelf
-			 * @type {boolean}
-			 */
-			self.createdSelf = false;
 			/**
 			 * @summary The CSS classes for the template.
 			 * @memberof FooGallery.Template#
@@ -3555,6 +3558,12 @@
 			self.initialized = false;
 			self.destroying = false;
 			self.destroyed = false;
+			self._undo = {
+				classes: "",
+				style: "",
+				create: false,
+				children: false
+			};
 		},
 
 		// ################
@@ -3573,38 +3582,55 @@
 		 * @fires FooGallery.Template~"post-init.foogallery"
 		 * @fires FooGallery.Template~"ready.foogallery"
 		 */
-		initialize: function(parent){
+		initialize: function (parent) {
 			var self = this;
 			if (_is.promise(self._initialize)) return self._initialize;
 			parent = _is.jq(parent) ? parent : $(parent);
-			return self._initialize = $.Deferred(function(def){
+			return self._initialize = $.Deferred(function (def) {
 				self.initializing = true;
-				if (parent.length === 0 && self.$el.parent().length === 0){
+				if (parent.length === 0 && self.$el.parent().length === 0) {
 					def.reject("A parent element is required.");
 					return;
 				}
-				if (self.$el.length === 0){
+				if (self.$el.length === 0) {
 					self.$el = self.create();
-					self.createdSelf = true;
+					self._undo.create = true;
 				}
-				if (parent.length > 0){
+				if (parent.length > 0) {
 					self.$el.appendTo(parent);
 				}
 				var queue = $.Deferred(), promise = queue.promise(), existing;
-				if (self.$el.length > 0 && (existing = self.$el.data(_.dataTemplate)) instanceof _.Template){
-					promise = promise.then(function(){
-						return existing.destroy().then(function(){
+				if (self.$el.length > 0 && (existing = self.$el.data(_.dataTemplate)) instanceof _.Template) {
+					promise = promise.then(function () {
+						return existing.destroy().then(function () {
 							self.$el.data(_.dataTemplate, self);
 						});
 					});
 				} else {
 					self.$el.data(_.dataTemplate, self);
 				}
-				promise.then(function(){
+				promise.then(function () {
 					if (self.destroying) return _fn.rejectWith("destroy in progress");
 					// at this point we have our container element free of pre-existing instances so let's bind any event listeners supplied by the .on option
-					if (!_is.empty(self.opt.on)){
+					if (!_is.empty(self.opt.on)) {
 						self.$el.on(self.opt.on);
+					}
+					self._undo.classes = self.$el.attr("class");
+					self._undo.style = self.$el.attr("style");
+
+					// ensure the container has it's required CSS classes
+					if (!self.$el.is(self.sel.container)) {
+						self.$el.addClass(self.cls.container);
+					}
+					var selector = _utils.selectify(self.opt.classes);
+					if (selector != null && !self.$el.is(selector)) {
+						self.$el.addClass(self.opt.classes);
+					}
+
+					// if the container currently has no children make them
+					if (self.$el.children().length == 0) {
+						self.$el.append(self.createChildren());
+						self._undo.children = true;
 					}
 
 					/**
@@ -3637,17 +3663,17 @@
 					 */
 					var e = self.raise("pre-init");
 					if (e.isDefaultPrevented()) return _fn.rejectWith("pre-init default prevented");
-				}).then(function(){
+				}).then(function () {
 					if (self.destroying) return _fn.rejectWith("destroy in progress");
 					// checks the delay option and if it is greater than 0 waits for that amount of time before continuing
 					if (self.opt.delay <= 0) return _fn.resolved;
-					return $.Deferred(function(wait){
+					return $.Deferred(function (wait) {
 						self._delay = setTimeout(function () {
 							self._delay = null;
 							wait.resolve();
 						}, self.opt.delay);
 					}).promise();
-				}).then(function(){
+				}).then(function () {
 					if (self.destroying) return _fn.rejectWith("destroy in progress");
 					/**
 					 * @summary Raised before the template is initialized but after any pre-initialization work is complete.
@@ -3693,7 +3719,7 @@
 					var e = self.raise("init");
 					if (e.isDefaultPrevented()) return _fn.rejectWith("init default prevented");
 					return self.items.fetch();
-				}).then(function(){
+				}).then(function () {
 					if (self.destroying) return _fn.rejectWith("destroy in progress");
 					/**
 					 * @summary Raised after the template is initialized but before any post-initialization work is complete.
@@ -3740,9 +3766,9 @@
 					if (e.isDefaultPrevented()) return _fn.rejectWith("post-init default prevented");
 					var state = self.state.parse();
 					self.state.set(_is.empty(state) ? self.state.initial() : state);
-					$(window).on("scroll.foogallery", {self: self}, self.throttle(self.onWindowScroll, self.opt.throttle))
-							.on("popstate.foogallery", {self: self}, self.onWindowPopState);
-				}).then(function(){
+					$(window).on("scroll" + self.namespace, {self: self}, self.throttle(self.onWindowScroll, self.opt.throttle))
+							.on("popstate" + self.namespace, {self: self}, self.onWindowPopState);
+				}).then(function () {
 					if (self.destroying) return _fn.rejectWith("destroy in progress");
 					/**
 					 * @summary Raised after the template is fully initialized but before the first load occurs.
@@ -3762,7 +3788,7 @@
 					 */
 					self.raise("first-load");
 					return self.loadAvailable();
-				}).then(function(){
+				}).then(function () {
 					if (self.destroying) return _fn.rejectWith("destroy in progress");
 					self.initializing = false;
 					self.initialized = true;
@@ -3792,11 +3818,11 @@
 					 */
 					self.raise("ready");
 					def.resolve(self);
-				}).fail(function(err){
+				}).fail(function (err) {
 					def.reject(err);
 				});
 				queue.resolve();
-			}).promise().fail(function(err){
+			}).promise().fail(function (err) {
 				console.log("initialize failed", self, err);
 				self.destroy();
 			});
@@ -3811,9 +3837,19 @@
 		 * <div id="{options.id}" class="{options.cls.container} {options.classes}">
 		 * </div>
 		 */
-		create: function(){
+		create: function () {
 			var self = this;
 			return $("<div/>", {"id": self.id, "class": self.cls.container}).addClass(self.opt.classes);
+		},
+		/**
+		 * @summary Create any container child elements for the template returning the jQuery object.
+		 * @memberof FooGallery.Template#
+		 * @function createChildren
+		 * @returns {(jQuery|jQuery[]|HTMLElement|HTMLElement[])} A jQuery object to use as the container for the template.
+		 * @description This method is called just prior to the {@link FooGallery.Template~"preinit.foogallery"|preinit} event if the container element has no children to allow templates to add any markup required.
+		 */
+		createChildren: function () {
+			return $();
 		},
 
 		// #############
@@ -3828,13 +3864,13 @@
 		 * @description Once this method is called it can not be stopped and the template will be destroyed.
 		 * @fires FooGallery.Template~"destroy.foogallery"
 		 */
-		destroy: function(){
+		destroy: function () {
 			var self = this;
 			if (self.destroyed) return _fn.resolved;
 			self.destroying = true;
-			return $.Deferred(function(def){
-				if (self.initializing && _is.promise(self._initialize)){
-					self._initialize.always(function(){
+			return $.Deferred(function (def) {
+				if (self.initializing && _is.promise(self._initialize)) {
+					self._initialize.always(function () {
 						self.destroying = false;
 						self._destroy();
 						def.resolve();
@@ -3852,7 +3888,7 @@
 		 * @function _destroy
 		 * @private
 		 */
-		_destroy: function(){
+		_destroy: function () {
 			var self = this;
 			if (self.destroyed) return;
 			/**
@@ -3871,13 +3907,12 @@
 			 * });
 			 */
 			self.raise("destroy");
-			$(window).off("popstate.foogallery", self.onWindowPopState)
-					.off("scroll.foogallery");
+			$(window).off(self.namespace);
 			self.state.destroy();
 			if (self.filter) self.filter.destroy();
 			if (self.pages) self.pages.destroy();
 			self.items.destroy();
-			if (!_is.empty(self.opt.on)){
+			if (!_is.empty(self.opt.on)) {
 				self.$el.off(self.opt.on);
 			}
 			/**
@@ -3897,7 +3932,17 @@
 			 */
 			self.raise("destroyed");
 			self.$el.removeData(_.dataTemplate);
-			if (self.createdSelf){
+
+			if (_is.empty(self._undo.classes)) self.$el.removeAttr("class");
+			else self.$el.attr("class", self._undo.classes);
+
+			if (_is.empty(self._undo.style)) self.$el.removeAttr("style");
+			else self.$el.attr("style", self._undo.style);
+
+			if (self._undo.children) {
+				self.$el.empty();
+			}
+			if (self._undo.create) {
 				self.$el.remove();
 			}
 			self.$el = self.state = self.items = self.pages = null;
@@ -3917,7 +3962,7 @@
 		 * @function getAvailable
 		 * @returns {FooGallery.Item[]} An array of {@link FooGallery.Item|items}.
 		 */
-		getAvailable: function(){
+		getAvailable: function () {
 			return this.pages ? this.pages.available() : this.items.available();
 		},
 
@@ -3927,7 +3972,7 @@
 		 * @function loadAvailable
 		 * @returns {Promise<FooGallery.Item[]>} Resolves with an array of {@link FooGallery.Item|items} as the first argument. If no items are loaded this array is empty.
 		 */
-		loadAvailable: function(){
+		loadAvailable: function () {
 			return this.items.load(this.getAvailable());
 		},
 
@@ -3937,11 +3982,11 @@
 		 * @function _check
 		 * @private
 		 */
-		_check: function(delay){
+		_check: function (delay) {
 			delay = _is.number(delay) ? delay : 0;
 			var self = this;
-			setTimeout(function(){
-				if (self.initialized && (!self.destroying || !self.destroyed)){
+			setTimeout(function () {
+				if (self.initialized && (!self.destroying || !self.destroyed)) {
 					self.loadAvailable();
 				}
 			}, delay);
@@ -3970,20 +4015,20 @@
 			if (!_is.string(eventName) || _is.empty(eventName)) return null;
 			args = _is.array(args) ? args : [];
 			var self = this,
-				name = eventName.split(".")[0],
-				listener = _str.camel("on-" + name),
-				event = $.Event(name + ".foogallery");
+					name = eventName.split(".")[0],
+					listener = _str.camel("on-" + name),
+					event = $.Event(name + ".foogallery");
 			args.unshift(self); // add self
 			self.$el.trigger(event, args);
 			_.debug.logf("{id}|{name}:", {id: self.id, name: name}, args);
-			if (_is.fn(self[listener])){
+			if (_is.fn(self[listener])) {
 				args.unshift(event); // add event
 				self[listener].apply(self.$el.get(0), args);
 			}
 			return event;
 		},
 
-		layout: function(){
+		layout: function () {
 			var self = this;
 			if (self._initialize === null) return;
 			/**
@@ -4013,9 +4058,9 @@
 		 * @param {number} wait - The number of milliseconds to wait before allowing execution.
 		 * @returns {Function}
 		 */
-		throttle: function(fn, wait){
+		throttle: function (fn, wait) {
 			var time = Date.now();
-			return function() {
+			return function () {
 				if ((time + wait - Date.now()) < 0) {
 					var args = _fn.arg2arr(arguments);
 					fn.apply(this, args);
@@ -4035,9 +4080,9 @@
 		 * @param {jQuery.Event} e - The jQuery.Event object for the event.
 		 * @private
 		 */
-		onWindowPopState: function(e){
+		onWindowPopState: function (e) {
 			var self = e.data.self, state = e.originalEvent.state;
-			if (!_is.empty(state) && state.id === self.id){
+			if (!_is.empty(state) && state.id === self.id) {
 				self.state.set(state);
 				self.loadAvailable();
 			}
@@ -4049,7 +4094,7 @@
 		 * @param {jQuery.Event} e - The jQuery.Event object for the event.
 		 * @private
 		 */
-		onWindowScroll: function(e){
+		onWindowScroll: function (e) {
 			var self = e.data.self;
 			self.loadAvailable();
 		}
@@ -4071,9 +4116,7 @@
 		template: {}
 	}, {
 		container: "foogallery"
-	}, {
-
-	}, -100);
+	}, {}, -100);
 
 	/**
 	 * @summary An object containing all the core template options.
@@ -4120,15 +4163,13 @@
 	 */
 
 })(
-	FooGallery.$,
-	FooGallery,
-	FooGallery.utils,
-	FooGallery.utils.is,
-	FooGallery.utils.fn,
-	FooGallery.utils.str
+		FooGallery.$,
+		FooGallery,
+		FooGallery.utils,
+		FooGallery.utils.is,
+		FooGallery.utils.fn,
+		FooGallery.utils.str
 );
-
-
 (function(_, _utils){
 
 	_.Component = _utils.Class.extend(/** @lend FooGallery.Component */{
@@ -4494,7 +4535,7 @@
 	FooGallery.utils.is,
 	FooGallery.utils.str
 );
-(function($, _, _utils, _is, _fn, _obj){
+(function ($, _, _utils, _is, _fn, _obj) {
 
 	_.Item = _.Component.extend(/** @lends FooGallery.Item */{
 		/**
@@ -4507,7 +4548,7 @@
 		 * @borrows FooGallery.utils.Class.extend as extend
 		 * @borrows FooGallery.utils.Class.override as override
 		 */
-		construct: function(template, options){
+		construct: function (template, options) {
 			var self = this;
 			/**
 			 * @ignore
@@ -4518,6 +4559,8 @@
 			self.cls = template.cls.item;
 			self.il8n = template.il8n.item;
 			self.sel = template.sel.item;
+			self.opt = _obj.extend({}, template.opt.item, options);
+
 			/**
 			 * @summary Whether or not the items' elements are appended to the template.
 			 * @memberof FooGallery.Item#
@@ -4597,110 +4640,114 @@
 			 */
 			self.$caption = null;
 
-			options = _obj.extend({}, template.opt.item, options);
-
+			/**
+			 * @memberof FooGallery.Item#
+			 * @name type
+			 * @type {string}
+			 */
+			self.type = self.opt.type;
 			/**
 			 * @memberof FooGallery.Item#
 			 * @name id
 			 * @type {string}
 			 */
-			self.id = options.id;
+			self.id = self.opt.id;
 			/**
 			 * @memberof FooGallery.Item#
 			 * @name href
 			 * @type {string}
 			 */
-			self.href = options.href;
+			self.href = self.opt.href;
 			/**
 			 * @memberof FooGallery.Item#
 			 * @name src
 			 * @type {string}
 			 */
-			self.src = options.src;
+			self.src = self.opt.src;
 			/**
 			 * @memberof FooGallery.Item#
 			 * @name srcset
 			 * @type {string}
 			 */
-			self.srcset = options.srcset;
+			self.srcset = self.opt.srcset;
 			/**
 			 * @memberof FooGallery.Item#
 			 * @name width
 			 * @type {number}
 			 */
-			self.width = options.width;
+			self.width = self.opt.width;
 			/**
 			 * @memberof FooGallery.Item#
 			 * @name height
 			 * @type {number}
 			 */
-			self.height = options.height;
+			self.height = self.opt.height;
 			/**
 			 * @memberof FooGallery.Item#
 			 * @name title
 			 * @type {string}
 			 */
-			self.title = options.title;
+			self.title = self.opt.title;
 			/**
 			 * @memberof FooGallery.Item#
 			 * @name alt
 			 * @type {string}
 			 */
-			self.alt = options.alt;
+			self.alt = self.opt.alt;
 			/**
 			 * @memberof FooGallery.Item#
 			 * @name caption
 			 * @type {string}
 			 */
-			self.caption = _is.empty(options.caption) ? self.title : options.caption;
+			self.caption = _is.empty(self.opt.caption) ? self.title : self.opt.caption;
 			/**
 			 * @memberof FooGallery.Item#
 			 * @name description
 			 * @type {string}
 			 */
-			self.description = _is.empty(options.description) ? self.alt : options.description;
+			self.description = _is.empty(self.opt.description) ? self.alt : self.opt.description;
 			/**
 			 * @memberof FooGallery.Item#
 			 * @name attrItem
 			 * @type {FooGallery.Item~Attributes}
 			 */
-			self.attr = options.attr;
+			self.attr = self.opt.attr;
 			/**
 			 * @memberof FooGallery.Item#
 			 * @name tags
 			 * @type {string[]}
 			 */
-			self.tags = options.tags;
+			self.tags = self.opt.tags;
 			/**
 			 * @memberof FooGallery.Item#
 			 * @name maxWidth
 			 * @type {?FooGallery.Item~maxWidthCallback}
 			 */
-			self.maxWidth = options.maxWidth;
+			self.maxWidth = self.opt.maxWidth;
 			/**
 			 * @memberof FooGallery.Item#
 			 * @name maxCaptionLength
 			 * @type {number}
 			 */
-			self.maxCaptionLength = options.maxCaptionLength;
+			self.maxCaptionLength = self.opt.maxCaptionLength;
 			/**
 			 * @memberof FooGallery.Item#
 			 * @name maxDescriptionLength
 			 * @type {number}
 			 */
-			self.maxDescriptionLength = options.maxDescriptionLength;
+			self.maxDescriptionLength = self.opt.maxDescriptionLength;
 			/**
 			 * @memberof FooGallery.Item#
 			 * @name showCaptionTitle
 			 * @type {boolean}
 			 */
-			self.showCaptionTitle = options.showCaptionTitle;
+			self.showCaptionTitle = self.opt.showCaptionTitle;
 			/**
 			 * @memberof FooGallery.Item#
 			 * @name showCaptionDescription
 			 * @type {boolean}
 			 */
-			self.showCaptionDescription = options.showCaptionDescription;
+			self.showCaptionDescription = self.opt.showCaptionDescription;
 			/**
 			 * @summary The cached result of the last call to the {@link FooGallery.Item#getThumbUrl|getThumbUrl} method.
 			 * @memberof FooGallery.Item#
@@ -4710,6 +4757,14 @@
 			 */
 			self._thumbUrl = null;
 			/**
+			 * @summary The placeholder url for this item generated by calling the {@link FooGallery.Items#placeholder|placeholder} method.
+			 * @memberof FooGallery.Item#
+			 * @name _placeholder
+			 * @type {string}
+			 * @private
+			 */
+			self._placeholder = null;
+			/**
 			 * @summary This property is used to store the promise created when loading an item for the first time.
 			 * @memberof FooGallery.Item#
 			 * @name _load
@@ -4717,13 +4772,26 @@
 			 * @private
 			 */
 			self._load = null;
+			/**
+			 * @summary This property is used to store the init state of an item the first time it is parsed and is used to reset state during destroy.
+			 * @memberof FooGallery.Item#
+			 * @name _undo
+			 * @type {object}
+			 * @private
+			 */
+			self._undo = {
+				classes: "",
+				style: "",
+				loader: false,
+				placeholder: false
+			};
 		},
 		/**
 		 * @summary Destroy the item preparing it for garbage collection.
 		 * @memberof FooGallery.Item#
 		 * @function destroy
 		 */
-		destroy: function(){
+		destroy: function () {
 			var self = this;
 			/**
 			 * @summary Raised when a template destroys an item.
@@ -4769,15 +4837,37 @@
 			 * });
 			 */
 			var e = self.tmpl.raise("destroy-item");
-			if (!e.isDefaultPrevented()){
-				if (self.isParsed && !self.isAttached){
-					self.append();
-				} else if (!self.isParsed && self.isAttached) {
-					self.detach();
-				}
+			if (!e.isDefaultPrevented()) {
+				self.doDestroyItem();
 				self._super();
 			}
 			return self.tmpl === null;
+		},
+		/**
+		 * @summary Performs the actual destroy logic for the item.
+		 * @memberof FooGallery.Item#
+		 * @function doDestroyItem
+		 */
+		doDestroyItem: function () {
+			var self = this;
+			if (self.isParsed) {
+				self.append();
+				if (_is.empty(self._undo.classes)) self.$el.removeAttr("class");
+				else self.$el.attr("class", self._undo.classes);
+
+				if (_is.empty(self._undo.style)) self.$el.removeAttr("style");
+				else self.$el.attr("style", self._undo.style);
+
+				if (self._undo.loader) {
+					self.$el.find(self.sel.loader).remove();
+				}
+				if (self._undo.placeholder && self.$image.prop("src") == self._placeholder) {
+					self.$image.removeAttr("src");
+				}
+			} else if (self.isCreated) {
+				self.detach();
+				self.$el.remove();
+			}
 		},
 		/**
 		 * @summary Parse the supplied element updating the current items' properties.
@@ -4788,8 +4878,8 @@
 		 * @fires FooGallery.Template~"parse-item.foogallery"
 		 * @fires FooGallery.Template~"parsed-item.foogallery"
 		 */
-		parse: function(element){
-			var self = this, o = self.tmpl.opt, cls = self.cls, sel = self.sel, $el = $(element);
+		parse: function (element) {
+			var self = this, $el = $(element);
 			/**
 			 * @summary Raised when an item needs to parse properties from an element.
 			 * @event FooGallery.Template~"parse-item.foogallery"
@@ -4833,53 +4923,12 @@
 			 * });
 			 */
 			var e = self.tmpl.raise("parse-item", [self, $el]);
-			if (!e.isDefaultPrevented() && (self.isCreated = $el.is(sel.elem))){
-				self.$el = $el.data(_.dataItem, self);
-				self.$inner = self.$el.find(sel.inner);
-				self.$anchor = self.$el.find(sel.anchor).on("click.foogallery", {self: self}, self.onAnchorClick);
-				self.$image = self.$anchor.find(sel.image);
-				self.$caption = self.$el.find(sel.caption.elem).on("click.foogallery", {self: self}, self.onCaptionClick);
-				self.isAttached = self.$el.parent().length > 0;
-				self.isLoading = self.$el.is(sel.loading);
-				self.isLoaded = self.$el.is(sel.loaded);
-				self.isError = self.$el.is(sel.error);
-				self.id = self.$anchor.data("id");
-				self.tags = self.$anchor.data("tags");
-				self.href = self.$anchor.attr("href");
-				self.src = self.$image.attr(o.src);
-				self.srcset = self.$image.attr(o.srcset);
-				self.width = parseInt(self.$image.attr("width"));
-				self.height = parseInt(self.$image.attr("height"));
-				self.title = self.$image.attr("title");
-				self.alt = self.$image.attr("alt");
-				self.caption = self.$anchor.data("title") || self.$anchor.data("captionTitle");
-				self.description = self.$anchor.data("description") || self.$anchor.data("captionDesc");
-				// if the caption or description are not provided set there values to the title and alt respectively
-				if (_is.empty(self.caption)) self.caption = self.title;
-				if (_is.empty(self.description)) self.description = self.alt;
-				// enforce the max lengths for the caption and description
-				if (_is.number(self.maxCaptionLength) && self.maxCaptionLength > 0 && !_is.empty(self.caption) && _is.string(self.caption) && self.caption.length > self.maxCaptionLength){
-					self.$caption.find(sel.caption.title).html(self.caption.substr(0, self.maxCaptionLength) + "&hellip;");
-				}
-				if (_is.number(self.maxDescriptionLength) && self.maxDescriptionLength > 0 && !_is.empty(self.description) && _is.string(self.description) && self.description.length > self.maxDescriptionLength){
-					self.$caption.find(sel.caption.description).html(self.description.substr(0, self.maxDescriptionLength) + "&hellip;");
-				}
-				// check if the item has a loader
-				if (self.$el.find(sel.loader).length === 0){
-					self.$el.append($("<div/>", {"class": cls.loader}));
-				}
-				// if the image has no src url then set the placeholder
-				if (_is.empty(self.$image.prop("src"))){
-					self.$image.prop("src", self.tmpl.items.placeholder(self.width, self.height));
-				}
-				if (self.isCreated && self.isAttached && !self.isLoading && !self.isLoaded && !self.isError){
-					self.$el.addClass(cls.idle);
-				}
+			if (!e.isDefaultPrevented() && (self.isCreated = $el.is(self.sel.elem))) {
+				self.isParsed = self.doParseItem($el);
 				self.fix();
-				self.isParsed = true;
 				// We don't load the attributes when parsing as they are only ever used to create an item and if you're parsing it's already created.
 			}
-			if (self.isParsed){
+			if (self.isParsed) {
 				/**
 				 * @summary Raised after an item has been parsed from an element.
 				 * @event FooGallery.Template~"parsed-item.foogallery"
@@ -4902,6 +4951,65 @@
 			return self.isParsed;
 		},
 		/**
+		 * @summary Performs the actual parse logic for the item.
+		 * @memberof FooGallery.Item#
+		 * @function doParseItem
+		 * @param {jQuery} $el - The jQuery element to parse.
+		 * @returns {boolean}
+		 */
+		doParseItem: function ($el) {
+			var self = this, o = self.tmpl.opt, cls = self.cls, sel = self.sel;
+
+			self._undo.classes = $el.attr("class") || "";
+			self._undo.style = $el.attr("style") || "";
+
+			self.$el = $el.data(_.dataItem, self);
+			self.$inner = self.$el.find(sel.inner);
+			self.$anchor = self.$el.find(sel.anchor).on("click.foogallery", {self: self}, self.onAnchorClick);
+			self.$image = self.$anchor.find(sel.image);
+			self.$caption = self.$el.find(sel.caption.elem).on("click.foogallery", {self: self}, self.onCaptionClick);
+			self.isAttached = self.$el.parent().length > 0;
+			self.isLoading = self.$el.is(sel.loading);
+			self.isLoaded = self.$el.is(sel.loaded);
+			self.isError = self.$el.is(sel.error);
+			self.id = self.$anchor.data("id") || self.id;
+			self.tags = self.$anchor.data("tags") || self.tags;
+			self.href = self.$anchor.attr("href") || self.href;
+			self.src = self.$image.attr(o.src) || self.src;
+			self.srcset = self.$image.attr(o.srcset) || self.srcset;
+			self.width = parseInt(self.$image.attr("width")) || self.width;
+			self.height = parseInt(self.$image.attr("height")) || self.height;
+			self.title = self.$image.attr("title") || self.title;
+			self.alt = self.$image.attr("alt") || self.alt;
+			self.caption = self.$anchor.data("title") || self.$anchor.data("captionTitle") || self.caption || self.title;
+			self.description = self.$anchor.data("description") || self.$anchor.data("captionDesc") || self.description || self.alt;
+			// if the caption or description are not set yet try fetching it from the html
+			if (_is.empty(self.caption)) self.caption = $.trim(self.$caption.find(sel.caption.title).html());
+			if (_is.empty(self.description)) self.description = $.trim(self.$caption.find(sel.caption.description).html());
+			// enforce the max lengths for the caption and description
+			if (_is.number(self.maxCaptionLength) && self.maxCaptionLength > 0 && !_is.empty(self.caption) && _is.string(self.caption) && self.caption.length > self.maxCaptionLength) {
+				self.$caption.find(sel.caption.title).html(self.caption.substr(0, self.maxCaptionLength) + "&hellip;");
+			}
+			if (_is.number(self.maxDescriptionLength) && self.maxDescriptionLength > 0 && !_is.empty(self.description) && _is.string(self.description) && self.description.length > self.maxDescriptionLength) {
+				self.$caption.find(sel.caption.description).html(self.description.substr(0, self.maxDescriptionLength) + "&hellip;");
+			}
+			// check if the item has a loader
+			if (self.$el.find(sel.loader).length === 0) {
+				self.$el.append($("<div/>", {"class": cls.loader}));
+				self._undo.loader = true;
+			}
+			// if the image has no src url then set the placeholder
+			if (_is.empty(self.$image.prop("src"))) {
+				self._placeholder = self.tmpl.items.placeholder(self.width, self.height);
+				self.$image.prop("src", self._placeholder);
+				self._undo.placeholder = true;
+			}
+			if (self.isCreated && self.isAttached && !self.isLoading && !self.isLoaded && !self.isError) {
+				self.$el.addClass(cls.idle);
+			}
+			return true;
+		},
+		/**
 		 * @summary Create the items' DOM elements and populate the corresponding properties.
 		 * @memberof FooGallery.Item#
 		 * @function create
@@ -4909,9 +5017,9 @@
 		 * @fires FooGallery.Template~"create-item.foogallery"
 		 * @fires FooGallery.Template~"created-item.foogallery"
 		 */
-		create: function(){
+		create: function () {
 			var self = this;
-			if (!self.isCreated && _is.string(self.href) && _is.string(self.src) && _is.number(self.width) && _is.number(self.height)){
+			if (!self.isCreated && _is.string(self.href) && _is.string(self.src) && _is.number(self.width) && _is.number(self.height)) {
 				/**
 				 * @summary Raised when an item needs to create its' elements.
 				 * @event FooGallery.Template~"create-item.foogallery"
@@ -4954,74 +5062,10 @@
 				 * });
 				 */
 				var e = self.tmpl.raise("create-item", [self]);
-				if (!e.isDefaultPrevented()){
-					var o = self.tmpl.opt, cls = self.cls, attr = self.attr;
-					attr.elem["class"] = cls.elem + " " + cls.idle;
-
-					attr.inner["class"] = cls.inner;
-
-					attr.anchor["class"] = cls.anchor;
-					attr.anchor["href"] = self.href;
-					attr.anchor["data-id"] = self.id;
-					attr.anchor["data-title"] = self.caption;
-					attr.anchor["data-description"] = self.description;
-					if (!_is.empty(self.tags)){
-						attr.anchor["data-tags"] = JSON.stringify(self.tags);
-					}
-
-					attr.image["class"] = cls.image;
-					attr.image["src"] = self.tmpl.items.placeholder(self.width, self.height);
-					attr.image[o.src] = self.src;
-					attr.image[o.srcset] = self.srcset;
-					attr.image["width"] = self.width;
-					attr.image["height"] = self.height;
-					attr.image["title"] = self.title;
-					attr.image["alt"] = self.alt;
-
-					self.$el = $("<div/>").attr(attr.elem).data(_.dataItem, self);
-					self.$inner = $("<figure/>").attr(attr.inner).appendTo(self.$el);
-					self.$anchor = $("<a/>").attr(attr.anchor).appendTo(self.$inner).on("click.foogallery", {self: self}, self.onAnchorClick);
-					self.$image = $("<img/>").attr(attr.image).appendTo(self.$anchor);
-
-					cls = self.cls.caption;
-					attr = self.attr.caption;
-					attr.elem["class"] = cls.elem;
-					self.$caption = $("<figcaption/>").attr(attr.elem).on("click.foogallery", {self: self}, self.onCaptionClick);
-					var hasTitle = !_is.empty(self.caption), hasDesc = !_is.empty(self.description);
-					if (hasTitle || hasDesc){
-						attr.inner["class"] = cls.inner;
-						attr.title["class"] = cls.title;
-						attr.description["class"] = cls.description;
-						var $inner = $("<div/>").attr(attr.inner).appendTo(self.$caption);
-						if (hasTitle){
-							var $title;
-							// enforce the max length for the caption
-							if (_is.number(self.maxCaptionLength) && self.maxCaptionLength  > 0 && _is.string(self.caption) && self.caption.length > self.maxCaptionLength){
-								$title = $("<div/>").attr(attr.title).html(self.caption.substr(0, self.maxCaptionLength) + "&hellip;");
-							} else {
-								$title = $("<div/>").attr(attr.title).html(self.caption);
-							}
-							$inner.append($title);
-						}
-						if (hasDesc){
-							var $desc;
-							// enforce the max length for the description
-							if (_is.number(self.maxDescriptionLength) && self.maxDescriptionLength  > 0 && _is.string(self.description) && self.description.length > self.maxDescriptionLength){
-								$desc = $("<div/>").attr(attr.description).html(self.description.substr(0, self.maxDescriptionLength) + "&hellip;");
-							} else {
-								$desc = $("<div/>").attr(attr.description).html(self.description);
-							}
-							$inner.append($desc);
-						}
-					}
-					self.$caption.appendTo(self.$inner);
-					// check if the item has a loader
-					if (self.$el.find(self.sel.loader).length === 0){
-						self.$el.append($("<div/>", {"class": self.cls.loader}));
-					}
-					self.isCreated = true;
+				if (!e.isDefaultPrevented()) {
+					self.isCreated = self.doCreateItem();
 				}
-				if (self.isCreated){
+				if (self.isCreated) {
 					/**
 					 * @summary Raised after an items' elements have been created.
 					 * @event FooGallery.Template~"created-item.foogallery"
@@ -5044,6 +5088,79 @@
 			return self.isCreated;
 		},
 		/**
+		 * @summary Performs the actual create logic for the item.
+		 * @memberof FooGallery.Item#
+		 * @function doCreateItem
+		 * @returns {boolean}
+		 */
+		doCreateItem: function () {
+			var self = this, o = self.tmpl.opt, cls = self.cls, attr = self.attr;
+			attr.elem["class"] = cls.elem + " " + cls.idle;
+
+			attr.inner["class"] = cls.inner;
+
+			attr.anchor["class"] = cls.anchor;
+			attr.anchor["href"] = self.href;
+			attr.anchor["data-id"] = self.id;
+			attr.anchor["data-title"] = self.caption;
+			attr.anchor["data-description"] = self.description;
+			if (!_is.empty(self.tags)) {
+				attr.anchor["data-tags"] = JSON.stringify(self.tags);
+			}
+
+			attr.image["class"] = cls.image;
+			attr.image["src"] = self.tmpl.items.placeholder(self.width, self.height);
+			attr.image[o.src] = self.src;
+			attr.image[o.srcset] = self.srcset;
+			attr.image["width"] = self.width;
+			attr.image["height"] = self.height;
+			attr.image["title"] = self.title;
+			attr.image["alt"] = self.alt;
+
+			self.$el = $("<div/>").attr(attr.elem).data(_.dataItem, self);
+			self.$inner = $("<figure/>").attr(attr.inner).appendTo(self.$el);
+			self.$anchor = $("<a/>").attr(attr.anchor).appendTo(self.$inner).on("click.foogallery", {self: self}, self.onAnchorClick);
+			self.$image = $("<img/>").attr(attr.image).appendTo(self.$anchor);
+
+			cls = self.cls.caption;
+			attr = self.attr.caption;
+			attr.elem["class"] = cls.elem;
+			self.$caption = $("<figcaption/>").attr(attr.elem).on("click.foogallery", {self: self}, self.onCaptionClick);
+			var hasTitle = !_is.empty(self.caption), hasDesc = !_is.empty(self.description);
+			if (hasTitle || hasDesc) {
+				attr.inner["class"] = cls.inner;
+				attr.title["class"] = cls.title;
+				attr.description["class"] = cls.description;
+				var $inner = $("<div/>").attr(attr.inner).appendTo(self.$caption);
+				if (hasTitle) {
+					var $title;
+					// enforce the max length for the caption
+					if (_is.number(self.maxCaptionLength) && self.maxCaptionLength > 0 && _is.string(self.caption) && self.caption.length > self.maxCaptionLength) {
+						$title = $("<div/>").attr(attr.title).html(self.caption.substr(0, self.maxCaptionLength) + "&hellip;");
+					} else {
+						$title = $("<div/>").attr(attr.title).html(self.caption);
+					}
+					$inner.append($title);
+				}
+				if (hasDesc) {
+					var $desc;
+					// enforce the max length for the description
+					if (_is.number(self.maxDescriptionLength) && self.maxDescriptionLength > 0 && _is.string(self.description) && self.description.length > self.maxDescriptionLength) {
+						$desc = $("<div/>").attr(attr.description).html(self.description.substr(0, self.maxDescriptionLength) + "&hellip;");
+					} else {
+						$desc = $("<div/>").attr(attr.description).html(self.description);
+					}
+					$inner.append($desc);
+				}
+			}
+			self.$caption.appendTo(self.$inner);
+			// check if the item has a loader
+			if (self.$el.find(self.sel.loader).length === 0) {
+				self.$el.append($("<div/>", {"class": self.cls.loader}));
+			}
+			return true;
+		},
+		/**
 		 * @summary Append the item to the current template.
 		 * @memberof FooGallery.Item#
 		 * @function append
@@ -5051,9 +5168,9 @@
 		 * @fires FooGallery.Template~"append-item.foogallery"
 		 * @fires FooGallery.Template~"appended-item.foogallery"
 		 */
-		append: function(){
+		append: function () {
 			var self = this;
-			if (self.isCreated && !self.isAttached){
+			if (self.isCreated && !self.isAttached) {
 				/**
 				 * @summary Raised when an item needs to append its elements to the template.
 				 * @event FooGallery.Template~"append-item.foogallery"
@@ -5096,12 +5213,12 @@
 				 * });
 				 */
 				var e = self.tmpl.raise("append-item", [self]);
-				if (!e.isDefaultPrevented()){
+				if (!e.isDefaultPrevented()) {
 					self.tmpl.$el.append(self.$el);
 					self.fix();
 					self.isAttached = true;
 				}
-				if (self.isAttached){
+				if (self.isAttached) {
 					/**
 					 * @summary Raised after an item has appended its' elements to the template.
 					 * @event FooGallery.Template~"appended-item.foogallery"
@@ -5129,9 +5246,9 @@
 		 * @function detach
 		 * @returns {boolean}
 		 */
-		detach: function(){
+		detach: function () {
 			var self = this;
-			if (self.isCreated && self.isAttached){
+			if (self.isCreated && self.isAttached) {
 				/**
 				 * @summary Raised when an item needs to detach its' elements from the template.
 				 * @event FooGallery.Template~"detach-item.foogallery"
@@ -5174,12 +5291,12 @@
 				 * });
 				 */
 				var e = self.tmpl.raise("detach-item", [self]);
-				if (!e.isDefaultPrevented()){
+				if (!e.isDefaultPrevented()) {
 					self.$el.detach();
 					self.unfix();
 					self.isAttached = false;
 				}
-				if (!self.isAttached){
+				if (!self.isAttached) {
 					/**
 					 * @summary Raised after an item has detached its' elements from the template.
 					 * @event FooGallery.Template~"detached-item.foogallery"
@@ -5207,7 +5324,7 @@
 		 * @function load
 		 * @returns {Promise.<FooGallery.Item>}
 		 */
-		load: function(){
+		load: function () {
 			var self = this;
 			if (_is.promise(self._load)) return self._load;
 			if (!self.isCreated || !self.isAttached) return _fn.rejectWith("not created or attached");
@@ -5249,18 +5366,18 @@
 		 * @function fix
 		 * @returns {FooGallery.Item}
 		 */
-		fix: function(){
-			var self = this;
-			if (self.isCreated && !self.isLoading && !self.isLoaded && !self.isError){
+		fix: function () {
+			var self = this, e = self.tmpl.raise("fix-item", [self]);
+			if (!e.isDefaultPrevented() && self.isCreated && !self.isLoading && !self.isLoaded && !self.isError) {
 				var w = self.width, h = self.height;
 				// if we have a base width and height to work with
-				if (!isNaN(w) && !isNaN(h)){
+				if (!isNaN(w) && !isNaN(h)) {
 					// figure out the max image width and calculate the height the image should be displayed as
 					var width = _is.fn(self.maxWidth) ? self.maxWidth(self) : self.$image.width();
 					if (width <= 0) width = w;
 					var ratio = width / w, height = h * ratio;
 					// actually set the inline css on the image
-					self.$image.css({width: width,height: height});
+					self.$image.css({width: width, height: height});
 				}
 			}
 			return self;
@@ -5271,9 +5388,9 @@
 		 * @function unfix
 		 * @returns {FooGallery.Item}
 		 */
-		unfix: function(){
-			var self = this;
-			if (self.isCreated) self.$image.css({width: '',height: ''});
+		unfix: function () {
+			var self = this, e = self.tmpl.raise("unfix-item", [self]);
+			if (!e.isDefaultPrevented() && self.isCreated) self.$image.css({width: '', height: ''});
 			return self;
 		},
 		/**
@@ -5283,7 +5400,7 @@
 		 * @param {boolean} [refresh=false] - Whether or not to force refreshing of the cached value.
 		 * @returns {string}
 		 */
-		getThumbUrl: function(refresh){
+		getThumbUrl: function (refresh) {
 			refresh = _is.boolean(refresh) ? refresh : false;
 			var self = this;
 			if (!refresh && _is.string(self._thumbUrl)) return self._thumbUrl;
@@ -5294,11 +5411,11 @@
 		 * @memberof FooGallery.Item#
 		 * @function scrollTo
 		 */
-		scrollTo: function(align){
+		scrollTo: function (align) {
 			var self = this;
-			if (self.isAttached){
+			if (self.isAttached) {
 				var ib = self.bounds(), vb = _utils.getViewportBounds();
-				switch(align){
+				switch (align) {
 					case "top": // attempts to center the item horizontally but aligns the top with the middle of the viewport
 						ib.left += (ib.width / 2) - (vb.width / 2);
 						ib.top -= (vb.height / 5);
@@ -5318,7 +5435,7 @@
 		 * @function bounds
 		 * @returns {?FooGallery.utils.Bounds}
 		 */
-		bounds: function(){
+		bounds: function () {
 			return this.isAttached ? _utils.getElementBounds(this.$el) : null;
 		},
 		/**
@@ -5328,7 +5445,7 @@
 		 * @param {FooGallery.utils.Bounds} bounds - The bounds to check.
 		 * @returns {boolean}
 		 */
-		intersects: function(bounds){
+		intersects: function (bounds) {
 			return this.isAttached ? this.bounds().intersects(bounds) : false;
 		},
 		/**
@@ -5338,9 +5455,9 @@
 		 * @param {jQuery.Event} e - The jQuery.Event object for the click event.
 		 * @private
 		 */
-		onAnchorClick: function(e){
+		onAnchorClick: function (e) {
 			var self = e.data.self,
-				state = self.tmpl.state.get(self);
+					state = self.tmpl.state.get(self);
 			self.tmpl.state.update(state);
 		},
 		/**
@@ -5350,9 +5467,9 @@
 		 * @param {jQuery.Event} e - The jQuery.Event object for the click event.
 		 * @private
 		 */
-		onCaptionClick: function(e){
+		onCaptionClick: function (e) {
 			var self = e.data.self;
-			if ($(e.target).is(self.sel.caption.all) && self.$anchor.length > 0){
+			if ($(e.target).is(self.sel.caption.all) && self.$anchor.length > 0) {
 				self.$anchor.get(0).click();
 			}
 		}
@@ -5374,6 +5491,7 @@
 	/**
 	 * @summary A simple object containing an items' default values.
 	 * @typedef {object} FooGallery.Item~Options
+	 * @property {?string} [type="item"] - The `data-type` attribute for the anchor element.
 	 * @property {?string} [id=null] - The `data-id` attribute for the outer element.
 	 * @property {?string} [href=null] - The `href` attribute for the anchor element.
 	 * @property {?string} [src=null] - The `src` attribute for the image element.
@@ -5394,6 +5512,7 @@
 	 */
 	_.template.configure("core", {
 		item: {
+			type: "item",
 			id: "",
 			href: "",
 			src: "",
@@ -5441,6 +5560,8 @@
 				description: "fg-caption-desc"
 			}
 		}
+	}, {
+		item: {}
 	});
 
 	_.components.register("item", _.Item);
@@ -5481,14 +5602,14 @@
 	 */
 
 })(
-	FooGallery.$,
-	FooGallery,
-	FooGallery.utils,
-	FooGallery.utils.is,
-	FooGallery.utils.fn,
-	FooGallery.utils.obj
+		FooGallery.$,
+		FooGallery,
+		FooGallery.utils,
+		FooGallery.utils.is,
+		FooGallery.utils.fn,
+		FooGallery.utils.obj
 );
-(function($, _, _utils, _is, _fn){
+(function ($, _, _utils, _is, _fn, _obj) {
 
 	_.Items = _.Component.extend(/** @lends FooGallery.Items */{
 		/**
@@ -5500,7 +5621,7 @@
 		 * @borrows FooGallery.utils.Class.extend as extend
 		 * @borrows FooGallery.utils.Class.override as override
 		 */
-		construct: function(template){
+		construct: function (template) {
 			var self = this;
 			/**
 			 * @ignore
@@ -5517,7 +5638,7 @@
 			var cls = self.tmpl.cls.item.caption;
 			self.tmpl.sel.item.caption.all = _utils.selectify([cls.elem, cls.inner, cls.title, cls.description]);
 		},
-		destroy: function(){
+		destroy: function () {
 			var self = this, items = self.all(), destroyed = [];
 			if (items.length > 0) {
 				/**
@@ -5537,7 +5658,7 @@
 				 * });
 				 */
 				self.tmpl.raise("destroy-items", [items]);
-				destroyed = $.map(items, function(item){
+				destroyed = $.map(items, function (item) {
 					return item.destroy() ? item : null;
 				});
 				/**
@@ -5565,24 +5686,24 @@
 			self._available = [];
 			self._super();
 		},
-		fetch: function(refresh){
+		fetch: function (refresh) {
 			var self = this;
 			if (!refresh && _is.promise(self._fetched)) return self._fetched;
 			var fg = self.tmpl, selectors = fg.sel,
-				option = fg.opt.items,
-				def = $.Deferred();
+					option = fg.opt.items,
+					def = $.Deferred();
 
 			var items = self.make(fg.$el.find(selectors.item.elem));
 
-			if (!_is.empty(option)){
-				if (_is.array(option)){
+			if (!_is.empty(option)) {
+				if (_is.array(option)) {
 					items.push.apply(items, self.make(option));
 					def.resolve(items);
-				} else if (_is.string(option)){
-					$.get(option).then(function(response){
+				} else if (_is.string(option)) {
+					$.get(option).then(function (response) {
 						items.push.apply(items, self.make(response));
 						def.resolve(items);
-					}, function( jqXHR, textStatus, errorThrown ){
+					}, function (jqXHR, textStatus, errorThrown) {
 						console.log("FooGallery: GET items error.", option, jqXHR, textStatus, errorThrown);
 						def.resolve(items);
 					});
@@ -5593,30 +5714,36 @@
 				items.push.apply(items, self.make(window[fg.id + "-items"]));
 				def.resolve(items);
 			}
-			def.then(function(items){
-				self._arr = items;
-				self.idMap = self.createIdMap(items);
-				self.setAvailable(self.all());
+			def.then(function (items) {
+				self.setAll(items);
 			});
 			return self._fetched = def.promise();
 		},
-		all: function(){
+		all: function () {
 			return this._arr.slice();
 		},
-		available: function(){
+		count: function (all) {
+			return all ? this.all().length : this.available().length;
+		},
+		available: function () {
 			return this._available.slice();
 		},
-		get: function(id){
+		get: function (id) {
 			return !_is.empty(id) && !!this.idMap[id] ? this.idMap[id] : null;
 		},
-		setAvailable: function(items){
+		setAll: function (items) {
+			this._arr = _is.array(items) ? items : [];
+			this.idMap = this.createIdMap(items);
+			this._available = this.all();
+		},
+		setAvailable: function (items) {
 			this._available = _is.array(items) ? items : [];
 		},
-		reset: function(){
+		reset: function () {
 			this.setAvailable(this.all());
 		},
-		placeholder: function(width, height){
-			if (this._canvas && this._canvas.toDataURL && _is.number(width) && _is.number(height)){
+		placeholder: function (width, height) {
+			if (this._canvas && this._canvas.toDataURL && _is.number(width) && _is.number(height)) {
 				this._canvas.width = width;
 				this._canvas.height = height;
 				return this._canvas.toDataURL();
@@ -5630,14 +5757,14 @@
 		 * @param {FooGallery.Item[]} items - The items to filter.
 		 * @returns {FooGallery.Item[]}
 		 */
-		loadable: function(items){
+		loadable: function (items) {
 			var self = this, opt = self.tmpl.opt, viewport;
-			if (opt.lazy){
+			if (opt.lazy) {
 				viewport = _utils.getViewportBounds(opt.viewport);
 			}
-			return _is.array(items) ? $.map(items, function(item){
-				return item.isCreated && item.isAttached && !item.isLoading && !item.isLoaded && !item.isError && (!opt.lazy || (opt.lazy && item.intersects(viewport))) ? item : null;
-			}) : [];
+			return _is.array(items) ? $.map(items, function (item) {
+						return item.isCreated && item.isAttached && !item.isLoading && !item.isLoaded && !item.isError && (!opt.lazy || (opt.lazy && item.intersects(viewport))) ? item : null;
+					}) : [];
 		},
 		/**
 		 * @summary Filter the supplied `items` and return only those that can be created.
@@ -5646,10 +5773,10 @@
 		 * @param {FooGallery.Item[]} items - The items to filter.
 		 * @returns {FooGallery.Item[]}
 		 */
-		creatable: function(items){
-			return _is.array(items) ? $.map(items, function(item){
-				return item instanceof _.Item && !item.isCreated ? item : null;
-			}) : [];
+		creatable: function (items) {
+			return _is.array(items) ? $.map(items, function (item) {
+						return item instanceof _.Item && !item.isCreated ? item : null;
+					}) : [];
 		},
 		/**
 		 * @summary Filter the supplied `items` and return only those that can be appended.
@@ -5658,10 +5785,10 @@
 		 * @param {FooGallery.Item[]} items - The items to filter.
 		 * @returns {FooGallery.Item[]}
 		 */
-		appendable: function(items){
-			return _is.array(items) ? $.map(items, function(item){
-					return item instanceof _.Item && item.isCreated && !item.isAttached ? item : null;
-				}) : [];
+		appendable: function (items) {
+			return _is.array(items) ? $.map(items, function (item) {
+						return item instanceof _.Item && item.isCreated && !item.isAttached ? item : null;
+					}) : [];
 		},
 		/**
 		 * @summary Filter the supplied `items` and return only those that can be detached.
@@ -5670,10 +5797,10 @@
 		 * @param {FooGallery.Item[]} items - The items to filter.
 		 * @returns {FooGallery.Item[]}
 		 */
-		detachable: function(items){
-			return _is.array(items) ? $.map(items, function(item){
-				return item instanceof _.Item && item.isCreated && item.isAttached ? item : null;
-			}) : [];
+		detachable: function (items) {
+			return _is.array(items) ? $.map(items, function (item) {
+						return item instanceof _.Item && item.isCreated && item.isAttached ? item : null;
+					}) : [];
 		},
 		/**
 		 * @summary Get a single jQuery object containing all the supplied items' elements.
@@ -5682,7 +5809,7 @@
 		 * @param {FooGallery.Item[]} items - The items to get a jQuery object for.
 		 * @returns {jQuery}
 		 */
-		jquerify: function(items){
+		jquerify: function (items) {
 			return $($.map(items, function (item) {
 				return item.$el.get();
 			}));
@@ -5697,9 +5824,9 @@
 		 * @fires FooGallery.Template~"made-items.foogallery"
 		 * @fires FooGallery.Template~"parsed-items.foogallery"
 		 */
-		make: function(items){
+		make: function (items) {
 			var self = this, made = [];
-			if (_is.jq(items) || _is.array(items)){
+			if (_is.jq(items) || _is.array(items)) {
 				var parsed = [], arr = $.makeArray(items);
 				if (arr.length === 0) return made;
 				/**
@@ -5731,11 +5858,13 @@
 				 * });
 				 */
 				var e = self.tmpl.raise("make-items", [arr]);
-				if (!e.isDefaultPrevented()){
-					made = $.map(arr, function(obj){
-						var item = _.components.make("item", self.tmpl, _is.hash(obj) ? obj : {});
-						if (_is.element(obj)){
-							if (item.parse(obj)){
+				if (!e.isDefaultPrevented()) {
+					made = $.map(arr, function (obj) {
+						var type = self.type(obj),
+								opt = _obj.extend(_is.hash(obj) ? obj : {}, {type: type});
+						var item = _.components.make(type, self.tmpl, opt);
+						if (_is.element(obj)) {
+							if (item.parse(obj)) {
 								parsed.push(item);
 								return item;
 							}
@@ -5783,6 +5912,15 @@
 			}
 			return made;
 		},
+		type: function (objOrElement) {
+			var type;
+			if (_is.hash(objOrElement)) {
+				type = objOrElement.type;
+			} else if (_is.element(objOrElement)) {
+				type = $(objOrElement).find(this.tmpl.sel.item.anchor).data("type");
+			}
+			return _is.string(type) && _.components.contains(type) ? type : "item";
+		},
 		/**
 		 * @summary Create each of the supplied {@link FooGallery.Item|`items`} elements.
 		 * @memberof FooGallery.Items#
@@ -5796,7 +5934,7 @@
 		 * @fires FooGallery.Template~"append-items.foogallery"
 		 * @fires FooGallery.Template~"appended-items.foogallery"
 		 */
-		create: function(items, append){
+		create: function (items, append) {
 			var self = this, created = [], creatable = self.creatable(items);
 			if (creatable.length > 0) {
 				/**
@@ -5828,8 +5966,8 @@
 				 * });
 				 */
 				var e = self.tmpl.raise("create-items", [creatable]);
-				if (!e.isDefaultPrevented()){
-					created = $.map(creatable, function(item){
+				if (!e.isDefaultPrevented()) {
+					created = $.map(creatable, function (item) {
 						return item.create() ? item : null;
 					});
 				}
@@ -5863,7 +6001,7 @@
 		 * @fires FooGallery.Template~"append-items.foogallery"
 		 * @fires FooGallery.Template~"appended-items.foogallery"
 		 */
-		append: function(items){
+		append: function (items) {
 			var self = this, appended = [], appendable = self.appendable(items);
 			if (appendable.length > 0) {
 				/**
@@ -5894,8 +6032,8 @@
 				 * });
 				 */
 				var e = self.tmpl.raise("append-items", [appendable]);
-				if (!e.isDefaultPrevented()){
-					appended = $.map(appendable, function(item){
+				if (!e.isDefaultPrevented()) {
+					appended = $.map(appendable, function (item) {
 						return item.append() ? item : null;
 					});
 				}
@@ -5928,7 +6066,7 @@
 		 * @fires FooGallery.Template~"detach-items.foogallery"
 		 * @fires FooGallery.Template~"detached-items.foogallery"
 		 */
-		detach: function(items){
+		detach: function (items) {
 			var self = this, detached = [], detachable = self.detachable(items);
 			if (detachable.length > 0) {
 				/**
@@ -5959,8 +6097,8 @@
 				 * });
 				 */
 				var e = self.tmpl.raise("detach-items", [detachable]);
-				if (!e.isDefaultPrevented()){
-					detached = $.map(detachable, function(item){
+				if (!e.isDefaultPrevented()) {
+					detached = $.map(detachable, function (item) {
 						return item.detach() ? item : null;
 					});
 				}
@@ -5993,10 +6131,10 @@
 		 * @fires FooGallery.Template~"load-items.foogallery"
 		 * @fires FooGallery.Template~"loaded-items.foogallery"
 		 */
-		load: function(items){
+		load: function (items) {
 			var self = this;
 			items = self.loadable(items);
-			if (items.length > 0){
+			if (items.length > 0) {
 				/**
 				 * @summary Raised before the template loads any items.
 				 * @event FooGallery.Template~"load-items.foogallery"
@@ -6025,11 +6163,11 @@
 				 * });
 				 */
 				var e = self.tmpl.raise("load-items", [items]);
-				if (!e.isDefaultPrevented()){
-					var loading = $.map(items, function(item){
+				if (!e.isDefaultPrevented()) {
+					var loading = $.map(items, function (item) {
 						return item.load();
 					});
-					return _fn.when(loading).done(function(loaded) {
+					return _fn.when(loading).done(function (loaded) {
 						/**
 						 * @summary Raised after the template has loaded items.
 						 * @event FooGallery.Template~"loaded-items.foogallery"
@@ -6052,9 +6190,9 @@
 			}
 			return _fn.resolveWith([]);
 		},
-		createIdMap: function(items){
+		createIdMap: function (items) {
 			var map = {};
-			$.each(items, function(i, item){
+			$.each(items, function (i, item) {
 				if (_is.empty(item.id)) item.id = "" + (i + 1);
 				map[item.id] = item;
 			});
@@ -6065,17 +6203,17 @@
 	_.components.register("items", _.Items);
 
 })(
-	FooGallery.$,
-	FooGallery,
-	FooGallery.utils,
-	FooGallery.utils.is,
-	FooGallery.utils.fn,
-	FooGallery.utils.str
+		FooGallery.$,
+		FooGallery,
+		FooGallery.utils,
+		FooGallery.utils.is,
+		FooGallery.utils.fn,
+		FooGallery.utils.obj
 );
-(function($, _, _utils, _is){
+(function ($, _, _utils, _is) {
 
 	_.Paging = _.Component.extend({
-		construct: function(template){
+		construct: function (template) {
 			var self = this;
 			/**
 			 * @ignore
@@ -6098,119 +6236,111 @@
 			self.ctrls = [];
 			self._arr = [];
 		},
-		destroy: function(){
+		destroy: function () {
 			var self = this;
 			self._arr.splice(0, self._arr.length);
-			$.each(self.ctrls.splice(0, self.ctrls.length), function(i, control){
+			$.each(self.ctrls.splice(0, self.ctrls.length), function (i, control) {
 				control.destroy();
 			});
 			self._super();
 		},
-		build: function(){
+		build: function () {
 			var self = this, items = self.tmpl.items.available();
 			self.total = self.size > 0 && items.length > 0 ? Math.ceil(items.length / self.size) : 1;
-			if (self.total <= 1){
-				self._arr.push(items);
-				self.tmpl.items.detach(self._arr[0]);
-			} else {
-				for (var i = 0; i < self.total; i++){
-					self._arr.push(items.splice(0, self.size));
-					self.tmpl.items.detach(self._arr[i]);
-				}
+			for (var i = 0; i < self.total; i++) {
+				self._arr.push(items.splice(0, self.size));
 			}
-			if (self.total > 1 && _.paging.hasCtrl(self.type)){
+			if (self.total > 1 && _.paging.hasCtrl(self.type)) {
 				var pos = self.position, top, bottom;
-				if (pos === "both" || pos === "top"){
+				if (pos === "both" || pos === "top") {
 					top = _.paging.makeCtrl(self.type, self.tmpl, self, "top");
-					if (top.create()){
+					if (top.create()) {
 						top.append();
 						self.ctrls.push(top);
 					}
 				}
-				if (pos === "both" || pos === "bottom"){
+				if (pos === "both" || pos === "bottom") {
 					bottom = _.paging.makeCtrl(self.type, self.tmpl, self, "bottom");
-					if (bottom.create()){
+					if (bottom.create()) {
 						bottom.append();
 						self.ctrls.push(bottom);
 					}
 				}
 			}
 		},
-		rebuild: function(){
+		rebuild: function () {
 			var self = this;
 			self.current = 0;
 			self.total = 0;
 			self._arr.splice(0, self._arr.length);
-			$.each(self.ctrls.splice(0, self.ctrls.length), function(i, control){
+			$.each(self.ctrls.splice(0, self.ctrls.length), function (i, control) {
 				control.destroy();
 			});
 			self.build();
 		},
-		all: function(){
+		all: function () {
 			return this._arr.slice();
 		},
-		available: function(){
+		available: function () {
 			return this.get(this.current);
 		},
-		controls: function(pageNumber){
+		controls: function (pageNumber) {
 			var self = this;
-			if (self.isValid(pageNumber)){
-				$.each(self.ctrls, function(i, control){
+			if (self.isValid(pageNumber)) {
+				$.each(self.ctrls, function (i, control) {
 					control.update(pageNumber);
 				});
 			}
 		},
-		isValid: function(pageNumber){
+		isValid: function (pageNumber) {
 			return _is.number(pageNumber) && pageNumber > 0 && pageNumber <= this.total;
 		},
-		number: function(value){
+		number: function (value) {
 			return this.isValid(value) ? value : (this.current === 0 ? 1 : this.current);
 		},
-		create: function(pageNumber){
+		create: function (pageNumber, isFilter) {
 			var self = this;
 			pageNumber = self.number(pageNumber);
 			var index = pageNumber - 1;
+			self.tmpl.items.detach(self.tmpl.items.all());
 			self.tmpl.items.create(self._arr[index], true);
-			for (var i = 0, l = self._arr.length; i < l; i++) {
-				if (i === index) continue;
-				self.tmpl.items.detach(self._arr[i]);
-			}
 			self.current = pageNumber;
 		},
-		get: function(pageNumber){
+		get: function (pageNumber) {
 			var self = this;
-			if (self.isValid(pageNumber)){
+			if (self.isValid(pageNumber)) {
 				pageNumber = self.number(pageNumber);
 				return self._arr[pageNumber - 1];
 			}
 			return [];
 		},
-		set: function(pageNumber, scroll, updateState){
+		set: function (pageNumber, scroll, updateState, isFilter) {
 			var self = this;
-			if (self.isValid(pageNumber)){
+			if (self.isValid(pageNumber)) {
 				var num = self.number(pageNumber), state;
 				if (num !== self.current) {
-					var prev = self.current, setPage = function(){
+					var prev = self.current, setPage = function () {
 						updateState = _is.boolean(updateState) ? updateState : true;
-						if (updateState && self.current === 1 && !self.tmpl.state.exists()){
+						isFilter = _is.boolean(isFilter) ? isFilter : false;
+						if (updateState && self.current === 1 && !self.tmpl.state.exists()) {
 							state = self.tmpl.state.get();
 							self.tmpl.state.update(state, self.pushOrReplace);
 						}
 						self.controls(pageNumber);
-						self.create(num);
-						if (updateState){
+						self.create(num, isFilter);
+						if (updateState) {
 							state = self.tmpl.state.get();
 							self.tmpl.state.update(state, self.pushOrReplace);
 						}
 						if (self.scrollToTop && _is.boolean(scroll) ? scroll : false) {
 							var page = self.get(self.current);
-							if (page.length > 0){
+							if (page.length > 0) {
 								page[0].scrollTo("top");
 							}
 						}
-						self.tmpl.raise("after-page-change", [self.current, prev]);
+						self.tmpl.raise("after-page-change", [self.current, prev, isFilter]);
 					};
-					var e = self.tmpl.raise("before-page-change", [self.current, num, setPage]);
+					var e = self.tmpl.raise("before-page-change", [self.current, num, setPage, isFilter]);
 					if (e.isDefaultPrevented()) return false;
 					setPage();
 					return true;
@@ -6218,7 +6348,7 @@
 			}
 			return false;
 		},
-		find: function(item){
+		find: function (item) {
 			var self = this;
 			for (var i = 0, l = self._arr.length; i < l; i++) {
 				if ($.inArray(item, self._arr[i]) !== -1) {
@@ -6227,57 +6357,58 @@
 			}
 			return 0;
 		},
-		contains: function(pageNumber, item){
+		contains: function (pageNumber, item) {
 			var items = this.get(pageNumber);
 			return $.inArray(item, items) !== -1;
 		},
-		first: function(){
+		first: function () {
 			this.goto(1);
 		},
-		last: function(){
+		last: function () {
 			this.goto(this._arr.length);
 		},
-		prev: function(){
+		prev: function () {
 			this.goto(this.current - 1);
 		},
-		next: function(){
+		next: function () {
 			this.goto(this.current + 1);
 		},
-		goto: function(pageNumber){
+		goto: function (pageNumber) {
 			var self = this;
-			if (self.set(pageNumber, true)){
+			if (self.set(pageNumber, true)) {
 				self.tmpl.loadAvailable();
 			}
 		}
 	});
 
 	_.PagingControl = _.Component.extend({
-		construct: function(template, parent, position){
+		construct: function (template, parent, position) {
 			var self = this;
 			self._super(template);
 			self.pages = parent;
 			self.position = position;
 			self.$container = null;
 		},
-		create: function(){
+		create: function () {
 			var self = this;
 			self.$container = $("<nav/>", {"class": self.pages.cls.container}).addClass(self.pages.theme);
 			return true;
 		},
-		destroy: function(){
+		destroy: function () {
 			var self = this;
 			self.$container.remove();
 			self.$container = null;
 		},
-		append: function(){
+		append: function () {
 			var self = this;
-			if (self.position === "top"){
+			if (self.position === "top") {
 				self.$container.insertBefore(self.tmpl.$el);
 			} else {
 				self.$container.insertAfter(self.tmpl.$el);
 			}
 		},
-		update: function(pageNumber){}
+		update: function (pageNumber) {
+		}
 	});
 
 	_.paging.register("default", _.Paging, null, {
@@ -6292,10 +6423,10 @@
 	}, null, -100);
 
 })(
-	FooGallery.$,
-	FooGallery,
-	FooGallery.utils,
-	FooGallery.utils.is
+		FooGallery.$,
+		FooGallery,
+		FooGallery.utils,
+		FooGallery.utils.is
 );
 (function($, _, _utils, _is){
 
@@ -6596,6 +6727,16 @@
 			cls.layouts = $.map(cls.layout, function(value){
 				return value;
 			}).join(" ");
+			// check if the layout is supplied as a CSS class
+			var layouts = $.map(cls.layout, function(value, key){
+				return {key: key, value: value};
+			});
+			for (var i =0, l = layouts.length; i < l; i++){
+				if (self.$el.hasClass(layouts[i].value)){
+					self.template.layout = layouts[i].key;
+					break;
+				}
+			}
 			// check if the supplied layout is supported
 			if (!_is.string(cls.layout[self.template.layout])){
 				// if not set the default
@@ -6637,13 +6778,12 @@
 				rule = '#' + self.id + sel.container + ' ' + sel.item.elem + ' { margin-bottom: ' + self.template.gutter + 'px; }';
 				sheet.insertRule(rule , 0);
 			}
-
 			self.masonry = new Masonry( self.$el.get(0), self.template );
 		},
-		onInit: function(event, self){
+		onPostInit: function(event, self){
 			self.masonry.layout();
 		},
-		onPostInit: function(event, self){
+		onFirstLoad: function(event, self){
 			self.masonry.layout();
 		},
 		onReady: function(event, self){
@@ -6652,11 +6792,13 @@
 		onDestroy: function(event, self){
 			self.$el.find(self.sel.columnWidth).remove();
 			self.$el.find(self.sel.gutterWidth).remove();
-			if (self.masonry instanceof Masonry){
-				self.masonry.destroy();
-			}
 			if (self.style && self.style.parentNode){
 				self.style.parentNode.removeChild(self.style);
+			}
+		},
+		onDestroyed: function(event, self){
+			if (self.masonry instanceof Masonry){
+				self.masonry.destroy();
 			}
 		},
 		onLayout: function(event, self){
@@ -6733,6 +6875,8 @@
 
 	_.template.register("masonry", _.MasonryTemplate, {
 		template: {
+			initLayout: false,
+			isInitLayout: false,
 			layout: "col4"
 		}
 	}, {
@@ -6807,10 +6951,10 @@
 	 */
 
 })(
-	FooGallery.$,
-	FooGallery,
-	FooGallery.utils,
-	FooGallery.utils.is
+		FooGallery.$,
+		FooGallery,
+		FooGallery.utils,
+		FooGallery.utils.is
 );
 (function($, _, _utils, _is){
 
@@ -6829,14 +6973,10 @@
 					self.options.maxRowHeight = parseInt(self.options.maxRowHeight);
 				}
 			}
-			self.layout(true);
 			$(window).on("resize.justified", {self: self}, self.onWindowResize);
 		},
 		destroy: function(){
 			$(window).off("resize.justified");
-			$.each(this._items, function(i, item){
-				item.$item.removeAttr("style").removeClass("fg-positioned");
-			});
 			this.$el.removeAttr("style");
 		},
 		parse: function(){
@@ -6892,9 +7032,9 @@
 			}
 
 			var self = this,
-				containerWidth = self.getContainerWidth(),
-				rows = self.rows(containerWidth),
-				offsetTop = 0;
+					containerWidth = self.getContainerWidth(),
+					rows = self.rows(containerWidth),
+					offsetTop = 0;
 
 			for (var i = 0, l = rows.length, row; i < l; i++){
 				row = rows[i];
@@ -6958,9 +7098,9 @@
 		},
 		justify: function(row, containerWidth, offsetTop){
 			var self = this,
-				left = 0,
-				margins = self.options.margins * (row.items.length - 1),
-				ratio = (containerWidth - margins) / row.width;
+					left = 0,
+					margins = self.options.margins * (row.items.length - 1),
+					ratio = (containerWidth - margins) / row.width;
 
 			if (row.index > 0) offsetTop += self.options.margins;
 			row.top = offsetTop;
@@ -7007,10 +7147,10 @@
 		},
 		rows: function(containerWidth){
 			var self = this,
-				items = self.items(),
-				rows = [],
-				process = items.length > 0,
-				index = -1, offsetTop = 0;
+					items = self.items(),
+					rows = [],
+					process = items.length > 0,
+					index = -1, offsetTop = 0;
 
 			while (process){
 				index += 1;
@@ -7073,10 +7213,10 @@
 	};
 
 })(
-	FooGallery.$,
-	FooGallery,
-	FooGallery.utils,
-	FooGallery.utils.is
+		FooGallery.$,
+		FooGallery,
+		FooGallery.utils,
+		FooGallery.utils.is
 );
 (function($, _, _utils){
 
@@ -7087,11 +7227,11 @@
 		onInit: function(event, self){
 			self.justified.init();
 		},
-		onPostInit: function(event, self){
+		onFirstLoad: function(event, self){
 			self.justified.layout( true );
 		},
 		onReady: function(event, self){
-			self.justified.layout( true );
+			self.justified.layout();
 		},
 		onDestroy: function(event, self){
 			self.justified.destroy();
@@ -7115,9 +7255,9 @@
 	});
 
 })(
-	FooGallery.$,
-	FooGallery,
-	FooGallery.utils
+		FooGallery.$,
+		FooGallery,
+		FooGallery.utils
 );
 (function($, _, _utils, _is){
 
@@ -7130,13 +7270,9 @@
 		init: function(){
 			var self = this;
 			$(window).on("resize.portfolio", {self: self}, self.onWindowResize);
-			self.layout(true);
 		},
 		destroy: function(){
 			$(window).off("resize.portfolio");
-			$.each(this._items, function(i, item){
-				item.$item.removeAttr("style").removeClass("fg-positioned");
-			});
 			this.$el.removeAttr("style");
 		},
 		parse: function(){
@@ -7196,9 +7332,9 @@
 			}
 
 			var self = this,
-				containerWidth = self.getContainerWidth(),
-				rows = self.rows(containerWidth),
-				offsetTop = 0;
+					containerWidth = self.getContainerWidth(),
+					rows = self.rows(containerWidth),
+					offsetTop = 0;
 
 			for (var i = 0, l = rows.length, row; i < l; i++){
 				row = rows[i];
@@ -7258,10 +7394,10 @@
 		},
 		rows: function(containerWidth){
 			var self = this,
-				items = self.items(),
-				rows = [],
-				process = items.length > 0,
-				index = -1, offsetTop = 0;
+					items = self.items(),
+					rows = [],
+					process = items.length > 0,
+					index = -1, offsetTop = 0;
 
 			while (process){
 				index += 1;
@@ -7326,10 +7462,10 @@
 	};
 
 })(
-	FooGallery.$,
-	FooGallery,
-	FooGallery.utils,
-	FooGallery.utils.is
+		FooGallery.$,
+		FooGallery,
+		FooGallery.utils,
+		FooGallery.utils.is
 );
 (function($, _, _utils){
 
@@ -7345,11 +7481,11 @@
 		onInit: function(event, self){
 			self.portfolio.init();
 		},
-		onPostInit: function(event, self){
+		onFirstLoad: function(event, self){
 			self.portfolio.layout( true );
 		},
 		onReady: function(event, self){
-			self.portfolio.layout( true );
+			self.portfolio.layout();
 		},
 		onDestroy: function(event, self){
 			self.portfolio.destroy();
@@ -7375,9 +7511,9 @@
 	});
 
 })(
-	FooGallery.$,
-	FooGallery,
-	FooGallery.utils
+		FooGallery.$,
+		FooGallery,
+		FooGallery.utils
 );
 // (function(_){
 //
@@ -7435,35 +7571,35 @@
 			 * @name $inner
 			 * @type {jQuery}
 			 */
-			this.$inner = this.$el.find('.fiv-inner-container');
+			this.$inner = $();
 			/**
 			 * @summary The jQuery object that displays the current image count.
 			 * @memberof FooGallery.ImageViewerTemplate#
 			 * @name $current
 			 * @type {jQuery}
 			 */
-			this.$current = this.$el.find('.fiv-count-current');
+			this.$current = $();
 			/**
 			 * @summary The jQuery object that displays the current image count.
 			 * @memberof FooGallery.ImageViewerTemplate#
 			 * @name $current
 			 * @type {jQuery}
 			 */
-			this.$total = this.$el.find('.fiv-count-total');
+			this.$total = $();
 			/**
 			 * @summary The jQuery object for the previous button.
 			 * @memberof FooGallery.ImageViewerTemplate#
 			 * @name $prev
 			 * @type {jQuery}
 			 */
-			this.$prev = this.$el.find('.fiv-prev');
+			this.$prev = $();
 			/**
 			 * @summary The jQuery object for the next button.
 			 * @memberof FooGallery.ImageViewerTemplate#
 			 * @name $next
 			 * @type {jQuery}
 			 */
-			this.$next = this.$el.find('.fiv-next');
+			this.$next = $();
 			/**
 			 * @summary The CSS classes for the Image Viewer template.
 			 * @memberof FooGallery.ImageViewerTemplate#
@@ -7476,6 +7612,28 @@
 			 * @name sel
 			 * @type {FooGallery.ImageViewerTemplate~CSSSelectors}
 			 */
+		},
+		createChildren: function(){
+			var self = this;
+			return $("<div/>", {"class": self.cls.inner}).append(
+					$("<div/>", {"class": self.cls.innerContainer}),
+					$("<div/>", {"class": self.cls.controls}).append(
+							$("<div/>", {"class": self.cls.prev})
+									.append($("<span/>", {text: self.il8n.prev})),
+							$("<label/>", {"class": self.cls.count, text: self.il8n.count})
+									.prepend($("<span/>", {"class": self.cls.countCurrent, text: "0"}))
+									.append($("<span/>", {"class": self.cls.countTotal, text: "0"})),
+							$("<div/>", {"class": self.cls.next})
+									.append($("<span/>", {text: self.il8n.next}))
+					)
+			);
+		},
+		onPreInit: function(event, self){
+			self.$inner = self.$el.find(self.sel.innerContainer);
+			self.$current = self.$el.find(self.sel.countCurrent);
+			self.$total = self.$el.find(self.sel.countTotal);
+			self.$prev = self.$el.find(self.sel.prev);
+			self.$next = self.$el.find(self.sel.next);
 		},
 		onInit: function (event, self) {
 			if (self.template.attachFooBox) {
@@ -7508,6 +7666,14 @@
 			self.$inner.append(item.$el);
 			item.fix();
 			item.isAttached = true;
+		},
+		onAfterPageChange: function(event, self, current, prev, isFilter){
+			if (!isFilter){
+				self.update();
+			}
+		},
+		onAfterFilterChange: function(event, self){
+			self.update();
 		},
 		update: function(){
 			if (this.pages){
@@ -7595,7 +7761,19 @@
 			loop: false
 		}
 	}, {
-		container: "foogallery fg-image-viewer"
+		container: "foogallery fg-image-viewer",
+		inner: "fiv-inner",
+		innerContainer: "fiv-inner-container",
+		controls: "fiv-ctrls",
+		prev: "fiv-prev",
+		next: "fiv-next",
+		count: "fiv-count",
+		countCurrent: "fiv-count-current",
+		countTotal: "fiv-count-total"
+	}, {
+		prev: "Prev",
+		next: "Next",
+		count: "of"
 	});
 
 })(
@@ -7609,15 +7787,40 @@
 	_.ThumbnailTemplate = _.Template.extend({
 		construct: function (options, element) {
 			this._super(_obj.extend({}, options, {
+				filtering: {
+					type: "none"
+				},
 				paging: {
 					type: "none"
 				}
 			}), element);
+			this.$hidden = $();
+		},
+		createChildren: function(){
+			var self = this;
+			return self.$hidden = $("<div/>", {"class": self.cls.hidden});
+		},
+		onPreInit: function(event, self){
+			self.$hidden = self.$el.find(self.sel.hidden);
+		},
+		onPostInit: function(event, self){
+			var hidden = self.items.all().slice(1);
+			for (var i = 0, l = hidden.length, item; i < l; i++){
+				item = hidden[i];
+				self.$hidden.append(
+						$("<a/>", {
+							href: item.href,
+							rel: "foobox[" + self.id + "]"
+						}).attr(item.attr.anchor)
+				);
+			}
+			self.items.setAll(self.items.all().slice(0,1));
 		}
 	});
 
 	_.template.register("thumbnail", _.ThumbnailTemplate, null, {
-		container: "foogallery fg-thumbnail"
+		container: "foogallery fg-thumbnail",
+		hidden: "fg-st-hidden"
 	});
 
 })(
@@ -7625,31 +7828,36 @@
 		FooGallery,
 		FooGallery.utils.obj
 );
-(function($, _utils, _is){
+(function ($, _, _utils, _obj) {
 
-	function wp_integration(e, tmpl, current, prev){
-		if (tmpl.initialized && (e.type === "after-page-change" || e.type === "ready" || (e.type === "after-filter-change" && !tmpl.pages))){
+	_.triggerPostLoad = function (e, tmpl, current, prev, isFilter) {
+		if (e.type === "first-load" || (tmpl.initialized && ((e.type === "after-page-change" && !isFilter) || e.type === "after-filter-change"))) {
 			$("body").trigger("post-load");
 		}
-	}
+	};
 
-	var config = {
+	_.autoDefaults = {
 		on: {
-			"ready.foogallery after-page-change.foogallery after-filter-change.foogallery": wp_integration
+			"first-load.foogallery after-page-change.foogallery after-filter-change.foogallery": _.triggerPostLoad
 		}
+	};
+
+	_.auto = function (options) {
+		_.autoDefaults = _obj.merge(_.autoDefaults, options);
 	};
 
 	// this automatically initializes all templates on page load
 	$(function () {
-		$('[id^="foogallery-"]:not(.fg-ready)').foogallery(config);
+		$('[id^="foogallery-"]:not(.fg-ready)').foogallery(_.autoDefaults);
 	});
 
-	_utils.ready(function(){
-		$('[id^="foogallery-"].fg-ready').foogallery(config);
+	_utils.ready(function () {
+		$('[id^="foogallery-"].fg-ready').foogallery(_.autoDefaults);
 	});
 
 })(
 		FooGallery.$,
+		FooGallery,
 		FooGallery.utils,
-		FooGallery.utils.is
+		FooGallery.utils.obj
 );
