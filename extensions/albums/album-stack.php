@@ -4,6 +4,7 @@
  */
 global $current_foogallery_album;
 global $current_foogallery_album_arguments;
+global $current_foogallery;
 $args = foogallery_album_template_setting( 'thumbnail_dimensions', array() );
 $lightbox = foogallery_album_template_setting( 'lightbox', 'unknown' );
 $random_angle = foogallery_album_template_setting( 'random_angle', 'false' );
@@ -33,6 +34,7 @@ if ( !function_exists( 'foogallery_album_all_in_one_stack_render_gallery_attachm
 	<ul id="foogallery-stack-album-<?php echo $current_foogallery_album->ID; ?>" class="tp-grid">
 		<?php
 		foreach ( $current_foogallery_album->galleries() as $gallery ) {
+			$current_foogallery = $gallery;
 			$featured_attachment = $gallery->featured_attachment();
 			//render the featured attachment first
 			foogallery_album_all_in_one_stack_render_gallery_attachment( $gallery, $featured_attachment, $args, $lightbox );
