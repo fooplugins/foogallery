@@ -99,6 +99,7 @@ if ( !class_exists( 'FooGallery_FooGrid_Gallery_Template' ) ) {
                 'paging_support' => true,
                 'thumbnail_dimensions' => true,
 				'mandatory_classes' => 'foogrid',
+				'filtering_support' => true,
 				'fields'	  => array(
 					array(
 						'id'      => 'thumbnail_size',

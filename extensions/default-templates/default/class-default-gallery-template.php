@@ -55,6 +55,7 @@ if ( !class_exists( 'FooGallery_Default_Gallery_Template' ) ) {
 				'lazyload_support' => true,
 				'mandatory_classes' => 'fg-default',
 				'thumbnail_dimensions' => true,
+				'filtering_support' => true,
 				'fields'	  => array(
                     array(
                         'id'      => 'thumbnail_dimensions',
