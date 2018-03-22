@@ -241,14 +241,14 @@ if ( ! class_exists( 'FooGallery_Admin_Album_MetaBoxes' ) ) {
 			$shortcode = $album->shortcode();
 			?>
 			<p class="foogallery-shortcode">
-				<input type="text" id="foogallery-copy-shortcode" size="<?php echo strlen( $shortcode ); ?>" value="<?php echo htmlspecialchars( $shortcode ); ?>" readonly="readonly" />
+				<input type="text" id="foogallery_copy_shortcode" size="<?php echo strlen( $shortcode ); ?>" value="<?php echo htmlspecialchars( $shortcode ); ?>" readonly="readonly" />
 			</p>
 			<p>
 				<?php _e( 'Paste the above shortcode into a post or page to show the album.', 'foogallery' ); ?>
 			</p>
 			<script>
 				jQuery(function($) {
-					var shortcodeInput = document.querySelector('#foogallery-copy-shortcode');
+					var shortcodeInput = document.querySelector('#foogallery_copy_shortcode');
 					shortcodeInput.addEventListener('click', function () {
 						try {
 							// select the contents
