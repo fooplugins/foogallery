@@ -83,14 +83,16 @@ if ( !class_exists( 'Foo_Plugin_Settings_v2_2' ) ) {
 
 				$this->_settings_sections[$section_id] = $section;
 
-				$section_callback = create_function( '',
-					'echo "' . $desc . '";' );
-
-				add_settings_section( $section_id, $title, $section_callback, $this->plugin_slug );
+				add_settings_section( $section_id, $title, array( $this, 'echo_section_desc' ), $this->plugin_slug );
 
 				//post action
 				do_action( $this->plugin_slug . '_admin_settings_after_section', $section_id, $title, $desc );
 			}
+		}
+
+		function echo_section_desc( $arg ) {
+			$section =  $this->_settings_sections[ $arg['id'] ];
+			echo $section['desc'];
 		}
 
 		function add_section_to_tab($tab_id, $section_id, $title, $desc = '') {
