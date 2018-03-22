@@ -8,11 +8,11 @@ Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-FooGallery is the best image gallery plugin for WordPress. Why? Stunning gallery layouts, responsive, retina-ready, lightning fast, easy to use.
+Why choose FooGallery? Stunning gallery layouts, responsive, retina-ready, lightning fast, easy to use.
 
 == Description ==
 
-FooGallery is the best image gallery plugin for WordPress. Why? Stunning gallery layouts, responsive, retina-ready, lightning fast, easy to use. Built to be highly configurable and extensible for developers or freelancers.
+Why choose FooGallery? Stunning gallery layouts, responsive, retina-ready, lightning fast, easy to use. Built to be highly configurable and extensible for developers or freelancers.
 
 [View the FooGallery Homepage & DEMO](http://foo.gallery/)
 
@@ -61,6 +61,8 @@ FooGallery was designed to be the most developer-friendly gallery plugin availab
 **PRO Features**
 
 *   11 Beautiful Hover Effect Presets
+*	Media Tags and Categories
+*	Gallery Filtering using Media Tags or Categories
 *   Polaroid PRO Gallery Template
 *   Grid PRO Gallery Template
 *   Advanced Pagination
@@ -98,8 +100,6 @@ FooGallery was designed to be the most developer-friendly gallery plugin availab
 *	[Custom Branding](http://fooplugins.com/plugins/foogallery-branding/?utm_source=foogalleryplugin&utm_medium=foogallerylink&utm_campaign=foogallery_wprepo)
 *	[FooBox PRO Lightbox](http://fooplugins.com/plugins/foobox/?utm_source=foogalleryplugin&utm_medium=foogallerylink&utm_campaign=foogallery_wprepo)
 *	[FooBox FREE Lightbox](http://wordpress.org/plugins/foobox-image-lightbox)
-*	[ZOOM Template](http://wordpress.org/plugins/foogallery-zoom-template/)
-*	[Use Media Menu](https://github.com/fooplugins/foogallery-media-menu)
 *	Build your own!!!
 
 **Documentation**
@@ -122,7 +122,7 @@ FooGallery is hosted on [GitHub](https://github.com/fooplugins/foogallery). If y
 
 = Why are my thumbnails so blurry? =
 
-Have you enabled retina support for your galleries? Displays with retina support can show better quality thumbnails when retina support is enabled. To enable retina support, edit the gallery and locate the Retina Support metabox.
+Have you enabled retina support for your galleries? To enable retina support, edit the gallery and locate the Retina Support metabox.
 
 = Can I add videos to my galleries? =
 
@@ -146,21 +146,23 @@ Hell, yes! Check out our [developer page](http://foo.gallery/developers/)
 
 == Upgrade Notice ==
 
-Update now to support FooVideo and many other improvements!
+Update now to get all the latest features, bug fixes and improvements!
 
 == Changelog ==
 
-= 1.4.18 =
+= 1.4.24 =
 
-* New : default crop position setting for attachments
-
-= 1.4.17 =
-
-* Speed up gallery previews in wp-admin
-* Fix : ensure jquery-ui-sortable is loaded on edit page for some installs
+* New : Retina support for albums!
+* New : Default crop position setting for attachments
+* New : Speed up gallery previews in wp-admin
+* Fix : Extension loading issues on certain installs
+* Fix : Shortcode copy-to-clipboard metabox works again
+* Fix : Bugs fixes for paging, filtering, FooBox and more
+* Fix : Ensure jquery-ui-sortable is loaded on edit page for some installs
 * Fix : All-In-One Stack Album layout bugs
-* Reworked extensions listing page logic
-* Updated to Freemius SDK 1.2.4
+* Fix : Reworked extensions listing page logic
+* Update : FooGallery client side 1.0.23
+* Update : Freemius SDK 1.2.4
 
 = 1.4.15 =
 
