@@ -4,6 +4,7 @@
  */
 global $current_foogallery_album;
 global $current_foogallery_album_arguments;
+global $current_foogallery;
 $gallery = foogallery_album_get_current_gallery();
 $alignment = foogallery_album_template_setting( 'alignment', 'alignment-left' );
 $foogallery = false;
@@ -44,6 +45,7 @@ if ( false !== $foogallery ) {
 	<ul class="foogallery-album-gallery-list <?php echo $alignment; ?>">
 		<?php
 		foreach ( $current_foogallery_album->galleries() as $gallery ) {
+			$current_foogallery = $gallery;
 			if (!empty($gallery->attachment_ids)) {
 				$attachment = $gallery->featured_attachment();
 

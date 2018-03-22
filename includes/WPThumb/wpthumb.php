@@ -156,7 +156,7 @@ class WP_Thumb {
 			'width'                   => 0,
 			'height'                  => 0,
 			'crop'                    => false,
-			'crop_from_position'      => 'center,center',
+			'crop_from_position'      => wpthumb_default_crop_position(),
 			'resize'                  => true,
 			'watermark_options'       => array(),
 			'cache'                   => true,
@@ -822,3 +822,7 @@ function wpthumb_create_args_from_size( $args = '' ) {
 }
 
 add_filter( 'wpthumb_create_args_from_size', 'wpthumb_create_args_from_size' );
+
+function wpthumb_default_crop_position() {
+	return apply_filters( 'wpthumb_default_crop_position', 'center,center' );
+}

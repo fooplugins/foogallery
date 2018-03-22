@@ -12,10 +12,23 @@ if ( ! class_exists( 'FooGallery_Extensions_Loader' ) ) {
 		 * For each extension, create an instance of the extension class and add it to a global extensions array
 		 */
 		function load_active_extensions() {
+			$action = foo_safe_get( $_POST, 'action');
+			if ( 'deactivate' === $action || 'heartbeat' === $action ) { return; }
+
+			if ( ! function_exists( 'get_current_screen' ) ) {
+				require_once(ABSPATH . 'wp-admin/includes/screen.php');
+			}
+
 			$api               = new FooGallery_Extensions_API();
 			$active_extensions = $api->get_active_extensions();
 			foreach ( $active_extensions as $slug => $class ) {
-				$this->load_extension( $slug, $class );
+				try {
+					$this->load_extension( $slug, $class );
+				}
+				catch (Exception $e) {
+					$error = $e;
+					$something = $error;
+				}
 			}
 
 			//What if no extensions were loaded?

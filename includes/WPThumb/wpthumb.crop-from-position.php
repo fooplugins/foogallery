@@ -31,7 +31,7 @@ function wpthumb_media_form_crop_position( $fields, $post ) {
 	$current_position = get_post_meta( $post->ID, 'wpthumb_crop_pos', true );
 
 	if ( ! $current_position ) {
-		$current_position = 'center,center';
+		$current_position = wpthumb_default_crop_position();
 	}
 
 	$html = '<style>#wpthumb_crop_pos { padding: 5px; } #wpthumb_crop_pos input { margin: 5px; width: auto; }</style>';
@@ -74,7 +74,7 @@ function wpthumb_media_form_crop_position_save( $post, $attachment ) {
 		return $post;
 	}
 
-	if ( $attachment['wpthumb_crop_pos'] == 'center,center' ) {
+	if ( $attachment['wpthumb_crop_pos'] == wpthumb_default_crop_position() ) {
 		delete_post_meta( $post['ID'], 'wpthumb_crop_pos' );
 	} else {
 		update_post_meta( $post['ID'], 'wpthumb_crop_pos', $attachment['wpthumb_crop_pos'] );
