@@ -473,7 +473,7 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 						}
 
 						$filtering_adjust_opacity = $this->get_foogallery_argument( $gallery, 'filtering_adjust_opacity', 'filtering_adjust_opacity', 'no' ) === 'yes';
-						if ( $filtering_adjust_size ) {
+						if ( $filtering_adjust_opacity ) {
 							$filtering_options['adjustOpacity'] = $filtering_adjust_opacity;
 							$filtering_options['lightest'] = $this->get_foogallery_argument( $gallery, 'filtering_adjust_opacity_lightest', 'filtering_adjust_opacity_lightest', '0.5' );
 							$filtering_options['darkest']  = intval( $this->get_foogallery_argument( $gallery, 'filtering_adjust_opacity_darkest', 'filtering_adjust_opacity_darkest', '1' ) );
