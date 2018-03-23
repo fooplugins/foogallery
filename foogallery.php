@@ -127,8 +127,6 @@ if ( ! class_exists( 'FooGallery_Plugin' ) ) {
 
 			new FooGallery_Thumbnails();
 
-			new FooGallery_Polylang_Compatibility();
-
 			new FooGallery_Attachment_Filters();
 
 			new FooGallery_Retina();
@@ -147,13 +145,11 @@ if ( ! class_exists( 'FooGallery_Plugin' ) ) {
 
 			new FooGallery_Thumbnail_Dimensions();
 
-			new FooGallery_FooBox_Support();
-
-			new FooGallery_Responsive_Lightbox_dFactory_Support();
-
 			new FooGallery_Attachment_Custom_Class();
 
 			new FooGallery_Upgrade();
+
+			new FooGallery_Compatibility();
 
 			new FooGallery_Extensions_Compatibility();
 

@@ -3,9 +3,9 @@
  * Adds in better support for FooBox Free and PRO
  */
 
-if ( !class_exists( 'FooGallery_FooBox_Support' ) ) {
+if ( !class_exists( 'FooGallery_FooBox_Compatibility' ) ) {
 
-	class FooGallery_FooBox_Support {
+	class FooGallery_FooBox_Compatibility {
 
 		function __construct() {
 			//we need to make sure outdated versions of FooBox never run in the future
