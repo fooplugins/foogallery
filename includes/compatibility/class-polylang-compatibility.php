@@ -18,7 +18,7 @@ if ( ! class_exists( 'FooGallery_Polylang_Compatibility' ) ) {
 				//whitelist the Polylang metabox
 				add_filter( 'foogallery_metabox_sanity_foogallery', array( $this, 'add_pll_metaboxes' ) );
 
-				add_action('admin_notices', array($this, 'admin_notice'));
+				add_action( 'admin_notices', array( $this, 'admin_notice' ) );
 			}
 		}
 

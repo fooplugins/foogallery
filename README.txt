@@ -150,11 +150,12 @@ Update now to get all the latest features, bug fixes and improvements!
 
 == Changelog ==
 
-= 1.4.24 =
+= 1.4.25 =
 
 * New : Retina support for albums!
 * New : Default crop position setting for attachments
 * New : Speed up gallery previews in wp-admin
+* New : Caption support for Responsive Lightbox by dFactory
 * Fix : Extension loading issues on certain installs
 * Fix : Shortcode copy-to-clipboard metabox works again
 * Fix : Bugs fixes for paging, filtering, FooBox and more

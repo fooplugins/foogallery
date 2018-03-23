@@ -6,13 +6,13 @@
  *
  * @since 1.2.21
  */
-if ( ! class_exists( 'FooGallery_Responsive_Lightbox_dFactory_Support' ) ) {
+if ( ! class_exists( 'FooGallery_Responsive_Lightbox_dFactory_Compatibility' ) ) {
 
-	class FooGallery_Responsive_Lightbox_dFactory_Support {
+	class FooGallery_Responsive_Lightbox_dFactory_Compatibility {
 
 		function __construct() {
 			add_filter( 'foogallery_gallery_template_field_lightboxes', array( $this, 'add_lightbox' ), 99 );
-			add_filter( 'foogallery_attachment_html_link_attributes', array( $this, 'add_lightbox_data_rel' ), 10, 3 );
+			add_filter( 'foogallery_attachment_html_link_attributes', array( $this, 'add_attributes' ), 10, 3 );
 		}
 
 		/**
@@ -42,11 +42,18 @@ if ( ! class_exists( 'FooGallery_Responsive_Lightbox_dFactory_Support' ) ) {
 		 * @return mixed
 		 * @since 1.2.21
 		 */
-		function add_lightbox_data_rel($attr, $args, $attachment) {
-			$lightbox = foogallery_gallery_template_setting( 'lightbox', 'unknown' );
+		function add_attributes($attr, $args, $attachment) {
+			if ( class_exists( 'Responsive_Lightbox' ) ) {
+				$lightbox = foogallery_gallery_template_setting( 'lightbox', 'unknown' );
 
-			if ( 'dfactory' === $lightbox ) {
-				$attr['data-rel'] = 'lightbox';
+				//only add attributes if the dfactory lightbox is in use
+				if ( 'dfactory' === $lightbox ) {
+					$attr['data-rel'] = 'lightbox';
+
+					if ( !empty( $attachment->caption ) ) {
+						$attr['title'] = $attachment->caption;
+					}
+				}
 			}
 
     		return $attr;

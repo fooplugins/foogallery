@@ -33,15 +33,13 @@ require_once( FOOGALLERY_PATH . 'extensions/nextgen-importer/class-nextgen-galle
 //load Template Loader files
 require_once( FOOGALLERY_PATH . 'includes/public/class-foogallery-template-loader.php' );
 
-//Polylang Compatibility
-require_once( FOOGALLERY_PATH . 'includes/class-polylang-compatibility.php' );
+//Load all Compatibility files
+require_once( FOOGALLERY_PATH . 'includes/compatibility/class-foogallery-compatibility.php' );
 
 require_once( FOOGALLERY_PATH . 'includes/class-version-check.php' );
 require_once( FOOGALLERY_PATH . 'includes/class-foogallery-animated-gif-support.php' );
 require_once( FOOGALLERY_PATH . 'includes/class-foogallery-cache.php' );
 require_once( FOOGALLERY_PATH . 'includes/class-thumbnail-dimensions.php' );
-require_once( FOOGALLERY_PATH . 'includes/class-foobox-support.php' );
-require_once( FOOGALLERY_PATH . 'includes/class-responsive-lightbox-dfactory-support.php' );
 require_once( FOOGALLERY_PATH . 'includes/class-foogallery-common-fields.php' );
 require_once( FOOGALLERY_PATH . 'includes/class-foogallery-lazyload.php' );
 require_once( FOOGALLERY_PATH . 'includes/class-foogallery-paging.php' );
@@ -72,7 +70,6 @@ if ( is_admin() ) {
 	require_once( FOOGALLERY_PATH . 'includes/admin/class-attachment-fields.php' );
 	require_once( FOOGALLERY_PATH . 'includes/admin/class-admin-css-load-optimizer.php' );
 	require_once( FOOGALLERY_PATH . 'includes/admin/class-admin-notices.php' );
-    require_once( FOOGALLERY_PATH . 'includes/admin/class-autoptimize-support.php' );
 
 } else {
 

@@ -6,9 +6,9 @@
  *
  * @since 1.3.3
  */
-if ( ! class_exists( 'FooGallery_WPRocket_Support' ) ) {
+if ( ! class_exists( 'FooGallery_WPRocket_Compatibility' ) ) {
 
-	class FooGallery_WPRocket_Support {
+	class FooGallery_WPRocket_Compatibility {
 
 		function __construct() {
 			add_filter( 'foogallery_attachment_html_image_attributes', array( $this, 'alter_image_attributes' ), 999, 3 );
