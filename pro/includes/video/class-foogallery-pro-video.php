@@ -5,38 +5,26 @@
 
 if ( !class_exists( 'FooGallery_Pro_Video' ) ) {
 
-    define( 'FOOVIDEO_PATH', plugin_dir_path( __FILE__ ) );
-    define( 'FOOVIDEO_VERSION', '2.0.3' );
     define( 'FOOVIDEO_BATCH_LIMIT', 10 );
     define( 'FOOVIDEO_POST_META', '_foovideo_video_data' );
     define( 'FOOVIDEO_POST_META_VIDEO_COUNT', '_foovideo_video_count' );
-    define( 'FOOVIDEO_FOOGALLERY_MIN_VERSION', '1.4.13' );
 
-    require_once FOOVIDEO_PATH . 'includes/functions.php';
-    require_once FOOVIDEO_PATH . 'includes/videoslider/class-videoslider-gallery-template.php';
-    require_once FOOVIDEO_PATH . 'includes/import/class-import-manager.php';
-    require_once FOOVIDEO_PATH . 'includes/import/class-import-handler-youtube.php';
-    require_once FOOVIDEO_PATH . 'includes/import/class-import-handler-vimeo.php';
-    class FooGallery_FooVideo
+    require_once plugin_dir_path( __FILE__ ) . 'includes/functions.php';
+    require_once plugin_dir_path( __FILE__ ) . 'includes/import/class-import-manager.php';
+    require_once plugin_dir_path( __FILE__ ) . 'includes/import/class-import-handler-youtube.php';
+    require_once plugin_dir_path( __FILE__ ) . 'includes/import/class-import-handler-vimeo.php';
+
+    class FooGallery_Pro_Video
     {
-        private static  $instance ;
-        public static function get_instance()
-        {
-            if ( !isset( self::$instance ) && !self::$instance instanceof FooGallery_FooVideo ) {
-                self::$instance = new FooGallery_FooVideo();
-            }
-            return self::$instance;
-        }
-
         /**
-         * Wire up everything we need to run the extension
+         * Wire up everything we need
          */
         function __construct()
         {
-            new FooGallery_Videoslider_Gallery_Template();
-            new FooGallery_FooVideo_Import_Manager();
-            new FooGallery_FooVideo_Import_Handler_YouTube();
-            new FooGallery_FooVideo_Import_Handler_Vimeo();
+            new FooGallery_FooGallery_Pro_Video_Import_Manager();
+            new FooGallery_FooGallery_Pro_Video_Import_Handler_YouTube();
+            new FooGallery_FooGallery_Pro_Video_Import_Handler_Vimeo();
+
             //setup script includes
             add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_stylescripts' ) );
             //add attachment custom fields
@@ -100,7 +88,7 @@ if ( !class_exists( 'FooGallery_Pro_Video' ) ) {
                 wp_send_json_success( $attachments );
             } else {
                 status_header( 500 );
-                echo  __( 'Could not search attachments!', 'foo-video' ) ;
+                echo  __( 'Could not search attachments!', 'foogallery' ) ;
                 wp_die();
             }
 
@@ -194,10 +182,10 @@ if ( !class_exists( 'FooGallery_Pro_Video' ) ) {
 
             if ( empty($results['stream']) && empty($results['provider_name']) && empty($results['video']) && empty($results['video_id']) ) {
                 if ( $type == 'youtube' ) {
-                    echo  '<div class="notice error"><p>' . sprintf( __( 'No videos found matching "%s"', 'foo-video' ), '<strong>' . stripslashes_deep( $query_str ) . '</strong>' ) . '</p></div>' ;
+                    echo  '<div class="notice error"><p>' . sprintf( __( 'No videos found matching "%s"', 'foogallery' ), '<strong>' . stripslashes_deep( $query_str ) . '</strong>' ) . '</p></div>' ;
                 }
                 if ( $type == 'vimeo' ) {
-                    echo  '<div class="notice error"><p>' . __( 'Invalid ID or URL', 'foo-video' ) . '</p></div>' ;
+                    echo  '<div class="notice error"><p>' . __( 'Invalid ID or URL', 'foogallery' ) . '</p></div>' ;
                 }
                 exit;
             }
@@ -207,34 +195,34 @@ if ( !class_exists( 'FooGallery_Pro_Video' ) ) {
 
                 if ( empty($isstream) ) {
                     $video = $results;
-                    include FOOVIDEO_PATH . 'views/general-single-result.php';
+                    include plugin_dir_path( __FILE__ ) . 'views/general-single-result.php';
                 } else {
-                    include FOOVIDEO_PATH . 'views/vimeo-playlist-result.php';
+                    include plugin_dir_path( __FILE__ ) . 'views/vimeo-playlist-result.php';
                     foreach ( $results['stream']['clips'] as $index => $video ) {
-                        include FOOVIDEO_PATH . 'views/vimeo-result.php';
+                        include plugin_dir_path( __FILE__ ) . 'views/vimeo-result.php';
                     }
                 }
 
             } else {
                 if ( !empty($isplaylist) ) {
-                    include FOOVIDEO_PATH . 'views/youtube-playlist-result.php';
+                    include plugin_dir_path( __FILE__ ) . 'views/youtube-playlist-result.php';
                 }
 
                 if ( !empty($results['provider_name']) ) {
                     $video = $results;
-                    include FOOVIDEO_PATH . 'views/youtube-playlist-result.php';
+                    include plugin_dir_path( __FILE__ ) . 'views/youtube-playlist-result.php';
                 }
 
 
                 if ( !empty($results['video']) ) {
-                    echo  '<span id="import-playlist-id" data-loading="' . esc_attr( __( 'Importing Video(s)', 'foo-video' ) ) . '"></span>' ;
+                    echo  '<span id="import-playlist-id" data-loading="' . esc_attr( __( 'Importing Video(s)', 'foogallery' ) ) . '"></span>' ;
                     foreach ( $results['video'] as $index => $video ) {
-                        include FOOVIDEO_PATH . 'views/youtube-result.php';
+                        include plugin_dir_path( __FILE__ ) . 'views/youtube-result.php';
                     }
                 }
 
                 if ( !empty($results['hits']) && ($index + 1) * $page < $results['hits'] ) {
-                    echo  '<div class="foovideo-loadmore button" data-page="' . ($page + 1) . '">' . __( 'Load More', 'foo-video' ) . '</div>' ;
+                    echo  '<div class="foovideo-loadmore button" data-page="' . ($page + 1) . '">' . __( 'Load More', 'foogallery' ) . '</div>' ;
                 }
             }
 
@@ -255,14 +243,14 @@ if ( !class_exists( 'FooGallery_Pro_Video' ) ) {
                 'foo_video_admin',
                 $js,
                 array( 'jquery' ),
-                FOOVIDEO_VERSION
+                FOOGALLERY_VERSION
             );
             $css = plugin_dir_url( __FILE__ ) . 'css/gallery-foo_video-admin.css';
             wp_enqueue_style(
                 'foo_video_admin',
                 $css,
                 array(),
-                FOOVIDEO_VERSION
+				FOOGALLERY_VERSION
             );
         }
 
@@ -276,28 +264,28 @@ if ( !class_exists( 'FooGallery_Pro_Video' ) ) {
         public function attachment_custom_fields( $fields )
         {
 			$fields[ 'data-width' ] = array(
-				'label'       =>  __( 'Override Width', 'foo-video' ),
+				'label'       =>  __( 'Override Width', 'foogallery' ),
 				'input'       => 'text',
 				'exclusions'  => array( 'audio', 'video' ),
 			);
 			$fields[ 'data-height' ] = array(
-				'label'       =>  __( 'Override Height', 'foo-video' ),
+				'label'       =>  __( 'Override Height', 'foogallery' ),
 				'input'       => 'text',
 				'exclusions'  => array( 'audio', 'video' ),
 			);
 //            $fields['foovideo_video_type'] = array(
-//                'label'      => __( 'Video Source', 'foo-video' ),
+//                'label'      => __( 'Video Source', 'foogallery' ),
 //                'input'      => 'select',
 //                'options'    => array(
-//                'youtube' => __( 'YouTube', 'foo-video' ),
-//                'vimeo'   => __( 'Vimeo', 'foo-video' ),
+//                'youtube' => __( 'YouTube', 'foogallery' ),
+//                'vimeo'   => __( 'Vimeo', 'foogallery' ),
 //            ),
 //                'exclusions' => array( 'audio', 'video' ),
 //            );
 //            $fields['foovideo_video_description'] = array(
-//                'label'      => __( 'Video Description', 'foo-video' ),
+//                'label'      => __( 'Video Description', 'foogallery' ),
 //                'input'      => 'text',
-//                'helps'      => __( 'Video description.', 'foo-video' ),
+//                'helps'      => __( 'Video description.', 'foogallery' ),
 //                'exclusions' => array( 'audio', 'video' ),
 //            );
             return $fields;
@@ -315,75 +303,75 @@ if ( !class_exists( 'FooGallery_Pro_Video' ) ) {
         {
             $fields[] = array(
                 'id'      => 'foovideo_video_overlay',
-                'section' => __( 'Video', 'foo-video' ),
-                'title'   => __( 'Video Hover Icon', 'foo-video' ),
+                'section' => __( 'Video', 'foogallery' ),
+                'title'   => __( 'Video Hover Icon', 'foogallery' ),
                 'type'    => 'icon',
                 'default' => 'video-icon-default',
                 'choices' => array(
 					'video-icon-default' => array(
-						'label' => __( 'Default Icon', 'foo-video' ),
+						'label' => __( 'Default Icon', 'foogallery' ),
 						'img'   => plugin_dir_url( __FILE__ ) . 'assets/video-icon-default.png',
 					),
 						'video-icon-1'       => array(
-						'label' => __( 'Icon 1', 'foo-video' ),
+						'label' => __( 'Icon 1', 'foogallery' ),
 						'img'   => plugin_dir_url( __FILE__ ) . 'assets/video-icon-1.png',
 					),
 						'video-icon-2'       => array(
-						'label' => __( 'Icon 2', 'foo-video' ),
+						'label' => __( 'Icon 2', 'foogallery' ),
 						'img'   => plugin_dir_url( __FILE__ ) . 'assets/video-icon-2.png',
 					),
 						'video-icon-3'       => array(
-						'label' => __( 'Icon 3', 'foo-video' ),
+						'label' => __( 'Icon 3', 'foogallery' ),
 						'img'   => plugin_dir_url( __FILE__ ) . 'assets/video-icon-3.png',
 					),
 						'video-icon-4'       => array(
-						'label' => __( 'Icon 4', 'foo-video' ),
+						'label' => __( 'Icon 4', 'foogallery' ),
 						'img'   => plugin_dir_url( __FILE__ ) . 'assets/video-icon-4.png',
 					),
 				),
             );
             $fields[] = array(
                 'id'      => 'foovideo_sticky_icon',
-                'section' => __( 'Video', 'foo-video' ),
-                'title'   => __( 'Sticky Video Icon', 'foo-video' ),
-                'desc'    => __( 'Always show the video icon for videos in the gallery, and not only when you hover.', 'foo-video' ),
+                'section' => __( 'Video', 'foogallery' ),
+                'title'   => __( 'Sticky Video Icon', 'foogallery' ),
+                'desc'    => __( 'Always show the video icon for videos in the gallery, and not only when you hover.', 'foogallery' ),
                 'type'    => 'radio',
                 'default' => 'no',
                 'spacer'  => '<span class="spacer"></span>',
                 'choices' => array(
-                	'video-icon-sticky' => __( 'Yes', 'foo-video' ),
-                	'no'                  => __( 'No', 'foo-video' ),
+                	'video-icon-sticky' => __( 'Yes', 'foogallery' ),
+                	'no'                  => __( 'No', 'foogallery' ),
             	),
             );
             $fields[] = array(
                 'id'      => 'foovideo_video_size',
-                'section' => __( 'Video', 'foo-video' ),
-                'title'   => __( 'Video Size', 'foo-video' ),
-                'desc'    => __( 'The default video size when opening videos in FooBox. This can be overridden on each individual video by editing the attachment info, and changing the Data Width and Data Height properties.', 'foo-video' ),
+                'section' => __( 'Video', 'foogallery' ),
+                'title'   => __( 'Video Size', 'foogallery' ),
+                'desc'    => __( 'The default video size when opening videos in FooBox. This can be overridden on each individual video by editing the attachment info, and changing the Data Width and Data Height properties.', 'foogallery' ),
                 'type'    => 'select',
                 'default' => '640x360',
                 'choices' => array(
-                '640x360'   => __( '640 x 360', 'foo-video' ),
-                '854x480'   => __( '854 x 480', 'foo-video' ),
-                '960x540'   => __( '960 x 540', 'foo-video' ),
-                '1024x576'  => __( '1024 x 576', 'foo-video' ),
-                '1280x720'  => __( '1280 x 720 (HD)', 'foo-video' ),
-                '1366x768'  => __( '1366 x 768', 'foo-video' ),
-                '1600x900'  => __( '1600 x 900', 'foo-video' ),
-                '1920x1080' => __( '1920 x 1080 (Full HD)', 'foo-video' ),
+                '640x360'   => __( '640 x 360', 'foogallery' ),
+                '854x480'   => __( '854 x 480', 'foogallery' ),
+                '960x540'   => __( '960 x 540', 'foogallery' ),
+                '1024x576'  => __( '1024 x 576', 'foogallery' ),
+                '1280x720'  => __( '1280 x 720 (HD)', 'foogallery' ),
+                '1366x768'  => __( '1366 x 768', 'foogallery' ),
+                '1600x900'  => __( '1600 x 900', 'foogallery' ),
+                '1920x1080' => __( '1920 x 1080 (Full HD)', 'foogallery' ),
             ),
             );
             $fields[] = array(
                 'id'      => 'foovideo_autoplay',
-                'section' => __( 'Video', 'foo-video' ),
-                'title'   => __( 'Autoplay', 'foo-video' ),
-                'desc'    => __( 'Try to autoplay the video when opened in a lightbox. This will only work with videos hosted on Youtube or Vimeo.', 'foo-video' ),
+                'section' => __( 'Video', 'foogallery' ),
+                'title'   => __( 'Autoplay', 'foogallery' ),
+                'desc'    => __( 'Try to autoplay the video when opened in a lightbox. This will only work with videos hosted on Youtube or Vimeo.', 'foogallery' ),
                 'type'    => 'radio',
                 'default' => 'yes',
                 'spacer'  => '<span class="spacer"></span>',
                 'choices' => array(
-                'yes' => __( 'Yes', 'foo-video' ),
-                'no'  => __( 'No', 'foo-video' ),
+                'yes' => __( 'Yes', 'foogallery' ),
+                'no'  => __( 'No', 'foogallery' ),
             ),
             );
             return $fields;
@@ -408,9 +396,9 @@ if ( !class_exists( 'FooGallery_Pro_Video' ) ) {
                 if ( 'videoslider' !== $current_foogallery_template ) {
 
                     if ( !isset( $attr['class'] ) ) {
-                        $attr['class'] = ' foo-video';
+                        $attr['class'] = ' foogallery';
                     } else {
-                        $attr['class'] .= ' foo-video';
+                        $attr['class'] .= ' foogallery';
                     }
 
                 }
@@ -445,7 +433,7 @@ if ( !class_exists( 'FooGallery_Pro_Video' ) ) {
                         'foo_video',
                         $js,
                         array( 'jquery' ),
-                        FOOVIDEO_VERSION
+						FOOGALLERY_VERSION
                     );
                 }
 
@@ -527,7 +515,7 @@ if ( !class_exists( 'FooGallery_Pro_Video' ) ) {
                             'foo_video',
                             $css,
                             array(),
-                            FOOVIDEO_VERSION
+							FOOGALLERY_VERSION
                         );
                         return;
                     }
@@ -537,7 +525,7 @@ if ( !class_exists( 'FooGallery_Pro_Video' ) ) {
         }
 
         /**
-         * Enqueue any script or stylesheet file dependencies that FooVideo relies on
+         * Enqueue any script or stylesheet file dependencies that FooGallery_Pro_Video relies on
          *
          * @param $foogallery FooGallery
          */
@@ -553,7 +541,7 @@ if ( !class_exists( 'FooGallery_Pro_Video' ) ) {
                         'foo_video',
                         $css,
                         array(),
-                        FOOVIDEO_VERSION
+						FOOGALLERY_VERSION
                     );
                     $lightbox = foogallery_gallery_template_setting( 'lightbox', 'unknown' );
                     //we want to add some JS to the front-end ONLY if we are using FooBox Free
@@ -564,7 +552,7 @@ if ( !class_exists( 'FooGallery_Pro_Video' ) ) {
                             'foo_video',
                             $js,
                             array( 'jquery' ),
-                            FOOVIDEO_VERSION
+							FOOGALLERY_VERSION
                         );
                     }
 
@@ -594,8 +582,8 @@ if ( !class_exists( 'FooGallery_Pro_Video' ) ) {
         {
             $settings['settings'][] = array(
                 'id'      => 'video_default_target',
-                'title'   => __( 'Default Video Target', 'foo-video' ),
-                'desc'    => __( 'The default target set for a video when it is imported into the gallery.', 'foo-video' ),
+                'title'   => __( 'Default Video Target', 'foogallery' ),
+                'desc'    => __( 'The default target set for a video when it is imported into the gallery.', 'foogallery' ),
                 'type'    => 'select',
                 'default' => '_blank',
                 'section' => __( 'Gallery Defaults', 'foogallery ' ),
@@ -609,136 +597,26 @@ if ( !class_exists( 'FooGallery_Pro_Video' ) ) {
             );
             $settings['settings'][] = array(
                 'id'      => 'language_video_count_none_text',
-                'title'   => __( 'Video Count None Text', 'foo-video' ),
+                'title'   => __( 'Video Count None Text', 'foogallery' ),
                 'type'    => 'text',
-                'default' => __( 'No images or videos', 'foo-video' ),
+                'default' => __( 'No images or videos', 'foogallery' ),
                 'tab'     => 'language',
             );
             $settings['settings'][] = array(
                 'id'      => 'language_video_count_single_text',
-                'title'   => __( 'Video Count Single Text', 'foo-video' ),
+                'title'   => __( 'Video Count Single Text', 'foogallery' ),
                 'type'    => 'text',
-                'default' => __( '1 video', 'foo-video' ),
+                'default' => __( '1 video', 'foogallery' ),
                 'tab'     => 'language',
             );
             $settings['settings'][] = array(
                 'id'      => 'language_video_count_plural_text',
-                'title'   => __( 'Video Count Many Text', 'foo-video' ),
+                'title'   => __( 'Video Count Many Text', 'foogallery' ),
                 'type'    => 'text',
-                'default' => __( '%s videos', 'foo-video' ),
+                'default' => __( '%s videos', 'foogallery' ),
                 'tab'     => 'language',
             );
             return $settings;
         }
-
     }
-    //region Freemius Init code
-    // Create a helper function for easy SDK access.
-    function foovideo_fs()
-    {
-        global  $foovideo_fs ;
-
-        if ( !isset( $foovideo_fs ) ) {
-            // Include Freemius SDK.
-
-            if ( file_exists( dirname( dirname( __FILE__ ) ) . '/foogallery/freemius/start.php' ) ) {
-                // Try to load SDK from parent plugin folder.
-                require_once dirname( dirname( __FILE__ ) ) . '/foogallery/freemius/start.php';
-            } else {
-
-                if ( file_exists( dirname( dirname( __FILE__ ) ) . '/foogallery-premium/freemius/start.php' ) ) {
-                    // Try to load SDK from premium parent plugin folder.
-                    require_once dirname( dirname( __FILE__ ) ) . '/foogallery-premium/freemius/start.php';
-                } else {
-                    require_once dirname( __FILE__ ) . '/freemius/start.php';
-                }
-
-            }
-
-            $foovideo_fs = fs_dynamic_init( array(
-                'id'               => '1637',
-                'slug'             => 'foovideo',
-                'type'             => 'plugin',
-                'public_key'       => 'pk_242929ac0026ee8cf2d150342dca7',
-                'is_premium'       => true,
-                'is_premium_only'  => true,
-                'has_paid_plans'   => true,
-                'is_org_compliant' => false,
-                'trial'            => array(
-                'days'               => 7,
-                'is_require_payment' => false,
-            ),
-                'parent'           => array(
-                'id'         => '843',
-                'slug'       => 'foogallery',
-                'public_key' => 'pk_d87616455a835af1d0658699d0192',
-                'name'       => 'FooGallery',
-            ),
-                'menu'             => array(
-                'first-path' => 'plugins.php',
-                'account'    => true,
-                'support'    => false,
-            ),
-                'is_live'          => true,
-            ) );
-        }
-
-        return $foovideo_fs;
-    }
-
-    function foovideo_fs_is_parent_active_and_loaded()
-    {
-        // Check if the parent's init SDK method exists.
-        return function_exists( 'foogallery_fs' );
-    }
-
-    function foovideo_fs_is_parent_active()
-    {
-        $active_plugins_basenames = get_option( 'active_plugins' );
-        foreach ( $active_plugins_basenames as $plugin_basename ) {
-            if ( 0 === strpos( $plugin_basename, 'foogallery/' ) || 0 === strpos( $plugin_basename, 'foogallery-premium/' ) ) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    function foovideo_fs_init()
-    {
-
-        if ( foovideo_fs_is_parent_active_and_loaded() ) {
-            // Init Freemius.
-            foovideo_fs();
-            // Parent is active, add your init code here.
-            FooGallery_FooVideo::get_instance();
-        } else {
-            // Parent is inactive, add your error handling here.
-        }
-
-    }
-
-
-    if ( foovideo_fs_is_parent_active_and_loaded() ) {
-        // If parent already included, init add-on.
-        foovideo_fs_init();
-    } else {
-
-        if ( foovideo_fs_is_parent_active() ) {
-            // Init add-on only after the parent is loaded.
-            add_action( 'foogallery_fs_loaded', 'foovideo_fs_init' );
-        } else {
-            // Even though the parent is not activated, execute add-on for activation / uninstall hooks.
-            foovideo_fs_init();
-        }
-
-    }
-
-    //endregion
-}
-
-if ( !class_exists( 'FooGallery_FooVideo_Extension' ) ) {
-	class FooGallery_FooVideo_Extension
-	{
-		//empty class
-	}
 }

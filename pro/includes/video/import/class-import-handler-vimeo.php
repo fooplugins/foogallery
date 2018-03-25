@@ -1,6 +1,6 @@
 <?php
-if ( ! class_exists( 'FooGallery_FooVideo_Import_Handler_Vimeo' ) ) {
-	class FooGallery_FooVideo_Import_Handler_Vimeo {
+if ( ! class_exists( 'FooGallery_FooGallery_Pro_Video_Import_Handler_Vimeo' ) ) {
+	class FooGallery_FooGallery_Pro_Video_Import_Handler_Vimeo {
 
 
 		/**

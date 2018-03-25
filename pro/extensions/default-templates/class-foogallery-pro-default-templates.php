@@ -12,12 +12,14 @@ if ( ! class_exists( 'FooGallery_Pro_Default_Templates' ) ) {
 
 	require_once( FOOGALLERY_PRO_DEFAULT_TEMPLATES_PATH . 'polaroid/class-polaroid-gallery-template.php' );
     require_once( FOOGALLERY_PRO_DEFAULT_TEMPLATES_PATH . 'foogrid/class-foogrid-gallery-template.php' );
+	require_once( FOOGALLERY_PRO_DEFAULT_TEMPLATES_PATH . 'slider/class-slider-gallery-template.php' );
 
 	class FooGallery_Pro_Default_Templates {
 
 		function __construct() {
 			new FooGallery_Polaroid_Gallery_Template();
 			new FooGallery_FooGrid_Gallery_Template();
+			new FooGallery_Slider_Gallery_Template();
 
 			add_filter( 'foogallery_core_gallery_style', array( $this, 'pro_core_gallery_style' ) );
 			add_filter( 'foogallery_core_gallery_script', array( $this, 'pro_core_gallery_script' ) );

@@ -1,8 +1,8 @@
 <?php
 
-if ( !class_exists( 'FooGallery_Videoslider_Gallery_Template' ) ) {
+if ( !class_exists( 'FooGallery_Slider_Gallery_Template' ) ) {
 
-	class FooGallery_Videoslider_Gallery_Template {
+	class FooGallery_Slider_Gallery_Template {
 		/**
 		 * Wire up everything we need to run the extension
 		 */
@@ -28,21 +28,21 @@ if ( !class_exists( 'FooGallery_Videoslider_Gallery_Template' ) ) {
 		function add_template( $gallery_templates ) {
 
 			$gallery_templates[] = array(
-				'slug'        => 'videoslider',
-				'name'        => __( 'Video Slider', 'foo-video'),
+				'slug'        => 'slider',
+				'name'        => __( 'Slider', 'foogallery'),
 				'admin_js'	  => plugin_dir_url( __FILE__ ) . 'js/admin-gallery-videoslider.js',
 				'preview_support' => true,
 				'mandatory_classes' => 'rvs-container rvs-hide-credits',
 				'fields'	  => array(
 					array(
 						'id'      => 'layout',
-						'title'   => __('Layout', 'foo-video'),
-						'desc'    => __( 'You can choose either a horizontal or vertical layout for your responsive video gallery.', 'foo-video' ),
+						'title'   => __('Layout', 'foogallery'),
+						'desc'    => __( 'You can choose either a horizontal or vertical layout for your responsive video gallery.', 'foogallery' ),
 						'type'    => 'icon',
 						'default' => 'rvs-vertical',
 						'choices' => array(
-							'rvs-vertical' => array( 'label' => __( 'Vertical' , 'foo-video' ), 'img' => plugin_dir_url( __FILE__ ) . 'assets/video-layout-vertical.png' ),
-							'rvs-horizontal' => array( 'label' => __( 'Horizontal' , 'foo-video' ), 'img' => plugin_dir_url( __FILE__ ) . 'assets/video-layout-horizontal.png' )
+							'rvs-vertical' => array( 'label' => __( 'Vertical' , 'foogallery' ), 'img' => plugin_dir_url( __FILE__ ) . 'assets/video-layout-vertical.png' ),
+							'rvs-horizontal' => array( 'label' => __( 'Horizontal' , 'foogallery' ), 'img' => plugin_dir_url( __FILE__ ) . 'assets/video-layout-horizontal.png' )
 						),
 						'row_data' => array(
 							'data-foogallery-change-selector' => 'input:radio',
@@ -59,27 +59,27 @@ if ( !class_exists( 'FooGallery_Videoslider_Gallery_Template' ) ) {
 					),
 					array(
 						'id'      => 'viewport',
-						'title'   => __('Use Viewport Width', 'foo-video'),
-						'desc'    => __('Use the viewport width instead of the parent element width.', 'foo-video'),
+						'title'   => __('Use Viewport Width', 'foogallery'),
+						'desc'    => __('Use the viewport width instead of the parent element width.', 'foogallery'),
 						'default' => '',
 						'type'    => 'radio',
 						'spacer'  => '<span class="spacer"></span>',
 						'choices' => array(
-							'' => __( 'No', 'foo-video' ),
-							'rvs-use-viewport' => __( 'Yes', 'foo-video' )
+							'' => __( 'No', 'foogallery' ),
+							'rvs-use-viewport' => __( 'Yes', 'foogallery' )
 						)
 					),
 					array(
 						'id'      => 'theme',
-						'title'   => __('Theme', 'foo-video'),
+						'title'   => __('Theme', 'foogallery'),
 						'section' => __( 'Appearance', 'foogallery' ),
 						'default' => '',
 						'type'    => 'radio',
 						'spacer'  => '<span class="spacer"></span>',
 						'choices' => array(
-							'' => __( 'Dark', 'foo-video' ),
-							'rvs-light' => __( 'Light', 'foo-video' ),
-							'rvs-custom' => __( 'Custom', 'foo-video' )
+							'' => __( 'Dark', 'foogallery' ),
+							'rvs-light' => __( 'Light', 'foogallery' ),
+							'rvs-custom' => __( 'Custom', 'foogallery' )
 						),
 						'row_data' => array(
 							'data-foogallery-change-selector' => 'input:radio',
@@ -89,7 +89,7 @@ if ( !class_exists( 'FooGallery_Videoslider_Gallery_Template' ) ) {
 					),
 					array(
 						'id'      => 'theme_custom_bgcolor',
-						'title'   => __('Background Color', 'foo-video'),
+						'title'   => __('Background Color', 'foogallery'),
 						'section' => __( 'Appearance', 'foogallery' ),
 						'type'    => 'colorpicker',
 						'default' => '#000000',
@@ -102,7 +102,7 @@ if ( !class_exists( 'FooGallery_Videoslider_Gallery_Template' ) ) {
 					),
 					array(
 						'id'      => 'theme_custom_textcolor',
-						'title'   => __('Text Color', 'foo-video'),
+						'title'   => __('Text Color', 'foogallery'),
 						'section' => __( 'Appearance', 'foogallery' ),
 						'type'    => 'colorpicker',
 						'default' => '#ffffff',
@@ -115,7 +115,7 @@ if ( !class_exists( 'FooGallery_Videoslider_Gallery_Template' ) ) {
 					),
 					array(
 						'id'      => 'theme_custom_hovercolor',
-						'title'   => __('Hover BG Color', 'foo-video'),
+						'title'   => __('Hover BG Color', 'foogallery'),
 						'section' => __( 'Appearance', 'foogallery' ),
 						'type'    => 'colorpicker',
 						'default' => '#222222',
@@ -128,7 +128,7 @@ if ( !class_exists( 'FooGallery_Videoslider_Gallery_Template' ) ) {
 					),
 					array(
 						'id'      => 'theme_custom_dividercolor',
-						'title'   => __('Divider Color', 'foo-video'),
+						'title'   => __('Divider Color', 'foogallery'),
 						'section' => __( 'Appearance', 'foogallery' ),
 						'type'    => 'colorpicker',
 						'default' => '#2e2e2e',
@@ -141,19 +141,19 @@ if ( !class_exists( 'FooGallery_Videoslider_Gallery_Template' ) ) {
 					),
 					array(
 						'id'      => 'highlight',
-						'title'   => __('Highlight', 'foo-video'),
+						'title'   => __('Highlight', 'foogallery'),
 						'section' => __( 'Appearance', 'foogallery' ),
-						'desc'    => __('The color that is used to highlight the selected video.', 'foo-video'),
+						'desc'    => __('The color that is used to highlight the selected video.', 'foogallery'),
 						'default' => '',
 						'type'    => 'radio',
 						'spacer'  => '<span class="spacer"></span>',
 						'choices' => array(
-							'' => __( 'Purple', 'foo-video' ),
-							'rvs-blue-highlight' => __( 'Blue', 'foo-video' ),
-							'rvs-green-highlight' => __( 'Green', 'foo-video' ),
-							'rvs-orange-highlight' => __( 'Orange', 'foo-video' ),
-							'rvs-red-highlight' => __( 'Red', 'foo-video' ),
-							'rvs-custom-highlight' => __( 'Custom', 'foo-video' )
+							'' => __( 'Purple', 'foogallery' ),
+							'rvs-blue-highlight' => __( 'Blue', 'foogallery' ),
+							'rvs-green-highlight' => __( 'Green', 'foogallery' ),
+							'rvs-orange-highlight' => __( 'Orange', 'foogallery' ),
+							'rvs-red-highlight' => __( 'Red', 'foogallery' ),
+							'rvs-custom-highlight' => __( 'Custom', 'foogallery' )
 						),
 						'row_data' => array(
 							'data-foogallery-change-selector' => 'input:radio',
@@ -163,7 +163,7 @@ if ( !class_exists( 'FooGallery_Videoslider_Gallery_Template' ) ) {
 					),
 					array(
 						'id'      => 'highlight_custom_bgcolor',
-						'title'   => __('Highlight BG Color', 'foo-video'),
+						'title'   => __('Highlight BG Color', 'foogallery'),
 						'section' => __( 'Appearance', 'foogallery' ),
 						'type'    => 'colorpicker',
 						'default' => '#7816d6',
@@ -176,7 +176,7 @@ if ( !class_exists( 'FooGallery_Videoslider_Gallery_Template' ) ) {
 					),
 					array(
 						'id'      => 'highlight_custom_textcolor',
-						'title'   => __('Highlight Text Color', 'foo-video'),
+						'title'   => __('Highlight Text Color', 'foogallery'),
 						'section' => __( 'Appearance', 'foogallery' ),
 						'type'    => 'colorpicker',
 						'default' => 'rgba(255, 255, 255, 1)',

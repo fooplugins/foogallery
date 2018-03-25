@@ -1,6 +1,6 @@
 <?php
 
-final class FooGallery_FooVideo_Import_Manager {
+final class FooGallery_FooGallery_Pro_Video_Import_Manager {
 
 	public function __construct( ) {
 		add_action( 'wp_ajax_foo_video_gallery_import_selection', array( $this, 'ajax_handler' ) );

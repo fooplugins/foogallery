@@ -10,10 +10,10 @@
 			echo '<h4><a href="https://www.vimeo.com/' . $video['id'] . '" target="_blank">' . $video['title'] . '</a></h4>';
 			echo '<div class="foovideo-meta">';
 				if( empty( $isplaylist ) ){
-					echo __('by', 'foo-video' ) . ' <a href="https://www.vimeo.com/channel/' . $video['owner']['url'] . '" target="_blank">' . $video['owner']['display_name'] . '</a> &bull; ';
+					echo __('by', 'foogallery' ) . ' <a href="https://www.vimeo.com/channel/' . $video['owner']['url'] . '" target="_blank">' . $video['owner']['display_name'] . '</a> &bull; ';
 				}
 				echo $video['uploaded_ago'];
-				echo ' &bull; ' . sprintf( _n( '%s play', '%s plays', $video['stats']['plays'], 'foo-video' ), $video['stats']['plays'] );
+				echo ' &bull; ' . sprintf( _n( '%s play', '%s plays', $video['stats']['plays'], 'foogallery' ), $video['stats']['plays'] );
 			echo '</div>';
 			echo '<div class="foovideo-description">';
 				echo substr( $video['description'],0, 280 ) . '&hellip;';

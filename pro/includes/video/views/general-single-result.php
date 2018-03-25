@@ -9,7 +9,7 @@
 			echo '<div class="foovideo-details">';
 				echo '<h4><a href="' . $video['provider_url'] . $video['video_id'] . '" target="_blank">' . $video['title'] . '</a></h4>';
 				echo '<div class="foovideo-meta">';
-					echo __('by', 'foo-video' ) . ' <a href="' . $video['author_url'] . '" target="_blank">' . $video['author_name'] . '</a>';
+					echo __('by', 'foogallery' ) . ' <a href="' . $video['author_url'] . '" target="_blank">' . $video['author_name'] . '</a>';
 				echo '</div>';
 				echo '<div class="foovideo-description">';
 					echo wpautop( substr( $video['description'],0, 280 ) . '&hellip;' );
