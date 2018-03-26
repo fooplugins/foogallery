@@ -9,10 +9,10 @@ if ( !class_exists( 'FooGallery_Pro_Video' ) ) {
     define( 'FOOVIDEO_POST_META', '_foovideo_video_data' );
     define( 'FOOVIDEO_POST_META_VIDEO_COUNT', '_foovideo_video_count' );
 
-    require_once plugin_dir_path( __FILE__ ) . 'includes/functions.php';
-    require_once plugin_dir_path( __FILE__ ) . 'includes/import/class-import-manager.php';
-    require_once plugin_dir_path( __FILE__ ) . 'includes/import/class-import-handler-youtube.php';
-    require_once plugin_dir_path( __FILE__ ) . 'includes/import/class-import-handler-vimeo.php';
+    require_once plugin_dir_path( __FILE__ ) . 'functions.php';
+    require_once plugin_dir_path( __FILE__ ) . 'import/class-import-manager.php';
+    require_once plugin_dir_path( __FILE__ ) . 'import/class-import-handler-youtube.php';
+    require_once plugin_dir_path( __FILE__ ) . 'import/class-import-handler-vimeo.php';
 
     class FooGallery_Pro_Video
     {
