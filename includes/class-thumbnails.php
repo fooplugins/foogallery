@@ -57,6 +57,10 @@ if ( !class_exists( 'FooGallery_Thumbnails' ) ) {
 			$height = (int)$args['height'];
 			$crop   = (bool)$args['crop'];
 
+			if ( 0 === $width && 0 === $height ) {
+				return $original_image_src;
+			}
+
 			//we can force the use of the originally uploaded full-size image
 			$force_use_original_image = isset( $args['force_use_original_image'] ) && true === $args['force_use_original_image'];
 
