@@ -2844,8 +2844,10 @@ only screen and (min-resolution: 2.25dppx) {
 .fg-show-count .fg-tag-item .fg-tag-link {
 	padding: 5px 5px 5px 10px;
 }
-.fg-tag-item .fg-tag-link:hover {
+.fg-tag-item .fg-tag-link:hover,
+.fg-tag-item .fg-tag-link:focus {
 	opacity: 1!important;
+	box-shadow: none;
 }
 .fg-tag-item .fg-tag-link .fg-tag-text {
 	vertical-align: middle;

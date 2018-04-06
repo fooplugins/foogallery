@@ -58,11 +58,11 @@
 
     // if you want to sanitize the data being sent back to the server we can override the original
     // wp.media.model.Attachment#saveCompat function using the below.
-    var saveCompat = model.Attachment.prototype.saveCompat;
-    model.Attachment.prototype.saveCompat = function(data){
-        console.log("saveCompat", data);
-        return saveCompat.apply(this, arguments);
-    };
+    // var saveCompat = model.Attachment.prototype.saveCompat;
+    // model.Attachment.prototype.saveCompat = function(data){
+    //     console.log("saveCompat", data);
+    //     return saveCompat.apply(this, arguments);
+    // };
 })(
     jQuery,
     wp.media.view,
