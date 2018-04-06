@@ -25,7 +25,7 @@ if ( foogallery_gallery_template_setting( 'link_custom_url', '' ) == 'on' ) {
     $args['link'] = 'custom';
 }
 $args['link_attributes'] = array(
-    'rel' => 'foobox[' . $current_foogallery->ID . ']'
+    'rel' => 'lightbox[' . $current_foogallery->ID . ']'
 );
 $foogallery_single_thumbnail_classes = foogallery_build_class_attribute_safe( $current_foogallery, 'foogallery-single-thumbnail', 'foogallery-lightbox-' . $lightbox, $position );
 $foogallery_single_thumbnail_attributes = foogallery_build_container_attributes_safe( $current_foogallery, array( 'class' => $foogallery_single_thumbnail_classes ) );
