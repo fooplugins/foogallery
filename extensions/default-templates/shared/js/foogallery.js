@@ -7812,7 +7812,7 @@
 				self.$hidden.append(
 						$("<a/>", {
 							href: item.href,
-							rel: "foobox[" + self.id + "]"
+							rel: "lightbox[" + self.id + "]"
 						}).attr(item.attr.anchor)
 				);
 			}
