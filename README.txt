@@ -150,6 +150,19 @@ Update now to get all the latest features, bug fixes and improvements!
 
 == Changelog ==
 
+= 1.4.27 =
+
+* Fix : Justified gallery issues in certain browsers / devices
+* Fix : Portfolio gallery issues in certain browsers / devices
+* Fix : Use of correct rel attribute for better lightbox compatibility and W3 validation
+* Fix : Removed local translations that were incomplete and outdated
+* Update : FooGallery client side 1.0.24
+* Update : language files
+
+= 1.4.26 =
+
+* Fix : Filtering introduced an array initialization construct not working for older versions of php
+
 = 1.4.25 =
 
 * New : Retina support for albums!
