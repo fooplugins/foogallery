@@ -7954,7 +7954,8 @@
 						position: 'absolute',
 						top: 0,
 						left: -9999,
-						visibility: 'hidden'
+						visibility: 'hidden',
+						maxWidth: self.getContainerWidth()
 					}).appendTo('body');
 			self._items = self.$el.find(self.options.itemSelector).removeAttr("style").removeClass("fg-positioned").map(function(i, el){
 				var $item = $(el), width = 0, height = 0, ratio;
@@ -7988,7 +7989,7 @@
 		getContainerWidth: function(){
 			var self = this, visible = self.$el.is(':visible');
 			if (!visible){
-				return self.$el.parents(':visible:first').width();
+				return self.$el.parents(':visible:first').innerWidth();
 			}
 			return self.$el.width();
 		},
@@ -8200,7 +8201,7 @@
 			self.justified.layout( true );
 		},
 		onReady: function(event, self){
-			self.justified.layout();
+			self.justified.layout( true );
 		},
 		onDestroy: function(event, self){
 			self.justified.destroy();
@@ -8250,7 +8251,8 @@
 						position: 'absolute',
 						top: 0,
 						left: -9999,
-						visibility: 'hidden'
+						visibility: 'hidden',
+						maxWidth: self.getContainerWidth()
 					}).appendTo('body');
 			self._items = self.$el.find(".fg-item").removeAttr("style").removeClass("fg-positioned").map(function(i, el){
 				var $item = $(el),
@@ -8288,7 +8290,7 @@
 		getContainerWidth: function(){
 			var self = this, visible = self.$el.is(':visible');
 			if (!visible){
-				return self.$el.parents(':visible:first').width();
+				return self.$el.parents(':visible:first').innerWidth();
 			}
 			return self.$el.width();
 		},
@@ -8454,7 +8456,7 @@
 			self.portfolio.layout( true );
 		},
 		onReady: function(event, self){
-			self.portfolio.layout();
+			self.portfolio.layout( true );
 		},
 		onDestroy: function(event, self){
 			self.portfolio.destroy();
@@ -8779,7 +8781,7 @@
 				self.$hidden.append(
 						$("<a/>", {
 							href: item.href,
-							rel: "foobox[" + self.id + "]"
+							rel: "lightbox[" + self.id + "]"
 						}).attr(item.attr.anchor)
 				);
 			}
@@ -9983,11 +9985,11 @@
 
 	// this automatically initializes all templates on page load
 	$(function () {
-		$('[id^="foogallery-"]:not(.fg-ready)').foogallery(_.autoDefaults);
+		$('[id^="foogallery-gallery-"]:not(.fg-ready)').foogallery(_.autoDefaults);
 	});
 
 	_utils.ready(function () {
-		$('[id^="foogallery-"].fg-ready').foogallery(_.autoDefaults);
+		$('[id^="foogallery-gallery-"].fg-ready').foogallery(_.autoDefaults);
 	});
 
 })(

@@ -3,7 +3,7 @@ Contributors: bradvin, steveush, fooplugins
 Donate link: http://fooplugins.com
 Tags: gallery, image gallery, photo gallery, responsive, album, media gallery, masonry gallery, portfolio, justified image gallery, video gallery, photography, photographer, retina
 Requires at least: 3.9
-Tested up to: 4.9.4
+Tested up to: 4.9.5
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -149,6 +149,19 @@ Hell, yes! Check out our [developer page](http://foo.gallery/developers/)
 Update now to get all the latest features, bug fixes and improvements!
 
 == Changelog ==
+
+= 1.4.27 =
+
+* Fix : Justified gallery issues in certain browsers / devices
+* Fix : Portfolio gallery issues in certain browsers / devices
+* Fix : Use of correct rel attribute for better lightbox compatibility and W3 validation
+* Fix : Removed local translations that were incomplete and outdated
+* Update : FooGallery client side 1.0.24
+* Update : language files
+
+= 1.4.26 =
+
+* Fix : Filtering introduced an array initialization construct not working for older versions of php
 
 = 1.4.25 =
 
