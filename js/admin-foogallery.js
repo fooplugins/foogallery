@@ -343,65 +343,63 @@
 		if (!selected_attachment_id) { selected_attachment_id = 0; }
 		FOOGALLERY.selected_attachment_id = selected_attachment_id;
 
-		//if the media frame already exists, reopen it.
-		if ( FOOGALLERY.media_uploader !== false ) {
-			// Open frame
+		if (FOOGALLERY.media_uploader !== false){
 			FOOGALLERY.media_uploader.open();
 			return;
 		}
 
-		// Create the media frame.
-		FOOGALLERY.media_uploader = wp.media.frames.file_frame = wp.media({
+		var createModal = $.isFunction(wp.foogallery) ? wp.foogallery : wp.media;
+
+		// Create our FooGallery media frame.
+		FOOGALLERY.media_uploader = createModal({
+			frame: "select",
+			multiple: 'add',
 			title: FOOGALLERY.mediaModalTitle,
-			//frame: 'post',
 			button: {
 				text: FOOGALLERY.mediaModalButtonText
 			},
-			multiple: 'add',  // Set to allow multiple files to be selected
-			toolbar:  'select'
-		});
+			library: {
+				type: "image"
+			}
+		}).on("select", function(){
+			var attachments = FOOGALLERY.media_uploader.state().get('selection').toJSON();
 
-		// When an image is selected, run a callback.
-		FOOGALLERY.media_uploader
-			.on( 'select', function() {
-				var attachments = FOOGALLERY.media_uploader.state().get('selection').toJSON();
-
-				$.each(attachments, function(i, item) {
-					if (item && item.id && item.sizes) {
-						if (item.sizes.thumbnail) {
-							var attachment = {
-								id: item.id,
-								src: item.sizes.thumbnail.url
-							};
-						} else {
-							//thumbnail could not be found for whatever reason
-							var attachment = {
-								id: item.id,
-								src: item.url
-							};
-						}
-
-						FOOGALLERY.addAttachmentToGalleryList(attachment);
+			$.each(attachments, function(i, item) {
+				if (item && item.id && item.sizes) {
+					if (item.sizes.thumbnail) {
+						var attachment = {
+							id: item.id,
+							src: item.sizes.thumbnail.url
+						};
 					} else {
-						//there was a problem adding the item! Move on to the next
+						//thumbnail could not be found for whatever reason
+						var attachment = {
+							id: item.id,
+							src: item.url
+						};
 					}
-				});
-			})
-			.on( 'open', function() {
-				var selection = FOOGALLERY.media_uploader.state().get('selection');
-				if (selection) {
-					//clear any previous selections
-					selection.reset();
-				}
 
-				if (FOOGALLERY.selected_attachment_id > 0) {
-					var attachment = wp.media.attachment(FOOGALLERY.selected_attachment_id);
-					attachment.fetch();
-					selection.add( attachment ? [ attachment ] : [] );
+					FOOGALLERY.addAttachmentToGalleryList(attachment);
 				} else {
-					//would be nice to have all previously added media selected
+					//there was a problem adding the item! Move on to the next
 				}
 			});
+		})
+		.on( 'open', function() {
+			var selection = FOOGALLERY.media_uploader.state().get('selection');
+			if (selection && !$.isFunction(wp.foogallery)) {
+				//clear any previous selections
+				selection.reset();
+			}
+
+			if (FOOGALLERY.selected_attachment_id > 0) {
+				var attachment = wp.media.attachment(FOOGALLERY.selected_attachment_id);
+				attachment.fetch();
+				selection.add( attachment ? [ attachment ] : [] );
+			} else {
+				//would be nice to have all previously added media selected
+			}
+		});
 
 		// Finally, open the modal
 		FOOGALLERY.media_uploader.open();

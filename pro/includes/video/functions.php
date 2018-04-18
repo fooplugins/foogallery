@@ -1,92 +1,7 @@
 <?php
 /**
- * Useful functions for FooGallery Videos Extension
+ * Useful functions for FooGallery PRO Videos
  */
-
-/**
- * Import Video as a WP attachment and return attachment info
- *
- * @param array $video_object The Video Object
- *
- * @return array
- */
-function foogallery_foovideo_import_video_as_attachment( $video_object ) {
-
-	//allow for really big imports that take a really long time!
-	@set_time_limit(300);
-
-	$thumbnail = $video_object['thumbnail'];
-	$attachment_id = foogallery_foovideo_get_attachment_id_by_url( $thumbnail );
-
-	if ( empty( $attachment_id ) ) {
-
-		// Get the contents of the picture
-		$response = wp_remote_get( $thumbnail );
-		if ( is_wp_error( $response ) ) {
-			//@todo throw error??
-			return;
-		}
-
-		$contents = wp_remote_retrieve_body( $response );
-
-		$thumbnail_filename = $video_object['id'] . '.' . pathinfo( basename( $thumbnail ), PATHINFO_EXTENSION );
-		// Upload and get file data
-		$upload    = wp_upload_bits( $thumbnail_filename, null, $contents );
-		$guid      = $upload['url'];
-		$file      = $upload['file'];
-		$file_type = wp_check_filetype( basename( $file ), null );
-
-		// Create attachment
-		$attachment = array(
-			'ID'             => 0,
-			'guid'           => $guid,
-			'post_title'     => $video_object['title'],
-			'post_excerpt'   => $video_object['title'],
-			'post_content'   => $video_object['description'],
-			'post_date'      => '',
-			'post_mime_type' => $file_type['type'],
-		);
-
-		// Include image.php so we can call wp_generate_attachment_metadata()
-		require_once( ABSPATH . 'wp-admin/includes/image.php' );
-
-		// Insert the attachment
-		$attachment_id   = wp_insert_attachment( $attachment, $file, 0 );
-		$attachment_data = wp_generate_attachment_metadata( $attachment_id, $file );
-		wp_update_attachment_metadata( $attachment_id, $attachment_data );
-
-		$thumbnail_details = wp_get_attachment_image_src( $attachment_id, 'thumbnail' ); // Yes we have the data, but get the thumbnail URL anyway, to be safe
-		$thumbnail = $thumbnail_details[0];
-	} else {
-		//we are using an existing attachment, so do not upload another attachment, just update the info
-		$attachment = array(
-			'ID'             => $attachment_id,
-			'post_title'     => $video_object['title'],
-			'post_excerpt'   => $video_object['title'],
-			'post_content'   => $video_object['description'],
-		);
-		wp_update_post( $attachment );
-	}
-
-	// Save alt text in the post meta
-	update_post_meta( $attachment_id, '_wp_attachment_image_alt', $video_object['title'] );
-
-	// Save the URL that we will be opening
-	update_post_meta( $attachment_id, '_foogallery_custom_url', $video_object['url'] );
-
-	// Make sure we open in new tab by default
-	update_post_meta( $attachment_id, '_foogallery_custom_target', foogallery_get_setting( 'video_default_target', '_blank' ) );
-
-	//save video object
-	update_post_meta( $attachment_id, FOOVIDEO_POST_META, $video_object );
-
-	// return the data
-	return array(
-		'id'  => $attachment_id,
-		'src' => $thumbnail
-	);
-
-}
 
 /**
  * Returns the number of videos for a specific gallery
@@ -95,7 +10,7 @@ function foogallery_foovideo_import_video_as_attachment( $video_object ) {
  * @return int
  */
 function foogallery_foovideo_get_gallery_video_count( $post_id ) {
-	$video_count = get_post_meta( $post_id , FOOVIDEO_POST_META_VIDEO_COUNT, true );
+	$video_count = get_post_meta( $post_id , FOOGALLERY_VIDEO_POST_META_VIDEO_COUNT, true );
 
 	if ( !empty( $video_count ) ) {
 		return absint( $video_count );
@@ -112,9 +27,9 @@ function foogallery_foovideo_get_gallery_video_count( $post_id ) {
 function foogallery_foovideo_set_gallery_video_count( $post_id ) {
 	$video_count = foogallery_foovideo_calculate_gallery_video_count( $post_id );
 	if ( $video_count > 0 ) {
-		update_post_meta( $post_id, FOOVIDEO_POST_META_VIDEO_COUNT, $video_count );
+		update_post_meta( $post_id, FOOGALLERY_VIDEO_POST_META_VIDEO_COUNT, $video_count );
 	} else {
-		delete_post_meta( $post_id, FOOVIDEO_POST_META_VIDEO_COUNT );
+		delete_post_meta( $post_id, FOOGALLERY_VIDEO_POST_META_VIDEO_COUNT );
 	}
 }
 
@@ -129,7 +44,7 @@ function foogallery_foovideo_calculate_gallery_video_count( $post_id ) {
 	$gallery = FooGallery::get_by_id( $post_id );
 	if ( ! empty( $gallery->attachment_ids ) ) {
 		foreach ( $gallery->attachment_ids as $id ) {
-			$video_info = get_post_meta( $id, FOOVIDEO_POST_META, true );
+			$video_info = get_post_meta( $id, FOOGALLERY_VIDEO_POST_META, true );
 			if ( isset( $video_info['id'] ) ) {
 				//this attachment is a video
 				$video_count++;

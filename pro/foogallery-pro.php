@@ -19,6 +19,9 @@ require_once( FOOGALLERY_PATH . 'pro/includes/video/class-foogallery-pro-video.p
  */
 if ( ! class_exists( 'FooGallery_Pro' ) ) {
 
+	define( 'FOOGALLERY_PRO_PATH', plugin_dir_path( __FILE__ ) );
+	define( 'FOOGALLERY_PRO_URL', plugin_dir_url( __FILE__ ) );
+
 	class FooGallery_Pro {
 
 		function __construct() {
