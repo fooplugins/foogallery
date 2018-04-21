@@ -26,7 +26,7 @@
 
 	//hook up the extensions search
 	FOOGALLERY.bindEditorButton = function() {
-		$(document).on('click', '.foogallery-modal-trigger', function(e) {
+		$(document.body).on('click', '.foogallery-modal-trigger', function(e) {
 			e.preventDefault();
 			//set the active editor
 			FOOGALLERY.activeEditor = $(this).data('editor');
@@ -40,16 +40,16 @@
 	};
 
 	FOOGALLERY.bindModalElements = function() {
-		$('.media-modal-close, .foogallery-modal-cancel').on('click', function() {
+		$(document.body).on('click', '.media-modal-close, .foogallery-modal-cancel', function(e) {
 			$('.foogallery-modal-wrapper').hide();
 		});
 
-		$('.foogallery-modal-reload').on('click', function(e) {
+		$(document.body).on('click', '.foogallery-modal-reload', function(e) {
 			e.preventDefault();
 			FOOGALLERY.loadGalleries();
 		});
 
-		$('.foogallery-modal-wrapper').on('click', '.foogallery-gallery-select', function(e) {
+		$(document.body).on('click', '.foogallery-gallery-select', function(e) {
 			var $this = $(this);
 			if ( $this.is('.foogallery-add-gallery') ) {
 				//if the add icon is click then do nothing
@@ -61,7 +61,7 @@
 			}
 		});
 
-		$('.foogallery-modal-insert').on('click', function(e) {
+		$(document.body).on('click', '.foogallery-modal-insert', function(e) {
 			e.preventDefault();
 			if ( $(this).attr('disabled') ) {
 				return;
@@ -95,8 +95,10 @@
 	};
 
 	$(function() { //wait for ready
-		FOOGALLERY.bindEditorButton();
-		FOOGALLERY.bindModalElements();
-		FOOGALLERY.activeEditor = 'content';
 	});
+
+	FOOGALLERY.bindEditorButton();
+	FOOGALLERY.bindModalElements();
+	FOOGALLERY.activeEditor = 'content';
+
 }(window.FOOGALLERY = window.FOOGALLERY || {}, jQuery));

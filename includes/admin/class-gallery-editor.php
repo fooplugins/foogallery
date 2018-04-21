@@ -43,6 +43,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Editor' ) ) {
 
 			//render the gallery modal
 			add_action( 'admin_footer', array( $this, 'render_gallery_modal' ) );
+			add_action( 'wp_footer', array( $this, 'render_gallery_modal' ) );
 
 			$foogallery = FooGallery_Plugin::get_instance();
 			$foogallery->register_and_enqueue_js( 'admin-foogallery-editor.js' );
@@ -273,12 +274,12 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Editor' ) ) {
 			<?php wp_nonce_field( 'foogallery_load_galleries', 'foogallery_load_galleries', false ); ?>
 			<div class="foogallery-modal-wrapper" style="display: none;">
 				<div class="media-modal wp-core-ui">
-					<button type="button" class="button-link media-modal-close"><span class="media-modal-icon"><span class="screen-reader-text">Close media panel</span></span></button>
+					<button type="button" class="media-modal-close"><span class="media-modal-icon"><span class="screen-reader-text">Close media panel</span></span></button>
 					<div class="media-modal-content">
 						<div class="media-frame wp-core-ui hide-menu hide-router foogallery-meta-wrap">
 							<div class="media-frame-title">
 								<h1>
-									<?php _e( 'Choose a Gallery to Insert', 'foogallery' ); ?>
+									<?php _e( 'Choose a gallery to insert', 'foogallery' ); ?>
 									<div class="foogallery-modal-reload-container">
 										<div class="spinner"></div>
 										<a class="foogallery-modal-reload button" href="#"><span class="dashicons dashicons-update"></span> <?php _e( 'Reload', 'foogallery' ); ?></a>
