@@ -61,6 +61,7 @@
 	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
 	overflow: hidden;
 	background: #CCC;
+	font-size: 0;
 }
 
 /* Stacks creted by the use of generated content */
