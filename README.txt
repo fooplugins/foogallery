@@ -150,6 +150,12 @@ Update now to get all the latest features, bug fixes and improvements!
 
 == Changelog ==
 
+= 1.4.28 =
+
+* New : Added an album setting to set the gallery title size
+* Fix : media modal issues with Elementor
+* Update : media modal improvements
+
 = 1.4.27 =
 
 * Fix : Justified gallery issues in certain browsers / devices
