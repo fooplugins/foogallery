@@ -233,7 +233,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Editor' ) ) {
 
 					.foogallery-gallery-select-inner span {
 						display: block;
-						font-size: 0.6em;
+						font-size: 0.9em;
 					}
 
 				.foogallery-add-gallery {
