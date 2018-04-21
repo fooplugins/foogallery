@@ -56,8 +56,8 @@ if ( ! class_exists( 'FooGallery_Pro_Attachment_Taxonomies' ) ) {
 				//make the attachment taxonomies awesome
 				add_action( 'admin_head', array( $this, 'include_inline_taxonomy_data_script' ) );
 				add_filter( 'attachment_fields_to_edit', array( $this, 'inject_code_into_field' ), 10, 2 );
-				//add_filter( 'attachment_fields_to_save', array( $this, 'save_fields' ), 10, 2 );
-				add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_js' ), 99 );
+
+				add_action( 'wp_enqueue_media', array( $this, 'enqueue_js' ) );
 
 				//ajax actions from the media modal
 				add_action( 'wp_ajax_foogallery-taxonomies-add-term', array( $this, 'ajax_add_term' ) );
@@ -122,12 +122,6 @@ if ( ! class_exists( 'FooGallery_Pro_Attachment_Taxonomies' ) ) {
             die();
         }
 
-        public function save_fields( $post, $attachment ) {
-            $something = $_POST;
-
-            return $post;
-        }
-
 		/**
 		 * Enqueue admin script and styles
 		 *
@@ -136,14 +130,6 @@ if ( ! class_exists( 'FooGallery_Pro_Attachment_Taxonomies' ) ) {
 		 * @static
 		 */
 		public function enqueue_js() {
-			global $pagenow, $mode;
-
-			$should_add = wp_script_is('media-views') || ($pagenow === 'upload.php' && $mode === 'grid');
-
-			if( !$should_add ) {
-				return;
-			}
-
 			//enqueue selectize assets
 			wp_enqueue_script( 'foogallery-selectize-core', FOOGALLERY_URL . 'lib/selectize/selectize.min.js', array('jquery'), FOOGALLERY_VERSION );
 			wp_enqueue_script( 'foogallery-selectize', FOOGALLERY_URL . 'lib/selectize/foogallery.selectize.js', array('foogallery-selectize-core'), FOOGALLERY_VERSION );
@@ -151,6 +137,8 @@ if ( ! class_exists( 'FooGallery_Pro_Attachment_Taxonomies' ) ) {
 
 			//enqueue media attachment autosave script
             wp_enqueue_script( 'foogallery-attachment-autosave', FOOGALLERY_URL . 'js/admin-foogallery-attachment-autosave.js', array('media-views') );
+
+			$this->include_inline_taxonomy_data_script();
 		}
 
 		/**
@@ -199,14 +187,6 @@ if ( ! class_exists( 'FooGallery_Pro_Attachment_Taxonomies' ) ) {
 		 * @static
 		 */
 		public function include_inline_taxonomy_data_script() {
-			global $pagenow, $mode;
-
-			$should_add = wp_script_is('media-views') || ($pagenow === 'upload.php' && $mode === 'grid');
-
-			if( !$should_add ) {
-				return;
-			}
-
 			$taxonomy_data[FOOGALLERY_ATTACHMENT_TAXONOMY_TAG] = array(
 				'slug' => FOOGALLERY_ATTACHMENT_TAXONOMY_TAG,
 				'terms' => $this->build_terms_recursive(FOOGALLERY_ATTACHMENT_TAXONOMY_TAG, array('hide_empty' => false)),
@@ -229,9 +209,7 @@ if ( ! class_exists( 'FooGallery_Pro_Attachment_Taxonomies' ) ) {
 
 			$taxonomy_data['nonce'] = wp_create_nonce( 'foogallery-attachment-taxonomy' );
 
-			echo '<script type="text/javascript">
-			window.FOOGALLERY_TAXONOMY_DATA = ' . json_encode($taxonomy_data) . ';
-		</script>';
+			wp_add_inline_script( 'foogallery-selectize', 'window.FOOGALLERY_TAXONOMY_DATA = ' . json_encode($taxonomy_data) . ';' );
 		}
 
         function change_attachment_column_names( $columns ) {
