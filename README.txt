@@ -154,6 +154,7 @@ Update now to get all the latest features, bug fixes and improvements!
 
 * New : Added an album setting to set the gallery title size
 * Fix : media modal issues with Elementor
+* Fix : media modal issues with Thrive Architect
 * Update : media modal improvements
 
 = 1.4.27 =
