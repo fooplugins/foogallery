@@ -282,6 +282,14 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
             );
 
 			$settings[] = array(
+				'id'      => 'enable_legacy_thumb_cropping',
+				'title'   => __( 'Enable Legacy Thumb Cropping', 'foogallery' ),
+				'desc'    => __( 'For when you want to enable legacy cropping options in certain gallery templates. This is not recommended.', 'foogallery' ),
+				'type'    => 'checkbox',
+				'tab'     => 'advanced'
+			);
+
+			$settings[] = array(
 				'id'      => 'enable_debugging',
 				'title'   => __( 'Enable Debugging', 'foogallery' ),
 				'desc'    => sprintf( __( 'Helps to debug problems and diagnose issues. Enable debugging if you need support for an issue you are having.', 'foogallery' ), foogallery_plugin_name() ),
