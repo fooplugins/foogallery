@@ -629,7 +629,10 @@ function foogallery_caption_title_source() {
  */
 function foogallery_get_caption_title_for_attachment($attachment_post, $source = false) {
 	if ( false === $source ) {
-		$source = foogallery_caption_title_source();
+		$source = foogallery_gallery_template_setting( 'caption_title_source', false );
+		if ( false === $source || "none" === $source ) {
+			$source = foogallery_caption_title_source();
+		}
 	}
 
 	switch ( $source ) {
@@ -674,7 +677,10 @@ function foogallery_caption_desc_source() {
  */
 function foogallery_get_caption_desc_for_attachment($attachment_post, $source = false) {
 	if ( false === $source ) {
-		$source = foogallery_caption_desc_source();
+		$source = foogallery_gallery_template_setting( 'caption_desc_source', false );
+		if ( false === $source || "none" === $source ) {
+			$source = foogallery_caption_desc_source();
+		}
 	}
 
 	switch ( $source ) {
