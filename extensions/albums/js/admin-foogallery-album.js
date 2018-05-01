@@ -3,6 +3,7 @@
 	FOOGALLERYALBUM.bindElements = function() {
 		$('.foogallery-album-gallery-list')
 			.on('click', '.foogallery-gallery-select', function(e) {
+				e.stopPropagation();
 				$(this).toggleClass('selected');
 				FOOGALLERYALBUM.changeSelection();
 			})
