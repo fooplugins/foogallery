@@ -150,6 +150,15 @@ Update now to get all the latest features, bug fixes and improvements!
 
 == Changelog ==
 
+= 1.4.30 =
+
+* Fix : Album 404 issues when used on homepage
+* Fix : Dimension attributes missing for upscaling small images
+* Fix : Issue when galleries cannot be added to an album
+* Fix : Lightbox caption mismatch
+* New : Setting for legacy thumb cropping in Simple Portfolio gallery
+* Update : FooGallery client side 1.0.26
+
 = 1.4.29 =
 
 * New : Added an album setting to set the gallery title size (h2,h3,h4,h5,h6)
