@@ -91,9 +91,21 @@ if ( ! class_exists( 'FooGallery_Thumbnail_Dimensions' ) ) {
                                 $calculated_thumb_width = $thumb_width;
                                 $calculated_thumb_height = $thumb_height;
                             } else {
-                                $size_array = image_resize_dimensions($attachment->width, $attachment->height, $thumb_width, $thumb_height, $thumb_crop);
-                                $calculated_thumb_width = $size_array[4];
-                                $calculated_thumb_height = $size_array[5];
+                                $size_array = image_resize_dimensions( $attachment->width, $attachment->height, $thumb_width, $thumb_height, $thumb_crop );
+								if ( false !== $size_array ) {
+									$calculated_thumb_width = $size_array[4];
+									$calculated_thumb_height = $size_array[5];
+								} else {
+									$size_array = $this->calculate_dimensions( $attachment->width, $attachment->height, $thumb_width, $thumb_height );
+									if ( false !== $size_array ) {
+										$calculated_thumb_width = $size_array[0];
+										$calculated_thumb_height = $size_array[1];
+									} else {
+										//fallback for when we cannot calculate dimensions. Use the originals
+										$calculated_thumb_width = $attachment->width;
+										$calculated_thumb_height = $attachment->height;
+									}
+								}
                             }
 
                             $attachment->has_thumbnail_dimensions = true;
@@ -104,6 +116,45 @@ if ( ! class_exists( 'FooGallery_Thumbnail_Dimensions' ) ) {
                 }
             }
         }
+
+		/**
+		 * Returns a resized width and height value given the original dimensions and then either the new width or height value, one can be 0.
+		 *
+		 * @param {int} $orig_width - The original width of the image.
+		 * @param {int} $orig_height - The original height of the image.
+		 * @param {int} $new_width - The new width for the image or 0 to calculate it from the supplied new height and original dimensions.
+		 * @param {int} $new_height - The new height for the image or 0 to calculate it from the supplied new width and original dimensions.
+		 *
+		 * @return array|false - Returns an array with the width value at index 0 and the height value at index 1.
+		 * Returns false if the original dimensions are invalid or if both the new width and height are invalid.
+		 *
+		 * @example
+		 *
+		 * $size_1 = calculate_dimensions(800, 600, 0, 300); // => [400, 300]
+		 *
+		 * $size_2 = calculate_dimensions(800, 600, 400, 0); // => [400, 300]
+		 */
+		function calculate_dimensions($orig_width, $orig_height, $new_width, $new_height){
+			// if we have an invalid original size provided exit early and return false
+			if (!is_numeric($orig_width) || $orig_width === 0 || !is_numeric($orig_height) || $orig_height === 0){
+				return false;
+			}
+			$needs_width = !is_numeric($new_width) || $new_width === 0;
+			$needs_height = !is_numeric($new_height) || $new_height === 0;
+			// if we have an invalid new size provided i.e. both new values are not numbers or both are 0 then exit early and return false
+			if ($needs_width && $needs_height){
+				return false;
+			}
+			// otherwise get the ratio of the original so we can calculate any missing new values
+			$ratio = $orig_width / $orig_height;
+			if ($needs_width){
+				$new_width = $new_height * $ratio;
+			}
+			if ($needs_height){
+				$new_height = $new_width / $ratio;
+			}
+			return array($new_width, $new_height);
+		}
 
         /**
          * Include the thumb dimension html attributes in the rendered HTML

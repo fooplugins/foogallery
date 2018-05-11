@@ -146,9 +146,14 @@ if ( ! class_exists( 'FooGallery_Admin_Album_MetaBoxes' ) ) {
 		}
 
 		public function get_ordered_galleries( $album ) {
+		    //exclude the galleries already added to the album
+            $excluded_galleries = $album->gallery_ids;
+
+            //allow more galleries to be excluded
+            $excluded_galleries = apply_filters( 'foogallery_album_exlcuded_galleries', $excluded_galleries, $album );
 
 			//get all other galleries
-			$galleries = foogallery_get_all_galleries( $album->gallery_ids );
+			$galleries = foogallery_get_all_galleries( $excluded_galleries );
 
 			$album_galleries = $album->galleries();
 

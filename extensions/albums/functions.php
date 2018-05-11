@@ -115,7 +115,22 @@ function foogallery_album_templates() {
 					'remember' => __('Remember Scroll Position', 'foogallery')
 				),
 				'default' => 'none'
-			)
+			),
+			array(
+				'id'      => 'gallery_title_size',
+				'title'   => __( 'Gallery Title Size', 'foogallery' ),
+				'desc'    => __( 'The size of the title when displaying a gallery page.', 'foogallery' ),
+				'section' => __( 'Gallery Settings', 'foogallery' ),
+				'default' => 'h2',
+				'type'    => 'select',
+				'choices' => array(
+					'h2' => __( 'H2', 'foogallery' ),
+					'h3' => __( 'H3', 'foogallery' ),
+					'h4' => __( 'H4', 'foogallery' ),
+					'h5' => __( 'H5', 'foogallery' ),
+					'h6' => __( 'H6', 'foogallery' ),
+				)
+			),
 		)
 	);
 

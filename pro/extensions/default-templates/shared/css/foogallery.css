@@ -3519,6 +3519,8 @@ only screen and (min-resolution: 2.25dppx) {
 	width: 100%;
 	height: auto;
 	min-height: 100%;
+	top: 50%;
+	transform: translateY(-50%);
 }
 /* Base Styles */
 .fg-simple_portfolio {
