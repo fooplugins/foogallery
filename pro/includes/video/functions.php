@@ -9,7 +9,7 @@
  *
  * @return int
  */
-function foogallery_foovideo_get_gallery_video_count( $post_id ) {
+function foogallery_get_gallery_video_count( $post_id ) {
 	$video_count = get_post_meta( $post_id , FOOGALLERY_VIDEO_POST_META_VIDEO_COUNT, true );
 
 	if ( !empty( $video_count ) ) {
@@ -24,8 +24,8 @@ function foogallery_foovideo_get_gallery_video_count( $post_id ) {
  *
  * @param $post_id
  */
-function foogallery_foovideo_set_gallery_video_count( $post_id ) {
-	$video_count = foogallery_foovideo_calculate_gallery_video_count( $post_id );
+function foogallery_set_gallery_video_count( $post_id ) {
+	$video_count = foogallery_calculate_gallery_video_count( $post_id );
 	if ( $video_count > 0 ) {
 		update_post_meta( $post_id, FOOGALLERY_VIDEO_POST_META_VIDEO_COUNT, $video_count );
 	} else {
@@ -39,19 +39,35 @@ function foogallery_foovideo_set_gallery_video_count( $post_id ) {
  *
  * @return int
  */
-function foogallery_foovideo_calculate_gallery_video_count( $post_id ) {
+function foogallery_calculate_gallery_video_count( $post_id ) {
 	$video_count = 0;
 	$gallery = FooGallery::get_by_id( $post_id );
 	if ( ! empty( $gallery->attachment_ids ) ) {
 		foreach ( $gallery->attachment_ids as $id ) {
-			$video_info = get_post_meta( $id, FOOGALLERY_VIDEO_POST_META, true );
-			if ( isset( $video_info['id'] ) ) {
+
+			if ( foogallery_is_attachment_video( $id ) ) {
 				//this attachment is a video
 				$video_count++;
 			}
 		}
 	}
 	return $video_count;
+}
+
+/**
+ * Determines if an attachment is a video
+ *
+ * @param $attachment_id
+ *
+ * @return bool
+ */
+function foogallery_is_attachment_video( $attachment_id ) {
+	$video_info = get_post_meta( $attachment_id, FOOGALLERY_VIDEO_POST_META, true );
+
+	$is_video = isset( $video_info ) && isset( $video_info['url'] );
+
+	//allow legacy to override
+	return apply_filters( 'foogallery_is_attachment_video', $is_video, $attachment_id, $video_info );
 }
 
 /**
@@ -63,7 +79,7 @@ function foogallery_foovideo_calculate_gallery_video_count( $post_id ) {
  *
  * @return string|void
  */
-function foogallery_foovideo_gallery_image_count_text( $total_count, $image_count, $video_count ) {
+function foogallery_gallery_image_count_text( $total_count, $image_count, $video_count ) {
 	//get image count text strings
 	$images_single_text = foogallery_get_setting( 'language_images_count_single_text', __( '1 image', 'foogallery' ) );
 	$images_plural_text = foogallery_get_setting( 'language_images_count_plural_text', __( '%s images', 'foogallery' ) );
@@ -89,22 +105,22 @@ function foogallery_foovideo_gallery_image_count_text( $total_count, $image_coun
 	}
 }
 
-/**
- * Custom encoding for JSON so that special characters are handled correctly
- *
- * @param $data
- *
- * @return string
- */
-function foogallery_foovideo_esc_json_encode( $data ) {
-	if ( defined( 'JSON_HEX_AMP' ) ) {
-		// This is nice to have, but not strictly necessary since we use _wp_specialchars() below
-		$data = json_encode( $data, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT );
-	} else {
-		$data = json_encode( $data );
-	}
-	return _wp_specialchars( $data, ENT_QUOTES, false, true );
-}
+///**
+// * Custom encoding for JSON so that special characters are handled correctly
+// *
+// * @param $data
+// *
+// * @return string
+// */
+//function foogallery_esc_json_encode( $data ) {
+//	if ( defined( 'JSON_HEX_AMP' ) ) {
+//		// This is nice to have, but not strictly necessary since we use _wp_specialchars() below
+//		$data = json_encode( $data, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT );
+//	} else {
+//		$data = json_encode( $data );
+//	}
+//	return _wp_specialchars( $data, ENT_QUOTES, false, true );
+//}
 
 /**
  * Cleans the video URL before sending it to the client
@@ -113,11 +129,11 @@ function foogallery_foovideo_esc_json_encode( $data ) {
  *
  * @return String the cleaned up video URL
  */
-function foogallery_foovideo_clean_video_url( $url ) {
+function foogallery_clean_video_url( $url ) {
 	//make the video URL Protocol-relative to cater for sites that are HTTPS
 	$url = str_replace( 'http://', '//', $url );
 
-	return apply_filters( 'foogallery_foovideo_clean_video_url', $url );
+	return apply_filters( 'foogallery_clean_video_url', $url );
 }
 
 /**
@@ -127,7 +143,7 @@ function foogallery_foovideo_clean_video_url( $url ) {
  *
  * @return String the video URL for the attachment
  */
-function foogallery_foovideo_get_video_url_from_attachment( $attachment ) {
+function foogallery_get_video_url_from_attachment( $attachment ) {
 	if ( empty( $attachment ) ) return '';
 
 	$url = $attachment->custom_url;
@@ -138,10 +154,10 @@ function foogallery_foovideo_get_video_url_from_attachment( $attachment ) {
 		$url = add_query_arg( 'autoplay', '1', $url );
 	}
 
-	return foogallery_foovideo_clean_video_url( $url );
+	return foogallery_clean_video_url( $url );
 }
 
-function foogallery_foovideo_get_video_thumbnail_from_attachment( $attachment ) {
+function foogallery_get_video_thumbnail_from_attachment( $attachment ) {
 	$args = array(
 		'width'  => 90,
 		'height' => 90,
@@ -155,8 +171,8 @@ function foogallery_foovideo_get_video_thumbnail_from_attachment( $attachment ) 
  * Return an API key that youtube can use to request video info
  * @return mixed|void
  */
-function foogallery_foovideo_youtubekey() {
-	return apply_filters( 'foogallery_foovideo_youtubekey', 'AIzaSyBMT07ftYs1dGnguTdI8I_fXazRyrnZcEA' );
+function foogallery_youtubekey() {
+	return apply_filters( 'foogallery_youtubekey', 'AIzaSyBMT07ftYs1dGnguTdI8I_fXazRyrnZcEA' );
 }
 
 /**
@@ -166,7 +182,7 @@ function foogallery_foovideo_youtubekey() {
  *
  * @return null or attachment ID
  */
-function foogallery_foovideo_get_attachment_id_by_url($url) {
+function foogallery_get_attachment_id_by_url($url) {
 	global $wpdb;
 	$query = "SELECT ID FROM {$wpdb->posts} WHERE guid=%s";
 	$attachment = $wpdb->get_col( $wpdb->prepare( $query, $url ) );
