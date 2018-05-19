@@ -233,7 +233,7 @@ if ( !class_exists( 'FooGallery_Pro_Video' ) ) {
             if ( $attachment->is_video ) {
 
             	//set the video URL
-                $url = foogallery_foovideo_get_video_url_from_attachment( $attachment );
+                $url = foogallery_get_video_url_from_attachment( $attachment );
                 $attr['href'] = $url;
 
                 //if we have no widths or heights then use video default size
@@ -333,7 +333,7 @@ if ( !class_exists( 'FooGallery_Pro_Video' ) ) {
          */
         function enqueue_foobox_free_dependencies( $foogallery ) {
             if ( $foogallery ) {
-                $video_count = foogallery_foovideo_get_gallery_video_count( $foogallery->ID );
+                $video_count = foogallery_get_gallery_video_count( $foogallery->ID );
 
                 if ( $video_count > 0 ) {
 
@@ -356,7 +356,7 @@ if ( !class_exists( 'FooGallery_Pro_Video' ) ) {
         public function calculate_video_count( $post_id )
         {
             //calculate the video count
-            $video_count = foogallery_foovideo_calculate_gallery_video_count( $post_id );
+            $video_count = foogallery_calculate_gallery_video_count( $post_id );
             //store the video in post meta to save time later
             update_post_meta( $post_id, FOOGALLERY_VIDEO_POST_META_VIDEO_COUNT, $video_count );
         }
@@ -364,9 +364,9 @@ if ( !class_exists( 'FooGallery_Pro_Video' ) ) {
         public function include_video_count( $image_count_text, $gallery )
         {
             $count = sizeof( $gallery->attachment_ids );
-            $video_count = foogallery_foovideo_get_gallery_video_count( $gallery->ID );
+            $video_count = foogallery_get_gallery_video_count( $gallery->ID );
             $image_count = $count - $video_count;
-            return foogallery_foovideo_gallery_image_count_text( $count, $image_count, $video_count );
+            return foogallery_gallery_image_count_text( $count, $image_count, $video_count );
         }
 
         public function include_video_settings( $settings )
