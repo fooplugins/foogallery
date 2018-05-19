@@ -42,13 +42,11 @@ function foogallery_set_gallery_video_count( $post_id ) {
 function foogallery_calculate_gallery_video_count( $post_id ) {
 	$video_count = 0;
 	$gallery = FooGallery::get_by_id( $post_id );
-	if ( ! empty( $gallery->attachment_ids ) ) {
-		foreach ( $gallery->attachment_ids as $id ) {
 
-			if ( foogallery_is_attachment_video( $id ) ) {
-				//this attachment is a video
-				$video_count++;
-			}
+	foreach ( $gallery->attachments() as $attachment ) {
+		if ( foogallery_is_attachment_video( $attachment ) ) {
+			//this attachment is a video
+			$video_count++;
 		}
 	}
 	return $video_count;
@@ -57,17 +55,22 @@ function foogallery_calculate_gallery_video_count( $post_id ) {
 /**
  * Determines if an attachment is a video
  *
- * @param $attachment_id
+ * @param      $attachment_id
+ *
+ * @param FooGalleryAttachment $foogallery_attachment
  *
  * @return bool
  */
-function foogallery_is_attachment_video( $attachment_id ) {
-	$video_info = get_post_meta( $attachment_id, FOOGALLERY_VIDEO_POST_META, true );
-
-	$is_video = isset( $video_info ) && isset( $video_info['url'] );
+function foogallery_is_attachment_video( $foogallery_attachment ) {
+	if ( isset( $foogallery_attachment ) && isset( $foogallery_attachment->_post ) ) {
+		if ( 'image/foogallery' === $foogallery_attachment->_post->post_mime_type ) {
+			//we are definitely dealing with a video
+			return true;
+		}
+	}
 
 	//allow legacy to override
-	return apply_filters( 'foogallery_is_attachment_video', $is_video, $attachment_id, $video_info );
+	return apply_filters( 'foogallery_is_attachment_video', false, $foogallery_attachment );
 }
 
 /**
@@ -173,21 +176,4 @@ function foogallery_get_video_thumbnail_from_attachment( $attachment ) {
  */
 function foogallery_youtubekey() {
 	return apply_filters( 'foogallery_youtubekey', 'AIzaSyBMT07ftYs1dGnguTdI8I_fXazRyrnZcEA' );
-}
-
-/**
- * Return attachment ID from a URL
- *
- * @param $url String URL to the image we are checking
- *
- * @return null or attachment ID
- */
-function foogallery_get_attachment_id_by_url($url) {
-	global $wpdb;
-	$query = "SELECT ID FROM {$wpdb->posts} WHERE guid=%s";
-	$attachment = $wpdb->get_col( $wpdb->prepare( $query, $url ) );
-	if ( count( $attachment ) > 0 ) {
-		return $attachment[0];
-	}
-	return null;
 }

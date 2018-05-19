@@ -311,11 +311,11 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 			if ( $attachment_post != false ) {
 				$attachment_id = $attachment_post->ID;
 				$attachment = wp_get_attachment_image_src( $attachment_id );
+				$extra_class = apply_filters( 'foogallery_admin_render_gallery_item_extra_classes' , '', $attachment_post );
 			} else {
-				$attachment_id = '';
-				$attachment = '';
+				$attachment_id = $attachment = $extra_class = '';
 			}
-			$extra_class = apply_filters( 'foogallery_admin_render_gallery_item_extra_classes' , '', $attachment_id, $attachment_post );
+
 			$data_attribute = empty($attachment_id) ? '' : "data-attachment-id=\"{$attachment_id}\"";
 			$img_tag        = empty($attachment) ? '<img width="150" height="150" />' : "<img width=\"150\" height=\"150\" src=\"{$attachment[0]}\" />";
 			?>
