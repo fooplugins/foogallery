@@ -35,6 +35,7 @@ if ( ! class_exists( 'FooGallery_Pro' ) ) {
 			new FooGallery_Pro_Attachment_Taxonomies();
 			new FooGallery_Pro_Filtering();
 			new FooGallery_Pro_Video();
+			new FooGallery_Pro_Video_Legacy();
 		}
 	}
 }
