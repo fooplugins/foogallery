@@ -315,11 +315,12 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 				$attachment_id = '';
 				$attachment = '';
 			}
+			$extra_class = apply_filters( 'foogallery_admin_render_gallery_item_extra_classes' , '', $attachment_id, $attachment_post );
 			$data_attribute = empty($attachment_id) ? '' : "data-attachment-id=\"{$attachment_id}\"";
 			$img_tag        = empty($attachment) ? '<img width="150" height="150" />' : "<img width=\"150\" height=\"150\" src=\"{$attachment[0]}\" />";
 			?>
 			<li class="attachment details" <?php echo $data_attribute; ?>>
-				<div class="attachment-preview type-image">
+				<div class="attachment-preview type-image <?php echo $extra_class; ?>">
 					<div class="thumbnail">
 						<div class="centered">
 							<?php echo $img_tag; ?>

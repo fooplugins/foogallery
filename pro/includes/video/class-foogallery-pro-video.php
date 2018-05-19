@@ -25,6 +25,9 @@ if ( !class_exists( 'FooGallery_Pro_Video' ) ) {
             //setup script includes
             add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_scripts' ) );
 
+			//make sure the gallery items render with a video icon
+			add_filter( 'foogallery_admin_render_gallery_item_extra_classes', array( $this, 'render_gallery_item_with_video_icon' ), 10, 3 );
+
             //add attachment custom fields
             add_filter( 'foogallery_attachment_custom_fields', array( $this, 'attachment_custom_fields' ) );
 
@@ -76,10 +79,23 @@ if ( !class_exists( 'FooGallery_Pro_Video' ) ) {
 			}
         }
 
+		/**
+		 * Include the templates into the page
+		 */
 		public function add_media_templates() {
 			if ( $this->screen_check() ) {
 				foogallery_include_media_views_templates();
 			}
+		}
+
+		function render_gallery_item_with_video_icon( $extra_class, $attachment_id, $attachment_post ) {
+			//check if the attachment is a video and append a class
+			if ( foogallery_is_attachment_video( $attachment_id ) ) {
+				if ( !isset( $extra_class ) ) $extra_class = '';
+				$extra_class .= 'subtype-foogallery';
+			}
+
+			return $extra_class;
 		}
 
         /**
