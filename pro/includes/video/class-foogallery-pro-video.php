@@ -110,12 +110,12 @@ if ( !class_exists( 'FooGallery_Pro_Video' ) ) {
 			$fields[ 'data-width' ] = array(
 				'label'       =>  __( 'Override Width', 'foogallery' ),
 				'input'       => 'text',
-				'exclusions'  => array( 'audio', 'video' ),
+				'application' => 'image/foogallery',
 			);
 			$fields[ 'data-height' ] = array(
 				'label'       =>  __( 'Override Height', 'foogallery' ),
 				'input'       => 'text',
-				'exclusions'  => array( 'audio', 'video' ),
+				'application' => 'image/foogallery',
 			);
 //            $fields['foovideo_video_type'] = array(
 //                'label'      => __( 'Video Source', 'foogallery' ),
