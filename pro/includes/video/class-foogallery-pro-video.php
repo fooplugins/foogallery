@@ -312,9 +312,9 @@ if ( !class_exists( 'FooGallery_Pro_Video' ) ) {
                     if ( class_exists( 'Foobox_Free' ) && ('foobox' == $lightbox || 'foobox-free' == $lightbox) ) {
                         $js = FOOGALLERY_PRO_URL . 'js/foobox.video.min.js';
                         wp_enqueue_script(
-                            'foo_video',
+                            'foogallery-foobox-video',
                             $js,
-                            array( 'jquery', 'foobox-free' ),
+                            array( 'jquery', 'foobox-free-min' ),
 							FOOGALLERY_VERSION
                         );
                     }
