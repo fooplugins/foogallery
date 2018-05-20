@@ -6381,7 +6381,12 @@
 			if (_is.hash(objOrElement)) {
 				type = objOrElement.type;
 			} else if (_is.element(objOrElement)) {
-				type = $(objOrElement).find(this.tmpl.sel.item.anchor).data("type");
+				var $el = $(objOrElement), vid = this.tmpl.sel.item.video;
+				if (_is.string(vid) && $el.is(vid)){
+					type = "video";
+				} else {
+					type = $(objOrElement).find(this.tmpl.sel.item.anchor).data("type");
+				}
 			}
 			return _is.string(type) && _.components.contains(type) ? type : "item";
 		},
