@@ -80,7 +80,7 @@ if ( !class_exists( 'FooGallery_Slider_Gallery_Template' ) ) {
 						'default' => '',
 						'choices' => array(
 							'' => array( 'label' => __( 'Vertical' , 'foogallery' ), 'img' => plugin_dir_url( __FILE__ ) . 'assets/video-layout-vertical.png' ),
-							'fg-horizontal' => array( 'label' => __( 'Horizontal' , 'foogallery' ), 'img' => plugin_dir_url( __FILE__ ) . 'assets/video-layout-horizontal.png' )
+							'fgs-horizontal' => array( 'label' => __( 'Horizontal' , 'foogallery' ), 'img' => plugin_dir_url( __FILE__ ) . 'assets/video-layout-horizontal.png' )
 						),
 						'row_data' => array(
 							'data-foogallery-change-selector' => 'input:radio',
@@ -99,6 +99,11 @@ if ( !class_exists( 'FooGallery_Slider_Gallery_Template' ) ) {
 						'choices' => array(
 							'' => __( 'No', 'foogallery' ),
 							'yes' => __( 'Yes', 'foogallery' )
+						),
+						'row_data' => array(
+							'data-foogallery-change-selector' => 'input:radio',
+							'data-foogallery-value-selector'  => 'input:checked',
+							'data-foogallery-preview' => 'shortcode',
 						)
 					),
 				)
@@ -115,6 +120,53 @@ if ( !class_exists( 'FooGallery_Slider_Gallery_Template' ) ) {
 		 * @return array
 		 */
 		function add_additional_setting_fields( $fields, $template ) {
+
+			$fields[] =	array(
+				'id'      => 'highlight',
+				'title'   => __('Highlight', 'foogallery'),
+				'section' => __( 'Appearance', 'foogallery' ),
+				'desc'    => __('The color that is used to highlight the selected video.', 'foogallery'),
+				'default' => 'fgs-purple',
+				'type'    => 'radio',
+				'spacer'  => '<span class="spacer"></span>',
+				'choices' => array(
+					'fgs-purple' => __( 'Purple', 'foogallery' ),
+					'fgs-blue' => __( 'Blue', 'foogallery' ),
+					'fgs-green' => __( 'Green', 'foogallery' ),
+					'fgs-orange' => __( 'Orange', 'foogallery' ),
+					'fgs-red' => __( 'Red', 'foogallery' ),
+					'fg-custom' => __( 'Custom', 'foogallery' )
+				),
+				'row_data' => array(
+					'data-foogallery-change-selector' => 'input:radio',
+					'data-foogallery-value-selector'  => 'input:checked',
+					'data-foogallery-preview' => 'class',
+				)
+			);
+
+			$fields[] = array(
+				'id'      => 'thumbnail_captions',
+				'title'   => __('Thumbnail Captions', 'foogallery'),
+				'desc'    => __('You can choose to hide the captions for the small thumbnails in the slider.', 'foogallery'),
+				'section' => __( 'Captions', 'foogallery' ),
+				'default' => '',
+				'type'    => 'radio',
+				'spacer'  => '<span class="spacer"></span>',
+				'choices' => array(
+					'' => __( 'Show Captions', 'foogallery' ),
+					'fgs-no-captions' => __( 'Hide Captions', 'foogallery' )
+				),
+				'row_data' => array(
+					'data-foogallery-change-selector' => 'input:radio',
+					'data-foogallery-value-selector'  => 'input:checked',
+					'data-foogallery-preview' => 'class',
+				)
+			);
+
+			return $fields;
+		}
+
+		function unused_fields_for_future_version() {
 			$fields[] = array(
 				'id'      => 'theme_custom_bgcolor',
 				'title'   => __('Background Color', 'foogallery'),
@@ -167,28 +219,7 @@ if ( !class_exists( 'FooGallery_Slider_Gallery_Template' ) ) {
 					'data-foogallery-show-when-field-value'    => 'fg-custom',
 				)
 			);
-			$fields[] =	array(
-				'id'      => 'highlight',
-				'title'   => __('Highlight', 'foogallery'),
-				'section' => __( 'Appearance', 'foogallery' ),
-				'desc'    => __('The color that is used to highlight the selected video.', 'foogallery'),
-				'default' => 'fgs-purple',
-				'type'    => 'radio',
-				'spacer'  => '<span class="spacer"></span>',
-				'choices' => array(
-					'fgs-purple' => __( 'Purple', 'foogallery' ),
-					'fgs-blue' => __( 'Blue', 'foogallery' ),
-					'fgs-green' => __( 'Green', 'foogallery' ),
-					'fgs-orange' => __( 'Orange', 'foogallery' ),
-					'fgs-red' => __( 'Red', 'foogallery' ),
-					'fg-custom' => __( 'Custom', 'foogallery' )
-				),
-				'row_data' => array(
-					'data-foogallery-change-selector' => 'input:radio',
-					'data-foogallery-value-selector'  => 'input:checked',
-					'data-foogallery-preview' => 'class',
-				)
-			);
+
 			$fields[] =	array(
 				'id'      => 'highlight_custom_bgcolor',
 				'title'   => __('Highlight BG Color', 'foogallery'),
@@ -216,26 +247,6 @@ if ( !class_exists( 'FooGallery_Slider_Gallery_Template' ) ) {
 				)
 			);
 
-			$fields[] = array(
-				'id'      => 'thumbnail_captions',
-				'title'   => __('Thumbnail Captions', 'foogallery'),
-				'desc'    => __('You can choose to hide the captions for the small thumbnails in the slider.', 'foogallery'),
-				'section' => __( 'Captions', 'foogallery' ),
-				'default' => '',
-				'type'    => 'radio',
-				'spacer'  => '<span class="spacer"></span>',
-				'choices' => array(
-					'' => __( 'Show Captions', 'foogallery' ),
-					'fgs-no-captions' => __( 'Hide Captions', 'foogallery' )
-				),
-				'row_data' => array(
-					'data-foogallery-change-selector' => 'input:radio',
-					'data-foogallery-value-selector'  => 'input:checked',
-					'data-foogallery-preview' => 'class',
-				)
-			);
-
-			return $fields;
 		}
 
 		/**
