@@ -23,7 +23,7 @@ if ( !class_exists( 'FooGallery_Pro_Video' ) ) {
             new FooGallery_Pro_Video_Import();
 
             //setup script includes
-            add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_scripts' ) );
+            add_action( 'wp_enqueue_media', array( $this, 'enqueue_assets' ) );
 
 			//make sure the gallery items render with a video icon
 			add_filter( 'foogallery_admin_render_gallery_item_extra_classes', array( $this, 'render_gallery_item_with_video_icon' ), 10, 2 );
@@ -62,28 +62,19 @@ if ( !class_exists( 'FooGallery_Pro_Video' ) ) {
             add_filter( 'foogallery_admin_settings_override', array( $this, 'include_video_settings' ) );
         }
 
-		public function screen_check() {
-			$screen = get_current_screen();
-			$include_screens = apply_filters( 'foogallery-screen-check', array('foogallery') );
-			return is_object( $screen ) && in_array( $screen->id, $include_screens );
-		}
-
         /**
-         * Enqueue admin styles and scripts
+         * Enqueue styles and scripts
          */
-        function enqueue_admin_scripts() {
-
-			if ( $this->screen_check() ) {
-				foogallery_enqueue_media_views_script();
-				foogallery_enqueue_media_views_style();
-			}
+        function enqueue_assets() {
+			foogallery_enqueue_media_views_script();
+			foogallery_enqueue_media_views_style();
         }
 
 		/**
-		 * Include the templates into the page
+		 * Include the templates into the page if they are needed
 		 */
 		public function add_media_templates() {
-			if ( $this->screen_check() ) {
+			if ( wp_script_is( 'foogallery-media-views' ) ) {
 				foogallery_include_media_views_templates();
 			}
 		}
@@ -135,8 +126,7 @@ if ( !class_exists( 'FooGallery_Pro_Video' ) ) {
          *
          * @return mixed
          */
-        public function all_template_fields( $fields )
-        {
+        public function all_template_fields( $fields ) {
             $fields[] = array(
                 'id'      => 'video_hover_icon',
                 'section' => __( 'Video', 'foogallery' ),
