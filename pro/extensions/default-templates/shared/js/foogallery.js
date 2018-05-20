@@ -4083,7 +4083,7 @@
 					}
 
 					// if the container currently has no children make them
-					if (self.$el.children().length == 0) {
+					if (self.$el.children().not(self.sel.item.elem).length == 0) {
 						self.$el.append(self.createChildren());
 						self._undo.children = true;
 					}
@@ -4395,7 +4395,7 @@
 			else self.$el.attr("style", self._undo.style);
 
 			if (self._undo.children) {
-				self.$el.empty();
+				self.destroyChildren();
 			}
 			if (self._undo.create) {
 				self.$el.remove();
@@ -4404,6 +4404,15 @@
 			self.destroyed = true;
 			self.initializing = false;
 			self.initialized = false;
+		},
+		/**
+		 * @summary If the {@link FooGallery.Template#createChildren|createChildren} method is used to generate custom elements for a template this method should also be overridden and used to destroy them.
+		 * @memberof FooGallery.Template#
+		 * @function destroyChildren
+		 * @description This method is called just after the {@link FooGallery.Template~"destroyed.foogallery"|destroyed} event to allow templates to remove any markup created in the {@link FooGallery.Template#createChildren|createChildren} method.
+		 */
+		destroyChildren: function(){
+			// does nothing for the base template
 		},
 
 		// ################
@@ -9293,42 +9302,6 @@
 		FooGallery,
 		FooGallery.utils
 );
-// (function(_){
-//
-// 	// This file contains the initialization code for the Image Viewer gallery. It makes use of the FooGallery.Loader
-// 	// allowing for optimized loading of images within the gallery.
-//
-// 	// Use FooGallery.ready to wait for the DOM to be ready
-// 	_.ready(function($){
-//
-// 		// Find each Image Viewer gallery in the current page
-// 		$(".fg-image-viewer").each(function(){
-// 			var $gallery = $(this),
-// 				// Get the options for the plugin
-// 				options = $gallery.data("loader-options"),
-// 				// Get the options for the loader
-// 				loader = $.extend(true, $gallery.data("loader-options"), {
-// 					oninit: function(){
-// 						// the first time the gallery is initialized it triggers a window resize event
-// 						$(window).trigger("resize");
-// 					},
-// 					onloaded: function(image){
-// 						// once the actual image is loaded we no longer need the inline css used to prevent layout jumps so remove it
-// 						$(image).fgRemoveSize();
-// 					}
-// 				});
-//
-// 			// Find all images that have a width and height attribute set and calculate the size to set as a temporary inline style.
-// 			// This calculated size is used to prevent layout jumps.
-// 			// Once that is done initialize the plugin and the loader.
-// 			$gallery.fgAddSize(true).fgImageViewer( options ).fgLoader( loader );
-// 		});
-//
-// 	});
-//
-// })(
-// 	FooGallery
-// );
 (function ($, _, _utils, _obj) {
 
 	_.ImageViewerTemplate = _.Template.extend({
@@ -9405,6 +9378,10 @@
 									.append($("<span/>", {text: self.il8n.next}))
 					)
 			);
+		},
+		destroyChildren: function(){
+			var self = this;
+			self.$el.find(self.sel.inner).remove();
 		},
 		onPreInit: function(event, self){
 			self.$inner = self.$el.find(self.sel.innerContainer);
@@ -9577,6 +9554,10 @@
 		createChildren: function(){
 			var self = this;
 			return self.$hidden = $("<div/>", {"class": self.cls.hidden});
+		},
+		destroyChildren: function(){
+			var self = this;
+			self.$el.find(self.sel.hidden).remove();
 		},
 		onPreInit: function(event, self){
 			self.$hidden = self.$el.find(self.sel.hidden);
@@ -10813,6 +10794,11 @@
 								$("<div/>", {"class": self.cls.itemNext})
 						)
 			];
+		},
+		destroyChildren: function(){
+			var self = this;
+			self.$el.find(self.sel.contentContainer).remove();
+			self.$el.find(self.sel.itemContainer).remove();
 		},
 		onPreInit: function(event, self){
 			self.$contentContainer = self.$el.find(self.sel.contentContainer);
