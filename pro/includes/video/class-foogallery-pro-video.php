@@ -243,6 +243,11 @@ if ( !class_exists( 'FooGallery_Pro_Video' ) ) {
 		 */
         public function alter_video_link_attributes( $attr, $args, $attachment ) {
             if ( $attachment->is_video ) {
+            	//identify the item as a video
+				$attr['data-type'] = 'video';
+
+				//set the cover image for the video
+				$attr['data-cover'] = $attachment->url;
 
             	//set the video URL
                 $url = foogallery_get_video_url_from_attachment( $attachment );
