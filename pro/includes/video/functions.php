@@ -152,7 +152,7 @@ function foogallery_get_video_url_from_attachment( $attachment ) {
 	$url = $attachment->custom_url;
 
 	//append autoplay querystring
-	$autoplay = foogallery_gallery_template_setting( 'foovideo_autoplay', 'yes' );
+	$autoplay = foogallery_gallery_template_setting( 'video_autoplay', 'yes' );
 	if ( 'yes' === $autoplay ) {
 		$url = add_query_arg( 'autoplay', '1', $url );
 	}
