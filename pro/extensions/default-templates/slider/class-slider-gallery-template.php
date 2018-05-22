@@ -35,6 +35,8 @@ if ( !class_exists( 'FooGallery_Slider_Gallery_Template' ) ) {
 
 			//build up the arguments needed for rendering this template
 			add_filter( 'foogallery_gallery_template_arguments-slider', array( $this, 'build_gallery_template_arguments' ) );
+
+			add_filter( 'foogallery_build_class_attribute', array( $this, 'remove_classes' ), 10, 2 );
 		}
 
 		/**
@@ -418,6 +420,28 @@ if ( !class_exists( 'FooGallery_Slider_Gallery_Template' ) ) {
 			$args['crop'] = '1'; //we now force thumbs to be cropped
 
 			return $args;
+		}
+
+		/**
+		 * Remove certain classes from the container
+		 *
+		 * @param $classes
+		 * @param $gallery
+		 *
+		 * @return array
+		 */
+		function remove_classes( $classes, $gallery ) {
+			if ( ( $key = array_search( 'slider', $classes ) ) !== false ) {
+				unset( $classes[$key] );
+			}
+			if ( ( $key = array_search( 'fg-border-thin', $classes ) ) !== false ) {
+				unset( $classes[$key] );
+			}
+			if ( ( $key = array_search( 'fg-loaded-fade-in', $classes ) ) !== false ) {
+				unset( $classes[$key] );
+			}
+
+			return $classes;
 		}
 	}
 }
