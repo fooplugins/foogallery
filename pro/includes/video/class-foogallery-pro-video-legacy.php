@@ -38,16 +38,6 @@ if ( ! class_exists( 'FooGallery_Pro_Video_Legacy' ) ) {
 			return apply_filters( 'foogallery_foovideo_clean_video_url', $url );
 		}
 
-		/**
-		 * Applies the legacy filter for backwards compatibility
-		 * @param $key
-		 *
-		 * @return string
-		 */
-		function foogallery_youtubekey_legacy_filter( $key ) {
-			return apply_filters( 'foogallery_foovideo_youtubekey', $key );
-		}
-
 		public function foogallery_build_class_attribute( $classes ) {
 			global $current_foogallery_template;
 

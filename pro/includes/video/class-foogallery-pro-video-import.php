@@ -7,72 +7,94 @@
  * Time: 10:09 PM
  */
 
-if ( !class_exists("FooGallery_Pro_Video_Import") ){
+if ( ! class_exists( "FooGallery_Pro_Video_Import" ) ) {
 
-	require_once dirname(__FILE__) . '/class-foogallery-pro-video-base.php';
+	require_once dirname( __FILE__ ) . '/class-foogallery-pro-video-base.php';
 
 	class FooGallery_Pro_Video_Import extends FooGallery_Pro_Video_Base {
 
 		function __construct() {
 
-			add_action('wp_ajax_fgi_import', array($this, 'ajax'));
+			add_action( 'wp_ajax_fgi_import', array( $this, 'ajax' ) );
 
 		}
 
 		public function get_args() {
 			return array(
 				"videos" => $this->get_videos_arg(),
-				"nonce" => !empty($_POST["fgi_nonce"]) ? $_POST["fgi_nonce"] : null
+				"nonce"  => ! empty( $_POST["fgi_nonce"] ) ? $_POST["fgi_nonce"] : null
 			);
 		}
 
-		private function get_videos_arg(){
+		private function get_videos_arg() {
 			$videos = array();
-			if (empty($_POST["videos"])) return $videos;
-			foreach($_POST["videos"] as $video ){
+			if ( empty( $_POST["videos"] ) ) {
+				return $videos;
+			}
+			foreach ( $_POST["videos"] as $video ) {
 				$videos[] = is_array( $video ) ? $video : json_decode( stripslashes( $video ), true );
 			}
+
 			return $videos;
 		}
 
 		public function ajax() {
 			$args = $this->get_args();
-			if (wp_verify_nonce($args["nonce"], "fgi_nonce")){
-				if (empty($args["videos"]) || !is_array($args["videos"])){
-					wp_send_json_error("The 'videos' argument is required and must be an array.");
+			if ( wp_verify_nonce( $args["nonce"], "fgi_nonce" ) ) {
+				if ( empty( $args["videos"] ) || ! is_array( $args["videos"] ) ) {
+					wp_send_json_error( "The 'videos' argument is required and must be an array." );
+
 					return;
 				}
-				$response = $this->handle_import($args["videos"]);
-				wp_send_json_success($response);
+				$response = $this->handle_import( $args["videos"] );
+				wp_send_json_success( $response );
 			}
 			die();
 		}
 
-		public function handle_import($videos){
+		public function handle_import( $videos ) {
 			$response = array(
-				"mode" => "import-result",
+				"mode"     => "import-result",
 				"imported" => array(),
-				"failed" => array()
+				"failed"   => array()
 			);
-			foreach ($videos as $video){
-				if (isset($video["urls"])){
+
+			$video_types = array(
+				'youtube',
+				'vimeo',
+				'wistia-inc',
+				'dailymotion'
+			);
+
+			foreach ( $videos as $video ) {
+				//set the default type to "video"
+				$video["type"] = 'embed';
+
+				if ( in_array( $video['provider'], $video_types ) ) {
+					$video["type"] = 'video';
+				}
+
+				if ( isset( $video["urls"] ) ) {
 					// handle self-hosted import
+					$video["type"] = 'video';
 					$url = "";
-					foreach ($video["urls"] as $type => $value){
-						if (!empty($value)){
-							if (!empty($url)) $url .= ",";
+					foreach ( $video["urls"] as $type => $value ) {
+						if ( ! empty( $value ) ) {
+							if ( ! empty( $url ) ) {
+								$url .= ",";
+							}
 							$url .= $value;
 						}
 					}
-					if (!empty($url)){
+					if ( ! empty( $url ) ) {
 						$video["url"] = $url;
 					} else {
 						$response["failed"][] = $video;
 						continue;
 					}
 				}
-				$attachment_id = $this->create_attachment($video);
-				if ($attachment_id === false){
+				$attachment_id = $this->create_attachment( $video );
+				if ( $attachment_id === false ) {
 					$response["failed"][] = $video;
 				} else {
 					$response["imported"][] = $attachment_id;
@@ -86,25 +108,26 @@ if ( !class_exists("FooGallery_Pro_Video_Import") ){
 					update_post_meta( $attachment_id, FOOGALLERY_VIDEO_POST_META, $video );
 				}
 			}
+
 			return $response;
 		}
 
-		private function create_attachment(&$video){
+		private function create_attachment( &$video ) {
 			//allow for really big imports that take a really long time!
-			@set_time_limit(300);
+			@set_time_limit( 300 );
 
-			$video["thumbnail"] = $this->get_thumbnail_url($video);
-			$response = wp_remote_get($video["thumbnail"]);
-			if (is_wp_error($response)){
+			$video["thumbnail"] = $this->get_thumbnail_url( $video );
+			$response           = wp_remote_get( $video["thumbnail"] );
+			if ( is_wp_error( $response ) ) {
 				return false;
 			}
 
-			$thumbnail = wp_remote_retrieve_body( $response );
-			$thumbnail_filename = $this->get_thumbnail_filename($video);
+			$thumbnail          = wp_remote_retrieve_body( $response );
+			$thumbnail_filename = $this->get_thumbnail_filename( $video );
 
 			$upload = wp_upload_bits( $thumbnail_filename, null, $thumbnail );
-			$guid = $upload["url"];
-			$file = $upload["file"];
+			$guid   = $upload["url"];
+			$file   = $upload["file"];
 
 			// Create attachment
 			$attachment = array(
@@ -125,14 +148,15 @@ if ( !class_exists("FooGallery_Pro_Video_Import") ){
 			$attachment_data = wp_generate_attachment_metadata( $attachment_id, $file );
 			wp_update_attachment_metadata( $attachment_id, $attachment_data );
 
-			$thumbnail_details = wp_get_attachment_image_src( $attachment_id, 'thumbnail' ); // Yes we have the data, but get the thumbnail URL anyway, to be safe
+			$thumbnail_details  = wp_get_attachment_image_src( $attachment_id, 'thumbnail' ); // Yes we have the data, but get the thumbnail URL anyway, to be safe
 			$video["thumbnail"] = $thumbnail_details[0];
+
 			return $attachment_id;
 		}
 
-		private function get_thumbnail_url($video){
-			if (!empty($video["provider"])){
-				switch($video["provider"]){
+		private function get_thumbnail_url( $video ) {
+			if ( ! empty( $video["provider"] ) ) {
+				switch ( $video["provider"] ) {
 					case "youtube":
 						$format = "http://img.youtube.com/vi/%1s/%2s.jpg";
 						/**
@@ -146,19 +170,20 @@ if ( !class_exists("FooGallery_Pro_Video_Import") ){
 							'default',
 							'0'
 						);
-						foreach ($sizes as $size){
-							$url = sprintf($format, $video["id"], $size);
-							if ($this->url_exists($url)){
+						foreach ( $sizes as $size ) {
+							$url = sprintf( $format, $video["id"], $size );
+							if ( $this->url_exists( $url ) ) {
 								return $url;
 							}
 						}
 						break;
 				}
 			}
+
 			return $video["thumbnail"];
 		}
 
-		private function get_thumbnail_filename($video){
+		private function get_thumbnail_filename( $video ) {
 			return $video["id"] . '.' . pathinfo( basename( $video["thumbnail"] ), PATHINFO_EXTENSION );
 		}
 

@@ -171,9 +171,32 @@ function foogallery_get_video_thumbnail_from_attachment( $attachment ) {
 }
 
 /**
- * Return an API key that youtube can use to request video info
- * @return mixed|void
+ * Takes a URL and attempts to return the oEmbed data.
+ *
+ * @param string $url The URL to the content that should be attempted to be embedded.
+ * @param array|string $args Optional. Arguments, usually passed from a shortcode. Default empty.
+ * @return false|object False on failure, otherwise the result in the form of an object.
+ *
+ * @see WP_oEmbed::get_data()
+ *
+ * @description This method is a duplicate of the WP_oEmbed::get_data() method as it was only
+ * included since WordPress 4.8.0.
  */
-function foogallery_youtubekey() {
-	return apply_filters( 'foogallery_youtubekey', 'AIzaSyBMT07ftYs1dGnguTdI8I_fXazRyrnZcEA' );
+function foogallery_oembed_get_data($url, $args = '') {
+	$oembed = _wp_oembed_get_object();
+	$args = wp_parse_args($args);
+
+	$provider = $oembed->get_provider($url, $args);
+
+	if (!$provider) {
+		return false;
+	}
+
+	$data = $oembed->fetch($provider, $url, $args);
+
+	if (false === $data) {
+		return false;
+	}
+
+	return $data;
 }

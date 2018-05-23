@@ -58,6 +58,8 @@ if ( ! class_exists( 'FooGallery_Pro_Video' ) ) {
 
 			//add settings for video
 			add_filter( 'foogallery_admin_settings_override', array( $this, 'include_video_settings' ) );
+
+			add_action( 'foogallery_loaded_template', array( $this, 'include_video_embeds' ) );
 		}
 
 		/**
@@ -139,13 +141,13 @@ if ( ! class_exists( 'FooGallery_Pro_Video' ) ) {
 				'default'  => 'fg-video-default',
 				'choices'  => apply_filters(
 					'foogallery_gallery_template_video_hover_icon_choices', array(
-					''                 => array( 'label' => __( 'None', 'foogallery' ), 'html' => '<div class="foogallery-setting-video_overlay"></div>' ),
-					'fg-video-default' => array( 'label' => __( 'Default Icon', 'foogallery' ), 'html' => '<div class="foogallery-setting-video_overlay fg-video-default"></div>' ),
-					'fg-video-1'       => array( 'label' => __( 'Icon 1', 'foogallery' ), 'html' => '<div class="foogallery-setting-video_overlay fg-video-1"></div>' ),
-					'fg-video-2'       => array( 'label' => __( 'Icon 2', 'foogallery' ), 'html' => '<div class="foogallery-setting-video_overlay fg-video-2"></div>' ),
-					'fg-video-3'       => array( 'label' => __( 'Icon 3', 'foogallery' ), 'html' => '<div class="foogallery-setting-video_overlay fg-video-3"></div>' ),
-					'fg-video-4'       => array( 'label' => __( 'Icon 4', 'foogallery' ), 'html' => '<div class="foogallery-setting-video_overlay fg-video-4"></div>' ),
-				)
+						''                 => array( 'label' => __( 'None', 'foogallery' ), 'html' => '<div class="foogallery-setting-video_overlay"></div>' ),
+						'fg-video-default' => array( 'label' => __( 'Default Icon', 'foogallery' ), 'html' => '<div class="foogallery-setting-video_overlay fg-video-default"></div>' ),
+						'fg-video-1'       => array( 'label' => __( 'Icon 1', 'foogallery' ), 'html' => '<div class="foogallery-setting-video_overlay fg-video-1"></div>' ),
+						'fg-video-2'       => array( 'label' => __( 'Icon 2', 'foogallery' ), 'html' => '<div class="foogallery-setting-video_overlay fg-video-2"></div>' ),
+						'fg-video-3'       => array( 'label' => __( 'Icon 3', 'foogallery' ), 'html' => '<div class="foogallery-setting-video_overlay fg-video-3"></div>' ),
+						'fg-video-4'       => array( 'label' => __( 'Icon 4', 'foogallery' ), 'html' => '<div class="foogallery-setting-video_overlay fg-video-4"></div>' ),
+					)
 				),
 				'row_data' => array(
 					'data-foogallery-change-selector' => 'input:radio',
@@ -249,16 +251,43 @@ if ( ! class_exists( 'FooGallery_Pro_Video' ) ) {
 		 * @return mixed
 		 */
 		public function alter_video_link_attributes( $attr, $args, $attachment ) {
+			global $current_foogallery;
+
 			if ( $attachment->is_video ) {
-				//identify the item as a video
-				$attr['data-type'] = 'video';
+				$current_foogallery->has_videos = true;
+
+				$video_data = get_post_meta( $attachment->ID, FOOGALLERY_VIDEO_POST_META, true );
+
+				$is_embed = false;
+
+				if ( isset( $video_data['type'] ) ) {
+					//identify the item as a video
+					$attr['data-type'] = $video_data['type'];
+
+					$is_embed = 'embed' === $video_data['type'];
+				}
 
 				//set the cover image for the video
 				$attr['data-cover'] = $attachment->url;
 
-				//set the video URL
-				$url          = foogallery_get_video_url_from_attachment( $attachment );
-				$attr['href'] = $url;
+				//make some changes for embeds
+				if ( $is_embed ) {
+					$oembed_data = foogallery_oembed_get_data( $attachment->custom_url );
+
+					$data = array(
+						'id'            => 'foogallery_embed_'.$current_foogallery->ID . '-' . $attachment->ID,
+						'attachment_id' => $attachment->ID,
+						'url'           => $attachment->custom_url,
+						'provider'      => $video_data['provider'],
+						'html'          => $oembed_data->html
+					);
+
+					$current_foogallery->video_embeds[] = $data;
+
+					$attr['href'] = '#' . $data['id'];
+				} else {
+					$attr['href'] = foogallery_get_video_url_from_attachment( $attachment );
+				}
 
 				//if we have no widths or heights then use video default size
 				if ( ! isset( $attr['data-width'] ) ) {
@@ -297,6 +326,8 @@ if ( ! class_exists( 'FooGallery_Pro_Video' ) ) {
 			if ( 0 === foogallery_get_gallery_video_count( $current_foogallery->ID ) ) {
 				return $classes;
 			}
+
+			$current_foogallery->has_videos = true;
 
 			//get the selected video icon
 			$classes[] = foogallery_gallery_template_setting( 'video_hover_icon', 'fg-video-default' );
@@ -385,6 +416,30 @@ if ( ! class_exists( 'FooGallery_Pro_Video' ) ) {
 			);
 
 			return $settings;
+		}
+
+
+		/**
+		 * Renders any video embeds for the gallery
+		 *
+		 * @param FooGallery $gallery
+		 */
+		function include_video_embeds( $gallery ) {
+			if ( isset( $gallery->has_videos ) && $gallery->has_videos ) {
+
+				?>
+				<div style="display: none;"><?php
+
+				foreach ( $gallery->video_embeds as $embed ) {
+					?>
+					<div id="<?php echo $embed['id']; ?>" data-provider="<?php echo $embed['provider']; ?>">
+						<?php echo $embed['html']; ?>
+					</div>
+					<?php
+				}
+
+				?></div><?php
+			}
 		}
 	}
 }
