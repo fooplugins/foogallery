@@ -1040,3 +1040,17 @@ function foogallery_current_gallery_attachments_for_rendering() {
     //by default, return all attachments
     return $current_foogallery->attachments();
 }
+
+/**
+ * Safer escaping for HTML attributes.
+ *
+ * @since 1.4.31
+ *
+ * @param string $text
+ * @return string
+ */
+function foogallery_esc_attr( $text ) {
+	$safe_text = wp_check_invalid_utf8( $text );
+	$safe_text = _wp_specialchars( $safe_text, ENT_QUOTES );
+	return $safe_text;
+}
