@@ -3,7 +3,7 @@ Contributors: bradvin, steveush, fooplugins
 Donate link: http://fooplugins.com
 Tags: gallery, image gallery, photo gallery, responsive, album, media gallery, masonry gallery, portfolio, justified image gallery, video gallery, photography, photographer, retina
 Requires at least: 3.9
-Tested up to: 4.9.5
+Tested up to: 4.9.6
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -15,6 +15,12 @@ Why choose FooGallery? Stunning gallery layouts, responsive, retina-ready, light
 Why choose FooGallery? Stunning gallery layouts, responsive, retina-ready, lightning fast, easy to use. Built to be highly configurable and extensible for developers or freelancers.
 
 [View the FooGallery Homepage & DEMO](http://foo.gallery/)
+
+**GDPR**
+
+When you install FooGallery for the first time, the plugin asks you (the website admin) to opt-in so that we can track your usage of the plugin and provide a better service (send you update emails for new version releases and security updates etc). *This is optional and not required in order to use the plugin.*
+
+From your website point of view, FooGallery never collects or stores any visitor information at all, when someone visits your website.
 
 **PHP 7 Compatible**
 
@@ -149,6 +155,21 @@ Hell, yes! Check out our [developer page](http://foo.gallery/developers/)
 Update now to get all the latest features, bug fixes and improvements!
 
 == Changelog ==
+
+= 1.4.31 =
+
+* New : GDPR notice in readme
+* New : Update to Freemius SDK 2.0.1
+* Fix : Default captions bug introduced in 1.4.30
+
+= 1.4.30 =
+
+* Fix : Album 404 issues when used on homepage
+* Fix : Dimension attributes missing for upscaling small images
+* Fix : Issue when galleries cannot be added to an album
+* Fix : Lightbox caption mismatch
+* New : Setting for legacy thumb cropping in Simple Portfolio gallery
+* Update : FooGallery client side 1.0.26
 
 = 1.4.29 =
 
