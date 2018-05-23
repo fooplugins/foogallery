@@ -630,7 +630,7 @@ function foogallery_caption_title_source() {
 function foogallery_get_caption_title_for_attachment($attachment_post, $source = false) {
 	if ( false === $source ) {
 		$source = foogallery_gallery_template_setting( 'caption_title_source', false );
-		if ( false === $source || "none" === $source ) {
+		if ( empty( $source ) || "none" === $source ) {
 			$source = foogallery_caption_title_source();
 		}
 	}
@@ -678,7 +678,7 @@ function foogallery_caption_desc_source() {
 function foogallery_get_caption_desc_for_attachment($attachment_post, $source = false) {
 	if ( false === $source ) {
 		$source = foogallery_gallery_template_setting( 'caption_desc_source', false );
-		if ( false === $source || "none" === $source ) {
+		if ( empty( $source ) || "none" === $source ) {
 			$source = foogallery_caption_desc_source();
 		}
 	}
@@ -1056,4 +1056,18 @@ function foogallery_get_attachment_id_by_url($url) {
 		return $attachment[0];
 	}
 	return null;
+}
+
+/**
+ * Safer escaping for HTML attributes.
+ *
+ * @since 1.4.31
+ *
+ * @param string $text
+ * @return string
+ */
+function foogallery_esc_attr( $text ) {
+	$safe_text = wp_check_invalid_utf8( $text );
+	$safe_text = _wp_specialchars( $safe_text, ENT_QUOTES );
+	return $safe_text;
 }

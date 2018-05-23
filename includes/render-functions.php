@@ -38,7 +38,7 @@ function foogallery_attachment_html_image( $foogallery_attachment, $args = array
 	$html = '<img ';
 	foreach ( $attr as $name => $value ) {
         $name = str_replace(' ', '', $name); //ensure we have no spaces!
-		$html .= " $name=" . '"' . esc_attr($value) . '"';
+		$html .= " $name=" . '"' . foogallery_esc_attr($value) . '"';
 	}
 	$html .= ' />';
 
@@ -106,7 +106,7 @@ function foogallery_attachment_html_anchor_opening( $foogallery_attachment, $arg
     $html = '<a ';
     foreach ( $attr as $name => $value ) {
 		$name = str_replace(' ', '', $name); //ensure we have no spaces!
-        $html .= " $name=" . '"' . esc_attr($value) . '"';
+        $html .= " $name=" . '"' . foogallery_esc_attr($value) . '"';
     }
     $html .= '>';
 
