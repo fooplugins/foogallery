@@ -97,5 +97,74 @@ if ( ! class_exists( 'FooGallery_Pro_Video_Legacy' ) ) {
 			$classes[] = $video_icon_sticky;
 			return $classes;
 		}
+
+		/**
+		 * Migrate a gallery from the old video slider to the new slider
+		 *
+		 * @param $gallery_id
+		 */
+		public function migrate( $gallery_id ) {
+			$gallery = FooGallery::get_by_id( $gallery_id );
+
+			//only migrate if the template is valid
+			if ( 'videoslider' === $gallery->gallery_template ) {
+
+				//update the gallery template
+				update_post_meta( $gallery_id, FOOGALLERY_META_TEMPLATE, 'slider' );
+
+				//get the old settings, so we can migrate to the new
+				$settings = $gallery->settings;
+
+				//update the layout setting
+				$this->migrate_setting( $settings, 'layout', array(
+					'rvs-vertical' => '',
+					'rvs-horizontal' => 'fgs-horizontal'
+				));
+
+				//update the viewport setting
+				$this->migrate_setting( $settings, 'viewport', array(
+					'rvs-use-viewport' => 'yes'
+				));
+
+				//update the theme setting
+				$this->migrate_setting( $settings, 'theme', array(
+					'' => 'fg-dark',
+					'rvs-light' => 'fg-light',
+					'rvs-custom' => 'fg-custom'
+				));
+
+				//update the highlight setting
+				$this->migrate_setting( $settings, 'highlight', array(
+					'' => 'fgs-purple',
+					'rvs-blue-highlight' => 'fgs-blue',
+					'rvs-green-highlight' => 'fgs-green',
+					'rvs-orange-highlight' => 'fgs-orange',
+					'rvs-red-highlight' => 'fgs-red',
+					'rvs-custom-highlight' => 'fgs-custom'
+				));
+
+				//update the gallery settings
+				update_post_meta( $gallery_id, FOOGALLERY_META_SETTINGS, $settings );
+			}
+		}
+
+		/**
+		 * Migrate settings and the choice mappings
+		 *
+		 * @param array $settings
+		 * @param string $setting_name
+		 * @param array $mappings
+		 */
+		function migrate_setting( &$settings, $setting_name, $mappings ) {
+			foreach ( $settings as $setting => $name) {
+				if ( $setting_name === $name ) {
+					foreach( $mappings as $mapping_key => $mapping_value ) {
+						if ( $mapping_key === $setting ) {
+							$settings[$setting_name] = $mapping_value;
+						}
+					}
+				}
+			}
+		}
 	}
 }
