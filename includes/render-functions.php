@@ -429,7 +429,7 @@ function foogallery_build_json_from_attachment( $foogallery_attachment, $args = 
         if ( array_key_exists( 'height', $image_attributes ) ) {
             $json_object->height = $image_attributes['height'];
         }
-        $json_object->title     = $foogallery_attachment->title;
+
         $json_object->alt       = $foogallery_attachment->alt;
 
         $json_object_attr_anchor = new stdClass();
@@ -437,8 +437,7 @@ function foogallery_build_json_from_attachment( $foogallery_attachment, $args = 
 
         if ( $captions !== false ) {
             if ( array_key_exists( 'title', $captions ) ) {
-                $json_object->caption = $json_object_attr_anchor->{'data-caption-title'} = $captions['title'];
-
+                $json_object->caption = $json_object->title = $json_object_attr_anchor->{'data-caption-title'} = $captions['title'];
             }
             if ( array_key_exists( 'desc', $captions ) ) {
                 $json_object->description = $json_object_attr_anchor->{'data-caption-desc'} = $captions['desc'];
