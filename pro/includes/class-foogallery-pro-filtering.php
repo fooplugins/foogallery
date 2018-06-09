@@ -29,6 +29,9 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 
 			//add attributes to the thumbnail anchors
 			add_filter( 'foogallery_attachment_html_link_attributes', array( $this, 'add_tag_attribute' ), 10, 3 );
+
+			//add tags to the json output
+			add_filter( 'foogallery_build_attachment_json', array( $this, 'add_json_tags' ), 10, 6 );
 		}
 
 		/**
@@ -541,10 +544,32 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 
 				$terms = wp_get_post_terms( $attachment->ID, $taxonomy, array('fields' => 'names') );
 
+				$attachment->tags = $terms;
+
 				$attr['data-tags'] = json_encode($terms);
 			}
 
 			return $attr;
+		}
+
+		/**
+		 * Add the tags to the json object
+		 *
+		 * @param StdClass $json_object
+		 * @param FooGalleryAttachment $foogallery_attachment
+		 * @param array $args
+		 * @param array $anchor_attributes
+		 * @param array $image_attributes
+		 * @param array $captions
+		 *
+		 * @return mixed
+		 */
+		public function add_json_tags(  $json_object, $foogallery_attachment, $args, $anchor_attributes, $image_attributes, $captions ) {
+			if ( isset( $foogallery_attachment->tags ) ) {
+				$json_object->tags = $foogallery_attachment->tags;
+			}
+
+			return $json_object;
 		}
 
 		/**
