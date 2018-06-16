@@ -93,8 +93,10 @@
 				} );
 			} else {
 				$preview.foogallery( 'layout' );
-				$preview_container.css( 'height', '' );
 			}
+		} else {
+			//reset the height to what it should be
+			$preview_container.css('height', '');
 		}
 	};
 
