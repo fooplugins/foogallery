@@ -12,6 +12,11 @@ if ( ! class_exists( 'FooGallery_Pro_Video_Legacy' ) ) {
 
 			add_filter( 'foogallery_clean_video_url', array( $this, 'foogallery_clean_video_url_legacy_filter' ) );
 			add_filter( 'foogallery_youtubekey', array( $this, 'foogallery_youtubekey_legacy_filter' ) );
+
+			//check if the old FooVideo is installed
+			if ( is_admin() ) {
+				add_action( 'admin_notices', array( $this, 'display_foovideo_notice') );
+			}
 		}
 
 		/**
@@ -99,6 +104,27 @@ if ( ! class_exists( 'FooGallery_Pro_Video_Legacy' ) ) {
 		}
 
 		/**
+		 * Display a message if the FooVideo extension is also installed
+		 */
+		function display_foovideo_notice() {
+			if ( class_exists('Foo_Video') ) {
+				?>
+				<div class="notice error">
+					<p>
+						<strong><?php _e('FooVideo Extension Redundant!', 'foogallery'); ?></strong><br/>
+						<?php _e('You have both FooGallery PRO and the legacy FooVideo extension activated. FooGallery PRO now includes all the video features that FooVideo had, plus more! Which means the FooVideo extension is now redundant.', 'foogallery'); ?>
+						<br/>
+						<?php _e('Your video galleries will continue to work, but we recommend you migrate them and then deactivate FooVideo.', 'foogallery'); ?>
+						<br/>
+						<input name="migrate" type="submit" class="button button-primary button-large" id="publish" value="<?php _e('Migrate Video Galleries', 'foogallery'); ?>">
+						<br/>
+					</p>
+				</div>
+				<?php
+			}
+		}
+
+		/**
 		 * Migrate a gallery from the old video slider to the new slider
 		 *
 		 * @param $gallery_id
@@ -166,5 +192,7 @@ if ( ! class_exists( 'FooGallery_Pro_Video_Legacy' ) ) {
 				}
 			}
 		}
+
+
 	}
 }
