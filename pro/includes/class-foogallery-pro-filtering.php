@@ -29,6 +29,9 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 
 			//add attributes to the thumbnail anchors
 			add_filter( 'foogallery_attachment_html_link_attributes', array( $this, 'add_tag_attribute' ), 10, 3 );
+
+			//add tags to the json output
+			add_filter( 'foogallery_build_attachment_json', array( $this, 'add_json_tags' ), 10, 6 );
 		}
 
 		/**
@@ -382,6 +385,23 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 						'data-foogallery-show-when-field-value'    => 'yes',
 					)
 				);
+
+				$fields[] = array(
+					'id'       => 'filtering_override',
+					'title'    => __( 'Override', 'foogallery' ),
+					'desc'     => __( 'You can override which filters are shown, by providing a comma-separated list. Leave black for them to be auto-generated.', 'foogallery' ),
+					'section'  => __( 'Filtering', 'foogallery' ),
+					'type'     => 'text',
+					'default'  => '',
+					'row_data' => array(
+						'data-foogallery-change-selector'          => 'input',
+						'data-foogallery-preview'                  => 'shortcode',
+						'data-foogallery-hidden'                   => true,
+						'data-foogallery-show-when-field'          => 'filtering_type',
+						'data-foogallery-show-when-field-operator' => '===',
+						'data-foogallery-show-when-field-value'    => 'advanced',
+					)
+				);
 			}
 
 			return $fields;
@@ -415,6 +435,7 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 				$args['filtering_adjust_opacity']          = $post_data[FOOGALLERY_META_SETTINGS][$template . '_filtering_adjust_opacity'];
 				$args['filtering_adjust_opacity_lightest'] = $post_data[FOOGALLERY_META_SETTINGS][$template . '_filtering_adjust_opacity_lightest'];
 				$args['filtering_adjust_opacity_darkest']  = $post_data[FOOGALLERY_META_SETTINGS][$template . '_filtering_adjust_opacity_darkest'];
+				$args['filtering_override']				   = $post_data[FOOGALLERY_META_SETTINGS][$template . '_filtering_override'];
 			}
 
 			return $args;
@@ -477,6 +498,12 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 							$filtering_options['adjustOpacity'] = $filtering_adjust_opacity;
 							$filtering_options['lightest'] = $this->get_foogallery_argument( $gallery, 'filtering_adjust_opacity_lightest', 'filtering_adjust_opacity_lightest', '0.5' );
 							$filtering_options['darkest']  = intval( $this->get_foogallery_argument( $gallery, 'filtering_adjust_opacity_darkest', 'filtering_adjust_opacity_darkest', '1' ) );
+						}
+
+						$filtering_override = $this->get_foogallery_argument( $gallery, 'filtering_override', 'filtering_override', '' );
+						if ( !empty( $filtering_override ) ) {
+							$filtering_options['tags'] = explode( ',', $filtering_override );
+							$filtering_options['tags'] = array_filter( array_map( 'trim', $filtering_options['tags'] ) ) ;
 						}
 					}
 
@@ -541,10 +568,32 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 
 				$terms = wp_get_post_terms( $attachment->ID, $taxonomy, array('fields' => 'names') );
 
+				$attachment->tags = $terms;
+
 				$attr['data-tags'] = json_encode($terms);
 			}
 
 			return $attr;
+		}
+
+		/**
+		 * Add the tags to the json object
+		 *
+		 * @param StdClass $json_object
+		 * @param FooGalleryAttachment $foogallery_attachment
+		 * @param array $args
+		 * @param array $anchor_attributes
+		 * @param array $image_attributes
+		 * @param array $captions
+		 *
+		 * @return mixed
+		 */
+		public function add_json_tags(  $json_object, $foogallery_attachment, $args, $anchor_attributes, $image_attributes, $captions ) {
+			if ( isset( $foogallery_attachment->tags ) ) {
+				$json_object->tags = $foogallery_attachment->tags;
+			}
+
+			return $json_object;
 		}
 
 		/**

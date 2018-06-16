@@ -165,11 +165,19 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 				$attachments = apply_filters( 'foogallery_save_gallery_attachments', explode( ',', $_POST[FOOGALLERY_META_ATTACHMENTS] ), $post_id, $_POST );
 				update_post_meta( $post_id, FOOGALLERY_META_ATTACHMENTS, $attachments );
 
-				$gallery_template = $_POST[FOOGALLERY_META_TEMPLATE];
-				update_post_meta( $post_id, FOOGALLERY_META_TEMPLATE, $gallery_template );
+				if ( isset( $_POST[FOOGALLERY_META_TEMPLATE] ) ) {
+					$gallery_template = $_POST[FOOGALLERY_META_TEMPLATE];
+					update_post_meta( $post_id, FOOGALLERY_META_TEMPLATE, $gallery_template );
+				} else {
+					$gallery_template = foogallery_default_gallery_template();
+				}
 
-				$settings = isset($_POST[FOOGALLERY_META_SETTINGS]) ?
-					$_POST[FOOGALLERY_META_SETTINGS] : array();
+				if ( isset( $_POST[FOOGALLERY_META_SETTINGS] ) ) {
+					$settings = isset( $_POST[FOOGALLERY_META_SETTINGS] ) ?
+						$_POST[FOOGALLERY_META_SETTINGS] : array();
+				} else {
+					$settings = array();
+				}
 
 				$settings = apply_filters( 'foogallery_save_gallery_settings', $settings, $post_id, $_POST );
 				$settings = apply_filters( 'foogallery_save_gallery_settings-'. $gallery_template, $settings, $post_id, $_POST );
