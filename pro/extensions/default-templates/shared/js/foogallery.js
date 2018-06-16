@@ -6381,12 +6381,12 @@
 			if (_is.hash(objOrElement)) {
 				type = objOrElement.type;
 			} else if (_is.element(objOrElement)) {
-				var $el = $(objOrElement), vid = this.tmpl.sel.item.video;
-				if (_is.string(vid) && $el.is(vid)){
-					type = "video";
-				} else {
-					type = $(objOrElement).find(this.tmpl.sel.item.anchor).data("type");
-				}
+				var $el = $(objOrElement), item = this.tmpl.sel.item;
+				// if (_is.string(item.video) && $el.is(item.video)){
+				// 	type = "video";
+				// } else {
+				// }
+				type = $el.find(item.anchor).data("type");
 			}
 			return _is.string(type) && _.components.contains(type) ? type : "item";
 		},
@@ -8304,6 +8304,55 @@
 		FooGallery.utils.is,
 		FooGallery.utils.url
 );
+(function($, _, _utils, _is){
+
+	_.Embed = _.Item.extend({
+		construct: function(template, options){
+			var self = this;
+			self._super(template, options);
+			self.cover = self.opt.cover;
+		},
+		doParseItem: function($element){
+			var self = this;
+			if (self._super($element)){
+				self.cover = self.$anchor.data("cover") || self.cover;
+				self.$el.addClass(self.cls.embed);
+				return true;
+			}
+			return false;
+		},
+		doCreateItem: function(){
+			var self = this;
+			if (self._super()){
+				self.$anchor.attr({
+					"data-type": self.type,
+					"data-cover": self.cover
+				});
+				self.$el.addClass(self.cls.embed);
+				return true;
+			}
+			return false;
+		}
+	});
+
+	_.template.configure("core", {
+		item: {
+			cover: ""
+		}
+	},{
+		item: {
+			embed: "fg-video"
+		}
+	});
+
+	_.components.register("embed", _.Embed);
+
+})(
+		FooGallery.$,
+		FooGallery,
+		FooGallery.utils,
+		FooGallery.utils.is
+);
 (function($, _, _utils){
 
 	_.DefaultTemplate = _.Template.extend({});
@@ -9755,7 +9804,9 @@
 		},
 		thumbnail: ['attr:src','data:thumbnail'],
 		title: ['attr:title','data:title','data:captionTitle'],
-		description: ['data:description','data:captionDesc','attr:alt']
+		description: ['data:description','data:captionDesc','attr:alt'],
+		width: ['data:width'],
+		height: ['data:height']
 	};
 
 	F.Parser.prototype._init = function(options){
@@ -9768,14 +9819,19 @@
 	};
 
 	F.Parser.prototype.parse = function($anchor){
+		var type = this._type($anchor),
+				width = parseInt(this._width($anchor)),
+				height = parseInt(this._height($anchor));
 		var content = {
-			url: this._url($anchor),
+			url: this._url($anchor, type),
 			external: this._external($anchor),
-			type: this._type($anchor),
+			type: type,
 			title: this._title($anchor),
-			description: this._description($anchor)
+			description: this._description($anchor),
+			width: isNaN(width) ? 0 : width,
+			height: isNaN(height) ? 0 : height
 		};
-		if (content.type === 'video'){
+		if (type === 'video' || type === 'embed'){
 			content.thumbnail = this._thumbnail($anchor);
 		}
 		return _is.string(content.url) ? content : null;
@@ -9804,9 +9860,9 @@
 		return value;
 	};
 
-	F.Parser.prototype._url = function($anchor){
+	F.Parser.prototype._url = function($anchor, type){
 		var url = this._parse($anchor, this.options.url);
-		return this._full_url(url);
+		return type === 'embed' ? url : this._full_url(url);
 	};
 
 	F.Parser.prototype._external = function($anchor){
@@ -9816,7 +9872,7 @@
 
 	F.Parser.prototype._type = function($anchor){
 		var tmp; // first check if the type is supplied and valid
-		if (_is.string(tmp = $anchor.data('type')) && tmp in this.options.type){
+		if (_is.string(tmp = $anchor.data('type')) && (tmp in this.options.type || tmp === 'embed')){
 			return tmp;
 		}
 		// otherwise perform a best guess using the href and any parser.type values
@@ -9857,6 +9913,14 @@
 			}
 		}
 		return null;
+	};
+
+	F.Parser.prototype._width = function($anchor){
+		return this._parse($anchor, this.options.width);
+	};
+
+	F.Parser.prototype._height = function($anchor){
+		return this._parse($anchor, this.options.height);
 	};
 
 })(
@@ -10203,8 +10267,9 @@
 		this.visible = false;
 		this.content = this.grid.parser.parse(this.$link);
 		this.hasCaption = false;
+		this.isCreated = false;
 		this.player = null;
-		this.$content = this.$create();
+		this.$content = null;
 	};
 
 	F.Item.prototype.destroy = function(){
@@ -10214,9 +10279,13 @@
 		this.player = null;
 		this.$li.removeClass('foogrid-visible').children('span').remove();
 		this.$link.off('click.gg', this.onClick);
-		this.$content.remove();
+		if (this.isCreated){
+			this.$content.remove();
+		}
 		this.$content = null;
 		this.visible = false;
+		this.hasCaption = false;
+		this.isCreated = false;
 		this.index = null;
 		this.content = {};
 	};
@@ -10231,6 +10300,9 @@
 				break;
 			case 'html':
 				$content = $(this.content.url).contents();
+				break;
+			case 'embed':
+				$content = $('<div/>', {'class': 'foogrid-embed'}).append($(this.content.url).contents());
 				break;
 			case 'video':
 				this.player = new F.Player(this.grid, this.content.url);
@@ -10250,6 +10322,7 @@
 			$inner.addClass('foogrid-has-caption').append($caption);
 		}
 
+		this.isCreated = true;
 		return $inner;
 	};
 
@@ -10268,9 +10341,30 @@
 		return null;
 	};
 
+	F.Item.prototype.setEmbedSize = function(){
+		var ah = this.$content.height(), ch = this.content.height,
+				aw = this.$content.width(), cw = this.content.width,
+				rh = ah / ch, rw = aw / cw, ratio = 0;
+
+		if (rh < rw){
+			ratio = rh;
+		} else {
+			ratio = rw;
+		}
+
+		if (ratio > 0 && ratio < 1){
+			this.$content.children('.foogrid-embed').css({height: this.content.height * ratio, width: this.content.width * ratio});
+		} else {
+			this.$content.children('.foogrid-embed').css({height: '', width: ''});
+		}
+	};
+
 	F.Item.prototype.open = function(reverse){
 		var self = this;
 		return $.Deferred(function(d){
+			if (!self.isCreated){
+				self.$content = self.$create();
+			}
 			self.visible = true;
 			if (reverse){
 				self.$content.addClass('foogrid-reverse');
@@ -10282,6 +10376,13 @@
 			self.$li.addClass('foogrid-visible');
 			if (self.grid.transitions()){
 				_transition.start(self.$content, 'foogrid-visible', true, 1000).then(function(){
+					if (self.content.type === 'embed'){
+						$(window).on('resize.foogrid', function(){
+							self.setEmbedSize();
+						});
+						self.setEmbedSize();
+					}
+
 					self.$content.removeClass('foogrid-reverse');
 					if (self.player && self.player.options.autoplay){
 						self.player.play();
@@ -10311,6 +10412,7 @@
 			} else {
 				self.$content.addClass('foogrid-reverse');
 			}
+			$(window).off('resize.foogrid');
 			if (self.grid.transitions()){
 				_transition.start(self.$content, 'foogrid-visible', false, 350).then(function(){
 					self.$content.removeClass('foogrid-reverse').detach();
@@ -10867,6 +10969,10 @@
 									$("<div/>", {"class": self.cls.contentPlay})
 											.on("click.foogallery", {self: self, item: item}, self.onPlayVideo)
 							);
+				} else if (item.type === "embed") {
+					item.$embed = $("<div/>", {'class': self.cls.embed});
+					item.$content.addClass(self.cls.embedable).append(item.$embed);
+					item.$target = $(item.href).contents();
 				} else {
 					item.$content.css("background-image", "url("+item.href+")");
 				}
@@ -10890,6 +10996,10 @@
 				item.player.$el.detach();
 				item.$el.add(item.$content)
 						.removeClass(self.cls.playing);
+			}
+			if (item.type === "embed" && item.$target){
+				item.$target.detach();
+				$(item.href).append(item.$target);
 			}
 			item.$el.add(item.$content)
 					.removeClass(self.cls.selected).detach();
@@ -10959,6 +11069,24 @@
 				self._itemHeight = items[0].$el.outerHeight();
 			}
 		},
+		setEmbedSize: function(item){
+			var self = this,
+					ah = self._contentHeight, ch = item.$anchor.data("height"),
+					aw = self._contentWidth, cw = item.$anchor.data("width"),
+					rh = ah / ch, rw = aw / cw, ratio = 0;
+
+			if (rh < rw){
+				ratio = rh;
+			} else {
+				ratio = rw;
+			}
+
+			if (ratio > 0 && ratio < 1){
+				item.$embed.css({height: ch * ratio, width: cw * ratio});
+			} else {
+				item.$embed.css({height: '', width: ''});
+			}
+		},
 		setSelected: function(itemOrIndex){
 			var self = this, prev = self.selected, next = itemOrIndex;
 			if (_is.number(itemOrIndex)){
@@ -10972,6 +11100,10 @@
 						prev.player.$el.detach();
 						prev.$el.add(prev.$content).removeClass(self.cls.playing);
 					}
+					if (prev.type === "embed" && prev.$target){
+						prev.$target.detach();
+						$(prev.href).append(prev.$target);
+					}
 					prev.$el.add(prev.$content).removeClass(self.cls.selected);
 				}
 				self.$contentStage.css("transform", "translateX(-" + (next.index * self._contentWidth) + "px)");
@@ -10979,6 +11111,10 @@
 				if (self.template.autoPlay && next.type === "video" && next.player instanceof _.VideoPlayer){
 					next.$el.add(next.$content).addClass(self.cls.playing);
 					next.player.appendTo(next.$content).load();
+				}
+				if (next.type === "embed" && next.$target){
+					next.$target.appendTo(next.$embed);
+					self.setEmbedSize(next);
 				}
 				self.selected = next;
 				if (next.index <= self._firstVisible || next.index >= self._lastVisible){
@@ -11163,7 +11299,9 @@
 		horizontal: "fgs-horizontal",
 		selected: "fgs-selected",
 		playing: "fgs-playing",
-		noCaptions: "fgs-no-captions"
+		noCaptions: "fgs-no-captions",
+		embed: "fgs-embed",
+		embedable: "fgs-embedable"
 	});
 
 })(
