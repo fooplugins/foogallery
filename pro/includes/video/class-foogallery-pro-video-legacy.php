@@ -14,9 +14,14 @@ if ( ! class_exists( 'FooGallery_Pro_Video_Legacy' ) ) {
 			add_filter( 'foogallery_youtubekey', array( $this, 'foogallery_youtubekey_legacy_filter' ) );
 
 			//check if the old FooVideo is installed
-			if ( is_admin() ) {
+			if ( is_admin() && class_exists('Foo_Video') ) {
 				add_action( 'admin_notices', array( $this, 'display_foovideo_notice') );
+				add_action( 'admin_menu',  array( $this, 'add_migration_menu' ) );
 			}
+
+			// Ajax calls for migrating
+			add_action( 'wp_ajax_foogallery_video_migration', array( $this, 'ajax_foogallery_video_migration' ) );
+			add_action( 'wp_ajax_foogallery_video_migration_reset', array( $this, 'ajax_foogallery_video_migration_reset' ) );
 		}
 
 		/**
@@ -107,92 +112,55 @@ if ( ! class_exists( 'FooGallery_Pro_Video_Legacy' ) ) {
 		 * Display a message if the FooVideo extension is also installed
 		 */
 		function display_foovideo_notice() {
-			if ( class_exists('Foo_Video') ) {
-				?>
-				<div class="notice error">
-					<p>
-						<strong><?php _e('FooVideo Extension Redundant!', 'foogallery'); ?></strong><br/>
-						<?php _e('You have both FooGallery PRO and the legacy FooVideo extension activated. FooGallery PRO now includes all the video features that FooVideo had, plus more! Which means the FooVideo extension is now redundant.', 'foogallery'); ?>
-						<br/>
-						<?php _e('Your video galleries will continue to work, but we recommend you migrate them and then deactivate FooVideo.', 'foogallery'); ?>
-						<br/>
-						<input name="migrate" type="submit" class="button button-primary button-large" id="publish" value="<?php _e('Migrate Video Galleries', 'foogallery'); ?>">
-						<br/>
-					</p>
-				</div>
-				<?php
-			}
+			?>
+			<div class="notice error">
+				<p>
+					<strong><?php _e('FooVideo Extension Redundant!', 'foogallery'); ?></strong><br/>
+					<?php _e('You have both FooGallery PRO and the legacy FooVideo extension activated. FooGallery PRO now includes all the video features that FooVideo had, plus more! Which means the FooVideo extension is now redundant.', 'foogallery'); ?>
+					<br/>
+					<?php _e('Your video galleries will continue to work, but we recommend you migrate them across to FooGallery PRO and then deactivate FooVideo.', 'foogallery'); ?>
+					<br/>
+					<br/>
+					<a href="#" class="button button-primary button-large"><?php _e('Migrate Video Galleries', 'foogallery'); ?></a>
+					<br/>
+					<br/>
+				</p>
+			</div>
+			<?php
 		}
 
 		/**
-		 * Migrate a gallery from the old video slider to the new slider
-		 *
-		 * @param $gallery_id
+		 * Outputs the video migration view
 		 */
-		public function migrate( $gallery_id ) {
-			$gallery = FooGallery::get_by_id( $gallery_id );
-
-			//only migrate if the template is valid
-			if ( 'videoslider' === $gallery->gallery_template ) {
-
-				//update the gallery template
-				update_post_meta( $gallery_id, FOOGALLERY_META_TEMPLATE, 'slider' );
-
-				//get the old settings, so we can migrate to the new
-				$settings = $gallery->settings;
-
-				//update the layout setting
-				$this->migrate_setting( $settings, 'layout', array(
-					'rvs-vertical' => '',
-					'rvs-horizontal' => 'fgs-horizontal'
-				));
-
-				//update the viewport setting
-				$this->migrate_setting( $settings, 'viewport', array(
-					'rvs-use-viewport' => 'yes'
-				));
-
-				//update the theme setting
-				$this->migrate_setting( $settings, 'theme', array(
-					'' => 'fg-dark',
-					'rvs-light' => 'fg-light',
-					'rvs-custom' => 'fg-custom'
-				));
-
-				//update the highlight setting
-				$this->migrate_setting( $settings, 'highlight', array(
-					'' => 'fgs-purple',
-					'rvs-blue-highlight' => 'fgs-blue',
-					'rvs-green-highlight' => 'fgs-green',
-					'rvs-orange-highlight' => 'fgs-orange',
-					'rvs-red-highlight' => 'fgs-red',
-					'rvs-custom-highlight' => 'fgs-custom'
-				));
-
-				//update the gallery settings
-				update_post_meta( $gallery_id, FOOGALLERY_META_SETTINGS, $settings );
-			}
+		function render_video_migration_view() {
+			require_once 'view-video-migration.php';
 		}
 
 		/**
-		 * Migrate settings and the choice mappings
-		 *
-		 * @param array $settings
-		 * @param string $setting_name
-		 * @param array $mappings
+		 * Add a new menu item for running the migration
 		 */
-		function migrate_setting( &$settings, $setting_name, $mappings ) {
-			foreach ( $settings as $setting => $name) {
-				if ( $setting_name === $name ) {
-					foreach( $mappings as $mapping_key => $mapping_value ) {
-						if ( $mapping_key === $setting ) {
-							$settings[$setting_name] = $mapping_value;
-						}
-					}
-				}
-			}
+		function add_migration_menu() {
+			foogallery_add_submenu_page( __( 'Video Migration', 'foogallery' ), 'manage_options', 'foogallery-video-migration', array( $this, 'render_video_migration_view', ) );
 		}
 
+		function ajax_foogallery_video_migration() {
+			if ( check_admin_referer( 'foogallery_video_migration' ) ) {
+				$helper = new FooGallery_Pro_Video_Migration_Helper();
+				$state = $helper->run_next_migration_step();
+				header( 'Content-type: application/json' );
+				echo json_encode( $state );
+			}
+			die();
+		}
 
+		function ajax_foogallery_video_migration_reset() {
+			if ( check_admin_referer( 'foogallery_video_migration' ) ) {
+				$helper = new FooGallery_Pro_Video_Migration_Helper();
+				$state = $helper->reset_state();
+				header( 'Content-type: application/json' );
+				echo json_encode( $state );
+			}
+			die();
+		}
 	}
 }

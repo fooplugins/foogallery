@@ -14,6 +14,7 @@ require_once( FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-filtering.php
 require_once( FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-attachment-taxonomies.php' );
 require_once( FOOGALLERY_PATH . 'pro/includes/video/class-foogallery-pro-video.php' );
 require_once( FOOGALLERY_PATH . 'pro/includes/video/class-foogallery-pro-video-legacy.php' );
+require_once( FOOGALLERY_PATH . 'pro/includes/video/class-foogallery-pro-video-migration-helper.php' );
 
 /**
  * FooGallery PRO Main Class
