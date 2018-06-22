@@ -261,10 +261,11 @@ if ( ! class_exists( 'FooGallery_Pro_Video' ) ) {
 				$is_embed = false;
 
 				if ( isset( $video_data['type'] ) ) {
-					//identify the item as a video
-					$attr['data-type'] = $video_data['type'];
 
+					//identify the item as an embed and also check if FooBox is the lightbox
 					$is_embed = 'embed' === $video_data['type'];
+
+					$attr['data-type'] = $is_embed ? 'embed' : 'video'; //$video_data['type'];
 				}
 
 				//set the cover image for the video
