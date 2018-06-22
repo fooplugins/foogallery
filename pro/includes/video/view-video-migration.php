@@ -15,6 +15,8 @@ $helper = new FooGallery_Pro_Video_Migration_Helper();
 		margin: 0;
 	}
 
+
+
 	.nextgen-import-progress-error {
 		color: #f00 !important;
 	}
@@ -108,8 +110,12 @@ $helper = new FooGallery_Pro_Video_Migration_Helper();
 
 	<p class="foogallery_video_migration_message"><?php echo $state['message']; ?></p>
 
+	<?php if ( $state['step'] > 0 ) { ?>
+		<input type="submit" class="button button-secondary foogallery-video-migrate" data-action="foogallery_video_migration_reset" value="<?php _e('Restart Migration', 'foogallery'); ?>">
+	<?php } ?>
+
 	<input type="submit" class="button button-primary foogallery-video-migrate" data-action="foogallery_video_migration" value="<?php echo $button_text; ?>">
-	<input type="submit" class="button button-secondary foogallery-video-migrate" data-action="foogallery_video_migration_reset" value="<?php _e('Start Again', 'foogallery'); ?>">
+
 	<?php wp_nonce_field( 'foogallery_video_migration', 'foogallery_video_migration' ); ?>
-	<div style="width:40px; position: absolute;"><span class="foogallery-video-migrate-spinner spinner"></span></div>
+	<div style="width:40px; display: inline-block;"><span class="foogallery-video-migrate-spinner spinner"></span></div>
 </div>
