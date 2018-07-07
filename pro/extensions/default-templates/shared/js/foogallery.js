@@ -7167,6 +7167,7 @@
 			self.lightest = self.opt.lightest;
 			self.darkest = self.opt.darkest;
 
+			self.items = [];
 			self.tags = [];
 			self.current = [];
 			self.ctrls = [];
@@ -7177,6 +7178,7 @@
 			$.each(self.ctrls.splice(0, self.ctrls.length), function (i, control) {
 				control.destroy();
 			});
+			self.items.splice(0, self.items.length);
 			self._super();
 		},
 		count: function (items, tags) {
@@ -7203,6 +7205,7 @@
 		},
 		build: function () {
 			var self = this, items = self.tmpl.items.all();
+			self.items.push.apply(self.items, items);
 			if (items.length > 0) {
 				// first get a count of every tag available from all items
 				var counts = self.count(items, self.opt.tags), min = Infinity, max = 0;
@@ -7271,6 +7274,7 @@
 			$.each(self.ctrls.splice(0, self.ctrls.length), function (i, control) {
 				control.destroy();
 			});
+			self.items.splice(0, self.items.length);
 			self.build();
 		},
 		controls: function (tags) {
@@ -7295,7 +7299,10 @@
 
 					if (_is.empty(tags)) {
 						self.tmpl.items.reset();
+						self.items.splice(0, self.items.length);
+						self.items.push.apply(self.items, self.tmpl.items.all());
 					} else {
+						self.items.splice(0, self.items.length);
 						var items = self.tmpl.items.all();
 						if (self.mode === 'intersect') {
 							items = $.map(items, function (item) {
@@ -7310,6 +7317,7 @@
 								}) ? item : null;
 							});
 						}
+						self.items.push.apply(self.items, items);
 						self.tmpl.items.setAvailable(items);
 					}
 					self.current = tags.slice();
