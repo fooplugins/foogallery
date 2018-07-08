@@ -67,9 +67,8 @@ if ( ! class_exists( 'FooGallery_Pro_Video_Legacy' ) ) {
 		}
 
 		function migrate_settings( $foogallery, $post ) {
-			$settings = $foogallery->settings;
-
-
+			$helper = new FooGallery_Pro_Video_Migration_Helper();
+			$foogallery = $helper->migrate_gallery( $foogallery, false );
 		}
 
 		/**
@@ -81,7 +80,7 @@ if ( ! class_exists( 'FooGallery_Pro_Video_Legacy' ) ) {
 		function migrate_gallery($post_id, $post) {
 			if ( $this->migration_required() ) {
 				$helper = new FooGallery_Pro_Video_Migration_Helper();
-				$helper->migrate_gallery( $post_id );
+				//$helper->migrate_gallery( $post_id );
 
 				$gallery = FooGallery::get_by_id( $post_id );
 				foreach ( $gallery->attachments() as $attachment ) {

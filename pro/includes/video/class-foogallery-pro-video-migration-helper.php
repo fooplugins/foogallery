@@ -70,7 +70,7 @@ if ( ! class_exists( 'FooGallery_Pro_Video_Migration_Helper' ) ) {
 				$count = 0;
 				foreach ($state['gallery_data'] as $gallery_id) {
 					$gallery = FooGallery::get_by_id( $gallery_id );
-					$this->migrate_gallery( $gallery );
+					$this->migrate_gallery( $gallery, true );
 					$count++;
 				}
 
@@ -112,16 +112,22 @@ if ( ! class_exists( 'FooGallery_Pro_Video_Migration_Helper' ) ) {
 		 * Migrate a gallery from the old video slider to the new slider
 		 *
 		 * @param FooGallery $gallery
+		 *
+		 * @param bool       $save_changes
+		 *
+		 * @return FooGallery
 		 */
-		public function migrate_gallery( $gallery ) {
+		public function migrate_gallery( &$gallery, $save_changes ) {
 
 			//get the old settings, so we can migrate to the new
 			$settings = $gallery->settings;
 
 			if ( 'videoslider' === $gallery->gallery_template ) {
 
-				//update the gallery template
-				update_post_meta( $gallery->ID, FOOGALLERY_META_TEMPLATE, 'slider' );
+				if ( $save_changes ) {
+					//update the gallery template
+					update_post_meta( $gallery->ID, FOOGALLERY_META_TEMPLATE, 'slider' );
+				}
 
 				//update the layout setting
 				$this->migrate_setting( $settings, 'videoslider_layout', array(
@@ -160,62 +166,52 @@ if ( ! class_exists( 'FooGallery_Pro_Video_Migration_Helper' ) ) {
 					}
 				}
 
-				update_post_meta( $gallery->ID, FOOGALLERY_META_SETTINGS, $settings );
+				if ( $save_changes ) {
+					update_post_meta( $gallery->ID, FOOGALLERY_META_SETTINGS, $settings );
+				}
 
 				$gallery->gallery_template = 'slider';
 			}
 
-			//we need to migrate and remove the old foovideo settings that are saved on all galleries
-			if ( array_key_exists( $gallery->gallery_template . '_foovideo_video_overlay', $settings ) ) {
-				$this->migrate_setting(
-					$settings, $gallery->gallery_template . '_foovideo_video_overlay', array(
-					'video-icon-default' => 'fg-video-default',
-					'video-icon-1'       => 'fg-video-1',
-					'video-icon-2'       => 'fg-video-2',
-					'video-icon-3'       => 'fg-video-3',
-					'video-icon-4'       => 'fg-video-4'
-				), $gallery->gallery_template . '_video_hover_icon' );
+			//we need to migrate the old foovideo settings that are saved on all galleries
+			$this->migrate_setting(
+				$settings, $gallery->gallery_template . '_foovideo_video_overlay', array(
+				'video-icon-default' => 'fg-video-default',
+				'video-icon-1'       => 'fg-video-1',
+				'video-icon-2'       => 'fg-video-2',
+				'video-icon-3'       => 'fg-video-3',
+				'video-icon-4'       => 'fg-video-4'
+			), $gallery->gallery_template . '_video_hover_icon' );
 
-				unset( $settings[$gallery->gallery_template . '_foovideo_video_overlay'] );
+			$this->migrate_setting(
+				$settings, $gallery->gallery_template . '_foovideo_sticky_icon', array(
+				'video-icon-sticky' => 'fg-video-sticky',
+				''                  => ''
+			), $gallery->gallery_template . '_video_sticky_icon' );
+
+			$this->migrate_setting(
+				$settings, $gallery->gallery_template . '_foovideo_video_size', array(
+				'640x360'   => '640x360',
+				'854x480'   => '854x480',
+				'960x540'   => '960x540',
+				'1024x576'  => '1024x576',
+				'1280x720'  => '1280x720',
+				'1366x768'  => '1366x768',
+				'1600x900'  => '1600x900',
+				'1920x1080' => '1920x1080',
+			), $gallery->gallery_template . '_video_size' );
+
+			$this->migrate_setting( $settings, $gallery->gallery_template . '_foovideo_autoplay', array(
+				'yes' => 'yes',
+				'no' => 'no'
+			), $gallery->gallery_template . '_video_autoplay' );
+
+			if  ( $save_changes ) {
+				//update the gallery settings
+				update_post_meta( $gallery->ID, FOOGALLERY_META_SETTINGS, $settings );
 			}
 
-			if ( array_key_exists( $gallery->gallery_template . '_foovideo_sticky_icon', $settings ) ) {
-				$this->migrate_setting(
-					$settings, $gallery->gallery_template . '_foovideo_sticky_icon', array(
-					'video-icon-sticky' => 'fg-video-sticky',
-					''                  => ''
-				), $gallery->gallery_template . '_video_sticky_icon' );
-
-				unset( $settings[$gallery->gallery_template . '_foovideo_sticky_icon'] );
-			}
-
-			if ( array_key_exists( $gallery->gallery_template . '_foovideo_video_size', $settings ) ) {
-				$this->migrate_setting(
-					$settings, $gallery->gallery_template . '_foovideo_video_size', array(
-					'640x360'   => '640x360',
-					'854x480'   => '854x480',
-					'960x540'   => '960x540',
-					'1024x576'  => '1024x576',
-					'1280x720'  => '1280x720',
-					'1366x768'  => '1366x768',
-					'1600x900'  => '1600x900',
-					'1920x1080' => '1920x1080',
-				), $gallery->gallery_template . '_video_size' );
-
-				unset( $settings[$gallery->gallery_template . '_foovideo_video_size'] );
-			}
-
-			if ( array_key_exists( $gallery->gallery_template . '_foovideo_autoplay', $settings ) ) {
-				$this->migrate_setting( $settings, $gallery->gallery_template . '_foovideo_autoplay', array(
-					'yes' => 'yes',
-					'no' => 'no'
-				), $gallery->gallery_template . '_video_autoplay' );
-
-				unset( $settings[$gallery->gallery_template . '_foovideo_autoplay'] );
-			}
-
-			//update the gallery settings
-			update_post_meta( $gallery->ID, FOOGALLERY_META_SETTINGS, $settings );
+			return $gallery;
 		}
 
 		/**
