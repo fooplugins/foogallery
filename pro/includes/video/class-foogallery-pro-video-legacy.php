@@ -1,9 +1,10 @@
 <?php
 /**
  * All Legacy FooVideo Code lives in this class
- * Date: 19/05/2018
- */
+  */
 if ( ! class_exists( 'FooGallery_Pro_Video_Legacy' ) ) {
+
+	define( 'FOOGALLERY_FOOVIDEO_MIGRATION_REQUIRED', 'foogallery-foovideo-migration-required' );
 
 	class FooGallery_Pro_Video_Legacy {
 
@@ -14,14 +15,119 @@ if ( ! class_exists( 'FooGallery_Pro_Video_Legacy' ) ) {
 			add_filter( 'foogallery_youtubekey', array( $this, 'foogallery_youtubekey_legacy_filter' ) );
 
 			//check if the old FooVideo is installed
-			if ( is_admin() && class_exists('Foo_Video') ) {
+			if ( is_admin() && $this->migration_required() ) {
 				add_action( 'admin_notices', array( $this, 'display_foovideo_notice') );
 				add_action( 'admin_menu',  array( $this, 'add_migration_menu' ) );
+
+				add_action( 'foogallery_instance_after_load', array( $this, 'migrate_settings' ), 99, 2 );
+
+				add_action( 'foogallery_after_save_gallery', array( $this, 'migrate_gallery' ), 99, 2 );
+			}
+
+			if ( is_admin() && class_exists( 'Foo_Video' ) ) {
+				//rename the Video Slider template
+				add_filter( 'foogallery_gallery_templates', array( $this, 'rename_videoslider_template' ), 99 );
+
+				//remove legacy fields added by FooVideo
+				add_filter( 'foogallery_override_gallery_template_fields', array( $this, 'remove_legacy_template_fields' ), 99 );
 			}
 
 			// Ajax calls for migrating
 			add_action( 'wp_ajax_foogallery_video_migration', array( $this, 'ajax_foogallery_video_migration' ) );
 			add_action( 'wp_ajax_foogallery_video_migration_reset', array( $this, 'ajax_foogallery_video_migration_reset' ) );
+		}
+
+		/**
+		 * Determines if a migration is needed
+		 *
+		 * @return bool
+		 */
+		function migration_required() {
+			//first try to get the saved option
+- 			$migration_required = get_option( FOOGALLERY_FOOVIDEO_MIGRATION_REQUIRED, 0 );
+
+			//we require migration - get out early
+			if ( "1" === $migration_required ) {
+				return true;
+			}
+
+			if ( class_exists('Foo_Video') ) {
+				//the legacy plugin is installed, so set the option for future use
+				$migration_required = true;
+
+				update_option( FOOGALLERY_FOOVIDEO_MIGRATION_REQUIRED, $migration_required );
+			}
+
+			//we have no option saved and no legacy plugin, so no migration required
+			if ( 0 === $migration_required ) {
+				$migration_required = false;
+			}
+
+			return $migration_required;
+		}
+
+		function migrate_settings( $foogallery, $post ) {
+			$settings = $foogallery->settings;
+
+
+		}
+
+		/**
+		 * Migrate video for the gallery that is saved
+		 *
+		 * @param $post_id
+		 * @param $post
+		 */
+		function migrate_gallery($post_id, $post) {
+			if ( $this->migration_required() ) {
+				$helper = new FooGallery_Pro_Video_Migration_Helper();
+				$helper->migrate_gallery( $post_id );
+
+				$gallery = FooGallery::get_by_id( $post_id );
+				foreach ( $gallery->attachments() as $attachment ) {
+					$helper->migrate_attachment( $attachment->ID );
+				}
+			}
+		}
+
+		/**
+		 * Remove the legacy template fields added by FooVideo
+		 *
+		 * @param $fields
+		 *
+		 * @return array
+		 */
+		function remove_legacy_template_fields( $fields ) {
+			$new_fields = array();
+
+			foreach ( $fields as $field ) {
+
+				if ( $field['id'] !== 'foovideo_video_overlay' &&
+					$field['id'] !== 'foovideo_sticky_icon' &&
+					$field['id'] !== 'foovideo_video_size' &&
+					$field['id'] !== 'foovideo_autoplay' ) {
+
+					$new_fields[] = $field;
+				}
+			}
+
+			return $new_fields;
+		}
+
+		/**
+		 * Rename the Video Slider template to include the text 'Deprecated'
+		 * @param $templates
+		 *
+		 * @return mixed
+		 */
+		function rename_videoslider_template( $templates ) {
+			foreach( $templates as &$template ) {
+				if ( 'videoslider' === $template['slug'] ) {
+					$template['name'] = __( 'Video Slider (Deprecated!)', 'foogallery' );
+				}
+			}
+
+			return $templates;
 		}
 
 		/**
@@ -112,6 +218,7 @@ if ( ! class_exists( 'FooGallery_Pro_Video_Legacy' ) ) {
 		 * Display a message if the FooVideo extension is also installed
 		 */
 		function display_foovideo_notice() {
+			$url = admin_url( add_query_arg( array( 'page' => 'foogallery-video-migration' ), foogallery_admin_menu_parent_slug() ) );
 			?>
 			<div class="notice error">
 				<p>
@@ -121,8 +228,7 @@ if ( ! class_exists( 'FooGallery_Pro_Video_Legacy' ) ) {
 					<?php _e('Your video galleries will continue to work, but we recommend you migrate them across to FooGallery PRO and then deactivate FooVideo.', 'foogallery'); ?>
 					<br/>
 					<br/>
-					<a href="#" class="button button-primary button-large"><?php _e('Migrate Video Galleries', 'foogallery'); ?></a>
-					<br/>
+					<a href="<?php echo $url; ?>" class="button button-primary button-large"><?php _e('Migrate Video Galleries', 'foogallery'); ?></a>
 					<br/>
 				</p>
 			</div>
