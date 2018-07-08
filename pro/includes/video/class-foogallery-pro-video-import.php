@@ -123,9 +123,16 @@ if ( ! class_exists( "FooGallery_Pro_Video_Import" ) ) {
 			}
 
 			$thumbnail          = wp_remote_retrieve_body( $response );
-			$thumbnail_filename = $this->get_thumbnail_filename( $video );
+			$thumbnail_filename = $this->get_thumbnail_filename( $video, $response );
+			if ($thumbnail_filename === false){
+				return false;
+			}
 
 			$upload = wp_upload_bits( $thumbnail_filename, null, $thumbnail );
+			if ($upload["error"] === true){
+				return false;
+			}
+
 			$guid   = $upload["url"];
 			$file   = $upload["file"];
 
@@ -183,10 +190,38 @@ if ( ! class_exists( "FooGallery_Pro_Video_Import" ) ) {
 			return $video["thumbnail"];
 		}
 
-		private function get_thumbnail_filename( $video ) {
-			return $video["id"] . '.' . pathinfo( basename( $video["thumbnail"] ), PATHINFO_EXTENSION );
+		private $image_mimes = array(
+			"png" => array("image/png", "image/x-png"),
+			"bmp" => array("image/bmp", "image/x-bmp", "image/x-bitmap", "image/x-xbitmap", "image/x-win-bitmap", "image/x-windows-bmp", "image/ms-bmp", "image/x-ms-bmp", "application/bmp", "application/x-bmp","application/x-win-bitmap"),
+			"gif" => array("image/bmp", "image/x-bmp"),
+			"jpeg" => array("image/jpeg", "image/pjpeg"),
+			"svg" => array("image/svg+xml"),
+			"jp2" => array("image/jp2", "image/jpx", "image/jpm"),
+			"tiff" => array("image/tiff"),
+			"ico" => array("image/x-icon", "image/x-ico", "image/vnd.microsoft.icon")
+		);
+
+		private function mime2ext($mime){
+			foreach ($this->image_mimes as $key => $value) {
+				if(array_search($mime,$value) !== false) return $key;
+			}
+			return false;
 		}
 
-	}
+		private function url2ext($url){
+			$parts = parse_url($url);
+			$ext = pathinfo( basename( $parts["path"] ), PATHINFO_EXTENSION );
+			return array_key_exists($ext, $this->image_mimes) ? $ext : false;
+		}
 
+		private function get_thumbnail_filename( $video, $response ) {
+			$headers = $response["headers"];
+			if ( isset($headers["content-type"]) ){
+				$ext = $this->mime2ext($headers["content-type"]);
+			} else {
+				$ext = $this->url2ext($video["thumbnail"]);
+			}
+			return $ext === false ? false : $video["id"] . '.' . $ext;
+		}
+	}
 }
