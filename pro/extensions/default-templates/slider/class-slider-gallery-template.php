@@ -36,7 +36,7 @@ if ( !class_exists( 'FooGallery_Slider_Gallery_Template' ) ) {
 			//build up the arguments needed for rendering this template
 			add_filter( 'foogallery_gallery_template_arguments-slider', array( $this, 'build_gallery_template_arguments' ) );
 
-			add_filter( 'foogallery_build_class_attribute', array( $this, 'remove_classes' ), 10, 2 );
+			add_filter( 'foogallery_build_class_attribute', array( $this, 'remove_classes' ), 99, 2 );
 		}
 
 		/**
@@ -438,6 +438,9 @@ if ( !class_exists( 'FooGallery_Slider_Gallery_Template' ) ) {
 				unset( $classes[$key] );
 			}
 			if ( ( $key = array_search( 'fg-loaded-fade-in', $classes ) ) !== false ) {
+				unset( $classes[$key] );
+			}
+			if ( ( $key = array_search( 'video-icon-default', $classes ) ) !== false ) {
 				unset( $classes[$key] );
 			}
 
