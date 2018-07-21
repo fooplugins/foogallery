@@ -79,12 +79,24 @@ if ( ! class_exists( 'FooGallery_Pro_Video_Legacy' ) ) {
 		 */
 		function migrate_gallery($post_id, $post) {
 			if ( $this->migration_required() ) {
-				$helper = new FooGallery_Pro_Video_Migration_Helper();
-				//$helper->migrate_gallery( $post_id );
 
-				$gallery = FooGallery::get_by_id( $post_id );
-				foreach ( $gallery->attachments() as $attachment ) {
-					$helper->migrate_attachment( $attachment->ID );
+				//check if the gallery has legacy videos
+				$video_count = get_post_meta( $post_id , '_foovideo_video_count', true );
+
+				if ( $video_count > 0 ) {
+					$helper = new FooGallery_Pro_Video_Migration_Helper();
+					//$helper->migrate_gallery( $post_id );
+
+					$gallery = FooGallery::get_by_id( $post_id );
+					foreach ( $gallery->attachments() as $attachment ) {
+						$helper->migrate_attachment( $attachment->ID );
+					}
+
+					//clear the video count so we do not migrate the gallery again
+					delete_post_meta( $post_id, '_foovideo_video_count' );
+
+					//update the new video count
+					update_post_meta( $post_id, FOOGALLERY_VIDEO_POST_META_VIDEO_COUNT, $video_count );
 				}
 			}
 		}

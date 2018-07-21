@@ -239,18 +239,22 @@ if ( ! class_exists( 'FooGallery_Pro_Video_Migration_Helper' ) ) {
 		}
 
 		function migrate_attachment( $attachment_id ) {
-			$video_info = get_post_meta( $attachment_id, FOO_VIDEO_POST_META, true );
-			$type = $video_info['type'];
+			$video_info = get_post_meta( $attachment_id, '_foovideo_video_data', true );
+			if ( isset( $video_info ) ) {
+				//need to update the post mime type
+				$update_attachment = array(
+					'ID'             => $attachment_id,
+					'post_mime_type' => 'image/foogallery'
+				);
 
-			//need to update the post mime type
-			$update_attachment = array(
-				'ID' => $attachment_id,
-				'post_mime_type' => 'image/foogallery'
-			);
+				wp_update_post( $update_attachment );
 
-			wp_update_post( $update_attachment );
+				//set the new data
+				update_post_meta( $attachment_id, FOOGALLERY_VIDEO_POST_META, $video_info );
 
-			update_post_meta( $attachment_id, FOOGALLERY_VIDEO_POST_META, $video_info );
+				//remove the old data
+				delete_post_meta( $attachment_id, '_foovideo_video_data' );
+			}
 		}
 
 	}
