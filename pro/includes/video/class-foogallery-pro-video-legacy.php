@@ -19,9 +19,11 @@ if ( ! class_exists( 'FooGallery_Pro_Video_Legacy' ) ) {
 				add_action( 'admin_notices', array( $this, 'display_foovideo_notice') );
 				add_action( 'admin_menu',  array( $this, 'add_migration_menu' ) );
 
-				add_action( 'foogallery_instance_after_load', array( $this, 'migrate_settings' ), 99, 2 );
+				add_filter( 'foogallery_render_gallery_settings_metabox', array( $this, 'migrate_settings' ) );
 
 				add_action( 'foogallery_after_save_gallery', array( $this, 'migrate_gallery' ), 99, 2 );
+
+				add_filter( 'update_post_metadata', array( $this, 'short_circuit_legacy_video_count' ), 10, 5 );
 			}
 
 			if ( is_admin() && class_exists( 'Foo_Video' ) ) {
@@ -66,9 +68,17 @@ if ( ! class_exists( 'FooGallery_Pro_Video_Legacy' ) ) {
 			return $migration_required;
 		}
 
-		function migrate_settings( $foogallery, $post ) {
+		function migrate_settings( $foogallery ) {
 			$helper = new FooGallery_Pro_Video_Migration_Helper();
 			$foogallery = $helper->migrate_gallery( $foogallery, false );
+			return $foogallery;
+		}
+
+		function short_circuit_legacy_video_count( $check, $object_id, $meta_key, $meta_value, $prev_value ) {
+			if ( '_foovideo_video_count' === $meta_key ) {
+				$check = true;
+			}
+			return $check;
 		}
 
 		/**
@@ -83,7 +93,9 @@ if ( ! class_exists( 'FooGallery_Pro_Video_Legacy' ) ) {
 				//check if the gallery has legacy videos
 				$video_count = get_post_meta( $post_id , '_foovideo_video_count', true );
 
-				if ( $video_count > 0 ) {
+				//if ( empty( $video_count ) ) return;
+
+				if ( $video_count !== '' ) {
 					$helper = new FooGallery_Pro_Video_Migration_Helper();
 					//$helper->migrate_gallery( $post_id );
 

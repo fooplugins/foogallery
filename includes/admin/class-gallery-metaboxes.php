@@ -349,6 +349,8 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 		public function render_gallery_settings_metabox( $post ) {
             $gallery = $this->get_gallery( $post );
 
+			$gallery = apply_filters( 'foogallery_render_gallery_settings_metabox', $gallery );
+
             $settings = new FooGallery_Admin_Gallery_MetaBox_Settings_Helper( $gallery );
 
             $settings->render_hidden_gallery_template_selector();

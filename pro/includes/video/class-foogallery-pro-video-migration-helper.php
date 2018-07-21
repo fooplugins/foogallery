@@ -129,6 +129,14 @@ if ( ! class_exists( 'FooGallery_Pro_Video_Migration_Helper' ) ) {
 					update_post_meta( $gallery->ID, FOOGALLERY_META_TEMPLATE, 'slider' );
 				}
 
+				//we need to port all settings from 'videoslider' across to 'slider'
+				foreach ( $settings as $name => $value) {
+					if ( strpos( $name, 'videoslider_' ) === 0 ) {
+						$new_name = str_replace( 'videoslider_', 'slider_', $name );
+						$settings[$new_name] = $value;
+					}
+				}
+
 				//update the layout setting
 				$this->migrate_setting( $settings, 'videoslider_layout', array(
 					'rvs-vertical' => '',
@@ -158,13 +166,7 @@ if ( ! class_exists( 'FooGallery_Pro_Video_Migration_Helper' ) ) {
 					'rvs-custom-highlight' => 'fgs-custom'
 				), 'slider_highlight' );
 
-				//we need to port all settings from 'videoslider' across to 'slider'
-				foreach ( $settings as $name => $value) {
-					if ( strpos( $name, 'videoslider_' ) === 0 ) {
-						$new_name = str_replace( 'videoslider_', 'slider_', $name );
-						$settings[$new_name] = $value;
-					}
-				}
+				$gallery->settings = $settings;
 
 				if ( $save_changes ) {
 					update_post_meta( $gallery->ID, FOOGALLERY_META_SETTINGS, $settings );
@@ -206,6 +208,8 @@ if ( ! class_exists( 'FooGallery_Pro_Video_Migration_Helper' ) ) {
 				'no' => 'no'
 			), $gallery->gallery_template . '_video_autoplay' );
 
+			$gallery->settings = $settings;
+
 			if  ( $save_changes ) {
 				//update the gallery settings
 				update_post_meta( $gallery->ID, FOOGALLERY_META_SETTINGS, $settings );
@@ -240,7 +244,7 @@ if ( ! class_exists( 'FooGallery_Pro_Video_Migration_Helper' ) ) {
 
 		function migrate_attachment( $attachment_id ) {
 			$video_info = get_post_meta( $attachment_id, '_foovideo_video_data', true );
-			if ( isset( $video_info ) ) {
+			if ( isset( $video_info ) && !empty( $video_info ) ) {
 				//need to update the post mime type
 				$update_attachment = array(
 					'ID'             => $attachment_id,
