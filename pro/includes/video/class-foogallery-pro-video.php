@@ -315,6 +315,11 @@ if ( ! class_exists( 'FooGallery_Pro_Video' ) ) {
 				if ( 'unknown' === $lightbox || 'none' === $lightbox ) {
 					$attr['target'] = '_blank';
 				}
+
+				//remove the targets for slider and grid pro galleries
+				if ( array_key_exists( 'target', $attr ) && 'slider' === $current_foogallery_template || 'foogridpro' === $current_foogallery_template ) {
+					unset( $attr['target'] );
+				}
 			}
 
 			return $attr;
