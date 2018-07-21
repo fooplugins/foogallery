@@ -423,7 +423,7 @@ if ( !class_exists( 'FooGallery_Slider_Gallery_Template' ) ) {
 		}
 
 		/**
-		 * Remove certain classes from the container
+		 * Remove certain classes from the container only if the slider gallery template is in use
 		 *
 		 * @param $classes
 		 * @param $gallery
@@ -431,17 +431,20 @@ if ( !class_exists( 'FooGallery_Slider_Gallery_Template' ) ) {
 		 * @return array
 		 */
 		function remove_classes( $classes, $gallery ) {
-			if ( ( $key = array_search( 'slider', $classes ) ) !== false ) {
-				unset( $classes[$key] );
-			}
-			if ( ( $key = array_search( 'fg-border-thin', $classes ) ) !== false ) {
-				unset( $classes[$key] );
-			}
-			if ( ( $key = array_search( 'fg-loaded-fade-in', $classes ) ) !== false ) {
-				unset( $classes[$key] );
-			}
-			if ( ( $key = array_search( 'video-icon-default', $classes ) ) !== false ) {
-				unset( $classes[$key] );
+			if ( 'slider' === $gallery->gallery_template ) {
+
+				if ( ( $key = array_search( 'slider', $classes ) ) !== false ) {
+					unset( $classes[$key] );
+				}
+				if ( ( $key = array_search( 'fg-border-thin', $classes ) ) !== false ) {
+					unset( $classes[$key] );
+				}
+				if ( ( $key = array_search( 'fg-loaded-fade-in', $classes ) ) !== false ) {
+					unset( $classes[$key] );
+				}
+				if ( ( $key = array_search( 'video-icon-default', $classes ) ) !== false ) {
+					unset( $classes[$key] );
+				}
 			}
 
 			return $classes;
