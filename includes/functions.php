@@ -381,6 +381,8 @@ function foogallery_build_class_attribute( $gallery ) {
 
 	$classes = apply_filters( 'foogallery_build_class_attribute', $classes, $gallery );
 
+	$classes = array_filter( $classes );
+
 	return implode( ' ', $classes );
 }
 
