@@ -93,7 +93,7 @@ if ( ! class_exists( 'FooGallery_Pro_Video' ) ) {
 				if ( ! isset( $extra_class ) ) {
 					$extra_class = '';
 				}
-				$extra_class .= 'subtype-foogallery';
+				$extra_class .= ' subtype-foogallery';
 			}
 
 			return $extra_class;
@@ -252,6 +252,7 @@ if ( ! class_exists( 'FooGallery_Pro_Video' ) ) {
 		 */
 		public function alter_video_link_attributes( $attr, $args, $attachment ) {
 			global $current_foogallery;
+			global $current_foogallery_template;
 
 			if ( $attachment->is_video ) {
 				$current_foogallery->has_videos = true;
