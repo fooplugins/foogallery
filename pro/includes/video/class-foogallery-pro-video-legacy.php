@@ -14,7 +14,7 @@ if ( ! class_exists( 'FooGallery_Pro_Video_Legacy' ) ) {
 			add_filter( 'foogallery_clean_video_url', array( $this, 'foogallery_clean_video_url_legacy_filter' ) );
 			add_filter( 'foogallery_youtubekey', array( $this, 'foogallery_youtubekey_legacy_filter' ) );
 
-			//check if the old FooVideo is installed
+			//check if the old FooVideo was/is installed
 			if ( is_admin() && $this->migration_required() ) {
 				add_action( 'admin_notices', array( $this, 'display_foovideo_notice') );
 				add_action( 'admin_menu',  array( $this, 'add_migration_menu' ) );
@@ -22,16 +22,18 @@ if ( ! class_exists( 'FooGallery_Pro_Video_Legacy' ) ) {
 				add_filter( 'foogallery_render_gallery_settings_metabox', array( $this, 'migrate_settings' ) );
 
 				add_action( 'foogallery_after_save_gallery', array( $this, 'migrate_gallery' ), 99, 2 );
-
-				add_filter( 'update_post_metadata', array( $this, 'short_circuit_legacy_video_count' ), 10, 5 );
 			}
 
+			//check if the old FooVideo is still activated
 			if ( is_admin() && class_exists( 'Foo_Video' ) ) {
 				//rename the Video Slider template
 				add_filter( 'foogallery_gallery_templates', array( $this, 'rename_videoslider_template' ), 99 );
 
 				//remove legacy fields added by FooVideo
 				add_filter( 'foogallery_override_gallery_template_fields', array( $this, 'remove_legacy_template_fields' ), 99 );
+
+				//short-circuit saving the post meta for video count on the gallery
+				add_filter( 'update_post_metadata', array( $this, 'short_circuit_legacy_video_count' ), 10, 5 );
 			}
 
 			// Ajax calls for migrating
@@ -68,12 +70,30 @@ if ( ! class_exists( 'FooGallery_Pro_Video_Legacy' ) ) {
 			return $migration_required;
 		}
 
+		/**
+		 * Migrate the gallery settings
+		 *
+		 * @param $foogallery
+		 *
+		 * @return FooGallery
+		 */
 		function migrate_settings( $foogallery ) {
 			$helper = new FooGallery_Pro_Video_Migration_Helper();
 			$foogallery = $helper->migrate_gallery( $foogallery, false );
 			return $foogallery;
 		}
 
+		/**
+		 * Short-circuit the post meta updates for the legacy FooVideo while both plugins are activated
+		 *
+		 * @param $check
+		 * @param $object_id
+		 * @param $meta_key
+		 * @param $meta_value
+		 * @param $prev_value
+		 *
+		 * @return bool
+		 */
 		function short_circuit_legacy_video_count( $check, $object_id, $meta_key, $meta_value, $prev_value ) {
 			if ( '_foovideo_video_count' === $meta_key ) {
 				$check = true;
@@ -90,25 +110,17 @@ if ( ! class_exists( 'FooGallery_Pro_Video_Legacy' ) ) {
 		function migrate_gallery($post_id, $post) {
 			if ( $this->migration_required() ) {
 
-				//check if the gallery has legacy videos
-				$video_count = get_post_meta( $post_id , '_foovideo_video_count', true );
+				$helper = new FooGallery_Pro_Video_Migration_Helper();
 
-				//if ( empty( $video_count ) ) return;
+				if ( $helper->check_gallery_needs_migration( $post_id ) ) {
 
-				if ( $video_count !== '' ) {
-					$helper = new FooGallery_Pro_Video_Migration_Helper();
-					//$helper->migrate_gallery( $post_id );
-
+					//migrate all the video attachments
 					$gallery = FooGallery::get_by_id( $post_id );
 					foreach ( $gallery->attachments() as $attachment ) {
 						$helper->migrate_attachment( $attachment->ID );
 					}
 
-					//clear the video count so we do not migrate the gallery again
-					delete_post_meta( $post_id, '_foovideo_video_count' );
-
-					//update the new video count
-					update_post_meta( $post_id, FOOGALLERY_VIDEO_POST_META_VIDEO_COUNT, $video_count );
+					$helper->migrate_video_counts( $post_id );
 				}
 			}
 		}
@@ -245,10 +257,16 @@ if ( ! class_exists( 'FooGallery_Pro_Video_Legacy' ) ) {
 			?>
 			<div class="notice error">
 				<p>
-					<strong><?php _e('FooVideo Extension Redundant!', 'foogallery'); ?></strong><br/>
-					<?php _e('You have both FooGallery PRO and the legacy FooVideo extension activated. FooGallery PRO now includes all the video features that FooVideo had, plus more! Which means the FooVideo extension is now redundant.', 'foogallery'); ?>
-					<br/>
-					<?php _e('Your video galleries will continue to work, but we recommend you migrate them across to FooGallery PRO and then deactivate FooVideo.', 'foogallery'); ?>
+					<strong><?php _e('FooGallery Video Migration Required!', 'foogallery'); ?></strong><br/>
+					<?php if ( class_exists( 'Foo_Video' ) ) { ?>
+						<?php _e('You have both FooGallery PRO and the legacy FooVideo extension activated. FooGallery PRO now includes all the video features that FooVideo had, plus more! Which means the FooVideo extension is now redundant.', 'foogallery'); ?>
+						<br/>
+						<?php _e('Your video galleries will continue to work, but we recommend you migrate them across to use the video features in FooGallery PRO as soon as possible.', 'foogallery'); ?>
+					<?php } else { ?>
+						<?php _e('At some point you had the FooVideo extension installed. FooGallery PRO now includes all the video features that FooVideo had, plus more! Which means the FooVideo extension is now redundant.', 'foogallery'); ?>
+						<br/>
+						<?php _e('You will need to migrate your video galleries across to use the new video features in FooGallery PRO as soon as possible.', 'foogallery'); ?>
+					<?php } ?>
 					<br/>
 					<br/>
 					<a href="<?php echo $url; ?>" class="button button-primary button-large"><?php _e('Migrate Video Galleries', 'foogallery'); ?></a>

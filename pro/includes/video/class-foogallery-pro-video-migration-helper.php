@@ -29,20 +29,45 @@ if ( ! class_exists( 'FooGallery_Pro_Video_Migration_Helper' ) ) {
 			}
 		}
 
+		function find_galleries_to_migrate() {
+			//first take all galleries, as all templates share the video settings
+			$gallery_posts = get_posts( array(
+				'fields' => 'ids',
+				'post_type'     => FOOGALLERY_CPT_GALLERY,
+				'post_status'	=> array( 'publish', 'draft' ),
+				'cache_results' => false,
+				'nopaging'      => true
+			) );
+
+			$galleries_to_migrate = array();
+
+			//loop through the galleries and determine if
+			// a. they use the Video Slider gallery template
+			// b. have a video count
+			foreach ($gallery_posts as $gallery_id) {
+				$gallery_template = get_post_meta( $gallery_id, FOOGALLERY_META_TEMPLATE, true );
+
+				if ( 'videoslider' === $gallery_template ) {
+					$galleries_to_migrate[] = $gallery_id;
+				} else {
+
+					$video_count = intval( get_post_meta( $gallery_id , '_foovideo_video_count', true ) );
+
+					if ( $video_count > 0 ) {
+						$galleries_to_migrate[] = $gallery_id;
+					}
+				}
+			}
+
+			return $galleries_to_migrate;
+		}
+
 		public function run_next_migration_step() {
 			$state = $this->get_migration_state();
 
 			if ( 0 === $state['step'] ) {
 				//first we need to identify what needs to be migrated.
-
-				//take all galleries, as all templates share the video settings
-				$gallery_posts = get_posts( array(
-					'fields' => 'ids',
-					'post_type'     => FOOGALLERY_CPT_GALLERY,
-					'post_status'	=> array( 'publish', 'draft' ),
-					'cache_results' => false,
-					'nopaging'      => true
-				) );
+				$gallery_posts = $this->find_galleries_to_migrate();
 
 				//how many videos were imported into the media library with the legacy importer?
 				$attachment_posts = get_posts( array(
@@ -52,33 +77,62 @@ if ( ! class_exists( 'FooGallery_Pro_Video_Migration_Helper' ) ) {
 					'nopaging'      => true,
 					'meta_query' => array(
 						array(
-							'key' => FOO_VIDEO_POST_META,
+							'key' => '_foovideo_video_data',
 							'compare' => 'EXISTS',
 						)
 					)
 				) );
 
-				$state['step'] = 1;
-				$state['button_text'] =  __( 'Next', 'foogallery' );
-				$state['message'] = sprintf( __('We found %d galleries and %d videos that need to be migrated. Click Next to migrate the galleries first.', 'foogallery' ), count( $gallery_posts ), count( $attachment_posts ) );
+				$gallery_count = count( $gallery_posts );
+				$attachment_count = count( $attachment_posts );
+
 				$state['gallery_data'] = $gallery_posts;
 				$state['attachment_data'] = $attachment_posts;
 
+				if ( $gallery_count > 0 && $attachment_count > 0 ) {
+					$state['step'] = 1;
+					$state['button_text'] =  __( 'Migrate Galleries', 'foogallery' );
+					$state['message'] = sprintf( __('We found %d galleries and %d videos that need to be migrated. Click "Migrate Galleries" to continue.', 'foogallery' ), $gallery_count, $attachment_count );
+				} else if ( $gallery_count === 0 && $attachment_count === 0 ) {
+					$state['step'] = 3;
+					$state['button_text'] =  __( 'Finalize Migration', 'foogallery' );
+					$state['message'] = __('We found nothing that needs to be migrated. Click "Finalize Migration" to uninstall FooVideo.', 'foogallery' );
+				} else if ( $attachment_count > 0 ) {
+					$state['step'] = 2;
+					$state['button_text'] =  __( 'Migrate Videos', 'foogallery' );
+					$state['message'] = sprintf( __('We found %d videos that need to be migrated. Click "Migrate Videos" to continue.', 'foogallery' ), $attachment_count );
+				} else if ( $gallery_count > 0 ) {
+					$state['step'] = 1;
+					$state['button_text'] =  __( 'Migrate Galleries', 'foogallery' );
+					$state['message'] = sprintf( __('We found %d galleries that need to be migrated. Click "Migrate Galleries" to continue.', 'foogallery' ), $gallery_count );
+				}
+
 			} else if ( 1 === $state['step'] ) {
 				//migrate the galleries
-
 				$count = 0;
 				foreach ($state['gallery_data'] as $gallery_id) {
 					$gallery = FooGallery::get_by_id( $gallery_id );
+					//migrate the gallery settings
 					$this->migrate_gallery( $gallery, true );
+					//migrate video counts
+					$this->migrate_video_counts( $gallery_id );
 					$count++;
 				}
 
-				$state['step'] = 2;
-				$state['message'] = sprintf( __('%d galleries were successfully migrated. Click Next to migrate the video attachments.', 'foogallery' ), $count );
+				$attachment_count = count( $state['attachment_data'] );
+
+				if ( $attachment_count > 0 ) {
+					$state['step'] = 2;
+					$state['button_text'] =  __( 'Migrate Videos', 'foogallery' );
+					$state['message'] = sprintf( __('%d galleries were migrated. %d videos still need to be migrated. Click "Migrate Videos" to continue.', 'foogallery' ), $count, $attachment_count );
+				} else {
+					$state['step'] = 3;
+					$state['button_text'] =  __( 'Finalize Migration', 'foogallery' );
+					$state['message'] = sprintf( __('%d galleries were migrated. Click "Finalize Migration" to uninstall FooVideo.', 'foogallery' ), $count );
+				}
+
 			} else if ( 2 === $state['step'] ) {
 				//migrate the attachments
-
 				$count = 0;
 				foreach ($state['attachment_data'] as $attachment_id) {
 					$this->migrate_attachment( $attachment_id );
@@ -86,16 +140,32 @@ if ( ! class_exists( 'FooGallery_Pro_Video_Migration_Helper' ) ) {
 				}
 
 				$state['step'] = 3;
-				$state['button_text'] =  __( 'Deactivate FooVideo', 'foogallery' );
-				$state['message'] = sprintf( __('%d video attachments were successfully migrated. You can now safely deactivate the FooVideo extension.', 'foogallery' ), $count );
+				$state['button_text'] =  __( 'Finalize Migration', 'foogallery' );
+				$state['message'] = sprintf( __('%d video attachments were migrated. Click "Finalize Migration" to uninstall FooVideo.', 'foogallery' ), $count );
 			} else if ( 3 === $state['step'] ) {
+
+				//delete the option for migrations so we no longer see the migration admin message
+				delete_option( FOOGALLERY_FOOVIDEO_MIGRATION_REQUIRED );
 
 				//DEACTIVATE FOOVIDEO!
 				$api = foogallery_extensions_api();
-				$api->deactivate('foovideo');
+				$api->deactivate('foovideo', true);
 
-				//delete the option for migrations
-				delete_option( FOOGALLERY_FOOVIDEO_MIGRATION_REQUIRED );
+				$state['step'] = 4;
+				$state['message'] = __('The migration has completed. Click "Check" to ensure the migration was a success.', 'foogallery' );
+				$state['button_text'] =  __( 'Check', 'foogallery' );
+			} else if ( 4 === $state['step'] ) {
+
+				if ( class_exists( 'Foo_Video' ) ) {
+					$state['button_text'] =  __( 'Check Again', 'foogallery' );
+					$state['message'] = __('FooVideo cannot be deactivated automatically. Please manually deactivate "FooGallery - Video Extension" from the plugins listing, and then restart this migration.', 'foogallery' );
+				} else {
+					//delete the option for migrations so we no longer see the migration admin message
+					delete_option( FOOGALLERY_FOOVIDEO_MIGRATION_REQUIRED );
+
+					$state['button_text'] =  __( 'All Done!', 'foogallery' );
+					$state['message'] = __('The migration has completed. You can now navigate away from this page.', 'foogallery' );
+				}
 			}
 
 			$this->save_migration_state( $state );
@@ -109,7 +179,42 @@ if ( ! class_exists( 'FooGallery_Pro_Video_Migration_Helper' ) ) {
 		}
 
 		/**
-		 * Migrate a gallery from the old video slider to the new slider
+		 * Checks if the gallery needs to be migrated
+		 *
+		 * @param $gallery_id
+		 *
+		 * @return bool
+		 */
+		public function check_gallery_needs_migration( $gallery_id ) {
+
+			//check if the gallery has legacy videos
+			$video_count = get_post_meta( $gallery_id , '_foovideo_video_count', true );
+
+			if ( $video_count !== '' ) {
+				return true;
+			}
+
+			return false;
+		}
+
+		/**
+		 * Cleans up the legacy video counts and sets the new counts
+		 *
+		 * @param $gallery_id
+		 */
+		public function migrate_video_counts( $gallery_id ) {
+			//get the legacy video count
+			$video_count = intval( get_post_meta( $gallery_id , '_foovideo_video_count', true ) );
+
+			//clear the video count so we do not migrate the gallery again
+			delete_post_meta( $gallery_id, '_foovideo_video_count' );
+
+			//update the new video count
+			update_post_meta( $gallery_id, FOOGALLERY_VIDEO_POST_META_VIDEO_COUNT, $video_count );
+		}
+
+		/**
+		 * Migrate a gallery's settings
 		 *
 		 * @param FooGallery $gallery
 		 *
@@ -242,6 +347,10 @@ if ( ! class_exists( 'FooGallery_Pro_Video_Migration_Helper' ) ) {
 			}
 		}
 
+		/**
+		 * Migrate a single attachment
+		 * @param $attachment_id
+		 */
 		function migrate_attachment( $attachment_id ) {
 			$video_info = get_post_meta( $attachment_id, '_foovideo_video_data', true );
 			if ( isset( $video_info ) && !empty( $video_info ) ) {
