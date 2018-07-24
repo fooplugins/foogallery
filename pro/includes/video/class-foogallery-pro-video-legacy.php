@@ -5,6 +5,7 @@
 if ( ! class_exists( 'FooGallery_Pro_Video_Legacy' ) ) {
 
 	define( 'FOOGALLERY_FOOVIDEO_MIGRATION_REQUIRED', 'foogallery-foovideo-migration-required' );
+	define( 'FOOGALLERY_FOOVIDEO_MIGRATED', 'foogallery-foovideo-migrated' );
 
 	class FooGallery_Pro_Video_Legacy {
 

@@ -76,6 +76,12 @@ if ( ! class_exists( 'FooGallery_Pro_Video_Migration_Helper' ) ) {
 					'cache_results' => false,
 					'nopaging'      => true,
 					'meta_query' => array(
+						'relation' => 'AND',
+						array(
+							'key' => FOOGALLERY_FOOVIDEO_MIGRATED,
+							'compare' => 'NOT EXISTS', // works!
+							'value' => '' // This is ignored, but is necessary...
+						),
 						array(
 							'key' => '_foovideo_video_data',
 							'compare' => 'EXISTS',
@@ -353,7 +359,12 @@ if ( ! class_exists( 'FooGallery_Pro_Video_Migration_Helper' ) ) {
 		 */
 		function migrate_attachment( $attachment_id ) {
 			$video_info = get_post_meta( $attachment_id, '_foovideo_video_data', true );
+
 			if ( isset( $video_info ) && !empty( $video_info ) ) {
+				$is_migrated = get_post_meta( $attachment_id, FOOGALLERY_FOOVIDEO_MIGRATED, true );
+
+				if ( '1' === $is_migrated ) return;
+
 				//need to update the post mime type
 				$update_attachment = array(
 					'ID'             => $attachment_id,
@@ -365,8 +376,8 @@ if ( ! class_exists( 'FooGallery_Pro_Video_Migration_Helper' ) ) {
 				//set the new data
 				update_post_meta( $attachment_id, FOOGALLERY_VIDEO_POST_META, $video_info );
 
-				//remove the old data
-				delete_post_meta( $attachment_id, '_foovideo_video_data' );
+				//mark as migrated
+				update_post_meta( $attachment_id, FOOGALLERY_FOOVIDEO_MIGRATED, 1 );
 			}
 		}
 
