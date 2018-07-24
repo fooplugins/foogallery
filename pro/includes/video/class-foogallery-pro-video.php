@@ -255,9 +255,14 @@ if ( ! class_exists( 'FooGallery_Pro_Video' ) ) {
 			global $current_foogallery_template;
 
 			if ( $attachment->is_video ) {
-				$current_foogallery->has_videos = true;
-
 				$video_data = get_post_meta( $attachment->ID, FOOGALLERY_VIDEO_POST_META, true );
+
+				if ( empty( $video_data ) ) {
+					//get out early if we have no video data
+					return $attr;
+				}
+
+				$current_foogallery->has_videos = true;
 
 				$is_embed = false;
 
