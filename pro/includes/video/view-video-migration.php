@@ -14,53 +14,6 @@ $helper = new FooGallery_Pro_Video_Migration_Helper();
 		display: inline !important;
 		margin: 0;
 	}
-
-
-
-	.nextgen-import-progress-error {
-		color: #f00 !important;
-	}
-
-	.nextgen-import-progress-not_started {
-		color: #f60 !important;
-	}
-
-	.nextgen-import-progress-started {
-		color: #f80 !important;
-	}
-
-	.nextgen-import-progress-completed {
-		color: #080 !important;
-	}
-
-	.nextgen-import-progressbar {
-		margin-top: 10px;
-		display: inline-block;
-		width: 500px;
-		height: 10px;
-		background: #ddd;
-		position: relative;
-	}
-
-	.nextgen-import-progressbar span {
-		position: absolute;
-		height: 100%;
-		left: 0;
-		background: #888;
-	}
-
-	#nextgen_import_form .dashicons-arrow-right {
-		font-size: 2em;
-		margin-top: -0.2em;
-	}
-
-
-
-	.nextgen_import_container {
-		margin-top: 10px;
-	}
-
-
 </style>
 <script type="text/javascript">
 	jQuery(function ($) {
