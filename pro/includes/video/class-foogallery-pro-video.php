@@ -51,7 +51,7 @@ if ( ! class_exists( 'FooGallery_Pro_Video' ) ) {
 			add_action( 'foogallery_after_save_gallery', array( $this, 'calculate_video_count' ) );
 
 			//change the image count to include videos if they are present in the gallery
-			add_filter( 'foogallery_image_count', array( $this, 'include_video_count' ), 10, 2 );
+			add_filter( 'foogallery_image_count', array( $this, 'include_video_count' ), 11, 2 );
 
 			//check if the gallery is using foobox free and also has a video and if so, enqueue foobox video scripts.
 			add_action( 'foogallery_loaded_template', array( $this, 'enqueue_foobox_free_dependencies' ) );
