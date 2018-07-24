@@ -254,6 +254,8 @@ if ( ! class_exists( 'FooGallery_Pro_Video_Legacy' ) ) {
 		 * Display a message if the FooVideo extension is also installed
 		 */
 		function display_foovideo_notice() {
+			if ( 'foogallery' !== foo_current_screen_post_type() ) return;
+
 			$url = admin_url( add_query_arg( array( 'page' => 'foogallery-video-migration' ), foogallery_admin_menu_parent_slug() ) );
 			?>
 			<div class="notice error">

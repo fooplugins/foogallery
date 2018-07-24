@@ -22,13 +22,16 @@ if ( ! class_exists( 'FooGallery_FooVideo_Compatibility' ) ) {
 		 * Display a message if the FooVideo extension is also installed
 		 */
 		function display_foovideo_discount_notice() {
+			if ( 'foogallery' !== foo_current_screen_post_type() ) return;
+
 			$url = admin_url( add_query_arg( array( 'page' => 'foogallery-video-offer' ), foogallery_admin_menu_parent_slug() ) );
 			?>
 			<div class="notice notice-info">
 				<p>
 					<strong><?php _e('FooGallery PRO Discount Available!', 'foogallery'); ?></strong><br/>
 					<?php _e('We noticed that you own a license for the older FooVideo extension but not for FooGallery PRO, which has all the awesome features of FooVideo, plus more! And because you already own FooVideo, you are eligible for a discount when upgrading to FooGallery PRO.', 'foogallery'); ?><br/>
-					<a href="<?php echo $url; ?>"><?php _e('Redeem your discount now!', 'foogallery'); ?></a>
+					<br />
+					<a class="button button-primary button-large" href="<?php echo $url; ?>"><?php _e('Redeem your discount now!', 'foogallery'); ?></a>
 				</p>
 			</div>
 			<?php
