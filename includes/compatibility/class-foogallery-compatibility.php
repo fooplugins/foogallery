@@ -10,6 +10,7 @@ require_once( FOOGALLERY_PATH . 'includes/compatibility/class-foobox-compatibili
 require_once( FOOGALLERY_PATH . 'includes/compatibility/class-polylang-compatibility.php' );
 require_once( FOOGALLERY_PATH . 'includes/compatibility/class-responsive-lightbox-dfactory-compatibility.php' );
 require_once( FOOGALLERY_PATH . 'includes/compatibility/class-wprocket-compatibility.php' );
+require_once( FOOGALLERY_PATH . 'includes/compatibility/class-foovideo-compatibility.php' );
 
 if ( ! class_exists( 'FooGallery_Compatibility' ) ) {
 	class FooGallery_Compatibility {
@@ -18,6 +19,7 @@ if ( ! class_exists( 'FooGallery_Compatibility' ) ) {
 			new FooGallery_FooBox_Compatibility();
 			new FooGallery_Polylang_Compatibility();
 			new FooGallery_Responsive_Lightbox_dFactory_Compatibility();
+			new FooGallery_FooVideo_Compatibility();
 			//new FooGallery_WPRocket_Compatibility(); this has not been fully tested
 		}
 	}
