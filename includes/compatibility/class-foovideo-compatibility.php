@@ -6,27 +6,79 @@ if ( ! class_exists( 'FooGallery_FooVideo_Compatibility' ) ) {
 
 	class FooGallery_FooVideo_Compatibility {
 
+		const option_key = 'foogallery_video_discount_dismiss';
+
 		function __construct() {
 			//check if the old FooVideo is still activated
-			if ( is_admin() && class_exists( 'Foo_Video' ) ) {
-				add_action( 'admin_notices', array( $this, 'display_foovideo_discount_notice') );
+			if ( is_admin() && $this->show_discount_message() ) {
+				add_action( 'admin_notices', array( $this, 'display_discount_notice') );
+
+				// Ajax calls
+				add_action( 'wp_ajax_foogallery_video_discount_dismiss', array( $this, 'admin_notice_dismiss' ) );
+			}
+
+			if ( is_admin() && class_exists('Foo_Video') ) {
 				add_action( 'admin_menu',  array( $this, 'add_discount_menu' ) );
 
-				// Ajax calls for migrating
+				// Ajax calls
 				add_action( 'wp_ajax_foogallery_video_discount_offer', array( $this, 'ajax_foogallery_video_discount_offer' ) );
 				add_action( 'wp_ajax_foogallery_video_discount_offer_support', array( $this, 'ajax_foogallery_video_discount_offer_support' ) );
 			}
 		}
 
 		/**
+		 * Determines if the discount message should be shown
+		 *
+		 * @return bool
+		 */
+		function show_discount_message() {
+			//first try to get the saved option
+			$show_message = get_option( FooGallery_FooVideo_Compatibility::option_key, 0 );
+
+			//we must show the message - get out early
+			if ( "1" === $show_message ) {
+				return true;
+			}
+
+			if ( class_exists('Foo_Video') ) {
+				//the legacy plugin is installed, so set the option for future use
+				$show_message = true;
+
+				update_option( FooGallery_FooVideo_Compatibility::option_key, $show_message );
+			}
+
+			//we have no option saved and no legacy plugin, so no migration required
+			if ( 0 === $show_message ) {
+				$show_message = false;
+			}
+
+			return $show_message;
+		}
+
+		/**
 		 * Display a message if the FooVideo extension is also installed
 		 */
-		function display_foovideo_discount_notice() {
-			if ( 'foogallery' !== foo_current_screen_post_type() ) return;
+		function display_discount_notice() {
+
 
 			$url = admin_url( add_query_arg( array( 'page' => 'foogallery-video-offer' ), foogallery_admin_menu_parent_slug() ) );
 			?>
-			<div class="notice notice-info">
+			<script type="text/javascript">
+				( function ( $ ) {
+					$( document ).ready( function () {
+						$( '.foogallery-foovideo-discount-notice.is-dismissible' )
+							.on( 'click', '.notice-dismiss', function ( e ) {
+								e.preventDefault();
+								$.post( ajaxurl, {
+									action: 'foogallery_video_discount_dismiss',
+									url: '<?php echo admin_url( 'admin-ajax.php' ); ?>',
+									_wpnonce: '<?php echo wp_create_nonce( 'foogallery_video_discount_dismiss' ); ?>'
+								} );
+							} );
+					} );
+				} )( jQuery );
+			</script>
+			<div class="foogallery-foovideo-discount-notice notice notice-info is-dismissible">
 				<p>
 					<strong><?php _e('FooGallery PRO Discount Available!', 'foogallery'); ?></strong><br/>
 					<?php _e('We noticed that you own a license for the older FooVideo extension but not for FooGallery PRO, which has all the awesome features of FooVideo, plus more! And because you already own FooVideo, you are eligible for a discount when upgrading to FooGallery PRO.', 'foogallery'); ?><br/>
@@ -35,6 +87,15 @@ if ( ! class_exists( 'FooGallery_FooVideo_Compatibility' ) ) {
 				</p>
 			</div>
 			<?php
+		}
+
+		/**
+		 * Dismiss the admin notice
+		 */
+		function admin_notice_dismiss() {
+			if ( check_admin_referer( 'foogallery_video_discount_dismiss' ) ) {
+				delete_option( FooGallery_FooVideo_Compatibility::option_key );
+			}
 		}
 
 		/**
@@ -69,10 +130,15 @@ if ( ! class_exists( 'FooGallery_FooVideo_Compatibility' ) ) {
 							$license_details = @json_decode( $response['body'], true );
 
 							if ( isset( $license_details ) ) {
-								$license_type = $license_details['license'];
-								$expires = $license_details['expires'];
+								$coupon = $license_details['coupon'];
 
-								echo var_dump( $license_details );
+								if ( $coupon['valid'] ) {
+									echo '<h3>' . __( 'Your discount code is : ', 'foogallery' ) . $coupon['code'] . '</h3><br />';
+									echo 'You can copy the discount code and use it when purchasing FooGallery PRO from the "FooGallery -> Pricing" page.';
+								} else {
+									echo $coupon['code'];
+								}
+
 							}
 						}
 					} else {
