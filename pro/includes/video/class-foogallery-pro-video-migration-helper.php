@@ -170,7 +170,7 @@ if ( ! class_exists( 'FooGallery_Pro_Video_Migration_Helper' ) ) {
 					delete_option( FOOGALLERY_FOOVIDEO_MIGRATION_REQUIRED );
 
 					$state['button_text'] =  __( 'All Done!', 'foogallery' );
-					$state['message'] = __('The migration has completed. You can now navigate away from this page.', 'foogallery' );
+					$state['message'] = __('The migration was successful. You can now navigate away from this page.', 'foogallery' );
 				}
 			}
 
