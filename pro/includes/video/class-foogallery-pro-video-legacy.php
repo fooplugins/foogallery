@@ -15,28 +15,35 @@ if ( ! class_exists( 'FooGallery_Pro_Video_Legacy' ) ) {
 			add_filter( 'foogallery_clean_video_url', array( $this, 'foogallery_clean_video_url_legacy_filter' ) );
 			add_filter( 'foogallery_youtubekey', array( $this, 'foogallery_youtubekey_legacy_filter' ) );
 
-			//check if the old FooVideo was/is installed
-			if ( is_admin() && $this->migration_required() ) {
-				add_action( 'admin_notices', array( $this, 'display_foovideo_notice') );
-				add_action( 'admin_menu',  array( $this, 'add_migration_menu' ) );
+			if ( is_admin() ) {
 
-				add_filter( 'foogallery_render_gallery_settings_metabox', array( $this, 'migrate_settings' ) );
+				//check if the old FooVideo was/is installed
+				if ( $this->migration_required() ) {
+					add_action( 'admin_notices', array( $this, 'display_foovideo_notice') );
+					add_action( 'admin_menu',  array( $this, 'add_migration_menu' ) );
 
-				add_action( 'foogallery_after_save_gallery', array( $this, 'migrate_gallery' ), 99, 2 );
-			}
+					add_filter( 'foogallery_render_gallery_settings_metabox', array( $this, 'migrate_settings' ) );
 
-			//check if the old FooVideo is still activated
-			if ( is_admin() && class_exists( 'Foo_Video' ) ) {
-				//rename the Video Slider template
-				add_filter( 'foogallery_gallery_templates', array( $this, 'rename_videoslider_template' ), 99 );
+					add_action( 'foogallery_after_save_gallery', array( $this, 'migrate_gallery' ), 99, 2 );
+				}
 
-				//remove legacy fields added by FooVideo
-				add_filter( 'foogallery_override_gallery_template_fields', array( $this, 'remove_legacy_template_fields' ), 99 );
+				//check if the old FooVideo is still activated
+				if ( class_exists( 'Foo_Video' ) ) {
+					//rename the Video Slider template
+					add_filter( 'foogallery_gallery_templates', array( $this, 'rename_videoslider_template' ), 99 );
 
-				//short-circuit saving the post meta for video count on the gallery
-				add_filter( 'update_post_metadata', array( $this, 'short_circuit_legacy_video_count' ), 10, 5 );
+					//remove legacy fields added by FooVideo
+					add_filter( 'foogallery_override_gallery_template_fields', array( $this, 'remove_legacy_template_fields' ), 99 );
 
+					//short-circuit saving the post meta for video count on the gallery
+					add_filter( 'update_post_metadata', array( $this, 'short_circuit_legacy_video_count' ), 10, 5 );
+				}
 
+				add_filter( 'foogallery_foovideo_discount_offer_notice_title', array( $this, 'override_discount_offer_notice_title' ) );
+				add_filter( 'foogallery_foovideo_discount_offer_notice_message', array( $this, 'override_discount_offer_notice_message' ) );
+				add_filter( 'foogallery_foovideo_discount_offer_menu', array( $this, 'override_discount_offer_menu' ) );
+				add_filter( 'foogallery_foovideo_discount_offer_show_upgrade', '__return_false' );
+				add_filter( 'foogallery_foovideo_discount_offer_message', array( $this, 'override_discount_offer_message' ) );
 			}
 
 			if ( !is_admin() && class_exists( 'Foo_Video' ) ) {
@@ -257,6 +264,9 @@ if ( ! class_exists( 'FooGallery_Pro_Video_Legacy' ) ) {
 			foogallery_add_submenu_page( __( 'Video Migration', 'foogallery' ), 'manage_options', 'foogallery-video-migration', array( $this, 'render_video_migration_view', ) );
 		}
 
+		/**
+		 * Handle the Video Migration Step from an AJAX call
+		 */
 		function ajax_foogallery_video_migration() {
 			if ( check_admin_referer( 'foogallery_video_migration' ) ) {
 				$helper = new FooGallery_Pro_Video_Migration_Helper();
@@ -267,6 +277,9 @@ if ( ! class_exists( 'FooGallery_Pro_Video_Legacy' ) ) {
 			die();
 		}
 
+		/**
+		 * Handle the Video Migration Reset from an AJAX call
+		 */
 		function ajax_foogallery_video_migration_reset() {
 			if ( check_admin_referer( 'foogallery_video_migration' ) ) {
 				$helper = new FooGallery_Pro_Video_Migration_Helper();
@@ -276,5 +289,51 @@ if ( ! class_exists( 'FooGallery_Pro_Video_Legacy' ) ) {
 			}
 			die();
 		}
+
+		/**
+		 * Override the Discount Offer admin notice title
+		 * @param $title
+		 *
+		 * @return string
+		 */
+		function override_discount_offer_notice_title( $title ) {
+			$title = __( 'FooGallery Renewal Offer Available!', 'foogallery' );
+			return $title;
+		}
+
+		/**
+		 * Override the Discount Offer admin notice message
+		 * @param $message
+		 *
+		 * @return string
+		 */
+		function override_discount_offer_notice_message( $message ) {
+			$message = __( 'We noticed that you own licenses for FooVideo and FooGallery PRO. FooGallery PRO now has all the awesome features of FooVideo, plus more! And because you already own both, you are eligible for a free renewal on your existing FooGallery PRO license.', 'foogallery' );
+			return $message;
+		}
+
+		/**
+		 * Override the Discount Offer menu
+		 * @param $menu
+		 *
+		 * @return string
+		 */
+		function override_discount_offer_menu( $menu ) {
+			$menu = __( 'Renewal Offer', 'foogallery' );
+			return $menu;
+		}
+
+		/**
+		 * Override the Discount Offer page message
+		 * @param $message
+		 *
+		 * @return string
+		 */
+		function override_discount_offer_message( $message ) {
+			$message = __( 'Thank you for your support - you are awesome! FooGallery PRO now has all the awesome features of FooVideo, plus more! And because you already own both, you are eligible for a free renewal on your existing FooGallery PRO license.', 'foogallery' );
+			return $message;
+		}
+
+
 	}
 }

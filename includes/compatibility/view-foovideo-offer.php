@@ -1,6 +1,6 @@
 <?php
-$show_upgrade = apply_filters('foogallery_video_discount_offer_show_upgrade', true );
-$message = apply_filters('foogallery_video_discount_offer_message', '' );
+$show_upgrade = apply_filters('foogallery_foovideo_discount_offer_show_upgrade', true );
+$message = apply_filters('foogallery_foovideo_discount_offer_message', '' );
 ?>
 <style>
 	div.about-wrap h2 {
@@ -9,11 +9,6 @@ $message = apply_filters('foogallery_video_discount_offer_message', '' );
 
 	.foogallery-help {
 		margin-bottom: 10px;
-	}
-
-	.spinner.shown {
-		display: inline !important;
-		margin: 0;
 	}
 </style>
 <script type="text/javascript">
@@ -76,7 +71,27 @@ $message = apply_filters('foogallery_video_discount_offer_message', '' );
 					alert('<?php _e( 'Something went wrong when sending the ticket.', 'foogallery' ); ?>');
 				}
 			});
+		}).on('click', '.foogallery-video-discount-offer-not-interested', function(e){
+			e.preventDefault();
+
+			if ( confirm('Are you sure? You will not be able to redeem the offer again!') ) {
+				var data = {
+					action    : 'foogallery_video_discount_offer_hide',
+					'_wpnonce': $('#foogallery_video_discount_offer_hide').val()
+				};
+
+				$.ajax({
+					type    : "POST",
+					url     : ajaxurl,
+					data    : data,
+					complete: function () {
+						location.href = '<?php echo foogallery_admin_settings_url(); ?>';
+					}
+				});
+			}
 		});
+
+
 	});
 </script>
 <div class="wrap about-wrap foogallery-video-offer-container">
@@ -129,4 +144,7 @@ Message : I am an existing FooVideo customer - please contact me.</textarea>
 		<?php wp_nonce_field( 'foogallery_video_discount_offer_support', 'foogallery_video_discount_offer_support' ); ?>
 		<div style="width:40px; display: inline-block;"><span class="foogallery-video-discount-offer-support-spinner spinner"></span></div>
 	</div>
+	<br />
+	<input type="submit" class="button foogallery-video-discount-offer-not-interested" value="<?php _e( 'I am no longer interested!', 'foogallery'); ?>">
+	<?php wp_nonce_field( 'foogallery_video_discount_offer_hide', 'foogallery_video_discount_offer_hide' ); ?>
 </div>
