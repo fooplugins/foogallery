@@ -4898,6 +4898,14 @@
 			 */
 			self.isCreated = false;
 			/**
+			 * @summary Whether or not the item has been destroyed and can not be used.
+			 * @memberof FooGallery.Item#
+			 * @name isDestroyed
+			 * @type {boolean}
+			 * @readonly
+			 */
+			self.isDestroyed = false;
+			/**
 			 * @summary Whether or not the items' image is currently loading.
 			 * @memberof FooGallery.Item#
 			 * @name isLoading
@@ -5156,17 +5164,38 @@
 			 * 	}
 			 * });
 			 */
-			var e = self.tmpl.raise("destroy-item");
+			var e = self.tmpl.raise("destroy-item", [self]);
 			if (!e.isDefaultPrevented()) {
-				self.doDestroyItem();
+				self.isDestroyed = self.doDestroyItem();
+			}
+			if (self.isDestroyed) {
+				/**
+				 * @summary Raised after an item has been destroyed.
+				 * @event FooGallery.Template~"destroyed-item.foogallery"
+				 * @type {jQuery.Event}
+				 * @param {jQuery.Event} event - The jQuery.Event object for the current event.
+				 * @param {FooGallery.Template} template - The template raising the event.
+				 * @param {FooGallery.Item} item - The item that was destroyed.
+				 * @example {@caption To listen for this event and perform some action when it occurs you would bind to it as follows.}
+				 * $(".foogallery").foogallery({
+					 * 	on: {
+					 * 		"destroyed-item.foogallery": function(event, template, item){
+					 * 			// do something
+					 * 		}
+					 * 	}
+					 * });
+				 */
+				self.tmpl.raise("destroyed-item", [self]);
+				// call the original method that simply nulls the tmpl property
 				self._super();
 			}
-			return self.tmpl === null;
+			return self.isDestroyed;
 		},
 		/**
 		 * @summary Performs the actual destroy logic for the item.
 		 * @memberof FooGallery.Item#
 		 * @function doDestroyItem
+		 * @returns {boolean}
 		 */
 		doDestroyItem: function () {
 			var self = this;
@@ -5188,6 +5217,7 @@
 				self.detach();
 				self.$el.remove();
 			}
+			return true;
 		},
 		/**
 		 * @summary Parse the supplied element updating the current items' properties.

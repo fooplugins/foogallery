@@ -5709,6 +5709,7 @@ only screen and (min-resolution: 2.25dppx) {
 }
 .fg-slider .fg-caption-inner {
 	max-width: 100%;
+	max-height: 100%;
 	position: absolute;
 	top: 50%;
 	-webkit-transform: translateY(-50%);
