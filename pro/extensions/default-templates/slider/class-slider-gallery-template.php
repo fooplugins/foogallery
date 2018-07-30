@@ -49,7 +49,7 @@ if ( !class_exists( 'FooGallery_Slider_Gallery_Template' ) ) {
 
 			$gallery_templates[] = array(
 				'slug'        => 'slider',
-				'name'        => __( 'Slider', 'foogallery'),
+				'name'        => __( 'Slider PRO', 'foogallery'),
 				'preview_support' => true,
 				'common_fields_support' => true,
 				'lazyload_support' => true,
