@@ -93,6 +93,7 @@
 				} );
 			} else {
 				$preview.foogallery( 'layout' );
+				$preview_container.css( 'height', '' );
 			}
 		} else {
 			//reset the height to what it should be
@@ -137,6 +138,8 @@
             data: data,
 			cache: false,
             success: function(data) {
+				$('.foogallery_preview_container .foogallery').foogallery("destroy");
+				
                 //updated the preview
 				$('.foogallery_preview_container').html(data);
                 $('#foogallery_preview_spinner').removeClass('is-active');
@@ -223,7 +226,7 @@
 			$('#foogallery_items_view_input').val(value);
 
 			if ( $('.foogallery_preview_container').is(':visible') ) {
-				FOOGALLERY.updateGalleryPreview(true, false);
+				FOOGALLERY.updateGalleryPreview(false, false);
 
 				//check if there is no preview
 				if ( !$.trim( $('.foogallery_preview_container').html() ) ||
