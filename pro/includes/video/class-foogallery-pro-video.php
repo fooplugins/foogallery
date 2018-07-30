@@ -437,7 +437,7 @@ if ( ! class_exists( 'FooGallery_Pro_Video' ) ) {
 		 * @param FooGallery $gallery
 		 */
 		function include_video_embeds( $gallery ) {
-			if ( isset( $gallery->has_videos ) && $gallery->has_videos ) {
+			if ( isset( $gallery->has_videos ) && $gallery->has_videos && isset( $gallery->video_embeds ) ) {
 
 				?>
 				<div style="display: none;"><?php
