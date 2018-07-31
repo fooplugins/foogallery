@@ -87,7 +87,7 @@ if ( !class_exists( 'FooGallery_Slider_Gallery_Template' ) ) {
 						'row_data' => array(
 							'data-foogallery-change-selector' => 'input:radio',
 							'data-foogallery-value-selector'  => 'input:checked',
-							'data-foogallery-preview' => 'shortcode',
+							'data-foogallery-preview' => 'class',
 						)
 					),
 					array(
