@@ -52,6 +52,8 @@ if (!class_exists('class-css-load-optimizer.php')) {
                 //get any foogallery stylesheets that the post might need to include
                 $css = get_post_meta($post_id, FOOGALLERY_META_POST_USAGE_CSS);
 
+				if ( empty( $css ) || !is_array( $css ) ) return;
+
                 foreach ($css as $css_item) {
                     if (!$css_item) continue;
                     foreach ($css_item as $handle => $style) {
