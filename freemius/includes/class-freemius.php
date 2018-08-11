@@ -3145,7 +3145,7 @@
             if ( $is_connected ) {
                 FS_GDPR_Manager::instance()->store_is_required( $pong->is_gdpr_required );
             }
-            
+
             $this->store_connectivity_info( $pong, $is_connected );
 
             return $this->_has_api_connection;
@@ -10587,7 +10587,7 @@
          */
         function _activate_license_ajax_action() {
             $this->_logger->entrance();
-            
+
             $this->check_ajax_referer( 'activate_license' );
 
             $license_key = trim( fs_request_get( 'license_key' ) );
@@ -15569,7 +15569,8 @@
                 return;
             }
 
-            $encrypted_site = clone ( is_object( $site ) ? $site : $this->_site );
+            $site_clone = is_object( $site ) ? $site : $this->_site;
+            $encrypted_site = clone $site_clone;
 
             $sites = self::get_all_sites( $this->_module_type, $network_level_or_blog_id );
 
