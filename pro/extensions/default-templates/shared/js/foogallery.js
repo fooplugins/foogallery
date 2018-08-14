@@ -11083,6 +11083,12 @@
 					count = items.length,
 					prev = self._breakpoint;
 
+			self.horizontal = self.$el.hasClass(self.cls.horizontal);
+			self.$el.toggleClass(self.cls.horizontal, self.horizontal);
+
+			self.noCaptions = self.$el.hasClass(self.cls.noCaptions);
+			self.$el.toggleClass(self.cls.noCaptions, self.noCaptions);
+
 			self._breakpoint = self.getBreakpoint();
 			self.$el.removeClass(self.allBreakpointClasses).addClass(self._breakpoint.classes);
 
@@ -11113,11 +11119,15 @@
 							width: hItemWidth,
 							left: i * hItemWidth
 						});
+					} else {
+						item.$el.css({ width: '', left: '' });
 					}
 				});
 				self.$contentStage.css("transform", "translateX(-" + (index * self._contentWidth) + "px)");
 				self._itemWidth = items[0].$el.outerWidth();
 				self._itemHeight = items[0].$el.outerHeight();
+
+				self.setVisible(self._firstVisible, false);
 			}
 		},
 		setEmbedSize: function(item){
