@@ -156,6 +156,16 @@ Update now to get all the latest features, bug fixes and improvements!
 
 == Changelog ==
 
+= 1.4.33 =
+* Fix : PHP 7.1 compatibility tests failing for clone
+
+= 1.4.32 =
+* Update : Freemius SDK 2.1.1
+* Update : FooGallery client side 1.0.28
+* Fix : better paging + filtering support
+* Fix : better RTL support in media modal
+* Multiple small bug fixes and improvements
+
 = 1.4.31 =
 
 * New : GDPR notice in readme
