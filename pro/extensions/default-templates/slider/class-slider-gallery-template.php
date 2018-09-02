@@ -53,26 +53,12 @@ if ( !class_exists( 'FooGallery_Slider_Gallery_Template' ) ) {
 				'preview_support' => true,
 				'common_fields_support' => true,
 				'lazyload_support' => true,
-				'paging_support' => true,
-				'thumbnail_dimensions' => true,
+				'paging_support' => false,
+				'thumbnail_dimensions' => false,
 				'filtering_support' => true,
 				'mandatory_classes' => 'fg-slider',
+				'embed_support' => true,
 				'fields'	  => array(
-					array(
-						'id'      => 'thumbnail_dimensions',
-						'title'   => __( 'Thumbnail Size', 'foogallery' ),
-						'desc'    => __( 'Choose the size of your thumbnails.', 'foogallery' ),
-						'section' => __( 'General', 'foogallery' ),
-						'type'    => 'thumb_size_no_crop',
-						'default' => array(
-							'width' => 150,
-							'height' => 150
-						),
-						'row_data'=> array(
-							'data-foogallery-change-selector' => 'input',
-							'data-foogallery-preview' => 'shortcode'
-						)
-					),
 					array(
 						'id'      => 'layout',
 						'title'   => __('Layout', 'foogallery'),
@@ -337,9 +323,14 @@ if ( !class_exists( 'FooGallery_Slider_Gallery_Template' ) ) {
 		 * @return array
 		 */
 		function add_data_options($options, $gallery, $attributes) {
-			$viewport = foogallery_gallery_template_setting( 'viewport', 40 );
+			$viewport = foogallery_gallery_template_setting( 'viewport', '' );
 			if ( 'yes' === $viewport ) {
 				$options['template']['viewport'] = true;
+			}
+
+			$video_autoplay = foogallery_gallery_template_setting( 'video_autoplay', 'yes' );
+			if ( 'yes' === $video_autoplay ) {
+				$options['template']['autoPlay'] = true;
 			}
 
 			return $options;
@@ -367,7 +358,11 @@ if ( !class_exists( 'FooGallery_Slider_Gallery_Template' ) ) {
 		 * @return mixed
 		 */
 		function preview_arguments( $args, $post_data ) {
-			$args['thumbnail_dimensions'] = $post_data[FOOGALLERY_META_SETTINGS]['slider_thumbnail_dimensions'];
+			$args['thumbnail_dimensions'] = array(
+				'width' => 150,
+				'height' => 150,
+				'crop' => true
+			);
 			$args['layout'] = $post_data[FOOGALLERY_META_SETTINGS]['slider_layout'];
 			$args['viewport'] = $post_data[FOOGALLERY_META_SETTINGS]['slider_viewport'];
 			return $args;
@@ -382,14 +377,11 @@ if ( !class_exists( 'FooGallery_Slider_Gallery_Template' ) ) {
 		 * @return mixed
 		 */
 		function build_thumbnail_dimensions_from_arguments( $dimensions, $arguments ) {
-			if ( array_key_exists( 'thumbnail_dimensions', $arguments) ) {
-				return array(
-					'height' => intval($arguments['thumbnail_dimensions']['height']),
-					'width' => intval($arguments['thumbnail_dimensions']['width']),
-					'crop' => '1'
-				);
-			}
-			return null;
+			return array(
+				'width' => 150,
+				'height' => 150,
+				'crop' => true
+			);
 		}
 
 		/**
@@ -401,12 +393,11 @@ if ( !class_exists( 'FooGallery_Slider_Gallery_Template' ) ) {
 		 * @return mixed
 		 */
 		function get_thumbnail_dimensions( $dimensions, $foogallery ) {
-			$dimensions = $foogallery->get_meta( 'slider_thumbnail_dimensions', array(
+			return array(
 				'width' => 150,
-				'height' => 150
-			) );
-			$dimensions['crop'] = true;
-			return $dimensions;
+				'height' => 150,
+				'crop' => true
+			);
 		}
 
 		/**
@@ -416,8 +407,11 @@ if ( !class_exists( 'FooGallery_Slider_Gallery_Template' ) ) {
 		 * @return array
 		 */
 		function build_gallery_template_arguments( $args ) {
-			$args = foogallery_gallery_template_setting( 'thumbnail_dimensions', array() );
-			$args['crop'] = '1'; //we now force thumbs to be cropped
+			$args = array(
+				'width' => 150,
+				'height' => 150,
+				'crop' => true
+			);
 
 			return $args;
 		}

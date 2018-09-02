@@ -100,6 +100,7 @@ if ( !class_exists( 'FooGallery_FooGrid_Gallery_Template' ) ) {
                 'thumbnail_dimensions' => true,
 				'mandatory_classes' => 'foogrid',
 				'filtering_support' => true,
+				'embed_support' => true,
 				'fields'	  => array(
 					array(
 						'id'      => 'thumbnail_size',

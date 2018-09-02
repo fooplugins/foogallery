@@ -268,10 +268,24 @@ if ( ! class_exists( 'FooGallery_Pro_Video' ) ) {
 
 				if ( isset( $video_data['type'] ) ) {
 
-					//identify the item as an embed and also check if FooBox is the lightbox
 					$is_embed = 'embed' === $video_data['type'];
 
-					$attr['data-type'] = $is_embed ? 'embed' : 'video'; //$video_data['type'];
+					//check that the gallery template supports embeds
+					$template_data = foogallery_get_gallery_template( $current_foogallery_template );
+
+					//check the template supports filtering
+					if ( $template_data && array_key_exists( 'embed_support', $template_data ) && true === $template_data['embed_support'] ) {
+						//do nothing
+						$attr['data-type'] = $is_embed ? 'embed' : 'video';
+					} else {
+						//should be for templates that do not support embeds natively e.g. responsive gallery
+						//we need to check that the lightbox is FooBox, because embeds will only then work with FooBox
+						$lightbox = foogallery_gallery_template_setting( 'lightbox' );
+						$is_embed = $is_embed && ( 'foobox' === $lightbox );
+						if ( $is_embed ) {
+							$attr['data-type'] = $is_embed ? 'embed' : 'video';
+						}
+					}
 				}
 
 				//set the cover image for the video
