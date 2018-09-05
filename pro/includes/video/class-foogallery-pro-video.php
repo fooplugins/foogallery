@@ -291,25 +291,6 @@ if ( ! class_exists( 'FooGallery_Pro_Video' ) ) {
 				//set the cover image for the video
 				$attr['data-cover'] = $attachment->url;
 
-				//make some changes for embeds
-				if ( $is_embed ) {
-					$oembed_data = foogallery_oembed_get_data( $attachment->custom_url );
-
-					$data = array(
-						'id'            => 'foogallery_embed_'.$current_foogallery->ID . '-' . $attachment->ID,
-						'attachment_id' => $attachment->ID,
-						'url'           => $attachment->custom_url,
-						'provider'      => $video_data['provider'],
-						'html'          => $oembed_data->html
-					);
-
-					$current_foogallery->video_embeds[] = $data;
-
-					$attr['href'] = '#' . $data['id'];
-				} else {
-					$attr['href'] = foogallery_get_video_url_from_attachment( $attachment );
-				}
-
 				//if we have no widths or heights then use video default size
 				if ( ! isset( $attr['data-width'] ) ) {
 					$size = foogallery_gallery_template_setting( 'video_size', '640x360' );
@@ -328,6 +309,33 @@ if ( ! class_exists( 'FooGallery_Pro_Video' ) ) {
 				$override_height = get_post_meta( $attachment->ID, '_data-height', true );
 				if ( ! empty( $override_height ) ) {
 					$attr['data-height'] = intval( $override_height );
+				}
+
+				//make some changes for embeds
+				if ( $is_embed ) {
+
+					$args = array();
+					if ( isset( $attr['data-width'] ) ) {
+						$args['width'] = $attr['data-width'];
+					}
+
+					$oembed_data = foogallery_oembed_get_data( $attachment->custom_url, $args );
+
+					$data = array(
+						'id'            => 'foogallery_embed_'.$current_foogallery->ID . '-' . $attachment->ID,
+						'attachment_id' => $attachment->ID,
+						'url'           => $attachment->custom_url,
+						'provider'      => $video_data['provider'],
+						'html'          => $oembed_data->html
+					);
+
+					$current_foogallery->video_embeds[] = $data;
+
+					$attr['href'] = '#' . $data['id'];
+					//make sure FooBox opens the embed
+					$attr['target'] = 'foobox';
+				} else {
+					$attr['href'] = foogallery_get_video_url_from_attachment( $attachment );
 				}
 
 				$lightbox = foogallery_gallery_template_setting( 'lightbox', 'unknown' );
