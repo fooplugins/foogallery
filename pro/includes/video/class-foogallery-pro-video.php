@@ -283,7 +283,7 @@ if ( ! class_exists( 'FooGallery_Pro_Video' ) ) {
 						$lightbox = foogallery_gallery_template_setting( 'lightbox' );
 						$is_embed = $is_embed && ( 'foobox' === $lightbox );
 						if ( $is_embed ) {
-							$attr['data-type'] = $is_embed ? 'embed' : 'video';
+							$attr['data-type'] = 'embed';
 						}
 					}
 				}
