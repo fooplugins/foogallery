@@ -4479,7 +4479,7 @@
 						page = tmpl.pages.find(item);
 						page = page !== 0 ? page : 1;
 					}
-					tmpl.pages.set(page, !_is.empty(state), false);
+					tmpl.pages.set(page, !_is.empty(state), false, true);
 					if (item && tmpl.pages.contains(page, item)){
 						item.scrollTo();
 					}
