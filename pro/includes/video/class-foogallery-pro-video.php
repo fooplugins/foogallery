@@ -412,14 +412,16 @@ if ( ! class_exists( 'FooGallery_Pro_Video' ) ) {
 		}
 
 		public function include_video_settings( $settings ) {
+
+			$settings['tabs']['video'] = __( 'Video', 'foogallery' );
+
 			$settings['settings'][] = array(
 				'id'      => 'video_default_target',
 				'title'   => __( 'Default Video Target', 'foogallery' ),
 				'desc'    => __( 'The default target set for a video when it is imported into the gallery.', 'foogallery' ),
 				'type'    => 'select',
 				'default' => '_blank',
-				'section' => __( 'Gallery Defaults', 'foogallery ' ),
-				'tab'     => 'general',
+				'tab'     => 'video',
 				'choices' => array(
 					'default' => __( 'Default', 'foogallery' ),
 					'_blank'  => __( 'New tab (_blank)', 'foogallery' ),
@@ -427,6 +429,16 @@ if ( ! class_exists( 'FooGallery_Pro_Video' ) ) {
 					'foobox'  => __( 'FooBox', 'foogallery' ),
 				),
 			);
+
+			$settings['settings'][] = array(
+				'id'      => 'vimeo_access_token',
+				'title'   => __( 'Vimeo Access Token', 'foogallery' ),
+				'desc'    => __( 'An access token is required by the Vimeo API in order to import multiple videos from channels, albums or a user. This is not required to import a single video.', 'foogallery' ),
+				'type'    => 'text',
+				'default' => '',
+				'tab'     => 'video',
+			);
+
 			$settings['settings'][] = array(
 				'id'      => 'language_video_count_none_text',
 				'title'   => __( 'Video Count None Text', 'foogallery' ),
