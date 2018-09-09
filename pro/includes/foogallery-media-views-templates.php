@@ -382,6 +382,64 @@
 	<# } #>
 
 </script>
+<script type="text/html" id="tmpl-fgi-oembed">
+
+	<div class="fgi-oembed-notification">
+		<p><?php _e("Enter any missing details for the oEmbed video below and then click the Import button.", "foogallery") ?></p>
+	</div>
+	<div class="fgi-oembed-details">
+		<div class="fgi-form">
+			<input type="hidden" name="id" value="{{data.id}}"/>
+			<label class="fgi-row">
+				<span class="fgi-col-label"><?php _e("URL", "foogallery") ?></span>
+				<span class="fgi-col-input">
+					<input type="text" name="url" value="{{data.url}}" readonly="readonly"/>
+				</span>
+			</label>
+			<label class="fgi-row">
+				<span class="fgi-col-label"><?php _e("Provider", "foogallery") ?></span>
+				<span class="fgi-col-input">
+					<input type="text" name="provider" value="{{data.provider}}" readonly="readonly"/>
+					<span class="fgi-input-description">
+						<?php _e("The oEmbed standards do not specify that a provider must supply a thumbnail, title or description but to display a video within a gallery it must have an image to use as a thumbnail. The inputs below allow you to edit or supply any missing information and then continue with the import.", "foogallery") ?>
+					</span>
+				</span>
+			</label>
+			<label class="fgi-row">
+				<span class="fgi-col-label"><?php _e("Thumbnail", "foogallery") ?></span>
+				<span class="fgi-col-input">
+					<span class="fgi-browse">
+						<span class="fgi-browse-inner">
+							<span class="fgi-browse-col-input">
+								<input type="text" name="thumbnail" value="{{data.thumbnail}}" spellcheck="false"
+											 data-messages='{"required":"<?php _e("You must supply a thumbnail for the video.", "foogallery") ?>","pattern":"<?php _e("Please enter a .jpg, .jpeg, .png or .gif file.", "foogallery") ?>"}'
+											 data-pattern="(?:\/|=)(?<name>[^\/]+?)\.(?<ext>jpg|jpeg|png|gif)(?:$|\?|&|#|,)" data-required="true"/>
+							</span>
+							<span class="fgi-browse-col-button">
+								<button type="button" class="button button-secondary"
+												data-options='{"type": "image/png,image/jpg,image/jpeg,image/gif", "title":"<?php _e("Select a thumbnail for the video", "foogallery") ?>", "button":"<?php _e("Select Image", "foogallery") ?>"}'
+								><?php _e("Select", "foogallery") ?></button>
+							</span>
+						</span>
+					</span>
+				</span>
+			</label>
+			<label class="fgi-row">
+				<span class="fgi-col-label"><?php _e("Title", "foogallery") ?></span>
+				<span class="fgi-col-input">
+					<input type="text" name="title" value="{{data.title}}"/>
+				</span>
+			</label>
+			<label class="fgi-row">
+				<span class="fgi-col-label"><?php _e("Description", "foogallery") ?></span>
+				<span class="fgi-col-input">
+					<textarea name="description" rows="5">{{data.description}}</textarea>
+				</span>
+			</label>
+		</div>
+	</div>
+
+</script>
 <script type="text/html" id="tmpl-fgi-import">
 <?php
 	$single = __("video", "foogallery");
