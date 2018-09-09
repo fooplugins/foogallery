@@ -59,7 +59,11 @@ if ( ! class_exists( 'FooGallery_Pro_Video' ) ) {
 			//add settings for video
 			add_filter( 'foogallery_admin_settings_override', array( $this, 'include_video_settings' ) );
 
+			//output the embeds after the gallery if needed
 			add_action( 'foogallery_loaded_template', array( $this, 'include_video_embeds' ) );
+
+			//ajax call to save the Vimeo access token
+			add_action('wp_ajax_fgi_save_access_token', array($this, 'save_vimeo_access_token'));
 		}
 
 		/**
@@ -486,6 +490,21 @@ if ( ! class_exists( 'FooGallery_Pro_Video' ) ) {
 
 				?></div><?php
 			}
+		}
+
+		/**
+		 * Save the Vimeo Access Token to the foogallery settings
+		 */
+		function save_vimeo_access_token() {
+			$nonce = !empty($_POST["fgi_nonce"]) ? $_POST["fgi_nonce"] : null;
+
+			if (wp_verify_nonce($nonce, "fgi_nonce")) {
+				$access_token = !empty( $_POST["access_token"] ) ? $_POST["access_token"] : null;
+
+				foogallery_settings_set_vimeo_access_token( $access_token );
+				wp_send_json_success( __('Saved successfully.', 'foogallery' ) );
+			}
+			die();
 		}
 	}
 }
