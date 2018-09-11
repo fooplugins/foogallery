@@ -3,7 +3,7 @@ Contributors: bradvin, steveush, fooplugins
 Donate link: http://fooplugins.com
 Tags: gallery, image gallery, photo gallery, responsive, album, media gallery, masonry gallery, portfolio, justified image gallery, video gallery, photography, photographer, retina
 Requires at least: 3.9
-Tested up to: 4.9.7
+Tested up to: 4.9.8
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -156,8 +156,12 @@ Update now to get all the latest features, bug fixes and improvements!
 
 == Changelog ==
 
-= 1.4.33 =
+= 1.4.34 =
+* New : Language setting for load more pagination
+* Fix : Pagination + Filtering bugs
 * Fix : PHP 7.1 compatibility tests failing for clone
+* Update : FooGallery client side 1.0.29
+* Multiple bug fixes and improvements
 
 = 1.4.32 =
 * Update : Freemius SDK 2.1.1
