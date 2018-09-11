@@ -12,6 +12,7 @@ require_once( FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-bulk-copy.php
 require_once( FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-gallery-override.php' );
 require_once( FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-filtering.php' );
 require_once( FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-attachment-taxonomies.php' );
+require_once( FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-advanced-gallery-settings.php' );
 
 /**
  * FooGallery PRO Main Class
@@ -29,6 +30,7 @@ if ( ! class_exists( 'FooGallery_Pro' ) ) {
 			new FooGallery_Pro_Gallery_Shortcode_Override();
 			new FooGallery_Pro_Attachment_Taxonomies();
 			new FooGallery_Pro_Filtering();
+			new FooGallery_Pro_Advanced_Gallery_Settings();
 		}
 	}
 }
