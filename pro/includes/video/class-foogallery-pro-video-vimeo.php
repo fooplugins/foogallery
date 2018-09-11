@@ -25,6 +25,59 @@ if ( !class_exists("FooGallery_Pro_Video_Vimeo") ){
 
 		function __construct() {
 			$this->regex_pattern = '/(player\.)?vimeo\.com/i';
+
+			add_action('wp_ajax_fgi_save', array($this, 'ajax'));
+		}
+
+		public function get_args(){
+			return array(
+				"access_token" => !empty($_POST["access_token"]) ? trim($_POST["access_token"]) : null,
+				"nonce" => !empty($_POST["fgi_nonce"]) ? $_POST["fgi_nonce"] : null
+			);
+		}
+
+		/**
+		 * Save the Vimeo Access Token to the foogallery settings
+		 */
+		public function ajax() {
+
+			$args = $this->get_args();
+			if (wp_verify_nonce($args["nonce"], "fgi_nonce")){
+				if (empty($args["access_token"]) || mb_strlen($args["access_token"], "UTF-8") < 30) {
+					wp_send_json_error("The 'access_token' argument is required and must be a minimum of 30 characters in length.");
+					return;
+				}
+
+				$response = $this->verify_token($args["access_token"]);
+
+				if ($response["mode"] == "verified"){
+					foogallery_settings_set_vimeo_access_token($args["access_token"]);
+				}
+				wp_send_json_success($response);
+			}
+			die();
+		}
+
+		public function verify_token($token){
+
+			$remote = wp_remote_get("https://api.vimeo.com/oauth/verify", array(
+				"headers" => array(
+					"Authorization" => "Bearer " . $token
+				)
+			));
+
+			if (is_wp_error($remote)) {
+				return $this->error_response("Error validating token: " . $remote->get_error_message());
+			}
+
+			if (wp_remote_retrieve_response_code($remote) == "401"){
+				return $this->error_response("Invalid token supplied unable to verify.");
+			}
+
+			return array(
+				"mode" => "verified",
+				"message" => __( 'Verified access token.' , 'foogallery' )
+			);
 		}
 
 		/**
@@ -100,7 +153,7 @@ if ( !class_exists("FooGallery_Pro_Video_Vimeo") ){
 			// we have as valid an id as we can hope for until we make the actual request so request it
 			$url = "https://vimeo.com/api/oembed.json?url=" . urlencode("https://vimeo.com/" . $id);
 			// get the json object from the supplied url
-			$json = $this->get_json($url);
+			$json = $this->json_get($url);
 
 			// if an error occurred return it
 			if ($this->is_error($json)) {
@@ -140,12 +193,22 @@ if ( !class_exists("FooGallery_Pro_Video_Vimeo") ){
 				return $this->error_response("Invalid id supplied.");
 			}
 
-			$endpoint = "https://player.vimeo.com/hubnut/config/%s/%s?page=%d";
+			$access_token = foogallery_settings_get_vimeo_access_token();
+			if (empty($access_token)){
+				return array(
+					"mode" => "vimeo",
+					"access_token" => ""
+				);
+			}
 
-			// we have as valid an id as we can hope for until we make the actual request so request it
-			$url = sprintf($endpoint, $type, $id, $page);
+			$endpoint = "https://api.vimeo.com/{$type}s/{$id}/videos?page={$page}&fields=uri,name,description,pictures.sizes.width,pictures.sizes.link";
+
 			// get the json object from the supplied url
-			$json = $this->get_json($url);
+			$json = $this->json_get($endpoint, array(
+				"headers" => array(
+					"Authorization" => "Bearer " . $access_token
+				)
+			));
 
 			// if an error occurred return it
 			if ($this->is_error($json)) {
@@ -153,7 +216,7 @@ if ( !class_exists("FooGallery_Pro_Video_Vimeo") ){
 			}
 
 			// do basic validation on the json object
-			if (empty($json) || !is_object($stream = $json->stream) || !is_array($stream->clips)) {
+			if (empty($json) || !is_array($json->data)) {
 				return $this->error_response("Invalid response.");
 			}
 
@@ -161,7 +224,7 @@ if ( !class_exists("FooGallery_Pro_Video_Vimeo") ){
 			$response = array(
 				"mode" => $type,
 				"id" => $id,
-				"total" => $stream->total_clips,
+				"total" => $json->total,
 				"offset" => $offset,
 				"page" => $page,
 				"nextPage" => 0,
@@ -170,15 +233,17 @@ if ( !class_exists("FooGallery_Pro_Video_Vimeo") ){
 
 			$has_valid = false;
 			// iterate each of the returned videos and add them to the response in our desired format
-			foreach ($stream->clips as $video) {
-				if (!empty($video->thumbnail) && !empty($video->id) && !empty($video->title)) {
+			foreach ($json->data as $video) {
+				$video_id = $this->get_video_id($video);
+				$thumbnail = $this->get_video_thumbnail($video);
+				if (!empty($video_id) && !empty($thumbnail) && !empty($video->name)) {
 					if (!$has_valid) $has_valid = true;
 					$response["videos"][] = array(
 						"provider" => "vimeo",
-						"id" => $video->id,
-						"url" => "https://player.vimeo.com/video/" . $video->id,
-						"thumbnail" => $video->thumbnail,
-						"title" => $video->title,
+						"id" => $video_id,
+						"url" => "https://player.vimeo.com/video/" . $video_id,
+						"thumbnail" => $thumbnail,
+						"title" => $video->name,
 						"description" => !empty($video->description) ? $video->description : ""
 					);
 				}
@@ -196,7 +261,23 @@ if ( !class_exists("FooGallery_Pro_Video_Vimeo") ){
 			return $response;
 		}
 
+		private function get_video_id($video){
+			if (!is_object($video) || !is_string($video->uri)) return false;
+			$exploded = explode("/", $video->uri);
+			return $exploded[count($exploded) - 1];
+		}
 
+		private function get_video_thumbnail($video){
+			if (!is_object($video) || !is_object($video->pictures) || !is_array($sizes = $video->pictures->sizes)) return false;
+			$image = false;
+			foreach ($sizes as $size){
+				if ($image == false || $size->width > $image->width ){
+					$image = $size;
+				}
+			}
+			if ($image == false || !is_string($image->link)) return false;
+			return $image->link;
+		}
 	}
 
 }

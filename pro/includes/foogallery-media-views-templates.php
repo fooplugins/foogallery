@@ -25,8 +25,8 @@
 	<h2>Video Help</h2>
 	<p>FooGallery supports a number of providers for importing videos and provides additional methods of importing multiple videos from YouTube and Vimeo.</p>
 	<dl class="fgi-providers">
-		<dt class="fgi-provider-title mode-expanded">YouTube</dt>
-		<dd class="fgi-provider-content mode-expanded">
+		<dt class="fgi-provider-title">YouTube</dt>
+		<dd class="fgi-provider-content">
 			<p>There are a number of ways to import YouTube videos.</p>
 
 			<h4>Single Video</h4>
@@ -67,16 +67,43 @@
 				<li>http(s)://vimeo.com/album/[ALBUM_ID]</li>
 			</ul>
 
+			<h4>Channels</h4>
+			<p>Import an entire channel or a subselection of its' videos by entering its' url into the search input. The following URL format is supported:</p>
+			<ul>
+				<li>http(s)://vimeo.com/channel/[CHANNEL_ID]</li>
+			</ul>
+
 			<h4>User Videos</h4>
 			<p>Import all videos for a specific user or a subselection of their videos by entering their user url into the search input. The following URL formats are supported:</p>
 			<ul>
 				<li>http(s)://vimeo.com/[USER_ID]</li>
 				<li>http(s)://vimeo.com/[USER_ID]/videos</li>
 			</ul>
+
+			<h4>Access Token</h4>
+			<p>If you want to import multiple videos from an album, channel or user then you will need an API access token. You can generate one by following the basic instructions below or take a look at our <a href="" target="_blank">documentation</a> for more detailed steps.</p>
+			<ul>
+				<li>
+					Visit <a href="https://developer.vimeo.com/apps/new" target="_blank">https://developer.vimeo.com/apps/new</a> and fill in the form. If you are not signed in you should be prompted to using your Vimeo account.
+					<ul>
+						<li>In the <b>App Name</b> field enter a value like <b>My FooGallery</b>.</li>
+						<li>In the <b>App Description</b> field enter a value like <b>Allows importing of multiple videos from an album, channel or user into FooGallery</b>.</li>
+						<li>In the <b>App URL</b> field enter the URL of your website.</li>
+						<li>You can then ignore the <b>App Logo URL</b> and <b>App Callback URLs</b> fields.</li>
+						<li>Set the <b>Will you charge users to utilize your app?</b> value to <b>No</b>.</li>
+						<li>Set the <b>Will your integration be ad supported?</b> value to <b>No</b>.</li>
+						<li>For the <b>What platform(s) will be running this app?</b> checklist simply select <b>Web server</b>.</li>
+					</ul>
+				</li>
+				<li>Agree to the license agreement and terms of service and then click the <b>Create app</b> button.</li>
+				<li>Once the app is created select the <b>Authentication</b> tab and scroll down to the <b>Generate an Access Token</b> section.</li>
+				<li>For the <b>Scopes</b> checklist the default of <b>Public</b> and <b>Private</b> should be enough however if you are a PRO subscriber or higher and can't access your videos you may also need to select the <b>Video Files</b> option as well.</li>
+				<li>Finally click the <b>Generate Token</b> button and then copy the value from the <b>Your new Access token</b> field and enter it into either the prompt displayed during import or the <b>FooGallery > Settings > Video > Vimeo Access Token</b> option.</li>
+			</ul>
 		</dd>
 		<dt class="fgi-provider-title">Self Hosted</dt>
 		<dd class="fgi-provider-content">
-
+			<p>TODO</p>
 		</dd>
 		<dt class="fgi-provider-title">WordPress oEmbed</dt>
 		<dd class="fgi-provider-content">
@@ -84,58 +111,10 @@
 				FooGallery supports importing videos from all registered WordPress oEmbed video providers by entering the supported video URL into the search input.
 				For a full list of these providers please see the <a href="https://codex.wordpress.org/Embeds#oEmbed" target="_blank">official WordPress documentation on oEmbed providers</a>.
 			</p>
-			<p>The following table displays a list of these providers and there supported formats:</p>
-			<table>
-				<thead>
-					<tr>
-						<th>Provider</th>
-						<th>URL Formats</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td>Animoto</td>
-						<td>
-							<ul>
-								<li>http(s)://animoto.com/play/[VIDEO_ID]</li>
-							</ul>
-						</td>
-					</tr>
-					<tr>
-						<td>Cloudup</td>
-						<td>
-							<ul>
-								<li>http(s)://cloudup.com/[VIDEO_ID]</li>
-							</ul>
-						</td>
-					</tr>
-					<tr>
-						<td>CollegeHumor</td>
-						<td>
-							<ul>
-								<li>http(s)://www.collegehumor.com/video/[VIDEO_ID]</li>
-							</ul>
-						</td>
-					</tr>
-					<tr>
-						<td>DailyMotion</td>
-						<td>
-							<ul>
-								<li>http(s)://www.dailymotion.com/video/[VIDEO_ID]</li>
-								<li>http(s)://www.dailymotion.com/embed/video/[VIDEO_ID]</li>
-							</ul>
-						</td>
-					</tr>
-					<tr>
-						<td>TED</td>
-						<td>
-							<ul>
-								<li>http(s)://www.ted.com/talks/[VIDEO_ID]</li>
-							</ul>
-						</td>
-					</tr>
-				</tbody>
-			</table>
+			<p>
+				Please note that if any required information to import a video as a gallery item is missing you will be prompted to supply it. Also note if a providers content can not
+				be moved within a page, for example they use an IFRAME with no SRC, then there may be issues displaying the content within a lightbox.
+			</p>
 		</dd>
 	</dl>
 
@@ -440,6 +419,31 @@
 	</div>
 
 </script>
+<script type="text/html" id="tmpl-fgi-vimeo">
+
+	<?php
+	$help = sprintf('<a href="#toggle-help">%s</a>', __("help", "foogallery"));
+	?>
+
+<!--	<div class="fgi-vimeo-notification">-->
+<!--		<p>--><?php //_e("A Vimeo API access token is required to import multiple videos from an album, channel or user.", "foogallery") ?><!--</p>-->
+<!--	</div>-->
+<!--	<div class="fgi-vimeo-details">-->
+<!---->
+<!--	</div>-->
+
+	<div class="fgi-splash fgi-vimeo-access-token">
+		<h2><?php _e("Vimeo API access token is required.", "foogallery") ?></h2>
+		<p><?php _e("Create a new app on Vimeo to generate an access token.", "foogallery") ?></p>
+		<div class="button-hero-container">
+			<input type="text" name="access_token" value="{{data.access_token}}" spellcheck="false" placeholder="<?php _e("Your access token", "foogallery") ?>"/>
+			<button type="button" class="button fgi-save" disabled="disabled"><?php _e("Save", "foogallery") ?></button>
+			<p class="fgi-vimeo-error-message"></p>
+		</div>
+		<p><small><?php printf(__("See the %s for more information.", "foogallery"), $help) ?></small></p>
+	</div>
+
+</script>
 <script type="text/html" id="tmpl-fgi-import">
 <?php
 	$single = __("video", "foogallery");
@@ -534,6 +538,7 @@
 
 		<div class="button-hero-container">
 			<button type="button" class="button button-hero button-secondary fgi-import-more-videos"><?php _e("Import More Videos", "foogallery") ?></button>
+			<button type="button" class="button button-hero button-primary fgi-import-add-videos"><?php _e("Add Videos to Gallery", "foogallery") ?></button>
 		</div>
 	</div>
 

@@ -96,24 +96,6 @@ if ( !class_exists("FooGallery_Pro_Video_Self_Hosted") ){
 			return $this->error_response("The supplied URL is not supported.");
 		}
 
-		/**
-		 * Takes the supplied URL and retrieves its' MIME type.
-		 *
-		 * @param string $url The URL to fetch the MIME type for.
-		 *
-		 * @return bool|string Returns false if the MIME type could not be retrieved.
-		 */
-		function get_mime_type($url){
-			$remote = wp_safe_remote_head($url);
-			if (is_wp_error($remote)) {
-				return false;
-			}
-			if ( !empty($remote) && is_array($remote["response"]) && $remote["response"]["code"] === 200 ){
-				return wp_remote_retrieve_header($remote, "content-type");
-			}
-			return false;
-		}
-
 	}
 
 }

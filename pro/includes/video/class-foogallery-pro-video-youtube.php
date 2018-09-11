@@ -159,7 +159,7 @@ if ( !class_exists("FooGallery_Pro_Video_YouTube") ){
 			// we have as valid an id as we can hope for until we make the actual request so request it
 			$url = "https://www.youtube.com/list_ajax?style=json&action_get_list=true&list=" . $id;
 			// get the json object from the supplied url
-			$json = $this->get_json($url);
+			$json = $this->json_get($url);
 
 			// if an error occurred return it
 			if ($this->is_error($json)) {
@@ -232,7 +232,7 @@ if ( !class_exists("FooGallery_Pro_Video_YouTube") ){
 			// we have as valid an id as we can hope for until we make the actual request so request it
 			$url = "http://www.youtube.com/oembed?url=" . urlencode("https://www.youtube.com/watch?v=" . $id);
 			// get the json object from the supplied url
-			$json = $this->get_json($url);
+			$json = $this->json_get($url);
 
 			// if an error occurred return it
 			if ($this->is_error($json)) {
@@ -301,7 +301,7 @@ if ( !class_exists("FooGallery_Pro_Video_YouTube") ){
 
 			$url = "https://www.youtube.com/search_ajax?style=json&search_query=" . urlencode($query) . "&page=" . $page;
 			// get the json object from the supplied url
-			$json = $this->get_json($url);
+			$json = $this->json_get($url);
 
 			// if an error occurred return it
 			if ($this->is_error($json)) {

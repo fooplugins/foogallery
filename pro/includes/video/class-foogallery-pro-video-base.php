@@ -15,8 +15,28 @@ if ( ! class_exists( 'FooGallery_Pro_Video_Base' ) ) {
 			);
 		}
 
-		protected function get_json($url) {
-			$remote = wp_remote_get($url);
+		protected function json_get($url, $args = array("method"=>"GET")) {
+			if (!is_array($args)){
+				$args = array("method"=>"GET");
+			}
+			if (!array_key_exists("method", $args) || (array_key_exists("method", $args) && (!is_string($args["method"]) || strtoupper($args["method"]) != "GET"))){
+				$args["method"] = "GET";
+			}
+			return $this->json_response($url, $args);
+		}
+
+		protected function json_post($url, $args = array("method"=>"POST")) {
+			if (!is_array($args)){
+				$args = array("method"=>"POST");
+			}
+			if (!array_key_exists("method", $args) || (array_key_exists("method", $args) && (!is_string($args["method"]) || strtoupper($args["method"]) != "POST"))){
+				$args["method"] = "POST";
+			}
+			return $this->json_response($url, $args);
+		}
+
+		protected function json_response($url, $args = array("method"=>"GET")) {
+			$remote = wp_remote_request($url, $args);
 			if (is_wp_error($remote)) {
 				return $this->error_response("Error fetching JSON: " . $remote->get_error_message());
 			}
@@ -39,6 +59,13 @@ if ( ! class_exists( 'FooGallery_Pro_Video_Base' ) ) {
 			return !is_wp_error($remote) && wp_remote_retrieve_response_code($remote) === 200;
 		}
 
+		/**
+		 * Takes the supplied URL and retrieves its' MIME type.
+		 *
+		 * @param string $url The URL to fetch the MIME type for.
+		 *
+		 * @return bool|string Returns false if the MIME type could not be retrieved.
+		 */
 		protected function get_mime_type($url){
 			$remote = wp_safe_remote_head($url);
 			if (is_wp_error($remote)) {

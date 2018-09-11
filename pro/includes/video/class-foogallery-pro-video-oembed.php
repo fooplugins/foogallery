@@ -17,38 +17,39 @@ if ( ! class_exists( "FooGallery_Pro_Video_oEmbed" ) ) {
 		 * Takes a URL and attempts to return a result generated from its oEmbed data.
 		 *
 		 * @param string $url The url to fetch.
+		 *
 		 * @return array(
 		 *  "mode" => "embed",
-		 *     "videos" => array(
-		 *         array(
-		 *             "provider" => string,
-		 *             "id" => string,
-		 *             "url" => string,
-		 *             "thumbnail" => string,
-		 *             "title" => string,
-		 *             "description" => string,
-		 *             "html" => string
-		 *         )
-		 *     )
+		 *    "videos" => array(
+		 *        array(
+		 *            "provider" => string,
+		 *            "id" => string,
+		 *            "url" => string,
+		 *            "thumbnail" => string,
+		 *            "title" => string,
+		 *            "description" => string,
+		 *            "html" => string
+		 *        )
+		 *    )
 		 * )
 		 * @return array(
-		 *     "mode" => "error",
-		 *     "title" => string,
-		 *     "message" => string
+		 *    "mode" => "error",
+		 *    "title" => string,
+		 *    "message" => string
 		 * )
 		 */
-		function fetch($url) {
+		function fetch( $url ) {
 			// check if the url is not empty and is not false
-			if (empty($url) || $url === false) {
-				return $this->error_response("Invalid url supplied.");
+			if ( empty( $url ) || $url === false ) {
+				return $this->error_response( "Invalid url supplied." );
 			}
 
-			$data = $this->get_data($url);
-			if ($data === false) {
-				return $this->error_response("Unable to retrieve any data from the supplied URL.");
+			$data = foogallery_oembed_get_data( $url );
+			if ( $data === false ) {
+				return $this->error_response( "Unable to retrieve any data from the supplied URL." );
 			}
-			if (strtolower($data->type) !== "video") {
-				return $this->error_response("The data returned for the supplied URL was not a video.");
+			if ( strtolower( $data->type ) !== "video" ) {
+				return $this->error_response( "The data returned for the supplied URL was not a video." );
 			}
 
 			$provider = sanitize_title($data->provider_name, "oembed");
