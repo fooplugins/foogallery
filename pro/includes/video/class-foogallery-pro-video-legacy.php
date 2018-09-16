@@ -63,7 +63,7 @@ if ( ! class_exists( 'FooGallery_Pro_Video_Legacy' ) ) {
 		 */
 		function migration_required() {
 			//first try to get the saved option
-- 			$migration_required = get_option( FOOGALLERY_FOOVIDEO_MIGRATION_REQUIRED, 0 );
+ 			$migration_required = get_option( FOOGALLERY_FOOVIDEO_MIGRATION_REQUIRED, 0 );
 
 			//we require migration - get out early
 			if ( "1" === $migration_required ) {
