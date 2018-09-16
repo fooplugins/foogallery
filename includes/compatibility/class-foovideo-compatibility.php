@@ -125,7 +125,7 @@ if ( ! class_exists( 'FooGallery_FooVideo_Compatibility' ) ) {
 				$license_key = get_site_option( 'foo-video_licensekey' );
 
 				if ( empty( $license_key ) ) {
-					_e('There is no FooVideo license key set for this site. Please set it via the FooGallery Settings page under the extensions tab and try again.', 'foogallery');
+					echo '<h4>'. __('There is no FooVideo license key set for this site. Please set it via the FooGallery Settings page under the extensions tab and try again.', 'foogallery') . '</h4>';
 				} else {
 					$license_url = "http://fooplugins.com/api/{$license_key}/licensekey/";
 
@@ -142,17 +142,22 @@ if ( ! class_exists( 'FooGallery_FooVideo_Compatibility' ) ) {
 
 								if ( $coupon['valid'] ) {
 									echo '<h3>' . __( 'Your discount code is : ', 'foogallery' ) . $coupon['code'] . '</h3><br />';
-									echo 'You can copy the discount code and use it when purchasing FooGallery PRO from the "FooGallery -> Pricing" page.';
+									$pricing_page_url = foogallery_admin_pricing_url();
+									$pricing_page_text = apply_filters( 'foogallery_foovideo_pricing_menu_text', __('FooGallery -> Upgrade', 'foogallery') );
+									$pricing_page_link = '<a href="' . $pricing_page_url . '">' . $pricing_page_text . '</a>';
+									echo sprintf( __('You can copy the discount code and use it when purchasing FooGallery PRO from the %s page.', 'foogallery' ), $pricing_page_link );
+
+									//redeemed the code - no need to show the admin notice anymore
+									update_option( FooGallery_FooVideo_Compatibility::option_discount_key, '2' );
 								} else {
-									echo '<h4>' .$coupon['code'] . '</h4>';
+									echo '<h3>' .$coupon['code'] . '</h3>';
 								}
 
 							}
 						}
 					} else {
-						echo __('Sorry! There was an error retrieving your discount code from our servers. Please log a support ticket and we will help.', 'foogallery');
+						echo '<h4>'. __('Sorry! There was an error retrieving your discount code from our servers. Please log a support ticket and we will help.', 'foogallery') . '</h4>';
 					}
-
 				}
 			}
 			die();

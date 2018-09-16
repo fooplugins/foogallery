@@ -44,6 +44,7 @@ if ( ! class_exists( 'FooGallery_Pro_Video_Legacy' ) ) {
 				add_filter( 'foogallery_foovideo_discount_offer_menu', array( $this, 'override_discount_offer_menu' ) );
 				add_filter( 'foogallery_foovideo_discount_offer_show_upgrade', '__return_false' );
 				add_filter( 'foogallery_foovideo_discount_offer_message', array( $this, 'override_discount_offer_message' ) );
+				add_filter( 'foogallery_foovideo_pricing_menu_text', array( $this, 'override_pricing_menu_text' ) );
 			}
 
 			if ( !is_admin() && class_exists( 'Foo_Video' ) ) {
@@ -334,6 +335,15 @@ if ( ! class_exists( 'FooGallery_Pro_Video_Legacy' ) ) {
 			return $message;
 		}
 
-
+		/**
+		 * Override the pricing page menu text
+		 * @param $text
+		 *
+		 * @return string
+		 */
+		function override_pricing_menu_text( $text ) {
+			$text = __('FooGallery -> Pricing', 'foogallery');
+			return $text;
+		}
 	}
 }

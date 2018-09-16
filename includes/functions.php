@@ -188,6 +188,15 @@ function foogallery_admin_systeminfo_url() {
 }
 
 /**
+ * Returns the FooGallery pricing page Url within the admin
+ *
+ * @return string The Url to the FooGallery pricing page in admin
+ */
+function foogallery_admin_pricing_url() {
+	return admin_url( add_query_arg( array( 'page' => FOOGALLERY_ADMIN_MENU_PRICING_SLUG ), foogallery_admin_menu_parent_slug() ) );
+}
+
+/**
  * Get a foogallery template setting for the current foogallery that is being output to the frontend
  * @param string	$key
  * @param string	$default
