@@ -156,7 +156,7 @@ Update now to get all the latest features, bug fixes and improvements!
 
 == Changelog ==
 
-= 1.5.1 =
+= 1.5.2 =
 * Major version bump to correspond with FooGallery PRO which includes video support
 * New : check for FooVideo and upgrade offer for FooGallery PRO
 
