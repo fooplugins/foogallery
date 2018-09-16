@@ -156,6 +156,10 @@ Update now to get all the latest features, bug fixes and improvements!
 
 == Changelog ==
 
+= 1.5.1 =
+* Major version bump to correspond with FooGallery PRO which includes video support
+* New : check for FooVideo and upgrade offer for FooGallery PRO
+
 = 1.4.34 =
 * New : Language setting for load more pagination
 * Fix : Pagination + Filtering bugs
