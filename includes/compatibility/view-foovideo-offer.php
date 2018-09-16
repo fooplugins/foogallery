@@ -30,7 +30,6 @@ $message = apply_filters('foogallery_foovideo_discount_offer_message', '' );
 				data: data,
 				success: function(data) {
 					$('.foogallery-video-offer-result').html(data);
-					$('.foogallery-video-discount-offer').hide();
 				},
 				complete: function() {
 					$('.foogallery-video-discount-offer-spinner').removeClass('is-active');
@@ -114,17 +113,20 @@ $message = apply_filters('foogallery_foovideo_discount_offer_message', '' );
 	<?php } ?>
 	<p><?php _e('Click the "Redeem Now" button below to retrieve your discount code based on the FooVideo license you have entered for this site. If you have not entered your FooVideo license, please enter it on the FooGallery Settings page, under the Extensions tab, and then try again.','foogallery'); ?></p>
 
+	<p>
+		<?php _e('You can also log a support ticket through to our help desk if you are having any problems.', 'foogallery'); ?>
+		<a class="foogallery-video-discount-offer-support" href="#logticket"><?php _e('Log a support ticket.', 'foogallery' ); ?></a>
+	</p>
+
 	<input type="submit" class="button button-primary foogallery-video-discount-offer" value="<?php _e( 'Redeem Now!', 'foogallery'); ?>">
 
 	<?php wp_nonce_field( 'foogallery_video_discount_offer', 'foogallery_video_discount_offer' ); ?>
 	<div style="width:40px; display: inline-block;"><span class="foogallery-video-discount-offer-spinner spinner"></span></div>
 
-	<p class="foogallery-video-offer-result"></p>
+	<input type="submit" class="button foogallery-video-discount-offer-not-interested" value="<?php _e( 'I am no longer interested!', 'foogallery'); ?>">
+	<?php wp_nonce_field( 'foogallery_video_discount_offer_hide', 'foogallery_video_discount_offer_hide' ); ?>
 
-	<p>
-		<?php _e('You can also log a support ticket through to our help desk if you are having any problems.', 'foogallery'); ?>
-		<a class="foogallery-video-discount-offer-support" href="#logticket"><?php _e('Log a support ticket.', 'foogallery' ); ?></a>
-	</p>
+	<p class="foogallery-video-offer-result"></p>
 
 	<div style="display: none" class="foogallery-video-discount-offer-support-container">
 		<h4><?php _e('Log a Support Ticket', 'foogallery'); ?></h4>
@@ -144,7 +146,4 @@ Message : I am an existing FooVideo customer - please contact me.</textarea>
 		<?php wp_nonce_field( 'foogallery_video_discount_offer_support', 'foogallery_video_discount_offer_support' ); ?>
 		<div style="width:40px; display: inline-block;"><span class="foogallery-video-discount-offer-support-spinner spinner"></span></div>
 	</div>
-	<br />
-	<input type="submit" class="button foogallery-video-discount-offer-not-interested" value="<?php _e( 'I am no longer interested!', 'foogallery'); ?>">
-	<?php wp_nonce_field( 'foogallery_video_discount_offer_hide', 'foogallery_video_discount_offer_hide' ); ?>
 </div>
