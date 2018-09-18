@@ -156,23 +156,17 @@ Update now to get all the latest features, bug fixes and improvements!
 
 == Changelog ==
 
-= 1.5.2 =
+= 1.5.3 =
 * Major version bump to correspond with FooGallery PRO which includes video support
 * New : check for FooVideo and upgrade offer for FooGallery PRO
-
-= 1.4.34 =
 * New : Language setting for load more pagination
+* Update : FooGallery client side 1.0.29
+* Update : Freemius SDK 2.1.1
 * Fix : Pagination + Filtering bugs
 * Fix : PHP 7.1 compatibility tests failing for clone
-* Update : FooGallery client side 1.0.29
-* Multiple bug fixes and improvements
-
-= 1.4.32 =
-* Update : Freemius SDK 2.1.1
-* Update : FooGallery client side 1.0.28
 * Fix : better paging + filtering support
 * Fix : better RTL support in media modal
-* Multiple small bug fixes and improvements
+* Multiple bug fixes and improvements
 
 = 1.4.31 =
 
