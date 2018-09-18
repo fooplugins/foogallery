@@ -15,6 +15,18 @@ if ( ! class_exists( 'FooGallery_Pro_Video_Legacy' ) ) {
 			add_filter( 'foogallery_clean_video_url', array( $this, 'foogallery_clean_video_url_legacy_filter' ) );
 			add_filter( 'foogallery_youtubekey', array( $this, 'foogallery_youtubekey_legacy_filter' ) );
 
+			//make sure that all plugins are loaded first before we do checks for FooVideo
+			add_action( 'plugins_loaded', array( $this, 'load_legacy_overrides' ) );
+
+			// Ajax calls for migrating
+			add_action( 'wp_ajax_foogallery_video_migration', array( $this, 'ajax_foogallery_video_migration' ) );
+			add_action( 'wp_ajax_foogallery_video_migration_reset', array( $this, 'ajax_foogallery_video_migration_reset' ) );
+		}
+
+		/**
+		 * Run legacy override hooks and filters
+		 */
+		function load_legacy_overrides() {
 			if ( is_admin() ) {
 
 				//check if the old FooVideo was/is installed
@@ -50,10 +62,6 @@ if ( ! class_exists( 'FooGallery_Pro_Video_Legacy' ) ) {
 			if ( !is_admin() && class_exists( 'Foo_Video' ) ) {
 				add_filter( 'foogallery_build_class_attribute', array( $this, 'foogallery_build_class_attribute' ), 20 );
 			}
-
-			// Ajax calls for migrating
-			add_action( 'wp_ajax_foogallery_video_migration', array( $this, 'ajax_foogallery_video_migration' ) );
-			add_action( 'wp_ajax_foogallery_video_migration_reset', array( $this, 'ajax_foogallery_video_migration_reset' ) );
 		}
 
 		/**
