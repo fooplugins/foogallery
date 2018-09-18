@@ -126,7 +126,8 @@ if ( ! class_exists( 'FooGallery_FooVideo_Compatibility' ) ) {
 
 				if ( empty( $license_key ) ) {
 					echo '<h3>' . __( 'No FooVideo License Found!', 'foogallery' ) . '</h3>';
-					echo '<h4>' . __( 'There is no FooVideo license key set for this site. Please set it via the FooGallery Settings page under the extensions tab and try again.', 'foogallery' ) . '</h4>';
+					$settings_link = '<a target="_blank" href="' . foogallery_admin_settings_url() . '#extensions">' . __('FooGallery Settings page', 'foogallery') . '</a>';
+					echo '<h4>' . sprintf( __( 'There is no FooVideo license key set for this site. Please set it via the %s under the extensions tab and try again.', 'foogallery' ), $settings_link ) . '</h4>';
 				} else {
 					$license_url = "http://fooplugins.com/api/{$license_key}/licensekey/";
 
@@ -142,11 +143,29 @@ if ( ! class_exists( 'FooGallery_FooVideo_Compatibility' ) ) {
 								$coupon = $license_details['coupon'];
 
 								if ( $coupon['valid'] ) {
-									echo '<h3>' . __( 'Your discount code is : ', 'foogallery' ) . $coupon['code'] . '</h3><br />';
-									$pricing_page_url = foogallery_admin_pricing_url();
-									$pricing_page_text = apply_filters( 'foogallery_foovideo_pricing_menu_text', __('FooGallery -> Upgrade', 'foogallery') );
-									$pricing_page_link = '<a href="' . $pricing_page_url . '">' . $pricing_page_text . '</a>';
-									echo sprintf( __('You can copy the discount code and use it when purchasing FooGallery PRO from the %s page.', 'foogallery' ), $pricing_page_link );
+									echo '<h3>' . __( 'Your discount code is : ', 'foogallery' ) . $coupon['code'] . '</h3>';
+									echo '<h4>' . __( 'The value of the discount is : ', 'foogallery' ) . $coupon['value'] . '</h4>';
+
+									$license_option = __( 'Single Site', 'foogallery' );
+									if ( 'FooVideo Extension (Multi)' === $license_details['license'] ) {
+										$license_option = __( '5 Site', 'foogallery' );
+									} else if ( 'FooVideo Extension (Business)' === $license_details['license'] ) {
+										$license_option = __( '25 Site', 'foogallery' );
+									}
+									$license_option = '<strong>' . $license_option . '</strong>';
+									$pricing_page_url  = foogallery_admin_pricing_url();
+									$pricing_page_text = apply_filters( 'foogallery_foovideo_pricing_menu_text', __( 'FooGallery -> Upgrade', 'foogallery' ) );
+									$pricing_page_link = '<a target="_blank" href="' . $pricing_page_url . '">' . $pricing_page_text . '</a>';
+
+									if ( !class_exists( 'FooGallery_Pro_Video' ) ) {
+										echo sprintf( __( 'Your discount entitles you to a FooGallery PRO - %s license for no additional cost!', 'foogallery' ), $license_option );
+										echo '<br />' . sprintf( __( 'Copy the discount code above and use it when purchasing FooGallery PRO from %s (make sure to select %s plan!).', 'foogallery' ), $pricing_page_link, $license_option );
+									} else {
+										echo sprintf( __( 'Your discount entitles you to a free FooGallery PRO - %s license renewal or extension!', 'foogallery' ), $license_option );
+										echo '<br />' . sprintf( __( 'Copy the discount code above and use it when extending your FooGallery PRO license from %s (make sure to select the %s plan!).', 'foogallery' ), $pricing_page_link, $license_option );
+									}
+									$doc_link = '<a href="https://fooplugins.link/foovideo-upgrade" target="_blank">' . __( 'read our documentation', 'foogallery' ) . '</a>';
+									echo '<br />' . sprintf( __( 'For a more detailed guide on the process, %s.', 'foogallery' ), $doc_link );
 
 									//redeemed the code - no need to show the admin notice anymore
 									update_option( FooGallery_FooVideo_Compatibility::option_discount_key, '2' );
