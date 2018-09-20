@@ -127,7 +127,7 @@ if ( !class_exists("FooGallery_Pro_Video_Vimeo") ){
 				}
 
 				// check if we are dealing with a channel
-				if (preg_match('/vimeo\.com\/channels\/(?<id>[0-9]*?)$/i', $url, $matches)) {
+				if (preg_match('/vimeo\.com\/channels\/(?<id>[a-zA-Z0-9]*?)$/i', $url, $matches)) {
 					// for albums the id is the last part of the url
 					return $this->fetch_stream("channel", $matches["id"], $page, $offset);
 				}
