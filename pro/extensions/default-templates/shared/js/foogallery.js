@@ -8187,7 +8187,7 @@
 
 	_.VideoSource.Ogv = _.VideoSource.extend({
 		construct: function(){
-			this._super('video/ogg', /\.ogv/i, true);
+			this._super('video/ogg', /\.ogv|\.ogg/i, true);
 		}
 	});
 	_.videoSources.register('video/ogg', _.VideoSource.Ogv);

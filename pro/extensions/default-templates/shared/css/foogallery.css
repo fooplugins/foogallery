@@ -80,6 +80,16 @@ only screen and (min-resolution: 2.25dppx) {
 	outline: 0;
 	text-decoration: none;
 	z-index: 4;
+	-moz-box-shadow: none;
+	box-shadow: none;
+}
+.foogallery .fg-thumb:hover,
+.foogallery .fg-thumb:focus {
+	border: none;
+	outline: 0;
+	text-decoration: none;
+	-moz-box-shadow: none;
+	box-shadow: none;
 }
 .foogallery .fg-image {
 	display: block;
@@ -6018,7 +6028,7 @@ only screen and (min-resolution: 2.25dppx) {
 
 /* Next hide the caption itself */
 .fg-slider.fgs-no-captions .fg-caption {
-	display: none;
+	display: none !important;
 }
 
 /* Now make adjustments to the layout of the item itself to display the thumb more predominantly */
