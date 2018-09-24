@@ -7,14 +7,14 @@
  * Enqueue the FooGallery Media Views stylesheet
  */
 function foogallery_enqueue_media_views_style() {
-	wp_enqueue_style( 'foogallery-media-views', FOOGALLERY_PRO_URL . 'css/foogallery.media-views.min.css' );
+	wp_enqueue_style( 'foogallery-media-views', FOOGALLERY_PRO_URL . 'css/foogallery.media-views.min.css', array(), FOOGALLERY_VERSION );
 }
 
 /**
  * Enqueue the FooGallery Media Views script
  */
 function foogallery_enqueue_media_views_script() {
-	wp_enqueue_script( 'foogallery-media-views', FOOGALLERY_PRO_URL . 'js/foogallery.media-views.min.js', array( 'jquery', 'media-views', 'underscore' ) );
+	wp_enqueue_script( 'foogallery-media-views', FOOGALLERY_PRO_URL . 'js/foogallery.media-views.min.js', array( 'jquery', 'media-views', 'underscore' ), FOOGALLERY_VERSION );
 }
 
 /**
