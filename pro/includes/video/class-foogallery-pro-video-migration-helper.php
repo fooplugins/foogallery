@@ -337,6 +337,10 @@ if ( ! class_exists( 'FooGallery_Pro_Video_Migration_Helper' ) ) {
 		 * @param array $mappings
 		 */
 		function migrate_setting( &$settings, $setting_name, $mappings, $override_setting_name = false ) {
+			if ( false === $settings ) {
+				return;
+			}
+
 			$old_setting_name = $setting_name;
 			foreach ( $settings as $name => $value) {
 				if ( $old_setting_name === $name ) {
