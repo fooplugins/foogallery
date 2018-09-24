@@ -439,6 +439,12 @@ if ( !class_exists( 'FooGallery_Slider_Gallery_Template' ) ) {
 				if ( ( $key = array_search( 'video-icon-default', $classes ) ) !== false ) {
 					unset( $classes[$key] );
 				}
+				if ( ( $key = array_search( 'fgs-no-captions', $classes ) ) !== false ) {
+					//only remove the caption hover class if no captions is enabled
+					if ( ( $key = array_search( 'fg-caption-hover', $classes ) ) !== false ) {
+						unset( $classes[$key] );
+					}
+				}
 			}
 
 			return $classes;
