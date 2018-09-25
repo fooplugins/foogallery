@@ -81,7 +81,7 @@
 			</ul>
 
 			<h4>Access Token</h4>
-			<p>If you want to import multiple videos from an album, channel or user then you will need an API access token. You can generate one by following the basic instructions below or take a look at our <a href="" target="_blank">documentation</a> for more detailed steps.</p>
+			<p>If you want to import multiple videos from an album, channel or user then you will need an API access token. You can generate one by following the basic instructions below or take a look at our <a href="https://fooplugins.link/vimeo-access-token" target="_blank">documentation</a> for more detailed steps.</p>
 			<ul>
 				<li>
 					Visit <a href="https://developer.vimeo.com/apps/new" target="_blank">https://developer.vimeo.com/apps/new</a> and fill in the form. If you are not signed in you should be prompted to using your Vimeo account.
@@ -103,7 +103,35 @@
 		</dd>
 		<dt class="fgi-provider-title">Self Hosted</dt>
 		<dd class="fgi-provider-content">
-			<p>TODO</p>
+			<p>FooGallery supports displaying .mp4, .webm and .ogg files hosted either locally on this site or externally using a service like Amazon Web Services.</p>
+			<h4>Locally Hosted</h4>
+			<p>
+				If your video file is hosted locally you can simply click the <b>Choose a video from your Media Library</b> button displayed on the <b>Getting Started</b> screen.
+			</p>
+			<p>
+				You can also just enter the full video url into the search input and you will be prompted to supply any additional information required.
+			</p>
+
+			<h4>Externally Hosted</h4>
+			<p>If your video file is hosted externally you can just enter the full video url into the search input and you will be prompted to supply any additional information required.</p>
+
+			<h4>URL Formats</h4>
+			<p>When entering a URL directly into the search or URL(s) inputs the following formats are supported:</p>
+			<ul>
+				<li>http(s)://site/path/file_name.mp4</li>
+				<li>http(s)://site/path/file_name.webm</li>
+				<li>http(s)://site/path/file_name.ogg</li>
+				<li>http(s)://site/path/file_name.ogv</li>
+			</ul>
+
+			<h4>Additional Information</h4>
+			<p>When using either locally or externally hosted files you will be prompted to supply some additional information that FooGallery needs in order to display the video as an item within a gallery.</p>
+			<ul>
+				<li><b>Thumbnail</b> - The image used to represent the video within a gallery. We recommend larger images as additional sizes are auto-generated and downscaled images look better than upscaled ones.</li>
+				<li><b>Title</b> - The title for the video. While not required it is recommended to supply a simple title.</li>
+				<li><b>Description</b> - The description for the video.</li>
+				<li><b>URL(s)</b> - The URLs are combined and used as required to give the best cross browser compatibility possible. If you are only using a single video format we recommend using .mp4 videos as they cover the majority of modern browsers however the more types you supply the better the compatibility becomes.</li>
+			</ul>
 		</dd>
 		<dt class="fgi-provider-title">WordPress oEmbed</dt>
 		<dd class="fgi-provider-content">
@@ -111,10 +139,8 @@
 				FooGallery supports importing videos from all registered WordPress oEmbed video providers by entering the supported video URL into the search input.
 				For a full list of these providers please see the <a href="https://codex.wordpress.org/Embeds#oEmbed" target="_blank">official WordPress documentation on oEmbed providers</a>.
 			</p>
-			<p>
-				Please note that if any required information to import a video as a gallery item is missing you will be prompted to supply it. Also note if a providers content can not
-				be moved within a page, for example they use an IFRAME with no SRC, then there may be issues displaying the content within a lightbox.
-			</p>
+			<p>Please note that if any required information to import a video as a gallery item is missing you will be prompted to supply it.</p>
+			<p>Also note if a providers content can not be moved within a page, for example they use an IFRAME with no SRC, then there may be issues displaying the content within a lightbox.</p>
 		</dd>
 	</dl>
 
@@ -164,7 +190,7 @@
 			<input type="hidden" name="id" value="{{data.id}}"/>
 			<input type="hidden" name="provider" value="{{data.mode}}"/>
 			<label class="fgi-row">
-				<span class="fgi-col-label"><?php _e("Thumbnail", "foogallery") ?></span>
+				<span class="fgi-col-label"><?php _e("Thumbnail", "foogallery") ?> *</span>
 				<span class="fgi-col-input">
 					<span class="fgi-browse">
 						<span class="fgi-browse-inner">
@@ -195,7 +221,7 @@
 				</span>
 			</label>
 			<label class="fgi-row">
-				<span class="fgi-col-label"><?php _e("URL(s)", "foogallery") ?></span>
+				<span class="fgi-col-label"><?php _e("URL(s)", "foogallery") ?> *</span>
 				<span class="fgi-col-input">
 					<# var first = true; _(data.urls).each(function(url, type){ #>
 						<span class="fgi-browse">
@@ -223,7 +249,7 @@
 						</span>
 					<# }) #>
 					<span class="fgi-input-description">
-						<?php _e("We recommend using .mp4 videos for the best cross browser compatibility. If you already have the URL you can simply paste it into the appropriate input.", "foogallery") ?>
+						<?php _e("We recommend using .mp4 videos for the best cross browser compatibility however the more types you supply the better the compatibility becomes. If you already have the URL you can simply paste it into the appropriate input.", "foogallery") ?>
 					</span>
 					<span class="fgi-input-description">
 						<?php _e("As you enter URLs above the below compatibility list will be updated giving you an idea of which browsers will be able to play your video.", "foogallery") ?>
@@ -425,13 +451,6 @@
 	$help = sprintf('<a href="#toggle-help">%s</a>', __("help", "foogallery"));
 	?>
 
-<!--	<div class="fgi-vimeo-notification">-->
-<!--		<p>--><?php //_e("A Vimeo API access token is required to import multiple videos from an album, channel or user.", "foogallery") ?><!--</p>-->
-<!--	</div>-->
-<!--	<div class="fgi-vimeo-details">-->
-<!---->
-<!--	</div>-->
-
 	<div class="fgi-splash fgi-vimeo-access-token">
 		<h2><?php _e("Vimeo API access token is required.", "foogallery") ?></h2>
 		<p><?php _e("Create a new app on Vimeo to generate an access token.", "foogallery") ?></p>
@@ -490,12 +509,12 @@
 	$try_again_failed = sprintf('<a href="#try-again-failed">%s</a>', sprintf(__("try importing %s again", "foogallery"), $video_try_again));
 	$toggle_failed_title = __("Toggle failed list", "foogallery");
 	$toggle_failed_message = sprintf(__("failed to import. Would you like to %s?", "foogallery"), $try_again_failed);
-	$toggle_failed = sprintf('<a href="#toggle-failed" title="%s">{{failed}} %s</a>', $toggle_failed_title, $video_failed, $toggle_failed_message);
-	$video_cancelled = sprintf("{{cancelled > 1 ? \"%s\" : \"%s\"}}", $plural_1, $single_1);
-	$import_cancelled = sprintf('<a href="#import-cancelled">%s</a>', sprintf(__("import %s", "foogallery"), $video_cancelled));
+	$toggle_failed = sprintf('<a href="#toggle-failed" title="%s">{{failed}} %s</a> %s', $toggle_failed_title, $video_failed, $toggle_failed_message);
+	$video_cancelled_1 = sprintf("{{cancelled > 1 ? \"%s\" : \"%s\"}}", $plural_1, $single_1);
+	$import_cancelled = sprintf('<a href="#import-cancelled">%s</a>', sprintf(__("import %s", "foogallery"), $video_cancelled_1));
 	$toggle_cancelled_title = __("Toggle cancelled list", "foogallery");
 	$toggle_cancelled_message = sprintf(__("were cancelled. Would you like to %s?", "foogallery"), $import_cancelled);
-	$toggle_cancelled = sprintf('<a href="#toggle-cancelled" title="%s">{{cancelled}} %s</a>', $toggle_cancelled_title, $video_cancelled, $toggle_cancelled_message);
+	$toggle_cancelled = sprintf('<a href="#toggle-cancelled" title="%s">{{cancelled}} %s</a> %s', $toggle_cancelled_title, $video_cancelled, $toggle_cancelled_message);
 ?>
 	<div class="fgi-splash fgi-import-notification">
 
@@ -513,11 +532,11 @@
 		<# if (data.failed.length){ var failed = data.failed.length; #>
 			<p><?php echo $toggle_failed ?></p>
 			<ul class="fgi-import-failed">
-				<# _.each(data.failed, function(video){ #>
+				<# _.each(data.failed, function(video, i){ #>
 					<# if (video.urls){ #>
-						<li><span>{{video.title}}</span></li>
+						<li><span>{{video.title}}</span> - <small>{{data.errors[i]}}</small></li>
 					<# } else { #>
-						<li><a href="{{video.url}}" target="_blank">{{video.title}}</a></li>
+						<li><a href="{{video.url}}" target="_blank">{{video.title}}</a> - <small>{{data.errors[i]}}</small></li>
 					<# } #>
 				<# }) #>
 			</ul>
