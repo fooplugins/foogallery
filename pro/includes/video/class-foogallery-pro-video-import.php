@@ -56,7 +56,8 @@ if ( ! class_exists( "FooGallery_Pro_Video_Import" ) ) {
 			$response = array(
 				"mode"     => "import-result",
 				"imported" => array(),
-				"failed"   => array()
+				"failed"   => array(),
+				"errors"	 => array()
 			);
 
 			$video_types = array(
@@ -86,26 +87,28 @@ if ( ! class_exists( "FooGallery_Pro_Video_Import" ) ) {
 							$url .= $value;
 						}
 					}
-					if ( ! empty( $url ) ) {
-						$video["url"] = $url;
-					} else {
+					if ( empty( $url ) ) {
 						$response["failed"][] = $video;
+						$response["errors"][] = "No urls provided.";
 						continue;
+					} else {
+						$video["url"] = $url;
 					}
 				}
-				$attachment_id = $this->create_attachment( $video );
-				if ( $attachment_id === false ) {
+				$result = $this->create_attachment( $video );
+				if ( $result["type"] === "error" ) {
 					$response["failed"][] = $video;
+					$response["errors"][] =  $result["message"];
 				} else {
-					$response["imported"][] = $attachment_id;
+					$response["imported"][] = $result["attachment_id"];
 					// Save alt text in the post meta
-					update_post_meta( $attachment_id, "_wp_attachment_image_alt", $video["title"] );
+					update_post_meta( $result["attachment_id"], "_wp_attachment_image_alt", $video["title"] );
 					// Save the URL that we will be opening
-					update_post_meta( $attachment_id, "_foogallery_custom_url", $video["url"] );
+					update_post_meta( $result["attachment_id"], "_foogallery_custom_url", $video["url"] );
 					// Make sure we open in new tab by default
-					update_post_meta( $attachment_id, "_foogallery_custom_target", foogallery_get_setting( "video_default_target", "_blank" ) );
+					update_post_meta( $result["attachment_id"], "_foogallery_custom_target", foogallery_get_setting( "video_default_target", "_blank" ) );
 					//save video object
-					update_post_meta( $attachment_id, FOOGALLERY_VIDEO_POST_META, $video );
+					update_post_meta( $result["attachment_id"], FOOGALLERY_VIDEO_POST_META, $video );
 				}
 			}
 
@@ -119,18 +122,33 @@ if ( ! class_exists( "FooGallery_Pro_Video_Import" ) ) {
 			$video["thumbnail"] = $this->get_thumbnail_url( $video );
 			$response           = wp_remote_get( $video["thumbnail"] );
 			if ( is_wp_error( $response ) ) {
-				return false;
+				return array(
+					"type" => "error",
+					"message" => $response->get_error_message()
+				);
 			}
 
 			$thumbnail          = wp_remote_retrieve_body( $response );
+			if ( empty($thumbnail) ) {
+				return array(
+					"type" => "error",
+					"message" => "Unable to retrieve response body for thumbnail."
+				);
+			}
 			$thumbnail_filename = $this->get_thumbnail_filename( $video, $response );
 			if ($thumbnail_filename === false){
-				return false;
+				return array(
+					"type" => "error",
+					"message" => "Unable to generate thumbnail filename from response."
+				);
 			}
 
 			$upload = wp_upload_bits( $thumbnail_filename, null, $thumbnail );
-			if ($upload["error"] === true){
-				return false;
+			if ($upload["error"] !== false){
+				return array(
+					"type" => "error",
+					"message" => $upload["error"] === true ? "Unknown error uploading thumbnail image." : $upload["error"]
+				);
 			}
 
 			$guid   = $upload["url"];
@@ -152,13 +170,28 @@ if ( ! class_exists( "FooGallery_Pro_Video_Import" ) ) {
 
 			// Insert the attachment
 			$attachment_id   = wp_insert_attachment( $attachment, $file, 0 );
+			if ($attachment_id == 0 || is_wp_error($attachment_id)){
+				return array(
+					"type" => "error",
+					"message" => is_wp_error($attachment_id) ? $attachment_id->get_error_message() : "Failed to insert the attachment."
+				);
+			}
 			$attachment_data = wp_generate_attachment_metadata( $attachment_id, $file );
 			wp_update_attachment_metadata( $attachment_id, $attachment_data );
 
 			$thumbnail_details  = wp_get_attachment_image_src( $attachment_id, 'thumbnail' ); // Yes we have the data, but get the thumbnail URL anyway, to be safe
+			if ($thumbnail_details === false){
+				return array(
+					"type" => "error",
+					"message" => "Unable to retrieve thumbnail details."
+				);
+			}
 			$video["thumbnail"] = $thumbnail_details[0];
 
-			return $attachment_id;
+			return array(
+				"type" => "success",
+				"attachment_id" => $attachment_id
+			);
 		}
 
 		private function get_thumbnail_url( $video ) {
