@@ -4647,8 +4647,8 @@
 						var parts = pair.split(self.opt.pair);
 						if (parts.length === 2){
 							state[parts[0]] = parts[1].indexOf(self.opt.array) === -1
-								? decodeURIComponent(parts[1])
-								: $.map(parts[1].split(self.opt.array), function(part){ return decodeURIComponent(part); });
+								? decodeURIComponent(parts[1].replace(/\+/g, '%20'))
+								: $.map(parts[1].split(self.opt.array), function(part){ return decodeURIComponent(part.replace(/\+/g, '%20')); });
 							if (_is.string(state[parts[0]]) && !isNaN(state[parts[0]])){
 								state[parts[0]] = parseInt(state[parts[0]]);
 							}
@@ -4679,7 +4679,7 @@
 				$.each(state, function(name, value){
 					if (!_is.empty(value) && name !== "id"){
 						if (_is.array(value)){
-							value = $.map(value, function(part){ return encodeURIComponent(part); }).join("+");
+							value = $.map(value, function(part){ return encodeURIComponent(part); }).join(self.opt.array);
 						} else {
 							value = encodeURIComponent(value);
 						}
