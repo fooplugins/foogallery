@@ -120,28 +120,44 @@ if ( ! class_exists( "FooGallery_Pro_Video_Import" ) ) {
 			@set_time_limit( 300 );
 
 			$video["thumbnail"] = $this->get_thumbnail_url( $video );
-			$response           = wp_remote_get( $video["thumbnail"] );
-			if ( is_wp_error( $response ) ) {
-				return array(
-					"type" => "error",
-					"message" => $response->get_error_message()
-				);
-			}
 
-			$thumbnail          = wp_remote_retrieve_body( $response );
-			if ( empty($thumbnail) ) {
-				return array(
-					"type" => "error",
-					"message" => "Unable to retrieve response body for thumbnail."
-				);
-			}
-			$thumbnail_filename = $this->get_thumbnail_filename( $video, $response );
-			if ($thumbnail_filename === false){
-				return array(
-					"type" => "error",
-					"message" => "Unable to generate thumbnail filename from response."
-				);
-			}
+			$thumbnail = file_get_contents( $video["thumbnail"] );
+			$filetype = wp_check_filetype( $video["thumbnail"], null );
+
+			$thumbnail_filename = $video["id"] . '.' . $filetype['ext'];
+
+//			$response = wp_remote_get( $video["thumbnail"] );
+//
+//			if ( is_wp_error( $response ) ) {
+//				return array(
+//					"type" => "error",
+//					"message" => $response->get_error_message()
+//				);
+//			}
+//
+//			$response_code = wp_remote_retrieve_response_code( $response );
+//			if ( 200 !== $response_code ) {
+//				return array(
+//					"type" => "error",
+//					"message" => "Unable to retrieve thumbnail due to error " . $response_code
+//				);
+//			}
+//
+//			$thumbnail          = wp_remote_retrieve_body( $response );
+//			if ( empty($thumbnail) ) {
+//				return array(
+//					"type" => "error",
+//					"message" => "Unable to retrieve response body for thumbnail."
+//				);
+//			}
+//
+//			$thumbnail_filename = $this->get_thumbnail_filename( $video, $response );
+//			if ($thumbnail_filename === false){
+//				return array(
+//					"type" => "error",
+//					"message" => "Unable to generate thumbnail filename from response."
+//				);
+//			}
 
 			$upload = wp_upload_bits( $thumbnail_filename, null, $thumbnail );
 			if ($upload["error"] !== false){
