@@ -1,7 +1,7 @@
 === FooGallery - Image Gallery WordPress Plugin ===
 Contributors: bradvin, steveush, fooplugins
 Donate link: http://fooplugins.com
-Tags: gallery, image gallery, photo gallery, responsive, album, media gallery, masonry gallery, portfolio, justified image gallery, video gallery, photography, photographer, retina
+Tags: gallery, image gallery, photo gallery, responsive, album, media gallery, masonry gallery, portfolio, justified gallery, video gallery, photography, youtube gallery
 Requires at least: 3.9
 Tested up to: 4.9.8
 Stable tag: trunk
@@ -15,6 +15,60 @@ Why choose FooGallery? Stunning gallery layouts, responsive, retina-ready, light
 Why choose FooGallery? Stunning gallery layouts, responsive, retina-ready, lightning fast, easy to use. Built to be highly configurable and extensible for developers or freelancers.
 
 [View the FooGallery Homepage & DEMO](http://foo.gallery/)
+
+https://youtu.be/zY8eSTEIwpU
+
+**Features**
+
+*	Lazy loading
+*	Simple Pagination (dots)
+*	Live previews in admin
+*	Retina thumbnail support
+*	Gallery Widget
+*	Albums built-in! (Activate the albums extension)
+*	Use built-in media library to manage images
+*	Drag n Drop reordering of images and galleries
+*	Beautiful gallery templates
+*	Custom CSS for both galleries and albums
+*	Copy to clipboard shortcodes
+*	Visual shortcodes in rich text editor
+*	Gallery picker to insert shortcodes
+*	Page usage metabox with one-click gallery page creation
+*	NextGen importer tool (albums and galleries and shortcodes)
+*	Multisite Support
+*	PHP 7 compatible
+*	plus many, many more
+
+**Demos**
+
+*	Responsive Image Gallery - [demo](https://foo.gallery/demos/responsive-image-gallery/)
+*	Image Viewer Gallery - [demo](https://foo.gallery/demos/image-viewer-gallery/)
+*	Masonry Gallery - [demo](https://foo.gallery/demos/masonry-image-gallery/)
+*	Simple Portfolio - [demo](https://foo.gallery/demos/simple-portfolio-demo/)
+*	Justified Gallery - [demo](https://foo.gallery/demos/justified-gallery/)
+*	Single Thumbnail Gallery - [demo](https://foo.gallery/demos/single-thumbnail-gallery/)
+*	Responsive Album Layout - [demo](https://foo.gallery/demos/responsive-album-layout/)
+*	All-in-one Stack Album - [demo](https://foo.gallery/demos/all-in-one-stack-album/)
+*	[More Demos](https://foo.gallery/demos)
+
+**PRO Features**
+
+*   11 Beautiful Hover Effect Presets - [demo](https://foo.gallery/demos/hover-effect-presets-demos/)
+*	Video Support - [demo](https://foo.gallery/demos/video-gallery-demos/)
+*	Media Tags and Categories
+*	Gallery Filtering using Media Tags or Categories - [demo](https://foo.gallery/demos/filtering-demos/)
+*   Polaroid PRO Gallery Template - [demo](https://foo.gallery/demos/polaroid-pro-image-gallery/)
+*   Grid PRO Gallery Template - [demo](https://foo.gallery/demos/grid-pro-demo/)
+*	Slider PRO Gallery Template - [demo](https://foo.gallery/demos/slider-pro/)
+*   Advanced Pagination - [demo](https://foo.gallery/demos/pagination-demo/)
+*   Infinite Scroll - [demo](https://foo.gallery/demos/infinite-scroll-demo/)
+*   Multiple Loaded Effects - [demo](https://foo.gallery/demos/loaded-effect-demos/)
+*   Bulk Copy Gallery Settings - [more info](https://fooplugins.com/bulk-copy-foogallery-pro/)
+*   More on the way!
+
+**Documentation**
+
+*	[FooGallery Documentation](https://fooplugins.helpscoutdocs.com/collection/8-foogallery)
 
 **GDPR**
 
@@ -32,7 +86,7 @@ FooGallery now comes with built-in support for higher quality thumbnails on reti
 
 **Video Support**
 
-FooGallery now supports the creation of video galleries with the [FooVideo premium extension](http://fooplugins.com/plugins/foovideo/?utm_source=foogalleryplugin&utm_medium=foogallerylink&utm_campaign=foogallery_wprepo)! Create galleries with both images and videos mixed!
+FooGallery PRO now supports the creation of video galleries! Import from YouTube, Vimeo, Facebook, TED and Dailymotion, or use a self-hosted video from any online source. You can also easily create mixed galleries with both images and videos!
 
 **Albums Built In**
 
@@ -42,81 +96,9 @@ Albums are now built in as an extension. Simply head over to the extensions page
 
 FooGallery was designed to be the most developer-friendly gallery plugin available for WordPress. It was also built on top of a solid extension framework, which means different functionality is separated out into different areas in the codebase. It also means the core plugin is lightweight, but still allowing for the most flexibility.
 
-**Features**
-
-*	Lazy loading
-*	Simple Pagination (dots)
-*	Live previews in admin
-*	Retina thumbnail support
-*	Gallery Widget
-*	Add videos to galleries (via the [FooVideo premium extension](http://fooplugins.com/plugins/foovideo/?utm_source=foogalleryplugin&utm_medium=foogallerylink&utm_campaign=foogallery_wprepo))
-*	Albums built-in! (Activate the albums extension)
-*	Use built-in media library to manage images
-*	Drag n Drop reordering of images and galleries
-*	Beautiful gallery templates
-*	Custom CSS for both galleries and albums
-*	Copy to clipboard shortcodes
-*	Visual shortcodes in rich text editor
-*	Gallery picker to insert shortcodes
-*	Page usage metabox with one-click gallery page creation
-*	NextGen importer tool (albums and galleries and shortcodes)
-*	Multisite Support
-*	PHP 7 compatible
-*	plus many, many more
-
-**PRO Features**
-
-*   11 Beautiful Hover Effect Presets
-*	Media Tags and Categories
-*	Gallery Filtering using Media Tags or Categories
-*   Polaroid PRO Gallery Template
-*   Grid PRO Gallery Template
-*   Advanced Pagination
-*   Infinite Scroll
-*   Multiple Loaded Effects
-*   Bulk Copy Gallery Settings
-*   More on the way!
-
-**Demos**
-
-*	Responsive Image Gallery - [demo](http://foo.gallery/demos/responsive-image-gallery/)
-*	Image Viewer Gallery - [light demo](http://foo.gallery/demos/image-viewer-gallery/) - [dark demo](http://foo.gallery/demos/image-viewer-gallery-dark/)
-*	Masonry Gallery - [demo](http://foo.gallery/demos/masonry-image-gallery/)
-*	Simple Portfolio - [demo](http://foo.gallery/demos/simple-portfolio/)
-*	Justified Gallery - [demo](http://foo.gallery/demos/justified-gallery/)
-*	Single Thumbnail Gallery - [demo](http://foo.gallery/demos/single-thumbnail-gallery/)
-*	[More Demos](http://foo.gallery/demos)
-
-**Album Demos**
-
-*	Responsive Album Layout - [demo](http://foo.gallery/demos/responsive-album-layout/)
-*	All-in-one Stack Album - [demo](http://foo.gallery/demos/all-in-one-stack-album/)
-
-**Videos Demos**
-
-*	Vertical Video Slider - [demo](http://foo.gallery/demos/video-slider-vertical/) - [full-width demo](http://foo.gallery/demos/video-slider-vertical-full-width/)
-*	Horizontal Video Slider - [demo](http://foo.gallery/demos/video-slider-horizontal/) - [custom colors](http://foo.gallery/demos/video-slider-custom-theme/)
-
-**Extensions**
-
-*	[FooVideo](http://fooplugins.com/plugins/foovideo/?utm_source=foogalleryplugin&utm_medium=foogallerylink&utm_campaign=foogallery_wprepo)
-*	Albums (bundled)
-*	Default Gallery Templates (bundled)
-*	NextGen Gallery and Album Importer (bundled)
-*	[Custom Branding](http://fooplugins.com/plugins/foogallery-branding/?utm_source=foogalleryplugin&utm_medium=foogallerylink&utm_campaign=foogallery_wprepo)
-*	[FooBox PRO Lightbox](http://fooplugins.com/plugins/foobox/?utm_source=foogalleryplugin&utm_medium=foogallerylink&utm_campaign=foogallery_wprepo)
-*	[FooBox FREE Lightbox](http://wordpress.org/plugins/foobox-image-lightbox)
-*	Build your own!!!
-
-**Documentation**
-
-*	[FooGallery 101](http://docs.fooplugins.com/foogallery/foogallery-101/)
-*	[Developer 101](http://docs.fooplugins.com/foogallery/foogallery-developers-101/)
-*	[Actions and Filters](http://docs.fooplugins.com/foogallery/actions-filters/)
-
 **Contribute**
 
-FooGallery is hosted on [GitHub](https://github.com/fooplugins/foogallery). If you find a bug, please [create an issue](https://github.com/fooplugins/foogallery/issues).
+FooGallery is hosted on [GitHub](https://github.com/fooplugins/foogallery).
 
 == Installation ==
 
@@ -132,7 +114,7 @@ Have you enabled retina support for your galleries? To enable retina support, ed
 
 = Can I add videos to my galleries? =
 
-Yes, you need to use the [FooVideo premium extension](http://fooplugins.com/plugins/foovideo/?utm_source=foogalleryplugin&utm_medium=foogallerylink&utm_campaign=foogallery_wprepo)
+Yes, video is supported in FooGallery PRO!
 
 = How do I get albums working? =
 
@@ -156,11 +138,11 @@ Update now to get all the latest features, bug fixes and improvements!
 
 == Changelog ==
 
-= 1.5.3 =
+= 1.5.8 =
 * Major version bump to correspond with FooGallery PRO which includes video support
-* New : check for FooVideo and upgrade offer for FooGallery PRO
+* New : Upgrade offer to FooGallery PRO for FooVideo customers
 * New : Language setting for load more pagination
-* Update : FooGallery client side 1.0.29
+* Update : FooGallery client side 1.1.2
 * Update : Freemius SDK 2.1.1
 * Fix : Pagination + Filtering bugs
 * Fix : PHP 7.1 compatibility tests failing for clone
