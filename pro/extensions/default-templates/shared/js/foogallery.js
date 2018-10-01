@@ -3157,6 +3157,317 @@
 		FooGallery.utils.is,
 		FooGallery.utils.fn
 );
+(function($, _, _utils, _is, _obj) {
+
+	var DATA_NAME = "__FooGallerySwipe__",
+			TOUCH = "ontouchstart" in window,
+			POINTER_IE10 = window.navigator.msPointerEnabled && !window.navigator.pointerEnabled && !TOUCH,
+			POINTER = (window.navigator.pointerEnabled || window.navigator.msPointerEnabled) && !TOUCH,
+			USE_TOUCH = TOUCH || POINTER;
+
+	_.Swipe = _utils.Class.extend(/** @lend FooGallery.Swipe */{
+		/**
+		 * @summary A utility class for handling swipe gestures on touch devices.
+		 * @memberof FooGallery
+		 * @constructs Swipe
+		 * @param {Element} element - The element being bound to.
+		 * @param {Object} options - Any options for the current instance of the class.
+		 * @augments FooGallery.utils.Class
+		 * @borrows FooGallery.utils.Class.extend as extend
+		 * @borrows FooGallery.utils.Class.override as override
+		 */
+		construct: function(element, options){
+			var self = this, ns = ".fgswipe";
+			/**
+			 * @summary The jQuery element this instance of the class is bound to.
+			 * @memberof FooGallery.Swipe
+			 * @name $el
+			 * @type {jQuery}
+			 */
+			self.$el = $(element);
+			/**
+			 * @summary The options for this instance of the class.
+			 * @memberof FooGallery.Swipe
+			 * @name opt
+			 * @type {FooGallery.Swipe~Options}
+			 */
+			self.opt = _obj.extend({
+				threshold: 20,
+				allowPageScroll: false,
+				swipe: $.noop,
+				data: {}
+			}, options);
+			/**
+			 * @summary Whether or not a swipe is in progress.
+			 * @memberof FooGallery.Swipe
+			 * @name active
+			 * @type {boolean}
+			 */
+			self.active = false;
+			/**
+			 * @summary The start point for the last swipe.
+			 * @memberof FooGallery.Swipe
+			 * @name startPoint
+			 * @type {?FooGallery.Swipe~Point}
+			 */
+			self.startPoint = null;
+			/**
+			 * @summary The end point for the last swipe.
+			 * @memberof FooGallery.Swipe
+			 * @name startPoint
+			 * @type {?FooGallery.Swipe~Point}
+			 */
+			self.endPoint = null;
+			/**
+			 * @summary The event names used by this instance of the plugin.
+			 * @memberof FooGallery.Swipe
+			 * @name events
+			 * @type {{start: string, move: string, end: string, leave: string}}
+			 */
+			self.events = {
+				start: (USE_TOUCH ? (POINTER ? (POINTER_IE10 ? 'MSPointerDown' : 'pointerdown') : 'touchstart') : 'mousedown') + ns,
+				move: (USE_TOUCH ? (POINTER ? (POINTER_IE10 ? 'MSPointerMove' : 'pointermove') : 'touchmove') : 'mousemove') + ns,
+				end: (USE_TOUCH ? (POINTER ? (POINTER_IE10 ? 'MSPointerUp' : 'pointerup') : 'touchend') : 'mouseup') + ns,
+				leave: (USE_TOUCH ? (POINTER ? 'mouseleave' : null) : 'mouseleave') + ns
+			};
+		},
+		/**
+		 * @summary Initializes this instance of the class.
+		 * @memberof FooGallery.Swipe
+		 * @function init
+		 */
+		init: function(){
+			var self = this;
+			self.$el.on(self.events.start, {self: self}, self.onStart);
+			self.$el.on(self.events.move, {self: self}, self.onMove);
+			self.$el.on(self.events.end, {self: self}, self.onEnd);
+			if (_is.string(self.events.leave)) self.$el.on(self.events.leave, {self: self}, self.onEnd);
+			self.$el.data(DATA_NAME, self);
+		},
+		/**
+		 * @summary Destroys this instance of the class.
+		 * @memberof FooGallery.Swipe
+		 * @function destroy
+		 */
+		destroy: function(){
+			var self = this;
+			self.$el.off(self.events.start, self.onStart);
+			self.$el.off(self.events.move, self.onMove);
+			self.$el.off(self.events.end, self.onEnd);
+			if (_is.string(self.events.leave)) self.$el.off(self.events.leave, self.onEnd);
+			self.$el.removeData(DATA_NAME);
+		},
+		/**
+		 * @summary Gets the angle between two points.
+		 * @memberof FooGallery.Swipe
+		 * @function getAngle
+		 * @param {FooGallery.Swipe~Point} pt1 - The first point.
+		 * @param {FooGallery.Swipe~Point} pt2 - The second point.
+		 * @returns {number}
+		 */
+		getAngle: function(pt1, pt2){
+			var radians = Math.atan2(pt1.x - pt2.x, pt1.y - pt2.y),
+					degrees = Math.round(radians * 180 / Math.PI);
+			return 360 - (degrees < 0 ? 360 - Math.abs(degrees) : degrees);
+		},
+		/**
+		 * @summary Gets the distance between two points.
+		 * @memberof FooGallery.Swipe
+		 * @function getDistance
+		 * @param {FooGallery.Swipe~Point} pt1 - The first point.
+		 * @param {FooGallery.Swipe~Point} pt2 - The second point.
+		 * @returns {number}
+		 */
+		getDistance: function(pt1, pt2){
+			var xs = pt2.x - pt1.x,
+					ys = pt2.y - pt1.y;
+
+			xs *= xs;
+			ys *= ys;
+
+			return Math.sqrt( xs + ys );
+		},
+		/**
+		 * @summary Gets the general direction between two points and returns the result as a compass heading: N, NE, E, SE, S, SW, W, NW or NONE if the points are the same.
+		 * @memberof FooGallery.Swipe
+		 * @function getDirection
+		 * @param {FooGallery.Swipe~Point} pt1 - The first point.
+		 * @param {FooGallery.Swipe~Point} pt2 - The second point.
+		 * @returns {string}
+		 */
+		getDirection: function(pt1, pt2){
+			var self = this, angle = self.getAngle(pt1, pt2);
+			if (angle > 337.5 || angle <= 22.5) return "N";
+			else if (angle > 22.5 && angle <= 67.5) return "NE";
+			else if (angle > 67.5 && angle <= 112.5) return "E";
+			else if (angle > 112.5 && angle <= 157.5) return "SE";
+			else if (angle > 157.5 && angle <= 202.5) return "S";
+			else if (angle > 202.5 && angle <= 247.5) return "SW";
+			else if (angle > 247.5 && angle <= 292.5) return "W";
+			else if (angle > 292.5 && angle <= 337.5) return "NW";
+			return "NONE";
+		},
+		/**
+		 * @summary Gets the pageX and pageY point from the supplied event whether it is for a touch or mouse event.
+		 * @memberof FooGallery.Swipe
+		 * @function getPoint
+		 * @param {jQuery.Event} event - The event to parse the point from.
+		 * @returns {FooGallery.Swipe~Point}
+		 */
+		getPoint: function(event){
+			var touches;
+			if (USE_TOUCH && !_is.empty(touches = event.originalEvent.touches || event.touches)){
+				return {x: touches[0].pageX, y: touches[0].pageY};
+			}
+			if (_is.number(event.pageX) && _is.number(event.pageY)){
+				return {x: event.pageX, y: event.pageY};
+			}
+			return null;
+		},
+		/**
+		 * @summary Gets the offset from the supplied point.
+		 * @memberof FooGallery.Swipe
+		 * @function getOffset
+		 * @param {FooGallery.Swipe~Point} pt - The point to use to calculate the offset.
+		 * @returns {FooGallery.Swipe~Offset}
+		 */
+		getOffset: function(pt){
+			var self = this, offset = self.$el.offset();
+			return {
+				left: pt.x - offset.left,
+				top: pt.y - offset.top
+			};
+		},
+		/**
+		 * @summary Handles the {@link FooGallery.Swipe#events.start|start} event.
+		 * @memberof FooGallery.Swipe
+		 * @function onStart
+		 * @param {jQuery.Event} event - The event object for the current event.
+		 */
+		onStart: function(event){
+			var self = event.data.self, pt = self.getPoint(event);
+			if (!_is.empty(pt)){
+				self.active = true;
+				self.startPoint = self.endPoint = pt;
+			}
+		},
+		/**
+		 * @summary Handles the {@link FooGallery.Swipe#events.move|move} event.
+		 * @memberof FooGallery.Swipe
+		 * @function onMove
+		 * @param {jQuery.Event} event - The event object for the current event.
+		 */
+		onMove: function(event){
+			var self = event.data.self, pt = self.getPoint(event);
+			if (self.active && !_is.empty(pt)){
+				self.endPoint = pt;
+				if (!self.opt.allowPageScroll){
+					event.preventDefault();
+				}
+			}
+		},
+		/**
+		 * @summary Handles the {@link FooGallery.Swipe#events.end|end} and {@link FooGallery.Swipe#events.leave|leave} events.
+		 * @memberof FooGallery.Swipe
+		 * @function onEnd
+		 * @param {jQuery.Event} event - The event object for the current event.
+		 */
+		onEnd: function(event){
+			var self = event.data.self;
+			if (self.active){
+				self.active = false;
+				var info = {
+					startPoint: self.startPoint,
+					endPoint: self.endPoint,
+					startOffset: self.getOffset(self.startPoint),
+					endOffset: self.getOffset(self.endPoint),
+					angle: self.getAngle(self.startPoint, self.endPoint),
+					distance: self.getDistance(self.startPoint, self.endPoint),
+					direction: self.getDirection(self.startPoint, self.endPoint)
+				};
+
+				if (self.opt.threshold > 0 && info.distance < self.opt.threshold) return;
+
+				self.opt.swipe.apply(this, [info, self.opt.data]);
+				self.startPoint = null;
+				self.endPoint = null;
+			}
+		}
+	});
+
+	/**
+	 * @summary Expose FooGallery.Swipe as a jQuery plugin.
+	 * @memberof external:"jQuery.fn"#
+	 * @function fgswipe
+	 * @param {(FooGallery.Swipe~Options|string)} [options] - The options to supply to FooGallery.Swipe or one of the supported method names.
+	 * @returns {jQuery}
+	 */
+	$.fn.fgswipe = function(options){
+		return this.each(function(){
+			var $this = $(this), swipe = $this.data(DATA_NAME), exists = swipe instanceof _.Swipe;
+			if (exists){
+				if (_is.string(options) && _is.fn(swipe[options])){
+					swipe[options]();
+					return;
+				} else {
+					swipe.destroy();
+				}
+			}
+			if (_is.hash(options)){
+				swipe = new _.Swipe(this, options);
+				swipe.init();
+			}
+		});
+	};
+
+	/**
+	 * @summary A simple point object containing X and Y coordinates.
+	 * @typedef {Object} FooGallery.Swipe~Point
+	 * @property {number} x - The X coordinate.
+	 * @property {number} y - The Y coordinate.
+	 */
+
+	/**
+	 * @summary A simple offset object containing top and left values.
+	 * @typedef {Object} FooGallery.Swipe~Offset
+	 * @property {number} left - The left value.
+	 * @property {number} top - The top value.
+	 */
+
+	/**
+	 * @summary The information object supplied as the first parameter to the {@link FooGallery.Swipe~swipeCallback} function.
+	 * @typedef {Object} FooGallery.Swipe~Info
+	 * @property {FooGallery.Swipe~Point} startPoint - The page X and Y coordinates where the swipe began.
+	 * @property {FooGallery.Swipe~Point} endPoint - The page X and Y coordinates where the swipe ended.
+	 * @property {FooGallery.Swipe~Offset} startOffset - The top and left values where the swipe began.
+	 * @property {FooGallery.Swipe~Offset} endOffset - The top and left values where the swipe ended.
+	 * @property {number} angle - The angle traveled from the start to the end of the swipe.
+	 * @property {number} distance - The distance traveled from the start to the end of the swipe.
+	 * @property {string} direction - The general direction traveled from the start to the end of the swipe: N, NE, E, SE, S, SW, W, NW or NONE if the points are the same.
+	 */
+
+	/**
+	 * @summary The callback function to execute whenever a swipe occurs.
+	 * @callback FooGallery.Swipe~swipeCallback
+	 * @param {FooGallery.Swipe~Info} info - The swipe info.
+	 * @param {Object} data - Any additional data supplied when the swipe was bound.
+	 */
+
+	/**
+	 * @summary The options available for the swipe utility class.
+	 * @typedef {Object} FooGallery.Swipe~Options
+	 * @property {number} [threshold=20] - The minimum distance to travel before being registered as a swipe.
+	 * @property {FooGallery.Swipe~swipeCallback} swipe - The callback function to execute whenever a swipe occurs.
+	 * @property {Object} [data={}] - Any additional data to supply to the swipe callback.
+	 */
+
+})(
+		FooGallery.$,
+		FooGallery,
+		FooGallery.utils,
+		FooGallery.utils.is,
+		FooGallery.utils.obj
+);
 (function ($, _, _utils, _is, _fn, _obj) {
 
 	_.TemplateFactory = _utils.Factory.extend(/** @lends FooGallery.TemplateFactory */{
@@ -3772,7 +4083,7 @@
 					}
 
 					// if the container currently has no children make them
-					if (self.$el.children().length == 0) {
+					if (self.$el.children().not(self.sel.item.elem).length == 0) {
 						self.$el.append(self.createChildren());
 						self._undo.children = true;
 					}
@@ -4084,7 +4395,7 @@
 			else self.$el.attr("style", self._undo.style);
 
 			if (self._undo.children) {
-				self.$el.empty();
+				self.destroyChildren();
 			}
 			if (self._undo.create) {
 				self.$el.remove();
@@ -4093,6 +4404,15 @@
 			self.destroyed = true;
 			self.initializing = false;
 			self.initialized = false;
+		},
+		/**
+		 * @summary If the {@link FooGallery.Template#createChildren|createChildren} method is used to generate custom elements for a template this method should also be overridden and used to destroy them.
+		 * @memberof FooGallery.Template#
+		 * @function destroyChildren
+		 * @description This method is called just after the {@link FooGallery.Template~"destroyed.foogallery"|destroyed} event to allow templates to remove any markup created in the {@link FooGallery.Template#createChildren|createChildren} method.
+		 */
+		destroyChildren: function(){
+			// does nothing for the base template
 		},
 
 		// ################
@@ -4471,8 +4791,8 @@
 						var parts = pair.split(self.opt.pair);
 						if (parts.length === 2){
 							state[parts[0]] = parts[1].indexOf(self.opt.array) === -1
-								? decodeURIComponent(parts[1])
-								: $.map(parts[1].split(self.opt.array), function(part){ return decodeURIComponent(part); });
+								? decodeURIComponent(parts[1].replace(/\+/g, '%20'))
+								: $.map(parts[1].split(self.opt.array), function(part){ return decodeURIComponent(part.replace(/\+/g, '%20')); });
 							if (_is.string(state[parts[0]]) && !isNaN(state[parts[0]])){
 								state[parts[0]] = parseInt(state[parts[0]]);
 							}
@@ -4503,7 +4823,7 @@
 				$.each(state, function(name, value){
 					if (!_is.empty(value) && name !== "id"){
 						if (_is.array(value)){
-							value = $.map(value, function(part){ return encodeURIComponent(part); }).join("+");
+							value = $.map(value, function(part){ return encodeURIComponent(part); }).join(self.opt.array);
 						} else {
 							value = encodeURIComponent(value);
 						}
@@ -4721,6 +5041,14 @@
 			 * @readonly
 			 */
 			self.isCreated = false;
+			/**
+			 * @summary Whether or not the item has been destroyed and can not be used.
+			 * @memberof FooGallery.Item#
+			 * @name isDestroyed
+			 * @type {boolean}
+			 * @readonly
+			 */
+			self.isDestroyed = false;
 			/**
 			 * @summary Whether or not the items' image is currently loading.
 			 * @memberof FooGallery.Item#
@@ -4980,17 +5308,38 @@
 			 * 	}
 			 * });
 			 */
-			var e = self.tmpl.raise("destroy-item");
+			var e = self.tmpl.raise("destroy-item", [self]);
 			if (!e.isDefaultPrevented()) {
-				self.doDestroyItem();
+				self.isDestroyed = self.doDestroyItem();
+			}
+			if (self.isDestroyed) {
+				/**
+				 * @summary Raised after an item has been destroyed.
+				 * @event FooGallery.Template~"destroyed-item.foogallery"
+				 * @type {jQuery.Event}
+				 * @param {jQuery.Event} event - The jQuery.Event object for the current event.
+				 * @param {FooGallery.Template} template - The template raising the event.
+				 * @param {FooGallery.Item} item - The item that was destroyed.
+				 * @example {@caption To listen for this event and perform some action when it occurs you would bind to it as follows.}
+				 * $(".foogallery").foogallery({
+					 * 	on: {
+					 * 		"destroyed-item.foogallery": function(event, template, item){
+					 * 			// do something
+					 * 		}
+					 * 	}
+					 * });
+				 */
+				self.tmpl.raise("destroyed-item", [self]);
+				// call the original method that simply nulls the tmpl property
 				self._super();
 			}
-			return self.tmpl === null;
+			return self.isDestroyed;
 		},
 		/**
 		 * @summary Performs the actual destroy logic for the item.
 		 * @memberof FooGallery.Item#
 		 * @function doDestroyItem
+		 * @returns {boolean}
 		 */
 		doDestroyItem: function () {
 			var self = this;
@@ -5012,6 +5361,7 @@
 				self.detach();
 				self.$el.remove();
 			}
+			return true;
 		},
 		/**
 		 * @summary Parse the supplied element updating the current items' properties.
@@ -6061,7 +6411,12 @@
 			if (_is.hash(objOrElement)) {
 				type = objOrElement.type;
 			} else if (_is.element(objOrElement)) {
-				type = $(objOrElement).find(this.tmpl.sel.item.anchor).data("type");
+				var $el = $(objOrElement), item = this.tmpl.sel.item;
+				// if (_is.string(item.video) && $el.is(item.video)){
+				// 	type = "video";
+				// } else {
+				// }
+				type = $el.find(item.anchor).data("type");
 			}
 			return _is.string(type) && _.components.contains(type) ? type : "item";
 		},
@@ -7154,6 +7509,8 @@
 
 			self.position = self.opt.position;
 			self.mode = self.opt.mode;
+			self.sortBy = self.opt.sortBy;
+			self.sortInvert = self.opt.sortInvert;
 
 			self.min = self.opt.min;
 			self.limit = self.opt.limit;
@@ -7208,12 +7565,17 @@
 			self.items.push.apply(self.items, items);
 			if (items.length > 0) {
 				// first get a count of every tag available from all items
-				var counts = self.count(items, self.opt.tags), min = Infinity, max = 0;
+				var counts = self.count(items, self.opt.tags), supplied = self.opt.tags.length > 0, min = Infinity, max = 0, index = -1;
 				for (var prop in counts) {
 					if (counts.hasOwnProperty(prop)) {
 						var count = counts[prop];
 						if (self.min <= 0 || count >= self.min) {
-							self.tags.push({value: prop, count: count, percent: 1, size: self.largest, opacity: self.darkest});
+							if (supplied){
+								index = $.inArray(prop, self.opt.tags);
+							} else {
+								index++;
+							}
+							self.tags.push({index: index, value: prop, count: count, percent: 1, size: self.largest, opacity: self.darkest});
 							if (count < min) min = count;
 							if (count > max) max = count;
 						}
@@ -7240,13 +7602,15 @@
 					}
 				}
 
-				// finally sort the tags by name
-				self.tags.sort(function (a, b) {
-					var aTag = a.value.toUpperCase(), bTag = b.value.toUpperCase();
-					if (aTag < bTag) return -1;
-					if (aTag > bTag) return 1;
-					return 0;
-				});
+				// finally sort the tags using the sort options
+				switch (self.sortBy){
+					case "none":
+						self.sortTags("index", false);
+						break;
+					default:
+						self.sortTags(self.sortBy, self.sortInvert);
+						break;
+				}
 
 			}
 
@@ -7284,7 +7648,7 @@
 			});
 		},
 		set: function (tags, updateState) {
-			if (_is.string(tags)) tags = tags.split(' ');
+			if (_is.string(tags)) tags = [tags];
 			if (!_is.array(tags)) tags = [];
 			var self = this, state;
 			if (!self.arraysEqual(self.current, tags)) {
@@ -7346,6 +7710,10 @@
 		arraysEqual: function (arr1, arr2) {
 			if (arr1.length !== arr2.length)
 				return false;
+
+			arr1 = arr1.slice();
+			arr2 = arr2.slice();
+
 			arr1.sort();
 			arr2.sort();
 			for (var i = arr1.length; i--;) {
@@ -7353,6 +7721,30 @@
 					return false;
 			}
 			return true;
+		},
+		sortTags: function(prop, invert){
+			this.tags.sort(function(a, b){
+
+				if (a.hasOwnProperty(prop) && b.hasOwnProperty(prop)){
+					if (_is.string(a[prop]) && _is.string(b[prop])){
+						var s1 = a[prop].toUpperCase(), s2 = b[prop].toUpperCase();
+						if (invert){
+							if (s2 < s1) return -1;
+							if (s2 > s1) return 1;
+						} else {
+							if (s1 < s2) return -1;
+							if (s1 > s2) return 1;
+						}
+					} else {
+						if (invert){
+							return b[prop] - a[prop];
+						}
+						return a[prop] - b[prop];
+					}
+				}
+				return 0;
+
+			});
 		},
 		apply: function (tags) {
 			var self = this;
@@ -7398,6 +7790,8 @@
 		pushOrReplace: "push",
 		position: "none",
 		mode: "single",
+		sortBy: "value", // "value", "count", "index", "none"
+		sortInvert: false, // the direction of the sorting
 		tags: [],
 		min: 0,
 		limit: 0,
@@ -7535,6 +7929,500 @@
 		all: "All",
 		none: "No items found."
 	}, -100);
+
+})(
+		FooGallery.$,
+		FooGallery,
+		FooGallery.utils,
+		FooGallery.utils.is
+);
+(function($, _, _utils, _is){
+
+	_.Video = _.Item.extend({
+		construct: function(template, options){
+			var self = this;
+			self._super(template, options);
+			self.cover = self.opt.cover;
+		},
+		doParseItem: function($element){
+			var self = this;
+			if (self._super($element)){
+				self.cover = self.$anchor.data("cover") || self.cover;
+				self.$el.addClass(self.cls.video);
+				return true;
+			}
+			return false;
+		},
+		doCreateItem: function(){
+			var self = this;
+			if (self._super()){
+				self.$anchor.attr({
+					"data-type": self.type,
+					"data-cover": self.cover
+				});
+				self.$el.addClass(self.cls.video);
+				return true;
+			}
+			return false;
+		}
+	});
+
+	_.template.configure("core", {
+		item: {
+			cover: ""
+		}
+	},{
+		item: {
+			video: "fg-video"
+		}
+	});
+
+	_.components.register("video", _.Video);
+
+})(
+		FooGallery.$,
+		FooGallery,
+		FooGallery.utils,
+		FooGallery.utils.is
+);
+(function(_, _utils, _is, _obj, _url){
+
+
+	_.VideoHelper = _utils.Class.extend({
+		construct: function(playerDefaults){
+			this.playerDefaults = _obj.extend({
+				autoPlay: false,
+				width: null,
+				height: null,
+				minWidth: null,
+				minHeight: null,
+				maxWidth: null,
+				maxHeight: null,
+				attrs: {
+					iframe: {
+						frameborder: 'no',
+						webkitallowfullscreen: true,
+						mozallowfullscreen: true,
+						allowfullscreen: true
+					},
+					video: {
+						controls: true,
+						preload: false,
+						controlsList: "nodownload"
+					}
+				}
+			}, playerDefaults);
+			this.sources = _.videoSources.load();
+		},
+		parseHref: function(href, autoPlay){
+			var self = this, urls = href.split(','), result = [];
+			for (var i = 0, il = urls.length, url, source; i < il; i++){
+				if (_is.empty(urls[i])) continue;
+				url = _url.parts(urls[i]);
+				source = null;
+				for (var j = 0, jl = self.sources.length; j < jl; j++){
+					if (self.sources[j].canPlay(url)){
+						source = self.sources[j];
+						result.push({
+							parts: url,
+							source: source,
+							embed: source.getEmbedUrl(url, autoPlay)
+						});
+						break;
+					}
+				}
+			}
+			return result;
+		},
+		canPlay: function(href){
+			return this.parseHref(href).length > 0;
+		},
+		getPlayer: function(href, options){
+			options = _obj.extend({}, this.playerDefaults, options);
+			var urls = this.parseHref(href, options.autoPlay);
+			return new _.VideoPlayer(urls, options);
+		}
+	});
+
+
+})(
+		FooGallery,
+		FooGallery.utils,
+		FooGallery.utils.is,
+		FooGallery.utils.obj,
+		FooGallery.utils.url
+);
+(function($, _, _utils, _fn){
+
+
+	_.VideoPlayer = _utils.Class.extend({
+		construct: function(urls, options){
+			this.urls = urls;
+			this.options = options;
+			this.selfHosted = $.map(this.urls, function(url){ return url.source.selfHosted ? true : null; }).length > 0;
+			this.$el = this.$create();
+		},
+		$create: function(){
+			var self = this, o = self.options,
+					$result = self.selfHosted ? $('<video/>', o.attrs.video) : $('<iframe/>', o.attrs.iframe);
+			$result.css({
+				width: o.width, height: o.height,
+				maxWidth: o.maxWidth, maxHeight: o.maxHeight,
+				minWidth: o.minWidth, minHeight: o.minHeight
+			});
+			return $result;
+		},
+		appendTo: function(parent){
+			var self = this, $parent = $(parent);
+			if ($parent.length > 0){
+				if (self.$el.length === 0){
+					self.$el = self.$create();
+				}
+				$parent.append(self.$el);
+			}
+			return self;
+		},
+		load: function(){
+			var self = this;
+			if (self.urls.length === 0){
+				return _fn.rejectWith(Error("No supported urls available."));
+			}
+			if (self.selfHosted){
+				return self.loadSelfHosted();
+			} else {
+				return self.loadEmbed();
+			}
+		},
+		loadSelfHosted: function(){
+			var self = this;
+			self.$el.off("loadeddata error");
+			return $.Deferred(function(def){
+				self.$el.find("source").remove();
+				self.$el.on({
+					'loadeddata': function(){
+						self.$el.off("loadeddata error");
+						this.volume = 0.2;
+						if (self.options.autoPlay){
+							this.play();
+						}
+						def.resolve();
+					},
+					'error': function(){
+						self.$el.off("loadeddata error");
+						def.reject(Error('Error loading video: ' + $.map(self.urls, function(url){ return url.embed; }).join(",")));
+					}
+				});
+				var sources = $.map(self.urls, function(url){
+					return $("<source/>", {src: url.embed, mimeType: url.source.mimeType});
+				});
+				self.$el.append(sources);
+				if (self.$el.prop("readyState") > 0){
+					self.$el.get(0).load();
+				}
+			}).promise();
+		},
+		loadEmbed: function(){
+			var self = this;
+			self.$el.off("load error");
+			return $.Deferred(function(def){
+				var src = self.urls[0].embed;
+				self.$el.on({
+					'load': function(){
+						self.$el.off("load error");
+						def.resolve();
+					},
+					'error': function(){
+						self.$el.off("load error");
+						def.reject(Error('Error loading video: ' + src));
+					}
+				});
+				self.$el.attr("src", src);
+			}).promise();
+		},
+		remove: function(){
+			this.$el.off("load loadeddata error").remove();
+		}
+	});
+
+
+})(
+		FooGallery.$,
+		FooGallery,
+		FooGallery.utils,
+		FooGallery.utils.fn
+);
+(function($, _, _utils, _is, _url, _str){
+
+
+	var _testVideo = document.createElement("video");
+
+	_.VideoSource = _utils.Class.extend({
+		construct: function(mimeType, regex, selfHosted, embedParams, autoPlayParam){
+			this.mimeType = mimeType;
+			this.regex = regex;
+			this.selfHosted = _is.boolean(selfHosted) ? selfHosted : false;
+			this.embedParams = _is.array(embedParams) ? embedParams : [];
+			this.autoPlayParam = _is.hash(autoPlayParam) ? autoPlayParam : {};
+			this.canPlayType = this.selfHosted && _is.fn(_testVideo.canPlayType) ? $.inArray(_testVideo.canPlayType(this.mimeType), ['probably','maybe']) !== -1 : true;
+		},
+		canPlay: function(urlParts){
+			return this.canPlayType && this.regex.test(urlParts.href);
+		},
+		mergeParams: function(urlParts, autoPlay){
+			var self = this;
+			for (var i = 0, il = self.embedParams.length, ip; i < il; i++){
+				ip = self.embedParams[i];
+				urlParts.search = _url.param(urlParts.search, ip.key, ip.value);
+			}
+			if (!_is.empty(self.autoPlayParam)){
+				urlParts.search = _url.param(urlParts.search, self.autoPlayParam.key, autoPlay ? self.autoPlayParam.value : '');
+			}
+			return urlParts.search;
+		},
+		getId: function(urlParts){
+			var match = urlParts.href.match(/.*\/(.*?)($|\?|#)/);
+			return match && match.length >= 2 ? match[1] : null;
+		},
+		getEmbedUrl: function(urlParts, autoPlay){
+			urlParts.search = this.mergeParams(urlParts, autoPlay);
+			return _str.join('/', location.protocol, '//', urlParts.hostname, urlParts.pathname) + urlParts.search + urlParts.hash;
+		}
+	});
+
+	_.videoSources = new _utils.Factory();
+
+
+})(
+		FooGallery.$,
+		FooGallery,
+		FooGallery.utils,
+		FooGallery.utils.is,
+		FooGallery.utils.url,
+		FooGallery.utils.str
+);
+(function(_){
+
+
+	_.VideoSource.Mp4 = _.VideoSource.extend({
+		construct: function(){
+			this._super('video/mp4', /\.mp4/i, true);
+		}
+	});
+	_.videoSources.register('video/mp4', _.VideoSource.Mp4);
+
+	_.VideoSource.Webm = _.VideoSource.extend({
+		construct: function(){
+			this._super('video/webm', /\.webm/i, true);
+		}
+	});
+	_.videoSources.register('video/webm', _.VideoSource.Webm);
+
+	_.VideoSource.Wmv = _.VideoSource.extend({
+		construct: function(){
+			this._super('video/wmv', /\.wmv/i, true);
+		}
+	});
+	_.videoSources.register('video/wmv', _.VideoSource.Wmv);
+
+	_.VideoSource.Ogv = _.VideoSource.extend({
+		construct: function(){
+			this._super('video/ogg', /\.ogv|\.ogg/i, true);
+		}
+	});
+	_.videoSources.register('video/ogg', _.VideoSource.Ogv);
+
+
+})(
+		FooGallery
+);
+(function(_){
+
+
+	_.VideoSource.YouTube = _.VideoSource.extend({
+		construct: function(){
+			this._super(
+					'video/youtube',
+					/(www.)?youtube|youtu\.be/i,
+					false,
+					[
+						{key: 'modestbranding', value: '1'},
+						{key: 'rel', value: '0'},
+						{key: 'wmode', value: 'transparent'},
+						{key: 'showinfo', value: '0'}
+					],
+					{key: 'autoplay', value: '1'}
+			);
+		},
+		getId: function(urlParts){
+			return /embed\//i.test(urlParts.href)
+					? urlParts.href.split(/embed\//i)[1].split(/[?&]/)[0]
+					: urlParts.href.split(/v\/|v=|youtu\.be\//i)[1].split(/[?&]/)[0];
+		},
+		getEmbedUrl: function(urlParts, autoPlay){
+			var id = this.getId(urlParts);
+			urlParts.search = this.mergeParams(urlParts, autoPlay);
+			return 'https://www.youtube-nocookie.com/embed/' + id + urlParts.search + urlParts.hash;
+		}
+	});
+
+	_.videoSources.register('video/youtube', _.VideoSource.YouTube);
+
+
+})(
+		FooGallery
+);
+(function(_){
+
+	_.VideoSource.Vimeo = _.VideoSource.extend({
+		construct: function(){
+			this._super(
+					'video/vimeo',
+					/(player.)?vimeo\.com/i,
+					false,
+					[
+						{key: 'badge', value: '0'},
+						{key: 'portrait', value: '0'}
+					],
+					{key: 'autoplay', value: '1'}
+			);
+		},
+		getEmbedUrl: function(urlParts, autoPlay){
+			var id = this.getId(urlParts);
+			urlParts.search = this.mergeParams(urlParts, autoPlay);
+			return location.protocol + '//player.vimeo.com/video/' + id + urlParts.search + urlParts.hash;
+		}
+	});
+
+	_.videoSources.register('video/vimeo', _.VideoSource.Vimeo);
+
+})(
+		FooGallery
+);
+(function(_){
+
+	_.VideoSource.Dailymotion = _.VideoSource.extend({
+		construct: function(){
+			this._super(
+					'video/daily',
+					/(www.)?dailymotion\.com|dai\.ly/i,
+					false,
+					[
+						{key: 'wmode', value: 'opaque'},
+						{key: 'info', value: '0'},
+						{key: 'logo', value: '0'},
+						{key: 'related', value: '0'}
+					],
+					{key: 'autoplay', value: '1'}
+			);
+		},
+		getId: function(urlParts){
+			return /\/video\//i.test(urlParts.href)
+					? urlParts.href.split(/\/video\//i)[1].split(/[?&]/)[0].split(/[_]/)[0]
+					: urlParts.href.split(/dai\.ly/i)[1].split(/[?&]/)[0];
+		},
+		getEmbedUrl: function(urlParts, autoPlay){
+			var id = this.getId(urlParts);
+			urlParts.search = this.mergeParams(urlParts, autoPlay);
+			return location.protocol + '//www.dailymotion.com/embed/video/' + id + urlParts.search + urlParts.hash;
+		}
+	});
+
+	_.videoSources.register('video/daily', _.VideoSource.Dailymotion);
+
+})(
+		FooGallery
+);
+(function(_, _is, _url){
+
+	_.VideoSource.Wistia = _.VideoSource.extend({
+		construct: function(){
+			this._super(
+					'video/wistia',
+					/(.+)?(wistia\.(com|net)|wi\.st)\/.*/i,
+					false,
+					[],
+					{
+						iframe: {key: 'autoPlay', value: '1'},
+						playlists: {key: 'media_0_0[autoPlay]', value: '1'}
+					}
+			);
+		},
+		getType: function(href){
+			return /playlists\//i.test(href) ? 'playlists' : 'iframe';
+		},
+		mergeParams: function(urlParts, autoPlay){
+			var self = this;
+			for (var i = 0, il = self.embedParams.length, ip; i < il; i++){
+				ip = self.embedParams[i];
+				urlParts.search = _url.param(urlParts.search, ip.key, ip.value);
+			}
+			if (!_is.empty(self.autoPlayParam)){
+				var param = self.autoPlayParam[self.getType(urlParts.href)];
+				urlParts.search = _url.param(urlParts.search, param.key, autoPlay ? param.value : '');
+			}
+			return urlParts.search;
+		},
+		getId: function(urlParts){
+			return /embed\//i.test(urlParts.href)
+					? urlParts.href.split(/embed\/.*?\//i)[1].split(/[?&]/)[0]
+					: urlParts.href.split(/medias\//)[1].split(/[?&]/)[0];
+		},
+		getEmbedUrl: function(urlParts, autoPlay){
+			var id = this.getId(urlParts);
+			urlParts.search = this.mergeParams(urlParts, autoPlay);
+			return location.protocol + '//fast.wistia.net/embed/'+this.getType(urlParts.href)+'/' + id + urlParts.search + urlParts.hash;
+		}
+	});
+
+	_.videoSources.register('video/wistia', _.VideoSource.Wistia);
+
+})(
+		FooGallery,
+		FooGallery.utils.is,
+		FooGallery.utils.url
+);
+(function($, _, _utils, _is){
+
+	_.Embed = _.Item.extend({
+		construct: function(template, options){
+			var self = this;
+			self._super(template, options);
+			self.cover = self.opt.cover;
+		},
+		doParseItem: function($element){
+			var self = this;
+			if (self._super($element)){
+				self.cover = self.$anchor.data("cover") || self.cover;
+				self.$el.addClass(self.cls.embed);
+				return true;
+			}
+			return false;
+		},
+		doCreateItem: function(){
+			var self = this;
+			if (self._super()){
+				self.$anchor.attr({
+					"data-type": self.type,
+					"data-cover": self.cover
+				});
+				self.$el.addClass(self.cls.embed);
+				return true;
+			}
+			return false;
+		}
+	});
+
+	_.template.configure("core", {
+		item: {
+			cover: ""
+		}
+	},{
+		item: {
+			embed: "fg-video"
+		}
+	});
+
+	_.components.register("embed", _.Embed);
 
 })(
 		FooGallery.$,
@@ -8545,42 +9433,6 @@
 		FooGallery,
 		FooGallery.utils
 );
-// (function(_){
-//
-// 	// This file contains the initialization code for the Image Viewer gallery. It makes use of the FooGallery.Loader
-// 	// allowing for optimized loading of images within the gallery.
-//
-// 	// Use FooGallery.ready to wait for the DOM to be ready
-// 	_.ready(function($){
-//
-// 		// Find each Image Viewer gallery in the current page
-// 		$(".fg-image-viewer").each(function(){
-// 			var $gallery = $(this),
-// 				// Get the options for the plugin
-// 				options = $gallery.data("loader-options"),
-// 				// Get the options for the loader
-// 				loader = $.extend(true, $gallery.data("loader-options"), {
-// 					oninit: function(){
-// 						// the first time the gallery is initialized it triggers a window resize event
-// 						$(window).trigger("resize");
-// 					},
-// 					onloaded: function(image){
-// 						// once the actual image is loaded we no longer need the inline css used to prevent layout jumps so remove it
-// 						$(image).fgRemoveSize();
-// 					}
-// 				});
-//
-// 			// Find all images that have a width and height attribute set and calculate the size to set as a temporary inline style.
-// 			// This calculated size is used to prevent layout jumps.
-// 			// Once that is done initialize the plugin and the loader.
-// 			$gallery.fgAddSize(true).fgImageViewer( options ).fgLoader( loader );
-// 		});
-//
-// 	});
-//
-// })(
-// 	FooGallery
-// );
 (function ($, _, _utils, _obj) {
 
 	_.ImageViewerTemplate = _.Template.extend({
@@ -8657,6 +9509,10 @@
 									.append($("<span/>", {text: self.il8n.next}))
 					)
 			);
+		},
+		destroyChildren: function(){
+			var self = this;
+			self.$el.find(self.sel.inner).remove();
 		},
 		onPreInit: function(event, self){
 			self.$inner = self.$el.find(self.sel.innerContainer);
@@ -8829,6 +9685,10 @@
 		createChildren: function(){
 			var self = this;
 			return self.$hidden = $("<div/>", {"class": self.cls.hidden});
+		},
+		destroyChildren: function(){
+			var self = this;
+			self.$el.find(self.sel.hidden).remove();
 		},
 		onPreInit: function(event, self){
 			self.$hidden = self.$el.find(self.sel.hidden);
@@ -9021,7 +9881,9 @@
 		},
 		thumbnail: ['attr:src','data:thumbnail'],
 		title: ['attr:title','data:title','data:captionTitle'],
-		description: ['data:description','data:captionDesc','attr:alt']
+		description: ['data:description','data:captionDesc','attr:alt'],
+		width: ['data:width'],
+		height: ['data:height']
 	};
 
 	F.Parser.prototype._init = function(options){
@@ -9034,14 +9896,19 @@
 	};
 
 	F.Parser.prototype.parse = function($anchor){
+		var type = this._type($anchor),
+				width = parseInt(this._width($anchor)),
+				height = parseInt(this._height($anchor));
 		var content = {
-			url: this._url($anchor),
+			url: this._url($anchor, type),
 			external: this._external($anchor),
-			type: this._type($anchor),
+			type: type,
 			title: this._title($anchor),
-			description: this._description($anchor)
+			description: this._description($anchor),
+			width: isNaN(width) ? 0 : width,
+			height: isNaN(height) ? 0 : height
 		};
-		if (content.type === 'video'){
+		if (type === 'video' || type === 'embed'){
 			content.thumbnail = this._thumbnail($anchor);
 		}
 		return _is.string(content.url) ? content : null;
@@ -9070,9 +9937,9 @@
 		return value;
 	};
 
-	F.Parser.prototype._url = function($anchor){
+	F.Parser.prototype._url = function($anchor, type){
 		var url = this._parse($anchor, this.options.url);
-		return this._full_url(url);
+		return type === 'embed' ? url : this._full_url(url);
 	};
 
 	F.Parser.prototype._external = function($anchor){
@@ -9082,7 +9949,7 @@
 
 	F.Parser.prototype._type = function($anchor){
 		var tmp; // first check if the type is supplied and valid
-		if (_is.string(tmp = $anchor.data('type')) && tmp in this.options.type){
+		if (_is.string(tmp = $anchor.data('type')) && (tmp in this.options.type || tmp === 'embed')){
 			return tmp;
 		}
 		// otherwise perform a best guess using the href and any parser.type values
@@ -9123,6 +9990,14 @@
 			}
 		}
 		return null;
+	};
+
+	F.Parser.prototype._width = function($anchor){
+		return this._parse($anchor, this.options.width);
+	};
+
+	F.Parser.prototype._height = function($anchor){
+		return this._parse($anchor, this.options.height);
 	};
 
 })(
@@ -9469,8 +10344,9 @@
 		this.visible = false;
 		this.content = this.grid.parser.parse(this.$link);
 		this.hasCaption = false;
+		this.isCreated = false;
 		this.player = null;
-		this.$content = this.$create();
+		this.$content = null;
 	};
 
 	F.Item.prototype.destroy = function(){
@@ -9480,9 +10356,13 @@
 		this.player = null;
 		this.$li.removeClass('foogrid-visible').children('span').remove();
 		this.$link.off('click.gg', this.onClick);
-		this.$content.remove();
+		if (this.isCreated){
+			this.$content.remove();
+		}
 		this.$content = null;
 		this.visible = false;
+		this.hasCaption = false;
+		this.isCreated = false;
 		this.index = null;
 		this.content = {};
 	};
@@ -9497,6 +10377,9 @@
 				break;
 			case 'html':
 				$content = $(this.content.url).contents();
+				break;
+			case 'embed':
+				$content = $('<div/>', {'class': 'foogrid-embed'}).append($(this.content.url).contents());
 				break;
 			case 'video':
 				this.player = new F.Player(this.grid, this.content.url);
@@ -9516,6 +10399,7 @@
 			$inner.addClass('foogrid-has-caption').append($caption);
 		}
 
+		this.isCreated = true;
 		return $inner;
 	};
 
@@ -9534,9 +10418,30 @@
 		return null;
 	};
 
+	F.Item.prototype.setEmbedSize = function(){
+		var ah = this.$content.height(), ch = this.content.height,
+				aw = this.$content.width(), cw = this.content.width,
+				rh = ah / ch, rw = aw / cw, ratio = 0;
+
+		if (rh < rw){
+			ratio = rh;
+		} else {
+			ratio = rw;
+		}
+
+		if (ratio > 0 && ratio < 1){
+			this.$content.children('.foogrid-embed').css({height: this.content.height * ratio, width: this.content.width * ratio});
+		} else {
+			this.$content.children('.foogrid-embed').css({height: '', width: ''});
+		}
+	};
+
 	F.Item.prototype.open = function(reverse){
 		var self = this;
 		return $.Deferred(function(d){
+			if (!self.isCreated){
+				self.$content = self.$create();
+			}
 			self.visible = true;
 			if (reverse){
 				self.$content.addClass('foogrid-reverse');
@@ -9548,6 +10453,13 @@
 			self.$li.addClass('foogrid-visible');
 			if (self.grid.transitions()){
 				_transition.start(self.$content, 'foogrid-visible', true, 1000).then(function(){
+					if (self.content.type === 'embed'){
+						$(window).on('resize.foogrid', function(){
+							self.setEmbedSize();
+						});
+						self.setEmbedSize();
+					}
+
 					self.$content.removeClass('foogrid-reverse');
 					if (self.player && self.player.options.autoplay){
 						self.player.play();
@@ -9577,6 +10489,7 @@
 			} else {
 				self.$content.addClass('foogrid-reverse');
 			}
+			$(window).off('resize.foogrid');
 			if (self.grid.transitions()){
 				_transition.start(self.$content, 'foogrid-visible', false, 350).then(function(){
 					self.$content.removeClass('foogrid-reverse').detach();
@@ -10023,6 +10936,481 @@
 		FooGallery.$,
 		FooGallery,
 		FooGallery.utils
+);
+(function ($, _, _utils, _is, _obj, _transition) {
+
+	_.SliderTemplate = _.Template.extend({
+		construct: function (options, element) {
+			var self = this;
+			self._super(_obj.extend({}, options, {
+				paging: {
+					type: "none"
+				}
+			}), element);
+			self.$contentContainer = $();
+			self.$contentStage = $();
+			self.$itemContainer = $();
+			self.$itemStage = $();
+			self.$itemPrev = $();
+			self.$itemNext = $();
+			self.selected = null;
+			self.helper = new _.VideoHelper(self.template.player);
+			self.horizontal = self.template.horizontal;
+			self.noCaptions = self.template.noCaptions;
+			self.useViewport = self.template.useViewport;
+			self.breakpoints = self.template.breakpoints;
+			self.allBreakpointClasses = $.map(self.breakpoints, function(breakpoint){ return breakpoint.classes; }).join(' ');
+			self._contentWidth = 0;
+			self._contentHeight = 0;
+			self._firstVisible = -1;
+			self._lastVisible = -1;
+			self._breakpoint = null;
+		},
+		createChildren: function(){
+			var self = this;
+			return [
+				$("<div/>", {"class": self.cls.contentContainer})
+						.append($("<div/>", {"class": self.cls.contentStage})),
+				$("<div/>", {"class": self.cls.itemContainer})
+						.append(
+								$("<div/>", {"class": self.cls.itemPrev}),
+								$("<div/>", {"class": self.cls.itemStage}),
+								$("<div/>", {"class": self.cls.itemNext})
+						)
+			];
+		},
+		destroyChildren: function(){
+			var self = this;
+			self.$el.find(self.sel.contentContainer).remove();
+			self.$el.find(self.sel.itemContainer).remove();
+		},
+		onPreInit: function(event, self){
+			self.$contentContainer = self.$el.find(self.sel.contentContainer);
+			self.$contentStage = self.$el.find(self.sel.contentStage);
+			self.$itemContainer = self.$el.find(self.sel.itemContainer);
+			self.$itemStage = self.$el.find(self.sel.itemStage);
+			self.$itemPrev = self.$el.find(self.sel.itemPrev);
+			self.$itemNext = self.$el.find(self.sel.itemNext);
+			self.horizontal = self.$el.hasClass(self.cls.horizontal) || self.horizontal;
+			if (self.horizontal) self.$el.addClass(self.cls.horizontal);
+			self.noCaptions = self.$el.hasClass(self.cls.noCaptions) || self.noCaptions;
+			if (self.noCaptions) self.$el.addClass(self.cls.noCaptions);
+
+		},
+		onInit: function (event, self) {
+			$(window).on("resize.fg-slider", {self: self}, self.throttle(self.onWindowResize, self.template.throttle));
+			self.$itemPrev.on("click.fg-slider", {self: self}, self.onPrevClick);
+			self.$itemNext.on("click.fg-slider", {self: self}, self.onNextClick);
+			self.$contentContainer.fgswipe({data: {self: self}, swipe: self.onContentSwipe});
+			self.$itemContainer.fgswipe({data: {self: self}, swipe: self.onItemSwipe})
+					.on("DOMMouseScroll.fg-slider mousewheel.fg-slider", {self: self}, self.onItemMouseWheel);
+		},
+		onFirstLoad: function(event, self){
+			self.layout();
+			self.setSelected(0);
+		},
+		onAfterFilterChange: function(event, self){
+			self.selected = null;
+			self.layout();
+			self.setSelected(0);
+		},
+		/**
+		 * @summary Destroy the plugin cleaning up any bound events.
+		 * @memberof FooGallery.SliderTemplate#
+		 * @function onDestroy
+		 */
+		onDestroy: function (event, self) {
+			$(window).off("resize.fg-slider");
+			self.$itemPrev.off("click.fg-slider");
+			self.$itemNext.off("click.fg-slider");
+			self.$contentContainer.fgswipe("destroy");
+			self.$itemContainer.fgswipe("destroy")
+					.off("DOMMouseScroll.fg-slider mousewheel.fg-slider");
+		},
+		onParsedOrCreatedItem: function(item){
+			if (!item.isError){
+				var self = this;
+				item.$anchor.add(item.$image).attr("draggable", false);
+				item.$anchor.add(item.$caption).off("click.foogallery");
+				item.$inner.on("click.foogallery", {self: self, item: item}, self.onItemClick);
+
+				item.$content = $("<div/>", {"class": self.cls.content})
+						.append($("<p/>", {"class": self.cls.contentText}).html(item.caption).append($("<small/>").html(item.description)));
+				if (item.type === "video"){
+					item.index = -1;
+					item.player = self.helper.getPlayer(item.href, {});
+					item.$content.css("background-image", "url("+item.cover+")")
+							.append(
+									$("<div/>", {"class": self.cls.contentClose})
+											.on("click.foogallery", {self: self, item: item}, self.onCloseVideo),
+									$("<div/>", {"class": self.cls.contentPlay})
+											.on("click.foogallery", {self: self, item: item}, self.onPlayVideo)
+							);
+				} else if (item.type === "embed") {
+					item.$embed = $("<div/>", {'class': self.cls.embed});
+					item.$content.addClass(self.cls.embedable).append(item.$embed);
+					item.$target = $(item.href).contents();
+				} else {
+					item.$content.css("background-image", "url("+item.href+")");
+				}
+			}
+		},
+		onParsedItem: function(event, self, item){
+			self.onParsedOrCreatedItem(item);
+		},
+		onCreatedItem: function(event, self, item){
+			self.onParsedOrCreatedItem(item);
+		},
+		onDestroyedItem: function(event, self, item){
+			if (item.type === "video" && item.player instanceof _.VideoPlayer){
+				item.player.$el.detach();
+				item.$el.add(item.$content)
+						.removeClass(self.cls.playing);
+			}
+			if (item.type === "embed" && item.$target){
+				item.$target.detach();
+				$(item.href).append(item.$target);
+			}
+			item.$el.add(item.$content)
+					.removeClass(self.cls.selected).detach();
+		},
+		onAppendItem: function (event, self, item) {
+			event.preventDefault();
+			self.$itemStage.append(item.$el);
+			self.$contentStage.append(item.$content);
+			item.isAttached = true;
+		},
+		onDetachItem: function(event, self, item){
+			event.preventDefault();
+			if (item.type === "video" && item.player instanceof _.VideoPlayer){
+				item.player.$el.detach();
+				item.$el.add(item.$content)
+						.removeClass(self.cls.playing);
+			}
+			if (item.type === "embed" && item.$target){
+				item.$target.detach();
+				$(item.href).append(item.$target);
+			}
+			item.$el.add(item.$content)
+					.removeClass(self.cls.selected).detach();
+			item.isAttached = false;
+		},
+		onLayout: function(event, self){
+			self.layout();
+		},
+		onWindowResize: function(e){
+			var self = e.data.self;
+			self.layout();
+		},
+		getBreakpoint: function(){
+			var self = this, width = self.useViewport ? $(window).width() : self.$el.outerWidth();
+			// sort breakpoints so we iterate smallest to largest
+			self.breakpoints.sort(function(a, b){ return a.width - b.width; });
+			for (var i = 0, il = self.breakpoints.length; i < il; i++){
+				if (self.breakpoints[i].width >= width) return self.breakpoints[i];
+			}
+			return self.breakpoints[self.breakpoints.length - 1];
+		},
+		getMaxVisibleItems: function(){
+			var self = this, h = self.noCaptions ? self._breakpoint.items.h.noCaptions : self._breakpoint.items.h.captions;
+			return self.horizontal ? h : self._breakpoint.items.v;
+		},
+		layout: function(){
+			var self = this,
+					index = self.selected instanceof _.Item ? self.selected.index : 0,
+					items = self.items.available(),
+					count = items.length,
+					prev = self._breakpoint;
+
+			self.horizontal = self.$el.hasClass(self.cls.horizontal);
+			self.$el.toggleClass(self.cls.horizontal, self.horizontal);
+
+			self.noCaptions = self.$el.hasClass(self.cls.noCaptions);
+			self.$el.toggleClass(self.cls.noCaptions, self.noCaptions);
+
+			self._breakpoint = self.getBreakpoint();
+			self.$el.removeClass(self.allBreakpointClasses).addClass(self._breakpoint.classes);
+
+			var max = self.getMaxVisibleItems() - 1;
+			if (self._firstVisible == -1 || self._lastVisible == -1){
+				self._firstVisible = 0;
+				self._lastVisible = max;
+			} else if (self._breakpoint != prev){
+				if (index > self._firstVisible + max){
+					self._firstVisible += index - (self._firstVisible + max);
+				}
+				self._firstVisible = index;
+				self._lastVisible = index + max;
+			}
+			self.$itemPrev.toggle(self._firstVisible > 0);
+			self.$itemNext.toggle(self._lastVisible < count - 1);
+
+			self._contentWidth = self.$contentContainer.width();
+			self._contentHeight = self.$contentContainer.height();
+			if (count > 0){
+				self.$contentStage.width(self._contentWidth * count);
+				var hItemWidth = Math.max((self._contentWidth + 1) / self.getMaxVisibleItems());
+				$.each(items, function(i, item){
+					item.index = i;
+					item.$content.width(self._contentWidth).css("left", i * self._contentWidth);
+					if (self.horizontal){
+						item.$el.css({
+							width: hItemWidth,
+							left: i * hItemWidth
+						});
+					} else {
+						item.$el.css({ width: '', left: '' });
+					}
+				});
+				self.$contentStage.css("transform", "translateX(-" + (index * self._contentWidth) + "px)");
+				self._itemWidth = items[0].$el.outerWidth();
+				self._itemHeight = items[0].$el.outerHeight();
+
+				self.setVisible(self._firstVisible, false);
+			}
+		},
+		setEmbedSize: function(item){
+			var self = this,
+					ah = self._contentHeight, ch = item.$anchor.data("height"),
+					aw = self._contentWidth, cw = item.$anchor.data("width"),
+					rh = ah / ch, rw = aw / cw, ratio = 0;
+
+			if (rh < rw){
+				ratio = rh;
+			} else {
+				ratio = rw;
+			}
+
+			if (ratio > 0 && ratio < 1){
+				item.$embed.css({height: ch * ratio, width: cw * ratio});
+			} else {
+				item.$embed.css({height: '', width: ''});
+			}
+		},
+		setSelected: function(itemOrIndex){
+			var self = this, prev = self.selected, next = itemOrIndex;
+			if (_is.number(itemOrIndex)){
+				var items = self.items.available();
+				itemOrIndex = itemOrIndex < 0 ? 0 : (itemOrIndex >= items.length ? items.length - 1 : itemOrIndex);
+				next = items[itemOrIndex];
+			}
+			if (prev != next && next instanceof _.Item){
+				if (prev instanceof _.Item){
+					if (prev.type === "video" && prev.player instanceof _.VideoPlayer){
+						prev.player.$el.detach();
+						prev.$el.add(prev.$content).removeClass(self.cls.playing);
+					}
+					if (prev.type === "embed" && prev.$target){
+						prev.$target.detach();
+						$(prev.href).append(prev.$target);
+					}
+					prev.$el.add(prev.$content).removeClass(self.cls.selected);
+				}
+				self.$contentStage.css("transform", "translateX(-" + (next.index * self._contentWidth) + "px)");
+				next.$el.add(next.$content).addClass(self.cls.selected);
+				if (self.template.autoPlay && next.type === "video" && next.player instanceof _.VideoPlayer){
+					next.$el.add(next.$content).addClass(self.cls.playing);
+					next.player.appendTo(next.$content).load();
+				}
+				if (next.type === "embed" && next.$target){
+					next.$target.appendTo(next.$embed);
+					self.setEmbedSize(next);
+				}
+				self.selected = next;
+				if (next.index <= self._firstVisible || next.index >= self._lastVisible){
+					var last = prev instanceof _.Item ? next.index > prev.index : false,
+							index = last ? (next.index == self._lastVisible ? next.index + 1 : next.index) : (next.index == self._firstVisible ? next.index - 1 : next.index);
+					self.setVisible(index, last);
+				}
+			}
+		},
+		setVisible: function(index, last){
+			var self = this, count = self.items.count(), max = self.getMaxVisibleItems() - 1;
+			index = index < 0 ? 0 : (index >= count ? count - 1 : index);
+
+			if (last) index = index - max < 0 ? 0 : index - max;
+			if (index >= 0 && index < count){
+				self._firstVisible = index;
+				self._lastVisible = index + max;
+				var translate = self.horizontal
+						? 'translateX(-'+((index * self._itemWidth) + 1)+'px) translateY(0px)'
+						: 'translateX(0px) translateY(-'+((index * self._itemHeight) + 1)+'px)';
+
+				_transition.start(self.$itemStage, function($el){
+					$el.css("transform", translate);
+				}).then(function(){
+					self.loadAvailable();
+				});
+			} else {
+				self.loadAvailable();
+			}
+			self.$itemPrev.toggle(self._firstVisible > 0);
+			self.$itemNext.toggle(self._lastVisible < count - 1);
+		},
+		onItemClick: function(e){
+			e.preventDefault();
+			e.data.self.setSelected(e.data.item);
+		},
+		onPrevClick: function(e){
+			e.preventDefault();
+			var self = e.data.self;
+			self.setVisible(self._firstVisible - 1);
+		},
+		onNextClick: function(e){
+			var self = e.data.self;
+			self.setVisible(self._lastVisible + 1, true);
+		},
+		onPlayVideo: function(e){
+			var self = e.data.self, item = e.data.item;
+			item.$el.add(item.$content).addClass(self.cls.playing);
+			item.player.appendTo(item.$content).load();
+		},
+		onCloseVideo: function(e){
+			var self = e.data.self, item = e.data.item;
+			item.player.$el.detach();
+			item.$el.add(item.$content).removeClass(self.cls.playing);
+		},
+		onItemMouseWheel: function(e){
+			var self = e.data.self,
+					max = self.items.count() - 1,
+					delta = Math.max(-1, Math.min(1, (e.originalEvent.wheelDelta || -e.originalEvent.detail)));
+
+			if (delta > 0 && self._firstVisible > 0){
+				self.setVisible(self._firstVisible - 1);
+				e.preventDefault();
+			} else if (delta < 0 && self._lastVisible < max){
+				self.setVisible(self._lastVisible + 1, true);
+				e.preventDefault();
+			}
+		},
+		onItemSwipe: function(info, data){
+			var self = data.self, amount = 1;
+			if (self.horizontal){
+				amount = Math.ceil(info.distance / self._itemWidth);
+				if ($.inArray(info.direction, ["NE", "E", "SE"]) !== -1){
+					self.setVisible(self._firstVisible - amount);
+				}
+				if ($.inArray(info.direction, ["NW", "W", "SW"]) !== -1){
+					self.setVisible(self._lastVisible + amount, true);
+				}
+			} else {
+				amount = Math.ceil(info.distance / self._itemHeight);
+				if ($.inArray(info.direction, ["SW", "S", "SE"]) !== -1){
+					self.setVisible(self._firstVisible - amount);
+				}
+				if ($.inArray(info.direction, ["NW", "N", "NE"]) !== -1){
+					self.setVisible(self._lastVisible + amount, true);
+				}
+			}
+		},
+		onContentSwipe: function (info, data) {
+			var self = data.self;
+			if ($.inArray(info.direction, ["NE", "E", "SE"]) !== -1){
+				self.setSelected(self.selected.index - 1);
+			}
+			if ($.inArray(info.direction, ["NW", "W", "SW"]) !== -1){
+				self.setSelected(self.selected.index + 1);
+			}
+		},
+		onFixItem: function(event){
+			event.preventDefault();
+		},
+		onUnfixItem: function(event){
+			event.preventDefault();
+		}
+	});
+
+	_.template.register("slider", _.SliderTemplate, {
+		template: {
+			horizontal: false,
+			useViewport: false,
+			noCaptions: false,
+			autoPlay: false,
+			breakpoints: [{
+				width: 480,
+				classes: "fgs-xs",
+				items: {
+					h: {
+						captions: 2,
+						noCaptions: 5
+					},
+					v: 6
+				}
+			},{
+				width: 768,
+				classes: "fgs-sm",
+				items: {
+					h: {
+						captions: 3,
+						noCaptions: 7
+					},
+					v: 7
+				}
+			},{
+				width: 1024,
+				classes: "fgs-md",
+				items: {
+					h: {
+						captions: 4,
+						noCaptions: 9
+					},
+					v: 6
+				}
+			},{
+				width: 1280,
+				classes: "fgs-lg",
+				items: {
+					h: {
+						captions: 5,
+						noCaptions: 11
+					},
+					v: 7
+				}
+			},{
+				width: 1600,
+				classes: "fgs-xl",
+				items: {
+					h: {
+						captions: 6,
+						noCaptions: 13
+					},
+					v: 8
+				}
+			}],
+			player: {
+				autoPlay: true,
+				width: "100%",
+				height: "100%"
+			},
+			throttle: 150
+		}
+	}, {
+		container: "foogallery fg-slider",
+		contentContainer: "fgs-content-container",
+		contentStage: "fgs-content-stage",
+		content: "fgs-content",
+		contentText: "fgs-content-text",
+		contentPlay: "fgs-content-play",
+		contentClose: "fgs-content-close",
+		itemContainer: "fgs-item-container",
+		itemStage: "fgs-item-stage",
+		itemPrev: "fgs-item-prev",
+		itemNext: "fgs-item-next",
+		horizontal: "fgs-horizontal",
+		selected: "fgs-selected",
+		playing: "fgs-playing",
+		noCaptions: "fgs-no-captions",
+		embed: "fgs-embed",
+		embedable: "fgs-embedable"
+	});
+
+})(
+		FooGallery.$,
+		FooGallery,
+		FooGallery.utils,
+		FooGallery.utils.is,
+		FooGallery.utils.obj,
+		FooGallery.utils.transition
 );
 (function ($, _, _utils, _obj) {
 

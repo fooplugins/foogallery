@@ -188,6 +188,15 @@ function foogallery_admin_systeminfo_url() {
 }
 
 /**
+ * Returns the FooGallery pricing page Url within the admin
+ *
+ * @return string The Url to the FooGallery pricing page in admin
+ */
+function foogallery_admin_pricing_url() {
+	return admin_url( add_query_arg( array( 'page' => FOOGALLERY_ADMIN_MENU_PRICING_SLUG ), foogallery_admin_menu_parent_slug() ) );
+}
+
+/**
  * Get a foogallery template setting for the current foogallery that is being output to the frontend
  * @param string	$key
  * @param string	$default
@@ -380,6 +389,8 @@ function foogallery_build_class_attribute( $gallery ) {
 	}
 
 	$classes = apply_filters( 'foogallery_build_class_attribute', $classes, $gallery );
+
+	$classes = array_filter( $classes );
 
 	return implode( ' ', $classes );
 }
@@ -1039,6 +1050,23 @@ function foogallery_current_gallery_attachments_for_rendering() {
 
     //by default, return all attachments
     return $current_foogallery->attachments();
+}
+
+/**
+ * Return attachment ID from a URL
+ *
+ * @param $url String URL to the image we are checking
+ *
+ * @return null or attachment ID
+ */
+function foogallery_get_attachment_id_by_url($url) {
+	global $wpdb;
+	$query = "SELECT ID FROM {$wpdb->posts} WHERE guid=%s";
+	$attachment = $wpdb->get_col( $wpdb->prepare( $query, $url ) );
+	if ( count( $attachment ) > 0 ) {
+		return $attachment[0];
+	}
+	return null;
 }
 
 /**

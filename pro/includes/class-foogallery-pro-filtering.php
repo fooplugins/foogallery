@@ -387,6 +387,32 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 				);
 
 				$fields[] = array(
+					'id'       => 'filtering_sort',
+					'title'    => __( 'Sort Mode', 'foogallery' ),
+					'desc'     => __( 'How do you want to sort your filters? Default is by the filter name.', 'foogallery' ),
+					'section'  => __( 'Filtering', 'foogallery' ),
+					'type'     => 'radio',
+					'default'  => 'value',
+					'choices'  => apply_filters (
+						'foogallery_gallery_template_filtering_sort_choices', array(
+							'value' => __( 'Default (alphabetical)', 'foogallery' ),
+							'value_inverse ' => __( 'Reverse', 'foogallery' ),
+							'count' => __( 'Count ascending', 'foogallery' ),
+							'count_inverse' => __( 'Count descending', 'foogallery' ),
+							'none'  => __( 'No sorting', 'foogallery' ),
+						)
+					),
+					'row_data' => array(
+						'data-foogallery-hidden'                   => true,
+						'data-foogallery-show-when-field-operator' => '===',
+						'data-foogallery-show-when-field'          => 'filtering_type',
+						'data-foogallery-show-when-field-value'    => 'advanced',
+						'data-foogallery-change-selector'          => 'input',
+						'data-foogallery-preview'                  => 'shortcode'
+					)
+				);
+
+				$fields[] = array(
 					'id'       => 'filtering_override',
 					'title'    => __( 'Override', 'foogallery' ),
 					'desc'     => __( 'You can override which filters are shown, by providing a comma-separated list. Leave black for them to be auto-generated.', 'foogallery' ),
@@ -436,6 +462,8 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 				$args['filtering_adjust_opacity_lightest'] = $post_data[FOOGALLERY_META_SETTINGS][$template . '_filtering_adjust_opacity_lightest'];
 				$args['filtering_adjust_opacity_darkest']  = $post_data[FOOGALLERY_META_SETTINGS][$template . '_filtering_adjust_opacity_darkest'];
 				$args['filtering_override']				   = $post_data[FOOGALLERY_META_SETTINGS][$template . '_filtering_override'];
+				$args['filtering_sort']				   	   = $post_data[FOOGALLERY_META_SETTINGS][$template . '_filtering_sort'];
+
 			}
 
 			return $args;
@@ -498,6 +526,15 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 							$filtering_options['adjustOpacity'] = $filtering_adjust_opacity;
 							$filtering_options['lightest'] = $this->get_foogallery_argument( $gallery, 'filtering_adjust_opacity_lightest', 'filtering_adjust_opacity_lightest', '0.5' );
 							$filtering_options['darkest']  = intval( $this->get_foogallery_argument( $gallery, 'filtering_adjust_opacity_darkest', 'filtering_adjust_opacity_darkest', '1' ) );
+						}
+
+						$filtering_sort = $this->get_foogallery_argument( $gallery, 'filtering_sort', 'filtering_sort', 'value' );
+						if ( 'value' !== $filtering_sort ) {
+							if ( foo_contains( $filtering_sort, '_inverse' ) ) {
+								$filtering_sort = str_replace( '_inverse', '', $filtering_sort );
+								$filtering_options['sortInvert'] = true;
+							}
+							$filtering_options['sortBy'] = trim( $filtering_sort );
 						}
 
 						$filtering_override = $this->get_foogallery_argument( $gallery, 'filtering_override', 'filtering_override', '' );
