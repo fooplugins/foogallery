@@ -66,6 +66,10 @@ if (!class_exists('FooGallery_Attachment_Fields')) {
 						unset( $values['helps'] );
 					}
 
+					if ( empty( $values['exclusions'] ) ) {
+						$values['exclusions'] = array();
+					}
+
 				    // If the field matches the current attachment mime type
 				    // and is not one of the exclusions
 				    if ( !in_array( $post->post_mime_type, $values['exclusions'] ) ) {
