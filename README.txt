@@ -138,6 +138,9 @@ Update now to get all the latest features, bug fixes and improvements!
 
 == Changelog ==
 
+= 1.5.9 =
+* Fix : Theme customizer not loading for some theme/plugin combinations
+
 = 1.5.8 =
 * Major version bump to correspond with FooGallery PRO which includes video support
 * New : Upgrade offer to FooGallery PRO for FooVideo customers
