@@ -382,7 +382,7 @@ class FooGallery extends stdClass {
 				$count_text = sprintf( $plural_text === false ?  __( '%s images', 'foogallery' ) : $plural_text, $count );
 		}
 
-		return apply_filters( 'foogallery_image_count', $count_text, $this );
+		return esc_html( apply_filters( 'foogallery_image_count', $count_text, $this ) );
 	}
 
 	/**
