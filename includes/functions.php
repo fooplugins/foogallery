@@ -273,7 +273,7 @@ function foogallery_add_submenu_page( $menu_title, $capability, $menu_slug, $fun
  *
  * @return FooGallery[] array of FooGallery galleries
  */
-function foogallery_get_all_galleries( $excludes = false ) {
+function foogallery_get_all_galleries( $excludes = false, $extra_args = false ) {
 	$args = array(
 		'post_type'     => FOOGALLERY_CPT_GALLERY,
 		'post_status'	=> array( 'publish', 'draft' ),
@@ -283,6 +283,10 @@ function foogallery_get_all_galleries( $excludes = false ) {
 
 	if ( is_array( $excludes ) ) {
 		$args['post__not_in'] = $excludes;
+	}
+
+	if ( is_array( $extra_args ) ) {
+		$args = array_merge( $args, $extra_args );
 	}
 
 	$gallery_posts = get_posts( $args );
