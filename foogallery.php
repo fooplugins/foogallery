@@ -172,6 +172,9 @@ if ( ! class_exists( 'FooGallery_Plugin' ) ) {
 			} else {
 				add_filter( 'foogallery_extensions_for_view', array( $this, 'add_foogallery_pro_extension' ) );
 			}
+
+			//init Gutenberg!
+			new FooGallery_Blocks();
 		}
 
 		function add_foogallery_pro_extension( $extensions ) {
