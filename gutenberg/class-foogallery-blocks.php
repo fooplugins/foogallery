@@ -38,7 +38,7 @@ if ( ! class_exists( 'FooGallery_Blocks' ) ) {
 			wp_enqueue_script(
 				'foogallery-block-js', // Handle.
 				$js_url, // Block.build.js: We register the block here. Built with Webpack.
-				array( 'wp-blocks', 'wp-i18n', 'wp-element' ), // Dependencies, defined above.
+				array( 'wp-blocks', 'wp-i18n', 'wp-element', 'foogallery-core' ), // Dependencies, defined above.
 				// filemtime( plugin_dir_path( __DIR__ ) . 'dist/blocks.build.js' ), // Version: filemtime — Gets file modification time.
 				true // Enqueue the script in the footer.
 			);
@@ -47,7 +47,7 @@ if ( ! class_exists( 'FooGallery_Blocks' ) ) {
 			wp_enqueue_style(
 				'foogallery-block-editor-css', // Handle.
 				plugins_url( 'gutenberg/dist/blocks.editor.build.css', dirname( __FILE__ ) ), // Block editor CSS.
-				array( 'wp-edit-blocks' ) // Dependency to include the CSS after it.
+				array( 'wp-edit-blocks', 'foogallery-core' ) // Dependency to include the CSS after it.
 			// filemtime( plugin_dir_path( __DIR__ ) . 'dist/blocks.editor.build.css' ) // Version: filemtime — Gets file modification time.
 			);
 		}
@@ -83,8 +83,22 @@ if ( ! class_exists( 'FooGallery_Blocks' ) ) {
 			) );
 		}
 
-		function render_block( $attributes, $content ) {
-			return '<p>' . print_r( $attributes, true ) . '</p>';
+		function render_block( $attributes ) {
+			$foogallery_id = $attributes['foo'];
+			$args = array(
+				'id' => $foogallery_id
+			);
+			//create new instance of template engine
+			$engine = new FooGallery_Template_Loader();
+
+			ob_start();
+
+			$engine->render_template( $args );
+
+			$output_string = ob_get_contents();
+			ob_end_clean();
+			return $output_string .
+				"<script type='text/javascript'>setTimeout(function(){ jQuery('#foogallery-gallery-{$foogallery_id}').foogallery(); }, 5000);</script>";
 		}
 	}
 }
