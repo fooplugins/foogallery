@@ -11,6 +11,18 @@ import './editor.scss';
 
 const { __ } = wp.i18n; // Import __() from wp.i18n
 const { registerBlockType } = wp.blocks; // Import registerBlockType() from wp.blocks
+const { Fragment } = wp.element;
+const {
+	ServerSideRender,
+	TextControl
+} = wp.components;
+const { InspectorControls } = wp.editor;
+
+// var el = wp.element.createElement,
+// 	registerBlockType = wp.blocks.registerBlockType,
+// 	ServerSideRender = wp.components.ServerSideRender,
+// 	TextControl = wp.components.TextControl,
+// 	InspectorControls = wp.editor.InspectorControls;
 
 /**
  * Register: aa Gutenberg Block.
@@ -35,6 +47,11 @@ registerBlockType( 'foogallery/responsive-gallery', {
 		__( 'gallery' ),
 		__( 'responsive' ),
 	],
+	attributes: {
+		foo: {
+			type: 'string',
+		},
+	},
 
 	/**
 	 * The edit function describes the structure of your block in the context of the editor.
@@ -44,22 +61,28 @@ registerBlockType( 'foogallery/responsive-gallery', {
 	 *
 	 * @link https://wordpress.org/gutenberg/handbook/block-api/block-edit-save/
 	 */
-	edit: function( props ) {
-		// Creates a <p class='wp-block-cgb-block-my-block'></p>.
+	edit( { attributes, className, setAttributes } ) {
+		const { foo } = attributes;
+
+		function onChangeFoo( newFoo ) {
+			setAttributes( { foo: newFoo } );
+		}
+
 		return (
-			<div className={ props.className }>
-				<p>— Hello from the backend.</p>
-				<p>
-					CGB BLOCK: <code>my-block</code> is a new Gutenberg block
-				</p>
-				<p>
-					It was created via{ ' ' }
-					<code>
-						<a href="https://github.com/ahmadawais/create-guten-block">create-guten-block</a>
-					</code>.
-				</p>
-			</div>
-		);
+			<Fragment>
+				<ServerSideRender
+					block="foogallery/responsive-gallery"
+					attributes={ attributes }
+				/>
+				<InspectorControls>
+					<TextControl
+						label="Foo"
+						value={ foo }
+						onChange={ onChangeFoo }
+					/>
+				</InspectorControls>
+			</Fragment>
+		)
 	},
 
 	/**
@@ -70,22 +93,8 @@ registerBlockType( 'foogallery/responsive-gallery', {
 	 *
 	 * @link https://wordpress.org/gutenberg/handbook/block-api/block-edit-save/
 	 */
-	save: function( props ) {
-		return (
-			<div>
-				<p>— Hello from the frontend.</p>
-				<p>
-					CGB BLOCK: <code>my-block</code> is a new Gutenberg block.
-				</p>
-				<p>
-					It was created via{ ' ' }
-					<code>
-						<a href="https://github.com/ahmadawais/create-guten-block">
-							create-guten-block
-						</a>
-					</code>.
-				</p>
-			</div>
-		);
+	save() {
+		// Rendering in PHP
+		return null;
 	},
 } );

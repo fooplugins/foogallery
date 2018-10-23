@@ -17,6 +17,8 @@ if ( ! class_exists( 'FooGallery_Blocks' ) ) {
 
 			//Backend editor block assets.
 			add_action( 'enqueue_block_editor_assets', array( $this, 'enqueue_block_editor_assets' ) );
+
+			add_action( 'init', array( $this, 'php_block_init' ) );
 		}
 
 		/**
@@ -64,6 +66,25 @@ if ( ! class_exists( 'FooGallery_Blocks' ) ) {
 				plugins_url( 'gutenberg/dist/blocks.style.build.css', dirname( __FILE__ ) ),
 				array( 'wp-blocks' )
 			);
+		}
+
+		/**
+		 * Register our block and shortcode.
+		 */
+		function php_block_init() {
+			// Register our block, and explicitly define the attributes we accept.
+			register_block_type( 'foogallery/responsive-gallery', array(
+				'attributes'      => array(
+					'foo' => array(
+						'type' => 'string',
+					),
+				),
+				'render_callback' => array( $this, 'render_block' ),
+			) );
+		}
+
+		function render_block( $attributes, $content ) {
+			return '<p>' . print_r( $attributes, true ) . '</p>';
 		}
 	}
 }
