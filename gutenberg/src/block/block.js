@@ -18,12 +18,6 @@ const {
 } = wp.components;
 const { InspectorControls } = wp.editor;
 
-// var el = wp.element.createElement,
-// 	registerBlockType = wp.blocks.registerBlockType,
-// 	ServerSideRender = wp.components.ServerSideRender,
-// 	TextControl = wp.components.TextControl,
-// 	InspectorControls = wp.editor.InspectorControls;
-
 /**
  * Register: aa Gutenberg Block.
  *
@@ -68,11 +62,16 @@ registerBlockType( 'foogallery/responsive-gallery', {
 			setAttributes( { foo: newFoo } );
 		}
 
+		function initializeFooGallery() {
+			jQuery('.foogallery').foogallery();
+		}
+
 		return (
 			<Fragment>
 				<ServerSideRender
 					block="foogallery/responsive-gallery"
 					attributes={ attributes }
+					onChange={ initializeFooGallery }
 				/>
 				<InspectorControls>
 					<TextControl

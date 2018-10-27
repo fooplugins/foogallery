@@ -9,4 +9,7 @@
  * Webpack is compiling as the input file.
  */
 
+//import './foogallery-server-side-render.js';
 import './block/block.js';
+
+//export { default as FooGalleryServerSideRender } from './foogallery-server-side-render';

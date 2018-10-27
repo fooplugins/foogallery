@@ -72,15 +72,18 @@ if ( ! class_exists( 'FooGallery_Blocks' ) ) {
 		 * Register our block and shortcode.
 		 */
 		function php_block_init() {
-			// Register our block, and explicitly define the attributes we accept.
-			register_block_type( 'foogallery/responsive-gallery', array(
-				'attributes'      => array(
-					'foo' => array(
-						'type' => 'string',
+			if ( function_exists( 'register_block_type' ) ) {
+				// Register our block, and explicitly define the attributes we accept.
+				register_block_type(
+					'foogallery/responsive-gallery', array(
+					'attributes' => array(
+						'foo' => array(
+							'type' => 'string',
+						),
 					),
-				),
-				'render_callback' => array( $this, 'render_block' ),
-			) );
+					'render_callback' => array( $this, 'render_block' ),
+				));
+			}
 		}
 
 		function render_block( $attributes ) {
@@ -97,8 +100,8 @@ if ( ! class_exists( 'FooGallery_Blocks' ) ) {
 
 			$output_string = ob_get_contents();
 			ob_end_clean();
-			return $output_string .
-				"<script type='text/javascript'>setTimeout(function(){ jQuery('#foogallery-gallery-{$foogallery_id}').foogallery(); }, 5000);</script>";
+			return $output_string;
+				//"<script type='text/javascript'>setTimeout(function(){ jQuery('#foogallery-gallery-{$foogallery_id}').foogallery(); }, 5000);</script>";
 		}
 	}
 }
