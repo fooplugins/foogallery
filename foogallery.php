@@ -174,7 +174,7 @@ if ( ! class_exists( 'FooGallery_Plugin' ) ) {
 			}
 
 			//init Gutenberg!
-			new FooGallery_Blocks();
+			new FooGallery_Gutenberg();
 		}
 
 		function add_foogallery_pro_extension( $extensions ) {
