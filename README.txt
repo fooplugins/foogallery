@@ -138,6 +138,9 @@ Update now to get all the latest features, bug fixes and improvements!
 
 == Changelog ==
 
+= 1.5.10 =
+* Update : Freemius SDK 2.1.3 (which fixes fatal Multisite bug)
+
 = 1.5.9 =
 * Fix : Theme customizer not loading for some theme/plugin combinations
 
