@@ -1,9 +1,4 @@
 /**
- * External dependencies.
- */
-import { isEqual, get } from 'lodash';
-
-/**
  * WordPress dependencies.
  */
 const {
@@ -11,15 +6,15 @@ const {
 } = wp.components;
 
 export class FooGalleryServerSideRender extends ServerSideRender {
-	componentDidUpdate( prevProps, prevState ) {
-		if ( ! isEqual( prevProps, this.props ) ) {
-			this.fetch( this.props );
-		}
-		if ( this.state.response !== prevState.response ) {
-			if ( this.props.onChange ) {
-				this.props.onChange();
-			}
-		}
+
+	componentWillUnmount() {
+		super.componentWillUnmount();
+		//jQuery(this.el).find('.foogallery').foogallery('destroy');
+	}
+
+	componentDidUpdate( prevProps ) {
+		super.componentDidUpdate( prevProps );
+		jQuery('#foogallery-gallery-' + this.props.attributes.foo ).foogallery();
 	}
 }
 

@@ -5,6 +5,10 @@
  * Simple block, renders and saves the same content without any interactivity.
  */
 
+/**
+ * External dependencies
+ */
+
 //  Import CSS.
 import './style.scss';
 import './editor.scss';
@@ -14,8 +18,9 @@ const { __ } = wp.i18n; // Import __() from wp.i18n
 const { registerBlockType } = wp.blocks; // Import registerBlockType() from wp.blocks
 const { Fragment } = wp.element;
 const {
-	ServerSideRender,
-	TextControl
+	TextControl,
+	Placeholder,
+	Button
 } = wp.components;
 const { InspectorControls } = wp.editor;
 
@@ -45,6 +50,7 @@ registerBlockType( 'foogallery/responsive-gallery', {
 	attributes: {
 		foo: {
 			type: 'string',
+			default: null
 		},
 	},
 
@@ -63,16 +69,31 @@ registerBlockType( 'foogallery/responsive-gallery', {
 			setAttributes( { foo: newFoo } );
 		}
 
-		function initializeFooGallery() {
-			jQuery('.foogallery').foogallery();
+		console.log(foo);
+
+		if ( foo === null || foo === '' ) {
+			return (
+				<Placeholder
+					icon="format-gallery"
+					label={ __( 'FooGallery' ) }
+					instructions={ __( 'Select the gallery you want to embed' ) }
+					className="editor-media-placeholder"
+				>
+					<Button
+						isLarge
+						className="editor-media-placeholder__button"
+					>
+						{ __( 'Select Gallery' ) }
+					</Button>
+				</Placeholder>
+			)
 		}
 
 		return (
 			<Fragment>
-				<ServerSideRender
+				<FooGalleryServerSideRender
 					block="foogallery/responsive-gallery"
 					attributes={ attributes }
-					onChange={ initializeFooGallery }
 				/>
 				<InspectorControls>
 					<TextControl
