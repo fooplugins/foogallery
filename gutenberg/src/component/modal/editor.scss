@@ -1,0 +1,144 @@
+/**
+ * #.# FooGalleryModal Editor Styles
+ *
+ * CSS for just Backend enqueued after style.scss
+ * which makes it higher in priority.
+ */
+
+.foogallery-modal__content {
+  text-align: center;
+}
+
+.foogallery-modal__content-container {
+  position: relative;
+  display: inline-block;
+}
+
+.foogallery-modal__content-placeholder {
+  background-color: transparent;
+  min-height: 150px;
+  border: solid 3px transparent;
+  outline: solid 1px transparent;
+  margin: 10px;
+}
+
+.foogallery-modal__footer {
+  border-top: 1px solid #e2e4e7;
+  padding: 0 16px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  background: #fff;
+  align-items: center;
+  box-sizing: border-box;
+  height: 56px;
+  position: -webkit-sticky;
+  position: sticky;
+  bottom: 0;
+  z-index: 10;
+  margin: 16px -16px -16px;
+}
+
+.foogallery-modal__footer-container {
+  align-items: center;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+
+/* #.# FooGalleryItem Editor Styles */
+
+.foogallery-modal__item {
+  display: inline-block;
+  position: relative;
+  width: 150px;
+  height: 150px;
+  border: solid 3px #FFF;
+  box-shadow: 0 0 0 1px #ccc, inset 0 0 0 1px #ccc;
+  background-color: #f7f7f7;
+  margin: 10px;
+  cursor: pointer;
+  border-radius: 3px;
+}
+.foogallery-modal__item:focus {
+  border-style: dashed;
+}
+.foogallery-modal__item:hover,
+.foogallery-modal__item.is-selected {
+  border-style: solid;
+}
+.foogallery-modal__item:hover,
+.foogallery-modal__item:focus,
+.foogallery-modal__item.is-selected {
+  border-color: #0085ba;
+  box-shadow: 0 0 0 1px #00648c, inset 0 0 0 1px #00648c;
+}
+//.foogallery-modal__item.is-selected:after {
+//  display: inline-block;
+//  content: '\2713';
+//  position: absolute;
+//  top: 50%;
+//  left: 50%;
+//  transform: translateX(-50%) translateY(-50%);
+//  width: 40px;
+//  height: 40px;
+//  line-height: 40px;
+//  font-size: 30px;
+//  border-radius: 50%;
+//  text-align: center;
+//  background-color: #00a0d2;
+//  border: solid 1px #0085ba;
+//  color: #FFF;
+//}
+.foogallery-modal__item.is-disabled {
+  border-color: #e4e4e4;
+  box-shadow: 0 0 0 1px #ccc, inset 0 0 0 1px #ccc;
+  cursor: not-allowed;
+}
+
+img.foogallery-modal__item-thumbnail {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.foogallery-modal__item.is-disabled  img.foogallery-modal__item-thumbnail {
+  filter: grayscale(1);
+}
+svg.foogallery-modal__item-thumbnail {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  width: 64px;
+  height: 64px;
+  fill: #CCC;
+}
+
+.foogallery-modal__item-caption {
+  display: block;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: auto;
+  max-height: 100%;
+  overflow: hidden;
+  color: #FFF;
+  padding: 10px 5px 5px;
+  background: rgba(0,0,0,0.5);
+  background: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.5) 15px, rgba(0,0,0,0.5) 100%);
+}
+
+
+svg.dashicon.foogallery-modal__icon-selected,
+svg.dashicon.foogallery-modal__icon-disabled {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  fill: #FFF;
+  width: 60px;
+  height: 60px;
+  filter: drop-shadow( 0px 0px 5px #000 );
+}

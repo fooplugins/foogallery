@@ -8,22 +8,27 @@
 /**
  * External dependencies
  */
-
+import classnames from 'classnames';
 //  Import CSS.
 import './style.scss';
 import './editor.scss';
-import FooGalleryServerSideRender from '../foogallery-server-side-render';
-import apiFetch from '@wordpress/api-fetch';
+
+import FooGalleryEditor from '../component/editor';
 
 const { __ } = wp.i18n; // Import __() from wp.i18n
 const { registerBlockType } = wp.blocks; // Import registerBlockType() from wp.blocks
 const { Fragment } = wp.element;
 const {
-	TextControl,
-	Placeholder,
-	Button
+		Button,
+		TextControl,
+		Placeholder,
+		Spinner,
+		Toolbar,
+		ToolbarButton,
+		Tooltip,
+		Dashicon
 } = wp.components;
-const { InspectorControls } = wp.editor;
+const { InspectorControls, BlockControls } = wp.editor;
 
 /**
  * Register: aa Gutenberg Block.
@@ -38,23 +43,26 @@ const { InspectorControls } = wp.editor;
  * @return {?WPBlock}          The block, if it has been successfully
  *                             registered; otherwise `undefined`.
  */
-registerBlockType( 'foogallery/responsive-gallery', {
+registerBlockType( 'fooplugins/foogallery', {
 	// Block name. Block names must be string that contains a namespace prefix. Example: my-plugin/my-custom-block.
-	title: __( 'Responsive Gallery' ), // Block title.
+	title: __( 'FooGallery' ), // Block title.
+	description: __( "Insert a FooGallery into your post" ),
 	icon: 'format-gallery', // Block icon from Dashicons → https://developer.wordpress.org/resource/dashicons/.
 	category: 'common', // Block category — Group blocks together based on common traits E.g. common, formatting, layout widgets, embed.
 	keywords: [
 		__( 'foogallery' ),
 		__( 'gallery' ),
-		__( 'responsive' ),
 	],
-	attributes: {
-		foo: {
-			type: 'string',
-			default: null
-		},
+	supports: {
+		multiple: true,
+		html: false
 	},
-
+	attributes: {
+		id: {
+			type: 'number',
+			default: 0
+		}
+	},
 	/**
 	 * The edit function describes the structure of your block in the context of the editor.
 	 * This represents what the editor will render when the block is used.
@@ -63,49 +71,10 @@ registerBlockType( 'foogallery/responsive-gallery', {
 	 *
 	 * @link https://wordpress.org/gutenberg/handbook/block-api/block-edit-save/
 	 */
-	edit( { attributes, className, setAttributes } ) {
-		const { foo } = attributes;
-
-		function onChangeFoo( newFoo ) {
-			setAttributes( { foo: newFoo } );
-		}
-
-		console.log(foo);
-
-		if ( foo === null || foo === '' ) {
-			return (
-				<Placeholder
-					icon="format-gallery"
-					label={ __( 'FooGallery' ) }
-					instructions={ __( 'Select the gallery you want to embed' ) }
-					className="editor-media-placeholder"
-				>
-					<Button
-						isLarge
-						className="editor-media-placeholder__button"
-					>
-						{ __( 'Select Gallery' ) }
-					</Button>
-				</Placeholder>
-			)
-		}
-
-		return (
-			<Fragment>
-				<FooGalleryServerSideRender
-					block="foogallery/responsive-gallery"
-					attributes={ attributes }
-				/>
-				<InspectorControls>
-					<TextControl
-						label="Foo"
-						value={ foo }
-						onChange={ onChangeFoo }
-					/>
-				</InspectorControls>
-			</Fragment>
-		)
+	edit(props) {
+		return (<FooGalleryEditor {...props}/>)
 	},
+
 
 	/**
 	 * The save function defines the way in which the different attributes should be combined

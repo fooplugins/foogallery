@@ -81,10 +81,11 @@ if ( ! class_exists( 'FooGallery_Blocks' ) ) {
 			if ( function_exists( 'register_block_type' ) ) {
 				// Register our block, and explicitly define the attributes we accept.
 				register_block_type(
-					'foogallery/responsive-gallery', array(
+					'fooplugins/foogallery', array(
 					'attributes' => array(
-						'foo' => array(
-							'type' => 'string',
+						'id' => array(
+							'type' => 'number',
+							'default' => 0
 						),
 					),
 					'render_callback' => array( $this, 'render_block' ),
@@ -93,7 +94,7 @@ if ( ! class_exists( 'FooGallery_Blocks' ) ) {
 		}
 
 		function render_block( $attributes ) {
-			$foogallery_id = $attributes['foo'];
+			$foogallery_id = $attributes['id'];
 			$args = array(
 				'id' => $foogallery_id
 			);
@@ -106,7 +107,7 @@ if ( ! class_exists( 'FooGallery_Blocks' ) ) {
 
 			$output_string = ob_get_contents();
 			ob_end_clean();
-			return $output_string;
+			return !empty($output_string) ? $output_string : null;
 				//"<script type='text/javascript'>setTimeout(function(){ jQuery('#foogallery-gallery-{$foogallery_id}').foogallery(); }, 5000);</script>";
 		}
 

@@ -73,27 +73,36 @@ if ( ! class_exists( 'FooGallery_Rest_Routes' ) ) {
 		 * @return WP_REST_Response|WP_Error Response object on success, or WP_Error object on failure.
 		 */
 		public function get_galleries( $request ) {
-			$args = array(
-				'post_type'     => FOOGALLERY_CPT_GALLERY,
-				'post_status'	=> array( 'publish', 'draft' ),
-				'cache_results' => false,
-				'nopaging'      => true,
-			);
 
-			$gallery_posts = get_posts( $args );
+			$galleries = foogallery_get_all_galleries();
 
-			$galleries = array();
+			$result = array();
 
-			if ( !empty( $gallery_posts ) ) {
-				foreach ( $gallery_posts as $post ) {
-					$galleries[] = array(
-						'ID' => $post->ID,
-						'Name' => $post->post_title
+			if ( !empty( $galleries ) ) {
+				foreach ( $galleries as $gallery ) {
+					$args = array(
+						'width' => 150,
+						'height' => 150
+					);
+
+					$featuredAttachment = $gallery->featured_attachment();
+					if ( $featuredAttachment ) {
+						$img = $featuredAttachment->html_img_src( $args );
+					} else {
+						//if we have no featured attachment, then use the built-in image placeholder
+						$img = foogallery_image_placeholder_src();
+					}
+
+
+					$result[] = array(
+						'id' => $gallery->ID,
+						'name' => $gallery->name,
+						'thumbnail' => $img
 					);
 				}
 			}
 
-			return rest_ensure_response( $galleries );
+			return rest_ensure_response( $result );
 		}
 
 		/**
@@ -110,14 +119,20 @@ if ( ! class_exists( 'FooGallery_Rest_Routes' ) ) {
 				'title'      => 'foogallery',
 				'type'       => 'object',
 				'properties' => array(
-					'ID' => array(
+					'id' => array(
 						'description' => __( 'The FooGallery ID.', 'foogallery' ),
 						'type'        => 'int',
 						'required'    => true,
 						'context'     => array( 'edit' ),
 					),
-					'Name' => array(
+					'name' => array(
 						'description' => __( 'The FooGallery Name.', 'foogallery' ),
+						'type'        => 'string',
+						'required'    => false,
+						'context'     => array( 'edit' ),
+					),
+					'thumbnail' => array(
+						'description' => __( 'The FooGallery Thumbnail.', 'foogallery' ),
 						'type'        => 'string',
 						'required'    => false,
 						'context'     => array( 'edit' ),
