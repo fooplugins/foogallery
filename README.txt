@@ -3,7 +3,7 @@ Contributors: bradvin, steveush, fooplugins
 Donate link: http://fooplugins.com
 Tags: gallery, image gallery, photo gallery, responsive, album, media gallery, masonry gallery, portfolio, justified gallery, video gallery, photography, youtube gallery
 Requires at least: 3.9
-Tested up to: 4.9.8
+Tested up to: 5.0
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -20,6 +20,7 @@ https://youtu.be/zY8eSTEIwpU
 
 **Features**
 
+*	Gutenberg ready (Gallery previews inside the editor!)
 *	Lazy loading
 *	Simple Pagination (dots)
 *	Live previews in admin
@@ -69,6 +70,10 @@ https://youtu.be/zY8eSTEIwpU
 **Documentation**
 
 *	[FooGallery Documentation](https://fooplugins.helpscoutdocs.com/collection/8-foogallery)
+
+**Gutenberg**
+
+We love the new Gutenberg editor. We have built a really simple-to-use Gutenberg block to add your existing FooGalleries in seconds. And it includes live previews of the gallery too!
 
 **GDPR**
 
@@ -137,6 +142,9 @@ Hell, yes! Check out our [developer page](http://foo.gallery/developers/)
 Update now to get all the latest features, bug fixes and improvements!
 
 == Changelog ==
+
+= 1.6.0 =
+* New : Gutenberg FooGallery block (including live gallery previews!)
 
 = 1.5.10 =
 * Update : Freemius SDK 2.1.3 (which fixes fatal Multisite bug)
