@@ -32,9 +32,10 @@ if ( ! class_exists( 'FooGallery_Blocks' ) ) {
 		 */
 		function enqueue_block_editor_assets() {
 
-			$js_url = plugins_url( 'gutenberg/dist/blocks.build.js', dirname( __FILE__ ) );
-
+			//enqueue foogallery dependencies
+			wp_enqueue_script( 'masonry' );
 			foogallery_enqueue_core_gallery_template_script();
+			foogallery_enqueue_core_gallery_template_style();
 
 			$deps = array(
 				'wp-blocks',
@@ -45,6 +46,8 @@ if ( ! class_exists( 'FooGallery_Blocks' ) ) {
 				'foogallery-core'
 			);
 
+			$js_url = plugins_url( 'gutenberg/dist/blocks.build.js', dirname( __FILE__ ) );
+
 			// Scripts.
 			wp_enqueue_script(
 				'foogallery-block-js', // Handle.
@@ -53,8 +56,6 @@ if ( ! class_exists( 'FooGallery_Blocks' ) ) {
 				// filemtime( plugin_dir_path( __DIR__ ) . 'dist/blocks.build.js' ), // Version: filemtime — Gets file modification time.
 				true // Enqueue the script in the footer.
 			);
-
-			foogallery_enqueue_core_gallery_template_style();
 
 			// Styles.
 			wp_enqueue_style(
