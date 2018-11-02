@@ -30,12 +30,12 @@ const shouldUseSourceMap = process.env.GENERATE_SOURCEMAP === 'true';
 
 // Extract style.css for both editor and frontend styles.
 const blocksCSSPlugin = new ExtractTextPlugin( {
-	filename: './dist/blocks.style.build.css',
+	filename: './gutenberg/dist/blocks.style.build.css',
 } );
 
 // Extract editor.css for editor styles.
 const editBlocksCSSPlugin = new ExtractTextPlugin( {
-	filename: './dist/blocks.editor.build.css',
+	filename: './gutenberg/dist/blocks.editor.build.css',
 } );
 
 // Configuration for the ExtractTextPlugin — DRY rule.
