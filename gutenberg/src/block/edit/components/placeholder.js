@@ -4,7 +4,7 @@ const { __ } = wp.i18n;
 const { Component } = wp.element;
 const { Placeholder } = wp.components;
 
-export default class FooGalleryPlaceholder extends Component {
+export default class FooGalleryEditPlaceholder extends Component {
 	render(){
 		const { className, children, ...props } = this.props;
 		return (
@@ -14,7 +14,3 @@ export default class FooGalleryPlaceholder extends Component {
 		);
 	}
 }
-
-FooGalleryPlaceholder.defaultProps = {
-	className: ""
-};

@@ -1,13 +1,15 @@
-import FooGalleryModal from '../modal';
-import FooGalleryPlaceholder from '../placeholder';
-import FooGalleryEditorBlockControls from './block-controls';
-import FooGalleryEditorInspectorControls from './inspector-controls';
+import {
+	FooGalleryEditModal,
+	FooGalleryEditPlaceholder,
+	FooGalleryEditBlockControls,
+	FooGalleryEditInspectorControls
+} from '../components';
 
 const { __ } = wp.i18n;
 const { Component, Fragment } = wp.element;
 const { Button } = wp.components;
 
-export default class FooGalleryEditorEmpty extends Component {
+export default class FooGalleryEditEmpty extends Component {
 	render(){
 		const { icon, label, instructions, button, ...props } = this.props;
 
@@ -15,18 +17,18 @@ export default class FooGalleryEditorEmpty extends Component {
 
 		return (
 				<Fragment>
-					<FooGalleryEditorBlockControls { ...props } />
-					<FooGalleryPlaceholder { ...placeholderProps }>
+					<FooGalleryEditBlockControls { ...props } />
+					<FooGalleryEditPlaceholder { ...placeholderProps }>
 						<Button isDefault isLarge onClick={ props.onRequestModalOpen }>{ button }</Button>
-					</FooGalleryPlaceholder>
-					<FooGalleryModal { ...props } />
-					<FooGalleryEditorInspectorControls { ...props }/>
+					</FooGalleryEditPlaceholder>
+					<FooGalleryEditModal { ...props } />
+					<FooGalleryEditInspectorControls { ...props }/>
 				</Fragment>
 		);
 	}
 }
 
-FooGalleryEditorEmpty.defaultProps = {
+FooGalleryEditEmpty.defaultProps = {
 	icon: "format-gallery",
 	label: __("FooGallery", "foogallery"),
 	instructions: __("Select the gallery you want to insert.", "foogallery"),

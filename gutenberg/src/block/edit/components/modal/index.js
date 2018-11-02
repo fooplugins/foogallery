@@ -1,7 +1,6 @@
-
 import './editor.scss';
 import classnames from 'classnames';
-import FooGalleryModalItem from './item';
+import FooGalleryEditModalItem from './item';
 
 /**
  * Internal block libraries
@@ -13,7 +12,7 @@ const { Button, IconButton, Placeholder, Modal, Spinner } = wp.components;
 /**
  * Create the FooGallery Select Modal Component
  */
-export default class FooGalleryModal extends Component {
+export default class FooGalleryEditModal extends Component {
 
 	constructor() {
 		super( ...arguments );
@@ -98,7 +97,7 @@ export default class FooGalleryModal extends Component {
 		let self = this;
 		return data.map(gallery => {
 			return (
-					<FooGalleryModalItem
+					<FooGalleryEditModalItem
 							data={ gallery }
 							isSelected={ id == gallery.id }
 							isDisabled={ disable.indexOf(gallery.id) !== -1 }
@@ -110,7 +109,7 @@ export default class FooGalleryModal extends Component {
 
 }
 
-FooGalleryModal.defaultProps = {
+FooGalleryEditModal.defaultProps = {
 	currentId: 0,
 	isModalOpen: false,
 	className: "",

@@ -1,9 +1,11 @@
+import './editor.scss';
+
 const { __ } = wp.i18n;
 const { Component } = wp.element;
 const { Button, IconButton } = wp.components;
 const { InspectorControls } = wp.editor;
 
-export default class FooGalleryEditorInspectorControls extends Component {
+export default class FooGalleryEditInspectorControls extends Component {
 	render(){
 		const { select, onRequestModalOpen, canEdit, edit, onRequestGalleryEdit, children } = this.props;
 		return (
@@ -18,7 +20,7 @@ export default class FooGalleryEditorInspectorControls extends Component {
 	}
 }
 
-FooGalleryEditorInspectorControls.defaultProps = {
+FooGalleryEditInspectorControls.defaultProps = {
 	canEdit: false,
 	edit: __("Edit Gallery", "foogallery"),
 	select: __("Select Gallery", "foogallery"),

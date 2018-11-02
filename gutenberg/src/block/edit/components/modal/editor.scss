@@ -74,23 +74,6 @@
   border-color: #0085ba;
   box-shadow: 0 0 0 1px #00648c, inset 0 0 0 1px #00648c;
 }
-//.foogallery-modal__item.is-selected:after {
-//  display: inline-block;
-//  content: '\2713';
-//  position: absolute;
-//  top: 50%;
-//  left: 50%;
-//  transform: translateX(-50%) translateY(-50%);
-//  width: 40px;
-//  height: 40px;
-//  line-height: 40px;
-//  font-size: 30px;
-//  border-radius: 50%;
-//  text-align: center;
-//  background-color: #00a0d2;
-//  border: solid 1px #0085ba;
-//  color: #FFF;
-//}
 .foogallery-modal__item.is-disabled {
   border-color: #e4e4e4;
   box-shadow: 0 0 0 1px #ccc, inset 0 0 0 1px #ccc;

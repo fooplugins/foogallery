@@ -1,34 +1,15 @@
 /**
- * BLOCK: my-block
+ * BLOCK: fooplugins/foogallery
  *
- * Registering a basic block with Gutenberg.
- * Simple block, renders and saves the same content without any interactivity.
+ * Registering a basic FooGallery block with Gutenberg.
  */
 
-/**
- * External dependencies
- */
-import classnames from 'classnames';
-//  Import CSS.
 import './style.scss';
 import './editor.scss';
-
-import FooGalleryEditor from '../component/editor';
+import FooGalleryEdit from './edit';
 
 const { __ } = wp.i18n; // Import __() from wp.i18n
 const { registerBlockType } = wp.blocks; // Import registerBlockType() from wp.blocks
-const { Fragment } = wp.element;
-const {
-		Button,
-		TextControl,
-		Placeholder,
-		Spinner,
-		Toolbar,
-		ToolbarButton,
-		Tooltip,
-		Dashicon
-} = wp.components;
-const { InspectorControls, BlockControls } = wp.editor;
 
 /**
  * Register: aa Gutenberg Block.
@@ -72,7 +53,7 @@ registerBlockType( 'fooplugins/foogallery', {
 	 * @link https://wordpress.org/gutenberg/handbook/block-api/block-edit-save/
 	 */
 	edit(props) {
-		return (<FooGalleryEditor {...props}/>)
+		return (<FooGalleryEdit {...props}/>)
 	},
 
 

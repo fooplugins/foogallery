@@ -1,26 +1,28 @@
-import './editor.scss';
+import FooGalleryEditRendered from './rendered';
+import {
+	FooGalleryEditEmpty,
+	FooGalleryEditPopulated,
+	FooGalleryEditDuplicate
+} from './views';
 
-import classnames from 'classnames';
-import FooGalleryModal from '../modal';
-import FooGalleryEditorEmpty from './empty';
-import FooGalleryEditorPopulated from './populated';
-import FooGalleryEditorDuplicate from './duplicate';
-import FooGalleryRendered from './rendered';
-import FooGalleryServerSideRender from '../server-side-render';
-import FooGalleryEditorInspectorControls from './inspector-controls';
-
-const { __, sprintf } = wp.i18n;
+const { sprintf } = wp.i18n;
 const { dispatch } = wp.data;
-const { Component, Fragment } = wp.element;
+const { Component } = wp.element;
 
-export default class FooGalleryEditor extends Component {
+export default class FooGalleryEdit extends Component {
+	/**
+	 * Called whenever a block is created in the editor.
+	 */
 	constructor(){
 		super(...arguments);
+
+		// Keep track of whether or not the modal is open and a boolean indicating if the component should reload in the state.
 		this.state = {
 			isModalOpen: false,
-			reload: false
+			reload: false // to force a reload simply call this.setState({ reload: !this.state.reload })
 		};
 
+		// Ensure that whenever this methods are called the `this` variable correctly points to this instance of the component.
 		this.showModal = this.showModal.bind(this);
 		this.closeModal = this.closeModal.bind(this);
 		this.insertGallery = this.insertGallery.bind(this);
@@ -29,20 +31,24 @@ export default class FooGalleryEditor extends Component {
 		this.removeBlock = this.removeBlock.bind(this);
 	}
 
+	/**
+	 * Every time the editor is mounted add the current gallery id and clientId to the static rendered array.
+	 */
 	componentDidMount(){
 		const { clientId, attributes: { id } } = this.props;
 		if ( id != 0 ){
-			FooGalleryRendered.add( id, clientId );
+			FooGalleryEditRendered.add( id, clientId );
 		}
-		console.log("componentDidMount", clientId, id, FooGalleryRendered.array);
 	}
 
+	/**
+	 * Whenever the editor is unmounted remove the id and clientId from the static rendered array.
+	 */
 	componentWillUnmount() {
 		const { clientId, attributes: { id } } = this.props;
 		if ( id != 0 ){
-			FooGalleryRendered.remove( clientId );
+			FooGalleryEditRendered.remove( clientId );
 		}
-		console.log("componentWillUnmount", clientId, id, FooGalleryRendered.array);
 	}
 
 	showModal(){
@@ -55,9 +61,8 @@ export default class FooGalleryEditor extends Component {
 
 	insertGallery( id ){
 		const { clientId, setAttributes } = this.props;
-		FooGalleryRendered.update( id, clientId );
+		FooGalleryEditRendered.update( id, clientId );
 		setAttributes( { id } );
-		console.log( id, clientId );
 	}
 
 	editGallery(){
@@ -81,7 +86,7 @@ export default class FooGalleryEditor extends Component {
 		const { isModalOpen, reload } = this.state;
 
 		let props = {
-			disable: FooGalleryRendered.ids(),
+			disable: FooGalleryEditRendered.ids(),
 			isModalOpen: isModalOpen,
 			onRequestModalOpen: this.showModal,
 			onRequestModalClose: this.closeModal,
@@ -91,18 +96,18 @@ export default class FooGalleryEditor extends Component {
 			onRequestGalleryReload: this.reloadGallery
 		};
 
-		if ( FooGalleryRendered.contains(attributes.id, clientId) ){
-			return (<FooGalleryEditorDuplicate { ...props }/>);
+		if ( FooGalleryEditRendered.contains(attributes.id, clientId) ){
+			return (<FooGalleryEditDuplicate { ...props }/>);
 		}
 
 		if ( !attributes.id ){
-			return (<FooGalleryEditorEmpty { ...props }/>);
+			return (<FooGalleryEditEmpty { ...props }/>);
 		}
 
-		return (<FooGalleryEditorPopulated attributes={attributes} reload={reload} { ...props }/>);
+		return (<FooGalleryEditPopulated attributes={attributes} reload={reload} { ...props }/>);
 	}
 }
 
-FooGalleryEditor.defaultProps = {
+FooGalleryEdit.defaultProps = {
 
 };

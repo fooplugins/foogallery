@@ -1,5 +1,5 @@
 const rendered = [];
-export default class FooGalleryRendered {
+export default class FooGalleryEditRendered {
 	static get array(){
 		return rendered;
 	}

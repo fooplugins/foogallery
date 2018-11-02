@@ -1,4 +1,4 @@
-import FooGalleryPlaceholder from '../placeholder';
+import FooGalleryEditPlaceholder from './placeholder';
 
 /**
  * WordPress dependencies.
@@ -11,24 +11,22 @@ const {
 } = wp.components;
 const { isEqual } = lodash;
 
-export default class FooGalleryServerSideRender extends ServerSideRender {
+export default class FooGalleryEditServerSideRender extends ServerSideRender {
 
 	shouldComponentUpdate(nextProps, nextState){
 		let propDiff = !isEqual(this.props, nextProps);
 		let stateDiff = !isEqual(this.state, nextState);
-		console.log("shouldComponentUpdate", propDiff, stateDiff);
 		return propDiff || stateDiff;
 	}
 
 	componentDidUpdate() {
-		console.log("componentDidUpdate");
 		super.componentDidUpdate( ...arguments );
 		const { attributes: { id } } = this.props;
 		jQuery( '[id="foogallery-gallery-' + id + '"]' ).foogallery(FooGallery.autoDefaults);
 	}
 
 	componentWillReceiveProps( props ){
-		console.log("componentWillReceiveProps");
+		//todo: call super.componentWillReceiveProps ???
 		const { reload } = this.props;
 		if (props.reload != reload){
 			this.reload();
@@ -44,19 +42,19 @@ export default class FooGalleryServerSideRender extends ServerSideRender {
 		const response = this.state.response;
 		if ( ! response ) {
 			return (
-					<FooGalleryPlaceholder instructions={ loading }>
+					<FooGalleryEditPlaceholder instructions={ loading }>
 						<Spinner />
-					</FooGalleryPlaceholder>
+					</FooGalleryEditPlaceholder>
 			);
 		} else if ( response.error ) {
 			// translators: %s: error message describing the problem
 			const errorMessage = sprintf( error, response.errorMsg );
 			return (
-					<FooGalleryPlaceholder instructions={ errorMessage } />
+					<FooGalleryEditPlaceholder instructions={ errorMessage } />
 			);
 		} else if ( ! response.length ) {
 			return (
-					<FooGalleryPlaceholder instructions={ empty } />
+					<FooGalleryEditPlaceholder instructions={ empty } />
 			);
 		}
 
@@ -67,7 +65,7 @@ export default class FooGalleryServerSideRender extends ServerSideRender {
 
 }
 
-FooGalleryServerSideRender.defaultProps = {
+FooGalleryEditServerSideRender.defaultProps = {
 	loading: __("Loading gallery...", "foogallery"),
 	error: __("Error loading gallery: %s", "foogallery"),
 	empty: __("No gallery was found.", "foogallery")

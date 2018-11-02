@@ -3,7 +3,7 @@ const { Component } = wp.element;
 const { Toolbar, IconButton } = wp.components;
 const { BlockControls } = wp.editor;
 
-export default class FooGalleryEditorBlockControls extends Component {
+export default class FooGalleryEditBlockControls extends Component {
 	render(){
 		const {
 			select, onRequestModalOpen,
@@ -28,7 +28,7 @@ export default class FooGalleryEditorBlockControls extends Component {
 	}
 }
 
-FooGalleryEditorBlockControls.defaultProps = {
+FooGalleryEditBlockControls.defaultProps = {
 	canEdit: false,
 	canReload: false,
 	select: __("Select gallery", "foogallery"),

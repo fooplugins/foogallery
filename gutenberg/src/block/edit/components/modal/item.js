@@ -3,7 +3,7 @@ import classnames from 'classnames';
 const { Dashicon } = wp.components;
 const { Component } = wp.element;
 
-export default class FooGalleryModalItem extends Component {
+export default class FooGalleryEditModalItem extends Component {
 	render(){
 		const { data, className, isSelected, isDisabled, onSelected } = this.props;
 		let props = {
@@ -45,7 +45,7 @@ export default class FooGalleryModalItem extends Component {
 	}
 }
 
-FooGalleryModalItem.defaultProps = {
+FooGalleryEditModalItem.defaultProps = {
 	data: {},
 	className: "",
 	isSelected: false,
