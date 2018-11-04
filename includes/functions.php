@@ -467,7 +467,11 @@ function foogallery_build_container_data_options( $gallery, $attributes ) {
 
 	$options = apply_filters( 'foogallery_build_container_data_options-'. $gallery->gallery_template, $options, $gallery, $attributes );
 
-	return json_encode( $options );
+	if ( defined( 'JSON_UNESCAPED_UNICODE' ) ) {
+		return json_encode( $options, JSON_UNESCAPED_UNICODE );
+	} else {
+		return json_encode( $options );
+	}
 }
 
 /**
