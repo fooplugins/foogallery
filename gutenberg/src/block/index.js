@@ -27,7 +27,7 @@ const { registerBlockType } = wp.blocks; // Import registerBlockType() from wp.b
 registerBlockType( 'fooplugins/foogallery', {
 	// Block name. Block names must be string that contains a namespace prefix. Example: my-plugin/my-custom-block.
 	title: __( 'FooGallery' ), // Block title.
-	description: __( "Insert a FooGallery into your post" ),
+	description: __( 'Insert a FooGallery into your content' ),
 	icon: 'format-gallery', // Block icon from Dashicons → https://developer.wordpress.org/resource/dashicons/.
 	category: 'common', // Block category — Group blocks together based on common traits E.g. common, formatting, layout widgets, embed.
 	keywords: [
