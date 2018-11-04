@@ -449,7 +449,11 @@ function foogallery_build_json_from_attachment( $foogallery_attachment, $args = 
 
 		$json_object = apply_filters( 'foogallery_build_attachment_json', $json_object, $foogallery_attachment, $args, $anchor_attributes, $image_attributes, $captions );
 
-		return json_encode( $json_object );
+		if ( defined( 'JSON_UNESCAPED_UNICODE' ) ) {
+			return json_encode( $json_object, JSON_UNESCAPED_UNICODE );
+		} else {
+			return json_encode( $json_object );
+		}
 	}
 
 	return '';
