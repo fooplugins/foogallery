@@ -382,72 +382,95 @@ function foogallery_gallery_template_arguments() {
 }
 
 /**
+ * Build up an object that will be encoded to JSON for a FooGallery Attachment
+ *
+ * @param FooGalleryAttachment $foogallery_attachment
+ * @param array                $args
+ *
+ * @since 1.6.0
+ *
+ * @returns string
+ * @return string
+ */
+function foogallery_build_json_object_from_attachment( $foogallery_attachment, $args = array() ) {
+	if ( isset( $foogallery_attachment ) ) {
+
+		//check if no arguments were passed in, and build them up if so
+		if ( empty( $args ) ) {
+			$args = foogallery_gallery_template_arguments();
+		}
+
+		$anchor_attributes = foogallery_build_attachment_html_anchor_attributes( $foogallery_attachment, $args );
+		$image_attributes  = foogallery_build_attachment_html_image_attributes( $foogallery_attachment, $args );
+		$captions          = foogallery_build_attachment_html_caption( $foogallery_attachment, $args );
+
+		if ( array_key_exists( 'src', $image_attributes ) ) {
+			$src = $image_attributes['src'];
+		} else if ( array_key_exists( 'data-src-fg', $image_attributes ) ) {
+			$src = $image_attributes['data-src-fg'];
+		}
+
+		if ( array_key_exists( 'srcset', $image_attributes ) ) {
+			$srcset = $image_attributes['srcset'];
+		} else if ( array_key_exists( 'data-srcset-fg', $image_attributes ) ) {
+			$srcset = $image_attributes['data-srcset-fg'];
+		}
+
+		$json_object       = new stdClass();
+		$json_object->href = $anchor_attributes['href'];
+		if ( isset( $src ) ) {
+			$json_object->src = $src;
+		}
+		if ( isset( $srcset ) ) {
+			$json_object->srcset = $srcset;
+		}
+		if ( array_key_exists( 'width', $image_attributes ) ) {
+			$json_object->width = $image_attributes['width'];
+		}
+		if ( array_key_exists( 'height', $image_attributes ) ) {
+			$json_object->height = $image_attributes['height'];
+		}
+
+		$json_object->alt = $foogallery_attachment->alt;
+
+		$json_object_attr_anchor                         = new stdClass();
+		$json_object_attr_anchor->{'data-attachment-id'} = $foogallery_attachment->ID;
+
+		if ( $captions !== false ) {
+			if ( array_key_exists( 'title', $captions ) ) {
+				$json_object->caption = $json_object->title = $json_object_attr_anchor->{'data-caption-title'} = $captions['title'];
+			}
+			if ( array_key_exists( 'desc', $captions ) ) {
+				$json_object->description = $json_object_attr_anchor->{'data-caption-desc'} = $captions['desc'];
+			}
+		}
+
+		$json_object->attr         = new stdClass();
+		$json_object->attr->anchor = $json_object_attr_anchor;
+
+		$json_object = apply_filters( 'foogallery_build_attachment_json', $json_object, $foogallery_attachment, $args, $anchor_attributes, $image_attributes, $captions );
+
+		return $json_object;
+	}
+
+	return false;
+}
+
+/**
  * Build up a JSON string for a FooGallery Attachment
  *
  * @param FooGalleryAttachment $foogallery_attachment
- * @param array $args
+ * @param array                $args
  *
  * @since 1.4.9
  *
  * @returns string
+ * @return string
  */
 function foogallery_build_json_from_attachment( $foogallery_attachment, $args = array() ) {
 	if ( isset( $foogallery_attachment ) ) {
 
-	    //check if no arguments were passed in, and build them up if so
-	    if ( empty( $args ) ) {
-            $args = foogallery_gallery_template_arguments();
-        }
-
-		$anchor_attributes = foogallery_build_attachment_html_anchor_attributes( $foogallery_attachment, $args );
-		$image_attributes = foogallery_build_attachment_html_image_attributes( $foogallery_attachment, $args );
-		$captions = foogallery_build_attachment_html_caption( $foogallery_attachment, $args );
-
-		if ( array_key_exists( 'src', $image_attributes ) ) {
-		    $src = $image_attributes['src'];
-        } else if ( array_key_exists( 'data-src-fg', $image_attributes ) ) {
-		    $src = $image_attributes['data-src-fg'];
-        }
-
-        if ( array_key_exists( 'srcset', $image_attributes ) ) {
-            $srcset = $image_attributes['srcset'];
-        } else if ( array_key_exists( 'data-srcset-fg', $image_attributes ) ) {
-            $srcset = $image_attributes['data-srcset-fg'];
-        }
-
-        $json_object = new stdClass();
-        $json_object->href = $anchor_attributes['href'];
-        if ( isset( $src ) ) {
-            $json_object->src = $src;
-        }
-        if ( isset( $srcset ) ) {
-            $json_object->srcset = $srcset;
-        }
-        if ( array_key_exists( 'width', $image_attributes ) ) {
-            $json_object->width = $image_attributes['width'];
-        }
-        if ( array_key_exists( 'height', $image_attributes ) ) {
-            $json_object->height = $image_attributes['height'];
-        }
-
-        $json_object->alt       = $foogallery_attachment->alt;
-
-        $json_object_attr_anchor = new stdClass();
-        $json_object_attr_anchor->{'data-attachment-id'} = $foogallery_attachment->ID;
-
-        if ( $captions !== false ) {
-            if ( array_key_exists( 'title', $captions ) ) {
-                $json_object->caption = $json_object->title = $json_object_attr_anchor->{'data-caption-title'} = $captions['title'];
-            }
-            if ( array_key_exists( 'desc', $captions ) ) {
-                $json_object->description = $json_object_attr_anchor->{'data-caption-desc'} = $captions['desc'];
-            }
-        }
-
-        $json_object->attr = new stdClass();
-        $json_object->attr->anchor = $json_object_attr_anchor;
-
-		$json_object = apply_filters( 'foogallery_build_attachment_json', $json_object, $foogallery_attachment, $args, $anchor_attributes, $image_attributes, $captions );
+		$json_object = foogallery_build_json_object_from_attachment( $foogallery_attachment, $args );
 
 		if ( defined( 'JSON_UNESCAPED_UNICODE' ) ) {
 			return json_encode( $json_object, JSON_UNESCAPED_UNICODE );
