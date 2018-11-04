@@ -41,9 +41,10 @@ if ( ! class_exists( 'FooGallery_Blocks' ) ) {
 				'wp-blocks',
 				'wp-i18n',
 				'wp-element',
+				'foogallery-core',
 				'wp-components',
 				'wp-editor',
-				'foogallery-core'
+				'underscore'
 			);
 
 			$js_url = plugins_url( 'gutenberg/dist/blocks.build.js', dirname( __FILE__ ) );
