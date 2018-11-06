@@ -12,6 +12,8 @@ if ( ! class_exists( 'FooGallery_Shortcodes' ) ) {
 			add_action( 'foogallery_loaded_template', array( $this, 'render_custom_css' ) );
 
 			add_shortcode( foogallery_gallery_shortcode_tag(), array( $this, 'render_foogallery_shortcode' ) );
+
+			add_shortcode( 'foogallery-enqueue', array( $this, 'render_foogallery_enqueue' ) );
 		}
 
 		function render_foogallery_shortcode( $atts ) {
@@ -33,6 +35,30 @@ if ( ! class_exists( 'FooGallery_Shortcodes' ) ) {
 			$output_string = ob_get_contents();
 			ob_end_clean();
 			return $output_string;
+		}
+
+		function render_foogallery_enqueue() {
+			foogallery_enqueue_core_gallery_template_script();
+			foogallery_enqueue_core_gallery_template_style();
+			wp_enqueue_script( 'masonry' );
+			return '<script>
+    function initFooGalleryAjaxComplete(){
+        if ( !jQuery || !FooGallery ){
+            console.log("FooGallery ajax complete missing dependencies.", jQuery, FooGallery);
+            return;
+        }
+        jQuery( document ).ajaxComplete(function() {
+            jQuery(".foogallery").each(function(){
+                var $gallery = jQuery(this), fg = $gallery.data(FooGallery.dataTemplate);
+                if (!(fg instanceof FooGallery.Template)){
+                    $gallery.foogallery(FooGallery.autoDefaults);
+                }
+            });
+        });
+    }
+    if (Function(\'/*@cc_on return true@*/\')() ? document.readyState === "complete" : document.readyState !== "loading") initFooGalleryAjaxComplete();
+    else document.addEventListener(\'DOMContentLoaded\', initFooGalleryAjaxComplete, false);
+</script>';
 		}
 
 		/**
