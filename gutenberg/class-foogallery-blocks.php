@@ -32,6 +32,10 @@ if ( ! class_exists( 'FooGallery_Blocks' ) ) {
 		 */
 		function enqueue_block_editor_assets() {
 
+			if ( !apply_filters( 'foogallery_gutenberg_enabled', true ) ) {
+				return;
+			}
+
 			//enqueue foogallery dependencies
 			wp_enqueue_script( 'masonry' );
 			foogallery_enqueue_core_gallery_template_script();
@@ -97,6 +101,10 @@ if ( ! class_exists( 'FooGallery_Blocks' ) ) {
 		 * @since 1.0.0
 		 */
 		function enqueue_block_assets() {
+			if ( !apply_filters( 'foogallery_gutenberg_enabled', true ) ) {
+				return;
+			}
+
 			// Styles.
 			wp_enqueue_style(
 				'foogallery-block-css',
@@ -109,6 +117,10 @@ if ( ! class_exists( 'FooGallery_Blocks' ) ) {
 		 * Register our block and shortcode.
 		 */
 		function php_block_init() {
+			if ( !apply_filters( 'foogallery_gutenberg_enabled', true ) ) {
+				return;
+			}
+
 			//get out quickly if no Gutenberg
 			if ( !function_exists( 'register_block_type' ) ) {
 				return;
