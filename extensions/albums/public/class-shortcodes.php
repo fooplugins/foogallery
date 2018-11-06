@@ -8,11 +8,7 @@ if ( ! class_exists( 'FooGallery_Album_Shortcodes' ) ) {
 	class FooGallery_Album_Shortcodes {
 
 		function __construct() {
-			add_action( 'init', array( $this, 'init_shortcode' ) );
 			add_action( 'foogallery_loaded_album_template', array( $this, 'render_custom_css' ) );
-		}
-
-		function init_shortcode() {
 			add_shortcode( foogallery_album_shortcode_tag(), array( $this, 'render_foogallery_album_shortcode' ) );
 		}
 
