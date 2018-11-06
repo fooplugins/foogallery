@@ -125,6 +125,8 @@ if ( ! class_exists( 'FooGallery_Plugin' ) ) {
 				new FooGallery_Public();
 			}
 
+			new FooGallery_Shortcodes();
+
 			new FooGallery_Thumbnails();
 
 			new FooGallery_Attachment_Filters();
