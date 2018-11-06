@@ -41,24 +41,6 @@ if ( ! class_exists( 'FooGallery_Shortcodes' ) ) {
 			foogallery_enqueue_core_gallery_template_script();
 			foogallery_enqueue_core_gallery_template_style();
 			wp_enqueue_script( 'masonry' );
-			return '<script>
-    function initFooGalleryAjaxComplete(){
-        if ( !jQuery || !FooGallery ){
-            console.log("FooGallery ajax complete missing dependencies.", jQuery, FooGallery);
-            return;
-        }
-        jQuery( document ).ajaxComplete(function() {
-            jQuery(".foogallery").each(function(){
-                var $gallery = jQuery(this), fg = $gallery.data(FooGallery.dataTemplate);
-                if (!(fg instanceof FooGallery.Template)){
-                    $gallery.foogallery(FooGallery.autoDefaults);
-                }
-            });
-        });
-    }
-    if (Function(\'/*@cc_on return true@*/\')() ? document.readyState === "complete" : document.readyState !== "loading") initFooGalleryAjaxComplete();
-    else document.addEventListener(\'DOMContentLoaded\', initFooGalleryAjaxComplete, false);
-</script>';
 		}
 
 		/**
