@@ -8,7 +8,7 @@ Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Why choose FooGallery? Stunning gallery layouts, responsive, retina-ready, lightning fast, easy to use.
+Why choose FooGallery? Stunning gallery layouts, responsive, retina-ready, lightning fast, easy to use. Gutenberg Ready!
 
 == Description ==
 
