@@ -123,14 +123,22 @@ if ( ! class_exists( 'FooGallery_Admin_Album_MetaBoxes' ) ) {
 
 				update_post_meta( $post_id, FOOGALLERY_ALBUM_META_TEMPLATE, $_POST[FOOGALLERY_ALBUM_META_TEMPLATE] );
 
-				update_post_meta( $post_id, FOOGALLERY_ALBUM_META_SORT, $_POST[FOOGALLERY_ALBUM_META_SORT] );
+				if ( isset( $_POST[FOOGALLERY_ALBUM_META_SORT] ) ) {
+					update_post_meta( $post_id, FOOGALLERY_ALBUM_META_SORT, $_POST[FOOGALLERY_ALBUM_META_SORT] );
+				} else {
+					delete_post_meta( $post_id, FOOGALLERY_ALBUM_META_SORT );
+				}
 
 				$settings = isset($_POST['_foogallery_settings']) ?
 					$_POST['_foogallery_settings'] : array();
 
 				$settings = apply_filters( 'foogallery_save_album_settings', $settings );
 
-				update_post_meta( $post_id, FOOGALLERY_META_SETTINGS_OLD, $settings );
+				if ( !empty( $settings ) ) {
+					update_post_meta( $post_id, FOOGALLERY_META_SETTINGS_OLD, $settings );
+				} else {
+					delete_post_meta( $post_id, FOOGALLERY_META_SETTINGS_OLD );
+				}
 
 				$custom_css = isset($_POST[FOOGALLERY_META_CUSTOM_CSS]) ?
 					$_POST[FOOGALLERY_META_CUSTOM_CSS] : '';
