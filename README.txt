@@ -8,7 +8,7 @@ Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Why choose FooGallery? Stunning gallery layouts, responsive, retina-ready, lightning fast, easy to use.
+Why choose FooGallery? Stunning gallery layouts, responsive, retina-ready, lightning fast, easy to use. Gutenberg Ready!
 
 == Description ==
 
@@ -20,7 +20,7 @@ https://youtu.be/zY8eSTEIwpU
 
 **Features**
 
-*	Gutenberg ready (Gallery previews inside the editor!)
+*	Gutenberg ready (Gallery previews inside the new editor!)
 *	Lazy loading
 *	Simple Pagination (dots)
 *	Live previews in admin
@@ -73,7 +73,7 @@ https://youtu.be/zY8eSTEIwpU
 
 **Gutenberg**
 
-We love the new Gutenberg editor. We have built a really simple-to-use Gutenberg block to add your existing FooGalleries in seconds. And it includes live previews of the gallery too!
+We love the new Gutenberg editor. We have built a really simple-to-use Gutenberg block to add your existing FooGalleries in seconds. And it includes live previews of the gallery too! Also works in WP5 beta!
 
 **GDPR**
 
@@ -143,10 +143,10 @@ Update now to get all the latest features, bug fixes and improvements!
 
 == Changelog ==
 
-= 1.6.0 =
+= 1.6.1 =
 * New : Gutenberg FooGallery block (including live gallery previews!)
-
-= 1.5.10 =
+* Fix : foogallery shortcode not rendering in certain cases
+* Fix : disabling lazy loading via settings was being ignored
 * Update : Freemius SDK 2.1.3 (which fixes fatal Multisite bug)
 
 = 1.5.9 =

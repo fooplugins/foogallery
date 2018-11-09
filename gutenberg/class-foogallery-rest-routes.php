@@ -22,8 +22,9 @@ if ( ! class_exists( 'FooGallery_Rest_Routes' ) ) {
 		 * @access public
 		 */
 		public function register_routes() {
-			$nonce = wp_create_nonce( 'wp_rest' );
-
+			if ( !apply_filters( 'foogallery_gutenberg_enabled', true ) ) {
+				return;
+			}
 
 			register_rest_route(
 				'foogallery/v1',
@@ -35,8 +36,6 @@ if ( ! class_exists( 'FooGallery_Rest_Routes' ) ) {
 					'schema' 			  => array( $this, 'get_galleries_schema' ),
 				)
 			);
-
-
 		}
 
 		/**
