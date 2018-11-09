@@ -325,7 +325,7 @@ if ( !class_exists( 'FooGallery_Slider_Gallery_Template' ) ) {
 		function add_data_options($options, $gallery, $attributes) {
 			$viewport = foogallery_gallery_template_setting( 'viewport', '' );
 			if ( 'yes' === $viewport ) {
-				$options['template']['viewport'] = true;
+				$options['template']['useViewport'] = true;
 			}
 
 			$video_autoplay = foogallery_gallery_template_setting( 'video_autoplay', 'yes' );
