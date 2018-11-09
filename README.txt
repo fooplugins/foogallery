@@ -3,12 +3,12 @@ Contributors: bradvin, steveush, fooplugins
 Donate link: http://fooplugins.com
 Tags: gallery, image gallery, photo gallery, responsive, album, media gallery, masonry gallery, portfolio, justified gallery, video gallery, photography, youtube gallery
 Requires at least: 3.9
-Tested up to: 4.9.8
+Tested up to: 5.0
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Why choose FooGallery? Stunning gallery layouts, responsive, retina-ready, lightning fast, easy to use.
+Why choose FooGallery? Stunning gallery layouts, responsive, retina-ready, lightning fast, easy to use. Gutenberg Ready!
 
 == Description ==
 
@@ -20,6 +20,7 @@ https://youtu.be/zY8eSTEIwpU
 
 **Features**
 
+*	Gutenberg ready (Gallery previews inside the new editor!)
 *	Lazy loading
 *	Simple Pagination (dots)
 *	Live previews in admin
@@ -69,6 +70,10 @@ https://youtu.be/zY8eSTEIwpU
 **Documentation**
 
 *	[FooGallery Documentation](https://fooplugins.helpscoutdocs.com/collection/8-foogallery)
+
+**Gutenberg**
+
+We love the new Gutenberg editor. We have built a really simple-to-use Gutenberg block to add your existing FooGalleries in seconds. And it includes live previews of the gallery too! Also works in WP5 beta!
 
 **GDPR**
 
@@ -137,6 +142,12 @@ Hell, yes! Check out our [developer page](http://foo.gallery/developers/)
 Update now to get all the latest features, bug fixes and improvements!
 
 == Changelog ==
+
+= 1.6.1 =
+* New : Gutenberg FooGallery block (including live gallery previews!)
+* Fix : foogallery shortcode not rendering in certain cases
+* Fix : disabling lazy loading via settings was being ignored
+* Update : Freemius SDK 2.1.3 (which fixes fatal Multisite bug)
 
 = 1.5.9 =
 * Fix : Theme customizer not loading for some theme/plugin combinations

@@ -15,6 +15,7 @@ require_once( FOOGALLERY_PATH . 'includes/class-attachment-filters.php' );
 require_once( FOOGALLERY_PATH . 'includes/class-retina.php' );
 require_once( FOOGALLERY_PATH . 'includes/class-foogallery-upgrade.php' );
 require_once( FOOGALLERY_PATH . 'includes/class-foogallery-widget.php' );
+require_once( FOOGALLERY_PATH . 'gutenberg/class-foogallery-gutenberg.php' );
 
 //check for WPThumb, include.
 if ( ! class_exists( 'WP_Thumb' ) ) {
@@ -75,8 +76,9 @@ if ( is_admin() ) {
 
 	//only front-end
 	require_once( FOOGALLERY_PATH . 'includes/public/class-public.php' );
-	require_once( FOOGALLERY_PATH . 'includes/public/class-shortcodes.php' );
 	require_once( FOOGALLERY_PATH . 'includes/public/class-css-load-optimizer.php' );
 	require_once( FOOGALLERY_PATH . 'includes/public/class-admin-bar.php' );
 	require_once( FOOGALLERY_PATH . 'includes/public/class-yoast-seo-sitemaps.php' );
 }
+
+require_once( FOOGALLERY_PATH . 'includes/public/class-shortcodes.php' );
