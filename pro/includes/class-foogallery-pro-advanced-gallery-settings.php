@@ -12,7 +12,7 @@ if ( ! class_exists( 'FooGallery_Pro_Advanced_Gallery_Settings' ) ) {
 			add_filter( 'foogallery_override_gallery_template_fields', array( $this, 'add_advanced_fields' ), 10, 2 );
 
 			//add data options
-			add_filter( 'foogallery_build_container_data_options', array( $this, 'add_data_options' ), 10, 3 );
+			add_filter( 'foogallery_build_container_data_options', array( $this, 'add_data_options' ), 20, 3 );
 		}
 
 		/**
