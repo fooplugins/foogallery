@@ -220,9 +220,10 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 				return $post_id;
 			}
 
+			$allowed_post_types = apply_filters( 'foogallery_allowed_post_types_for_attachment', array( 'post', 'page' ) );
+
 			//only do this check for a page or post
-			if ( 'post' == $post->post_type ||
-				'page' == $post->post_type ) {
+			if ( in_array( $post->post_type, $allowed_post_types ) ) {
 
                 do_action( 'foogallery_start_attach_gallery_to_post', $post_id );
 
