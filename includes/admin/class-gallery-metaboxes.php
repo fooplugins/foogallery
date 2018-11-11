@@ -242,6 +242,8 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
                         do_action( 'foogallery_attach_gallery_to_post', $post_id, $id );
                     }
                 }
+
+                do_action( 'foogallery_attach_gallery_to_post', $post_id, $post );
 			}
 		}
 
