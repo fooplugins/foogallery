@@ -121,16 +121,24 @@ if ( ! class_exists( 'FooGallery_Admin_Album_MetaBoxes' ) ) {
 				$galleries = apply_filters( 'foogallery_save_album_galleries', explode( ',', $_POST[ FOOGALLERY_ALBUM_META_GALLERIES ] ) );
 				update_post_meta( $post_id, FOOGALLERY_ALBUM_META_GALLERIES, $galleries );
 
-				update_post_meta( $post_id, FOOGALLERY_ALBUM_META_TEMPLATE, $_POST[FOOGALLERY_ALBUM_META_TEMPLATE] );
+				if ( !empty( $_POST[FOOGALLERY_ALBUM_META_TEMPLATE] ) ) {
+					update_post_meta( $post_id, FOOGALLERY_ALBUM_META_TEMPLATE, $_POST[FOOGALLERY_ALBUM_META_TEMPLATE] );
+				}
 
-				update_post_meta( $post_id, FOOGALLERY_ALBUM_META_SORT, $_POST[FOOGALLERY_ALBUM_META_SORT] );
+				if ( isset( $_POST[FOOGALLERY_ALBUM_META_SORT] ) ) {
+					update_post_meta( $post_id, FOOGALLERY_ALBUM_META_SORT, $_POST[FOOGALLERY_ALBUM_META_SORT] );
+				}
 
 				$settings = isset($_POST['_foogallery_settings']) ?
 					$_POST['_foogallery_settings'] : array();
 
 				$settings = apply_filters( 'foogallery_save_album_settings', $settings );
 
-				update_post_meta( $post_id, FOOGALLERY_META_SETTINGS_OLD, $settings );
+				if ( !empty( $settings ) ) {
+					update_post_meta( $post_id, FOOGALLERY_META_SETTINGS_OLD, $settings );
+				} else {
+					delete_post_meta( $post_id, FOOGALLERY_META_SETTINGS_OLD );
+				}
 
 				$custom_css = isset($_POST[FOOGALLERY_META_CUSTOM_CSS]) ?
 					$_POST[FOOGALLERY_META_CUSTOM_CSS] : '';
@@ -146,9 +154,14 @@ if ( ! class_exists( 'FooGallery_Admin_Album_MetaBoxes' ) ) {
 		}
 
 		public function get_ordered_galleries( $album ) {
+		    //exclude the galleries already added to the album
+            $excluded_galleries = $album->gallery_ids;
+
+            //allow more galleries to be excluded
+            $excluded_galleries = apply_filters( 'foogallery_album_exlcuded_galleries', $excluded_galleries, $album );
 
 			//get all other galleries
-			$galleries = foogallery_get_all_galleries( $album->gallery_ids );
+			$galleries = foogallery_get_all_galleries( $excluded_galleries );
 
 			$album_galleries = $album->galleries();
 
@@ -241,14 +254,14 @@ if ( ! class_exists( 'FooGallery_Admin_Album_MetaBoxes' ) ) {
 			$shortcode = $album->shortcode();
 			?>
 			<p class="foogallery-shortcode">
-				<input type="text" id="foogallery-copy-shortcode" size="<?php echo strlen( $shortcode ); ?>" value="<?php echo htmlspecialchars( $shortcode ); ?>" readonly="readonly" />
+				<input type="text" id="foogallery_copy_shortcode" size="<?php echo strlen( $shortcode ); ?>" value="<?php echo htmlspecialchars( $shortcode ); ?>" readonly="readonly" />
 			</p>
 			<p>
 				<?php _e( 'Paste the above shortcode into a post or page to show the album.', 'foogallery' ); ?>
 			</p>
 			<script>
 				jQuery(function($) {
-					var shortcodeInput = document.querySelector('#foogallery-copy-shortcode');
+					var shortcodeInput = document.querySelector('#foogallery_copy_shortcode');
 					shortcodeInput.addEventListener('click', function () {
 						try {
 							// select the contents

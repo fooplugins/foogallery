@@ -15,6 +15,7 @@ require_once( FOOGALLERY_PATH . 'includes/class-attachment-filters.php' );
 require_once( FOOGALLERY_PATH . 'includes/class-retina.php' );
 require_once( FOOGALLERY_PATH . 'includes/class-foogallery-upgrade.php' );
 require_once( FOOGALLERY_PATH . 'includes/class-foogallery-widget.php' );
+require_once( FOOGALLERY_PATH . 'gutenberg/class-foogallery-gutenberg.php' );
 
 //check for WPThumb, include.
 if ( ! class_exists( 'WP_Thumb' ) ) {
@@ -29,21 +30,18 @@ require_once( FOOGALLERY_PATH . 'extensions/albums/class-albums-extension.php' )
 require_once( FOOGALLERY_PATH . 'extensions/default-templates/class-default-templates-extension.php' ); //Legacy!
 require_once( FOOGALLERY_PATH . 'extensions/default-templates/class-default-templates.php' );
 require_once( FOOGALLERY_PATH . 'extensions/nextgen-importer/class-nextgen-gallery-importer-extension.php' );
-require_once( FOOGALLERY_PATH . 'extensions/media-categories/class-media-categories-extension.php' );
 require_once( FOOGALLERY_PATH . 'extensions/demo-content-generator/class-demo-content-generator.php' );
 
 //load Template Loader files
 require_once( FOOGALLERY_PATH . 'includes/public/class-foogallery-template-loader.php' );
 
-//Polylang Compatibility
-require_once( FOOGALLERY_PATH . 'includes/class-polylang-compatibility.php' );
+//Load all Compatibility files
+require_once( FOOGALLERY_PATH . 'includes/compatibility/class-foogallery-compatibility.php' );
 
 require_once( FOOGALLERY_PATH . 'includes/class-version-check.php' );
 require_once( FOOGALLERY_PATH . 'includes/class-foogallery-animated-gif-support.php' );
 require_once( FOOGALLERY_PATH . 'includes/class-foogallery-cache.php' );
 require_once( FOOGALLERY_PATH . 'includes/class-thumbnail-dimensions.php' );
-require_once( FOOGALLERY_PATH . 'includes/class-foobox-support.php' );
-require_once( FOOGALLERY_PATH . 'includes/class-responsive-lightbox-dfactory-support.php' );
 require_once( FOOGALLERY_PATH . 'includes/class-foogallery-common-fields.php' );
 require_once( FOOGALLERY_PATH . 'includes/class-foogallery-lazyload.php' );
 require_once( FOOGALLERY_PATH . 'includes/class-foogallery-paging.php' );
@@ -74,14 +72,14 @@ if ( is_admin() ) {
 	require_once( FOOGALLERY_PATH . 'includes/admin/class-attachment-fields.php' );
 	require_once( FOOGALLERY_PATH . 'includes/admin/class-admin-css-load-optimizer.php' );
 	require_once( FOOGALLERY_PATH . 'includes/admin/class-admin-notices.php' );
-    require_once( FOOGALLERY_PATH . 'includes/admin/class-autoptimize-support.php' );
 
 } else {
 
 	//only front-end
 	require_once( FOOGALLERY_PATH . 'includes/public/class-public.php' );
-	require_once( FOOGALLERY_PATH . 'includes/public/class-shortcodes.php' );
 	require_once( FOOGALLERY_PATH . 'includes/public/class-css-load-optimizer.php' );
 	require_once( FOOGALLERY_PATH . 'includes/public/class-admin-bar.php' );
 	require_once( FOOGALLERY_PATH . 'includes/public/class-yoast-seo-sitemaps.php' );
 }
+
+require_once( FOOGALLERY_PATH . 'includes/public/class-shortcodes.php' );

@@ -57,6 +57,10 @@ if ( !class_exists( 'FooGallery_Thumbnails' ) ) {
 			$height = (int)$args['height'];
 			$crop   = (bool)$args['crop'];
 
+			if ( 0 === $width && 0 === $height ) {
+				return $original_image_src;
+			}
+
 			//we can force the use of the originally uploaded full-size image
 			$force_use_original_image = isset( $args['force_use_original_image'] ) && true === $args['force_use_original_image'];
 
@@ -105,12 +109,29 @@ if ( !class_exists( 'FooGallery_Thumbnails' ) ) {
 				unset( $args['height'] );
 			}
 
-			//save the generated thumb url to a global so that we can use it later if needed
-            $foogallery_last_generated_thumb_url = wpthumb( $original_image_src, $args );
-
-			//TODO : get 'Force HTTPS' setting and replace all occurrences of http:// with https://
+			//do some checks to see if the image is smaller
+			if ( $this->should_resize( $thumbnail_object, $args ) ) {
+				//save the generated thumb url to a global so that we can use it later if needed
+				$foogallery_last_generated_thumb_url = wpthumb( $original_image_src, $args );
+			} else {
+				$foogallery_last_generated_thumb_url = $original_image_src;
+			}
 
             return $foogallery_last_generated_thumb_url;
+		}
+
+		function should_resize($thumbnail_object, $args) {
+			$original_width = $thumbnail_object->width;
+			$original_height = $thumbnail_object->height;
+			$new_width = isset( $args['width'] ) ? $args['width'] : 0;
+			$new_height = isset( $args['height'] ) ? $args['height'] : 0;
+
+			if ( $new_width > 0 && $new_height > 0 ) {
+				return $original_width > $new_width || $original_height > $new_height;
+			} else if ( $new_width > 0 ) {
+				return $original_width > $new_width;
+			}
+			return $original_height > $new_height;
 		}
 
 		function run_thumbnail_generation_tests() {

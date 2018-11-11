@@ -59,6 +59,12 @@ if ( ! class_exists( 'FooGallery_LazyLoad' ) ) {
                     //set if lazy loading is forced to disabled for all galleries
                     $lazyloading_forced_disabled = foogallery_get_setting('disable_lazy_loading') === 'on';
                     $current_foogallery->lazyload_forced_disabled = $lazyloading_forced_disabled;
+
+                    //check if we are inside a feed. Always disable lazy load when shown within a feed
+					if ( is_feed() ) {
+						$current_foogallery->lazyload_forced_disabled = true;
+					}
+
                 }
             }
         }
@@ -74,6 +80,20 @@ if ( ! class_exists( 'FooGallery_LazyLoad' ) ) {
             global $current_foogallery;
 
             if ($current_foogallery !== null) {
+
+            	//check that lazy loading was not disabled from the Gallery Settings -> Advanced Tab
+            	if ( isset( $current_foogallery->lazyload_enabled ) ) {
+            		if ( false === $current_foogallery->lazyload_enabled ) {
+						return $attr;
+					}
+				}
+
+				//check that lazy loading was not disabled from Global Settings or any other reason
+				if ( isset( $current_foogallery->lazyload_forced_disabled ) ) {
+					if ( true === $current_foogallery->lazyload_forced_disabled ) {
+						return $attr;
+					}
+				}
 
                 if (isset($current_foogallery->lazyload_support) && true === $current_foogallery->lazyload_support) {
                     if (isset($attr['src'])) {
@@ -108,8 +128,13 @@ if ( ! class_exists( 'FooGallery_LazyLoad' ) ) {
         {
             if ( isset( $gallery->lazyload_support ) && true === $gallery->lazyload_support ) {
                 $options['lazy'] = $gallery->lazyload_enabled && !$gallery->lazyload_forced_disabled;
-                $options['src'] = 'data-src-fg';
-                $options['srcset'] = 'data-srcset-fg';
+                if ( $options['lazy'] ) {
+					$options['src']    = 'data-src-fg';
+					$options['srcset'] = 'data-srcset-fg';
+				} else {
+					$options['src']    = 'src';
+					$options['srcset'] = 'srcset';
+				}
             }
             return $options;
         }

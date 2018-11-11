@@ -63,6 +63,7 @@ if ( !class_exists( 'FooGallery_Simple_Portfolio_Gallery_Template' ) ) {
 				'paging_support' => true,
 				'mandatory_classes' => 'fg-simple_portfolio',
 				'thumbnail_dimensions' => true,
+				'filtering_support' => true,
                 'fields'	  => array(
                     array(
                         'id'	  => 'help',
@@ -263,11 +264,17 @@ if ( !class_exists( 'FooGallery_Simple_Portfolio_Gallery_Template' ) ) {
 		 */
 		function build_thumbnail_dimensions_from_arguments( $dimensions, $arguments ) {
             if ( array_key_exists( 'thumbnail_dimensions', $arguments) ) {
-                return array(
+				$dimensions = array(
                     'height' => intval($arguments['thumbnail_dimensions']['height']),
                     'width' => intval($arguments['thumbnail_dimensions']['width']),
                     'crop' => '1'
                 );
+
+				if ( 'on' === foogallery_get_setting('enable_legacy_thumb_cropping') ) {
+					$dimensions['crop'] = '0';
+				}
+
+				return $dimensions;
             }
             return null;
 		}
@@ -283,9 +290,15 @@ if ( !class_exists( 'FooGallery_Simple_Portfolio_Gallery_Template' ) ) {
 		function get_thumbnail_dimensions( $dimensions, $foogallery ) {
 			$dimensions = $foogallery->get_meta( 'simple_portfolio_thumbnail_dimensions', array(
 				'width' => 250,
-				'height' => 200
+				'height' => 200,
+				'crop' => true
 			) );
-			$dimensions['crop'] = true;
+
+			if ( 'on' === foogallery_get_setting('enable_legacy_thumb_cropping') ) {
+				$dimensions['crop'] = false;
+			} else {
+				$dimensions['crop'] = true;
+			}
 			return $dimensions;
 		}
 
@@ -298,6 +311,9 @@ if ( !class_exists( 'FooGallery_Simple_Portfolio_Gallery_Template' ) ) {
         function build_gallery_template_arguments( $args ) {
             $args = foogallery_gallery_template_setting( 'thumbnail_dimensions', array() );
             $args['crop'] = '1'; //we now force thumbs to be cropped
+			if ( 'on' === foogallery_get_setting('enable_legacy_thumb_cropping') ) {
+				$args['crop'] = '0';
+			}
             $args['link'] = foogallery_gallery_template_setting( 'thumbnail_link', 'image' );
             $args['image_attributes'] = array(
                 'class'  => 'bf-img',

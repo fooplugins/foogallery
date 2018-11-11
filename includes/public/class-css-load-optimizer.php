@@ -8,8 +8,28 @@ if (!class_exists('class-css-load-optimizer.php')) {
 
         function __construct() {
             add_action( 'wp_enqueue_scripts', array( $this, 'include_gallery_css' ) );
-            add_action( 'foogallery_enqueue_style', array( $this, 'persist_enqueued_style' ), 10, 5 );
+            add_action( 'foogallery_enqueue_style', array( $this, 'enqueue_style_to_persist' ), 10, 5 );
+            add_action( 'wp_footer', array( $this, 'persist_enqueued_styles' ) );
         }
+
+		/**
+		 * Persist any styles that are enqueued to be persisted
+		 */
+        function persist_enqueued_styles() {
+			global $wp_query, $foogallery_styles_to_persist;
+
+			//we only want to do this if we are looking at a single post
+			if ( ! is_singular() ) {
+				return;
+			}
+
+			$post_id = $wp_query->post->ID;
+			if ( $post_id  && is_array( $foogallery_styles_to_persist ) ) {
+				foreach( $foogallery_styles_to_persist as $style_handle => $style ) {
+					add_post_meta( $post_id, FOOGALLERY_META_POST_USAGE_CSS, array( $style_handle => $style ), false );
+				}
+			}
+		}
 
         /**
          * Get the current post ids for the view that is being shown
@@ -52,6 +72,8 @@ if (!class_exists('class-css-load-optimizer.php')) {
                 //get any foogallery stylesheets that the post might need to include
                 $css = get_post_meta($post_id, FOOGALLERY_META_POST_USAGE_CSS);
 
+				if ( empty( $css ) || !is_array( $css ) ) return;
+
                 foreach ($css as $css_item) {
                     if (!$css_item) continue;
                     foreach ($css_item as $handle => $style) {
@@ -82,8 +104,8 @@ if (!class_exists('class-css-load-optimizer.php')) {
          * @param bool $ver
          * @param string $media
          */
-        function persist_enqueued_style($style_handle, $src, $deps = array(), $ver = false, $media = 'all') {
-            global $wp_query, $enqueued_foogallery_styles;
+        function enqueue_style_to_persist($style_handle, $src, $deps = array(), $ver = false, $media = 'all') {
+            global $wp_query, $enqueued_foogallery_styles, $foogallery_styles_to_persist;
 
             //we only want to do this if we are looking at a single post
             if ( ! is_singular() ) {
@@ -124,7 +146,18 @@ if (!class_exists('class-css-load-optimizer.php')) {
                         'site'  => home_url()
                     );
 
-                    add_post_meta( $post_id, FOOGALLERY_META_POST_USAGE_CSS, array( $style_handle => $style ), false );
+                    if ( !is_array( $foogallery_styles_to_persist ) ) {
+						$foogallery_styles_to_persist = array();
+					}
+
+					if ( !array_key_exists( $style_handle, $foogallery_styles_to_persist ) ) {
+						$foogallery_styles_to_persist[$style_handle] = $style;
+					}
+
+//                    add_post_meta( $post_id, FOOGALLERY_META_POST_USAGE_CSS, array( $style_handle => $style ), false );
+//
+//					$cache_buster_key = $this->create_cache_buster_key( $style_handle, $ver, home_url() );
+//					$enqueued_foogallery_styles[$style_handle] = $cache_buster_key;
                 }
             }
         }

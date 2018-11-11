@@ -8,13 +8,14 @@ if ( ! class_exists( 'FooGallery_Shortcodes' ) ) {
 	class FooGallery_Shortcodes {
 
 		function __construct() {
-			add_action( 'init', array( $this, 'init_shortcode' ) );
 			add_action( 'foogallery_load_template', array( $this, 'handle_lightbox_field' ) );
 			add_action( 'foogallery_loaded_template', array( $this, 'render_custom_css' ) );
+			add_action( 'plugins_loaded', array( $this, 'init_shortcodes' ) );
 		}
 
-		function init_shortcode() {
+		function init_shortcodes() {
 			add_shortcode( foogallery_gallery_shortcode_tag(), array( $this, 'render_foogallery_shortcode' ) );
+			add_shortcode( 'foogallery-enqueue', array( $this, 'render_foogallery_enqueue' ) );
 		}
 
 		function render_foogallery_shortcode( $atts ) {
@@ -36,6 +37,12 @@ if ( ! class_exists( 'FooGallery_Shortcodes' ) ) {
 			$output_string = ob_get_contents();
 			ob_end_clean();
 			return $output_string;
+		}
+
+		function render_foogallery_enqueue() {
+			foogallery_enqueue_core_gallery_template_script();
+			foogallery_enqueue_core_gallery_template_style();
+			wp_enqueue_script( 'masonry' );
 		}
 
 		/**

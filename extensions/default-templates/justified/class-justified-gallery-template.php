@@ -55,6 +55,7 @@ if ( !class_exists( 'FooGallery_Justified_Gallery_Template' ) ) {
 				'paging_support' => true,
 				'mandatory_classes' => 'fg-justified',
 				'thumbnail_dimensions' => true,
+				'filtering_support' => true,
                 'fields'	  => array(
                     array(
                         'id'      => 'thumb_height',
@@ -261,7 +262,8 @@ if ( !class_exists( 'FooGallery_Justified_Gallery_Template' ) ) {
             $height = foogallery_gallery_template_setting( 'thumb_height', '250' );
             $args = array(
                 'height' => $height,
-                'link' => foogallery_gallery_template_setting( 'thumbnail_link', 'image' )
+                'link' => foogallery_gallery_template_setting( 'thumbnail_link', 'image' ),
+				'crop' => false
             );
 
             return $args;

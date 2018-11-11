@@ -56,6 +56,8 @@ if ( ! class_exists( 'FooGalleryAttachment' ) ) {
 				$this->width = $image_attributes[1];
 				$this->height = $image_attributes[2];
 			}
+
+			do_action( 'foogallery_attachment_instance_after_load', $this, $post );
 		}
 
 		/**

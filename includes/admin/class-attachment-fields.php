@@ -13,7 +13,7 @@ if (!class_exists('FooGallery_Attachment_Fields')) {
 	        add_filter( 'attachment_fields_to_save', array( $this, 'save_fields' ), 11, 2 );
         }
 
-	    public function get_custom_fields() {
+	    public function get_custom_fields( $post = null ) {
 
 		    $target_options = apply_filters( 'foogallery_attachment_field_custom_target_options',  array(
 			    'default' => __( 'Default', 'foogallery' ),
@@ -39,7 +39,13 @@ if (!class_exists('FooGallery_Attachment_Fields')) {
 			    )
 		    );
 
-		    return apply_filters( 'foogallery_attachment_custom_fields', $fields );
+			//original filter without $post
+			$fields = apply_filters( 'foogallery_attachment_custom_fields', $fields );
+
+			//newer filter including the $post
+			$fields = apply_filters( 'foogallery_attachment_custom_fields_with_post', $fields, $post );
+
+			return $fields;
 	    }
 
 	    /**
@@ -55,6 +61,15 @@ if (!class_exists('FooGallery_Attachment_Fields')) {
 		    if ( ! empty( $custom_fields ) ) {
 			    // We browse our set of options
 			    foreach ( $custom_fields as $field => $values ) {
+			    	//remove any help, as it just looks untidy
+					if ( isset( $values['helps'] ) ) {
+						unset( $values['helps'] );
+					}
+
+					if ( empty( $values['exclusions'] ) ) {
+						$values['exclusions'] = array();
+					}
+
 				    // If the field matches the current attachment mime type
 				    // and is not one of the exclusions
 				    if ( !in_array( $post->post_mime_type, $values['exclusions'] ) ) {
@@ -153,8 +168,11 @@ if (!class_exists('FooGallery_Attachment_Fields')) {
 			    }
 		    }
 
+		    //allow it to change
+			$form_fields = apply_filters( 'foogallery_attachment_add_fields', $form_fields );
+
 		    // We return the completed $form_fields array
-		    return apply_filters( 'foogallery_attachment_add_fields', $form_fields );
+		    return $form_fields;
 	    }
 
 	    function save_fields( $post, $attachment ) {

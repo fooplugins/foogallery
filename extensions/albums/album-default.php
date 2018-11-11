@@ -4,6 +4,7 @@
  */
 global $current_foogallery_album;
 global $current_foogallery_album_arguments;
+global $current_foogallery;
 $gallery = foogallery_album_get_current_gallery();
 $alignment = foogallery_album_template_setting( 'alignment', 'alignment-left' );
 $foogallery = false;
@@ -19,9 +20,10 @@ if ( !empty( $gallery ) ) {
 
 if ( false !== $foogallery ) {
 	$album_url = foogallery_album_remove_gallery_from_link();
+	$gallery_title_size = foogallery_album_template_setting('gallery_title_size', 'h2');
 	echo '<div id="' . $current_foogallery_album->slug . '" class="foogallery-album-header">';
 	echo '<p><a href="' . esc_url( $album_url ) . '">' . foogallery_get_setting( 'language_back_to_album_text', __( '&laquo; back to album', 'foogallery' ) ) . '</a></p>';
-	echo '<h2>' . $foogallery->name . '</h2>';
+	echo '<' . $gallery_title_size . '>' . $foogallery->name . '</'. $gallery_title_size . '>';
 	echo apply_filters('foogallery_album_default_gallery_content', '', $foogallery);
 	echo '</div>';
 	echo do_shortcode('[foogallery id="' . $foogallery->ID . '"]');
@@ -44,6 +46,7 @@ if ( false !== $foogallery ) {
 	<ul class="foogallery-album-gallery-list <?php echo $alignment; ?>">
 		<?php
 		foreach ( $current_foogallery_album->galleries() as $gallery ) {
+			$current_foogallery = $gallery;
 			if (!empty($gallery->attachment_ids)) {
 				$attachment = $gallery->featured_attachment();
 

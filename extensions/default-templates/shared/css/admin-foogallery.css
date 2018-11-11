@@ -1,5 +1,6 @@
 .foogallery-setting-caption_icon,
-.foogallery-setting-loading_icon {
+.foogallery-setting-loading_icon,
+.foogallery-setting-video_overlay {
 	content: "";
 	display: inline-block;
 	position: relative;
@@ -30,6 +31,26 @@
 }
 .foogallery-setting-caption_icon.fg-hover-external {
 	background-image: url('../img/external.png');
+}
+
+.foogallery-setting-video_overlay.fg-video-default {
+	background-image: url('../img/video-default.png');
+}
+
+.foogallery-setting-video_overlay.fg-video-1 {
+	background-image: url('../img/video-1.png');
+}
+
+.foogallery-setting-video_overlay.fg-video-2 {
+	background-image: url('../img/video-2.png');
+}
+
+.foogallery-setting-video_overlay.fg-video-3 {
+	background-image: url('../img/video-3.png');
+}
+
+.foogallery-setting-video_overlay.fg-video-4 {
+	background-image: url('../img/video-4.png');
 }
 
 .foogallery_template_field_type-htmlicon.foogallery_template_field_id-loading_icon td label {

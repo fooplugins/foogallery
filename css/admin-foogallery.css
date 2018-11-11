@@ -460,3 +460,53 @@ button[data-balloon]{overflow:visible}[data-balloon]{position:relative}[data-bal
 .foogallery_template_field_type-thumb_size_no_crop label+input {
 	margin-left: 5px;
 }
+
+/* changes to the media modal */
+.compat-item .compat-attachment-fields th.label label span {
+	text-align: left;
+}
+
+.compat-item .compat-attachment-fields td.field {
+	width: 100%;
+	margin: 0;
+}
+
+.media-modal .attachments-browser .media-toolbar {
+	right: 500px;
+}
+.media-modal .attachments {
+	right: 500px;
+}
+.media-modal .media-sidebar {
+	width: 467px;
+}
+
+.rtl .media-modal .attachments-browser .media-toolbar {
+	left: 500px;
+	right: 0;
+}
+.rtl .media-modal .attachments {
+	left: 500px;
+	right: 0;
+}
+
+@media (max-width: 900px) {
+	.media-modal .attachments-browser .media-toolbar {
+		right: 300px;
+	}
+	.media-modal .attachments {
+		right: 300px;
+	}
+	.media-modal .media-sidebar {
+		width: 267px;
+	}
+
+	.rtl .media-modal .attachments-browser .media-toolbar {
+		left: 300px;
+		right: 0;
+	}
+	.rtl .media-modal .attachments {
+		left: 300px;
+		right: 0;
+	}
+}
