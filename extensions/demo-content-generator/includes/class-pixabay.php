@@ -15,8 +15,7 @@
  */
 
 /**
- * Class PixabayClient
- * @package Pixabay\PixabayClient
+ * Class FooGallery_PixabayClient
  */
 class FooGallery_PixabayClient {
 	/**
@@ -54,25 +53,29 @@ class FooGallery_PixabayClient {
 	 *
 	 * @param        $key
 	 * @param        $query
+	 * @param int    $count
 	 * @param string $image_type
 	 * @param string $response_group
 	 *
+	 * @param string $safesearch
+	 *
 	 * @return mixed
 	 */
-	public function search( $key, $query, $image_type = 'photo', $response_group = 'high_resolution', $safesearch = 'true')
+	public function search( $key, $query, $count = 20, $image_type = 'photo', $response_group = 'high_resolution', $safesearch = 'true')
 	{
 		$url = add_query_arg( array(
 			'key' => $key,
-			'q' => $query,
+			'q' => urlencode( $query ),
+			'per_page' => $count,
 			'image_type' => $image_type,
 			'response_group' => $response_group,
 			'safesearch' => $safesearch
 		), self::API_ROOT );
 
-		$transient_key = 'foogallery-pixabay-' . esc_attr($query);
+		$transient_key = 'foogallery-pixabay-' . urlencode($query) . '-' . $count;
 
 		if ( false === ( $response_data = get_transient( $transient_key ) ) ) {
-			$response = wp_remote_get( esc_url( $url ) );
+			$response = wp_remote_get( $url );
 			$response_data = wp_remote_retrieve_body( $response );
 
 			$expires = 60 * 60 * 24; //cache for 24 hours
