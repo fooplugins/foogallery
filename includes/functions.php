@@ -1090,3 +1090,88 @@ function foogallery_esc_attr( $text ) {
 	$safe_text = _wp_specialchars( $safe_text, ENT_QUOTES );
 	return $safe_text;
 }
+
+
+/**
+ * Create a FooGallery and return the ID
+ *
+ * @param $template
+ * @param $attachment_ids
+ *
+ * @return int
+ */
+function foogallery_create_gallery( $template, $attachment_ids ) {
+
+	if ( empty( $template ) ) {
+		$template = foogallery_default_gallery_template();
+	}
+
+	//create an empty foogallery
+	$foogallery_args = array(
+		'post_title'  => 'Demo Gallery',
+		'post_type'   => FOOGALLERY_CPT_GALLERY,
+		'post_status' => 'publish',
+	);
+	$gallery_id = wp_insert_post( $foogallery_args );
+
+	//set a gallery template
+	add_post_meta( $gallery_id, FOOGALLERY_META_TEMPLATE, $template, true );
+
+	$settings = array();
+
+	//set default settings if there are any, and also if the template is the same as the default
+	if ( foogallery_default_gallery_template() === $template ) {
+		$default_gallery_id = foogallery_get_setting( 'default_gallery_settings' );
+		if ( $default_gallery_id ) {
+			$settings = get_post_meta( $default_gallery_id, FOOGALLERY_META_SETTINGS, true );
+			add_post_meta( $this->foogallery_id, FOOGALLERY_META_SETTINGS, $settings, true );
+		}
+	}
+
+	if ( empty( $settings) ) {
+		switch ( $template ) {
+			case 'masonry':
+				$settings = array(
+					'foogallery_items_view' => 'preview',
+					'masonry_alignment' =>'fg-center',
+					'masonry_border_size' =>'fg-border-thin',
+					'masonry_caption_desc_source' =>'',
+					'masonry_caption_title_source' =>'',
+					'masonry_captions_limit_length' =>'',
+					'masonry_custom_settings' =>'',
+					'masonry_drop_shadow' =>'fg-shadow-outline',
+					'masonry_filtering_type' =>'',
+					'masonry_gutter_width' =>'10',
+					'masonry_hover_effect_caption_visibility' =>'fg-captions-bottom',
+					'masonry_hover_effect_color' =>'',
+					'masonry_hover_effect_icon' =>'fg-hover-zoom',
+					'masonry_hover_effect_preset' =>'fg-custom',
+					'masonry_hover_effect_scale' =>'',
+					'masonry_hover_effect_transition' =>'fg-hover-fade',
+					'masonry_inner_shadow' =>'',
+					'masonry_layout' =>'fixed',
+					'masonry_lazyload' =>'',
+					'masonry_lightbox' =>'foobox',
+					'masonry_loaded_effect' =>'fg-loaded-fade-in',
+					'masonry_loading_icon' =>'fg-loading-default',
+					'masonry_paging_type' =>'',
+					'masonry_rounded_corners' =>'',
+					'masonry_state' =>'no',
+					'masonry_theme' =>'fg-dark',
+					'masonry_thumbnail_link' =>'image',
+					'masonry_thumbnail_width' =>'250',
+					'masonry_video_autoplay' =>'yes',
+					'masonry_video_hover_icon' =>'fg-video-default',
+					'masonry_video_size' =>'640x360',
+					'masonry_video_sticky_icon' =>'',
+				);
+		}
+	}
+
+	add_post_meta( $gallery_id, FOOGALLERY_META_SETTINGS, $settings, true );
+
+	$attachments = explode( ',', $attachment_ids );
+	update_post_meta( $gallery_id, FOOGALLERY_META_ATTACHMENTS, $attachments );
+
+	return $gallery_id;
+}
