@@ -6952,10 +6952,12 @@
 			for (var i = 0, l = self._created.length, num; i < l; i++){
 				num = i + 1;
 				page = self.get(num);
-				first = page[0].bounds();
-				last = page[page.length - 1].bounds();
-				if (first.top - viewport.bottom < self.distance || last.bottom - viewport.top < self.distance){
-					items.push.apply(items, page);
+				if (!_is.empty(page)){
+					first = page[0].bounds();
+					last = page[page.length - 1].bounds();
+					if (first.top - viewport.bottom < self.distance || last.bottom - viewport.top < self.distance){
+						items.push.apply(items, page);
+					}
 				}
 			}
 			return items;
@@ -7022,10 +7024,12 @@
 			for (var i = 0, l = self._created.length, num; i < l; i++){
 				num = i + 1;
 				page = self.get(num);
-				first = page[0].bounds();
-				last = page[page.length - 1].bounds();
-				if (first.top - viewport.bottom < self.distance || last.bottom - viewport.top < self.distance){
-					items.push.apply(items, page);
+				if (!_is.empty(page)){
+					first = page[0].bounds();
+					last = page[page.length - 1].bounds();
+					if (first.top - viewport.bottom < self.distance || last.bottom - viewport.top < self.distance){
+						items.push.apply(items, page);
+					}
 				}
 			}
 			return items;
