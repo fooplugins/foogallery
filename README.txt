@@ -143,7 +143,8 @@ Update now to get all the latest features, bug fixes and improvements!
 
 == Changelog ==
 
-= 1.6.2 =
+= 1.6.3 =
+* Fix : Beaver Builder javascript error while editing a page
 * Fix : album shortcodes not working in some page builders
 * Fix : attach gallery to post when gutenberg block is included
 * Fix : filtering + paging bugs corrected in some scenarios
