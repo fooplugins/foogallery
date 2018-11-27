@@ -9161,10 +9161,10 @@
 			self.justified.layout( true );
 		},
 		onParsedItems: function(event, self, items){
-			if (self.initialized) self.justified.layout( true );
+			if (self.initialized || self.initializing) self.justified.layout( true );
 		},
 		onAppendedItems: function(event, self, items){
-			if (self.initialized) self.justified.layout( true );
+			if (self.initialized || self.initializing) self.justified.layout( true );
 		},
 		onDetachedItems: function(event, self, items){
 			if (self.initialized) self.justified.layout( true );
@@ -9416,10 +9416,10 @@
 			self.portfolio.layout( true );
 		},
 		onParsedItems: function(event, self, items){
-			if (self.initialized) self.portfolio.layout( true );
+			if (self.initialized || self.initializing) self.portfolio.layout( true );
 		},
 		onAppendedItems: function(event, self, items){
-			if (self.initialized) self.portfolio.layout( true );
+			if (self.initialized || self.initializing) self.portfolio.layout( true );
 		},
 		onDetachedItems: function(event, self, items){
 			if (self.initialized) self.portfolio.layout( true );

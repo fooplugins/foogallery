@@ -143,6 +143,14 @@ Update now to get all the latest features, bug fixes and improvements!
 
 == Changelog ==
 
+= 1.6.2 =
+* Fix : album shortcodes not working in some page builders
+* Fix : attach gallery to post when gutenberg block is included
+* Fix : filtering + paging bugs corrected in some scenarios
+* New : added new filter for allowed post types that foogallery can be attached to
+* Update : FooGallery client side 1.1.3
+* Fix : multiple small bugs and tweaks
+
 = 1.6.1 =
 * New : Gutenberg FooGallery block (including live gallery previews!)
 * Fix : foogallery shortcode not rendering in certain cases
