@@ -143,7 +143,7 @@ Update now to get all the latest features, bug fixes and improvements!
 
 == Changelog ==
 
-= 1.6.3 =
+= 1.6.5 =
 * Fix : Beaver Builder javascript error while editing a page
 * Fix : album shortcodes not working in some page builders
 * Fix : attach gallery to post when gutenberg block is included
@@ -151,6 +151,7 @@ Update now to get all the latest features, bug fixes and improvements!
 * New : added new filter for allowed post types that foogallery can be attached to
 * Update : FooGallery client side 1.1.3
 * Fix : multiple small bugs and tweaks
+* Update : Freemius SDK 2.2.2
 
 = 1.6.1 =
 * New : Gutenberg FooGallery block (including live gallery previews!)
