@@ -11,6 +11,8 @@ if ( !class_exists( 'FooGallery_Thumbnails' ) ) {
 			//generate thumbs using WPThumb
 			add_filter( 'foogallery_attachment_resize_thumbnail', array( $this, 'resize' ), 10, 3 );
 
+			add_filter( 'foogallery_test_thumb_url', array( $this, 'find_first_image_in_media_library' ) );
+
 			add_filter( 'foogallery_thumbnail_resize_args', array( $this, 'check_for_force_original_thumb') );
 		}
 
@@ -164,6 +166,20 @@ if ( !class_exists( 'FooGallery_Thumbnails' ) ) {
             do_action( 'foogallery_thumbnail_generation_test', $test_results );
 
             return $test_results;
+		}
+
+		function find_first_image_in_media_library( $test_thumb_url ) {
+			$args = array(
+				'post_type' => 'attachment',
+				'post_mime_type' =>'image',
+				'post_status' => 'inherit',
+				'posts_per_page' => 1
+			);
+			$query_images = new WP_Query( $args );
+			foreach ( $query_images->posts as $image) {
+				return $image->guid;
+			}
+			return $test_thumb_url;
 		}
 	}
 }
