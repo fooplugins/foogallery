@@ -87,7 +87,7 @@
 
 		//this handles all built-in templates that use the FooGallery core client side JS
 		if ( $preview.data('fg-common-fields') ) {
-			if ( initGallery || FOOGALLERY.getSelectedTemplate() === 'masonry' ) {
+			if ( initGallery ) {
 				$preview.foogallery( {}, function() {
 					$preview_container.css( 'height', '' );
 				} );
