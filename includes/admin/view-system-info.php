@@ -61,9 +61,11 @@ if ( current_user_can( 'activate_plugins' ) ) {
 
 	$stream_wrappers = stream_get_wrappers();
 
-	$test_image_url_scheme = parse_url( foogallery_test_thumb_url() ,PHP_URL_SCHEME );
+	$test_image_url = foogallery_test_thumb_url();
+
+	$test_image_url_scheme = parse_url( $test_image_url ,PHP_URL_SCHEME );
 	$home_url_scheme = parse_url( home_url() ,PHP_URL_SCHEME );
-	$image_file_contents = file_get_contents( foogallery_test_thumb_url() );
+	$image_file_contents = file_get_contents( $test_image_url );
 
 	$debug_info = array(
 		__( 'FooGallery version', 'foogallery' )  			=> $info['version'],
