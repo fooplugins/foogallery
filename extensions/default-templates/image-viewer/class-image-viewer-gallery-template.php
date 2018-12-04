@@ -34,6 +34,9 @@ if ( !class_exists( 'FooGallery_Image_Viewer_Gallery_Template' ) ) {
 
             //build up the arguments needed for rendering this template
             add_filter( 'foogallery_gallery_template_arguments-image-viewer', array( $this, 'build_gallery_template_arguments' ) );
+
+			//add the data options needed for image viewer
+			add_filter( 'foogallery_build_container_data_options-image-viewer', array( $this, 'add_data_options' ), 10, 3 );
         }
 
         function alter_field_value( $value, $field, $gallery, $template ) {
@@ -132,6 +135,23 @@ if ( !class_exists( 'FooGallery_Image_Viewer_Gallery_Template' ) ) {
 							'data-foogallery-preview' => 'class'
 						)
                     ),
+					array(
+						'id'      => 'looping',
+						'title'   => __( 'Loop Images', 'foogallery' ),
+						'section' => __( 'General', 'foogallery' ),
+						'desc'    => __( 'When navigating through the images, do you want to loop image back to the first after you navigate past the last image?', 'foogallery' ),
+						'default' => 'enabled',
+						'type'    => 'radio',
+						'spacer'  => '<span class="spacer"></span>',
+						'choices' => array(
+							'disabled' => __( 'Disabled', 'foogallery' ),
+							'enabled' => __( 'Looping Enabled', 'foogallery' ),
+						),
+						'row_data'=> array(
+							'data-foogallery-change-selector' => 'input:radio',
+							'data-foogallery-preview' => 'shortcode'
+						)
+					),
                     array(
                         'id'      => 'language-help',
                         'title'   => __( 'Language Help', 'foogallery' ),
@@ -257,6 +277,7 @@ if ( !class_exists( 'FooGallery_Image_Viewer_Gallery_Template' ) ) {
 			$args['text-prev'] = $post_data[FOOGALLERY_META_SETTINGS]['image-viewer_text-prev'];
 			$args['text-of'] = $post_data[FOOGALLERY_META_SETTINGS]['image-viewer_text-of'];
 			$args['text-next'] = $post_data[FOOGALLERY_META_SETTINGS]['image-viewer_text-next'];
+			$args['looping'] = $post_data[FOOGALLERY_META_SETTINGS]['image-viewer_looping'];
 			return $args;
 		}
 
@@ -294,5 +315,23 @@ if ( !class_exists( 'FooGallery_Image_Viewer_Gallery_Template' ) ) {
 
             return $args;
         }
+
+		/**
+		 * Add the required options
+		 *
+		 * @param $options
+		 * @param $gallery    FooGallery
+		 *
+		 * @param $attributes array
+		 *
+		 * @return array
+		 */
+		function add_data_options($options, $gallery, $attributes) {
+
+			$looping = foogallery_gallery_template_setting( 'looping', 'enabled' ) === 'enabled';
+			$options['template']['loop'] = $looping;
+
+			return $options;
+		}
 	}
 }
