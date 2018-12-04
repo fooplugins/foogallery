@@ -19,7 +19,7 @@ if ( ! class_exists( 'FooGallery_Paging' ) ) {
 			add_action( 'foogallery_located_template', array( $this, 'determine_paging' ), 10, 2 );
 
 			//add the paging attributes to the gallery container
-			add_filter( 'foogallery_build_container_data_options', array( $this, 'add_paging_options' ), 10, 3 );
+			add_filter( 'foogallery_build_container_data_options', array( $this, 'add_paging_options' ), 20, 3 );
 
 			//limit the number of attachments returned when rendering a gallery
             add_filter( 'foogallery_gallery_attachments_override_for_rendering', array( $this, 'attachments_override' ), 10, 3 );
