@@ -152,10 +152,9 @@ if ( ! class_exists( 'FooGallery_Nextgen_Gallery_Importer_Extension' ) ) {
 			<div class="changelog">
 
 				<div class="feature-section">
-					<img src="<?php echo FOOGALLERY_URL . 'assets/screenshots/admin-nextgen-import.jpg'; ?>"
-					     class="foogallery-help-screenshot"/>
-
 					<h2><?php _e( 'Import Your NextGen Galleries', 'foogallery' ); ?></h2>
+
+					<img src="<?php echo FOOGALLERY_URL . 'assets/screenshots/admin-nextgen-import.jpg'; ?>" class="foogallery-help-screenshot"/>
 
 					<h4><?php _e( 'Import Galleries', 'foogallery' ); ?></h4>
 

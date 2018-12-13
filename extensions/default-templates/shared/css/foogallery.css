@@ -1615,13 +1615,13 @@ only screen and (min-resolution: 2.25dppx) {
 
 /* Border Styles - We must apply width changing border styles to the fg-column-width element so that the plugin can correctly determine the item widths. */
 .foogallery.fg-border-thin .fg-column-width {
-	border-width: 5px;
+	border-width: 4px;
 }
 .foogallery.fg-border-medium .fg-column-width {
 	border-width: 10px;
 }
 .foogallery.fg-border-thick .fg-column-width {
-	border-width: 15px;
+	border-width: 16px;
 }
 
 /* Captions Bottom */
@@ -1710,16 +1710,16 @@ only screen and (min-resolution: 2.25dppx) {
 	border-width: 10px;
 }
 .fg-masonry.fg-captions-bottom .fg-caption-title+.fg-caption-desc {
-	margin-top: 5px;
+	margin-top: 4px;
 }
 .fg-masonry.fg-captions-bottom.fg-border-thin .fg-caption {
-	border-width: 10px 5px 5px 5px;
+	border-width: 10px 4px 4px 4px;
 }
 .fg-masonry.fg-captions-bottom.fg-border-medium .fg-caption {
 	border-width: 10px 0 0 0;
 }
 .fg-masonry.fg-captions-bottom.fg-border-thick .fg-caption {
-	border-width: 15px 0 0 0;
+	border-width: 16px 0 0 0;
 }
 .fg-masonry.fg-captions-bottom.fg-border-thick .fg-caption-title+.fg-caption-desc {
 	margin-top: 10px;
@@ -1904,13 +1904,13 @@ only screen and (min-resolution: 2.25dppx) {
 	border-width: 0;
 }
 .fg-simple_portfolio .fg-caption-title+.fg-caption-desc {
-	margin-top: 5px;
+	margin-top: 4px;
 }
 .fg-simple_portfolio.fg-border-thin .fg-caption {
-	border-width: 10px 5px 5px 5px;
+	border-width: 10px 4px 4px 4px;
 }
 .fg-simple_portfolio.fg-captions-top.fg-border-thin .fg-caption {
-	border-width: 5px 5px 10px 5px;
+	border-width: 4px 4px 10px 4px;
 }
 .fg-simple_portfolio.fg-border-medium .fg-caption {
 	border-width: 10px 0 0 0;
@@ -1919,10 +1919,10 @@ only screen and (min-resolution: 2.25dppx) {
 	border-width: 0 0 10px 0;
 }
 .fg-simple_portfolio.fg-border-thick .fg-caption {
-	border-width: 15px 0 0 0;
+	border-width: 16px 0 0 0;
 }
 .fg-simple_portfolio.fg-captions-top.fg-border-thick .fg-caption {
-	border-width: 0 0 15px 0;
+	border-width: 0 0 16px 0;
 }
 .fg-simple_portfolio.fg-border-thick .fg-caption-title+.fg-caption-desc {
 	margin-top: 10px;
@@ -1990,13 +1990,13 @@ only screen and (min-resolution: 2.25dppx) {
 	border-width: 10px;
 }
 .foogallery.fg-preset.fg-polaroid .fg-caption-title+.fg-caption-desc {
-	margin-top: 5px;
+	margin-top: 4px;
 }
 .foogallery.fg-preset.fg-polaroid.fg-border-thin .fg-caption {
-	border-width: 10px 5px 5px 5px;
+	border-width: 10px 4px 4px 4px;
 }
 .foogallery.fg-preset.fg-polaroid.fg-captions-top.fg-border-thin .fg-caption {
-	border-width: 5px 5px 10px 5px;
+	border-width: 4px 4px 10px 4px;
 }
 .foogallery.fg-preset.fg-polaroid.fg-border-medium .fg-caption {
 	border-width: 10px 0 0 0;
@@ -2005,10 +2005,10 @@ only screen and (min-resolution: 2.25dppx) {
 	border-width: 0 0 10px 0;
 }
 .foogallery.fg-preset.fg-polaroid.fg-border-thick .fg-caption {
-	border-width: 15px 0 0 0;
+	border-width: 16px 0 0 0;
 }
 .foogallery.fg-preset.fg-polaroid.fg-captions-top.fg-border-thick .fg-caption {
-	border-width: 0 0 15px 0;
+	border-width: 0 0 16px 0;
 }
 .foogallery.fg-preset.fg-polaroid.fg-border-thick .fg-caption-title+.fg-caption-desc {
 	margin-top: 10px;

@@ -87,7 +87,7 @@
 
 		//this handles all built-in templates that use the FooGallery core client side JS
 		if ( $preview.data('fg-common-fields') ) {
-			if ( initGallery || FOOGALLERY.getSelectedTemplate() === 'masonry' ) {
+			if ( initGallery ) {
 				$preview.foogallery( {}, function() {
 					$preview_container.css( 'height', '' );
 				} );
@@ -139,7 +139,7 @@
 			cache: false,
             success: function(data) {
 				$('.foogallery_preview_container .foogallery').foogallery("destroy");
-				
+
                 //updated the preview
 				$('.foogallery_preview_container').html(data);
                 $('#foogallery_preview_spinner').removeClass('is-active');
@@ -323,6 +323,10 @@
 
         $template.find('img').attr('src', attachment.src);
 
+        if (attachment.subtype) {
+			$template.find('.attachment-preview.type-image').addClass('subtype-' + attachment.subtype);
+		}
+
         $('.foogallery-attachments-list .add-attachment').before($template);
 
         FOOGALLERY.attachments.push( attachment.id );
@@ -371,17 +375,19 @@
 
 			$.each(attachments, function(i, item) {
 				if (item && item.id && item.sizes) {
+					var attachment = {
+						id: item.id,
+						src: null,
+						subtype: null
+					};
 					if (item.sizes.thumbnail) {
-						var attachment = {
-							id: item.id,
-							src: item.sizes.thumbnail.url
-						};
+						attachment.src = item.sizes.thumbnail.url;
 					} else {
 						//thumbnail could not be found for whatever reason
-						var attachment = {
-							id: item.id,
-							src: item.url
-						};
+						attachment.src = item.url;
+					}
+					if ( item.subtype ) {
+						attachment.subtype = item.subtype;
 					}
 
 					FOOGALLERY.addAttachmentToGalleryList(attachment);

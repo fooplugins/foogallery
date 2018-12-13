@@ -15,7 +15,7 @@
 	 *
 	 * @var string
 	 */
-	$this_sdk_version = '2.1.3';
+	$this_sdk_version = '2.2.2';
 
 	#region SDK Selection Logic --------------------------------------------------------------------
 
@@ -99,7 +99,7 @@
 			 * @since  1.2.1.7
 			 */
 			$has_changes = false;
-			foreach ( $fs_active_plugins->plugins as $sdk_path => &$data ) {
+			foreach ( $fs_active_plugins->plugins as $sdk_path => $data ) {
 				if ( ! file_exists( WP_PLUGIN_DIR . '/' . $sdk_path ) ) {
 					unset( $fs_active_plugins->plugins[ $sdk_path ] );
 					$has_changes = true;
@@ -118,6 +118,10 @@
 
 	if ( ! function_exists( 'fs_find_direct_caller_plugin_file' ) ) {
 		require_once dirname( __FILE__ ) . '/includes/supplements/fs-essential-functions-1.1.7.1.php';
+	}
+
+	if ( ! function_exists( 'fs_get_plugins' ) ) {
+		require_once dirname( __FILE__ ) . '/includes/supplements/fs-essential-functions-2.2.1.php';
 	}
 
 	// Update current SDK info based on the SDK path.

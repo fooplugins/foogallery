@@ -55,6 +55,13 @@ if ( ! class_exists( 'FooGalleryDatasource_MediaLibrary' ) ) {
 
 			if ( ! empty( $this->foogallery->attachment_ids ) ) {
 
+				global $current_foogallery_arguments;
+
+				//check if a sorting override has been applied
+				if ( isset( $current_foogallery_arguments ) && isset( $current_foogallery_arguments['sort'] ) ) {
+					$this->foogallery->sorting = $current_foogallery_arguments['sort'];
+				}
+
 				add_action( 'pre_get_posts', array( $this, 'force_gallery_ordering' ), 99 );
 
 				$attachment_query_args = apply_filters( 'foogallery_attachment_get_posts_args', array(

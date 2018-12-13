@@ -143,6 +143,18 @@ Update now to get all the latest features, bug fixes and improvements!
 
 == Changelog ==
 
+= 1.6.7 =
+* New : added new filter for allowed post types that foogallery can be attached to
+* New : added loop setting for image viewer gallery template
+* Fix : Beaver Builder javascript error while editing a page
+* Fix : album shortcodes not working in some page builders
+* Fix : attach gallery to post when gutenberg block is included
+* Fix : filtering + paging bugs corrected in some scenarios
+* Fix : multiple small bugs and tweaks
+* Fix : Thumbnail generation tries to use first image in media library
+* Update : FooGallery client side 1.1.5
+* Update : Freemius SDK 2.2.2
+
 = 1.6.1 =
 * New : Gutenberg FooGallery block (including live gallery previews!)
 * Fix : foogallery shortcode not rendering in certain cases

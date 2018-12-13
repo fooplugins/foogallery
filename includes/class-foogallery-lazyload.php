@@ -59,6 +59,12 @@ if ( ! class_exists( 'FooGallery_LazyLoad' ) ) {
                     //set if lazy loading is forced to disabled for all galleries
                     $lazyloading_forced_disabled = foogallery_get_setting('disable_lazy_loading') === 'on';
                     $current_foogallery->lazyload_forced_disabled = $lazyloading_forced_disabled;
+
+                    //check if we are inside a feed. Always disable lazy load when shown within a feed
+					if ( is_feed() ) {
+						$current_foogallery->lazyload_forced_disabled = true;
+					}
+
                 }
             }
         }
@@ -82,7 +88,7 @@ if ( ! class_exists( 'FooGallery_LazyLoad' ) ) {
 					}
 				}
 
-				//check that lazy loading was not disabled from Global Settings
+				//check that lazy loading was not disabled from Global Settings or any other reason
 				if ( isset( $current_foogallery->lazyload_forced_disabled ) ) {
 					if ( true === $current_foogallery->lazyload_forced_disabled ) {
 						return $attr;

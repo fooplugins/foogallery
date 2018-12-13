@@ -28,9 +28,6 @@ if ( ! class_exists( 'FooGallery_Albums_Extension' ) ) {
 				add_filter( 'foogallery_admin_settings_override', array($this, 'add_album_settings' ) );
 
 				add_action( 'foogallery_uninstall', array($this, 'uninstall' ) );
-
-			} else {
-				new FooGallery_Album_Template_Loader();
 			}
 			add_filter( 'foogallery_album_templates_files', array( $this, 'register_myself' ) );
 			add_filter( 'foogallery_defaults', array( $this, 'apply_album_defaults' ) );
@@ -44,15 +41,12 @@ if ( ! class_exists( 'FooGallery_Albums_Extension' ) ) {
 			require_once( FOOGALLERY_ALBUM_PATH . 'class-foogallery-album.php' );
 			require_once( FOOGALLERY_ALBUM_PATH . 'public/class-rewrite-rules.php' );
 			require_once( FOOGALLERY_ALBUM_PATH . 'public/class-shortcodes.php' );
+			require_once( FOOGALLERY_ALBUM_PATH . 'public/class-foogallery-album-template-loader.php' );
 
 			if ( is_admin() ) {
 				//only admin
 				require_once( FOOGALLERY_ALBUM_PATH . 'admin/class-metaboxes.php' );
 				require_once( FOOGALLERY_ALBUM_PATH . 'admin/class-columns.php' );
-			} else {
-				//only front-end
-				//load Template \ Loader files
-				require_once( FOOGALLERY_ALBUM_PATH . 'public/class-foogallery-album-template-loader.php' );
 			}
 		}
 

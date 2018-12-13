@@ -57,12 +57,12 @@ if ( ! class_exists( 'FooGallery_Pro_Attachment_Taxonomies' ) ) {
 				add_action( 'admin_head', array( $this, 'include_inline_taxonomy_data_script' ) );
 				add_filter( 'attachment_fields_to_edit', array( $this, 'inject_code_into_field' ), 10, 2 );
 
-				add_action( 'wp_enqueue_media', array( $this, 'enqueue_js' ) );
-
 				//ajax actions from the media modal
 				add_action( 'wp_ajax_foogallery-taxonomies-add-term', array( $this, 'ajax_add_term' ) );
 				add_action( 'wp_ajax_foogallery-taxonomies-save-terms', array( $this, 'ajax_save_terms' ) );
 			}
+
+			add_action( 'wp_enqueue_media', array( $this, 'enqueue_js' ) );
 		}
         /**
          * Save terms for an attachment
