@@ -29,6 +29,10 @@ if ( ! class_exists( 'FooGallery_Gutenberg' ) ) {
 				return;
 			}
 
+			if ( !is_object( $post ) ) {
+				return;
+			}
+
 			$parser = new WP_Block_Parser();
 			$blocks = $parser->parse( $post->post_content );
 
