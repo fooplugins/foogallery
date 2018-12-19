@@ -5622,7 +5622,7 @@
 			self.$caption = $("<figcaption/>").attr(attr.elem).on("click.foogallery", {self: self}, self.onCaptionClick);
 			attr.inner["class"] = cls.inner;
 			var $inner = $("<div/>").attr(attr.inner).appendTo(self.$caption);
-			var hasTitle = !_is.empty(self.caption), hasDesc = !_is.empty(self.description);
+			var hasTitle = self.showCaptionTitle && !_is.empty(self.caption), hasDesc = self.showCaptionDescription && !_is.empty(self.description);
 			if (hasTitle || hasDesc) {
 				attr.title["class"] = cls.title;
 				attr.description["class"] = cls.description;
@@ -5963,7 +5963,7 @@
 		 */
 		onCaptionClick: function (e) {
 			var self = e.data.self;
-			if ($(e.target).is(self.sel.caption.all) && self.$anchor.length > 0) {
+			if (self.$anchor.length > 0) {
 				self.$anchor.get(0).click();
 			}
 		}
