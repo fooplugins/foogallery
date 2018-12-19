@@ -18,6 +18,9 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings' ) ) {
             //enqueue assets for the new settings tabs
             add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_assets' ) );
 
+            //get the section slug
+			add_filter( 'foogallery_gallery_settings_metabox_section_slug', array( $this, 'get_section_slug' ) );
+
             //set default settings tab icons
             add_filter( 'foogallery_gallery_settings_metabox_section_icon', array( $this, 'add_section_icons') );
         }
@@ -38,6 +41,31 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings' ) ) {
                 }
             }
         }
+
+		/**
+		 * Returns the section slug that can be used in the settings tabs
+		 * @param $section
+		 * @return string
+		 */
+		function get_section_slug( $section ) {
+			switch ( $section ) {
+				case __('General', 'foogallery'):
+					return 'general';
+				case __('Advanced', 'foogallery'):
+					return 'advanced';
+				case __('Appearance', 'foogallery'):
+					return 'appearance';
+				case __('Video', 'foogallery'):
+					return 'video';
+				case __('Hover Effects', 'foogallery'):
+					return 'hover effects';
+				case __('Captions', 'foogallery'):
+					return 'captions';
+				case __('Paging', 'foogallery'):
+					return 'paging';
+			}
+			return strtolower( $section );
+		}
 
         /**
          * Returns the Dashicon that can be used in the settings tabs
