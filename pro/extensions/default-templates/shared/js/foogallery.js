@@ -5827,6 +5827,14 @@
 			var cls = self.cls, img = self.$image.get(0), placeholder = img.src;
 			self.isLoading = true;
 			self.$el.removeClass(cls.idle).removeClass(cls.loaded).removeClass(cls.error).addClass(cls.loading);
+			if (img.src != self._placeholder && img.complete){
+				self.isLoading = false;
+				self.isLoaded = true;
+				self.$el.removeClass(cls.loading).addClass(cls.loaded);
+				self.unfix();
+				self.tmpl.raise("loaded-item", [self]);
+				return self._load = _fn.resolveWith(self);
+			}
 			return self._load = $.Deferred(function (def) {
 				// if Firefox reset to empty src or else the onload and onerror callbacks are executed immediately
 				if (!_is.undef(window.InstallTrigger)) img.src = "";
@@ -5851,7 +5859,7 @@
 					def.reject(self);
 				};
 				// set everything in motion by setting the src
-				img.src = self.getThumbUrl();
+				setTimeout(function(){img.src = self.getThumbUrl();});
 			}).promise();
 		},
 		/**
