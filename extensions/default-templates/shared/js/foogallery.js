@@ -5683,7 +5683,7 @@
 			var cls = self.cls, img = self.$image.get(0), placeholder = img.src;
 			self.isLoading = true;
 			self.$el.removeClass(cls.idle).removeClass(cls.loaded).removeClass(cls.error).addClass(cls.loading);
-			if (img.src != self._placeholder && img.complete){
+			if (self.isParsed && img.src != self._placeholder && img.complete){
 				self.isLoading = false;
 				self.isLoaded = true;
 				self.$el.removeClass(cls.loading).addClass(cls.loaded);
