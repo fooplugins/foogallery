@@ -145,6 +145,7 @@ Update now to get all the latest features, bug fixes and improvements!
 
 = 1.6.11 =
 * Fix : Random thumbnails not loading in FireFox
+* Update : FooGallery client side 1.1.8
 
 = 1.6.10 =
 * Fix : Safari bug with lazy loading
