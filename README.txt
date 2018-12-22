@@ -3,7 +3,7 @@ Contributors: bradvin, steveush, fooplugins
 Donate link: http://fooplugins.com
 Tags: gallery, image gallery, photo gallery, responsive, album, media gallery, masonry gallery, portfolio, justified gallery, video gallery, photography, youtube gallery
 Requires at least: 3.9
-Tested up to: 5.0
+Tested up to: 5.0.2
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -143,9 +143,20 @@ Update now to get all the latest features, bug fixes and improvements!
 
 == Changelog ==
 
+= 1.6.11 =
+* Fix : Random thumbnails not loading in FireFox
+
+= 1.6.10 =
+* Fix : Safari bug with lazy loading
+* Fix : Thumbs not loading with paging
+* Fix : duplicate caption title in some scenarios
+* Fix : clicking html in caption was not loading lightbox
+* Update : FooGallery client side 1.1.7
+
 = 1.6.7 =
 * New : added new filter for allowed post types that foogallery can be attached to
 * New : added loop setting for image viewer gallery template
+* New : override sorting in shortcode by providing "sort" attribute
 * Fix : Beaver Builder javascript error while editing a page
 * Fix : album shortcodes not working in some page builders
 * Fix : attach gallery to post when gutenberg block is included
