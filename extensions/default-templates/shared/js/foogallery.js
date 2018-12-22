@@ -5692,8 +5692,6 @@
 				return self._load = _fn.resolveWith(self);
 			}
 			return self._load = $.Deferred(function (def) {
-				// if Firefox reset to empty src or else the onload and onerror callbacks are executed immediately
-				if (!_is.undef(window.InstallTrigger)) img.src = "";
 				img.onload = function () {
 					img.onload = img.onerror = null;
 					self.isLoading = false;
@@ -5715,7 +5713,9 @@
 					def.reject(self);
 				};
 				// set everything in motion by setting the src
-				setTimeout(function(){img.src = self.getThumbUrl();});
+				setTimeout(function(){
+					img.src = self.getThumbUrl();
+				});
 			}).promise();
 		},
 		/**
