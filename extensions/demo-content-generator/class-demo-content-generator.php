@@ -173,8 +173,10 @@ if ( ! class_exists( 'FooGallery_Demo_Content_Generator' ) ) {
 			$attachment_data = wp_generate_attachment_metadata( $attachment_id, $file );
 			wp_update_attachment_metadata( $attachment_id, $attachment_data );
 
-			// Save tags
-			wp_set_object_terms($attachment_id, array_map('trim', preg_split('/,+/', $tags)), FOOGALLERY_ATTACHMENT_TAXONOMY_TAG, false);
+			if ( defined( 'FOOGALLERY_ATTACHMENT_TAXONOMY_TAG' ) ) {
+				// Save tags
+				wp_set_object_terms( $attachment_id, array_map( 'trim', preg_split( '/,+/', $tags ) ), FOOGALLERY_ATTACHMENT_TAXONOMY_TAG, false );
+			}
 
 			return $attachment_id;
 		}

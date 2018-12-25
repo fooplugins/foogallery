@@ -147,7 +147,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings_Helper' ) ) {
 
 				$section_name = isset($field['section']) ? $field['section'] : __( 'General', 'foogallery' );
 
-				$section_slug = strtolower( $section_name );
+				$section_slug = apply_filters( 'foogallery_gallery_settings_metabox_section_slug', $section_name );
 
 				if ( !isset( $sections[ $section_slug ] ) ) {
 					$sections[ $section_slug ] = array (

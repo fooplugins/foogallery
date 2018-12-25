@@ -5478,7 +5478,7 @@
 			self.$caption = $("<figcaption/>").attr(attr.elem).on("click.foogallery", {self: self}, self.onCaptionClick);
 			attr.inner["class"] = cls.inner;
 			var $inner = $("<div/>").attr(attr.inner).appendTo(self.$caption);
-			var hasTitle = !_is.empty(self.caption), hasDesc = !_is.empty(self.description);
+			var hasTitle = self.showCaptionTitle && !_is.empty(self.caption), hasDesc = self.showCaptionDescription && !_is.empty(self.description);
 			if (hasTitle || hasDesc) {
 				attr.title["class"] = cls.title;
 				attr.description["class"] = cls.description;
@@ -5683,9 +5683,15 @@
 			var cls = self.cls, img = self.$image.get(0), placeholder = img.src;
 			self.isLoading = true;
 			self.$el.removeClass(cls.idle).removeClass(cls.loaded).removeClass(cls.error).addClass(cls.loading);
+			if (self.isParsed && img.src != self._placeholder && img.complete){
+				self.isLoading = false;
+				self.isLoaded = true;
+				self.$el.removeClass(cls.loading).addClass(cls.loaded);
+				self.unfix();
+				self.tmpl.raise("loaded-item", [self]);
+				return self._load = _fn.resolveWith(self);
+			}
 			return self._load = $.Deferred(function (def) {
-				// if Firefox reset to empty src or else the onload and onerror callbacks are executed immediately
-				if (!_is.undef(window.InstallTrigger)) img.src = "";
 				img.onload = function () {
 					img.onload = img.onerror = null;
 					self.isLoading = false;
@@ -5707,7 +5713,9 @@
 					def.reject(self);
 				};
 				// set everything in motion by setting the src
-				img.src = self.getThumbUrl();
+				setTimeout(function(){
+					img.src = self.getThumbUrl();
+				});
 			}).promise();
 		},
 		/**
@@ -5819,7 +5827,7 @@
 		 */
 		onCaptionClick: function (e) {
 			var self = e.data.self;
-			if ($(e.target).is(self.sel.caption.all) && self.$anchor.length > 0) {
+			if (self.$anchor.length > 0) {
 				self.$anchor.get(0).click();
 			}
 		}
