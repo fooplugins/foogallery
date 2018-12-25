@@ -63,6 +63,7 @@ if ( ! class_exists( 'FooGalleryDatasource_MediaLibrary' ) ) {
 				}
 
 				add_action( 'pre_get_posts', array( $this, 'force_gallery_ordering' ), 99 );
+				add_action( 'pre_get_posts', array( $this, 'force_suppress_filters' ), PHP_INT_MAX );
 
 				$attachment_query_args = apply_filters( 'foogallery_attachment_get_posts_args', array(
 					'post_type'      => 'attachment',
@@ -75,6 +76,7 @@ if ( ! class_exists( 'FooGalleryDatasource_MediaLibrary' ) ) {
 				$attachment_posts = get_posts( $attachment_query_args );
 
 				remove_action( 'pre_get_posts', array( $this, 'force_gallery_ordering' ), 99 );
+				remove_action( 'pre_get_posts', array( $this, 'force_suppress_filters' ), PHP_INT_MAX );
 
 				$attachments = array_map( array( $this, 'build_attachment' ), $attachment_posts );
 			}
@@ -114,6 +116,19 @@ if ( ! class_exists( 'FooGalleryDatasource_MediaLibrary' ) ) {
 				'attachment' === $query->query['post_type'] ) {
 				$query->set( 'orderby', foogallery_sorting_get_posts_orderby_arg( $this->foogallery->sorting ) );
 				$query->set( 'order', foogallery_sorting_get_posts_order_arg( $this->foogallery->sorting ) );
+			}
+		}
+
+		/**
+		 * This forces the attachments to be fetched without any other filters.
+		 * Some plugins override attachment queries, so this is a preventative measure to ensure sorting is correct
+		 * @param $query WP_Query
+		 */
+		public function force_suppress_filters( $query ) {
+			//only care about attachments
+			if ( array_key_exists( 'post_type', $query->query ) &&
+				'attachment' === $query->query['post_type'] ) {
+				$query->set( 'suppress_filters', true );
 			}
 		}
 

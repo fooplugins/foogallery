@@ -173,7 +173,8 @@ if ( !class_exists( 'FooGallery_Thumbnails' ) ) {
 				'post_type' => 'attachment',
 				'post_mime_type' =>'image',
 				'post_status' => 'inherit',
-				'posts_per_page' => 1
+				'posts_per_page' => 1,
+				'suppress_filters' => 1
 			);
 			$query_images = new WP_Query( $args );
 			foreach ( $query_images->posts as $image) {
