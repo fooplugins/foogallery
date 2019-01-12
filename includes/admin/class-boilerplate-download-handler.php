@@ -37,7 +37,16 @@ if ( ! class_exists( 'FooGallery_Boilerplate_Download_Handler' ) ) {
 
 		function run( $boilerplate_name, $boilerplate_type, $boilerplate_desc, $boilerplate_author, $boilerplate_author_link ) {
 			$this->slug = str_replace( ' ', '-', strtolower( $boilerplate_name ) );
-			$package = str_replace( ' ', '_', foo_title_case( $boilerplate_name . ' ' . $boilerplate_type ) ) . '_FooGallery_Extension';
+			if ( 'blank' === $boilerplate_type ) {
+				$package =  'FooGallery_' . str_replace( ' ', '_', foo_title_case( $boilerplate_name ) );
+				$zip_root_directory = "foogallery-{$this->slug}";
+				$download_filename = "foogallery-{$this->slug}.zip";
+			} else {
+				$package =  'FooGallery_' . str_replace( ' ', '_', foo_title_case( trim( $boilerplate_name . ' ' . $boilerplate_type ) ) );
+				$zip_root_directory = "foogallery-{$this->slug}-{$boilerplate_type}";
+				$download_filename = "foogallery-{$this->slug}-{$boilerplate_type}.zip";
+			}
+
 			$constant = strtoupper( $package );
 
 			//setup some variables for replacement
@@ -60,8 +69,8 @@ if ( ! class_exists( 'FooGallery_Boilerplate_Download_Handler' ) ) {
 				'name'                 => 'foogallery',
 				'process_extensions'   => array( 'php', 'css', 'js', 'txt', ),
 				'source_directory'     => FOOGALLERY_PATH . "/includes/admin/boilerplates/{$boilerplate_type}/",
-				'zip_root_directory'   => "foogallery-{$this->slug}-{$boilerplate_type}",
-				'download_filename'    => "foogallery-{$this->slug}-{$boilerplate_type}.zip",
+				'zip_root_directory'   => $zip_root_directory,
+				'download_filename'    => $download_filename,
 				'filename_filter'      => array( $this, 'process_zip_filename' ),
 				'variables'            => $variables,
 				'zip_temp_directory'   => $upload_dir['path'],

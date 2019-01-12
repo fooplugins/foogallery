@@ -108,16 +108,9 @@ if ( ! empty( $nonce ) && wp_verify_nonce( $nonce, 'foogallery_boilerplate' ) ) 
 	<h2><?php _e( 'Developer Tips', 'foogallery' ); ?></h2>
 	<ul class="ul-disc">
 		<li><?php _e( 'An extension is essentially a WordPress plugin.', 'foogallery' ); ?></li>
-		<li><?php _e( 'Extension functionality must be wrapped in a PHP class. (This class is included when the extension is activated)', 'foogallery' ); ?></li>
 		<li><?php printf( __( 'There are several dozen actions and filters built in for you. (See all %s)', 'foogallery' ), '<a href="' . esc_url( $link_actions_filters ) . '" target="_blank">' . __( 'FooGallery actions and filters', 'foogallery' ) . '</a>' ); ?></li>
-		<li><?php printf( __( 'Read our %s on how to build your own extension in 2	minutes.', 'foogallery' ), '<a href="' . esc_url( $link_tutorial ) . '" target="_blank">' . __( 'step-by-step tutorial', 'foogallery' ) . '</a>' ); ?></li>
+		<li><?php printf( __( 'Read our %s on how to build your own extension in 2 minutes.', 'foogallery' ), '<a href="' . esc_url( $link_tutorial ) . '" target="_blank">' . __( 'step-by-step tutorial', 'foogallery' ) . '</a>' ); ?></li>
 	</ul>
-
-	<h2><?php _e( 'Submit Your Extension', 'foogallery' ); ?></h2>
-
-	<p><?php _e( 'Have you built your own extension that you are proud of? Do you want to share it with the community of FooGallery	users?', 'foogallery' ); ?></p>
-
-	<p><?php printf( __( '%s to get it listed in our extension store.', 'foogallery' ), '<a href="' . esc_url( $link_submit ) . '" target="_blank">' . __( 'Follow these simple instructions', 'foogallery' ) . '</a>' ); ?></p>
 
 	<h2><?php _e( 'Extension Boilerplates', 'foogallery' ); ?></h2>
 
@@ -133,6 +126,7 @@ if ( ! empty( $nonce ) && wp_verify_nonce( $nonce, 'foogallery_boilerplate' ) ) 
 			<select name="boilerplate_type">
 				<option <?php echo 'template' === $boilerplate_type ? 'selected="selected"' : ''; ?> value="template"><?php _e( 'Gallery Template', 'foogallery' ); ?></option>
 				<option <?php echo 'lightbox' === $boilerplate_type ? 'selected="selected"' : ''; ?> value="lightbox"><?php _e( 'Lightbox', 'foogallery' ); ?></option>
+				<option <?php echo 'blank' === $boilerplate_type ? 'selected="selected"' : ''; ?> value="blank"><?php _e( 'Blank', 'foogallery' ); ?></option>
 			</select>
 		</div>
 		<div>
