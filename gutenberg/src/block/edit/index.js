@@ -8,6 +8,7 @@ import {
 const { sprintf } = wp.i18n;
 const { dispatch } = wp.data;
 const { Component } = wp.element;
+const { editGalleryUrl } = window.FOOGALLERY_BLOCK;
 
 export default class FooGalleryEdit extends Component {
 	/**
@@ -67,7 +68,7 @@ export default class FooGalleryEdit extends Component {
 
 	editGallery(){
 		const { attributes: { id } } = this.props;
-		let editPost = sprintf( "/wp-admin/post.php?post=%s&action=edit", id );
+		let editPost = sprintf( editGalleryUrl, id );
 		window.open( editPost, "_blank" );
 	}
 
