@@ -5434,6 +5434,9 @@ only screen and (min-resolution: 2.25dppx) {
 	opacity: 1;
 	background-color: rgba(241,241,241,0.5);
 }
+.foogallery.fg-slider, .foogallery.fg-slider * {
+	box-sizing: border-box;
+}
 .fg-slider {
 	display: block;
 	width: auto;

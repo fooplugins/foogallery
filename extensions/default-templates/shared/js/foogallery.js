@@ -5725,7 +5725,9 @@
 		 * @returns {FooGallery.Item}
 		 */
 		fix: function () {
-			var self = this, e = self.tmpl.raise("fix-item", [self]);
+			var self = this;
+			if (self.tmpl == null) return self;
+			var e = self.tmpl.raise("fix-item", [self]);
 			if (!e.isDefaultPrevented() && self.isCreated && !self.isLoading && !self.isLoaded && !self.isError) {
 				var w = self.width, h = self.height;
 				// if we have a base width and height to work with
@@ -5747,7 +5749,9 @@
 		 * @returns {FooGallery.Item}
 		 */
 		unfix: function () {
-			var self = this, e = self.tmpl.raise("unfix-item", [self]);
+			var self = this;
+			if (self.tmpl == null) return self;
+			var e = self.tmpl.raise("unfix-item", [self]);
 			if (!e.isDefaultPrevented() && self.isCreated) self.$image.css({width: '', height: ''});
 			return self;
 		},
@@ -8209,12 +8213,16 @@
 			var hidden = self.items.all().slice(1);
 			for (var i = 0, l = hidden.length, item; i < l; i++){
 				item = hidden[i];
-				self.$hidden.append(
-						$("<a/>", {
-							href: item.href,
-							rel: "lightbox[" + self.id + "]"
-						}).attr(item.attr.anchor)
-				);
+				if (item.isCreated){
+					self.$hidden.append(item.$el);
+				} else {
+					self.$hidden.append(
+							$("<a/>", {
+								href: item.href,
+								rel: "lightbox[" + self.id + "]"
+							}).attr(item.attr.anchor)
+					);
+				}
 			}
 			self.items.setAll(self.items.all().slice(0,1));
 		}
@@ -8235,6 +8243,8 @@
 	_.triggerPostLoad = function (e, tmpl, current, prev, isFilter) {
 		if (e.type === "first-load" || (tmpl.initialized && ((e.type === "after-page-change" && !isFilter) || e.type === "after-filter-change"))) {
 			try {
+				// if the gallery is displayed within a FooBox do not trigger the post-load which would cause the lightbox to re-init
+				if (tmpl.$el.parents(".fbx-item").length > 0) return;
 				$("body").trigger("post-load");
 			} catch(err) {
 				console.error(err);
@@ -8252,14 +8262,18 @@
 		_.autoDefaults = _obj.merge(_.autoDefaults, options);
 	};
 
-	// this automatically initializes all templates on page load
-	$(function () {
-		$('[id^="foogallery-gallery-"]:not(.fg-ready)').foogallery(_.autoDefaults);
-	});
+	_.load = _.reload = function(){
+		// this automatically initializes all templates on page load
+		$(function () {
+			$('[id^="foogallery-gallery-"]:not(.fg-ready)').foogallery(_.autoDefaults);
+		});
 
-	_utils.ready(function () {
-		$('[id^="foogallery-gallery-"].fg-ready').foogallery(_.autoDefaults);
-	});
+		_utils.ready(function () {
+			$('[id^="foogallery-gallery-"].fg-ready').foogallery(_.autoDefaults);
+		});
+	};
+
+	_.load();
 
 })(
 		FooGallery.$,
