@@ -150,6 +150,12 @@ $show_demos = apply_filters( 'foogallery_admin_help_show_demos', true );
 		text-align: center;
 	}
 
+	.demos_masonry {
+		display: grid;
+		grid-gap: 2em; /* [1] Add some gap between rows and columns */
+		grid-template-columns: repeat( auto-fill, minmax( 200px, 1fr ) ); /* [2] Make columns adjust according to the available viewport */
+	}
+
 </style>
 <div class="wrap about-wrap">
 	<h1><?php echo $title; ?></h1>
@@ -245,15 +251,20 @@ $show_demos = apply_filters( 'foogallery_admin_help_show_demos', true );
 	</div>
 	<div id="demos_section" class="feature-section nav-container" style="display: none">
 		<h2><?php _e( 'FooGallery Demos', 'foogallery' );?></h2>
+		<div class="demos_masonry">
 		<?php
 		$demo_section = '';
 		foreach ( foogallery_marketing_demos() as $demo ) {
 			if ( $demo_section !== $demo['section'] ) {
+				if ( '' !== $demo_section ) {
+					echo '</div>';
+				}
 				$demo_section = $demo['section'];
-				echo '<h3>' . $demo_section . '</h3>';
+				echo '<div class="demo_section"><h3>' . $demo_section . '</h3>';
 			}
 			?><p><span class="dashicons dashicons-format-image"></span><a href="<?php echo esc_url($demo['href'] . '?utm_source=foogallery_plugin_help_demos' ); ?>" target="_blank" title="<?php __('Open demo in new tab','foogallery'); ?>"><?php echo $demo['demo']; ?></a></p><?php
-		}?>
+		}?></div>
+		</div>
 	</div>
 	<div id="support_section" class="feature-section nav-container" style="display: none">
 		<h2><?php _e( 'Need help? We\'re here for you...' , 'foogallery' );?></h2>
