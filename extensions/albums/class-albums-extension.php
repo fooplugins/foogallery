@@ -33,6 +33,7 @@ if ( ! class_exists( 'FooGallery_Albums_Extension' ) ) {
 			add_filter( 'foogallery_defaults', array( $this, 'apply_album_defaults' ) );
 			add_action( 'foogallery_extension_activated-albums', array( $this, 'flush_rewrite_rules' ) );
 			add_filter( 'foogallery_alter_album_template_field', array( $this, 'alter_gallery_template_field' ), 10, 2 );
+			add_filter( 'foogallery_albums_supports_video-stack', '__return_true' );
 		}
 
 		function includes() {
