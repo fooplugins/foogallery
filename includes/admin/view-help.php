@@ -7,6 +7,7 @@ $link = apply_filters( 'foogallery_admin_help_tagline_link', ' - <a href="https:
 $show_logo = apply_filters( 'foogallery_admin_help_show_logo', true );
 $show_tabs = apply_filters( 'foogallery_admin_help_show_tabs', true );
 $demo_link = '<a href="https://foo.gallery/demos?utm_source=foogallery_plugin_help" target="_blank">' . __( 'gallery demos', 'foogallery' ) . '</a>';
+$support_url = 'https://fooplugins.link/support?utm_source=foogallery_plugin_help_support';
 
 $fs_instance = freemius( FOOGALLERY_SLUG );
 $show_upgrade = $fs_instance->is_free_plan();
@@ -130,8 +131,19 @@ $show_demos = apply_filters( 'foogallery_admin_help_show_demos', true );
 
 	.feature-section .dashicons {
 		font-size: 1.8em;
-		color: green;
 		padding-right: 10px;
+	}
+
+	#freetrial_section .dashicons {
+		color: green;
+	}
+
+	#demos_section .dashicons {
+		color: #006799;
+	}
+
+	#support_section .dashicons {
+		color: #006799;
 	}
 
 	#demos_section {
@@ -162,7 +174,7 @@ $show_demos = apply_filters( 'foogallery_admin_help_show_demos', true );
 				<?php _e( 'Demos', 'foogallery' ); ?>
 			</a>
 		<?php } ?>
-		<a class="nav-tab" href="#support" data-old-href="https://fooplugins.link/support?utm_source=foogallery_plugin_help">
+		<a class="nav-tab" href="#support">
 			<?php _e( 'Support', 'foogallery' ); ?>
 		</a>
 	</h2>
@@ -227,7 +239,7 @@ $show_demos = apply_filters( 'foogallery_admin_help_show_demos', true );
 		<h2><?php _e( 'FooGallery PRO Features', 'foogallery' );?></h2>
 		<p><?php _e( 'Click on a link below to open a demo of the PRO feature in a new tab.', 'foogallery' );?></p>
 		<?php foreach ( foogallery_marketing_pro_features() as $feature ) {
-			?><p><span class="dashicons dashicons-yes"></span><strong><a href="<?php echo $feature['demo']; ?>" target="_blank" title="<?php __('Open PRO demo in new tab','foogallery'); ?>"><?php echo $feature['feature']; ?></a></strong> - <?php echo $feature['desc']; ?></p><?php
+			?><p><span class="dashicons dashicons-yes"></span><strong><a href="<?php echo esc_url($feature['demo'] . '?utm_source=foogallery_plugin_help_features' ); ?>" target="_blank" title="<?php __('Open PRO demo in new tab','foogallery'); ?>"><?php echo $feature['feature']; ?></a></strong> - <?php echo $feature['desc']; ?></p><?php
 		}?>
 		<div class="feature-cta"><?php printf( '<a href="%s">%s</a>', esc_url ( foogallery_admin_pricing_url() ), $upgrade_button_text ); ?></div>
 	</div>
@@ -240,10 +252,19 @@ $show_demos = apply_filters( 'foogallery_admin_help_show_demos', true );
 				$demo_section = $demo['section'];
 				echo '<h3>' . $demo_section . '</h3>';
 			}
-			?><p><a href="<?php echo $demo['href']; ?>" target="_blank" title="<?php __('Open demo in new tab','foogallery'); ?>"><?php echo $demo['demo']; ?></a></p><?php
+			?><p><span class="dashicons dashicons-format-image"></span><a href="<?php echo esc_url($demo['href'] . '?utm_source=foogallery_plugin_help_demos' ); ?>" target="_blank" title="<?php __('Open demo in new tab','foogallery'); ?>"><?php echo $demo['demo']; ?></a></p><?php
 		}?>
 	</div>
 	<div id="support_section" class="feature-section nav-container" style="display: none">
+		<h2><?php _e( 'Need help? We\'re here for you...' , 'foogallery' );?></h2>
 
+		<p><span class="dashicons dashicons-editor-help"></span><a href="https://docs.fooplugins.com/" target="_blank"><?php _e('FooPlugins Knowledgebase','foogallery'); ?></a> - <?php _e('A collection of common scenarios and questions. The knowledgebase articles will help you troubleshoot issues that have previously been solved.', 'foogallery'); ?></p>
+
+		<p><span class="dashicons dashicons-editor-help"></span><a href="https://wordpress.org/support/plugin/foogallery/" target="_blank"><?php _e('FooGallery WordPress.org Support','foogallery'); ?></a> - <?php _e('We actively monitor and answer all questions posted on WordPress.org for FooGallery.', 'foogallery'); ?></p>
+
+		<div class="feature-cta">
+			<p><?php _e('Still stuck? Please open a support ticket and we will help:', 'foogallery'); ?></p>
+			<a target="_blank" href="<?php echo esc_url ( $support_url ); ?>"><?php _e('Open a support ticket', 'fooplugins' ); ?></a>
+		</div>
 	</div>
 </div>
