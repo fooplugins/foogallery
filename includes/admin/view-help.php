@@ -184,7 +184,7 @@ $show_demos = apply_filters( 'foogallery_admin_help_show_demos', true );
 			<div class="feature-section">
 				<h2><?php _e( 'Creating Your First Gallery', 'foogallery' );?></h2>
 
-				<img src="<?php echo FOOGALLERY_URL . 'assets/screenshots/admin-edit-gallery.jpg'; ?>" class="foogallery-help-screenshot"/>
+				<img src="https://s3.amazonaws.com/foocdn/foogallery/admin-edit-gallery.jpg" class="foogallery-help-screenshot"/>
 
 				<h4><?php printf( __( '1. <a href="%s">Galleries &rarr; Add New</a>', 'foogallery' ), esc_url ( admin_url( 'post-new.php?post_type=foogallery' ) ) ); ?></h4>
 				<p><?php _e( 'To create your first gallery, simply click the Add New button or click the Add Gallery link in the menu.', 'foogallery' ); ?></p>
@@ -212,7 +212,7 @@ $show_demos = apply_filters( 'foogallery_admin_help_show_demos', true );
 			<div class="feature-section">
 				<h2><?php _e( 'Show Off Your Gallery', 'foogallery' );?></h2>
 
-				<img src="<?php echo FOOGALLERY_URL . 'assets/screenshots/admin-insert-shortcode.jpg'; ?>" class="foogallery-help-screenshot"/>
+				<img src="https://s3.amazonaws.com/foocdn/foogallery/admin-insert-shortcode.jpg" class="foogallery-help-screenshot"/>
 
 				<h4><?php printf( __( 'Gutenberg Editor','foogallery' ), foogallery_gallery_shortcode_tag() );?></h4>
 				<p><?php _e( 'Use the new block directly in the new visual editor that comes standard in WordPress 5.', 'foogallery' );?></p>

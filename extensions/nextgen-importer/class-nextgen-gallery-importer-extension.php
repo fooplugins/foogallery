@@ -154,11 +154,9 @@ if ( ! class_exists( 'FooGallery_Nextgen_Gallery_Importer_Extension' ) ) {
 				<div class="feature-section">
 					<h2><?php _e( 'Import Your NextGen Galleries', 'foogallery' ); ?></h2>
 
-					<img src="<?php echo FOOGALLERY_URL . 'assets/screenshots/admin-nextgen-import.jpg'; ?>" class="foogallery-help-screenshot"/>
+					<img src="https://s3.amazonaws.com/foocdn/foogallery/admin-nextgen-import.jpg" class="foogallery-help-screenshot"/>
 
 					<h4><?php _e( 'Import Galleries', 'foogallery' ); ?></h4>
-
-
 
 					<p><?php printf( __( 'Import all your NextGen galleries in a single click, or choose the galleries you would like to migrate over to %s.', 'foogallery' ), foogallery_plugin_name() ); ?></p>
 
