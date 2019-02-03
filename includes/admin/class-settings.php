@@ -317,6 +317,14 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 				'tab'     => 'advanced',
 			);
 
+			$settings[] = array(
+				'id'      => 'override_thumb_test',
+				'title'   => __( 'Override Thumb Test', 'foogallery' ),
+				'desc'    => __( 'Sometimes there are problems running the thumbnail generation test. This overrides the test to use a remote image from our CDN.', 'foogallery' ),
+				'type'    => 'checkbox',
+				'tab'     => 'advanced',
+			);
+
 			//endregion Advanced Tab
 
 			return apply_filters( 'foogallery_admin_settings_override', array(

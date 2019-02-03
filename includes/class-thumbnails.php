@@ -169,6 +169,10 @@ if ( !class_exists( 'FooGallery_Thumbnails' ) ) {
 		}
 
 		function find_first_image_in_media_library( $test_thumb_url ) {
+			if ( 'on' === foogallery_get_setting( 'override_thumb_test', false ) ) {
+				return 'https://s3.amazonaws.com/foocdn/test.jpg';
+			}
+
 			$args = array(
 				'post_type' => 'attachment',
 				'post_mime_type' =>'image',
