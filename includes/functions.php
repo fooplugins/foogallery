@@ -197,6 +197,15 @@ function foogallery_admin_pricing_url() {
 }
 
 /**
+ * Returns the FooGallery free trial pricing page Url within the admin
+ *
+ * @return string The Url to the FooGallery free trial page in admin
+ */
+function foogallery_admin_freetrial_url() {
+	return add_query_arg( 'trial', 'true', foogallery_admin_pricing_url() );
+}
+
+/**
  * Get a foogallery template setting for the current foogallery that is being output to the frontend
  * @param string	$key
  * @param string	$default
