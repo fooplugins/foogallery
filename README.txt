@@ -12,7 +12,7 @@ Why choose FooGallery? Stunning gallery layouts, responsive, retina-ready, light
 
 == Description ==
 
-Why choose FooGallery? Stunning gallery layouts, responsive, retina-ready, lightning fast, easy to use. Built to be highly configurable and extensible for developers or freelancers.
+Why choose FooGallery? Stunning gallery layouts, responsive, retina-ready, lightning fast, easy to use. Gutenberg Ready! Built to be highly configurable and extensible for developers or freelancers.
 
 [View the FooGallery Homepage & DEMO](http://foo.gallery/)
 
