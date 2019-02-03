@@ -125,6 +125,7 @@ if ( function_exists( 'foogallery_fs' ) ) {
 					add_action( 'admin_page_access_denied', array( $this, 'check_for_access_denied' ) );
 					foogallery_fs()->add_filter( 'connect_message_on_update', array( $this, 'override_connect_message_on_update' ), 10, 6 );
 					foogallery_fs()->add_filter( 'is_submenu_visible', array( $this, 'is_submenu_visible' ), 10, 2 );
+					foogallery_fs()->add_filter( 'plugin_icon',	array( $this, 'freemius_plugin_icon' ), 10, 1 );
 					add_action( 'foogallery_admin_menu_before', array( $this, 'add_freemius_activation_menu' ) );
 				} else {
 					new FooGallery_Public();
@@ -266,6 +267,15 @@ if ( function_exists( 'foogallery_fs' ) ) {
 				}
 
 				return $visible;
+			}
+
+			/**
+			 * Set Freemius plugin icon.
+			 *
+			 * @return string
+			 */
+			public static function plugin_icon( $icon ) {
+				return FOOGALLERY_URL . 'assets/foogallery.png';
 			}
 
 			/**
