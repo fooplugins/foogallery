@@ -340,7 +340,8 @@ function foogallery_attachment_html_item_opening($foogallery_attachment, $args =
         $class_list = implode( ' ', $classes );
     }
 
-	$html = '<div class="' . $class_list . '"><figure class="fg-item-inner">';
+    $attachment_item_figure_class = apply_filters( 'foogallery_attachment_html_item_figure_class', 'fg-item-inner', $foogallery_attachment, $args );
+	$html = '<div class="' . $class_list . '"><figure class="'. esc_attr( $attachment_item_figure_class ) . '">';
 	return apply_filters( 'foogallery_attachment_html_item_opening', $html, $foogallery_attachment, $args );
 }
 
