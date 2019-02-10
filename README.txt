@@ -143,6 +143,24 @@ Update now to get all the latest features, bug fixes and improvements!
 
 == Changelog ==
 
+= 1.6.15 =
+* Fix : fixed logo path in admin
+* Update : changed the paging default output to HTML
+
+= 1.6.14 =
+* New : Added free trial tab to landing page
+* New : Added demo tab to landing page
+* New : Added support tab to landing page
+* New : Added help with FooBox lightbox in gallery templates
+* New : New setting to override thumb generation test URL
+* New : New setting to output gallery JSON to script block
+* New : Added rating admin notice after 5 galleries has been created
+* Fix : Fixed issues with video support in All-In-One stack album
+* Fix : Support for galleries loading in FooBox
+* Update : updated plugin generator
+* Update : FooGallery client side 1.1.10
+* Update : Freemius SDK 2.2.3
+
 = 1.6.13 =
 * New : Added setting to render JSON data to script block (fix for some caching plugins)
 * Fix : Compatibility with WPML Media

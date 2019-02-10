@@ -235,7 +235,7 @@ if ( ! class_exists( 'FooGallery_Paging' ) ) {
 					'section' => __( 'Paging', 'foogallery' ),
 					'spacer'  => '<span class="spacer"></span>',
 					'type'    => 'radio',
-					'default' => '',
+					'default' => 'html',
 					'choices' => apply_filters( 'foogallery_gallery_template_paging_output_choices', array(
 						''  => __( 'JSON', 'foogallery' ),
 						'html'   => __( 'HTML', 'foogallery' )
