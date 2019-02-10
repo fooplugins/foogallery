@@ -274,8 +274,8 @@ if ( function_exists( 'foogallery_fs' ) ) {
 			 *
 			 * @return string
 			 */
-			public static function plugin_icon( $icon ) {
-				return FOOGALLERY_URL . 'assets/foogallery.png';
+			public function freemius_plugin_icon( $icon ) {
+				return FOOGALLERY_PATH . 'assets/foogallery.png';
 			}
 
 			/**
