@@ -278,6 +278,14 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 			);
 
 			$settings[] = array(
+				'id'      => 'output_json_to_script_block',
+				'title'   => __( 'Output Gallery JSON to Script Block', 'foogallery' ),
+				'desc'    => __( 'Some plugins conflict with the default way of rendering gallery items to the container. Enabling this setting will output gallery items to a separate script block.', 'foogallery' ),
+				'type'    => 'checkbox',
+				'tab'     => 'advanced'
+			);
+
+			$settings[] = array(
 				'id'      => 'enable_debugging',
 				'title'   => __( 'Enable Debugging', 'foogallery' ),
 				'desc'    => sprintf( __( 'Helps to debug problems and diagnose issues. Enable debugging if you need support for an issue you are having.', 'foogallery' ), foogallery_plugin_name() ),
@@ -305,6 +313,14 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 				'id'      => 'use_future_endpoint',
 				'title'   => __( 'Use Beta Endpoint', 'foogallery' ),
 				'desc'    => __( 'The list of available extensions are pulled from an external URL. You can also pull from a "beta" endpoint which will sometimes contain beta extensions that are not publicly available.', 'foogallery' ),
+				'type'    => 'checkbox',
+				'tab'     => 'advanced',
+			);
+
+			$settings[] = array(
+				'id'      => 'override_thumb_test',
+				'title'   => __( 'Override Thumb Test', 'foogallery' ),
+				'desc'    => __( 'Sometimes there are problems running the thumbnail generation test. This overrides the test to use a remote image from our CDN.', 'foogallery' ),
 				'type'    => 'checkbox',
 				'tab'     => 'advanced',
 			);

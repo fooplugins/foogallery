@@ -5869,7 +5869,9 @@
 		 * @returns {FooGallery.Item}
 		 */
 		fix: function () {
-			var self = this, e = self.tmpl.raise("fix-item", [self]);
+			var self = this;
+			if (self.tmpl == null) return self;
+			var e = self.tmpl.raise("fix-item", [self]);
 			if (!e.isDefaultPrevented() && self.isCreated && !self.isLoading && !self.isLoaded && !self.isError) {
 				var w = self.width, h = self.height;
 				// if we have a base width and height to work with
@@ -5891,7 +5893,9 @@
 		 * @returns {FooGallery.Item}
 		 */
 		unfix: function () {
-			var self = this, e = self.tmpl.raise("unfix-item", [self]);
+			var self = this;
+			if (self.tmpl == null) return self;
+			var e = self.tmpl.raise("unfix-item", [self]);
 			if (!e.isDefaultPrevented() && self.isCreated) self.$image.css({width: '', height: ''});
 			return self;
 		},
@@ -9723,12 +9727,16 @@
 			var hidden = self.items.all().slice(1);
 			for (var i = 0, l = hidden.length, item; i < l; i++){
 				item = hidden[i];
-				self.$hidden.append(
-						$("<a/>", {
-							href: item.href,
-							rel: "lightbox[" + self.id + "]"
-						}).attr(item.attr.anchor)
-				);
+				if (item.isCreated){
+					self.$hidden.append(item.$el);
+				} else {
+					self.$hidden.append(
+							$("<a/>", {
+								href: item.href,
+								rel: "lightbox[" + self.id + "]"
+							}).attr(item.attr.anchor)
+					);
+				}
 			}
 			self.items.setAll(self.items.all().slice(0,1));
 		}
@@ -11006,9 +11014,17 @@
 			];
 		},
 		destroyChildren: function(){
-			var self = this;
+			var self = this, $items = self.$el.find(self.sel.item.elem).detach();
 			self.$el.find(self.sel.contentContainer).remove();
 			self.$el.find(self.sel.itemContainer).remove();
+			self.$el.append($items);
+		},
+		getContainerWidth: function(){
+			var self = this, visible = self.$el.is(':visible');
+			if (!visible){
+				return self.$el.parents(':visible:first').innerWidth();
+			}
+			return self.$el.outerWidth();
 		},
 		onPreInit: function(event, self){
 			self.$contentContainer = self.$el.find(self.sel.contentContainer);
@@ -11097,8 +11113,7 @@
 				item.$target.detach();
 				$(item.href).append(item.$target);
 			}
-			item.$el.add(item.$content)
-					.removeClass(self.cls.selected).detach();
+			item.$el.add(item.$content).removeClass(self.cls.selected);
 		},
 		onAppendItem: function (event, self, item) {
 			event.preventDefault();
@@ -11129,7 +11144,7 @@
 			self.layout();
 		},
 		getBreakpoint: function(){
-			var self = this, width = self.useViewport ? $(window).width() : self.$el.outerWidth();
+			var self = this, width = self.useViewport ? $(window).width() : self.getContainerWidth();
 			// sort breakpoints so we iterate smallest to largest
 			self.breakpoints.sort(function(a, b){ return a.width - b.width; });
 			for (var i = 0, il = self.breakpoints.length; i < il; i++){
@@ -11157,7 +11172,7 @@
 			self._breakpoint = self.getBreakpoint();
 			self.$el.removeClass(self.allBreakpointClasses).addClass(self._breakpoint.classes);
 
-			var max = self.getMaxVisibleItems() - 1;
+			var max = self.getMaxVisibleItems() - 1, cWidth = self.getContainerWidth();
 			if (self._firstVisible == -1 || self._lastVisible == -1){
 				self._firstVisible = 0;
 				self._lastVisible = max;
@@ -11171,11 +11186,11 @@
 			self.$itemPrev.toggle(self._firstVisible > 0);
 			self.$itemNext.toggle(self._lastVisible < count - 1);
 
-			self._contentWidth = self.$contentContainer.width();
-			self._contentHeight = self.$contentContainer.height();
+			self._contentWidth = cWidth - (self.horizontal ? 0 : self._breakpoint.size.v.items.width);
+			self._contentHeight = (self.horizontal ? self._breakpoint.size.h.height : self._breakpoint.size.v.height);
 			if (count > 0){
 				self.$contentStage.width(self._contentWidth * count);
-				var hItemWidth = Math.max((self._contentWidth + 1) / self.getMaxVisibleItems());
+				var hItemWidth = Math.max(cWidth / self.getMaxVisibleItems());
 				$.each(items, function(i, item){
 					item.index = i;
 					item.$content.width(self._contentWidth).css("left", i * self._contentWidth);
@@ -11189,8 +11204,8 @@
 					}
 				});
 				self.$contentStage.css("transform", "translateX(-" + (index * self._contentWidth) + "px)");
-				self._itemWidth = items[0].$el.outerWidth();
-				self._itemHeight = items[0].$el.outerHeight();
+				self._itemWidth = self.horizontal ? hItemWidth : self._breakpoint.size.v.items.width;
+				self._itemHeight = self.horizontal ? self._breakpoint.size.h.items : self._breakpoint.size.v.items.height;
 
 				self.setVisible(self._firstVisible, false);
 			}
@@ -11361,6 +11376,19 @@
 						noCaptions: 5
 					},
 					v: 6
+				},
+				size: {
+					h: {
+						height: 336,
+						items: 56
+					},
+					v: {
+						height: 336,
+						items: {
+							width: 100,
+							height: 56
+						}
+					}
 				}
 			},{
 				width: 768,
@@ -11371,6 +11399,19 @@
 						noCaptions: 7
 					},
 					v: 7
+				},
+				size: {
+					h: {
+						height: 420,
+						items: 56
+					},
+					v: {
+						height: 392,
+						items: {
+							width: 150,
+							height: 56
+						}
+					}
 				}
 			},{
 				width: 1024,
@@ -11381,6 +11422,19 @@
 						noCaptions: 9
 					},
 					v: 6
+				},
+				size: {
+					h: {
+						height: 520,
+						items: 77
+					},
+					v: {
+						height: 461,
+						items: {
+							width: 220,
+							height: 77
+						}
+					}
 				}
 			},{
 				width: 1280,
@@ -11391,6 +11445,19 @@
 						noCaptions: 11
 					},
 					v: 7
+				},
+				size: {
+					h: {
+						height: 546,
+						items: 77
+					},
+					v: {
+						height: 538,
+						items: {
+							width: 280,
+							height: 77
+						}
+					}
 				}
 			},{
 				width: 1600,
@@ -11401,6 +11468,19 @@
 						noCaptions: 13
 					},
 					v: 8
+				},
+				size: {
+					h: {
+						height: 623,
+						items: 77
+					},
+					v: {
+						height: 615,
+						items: {
+							width: 280,
+							height: 77
+						}
+					}
 				}
 			}],
 			player: {
@@ -11443,6 +11523,8 @@
 	_.triggerPostLoad = function (e, tmpl, current, prev, isFilter) {
 		if (e.type === "first-load" || (tmpl.initialized && ((e.type === "after-page-change" && !isFilter) || e.type === "after-filter-change"))) {
 			try {
+				// if the gallery is displayed within a FooBox do not trigger the post-load which would cause the lightbox to re-init
+				if (tmpl.$el.parents(".fbx-item").length > 0) return;
 				$("body").trigger("post-load");
 			} catch(err) {
 				console.error(err);
@@ -11460,14 +11542,18 @@
 		_.autoDefaults = _obj.merge(_.autoDefaults, options);
 	};
 
-	// this automatically initializes all templates on page load
-	$(function () {
-		$('[id^="foogallery-gallery-"]:not(.fg-ready)').foogallery(_.autoDefaults);
-	});
+	_.load = _.reload = function(){
+		// this automatically initializes all templates on page load
+		$(function () {
+			$('[id^="foogallery-gallery-"]:not(.fg-ready)').foogallery(_.autoDefaults);
+		});
 
-	_utils.ready(function () {
-		$('[id^="foogallery-gallery-"].fg-ready').foogallery(_.autoDefaults);
-	});
+		_utils.ready(function () {
+			$('[id^="foogallery-gallery-"].fg-ready').foogallery(_.autoDefaults);
+		});
+	};
+
+	_.load();
 
 })(
 		FooGallery.$,

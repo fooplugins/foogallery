@@ -2,7 +2,7 @@
 /*
 Plugin Name: FooGallery
 Description: FooGallery is the most intuitive and extensible gallery management tool ever created for WordPress
-Version:     1.6.11
+Version:     1.6.15
 Author:      FooPlugins
 Plugin URI:  https://foo.gallery
 Author URI:  http://fooplugins.com
@@ -28,7 +28,7 @@ if ( function_exists( 'foogallery_fs' ) ) {
 		define( 'FOOGALLERY_PATH', plugin_dir_path( __FILE__ ) );
 		define( 'FOOGALLERY_URL', plugin_dir_url( __FILE__ ) );
 		define( 'FOOGALLERY_FILE', __FILE__ );
-		define( 'FOOGALLERY_VERSION', '1.6.11' );
+		define( 'FOOGALLERY_VERSION', '1.6.15' );
 		define( 'FOOGALLERY_SETTINGS_VERSION', '2' );
 
 		require_once( FOOGALLERY_PATH . 'includes/constants.php' );
@@ -125,7 +125,7 @@ if ( function_exists( 'foogallery_fs' ) ) {
 					add_action( 'admin_page_access_denied', array( $this, 'check_for_access_denied' ) );
 					foogallery_fs()->add_filter( 'connect_message_on_update', array( $this, 'override_connect_message_on_update' ), 10, 6 );
 					foogallery_fs()->add_filter( 'is_submenu_visible', array( $this, 'is_submenu_visible' ), 10, 2 );
-					foogallery_fs()->add_filter( 'hide_account_tabs', '__return_true' );
+					foogallery_fs()->add_filter( 'plugin_icon',	array( $this, 'freemius_plugin_icon' ), 10, 1 );
 					add_action( 'foogallery_admin_menu_before', array( $this, 'add_freemius_activation_menu' ) );
 				} else {
 					new FooGallery_Public();
@@ -267,6 +267,15 @@ if ( function_exists( 'foogallery_fs' ) ) {
 				}
 
 				return $visible;
+			}
+
+			/**
+			 * Set Freemius plugin icon.
+			 *
+			 * @return string
+			 */
+			public function freemius_plugin_icon( $icon ) {
+				return FOOGALLERY_PATH . 'assets/foogallery.png';
 			}
 
 			/**

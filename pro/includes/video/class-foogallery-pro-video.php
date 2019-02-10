@@ -56,11 +56,17 @@ if ( ! class_exists( 'FooGallery_Pro_Video' ) ) {
 			//check if the gallery is using foobox free and also has a video and if so, enqueue foobox video scripts.
 			add_action( 'foogallery_loaded_template', array( $this, 'enqueue_foobox_free_dependencies' ) );
 
+			//check if the album is using foobox free and also has a video and if so, enqueue foobox video scripts.
+			add_action( 'foogallery_loaded_album_template', array( $this, 'enqueue_foobox_free_dependencies_for_album' ) );
+
 			//add settings for video
 			add_filter( 'foogallery_admin_settings_override', array( $this, 'include_video_settings' ) );
 
 			//output the embeds after the gallery if needed
 			add_action( 'foogallery_loaded_template', array( $this, 'include_video_embeds' ) );
+
+			//output the embeds after the album if needed
+			add_action( 'foogallery_loaded_album_template', array( $this, 'include_video_embeds_for_album' ) );
 
 			//ajax call to save the Vimeo access token
 			add_action('wp_ajax_fgi_save_access_token', array($this, 'save_vimeo_access_token'));
@@ -257,6 +263,7 @@ if ( ! class_exists( 'FooGallery_Pro_Video' ) ) {
 		public function alter_video_link_attributes( $attr, $args, $attachment ) {
 			global $current_foogallery;
 			global $current_foogallery_template;
+			global $current_foogallery_album;
 
 			if ( $attachment->is_video ) {
 				$video_data = get_post_meta( $attachment->ID, FOOGALLERY_VIDEO_POST_META, true );
@@ -274,17 +281,30 @@ if ( ! class_exists( 'FooGallery_Pro_Video' ) ) {
 
 					$is_embed = 'embed' === $video_data['type'];
 
-					//check that the gallery template supports embeds
-					$template_data = foogallery_get_gallery_template( $current_foogallery_template );
+					$template_supports_embeds = false;
 
-					//check the template supports filtering
-					if ( $template_data && array_key_exists( 'embed_support', $template_data ) && true === $template_data['embed_support'] ) {
+					if ( isset( $current_foogallery_template ) ) {
+						//check that the gallery template supports embeds
+						$template_data = foogallery_get_gallery_template( $current_foogallery_template );
+
+						$template_supports_embeds = $template_data && array_key_exists( 'embed_support', $template_data ) && true === $template_data['embed_support'];
+					}
+
+					//check the template supports embeds
+					if ( $template_supports_embeds ) {
 						//do nothing
 						$attr['data-type'] = $is_embed ? 'embed' : 'video';
 					} else {
 						//should be for templates that do not support embeds natively e.g. responsive gallery
 						//we need to check that the lightbox is FooBox, because embeds will only then work with FooBox
-						$lightbox = foogallery_gallery_template_setting( 'lightbox' );
+
+						$lightbox = '';
+						if ( isset( $current_foogallery_template ) ) {
+							$lightbox = foogallery_gallery_template_setting( 'lightbox' );
+						} else if ( isset( $current_foogallery_album ) ) {
+							$lightbox = foogallery_album_template_setting( 'lightbox' );
+						}
+
 						$is_embed = $is_embed && ( 'foobox' === $lightbox );
 						if ( $is_embed ) {
 							$attr['data-type'] = 'embed';
@@ -342,15 +362,17 @@ if ( ! class_exists( 'FooGallery_Pro_Video' ) ) {
 					$attr['href'] = foogallery_get_video_url_from_attachment( $attachment );
 				}
 
-				$lightbox = foogallery_gallery_template_setting( 'lightbox', 'unknown' );
-				//if no lightbox is being used then force to open in new tab
-				if ( 'unknown' === $lightbox || 'none' === $lightbox ) {
-					$attr['target'] = '_blank';
-				}
+				if ( isset( $current_foogallery_template ) ) {
+					$lightbox = foogallery_gallery_template_setting( 'lightbox', 'unknown' );
+					//if no lightbox is being used then force to open in new tab
+					if ( 'unknown' === $lightbox || 'none' === $lightbox ) {
+						$attr['target'] = '_blank';
+					}
 
-				//remove the targets for slider and grid pro galleries
-				if ( array_key_exists( 'target', $attr ) && 'slider' === $current_foogallery_template || 'foogridpro' === $current_foogallery_template ) {
-					unset( $attr['target'] );
+					//remove the targets for slider and grid pro galleries
+					if ( array_key_exists( 'target', $attr ) && 'slider' === $current_foogallery_template || 'foogridpro' === $current_foogallery_template ) {
+						unset( $attr['target'] );
+					}
 				}
 			}
 
@@ -398,6 +420,35 @@ if ( ! class_exists( 'FooGallery_Pro_Video' ) ) {
 							array( 'jquery', 'foobox-free-min' ),
 							FOOGALLERY_VERSION
 						);
+					}
+				}
+			}
+		}
+
+		/**
+		 * Enqueue any script or stylesheet file dependencies that FooGallery_Pro_Video relies on for an album
+		 *
+		 * @param $foogallery_album FooGalleryAlbum
+		 */
+		function enqueue_foobox_free_dependencies_for_album( $foogallery_album ) {
+			if ( $foogallery_album ) {
+				if ( apply_filters( 'foogallery_albums_supports_video-' . $foogallery_album->album_template, false ) ) {
+					$video_count = 0;
+					foreach ( $foogallery_album->gallery_ids as $gallery_id ) {
+						$video_count += foogallery_get_gallery_video_count( $gallery_id );
+					}
+					if ( $video_count > 0 ) {
+						$lightbox = foogallery_album_template_setting( 'lightbox', 'unknown' );
+						//we want to add some JS to the front-end ONLY if we are using FooBox Free
+						if ( class_exists( 'Foobox_Free' ) && ( 'foobox' == $lightbox || 'foobox-free' == $lightbox ) ) {
+							$js = FOOGALLERY_PRO_URL . 'js/foobox.video.min.js';
+							wp_enqueue_script(
+								'foogallery-foobox-video',
+								$js,
+								array( 'jquery', 'foobox-free-min' ),
+								FOOGALLERY_VERSION
+							);
+						}
 					}
 				}
 			}
@@ -489,6 +540,17 @@ if ( ! class_exists( 'FooGallery_Pro_Video' ) ) {
 				}
 
 				?></div><?php
+			}
+		}
+
+		/**
+		 * Renders any video embeds for the album
+		 *
+		 * @param FooGalleryAlbum $album
+		 */
+		function include_video_embeds_for_album( $album ) {
+			foreach ( $album->galleries() as $gallery ) {
+				$this->include_video_embeds( $gallery );
 			}
 		}
 

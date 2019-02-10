@@ -78,19 +78,39 @@ if ( ! class_exists( 'FooGallery_Blocks' ) ) {
 				$local_data = gutenberg_get_jed_locale_data( 'foogallery' );
 			}
 
-			if ( false !== $local_data ) {
+			$block_js_data = apply_filters('foogallery_gutenberg_block_js_data', array(
+				"editGalleryUrl" => $this->get_edit_gallery_url()
+			));
 
+			$inline_script = 'window.FOOGALLERY_BLOCK = ' . json_encode( $block_js_data ) . ';';
+			if ( false !== $local_data ) {
 				/*
 				 * Pass already loaded translations to our JavaScript.
 				 *
 				 * This happens _before_ our JavaScript runs, afterwards it's too late.
 				 */
-				wp_add_inline_script(
-					'foogallery-block-js',
-					'wp.i18n.setLocaleData( ' . json_encode( $local_data ) . ', "foogallery" );',
-					'before'
-				);
+				$inline_script .= PHP_EOL . 'wp.i18n.setLocaleData( ' . json_encode( $local_data ) . ', "foogallery" );';
 			}
+
+			wp_add_inline_script(
+				'foogallery-block-js',
+				$inline_script,
+				'before'
+			);
+		}
+
+		function get_edit_gallery_url() {
+			$post_type_object = get_post_type_object( "foogallery" );
+			if ( !$post_type_object )
+				return '';
+
+			if ( $post_type_object->_edit_link ) {
+				$link = admin_url( $post_type_object->_edit_link . '&action=edit' );
+			} else {
+				$link = '';
+			}
+
+			return apply_filters( 'foogallery_gutenberg_edit_gallery_url', $link );
 		}
 
 		/**

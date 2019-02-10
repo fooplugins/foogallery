@@ -1,16 +1,9 @@
 <?php
 /**
- * FooGallery {name} Extension
+ * FooGallery - {name}
  *
  * {desc}
  *
- * @package   {package}
- * @author    {author}
- * @license   GPL-2.0+
- * @link      {author_link}
- * @copyright 2014 {author}
- *
- * @wordpress-plugin
  * Plugin Name: FooGallery - {name}
  * Description: {desc}
  * Version:     1.0.0
@@ -25,12 +18,10 @@ if ( !class_exists( '{package}' ) ) {
 	define('{constant}_URL', plugin_dir_url( __FILE__ ));
 	define('{constant}_VERSION', '1.0.0');
 
-	require_once( 'foogallery-{slug}-init.php' );
-
 	class {package} {
 
 		/**
-		 * Wire up everything we need to run the extension
+		 * Wire up everything we need to run
 		 */
 		function __construct() {
 			add_filter( 'foogallery_gallery_template_field_lightboxes', array($this, 'add_lightbox') );
@@ -76,3 +67,5 @@ if ( !class_exists( '{package}' ) ) {
 		}
 	}
 }
+
+new {package}();
