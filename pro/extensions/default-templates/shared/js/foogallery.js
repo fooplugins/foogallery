@@ -5101,6 +5101,12 @@
 			self.$anchor = null;
 			/**
 			 * @memberof FooGallery.Item#
+			 * @name $wrap
+			 * @type {?jQuery}
+			 */
+			self.$wrap = null;
+			/**
+			 * @memberof FooGallery.Item#
 			 * @name $image
 			 * @type {?jQuery}
 			 */
@@ -5255,6 +5261,7 @@
 				classes: "",
 				style: "",
 				loader: false,
+				wrap: false,
 				placeholder: false
 			};
 		},
@@ -5351,6 +5358,9 @@
 				if (_is.empty(self._undo.style)) self.$el.removeAttr("style");
 				else self.$el.attr("style", self._undo.style);
 
+				if (self._undo.wrap) {
+					self.$image.unwrap();
+				}
 				if (self._undo.loader) {
 					self.$el.find(self.sel.loader).remove();
 				}
@@ -5487,6 +5497,11 @@
 			if (_is.number(self.maxDescriptionLength) && self.maxDescriptionLength > 0 && !_is.empty(self.description) && _is.string(self.description) && self.description.length > self.maxDescriptionLength) {
 				self.$caption.find(sel.caption.description).html(self.description.substr(0, self.maxDescriptionLength) + "&hellip;");
 			}
+			// check if the item has a wrap
+			if (self.$anchor.find(sel.wrap).length === 0) {
+				self.$image.wrap($("<span/>", {"class": cls.wrap}));
+				self._undo.wrap = true;
+			}
 			// check if the item has a loader
 			if (self.$el.find(sel.loader).length === 0) {
 				self.$el.append($("<div/>", {"class": cls.loader}));
@@ -5614,7 +5629,8 @@
 			self.$el = $("<div/>").attr(attr.elem).data(_.dataItem, self);
 			self.$inner = $("<figure/>").attr(attr.inner).appendTo(self.$el);
 			self.$anchor = $("<a/>").attr(attr.anchor).appendTo(self.$inner).on("click.foogallery", {self: self}, self.onAnchorClick);
-			self.$image = $("<img/>").attr(attr.image).appendTo(self.$anchor);
+			var $wrap = $("<span/>", {"class": cls.wrap}).appendTo(self.$anchor);
+			self.$image = $("<img/>").attr(attr.image).appendTo($wrap);
 
 			cls = self.cls.caption;
 			attr = self.attr.caption;
@@ -6053,6 +6069,7 @@
 			elem: "fg-item",
 			inner: "fg-item-inner",
 			anchor: "fg-thumb",
+			wrap: "fg-image-wrap",
 			image: "fg-image",
 			loader: "fg-loader",
 			idle: "fg-idle",
