@@ -237,6 +237,39 @@ only screen and (min-resolution: 2.25dppx) {
 	mix-blend-mode: screen;
 	background: rgba(243, 106, 188, 0.3);
 }
+.foogallery.fg-filter-amaro .fg-image-wrap {
+  -webkit-filter: contrast(90%) brightness(110%) saturate(150%) hue-rotate(-10deg);
+  filter: contrast(90%) brightness(110%) saturate(150%) hue-rotate(-10deg);
+}
+
+.foogallery.fg-filter-brannan .fg-image-wrap {
+	-webkit-filter: contrast(140%) sepia(50%);
+  filter: contrast(140%) sepia(50%);
+}
+.foogallery.fg-filter-brannan .fg-image-wrap:before {
+  mix-blend-mode: lighten;
+  background: rgba(161, 44, 199, 0.31);
+}
+
+.foogallery.fg-filter-clarendon .fg-image-wrap {
+  -webkit-filter: contrast(120%) saturate(125%);
+  filter: contrast(120%) saturate(125%);
+}
+.foogallery.fg-filter-clarendon .fg-image-wrap:before {
+  mix-blend-mode: overlay;
+  background: rgba(127, 187, 227, 0.2);
+}
+
+.foogallery.fg-filter-earlybird .fg-image-wrap {
+  -webkit-filter: contrast(90%) sepia(20%);
+  filter: contrast(90%) sepia(20%);
+}
+.foogallery.fg-filter-earlybird .fg-image-wrap:before {
+  mix-blend-mode: overlay;
+  background: -webkit-radial-gradient(50% 50%, circle closest-corner, rgba(208, 186, 142, 1) 20%, rgba(29, 2, 16, 0.2));
+  background: radial-gradient(50% 50%, circle closest-corner, rgba(208, 186, 142, 1) 20%, rgba(29, 2, 16, 0.2));
+}
+
 .foogallery.fg-filter-lofi .fg-image-wrap {
 	-webkit-filter: contrast(150%) saturate(110%);
 	filter: contrast(150%) saturate(110%);
@@ -246,6 +279,68 @@ only screen and (min-resolution: 2.25dppx) {
 	background: -webkit-radial-gradient(circle closest-corner, rgba(0, 0, 0, 0) 70%, rgba(34, 34, 34, 1) 100%);
 	background: radial-gradient(circle closest-corner, rgba(0, 0, 0, 0) 70%, rgba(34, 34, 34, 1) 100%);
 }
+.foogallery.fg-filter-poprocket .fg-image-wrap {
+  -webkit-filter: sepia(.15) brightness(1.2);
+  filter: sepia(.15) brightness(1.2);
+}
+.foogallery.fg-filter-poprocket .fg-image-wrap:before {
+  mix-blend-mode: screen;
+  background: -webkit-radial-gradient(center center, circle closest-corner, rgba(206, 39, 70, .75) 40%, rgba(0, 0, 0, 1) 80%);
+	background: radial-gradient(center center, circle closest-corner, rgba(206, 39, 70, .75) 40%, rgba(0, 0, 0, 1) 80%);
+}
+
+.foogallery.fg-filter-reyes .fg-image-wrap {
+  -webkit-filter: contrast(85%) brightness(110%) saturate(75%) sepia(22%);
+  filter: contrast(85%) brightness(110%) saturate(75%) sepia(22%);
+}
+.foogallery.fg-filter-reyes .fg-image-wrap:before {
+  mix-blend-mode: soft-light;
+  opacity: 0.5;
+  background: rgba(173, 205, 239, 1);
+}
+
+.foogallery.fg-filter-toaster .fg-image-wrap {
+  -webkit-filter: contrast(150%) brightness(90%);
+  filter: contrast(150%) brightness(90%);
+}
+.foogallery.fg-filter-toaster .fg-image-wrap:before {
+  mix-blend-mode: screen;
+  opacity: 0.5;
+  background: -webkit-radial-gradient(50% 50%, circle closest-corner, rgba(15, 78, 128, 1) 1%, rgba(59, 0, 59, 1));
+  background: radial-gradient(50% 50%, circle closest-corner, rgba(15, 78, 128, 1) 1%, rgba(59, 0, 59, 1));
+}
+
+.foogallery.fg-filter-walden .fg-image-wrap {
+  -webkit-filter: brightness(110%) saturate(160%) sepia(30%) hue-rotate(350deg);
+  filter: brightness(110%) saturate(160%) sepia(30%) hue-rotate(350deg);
+}
+.foogallery.fg-filter-walden .fg-image-wrap:before {
+  mix-blend-mode: screen;
+  opacity: 0.3;
+  background: rgba(204, 68, 0, 1);
+}
+
+.foogallery.fg-filter-xpro2 .fg-image-wrap {
+  -webkit-filter: sepia(30%);
+  filter: sepia(30%);
+}
+.foogallery.fg-filter-xpro2 .fg-image-wrap:before {
+  mix-blend-mode: color-burn;
+  background: -webkit-radial-gradient(center center, circle closest-corner, rgba(224, 231, 230, 1) 40%, rgba(43, 42, 161, 0.6));
+  background: radial-gradient(center center, circle closest-corner, rgba(224, 231, 230, 1) 40%, rgba(43, 42, 161, 0.6));
+}
+
+.foogallery.fg-filter-xtreme .fg-image-wrap {
+  -webkit-filter: contrast(200%) brightness(127%) saturate(200%) sepia(45%);
+  filter: contrast(200%) brightness(127%) saturate(200%) sepia(45%);
+}
+.foogallery.fg-filter-xtreme .fg-image-wrap:before {
+  mix-blend-mode: hard-light;
+  opacity: 0.7;
+  background: -webkit-radial-gradient(50% 50%, circle closest-corner, rgba(62, 253, 220, 0.33) 10%, rgba(70, 70, 70, 0.04));
+  background: radial-gradient(50% 50%, circle closest-corner, rgba(62, 253, 220, 0.33) 10%, rgba(70, 70, 70, 0.04));
+}
+
 /* Loader Styles */
 .foogallery .fg-loader {
 	position: absolute;
