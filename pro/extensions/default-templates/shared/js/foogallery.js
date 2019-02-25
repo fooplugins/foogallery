@@ -3150,6 +3150,20 @@
 	 * });
 	 */
 
+	/**
+	 * @summary Checks if the supplied image src is cached by the browser.
+	 * @param {string} src - The image src to check.
+	 * @returns {boolean}
+	 */
+	_.isCached = function(src){
+		var img = new Image();
+		img.src = src;
+		var complete = img.complete;
+		img.src = "";
+		img = null;
+		return complete;
+	};
+
 })(
 		FooGallery.$,
 		FooGallery,
@@ -3363,6 +3377,14 @@
 				self.endPoint = pt;
 				if (!self.opt.allowPageScroll){
 					event.preventDefault();
+				} else if (_is.hash(self.opt.allowPageScroll)){
+					var dir = self.getDirection(self.startPoint, self.endPoint);
+					if (!self.opt.allowPageScroll.x && $.inArray(dir, ['NE','E','SE','NW','W','SW']) !== -1){
+						event.preventDefault();
+					}
+					if (!self.opt.allowPageScroll.y && $.inArray(dir, ['NW','N','NE','SW','S','SE']) !== -1){
+						event.preventDefault();
+					}
 				}
 			}
 		},
@@ -5843,14 +5865,6 @@
 			var cls = self.cls, img = self.$image.get(0), placeholder = img.src;
 			self.isLoading = true;
 			self.$el.removeClass(cls.idle).removeClass(cls.loaded).removeClass(cls.error).addClass(cls.loading);
-			if (self.isParsed && img.src != self._placeholder && img.complete){
-				self.isLoading = false;
-				self.isLoaded = true;
-				self.$el.removeClass(cls.loading).addClass(cls.loaded);
-				self.unfix();
-				self.tmpl.raise("loaded-item", [self]);
-				return self._load = _fn.resolveWith(self);
-			}
 			return self._load = $.Deferred(function (def) {
 				img.onload = function () {
 					img.onload = img.onerror = null;
@@ -5873,9 +5887,10 @@
 					def.reject(self);
 				};
 				// set everything in motion by setting the src
-				setTimeout(function(){
-					img.src = self.getThumbUrl();
-				});
+				img.src = self.getThumbUrl();
+				if (img.complete){
+					img.onload();
+				}
 			}).promise();
 		},
 		/**
@@ -9724,44 +9739,19 @@
 					type: "none"
 				},
 				paging: {
-					type: "none"
+					pushOrReplace: "replace",
+					theme: "fg-light",
+					type: "default",
+					size: 1,
+					position: "none",
+					scrollToTop: false
 				}
 			}), element);
-			this.$hidden = $();
-		},
-		createChildren: function(){
-			var self = this;
-			return self.$hidden = $("<div/>", {"class": self.cls.hidden});
-		},
-		destroyChildren: function(){
-			var self = this;
-			self.$el.find(self.sel.hidden).remove();
-		},
-		onPreInit: function(event, self){
-			self.$hidden = self.$el.find(self.sel.hidden);
-		},
-		onPostInit: function(event, self){
-			var hidden = self.items.all().slice(1);
-			for (var i = 0, l = hidden.length, item; i < l; i++){
-				item = hidden[i];
-				if (item.isCreated){
-					self.$hidden.append(item.$el);
-				} else {
-					self.$hidden.append(
-							$("<a/>", {
-								href: item.href,
-								rel: "lightbox[" + self.id + "]"
-							}).attr(item.attr.anchor)
-					);
-				}
-			}
-			self.items.setAll(self.items.all().slice(0,1));
 		}
 	});
 
 	_.template.register("thumbnail", _.ThumbnailTemplate, null, {
-		container: "foogallery fg-thumbnail",
-		hidden: "fg-st-hidden"
+		container: "foogallery fg-thumbnail"
 	});
 
 })(
@@ -9931,8 +9921,8 @@
 			html: /^#.+?$/i
 		},
 		thumbnail: ['attr:src','data:thumbnail'],
-		title: ['attr:title','data:title','data:captionTitle'],
-		description: ['data:description','data:captionDesc','attr:alt'],
+		title: ['data:captionTitle','data:title','attr:title'],
+		description: ['data:captionDesc','data:description','attr:alt'],
 		width: ['data:width'],
 		height: ['data:height']
 	};
@@ -10005,9 +9995,9 @@
 		}
 		// otherwise perform a best guess using the href and any parser.type values
 		tmp = $anchor.attr('href');
-		var type = null;
-		$.each(this.options.type, function(name, regex){
-			if (regex.test(tmp)){
+		var regex = this.options.type, type = null;
+		$.each(['image','video','html','iframe'], function(i, name){
+			if (regex[name] && regex[name].test(tmp)){
 				type = name;
 				return false;
 			}
@@ -10212,6 +10202,7 @@
 			self._loop();
 			self.$li.addClass('foogrid-visible').focus();
 			self.active = item;
+			if (self.grid && self.grid.deeplinking) self.grid.deeplinking.set(item);
 			self.busy = false;
 			return item.open(reverse);
 		});
@@ -10275,6 +10266,7 @@
 			self.$prev.add(self.$next).removeClass('foogrid-disabled');
 			self.fullscreen = false;
 			self.active = null;
+			if (self.grid && self.grid.deeplinking) self.grid.deeplinking.clear();
 			self.busy = false;
 			if (!diff_row) self.first = true;
 		});
@@ -10394,6 +10386,7 @@
 		this.$link = this.$li.find('.fg-thumb').first().on('click.gg', {self: this}, this.onClick);
 		this.visible = false;
 		this.content = this.grid.parser.parse(this.$link);
+		this.hash = this.grid.deeplinking.hash(this.content.external);
 		this.hasCaption = false;
 		this.isCreated = false;
 		this.player = null;
@@ -10424,20 +10417,25 @@
 
 		switch (this.content.type){
 			case 'image':
+				$inner.addClass('foogrid-content-image');
 				$content = $('<img/>', {src: this.content.url, 'class': 'foogrid-image'});
 				break;
 			case 'html':
+				$inner.addClass('foogrid-content-html');
 				$content = $(this.content.url).contents();
 				break;
 			case 'embed':
+				$inner.addClass('foogrid-content-embed');
 				$content = $('<div/>', {'class': 'foogrid-embed'}).append($(this.content.url).contents());
 				break;
 			case 'video':
+				$inner.addClass('foogrid-content-video');
 				this.player = new F.Player(this.grid, this.content.url);
 				$content = this.player.$el;
 				break;
 			case 'iframe':
 			default:
+				$inner.addClass('foogrid-content-iframe');
 				$content = $('<iframe/>', {
 					src: this.content.url, 'class': 'foogrid-iframe', frameborder: 'no',
 					webkitallowfullscreen: true, mozallowfullscreen: true, allowfullscreen: true
@@ -10890,30 +10888,6 @@
 		}
 	};
 
-	/* Override various methods of other components to hook into the open/close/change of content. */
-
-	var original_content_open = F.Content.prototype._open;
-	F.Content.prototype._open = function(item, diff_row, reverse){
-		var self = this;
-		return original_content_open.call(self, item, diff_row, reverse).then(function(){
-			self.grid.deeplinking.set(item);
-		});
-	};
-
-	var original_content_close = F.Content.prototype.close;
-	F.Content.prototype.close = function(reverse, diff_row){
-		var self = this;
-		return original_content_close.call(self, reverse, diff_row).then(function(){
-			self.grid.deeplinking.clear();
-		});
-	};
-
-	var original_item_init = F.Item.prototype._init;
-	F.Item.prototype._init = function(grid, li, index){
-		original_item_init.call(this, grid, li, index);
-		this.hash = this.grid.deeplinking.hash(this.content.external);
-	};
-
 })(
 		FooGallery.$,
 		FooGallery.FooGrid,
@@ -10945,37 +10919,19 @@
 		},
 		onBeforePageChange: function(event, self, current, next, setPage, isFilter){
 			if (!isFilter){
-				event.preventDefault();
-				self.wasActive = self.foogrid.isActive();
-				self.foogrid.close().then(function(){
-					setPage();
-					self.loadAvailable();
-				});
+				self.foogrid.close(true);
 			}
 		},
 		onAfterPageChange: function(event, self, current, prev, isFilter){
 			if (!isFilter){
 				self.foogrid.layout(true);
-				if (self.wasActive){
-					self.wasActive = false;
-					self.foogrid.open(0);
-				}
 			}
 		},
 		onBeforeFilterChange: function(event, self, current, next, setFilter){
-			event.preventDefault();
-			self.wasActive = self.foogrid.isActive();
-			self.foogrid.close().then(function(){
-				setFilter();
-				self.loadAvailable();
-			});
+			self.foogrid.close(true);
 		},
 		onAfterFilterChange: function(event, self){
 			self.foogrid.layout(true);
-			if (self.wasActive) {
-				self.wasActive = false;
-				self.foogrid.open(0);
-			}
 		}
 	});
 
@@ -11010,6 +10966,7 @@
 			self.noCaptions = self.template.noCaptions;
 			self.useViewport = self.template.useViewport;
 			self.breakpoints = self.template.breakpoints;
+			self.allowPageScroll = self.template.allowPageScroll;
 			self.allBreakpointClasses = $.map(self.breakpoints, function(breakpoint){ return breakpoint.classes; }).join(' ');
 			self._contentWidth = 0;
 			self._contentHeight = 0;
@@ -11060,7 +11017,7 @@
 			$(window).on("resize.fg-slider", {self: self}, self.throttle(self.onWindowResize, self.template.throttle));
 			self.$itemPrev.on("click.fg-slider", {self: self}, self.onPrevClick);
 			self.$itemNext.on("click.fg-slider", {self: self}, self.onNextClick);
-			self.$contentContainer.fgswipe({data: {self: self}, swipe: self.onContentSwipe});
+			self.$contentContainer.fgswipe({data: {self: self}, allowPageScroll: self.allowPageScroll, swipe: self.onContentSwipe});
 			self.$itemContainer.fgswipe({data: {self: self}, swipe: self.onItemSwipe})
 					.on("DOMMouseScroll.fg-slider mousewheel.fg-slider", {self: self}, self.onItemMouseWheel);
 		},
@@ -11384,6 +11341,10 @@
 			useViewport: false,
 			noCaptions: false,
 			autoPlay: false,
+			allowPageScroll: {
+				x: false,
+				y: true
+			},
 			breakpoints: [{
 				width: 480,
 				classes: "fgs-xs",
