@@ -91,6 +91,10 @@ only screen and (min-resolution: 2.25dppx) {
 	-moz-box-shadow: none;
 	box-shadow: none;
 }
+.foogallery .fg-image-wrap {
+	display: block;
+	position: relative;
+}
 .foogallery .fg-image {
 	display: block;
 	position: relative;
@@ -1754,7 +1758,8 @@ only screen and (min-resolution: 2.25dppx) {
 .fg-justified .fg-image {
 	z-index: 1;
 }
-.fg-justified .fg-item.fg-positioned .fg-thumb {
+.fg-justified .fg-item.fg-positioned .fg-thumb,
+.fg-justified .fg-item.fg-positioned .fg-image-wrap {
 	width: 100%;
 	height: 100%;
 }

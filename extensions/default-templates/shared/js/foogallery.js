@@ -3150,6 +3150,20 @@
 	 * });
 	 */
 
+	/**
+	 * @summary Checks if the supplied image src is cached by the browser.
+	 * @param {string} src - The image src to check.
+	 * @returns {boolean}
+	 */
+	_.isCached = function(src){
+		var img = new Image();
+		img.src = src;
+		var complete = img.complete;
+		img.src = "";
+		img = null;
+		return complete;
+	};
+
 })(
 		FooGallery.$,
 		FooGallery,
@@ -3363,6 +3377,14 @@
 				self.endPoint = pt;
 				if (!self.opt.allowPageScroll){
 					event.preventDefault();
+				} else if (_is.hash(self.opt.allowPageScroll)){
+					var dir = self.getDirection(self.startPoint, self.endPoint);
+					if (!self.opt.allowPageScroll.x && $.inArray(dir, ['NE','E','SE','NW','W','SW']) !== -1){
+						event.preventDefault();
+					}
+					if (!self.opt.allowPageScroll.y && $.inArray(dir, ['NW','N','NE','SW','S','SE']) !== -1){
+						event.preventDefault();
+					}
 				}
 			}
 		},
@@ -4957,6 +4979,12 @@
 			self.$anchor = null;
 			/**
 			 * @memberof FooGallery.Item#
+			 * @name $wrap
+			 * @type {?jQuery}
+			 */
+			self.$wrap = null;
+			/**
+			 * @memberof FooGallery.Item#
 			 * @name $image
 			 * @type {?jQuery}
 			 */
@@ -5111,6 +5139,7 @@
 				classes: "",
 				style: "",
 				loader: false,
+				wrap: false,
 				placeholder: false
 			};
 		},
@@ -5207,6 +5236,9 @@
 				if (_is.empty(self._undo.style)) self.$el.removeAttr("style");
 				else self.$el.attr("style", self._undo.style);
 
+				if (self._undo.wrap) {
+					self.$image.unwrap();
+				}
 				if (self._undo.loader) {
 					self.$el.find(self.sel.loader).remove();
 				}
@@ -5343,6 +5375,11 @@
 			if (_is.number(self.maxDescriptionLength) && self.maxDescriptionLength > 0 && !_is.empty(self.description) && _is.string(self.description) && self.description.length > self.maxDescriptionLength) {
 				self.$caption.find(sel.caption.description).html(self.description.substr(0, self.maxDescriptionLength) + "&hellip;");
 			}
+			// check if the item has a wrap
+			if (self.$anchor.find(sel.wrap).length === 0) {
+				self.$image.wrap($("<span/>", {"class": cls.wrap}));
+				self._undo.wrap = true;
+			}
 			// check if the item has a loader
 			if (self.$el.find(sel.loader).length === 0) {
 				self.$el.append($("<div/>", {"class": cls.loader}));
@@ -5470,7 +5507,8 @@
 			self.$el = $("<div/>").attr(attr.elem).data(_.dataItem, self);
 			self.$inner = $("<figure/>").attr(attr.inner).appendTo(self.$el);
 			self.$anchor = $("<a/>").attr(attr.anchor).appendTo(self.$inner).on("click.foogallery", {self: self}, self.onAnchorClick);
-			self.$image = $("<img/>").attr(attr.image).appendTo(self.$anchor);
+			var $wrap = $("<span/>", {"class": cls.wrap}).appendTo(self.$anchor);
+			self.$image = $("<img/>").attr(attr.image).appendTo($wrap);
 
 			cls = self.cls.caption;
 			attr = self.attr.caption;
@@ -5683,14 +5721,6 @@
 			var cls = self.cls, img = self.$image.get(0), placeholder = img.src;
 			self.isLoading = true;
 			self.$el.removeClass(cls.idle).removeClass(cls.loaded).removeClass(cls.error).addClass(cls.loading);
-			if (self.isParsed && img.src != self._placeholder && img.complete){
-				self.isLoading = false;
-				self.isLoaded = true;
-				self.$el.removeClass(cls.loading).addClass(cls.loaded);
-				self.unfix();
-				self.tmpl.raise("loaded-item", [self]);
-				return self._load = _fn.resolveWith(self);
-			}
 			return self._load = $.Deferred(function (def) {
 				img.onload = function () {
 					img.onload = img.onerror = null;
@@ -5713,9 +5743,10 @@
 					def.reject(self);
 				};
 				// set everything in motion by setting the src
-				setTimeout(function(){
-					img.src = self.getThumbUrl();
-				});
+				img.src = self.getThumbUrl();
+				if (img.complete){
+					img.onload();
+				}
 			}).promise();
 		},
 		/**
@@ -5909,6 +5940,7 @@
 			elem: "fg-item",
 			inner: "fg-item-inner",
 			anchor: "fg-thumb",
+			wrap: "fg-image-wrap",
 			image: "fg-image",
 			loader: "fg-loader",
 			idle: "fg-idle",
@@ -8193,44 +8225,19 @@
 					type: "none"
 				},
 				paging: {
-					type: "none"
+					pushOrReplace: "replace",
+					theme: "fg-light",
+					type: "default",
+					size: 1,
+					position: "none",
+					scrollToTop: false
 				}
 			}), element);
-			this.$hidden = $();
-		},
-		createChildren: function(){
-			var self = this;
-			return self.$hidden = $("<div/>", {"class": self.cls.hidden});
-		},
-		destroyChildren: function(){
-			var self = this;
-			self.$el.find(self.sel.hidden).remove();
-		},
-		onPreInit: function(event, self){
-			self.$hidden = self.$el.find(self.sel.hidden);
-		},
-		onPostInit: function(event, self){
-			var hidden = self.items.all().slice(1);
-			for (var i = 0, l = hidden.length, item; i < l; i++){
-				item = hidden[i];
-				if (item.isCreated){
-					self.$hidden.append(item.$el);
-				} else {
-					self.$hidden.append(
-							$("<a/>", {
-								href: item.href,
-								rel: "lightbox[" + self.id + "]"
-							}).attr(item.attr.anchor)
-					);
-				}
-			}
-			self.items.setAll(self.items.all().slice(0,1));
 		}
 	});
 
 	_.template.register("thumbnail", _.ThumbnailTemplate, null, {
-		container: "foogallery fg-thumbnail",
-		hidden: "fg-st-hidden"
+		container: "foogallery fg-thumbnail"
 	});
 
 })(
