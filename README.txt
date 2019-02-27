@@ -143,6 +143,13 @@ Update now to get all the latest features, bug fixes and improvements!
 
 == Changelog ==
 
+= 1.6.17 =
+* IMPORTANT : Please update to address a security vulnerability.
+* Fix : Security vulnerability
+* Fix : Images caching in certain browsers, not loading
+* Update : Freemius SDK 2.2.4
+* Update : FooGallery client side 1.1.13
+
 = 1.6.15 =
 * Fix : fixed logo path in admin
 * Update : changed the paging default output to HTML
