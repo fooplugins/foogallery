@@ -39,12 +39,23 @@
   margin: 16px -16px -16px;
 }
 
-.foogallery-modal__footer-container {
-  align-items: center;
-  flex-grow: 1;
+.foogallery-modal__footer-search {
+  flex: 1;
+}
+.foogallery-modal__footer-buttons {
   display: flex;
-  flex-direction: row;
+  flex: 1;
   justify-content: flex-end;
+}
+.foogallery-modal__footer-buttons .components-button,
+.foogallery-modal__footer-buttons .components-icon-button {
+  display: inline-flex;
+}
+.foogallery-modal__footer-buttons .components-button {
+  margin-right: 4px;
+}
+.foogallery-modal__footer-buttons .components-button:last-of-type {
+  margin-right: 0;
 }
 
 /* #.# FooGalleryItem Editor Styles */

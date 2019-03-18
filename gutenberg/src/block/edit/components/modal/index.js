@@ -19,16 +19,21 @@ export default class FooGalleryEditModal extends Component {
 		this.state = {
 			id: this.props.currentId,
 			data: null,
-			isLoading: false
+			isLoading: false,
+			query: ''
 		};
 
 		this.onReloadClick = this.onReloadClick.bind( this );
 		this.onInsertClick = this.onInsertClick.bind( this );
+		this.onQueryChange = this.onQueryChange.bind( this );
 	}
 
 	async fetchGalleries(){
 		this.setState( { isLoading: true } );
 		let data = await wp.apiFetch({ path: "/foogallery/v1/galleries/" });
+		data.forEach(gallery => {
+			gallery.lowerName = typeof gallery.name === 'string' ? gallery.name.toLowerCase() : '';
+		});
 		this.setState( { data: data, isLoading: false } );
 	}
 
@@ -47,14 +52,18 @@ export default class FooGalleryEditModal extends Component {
 		}
 	}
 
+	onQueryChange(event){
+		this.setState({query: event.target.value});
+	}
+
 	render() {
-		const { isModalOpen, className, title, insert, reload, onRequestModalClose } = this.props;
+		const { isModalOpen, className, title, insert, reload, search, onRequestModalClose } = this.props;
 
 		if ( !isModalOpen ){
 			return null;
 		}
 
-		const { id, isLoading } = this.state;
+		const { id, isLoading, query } = this.state;
 
 		return (
 				<Modal className={ classnames( "foogallery-modal", className ) }
@@ -66,11 +75,10 @@ export default class FooGalleryEditModal extends Component {
 						</div>
 					</div>
 					<div className="foogallery-modal__footer">
-						<div className="foogallery-modal__footer-container">
-							<IconButton isDefault icon="update" label={ reload } onClick={ this.onReloadClick } disabled={ isLoading }/>&nbsp;
-							<Button isPrimary onClick={ this.onInsertClick } disabled={ id == 0 }>
-								{ insert }
-							</Button>
+						<input type="text" className="foogallery-modal__footer-search" placeholder={ search } value={ query } onChange={ this.onQueryChange } />
+						<div className="foogallery-modal__footer-buttons">
+							<IconButton isDefault icon="update" label={ reload } onClick={ this.onReloadClick } disabled={ isLoading }/>
+							<Button isPrimary onClick={ this.onInsertClick } disabled={ id == 0 }>{ insert }</Button>
 						</div>
 					</div>
 				</Modal>
@@ -79,7 +87,7 @@ export default class FooGalleryEditModal extends Component {
 
 	renderContent(){
 		const { disable, empty, loading } = this.props;
-		const { id, data, isLoading } = this.state;
+		const { id, data, isLoading, query } = this.state;
 
 		if ( data === null && !isLoading ){
 			this.fetchGalleries();
@@ -94,8 +102,14 @@ export default class FooGalleryEditModal extends Component {
 			return (<Placeholder className="foogallery-modal__content-placeholder" instructions={ empty }/>);
 		}
 
-		let self = this;
-		return data.map(gallery => {
+		let self = this,
+				hasQuery = query && query.length > 2,
+				lowerQuery = hasQuery ? query.toLowerCase() : '',
+				filtered = hasQuery ? data.filter(gallery => {
+					return gallery.lowerName.indexOf(lowerQuery) !== -1;
+				}) : data;
+
+		return filtered.map(gallery => {
 			return (
 					<FooGalleryEditModalItem
 							data={ gallery }
@@ -118,6 +132,7 @@ FooGalleryEditModal.defaultProps = {
 	insert: __("Insert Gallery"),
 	reload: __("Reload Galleries"),
 	loading: __("Loading galleries please wait..."),
+	search: __("Search..."),
 	disable: [],
 	onRequestGalleryInsert: _.noop,
 	onRequestModalClose: _.noop
