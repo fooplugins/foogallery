@@ -80,7 +80,6 @@ only screen and (min-resolution: 2.25dppx) {
 	outline: 0;
 	text-decoration: none;
 	z-index: 4;
-	-moz-box-shadow: none;
 	box-shadow: none;
 }
 .foogallery .fg-thumb:hover,
@@ -88,7 +87,6 @@ only screen and (min-resolution: 2.25dppx) {
 	border: none;
 	outline: 0;
 	text-decoration: none;
-	-moz-box-shadow: none;
 	box-shadow: none;
 }
 .foogallery .fg-image-wrap {
@@ -1176,8 +1174,6 @@ only screen and (min-resolution: 2.25dppx) {
 	transform: translateX(-100%);
 }
 .fg-paging-container, .fg-paging-container *, .fg-paging-container *:before, .fg-paging-container *:after {
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 }
 .fg-paging-container {
@@ -1268,22 +1264,22 @@ only screen and (min-resolution: 2.25dppx) {
 }
 .fg-paging-container.fg-light .fg-dot-item .fg-dot-link {
 	background-color: #eee;
-	border-color: #9e9e9e;
+	border-color: #9d9d9d;
 }
 .fg-paging-container.fg-light .fg-dot-item.fg-selected .fg-dot-link {
-	border-color: #8a8a8a;
+	border-color: #888;
 }
 .fg-paging-container.fg-light .fg-dot-item.fg-selected .fg-dot-link:before,
 .fg-paging-container.fg-light .fg-dot-item .fg-dot-link:hover:before,
 .fg-paging-container.fg-light .fg-dot-item .fg-dot-link:focus:before {
 	background-color: #666;
-	border-color: #8a8a8a;
+	border-color: #888;
 }
 .fg-paging-container.fg-light .fg-dot-item.fg-disabled .fg-dot-link,
 .fg-paging-container.fg-light .fg-dot-item.fg-disabled .fg-dot-link:hover,
 .fg-paging-container.fg-light .fg-dot-item.fg-disabled .fg-dot-link:focus {
 	background-color: #eee;
-	border-color: #9e9e9e;
+	border-color: #9d9d9d;
 	opacity: 0.5;
 }
 
@@ -1402,8 +1398,6 @@ only screen and (min-resolution: 2.25dppx) {
 }
 /* Base styles */
 .fg-masonry * {
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 }
 .foogallery.fg-masonry.fg-center {
@@ -1936,7 +1930,6 @@ only screen and (min-resolution: 2.25dppx) {
 .foogallery.fg-preset.fg-polaroid .fg-item {
 	-webkit-backface-visibility: hidden;
 	backface-visibility: hidden;
-	-webkit-transition: -webkit-transform 0.35s, background-color 0.65s;
 	transition: transform 0.35s, background-color 0.65s;
 }
 .foogallery.fg-preset.fg-polaroid .fg-item:nth-child(2n+1) {
@@ -2064,7 +2057,7 @@ only screen and (min-resolution: 2.25dppx) {
 }
 
 .fg-image-viewer .fiv-inner .fiv-inner-container .fg-item {
-	position: relative;
+	position: absolute;
 	visibility: visible;
 	opacity: 1;
 	border: none;
@@ -2072,6 +2065,9 @@ only screen and (min-resolution: 2.25dppx) {
 	text-decoration: none;
 	box-shadow: none;
 	max-width: 100%;
+}
+.fg-image-viewer .fiv-inner .fiv-inner-container .fg-item:first-of-type {
+	position: relative;
 }
 .fg-image-viewer .fiv-inner .fiv-inner-container .fg-item .fg-thumb img {
 	display: block;
