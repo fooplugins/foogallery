@@ -163,6 +163,8 @@ if ( function_exists( 'foogallery_fs' ) ) {
 
 				new FooGallery_Default_Crop_Position();
 
+				new FooGallery_ForceHttps();
+
 				$checker = new FooGallery_Version_Check();
 				$checker->wire_up_checker();
 
