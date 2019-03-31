@@ -35,7 +35,7 @@ function foogallery_attachment_html_image_src( $foogallery_attachment, $args = a
 function foogallery_attachment_html_image( $foogallery_attachment, $args = array() ) {
 	$attr = foogallery_build_attachment_html_image_attributes( $foogallery_attachment, $args );
 
-	$html = '<img ';
+	$html = '<img';
 	foreach ( $attr as $name => $value ) {
         $name = str_replace(' ', '', $name); //ensure we have no spaces!
 		$html .= " $name=" . '"' . foogallery_esc_attr($value) . '"';
@@ -103,7 +103,7 @@ function foogallery_build_attachment_html_image_attributes( $foogallery_attachme
 function foogallery_attachment_html_anchor_opening( $foogallery_attachment, $args = array() ) {
 	$attr = foogallery_build_attachment_html_anchor_attributes( $foogallery_attachment, $args );
 
-    $html = '<a ';
+    $html = '<a';
     foreach ( $attr as $name => $value ) {
 		$name = str_replace(' ', '', $name); //ensure we have no spaces!
         $html .= " $name=" . '"' . foogallery_esc_attr($value) . '"';
@@ -175,7 +175,7 @@ function foogallery_build_attachment_html_anchor_attributes( $foogallery_attachm
 	$attr = apply_filters( 'foogallery_attachment_html_link_attributes', $attr, $args, $foogallery_attachment );
 
 	//always add the fg-thumb class
-	if ( array_key_exists( 'class', $attr ) ) {
+	if ( array_key_exists( 'class', $attr ) && !empty( $attr['class'] ) ) {
 		$attr['class'] .= ' fg-thumb';
 	} else {
 		$attr['class'] = 'fg-thumb';
@@ -364,10 +364,12 @@ function foogallery_attachment_html( $foogallery_attachment, $args = array() ) {
 
     $html = foogallery_attachment_html_item_opening( $foogallery_attachment, $args );
     $html .= foogallery_attachment_html_anchor_opening( $foogallery_attachment, $args );
+    $html .= '<span class="fg-image-wrap">';
     $html .= foogallery_attachment_html_image( $foogallery_attachment, $args );
+	$html .= '</span>';
     $html .= '</a>';
     $html .= foogallery_attachment_html_caption( $foogallery_attachment, $args );
-    $html .= '</figure></div>';
+    $html .= '</figure><div class="fg-loader"></div></div>';
     return $html;
 }
 
