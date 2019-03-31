@@ -60,11 +60,10 @@ if ( ! class_exists( 'FooGallery_LazyLoad' ) ) {
                     $lazyloading_forced_disabled = foogallery_get_setting('disable_lazy_loading') === 'on';
                     $current_foogallery->lazyload_forced_disabled = $lazyloading_forced_disabled;
 
-                    //check if we are inside a feed. Always disable lazy load when shown within a feed
+                    //check if we are inside a feed
 					if ( is_feed() ) {
-						$current_foogallery->lazyload_forced_disabled = true;
+						$current_foogallery->is_feed = true;
 					}
-
                 }
             }
         }
@@ -81,18 +80,9 @@ if ( ! class_exists( 'FooGallery_LazyLoad' ) ) {
 
             if ($current_foogallery !== null) {
 
-            	//check that lazy loading was not disabled from the Gallery Settings -> Advanced Tab
-            	if ( isset( $current_foogallery->lazyload_enabled ) ) {
-            		if ( false === $current_foogallery->lazyload_enabled ) {
-						return $attr;
-					}
-				}
-
-				//check that lazy loading was not disabled from Global Settings or any other reason
-				if ( isset( $current_foogallery->lazyload_forced_disabled ) ) {
-					if ( true === $current_foogallery->lazyload_forced_disabled ) {
-						return $attr;
-					}
+				//check if we inside a feed and exit early
+				if ( isset( $current_foogallery->is_feed ) && true === $current_foogallery->is_feed ) {
+					return $attr;
 				}
 
                 if (isset($current_foogallery->lazyload_support) && true === $current_foogallery->lazyload_support) {
@@ -109,6 +99,9 @@ if ( ! class_exists( 'FooGallery_LazyLoad' ) ) {
                         unset($attr['srcset']);
                         $attr['data-srcset-fg'] = $src;
                     }
+
+                    //set the src to a 1x1 transparent gif
+					$attr['src'] = FOOGALLERY_URL . 'assets/1x1.gif';
                 }
             }
 
@@ -128,13 +121,6 @@ if ( ! class_exists( 'FooGallery_LazyLoad' ) ) {
         {
             if ( isset( $gallery->lazyload_support ) && true === $gallery->lazyload_support ) {
                 $options['lazy'] = $gallery->lazyload_enabled && !$gallery->lazyload_forced_disabled;
-                if ( $options['lazy'] ) {
-					$options['src']    = 'data-src-fg';
-					$options['srcset'] = 'data-srcset-fg';
-				} else {
-					$options['src']    = 'src';
-					$options['srcset'] = 'srcset';
-				}
             }
             return $options;
         }
