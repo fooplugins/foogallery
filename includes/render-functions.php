@@ -407,16 +407,16 @@ function foogallery_build_json_object_from_attachment( $foogallery_attachment, $
 		$image_attributes  = foogallery_build_attachment_html_image_attributes( $foogallery_attachment, $args );
 		$captions          = foogallery_build_attachment_html_caption( $foogallery_attachment, $args );
 
-		if ( array_key_exists( 'src', $image_attributes ) ) {
-			$src = $image_attributes['src'];
-		} else if ( array_key_exists( 'data-src-fg', $image_attributes ) ) {
+		if ( array_key_exists( 'data-src-fg', $image_attributes ) ) {
 			$src = $image_attributes['data-src-fg'];
+		} else if (array_key_exists( 'src', $image_attributes ) ) {
+			$src = $image_attributes['src'];
 		}
 
-		if ( array_key_exists( 'srcset', $image_attributes ) ) {
-			$srcset = $image_attributes['srcset'];
-		} else if ( array_key_exists( 'data-srcset-fg', $image_attributes ) ) {
+		if ( array_key_exists( 'data-srcset-fg', $image_attributes ) ) {
 			$srcset = $image_attributes['data-srcset-fg'];
+		} else if ( array_key_exists( 'srcset', $image_attributes ) ) {
+			$srcset = $image_attributes['srcset'];
 		}
 
 		$json_object       = new stdClass();
