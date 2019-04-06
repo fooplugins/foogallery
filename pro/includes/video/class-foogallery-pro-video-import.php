@@ -145,7 +145,13 @@ if ( ! class_exists( "FooGallery_Pro_Video_Import" ) ) {
 				);
 			}
 
-			$filetype = wp_check_filetype( $video["thumbnail"], null );
+			$filetype = $this->check_filetype( $video["thumbnail"], null );
+			if ( $filetype['ext'] === false ){
+				return array(
+					"type" => "error",
+					"message" => "Unable to determine file type for thumbnail."
+				);
+			}
 			$thumbnail_filename = $video["id"] . '.' . $filetype['ext'];
 
 			$upload = wp_upload_bits( $thumbnail_filename, null, $thumbnail );
@@ -226,6 +232,36 @@ if ( ! class_exists( "FooGallery_Pro_Video_Import" ) ) {
 			}
 
 			return $video["thumbnail"];
+		}
+
+		/**
+		 * Retrieve the file type from the file name.
+		 *
+		 * You can optionally define the mime array, if needed.
+		 *
+		 * This was made to replace the built-in wp_check_filetype function as it does not handle URLs
+		 *
+		 * @param string $filename File name or path.
+		 * @param array  $mimes    Optional. Key is the file extension with value as the mime type.
+		 * @return array Values with extension first and mime type.
+		 */
+		private function check_filetype( $filename, $mimes = null ) {
+			if ( empty($mimes) )
+				$mimes = get_allowed_mime_types();
+
+			$type = false;
+			$ext = false;
+
+			foreach ( $mimes as $ext_preg => $mime_match ) {
+				$ext_preg = '!\.(' . $ext_preg . ')($|\?)!i';
+				if ( preg_match( $ext_preg, $filename, $ext_matches ) ) {
+					$type = $mime_match;
+					$ext = $ext_matches[1];
+					break;
+				}
+			}
+
+			return compact( 'ext', 'type' );
 		}
 	}
 }
