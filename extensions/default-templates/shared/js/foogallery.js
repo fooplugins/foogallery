@@ -5574,6 +5574,9 @@
 			if (self.$el.find(self.sel.loader).length === 0) {
 				self.$el.append($("<div/>", {"class": self.cls.loader}));
 			}
+			// When an item is created from a JSON object the browser does not correctly set the width and height
+			// from the attributes on the image. Setting fixLayout to true for JSON items resolves this.
+			self.fixLayout = true;
 			return true;
 		},
 		/**

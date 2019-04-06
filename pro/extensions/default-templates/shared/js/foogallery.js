@@ -5718,6 +5718,9 @@
 			if (self.$el.find(self.sel.loader).length === 0) {
 				self.$el.append($("<div/>", {"class": self.cls.loader}));
 			}
+			// When an item is created from a JSON object the browser does not correctly set the width and height
+			// from the attributes on the image. Setting fixLayout to true for JSON items resolves this.
+			self.fixLayout = true;
 			return true;
 		},
 		/**
@@ -11023,12 +11026,12 @@
 					.on("DOMMouseScroll.fg-slider mousewheel.fg-slider", {self: self}, self.onItemMouseWheel);
 		},
 		onFirstLoad: function(event, self){
-			self.layout();
+			self.redraw();
 			self.setSelected(0);
 		},
 		onAfterFilterChange: function(event, self){
 			self.selected = null;
-			self.layout();
+			self.redraw();
 			self.setSelected(0);
 		},
 		/**
@@ -11044,6 +11047,15 @@
 			self.$itemContainer.fgswipe("destroy")
 					.off("DOMMouseScroll.fg-slider mousewheel.fg-slider");
 		},
+		onLoadItem: function(event, self, item){
+			if (!item.isError && _is.jq(item.$content)){
+				if (item.type === "video"){
+					item.$content.css("background-image", "url('"+item.cover+"')");
+				} else {
+					item.$content.css("background-image", "url('"+item.href+"')");
+				}
+			}
+		},
 		onParsedOrCreatedItem: function(item){
 			if (!item.isError){
 				var self = this;
@@ -11056,19 +11068,16 @@
 				if (item.type === "video"){
 					item.index = -1;
 					item.player = self.helper.getPlayer(item.href, {});
-					item.$content.css("background-image", "url("+item.cover+")")
-							.append(
-									$("<div/>", {"class": self.cls.contentClose})
-											.on("click.foogallery", {self: self, item: item}, self.onCloseVideo),
-									$("<div/>", {"class": self.cls.contentPlay})
-											.on("click.foogallery", {self: self, item: item}, self.onPlayVideo)
-							);
+					item.$content.append(
+							$("<div/>", {"class": self.cls.contentClose})
+									.on("click.foogallery", {self: self, item: item}, self.onCloseVideo),
+							$("<div/>", {"class": self.cls.contentPlay})
+									.on("click.foogallery", {self: self, item: item}, self.onPlayVideo)
+					);
 				} else if (item.type === "embed") {
 					item.$embed = $("<div/>", {'class': self.cls.embed});
 					item.$content.addClass(self.cls.embedable).append(item.$embed);
 					item.$target = $(item.href).contents();
-				} else {
-					item.$content.css("background-image", "url("+item.href+")");
 				}
 			}
 		},
@@ -11112,11 +11121,11 @@
 			item.isAttached = false;
 		},
 		onLayout: function(event, self){
-			self.layout();
+			self.redraw();
 		},
 		onWindowResize: function(e){
 			var self = e.data.self;
-			self.layout();
+			self.redraw();
 		},
 		getBreakpoint: function(){
 			var self = this, width = self.useViewport ? $(window).width() : self.getContainerWidth();
@@ -11131,12 +11140,14 @@
 			var self = this, h = self.noCaptions ? self._breakpoint.items.h.noCaptions : self._breakpoint.items.h.captions;
 			return self.horizontal ? h : self._breakpoint.items.v;
 		},
-		layout: function(){
+		redraw: function(){
 			var self = this,
 					index = self.selected instanceof _.Item ? self.selected.index : 0,
 					items = self.items.available(),
 					count = items.length,
 					prev = self._breakpoint;
+
+			self.$el.addClass("fgs-transitions-disabled");
 
 			self.horizontal = self.$el.hasClass(self.cls.horizontal);
 			self.$el.toggleClass(self.cls.horizontal, self.horizontal);
@@ -11184,6 +11195,7 @@
 
 				self.setVisible(self._firstVisible, false);
 			}
+			self.$el.removeClass("fgs-transitions-disabled");
 		},
 		setEmbedSize: function(item){
 			var self = this,
