@@ -5574,9 +5574,6 @@
 			if (self.$el.find(self.sel.loader).length === 0) {
 				self.$el.append($("<div/>", {"class": self.cls.loader}));
 			}
-			// When an item is created from a JSON object the browser does not correctly set the width and height
-			// from the attributes on the image. Setting fixLayout to true for JSON items resolves this.
-			self.fixLayout = true;
 			return true;
 		},
 		/**
@@ -6989,9 +6986,7 @@
 
 	_.DefaultTemplate = _.Template.extend({});
 
-	_.template.register("default", _.DefaultTemplate, {
-		fixLayout: false
-	}, {
+	_.template.register("default", _.DefaultTemplate, null, {
 		container: "foogallery fg-default"
 	});
 
@@ -7705,9 +7700,7 @@
 		}
 	});
 
-	_.template.register("justified", _.JustifiedTemplate, {
-		fixLayout: false
-	}, {
+	_.template.register("justified", _.JustifiedTemplate, null, {
 		container: "foogallery fg-justified"
 	});
 
@@ -7970,7 +7963,6 @@
 	});
 
 	_.template.register("simple_portfolio", _.PortfolioTemplate, {
-		fixLayout: false,
 		template: {
 			gutter: 40
 		}
