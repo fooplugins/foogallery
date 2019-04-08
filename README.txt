@@ -3,7 +3,7 @@ Contributors: bradvin, steveush, fooplugins
 Donate link: http://fooplugins.com
 Tags: gallery, image gallery, photo gallery, responsive, album, media gallery, masonry gallery, portfolio, justified gallery, video gallery, photography, youtube gallery
 Requires at least: 3.9
-Tested up to: 5.1
+Tested up to: 5.2
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -142,6 +142,15 @@ Hell, yes! Check out our [developer page](http://foo.gallery/developers/)
 Update now to get all the latest features, bug fixes and improvements!
 
 == Changelog ==
+
+= 1.7.4 =
+* New : Major performance enhancements for all galleries
+* New : Performance enhancements with FooBox
+* New : Force HTTPS setting for migrated sites
+* New : FooGallery Gutenberg block gallery search
+* Fix : fixed scroll blocking violation warnings in dev tools
+* Fix : fixed Wistia video import issues
+* Update : FooGallery client side 1.2.2
 
 = 1.6.17 =
 * IMPORTANT : Please update to address a security vulnerability.

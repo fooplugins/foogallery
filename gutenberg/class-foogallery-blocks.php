@@ -109,7 +109,7 @@ if ( ! class_exists( 'FooGallery_Blocks' ) ) {
 
 			return apply_filters( 'foogallery_gutenberg_edit_gallery_url', $link );
 		}
-		
+
 		/**
 		 * Register our block and shortcode.
 		 */
