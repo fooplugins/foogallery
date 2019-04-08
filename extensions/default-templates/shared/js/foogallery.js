@@ -3177,7 +3177,20 @@
 			TOUCH = "ontouchstart" in window,
 			POINTER_IE10 = window.navigator.msPointerEnabled && !window.navigator.pointerEnabled && !TOUCH,
 			POINTER = (window.navigator.pointerEnabled || window.navigator.msPointerEnabled) && !TOUCH,
-			USE_TOUCH = TOUCH || POINTER;
+			USE_TOUCH = TOUCH || POINTER,
+			SUPPORTS_PASSIVE = false;
+
+
+	// @see https://github.com/WICG/EventListenerOptions/blob/gh-pages/explainer.md
+	try {
+		var opts = Object.defineProperty({}, 'passive', {
+			get: function() {
+				SUPPORTS_PASSIVE = true;
+			}
+		});
+		window.addEventListener("testPassive", null, opts);
+		window.removeEventListener("testPassive", null, opts);
+	} catch (e) {}
 
 	_.Swipe = _utils.Class.extend(/** @lend FooGallery.Swipe */{
 		/**
@@ -3251,10 +3264,18 @@
 		 * @function init
 		 */
 		init: function(){
-			var self = this;
-			self.$el.on(self.events.start, {self: self}, self.onStart);
+			var self = this, elem = self.$el.get(0);
+			if (SUPPORTS_PASSIVE && self.events.start == 'touchstart' && !!elem.addEventListener){
+				elem.addEventListener('touchstart', self.onStart, { passive: true });
+			} else {
+				self.$el.on(self.events.start, {self: self}, self.onStart);
+			}
 			self.$el.on(self.events.move, {self: self}, self.onMove);
-			self.$el.on(self.events.end, {self: self}, self.onEnd);
+			if (SUPPORTS_PASSIVE && self.events.end == 'touchend' && !!elem.addEventListener){
+				elem.addEventListener('touchend', self.onEnd, { passive: true });
+			} else {
+				self.$el.on(self.events.end, {self: self}, self.onEnd);
+			}
 			if (_is.string(self.events.leave)) self.$el.on(self.events.leave, {self: self}, self.onEnd);
 			self.$el.data(DATA_NAME, self);
 		},
@@ -3264,10 +3285,18 @@
 		 * @function destroy
 		 */
 		destroy: function(){
-			var self = this;
-			self.$el.off(self.events.start, self.onStart);
+			var self = this, elem = self.$el.get(0);
+			if (SUPPORTS_PASSIVE && self.events.start == 'touchstart' && !!elem.removeEventListener){
+				elem.removeEventListener('touchstart', self.onStart, { passive: true });
+			} else {
+				self.$el.off(self.events.start, self.onStart);
+			}
 			self.$el.off(self.events.move, self.onMove);
-			self.$el.off(self.events.end, self.onEnd);
+			if (SUPPORTS_PASSIVE && self.events.end == 'touchend' && !!elem.removeEventListener){
+				elem.removeEventListener('touchend', self.onEnd, { passive: true });
+			} else {
+				self.$el.off(self.events.end, self.onEnd);
+			}
 			if (_is.string(self.events.leave)) self.$el.off(self.events.leave, self.onEnd);
 			self.$el.removeData(DATA_NAME);
 		},
@@ -4127,11 +4156,8 @@
 					self.initialized = true;
 
 					// performed purely to re-check if any items need to be loaded after content has possibly shifted
-					self._check(200);
-					self._check(500);
 					self._check(1000);
-					self._check(2000);
-					self._check(5000);
+					self._check(3000);
 
 					/**
 					 * @summary Raised after the template is fully initialized and is ready to be interacted with.
@@ -4450,11 +4476,12 @@
 		lazy: true,
 		viewport: 200,
 		items: [],
-		delay: 100,
+		fixLayout: true,
+		delay: 0,
 		throttle: 50,
 		timeout: 60000,
-		srcset: "data-srcset",
-		src: "data-src",
+		srcset: "data-srcset-fg",
+		src: "data-src-fg",
 		template: {}
 	}, {
 		container: "foogallery"
@@ -4470,11 +4497,12 @@
 	 * @property {boolean} [lazy=true] - Whether or not to enable lazy loading of images.
 	 * @property {number} [viewport=200] - The number of pixels to inflate the viewport by when checking to lazy load items.
 	 * @property {(FooGallery.Item~Options[]|FooGallery.Item[]| string)} [items=[]] - An array of items to load when required. A url can be provided and the items will be fetched using an ajax call, the response should be a properly formatted JSON array of {@link FooGallery.Item~Options|item} object.
-	 * @property {number} [delay=100] - The number of milliseconds to delay the initialization of a template.
+	 * @property {boolean} [fixLayout=true] - Whether or not the items' size should be set with CSS until the image is loaded.
+	 * @property {number} [delay=0] - The number of milliseconds to delay the initialization of a template.
 	 * @property {number} [throttle=50] - The number of milliseconds to wait once scrolling has stopped before performing any work.
 	 * @property {number} [timeout=60000] - The number of milliseconds to wait before forcing a timeout when loading items.
-	 * @property {string} [src="data-src"] - The name of the attribute to retrieve an images src url from.
-	 * @property {string} [srcset="data-srcset"] - The name of the attribute to retrieve an images srcset url from.
+	 * @property {string} [src="data-src-fg"] - The name of the attribute to retrieve an images src url from.
+	 * @property {string} [srcset="data-srcset-fg"] - The name of the attribute to retrieve an images srcset url from.
 	 * @property {object} [template={}] - An object containing any additional custom options for the template.
 	 * @property {FooGallery.Template~CSSClasses} [cls] - An object containing all CSS classes for the template.
 	 * @property {FooGallery.Template~CSSSelectors} [sel] - An object containing all CSS selectors for the template.
@@ -4998,6 +5026,13 @@
 
 			/**
 			 * @memberof FooGallery.Item#
+			 * @name fixLayout
+			 * @type {boolean}
+			 */
+			self.fixLayout = self.tmpl.opt.fixLayout;
+
+			/**
+			 * @memberof FooGallery.Item#
 			 * @name type
 			 * @type {string}
 			 */
@@ -5112,14 +5147,6 @@
 			 * @private
 			 */
 			self._thumbUrl = null;
-			/**
-			 * @summary The placeholder url for this item generated by calling the {@link FooGallery.Items#placeholder|placeholder} method.
-			 * @memberof FooGallery.Item#
-			 * @name _placeholder
-			 * @type {string}
-			 * @private
-			 */
-			self._placeholder = null;
 			/**
 			 * @summary This property is used to store the promise created when loading an item for the first time.
 			 * @memberof FooGallery.Item#
@@ -5242,7 +5269,7 @@
 				if (self._undo.loader) {
 					self.$el.find(self.sel.loader).remove();
 				}
-				if (self._undo.placeholder && self.$image.prop("src") == self._placeholder) {
+				if (self._undo.placeholder && self.$image.prop("src") == _.emptyImage) {
 					self.$image.removeAttr("src");
 				}
 			} else if (self.isCreated) {
@@ -5307,7 +5334,7 @@
 			var e = self.tmpl.raise("parse-item", [self, $el]);
 			if (!e.isDefaultPrevented() && (self.isCreated = $el.is(self.sel.elem))) {
 				self.isParsed = self.doParseItem($el);
-				self.fix();
+				if (self.fixLayout) self.fix();
 				// We don't load the attributes when parsing as they are only ever used to create an item and if you're parsing it's already created.
 			}
 			if (self.isParsed) {
@@ -5346,25 +5373,27 @@
 			self._undo.style = $el.attr("style") || "";
 
 			self.$el = $el.data(_.dataItem, self);
-			self.$inner = self.$el.find(sel.inner);
-			self.$anchor = self.$el.find(sel.anchor).on("click.foogallery", {self: self}, self.onAnchorClick);
+			self.$inner = self.$el.children(sel.inner);
+			self.$anchor = self.$inner.children(sel.anchor).on("click.foogallery", {self: self}, self.onAnchorClick);
 			self.$image = self.$anchor.find(sel.image);
-			self.$caption = self.$el.find(sel.caption.elem).on("click.foogallery", {self: self}, self.onCaptionClick);
+			self.$caption = self.$inner.children(sel.caption.elem).on("click.foogallery", {self: self}, self.onCaptionClick);
 			self.isAttached = self.$el.parent().length > 0;
 			self.isLoading = self.$el.is(sel.loading);
 			self.isLoaded = self.$el.is(sel.loaded);
 			self.isError = self.$el.is(sel.error);
-			self.id = self.$anchor.data("id") || self.id;
-			self.tags = self.$anchor.data("tags") || self.tags;
-			self.href = self.$anchor.attr("href") || self.href;
+
+			var data = self.$anchor.data();
+			self.id = data.id || self.id;
+			self.tags = data.tags || self.tags;
+			self.href = data.href || self.$anchor.attr('href') || self.href;
 			self.src = self.$image.attr(o.src) || self.src;
 			self.srcset = self.$image.attr(o.srcset) || self.srcset;
 			self.width = parseInt(self.$image.attr("width")) || self.width;
 			self.height = parseInt(self.$image.attr("height")) || self.height;
 			self.title = self.$image.attr("title") || self.title;
 			self.alt = self.$image.attr("alt") || self.alt;
-			self.caption = self.$anchor.data("title") || self.$anchor.data("captionTitle") || self.caption || self.title;
-			self.description = self.$anchor.data("description") || self.$anchor.data("captionDesc") || self.description || self.alt;
+			self.caption = data.title || data.captionTitle || self.caption || self.title;
+			self.description = data.description || data.captionDesc || self.description || self.alt;
 			// if the caption or description are not set yet try fetching it from the html
 			if (_is.empty(self.caption)) self.caption = $.trim(self.$caption.find(sel.caption.title).html());
 			if (_is.empty(self.description)) self.description = $.trim(self.$caption.find(sel.caption.description).html());
@@ -5376,19 +5405,20 @@
 				self.$caption.find(sel.caption.description).html(self.description.substr(0, self.maxDescriptionLength) + "&hellip;");
 			}
 			// check if the item has a wrap
-			if (self.$anchor.find(sel.wrap).length === 0) {
-				self.$image.wrap($("<span/>", {"class": cls.wrap}));
+			if (self.$anchor.children(sel.wrap).length === 0) {
+				var $wrap = $("<span/>", {"class": cls.wrap});
+				self.$anchor.append($wrap.append(self.$image));
 				self._undo.wrap = true;
 			}
 			// check if the item has a loader
-			if (self.$el.find(sel.loader).length === 0) {
+			if (self.$el.children(sel.loader).length === 0) {
 				self.$el.append($("<div/>", {"class": cls.loader}));
 				self._undo.loader = true;
 			}
 			// if the image has no src url then set the placeholder
-			if (_is.empty(self.$image.prop("src"))) {
-				self._placeholder = self.tmpl.items.placeholder(self.width, self.height);
-				self.$image.prop("src", self._placeholder);
+			var img = self.$image.get(0);
+			if (_is.empty(img.src)) {
+				img.src = _.emptyImage;
 				self._undo.placeholder = true;
 			}
 			if (self.isCreated && self.isAttached && !self.isLoading && !self.isLoaded && !self.isError) {
@@ -5496,7 +5526,7 @@
 			}
 
 			attr.image["class"] = cls.image;
-			attr.image["src"] = self.tmpl.items.placeholder(self.width, self.height);
+			attr.image["src"] = _.emptyImage;
 			attr.image[o.src] = self.src;
 			attr.image[o.srcset] = self.srcset;
 			attr.image["width"] = self.width;
@@ -5521,23 +5551,21 @@
 				attr.title["class"] = cls.title;
 				attr.description["class"] = cls.description;
 				if (hasTitle) {
-					var $title;
+					var $title = $("<div/>").attr(attr.title), titleHtml = self.caption;
 					// enforce the max length for the caption
 					if (_is.number(self.maxCaptionLength) && self.maxCaptionLength > 0 && _is.string(self.caption) && self.caption.length > self.maxCaptionLength) {
-						$title = $("<div/>").attr(attr.title).html(self.caption.substr(0, self.maxCaptionLength) + "&hellip;");
-					} else {
-						$title = $("<div/>").attr(attr.title).html(self.caption);
+						titleHtml = self.caption.substr(0, self.maxCaptionLength) + "&hellip;";
 					}
+					$title.get(0).innerHTML = titleHtml;
 					$inner.append($title);
 				}
 				if (hasDesc) {
-					var $desc;
+					var $desc = $("<div/>").attr(attr.description), descHtml = self.description;
 					// enforce the max length for the description
 					if (_is.number(self.maxDescriptionLength) && self.maxDescriptionLength > 0 && _is.string(self.description) && self.description.length > self.maxDescriptionLength) {
-						$desc = $("<div/>").attr(attr.description).html(self.description.substr(0, self.maxDescriptionLength) + "&hellip;");
-					} else {
-						$desc = $("<div/>").attr(attr.description).html(self.description);
+						descHtml = self.description.substr(0, self.maxDescriptionLength) + "&hellip;";
 					}
+					$desc.get(0).innerHTML = descHtml;
 					$inner.append($desc);
 				}
 			}
@@ -5603,7 +5631,7 @@
 				var e = self.tmpl.raise("append-item", [self]);
 				if (!e.isDefaultPrevented()) {
 					self.tmpl.$el.append(self.$el);
-					self.fix();
+					if (self.fixLayout) self.fix();
 					self.isAttached = true;
 				}
 				if (self.isAttached) {
@@ -5681,7 +5709,7 @@
 				var e = self.tmpl.raise("detach-item", [self]);
 				if (!e.isDefaultPrevented()) {
 					self.$el.detach();
-					self.unfix();
+					if (self.fixLayout) self.unfix();
 					self.isAttached = false;
 				}
 				if (!self.isAttached) {
@@ -5727,7 +5755,7 @@
 					self.isLoading = false;
 					self.isLoaded = true;
 					self.$el.removeClass(cls.loading).addClass(cls.loaded);
-					self.unfix();
+					if (self.fixLayout) self.unfix();
 					self.tmpl.raise("loaded-item", [self]);
 					def.resolve(self);
 				};
@@ -5758,11 +5786,10 @@
 		fix: function () {
 			var self = this;
 			if (self.tmpl == null) return self;
-			var e = self.tmpl.raise("fix-item", [self]);
-			if (!e.isDefaultPrevented() && self.isCreated && !self.isLoading && !self.isLoaded && !self.isError) {
-				var w = self.width, h = self.height;
+			if (self.isCreated && !self.isLoading && !self.isLoaded && !self.isError) {
+				var w = self.width, h = self.height, img = self.$image.get(0);
 				// if we have a base width and height to work with
-				if (!isNaN(w) && !isNaN(h)) {
+				if (!isNaN(w) && !isNaN(h) && !!img) {
 					// figure out the max image width and calculate the height the image should be displayed as
 					var width = _is.fn(self.maxWidth) ? self.maxWidth(self) : self.$image.width();
 					if (width <= 0) width = w;
@@ -5782,8 +5809,7 @@
 		unfix: function () {
 			var self = this;
 			if (self.tmpl == null) return self;
-			var e = self.tmpl.raise("unfix-item", [self]);
-			if (!e.isDefaultPrevented() && self.isCreated) self.$image.css({width: '', height: ''});
+			if (self.isCreated) self.$image.css({width: '', height: ''});
 			return self;
 		},
 		/**
@@ -6135,14 +6161,6 @@
 		},
 		reset: function () {
 			this.setAvailable(this.all());
-		},
-		placeholder: function (width, height) {
-			if (this._canvas && this._canvas.toDataURL && _is.number(width) && _is.number(height)) {
-				this._canvas.width = width;
-				this._canvas.height = height;
-				return this._canvas.toDataURL();
-			}
-			return _.emptyImage;
 		},
 		/**
 		 * @summary Filter the supplied `items` and return only those that can be loaded.
@@ -7358,8 +7376,9 @@
 (function($, _, _utils, _is){
 
 	_.Justified = _utils.Class.extend({
-		construct: function(element, options){
-			this.$el = $(element);
+		construct: function(template, options){
+			this.tmpl = template;
+			this.$el = template.$el;
 			this.options = $.extend(true, {}, _.Justified.defaults, options);
 			this._items = [];
 			this._lastRefresh = 0;
@@ -7392,37 +7411,17 @@
 			}
 		},
 		parse: function(){
-			var self = this, visible = self.$el.is(':visible'),
-					$test = $('<div/>', {'class': self.$el.attr('class')}).css({
-						position: 'absolute',
-						top: 0,
-						left: -9999,
-						visibility: 'hidden',
-						maxWidth: self.getContainerWidth()
-					}).appendTo('body');
-			self._items = self.$el.find(self.options.itemSelector).removeAttr("style").removeClass("fg-positioned").map(function(i, el){
-				var $item = $(el), width = 0, height = 0;
-				if (!visible){
-					var $clone = $item.clone();
-					$clone.appendTo($test);
-					width = $clone.outerWidth();
-					height = $clone.outerHeight();
-				} else {
-					width = $item.outerWidth();
-					height = $item.outerHeight();
-				}
-
+			var self = this;
+			return self._items = $.map(self.tmpl.items.available(), function(item, i){
 				return {
 					index: i,
-					width: width,
-					height: height,
+					width: item.width,
+					height: item.height,
 					top: 0,
 					left: 0,
-					$item: $item
+					$item: item.$el
 				};
-			}).get();
-			$test.remove();
-			return self._items;
+			});
 		},
 		getMaxRowHeight: function() {
 			var self = this;
@@ -7669,11 +7668,11 @@
 		FooGallery.utils,
 		FooGallery.utils.is
 );
-(function($, _, _utils){
+(function($, _, _is){
 
 	_.JustifiedTemplate = _.Template.extend({
 		onPreInit: function(event, self){
-			self.justified = new _.Justified( self.$el.get(0), self.template );
+			self.justified = new _.Justified( self, self.template );
 		},
 		onInit: function(event, self){
 			self.justified.init();
@@ -7708,13 +7707,14 @@
 })(
 		FooGallery.$,
 		FooGallery,
-		FooGallery.utils
+		FooGallery.utils.is
 );
 (function($, _, _utils, _is){
 
 	_.Portfolio = _utils.Class.extend({
-		construct: function(element, options){
-			this.$el = $(element);
+		construct: function(tmpl, options){
+			this.tmpl = tmpl;
+			this.$el = tmpl.$el;
 			this.options = $.extend(true, {}, _.Portfolio.defaults, options);
 			this._items = [];
 			this._lastWidth = 0;
@@ -7736,37 +7736,29 @@
 						visibility: 'hidden',
 						maxWidth: maxWidth
 					}).appendTo('body');
-			self._items = self.$el.find(".fg-item").removeAttr("style").removeClass("fg-positioned").map(function(i, el){
-				var $item = $(el),
-						$thumb = $item.find(".fg-thumb"),
-						$img = $item.find(".fg-image"),
-						width = parseFloat($img.attr("width")),
-						height = parseFloat($img.attr("height")),
-						iWidth = maxWidth < width ? maxWidth : width,
-						iHeight = maxWidth < width ? 'auto' : height;
 
-				$item.find(".fg-caption").css("max-width", iWidth);
-				$img.css({ width: iWidth, height: iHeight });
+			self._items = $.map(self.tmpl.items.available(), function(item, i){
+				var width = item.width, height = item.height;
+				item.$caption.css("max-width", width);
 				if (!visible){
-					var $clone = $item.clone();
+					var $clone = item.$el.clone();
 					$clone.appendTo($test);
 					width = $clone.outerWidth();
 					height = $clone.outerHeight();
 				} else {
-					width = $item.outerWidth();
-					height = $item.outerHeight();
+					width = item.$el.outerWidth();
+					height = item.$el.outerHeight();
 				}
-				$img.css({ width: '', height: '' });
 				return {
 					index: i,
 					width: width,
 					height: height,
 					top: 0,
 					left: 0,
-					$item: $item,
-					$thumb: $thumb
+					$item: item.$el,
+					$thumb: item.$thumb
 				};
-			}).get();
+			});
 			$test.remove();
 			return self._items;
 		},
@@ -7942,7 +7934,7 @@
 			this.portfolio = null;
 		},
 		onPreInit: function(event, self){
-			self.portfolio = new _.Portfolio( self.$el.get(0), self.template );
+			self.portfolio = new _.Portfolio( self, self.template );
 		},
 		onInit: function(event, self){
 			self.portfolio.init();
@@ -7971,7 +7963,9 @@
 	});
 
 	_.template.register("simple_portfolio", _.PortfolioTemplate, {
-		gutter: 40
+		template: {
+			gutter: 40
+		}
 	}, {
 		container: "foogallery fg-simple_portfolio"
 	});
@@ -8252,7 +8246,11 @@
 			try {
 				// if the gallery is displayed within a FooBox do not trigger the post-load which would cause the lightbox to re-init
 				if (tmpl.$el.parents(".fbx-item").length > 0) return;
-				$("body").trigger("post-load");
+				if (tmpl.$el.hasClass("fbx-instance") && !!window.FOOBOX && !!$.fn.foobox){
+					tmpl.$el.foobox(window.FOOBOX.o);
+				} else {
+					$("body").trigger("post-load");
+				}
 			} catch(err) {
 				console.error(err);
 			}

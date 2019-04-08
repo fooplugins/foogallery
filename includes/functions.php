@@ -574,6 +574,8 @@ function foogallery_activate_default_templates_extension() {
  * @param string $media
  */
 function foogallery_enqueue_style( $handle, $src, $deps = array(), $ver = false, $media = 'all' ) {
+	$src = apply_filters( 'foogallery_enqueue_style_src', $src, $handle );
+
 	wp_enqueue_style( $handle, $src, $deps, $ver, $media );
 	do_action( 'foogallery_enqueue_style', $handle, $src, $deps, $ver, $media );
 }

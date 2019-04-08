@@ -48,6 +48,7 @@ require_once( FOOGALLERY_PATH . 'includes/class-foogallery-paging.php' );
 require_once( FOOGALLERY_PATH . 'includes/class-foogallery-attachment-custom-class.php' );
 require_once( FOOGALLERY_PATH . 'includes/class-foogallery-extensions-compatibility.php' );
 require_once( FOOGALLERY_PATH . 'includes/class-foogallery-default-crop-position.php' );
+require_once( FOOGALLERY_PATH . 'includes/class-foogallery-force-https.php' );
 
 //Datasource includes
 require_once( FOOGALLERY_PATH . 'includes/interface-foogallery-datasource.php' );

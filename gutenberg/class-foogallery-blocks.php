@@ -12,9 +12,6 @@ if ( ! class_exists( 'FooGallery_Blocks' ) ) {
 	class FooGallery_Blocks {
 
 		function __construct() {
-			//Frontend block assets.
-			add_action( 'enqueue_block_assets', array( $this, 'enqueue_block_assets' ) );
-
 			//Backend editor block assets.
 			add_action( 'enqueue_block_editor_assets', array( $this, 'enqueue_block_editor_assets' ) );
 
@@ -111,26 +108,6 @@ if ( ! class_exists( 'FooGallery_Blocks' ) ) {
 			}
 
 			return apply_filters( 'foogallery_gutenberg_edit_gallery_url', $link );
-		}
-
-		/**
-		 * Enqueue Gutenberg block assets for both frontend + backend.
-		 *
-		 * `wp-blocks`: includes block type registration and related functions.
-		 *
-		 * @since 1.0.0
-		 */
-		function enqueue_block_assets() {
-			if ( !apply_filters( 'foogallery_gutenberg_enabled', true ) ) {
-				return;
-			}
-
-			// Styles.
-			wp_enqueue_style(
-				'foogallery-block-css',
-				plugins_url( 'gutenberg/dist/blocks.style.build.css', dirname( __FILE__ ) ),
-				array( 'wp-blocks' )
-			);
 		}
 
 		/**
