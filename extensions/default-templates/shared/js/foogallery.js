@@ -4157,7 +4157,7 @@
 
 					// performed purely to re-check if any items need to be loaded after content has possibly shifted
 					self._check(1000);
-					self._check(3000);
+					// self._check(3000);
 
 					/**
 					 * @summary Raised after the template is fully initialized and is ready to be interacted with.
@@ -4342,6 +4342,10 @@
 		 */
 		loadAvailable: function () {
 			return this.items.load(this.getAvailable());
+		},
+
+		getItems: function(){
+			return this.pages ? this.pages.items() : this.items.available();
 		},
 
 		/**
@@ -6701,6 +6705,9 @@
 		available: function () {
 			return this.get(this.current);
 		},
+		items: function(){
+			return this.get(this.current);
+		},
 		controls: function (pageNumber) {
 			var self = this;
 			if (self.isValid(pageNumber)) {
@@ -6720,8 +6727,8 @@
 			pageNumber = self.number(pageNumber);
 			var index = pageNumber - 1;
 			self.tmpl.items.detach(self.tmpl.items.all());
-			self.tmpl.items.create(self._arr[index], true);
 			self.current = pageNumber;
+			self.tmpl.items.create(self._arr[index], true);
 		},
 		get: function (pageNumber) {
 			var self = this;
@@ -7412,7 +7419,7 @@
 		},
 		parse: function(){
 			var self = this;
-			return self._items = $.map(self.tmpl.items.available(), function(item, i){
+			return self._items = $.map(self.tmpl.getItems(), function(item, i){
 				return {
 					index: i,
 					width: item.width,
@@ -7648,7 +7655,7 @@
 			return rows;
 		},
 		onWindowResize: function(e){
-			e.data.self.layout();
+			e.data.self.layout( true );
 		}
 	});
 
@@ -7689,14 +7696,13 @@
 		onLayout: function(event, self){
 			self.justified.layout( true );
 		},
-		onParsedItems: function(event, self, items){
-			if (self.initialized || self.initializing) self.justified.layout( true );
+		onAfterPageChange: function(event, self, current, prev, isFilter){
+			if (!isFilter){
+				self.justified.layout( true );
+			}
 		},
-		onAppendedItems: function(event, self, items){
-			if (self.initialized || self.initializing) self.justified.layout( true );
-		},
-		onDetachedItems: function(event, self, items){
-			if (self.initialized) self.justified.layout( true );
+		onAfterFilterChange: function(event, self){
+			self.justified.layout( true );
 		}
 	});
 
@@ -7737,7 +7743,7 @@
 						maxWidth: maxWidth
 					}).appendTo('body');
 
-			self._items = $.map(self.tmpl.items.available(), function(item, i){
+			self._items = $.map(self.tmpl.getItems(), function(item, i){
 				var width = item.width, height = item.height;
 				item.$caption.css("max-width", width);
 				if (!visible){
@@ -7951,14 +7957,13 @@
 		onLayout: function(event, self){
 			self.portfolio.layout( true );
 		},
-		onParsedItems: function(event, self, items){
-			if (self.initialized || self.initializing) self.portfolio.layout( true );
+		onAfterPageChange: function(event, self, current, prev, isFilter){
+			if (!isFilter){
+				self.portfolio.layout( true );
+			}
 		},
-		onAppendedItems: function(event, self, items){
-			if (self.initialized || self.initializing) self.portfolio.layout( true );
-		},
-		onDetachedItems: function(event, self, items){
-			if (self.initialized) self.portfolio.layout( true );
+		onAfterFilterChange: function(event, self){
+			self.portfolio.layout( true );
 		}
 	});
 
