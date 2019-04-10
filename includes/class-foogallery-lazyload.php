@@ -100,8 +100,11 @@ if ( ! class_exists( 'FooGallery_LazyLoad' ) ) {
                         $attr['data-srcset-fg'] = $src;
                     }
 
-                    //set the src to a 1x1 transparent gif
-					$attr['src'] = FOOGALLERY_URL . 'assets/1x1.gif';
+                    //do not add the src attribute
+                    if ( false ) {
+						//set the src to a 1x1 transparent gif
+						$attr['src'] = FOOGALLERY_URL . 'assets/1x1.gif';
+					}
                 }
             }
 
