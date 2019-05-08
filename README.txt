@@ -16,20 +16,26 @@ Why choose FooGallery? Stunning gallery layouts, responsive, retina-ready, light
 
 [View the FooGallery Homepage & DEMO](http://foo.gallery/)
 
-https://youtu.be/zY8eSTEIwpU
-
 **Features**
 
+*	6 Beautiful Gallery templates
+	*	Responsive Image Gallery - [demo](https://foo.gallery/demos/responsive-image-gallery/)
+	*	Image Viewer Gallery - [demo](https://foo.gallery/demos/image-viewer-gallery/)
+	*	Masonry Gallery - [demo](https://foo.gallery/demos/masonry-image-gallery/)
+	*	Simple Portfolio - [demo](https://foo.gallery/demos/simple-portfolio-demo/)
+	*	Justified Gallery - [demo](https://foo.gallery/demos/justified-gallery/)
+	*	Single Thumbnail Gallery - [demo](https://foo.gallery/demos/single-thumbnail-gallery/)
+*   Albums built-in! (Activate the albums extension)
+	*	Responsive Album Layout - [demo](https://foo.gallery/demos/responsive-album-layout/)
+	*	All-in-one Stack Album - [demo](https://foo.gallery/demos/all-in-one-stack-album/)
 *	Gutenberg ready (Gallery previews inside the new editor!)
 *	Lazy loading
 *	Simple Pagination (dots)
 *	Live previews in admin
 *	Retina thumbnail support
 *	Gallery Widget
-*	Albums built-in! (Activate the albums extension)
 *	Use built-in media library to manage images
 *	Drag n Drop reordering of images and galleries
-*	Beautiful gallery templates
 *	Custom CSS for both galleries and albums
 *	Copy to clipboard shortcodes
 *	Visual shortcodes in rich text editor
@@ -37,36 +43,26 @@ https://youtu.be/zY8eSTEIwpU
 *	Page usage metabox with one-click gallery page creation
 *	NextGen importer tool (albums and galleries and shortcodes)
 *	Multisite Support
-*	PHP 7 compatible
-*	plus many, many more
-
-**Demos**
-
-*	Responsive Image Gallery - [demo](https://foo.gallery/demos/responsive-image-gallery/)
-*	Image Viewer Gallery - [demo](https://foo.gallery/demos/image-viewer-gallery/)
-*	Masonry Gallery - [demo](https://foo.gallery/demos/masonry-image-gallery/)
-*	Simple Portfolio - [demo](https://foo.gallery/demos/simple-portfolio-demo/)
-*	Justified Gallery - [demo](https://foo.gallery/demos/justified-gallery/)
-*	Single Thumbnail Gallery - [demo](https://foo.gallery/demos/single-thumbnail-gallery/)
-*	Responsive Album Layout - [demo](https://foo.gallery/demos/responsive-album-layout/)
-*	All-in-one Stack Album - [demo](https://foo.gallery/demos/all-in-one-stack-album/)
-*	[More Demos](https://foo.gallery/demos)
 
 **PRO Features**
 
-*   11 Beautiful Hover Effect Presets - [demo](https://foo.gallery/demos/hover-effect-presets-demos/)
-*	Video Support - [demo](https://foo.gallery/demos/video-gallery-demos/)
-*	Media Tags and Categories
-*	Gallery Filtering using Media Tags or Categories - [demo](https://foo.gallery/demos/filtering-demos/)
-*   12 CSS thumbnail filters (Instagram) - [demo](https://foo.gallery/demos/thumbnail-filters/)
 *   Polaroid PRO Gallery Template - [demo](https://foo.gallery/demos/polaroid-pro-image-gallery/)
 *   Grid PRO Gallery Template - [demo](https://foo.gallery/demos/grid-pro-demo/)
 *	Slider PRO Gallery Template - [demo](https://foo.gallery/demos/slider-pro/)
+*	Video Support - [demo](https://foo.gallery/demos/video-gallery-demos/)
+*	Media Tags and Categories
+*	Gallery Filtering using Media Tags or Categories - [demo](https://foo.gallery/demos/filtering-demos/)
+*   11 Beautiful Hover Effect Presets - [demo](https://foo.gallery/demos/hover-effect-presets-demos/)
+*   12 CSS thumbnail filters (Instagram) - [demo](https://foo.gallery/demos/thumbnail-filters/)
 *   Advanced Pagination - [demo](https://foo.gallery/demos/pagination-demo/)
 *   Infinite Scroll - [demo](https://foo.gallery/demos/infinite-scroll-demo/)
 *   Multiple Loaded Effects - [demo](https://foo.gallery/demos/loaded-effect-demos/)
 *   Bulk Copy Gallery Settings - [more info](https://fooplugins.com/bulk-copy-foogallery-pro/)
 *   More on the way!
+
+[See More Demos](https://foo.gallery/demos)
+
+https://youtu.be/zY8eSTEIwpU
 
 **Documentation**
 
@@ -84,7 +80,7 @@ From your website point of view, FooGallery never collects or stores any visitor
 
 **PHP 7 Compatible**
 
-FooGallery has been tried and tested on servers running PHP 7.
+FooGallery has been tried and tested on servers running up to PHP 7.3
 
 **Retina Support**
 
@@ -144,9 +140,17 @@ Update now to get all the latest features, bug fixes and improvements!
 
 == Changelog ==
 
+= 1.7.7 =
+* New : Added slider navigation buttons in Slider PRO template
+* Fix : Fixed gallery usage with custom post types
+* Fix : Captions being cut off in portfolio template
+* Fix : Multiple small bugs and tweaks
+* Update : Updated to handle Chrome's new allow attribute in videos
+* Update : FooGallery client side 1.2.4
+
 = 1.7.6 =
-* Fix : fixed issues with paging introduced in 1.7.4
-* Fix : fixed conflicts with other lazy loading plugins
+* Fix : Fixed issues with paging introduced in 1.7.4
+* Fix : Fixed conflicts with other lazy loading plugins
 * Update : FooGallery client side 1.2.3
 
 = 1.7.4 =
