@@ -19,7 +19,9 @@ $attachments_to_render = foogallery_current_gallery_attachments_for_rendering();
 ?><div <?php echo $foogallery_default_attributes; ?>>
 	<?php if ( count($attachments_to_render) > 0 ){ ?>
 		<div class="fgs-content-container">
+			<div class="fgs-content-prev"></div>
 			<div class="fgs-content-stage"></div>
+			<div class="fgs-content-next"></div>
 		</div>
 		<div class="fgs-item-container">
 			<div class="fgs-item-prev"></div>

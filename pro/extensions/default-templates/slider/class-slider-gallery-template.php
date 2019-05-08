@@ -77,6 +77,23 @@ if ( !class_exists( 'FooGallery_Slider_Gallery_Template' ) ) {
 						)
 					),
 					array(
+						'id'      => 'buttons',
+						'title'   => __('Navigation', 'foogallery'),
+						'desc'    => __( 'You can choose to show navigation buttons in the slider.', 'foogallery' ),
+						'section' => __( 'General', 'foogallery' ),
+						'type'    => 'radio',
+						'default' => '',
+						'choices' => array(
+							'' => __( 'None', 'foogallery' ),
+							'fgs-content-nav' => __( 'Buttons', 'foogallery' )
+						),
+						'row_data' => array(
+							'data-foogallery-change-selector' => 'input:radio',
+							'data-foogallery-value-selector'  => 'input:checked',
+							'data-foogallery-preview' => 'class',
+						)
+					),
+					array(
 						'id'      => 'viewport',
 						'title'   => __('Use Viewport Width', 'foogallery'),
 						'desc'    => __('Use the viewport width instead of the parent element width.', 'foogallery'),
