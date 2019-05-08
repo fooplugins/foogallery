@@ -5525,6 +5525,17 @@
 			self.$anchor = self.$inner.children(sel.anchor).on("click.foogallery", {self: self}, self.onAnchorClick);
 			self.$image = self.$anchor.find(sel.image);
 			self.$caption = self.$inner.children(sel.caption.elem).on("click.foogallery", {self: self}, self.onCaptionClick);
+
+			if ( !self.$el.length || !self.$inner.length || !self.$anchor.length || !self.$image.length ){
+				console.error("FooGallery Error: Invalid HTML markup. Check the item markup for additional elements or malformed HTML in the title or description.", self);
+				self.isError = true;
+				self.tmpl.raise("error-item", [self]);
+				if (self.$el.length !== 0){
+					self.$el.remove();
+				}
+				return false;
+			}
+
 			self.isAttached = self.$el.parent().length > 0;
 			self.isLoading = self.$el.is(sel.loading);
 			self.isLoaded = self.$el.is(sel.loaded);
@@ -8087,9 +8098,9 @@
 				maxHeight: null,
 				attrs: {
 					iframe: {
+						src: '',
 						frameborder: 'no',
-						webkitallowfullscreen: true,
-						mozallowfullscreen: true,
+						allow: "autoplay; fullscreen",
 						allowfullscreen: true
 					},
 					video: {
@@ -8190,7 +8201,12 @@
 						self.$el.off("loadeddata error");
 						this.volume = 0.2;
 						if (self.options.autoPlay){
-							this.play();
+							var p = this.play();
+							if (typeof p !== 'undefined'){
+								p.catch(function(){
+									console.log("Unable to autoplay video due to policy changes: https://developers.google.com/web/updates/2017/09/autoplay-policy-changes");
+								});
+							}
 						}
 						def.resolve();
 					},
@@ -9262,27 +9278,28 @@
 			this.$el.removeAttr("style");
 		},
 		parse: function(){
-			var self = this, visible = self.$el.is(':visible'), maxWidth = self.getContainerWidth(),
+			var self = this, containerWidth = self.getContainerWidth(),
 					$test = $('<div/>', {'class': self.$el.attr('class')}).css({
 						position: 'absolute',
-						top: 0,
+						top: -9999,
 						left: -9999,
 						visibility: 'hidden',
-						maxWidth: maxWidth
+						maxWidth: containerWidth
 					}).appendTo('body');
 
+			var borderSize = 0;
+			if (self.$el.hasClass("fg-border-thin")) borderSize = 4;
+			if (self.$el.hasClass("fg-border-medium")) borderSize = 10;
+			if (self.$el.hasClass("fg-border-thick")) borderSize = 16;
+			var border = borderSize * 2;
+
 			self._items = $.map(self.tmpl.getItems(), function(item, i){
-				var width = item.width, height = item.height;
-				item.$caption.css("max-width", width);
-				if (!visible){
-					var $clone = item.$el.clone();
-					$clone.appendTo($test);
-					width = $clone.outerWidth();
-					height = $clone.outerHeight();
-				} else {
-					width = item.$el.outerWidth();
-					height = item.$el.outerHeight();
-				}
+				var maxWidth = containerWidth - border, single = item.width > maxWidth;
+				var $clone = item.$el.clone().css({width: '', height: ''})
+						.find(".fg-image,.fg-caption").css("width", single ? maxWidth : item.width).end()
+						.appendTo($test);
+				var width = $clone.outerWidth(), height = $clone.outerHeight();
+				$clone.remove();
 				return {
 					index: i,
 					width: width,
@@ -10822,7 +10839,7 @@
 
 	F.Player.prototype.$createEmbed = function(url){
 		return $('<iframe/>', {
-			src: url, frameborder: 'no',
+			src: url, frameborder: 'no', allow: "autoplay; fullscreen",
 			width: this.options.width, height: this.options.height,
 			webkitallowfullscreen: true, mozallowfullscreen: true, allowfullscreen: true
 		}).css({width: '100%',height: '100%'});
@@ -10980,6 +10997,7 @@
 			self.useViewport = self.template.useViewport;
 			self.breakpoints = self.template.breakpoints;
 			self.allowPageScroll = self.template.allowPageScroll;
+			self.contentNav = self.template.contentNav;
 			self.allBreakpointClasses = $.map(self.breakpoints, function(breakpoint){ return breakpoint.classes; }).join(' ');
 			self._contentWidth = 0;
 			self._contentHeight = 0;
@@ -10991,7 +11009,11 @@
 			var self = this;
 			return [
 				$("<div/>", {"class": self.cls.contentContainer})
-						.append($("<div/>", {"class": self.cls.contentStage})),
+						.append(
+								$("<div/>", {"class": self.cls.contentPrev}),
+								$("<div/>", {"class": self.cls.contentStage}),
+								$("<div/>", {"class": self.cls.contentNext})
+						),
 				$("<div/>", {"class": self.cls.itemContainer})
 						.append(
 								$("<div/>", {"class": self.cls.itemPrev}),
@@ -11020,16 +11042,22 @@
 			self.$itemStage = self.$el.find(self.sel.itemStage);
 			self.$itemPrev = self.$el.find(self.sel.itemPrev);
 			self.$itemNext = self.$el.find(self.sel.itemNext);
+			self.$contentPrev = self.$el.find(self.sel.contentPrev);
+			self.$contentNext = self.$el.find(self.sel.contentNext);
 			self.horizontal = self.$el.hasClass(self.cls.horizontal) || self.horizontal;
 			if (self.horizontal) self.$el.addClass(self.cls.horizontal);
 			self.noCaptions = self.$el.hasClass(self.cls.noCaptions) || self.noCaptions;
 			if (self.noCaptions) self.$el.addClass(self.cls.noCaptions);
+			self.contentNav = self.$el.hasClass(self.cls.contentNav) || self.contentNav;
+			if (self.contentNav) self.$el.addClass(self.cls.contentNav);
 
 		},
 		onInit: function (event, self) {
 			$(window).on("resize.fg-slider", {self: self}, self.throttle(self.onWindowResize, self.template.throttle));
 			self.$itemPrev.on("click.fg-slider", {self: self}, self.onPrevClick);
 			self.$itemNext.on("click.fg-slider", {self: self}, self.onNextClick);
+			self.$contentPrev.on("click.fg-slider", {self: self}, self.onContentPrevClick);
+			self.$contentNext.on("click.fg-slider", {self: self}, self.onContentNextClick);
 			self.$contentContainer.fgswipe({data: {self: self}, allowPageScroll: self.allowPageScroll, swipe: self.onContentSwipe});
 			self.$itemContainer.fgswipe({data: {self: self}, swipe: self.onItemSwipe})
 					.on("DOMMouseScroll.fg-slider mousewheel.fg-slider", {self: self}, self.onItemMouseWheel);
@@ -11052,6 +11080,8 @@
 			$(window).off("resize.fg-slider");
 			self.$itemPrev.off("click.fg-slider");
 			self.$itemNext.off("click.fg-slider");
+			self.$contentPrev.off("click.fg-slider");
+			self.$contentNext.off("click.fg-slider");
 			self.$contentContainer.fgswipe("destroy");
 			self.$itemContainer.fgswipe("destroy")
 					.off("DOMMouseScroll.fg-slider mousewheel.fg-slider");
@@ -11225,9 +11255,8 @@
 			}
 		},
 		setSelected: function(itemOrIndex){
-			var self = this, prev = self.selected, next = itemOrIndex;
+			var self = this, prev = self.selected, next = itemOrIndex, items = self.items.available();
 			if (_is.number(itemOrIndex)){
-				var items = self.items.available();
 				itemOrIndex = itemOrIndex < 0 ? 0 : (itemOrIndex >= items.length ? items.length - 1 : itemOrIndex);
 				next = items[itemOrIndex];
 			}
@@ -11259,6 +11288,11 @@
 							index = last ? (next.index == self._lastVisible ? next.index + 1 : next.index) : (next.index == self._firstVisible ? next.index - 1 : next.index);
 					self.setVisible(index, last);
 				}
+				var cPrev = next.index - 1, cNext = next.index + 1;
+				cPrev = cPrev < 0 ? items.length - 1 : (cPrev >= items.length ? 0 : cPrev);
+				cNext = cNext < 0 ? items.length - 1 : (cNext >= items.length ? 0 : cNext);
+				self.$contentPrev.data("index", cPrev);
+				self.$contentNext.data("index", cNext);
 			}
 		},
 		setVisible: function(index, last){
@@ -11287,6 +11321,16 @@
 		onItemClick: function(e){
 			e.preventDefault();
 			e.data.self.setSelected(e.data.item);
+		},
+		onContentPrevClick: function(e){
+			e.preventDefault();
+			var self = e.data.self;
+			self.setSelected(self.$contentPrev.data("index"));
+		},
+		onContentNextClick: function(e){
+			e.preventDefault();
+			var self = e.data.self;
+			self.setSelected(self.$contentNext.data("index"));
 		},
 		onPrevClick: function(e){
 			e.preventDefault();
@@ -11357,6 +11401,7 @@
 			useViewport: false,
 			noCaptions: false,
 			autoPlay: false,
+			contentNav: false,
 			allowPageScroll: {
 				x: false,
 				y: true
@@ -11492,6 +11537,9 @@
 		contentText: "fgs-content-text",
 		contentPlay: "fgs-content-play",
 		contentClose: "fgs-content-close",
+		contentPrev: "fgs-content-prev",
+		contentNext: "fgs-content-next",
+		contentNav: "fgs-content-nav",
 		itemContainer: "fgs-item-container",
 		itemStage: "fgs-item-stage",
 		itemPrev: "fgs-item-prev",

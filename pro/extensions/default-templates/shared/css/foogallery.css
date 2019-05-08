@@ -5851,6 +5851,7 @@ only screen and (min-resolution: 2.25dppx) {
 /* Content */
 .fg-slider .fgs-content-container {
 	display: block;
+	position: relative;
 	height: 100%;
 	overflow: hidden;
 }
@@ -6048,6 +6049,61 @@ only screen and (min-resolution: 2.25dppx) {
 	max-width: 100%;
 	max-height: 100%;
 }
+
+.fg-slider .fgs-content-prev,
+.fg-slider .fgs-content-next {
+	display: none;
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	width: 40px;
+	height: 80px;
+	font-size: 16px;
+	font-weight: bold;
+	opacity: 0;
+	outline: none;
+	text-decoration: none;
+	cursor: pointer;
+	z-index: 2;
+	font-family: "Andale Mono",Arial,"Courier New",sans-serif;
+	line-height: 1;
+	text-align: center;
+	border-radius: 4px;
+}
+.fg-slider.fgs-content-nav .fgs-content-prev,
+.fg-slider.fgs-content-nav .fgs-content-next {
+	display: block;
+}
+.fg-slider .fgs-content-prev {
+	left: 10px;
+}
+.fg-slider .fgs-content-next {
+	right: 10px;
+}
+.fg-slider .fgs-content-container:hover .fgs-content-prev,
+.fg-slider .fgs-content-container:hover .fgs-content-next {
+	opacity: 0.5;
+}
+.fg-slider .fgs-content-container .fgs-content-prev:hover,
+.fg-slider .fgs-content-container .fgs-content-next:hover {
+	opacity: 1;
+}
+
+.fg-slider .fgs-content-prev:before,
+.fg-slider .fgs-content-next:before {
+	display: inline-block;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	-webkit-transform: translateX(-50%) translateY(-50%);
+	transform: translateX(-50%) translateY(-50%);
+}
+.fg-slider .fgs-content-prev:before {
+	content: '\25c0';
+}
+.fg-slider .fgs-content-next:before {
+	content: '\25b6';
+}
 /* First adjust the size of the item area */
 .fg-slider.fgs-no-captions {
 	padding-right: 70px;
@@ -6136,7 +6192,9 @@ only screen and (min-resolution: 2.25dppx) {
 
 /* Shared */
 .fg-slider .fgs-content-play,
-.fg-slider .fgs-content-close {
+.fg-slider .fgs-content-close,
+.fg-slider .fgs-content-prev,
+.fg-slider .fgs-content-next {
 	background-color: rgba(23,35,34,.75);
 }
 .fg-slider .fg-caption {
@@ -6147,7 +6205,9 @@ only screen and (min-resolution: 2.25dppx) {
 }
 .fg-slider .fgs-content-text,
 .fg-slider .fgs-content-play,
-.fg-slider .fgs-content-close {
+.fg-slider .fgs-content-close,
+.fg-slider .fgs-content-prev,
+.fg-slider .fgs-content-next {
 	color: #FFF;
 }
 .fg-slider .fgs-content-play {
