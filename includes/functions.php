@@ -1376,3 +1376,11 @@ function foogallery_marketing_pro_features() {
 	);
 	return $features;
 }
+
+/**
+ * Returns the allowed post types that galleries can be attached to
+ * @return array
+ */
+function foogallery_allowed_post_types_for_usage() {
+	return apply_filters( 'foogallery_allowed_post_types_for_attachment', array( 'post', 'page' ) );
+}
