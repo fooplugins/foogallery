@@ -58,6 +58,7 @@ https://youtu.be/zY8eSTEIwpU
 *	Video Support - [demo](https://foo.gallery/demos/video-gallery-demos/)
 *	Media Tags and Categories
 *	Gallery Filtering using Media Tags or Categories - [demo](https://foo.gallery/demos/filtering-demos/)
+*   12 CSS thumbnail filters (Instagram) - [demo](https://foo.gallery/demos/thumbnail-filters/)
 *   Polaroid PRO Gallery Template - [demo](https://foo.gallery/demos/polaroid-pro-image-gallery/)
 *   Grid PRO Gallery Template - [demo](https://foo.gallery/demos/grid-pro-demo/)
 *	Slider PRO Gallery Template - [demo](https://foo.gallery/demos/slider-pro/)
@@ -142,6 +143,11 @@ Hell, yes! Check out our [developer page](http://foo.gallery/developers/)
 Update now to get all the latest features, bug fixes and improvements!
 
 == Changelog ==
+
+= 1.7.6 =
+* Fix : fixed issues with paging introduced in 1.7.4
+* Fix : fixed conflicts with other lazy loading plugins
+* Update : FooGallery client side 1.2.3
 
 = 1.7.4 =
 * New : Major performance enhancements for all galleries
