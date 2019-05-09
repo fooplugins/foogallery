@@ -5879,6 +5879,13 @@ only screen and (min-resolution: 2.25dppx) {
 	opacity: 1;
 	visibility: visible;
 }
+.fg-slider .fgs-content iframe,
+.fg-slider .fgs-content video {
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 2;
+}
 .fg-slider .fgs-content-image {
 	position: absolute;
 	top: 0;
@@ -5972,7 +5979,7 @@ only screen and (min-resolution: 2.25dppx) {
 	height: 36px;
 	font-size: 28px;
 	font-weight: 700;
-	z-index: 2;
+	z-index: 3;
 }
 .fg-slider .fgs-content-close:before {
 	content: '\00D7';
@@ -5987,6 +5994,7 @@ only screen and (min-resolution: 2.25dppx) {
 	width: 60px;
 	height: 60px;
 	font-size: 32px;
+	z-index: 2;
 	-webkit-transform: translateX(-50%) translateY(-50%);
 	transform: translateX(-50%) translateY(-50%);
 }
@@ -6054,7 +6062,7 @@ only screen and (min-resolution: 2.25dppx) {
 	top: 50%;
 	left: 50%;
 	transform: translateY(-50%) translateX(-50%);
-	z-index: 1;
+	z-index: 2;
 	max-width: 100%;
 	max-height: 100%;
 }
@@ -6196,7 +6204,6 @@ only screen and (min-resolution: 2.25dppx) {
 
 .fg-slider.fgs-no-captions .fg-thumb {
 	float: none;
-	padding: 4px;
 	margin-left: 0;
 	margin-right: 0;
 	width: 100%;
