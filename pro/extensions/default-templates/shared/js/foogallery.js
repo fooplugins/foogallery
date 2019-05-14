@@ -3177,20 +3177,7 @@
 			TOUCH = "ontouchstart" in window,
 			POINTER_IE10 = window.navigator.msPointerEnabled && !window.navigator.pointerEnabled && !TOUCH,
 			POINTER = (window.navigator.pointerEnabled || window.navigator.msPointerEnabled) && !TOUCH,
-			USE_TOUCH = TOUCH || POINTER,
-			SUPPORTS_PASSIVE = false;
-
-
-	// @see https://github.com/WICG/EventListenerOptions/blob/gh-pages/explainer.md
-	try {
-		var opts = Object.defineProperty({}, 'passive', {
-			get: function() {
-				SUPPORTS_PASSIVE = true;
-			}
-		});
-		window.addEventListener("testPassive", null, opts);
-		window.removeEventListener("testPassive", null, opts);
-	} catch (e) {}
+			USE_TOUCH = TOUCH || POINTER;
 
 	_.Swipe = _utils.Class.extend(/** @lend FooGallery.Swipe */{
 		/**
@@ -3264,18 +3251,10 @@
 		 * @function init
 		 */
 		init: function(){
-			var self = this, elem = self.$el.get(0);
-			if (SUPPORTS_PASSIVE && self.events.start == 'touchstart' && !!elem.addEventListener){
-				elem.addEventListener('touchstart', self.onStart, { passive: true });
-			} else {
-				self.$el.on(self.events.start, {self: self}, self.onStart);
-			}
+			var self = this;
+			self.$el.on(self.events.start, {self: self}, self.onStart);
 			self.$el.on(self.events.move, {self: self}, self.onMove);
-			if (SUPPORTS_PASSIVE && self.events.end == 'touchend' && !!elem.addEventListener){
-				elem.addEventListener('touchend', self.onEnd, { passive: true });
-			} else {
-				self.$el.on(self.events.end, {self: self}, self.onEnd);
-			}
+			self.$el.on(self.events.end, {self: self}, self.onEnd);
 			if (_is.string(self.events.leave)) self.$el.on(self.events.leave, {self: self}, self.onEnd);
 			self.$el.data(DATA_NAME, self);
 		},
@@ -3285,18 +3264,10 @@
 		 * @function destroy
 		 */
 		destroy: function(){
-			var self = this, elem = self.$el.get(0);
-			if (SUPPORTS_PASSIVE && self.events.start == 'touchstart' && !!elem.removeEventListener){
-				elem.removeEventListener('touchstart', self.onStart, { passive: true });
-			} else {
-				self.$el.off(self.events.start, self.onStart);
-			}
+			var self = this;
+			self.$el.off(self.events.start, self.onStart);
 			self.$el.off(self.events.move, self.onMove);
-			if (SUPPORTS_PASSIVE && self.events.end == 'touchend' && !!elem.removeEventListener){
-				elem.removeEventListener('touchend', self.onEnd, { passive: true });
-			} else {
-				self.$el.off(self.events.end, self.onEnd);
-			}
+			self.$el.off(self.events.end, self.onEnd);
 			if (_is.string(self.events.leave)) self.$el.off(self.events.leave, self.onEnd);
 			self.$el.removeData(DATA_NAME);
 		},
