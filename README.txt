@@ -146,7 +146,7 @@ Update now to get all the latest features, bug fixes and improvements!
 * Fix : Captions being cut off in portfolio template
 * Fix : Multiple small bugs and tweaks
 * Update : Updated to handle Chrome's new allow attribute in videos
-* Update : FooGallery client side 1.2.4
+* Update : FooGallery client side 1.2.7
 
 = 1.7.6 =
 * Fix : Fixed issues with paging introduced in 1.7.4
