@@ -3177,20 +3177,7 @@
 			TOUCH = "ontouchstart" in window,
 			POINTER_IE10 = window.navigator.msPointerEnabled && !window.navigator.pointerEnabled && !TOUCH,
 			POINTER = (window.navigator.pointerEnabled || window.navigator.msPointerEnabled) && !TOUCH,
-			USE_TOUCH = TOUCH || POINTER,
-			SUPPORTS_PASSIVE = false;
-
-
-	// @see https://github.com/WICG/EventListenerOptions/blob/gh-pages/explainer.md
-	try {
-		var opts = Object.defineProperty({}, 'passive', {
-			get: function() {
-				SUPPORTS_PASSIVE = true;
-			}
-		});
-		window.addEventListener("testPassive", null, opts);
-		window.removeEventListener("testPassive", null, opts);
-	} catch (e) {}
+			USE_TOUCH = TOUCH || POINTER;
 
 	_.Swipe = _utils.Class.extend(/** @lend FooGallery.Swipe */{
 		/**
@@ -3264,18 +3251,10 @@
 		 * @function init
 		 */
 		init: function(){
-			var self = this, elem = self.$el.get(0);
-			if (SUPPORTS_PASSIVE && self.events.start == 'touchstart' && !!elem.addEventListener){
-				elem.addEventListener('touchstart', self.onStart, { passive: true });
-			} else {
-				self.$el.on(self.events.start, {self: self}, self.onStart);
-			}
+			var self = this;
+			self.$el.on(self.events.start, {self: self}, self.onStart);
 			self.$el.on(self.events.move, {self: self}, self.onMove);
-			if (SUPPORTS_PASSIVE && self.events.end == 'touchend' && !!elem.addEventListener){
-				elem.addEventListener('touchend', self.onEnd, { passive: true });
-			} else {
-				self.$el.on(self.events.end, {self: self}, self.onEnd);
-			}
+			self.$el.on(self.events.end, {self: self}, self.onEnd);
 			if (_is.string(self.events.leave)) self.$el.on(self.events.leave, {self: self}, self.onEnd);
 			self.$el.data(DATA_NAME, self);
 		},
@@ -3285,18 +3264,10 @@
 		 * @function destroy
 		 */
 		destroy: function(){
-			var self = this, elem = self.$el.get(0);
-			if (SUPPORTS_PASSIVE && self.events.start == 'touchstart' && !!elem.removeEventListener){
-				elem.removeEventListener('touchstart', self.onStart, { passive: true });
-			} else {
-				self.$el.off(self.events.start, self.onStart);
-			}
+			var self = this;
+			self.$el.off(self.events.start, self.onStart);
 			self.$el.off(self.events.move, self.onMove);
-			if (SUPPORTS_PASSIVE && self.events.end == 'touchend' && !!elem.removeEventListener){
-				elem.removeEventListener('touchend', self.onEnd, { passive: true });
-			} else {
-				self.$el.off(self.events.end, self.onEnd);
-			}
+			self.$el.off(self.events.end, self.onEnd);
 			if (_is.string(self.events.leave)) self.$el.off(self.events.leave, self.onEnd);
 			self.$el.removeData(DATA_NAME);
 		},
@@ -10234,7 +10205,9 @@
 			self.active = item;
 			if (self.grid && self.grid.deeplinking) self.grid.deeplinking.set(item);
 			self.busy = false;
-			return item.open(reverse);
+			return item.open(reverse).then(function(){
+				return self.scrollTo(item.$li.offset().top, true);
+			});
 		});
 	};
 
@@ -11086,15 +11059,6 @@
 			self.$itemContainer.fgswipe("destroy")
 					.off("DOMMouseScroll.fg-slider mousewheel.fg-slider");
 		},
-		onLoadItem: function(event, self, item){
-			if (!item.isError && _is.jq(item.$content)){
-				if (item.type === "video"){
-					item.$content.css("background-image", "url('"+item.cover+"')");
-				} else {
-					item.$content.css("background-image", "url('"+item.href+"')");
-				}
-			}
-		},
 		onParsedOrCreatedItem: function(item){
 			if (!item.isError){
 				var self = this;
@@ -11103,6 +11067,7 @@
 				item.$inner.on("click.foogallery", {self: self, item: item}, self.onItemClick);
 
 				item.$content = $("<div/>", {"class": self.cls.content})
+						.append($("<div/>", {"class": self.cls.contentImage}))
 						.append($("<p/>", {"class": self.cls.contentText}).html(item.caption).append($("<small/>").html(item.description)));
 				if (item.type === "video"){
 					item.index = -1;
@@ -11137,6 +11102,7 @@
 				$(item.href).append(item.$target);
 			}
 			item.$el.add(item.$content).removeClass(self.cls.selected);
+			item.$inner.off("click.foogallery");
 		},
 		onAppendItem: function (event, self, item) {
 			event.preventDefault();
@@ -11211,7 +11177,7 @@
 			self.$itemPrev.toggle(self._firstVisible > 0);
 			self.$itemNext.toggle(self._lastVisible < count - 1);
 
-			self._contentWidth = cWidth - (self.horizontal ? 0 : self._breakpoint.size.v.items.width);
+			self._contentWidth = cWidth - (self.horizontal ? 0 : (self.noCaptions ? self._breakpoint.size.v.items.noCaptions : self._breakpoint.size.v.items.width));
 			self._contentHeight = (self.horizontal ? self._breakpoint.size.h.height : self._breakpoint.size.v.height);
 			if (count > 0){
 				self.$contentStage.width(self._contentWidth * count);
@@ -11229,7 +11195,7 @@
 					}
 				});
 				self.$contentStage.css("transform", "translateX(-" + (index * self._contentWidth) + "px)");
-				self._itemWidth = self.horizontal ? hItemWidth : self._breakpoint.size.v.items.width;
+				self._itemWidth = self.horizontal ? hItemWidth : (self.noCaptions ? self._breakpoint.size.v.items.noCaptions : self._breakpoint.size.v.items.width);
 				self._itemHeight = self.horizontal ? self._breakpoint.size.h.items : self._breakpoint.size.v.items.height;
 
 				self.setVisible(self._firstVisible, false);
@@ -11272,6 +11238,7 @@
 					}
 					prev.$el.add(prev.$content).removeClass(self.cls.selected);
 				}
+				self.setBackgroundImage(next);
 				self.$contentStage.css("transform", "translateX(-" + (next.index * self._contentWidth) + "px)");
 				next.$el.add(next.$content).addClass(self.cls.selected);
 				if (self.template.autoPlay && next.type === "video" && next.player instanceof _.VideoPlayer){
@@ -11283,6 +11250,7 @@
 					self.setEmbedSize(next);
 				}
 				self.selected = next;
+
 				if (next.index <= self._firstVisible || next.index >= self._lastVisible){
 					var last = prev instanceof _.Item ? next.index > prev.index : false,
 							index = last ? (next.index == self._lastVisible ? next.index + 1 : next.index) : (next.index == self._firstVisible ? next.index - 1 : next.index);
@@ -11293,6 +11261,31 @@
 				cNext = cNext < 0 ? items.length - 1 : (cNext >= items.length ? 0 : cNext);
 				self.$contentPrev.data("index", cPrev);
 				self.$contentNext.data("index", cNext);
+			}
+		},
+		setBackgroundImage: function(item){
+			if (item.type !== "embed" && !item.isError && !item.isBackgroundLoaded && _is.jq(item.$content)){
+				var self = this,
+						src = item.type === "video" ? item.cover : item.href,
+						$loader = $("<div/>", {'class': 'fg-loader'}).appendTo(item.$content.addClass(self.cls.loading)),
+						img = new Image();
+
+				img.onload = function(){
+					img.onload = img.onerror = null;
+					$loader.remove();
+					item.$content.removeClass(self.cls.loading)
+							.find(self.sel.contentImage).css("background-image", "url('"+src+"')");
+				};
+				img.onerror = function(){
+					$loader.remove();
+					item.$content.removeClass(self.cls.loading);
+				};
+				img.src = src;
+				if (img.complete){
+					img.onload();
+				}
+
+				item.isBackgroundLoaded = true;
 			}
 		},
 		setVisible: function(index, last){
@@ -11424,6 +11417,7 @@
 					v: {
 						height: 336,
 						items: {
+							noCaptions: 70,
 							width: 100,
 							height: 56
 						}
@@ -11447,6 +11441,7 @@
 					v: {
 						height: 392,
 						items: {
+							noCaptions: 100,
 							width: 150,
 							height: 56
 						}
@@ -11470,6 +11465,7 @@
 					v: {
 						height: 461,
 						items: {
+							noCaptions: 150,
 							width: 220,
 							height: 77
 						}
@@ -11493,6 +11489,7 @@
 					v: {
 						height: 538,
 						items: {
+							noCaptions: 150,
 							width: 280,
 							height: 77
 						}
@@ -11516,6 +11513,7 @@
 					v: {
 						height: 615,
 						items: {
+							noCaptions: 150,
 							width: 280,
 							height: 77
 						}
@@ -11534,6 +11532,7 @@
 		contentContainer: "fgs-content-container",
 		contentStage: "fgs-content-stage",
 		content: "fgs-content",
+		contentImage: "fgs-content-image",
 		contentText: "fgs-content-text",
 		contentPlay: "fgs-content-play",
 		contentClose: "fgs-content-close",
@@ -11546,6 +11545,7 @@
 		itemNext: "fgs-item-next",
 		horizontal: "fgs-horizontal",
 		selected: "fgs-selected",
+		loading: "fgs-loading",
 		playing: "fgs-playing",
 		noCaptions: "fgs-no-captions",
 		embed: "fgs-embed",
