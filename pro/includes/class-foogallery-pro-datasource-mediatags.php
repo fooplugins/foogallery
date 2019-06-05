@@ -25,7 +25,7 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_MediaTags' ) ) {
          * @return int
          */
         public function getCount() {
-            // TODO: Implement getCount() method.
+            return 0;
         }
 
         /**
@@ -33,7 +33,7 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_MediaTags' ) ) {
          * @return array(FooGalleryAttachment)
          */
         public function getAttachments() {
-            // TODO: Implement getAttachments() method.
+            return array();
         }
 
         /**
@@ -41,7 +41,7 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_MediaTags' ) ) {
          * @return bool|FooGalleryAttachment
          */
         public function getFeaturedAttachment() {
-            // TODO: Implement getFeaturedAttachment() method.
+            return false;
         }
 
         /**
@@ -51,7 +51,7 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_MediaTags' ) ) {
          * @return string
          */
         public function getSerializedData() {
-            // TODO: Implement getSerializedData() method.
+            return '';
         }
     }
 }

@@ -320,6 +320,10 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Datasources' ) ) {
                     text-decoration: none;
                 }
 
+				.datasounce-info .center {
+					padding: 5px;
+				}
+
                 .datasounce-info a.remove {
                     display: none;
                     top: 5px;
