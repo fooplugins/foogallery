@@ -767,7 +767,13 @@ function foogallery_test_thumb_url() {
 function foogallery_gallery_datasources() {
 	$default_datasource = foogallery_default_datasource();
 
-	$datasources[$default_datasource] = 'FooGalleryDatasource_MediaLibrary';
+	$datasources[$default_datasource] = array(
+	    'id'     => $default_datasource,
+	    'name'   => __( 'Media Library', 'foogalery' ),
+        'label'  => __( 'From Media Library', 'foogallery' ),
+	    'class'  => 'FooGalleryDatasource_MediaLibrary',
+        'public' => false
+    );
 
 	return apply_filters( 'foogallery_gallery_datasources', $datasources );
 }
@@ -791,7 +797,10 @@ function foogallery_default_datasource() {
 function foogallery_instantiate_datasource( $datasource_name ) {
 	$datasources = foogallery_gallery_datasources();
 	if ( array_key_exists( $datasource_name, $datasources ) ) {
-		return new $datasources[$datasource_name];
+
+	    $datasource = $datasources[$datasource_name];
+		return new $datasource['class'];
+
 	}
 
 	return new FooGalleryDatasource_MediaLibrary();

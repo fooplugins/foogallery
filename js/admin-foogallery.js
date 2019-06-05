@@ -8,7 +8,9 @@
     FOOGALLERY.calculateAttachmentIds = function() {
         var sorted = [];
         $('.foogallery-attachments-list li:not(.add-attachment)').each(function() {
-            sorted.push( $(this).data('attachment-id') );
+        	if ( $(this).data('attachment-id') ) {
+                sorted.push($(this).data('attachment-id'));
+            }
         });
 
         $('#foogallery_attachments').val( sorted.join(',') );
@@ -327,7 +329,7 @@
 			$template.find('.attachment-preview.type-image').addClass('subtype-' + attachment.subtype);
 		}
 
-        $('.foogallery-attachments-list .add-attachment').before($template);
+        $('.foogallery-attachments-list .datasource-medialibrary').before($template);
 
         FOOGALLERY.attachments.push( attachment.id );
 

@@ -282,15 +282,16 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 							$this->render_gallery_item( $attachment );
 						}
 					} ?>
-						<li class="add-attachment">
+						<li class="add-attachment datasource-medialibrary">
 							<a href="#" data-uploader-title="<?php _e( 'Add Media To Gallery', 'foogallery' ); ?>"
 							   data-uploader-button-text="<?php _e( 'Add Media', 'foogallery' ); ?>"
 							   data-post-id="<?php echo $post->ID; ?>" class="upload_image_button"
-							   title="<?php _e( 'Add Media To Gallery', 'foogallery' ); ?>">
+							   title="<?php _e( 'Add Media From Media Library', 'foogallery' ); ?>">
 								<div class="dashicons dashicons-format-gallery"></div>
-								<span><?php _e( 'Add Media', 'foogallery' ); ?></span>
+								<span><?php _e( 'Add From Media Library', 'foogallery' ); ?></span>
 							</a>
 						</li>
+                        <?php do_action( 'foogallery_gallery_metabox_items_after_addmedia_button' ); ?>
 					</ul>
 					<div style="clear: both;"></div>
 				</div>
@@ -346,7 +347,6 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 						<span class="dashicons dashicons-dismiss"></span>
 					</a>
 				</div>
-				<!--				<input type="text" value="" class="describe" data-setting="caption" placeholder="Caption this image…" />-->
 			</li>
 		<?php
 		}
