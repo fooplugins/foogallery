@@ -30,7 +30,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Datasources' ) ) {
 
                 $datasource_value = $_POST['foogallery_datasource_value'];
 
-                update_post_meta( $post_id, 'foogallery_datasource_value', $datasource_value );
+                update_post_meta( $post_id, FOOGALLERY_META_DATASOURCE_VALUE, $datasource_value );
             }
         }
 
