@@ -75,7 +75,7 @@ if ( !class_exists( 'FooGallery_Thumbnails' ) ) {
 			//we can force the use of the original WP icon or WP-generated thumb by passing through args individually
 			$force_use_original_thumb = isset( $args['force_use_original_thumb'] ) && true === $args['force_use_original_thumb'];
 
-			if ( $force_use_original_thumb ) {
+			if ( $thumbnail_object->ID > 0 && $force_use_original_thumb ) {
 				$thumbnail_icon = wp_get_attachment_image_src( $thumbnail_object->ID, array( $width, $height ) );
 
 				return $thumbnail_icon[0];
