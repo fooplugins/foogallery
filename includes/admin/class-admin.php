@@ -22,6 +22,8 @@ if ( ! class_exists( 'FooGallery_Admin' ) ) {
 			new FooGallery_Admin_Menu();
 			new FooGallery_Admin_Gallery_Editor();
 			new FooGallery_Admin_Gallery_MetaBoxes();
+			new FooGallery_Admin_Gallery_MetaBox_Items();
+			new FooGallery_Admin_Gallery_MetaBox_Settings();
 			new FooGallery_Admin_Gallery_MetaBox_Fields();
 			new FooGallery_Admin_Columns();
 			new FooGallery_Admin_Extensions();
@@ -29,7 +31,6 @@ if ( ! class_exists( 'FooGallery_Admin' ) ) {
 			new FooGallery_Attachment_Fields();
             new FooGallery_Admin_CSS_Load_Optimizer();
 			new FooGallery_Admin_Notices();
-            new FooGallery_Admin_Gallery_MetaBox_Settings();
             new FooGallery_Admin_Gallery_Datasources();
 		}
 

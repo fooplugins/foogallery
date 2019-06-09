@@ -31,12 +31,6 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 
 			// Ajax call for clearing thumb cache for the gallery
 			add_action( 'wp_ajax_foogallery_clear_gallery_thumb_cache', array( $this, 'ajax_clear_gallery_thumb_cache' ) );
-
-			// Ajax call for generating a gallery preview
-			add_action( 'wp_ajax_foogallery_preview', array( $this, 'ajax_gallery_preview' ) );
-
-			//handle previews that have no attachments
-			add_action( 'foogallery_template_no_attachments', array( $this, 'preview_no_attachments' ) );
 		}
 
 		public function whitelist_metaboxes() {
@@ -63,24 +57,6 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 		}
 
 		public function add_meta_boxes_to_gallery( $post ) {
-
-			add_meta_box(
-				'foogallery_items',
-				__( 'Gallery Items', 'foogallery' ),
-				array( $this, 'render_gallery_media_metabox' ),
-				FOOGALLERY_CPT_GALLERY,
-				'normal',
-				'high'
-			);
-
-			add_meta_box(
-				'foogallery_settings',
-				__( 'Gallery Settings', 'foogallery' ),
-				array( $this, 'render_gallery_settings_metabox' ),
-				FOOGALLERY_CPT_GALLERY,
-				'normal',
-				'high'
-			);
 
 			add_meta_box(
 				'foogallery_help',
@@ -162,9 +138,6 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 				//if we get here, we are dealing with the Gallery custom post type
 				do_action( 'foogallery_before_save_gallery', $post_id, $_POST );
 
-				$attachments = apply_filters( 'foogallery_save_gallery_attachments', explode( ',', $_POST[FOOGALLERY_META_ATTACHMENTS] ), $post_id, $_POST );
-				update_post_meta( $post_id, FOOGALLERY_META_ATTACHMENTS, $attachments );
-
 				if ( isset( $_POST[FOOGALLERY_META_TEMPLATE] ) ) {
 					$gallery_template = $_POST[FOOGALLERY_META_TEMPLATE];
 					update_post_meta( $post_id, FOOGALLERY_META_TEMPLATE, $gallery_template );
@@ -245,122 +218,6 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 
                 do_action( 'foogallery_attach_gallery_to_post', $post_id, $post );
 			}
-		}
-
-		public function render_gallery_media_metabox( $post ) {
-			$gallery = $this->get_gallery( $post );
-
-			$mode = $gallery->get_meta( 'foogallery_items_view', 'manage' );
-
-			if ( empty($mode) || $gallery->is_new() ) {
-				$mode = 'manage';
-			}
-
-			wp_enqueue_media();
-
-			?>
-			<div class="hidden foogallery-items-view-switch-container">
-				<div class="foogallery-items-view-switch">
-					<a href="#manage" data-value="manage" data-container=".foogallery-items-view-manage" class="<?php echo $mode==='manage' ? 'current' : ''; ?>"><?php _e('Manage Items', 'foogallery'); ?></a>
-					<a href="#preview" data-value="preview" data-container=".foogallery-items-view-preview" class="<?php echo $mode==='preview' ? 'current' : ''; ?>"><?php _e('Gallery Preview', 'foogallery'); ?></a>
-				</div>
-				<span id="foogallery_preview_spinner" class="spinner"></span>
-                <input type="hidden" id="foogallery_items_view_input" value="<?php echo $mode; ?>" name="<?php echo FOOGALLERY_META_SETTINGS . '[foogallery_items_view]'; ?>" />
-			</div>
-
-			<div class="foogallery-items-view foogallery-items-view-manage <?php echo $mode==='manage' ? '' : 'hidden'; ?>">
-				<input type="hidden" name="<?php echo FOOGALLERY_CPT_GALLERY; ?>_nonce"
-					   id="<?php echo FOOGALLERY_CPT_GALLERY; ?>_nonce"
-					   value="<?php echo wp_create_nonce( plugin_basename( FOOGALLERY_FILE ) ); ?>"/>
-				<input type="hidden" name='foogallery_attachments' id="foogallery_attachments"
-					   value="<?php echo $gallery->attachment_id_csv(); ?>"/>
-				<div>
-					<ul class="foogallery-attachments-list">
-					<?php
-					if ( $gallery->has_attachments() ) {
-						foreach ( $gallery->attachments() as $attachment ) {
-							$this->render_gallery_item( $attachment );
-						}
-					} ?>
-						<li class="add-attachment datasource-medialibrary">
-							<a href="#" data-uploader-title="<?php _e( 'Add Media To Gallery', 'foogallery' ); ?>"
-							   data-uploader-button-text="<?php _e( 'Add Media', 'foogallery' ); ?>"
-							   data-post-id="<?php echo $post->ID; ?>" class="upload_image_button"
-							   title="<?php _e( 'Add Media From Media Library', 'foogallery' ); ?>">
-								<div class="dashicons dashicons-format-gallery"></div>
-								<span><?php _e( 'Add From Media Library', 'foogallery' ); ?></span>
-							</a>
-						</li>
-                        <?php do_action( 'foogallery_gallery_metabox_items_after_addmedia_button' ); ?>
-					</ul>
-					<div style="clear: both;"></div>
-				</div>
-				<textarea style="display: none" id="foogallery-attachment-template">
-					<?php $this->render_gallery_item(); ?>
-				</textarea>
-			</div>
-			<div class="foogallery-items-view foogallery-items-view-preview <?php echo $mode==='preview' ? '' : 'hidden'; ?>">
-				<div class="foogallery_preview_container">
-				<?php
-				if ( $gallery->has_attachments() ) {
-					foogallery_render_gallery( $gallery->ID );
-				} else {
-					$this->render_empty_gallery_preview();
-				}
-				?>
-				</div>
-				<div style="clear: both"></div>
-				<?php wp_nonce_field( 'foogallery_preview', 'foogallery_preview', false ); ?>
-			</div>
-		<?php
-		}
-
-		public function render_empty_gallery_preview() {
-			echo '<div class="foogallery-preview-empty" style="padding:20px; text-align: center">';
-			echo '<h3>' . __( 'Please add media to your gallery to see a preview!', 'foogallery' ) . '</h3>';
-			echo '</div>';
-		}
-
-		public function render_gallery_item( $attachment_post = false ) {
-			if ( $attachment_post != false ) {
-				$attachment_id = $attachment_post->ID;
-				$attachment = wp_get_attachment_image_src( $attachment_id );
-				$extra_class = apply_filters( 'foogallery_admin_render_gallery_item_extra_classes' , '', $attachment_post );
-			} else {
-				$attachment_id = $attachment = $extra_class = '';
-			}
-
-			$data_attribute = empty($attachment_id) ? '' : "data-attachment-id=\"{$attachment_id}\"";
-			$img_tag        = empty($attachment) ? '<img width="150" height="150" />' : "<img width=\"150\" height=\"150\" src=\"{$attachment[0]}\" />";
-			?>
-			<li class="attachment details" <?php echo $data_attribute; ?>>
-				<div class="attachment-preview type-image <?php echo $extra_class; ?>">
-					<div class="thumbnail">
-						<div class="centered">
-							<?php echo $img_tag; ?>
-						</div>
-					</div>
-					<a class="info" href="#" title="<?php _e( 'Edit Info', 'foogallery' ); ?>">
-						<span class="dashicons dashicons-info"></span>
-					</a>
-					<a class="remove" href="#" title="<?php _e( 'Remove from gallery', 'foogallery' ); ?>">
-						<span class="dashicons dashicons-dismiss"></span>
-					</a>
-				</div>
-			</li>
-		<?php
-		}
-
-		public function render_gallery_settings_metabox( $post ) {
-            $gallery = $this->get_gallery( $post );
-
-			$gallery = apply_filters( 'foogallery_render_gallery_settings_metabox', $gallery );
-
-            $settings = new FooGallery_Admin_Gallery_MetaBox_Settings_Helper( $gallery );
-
-            $settings->render_hidden_gallery_template_selector();
-
-            $settings->render_gallery_settings();
 		}
 
 		public function render_gallery_shortcode_metabox( $post ) {
@@ -498,21 +355,6 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 			if ( FOOGALLERY_CPT_GALLERY === $screen_id ||
 			     'edit-' . FOOGALLERY_CPT_GALLERY === $screen_id ) {
 
-				//enqueue any dependencies from extensions or gallery templates
-				do_action( 'foogallery_enqueue_preview_dependencies' );
-				//add core foogallery files for preview
-				foogallery_enqueue_core_gallery_template_style();
-				foogallery_enqueue_core_gallery_template_script();
-
-				//spectrum needed for the colorpicker field
-				$url = FOOGALLERY_URL . 'lib/spectrum/spectrum.js';
-				wp_enqueue_script( 'foogallery-spectrum', $url, array('jquery'), FOOGALLERY_VERSION );
-				$url = FOOGALLERY_URL . 'lib/spectrum/spectrum.css';
-				wp_enqueue_style( 'foogallery-spectrum', $url, array(), FOOGALLERY_VERSION );
-
-				//make sure we have jquery UI sortable enqueued
-				wp_enqueue_script( 'jquery-ui-sortable');
-
 				//include any admin js required for the templates
 				foreach ( foogallery_gallery_templates() as $template ) {
 					$admin_js = foo_safe_get( $template, 'admin_js' );
@@ -592,58 +434,6 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 			}
 
 			die();
-		}
-
-		public function ajax_gallery_preview() {
-			if ( check_admin_referer( 'foogallery_preview', 'foogallery_preview_nonce' ) ) {
-
-				$foogallery_id = $_POST['foogallery_id'];
-
-				$template = $_POST['foogallery_template'];
-
-				//check that the template supports previews
-				$gallery_template = foogallery_get_gallery_template( $template );
-				if ( isset( $gallery_template['preview_support'] ) && true === $gallery_template['preview_support'] ) {
-
-					global $foogallery_gallery_preview;
-
-					$foogallery_gallery_preview = true;
-
-					$args = array(
-						'template'       => $template,
-						'attachment_ids' => $_POST['foogallery_attachments'],
-                        'preview'        => true
-					);
-
-					$args = apply_filters( 'foogallery_preview_arguments', $args, $_POST, $template );
-					$args = apply_filters( 'foogallery_preview_arguments-' . $template, $args, $_POST );
-
-					foogallery_render_gallery( $foogallery_id, $args );
-
-					$foogallery_gallery_preview = false;
-
-				} else {
-					echo '<div style="padding:20px 50px 50px 50px; text-align: center">';
-					echo '<h3>' . __( 'Preview not available!', 'foogallery' ) . '</h3>';
-					echo __('Sorry, but this gallery template does not support live previews. Please update the gallery in order to see what the gallery will look like.', 'foogallery' );
-					echo '</div>';
-				}
-			}
-
-			die();
-		}
-
-		/**
-		 * Handle gallery previews where there are no attachments
-		 *
-		 * @param $foogallery FooGallery
-		 */
-		public function preview_no_attachments( $foogallery ) {
-			global $foogallery_gallery_preview;
-
-			if ( isset( $foogallery_gallery_preview ) && true === $foogallery_gallery_preview ) {
-				$this->render_empty_gallery_preview();
-			}
 		}
 	}
 }
