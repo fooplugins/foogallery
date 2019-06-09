@@ -18,6 +18,18 @@
 		$('.foogallery_preview_container').addClass('foogallery-preview-force-refresh');
     };
 
+	FOOGALLERY.calculateHiddenAreas = function() {
+		if ( FOOGALLERY.attachments.length === 0 ) {
+			$('.foogallery-items-add').removeClass('hidden');
+			$('.foogallery-attachments-list').addClass('hidden');
+			$('.foogallery-items-empty').removeClass('hidden');
+		} else {
+			$('.foogallery-items-add').addClass('hidden');
+			$('.foogallery-attachments-list').removeClass('hidden');
+			$('.foogallery-items-empty').addClass('hidden');
+		}
+	};
+
     FOOGALLERY.initAttachments = function() {
         var attachments = $('#foogallery_attachments').val();
 		if (attachments) {
@@ -334,6 +346,8 @@
         FOOGALLERY.attachments.push( attachment.id );
 
         FOOGALLERY.calculateAttachmentIds();
+
+        FOOGALLERY.calculateHiddenAreas();
     };
 
     FOOGALLERY.removeAttachmentFromGalleryList = function(id) {
@@ -344,6 +358,8 @@
 		$('.foogallery-attachments-list [data-attachment-id="' + id + '"]').remove();
 
         FOOGALLERY.calculateAttachmentIds();
+
+		FOOGALLERY.calculateHiddenAreas();
     };
 
 	FOOGALLERY.showAttachmentInfoModal = function(id) {
@@ -469,6 +485,10 @@
 			FOOGALLERY.mediaModalButtonText = $(this).data( 'uploader-button-text' );
 			FOOGALLERY.openMediaModal(0);
         });
+
+		$(document).on('foogallery-datasource-changed', function() {
+
+		});
 
         FOOGALLERY.initAttachments();
 

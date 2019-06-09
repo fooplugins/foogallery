@@ -12,6 +12,7 @@ define( 'FOOGALLERY_META_TEMPLATE', 'foogallery_template' );
 define( 'FOOGALLERY_META_SORT', 'foogallery_sort' );
 define( 'FOOGALLERY_META_DATASOURCE', 'foogallery_datasource' );
 define( 'FOOGALLERY_META_DATASOURCE_VALUE', '_foogallery_datasource_value' );
+define( 'FOOGALLERY_META_DATASOURCE_CACHED_ATTACHMENTS', '_foogallery_datasource_cached_attachments' );
 define( 'FOOGALLERY_META_POST_USAGE', '_foogallery' );
 define( 'FOOGALLERY_META_POST_USAGE_CSS', '_foogallery_css' );
 define( 'FOOGALLERY_META_RETINA', 'foogallery_retina' );
