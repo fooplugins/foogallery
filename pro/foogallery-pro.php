@@ -44,6 +44,7 @@ if ( ! class_exists( 'FooGallery_Pro' ) ) {
 			new FooGallery_Pro_Video_Legacy();
 			new FooGallery_Pro_Instagram_Filters();
 			new FooGallery_Pro_Datasources();
+			new FooGallery_Pro_Datasource_MediaTags();
 		}
 	}
 }

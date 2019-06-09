@@ -173,6 +173,9 @@ if ( function_exists( 'foogallery_fs' ) ) {
 				//include the default templates no matter what!
 				new FooGallery_Default_Templates();
 
+				//init the default media library datasource
+				new FooGallery_Datasource_MediaLibrary();
+
 				if ( foogallery_fs()->is__premium_only() ) {
 					if ( foogallery_fs()->can_use_premium_code() ) {
 						require_once FOOGALLERY_PATH . 'pro/foogallery-pro.php';

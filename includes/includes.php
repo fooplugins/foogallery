@@ -51,7 +51,6 @@ require_once( FOOGALLERY_PATH . 'includes/class-foogallery-default-crop-position
 require_once( FOOGALLERY_PATH . 'includes/class-foogallery-force-https.php' );
 
 //Datasource includes
-require_once( FOOGALLERY_PATH . 'includes/interface-foogallery-datasource.php' );
 require_once( FOOGALLERY_PATH . 'includes/class-foogallery-datasource-media_library.php' );
 
 if ( is_admin() ) {

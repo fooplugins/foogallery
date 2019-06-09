@@ -4,100 +4,177 @@
  */
 if ( ! class_exists( 'FooGallery_Pro_Datasource_MediaTags' ) ) {
 
-    class FooGallery_Pro_Datasource_MediaTags implements IFooGalleryDatasource {
+    class FooGallery_Pro_Datasource_MediaTags {
 
-        /**
-         * @var FooGallery
-         */
-        private $foogallery;
+    	public function __construct() {
+			add_filter( 'foogallery_datasource_media_tags_item_count', array( $this, 'get_gallery_attachment_count' ), 10, 2 );
+			add_filter( 'foogallery_datasource_media_tags_featured_image', array( $this, 'get_gallery_featured_attachment' ), 10, 2 );
+			add_filter( 'foogallery_datasource_media_tags_attachments', array( $this, 'get_gallery_attachments' ), 10, 2 );
+			add_action( 'foogallery-datasource-modal-content_media_tags', array($this, 'render_datasource_modal_content'), 10, 2 );
+		}
 
-        /**
-         * Sets the FooGa llery object we are dealing with
-         *
-         * @param $foogallery FooGallery
-         */
-        public function setGallery($foogallery) {
-            $this->foogallery = $foogallery;
-        }
+		/**
+		 * Returns the number of attachments used from the media library
+		 *
+		 * @param int $count
+		 * @param FooGallery $foogallery
+		 *
+		 * @return int
+		 */
+		public function get_gallery_attachment_count( $count, $foogallery ) {
+			$cached_attachments = get_post_meta( $foogallery->ID, FOOGALLERY_META_DATASOURCE_CACHED_ATTACHMENTS, true );
 
-        /**
-         * Returns the number of images/videos in the datasource
-         * @return int
-         */
-        public function getCount() {
+			if ( is_array( $cached_attachments ) ) {
+				return count( $cached_attachments );
+			}
 
-            //TODO : refactor this so that the count is cached
-            return count( $this->getAttachments() ) > 0;
-        }
+			return count( $this->get_gallery_attachments( array(), $foogallery ) );
+		}
 
-        /**
-         * Returns an array of FooGalleryAttachments from the datasource
-         * @return array(FooGalleryAttachment)
-         */
-        public function getAttachments() {
-            $attachments = array();
+		/**
+		 * Returns an array of FooGalleryAttachments from the datasource
+		 *
+		 * @param array $attachments
+		 * @param FooGallery $foogallery
+		 *
+		 * @return array(FooGalleryAttachment)
+		 */
+		public function get_gallery_attachments( $attachments, $foogallery ) {
+			if ( ! empty( $foogallery->datasource_value ) ) {
 
-            if ( ! empty( $this->foogallery->datasouce_value ) ) {
+				$helper = new FooGallery_Datasource_MediaLibrary_Query_Helper();
 
-                global $current_foogallery_arguments;
+				//check if there is a cached list of attachments
+				$cached_attachments = get_post_meta( $foogallery->ID, FOOGALLERY_META_DATASOURCE_CACHED_ATTACHMENTS, true );
 
-                //check if a sorting override has been applied
-                if ( isset( $current_foogallery_arguments ) && isset( $current_foogallery_arguments['sort'] ) ) {
-                    $this->foogallery->sorting = $current_foogallery_arguments['sort'];
-                }
+				if ( empty( $cached_attachments ) ) {
+					$datasource_value = json_decode( $foogallery->datasource_value );
+					$terms            = $datasource_value->value;
+					$attachments      = $helper->query_attachments( $foogallery, array(
+						'tax_query' => array(
+							array(
+								'taxonomy' => FOOGALLERY_ATTACHMENT_TAXONOMY_TAG,
+								'field'    => 'term_id',
+								'terms'    => $terms,
+							),
+						)
+					) );
 
-                $datasource_value = json_decode( $this->foogallery->datasouce_value );
-                $terms = $datasource_value->value;
+					$attachment_ids = array();
+					foreach ( $attachments as $attachment ) {
+						$attachment_ids[] = $attachment->ID;
+					}
+					//save a cached list of attachments
+					update_post_meta( $foogallery->ID, FOOGALLERY_META_DATASOURCE_CACHED_ATTACHMENTS, $attachment_ids );
+				} else {
+					$attachments = $helper->query_attachments( $foogallery,
+						array( 'post__in' => $cached_attachments )
+					);
+				}
+			}
 
-                //add_action( 'pre_get_posts', array( $this, 'force_gallery_ordering' ), 99 );
-                //add_action( 'pre_get_posts', array( $this, 'force_suppress_filters' ), PHP_INT_MAX );
+			return $attachments;
+		}
 
-                $attachment_query_args = apply_filters( 'foogallery_attachment_get_posts_args', array(
-                    'post_type'      => 'attachment',
-                    'posts_per_page' => -1,
-                    'tax_query' => array(
-                        array(
-                            'taxonomy' => FOOGALLERY_ATTACHMENT_TAXONOMY_TAG,
-                            'field'    => 'term_id',
-                            'terms'    => $terms,
-                        ),
-                    ),
-                    'orderby'        => foogallery_sorting_get_posts_orderby_arg( $this->foogallery->sorting ),
-                    'order'          => foogallery_sorting_get_posts_order_arg( $this->foogallery->sorting )
-                ) );
+		/**
+		 * Returns the featured FooGalleryAttachment from the datasource
+		 *
+		 * @param FooGalleryAttachment $default
+		 * @param FooGallery $foogallery
+		 *
+		 * @return bool|FooGalleryAttachment
+		 */
+		public function get_gallery_featured_attachment( $default, $foogallery ) {
+			$cached_attachments = get_post_meta( $foogallery->ID, FOOGALLERY_META_DATASOURCE_CACHED_ATTACHMENTS, true );
 
-                $attachment_posts = get_posts( $attachment_query_args );
+			if ( is_array( $cached_attachments ) && count( $cached_attachments ) > 0 ) {
+				return FooGalleryAttachment::get_by_id( $cached_attachments[0] );
+			}
 
-                //remove_action( 'pre_get_posts', array( $this, 'force_gallery_ordering' ), 99 );
-                //remove_action( 'pre_get_posts', array( $this, 'force_suppress_filters' ), PHP_INT_MAX );
+			return false;
+		}
 
-                $attachments = array_map( array( $this, 'build_attachment' ), $attachment_posts );
-            }
+		/**
+		 * Output the datasource modal content
+		 * @param $datasource
+		 */
+		function render_datasource_modal_content( $foogallery_id ) {
+			?>
+			<style>
+				.datasource-taxonomy {
+					position: relative;
+					float: left;
+					margin-right: 10px;
+				}
 
-            return $attachments;
-        }
+				.datasource-taxonomy a {
+					border: 1px solid #ddd;
+					border-radius: 5px;
+					padding: 4px 8px;
+					display: block;
+					padding: 10px;
+					text-align: center;
+					text-decoration: none;
+					font-size: 1.2em;
+				}
 
-        function build_attachment( $attachment_post ) {
-            $attachment = apply_filters( 'foogallery_attachment_load', FooGalleryAttachment::get( $attachment_post ), $this->foogallery );
-            return $attachment;
-        }
+				.datasource-taxonomy a.active {
+					color: #fff;
+					background: #0085ba;
+					border-color: #0073aa #006799 #006799;
+				}
+			</style>
+			<script type="text/javascript">
+				jQuery(function ($) {
+					$('.foogallery-datasource-modal-container').on('click', '.datasource-taxonomy a', function (e) {
+						e.preventDefault();
+						$(this).toggleClass('active');
+						$selected = $(this).parents('ul:first').find('a.active');
 
-        /**
-         * Returns the featured FooGalleryAttachment from the datasource
-         * @return bool|FooGalleryAttachment
-         */
-        public function getFeaturedAttachment() {
-            return false;
-        }
+						//validate if the OK button can be pressed.
+						if ( $selected.length > 0 ) {
+							$('.foogallery-datasource-modal-insert').removeAttr( 'disabled' );
 
-        /**
-         * Returns a serialized string that represents the media in the datasource.
-         * This string is persisted when saving a FooGallery
-         *
-         * @return string
-         */
-        public function getSerializedData() {
-            return '';
-        }
+							var taxonomy_values = [],
+								taxonomies = [];
+
+							$selected.each(function() {
+								taxonomy_values.push( $(this).data('termId') );
+								taxonomies.push( $(this).text() );
+							});
+
+							var text = '<strong><?php _e( 'Media Tags', 'foogallery' );?>:</strong><br />' + taxonomies.join(', ');
+
+							//set the selection
+							$('#foogallery_datasource_value').val( JSON.stringify( {
+								"datasource" : "media_tags",
+								"value" : taxonomy_values,
+								"text" : text
+							} ) );
+						} else {
+							$('.foogallery-datasource-modal-insert').attr('disabled','disabled');
+
+							//clear the selection
+							$('#foogallery_datasource_value').val('');
+						}
+					});
+				});
+			</script>
+			<p><?php _e('Select a media tag from the list below. The gallery will then dynamically load all attachments that are associated to that tag.', 'foogallery'); ?></p>
+			<ul>
+				<?php
+
+				$terms = get_terms( FOOGALLERY_ATTACHMENT_TAXONOMY_TAG, array('hide_empty' => false) );
+
+				foreach($terms as $term) {
+					?><li class="datasource-taxonomy media_tags">
+					<a href="#" data-term-id="<?php echo $term->term_id; ?>"><?php echo $term->name; ?></a>
+					</li><?php
+				}
+
+				?>
+			</ul>
+			<?php
+		}
     }
 }

@@ -29,7 +29,6 @@ class FooGallery extends stdClass {
 		$this->attachment_ids = array();
 		$this->_attachments = false;
 		$this->datasource_name = foogallery_default_datasource();
-		$this->_datasource = false;
 		$this->settings = array();
 		$this->sorting = '';
 		$this->force_use_original_thumbs = false;
@@ -69,7 +68,7 @@ class FooGallery extends stdClass {
 		if ( empty( $this->datasource_name ) ) {
 			$this->datasource_name = foogallery_default_datasource();
 		} else {
-            $this->datasouce_value = get_post_meta( $post_id, FOOGALLERY_META_DATASOURCE_VALUE, true );
+            $this->datasource_value = get_post_meta( $post_id, FOOGALLERY_META_DATASOURCE_VALUE, true );
         }
         $this->retina = get_post_meta( $post_id, FOOGALLERY_META_RETINA, true );
 		$this->force_use_original_thumbs = 'true' === get_post_meta( $post_id, FOOGALLERY_META_FORCE_ORIGINAL_THUMBS, true );
@@ -235,15 +234,18 @@ class FooGallery extends stdClass {
 	}
 
 	/**
-	 * Returns the number of attachments in the current gallery
+	 * Returns the number of attachments in the current gallery, that were added from the media library
 	 * @return int
 	 */
 	public function attachment_count() {
-		return $this->datasource()->getCount();
+		if ( is_array( $this->attachment_ids ) ) {
+			return count( $this->attachment_ids );
+		}
+		return 0;
 	}
 
 	/**
-	 * Checks if the gallery has attachments
+	 * Checks if the gallery has attachments. There will only be attachments if they were added from the media library.
 	 * @return bool
 	 */
 	public function has_attachments() {
@@ -279,7 +281,10 @@ class FooGallery extends stdClass {
 	 * @return string
 	 */
 	public function attachment_id_csv() {
-		return $this->datasource()->getSerializedData();
+		if ( is_array( $this->attachment_ids ) ) {
+			return implode( ',', $this->attachment_ids );
+		}
+		return '';
 	}
 
 	/**
@@ -290,21 +295,10 @@ class FooGallery extends stdClass {
 	public function attachments() {
 		//lazy load the attachments for performance
 		if ( $this->_attachments === false ) {
-			$this->_attachments = $this->datasource()->getAttachments();
+			$this->_attachments = $this->apply_datasource_filter( 'attachments', array() );
 		}
 
 		return $this->_attachments;
-	}
-
-	/**
-	 * @deprecated 1.3.0 This is now moved into the datasource implementation
-	 *
-	 * This forces the attachments to be fetched using the correct ordering.
-	 * Some plugins / themes override this globally for some reason, so this is a preventative measure to ensure sorting is correct
-	 * @param $query WP_Query
-	 */
-	public function force_gallery_ordering( $query ) {
-		_deprecated_function( __FUNCTION__, '1.3.0' );
 	}
 
 	/**
@@ -317,61 +311,34 @@ class FooGallery extends stdClass {
 	}
 
 	/**
-	 * @deprecated 1.3.0 This is now moved into the datasource implementation
-	 *
-	 * @return int|mixed|string
-	 */
-	public function find_featured_attachment_id() {
-		_deprecated_function( __FUNCTION__, '1.3.0' );
-
-		return 0;
-	}
-
-	/**
 	 * Gets the featured image FooGalleryAttachment object. If no featured image is set, then get back the first image in the gallery
 	 *
 	 * @return bool|FooGalleryAttachment
 	 */
 	public function featured_attachment() {
-		return $this->datasource()->getFeaturedAttachment();
+		//first try get back the featured image for the gallery
+		$attachment_id = get_post_thumbnail_id( $this->ID );
+		if ( $attachment_id ) {
+			return FooGalleryAttachment::get_by_id( $attachment_id );
+		}
+
+		//then get the featured image from the datasource
+		$default_placeholder_attachment = new FooGalleryAttachment();
+		$default_placeholder_attachment->url = foogallery_image_placeholder_src();
+
+		return $this->apply_datasource_filter( 'featured_image', $default_placeholder_attachment );
 	}
 
 	/**
-	 * @deprecated 1.3.0 This is now moved into the datasource implementation
-	 *
-	 * @param string $size
-	 * @param bool   $icon
-	 *
-	 * @return bool
+	 * Returns the string representation of the number of items in the gallery
+	 * @return string
 	 */
-	public function featured_image_src( $size = 'thumbnail', $icon = false ) {
-		_deprecated_function( __FUNCTION__, '1.3.0' );
-
-		return false;
-	}
-
-	/**
-	 * @deprecated 1.3.0 This is now moved into the datasource implementation
-	 *
-	 * Get an HTML img element representing the featured image for the gallery
-	 *
-	 * @param string $size Optional, default is 'thumbnail'.
-	 * @param bool $icon Optional, default is false. Whether it is an icon.
-	 *
-	 * @return string HTML img element or empty string on failure.
-	 */
-	public function featured_image_html( $size = 'thumbnail', $icon = false ) {
-		_deprecated_function( __FUNCTION__, '1.3.0' );
-
-		return '';
-	}
-
 	public function image_count() {
 		$no_images_text = foogallery_get_setting( 'language_images_count_none_text',   __( 'No images', 'foogallery' ) );
 		$singular_text  = foogallery_get_setting( 'language_images_count_single_text', __( '1 image', 'foogallery' ) );
 		$plural_text    = foogallery_get_setting( 'language_images_count_plural_text', __( '%s images', 'foogallery' ) );
 
-		$count = $this->attachment_count();
+		$count = $this->item_count();
 
 		switch ( $count ) {
 			case 0:
@@ -398,6 +365,10 @@ class FooGallery extends stdClass {
 				$this->name;
 	}
 
+	/**
+	 * Finds usages of the FooGallery
+	 * @return WP_Post[]
+	 */
 	public function find_usages() {
 		return get_posts( array(
 			'post_type'      => foogallery_allowed_post_types_for_usage(),
@@ -414,6 +385,10 @@ class FooGallery extends stdClass {
 		) );
 	}
 
+	/**
+	 * Returns the current gallery template details
+	 * @return array|bool
+	 */
 	public function gallery_template_details() {
 		if ( ! empty( $this->gallery_template ) ) {
 
@@ -429,7 +404,7 @@ class FooGallery extends stdClass {
 
 	/**
 	 * Returns the name of the gallery template
-	 * @return string|void
+	 * @return string
 	 */
 	public function gallery_template_name() {
 		$template = $this->gallery_template_details();
@@ -439,6 +414,12 @@ class FooGallery extends stdClass {
 		return __( 'Unknown', 'foogallery' );
 	}
 
+	/**
+	 * Returns true if the gallery template has a field of a certain type
+	 * @param $field_type
+	 *
+	 * @return bool
+	 */
 	public function gallery_template_has_field_of_type( $field_type ) {
 		$gallery_template_details = $this->gallery_template_details();
 
@@ -465,18 +446,33 @@ class FooGallery extends stdClass {
 		}
 	}
 
-	/**
-	 * Returns the current gallery datasource object
-	 *
-	 * @returns IFooGalleryDatasource
-	 */
-	public function datasource() {
-		//lazy load the datasource only when needed
-		if ( $this->_datasource === false ) {
-			$this->_datasource = foogallery_instantiate_datasource( $this->datasource_name );
-			$this->_datasource->setGallery( $this );
-		}
 
-		return $this->_datasource;
+	/**
+	 * Small helper function to apply the datasource-specific filters in a consistent way
+	 * @param $filter_name
+	 * @param $filter_default_value
+	 * @since 1.8.0
+	 * @return mixed
+	 */
+	private function apply_datasource_filter( $filter_name, $filter_default_value ) {
+		return apply_filters( "foogallery_datasource_{$this->datasource_name}_{$filter_name}" , $filter_default_value, $this );
+	}
+
+	/**
+	 * Does the current gallery contain any items
+	 * @return bool
+	 * @since 1.8.0
+	 */
+	public function has_items() {
+		return $this->item_count() > 0;
+	}
+
+	/**
+	 * Return the number of items in the gallery. This is determined by querying the gallery datasource
+	 * @return bool
+	 * @since 1.8.0
+	 */
+	public function item_count() {
+		return $this->apply_datasource_filter('item_count', 0 );
 	}
 }

@@ -771,7 +771,6 @@ function foogallery_gallery_datasources() {
 	    'id'     => $default_datasource,
 	    'name'   => __( 'Media Library', 'foogalery' ),
         'label'  => __( 'From Media Library', 'foogallery' ),
-	    'class'  => 'FooGalleryDatasource_MediaLibrary',
         'public' => false
     );
 
@@ -785,25 +784,6 @@ function foogallery_gallery_datasources() {
  */
 function foogallery_default_datasource() {
 	return foogallery_get_default( 'datasource', 'media_library' );
-}
-
-/**
- * Instantiates a FooGallery datasource based on a datasource name
- *
- * @param $datasource_name string
- *
- * @return IFooGalleryDatasource
- */
-function foogallery_instantiate_datasource( $datasource_name ) {
-	$datasources = foogallery_gallery_datasources();
-	if ( array_key_exists( $datasource_name, $datasources ) ) {
-
-	    $datasource = $datasources[$datasource_name];
-		return new $datasource['class'];
-
-	}
-
-	return new FooGalleryDatasource_MediaLibrary();
 }
 
 /**
