@@ -351,7 +351,7 @@ class FooGallery extends stdClass {
 				$count_text = sprintf( $plural_text === false ?  __( '%s images', 'foogallery' ) : $plural_text, $count );
 		}
 
-		return esc_html( apply_filters( 'foogallery_image_count', $count_text, $this ) );
+		return esc_html( apply_filters( 'foogallery_image_count', $count_text, $this, $count ) );
 	}
 
 	/**
@@ -475,4 +475,12 @@ class FooGallery extends stdClass {
 	public function item_count() {
 		return $this->apply_datasource_filter('item_count', 0 );
 	}
+
+	public function is_empty() {
+	    if ( foogallery_default_datasource() ===  $this->datasource_name ) {
+	        return $this->attachment_count() === 0;
+        }
+
+        return empty( $this->datasource_value );
+    }
 }
