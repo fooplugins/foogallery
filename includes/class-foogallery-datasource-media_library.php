@@ -96,7 +96,7 @@ if ( ! class_exists( 'FooGallery_Datasource_MediaLibrary' ) ) {
 			//always output the ability to add via media library
 			$has_attachments = $foogallery->has_attachments();
 			?>
-			<input type="hidden" name='foogallery_attachments' id="foogallery_attachments" value="<?php echo $foogallery->attachment_id_csv(); ?>"/>
+			<input type="hidden" data-foogallery-preview="include" name='foogallery_attachments' id="foogallery_attachments" value="<?php echo $foogallery->attachment_id_csv(); ?>"/>
 			<ul class="foogallery-attachments-list <?php echo $has_attachments ? '' : 'hidden'; ?>">
 				<?php
 				//render all attachments that have been added to the gallery from the media library

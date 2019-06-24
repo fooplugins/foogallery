@@ -19,15 +19,19 @@
     };
 
 	FOOGALLERY.calculateHiddenAreas = function() {
-		if ( FOOGALLERY.attachments.length === 0 ) {
-			$('.foogallery-items-add').removeClass('hidden');
-			$('.foogallery-attachments-list').addClass('hidden');
-			$('.foogallery-items-empty').removeClass('hidden');
-		} else {
-			$('.foogallery-items-add').addClass('hidden');
-			$('.foogallery-attachments-list').removeClass('hidden');
-			$('.foogallery-items-empty').addClass('hidden');
-		}
+        FOOGALLERY.showHiddenAreas( FOOGALLERY.attachments.length === 0 );
+	};
+
+	FOOGALLERY.showHiddenAreas = function( show ) {
+        if ( show ) {
+            $('.foogallery-items-add').removeClass('hidden');
+            $('.foogallery-attachments-list').addClass('hidden');
+            $('.foogallery-items-empty').removeClass('hidden');
+        } else {
+            $('.foogallery-items-add').addClass('hidden');
+            $('.foogallery-attachments-list').removeClass('hidden');
+            $('.foogallery-items-empty').addClass('hidden');
+        }
 	};
 
     FOOGALLERY.initAttachments = function() {
@@ -137,7 +141,14 @@
         //add additional data for the preview
 		data.push({name: 'foogallery_id', value: foogallery_id});
 		data.push({name: 'foogallery_template', value: FOOGALLERY.getSelectedTemplate()});
+
+		//include other preview fields
+        var previewData = $('[data-foogallery-preview="include"]').serializeArray();
+        data = data.concat(previewData);
+
 		data.push({name: 'foogallery_attachments', value: $('#foogallery_attachments').val()});
+        data.push({name: 'foogallery_datasource', value: $('#foogallery_datasource').val()});
+        data.push({name: 'foogallery_datasource_value', value: $('#_foogallery_datasource_value').val()});
 
 		//add data needed for the ajax call
 		data.push({name: 'action', value: 'foogallery_preview'});
@@ -487,7 +498,7 @@
         });
 
 		$(document).on('foogallery-datasource-changed', function() {
-
+            FOOGALLERY.calculateHiddenAreas();
 		});
 
         FOOGALLERY.initAttachments();
@@ -524,6 +535,11 @@
 			preferredFormat: "rgb",
 			showInput: true,
 			clickoutFiresChange: true
+		});
+
+		$('.foogallery_preview_container .foogallery a').click(function(e) {
+			e.preventDefault();
+            e.stopPropagation();
 		});
     };
 

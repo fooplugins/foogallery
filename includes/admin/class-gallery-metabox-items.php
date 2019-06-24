@@ -46,9 +46,10 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Items' ) ) {
 			if ( empty($mode) || $gallery->is_new() ) {
 				$mode = 'manage';
 			}
-			$has_items = $gallery->has_items();
+			$has_items = !$gallery->is_empty();
+
+			do_action( 'foogallery_gallery_metabox_items', $gallery );
 			?>
-			<input type="hidden" name="foogallery_datasource" value="<?php echo $gallery->datasource_name; ?>" id="foogallery_datasource" />
 			<div class="hidden foogallery-items-view-switch-container">
 				<div class="foogallery-items-view-switch">
 					<a href="#manage" data-value="manage" data-container=".foogallery-items-view-manage" class="<?php echo $mode==='manage' ? 'current' : ''; ?>"><?php _e('Manage Items', 'foogallery'); ?></a>
