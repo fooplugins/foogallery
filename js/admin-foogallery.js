@@ -107,7 +107,10 @@
 		if ( $preview.data('fg-common-fields') ) {
 			if ( initGallery ) {
 				$preview.foogallery( {}, function() {
-					$preview_container.css( 'height', '' );
+					$preview_container.css( 'height', '' )
+						.find(".fg-thumb").off("click.foogallery").on("click", function(e){
+                        	e.preventDefault();
+                    	});
 				} );
 			} else {
 				$preview.foogallery( 'layout' );
@@ -535,11 +538,6 @@
 			preferredFormat: "rgb",
 			showInput: true,
 			clickoutFiresChange: true
-		});
-
-		$('.foogallery_preview_container .foogallery a').click(function(e) {
-			e.preventDefault();
-            e.stopPropagation();
 		});
     };
 
