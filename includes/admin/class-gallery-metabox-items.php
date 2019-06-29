@@ -72,9 +72,9 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Items' ) ) {
 				</div>
 			</div>
 			<div class="foogallery-items-view foogallery-items-view-preview <?php echo $mode==='preview' ? '' : 'hidden'; ?>">
-				<div class="foogallery_preview_container">
+				<div class="foogallery_preview_container <?php echo $mode==='preview' ? '' : 'foogallery-preview-force-refresh'; ?>">
 					<?php
-					if ( $has_items ) {
+					if ( $has_items && $mode==='preview' ) {
 						foogallery_render_gallery( $gallery->ID );
 					} else {
 						$this->render_empty_gallery_preview();
