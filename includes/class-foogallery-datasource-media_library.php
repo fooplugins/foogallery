@@ -79,7 +79,7 @@ if ( ! class_exists( 'FooGallery_Datasource_MediaLibrary' ) ) {
 					data-uploader-title="<?php _e( 'Add Media To Gallery', 'foogallery' ); ?>"
 					data-uploader-button-text="<?php _e( 'Add Media', 'foogallery' ); ?>"
 					data-post-id="<?php echo $foogallery->ID; ?>">
-				<span class="dashicons dashicons-admin-media"></span><?php _e( 'Add Items From Media Library', 'foogallery' ); ?>
+				<span class="dashicons dashicons-admin-media"></span><?php _e( 'Add From Media Library', 'foogallery' ); ?>
 			</button>
 			<?php
 		}

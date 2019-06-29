@@ -149,7 +149,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Datasources' ) ) {
             if ( count( $datasources ) > 1 ) { ?>
 				<p><?php _e('or', 'foogallery');?></p>
 				<button type="button" class="button button-secondary button-hero gallery_datasources_button">
-					<span class="dashicons dashicons-format-gallery"></span><?php _e( 'Add Items From Another Source', 'foogallery' ); ?>
+					<span class="dashicons dashicons-format-gallery"></span><?php _e( 'Add From Another Source', 'foogallery' ); ?>
 				</button>
             <?php }
         }

@@ -145,20 +145,17 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_MediaTags' ) ) {
 				}
 
 				.datasource-taxonomy a {
-					border: 1px solid #ddd;
+                    background: #efefef;
 					border-radius: 5px;
-					padding: 4px 8px;
+					padding: 4px 12px;
 					display: block;
-					padding: 10px;
 					text-align: center;
 					text-decoration: none;
 					font-size: 1.2em;
 				}
 
 				.datasource-taxonomy a.active {
-					color: #fff;
-					background: #0085ba;
-					border-color: #0073aa #006799 #006799;
+					background: #bbb;
 				}
 			</style>
 			<script type="text/javascript">
@@ -173,20 +170,20 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_MediaTags' ) ) {
 							$('.foogallery-datasource-modal-insert').removeAttr( 'disabled' );
 
 							var taxonomy_values = [],
-								taxonomies = [];
+								taxonomies = [],
+                                html = '';
 
 							$selected.each(function() {
 								taxonomy_values.push( $(this).data('termId') );
 								taxonomies.push( $(this).text() );
+                                html += '<li>' + $(this).text() + '</li>';
 							});
-
-							var text = '<strong><?php _e( 'Media Tags', 'foogallery' );?>:</strong><br />' + taxonomies.join(', ');
 
 							//set the selection
 							$('#<?php echo FOOGALLERY_META_DATASOURCE_VALUE; ?>').val( JSON.stringify( {
 								"taxonomy" : "<?php echo FOOGALLERY_ATTACHMENT_TAXONOMY_TAG; ?>",
 								"value" : taxonomy_values,
-								"text" : text
+								"html" : '<ul>' + html + '</ul>'
 							} ) );
 						} else {
 							$('.foogallery-datasource-modal-insert').attr('disabled','disabled');
@@ -197,7 +194,7 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_MediaTags' ) ) {
 					});
 				});
 			</script>
-			<p><?php _e('Select a media tag from the list below. The gallery will then dynamically load all attachments that are associated to that tag.', 'foogallery'); ?></p>
+			<p><?php _e('Select one or more Media Tags from the list below. The gallery will then dynamically load all attachments that are associated to the selected Media Tags.', 'foogallery'); ?></p>
 			<ul>
 				<?php
 
@@ -220,13 +217,40 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_MediaTags' ) ) {
          * @param FooGallery $gallery
          */
 		function render_datasource_item( $gallery ) { ?>
+            <style type="text/css">
+                .foogallery-datasource-taxonomy {
+                    padding: 20px;
+                    text-align: center;
+                }
+
+                .foogallery-datasource-taxonomy ul {
+                    list-style: none;
+                    margin-bottom: 20px;
+                }
+
+                .foogallery-datasource-taxonomy ul li {
+                    display: inline-block;
+                    margin-right: 10px;
+                    border-radius: 5px;
+                    padding: 4px 12px;
+                    text-align: center;
+                    text-decoration: none;
+                    font-size: 1.2em;
+                    background: #bbb;
+                }
+
+                .foogallery-datasource-taxonomy-help h4 {
+                    font-weight: bold;
+                    text-decoration: underline;
+                }
+            </style>
             <script type="text/javascript">
                 jQuery(function ($) {
-                    $('.foogallery-datasource-items-list-media_tags').on('click', '.datasource-info a.remove', function (e) {
+                    $('.foogallery-datasource-items-list-media_tags').on('click', 'button.remove', function (e) {
                         e.preventDefault();
 
-                        //clear the items
-                        $(this).parents('.datasource-info').hide();
+                        //hide the previous info
+                        $(this).parents('.foogallery-datasource-taxonomy').hide();
 
                         //clear the datasource value
                         $('#<?php echo FOOGALLERY_META_DATASOURCE_VALUE; ?>').val('');
@@ -242,28 +266,61 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_MediaTags' ) ) {
 
                         FOOGALLERY.showHiddenAreas( true );
 
+                        //ensure the preview will be refreshed
                         $('.foogallery_preview_container').addClass('foogallery-preview-force-refresh');
                     });
 
-                    $('.foogallery-datasource-items-list-media_tags').on('click', '.datasource-info a.edit', function (e) {
+                    $('.foogallery-datasource-items-list-media_tags').on('click', 'button.edit', function (e) {
                         e.preventDefault();
 
+                        //show the modal
                         $('.foogallery-datasources-modal-wrapper').show();
 
                         //select the media tags datasource
                         $('.foogallery-datasource-modal-selector[data-datasource="media_tags"]').click();
                     });
 
+                    $('.foogallery-datasource-items-list-media_tags').on('click', 'button.media', function(e) {
+                       e.preventDefault();
+
+                        if (typeof(document.foogallery_media_tags_modal) !== 'undefined'){
+                            document.foogallery_media_tags_modal.open();
+                            return;
+                        }
+
+                        document.foogallery_media_tags_modal = wp.media({
+                            frame: 'select',
+                            title: '<?php _e('Assign Media Tags', 'foogallery'); ?>',
+                            button: {
+                                text: '<?php _e('Close', 'foogallery'); ?>'
+                            },
+                            library: {
+                                type: 'image'
+                            }
+                        }).on( 'open', function() {
+                            //ensure the preview will be refreshed
+                            $('.foogallery_preview_container').addClass('foogallery-preview-force-refresh');
+                        });
+
+                        document.foogallery_media_tags_modal.open();
+                    });
+
+                    $('.foogallery-datasource-items-list-media_tags').on('click', 'button.help', function(e) {
+                        e.preventDefault();
+
+                        $('.foogallery-datasource-taxonomy-help').toggle();
+                    });
+
                     $(document).on('foogallery-datasource-changed-media_tags', function() {
-                        var $template = $($('#foogallery-datasource-template-media_tags').val()),
+                        var $container = $('.foogallery-datasource-taxonomy'),
                             datasource_value = $('#<?php echo FOOGALLERY_META_DATASOURCE_VALUE; ?>').val();
 
                         if ( datasource_value.length > 0 ) {
                             var datasource_value_json = JSON.parse( datasource_value );
 
-                            $template.find('.centered').html(datasource_value_json.text);
+                            $container.find('.foogallery-items-html').html(datasource_value_json.html);
 
-                            $('.foogallery-datasource-items-list-media_tags').html($template);
+                            $container.show();
 
                             FOOGALLERY.showHiddenAreas( false );
 
@@ -274,39 +331,39 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_MediaTags' ) ) {
                     });
                 });
             </script>
-            <textarea style="display: none;" id="foogallery-datasource-template-media_tags">
-                <li class="datasource-info">
-                    <div>
-                        <div class="centered"></div>
-                        <a class="edit" href="#" title="<?php _e( 'Edit Media Tags', 'foogallery' ); ?>">
-                            <span class="dashicons dashicons-info"></span>
-                        </a>
-                        <a class="remove" href="#" title="<?php _e( 'Remove from gallery', 'foogallery' ); ?>">
-                            <span class="dashicons dashicons-dismiss"></span>
-                        </a>
-                    </div>
-                </li>
-            </textarea>
             <ul class="foogallery-datasource-items-list-media_tags">
         <?php
             //if we have a datasource set and its for media tags then output the item
             if ( isset( $gallery->datasource_name) && 'media_tags' === $gallery->datasource_name ) {
                 ?>
-                <li class="datasource-info">
-                    <div>
-                        <div class="centered"><?php echo $gallery->datasource_value['text']; ?></div>
-                        <a class="edit" href="#" title="<?php _e( 'Edit Media Tags', 'foogallery' ); ?>">
-                            <span class="dashicons dashicons-info"></span>
-                        </a>
-                        <a class="remove" href="#" title="<?php _e( 'Remove from gallery', 'foogallery' ); ?>">
-                            <span class="dashicons dashicons-dismiss"></span>
-                        </a>
+                <div class="foogallery-datasource-taxonomy">
+                    <h3><?php _e('Datasource : Media Tags', 'foogallery'); ?></h3>
+                    <p><?php _e('This gallery will be dynamically populated with all attachments assigned to the following Media Tags:', 'foogallery'); ?></p>
+                    <div class="foogallery-items-html"><?php echo $gallery->datasource_value['html']; ?></div>
+                    <button type="button" class="button button-small edit">
+                        <span class="dashicons dashicons-edit"></span><?php _e( 'Change Media Tags', 'foogallery' ); ?>
+                    </button>
+                    <button type="button" class="button button-small remove">
+                        <span class="dashicons dashicons-dismiss"></span><?php _e( 'Remove All Media Tags', 'foogallery' ); ?>
+                    </button>
+                    <button type="button" class="button button-small media">
+                        <span class="dashicons dashicons-admin-media"></span><?php _e( 'Open Media Library', 'foogallery' ); ?>
+                    </button>
+                    <button type="button" class="button button-small help">
+                        <span class="dashicons dashicons-editor-help"></span><?php _e( 'Show Help', 'foogallery' ); ?>
+                    </button>
+                    <div style="display: none" class="foogallery-datasource-taxonomy-help">
+                        <h4><?php _e('Media Tags Datasource Help', 'foogallery'); ?></h4>
+                        <p><?php _e('You can change which Media Tags are assigned to this gallery by clicking "Change Media Tags".', 'foogalley' ); ?></p>
+                        <p><?php _e('You can remove all Media Tags from this gallery by clicking "Remove All Media Tags".', 'foogalley' ); ?></p>
+                        <p><?php _e('You can assign Media Tags to attachments within the WordPress Media Library. Launch by clicking "Open Media Library".', 'foogalley' ); ?></p>
+                        <p><?php _e('When an attachment is assigned to one of the Media Tags, it will automatically be shown in the gallery.', 'foogalley' ); ?></p>
+                        <p><?php _e('Click on the "Gallery Preview" to see which attachments will be loaded into the gallery.', 'foogallery'); ?></p>
                     </div>
-                </li>
+                </div>
                 <?php
             } ?>
-            </ul>
-            <div style="clear: both;"></div><?php
+            </ul><?php
 		}
     }
 }

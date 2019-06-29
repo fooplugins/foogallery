@@ -439,14 +439,14 @@ button[data-balloon]{overflow:visible}[data-balloon]{position:relative}[data-bal
 	text-align: center
 }
 
-	.foogallery-items-add .button-hero .dashicons {
-		vertical-align: middle;
-		padding-right: 10px;
-		width: 24px;
-		height: 24px;
-		font-size: 24px;
-		font-weight: normal;
-	}
+.foogallery-items-view .button-hero .dashicons {
+	vertical-align: middle;
+	padding-right: 10px;
+	width: 24px;
+	height: 24px;
+	font-size: 24px;
+	font-weight: normal;
+}
 
 .foogallery_preview_container.loading:after {
 	content: '';
