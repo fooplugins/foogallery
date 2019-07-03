@@ -333,7 +333,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Datasources' ) ) {
                     padding: 16px;
                     left: 200px;
                     right: 0;
-                    bottom: 0;
+                    bottom: 60px;
                     overflow: auto;
                     outline: 0;
                 }
