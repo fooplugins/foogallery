@@ -3,7 +3,7 @@ Contributors: bradvin, steveush, fooplugins
 Donate link: http://fooplugins.com
 Tags: gallery, image gallery, photo gallery, responsive, album, media gallery, masonry gallery, portfolio, justified gallery, video gallery, photography, youtube gallery
 Requires at least: 3.9
-Tested up to: 5.2
+Tested up to: 5.2.2
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -139,6 +139,12 @@ Hell, yes! Check out our [developer page](http://foo.gallery/developers/)
 Update now to get all the latest features, bug fixes and improvements!
 
 == Changelog ==
+
+= 1.7.8 =
+* New : Added filter to override content when creating a gallery page 'foogallery_create_gallery_page_content'
+* Fix : Fixed bug for Justified gallery, when last row was set to hidden
+* Update : FooGallery client side 1.2.8
+* Update : Freemius SDK 2.3.0
 
 = 1.7.7 =
 * New : Added slider navigation buttons in Slider PRO template
