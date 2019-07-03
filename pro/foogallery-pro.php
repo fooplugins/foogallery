@@ -19,6 +19,7 @@ require_once( FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-advanced-gall
 require_once( FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-instagram-filters.php' );
 require_once( FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-datasources.php' );
 require_once( FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-datasource-mediatags.php' );
+require_once( FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-datasource-folders.php' );
 
 /**
  * FooGallery PRO Main Class
@@ -45,6 +46,7 @@ if ( ! class_exists( 'FooGallery_Pro' ) ) {
 			new FooGallery_Pro_Instagram_Filters();
 			new FooGallery_Pro_Datasources();
 			new FooGallery_Pro_Datasource_MediaTags();
+			new FooGallery_Pro_Datasource_Folders();
 		}
 	}
 }

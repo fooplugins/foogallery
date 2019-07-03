@@ -30,6 +30,13 @@ if ( ! class_exists( 'FooGallery_Pro_Datasources' ) ) {
                 'public' => true
             );
 
+            $datasources['folders'] = array(
+                'id'     => 'folders',
+                'name'   => __( 'Folders', 'foogalery' ),
+                'menu'  => __( 'Folders', 'foogallery' ),
+                'public' => true
+            );
+
             return $datasources;
         }
     }
