@@ -3177,20 +3177,7 @@
 			TOUCH = "ontouchstart" in window,
 			POINTER_IE10 = window.navigator.msPointerEnabled && !window.navigator.pointerEnabled && !TOUCH,
 			POINTER = (window.navigator.pointerEnabled || window.navigator.msPointerEnabled) && !TOUCH,
-			USE_TOUCH = TOUCH || POINTER,
-			SUPPORTS_PASSIVE = false;
-
-
-	// @see https://github.com/WICG/EventListenerOptions/blob/gh-pages/explainer.md
-	try {
-		var opts = Object.defineProperty({}, 'passive', {
-			get: function() {
-				SUPPORTS_PASSIVE = true;
-			}
-		});
-		window.addEventListener("testPassive", null, opts);
-		window.removeEventListener("testPassive", null, opts);
-	} catch (e) {}
+			USE_TOUCH = TOUCH || POINTER;
 
 	_.Swipe = _utils.Class.extend(/** @lend FooGallery.Swipe */{
 		/**
@@ -3264,18 +3251,10 @@
 		 * @function init
 		 */
 		init: function(){
-			var self = this, elem = self.$el.get(0);
-			if (SUPPORTS_PASSIVE && self.events.start == 'touchstart' && !!elem.addEventListener){
-				elem.addEventListener('touchstart', self.onStart, { passive: true });
-			} else {
-				self.$el.on(self.events.start, {self: self}, self.onStart);
-			}
+			var self = this;
+			self.$el.on(self.events.start, {self: self}, self.onStart);
 			self.$el.on(self.events.move, {self: self}, self.onMove);
-			if (SUPPORTS_PASSIVE && self.events.end == 'touchend' && !!elem.addEventListener){
-				elem.addEventListener('touchend', self.onEnd, { passive: true });
-			} else {
-				self.$el.on(self.events.end, {self: self}, self.onEnd);
-			}
+			self.$el.on(self.events.end, {self: self}, self.onEnd);
 			if (_is.string(self.events.leave)) self.$el.on(self.events.leave, {self: self}, self.onEnd);
 			self.$el.data(DATA_NAME, self);
 		},
@@ -3285,18 +3264,10 @@
 		 * @function destroy
 		 */
 		destroy: function(){
-			var self = this, elem = self.$el.get(0);
-			if (SUPPORTS_PASSIVE && self.events.start == 'touchstart' && !!elem.removeEventListener){
-				elem.removeEventListener('touchstart', self.onStart, { passive: true });
-			} else {
-				self.$el.off(self.events.start, self.onStart);
-			}
+			var self = this;
+			self.$el.off(self.events.start, self.onStart);
 			self.$el.off(self.events.move, self.onMove);
-			if (SUPPORTS_PASSIVE && self.events.end == 'touchend' && !!elem.removeEventListener){
-				elem.removeEventListener('touchend', self.onEnd, { passive: true });
-			} else {
-				self.$el.off(self.events.end, self.onEnd);
-			}
+			self.$el.off(self.events.end, self.onEnd);
 			if (_is.string(self.events.leave)) self.$el.off(self.events.leave, self.onEnd);
 			self.$el.removeData(DATA_NAME);
 		},
@@ -4301,7 +4272,7 @@
 
 					// performed purely to re-check if any items need to be loaded after content has possibly shifted
 					self._check(1000);
-					self._check(3000);
+					// self._check(3000);
 
 					/**
 					 * @summary Raised after the template is fully initialized and is ready to be interacted with.
@@ -4486,6 +4457,10 @@
 		 */
 		loadAvailable: function () {
 			return this.items.load(this.getAvailable());
+		},
+
+		getItems: function(){
+			return this.pages ? this.pages.items() : this.items.available();
 		},
 
 		/**
@@ -5521,6 +5496,17 @@
 			self.$anchor = self.$inner.children(sel.anchor).on("click.foogallery", {self: self}, self.onAnchorClick);
 			self.$image = self.$anchor.find(sel.image);
 			self.$caption = self.$inner.children(sel.caption.elem).on("click.foogallery", {self: self}, self.onCaptionClick);
+
+			if ( !self.$el.length || !self.$inner.length || !self.$anchor.length || !self.$image.length ){
+				console.error("FooGallery Error: Invalid HTML markup. Check the item markup for additional elements or malformed HTML in the title or description.", self);
+				self.isError = true;
+				self.tmpl.raise("error-item", [self]);
+				if (self.$el.length !== 0){
+					self.$el.remove();
+				}
+				return false;
+			}
+
 			self.isAttached = self.$el.parent().length > 0;
 			self.isLoading = self.$el.is(sel.loading);
 			self.isLoaded = self.$el.is(sel.loaded);
@@ -6845,6 +6831,9 @@
 		available: function () {
 			return this.get(this.current);
 		},
+		items: function(){
+			return this.get(this.current);
+		},
 		controls: function (pageNumber) {
 			var self = this;
 			if (self.isValid(pageNumber)) {
@@ -6864,8 +6853,8 @@
 			pageNumber = self.number(pageNumber);
 			var index = pageNumber - 1;
 			self.tmpl.items.detach(self.tmpl.items.all());
-			self.tmpl.items.create(self._arr[index], true);
 			self.current = pageNumber;
+			self.tmpl.items.create(self._arr[index], true);
 		},
 		get: function (pageNumber) {
 			var self = this;
@@ -7004,7 +6993,7 @@
 		},
 		available: function(){
 			var self = this, items = [], page = self.get(self.current), viewport = _utils.getViewportBounds(), last, first;
-			if (!_is.empty(page) && self._created.length !== self.total){
+			if (!self.tmpl.initializing && !_is.empty(page) && self._created.length < self.total){
 				last = page[page.length - 1].bounds();
 				if (last.top - viewport.bottom < self.distance){
 					self.set(self.current + 1, false);
@@ -7024,14 +7013,28 @@
 			}
 			return items;
 		},
+		items: function(){
+			var self = this, items = [];
+			for (var i = 0, l = self._created.length, num, page; i < l; i++){
+				num = i + 1;
+				page = self.get(num);
+				if (!_is.empty(page)){
+					items.push.apply(items, page);
+				}
+			}
+			return items;
+		},
 		create: function(pageNumber, isFilter){
 			var self = this;
 			pageNumber = self.number(pageNumber);
 			if (isFilter) self.tmpl.items.detach(self.tmpl.items.all());
 			for (var i = 0; i < pageNumber; i++){
-				if ($.inArray(i, self._created) === -1){
-					self.tmpl.items.create(self._arr[i], true);
-					self._created.push(i);
+				var exists = $.inArray(i, self._created);
+				if (exists === -1){
+					var items = self.tmpl.items.create(self._arr[i], true);
+					if (items.length){
+						self._created.push(i);
+					}
 				}
 			}
 			self.current = pageNumber;
@@ -8066,9 +8069,9 @@
 				maxHeight: null,
 				attrs: {
 					iframe: {
+						src: '',
 						frameborder: 'no',
-						webkitallowfullscreen: true,
-						mozallowfullscreen: true,
+						allow: "autoplay; fullscreen",
 						allowfullscreen: true
 					},
 					video: {
@@ -8169,7 +8172,12 @@
 						self.$el.off("loadeddata error");
 						this.volume = 0.2;
 						if (self.options.autoPlay){
-							this.play();
+							var p = this.play();
+							if (typeof p !== 'undefined'){
+								p.catch(function(){
+									console.log("Unable to autoplay video due to policy changes: https://developers.google.com/web/updates/2017/09/autoplay-policy-changes");
+								});
+							}
 						}
 						def.resolve();
 					},
@@ -8926,7 +8934,7 @@
 		},
 		parse: function(){
 			var self = this;
-			return self._items = $.map(self.tmpl.items.available(), function(item, i){
+			return self._items = $.map(self.tmpl.getItems(), function(item, i){
 				return {
 					index: i,
 					width: item.width,
@@ -8970,9 +8978,10 @@
 					rows = self.rows(maxWidth, maxHeight);
 
 			$.each(rows, function(ri, row){
-				if (!row.visible) return;
-				if (ri > 0) height += self.options.margins;
-				height += row.height;
+				if (row.visible){
+					if (ri > 0) height += self.options.margins;
+					height += row.height;
+				}
 				self.render(row);
 			});
 			self.$el.height(height);
@@ -9162,7 +9171,7 @@
 			return rows;
 		},
 		onWindowResize: function(e){
-			e.data.self.layout();
+			e.data.self.layout( true );
 		}
 	});
 
@@ -9203,14 +9212,13 @@
 		onLayout: function(event, self){
 			self.justified.layout( true );
 		},
-		onParsedItems: function(event, self, items){
-			if (self.initialized || self.initializing) self.justified.layout( true );
+		onAfterPageChange: function(event, self, current, prev, isFilter){
+			if (!isFilter){
+				self.justified.layout( true );
+			}
 		},
-		onAppendedItems: function(event, self, items){
-			if (self.initialized || self.initializing) self.justified.layout( true );
-		},
-		onDetachedItems: function(event, self, items){
-			if (self.initialized) self.justified.layout( true );
+		onAfterFilterChange: function(event, self){
+			self.justified.layout( true );
 		}
 	});
 
@@ -9242,27 +9250,28 @@
 			this.$el.removeAttr("style");
 		},
 		parse: function(){
-			var self = this, visible = self.$el.is(':visible'), maxWidth = self.getContainerWidth(),
+			var self = this, containerWidth = self.getContainerWidth(),
 					$test = $('<div/>', {'class': self.$el.attr('class')}).css({
 						position: 'absolute',
-						top: 0,
+						top: -9999,
 						left: -9999,
 						visibility: 'hidden',
-						maxWidth: maxWidth
+						maxWidth: containerWidth
 					}).appendTo('body');
 
-			self._items = $.map(self.tmpl.items.available(), function(item, i){
-				var width = item.width, height = item.height;
-				item.$caption.css("max-width", width);
-				if (!visible){
-					var $clone = item.$el.clone();
-					$clone.appendTo($test);
-					width = $clone.outerWidth();
-					height = $clone.outerHeight();
-				} else {
-					width = item.$el.outerWidth();
-					height = item.$el.outerHeight();
-				}
+			var borderSize = 0;
+			if (self.$el.hasClass("fg-border-thin")) borderSize = 4;
+			if (self.$el.hasClass("fg-border-medium")) borderSize = 10;
+			if (self.$el.hasClass("fg-border-thick")) borderSize = 16;
+			var border = borderSize * 2;
+
+			self._items = $.map(self.tmpl.getItems(), function(item, i){
+				var maxWidth = containerWidth - border, single = item.width > maxWidth;
+				var $clone = item.$el.clone().css({width: '', height: ''})
+						.find(".fg-image,.fg-caption").css("width", single ? maxWidth : item.width).end()
+						.appendTo($test);
+				var width = $clone.outerWidth(), height = $clone.outerHeight();
+				$clone.remove();
 				return {
 					index: i,
 					width: width,
@@ -9465,14 +9474,13 @@
 		onLayout: function(event, self){
 			self.portfolio.layout( true );
 		},
-		onParsedItems: function(event, self, items){
-			if (self.initialized || self.initializing) self.portfolio.layout( true );
+		onAfterPageChange: function(event, self, current, prev, isFilter){
+			if (!isFilter){
+				self.portfolio.layout( true );
+			}
 		},
-		onAppendedItems: function(event, self, items){
-			if (self.initialized || self.initializing) self.portfolio.layout( true );
-		},
-		onDetachedItems: function(event, self, items){
-			if (self.initialized) self.portfolio.layout( true );
+		onAfterFilterChange: function(event, self){
+			self.portfolio.layout( true );
 		}
 	});
 
@@ -10198,7 +10206,9 @@
 			self.active = item;
 			if (self.grid && self.grid.deeplinking) self.grid.deeplinking.set(item);
 			self.busy = false;
-			return item.open(reverse);
+			return item.open(reverse).then(function(){
+				return self.scrollTo(item.$li.offset().top, true);
+			});
 		});
 	};
 
@@ -10803,7 +10813,7 @@
 
 	F.Player.prototype.$createEmbed = function(url){
 		return $('<iframe/>', {
-			src: url, frameborder: 'no',
+			src: url, frameborder: 'no', allow: "autoplay; fullscreen",
 			width: this.options.width, height: this.options.height,
 			webkitallowfullscreen: true, mozallowfullscreen: true, allowfullscreen: true
 		}).css({width: '100%',height: '100%'});
@@ -10961,6 +10971,7 @@
 			self.useViewport = self.template.useViewport;
 			self.breakpoints = self.template.breakpoints;
 			self.allowPageScroll = self.template.allowPageScroll;
+			self.contentNav = self.template.contentNav;
 			self.allBreakpointClasses = $.map(self.breakpoints, function(breakpoint){ return breakpoint.classes; }).join(' ');
 			self._contentWidth = 0;
 			self._contentHeight = 0;
@@ -10972,7 +10983,11 @@
 			var self = this;
 			return [
 				$("<div/>", {"class": self.cls.contentContainer})
-						.append($("<div/>", {"class": self.cls.contentStage})),
+						.append(
+								$("<div/>", {"class": self.cls.contentPrev}),
+								$("<div/>", {"class": self.cls.contentStage}),
+								$("<div/>", {"class": self.cls.contentNext})
+						),
 				$("<div/>", {"class": self.cls.itemContainer})
 						.append(
 								$("<div/>", {"class": self.cls.itemPrev}),
@@ -11001,16 +11016,22 @@
 			self.$itemStage = self.$el.find(self.sel.itemStage);
 			self.$itemPrev = self.$el.find(self.sel.itemPrev);
 			self.$itemNext = self.$el.find(self.sel.itemNext);
+			self.$contentPrev = self.$el.find(self.sel.contentPrev);
+			self.$contentNext = self.$el.find(self.sel.contentNext);
 			self.horizontal = self.$el.hasClass(self.cls.horizontal) || self.horizontal;
 			if (self.horizontal) self.$el.addClass(self.cls.horizontal);
 			self.noCaptions = self.$el.hasClass(self.cls.noCaptions) || self.noCaptions;
 			if (self.noCaptions) self.$el.addClass(self.cls.noCaptions);
+			self.contentNav = self.$el.hasClass(self.cls.contentNav) || self.contentNav;
+			if (self.contentNav) self.$el.addClass(self.cls.contentNav);
 
 		},
 		onInit: function (event, self) {
 			$(window).on("resize.fg-slider", {self: self}, self.throttle(self.onWindowResize, self.template.throttle));
 			self.$itemPrev.on("click.fg-slider", {self: self}, self.onPrevClick);
 			self.$itemNext.on("click.fg-slider", {self: self}, self.onNextClick);
+			self.$contentPrev.on("click.fg-slider", {self: self}, self.onContentPrevClick);
+			self.$contentNext.on("click.fg-slider", {self: self}, self.onContentNextClick);
 			self.$contentContainer.fgswipe({data: {self: self}, allowPageScroll: self.allowPageScroll, swipe: self.onContentSwipe});
 			self.$itemContainer.fgswipe({data: {self: self}, swipe: self.onItemSwipe})
 					.on("DOMMouseScroll.fg-slider mousewheel.fg-slider", {self: self}, self.onItemMouseWheel);
@@ -11033,18 +11054,11 @@
 			$(window).off("resize.fg-slider");
 			self.$itemPrev.off("click.fg-slider");
 			self.$itemNext.off("click.fg-slider");
+			self.$contentPrev.off("click.fg-slider");
+			self.$contentNext.off("click.fg-slider");
 			self.$contentContainer.fgswipe("destroy");
 			self.$itemContainer.fgswipe("destroy")
 					.off("DOMMouseScroll.fg-slider mousewheel.fg-slider");
-		},
-		onLoadItem: function(event, self, item){
-			if (!item.isError && _is.jq(item.$content)){
-				if (item.type === "video"){
-					item.$content.css("background-image", "url('"+item.cover+"')");
-				} else {
-					item.$content.css("background-image", "url('"+item.href+"')");
-				}
-			}
 		},
 		onParsedOrCreatedItem: function(item){
 			if (!item.isError){
@@ -11054,6 +11068,7 @@
 				item.$inner.on("click.foogallery", {self: self, item: item}, self.onItemClick);
 
 				item.$content = $("<div/>", {"class": self.cls.content})
+						.append($("<div/>", {"class": self.cls.contentImage}))
 						.append($("<p/>", {"class": self.cls.contentText}).html(item.caption).append($("<small/>").html(item.description)));
 				if (item.type === "video"){
 					item.index = -1;
@@ -11088,6 +11103,7 @@
 				$(item.href).append(item.$target);
 			}
 			item.$el.add(item.$content).removeClass(self.cls.selected);
+			item.$inner.off("click.foogallery");
 		},
 		onAppendItem: function (event, self, item) {
 			event.preventDefault();
@@ -11162,7 +11178,7 @@
 			self.$itemPrev.toggle(self._firstVisible > 0);
 			self.$itemNext.toggle(self._lastVisible < count - 1);
 
-			self._contentWidth = cWidth - (self.horizontal ? 0 : self._breakpoint.size.v.items.width);
+			self._contentWidth = cWidth - (self.horizontal ? 0 : (self.noCaptions ? self._breakpoint.size.v.items.noCaptions : self._breakpoint.size.v.items.width));
 			self._contentHeight = (self.horizontal ? self._breakpoint.size.h.height : self._breakpoint.size.v.height);
 			if (count > 0){
 				self.$contentStage.width(self._contentWidth * count);
@@ -11180,7 +11196,7 @@
 					}
 				});
 				self.$contentStage.css("transform", "translateX(-" + (index * self._contentWidth) + "px)");
-				self._itemWidth = self.horizontal ? hItemWidth : self._breakpoint.size.v.items.width;
+				self._itemWidth = self.horizontal ? hItemWidth : (self.noCaptions ? self._breakpoint.size.v.items.noCaptions : self._breakpoint.size.v.items.width);
 				self._itemHeight = self.horizontal ? self._breakpoint.size.h.items : self._breakpoint.size.v.items.height;
 
 				self.setVisible(self._firstVisible, false);
@@ -11206,9 +11222,8 @@
 			}
 		},
 		setSelected: function(itemOrIndex){
-			var self = this, prev = self.selected, next = itemOrIndex;
+			var self = this, prev = self.selected, next = itemOrIndex, items = self.items.available();
 			if (_is.number(itemOrIndex)){
-				var items = self.items.available();
 				itemOrIndex = itemOrIndex < 0 ? 0 : (itemOrIndex >= items.length ? items.length - 1 : itemOrIndex);
 				next = items[itemOrIndex];
 			}
@@ -11224,6 +11239,7 @@
 					}
 					prev.$el.add(prev.$content).removeClass(self.cls.selected);
 				}
+				self.setBackgroundImage(next);
 				self.$contentStage.css("transform", "translateX(-" + (next.index * self._contentWidth) + "px)");
 				next.$el.add(next.$content).addClass(self.cls.selected);
 				if (self.template.autoPlay && next.type === "video" && next.player instanceof _.VideoPlayer){
@@ -11235,11 +11251,42 @@
 					self.setEmbedSize(next);
 				}
 				self.selected = next;
+
 				if (next.index <= self._firstVisible || next.index >= self._lastVisible){
 					var last = prev instanceof _.Item ? next.index > prev.index : false,
 							index = last ? (next.index == self._lastVisible ? next.index + 1 : next.index) : (next.index == self._firstVisible ? next.index - 1 : next.index);
 					self.setVisible(index, last);
 				}
+				var cPrev = next.index - 1, cNext = next.index + 1;
+				cPrev = cPrev < 0 ? items.length - 1 : (cPrev >= items.length ? 0 : cPrev);
+				cNext = cNext < 0 ? items.length - 1 : (cNext >= items.length ? 0 : cNext);
+				self.$contentPrev.data("index", cPrev);
+				self.$contentNext.data("index", cNext);
+			}
+		},
+		setBackgroundImage: function(item){
+			if (item.type !== "embed" && !item.isError && !item.isBackgroundLoaded && _is.jq(item.$content)){
+				var self = this,
+						src = item.type === "video" ? item.cover : item.href,
+						$loader = $("<div/>", {'class': 'fg-loader'}).appendTo(item.$content.addClass(self.cls.loading)),
+						img = new Image();
+
+				img.onload = function(){
+					img.onload = img.onerror = null;
+					$loader.remove();
+					item.$content.removeClass(self.cls.loading)
+							.find(self.sel.contentImage).css("background-image", "url('"+src+"')");
+				};
+				img.onerror = function(){
+					$loader.remove();
+					item.$content.removeClass(self.cls.loading);
+				};
+				img.src = src;
+				if (img.complete){
+					img.onload();
+				}
+
+				item.isBackgroundLoaded = true;
 			}
 		},
 		setVisible: function(index, last){
@@ -11268,6 +11315,16 @@
 		onItemClick: function(e){
 			e.preventDefault();
 			e.data.self.setSelected(e.data.item);
+		},
+		onContentPrevClick: function(e){
+			e.preventDefault();
+			var self = e.data.self;
+			self.setSelected(self.$contentPrev.data("index"));
+		},
+		onContentNextClick: function(e){
+			e.preventDefault();
+			var self = e.data.self;
+			self.setSelected(self.$contentNext.data("index"));
 		},
 		onPrevClick: function(e){
 			e.preventDefault();
@@ -11338,6 +11395,7 @@
 			useViewport: false,
 			noCaptions: false,
 			autoPlay: false,
+			contentNav: false,
 			allowPageScroll: {
 				x: false,
 				y: true
@@ -11360,6 +11418,7 @@
 					v: {
 						height: 336,
 						items: {
+							noCaptions: 70,
 							width: 100,
 							height: 56
 						}
@@ -11383,6 +11442,7 @@
 					v: {
 						height: 392,
 						items: {
+							noCaptions: 100,
 							width: 150,
 							height: 56
 						}
@@ -11406,6 +11466,7 @@
 					v: {
 						height: 461,
 						items: {
+							noCaptions: 150,
 							width: 220,
 							height: 77
 						}
@@ -11429,6 +11490,7 @@
 					v: {
 						height: 538,
 						items: {
+							noCaptions: 150,
 							width: 280,
 							height: 77
 						}
@@ -11452,6 +11514,7 @@
 					v: {
 						height: 615,
 						items: {
+							noCaptions: 150,
 							width: 280,
 							height: 77
 						}
@@ -11470,15 +11533,20 @@
 		contentContainer: "fgs-content-container",
 		contentStage: "fgs-content-stage",
 		content: "fgs-content",
+		contentImage: "fgs-content-image",
 		contentText: "fgs-content-text",
 		contentPlay: "fgs-content-play",
 		contentClose: "fgs-content-close",
+		contentPrev: "fgs-content-prev",
+		contentNext: "fgs-content-next",
+		contentNav: "fgs-content-nav",
 		itemContainer: "fgs-item-container",
 		itemStage: "fgs-item-stage",
 		itemPrev: "fgs-item-prev",
 		itemNext: "fgs-item-next",
 		horizontal: "fgs-horizontal",
 		selected: "fgs-selected",
+		loading: "fgs-loading",
 		playing: "fgs-playing",
 		noCaptions: "fgs-no-captions",
 		embed: "fgs-embed",

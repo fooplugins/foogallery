@@ -3177,20 +3177,7 @@
 			TOUCH = "ontouchstart" in window,
 			POINTER_IE10 = window.navigator.msPointerEnabled && !window.navigator.pointerEnabled && !TOUCH,
 			POINTER = (window.navigator.pointerEnabled || window.navigator.msPointerEnabled) && !TOUCH,
-			USE_TOUCH = TOUCH || POINTER,
-			SUPPORTS_PASSIVE = false;
-
-
-	// @see https://github.com/WICG/EventListenerOptions/blob/gh-pages/explainer.md
-	try {
-		var opts = Object.defineProperty({}, 'passive', {
-			get: function() {
-				SUPPORTS_PASSIVE = true;
-			}
-		});
-		window.addEventListener("testPassive", null, opts);
-		window.removeEventListener("testPassive", null, opts);
-	} catch (e) {}
+			USE_TOUCH = TOUCH || POINTER;
 
 	_.Swipe = _utils.Class.extend(/** @lend FooGallery.Swipe */{
 		/**
@@ -3264,18 +3251,10 @@
 		 * @function init
 		 */
 		init: function(){
-			var self = this, elem = self.$el.get(0);
-			if (SUPPORTS_PASSIVE && self.events.start == 'touchstart' && !!elem.addEventListener){
-				elem.addEventListener('touchstart', self.onStart, { passive: true });
-			} else {
-				self.$el.on(self.events.start, {self: self}, self.onStart);
-			}
+			var self = this;
+			self.$el.on(self.events.start, {self: self}, self.onStart);
 			self.$el.on(self.events.move, {self: self}, self.onMove);
-			if (SUPPORTS_PASSIVE && self.events.end == 'touchend' && !!elem.addEventListener){
-				elem.addEventListener('touchend', self.onEnd, { passive: true });
-			} else {
-				self.$el.on(self.events.end, {self: self}, self.onEnd);
-			}
+			self.$el.on(self.events.end, {self: self}, self.onEnd);
 			if (_is.string(self.events.leave)) self.$el.on(self.events.leave, {self: self}, self.onEnd);
 			self.$el.data(DATA_NAME, self);
 		},
@@ -3285,18 +3264,10 @@
 		 * @function destroy
 		 */
 		destroy: function(){
-			var self = this, elem = self.$el.get(0);
-			if (SUPPORTS_PASSIVE && self.events.start == 'touchstart' && !!elem.removeEventListener){
-				elem.removeEventListener('touchstart', self.onStart, { passive: true });
-			} else {
-				self.$el.off(self.events.start, self.onStart);
-			}
+			var self = this;
+			self.$el.off(self.events.start, self.onStart);
 			self.$el.off(self.events.move, self.onMove);
-			if (SUPPORTS_PASSIVE && self.events.end == 'touchend' && !!elem.removeEventListener){
-				elem.removeEventListener('touchend', self.onEnd, { passive: true });
-			} else {
-				self.$el.off(self.events.end, self.onEnd);
-			}
+			self.$el.off(self.events.end, self.onEnd);
 			if (_is.string(self.events.leave)) self.$el.off(self.events.leave, self.onEnd);
 			self.$el.removeData(DATA_NAME);
 		},
@@ -4157,7 +4128,7 @@
 
 					// performed purely to re-check if any items need to be loaded after content has possibly shifted
 					self._check(1000);
-					self._check(3000);
+					// self._check(3000);
 
 					/**
 					 * @summary Raised after the template is fully initialized and is ready to be interacted with.
@@ -4342,6 +4313,10 @@
 		 */
 		loadAvailable: function () {
 			return this.items.load(this.getAvailable());
+		},
+
+		getItems: function(){
+			return this.pages ? this.pages.items() : this.items.available();
 		},
 
 		/**
@@ -5377,6 +5352,17 @@
 			self.$anchor = self.$inner.children(sel.anchor).on("click.foogallery", {self: self}, self.onAnchorClick);
 			self.$image = self.$anchor.find(sel.image);
 			self.$caption = self.$inner.children(sel.caption.elem).on("click.foogallery", {self: self}, self.onCaptionClick);
+
+			if ( !self.$el.length || !self.$inner.length || !self.$anchor.length || !self.$image.length ){
+				console.error("FooGallery Error: Invalid HTML markup. Check the item markup for additional elements or malformed HTML in the title or description.", self);
+				self.isError = true;
+				self.tmpl.raise("error-item", [self]);
+				if (self.$el.length !== 0){
+					self.$el.remove();
+				}
+				return false;
+			}
+
 			self.isAttached = self.$el.parent().length > 0;
 			self.isLoading = self.$el.is(sel.loading);
 			self.isLoaded = self.$el.is(sel.loaded);
@@ -6701,6 +6687,9 @@
 		available: function () {
 			return this.get(this.current);
 		},
+		items: function(){
+			return this.get(this.current);
+		},
 		controls: function (pageNumber) {
 			var self = this;
 			if (self.isValid(pageNumber)) {
@@ -6720,8 +6709,8 @@
 			pageNumber = self.number(pageNumber);
 			var index = pageNumber - 1;
 			self.tmpl.items.detach(self.tmpl.items.all());
-			self.tmpl.items.create(self._arr[index], true);
 			self.current = pageNumber;
+			self.tmpl.items.create(self._arr[index], true);
 		},
 		get: function (pageNumber) {
 			var self = this;
@@ -7412,7 +7401,7 @@
 		},
 		parse: function(){
 			var self = this;
-			return self._items = $.map(self.tmpl.items.available(), function(item, i){
+			return self._items = $.map(self.tmpl.getItems(), function(item, i){
 				return {
 					index: i,
 					width: item.width,
@@ -7456,9 +7445,10 @@
 					rows = self.rows(maxWidth, maxHeight);
 
 			$.each(rows, function(ri, row){
-				if (!row.visible) return;
-				if (ri > 0) height += self.options.margins;
-				height += row.height;
+				if (row.visible){
+					if (ri > 0) height += self.options.margins;
+					height += row.height;
+				}
 				self.render(row);
 			});
 			self.$el.height(height);
@@ -7648,7 +7638,7 @@
 			return rows;
 		},
 		onWindowResize: function(e){
-			e.data.self.layout();
+			e.data.self.layout( true );
 		}
 	});
 
@@ -7689,14 +7679,13 @@
 		onLayout: function(event, self){
 			self.justified.layout( true );
 		},
-		onParsedItems: function(event, self, items){
-			if (self.initialized || self.initializing) self.justified.layout( true );
+		onAfterPageChange: function(event, self, current, prev, isFilter){
+			if (!isFilter){
+				self.justified.layout( true );
+			}
 		},
-		onAppendedItems: function(event, self, items){
-			if (self.initialized || self.initializing) self.justified.layout( true );
-		},
-		onDetachedItems: function(event, self, items){
-			if (self.initialized) self.justified.layout( true );
+		onAfterFilterChange: function(event, self){
+			self.justified.layout( true );
 		}
 	});
 
@@ -7728,27 +7717,28 @@
 			this.$el.removeAttr("style");
 		},
 		parse: function(){
-			var self = this, visible = self.$el.is(':visible'), maxWidth = self.getContainerWidth(),
+			var self = this, containerWidth = self.getContainerWidth(),
 					$test = $('<div/>', {'class': self.$el.attr('class')}).css({
 						position: 'absolute',
-						top: 0,
+						top: -9999,
 						left: -9999,
 						visibility: 'hidden',
-						maxWidth: maxWidth
+						maxWidth: containerWidth
 					}).appendTo('body');
 
-			self._items = $.map(self.tmpl.items.available(), function(item, i){
-				var width = item.width, height = item.height;
-				item.$caption.css("max-width", width);
-				if (!visible){
-					var $clone = item.$el.clone();
-					$clone.appendTo($test);
-					width = $clone.outerWidth();
-					height = $clone.outerHeight();
-				} else {
-					width = item.$el.outerWidth();
-					height = item.$el.outerHeight();
-				}
+			var borderSize = 0;
+			if (self.$el.hasClass("fg-border-thin")) borderSize = 4;
+			if (self.$el.hasClass("fg-border-medium")) borderSize = 10;
+			if (self.$el.hasClass("fg-border-thick")) borderSize = 16;
+			var border = borderSize * 2;
+
+			self._items = $.map(self.tmpl.getItems(), function(item, i){
+				var maxWidth = containerWidth - border, single = item.width > maxWidth;
+				var $clone = item.$el.clone().css({width: '', height: ''})
+						.find(".fg-image,.fg-caption").css("width", single ? maxWidth : item.width).end()
+						.appendTo($test);
+				var width = $clone.outerWidth(), height = $clone.outerHeight();
+				$clone.remove();
 				return {
 					index: i,
 					width: width,
@@ -7951,14 +7941,13 @@
 		onLayout: function(event, self){
 			self.portfolio.layout( true );
 		},
-		onParsedItems: function(event, self, items){
-			if (self.initialized || self.initializing) self.portfolio.layout( true );
+		onAfterPageChange: function(event, self, current, prev, isFilter){
+			if (!isFilter){
+				self.portfolio.layout( true );
+			}
 		},
-		onAppendedItems: function(event, self, items){
-			if (self.initialized || self.initializing) self.portfolio.layout( true );
-		},
-		onDetachedItems: function(event, self, items){
-			if (self.initialized) self.portfolio.layout( true );
+		onAfterFilterChange: function(event, self){
+			self.portfolio.layout( true );
 		}
 	});
 

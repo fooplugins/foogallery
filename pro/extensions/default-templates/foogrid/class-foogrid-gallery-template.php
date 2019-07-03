@@ -284,8 +284,8 @@ if ( !class_exists( 'FooGallery_FooGrid_Gallery_Template' ) ) {
 		 */
 		function add_data_options($options, $gallery, $attributes) {
 			$loop = foogallery_gallery_template_setting( 'loop', 'yes' ) === 'yes';
-			$scroll = foogallery_gallery_template_setting( 'transition', 'yes' ) === 'yes';
-			$scroll_smooth = foogallery_gallery_template_setting( 'transition', 'yes' ) === 'yes';
+			$scroll = foogallery_gallery_template_setting( 'scroll', 'yes' ) === 'yes';
+			$scroll_smooth = foogallery_gallery_template_setting( 'scroll_smooth', 'yes' ) === 'yes';
 			$scroll_offset = foogallery_gallery_template_setting( 'scroll_offset', 0 );
 
 			$options['template']['loop'] = $loop;

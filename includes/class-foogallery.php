@@ -398,7 +398,7 @@ class FooGallery extends stdClass {
 
 	public function find_usages() {
 		return get_posts( array(
-			'post_type'      => array( 'post', 'page', ),
+			'post_type'      => foogallery_allowed_post_types_for_usage(),
 			'post_status'    => array( 'draft', 'publish', ),
 			'posts_per_page' => -1,
 			'orderby'        => 'post_type',

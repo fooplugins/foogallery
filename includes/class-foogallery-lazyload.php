@@ -100,8 +100,11 @@ if ( ! class_exists( 'FooGallery_LazyLoad' ) ) {
                         $attr['data-srcset-fg'] = $src;
                     }
 
-                    //set the src to a 1x1 transparent gif
-					$attr['src'] = FOOGALLERY_URL . 'assets/1x1.gif';
+                    //do not add the src attribute
+                    if ( false ) {
+						//set the src to a 1x1 transparent gif
+						$attr['src'] = FOOGALLERY_URL . 'assets/1x1.gif';
+					}
                 }
             }
 
@@ -121,7 +124,9 @@ if ( ! class_exists( 'FooGallery_LazyLoad' ) ) {
         {
             if ( isset( $gallery->lazyload_support ) && true === $gallery->lazyload_support ) {
                 $options['lazy'] = $gallery->lazyload_enabled && !$gallery->lazyload_forced_disabled;
-            }
+				$options['src']    = 'data-src-fg';
+				$options['srcset'] = 'data-srcset-fg';
+			}
             return $options;
         }
 
