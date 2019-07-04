@@ -141,7 +141,8 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_MediaTags' ) ) {
 				.datasource-taxonomy {
 					position: relative;
 					float: left;
-					margin-right: 10px;
+					margin-right: 8px;
+					margin-bottom: 10px;
 				}
 
 				.datasource-taxonomy a {
@@ -162,8 +163,8 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_MediaTags' ) ) {
 				jQuery(function ($) {
 					$('.foogallery-datasource-modal-container').on('click', '.datasource-taxonomy a', function (e) {
 						e.preventDefault();
-						$(this).toggleClass('active');
-						$selected = $(this).parents('ul:first').find('a.active');
+						$(this).toggleClass('button-primary');
+						$selected = $(this).parents('ul:first').find('a.button-primary');
 
 						//validate if the OK button can be pressed.
 						if ( $selected.length > 0 ) {
@@ -203,7 +204,7 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_MediaTags' ) ) {
 				foreach($terms as $term) {
 				    $selected = in_array( $term->term_id, $selected_terms );
 					?><li class="datasource-taxonomy media_tags">
-					<a href="#" <?php echo $selected ? 'class="active"' : ''; ?> data-term-id="<?php echo $term->term_id; ?>"><?php echo $term->name; ?></a>
+					<a href="#" class="button button-small<?php echo $selected ? ' button-primary' : ''; ?>" data-term-id="<?php echo $term->term_id; ?>"><?php echo $term->name; ?></a>
 					</li><?php
 				}
 
@@ -231,12 +232,10 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_MediaTags' ) ) {
                 .foogallery-datasource-taxonomy ul li {
                     display: inline-block;
                     margin-right: 10px;
-                    border-radius: 5px;
-                    padding: 4px 12px;
-                    text-align: center;
-                    text-decoration: none;
-                    font-size: 1.2em;
-                    background: #bbb;
+                    border-radius: 3px;
+					padding: 2px 6px;
+					background: #f2f2f2;
+					color: #303030;
                 }
 
                 .foogallery-datasource-taxonomy-help h4 {
@@ -360,8 +359,6 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_MediaTags' ) ) {
                         <p><?php _e('Click on the "Gallery Preview" to see which attachments will be loaded into the gallery.', 'foogallery'); ?></p>
                     </div>
                 </div>
-                <?php
-            } ?>
             </ul><?php
 		}
     }
