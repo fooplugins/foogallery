@@ -333,24 +333,23 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_MediaTags' ) ) {
             </script>
             <ul class="foogallery-datasource-items-list-media_tags">
         <?php
-            //if we have a datasource set and its for media tags then output the item
-            if ( isset( $gallery->datasource_name) && 'media_tags' === $gallery->datasource_name ) {
-                ?>
-                <div class="foogallery-datasource-taxonomy">
+			$html = isset( $gallery->datasource_value['html'] ) ? $gallery->datasource_value['html'] : '';
+			$show_container = isset( $gallery->datasource_name) && 'media_tags' === $gallery->datasource_name; ?>
+                <div <?php echo $show_container ? '' : 'style="display:none" '; ?>class="foogallery-datasource-taxonomy">
                     <h3><?php _e('Datasource : Media Tags', 'foogallery'); ?></h3>
                     <p><?php _e('This gallery will be dynamically populated with all attachments assigned to the following Media Tags:', 'foogallery'); ?></p>
-                    <div class="foogallery-items-html"><?php echo $gallery->datasource_value['html']; ?></div>
-                    <button type="button" class="button button-small edit">
-                        <span class="dashicons dashicons-edit"></span><?php _e( 'Change Media Tags', 'foogallery' ); ?>
+                    <div class="foogallery-items-html"><?php echo $html; ?></div>
+                    <button type="button" class="button edit">
+                        <?php _e( 'Change Media Tags', 'foogallery' ); ?>
                     </button>
-                    <button type="button" class="button button-small remove">
-                        <span class="dashicons dashicons-dismiss"></span><?php _e( 'Remove All Media Tags', 'foogallery' ); ?>
+                    <button type="button" class="button remove">
+                        <?php _e( 'Remove All Media Tags', 'foogallery' ); ?>
                     </button>
-                    <button type="button" class="button button-small media">
-                        <span class="dashicons dashicons-admin-media"></span><?php _e( 'Open Media Library', 'foogallery' ); ?>
+                    <button type="button" class="button media">
+                        <?php _e( 'Open Media Library', 'foogallery' ); ?>
                     </button>
-                    <button type="button" class="button button-small help">
-                        <span class="dashicons dashicons-editor-help"></span><?php _e( 'Show Help', 'foogallery' ); ?>
+                    <button type="button" class="button help">
+                        <?php _e( 'Show Help', 'foogallery' ); ?>
                     </button>
                     <div style="display: none" class="foogallery-datasource-taxonomy-help">
                         <h4><?php _e('Media Tags Datasource Help', 'foogallery'); ?></h4>
