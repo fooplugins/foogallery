@@ -8978,9 +8978,10 @@
 					rows = self.rows(maxWidth, maxHeight);
 
 			$.each(rows, function(ri, row){
-				if (!row.visible) return;
-				if (ri > 0) height += self.options.margins;
-				height += row.height;
+				if (row.visible){
+					if (ri > 0) height += self.options.margins;
+					height += row.height;
+				}
 				self.render(row);
 			});
 			self.$el.height(height);
