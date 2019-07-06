@@ -173,13 +173,13 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Folders' ) ) {
             <p><?php _e('Selected Folder : ', 'foogallery'); ?><span class="foogallery-datasource-folder-selected"><?php _e('nothing yet', 'foogallery'); ?></span></p>
             <div class="foogallery-datasource-folder-list">
             <?php
-
-            $root = apply_filters( 'foogallery_filesystem_root', WP_CONTENT_DIR );
-
-            $this->render_filesystem_tree( $root );
-
+            $this->render_filesystem_tree();
             ?>
             </div><?php
+		}
+
+		function get_root_folder() {
+			return trailingslashit( apply_filters( 'foogallery_filesystem_root', ABSPATH ) );
 		}
 
 		function render_folder_structure() {
@@ -191,7 +191,7 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Folders' ) ) {
             die();
         }
 
-		function render_filesystem_tree( $path ) {
+		function render_filesystem_tree( $path = '/' ) {
             global $wp_filesystem;
             // setup wp_filesystem api
             $url         = wp_nonce_url( '/', 'foogallery-datasource-folders' );
@@ -204,43 +204,79 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Folders' ) ) {
                 return false;
             }
 
-            if ( $wp_filesystem->exists( $path ) ) {
-                $files = $wp_filesystem->dirlist( $path );
+            if ( empty( $path ) ) {
+            	$path = '/';
+			}
 
-                echo '<ul>';
+			//ensure we are always looking at a folder down from the root folder
+            $root = $this->get_root_folder();
+            $actual_path = rtrim( $root, '/' ) . $path;
 
-                $up_folder = substr($path, 0, strrpos( $path, '/') );
+			echo '<ul>';
 
-                echo '<li><a href="#" data-folder="' . esc_attr( $up_folder ) . '"><span class="dashicons dashicons-category" />..</a></li>';
+			//only show the UP folder if we are not at the root.
+			//We do not want the user to be able to go past the root
+			if ( $path !== '/' ) {
+				$up_folder = substr( $path, 0, strrpos( $path, '/' ) );
+				if ( empty( $up_folder ) ) {
+					$up_folder = '/';
+				}
+				echo '<li><a href="#" data-folder="' . esc_attr( $up_folder ) . '"><span class="dashicons dashicons-category" />..</a></li>';
+			}
 
-                if( count( $files ) > 0 ) {
-                    // build separate arrays for folders and files
-                    $dir_array = array();
-                    $file_array = array();
-                    foreach ( $files as $file => $file_info ) {
-                        if ( $file != '.' && $file != '..' && $file_info['type'] == 'd' ) {
-                            $file_string = strtolower( preg_replace( "[._-]", "", $file ) );
-                            $dir_array[$file_string] = $file_info;
-                        } elseif ( $file != '.' && $file != '..' &&  $file_info['type'] == 'f' ){
-                            $file_string = strtolower( preg_replace( "[._-]", "", $file ) );
-                            $file_array[$file_string] = $file_info;
-                        }
-                    }
-                    // shot those arrays
-                    ksort( $dir_array );
-                    ksort( $file_array );
-                    // All dirs
-                    foreach ( $dir_array as $file => $file_info ) {
-                        echo '<li><a href="#" data-folder="' . esc_attr( $path . '/' . $file_info['name'] ) . '"><span class="dashicons dashicons-category" />' . esc_html( $file_info['name'] ) . '</a></li>';
-                    }
-//                    // All files
-//                    foreach ( $file_array as $file => $file_info ) {
-//                        $ext = preg_replace( '/^.*\./', '', $file_info['name'] );
-//                        echo "<li class=\"file ext_$ext\"><a href=\"#\" rel=\"" . esc_attr( $_POST['dir'] . $file_info['name'] ) . "\" draggable=\"false\">" . esc_html( $file_info['name'] ) . "</a></li>";
-//                    }
-                }
-                echo '</ul>';
-            }
+			$file_array = array();
+
+			$folder_exists = $wp_filesystem->exists( $actual_path );
+
+			if ( $folder_exists ) {
+				$files = $wp_filesystem->dirlist( $actual_path );
+				if ( count( $files ) > 0 ) {
+					// build separate arrays for folders and files
+					$dir_array  = array();
+
+					foreach ( $files as $file => $file_info ) {
+						if ( $file != '.' && $file != '..' && $file_info['type'] == 'd' ) {
+							$file_string             = strtolower( preg_replace( "[._-]", "", $file ) );
+							$dir_array[$file_string] = $file_info;
+						} elseif ( $file != '.' && $file != '..' && $file_info['type'] == 'f' ) {
+							$file_string              = strtolower( preg_replace( "[._-]", "", $file ) );
+							$file_array[$file_string] = $file_info;
+						}
+					}
+					// shot those arrays
+					ksort( $dir_array );
+
+					// output all folders
+					foreach ( $dir_array as $file => $file_info ) {
+						$folder = trailingslashit( $path ) . $file_info['name'];
+						echo '<li><a href="#" data-folder="' . esc_attr( $folder ) . '"><span class="dashicons dashicons-category" />' . esc_html( $file_info['name'] ) . '</a></li>';
+					}
+
+				}
+			}
+			echo '</ul>';
+
+			if ( $folder_exists ) {
+				$image_count = 0;
+
+				$supported_image = array(
+					'gif',
+					'jpg',
+					'jpeg',
+					'png'
+				);
+
+				//see if there are any images in the selected folder
+				foreach ( $file_array as $file => $file_info ) {
+					$ext = preg_replace( '/^.*\./', '', $file_info['name'] );
+
+					if ( in_array( $ext, $supported_image ) ) {
+						$image_count ++;
+					}
+				}
+
+				echo __( 'Images found in folder : ', 'foogallery' ) . $image_count;
+			}
         }
 
         /**
