@@ -42,8 +42,18 @@ if ( ! class_exists( 'FooGallery_Admin' ) ) {
 			add_filter( 'foogallery_admin_plugin_action_links', array( $this, 'plugin_listing_links' ) );
 			//output shortcode for javascript
 			add_action( 'admin_footer', array( $this, 'output_shortcode_variable' ), 200 );
+			add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts_and_styles' ) );
 		}
 
+		public function enqueue_scripts_and_styles( $hook ) {
+			//check if the gallery edit page is being shown
+			$screen = get_current_screen();
+			if ( 'foogallery' !== $screen->id ) {
+				return;
+			}
+
+			do_action('foogallery_admin_enqueue_scripts' );
+		}
 
 		function admin_print_styles() {
 			$page       = safe_get_from_request( 'page' );
