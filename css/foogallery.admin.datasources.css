@@ -1,0 +1,118 @@
+.foogallery-datasource-modal-title {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	height: 50px;
+	z-index: 200;
+	padding-left: 16px;
+	border-bottom: 1px solid #ddd;
+}
+
+.foogallery-datasource-modal-sidebar {
+	position: absolute;
+	top: 51px;
+	left: 0;
+	bottom: 0;
+	width: 200px;
+	z-index: 75;
+	background: #f3f3f3;
+	overflow: auto;
+	-webkit-overflow-scrolling: touch;
+}
+
+.foogallery-datasource-modal-sidebar-menu {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	margin: 0;
+	padding: 10px 0;
+	background: #f3f3f3;
+	border-right-width: 1px;
+	border-right-style: solid;
+	border-right-color: #ccc;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none
+}
+
+.foogallery-datasource-modal-sidebar-menu>a {
+	display: block;
+	position: relative;
+	padding: 8px 20px;
+	margin: 0;
+	line-height: 18px;
+	font-size: 14px;
+	color: #0073aa;
+	text-decoration: none;
+}
+
+.foogallery-datasource-modal-sidebar-menu>a:hover {
+	color: #0073aa;
+	background: rgba(0,0,0,.04)
+}
+
+.foogallery-datasource-modal-sidebar-menu .active,
+.foogallery-datasource-modal-sidebar-menu .active:hover{
+	color: #23282d;
+	font-weight: 600;
+	background: rgba(0,0,0,.04);
+}
+
+.foogallery-datasource-modal-sidebar-menu>a,
+.foogallery-datasource-modal-sidebar-menu>a:active,
+.foogallery-datasource-modal-sidebar-menu>a:hover,
+.foogallery-datasource-modal-sidebar-menu>a:focus {
+	box-shadow: none;
+	outline: 0
+}
+
+.media-menu .separator {
+	height: 0;
+	margin: 12px 20px;
+	padding: 0;
+	border-top: 1px solid #ddd
+}
+
+.foogallery-datasource-modal-container {
+	position: absolute;
+	top: 51px;
+	padding: 16px;
+	left: 200px;
+	right: 0;
+	bottom: 60px;
+	overflow: auto;
+	outline: 0;
+}
+
+.foogallery-datasource-modal-toolbar {
+	position: absolute;
+	left: 200px;
+	right: 0;
+	z-index: 100;
+	bottom: 60px;
+	height: auto;
+	border-top: 1px solid #ddd;
+}
+
+.foogallery-datasource-modal-toolbar-inner {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: -45px;
+	height: 60px;
+	padding: 0 16px;
+	overflow: hidden;
+}
+
+.foogallery-datasource-modal-container-inner .spinner {
+	float: left;
+}
+
+.foogallery-datasource-modal-insert {
+	float: right;
+}
