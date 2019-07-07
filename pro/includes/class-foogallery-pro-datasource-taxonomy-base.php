@@ -21,6 +21,12 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Taxonomy_Base' ) ) {
 			add_action( 'added_term_relationship', array( $this, 'change_term_relationship_clear_datasource_cached_attachments' ), 10, 3 );
 			add_action( 'deleted_term_relationships', array( $this, 'change_term_relationship_clear_datasource_cached_attachments' ), 10, 3 );
 			add_action( 'foogallery_before_save_gallery_datasource', array( $this, 'before_save_gallery_datasource_clear_datasource_cached_attachments' ) );
+			add_action( 'foogallery_admin_enqueue_scripts', array( $this, 'enqueue_scripts_and_styles' ) );
+		}
+
+		public function enqueue_scripts_and_styles() {
+			wp_enqueue_style( 'foogallery.admin.datasources.taxonomy', FOOGALLERY_PRO_URL . 'css/foogallery.admin.datasources.taxonomy.css', array(), FOOGALLERY_VERSION );
+			wp_enqueue_script( 'foogallery.admin.datasources.taxonomy', FOOGALLERY_PRO_URL . 'js/foogallery.admin.datasources.taxonomy.js', array( 'jquery' ), FOOGALLERY_VERSION );
 		}
 
 		/**
@@ -153,76 +159,16 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Taxonomy_Base' ) ) {
 			$datasource = $datasources[$this->datasource_name];
 
 			?>
-			<style>
-				.datasource-taxonomy {
-					position: relative;
-					float: left;
-					margin-right: 10px;
-				}
-
-				.datasource-taxonomy a {
-					border: 1px solid #ddd;
-					border-radius: 5px;
-					padding: 4px 8px;
-					display: block;
-					padding: 10px;
-					text-align: center;
-					text-decoration: none;
-					font-size: 1.2em;
-				}
-
-				.datasource-taxonomy a.active {
-					color: #fff;
-					background: #0085ba;
-					border-color: #0073aa #006799 #006799;
-				}
-			</style>
-			<script type="text/javascript">
-				jQuery(function ($) {
-					$('.foogallery-datasource-modal-container').on('click', '.datasource-taxonomy a', function (e) {
-						e.preventDefault();
-						$(this).toggleClass('active');
-						$selected = $(this).parents('ul:first').find('a.active');
-
-						//validate if the OK button can be pressed.
-						if ( $selected.length > 0 ) {
-							$('.foogallery-datasource-modal-insert').removeAttr( 'disabled' );
-
-							var taxonomy_values = [],
-								taxonomies = [];
-
-							$selected.each(function() {
-								taxonomy_values.push( $(this).data('termId') );
-								taxonomies.push( $(this).text() );
-							});
-
-							var text = '<strong><?php echo $datasource['name']; ?>:</strong><br />' + taxonomies.join(', ');
-
-							//set the selection
-							$('#<?php echo FOOGALLERY_META_DATASOURCE_VALUE; ?>').val( JSON.stringify( {
-								"taxonomy" : "<?php echo $this->taxonomy; ?>",
-								"value" : taxonomy_values,
-								"text" : text
-							} ) );
-						} else {
-							$('.foogallery-datasource-modal-insert').attr('disabled','disabled');
-
-							//clear the selection
-							$('#<?php echo FOOGALLERY_META_DATASOURCE_VALUE; ?>').val('');
-						}
-					});
-				});
-			</script>
-			<p><?php printf( __('Select a %s from the list below. The gallery will then dynamically load all attachments that are associated to the selected items.', 'foogallery'), $datasource['name']); ?></p>
-			<ul>
+			<p><?php printf( __('Select %s from the list below. The gallery will then dynamically load all attachments that are assigned to the selected items.', 'foogallery'), $datasource['name']); ?></p>
+			<ul data-taxonomy="<?php echo $this->taxonomy; ?>">
 				<?php
 
-				$terms = get_terms( FOOGALLERY_ATTACHMENT_TAXONOMY_TAG, array('hide_empty' => false) );
+				$terms = get_terms( $this->taxonomy, array('hide_empty' => false) );
 
 				foreach($terms as $term) {
 				    $selected = in_array( $term->term_id, $selected_terms );
 					?><li class="datasource-taxonomy <?php echo $this->datasource_name; ?>">
-					<a href="#" <?php echo $selected ? 'class="active"' : ''; ?> data-term-id="<?php echo $term->term_id; ?>"><?php echo $term->name; ?></a>
+					<a href="#" class="button button-small<?php echo $selected ? ' button-primary' : ''; ?>" data-term-id="<?php echo $term->term_id; ?>"><?php echo $term->name; ?></a>
 					</li><?php
 				}
 
@@ -231,100 +177,69 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Taxonomy_Base' ) ) {
 			<?php
 		}
 
-        /**
-         * Output the html required by the datasource in order to add item(s)
-         * @param FooGallery $gallery
-         */
+		/**
+		 * Output the html required by the datasource in order to add item(s)
+		 * @param FooGallery $gallery
+		 */
 		function render_datasource_item( $gallery ) {
+			$datasources = foogallery_gallery_datasources();
+			$datasource = $datasources[$this->datasource_name];
 
+			$html = isset( $gallery->datasource_value['html'] ) ? $gallery->datasource_value['html'] : '';
+			$show_container = isset( $gallery->datasource_name ) && $this->datasource_name === $gallery->datasource_name;
+			$show_media_button = isset( $datasource['show_media_button'] ) && true === $datasource['show_media_button'];
 			?>
-            <script type="text/javascript">
-                jQuery(function ($) {
-                    $('.foogallery-datasource-items-list-<?php echo $this->datasource_name; ?>').on('click', '.datasource-info a.remove', function (e) {
-                        e.preventDefault();
+			<script type="text/javascript">
+				jQuery(function ($) {
+					$(document).on('foogallery-datasource-changed-<?php echo $this->datasource_name; ?>', function() {
+						var $container = $('.foogallery-datasource-taxonomy-<?php echo $this->taxonomy; ?>'),
+							datasource_value = $('#_foogallery_datasource_value').val();
 
-                        //clear the items
-                        $(this).parents('.datasource-info').hide();
+						if ( datasource_value.length > 0 ) {
+							var datasource_value_json = JSON.parse( datasource_value );
 
-                        //clear the datasource value
-                        $('#<?php echo FOOGALLERY_META_DATASOURCE_VALUE; ?>').val('');
+							$container.find('.foogallery-items-html').html(datasource_value_json.html);
 
-                        //clear the datasource
-                        $('#<?php echo FOOGALLERY_META_DATASOURCE; ?>').val('');
+							$container.show();
 
-                        //deselect any taxonomy buttons in the modal
-                        $('.foogallery-datasource-modal-container .datasource-taxonomy a.active').removeClass('active');
+							FOOGALLERY.showHiddenAreas( false );
 
-                        //make sure the modal insert button is not active
-                        $('.foogallery-datasource-modal-insert').attr('disabled','disabled');
+							$('.foogallery-attachments-list').addClass('hidden');
 
-                        FOOGALLERY.showHiddenAreas( true );
-
-                        $('.foogallery_preview_container').addClass('foogallery-preview-force-refresh');
-                    });
-
-                    $('.foogallery-datasource-items-list-<?php echo $this->datasource_name; ?>').on('click', '.datasource-info a.edit', function (e) {
-                        e.preventDefault();
-
-                        $('.foogallery-datasources-modal-wrapper').show();
-
-                        //select the datasource
-                        $('.foogallery-datasource-modal-selector[data-datasource="<?php echo $this->datasource_name; ?>"]').click();
-                    });
-
-                    $(document).on('foogallery-datasource-changed-<?php echo $this->datasource_name; ?>', function() {
-                        var $template = $($('#foogallery-datasource-template-<?php echo $this->datasource_name; ?>').val()),
-                            datasource_value = $('#<?php echo FOOGALLERY_META_DATASOURCE_VALUE; ?>').val();
-
-                        if ( datasource_value.length > 0 ) {
-                            var datasource_value_json = JSON.parse( datasource_value );
-
-                            $template.find('.centered').html(datasource_value_json.text);
-
-                            $('.foogallery-datasource-items-list-<?php echo $this->datasource_name; ?>').html($template);
-
-                            FOOGALLERY.showHiddenAreas( false );
-
-                            $('.foogallery-attachments-list').addClass('hidden');
-
-                            $('.foogallery_preview_container').addClass('foogallery-preview-force-refresh');
-                        }
-                    });
-                });
-            </script>
-            <textarea style="display: none;" id="foogallery-datasource-template-<?php echo $this->datasource_name; ?>">
-                <li class="datasource-info">
-                    <div>
-                        <div class="centered"></div>
-                        <a class="edit" href="#" title="<?php _e( 'Edit Selection', 'foogallery' ); ?>">
-                            <span class="dashicons dashicons-info"></span>
-                        </a>
-                        <a class="remove" href="#" title="<?php _e( 'Remove from gallery', 'foogallery' ); ?>">
-                            <span class="dashicons dashicons-dismiss"></span>
-                        </a>
-                    </div>
-                </li>
-            </textarea>
-            <ul class="foogallery-datasource-items-list-<?php echo $this->datasource_name; ?>">
-        <?php
-            //if we have a datasource set and its for the correct datasource then output the item
-            if ( isset( $gallery->datasource_name) && $this->datasource_name === $gallery->datasource_name ) {
-                ?>
-                <li class="datasource-info">
-                    <div>
-                        <div class="centered"><?php echo $gallery->datasource_value['text']; ?></div>
-                        <a class="edit" href="#" title="<?php _e( 'Edit Selection', 'foogallery' ); ?>">
-                            <span class="dashicons dashicons-info"></span>
-                        </a>
-                        <a class="remove" href="#" title="<?php _e( 'Remove from gallery', 'foogallery' ); ?>">
-                            <span class="dashicons dashicons-dismiss"></span>
-                        </a>
-                    </div>
-                </li>
-                <?php
-            } ?>
-            </ul>
-            <div style="clear: both;"></div><?php
+							$('.foogallery_preview_container').addClass('foogallery-preview-force-refresh');
+						}
+					});
+				});
+			</script>
+			<div class="foogallery-datasource-taxonomy foogallery-datasource-taxonomy-<?php echo $this->taxonomy; ?>" data-media-title="<?php _e('Assign Media Tags', 'foogallery'); ?>" data-media-button="<?php _e('Close', 'foogallery'); ?>" <?php echo $show_container ? '' : 'style="display:none" '; ?>>
+				<h3><?php echo sprintf( __('Datasource : %s', 'foogallery'), $datasource['name'] ); ?></h3>
+				<p><?php echo sprintf( __('This gallery will be dynamically populated with all attachments assigned to the following %s:', 'foogallery'), $datasource['name'] ); ?></p>
+				<div class="foogallery-items-html"><?php echo $html; ?></div>
+				<button type="button" class="button edit" data-datasource="<?php echo $this->datasource_name; ?>">
+					<?php echo sprintf( __( 'Change %s', 'foogallery' ), $datasource['name'] ); ?>
+				</button>
+				<button type="button" class="button remove">
+					<?php echo sprintf( __( 'Remove All %s', 'foogallery' ), $datasource['name'] ); ?>
+				</button>
+				<?php if ( $show_media_button ) { ?>
+				<button type="button" class="button media">
+					<?php _e( 'Open Media Library', 'foogallery' ); ?>
+				</button>
+				<?php } ?>
+				<button type="button" class="button help">
+					<?php _e( 'Show Help', 'foogallery' ); ?>
+				</button>
+				<div style="display: none" class="foogallery-datasource-taxonomy-help">
+					<h4><?php echo sprintf( __('%s Datasource Help', 'foogallery'), $datasource['name'] ); ?></h4>
+					<p><?php echo sprintf( __('You can change which %s are assigned to this gallery by clicking "Change %s".', 'foogalley' ), $datasource['name'], $datasource['name'] ); ?></p>
+					<p><?php echo sprintf( __('You can remove all %s from this gallery by clicking "Remove All %s".', 'foogalley' ), $datasource['name'], $datasource['name'] ); ?></p>
+					<?php if ( $show_media_button ) { ?>
+					<p><?php echo sprintf( __('You can assign %s to attachments within the WordPress Media Library. Launch by clicking "Open Media Library".', 'foogalley' ), $datasource['name'] ); ?></p>
+					<?php } ?>
+					<p><?php echo sprintf( __('When an attachment is assigned to one of the %s, it will automatically be shown in the gallery.', 'foogalley' ), $datasource['name'] ); ?></p>
+					<p><?php echo __('Click on the "Gallery Preview" to see which attachments will be loaded into the gallery.', 'foogallery'); ?></p>
+				</div>
+			</div><?php
 		}
     }
 }

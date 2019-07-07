@@ -1,0 +1,44 @@
+.datasource-taxonomy {
+	position: relative;
+	float: left;
+	margin-right: 8px;
+	margin-bottom: 10px;
+}
+
+.datasource-taxonomy a {
+	background: #efefef;
+	border-radius: 5px;
+	padding: 4px 12px;
+	display: block;
+	text-align: center;
+	text-decoration: none;
+	font-size: 1.2em;
+}
+
+.datasource-taxonomy a.active {
+	background: #bbb;
+}
+
+.foogallery-datasource-taxonomy {
+	padding: 20px;
+	text-align: center;
+}
+
+.foogallery-datasource-taxonomy ul {
+	list-style: none;
+	margin-bottom: 20px;
+}
+
+.foogallery-datasource-taxonomy ul li {
+	display: inline-block;
+	margin-right: 10px;
+	border-radius: 3px;
+	padding: 2px 6px;
+	background: #f2f2f2;
+	color: #303030;
+}
+
+.foogallery-datasource-taxonomy-help h4 {
+	font-weight: bold;
+	text-decoration: underline;
+}
