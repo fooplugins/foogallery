@@ -171,9 +171,11 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Folders' ) ) {
                         $('.foogallery-datasource-folder-selected').text(folder);
 
 						//set the selection
-						$('#<?php echo FOOGALLERY_META_DATASOURCE_VALUE; ?>').val( JSON.stringify( {
+						document.foogallery_datasource_value_temp = {
 							"value" : folder
-						} ) );
+						};
+
+						$('#<?php echo FOOGALLERY_META_DATASOURCE_VALUE; ?>').val( JSON.stringify(  ) );
 
 						$('.foogallery-datasource-modal-insert').removeAttr( 'disabled' );
 
@@ -283,7 +285,7 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Folders' ) ) {
 			if ( $folder_exists ) {
 				$image_count = 0;
 
-				$supported_image = array(
+				$supported_images = array(
 					'gif',
 					'jpg',
 					'jpeg',
@@ -294,7 +296,7 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Folders' ) ) {
 				foreach ( $file_array as $file => $file_info ) {
 					$ext = preg_replace( '/^.*\./', '', $file_info['name'] );
 
-					if ( in_array( $ext, $supported_image ) ) {
+					if ( in_array( $ext, $supported_images ) ) {
 						$image_count ++;
 					}
 				}
@@ -326,8 +328,10 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Folders' ) ) {
 				}
             </style>
             <script type="text/javascript">
+
+
                 jQuery(function ($) {
-                    $('.foogallery-datasource-items-list-media_tags').on('click', 'button.remove', function (e) {
+                    $('.foogallery-datasource-folder').on('click', 'button.remove', function (e) {
                         e.preventDefault();
 
                         //hide the previous info
@@ -338,9 +342,6 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Folders' ) ) {
 
                         //clear the datasource
                         $('#<?php echo FOOGALLERY_META_DATASOURCE; ?>').val('');
-
-                        //deselect current folder
-                        $('.foogallery-datasource-folder-selected').val('');
 
                         //make sure the modal insert button is not active
                         $('.foogallery-datasource-modal-insert').attr('disabled','disabled');
@@ -361,23 +362,28 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Folders' ) ) {
                         $('.foogallery-datasource-modal-selector[data-datasource="folders"]').click();
                     });
 
+					$(document).on('foogallery-datasource-changed', function(e, activeDatasource) {
+						$('.foogallery-datasource-folder').hide();
+
+						if ( activeDatasource !== 'folders' ) {
+							//clear the selected folder
+						}
+					});
+
                     $(document).on('foogallery-datasource-changed-folders', function() {
-                        var $container = $('.foogallery-datasource-folder'),
-                            datasource_value = $('#<?php echo FOOGALLERY_META_DATASOURCE_VALUE; ?>').val();
+                        var $container = $('.foogallery-datasource-folder');
 
-                        if ( datasource_value.length > 0 ) {
-                            var datasource_value_json = JSON.parse( datasource_value );
+						$('#_foogallery_datasource_value').val(JSON.stringify(document.foogallery_datasource_value_temp));
 
-                            $container.find('.foogallery-items-html').html(datasource_value_json.value);
+						$container.find('.foogallery-items-html').html(document.foogallery_datasource_value_temp.value);
 
-                            $container.show();
+						$container.show();
 
-                            FOOGALLERY.showHiddenAreas( false );
+						FOOGALLERY.showHiddenAreas( false );
 
-                            $('.foogallery-attachments-list').addClass('hidden');
+						$('.foogallery-attachments-list').addClass('hidden');
 
-                            $('.foogallery_preview_container').addClass('foogallery-preview-force-refresh');
-                        }
+						$('.foogallery_preview_container').addClass('foogallery-preview-force-refresh');
                     });
                 });
             </script>

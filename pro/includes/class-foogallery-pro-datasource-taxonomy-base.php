@@ -191,23 +191,28 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Taxonomy_Base' ) ) {
 			?>
 			<script type="text/javascript">
 				jQuery(function ($) {
-					$(document).on('foogallery-datasource-changed-<?php echo $this->datasource_name; ?>', function() {
-						var $container = $('.foogallery-datasource-taxonomy-<?php echo $this->taxonomy; ?>'),
-							datasource_value = $('#_foogallery_datasource_value').val();
-
-						if ( datasource_value.length > 0 ) {
-							var datasource_value_json = JSON.parse( datasource_value );
-
-							$container.find('.foogallery-items-html').html(datasource_value_json.html);
-
-							$container.show();
-
-							FOOGALLERY.showHiddenAreas( false );
-
-							$('.foogallery-attachments-list').addClass('hidden');
-
-							$('.foogallery_preview_container').addClass('foogallery-preview-force-refresh');
+					$(document).on('foogallery-datasource-changed', function(e, activeDatasource) {
+						$('.foogallery-datasource-taxonomy-<?php echo $this->taxonomy; ?>').hide();
+						if ( activeDatasource !== '<?php echo $this->datasource_name; ?>' ) {
+							$('.foogallery-datasource-modal-container-inner.<?php echo $this->datasource_name; ?>').find('a.button-primary').removeClass('button-primary');
 						}
+					});
+
+					$(document).on('foogallery-datasource-changed-<?php echo $this->datasource_name; ?>', function() {
+						var $container = $('.foogallery-datasource-taxonomy-<?php echo $this->taxonomy; ?>');
+
+						//set the datasource value
+						$('#_foogallery_datasource_value').val(JSON.stringify(document.foogallery_datasource_value_temp));
+
+						$container.find('.foogallery-items-html').html(document.foogallery_datasource_value_temp.html);
+
+						$container.show();
+
+						FOOGALLERY.showHiddenAreas(false);
+
+						$('.foogallery-attachments-list').addClass('hidden');
+
+						$('.foogallery_preview_container').addClass('foogallery-preview-force-refresh');
 					});
 				});
 			</script>

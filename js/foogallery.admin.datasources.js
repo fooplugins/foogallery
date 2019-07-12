@@ -17,7 +17,7 @@ jQuery(function ($) {
 		$('#foogallery_datasource').val( activeDatasource );
 
 		//raise a general event so that other datasources can clean up
-		$(document).trigger('foogallery-datasource-changed');
+		$(document).trigger('foogallery-datasource-changed', activeDatasource);
 
 		//raise a specific event for the new datasource so that things can be done
 		$(document).trigger('foogallery-datasource-changed-' + activeDatasource);

@@ -2,17 +2,16 @@ jQuery(function ($) {
 	$('.foogallery-datasource-modal-container').on('click', '.datasource-taxonomy a', function (e) {
 		e.preventDefault();
 		$(this).toggleClass('button-primary');
-		$selected = $(this).parents('ul:first').find('a.button-primary');
+		var $selected = $(this).parents('ul:first').find('a.button-primary'),
+			$parent_ul = $(this).parents('ul:first'),
+			taxonomy = $parent_ul.data('taxonomy'),
+			taxonomy_values = [],
+			taxonomies = [],
+			html = '';
 
 		//validate if the OK button can be pressed.
 		if ( $selected.length > 0 ) {
 			$('.foogallery-datasource-modal-insert').removeAttr( 'disabled' );
-
-			var taxonomy_values = [],
-				taxonomies = [],
-				html = '',
-				$parent_ul = $(this).parents('ul:first'),
-				taxonomy = $parent_ul.data('taxonomy');
 
 			$selected.each(function() {
 				taxonomy_values.push( $(this).data('termId') );
@@ -20,18 +19,17 @@ jQuery(function ($) {
 				html += '<li>' + $(this).text() + '</li>';
 			});
 
-			//set the selection
-			$('#_foogallery_datasource_value').val( JSON.stringify( {
-				"taxonomy" : taxonomy,
-				"value" : taxonomy_values,
-				"html" : '<ul>' + html + '</ul>'
-			} ) );
 		} else {
 			$('.foogallery-datasource-modal-insert').attr('disabled','disabled');
-
-			//clear the selection
-			$('#_foogallery_datasource_value').val('');
+			html = '';
 		}
+
+		//set the selection
+		document.foogallery_datasource_value_temp = {
+			"taxonomy" : taxonomy,
+			"value" : taxonomy_values,
+			"html" : '<ul>' + html + '</ul>'
+		};
 	});
 
 	$('.foogallery-datasource-taxonomy').on('click', 'button.remove', function (e) {
