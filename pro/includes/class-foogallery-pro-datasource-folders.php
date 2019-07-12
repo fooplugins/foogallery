@@ -7,6 +7,7 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Folders' ) ) {
     class FooGallery_Pro_Datasource_Folders {
 
     	public function __construct() {
+			add_action( 'foogallery_gallery_datasources', array($this, 'add_datasource'), 6 );
 			add_filter( 'foogallery_datasource_folders_item_count', array( $this, 'get_gallery_attachment_count' ), 10, 2 );
 			add_filter( 'foogallery_datasource_folders_featured_image', array( $this, 'get_gallery_featured_attachment' ), 10, 2 );
 			add_filter( 'foogallery_datasource_folders_attachments', array( $this, 'get_gallery_attachments' ), 10, 2 );
@@ -14,6 +15,22 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Folders' ) ) {
 			add_action( 'wp_ajax_foogallery_datasource_folder_change' , array( $this, 'render_folder_structure' ) );
 			add_action( 'foogallery_gallery_metabox_items_list', array( $this, 'render_datasource_item' ), 10, 1 );
 			add_action( 'foogallery_before_save_gallery_datasource', array( $this, 'before_save_gallery_datasource_clear_datasource_cached_images' ) );
+		}
+
+		/**
+		 * Add the Folders Datasource
+		 * @param $datasources
+		 * @return mixed
+		 */
+		function add_datasource( $datasources ) {
+			$datasources['folders'] = array(
+				'id'     => 'folders',
+				'name'   => __( 'Server Folder', 'foogallery' ),
+				'menu'  => __( 'Server Folder', 'foogallery' ),
+				'public' => true
+			);
+
+			return $datasources;
 		}
 
         /**

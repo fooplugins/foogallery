@@ -16,26 +16,37 @@ if ( ! class_exists( 'FooGallery_Pro_Datasources' ) ) {
          * @return mixed
          */
         function add_datasources( $datasources ) {
-            $datasources['media_tags'] = array(
-                'id'     => 'media_tags',
-                'name'   => __( 'Media Tags', 'foogalery' ),
-                'menu'  => __( 'Media Tags', 'foogallery' ),
-                'public' => true
-            );
 
-            $datasources['media_categories'] = array(
-                'id'     => 'media_categories',
-                'name'   => __( 'Media Categories', 'foogalery' ),
-                'menu'  => __( 'Media Categories', 'foogallery' ),
-                'public' => true
-            );
 
-            $datasources['folders'] = array(
-                'id'     => 'folders',
-                'name'   => __( 'Folders', 'foogalery' ),
-                'menu'  => __( 'Folders', 'foogallery' ),
-                'public' => true
-            );
+
+
+			$datasources['dropbox'] = array(
+				'id'     => 'dropbox',
+				'name'   => __( 'DropBox', 'foogallery' ),
+				'menu'  => __( 'DropBox', 'foogallery' ),
+				'public' => true
+			);
+
+			$datasources['amazon'] = array(
+				'id'     => 'amazon',
+				'name'   => __( 'Amazon S3', 'foogallery' ),
+				'menu'  => __( 'Amazon S3', 'foogallery' ),
+				'public' => true
+			);
+
+			$datasources['lightroom'] = array(
+				'id'     => 'lightroom',
+				'name'   => __( 'Adobe Lightroom', 'foogallery' ),
+				'menu'  => __( 'Adobe Lightroom', 'foogallery' ),
+				'public' => true
+			);
+
+			$datasources['instagram'] = array(
+				'id'     => 'instagram',
+				'name'   => __( 'Instagram', 'foogallery' ),
+				'menu'  => __( 'Instagram', 'foogallery' ),
+				'public' => true
+			);
 
             return $datasources;
         }
