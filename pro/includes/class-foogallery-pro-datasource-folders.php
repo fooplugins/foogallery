@@ -58,6 +58,18 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Folders' ) ) {
             return count( $this->get_images_from_folder( $foogallery ) );
 		}
 
+        /**
+         * Returns an array of FooGalleryAttachments from the datasource
+         *
+         * @param array $attachments
+         * @param FooGallery $foogallery
+         *
+         * @return array(FooGalleryAttachment)
+         */
+        public function get_gallery_attachments( $attachments, $foogallery ) {
+            return $this->get_images_from_folder( $foogallery );
+        }
+
 		/**
 		 * Returns an array of FooGalleryAttachments from the datasource
 		 *
@@ -73,18 +85,25 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Folders' ) ) {
 			if ( ! empty( $foogallery->datasource_value ) ) {
                 $transient_key = '_foogallery_datasource_folder_' . $foogallery->ID;
 
-                $cached_attachments = get_transient( $transient_key );
+                //never get the cached results if we are doing a preview
+                if ( isset( $foogallery_gallery_preview ) ) {
+                    $cached_attachments = false;
+                } else {
+                    $cached_attachments = get_transient( $transient_key );
+                }
 
 				if ( false === $cached_attachments) {
                     $datasource_value = $foogallery->datasource_value;
-                    $folder = $datasource_value['folder'];
-                    $files = $datasource_value['files'];
-                    $expiry_minutes = int_val( $datasource_value['expiry'] );
+                    $folder = $datasource_value['value'];
+
+                    //$files = $datasource_value['files'];
+                    $expiry = 5 * 60 * 60; //int_val( $datasource_value['expiry'] );
 
                     //find all image files in the folder
+                    $attachments = $this->get_attachments_for_folder( $folder );
 
 					//save a cached list of attachments
-					set_transient( $transient_key, $attachments, $expiry_minutes * 60 );
+					set_transient( $transient_key, $attachments, $expiry );
 				} else {
 					$attachments = $cached_attachments;
 				}
@@ -92,6 +111,112 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Folders' ) ) {
 
 			return $attachments;
 		}
+
+		public function get_attachments_for_folder( $folder ) {
+            global $wp_filesystem;
+            $attachments = array();
+
+            // setup wp_filesystem api
+            $url         = wp_nonce_url( '/', 'foogallery-datasource-folders' );
+            $creds       = request_filesystem_credentials( $url, FS_METHOD, false, false, null );
+            if ( false === $creds ) {
+                // no credentials yet, just produced a form for the user to fill in
+                return $attachments; // stop the normal page form from displaying
+            }
+            if ( ! WP_Filesystem( $creds ) ) {
+                return $attachments;
+            }
+
+            if ( empty( $folder ) ) {
+                $folder = '/';
+            }
+
+            //ensure we are always looking at a folder down from the root folder
+            $root = $this->get_root_folder();
+            $actual_path = rtrim( $root, '/' ) . $folder;
+
+            $file_array = array();
+
+            $image_array = array();
+
+            if ( $wp_filesystem->exists( $actual_path ) ) {
+                $json = false;
+
+                $json_path = trailingslashit( $actual_path ) . 'images.json';
+
+                if ( $wp_filesystem->exists( $json_path ) ) {
+                    //load json here
+                    $json = @json_decode( $wp_filesystem->get_contents( $json_path ) );
+                }
+
+                $files = $wp_filesystem->dirlist($actual_path);
+                if (count($files) > 0) {
+                    // build separate arrays for folders and files
+                    $dir_array = array();
+
+                    foreach ($files as $file => $file_info) {
+                        if ($file != '.' && $file != '..' && $file_info['type'] == 'd') {
+                            $file_string = strtolower(preg_replace("[._-]", "", $file));
+                            $dir_array[$file_string] = $file_info;
+                        } elseif ($file != '.' && $file != '..' && $file_info['type'] == 'f') {
+                            $file_string = strtolower(preg_replace("[._-]", "", $file));
+                            $file_array[$file_string] = $file_info;
+                        }
+                    }
+
+                    $supported_images = array(
+                        'gif',
+                        'jpg',
+                        'jpeg',
+                        'png'
+                    );
+
+                    //see if there are any images in the selected folder
+                    foreach ( $file_array as $file => $file_info ) {
+                        $ext = preg_replace( '/^.*\./', '', $file_info['name'] );
+
+                        if ( in_array( $ext, $supported_images ) ) {
+                            $filename = trailingslashit( $actual_path ) . $file;
+                            $url = get_site_url( null, trailingslashit( $folder ) . $file );
+                            $size = getimagesize( $filename );
+
+                            $attachment = new FooGalleryAttachment();
+                            $attachment->ID = count( $image_array ) + 1;
+                            $attachment->title = $file;
+                            $attachment->url = $url;
+                            if ( $size !== false ) {
+                                $attachment->width = $size['width'];
+                                $attachment->height = $size['height'];
+                            }
+
+                            if ( $json && array_key_exists( $file, $json ) ) {
+                                //extract info from the json config file in the folder
+                                $file_json = $json[$file];
+                                if ( array_key_exists( 'caption', $file_json ) ) {
+                                    $attachment->caption = $file_json['caption'];
+                                }
+                                if ( array_key_exists( 'description', $file_json ) ) {
+                                    $attachment->caption = $file_json['description'];
+                                }
+                                if ( array_key_exists( 'alt', $file_json ) ) {
+                                    $attachment->caption = $file_json['alt'];
+                                }
+                                if ( array_key_exists( 'custom_url', $file_json ) ) {
+                                    $attachment->caption = $file_json['custom_url'];
+                                }
+                                if ( array_key_exists( 'custom_target', $file_json ) ) {
+                                    $attachment->caption = $file_json['custom_target'];
+                                }
+                            }
+
+                            $image_array[] = $attachment;
+                        }
+                    }
+                }
+            }
+
+            return $image_array;
+        }
 
 		/**
 		 * Returns the featured FooGalleryAttachment from the datasource
@@ -104,7 +229,7 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Folders' ) ) {
 		public function get_gallery_featured_attachment( $default, $foogallery ) {
             $attachments = $this->get_images_from_folder( $foogallery );
 			if ( is_array( $attachments ) && count( $attachments ) > 0 ) {
-				return FooGalleryAttachment::get_by_id( $attachments[0]->ID );
+				return $attachments[0];
 			}
 
 			return false;
