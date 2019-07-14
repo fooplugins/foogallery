@@ -683,6 +683,35 @@ function foogallery_get_caption_title_for_attachment($attachment_post, $source =
 }
 
 /**
+ * Returns the attachment caption title based on the caption_title_source setting
+ *
+ * @param FooGalleryAttachment $attachment
+ * @param string $source
+ * @param string $caption_type The type of caption (title or desc)
+ *
+ * @return string
+ */
+function foogallery_get_caption_by_source($attachment, $source, $caption_type) {
+
+	switch ( $source ) {
+		case 'title':
+			$caption = trim( $attachment->title );
+			break;
+		case 'desc':
+			$caption = trim( $attachment->description );
+			break;
+		case 'alt':
+			$caption = trim( $attachment->alt );
+			break;
+		case 'caption' :
+		default:
+			$caption = trim( $attachment->caption );
+	}
+
+	return apply_filters( 'foogallery_get_caption_by_source', $caption, $attachment, $source, $caption_type );
+}
+
+/**
  * Returns the caption description source setting
  *
  * @return string
