@@ -244,7 +244,7 @@ if ( ! class_exists( 'FooGallery_Pro_Video' ) ) {
 		 * @return mixed
 		 */
 		public function alter_video_item_attributes( $classes, $attachment, $args ) {
-			if ( $attachment->is_video ) {
+			if ( isset( $attachment->is_video ) && $attachment->is_video === true ) {
 				$classes[] = 'fg-video';
 			}
 
@@ -265,7 +265,7 @@ if ( ! class_exists( 'FooGallery_Pro_Video' ) ) {
 			global $current_foogallery_template;
 			global $current_foogallery_album;
 
-			if ( $attachment->is_video ) {
+			if ( isset( $attachment->is_video ) && $attachment->is_video === true ) {
 				$video_data = get_post_meta( $attachment->ID, FOOGALLERY_VIDEO_POST_META, true );
 
 				if ( empty( $video_data ) ) {

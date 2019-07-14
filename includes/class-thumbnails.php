@@ -66,7 +66,7 @@ if ( !class_exists( 'FooGallery_Thumbnails' ) ) {
 			//we can force the use of the originally uploaded full-size image
 			$force_use_original_image = isset( $args['force_use_original_image'] ) && true === $args['force_use_original_image'];
 
-			if ( $force_use_original_image ) {
+			if ( $thumbnail_object->ID > 0 && $force_use_original_image ) {
 				$fullsize = wp_get_attachment_image_src( $thumbnail_object->ID, 'fullsize' );
 
 				return $fullsize[0];
