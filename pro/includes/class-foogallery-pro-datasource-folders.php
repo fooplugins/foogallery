@@ -11,6 +11,7 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Folders' ) ) {
 			add_filter( 'foogallery_datasource_folders_item_count', array( $this, 'get_gallery_attachment_count' ), 10, 2 );
 			add_filter( 'foogallery_datasource_folders_featured_image', array( $this, 'get_gallery_featured_attachment' ), 10, 2 );
 			add_filter( 'foogallery_datasource_folders_attachments', array( $this, 'get_gallery_attachments' ), 10, 2 );
+
 			add_action( 'foogallery-datasource-modal-content_folders', array( $this, 'render_datasource_modal_content' ), 10, 3 );
 			add_action( 'wp_ajax_foogallery_datasource_folder_change' , array( $this, 'render_folder_structure' ) );
 			add_action( 'foogallery_gallery_metabox_items_list', array( $this, 'render_datasource_item' ), 10, 1 );
@@ -55,7 +56,7 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Folders' ) ) {
 		 * @return int
 		 */
 		public function get_gallery_attachment_count( $count, $foogallery ) {
-            return count( $this->get_images_from_folder( $foogallery ) );
+            return count( $this->get_gallery_attachments_from_folder( $foogallery ) );
 		}
 
         /**
@@ -67,17 +68,17 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Folders' ) ) {
          * @return array(FooGalleryAttachment)
          */
         public function get_gallery_attachments( $attachments, $foogallery ) {
-            return $this->get_images_from_folder( $foogallery );
+            return $this->get_gallery_attachments_from_folder( $foogallery );
         }
 
 		/**
-		 * Returns an array of FooGalleryAttachments from the datasource
+		 * Returns a cached array of FooGalleryAttachments from the datasource
 		 *
 		 * @param FooGallery $foogallery
 		 *
 		 * @return array(FooGalleryAttachment)
 		 */
-		public function get_images_from_folder( $foogallery ) {
+		public function get_gallery_attachments_from_folder( $foogallery ) {
             global $foogallery_gallery_preview;
 
             $attachments = array();
@@ -100,7 +101,7 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Folders' ) ) {
                     $expiry = 5 * 60 * 60; //int_val( $datasource_value['expiry'] );
 
                     //find all image files in the folder
-                    $attachments = $this->get_attachments_for_folder( $folder );
+                    $attachments = $this->build_attachments_from_folder( $folder );
 
 					//save a cached list of attachments
 					set_transient( $transient_key, $attachments, $expiry );
@@ -112,7 +113,27 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Folders' ) ) {
 			return $attachments;
 		}
 
-		public function get_attachments_for_folder( $folder ) {
+		/**
+		 * returns the supported image types that will be pulled from a folder
+		 *
+		 * @return array
+		 */
+		public function supported_image_types() {
+			return apply_filters( 'foogallery_datasource_folder_supported_image_types', array(
+				'gif',
+				'jpg',
+				'jpeg',
+				'png'
+			));
+		}
+
+		/**
+		 * Scans the folder and builds an array of attachments
+		 * @param $folder
+		 *
+		 * @return array(FooGalleryAttachment)
+		 */
+		private function build_attachments_from_folder( $folder ) {
             global $wp_filesystem;
             $attachments = array();
 
@@ -135,88 +156,88 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Folders' ) ) {
             $root = $this->get_root_folder();
             $actual_path = rtrim( $root, '/' ) . $folder;
 
-            $file_array = array();
-
-            $image_array = array();
-
             if ( $wp_filesystem->exists( $actual_path ) ) {
                 $json = false;
 
-                $json_path = trailingslashit( $actual_path ) . 'images.json';
+                $json_path = trailingslashit( $actual_path ) . $this->image_metadata_file();
 
                 if ( $wp_filesystem->exists( $json_path ) ) {
                     //load json here
-                    $json = @json_decode( $wp_filesystem->get_contents( $json_path ) );
+                    $json = @json_decode( $wp_filesystem->get_contents( $json_path ), true );
                 }
 
                 $files = $wp_filesystem->dirlist($actual_path);
-                if (count($files) > 0) {
-                    // build separate arrays for folders and files
-                    $dir_array = array();
+
+                $supported_image_types = $this->supported_image_types();
+
+                if ( count( $files ) > 0 ) {
 
                     foreach ($files as $file => $file_info) {
-                        if ($file != '.' && $file != '..' && $file_info['type'] == 'd') {
-                            $file_string = strtolower(preg_replace("[._-]", "", $file));
-                            $dir_array[$file_string] = $file_info;
-                        } elseif ($file != '.' && $file != '..' && $file_info['type'] == 'f') {
-                            $file_string = strtolower(preg_replace("[._-]", "", $file));
-                            $file_array[$file_string] = $file_info;
-                        }
-                    }
+                        if ($file != '.' && $file != '..' && $file_info['type'] == 'f') {
+							$ext = preg_replace( '/^.*\./', '', $file_info['name'] );
 
-                    $supported_images = array(
-                        'gif',
-                        'jpg',
-                        'jpeg',
-                        'png'
-                    );
+							if ( in_array( $ext, $supported_image_types ) ) {
+								$filename = trailingslashit( $actual_path ) . $file;
+								$url = get_site_url( null, trailingslashit( $folder ) . $file );
+								$size = getimagesize( $filename );
 
-                    //see if there are any images in the selected folder
-                    foreach ( $file_array as $file => $file_info ) {
-                        $ext = preg_replace( '/^.*\./', '', $file_info['name'] );
+								$attachment = new FooGalleryAttachment();
+								$attachment->ID = 0;
+								$attachment->title = $file;
+								$attachment->url = $url;
+								if ( $size !== false ) {
+									$attachment->width = $size[0];
+									$attachment->height = $size[1];
+								}
 
-                        if ( in_array( $ext, $supported_images ) ) {
-                            $filename = trailingslashit( $actual_path ) . $file;
-                            $url = get_site_url( null, trailingslashit( $folder ) . $file );
-                            $size = getimagesize( $filename );
+								//extract info from the json config file in the folder
+								if ( $json ) {
+									$file_json = $this->find_json_data_for_file( $file, $json );
 
-                            $attachment = new FooGalleryAttachment();
-                            $attachment->ID = count( $image_array ) + 1;
-                            $attachment->title = $file;
-                            $attachment->url = $url;
-                            if ( $size !== false ) {
-                                $attachment->width = $size['width'];
-                                $attachment->height = $size['height'];
-                            }
+									if ( array_key_exists( 'caption', $file_json ) ) {
+										$attachment->caption = $file_json['caption'];
+									}
+									if ( array_key_exists( 'description', $file_json ) ) {
+										$attachment->description = $file_json['description'];
+									}
+									if ( array_key_exists( 'alt', $file_json ) ) {
+										$attachment->alt = $file_json['alt'];
+									}
+									if ( array_key_exists( 'custom_url', $file_json ) ) {
+										$attachment->custom_url = $file_json['custom_url'];
+									}
+									if ( array_key_exists( 'custom_target', $file_json ) ) {
+										$attachment->custom_target = $file_json['custom_target'];
+									}
+								}
 
-                            if ( $json && array_key_exists( $file, $json ) ) {
-                                //extract info from the json config file in the folder
-                                $file_json = $json[$file];
-                                if ( array_key_exists( 'caption', $file_json ) ) {
-                                    $attachment->caption = $file_json['caption'];
-                                }
-                                if ( array_key_exists( 'description', $file_json ) ) {
-                                    $attachment->caption = $file_json['description'];
-                                }
-                                if ( array_key_exists( 'alt', $file_json ) ) {
-                                    $attachment->caption = $file_json['alt'];
-                                }
-                                if ( array_key_exists( 'custom_url', $file_json ) ) {
-                                    $attachment->caption = $file_json['custom_url'];
-                                }
-                                if ( array_key_exists( 'custom_target', $file_json ) ) {
-                                    $attachment->caption = $file_json['custom_target'];
-                                }
-                            }
-
-                            $image_array[] = $attachment;
+								$attachments[] = $attachment;
+							}
                         }
                     }
                 }
             }
 
-            return $image_array;
+            return $attachments;
         }
+
+		/**
+		 * Extract the correct json data for the file
+		 * @param $filename
+		 * @param $json_data
+		 *
+		 * @return bool
+		 */
+        public function find_json_data_for_file( $filename, $json_data ) {
+			if ( array_key_exists( 'items', $json_data ) ) {
+				foreach ( $json_data['items'] as $item ) {
+					if ( array_key_exists( 'file', $item ) && $item['file'] === $filename ) {
+						return $item;
+					}
+				}
+			}
+			return false;
+		}
 
 		/**
 		 * Returns the featured FooGalleryAttachment from the datasource
@@ -227,7 +248,7 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Folders' ) ) {
 		 * @return bool|FooGalleryAttachment
 		 */
 		public function get_gallery_featured_attachment( $default, $foogallery ) {
-            $attachments = $this->get_images_from_folder( $foogallery );
+            $attachments = $this->get_gallery_attachments_from_folder( $foogallery );
 			if ( is_array( $attachments ) && count( $attachments ) > 0 ) {
 				return $attachments[0];
 			}
@@ -242,8 +263,8 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Folders' ) ) {
 		function render_datasource_modal_content( $foogallery_id, $datasource_value ) {
 
             $folder = '';
-            if ( is_array( $datasource_value ) && array_key_exists( 'folder', $datasource_value ) ) {
-                $folder = $datasource_value['folder'];
+            if ( is_array( $datasource_value ) && array_key_exists( 'value', $datasource_value ) ) {
+                $folder = $datasource_value['value'];
             }
             $files = '';
             if ( is_array( $datasource_value ) && array_key_exists( 'files', $datasource_value ) ) {
@@ -281,6 +302,12 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Folders' ) ) {
                     background: #efefef;
                     border-radius: 3px;
                 }
+
+				.foogallery-datasource-folder-list textarea {
+					width: 500px;
+					height: 500px;
+				}
+
 			</style>
 			<script type="text/javascript">
 				jQuery(function ($) {
@@ -324,7 +351,7 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Folders' ) ) {
             <p><?php _e('Selected Folder : ', 'foogallery'); ?><span class="foogallery-datasource-folder-selected"><?php echo empty($folder) ? __('nothing yet', 'foogallery') : $folder; ?></span></p>
             <div class="foogallery-datasource-folder-list">
             <?php
-            $this->render_filesystem_tree();
+            $this->render_filesystem_tree( $folder );
             ?>
             </div><?php
 		}
@@ -372,14 +399,25 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Folders' ) ) {
 				if ( empty( $up_folder ) ) {
 					$up_folder = '/';
 				}
-				echo '<li><a href="#" data-folder="' . esc_attr( $up_folder ) . '"><span class="dashicons dashicons-category" />..</a></li>';
+				echo '<li><a title="' . __( 'Go up a level', 'foogallery' ) . '" href="#" data-folder="' . esc_attr( $up_folder ) . '"><span class="dashicons dashicons-category" />..</a></li>';
 			}
 
-			$file_array = array();
-
 			$folder_exists = $wp_filesystem->exists( $actual_path );
+			$image_count = 0;
+			$image_metadata_count = 0;
+			$metadata_file_exists = false;
+			$metadata_array = array();
+			$json = false;
 
 			if ( $folder_exists ) {
+				$json_path = trailingslashit( $actual_path ) . $this->image_metadata_file();
+
+				if ( $wp_filesystem->exists( $json_path ) ) {
+					//load json here
+					$metadata_file_exists = true;
+					$json = @json_decode( $wp_filesystem->get_contents( $json_path ), true );
+				}
+
 				$files = $wp_filesystem->dirlist( $actual_path );
 				if ( count( $files ) > 0 ) {
 					// build separate arrays for folders and files
@@ -390,11 +428,51 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Folders' ) ) {
 							$file_string             = strtolower( preg_replace( "[._-]", "", $file ) );
 							$dir_array[$file_string] = $file_info;
 						} elseif ( $file != '.' && $file != '..' && $file_info['type'] == 'f' ) {
-							$file_string              = strtolower( preg_replace( "[._-]", "", $file ) );
-							$file_array[$file_string] = $file_info;
+							//dealing with a file.
+
+							//Check if the file is an image
+							$ext = preg_replace( '/^.*\./', '', $file_info['name'] );
+							if ( in_array( $ext, $this->supported_image_types() ) ) {
+								$image_count ++;
+
+								$metadata = array(
+									'file' => $file,
+									'caption' => '',
+									'description' => '',
+									'alt' => '',
+									'custom_url' => '',
+									'custom_target' => '',
+								);
+
+								//check if we have metadata for the file
+								if ( $json ) {
+									$file_json = $this->find_json_data_for_file( $file, $json );
+									if ( $file_json !== false ) {
+										$image_metadata_count++;
+
+										if ( array_key_exists( 'caption', $file_json ) ) {
+											$metadata['caption'] = $file_json['caption'];
+										}
+										if ( array_key_exists( 'description', $file_json ) ) {
+											$metadata['description'] = $file_json['description'];
+										}
+										if ( array_key_exists( 'alt', $file_json ) ) {
+											$metadata['alt'] = $file_json['alt'];
+										}
+										if ( array_key_exists( 'custom_url', $file_json ) ) {
+											$metadata['custom_url'] = $file_json['custom_url'];
+										}
+										if ( array_key_exists( 'custom_target', $file_json ) ) {
+											$metadata['custom_target'] = $file_json['custom_target'];
+										}
+									}
+								}
+
+								$metadata_array[] = $metadata;
+							}
 						}
 					}
-					// shot those arrays
+					// sort the folders
 					ksort( $dir_array );
 
 					// output all folders
@@ -402,33 +480,45 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Folders' ) ) {
 						$folder = trailingslashit( $path ) . $file_info['name'];
 						echo '<li><a href="#" data-folder="' . esc_attr( $folder ) . '"><span class="dashicons dashicons-category" />' . esc_html( $file_info['name'] ) . '</a></li>';
 					}
-
 				}
 			}
 			echo '</ul>';
 
 			if ( $folder_exists ) {
-				$image_count = 0;
+				echo '<p>' . __( 'Images found in folder : ', 'foogallery' ) . $image_count . '</p>';
 
-				$supported_images = array(
-					'gif',
-					'jpg',
-					'jpeg',
-					'png'
-				);
+				if ( $image_count > 0 ) {
+					if ( $metadata_file_exists ) {
+						echo '<p>' . __( 'Images with metadata : ', 'foogallery' ) . $image_metadata_count . '</p>';
+						if ( $image_count > $image_metadata_count ) {
+							//there is missing metadata
+							echo '<p><strong>' . __( 'There are images with missing metadata!', 'foogallery' ) . '</strong></p>';
+						}
+					} else {
+						echo '<p><strong>' . __( 'NO metadata file found in folder!', 'foogallery' ) . '</strong></p>';
+						echo '<p>' . sprintf( __( 'We extract metadata information about each image from a file (%s) in the same folder.', 'foogallery' ), '<i>' . $this->image_metadata_file() . '</i>' );
+						echo '<br />';
+						//echo sprintf( __('Save a json file in the folder named %s and we will extract all the image metadata for each image.', 'foogallery' ), $this->image_metadata_file() );
+						echo '</p>';
+					}
 
-				//see if there are any images in the selected folder
-				foreach ( $file_array as $file => $file_info ) {
-					$ext = preg_replace( '/^.*\./', '', $file_info['name'] );
-
-					if ( in_array( $ext, $supported_images ) ) {
-						$image_count ++;
+					if ( $image_count > $image_metadata_count ) {
+						echo '<p>' .  sprintf( __( 'Copy the data below, change the metadata for each file, and then save it to the file %s in the same folder.', 'foogallery'), $this->image_metadata_file() ) . '</p>';
+						echo '<textarea>';
+						echo json_encode( array( 'items' => $metadata_array ), JSON_PRETTY_PRINT );
+						echo '</textarea>';
 					}
 				}
-
-				echo __( 'Images found in folder : ', 'foogallery' ) . $image_count;
 			}
         }
+
+		/**
+		 * Return the filename for the images metadata
+		 * @return string
+		 */
+        private function image_metadata_file() {
+			return apply_filters( 'foogallery_datasource_folders_json', 'metadata.json' );
+		}
 
         /**
          * Output the html required by the datasource in order to add item(s)
