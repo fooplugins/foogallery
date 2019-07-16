@@ -327,8 +327,6 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Folders' ) ) {
 							"value" : folder
 						};
 
-						$('#<?php echo FOOGALLERY_META_DATASOURCE_VALUE; ?>').val( JSON.stringify(  ) );
-
 						$('.foogallery-datasource-modal-insert').removeAttr( 'disabled' );
 
                         var data = 'action=foogallery_datasource_folder_change' +
