@@ -34,12 +34,7 @@ if ( ! class_exists( 'FooGallery_Pro_Datasources' ) ) {
 				'public' => true
 			);
 
-			$datasources['lightroom'] = array(
-				'id'     => 'lightroom',
-				'name'   => __( 'Adobe Lightroom', 'foogallery' ),
-				'menu'  => __( 'Adobe Lightroom', 'foogallery' ),
-				'public' => true
-			);
+
 
 			$datasources['instagram'] = array(
 				'id'     => 'instagram',

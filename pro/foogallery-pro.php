@@ -22,6 +22,7 @@ require_once( FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-datasource-ta
 require_once( FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-datasource-mediatags.php' );
 require_once( FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-datasource-mediacategories.php' );
 require_once( FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-datasource-folders.php' );
+require_once( FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-datasource-lightroom.php' );
 
 /**
  * FooGallery PRO Main Class
@@ -50,6 +51,7 @@ if ( ! class_exists( 'FooGallery_Pro' ) ) {
 			new FooGallery_Pro_Datasource_MediaCategories();
 			new FooGallery_Pro_Datasource_MediaTags();
 			new FooGallery_Pro_Datasource_Folders();
+			new FooGallery_Pro_Datasource_Lightroom();
 		}
 	}
 }
