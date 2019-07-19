@@ -1153,7 +1153,7 @@ function foogallery_create_gallery( $template, $attachment_ids ) {
 		$default_gallery_id = foogallery_get_setting( 'default_gallery_settings' );
 		if ( $default_gallery_id ) {
 			$settings = get_post_meta( $default_gallery_id, FOOGALLERY_META_SETTINGS, true );
-			add_post_meta( $this->foogallery_id, FOOGALLERY_META_SETTINGS, $settings, true );
+			add_post_meta( $gallery_id, FOOGALLERY_META_SETTINGS, $settings, true );
 		}
 	}
 
