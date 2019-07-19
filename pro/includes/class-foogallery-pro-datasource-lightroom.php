@@ -98,7 +98,7 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Lightroom' ) ) {
                     $datasource_value = $foogallery->datasource_value;
 					$collectionId = $datasource_value['collectionId'];
 
-                    $expiry = 5 * 60 * 60;
+					$expiry = 24 * 60 * 60; //24 hours
 
                     //find all image files in the lightroom collection
 					$helper = new FooGallery_Datasource_MediaLibrary_Query_Helper();
