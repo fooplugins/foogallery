@@ -247,7 +247,7 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Lightroom' ) ) {
 				</div>
 			<?php } else { ?>
 				<p><?php echo sprintf( __('You need to purchase the %s plugin in order to sync your Adobe Lightroom collections with your WordPress Media Library.','foogallery'), $wplr_link ); ?></p>
-				<p><?php echo __('WP/LR Sync is a Lightroom Publish Service for WordPress. It exports your photos to WordPress, the folders and collections from Adobe Lightroom and keeps it all synchronized.', 'foogallery'); ?></p>
+				<p><?php echo __('WP/LR Sync is a Lightroom Publishing Service for WordPress. It exports your photos to WordPress, the folders and collections from Adobe Lightroom and keeps it all synchronized.', 'foogallery'); ?></p>
 				<a href="<?php echo $wplr_url; ?>" target="_blank"><img src="https://store.meowapps.com/wp-content/uploads/2017/03/meow-apps.png" width="500" /></a>
 			<?php } ?>
             <?php
