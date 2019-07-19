@@ -410,10 +410,15 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Folders' ) ) {
 			if ( $folder_exists ) {
 				$json_path = trailingslashit( $actual_path ) . $this->image_metadata_file();
 
+				$json_last_error = false;
+				$json_last_error_code = 0;
+
 				if ( $wp_filesystem->exists( $json_path ) ) {
 					//load json here
 					$metadata_file_exists = true;
 					$json = @json_decode( $wp_filesystem->get_contents( $json_path ), true );
+					$json_last_error_code = json_last_error();
+					$json_last_error = json_last_error_msg();
 				}
 
 				$files = $wp_filesystem->dirlist( $actual_path );
@@ -483,29 +488,37 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Folders' ) ) {
 			echo '</ul>';
 
 			if ( $folder_exists ) {
-				echo '<p>' . __( 'Images found in folder : ', 'foogallery' ) . $image_count . '</p>';
+				echo '<p>' . sprintf( __( '%s images found in the folder.', 'foogallery' ), $image_count ) . '</p>';
 
 				if ( $image_count > 0 ) {
 					if ( $metadata_file_exists ) {
-						echo '<p>' . __( 'Images with metadata : ', 'foogallery' ) . $image_metadata_count . '</p>';
-						if ( $image_count > $image_metadata_count ) {
-							//there is missing metadata
-							echo '<p><strong>' . __( 'There are images with missing metadata!', 'foogallery' ) . '</strong></p>';
+						if ( $json_last_error_code !== JSON_ERROR_NONE ) {
+							echo '<p><strong>' . __( 'ERROR reading metadata file!', 'foogallery' ) . '</strong></p>';
+							echo '<p>' . sprintf( __( 'There was a problem reading metadata from %s. Please check that the file contains valid JSON. You can use a website like %s to help validate your JSON data.', 'foogallery' ), $this->image_metadata_file(), '<a href="https://jsonlint.com/" target="_blank">JSONLint</a>') . '</p>';
+							echo '<p>' . __( 'Error : ', 'foogallery' ) . $json_last_error . '</p>';
+						} else {
+							if ( $image_count > $image_metadata_count ) {
+								//there is missing metadata
+								echo '<p><strong>' . sprintf( __( 'There are %d images with missing metadata!', 'foogallery' ), $image_count - $image_metadata_count ) . '</strong></p>';
+							}
 						}
 					} else {
 						echo '<p><strong>' . __( 'NO metadata file found in folder!', 'foogallery' ) . '</strong></p>';
-						echo '<p>' . sprintf( __( 'We extract metadata information about each image from a file (%s) in the same folder.', 'foogallery' ), '<i>' . $this->image_metadata_file() . '</i>' );
+						echo '<p>' . sprintf( __( 'We read JSON metadata information about each image from the file (%s) which you need to save to the same folder.', 'foogallery' ), '<i>' . $this->image_metadata_file() . '</i>' );
 						echo '<br />';
 						//echo sprintf( __('Save a json file in the folder named %s and we will extract all the image metadata for each image.', 'foogallery' ), $this->image_metadata_file() );
 						echo '</p>';
 					}
 
 					if ( $image_count > $image_metadata_count ) {
-						echo '<p>' .  sprintf( __( 'Copy the data below, change the metadata for each file, and then save it to the file %s in the same folder.', 'foogallery'), $this->image_metadata_file() ) . '</p>';
-						echo '<textarea>';
-						echo json_encode( array( 'items' => $metadata_array ), JSON_PRETTY_PRINT );
-						echo '</textarea>';
+						echo '<p>' .  __( 'Below is the automatically generated JSON metadata for the images found in the folder.', 'foogallery') . '</p>';
+						echo '<p>' .  sprintf( __( 'To use it: copy the metadata, change the info for each image, save it to a file named %s, and finally transfer/FTP the file into the same folder on your server.', 'foogallery'), $this->image_metadata_file() ) . '</p>';
+					} else {
+						echo '<p>' .  sprintf( __( 'Below is the JSON metadata read from %s', 'foogallery'), $this->image_metadata_file() ) . '</p>';
 					}
+					echo '<textarea>';
+					echo json_encode( array( 'items' => $metadata_array ), JSON_PRETTY_PRINT );
+					echo '</textarea>';
 				}
 			}
         }
