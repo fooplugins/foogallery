@@ -447,23 +447,27 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 
 			//check the template supports filtering
 			if ( $template_data && array_key_exists( 'filtering_support', $template_data ) && true === $template_data['filtering_support'] ) {
-				$args['filtering_type']                    = $post_data[FOOGALLERY_META_SETTINGS][$template . '_filtering_type'];
-				$args['filtering_theme']                   = $post_data[FOOGALLERY_META_SETTINGS][$template . '_filtering_theme'];
-				$args['filtering_taxonomy']                = $post_data[FOOGALLERY_META_SETTINGS][$template . '_filtering_taxonomy'];
-				$args['filtering_position']                = $post_data[FOOGALLERY_META_SETTINGS][$template . '_filtering_position'];
-				$args['filtering_mode']                    = $post_data[FOOGALLERY_META_SETTINGS][$template . '_filtering_mode'];
-				$args['filtering_min']                     = $post_data[FOOGALLERY_META_SETTINGS][$template . '_filtering_min'];
-				$args['filtering_limit']                   = $post_data[FOOGALLERY_META_SETTINGS][$template . '_filtering_limit'];
-				$args['filtering_show_count']              = $post_data[FOOGALLERY_META_SETTINGS][$template . '_filtering_show_count'];
-				$args['filtering_adjust_size']             = $post_data[FOOGALLERY_META_SETTINGS][$template . '_filtering_adjust_size'];
-				$args['filtering_adjust_size_smallest']    = $post_data[FOOGALLERY_META_SETTINGS][$template . '_filtering_adjust_size_smallest'];
-				$args['filtering_adjust_size_largest']     = $post_data[FOOGALLERY_META_SETTINGS][$template . '_filtering_adjust_size_largest'];
-				$args['filtering_adjust_opacity']          = $post_data[FOOGALLERY_META_SETTINGS][$template . '_filtering_adjust_opacity'];
-				$args['filtering_adjust_opacity_lightest'] = $post_data[FOOGALLERY_META_SETTINGS][$template . '_filtering_adjust_opacity_lightest'];
-				$args['filtering_adjust_opacity_darkest']  = $post_data[FOOGALLERY_META_SETTINGS][$template . '_filtering_adjust_opacity_darkest'];
-				$args['filtering_override']				   = $post_data[FOOGALLERY_META_SETTINGS][$template . '_filtering_override'];
-				$args['filtering_sort']				   	   = $post_data[FOOGALLERY_META_SETTINGS][$template . '_filtering_sort'];
+				if ( array_key_exists( $template . '_filtering_type', $post_data[FOOGALLERY_META_SETTINGS] ) ) {
+					$args['filtering_type'] = $post_data[FOOGALLERY_META_SETTINGS][$template . '_filtering_type'];
 
+					if ( $args['filtering_type'] !== '' ) {
+						$args['filtering_theme']                   = $post_data[FOOGALLERY_META_SETTINGS][$template . '_filtering_theme'];
+						$args['filtering_taxonomy']                = $post_data[FOOGALLERY_META_SETTINGS][$template . '_filtering_taxonomy'];
+						$args['filtering_position']                = $post_data[FOOGALLERY_META_SETTINGS][$template . '_filtering_position'];
+						$args['filtering_mode']                    = $post_data[FOOGALLERY_META_SETTINGS][$template . '_filtering_mode'];
+						$args['filtering_min']                     = $post_data[FOOGALLERY_META_SETTINGS][$template . '_filtering_min'];
+						$args['filtering_limit']                   = $post_data[FOOGALLERY_META_SETTINGS][$template . '_filtering_limit'];
+						$args['filtering_show_count']              = $post_data[FOOGALLERY_META_SETTINGS][$template . '_filtering_show_count'];
+						$args['filtering_adjust_size']             = $post_data[FOOGALLERY_META_SETTINGS][$template . '_filtering_adjust_size'];
+						$args['filtering_adjust_size_smallest']    = $post_data[FOOGALLERY_META_SETTINGS][$template . '_filtering_adjust_size_smallest'];
+						$args['filtering_adjust_size_largest']     = $post_data[FOOGALLERY_META_SETTINGS][$template . '_filtering_adjust_size_largest'];
+						$args['filtering_adjust_opacity']          = $post_data[FOOGALLERY_META_SETTINGS][$template . '_filtering_adjust_opacity'];
+						$args['filtering_adjust_opacity_lightest'] = $post_data[FOOGALLERY_META_SETTINGS][$template . '_filtering_adjust_opacity_lightest'];
+						$args['filtering_adjust_opacity_darkest']  = $post_data[FOOGALLERY_META_SETTINGS][$template . '_filtering_adjust_opacity_darkest'];
+						$args['filtering_override']                = $post_data[FOOGALLERY_META_SETTINGS][$template . '_filtering_override'];
+						$args['filtering_sort']                    = $post_data[FOOGALLERY_META_SETTINGS][$template . '_filtering_sort'];
+					}
+				}
 			}
 
 			return $args;

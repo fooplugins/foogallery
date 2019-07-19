@@ -631,8 +631,10 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 			$args['caption_title_source'] = $post_data[FOOGALLERY_META_SETTINGS][$template . '_caption_title_source'];
 			$args['caption_desc_source'] = $post_data[FOOGALLERY_META_SETTINGS][$template . '_caption_desc_source'];
 			$args['captions_limit_length'] = $post_data[FOOGALLERY_META_SETTINGS][$template . '_captions_limit_length'];
-			$args['caption_title_length'] = $post_data[FOOGALLERY_META_SETTINGS][$template . '_caption_title_length'];
-			$args['caption_desc_length'] = $post_data[FOOGALLERY_META_SETTINGS][$template . '_caption_desc_length'];
+			if ( $args['captions_limit_length'] !== '' ) {
+				$args['caption_title_length'] = $post_data[FOOGALLERY_META_SETTINGS][$template . '_caption_title_length'];
+				$args['caption_desc_length']  = $post_data[FOOGALLERY_META_SETTINGS][$template . '_caption_desc_length'];
+			}
 			return $args;
 		}
 
