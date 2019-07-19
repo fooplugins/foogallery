@@ -12,7 +12,8 @@ if ( ! class_exists( 'FooGallery_Pro_Attachment_Taxonomies' ) ) {
          * Class Constructor
          */
         function __construct() {
-			add_action( 'init', array( $this, 'init_all' ), 11 );
+			add_action( 'init', array( $this, 'init_taxonomies' ), 9 );
+			add_action( 'init', array( $this, 'init_rest' ), 11 );
 			add_action( 'foogallery_admin_settings_override', array( $this, 'add_admin_setting' ) );
         }
 
@@ -36,15 +37,21 @@ if ( ! class_exists( 'FooGallery_Pro_Attachment_Taxonomies' ) ) {
         	return $settings;
 		}
 
-		/**
-		 * Initialize all the hooks if the taxonomies are not disabled
-		 */
-        function init_all() {
+		function init_taxonomies() {
 			if ( foogallery_get_setting( 'disable_attachment_taxonomies' ) === 'on' ) {
 				return;
 			}
 
 			$this->add_taxonomies();
+		}
+
+		/**
+		 * Initialize the rest off the hooks if the taxonomies are not disabled
+		 */
+        function init_rest() {
+			if ( foogallery_get_setting( 'disable_attachment_taxonomies' ) === 'on' ) {
+				return;
+			}
 
 			if ( is_admin() ) {
 				add_action( 'admin_menu', array( $this, 'add_menu_items' ), 1 );
