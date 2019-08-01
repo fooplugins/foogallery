@@ -130,7 +130,7 @@ if ( ! class_exists( 'FooGallery_Pro_Bulk_Copy' ) ) {
                 <table class="foogallery-metabox-settings">
                     <tr class="foogallery_template_field">
                         <th>
-                            <label for="FooGallerySettings_default_lightbox"><?php _e('Which Settings?', 'foogallery'); ?></label>
+                            <label><?php _e('Which Settings?', 'foogallery'); ?></label>
                             <span data-balloon-length="large" data-balloon-pos="right" data-balloon="Choose which settings you wish to bulk copy to other galleries."><i class="dashicons dashicons-editor-help"></i></span>
                         </th>
                         <td>
