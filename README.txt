@@ -52,6 +52,11 @@ Why choose FooGallery? Stunning image gallery layouts, responsive, retina-ready,
 *	Video Support - [demo](https://foo.gallery/demos/video-gallery-demos/)
 *	Media Tags and Categories
 *	Gallery Filtering using Media Tags or Categories - [demo](https://foo.gallery/demos/filtering-demos/)
+*	Load Galleries From Other Sources
+	*	Load from a folder on the server
+	*	Load from a collection from Adobe Lightroom (using WP/LR Sync)
+	*	Load all attachments with Media Tags
+	*	Load all attachments with Media Categories
 *   11 Beautiful Hover Effect Presets - [demo](https://foo.gallery/demos/hover-effect-presets-demos/)
 *   12 CSS thumbnail filters (Instagram) - [demo](https://foo.gallery/demos/thumbnail-filters/)
 *   Advanced Pagination - [demo](https://foo.gallery/demos/pagination-demo/)
@@ -139,6 +144,10 @@ Hell, yes! Check out our [developer page](http://foo.gallery/developers/)
 Update now to get all the latest features, bug fixes and improvements!
 
 == Changelog ==
+
+= 1.8.0 =
+* New : Implemented the Datasource architecture within the plugin
+* Fix : PHP Warnings when previewing galleries
 
 = 1.7.8 =
 * New : Added filter to override content when creating a gallery page 'foogallery_create_gallery_page_content'
