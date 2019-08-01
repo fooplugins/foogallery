@@ -7,7 +7,7 @@ if ( ! class_exists( 'FooGallery_Pro_Datasources' ) ) {
     class FooGallery_Pro_Datasources {
         function __construct() {
             //add the datasources
-            add_action( 'foogallery_gallery_datasources', array($this, 'add_datasources') );
+            //add_action( 'foogallery_gallery_datasources', array($this, 'add_datasources') );
         }
 
         /**
