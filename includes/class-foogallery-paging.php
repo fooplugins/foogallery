@@ -352,16 +352,17 @@ if ( ! class_exists( 'FooGallery_Paging' ) ) {
 			//check the template supports paging
 			if ( $template_data && array_key_exists( 'paging_support', $template_data ) && true === $template_data['paging_support'] ) {
 				$args['paging'] = $post_data[FOOGALLERY_META_SETTINGS][$template. '_paging_type'];
-				$args['paging_position'] = $post_data[FOOGALLERY_META_SETTINGS][$template. '_paging_position'];
-				$args['paging_theme'] = $post_data[FOOGALLERY_META_SETTINGS][$template. '_paging_theme'];
-				$args['paging_size'] = $post_data[FOOGALLERY_META_SETTINGS][$template. '_paging_size'];
-				$args['paging_scroll'] = $post_data[FOOGALLERY_META_SETTINGS][$template. '_paging_scroll'];
-				$args['paging_output'] = $post_data[FOOGALLERY_META_SETTINGS][$template. '_paging_output'];
-
-				$args['paging_limit'] = $post_data[FOOGALLERY_META_SETTINGS][$template. '_paging_limit'];
-				$args['paging_showFirstLast'] = $post_data[FOOGALLERY_META_SETTINGS][$template. '_paging_showFirstLast'];
-				$args['paging_showPrevNext'] = $post_data[FOOGALLERY_META_SETTINGS][$template. '_paging_showPrevNext'];
-				$args['paging_showPrevNextMore'] = $post_data[FOOGALLERY_META_SETTINGS][$template. '_paging_showPrevNextMore'];
+				if ( $args['paging'] !== '') {
+					$args['paging_position'] 		 = $post_data[FOOGALLERY_META_SETTINGS][$template . '_paging_position'];
+					$args['paging_theme']    		 = $post_data[FOOGALLERY_META_SETTINGS][$template . '_paging_theme'];
+					$args['paging_size']     		 = $post_data[FOOGALLERY_META_SETTINGS][$template . '_paging_size'];
+					$args['paging_scroll']   		 = $post_data[FOOGALLERY_META_SETTINGS][$template . '_paging_scroll'];
+					$args['paging_output']   		 = $post_data[FOOGALLERY_META_SETTINGS][$template . '_paging_output'];
+					$args['paging_limit']            = $post_data[FOOGALLERY_META_SETTINGS][$template . '_paging_limit'];
+					$args['paging_showFirstLast']    = $post_data[FOOGALLERY_META_SETTINGS][$template . '_paging_showFirstLast'];
+					$args['paging_showPrevNext']     = $post_data[FOOGALLERY_META_SETTINGS][$template . '_paging_showPrevNext'];
+					$args['paging_showPrevNextMore'] = $post_data[FOOGALLERY_META_SETTINGS][$template . '_paging_showPrevNextMore'];
+				}
 			}
 
 			return $args;

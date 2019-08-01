@@ -1,7 +1,6 @@
 .foogallery-attachments-list .add-attachment {
     background: #ddd;
-    box-shadow: 0 0 0 1px #ccc;
-    width: 150px;
+	border: #888 1px dashed;
     position: relative;
     float: left;
     padding: 0;
@@ -21,7 +20,6 @@
     height: 150px;
     text-align: center;
     width: 150px;
-    height: 150px;
     color:#666;
     font-weight: bold;
     text-decoration: none;
@@ -434,6 +432,20 @@ button[data-balloon]{overflow:visible}[data-balloon]{position:relative}[data-bal
 .foogallery_preview_container {
 	position: relative;
 	padding: 10px;
+}
+
+.foogallery-items-add {
+	padding:20px;
+	text-align: center
+}
+
+.foogallery-items-view .button-hero .dashicons {
+	vertical-align: middle;
+	padding-right: 10px;
+	width: 24px;
+	height: 24px;
+	font-size: 24px;
+	font-weight: normal;
 }
 
 .foogallery_preview_container.loading:after {

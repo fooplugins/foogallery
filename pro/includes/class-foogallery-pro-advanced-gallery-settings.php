@@ -26,8 +26,8 @@ if ( ! class_exists( 'FooGallery_Pro_Advanced_Gallery_Settings' ) ) {
 		function add_advanced_fields( $fields, $template ) {
 			$fields[] = array(
 				'id'       => 'state',
-				'title'    => __( 'State', 'foogallery' ),
-				'desc'     => __( 'Allow the gallery to keep state for both paging and filtering. When enabled, changing the page or filter will alter the URL.', 'foogallery' ),
+				'title'    => __( 'Deep Linking', 'foogallery' ),
+				'desc'     => __( 'Enable Deep Linking for the gallery which allows the gallery to keep it\'s state for both paging and filtering.', 'foogallery' ),
 				'section'  => __( 'Advanced', 'foogallery' ),
 				'type'     => 'radio',
 				'default'  => 'no',
@@ -36,11 +36,6 @@ if ( ! class_exists( 'FooGallery_Pro_Advanced_Gallery_Settings' ) ) {
 					'no'  => __( 'Disabled', 'foogallery' ),
 					'yes'   => __( 'Enabled', 'foogallery' ),
 				),
-//				'row_data' => array(
-//					'data-foogallery-change-selector' => 'input:radio',
-//					'data-foogallery-value-selector'  => 'input:checked',
-//					'data-foogallery-preview'         => 'class'
-//				)
 			);
 
 			$fields[] = array(
@@ -50,11 +45,6 @@ if ( ! class_exists( 'FooGallery_Pro_Advanced_Gallery_Settings' ) ) {
 				'section'  => __( 'Advanced', 'foogallery' ),
 				'type'     => 'textarea',
 				'default'  => '',
-//				'row_data' => array(
-//					'data-foogallery-change-selector' => 'input:radio',
-//					'data-foogallery-value-selector'  => 'input:checked',
-//					'data-foogallery-preview'         => 'class'
-//				)
 			);
 
 			return $fields;

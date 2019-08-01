@@ -51,7 +51,6 @@ require_once( FOOGALLERY_PATH . 'includes/class-foogallery-default-crop-position
 require_once( FOOGALLERY_PATH . 'includes/class-foogallery-force-https.php' );
 
 //Datasource includes
-require_once( FOOGALLERY_PATH . 'includes/interface-foogallery-datasource.php' );
 require_once( FOOGALLERY_PATH . 'includes/class-foogallery-datasource-media_library.php' );
 
 if ( is_admin() ) {
@@ -63,6 +62,7 @@ if ( is_admin() ) {
 	require_once( FOOGALLERY_PATH . 'includes/admin/class-settings-image-optimization.php' );
 	require_once( FOOGALLERY_PATH . 'includes/admin/class-gallery-editor.php' );
 	require_once( FOOGALLERY_PATH . 'includes/admin/class-gallery-metaboxes.php' );
+	require_once( FOOGALLERY_PATH . 'includes/admin/class-gallery-metabox-items.php' );
 	require_once( FOOGALLERY_PATH . 'includes/admin/class-gallery-metabox-fields.php' );
 	require_once( FOOGALLERY_PATH . 'includes/admin/class-gallery-metabox-settings.php' );
 	require_once( FOOGALLERY_PATH . 'includes/admin/class-gallery-metabox-settings-helper.php' );
@@ -73,6 +73,7 @@ if ( is_admin() ) {
 	require_once( FOOGALLERY_PATH . 'includes/admin/class-attachment-fields.php' );
 	require_once( FOOGALLERY_PATH . 'includes/admin/class-admin-css-load-optimizer.php' );
 	require_once( FOOGALLERY_PATH . 'includes/admin/class-admin-notices.php' );
+    require_once( FOOGALLERY_PATH . 'includes/admin/class-gallery-datasources.php' );
 
 } else {
 

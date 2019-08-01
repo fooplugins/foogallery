@@ -22,6 +22,8 @@ if ( ! class_exists( 'FooGallery_Admin' ) ) {
 			new FooGallery_Admin_Menu();
 			new FooGallery_Admin_Gallery_Editor();
 			new FooGallery_Admin_Gallery_MetaBoxes();
+			new FooGallery_Admin_Gallery_MetaBox_Items();
+			new FooGallery_Admin_Gallery_MetaBox_Settings();
 			new FooGallery_Admin_Gallery_MetaBox_Fields();
 			new FooGallery_Admin_Columns();
 			new FooGallery_Admin_Extensions();
@@ -29,7 +31,7 @@ if ( ! class_exists( 'FooGallery_Admin' ) ) {
 			new FooGallery_Attachment_Fields();
             new FooGallery_Admin_CSS_Load_Optimizer();
 			new FooGallery_Admin_Notices();
-            new FooGallery_Admin_Gallery_MetaBox_Settings();
+            new FooGallery_Admin_Gallery_Datasources();
 		}
 
 		function init() {
@@ -40,8 +42,18 @@ if ( ! class_exists( 'FooGallery_Admin' ) ) {
 			add_filter( 'foogallery_admin_plugin_action_links', array( $this, 'plugin_listing_links' ) );
 			//output shortcode for javascript
 			add_action( 'admin_footer', array( $this, 'output_shortcode_variable' ), 200 );
+			add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts_and_styles' ) );
 		}
 
+		public function enqueue_scripts_and_styles( $hook ) {
+			//check if the gallery edit page is being shown
+			$screen = get_current_screen();
+			if ( 'foogallery' !== $screen->id ) {
+				return;
+			}
+
+			do_action('foogallery_admin_enqueue_scripts' );
+		}
 
 		function admin_print_styles() {
 			$page       = safe_get_from_request( 'page' );

@@ -62,8 +62,12 @@ class FooGallery_Template_Loader {
 			$current_foogallery->attachment_ids = $attachment_ids;
 		}
 
-		//check if we have any attachments
-		if ( ! $current_foogallery->has_attachments() ) {
+		//allow for any other gallery argument overrides
+        $current_foogallery = apply_filters( 'foogallery_render_template_argument_overrides', $current_foogallery, $args );
+
+
+		//check if we have any items
+		if ( ! $current_foogallery->has_items() ) {
 			//no attachments!
 			do_action( "foogallery_template_no_attachments-($current_foogallery_template)", $current_foogallery );
 			do_action( "foogallery_template_no_attachments", $current_foogallery );

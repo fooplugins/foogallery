@@ -8,13 +8,31 @@
     FOOGALLERY.calculateAttachmentIds = function() {
         var sorted = [];
         $('.foogallery-attachments-list li:not(.add-attachment)').each(function() {
-            sorted.push( $(this).data('attachment-id') );
+        	if ( $(this).data('attachment-id') ) {
+                sorted.push($(this).data('attachment-id'));
+            }
         });
 
         $('#foogallery_attachments').val( sorted.join(',') );
 
 		$('.foogallery_preview_container').addClass('foogallery-preview-force-refresh');
     };
+
+	FOOGALLERY.calculateHiddenAreas = function() {
+        FOOGALLERY.showHiddenAreas( FOOGALLERY.attachments.length === 0 );
+	};
+
+	FOOGALLERY.showHiddenAreas = function( show ) {
+        if ( show ) {
+            $('.foogallery-items-add').removeClass('hidden');
+            $('.foogallery-attachments-list').addClass('hidden');
+            $('.foogallery-items-empty').removeClass('hidden');
+        } else {
+            $('.foogallery-items-add').addClass('hidden');
+            $('.foogallery-attachments-list').removeClass('hidden');
+            $('.foogallery-items-empty').addClass('hidden');
+        }
+	};
 
     FOOGALLERY.initAttachments = function() {
         var attachments = $('#foogallery_attachments').val();
@@ -89,7 +107,10 @@
 		if ( $preview.data('fg-common-fields') ) {
 			if ( initGallery ) {
 				$preview.foogallery( {}, function() {
-					$preview_container.css( 'height', '' );
+					$preview_container.css( 'height', '' )
+						.find(".fg-thumb").off("click.foogallery").on("click", function(e){
+                        	e.preventDefault();
+                    	});
 				} );
 			} else {
 				$preview.foogallery( 'layout' );
@@ -123,7 +144,14 @@
         //add additional data for the preview
 		data.push({name: 'foogallery_id', value: foogallery_id});
 		data.push({name: 'foogallery_template', value: FOOGALLERY.getSelectedTemplate()});
+
+		//include other preview fields
+        var previewData = $('[data-foogallery-preview="include"]').serializeArray();
+        data = data.concat(previewData);
+
 		data.push({name: 'foogallery_attachments', value: $('#foogallery_attachments').val()});
+        data.push({name: 'foogallery_datasource', value: $('#foogallery_datasource').val()});
+        data.push({name: 'foogallery_datasource_value', value: $('#_foogallery_datasource_value').val()});
 
 		//add data needed for the ajax call
 		data.push({name: 'action', value: 'foogallery_preview'});
@@ -327,11 +355,13 @@
 			$template.find('.attachment-preview.type-image').addClass('subtype-' + attachment.subtype);
 		}
 
-        $('.foogallery-attachments-list .add-attachment').before($template);
+        $('.foogallery-attachments-list .datasource-medialibrary').before($template);
 
         FOOGALLERY.attachments.push( attachment.id );
 
         FOOGALLERY.calculateAttachmentIds();
+
+        FOOGALLERY.calculateHiddenAreas();
     };
 
     FOOGALLERY.removeAttachmentFromGalleryList = function(id) {
@@ -342,6 +372,8 @@
 		$('.foogallery-attachments-list [data-attachment-id="' + id + '"]').remove();
 
         FOOGALLERY.calculateAttachmentIds();
+
+		FOOGALLERY.calculateHiddenAreas();
     };
 
 	FOOGALLERY.showAttachmentInfoModal = function(id) {
@@ -467,6 +499,10 @@
 			FOOGALLERY.mediaModalButtonText = $(this).data( 'uploader-button-text' );
 			FOOGALLERY.openMediaModal(0);
         });
+
+		$(document).on('foogallery-datasource-changed', function() {
+            FOOGALLERY.calculateHiddenAreas();
+		});
 
         FOOGALLERY.initAttachments();
 
