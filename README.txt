@@ -8,17 +8,17 @@ Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Why choose FooGallery? Stunning gallery layouts, responsive, retina-ready, lightning fast, easy to use. Gutenberg Ready!
+Why choose FooGallery? Stunning image gallery layouts, responsive, retina-ready, lightning fast, easy to use. Gutenberg Ready!
 
 == Description ==
 
-Why choose FooGallery? Stunning gallery layouts, responsive, retina-ready, lightning fast, easy to use. Gutenberg Ready! Built to be highly configurable and extensible for developers or freelancers.
+Why choose FooGallery? Stunning image gallery layouts, responsive, retina-ready, lightning fast, easy to use. Gutenberg Ready! Built to be highly configurable and extensible for developers or freelancers.
 
 [View the FooGallery Homepage & DEMO](http://foo.gallery/)
 
 **Features**
 
-*	6 Beautiful Gallery templates
+*	6 Beautiful Image Gallery templates
 	*	Responsive Image Gallery - [demo](https://foo.gallery/demos/responsive-image-gallery/)
 	*	Image Viewer Gallery - [demo](https://foo.gallery/demos/image-viewer-gallery/)
 	*	Masonry Gallery - [demo](https://foo.gallery/demos/masonry-image-gallery/)
@@ -52,6 +52,11 @@ Why choose FooGallery? Stunning gallery layouts, responsive, retina-ready, light
 *	Video Support - [demo](https://foo.gallery/demos/video-gallery-demos/)
 *	Media Tags and Categories
 *	Gallery Filtering using Media Tags or Categories - [demo](https://foo.gallery/demos/filtering-demos/)
+*	Load Galleries From Other Sources
+	*	Load from a folder on the server
+	*	Load from a collection from Adobe Lightroom (using WP/LR Sync)
+	*	Load all attachments with Media Tags
+	*	Load all attachments with Media Categories
 *   11 Beautiful Hover Effect Presets - [demo](https://foo.gallery/demos/hover-effect-presets-demos/)
 *   12 CSS thumbnail filters (Instagram) - [demo](https://foo.gallery/demos/thumbnail-filters/)
 *   Advanced Pagination - [demo](https://foo.gallery/demos/pagination-demo/)
@@ -70,7 +75,7 @@ https://youtu.be/zY8eSTEIwpU
 
 **Gutenberg**
 
-We love the new Gutenberg editor. We have built a really simple-to-use Gutenberg block to add your existing FooGalleries in seconds. And it includes live previews of the gallery too! Also works in WP5 beta!
+We love the new Gutenberg editor. We have built a really simple-to-use Gutenberg block to add your existing FooGallery image galleries in seconds. And it includes live previews of the image gallery too!
 
 **GDPR**
 
@@ -84,7 +89,7 @@ FooGallery has been tried and tested on servers running up to PHP 7.3
 
 **Retina Support**
 
-FooGallery now comes with built-in support for higher quality thumbnails on retina-enabled displays. No more blurry thumbnails, just crisp thumbnails that look amazing on all devices.
+FooGallery now comes with built-in support for higher quality thumbnails on retina-enabled displays. No more blurry thumbnails, just crisp thumbnails so that your image galleries look amazing on all devices.
 
 **Video Support**
 
@@ -92,7 +97,7 @@ FooGallery PRO now supports the creation of video galleries! Import from YouTube
 
 **Albums Built In**
 
-Albums are now built in as an extension. Simply head over to the extensions page and activate the albums extension. A new menu item will appear that allows you to add albums just as easily as galleries.
+Albums are built in as an extension. Simply head over to the extensions page and activate the albums extension. A new menu item will appear that allows you to add albums just as easily as galleries.
 
 **Built For Developers**
 
@@ -139,6 +144,10 @@ Hell, yes! Check out our [developer page](http://foo.gallery/developers/)
 Update now to get all the latest features, bug fixes and improvements!
 
 == Changelog ==
+
+= 1.8.0 =
+* New : Implemented the Datasource architecture within the plugin
+* Fix : PHP Warnings when previewing galleries
 
 = 1.7.8 =
 * New : Added filter to override content when creating a gallery page 'foogallery_create_gallery_page_content'

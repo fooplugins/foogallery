@@ -1,9 +1,6 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: bradvin
- * Date: 2017/04/19
- * Time: 1:19 PM
+ * Class to handle adding the Settings metabox to a gallery
  */
 
 
@@ -15,6 +12,8 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings' ) ) {
          * FooGallery_Admin_Gallery_MetaBox_Settings constructor.
          */
         function __construct() {
+			add_action( 'add_meta_boxes_' . FOOGALLERY_CPT_GALLERY, array( $this, 'add_settings_metabox' ), 8 );
+
             //enqueue assets for the new settings tabs
             add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_assets' ) );
 
@@ -24,6 +23,32 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings' ) ) {
             //set default settings tab icons
             add_filter( 'foogallery_gallery_settings_metabox_section_icon', array( $this, 'add_section_icons') );
         }
+
+		public function add_settings_metabox( $post ) {
+			add_meta_box(
+				'foogallery_settings',
+				__( 'Gallery Settings', 'foogallery' ),
+				array( $this, 'render_gallery_settings_metabox' ),
+				FOOGALLERY_CPT_GALLERY,
+				'normal',
+				'high'
+			);
+		}
+
+		public function render_gallery_settings_metabox( $post ) {
+			$gallery = FooGallery::get( $post );
+
+			//attempt to load default gallery settings from another gallery, as per FooGallery settings page
+			$gallery->load_default_settings_if_new();
+
+			$gallery = apply_filters( 'foogallery_render_gallery_settings_metabox', $gallery );
+
+			$settings = new FooGallery_Admin_Gallery_MetaBox_Settings_Helper( $gallery );
+
+			$settings->render_hidden_gallery_template_selector();
+
+			$settings->render_gallery_settings();
+		}
 
         /***
          * Enqueue the assets needed by the settings
@@ -35,9 +60,15 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings' ) ) {
 
                 if ( is_object( $screen ) && FOOGALLERY_CPT_GALLERY == $screen->post_type ){
 
+					//spectrum needed for the colorpicker field
+					$url = FOOGALLERY_URL . 'lib/spectrum/spectrum.js';
+					wp_enqueue_script( 'foogallery-spectrum', $url, array('jquery'), FOOGALLERY_VERSION );
+					$url = FOOGALLERY_URL . 'lib/spectrum/spectrum.css';
+					wp_enqueue_style( 'foogallery-spectrum', $url, array(), FOOGALLERY_VERSION );
+
                     // Register, enqueue scripts and styles here
-                    wp_enqueue_script( 'foogallery-admin-settings', FOOGALLERY_URL . '/js/foogallery.admin.min.js', array('jquery'), FOOGALLERY_VERSION );
-                    wp_enqueue_style( 'foogallery-admin-settings', FOOGALLERY_URL . '/css/foogallery.admin.min.css', array(), FOOGALLERY_VERSION );
+                    wp_enqueue_script( 'foogallery-admin-settings', FOOGALLERY_URL . 'js/foogallery.admin.min.js', array('jquery'), FOOGALLERY_VERSION );
+                    wp_enqueue_style( 'foogallery-admin-settings', FOOGALLERY_URL . 'css/foogallery.admin.min.css', array(), FOOGALLERY_VERSION );
                 }
             }
         }

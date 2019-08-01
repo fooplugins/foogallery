@@ -253,7 +253,11 @@ function foogallery_build_attachment_html_caption( $foogallery_attachment, $args
 			}
 
 			//get the correct captions
-			$caption_title = foogallery_get_caption_title_for_attachment( $foogallery_attachment->_post, $caption_title_source );
+			if ( $foogallery_attachment->_post ) {
+				$caption_title = foogallery_get_caption_title_for_attachment( $foogallery_attachment->_post, $caption_title_source );
+			} else {
+				$caption_title = foogallery_get_caption_by_source( $foogallery_attachment, $caption_title_source, 'title' );
+			}
 		}
 
 		//check if we have provided overrides for the caption description
@@ -274,7 +278,11 @@ function foogallery_build_attachment_html_caption( $foogallery_attachment, $args
 				$show_caption_desc = true;
 			}
 
-			$caption_desc = foogallery_get_caption_desc_for_attachment( $foogallery_attachment->_post, $caption_desc_source );
+			if ( $foogallery_attachment->_post ) {
+				$caption_desc = foogallery_get_caption_desc_for_attachment( $foogallery_attachment->_post, $caption_desc_source );
+			} else {
+				$caption_desc = foogallery_get_caption_by_source( $foogallery_attachment, $caption_desc_source, 'desc' );
+			}
 		}
 
 		if ( $caption_title && $show_caption_title ) {

@@ -27,7 +27,9 @@ if ( ! class_exists( 'FooGallery_Pro_Instagram_Filters' ) ) {
 		 * @return mixed
 		 */
 		function preview_arguments( $args, $post_data, $template ) {
-			$args['instagram'] = $post_data[FOOGALLERY_META_SETTINGS][$template . '_instagram'];
+			if ( array_key_exists( $template . '_instagram', $post_data[FOOGALLERY_META_SETTINGS] ) ) {
+				$args['instagram'] = $post_data[FOOGALLERY_META_SETTINGS][$template . '_instagram'];
+			}
 			return $args;
 		}
 

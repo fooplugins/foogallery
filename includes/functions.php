@@ -683,6 +683,35 @@ function foogallery_get_caption_title_for_attachment($attachment_post, $source =
 }
 
 /**
+ * Returns the attachment caption title based on the caption_title_source setting
+ *
+ * @param FooGalleryAttachment $attachment
+ * @param string $source
+ * @param string $caption_type The type of caption (title or desc)
+ *
+ * @return string
+ */
+function foogallery_get_caption_by_source($attachment, $source, $caption_type) {
+
+	switch ( $source ) {
+		case 'title':
+			$caption = trim( $attachment->title );
+			break;
+		case 'desc':
+			$caption = trim( $attachment->description );
+			break;
+		case 'alt':
+			$caption = trim( $attachment->alt );
+			break;
+		case 'caption' :
+		default:
+			$caption = trim( $attachment->caption );
+	}
+
+	return apply_filters( 'foogallery_get_caption_by_source', $caption, $attachment, $source, $caption_type );
+}
+
+/**
  * Returns the caption description source setting
  *
  * @return string
@@ -767,7 +796,12 @@ function foogallery_test_thumb_url() {
 function foogallery_gallery_datasources() {
 	$default_datasource = foogallery_default_datasource();
 
-	$datasources[$default_datasource] = 'FooGalleryDatasource_MediaLibrary';
+	$datasources[$default_datasource] = array(
+	    'id'     => $default_datasource,
+	    'name'   => __( 'Media Library', 'foogalery' ),
+        'label'  => __( 'From Media Library', 'foogallery' ),
+        'public' => false
+    );
 
 	return apply_filters( 'foogallery_gallery_datasources', $datasources );
 }
@@ -779,22 +813,6 @@ function foogallery_gallery_datasources() {
  */
 function foogallery_default_datasource() {
 	return foogallery_get_default( 'datasource', 'media_library' );
-}
-
-/**
- * Instantiates a FooGallery datasource based on a datasource name
- *
- * @param $datasource_name string
- *
- * @return IFooGalleryDatasource
- */
-function foogallery_instantiate_datasource( $datasource_name ) {
-	$datasources = foogallery_gallery_datasources();
-	if ( array_key_exists( $datasource_name, $datasources ) ) {
-		return new $datasources[$datasource_name];
-	}
-
-	return new FooGalleryDatasource_MediaLibrary();
 }
 
 /**
@@ -1135,7 +1153,7 @@ function foogallery_create_gallery( $template, $attachment_ids ) {
 		$default_gallery_id = foogallery_get_setting( 'default_gallery_settings' );
 		if ( $default_gallery_id ) {
 			$settings = get_post_meta( $default_gallery_id, FOOGALLERY_META_SETTINGS, true );
-			add_post_meta( $this->foogallery_id, FOOGALLERY_META_SETTINGS, $settings, true );
+			add_post_meta( $gallery_id, FOOGALLERY_META_SETTINGS, $settings, true );
 		}
 	}
 

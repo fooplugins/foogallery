@@ -377,6 +377,11 @@ if ( !class_exists( 'Foo_Plugin_Settings_v2_2' ) ) {
 //
 //            }
 
+			if ( empty( $this->_settings ) ) {
+				$settings = apply_filters( $this->plugin_slug . '_admin_settings', false );
+				$this->add_settings( $settings );
+			}
+
 			foreach ( $this->_settings as $setting ) {
 				$this->validate_setting( $setting, $input );
 			}
