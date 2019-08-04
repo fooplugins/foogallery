@@ -3185,7 +3185,7 @@
 							parent.css( "overflow-x" ) );
 				} ).eq( 0 );
 
-		return position === "fixed" || !scrollParent.length ?
+		return position === "fixed" || !scrollParent.length || scrollParent.is( "html" ) ?
 				$( $elem[ 0 ].ownerDocument || document ) :
 				scrollParent;
 	};
@@ -7753,26 +7753,25 @@
 			this.$el.removeAttr("style");
 		},
 		parse: function(){
-			var self = this, containerWidth = self.getContainerWidth(),
-					$test = $('<div/>', {'class': self.$el.attr('class')}).css({
-						position: 'absolute',
-						top: -9999,
-						left: -9999,
-						visibility: 'hidden',
-						maxWidth: containerWidth
-					}).appendTo('body');
-
-			var borderSize = 0;
+			var self = this, borderSize = 0;
 			if (self.$el.hasClass("fg-border-thin")) borderSize = 4;
 			if (self.$el.hasClass("fg-border-medium")) borderSize = 10;
 			if (self.$el.hasClass("fg-border-thick")) borderSize = 16;
-			var border = borderSize * 2;
+			var border = borderSize * 2,
+				containerWidth = self.getContainerWidth(),
+				maxWidth = containerWidth - border,
+				$test = $('<div/>', {'class': self.$el.attr('class')}).css({
+					position: 'absolute',
+					top: -9999,
+					left: -9999,
+					visibility: 'hidden',
+					maxWidth: containerWidth
+				}).appendTo('body');
 
 			self._items = $.map(self.tmpl.getItems(), function(item, i){
-				var maxWidth = containerWidth - border, single = item.width > maxWidth;
 				var $clone = item.$el.clone().css({width: '', height: '', top: '', left: '', position: 'relative'}).removeClass("fg-positioned")
-						.find(".fg-image,.fg-caption").css("width", single ? maxWidth : item.width).end()
-						.appendTo($test);
+					.find(".fg-image,.fg-caption").css("width", item.width > maxWidth ? maxWidth : item.width).end()
+					.appendTo($test);
 				var width = $clone.outerWidth(), height = $clone.outerHeight();
 				$clone.remove();
 				return {
