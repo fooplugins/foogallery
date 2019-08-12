@@ -5,7 +5,7 @@ export default class FooGalleryEditRendered {
 	}
 
 	static add( id, clientId ){
-		let index = rendered.findIndex(r => r.id == id);
+		let index = rendered.findIndex(r => r.id === id);
 		if (index === -1){
 			rendered.push({ id, clientId });
 			return true;
@@ -14,7 +14,7 @@ export default class FooGalleryEditRendered {
 	}
 
 	static remove( clientId ){
-		let index = rendered.findIndex(r => r.clientId == clientId);
+		let index = rendered.findIndex(r => r.clientId === clientId);
 		if (index !== -1){
 			rendered.splice(index, 1);
 			return true;
@@ -34,6 +34,6 @@ export default class FooGalleryEditRendered {
 	}
 
 	static contains( id, clientId ){
-		return rendered.findIndex(r => r.id == id && r.clientId != clientId) !== -1;
+		return rendered.findIndex(r => r.id === id && r.clientId !== clientId) !== -1;
 	}
 }

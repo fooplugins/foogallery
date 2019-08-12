@@ -37,7 +37,7 @@ export default class FooGalleryEdit extends Component {
 	 */
 	componentDidMount(){
 		const { clientId, attributes: { id } } = this.props;
-		if ( id != 0 ){
+		if ( id !== 0 ){
 			FooGalleryEditRendered.add( id, clientId );
 		}
 	}
@@ -47,7 +47,7 @@ export default class FooGalleryEdit extends Component {
 	 */
 	componentWillUnmount() {
 		const { clientId, attributes: { id } } = this.props;
-		if ( id != 0 ){
+		if ( id !== 0 ){
 			FooGalleryEditRendered.remove( clientId );
 		}
 	}
