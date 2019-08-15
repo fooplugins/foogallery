@@ -137,14 +137,7 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Folders' ) ) {
             global $wp_filesystem;
             $attachments = array();
 
-            // setup wp_filesystem api
-            $url         = wp_nonce_url( '/', 'foogallery-datasource-folders' );
-            $creds       = request_filesystem_credentials( $url, FS_METHOD, false, false, null );
-            if ( false === $creds ) {
-                // no credentials yet, just produced a form for the user to fill in
-                return $attachments; // stop the normal page form from displaying
-            }
-            if ( ! WP_Filesystem( $creds ) ) {
+            if ( ! WP_Filesystem( true ) ) {
                 return $attachments;
             }
 
@@ -370,13 +363,7 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Folders' ) ) {
 		function render_filesystem_tree( $path = '/' ) {
             global $wp_filesystem;
             // setup wp_filesystem api
-            $url         = wp_nonce_url( '/', 'foogallery-datasource-folders' );
-            $creds       = request_filesystem_credentials( $url, FS_METHOD, false, false, null );
-            if ( false === $creds ) {
-                // no credentials yet, just produced a form for the user to fill in
-                return true; // stop the normal page form from displaying
-            }
-            if ( ! WP_Filesystem( $creds ) ) {
+            if ( ! WP_Filesystem( true ) ) {
                 return false;
             }
 
