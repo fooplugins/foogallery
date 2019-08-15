@@ -415,7 +415,7 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 				$fields[] = array(
 					'id'       => 'filtering_override',
 					'title'    => __( 'Override', 'foogallery' ),
-					'desc'     => __( 'You can override which filters are shown, by providing a comma-separated list. Leave black for them to be auto-generated.', 'foogallery' ),
+					'desc'     => __( 'You can override which filters are shown, by providing a comma-separated list. Leave blank for them to be auto-generated.', 'foogallery' ),
 					'section'  => __( 'Filtering', 'foogallery' ),
 					'type'     => 'text',
 					'default'  => '',
