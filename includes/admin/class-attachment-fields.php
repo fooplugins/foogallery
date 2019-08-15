@@ -157,13 +157,20 @@ if (!class_exists('FooGallery_Attachment_Fields')) {
 							    $values['html'] = $html;
 
 							    break;
+
+							case 'html':
+								$values['input'] = 'html';
+								$values['html'] = '';
+								break;
 					    }
 
 					    // And set it to the field before building it
 					    $values['value'] = $meta;
 
 					    // We add our field into the $form_fields array
-					    $form_fields[$field] = apply_filters( 'foogallery_attachment_field_' . $field, $values, $post->ID );
+						$filtered_field = apply_filters( 'foogallery_attachment_field_' . $field, $values, $post->ID );
+						$filtered_field = apply_filters( 'foogallery_attachment_field_' . $field . '_with_post', $values, $field, $post );
+					    $form_fields[$field] = $filtered_field;
 				    }
 			    }
 		    }
