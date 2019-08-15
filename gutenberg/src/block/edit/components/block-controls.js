@@ -1,7 +1,7 @@
 const { __ } = wp.i18n;
 const { Component } = wp.element;
 const { Toolbar, IconButton } = wp.components;
-const { BlockControls } = wp.editor;
+const { BlockControls } = !!wp.blockEditor ? wp.blockEditor : wp.editor;
 
 export default class FooGalleryEditBlockControls extends Component {
 	render(){

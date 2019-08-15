@@ -20,7 +20,7 @@ export default class FooGalleryEditModalItem extends Component {
 				},
 				onKeyPress: ( event ) => {
 					event.stopPropagation();
-					if (event.which == 32 || event.which == 13) {
+					if (event.which === 32 || event.which === 13) {
 						onSelected( data.id );
 					}
 				},
@@ -29,7 +29,7 @@ export default class FooGalleryEditModalItem extends Component {
 			props = { ...props, ...selectable };
 		}
 		let thumb = !!data.thumbnail
-				? (<img className="foogallery-modal__item-thumbnail" src={data.thumbnail} />)
+				? (<img className="foogallery-modal__item-thumbnail" src={data.thumbnail} alt={data.name} />)
 				: (<Dashicon className="foogallery-modal__item-thumbnail" icon="format-image"/>);
 
 		return (

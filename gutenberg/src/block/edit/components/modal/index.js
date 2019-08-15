@@ -46,7 +46,7 @@ export default class FooGalleryEditModal extends Component {
 		event.stopPropagation();
 		const { onRequestModalClose, onRequestGalleryInsert } = this.props;
 		const { id } = this.state;
-		if ( id != 0 ){
+		if ( id !== 0 ){
 			onRequestGalleryInsert( id );
 			onRequestModalClose();
 		}
@@ -78,7 +78,7 @@ export default class FooGalleryEditModal extends Component {
 						<input type="text" className="foogallery-modal__footer-search" placeholder={ search } value={ query } onChange={ this.onQueryChange } />
 						<div className="foogallery-modal__footer-buttons">
 							<IconButton isDefault icon="update" label={ reload } onClick={ this.onReloadClick } disabled={ isLoading }/>
-							<Button isPrimary onClick={ this.onInsertClick } disabled={ id == 0 }>{ insert }</Button>
+							<Button isPrimary onClick={ this.onInsertClick } disabled={ id === 0 }>{ insert }</Button>
 						</div>
 					</div>
 				</Modal>
@@ -113,7 +113,7 @@ export default class FooGalleryEditModal extends Component {
 			return (
 					<FooGalleryEditModalItem
 							data={ gallery }
-							isSelected={ id == gallery.id }
+							isSelected={ id === gallery.id }
 							isDisabled={ disable.indexOf(gallery.id) !== -1 }
 							onSelected={ ( id ) => { self.setState( { id: id } ); } }
 					/>
