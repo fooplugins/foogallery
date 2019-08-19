@@ -37,7 +37,7 @@ $foogallery_single_thumbnail_attributes = foogallery_build_container_attributes_
     unset( $args['override_caption_title'] );
     unset( $args['override_caption_desc'] );
     foreach ( foogallery_current_gallery_attachments_for_rendering() as $attachment ) {
-        if ( $attachment->ID !== $featured_attachment->ID ) {
+        if ( $attachment->url !== $featured_attachment->url ) {
             echo foogallery_attachment_html( $attachment, $args );
         }
     } ?>
