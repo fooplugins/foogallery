@@ -474,7 +474,7 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Folders' ) ) {
 									'alt' => '',
 									'custom_url' => '',
 									'custom_target' => '',
-									'index' => ($image_count - 1)
+									'index' => PHP_INT_MAX
 								);
 
 								//check if we have metadata for the file
@@ -510,6 +510,11 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Folders' ) ) {
 					}
 					// sort the metadata correctly
 					usort( $metadata_array, array( $this, 'sort_metadata') );
+
+					// Remove any indexes
+					foreach ( $metadata_array as $position => &$metadata ) {
+						unset( $metadata['index'] );
+					}
 
 					// sort the folders
 					ksort( $dir_array );
