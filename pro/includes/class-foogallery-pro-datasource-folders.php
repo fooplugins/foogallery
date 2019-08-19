@@ -178,6 +178,7 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Folders' ) ) {
 								$attachment->ID = 0;
 								$attachment->title = $file;
 								$attachment->url = $url;
+								$attachment->sort = PHP_INT_MAX;
 								if ( $size !== false ) {
 									$attachment->width = $size[0];
 									$attachment->height = $size[1];
@@ -187,20 +188,25 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Folders' ) ) {
 								if ( $json ) {
 									$file_json = $this->find_json_data_for_file( $file, $json );
 
-									if ( array_key_exists( 'caption', $file_json ) ) {
-										$attachment->caption = $file_json['caption'];
-									}
-									if ( array_key_exists( 'description', $file_json ) ) {
-										$attachment->description = $file_json['description'];
-									}
-									if ( array_key_exists( 'alt', $file_json ) ) {
-										$attachment->alt = $file_json['alt'];
-									}
-									if ( array_key_exists( 'custom_url', $file_json ) ) {
-										$attachment->custom_url = $file_json['custom_url'];
-									}
-									if ( array_key_exists( 'custom_target', $file_json ) ) {
-										$attachment->custom_target = $file_json['custom_target'];
+									if ( $file_json !== false ) {
+										if ( array_key_exists( 'caption', $file_json ) ) {
+											$attachment->caption = $file_json['caption'];
+										}
+										if ( array_key_exists( 'description', $file_json ) ) {
+											$attachment->description = $file_json['description'];
+										}
+										if ( array_key_exists( 'alt', $file_json ) ) {
+											$attachment->alt = $file_json['alt'];
+										}
+										if ( array_key_exists( 'custom_url', $file_json ) ) {
+											$attachment->custom_url = $file_json['custom_url'];
+										}
+										if ( array_key_exists( 'custom_target', $file_json ) ) {
+											$attachment->custom_target = $file_json['custom_target'];
+										}
+										if ( array_key_exists( 'index', $file_json ) ) {
+											$attachment->sort = intval( $file_json['index'] );
+										}
 									}
 								}
 
@@ -211,8 +217,38 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Folders' ) ) {
                 }
             }
 
+			usort( $attachments, array( $this, 'sort_attachments') );
+
             return $attachments;
         }
+
+		/**
+		 * Sort the attachments according to the index
+		 * @param FooGalleryAttachment $a
+		 * @param FooGalleryAttachment $b
+		 *
+		 * @return int
+		 */
+        function sort_attachments( $a, $b ) {
+			if ($a->sort == $b->sort) {
+				return 0;
+			}
+			return ($a->sort < $b->sort) ? -1 : 1;
+		}
+
+		/**
+		 * Sort the metadata according to the index
+		 * @param array $a
+		 * @param array $b
+		 *
+		 * @return int
+		 */
+		function sort_metadata( $a, $b ) {
+			if ($a['index'] == $b['index']) {
+				return 0;
+			}
+			return ($a['index'] < $b['index']) ? -1 : 1;
+		}
 
 		/**
 		 * Extract the correct json data for the file
@@ -223,8 +259,14 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Folders' ) ) {
 		 */
         public function find_json_data_for_file( $filename, $json_data ) {
 			if ( array_key_exists( 'items', $json_data ) ) {
-				foreach ( $json_data['items'] as $item ) {
+				foreach ( $json_data['items'] as $position => $item ) {
+					//allow for an index to be specified, otherwise set the index to be the position in the array
+					if ( !array_key_exists( 'index', $item ) ) {
+						$item['index'] = $position;
+					}
+
 					if ( array_key_exists( 'file', $item ) && $item['file'] === $filename ) {
+
 						return $item;
 					}
 				}
@@ -432,6 +474,7 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Folders' ) ) {
 									'alt' => '',
 									'custom_url' => '',
 									'custom_target' => '',
+									'index' => ($image_count - 1)
 								);
 
 								//check if we have metadata for the file
@@ -455,6 +498,9 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Folders' ) ) {
 										if ( array_key_exists( 'custom_target', $file_json ) ) {
 											$metadata['custom_target'] = $file_json['custom_target'];
 										}
+										if ( array_key_exists( 'index', $file_json ) ) {
+											$metadata['index'] = intval( $file_json['index'] );
+										}
 									}
 								}
 
@@ -462,6 +508,9 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Folders' ) ) {
 							}
 						}
 					}
+					// sort the metadata correctly
+					usort( $metadata_array, array( $this, 'sort_metadata') );
+
 					// sort the folders
 					ksort( $dir_array );
 
