@@ -36,14 +36,12 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Taxonomy_Base' ) ) {
 		function shortcode_taxonomy_attribute( $foogallery, $args ) {
 			//check for the taxonomy shortcode attribute
 			if ( array_key_exists( $this->datasource_name, $args ) ) {
-				global $foogallery_gallery_preview;
 				$foogallery->datasource_name = $this->datasource_name;
 				$foogallery->datasource_value = array(
 					'taxonomy' => $this->taxonomy,
 					'field'	   => 'slug',
 					'value'    => explode( ',', $args[$this->datasource_name] )
 				);
-				$foogallery_gallery_preview = true;
 			}
 
 			return $foogallery;
