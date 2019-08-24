@@ -167,7 +167,7 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Folders' ) ) {
 
                     foreach ($files as $file => $file_info) {
                         if ($file != '.' && $file != '..' && $file_info['type'] == 'f') {
-							$ext = preg_replace( '/^.*\./', '', $file_info['name'] );
+							$ext = strtolower( preg_replace( '/^.*\./', '', $file_info['name'] ) );
 
 							if ( in_array( $ext, $supported_image_types ) ) {
 								$filename = trailingslashit( $actual_path ) . $file;
@@ -463,7 +463,7 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Folders' ) ) {
 							//dealing with a file.
 
 							//Check if the file is an image
-							$ext = preg_replace( '/^.*\./', '', $file_info['name'] );
+							$ext = strtolower( preg_replace( '/^.*\./', '', $file_info['name'] ) );
 							if ( in_array( $ext, $this->supported_image_types() ) ) {
 								$image_count ++;
 
