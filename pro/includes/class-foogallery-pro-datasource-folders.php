@@ -97,8 +97,8 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Folders' ) ) {
                     $datasource_value = $foogallery->datasource_value;
                     $folder = $datasource_value['value'];
 
-                    //$files = $datasource_value['files'];
-                    $expiry = 24 * 60 * 60; //24 hours
+                    $expiry_hours = apply_filters( 'foogallery_datasource_folder_expiry', 24 );
+                    $expiry = $expiry_hours * 60 * 60;
 
                     //find all image files in the folder
                     $attachments = $this->build_attachments_from_folder( $folder );
