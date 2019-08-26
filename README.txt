@@ -71,7 +71,7 @@ https://youtu.be/zY8eSTEIwpU
 
 **Documentation**
 
-*	[FooGallery Documentation](https://fooplugins.helpscoutdocs.com/collection/8-foogallery)
+*	[FooGallery Documentation](https://fooplugins.com/documentation/foogallery/)
 
 **Gutenberg**
 
@@ -145,9 +145,12 @@ Update now to get all the latest features, bug fixes and improvements!
 
 == Changelog ==
 
-= 1.8.0 =
+= 1.8.8 =
 * New : Implemented the Datasource architecture within the plugin
 * Fix : PHP Warnings when previewing galleries
+* Fix : Simple Portfolio thumbnails cut off in certain scenarios
+* Fix : Updated Gutenberg block to work in latest Gutengerg release
+* Update : FooGallery client side 1.2.10
 
 = 1.7.8 =
 * New : Added filter to override content when creating a gallery page 'foogallery_create_gallery_page_content'
