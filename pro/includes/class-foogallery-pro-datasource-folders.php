@@ -142,6 +142,17 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Folders' ) ) {
 		}
 
 		/**
+		 * Generates the option key used to store the metadata for a folder
+		 *
+		 * @param $folder
+		 *
+		 * @return string
+		 */
+		private function build_database_options_key( $folder ) {
+			return 'foogallery_folder_metadata' . foo_convert_to_key( $folder );
+		}
+
+		/**
 		 * Scans the folder and builds an array of attachments
 		 *
 		 * @param        $folder
@@ -171,7 +182,7 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Folders' ) ) {
 
                 if ( 'database' === $metadata_source ) {
                 	//load metadata from the database
-					$option_key = 'foogallery_folder_metadata' . foo_convert_to_key( $folder );
+					$option_key = $this->build_database_options_key( $folder );
 					$json = get_option( $option_key );
 				} else {
                 	//load json from the file on the server
@@ -216,6 +227,9 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Folders' ) ) {
 									if ( $file_json !== false ) {
 										$attachment->has_metadata = true;
 
+										if ( array_key_exists( 'missing', $file_json ) ) {
+											$attachment->has_metadata = false;
+										}
 										if ( array_key_exists( 'caption', $file_json ) ) {
 											$attachment->caption = $file_json['caption'];
 										}
@@ -365,9 +379,13 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Folders' ) ) {
 				if ( array_key_exists( 'json', $_POST ) ) {
 					$json = $_POST['json'];
 					//save the json for the folder
-					$option_key = 'foogallery_folder_metadata' . foo_convert_to_key( $folder );
-
+					$option_key = $this->build_database_options_key( $folder );
 					update_option( $option_key, $json );
+				}
+
+				if ( array_key_exists( 'clear', $_POST ) ) {
+					$option_key = $this->build_database_options_key( $folder );
+					delete_option( $option_key );
 				}
 
                 $this->render_folder( $folder, $metadata );
@@ -416,6 +434,14 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Folders' ) ) {
 			}
 
 			if ( 'database' === $metadata_source ) {
+				$option_key = $this->build_database_options_key( $folder );
+				$metadata_data = get_option( $option_key );
+				if ( false !== $metadata_data ) {
+					echo '<p>' . sprintf( __( 'Loading metadata from WordPress database option %s', 'foogallery' ), '<code>' . $option_key . '</code>' );
+					echo ' <a href="#" class="foogallery-server-image-metadata-clear">' . __( 'Clear Metadata', 'foogallery' ) . '</a>';
+					echo '</p>';
+				}
+
 				if ( $image_count > $image_metadata_count ) {
 					//there is missing metadata
 					echo '<p><strong>' . sprintf( __( 'There are %d images with missing metadata!', 'foogallery' ), $image_count - $image_metadata_count ) . '</strong></p>';
@@ -460,7 +486,7 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Folders' ) ) {
 					$json_last_error_code = 0;
 
 					if ( $wp_filesystem->exists( $json_path ) ) {
-						echo '<p>' . sprintf( __('Loading metadata from %s', 'foogallery'), trailingslashit( $folder ) . $this->image_metadata_file() ) . '</p>';
+						echo '<p>' . sprintf( __('Loading metadata from %s', 'foogallery'), '<code>' . trailingslashit( $folder ) . $this->image_metadata_file() . '</code>' ) . '</p>';
 
 						//load json here
 						$metadata_file_exists = true;

@@ -1,5 +1,6 @@
-/* Manage media javascript */
 jQuery(function ($) {
+
+	/* Manage media javascript */
 	$('.foogallery-datasource-folder').on('click', 'button.remove', function (e) {
 		e.preventDefault();
 
@@ -54,11 +55,8 @@ jQuery(function ($) {
 
 		$('.foogallery_preview_container').addClass('foogallery-preview-force-refresh');
 	});
-});
 
-/* Modal javascript */
-jQuery(function ($) {
-
+	/* Modal javascript */
 	$(document).on('foogallery-datasource-content-loaded-folders', function () {
 		foogalleryInitSortable();
 
@@ -123,22 +121,47 @@ jQuery(function ($) {
 
 			var json = { "items" : [] };
 
-			$('.foogallery-server-image-list li:not(.has_missing_metadata) img').each( function() {
-				var $this = $(this);
-				json.items.push({
-					"file": $this.data('file'),
-					"caption": $this.data('caption'),
-					"description": $this.data('description'),
-					"alt": $this.data('alt'),
-					"custom_url": $this.data('custom-url'),
-					"custom_target": $this.data('custom-target')
-				});
+			$('.foogallery-server-image-list li').each( function() {
+				var $this = $(this),
+					hasMissingMetadata = $this.hasClass('has_missing_metadata'),
+					$img = $this.find('img');
+
+				if ( !hasMissingMetadata ) {
+					json.items.push({
+						"file"         : $img.data('file'),
+						"caption"      : $img.data('caption'),
+						"description"  : $img.data('description'),
+						"alt"          : $img.data('alt'),
+						"custom_url"   : $img.data('custom-url'),
+						"custom_target": $img.data('custom-target')
+					});
+				} else {
+					//we need to store something so that the sort order is kept!
+					json.items.push({
+						"file"         : $img.data('file'),
+						"missing"	   : true
+					});
+				}
 			});
 
 			document.foogalleryImageMetadata = json;
 			var folder = $('.foogallery-datasource-folder-selected').text();
 			foogalleryRefreshDatasourceFolderContainer(folder);
 			document.foogalleryImageMetadata = null;
+		});
+
+		$('.foogallery-datasource-folder-container').on('click', '.foogallery-server-image-metadata-clear', function(e) {
+			e.preventDefault();
+
+			if ( confirm('Are you sure? All metadata for this folder will be cleared!' ) ) {
+
+				$(this).after('<span class="is-active spinner"></span>');
+
+				document.foogalleryClearImageMetadata = true;
+				var folder = $('.foogallery-datasource-folder-selected').text();
+				foogalleryRefreshDatasourceFolderContainer(folder);
+				document.foogalleryClearImageMetadata = null;
+			}
 		});
 	});
 
@@ -163,6 +186,10 @@ jQuery(function ($) {
 
 		if ( document.foogalleryImageMetadata ) {
 			data.json = document.foogalleryImageMetadata;
+		}
+
+		if ( document.foogalleryClearImageMetadata ) {
+			data.clear = true;
 		}
 
 		$.ajax({
