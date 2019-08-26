@@ -61,6 +61,8 @@ jQuery(function ($) {
 				data: data,
 				success: function(data) {
 					$content.html(data);
+					//raise a event so that datasource-specific code can run
+					$(document).trigger('foogallery-datasource-content-loaded-' + datasource);
 				}
 			});
 		}
