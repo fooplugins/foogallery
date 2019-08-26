@@ -3,7 +3,7 @@ import './editor.scss';
 const { __ } = wp.i18n;
 const { Component } = wp.element;
 const { Button, IconButton } = wp.components;
-const { InspectorControls } = wp.editor;
+const { InspectorControls } = !!wp.blockEditor ? wp.blockEditor : wp.editor;
 
 export default class FooGalleryEditInspectorControls extends Component {
 	render(){

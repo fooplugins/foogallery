@@ -692,6 +692,16 @@ function foogallery_get_caption_title_for_attachment($attachment_post, $source =
  * @return string
  */
 function foogallery_get_caption_by_source($attachment, $source, $caption_type) {
+	if ( false === $source ) {
+		$source = foogallery_gallery_template_setting( 'caption_' . $caption_type . '_source', false );
+		if ( empty( $source ) || "none" === $source ) {
+			if ( 'title' === $caption_type ) {
+				$source = 'caption'; //bad legacy naming!
+			} else {
+				$source = $caption_type;
+			}
+		}
+	}
 
 	switch ( $source ) {
 		case 'title':

@@ -84,14 +84,12 @@ if ( ! class_exists( 'FooGallery_Rest_Routes' ) ) {
 						'height' => 150
 					);
 
-					$featuredAttachment = $gallery->featured_attachment();
-					if ( $featuredAttachment ) {
-						$img = $featuredAttachment->html_img_src( $args );
-					} else {
-						//if we have no featured attachment, then use the built-in image placeholder
-						$img = foogallery_image_placeholder_src();
-					}
+					$img = foogallery_image_placeholder_src();
 
+					$featuredAttachment = @$gallery->featured_attachment();
+					if ( $featuredAttachment ) {
+						$img = @$featuredAttachment->html_img_src( $args );
+					}
 
 					$result[] = array(
 						'id' => $gallery->ID,

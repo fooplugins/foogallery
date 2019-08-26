@@ -22,8 +22,34 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Taxonomy_Base' ) ) {
 			add_action( 'deleted_term_relationships', array( $this, 'change_term_relationship_clear_datasource_cached_attachments' ), 10, 3 );
 			add_action( 'foogallery_before_save_gallery_datasource', array( $this, 'before_save_gallery_datasource_clear_datasource_cached_attachments' ) );
 			add_action( 'foogallery_admin_enqueue_scripts', array( $this, 'enqueue_scripts_and_styles' ) );
+			add_filter( 'foogallery_render_template_argument_overrides', array( $this, 'shortcode_taxonomy_attribute' ), 10, 2 );
 		}
 
+		/**
+		 * Allow for a shortcode attribute of "tags"
+		 *
+		 * @param $foogallery
+		 * @param $args
+		 *
+		 * @return mixed
+		 */
+		function shortcode_taxonomy_attribute( $foogallery, $args ) {
+			//check for the taxonomy shortcode attribute
+			if ( array_key_exists( $this->datasource_name, $args ) ) {
+				$foogallery->datasource_name = $this->datasource_name;
+				$foogallery->datasource_value = array(
+					'taxonomy' => $this->taxonomy,
+					'field'	   => 'slug',
+					'value'    => explode( ',', $args[$this->datasource_name] )
+				);
+			}
+
+			return $foogallery;
+		}
+
+		/**
+		 * Enqueues taxonomy-specific assets
+		 */
 		public function enqueue_scripts_and_styles() {
 			wp_enqueue_style( 'foogallery.admin.datasources.taxonomy', FOOGALLERY_PRO_URL . 'css/foogallery.admin.datasources.taxonomy.css', array(), FOOGALLERY_VERSION );
 			wp_enqueue_script( 'foogallery.admin.datasources.taxonomy', FOOGALLERY_PRO_URL . 'js/foogallery.admin.datasources.taxonomy.js', array( 'jquery' ), FOOGALLERY_VERSION );
@@ -101,11 +127,12 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Taxonomy_Base' ) ) {
 
 				if ( empty( $cached_attachments ) ) {
 					$terms            = $datasource_value['value'];
+					$field			  = array_key_exists( 'field', $datasource_value ) ? $datasource_value['field'] : 'term_id';
 					$attachments      = $helper->query_attachments( $foogallery, array(
 						'tax_query' => array(
 							array(
 								'taxonomy' => $taxonomy,
-								'field'    => 'term_id',
+								'field'    => $field,
 								'terms'    => $terms,
 							),
 						)

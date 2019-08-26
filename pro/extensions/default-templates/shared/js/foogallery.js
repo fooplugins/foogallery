@@ -3164,6 +3164,32 @@
 		return complete;
 	};
 
+	/**
+	 * @summary Gets the closest ancestor element that is scrollable.
+	 * @see https://github.com/jquery/jquery-ui/blob/master/ui/scroll-parent.js
+	 * @param {(string|Element|jQuery)} element - The element to find the scrollable parent for.
+	 * @param {boolean} [includeHidden=false] - Whether or not to include elements with overflow:hidden set on them.
+	 * @returns {jQuery}
+	 */
+	_.scrollParent = function(element, includeHidden){
+		var $elem = _is.jq(element) ? element : $(element),
+				position = $elem.css( "position" ),
+				excludeStaticParent = position === "absolute",
+				overflowRegex = includeHidden ? /(auto|scroll|hidden)/ : /(auto|scroll)/,
+				scrollParent = $elem.parents().filter( function() {
+					var parent = $( this );
+					if ( excludeStaticParent && parent.css( "position" ) === "static" ) {
+						return false;
+					}
+					return overflowRegex.test( parent.css( "overflow" ) + parent.css( "overflow-y" ) +
+							parent.css( "overflow-x" ) );
+				} ).eq( 0 );
+
+		return position === "fixed" || !scrollParent.length || scrollParent.is( "html" ) ?
+				$( $elem[ 0 ].ownerDocument || document ) :
+				scrollParent;
+	};
+
 })(
 		FooGallery.$,
 		FooGallery,
@@ -3954,6 +3980,13 @@
 			 */
 			self.$el = _is.jq(element) ? element : $(element);
 			/**
+			 * @summary The jQuery object for the template containers scroll parent.
+			 * @memberof FooGallery.Template#
+			 * @name $scrollParent
+			 * @type {jQuery}
+			 */
+			self.$scrollParent = $();
+			/**
 			 * @summary The options for the template.
 			 * @memberof FooGallery.Template#
 			 * @name opt
@@ -4076,6 +4109,8 @@
 				if (parent.length > 0) {
 					self.$el.appendTo(parent);
 				}
+				self.$scrollParent = _.scrollParent(self.$el);
+
 				var queue = $.Deferred(), promise = queue.promise(), existing;
 				if (self.$el.length > 0 && (existing = self.$el.data(_.dataTemplate)) instanceof _.Template) {
 					promise = promise.then(function () {
@@ -4243,8 +4278,8 @@
 					if (e.isDefaultPrevented()) return _fn.rejectWith("post-init default prevented");
 					var state = self.state.parse();
 					self.state.set(_is.empty(state) ? self.state.initial() : state);
-					$(window).on("scroll" + self.namespace, {self: self}, self.throttle(self.onWindowScroll, self.opt.throttle))
-							.on("popstate" + self.namespace, {self: self}, self.onWindowPopState);
+					self.$scrollParent.on("scroll" + self.namespace, {self: self}, self.throttle(self.onWindowScroll, self.opt.throttle));
+					$(window).on("popstate" + self.namespace, {self: self}, self.onWindowPopState);
 				}).then(function () {
 					if (self.destroying) return _fn.rejectWith("destroy in progress");
 					/**
@@ -4381,6 +4416,7 @@
 			 * });
 			 */
 			self.raise("destroy");
+			self.$scrollParent.off(self.namespace);
 			$(window).off(self.namespace);
 			self.state.destroy();
 			if (self.filter) self.filter.destroy();
@@ -9250,26 +9286,25 @@
 			this.$el.removeAttr("style");
 		},
 		parse: function(){
-			var self = this, containerWidth = self.getContainerWidth(),
-					$test = $('<div/>', {'class': self.$el.attr('class')}).css({
-						position: 'absolute',
-						top: -9999,
-						left: -9999,
-						visibility: 'hidden',
-						maxWidth: containerWidth
-					}).appendTo('body');
-
-			var borderSize = 0;
+			var self = this, borderSize = 0;
 			if (self.$el.hasClass("fg-border-thin")) borderSize = 4;
 			if (self.$el.hasClass("fg-border-medium")) borderSize = 10;
 			if (self.$el.hasClass("fg-border-thick")) borderSize = 16;
-			var border = borderSize * 2;
+			var border = borderSize * 2,
+				containerWidth = self.getContainerWidth(),
+				maxWidth = containerWidth - border,
+				$test = $('<div/>', {'class': self.$el.attr('class')}).css({
+					position: 'absolute',
+					top: -9999,
+					left: -9999,
+					visibility: 'hidden',
+					maxWidth: containerWidth
+				}).appendTo('body');
 
 			self._items = $.map(self.tmpl.getItems(), function(item, i){
-				var maxWidth = containerWidth - border, single = item.width > maxWidth;
-				var $clone = item.$el.clone().css({width: '', height: ''})
-						.find(".fg-image,.fg-caption").css("width", single ? maxWidth : item.width).end()
-						.appendTo($test);
+				var $clone = item.$el.clone().css({width: '', height: '', top: '', left: '', position: 'relative'}).removeClass("fg-positioned")
+					.find(".fg-image,.fg-caption").css("width", item.width > maxWidth ? maxWidth : item.width).end()
+					.appendTo($test);
 				var width = $clone.outerWidth(), height = $clone.outerHeight();
 				$clone.remove();
 				return {
@@ -9278,8 +9313,7 @@
 					height: height,
 					top: 0,
 					left: 0,
-					$item: item.$el,
-					$thumb: item.$thumb
+					$item: item.$el
 				};
 			});
 			$test.remove();
@@ -9367,7 +9401,6 @@
 					width: item.width,
 					height: item.height,
 					$item: item.$item,
-					$thumb: item.$thumb,
 					top: item.top,
 					left: item.left,
 				};

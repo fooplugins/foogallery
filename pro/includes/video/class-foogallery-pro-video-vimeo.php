@@ -152,8 +152,12 @@ if ( !class_exists("FooGallery_Pro_Video_Vimeo") ){
 
 			// we have as valid an id as we can hope for until we make the actual request so request it
 			$url = "https://vimeo.com/api/oembed.json?url=" . urlencode("https://vimeo.com/" . $id);
+
+			//filter the args so we can change per site if needed
+			$args = apply_filters( 'foogallery_video_json_get_vimeo', array( "headers" => array(  "Referer" => get_site_url() ) ) );
+
 			// get the json object from the supplied url
-			$json = $this->json_get($url);
+			$json = $this->json_get( $url, $args );
 
 			// if an error occurred return it
 			if ($this->is_error($json)) {
