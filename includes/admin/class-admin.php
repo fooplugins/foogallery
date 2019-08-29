@@ -32,6 +32,7 @@ if ( ! class_exists( 'FooGallery_Admin' ) ) {
             new FooGallery_Admin_CSS_Load_Optimizer();
 			new FooGallery_Admin_Notices();
             new FooGallery_Admin_Gallery_Datasources();
+            new FooGallery_Advanced_Gallery_Settings();
 		}
 
 		function init() {
