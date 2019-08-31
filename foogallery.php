@@ -188,6 +188,9 @@ if ( function_exists( 'foogallery_fs' ) ) {
 
 				//init Gutenberg!
 				new FooGallery_Gutenberg();
+
+				//init advanced settings
+				new FooGallery_Advanced_Gallery_Settings();
 			}
 
 			function add_foogallery_pro_extension( $extensions ) {

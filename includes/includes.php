@@ -74,7 +74,6 @@ if ( is_admin() ) {
 	require_once( FOOGALLERY_PATH . 'includes/admin/class-admin-css-load-optimizer.php' );
 	require_once( FOOGALLERY_PATH . 'includes/admin/class-admin-notices.php' );
     require_once( FOOGALLERY_PATH . 'includes/admin/class-gallery-datasources.php' );
-	require_once( FOOGALLERY_PATH . 'includes/admin/class-gallery-advanced-settings.php' );
 
 } else {
 
@@ -86,3 +85,4 @@ if ( is_admin() ) {
 }
 
 require_once( FOOGALLERY_PATH . 'includes/public/class-shortcodes.php' );
+require_once( FOOGALLERY_PATH . 'includes/class-gallery-advanced-settings.php' );
