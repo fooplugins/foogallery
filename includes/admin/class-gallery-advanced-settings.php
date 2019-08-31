@@ -26,7 +26,7 @@ if ( ! class_exists( 'FooGallery_Advanced_Gallery_Settings' ) ) {
 			$fields[] = array(
 				'id'       => 'custom_settings',
 				'title'    => __( 'Custom Settings', 'foogallery' ),
-				'desc'     => __( 'Add any custom settings to the gallery which will be merged with existing settings.', 'foogallery' ),
+				'desc'     => __( 'Add any custom settings to the gallery which will be merged with existing settings. To be used by developers only!', 'foogallery' ),
 				'section'  => __( 'Advanced', 'foogallery' ),
 				'type'     => 'textarea',
 				'default'  => '',
