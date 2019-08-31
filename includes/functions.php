@@ -460,7 +460,7 @@ function foogallery_build_container_attributes_safe( $gallery, $attributes ) {
 		$html .= "{$key}=\"{$safe_value}\" ";
 	}
 
-	return $html;
+	return apply_filters( 'foogallery_build_container_attributes_html', $html, $attributes, $gallery );
 }
 
 /**
