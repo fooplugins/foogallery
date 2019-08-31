@@ -14,7 +14,10 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_RealMediaLibrary' ) ) {
 			add_action( 'foogallery-datasource-modal-content_rml', array( $this, 'render_datasource_modal_content' ), 10, 3 );
 			add_action( 'foogallery_gallery_metabox_items_list', array( $this, 'render_datasource_item' ), 10, 1 );
 			add_action( 'foogallery_before_save_gallery_datasource', array( $this, 'before_save_gallery_datasource_clear_datasource_cached_attachments' ) );
-			add_action( 'RML/Folder/Deleted', array( $this, 'rml_folder_deleted' ) );
+			add_action( 'RML/Folder/Deleted', array( $this, 'rml_folder_cachereset' ) );
+			add_action( 'RML/Folder/Deleted', array( $this, 'rml_folder_cachereset' ) );
+			add_action( 'RML/Folder/OrderBy', array( $this, 'rml_folder_cachereset' ) );
+			add_action( 'RML/Item/DragDrop',  array( $this, 'rml_folder_cachereset' ) );
 			add_action( 'RML/Item/MoveFinished', array( $this, 'rml_item_move_finished' ), 10, 5 );
 
 			add_filter( 'foogallery_datasource_rml_item_count', array( $this, 'get_gallery_attachment_count' ), 10, 2 );
@@ -22,14 +25,14 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_RealMediaLibrary' ) ) {
 			add_filter( 'foogallery_datasource_rml_attachments', array( $this, 'get_gallery_attachments' ), 10, 2 );
 		}
 
-		public function versionReached() {
-			return defined( 'RML_VERSION' ) && version_compare( RML_VERSION, '>=', '4.0.3' );
+		public function correct_version() {
+			return defined( 'RML_VERSION' ) && version_compare( RML_VERSION, '4.5.3', '>=' );
 		}
 
 		/**
-		 * A folder got deleted, clear cache.
+		 * If a real media folder got deleted or orderby changed, then clear cache.
 		 */
-		public function rml_folder_deleted( $fid ) {
+		public function rml_folder_cachereset( $fid ) {
 			$cache_post_meta_key = FOOGALLERY_META_DATASOURCE_CACHED_ATTACHMENTS . '_' . $fid;
 			delete_post_meta_by_key( $cache_post_meta_key );
 		}
@@ -199,6 +202,10 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_RealMediaLibrary' ) ) {
 				<p><?php echo __( 'RML (Real Media Library) is one of the most wanted media wordpress plugins. It is easy to use and it allows you to organize your thousands of images in folders. It is similar to wordpress categories like in the posts.', 'foogallery' ); ?></p>
 				<a href="<?php echo $rml_url; ?>" target="_blank"><img src="https://matthias-web.com/wp-content/uploads/Plugins/Real-Media-Library/preview.jpg" width="500" /></a>
 			<?php } else {
+
+				if ( !$this->correct_version() ) { ?>
+					<p><?php echo sprintf( __( 'You are using an outdated version of %s - please download the latest version of the plugin, which is 100%% datasource compatible.', 'foogallery' ), $rml_link ); ?></p>
+				<?php }
 
 				echo '<p>' . __( 'Select a folder below. Your gallery will then be dynamically populated with all the images within the selected folder.', 'foogallery' ) . '</p>';
 
