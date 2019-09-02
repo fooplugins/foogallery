@@ -4811,6 +4811,21 @@
 			self.raise("layout");
 		},
 
+		/**
+		 * @summary Gets the width of the FooGallery container.
+		 * @memberof FooGallery.Template#
+		 * @type function
+		 * @name getContainerWidth
+		 * @returns {number}
+		 */
+		getContainerWidth: function(){
+			var self = this, visible = self.$el.is(':visible');
+			if (!visible){
+				return self.$el.parents(':visible:first').innerWidth();
+			}
+			return self.$el.width();
+		},
+
 		// ###############
 		// ## Listeners ##
 		// ###############
@@ -9488,259 +9503,104 @@
 		FooGallery,
 		FooGallery.utils.is
 );
-(function($, _, _utils, _is){
-
-	_.Portfolio = _utils.Class.extend({
-		construct: function(tmpl, options){
-			this.tmpl = tmpl;
-			this.$el = tmpl.$el;
-			this.options = $.extend(true, {}, _.Portfolio.defaults, options);
-			this._items = [];
-			this._lastWidth = 0;
-		},
-		init: function(){
-			var self = this;
-			$(window).on("resize.portfolio", {self: self}, self.onWindowResize);
-		},
-		destroy: function(){
-			$(window).off("resize.portfolio");
-			this.$el.removeAttr("style");
-		},
-		parse: function(){
-			var self = this, borderSize = 0;
-			if (self.$el.hasClass("fg-border-thin")) borderSize = 4;
-			if (self.$el.hasClass("fg-border-medium")) borderSize = 10;
-			if (self.$el.hasClass("fg-border-thick")) borderSize = 16;
-			var border = borderSize * 2,
-				containerWidth = self.getContainerWidth(),
-				maxWidth = containerWidth - border,
-				$test = $('<div/>', {'class': self.$el.attr('class')}).css({
-					position: 'absolute',
-					top: -9999,
-					left: -9999,
-					visibility: 'hidden',
-					maxWidth: containerWidth
-				}).appendTo('body');
-
-			self._items = $.map(self.tmpl.getItems(), function(item, i){
-				var $clone = item.$el.clone().css({width: '', height: '', top: '', left: '', position: 'relative'}).removeClass("fg-positioned")
-					.find(".fg-image,.fg-caption").css("width", item.width > maxWidth ? maxWidth : item.width).end()
-					.appendTo($test);
-				var width = $clone.outerWidth(), height = $clone.outerHeight();
-				$clone.remove();
-				return {
-					index: i,
-					width: width,
-					height: height,
-					top: 0,
-					left: 0,
-					$item: item.$el
-				};
-			});
-			$test.remove();
-			return self._items;
-		},
-		round: function(value){
-			return Math.round(value*2) / 2;
-		},
-		getContainerWidth: function(){
-			var self = this, visible = self.$el.is(':visible');
-			if (!visible){
-				return self.$el.parents(':visible:first').innerWidth();
-			}
-			return self.$el.width();
-		},
-		layout: function(refresh, autoCorrect){
-			refresh = _is.boolean(refresh) ? refresh : false;
-			autoCorrect = _is.boolean(autoCorrect) ? autoCorrect : true;
-
-			var self = this,
-					containerWidth = self.getContainerWidth();
-
-			if (self._lastWidth != 0 && Math.abs(containerWidth - self._lastWidth) > 0){
-				refresh = true;
-				self._lastWidth = containerWidth;
-			}
-
-			if (refresh || self._items.length === 0){
-				self.parse();
-			}
-
-			var rows = self.rows(containerWidth),
-					offsetTop = 0;
-
-			for (var i = 0, l = rows.length, row; i < l; i++){
-				row = rows[i];
-				offsetTop = self.position(row, containerWidth, offsetTop, self.options.align);
-				self.render(row);
-			}
-			self.$el.height(offsetTop);
-			if (self._lastWidth == 0){
-				self._lastWidth = containerWidth;
-			}
-			// if our layout caused the container width to get smaller
-			// i.e. makes a scrollbar appear then layout again to account for it
-			if (autoCorrect && self.getContainerWidth() < containerWidth){
-				self.layout(false, false);
-			}
-		},
-		render: function(row){
-			for (var j = 0, jl = row.items.length, item; j < jl; j++){
-				item = row.items[j];
-				if (row.visible){
-					item.$item.css({
-						width: item.width,
-						height: row.height,
-						top: item.top,
-						left: item.left,
-						display: ""
-					}).addClass("fg-positioned");
-				} else {
-					item.$item.css("display", "none");
-				}
-			}
-		},
-		position: function(row, containerWidth, offsetTop, alignment){
-			var self = this, lastItem = row.items[row.items.length - 1], diff = containerWidth - (lastItem.left + lastItem.width);
-			if (row.index > 0) offsetTop += self.options.gutter;
-			row.top = offsetTop;
-			for (var i = 0, l = row.items.length, item; i < l; i++){
-				item = row.items[i];
-				item.top = offsetTop;
-				if (alignment === "center"){
-					item.left += diff / 2;
-				} else if (alignment === "right"){
-					item.left += diff;
-				}
-			}
-			return offsetTop + row.height;
-		},
-		items: function(){
-			return $.map(this._items, function(item){
-				return {
-					index: item.index,
-					width: item.width,
-					height: item.height,
-					$item: item.$item,
-					top: item.top,
-					left: item.left,
-				};
-			});
-		},
-		rows: function(containerWidth){
-			var self = this,
-					items = self.items(),
-					rows = [],
-					process = items.length > 0,
-					index = -1, offsetTop = 0;
-
-			while (process){
-				index += 1;
-				if (index > 0) offsetTop += self.options.gutter;
-				var row = {
-					index: index,
-					visible: true,
-					top: offsetTop,
-					width: 0,
-					height: 0,
-					items: []
-				}, remove = [], left = 0, tmp;
-
-				for (var i = 0, il = items.length, item, ratio; i < il; i++){
-					item = items[i];
-					tmp = row.width + item.width;
-					if (tmp > containerWidth && i > 0){
-						break;
-					} else if (tmp > containerWidth && i == 0){
-						tmp = containerWidth;
-						ratio = containerWidth / item.width;
-						item.width = self.round(item.width * ratio);
-						item.height = self.round(item.height * ratio);
-						row.height = item.height;
-					}
-					item.top = row.top;
-					if (i > 0){
-						left += self.options.gutter;
-					}
-					if (i !== il - 1){
-						tmp += self.options.gutter;
-					}
-					item.left = left;
-					left += item.width;
-					if (item.height > row.height) row.height = item.height;
-					row.width = tmp;
-					row.items.push(item);
-					remove.push(i);
-				}
-				// make sure we don't get stuck in a loop, there should always be items to be removed
-				if (remove.length === 0){
-					process = false;
-					break;
-				}
-				remove.sort(function(a, b){ return b - a; });
-				for (var j = 0, jl = remove.length; j < jl; j++){
-					items.splice(remove[j], 1);
-				}
-				rows.push(row);
-				process = items.length > 0;
-			}
-			return rows;
-		},
-		onWindowResize: function(e){
-			e.data.self.layout();
-		}
-	});
-
-	_.Portfolio.defaults = {
-		gutter: 40,
-		align: "center"
-	};
-
-})(
-		FooGallery.$,
-		FooGallery,
-		FooGallery.utils,
-		FooGallery.utils.is
-);
-(function($, _, _utils){
+(function($, _, _utils, _is, _fn){
 
 	_.PortfolioTemplate = _.Template.extend({
 		construct: function(element, options){
 			this._super(element, options);
+			/**
+			 *
+			 * @type {?HTMLStyleElement}
+			 */
+			this.style = null;
 
-			this.portfolio = null;
+			this.fullWidth = false;
+		},
+		/**
+		 * @summary Creates or gets the CSS stylesheet element for this template instance.
+		 * @memberof FooGallery.MasonryTemplate#
+		 * @function getStylesheet
+		 * @returns {StyleSheet}
+		 */
+		getStylesheet: function(){
+			var self = this;
+			if (self.style === null){
+				self.style = document.createElement("style");
+				self.style.appendChild(document.createTextNode(""));
+				document.head.appendChild(self.style);
+			}
+			return self.style.sheet;
 		},
 		onPreInit: function(event, self){
-			self.portfolio = new _.Portfolio( self, self.template );
+			self.appendCSS();
 		},
-		onInit: function(event, self){
-			self.portfolio.init();
-		},
-		onFirstLoad: function(event, self){
-			self.portfolio.layout( true );
-		},
-		onReady: function(event, self){
-			self.portfolio.layout( true );
+		onPostInit: function(event, self){
+			self.checkCSS();
+			$(window).on("resize" + self.namespace, {self: self}, _fn.debounce(self.onWindowResize, 50));
 		},
 		onDestroy: function(event, self){
-			self.portfolio.destroy();
+			self.removeCSS();
+			$(window).off("resize" + self.namespace);
 		},
-		onLayout: function(event, self){
-			self.portfolio.layout( true );
+		onWindowResize: function(e){
+			e.data.self.checkCSS();
 		},
-		onAfterPageChange: function(event, self, current, prev, isFilter){
-			if (!isFilter){
-				self.portfolio.layout( true );
+		checkCSS: function(){
+			var self = this, maxWidth = self.getContainerWidth(), current = maxWidth < self.template.columnWidth;
+			if (current !== self.fullWidth){
+				self.appendCSS(maxWidth);
 			}
 		},
-		onAfterFilterChange: function(event, self){
-			self.portfolio.layout( true );
+		appendCSS: function(maxWidth){
+			var self = this;
+			maxWidth = _is.number(maxWidth) ? maxWidth : self.getContainerWidth();
+
+			self.removeCSS();
+
+			var sheet = self.getStylesheet(), rule,
+				container = '#' + self.id + self.sel.container,
+				item = container + ' ' + self.sel.item.elem,
+				width = self.template.columnWidth,
+				gutter = Math.ceil(self.template.gutter / 2);
+
+			switch (self.template.align) {
+				case "center":
+					rule = container + ' { justify-content: center; }';
+					sheet.insertRule(rule , 0);
+					break;
+				case "left":
+					rule = container + ' { justify-content: flex-start; }';
+					sheet.insertRule(rule , 0);
+					break;
+				case "right":
+					rule = container + ' { justify-content: flex-end; }';
+					sheet.insertRule(rule , 0);
+					break;
+			}
+			self.fullWidth = maxWidth < width;
+			if (self.fullWidth){
+				rule = item + ' { max-width: 100%; margin: ' + gutter + 'px; }';
+				sheet.insertRule(rule , 0);
+			} else {
+				rule = item + ' { max-width: ' + width + 'px; min-width: ' + width + 'px; margin: ' + gutter + 'px; }';
+				sheet.insertRule(rule , 0);
+			}
+		},
+		removeCSS: function(){
+			var self = this;
+			if (self.style && self.style.parentNode){
+				self.style.parentNode.removeChild(self.style);
+				self.style = null;
+				self.fullWidth = false;
+			}
 		}
 	});
 
 	_.template.register("simple_portfolio", _.PortfolioTemplate, {
 		template: {
-			gutter: 40
+			gutter: 40,
+			align: "center",
+			columnWidth: 250
 		}
 	}, {
 		container: "foogallery fg-simple_portfolio"
@@ -9749,7 +9609,9 @@
 })(
 		FooGallery.$,
 		FooGallery,
-		FooGallery.utils
+	FooGallery.utils,
+	FooGallery.utils.is,
+	FooGallery.utils.fn
 );
 (function ($, _, _utils, _obj) {
 
