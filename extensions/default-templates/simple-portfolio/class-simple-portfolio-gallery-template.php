@@ -219,8 +219,15 @@ if ( !class_exists( 'FooGallery_Simple_Portfolio_Gallery_Template' ) ) {
 			$gutter = foogallery_gallery_template_setting( 'gutter', 40 );
 			$options['template']['gutter'] = intval($gutter);
 
+			$thumbnail_dimensions = foogallery_gallery_template_setting( 'thumbnail_dimensions', array() );
+			if ( array_key_exists( 'width', $thumbnail_dimensions ) ) {
+				$width                              = $thumbnail_dimensions['width'];
+				$options['template']['columnWidth'] = intval( $width );
+			}
+
 			$align = foogallery_gallery_template_setting( 'align', 'center' );
             $options['template']['align'] = $align;
+
 			return $options;
 		}
 
