@@ -230,6 +230,9 @@
 		//move the template selector into the metabox heading
         $('.foogallery-template-selector').appendTo( '#foogallery_settings .hndle span' ).removeClass('hidden');
 
+		//remove the loading spinner
+		$('.foogallery-gallery-items-metabox-title').remove();
+
 		//move the items switch selector into the metabox heading
 		$('.foogallery-items-view-switch-container').appendTo( '#foogallery_items .hndle span' ).removeClass('hidden');
 

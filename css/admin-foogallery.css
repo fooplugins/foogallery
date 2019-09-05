@@ -429,6 +429,10 @@ button[data-balloon]{overflow:visible}[data-balloon]{position:relative}[data-bal
 		margin-left: -1px;
 	}
 
+.foogallery-gallery-items-metabox-title {
+	float:none;
+}
+
 .foogallery_preview_container {
 	position: relative;
 	padding: 10px;
