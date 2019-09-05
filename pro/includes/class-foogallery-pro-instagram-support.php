@@ -21,7 +21,7 @@ if ( ! class_exists( 'FooGallery_Pro_Instagram_Support' ) ) {
 		 * @param $name
 		 *
 		 */
-        /*function sync_collection_to_gallery( $collection_id, $parent_id, $name ) {
+       /* function sync_collection_to_gallery( $collection_id, $parent_id, $name ) {
         	//first check if the setting is enabled
 			if ( foogallery_get_setting('enable_sync_collections_to_galleries') === 'on' ) {
 
