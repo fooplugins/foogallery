@@ -149,7 +149,7 @@
         var previewData = $('[data-foogallery-preview="include"]').serializeArray();
         data = data.concat(previewData);
 
-		data.push({name: 'foogallery_attachments', value: $('#foogallery_attachments').val()});
+		//data.push({name: 'foogallery_attachments', value: $('#foogallery_attachments').val()});
         data.push({name: 'foogallery_datasource', value: $('#foogallery_datasource').val()});
         data.push({name: 'foogallery_datasource_value', value: $('#_foogallery_datasource_value').val()});
 
@@ -362,6 +362,8 @@
         FOOGALLERY.calculateAttachmentIds();
 
         FOOGALLERY.calculateHiddenAreas();
+
+		$('.foogallery_preview_container').addClass('foogallery-preview-force-refresh');
     };
 
     FOOGALLERY.removeAttachmentFromGalleryList = function(id) {
