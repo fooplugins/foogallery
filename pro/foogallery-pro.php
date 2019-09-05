@@ -26,6 +26,8 @@ require_once( FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-datasource-li
 require_once( FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-datasource-instagram.php' );
 require_once( FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-wplr-support.php' );
 require_once( FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-instagram-support.php' );
+require_once( FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-datasource-realmedialibrary.php' );
+
 
 /**
  * FooGallery PRO Main Class
@@ -58,6 +60,8 @@ if ( ! class_exists( 'FooGallery_Pro' ) ) {
 			new FooGallery_Pro_WPLR_Support();
 			new FooGallery_Pro_Datasource_Instagram();
 			new FooGallery_Pro_Instagram_Support();
+			new FooGallery_Pro_Datasource_RealMediaLibrary();
+
 		}
 	}
 }

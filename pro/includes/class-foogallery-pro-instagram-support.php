@@ -75,9 +75,21 @@ if ( ! class_exists( 'FooGallery_Pro_Instagram_Support' ) ) {
 		 * @return array
 		 */
 		function add_insta_settings( $settings ) {
-
+			//.'edit.php?post_type=foogallery&page=foogallery-settings'
 			$settings['tabs']['insta'] = __( 'Instagram', 'foogallery' );
-			$redirect_url = admin_url().'edit.php?post_type=foogallery&page=foogallery-settings/';
+			$redirect_url = admin_url();
+
+			if(get_option('instagram_token') != ''){
+				//echo "<h3>Successfully connected to Instagram</h3>";
+				$settings['settings'][] = array(
+					'id'      => 'insta_connected_desc',
+					'title'   => '',
+					'type'    => 'html',
+					'desc'    => "<h3>Successfully connected to Instagram</h3>",
+					'tab'     => 'insta'
+				);
+			}
+
 			$html = '<div><code>' .$redirect_url.'</code> </div>';
 
 			$settings['settings'][] = array(
@@ -133,7 +145,7 @@ if ( ! class_exists( 'FooGallery_Pro_Instagram_Support' ) ) {
 				           'client_id'     => $synced['insta_client_id'],
 				           'client_secret' => $synced['insta_client_secret'],
 				           'grant_type'    => 'authorization_code',
-				           'redirect_uri'  => $redirect_url,
+				           'redirect_uri'  => admin_url(),
 				           'code'          => $_GET['code']
 				    );
 				    $url = 'https://api.instagram.com/oauth/access_token';
@@ -146,9 +158,13 @@ if ( ! class_exists( 'FooGallery_Pro_Instagram_Support' ) ) {
 					    'body' => $fields, 
 						)
 				    );
-				    echo "<pre>";
-				    print_r($response);
-				    exit;
+
+				    if($response['response']['message'] == 'OK'){
+				    	update_option( 'instagram_token', $response['body'] );
+				    }
+				   
+				   wp_redirect(admin_url().'edit.php?post_type=foogallery&page=foogallery-settings#insta');
+				   //wp_die();
 				}
 			}
 		}

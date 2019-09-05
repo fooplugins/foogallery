@@ -11,11 +11,8 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Instagram' ) ) {
 			add_filter( 'foogallery_datasource_instagram_item_count', array( $this, 'get_gallery_attachment_count' ), 10, 2 );
 			add_filter( 'foogallery_datasource_instagram_featured_image', array( $this, 'get_gallery_featured_attachment' ), 10, 2 );
 			add_filter( 'foogallery_datasource_instagram_attachments', array( $this, 'get_gallery_attachments' ), 10, 2 );
-
 			add_action( 'foogallery-datasource-modal-content_instagram', array( $this, 'render_datasource_modal_content' ), 10, 3 );
-			add_action( 'foogallery_gallery_metabox_items_list', array( $this, 'render_datasource_item' ), 10, 1 );
-
-			add_action( 'wp_ajax_foogallery_datasource_instagram_select' , array( $this, 'get_instagram_authentication' ) );
+			add_action( 'foogallery_gallery_metabox_items_list', array( $this, 'render_datasource_item' ), 10, 1 );			
 			add_action( 'foogallery_before_save_gallery_datasource', array( $this, 'before_save_gallery_datasource_clear_datasource_transient' ) );
 		}
 
@@ -145,66 +142,8 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Instagram' ) ) {
 
 		}
 
-		private function output_instagram_hierarchy( $hierarchy ) {
-			if ( is_array( $hierarchy ) ) {
-				echo '<ul>';
-				foreach ( $hierarchy as $item ) {
-					if ( $item['type'] === 'collection' ) {
-						echo '<li><a href="#" data-collection="' . esc_attr( $item['name'] ) . '" data-collection-id="' . esc_attr( $item['id'] ) . '"><span class="dashicons dashicons-images-alt2" />' . esc_html( $item['name'] ) . '</a></li>';
-					} elseif ( $item['type'] === 'folder' ) {
-						echo '<li><span class="dashicons dashicons-category" />';
-						echo $item['name'];
-						if ( array_key_exists( 'children', $item ) ) {
-							$children = $item['children'];
-							$this->output_instagram_hierarchy( $children );
-						}
-						echo '</li>';
-					}
-				}
-				echo '</ul>';
-			}
-		}
-
-		function get_instagram_authentication() {
-			if ( check_admin_referer( 'foogallery_datasource_instagram_select', 'nonce' ) ) {
-					$client_id = sanitize_text_field($_POST['clientID']);
-					$client_secret = sanitize_text_field($_POST['clientSecret']);
-					//$client_id = sanitize_text_field($_POST['clientID']);
-					echo $client_id;
-					echo "<br>";
-					echo
-					$fields = array(
-				           'client_id'     => $client_id,
-				           'client_secret' => $client_secret,
-				           'grant_type'    => 'authorization_code',
-				           'redirect_uri'  => home_url(),
-				           'code'          => 'insta'
-				    );
-				    $url = 'https://api.instagram.com/oauth/access_token';
-				    $response = wp_remote_post( $url, array(
-				    
-				    	
-				    	'body' => $fields,
-				    	
-				        )
-				    );
-				    echo "<pre>";
-				    print_r($response);
-				    
-				    /*$ch = curl_init();
-				    curl_setopt($ch, CURLOPT_URL, $url);
-				    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-				    curl_setopt($ch, CURLOPT_TIMEOUT, 20);
-				    curl_setopt($ch,CURLOPT_POST,true); 
-				    curl_setopt($ch, CURLOPT_POSTFIELDS, $fields);
-				    $result = curl_exec($ch);
-				    curl_close($ch); 
-				    $result = json_decode($result);
-				    print_r($result);*/
-			}
-
-			die();
-		}
+		
+		
 
         /**
          * Output the html required by the datasource in order to add item(s)

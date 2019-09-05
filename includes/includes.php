@@ -85,3 +85,4 @@ if ( is_admin() ) {
 }
 
 require_once( FOOGALLERY_PATH . 'includes/public/class-shortcodes.php' );
+require_once( FOOGALLERY_PATH . 'includes/class-gallery-advanced-settings.php' );

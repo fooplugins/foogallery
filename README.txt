@@ -145,6 +145,12 @@ Update now to get all the latest features, bug fixes and improvements!
 
 == Changelog ==
 
+= 1.8.11 =
+* New : Added advanced gallery settings for custom settings and custom attributes
+* Fix : Rewrite of Simple Portfolio to incorrect thumb heights
+* Fix : Lazy-load issues for certain themes
+* Update : FooGallery client side 1.3.3
+
 = 1.8.8 =
 * New : Implemented the Datasource architecture within the plugin
 * Fix : PHP Warnings when previewing galleries

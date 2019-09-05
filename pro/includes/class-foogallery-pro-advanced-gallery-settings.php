@@ -38,15 +38,6 @@ if ( ! class_exists( 'FooGallery_Pro_Advanced_Gallery_Settings' ) ) {
 				),
 			);
 
-			$fields[] = array(
-				'id'       => 'custom_settings',
-				'title'    => __( 'Custom Settings', 'foogallery' ),
-				'desc'     => __( 'Add any custom settings to the gallery which will be merged with existing settings.', 'foogallery' ),
-				'section'  => __( 'Advanced', 'foogallery' ),
-				'type'     => 'textarea',
-				'default'  => '',
-			);
-
 			return $fields;
 		}
 
@@ -65,16 +56,6 @@ if ( ! class_exists( 'FooGallery_Pro_Advanced_Gallery_Settings' ) ) {
 
 			if ( 'yes' === $enable_state ) {
 				$options['state']['enabled'] = true;
-			}
-
-			$custom_settings = foogallery_gallery_template_setting( 'custom_settings', '' );
-
-			if ( !empty( $custom_settings ) ) {
-				$settings_array = @json_decode($custom_settings, true);
-
-				if ( isset( $settings_array ) ) {
-					$options = array_merge_recursive( $options, $settings_array );
-				}
 			}
 
 			return $options;
