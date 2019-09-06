@@ -7,242 +7,323 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Instagram' ) ) {
     class FooGallery_Pro_Datasource_Instagram {
 
     	public function __construct() {
-			add_action( 'foogallery_gallery_datasources', array($this, 'add_datasource'), 6 );
-			add_filter( 'foogallery_datasource_instagram_item_count', array( $this, 'get_gallery_attachment_count' ), 10, 2 );
-			add_filter( 'foogallery_datasource_instagram_featured_image', array( $this, 'get_gallery_featured_attachment' ), 10, 2 );
-			add_filter( 'foogallery_datasource_instagram_attachments', array( $this, 'get_gallery_attachments' ), 10, 2 );
-			add_action( 'foogallery-datasource-modal-content_instagram', array( $this, 'render_datasource_modal_content' ), 10, 3 );
-			add_action( 'foogallery_gallery_metabox_items_list', array( $this, 'render_datasource_item' ), 10, 1 );			
-			add_action( 'foogallery_before_save_gallery_datasource', array( $this, 'before_save_gallery_datasource_clear_datasource_transient' ) );
-		}
+    		add_action( 'foogallery_gallery_datasources', array( $this, 'add_datasource' ), 6 );
+    		add_filter( 'foogallery_datasource_instagram_item_count', array( $this, 'get_gallery_attachment_count' ), 10, 2 );
+    		add_filter( 'foogallery_datasource_instagram_featured_image', array( $this, 'get_gallery_featured_attachment' ), 10, 2 );
+    		add_filter( 'foogallery_datasource_instagram_attachments', array( $this, 'get_gallery_attachments' ), 10, 2 );
+    		add_action( 'foogallery-datasource-modal-content_instagram', array( $this, 'render_datasource_modal_content' ), 10, 3 );
+    		add_action( 'wp_ajax_foogallery_datasource_instagram_get_images', array( $this, 'fetch_images_from_instagram' ) );
+    		add_action( 'foogallery_gallery_metabox_items_list', array( $this, 'render_datasource_item' ), 10, 1 );
+    		add_action( 'foogallery_before_save_gallery_datasource', array( $this, 'before_save_gallery_datasource_clear_datasource_cached_images' ) );
+    		add_action( 'foogallery_admin_enqueue_scripts', array( $this, 'enqueue_scripts_and_styles' ) );
+    	}
 
-		/**
-		 * Add the Instagram Datasource
-		 * @param $datasources
-		 * @return mixed
-		 */
-		function add_datasource( $datasources ) {
-			$datasources['instagram'] = array(
-				'id'     => 'instagram',
-				'name'   => __( 'Instagram', 'foogallery' ),
-				'menu'   => __( 'Instagram', 'foogallery' ),
-				'public' => true
-			);
+    	/**
+    	 * Add the instagrams Datasource
+    	 *
+    	 * @param $datasources
+    	 *
+    	 * @return mixed
+    	 */
+    	function add_datasource( $datasources ) {
+    		$datasources['instagram'] = array(
+    			'id'     => 'instagram',
+    			'name'   => __( 'Instagram', 'foogallery' ),
+    			'menu'   => __( 'Instagram', 'foogallery' ),
+    			'public' => true
+    		);
 
-			return $datasources;
-		}
+    		return $datasources;
+    	}
 
-		/**
-		 * Clears the cache for the specific folder
-		 * @param $foogallery_id
-		 */
-		public function before_save_gallery_datasource_clear_datasource_transient( $foogallery_id ) {
-            $this->clear_gallery_transient( $foogallery_id );
-		}
+    	/**
+    	 * Enqueues instagrams-specific assets
+    	 */
+    	public function enqueue_scripts_and_styles() {
+    		wp_enqueue_style( 'foogallery.admin.datasources.instagram', FOOGALLERY_PRO_URL . 'css/foogallery.admin.datasources.instagram.css', array(), FOOGALLERY_VERSION );
+    		wp_enqueue_script( 'foogallery.admin.datasources.instagram', FOOGALLERY_PRO_URL . 'js/foogallery.admin.datasources.instagram.js', array( 'jquery' ), FOOGALLERY_VERSION );
+    	}
 
-        public function clear_gallery_transient( $foogallery_id ) {
-		    $transient_key = '_foogallery_datasource_instagram_' . $foogallery_id;
-		    delete_transient( $transient_key );
-        }
+    	/**
+    	 * Clears the cache for the specific instagram
+    	 *
+    	 * @param $foogallery_id
+    	 */
+    	public function before_save_gallery_datasource_clear_datasource_cached_images( $foogallery_id ) {
+    		$this->clear_gallery_transient( $foogallery_id );
+    	}
 
-		/**
-		 * Returns the number of attachments used for the gallery
-		 *
-		 * @param int $count
-		 * @param FooGallery $foogallery
-		 *
-		 * @return int
-		 */
-		public function get_gallery_attachment_count( $count, $foogallery ) {
-            return count( $this->get_gallery_attachments_from_instagram( $foogallery ) );
-		}
+    	public function clear_gallery_transient( $foogallery_id ) {
+    		$transient_key = '_foogallery_datasource_instagram_' . $foogallery_id;
+    		delete_transient( $transient_key );
+    	}
 
-        /**
-         * Returns an array of FooGalleryAttachments from the datasource
-         *
-         * @param array $attachments
-         * @param FooGallery $foogallery
-         *
-         * @return array(FooGalleryAttachment)
-         */
-        public function get_gallery_attachments( $attachments, $foogallery ) {
-            return $this->get_gallery_attachments_from_instagram( $foogallery );
-        }
+    	/**
+    	 * Returns the number of attachments used for the gallery
+    	 *
+    	 * @param int        $count
+    	 * @param FooGallery $foogallery
+    	 *
+    	 * @return int
+    	 */
+    	public function get_gallery_attachment_count( $count, $foogallery ) {
+    		return count( $this->get_gallery_attachments_from_instagram( $foogallery ) );
+    	}
 
-		/**
-		 * Returns a cached array of FooGalleryAttachments from the datasource
-		 *
-		 * @param FooGallery $foogallery
-		 *
-		 * @return array(FooGalleryAttachment)
-		 */
-		public function get_gallery_attachments_from_instagram( $foogallery ) {
-            global $foogallery_gallery_preview;
+    	/**
+    	 * Returns an array of FooGalleryAttachments from the datasource
+    	 *
+    	 * @param array      $attachments
+    	 * @param FooGallery $foogallery
+    	 *
+    	 * @return array(FooGalleryAttachment)
+    	 */
+    	public function get_gallery_attachments( $attachments, $foogallery ) {
+    		return $this->get_gallery_attachments_from_instagram( $foogallery );
+    	}
 
-            $attachments = array();
+    	/**
+    	 * Returns a cached array of FooGalleryAttachments from the datasource
+    	 *
+    	 * @param FooGallery $foogallery
+    	 *
+    	 * @return array(FooGalleryAttachment)
+    	 */
+    	public function get_gallery_attachments_from_instagram( $foogallery ) {
+    		global $foogallery_gallery_preview;
 
-			if ( ! empty( $foogallery->datasource_value ) ) {
-                $transient_key = '_foogallery_datasource_instagram_' . $foogallery->ID;
+    		$attachments = array();
 
-                //never get the cached results if we are doing a preview
-                if ( isset( $foogallery_gallery_preview ) ) {
-                    $cached_attachments = false;
-                } else {
-                    $cached_attachments = get_transient( $transient_key );
-                }
+    		if ( ! empty( $foogallery->datasource_value ) ) {
+    			$transient_key = '_foogallery_datasource_instagram_' . $foogallery->ID;
 
-				if ( false === $cached_attachments) {
-                    $datasource_value = $foogallery->datasource_value;
-					$collectionId = $datasource_value['collectionId'];
+    			//never get the cached results if we are doing a preview
+    			if ( isset( $foogallery_gallery_preview ) ) {
+    				$cached_attachments = false;
+    			} else {
+    				$cached_attachments = get_transient( $transient_key );
+    			}
 
-					$expiry = 24 * 60 * 60; //24 hours
+    			if ( false === $cached_attachments ) {
+    				$datasource_value = $foogallery->datasource_value;
+    				$instagram           = $datasource_value['value'];
+    				if ( array_key_exists( 'metadata', $datasource_value ) ) {
+    					$metadata = $datasource_value['metadata'];
+    				} else {
+    					$metadata = 'file'; //set the default metadata source to be the server file
+    				}
 
-                    //find all image files in the instagram collection
-					$helper = new FooGallery_Datasource_MediaLibrary_Query_Helper();
+    				$expiry_hours = apply_filters( 'foogallery_datasource_instagram_expiry', 24 );
+    				$expiry       = $expiry_hours * 60 * 60;
 
-					global $wplr;
-					$media = $wplr->get_media_from_collection( $collectionId );
+    				//find all image files in the instagram
+    				$attachments = $this->build_attachments_from_instagram( $instagram, $metadata );
 
-					$attachments = $helper->query_attachments( $foogallery,
-						array( 'post__in' => $media )
-					);
+    				//save a cached list of attachments
+    				set_transient( $transient_key, $attachments, $expiry );
+    			} else {
+    				$attachments = $cached_attachments;
+    			}
+    		}
 
-					//save a cached list of attachments
-					set_transient( $transient_key, $attachments, $expiry );
-				} else {
-					$attachments = $cached_attachments;
-				}
-			}
+    		return $attachments;
+    	}
 
-			return $attachments;
-		}
+    	/**
+    	 * returns the supported image types that will be pulled from a instagram
+    	 *
+    	 * @return array
+    	 */
+    	public function supported_image_types() {
+    		return apply_filters(
+    			'foogallery_datasource_instagram_supported_image_types', array(
+    			'gif',
+    			'jpg',
+    			'jpeg',
+    			'png'
+    		)
+    		);
+    	}
 
-		/**
-		 * Returns the featured FooGalleryAttachment from the datasource
-		 *
-		 * @param FooGalleryAttachment $default
-		 * @param FooGallery $foogallery
-		 *
-		 * @return bool|FooGalleryAttachment
-		 */
-		public function get_gallery_featured_attachment( $default, $foogallery ) {
-            $attachments = $this->get_gallery_attachments_from_instagram( $foogallery );
-			if ( is_array( $attachments ) && count( $attachments ) > 0 ) {
-				return $attachments[0];
-			}
+    	/**
+    	 * Generates the option key used to store the response for a instagram
+    	 *
+    	 * @param $instagram
+    	 *
+    	 * @return string
+    	 */
+    	private function build_database_options_key( $gallery_id) {
+    		return '_foogallery_datasource_instagram_' . $gallery_id;
+    	}
 
-			return false;
-		}
+    	
+    	/**
+    	 * Extract the correct json data for the file
+    	 *
+    	 * @param $filename
+    	 * @param $json_data
+    	 *
+    	 * @return bool
+    	 */
+    	public function find_json_data_for_file( $filename, $json_data ) {
+    		if ( array_key_exists( 'items', $json_data ) ) {
+    			foreach ( $json_data['items'] as $position => $item ) {
+    				//allow for an index to be specified, otherwise set the index to be the position in the array
+    				if ( ! array_key_exists( 'index', $item ) ) {
+    					$item['index'] = $position;
+    				}
 
-		/**
-		 * Output the datasource modal content
-		 * @param $foogallery_id
-		 */
-		function render_datasource_modal_content( $foogallery_id, $datasource_value ) {
+    				if ( array_key_exists( 'file', $item ) && $item['file'] === $filename ) {
+    					return $item;
+    				}
+    			}
+    		}
 
-		}
+    		return false;
+    	}
 
-		
-		
+    	/**
+    	 * Returns the featured FooGalleryAttachment from the datasource
+    	 *
+    	 * @param FooGalleryAttachment $default
+    	 * @param FooGallery           $foogallery
+    	 *
+    	 * @return bool|FooGalleryAttachment
+    	 */
+    	public function get_gallery_featured_attachment( $default, $foogallery ) {
+    		$attachments = $this->get_gallery_attachments_from_instagram( $foogallery );
+    		if ( is_array( $attachments ) && count( $attachments ) > 0 ) {
+    			return $attachments[0];
+    		}
 
-        /**
-         * Output the html required by the datasource in order to add item(s)
-         * @param FooGallery $gallery
-         */
-		function render_datasource_item( $gallery ) { ?>
-            <style type="text/css">
-                .foogallery-datasource-instagram {
-                    padding: 20px;
-                    text-align: center;
-                }
+    		return false;
+    	}
 
-				.foogallery-datasource-instagram .foogallery-items-html {
-					background: #efefef;
-					border-radius: 5px;
-					display: inline-block;
-					padding: 4px 12px;
-					text-align: center;
-					text-decoration: none;
-					font-size: 1.2em;
-					margin-bottom: 20px;
-				}
-            </style>
-            <script type="text/javascript">
+    	/**
+    	 * Output the datasource modal content
+    	 *
+    	 * @param $foogallery_id
+    	 */
+    	function render_datasource_modal_content( $foogallery_id, $datasource_value ) {
+    		if(get_option('instagram_token') != ''){
 
+    			?>
+    			<script type="text/javascript">
+    				$(document).on('click','#get_instagram_images',function(){
 
-                jQuery(function ($) {
-                    $('.foogallery-datasource-instagram').on('click', 'button.remove', function (e) {
-                        e.preventDefault();
+    					var data = 'action=foogallery_datasource_instagram_get_images' +
+                            '&image_count=' + encodeURIComponent($('#instagram_image_count').val()) +
+                            '&resolution=' + encodeURIComponent($('#instagram_imgage_resolution').val()) +
+                            '&gallery_id=' + <?php echo $foogallery_id; ?> +
+                            '&nonce=<?php echo wp_create_nonce( 'foogallery_datasource_instagram_get_images' ); ?>';
 
-                        //hide the previous info
-                        $(this).parents('.foogallery-datasource-instagram').hide();
+                        $.ajax({
+                            type: "POST",
+                            url: ajaxurl,
+                            data: data,
+                            success: function(data) {
+                            	$('.foogallery-datasource-modal-insert').removeAttr( 'disabled' );
+                                $this.find('.spinner').remove();
+								$collectionInfo.html(data);
+                            }
+                        });
+    				});
+    			</script>
+    			<table>
+    				<tr>
+    					<th align="left"><label for="instagram_image_count"><?php echo __("Number of Images to Display","foogallery"); ?></label></th>
+    					<td><input type="number" name="instagram_image_count" min="0" id="instagram_image_count"></td>
+    				</tr>
 
-                        //clear the datasource value
-                        $('#<?php echo FOOGALLERY_META_DATASOURCE_VALUE; ?>').val('');
+    				<tr>
+    					<th align="left"><label for="instagram_imgage_resolution"><?php echo  __("Image Resolution","foogallery"); ?></label></th>
+    					<td>
+    						<select name="instagram_imgage_resolution" id="instagram_imgage_resolution">
+    							<option value="thumbnail"><?php echo __("Thumbnail","foogallery"); ?></option>
+    							<option value="low_resolution"><?php echo __("Low Resolution","foogallery"); ?></option>
+    							<option value="standard_resolution"><?php echo __("Standard Resolution","foogallery"); ?></option>
+    						</select> 
+    					</td>
+    				</tr>
+    				<tr>
+    					<td colspan="2" align="center"><input type="button" value="<?php echo __("Save Settings","foogallery"); ?>" id="get_instagram_images"></td>
+    				</tr>
 
-                        //clear the datasource
-                        $('#<?php echo FOOGALLERY_META_DATASOURCE; ?>').val('');
+    			</table>
+    			
+    			<?php
+    		}else{
 
-                        //make sure the modal insert button is not active
-                        $('.foogallery-datasource-modal-insert').attr('disabled','disabled');
+    		}
+    	}
 
-                        FOOGALLERY.showHiddenAreas( true );
+    	function get_root_instagram() {
+    		return trailingslashit( apply_filters( 'foogallery_filesystem_root', ABSPATH ) );
+    	}
 
-                        //ensure the preview will be refreshed
-                        $('.foogallery_preview_container').addClass('foogallery-preview-force-refresh');
-                    });
+    	function fetch_images_from_instagram() {
+    		if ( check_admin_referer( 'foogallery_datasource_instagram_get_images', 'nonce' ) ) {
+    			$data = array();
+    			
+    			$instagram_token = get_option('instagram_token');
+    			$instagram_array = json_decode($instagram_token);
+    			   			
+    			$respose = wp_remote_get("https://api.instagram.com/v1/users/self/media/recent/?access_token=".$instagram_array->access_token."&count=".$_POST['image_count']);
+    			$respose_array = json_decode($respose['body'],true);
+    			 
+    			if($respose_array['meta']['code'] == '200'){
+    				foreach ($respose_array['data'] as $instagram_images) {
+    					$data[] = array(
+    						"file" => $instagram_images['images'][$_POST['resolution']]['url'],
+    						"caption" => $instagram_images['caption'],
+    						"description" => "",
+    						"alt" => "", 
+    						"custom_url" => "",
+    						"custom_target" => ""
+    					);
+    				}
+    			}
+    			$json = json_encode($data);
+    			$option_key = $this->build_database_options_key( $_POST['gallery_id'] );
+    			update_option( $option_key, $json );
+    		
+    		}
 
-                    $('.foogallery-datasource-instagram').on('click', 'button.edit', function (e) {
-                        e.preventDefault();
+    		die();
+    	}
 
-                        //show the modal
-                        $('.foogallery-datasources-modal-wrapper').show();
+    	
 
-                        //select the instagram datasource
-                        $('.foogallery-datasource-modal-selector[data-datasource="instagram"]').click();
-                    });
+    	/**
+    	 * Return the filename for the images metadata
+    	 * @return string
+    	 */
+    	private function image_metadata_file() {
+    		return apply_filters( 'foogallery_datasource_instagram_json', 'metadata.json' );
+    	}
 
-					$(document).on('foogallery-datasource-changed', function(e, activeDatasource) {
-						$('.foogallery-datasource-instagram').hide();
-
-						if ( activeDatasource !== 'instagram' ) {
-							//clear the selected
-						}
-					});
-
-                    $(document).on('foogallery-datasource-changed-instagram', function() {
-                        var $container = $('.foogallery-datasource-instagram');
-
-						$('#_foogallery_datasource_value').val(JSON.stringify(document.foogallery_datasource_value_temp));
-
-						$container.find('.foogallery-items-html').html(document.foogallery_datasource_value_temp.collection);
-
-						$container.show();
-
-						FOOGALLERY.showHiddenAreas( false );
-
-						$('.foogallery-attachments-list').addClass('hidden');
-
-						$('.foogallery_preview_container').addClass('foogallery-preview-force-refresh');
-                    });
-                });
-            </script>
-        <?php
-			$show_container = isset( $gallery->datasource_name) && 'instagram' === $gallery->datasource_name;
-			$value = ($show_container && isset( $gallery->datasource_value['collection'] )) ? $gallery->datasource_value['collection'] : '';
-			?>
-			<div <?php echo $show_container ? '' : 'style="display:none" '; ?>class="foogallery-datasource-instagram">
-				<h3><?php _e('Datasource : Instagram Collection', 'foogallery'); ?></h3>
-				<p><?php _e('This gallery will be dynamically populated with all images within the following collection in Adobe Instagram:', 'foogallery'); ?></p>
-				<div class="foogallery-items-html"><?php echo $value ?></div>
-				<br />
-				<button type="button" class="button edit">
-					<?php _e( 'Change Collection', 'foogallery' ); ?>
-				</button>
-				<button type="button" class="button remove">
-					<?php _e( 'Remove Collection', 'foogallery' ); ?>
-				</button>
-			</div><?php
-		}
+    	/**
+    	 * Output the html required by the datasource in order to add item(s)
+    	 *
+    	 * @param FooGallery $gallery
+    	 */
+    	function render_datasource_item( $gallery ) { ?>
+    		<?php
+    		$show_container = isset( $gallery->datasource_name ) && 'instagram' === $gallery->datasource_name;
+    		$value          = ( $show_container && isset( $gallery->datasource_value['value'] ) ) ? $gallery->datasource_value['value'] : '';
+    		?>
+    	<div <?php echo $show_container ? '' : 'style="display:none" '; ?>class="foogallery-datasource-instagram">
+    		<h3><?php _e( 'Datasource : Server instagram', 'foogallery' ); ?></h3>
+    		<p><?php _e( 'This gallery will be dynamically populated with all images within the following instagram on your server:', 'foogallery' ); ?></p>
+    		<div class="foogallery-items-html"><?php echo $value ?></div>
+    		<br />
+    		<button type="button" class="button edit">
+    			<?php _e( 'Change', 'foogallery' ); ?>
+    		</button>
+    		<button type="button" class="button remove">
+    			<?php _e( 'Remove', 'foogallery' ); ?>
+    		</button>
+    		</div><?php
+    	}
     }
 }
