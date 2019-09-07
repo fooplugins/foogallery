@@ -8,8 +8,8 @@ if ( ! class_exists( 'FooGallery_Pro_Instagram_Support' ) ) {
 
 		function __construct() {
 			//add some settings for Instagram
-			add_filter( 'foogallery_admin_settings_override', array( $this, 'add_insta_settings' ) );
-			add_action('admin_init', array($this,'save_insta_access_token'));
+			add_filter( 'foogallery_admin_settings_override', array( $this, 'add_instagram_settings' ) );
+			add_action('admin_init', array($this,'save_instagram_access_token'));
 			//add_action( 'wplr_create_collection', array( $this, 'sync_collection_to_gallery'), 10, 3 );
         }
 
@@ -21,7 +21,7 @@ if ( ! class_exists( 'FooGallery_Pro_Instagram_Support' ) ) {
 		 * @param $name
 		 *
 		 */
-       /* function sync_collection_to_gallery( $collection_id, $parent_id, $name ) {
+        /*function sync_collection_to_gallery( $collection_id, $parent_id, $name ) {
         	//first check if the setting is enabled
 			if ( foogallery_get_setting('enable_sync_collections_to_galleries') === 'on' ) {
 
@@ -74,7 +74,7 @@ if ( ! class_exists( 'FooGallery_Pro_Instagram_Support' ) ) {
 		 *
 		 * @return array
 		 */
-		function add_insta_settings( $settings ) {
+		function add_instagram_settings( $settings ) {
 			//.'edit.php?post_type=foogallery&page=foogallery-settings'
 			$settings['tabs']['insta'] = __( 'Instagram', 'foogallery' );
 			$redirect_url = admin_url();
@@ -135,7 +135,7 @@ if ( ! class_exists( 'FooGallery_Pro_Instagram_Support' ) ) {
 			return $settings;
 		}
 
-		function save_insta_access_token(){
+		function save_instagram_access_token(){
 			
 			if(isset($_GET['code']) && $_GET['code'] != ''){
 				$synced = get_option('foogallery');
