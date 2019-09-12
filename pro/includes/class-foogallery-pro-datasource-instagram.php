@@ -113,7 +113,7 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Instagram' ) ) {
     				$expiry       = $expiry_hours * 60 * 60;
 
     				//find all image files in the instagram
-    				$attachments = $this->build_attachments_from_instagram( $foogallery->ID );
+    				$attachments = $this->build_attachments_from_instagram( $datasource_value['image_count'], $datasource_value['image_resolution'] );
 
     				//save a cached list of attachments
     				set_transient( $transient_key, $attachments, $expiry );
@@ -205,50 +205,27 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Instagram' ) ) {
 
     			?>
     			<script type="text/javascript">
-    				$(document).on('click','#get_instagram_images',function(){
-
-    					var data = 'action=foogallery_datasource_instagram_get_images' +
-                            '&image_count=' + encodeURIComponent($('#instagram_image_count').val()) +
-                            '&resolution=' + encodeURIComponent($('#instagram_imgage_resolution').val()) +
-                            '&gallery_id=' + <?php echo $foogallery_id; ?> +
-                            '&nonce=<?php echo wp_create_nonce( 'foogallery_datasource_instagram_get_images' ); ?>';
-
-                        $.ajax({
-                            type: "POST",
-                            url: ajaxurl,
-                            data: data,
-                            success: function(data) {
-                            	$('.foogallery-datasource-modal-insert').removeAttr( 'disabled' );
-                                $this.find('.spinner').remove();
-								$('.foogallery_preview_container').addClass('foogallery-preview-force-refresh');
-								FOOGALLERY.showHiddenAreas( false );
-								$('.foogallery_preview_container').addClass('foogallery-preview-force-refresh');
-                            }
-                        });
+    				$(document).on('change','.foogallery_instagram_input',function(){
+                        $('.foogallery-datasource-modal-insert').removeAttr( 'disabled' );
     				});
     			</script>
     			<table>
     				<tr>
     					<th align="left"><label for="instagram_image_count"><?php echo __("Number of Images to Display","foogallery"); ?></label></th>
-    					<td><input type="number" name="instagram_image_count" min="0" id="instagram_image_count"></td>
+    					<td><input class="foogallery_instagram_input" type="number" name="instagram_image_count" min="0" id="instagram_image_count"></td>
     				</tr>
 
     				<tr>
-    					<th align="left"><label for="instagram_imgage_resolution"><?php echo  __("Image Resolution","foogallery"); ?></label></th>
+    					<th align="left"><label for="instagram_image_resolution"><?php echo  __("Image Resolution","foogallery"); ?></label></th>
     					<td>
-    						<select name="instagram_imgage_resolution" id="instagram_imgage_resolution">
+    						<select class="foogallery_instagram_input" name="instagram_image_resolution" id="instagram_image_resolution">
     							<option value="thumbnail"><?php echo __("Thumbnail","foogallery"); ?></option>
     							<option value="low_resolution"><?php echo __("Low Resolution","foogallery"); ?></option>
     							<option value="standard_resolution"><?php echo __("Standard Resolution","foogallery"); ?></option>
     						</select> 
     					</td>
     				</tr>
-    				<tr>
-    					<td colspan="2" align="center"><input type="button" value="<?php echo __("Save Settings","foogallery"); ?>" id="get_instagram_images"></td>
-    				</tr>
-
     			</table>
-    			
     			<?php
     		}else{
 
@@ -294,16 +271,14 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Instagram' ) ) {
     	}
 
 
-    	function build_attachments_from_instagram($gallery_id) {
+    	function build_attachments_from_instagram($image_count, $image_resolution) {
     		
     			$data = array();
     			
     			$instagram_token = get_option('instagram_token');
-    			$count = get_option("instagram_count_".$gallery_id);
-    			$resolution = get_option("instagram_resolution_".$gallery_id);
     			$instagram_array = json_decode($instagram_token);
     			   			
-    			$respose = wp_remote_get("https://api.instagram.com/v1/users/self/media/recent/?access_token=".$instagram_array->access_token."&count=".$count);
+    			$respose = wp_remote_get("https://api.instagram.com/v1/users/self/media/recent/?access_token=".$instagram_array->access_token."&count=".$image_count);
     			$respose_array = json_decode($respose['body'],true);
     			 
     			if($respose_array['meta']['code'] == '200'){
@@ -312,14 +287,14 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Instagram' ) ) {
     					$attachment               = new FooGalleryAttachment();
     					$attachment->ID           = 0;
     					$attachment->title        = '';
-    					$attachment->url          = $instagram_images['images'][$resolution]['url'];
+    					$attachment->url          = $instagram_images['images'][$image_resolution]['url'];
     					$attachment->has_metadata = false;
     					$attachment->sort         = PHP_INT_MAX;    				  							
 						$attachment->has_metadata = false;					
-						$attachment->caption = $instagram_images['caption'];					
+						$attachment->caption = $instagram_images['caption']['text'];
 						$attachment->description = '';					
 						$attachment->alt = '';					
-						$attachment->custom_url = $instagram_images['images'][$resolution]['url'];					
+						$attachment->custom_url = $instagram_images['images'][$image_resolution]['url'];
 						$attachment->custom_target = '';					
 						$attachment->sort = '';
     					$attachments[] = $attachment;

@@ -43,9 +43,14 @@ jQuery(function ($) {
 	$(document).on('foogallery-datasource-changed-instagram', function() {
 		var $container = $('.foogallery-datasource-instagram');
 
-		$('#_foogallery_datasource_value').val(JSON.stringify(document.foogallery_datasource_value_temp));
+		//build up the datasource_value
+		var value = {
+			"image_count" : $('#instagram_image_count').val(),
+			"image_resolution" : $('#instagram_image_resolution').val()
+		};
 
-		//$container.find('.foogallery-items-html').html(document.foogallery_datasource_value_temp.value);
+		//save the datasource_value
+		$('#_foogallery_datasource_value').val( JSON.stringify( value ) );
 
 		$container.show();
 
@@ -57,6 +62,7 @@ jQuery(function ($) {
 	});
 
 	/* Modal javascript */
+
 	$(document).on('foogallery-datasource-content-loaded-instagram', function () {
 		foogalleryInitSortable();
 
