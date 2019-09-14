@@ -26,6 +26,18 @@ jQuery(function ($) {
 		$('.foogallery-datasources-modal-wrapper').hide();
 	});
 
+	$('.foogallery-datasources-modal-wrapper').on('click', '.foogallery-datasource-modal-reload', function(e) {
+		e.preventDefault();
+
+		var datasource = $('#foogallery_datasource').val(),
+			$content = $('.foogallery-datasource-modal-container-inner.' + datasource);
+
+		$content.addClass('not-loaded');
+
+		//force the refresh
+		$('.foogallery-datasource-modal-selector.active').click();
+	});
+
 	$('.foogallery-datasource-modal-selector').on('click', function(e) {
 		e.preventDefault();
 
@@ -60,6 +72,8 @@ jQuery(function ($) {
 				url: ajaxurl,
 				data: data,
 				success: function(data) {
+					$('.foogallery-datasource-modal-reload').show();
+
 					$content.html(data);
 					//raise a event so that datasource-specific code can run
 					$(document).trigger('foogallery-datasource-content-loaded-' + datasource);
