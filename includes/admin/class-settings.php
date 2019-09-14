@@ -269,6 +269,14 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
                 'tab'     => 'advanced'
             );
 
+            $settings[] = array(
+                'id'      => 'add_media_button_start',
+                'title'   => __( 'Move Add Media Button', 'foogallery' ),
+                'desc'    => sprintf( __( 'You can move the Add Media button to the beginning of the attachment list. This can help when your galleries have a large number of images, so you do not have to scroll.', 'foogallery' ), foogallery_plugin_name() ),
+                'type'    => 'checkbox',
+                'tab'     => 'advanced'
+            );
+
 			$settings[] = array(
 				'id'      => 'enable_legacy_thumb_cropping',
 				'title'   => __( 'Enable Legacy Thumb Cropping', 'foogallery' ),

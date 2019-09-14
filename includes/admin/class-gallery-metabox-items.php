@@ -27,7 +27,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Items' ) ) {
 		public function add_items_metabox( $post ) {
 			add_meta_box(
 				'foogallery_items',
-				__( 'Gallery Items', 'foogallery' ),
+				__( 'Gallery Items', 'foogallery' ) . '<span class="foogallery-gallery-items-metabox-title spinner is-active"></span>',
 				array( $this, 'render_gallery_items_metabox' ),
 				FOOGALLERY_CPT_GALLERY,
 				'normal',

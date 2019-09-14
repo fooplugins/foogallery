@@ -65,6 +65,10 @@ class FooGallery_Template_Loader {
 		//allow for any other gallery argument overrides
         $current_foogallery = apply_filters( 'foogallery_render_template_argument_overrides', $current_foogallery, $args );
 
+		//check that we have a datasource. If not then set it to the default
+		if ( empty( $current_foogallery->datasource_name ) ) {
+			$current_foogallery->datasource_name = foogallery_default_datasource();
+		}
 
 		//check if we have any items
 		if ( ! $current_foogallery->has_items() ) {

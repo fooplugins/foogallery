@@ -3,7 +3,7 @@ Contributors: bradvin, steveush, fooplugins
 Donate link: http://fooplugins.com
 Tags: gallery, image gallery, photo gallery, responsive, album, media gallery, masonry gallery, portfolio, justified gallery, video gallery, photography, youtube gallery
 Requires at least: 3.9
-Tested up to: 5.2.2
+Tested up to: 5.2.3
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -144,6 +144,23 @@ Hell, yes! Check out our [developer page](http://foo.gallery/developers/)
 Update now to get all the latest features, bug fixes and improvements!
 
 == Changelog ==
+
+= 1.8.14 =
+[//]: # fs_premium_only_begin
+* New : Better messages for Media Tags & Categories datasources
+* New : Ability to reload datasource modal without refreshing
+[//]: # fs_premium_only_end
+* New : Added setting to move "Add Media" button to front of attachment listing (Advanced tab in FooGallery Settings)
+[//]: # fs_premium_only_begin
+* Fix : Real Media Library was not picking up featured images
+* Fix : Albums were not working correctly with galleries that load from other datasources
+[//]: # fs_premium_only_end
+* Fix : Lazy-load issues with Gutenberg Editor
+* Fix : Simple portfolio layout issue with certain themes
+* Update : FooGallery client side 1.3.4
+
+= 1.8.12 =
+* Fix : Previews not working on new galleries
 
 = 1.8.11 =
 * New : Added advanced gallery settings for custom settings and custom attributes

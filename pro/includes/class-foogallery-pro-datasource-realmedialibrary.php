@@ -69,12 +69,10 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_RealMediaLibrary' ) ) {
 			}
 
 			// Fallback to first image
-			if ( $foogallery->attachment_ids ) {
-				$attachment_id_values = array_values( $foogallery->attachment_ids );
-				$attachment_id        = array_shift( $attachment_id_values );
-
-				return FooGalleryAttachment::get_by_id( $attachment_id );
-			}
+            $attachments = $this->get_gallery_attachments( array(), $foogallery );
+            if ( is_array( $attachments ) && count( $attachments ) > 0 ) {
+                return $attachments[0];
+            }
 
 			return $default;
 		}
