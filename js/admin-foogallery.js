@@ -358,7 +358,11 @@
 			$template.find('.attachment-preview.type-image').addClass('subtype-' + attachment.subtype);
 		}
 
-        $('.foogallery-attachments-list .datasource-medialibrary').before($template);
+        if ( $('.foogallery-attachments-list').hasClass('foogallery-add-media-button-start') ) {
+			$('.foogallery-attachments-list .datasource-medialibrary').after($template);
+		} else {
+			$('.foogallery-attachments-list .datasource-medialibrary').before($template);
+		}
 
         FOOGALLERY.attachments.push( attachment.id );
 
