@@ -10,64 +10,10 @@ if ( ! class_exists( 'FooGallery_Pro_Instagram_Support' ) ) {
 			//add some settings for Instagram
 			add_filter( 'foogallery_admin_settings_override', array( $this, 'add_instagram_settings' ) );
 			add_action('admin_init', array($this,'save_instagram_access_token'));
-			//add_action( 'wplr_create_collection', array( $this, 'sync_collection_to_gallery'), 10, 3 );
+			
         }
 
-		/**
-		 * Creates a draft gallery and populates it with the collection as the datasource
-		 *
-		 * @param $collection_id
-		 * @param $parent_id
-		 * @param $name
-		 *
-		 */
-        /*function sync_collection_to_gallery( $collection_id, $parent_id, $name ) {
-        	//first check if the setting is enabled
-			if ( foogallery_get_setting('enable_sync_collections_to_galleries') === 'on' ) {
-
-				//then check if we have already synced the collection to an existing gallery
-				$foogallery_insta = get_option( 'foogallery_insta_sync', array() );
-				if ( ! array_key_exists( $collection_id, $foogallery_wplr ) ) {
-
-					//create a new gallery
-					$foogallery_args = array(
-						'post_title'  => $name['name'],
-						'post_type'   => FOOGALLERY_CPT_GALLERY,
-						'post_status' => 'publish',
-					);
-					$gallery_id      = wp_insert_post( $foogallery_args );
-
-					//save some default settings if setup
-					$default_gallery_id = foogallery_get_setting( 'default_gallery_settings' );
-					if ( $default_gallery_id ) {
-						$settings = get_post_meta( $default_gallery_id, FOOGALLERY_META_SETTINGS, true );
-						add_post_meta( $gallery_id, FOOGALLERY_META_SETTINGS, $settings, true );
-
-						$default_gallery = FooGallery::get_by_id( $default_gallery_id );
-						$template        = $default_gallery->gallery_template;
-					} else {
-						$template = foogallery_default_gallery_template();
-					}
-
-					//set a gallery template
-					add_post_meta( $gallery_id, FOOGALLERY_META_TEMPLATE, $template, true );
-
-					//make sure the datasource is set correctly
-					update_post_meta( $gallery_id, FOOGALLERY_META_DATASOURCE, 'lightroom' );
-					update_post_meta( $gallery_id, FOOGALLERY_META_DATASOURCE_VALUE, array( 'collectionId' => $collection_id, 'collection' => $name['name'] ) );
-
-					//save the mapping so we dont do it again
-					$foogallery_wplr[$collection_id] = array(
-						'collectionId' => $collection_id,
-						'collection'   => $name['name'],
-						'foogalleryId' => $gallery_id
-					);
-
-					update_option( 'foogallery_wplr_sync', $foogallery_wplr );
-				}
-			}
-		}*/
-
+		
 		/**
 		 * Add some Instagram settings
 		 * @param $settings
