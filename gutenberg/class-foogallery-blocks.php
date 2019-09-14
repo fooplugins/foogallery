@@ -16,6 +16,8 @@ if ( ! class_exists( 'FooGallery_Blocks' ) ) {
 			add_action( 'enqueue_block_editor_assets', array( $this, 'enqueue_block_editor_assets' ) );
 
 			add_action( 'init', array( $this, 'php_block_init' ) );
+
+			add_filter( 'foogallery_build_container_data_options', array( $this, 'add_data_options_for_block_editor' ), 10, 3 );
 		}
 
 		/**
@@ -136,6 +138,13 @@ if ( ! class_exists( 'FooGallery_Blocks' ) ) {
 			));
 		}
 
+		/**
+		 * Render the contents of the block
+		 *
+		 * @param $attributes
+		 *
+		 * @return false|string|null
+		 */
 		function render_block( $attributes ) {
 			$foogallery_id = $attributes['id'];
 			$args = array(
@@ -151,6 +160,32 @@ if ( ! class_exists( 'FooGallery_Blocks' ) ) {
 			$output_string = ob_get_contents();
 			ob_end_clean();
 			return !empty($output_string) ? $output_string : null;
+		}
+
+		/**
+		 * Returns true if the block editor is being used
+		 *
+		 * @return bool
+		 */
+		function is_being_rendered_in_block_editor() {
+			return defined( 'REST_REQUEST' ) && REST_REQUEST && ! empty( $_REQUEST['context'] ) && 'edit' === $_REQUEST['context'];
+		}
+
+		/**
+		 * Add data options needed for lazy loading to work with the block editor
+		 *
+		 * @param $options
+		 * @param $gallery    FooGallery
+		 * @param $attributes array
+		 *
+		 * @return array
+		 */
+		function add_data_options_for_block_editor( $options, $gallery, $attributes ) {
+			if ( $this->is_being_rendered_in_block_editor() ) {
+				$options['scrollParent'] = '.edit-post-layout__content';
+			}
+
+			return $options;
 		}
 	}
 }
