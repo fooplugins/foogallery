@@ -149,7 +149,7 @@
         var previewData = $('[data-foogallery-preview="include"]').serializeArray();
         data = data.concat(previewData);
 
-		data.push({name: 'foogallery_attachments', value: $('#foogallery_attachments').val()});
+		//data.push({name: 'foogallery_attachments', value: $('#foogallery_attachments').val()});
         data.push({name: 'foogallery_datasource', value: $('#foogallery_datasource').val()});
         data.push({name: 'foogallery_datasource_value', value: $('#_foogallery_datasource_value').val()});
 
@@ -229,6 +229,9 @@
 	FOOGALLERY.initSettings = function() {
 		//move the template selector into the metabox heading
         $('.foogallery-template-selector').appendTo( '#foogallery_settings .hndle span' ).removeClass('hidden');
+
+		//remove the loading spinner
+		$('.foogallery-gallery-items-metabox-title').remove();
 
 		//move the items switch selector into the metabox heading
 		$('.foogallery-items-view-switch-container').appendTo( '#foogallery_items .hndle span' ).removeClass('hidden');
@@ -362,6 +365,8 @@
         FOOGALLERY.calculateAttachmentIds();
 
         FOOGALLERY.calculateHiddenAreas();
+
+		$('.foogallery_preview_container').addClass('foogallery-preview-force-refresh');
     };
 
     FOOGALLERY.removeAttachmentFromGalleryList = function(id) {
