@@ -4,3 +4,5 @@ documentation
 vendor
 node_modules
 .DS_Store
+fs-config.json
+dist
