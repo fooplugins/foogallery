@@ -32,7 +32,7 @@ if ( ! class_exists( 'FooGallery_Widget' ) ) {
                 'description' => __('Insert a FooGallery', 'foogallery'),
             );
 
-            parent::__construct('foogallery_widget', 'FooGallery', $widget_ops);
+            parent::__construct('foogallery_widget', __('FooGallery Widget', 'foogallery'), $widget_ops);
         }
 
 
