@@ -95,9 +95,14 @@ if ( ! class_exists( 'FooGallery_Datasource_MediaLibrary' ) ) {
 
 			//always output the ability to add via media library
 			$has_attachments = $foogallery->has_attachments();
+
+			$media_button_start = foogallery_get_setting('add_media_button_start', '' ) === 'on';
 			?>
 			<input type="hidden" data-foogallery-preview="include" name='foogallery_attachments' id="foogallery_attachments" value="<?php echo $foogallery->attachment_id_csv(); ?>"/>
-			<ul class="foogallery-attachments-list <?php echo $has_attachments ? '' : 'hidden'; ?>">
+			<ul class="foogallery-attachments-list <?php echo $has_attachments ? '' : 'hidden'; ?> <?php echo $media_button_start ? 'foogallery-add-media-button-start' : ''; ?>">
+                <?php if ( $media_button_start ) {
+                    $this->render_add_meda_button( $foogallery->ID );
+                } ?>
 				<?php
 				//render all attachments that have been added to the gallery from the media library
 				if ( $has_attachments ) {
@@ -105,19 +110,27 @@ if ( ! class_exists( 'FooGallery_Datasource_MediaLibrary' ) ) {
 						$this->render_attachment_item( $attachment );
 					}
 				} ?>
-				<li class="add-attachment datasource-medialibrary">
-					<a href="#" data-uploader-title="<?php _e( 'Add Media To Gallery', 'foogallery' ); ?>"
-					   data-uploader-button-text="<?php _e( 'Add Media', 'foogallery' ); ?>"
-					   data-post-id="<?php echo $foogallery->ID; ?>" class="upload_image_button"
-					   title="<?php _e( 'Add From Media Library', 'foogallery' ); ?>">
-						<div class="dashicons dashicons-plus"></div>
-					</a>
-				</li>
+                <?php if ( !$media_button_start ) {
+                    $this->render_add_meda_button( $foogallery->ID );
+                } ?>
 			</ul>
 			<div style="clear: both;"></div>
 			<textarea style="display: none" id="foogallery-attachment-template"><?php $this->render_attachment_item(); ?></textarea>
 			<?php
 		}
+
+		private function render_add_meda_button( $foogallery_id) {
+		    ?>
+            <li class="add-attachment datasource-medialibrary">
+                <a href="#" data-uploader-title="<?php _e( 'Add Media To Gallery', 'foogallery' ); ?>"
+                   data-uploader-button-text="<?php _e( 'Add Media', 'foogallery' ); ?>"
+                   data-post-id="<?php echo $foogallery_id; ?>" class="upload_image_button"
+                   title="<?php _e( 'Add From Media Library', 'foogallery' ); ?>">
+                    <div class="dashicons dashicons-plus"></div>
+                </a>
+            </li>
+            <?php
+        }
 
 		/**
 		 * Render the output for an item added from the media library

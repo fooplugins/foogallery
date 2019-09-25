@@ -184,7 +184,10 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Datasources' ) ) {
                     <div class="media-modal-content">
                         <div class="media-frame wp-core-ui">
                             <div class="foogallery-datasource-modal-title">
-                                <h1><?php _e('Add To Gallery From Another Source', 'foogallery'); ?></h1>
+                                <h1>
+                                    <?php _e('Add To Gallery From Another Source', 'foogallery'); ?>
+                                    <a class="foogallery-datasource-modal-reload button" href="#" style="display: none; margin-top: -4px;"><span style="padding-top: 3px;" class="dashicons dashicons-update"></span> <?php _e('Reload', 'foogallery'); ?></a>
+                                </h1>
                             </div>
                             <div class="foogallery-datasource-modal-sidebar">
                                 <div class="foogallery-datasource-modal-sidebar-menu">

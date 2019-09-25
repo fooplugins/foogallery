@@ -47,7 +47,7 @@ if ( false !== $foogallery ) {
 		<?php
 		foreach ( $current_foogallery_album->galleries() as $gallery ) {
 			$current_foogallery = $gallery;
-			if (!empty($gallery->attachment_ids)) {
+			if (!empty($gallery->has_items())) {
 				$attachment = $gallery->featured_attachment();
 
 				if ( false === $attachment ) continue;
