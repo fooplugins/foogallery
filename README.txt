@@ -115,6 +115,47 @@ FooGallery is hosted on [GitHub](https://github.com/fooplugins/foogallery).
 
 == Frequently Asked Questions ==
 
+= My galleries are not working. Thumbnails are greyed out and not loading when I scroll down the page. =
+
+Lazy loading is not working on your gallery. This could be due to a conflict between our plugin and your theme.
+You can test this theory by testing a different theme (if possible).
+We can help you get it working, by contacting our support.
+
+= I have created a gallery in the backend, but when I look at it on the frontend, it does not show correctly. =
+
+Sometimes, there are issues when the theme does not follow WordPress best practices.
+In order for FooGallery to function properly, the theme needs to:
+    * A call to wp_head(); in the header.php file.
+    * A call to wp_footer(); in the footer.php file.
+
+One way to check if the theme is the problem, is by switching to one of the built-in WordPress themes, and then see if the gallery loads.
+
+= After updating, my galleries no longer work! What should I do? =
+
+Do you have any WordPress caching or optimization plugins? If so, then clear/purge your caches.
+Do you have any caching setup at your website host? If so, clear/purge those caches.
+
+= After installing the plugin, my site is broken! Help! =
+
+First thing to do is restore your site to it's previous working state.
+1. Get access to your site via FTP, or SFTP.
+2. Navigate to the wp-content/plugins folder.
+3. Rename the foogallery folder to foogallery1 in order to deactivate the pluing.
+4. At this point, your site should be working again.
+5. Please contact our support and provide the following info:
+    * What version of WordPress you are running.
+    * What version of PHP you are using.
+    * What version of FooGallery you installed.
+    * What error was shown when your site was broken?
+    * What plugins and theme are you using?
+
+= I purchased a PRO license, but the Free version is still running. =
+
+Make sure you are running the PRO version. You can check this by visiting the FooGallery -> Account page within the WordPress admin.
+If you do not have the PRO version, you can download it by visiting your account page at https://fooplugins.com/account
+If you have the PRO version, then clear any caches on your site or for your host. Also clear CSS Optimiztion Cache from FooGallery Settings.
+If it still does not work, then please contact our support to help further.
+
 = Why are my thumbnails so blurry? =
 
 Have you enabled retina support for your galleries? To enable retina support, edit the gallery and locate the Retina Support metabox.
@@ -126,10 +167,6 @@ Yes, video is supported in FooGallery PRO!
 = How do I get albums working? =
 
 Simply go to the FooGallery extensions page and activate the Albums extension. If you do not see a button to activate the albums extension, reload the extensions list by clicking the reload button.
-
-= Can I build an extension? =
-
-Hell, yes! Check out our [developer page](http://foo.gallery/developers/)
 
 == Screenshots ==
 
