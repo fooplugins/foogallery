@@ -18,29 +18,70 @@ if (!class_exists('FooGallery_Pro_Datasource_Post_Query')) {
             add_action( 'foogallery_admin_enqueue_scripts', array( $this, 'enqueue_scripts_and_styles' ) );
         }
         
+    	/**
+    	 * Clears the cache for the specific instagram
+    	 *
+    	 * @param $foogallery_id
+    	 */
         public function before_save_gallery_datasource_clear_datasource_cached_images( $foogallery_id )
         {
             $this->clear_gallery_transient( $foogallery_id );
         }
 
-    	public function clear_gallery_transient( $foogallery_id ) {
+     	/**
+    	 * Clears the cache for the specific instagram
+    	 *
+    	 * @param $foogallery_id
+    	 */
+   	public function clear_gallery_transient( $foogallery_id ) {
     		$transient_key = '_foogallery_datasource_post_query_' . $foogallery_id;
     		delete_transient( $transient_key );
     	}
 
-        public function get_gallery_featured_attachment()
+    	/**
+    	 * Returns the featured FooGalleryAttachment from the datasource
+    	 *
+    	 * @param FooGalleryAttachment $default
+    	 * @param FooGallery           $foogallery
+    	 *
+    	 * @return bool|FooGalleryAttachment
+    	 */
+       public function get_gallery_featured_attachment()
         {
             return $this->get_gallery_attachments_from_post_query( $foogallery );
         }
         
-        public function get_gallery_attachment_count( $count, $foogallery ){
+     	/**
+    	 * Returns the number of attachments used for the gallery
+    	 *
+    	 * @param int        $count
+    	 * @param FooGallery $foogallery
+    	 *
+    	 * @return int
+    	 */
+       public function get_gallery_attachment_count( $count, $foogallery ){
             return count( $this->get_gallery_attachments_from_post_query( $foogallery ) );
         }
 
-    	public function get_gallery_attachments( $attachments, $foogallery ) {
+     	/**
+    	 * Returns an array of FooGalleryAttachments from the datasource
+    	 *
+    	 * @param array      $attachments
+    	 * @param FooGallery $foogallery
+    	 *
+    	 * @return array(FooGalleryAttachment)
+    	 */
+   	public function get_gallery_attachments( $attachments, $foogallery ) {
             return $this->get_gallery_attachments_from_post_query( $foogallery );
     	}
 
+    	/**
+    	 * Returns a cached array of FooGalleryAttachments from the datasource
+    	 *
+    	 * @param FooGallery $foogallery
+    	 *
+    	 * @return array(FooGalleryAttachment)
+    	 */
         public function get_gallery_attachments_from_post_query($foogallery) {
             global $foogallery_gallery_preview;
             
@@ -81,39 +122,54 @@ if (!class_exists('FooGallery_Pro_Datasource_Post_Query')) {
             return $attachments;
         }
         
-        
+    	/**
+    	 * Returns a cached array of FooGalleryAttachments from the datasource
+    	 *
+    	 * @param FooGallery $foogallery
+    	 *
+    	 * @return array(FooGalleryAttachment)
+    	 */
         function build_attachments_from_post_query($settings)
         {
+            $totalPosts = !empty($settings['no_of_post']) ? $settings['no_of_post'] : 5 ;
+            $postType   = !empty($settings['gallery_post_type']) ? $settings['gallery_post_type'] : 'post' ;
+
             $data = array();
             $posts = get_posts(array(
-                'posts_per_page' => $settings['no_of_post'],
-                'post_type'      => $settings['gallery_post_type'],
+                'posts_per_page' => $totalPosts,
+                'post_type'      => $postType,
                 'post_status'    => 'publish',
-                'post__not_in'   => explode(',', $settings['exclude'])
+                'post__not_in'   => explode(',', $settings['exclude']),
+                'meta_query'     => array(
+                    array(
+                        'key'       => '_thumbnail_id',
+                        'compare'   => 'EXISTS'
+                    )
+                )
             ));
             
             foreach ($posts as $post)
             {
                 $attachment = new FooGalleryAttachment();
+                
                 $url = get_permalink($post->ID);
                 if( $settings['link_to'] == 'image')
                     $url = get_the_post_thumbnail_url($post->ID);
 
-                if( !empty(get_the_post_thumbnail_url( $post->ID )) )
-                {
-                    $attachment->ID             = $post->ID;
-                    $attachment->title          = $post->post_title;
-                    $attachment->url            = get_the_post_thumbnail_url($post->ID);
-                    $attachment->has_metadata   = false;
-                    $attachment->sort           = PHP_INT_MAX;
-                    $attachment->caption        = '';
-                    $attachment->description    = $post->post_excerpt;
-                    $attachment->alt            = '';
-                    $attachment->custom_url     = $url;
-                    $attachment->custom_target  = '';
-                    $attachment->sort           = '';
-                    $attachments[] = $attachment;
-                }
+                $attachment->ID             = $post->ID;
+                $attachment->title          = $post->post_title;
+                $attachment->url            = get_the_post_thumbnail_url($post->ID);
+                $attachment->has_metadata   = false;
+                $attachment->sort           = PHP_INT_MAX;
+                $attachment->caption        = '';
+                $attachment->description    = $post->post_excerpt;
+                $attachment->alt            = $post->post_title;
+                $attachment->custom_url     = $url;
+                $attachment->custom_target  = '';
+                $attachment->sort           = '';
+                
+                $attachment = apply_filters( 'foogallery_datasource_post_query_build_attachment', $attachment, $post );
+                $attachments[] = $attachment;
             }
             return $attachments;
         }
@@ -245,7 +301,7 @@ if (!class_exists('FooGallery_Pro_Datasource_Post_Query')) {
                     <?php _e( 'Datasource : Post Query', 'foogallery' ); ?>
                 </h3>
                 <p>
-                    <?php _e( 'This gallery will be dynamically populated with all images within the selected post type:', 'foogallery' ); ?>
+                    <?php _e( 'This gallery will be dynamically populated with the featured images from the post type ::', 'foogallery' ); ?>
                 </p>
                 <div class="foogallery-items-html">
                     <?php echo $value ?>
