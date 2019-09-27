@@ -19,7 +19,7 @@ if (!class_exists('FooGallery_Pro_Datasource_Post_Query')) {
         }
         
     	/**
-    	 * Clears the cache for the specific instagram
+    	 * Clears the cache for the specific post query
     	 *
     	 * @param $foogallery_id
     	 */
@@ -29,7 +29,7 @@ if (!class_exists('FooGallery_Pro_Datasource_Post_Query')) {
         }
 
      	/**
-    	 * Clears the cache for the specific instagram
+    	 * Clears the cache for the specific post query
     	 *
     	 * @param $foogallery_id
     	 */
