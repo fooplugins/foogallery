@@ -11,7 +11,6 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Folders' ) ) {
 			add_filter( 'foogallery_datasource_folders_item_count', array( $this, 'get_gallery_attachment_count' ), 10, 2 );
 			add_filter( 'foogallery_datasource_folders_featured_image', array( $this, 'get_gallery_featured_attachment' ), 10, 2 );
 			add_filter( 'foogallery_datasource_folders_attachments', array( $this, 'get_gallery_attachments' ), 10, 2 );
-
 			add_action( 'foogallery-datasource-modal-content_folders', array( $this, 'render_datasource_modal_content' ), 10, 3 );
 			add_action( 'wp_ajax_foogallery_datasource_folder_change', array( $this, 'render_folder_structure' ) );
 			add_action( 'foogallery_gallery_metabox_items_list', array( $this, 'render_datasource_item' ), 10, 1 );
@@ -416,6 +415,8 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Folders' ) ) {
 		 * @return void
 		 */
 		function render_metadata( $attachments, $folder, $metadata_source ) {
+
+			
 
 			$image_count          = count( $attachments );
 			$image_metadata_count = 0;
