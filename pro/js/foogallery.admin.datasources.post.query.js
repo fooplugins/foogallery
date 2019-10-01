@@ -48,10 +48,8 @@ jQuery(function ($) {
             "gallery_post_type": $('#gallery_post_type').val(),
             "no_of_post": $('#no_of_post').val(),
             "exclude": $('#exclude').val(),
-            "link_to": $('.link_to').val()
+            "link_to": $(".link_to:checked").val()
         };
-        
-        console.log(value);
 
         //save the datasource_value
         $('#_foogallery_datasource_value').val(JSON.stringify(value));
