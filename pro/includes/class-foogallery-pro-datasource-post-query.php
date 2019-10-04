@@ -207,13 +207,18 @@ if (!class_exists('FooGallery_Pro_Datasource_Post_Query')) {
         public function render_datasource_modal_content( $foogallery_id, $datasource_value )
         {
 ?>
+            <script type="text/javascript">
+                $(document).on('change','.foogallery_post_query_input',function(){
+                    $('.foogallery-datasource-modal-insert').removeAttr( 'disabled' );
+                });
+            </script>
             <form action="" method="post" name="post_query_gallery_form">
                 <table class="form-table">
                     <tbody>
                         <tr>
                             <th scope="row"><?php _e('Post types', 'foogallery') ?></th>
                             <td>
-                                <select class="regular-text" name="post_type" id="gallery_post_type">
+                                <select class="regular-text foogallery_post_query_input" name="post_type" id="gallery_post_type">
                                     <option value=""><?php _e('Select a post type') ?></option>
                                     <?php
                                         foreach( get_post_types(array('public'=>true)) as $key => $value){
@@ -231,7 +236,7 @@ if (!class_exists('FooGallery_Pro_Datasource_Post_Query')) {
                             <td>
                                 <input
                                     type="text"
-                                    class="regular-text"
+                                    class="regular-text foogallery_post_query_input"
                                     name="no_of_post"
                                     id="no_of_post"
                                     value="<?php echo isset($datasource_value['no_of_post']) ? $datasource_value['no_of_post'] : '' ?>"
@@ -244,7 +249,7 @@ if (!class_exists('FooGallery_Pro_Datasource_Post_Query')) {
                             <td>
                                 <input
                                     type="text"
-                                    class="regular-text"
+                                    class="regular-text foogallery_post_query_input"
                                     name="exclude"
                                     id="exclude"
                                     value="<?php echo isset($datasource_value['exclude']) ? $datasource_value['exclude'] : '' ?>"
@@ -261,7 +266,7 @@ if (!class_exists('FooGallery_Pro_Datasource_Post_Query')) {
                                             type="radio"
                                             name="link_to"
                                             value="post"
-                                            class="link_to"
+                                            class="link_to foogallery_post_query_input"
                                             <?php echo (isset($datasource_value['link_to']) && $datasource_value['link_to'] == 'post') ? 'checked="checked"' : '' ?>"
                                         />
                                         <span><?php _e('Post', 'foogallery') ?></span>
@@ -272,7 +277,7 @@ if (!class_exists('FooGallery_Pro_Datasource_Post_Query')) {
                                             type="radio"
                                             name="link_to"
                                             value="image"
-                                            class="link_to"
+                                            class="link_to foogallery_post_query_input"
                                             <?php echo (isset($datasource_value['link_to']) && $datasource_value['link_to'] == 'image') ? 'checked="checked"' : '' ?>"
                                         />
                                         <span><?php _e('Images', 'foogallery') ?></span>
