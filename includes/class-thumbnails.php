@@ -125,6 +125,12 @@ if ( !class_exists( 'FooGallery_Thumbnails' ) ) {
 		function should_resize($thumbnail_object, $args) {
 			$original_width = $thumbnail_object->width;
 			$original_height = $thumbnail_object->height;
+
+			if ( $original_width === $original_height && $original_height === 0 ) {
+				//we do not have the original dimensions, so assume we must resize!
+				return true;
+			}
+
 			$new_width = isset( $args['width'] ) ? $args['width'] : 0;
 			$new_height = isset( $args['height'] ) ? $args['height'] : 0;
 
