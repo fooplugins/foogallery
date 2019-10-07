@@ -23,6 +23,9 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_RealMediaLibrary' ) ) {
 			add_filter( 'foogallery_datasource_rml_item_count', array( $this, 'get_gallery_attachment_count' ), 10, 2 );
 			add_filter( 'foogallery_datasource_rml_featured_image', array( $this, 'get_gallery_featured_attachment' ), 10, 2 );
 			add_filter( 'foogallery_datasource_rml_attachments', array( $this, 'get_gallery_attachments' ), 10, 2 );
+
+            add_filter( 'foogallery_gallery_template_filtering_taxonomy_choices', array( $this, 'add_rml_taxonomies_to_filter_choices') );
+			add_filter( 'foogallery_filtering_get_terms_for_attachment', array( $this, 'get_rml_terms_for_attachment' ), 10, 3 );
 		}
 
 		public function correct_version() {
@@ -323,5 +326,28 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_RealMediaLibrary' ) ) {
 				</button>
 			</div><?php
 		}
+
+		/**
+         * Get back a list of terms for the attachment
+         *
+		 * @param $terms
+		 * @param $taxonomy
+		 * @param $attachment
+		 *
+		 * @return bool
+		 */
+		function get_rml_terms_for_attachment( $terms, $taxonomy, $attachment ) {
+		    return false;
+        }
+
+		/**
+         * Adds the RML taxonomies to the taxonomy choices
+		 * @param $choices
+		 *
+		 * @return mixed
+		 */
+        function add_rml_taxonomies_to_filter_choices( $choices ) {
+		    return $choices;
+        }
 	}
 }
