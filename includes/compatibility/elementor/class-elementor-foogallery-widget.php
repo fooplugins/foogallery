@@ -112,11 +112,8 @@ class Elementor_FooGallery_Widget extends \Elementor\Widget_Base {
      * @access protected
      */
     protected function render() {
-
         $settings = $this->get_settings_for_display();
-
-        foogallery_render_gallery( intval( $settings['gallery_id'] ) );
-
+        $foogallery_id = intval( $settings['gallery_id'] );
+        foogallery_render_gallery( $foogallery_id );
     }
-
 }
