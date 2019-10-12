@@ -4327,7 +4327,7 @@
 			if (!_is.empty(self.opt.scrollParent) && ($sp = $(self.opt.scrollParent)).length !== 0){
 				self.$scrollParent = $sp.is("html") ? $(document) : $sp;
 			} else {
-				self.$scrollParent = _utils.scrollParent(self.$el);
+				self.$scrollParent = $(document);
 			}
 			self.$el.data(_.dataTemplate, self);
 

@@ -184,24 +184,35 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Taxonomy_Base' ) ) {
 
             $datasources = foogallery_gallery_datasources();
 			$datasource = $datasources[$this->datasource_name];
+            $terms = get_terms( $this->taxonomy, array('hide_empty' => false) );
+            $term_count = count( $terms );
 
-			?>
-			<p><?php printf( __('Select %s from the list below. The gallery will then dynamically load all attachments that are assigned to the selected items.', 'foogallery'), $datasource['name']); ?></p>
-			<ul data-taxonomy="<?php echo $this->taxonomy; ?>">
-				<?php
+            if ( $term_count > 0 ) {
 
-				$terms = get_terms( $this->taxonomy, array('hide_empty' => false) );
+                ?>
+                <p><?php printf(__('Select %s from the list below. The gallery will then dynamically load all attachments that are assigned to the selected items.', 'foogallery'), $datasource['name']); ?></p>
+                <ul data-taxonomy="<?php echo $this->taxonomy; ?>">
+                    <?php
 
-				foreach($terms as $term) {
-				    $selected = in_array( $term->term_id, $selected_terms );
-					?><li class="datasource-taxonomy <?php echo $this->datasource_name; ?>">
-					<a href="#" class="button button-small<?php echo $selected ? ' button-primary' : ''; ?>" data-term-id="<?php echo $term->term_id; ?>"><?php echo $term->name; ?></a>
-					</li><?php
-				}
+                    foreach ($terms as $term) {
+                        $selected = in_array($term->term_id, $selected_terms);
+                        ?>
+                        <li class="datasource-taxonomy <?php echo $this->datasource_name; ?>">
+                        <a href="#" class="button button-small<?php echo $selected ? ' button-primary' : ''; ?>"
+                           data-term-id="<?php echo $term->term_id; ?>"><?php echo $term->name; ?></a>
+                        </li><?php
+                    }
 
-				?>
-			</ul>
-			<?php
+                    ?>
+                </ul>
+                <?php
+
+            } else {
+                echo '<p>' . sprintf( __( 'We found no %s for you to choose. You will need to create a few first, by clicking the link below. Once you have created them, you can click the reload button above.', 'foogallery' ), $datasource['name']) . '</p>';
+            }
+
+            $taxonomy_url = admin_url( 'edit-tags.php?taxonomy=' . $this->taxonomy );
+            echo '<div style="clear: both"></div><p><a target="_blank" href="' . $taxonomy_url . '">' . sprintf( __('Manage your %s', 'foogallery'), $datasource['name'] ) . '</a></p>';
 		}
 
 		/**

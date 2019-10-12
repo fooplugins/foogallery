@@ -607,7 +607,13 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 			if ( isset( $current_foogallery->filtering_taxonomy ) && isset( $current_foogallery->filtering ) && true === $current_foogallery->filtering ) {
 				$taxonomy = $current_foogallery->filtering_taxonomy;
 
-				$terms = wp_get_post_terms( $attachment->ID, $taxonomy, array('fields' => 'names') );
+				//allow other plugins to get the terms for the attachment for the particular taxonomy
+				$terms = apply_filters( 'foogallery_filtering_get_terms_for_attachment', false, $taxonomy, $attachment );
+
+				//if no terms were returned, then do the default
+				if ( false === $terms ) {
+					$terms = wp_get_post_terms( $attachment->ID, $taxonomy, array( 'fields' => 'names' ) );
+				}
 
 				$attachment->tags = $terms;
 
