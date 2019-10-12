@@ -21,12 +21,11 @@ if ( ! class_exists( 'FooGallery_Pro_Instagram_Support' ) ) {
 		 * @return array
 		 */
 		function add_instagram_settings( $settings ) {
-			//.'edit.php?post_type=foogallery&page=foogallery-settings'
+
 			$settings['tabs']['insta'] = __( 'Instagram', 'foogallery' );
 			$redirect_url = admin_url();
 
-			if(get_option('instagram_token') != ''){
-				//echo "<h3>Successfully connected to Instagram</h3>";
+			if ( get_option('instagram_token') != ''){
 				$settings['settings'][] = array(
 					'id'      => 'insta_connected_desc',
 					'title'   => '',
@@ -50,7 +49,7 @@ if ( ! class_exists( 'FooGallery_Pro_Instagram_Support' ) ) {
 				'id'      => 'insta_client_id',
 				'title'   => __( 'Instagram Client ID', 'foogallery' ),
 				'type'    => 'text',
-				'desc'    => 'Please enter Instagram Client ID',
+				'desc'    => __( 'Please enter your Instagram Client ID. You can get this from the Please enter your Instagram Client ID. You can get this from the Please enter your Instagram Client ID. You can get this from the Please enter your Instagram Client ID. You can get this from the ', 'foogallery'),
 				'tab'     => 'insta'
 			);
 
@@ -63,9 +62,8 @@ if ( ! class_exists( 'FooGallery_Pro_Instagram_Support' ) ) {
 			);
 
 			$synced = get_option('foogallery');
-			//print_r($synced['insta_client_id']);
-			//	exit;
-			if ( isset($synced['insta_client_id']) && $synced['insta_client_id'] != '' ) {
+
+			if ( isset( $synced['insta_client_id'] ) && $synced['insta_client_id'] != '' ) {
 				
 				$sync_data = '<a class="button-secondary" href="https://api.instagram.com/oauth/authorize/?client_id='.$synced['insta_client_id'].'&redirect_uri='.$redirect_url.'&response_type=code" target="_blank">Get Access Token</a>';
 
