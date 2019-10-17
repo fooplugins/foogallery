@@ -93,7 +93,7 @@ class Elementor_FooGallery_Widget extends \Elementor\Widget_Base {
         $this->add_control(
             'gallery_id',
             [
-                'label' => __( 'Choose the FooGallery', 'plugin-name' ),
+                'label' => __( 'Choose the FooGallery', 'foogallery' ),
                 'type' => \Elementor\Controls_Manager::SELECT,
                 'options' => $options
             ]
@@ -115,5 +115,6 @@ class Elementor_FooGallery_Widget extends \Elementor\Widget_Base {
         $settings = $this->get_settings_for_display();
         $foogallery_id = intval( $settings['gallery_id'] );
         foogallery_render_gallery( $foogallery_id );
+
     }
 }
