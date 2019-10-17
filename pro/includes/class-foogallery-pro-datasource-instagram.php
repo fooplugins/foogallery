@@ -15,7 +15,17 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Instagram' ) ) {
     		add_action( 'foogallery_gallery_metabox_items_list', array( $this, 'render_datasource_item' ), 10, 1 );
     		add_action( 'foogallery_before_save_gallery_datasource', array( $this, 'before_save_gallery_datasource_clear_datasource_cached_images' ) );
     		add_action( 'foogallery_admin_enqueue_scripts', array( $this, 'enqueue_scripts_and_styles' ) );
+
+    		//add_filter( 'foogallery_thumbnail_resize_args', array( $this, 'append_thumbnail_args' ), 10, 3 );
     	}
+
+    	function append_thumbnail_args( $args, $original_image_src, $thumbnail_object ) {
+            if ( isset( $thumbnail_object->instagram_image ) && true === $thumbnail_object->instagram_image ) {
+                $args['cache_with_query_params'] = true;
+            }
+
+    	    return $args;
+        }
 
     	/**
     	 * Add the instagrams Datasource
@@ -111,7 +121,7 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Instagram' ) ) {
     				$expiry       = $expiry_hours * 60 * 60;
 
     				//find all image files in the instagram
-    				$attachments = $this->build_attachments_from_instagram( $datasource_value['image_count'], $datasource_value['image_resolution'] );
+    				$attachments = $this->build_attachments_from_instagram( $datasource_value );
 
     				//save a cached list of attachments
     				set_transient( $transient_key, $attachments, $expiry );
@@ -121,59 +131,6 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Instagram' ) ) {
     		}
 
     		return $attachments;
-    	}
-
-    	/**
-    	 * returns the supported image types that will be pulled from a instagram
-    	 *
-    	 * @return array
-    	 */
-    	public function supported_image_types() {
-    		return apply_filters(
-    			'foogallery_datasource_instagram_supported_image_types', array(
-    			'gif',
-    			'jpg',
-    			'jpeg',
-    			'png'
-    		)
-    		);
-    	}
-
-    	/**
-    	 * Generates the option key used to store the response for a instagram
-    	 *
-    	 * @param $instagram
-    	 *
-    	 * @return string
-    	 */
-    	private function build_database_options_key( $gallery_id) {
-    		return '_foogallery_datasource_instagram_' . $gallery_id;
-    	}
-
-    	
-    	/**
-    	 * Extract the correct json data for the file
-    	 *
-    	 * @param $filename
-    	 * @param $json_data
-    	 *
-    	 * @return bool
-    	 */
-    	public function find_json_data_for_file( $filename, $json_data ) {
-    		if ( array_key_exists( 'items', $json_data ) ) {
-    			foreach ( $json_data['items'] as $position => $item ) {
-    				//allow for an index to be specified, otherwise set the index to be the position in the array
-    				if ( ! array_key_exists( 'index', $item ) ) {
-    					$item['index'] = $position;
-    				}
-
-    				if ( array_key_exists( 'file', $item ) && $item['file'] === $filename ) {
-    					return $item;
-    				}
-    			}
-    		}
-
-    		return false;
     	}
 
     	/**
@@ -193,99 +150,138 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Instagram' ) ) {
     		return false;
     	}
 
+	    /**
+         * Returns the stored Instagram Account token
+	     * @return array|boolean
+	     */
+    	function get_instagram_token() {
+		    $instagram_token = get_option('foogallery_instagram_token');
+		    if ( false !== $instagram_token ) {
+			    return @json_decode( $instagram_token, true );
+		    }
+
+		    return false;
+    	}
+
     	/**
     	 * Output the datasource modal content
     	 *
     	 * @param $foogallery_id
     	 */
     	function render_datasource_modal_content( $foogallery_id, $datasource_value ) {
-    		if(get_option('instagram_token') != ''){
+    	    $token = $this->get_instagram_token();
+    	    $account = isset( $datasource_value['instagram_account'] ) ? $datasource_value['instagram_account'] : $token['user']['username'];
 
-    			?>
+    		if ( false !== $token ) { ?>
     			<script type="text/javascript">
     				$(document).on('change','.foogallery_instagram_input',function(){
                         $('.foogallery-datasource-modal-insert').removeAttr( 'disabled' );
     				});
     			</script>
-    			<table>
-    				<tr>
-    					<th align="left"><label for="instagram_image_count"><?php echo __("Number of Images to Display","foogallery"); ?></label></th>
-    					<td><input class="foogallery_instagram_input" type="number" name="instagram_image_count" min="0" id="instagram_image_count"></td>
-    				</tr>
+                <table class="form-table">
+                    <tbody>
+                    <tr>
+                        <th scope="row">
+                            <label for="instagram_account"> <?php _e( 'Instagram Account', 'foogallery' ) ?></label>
+                        </th>
+                        <td>
+                            <input
+                                    type="hidden"
+                                    id="instagram_account"
+                                    value="<?php echo $account; ?>"
+                            />
+                            <code><?php echo $account; ?></code>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">
+                            <label for="instagram_image_count"> <?php _e( 'Number of Images', 'foogallery' ) ?></label>
+                        </th>
+                        <td>
+                            <input
+                                    type="number"
+                                    class="regular-text foogallery_instagram_input"
+                                    name="instagram_image_count"
+                                    id="instagram_image_count"
+                                    value="<?php echo isset( $datasource_value['image_count'] ) ? $datasource_value['image_count'] : '' ?>"
+                            />
+                            <p class="description"><?php _e( 'Max number allowed by the Instagram is 33.', 'foogallery' ) ?></p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">
+                            <label for="instagram_image_resolution"> <?php _e( 'Image Resolution', 'foogallery' ) ?></label>
+                        </th>
+                        <td>
+                            <select class="regular-text foogallery_instagram_input" name="instagram_image_resolution" id="instagram_image_resolution">
+		                        <?php
+                                $resolutions['thumbnail'] =  __( 'Thumbnail', 'foogallery' );
+		                        $resolutions['low_resolution'] =  __( 'Low Resolution', 'foogallery' );
+		                        $resolutions['standard_resolution'] =  __( 'Standard Resolution', 'foogallery' );
 
-    				<tr>
-    					<th align="left"><label for="instagram_image_resolution"><?php echo  __("Image Resolution","foogallery"); ?></label></th>
-    					<td>
-    						<select class="foogallery_instagram_input" name="instagram_image_resolution" id="instagram_image_resolution">
-    							<option value="thumbnail"><?php echo __("Thumbnail","foogallery"); ?></option>
-    							<option value="low_resolution"><?php echo __("Low Resolution","foogallery"); ?></option>
-    							<option value="standard_resolution"><?php echo __("Standard Resolution","foogallery"); ?></option>
-    						</select> 
-    					</td>
-    				</tr>
+		                        foreach ( $resolutions as $key => $value ) {
+			                        $selected = '';
+			                        if ( isset( $datasource_value['image_resolution'] ) && $key === $datasource_value['image_resolution'] ) {
+				                        $selected = 'selected';
+			                        }
+			                        echo "<option value='$key' $selected>" . $value . '</option>';
+		                        }
+		                        ?>
+                            </select>
+                            <p class="description"><?php _e( 'The resolution of the thumbs that will be used in the gallery.', 'foogallery' ) ?></p>
+                        </td>
+                    </tr>
     			</table>
     			<?php
-    		}else{ 
-
-    			$setting_url =  admin_url() . 'edit.php?post_type=foogallery&page=foogallery-settings#insta';
+    		} else {
+    			$setting_url = foogallery_admin_settings_url() . '#instagram';
     			?>
     			<p>
-    			<?php 
-    				 echo __('You need to obtain the instagram secret key and cleint ID from the instagram click here to save them.','foogallery'); 
-					 echo ' <a href="' . $setting_url . '" target="_blank">' . __('Instagram Settings', 'foogallery') . '</a>';
-						
-    			?>
-    				
-    			</p>
-
     			<?php
-
-    		}
+                    echo __('You need to connect an Instagram account first!','foogallery');
+					echo ' <a href="' . $setting_url . '" target="_blank">' . __('Visit Instagram Settings', 'foogallery') . '</a>';
+    			?>
+    			</p>
+                <?php
+            }
     	}
 
-    	function get_root_instagram() {
-    		return trailingslashit( apply_filters( 'foogallery_filesystem_root', ABSPATH ) );
-    	}
+    	function build_attachments_from_instagram( $datasource_value ) {
+		    $account = $datasource_value['account'];
+		    $image_count = $datasource_value['image_count'];
+		    $image_resolution = $datasource_value['image_resolution'];
 
-    	function build_attachments_from_instagram($image_count, $image_resolution) {
-    		
-    			$data = array();
-    			
-    			$instagram_token = get_option('instagram_token');
-    			$instagram_array = json_decode($instagram_token);
-    			   			
-    			$respose = wp_remote_get("https://api.instagram.com/v1/users/self/media/recent/?access_token=".$instagram_array->access_token."&count=".$image_count);
-    			$respose_array = json_decode($respose['body'],true);
-    			 
-    			if($respose_array['meta']['code'] == '200'){
-    				foreach ($respose_array['data'] as $instagram_images) {
+            $instagram_token = $this->get_instagram_token();
 
-    					$attachment               = new FooGalleryAttachment();
-    					$attachment->ID           = 0;
-    					$attachment->title        = '';
-    					$attachment->url          = $instagram_images['images'][$image_resolution]['url'];
-    					$attachment->has_metadata = false;
-    					$attachment->sort         = PHP_INT_MAX;    				  							
-						$attachment->has_metadata = false;					
-						$attachment->caption = $instagram_images['caption']['text'];
-						$attachment->description = '';					
-						$attachment->alt = '';					
-						$attachment->custom_url = $instagram_images['images'][$image_resolution]['url'];
-						$attachment->custom_target = '';					
-						$attachment->sort = '';
-    					$attachments[] = $attachment;
-    					
-    				}
-    			}
-    			/*$json = json_encode($data);
-    			$option_key = $this->build_database_options_key($gallery_id );
-    			update_option( $option_key, $json );*/
-    		
-    		
-    		//usort( $attachments, array( $this, 'sort_attachments' ) );
-    		
+            $respose = wp_remote_get('https://api.instagram.com/v1/users/self/media/recent/?access_token=' . $instagram_token['access_token'] . '&count=' . $image_count );
+            $respose_array = json_decode( $respose['body'], true );
+
+		    $attachments = array();
+
+            if ( $respose_array['meta']['code'] == '200' ){
+                foreach ($respose_array['data'] as $instagram_image) {
+                    $attachment               = new FooGalleryAttachment();
+                    $attachment->ID           = 0;
+                    $attachment->title        = $instagram_image['id'];
+                    if ( array_key_exists( $image_resolution, $instagram_image['images'] ) ) {
+	                    $attachment->url = $instagram_image['images'][ $image_resolution ]['url'];
+                    } else {
+	                    $attachment->url = $instagram_image['images'][0]['url'];
+                    }
+                    $attachment->sort         = PHP_INT_MAX;
+                    $attachment->has_metadata = false;
+                    $attachment->caption      = $instagram_image['caption']['text'];
+                    $attachment->description  = '';
+                    $attachment->alt          = $attachment->caption;
+                    $attachment->custom_url   = $instagram_image['link'];
+                    $attachment->custom_target = '';
+                    $attachment->sort = '';
+	                $attachment->instagram_image = true;
+                    $attachments[] = $attachment;
+                }
+            }
+
     		return $attachments;
-    		
     	}
 
 
@@ -296,12 +292,19 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Instagram' ) ) {
     	 */
     	function render_datasource_item( $gallery ) {
     		$show_container = isset( $gallery->datasource_name ) && 'instagram' === $gallery->datasource_name;
-    		$value          = ( $show_container && isset( $gallery->datasource_value['value'] ) ) ? $gallery->datasource_value['value'] : '';
+
+    		$account = isset( $gallery->datasource_value ) && array_key_exists( 'account', $gallery->datasource_value ) ? $gallery->datasource_value['account'] : '';
+		    $image_count = isset( $gallery->datasource_value ) && array_key_exists( 'image_count', $gallery->datasource_value ) ? $gallery->datasource_value['image_count'] : 0;
+		    $image_resolution = isset( $gallery->datasource_value ) && array_key_exists( 'image_resolution', $gallery->datasource_value ) ? $gallery->datasource_value['image_resolution'] : 'thumbnail';
     		?>
-    		<div <?php echo $show_container ? '' : 'style="display:none" '; ?>class="foogallery-datasource-instagram">
+    		<div <?php echo $show_container ? '' : 'style="display:none" '; ?>class="foogallery-datasource-item foogallery-datasource-instagram">
     		<h3><?php _e( 'Datasource : Instagram', 'foogallery' ); ?></h3>
-    		<p><?php _e( 'This gallery will be dynamically populated with all images within the following instagram on your server:', 'foogallery' ); ?></p>
-    		<div class="foogallery-items-html"><?php echo $value ?></div>
+    		<p><?php _e( 'This gallery will be dynamically populated with images from a connected Instagram account', 'foogallery' ); ?></p>
+            <div class="foogallery-items-html">
+			    <?php echo __('Account : ', 'foogallery') . $account; ?><br />
+			    <?php echo __('No. Of Images : ', 'foogallery') . $image_count; ?><br />
+			    <?php echo __('Resolution : ', 'foogallery') . $image_resolution; ?><br />
+            </div>
     		<br />
     		<button type="button" class="button edit">
     			<?php _e( 'Change', 'foogallery' ); ?>

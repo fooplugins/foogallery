@@ -45,6 +45,7 @@ jQuery(function ($) {
 
 		//build up the datasource_value
 		var value = {
+			"account" : $('#instagram_account').val(),
 			"image_count" : $('#instagram_image_count').val(),
 			"image_resolution" : $('#instagram_image_resolution').val()
 		};
