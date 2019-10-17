@@ -237,13 +237,13 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Post_Query' ) ) {
                         <th scope="row"><?php _e( 'Number of posts', 'foogallery' ); ?></th>
                         <td>
                             <input
-                                    type="text"
+                                    type="number"
                                     class="regular-text foogallery_post_query_input"
                                     name="no_of_post"
                                     id="no_of_post"
                                     value="<?php echo isset( $datasource_value['no_of_post'] ) ? $datasource_value['no_of_post'] : '' ?>"
                             />
-                            <p class="description"><?php _e( 'Number of images to show', 'foogallery' ) ?></p>
+                            <p class="description"><?php _e( 'Number of images to show in the gallery', 'foogallery' ) ?></p>
                         </td>
                     </tr>
                     <tr>

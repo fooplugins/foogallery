@@ -62,6 +62,4 @@ jQuery(function ($) {
 
         $('.foogallery_preview_container').addClass('foogallery-preview-force-refresh');
     });
-
-
 });
