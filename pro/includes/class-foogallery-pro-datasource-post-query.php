@@ -207,6 +207,9 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Post_Query' ) ) {
 		 */
 		public function render_datasource_modal_content( $foogallery_id, $datasource_value ) {
 			?>
+            <p>
+				<?php _e('Choose the settings for your gallery below. The gallery will be dynamically populated using the post query settings below.', 'foogallery' ); ?>
+            </p>
             <script type="text/javascript">
                 $(document).on('change', '.foogallery_post_query_input', function () {
                     $('.foogallery-datasource-modal-insert').removeAttr('disabled');
