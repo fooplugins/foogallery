@@ -15,20 +15,10 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Instagram' ) ) {
     		add_action( 'foogallery_gallery_metabox_items_list', array( $this, 'render_datasource_item' ), 10, 1 );
     		add_action( 'foogallery_before_save_gallery_datasource', array( $this, 'before_save_gallery_datasource_clear_datasource_cached_images' ) );
     		add_action( 'foogallery_admin_enqueue_scripts', array( $this, 'enqueue_scripts_and_styles' ) );
-
-    		//add_filter( 'foogallery_thumbnail_resize_args', array( $this, 'append_thumbnail_args' ), 10, 3 );
     	}
 
-    	function append_thumbnail_args( $args, $original_image_src, $thumbnail_object ) {
-            if ( isset( $thumbnail_object->instagram_image ) && true === $thumbnail_object->instagram_image ) {
-                $args['cache_with_query_params'] = true;
-            }
-
-    	    return $args;
-        }
-
     	/**
-    	 * Add the instagrams Datasource
+    	 * Add the Instagram Datasource
     	 *
     	 * @param $datasources
     	 *
@@ -173,6 +163,9 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Instagram' ) ) {
     	    $account = isset( $datasource_value['instagram_account'] ) ? $datasource_value['instagram_account'] : $token['user']['username'];
 
     		if ( false !== $token ) { ?>
+                <p>
+                    <?php _e('Choose the settings for your gallery below. The gallery will be dynamically loaded from the connected Instagram feed.', 'foogallery' ); ?>
+                </p>
     			<script type="text/javascript">
     				$(document).on('change','.foogallery_instagram_input',function(){
                         $('.foogallery-datasource-modal-insert').removeAttr( 'disabled' );
@@ -205,7 +198,7 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Instagram' ) ) {
                                     id="instagram_image_count"
                                     value="<?php echo isset( $datasource_value['image_count'] ) ? $datasource_value['image_count'] : '' ?>"
                             />
-                            <p class="description"><?php _e( 'Max number allowed by the Instagram is 33.', 'foogallery' ) ?></p>
+                            <p class="description"><?php _e( 'Max number allowed by the Instagram is 33 images, and only 20 if your Instagram client is in Sandbox mode.', 'foogallery' ) ?></p>
                         </td>
                     </tr>
                     <tr>

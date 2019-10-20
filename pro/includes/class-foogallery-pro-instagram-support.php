@@ -80,7 +80,11 @@ if ( ! class_exists( 'FooGallery_Pro_Instagram_Support' ) ) {
 
 			} else {
 
-				$settings['settings'][] = array(
+				$synced = get_option( 'foogallery' );
+
+				$show_get_access_token_button = isset( $synced['insta_client_id'] ) && $synced['insta_client_id'] != '';
+
+				$instagram_desc_setting = array(
 					'id'    => 'insta_desc',
 					'title' => __( 'You are not connected!', 'foogallery' ),
 					'type'  => 'html',
@@ -101,6 +105,17 @@ if ( ! class_exists( 'FooGallery_Pro_Instagram_Support' ) ) {
 					'tab'   => 'instagram'
 				);
 
+				if ( $show_get_access_token_button ) {
+					$instagram_desc_setting['desc'] = '<strong>' . __('You are almost there! Just a couple more steps to connect your Instagram account:', 'foogallery') .
+'</strong><ol>
+	<li>'. __('Click the "Get Access Token" button below.' , 'foogallery') . '</li>
+	<li>'. __('You will be redirected to the Instagram website to authorize.' , 'foogallery') . '</li>
+	<li>'. __('Once authorized, you will be redirected back to this page and the account should be connected.' , 'foogallery') . '</li>
+</ol>';
+				}
+
+				$settings['settings'][] = $instagram_desc_setting;
+
 				$settings['settings'][] = array(
 					'id'    => 'insta_client_id',
 					'title' => __( 'Instagram Client ID', 'foogallery' ),
@@ -117,9 +132,9 @@ if ( ! class_exists( 'FooGallery_Pro_Instagram_Support' ) ) {
 					'tab'   => 'instagram'
 				);
 
-				$synced = get_option( 'foogallery' );
 
-				if ( isset( $synced['insta_client_id'] ) && $synced['insta_client_id'] != '' ) {
+
+				if ( $show_get_access_token_button ) {
 
 					$sync_data = '<a class="button-secondary" href="https://api.instagram.com/oauth/authorize/?client_id=' . $synced['insta_client_id'] . '&redirect_uri=' . $redirect_url  . '&response_type=code">Get Access Token</a>';
 
