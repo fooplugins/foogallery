@@ -182,6 +182,18 @@ Update now to get all the latest features, bug fixes and improvements!
 
 == Changelog ==
 
+= 1.8.18 =
+* New : Elementor compatibility - gallery previews in Elementor editor work, and added a FooGallery widget to the Elementor editor
+[//]: # fs_premium_only_begin
+* New : Instagram datasource - populate galleries from your Instagram account
+* New : Post Query datasource - populate galleries with the featured images from your posts/pages
+* Fix : Images not being resized for certain datasources
+* Fix : Caching issues when using taxonomy attributes in shortcode e.g. media_tags=cars
+[//]: # fs_premium_only_end
+* Fix : Images in Yoast SEO sitemaps pull correctly for all types of gallery embedding
+* Fix : Lazy-load issues on certain browsers (reverted back to old logic)
+* Fix : Updated WPThumb so that images with querystrings in the URL will work
+
 = 1.8.14 =
 [//]: # fs_premium_only_begin
 * New : Better messages for Media Tags & Categories datasources
