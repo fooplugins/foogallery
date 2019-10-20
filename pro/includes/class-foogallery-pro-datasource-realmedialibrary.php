@@ -89,10 +89,12 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_RealMediaLibrary' ) ) {
 			// clear any previously cached post meta for the gallery
 			$previous_datasource_value = get_post_meta( $foogallery_id, FOOGALLERY_META_DATASOURCE_VALUE, true );
 
-			if ( is_array( $previous_datasource_value ) ) {
-				$fid                 = $previous_datasource_value['value'];
-				$cache_post_meta_key = FOOGALLERY_META_DATASOURCE_CACHED_ATTACHMENTS . '_' . $fid;
-				delete_post_meta( $foogallery_id, $cache_post_meta_key );
+			if ( is_array( $previous_datasource_value ) && array_key_exists( 'value', $previous_datasource_value ) ) {
+				$fid = $previous_datasource_value['value'];
+				if ( is_string( $fid ) ) {
+					$cache_post_meta_key = FOOGALLERY_META_DATASOURCE_CACHED_ATTACHMENTS . '_' . $fid;
+					delete_post_meta( $foogallery_id, $cache_post_meta_key );
+				}
 			}
 		}
 

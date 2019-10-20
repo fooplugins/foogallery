@@ -38,9 +38,10 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Taxonomy_Base' ) ) {
 			if ( array_key_exists( $this->datasource_name, $args ) ) {
 				$foogallery->datasource_name = $this->datasource_name;
 				$foogallery->datasource_value = array(
-					'taxonomy' => $this->taxonomy,
-					'field'	   => 'slug',
-					'value'    => explode( ',', $args[$this->datasource_name] )
+					'taxonomy'       => $this->taxonomy,
+					'field'	         => 'slug',
+					'value'          => explode( ',', $args[$this->datasource_name] ),
+                    'enhanced_cache' => true
 				);
 			}
 
@@ -63,7 +64,7 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Taxonomy_Base' ) ) {
             //clear any previously cached post meta for the gallery
             $previous_datasource_value = get_post_meta( $foogallery_id, FOOGALLERY_META_DATASOURCE_VALUE, true );
 
-            if ( is_array( $previous_datasource_value ) ) {
+            if ( is_array( $previous_datasource_value ) && array_key_exists( 'taxonomy', $previous_datasource_value ) ) {
                 $taxonomy = $previous_datasource_value['taxonomy'];
                 $cache_post_meta_key = FOOGALLERY_META_DATASOURCE_CACHED_ATTACHMENTS . '_' . $taxonomy;
                 delete_post_meta($foogallery_id, $cache_post_meta_key);
@@ -114,6 +115,10 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Taxonomy_Base' ) ) {
                 $taxonomy = $datasource_value['taxonomy'];
 
                 $cache_post_meta_key = FOOGALLERY_META_DATASOURCE_CACHED_ATTACHMENTS . '_' . $taxonomy;
+
+                if ( array_key_exists( 'enhanced_cache', $datasource_value ) ) {
+	                $cache_post_meta_key .= '_values(' . implode( '|', $datasource_value['value'] ) . ')';
+                }
 
                 $helper = new FooGallery_Datasource_MediaLibrary_Query_Helper();
 

@@ -116,3 +116,8 @@
 .foogallery-datasource-modal-insert {
 	float: right;
 }
+
+.foogallery-datasource-item {
+	padding: 20px;
+	text-align: center;
+}

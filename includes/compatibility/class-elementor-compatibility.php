@@ -9,12 +9,13 @@ if ( ! class_exists( 'FooGallery_Elementor_Compatibility' ) ) {
         function __construct() {
             add_action( 'elementor/editor/after_save', array( $this, 'save_elementor_data' ), 10, 2 );
             add_action( 'plugins_loaded', array( $this, 'init' ) );
+
+            add_action( 'elementor/preview/enqueue_scripts', array( $this, 'enqueue_assets' ) );
         }
 
         function init() {
             if ( did_action( 'elementor/loaded' ) ) {
                 add_action( 'elementor/widgets/widgets_registered', array( $this, 'init_widget' ) );
-                add_action( 'elementor/editor/before_enqueue_scripts', array( $this, 'enqueue_assets') );
             }
         }
 
@@ -31,6 +32,8 @@ if ( ! class_exists( 'FooGallery_Elementor_Compatibility' ) ) {
         public function enqueue_assets() {
             foogallery_enqueue_core_gallery_template_script();
             foogallery_enqueue_core_gallery_template_style();
+
+	        wp_enqueue_script( 'foogallery-elementor-preview', FOOGALLERY_URL . 'js/admin-foogallery-elementor-preview.js', array('jquery'), FOOGALLERY_VERSION );
         }
 
         function save_elementor_data( $post_id, $editor_data) {
