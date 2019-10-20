@@ -225,14 +225,19 @@ class WP_Thumb {
 			$this->file_path = $this->args['default'];
 		}
 
-		if ( $this->getArg( 'cache_with_query_params' ) ) {
-			return $this->file_path;
+		//added this filter to allow a fallback to legacy logic if needed
+		if ( true === apply_filters( 'foogallery_wpthumb_legacy_logic', false ) ) {
+			if ( $this->getArg( 'cache_with_query_params' ) ) {
+				return $this->file_path;
+			}
+
+			$path_bits = explode( '?', $this->file_path );
+			$this->_file_path = reset( $path_bits );
+
+			return $this->_file_path;
 		}
 
-		$path_bits = explode( '?', $this->file_path );
-		$this->_file_path = reset( $path_bits );
-
-		return $this->_file_path;
+		return $this->file_path;
 	}
 
 	/**
@@ -269,7 +274,9 @@ class WP_Thumb {
 	 */
 	public function getFileExtension() {
 
-		$ext = pathinfo( $this->getFilePath(), PATHINFO_EXTENSION );
+		$filename = parse_url( $this->getFilePath(), PHP_URL_PATH );
+
+		$ext = pathinfo( $filename, PATHINFO_EXTENSION );
 
 		if ( ! $ext ) {
 			// Seems like we dont have an ext, lets guess at JPG
@@ -277,7 +284,6 @@ class WP_Thumb {
 		}
 
 		return strtolower( $ext );
-
 	}
 
 	/**
