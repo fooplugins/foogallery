@@ -84,7 +84,7 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 			$gallery_choices = array();
 			$gallery_choices[] = __( 'No default', 'foogallery' );
 			foreach ( $galleries as $gallery ) {
-				$gallery_choices[ $gallery['ID'] ] = $gallery['name'];
+				$gallery_choices[ $gallery['ID'] ] = esc_html( $gallery['name'] );
 			}
 
 			$settings[] = array(
