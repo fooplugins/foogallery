@@ -16,12 +16,11 @@ if ( ! class_exists( 'FooGallery_Yoast_Seo_Sitemap_Support' ) ) {
 
 		function add_images_to_sitemap( $images, $post_id ) {
 			//check the content for $post_id contains a foogallery shortcode
-			$post = get_post( $post_id );
 
-			//get all the foogallery shortcodes in the post
-			$gallery_shortcodes = foogallery_extract_gallery_shortcodes( $post->post_content );
+			//get all the foogalleries used in the posts
+            $galleries = get_post_meta( $post_id, FOOGALLERY_META_POST_USAGE );
 
-			foreach ( $gallery_shortcodes as $gallery_id => $shortcode ) {
+			foreach ( $galleries as $gallery_id ) {
 
 				//load each gallery
 				$gallery = FooGallery::get_by_id( $gallery_id );

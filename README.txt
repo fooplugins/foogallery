@@ -3,7 +3,7 @@ Contributors: bradvin, steveush, fooplugins
 Donate link: http://fooplugins.com
 Tags: gallery, image gallery, photo gallery, responsive, album, media gallery, masonry gallery, portfolio, justified gallery, video gallery, photography, youtube gallery
 Requires at least: 3.9
-Tested up to: 5.2.3
+Tested up to: 5.3
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -14,17 +14,17 @@ Why choose FooGallery? Stunning image gallery layouts, responsive, retina-ready,
 
 Why choose FooGallery? Stunning image gallery layouts, responsive, retina-ready, lightning fast, easy to use. Gutenberg Ready! Built to be highly configurable and extensible for developers or freelancers.
 
-[View the FooGallery Homepage & DEMO](http://foo.gallery/)
+[View the FooGallery Homepage](http://fooplugins.com/foogallery)
 
 **Features**
 
 *	6 Beautiful Image Gallery templates
-	*	Responsive Image Gallery - [demo](https://foo.gallery/demos/responsive-image-gallery/)
-	*	Image Viewer Gallery - [demo](https://foo.gallery/demos/image-viewer-gallery/)
-	*	Masonry Gallery - [demo](https://foo.gallery/demos/masonry-image-gallery/)
-	*	Simple Portfolio - [demo](https://foo.gallery/demos/simple-portfolio-demo/)
-	*	Justified Gallery - [demo](https://foo.gallery/demos/justified-gallery/)
-	*	Single Thumbnail Gallery - [demo](https://foo.gallery/demos/single-thumbnail-gallery/)
+	*	Responsive Image Gallery - [demo](https://fooplugins.com/foogallery/wordpress-responsive-image-gallery/)
+	*	Image Viewer Gallery - [demo](https://fooplugins.com/foogallery/wordpress-image-viewer-gallery/)
+	*	Masonry Gallery - [demo](https://fooplugins.com/foogallery/wordpress-masonry-gallery/)
+	*	Simple Portfolio - [demo](https://fooplugins.com/foogallery/wordpress-portfolio-gallery/)
+	*	Justified Gallery - [demo](https://fooplugins.com/foogallery/wordpress-justified-gallery/)
+	*	Single Thumbnail Gallery - [demo](https://fooplugins.com/foogallery/wordpress-single-thumbnail-gallery/)
 *   Albums built-in! (Activate the albums extension)
 	*	Responsive Album Layout - [demo](https://foo.gallery/demos/responsive-album-layout/)
 	*	All-in-one Stack Album - [demo](https://foo.gallery/demos/all-in-one-stack-album/)
@@ -46,17 +46,20 @@ Why choose FooGallery? Stunning image gallery layouts, responsive, retina-ready,
 
 **PRO Features**
 
-*   Polaroid PRO Gallery Template - [demo](https://foo.gallery/demos/polaroid-pro-image-gallery/)
-*   Grid PRO Gallery Template - [demo](https://foo.gallery/demos/grid-pro-demo/)
-*	Slider PRO Gallery Template - [demo](https://foo.gallery/demos/slider-pro/)
-*	Video Support - [demo](https://foo.gallery/demos/video-gallery-demos/)
+*   Polaroid PRO Gallery Template - [demo](https://fooplugins.com/foogallery/wordpress-polaroid-gallery/)
+*   Grid PRO Gallery Template - [demo](https://fooplugins.com/foogallery/wordpress-grid-gallery/)
+*	Slider PRO Gallery Template - [demo](https://fooplugins.com/foogallery/wordpress-slider-gallery/)
+*	Video Support - [demo](https://fooplugins.com/foogallery/wordpress-slider-gallery/)
 *	Media Tags and Categories
-*	Gallery Filtering using Media Tags or Categories - [demo](https://foo.gallery/demos/filtering-demos/)
+*	Gallery Filtering using Media Tags or Categories - [demo](https://fooplugins.com/foogallery/wordpress-filtered-gallery/)
 *	Load Galleries From Other Sources
 	*	Load from a folder on the server
 	*	Load from a collection from Adobe Lightroom (using WP/LR Sync)
 	*	Load all attachments with Media Tags
 	*	Load all attachments with Media Categories
+	*	Load from a folder in Real Media Library
+	*	Load images from Instagram
+	*	Load featured images from a post/page/custom post type
 *   11 Beautiful Hover Effect Presets - [demo](https://foo.gallery/demos/hover-effect-presets-demos/)
 *   12 CSS thumbnail filters (Instagram) - [demo](https://foo.gallery/demos/thumbnail-filters/)
 *   Advanced Pagination - [demo](https://foo.gallery/demos/pagination-demo/)
@@ -65,7 +68,7 @@ Why choose FooGallery? Stunning image gallery layouts, responsive, retina-ready,
 *   Bulk Copy Gallery Settings - [more info](https://fooplugins.com/bulk-copy-foogallery-pro/)
 *   More on the way!
 
-[See More Demos](https://foo.gallery/demos)
+[See More Demos](https://fooplugins.com/foogallery/demos/)
 
 https://youtu.be/zY8eSTEIwpU
 
@@ -115,6 +118,47 @@ FooGallery is hosted on [GitHub](https://github.com/fooplugins/foogallery).
 
 == Frequently Asked Questions ==
 
+= My galleries are not working. Thumbnails are greyed out and not loading when I scroll down the page. =
+
+Lazy loading is not working on your gallery. This could be due to a conflict between our plugin and your theme.
+You can test this theory by testing a different theme (if possible).
+We can help you get it working, by contacting our support.
+
+= I have created a gallery in the backend, but when I look at it on the frontend, it does not show correctly. =
+
+Sometimes, there are issues when the theme does not follow WordPress best practices.
+In order for FooGallery to function properly, the theme needs to:
+    * A call to wp_head(); in the header.php file.
+    * A call to wp_footer(); in the footer.php file.
+
+One way to check if the theme is the problem, is by switching to one of the built-in WordPress themes, and then see if the gallery loads.
+
+= After updating, my galleries no longer work! What should I do? =
+
+Do you have any WordPress caching or optimization plugins? If so, then clear/purge your caches.
+Do you have any caching setup at your website host? If so, clear/purge those caches.
+
+= After installing the plugin, my site is broken! Help! =
+
+First thing to do is restore your site to it's previous working state.
+1. Get access to your site via FTP, or SFTP.
+2. Navigate to the wp-content/plugins folder.
+3. Rename the foogallery folder to foogallery1 in order to deactivate the pluing.
+4. At this point, your site should be working again.
+5. Please contact our support and provide the following info:
+    * What version of WordPress you are running.
+    * What version of PHP you are using.
+    * What version of FooGallery you installed.
+    * What error was shown when your site was broken?
+    * What plugins and theme are you using?
+
+= I purchased a PRO license, but the Free version is still running. =
+
+Make sure you are running the PRO version. You can check this by visiting the FooGallery -> Account page within the WordPress admin.
+If you do not have the PRO version, you can download it by visiting your account page at https://fooplugins.com/account
+If you have the PRO version, then clear any caches on your site or for your host. Also clear CSS Optimiztion Cache from FooGallery Settings.
+If it still does not work, then please contact our support to help further.
+
 = Why are my thumbnails so blurry? =
 
 Have you enabled retina support for your galleries? To enable retina support, edit the gallery and locate the Retina Support metabox.
@@ -126,10 +170,6 @@ Yes, video is supported in FooGallery PRO!
 = How do I get albums working? =
 
 Simply go to the FooGallery extensions page and activate the Albums extension. If you do not see a button to activate the albums extension, reload the extensions list by clicking the reload button.
-
-= Can I build an extension? =
-
-Hell, yes! Check out our [developer page](http://foo.gallery/developers/)
 
 == Screenshots ==
 
@@ -144,6 +184,33 @@ Hell, yes! Check out our [developer page](http://foo.gallery/developers/)
 Update now to get all the latest features, bug fixes and improvements!
 
 == Changelog ==
+
+= 1.8.18 =
+* New : Elementor compatibility - gallery previews in Elementor editor work, and added a FooGallery widget to the Elementor editor
+[//]: # fs_premium_only_begin
+* New : Instagram datasource - populate galleries from your Instagram account
+* New : Post Query datasource - populate galleries with the featured images from your posts/pages
+* Fix : Images not being resized for certain datasources
+* Fix : Caching issues when using taxonomy attributes in shortcode e.g. media_tags=cars
+[//]: # fs_premium_only_end
+* Fix : Images in Yoast SEO sitemaps pull correctly for all types of gallery embedding
+* Fix : Lazy-load issues on certain browsers (reverted back to old logic)
+* Fix : Updated WPThumb so that images with querystrings in the URL will work
+* Fix : Minor security issue fixed on the FooGallery settings page (only exploitable by administrators)
+
+= 1.8.14 =
+[//]: # fs_premium_only_begin
+* New : Better messages for Media Tags & Categories datasources
+* New : Ability to reload datasource modal without refreshing
+[//]: # fs_premium_only_end
+* New : Added setting to move "Add Media" button to front of attachment listing (Advanced tab in FooGallery Settings)
+[//]: # fs_premium_only_begin
+* Fix : Real Media Library was not picking up featured images
+* Fix : Albums were not working correctly with galleries that load from other datasources
+[//]: # fs_premium_only_end
+* Fix : Lazy-load issues with Gutenberg Editor
+* Fix : Simple portfolio layout issue with certain themes
+* Update : FooGallery client side 1.3.4
 
 = 1.8.12 =
 * Fix : Previews not working on new galleries

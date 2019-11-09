@@ -38,9 +38,10 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Taxonomy_Base' ) ) {
 			if ( array_key_exists( $this->datasource_name, $args ) ) {
 				$foogallery->datasource_name = $this->datasource_name;
 				$foogallery->datasource_value = array(
-					'taxonomy' => $this->taxonomy,
-					'field'	   => 'slug',
-					'value'    => explode( ',', $args[$this->datasource_name] )
+					'taxonomy'       => $this->taxonomy,
+					'field'	         => 'slug',
+					'value'          => explode( ',', $args[$this->datasource_name] ),
+                    'enhanced_cache' => true
 				);
 			}
 
@@ -63,7 +64,7 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Taxonomy_Base' ) ) {
             //clear any previously cached post meta for the gallery
             $previous_datasource_value = get_post_meta( $foogallery_id, FOOGALLERY_META_DATASOURCE_VALUE, true );
 
-            if ( is_array( $previous_datasource_value ) ) {
+            if ( is_array( $previous_datasource_value ) && array_key_exists( 'taxonomy', $previous_datasource_value ) ) {
                 $taxonomy = $previous_datasource_value['taxonomy'];
                 $cache_post_meta_key = FOOGALLERY_META_DATASOURCE_CACHED_ATTACHMENTS . '_' . $taxonomy;
                 delete_post_meta($foogallery_id, $cache_post_meta_key);
@@ -114,6 +115,10 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Taxonomy_Base' ) ) {
                 $taxonomy = $datasource_value['taxonomy'];
 
                 $cache_post_meta_key = FOOGALLERY_META_DATASOURCE_CACHED_ATTACHMENTS . '_' . $taxonomy;
+
+                if ( array_key_exists( 'enhanced_cache', $datasource_value ) ) {
+	                $cache_post_meta_key .= '_values(' . implode( '|', $datasource_value['value'] ) . ')';
+                }
 
                 $helper = new FooGallery_Datasource_MediaLibrary_Query_Helper();
 
@@ -184,24 +189,35 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Taxonomy_Base' ) ) {
 
             $datasources = foogallery_gallery_datasources();
 			$datasource = $datasources[$this->datasource_name];
+            $terms = get_terms( $this->taxonomy, array('hide_empty' => false) );
+            $term_count = count( $terms );
 
-			?>
-			<p><?php printf( __('Select %s from the list below. The gallery will then dynamically load all attachments that are assigned to the selected items.', 'foogallery'), $datasource['name']); ?></p>
-			<ul data-taxonomy="<?php echo $this->taxonomy; ?>">
-				<?php
+            if ( $term_count > 0 ) {
 
-				$terms = get_terms( $this->taxonomy, array('hide_empty' => false) );
+                ?>
+                <p><?php printf(__('Select %s from the list below. The gallery will then dynamically load all attachments that are assigned to the selected items.', 'foogallery'), $datasource['name']); ?></p>
+                <ul data-taxonomy="<?php echo $this->taxonomy; ?>">
+                    <?php
 
-				foreach($terms as $term) {
-				    $selected = in_array( $term->term_id, $selected_terms );
-					?><li class="datasource-taxonomy <?php echo $this->datasource_name; ?>">
-					<a href="#" class="button button-small<?php echo $selected ? ' button-primary' : ''; ?>" data-term-id="<?php echo $term->term_id; ?>"><?php echo $term->name; ?></a>
-					</li><?php
-				}
+                    foreach ($terms as $term) {
+                        $selected = in_array($term->term_id, $selected_terms);
+                        ?>
+                        <li class="datasource-taxonomy <?php echo $this->datasource_name; ?>">
+                        <a href="#" class="button button-small<?php echo $selected ? ' button-primary' : ''; ?>"
+                           data-term-id="<?php echo $term->term_id; ?>"><?php echo $term->name; ?></a>
+                        </li><?php
+                    }
 
-				?>
-			</ul>
-			<?php
+                    ?>
+                </ul>
+                <?php
+
+            } else {
+                echo '<p>' . sprintf( __( 'We found no %s for you to choose. You will need to create a few first, by clicking the link below. Once you have created them, you can click the reload button above.', 'foogallery' ), $datasource['name']) . '</p>';
+            }
+
+            $taxonomy_url = admin_url( 'edit-tags.php?taxonomy=' . $this->taxonomy );
+            echo '<div style="clear: both"></div><p><a target="_blank" href="' . $taxonomy_url . '">' . sprintf( __('Manage your %s', 'foogallery'), $datasource['name'] ) . '</a></p>';
 		}
 
 		/**

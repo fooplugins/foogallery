@@ -84,7 +84,7 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 			$gallery_choices = array();
 			$gallery_choices[] = __( 'No default', 'foogallery' );
 			foreach ( $galleries as $gallery ) {
-				$gallery_choices[ $gallery['ID'] ] = $gallery['name'];
+				$gallery_choices[ $gallery['ID'] ] = esc_html( $gallery['name'] );
 			}
 
 			$settings[] = array(
@@ -265,6 +265,14 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
                 'id'      => 'enable_custom_ready',
                 'title'   => __( 'Custom Ready Event', 'foogallery' ),
                 'desc'    => sprintf( __( 'By default the jQuery ready event is used, but there are sometimes unavoidable javascript errors on the page, which could result in the default gallery templates not initializing correctly. Enable this setting to use a built-in custom ready event to overcome this if needed.', 'foogallery' ), foogallery_plugin_name() ),
+                'type'    => 'checkbox',
+                'tab'     => 'advanced'
+            );
+
+            $settings[] = array(
+                'id'      => 'add_media_button_start',
+                'title'   => __( 'Move Add Media Button', 'foogallery' ),
+                'desc'    => sprintf( __( 'You can move the Add Media button to the beginning of the attachment list. This can help when your galleries have a large number of images, so you do not have to scroll.', 'foogallery' ), foogallery_plugin_name() ),
                 'type'    => 'checkbox',
                 'tab'     => 'advanced'
             );

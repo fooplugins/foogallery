@@ -32,7 +32,7 @@ $summary = $this->apply_filters( $plugin_slug . '_admin_settings_page_summary', 
 		}
     ?>
 	<div id="<?php echo $plugin_slug; ?>-settings-wrapper">
-		<div id="<?php echo $plugin_slug; ?>-settings-main" class="postbox-container">
+		<div id="<?php echo $plugin_slug; ?>-settings-main">
 	<form action="options.php" method="post">
 		<?php settings_fields($plugin_slug); ?>
                 <?php
