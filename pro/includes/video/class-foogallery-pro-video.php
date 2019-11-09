@@ -306,9 +306,10 @@ if ( ! class_exists( 'FooGallery_Pro_Video' ) ) {
 						}
 
 						$is_embed = $is_embed && ( 'foobox' === $lightbox );
-						if ( $is_embed ) {
-							$attr['data-type'] = 'embed';
-						}
+//						if ( $is_embed ) {
+//							$attr['data-type'] = 'embed';
+//						}
+						$attr['data-type'] = $is_embed ? 'embed' : 'video';
 					}
 				}
 

@@ -429,6 +429,9 @@ function foogallery_build_json_object_from_attachment( $foogallery_attachment, $
 
 		$json_object       = new stdClass();
 		$json_object->href = $anchor_attributes['href'];
+		if ( array_key_exists( 'data-type', $anchor_attributes ) ) {
+			$json_object->type = $anchor_attributes['data-type'];
+		}
 		if ( isset( $src ) ) {
 			$json_object->src = $src;
 		}
