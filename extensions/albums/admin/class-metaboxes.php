@@ -231,7 +231,7 @@ if ( ! class_exists( 'FooGallery_Admin_Album_MetaBoxes' ) ) {
 								<div class="thumbnail" style="display: table;">
 									<div style="display: table-cell; vertical-align: middle; text-align: center;">
 										<img src="<?php echo $img_src; ?>"/>
-										<h3><?php echo $title; ?>
+										<h3><?php echo esc_html( $title ); ?>
 											<span><?php echo $images; ?></span>
 										</h3>
 									</div>
