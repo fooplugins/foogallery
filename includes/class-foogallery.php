@@ -483,4 +483,11 @@ class FooGallery extends stdClass {
 
         return empty( $this->datasource_value );
     }
+
+	/**
+	 * Returns true if the datasource is not media_library
+	 */
+    public function is_dynamic() {
+		return $this->datasource_name !== foogallery_default_datasource();
+    }
 }

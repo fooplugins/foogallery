@@ -104,7 +104,7 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Instagram' ) ) {
     				$cached_attachments = get_transient( $transient_key );
     			}
 
-    			if ( false === $cached_attachments ) {
+    			if ( false === $cached_attachments || empty( $cached_attachments ) ) {
     				$datasource_value = $foogallery->datasource_value;
     				
     				$expiry_hours = apply_filters( 'foogallery_datasource_instagram_expiry', 24 );
@@ -237,18 +237,25 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Instagram' ) ) {
 		    $attachments = array();
 
             foreach ($instagram_images['media'] as $instagram_image) {
-                $attachment               = new FooGalleryAttachment();
-                $attachment->ID           = 0;
-                $attachment->title        = $instagram_image['id'];
-	            $attachment->url          = $instagram_image['thumbnail_src'];
-                $attachment->sort         = PHP_INT_MAX;
-                $attachment->has_metadata = false;
-                $attachment->caption      = $instagram_image['caption'];
-                $attachment->description  = '';
-                $attachment->alt          = $attachment->caption;
-                $attachment->custom_url   = $instagram_image['display_url'];
+                $attachment                = new FooGalleryAttachment();
+                $attachment->ID            = 0;
+                $attachment->title         = $instagram_image['id'];
+	            $attachment->url           = $instagram_image['thumbnail_src'];
+                $attachment->sort          = PHP_INT_MAX;
+                $attachment->has_metadata  = false;
+                $attachment->caption       = $instagram_image['caption'];
+                $attachment->description   = '';
+                $attachment->alt           = $attachment->caption;
+                $attachment->custom_url    = $instagram_image['display_url'];
                 $attachment->custom_target = '';
-                $attachment->sort = '';
+                $attachment->sort          = '';
+	            $attachment->is_video      = $instagram_image['is_video'];
+                if ( $attachment->is_video ) {
+                    $attachment->video_data = array(
+                        'type' => 'video'
+                    );
+	                $attachment->custom_url = $instagram_image['video_url'];
+                }
                 $attachment->instagram_image = true;
                 $attachments[] = $attachment;
             }

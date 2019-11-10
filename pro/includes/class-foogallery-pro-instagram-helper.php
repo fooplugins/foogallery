@@ -110,7 +110,7 @@ if ( ! class_exists( 'FooGallery_Pro_Instagram_Helper' ) ) {
 
 			$gis = md5( join(':', array( '', $variables ) ) );
 
-			// URL запроса
+			// request URL
 			$url = add_query_arg( array(
 				'query_hash' => 'f2405b236d85e8296cf30347c9f08c2a',
 				'variables' => $variables,
@@ -150,6 +150,7 @@ if ( ! class_exists( 'FooGallery_Pro_Instagram_Helper' ) ) {
 					'shortcode' => $node['node']['shortcode'],
 					'caption' => (is_array( $captions ) && count( $captions ) > 0) ? $captions[0]['node']['text'] : '',
 					'is_video' => $node['node']['is_video'],
+					'video_url' => isset( $node['node']['video_url'] ) ? $node['node']['video_url'] : '',
 					'comment_count' => $node['node']['edge_media_to_comment']['count'],
 					'like_count' => $node['node']['edge_media_preview_like']['count'],
 				);
