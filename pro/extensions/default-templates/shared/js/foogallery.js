@@ -15597,22 +15597,24 @@
 		},
 		onPreInit: function(event, self){
 			self.$section = $('<section/>', {'class': 'foogrid-content'});
-			self.panel.opt.transition = "none";
-			if (self.$el.hasClass("foogrid-transition-horizontal")){
-				self.panel.opt.transition = "horizontal";
+			if (self.panel.opt.transition === "none"){
+				if (self.$el.hasClass("foogrid-transition-horizontal")){
+					self.panel.opt.transition = "horizontal";
+				}
+				if (self.$el.hasClass("foogrid-transition-vertical")){
+					self.panel.opt.transition = "vertical";
+				}
+				if (self.$el.hasClass("foogrid-transition-fade")){
+					self.panel.opt.transition = "fade";
+				}
 			}
-			if (self.$el.hasClass("foogrid-transition-vertical")){
-				self.panel.opt.transition = "vertical";
-			}
-			if (self.$el.hasClass("foogrid-transition-fade")){
-				self.panel.opt.transition = "fade";
-			}
-			self.panel.opt.caption = "none";
-			if (self.$el.hasClass("foogrid-caption-below")){
-				self.panel.opt.caption = "bottom";
-			}
-			if (self.$el.hasClass("foogrid-caption-right")){
-				self.panel.opt.caption = "right";
+			if (self.panel.opt.info === "none"){
+				if (self.$el.hasClass("foogrid-caption-below")){
+					self.panel.opt.info = "bottom";
+				}
+				if (self.$el.hasClass("foogrid-caption-right")){
+					self.panel.opt.info = "right";
+				}
 			}
 			var theme = self.getCSSClass("theme");
 			if (theme === "fg-light" && self.panel.opt.button === null){
