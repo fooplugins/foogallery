@@ -4,10 +4,9 @@
  */
 if ( ! class_exists( 'FooGallery_Pro_Bulk_Copy' ) ) {
 
-    class FooGallery_Pro_Bulk_Copy
-    {
-        function __construct()
-        {
+    class FooGallery_Pro_Bulk_Copy {
+
+        function __construct() {
             //add the bulk copy metabox
             add_action( 'add_meta_boxes_' . FOOGALLERY_CPT_GALLERY, array( $this, 'add_bulk_copy_meta_box_to_gallery' ) );
 
@@ -18,8 +17,7 @@ if ( ! class_exists( 'FooGallery_Pro_Bulk_Copy' ) ) {
             add_action( 'wp_ajax_foogallery_bulk_copy_run', array( $this, 'ajax_bulk_copy_run' ) );
         }
 
-        public function ajax_bulk_copy_run()
-        {
+        public function ajax_bulk_copy_run() {
             if (check_admin_referer('foogallery_bulk_copy_run', 'foogallery_bulk_copy_run_nonce')) {
                 $data = $_POST['foogallery_bulk_copy'];
                 $foogallery_id = $data['foogallery'];
