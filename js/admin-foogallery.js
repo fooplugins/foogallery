@@ -107,10 +107,12 @@
 		if ( $preview.data('fg-common-fields') ) {
 			if ( initGallery ) {
 				$preview.foogallery( {}, function() {
-					$preview_container.css( 'height', '' )
-						.find(".fg-thumb").off("click.foogallery").on("click", function(e){
-                        	e.preventDefault();
-                    	});
+					$preview_container.css( 'height', '' );
+					if ( !$preview_container.find('.foogallery').data('foogallery-lightbox') ) {
+						$preview_container.find(".fg-thumb").off("click.foogallery").on("click", function (e) {
+							e.preventDefault();
+						});
+					}
 				} );
 			} else {
 				$preview.foogallery( 'layout' );
