@@ -12,7 +12,7 @@ if ( !class_exists( 'FooGallery_FooBox_Compatibility' ) ) {
 			$this->ensure_outdated_foobox_extensions_never_run();
 
 			//add the FooBox lightbox option no matter if using Free or Pro
-			add_filter( 'foogallery_gallery_template_field_lightboxes', array($this, 'add_lightbox') );
+			add_filter( 'foogallery_gallery_template_field_lightboxes', array($this, 'add_lightbox'), 11, 2 );
 
 			//alter the default lightbox to be foobox
 			add_filter( 'foogallery_alter_gallery_template_field', array( $this, 'make_foobox_default_lightbox' ), 10, 2 );
