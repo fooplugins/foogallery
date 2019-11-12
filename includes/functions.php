@@ -1043,7 +1043,7 @@ function foogallery_build_default_settings_for_gallery_template( $template_name 
  */
 function foogallery_gallery_template_field_thumb_link_choices() {
     return apply_filters( 'foogallery_gallery_template_field_thumb_links', array(
-        'image'  => __( 'Full Size Image (Lightbox)', 'foogallery' ),
+        'image'  => __( 'Full Size Image', 'foogallery' ),
         'page'   => __( 'Image Attachment Page', 'foogallery' ),
         'custom' => __( 'Custom URL', 'foogallery' ),
         'none'   => __( 'Not linked', 'foogallery' ),
