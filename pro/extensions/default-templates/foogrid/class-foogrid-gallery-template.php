@@ -40,7 +40,7 @@ if ( !class_exists( 'FooGallery_FooGrid_Gallery_Template' ) ) {
 			add_filter( 'foogallery_template_load_css-foogridpro', '__return_false' );
 			add_filter( 'foogallery_template_load_js-foogridpro', '__return_false' );
 
-			//add the data options needed for polaroid
+			//add the data options needed for grid pro
 			add_filter( 'foogallery_build_container_data_options-foogridpro', array( $this, 'add_data_options' ), 10, 3 );
 
 			//override specific settings when saving the gallery
@@ -59,6 +59,48 @@ if ( !class_exists( 'FooGallery_FooGrid_Gallery_Template' ) ) {
 
             //build up the arguments needed for rendering this template
             add_filter( 'foogallery_gallery_template_arguments-foogridpro', array( $this, 'build_gallery_template_arguments' ) );
+
+			add_filter( 'foogallery_render_gallery_template_field_value', array( $this, 'alter_old_field_values'), 10, 4 );
+        }
+
+        /*
+         * Map old field values
+         */
+		function alter_old_field_values( $value, $field, $gallery, $template ) {
+			//only do something if we are dealing with the grid pro template
+			if ( 'foogridpro' === $template['slug'] ) {
+				return $this->get_correct_field_value( $field['id'], $value );
+			}
+
+			return $value;
+		}
+
+		function get_correct_field_value( $field, $original_value ) {
+			//mappings for transitions
+            if ( 'transition' === $field ) {
+	            if ( 'foogrid-transition-horizontal' === $original_value ) {
+		            return 'horizontal';
+	            } else if ( 'foogrid-transition-vertical' === $original_value ) {
+		            return 'vertical';
+	            } else if ( 'foogrid-transition-fade' === $original_value ) {
+		            return 'fade';
+	            } else if ( '' === $original_value ) {
+		            return 'none';
+	            }
+            }
+
+			//mappings for captions
+			if ( 'captions' === $field ) {
+				if ( 'foogrid-caption-below' === $original_value ) {
+					return 'bottom';
+				} else if ( 'foogrid-caption-right' === $original_value ) {
+					return 'right';
+				} else if ( '' === $original_value ) {
+					return 'none';
+				}
+			}
+
+            return $original_value;
         }
 
 		/**
@@ -101,6 +143,7 @@ if ( !class_exists( 'FooGallery_FooGrid_Gallery_Template' ) ) {
 				'mandatory_classes' => 'foogrid',
 				'filtering_support' => true,
 				'embed_support' => true,
+				'panel_support' => true,
 				'fields'	  => array(
 					array(
 						'id'      => 'thumbnail_size',
@@ -142,19 +185,19 @@ if ( !class_exists( 'FooGallery_FooGrid_Gallery_Template' ) ) {
 						'section' => __( 'General', 'foogallery' ),
 						'title'   => __('Transition', 'foogallery'),
 						'desc' => __('Transition type to use switching between items, or no transitions at all.', 'foogallery'),
-						'default' => 'foogrid-transition-fade',
+						'default' => 'fade',
 						'type'    => 'radio',
 						'spacer'  => '<span class="spacer"></span>',
 						'choices' => array(
-							'foogrid-transition-fade' => __( 'Fade', 'foogallery' ),
-							'foogrid-transition-horizontal' => __( 'Horizontal', 'foogallery' ),
-							'foogrid-transition-vertical' => __( 'Vertical', 'foogallery' ),
-							'' => __( 'None', 'foogallery' )
+							'fade' => __( 'Fade', 'foogallery' ),
+							'horizontal' => __( 'Horizontal', 'foogallery' ),
+							'vertical' => __( 'Vertical', 'foogallery' ),
+							'none' => __( 'None', 'foogallery' )
 						),
 						'row_data'=> array(
 							'data-foogallery-change-selector' => 'input',
 							'data-foogallery-value-selector' => 'input:checked',
-							'data-foogallery-preview' => 'class'
+							'data-foogallery-preview' => 'shortcode'
 						)
 					),
 					array(
@@ -202,18 +245,20 @@ if ( !class_exists( 'FooGallery_FooGrid_Gallery_Template' ) ) {
 						'section' => __( 'General', 'foogallery' ),
 						'title'   => __('Stage Caption', 'foogallery'),
 						'desc' => __('The position of caption in the stage or no captions at all. * The caption will automatically switch to below the item on small screen sizes.', 'foogallery'),
-						'default' => 'foogrid-caption-below',
+						'default' => 'bottom',
 						'type'    => 'radio',
 						'spacer'  => '<span class="spacer"></span>',
 						'choices' => array(
-							'foogrid-caption-below' => __( 'Below', 'foogallery' ),
-							'foogrid-caption-right' => __( 'Right', 'foogallery' ),
-							'' => __( 'None', 'foogallery' )
+							'bottom' => __( 'Below', 'foogallery' ),
+							'right' => __( 'Right', 'foogallery' ),
+							'top' => __( 'Top', 'foogallery' ),
+							'left' => __( 'Left', 'foogallery' ),
+							'none' => __( 'None', 'foogallery' )
 						),
 						'row_data'=> array(
 							'data-foogallery-change-selector' => 'input',
 							'data-foogallery-value-selector' => 'input:checked',
-							'data-foogallery-preview' => 'class'
+							'data-foogallery-preview' => 'shortcode'
 						)
 					),
 					array(
@@ -287,11 +332,19 @@ if ( !class_exists( 'FooGallery_FooGrid_Gallery_Template' ) ) {
 			$scroll = foogallery_gallery_template_setting( 'scroll', 'yes' ) === 'yes';
 			$scroll_smooth = foogallery_gallery_template_setting( 'scroll_smooth', 'yes' ) === 'yes';
 			$scroll_offset = foogallery_gallery_template_setting( 'scroll_offset', 0 );
+			$transition = foogallery_gallery_template_setting( 'transition', 'fade' );
+			$captions = foogallery_gallery_template_setting( 'captions', 'fade' );
+
+			//map to correct values
+			$transition = $this->get_correct_field_value( 'transition', $transition );
+			$captions = $this->get_correct_field_value( 'captions', $captions );
 
 			$options['template']['loop'] = $loop;
 			$options['template']['scroll'] = $scroll;
-			$options['template']['scroll_smooth'] = $scroll_smooth;
-			$options['template']['scroll_offset'] = intval( $scroll_offset );
+			$options['template']['scrollSmooth'] = $scroll_smooth;
+			$options['template']['scrollOffset'] = intval( $scroll_offset );
+			$options['template']['transition'] = $transition;
+			$options['template']['info'] = $captions;
 
 			return $options;
 		}
@@ -320,6 +373,12 @@ if ( !class_exists( 'FooGallery_FooGrid_Gallery_Template' ) ) {
 			$args['thumbnail_width'] = $post_data[FOOGALLERY_META_SETTINGS]['foogridpro_thumbnail_size']['width'];
 			$args['thumbnail_height'] = $post_data[FOOGALLERY_META_SETTINGS]['foogridpro_thumbnail_size']['height'];
 			$args['thumbnail_crop'] = isset( $post_data[FOOGALLERY_META_SETTINGS]['foogridpro_thumbnail_size']['crop'] ) ? '1' : '0';
+			$args['scroll'] = $post_data[FOOGALLERY_META_SETTINGS]['foogridpro_scroll'];
+			$args['scroll_smooth'] = $post_data[FOOGALLERY_META_SETTINGS]['foogridpro_scroll_smooth'];
+			$args['scroll_offset'] = $post_data[FOOGALLERY_META_SETTINGS]['foogridpro_scroll_offset'];
+			$args['transition'] = $post_data[FOOGALLERY_META_SETTINGS]['foogridpro_transition'];
+			$args['captions'] = $post_data[FOOGALLERY_META_SETTINGS]['foogridpro_captions'];
+
 			return $args;
 		}
 
