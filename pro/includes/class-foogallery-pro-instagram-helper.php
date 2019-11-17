@@ -72,7 +72,7 @@ if ( ! class_exists( 'FooGallery_Pro_Instagram_Helper' ) ) {
 			return $profile;
 		}
 
-		function find_user_images_by_username($username, $count = 20, $resolution) {
+		function find_user_images_by_username($username, $count = 20) {
 			//first get the account profile
 			$profile = $this->find_account_profile( $username );
 
@@ -86,7 +86,7 @@ if ( ! class_exists( 'FooGallery_Pro_Instagram_Helper' ) ) {
 				//we found a profile
 
 				//check if the profile is private
-				if ( !empty( $profile['private'] ) ) {
+				if ( !empty( $profile['user']['is_private'] ) ) {
 					$image_data['error'] = __( 'The Instagram account is private and cannot be used!', 'foogallery' );
 
 				} else {
@@ -94,14 +94,14 @@ if ( ! class_exists( 'FooGallery_Pro_Instagram_Helper' ) ) {
 
 					$user_id = $profile['user']['pk'];
 
-					$image_data['media'] = $this->find_media( $user_id , $profile['cookies'], $count, $resolution );
+					$image_data['media'] = $this->find_media( $user_id , $profile['cookies'], $count );
 				}
 			}
 
 			return $image_data;
 		}
 
-		function find_media( $user_id, $cookies, $limit = 20, $resolution ){
+		function find_media( $user_id, $cookies, $limit = 20 ){
 
 			$variables = json_encode( array(
 				'id' => $user_id,

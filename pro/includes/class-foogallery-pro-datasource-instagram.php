@@ -163,11 +163,6 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Instagram' ) ) {
             <p>
                 <?php _e('Choose the settings for your gallery below. The gallery will be dynamically loaded from Instagram.', 'foogallery' ); ?>
             </p>
-            <script type="text/javascript">
-                $(document).on('change','.foogallery_instagram_input',function(){
-                    $('.foogallery-datasource-modal-insert').removeAttr( 'disabled' );
-                });
-            </script>
             <table class="form-table">
                 <tbody>
                 <tr>
@@ -196,30 +191,7 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Instagram' ) ) {
                                 id="instagram_image_count"
                                 value="<?php echo isset( $datasource_value['image_count'] ) ? $datasource_value['image_count'] : '20' ?>"
                         />
-                        <p class="description"><?php _e( 'Max number allowed by the Instagram is 33 images, and only 20 if your Instagram client is in Sandbox mode.', 'foogallery' ) ?></p>
-                    </td>
-                </tr>
-                <tr>
-                    <th scope="row">
-                        <label for="instagram_image_resolution"> <?php _e( 'Image Resolution', 'foogallery' ) ?></label>
-                    </th>
-                    <td>
-                        <select class="regular-text foogallery_instagram_input" name="instagram_image_resolution" id="instagram_image_resolution">
-                            <?php
-                            $resolutions['thumbnail'] =  __( 'Thumbnail', 'foogallery' );
-                            $resolutions['low_resolution'] =  __( 'Low Resolution', 'foogallery' );
-                            $resolutions['standard_resolution'] =  __( 'Standard Resolution', 'foogallery' );
-
-                            foreach ( $resolutions as $key => $value ) {
-                                $selected = '';
-                                if ( isset( $datasource_value['image_resolution'] ) && $key === $datasource_value['image_resolution'] ) {
-                                    $selected = 'selected';
-                                }
-                                echo "<option value='$key' $selected>" . $value . '</option>';
-                            }
-                            ?>
-                        </select>
-                        <p class="description"><?php _e( 'The resolution of the thumbs that will be used in the gallery.', 'foogallery' ) ?></p>
+                        <p class="description"><?php _e( 'Max number allowed is 50 images. Private accounts not allowed.', 'foogallery' ) ?></p>
                     </td>
                 </tr>
             </table>
@@ -229,10 +201,9 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Instagram' ) ) {
     	function build_attachments_from_instagram( $datasource_value ) {
 		    $account = $datasource_value['account'];
 		    $image_count = $datasource_value['image_count'];
-		    $image_resolution = $datasource_value['image_resolution'];
 
 		    $instagram_helper = new FooGallery_Pro_Instagram_Helper();
-		    $instagram_images = $instagram_helper->find_user_images_by_username( $account, $image_count, $image_resolution );
+		    $instagram_images = $instagram_helper->find_user_images_by_username( $account, $image_count );
 
 		    $attachments = array();
 
@@ -275,7 +246,6 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Instagram' ) ) {
 
     		$account = isset( $gallery->datasource_value ) && is_array( $gallery->datasource_value ) && array_key_exists( 'account', $gallery->datasource_value ) ? $gallery->datasource_value['account'] : '';
 		    $image_count = isset( $gallery->datasource_value ) && is_array( $gallery->datasource_value ) && array_key_exists( 'image_count', $gallery->datasource_value ) ? $gallery->datasource_value['image_count'] : 0;
-		    $image_resolution = isset( $gallery->datasource_value ) && is_array( $gallery->datasource_value ) && array_key_exists( 'image_resolution', $gallery->datasource_value ) ? $gallery->datasource_value['image_resolution'] : 'thumbnail';
     		?>
     		<div <?php echo $show_container ? '' : 'style="display:none" '; ?>class="foogallery-datasource-item foogallery-datasource-instagram">
     		<h3><?php _e( 'Datasource : Instagram', 'foogallery' ); ?></h3>
@@ -283,7 +253,6 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Instagram' ) ) {
             <div class="foogallery-items-html">
 			    <?php echo __('Account : ', 'foogallery'); ?><span id="foogallery-datasource-instagram-account"><?php echo esc_html($account); ?></span><br />
 	            <?php echo __('No. Of Images : ', 'foogallery'); ?><span id="foogallery-datasource-instagram-number"><?php echo esc_html($image_count); ?></span><br />
-	            <?php echo __('Resolution : ', 'foogallery'); ?><span id="foogallery-datasource-instagram-resolution"><?php echo esc_html($image_resolution); ?></span><br />
             </div>
     		<br />
     		<button type="button" class="button edit">
