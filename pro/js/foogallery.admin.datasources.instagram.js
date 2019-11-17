@@ -1,5 +1,9 @@
 jQuery(function ($) {
 
+	$(document).on('change','.foogallery_instagram_input',function(){
+		$('.foogallery-datasource-modal-insert').removeAttr( 'disabled' );
+	});
+
 	/* Manage media javascript */
 	$('.foogallery-datasource-instagram').on('click', 'button.remove', function (e) {
 		e.preventDefault();
