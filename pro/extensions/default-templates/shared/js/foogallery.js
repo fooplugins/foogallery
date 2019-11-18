@@ -1737,7 +1737,7 @@
 );
 /*!
 * FooGallery.utils - Contains common utility methods and classes used in our plugins.
-* @version 0.1.6
+* @version 0.1.7
 * @link https://github.com/steveush/foo-utils#readme
 * @copyright Steve Usher 2019
 * @license Released under the GPL-3.0 license.
@@ -1790,7 +1790,7 @@
 		 * @name version
 		 * @type {string}
 		 */
-		version: '0.1.6'
+		version: '0.1.7'
 	};
 
 	/**
@@ -1886,7 +1886,7 @@
 })(jQuery);
 (function ($, _){
 	// only register methods if this version is the current version
-	if (_.version !== '0.1.6') return;
+	if (_.version !== '0.1.7') return;
 
 	/**
 	 * @summary Contains common type checking utility methods.
@@ -2240,7 +2240,7 @@
 );
 (function($, _, _is){
 	// only register methods if this version is the current version
-	if (_.version !== '0.1.6') return;
+	if (_.version !== '0.1.7') return;
 
 	/**
 	 * @memberof FooGallery.utils
@@ -2823,7 +2823,7 @@
 );
 (function(_, _is){
 	// only register methods if this version is the current version
-	if (_.version !== '0.1.6') return;
+	if (_.version !== '0.1.7') return;
 
 	/**
 	 * @summary Contains common url utility methods.
@@ -2962,7 +2962,7 @@
 );
 (function (_, _is, _fn) {
 	// only register methods if this version is the current version
-	if (_.version !== '0.1.6') return;
+	if (_.version !== '0.1.7') return;
 
 	/**
 	 * @summary Contains common string utility methods.
@@ -3277,7 +3277,7 @@
 );
 (function($, _, _is, _fn, _str){
 	// only register methods if this version is the current version
-	if (_.version !== '0.1.6') return;
+	if (_.version !== '0.1.7') return;
 
 	/**
 	 * @summary Contains common object utility methods.
@@ -3609,7 +3609,7 @@
 );
 (function($, _, _is){
 	// only register methods if this version is the current version
-	if (_.version !== '0.1.6') return;
+	if (_.version !== '0.1.7') return;
 
 	// any methods that have dependencies but don't fall into a specific subset or namespace can be added here
 
@@ -3890,7 +3890,7 @@
 );
 (function($, _, _is){
 	// only register methods if this version is the current version
-	if (_.version !== '0.1.6') return;
+	if (_.version !== '0.1.7') return;
 
 	/**
 	 * @summary Contains common utility methods and members for the CSS animation property.
@@ -4058,6 +4058,7 @@
 		$element = $element.first();
 
 		if (_.animation.supported){
+			$element.prop('offsetTop');
 			var safety = $element.data('animation_safety');
 			if (_is.hash(safety) && _is.number(safety.timer)){
 				clearTimeout(safety.timer);
@@ -4115,7 +4116,7 @@
 );
 (function($, _, _is, _animation){
 	// only register methods if this version is the current version
-	if (_.version !== '0.1.6') return;
+	if (_.version !== '0.1.7') return;
 
 	/**
 	 * @summary Contains common utility methods and members for the CSS transition property.
@@ -4237,6 +4238,7 @@
 		$element = $element.first();
 
 		if (_.transition.supported){
+			$element.prop('offsetTop');
 			var safety = $element.data('transition_safety');
 			if (_is.hash(safety) && _is.number(safety.timer)){
 				clearTimeout(safety.timer);
@@ -4288,7 +4290,7 @@
 );
 (function ($, _, _is, _obj, _fn) {
 	// only register methods if this version is the current version
-	if (_.version !== '0.1.6') return;
+	if (_.version !== '0.1.7') return;
 
 	/**
 	 * @summary A base class providing some helper methods for prototypal inheritance.
@@ -4427,7 +4429,7 @@
 );
 (function (_, _is, _str) {
     // only register methods if this version is the current version
-    if (_.version !== '0.1.6') return;
+    if (_.version !== '0.1.7') return;
 
     _.Event = _.Class.extend(/** @lends FooGallery.utils.Event */{
         /**
@@ -4689,7 +4691,7 @@
 );
 (function($, _, _is){
 	// only register methods if this version is the current version
-	if (_.version !== '0.1.6') return;
+	if (_.version !== '0.1.7') return;
 
 	_.Bounds = _.Class.extend(/** @lends FooGallery.utils.Bounds */{
 		/**
@@ -4790,7 +4792,7 @@
 );
 (function($, _, _is, _fn, _obj){
     // only register methods if this version is the current version
-    if (_.version !== '0.1.6') return;
+    if (_.version !== '0.1.7') return;
 
     _.Timer = _.EventClass.extend(/** @lends FooGallery.utils.Timer */{
         /**
@@ -5084,7 +5086,7 @@
 
 (function($, _, _is, _fn){
 	// only register methods if this version is the current version
-	if (_.version !== '0.1.6') return;
+	if (_.version !== '0.1.7') return;
 
 	_.Factory = _.Class.extend(/** @lends FooGallery.utils.Factory */{
 		/**
@@ -5407,7 +5409,7 @@
 );
 (function(_, _fn, _str){
 	// only register methods if this version is the current version
-	if (_.version !== '0.1.6') return;
+	if (_.version !== '0.1.7') return;
 
 	// this is done to handle Content Security in Chrome and other browsers blocking access to the localStorage object under certain configurations.
 	// see: https://www.chromium.org/for-testers/bug-reporting-guidelines/uncaught-securityerror-failed-to-read-the-localstorage-property-from-window-access-is-denied-for-this-document
@@ -5513,7 +5515,7 @@
 );
 (function($, _, _fn){
     // only register methods if this version is the current version
-    if (_.version !== '0.1.6') return;
+    if (_.version !== '0.1.7') return;
 
     _.FullscreenAPI = _.EventClass.extend(/** @lends FooGallery.utils.FullscreenAPI */{
         /**
@@ -11543,8 +11545,6 @@
 
             self.__loading = null;
 
-            console.log("panel construct: ", self.instanceId);
-
             if (!(self.tmpl.destroying || self.tmpl.destroyed)){
                 self.tmpl.on({
                     "after-filter-change": self.onItemsChanged
@@ -11559,7 +11559,6 @@
         },
         create: function(){
             var self = this;
-            console.log("panel create: ", self.instanceId);
             if (!self.isCreated) {
                 var e = self.trigger("create", [self]);
                 if (!e.isDefaultPrevented()) {
@@ -11598,7 +11597,7 @@
                 _is.string(self.opt.highlight) ? self.opt.highlight : "",
                 self.opt.stackSideAreas ? self.cls.stackSideAreas : "",
                 self.opt.preserveButtonSpace ? self.cls.preserveButtonSpace : "",
-                self.opt.fitImages ? self.cls.fitImages : "",
+                self.opt.fitMedia ? self.cls.fitMedia : "",
                 self.opt.noMobile ? self.cls.noMobile : "",
                 self.opt.hoverButtons ? self.cls.hoverButtons : "",
                 self.opt.classNames
@@ -11608,7 +11607,6 @@
         destroy: function () {
             var self = this, _super = self._super.bind(self);
             if (self.isDestroyed) return _fn.resolved;
-            console.log("panel destroy: ", self.instanceId);
             self.isDestroying = true;
             return $.Deferred(function (def) {
                 if (self.isLoading && _is.promise(self.__loading)) {
@@ -11635,26 +11633,9 @@
                     def.resolve();
                 }
             }).then(function(){
-                console.log("panel destroyed: ", self.instanceId);
                 _super();
             }).promise();
         },
-        // destroy2: function(){
-        //     var self = this;
-        //     console.log("panel destroy: ", self.instanceId);
-        //     if (self.isCreated){
-        //         var e = self.trigger("destroy", [self]);
-        //         if (!e.isDefaultPrevented()) {
-        //             self.isCreated = !self.doDestroy();
-        //         }
-        //         if (!self.isCreated) {
-        //             self.trigger("destroyed", [self]);
-        //             // call the original method
-        //             self._super();
-        //         }
-        //     }
-        //     return !self.isCreated;
-        // },
         doDestroy: function(){
             var self = this;
             self.buttons.destroy();
@@ -11737,8 +11718,6 @@
             if (!(item instanceof _.Item)) return _fn.rejectWith("no items to load");
             if (item === self.currentItem) return _fn.rejectWith("item is currently loaded");
 
-            console.log("panel load: ", self.instanceId);
-
             self.isLoading = true;
             self.isLoaded = false;
             self.isError = false;
@@ -11766,12 +11745,10 @@
                 self.isLoading = false;
                 self.$el.focus();
             }).then(function(){
-                console.log("panel loaded: ", self.instanceId);
                 self.isLoaded = true;
                 self.trigger("loaded", [self, item]);
                 item.updateState();
             }).fail(function(){
-                console.log("panel error: ", self.instanceId);
                 self.isError = true;
                 self.trigger("error", [self, item]);
             }).promise();
@@ -11897,7 +11874,7 @@
 
             loop: true,
             autoProgress: 0,
-            fitImages: false,
+            fitMedia: false,
             keyboard: true,
             noScrollbars: true,
             swipe: true,
@@ -11949,7 +11926,7 @@
             maximized: "fg-panel-maximized",
             fullscreen: "fg-panel-fullscreen",
 
-            fitImages: "fg-panel-fit-images",
+            fitMedia: "fg-panel-fit-media",
             noScrollbars: "fg-panel-no-scroll",
             stackSideAreas: "fg-panel-area-stack",
             preserveButtonSpace: "fg-panel-preserve-button-space",
@@ -12648,13 +12625,22 @@
                 }
                 var hasMedia = self.currentMedia instanceof _.Panel.Media, prev = self.currentMedia;
                 if (self.opt.waitForUnload && hasMedia){
+                    self.panel.trigger("area-unload", [self, prev]);
                     self.doUnload(prev, reverseTransition).then(function(){
+                        self.panel.trigger("area-unloaded", [self, prev]);
                         self.currentMedia = media;
+                        self.panel.trigger("area-load", [self, media]);
                         self.doLoad(media, reverseTransition).then(def.resolve).fail(def.reject);
                     }).fail(def.reject);
                 } else {
-                    if (hasMedia) self.doUnload(prev, reverseTransition);
+                    if (hasMedia){
+                        self.panel.trigger("area-unload", [self, prev]);
+                        self.doUnload(prev, reverseTransition).then(function(){
+                            self.panel.trigger("area-unloaded", [self, prev]);
+                        });
+                    }
                     self.currentMedia = media;
+                    self.panel.trigger("area-load", [self, media]);
                     self.doLoad(media, reverseTransition).then(def.resolve).fail(def.reject);
                 }
             }).then(function(){
@@ -12672,12 +12658,18 @@
         close: function(immediate){
             var self = this;
             if (self.currentMedia instanceof _.Panel.Media){
+                var current = self.currentMedia;
                 if (!immediate){
-                    return self.doUnload(self.currentMedia, false).then(function() {
+                    self.panel.trigger("area-unload", [self, current]);
+                    return self.doUnload(current, false).then(function() {
+                        self.panel.trigger("area-unloaded", [self, current]);
                         self.currentMedia = null;
                     });
                 }
-                self.doUnload(self.currentMedia, false);
+                self.panel.trigger("area-unload", [self, current]);
+                self.doUnload(current, false).then(function(){
+                    self.panel.trigger("area-unloaded", [self, current]);
+                });
                 self.currentMedia = null;
             }
             return _fn.resolved;
@@ -12934,7 +12926,7 @@
     FooGallery.utils.is,
     FooGallery.utils.fn
 );
-(function($, _, _icons, _utils, _is, _fn){
+(function($, _, _icons, _utils, _is, _fn, _t){
 
     _.Panel.Thumbs = _.Panel.SideArea.extend({
         construct: function(panel){
@@ -13114,7 +13106,7 @@
         },
         goto: function(index, disableTransition){
             var self = this;
-            if (!self.isCreated) return;
+            if (!self.isCreated) return _fn.rejectWith("thumbs not created");
 
             index = index < 0 ? 0 : (index > self.lastIndex ? self.lastIndex : index);
 
@@ -13128,40 +13120,47 @@
             if (maxIndex < 0) maxIndex = 0;
             if (scrollIndex > maxIndex) scrollIndex = maxIndex;
 
-            // now that we know the index of the first and last visible thumbs we can set the disabled state of the prev & next buttons
-            self.$prev.toggleClass(states.disabled, !self.panel.opt.loop && scrollIndex <= 0);
-            self.$next.toggleClass(states.disabled, !self.panel.opt.loop && scrollIndex >= maxIndex);
-
-            // find the thumb
-            var $thumb = self.$stage.find(self.sel.thumb.elem).eq(scrollIndex);
-            if ($thumb.length === 0) return;
-
-            // align the right or bottom edge of the thumb with the viewport
-            var alignRightOrBottom = scrollIndex > self.scrollIndex, offset, translate;
-            if (self.info.isHorizontal) {
-                offset = -($thumb.prop("offsetLeft"));
-                if (alignRightOrBottom) offset += self.info.remaining.width;
-                if (self.info.stage.width - Math.abs(offset) < self.info.viewport.width) {
-                    offset = self.info.viewport.width - self.info.stage.width;
+            return $.Deferred(function(def){
+                // find the thumb
+                var $thumb = self.$stage.find(self.sel.thumb.elem).eq(scrollIndex);
+                if ($thumb.length > 0){
+                    // align the right or bottom edge of the thumb with the viewport
+                    var alignRightOrBottom = scrollIndex > self.scrollIndex, hasFullStage = self.__items.length >= self.info.count, offset, translate;
+                    if (self.info.isHorizontal) {
+                        offset = -($thumb.prop("offsetLeft"));
+                        if (alignRightOrBottom) offset += self.info.remaining.width;
+                        if (hasFullStage && self.info.stage.width - Math.abs(offset) < self.info.viewport.width) {
+                            offset = self.info.viewport.width - self.info.stage.width;
+                        }
+                        translate = "translateX(" + (offset - 1) + "px)";
+                    } else {
+                        offset = -($thumb.prop("offsetTop"));
+                        if (alignRightOrBottom) offset += self.info.remaining.height;
+                        if (hasFullStage && self.info.stage.height - Math.abs(offset) < self.info.viewport.height) {
+                            offset = self.info.viewport.height - self.info.stage.height;
+                        }
+                        translate = "translateY(" + (offset - 1) + "px)";
+                    }
+                    if (self.panel.hasTransition && !disableTransition) {
+                        _t.start(self.$stage, function ($el) {
+                            $el.css("transform", translate);
+                        }, null, 350).then(function () {
+                            def.resolve();
+                        }).fail(def.reject);
+                    } else {
+                        self.$stage.addClass(states.noTransitions).css("transform", translate);
+                        self.$stage.prop("offsetHeight");
+                        self.$stage.removeClass(states.noTransitions);
+                        def.resolve();
+                    }
+                } else {
+                    def.resolve();
                 }
-                translate = "translateX(" + (offset - 1) + "px)";
-            } else {
-                offset = -($thumb.prop("offsetTop"));
-                if (alignRightOrBottom) offset += self.info.remaining.height;
-                if (self.info.stage.height - Math.abs(offset) < self.info.viewport.height) {
-                    offset = self.info.viewport.height - self.info.stage.height;
-                }
-                translate = "translateY(" + (offset - 1) + "px)";
-            }
-            if (!!disableTransition) {
-                self.$stage.addClass(states.noTransitions);
-            }
-            self.$stage.css("transform", translate);
-            if (!!disableTransition) {
-                self.$stage.prop("offsetHeight");
-                self.$stage.removeClass(states.noTransitions);
-            }
-            self.scrollIndex = scrollIndex;
+            }).always(function(){
+                self.scrollIndex = scrollIndex;
+                self.$prev.toggleClass(states.disabled, scrollIndex <= 0);
+                self.$next.toggleClass(states.disabled, scrollIndex >= maxIndex);
+            }).promise();
         },
         getInfo: function(){
             var isHorizontal = this.isHorizontal(),
@@ -13206,7 +13205,7 @@
                     }
                 }
                 var visible = this.selectedIndex >= this.scrollIndex && this.selectedIndex < this.scrollIndex + this.info.count;
-                this.goto(visible ? this.scrollIndex : this.selectedIndex, true);
+                this.goto(this.scrollIndex, true);
             }
         },
         onThumbClick: function(e){
@@ -13262,7 +13261,8 @@
     FooGallery.icons,
     FooGallery.utils,
     FooGallery.utils.is,
-    FooGallery.utils.fn
+    FooGallery.utils.fn,
+    FooGallery.utils.transition
 );
 (function($, _, _fn, _t){
 
@@ -13847,7 +13847,7 @@
         },
         resize: function(){
             var self = this;
-            if (self.isCreated && self.panel.opt.fitImages){
+            if (self.isCreated && self.panel.opt.fitMedia){
                 var img = self.$content.get(0);
                 if (img.naturalWidth && img.naturalHeight){
                     var landscape = img.naturalWidth >= img.naturalHeight,
@@ -15616,11 +15616,13 @@
 					self.panel.opt.info = "right";
 				}
 			}
-			var theme = self.getCSSClass("theme");
-			if (theme === "fg-light" && self.panel.opt.button === null){
+			if (self.panel.opt.theme === null){
+				self.panel.opt.theme = self.getCSSClass("theme");
+			}
+			if (self.panel.opt.theme === "fg-light" && self.panel.opt.button === null){
 				self.panel.opt.button = "fg-button-blue";
 			}
-			if (theme === "fg-dark" && self.panel.opt.button === null){
+			if (self.panel.opt.theme === "fg-dark" && self.panel.opt.button === null){
 				self.panel.opt.button = "fg-button-dark";
 			}
 		},
@@ -15650,19 +15652,32 @@
 		},
 		onPanelClose: function(event, self, panel){
 			event.preventDefault();
-			self.close();
+			self.close(false, true);
+		},
+		onPanelAreaLoad: function(event, self, area, media){
+			if (area.name === "content"){
+				media.item.$el.addClass(self.cls.visible);
+			}
+		},
+		onPanelAreaUnload: function(event, self, area, media){
+			if (area.name === "content"){
+				media.item.$el.removeClass(self.cls.visible);
+			}
 		},
 		onParsedItem: function(event, self, item){
 			if (item.isError) return;
 			item.$anchor.on("click.gg", {self: self, item: item}, self.onAnchorClick);
+			item.$el.append($("<span/>").addClass([self.cls.currentPointer, self.panel.opt.theme].join(' ')));
 		},
 		onCreatedItem: function(event, self, item){
 			if (item.isError) return;
 			item.$anchor.on("click.gg", {self: self, item: item}, self.onAnchorClick);
+			item.$el.append($("<span/>").addClass([self.cls.currentPointer, self.panel.opt.theme].join(' ')));
 		},
 		onDestroyItem: function(event, self, item){
 			if (item.isError) return;
 			item.$anchor.off("click.gg", self.onAnchorClick);
+			item.$el.find(self.sel.currentPointer).remove();
 		},
 		onAfterState: function(event, self, state){
 			if (!(state.item instanceof _.Item)) return;
@@ -15670,10 +15685,10 @@
 		},
 		onBeforePageChange: function(event, self, current, next, setPage, isFilter){
 			if (isFilter) return;
-			self.close(true, self.panel.isAttached);
+			if (!self.panel.isMaximized) self.close(true, self.panel.isAttached);
 		},
 		onBeforeFilterChange: function(event, self, current, next, setFilter){
-			self.close(true, self.panel.isAttached);
+			if (!self.panel.isMaximized) self.close(true, self.panel.isAttached);
 		},
 		onAnchorClick: function(e){
 			e.preventDefault();
@@ -15744,27 +15759,27 @@
 
 				self.scrollTo(self.getOffsetTop(item), newRow || self.isFirst).then(function(){
 
-					item.$el.after(self.$section);
 					self.panel.appendTo(self.$section);
-
+					if (newRow) item.$el.after(self.$section);
 					if (self.transitionOpen(newRow)){
 						self.isFirst = false;
-						_t.start(self.$section, "foogrid-visible", true, 350).then(function(){
+						_t.start(self.$section, self.cls.visible, true, 350).then(function(){
 							def.resolve();
 						});
 					} else {
-						self.$section.addClass('foogrid-visible');
+						self.$section.addClass(self.cls.visible);
 						def.resolve();
 					}
 
 				});
 
 			}).then(function(){
+				return self.scrollTo(self.getOffsetTop(item), true);
+			}).then(function(){
 				return self.panel.load(item);
 			}).then(function(){
 				self.$section.focus();
 				self.isBusy = false;
-				return self.scrollTo(self.getOffsetTop(item), true);
 			}).promise();
 		},
 		transitionOpen: function(newRow){
@@ -15782,13 +15797,14 @@
 			var self = this;
 			return $.Deferred(function(def){
 				if (self.panel.currentItem instanceof _.Item){
+					if (newRow) self.panel.currentItem.$el.removeClass(self.cls.visible);
 					if (self.transitionClose(newRow)){
-						_t.start(self.$section, "foogrid-visible", false, 350).then(function(){
+						_t.start(self.$section, self.cls.visible, false, 350).then(function(){
 							self.panel.doClose(true, !newRow);
 							def.resolve();
 						});
 					} else {
-						self.$section.removeClass("foogrid-visible");
+						self.$section.removeClass(self.cls.visible);
 						self.panel.doClose(true, !newRow);
 						def.resolve();
 					}
@@ -15796,10 +15812,8 @@
 					def.resolve();
 				}
 			}).always(function(){
-				if (!newRow){
-					self.$section.detach();
-					self.isFirst = true;
-				}
+				self.$section.detach();
+				self.isFirst = true;
 			}).promise();
 		},
 		transitionClose: function(newRow){
@@ -15844,7 +15858,9 @@
 			}
 		}
 	}, {
-		container: "foogallery foogrid"
+		container: "foogallery foogrid",
+		currentPointer: "fg-current-pointer",
+		visible: "foogrid-visible"
 	});
 
 })(
@@ -15877,12 +15893,14 @@
                 if (this.panel.opt.thumbs === null){
                     this.panel.thumbs.opt.position = this.template.horizontal ? "bottom" : "right";
                 }
-                this.template.noCaptions = this.$el.hasClass("fgs-no-captions") || this.template.noCaptions;
-                this.panel.thumbs.opt.captions = !this.template.noCaptions;
-
-                this.template.contentNav = this.$el.hasClass("fgs-content-nav") || this.template.contentNav;
-                this.panel.opt.buttons.prev = this.panel.opt.buttons.next = this.template.contentNav;
-
+                if (this.$el.hasClass("fgs-no-captions")){
+                    this.template.noCaptions = true;
+                    this.panel.thumbs.opt.captions = !this.template.noCaptions;
+                }
+                if (this.$el.hasClass("fgs-content-nav")){
+                    this.template.contentNav = true;
+                    this.panel.opt.buttons.prev = this.panel.opt.buttons.next = this.template.contentNav;
+                }
                 if (this.panel.opt.highlight === null){
                     this.panel.opt.highlight = this.getPanelHighlightClass();
                 }
@@ -15925,7 +15943,7 @@
             contentNav: false,
 
             fitContainer: false,
-            fitImages: true,
+            fitMedia: true,
             transition: "horizontal",
             hoverButtons: true,
             preserveButtonSpace: false,

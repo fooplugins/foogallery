@@ -84,6 +84,10 @@
 	background-color: rgba(0,0,0,0.6);
 	color: #fff;
 }
+.foogallery.fg-light-overlays .fg-image-overlay {
+	background-color: rgba(255,255,255,0.8);
+	color: #333;
+}
 .foogallery .fg-image-wrap {
 	display: block;
 	position: relative;
@@ -729,6 +733,15 @@
 	color: #fff;
 	border-bottom: 1px solid #FFF;
 }
+.foogallery.fg-light-overlays .fg-caption {
+	background-color: rgba(255,255,255,0.8);
+	color: #333;
+}
+.foogallery.fg-light-overlays .fg-caption a {
+	color: #333;
+	border-bottom-color: #333;
+}
+
 .foogallery .fg-caption a:hover {
 	border-bottom: none;
 }
@@ -827,60 +840,108 @@
 .foogallery.fg-hover-zoom .fg-caption-inner:before {
 	background-image: url('../img/icons.svg#zoom-light');
 }
+.foogallery.fg-light-overlays.fg-hover-zoom .fg-image-overlay:before,
+.foogallery.fg-light-overlays.fg-hover-zoom .fg-caption-inner:before {
+	background-image: url('../img/icons.svg#zoom-dark');
+}
 
 .foogallery.fg-hover-zoom2 .fg-image-overlay:before,
 .foogallery.fg-hover-zoom2 .fg-caption-inner:before {
 	background-image: url('../img/icons.svg#zoom2-light');
+}
+.foogallery.fg-light-overlays.fg-hover-zoom2 .fg-image-overlay:before,
+.foogallery.fg-light-overlays.fg-hover-zoom2 .fg-caption-inner:before {
+	background-image: url('../img/icons.svg#zoom2-dark');
 }
 
 .foogallery.fg-hover-zoom3 .fg-image-overlay:before,
 .foogallery.fg-hover-zoom3 .fg-caption-inner:before {
 	background-image: url('../img/icons.svg#zoom3-light');
 }
+.foogallery.fg-light-overlays.fg-hover-zoom3 .fg-image-overlay:before,
+.foogallery.fg-light-overlays.fg-hover-zoom3 .fg-caption-inner:before {
+	background-image: url('../img/icons.svg#zoom3-dark');
+}
 
 .foogallery.fg-hover-plus .fg-image-overlay:before,
 .foogallery.fg-hover-plus .fg-caption-inner:before {
 	background-image: url('../img/icons.svg#plus-light');
+}
+.foogallery.fg-light-overlays.fg-hover-plus .fg-image-overlay:before,
+.foogallery.fg-light-overlays.fg-hover-plus .fg-caption-inner:before {
+	background-image: url('../img/icons.svg#plus-dark');
 }
 
 .foogallery.fg-hover-circle-plus .fg-image-overlay:before,
 .foogallery.fg-hover-circle-plus .fg-caption-inner:before {
 	background-image: url('../img/icons.svg#circle-plus-light');
 }
+.foogallery.fg-light-overlays.fg-hover-circle-plus .fg-image-overlay:before,
+.foogallery.fg-light-overlays.fg-hover-circle-plus .fg-caption-inner:before {
+	background-image: url('../img/icons.svg#circle-plus-dark');
+}
 
 .foogallery.fg-hover-eye .fg-image-overlay:before,
 .foogallery.fg-hover-eye .fg-caption-inner:before {
 	background-image: url('../img/icons.svg#eye-light');
+}
+.foogallery.fg-light-overlays.fg-hover-eye .fg-image-overlay:before,
+.foogallery.fg-light-overlays.fg-hover-eye .fg-caption-inner:before {
+	background-image: url('../img/icons.svg#eye-dark');
 }
 
 .foogallery.fg-hover-external .fg-image-overlay:before,
 .foogallery.fg-hover-external .fg-caption-inner:before {
 	background-image: url('../img/icons.svg#external-light');
 }
+.foogallery.fg-light-overlays.fg-hover-external .fg-image-overlay:before,
+.foogallery.fg-light-overlays.fg-hover-external .fg-caption-inner:before {
+	background-image: url('../img/icons.svg#external-dark');
+}
 
 .foogallery.fg-video-default .fg-type-video .fg-image-overlay:before,
 .foogallery.fg-video-default .fg-type-video .fg-caption-inner:before {
 	background-image: url('../img/icons.svg#video-default-light');
+}
+.foogallery.fg-light-overlays.fg-video-default .fg-type-video .fg-image-overlay:before,
+.foogallery.fg-light-overlays.fg-video-default .fg-type-video .fg-caption-inner:before {
+	background-image: url('../img/icons.svg#video-default-dark');
 }
 
 .foogallery.fg-video-1 .fg-type-video .fg-image-overlay:before,
 .foogallery.fg-video-1 .fg-type-video .fg-caption-inner:before {
 	background-image: url('../img/icons.svg#video-1-light');
 }
+.foogallery.fg-light-overlays.fg-video-1 .fg-type-video .fg-image-overlay:before,
+.foogallery.fg-light-overlays.fg-video-1 .fg-type-video .fg-caption-inner:before {
+	background-image: url('../img/icons.svg#video-1-dark');
+}
 
 .foogallery.fg-video-2 .fg-type-video .fg-image-overlay:before,
 .foogallery.fg-video-2 .fg-type-video .fg-caption-inner:before {
 	background-image: url('../img/icons.svg#video-2-light');
+}
+.foogallery.fg-light-overlays.fg-video-2 .fg-type-video .fg-image-overlay:before,
+.foogallery.fg-light-overlays.fg-video-2 .fg-type-video .fg-caption-inner:before {
+	background-image: url('../img/icons.svg#video-2-dark');
 }
 
 .foogallery.fg-video-3 .fg-type-video .fg-image-overlay:before,
 .foogallery.fg-video-3 .fg-type-video .fg-caption-inner:before {
 	background-image: url('../img/icons.svg#video-3-light');
 }
+.foogallery.fg-light-overlays.fg-video-3 .fg-type-video .fg-image-overlay:before,
+.foogallery.fg-light-overlays.fg-video-3 .fg-type-video .fg-caption-inner:before {
+	background-image: url('../img/icons.svg#video-3-dark');
+}
 
 .foogallery.fg-video-4 .fg-type-video .fg-image-overlay:before,
 .foogallery.fg-video-4 .fg-type-video .fg-caption-inner:before {
 	background-image: url('../img/icons.svg#video-4-light');
+}
+.foogallery.fg-light-overlays.fg-video-4 .fg-type-video .fg-image-overlay:before,
+.foogallery.fg-light-overlays.fg-video-4 .fg-type-video .fg-caption-inner:before {
+	background-image: url('../img/icons.svg#video-4-dark');
 }
 /* Transitions */
 .foogallery.fg-caption-hover.fg-hover-instant .fg-caption,
