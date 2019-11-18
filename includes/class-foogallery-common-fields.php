@@ -408,6 +408,24 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 						'data-foogallery-preview'               => 'class'
 					)
 				);
+
+				$fields[] = array(
+					'id'       => 'caption_invert_color',
+					'title'    => __( 'Invert Colors', 'foogallery' ),
+					'desc'     => __( 'You can invert the hover effect and caption colors from dark to light.', 'foogallery' ),
+					'section'  => __( 'Hover Effects', 'foogallery' ),
+					'type'     => 'radio',
+					'spacer'   => '<span class="spacer"></span>',
+					'default'  => '',
+					'choices'  => apply_filters( 'foogallery_gallery_template_common_thumbnail_fields_caption_invert_color_choices', array(
+						''                  => __( 'Normal', 'foogallery' ),
+						'fg-light-overlays' => __( 'Inverted', 'foogallery' ),
+					) ),
+					'row_data' => array(
+						'data-foogallery-change-selector' => 'input:radio',
+						'data-foogallery-preview'         => 'class'
+					)
+				);
 				//endregion Hover Effects Fields
 
 				//region Caption Fields
@@ -572,6 +590,7 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 					$classes[] = $this->get_setting_from_gallery( $gallery, 'hover_effect_caption_visibility', 'fg-caption-hover' );
 					$classes[] = $this->get_setting_from_gallery( $gallery, 'hover_effect_transition', 'fg-hover-fade' );
 					$classes[] = $this->get_setting_from_gallery( $gallery, 'hover_effect_icon', 'fg-hover-zoom' );
+					$classes[] = $this->get_setting_from_gallery( $gallery, 'caption_invert_color', '' );
 				} else if ( strpos( $caption_preset, 'fg-preset' ) !== false ) {
 					//set a preset size
 					$classes[] = $this->get_setting_from_gallery( $gallery, 'hover_effect_preset_size', 'fg-preset-small' );
