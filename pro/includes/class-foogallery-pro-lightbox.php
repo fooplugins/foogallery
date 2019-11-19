@@ -69,8 +69,8 @@ if ( ! class_exists( 'FooGallery_Pro_Lightbox' ) ) {
 
 			$field[] = array(
 				'id'      => 'lightbox_button_theme',
-				'title'   => __( 'Button Color', 'foogallery' ),
-				'desc'    => __( 'You can override the button color.', 'foogallery' ),
+				'title'   => __( 'Control Color', 'foogallery' ),
+				'desc'    => __( 'You can override the controls color.', 'foogallery' ),
 				'section' => $section,
 				'spacer'  => '<span class="spacer"></span>',
 				'type'    => 'radio',
@@ -94,8 +94,8 @@ if ( ! class_exists( 'FooGallery_Pro_Lightbox' ) ) {
 
 			$field[] = array(
 				'id'      => 'lightbox_button_highlight',
-				'title'   => __( 'Button Hover Color', 'foogallery' ),
-				'desc'    => __( 'You can override the button hover color.', 'foogallery' ),
+				'title'   => __( 'Control Hover Color', 'foogallery' ),
+				'desc'    => __( 'You can override the controls hover color.', 'foogallery' ),
 				'section' => $section,
 				'spacer'  => '<span class="spacer"></span>',
 				'type'    => 'radio',
@@ -114,6 +114,51 @@ if ( ! class_exists( 'FooGallery_Pro_Lightbox' ) ) {
 					'data-foogallery-change-selector' => 'input',
 					'data-foogallery-preview' => 'shortcode',
 					'data-foogallery-value-selector' => 'input:checked',
+				)
+			);
+
+			$field[] = array(
+				'id'       => 'lightbox_thumbs',
+				'title'    => __( 'Thumbnail Strip', 'foogallery' ),
+				'desc'     => __( 'You can enable or disable thumbnails within the lightbox.', 'foogallery' ),
+				'section'  => $section,
+				'spacer'   => '<span class="spacer"></span>',
+				'type'     => 'radio',
+				'default'  => 'bottom',
+				'choices'  => apply_filters( 'foogallery_gallery_template_lightbox_thumbs_choices', array(
+					'bottom' => __( 'Bottom', 'foogallery' ),
+					'top'    => __( 'Top', 'foogallery' ),
+					'left'   => __( 'Left', 'foogallery' ),
+					'right'  => __( 'Right', 'foogallery' ),
+					'none'  => __( 'Hidden', 'foogallery' ),
+				) ),
+				'row_data' => array(
+					'data-foogallery-change-selector' => 'input',
+					'data-foogallery-preview'         => 'shortcode',
+					'data-foogallery-value-selector'  => 'input:checked',
+				)
+			);
+
+			$field[] = array(
+				'id'      => 'lightbox_thumbs_captions',
+				'title'   => __( 'Thumbnail Strip Captions', 'foogallery' ),
+				'desc'    => __( 'Whether or not the thumbnail strip should contain captions.', 'foogallery' ),
+				'section' => $section,
+				'spacer'  => '<span class="spacer"></span>',
+				'type'    => 'radio',
+				'default' => 'no',
+				'choices' => apply_filters( 'foogallery_gallery_template_lightbox_thumbs_captions_choices', array(
+					'yes' => __( 'Show Captions', 'foogallery' ),
+					'no'  => __( 'No Captions', 'foogallery' ),
+				) ),
+				'row_data'=> array(
+					'data-foogallery-hidden'                   => true,
+					'data-foogallery-show-when-field'          => 'lightbox_thumbs',
+					'data-foogallery-show-when-field-operator' => '!==',
+					'data-foogallery-show-when-field-value'    => 'none',
+					'data-foogallery-change-selector'          => 'input:radio',
+					'data-foogallery-preview'                  => 'shortcode',
+					'data-foogallery-value-selector'           => 'input:checked',
 				)
 			);
 
@@ -162,8 +207,8 @@ if ( ! class_exists( 'FooGallery_Pro_Lightbox' ) ) {
 
 			$field[] = array(
 				'id'      => 'lightbox_info_overlay',
-				'title'   => __( 'Caption Overlay', 'foogallery' ),
-				'desc'    => __( 'Whether or not the caption is overlaid on top of the content.', 'foogallery' ),
+				'title'   => __( 'Caption Display', 'foogallery' ),
+				'desc'    => __( 'Whether or not the caption is overlaid on top of the content, or is inline (outside of the content).', 'foogallery' ),
 				'section' => $section,
 				'spacer'  => '<span class="spacer"></span>',
 				'type'    => 'radio',
@@ -177,72 +222,6 @@ if ( ! class_exists( 'FooGallery_Pro_Lightbox' ) ) {
 					'data-foogallery-show-when-field'          => 'lightbox_info_position',
 					'data-foogallery-show-when-field-operator' => '!==',
 					'data-foogallery-show-when-field-value'    => 'none',
-					'data-foogallery-change-selector'          => 'input:radio',
-					'data-foogallery-preview'                  => 'shortcode',
-					'data-foogallery-value-selector'           => 'input:checked',
-				)
-			);
-
-			if ( $use_lightbox ) {
-				$field[] = array(
-					'id'       => 'lightbox_thumbs',
-					'title'    => __( 'Thumbnail Strip', 'foogallery' ),
-					'desc'     => __( 'You can enable or disable thumbnails within the lightbox.', 'foogallery' ),
-					'section'  => $section,
-					'spacer'   => '<span class="spacer"></span>',
-					'type'     => 'radio',
-					'default'  => 'bottom',
-					'choices'  => apply_filters( 'foogallery_gallery_template_lightbox_thumbs_choices', array(
-						'bottom' => __( 'Bottom', 'foogallery' ),
-						'top'    => __( 'Top', 'foogallery' ),
-						'left'   => __( 'Left', 'foogallery' ),
-						'right'  => __( 'Right', 'foogallery' ),
-						'none'  => __( 'Hidden', 'foogallery' ),
-					) ),
-					'row_data' => array(
-						'data-foogallery-change-selector' => 'input',
-						'data-foogallery-preview'         => 'shortcode',
-						'data-foogallery-value-selector'  => 'input:checked',
-					)
-				);
-
-				$field[] = array(
-					'id'      => 'lightbox_thumbs_captions',
-					'title'   => __( 'Thumbnail Strip Captions', 'foogallery' ),
-					'desc'    => __( 'Whether or not the thumbnail strip should contain captions.', 'foogallery' ),
-					'section' => $section,
-					'spacer'  => '<span class="spacer"></span>',
-					'type'    => 'radio',
-					'default' => 'no',
-					'choices' => apply_filters( 'foogallery_gallery_template_lightbox_thumbs_captions_choices', array(
-						'yes' => __( 'Show Captions', 'foogallery' ),
-						'no'  => __( 'No Captions', 'foogallery' ),
-					) ),
-					'row_data'=> array(
-						'data-foogallery-hidden'                   => true,
-						'data-foogallery-show-when-field'          => 'lightbox_thumbs',
-						'data-foogallery-show-when-field-operator' => '!==',
-						'data-foogallery-show-when-field-value'    => 'none',
-						'data-foogallery-change-selector'          => 'input:radio',
-						'data-foogallery-preview'                  => 'shortcode',
-						'data-foogallery-value-selector'           => 'input:checked',
-					)
-				);
-			}
-
-			$field[] = array(
-				'id'      => 'lightbox_hover_buttons',
-				'title'   => __( 'Show Buttons On Hover', 'foogallery' ),
-				'desc'    => __( 'Only show the buttons when you hover the mouse over.', 'foogallery' ),
-				'section' => $section,
-				'spacer'  => '<span class="spacer"></span>',
-				'type'    => 'radio',
-				'default' => 'no',
-				'choices' => apply_filters( 'foogallery_gallery_template_lightbox_hover_buttons_choices', array(
-					'yes' => __( 'Yes', 'foogallery' ),
-					'no'  => __( 'No', 'foogallery' ),
-				) ),
-				'row_data'=> array(
 					'data-foogallery-change-selector'          => 'input:radio',
 					'data-foogallery-preview'                  => 'shortcode',
 					'data-foogallery-value-selector'           => 'input:checked',
@@ -324,27 +303,43 @@ if ( ! class_exists( 'FooGallery_Pro_Lightbox' ) ) {
 				)
 			);
 
-//			$field[] = array(
-//				'id'      => 'lightbox_buttons',
-//				'title'   => __( 'Buttons', 'foogallery' ),
-//				'desc'    => __( 'Which buttons should be shown.', 'foogallery' ),
-//				'section' => $section,
-//				'type'    => 'checkboxlist',
-//				'default' => 'no',
-//				'choices' => apply_filters( 'foogallery_gallery_template_lightbox_thumbs_captions_choices', array(
-//					'close' => __( 'Close', 'foogallery' ),
-//					'no'  => __( 'No Captions', 'foogallery' ),
-//				) ),
-//				'row_data'=> array(
-//					'data-foogallery-hidden'                   => true,
-//					'data-foogallery-show-when-field'          => 'lightbox_thumbs',
-//					'data-foogallery-show-when-field-operator' => '!==',
-//					'data-foogallery-show-when-field-value'    => 'none',
-//					'data-foogallery-change-selector'          => 'input:radio',
-//					'data-foogallery-preview'                  => 'shortcode',
-//					'data-foogallery-value-selector'           => 'input:checked',
-//				)
-//			);
+			$field[] = array(
+				'id'      => 'lightbox_buttons_display',
+				'title'   => __( 'Controls Display', 'foogallery' ),
+				'desc'    => __( 'Whether or not the control buttons are overlaid on top of the content, or are inline (outside of the content).', 'foogallery' ),
+				'section' => $section,
+				'spacer'  => '<span class="spacer"></span>',
+				'type'    => 'radio',
+				'default' => 'no',
+				'choices' => apply_filters( 'foogallery_gallery_template_lightbox_buttons_display', array(
+					'yes' => __( 'Overlaid', 'foogallery' ),
+					'no'  => __( 'Inline', 'foogallery' ),
+				) ),
+				'row_data'=> array(
+					'data-foogallery-change-selector' => 'input:radio',
+					'data-foogallery-preview'         => 'shortcode',
+					'data-foogallery-value-selector'  => 'input:checked',
+				)
+			);
+
+			$field[] = array(
+				'id'      => 'lightbox_hover_buttons',
+				'title'   => __( 'Show Controls On Hover', 'foogallery' ),
+				'desc'    => __( 'Only show the control buttons when you hover the mouse over.', 'foogallery' ),
+				'section' => $section,
+				'spacer'  => '<span class="spacer"></span>',
+				'type'    => 'radio',
+				'default' => 'no',
+				'choices' => apply_filters( 'foogallery_gallery_template_lightbox_hover_buttons_choices', array(
+					'yes' => __( 'Yes', 'foogallery' ),
+					'no'  => __( 'No', 'foogallery' ),
+				) ),
+				'row_data'=> array(
+					'data-foogallery-change-selector'          => 'input:radio',
+					'data-foogallery-preview'                  => 'shortcode',
+					'data-foogallery-value-selector'           => 'input:checked',
+				)
+			);
 
 			//find the index of the first Hover Effect field
 			$index = $this->find_index_of_section( $fields, __( 'Hover Effects', 'foogallery' ) );
@@ -447,11 +442,15 @@ if ( ! class_exists( 'FooGallery_Pro_Lightbox' ) ) {
 			}
 
 			if ( array_key_exists( $template . '_lightbox_fit_media', $post_data[FOOGALLERY_META_SETTINGS] ) ) {
-				$args['lightbox_fit_media'] = $post_data[FOOGALLERY_META_SETTINGS][$template . '_fit_media'];
+				$args['lightbox_fit_media'] = $post_data[FOOGALLERY_META_SETTINGS][$template . '_lightbox_fit_media'];
 			}
 
 			if ( array_key_exists( $template . '_lightbox_no_scrollbars', $post_data[FOOGALLERY_META_SETTINGS] ) ) {
 				$args['lightbox_no_scrollbars'] = $post_data[FOOGALLERY_META_SETTINGS][$template . '_lightbox_no_scrollbars'];
+			}
+
+			if ( array_key_exists( $template . '_lightbox_buttons_display', $post_data[FOOGALLERY_META_SETTINGS] ) ) {
+				$args['lightbox_buttons_display'] = $post_data[FOOGALLERY_META_SETTINGS][$template . '_lightbox_buttons_display'];
 			}
 
 			return $args;
@@ -532,8 +531,6 @@ if ( ! class_exists( 'FooGallery_Pro_Lightbox' ) ) {
 		private function get_options_from_settings() {
 			$options = array();
 
-			//$options['hoverButtons'] = true;
-
 			$theme = foogallery_gallery_template_setting( 'lightbox_theme', '' );
 			if ( !empty( $theme ) ) {
 				$options['theme'] = $theme;
@@ -572,6 +569,7 @@ if ( ! class_exists( 'FooGallery_Pro_Lightbox' ) ) {
 			$options['hoverButtons'] = foogallery_gallery_template_setting( 'lightbox_hover_buttons', 'no' ) === 'yes';
 			$options['fitMedia'] = foogallery_gallery_template_setting( 'lightbox_fit_media', 'no' ) === 'yes';
 			$options['noScrollbars'] = foogallery_gallery_template_setting( 'lightbox_no_scrollbars', 'no' ) !== 'yes';
+			$options['preserveButtonSpace'] = foogallery_gallery_template_setting( 'lightbox_buttons_display', 'no' ) === 'no';
 
 			return $options;
 		}
