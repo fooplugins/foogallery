@@ -7062,6 +7062,7 @@
 			 * @private
 			 */
 			self._initialize = null;
+			self._checkTimeout = null;
 			self.initializing = false;
 			self.initialized = false;
             self.destroying = false;
@@ -7452,6 +7453,7 @@
              * });
              */
             self.raise("destroy");
+			if (self._checkTimeout) clearTimeout(self._checkTimeout);
             self.$scrollParent.off(self.namespace);
             $(window).off(self.namespace);
             self.state.destroy(preserveState);
@@ -7544,7 +7546,9 @@
 		_check: function (delay) {
 			delay = _is.number(delay) ? delay : 0;
 			var self = this;
-			setTimeout(function () {
+			if (self._checkTimeout) clearTimeout(self._checkTimeout);
+			return self._checkTimeout = setTimeout(function () {
+				self._checkTimeout = null;
 				if (self.initialized && (!self.destroying || !self.destroyed)) {
 					self.loadAvailable();
 				}
@@ -7678,7 +7682,7 @@
 		src: "data-src-fg",
 		template: {},
 		regex: {
-			theme: /(?:\s|^)(fg-(?:light|dark))(?:\s|$)/,
+			theme: /(?:\s|^)(fg-(?:light|dark|custom))(?:\s|$)/,
 			loadingIcon: /(?:\s|^)(fg-loading-(?:default|bars|dots|partial|pulse|trail))(?:\s|$)/,
 			hoverIcon: /(?:\s|^)(fg-hover-(?:zoom|zoom2|zoom3|plus|circle-plus|eye|external|tint))(?:\s|$)/,
 			videoIcon: /(?:\s|^)(fg-video-(?:default|1|2|3|4))(?:\s|$)/,
@@ -12837,8 +12841,10 @@
                         .on("click.foogallery", {self: this}, this.onToggleClick)
                         .appendTo(this.$inner);
                 }
-                this.panel.$el.toggleClass(this.cls.visible, this.isVisible);
-                if (this.isEnabled()) this.setPosition( this.opt.position );
+                if (this.isEnabled()){
+                    this.panel.$el.toggleClass(this.cls.visible, this.isVisible);
+                    this.setPosition( this.opt.position );
+                }
                 return true;
             }
             return false;
@@ -15901,8 +15907,8 @@
                     this.template.contentNav = true;
                     this.panel.opt.buttons.prev = this.panel.opt.buttons.next = this.template.contentNav;
                 }
-                if (this.panel.opt.highlight === null){
-                    this.panel.opt.highlight = this.getPanelHighlightClass();
+                if (this.panel.opt.button === null){
+                    this.panel.opt.button = this.getPanelButtonClass();
                 }
                 return true;
             }
@@ -15912,7 +15918,6 @@
             var self = this;
             if (self._super()){
                 _.breakpoints.register(self.$el, self.template.outerBreakpoints, function () {
-                    console.log("slider bp");
                     self.panel.resize();
                 });
                 self.panel.appendTo(self.$el);
@@ -15928,11 +15933,11 @@
                 return _super(preserveState);
             });
         },
-        getPanelHighlightClass: function(){
+        getPanelButtonClass: function(){
             var className = this.$el.prop("className"),
                 match = /(?:^|\s)fgs-(purple|red|green|blue|orange)(?:$|\s)/.exec(className);
 
-            return match != null && match.length >= 2 ? "fg-highlight-" + match[1] : null;
+            return match != null && match.length >= 2 ? "fg-button-" + match[1] : null;
         },
     });
 
