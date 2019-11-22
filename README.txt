@@ -185,6 +185,18 @@ Update now to get all the latest features, bug fixes and improvements!
 
 == Changelog ==
 
+
+= 1.8.20 =
+* Fix : Fix for Masonry template layout issue in Firefox
+[//]: # fs_premium_only_begin
+* New : Instagram datasource - now works with Video
+* Fix : Instagram datasource - fixed a bunch of issues and changed how it pulls data from Instagram.
+* Fix : Post Query datasource - fixed a few UI bugs.
+* Fix : fixed video bugs, and better support for videos in dynamic galleries
+* Fix : better support for FooBox sharing with albums
+[//]: # fs_premium_only_end
+* Update : FooGallery client side 1.3.6
+
 = 1.8.18 =
 * New : Elementor compatibility - gallery previews in Elementor editor work, and added a FooGallery widget to the Elementor editor
 [//]: # fs_premium_only_begin
