@@ -46,7 +46,7 @@ if ( ! class_exists( 'FooGallery_Pro_Attachment_Taxonomies' ) ) {
 		}
 
 		/**
-		 * Initialize the rest off the hooks if the taxonomies are not disabled
+		 * Initialize the rest of the hooks if the taxonomies are not disabled
 		 */
         function init_rest() {
 			if ( foogallery_get_setting( 'disable_attachment_taxonomies' ) === 'on' ) {
