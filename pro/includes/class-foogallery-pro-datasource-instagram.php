@@ -243,7 +243,6 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Instagram' ) ) {
     	function render_datasource_item( $gallery ) {
     		$show_container = isset( $gallery->datasource_name ) && 'instagram' === $gallery->datasource_name;
 
-
     		$account = isset( $gallery->datasource_value ) && is_array( $gallery->datasource_value ) && array_key_exists( 'account', $gallery->datasource_value ) ? $gallery->datasource_value['account'] : '';
 		    $image_count = isset( $gallery->datasource_value ) && is_array( $gallery->datasource_value ) && array_key_exists( 'image_count', $gallery->datasource_value ) ? $gallery->datasource_value['image_count'] : 0;
     		?>
