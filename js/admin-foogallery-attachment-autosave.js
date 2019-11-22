@@ -1,7 +1,7 @@
 (function($, view){
-​
+
     var EXCLUDE_SELECTOR = '.foogallery-attachment-ignore-change';
-​
+
     // hold reference to the original prototype so we can call it's methods
     var original = view.AttachmentCompat.prototype;
     // replace the wp.media.view.AttachmentCompat with our own which allows us to filter fields from the auto-save
