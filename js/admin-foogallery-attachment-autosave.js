@@ -1,7 +1,7 @@
-(function($, view, model){
-
+(function($, view){
+​
     var EXCLUDE_SELECTOR = '.foogallery-attachment-ignore-change';
-
+​
     // hold reference to the original prototype so we can call it's methods
     var original = view.AttachmentCompat.prototype;
     // replace the wp.media.view.AttachmentCompat with our own which allows us to filter fields from the auto-save
@@ -11,19 +11,21 @@
          * @description We override the original here so we can hook into the controllers "close" event. The controller
          * is the wp.media.view.MediaFrame.Select so in essence this is hooking into the modal close event.
          */
-        ready: function(){
-            this.listenTo(this.controller, "close", this.saveAll);
+        initialize: function(){
+            this.dirty = false;
+            this.controller.on("close", this.saveAll.bind(this));
+            original.initialize.apply(this, arguments);
         },
         /**
-         * @summary Removes the view and its' `el` from the DOM and unbinds any events.
-         * @description We override the original here so we can force a save of all fields just prior to the view being
-         * removed. This also offers us the chance to unbind from the controllers' "close" event.
-         * @returns {*}
+         * @summary Disposes of the current view. This method is called prior to removing the view.
+         * @description We override the dispose method so we can check if one of the excluded fields has been changed and the
+         * view needs to be saved.
+         * @returns {wp.media.view.AttachmentCompat}
          */
-        remove: function(){
-            this.saveAll();
-            this.stopListening(this.controller, "close", this.saveAll);
-            return original.remove.apply(this, arguments);
+        dispose: function(){
+            if (this.dirty) this.saveAll();
+            this.dirty = false;
+            return original.dispose.apply(this, arguments);
         },
         /**
          * @summary Forces all fields to be saved regardless of the exclude selector.
@@ -44,27 +46,14 @@
          */
         save: function(event){
             if (event && event.target && $(event.target).is(EXCLUDE_SELECTOR)){
-                console.log("excluded-field:", event.target.name);
+                // console.log("excluded-field:", event.target.name);
+                this.dirty = true;
                 return;
             }
             original.save.apply(this, arguments);
         }
-
-        // initialize: function() {
-        //     original.initialize.apply( this, arguments );
-        //     this.stopListening( this.model, 'change:compat', this.render );
-        // }
     });
-
-    // if you want to sanitize the data being sent back to the server we can override the original
-    // wp.media.model.Attachment#saveCompat function using the below.
-    // var saveCompat = model.Attachment.prototype.saveCompat;
-    // model.Attachment.prototype.saveCompat = function(data){
-    //     console.log("saveCompat", data);
-    //     return saveCompat.apply(this, arguments);
-    // };
 })(
     jQuery,
-    wp.media.view,
-    wp.media.model
+    wp.media.view
 );
