@@ -189,6 +189,7 @@ Update now to get all the latest features, bug fixes and improvements!
 = 1.8.20 =
 * Fix : Fix for Masonry template layout issue in Firefox
 [//]: # fs_premium_only_begin
+* Fix : Fixed Media Library issues in WP 5.3
 * New : Instagram datasource - now works with Video
 * Fix : Instagram datasource - fixed a bunch of issues and changed how it pulls data from Instagram.
 * Fix : Post Query datasource - fixed a few UI bugs.
