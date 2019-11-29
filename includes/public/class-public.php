@@ -12,6 +12,7 @@ if ( ! class_exists( 'FooGallery_Public' ) ) {
             new FooGallery_CSS_Load_Optimizer();
 			new FooGallery_AdminBar();
 			new FooGallery_Yoast_Seo_Sitemap_Support();
+			new FooGallery_RankMath_Seo_Sitemap_Support();
 		}
 
 	}
