@@ -1,5 +1,9 @@
 jQuery(function ($) {
 
+    $(document).on('change', '.foogallery_post_query_input', function () {
+        $('.foogallery-datasource-modal-insert').removeAttr('disabled');
+    });
+
     /* Manage media javascript */
     $('.foogallery-datasource-post_query').on('click', 'button.remove', function (e) {
         e.preventDefault();
@@ -53,6 +57,11 @@ jQuery(function ($) {
 
         //save the datasource_value
         $('#_foogallery_datasource_value').val(JSON.stringify(value));
+
+        $('#foogallery-datasource-post-query-gallery_post_type').html( $('#gallery_post_type').val() );
+        $('#foogallery-datasource-post-query-no_of_post').html( $('#no_of_post').val() );
+        $('#foogallery-datasource-post-query-exclude').html( $('#exclude').val() );
+        $('#foogallery-datasource-post-query-link_to').html( $(".link_to:checked").val() );
 
         $container.show();
 

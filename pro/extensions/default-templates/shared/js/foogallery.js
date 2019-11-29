@@ -58,7 +58,7 @@
 );
 /*!
 * FooGallery.utils - Contains common utility methods and classes used in our plugins.
-* @version 0.1.3
+* @version 0.1.7
 * @link https://github.com/steveush/foo-utils#readme
 * @copyright Steve Usher 2019
 * @license Released under the GPL-3.0 license.
@@ -111,7 +111,7 @@
 		 * @name version
 		 * @type {string}
 		 */
-		version: '0.1.3'
+		version: '0.1.7'
 	};
 
 	/**
@@ -207,7 +207,7 @@
 })(jQuery);
 (function ($, _){
 	// only register methods if this version is the current version
-	if (_.version !== '0.1.3') return;
+	if (_.version !== '0.1.7') return;
 
 	/**
 	 * @summary Contains common type checking utility methods.
@@ -561,7 +561,7 @@
 );
 (function($, _, _is){
 	// only register methods if this version is the current version
-	if (_.version !== '0.1.3') return;
+	if (_.version !== '0.1.7') return;
 
 	/**
 	 * @memberof FooGallery.utils
@@ -1144,7 +1144,7 @@
 );
 (function(_, _is){
 	// only register methods if this version is the current version
-	if (_.version !== '0.1.3') return;
+	if (_.version !== '0.1.7') return;
 
 	/**
 	 * @summary Contains common url utility methods.
@@ -1170,9 +1170,13 @@
 	 */
 	_.url.parts = function(url){
 		_a.href = url;
+		var port = _a.port ? _a.port : (["http:","https:"].indexOf(_a.protocol) !== -1 ? (_a.protocol === "https:" ? "443" : "80") : ""),
+			host = _a.hostname + (port ? ":" + port : ""),
+			origin = _a.origin ? _a.origin : _a.protocol + "//" + host,
+			pathname = _a.pathname.slice(0, 1) === "/" ? _a.pathname : "/" + _a.pathname;
 		return {
-			hash: _a.hash, host: _a.host, hostname: _a.hostname, href: _a.href,
-			origin: _a.origin, pathname: _a.pathname, port: _a.port,
+			hash: _a.hash, host: host, hostname: _a.hostname, href: _a.href,
+			origin: origin, pathname: pathname, port: port,
 			protocol: _a.protocol, search: _a.search
 		};
 	};
@@ -1207,7 +1211,7 @@
 	 * @function param
 	 * @param {string} search - The search string to use (usually `location.search`).
 	 * @param {string} key - The key of the parameter.
-	 * @param {string} [value] - The value to set for the parameter. If not provided the current value for the `key` is returned.
+	 * @param {?string} [value] - The value to set for the parameter. If not provided the current value for the `key` is returned.
 	 * @returns {?string} The value of the `key` in the given `search` string if no `value` is supplied or `null` if the `key` does not exist.
 	 * @returns {string} A modified `search` string if a `value` is supplied.
 	 * @example <caption>Shows how to retrieve a parameter value from a search string.</caption>{@run true}
@@ -1234,11 +1238,11 @@
 		var regex, match, result, param;
 		if (_is.undef(value)){
 			regex = new RegExp('[?|&]' + key + '=([^&;]+?)(&|#|;|$)'); // regex to match the key and it's value but only capture the value
-			match = regex.exec(search) || [,""]; // match the param otherwise return an empty string match
+			match = regex.exec(search) || ["",""]; // match the param otherwise return an empty string match
 			result = match[1].replace(/\+/g, '%20'); // replace any + character's with spaces
 			return _is.string(result) && !_is.empty(result) ? decodeURIComponent(result) : null; // decode the result otherwise return null
 		}
-		if (value === "" || value === null){
+		if (_is.empty(value)){
 			regex = new RegExp('^([^#]*\?)(([^#]*)&)?' + key + '(\=[^&#]*)?(&|#|$)');
 			result = search.replace(regex, '$1$3$5').replace(/^([^#]*)((\?)&|\?(#|$))/,'$1$3$4');
 		} else {
@@ -1279,7 +1283,7 @@
 );
 (function (_, _is, _fn) {
 	// only register methods if this version is the current version
-	if (_.version !== '0.1.3') return;
+	if (_.version !== '0.1.7') return;
 
 	/**
 	 * @summary Contains common string utility methods.
@@ -1367,7 +1371,7 @@
 			return false;
 		var parts = target.split(/\W/);
 		for (var i = 0, len = parts.length; i < len; i++){
-			if (ignoreCase ? parts[i].toUpperCase() == word.toUpperCase() : parts[i] == word) return true;
+			if (ignoreCase ? parts[i].toUpperCase() === word.toUpperCase() : parts[i] === word) return true;
 		}
 		return false;
 	};
@@ -1388,8 +1392,8 @@
 	 * console.log( _str.endsWith( "something", "no" ) ); // => false
 	 */
 	_.str.endsWith = function (target, substr) {
-		if (!_is.string(target) || _is.empty(target) || !_is.string(substr) || _is.empty(substr)) return target == substr;
-		return target.slice(target.length - substr.length) == substr;
+		if (!_is.string(target) || _is.empty(target) || !_is.string(substr) || _is.empty(substr)) return target === substr;
+		return target.slice(target.length - substr.length) === substr;
 	};
 
 	/**
@@ -1507,7 +1511,7 @@
 	 */
 	_.str.startsWith = function (target, substr) {
 		if (_is.empty(target) || _is.empty(substr)) return false;
-		return target.slice(0, substr.length) == substr;
+		return target.slice(0, substr.length) === substr;
 	};
 
 	/**
@@ -1594,7 +1598,7 @@
 );
 (function($, _, _is, _fn, _str){
 	// only register methods if this version is the current version
-	if (_.version !== '0.1.3') return;
+	if (_.version !== '0.1.7') return;
 
 	/**
 	 * @summary Contains common object utility methods.
@@ -1926,7 +1930,7 @@
 );
 (function($, _, _is){
 	// only register methods if this version is the current version
-	if (_.version !== '0.1.3') return;
+	if (_.version !== '0.1.7') return;
 
 	// any methods that have dependencies but don't fall into a specific subset or namespace can be added here
 
@@ -2207,7 +2211,233 @@
 );
 (function($, _, _is){
 	// only register methods if this version is the current version
-	if (_.version !== '0.1.3') return;
+	if (_.version !== '0.1.7') return;
+
+	/**
+	 * @summary Contains common utility methods and members for the CSS animation property.
+	 * @memberof FooGallery.utils
+	 * @namespace animation
+	 */
+	_.animation = {};
+
+	function raf(callback){
+		return setTimeout(callback, 1);
+	}
+
+	function caf(requestID){
+		clearTimeout(requestID);
+	}
+
+	/**
+	 * @summary A cross browser wrapper for the `requestAnimationFrame` method.
+	 * @memberof FooGallery.utils.animation
+	 * @function requestFrame
+	 * @param {function} callback - The function to call when it's time to update your animation for the next repaint.
+	 * @return {number} - The request id that uniquely identifies the entry in the callback list.
+	 */
+	_.animation.requestFrame = (window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame || raf).bind(window);
+
+	/**
+	 * @summary A cross browser wrapper for the `cancelAnimationFrame` method.
+	 * @memberof FooGallery.utils.animation
+	 * @function cancelFrame
+	 * @param {number} requestID - The ID value returned by the call to {@link FooGallery.utils.animation.requestFrame|requestFrame} that requested the callback.
+	 */
+	_.animation.cancelFrame = (window.cancelAnimationFrame || window.mozCancelAnimationFrame || window.webkitCancelAnimationFrame || window.msCancelAnimationFrame || caf).bind(window);
+
+	// create a test element to check for the existence of the various animation properties
+	var testElement = document.createElement('div');
+
+	/**
+	 * @summary Whether or not animations are supported by the current browser.
+	 * @memberof FooGallery.utils.animation
+	 * @name supported
+	 * @type {boolean}
+	 */
+	_.animation.supported = (
+		/**
+		 * @ignore
+		 * @summary Performs a one time test to see if animations are supported
+		 * @param {HTMLElement} el - An element to test with.
+		 * @returns {boolean} `true` if animations are supported.
+		 */
+		function(el){
+			var style = el.style;
+			return _is.string(style['animation'])
+				|| _is.string(style['WebkitAnimation'])
+				|| _is.string(style['MozAnimation'])
+				|| _is.string(style['msAnimation'])
+				|| _is.string(style['OAnimation']);
+		}
+	)(testElement);
+
+	/**
+	 * @summary The `animationend` event name for the current browser.
+	 * @memberof FooGallery.utils.animation
+	 * @name end
+	 * @type {string}
+	 * @description Depending on the browser this returns one of the following values:
+	 *
+	 * <ul><!--
+	 * --><li>`"animationend"`</li><!--
+	 * --><li>`"webkitAnimationEnd"`</li><!--
+	 * --><li>`"msAnimationEnd"`</li><!--
+	 * --><li>`"oAnimationEnd"`</li><!--
+	 * --><li>`null` - If the browser doesn't support animations</li><!--
+	 * --></ul>
+	 */
+	_.animation.end = (
+		/**
+		 * @ignore
+		 * @summary Performs a one time test to determine which `animationend` event to use for the current browser.
+		 * @param {HTMLElement} el - An element to test with.
+		 * @returns {?string} The correct `animationend` event for the current browser, `null` if the browser doesn't support animations.
+		 */
+		function(el){
+			var style = el.style;
+			if (_is.string(style['animation'])) return 'animationend';
+			if (_is.string(style['WebkitAnimation'])) return 'webkitAnimationEnd';
+			if (_is.string(style['MozAnimation'])) return 'animationend';
+			if (_is.string(style['msAnimation'])) return 'msAnimationEnd';
+			if (_is.string(style['OAnimation'])) return 'oAnimationEnd';
+			return null;
+		}
+	)(testElement);
+
+	/**
+	 * @summary Gets the `animation-duration` value for the supplied jQuery element.
+	 * @memberof FooGallery.utils.animation
+	 * @function duration
+	 * @param {jQuery} $element - The jQuery element to retrieve the duration from.
+	 * @param {number} [def=0] - The default value to return if no duration is set.
+	 * @returns {number} The value of the `animation-duration` property converted to a millisecond value.
+	 */
+	_.animation.duration = function($element, def){
+		def = _is.number(def) ? def : 0;
+		if (!_is.jq($element)) return def;
+		// we can use jQuery.css() method to retrieve the value cross browser
+		var duration = $element.css('animation-duration');
+		if (/^([\d.]*)+?(ms|s)$/i.test(duration)){
+			// if we have a valid time value
+			var match = duration.match(/^([\d.]*)+?(ms|s)$/i),
+				value = parseFloat(match[1]),
+				unit = match[2].toLowerCase();
+			if (unit === 's'){
+				// convert seconds to milliseconds
+				value = value * 1000;
+			}
+			return value;
+		}
+		return def;
+	};
+
+	/**
+	 * @summary Gets the `animation-iteration-count` value for the supplied jQuery element.
+	 * @memberof FooGallery.utils.animation
+	 * @function iterations
+	 * @param {jQuery} $element - The jQuery element to retrieve the duration from.
+	 * @param {number} [def=1] - The default value to return if no iteration count is set.
+	 * @returns {number} The value of the `animation-iteration-count` property.
+	 */
+	_.animation.iterations = function($element, def){
+		def = _is.number(def) ? def : 1;
+		if (!_is.jq($element)) return def;
+		// we can use jQuery.css() method to retrieve the value cross browser
+		var iterations = $element.css('animation-iteration-count');
+		if (/^(\d+|infinite)$/i.test(iterations)){
+			return iterations === "infinite" ? Infinity : parseInt(iterations);
+		}
+		return def;
+	};
+
+	/**
+	 * @summary The callback function to execute when starting a animation.
+	 * @callback FooGallery.utils.animation~startCallback
+	 * @param {jQuery} $element - The element to start the animation on.
+	 * @this Element
+	 */
+
+	/**
+	 * @summary Start a animation by toggling the supplied `className` on the `$element`.
+	 * @memberof FooGallery.utils.animation
+	 * @function start
+	 * @param {jQuery} $element - The jQuery element to start the animation on.
+	 * @param {(string|FooGallery.utils.animation~startCallback)} classNameOrFunc - One or more class names (separated by spaces) to be toggled or a function that performs the required actions to start the animation.
+	 * @param {boolean} [state] - A Boolean (not just truthy/falsy) value to determine whether the class should be added or removed.
+	 * @param {number} [timeout] - The maximum time, in milliseconds, to wait for the `animationend` event to be raised. If not provided this will be automatically set to the elements `animation-duration` multiplied by the `animation-iteration-count` property plus an extra 50 milliseconds.
+	 * @returns {Promise}
+	 * @description This method lets us use CSS animations by toggling a class and using the `animationend` event to perform additional actions once the animation has completed across all browsers. In browsers that do not support animations this method would behave the same as if just calling jQuery's `.toggleClass` method.
+	 *
+	 * The last parameter `timeout` is used to create a timer that behaves as a safety net in case the `animationend` event is never raised and ensures the deferred returned by this method is resolved or rejected within a specified time.
+	 *
+	 * If no `timeout` is supplied the `animation-duration` and `animation-iterations-count` must be set on the `$element` before this method is called so one can be generated.
+	 * @see {@link https://developer.mozilla.org/en/docs/Web/CSS/animation-duration|animation-duration - CSS | MDN} for more information on the `animation-duration` CSS property.
+	 */
+	_.animation.start = function($element, classNameOrFunc, state, timeout){
+		var deferred = $.Deferred(), promise = deferred.promise();
+
+		$element = $element.first();
+
+		if (_.animation.supported){
+			$element.prop('offsetTop');
+			var safety = $element.data('animation_safety');
+			if (_is.hash(safety) && _is.number(safety.timer)){
+				clearTimeout(safety.timer);
+				$element.removeData('animation_safety').off(_.animation.end + '.utils');
+				safety.deferred.reject();
+			}
+			if (!_is.number(timeout)){
+				var iterations = _.animation.iterations($element);
+				if (iterations === Infinity){
+					deferred.reject("No timeout supplied with an infinite animation.");
+					return promise;
+				}
+				timeout = (_.animation.duration($element) * iterations) + 50;
+			}
+			safety = {
+				deferred: deferred,
+				timer: setTimeout(function(){
+					// This is the safety net in case a animation fails for some reason and the animationend event is never raised.
+					// This will remove the bound event and resolve the deferred
+					$element.removeData('animation_safety').off(_.animation.end + '.utils');
+					deferred.resolve();
+				}, timeout)
+			};
+			$element.data('animation_safety', safety);
+
+			$element.on(_.animation.end + '.utils', function(e){
+				if ($element.is(e.target)){
+					clearTimeout(safety.timer);
+					$element.removeData('animation_safety').off(_.animation.end + '.utils');
+					deferred.resolve();
+				}
+			});
+		}
+
+		_.animation.requestFrame(function(){
+			if (_is.fn(classNameOrFunc)){
+				classNameOrFunc.apply($element.get(0), [$element]);
+			} else {
+				$element.toggleClass(classNameOrFunc, state);
+			}
+			if (!_.animation.supported){
+				// If the browser doesn't support animations then just resolve the deferred
+				deferred.resolve();
+			}
+		});
+
+		return promise;
+	};
+
+})(
+	// dependencies
+	FooGallery.utils.$,
+	FooGallery.utils,
+	FooGallery.utils.is
+);
+(function($, _, _is, _animation){
+	// only register methods if this version is the current version
+	if (_.version !== '0.1.7') return;
 
 	/**
 	 * @summary Contains common utility methods and members for the CSS transition property.
@@ -2229,7 +2459,7 @@
 		/**
 		 * @ignore
 		 * @summary Performs a one time test to see if transitions are supported
-		 * @param {Element} el - An element to test with.
+		 * @param {HTMLElement} el - An element to test with.
 		 * @returns {boolean} `true` if transitions are supported.
 		 */
 		function(el){
@@ -2261,7 +2491,7 @@
 		/**
 		 * @ignore
 		 * @summary Performs a one time test to determine which `transitionend` event to use for the current browser.
-		 * @param {Element} el - An element to test with.
+		 * @param {HTMLElement} el - An element to test with.
 		 * @returns {?string} The correct `transitionend` event for the current browser, `null` if the browser doesn't support transitions.
 		 */
 		function(el){
@@ -2288,9 +2518,9 @@
 		if (!_is.jq($element)) return def;
 		// we can use jQuery.css() method to retrieve the value cross browser
 		var duration = $element.css('transition-duration');
-		if (/^([\d\.]*)+?(ms|s)$/i.test(duration)){
+		if (/^([\d.]*)+?(ms|s)$/i.test(duration)){
 			// if we have a valid time value
-			var match = duration.match(/^([\d\.]*)+?(ms|s)$/i),
+			var match = duration.match(/^([\d.]*)+?(ms|s)$/i),
 				value = parseFloat(match[1]),
 				unit = match[2].toLowerCase();
 			if (unit === 's'){
@@ -2324,11 +2554,12 @@
 	 * @see {@link https://developer.mozilla.org/en/docs/Web/CSS/transition-duration|transition-duration - CSS | MDN} for more information on the `transition-duration` CSS property.
 	 */
 	_.transition.start = function($element, classNameOrFunc, state, timeout){
-		var deferred = $.Deferred();
+		var deferred = $.Deferred(), promise = deferred.promise();
 
 		$element = $element.first();
 
 		if (_.transition.supported){
+			$element.prop('offsetTop');
 			var safety = $element.data('transition_safety');
 			if (_is.hash(safety) && _is.number(safety.timer)){
 				clearTimeout(safety.timer);
@@ -2356,8 +2587,7 @@
 			});
 		}
 
-		setTimeout(function(){
-			// This is executed inside of a 20ms timeout to allow the binding of the event handler above to actually happen before the class is toggled
+		_animation.requestFrame(function() {
 			if (_is.fn(classNameOrFunc)){
 				classNameOrFunc.apply($element.get(0), [$element]);
 			} else {
@@ -2367,20 +2597,21 @@
 				// If the browser doesn't support transitions then just resolve the deferred
 				deferred.resolve();
 			}
-		}, 20);
+		});
 
-		return deferred.promise();
+		return promise;
 	};
 
 })(
 	// dependencies
 	FooGallery.utils.$,
 	FooGallery.utils,
-	FooGallery.utils.is
+	FooGallery.utils.is,
+	FooGallery.utils.animation
 );
 (function ($, _, _is, _obj, _fn) {
 	// only register methods if this version is the current version
-	if (_.version !== '0.1.3') return;
+	if (_.version !== '0.1.7') return;
 
 	/**
 	 * @summary A base class providing some helper methods for prototypal inheritance.
@@ -2517,9 +2748,9 @@
 	FooGallery.utils.obj,
 	FooGallery.utils.fn
 );
-(function (_, _is) {
+(function (_, _is, _str) {
     // only register methods if this version is the current version
-    if (_.version !== '0.1.3') return;
+    if (_.version !== '0.1.7') return;
 
     _.Event = _.Class.extend(/** @lends FooGallery.utils.Event */{
         /**
@@ -2543,6 +2774,10 @@
          * eventClass.trigger(event);
          */
         construct: function(type){
+            if (_is.empty(type))
+                throw new SyntaxError('FooGallery.utils.Event objects must be supplied a `type`.');
+
+            var namespaced = _str.contains(type, ".");
             /**
              * @summary The type of event.
              * @memberof FooGallery.utils.Event#
@@ -2550,7 +2785,15 @@
              * @type {string}
              * @readonly
              */
-            this.type = type;
+            this.type = namespaced ? _str.until(type, ".") : type;
+            /**
+             * @summary The namespace of the event.
+             * @memberof FooGallery.utils.Event#
+             * @name namespace
+             * @type {string}
+             * @readonly
+             */
+            this.namespace = namespaced ? _str.from(type, ".") : null;
             /**
              * @summary Whether the default action should be taken or not.
              * @memberof FooGallery.utils.Event#
@@ -2559,6 +2802,14 @@
              * @readonly
              */
             this.defaultPrevented = false;
+            /**
+             * @summary The {@link FooGallery.utils.EventClass} that triggered this event.
+             * @memberof FooGallery.utils.Event#
+             * @name target
+             * @type {FooGallery.utils.EventClass}
+             * @readonly
+             */
+            this.target = null;
         },
         /**
          * @summary Informs the class that raised this event that its default action should not be taken.
@@ -2567,6 +2818,15 @@
          */
         preventDefault: function(){
             this.defaultPrevented = true;
+        },
+        /**
+         * @summary Gets whether the default action should be taken or not.
+         * @memberof FooGallery.utils.Event#
+         * @function isDefaultPrevented
+         * @returns {boolean}
+         */
+        isDefaultPrevented: function(){
+            return this.defaultPrevented;
         }
     });
 
@@ -2595,6 +2855,13 @@
             this.__handlers = {};
         },
         /**
+         * @summary Attach multiple event handler functions for one or more events to the class.
+         * @memberof FooGallery.utils.EventClass#
+         * @function on
+         * @param {object} events - An object containing an event name to handler mapping.
+         * @param {*} [thisArg] - The value of `this` within the `handler` function. Defaults to the `EventClass` raising the event.
+         * @returns {this}
+         *//**
          * @summary Attach an event handler function for one or more events to the class.
          * @memberof FooGallery.utils.EventClass#
          * @function on
@@ -2604,54 +2871,105 @@
          * @returns {this}
          */
         on: function(events, handler, thisArg){
-            if (!_is.string(events) || !_is.fn(handler)) return this;
-            thisArg = _is.undef(thisArg) ? this : thisArg;
-            var self = this, handlers = self.__handlers, exists;
-            events.split(" ").forEach(function(type){
-                if (!_is.array(handlers[type])){
-                    handlers[type] = [];
-                }
-                exists = handlers[type].some(function(h){
-                    return h.fn === handler && h.thisArg === thisArg;
-                });
-                if (!exists){
-                    handlers[type].push({
-                        fn: handler,
-                        thisArg: thisArg
+            var self = this;
+            if (_is.object(events)){
+                thisArg = _is.undef(handler) ? this : handler;
+                Object.keys(events).forEach(function(key){
+                    key.split(" ").forEach(function(type){
+                        self.__on(type, events[key], thisArg);
                     });
-                }
-            });
+                });
+            } else if (_is.string(events) && _is.fn(handler)) {
+                thisArg = _is.undef(thisArg) ? this : thisArg;
+                events.split(" ").forEach(function(type){
+                    self.__on(type, handler, thisArg);
+                });
+            }
+
             return self;
         },
+        __on: function(event, handler, thisArg){
+            var self = this,
+                namespaced = _str.contains(event, "."),
+                type = namespaced ? _str.until(event, ".") : event,
+                namespace = namespaced ? _str.from(event, ".") : null;
+
+            if (!_is.array(self.__handlers[type])){
+                self.__handlers[type] = [];
+            }
+            var exists = self.__handlers[type].some(function(h){
+                return h.namespace === namespace && h.fn === handler && h.thisArg === thisArg;
+            });
+            if (!exists){
+                self.__handlers[type].push({
+                    namespace: namespace,
+                    fn: handler,
+                    thisArg: thisArg
+                });
+            }
+        },
         /**
+         * @summary Remove multiple event handler functions for one or more events from the class.
+         * @memberof FooGallery.utils.EventClass#
+         * @function off
+         * @param {object} events - An object containing an event name to handler mapping.
+         * @param {*} [thisArg] - The value of `this` within the `handler` function. Defaults to the `EventClass` raising the event.
+         * @returns {this}
+         *//**
          * @summary Remove an event handler function for one or more events from the class.
          * @memberof FooGallery.utils.EventClass#
          * @function off
          * @param {string} events - One or more space-separated event types.
          * @param {function} handler - The handler to remove.
          * @param {*} [thisArg] - The value of `this` within the `handler` function.
-         * @returns {FooGallery.utils.EventClass}
+         * @returns {this}
          */
         off: function(events, handler, thisArg){
-            if (!_is.string(events)) return this;
-            handler = _is.fn(handler) ? handler : null;
-            thisArg = _is.undef(thisArg) ? this : thisArg;
-            var self = this, handlers = self.__handlers;
-            events.split(" ").forEach(function(type){
-                if (_is.array(handlers[type])){
+            var self = this;
+            if (_is.object(events)){
+                thisArg = _is.undef(handler) ? this : handler;
+                Object.keys(events).forEach(function(key){
+                    key.split(" ").forEach(function(type){
+                        self.__off(type, _is.fn(events[key]) ? events[key] : null, thisArg);
+                    });
+                });
+            } else if (_is.string(events)) {
+                handler = _is.fn(handler) ? handler : null;
+                thisArg = _is.undef(thisArg) ? this : thisArg;
+                events.split(" ").forEach(function(type){
+                    self.__off(type, handler, thisArg);
+                });
+            }
+
+            return self;
+        },
+        __off: function(event, handler, thisArg){
+            var self = this,
+                type = _str.until(event, ".") || null,
+                namespace = _str.from(event, ".") || null,
+                types = [];
+
+            if (!_is.empty(type)){
+                types.push(type);
+            } else if (!_is.empty(namespace)){
+                types.push.apply(types, Object.keys(self.__handlers));
+            }
+
+            types.forEach(function(type){
+                if (!_is.array(self.__handlers[type])) return;
+                self.__handlers[type] = self.__handlers[type].filter(function (h) {
                     if (handler != null){
-                        handlers[type] = handlers[type].filter(function(h){
-                            return !(h.fn === handler && h.thisArg === thisArg);
-                        });
-                        if (handlers[type].length === 0){
-                            delete handlers[type];
-                        }
-                    } else {
-                        delete handlers[type];
+                        return !(h.namespace === namespace && h.fn === handler && h.thisArg === thisArg);
                     }
+                    if (namespace != null){
+                        return h.namespace !== namespace;
+                    }
+                    return false;
+                });
+                if (self.__handlers[type].length === 0){
+                    delete self.__handlers[type];
                 }
             });
-            return self;
         },
         /**
          * @summary Trigger an event on the current class.
@@ -2662,39 +2980,39 @@
          * @returns {(FooGallery.utils.Event|FooGallery.utils.Event[]|null)} Returns the {@link FooGallery.utils.Event|event object} of the triggered event. If more than one event was triggered an array of {@link FooGallery.utils.Event|event objects} is returned. If no `event` was supplied or triggered `null` is returned.
          */
         trigger: function(event, args){
-            var instance = event instanceof _.Event;
-            if (!instance && !_is.string(event)) return null;
             args = _is.array(args) ? args : [];
-            var self = this,
-                handlers = self.__handlers,
-                result = [],
-                _trigger = function(e){
-                    result.push(e);
-                    if (!_is.array(handlers[e.type])) return;
-                    handlers[e.type].forEach(function (h) {
-                        h.fn.apply(h.thisArg, [e].concat(args));
-                    });
-                };
-
-            if (instance){
-                _trigger(event);
-            } else {
+            var self = this, result = [];
+            if (event instanceof _.Event){
+                result.push(event);
+                self.__trigger(event, args);
+            } else if (_is.string(event)) {
                 event.split(" ").forEach(function(type){
-                    _trigger(new _.Event(type));
+                    var index = result.push(new _.Event(type)) - 1;
+                    self.__trigger(result[index], args);
                 });
             }
             return _is.empty(result) ? null : (result.length === 1 ? result[0] : result);
+        },
+        __trigger: function(event, args){
+            var self = this;
+            event.target = self;
+            if (!_is.array(self.__handlers[event.type])) return;
+            self.__handlers[event.type].forEach(function (h) {
+                if (event.namespace != null && h.namespace !== event.namespace) return;
+                h.fn.apply(h.thisArg, [event].concat(args));
+            });
         }
     });
 
 })(
     // dependencies
     FooGallery.utils,
-    FooGallery.utils.is
+    FooGallery.utils.is,
+    FooGallery.utils.str
 );
 (function($, _, _is){
 	// only register methods if this version is the current version
-	if (_.version !== '0.1.3') return;
+	if (_.version !== '0.1.7') return;
 
 	_.Bounds = _.Class.extend(/** @lends FooGallery.utils.Bounds */{
 		/**
@@ -2793,9 +3111,303 @@
 	FooGallery.utils,
 	FooGallery.utils.is
 );
+(function($, _, _is, _fn, _obj){
+    // only register methods if this version is the current version
+    if (_.version !== '0.1.7') return;
+
+    _.Timer = _.EventClass.extend(/** @lends FooGallery.utils.Timer */{
+        /**
+         * @summary A simple timer that triggers events.
+         * @constructs
+         * @param {number} [interval=1000] - The internal tick interval of the timer.
+         */
+        construct: function(interval){
+            this._super();
+            /**
+             * @summary The internal tick interval of the timer in milliseconds.
+             * @memberof FooGallery.utils.Timer#
+             * @name interval
+             * @type {number}
+             * @default 1000
+             * @readonly
+             */
+            this.interval = _is.number(interval) ? interval : 1000;
+            /**
+             * @summary Whether the timer is currently running or not.
+             * @memberof FooGallery.utils.Timer#
+             * @name isRunning
+             * @type {boolean}
+             * @default false
+             * @readonly
+             */
+            this.isRunning = false;
+            /**
+             * @summary Whether the timer is currently paused or not.
+             * @memberof FooGallery.utils.Timer#
+             * @name isPaused
+             * @type {boolean}
+             * @default false
+             * @readonly
+             */
+            this.isPaused = false;
+            /**
+             * @summary Whether the timer can resume from a previous state or not.
+             * @memberof FooGallery.utils.Timer#
+             * @name canResume
+             * @type {boolean}
+             * @default false
+             * @readonly
+             */
+            this.canResume = false;
+            /**
+             * @summary Whether the timer can restart or not.
+             * @memberof FooGallery.utils.Timer#
+             * @name canRestart
+             * @type {boolean}
+             * @default false
+             * @readonly
+             */
+            this.canRestart = false;
+            /**
+             * @summary The internal tick timeout ID.
+             * @memberof FooGallery.utils.Timer#
+             * @name __timeout
+             * @type {?number}
+             * @default null
+             * @private
+             */
+            this.__timeout = null;
+            /**
+             * @summary Whether the timer is incrementing or decrementing.
+             * @memberof FooGallery.utils.Timer#
+             * @name __decrement
+             * @type {boolean}
+             * @default false
+             * @private
+             */
+            this.__decrement = false;
+            /**
+             * @summary The total time for the timer.
+             * @memberof FooGallery.utils.Timer#
+             * @name __time
+             * @type {number}
+             * @default 0
+             * @private
+             */
+            this.__time = 0;
+            /**
+             * @summary The remaining time for the timer.
+             * @memberof FooGallery.utils.Timer#
+             * @name __remaining
+             * @type {number}
+             * @default 0
+             * @private
+             */
+            this.__remaining = 0;
+            /**
+             * @summary The current time for the timer.
+             * @memberof FooGallery.utils.Timer#
+             * @name __current
+             * @type {number}
+             * @default 0
+             * @private
+             */
+            this.__current = 0;
+            /**
+             * @summary The final time for the timer.
+             * @memberof FooGallery.utils.Timer#
+             * @name __finish
+             * @type {number}
+             * @default 0
+             * @private
+             */
+            this.__finish = 0;
+            /**
+             * @summary The last arguments supplied to the {@link FooGallery.utils.Timer#start|start} method.
+             * @memberof FooGallery.utils.Timer#
+             * @name __restart
+             * @type {Array}
+             * @default []
+             * @private
+             */
+            this.__restart = [];
+        },
+        /**
+         * @summary Resets the timer back to a fresh starting state.
+         * @memberof FooGallery.utils.Timer#
+         * @function __reset
+         * @private
+         */
+        __reset: function(){
+            clearTimeout(this.__timeout);
+            this.__timeout = null;
+            this.__decrement = false;
+            this.__time = 0;
+            this.__remaining = 0;
+            this.__current = 0;
+            this.__finish = 0;
+            this.isRunning = false;
+            this.isPaused = false;
+            this.canResume = false;
+        },
+        /**
+         * @summary Generates event args to be passed to listeners of the timer events.
+         * @memberof FooGallery.utils.Timer#
+         * @function __eventArgs
+         * @param {...*} [args] - Any number of additional arguments to pass to an event listener.
+         * @return {Array} - The first 3 values of the result will always be the current time, the total time and boolean indicating if the timer is decremental.
+         * @private
+         */
+        __eventArgs: function(args){
+            return [
+                this.__current,
+                this.__time,
+                this.__decrement
+            ].concat(_fn.arg2arr(arguments));
+        },
+        /**
+         * @summary Performs the tick for the timer checking and modifying the various internal states.
+         * @memberof FooGallery.utils.Timer#
+         * @function __tick
+         * @private
+         */
+        __tick: function(){
+            var self = this;
+            self.trigger("tick", self.__eventArgs());
+            if (self.__current === self.__finish){
+                self.trigger("complete", self.__eventArgs());
+                self.__reset();
+            } else {
+                if (self.__decrement){
+                    self.__current--;
+                } else {
+                    self.__current++;
+                }
+                self.__remaining--;
+                self.canResume = self.__remaining > 0;
+                self.__timeout = setTimeout(function () {
+                    self.__tick();
+                }, self.interval);
+            }
+        },
+        /**
+         * @summary Starts the timer using the supplied `time` and whether or not to increment or decrement from the value.
+         * @memberof FooGallery.utils.Timer#
+         * @function start
+         * @param {number} time - The total time in seconds for the timer.
+         * @param {boolean} [decrement=false] - Whether the timer should increment or decrement from or to the supplied time.
+         */
+        start: function(time, decrement){
+            var self = this;
+            if (self.isRunning) return;
+            decrement = _is.boolean(decrement) ? decrement : false;
+            self.__restart = [time, decrement];
+            self.__decrement = decrement;
+            self.__time = time;
+            self.__remaining = time;
+            self.__current = decrement ? time : 0;
+            self.__finish = decrement ? 0 : time;
+            self.canRestart = true;
+            self.isRunning = true;
+            self.isPaused = false;
+            self.trigger("start", self.__eventArgs());
+            self.__tick();
+        },
+        /**
+         * @summary Starts the timer counting down to `0` from the supplied `time`.
+         * @memberof FooGallery.utils.Timer#
+         * @function countdown
+         * @param {number} time - The total time in seconds for the timer.
+         */
+        countdown: function(time){
+            this.start(time, true);
+        },
+        /**
+         * @summary Starts the timer counting up from `0` to the supplied `time`.
+         * @memberof FooGallery.utils.Timer#
+         * @function countup
+         * @param {number} time - The total time in seconds for the timer.
+         */
+        countup: function(time){
+            this.start(time, false);
+        },
+        /**
+         * @summary Stops and then restarts the timer using the last arguments supplied to the {@link FooGallery.utils.Timer#start|start} method.
+         * @memberof FooGallery.utils.Timer#
+         * @function restart
+         */
+        restart: function(){
+            this.stop();
+            if (this.canRestart){
+                this.start.apply(this, this.__restart);
+            }
+        },
+        /**
+         * @summary Stops the timer.
+         * @memberof FooGallery.utils.Timer#
+         * @function stop
+         */
+        stop: function(){
+            if (this.isRunning || this.isPaused){
+                this.__reset();
+                this.trigger("stop", this.__eventArgs());
+            }
+        },
+        /**
+         * @summary Pauses the timer and returns the remaining seconds.
+         * @memberof FooGallery.utils.Timer#
+         * @function pause
+         * @return {number} - The number of seconds remaining for the timer.
+         */
+        pause: function(){
+            var self = this;
+            if (self.__timeout != null){
+                clearTimeout(self.__timeout);
+                self.__timeout = null;
+            }
+            if (self.isRunning){
+                self.isRunning = false;
+                self.isPaused = true;
+                self.trigger("pause", self.__eventArgs());
+            }
+            return self.__remaining;
+        },
+        /**
+         * @summary Resumes the timer from a previously paused state.
+         * @memberof FooGallery.utils.Timer#
+         * @function resume
+         */
+        resume: function(){
+            var self = this;
+            if (self.canResume){
+                self.isRunning = true;
+                self.isPaused = false;
+                self.trigger("resume", self.__eventArgs());
+                self.__tick();
+            }
+        },
+        /**
+         * @summary Resets the timer back to a fresh starting state.
+         * @memberof FooGallery.utils.Timer#
+         * @function reset
+         */
+        reset: function(){
+            this.__reset();
+            this.trigger("reset", this.__eventArgs());
+        }
+    });
+
+})(
+    FooGallery.utils.$,
+    FooGallery.utils,
+    FooGallery.utils.is,
+    FooGallery.utils.fn,
+    FooGallery.utils.obj
+);
+
 (function($, _, _is, _fn){
 	// only register methods if this version is the current version
-	if (_.version !== '0.1.3') return;
+	if (_.version !== '0.1.7') return;
 
 	_.Factory = _.Class.extend(/** @lends FooGallery.utils.Factory */{
 		/**
@@ -3118,7 +3730,7 @@
 );
 (function(_, _fn, _str){
 	// only register methods if this version is the current version
-	if (_.version !== '0.1.3') return;
+	if (_.version !== '0.1.7') return;
 
 	// this is done to handle Content Security in Chrome and other browsers blocking access to the localStorage object under certain configurations.
 	// see: https://www.chromium.org/for-testers/bug-reporting-guidelines/uncaught-securityerror-failed-to-read-the-localstorage-property-from-window-access-is-denied-for-this-document
@@ -3221,6 +3833,250 @@
 	FooGallery.utils,
 	FooGallery.utils.fn,
 	FooGallery.utils.str
+);
+(function($, _, _fn){
+    // only register methods if this version is the current version
+    if (_.version !== '0.1.7') return;
+
+    _.FullscreenAPI = _.EventClass.extend(/** @lends FooGallery.utils.FullscreenAPI */{
+        /**
+         * @summary A wrapper around the fullscreen API to ensure cross browser compatibility.
+         * @constructs
+         */
+        construct: function(){
+            this._super();
+            /**
+             * @summary An object containing a single browsers various methods and events needed for this wrapper.
+             * @typedef {Object} FooGallery.utils.FullscreenAPI~BrowserAPI
+             * @property {string} enabled
+             * @property {string} element
+             * @property {string} request
+             * @property {string} exit
+             * @property {Object} events
+             * @property {string} events.change
+             * @property {string} events.error
+             */
+
+            /**
+             * @summary Contains the various browser specific method and event names.
+             * @memberof FooGallery.utils.FullscreenAPI#
+             * @name apis
+             * @type {{w3: BrowserAPI, ms: BrowserAPI, moz: BrowserAPI, webkit: BrowserAPI}}
+             */
+            this.apis = {
+                w3: {
+                    enabled: "fullscreenEnabled",
+                    element: "fullscreenElement",
+                    request: "requestFullscreen",
+                    exit:    "exitFullscreen",
+                    events: {
+                        change: "fullscreenchange",
+                        error:  "fullscreenerror"
+                    }
+                },
+                webkit: {
+                    enabled: "webkitFullscreenEnabled",
+                    element: "webkitCurrentFullScreenElement",
+                    request: "webkitRequestFullscreen",
+                    exit:    "webkitExitFullscreen",
+                    events: {
+                        change: "webkitfullscreenchange",
+                        error:  "webkitfullscreenerror"
+                    }
+                },
+                moz: {
+                    enabled: "mozFullScreenEnabled",
+                    element: "mozFullScreenElement",
+                    request: "mozRequestFullScreen",
+                    exit:    "mozCancelFullScreen",
+                    events: {
+                        change: "mozfullscreenchange",
+                        error:  "mozfullscreenerror"
+                    }
+                },
+                ms: {
+                    enabled: "msFullscreenEnabled",
+                    element: "msFullscreenElement",
+                    request: "msRequestFullscreen",
+                    exit:    "msExitFullscreen",
+                    events: {
+                        change: "MSFullscreenChange",
+                        error:  "MSFullscreenError"
+                    }
+                }
+            };
+            /**
+             * @summary The current browsers specific method and event names.
+             * @memberof FooGallery.utils.FullscreenAPI#
+             * @name api
+             * @type {?BrowserAPI}
+             */
+            this.api = this.getAPI();
+            /**
+             * @summary Whether or not the fullscreen API is supported in the current browser.
+             * @memberof FooGallery.utils.FullscreenAPI#
+             * @name supported
+             * @type {boolean}
+             */
+            this.supported = this.api != null;
+            this.__listen();
+        },
+        /**
+         * @summary Destroys the current wrapper unbinding events and freeing up resources.
+         * @memberof FooGallery.utils.FullscreenAPI#
+         * @function destroy
+         * @returns {boolean}
+         */
+        destroy: function(){
+            this.__stopListening();
+            return this._super();
+        },
+        /**
+         * @summary Fetches the correct API for the current browser.
+         * @memberof FooGallery.utils.FullscreenAPI#
+         * @function getAPI
+         * @return {?BrowserAPI} If the fullscreen API is not supported `null` is returned.
+         */
+        getAPI: function(){
+            for (var vendor in this.apis) {
+                if (!this.apis.hasOwnProperty(vendor)) continue;
+                // Check if document has the "enabled" property
+                if (this.apis[vendor].enabled in document) {
+                    // It seems this browser supports the fullscreen API
+                    return this.apis[vendor];
+                }
+            }
+            return null;
+        },
+        /**
+         * @summary Gets the current fullscreen element or null.
+         * @memberof FooGallery.utils.FullscreenAPI#
+         * @function element
+         * @returns {?Element}
+         */
+        element: function(){
+            return this.supported ? document[this.api.element] : null;
+        },
+        /**
+         * @summary Requests the browser to place the specified element into fullscreen mode.
+         * @memberof FooGallery.utils.FullscreenAPI#
+         * @function request
+         * @param {Element} element - The element to place into fullscreen mode.
+         * @returns {Promise} A Promise which is resolved once the element is placed into fullscreen mode.
+         */
+        request: function(element){
+            if (this.supported && !!element[this.api.request]){
+                var result = element[this.api.request]();
+                return !result ? $.Deferred(this.__resolver(this.api.request)).promise() : result;
+            }
+            return _fn.rejected;
+        },
+        /**
+         * @summary Requests that the browser switch from fullscreen mode back to windowed mode.
+         * @memberof FooGallery.utils.FullscreenAPI#
+         * @function exit
+         * @returns {Promise} A Promise which is resolved once fullscreen mode is exited.
+         */
+        exit: function(){
+            if (this.supported && !!this.element()){
+                var result = document[this.api.exit]();
+                return !result ? $.Deferred(this.__resolver(this.api.exit)).promise() : result;
+            }
+            return _fn.rejected;
+        },
+        /**
+         * @summary Toggles the supplied element between fullscreen and windowed modes.
+         * @memberof FooGallery.utils.FullscreenAPI#
+         * @function toggle
+         * @param {Element} element - The element to switch between modes.
+         * @returns {Promise} A Promise that is resolved once fullscreen mode is either entered or exited.
+         */
+        toggle: function(element){
+            return !!this.element() ? this.exit() : this.request(element);
+        },
+        /**
+         * @summary Starts listening to the document level fullscreen events and triggers an abbreviated version on this class.
+         * @memberof FooGallery.utils.FullscreenAPI#
+         * @function __listen
+         * @private
+         */
+        __listen: function(){
+            var self = this;
+            if (!self.supported) return;
+            $(document).on(self.api.events.change + ".utils", function() {
+                self.trigger("change");
+            }).on(self.api.events.error + ".utils", function() {
+                self.trigger("error");
+            });
+        },
+        /**
+         * @summary Stops listening to the document level fullscreen events.
+         * @memberof FooGallery.utils.FullscreenAPI#
+         * @function __stopListening
+         * @private
+         */
+        __stopListening: function(){
+            var self = this;
+            if (!self.supported) return;
+            $(document).off(self.api.events.change + ".utils")
+                .off(self.api.events.error + ".utils");
+        },
+        /**
+         * @summary Creates a resolver function to patch browsers which do not return a Promise from there request and exit methods.
+         * @memberof FooGallery.utils.FullscreenAPI#
+         * @function __resolver
+         * @param {string} method - The request or exit method the resolver is being created for.
+         * @returns {resolver}
+         * @private
+         */
+        __resolver: function(method){
+            var self = this;
+            /**
+             * @summary Binds to the fullscreen change and error events and resolves or rejects the supplied deferred accordingly.
+             * @callback FooGallery.utils.FullscreenAPI~resolver
+             * @param {jQuery.Deferred} def - The jQuery.Deferred object to resolve.
+             */
+            return function resolver(def) {
+                // Reject the promise if asked to exitFullscreen and there is no element currently in fullscreen
+                if (method === self.api.exit && !!self.element()) {
+                    setTimeout(function() {
+                        def.reject(new TypeError());
+                    }, 1);
+                    return;
+                }
+
+                // When receiving an internal fullscreenchange event, fulfill the promise
+                function change() {
+                    def.resolve();
+                    $(document).off(self.api.events.change, change)
+                        .off(self.api.events.error, error);
+                }
+
+                // When receiving an internal fullscreenerror event, reject the promise
+                function error() {
+                    def.reject(new TypeError());
+                    $(document).off(self.api.events.change, change)
+                        .off(self.api.events.error, error);
+                }
+
+                $(document).on(self.api.events.change, change)
+                    .on(self.api.events.error, error);
+            };
+        }
+    });
+
+    /**
+     * @summary A cross browser wrapper for the fullscreen API.
+     * @memberof FooGallery.utils
+     * @name fullscreen
+     * @type {FooGallery.utils.FullscreenAPI}
+     */
+    _.fullscreen = new _.FullscreenAPI();
+
+})(
+    FooGallery.utils.$,
+    FooGallery.utils,
+    FooGallery.utils.fn
 );
 (function ($, _, _utils, _is, _fn) {
 
@@ -8890,6 +9746,14 @@
 			}
 			return self.style.sheet;
 		},
+		delayedLayout: function(){
+			var self = this;
+			if (self._delayedLayout) clearTimeout(self._delayedLayout);
+			self._delayedLayout = setTimeout(function () {
+				self._delayedLayout = null;
+				self.masonry.layout();
+			}, 20);
+		},
 		/**
 		 * @summary Listens for the {@link FooGallery.Template~event:"pre-init.foogallery"|`pre-init.foogallery`} event.
 		 * @memberof FooGallery.MasonryTemplate#
@@ -8966,9 +9830,10 @@
 			self.masonry.layout();
 		},
 		onReady: function(event, self){
-			self.masonry.layout();
+			self.delayedLayout();
 		},
 		onDestroy: function(event, self){
+			if (self._delayedLayout) clearTimeout(self._delayedLayout);
 			self.$el.find(self.sel.columnWidth).remove();
 			self.$el.find(self.sel.gutterWidth).remove();
 			if (self.style && self.style.parentNode){

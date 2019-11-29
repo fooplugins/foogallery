@@ -245,7 +245,7 @@ if ( ! class_exists( 'FooGallery_Pro_Video' ) ) {
 		 */
 		public function alter_video_item_attributes( $classes, $attachment, $args ) {
 			if ( isset( $attachment->is_video ) && $attachment->is_video === true ) {
-				$classes[] = 'fg-video';
+				$classes[] = 'fg-type-video';
 			}
 
 			return $classes;
@@ -266,7 +266,8 @@ if ( ! class_exists( 'FooGallery_Pro_Video' ) ) {
 			global $current_foogallery_album;
 
 			if ( isset( $attachment->is_video ) && $attachment->is_video === true ) {
-				$video_data = get_post_meta( $attachment->ID, FOOGALLERY_VIDEO_POST_META, true );
+			    //allow video data to be stored directly against the attachment as an object
+			    $video_data = isset( $attachment->video_data ) ? $attachment->video_data : get_post_meta( $attachment->ID, FOOGALLERY_VIDEO_POST_META, true );
 
 				if ( empty( $video_data ) ) {
 					//get out early if we have no video data
@@ -306,9 +307,10 @@ if ( ! class_exists( 'FooGallery_Pro_Video' ) ) {
 						}
 
 						$is_embed = $is_embed && ( 'foobox' === $lightbox );
-						if ( $is_embed ) {
-							$attr['data-type'] = 'embed';
-						}
+//						if ( $is_embed ) {
+//							$attr['data-type'] = 'embed';
+//						}
+						$attr['data-type'] = $is_embed ? 'embed' : 'video';
 					}
 				}
 
@@ -380,20 +382,32 @@ if ( ! class_exists( 'FooGallery_Pro_Video' ) ) {
 		}
 
 		public function foogallery_build_class_attribute( $classes ) {
+			/** @var FooGallery */
 			global $current_foogallery;
 
-			//first determine if the gallery has any videos
-			if ( 0 === foogallery_get_gallery_video_count( $current_foogallery->ID ) ) {
-				return $classes;
+			$has_video = false;
+
+			//if it is a dynamic gallery, then loop through all attachments and see if there are videos
+			if ( $current_foogallery->is_dynamic() ) {
+			    foreach ( $current_foogallery->attachments() as $attachment ) {
+			        if ( $attachment->is_video ) {
+				        $has_video = true;
+			            break;
+                    }
+                }
+            } else {
+                $has_video = foogallery_get_gallery_video_count( $current_foogallery->ID ) > 0;
 			}
 
-			$current_foogallery->has_videos = true;
+			if ( $has_video ) {
+				$current_foogallery->has_videos = $has_video;
 
-			//get the selected video icon
-			$classes[] = foogallery_gallery_template_setting( 'video_hover_icon', 'fg-video-default' );
+				//get the selected video icon
+				$classes[] = foogallery_gallery_template_setting( 'video_hover_icon', 'fg-video-default' );
 
-			//include the video sticky class
-			$classes[] = foogallery_gallery_template_setting( 'video_sticky_icon', '' );;
+				//include the video sticky class
+				$classes[] = foogallery_gallery_template_setting( 'video_sticky_icon', '' );
+			}
 
 			return $classes;
 		}

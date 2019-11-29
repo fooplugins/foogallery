@@ -1,5 +1,9 @@
 jQuery(function ($) {
 
+	$(document).on('change','.foogallery_instagram_input',function(){
+		$('.foogallery-datasource-modal-insert').removeAttr( 'disabled' );
+	});
+
 	/* Manage media javascript */
 	$('.foogallery-datasource-instagram').on('click', 'button.remove', function (e) {
 		e.preventDefault();
@@ -52,6 +56,10 @@ jQuery(function ($) {
 
 		//save the datasource_value
 		$('#_foogallery_datasource_value').val( JSON.stringify( value ) );
+
+		$('#foogallery-datasource-instagram-account').html( $('#instagram_account').val() );
+		$('#foogallery-datasource-instagram-number').html( $('#instagram_image_count').val() );
+		$('#foogallery-datasource-instagram-resolution').html( $('#instagram_image_resolution').val() );
 
 		$container.show();
 
