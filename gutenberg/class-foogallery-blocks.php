@@ -133,6 +133,9 @@ if ( ! class_exists( 'FooGallery_Blocks' ) ) {
 						'type' => 'number',
 						'default' => 0
 					),
+					'className' => array(
+						'type' => 'string'
+					),
 				),
 				'render_callback' => array( $this, 'render_block' ),
 			));
