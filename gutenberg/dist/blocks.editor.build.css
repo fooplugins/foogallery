@@ -170,9 +170,9 @@ svg.dashicon.foogallery-modal__icon-disabled {
 */
 .foogallery-inspector-controls__button-container {
   text-align: center;
-  margin: -16px;
   padding: 16px; }
 
 .foogallery-inspector-controls__button-container button {
   display: -ms-inline-flexbox;
-  display: inline-flex; }
+  display: inline-flex;
+  vertical-align: middle; }
