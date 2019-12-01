@@ -149,16 +149,12 @@ if ( ! class_exists( 'FooGallery_Blocks' ) ) {
 		 * @return false|string|null
 		 */
 		function render_block( $attributes ) {
-			$foogallery_id = $attributes['id'];
-			$args = array(
-				'id' => $foogallery_id
-			);
 			//create new instance of template engine
 			$engine = new FooGallery_Template_Loader();
 
 			ob_start();
 
-			$engine->render_template( $args );
+			$engine->render_template( $attributes );
 
 			$output_string = ob_get_contents();
 			ob_end_clean();
