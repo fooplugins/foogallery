@@ -557,6 +557,7 @@ html.fg-panel-no-scroll body {
     border-style: solid;
     border-width: 0;
     box-shadow: none;
+    outline: none;
 }
 .fg-panel-button.fg-disabled {
     pointer-events: none;
@@ -631,6 +632,10 @@ html.fg-panel-no-scroll body {
     pointer-events: auto;
     user-select: none;
     -webkit-tap-highlight-color: unset;
+    background-color: transparent;
+    box-shadow: none;
+    outline: none;
+    border: none;
 }
 .fg-panel-area-toggle+.fg-panel-caption .fg-panel-caption-title {
     margin-right: 32px;
@@ -922,6 +927,13 @@ html.fg-panel-no-scroll body {
     visibility: visible;
     opacity: 1;
 }
+.fg-media:not(.fg-media-html) {
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+    -moz-user-select: none; /* Old versions of Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none;
+}
 
 .fg-media-content {
     display: inline-block;
@@ -1167,20 +1179,28 @@ html.fg-panel-no-scroll body {
 }
 
 @media (hover: hover) {
-    .fg-panel.fg-light .fg-panel-area-toggle:hover {
+    .fg-panel.fg-light .fg-panel-area-toggle:hover,
+    .fg-panel.fg-light .fg-panel-area-toggle:focus {
         color: #bbbbbb;
     }
     .fg-panel.fg-light .fg-panel-button:hover,
+    .fg-panel.fg-light .fg-panel-button:focus,
     .fg-panel.fg-light .fg-panel-thumbs-button:hover,
-    .fg-panel.fg-light .fg-panel-thumb:hover {
+    .fg-panel.fg-light .fg-panel-thumbs-button:focus,
+    .fg-panel.fg-light .fg-panel-thumb:hover,
+    .fg-panel.fg-light .fg-panel-thumb:focus {
         background-color: #f5f5f5;
     }
-    .fg-panel.fg-dark .fg-panel-area-toggle:hover {
+    .fg-panel.fg-dark .fg-panel-area-toggle:hover,
+    .fg-panel.fg-dark .fg-panel-area-toggle:focus {
         color: #bbbbbb;
     }
     .fg-panel.fg-dark .fg-panel-button:hover,
+    .fg-panel.fg-dark .fg-panel-button:focus,
     .fg-panel.fg-dark .fg-panel-thumbs-button:hover,
-    .fg-panel.fg-dark .fg-panel-thumb:hover {
+    .fg-panel.fg-dark .fg-panel-thumbs-button:focus,
+    .fg-panel.fg-dark .fg-panel-thumb:hover,
+    .fg-panel.fg-dark .fg-panel-thumb:focus {
         background-color: #303030;
     }
 }
@@ -1236,78 +1256,126 @@ html.fg-panel-no-scroll body {
 
 @media (hover: hover) {
     .fg-panel.fg-button-blue .fg-panel-button:hover,
+    .fg-panel.fg-button-blue .fg-panel-button:focus,
     .fg-panel.fg-button-blue .fg-panel-thumbs-button:hover,
+    .fg-panel.fg-button-blue .fg-panel-thumbs-button:focus,
     .fg-panel.fg-button-blue .fg-panel-thumb:hover,
+    .fg-panel.fg-button-blue .fg-panel-thumb:focus,
     .fg-panel.fg-button-blue .fg-panel-thumb.fg-selected:hover,
+    .fg-panel.fg-button-blue .fg-panel-thumb.fg-selected:focus,
     .fg-panel.fg-highlight-blue .fg-panel-area .fg-panel-button:hover,
+    .fg-panel.fg-highlight-blue .fg-panel-area .fg-panel-button:focus,
     .fg-panel.fg-highlight-blue .fg-panel-area .fg-panel-thumbs-button:hover,
+    .fg-panel.fg-highlight-blue .fg-panel-area .fg-panel-thumbs-button:focus,
     .fg-panel.fg-highlight-blue .fg-panel-area .fg-panel-thumb:hover,
-    .fg-panel.fg-highlight-blue .fg-panel-area .fg-panel-thumb.fg-selected:hover {
+    .fg-panel.fg-highlight-blue .fg-panel-area .fg-panel-thumb:focus,
+    .fg-panel.fg-highlight-blue .fg-panel-area .fg-panel-thumb.fg-selected:hover,
+    .fg-panel.fg-highlight-blue .fg-panel-area .fg-panel-thumb.fg-selected:focus {
         background-color: #4d90fe;
         border-color: #3079ed;
         color: #FFF;
     }
 
     .fg-panel.fg-button-dark .fg-panel-button:hover,
+    .fg-panel.fg-button-dark .fg-panel-button:focus,
     .fg-panel.fg-button-dark .fg-panel-thumbs-button:hover,
+    .fg-panel.fg-button-dark .fg-panel-thumbs-button:focus,
     .fg-panel.fg-button-dark .fg-panel-thumb:hover,
+    .fg-panel.fg-button-dark .fg-panel-thumb:focus,
     .fg-panel.fg-button-dark .fg-panel-thumb.fg-selected:hover,
+    .fg-panel.fg-button-dark .fg-panel-thumb.fg-selected:focus,
     .fg-panel.fg-highlight-dark .fg-panel-area .fg-panel-button:hover,
+    .fg-panel.fg-highlight-dark .fg-panel-area .fg-panel-button:focus,
     .fg-panel.fg-highlight-dark .fg-panel-area .fg-panel-thumbs-button:hover,
+    .fg-panel.fg-highlight-dark .fg-panel-area .fg-panel-thumbs-button:focus,
     .fg-panel.fg-highlight-dark .fg-panel-area .fg-panel-thumb:hover,
-    .fg-panel.fg-highlight-dark .fg-panel-area .fg-panel-thumb.fg-selected:hover {
+    .fg-panel.fg-highlight-dark .fg-panel-area .fg-panel-thumb:focus,
+    .fg-panel.fg-highlight-dark .fg-panel-area .fg-panel-thumb.fg-selected:hover,
+    .fg-panel.fg-highlight-dark .fg-panel-area .fg-panel-thumb.fg-selected:focus {
         background-color: #5e5e5e;
         border-color: #292929;
         color: #FFF;
     }
 
     .fg-panel.fg-button-green .fg-panel-button:hover,
+    .fg-panel.fg-button-green .fg-panel-button:focus,
     .fg-panel.fg-button-green .fg-panel-thumbs-button:hover,
+    .fg-panel.fg-button-green .fg-panel-thumbs-button:focus,
     .fg-panel.fg-button-green .fg-panel-thumb:hover,
+    .fg-panel.fg-button-green .fg-panel-thumb:focus,
     .fg-panel.fg-button-green .fg-panel-thumb.fg-selected:hover,
+    .fg-panel.fg-button-green .fg-panel-thumb.fg-selected:focus,
     .fg-panel.fg-highlight-green .fg-panel-area .fg-panel-button:hover,
+    .fg-panel.fg-highlight-green .fg-panel-area .fg-panel-button:focus,
     .fg-panel.fg-highlight-green .fg-panel-area .fg-panel-thumbs-button:hover,
+    .fg-panel.fg-highlight-green .fg-panel-area .fg-panel-thumbs-button:focus,
     .fg-panel.fg-highlight-green .fg-panel-area .fg-panel-thumb:hover,
-    .fg-panel.fg-highlight-green .fg-panel-area .fg-panel-thumb.fg-selected:hover {
+    .fg-panel.fg-highlight-green .fg-panel-area .fg-panel-thumb:focus,
+    .fg-panel.fg-highlight-green .fg-panel-area .fg-panel-thumb.fg-selected:hover,
+    .fg-panel.fg-highlight-green .fg-panel-area .fg-panel-thumb.fg-selected:focus {
         background-color: #02874A;
         border-color: #027339;
         color: #FFF;
     }
 
     .fg-panel.fg-button-purple .fg-panel-button:hover,
+    .fg-panel.fg-button-purple .fg-panel-button:focus,
     .fg-panel.fg-button-purple .fg-panel-thumbs-button:hover,
+    .fg-panel.fg-button-purple .fg-panel-thumbs-button:focus,
     .fg-panel.fg-button-purple .fg-panel-thumb:hover,
+    .fg-panel.fg-button-purple .fg-panel-thumb:focus,
     .fg-panel.fg-button-purple .fg-panel-thumb.fg-selected:hover,
+    .fg-panel.fg-button-purple .fg-panel-thumb.fg-selected:focus,
     .fg-panel.fg-highlight-purple .fg-panel-area .fg-panel-button:hover,
+    .fg-panel.fg-highlight-purple .fg-panel-area .fg-panel-button:focus,
     .fg-panel.fg-highlight-purple .fg-panel-area .fg-panel-thumbs-button:hover,
+    .fg-panel.fg-highlight-purple .fg-panel-area .fg-panel-thumbs-button:focus,
     .fg-panel.fg-highlight-purple .fg-panel-area .fg-panel-thumb:hover,
-    .fg-panel.fg-highlight-purple .fg-panel-area .fg-panel-thumb.fg-selected:hover {
+    .fg-panel.fg-highlight-purple .fg-panel-area .fg-panel-thumb:focus,
+    .fg-panel.fg-highlight-purple .fg-panel-area .fg-panel-thumb.fg-selected:hover,
+    .fg-panel.fg-highlight-purple .fg-panel-area .fg-panel-thumb.fg-selected:focus {
         background-color: #7816D6;
         border-color: #6816c2;
         color: #FFF;
     }
 
     .fg-panel.fg-button-orange .fg-panel-button:hover,
+    .fg-panel.fg-button-orange .fg-panel-button:focus,
     .fg-panel.fg-button-orange .fg-panel-thumbs-button:hover,
+    .fg-panel.fg-button-orange .fg-panel-thumbs-button:focus,
     .fg-panel.fg-button-orange .fg-panel-thumb:hover,
+    .fg-panel.fg-button-orange .fg-panel-thumb:focus,
     .fg-panel.fg-button-orange .fg-panel-thumb.fg-selected:hover,
+    .fg-panel.fg-button-orange .fg-panel-thumb.fg-selected:focus,
     .fg-panel.fg-highlight-orange .fg-panel-area .fg-panel-button:hover,
+    .fg-panel.fg-highlight-orange .fg-panel-area .fg-panel-button:focus,
     .fg-panel.fg-highlight-orange .fg-panel-area .fg-panel-thumbs-button:hover,
+    .fg-panel.fg-highlight-orange .fg-panel-area .fg-panel-thumbs-button:focus,
     .fg-panel.fg-highlight-orange .fg-panel-area .fg-panel-thumb:hover,
-    .fg-panel.fg-highlight-orange .fg-panel-area .fg-panel-thumb.fg-selected:hover {
+    .fg-panel.fg-highlight-orange .fg-panel-area .fg-panel-thumb:focus,
+    .fg-panel.fg-highlight-orange .fg-panel-area .fg-panel-thumb.fg-selected:hover,
+    .fg-panel.fg-highlight-orange .fg-panel-area .fg-panel-thumb.fg-selected:focus {
         background-color: #FF8E31;
         border-color: #e57731;
         color: #FFF;
     }
 
     .fg-panel.fg-button-red .fg-panel-button:hover,
+    .fg-panel.fg-button-red .fg-panel-button:focus,
     .fg-panel.fg-button-red .fg-panel-thumbs-button:hover,
+    .fg-panel.fg-button-red .fg-panel-thumbs-button:focus,
     .fg-panel.fg-button-red .fg-panel-thumb:hover,
+    .fg-panel.fg-button-red .fg-panel-thumb:focus,
     .fg-panel.fg-button-red .fg-panel-thumb.fg-selected:hover,
+    .fg-panel.fg-button-red .fg-panel-thumb.fg-selected:focus,
     .fg-panel.fg-highlight-red .fg-panel-area .fg-panel-button:hover,
+    .fg-panel.fg-highlight-red .fg-panel-area .fg-panel-button:focus,
     .fg-panel.fg-highlight-red .fg-panel-area .fg-panel-thumbs-button:hover,
+    .fg-panel.fg-highlight-red .fg-panel-area .fg-panel-thumbs-button:focus,
     .fg-panel.fg-highlight-red .fg-panel-area .fg-panel-thumb:hover,
-    .fg-panel.fg-highlight-red .fg-panel-area .fg-panel-thumb.fg-selected:hover {
+    .fg-panel.fg-highlight-red .fg-panel-area .fg-panel-thumb:focus,
+    .fg-panel.fg-highlight-red .fg-panel-area .fg-panel-thumb.fg-selected:hover,
+    .fg-panel.fg-highlight-red .fg-panel-area .fg-panel-thumb.fg-selected:focus {
         background-color: #F12B24;
         border-color: #c22b24;
         color: #FFF;
@@ -1641,6 +1709,14 @@ html.fg-panel-no-scroll body {
 }
 
 
+.fg-panel-thumb-wrap {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin: 0;
+}
 .fg-panel-thumb-image {
     width: 100%;
     height: auto;
@@ -1682,6 +1758,70 @@ html.fg-panel-no-scroll body {
 .fg-panel-thumb-description,
 .fg-panel.fg-medium:not(.fg-panel-thumbs-small) .fg-panel-thumb-title {
     -webkit-line-clamp: 2;
+}
+/* Inset Shadows */
+.fg-panel.fg-shadow-inset-small .fg-panel-thumb-media:after,
+.fg-panel.fg-shadow-inset-medium .fg-panel-thumb-media:after,
+.fg-panel.fg-shadow-inset-large .fg-panel-thumb-media:after {
+    display: block;
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 7;
+}
+.fg-panel.fg-light.fg-shadow-inset-small .fg-panel-thumb-media:after,
+.fg-panel.fg-dark.fg-shadow-inset-small .fg-panel-thumb-media:after {
+    box-shadow: inset 0 1px 4px 0 rgba(0,0,0,0.3);
+}
+.fg-panel.fg-light.fg-shadow-inset-medium .fg-panel-thumb-media:after,
+.fg-panel.fg-dark.fg-shadow-inset-medium .fg-panel-thumb-media:after {
+    box-shadow: inset 0 1px 10px 0 rgba(0,0,0,0.3);
+}
+.fg-panel.fg-light.fg-shadow-inset-large .fg-panel-thumb-media:after,
+.fg-panel.fg-dark.fg-shadow-inset-large .fg-panel-thumb-media:after {
+    box-shadow: inset 0 1px 16px 0 rgba(0,0,0,0.3);
+}
+/* Colorize */
+.fg-panel.fg-hover-colorize .fg-panel-thumb-image {
+    /* Firefox 10+, Firefox on Android */
+    filter: url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'grayscale\'><feColorMatrix type=\'saturate\' values=\'0\'/></filter></svg>#grayscale");
+    /* IE 6-9 */
+    filter: gray;
+    /* Chrome 19+, Safari 6+, Safari 6+ iOS */
+    -webkit-filter: grayscale(100%);
+    -webkit-transition-property: -webkit-filter;
+    transition-property: filter;
+}
+.fg-panel.fg-hover-colorize .fg-panel-thumb:hover .fg-panel-thumb-image {
+    -webkit-filter: none;
+    filter: none;
+}
+/* Grayscale */
+.fg-panel.fg-hover-grayscale .fg-panel-thumb-image {
+    -webkit-filter: none;
+    filter: none;
+    -webkit-transition-property: -webkit-filter;
+    transition-property: filter;
+}
+.fg-panel.fg-hover-grayscale .fg-panel-thumb:hover .fg-panel-thumb-image {
+    /* Firefox 10+, Firefox on Android */
+    filter: url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'grayscale\'><feColorMatrix type=\'saturate\' values=\'0\'/></filter></svg>#grayscale");
+    /* IE 6-9 */
+    filter: gray;
+    /* Chrome 19+, Safari 6+, Safari 6+ iOS */
+    -webkit-filter: grayscale(100%);
+    opacity: 1;
+}
+
+/* Scale */
+.fg-panel.fg-hover-scale .fg-panel-thumb {
+    transition-property: transform;
+}
+.fg-panel.fg-hover-scale .fg-panel-thumb:hover {
+    transform: scale(1.048);
 }
 /* Item Style */
 .foogallery.fg-light .fg-item-inner {
@@ -1789,6 +1929,9 @@ html.fg-panel-no-scroll body {
 }
 .foogallery .fg-image-wrap:before {
 	z-index: 8;
+}
+.foogallery .fg-image-wrap:before,
+.fg-panel .fg-panel-thumb-wrap:before {
 	content: "";
 	display: block;
 	height: 100%;
@@ -1798,112 +1941,135 @@ html.fg-panel-no-scroll body {
 	position: absolute;
 	pointer-events: none;
 }
-.foogallery.fg-filter-1977 .fg-image-wrap {
+.foogallery.fg-filter-1977 .fg-image-wrap,
+.fg-panel.fg-filter-1977 .fg-panel-thumb-wrap {
 	-webkit-filter: contrast(110%) brightness(110%) saturate(130%);
 	filter: contrast(110%) brightness(110%) saturate(130%);
 }
-.foogallery.fg-filter-1977 .fg-image-wrap:before {
+.foogallery.fg-filter-1977 .fg-image-wrap:before,
+.fg-panel.fg-filter-1977 .fg-panel-thumb-wrap:before {
 	mix-blend-mode: screen;
 	background: rgba(243, 106, 188, 0.3);
 }
-.foogallery.fg-filter-amaro .fg-image-wrap {
+.foogallery.fg-filter-amaro .fg-image-wrap,
+.fg-panel.fg-filter-amaro .fg-panel-thumb-wrap {
   -webkit-filter: contrast(90%) brightness(110%) saturate(150%) hue-rotate(-10deg);
   filter: contrast(90%) brightness(110%) saturate(150%) hue-rotate(-10deg);
 }
 
-.foogallery.fg-filter-brannan .fg-image-wrap {
+.foogallery.fg-filter-brannan .fg-image-wrap,
+.fg-panel.fg-filter-brannan .fg-panel-thumb-wrap {
 	-webkit-filter: contrast(140%) sepia(50%);
   filter: contrast(140%) sepia(50%);
 }
-.foogallery.fg-filter-brannan .fg-image-wrap:before {
+.foogallery.fg-filter-brannan .fg-image-wrap:before,
+.fg-panel.fg-filter-brannan .fg-panel-thumb-wrap:before {
   mix-blend-mode: lighten;
   background: rgba(161, 44, 199, 0.31);
 }
 
-.foogallery.fg-filter-clarendon .fg-image-wrap {
+.foogallery.fg-filter-clarendon .fg-image-wrap,
+.fg-panel.fg-filter-clarendon .fg-panel-thumb-wrap {
   -webkit-filter: contrast(120%) saturate(125%);
   filter: contrast(120%) saturate(125%);
 }
-.foogallery.fg-filter-clarendon .fg-image-wrap:before {
+.foogallery.fg-filter-clarendon .fg-image-wrap:before,
+.fg-panel.fg-filter-clarendon .fg-panel-thumb-wrap:before {
   mix-blend-mode: overlay;
   background: rgba(127, 187, 227, 0.2);
 }
 
-.foogallery.fg-filter-earlybird .fg-image-wrap {
+.foogallery.fg-filter-earlybird .fg-image-wrap,
+.fg-panel.fg-filter-earlybird .fg-panel-thumb-wrap {
   -webkit-filter: contrast(90%) sepia(20%);
   filter: contrast(90%) sepia(20%);
 }
-.foogallery.fg-filter-earlybird .fg-image-wrap:before {
+.foogallery.fg-filter-earlybird .fg-image-wrap:before,
+.fg-panel.fg-filter-earlybird .fg-panel-thumb-wrap:before {
   mix-blend-mode: overlay;
   background: -webkit-radial-gradient(50% 50%, circle closest-corner, rgba(208, 186, 142, 1) 20%, rgba(29, 2, 16, 0.2));
   background: radial-gradient(50% 50%, circle closest-corner, rgba(208, 186, 142, 1) 20%, rgba(29, 2, 16, 0.2));
 }
 
-.foogallery.fg-filter-lofi .fg-image-wrap {
+.foogallery.fg-filter-lofi .fg-image-wrap,
+.fg-panel.fg-filter-lofi .fg-panel-thumb-wrap {
 	-webkit-filter: contrast(150%) saturate(110%);
 	filter: contrast(150%) saturate(110%);
 }
-.foogallery.fg-filter-lofi .fg-image-wrap:before {
+.foogallery.fg-filter-lofi .fg-image-wrap:before,
+.fg-panel.fg-filter-lofi .fg-panel-thumb-wrap:before {
 	mix-blend-mode: multiply;
 	background: -webkit-radial-gradient(circle closest-corner, rgba(0, 0, 0, 0) 70%, rgba(34, 34, 34, 1) 100%);
 	background: radial-gradient(circle closest-corner, rgba(0, 0, 0, 0) 70%, rgba(34, 34, 34, 1) 100%);
 }
-.foogallery.fg-filter-poprocket .fg-image-wrap {
+.foogallery.fg-filter-poprocket .fg-image-wrap,
+.fg-panel.fg-filter-poprocket .fg-panel-thumb-wrap {
   -webkit-filter: sepia(.15) brightness(1.2);
   filter: sepia(.15) brightness(1.2);
 }
-.foogallery.fg-filter-poprocket .fg-image-wrap:before {
+.foogallery.fg-filter-poprocket .fg-image-wrap:before,
+.fg-panel.fg-filter-poprocket .fg-panel-thumb-wrap:before {
   mix-blend-mode: screen;
   background: -webkit-radial-gradient(center center, circle closest-corner, rgba(206, 39, 70, .75) 40%, rgba(0, 0, 0, 1) 80%);
 	background: radial-gradient(center center, circle closest-corner, rgba(206, 39, 70, .75) 40%, rgba(0, 0, 0, 1) 80%);
 }
 
-.foogallery.fg-filter-reyes .fg-image-wrap {
+.foogallery.fg-filter-reyes .fg-image-wrap,
+.fg-panel.fg-filter-reyes .fg-panel-thumb-wrap {
   -webkit-filter: contrast(85%) brightness(110%) saturate(75%) sepia(22%);
   filter: contrast(85%) brightness(110%) saturate(75%) sepia(22%);
 }
-.foogallery.fg-filter-reyes .fg-image-wrap:before {
+.foogallery.fg-filter-reyes .fg-image-wrap:before,
+.fg-panel.fg-filter-reyes .fg-panel-thumb-wrap:before {
   mix-blend-mode: soft-light;
   opacity: 0.5;
   background: rgba(173, 205, 239, 1);
 }
 
-.foogallery.fg-filter-toaster .fg-image-wrap {
+.foogallery.fg-filter-toaster .fg-image-wrap,
+.fg-panel.fg-filter-toaster .fg-panel-thumb-wrap {
   -webkit-filter: contrast(150%) brightness(90%);
   filter: contrast(150%) brightness(90%);
 }
-.foogallery.fg-filter-toaster .fg-image-wrap:before {
+.foogallery.fg-filter-toaster .fg-image-wrap:before,
+.fg-panel.fg-filter-toaster .fg-panel-thumb-wrap:before {
   mix-blend-mode: screen;
   opacity: 0.5;
   background: -webkit-radial-gradient(50% 50%, circle closest-corner, rgba(15, 78, 128, 1) 1%, rgba(59, 0, 59, 1));
   background: radial-gradient(50% 50%, circle closest-corner, rgba(15, 78, 128, 1) 1%, rgba(59, 0, 59, 1));
 }
 
-.foogallery.fg-filter-walden .fg-image-wrap {
+.foogallery.fg-filter-walden .fg-image-wrap,
+.fg-panel.fg-filter-walden .fg-panel-thumb-wrap {
   -webkit-filter: brightness(110%) saturate(160%) sepia(30%) hue-rotate(350deg);
   filter: brightness(110%) saturate(160%) sepia(30%) hue-rotate(350deg);
 }
-.foogallery.fg-filter-walden .fg-image-wrap:before {
+.foogallery.fg-filter-walden .fg-image-wrap:before,
+.fg-panel.fg-filter-walden .fg-panel-thumb-wrap:before {
   mix-blend-mode: screen;
   opacity: 0.3;
   background: rgba(204, 68, 0, 1);
 }
 
-.foogallery.fg-filter-xpro2 .fg-image-wrap {
+.foogallery.fg-filter-xpro2 .fg-image-wrap,
+.fg-panel.fg-filter-xpro2 .fg-panel-thumb-wrap {
   -webkit-filter: sepia(30%);
   filter: sepia(30%);
 }
-.foogallery.fg-filter-xpro2 .fg-image-wrap:before {
+.foogallery.fg-filter-xpro2 .fg-image-wrap:before,
+.fg-panel.fg-filter-xpro2 .fg-panel-thumb-wrap:before {
   mix-blend-mode: color-burn;
   background: -webkit-radial-gradient(center center, circle closest-corner, rgba(224, 231, 230, 1) 40%, rgba(43, 42, 161, 0.6));
   background: radial-gradient(center center, circle closest-corner, rgba(224, 231, 230, 1) 40%, rgba(43, 42, 161, 0.6));
 }
 
-.foogallery.fg-filter-xtreme .fg-image-wrap {
+.foogallery.fg-filter-xtreme .fg-image-wrap,
+.fg-panel.fg-filter-xtreme .fg-panel-thumb-wrap {
   -webkit-filter: contrast(200%) brightness(127%) saturate(200%) sepia(45%);
   filter: contrast(200%) brightness(127%) saturate(200%) sepia(45%);
 }
-.foogallery.fg-filter-xtreme .fg-image-wrap:before {
+.foogallery.fg-filter-xtreme .fg-image-wrap:before,
+.fg-panel.fg-filter-xtreme .fg-panel-thumb-wrap:before {
   mix-blend-mode: hard-light;
   opacity: 0.7;
   background: -webkit-radial-gradient(50% 50%, circle closest-corner, rgba(62, 253, 220, 0.33) 10%, rgba(70, 70, 70, 0.04));
@@ -6293,9 +6459,12 @@ html.fg-panel-no-scroll body {
 .fg-current-pointer.fg-dark {
     border-bottom-color: #292929;
 }
-.foogrid-content .fg-panel.fg-light .fg-panel-area .fg-panel-info-inner,
+.foogrid-content .fg-panel.fg-light .fg-panel-area .fg-panel-info-inner {
+    background-color: rgba(238, 238, 238, 0.5);
+    border-width: 0;
+}
 .foogrid-content .fg-panel.fg-dark .fg-panel-area .fg-panel-info-inner {
-    background-color: transparent;
+    background-color: rgba(51, 51, 51, 0.5);
     border-width: 0;
 }
 .foogrid-content .fg-panel.fg-light.fg-panel-info-bottom .fg-panel-area .fg-panel-info-inner {
@@ -6408,19 +6577,19 @@ html.fg-panel-no-scroll body {
     font-weight: normal;
 }
 
-.fg-slider .fg-panel.fg-dark .fg-panel-thumb {
-    background-color: #151515;
-    border-color: #444;
-}
-.fg-slider .fg-panel.fg-dark .fg-panel-thumb-description {
-    color: #767676;
-}
-.fg-slider .fg-panel.fg-dark .fg-selected .fg-panel-thumb-description {
-    color: #FEFEFE;
-}
+/*.fg-slider .fg-panel.fg-dark .fg-panel-thumb {*/
+/*    background-color: #151515;*/
+/*    border-color: #444;*/
+/*}*/
+/*.fg-slider .fg-panel.fg-dark .fg-panel-thumb-description {*/
+/*    color: #767676;*/
+/*}*/
+/*.fg-slider .fg-panel.fg-dark .fg-selected .fg-panel-thumb-description {*/
+/*    color: #FEFEFE;*/
+/*}*/
 
-@media (hover: hover) {
-    .fg-slider .fg-panel.fg-dark .fg-panel-thumb:not(.fg-selected):hover {
-        background-color: #000;
-    }
-}
+/*@media (hover: hover) {*/
+/*    .fg-slider .fg-panel.fg-dark .fg-panel-thumb:not(.fg-selected):hover {*/
+/*        background-color: #000;*/
+/*    }*/
+/*}*/

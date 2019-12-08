@@ -5584,7 +5584,11 @@
 			loadingIcon: /(?:\s|^)(fg-loading-(?:default|bars|dots|partial|pulse|trail))(?:\s|$)/,
 			hoverIcon: /(?:\s|^)(fg-hover-(?:zoom|zoom2|zoom3|plus|circle-plus|eye|external|tint))(?:\s|$)/,
 			videoIcon: /(?:\s|^)(fg-video-(?:default|1|2|3|4))(?:\s|$)/,
-			stickyVideoIcon: /(?:\s|^)(fg-video-sticky)(?:\s|$)/
+			hoverColor: /(?:\s|^)(fg-hover-(?:colorize|grayscale))(?:\s|$)/,
+			hoverScale: /(?:\s|^)(fg-hover-scale)(?:\s|$)/,
+			stickyVideoIcon: /(?:\s|^)(fg-video-sticky)(?:\s|$)/,
+			insetShadow: /(?:\s|^)(fg-shadow-inset-(?:small|medium|large))(?:\s|$)/,
+			filter: /(?:\s|^)(fg-filter-(?:1977|amaro|brannan|clarendon|earlybird|lofi|poprocket|reyes|toaster|walden|xpro2|xtreme))(?:\s|$)/
 		}
 	}, {
 		container: "foogallery"

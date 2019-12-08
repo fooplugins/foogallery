@@ -7686,7 +7686,11 @@
 			loadingIcon: /(?:\s|^)(fg-loading-(?:default|bars|dots|partial|pulse|trail))(?:\s|$)/,
 			hoverIcon: /(?:\s|^)(fg-hover-(?:zoom|zoom2|zoom3|plus|circle-plus|eye|external|tint))(?:\s|$)/,
 			videoIcon: /(?:\s|^)(fg-video-(?:default|1|2|3|4))(?:\s|$)/,
-			stickyVideoIcon: /(?:\s|^)(fg-video-sticky)(?:\s|$)/
+			hoverColor: /(?:\s|^)(fg-hover-(?:colorize|grayscale))(?:\s|$)/,
+			hoverScale: /(?:\s|^)(fg-hover-scale)(?:\s|$)/,
+			stickyVideoIcon: /(?:\s|^)(fg-video-sticky)(?:\s|$)/,
+			insetShadow: /(?:\s|^)(fg-shadow-inset-(?:small|medium|large))(?:\s|$)/,
+			filter: /(?:\s|^)(fg-filter-(?:1977|amaro|brannan|clarendon|earlybird|lofi|poprocket|reyes|toaster|walden|xpro2|xtreme))(?:\s|$)/
 		}
 	}, {
 		container: "foogallery"
@@ -11597,6 +11601,10 @@
                 _is.string(self.opt.hoverIcon) ? self.opt.hoverIcon : self.tmpl.getCSSClass("hoverIcon"),
                 _is.string(self.opt.videoIcon) ? self.opt.videoIcon : self.tmpl.getCSSClass("videoIcon"),
                 _is.boolean(self.opt.stickyVideoIcon) && self.opt.stickyVideoIcon ? self.cls.stickyVideoIcon : self.tmpl.getCSSClass("stickyVideoIcon"),
+                _is.string(self.opt.insetShadow) ? self.opt.insetShadow : self.tmpl.getCSSClass("insetShadow"),
+                _is.string(self.opt.filter) ? self.opt.filter : self.tmpl.getCSSClass("filter"),
+                _is.string(self.opt.hoverColor) ? self.opt.hoverColor : self.tmpl.getCSSClass("hoverColor"),
+                _is.boolean(self.opt.hoverScale) && self.opt.hoverScale ? self.cls.hoverScale : self.tmpl.getCSSClass("hoverScale"),
                 _is.string(self.opt.button) ? self.opt.button : "",
                 _is.string(self.opt.highlight) ? self.opt.highlight : "",
                 self.opt.stackSideAreas ? self.cls.stackSideAreas : "",
@@ -11839,6 +11847,33 @@
                 self.tmpl.state.clear();
             }).promise();
         },
+        trapFocus: function(){
+            if (!this.isCreated) return;
+            this.$el.on('keydown', {self: this}, this.onTrapFocusKeydown);
+        },
+        releaseFocus: function(){
+            if (!this.isCreated) return;
+            this.$el.off('keydown', this.onTrapFocusKeydown);
+        },
+        onTrapFocusKeydown: function(e){
+            // If TAB key pressed
+            if (e.keyCode === 9) {
+                var self = e.data.self, $target = $(e.target), $dialog = $target.parents('[role=dialog]');
+                // If inside a Modal dialog (determined by attribute role="dialog")
+                if ($dialog.length) {
+                    // Find first or last input element in the dialog parent (depending on whether Shift was pressed).
+                    var $focusable = $dialog.find(self.opt.focusable.include).not(self.opt.focusable.exclude),
+                        $first = $focusable.first(), $last = $focusable.last(),
+                        $boundary = e.shiftKey ? $first : $last,
+                        $new = e.shiftKey ? $last : $first;
+
+                    if ($boundary.length && $target.is($boundary)) {
+                        e.preventDefault();
+                        $new.focus();
+                    }
+                }
+            }
+        },
         onKeyDown: function(e){
             var self = e.data.self;
             switch (e.which){
@@ -11871,6 +11906,10 @@
             hoverIcon: null,
             videoIcon: null,
             stickyVideoIcon: null,
+            hoverColor: null,
+            hoverScale: null,
+            insetShadow: null,
+            filter: null,
             noMobile: false,
             hoverButtons: false,
             icons: "default",
@@ -11897,6 +11936,11 @@
             thumbsCaptions: true,
             thumbsSmall: false,
             thumbsBestFit: true,
+
+            focusable: {
+                include: 'a[href], area[href], input, select, textarea, button, iframe, object, embed, [tabindex], [contenteditable]',
+                exclude: '[tabindex=-1], [disabled], :hidden'
+            },
 
             buttons: {
                 prev: true,
@@ -11936,6 +11980,7 @@
             preserveButtonSpace: "fg-panel-preserve-button-space",
             hoverButtons: "fg-panel-hover-buttons",
             stickyVideoIcon: "fg-video-sticky",
+            hoverScale: "fg-hover-scale",
             noMobile: "fg-panel-no-mobile",
 
             loader: "fg-loader",
@@ -12012,6 +12057,7 @@
                     elem: "fg-panel-thumb",
                     media: "fg-panel-thumb-media",
                     overlay: "fg-panel-thumb-overlay",
+                    wrap: "fg-panel-thumb-wrap",
                     image: "fg-panel-thumb-image",
                     caption: "fg-panel-thumb-caption",
                     title: "fg-panel-thumb-title",
@@ -12056,6 +12102,7 @@
         registerCore: function(){
             this.register(new _.Panel.Button(this.panel, "prev", {
                 icon: "arrow-left",
+                label: "Previous Media",
                 onclick: this.panel.prev.bind(this.panel),
                 beforeLoad: function (media) {
                     this.disable(this.panel.prevItem == null);
@@ -12063,6 +12110,7 @@
             }), 10);
             this.register(new _.Panel.Button(this.panel, "next", {
                 icon: "arrow-right",
+                label: "Next Media",
                 onclick: this.panel.next.bind(this.panel),
                 beforeLoad: function (media) {
                     this.disable(this.panel.nextItem == null);
@@ -12074,7 +12122,11 @@
 
             this.register(new _.Panel.Maximize(this.panel), 180);
             this.register(new _.Panel.Fullscreen(this.panel), 190);
-            this.register(new _.Panel.Button(this.panel, "close", { icon: "close", onclick: this.panel.close.bind(this.panel) }), 200);
+            this.register(new _.Panel.Button(this.panel, "close", {
+                icon: "close",
+                label: "Close Modal",
+                onclick: this.panel.close.bind(this.panel)
+            }), 200);
         },
 
         register: function( button, priority ){
@@ -12241,6 +12293,7 @@
             this.name = name;
             this.opt = _obj.extend({
                 icon: null,
+                label: null,
                 visible: true,
                 disabled: false,
                 onclick: $.noop,
@@ -12264,8 +12317,12 @@
         create: function(){
             var self = this;
             if (!self.isCreated && self.isEnabled()){
-                self.$el = $('<div/>').addClass(self.cls.elem)
-                    .on("click.foogallery", {self: self}, self.onButtonClick);
+                self.$el = $('<button/>', {
+                    type: 'button',
+                    "aria-label": self.opt.label,
+                    "aria-disabled": self.isDisabled,
+                    "aria-hidden": !self.isVisible
+                }).addClass(self.cls.elem).on("click.foogallery", {self: self}, self.onButtonClick);
                 if (_is.string(self.opt.icon)){
                     self.$el.append(_icons.get(self.opt.icon, self.panel.opt.icons));
                 } else if (_is.array(self.opt.icon)){
@@ -12301,12 +12358,15 @@
         toggle: function(visible){
             if (!this.isCreated) return;
             this.isVisible = _is.boolean(visible) ? visible : !this.isVisible;
-            this.$el.toggleClass(this.cls.states.hidden, !this.isVisible);
+            this.$el.toggleClass(this.cls.states.hidden, !this.isVisible).attr("aria-hidden", !this.isVisible);
         },
         disable: function(disabled){
             if (!this.isCreated) return;
             this.isDisabled = _is.boolean(disabled) ? disabled : !this.isDisabled;
-            this.$el.toggleClass(this.cls.states.disabled, this.isDisabled);
+            this.$el.toggleClass(this.cls.states.disabled, this.isDisabled).attr({
+                "aria-disabled": this.isDisabled,
+                "disabled": this.isDisabled
+            });
         },
         beforeLoad: function(media){
             this.opt.beforeLoad.call(this, media);
@@ -12342,7 +12402,8 @@
             self.__stopped = false;
             self.__timer = new _utils.Timer();
             self._super(panel, "autoProgress", {
-                icon: "auto-progress"
+                icon: "auto-progress",
+                label: "Auto Progress"
             });
             self.$icon = null;
             self.$circle = null;
@@ -12438,8 +12499,16 @@
         construct: function(panel){
             var self = this;
             self._super(panel, "fullscreen", {
-                icon: ["expand", "shrink"]
+                icon: ["expand", "shrink"],
+                label: "Fullscreen"
             });
+        },
+        create: function(){
+            if (this._super()){
+                this.$el.attr("aria-pressed", false);
+                return true;
+            }
+            return false;
         },
         click: function(){
             var self = this, pnl = self.panel.$el.get(0);
@@ -12461,10 +12530,28 @@
         },
         enter: function(){
             this.panel.$el.addClass(this.panel.cls.fullscreen);
+            if (!this.panel.isMaximized){
+                this.panel.$el.attr({
+                    'role': 'dialog',
+                    'aria-modal': true
+                });
+                this.panel.trapFocus();
+            }
+            this.$el.attr("aria-pressed", true);
+            this.panel.buttons.toggle('maximize', false);
             this.panel.isFullscreen = true;
         },
         exit: function(){
             this.panel.$el.removeClass(this.panel.cls.fullscreen);
+            if (!this.panel.isMaximized){
+                this.panel.$el.attr({
+                    'role': null,
+                    'aria-modal': null
+                });
+                this.panel.releaseFocus();
+            }
+            this.$el.attr("aria-pressed", false);
+            this.panel.buttons.toggle('maximize', this.panel.buttons.opt.maximize);
             this.panel.isFullscreen = false;
         }
     });
@@ -12479,8 +12566,16 @@
     _.Panel.Maximize = _.Panel.Button.extend({
         construct: function(panel){
             this._super(panel, "maximize", {
-                icon: "maximize"
+                icon: "maximize",
+                label: "Maximize"
             });
+        },
+        create: function(){
+            if (this._super()){
+                this.$el.attr("aria-pressed", false);
+                return true;
+            }
+            return false;
         },
         click: function(){
             this.set(!this.panel.isMaximized);
@@ -12498,14 +12593,24 @@
         },
         enter: function(){
             this.panel.isMaximized = true;
-            this.panel.$el.addClass(this.panel.cls.maximized);
+            this.panel.$el.addClass(this.panel.cls.maximized).attr({
+                'role': 'dialog',
+                'aria-modal': true
+            });
+            this.$el.attr("aria-pressed", true);
+            this.panel.trapFocus();
             if (this.panel.opt.noScrollbars){
                 $("html").addClass(this.panel.cls.noScrollbars);
             }
         },
         exit: function(){
             this.panel.isMaximized = false;
-            this.panel.$el.removeClass(this.panel.cls.maximized);
+            this.panel.$el.removeClass(this.panel.cls.maximized).attr({
+                'role': null,
+                'aria-modal': null
+            });
+            this.$el.attr("aria-pressed", false);
+            this.panel.releaseFocus();
             if (this.panel.opt.noScrollbars){
                 $("html").removeClass(this.panel.cls.noScrollbars);
             }
@@ -12798,6 +12903,7 @@
             var self = this, cls = panel.cls.sideArea;
             self._super(panel, name, _obj.extend({
                 icon: null,
+                label: null,
                 position: null,
                 visible: true,
                 toggle: !!panel.opt.buttons[name]
@@ -12818,6 +12924,7 @@
             }).join(" ");
             self.panel.buttons.register(new _.Panel.Button(panel, name, {
                 icon: self.opt.icon,
+                label: self.opt.label,
                 onclick: self.toggle.bind(self),
                 beforeLoad: function(media){
                     var enabled = self.isEnabled(), supported = enabled && self.canLoad(media);
@@ -12836,7 +12943,7 @@
         doCreate: function(){
             if (this._super()){
                 if (this.opt.toggle){
-                    $('<div/>').addClass(this.cls.toggle)
+                    $('<button/>', {type: 'button'}).addClass(this.cls.toggle)
                         .append(_icons.get("circle-close", this.panel.opt.icons))
                         .on("click.foogallery", {self: this}, this.onToggleClick)
                         .appendTo(this.$inner);
@@ -12894,6 +13001,7 @@
         construct: function(panel){
             this._super(panel, "info", {
                 icon: "info",
+                label: "Information",
                 position: panel.opt.info,
                 overlay: panel.opt.infoOverlay,
                 visible: panel.opt.infoVisible,
@@ -12938,6 +13046,7 @@
         construct: function(panel){
             this._super(panel, "thumbs", {
                 icon: "thumbs",
+                label: "Thumbnails",
                 position: panel.opt.thumbs,
                 captions: panel.opt.thumbsCaptions,
                 small: panel.opt.thumbsSmall,
@@ -12970,12 +13079,12 @@
             if (self.isEnabled() && self._super()){
                 if (!self.opt.captions) self.panel.$el.addClass(self.cls.noCaptions);
                 if (self.opt.small) self.panel.$el.addClass(self.cls.small);
-                self.$prev = $('<div/>').addClass(self.cls.prev)
+                self.$prev = $('<button/>', {type: 'button'}).addClass(self.cls.prev)
                     .append(_icons.get("arrow-left", self.panel.opt.icons))
                     .on("click.foogallery", {self: self}, self.onPrevClick)
                     .prependTo(self.$inner);
                 self.$viewport = $('<div/>').addClass(self.cls.viewport).appendTo(self.$inner);
-                self.$next = $('<div/>').addClass(self.cls.next)
+                self.$next = $('<button/>', {type: 'button'}).addClass(self.cls.next)
                     .append(_icons.get("arrow-right", self.panel.opt.icons))
                     .on("click.foogallery", {self: self}, self.onNextClick)
                     .appendTo(self.$inner);
@@ -13031,7 +13140,9 @@
             return $("<figure/>").addClass(cls.elem).addClass(item.getTypeClass()).addClass(self.panel.cls.states.idle).append(
                 $("<div/>").addClass(cls.media).append(
                     $("<div/>").addClass(cls.overlay),
-                    $("<img/>", {title: item.title, alt: item.alt}).attr({draggable: false}).addClass(cls.image),
+                    $("<div/>").addClass(cls.wrap).append(
+                        $("<img/>", {title: item.title, alt: item.alt}).attr({draggable: false}).addClass(cls.image)
+                    ),
                     $("<div/>").addClass(self.panel.cls.loader)
                 ),
                 $("<div/>").addClass(cls.caption).append(
@@ -13276,6 +13387,7 @@
         construct: function(panel){
             this._super(panel, "cart", {
                 icon: "cart",
+                label: "Cart",
                 position: panel.opt.cart,
                 visible: panel.opt.cartVisible,
                 waitForUnload: false
