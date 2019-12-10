@@ -82,6 +82,7 @@ if ( is_admin() ) {
 	require_once( FOOGALLERY_PATH . 'includes/public/class-css-load-optimizer.php' );
 	require_once( FOOGALLERY_PATH . 'includes/public/class-admin-bar.php' );
 	require_once( FOOGALLERY_PATH . 'includes/public/class-yoast-seo-sitemaps.php' );
+	require_once( FOOGALLERY_PATH . 'includes/public/class-rank-math-seo-sitemaps.php' );
 }
 
 require_once( FOOGALLERY_PATH . 'includes/public/class-shortcodes.php' );

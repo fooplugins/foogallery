@@ -403,6 +403,18 @@ function foogallery_build_class_attribute( $gallery ) {
 
 	$classes = apply_filters( 'foogallery_build_class_attribute', $classes, $gallery );
 
+	//extract any classes from the gallery arguments
+	global $current_foogallery_arguments;
+	if ( isset( $current_foogallery_arguments ) && is_array( $current_foogallery_arguments ) ) {
+		if ( array_key_exists( 'className', $current_foogallery_arguments ) ) {
+			$classes[] = $current_foogallery_arguments['className'];
+		}
+
+		if ( array_key_exists( 'classes', $current_foogallery_arguments ) ) {
+			$classes[] = $current_foogallery_arguments['classes'];
+		}
+	}
+
 	$classes = array_filter( $classes );
 
 	return implode( ' ', $classes );

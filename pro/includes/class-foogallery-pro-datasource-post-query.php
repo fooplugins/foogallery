@@ -127,12 +127,14 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Post_Query' ) ) {
 		function build_attachments_from_post_query( $foogallery ) {
 			$totalPosts = ! empty( $foogallery->datasource_value['no_of_post'] ) ? $foogallery->datasource_value['no_of_post'] : 5;
 			$postType   = ! empty( $foogallery->datasource_value['gallery_post_type'] ) ? $foogallery->datasource_value['gallery_post_type'] : 'post';
+			$link_to    = ! empty( $foogallery->datasource_value['link_to'] ) ? $foogallery->datasource_value['link_to'] : 'image';
+			$exclude    = ! empty( $foogallery->datasource_value['exclude'] ) ? $foogallery->datasource_value['exclude'] : '';
 
 			$query_args = apply_filters( 'foogallery_datasource_post_query_arguments', array(
 				'posts_per_page' => $totalPosts,
 				'post_type'      => $postType,
 				'post_status'    => 'publish',
-				'post__not_in'   => explode( ',', $foogallery->datasource_value['exclude'] ),
+				'post__not_in'   => explode( ',', $exclude ),
 				'meta_query'     => array(
 					array(
 						'key'     => '_thumbnail_id',
@@ -149,7 +151,7 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Post_Query' ) ) {
 				$post_thumbnail_id = get_post_thumbnail_id( $post );
 				$post_thumbnail_url = get_the_post_thumbnail_url( $post->ID,'full' );
 
-				if ( $foogallery->datasource_value['link_to'] == 'image' ) {
+				if ( $link_to == 'image' ) {
 					$url = $post_thumbnail_url;
 				} else {
 					$url = get_permalink( $post->ID );
@@ -210,11 +212,6 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Post_Query' ) ) {
             <p>
 				<?php _e('Choose the settings for your gallery below. The gallery will be dynamically populated using the post query settings below.', 'foogallery' ); ?>
             </p>
-            <script type="text/javascript">
-                $(document).on('change', '.foogallery_post_query_input', function () {
-                    $('.foogallery-datasource-modal-insert').removeAttr('disabled');
-                });
-            </script>
             <form action="" method="post" name="post_query_gallery_form">
                 <table class="form-table">
                     <tbody>
@@ -246,7 +243,7 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Post_Query' ) ) {
                                     id="no_of_post"
                                     value="<?php echo isset( $datasource_value['no_of_post'] ) ? $datasource_value['no_of_post'] : '' ?>"
                             />
-                            <p class="description"><?php _e( 'Number of images to show in the gallery', 'foogallery' ) ?></p>
+                            <p class="description"><?php _e( 'Number of posts you want to include in the gallery.', 'foogallery' ) ?></p>
                         </td>
                     </tr>
                     <tr>
@@ -259,7 +256,7 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Post_Query' ) ) {
                                     id="exclude"
                                     value="<?php echo isset( $datasource_value['exclude'] ) ? $datasource_value['exclude'] : '' ?>"
                             />
-                            <p class="description"><?php _e( 'Write comma seperated id\'s of the post which you want to exclude', 'foogallery' ) ?></p>
+                            <p class="description"><?php _e( 'A comma separated list of post id\'s that you want to exclude from the gallery.', 'foogallery' ) ?></p>
                         </td>
                     </tr>
                     <tr>
@@ -303,6 +300,12 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Post_Query' ) ) {
 		 */
 		function render_datasource_item( $gallery ) {
 			$show_container = isset( $gallery->datasource_name ) && 'post_query' === $gallery->datasource_name;
+
+			$gallery_post_type = isset( $gallery->datasource_value ) && is_array( $gallery->datasource_value ) && array_key_exists( 'gallery_post_type', $gallery->datasource_value ) ? $gallery->datasource_value['gallery_post_type'] : '';
+			$no_of_post = isset( $gallery->datasource_value ) && is_array( $gallery->datasource_value ) && array_key_exists( 'no_of_post', $gallery->datasource_value ) ? $gallery->datasource_value['no_of_post'] : '';
+			$exclude = isset( $gallery->datasource_value ) && is_array( $gallery->datasource_value ) && array_key_exists( 'exclude', $gallery->datasource_value ) ? $gallery->datasource_value['exclude'] : '';
+			$link_to = isset( $gallery->datasource_value ) && is_array( $gallery->datasource_value ) && array_key_exists( 'link_to', $gallery->datasource_value ) ? $gallery->datasource_value['link_to'] : '';
+
 			?>
             <div <?php echo $show_container ? '' : 'style="display:none" '; ?>class="foogallery-datasource-item foogallery-datasource-post_query">
                 <h3>
@@ -312,10 +315,10 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Post_Query' ) ) {
 					<?php _e( 'This gallery will be dynamically populated with the featured images from the following post query:', 'foogallery' ); ?>
                 </p>
                 <div class="foogallery-items-html">
-					<?php echo __('Post Type : ', 'foogallery') . $gallery->datasource_value['gallery_post_type']; ?><br />
-	                <?php echo __('No. Of Posts : ', 'foogallery') . $gallery->datasource_value['no_of_post']; ?><br />
-	                <?php echo __('Excludes : ', 'foogallery') . $gallery->datasource_value['exclude']; ?><br />
-	                <?php echo __('Link To : ', 'foogallery') . $gallery->datasource_value['link_to']; ?><br />
+                    <?php echo __('Post Type : ', 'foogallery'); ?><span id="foogallery-datasource-post-query-gallery_post_type"><?php echo $gallery_post_type; ?></span><br />
+	                <?php echo __('No. Of Posts : ', 'foogallery'); ?><span id="foogallery-datasource-post-query-no_of_post"><?php echo $no_of_post; ?></span><br />
+	                <?php echo __('Excludes : ', 'foogallery'); ?><span id="foogallery-datasource-post-query-exclude"><?php echo $exclude; ?></span><br />
+	                <?php echo __('Link To : ', 'foogallery'); ?><span id="foogallery-datasource-post-query-link_to"><?php echo $link_to; ?></span><br />
                 </div>
                 <br/>
                 <button type="button" class="button edit">
