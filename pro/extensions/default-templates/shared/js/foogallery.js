@@ -12551,7 +12551,7 @@
                 this.panel.releaseFocus();
             }
             this.$el.attr("aria-pressed", false);
-            this.panel.buttons.toggle('maximize', this.panel.buttons.opt.maximize);
+            this.panel.buttons.toggle('maximize', this.panel.isInline && this.panel.buttons.opt.maximize);
             this.panel.isFullscreen = false;
         }
     });
