@@ -12,47 +12,46 @@
 	vertical-align: middle;
 }
 .foogallery-setting-caption_icon.fg-hover-zoom {
-	background-image: url('../img/zoom.png');
+	background-image: url('../img/admin/zoom.png');
 }
 .foogallery-setting-caption_icon.fg-hover-zoom2 {
-	background-image: url('../img/zoom2.png');
+	background-image: url('../img/admin/zoom2.png');
 }
 .foogallery-setting-caption_icon.fg-hover-zoom3 {
-	background-image: url('../img/zoom3.png');
+	background-image: url('../img/admin/zoom3.png');
 }
 .foogallery-setting-caption_icon.fg-hover-plus {
-	background-image: url('../img/plus.png');
+	background-image: url('../img/admin/plus.png');
 }
 .foogallery-setting-caption_icon.fg-hover-circle-plus {
-	background-image: url('../img/circle-plus.png');
+	background-image: url('../img/admin/circle-plus.png');
 }
 .foogallery-setting-caption_icon.fg-hover-eye {
-	background-image: url('../img/eye.png');
+	background-image: url('../img/admin/eye.png');
 }
 .foogallery-setting-caption_icon.fg-hover-external {
-	background-image: url('../img/external.png');
+	background-image: url('../img/admin/external.png');
 }
 
 .foogallery-setting-video_overlay.fg-video-default {
-	background-image: url('../img/video-default.png');
+	background-image: url('../img/admin/video-default.png');
 }
 
 .foogallery-setting-video_overlay.fg-video-1 {
-	background-image: url('../img/video-1.png');
+	background-image: url('../img/admin/video-1.png');
 }
 
 .foogallery-setting-video_overlay.fg-video-2 {
-	background-image: url('../img/video-2.png');
+	background-image: url('../img/admin/video-2.png');
 }
 
 .foogallery-setting-video_overlay.fg-video-3 {
-	background-image: url('../img/video-3.png');
+	background-image: url('../img/admin/video-3.png');
 }
 
 .foogallery-setting-video_overlay.fg-video-4 {
-	background-image: url('../img/video-4.png');
+	background-image: url('../img/admin/video-4.png');
 }
-
 .foogallery_template_field_type-htmlicon.foogallery_template_field_id-loading_icon td label {
 	background-color: #eee;
 }
