@@ -87,7 +87,7 @@
 		}
 
 		//build up the container class
-		var $classFields = $('.foogallery-settings-container-active .foogallery-metabox-settings .foogallery_template_field[data-foogallery-preview="class"]');
+		var $classFields = $('.foogallery-settings-container-active .foogallery-metabox-settings .foogallery_template_field[data-foogallery-preview*="class"]');
 
 		if ($classFields.length) {
 
@@ -132,7 +132,7 @@
 		$('.foogallery_preview_container').css('height', $('.foogallery_preview_container').height());
 
 		//build up all the data to generate a preview
-        var $shortcodeFields = $('.foogallery-settings-container-active .foogallery-metabox-settings .foogallery_template_field[data-foogallery-preview="shortcode"]'),
+        var $shortcodeFields = $('.foogallery-settings-container-active .foogallery-metabox-settings .foogallery_template_field[data-foogallery-preview*="shortcode"]'),
 			data = [],
 			foogallery_id = $('#post_ID').val();
 
@@ -309,10 +309,10 @@
 				selector = $fieldContainer.data('foogallery-change-selector');
 
             $fieldContainer.find(selector).change(function() {
-                if ( $fieldContainer.data('foogallery-preview') === 'shortcode' ) {
+                if ( $fieldContainer.data('foogallery-preview').indexOf('shortcode') !== -1 ) {
                     FOOGALLERY.reloadGalleryPreview();
                 } else {
-					FOOGALLERY.handleSettingFieldChange( $fieldContainer.data('foogallery-preview') !== 'class', true );
+					FOOGALLERY.handleSettingFieldChange( $fieldContainer.data('foogallery-preview').indexOf('class') !== -1, true );
 				}
 			});
         });

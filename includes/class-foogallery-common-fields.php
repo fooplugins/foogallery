@@ -96,7 +96,7 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 					'row_data' => array(
 						'data-foogallery-change-selector' => 'input:radio',
 						'data-foogallery-value-selector'  => 'input:checked',
-						'data-foogallery-preview'         => 'class'
+						'data-foogallery-preview'         => 'shortcode class'
 					)
 				);
 
@@ -546,7 +546,7 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 		function get_setting_from_gallery( $gallery, $key, $default ) {
 		    global $current_foogallery;
 
-		    if ( isset( $current_foogallery ) && $current_foogallery === $gallery ) {
+		    if ( isset( $current_foogallery ) && $current_foogallery->ID === $gallery->ID ) {
 		        return foogallery_gallery_template_setting( $key, $default );
             }
 
@@ -647,6 +647,7 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 		 * @return mixed
 		 */
 		function preview_arguments( $args, $post_data, $template ) {
+            $args['theme'] = $post_data[FOOGALLERY_META_SETTINGS][$template . '_theme'];
 			$args['caption_title_source'] = $post_data[FOOGALLERY_META_SETTINGS][$template . '_caption_title_source'];
 			$args['caption_desc_source'] = $post_data[FOOGALLERY_META_SETTINGS][$template . '_caption_desc_source'];
 			$args['captions_limit_length'] = $post_data[FOOGALLERY_META_SETTINGS][$template . '_captions_limit_length'];
