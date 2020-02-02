@@ -1424,3 +1424,11 @@ function foogallery_marketing_pro_features() {
 function foogallery_allowed_post_types_for_usage() {
 	return apply_filters( 'foogallery_allowed_post_types_for_attachment', array( 'post', 'page' ) );
 }
+
+/**
+ * Returns true if FooGallery is in debug mode
+ * @return bool
+ */
+function foogallery_is_debug() {
+    return foogallery_get_setting( 'enable_debugging', false );
+}

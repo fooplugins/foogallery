@@ -32,7 +32,7 @@ if ( ! class_exists( 'FooGallery_Upgrade' ) ) {
 
 		public function add_meta_boxes_to_gallery( $post ) {
 
-			if ( foogallery_get_setting( 'enable_debugging' ) ) {
+			if ( foogallery_is_debug() ) {
 				add_meta_box(
 					'foogallery_upgrade_debug',
 					__( 'Settings Upgrade Debugging', 'foogallery' ),
