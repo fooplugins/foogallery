@@ -517,7 +517,12 @@ if ( ! class_exists( 'FooGallery_Pro_Lightbox' ) ) {
 					$encoded_options = json_encode( $options );
 				}
 
-				$attributes['data-foogallery-lightbox'] = $encoded_options;
+				//check if lightbox set to foogallery
+                $lightbox = foogallery_gallery_template_setting( 'lightbox', '' );
+
+				if ( 'foogallery' === $lightbox ) {
+                    $attributes['data-foogallery-lightbox'] = $encoded_options;
+                }
 			}
 
 			return $attributes;
