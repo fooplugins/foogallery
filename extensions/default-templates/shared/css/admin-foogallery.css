@@ -1,6 +1,7 @@
 .foogallery-setting-caption_icon,
 .foogallery-setting-loading_icon,
-.foogallery-setting-video_overlay {
+.foogallery-setting-video_overlay,
+.foogallery-setting-panel_theme {
 	content: "";
 	display: inline-block;
 	position: relative;
@@ -95,4 +96,26 @@
 
 .fg-item-inner {
 	margin: 0;
+}
+
+.foogallery-setting-panel_theme.fg-light {
+	background-color: #fff;
+}
+.foogallery-setting-panel_theme.fg-dark {
+	background-color: #292929;
+}
+.foogallery-setting-panel_theme.fg-blue {
+	background-color: #3079ed;
+}
+.foogallery-setting-panel_theme.fg-purple {
+	background-color: #6816c2;
+}
+.foogallery-setting-panel_theme.fg-green {
+	background-color: #027339;
+}
+.foogallery-setting-panel_theme.fg-red {
+	background-color: #c22b24;
+}
+.foogallery-setting-panel_theme.fg-orange {
+	background-color: #e57731;
 }

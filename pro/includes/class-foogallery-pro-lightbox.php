@@ -47,6 +47,16 @@ if ( ! class_exists( 'FooGallery_Pro_Lightbox' ) ) {
 
 			$section = $use_lightbox ? __( 'Lightbox', 'foogallery' ) : __( 'Panel', 'foogallery' );
 
+			if ( $use_lightbox ) {
+                $field[] = array(
+                    'id'      => 'lightbox_help',
+                    'title'   => __( 'Lightbox Help', 'foogallery' ),
+                    'desc'    => __( 'The below settings are only applied and used if you have your lightbox set to "FooGallery PRO Lightbox"', 'foogallery' ),
+                    'section' => $section,
+                    'type'    => 'help'
+                );
+            }
+
 			$field[] = array(
 				'id'      => 'lightbox_theme',
 				'title'   => __( 'Theme', 'foogallery' ),
@@ -70,20 +80,20 @@ if ( ! class_exists( 'FooGallery_Pro_Lightbox' ) ) {
 			$field[] = array(
 				'id'      => 'lightbox_button_theme',
 				'title'   => __( 'Control Color', 'foogallery' ),
-				'desc'    => __( 'You can override the controls color.', 'foogallery' ),
+				'desc'    => __( 'You can override the button controls color. By default it will inherit from the theme.', 'foogallery' ),
 				'section' => $section,
 				'spacer'  => '<span class="spacer"></span>',
-				'type'    => 'radio',
+				'type'    => 'htmlicon',
 				'default' => '',
 				'choices' => apply_filters( 'foogallery_gallery_template_lightbox_button_theme_choices', array(
-					''  => __( 'Default', 'foogallery' ),
-					'fg-button-light'  => __( 'Light', 'foogallery' ),
-					'fg-button-dark'   => __( 'Dark', 'foogallery' ),
-					'fg-button-blue'  => __( 'Blue', 'foogallery' ),
-					'fg-button-purple'   => __( 'Purple', 'foogallery' ),
-					'fg-button-green'   => __( 'Green', 'foogallery' ),
-					'fg-button-red'   => __( 'Red', 'foogallery' ),
-					'fg-button-orange'   => __( 'Orange', 'foogallery' )
+					''                  => array( 'label' => __( 'Same As Theme', 'foogallery' ), 'html' => '<div class="foogallery-setting-panel_theme"></div>' ),
+					'fg-button-light'   => array( 'label' => __( 'Light',   'foogallery' ), 'html' => '<div class="foogallery-setting-panel_theme fg-light"></div>' ),
+					'fg-button-dark'    => array( 'label' => __( 'Dark',    'foogallery' ), 'html' => '<div class="foogallery-setting-panel_theme fg-dark"></div>' ),
+					'fg-button-blue'    => array( 'label' => __( 'Blue',    'foogallery' ), 'html' => '<div class="foogallery-setting-panel_theme fg-blue"></div>' ),
+					'fg-button-purple'  => array( 'label' => __( 'Purple',  'foogallery' ), 'html' => '<div class="foogallery-setting-panel_theme fg-purple"></div>' ),
+					'fg-button-green'   => array( 'label' => __( 'Green',   'foogallery' ), 'html' => '<div class="foogallery-setting-panel_theme fg-green"></div>' ),
+					'fg-button-red'     => array( 'label' => __( 'Red',     'foogallery' ), 'html' => '<div class="foogallery-setting-panel_theme fg-red"></div>' ),
+					'fg-button-orange'  => array( 'label' => __( 'Orange',  'foogallery' ), 'html' => '<div class="foogallery-setting-panel_theme fg-orange"></div>' ),
 				) ),
 				'row_data'=> array(
 					'data-foogallery-change-selector' => 'input',
@@ -95,20 +105,20 @@ if ( ! class_exists( 'FooGallery_Pro_Lightbox' ) ) {
 			$field[] = array(
 				'id'      => 'lightbox_button_highlight',
 				'title'   => __( 'Control Hover Color', 'foogallery' ),
-				'desc'    => __( 'You can override the controls hover color.', 'foogallery' ),
+				'desc'    => __( 'You can override the button controls hover color. By default it will inherit from the theme.', 'foogallery' ),
 				'section' => $section,
 				'spacer'  => '<span class="spacer"></span>',
-				'type'    => 'radio',
+				'type'    => 'htmlicon',
 				'default' => '',
 				'choices' => apply_filters( 'foogallery_gallery_template_lightbox_button_highlight_choices', array(
-					''  => __( 'Default', 'foogallery' ),
-					'fg-highlight-light'  => __( 'Light', 'foogallery' ),
-					'fg-highlight-dark'   => __( 'Dark', 'foogallery' ),
-					'fg-highlight-blue'  => __( 'Blue', 'foogallery' ),
-					'fg-highlight-purple'   => __( 'Purple', 'foogallery' ),
-					'fg-highlight-green'   => __( 'Green', 'foogallery' ),
-					'fg-highlight-red'   => __( 'Red', 'foogallery' ),
-					'fg-highlight-orange'   => __( 'Orange', 'foogallery' )
+                    ''                  => array( 'label' => __( 'Same As Theme', 'foogallery' ), 'html' => '<div class="foogallery-setting-panel_theme"></div>' ),
+					'fg-highlight-light'   => array( 'label' => __( 'Light',   'foogallery' ), 'html' => '<div class="foogallery-setting-panel_theme fg-light"></div>' ),
+					'fg-highlight-dark'    => array( 'label' => __( 'Dark',    'foogallery' ), 'html' => '<div class="foogallery-setting-panel_theme fg-dark"></div>' ),
+					'fg-highlight-blue'    => array( 'label' => __( 'Blue',    'foogallery' ), 'html' => '<div class="foogallery-setting-panel_theme fg-blue"></div>' ),
+					'fg-highlight-purple'  => array( 'label' => __( 'Purple',  'foogallery' ), 'html' => '<div class="foogallery-setting-panel_theme fg-purple"></div>' ),
+					'fg-highlight-green'   => array( 'label' => __( 'Green',   'foogallery' ), 'html' => '<div class="foogallery-setting-panel_theme fg-green"></div>' ),
+					'fg-highlight-red'     => array( 'label' => __( 'Red',     'foogallery' ), 'html' => '<div class="foogallery-setting-panel_theme fg-red"></div>' ),
+					'fg-highlight-orange'  => array( 'label' => __( 'Orange',  'foogallery' ), 'html' => '<div class="foogallery-setting-panel_theme fg-orange"></div>' ),
 				) ),
 				'row_data'=> array(
 					'data-foogallery-change-selector' => 'input',
