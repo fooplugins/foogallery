@@ -127,6 +127,12 @@ if ( ! class_exists( 'FooGallery_Pro_Lightbox' ) ) {
 				)
 			);
 
+            $hide_thumbs_by_default = false;
+            //only hide the thumbs by default if we are using the Grid PRO template
+            if ( $template && array_key_exists('slug', $template) && $template['slug'] === 'foogridpro' ) {
+                $hide_thumbs_by_default = true;
+            }
+
 			$field[] = array(
 				'id'       => 'lightbox_thumbs',
 				'title'    => __( 'Thumbnail Strip', 'foogallery' ),
@@ -134,7 +140,7 @@ if ( ! class_exists( 'FooGallery_Pro_Lightbox' ) ) {
 				'section'  => $section,
 				'spacer'   => '<span class="spacer"></span>',
 				'type'     => 'radio',
-				'default'  => 'bottom',
+				'default'  => $hide_thumbs_by_default ? 'none' : 'bottom',
 				'choices'  => apply_filters( 'foogallery_gallery_template_lightbox_thumbs_choices', array(
 					'bottom' => __( 'Bottom', 'foogallery' ),
 					'top'    => __( 'Top', 'foogallery' ),
@@ -544,7 +550,14 @@ if ( ! class_exists( 'FooGallery_Pro_Lightbox' ) ) {
 		 * @return array
 		 */
 		private function get_options_from_settings() {
+            global $current_foogallery_template;
 			$options = array();
+
+            $hide_thumbs_by_default = false;
+            //only hide the thumbs by default if we are using the Grid PRO template
+            if ( $current_foogallery_template && 'foogridpro' === $current_foogallery_template ) {
+                $hide_thumbs_by_default = true;
+            }
 
 			$theme = foogallery_gallery_template_setting( 'lightbox_theme', '' );
 			if ( !empty( $theme ) ) {
@@ -561,13 +574,13 @@ if ( ! class_exists( 'FooGallery_Pro_Lightbox' ) ) {
 				$options['highlight'] = $button_highlight;
 			}
 
-			$thumbs = foogallery_gallery_template_setting( 'lightbox_thumbs', 'bottom' );
+			$thumbs = foogallery_gallery_template_setting( 'lightbox_thumbs', $hide_thumbs_by_default ? 'none' : 'bottom' );
 			$options['thumbs'] = $thumbs;
 			if ( 'none' !== $thumbs ) {
 				$options['thumbsCaptions'] = foogallery_gallery_template_setting( 'lightbox_thumbs_captions', 'no' ) === 'yes';
 			}
 
-			$info_position = foogallery_gallery_template_setting( 'lightbox_info_position', 'botton' );
+			$info_position = foogallery_gallery_template_setting( 'lightbox_info_position', 'bottom' );
 			$options['info'] = $info_position;
 			if ( 'none' !== $info_position ) {
 				$options['infoVisible'] = true;
