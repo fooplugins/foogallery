@@ -27,10 +27,12 @@
             $('.foogallery-items-add').removeClass('hidden');
             $('.foogallery-attachments-list').addClass('hidden');
             $('.foogallery-items-empty').removeClass('hidden');
+            $('.foogallery-attachments-list-bar').hide();
         } else {
             $('.foogallery-items-add').addClass('hidden');
             $('.foogallery-attachments-list').removeClass('hidden');
             $('.foogallery-items-empty').addClass('hidden');
+            $('.foogallery-attachments-list-bar').show();
         }
 	};
 
@@ -550,6 +552,23 @@
 			showInput: true,
 			clickoutFiresChange: true
 		});
+
+		//lazy loading of images on the gallery edit page
+        var io = new IntersectionObserver(function(entries){
+            entries.forEach(function(entry){
+                if (entry.isIntersecting){
+                    var $target = $(entry.target);
+                    $target.attr("src", $target.data("src"));
+                    io.unobserve(entry.target);
+                }
+            });
+        }, {
+            root: $(".foogallery-attachments-list").get(0)
+        });
+
+        $(".foogallery-attachments-list .attachment .thumbnail img").each(function(i, img){
+            io.observe(img);
+        });
     };
 
 }(window.FOOGALLERY = window.FOOGALLERY || {}, jQuery));

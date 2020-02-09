@@ -526,3 +526,19 @@ button[data-balloon]{overflow:visible}[data-balloon]{position:relative}[data-bal
 		right: 0;
 	}
 }
+
+.foogallery-attachments-list {
+	max-height: 486px;
+	/*max-height: 324px;*/
+	/*max-height: 162px;*/
+	overflow: hidden auto;
+	list-style: none;
+	border: 1px solid #ccd0d4;
+	padding: 10px;
+}
+.foogallery-attachments-list:after,
+.foogallery-attachments-list-bar:after {
+	content: '';
+	display: block;
+	clear: both;
+}

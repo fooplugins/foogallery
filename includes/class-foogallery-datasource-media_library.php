@@ -111,15 +111,23 @@ if ( ! class_exists( 'FooGallery_Datasource_MediaLibrary' ) ) {
 					}
 				} ?>
                 <?php if ( !$media_button_start ) {
-                    $this->render_add_meda_button( $foogallery->ID );
+                    $this->render_add_media_button( $foogallery->ID );
                 } ?>
 			</ul>
 			<div style="clear: both;"></div>
 			<textarea style="display: none" id="foogallery-attachment-template"><?php $this->render_attachment_item(); ?></textarea>
+            <div class="foogallery-attachments-list-bar">
+                <button type="button" class="button button-primary button-large alignright upload_image_button"
+                        data-uploader-title="<?php _e( 'Add Media To Gallery', 'foogallery' ); ?>"
+                        data-uploader-button-text="<?php _e( 'Add Media', 'foogallery' ); ?>"
+                        data-post-id="<?php echo $foogallery->ID; ?>">
+                    <?php _e( 'Add Media', 'foogallery' ); ?>
+                </button>
+            </div>
 			<?php
 		}
 
-		private function render_add_meda_button( $foogallery_id) {
+		private function render_add_media_button( $foogallery_id) {
 		    ?>
             <li class="add-attachment datasource-medialibrary">
                 <a href="#" data-uploader-title="<?php _e( 'Add Media To Gallery', 'foogallery' ); ?>"
@@ -146,7 +154,7 @@ if ( ! class_exists( 'FooGallery_Datasource_MediaLibrary' ) ) {
 			}
 
 			$data_attribute = empty($attachment_id) ? '' : "data-attachment-id=\"{$attachment_id}\"";
-			$img_tag        = empty($attachment) ? '<img width="150" height="150" />' : "<img width=\"150\" height=\"150\" src=\"{$attachment[0]}\" />";
+			$img_tag        = empty($attachment) ? '<img width="150" height="150" />' : "<img width=\"150\" height=\"150\" data-src=\"{$attachment[0]}\" />";
 			?>
 			<li class="attachment details" <?php echo $data_attribute; ?>>
 				<div class="attachment-preview type-image <?php echo $extra_class; ?>">
