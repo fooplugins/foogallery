@@ -225,12 +225,17 @@ function foogallery_attachment_html_anchor( $foogallery_attachment, $args = arra
  * @return array|bool
  */
 function foogallery_build_attachment_html_caption( $foogallery_attachment, $args = array() ) {
-	$captions = array();
+	$captions = apply_filters( 'foogallery_build_attachment_html_caption_custom', false, $foogallery_attachment, $args);
+
+	if ( false === $captions ) {
+        $captions = array();
+    } else {
+	    return $captions;
+    }
 
 	$preset = foogallery_gallery_template_setting( 'caption_preset', 'fg-custom' );
 
 	if ( 'none' !== $preset ) {
-		$caption_html = array();
 
 		$show_caption_title = false;
 		$show_caption_desc = false;

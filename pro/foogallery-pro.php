@@ -29,6 +29,7 @@ require_once( FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-instagram-hel
 require_once( FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-datasource-realmedialibrary.php' );
 require_once( FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-datasource-post-query.php' );
 require_once( FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-lightbox.php' );
+require_once( FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-advanced-captions.php' );
 
 /**
  * FooGallery PRO Main Class
@@ -63,6 +64,7 @@ if ( ! class_exists( 'FooGallery_Pro' ) ) {
 			new FooGallery_Pro_Datasource_RealMediaLibrary();
             new FooGallery_Pro_Datasource_Post_Query();
             new FooGallery_Pro_Lightbox();
+            new FooGallery_Pro_Advanced_Captions();
 		}
 	}
 }
