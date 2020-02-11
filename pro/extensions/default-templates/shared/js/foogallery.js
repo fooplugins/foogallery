@@ -12569,6 +12569,7 @@
                 icon: "maximize",
                 label: "Maximize"
             });
+            this.$placeholder = $("<span/>");
         },
         create: function(){
             if (this._super()){
@@ -12593,11 +12594,12 @@
         },
         enter: function(){
             this.panel.isMaximized = true;
-            this.panel.$el.addClass(this.panel.cls.maximized).attr({
+            this.$placeholder.insertAfter(this.panel.$el);
+            this.panel.$el.appendTo("body").addClass(this.panel.cls.maximized).attr({
                 'role': 'dialog',
                 'aria-modal': true
             });
-            this.$el.attr("aria-pressed", true);
+            if (this.isCreated) this.$el.attr("aria-pressed", true);
             this.panel.trapFocus();
             if (this.panel.opt.noScrollbars){
                 $("html").addClass(this.panel.cls.noScrollbars);
@@ -12608,8 +12610,9 @@
             this.panel.$el.removeClass(this.panel.cls.maximized).attr({
                 'role': null,
                 'aria-modal': null
-            });
-            this.$el.attr("aria-pressed", false);
+            }).insertBefore(this.$placeholder);
+            this.$placeholder.detach();
+            if (this.isCreated) this.$el.attr("aria-pressed", false);
             this.panel.releaseFocus();
             if (this.panel.opt.noScrollbars){
                 $("html").removeClass(this.panel.cls.noScrollbars);
@@ -15918,13 +15921,15 @@
 					if (newRow) self.panel.currentItem.$el.removeClass(self.cls.visible);
 					if (self.transitionClose(newRow)){
 						_t.start(self.$section, self.cls.visible, false, 350).then(function(){
-							self.panel.doClose(true, !newRow);
-							def.resolve();
+							self.panel.doClose(true, true).then(function(){
+								def.resolve();
+							});
 						});
 					} else {
 						self.$section.removeClass(self.cls.visible);
-						self.panel.doClose(true, !newRow);
-						def.resolve();
+						self.panel.doClose(true, true).then(function(){
+							def.resolve();
+						});
 					}
 				} else {
 					def.resolve();
@@ -15952,6 +15957,7 @@
 
 	_.template.register("foogrid", _.FooGridTemplate, {
 		template: {
+			classNames: "foogrid-panel",
 			scroll: true,
 			scrollOffset: 0,
 			scrollSmooth: false,
@@ -16118,6 +16124,8 @@
 		}
 	};
 
+	_.autoEnabled = true;
+
 	_.auto = function (options) {
 		_.autoDefaults = _obj.merge(_.autoDefaults, options);
 	};
@@ -16125,11 +16133,15 @@
 	_.load = _.reload = function(){
 		// this automatically initializes all templates on page load
 		$(function () {
-			$('[id^="foogallery-gallery-"]:not(.fg-ready)').foogallery(_.autoDefaults);
+			if (_.autoEnabled){
+				$('[id^="foogallery-gallery-"]:not(.fg-ready)').foogallery(_.autoDefaults);
+			}
 		});
 
 		_utils.ready(function () {
-			$('[id^="foogallery-gallery-"].fg-ready').foogallery(_.autoDefaults);
+			if (_.autoEnabled){
+				$('[id^="foogallery-gallery-"].fg-ready').foogallery(_.autoDefaults);
+			}
 		});
 	};
 

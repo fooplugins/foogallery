@@ -9488,6 +9488,8 @@
 		}
 	};
 
+	_.autoEnabled = true;
+
 	_.auto = function (options) {
 		_.autoDefaults = _obj.merge(_.autoDefaults, options);
 	};
@@ -9495,11 +9497,15 @@
 	_.load = _.reload = function(){
 		// this automatically initializes all templates on page load
 		$(function () {
-			$('[id^="foogallery-gallery-"]:not(.fg-ready)').foogallery(_.autoDefaults);
+			if (_.autoEnabled){
+				$('[id^="foogallery-gallery-"]:not(.fg-ready)').foogallery(_.autoDefaults);
+			}
 		});
 
 		_utils.ready(function () {
-			$('[id^="foogallery-gallery-"].fg-ready').foogallery(_.autoDefaults);
+			if (_.autoEnabled){
+				$('[id^="foogallery-gallery-"].fg-ready').foogallery(_.autoDefaults);
+			}
 		});
 	};
 

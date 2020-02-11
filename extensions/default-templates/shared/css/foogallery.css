@@ -41,7 +41,11 @@
 	transform: translateX(-50%) translateY(-50%);
 	width: 32px;
 	height: 32px;
-	background: transparent url('../img/icons.svg#image') no-repeat center center;
+	background-image: url('../img/icons.svg#image');
+	background-color: transparent;
+	background-repeat: no-repeat;
+	background-position: center center;
+	background-size: 32px 32px;
 }
 
 .foogallery .fg-item.fg-loaded {
@@ -798,12 +802,13 @@
 	transform: translateX(-50%) translateY(-50%);
 	width: 32px;
 	height: 32px;
+	background-size: 32px 32px;
 	background-position: center center;
 	background-repeat: no-repeat;
 }
 .foogallery .fg-caption-inner:before {
 	content: "";
-	display: inline-block;
+	display: none;
 	position: relative;
 	width: 32px;
 	height: 32px;
@@ -812,6 +817,21 @@
 	vertical-align: middle;
 	background-position: center center;
 	background-repeat: no-repeat;
+}
+.foogallery.fg-hover-zoom 				.fg-caption-inner:before,
+.foogallery.fg-hover-zoom2 				.fg-caption-inner:before,
+.foogallery.fg-hover-zoom3 				.fg-caption-inner:before,
+.foogallery.fg-hover-plus 				.fg-caption-inner:before,
+.foogallery.fg-hover-circle-plus 	    .fg-caption-inner:before,
+.foogallery.fg-hover-eye 				.fg-caption-inner:before,
+.foogallery.fg-hover-external 		    .fg-caption-inner:before,
+.foogallery.fg-hover-tint 				.fg-caption-inner:before,
+.foogallery.fg-video-default            .fg-caption-inner:before,
+.foogallery.fg-video-1                  .fg-caption-inner:before,
+.foogallery.fg-video-2                  .fg-caption-inner:before,
+.foogallery.fg-video-3                  .fg-caption-inner:before,
+.foogallery.fg-video-4                  .fg-caption-inner:before {
+	display: inline-block;
 }
 
 .foogallery.fg-hover-zoom 				.fg-item-inner:hover .fg-image-overlay,
@@ -834,6 +854,9 @@
 	background-color: transparent;
 	visibility: visible;
 	opacity: 1;
+}
+.foogallery.fg-video-sticky				.fg-type-video .fg-caption-inner:before {
+	display: none;
 }
 
 .foogallery.fg-hover-zoom .fg-image-overlay:before,
@@ -969,6 +992,7 @@
 .foogallery.fg-hover-grayscale .fg-image {
 	transition-timing-function: ease;
 	transition-duration: 300ms;
+	backface-visibility: hidden;
 }
 /* Colorize */
 .foogallery.fg-hover-colorize .fg-image {
