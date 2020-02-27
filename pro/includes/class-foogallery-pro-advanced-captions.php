@@ -92,6 +92,31 @@ if ( ! class_exists( 'FooGallery_Pro_Advanced_Captions' ) ) {
                 )
             );
 
+            $fields[] = array(
+                'id'      => 'caption_custom_help',
+                'title'   => __( 'Custom Caption Help', 'foogallery' ),
+                'desc'	  => __( '<strong>Custom Caption Help</strong><br />The custom caption template can use any HTML together with the following dynamic placeholders:<br /><br />' .
+                    '<code>{{ID}}</code> - attachment ID<br />' .
+                    '<code>{{title}}</code> - attachment title<br />' .
+                    '<code>{{caption}}</code> - attachment caption<br />' .
+                    '<code>{{description}}</code> - attachment description<br />' .
+                    '<code>{{alt}}</code> - attachment ALT text<br />' .
+                    '<code>{{custom_url}}</code> - custom URL<br />' .
+                    '<code>{{custom_target}}</code> - custom target<br />' .
+                    '<code>{{url}}</code> - full-size image URL<br />' .
+                    '<code>{{width}}</code> - full-size image width<br />' .
+                    '<code>{{height}}</code> - full-size image height<br /><br />' .
+                    'You can also include custom attachment metadata by using <code>{{postmeta.metakey}}</code> where "metakey" is the key/slug/name of the metadata.', 'foogallery '),
+                'section' => __( 'Captions', 'foogallery' ),
+                'type'    => 'help',
+                'row_data' => array(
+                    'data-foogallery-hidden'                => true,
+                    'data-foogallery-show-when-field'       => 'captions_type',
+                    'data-foogallery-show-when-field-value' => 'custom',
+                    'data-foogallery-preview'               => 'shortcode'
+                )
+            );
+
             return $fields;
         }
 
@@ -162,12 +187,13 @@ if ( ! class_exists( 'FooGallery_Pro_Advanced_Captions' ) ) {
         function build_custom_caption( $template, $foogallery_attachment ) {
             $html = $template;
 
-            $html = preg_replace_callback( '{{?(#[a-z]+ )?[a-z]+.[a-z]*}?}',
+            $html = preg_replace_callback( '/\{\{(.+?)\}\}/',
                 function ($matches) use ($foogallery_attachment) {
-                    if ( isset( $foogallery_attachment->$matches[0] ) ) {
-                        return $foogallery_attachment->$matches[0];
-                    } else if ( strpos( $matches[0], 'postmeta.' ) === 0 ) {
-                        $post_meta_key = str_replace( 'postmeta.', '', $matches[0] );
+                    $property = $matches[1];
+                    if ( property_exists( $foogallery_attachment, $property ) ) {
+                        return $foogallery_attachment->$property;
+                    } else if ( strpos( $property, 'postmeta.' ) === 0 ) {
+                        $post_meta_key = str_replace( 'postmeta.', '', $property );
                         $post_meta_value = get_post_meta( $foogallery_attachment->ID, $post_meta_key, true );
 
                         return $post_meta_value;
@@ -176,18 +202,6 @@ if ( ! class_exists( 'FooGallery_Pro_Advanced_Captions' ) ) {
                     return '';
                 },
                 $html );
-
-//            //basic attachment info replacement
-//            $html = str_replace( '{ID}', $foogallery_attachment->ID, $html );
-//            $html = str_replace( '{title}', $foogallery_attachment->title, $html );
-//            $html = str_replace( '{caption}', $foogallery_attachment->caption, $html );
-//            $html = str_replace( '{description}', $foogallery_attachment->description, $html );
-//            $html = str_replace( '{alt}', $foogallery_attachment->alt, $html );
-//            $html = str_replace( '{custom_url}', $foogallery_attachment->custom_url, $html );
-//            $html = str_replace( '{custom_target}', $foogallery_attachment->custom_target, $html );
-//            $html = str_replace( '{url}', $foogallery_attachment->url, $html );
-//            $html = str_replace( '{width}', $foogallery_attachment->width, $html );
-//            $html = str_replace( '{height}', $foogallery_attachment->height, $html );
 
             return apply_filters( 'foogallery_build_custom_caption', $html, $template, $foogallery_attachment );
         }
