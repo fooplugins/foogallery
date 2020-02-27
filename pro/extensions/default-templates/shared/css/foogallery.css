@@ -4671,7 +4671,7 @@ html.fg-panel-no-scroll body {
 	padding-top: 0;
 }
 .fg-tag-list {
-	display: inline-block;
+	display: block;
 	list-style-type: none;
 	margin: 0;
 	padding: 0;

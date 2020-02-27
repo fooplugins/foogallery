@@ -7306,8 +7306,7 @@
 			 */
 			var e = self.raise("post-init");
 			if (e.isDefaultPrevented()) return false;
-			var state = self.state.parse();
-			self.state.set(_is.empty(state) ? self.state.initial() : state);
+			self.state.init();
 			self.$scrollParent.on("scroll" + self.namespace, {self: self}, _fn.throttle(function () {
 				self.loadAvailable();
 			}, 50));
@@ -7859,7 +7858,7 @@
 	FooGallery.utils,
 	FooGallery.utils.is
 );
-(function($, _, _is, _str){
+(function($, _, _is, _str, _obj){
 
 	_.State = _.Component.extend(/** @lends FooGallery.State */{
 		/**
@@ -7905,10 +7904,10 @@
 			 * @summary The current state of the template.
 			 * @memberof FooGallery.State#
 			 * @name current
-			 * @type {{item: null, page: number, tags: []}}
+			 * @type {{item: null, page: number, filter: []}}
 			 */
 			self.current = {
-				tags: [],
+				filter: [],
 				page: 0,
 				item: null
 			};
@@ -7953,6 +7952,9 @@
 			self.opt = self.regex = {};
 			self._super();
 		},
+		init: function(){
+			this.set(this.initial());
+		},
 		getIdNumber: function(){
 			return this.tmpl.id.match(/\d+/g)[0];
 		},
@@ -7988,26 +7990,35 @@
 		 * @description This method always returns an object, if successful the object contains properties otherwise it is just a plain empty object. For this method to be successful the current template {@link FooGallery.Template#id|id} must match the one from the url.
 		 */
 		parse: function(){
-			var self = this, state = {};
+			var self = this, tmpl = self.tmpl, state = {};
 			if (self.exists()){
 				if (self.enabled){
 					state.id = self.tmpl.id;
 					self.regex.values.lastIndex = 0;
 					var pairs = location.hash.match(self.regex.values);
 					$.each(pairs, function(i, pair){
-						var parts = pair.split(self.opt.pair);
+						var parts = pair.split(self.opt.pair), val;
 						if (parts.length === 2){
-							state[parts[0]] = parts[1].indexOf(self.opt.array) === -1
-									? decodeURIComponent(parts[1].replace(/\+/g, '%20'))
-									: $.map(parts[1].split(self.opt.array), function(part){ return decodeURIComponent(part.replace(/\+/g, '%20')); });
-							if (_is.string(state[parts[0]]) && !isNaN(state[parts[0]])){
-								state[parts[0]] = parseInt(state[parts[0]]);
+							switch(parts[0]){
+								case self.opt.itemKey:
+									val = tmpl.items.fromHash(parts[1]);
+									if (val !== null) state.item = val;
+									break;
+								case self.opt.pageKey:
+									if (tmpl.pages){
+										val = tmpl.pages.fromHash(parts[1]);
+										if (val !== null) state.page = val;
+									}
+									break;
+								case self.opt.filterKey:
+									if (tmpl.filter){
+										val = tmpl.filter.fromHash(parts[1]);
+										if (val !== null) state.filter = val;
+									}
+									break;
 							}
 						}
 					});
-					if (_is.number(state.i)){
-						state.i = state.i + "";
-					}
 				} else {
 					// if we're here it means there is a hash on the url but the option is disabled so remove it
 					if (self.apiEnabled){
@@ -8027,19 +8038,19 @@
 		 * @returns {string}
 		 */
 		hashify: function(state){
-			var self = this;
+			var self = this, tmpl = self.tmpl;
 			if (_is.hash(state)){
-				var hash = [];
-				$.each(state, function(name, value){
-					if (!_is.empty(value) && name !== "id"){
-						if (_is.array(value)){
-							value = $.map(value, function(part){ return encodeURIComponent(part); }).join(self.opt.array);
-						} else {
-							value = encodeURIComponent(value);
-						}
-						hash.push(name + self.opt.pair + value);
-					}
-				});
+				var hash = [], val = tmpl.items.toHash(state.item);
+				if (val !== null) hash.push(self.opt.itemKey + self.opt.pair + val);
+
+				if (!!tmpl.filter){
+					val = tmpl.filter.toHash(state.filter);
+					if (val !== null) hash.push(self.opt.filterKey + self.opt.pair + val);
+				}
+				if (!!tmpl.pages){
+					val = tmpl.pages.toHash(state.page);
+					if (val !== null) hash.push(self.opt.pageKey + self.opt.pair + val);
+				}
 				if (hash.length > 0){
 					hash.unshift("#"+self.getMasked());
 				}
@@ -8105,10 +8116,11 @@
 		 * @description This method returns an initial start up state from the template options.
 		 */
 		initial: function(){
-			var self = this, tmpl = self.tmpl, state = {};
-			if (tmpl.filter && !_is.empty(tmpl.filter.current)) state.f = tmpl.filter.current;
-			if (tmpl.pages && tmpl.pages.current > 1) state.p = tmpl.pages.current;
-			return state;
+			var self = this, state = self.parse();
+			if (_is.empty(state)){
+				return self.get();
+			}
+			return _obj.extend({ filter: [], page: 1, item: null }, state);
 		},
 		/**
 		 * @summary Get the current state of the template.
@@ -8119,15 +8131,17 @@
 		 * @description This method does not parse the history or url it returns the current state of the template itself. To parse the current url use the {@link FooGallery.State#parse|parse} method instead.
 		 */
 		get: function(item){
-			var self = this, tmpl = self.tmpl, state = {};
-			if (item instanceof _.Item) state.i = item.id;
-			if (tmpl.filter && !_is.empty(tmpl.filter.current)){
-				state.f = tmpl.filter.current;
+			var self = this, tmpl = self.tmpl, state = {}, val;
+			if (item instanceof _.Item) state.item = item;
+			if (!!tmpl.filter){
+				val = tmpl.filter.getState();
+				if (val !== null) state.filter = val;
 			}
-			if (tmpl.pages && tmpl.pages.isValid(tmpl.pages.current)){
-				state.p = tmpl.pages.current;
+			if (!!tmpl.pages){
+				val = tmpl.pages.getState();
+				if (val !== null) state.page = val;
 			}
-			return state;
+			return _obj.extend({ filter: [], page: 1, item: null }, state);
 		},
 		/**
 		 * @summary Set the current state of the template.
@@ -8139,47 +8153,26 @@
 		set: function(state){
 			var self = this, tmpl = self.tmpl;
 			if (_is.hash(state)){
+				var obj = _obj.extend({ filter: [], page: 1, item: null }, state);
 				tmpl.items.reset();
-
-				var obj = {
-					tags: !!tmpl.filter && !_is.empty(state.f) ? state.f : [],
-					page: !!tmpl.pages ? tmpl.pages.number(state.p) : 0,
-					item: tmpl.items.get(state.i)
-				};
-
 				var e = tmpl.raise("before-state", [obj]);
 				if (!e.isDefaultPrevented()){
 					if (!!tmpl.filter){
-						tmpl.filter.rebuild();
-						tmpl.filter.set(obj.tags, false);
+						tmpl.filter.setState(obj);
 					}
 					if (!!tmpl.pages){
-						tmpl.pages.rebuild();
-						if (!!obj.item && !tmpl.pages.contains(obj.page, obj.item)){
-							obj.page = tmpl.pages.find(obj.item);
-							obj.page = obj.page !== 0 ? obj.page : 1;
-						}
-						tmpl.pages.set(obj.page, !_is.empty(state), false, true);
-						if (obj.item && tmpl.pages.contains(obj.page, obj.item)){
-							if (self.opt.scrollTo) {
-								obj.item.scrollTo();
-							}
-							if (!_is.empty(state.i)){
-								state.i = null;
-								self.replace(state);
-							}
-						}
+						tmpl.pages.setState(obj);
 					} else {
 						tmpl.items.detach(tmpl.items.all());
 						tmpl.items.create(tmpl.items.available(), true);
-						if (obj.item){
-							if (self.opt.scrollTo) {
-								obj.item.scrollTo();
-							}
-							if (!_is.empty(state.i)){
-								state.i = null;
-								self.replace(state);
-							}
+					}
+					if (obj.item){
+						if (self.opt.scrollTo) {
+							obj.item.scrollTo();
+						}
+						if (!_is.empty(state.item)){
+							state.item = null;
+							self.replace(state);
 						}
 					}
 					self.current = obj;
@@ -8197,7 +8190,11 @@
 			mask: "foogallery-gallery-{id}",
 			values: "/",
 			pair: ":",
-			array: "+"
+			array: "+",
+			arraySeparator: ",",
+			itemKey: "i",
+			filterKey: "f",
+			pageKey: "p"
 		}
 	});
 
@@ -8217,16 +8214,17 @@
 	/**
 	 * @summary An object used to store the state of a template.
 	 * @typedef {object} FooGallery~State
-	 * @property {number} [p] - The current page number.
-	 * @property {string[]} [f] - The current filter array.
-	 * @property {?string} [i] - The currently selected item.
+	 * @property {number} [page] - The current page number.
+	 * @property {string[]} [filter] - The current filter array.
+	 * @property {?FooGallery.Item} [item] - The currently selected item.
 	 */
 
 })(
-		FooGallery.$,
-		FooGallery,
-		FooGallery.utils.is,
-		FooGallery.utils.str
+	FooGallery.$,
+	FooGallery,
+	FooGallery.utils.is,
+	FooGallery.utils.str,
+	FooGallery.utils.obj
 );
 (function ($, _, _utils, _is, _fn, _obj) {
 
@@ -8258,6 +8256,12 @@
 			// add the .all caption selector
 			var cls = self.tmpl.cls.item.caption;
 			self.tmpl.sel.item.caption.all = _utils.selectify([cls.elem, cls.inner, cls.title, cls.description]);
+		},
+		fromHash: function(hash){
+			return this.get(hash);
+		},
+		toHash: function(value){
+			return value instanceof _.Item ? value.id : null;
 		},
 		destroy: function () {
 			var self = this, items = self.all(), destroyed = [];
@@ -9961,7 +9965,7 @@
 		 */
 		onCaptionClick: function (e) {
 			var self = e.data.self, evt = self.tmpl.raise("caption-click-item", [self]);
-			if (!evt.isDefaultPrevented() && self.$anchor.length > 0) {
+			if (!evt.isDefaultPrevented() && self.$anchor.length > 0 && !$(e.target).is("a,:input")) {
 				self.$anchor.get(0).click();
 			}
 		}
@@ -10263,6 +10267,24 @@
 			self.total = 0;
 			self.ctrls = [];
 			self._arr = [];
+		},
+		fromHash: function(hash){
+			var parsed = parseInt(hash);
+			return isNaN(parsed) ? null : parsed;
+		},
+		toHash: function(value){
+			return _is.number(value) && value > 0 ? value.toString() : null;
+		},
+		getState: function(){
+			return this.isValid(this.current) ? this.current : null;
+		},
+		setState: function(state){
+			this.rebuild();
+			if (!!state.item && !this.contains(state.page, state.item)){
+				state.page = this.find(state.item);
+				state.page = state.page !== 0 ? state.page : 1;
+			}
+			this.set(state.page, false, false, true);
 		},
 		destroy: function () {
 			var self = this;
@@ -11056,8 +11078,8 @@
 			self.pushOrReplace = self.opt.pushOrReplace;
 			self.type = self.opt.type;
 			self.theme = self.opt.theme;
-
 			self.position = self.opt.position;
+
 			self.mode = self.opt.mode;
 			self.sortBy = self.opt.sortBy;
 			self.sortInvert = self.opt.sortInvert;
@@ -11074,10 +11096,46 @@
 			self.lightest = self.opt.lightest;
 			self.darkest = self.opt.darkest;
 
-			self.items = [];
-			self.tags = [];
 			self.current = [];
 			self.ctrls = [];
+			self.tags = [];
+			self.isMultiLevel = false;
+		},
+		fromHash: function(hash){
+			var self = this, opt = self.tmpl.state.opt;
+			return hash.indexOf(opt.arraySeparator) === -1
+				? [hash.split(opt.array).map(function(part){ return decodeURIComponent(part.replace(/\+/g, '%20')); })]
+				: hash.split(opt.arraySeparator).map(function(arr){
+					return _is.empty(arr) ? [] : arr.split(opt.array).map(function(part){
+						return decodeURIComponent(part.replace(/\+/g, '%20'));
+					})
+				});
+		},
+		toHash: function(value){
+			var self = this, opt = self.tmpl.state.opt, hash = null;
+			if (_is.array(value)){
+				if (_is.array(value[0])){
+					hash = $.map(value, function(tags){
+						return $.map(tags, function(tag){
+							return encodeURIComponent(tag);
+						}).join(opt.array);
+					}).join(opt.arraySeparator);
+				} else {
+					hash = $.map(value, function(tag){
+						return encodeURIComponent(tag);
+					}).join(opt.array);
+				}
+			}
+			return _is.empty(hash) ? null : hash;
+		},
+		getState: function(){
+			return _is.array(this.current) && !this.current.every(function (tags) {
+				return tags.length === 0;
+			}) ? this.current.slice() : null;
+		},
+		setState: function(state){
+			this.rebuild();
+			this.set(state.filter, false);
 		},
 		destroy: function () {
 			var self = this;
@@ -11085,17 +11143,17 @@
 			$.each(self.ctrls.splice(0, self.ctrls.length), function (i, control) {
 				control.destroy();
 			});
-			self.items.splice(0, self.items.length);
 			self._super();
 		},
 		count: function (items, tags) {
 			items = _is.array(items) ? items : [];
 			tags = _is.array(tags) ? tags : [];
-			var result = {}, generate = tags.length === 0;
+			var result = { __ALL__: 0 }, generate = tags.length === 0;
 			for (var i = 0, l = items.length, t; i < l; i++) {
 				if (!_is.empty(t = items[i].tags)) {
+					result.__ALL__++;
 					for (var j = 0, jl = t.length, tag; j < jl; j++) {
-						if (!_is.empty(tag = t[j]) && (generate || (!generate && $.inArray(tag, tags) != -1))) {
+						if (!_is.empty(tag = t[j]) && (generate || (!generate && $.inArray(tag, tags) !== -1))) {
 							if (_is.number(result[tag])) {
 								result[tag]++;
 							} else {
@@ -11110,61 +11168,86 @@
 			}
 			return result;
 		},
-		build: function () {
-			var self = this, items = self.tmpl.items.all();
-			self.items.push.apply(self.items, items);
-			if (items.length > 0) {
-				// first get a count of every tag available from all items
-				var counts = self.count(items, self.opt.tags), supplied = self.opt.tags.length > 0, min = Infinity, max = 0, index = -1;
-				for (var prop in counts) {
-					if (counts.hasOwnProperty(prop)) {
-						var count = counts[prop];
-						if (self.min <= 0 || count >= self.min) {
-							if (supplied){
-								index = $.inArray(prop, self.opt.tags);
-							} else {
-								index++;
-							}
-							self.tags.push({index: index, value: prop, count: count, percent: 1, size: self.largest, opacity: self.darkest});
-							if (count < min) min = count;
-							if (count > max) max = count;
+		createTagObjects: function(items, tags, levelIndex, levelText){
+			var self = this, result = [];
+			// first get a count of the tags
+			var counts = self.count(items, tags), min = Infinity, max = 0, index = -1;
+			for (var prop in counts) {
+				if (counts.hasOwnProperty(prop)) {
+					var count = counts[prop], isAll = prop === "__ALL__";
+					if (self.min <= 0 || count >= self.min) {
+						if (tags.length > 0){
+							index = $.inArray(prop, tags);
+						} else {
+							index++;
 						}
+						result.push({
+							level: levelIndex,
+							index: index,
+							value: isAll ? "" : prop,
+							text: isAll ? levelText : prop,
+							count: count,
+							percent: 1,
+							size: self.largest,
+							opacity: self.darkest
+						});
+						if (count < min) min = count;
+						if (count > max) max = count;
 					}
 				}
-
-				// if there's a limit set, remove other tags
-				if (self.limit > 0 && self.tags.length > self.limit) {
-					self.tags.sort(function (a, b) {
-						return b.count - a.count;
-					});
-					self.tags = self.tags.slice(0, self.limit);
-				}
-
-				// if adjustSize or adjustOpacity is enabled, calculate a percentage value used to calculate the appropriate font size and opacity
-				if (self.adjustSize === true || self.adjustOpacity === true) {
-					var fontRange = self.largest - self.smallest;
-					var opacityRange = self.darkest - self.lightest;
-					for (var i = 0, l = self.tags.length, tag; i < l; i++) {
-						tag = self.tags[i];
-						tag.percent = (tag.count - min) / (max - min);
-						tag.size = self.adjustSize ? Math.round((fontRange * tag.percent) + self.smallest) : self.largest;
-						tag.opacity = self.adjustOpacity ? (opacityRange * tag.percent) + self.lightest : self.darkest;
-					}
-				}
-
-				// finally sort the tags using the sort options
-				switch (self.sortBy){
-					case "none":
-						self.sortTags("index", false);
-						break;
-					default:
-						self.sortTags(self.sortBy, self.sortInvert);
-						break;
-				}
-
 			}
 
-			if (self.tags.length > 0 && _.filtering.hasCtrl(self.type)) {
+			// if there's a limit set, remove other tags
+			if (self.limit > 0 && result.length > self.limit) {
+				result.sort(function (a, b) {
+					return b.count - a.count;
+				});
+				result = result.slice(0, self.limit);
+			}
+
+			// if adjustSize or adjustOpacity is enabled, calculate a percentage value used to calculate the appropriate font size and opacity
+			if (!self.isMultiLevel && (self.adjustSize === true || self.adjustOpacity === true)) {
+				var fontRange = self.largest - self.smallest;
+				var opacityRange = self.darkest - self.lightest;
+				for (var i = 0, l = result.length, tag; i < l; i++) {
+					tag = result[i];
+					tag.percent = (tag.count - min) / (max - min);
+					tag.size = self.adjustSize ? Math.round((fontRange * tag.percent) + self.smallest) : self.largest;
+					tag.opacity = self.adjustOpacity ? (opacityRange * tag.percent) + self.lightest : self.darkest;
+				}
+			}
+
+			// finally sort the tags using the sort options
+			switch (self.sortBy){
+				case "none":
+					self.sort(result, "index", false);
+					break;
+				default:
+					self.sort(result, self.sortBy, self.sortInvert);
+					break;
+			}
+
+			return result;
+		},
+		showControl: function(){
+			return !this.tags.every(function (tags) {
+				return tags.length === 0;
+			});
+		},
+		build: function () {
+			var self = this, items = self.tmpl.items.all();
+			self.isMultiLevel = self.opt.tags.length > 0 && _is.object(self.opt.tags[0]);
+			if (items.length > 0) {
+				if (self.isMultiLevel){
+					$.each(self.opt.tags, function(i, level){
+						self.tags.push(self.createTagObjects(items, level.tags, i, level.all || self.il8n.all));
+					});
+				} else {
+					self.tags.push(self.createTagObjects(items, self.opt.tags, 0, self.il8n.all));
+				}
+			}
+
+			if (self.showControl() && _.filtering.hasCtrl(self.type)) {
 				var pos = self.position, top, bottom;
 				if (pos === "both" || pos === "top") {
 					top = _.filtering.makeCtrl(self.type, self.tmpl, self, "top");
@@ -11188,7 +11271,6 @@
 			$.each(self.ctrls.splice(0, self.ctrls.length), function (i, control) {
 				control.destroy();
 			});
-			self.items.splice(0, self.items.length);
 			self.build();
 		},
 		controls: function (tags) {
@@ -11197,8 +11279,22 @@
 				control.update(tags);
 			});
 		},
+		hasAll: function(item, tags){
+			return tags.every(function(arr){
+				return arr.length === 0 || (_is.array(item.tags) && arr.every(function (tag) {
+					return item.tags.indexOf(tag) !== -1;
+				}));
+			});
+		},
+		hasSome: function(item, tags){
+			return tags.every(function(arr){
+				return arr.length === 0 || (_is.array(item.tags) && arr.some(function (tag) {
+					return item.tags.indexOf(tag) !== -1;
+				}));
+			});
+		},
 		set: function (tags, updateState) {
-			if (_is.string(tags)) tags = [tags];
+			if (_is.string(tags)) tags = [[tags]];
 			if (!_is.array(tags)) tags = [];
 			var self = this, state;
 			if (!self.arraysEqual(self.current, tags)) {
@@ -11209,32 +11305,23 @@
 						self.tmpl.state.update(state, self.pushOrReplace);
 					}
 
-					self.controls(tags);
-
 					if (_is.empty(tags)) {
 						self.tmpl.items.reset();
-						self.items.splice(0, self.items.length);
-						self.items.push.apply(self.items, self.tmpl.items.all());
 					} else {
-						self.items.splice(0, self.items.length);
 						var items = self.tmpl.items.all();
 						if (self.mode === 'intersect') {
 							items = $.map(items, function (item) {
-								return _is.array(item.tags) && tags.every(function (tag) {
-									return item.tags.indexOf(tag) >= 0;
-								}) ? item : null;
+								return self.hasAll(item, tags) ? item : null;
 							});
 						} else {
 							items = $.map(items, function (item) {
-								return _is.array(item.tags) && item.tags.some(function (tag) {
-									return tags.indexOf(tag) >= 0;
-								}) ? item : null;
+								return self.hasSome(item, tags) ? item : null;
 							});
 						}
-						self.items.push.apply(self.items, items);
 						self.tmpl.items.setAvailable(items);
 					}
 					self.current = tags.slice();
+					self.controls(tags);
 					if (self.tmpl.pages) {
 						self.tmpl.pages.rebuild();
 						self.tmpl.pages.set(1, null, null, true);
@@ -11272,8 +11359,8 @@
 			}
 			return true;
 		},
-		sortTags: function(prop, invert){
-			this.tags.sort(function(a, b){
+		sort: function(tags, prop, invert){
+			tags.sort(function(a, b){
 
 				if (a.hasOwnProperty(prop) && b.hasOwnProperty(prop)){
 					if (_is.string(a[prop]) && _is.string(b[prop])){
@@ -11370,42 +11457,36 @@
 		construct: function(template, parent, position){
 			this._super(template, parent, position);
 			this.$container = $();
-			this.$list = $();
-			this.$items = $();
+			this.lists = [];
 		},
 		create: function(){
-			var self = this, cls = self.filter.cls, il8n = self.filter.il8n,
-					items = [], $list = $("<ul/>", {"class": cls.list}), $item;
-
-			items.push($item = self.createItem({
-				value: "",
-				count: self.tmpl.items.all().length,
-				percent: 1,
-				size: self.filter.largest,
-				opacity: self.filter.darkest
-			}, il8n.all));
-			$list.append($item.addClass(cls.selected));
-
+			var self = this, cls = self.filter.cls;
+			self.$container = $("<nav/>", {"class": cls.container}).addClass(self.filter.theme);
 			for (var i = 0, l = self.filter.tags.length; i < l; i++){
-				items.push($item = self.createItem(self.filter.tags[i]));
-				$list.append($item);
+				self.lists.push(self.createList(self.filter.tags[i]).appendTo(self.$container));
 			}
-
-			self.$list = $list;
-			self.$container = $("<nav/>", {"class": cls.container}).addClass(self.filter.theme).append($list);
-			if (self.filter.showCount === true){
+			if (!self.filter.isMultiLevel && self.filter.showCount === true){
 				self.$container.addClass(cls.showCount);
 			}
-			self.$items = $($.map(items, function($item){ return $item.get(); }));
 			return true;
+		},
+		createList: function(tags){
+			var self = this, cls = self.filter.cls,
+				$list = $("<ul/>", {"class": cls.list});
+
+			for (var i = 0, l = tags.length; i < l; i++){
+				$list.append(self.createItem(tags[i]).toggleClass(cls.selected, i === 0));
+			}
+			return $list;
 		},
 		destroy: function(){
 			var self = this, sel = self.filter.sel;
-			self.$list.find(sel.link).off("click.foogallery", self.onLinkClick);
+			self.lists.forEach(function($list, i){
+				$list.find(sel.link).off("click.foogallery", self.onLinkClick);
+			});
 			self.$container.remove();
 			self.$container = $();
-			self.$list = $();
-			self.$items = $();
+			self.lists = [];
 		},
 		append: function(){
 			var self = this;
@@ -11416,48 +11497,59 @@
 			}
 		},
 		update: function(tags){
-			var self = this, cls = self.filter.cls;
-			self.$items.removeClass(cls.selected);
-			self.$items.each(function(){
-				var $item = $(this), tag = $item.data("tag"), empty = _is.empty(tag);
-				$item.toggleClass(cls.selected, (empty && _is.empty(tags)) || (!empty && $.inArray(tag, tags) !== -1));
+			var self = this, cls = self.filter.cls, sel = self.filter.sel;
+			self.lists.forEach(function($list, i){
+				$list.find(sel.item).removeClass(cls.selected).each(function(){
+					var $item = $(this), tag = $item.data("tag"), empty = _is.empty(tag);
+					$item.toggleClass(cls.selected, (empty && _is.empty(tags[i])) || (!empty && $.inArray(tag, tags[i]) !== -1));
+				});
 			});
 		},
-		createItem: function(tag, text){
+		createItem: function(tag){
 			var self = this, cls = self.filter.cls,
 					$li = $("<li/>", {"class": cls.item}).attr("data-tag", tag.value),
 					$link = $("<a/>", {"href": "#tag-" + tag.value, "class": cls.link})
 							.on("click.foogallery", {self: self, tag: tag}, self.onLinkClick)
 							.css("font-size", tag.size)
 							.css("opacity", tag.opacity)
-							.append($("<span/>", {"text": _is.string(text) ? text : tag.value, "class": cls.text}))
+							.append($("<span/>", {"text": _is.string(tag.text) ? tag.text : tag.value, "class": cls.text}))
 							.appendTo($li);
 
-			if (self.filter.showCount === true){
+			if (!self.filter.isMultiLevel && self.filter.showCount === true){
 				$link.append($("<span/>", {"text": tag.count, "class": cls.count}));
 			}
 			return $li;
 		},
 		onLinkClick: function(e){
 			e.preventDefault();
-			var self = e.data.self, tag = e.data.tag, tags = [], i;
+			var self = e.data.self, tag = e.data.tag, tags = self.filter.current.map(function(obj){
+				if (_is.array(obj)) return obj.slice();
+				return obj;
+			}), i;
 			if (!_is.empty(tag.value)){
 				switch (self.filter.mode){
 					case "union":
 					case "intersect":
-						tags = self.filter.current.slice();
-						i = $.inArray(tag.value, tags);
+						if (!_is.array(tags[tag.level])){
+							tags[tag.level] = [];
+						}
+						i = $.inArray(tag.value, tags[tag.level]);
 						if (i === -1){
-							tags.push(tag.value);
+							tags[tag.level].push(tag.value);
 						} else {
-							tags.splice(i, 1);
+							tags[tag.level].splice(i, 1);
 						}
 						break;
 					case "single":
 					default:
-						tags = [tag.value];
+						tags[tag.level] = [tag.value];
 						break;
 				}
+			} else {
+				tags[tag.level] = [];
+			}
+			if (tags.every(_is.empty)){
+				tags = [];
 			}
 			self.filter.apply(tags);
 		}
@@ -15283,7 +15375,7 @@
 		maxRowHeight: "200%",
 		margins: 0,
 		lastRow: "center",
-		justifyThreshold: 0.5,
+		justifyThreshold: 1,
 		refreshInterval: 250
 	};
 
