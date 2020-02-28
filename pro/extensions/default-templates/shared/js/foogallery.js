@@ -13752,9 +13752,13 @@
             self.$el = null;
             self.isCreated = false;
             self.isAttached = false;
+            self.hasTitle = false;
+            self.hasDescription = false;
         },
         canLoad: function(){
-            return !_is.empty(this.media.item.caption) && !_is.empty(this.media.item.description);
+            this.hasTitle = !_is.empty(this.media.item.caption);
+            this.hasDescription = !_is.empty(this.media.item.description);
+            return this.hasTitle || this.hasDescription;
         },
         create: function(){
             if (!this.isCreated){
@@ -13769,10 +13773,13 @@
             return this.isCreated;
         },
         doCreate: function(){
-            this.$el = $("<div/>").addClass(this.cls.elem).append(
-                $("<div/>").addClass(this.cls.title).html(this.media.item.caption),
-                $("<div/>").addClass(this.cls.description).html(this.media.item.description)
-            );
+            this.$el = $("<div/>").addClass(this.cls.elem);
+            if (this.hasTitle){
+                this.$el.append($("<div/>").addClass(this.cls.title).html(this.media.item.caption));
+            }
+            if (this.hasDescription){
+                this.$el.append($("<div/>").addClass(this.cls.description).html(this.media.item.description));
+            }
             return true;
         },
         destroy: function(){
