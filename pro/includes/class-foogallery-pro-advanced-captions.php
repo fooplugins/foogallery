@@ -12,7 +12,7 @@ if ( ! class_exists( 'FooGallery_Pro_Advanced_Captions' ) ) {
             add_filter( 'foogallery_override_gallery_template_fields', array( $this, 'add_advanced_caption_fields' ), 100, 2 );
 
             //add custom captions
-            add_filter( 'foogallery_build_attachment_html_caption_custom', array( $this, 'customize_captions' ), 30, 3 );
+            add_filter( 'foogallery_build_attachment_html_caption_custom', array( &$this, 'customize_captions' ), 30, 3 );
         }
 
         /**
