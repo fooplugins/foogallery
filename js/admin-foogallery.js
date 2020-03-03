@@ -82,7 +82,8 @@
 
 	FOOGALLERY.updateGalleryPreview = function( initGallery, setContainerHeight ) {
 		var $preview = $('.foogallery_preview_container .foogallery'),
-			$preview_container = $('.foogallery_preview_container');
+			$preview_container = $('.foogallery_preview_container'),
+			overrideClasses = false;
 
 		if ( setContainerHeight ) {
 			$preview_container.css('height', $preview_container.height());
@@ -94,12 +95,12 @@
 		if ($classFields.length) {
 
 			var array = $classFields.find(' :input').serializeArray(),
-				mandatory_classes = $('#FooGallerySettings_GalleryTemplate').find(":selected").data('mandatory-classes'),
-				classes = $.map(array, function (item) {
+				mandatory_classes = $('#FooGallerySettings_GalleryTemplate').find(":selected").data('mandatory-classes');
+			overrideClasses = $.map(array, function (item) {
 					return item.value;
 				}).concat(['foogallery', mandatory_classes]).join(' ');
 
-			$preview.attr('class', classes);
+			$preview.attr('class', overrideClasses);
 		}
 
 		//this allows any extensions to hook into the template change event
@@ -109,6 +110,11 @@
 		if ( $preview.data('fg-common-fields') ) {
 			if ( initGallery ) {
 				$preview.foogallery( {}, function() {
+					//set the classes
+					if ( overrideClasses !== false ) {
+						$preview.attr('class', overrideClasses);
+					}
+
 					$preview_container.css( 'height', '' );
 					if ( !$preview_container.find('.foogallery').data('foogallery-lightbox') ) {
 						$preview_container.find(".fg-thumb").off("click.foogallery").on("click", function (e) {
