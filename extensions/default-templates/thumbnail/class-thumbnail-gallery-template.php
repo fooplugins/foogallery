@@ -115,6 +115,18 @@ if ( !class_exists( 'FooGallery_Thumbnail_Gallery_Template' ) ) {
                         'type'    => 'checkbox',
                         'desc'	  => __( 'You can link your thumbnails to Custom URL\'s (if they are set on your attachments). Fallback will be to the full size image.', 'foogallery' )
                     ),
+//	                array(
+//		                'id'      => 'exclude_featured_image',
+//		                'title'   => __( 'Exclude Featured Image', 'foogallery' ),
+//		                'section' => __( 'General', 'foogallery' ),
+//		                'default' => '',
+//		                'type'    => 'checkbox',
+//		                'desc'	  => __( 'You can exclude the featured image from the images shown in the lightbox.', 'foogallery' ),
+//		                'row_data'=> array(
+//			                'data-foogallery-change-selector' => 'input',
+//			                'data-foogallery-preview' => 'shortcode'
+//		                )
+//	                ),
                     array(
                         'id'      => 'lightbox',
                         'title'   => __( 'Lightbox', 'foogallery' ),
@@ -171,6 +183,9 @@ if ( !class_exists( 'FooGallery_Thumbnail_Gallery_Template' ) ) {
 			$args['thumbnail_dimensions'] = $post_data[FOOGALLERY_META_SETTINGS]['thumbnail_thumbnail_dimensions'];
 			$args['caption_title'] = $post_data[FOOGALLERY_META_SETTINGS]['thumbnail_caption_title'];
 			$args['caption_description'] = $post_data[FOOGALLERY_META_SETTINGS]['thumbnail_caption_description'];
+//			if ( isset( $post_data[FOOGALLERY_META_SETTINGS]['thumbnail_exclude_featured_image'] ) ) {
+//				$args['exclude_featured_image'] = $post_data[ FOOGALLERY_META_SETTINGS ]['thumbnail_exclude_featured_image'];
+//			}
 			return $args;
 		}
 
