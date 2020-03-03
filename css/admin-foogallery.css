@@ -188,6 +188,12 @@
 	margin-bottom: 10px;
 }
 
+.foogallery_template_field_id-lightbox_custom_button_theme .foogallery_metabox_field-htmlicon label,
+.foogallery_template_field_id-lightbox_custom_button_highlight .foogallery_metabox_field-htmlicon label
+{
+	padding:0px;
+}
+
 .foogallery_metabox_field-htmlicon input:checked + label {
 	border:solid 3px #444;
 	background: #888;
