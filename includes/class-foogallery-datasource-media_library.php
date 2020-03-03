@@ -101,7 +101,7 @@ if ( ! class_exists( 'FooGallery_Datasource_MediaLibrary' ) ) {
 			<input type="hidden" data-foogallery-preview="include" name='foogallery_attachments' id="foogallery_attachments" value="<?php echo $foogallery->attachment_id_csv(); ?>"/>
 			<ul class="foogallery-attachments-list <?php echo $has_attachments ? '' : 'hidden'; ?> <?php echo $media_button_start ? 'foogallery-add-media-button-start' : ''; ?>">
                 <?php if ( $media_button_start ) {
-                    $this->render_add_meda_button( $foogallery->ID );
+                    $this->render_add_media_button( $foogallery->ID );
                 } ?>
 				<?php
 				//render all attachments that have been added to the gallery from the media library
@@ -116,7 +116,7 @@ if ( ! class_exists( 'FooGallery_Datasource_MediaLibrary' ) ) {
 			</ul>
 			<div style="clear: both;"></div>
 			<textarea style="display: none" id="foogallery-attachment-template"><?php $this->render_attachment_item(); ?></textarea>
-            <div class="foogallery-attachments-list-bar">
+            <div class="<?php echo $has_attachments ? '' : 'hidden'; ?> foogallery-attachments-list-bar">
                 <button type="button" class="button button-primary button-large alignright upload_image_button"
                         data-uploader-title="<?php _e( 'Add Media To Gallery', 'foogallery' ); ?>"
                         data-uploader-button-text="<?php _e( 'Add Media', 'foogallery' ); ?>"
