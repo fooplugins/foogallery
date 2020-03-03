@@ -60,7 +60,7 @@ if ( ! class_exists( 'FooGallery_Pro_Lightbox' ) ) {
 			$field[] = array(
 				'id'      => 'lightbox_theme',
 				'title'   => __( 'Theme', 'foogallery' ),
-				'desc'    => __( 'The overall appearance including background and button color.', 'foogallery' ),
+				'desc'    => __( 'The overall appearance including background and button color. By default it will inherit from Appearance -> Theme', 'foogallery' ),
 				'section' => $section,
 				'spacer'  => '<span class="spacer"></span>',
 				'type'    => 'radio',
@@ -83,17 +83,11 @@ if ( ! class_exists( 'FooGallery_Pro_Lightbox' ) ) {
 				'desc'    => __( 'You can override the button controls color. By default it will inherit from the theme.', 'foogallery' ),
 				'section' => $section,
 				'spacer'  => '<span class="spacer"></span>',
-				'type'    => 'htmlicon',
+				'type'    => 'radio',
 				'default' => '',
 				'choices' => apply_filters( 'foogallery_gallery_template_lightbox_button_theme_choices', array(
-					''                  => array( 'label' => __( 'Same As Theme', 'foogallery' ), 'html' => '<div class="foogallery-setting-panel_theme"></div>' ),
-					'fg-button-light'   => array( 'label' => __( 'Light',   'foogallery' ), 'html' => '<div class="foogallery-setting-panel_theme fg-light"></div>' ),
-					'fg-button-dark'    => array( 'label' => __( 'Dark',    'foogallery' ), 'html' => '<div class="foogallery-setting-panel_theme fg-dark"></div>' ),
-					'fg-button-blue'    => array( 'label' => __( 'Blue',    'foogallery' ), 'html' => '<div class="foogallery-setting-panel_theme fg-blue"></div>' ),
-					'fg-button-purple'  => array( 'label' => __( 'Purple',  'foogallery' ), 'html' => '<div class="foogallery-setting-panel_theme fg-purple"></div>' ),
-					'fg-button-green'   => array( 'label' => __( 'Green',   'foogallery' ), 'html' => '<div class="foogallery-setting-panel_theme fg-green"></div>' ),
-					'fg-button-red'     => array( 'label' => __( 'Red',     'foogallery' ), 'html' => '<div class="foogallery-setting-panel_theme fg-red"></div>' ),
-					'fg-button-orange'  => array( 'label' => __( 'Orange',  'foogallery' ), 'html' => '<div class="foogallery-setting-panel_theme fg-orange"></div>' ),
+					''                    => __( 'Same As Theme', 'foogallery' ),
+					'custom' => __( 'Custom Color',   'foogallery' ),
 				) ),
 				'row_data'=> array(
 					'data-foogallery-change-selector' => 'input',
@@ -103,15 +97,61 @@ if ( ! class_exists( 'FooGallery_Pro_Lightbox' ) ) {
 			);
 
 			$field[] = array(
+				'id'      => 'lightbox_custom_button_theme',
+				'title'   => __( 'Custom Control Color', 'foogallery' ),
+				'desc'    => __( 'You can override the button controls color by selecting a color.', 'foogallery' ),
+				'section' => $section,
+				'spacer'  => '<span class="spacer"></span>',
+				'type'    => 'htmlicon',
+				'default' => 'fg-button-light',
+				'choices' => apply_filters( 'foogallery_gallery_template_lightbox_custom_button_theme_choices', array(
+					'fg-button-light'   => array( 'label' => __( 'Light',   'foogallery' ), 'html' => '<div class="foogallery-setting-panel_theme fg-light"></div>' ),
+					'fg-button-dark'    => array( 'label' => __( 'Dark',    'foogallery' ), 'html' => '<div class="foogallery-setting-panel_theme fg-dark"></div>' ),
+					'fg-button-blue'    => array( 'label' => __( 'Blue',    'foogallery' ), 'html' => '<div class="foogallery-setting-panel_theme fg-blue"></div>' ),
+					'fg-button-purple'  => array( 'label' => __( 'Purple',  'foogallery' ), 'html' => '<div class="foogallery-setting-panel_theme fg-purple"></div>' ),
+					'fg-button-green'   => array( 'label' => __( 'Green',   'foogallery' ), 'html' => '<div class="foogallery-setting-panel_theme fg-green"></div>' ),
+					'fg-button-red'     => array( 'label' => __( 'Red',     'foogallery' ), 'html' => '<div class="foogallery-setting-panel_theme fg-red"></div>' ),
+					'fg-button-orange'  => array( 'label' => __( 'Orange',  'foogallery' ), 'html' => '<div class="foogallery-setting-panel_theme fg-orange"></div>' ),
+				) ),
+				'row_data'=> array(
+					'data-foogallery-change-selector'          => 'input',
+					'data-foogallery-preview'                  => 'shortcode',
+					'data-foogallery-value-selector'           => 'input:checked',
+					'data-foogallery-hidden'                   => true,
+					'data-foogallery-show-when-field'          => 'lightbox_button_theme',
+					'data-foogallery-show-when-field-operator' => '===',
+					'data-foogallery-show-when-field-value'    => 'custom',
+				)
+			);
+
+			$field[] = array(
 				'id'      => 'lightbox_button_highlight',
 				'title'   => __( 'Control Hover Color', 'foogallery' ),
 				'desc'    => __( 'You can override the button controls hover color. By default it will inherit from the theme.', 'foogallery' ),
 				'section' => $section,
 				'spacer'  => '<span class="spacer"></span>',
-				'type'    => 'htmlicon',
+				'type'    => 'radio',
 				'default' => '',
 				'choices' => apply_filters( 'foogallery_gallery_template_lightbox_button_highlight_choices', array(
-                    ''                  => array( 'label' => __( 'Same As Theme', 'foogallery' ), 'html' => '<div class="foogallery-setting-panel_theme"></div>' ),
+                    ''       => __( 'Same As Theme', 'foogallery' ),
+                    'custom' => __( 'Custom Color', 'foogallery' ),
+				) ),
+				'row_data'=> array(
+					'data-foogallery-change-selector' => 'input',
+					'data-foogallery-preview' => 'shortcode',
+					'data-foogallery-value-selector' => 'input:checked',
+				)
+			);
+
+			$field[] = array(
+				'id'      => 'lightbox_custom_button_highlight',
+				'title'   => __( 'Custom Control Hover Color', 'foogallery' ),
+				'desc'    => __( 'You can override the button controls hover color by selecting a color.', 'foogallery' ),
+				'section' => $section,
+				'spacer'  => '<span class="spacer"></span>',
+				'type'    => 'htmlicon',
+				'default' => 'fg-highlight-light',
+				'choices' => apply_filters( 'foogallery_gallery_template_lightbox_custom_button_highlight_choices', array(
 					'fg-highlight-light'   => array( 'label' => __( 'Light',   'foogallery' ), 'html' => '<div class="foogallery-setting-panel_theme fg-light"></div>' ),
 					'fg-highlight-dark'    => array( 'label' => __( 'Dark',    'foogallery' ), 'html' => '<div class="foogallery-setting-panel_theme fg-dark"></div>' ),
 					'fg-highlight-blue'    => array( 'label' => __( 'Blue',    'foogallery' ), 'html' => '<div class="foogallery-setting-panel_theme fg-blue"></div>' ),
@@ -121,9 +161,13 @@ if ( ! class_exists( 'FooGallery_Pro_Lightbox' ) ) {
 					'fg-highlight-orange'  => array( 'label' => __( 'Orange',  'foogallery' ), 'html' => '<div class="foogallery-setting-panel_theme fg-orange"></div>' ),
 				) ),
 				'row_data'=> array(
-					'data-foogallery-change-selector' => 'input',
-					'data-foogallery-preview' => 'shortcode',
-					'data-foogallery-value-selector' => 'input:checked',
+					'data-foogallery-change-selector'          => 'input',
+					'data-foogallery-preview'                  => 'shortcode',
+					'data-foogallery-value-selector'           => 'input:checked',
+					'data-foogallery-hidden'                   => true,
+					'data-foogallery-show-when-field'          => 'lightbox_button_highlight',
+					'data-foogallery-show-when-field-operator' => '===',
+					'data-foogallery-show-when-field-value'    => 'custom',
 				)
 			);
 
@@ -421,8 +465,16 @@ if ( ! class_exists( 'FooGallery_Pro_Lightbox' ) ) {
 				$args['lightbox_button_theme'] = $post_data[FOOGALLERY_META_SETTINGS][$template . '_lightbox_button_theme'];
 			}
 
+			if ( array_key_exists( $template . '_lightbox_custom_button_theme', $post_data[FOOGALLERY_META_SETTINGS] ) ) {
+				$args['lightbox_custom_button_theme'] = $post_data[FOOGALLERY_META_SETTINGS][$template . '_lightbox_custom_button_theme'];
+			}
+
 			if ( array_key_exists( $template . '_lightbox_button_highlight', $post_data[FOOGALLERY_META_SETTINGS] ) ) {
 				$args['lightbox_button_highlight'] = $post_data[FOOGALLERY_META_SETTINGS][$template . '_lightbox_button_highlight'];
+			}
+
+			if ( array_key_exists( $template . '_lightbox_custom_button_highlight', $post_data[FOOGALLERY_META_SETTINGS] ) ) {
+				$args['lightbox_custom_button_highlight'] = $post_data[FOOGALLERY_META_SETTINGS][$template . '_lightbox_custom_button_highlight'];
 			}
 
 			if ( array_key_exists( $template . '_lightbox_thumbs', $post_data[FOOGALLERY_META_SETTINGS] ) ) {
@@ -565,12 +617,14 @@ if ( ! class_exists( 'FooGallery_Pro_Lightbox' ) ) {
 			}
 
 			$button_theme = foogallery_gallery_template_setting( 'lightbox_button_theme', '' );
-			if ( !empty( $button_theme ) ) {
+			if ( !empty( $button_theme ) && 'custom' === $button_theme ) {
+				$button_theme = foogallery_gallery_template_setting( 'lightbox_custom_button_theme', 'fg-button-light' );
 				$options['button'] = $button_theme;
 			}
 
 			$button_highlight = foogallery_gallery_template_setting( 'lightbox_button_highlight', '' );
-			if ( !empty( $button_highlight ) ) {
+			if ( !empty( $button_highlight ) && 'custom' === $button_highlight ) {
+				$button_highlight = foogallery_gallery_template_setting( 'lightbox_custom_button_highlight', 'fg-highlight-light' );
 				$options['highlight'] = $button_highlight;
 			}
 
