@@ -50,7 +50,18 @@ class FooGallery_Template_Loader {
 
 		//override the template if needed
 		if ( $current_foogallery->gallery_template !== $current_foogallery_template ) {
+			$old_gallery_template = $current_foogallery->gallery_template;
+
 			$current_foogallery->gallery_template = $current_foogallery_template;
+
+			//we need to move the settings across
+			$new_settings = array();
+			foreach ( $current_foogallery->settings as $setting_key=>$setting_value ) {
+				$setting_key = $this->str_replace_first( "{$old_gallery_template}_", "{$current_foogallery_template}_", $setting_key );
+				$new_settings[$setting_key] = $setting_value;
+			}
+
+			$current_foogallery->settings = $new_settings;
 		}
 
 		//potentially override attachment_ids from arguments
@@ -131,6 +142,23 @@ class FooGallery_Template_Loader {
 			$current_foogallery_arguments = null;
 			$current_foogallery_template  = null;
 		}
+	}
+
+	/**
+	 * Replaces the first occurrence of a string
+	 *
+	 * @param $search
+	 * @param $replace
+	 * @param $subject
+	 *
+	 * @return string|string[]
+	 */
+	function str_replace_first($search, $replace, $subject) {
+		$pos = strpos($subject, $search);
+		if ($pos !== false) {
+			return substr_replace($subject, $replace, $pos, strlen($search));
+		}
+		return $subject;
 	}
 
 	/***
