@@ -6,10 +6,8 @@ global $current_foogallery;
 global $current_foogallery_arguments;
 
 $columns = foogallery_gallery_template_setting( 'columns', 'foogrid-cols-4' );
-$captions = foogallery_gallery_template_setting( 'captions', 'foogrid-caption-below' );
-$transition = foogallery_gallery_template_setting( 'transition', 'foogrid-transition-horizontal' );
 
-$foogallery_default_classes = foogallery_build_class_attribute_safe( $current_foogallery, 'foogrid', $columns, $captions, $transition );
+$foogallery_default_classes = foogallery_build_class_attribute_safe( $current_foogallery, 'foogrid', $columns );
 $foogallery_default_attributes = foogallery_build_container_attributes_safe( $current_foogallery, array( 'class' => $foogallery_default_classes ) );
 
 ?><div <?php echo $foogallery_default_attributes; ?>>

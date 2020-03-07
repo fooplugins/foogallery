@@ -188,6 +188,12 @@
 	margin-bottom: 10px;
 }
 
+.foogallery_template_field_id-lightbox_custom_button_theme .foogallery_metabox_field-htmlicon label,
+.foogallery_template_field_id-lightbox_custom_button_highlight .foogallery_metabox_field-htmlicon label
+{
+	padding:0px;
+}
+
 .foogallery_metabox_field-htmlicon input:checked + label {
 	border:solid 3px #444;
 	background: #888;
@@ -291,7 +297,7 @@
 .foogallery-metabox-settings th {
 	font-weight: normal;
 	padding: 10px;
-	width: 180px;
+	width: 200px;
 }
 
 .foogallery-metabox-settings tr {
@@ -525,4 +531,20 @@ button[data-balloon]{overflow:visible}[data-balloon]{position:relative}[data-bal
 		left: 300px;
 		right: 0;
 	}
+}
+
+.foogallery-attachments-list {
+	max-height: 486px;
+	/*max-height: 324px;*/
+	/*max-height: 162px;*/
+	overflow: hidden auto;
+	list-style: none;
+	border: 1px solid #ccd0d4;
+	padding: 10px;
+}
+.foogallery-attachments-list:after,
+.foogallery-attachments-list-bar:after {
+	content: '';
+	display: block;
+	clear: both;
 }

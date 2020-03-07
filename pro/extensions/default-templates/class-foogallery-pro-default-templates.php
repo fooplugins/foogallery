@@ -29,7 +29,7 @@ if ( ! class_exists( 'FooGallery_Pro_Default_Templates' ) ) {
 		 * Return the path to the PRO core gallery stylesheet
 		 */
 		function pro_core_gallery_style( $url ){
-			$filename = foogallery_get_setting( 'enable_debugging', false ) ? '' : '.min';
+			$filename = foogallery_is_debug() ? '' : '.min';
 			return FOOGALLERY_PRO_DEFAULT_TEMPLATES_SHARED_URL . 'css/foogallery' . $filename . '.css';
 		}
 
@@ -37,7 +37,7 @@ if ( ! class_exists( 'FooGallery_Pro_Default_Templates' ) ) {
 		 * Return the path to the PRO core gallery script
 		 */
 		function pro_core_gallery_script( $url ){
-			$filename = foogallery_get_setting( 'enable_debugging', false ) ? '' : '.min';
+			$filename = foogallery_is_debug() ? '' : '.min';
 			return FOOGALLERY_PRO_DEFAULT_TEMPLATES_SHARED_URL . 'js/foogallery' . $filename . '.js';
 		}
 	}
