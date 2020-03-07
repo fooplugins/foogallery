@@ -13,6 +13,9 @@ if ( ! class_exists( 'FooGallery_Pro_Advanced_Gallery_Settings' ) ) {
 
 			//add data options
 			add_filter( 'foogallery_build_container_data_options', array( $this, 'add_data_options' ), 30, 3 );
+
+			//build up any preview arguments
+			add_filter( 'foogallery_preview_arguments', array( $this, 'preview_arguments' ), 10, 3 );
 		}
 
 		/**
@@ -30,12 +33,33 @@ if ( ! class_exists( 'FooGallery_Pro_Advanced_Gallery_Settings' ) ) {
 				'desc'     => __( 'Enable Deep Linking for the gallery which allows the gallery to keep it\'s state for both paging and filtering.', 'foogallery' ),
 				'section'  => __( 'Advanced', 'foogallery' ),
 				'type'     => 'radio',
-				'default'  => 'no',
+				'default'  => 'yes',
 				'spacer'   => '<span class="spacer"></span>',
 				'choices'  => array(
 					'no'  => __( 'Disabled', 'foogallery' ),
 					'yes'   => __( 'Enabled', 'foogallery' ),
 				),
+				'row_data' => array(
+					'data-foogallery-change-selector' => 'input:radio',
+					'data-foogallery-value-selector'  => 'input:checked',
+					'data-foogallery-preview'         => 'shortcode'
+				)
+			);
+
+			$fields[] = array(
+				'id'       => 'state_mask',
+				'title'    => __( 'Deep Linking Mask', 'foogallery' ),
+				'desc'     => __( 'Override the mask used in the URL for Deep Linking.', 'foogallery' ),
+				'section'  => __( 'Advanced', 'foogallery' ),
+				'type'     => 'text',
+				'default'  => 'foogallery-{id}',
+				'row_data' => array(
+					'data-foogallery-change-selector'       => 'input',
+					'data-foogallery-hidden'                => true,
+					'data-foogallery-show-when-field'       => 'state',
+					'data-foogallery-show-when-field-value' => 'yes',
+					'data-foogallery-preview'               => 'shortcode'
+				)
 			);
 
 			return $fields;
@@ -56,9 +80,30 @@ if ( ! class_exists( 'FooGallery_Pro_Advanced_Gallery_Settings' ) ) {
 
 			if ( 'yes' === $enable_state ) {
 				$options['state']['enabled'] = true;
+
+				$state_mask = foogallery_gallery_template_setting( 'state_mask', 'foogallery-{id}' );
+				$options['state']['mask'] = $state_mask;
 			}
 
 			return $options;
+		}
+
+		/**
+		 * Build up a arguments used in the preview of the gallery
+		 * @param $args
+		 * @param $post_data
+		 * @param $template
+		 *
+		 * @return mixed
+		 */
+		function preview_arguments( $args, $post_data, $template ) {
+			if ( array_key_exists( $template . '_state', $post_data[FOOGALLERY_META_SETTINGS] ) ) {
+				$args['state'] = $post_data[FOOGALLERY_META_SETTINGS][$template . '_state'];
+			}
+			if ( array_key_exists( $template . '_state_mask', $post_data[FOOGALLERY_META_SETTINGS] ) ) {
+				$args['state_mask'] = $post_data[FOOGALLERY_META_SETTINGS][$template . '_state_mask'];
+			}
+			return $args;
 		}
 	}
 }
