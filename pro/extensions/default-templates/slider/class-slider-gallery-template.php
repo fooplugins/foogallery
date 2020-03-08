@@ -345,7 +345,11 @@ if ( !class_exists( 'FooGallery_Slider_Gallery_Template' ) ) {
 					$field['section'] = __( 'Appearance', 'foogallery' );
 				} else if ( 'lightbox_button_theme' === $field['id'] ) {
 					$field['section'] = __( 'Appearance', 'foogallery' );
+				} else if ( 'lightbox_custom_button_theme' === $field['id'] ) {
+					$field['section'] = __( 'Appearance', 'foogallery' );
 				} else if ( 'lightbox_button_highlight' === $field['id'] ) {
+					$field['section'] = __( 'Appearance', 'foogallery' );
+				} else if ( 'lightbox_custom_button_highlight' === $field['id'] ) {
 					$field['section'] = __( 'Appearance', 'foogallery' );
 				} else if ( 'lightbox_hover_buttons' === $field['id'] ) {
 					$field['section'] = __( 'General', 'foogallery' );
