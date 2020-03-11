@@ -230,7 +230,8 @@
 				if (showField) {
 					$item.show()
 						.removeClass('foogallery_template_field_template_hidden')
-						.find(':input').removeAttr('disabled');
+						.find(':input').removeAttr('disabled')
+						.end().find('.colorpicker').spectrum("enable");
 				}
 			});
 		});

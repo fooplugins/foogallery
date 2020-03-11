@@ -12752,7 +12752,9 @@
             if (this.panel.opt.noScrollbars){
                 $("html").removeClass(this.panel.cls.noScrollbars)
                     .prop("clientWidth"); // query the clientWidth to force the class to be removed prior to setting the scroll position
-                window.scrollTo(this.scrollPosition[0], this.scrollPosition[1]);
+                if (_is.array(this.scrollPosition) && this.scrollPosition.length === 2){
+                    window.scrollTo(this.scrollPosition[0], this.scrollPosition[1]);
+                }
                 this.scrollPosition = [];
             }
         }

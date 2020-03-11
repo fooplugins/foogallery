@@ -11,9 +11,10 @@ if ( ! class_exists( 'FooGallery_Pro_Advanced_Thumbnails' ) ) {
             //add fields to all templates
             add_filter( 'foogallery_override_gallery_template_fields', array( $this, 'add_advanced_thumb_fields' ), 100, 2 );
 
-            //add custom captions
-            //add_filter( 'foogallery_build_attachment_html_caption_custom', array( $this, 'customize_captions' ), 30, 3 );
             add_filter( 'foogallery_thumbnail_resize_args', array( $this, 'add_arguments' ), 10, 3 );
+
+			//build up any preview arguments
+	        add_filter( 'foogallery_preview_arguments', array( $this, 'preview_arguments' ), 10, 3 );
         }
 
         /**
@@ -37,7 +38,7 @@ if ( ! class_exists( 'FooGallery_Pro_Advanced_Thumbnails' ) ) {
             return $args;
         }
 
-        function rgb_to_colors( string $rgba ) {
+        function rgb_to_colors( $rgba ) {
             preg_match( '/^rgba?[\s+]?\([\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?/i', $rgba, $by_color );
 
             return array( $by_color[1], $by_color[2], $by_color[3] );
@@ -89,101 +90,22 @@ if ( ! class_exists( 'FooGallery_Pro_Advanced_Thumbnails' ) ) {
             return $fields;
         }
 
-        /**
-         * Return the index of the requested field
-         *
-         * @param $fields
-         * @param $field_id
-         *
-         * @return int
-         */
-        private function find_index_of_field( $fields, $field_id ) {
-            $index = 0;
-            foreach ( $fields as $field ) {
-                if ( isset( $field['id'] ) && $field_id === $field['id'] ) {
-                    return $index;
-                }
-                $index++;
-            }
-            return $index;
-        }
-
-        /**
-         * Return the requested field
-         *
-         * @param $fields
-         * @param $field_id
-         *
-         * @return array|bool
-         */
-        private function &find_field( &$fields, $field_id ) {
-            foreach ( $fields as &$field ) {
-                if ( isset( $field['id'] ) && $field_id === $field['id'] ) {
-                    return $field;
-                }
-            }
-            return false;
-        }
-
-        /**
-         * Customize the captions if needed
-         *
-         * @param $captions
-         * @param $foogallery_attachment    FooGalleryAttachment
-         * @param $args array
-         *
-         * @return array
-         */
-        function customize_captions( $captions, $foogallery_attachment, $args) {
-            $caption_type = foogallery_gallery_template_setting( 'captions_type', '' );
-
-            if ( 'custom' === $caption_type ) {
-                $captions = array();
-                $template = foogallery_gallery_template_setting( 'caption_custom_template', '' );
-                $captions['desc'] = $this->build_custom_caption( $template, $foogallery_attachment );
-            }
-
-            return $captions;
-        }
-
-        /**
-         * Build up the custom caption based on the template
-         *
-         * @param $template
-         * @param $foogallery_attachment FooGalleryAttachment
-         * @return string
-         */
-        function build_custom_caption( $template, $foogallery_attachment ) {
-            $html = $template;
-
-            $html = preg_replace_callback( '{{?(#[a-z]+ )?[a-z]+.[a-z]*}?}',
-                function ($matches) use ($foogallery_attachment) {
-                    if ( isset( $foogallery_attachment->$matches[0] ) ) {
-                        return $foogallery_attachment->$matches[0];
-                    } else if ( strpos( $matches[0], 'postmeta.' ) === 0 ) {
-                        $post_meta_key = str_replace( 'postmeta.', '', $matches[0] );
-                        $post_meta_value = get_post_meta( $foogallery_attachment->ID, $post_meta_key, true );
-
-                        return $post_meta_value;
-                    }
-
-                    return '';
-                },
-                $html );
-
-//            //basic attachment info replacement
-//            $html = str_replace( '{ID}', $foogallery_attachment->ID, $html );
-//            $html = str_replace( '{title}', $foogallery_attachment->title, $html );
-//            $html = str_replace( '{caption}', $foogallery_attachment->caption, $html );
-//            $html = str_replace( '{description}', $foogallery_attachment->description, $html );
-//            $html = str_replace( '{alt}', $foogallery_attachment->alt, $html );
-//            $html = str_replace( '{custom_url}', $foogallery_attachment->custom_url, $html );
-//            $html = str_replace( '{custom_target}', $foogallery_attachment->custom_target, $html );
-//            $html = str_replace( '{url}', $foogallery_attachment->url, $html );
-//            $html = str_replace( '{width}', $foogallery_attachment->width, $html );
-//            $html = str_replace( '{height}', $foogallery_attachment->height, $html );
-
-            return apply_filters( 'foogallery_build_custom_caption', $html, $template, $foogallery_attachment );
-        }
+	    /**
+	     * Build up a arguments used in the preview of the gallery
+	     * @param $args
+	     * @param $post_data
+	     * @param $template
+	     *
+	     * @return mixed
+	     */
+	    function preview_arguments( $args, $post_data, $template ) {
+		    if ( array_key_exists( $template . '_thumb_cropping_options', $post_data[FOOGALLERY_META_SETTINGS] ) ) {
+			    $args['thumb_cropping_options'] = $post_data[FOOGALLERY_META_SETTINGS][$template . '_thumb_cropping_options'];
+		    }
+		    if ( array_key_exists( $template . '_thumb_background_fill', $post_data[FOOGALLERY_META_SETTINGS] ) ) {
+			    $args['thumb_background_fill'] = $post_data[FOOGALLERY_META_SETTINGS][$template . '_thumb_background_fill'];
+		    }
+		    return $args;
+	    }
     }
 }

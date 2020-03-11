@@ -19,7 +19,7 @@ if ( !class_exists( 'FooGallery_Slider_Gallery_Template' ) ) {
 			add_filter( 'foogallery_override_gallery_template_fields-slider', array( $this, 'change_common_thumbnail_fields' ), 10, 2 );
 
 			//add the data options needed for polaroid
-			add_filter( 'foogallery_build_container_data_options-slider', array( $this, 'add_data_options' ), 10, 3 );
+			add_filter( 'foogallery_build_container_data_options-slider', array( $this, 'add_data_options' ), 20, 3 );
 
 			//override specific settings when saving the gallery
 			add_filter( 'foogallery_save_gallery_settings-slider', array( $this, 'override_settings'), 10, 3 );
@@ -345,7 +345,11 @@ if ( !class_exists( 'FooGallery_Slider_Gallery_Template' ) ) {
 					$field['section'] = __( 'Appearance', 'foogallery' );
 				} else if ( 'lightbox_button_theme' === $field['id'] ) {
 					$field['section'] = __( 'Appearance', 'foogallery' );
+				} else if ( 'lightbox_custom_button_theme' === $field['id'] ) {
+					$field['section'] = __( 'Appearance', 'foogallery' );
 				} else if ( 'lightbox_button_highlight' === $field['id'] ) {
+					$field['section'] = __( 'Appearance', 'foogallery' );
+				} else if ( 'lightbox_custom_button_highlight' === $field['id'] ) {
 					$field['section'] = __( 'Appearance', 'foogallery' );
 				} else if ( 'lightbox_hover_buttons' === $field['id'] ) {
 					$field['section'] = __( 'General', 'foogallery' );
@@ -387,10 +391,18 @@ if ( !class_exists( 'FooGallery_Slider_Gallery_Template' ) ) {
 		function add_data_options($options, $gallery, $attributes) {
 
 			$old_layout = foogallery_gallery_template_setting( 'layout', false );
-			if ( 'fgs-horizontal' === $old_layout ) {
-				$options['template']['thumbs'] = 'bottom';
-			} else if ( '' === $old_layout ) {
-				$options['template']['thumbs'] = 'right';
+			if ( $old_layout !== false ) {
+				//we are dealing with an older version of the slider PRO, so we need to set some defaults
+				$options['template']['fitMedia'] = true;
+				$options['template']['preserveButtonSpace'] = false;
+				$options['template']['hoverButtons'] = true;
+				$options['template']['info'] = 'top';
+
+				if ( 'fgs-horizontal' === $old_layout ) {
+					$options['template']['thumbs'] = 'bottom';
+				} else if ( '' === $old_layout ) {
+					$options['template']['thumbs'] = 'right';
+				}
 			}
 
 			$old_thumbnail_captions = foogallery_gallery_template_setting( 'thumbnail_captions', false );
