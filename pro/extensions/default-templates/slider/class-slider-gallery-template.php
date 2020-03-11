@@ -396,6 +396,7 @@ if ( !class_exists( 'FooGallery_Slider_Gallery_Template' ) ) {
 				$options['template']['fitMedia'] = true;
 				$options['template']['preserveButtonSpace'] = false;
 				$options['template']['hoverButtons'] = true;
+				$options['template']['info'] = 'top';
 
 				if ( 'fgs-horizontal' === $old_layout ) {
 					$options['template']['thumbs'] = 'bottom';
