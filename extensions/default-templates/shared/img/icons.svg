@@ -1,0 +1,168 @@
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 16 16">
+    <style>
+        .icon { display: none; fill: #999; }
+        .icon:target { display: inline; }
+        .dark { fill: #333; }
+        .light { fill: #FFF; }
+    </style>
+    <defs>
+        <path id="image-def" d="M15 1h-14c-0.55 0-1 0.45-1 1v12c0 0.55 0.45 1 1 1h14c0.55 0 1-0.45 1-1v-12c0-0.55-0.45-1-1-1zM11.5 3c0.828 0 1.5 0.672 1.5 1.5s-0.672 1.5-1.5 1.5-1.5-0.672-1.5-1.5 0.672-1.5 1.5-1.5zM14 13h-12v-2l3.5-6 4 5h1l3.5-3v6z"/>
+        <path id="zoom-def" d="M15.56 15.56c-0.587 0.587-1.538 0.587-2.125 0l-2.652-2.652c-1.090 0.699-2.379 1.116-3.771 1.116-3.872 0-7.012-3.139-7.012-7.012s3.14-7.012 7.012-7.012c3.873 0 7.012 3.139 7.012 7.012 0 1.392-0.417 2.68-1.116 3.771l2.652 2.652c0.587 0.587 0.587 1.538 0 2.125zM7.012 2.003c-2.766 0-5.009 2.243-5.009 5.009s2.243 5.009 5.009 5.009c2.766 0 5.009-2.242 5.009-5.009s-2.242-5.009-5.009-5.009zM8.014 10.017h-2.003v-2.003h-2.003v-2.003h2.003v-2.003h2.003v2.003h2.003v2.003h-2.003v2.003z"/>
+        <path id="zoom2-def" d="M15.56 15.56c-0.587 0.587-1.538 0.587-2.125 0l-2.652-2.652c-1.090 0.699-2.379 1.116-3.771 1.116-3.872 0-7.012-3.139-7.012-7.012s3.14-7.012 7.012-7.012c3.873 0 7.012 3.139 7.012 7.012 0 1.391-0.417 2.68-1.116 3.771l2.652 2.652c0.587 0.587 0.587 1.538 0 2.125zM7.012 2.003c-2.766 0-5.009 2.242-5.009 5.009s2.243 5.009 5.009 5.009c2.766 0 5.009-2.242 5.009-5.009s-2.242-5.009-5.009-5.009z"/>
+        <g id="zoom3-def">
+            <path d="M8.667 7.333h-1.333v-1.333c0-0.184-0.149-0.333-0.333-0.333s-0.333 0.149-0.333 0.333v1.333h-1.333c-0.184 0-0.333 0.149-0.333 0.333s0.149 0.333 0.333 0.333h1.333v1.333c0 0.184 0.149 0.333 0.333 0.333s0.333-0.149 0.333-0.333v-1.333h1.333c0.184 0 0.333-0.149 0.333-0.333s-0.149-0.333-0.333-0.333z"/>
+            <path d="M12.288 9.98l-0.857-0.858c0.151-0.459 0.236-0.947 0.236-1.455 0-2.573-2.094-4.667-4.667-4.667s-4.667 2.094-4.667 4.667 2.094 4.667 4.667 4.667c0.509 0 0.997-0.085 1.456-0.236l1.549 1.547 0.043 0.037c0.401 0.337 0.899 0.523 1.403 0.523 1.151 0 2.087-0.936 2.087-2.087 0-0.56-0.219-1.085-0.616-1.479l-0.633-0.657zM3.667 7.667c0-1.838 1.495-3.333 3.333-3.333s3.333 1.495 3.333 3.333-1.495 3.333-3.333 3.333-3.333-1.495-3.333-3.333z"/>
+        </g>
+        <path id="circle-plus-def" d="M8 0c-4.418 0-8 3.582-8 8s3.582 8 8 8 8-3.582 8-8-3.582-8-8-8zM9 9v4h-2v-4h-4v-2h4v-4h2v4h4v2h-4z"/>
+        <path id="plus-def" d="M15.5 6h-5.5v-5.5c0-0.276-0.224-0.5-0.5-0.5h-3c-0.276 0-0.5 0.224-0.5 0.5v5.5h-5.5c-0.276 0-0.5 0.224-0.5 0.5v3c0 0.276 0.224 0.5 0.5 0.5h5.5v5.5c0 0.276 0.224 0.5 0.5 0.5h3c0.276 0 0.5-0.224 0.5-0.5v-5.5h5.5c0.276 0 0.5-0.224 0.5-0.5v-3c0-0.276-0.224-0.5-0.5-0.5z"/>
+        <path id="eye-def" d="M5.998 8c0 1.104 0.896 2 2 2s2-0.896 2-2v-0.017c-0.214 0.217-0.507 0.35-0.833 0.35-0.644 0-1.167-0.523-1.167-1.167 0-0.463 0.273-0.867 0.663-1.053-0.207-0.073-0.43-0.113-0.663-0.113-1.103 0-2 0.897-2 2zM15.552 6.863c-1.24-1.577-4.26-4.197-7.55-4.197-3.293 0-6.316 2.62-7.557 4.197-0.28 0.36-0.433 0.75-0.443 1.137 0.010 0.387 0.163 0.777 0.443 1.137 1.24 1.577 4.26 4.197 7.553 4.197s6.313-2.62 7.553-4.197c0.283-0.36 0.437-0.75 0.447-1.137-0.010-0.387-0.163-0.777-0.447-1.137zM7.998 11.333c-1.84 0-3.333-1.493-3.333-3.333s1.493-3.333 3.333-3.333 3.333 1.493 3.333 3.333c-0 1.84-1.493 3.333-3.333 3.333z"/>
+        <path id="external-def" d="M2 2v12h12v-4h2v5c0 0.552-0.448 1-1 1h-14c-0.552 0-1-0.448-1-1v-14c0-0.552 0.448-1 1-1h5v2h-4zM8 0h7c0.552 0 1 0.448 1 1v7l-3-3l-6 6l-2-2l6-6z"/>
+        <path id="video-default-def" d="M0 8a8 8 0 0 0 16 0a8 8 0 0 0-16 0M6 5l5 3-5 3z" fill-rule="evenodd"/>
+        <path id="video-1-def" d="M3 2l10 6-10 6z"/>
+        <path id="video-2-def" d="M0 8C0 2 0 2 8 2C16 2 16 2 16 8C16 14 16 14 8 14C0 14 0 14 0 8zM6.5 5.5l4 2.5-4 2.5z" fill-rule="evenodd"/>
+        <path id="video-3-def" d="M0 8a8 8 0 0 0 16 0a8 8 0 0 0-16 0M1.5 8a6.5 6.5 0 0 0 13 0a6.5 6.5 0 0 0-13 0M6 5l5 3-5 3z" fill-rule="evenodd"/>
+        <path id="video-4-def" d="M0 1c0-0.552 0.448-1 1-1h14c0.552 0 1 0.448 1 1v14c0 0.552-0.448 1-1 1h-14c-0.552 0-1-0.448-1-1zM6 5l5 3-5 3z" fill-rule="evenodd"/>
+    </defs>
+    <!-- image -->
+    <g id="image" class="icon">
+        <use xlink:href="#image-def"/>
+    </g>
+    <g id="image-light" class="icon light">
+        <use xlink:href="#image-def"/>
+    </g>
+    <g id="image-dark" class="icon dark">
+        <use xlink:href="#image-def"/>
+    </g>
+
+    <!-- zoom -->
+    <g id="zoom" class="icon">
+        <use xlink:href="#zoom-def"/>
+    </g>
+    <g id="zoom-light" class="icon light">
+        <use xlink:href="#zoom-def"/>
+    </g>
+    <g id="zoom-dark" class="icon dark">
+        <use xlink:href="#zoom-def"/>
+    </g>
+
+    <!-- zoom2 -->
+    <g id="zoom2" class="icon">
+        <use xlink:href="#zoom2-def"/>
+    </g>
+    <g id="zoom2-light" class="icon light">
+        <use xlink:href="#zoom2-def"/>
+    </g>
+    <g id="zoom2-dark" class="icon dark">
+        <use xlink:href="#zoom2-def"/>
+    </g>
+
+    <!-- zoom3 -->
+    <g id="zoom3" class="icon">
+        <use xlink:href="#zoom3-def"/>
+    </g>
+    <g id="zoom3-light" class="icon light">
+        <use xlink:href="#zoom3-def"/>
+    </g>
+    <g id="zoom3-dark" class="icon dark">
+        <use xlink:href="#zoom3-def"/>
+    </g>
+
+    <!-- circle-plus -->
+    <g id="circle-plus" class="icon">
+        <use xlink:href="#circle-plus-def"/>
+    </g>
+    <g id="circle-plus-light" class="icon light">
+        <use xlink:href="#circle-plus-def"/>
+    </g>
+    <g id="circle-plus-dark" class="icon dark">
+        <use xlink:href="#circle-plus-def"/>
+    </g>
+
+    <!-- plus -->
+    <g id="plus" class="icon">
+        <use xlink:href="#plus-def"/>
+    </g>
+    <g id="plus-light" class="icon light">
+        <use xlink:href="#plus-def"/>
+    </g>
+    <g id="plus-dark" class="icon dark">
+        <use xlink:href="#plus-def"/>
+    </g>
+
+    <!-- eye -->
+    <g id="eye" class="icon">
+        <use xlink:href="#eye-def"/>
+    </g>
+    <g id="eye-light" class="icon light">
+        <use xlink:href="#eye-def"/>
+    </g>
+    <g id="eye-dark" class="icon dark">
+        <use xlink:href="#eye-def"/>
+    </g>
+
+    <!-- external -->
+    <g id="external" class="icon">
+        <use xlink:href="#external-def"/>
+    </g>
+    <g id="external-light" class="icon light">
+        <use xlink:href="#external-def"/>
+    </g>
+    <g id="external-dark" class="icon dark">
+        <use xlink:href="#external-def"/>
+    </g>
+
+    <!-- video-default -->
+    <g id="video-default" class="icon">
+        <use xlink:href="#video-default-def"/>
+    </g>
+    <g id="video-default-light" class="icon light">
+        <use xlink:href="#video-default-def"/>
+    </g>
+    <g id="video-default-dark" class="icon dark">
+        <use xlink:href="#video-default-def"/>
+    </g>
+
+    <!-- video-1 -->
+    <g id="video-1" class="icon">
+        <use xlink:href="#video-1-def"/>
+    </g>
+    <g id="video-1-light" class="icon light">
+        <use xlink:href="#video-1-def"/>
+    </g>
+    <g id="video-1-dark" class="icon dark">
+        <use xlink:href="#video-1-def"/>
+    </g>
+
+    <!-- video-2 -->
+    <g id="video-2" class="icon">
+        <use xlink:href="#video-2-def"/>
+    </g>
+    <g id="video-2-light" class="icon light">
+        <use xlink:href="#video-2-def"/>
+    </g>
+    <g id="video-2-dark" class="icon dark">
+        <use xlink:href="#video-2-def"/>
+    </g>
+
+    <!-- video-3 -->
+    <g id="video-3" class="icon">
+        <use xlink:href="#video-3-def"/>
+    </g>
+    <g id="video-3-light" class="icon light">
+        <use xlink:href="#video-3-def"/>
+    </g>
+    <g id="video-3-dark" class="icon dark">
+        <use xlink:href="#video-3-def"/>
+    </g>
+
+    <!-- video-4 -->
+    <g id="video-4" class="icon">
+        <use xlink:href="#video-4-def"/>
+    </g>
+    <g id="video-4-light" class="icon light">
+        <use xlink:href="#video-4-def"/>
+    </g>
+    <g id="video-4-dark" class="icon dark">
+        <use xlink:href="#video-4-def"/>
+    </g>
+</svg>

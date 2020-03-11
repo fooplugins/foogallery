@@ -32,10 +32,10 @@ if ( ! class_exists( 'FooGallery_Upgrade' ) ) {
 
 		public function add_meta_boxes_to_gallery( $post ) {
 
-			if ( foogallery_get_setting( 'enable_debugging' ) ) {
+			if ( foogallery_is_debug() ) {
 				add_meta_box(
 					'foogallery_upgrade_debug',
-					__( 'Settings Upgrade Debugging', 'foogallery' ),
+					__( 'Settings Debugging', 'foogallery' ),
 					array( $this, 'render_upgrade_debug_metabox' ),
 					FOOGALLERY_CPT_GALLERY,
 					'normal',
@@ -65,18 +65,7 @@ if ( ! class_exists( 'FooGallery_Upgrade' ) ) {
 				#foogallery_upgrade_debug table { font-size: 0.8em; }
 				#foogallery_upgrade_debug td { vertical-align: top; }
 			</style>
-			<table>
-				<tr>
-					<td><h3>Old Settings</h3></td>
-					<td><h3>New Settings</h3></td>
-					<td><h3>Upgrade Settings</h3></td>
-				</tr>
-				<tr>
-					<td><?php var_dump( $old_settings ); ?></td>
-					<td><?php var_dump( $new_settings ); ?></td>
-					<td><?php var_dump( $upgrade_settings ); ?></td>
-				</tr>
-			</table>
+			<?php var_dump( $new_settings ); ?>
 			<?php
 		}
 

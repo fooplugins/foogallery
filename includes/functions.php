@@ -403,6 +403,18 @@ function foogallery_build_class_attribute( $gallery ) {
 
 	$classes = apply_filters( 'foogallery_build_class_attribute', $classes, $gallery );
 
+	//extract any classes from the gallery arguments
+	global $current_foogallery_arguments;
+	if ( isset( $current_foogallery_arguments ) && is_array( $current_foogallery_arguments ) ) {
+		if ( array_key_exists( 'className', $current_foogallery_arguments ) ) {
+			$classes[] = $current_foogallery_arguments['className'];
+		}
+
+		if ( array_key_exists( 'classes', $current_foogallery_arguments ) ) {
+			$classes[] = $current_foogallery_arguments['classes'];
+		}
+	}
+
 	$classes = array_filter( $classes );
 
 	return implode( ' ', $classes );
@@ -1043,7 +1055,7 @@ function foogallery_build_default_settings_for_gallery_template( $template_name 
  */
 function foogallery_gallery_template_field_thumb_link_choices() {
     return apply_filters( 'foogallery_gallery_template_field_thumb_links', array(
-        'image'  => __( 'Full Size Image (Lightbox)', 'foogallery' ),
+        'image'  => __( 'Full Size Image', 'foogallery' ),
         'page'   => __( 'Image Attachment Page', 'foogallery' ),
         'custom' => __( 'Custom URL', 'foogallery' ),
         'none'   => __( 'Not linked', 'foogallery' ),
@@ -1411,4 +1423,12 @@ function foogallery_marketing_pro_features() {
  */
 function foogallery_allowed_post_types_for_usage() {
 	return apply_filters( 'foogallery_allowed_post_types_for_attachment', array( 'post', 'page' ) );
+}
+
+/**
+ * Returns true if FooGallery is in debug mode
+ * @return bool
+ */
+function foogallery_is_debug() {
+    return foogallery_get_setting( 'enable_debugging', false );
 }

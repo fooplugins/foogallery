@@ -19,7 +19,7 @@ if ( !class_exists( 'FooGallery_Slider_Gallery_Template' ) ) {
 			add_filter( 'foogallery_override_gallery_template_fields-slider', array( $this, 'change_common_thumbnail_fields' ), 10, 2 );
 
 			//add the data options needed for polaroid
-			add_filter( 'foogallery_build_container_data_options-slider', array( $this, 'add_data_options' ), 10, 3 );
+			add_filter( 'foogallery_build_container_data_options-slider', array( $this, 'add_data_options' ), 20, 3 );
 
 			//override specific settings when saving the gallery
 			add_filter( 'foogallery_save_gallery_settings-slider', array( $this, 'override_settings'), 10, 3 );
@@ -58,59 +58,67 @@ if ( !class_exists( 'FooGallery_Slider_Gallery_Template' ) ) {
 				'filtering_support' => true,
 				'mandatory_classes' => 'fg-slider',
 				'embed_support' => true,
+				'panel_support' => true,
 				'fields'	  => array(
 					array(
-						'id'      => 'layout',
-						'title'   => __('Layout', 'foogallery'),
-						'desc'    => __( 'You can choose either a horizontal or vertical layout for your responsive video gallery.', 'foogallery' ),
+						'id'      => 'slider_help',
+						'title'   => __('Help', 'foogallery'),
+						'desc'    => __( 'You can change the layout of the slider by changing the position of the thumbnails.', 'foogallery' ),
 						'section' => __( 'General', 'foogallery' ),
-						'type'    => 'icon',
-						'default' => '',
-						'choices' => array(
-							'' => array( 'label' => __( 'Vertical' , 'foogallery' ), 'img' => plugin_dir_url( __FILE__ ) . 'assets/video-layout-vertical.png' ),
-							'fgs-horizontal' => array( 'label' => __( 'Horizontal' , 'foogallery' ), 'img' => plugin_dir_url( __FILE__ ) . 'assets/video-layout-horizontal.png' )
-						),
-						'row_data' => array(
-							'data-foogallery-change-selector' => 'input:radio',
-							'data-foogallery-value-selector'  => 'input:checked',
-							'data-foogallery-preview' => 'class',
-						)
+						'type'    => 'help',
 					),
-					array(
-						'id'      => 'buttons',
-						'title'   => __('Navigation', 'foogallery'),
-						'desc'    => __( 'You can choose to show navigation buttons in the slider.', 'foogallery' ),
-						'section' => __( 'General', 'foogallery' ),
-						'type'    => 'radio',
-						'default' => '',
-						'choices' => array(
-							'' => __( 'None', 'foogallery' ),
-							'fgs-content-nav' => __( 'Buttons', 'foogallery' )
-						),
-						'row_data' => array(
-							'data-foogallery-change-selector' => 'input:radio',
-							'data-foogallery-value-selector'  => 'input:checked',
-							'data-foogallery-preview' => 'class',
-						)
-					),
-					array(
-						'id'      => 'viewport',
-						'title'   => __('Use Viewport Width', 'foogallery'),
-						'desc'    => __('Use the viewport width instead of the parent element width.', 'foogallery'),
-						'section' => __( 'General', 'foogallery' ),
-						'default' => '',
-						'type'    => 'radio',
-						'spacer'  => '<span class="spacer"></span>',
-						'choices' => array(
-							'' => __( 'No', 'foogallery' ),
-							'yes' => __( 'Yes', 'foogallery' )
-						),
-						'row_data' => array(
-							'data-foogallery-change-selector' => 'input:radio',
-							'data-foogallery-value-selector'  => 'input:checked',
-							'data-foogallery-preview' => 'shortcode',
-						)
-					),
+//					array(
+//						'id'      => 'layout',
+//						'title'   => __('Layout', 'foogallery'),
+//						'desc'    => __( 'You can choose either a horizontal or vertical layout for your responsive video gallery.', 'foogallery' ),
+//						'section' => __( 'General', 'foogallery' ),
+//						'type'    => 'icon',
+//						'default' => '',
+//						'choices' => array(
+//							'' => array( 'label' => __( 'Vertical' , 'foogallery' ), 'img' => plugin_dir_url( __FILE__ ) . 'assets/video-layout-vertical.png' ),
+//							'fgs-horizontal' => array( 'label' => __( 'Horizontal' , 'foogallery' ), 'img' => plugin_dir_url( __FILE__ ) . 'assets/video-layout-horizontal.png' )
+//						),
+//						'row_data' => array(
+//							'data-foogallery-change-selector' => 'input:radio',
+//							'data-foogallery-value-selector'  => 'input:checked',
+//							'data-foogallery-preview' => 'class',
+//						)
+//					),
+//					array(
+//						'id'      => 'buttons',
+//						'title'   => __('Navigation', 'foogallery'),
+//						'desc'    => __( 'You can choose to show navigation buttons in the slider.', 'foogallery' ),
+//						'section' => __( 'General', 'foogallery' ),
+//						'type'    => 'radio',
+//						'default' => '',
+//						'choices' => array(
+//							'' => __( 'None', 'foogallery' ),
+//							'fgs-content-nav' => __( 'Buttons', 'foogallery' )
+//						),
+//						'row_data' => array(
+//							'data-foogallery-change-selector' => 'input:radio',
+//							'data-foogallery-value-selector'  => 'input:checked',
+//							'data-foogallery-preview' => 'class',
+//						)
+//					),
+//					array(
+//						'id'      => 'viewport',
+//						'title'   => __('Use Viewport Width', 'foogallery'),
+//						'desc'    => __('Use the viewport width instead of the parent element width.', 'foogallery'),
+//						'section' => __( 'General', 'foogallery' ),
+//						'default' => '',
+//						'type'    => 'radio',
+//						'spacer'  => '<span class="spacer"></span>',
+//						'choices' => array(
+//							'' => __( 'No', 'foogallery' ),
+//							'yes' => __( 'Yes', 'foogallery' )
+//						),
+//						'row_data' => array(
+//							'data-foogallery-change-selector' => 'input:radio',
+//							'data-foogallery-value-selector'  => 'input:checked',
+//							'data-foogallery-preview' => 'shortcode',
+//						)
+//					),
 				)
 			);
 
@@ -126,47 +134,47 @@ if ( !class_exists( 'FooGallery_Slider_Gallery_Template' ) ) {
 		 */
 		function add_additional_setting_fields( $fields, $template ) {
 
-			$fields[] =	array(
-				'id'      => 'highlight',
-				'title'   => __('Highlight', 'foogallery'),
-				'section' => __( 'Appearance', 'foogallery' ),
-				'desc'    => __('The color that is used to highlight the selected video.', 'foogallery'),
-				'default' => 'fgs-purple',
-				'type'    => 'radio',
-				'spacer'  => '<span class="spacer"></span>',
-				'choices' => array(
-					'fgs-purple' => __( 'Purple', 'foogallery' ),
-					'fgs-blue' => __( 'Blue', 'foogallery' ),
-					'fgs-green' => __( 'Green', 'foogallery' ),
-					'fgs-orange' => __( 'Orange', 'foogallery' ),
-					'fgs-red' => __( 'Red', 'foogallery' ),
-					'fg-custom' => __( 'Custom', 'foogallery' )
-				),
-				'row_data' => array(
-					'data-foogallery-change-selector' => 'input:radio',
-					'data-foogallery-value-selector'  => 'input:checked',
-					'data-foogallery-preview' => 'class',
-				)
-			);
+//			$fields[] =	array(
+//				'id'      => 'highlight',
+//				'title'   => __('Highlight', 'foogallery'),
+//				'section' => __( 'Appearance', 'foogallery' ),
+//				'desc'    => __('The color that is used to highlight the selected video.', 'foogallery'),
+//				'default' => 'fgs-purple',
+//				'type'    => 'radio',
+//				'spacer'  => '<span class="spacer"></span>',
+//				'choices' => array(
+//					'fgs-purple' => __( 'Purple', 'foogallery' ),
+//					'fgs-blue' => __( 'Blue', 'foogallery' ),
+//					'fgs-green' => __( 'Green', 'foogallery' ),
+//					'fgs-orange' => __( 'Orange', 'foogallery' ),
+//					'fgs-red' => __( 'Red', 'foogallery' ),
+//					'fg-custom' => __( 'Custom', 'foogallery' )
+//				),
+//				'row_data' => array(
+//					'data-foogallery-change-selector' => 'input:radio',
+//					'data-foogallery-value-selector'  => 'input:checked',
+//					'data-foogallery-preview' => 'class',
+//				)
+//			);
 
-			$fields[] = array(
-				'id'      => 'thumbnail_captions',
-				'title'   => __('Thumbnail Captions', 'foogallery'),
-				'desc'    => __('You can choose to hide the captions for the small thumbnails in the slider.', 'foogallery'),
-				'section' => __( 'Captions', 'foogallery' ),
-				'default' => '',
-				'type'    => 'radio',
-				'spacer'  => '<span class="spacer"></span>',
-				'choices' => array(
-					'' => __( 'Show Captions', 'foogallery' ),
-					'fgs-no-captions' => __( 'Hide Captions', 'foogallery' )
-				),
-				'row_data' => array(
-					'data-foogallery-change-selector' => 'input:radio',
-					'data-foogallery-value-selector'  => 'input:checked',
-					'data-foogallery-preview' => 'class',
-				)
-			);
+//			$fields[] = array(
+//				'id'      => 'thumbnail_captions',
+//				'title'   => __('Thumbnail Captions', 'foogallery'),
+//				'desc'    => __('You can choose to hide the captions for the small thumbnails in the slider.', 'foogallery'),
+//				'section' => __( 'Captions', 'foogallery' ),
+//				'default' => '',
+//				'type'    => 'radio',
+//				'spacer'  => '<span class="spacer"></span>',
+//				'choices' => array(
+//					'' => __( 'Show Captions', 'foogallery' ),
+//					'fgs-no-captions' => __( 'Hide Captions', 'foogallery' )
+//				),
+//				'row_data' => array(
+//					'data-foogallery-change-selector' => 'input:radio',
+//					'data-foogallery-value-selector'  => 'input:checked',
+//					'data-foogallery-preview' => 'class',
+//				)
+//			);
 
 			return $fields;
 		}
@@ -297,6 +305,7 @@ if ( !class_exists( 'FooGallery_Slider_Gallery_Template' ) ) {
 			$fields_to_remove[] = 'captions_help';
 			$fields_to_remove[] = 'video_size_help';
 			$fields_to_remove[] = 'video_size';
+			$fields_to_remove[] = 'lightbox_theme';
 
 			$indexes_to_remove = array();
 
@@ -315,6 +324,46 @@ if ( !class_exists( 'FooGallery_Slider_Gallery_Template' ) ) {
 				} else if ( 'video_autoplay' === $field['id'] ) {
 					$field['title'] = __( 'Autoplay', 'foogallery' );
 					$field['desc'] = __( 'Try to autoplay the video when selected. This will only work with videos hosted on Youtube or Vimeo.', 'foogallery' );
+				} else if ( 'lightbox_fit_media' === $field['id'] ) {
+					$field['section'] = __( 'General', 'foogallery' );
+					$field['default'] = 'yes';
+				} else if ( 'lightbox_buttons_display' === $field['id'] ) {
+					$field['section'] = __( 'General', 'foogallery' );
+					$field['default'] = 'yes';
+				} else if ( 'lightbox_thumbs' === $field['id'] ) {
+					$field['title'] = __( 'Thumbnails', 'foogallery' );
+					$field['section'] = __( 'General', 'foogallery' );
+					$field['default'] = 'right';
+				} else if ( 'lightbox_thumbs_captions' === $field['id'] ) {
+					$field['title'] = __( 'Thumbnail Captions', 'foogallery' );
+					$field['section'] = __( 'General', 'foogallery' );
+					$field['default'] = 'yes';
+				} else if ( 'lightbox_info_position' === $field['id'] ) {
+					$field['section'] = __( 'General', 'foogallery' );
+					$field['default'] = 'top';
+				} else if ( 'lightbox_theme' === $field['id'] ) {
+					$field['section'] = __( 'Appearance', 'foogallery' );
+				} else if ( 'lightbox_button_theme' === $field['id'] ) {
+					$field['section'] = __( 'Appearance', 'foogallery' );
+				} else if ( 'lightbox_custom_button_theme' === $field['id'] ) {
+					$field['section'] = __( 'Appearance', 'foogallery' );
+				} else if ( 'lightbox_button_highlight' === $field['id'] ) {
+					$field['section'] = __( 'Appearance', 'foogallery' );
+				} else if ( 'lightbox_custom_button_highlight' === $field['id'] ) {
+					$field['section'] = __( 'Appearance', 'foogallery' );
+				} else if ( 'lightbox_hover_buttons' === $field['id'] ) {
+					$field['section'] = __( 'General', 'foogallery' );
+					$field['default'] = 'yes';
+				} else if ( 'lightbox_transition' === $field['id'] ) {
+					$field['section'] = __( 'General', 'foogallery' );
+				} else if ( 'lightbox_auto_progress' === $field['id'] ) {
+					$field['section'] = __( 'General', 'foogallery' );
+				} else if ( 'lightbox_auto_progress_seconds' === $field['id'] ) {
+					$field['section'] = __( 'General', 'foogallery' );
+				} else if ( 'lightbox_no_scrollbars' === $field['id'] ) {
+					$field['section'] = __( 'General', 'foogallery' );
+				} else if ( 'lightbox_info_overlay' === $field['id'] ) {
+					$field['section'] = __( 'General', 'foogallery' );
 				}
 
 				if ( in_array( $field['id'], $fields_to_remove ) ) {
@@ -340,14 +389,40 @@ if ( !class_exists( 'FooGallery_Slider_Gallery_Template' ) ) {
 		 * @return array
 		 */
 		function add_data_options($options, $gallery, $attributes) {
-			$viewport = foogallery_gallery_template_setting( 'viewport', '' );
-			if ( 'yes' === $viewport ) {
-				$options['template']['useViewport'] = true;
+
+			$old_layout = foogallery_gallery_template_setting( 'layout', false );
+			if ( $old_layout !== false ) {
+				//we are dealing with an older version of the slider PRO, so we need to set some defaults
+				$options['template']['fitMedia'] = true;
+				$options['template']['preserveButtonSpace'] = false;
+				$options['template']['hoverButtons'] = true;
+				$options['template']['info'] = 'top';
+
+				if ( 'fgs-horizontal' === $old_layout ) {
+					$options['template']['thumbs'] = 'bottom';
+				} else if ( '' === $old_layout ) {
+					$options['template']['thumbs'] = 'right';
+				}
 			}
 
-			$video_autoplay = foogallery_gallery_template_setting( 'video_autoplay', 'yes' );
-			if ( 'yes' === $video_autoplay ) {
-				$options['template']['autoPlay'] = true;
+			$old_thumbnail_captions = foogallery_gallery_template_setting( 'thumbnail_captions', false );
+			if ( 'fgs-no-captions' === $old_thumbnail_captions ) {
+				$options['template']['thumbsCaptions'] = false;
+			} else if ( '' === $old_thumbnail_captions ) {
+				$options['template']['thumbsCaptions'] = true;
+			}
+
+			$old_highlight = foogallery_gallery_template_setting( 'highlight', false );
+			if ( 'fgs-purple' === $old_highlight ) {
+				$options['template']['button'] = 'fg-button-purple';
+			} else if ( 'fgs-blue' === $old_highlight ) {
+				$options['template']['button'] = 'fg-button-blue';
+			} else if ( 'fgs-green' === $old_highlight ) {
+				$options['template']['button'] = 'fg-button-green';
+			} else if ( 'fgs-orange' === $old_highlight ) {
+				$options['template']['button'] = 'fg-button-orange';
+			} else if ( 'fgs-red' === $old_highlight ) {
+				$options['template']['button'] = 'fg-button-red';
 			}
 
 			return $options;
@@ -380,8 +455,6 @@ if ( !class_exists( 'FooGallery_Slider_Gallery_Template' ) ) {
 				'height' => 150,
 				'crop' => true
 			);
-			$args['layout'] = $post_data[FOOGALLERY_META_SETTINGS]['slider_layout'];
-			$args['viewport'] = $post_data[FOOGALLERY_META_SETTINGS]['slider_viewport'];
 			return $args;
 		}
 

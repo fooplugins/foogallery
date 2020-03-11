@@ -27,10 +27,12 @@
             $('.foogallery-items-add').removeClass('hidden');
             $('.foogallery-attachments-list').addClass('hidden');
             $('.foogallery-items-empty').removeClass('hidden');
+            $('.foogallery-attachments-list-bar').hide();
         } else {
             $('.foogallery-items-add').addClass('hidden');
             $('.foogallery-attachments-list').removeClass('hidden');
             $('.foogallery-items-empty').addClass('hidden');
+            $('.foogallery-attachments-list-bar').show();
         }
 	};
 
@@ -80,24 +82,25 @@
 
 	FOOGALLERY.updateGalleryPreview = function( initGallery, setContainerHeight ) {
 		var $preview = $('.foogallery_preview_container .foogallery'),
-			$preview_container = $('.foogallery_preview_container');
+			$preview_container = $('.foogallery_preview_container'),
+			overrideClasses = false;
 
 		if ( setContainerHeight ) {
 			$preview_container.css('height', $preview_container.height());
 		}
 
 		//build up the container class
-		var $classFields = $('.foogallery-settings-container-active .foogallery-metabox-settings .foogallery_template_field[data-foogallery-preview="class"]');
+		var $classFields = $('.foogallery-settings-container-active .foogallery-metabox-settings .foogallery_template_field[data-foogallery-preview*="class"]');
 
 		if ($classFields.length) {
 
 			var array = $classFields.find(' :input').serializeArray(),
-				mandatory_classes = $('#FooGallerySettings_GalleryTemplate').find(":selected").data('mandatory-classes'),
-				classes = $.map(array, function (item) {
+				mandatory_classes = $('#FooGallerySettings_GalleryTemplate').find(":selected").data('mandatory-classes');
+			overrideClasses = $.map(array, function (item) {
 					return item.value;
 				}).concat(['foogallery', mandatory_classes]).join(' ');
 
-			$preview.attr('class', classes);
+			$preview.attr('class', overrideClasses);
 		}
 
 		//this allows any extensions to hook into the template change event
@@ -107,10 +110,17 @@
 		if ( $preview.data('fg-common-fields') ) {
 			if ( initGallery ) {
 				$preview.foogallery( {}, function() {
-					$preview_container.css( 'height', '' )
-						.find(".fg-thumb").off("click.foogallery").on("click", function(e){
-                        	e.preventDefault();
-                    	});
+					//set the classes
+					if ( overrideClasses !== false ) {
+						$preview.attr('class', overrideClasses);
+					}
+
+					$preview_container.css( 'height', '' );
+					if ( !$preview_container.find('.foogallery').data('foogallery-lightbox') ) {
+						$preview_container.find(".fg-thumb").off("click.foogallery").on("click", function (e) {
+							e.preventDefault();
+						});
+					}
 				} );
 			} else {
 				$preview.foogallery( 'layout' );
@@ -130,7 +140,7 @@
 		$('.foogallery_preview_container').css('height', $('.foogallery_preview_container').height());
 
 		//build up all the data to generate a preview
-        var $shortcodeFields = $('.foogallery-settings-container-active .foogallery-metabox-settings .foogallery_template_field[data-foogallery-preview="shortcode"]'),
+        var $shortcodeFields = $('.foogallery-settings-container-active .foogallery-metabox-settings .foogallery_template_field[data-foogallery-preview*="shortcode"]'),
 			data = [],
 			foogallery_id = $('#post_ID').val();
 
@@ -220,7 +230,8 @@
 				if (showField) {
 					$item.show()
 						.removeClass('foogallery_template_field_template_hidden')
-						.find(':input').removeAttr('disabled');
+						.find(':input').removeAttr('disabled')
+						.end().find('.colorpicker').spectrum("enable");
 				}
 			});
 		});
@@ -307,10 +318,10 @@
 				selector = $fieldContainer.data('foogallery-change-selector');
 
             $fieldContainer.find(selector).change(function() {
-                if ( $fieldContainer.data('foogallery-preview') === 'shortcode' ) {
+                if ( $fieldContainer.data('foogallery-preview').indexOf('shortcode') !== -1 ) {
                     FOOGALLERY.reloadGalleryPreview();
                 } else {
-					FOOGALLERY.handleSettingFieldChange( $fieldContainer.data('foogallery-preview') !== 'class', true );
+					FOOGALLERY.handleSettingFieldChange( $fieldContainer.data('foogallery-preview').indexOf('class') !== -1, true );
 				}
 			});
         });
@@ -548,6 +559,23 @@
 			showInput: true,
 			clickoutFiresChange: true
 		});
+
+		//lazy loading of images on the gallery edit page
+        var io = new IntersectionObserver(function(entries){
+            entries.forEach(function(entry){
+                if (entry.isIntersecting){
+                    var $target = $(entry.target);
+                    $target.attr("src", $target.data("src"));
+                    io.unobserve(entry.target);
+                }
+            });
+        }, {
+            root: $(".foogallery-attachments-list").get(0)
+        });
+
+        $(".foogallery-attachments-list .attachment .thumbnail img").each(function(i, img){
+            io.observe(img);
+        });
     };
 
 }(window.FOOGALLERY = window.FOOGALLERY || {}, jQuery));

@@ -42,6 +42,9 @@ registerBlockType( 'fooplugins/foogallery', {
 		id: {
 			type: 'number',
 			default: 0
+		},
+		className: {
+			type: 'string'
 		}
 	},
 	/**
