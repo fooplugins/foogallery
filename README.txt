@@ -187,18 +187,18 @@ Update now to get all the latest features, bug fixes and improvements!
 == Changelog ==
 
 = 1.9.8 =
-* New : Added RankMath compatibility - sitemap image indexing
+* New : Added RankMath compatibility - sitemap image indexing.
 * New : Added new setting under Hover Effects : Invert Color. Invert the caption icon colors from dark to light.
-* New : All hover and loading icons converted to SVG format
-* New : Lazy load gallery images when editing a gallery (improved performance for large galleries)
+* New : All hover and loading icons converted to SVG format.
+* New : Lazy load gallery images when editing a gallery (improved performance for large galleries in the admin).
 [//]: # fs_premium_only_begin
-* New : FooGallery PRO Lightbox added
-* New : Lightbox settings tab for PRO lightbox, including thumb slider, autoprogress
+* New : FooGallery PRO Lightbox added!!
+* New : Lightbox settings tab for PRO lightbox, including thumb slider, autoprogress and many more!
 * New : Added new setting under Advanced : Thumbnail Cropping. Allow for background fill with a custom color and no cropping.
-* New : Added new setting under Captions : Caption Type. Allow for custom captions
+* New : Added new setting under Captions : Caption Type. Allow for custom captions.
 [//]: # fs_premium_only_end
 * Fix : Previews not updating in some cases.
-* Update : FooGallery client side 1.4.0
+* Update : FooGallery client side 1.4.0 (MAJOR UPDATE).
 
 = 1.8.20 =
 * Fix : Fix for Masonry template layout issue in Firefox
