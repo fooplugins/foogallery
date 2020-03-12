@@ -8356,7 +8356,10 @@
 		count: function (all) {
 			return all ? this.all().length : this.available().length;
 		},
-		available: function () {
+		available: function (where) {
+			if (_is.fn(where)){
+				return this._available.filter(where, this);
+			}
 			return this._available.slice();
 		},
 		get: function (idOrIndex) {
@@ -8375,37 +8378,50 @@
 		reset: function () {
 			this.setAvailable(this.all());
 		},
-		first: function(){
-			return this._available.length > 0 ? this._available[0] : null;
-		},
-		last: function(){
-			return this._available.length > 0 ? this._available[this._available.length - 1] : null;
-		},
-		next: function(item, loop){
-			if (!(item instanceof _.Item)) return null;
-			loop = _is.boolean(loop) ? loop : false;
-			var index = this._available.indexOf(item);
-			if (index !== -1){
-				index++;
-				if (index >= this._available.length){
-					if (!loop) return null;
-					index = 0;
+		find: function(items, where){
+			where = _is.fn(where) ? where : function(){ return true; };
+			if (_is.array(items)){
+				for (var i = 0, l = items.length; i < l; i++){
+					if (where.call(this, items[i]) === true){
+						return items[i];
+					}
 				}
-				return this._available[index];
 			}
 			return null;
 		},
-		prev: function(item, loop){
+		first: function(where){
+			return this.find(this._available, where);
+		},
+		last: function(where){
+			return this.find(this._available.slice().reverse(), where);
+		},
+		next: function(item, where, loop){
 			if (!(item instanceof _.Item)) return null;
 			loop = _is.boolean(loop) ? loop : false;
-			var index = this._available.indexOf(item);
+			var items = this._available.slice(),
+				index = items.indexOf(item);
 			if (index !== -1){
-				index--;
-				if (index < 0){
-					if (!loop) return null;
-					index = this._available.length - 1;
+				var remainder = items.slice(0, index);
+				items = items.slice(index + 1);
+				if (loop){
+					items = items.concat(remainder);
 				}
-				return this._available[index];
+				return this.find(items, where);
+			}
+			return null;
+		},
+		prev: function(item, where, loop){
+			if (!(item instanceof _.Item)) return null;
+			loop = _is.boolean(loop) ? loop : false;
+			var items = this._available.slice().reverse(),
+				index = items.indexOf(item);
+			if (index !== -1){
+				var remainder = items.slice(0, index);
+				items = items.slice(index + 1);
+				if (loop){
+					items = items.concat(remainder);
+				}
+				return this.find(items, where);
 			}
 			return null;
 		},
@@ -9129,6 +9145,18 @@
 			 */
 			self.showCaptionDescription = self.opt.showCaptionDescription;
 			/**
+			 * @memberof FooGallery.Item#
+			 * @name noLightbox
+			 * @type {boolean}
+			 */
+			self.noLightbox = self.opt.noLightbox;
+			/**
+			 * @memberof FooGallery.Item#
+			 * @name panelHide
+			 * @type {boolean}
+			 */
+			self.panelHide = self.opt.panelHide;
+			/**
 			 * @summary The cached result of the last call to the {@link FooGallery.Item#getThumbUrl|getThumbUrl} method.
 			 * @memberof FooGallery.Item#
 			 * @name _thumbUrl
@@ -9401,6 +9429,8 @@
 			self.alt = self.$image.attr("alt") || self.alt;
 			self.caption = data.title || data.captionTitle || self.caption || self.title;
 			self.description = data.description || data.captionDesc || self.description || self.alt;
+			self.noLightbox = self.$anchor.hasClass(cls.noLightbox);
+			self.panelHide = self.$anchor.hasClass(cls.panelHide);
 			// if the caption or description are not set yet try fetching it from the html
 			if (_is.empty(self.caption)) self.caption = $.trim(self.$caption.find(sel.caption.title).html());
 			if (_is.empty(self.description)) self.description = $.trim(self.$caption.find(sel.caption.description).html());
@@ -9532,7 +9562,14 @@
 
 			attr.inner["class"] = cls.inner;
 
-			attr.anchor["class"] = cls.anchor;
+			var anchorClasses = [cls.anchor];
+			if (self.noLightbox){
+				anchorClasses.push(cls.noLightbox);
+			}
+			if (self.panelHide){
+				anchorClasses.push(cls.panelHide);
+			}
+			attr.anchor["class"] = anchorClasses.join(" ");
 			attr.anchor["href"] = self.href;
 			attr.anchor["data-type"] = self.type;
 			attr.anchor["data-id"] = self.id;
@@ -9924,6 +9961,8 @@
 		toJSON: function(){
 			return {
 				"type": this.type,
+				"id": this.id,
+				"productId": this.productId,
 				"href": this.href,
 				"src": this.src,
 				"srcset": this.srcset,
@@ -9938,6 +9977,8 @@
 				"maxDescriptionLength": this.maxDescriptionLength,
 				"showCaptionTitle": this.showCaptionTitle,
 				"showCaptionDescription": this.showCaptionDescription,
+				"noLightbox": this.noLightbox,
+				"panelHide": this.panelHide,
 				"attr": _obj.extend({}, this.attr)
 			};
 		},
@@ -10025,6 +10066,8 @@
 			maxDescriptionLength: 0,
 			showCaptionTitle: true,
 			showCaptionDescription: true,
+			noLightbox: false,
+			panelHide: false,
 			attr: {
 				elem: {},
 				inner: {},
@@ -10051,6 +10094,8 @@
 			loading: "fg-loading",
 			loaded: "fg-loaded",
 			error: "fg-error",
+			noLightbox: "fg-no-lightbox",
+			panelHide: "fg-panel-hide",
 			types: {
 				item: "fg-type-unknown"
 			},
@@ -11651,10 +11696,13 @@
                 }, self);
             }
         },
+        isVisible: function(item){
+            return item instanceof _.Item && !item.noLightbox && !item.panelHide;
+        },
         onItemsChanged: function(e, tmpl){
             if (this.thumbs.isCreated && tmpl.initialized){
-                this.thumbs.doCreateThumbs(tmpl.items.available());
-                if (this.isAttached) this.load(tmpl.items.first());
+                this.thumbs.doCreateThumbs(tmpl.items.available(this.isVisible));
+                if (this.isAttached) this.load(tmpl.items.first(this.isVisible));
             }
         },
         create: function(){
@@ -11778,6 +11826,9 @@
             });
 
             self.$el.appendTo( $parent );
+
+            _.breakpoints.check( self.$el );
+
             self.areas.forEach(function (area) {
                 area.listen();
             });
@@ -11813,13 +11864,24 @@
             if (this.__media.hasOwnProperty(item.id)) return this.__media[item.id];
             return this.__media[item.id] = _.Panel.media.make(item.type, this, item);
         },
+        getItem: function(item){
+            var self = this, result = item;
+            if (!(result instanceof _.Item)) result = self.currentItem;
+            if (!(result instanceof _.Item)) result = self.tmpl.items.first(self.isVisible);
+            if (item instanceof _.Item && !self.isVisible(item)){
+                result = self.tmpl.items.next(item, self.isVisible, self.opt.loop);
+                if (!(result instanceof _.Item)){
+                    result = self.tmpl.items.prev(item, self.isVisible, self.opt.loop);
+                }
+            }
+            return result;
+        },
         load: function( item ){
             var self = this;
 
-            item = item instanceof _.Item ? item : self.currentItem;
-            item = item instanceof _.Item ? item : self.tmpl.items.first();
+            item = self.getItem(item);
 
-            if (!(item instanceof _.Item)) return _fn.rejectWith("no items to load");
+            if (!(item instanceof _.Item)) return _fn.rejectWith("no item to load");
             if (item === self.currentItem) return _fn.rejectWith("item is currently loaded");
 
             self.isLoading = true;
@@ -11842,8 +11904,8 @@
                     return;
                 }
                 self.currentItem = item;
-                self.prevItem = self.tmpl.items.prev(item, self.opt.loop);
-                self.nextItem = self.tmpl.items.next(item, self.opt.loop);
+                self.prevItem = self.tmpl.items.prev(item, self.isVisible, self.opt.loop);
+                self.nextItem = self.tmpl.items.next(item, self.isVisible, self.opt.loop);
                 self.doLoad(media).then(def.resolve).fail(def.reject);
             }).always(function(){
                 self.isLoading = false;
@@ -11868,8 +11930,9 @@
             }).promise();
         },
         open: function( item, parent ){
-            var self = this,
-                e = self.trigger("open", [self, item, parent]);
+            var self = this;
+            item = self.getItem(item);
+            var e = self.trigger("open", [self, item, parent]);
             if (e.isDefaultPrevented()) return _fn.rejectWith("default prevented");
             return self.doOpen(item, parent).then(function(){
                 self.trigger("opened", [self, item, parent]);
@@ -11878,7 +11941,10 @@
         doOpen: function( item, parent ){
             var self = this;
             return $.Deferred(function(def){
-                item = item instanceof _.Item ? item : self.tmpl.items.first();
+                if (!(item instanceof _.Item)){
+                    def.rejectWith("item not instanceof FooGallery.Item");
+                    return;
+                }
                 parent = !_is.empty(parent) ? parent : "body";
                 if (!self.isAttached){
                     self.appendTo( parent );
@@ -12929,7 +12995,7 @@
         shouldReverseTransition: function( oldMedia, newMedia ){
             if (!(oldMedia instanceof _.Panel.Media) || !(newMedia instanceof _.Panel.Media)) return true;
             var result = oldMedia.item.index < newMedia.item.index,
-                last = this.panel.tmpl.items.last();
+                last = this.panel.tmpl.items.last(this.panel.isVisible);
             if (last instanceof _.Item && ((newMedia.item.index === 0 && oldMedia.item.index === last.index) || (newMedia.item.index === last.index && oldMedia.item.index === 0))){
                 result = !result;
             }
@@ -13239,7 +13305,7 @@
                     }
                 }, 50));
 
-                self.doCreateThumbs(self.panel.tmpl.items.available());
+                self.doCreateThumbs(self.panel.tmpl.items.available(self.panel.isVisible));
 
                 return true;
             }
@@ -13416,12 +13482,12 @@
                 counts = { horizontal: 0, vertical: 0 },
                 adjusted = { width: 0, height: 0 },
                 remaining = { width: 0, height: 0 },
-                width = 0, height = 0;
+                width = 0, height = 0, itemCount = this.__items.length;
             if (this.isCreated){
                 viewport = { width: this.$viewport.innerWidth() + 1, height: this.$viewport.innerHeight() + 1 };
                 original = { width: this.$dummy.outerWidth(), height: this.$dummy.outerHeight() };
                 counts = { horizontal: Math.floor(viewport.width / original.width), vertical: Math.floor(viewport.height / original.height) };
-                adjusted = { width: viewport.width / counts.horizontal, height: viewport.height / counts.vertical };
+                adjusted = { width: viewport.width / Math.min(itemCount, counts.horizontal), height: viewport.height / Math.min(itemCount, counts.vertical) };
                 width = this.opt.bestFit ? adjusted.width : original.width;
                 height = this.opt.bestFit ? adjusted.height : original.height;
                 stage = { width: isHorizontal ? this.__items.length * width : width, height: !isHorizontal ? this.__items.length * height : height };
@@ -13450,7 +13516,6 @@
                         this.$stage.find(this.sel.thumb.elem).css({height: this.info.height, minHeight: this.info.height, width: "", minWidth: ""});
                     }
                 }
-                var visible = this.selectedIndex >= this.scrollIndex && this.selectedIndex < this.scrollIndex + this.info.count;
                 this.goto(this.scrollIndex, true);
             }
         },
@@ -14704,14 +14769,16 @@
             }
         },
         onAnchorClickItem: function(e, tmpl, item){
-            e.preventDefault();
-            this.open(item);
+            if (!item.noLightbox){
+                e.preventDefault();
+                this.open(item);
+            }
         },
         onDestroyedTemplate: function(e, tmpl){
             this.destroy();
         },
         onAfterState: function(e, tmpl, state){
-            if (state.item instanceof _.Item){
+            if (state.item instanceof _.Item && !state.item.noLightbox){
                 this.open(state.item);
             }
         }
