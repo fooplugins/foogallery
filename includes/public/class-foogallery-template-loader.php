@@ -274,7 +274,8 @@ class FooGallery_Template_Loader {
 			return FooGallery::dynamic( $template, $attachment_ids );
 		}
 
-		return false;
+		//allow for other forms of dynamic galleries (e.g. for other datasources)
+		return apply_filters('foogallery_build_dynamic_gallery', false, $args);
 	}
 
 	/**
