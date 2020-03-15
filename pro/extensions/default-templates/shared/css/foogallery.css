@@ -6480,6 +6480,10 @@ html.fg-panel-no-scroll body {
 .foogrid-panel.fg-panel.fg-panel-no-mobile.fg-panel-preserve-button-space .fg-media-content {
     box-shadow: 0 5px 35px rgba(0,0,0,.65);
 }
+.foogallery.fg-slider .fgs-item-stage .fg-item {
+    display: none;
+}
+
 .fg-slider {
     display: block;
     width: auto;

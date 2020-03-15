@@ -8554,6 +8554,7 @@
 						if (_is.element(obj)) {
 							if (item.parse(obj)) {
 								parsed.push(item);
+								if (!self.ALLOW_APPEND) item.detach();
 								return item;
 							}
 							return null;
@@ -11817,16 +11818,16 @@
         doAppendTo: function( parent ){
             var self = this, $parent = $( parent ), maximize = self.buttons.get("maximize");
             self.isInline = !$parent.is("body");
+            self.$el.appendTo( $parent );
+
             maximize.set(!self.isInline, self.isInline);
+
             _.breakpoints.register(self.$el, self.opt.breakpoints, function(){
                 self.areas.forEach(function (area) {
                     area.resize();
                 });
                 self.buttons.resize();
             });
-
-            self.$el.appendTo( $parent );
-
             _.breakpoints.check( self.$el );
 
             self.areas.forEach(function (area) {
@@ -11909,7 +11910,6 @@
                 self.doLoad(media).then(def.resolve).fail(def.reject);
             }).always(function(){
                 self.isLoading = false;
-                self.$el.focus();
             }).then(function(){
                 self.isLoaded = true;
                 self.trigger("loaded", [self, item]);
@@ -12728,28 +12728,30 @@
             }
         },
         enter: function(){
+            if (this.panel.isFullscreen) return;
+            this.panel.isFullscreen = true;
             this.panel.$el.addClass(this.panel.cls.fullscreen);
             if (!this.panel.isMaximized){
                 this.panel.$el.attr({
                     'role': 'dialog',
                     'aria-modal': true
-                });
+                }).focus();
                 this.panel.trapFocus();
             }
-            this.$el.attr("aria-pressed", true);
+            if (this.isCreated) this.$el.attr("aria-pressed", true);
             this.panel.buttons.toggle('maximize', false);
-            this.panel.isFullscreen = true;
         },
         exit: function(){
+            if (!this.panel.isFullscreen) return;
             this.panel.$el.removeClass(this.panel.cls.fullscreen);
             if (!this.panel.isMaximized){
                 this.panel.$el.attr({
                     'role': null,
                     'aria-modal': null
-                });
+                }).focus();
                 this.panel.releaseFocus();
             }
-            this.$el.attr("aria-pressed", false);
+            if (this.isCreated) this.$el.attr("aria-pressed", false);
             this.panel.buttons.toggle('maximize', this.panel.isInline && this.panel.buttons.opt.maximize);
             this.panel.isFullscreen = false;
         }
@@ -12793,12 +12795,13 @@
             this.toggle(visible);
         },
         enter: function(){
+            if (this.panel.isMaximized) return;
             this.panel.isMaximized = true;
             this.$placeholder.insertAfter(this.panel.$el);
             this.panel.$el.appendTo("body").addClass(this.panel.cls.maximized).attr({
                 'role': 'dialog',
                 'aria-modal': true
-            });
+            }).focus();
             if (this.isCreated) this.$el.attr("aria-pressed", true);
             this.panel.trapFocus();
             if (this.panel.opt.noScrollbars){
@@ -12807,11 +12810,12 @@
             }
         },
         exit: function(){
+            if (!this.panel.isMaximized) return;
             this.panel.isMaximized = false;
             this.panel.$el.removeClass(this.panel.cls.maximized).attr({
                 'role': null,
                 'aria-modal': null
-            }).insertBefore(this.$placeholder);
+            }).insertBefore(this.$placeholder).focus();
             this.$placeholder.detach();
             if (this.isCreated) this.$el.attr("aria-pressed", false);
             this.panel.releaseFocus();

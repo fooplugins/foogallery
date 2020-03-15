@@ -6452,6 +6452,7 @@
 						if (_is.element(obj)) {
 							if (item.parse(obj)) {
 								parsed.push(item);
+								if (!self.ALLOW_APPEND) item.detach();
 								return item;
 							}
 							return null;
