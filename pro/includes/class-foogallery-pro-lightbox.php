@@ -223,6 +223,53 @@ if ( ! class_exists( 'FooGallery_Pro_Lightbox' ) ) {
 			);
 
 			$field[] = array(
+				'id'      => 'lightbox_thumbs_bestfit',
+				'title'   => __( 'Thumbnails Best Fit', 'foogallery' ),
+				'desc'    => __( 'Adjust the size of the displayed thumbnails so that they fill the entire space within the strip.', 'foogallery' ),
+				'section' => $section,
+				'spacer'  => '<span class="spacer"></span>',
+				'type'    => 'radio',
+				'default' => '',
+				'choices' => apply_filters( 'foogallery_gallery_template_lightbox_thumbs_bestfit_choices', array(
+					''  => __( 'Default', 'foogallery' ),
+					'yes' => __( 'Best Fit', 'foogallery' ),
+				) ),
+				'row_data'=> array(
+					'data-foogallery-hidden'                   => true,
+					'data-foogallery-show-when-field'          => 'lightbox_thumbs',
+					'data-foogallery-show-when-field-operator' => '!==',
+					'data-foogallery-show-when-field-value'    => 'none',
+					'data-foogallery-change-selector'          => 'input:radio',
+					'data-foogallery-preview'                  => 'shortcode',
+					'data-foogallery-value-selector'           => 'input:checked',
+				)
+			);
+
+			$field[] = array(
+				'id'      => 'lightbox_thumbs_size',
+				'title'   => __( 'Thumbnail Size', 'foogallery' ),
+				'desc'    => __( 'Adjust the size of the thumbnail image to display as either small (square) or large (landscape).', 'foogallery' ),
+				'section' => $section,
+				'spacer'  => '<span class="spacer"></span>',
+				'type'    => 'radio',
+				'default' => '',
+				'choices' => apply_filters( 'foogallery_gallery_template_lightbox_thumbs_size_choices', array(
+					''  => __( 'Normal', 'foogallery' ),
+					'small' => __( 'Small (square)', 'foogallery' ),
+				) ),
+				'row_data'=> array(
+					'data-foogallery-hidden'                   => true,
+					'data-foogallery-show-when-field'          => 'lightbox_thumbs',
+					'data-foogallery-show-when-field-operator' => '!==',
+					'data-foogallery-show-when-field-value'    => 'none',
+					'data-foogallery-change-selector'          => 'input:radio',
+					'data-foogallery-preview'                  => 'shortcode',
+					'data-foogallery-value-selector'           => 'input:checked',
+				)
+			);
+
+
+			$field[] = array(
 				'id'      => 'lightbox_transition',
 				'title'   => __( 'Transition', 'foogallery' ),
 				'desc'    => __( 'The transition to apply to the main content area when switching between items.', 'foogallery' ),
@@ -485,6 +532,14 @@ if ( ! class_exists( 'FooGallery_Pro_Lightbox' ) ) {
 				$args['lightbox_thumbs_captions'] = $post_data[FOOGALLERY_META_SETTINGS][$template . '_lightbox_thumbs_captions'];
 			}
 
+			if ( array_key_exists( $template . '_lightbox_thumbs_bestfit', $post_data[FOOGALLERY_META_SETTINGS] ) ) {
+				$args['lightbox_thumbs_bestfit'] = $post_data[FOOGALLERY_META_SETTINGS][$template . '_lightbox_thumbs_bestfit'];
+			}
+
+			if ( array_key_exists( $template . '_lightbox_thumbs_size', $post_data[FOOGALLERY_META_SETTINGS] ) ) {
+				$args['lightbox_thumbs_size'] = $post_data[FOOGALLERY_META_SETTINGS][$template . '_lightbox_thumbs_size'];
+			}
+
 			if ( array_key_exists( $template . '_lightbox_info_position', $post_data[FOOGALLERY_META_SETTINGS] ) ) {
 				$args['lightbox_info_position'] = $post_data[FOOGALLERY_META_SETTINGS][$template . '_lightbox_info_position'];
 			}
@@ -632,6 +687,8 @@ if ( ! class_exists( 'FooGallery_Pro_Lightbox' ) ) {
 			$options['thumbs'] = $thumbs;
 			if ( 'none' !== $thumbs ) {
 				$options['thumbsCaptions'] = foogallery_gallery_template_setting( 'lightbox_thumbs_captions', 'no' ) === 'yes';
+				$options['thumbsBestFit'] = foogallery_gallery_template_setting( 'lightbox_thumbs_bestfit', '' ) === 'yes';
+				$options['thumbsSmall'] = foogallery_gallery_template_setting( 'lightbox_thumbs_size', '' ) === 'small';
 			}
 
 			$info_position = foogallery_gallery_template_setting( 'lightbox_info_position', 'bottom' );

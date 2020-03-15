@@ -364,6 +364,11 @@ if ( !class_exists( 'FooGallery_Slider_Gallery_Template' ) ) {
 					$field['section'] = __( 'General', 'foogallery' );
 				} else if ( 'lightbox_info_overlay' === $field['id'] ) {
 					$field['section'] = __( 'General', 'foogallery' );
+				} else if ( 'lightbox_thumbs_bestfit' === $field['id'] ) {
+					$field['section'] = __( 'General', 'foogallery' );
+					$field['default'] = 'yes';
+				} else if ( 'lightbox_thumbs_size' === $field['id'] ) {
+					$field['section'] = __( 'General', 'foogallery' );
 				}
 
 				if ( in_array( $field['id'], $fields_to_remove ) ) {
