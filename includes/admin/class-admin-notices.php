@@ -150,8 +150,9 @@ if ( ! class_exists( 'FooGallery_Admin_Notices' ) ) {
                     <div class="notice error">
                         <p>
                             <strong><?php _e('Thumbnail Generation Alert!', 'foogallery'); ?></strong><br/>
-                            <?php _e('There is a problem generating thumbnails for your gallery. Please check that your hosting provider has the GD Image Library extension installed and enabled.' , 'foogallery'); ?><br />
-                            <?php _e('If thumbnails cannot be generated, then full-sized, uncropped images will be used instead. This will result in slow page load times, and thumbnails that do not look correct.', 'foogallery'); ?>
+                            <?php _e('There is a problem generating thumbnails for your galleries. There could be a number of reasons which could cause this problem.' , 'foogallery'); ?><br />
+                            <?php _e('If thumbnails cannot be generated, then full-sized, uncropped images will be used instead. This will result in slow page load times, and thumbnails that do not look correct.', 'foogallery'); ?><br/>
+                            <a target="_blank" href="https://fooplugins.com/documentation/foogallery/troubleshooting-foogallery/thumbnail-generation-alert-help/"><?php _e('View Troubleshooting Documentation', 'foogallery'); ?></a>
                             <br/>
                         </p>
                     </div>
