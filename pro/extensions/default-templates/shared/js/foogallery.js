@@ -6862,6 +6862,7 @@
                 nextBreakpoint = this.getCurrent( registered, size );
             if (nextBreakpoint !== prevBreakpoint || nextOrientation !== prevOrientation){
                 registered.current = nextBreakpoint;
+                registered.orientation = nextOrientation;
                 registered.$element.removeClass(registered.classNames).addClass([nextBreakpoint, nextOrientation].join(" "));
                 registered.callback.call(registered.thisArg, registered, nextBreakpoint, nextOrientation, prevBreakpoint, prevOrientation);
             }
@@ -11687,6 +11688,13 @@
 
             self.nextItem = null;
 
+            self.lastResize = {
+                breakpoint: null,
+                orientation: null,
+                prevBreakpoint: null,
+                prevOrientation: null
+            };
+
             self.__media = {};
 
             self.__loading = null;
@@ -11820,9 +11828,15 @@
             self.isInline = !$parent.is("body");
             self.$el.appendTo( $parent );
 
-            maximize.set(!self.isInline, self.isInline);
+            maximize.set(!self.isInline, maximize.isEnabled());
 
-            _.breakpoints.register(self.$el, self.opt.breakpoints, function(){
+            _.breakpoints.register(self.$el, self.opt.breakpoints, function(registered, breakpoint, orientation, prevBreakpoint, prevOrientation){
+                self.lastResize = {
+                    breakpoint: breakpoint,
+                    orientation: orientation,
+                    prevBreakpoint: prevBreakpoint,
+                    prevOrientation: prevOrientation
+                };
                 self.areas.forEach(function (area) {
                     area.resize();
                 });
@@ -12085,6 +12099,7 @@
             info: "bottom", // none | top | bottom | left | right
             infoVisible: false,
             infoOverlay: true,
+            infoAutoHide: true,
 
             cart: "none", // none | top | bottom | left | right
             cartVisible: false,
@@ -12479,7 +12494,7 @@
         },
         create: function(){
             var self = this;
-            if (!self.isCreated && self.isEnabled()){
+            if (!self.isCreated){
                 self.$el = $('<button/>', {
                     type: 'button',
                     "aria-label": self.opt.label,
@@ -12496,6 +12511,9 @@
                     self.$el.append(self.opt.icon.call(this));
                 }
                 self.isCreated = true;
+                var enabled = self.isEnabled();
+                self.toggle(enabled);
+                self.disable(!enabled);
             }
             return self.isCreated;
         },
@@ -12567,10 +12585,12 @@
             this._super(area.panel, area.name, {
                 icon: area.opt.icon,
                 label: area.opt.label,
+                autoHideArea: area.opt.autoHide,
                 click: area.toggle.bind(area)
             });
             this.area = area;
             this.__isVisible = null;
+            this.__autoHide = null;
         },
         beforeLoad: function(media){
             var enabled = this.area.isEnabled(), supported = enabled && this.area.canLoad(media);
@@ -12583,14 +12603,34 @@
             }
             if (enabled) this.disable(!supported);
             else this.toggle(supported);
+
+            this.checkAutoHide(enabled, supported);
+
             this.opt.beforeLoad.call(this, media);
+        },
+        checkAutoHide: function(enabled, supported){
+            if (enabled && supported && this.opt.autoHideArea === true){
+                var last = this.panel.lastResize;
+                if (this.__autoHide == null && _is.empty(last.breakpoint)){
+                    this.__autoHide = this.area.isVisible;
+                    this.area.toggle(false);
+                    this.area.button.toggle(true);
+                } else if (_is.boolean(this.__autoHide) && !_is.empty(last.breakpoint)) {
+                    this.area.button.toggle(this.area.button.isEnabled() && this.area.opt.toggle);
+                    this.area.toggle(this.__autoHide);
+                    this.__autoHide = null;
+                }
+            }
+        },
+        resize: function(){
+            var enabled = this.area.isEnabled(), supported = enabled && this.area.canLoad(this.area.currentMedia);
+            this.checkAutoHide(enabled, supported);
         }
     });
 
 })(
     FooGallery.$,
     FooGallery,
-    FooGallery.utils.is,
     FooGallery.utils.is
 );
 (function($, _, _utils){
@@ -13119,6 +13159,7 @@
                 label: null,
                 position: null,
                 visible: true,
+                autoHide: false,
                 toggle: !!panel.opt.buttons[name]
             }, options), _obj.extend({
                 toggle: this.__cls(cls.toggle, name, true),
@@ -13134,10 +13175,12 @@
             self.allPositionClasses = Object.keys(self.cls.position).map(function (key) {
                 return self.cls.position[key];
             }).join(" ");
-            self.registerButton();
+            self.button = self.registerButton();
         },
         registerButton: function(){
-            this.panel.buttons.register(new _.Panel.SideAreaButton(this));
+            var btn = new _.Panel.SideAreaButton(this);
+            this.panel.buttons.register(btn);
+            return btn;
         },
         doCreate: function(){
             if (this._super()){
@@ -13204,6 +13247,7 @@
                 position: panel.opt.info,
                 overlay: panel.opt.infoOverlay,
                 visible: panel.opt.infoVisible,
+                autoHide: panel.opt.infoAutoHide,
                 waitForUnload: false
             }, panel.cls.info);
             this.allPositionClasses += " " + this.cls.overlay;
