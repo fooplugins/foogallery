@@ -150,6 +150,26 @@ class FooGallery extends stdClass {
 	}
 
 	/**
+	 * Static function to build a dynamic gallery that does not exist in the database for a specific datasource
+	 *
+	 * @return FooGallery
+	 */
+	public static function dynamic_for_datasource( $datasource ) {
+		$gallery = new self( null );
+
+		//loads all meta data from the default gallery
+		$default_gallery_id = foogallery_get_setting( 'default_gallery_settings' );
+		if ( $default_gallery_id > 0 ) {
+			$gallery->load_meta( $default_gallery_id );
+		}
+
+		$gallery->datasource_name = $datasource;
+		//set the datasource_value from a filter
+
+		return $gallery;
+	}
+
+	/**
 	 * Static function to load a Gallery instance by passing in a post object
 	 * @static
 	 *
