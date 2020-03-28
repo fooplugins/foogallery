@@ -5,6 +5,8 @@
  */
 if ( ! class_exists( 'FooGallery_Pro_Advanced_Captions' ) ) {
 
+	define( 'FOOGALLERY_ADVANCED_CAPTIONS_FIELDS_TRANSIENT_KEY', 'foogallery_advanced_captions_fields' );
+
     class FooGallery_Pro_Advanced_Captions {
 
         function __construct() {
@@ -92,21 +94,42 @@ if ( ! class_exists( 'FooGallery_Pro_Advanced_Captions' ) ) {
                 )
             );
 
+	        $postmeta_fields = $this->find_attachment_postmeta_fields();
+	        $postmeta_html = '';
+	        foreach ( $postmeta_fields as $key => $field ) {
+	        	if ( '' === $postmeta_html ) {
+	        		$postmeta_html = '<br /><br />' . __( 'The following custom attachment metadata fields were found:', 'foogallery' ) . '<br /><br />';
+		        }
+
+	        	//check if we are dealing with ACF
+	        	if ( 'acf-form-data' === $key ) {
+
+	        		//extract all ACF fields here
+
+		        } else {
+			        $postmeta_html .= '<code>{{postmeta.' . $key . '}}</code>';
+			        if ( isset( $field['label'] ) ) {
+				        $postmeta_html .= ' - ' . $field['label'];
+			        }
+			        $postmeta_html .= '<br />';
+		        }
+	        }
+
             $fields[] = array(
                 'id'      => 'caption_custom_help',
                 'title'   => __( 'Custom Caption Help', 'foogallery' ),
-                'desc'	  => __( '<strong>Custom Caption Help</strong><br />The custom caption template can use any HTML together with the following dynamic placeholders:<br /><br />' .
-                    '<code>{{ID}}</code> - attachment ID<br />' .
-                    '<code>{{title}}</code> - attachment title<br />' .
-                    '<code>{{caption}}</code> - attachment caption<br />' .
-                    '<code>{{description}}</code> - attachment description<br />' .
-                    '<code>{{alt}}</code> - attachment ALT text<br />' .
-                    '<code>{{custom_url}}</code> - custom URL<br />' .
-                    '<code>{{custom_target}}</code> - custom target<br />' .
-                    '<code>{{url}}</code> - full-size image URL<br />' .
-                    '<code>{{width}}</code> - full-size image width<br />' .
-                    '<code>{{height}}</code> - full-size image height<br /><br />' .
-                    'You can also include custom attachment metadata by using <code>{{postmeta.metakey}}</code> where "metakey" is the key/slug/name of the metadata.', 'foogallery '),
+                'desc'	  => '<strong> ' . __('Custom Caption Help', 'foogallery') . '</strong><br />' . __('The custom caption template can use any HTML together with the following dynamic placeholders:', 'foogallery') . '<br /><br />' .
+                    '<code>{{ID}}</code> - ' . __('Attachment ID', 'foogallery') . '<br />' .
+                    '<code>{{title}}</code> - ' . __('Attachment title', 'foogallery') . '<br />' .
+                    '<code>{{caption}}</code> - ' . __('Attachment caption', 'foogallery') . '<br />' .
+                    '<code>{{description}}</code> - ' . __('Attachment description', 'foogallery') . '<br />' .
+                    '<code>{{alt}}</code> - ' . __('Attachment ALT text', 'foogallery') . '<br />' .
+                    '<code>{{custom_url}}</code> - ' . __('Custom URL', 'foogallery') . '<br />' .
+                    '<code>{{custom_target}}</code> - ' . __('Custom target', 'foogallery') . '<br />' .
+                    '<code>{{url}}</code> - ' . __('Full-size image URL', 'foogallery') . '<br />' .
+                    '<code>{{width}}</code> - ' . __('Full-size image width', 'foogallery') . '<br />' .
+                    '<code>{{height}}</code> - ' . __('Full-size image height', 'foogallery') . '<br /><br />' .
+                    __('You can also include custom attachment metadata by using <code>{{postmeta.metakey}}</code> where "metakey" is the key/slug/name of the metadata.', 'foogallery') . $postmeta_html,
                 'section' => __( 'Captions', 'foogallery' ),
                 'type'    => 'help',
                 'row_data' => array(
@@ -118,6 +141,43 @@ if ( ! class_exists( 'FooGallery_Pro_Advanced_Captions' ) ) {
             );
 
             return $fields;
+        }
+
+	    /**
+	     * Return a list of all fields that have been added for attachments
+	     */
+        function find_attachment_postmeta_fields() {
+	        $form_fields = array();
+
+	        if ( false === ( $form_fields = get_transient( FOOGALLERY_ADVANCED_CAPTIONS_FIELDS_TRANSIENT_KEY ) ) ) {
+
+		        $attachment = null;
+
+		        $args         = array(
+			        'post_type'        => 'attachment',
+			        'post_mime_type'   => 'image',
+			        'post_status'      => 'inherit',
+			        'posts_per_page'   => 1,
+			        'suppress_filters' => 1,
+			        'orderby'          => 'date',
+			        'order'            => 'ASC'
+		        );
+		        $query_images = new WP_Query( $args );
+		        foreach ( $query_images->posts as $post ) {
+			        //get the first attachment, then get out
+			        $attachment = $post;
+			        break;
+		        }
+		        $form_fields = array();
+		        $form_fields = apply_filters( 'attachment_fields_to_edit', $form_fields, $attachment );
+
+		        $expires = 30 * 60; //cache for 30 minutes
+
+		        //Cache the result
+		        set_transient( FOOGALLERY_ADVANCED_CAPTIONS_FIELDS_TRANSIENT_KEY, $form_fields, $expires );
+	        }
+
+	        return $form_fields;
         }
 
         /**
