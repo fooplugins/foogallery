@@ -1,18 +1,22 @@
-=== FooGallery - Image Gallery WordPress Plugin ===
+=== WordPress Gallery Plugin - FooGallery ===
 Contributors: bradvin, steveush, fooplugins
 Donate link: http://fooplugins.com
-Tags: gallery, image gallery, photo gallery, responsive, album, media gallery, masonry gallery, portfolio, justified gallery, video gallery, photography, youtube gallery
+Tags: gallery, image gallery, wordpress gallery plugin, responsive gallery, best gallery plugin
 Requires at least: 3.9
 Tested up to: 5.4
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Why choose FooGallery? Stunning image gallery layouts, responsive, retina-ready, lightning fast, easy to use. Gutenberg Ready!
+FooGallery is an easy-to-use WordPress gallery plugin, with stunning gallery layouts. It is also responsive, retina-ready and supports lazy loading for lightning fast photo galleries.
 
 == Description ==
 
-Why choose FooGallery? Stunning image gallery layouts, responsive, retina-ready, lightning fast, easy to use. Gutenberg Ready! Built to be highly configurable and extensible for developers or freelancers.
+FooGallery is an easy-to-use WordPress gallery plugin, with stunning gallery layouts. It is also responsive, retina-ready and supports lazy loading for lightning fast photo galleries.
+
+Live previews are available while creating a gallery, and also within the Gutenberg block editor with our FooGallery Block. FooGallery was built to be highly configurable and extendable for developers or freelancers.
+
+We have done the research and compared the best free gallery plugins out there, and we know that the free version of FooGallery is the best gallery plugin available!
 
 [View the FooGallery Homepage](http://fooplugins.com/foogallery)
 
@@ -144,7 +148,7 @@ Do you have any caching setup at your website host? If so, clear/purge those cac
 First thing to do is restore your site to it's previous working state.
 1. Get access to your site via FTP, or SFTP.
 2. Navigate to the wp-content/plugins folder.
-3. Rename the foogallery folder to foogallery1 in order to deactivate the pluing.
+3. Rename the foogallery folder to foogallery1 in order to deactivate the plugin.
 4. At this point, your site should be working again.
 5. Please contact our support and provide the following info:
     * What version of WordPress you are running.
@@ -167,6 +171,11 @@ Have you enabled retina support for your galleries? To enable retina support, ed
 = Can I add videos to my galleries? =
 
 Yes, video is supported in FooGallery PRO!
+
+= Do I need to install a separate plugin to show a lightbox? =
+
+For the Free version of FooGallery - Yes, you will need to install FooBox Image Lightbox.
+For the PRO version of FooGallery - No, we have built in a uniquely beautiful lightbox!
 
 = How do I get albums working? =
 
