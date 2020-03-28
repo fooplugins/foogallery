@@ -18,7 +18,7 @@ if ( !class_exists( 'FooGallery_Slider_Gallery_Template' ) ) {
 			//change fields for the template
 			add_filter( 'foogallery_override_gallery_template_fields-slider', array( $this, 'change_common_thumbnail_fields' ), 10, 2 );
 
-			//add the data options needed for polaroid
+			//add the data options needed for slider
 			add_filter( 'foogallery_build_container_data_options-slider', array( $this, 'add_data_options' ), 20, 3 );
 
 			//override specific settings when saving the gallery
@@ -398,22 +398,27 @@ if ( !class_exists( 'FooGallery_Slider_Gallery_Template' ) ) {
 			$old_layout = foogallery_gallery_template_setting( 'layout', false );
 			if ( $old_layout !== false ) {
 				//we are dealing with an older version of the slider PRO, so we need to set some defaults
-				$options['template']['fitMedia'] = true;
-				$options['template']['preserveButtonSpace'] = false;
-				$options['template']['hoverButtons'] = true;
-				$options['template']['info'] = 'top';
+				$defaultFitMedia = foogallery_gallery_template_setting( 'lightbox_fit_media', 'yes' ) === 'yes';
+				$defaultPreserveButtonSpace = foogallery_gallery_template_setting( 'lightbox_buttons_display', 'yes' ) === 'no';
+				$defaultHoverButtons = foogallery_gallery_template_setting( 'lightbox_hover_buttons', 'yes' ) === 'yes';
+				$defaultInfoPosition = foogallery_gallery_template_setting( 'lightbox_info_position', 'top' );
 
-				if ( 'fgs-horizontal' === $old_layout ) {
+				$options['template']['fitMedia'] = $defaultFitMedia;
+				$options['template']['preserveButtonSpace'] = $defaultPreserveButtonSpace;
+				$options['template']['hoverButtons'] = $defaultHoverButtons;
+				$options['template']['info'] = $defaultInfoPosition;
+
+				if ( 'fgs-horizontal' === $old_layout || 'horizontal' === $old_layout ) {
 					$options['template']['thumbs'] = 'bottom';
-				} else if ( '' === $old_layout ) {
+				} else if ( '' === $old_layout || 'fgs-vertical' === $old_layout || 'vertical' === $old_layout ) {
 					$options['template']['thumbs'] = 'right';
 				}
 			}
 
 			$old_thumbnail_captions = foogallery_gallery_template_setting( 'thumbnail_captions', false );
-			if ( 'fgs-no-captions' === $old_thumbnail_captions ) {
+			if ( 'fgs-no-captions' === $old_thumbnail_captions || 'none' === $old_thumbnail_captions ) {
 				$options['template']['thumbsCaptions'] = false;
-			} else if ( '' === $old_thumbnail_captions ) {
+			} else if ( '' === $old_thumbnail_captions || 'show' === $old_thumbnail_captions) {
 				$options['template']['thumbsCaptions'] = true;
 			}
 
