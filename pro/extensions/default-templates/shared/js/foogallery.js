@@ -14650,7 +14650,7 @@
         getEmbedUrl: function(urlParts, autoPlay){
             var id = this.getId(urlParts);
             urlParts.search = this.mergeParams(urlParts, autoPlay);
-            return location.protocol + '//www.dailymotion.com/embed/video/' + id + urlParts.search + urlParts.hash;
+            return 'https://www.dailymotion.com/embed/video/' + id + urlParts.search + urlParts.hash;
         }
     });
 
@@ -14710,7 +14710,7 @@
         getEmbedUrl: function(urlParts, autoPlay){
             var id = this.getId(urlParts);
             urlParts.search = this.mergeParams(urlParts, autoPlay);
-            return location.protocol + '//player.vimeo.com/video/' + id + urlParts.search + urlParts.hash;
+            return 'https://player.vimeo.com/video/' + id + urlParts.search + urlParts.hash;
         }
     });
 
@@ -14757,7 +14757,7 @@
         getEmbedUrl: function(urlParts, autoPlay){
             var id = this.getId(urlParts);
             urlParts.search = this.mergeParams(urlParts, autoPlay);
-            return location.protocol + '//fast.wistia.net/embed/'+this.getType(urlParts.href)+'/' + id + urlParts.search + urlParts.hash;
+            return 'https://fast.wistia.net/embed/'+this.getType(urlParts.href)+'/' + id + urlParts.search + urlParts.hash;
         }
     });
 
@@ -14801,6 +14801,57 @@
 
 })(
     FooGallery
+);
+(function(_){
+
+    _.Panel.Video.TED = _.Panel.Video.Source.extend({
+        construct: function(){
+            this._super(
+                'video/ted',
+                /(www.)?ted\.com/i,
+                false,
+                [],
+                {key: 'autoplay', value: '1'}
+            );
+        },
+        getEmbedUrl: function(urlParts, autoPlay){
+            var id = this.getId(urlParts);
+            urlParts.search = this.mergeParams(urlParts, autoPlay);
+            return 'https://embed.ted.com/talks/' + id + urlParts.search + urlParts.hash;
+        }
+    });
+
+    _.Panel.Video.sources.register('video/ted', _.Panel.Video.TED);
+
+})(
+    FooGallery
+);
+(function(_, _url){
+
+    _.Panel.Video.Facebook = _.Panel.Video.Source.extend({
+        construct: function(){
+            this._super(
+                'video/facebook',
+                /(www.)?facebook\.com\/.*?\/videos\//i,
+                false,
+                [
+                    {key: 'show_text', value: '0'},
+                    {key: 'show_caption', value: '0'}
+                ],
+                {key: 'autoplay', value: '1'}
+            );
+        },
+        getEmbedUrl: function(urlParts, autoPlay){
+            var search = _url.param(this.mergeParams(urlParts, autoPlay), "href", encodeURI(urlParts.origin + urlParts.pathname));
+            return 'https://www.facebook.com/plugins/video.php' + search + urlParts.hash;
+        }
+    });
+
+    _.Panel.Video.sources.register('video/facebook', _.Panel.Video.Facebook);
+
+})(
+    FooGallery,
+    FooGallery.utils.url
 );
 (function($, _, _is, _obj){
 
