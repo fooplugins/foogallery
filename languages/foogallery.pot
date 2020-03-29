@@ -4140,10 +4140,6 @@ msgstr ""
 msgid "FooGallery"
 msgstr ""
 
-#. Plugin URI of the plugin/theme
-msgid "https://foo.gallery"
-msgstr ""
-
 #. Description of the plugin/theme
 msgid ""
 "FooGallery is the most intuitive and extensible gallery management tool ever "

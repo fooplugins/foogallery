@@ -3,10 +3,10 @@ $instance = FooGallery_Plugin::get_instance();
 $info = $instance->get_plugin_info();
 $title = apply_filters( 'foogallery_admin_help_title', sprintf( __( 'Welcome to %s %s', 'foogallery' ), foogallery_plugin_name(), $info['version'] ) );
 $tagline = apply_filters( 'foogallery_admin_help_tagline', sprintf( __( 'Thank you for choosing %s, the most intuitive and extensible gallery creation and management tool ever created for WordPress!', 'foogallery' ), foogallery_plugin_name() ) );
-$link = apply_filters( 'foogallery_admin_help_tagline_link', ' - <a href="https://foo.gallery?utm_source=foogallery_plugin_help" target="_blank">' . __( 'Visit our homepage', 'foogallery' ) . '</a>' );
+$link = apply_filters( 'foogallery_admin_help_tagline_link', ' - <a href="https://fooplugins.com/foogallery/?utm_source=foogallery_plugin_help" target="_blank">' . __( 'Visit our homepage', 'foogallery' ) . '</a>' );
 $show_logo = apply_filters( 'foogallery_admin_help_show_logo', true );
 $show_tabs = apply_filters( 'foogallery_admin_help_show_tabs', true );
-$demo_link = '<a href="https://foo.gallery/demos?utm_source=foogallery_plugin_help" target="_blank">' . __( 'gallery demos', 'foogallery' ) . '</a>';
+$demo_link = '<a href="https://fooplugins.com/foogallery/demos/?utm_source=foogallery_plugin_help" target="_blank">' . __( 'gallery demos', 'foogallery' ) . '</a>';
 $support_url = 'https://fooplugins.link/support?utm_source=foogallery_plugin_help_support';
 
 $fs_instance = freemius( FOOGALLERY_SLUG );
@@ -269,7 +269,7 @@ $show_demos = apply_filters( 'foogallery_admin_help_show_demos', true );
 	<div id="support_section" class="feature-section nav-container" style="display: none">
 		<h2><?php _e( 'Need help? We\'re here for you...' , 'foogallery' );?></h2>
 
-		<p><span class="dashicons dashicons-editor-help"></span><a href="https://docs.fooplugins.com/" target="_blank"><?php _e('FooPlugins Knowledgebase','foogallery'); ?></a> - <?php _e('A collection of common scenarios and questions. The knowledgebase articles will help you troubleshoot issues that have previously been solved.', 'foogallery'); ?></p>
+		<p><span class="dashicons dashicons-editor-help"></span><a href="https://fooplugins.com/documentation/foogallery/" target="_blank"><?php _e('FooPlugins Knowledgebase','foogallery'); ?></a> - <?php _e('A collection of common scenarios and questions. The knowledgebase articles will help you troubleshoot issues that have previously been solved.', 'foogallery'); ?></p>
 
 		<p><span class="dashicons dashicons-editor-help"></span><a href="https://wordpress.org/support/plugin/foogallery/" target="_blank"><?php _e('FooGallery WordPress.org Support','foogallery'); ?></a> - <?php _e('We actively monitor and answer all questions posted on WordPress.org for FooGallery.', 'foogallery'); ?></p>
 

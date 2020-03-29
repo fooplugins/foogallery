@@ -1,9 +1,5 @@
 <?php
 
-$link_actions_filters = 'http://foo.gallery/developers#actions_filters';
-$link_tutorial = 'http://foo.gallery/developers#extensions';
-$link_submit = 'http://foo.gallery/submit-extension/';
-
 $nonce = safe_get_from_request( 'foogallery_boilerplate_nonce' );
 
 if ( ! empty( $nonce ) && wp_verify_nonce( $nonce, 'foogallery_boilerplate' ) ) {
@@ -108,8 +104,7 @@ if ( ! empty( $nonce ) && wp_verify_nonce( $nonce, 'foogallery_boilerplate' ) ) 
 	<h2><?php _e( 'Developer Tips', 'foogallery' ); ?></h2>
 	<ul class="ul-disc">
 		<li><?php _e( 'An extension is essentially a WordPress plugin.', 'foogallery' ); ?></li>
-		<li><?php printf( __( 'There are several dozen actions and filters built in for you. (See all %s)', 'foogallery' ), '<a href="' . esc_url( $link_actions_filters ) . '" target="_blank">' . __( 'FooGallery actions and filters', 'foogallery' ) . '</a>' ); ?></li>
-		<li><?php printf( __( 'Read our %s on how to build your own extension in 2 minutes.', 'foogallery' ), '<a href="' . esc_url( $link_tutorial ) . '" target="_blank">' . __( 'step-by-step tutorial', 'foogallery' ) . '</a>' ); ?></li>
+		<li><?php _e( 'There are several dozen actions and filters built in for you to use.', 'foogallery' ); ?></li>
 	</ul>
 
 	<h2><?php _e( 'Extension Boilerplates', 'foogallery' ); ?></h2>

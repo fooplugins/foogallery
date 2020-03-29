@@ -30,8 +30,8 @@ We have done the research and compared the best free gallery plugins out there, 
 	*	Justified Gallery - [demo](https://fooplugins.com/foogallery/wordpress-justified-gallery/)
 	*	Single Thumbnail Gallery - [demo](https://fooplugins.com/foogallery/wordpress-single-thumbnail-gallery/)
 *   Albums built-in! (Activate the albums extension)
-	*	Responsive Album Layout - [demo](https://foo.gallery/demos/responsive-album-layout/)
-	*	All-in-one Stack Album - [demo](https://foo.gallery/demos/all-in-one-stack-album/)
+	*	Responsive Album Layout - [demo](https://fooplugins.com/foogallery/wordpress-album-gallery/)
+	*	All-in-one Stack Album - [demo](https://fooplugins.com/foogallery/wordpress-album-gallery/#all-in-one)
 *	Gutenberg ready (Gallery previews inside the new editor!)
 *	Lazy loading
 *	Simple Pagination (dots)
@@ -65,10 +65,11 @@ We have done the research and compared the best free gallery plugins out there, 
 	*	Load from a folder in Real Media Library
 	*	Load images from Instagram
 	*	Load featured images from a post/page/custom post type
-*   11 Beautiful Hover Effect Presets - [demo](https://foo.gallery/demos/hover-effect-presets-demos/)
-*   12 CSS thumbnail filters (Instagram) - [demo](https://foo.gallery/demos/thumbnail-filters/)
-*   Advanced Pagination - [demo](https://foo.gallery/demos/pagination-demo/)
-*   Infinite Scroll - [demo](https://foo.gallery/demos/infinite-scroll-demo/)
+*   11 Beautiful Hover Effect Presets - [demo](https://fooplugins.com/foogallery/hover-presets/)
+*   12 CSS thumbnail filters (Instagram) - [demo](https://fooplugins.com/foogallery/thumbnail-filters/)
+*   Numbered Pagination - [demo](https://fooplugins.com/foogallery/gallery-pagination/#numbered)
+*   Load More Pagination - [demo]((https://fooplugins.com/foogallery/gallery-pagination/#load-more)
+*   Infinite Scroll - [demo]((https://fooplugins.com/foogallery/gallery-pagination/#infinite-scroll)
 *   Multiple Loaded Effects - [demo](https://foo.gallery/demos/loaded-effect-demos/)
 *   Bulk Copy Gallery Settings - [more info](https://fooplugins.com/bulk-copy-foogallery-pro/)
 *   More on the way!
