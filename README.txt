@@ -29,12 +29,17 @@ We have done the research and compared the best free gallery plugins out there, 
 	*	Simple Portfolio - [demo](https://fooplugins.com/foogallery/wordpress-portfolio-gallery/)
 	*	Justified Gallery - [demo](https://fooplugins.com/foogallery/wordpress-justified-gallery/)
 	*	Single Thumbnail Gallery - [demo](https://fooplugins.com/foogallery/wordpress-single-thumbnail-gallery/)
-*   Albums built-in! (Activate the albums extension)
-	*	Responsive Album Layout - [demo](https://fooplugins.com/foogallery/wordpress-album-gallery/)
-	*	All-in-one Stack Album - [demo](https://fooplugins.com/foogallery/wordpress-album-gallery/#all-in-one)
+*   Easy to customize!
+    *   Thumbnail size, spacing & alignment
+    *   Borders : size, rounded corners, drop shadows, inner shadows
+    *   Loading icons
+    *   Hover effects : colors, scaling, icons, captions
+*   Albums built-in! (just activate the albums extension)
+	*	Responsive album layout - [demo](https://fooplugins.com/foogallery/wordpress-album-gallery/)
+	*	All-in-one Stack album - [demo](https://fooplugins.com/foogallery/wordpress-album-gallery/#all-in-one)
 *	Gutenberg ready (Gallery previews inside the new editor!)
 *	Lazy loading
-*	Simple Pagination (dots)
+*	Simple dots pagination [demo](https://fooplugins.com/foogallery/gallery-pagination/)
 *	Live previews in admin
 *	Retina thumbnail support
 *	Gallery Widget
@@ -50,14 +55,15 @@ We have done the research and compared the best free gallery plugins out there, 
 
 **PRO Features**
 
-*   FooGallery PRO Lightbox built in!
-*   Polaroid PRO Gallery Template - [demo](https://fooplugins.com/foogallery/wordpress-polaroid-gallery/)
-*   Grid PRO Gallery Template - [demo](https://fooplugins.com/foogallery/wordpress-grid-gallery/)
-*	Slider PRO Gallery Template - [demo](https://fooplugins.com/foogallery/wordpress-slider-gallery/)
-*	Video Support - [demo](https://fooplugins.com/foogallery/wordpress-slider-gallery/)
-*	Media Tags and Categories
-*	Gallery Filtering using Media Tags or Categories - [demo](https://fooplugins.com/foogallery/wordpress-filtered-gallery/)
-*	Load Galleries From Other Sources
+*   3 more beautiful PRO gallery templates:
+    *   Polaroid gallery template - [demo](https://fooplugins.com/foogallery/wordpress-polaroid-gallery/)
+    *   Grid gallery template - [demo](https://fooplugins.com/foogallery/wordpress-grid-gallery/)
+    *	Slider gallery template - [demo](https://fooplugins.com/foogallery/wordpress-slider-gallery/)
+*	Video Support - [demo](https://fooplugins.com/foogallery/wordpress-video-gallery/)
+*	Filtered Galleries using Media Tags or Categories - [demo](https://fooplugins.com/foogallery/wordpress-filtered-gallery/)
+*	Media tags and media category management for attachments
+*   PRO image and media lightbox built in!
+*	Dynamic Galleries (load galleries from other sources):
 	*	Load from a folder on the server
 	*	Load from a collection from Adobe Lightroom (using WP/LR Sync)
 	*	Load all attachments with Media Tags
@@ -65,12 +71,12 @@ We have done the research and compared the best free gallery plugins out there, 
 	*	Load from a folder in Real Media Library
 	*	Load images from Instagram
 	*	Load featured images from a post/page/custom post type
-*   11 Beautiful Hover Effect Presets - [demo](https://fooplugins.com/foogallery/hover-presets/)
+*   11 beautiful hover effect presets - [demo](https://fooplugins.com/foogallery/hover-presets/)
 *   12 CSS thumbnail filters (Instagram) - [demo](https://fooplugins.com/foogallery/thumbnail-filters/)
-*   Numbered Pagination - [demo](https://fooplugins.com/foogallery/gallery-pagination/#numbered)
-*   Load More Pagination - [demo]((https://fooplugins.com/foogallery/gallery-pagination/#load-more)
-*   Infinite Scroll - [demo]((https://fooplugins.com/foogallery/gallery-pagination/#infinite-scroll)
-*   Multiple Loaded Effects - [demo](https://foo.gallery/demos/loaded-effect-demos/)
+*   Numbered pagination - [demo](https://fooplugins.com/foogallery/gallery-pagination/#numbered)
+*   "Load More" pagination - [demo]((https://fooplugins.com/foogallery/gallery-pagination/#load-more)
+*   Infinite scroll galleries - [demo]((https://fooplugins.com/foogallery/gallery-pagination/#infinite-scroll)
+*   Animated Loaded Effects - [demo](https://fooplugins.com/foogallery/animated-loaded-effects/)
 *   Bulk Copy Gallery Settings - [more info](https://fooplugins.com/bulk-copy-foogallery-pro/)
 *   More on the way!
 
@@ -195,6 +201,24 @@ Simply go to the FooGallery extensions page and activate the Albums extension. I
 Update now to get all the latest features, bug fixes and improvements!
 
 == Changelog ==
+
+= 1.9.11 =
+* Fix : Fix for Simple Portfolio template not saving "None" for captions.
+* Fix : Fixed albums when adding incorrect markup target="default"
+* Fix : Updated thumbnail generation test logic to be more resilient, and improved admin message.
+* Fix : Updated RankMath compatibility to work with pre PHP 5.4
+* New : Added filter "foogallery_build_dynamic_gallery" for dynamic gallery creation
+* New : Added WPML config file for better translations. (Also improves Polylang compatibility.)
+[//]: # fs_premium_only_begin
+* New : Added bestFit and smallThumbs settings to lightbox/grid/slider.
+* New : Improved performance when saving terms for attachments.
+* New : Advanced captions help - show available attachment custom fields.
+* Fix : Fixed scrolling focus issues for slider template.
+* Fix : Fixed slider shortcode arguments bug overriding settings.
+* Fix : Sticky video icons not displaying correctly.
+* Fix : Updated lightbox to work with embedded FaceBook and TED videos.
+[//]: # fs_premium_only_end
+* Update : FooGallery client side 1.4.6 (including multiple bug fixes)
 
 = 1.9.8 =
 * New : Added RankMath compatibility - sitemap image indexing.
