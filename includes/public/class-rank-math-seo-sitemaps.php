@@ -10,7 +10,7 @@ if ( ! class_exists( 'FooGallery_RankMath_Seo_Sitemap_Support' ) ) {
 	class FooGallery_RankMath_Seo_Sitemap_Support {
 
 		function __construct() {
-			add_filter( 'rank_math/sitemap/urlimages', [ $this, 'add_images_to_sitemap' ], 10, 2 );
+			add_filter( 'rank_math/sitemap/urlimages', array( $this, 'add_images_to_sitemap' ), 10, 2 );
 		}
 
 		function add_images_to_sitemap( $images, $post_id ) {
@@ -27,11 +27,11 @@ if ( ! class_exists( 'FooGallery_RankMath_Seo_Sitemap_Support' ) ) {
 
 				//add each image to the sitemap image array
 				foreach ( $gallery->attachments() as $attachment ) {
-					$image = [
+					$image = array(
 						'src'   => $attachment->url,
 						'title' => $attachment->caption,
 						'alt'   => $attachment->alt
-					];
+					);
 					$images[] = $image;
 				}
 			}

@@ -422,8 +422,11 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 						'fg-light-overlays' => __( 'Inverted', 'foogallery' ),
 					) ),
 					'row_data' => array(
-						'data-foogallery-change-selector' => 'input:radio',
-						'data-foogallery-preview'         => 'class'
+						'data-foogallery-change-selector'       => 'input:radio',
+						'data-foogallery-hidden'                => true,
+						'data-foogallery-show-when-field'       => 'hover_effect_preset',
+						'data-foogallery-show-when-field-value' => 'fg-custom',
+						'data-foogallery-preview'               => 'class'
 					)
 				);
 				//endregion Hover Effects Fields

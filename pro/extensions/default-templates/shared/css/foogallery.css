@@ -944,7 +944,7 @@ html.fg-panel-no-scroll body {
     opacity: 1;
 }
 .fg-media:not(.fg-media-html) {
-    -webkit-touch-callout: none; /* iOS Safari */
+    /*-webkit-touch-callout: none; !* iOS Safari - Disables Save Image As *!*/
     -webkit-user-select: none; /* Safari */
     -moz-user-select: none; /* Old versions of Firefox */
     -ms-user-select: none; /* Internet Explorer/Edge */
@@ -2745,6 +2745,7 @@ html.fg-panel-no-scroll body {
 	background-color: transparent;
 	visibility: visible;
 	opacity: 1;
+	display: block;
 }
 .foogallery.fg-video-sticky				.fg-type-video .fg-caption-inner:before {
 	display: none;
@@ -6480,6 +6481,10 @@ html.fg-panel-no-scroll body {
 .foogrid-panel.fg-panel.fg-panel-no-mobile.fg-panel-preserve-button-space .fg-media-content {
     box-shadow: 0 5px 35px rgba(0,0,0,.65);
 }
+.foogallery.fg-slider .fgs-item-stage .fg-item {
+    display: none;
+}
+
 .fg-slider {
     display: block;
     width: auto;
@@ -6503,10 +6508,13 @@ html.fg-panel-no-scroll body {
 
 .fg-slider .fg-panel.fg-panel-info-overlay.fg-light .fg-panel-info-inner,
 .fg-slider .fg-panel.fg-panel-info-overlay.fg-dark .fg-panel-info-inner {
-    background-color: transparent;
     border-color: transparent;
     color: #FFF;
     text-shadow: 1px 0 6px rgba(0,0,0,.5);
+}
+.fg-slider .fg-panel.fg-panel-info-overlay.fg-medium-width.fg-light .fg-panel-info-inner,
+.fg-slider .fg-panel.fg-panel-info-overlay.fg-medium-width.fg-dark .fg-panel-info-inner {
+    background-color: transparent;
 }
 .fg-slider .fg-panel-info-overlay .fg-media-caption {
     font-size: 18px;

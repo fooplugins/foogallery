@@ -85,13 +85,26 @@ if ( ! class_exists( 'FooGallery_Pro_Attachment_Taxonomies' ) ) {
                 $terms = $_POST['terms'];
                 $taxonomy = $_POST['taxonomy'];
 
-                $result = wp_set_object_terms($attachment_id, array_map('trim', preg_split('/,+/', $terms)), $taxonomy, false);
+                if ( empty( $terms ) ) {
 
+                	//remove all relationships between the object and any terms in a particular taxonomy
+	                wp_delete_object_term_relationships( $attachment_id, $taxonomy );
+
+                } else {
+	                $result = wp_set_object_terms( $attachment_id, array_map('trim', preg_split('/,+/', $terms)), $taxonomy, false );
+
+	                if ( is_wp_error( $result ) ) {
+		                wp_send_json_error( $result );
+	                }
+                }
+
+                //clear caches
 				clean_post_cache($attachment_id);
 
-				if ( !is_wp_error( $result ) ) {
-					wp_send_json( $terms );
-				}
+                //send back success response
+	            wp_send_json( $terms );
+
+
             }
             die();
         }

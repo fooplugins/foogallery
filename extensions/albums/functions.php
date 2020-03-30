@@ -292,6 +292,11 @@ function foogallery_album_build_gallery_link_target( $album, $gallery ) {
 	if ( 'custom_url' === $gallery_link ) {
 		//check if the gallery has a custom target, and if so, then use it
 		$target = get_post_meta( $gallery->ID, 'custom_target', true );
+
+		//check if the $target is 'default' and set to '_self'
+		if ( 'default' === $target ) {
+			$target = '_self';
+		}
 	}
 
 	if ( empty( $target ) ) {

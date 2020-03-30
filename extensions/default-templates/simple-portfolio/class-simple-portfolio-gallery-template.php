@@ -241,7 +241,6 @@ if ( !class_exists( 'FooGallery_Simple_Portfolio_Gallery_Template' ) ) {
 		 * @return mixed
 		 */
 		function override_settings($settings, $post_id, $form_data) {
-			$settings['simple_portfolio_hover_effect_preset'] = 'fg-custom';
 			$settings['simple_portfolio_hover_effect_caption_visibility'] = 'fg-caption-always';
 
 			return $settings;

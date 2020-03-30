@@ -6254,7 +6254,10 @@
 		count: function (all) {
 			return all ? this.all().length : this.available().length;
 		},
-		available: function () {
+		available: function (where) {
+			if (_is.fn(where)){
+				return this._available.filter(where, this);
+			}
 			return this._available.slice();
 		},
 		get: function (idOrIndex) {
@@ -6273,37 +6276,50 @@
 		reset: function () {
 			this.setAvailable(this.all());
 		},
-		first: function(){
-			return this._available.length > 0 ? this._available[0] : null;
-		},
-		last: function(){
-			return this._available.length > 0 ? this._available[this._available.length - 1] : null;
-		},
-		next: function(item, loop){
-			if (!(item instanceof _.Item)) return null;
-			loop = _is.boolean(loop) ? loop : false;
-			var index = this._available.indexOf(item);
-			if (index !== -1){
-				index++;
-				if (index >= this._available.length){
-					if (!loop) return null;
-					index = 0;
+		find: function(items, where){
+			where = _is.fn(where) ? where : function(){ return true; };
+			if (_is.array(items)){
+				for (var i = 0, l = items.length; i < l; i++){
+					if (where.call(this, items[i]) === true){
+						return items[i];
+					}
 				}
-				return this._available[index];
 			}
 			return null;
 		},
-		prev: function(item, loop){
+		first: function(where){
+			return this.find(this._available, where);
+		},
+		last: function(where){
+			return this.find(this._available.slice().reverse(), where);
+		},
+		next: function(item, where, loop){
 			if (!(item instanceof _.Item)) return null;
 			loop = _is.boolean(loop) ? loop : false;
-			var index = this._available.indexOf(item);
+			var items = this._available.slice(),
+				index = items.indexOf(item);
 			if (index !== -1){
-				index--;
-				if (index < 0){
-					if (!loop) return null;
-					index = this._available.length - 1;
+				var remainder = items.slice(0, index);
+				items = items.slice(index + 1);
+				if (loop){
+					items = items.concat(remainder);
 				}
-				return this._available[index];
+				return this.find(items, where);
+			}
+			return null;
+		},
+		prev: function(item, where, loop){
+			if (!(item instanceof _.Item)) return null;
+			loop = _is.boolean(loop) ? loop : false;
+			var items = this._available.slice().reverse(),
+				index = items.indexOf(item);
+			if (index !== -1){
+				var remainder = items.slice(0, index);
+				items = items.slice(index + 1);
+				if (loop){
+					items = items.concat(remainder);
+				}
+				return this.find(items, where);
 			}
 			return null;
 		},
@@ -6436,6 +6452,7 @@
 						if (_is.element(obj)) {
 							if (item.parse(obj)) {
 								parsed.push(item);
+								if (!self.ALLOW_APPEND) item.detach();
 								return item;
 							}
 							return null;
@@ -7027,6 +7044,18 @@
 			 */
 			self.showCaptionDescription = self.opt.showCaptionDescription;
 			/**
+			 * @memberof FooGallery.Item#
+			 * @name noLightbox
+			 * @type {boolean}
+			 */
+			self.noLightbox = self.opt.noLightbox;
+			/**
+			 * @memberof FooGallery.Item#
+			 * @name panelHide
+			 * @type {boolean}
+			 */
+			self.panelHide = self.opt.panelHide;
+			/**
 			 * @summary The cached result of the last call to the {@link FooGallery.Item#getThumbUrl|getThumbUrl} method.
 			 * @memberof FooGallery.Item#
 			 * @name _thumbUrl
@@ -7299,6 +7328,8 @@
 			self.alt = self.$image.attr("alt") || self.alt;
 			self.caption = data.title || data.captionTitle || self.caption || self.title;
 			self.description = data.description || data.captionDesc || self.description || self.alt;
+			self.noLightbox = self.$anchor.hasClass(cls.noLightbox);
+			self.panelHide = self.$anchor.hasClass(cls.panelHide);
 			// if the caption or description are not set yet try fetching it from the html
 			if (_is.empty(self.caption)) self.caption = $.trim(self.$caption.find(sel.caption.title).html());
 			if (_is.empty(self.description)) self.description = $.trim(self.$caption.find(sel.caption.description).html());
@@ -7430,7 +7461,14 @@
 
 			attr.inner["class"] = cls.inner;
 
-			attr.anchor["class"] = cls.anchor;
+			var anchorClasses = [cls.anchor];
+			if (self.noLightbox){
+				anchorClasses.push(cls.noLightbox);
+			}
+			if (self.panelHide){
+				anchorClasses.push(cls.panelHide);
+			}
+			attr.anchor["class"] = anchorClasses.join(" ");
 			attr.anchor["href"] = self.href;
 			attr.anchor["data-type"] = self.type;
 			attr.anchor["data-id"] = self.id;
@@ -7822,6 +7860,8 @@
 		toJSON: function(){
 			return {
 				"type": this.type,
+				"id": this.id,
+				"productId": this.productId,
 				"href": this.href,
 				"src": this.src,
 				"srcset": this.srcset,
@@ -7836,6 +7876,8 @@
 				"maxDescriptionLength": this.maxDescriptionLength,
 				"showCaptionTitle": this.showCaptionTitle,
 				"showCaptionDescription": this.showCaptionDescription,
+				"noLightbox": this.noLightbox,
+				"panelHide": this.panelHide,
 				"attr": _obj.extend({}, this.attr)
 			};
 		},
@@ -7923,6 +7965,8 @@
 			maxDescriptionLength: 0,
 			showCaptionTitle: true,
 			showCaptionDescription: true,
+			noLightbox: false,
+			panelHide: false,
 			attr: {
 				elem: {},
 				inner: {},
@@ -7949,6 +7993,8 @@
 			loading: "fg-loading",
 			loaded: "fg-loaded",
 			error: "fg-error",
+			noLightbox: "fg-no-lightbox",
+			panelHide: "fg-panel-hide",
 			types: {
 				item: "fg-type-unknown"
 			},

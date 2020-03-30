@@ -1,0 +1,9 @@
+<wpml-config>
+  <admin-texts>
+    <key name="foogallery">
+      <key name="language_filtering_all"/>
+      <key name="language_paging_loadmore_text"/>
+      <key name="language_back_to_album_text"/>
+    </key>
+  </admin-texts>
+</wpml-config>

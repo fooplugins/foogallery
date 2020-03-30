@@ -724,6 +724,7 @@
 	background-color: transparent;
 	visibility: visible;
 	opacity: 1;
+	display: block;
 }
 .foogallery.fg-video-sticky				.fg-type-video .fg-caption-inner:before {
 	display: none;

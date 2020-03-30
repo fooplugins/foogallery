@@ -1238,75 +1238,72 @@ function foogallery_marketing_demos() {
 	$demos[] = array(
 		'demo'	  => __('Responsive Image Gallery', 'foogallery'),
 		'section' => __('Standard Gallery Demos', 'foogallery'),
-		'href'	  => 'https://foo.gallery/demos/responsive-image-gallery/'
+		'href'	  => 'https://fooplugins.com/foogallery/wordpress-responsive-image-gallery/'
 	);
 	$demos[] = array(
 		'demo'	  => __('Masonry Image Gallery', 'foogallery'),
 		'section' => __('Standard Gallery Demos', 'foogallery'),
-		'href'	  => 'https://foo.gallery/demos/masonry-image-gallery/'
+		'href'	  => 'https://fooplugins.com/foogallery/wordpress-masonry-gallery/'
 	);
 	$demos[] = array(
 		'demo'	  => __('Justified Gallery', 'foogallery'),
 		'section' => __('Standard Gallery Demos', 'foogallery'),
-		'href'	  => 'https://foo.gallery/demos/justified-gallery/'
+		'href'	  => 'https://fooplugins.com/foogallery/wordpress-justified-gallery/'
 	);
 	$demos[] = array(
 		'demo'	  => __('Image Viewer Gallery', 'foogallery'),
 		'section' => __('Standard Gallery Demos', 'foogallery'),
-		'href'	  => 'https://foo.gallery/demos/image-viewer-gallery/'
+		'href'	  => 'https://fooplugins.com/foogallery/wordpress-image-viewer-gallery/'
 	);
 	$demos[] = array(
 		'demo'	  => __('Simple Portfolio Gallery', 'foogallery'),
 		'section' => __('Standard Gallery Demos', 'foogallery'),
-		'href'	  => 'https://foo.gallery/demos/simple-portfolio-demo/'
+		'href'	  => 'https://fooplugins.com/foogallery/wordpress-portfolio-gallery/'
 	);
 	$demos[] = array(
 		'demo'	  => __('Single Thumbnail Gallery', 'foogallery'),
 		'section' => __('Standard Gallery Demos', 'foogallery'),
-		'href'	  => 'https://foo.gallery/demos/single-thumbnail-gallery/'
+		'href'	  => 'https://fooplugins.com/foogallery/wordpress-single-thumbnail-gallery/'
 	);
 
 	$demos[] = array(
 		'demo'	  => __('Grid PRO Gallery', 'foogallery'),
 		'section' => __('PRO Gallery Demos', 'foogallery'),
-		'href'	  => 'https://foo.gallery/demos/grid-pro-demo/'
+		'href'	  => 'https://fooplugins.com/foogallery/wordpress-grid-gallery/'
 	);
 	$demos[] = array(
 		'demo'	  => __('Polaroid PRO Gallery', 'foogallery'),
 		'section' => __('PRO Gallery Demos', 'foogallery'),
-		'href'	  => 'https://foo.gallery/demos/polaroid-pro-image-gallery/'
+		'href'	  => 'https://fooplugins.com/foogallery/wordpress-polaroid-gallery/'
 	);
 	$demos[] = array(
 		'demo'	  => __('Slider PRO Gallery', 'foogallery'),
 		'section' => __('PRO Gallery Demos', 'foogallery'),
-		'href'	  => 'https://foo.gallery/demos/slider-pro/'
+		'href'	  => 'https://fooplugins.com/foogallery/wordpress-slider-gallery/'
 	);
 
 	$demos[] = array(
 		'demo'	  => __('Hover Presets Demo', 'foogallery'),
 		'section' => __('PRO Features', 'foogallery'),
-		'href'	  => 'https://foo.gallery/demos/hover-effect-presets-demos/'
+		'href'	  => 'https://fooplugins.com/foogallery/hover-presets/'
 	);
 	$demos[] = array(
 		'demo'	  => __('Filtering Demos', 'foogallery'),
 		'section' => __('PRO Features', 'foogallery'),
-		'href'	  => 'https://foo.gallery/demos/filtering-demos/'
+		'href'	  => 'https://fooplugins.com/foogallery/wordpress-filtered-gallery/'
 	);
 	$demos[] = array(
 		'demo'	  => __('Pagination Types Demo', 'foogallery'),
 		'section' => __('PRO Features', 'foogallery'),
-		'href'	  => 'https://foo.gallery/demos/pagination-demo/'
+		'href'	  => 'https://fooplugins.com/foogallery/gallery-pagination/'
 	);
+
 	$demos[] = array(
 		'demo'	  => __('Video Gallery Demos', 'foogallery'),
 		'section' => __('PRO Features', 'foogallery'),
-		'href'	  => 'https://foo.gallery/demos/video-gallery-demos/'
+		'href'	  => 'https://fooplugins.com/foogallery/wordpress-video-gallery/'
 	);
-	$demos[] = array(
-		'demo'	  => __('Loaded Effect Demos', 'foogallery'),
-		'section' => __('PRO Features', 'foogallery'),
-		'href'	  => 'https://foo.gallery/demos/loaded-effect-demos/'
-	);
+
 	$demos[] = array(
 		'demo'	  => __('Bulk Copy (admin)', 'foogallery'),
 		'section' => __('PRO Features', 'foogallery'),
@@ -1314,60 +1311,9 @@ function foogallery_marketing_demos() {
 	);
 
 	$demos[] = array(
-		'demo'	  => __('Responsive Album', 'foogallery'),
+		'demo'	  => __('Albums', 'foogallery'),
 		'section' => __('Album Demos', 'foogallery'),
-		'href'	  => 'https://foo.gallery/demos/responsive-album-layout/'
-	);
-	$demos[] = array(
-		'demo'	  => __('All-In-One Stack Album', 'foogallery'),
-		'section' => __('Album Demos', 'foogallery'),
-		'href'	  => 'https://foo.gallery/demos/all-in-one-stack-album/'
-	);
-
-	$demos[] = array(
-		'demo'	  => __('Captions Demos', 'foogallery'),
-		'section' => __('Other Demos', 'foogallery'),
-		'href'	  => 'https://foo.gallery/demos/captions-demos/'
-	);
-	$demos[] = array(
-		'demo'	  => __('Slider PRO Variations', 'foogallery'),
-		'section' => __('Other Demos', 'foogallery'),
-		'href'	  => 'https://foo.gallery/demos/slider-pro-variations/'
-	);
-	$demos[] = array(
-		'demo'	  => __('Masonry + Filtering', 'foogallery'),
-		'section' => __('Other Demos', 'foogallery'),
-		'href'	  => 'https://foo.gallery/demos/masonry-filtering/'
-	);
-	$demos[] = array(
-		'demo'	  => __('Load More + Filtering', 'foogallery'),
-		'section' => __('Other Demos', 'foogallery'),
-		'href'	  => 'https://foo.gallery/demos/paging-load-more-filtering/'
-	);
-	$demos[] = array(
-		'demo'	  => __('Mixed (Images + Videos)', 'foogallery'),
-		'section' => __('Other Demos', 'foogallery'),
-		'href'	  => 'https://foo.gallery/demos/mixed/'
-	);
-	$demos[] = array(
-		'demo'	  => __('HTML Captions Demo', 'foogallery'),
-		'section' => __('Other Demos', 'foogallery'),
-		'href'	  => 'https://foo.gallery/demos/html-captions-demo/'
-	);
-	$demos[] = array(
-		'demo'	  => __('Infinite Scroll Demo', 'foogallery'),
-		'section' => __('Other Demos', 'foogallery'),
-		'href'	  => 'https://foo.gallery/demos/infinite-scroll-demo/'
-	);
-	$demos[] = array(
-		'demo'	  => __('Videos From All Sources', 'foogallery'),
-		'section' => __('Other Demos', 'foogallery'),
-		'href'	  => 'https://foo.gallery/demos/videos-from-all-sources/'
-	);
-	$demos[] = array(
-		'demo'	  => __('Videos + Filters', 'foogallery'),
-		'section' => __('Other Demos', 'foogallery'),
-		'href'	  => 'https://foo.gallery/demos/videos-filters/'
+		'href'	  => 'https://fooplugins.com/foogallery/wordpress-album-gallery/'
 	);
 
 	return $demos;
@@ -1382,32 +1328,32 @@ function foogallery_marketing_pro_features() {
 	$features[] = array(
 		'feature' => __( 'Video Galleries', 'foogallery' ),
 		'desc'    => __( 'Create beautiful video galleries from YouTube, Vimeo, Facebook, Wistia and more!', 'foogallery' ),
-		'demo'	  => 'https://foo.gallery/demos/video-gallery-demos/'
+		'demo'	  => 'https://fooplugins.com/foogallery/wordpress-video-gallery/'
 	);
 	$features[] = array(
 		'feature' => __( 'Media Tags + Filtering', 'foogallery' ),
 		'desc'    => __( 'Assign tags to your media, which allows visitors to filter the galleries by tag.', 'foogallery' ),
-		'demo'	  => 'https://foo.gallery/demos/filtering-demos/'
+		'demo'	  => 'https://fooplugins.com/foogallery/wordpress-filtered-gallery/'
 	);
 	$features[] = array(
 		'feature' => __( 'More Gallery Templates', 'foogallery' ),
 		'desc'    => __( '3 more awesome gallery templates, including Slider, Grid and Polaroid.', 'foogallery' ),
-		'demo'	  => 'https://foo.gallery/demos/slider-pro/'
+		'demo'	  => 'https://fooplugins.com/foogallery/wordpress-slider-gallery/'
 	);
 	$features[] = array(
 		'feature' => __( 'Preset Hover Effects', 'foogallery' ),
 		'desc'    => __( 'Choose from 11 beautifully designed preset hover effects.', 'foogallery' ),
-		'demo'	  => 'https://foo.gallery/demos/hover-effect-presets-demos/'
+		'demo'	  => 'https://fooplugins.com/foogallery/hover-presets/'
 	);
 	$features[] = array(
 		'feature' => __( 'Advanced Pagination + Infinite Scroll', 'foogallery' ),
 		'desc'    => __( 'Choose from more paging types like numbered, load more or infinite scroll.', 'foogallery' ),
-		'demo'	  => 'https://foo.gallery/demos/pagination-demo/'
+		'demo'	  => 'https://fooplugins.com/foogallery/gallery-pagination/'
 	);
 	$features[] = array(
 		'feature' => __( 'Animated Loading Effects', 'foogallery' ),
 		'desc'    => __( 'Choose from 9 awesome animation effects to display as your galleries load.', 'foogallery' ),
-		'demo'	  => 'https://foo.gallery/demos/loaded-effect-demos/'
+		'demo'	  => 'https://fooplugins.com/foogallery/animated-loaded-effects/'
 	);
 	$features[] = array(
 		'feature' => __( 'Bulk Copy Settings', 'foogallery' ),

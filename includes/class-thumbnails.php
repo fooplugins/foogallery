@@ -175,22 +175,41 @@ if ( !class_exists( 'FooGallery_Thumbnails' ) ) {
 		}
 
 		function find_first_image_in_media_library( $test_thumb_url ) {
-			if ( 'on' === foogallery_get_setting( 'override_thumb_test', false ) ) {
-				return 'https://s3.amazonaws.com/foocdn/test.jpg';
+			if ( 'on' !== foogallery_get_setting( 'override_thumb_test', false ) ) {
+				//try the first 10 attachments from the media library
+				$args         = array(
+					'post_type'        => 'attachment',
+					'post_mime_type'   => 'image',
+					'post_status'      => 'inherit',
+					'posts_per_page'   => 10,
+					'suppress_filters' => 1,
+					'orderby'          => 'date',
+					'order'            => 'ASC'
+				);
+				$query_images = new WP_Query( $args );
+				foreach ( $query_images->posts as $image ) {
+					$image_url = $image->guid;
+
+					if ( $this->image_file_exists( $image_url ) ) {
+						return $image_url;
+					}
+				}
 			}
 
-			$args = array(
-				'post_type' => 'attachment',
-				'post_mime_type' =>'image',
-				'post_status' => 'inherit',
-				'posts_per_page' => 1,
-				'suppress_filters' => 1
-			);
-			$query_images = new WP_Query( $args );
-			foreach ( $query_images->posts as $image) {
-				return $image->guid;
-			}
-			return $test_thumb_url;
+			//if we get here, then either, we have set the override_thumb_test setting,
+			//or there are no good images to use from the media library
+			return 'https://s3.amazonaws.com/foocdn/test.jpg';
+		}
+
+		/**
+		 * Check if a remote image file exists.
+		 *
+		 * @param  string $url The url to the remote image.
+		 * @return bool        Whether the remote image exists.
+		 */
+		function image_file_exists( $url ) {
+			$response = wp_remote_head( $url );
+			return 200 === wp_remote_retrieve_response_code( $response );
 		}
 	}
 }
