@@ -59,10 +59,10 @@ We have done the research and compared the best free gallery plugins out there, 
     *   Polaroid gallery template - [demo](https://fooplugins.com/foogallery/wordpress-polaroid-gallery/)
     *   Grid gallery template - [demo](https://fooplugins.com/foogallery/wordpress-grid-gallery/)
     *	Slider gallery template - [demo](https://fooplugins.com/foogallery/wordpress-slider-gallery/)
-*	Video Support - [demo](https://fooplugins.com/foogallery/wordpress-video-gallery/)
+*   Video Support - [demo](https://fooplugins.com/foogallery/wordpress-video-gallery/)
 *	Filtered Galleries using Media Tags or Categories - [demo](https://fooplugins.com/foogallery/wordpress-filtered-gallery/)
 *	Media tags and media category management for attachments
-*   PRO image and media lightbox built in!
+*   PRO image and media lightbox built in! [demo](https://fooplugins.com/foogallery/foogallery-pro-lightbox/)
 *	Dynamic Galleries (load galleries from other sources):
 	*	Load from a folder on the server
 	*	Load from a collection from Adobe Lightroom (using WP/LR Sync)
@@ -74,8 +74,8 @@ We have done the research and compared the best free gallery plugins out there, 
 *   11 beautiful hover effect presets - [demo](https://fooplugins.com/foogallery/hover-presets/)
 *   12 CSS thumbnail filters (Instagram) - [demo](https://fooplugins.com/foogallery/thumbnail-filters/)
 *   Numbered pagination - [demo](https://fooplugins.com/foogallery/gallery-pagination/#numbered)
-*   "Load More" pagination - [demo]((https://fooplugins.com/foogallery/gallery-pagination/#load-more)
-*   Infinite scroll galleries - [demo]((https://fooplugins.com/foogallery/gallery-pagination/#infinite-scroll)
+*   "Load More" pagination - [demo](https://fooplugins.com/foogallery/gallery-pagination/#load-more)
+*   Infinite scroll galleries - [demo](https://fooplugins.com/foogallery/gallery-pagination/#infinite-scroll)
 *   Animated Loaded Effects - [demo](https://fooplugins.com/foogallery/animated-loaded-effects/)
 *   Bulk Copy Gallery Settings - [more info](https://fooplugins.com/bulk-copy-foogallery-pro/)
 *   More on the way!
