@@ -85,7 +85,7 @@ if ( ! class_exists( 'FooGallery_Paging' ) ) {
 					'section' => __( 'Paging', 'foogallery' ),
 					'spacer'  => '<span class="spacer"></span>',
 					'type'    => 'radio',
-					'default' => 'both',
+					'default' => 'bottom',
 					'choices' => apply_filters( 'foogallery_gallery_template_paging_position_choices', array(
 						''  => __( 'None', 'foogallery' ),
 						'top'   => __( 'Top', 'foogallery' ),
@@ -131,7 +131,7 @@ if ( ! class_exists( 'FooGallery_Paging' ) ) {
 					'section' => __( 'Paging', 'foogallery' ),
 					'type'    => 'radio',
 					'spacer'  => '<span class="spacer"></span>',
-					'default' => 'true',
+					'default' => 'false',
 					'choices' => array(
 						'true'  => __( 'Yes', 'foogallery' ),
 						'false'  => __( 'No', 'foogallery' ),
