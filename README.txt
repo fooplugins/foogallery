@@ -202,6 +202,13 @@ Update now to get all the latest features, bug fixes and improvements!
 
 == Changelog ==
 
+= 1.9.12 =
+* Fix : fixed bug with Safari when editing a gallery, not loading thumbs
+* Update : Freemius SDK 2.3.2
+[//]: # fs_premium_only_begin
+* New : added new setting to Thumbnail gallery to Exclude Featured image (only works with PRO Lightbox)
+[//]: # fs_premium_only_end
+
 = 1.9.11 =
 * Fix : Fix for Simple Portfolio template not saving "None" for captions.
 * Fix : Fixed albums when adding incorrect markup target="default"
