@@ -537,7 +537,8 @@ button[data-balloon]{overflow:visible}[data-balloon]{position:relative}[data-bal
 	max-height: 486px;
 	/*max-height: 324px;*/
 	/*max-height: 162px;*/
-	overflow: hidden auto;
+	overflow: scroll;
+	overflow-x: hidden;
 	list-style: none;
 	border: 1px solid #ccd0d4;
 	padding: 10px;
