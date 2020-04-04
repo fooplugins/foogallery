@@ -240,7 +240,7 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 					'type'     => 'radio',
 					'choices'  => apply_filters(
 						'foogallery_gallery_template_common_thumbnail_fields_hover_effect_type_choices', array(
-							'normal'       => __( 'Normal', 'foogallery' ),
+							'normal' => __( 'Normal', 'foogallery' ),
 							'none'   => __( 'None', 'foogallery' ),
 						)
 					),
@@ -679,13 +679,15 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 					$hover_effect_preset = $settings[ $gallery_template . '_hover_effect_preset' ];
 
 					if ( 'fg-custom' === $hover_effect_preset ) {
-						$settings['hover_effect_type'] = 'normal';
+						$settings[$gallery_template . '_hover_effect_type'] = 'normal';
+					} else if ( '' === $hover_effect_preset ) {
+						$settings[$gallery_template . '_hover_effect_type'] = 'none';
 					} else if ( strpos( $hover_effect_preset, 'fg-preset' ) !== false ) {
-						$settings['hover_effect_type'] = 'preset';
+						$settings[$gallery_template . '_hover_effect_type'] = 'preset';
 					}
 				} else {
 					//no hover effect type or hover effect preset set
-					$settings['hover_effect_type'] = 'normal';
+					$settings[$gallery_template . '_hover_effect_type'] = 'normal';
 				}
 			}
 
