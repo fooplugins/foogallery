@@ -92,7 +92,8 @@ class FooGallery extends stdClass {
             $settings = apply_filters('foogallery_default_settings-' . $this->gallery_template, $settings, $this);
         }
 
-		return $settings;
+        //allow the settings to be overridden
+		return apply_filters( 'foogallery_settings_override', $settings, $this->gallery_template, $this );
 	}
 
 	/**
