@@ -203,6 +203,7 @@ Update now to get all the latest features, bug fixes and improvements!
 == Changelog ==
 
 = 1.9.12 =
+* New : Reworked hover effect settings to allow none
 * Fix : fixed bug with Safari when editing a gallery, not loading thumbs
 * Update : Freemius SDK 2.3.2
 [//]: # fs_premium_only_begin
