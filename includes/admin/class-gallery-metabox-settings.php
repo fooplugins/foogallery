@@ -36,7 +36,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings' ) ) {
 		}
 
 		public function render_gallery_settings_metabox( $post ) {
-			$gallery = FooGallery::get( $post );
+			$gallery = foogallery_admin_get_current_gallery( $post );
 
 			//attempt to load default gallery settings from another gallery, as per FooGallery settings page
 			$gallery->load_default_settings_if_new();

@@ -116,7 +116,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 
 		public function get_gallery( $post ) {
 			if ( ! isset($this->_gallery) ) {
-				$this->_gallery = FooGallery::get( $post );
+				$this->_gallery = foogallery_admin_get_current_gallery( $post );
 
 				//attempt to load default gallery settings from another gallery, as per FooGallery settings page
 				$this->_gallery->load_default_settings_if_new();

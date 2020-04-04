@@ -1378,3 +1378,24 @@ function foogallery_allowed_post_types_for_usage() {
 function foogallery_is_debug() {
     return foogallery_get_setting( 'enable_debugging', false );
 }
+
+/**
+ * Get the current gallery in the admin
+ * @param $post_gallery
+ *
+ * @return FooGallery|null
+ */
+function foogallery_admin_get_current_gallery( $post_gallery ) {
+	global $post;
+	global $current_foogallery_admin;
+
+	if ( is_admin() && isset( $post ) ) {
+		if ( !isset( $current_foogallery_admin ) || $post_gallery->ID !== $post->ID ) {
+			$current_foogallery_admin = FooGallery::get( $post_gallery );
+		}
+
+		return $current_foogallery_admin;
+	}
+
+	return null;
+}
