@@ -173,14 +173,23 @@ if ( function_exists( 'foogallery_fs' ) ) {
 				//init the default media library datasource
 				new FooGallery_Datasource_MediaLibrary();
 
+				$pro_code_included = false;
+
 				if ( foogallery_fs()->is__premium_only() ) {
 					if ( foogallery_fs()->can_use_premium_code() ) {
 						require_once FOOGALLERY_PATH . 'pro/foogallery-pro.php';
 
 						new FooGallery_Pro();
+
+						$pro_code_included = true;
 					}
-				} else {
+				}
+
+				if ( !$pro_code_included ) {
 					add_filter( 'foogallery_extensions_for_view', array( $this, 'add_foogallery_pro_extension' ) );
+
+					//include PRO promotion
+					new FooGallery_Pro_Promotion();
 				}
 
 				//init Gutenberg!
