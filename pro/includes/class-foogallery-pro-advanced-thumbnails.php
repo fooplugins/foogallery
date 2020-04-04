@@ -11,7 +11,7 @@ if ( ! class_exists( 'FooGallery_Pro_Advanced_Thumbnails' ) ) {
             //add fields to all templates
             add_filter( 'foogallery_override_gallery_template_fields', array( $this, 'add_advanced_thumb_fields' ), 100, 2 );
 
-            add_filter( 'foogallery_thumbnail_resize_args', array( $this, 'add_arguments' ), 10, 3 );
+            add_filter( 'foogallery_thumbnail_resize_args_final', array( $this, 'add_arguments' ), 10, 3 );
 
 			//build up any preview arguments
 	        add_filter( 'foogallery_preview_arguments', array( $this, 'preview_arguments' ), 10, 3 );
@@ -39,9 +39,18 @@ if ( ! class_exists( 'FooGallery_Pro_Advanced_Thumbnails' ) ) {
         }
 
         function rgb_to_colors( $rgba ) {
+        	if ( empty( $rgba ) ) {
+        		return array(0,0,0);
+	        }
+
             preg_match( '/^rgba?[\s+]?\([\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?/i', $rgba, $by_color );
 
-            return array( $by_color[1], $by_color[2], $by_color[3] );
+            if ( count( $by_color ) >= 3 ) {
+	            return array( $by_color[1], $by_color[2], $by_color[3] );
+            }
+
+            //return black if there was a problem getting the color
+            return array(0,0,0);
         }
 
         /**
@@ -61,6 +70,7 @@ if ( ! class_exists( 'FooGallery_Pro_Advanced_Thumbnails' ) ) {
                 'section'  => __( 'Advanced', 'foogallery' ),
                 'type'     => 'radio',
                 'default'  => '',
+                'spacer'   => '<span class="spacer"></span>',
                 'choices'  => array(
                     ''  => __( 'Default', 'foogallery' ),
                     'background_fill'   => __( 'Background Fill (No crop)', 'foogallery' ),

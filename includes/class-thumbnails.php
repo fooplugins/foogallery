@@ -55,6 +55,9 @@ if ( !class_exists( 'FooGallery_Thumbnails' ) ) {
 				$args = wp_parse_args( $thumbnail_args, $args );
 			}
 
+			//allow for plugins to change the thumbnail creation args one final time
+			$args = apply_filters( 'foogallery_thumbnail_resize_args_final', $args, $original_image_src, $thumbnail_object );
+
 			$width  = (int)$args['width'];
 			$height = (int)$args['height'];
 			$crop   = (bool)$args['crop'];
