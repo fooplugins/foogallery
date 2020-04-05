@@ -255,7 +255,7 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 
 				$fields[] = array(
 					'id'       => 'caption_invert_color',
-					'title'    => __( 'Effect Color', 'foogallery' ),
+					'title'    => __( 'Theme', 'foogallery' ),
 					'desc'     => __( 'You can choose either a dark or light hover effect.', 'foogallery' ),
 					'section'  => __( 'Hover Effects', 'foogallery' ),
 					'type'     => 'radio',
@@ -672,22 +672,24 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 		 * @return array
 		 */
 		function override_settings_for_older_versions( $settings, $gallery_template, $foogallery ) {
-			if ( !array_key_exists( $gallery_template . '_hover_effect_type', $settings ) ) {
-				//we have no hover effect type
+			if ( is_array( $settings ) ) {
+				if ( ! array_key_exists( $gallery_template . '_hover_effect_type', $settings ) ) {
+					//we have no hover effect type
 
-				if ( array_key_exists( $gallery_template . '_hover_effect_preset', $settings ) ) {
-					$hover_effect_preset = $settings[ $gallery_template . '_hover_effect_preset' ];
+					if ( array_key_exists( $gallery_template . '_hover_effect_preset', $settings ) ) {
+						$hover_effect_preset = $settings[ $gallery_template . '_hover_effect_preset' ];
 
-					if ( 'fg-custom' === $hover_effect_preset ) {
-						$settings[$gallery_template . '_hover_effect_type'] = 'normal';
-					} else if ( '' === $hover_effect_preset ) {
-						$settings[$gallery_template . '_hover_effect_type'] = 'none';
-					} else if ( strpos( $hover_effect_preset, 'fg-preset' ) !== false ) {
-						$settings[$gallery_template . '_hover_effect_type'] = 'preset';
+						if ( 'fg-custom' === $hover_effect_preset ) {
+							$settings[ $gallery_template . '_hover_effect_type' ] = 'normal';
+						} else if ( '' === $hover_effect_preset ) {
+							$settings[ $gallery_template . '_hover_effect_type' ] = 'none';
+						} else if ( strpos( $hover_effect_preset, 'fg-preset' ) !== false ) {
+							$settings[ $gallery_template . '_hover_effect_type' ] = 'preset';
+						}
+					} else {
+						//no hover effect type or hover effect preset set
+						$settings[ $gallery_template . '_hover_effect_type' ] = 'normal';
 					}
-				} else {
-					//no hover effect type or hover effect preset set
-					$settings[$gallery_template . '_hover_effect_type'] = 'normal';
 				}
 			}
 
