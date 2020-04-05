@@ -287,6 +287,61 @@
 	content: '';
 }
 
+.foogallery_template_field_type-promo .foogallery-promo {
+	position: relative;
+	display: block;
+	line-height: 19px;
+	padding: 11px 10px 11px 40px;
+	font-size: 14px;
+	text-align: left;
+	margin: 5px 0 0 2px;
+	background-color: #f7fff6;
+	border-left: 4px solid #31be4d;
+	-webkit-box-shadow: 0 1px 1px 0 rgba(0, 0, 0, .1);
+	box-shadow: 0 1px 1px 0 rgba(0, 0, 0, .1);
+}
+
+.foogallery_template_field_type-promo .foogallery-promo:before {
+	/* content: "\f313";  award */
+	content: "\f155"; /* star */
+	font: 400 30px/1 dashicons !important;
+	speak: none;
+	color: #31be4d;
+	display: inline-block;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	position: absolute;
+	left: 5px;
+	margin-top: -5px;
+	height: 1em;
+}
+
+#post-body.columns-2 #postbox-container-1 .foogallery-promo {
+	padding-left: 11px;
+	margin-left: 5px;
+}
+
+#post-body.columns-2 #postbox-container-1 .foogallery-promo:before {
+	content: '';
+}
+
+.foogallery_template_field_type-promo .foogallery-promo .button-primary {
+	background: #1d7b30;
+	border-color: #1d7b30;
+}
+
+.foogallery_template_field_promo th .dashicons {
+	color: #31be4d;
+}
+
+.foogallery_metabox_field-radio label.foogallery-promo i {
+	font: 400 15px/1 dashicons !important;
+	speak: none;
+	color: #31be4d;
+	vertical-align: inherit;
+	padding-left: 2px;
+}
+
 /** <gallery settings styling overrides> **/
 
 .foogallery-metabox-settings {
