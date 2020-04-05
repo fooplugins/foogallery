@@ -6771,7 +6771,7 @@
             return self.registered.push({
                 $element: $el,
                 simple: parsed.every(function(bp){
-                    return bp.width > 0 && bp.height === 0;
+                    return bp.simple;
                 }),
                 current: "",
                 orientation: null,
@@ -6811,10 +6811,11 @@
             var self = this, result = [];
             for (var name in breakpoints){
                 if (!breakpoints.hasOwnProperty(name)) continue;
-                var width, height;
+                var width, height, simple = false;
                 if (_is.number(breakpoints[name])){
                     width = breakpoints[name];
                     height = 0;
+                    simple = true;
                 } else if (_is.hash(breakpoints[name])){
                     width = breakpoints[name].width || 0;
                     height = breakpoints[name].height || 0;
@@ -6823,7 +6824,8 @@
                     name: name,
                     width: width,
                     height: height,
-                    className: self.opt.prefix + name
+                    className: self.opt.prefix + name,
+                    simple: simple
                 });
             }
             result.sort(function (a, b) {
@@ -16348,6 +16350,7 @@
                 });
                 self.panel.appendTo(self.$el);
                 self.panel.load(self.state.current.item);
+                _.breakpoints.check(self.$el);
                 return true;
             }
             return false;

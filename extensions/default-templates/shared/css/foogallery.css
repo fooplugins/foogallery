@@ -688,35 +688,35 @@
 	background-position: center center;
 	background-repeat: no-repeat;
 }
-.foogallery.fg-hover-zoom 				.fg-caption-inner:before,
-.foogallery.fg-hover-zoom2 				.fg-caption-inner:before,
-.foogallery.fg-hover-zoom3 				.fg-caption-inner:before,
-.foogallery.fg-hover-plus 				.fg-caption-inner:before,
-.foogallery.fg-hover-circle-plus 	    .fg-caption-inner:before,
-.foogallery.fg-hover-eye 				.fg-caption-inner:before,
-.foogallery.fg-hover-external 		    .fg-caption-inner:before,
-.foogallery.fg-hover-tint 				.fg-caption-inner:before,
-.foogallery.fg-video-default            .fg-caption-inner:before,
-.foogallery.fg-video-1                  .fg-caption-inner:before,
-.foogallery.fg-video-2                  .fg-caption-inner:before,
-.foogallery.fg-video-3                  .fg-caption-inner:before,
-.foogallery.fg-video-4                  .fg-caption-inner:before {
+.foogallery.fg-hover-zoom:not(.fg-preset) 				.fg-caption-inner:before,
+.foogallery.fg-hover-zoom2:not(.fg-preset) 				.fg-caption-inner:before,
+.foogallery.fg-hover-zoom3:not(.fg-preset) 				.fg-caption-inner:before,
+.foogallery.fg-hover-plus:not(.fg-preset) 				.fg-caption-inner:before,
+.foogallery.fg-hover-circle-plus:not(.fg-preset) 	    .fg-caption-inner:before,
+.foogallery.fg-hover-eye:not(.fg-preset) 				.fg-caption-inner:before,
+.foogallery.fg-hover-external:not(.fg-preset) 		    .fg-caption-inner:before,
+.foogallery.fg-hover-tint:not(.fg-preset) 				.fg-caption-inner:before,
+.foogallery.fg-video-default:not(.fg-preset)            .fg-caption-inner:before,
+.foogallery.fg-video-1:not(.fg-preset)                  .fg-caption-inner:before,
+.foogallery.fg-video-2:not(.fg-preset)                  .fg-caption-inner:before,
+.foogallery.fg-video-3:not(.fg-preset)                  .fg-caption-inner:before,
+.foogallery.fg-video-4:not(.fg-preset)                  .fg-caption-inner:before {
 	display: inline-block;
 }
 
-.foogallery.fg-hover-zoom 				.fg-item-inner:hover .fg-image-overlay,
-.foogallery.fg-hover-zoom2 				.fg-item-inner:hover .fg-image-overlay,
-.foogallery.fg-hover-zoom3 				.fg-item-inner:hover .fg-image-overlay,
-.foogallery.fg-hover-plus 				.fg-item-inner:hover .fg-image-overlay,
-.foogallery.fg-hover-circle-plus 	    .fg-item-inner:hover .fg-image-overlay,
-.foogallery.fg-hover-eye 				.fg-item-inner:hover .fg-image-overlay,
-.foogallery.fg-hover-external 		    .fg-item-inner:hover .fg-image-overlay,
-.foogallery.fg-hover-tint 				.fg-item-inner:hover .fg-image-overlay,
-.foogallery.fg-video-default            .fg-type-video .fg-item-inner:hover .fg-image-overlay,
-.foogallery.fg-video-1                  .fg-type-video .fg-item-inner:hover .fg-image-overlay,
-.foogallery.fg-video-2                  .fg-type-video .fg-item-inner:hover .fg-image-overlay,
-.foogallery.fg-video-3                  .fg-type-video .fg-item-inner:hover .fg-image-overlay,
-.foogallery.fg-video-4                  .fg-type-video .fg-item-inner:hover .fg-image-overlay {
+.foogallery.fg-hover-zoom:not(.fg-preset) 				.fg-item-inner:hover .fg-image-overlay,
+.foogallery.fg-hover-zoom2:not(.fg-preset) 				.fg-item-inner:hover .fg-image-overlay,
+.foogallery.fg-hover-zoom3:not(.fg-preset) 				.fg-item-inner:hover .fg-image-overlay,
+.foogallery.fg-hover-plus:not(.fg-preset) 				.fg-item-inner:hover .fg-image-overlay,
+.foogallery.fg-hover-circle-plus:not(.fg-preset) 	    .fg-item-inner:hover .fg-image-overlay,
+.foogallery.fg-hover-eye:not(.fg-preset) 				.fg-item-inner:hover .fg-image-overlay,
+.foogallery.fg-hover-external:not(.fg-preset) 		    .fg-item-inner:hover .fg-image-overlay,
+.foogallery.fg-hover-tint:not(.fg-preset) 				.fg-item-inner:hover .fg-image-overlay,
+.foogallery.fg-video-default:not(.fg-preset)            .fg-type-video .fg-item-inner:hover .fg-image-overlay,
+.foogallery.fg-video-1:not(.fg-preset)                  .fg-type-video .fg-item-inner:hover .fg-image-overlay,
+.foogallery.fg-video-2:not(.fg-preset)                  .fg-type-video .fg-item-inner:hover .fg-image-overlay,
+.foogallery.fg-video-3:not(.fg-preset)                  .fg-type-video .fg-item-inner:hover .fg-image-overlay,
+.foogallery.fg-video-4:not(.fg-preset)                  .fg-type-video .fg-item-inner:hover .fg-image-overlay {
 	visibility: visible;
 	opacity: 1;
 }
@@ -859,6 +859,7 @@
 .foogallery.fg-hover-grayscale .fg-image-overlay,
 .foogallery.fg-hover-scale .fg-item,
 .foogallery.fg-hover-scale .fg-image-overlay,
+.foogallery.fg-hover-zoomed .fg-image,
 .foogallery.fg-hover-colorize .fg-image,
 .foogallery.fg-hover-grayscale .fg-image {
 	transition-timing-function: ease;
@@ -1638,6 +1639,9 @@
 	min-height: 100%;
 	top: 50%;
 	transform: translateY(-50%);
+}
+.fg-justified.fg-hover-zoomed .fg-item.fg-positioned:hover .fg-image {
+	transform: translateY(-50%) scale(1.15);
 }
 .fg-simple_portfolio {
     display: flex;
