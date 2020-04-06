@@ -43,10 +43,13 @@ function foogallery_calculate_gallery_video_count( $post_id ) {
 	$video_count = 0;
 	$gallery = FooGallery::get_by_id( $post_id );
 
-	foreach ( $gallery->attachments() as $attachment ) {
-		if ( foogallery_is_attachment_video( $attachment ) ) {
-			//this attachment is a video
-			$video_count++;
+	//only try to get the video count if the gallery is not dynamic
+	if ( !$gallery->is_dynamic() ) {
+		foreach ( $gallery->attachments() as $attachment ) {
+			if ( foogallery_is_attachment_video( $attachment ) ) {
+				//this attachment is a video
+				$video_count ++;
+			}
 		}
 	}
 	return $video_count;
