@@ -188,8 +188,11 @@ if ( function_exists( 'foogallery_fs' ) ) {
 				if ( !$pro_code_included ) {
 					add_filter( 'foogallery_extensions_for_view', array( $this, 'add_foogallery_pro_extension' ) );
 
-					//include PRO promotion
-					new FooGallery_Pro_Promotion();
+					//only include if in admin
+					if ( is_admin() ) {
+						//include PRO promotion
+						new FooGallery_Pro_Promotion();
+					}
 				}
 
 				//init Gutenberg!
