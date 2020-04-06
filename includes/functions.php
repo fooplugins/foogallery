@@ -406,8 +406,8 @@ function foogallery_build_class_attribute( $gallery ) {
 	//extract any classes from the gallery arguments
 	global $current_foogallery_arguments;
 	if ( isset( $current_foogallery_arguments ) && is_array( $current_foogallery_arguments ) ) {
-		if ( array_key_exists( 'className', $current_foogallery_arguments ) ) {
-			$classes[] = $current_foogallery_arguments['className'];
+		if ( array_key_exists( 'classname', $current_foogallery_arguments ) ) {
+			$classes[] = $current_foogallery_arguments['classname'];
 		}
 
 		if ( array_key_exists( 'classes', $current_foogallery_arguments ) ) {
