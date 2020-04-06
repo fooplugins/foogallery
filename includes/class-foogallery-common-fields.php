@@ -309,6 +309,7 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 						'foogallery_gallery_template_common_thumbnail_fields_hover_effect_scale_choices', array(
 						''               => __( 'None', 'foogallery' ),
 						'fg-hover-scale' => __( 'Scaled', 'foogallery' ),
+						'fg-hover-zoomed' => __( 'Zoomed', 'foogallery' ),
 					)
 					),
 					'desc'     => __( 'Apply a slight scaling effect when hovering over a thumbnail.', 'foogallery' ),
