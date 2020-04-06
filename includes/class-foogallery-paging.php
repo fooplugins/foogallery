@@ -53,8 +53,8 @@ if ( ! class_exists( 'FooGallery_Paging' ) ) {
 					) ),
 					'row_data'=> array(
 						'data-foogallery-change-selector' => 'input',
-						'data-foogallery-preview' => 'shortcode',
-						'data-foogallery-value-selector' => 'input:checked',
+						'data-foogallery-preview'         => 'shortcode',
+						'data-foogallery-value-selector'  => 'input:checked',
 					)
 				);
 
@@ -73,8 +73,8 @@ if ( ! class_exists( 'FooGallery_Paging' ) ) {
 						'data-foogallery-preview' => 'shortcode',
 						'data-foogallery-hidden'                   => true,
 						'data-foogallery-show-when-field'          => 'paging_type',
-						'data-foogallery-show-when-field-operator' => '!==',
-						'data-foogallery-show-when-field-value'    => '',
+						'data-foogallery-show-when-field-operator' => 'regex',
+						'data-foogallery-show-when-field-value'    => 'dots|pagination|infinite|loadMore',
 					)
 				);
 
@@ -105,7 +105,7 @@ if ( ! class_exists( 'FooGallery_Paging' ) ) {
 				$fields[] = array(
 					'id'      => 'paging_theme',
 					'title'   => __( 'Theme', 'foogallery' ),
-					'desc'    => __( 'The theme used for paging.', 'foogallery' ),
+					'desc'    => __( 'The theme used for pagination.', 'foogallery' ),
 					'section' => __( 'Paging', 'foogallery' ),
 					'spacer'  => '<span class="spacer"></span>',
 					'type'    => 'radio',
@@ -119,8 +119,8 @@ if ( ! class_exists( 'FooGallery_Paging' ) ) {
 						'data-foogallery-preview' => 'shortcode',
 						'data-foogallery-hidden'                   => true,
 						'data-foogallery-show-when-field'          => 'paging_type',
-						'data-foogallery-show-when-field-operator' => '!==',
-						'data-foogallery-show-when-field-value'    => '',
+						'data-foogallery-show-when-field-operator' => 'regex',
+						'data-foogallery-show-when-field-value'    => 'dots|pagination|loadMore',
 					)
 				);
 
@@ -168,7 +168,7 @@ if ( ! class_exists( 'FooGallery_Paging' ) ) {
 				$fields[] = array(
 					'id'      => 'paging_showFirstLast',
 					'title'   => __( 'First &amp; Last Buttons', 'foogallery' ),
-					'desc'    => __( 'Whether or not to show the first &amp; last buttons for pagination.', 'foogallery' ),
+					'desc'    => __( 'Whether or not to show the first &amp; last buttons for numbered pagination.', 'foogallery' ),
 					'section' => __( 'Paging', 'foogallery' ),
 					'type'    => 'radio',
 					'spacer'  => '<span class="spacer"></span>',
@@ -189,7 +189,7 @@ if ( ! class_exists( 'FooGallery_Paging' ) ) {
 				$fields[] = array(
 					'id'      => 'paging_showPrevNext',
 					'title'   => __( 'Prev &amp; Next Buttons', 'foogallery' ),
-					'desc'    => __( 'Whether or not to show the previous &amp; next buttons for pagination.', 'foogallery' ),
+					'desc'    => __( 'Whether or not to show the previous &amp; next buttons for numbered pagination.', 'foogallery' ),
 					'section' => __( 'Paging', 'foogallery' ),
 					'type'    => 'radio',
 					'spacer'  => '<span class="spacer"></span>',
@@ -210,7 +210,7 @@ if ( ! class_exists( 'FooGallery_Paging' ) ) {
 				$fields[] = array(
 					'id'      => 'paging_showPrevNextMore',
 					'title'   => __( 'More Buttons', 'foogallery' ),
-					'desc'    => __( 'Whether or not to show the previous &amp; next more buttons for pagination.', 'foogallery' ),
+					'desc'    => __( 'Whether or not to show the previous &amp; next more buttons for numbered pagination.', 'foogallery' ),
 					'section' => __( 'Paging', 'foogallery' ),
 					'type'    => 'radio',
 					'spacer'  => '<span class="spacer"></span>',
@@ -246,8 +246,8 @@ if ( ! class_exists( 'FooGallery_Paging' ) ) {
 						'data-foogallery-value-selector' => 'input:checked',
 						'data-foogallery-hidden'                   => true,
 						'data-foogallery-show-when-field'          => 'paging_type',
-						'data-foogallery-show-when-field-operator' => '!==',
-						'data-foogallery-show-when-field-value'    => '',
+						'data-foogallery-show-when-field-operator' => 'regex',
+						'data-foogallery-show-when-field-value'    => 'dots|pagination|infinite|loadMore',
 					)
 				);
 			}
