@@ -99,7 +99,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings_Helper' ) ) {
 									<?php
                                     echo $field['desc'];
 									if ( array_key_exists( 'cta_text', $field ) ) {
-									    echo '<br /><br /><a class="button-primary" href="' . $field['cta_link'] . '" target="_blank">' . $field['cta_text'] . '</a>';
+									    echo '<a class="button-primary" href="' . $field['cta_link'] . '" target="_blank">' . $field['cta_text'] . '</a>';
                                     }
 									?>
                                 </div>

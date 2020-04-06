@@ -14,14 +14,23 @@ if ( ! class_exists( 'FooGallery_Pro_Promotion' ) ) {
 		 * conditionally include promos
 		 */
 		function include_promos() {
+			add_filter( 'foogallery_admin_settings_override', array( $this, 'include_promo_settings' ) );
+
 			if ( $this->can_show_promo() ) {
-				add_filter( 'foogallery_admin_settings_override', array( $this, 'include_promo_settings' ) );
+				//paging
 				add_filter( 'foogallery_gallery_template_paging_type_choices', array( $this, 'add_promo_paging_choices' ) );
 				add_filter( 'foogallery_override_gallery_template_fields', array( $this, 'add_paging_promo_fields' ), 10, 2 );
 
 				//presets
 				add_filter( 'foogallery_gallery_template_common_thumbnail_fields_hover_effect_type_choices', array( $this, 'add_preset_type' ) );
 				add_filter( 'foogallery_override_gallery_template_fields', array( $this, 'add_preset_fields' ), 99, 2 );
+
+				//filtering
+				add_filter( 'foogallery_override_gallery_template_fields', array( $this, 'add_filtering_fields' ), 10, 2 );
+				add_filter( 'foogallery_gallery_settings_metabox_section_icon', array( $this, 'add_section_icons' ) );
+
+				//lightbox
+				add_filter( 'foogallery_override_gallery_template_fields', array( $this, 'lightbox_custom_fields' ), 10, 2 );
 			}
 		}
 
@@ -68,9 +77,24 @@ if ( ! class_exists( 'FooGallery_Pro_Promotion' ) ) {
 		 * @return mixed
 		 */
 		public function add_promo_paging_choices( $choices ) {
-			$choices['promo-pag'] = '<div class="foogallery-pro">' . __( 'Pagination', 'foogallery' ) . '</div>';
-			$choices['promo-inf'] = '<div class="foogallery-pro">' . __( 'Infinite Scroll', 'foogallery' ) . '</div>';
-			$choices['promo-load'] = '<div class="foogallery-pro">' . __( 'Load More', 'foogallery' ) . '</div>';
+			$choices['promo-page'] = array(
+				'label'   => __( 'Numbered',   'foogallery' ),
+				'tooltip' => __('Add numbered pagination controls to your larger galleries.', 'foogallery'),
+				'class'   => 'foogallery-promo',
+				'icon'    => 'dashicons-star-filled'
+			);
+			$choices['promo-infin'] = array(
+				'label'   => __( 'Infinite Scroll',   'foogallery' ),
+				'tooltip' => __('Add the popular infinite scroll ability to your larger galleries.', 'foogallery'),
+				'class'   => 'foogallery-promo',
+				'icon'    => 'dashicons-star-filled'
+			);
+			$choices['promo-load'] = array(
+				'label'   => __( 'Load More',   'foogallery' ),
+				'tooltip' => __('Add a Load More button to the end of your larger galleries.', 'foogallery'),
+				'class'   => 'foogallery-promo',
+				'icon'    => 'dashicons-star-filled'
+			);
 			return $choices;
 		}
 
@@ -87,16 +111,22 @@ if ( ! class_exists( 'FooGallery_Pro_Promotion' ) ) {
 			if ( $template && array_key_exists( 'paging_support', $template ) && true === $template['paging_support'] ) {
 				$fields[] = array(
 					'id'       => 'promo_paging',
-					'title'    => __( 'Paging Type', 'foogallery' ),
-					'desc'     => __( 'Add paging to a large gallery.', 'foogallery' ),
+					'title'    => __( 'Advanced Pagination', 'foogallery' ),
+					'desc'     => __( 'Besides the dot pagination, you can also add more advanced pagination to your galleries with a large number of images or videos:', 'foogallery' ) .
+								'<ul class="ul-disc"><li><strong>' . __('Numbered' ,'foogallery') . '</strong> ' . __( 'adds a numbered pagination control to top or bottom of your gallery.', 'foogallery' ) .
+								'</li><li><strong>' . __('Infinite Scroll' ,'foogallery') . '</strong> ' . __( 'adds the popular \'infinite scroll\' capability to your gallery, so as your visitors scroll, the gallery will load more items.', 'foogallery' ) .
+								'</li><li><strong>' . __('Load More' ,'foogallery') . '</strong> ' . __( 'adds a \'Load More\' button to the end of your gallery. When visitors click the button, the next set of items will load in the gallery.', 'foogallery' ) .
+					              '</li></ul>',
+					'cta_text' => __( 'View Demos', 'foogallery' ),
+					'cta_link' => 'https://fooplugins.com/foogallery/gallery-pagination/',
 					'section'  => __( 'Paging', 'foogallery' ),
 					'type'     => 'promo',
 					'row_data'=> array(
-						'data-foogallery-change-selector' => 'input',
-						'data-foogallery-preview' => 'shortcode',
+						'data-foogallery-change-selector'          => 'input',
+						'data-foogallery-preview'                  => 'shortcode',
 						'data-foogallery-hidden'                   => true,
 						'data-foogallery-show-when-field'          => 'paging_type',
-						'data-foogallery-show-when-field-operator' => 'in',
+						'data-foogallery-show-when-field-operator' => 'indexOf',
 						'data-foogallery-show-when-field-value'    => 'promo',
 					)
 				);
@@ -183,8 +213,8 @@ if ( ! class_exists( 'FooGallery_Pro_Promotion' ) ) {
 				'title'    => __( 'Hover Effect Presets', 'foogallery' ),
 				'desc'     => __( 'There are 11 stylish hover effect presets to choose from, which takes all the hard work out of making your galleries look professional and elegant.', 'foogallery' ) .
 				              '<br />' . __( 'Some of the effects like "Sarah" add subtle colors on hover, while other effects like "Layla" and "Oscar" add different shapes to the thumbnail.', 'foogallery') .
-				              '<br />' . __(' You really need to see all the different effects in action to appreciate them.', 'foogallery' ),
-				'cta_text' => __( 'View Demo', 'foogallery' ),
+				              '<br />' . __(' You really need to see all the different effects in action to appreciate them.', 'foogallery' ) . '<br /><br />',
+				'cta_text' => __( 'View Demos', 'foogallery' ),
 				'cta_link' => 'https://fooplugins.com/foogallery/hover-presets/',
 				'section'  => __( 'Hover Effects', 'foogallery' ),
 				'type'     => 'promo',
@@ -227,6 +257,89 @@ if ( ! class_exists( 'FooGallery_Pro_Promotion' ) ) {
 			);
 
 			array_splice( $fields, $index_of_hover_effect_preset_field, 0, $new_fields );
+
+			return $fields;
+		}
+
+		/**
+		 * Add filtering fields to the gallery templates
+		 *
+		 * @uses "foogallery_override_gallery_template_fields"
+		 *
+		 * @param $fields
+		 * @param $template
+		 *
+		 * @return array
+		 */
+		function add_filtering_fields( $fields, $template ) {
+			if ( $template && array_key_exists( 'filtering_support', $template ) && true === $template['filtering_support'] ) {
+				$fields[] = array(
+					'id'       => 'filtering_type',
+					'title'    => __( 'Filtering by Tags or Categories', 'foogallery' ),
+					'section'  => __( 'Filtering', 'foogallery' ),
+					'desc'     => __( 'Add frontend filtering to your gallery, simply by assigning media tags or media categories to your gallery attachments. Other filtering features include:', 'foogallery' ) .
+					              '<ul class="ul-disc"><li><strong>' . __('Filter Source' ,'foogallery') . '</strong> - ' . __( 'choose to filter the gallery by tag or category, or any other attachment taxonomy.', 'foogallery' ) .
+					              '</li><li><strong>' . __('Look &amp; Feel' ,'foogallery') . '</strong> - ' . __( 'display the filters above or below the gallery, and choose a color theme.', 'foogallery' ) .
+					              '</li><li><strong>' . __('Selection Mode' ,'foogallery') . '</strong> - ' . __( 'allow your visitors to select a single or multiple filters. Multiple also supports union or intersection modes.', 'foogallery' ) .
+					              '</li><li><strong>' . __('Show Counters' ,'foogallery') . '</strong> - ' . __( 'show the number of items in each tag filter.', 'foogallery' ) .
+					              '</li><li><strong>' . __('Adjust Size & Opacity' ,'foogallery') . '</strong> - ' . __( 'adjust the size and opacity of each filter based on the number of items.', 'foogallery' ) .
+					              '</li></ul>',
+					'cta_text' => __( 'View Demos', 'foogallery' ),
+					'cta_link' => 'https://fooplugins.com/foogallery/wordpress-filtered-gallery/',
+					'type'     => 'promo',
+					'row_data' => array(
+						'data-foogallery-change-selector' => 'input',
+						'data-foogallery-preview'         => 'shortcode',
+						'data-foogallery-value-selector'  => 'input:checked',
+					)
+				);
+			}
+
+			return $fields;
+		}
+
+		/**
+		 * Returns the Dashicon that can be used in the settings tabs
+		 *
+		 * @param $section_slug
+		 *
+		 * @return string
+		 */
+		function add_section_icons( $section_slug ) {
+			if ( 'filtering' === $section_slug ) {
+				return 'dashicons-filter';
+			}
+
+			if ( 'lightbox' === $section_slug ) {
+				return 'dashicons-grid-view';
+			}
+
+			return $section_slug;
+		}
+
+		/**
+		 * Add fields to all galleries.
+		 *
+		 * @param $fields
+		 * @param $template
+		 *
+		 * @return mixed
+		 * @uses "foogallery_override_gallery_template_fields"
+		 *
+		 */
+		public function lightbox_custom_fields( $fields, $template ) {
+			$field[] = array(
+				'id'      => 'lightbox_help',
+				'title'   => __( 'PRO Lightbox', 'foogallery' ),
+				'desc'    => __( 'The below settings are only applied and used if you have your lightbox set to "FooGallery PRO Lightbox"', 'foogallery' ),
+				'section' => __( 'Lightbox', 'foogallery' ),
+				'type'    => 'promo'
+			);
+
+			//find the index of the first Hover Effect field
+			$index = $this->find_index_of_section( $fields, __( 'Hover Effects', 'foogallery' ) );
+
+			array_splice( $fields, $index, 0, $field );
 
 			return $fields;
 		}
