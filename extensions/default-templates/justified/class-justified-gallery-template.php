@@ -26,6 +26,8 @@ if ( !class_exists( 'FooGallery_Justified_Gallery_Template' ) ) {
 
             //build up the arguments needed for rendering this template
             add_filter( 'foogallery_gallery_template_arguments-justified', array( $this, 'build_gallery_template_arguments' ) );
+
+			add_filter( 'foogallery_override_gallery_template_fields-justified', array( $this, 'adjust_default_field_values' ), 10, 2 );
         }
 
 		/**
@@ -79,7 +81,7 @@ if ( !class_exists( 'FooGallery_Justified_Gallery_Template' ) ) {
                         'section' => __( 'General', 'foogallery' ),
                         'type'    => 'number',
                         'class'   => 'small-text',
-                        'default' => 150,
+                        'default' => 200,
                         'step'    => '10',
                         'min'     => '0',
 						'row_data'=> array(
@@ -95,7 +97,7 @@ if ( !class_exists( 'FooGallery_Justified_Gallery_Template' ) ) {
                         'section' => __( 'General', 'foogallery' ),
                         'type'    => 'text',
                         'class'   => 'small-text',
-                        'default' => '200%',
+                        'default' => '150%',
 						'row_data'=> array(
 							'data-foogallery-change-selector' => 'input',
 							'data-foogallery-value-selector' => 'input',
@@ -109,7 +111,7 @@ if ( !class_exists( 'FooGallery_Justified_Gallery_Template' ) ) {
 						'section' => __( 'General', 'foogallery' ),
                         'type'    => 'number',
                         'class'   => 'small-text',
-                        'default' => 1,
+                        'default' => 2,
                         'step'    => '1',
                         'min'     => '0',
 						'row_data'=> array(
@@ -141,7 +143,7 @@ if ( !class_exists( 'FooGallery_Justified_Gallery_Template' ) ) {
                         'section' => __( 'General', 'foogallery' ),
                         'type'    => 'radio',
                         'spacer'  => '<span class="spacer"></span>',
-                        'default' => 'center',
+                        'default' => 'justify',
                         'choices' => array(
                             'hide' => __( 'Hide', 'foogallery' ),
                             'justify' => __( 'Justify', 'foogallery' ),
@@ -268,5 +270,31 @@ if ( !class_exists( 'FooGallery_Justified_Gallery_Template' ) ) {
 
             return $args;
         }
+
+		/**
+		 * Adjust the default values for the justified template
+		 *
+		 * @uses "foogallery_override_gallery_template_fields"
+		 * @param $fields
+		 * @param $template
+		 *
+		 * @return array
+		 */
+		function adjust_default_field_values( $fields, $template ) {
+			//update specific fields
+			foreach ($fields as &$field) {
+				if ( 'border_size' === $field['id'] ) {
+					$field['default'] = '';
+				} else if ( 'hover_effect_caption_visibility' == $field['id'] ) {
+					$field['default'] = 'fg-caption-always';
+				} else if ( 'hover_effect_icon' == $field['id'] ) {
+					$field['default'] = 'fg-hover-zoom2';
+				} else if ( 'caption_desc_source' == $field['id'] ) {
+					$field['default'] = 'none';
+				}
+			}
+
+			return $fields;
+		}
 	}
 }
