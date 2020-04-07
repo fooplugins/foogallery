@@ -202,12 +202,19 @@ Update now to get all the latest features, bug fixes and improvements!
 
 == Changelog ==
 
-= 1.9.12 =
+= 1.9.14 =
 * New : Reworked hover effect settings to allow none
+* New : Added new zoomed hover effect
+* New : Added new advanced setting to add custom class to the gallery container
+* New : Added Pro feature promotions in gallery settings
 * Fix : fixed bug with Safari when editing a gallery, not loading thumbs
 * Update : Freemius SDK 2.3.2
+* Update : FooGallery client side 1.4.8
 [//]: # fs_premium_only_begin
 * New : added new setting to Thumbnail gallery to Exclude Featured image (only works with PRO Lightbox)
+* Fix : Fixed fatal error bug with videos in dynamic galleries
+* Fix : Fixed background fill not working in some cases
+* Update : renamed "Pagination" paging to "Numbered"
 [//]: # fs_premium_only_end
 
 = 1.9.11 =
