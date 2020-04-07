@@ -2680,7 +2680,7 @@ html.fg-panel-no-scroll body {
 }
 
 /* Always */
-.foogallery.fg-caption-always .fg-caption .fg-caption-inner:before {
+.foogallery.fg-caption-always .fg-item .fg-caption .fg-caption-inner:before {
 	display: none;
 }
 .foogallery.fg-caption-always .fg-item.fg-loaded .fg-caption {
