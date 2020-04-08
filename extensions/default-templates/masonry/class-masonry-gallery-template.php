@@ -302,7 +302,15 @@ if ( !class_exists( 'FooGallery_Masonry_Gallery_Template' ) ) {
             //update specific fields
             foreach ($fields as &$field) {
                 if ( 'hover_effect_caption_visibility' === $field['id'] ) {
+                	//add a new choice for captions to show below the thumbs
                     $field['choices']['fg-captions-bottom'] = __( 'Below Thumbnail', 'foogallery' );
+	                $field['default'] = 'fg-captions-bottom';
+                } else if ( 'theme' === $field['id'] ) {
+	                $field['default'] = 'fg-dark';
+                } else if ( 'drop_shadow' === $field['id'] ) {
+	                $field['default'] = 'fg-shadow-small';
+                } else if ( 'hover_effect_icon' === $field['id'] ) {
+	                $field['default'] = 'fg-hover-plus';
                 }
             }
 
