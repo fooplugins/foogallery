@@ -415,7 +415,7 @@ function foogallery_build_class_attribute( $gallery ) {
 		}
 	}
 
-	$classes = array_filter( $classes );
+	$classes = array_filter( $classes, 'strlen' );
 
 	return implode( ' ', $classes );
 }
