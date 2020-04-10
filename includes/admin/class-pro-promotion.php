@@ -225,37 +225,6 @@ if ( ! class_exists( 'FooGallery_Pro_Promotion' ) ) {
 				)
 			);
 
-			$new_fields[] = array(
-				'id'       => 'hover_effect_preset',
-				'title'    => __( 'Preset', 'foogallery' ),
-				'section'  => __( 'Hover Effects', 'foogallery' ),
-				'default'  => 'fg-preset fg-sadie',
-				'type'     => 'radio',
-				'choices'  =>  array(
-						'sadie'   => __( 'Sadie',   'foogallery' ),
-						'layla'   => __( 'Layla',   'foogallery' ),
-						'oscar'   => __( 'Oscar',   'foogallery' ),
-						'sarah'   => __( 'Sarah',   'foogallery' ),
-						'goliath' => __( 'Goliath', 'foogallery' ),
-						'jazz'    => __( 'Jazz',    'foogallery' ),
-						'lily'    => __( 'Lily',    'foogallery' ),
-						'ming'    => __( 'Ming',    'foogallery' ),
-						'selena'  => __( 'Selena',  'foogallery' ),
-						'steve'   => __( 'Steve',   'foogallery' ),
-						'zoe'     => __( 'Zoe',     'foogallery' ),
-				),
-				'spacer'   => '<span class="spacer"></span>',
-				'promo'    => __( 'A preset styling that is used for the hover effect.', 'foogallery' ),
-				'row_data' => array(
-					'data-foogallery-change-selector'       => 'input:radio',
-					'data-foogallery-value-selector'        => 'input:checked',
-					'data-foogallery-preview'               => 'class',
-					'data-foogallery-hidden'                => true,
-					'data-foogallery-show-when-field'       => 'hover_effect_type',
-					'data-foogallery-show-when-field-value' => 'promo-presets',
-				)
-			);
-
 			array_splice( $fields, $index_of_hover_effect_preset_field, 0, $new_fields );
 
 			return $fields;
