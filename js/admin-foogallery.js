@@ -25,14 +25,12 @@
 	FOOGALLERY.showHiddenAreas = function( show ) {
         if ( show ) {
             $('.foogallery-items-add').removeClass('hidden');
-            $('.foogallery-attachments-list').addClass('hidden');
+            $('.foogallery-attachments-list-container').addClass('hidden');
             $('.foogallery-items-empty').removeClass('hidden');
-            $('.foogallery-attachments-list-bar').hide();
         } else {
             $('.foogallery-items-add').addClass('hidden');
-            $('.foogallery-attachments-list').removeClass('hidden');
+            $('.foogallery-attachments-list-container').removeClass('hidden');
             $('.foogallery-items-empty').addClass('hidden');
-            $('.foogallery-attachments-list-bar').show();
         }
 	};
 
@@ -520,8 +518,12 @@
 			FOOGALLERY.openMediaModal(0);
         });
 
-		$(document).on('foogallery-datasource-changed', function() {
-            FOOGALLERY.calculateHiddenAreas();
+		$('.remove_all_media').on('click', function(e) {
+			$('.foogallery-attachments-list a.remove').click();
+		});
+
+		$(document).on('foogallery-datasource-changed', function(e, activeDatasource) {
+			FOOGALLERY.showHiddenAreas( activeDatasource === 'media_library' );
 		});
 
         FOOGALLERY.initAttachments();

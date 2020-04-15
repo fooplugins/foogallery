@@ -604,3 +604,7 @@ button[data-balloon]{overflow:visible}[data-balloon]{position:relative}[data-bal
 	display: block;
 	clear: both;
 }
+
+.foogallery-attachments-list-bar button.alignright {
+	margin-left: 5px;
+}
