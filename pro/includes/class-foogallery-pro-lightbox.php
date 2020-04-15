@@ -448,6 +448,50 @@ if ( ! class_exists( 'FooGallery_Pro_Lightbox' ) ) {
 				)
 			);
 
+			//Only show this setting for gallery templates that use the lightbox
+			if ( $use_lightbox ) {
+				$field[] = array(
+					'id'       => 'lightbox_show_fullscreen_button',
+					'title'    => __( 'Show Fullscreen Button', 'foogallery' ),
+					'desc'     => __( 'Whether of not to show the Fullscreen button', 'foogallery' ),
+					'section'  => $section,
+					'spacer'   => '<span class="spacer"></span>',
+					'type'     => 'radio',
+					'default'  => 'yes',
+					'choices'  => apply_filters( 'foogallery_gallery_template_lightbox_show_fullscreen_button_choices', array(
+						'yes' => __( 'Yes', 'foogallery' ),
+						'no'  => __( 'No', 'foogallery' ),
+					) ),
+					'row_data' => array(
+						'data-foogallery-change-selector' => 'input:radio',
+						'data-foogallery-preview'         => 'shortcode',
+						'data-foogallery-value-selector'  => 'input:checked',
+					)
+				);
+			}
+
+			//Only add this setting for gallery templates that use the panel, not lightbox
+			if ( !$use_lightbox ) {
+				$field[] = array(
+					'id'       => 'lightbox_show_maximize_button',
+					'title'    => __( 'Show Maximise Button', 'foogallery' ),
+					'desc'     => __( 'Whether of not to show the Maximise button', 'foogallery' ),
+					'section'  => $section,
+					'spacer'   => '<span class="spacer"></span>',
+					'type'     => 'radio',
+					'default'  => 'yes',
+					'choices'  => apply_filters( 'foogallery_gallery_template_lightbox_show_maximize_button_choices', array(
+						'yes' => __( 'Yes', 'foogallery' ),
+						'no'  => __( 'No', 'foogallery' ),
+					) ),
+					'row_data' => array(
+						'data-foogallery-change-selector' => 'input:radio',
+						'data-foogallery-preview'         => 'shortcode',
+						'data-foogallery-value-selector'  => 'input:checked',
+					)
+				);
+			}
+
 			//find the index of the first Hover Effect field
 			$index = $this->find_index_of_section( $fields, __( 'Hover Effects', 'foogallery' ) );
 
@@ -574,6 +618,14 @@ if ( ! class_exists( 'FooGallery_Pro_Lightbox' ) ) {
 
 			if ( array_key_exists( $template . '_lightbox_buttons_display', $post_data[FOOGALLERY_META_SETTINGS] ) ) {
 				$args['lightbox_buttons_display'] = $post_data[FOOGALLERY_META_SETTINGS][$template . '_lightbox_buttons_display'];
+			}
+
+			if ( array_key_exists( $template . '_lightbox_show_maximize_button', $post_data[FOOGALLERY_META_SETTINGS] ) ) {
+				$args['lightbox_show_maximize_button'] = $post_data[FOOGALLERY_META_SETTINGS][$template . '_lightbox_show_maximize_button'];
+			}
+
+			if ( array_key_exists( $template . '_lightbox_show_fullscreen_button', $post_data[FOOGALLERY_META_SETTINGS] ) ) {
+				$args['lightbox_show_fullscreen_button'] = $post_data[FOOGALLERY_META_SETTINGS][$template . '_lightbox_show_fullscreen_button'];
 			}
 
 			return $args;
@@ -709,6 +761,16 @@ if ( ! class_exists( 'FooGallery_Pro_Lightbox' ) ) {
 			$options['fitMedia'] = foogallery_gallery_template_setting( 'lightbox_fit_media', 'no' ) === 'yes';
 			$options['noScrollbars'] = foogallery_gallery_template_setting( 'lightbox_no_scrollbars', 'no' ) !== 'yes';
 			$options['preserveButtonSpace'] = foogallery_gallery_template_setting( 'lightbox_buttons_display', 'no' ) === 'no';
+
+			$show_fullscreen_button = foogallery_gallery_template_setting( 'lightbox_show_fullscreen_button', false );
+			if ( $show_fullscreen_button !== false ) {
+				$options['buttons']['fullscreen'] = ($show_fullscreen_button === 'yes');
+			}
+
+			$show_maximise_button = foogallery_gallery_template_setting( 'lightbox_show_maximize_button', false );
+			if ( $show_maximise_button !== false ) {
+				$options['buttons']['maximize'] = ($show_maximise_button === 'yes');
+			}
 
 			return $options;
 		}
