@@ -134,7 +134,7 @@ if ( ! class_exists( 'FooGallery_Pro_Attachment_Taxonomies' ) ) {
                 if (!is_wp_error($new_term_obj)) {
                     wp_send_json(array(
                         'new_term' => $new_term_obj,
-                        'all_terms' => $this->build_terms_recursive($_POST['taxonomy'], array('hide_empty' => false))
+                        'all_terms' => foogallery_build_terms_recursive($_POST['taxonomy'], array('hide_empty' => false))
                     ));
                 }
             }
@@ -209,7 +209,7 @@ if ( ! class_exists( 'FooGallery_Pro_Attachment_Taxonomies' ) ) {
 		public function include_inline_taxonomy_data_script() {
 			$taxonomy_data[FOOGALLERY_ATTACHMENT_TAXONOMY_TAG] = array(
 				'slug' => FOOGALLERY_ATTACHMENT_TAXONOMY_TAG,
-				'terms' => $this->build_terms_recursive(FOOGALLERY_ATTACHMENT_TAXONOMY_TAG, array('hide_empty' => false)),
+				'terms' => foogallery_build_terms_recursive(FOOGALLERY_ATTACHMENT_TAXONOMY_TAG, array('hide_empty' => false)),
 				'query_var' => true,
 				'labels' => array(
 					'placeholder' => __( 'Select tags, or add a new tag...', 'foogallery' ),
@@ -219,7 +219,7 @@ if ( ! class_exists( 'FooGallery_Pro_Attachment_Taxonomies' ) ) {
 
 			$taxonomy_data[FOOGALLERY_ATTACHMENT_TAXONOMY_CATEGORY] = array(
 				'slug' => FOOGALLERY_ATTACHMENT_TAXONOMY_CATEGORY,
-				'terms' => $this->build_terms_recursive(FOOGALLERY_ATTACHMENT_TAXONOMY_CATEGORY, array('hide_empty' => false)),
+				'terms' => foogallery_build_terms_recursive(FOOGALLERY_ATTACHMENT_TAXONOMY_CATEGORY, array('hide_empty' => false)),
 				'query_var' => true,
 				'labels' => array(
 					'placeholder' => __( 'Select categories, or add a new category...', 'foogallery' ),
@@ -368,50 +368,6 @@ if ( ! class_exists( 'FooGallery_Pro_Attachment_Taxonomies' ) ) {
 				FOOGALLERY_SELECTIZE(\'#attachments-' . $post->ID .'-' . $taxonomy . '\', \'' . $taxonomy .'\');
 				</script>';
 			return $html;
-		}
-
-		/**
-		 * Get terms sorted by hierarchy in a recursive way
-		 *
-		 * @param  string $taxonomy The taxonomy name
-		 * @param  array $args The arguments which should be passed to the get_terms function
-		 * @param  int $parent The terms parent id (for recursive usage)
-		 * @param  int $level The current level (for recursive usage)
-		 * @param  array $parents An array with all the parent terms (for recursive usage)
-		 *
-		 * @return array $terms_all An array with all the terms for this taxonomy
-		 */
-		function build_terms_recursive($taxonomy, $args = array(), $parent = 0, $level = 1, $parents = array()) {
-			//check if the taxonomy terms have already been built up
-			if ( 0 === $parent && array_key_exists( $taxonomy, $this->cached_terms ) ) {
-				return $this->cached_terms[$taxonomy];
-			}
-
-			$terms_all = array();
-
-			$args['parent'] = $args['child_of'] = $parent;
-
-			$terms = get_terms($taxonomy, $args);
-
-			foreach($terms as $term) {
-				$term->level = $level;
-				$term->parents = $parents;
-				$term_parents = $parents;
-				$term_parents[] = $term->name;
-				$terms_all[] = $term;
-				$terms_sub = $this->build_terms_recursive($taxonomy, $args, $term->term_id, $level + 1, $term_parents);
-
-				if(!empty($terms_sub)) {
-					$terms_all = array_merge($terms_all, $terms_sub);
-				}
-			}
-
-			//cache what we have built up
-			if ( 0 === $parent && !array_key_exists( $taxonomy, $this->cached_terms ) ) {
-				$this->cached_terms[$taxonomy] = $terms_all;
-			}
-
-			return $terms_all;
 		}
     }
 }
