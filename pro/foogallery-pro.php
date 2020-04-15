@@ -31,6 +31,7 @@ require_once( FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-datasource-po
 require_once( FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-lightbox.php' );
 require_once( FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-advanced-captions.php' );
 require_once( FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-advanced-thumbnails.php' );
+require_once( FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-bulk-management.php' );
 
 /**
  * FooGallery PRO Main Class
@@ -67,6 +68,7 @@ if ( ! class_exists( 'FooGallery_Pro' ) ) {
             new FooGallery_Pro_Lightbox();
             new FooGallery_Pro_Advanced_Captions();
             new FooGallery_Pro_Advanced_Thumbnails();
+            new FooGallery_Pro_Bulk_Management();
 		}
 	}
 }
