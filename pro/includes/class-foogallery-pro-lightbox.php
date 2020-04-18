@@ -268,7 +268,6 @@ if ( ! class_exists( 'FooGallery_Pro_Lightbox' ) ) {
 				)
 			);
 
-
 			$field[] = array(
 				'id'      => 'lightbox_transition',
 				'title'   => __( 'Transition', 'foogallery' ),

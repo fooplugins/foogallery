@@ -95,10 +95,14 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings_Helper' ) ) {
 						<?php } else if ( 'promo' === $field_type ) { ?>
                             <td colspan="2">
                                 <div class="foogallery-promo">
-	                                <?php echo '<strong>' . __('FooGallery PRO Feature') . ' : ' . $field['title'] . '</strong><br /><br />'; ?>
+	                                <?php echo '<strong>' . $field['title'] . '</strong><br /><br />'; ?>
 									<?php
                                     echo $field['desc'];
 									if ( array_key_exists( 'cta_text', $field ) ) {
+									    $trial_link = '<a href="https://fooplugins.com/foogallery/start-trial/" target="_blank">' . __('start a 7 day free trial', 'foogallery') . '</a>';
+									    $pro_link = '<a href="https://fooplugins.com/foogallery/#pricing" target="_blank">' . __('Upgrade to PRO', 'foogallery') . '</a>';
+										echo sprintf( __('To play around with the PRO features, %s (no credit card required). Or you can %s right now.', 'foogallery' ), $trial_link, $pro_link );
+										echo '<br /><br />';
 									    echo '<a class="button-primary" href="' . $field['cta_link'] . '" target="_blank">' . $field['cta_text'] . '</a>';
                                     }
 									?>
