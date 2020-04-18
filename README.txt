@@ -202,18 +202,24 @@ Update now to get all the latest features, bug fixes and improvements!
 
 == Changelog ==
 
-= 1.9.14 =
+= 1.9.16 =
 * New : Reworked hover effect settings to allow none
 * New : Added new zoomed hover effect
 * New : Added new advanced setting to add custom class to the gallery container
+* New : Added global settings for upscaling small images when using larger thumbnail dimensions
 * New : Added Pro feature promotions in gallery settings
 * Fix : fixed bug with Safari when editing a gallery, not loading thumbs
 * Update : Freemius SDK 2.3.2
 * Update : FooGallery client side 1.4.8
 [//]: # fs_premium_only_begin
-* New : added new setting to Thumbnail gallery to Exclude Featured image (only works with PRO Lightbox)
+* New : Added new Bulk Taxonomy Management modal when editing a gallery
+* New : Added new setting to Thumbnail gallery to Exclude Featured image (only works with PRO Lightbox)
+* New : Added new setting to show/hide fullscreen button for lightbox
+* New : Added new setting to show/hide maximize button for Slider PRO and Grid PRO templates
 * Fix : Fixed fatal error bug with videos in dynamic galleries
 * Fix : Fixed background fill not working in some cases
+* Fix : Cleared cache for taxonomy datasource when using shortcode attributes
+* Fix : Server folders datasource has fatal error when cache clears in some cases
 * Update : renamed "Pagination" paging to "Numbered"
 [//]: # fs_premium_only_end
 
