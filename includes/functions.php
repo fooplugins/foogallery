@@ -1399,3 +1399,24 @@ function foogallery_admin_get_current_gallery( $post_gallery ) {
 
 	return null;
 }
+
+/**
+ * Takes an RGB string and returns an array of the colors
+ * @param string $rgba RBG color string in the format rgb(0,0,0)
+ *
+ * @return array|int[]
+ */
+function foogallery_rgb_to_color_array( $rgba ) {
+	if ( empty( $rgba ) ) {
+		return array(0,0,0);
+	}
+
+	preg_match( '/^rgba?[\s+]?\([\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?/i', $rgba, $by_color );
+
+	if ( count( $by_color ) >= 3 ) {
+		return array( $by_color[1], $by_color[2], $by_color[3] );
+	}
+
+	//return black if there was a problem getting the color
+	return array(0,0,0);
+}
