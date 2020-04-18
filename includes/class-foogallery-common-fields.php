@@ -46,6 +46,11 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 							$field['lightbox'] = true;
 							$field['type']     = 'select';
 							$field['choices']  = foogallery_gallery_template_field_lightbox_choices();
+							$field['row_data'] = array(
+								'data-foogallery-value-selector' => 'select',
+								'data-foogallery-change-selector' => 'select',
+								'data-foogallery-preview' => 'shortcode'
+							);
 							break;
 					}
 				}
