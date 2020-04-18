@@ -73,6 +73,7 @@ if ( ! class_exists( 'FooGallery_Pro_Advanced_Captions' ) ) {
             $captions_limit_length_field['row_data'] = array(
                 'data-foogallery-change-selector'       => 'input:radio',
                 'data-foogallery-hidden'                => true,
+                'data-foogallery-value-selector'        => 'input:checked',
                 'data-foogallery-show-when-field'       => 'captions_type',
                 'data-foogallery-show-when-field-value' => '',
                 'data-foogallery-preview'               => 'shortcode'
