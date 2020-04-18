@@ -197,12 +197,31 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 			);
 
 			$settings[] = array(
+				'id'      => 'thumb_resize_upscale_small',
+				'title'   => __( 'Upscale Small Images', 'foogallery' ),
+				'desc'    => __( 'If the original image is smaller than the thumbnail size, then upscale the image thumbnail to match the size.', 'foogallery' ),
+				'type'    => 'checkbox',
+				'tab'     => 'thumb'
+			);
+
+			$settings[] = array(
+				'id'      => 'thumb_resize_upscale_small_color',
+				'title'   => __( 'Upscale Background Color', 'foogallery' ),
+				'desc'    => __( 'The background color to use for upscaled images.', 'foogallery' ),
+				'type'    => 'text',
+				'default' => 'rgb(0,0,0)',
+				'tab'     => 'thumb'
+			);
+
+			$settings[] = array(
 				'id'      => 'thumb_generation_test',
 				'title'   => __( 'Thumbnail Generation Test', 'foogallery' ),
 				'desc'    => sprintf( __( 'Test to see if %s can generate the thumbnails it needs.', 'foogallery' ), foogallery_plugin_name() ),
 				'type'    => 'thumb_generation_test',
 				'tab'     => 'thumb'
 			);
+
+
 
 			//endregion Thumbnail Tab
 

@@ -119,7 +119,14 @@ if ( !class_exists( 'FooGallery_Thumbnails' ) ) {
 				//save the generated thumb url to a global so that we can use it later if needed
 				$foogallery_last_generated_thumb_url = wpthumb( $original_image_src, $args );
 			} else {
-				$foogallery_last_generated_thumb_url = $original_image_src;
+				//check if we must upscale smaller images
+				if ( 'on' === foogallery_get_setting( 'thumb_resize_upscale_small' ) ) {
+					$colors = foogallery_rgb_to_color_array( foogallery_get_setting( 'thumb_resize_upscale_small_color', '') );
+					$args['background_fill'] = sprintf( "%03d%03d%03d000", $colors[0], $colors[1], $colors[2] );
+					$foogallery_last_generated_thumb_url = wpthumb( $original_image_src, $args );
+				} else {
+					$foogallery_last_generated_thumb_url = apply_filters('foogallery_thumbnail_resize_small_image', $original_image_src, $args );
+				}
 			}
 
             return $foogallery_last_generated_thumb_url;
