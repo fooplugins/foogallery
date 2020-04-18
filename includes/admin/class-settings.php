@@ -159,7 +159,7 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 				'title'   => __( 'Thumbnail JPEG Quality', 'foogallery' ),
 				'desc'    => __( 'The image quality to be used when resizing JPEG images.', 'foogallery' ),
 				'type'    => 'text',
-				'default' => '80',
+				'default' => '90',
 				'tab'     => 'thumb'
 			);
 
