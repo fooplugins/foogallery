@@ -20,8 +20,6 @@ if ( !class_exists( 'FooGallery_FooBox_Compatibility' ) ) {
             //allow changing of field values
             add_filter( 'foogallery_render_gallery_template_field_value', array( $this, 'check_lightbox_value' ), 10, 4 );
 
-            add_filter( 'foogallery_override_gallery_template_fields', array( $this, 'add_foobox_help_field' ), 99, 2 );
-
             if ( class_exists( 'fooboxV2' ) ) {
 				//FooBox PRO specific functionality
 
