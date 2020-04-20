@@ -73,10 +73,12 @@ if ( ! class_exists( 'FooGallery_Admin' ) ) {
 		 * @return string
 		 */
 		function plugin_listing_links( $links ) {
+            if ( !is_array( $links ) ) {
+	            $links = array();
+            }
+
 			// Add a 'Settings' link to the plugin listing
 			$links[] = '<a href="' . esc_url( foogallery_admin_settings_url() ) . '"><b>' . __( 'Settings', 'foogallery' ) . '</b></a>';
-
-			$links[] = '<a href="' . esc_url( foogallery_admin_extensions_url() ) . '"><b>' . __( 'Extensions', 'foogallery' ) . '</b></a>';
 
 			$links[] = '<a href="' . esc_url( foogallery_admin_help_url() ) . '"><b>' . __( 'Help', 'foogallery' ) . '</b></a>';
 
