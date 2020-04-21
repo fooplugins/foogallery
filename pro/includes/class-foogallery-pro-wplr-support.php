@@ -133,31 +133,56 @@ if ( ! class_exists( 'FooGallery_Pro_WPLR_Support' ) ) {
 			$save_synced_data = false;
 			$updated_sync_data = array();
 
+			if ( isset( $_GET['data'] ) ) {
+
+				if ( 'clean' === $_GET['data'] ) {
+					$synced = array();
+				} else if ( 'dummy' === $_GET['data'] ) {
+					$synced[2] = array(
+						'collectionId' => 2,
+						'collection'   => 'test collection 2',
+						'foogalleryId' => 345677
+					);
+
+					$synced[3] = array(
+						'collectionId' => 3,
+						'collection'   => 'test collection 3',
+						'foogalleryId' => 1121212
+					);
+
+					$synced[1] = array(
+						'collectionId' => 1,
+						'collection'   => 'test collection',
+						'foogalleryId' => 348
+					);
+				}
+				update_option( 'foogallery_wplr_sync', $synced );
+			}
+
 			if ( count ( $synced ) > 0 ) {
-				$sync_data = sprintf( '<table class="wp-list-table widefat striped"><thead><tr><td><strong>%s</strong></td><td><strong>%s</strong></td></tr></thead><tbody>', __('Collection', 'foogallery'), __('Gallery', 'foogallery'));
-				foreach ($synced as $sync) {
+				$sync_data = sprintf( '<table class="wp-list-table widefat striped"><thead><tr><td><strong>%s</strong></td><td><strong>%s</strong></td></tr></thead><tbody>', __( 'Collection', 'foogallery' ), __( 'Gallery', 'foogallery' ) );
+				foreach ( $synced as $sync ) {
 					$gallery_id = $sync['foogalleryId'];
-					$gallery = FooGallery::get_by_id( $gallery_id );
+					$gallery    = FooGallery::get_by_id( $gallery_id );
 					if ( false === $gallery ) {
 						//gallery no longer exists
 						$save_synced_data = true;
-						break;
 					} else {
-						$gallery_url = get_edit_post_link( $gallery_id, 'url' );
-						$collection_id = $sync['collectionId'];
-						$collection = $sync['collection'];
-						$updated_sync_data[$collection_id] = $sync;
-						$sync_data .= sprintf( '<tr><td>%s</td><td><a href="%s" target="_blank">%s</a></td></tr>', $collection . ' (id:' . $collection_id . ')', $gallery_url, $gallery->name );
+						$gallery_url                         = get_edit_post_link( $gallery_id, 'url' );
+						$collection_id                       = $sync['collectionId'];
+						$collection                          = $sync['collection'];
+						$updated_sync_data[ $collection_id ] = $sync;
+						$sync_data                           .= sprintf( '<tr><td>%s</td><td><a href="%s" target="_blank">%s</a></td></tr>', $collection . ' (id:' . $collection_id . ')', $gallery_url, $gallery->name );
 					}
 				}
 				$sync_data .= '</tbody></table>';
 
 				$settings['settings'][] = array(
-					'id'      => 'wplr_synced',
-					'title'   => __( 'Already Synced', 'foogallery' ),
-					'type'    => 'html',
-					'desc'    => $sync_data,
-					'tab'     => 'wplr'
+					'id'    => 'wplr_synced',
+					'title' => __( 'Already Synced', 'foogallery' ),
+					'type'  => 'html',
+					'desc'  => $sync_data,
+					'tab'   => 'wplr'
 				);
 
 				//update the synced data, clearing out any unused collections where galleries have been deleted
