@@ -202,7 +202,7 @@ Update now to get all the latest features, bug fixes and improvements!
 
 == Changelog ==
 
-= 1.9.16 =
+= 1.9.18 =
 * New : Reworked hover effect settings to allow none
 * New : Added new zoomed hover effect
 * New : Added new advanced setting to add custom class to the gallery container
@@ -220,7 +220,9 @@ Update now to get all the latest features, bug fixes and improvements!
 * Fix : Fixed background fill not working in some cases
 * Fix : Cleared cache for taxonomy datasource when using shortcode attributes
 * Fix : Server folders datasource has fatal error when cache clears in some cases
+* Fix : WP/LR Sync removes deleted galleries from synced collection list
 * Update : renamed "Pagination" paging to "Numbered"
+* Update : WP/LR Sync updates gallery names when syncing collections
 [//]: # fs_premium_only_end
 
 = 1.9.11 =
