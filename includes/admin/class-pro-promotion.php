@@ -16,6 +16,7 @@ if ( ! class_exists( 'FooGallery_Pro_Promotion' ) ) {
 			'foogallery-polaroid'          => 'https://fooplugins.com/foogallery/wordpress-polaroid-gallery/',
 			'foogallery-grid'              => 'https://fooplugins.com/foogallery/wordpress-grid-gallery/',
 			'foogallery-slider'            => 'https://fooplugins.com/foogallery/wordpress-slider-gallery/',
+			'foogallery-videos'            => 'https://fooplugins.com/foogallery/wordpress-video-gallery/',
 			'foogallery-trial'             => 'https://fooplugins.com/foogallery/start-trial/',
 			'foogallery-pricing'           => 'https://fooplugins.com/foogallery/#pricing',
 			'foobox-pro'                   => 'https://fooplugins.com/foobox/',
@@ -50,6 +51,9 @@ if ( ! class_exists( 'FooGallery_Pro_Promotion' ) ) {
 
 				//Instagram + Loaded Effects
 				add_filter( 'foogallery_override_gallery_template_fields', array( $this, 'add_appearance_promo_fields' ), 20, 2 );
+
+				//Videos
+				add_filter( 'foogallery_override_gallery_template_fields', array( $this, 'add_video_promo_fields' ) );
 
 				//PRO Templates
 				add_filter( 'foogallery_gallery_templates', array( $this, 'add_promo_templates' ), 99, 1 );
@@ -476,6 +480,38 @@ if ( ! class_exists( 'FooGallery_Pro_Promotion' ) ) {
 			              '<li><strong>' . __( 'Thumbnail Filters', 'foogallery' ) . '</strong> - ' . __( 'Apply a filter to your gallery thumbnails, just like you can in Instagram. Choose from 12 unique filters!', 'foogallery' ) . $filters_link_html . '</li>' .
 		              '</ul>' . $this->build_promo_trial_html( 'appearance' ),
 				'type'     => 'promo'
+			);
+
+			return $fields;
+		}
+
+		/**
+		 * Add fields to the gallery template
+		 *
+		 * @uses "foogallery_override_gallery_template_fields"
+		 *
+		 * @param $fields
+		 * @param $template
+		 *
+		 * @return array
+		 */
+		function add_video_promo_fields( $fields ) {
+
+			$fields[] = array(
+				'id'       => 'video_promo',
+				'section'  => __( 'Video', 'foogallery' ),
+				'title'    => __( 'FooGallery PRO Feature : Video Galleries', 'foogallery' ),
+				'desc'     => __( 'Take your galleries to the next level with full video support:', 'foogallery' ) .
+				              '<ul class="ul-disc"><li><strong>' . __( 'Video Galleries', 'foogallery' ) . '</strong> - ' . __( 'Easily import videos to create beautiful video galleries. Or mix images and videos if you like.', 'foogallery' ) .
+				              '</li><li><strong>' . __( 'Youtube Video Search', 'foogallery' ) . '</strong> - ' . __( 'Search for Youtube videos, and then import them into your galleries in seconds.', 'foogallery' ) .
+				              '</li><li><strong>' . __( 'Vimeo Search And Import', 'foogallery' ) . '</strong> - ' . __( 'Import albums, channels, users or individual videos from Vimeo.', 'foogallery' ) .
+				              '</li><li><strong>' . __( 'Import From Other Sources', 'foogallery' ) . '</strong> - ' . __( 'Import from other popular video sources, including Facebook, Daily Motion, TED and others!', 'foogallery' ) .
+				              '</li><li><strong>' . __( 'Self-Hosted Videos', 'foogallery' ) . '</strong> - ' . __( 'Host your own videos? No problem! Upload them, select thumbnails and use in your gallery.', 'foogallery' ) .
+				              '</li></ul>' . $this->build_promo_trial_html( 'videos' ) . '<br /><br />',
+				'type'     => 'promo',
+				'default'  => 'fg-video-default',
+				'cta_text' => __( 'View Demos', 'foogallery' ),
+				'cta_link' => $this->build_url( 'foogallery-videos' )
 			);
 
 			return $fields;
