@@ -13,9 +13,6 @@ if ( ! class_exists( 'FooGallery_Pro_Lightbox' ) ) {
 			//add the data options needed for lightbox
 			add_filter( 'foogallery_build_container_data_options', array( $this, 'add_data_options' ), 10, 3 );
 
-			//build up any preview arguments
-			add_filter( 'foogallery_preview_arguments', array( $this, 'preview_arguments' ), 10, 3 );
-
 			//set the settings icon for lightbox
 			add_filter( 'foogallery_gallery_settings_metabox_section_icon', array( $this, 'add_section_icons' ) );
 
@@ -537,97 +534,6 @@ if ( ! class_exists( 'FooGallery_Pro_Lightbox' ) ) {
 			}
 
 			return $options;
-		}
-
-		/**
-		 * Build up a arguments used in the preview of the gallery
-		 * @param $args
-		 * @param $post_data
-		 *
-		 * @return mixed
-		 */
-		function preview_arguments( $args, $post_data, $template ) {
-			if ( array_key_exists( $template . '_lightbox_theme', $post_data[FOOGALLERY_META_SETTINGS] ) ) {
-				$args['lightbox_theme'] = $post_data[FOOGALLERY_META_SETTINGS][$template . '_lightbox_theme'];
-			}
-
-			if ( array_key_exists( $template . '_lightbox_button_theme', $post_data[FOOGALLERY_META_SETTINGS] ) ) {
-				$args['lightbox_button_theme'] = $post_data[FOOGALLERY_META_SETTINGS][$template . '_lightbox_button_theme'];
-			}
-
-			if ( array_key_exists( $template . '_lightbox_custom_button_theme', $post_data[FOOGALLERY_META_SETTINGS] ) ) {
-				$args['lightbox_custom_button_theme'] = $post_data[FOOGALLERY_META_SETTINGS][$template . '_lightbox_custom_button_theme'];
-			}
-
-			if ( array_key_exists( $template . '_lightbox_button_highlight', $post_data[FOOGALLERY_META_SETTINGS] ) ) {
-				$args['lightbox_button_highlight'] = $post_data[FOOGALLERY_META_SETTINGS][$template . '_lightbox_button_highlight'];
-			}
-
-			if ( array_key_exists( $template . '_lightbox_custom_button_highlight', $post_data[FOOGALLERY_META_SETTINGS] ) ) {
-				$args['lightbox_custom_button_highlight'] = $post_data[FOOGALLERY_META_SETTINGS][$template . '_lightbox_custom_button_highlight'];
-			}
-
-			if ( array_key_exists( $template . '_lightbox_thumbs', $post_data[FOOGALLERY_META_SETTINGS] ) ) {
-				$args['lightbox_thumbs'] = $post_data[FOOGALLERY_META_SETTINGS][$template . '_lightbox_thumbs'];
-			}
-
-			if ( array_key_exists( $template . '_lightbox_thumbs_captions', $post_data[FOOGALLERY_META_SETTINGS] ) ) {
-				$args['lightbox_thumbs_captions'] = $post_data[FOOGALLERY_META_SETTINGS][$template . '_lightbox_thumbs_captions'];
-			}
-
-			if ( array_key_exists( $template . '_lightbox_thumbs_bestfit', $post_data[FOOGALLERY_META_SETTINGS] ) ) {
-				$args['lightbox_thumbs_bestfit'] = $post_data[FOOGALLERY_META_SETTINGS][$template . '_lightbox_thumbs_bestfit'];
-			}
-
-			if ( array_key_exists( $template . '_lightbox_thumbs_size', $post_data[FOOGALLERY_META_SETTINGS] ) ) {
-				$args['lightbox_thumbs_size'] = $post_data[FOOGALLERY_META_SETTINGS][$template . '_lightbox_thumbs_size'];
-			}
-
-			if ( array_key_exists( $template . '_lightbox_info_position', $post_data[FOOGALLERY_META_SETTINGS] ) ) {
-				$args['lightbox_info_position'] = $post_data[FOOGALLERY_META_SETTINGS][$template . '_lightbox_info_position'];
-			}
-
-			if ( array_key_exists( $template . '_lightbox_info_overlay', $post_data[FOOGALLERY_META_SETTINGS] ) ) {
-				$args['lightbox_info_overlay'] = $post_data[FOOGALLERY_META_SETTINGS][$template . '_lightbox_info_overlay'];
-			}
-
-			if ( array_key_exists( $template . '_lightbox_hover_buttons', $post_data[FOOGALLERY_META_SETTINGS] ) ) {
-				$args['lightbox_hover_buttons'] = $post_data[FOOGALLERY_META_SETTINGS][$template . '_lightbox_hover_buttons'];
-			}
-
-			if ( array_key_exists( $template . '_lightbox_transition', $post_data[FOOGALLERY_META_SETTINGS] ) ) {
-				$args['lightbox_transition'] = $post_data[FOOGALLERY_META_SETTINGS][$template . '_lightbox_transition'];
-			}
-
-			if ( array_key_exists( $template . '_lightbox_auto_progress', $post_data[FOOGALLERY_META_SETTINGS] ) ) {
-				$args['lightbox_auto_progress'] = $post_data[FOOGALLERY_META_SETTINGS][$template . '_lightbox_auto_progress'];
-			}
-
-			if ( array_key_exists( $template . '_lightbox_auto_progress_seconds', $post_data[FOOGALLERY_META_SETTINGS] ) ) {
-				$args['lightbox_auto_progress_seconds'] = $post_data[FOOGALLERY_META_SETTINGS][$template . '_lightbox_auto_progress_seconds'];
-			}
-
-			if ( array_key_exists( $template . '_lightbox_fit_media', $post_data[FOOGALLERY_META_SETTINGS] ) ) {
-				$args['lightbox_fit_media'] = $post_data[FOOGALLERY_META_SETTINGS][$template . '_lightbox_fit_media'];
-			}
-
-			if ( array_key_exists( $template . '_lightbox_no_scrollbars', $post_data[FOOGALLERY_META_SETTINGS] ) ) {
-				$args['lightbox_no_scrollbars'] = $post_data[FOOGALLERY_META_SETTINGS][$template . '_lightbox_no_scrollbars'];
-			}
-
-			if ( array_key_exists( $template . '_lightbox_buttons_display', $post_data[FOOGALLERY_META_SETTINGS] ) ) {
-				$args['lightbox_buttons_display'] = $post_data[FOOGALLERY_META_SETTINGS][$template . '_lightbox_buttons_display'];
-			}
-
-			if ( array_key_exists( $template . '_lightbox_show_maximize_button', $post_data[FOOGALLERY_META_SETTINGS] ) ) {
-				$args['lightbox_show_maximize_button'] = $post_data[FOOGALLERY_META_SETTINGS][$template . '_lightbox_show_maximize_button'];
-			}
-
-			if ( array_key_exists( $template . '_lightbox_show_fullscreen_button', $post_data[FOOGALLERY_META_SETTINGS] ) ) {
-				$args['lightbox_show_fullscreen_button'] = $post_data[FOOGALLERY_META_SETTINGS][$template . '_lightbox_show_fullscreen_button'];
-			}
-
-			return $args;
 		}
 
 		/**

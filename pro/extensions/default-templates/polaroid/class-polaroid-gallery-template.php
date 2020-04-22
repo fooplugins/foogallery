@@ -26,9 +26,6 @@ if ( !class_exists( 'FooGallery_Polaroid_Gallery_Template' ) ) {
 			//override specific settings when saving the gallery
 			add_filter( 'foogallery_save_gallery_settings-polaroid_new', array( $this, 'override_settings'), 10, 3 );
 
-			//build up any preview arguments
-			add_filter( 'foogallery_preview_arguments-polaroid_new', array( $this, 'preview_arguments' ), 10, 2 );
-
 			//build up the thumb dimensions from some arguments
 			add_filter( 'foogallery_calculate_thumbnail_dimensions-polaroid_new', array( $this, 'build_thumbnail_dimensions_from_arguments' ), 10, 2 );
 
@@ -42,6 +39,8 @@ if ( !class_exists( 'FooGallery_Polaroid_Gallery_Template' ) ) {
 
             //build up the arguments needed for rendering this template
             add_filter( 'foogallery_gallery_template_arguments-polaroid_new', array( $this, 'build_gallery_template_arguments' ) );
+
+			add_filter( 'foogallery_build_class_attribute', array( $this, 'append_classes' ), 10, 2 );
         }
 
 		/**
@@ -154,7 +153,7 @@ if ( !class_exists( 'FooGallery_Polaroid_Gallery_Template' ) ) {
 						'row_data'=> array(
 							'data-foogallery-change-selector' => 'input:radio',
 							'data-foogallery-value-selector' => 'input:checked',
-							'data-foogallery-preview' => 'class'
+							'data-foogallery-preview' => 'shortcode'
 						)
                     ),
                 ),
@@ -259,20 +258,6 @@ if ( !class_exists( 'FooGallery_Polaroid_Gallery_Template' ) ) {
 		}
 
 		/**
-		 * Build up a arguments used in the preview of the gallery
-		 * @param $args
-		 * @param $post_data
-		 *
-		 * @return mixed
-		 */
-		function preview_arguments( $args, $post_data ) {
-            $args['thumbnail_dimensions'] = $post_data[FOOGALLERY_META_SETTINGS]['polaroid_new_thumbnail_dimensions'];
-            $args['gutter'] = $post_data[FOOGALLERY_META_SETTINGS]['polaroid_new_gutter'];
-            $args['align'] = $post_data[FOOGALLERY_META_SETTINGS]['polaroid_new_align'];
-            return $args;
-		}
-
-		/**
 		 * Builds thumb dimensions from arguments
 		 *
 		 * @param array $dimensions
@@ -344,5 +329,24 @@ if ( !class_exists( 'FooGallery_Polaroid_Gallery_Template' ) ) {
 
             return $args;
         }
+
+		/**
+		 * Adds the classes onto the container
+		 *
+		 * @param $classes
+		 * @param $foogallery
+		 *
+		 * @return array
+		 */
+		function append_classes( $classes, $foogallery ) {
+
+			$position = foogallery_gallery_template_setting( 'caption_position', '' );
+
+			if ( $position !== '' ) {
+				$classes[] = $position;
+			}
+
+			return $classes;
+		}
 	}
 }

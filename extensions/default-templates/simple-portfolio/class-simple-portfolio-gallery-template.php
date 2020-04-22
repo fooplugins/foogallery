@@ -23,9 +23,6 @@ if ( !class_exists( 'FooGallery_Simple_Portfolio_Gallery_Template' ) ) {
 			//override specific settings when saving the gallery
 			add_filter( 'foogallery_save_gallery_settings-simple_portfolio', array( $this, 'override_settings'), 10, 3 );
 
-			//build up any preview arguments
-			add_filter( 'foogallery_preview_arguments-simple_portfolio', array( $this, 'preview_arguments' ), 10, 2 );
-
 			//build up the thumb dimensions from some arguments
 			add_filter( 'foogallery_calculate_thumbnail_dimensions-simple_portfolio', array( $this, 'build_thumbnail_dimensions_from_arguments' ), 10, 2 );
 
@@ -154,7 +151,7 @@ if ( !class_exists( 'FooGallery_Simple_Portfolio_Gallery_Template' ) ) {
 						'row_data'=> array(
 							'data-foogallery-change-selector' => 'input:radio',
 							'data-foogallery-value-selector' => 'input:checked',
-							'data-foogallery-preview' => 'class'
+							'data-foogallery-preview' => 'shortcode'
 						)
                     ),
                 ),
@@ -192,7 +189,7 @@ if ( !class_exists( 'FooGallery_Simple_Portfolio_Gallery_Template' ) ) {
 					$field['row_data'] = array(
 						'data-foogallery-change-selector' => 'input:radio',
 						'data-foogallery-hidden' => true,
-						'data-foogallery-preview' => 'class'
+						'data-foogallery-preview' => 'shortcode'
 					);
 				} else if ( 'hover_effect_help' == $field['id'] ||
                             'captions_help' == $field['id']) {
@@ -244,20 +241,6 @@ if ( !class_exists( 'FooGallery_Simple_Portfolio_Gallery_Template' ) ) {
 			$settings['simple_portfolio_hover_effect_caption_visibility'] = 'fg-caption-always';
 
 			return $settings;
-		}
-
-		/**
-		 * Build up a arguments used in the preview of the gallery
-		 * @param $args
-		 * @param $post_data
-		 *
-		 * @return mixed
-		 */
-		function preview_arguments( $args, $post_data ) {
-			$args['thumbnail_dimensions'] = $post_data[FOOGALLERY_META_SETTINGS]['simple_portfolio_thumbnail_dimensions'];
-			$args['gutter'] = $post_data[FOOGALLERY_META_SETTINGS]['simple_portfolio_gutter'];
-            $args['align'] = $post_data[FOOGALLERY_META_SETTINGS]['simple_portfolio_align'];
-			return $args;
 		}
 
 		/**

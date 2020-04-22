@@ -18,9 +18,6 @@ if ( !class_exists( 'FooGallery_Justified_Gallery_Template' ) ) {
 			//add the data options needed for justified
 			add_filter( 'foogallery_build_container_data_options-justified', array( $this, 'add_justified_options' ), 10, 3 );
 
-			//build up any preview arguments
-			add_filter( 'foogallery_preview_arguments-justified', array( $this, 'preview_arguments' ), 10, 2 );
-
 			//build up the thumb dimensions from some arguments
 			add_filter( 'foogallery_calculate_thumbnail_dimensions-justified', array( $this, 'build_thumbnail_dimensions_from_arguments' ), 10, 2 );
 
@@ -216,22 +213,6 @@ if ( !class_exists( 'FooGallery_Justified_Gallery_Template' ) ) {
             $options['template']['lastRow'] = $lastRow;
 
 			return $options;
-		}
-
-		/**
-		 * Build up a arguments used in the preview of the gallery
-		 * @param $args
-		 * @param $post_data
-		 *
-		 * @return mixed
-		 */
-		function preview_arguments( $args, $post_data ) {
-			$args['thumbnail_height'] = $post_data[FOOGALLERY_META_SETTINGS]['justified_thumb_height'];
-			$args['row_height'] = $post_data[FOOGALLERY_META_SETTINGS]['justified_row_height'];
-			$args['max_row_height'] = $post_data[FOOGALLERY_META_SETTINGS]['justified_max_row_height'];
-			$args['margins'] = $post_data[FOOGALLERY_META_SETTINGS]['justified_margins'];
-            $args['lastrow'] = $post_data[FOOGALLERY_META_SETTINGS]['justified_lastrow'];
-			return $args;
 		}
 
 		/**

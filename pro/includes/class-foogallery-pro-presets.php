@@ -126,7 +126,7 @@ if ( ! class_exists( 'FooGallery_Pro_Hover_Presets' ) ) {
 				'row_data' => array(
 					'data-foogallery-change-selector'       => 'input:radio',
 					'data-foogallery-value-selector'        => 'input:checked',
-					'data-foogallery-preview'               => 'class',
+					'data-foogallery-preview'               => 'shortcode',
 					'data-foogallery-hidden'                => true,
 					'data-foogallery-show-when-field'       => 'hover_effect_type',
 					'data-foogallery-show-when-field-value' => 'preset',
@@ -153,7 +153,7 @@ if ( ! class_exists( 'FooGallery_Pro_Hover_Presets' ) ) {
 					'data-foogallery-hidden'                   => true,
 					'data-foogallery-show-when-field'          => 'hover_effect_type',
 					'data-foogallery-show-when-field-value'    => 'preset',
-					'data-foogallery-preview'                  => 'class'
+					'data-foogallery-preview'                  => 'shortcode'
 				)
 			);
 

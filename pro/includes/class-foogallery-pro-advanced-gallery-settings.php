@@ -13,9 +13,6 @@ if ( ! class_exists( 'FooGallery_Pro_Advanced_Gallery_Settings' ) ) {
 
 			//add data options
 			add_filter( 'foogallery_build_container_data_options', array( $this, 'add_data_options' ), 30, 3 );
-
-			//build up any preview arguments
-			add_filter( 'foogallery_preview_arguments', array( $this, 'preview_arguments' ), 10, 3 );
 		}
 
 		/**
@@ -86,24 +83,6 @@ if ( ! class_exists( 'FooGallery_Pro_Advanced_Gallery_Settings' ) ) {
 			}
 
 			return $options;
-		}
-
-		/**
-		 * Build up a arguments used in the preview of the gallery
-		 * @param $args
-		 * @param $post_data
-		 * @param $template
-		 *
-		 * @return mixed
-		 */
-		function preview_arguments( $args, $post_data, $template ) {
-			if ( array_key_exists( $template . '_state', $post_data[FOOGALLERY_META_SETTINGS] ) ) {
-				$args['state'] = $post_data[FOOGALLERY_META_SETTINGS][$template . '_state'];
-			}
-			if ( array_key_exists( $template . '_state_mask', $post_data[FOOGALLERY_META_SETTINGS] ) ) {
-				$args['state_mask'] = $post_data[FOOGALLERY_META_SETTINGS][$template . '_state_mask'];
-			}
-			return $args;
 		}
 	}
 }

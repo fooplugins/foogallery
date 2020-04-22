@@ -10,9 +10,6 @@ if ( ! class_exists( 'FooGallery_Paging' ) ) {
 			if ( is_admin() ) {
 				//add extra fields to the templates that support paging
 				add_filter( 'foogallery_override_gallery_template_fields', array( $this, 'add_paging_fields' ), 10, 2 );
-
-				//build up any preview arguments
-				add_filter( 'foogallery_preview_arguments', array( $this, 'preview_arguments' ), 10, 3 );
 			}
 
 			//adds the paging property to a FooGallery
@@ -281,7 +278,7 @@ if ( ! class_exists( 'FooGallery_Paging' ) ) {
 			if ( isset( $gallery->paging ) && true === $gallery->paging) {
 
 				//check if we have arguments from the shortcode and override the saved settings
-				$paging = $this->get_foogallery_argument( $gallery, 'paging_type', 'paging', '' );
+				$paging = $this->get_foogallery_argument( $gallery, 'paging_type', 'paging_type', '' );
 
 				if ( '' !== $paging ) {
 					$paging_position = $this->get_foogallery_argument( $gallery, 'paging_position', 'paging_position', 'both' );

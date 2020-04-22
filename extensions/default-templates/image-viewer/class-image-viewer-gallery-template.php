@@ -23,9 +23,6 @@ if ( !class_exists( 'FooGallery_Image_Viewer_Gallery_Template' ) ) {
 			//override specific settings when saving the gallery
 			add_filter( 'foogallery_save_gallery_settings-image-viewer', array( $this, 'override_settings'), 10, 3 );
 
-			//build up any preview arguments
-			add_filter( 'foogallery_preview_arguments-image-viewer', array( $this, 'preview_arguments' ), 10, 2 );
-
 			//build up the thumb dimensions from some arguments
 			add_filter( 'foogallery_calculate_thumbnail_dimensions-image-viewer', array( $this, 'build_thumbnail_dimensions_from_arguments' ), 10, 2 );
 
@@ -132,7 +129,7 @@ if ( !class_exists( 'FooGallery_Image_Viewer_Gallery_Template' ) ) {
                         ),
 						'row_data'=> array(
 							'data-foogallery-change-selector' => 'input:radio',
-							'data-foogallery-preview' => 'class'
+							'data-foogallery-preview' => 'shortcode'
 						)
                     ),
 					array(
@@ -263,22 +260,6 @@ if ( !class_exists( 'FooGallery_Image_Viewer_Gallery_Template' ) ) {
 			}
 
 			return $settings;
-		}
-
-		/**
-		 * Build up a arguments used in the preview of the gallery
-		 * @param $args
-		 * @param $post_data
-		 *
-		 * @return mixed
-		 */
-		function preview_arguments( $args, $post_data ) {
-			$args['thumbnail_size'] = $post_data[FOOGALLERY_META_SETTINGS]['image-viewer_thumbnail_size'];
-			$args['text-prev'] = $post_data[FOOGALLERY_META_SETTINGS]['image-viewer_text-prev'];
-			$args['text-of'] = $post_data[FOOGALLERY_META_SETTINGS]['image-viewer_text-of'];
-			$args['text-next'] = $post_data[FOOGALLERY_META_SETTINGS]['image-viewer_text-next'];
-			$args['looping'] = $post_data[FOOGALLERY_META_SETTINGS]['image-viewer_looping'];
-			return $args;
 		}
 
 		/**

@@ -12,9 +12,6 @@ if ( ! class_exists( 'FooGallery_Pro_Advanced_Thumbnails' ) ) {
             add_filter( 'foogallery_override_gallery_template_fields', array( $this, 'add_advanced_thumb_fields' ), 100, 2 );
 
             add_filter( 'foogallery_thumbnail_resize_args_final', array( $this, 'add_arguments' ), 10, 3 );
-
-			//build up any preview arguments
-	        add_filter( 'foogallery_preview_arguments', array( $this, 'preview_arguments' ), 10, 3 );
         }
 
         /**
@@ -84,23 +81,5 @@ if ( ! class_exists( 'FooGallery_Pro_Advanced_Thumbnails' ) ) {
 
             return $fields;
         }
-
-	    /**
-	     * Build up a arguments used in the preview of the gallery
-	     * @param $args
-	     * @param $post_data
-	     * @param $template
-	     *
-	     * @return mixed
-	     */
-	    function preview_arguments( $args, $post_data, $template ) {
-		    if ( array_key_exists( $template . '_thumb_cropping_options', $post_data[FOOGALLERY_META_SETTINGS] ) ) {
-			    $args['thumb_cropping_options'] = $post_data[FOOGALLERY_META_SETTINGS][$template . '_thumb_cropping_options'];
-		    }
-		    if ( array_key_exists( $template . '_thumb_background_fill', $post_data[FOOGALLERY_META_SETTINGS] ) ) {
-			    $args['thumb_background_fill'] = $post_data[FOOGALLERY_META_SETTINGS][$template . '_thumb_background_fill'];
-		    }
-		    return $args;
-	    }
     }
 }

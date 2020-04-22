@@ -20,9 +20,6 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 			//add common data options
 			add_filter( 'foogallery_build_container_data_options', array( $this, 'add_caption_data_options' ), 10, 3 );
 
-			//build up any preview arguments
-			add_filter( 'foogallery_preview_arguments', array( $this, 'preview_arguments' ), 10, 3 );
-
             //add common fields to the templates that support it
             add_filter( 'foogallery_override_gallery_template_fields', array( $this, 'add_common_fields' ), 10, 2 );
 
@@ -104,7 +101,7 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 					'row_data' => array(
 						'data-foogallery-change-selector' => 'input:radio',
 						'data-foogallery-value-selector'  => 'input:checked',
-						'data-foogallery-preview'         => 'shortcode class'
+						'data-foogallery-preview'         => 'shortcode'
 					)
 				);
 
@@ -124,7 +121,7 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 					),
 					'row_data' => array(
 						'data-foogallery-change-selector' => 'input:radio',
-						'data-foogallery-preview'         => 'class'
+						'data-foogallery-preview'         => 'shortcode'
 					)
 				);
 
@@ -145,7 +142,7 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 					),
 					'row_data' => array(
 						'data-foogallery-change-selector' => 'input:radio',
-						'data-foogallery-preview'         => 'class'
+						'data-foogallery-preview'         => 'shortcode'
 					)
 				);
 
@@ -166,7 +163,7 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 					),
 					'row_data' => array(
 						'data-foogallery-change-selector' => 'input:radio',
-						'data-foogallery-preview'         => 'class'
+						'data-foogallery-preview'         => 'shortcode'
 					)
 				);
 
@@ -186,7 +183,7 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 					),
 					'row_data' => array(
 						'data-foogallery-change-selector' => 'input:radio',
-						'data-foogallery-preview'         => 'class'
+						'data-foogallery-preview'         => 'shortcode'
 					)
 				);
 
@@ -211,7 +208,7 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 					'row_data' => array(
 						'data-foogallery-change-selector' => 'input:radio',
                         'data-foogallery-value-selector'  => 'input:checked',
-						'data-foogallery-preview'         => 'class'
+						'data-foogallery-preview'         => 'shortcode'
 					)
 				);
 
@@ -231,7 +228,7 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 					'row_data' => array(
 						'data-foogallery-change-selector' => 'select',
                         'data-foogallery-value-selector'  => 'select option:selected',
-						'data-foogallery-preview'         => 'class'
+						'data-foogallery-preview'         => 'shortcode'
 					)
 				);
 				//endregion
@@ -254,7 +251,7 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 					'row_data' => array(
 						'data-foogallery-change-selector' => 'input:radio',
 						'data-foogallery-value-selector'  => 'input:checked',
-						'data-foogallery-preview'         => 'class'
+						'data-foogallery-preview'         => 'shortcode'
 					)
 				);
 
@@ -275,7 +272,7 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 						'data-foogallery-hidden'                => true,
 						'data-foogallery-show-when-field'       => 'hover_effect_type',
 						'data-foogallery-show-when-field-value' => 'normal',
-						'data-foogallery-preview'               => 'class'
+						'data-foogallery-preview'               => 'shortcode'
 					)
 				);
 
@@ -299,7 +296,7 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 						'data-foogallery-hidden'                => true,
 						'data-foogallery-show-when-field'       => 'hover_effect_type',
 						'data-foogallery-show-when-field-value' => 'normal',
-						'data-foogallery-preview'               => 'class'
+						'data-foogallery-preview'               => 'shortcode'
 					)
 				);
 
@@ -323,7 +320,7 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 						'data-foogallery-hidden'                => true,
 						'data-foogallery-show-when-field'       => 'hover_effect_type',
 						'data-foogallery-show-when-field-value' => 'normal',
-						'data-foogallery-preview'               => 'class'
+						'data-foogallery-preview'               => 'shortcode'
 					)
 				);
 
@@ -347,7 +344,7 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 						'data-foogallery-hidden'                => true,
 						'data-foogallery-show-when-field'       => 'hover_effect_type',
 						'data-foogallery-show-when-field-value' => 'normal',
-						'data-foogallery-preview'               => 'class'
+						'data-foogallery-preview'               => 'shortcode'
 					)
 				);
 
@@ -372,7 +369,7 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 						'data-foogallery-hidden'                => true,
 						'data-foogallery-show-when-field'       => 'hover_effect_type',
 						'data-foogallery-show-when-field-value' => 'normal',
-						'data-foogallery-preview'               => 'class'
+						'data-foogallery-preview'               => 'shortcode'
 					)
 				);
 
@@ -398,7 +395,7 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 						'data-foogallery-hidden'                => true,
 						'data-foogallery-show-when-field'       => 'hover_effect_type',
 						'data-foogallery-show-when-field-value' => 'normal',
-						'data-foogallery-preview'               => 'class'
+						'data-foogallery-preview'               => 'shortcode'
 					)
 				);
 				//endregion Hover Effects Fields
@@ -605,26 +602,6 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 				}
 			}
 			return $options;
-		}
-
-		/**
-		 * Build up a arguments used in the preview of the gallery
-		 * @param $args
-		 * @param $post_data
-		 * @param $template
-		 *
-		 * @return mixed
-		 */
-		function preview_arguments( $args, $post_data, $template ) {
-            $args['theme'] = $post_data[FOOGALLERY_META_SETTINGS][$template . '_theme'];
-			$args['caption_title_source'] = $post_data[FOOGALLERY_META_SETTINGS][$template . '_caption_title_source'];
-			$args['caption_desc_source'] = $post_data[FOOGALLERY_META_SETTINGS][$template . '_caption_desc_source'];
-			$args['captions_limit_length'] = $post_data[FOOGALLERY_META_SETTINGS][$template . '_captions_limit_length'];
-			if ( $args['captions_limit_length'] !== '' ) {
-				$args['caption_title_length'] = $post_data[FOOGALLERY_META_SETTINGS][$template . '_caption_title_length'];
-				$args['caption_desc_length']  = $post_data[FOOGALLERY_META_SETTINGS][$template . '_caption_desc_length'];
-			}
-			return $args;
 		}
 
 		/**

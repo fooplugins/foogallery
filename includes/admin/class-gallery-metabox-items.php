@@ -114,6 +114,8 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Items' ) ) {
 						'preview'        => true
 					);
 
+					$args = $this->extract_preview_arguments( $args, $_POST, $template );
+
 					$args = apply_filters( 'foogallery_preview_arguments', $args, $_POST, $template );
 					$args = apply_filters( 'foogallery_preview_arguments-' . $template, $args, $_POST );
 
@@ -135,6 +137,36 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Items' ) ) {
 
 			die();
 		}
+
+	    /**
+         * Extract all the preview arguments from the post data
+         *
+	     * @param $args
+	     * @param $post_data
+	     * @param $template
+	     *
+	     * @return mixed
+	     */
+		private function extract_preview_arguments( $args, $post_data, $template ) {
+		    if ( array_key_exists( FOOGALLERY_META_SETTINGS, $post_data ) ) {
+			    $settings = $post_data[FOOGALLERY_META_SETTINGS];
+			    foreach ( $settings as $key => $value ) {
+			        if ( strpos( $key, $template . '_' ) === 0 ) {
+				        $args[ $this->str_replace_first( $template . '_', '', $key ) ] = $value;
+			        }
+			    }
+		    }
+
+            return $args;
+		}
+
+	    function str_replace_first($search, $replace, $subject) {
+		    $pos = strpos($subject, $search);
+		    if ($pos !== false) {
+			    return substr_replace($subject, $replace, $pos, strlen($search));
+		    }
+		    return $subject;
+	    }
 
 		/**
 		 * Handle gallery previews where there are no attachments

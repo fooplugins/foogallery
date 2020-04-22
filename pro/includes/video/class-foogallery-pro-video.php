@@ -161,7 +161,7 @@ if ( ! class_exists( 'FooGallery_Pro_Video' ) ) {
 				),
 				'row_data' => array(
 					'data-foogallery-change-selector' => 'input:radio',
-					'data-foogallery-preview'         => 'class'
+					'data-foogallery-preview'         => 'shortcode'
 				)
 			);
 			$fields[] = array(
@@ -178,7 +178,7 @@ if ( ! class_exists( 'FooGallery_Pro_Video' ) ) {
 				),
 				'row_data' => array(
 					'data-foogallery-change-selector' => 'input:radio',
-					'data-foogallery-preview'         => 'class'
+					'data-foogallery-preview'         => 'shortcode'
 				)
 			);
 

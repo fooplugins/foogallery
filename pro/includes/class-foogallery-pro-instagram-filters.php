@@ -13,9 +13,6 @@ if ( ! class_exists( 'FooGallery_Pro_Instagram_Filters' ) ) {
 			}
 
 			add_filter( 'foogallery_build_class_attribute', array( $this, 'append_instagram_filter_class' ), 10, 2 );
-
-			//build up any preview arguments
-			add_filter( 'foogallery_preview_arguments', array( $this, 'preview_arguments' ), 10, 3 );
 		}
 
 		/**
@@ -70,7 +67,7 @@ if ( ! class_exists( 'FooGallery_Pro_Instagram_Filters' ) ) {
 				),
 				'row_data' => array(
 					'data-foogallery-change-selector'       => 'select',
-					'data-foogallery-preview'               => 'class'
+					'data-foogallery-preview'               => 'shortcode'
 				)
 			);
 
