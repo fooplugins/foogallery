@@ -202,7 +202,7 @@ Update now to get all the latest features, bug fixes and improvements!
 
 == Changelog ==
 
-= 1.9.19 =
+= 1.9.20 =
 * New : Reworked hover effect settings to allow none
 * New : Added new zoomed hover effect
 * New : Added new advanced setting to add custom class to the gallery container
