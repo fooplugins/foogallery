@@ -75,6 +75,7 @@ if ( current_user_can( 'activate_plugins' ) ) {
 		__( 'WordPress URL', 'foogallery' )       			=> get_site_url(),
 		__( 'PHP version', 'foogallery' )         			=> phpversion(),
 		__( 'PHP GD', 'foogallery' )              			=> extension_loaded( 'gd' ) && function_exists( 'gd_info' ) ? __( 'Loaded', 'foogallery' ) . ' (V' . foogallery_gdversion() . ')' : __( 'Not found!', 'foogallery' ),
+		__( 'PHP Imagick', 'foogallery' )          			=> extension_loaded( 'imagick' ) ? __( 'Loaded', 'foogallery' ) : __( 'Not found!', 'foogallery' ),
 		__( 'PHP Open SSL', 'foogallery' )        			=> extension_loaded( 'openssl' ) ? __( 'Loaded', 'foogallery' ) : __( 'Not found!', 'foogallery' ),
 		__( 'PHP HTTP Wrapper', 'foogallery' )    			=> in_array( 'http', $stream_wrappers ) ? __( 'Found', 'foogallery' ) : __( 'Not found!', 'foogallery' ),
 		__( 'PHP HTTPS Wrapper', 'foogallery' )   			=> in_array( 'https', $stream_wrappers ) ? __( 'Found', 'foogallery' ) : __( 'Not found!', 'foogallery' ),
