@@ -202,12 +202,13 @@ Update now to get all the latest features, bug fixes and improvements!
 
 == Changelog ==
 
-= 1.9.20 =
+= 1.9.21 =
 * New : Reworked hover effect settings to allow none
 * New : Added new zoomed hover effect
 * New : Added new advanced setting to add custom class to the gallery container
 * New : Added global settings for upscaling small images when using larger thumbnail dimensions
 * New : Added Pro feature promotions in gallery settings
+* New : Added setting to force GD Image editor as the default
 * Fix : Fixed bug with Safari when editing a gallery, not loading thumbs
 * Fix : Fixed gallery previews in certain situations
 * Update : Freemius SDK 2.3.2
