@@ -221,7 +221,13 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 				'tab'     => 'thumb'
 			);
 
-
+			$settings[] = array(
+				'id'      => 'force_gd_library',
+				'title'   => __( 'Force GD Library', 'foogallery' ),
+				'desc'    => __( 'By default, WordPress will use Imagick as the default Image Editor. This will force GD to be used as the default.', 'foogallery' ),
+				'type'    => 'checkbox',
+				'tab'     => 'thumb'
+			);
 
 			//endregion Thumbnail Tab
 
