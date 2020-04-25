@@ -264,8 +264,18 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 					'spacer'   => '<span class="spacer"></span>',
 					'default'  => '',
 					'choices'  => apply_filters( 'foogallery_gallery_template_common_thumbnail_fields_caption_invert_color_choices', array(
-						''                  => __( 'Dark', 'foogallery' ),
-						'fg-light-overlays' => __( 'Light', 'foogallery' ),
+						'' => array(
+							'label'   => __( 'Dark',   'foogallery' ),
+							'tooltip' => __('A dark overlay with white text is shown on hover', 'foogallery'),
+						),
+						'fg-light-overlays' => array(
+							'label'   => __( 'Light',   'foogallery' ),
+							'tooltip' => __('A white overlay with dark text is shown on hover', 'foogallery'),
+						),
+						'fg-transparent-overlays' => array(
+							'label'   => __( 'Transparent',   'foogallery' ),
+							'tooltip' => __('A transparent overlay with white text is shown on hover', 'foogallery'),
+						),
 					) ),
 					'row_data' => array(
 						'data-foogallery-change-selector'       => 'input:radio',

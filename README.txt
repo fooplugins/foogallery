@@ -206,6 +206,7 @@ Update now to get all the latest features, bug fixes and improvements!
 Date Updated : 2020-04-24
 * New : Reworked hover effect settings to allow none
 * New : Added new zoomed hover effect
+* New : Added new transparent theme hover effect
 * New : Added new advanced setting to add custom class to the gallery container
 * New : Added global settings for upscaling small images when using larger thumbnail dimensions
 * New : Added Pro feature promotions in gallery settings
