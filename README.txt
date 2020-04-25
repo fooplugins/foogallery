@@ -202,7 +202,8 @@ Update now to get all the latest features, bug fixes and improvements!
 
 == Changelog ==
 
-= 1.9.21 =
+= 1.9.22 =
+Date Updated : 2020-04-24
 * New : Reworked hover effect settings to allow none
 * New : Added new zoomed hover effect
 * New : Added new advanced setting to add custom class to the gallery container
@@ -228,6 +229,7 @@ Update now to get all the latest features, bug fixes and improvements!
 [//]: # fs_premium_only_end
 
 = 1.9.11 =
+Date Updated : 2020-03-29
 * Fix : Fix for Simple Portfolio template not saving "None" for captions.
 * Fix : Fixed albums when adding incorrect markup target="default"
 * Fix : Updated thumbnail generation test logic to be more resilient, and improved admin message.
@@ -246,6 +248,7 @@ Update now to get all the latest features, bug fixes and improvements!
 * Update : FooGallery client side 1.4.6 (including multiple bug fixes)
 
 = 1.9.8 =
+Date Updated : 2020-03-08
 * New : Added RankMath compatibility - sitemap image indexing.
 * New : Added new setting under Hover Effects : Invert Color. Invert the caption icon colors from dark to light.
 * New : All hover and loading icons converted to SVG format.
@@ -260,6 +263,7 @@ Update now to get all the latest features, bug fixes and improvements!
 * Update : FooGallery client side 1.4.0 (MAJOR UPDATE).
 
 = 1.8.20 =
+Date Updated : 2019-11-22
 * Fix : Fix for Masonry template layout issue in Firefox
 [//]: # fs_premium_only_begin
 * Fix : Fixed Media Library issues in WP 5.3
@@ -272,6 +276,7 @@ Update now to get all the latest features, bug fixes and improvements!
 * Update : FooGallery client side 1.3.6
 
 = 1.8.18 =
+Date Updated : 2019-10-23
 * New : Elementor compatibility - gallery previews in Elementor editor work, and added a FooGallery widget to the Elementor editor
 [//]: # fs_premium_only_begin
 * New : Instagram datasource - populate galleries from your Instagram account
