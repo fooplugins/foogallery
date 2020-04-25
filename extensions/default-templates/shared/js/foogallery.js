@@ -59,9 +59,9 @@
 );
 /*!
 * FooGallery.utils - Contains common utility methods and classes used in our plugins.
-* @version 0.1.7
+* @version 0.1.8
 * @link https://github.com/steveush/foo-utils#readme
-* @copyright Steve Usher 2019
+* @copyright Steve Usher 2020
 * @license Released under the GPL-3.0 license.
 */
 /**
@@ -112,7 +112,7 @@
 		 * @name version
 		 * @type {string}
 		 */
-		version: '0.1.7'
+		version: '0.1.8'
 	};
 
 	/**
@@ -208,7 +208,7 @@
 })(jQuery);
 (function ($, _){
 	// only register methods if this version is the current version
-	if (_.version !== '0.1.7') return;
+	if (_.version !== '0.1.8') return;
 
 	/**
 	 * @summary Contains common type checking utility methods.
@@ -562,7 +562,7 @@
 );
 (function($, _, _is){
 	// only register methods if this version is the current version
-	if (_.version !== '0.1.7') return;
+	if (_.version !== '0.1.8') return;
 
 	/**
 	 * @memberof FooGallery.utils
@@ -1145,7 +1145,7 @@
 );
 (function(_, _is){
 	// only register methods if this version is the current version
-	if (_.version !== '0.1.7') return;
+	if (_.version !== '0.1.8') return;
 
 	/**
 	 * @summary Contains common url utility methods.
@@ -1284,7 +1284,7 @@
 );
 (function (_, _is, _fn) {
 	// only register methods if this version is the current version
-	if (_.version !== '0.1.7') return;
+	if (_.version !== '0.1.8') return;
 
 	/**
 	 * @summary Contains common string utility methods.
@@ -1317,6 +1317,32 @@
 			if (_is.string(p2)) return p2.toUpperCase();
 			return p1.toLowerCase();
 		});
+	};
+
+	/**
+	 * @summary Converts the given `target` to kebab case. Non-alphanumeric characters are converted to `-`.
+	 * @memberof FooGallery.utils.str
+	 * @function kebab
+	 * @param {string} target - The string to kebab case.
+	 * @returns {string}
+	 * @example {@run true}
+	 * // alias the FooGallery.utils.str namespace
+	 * var _str = FooGallery.utils.str;
+	 *
+	 * console.log( _str.kebab( "max-width" ) ); // => "max-width"
+	 * console.log( _str.kebab( "max--width" ) ); // => "max-width"
+	 * console.log( _str.kebab( "max Width" ) ); // => "max-width"
+	 * console.log( _str.kebab( "Max_width" ) ); // => "max-width"
+	 * console.log( _str.kebab( "MaxWidth" ) ); // => "max-width"
+	 * console.log( _str.kebab( "Non-alphanumeric ch@racters are converted to dashes!" ) ); // => "non-alphanumeric-ch-racters-are-converted-to-dashes"
+	 */
+	_.str.kebab = function(target){
+		if (_is.empty(target)) return target;
+		return target
+			.match(/[A-Z]{2,}(?=[A-Z][a-z0-9]*|\b)|[A-Z]?[a-z0-9]*|[A-Z]|[0-9]+/g)
+			.filter(Boolean)
+			.map(function(x){ return x.toLowerCase(); })
+			.join('-');
 	};
 
 	/**
@@ -1599,7 +1625,7 @@
 );
 (function($, _, _is, _fn, _str){
 	// only register methods if this version is the current version
-	if (_.version !== '0.1.7') return;
+	if (_.version !== '0.1.8') return;
 
 	/**
 	 * @summary Contains common object utility methods.
@@ -1931,7 +1957,7 @@
 );
 (function($, _, _is){
 	// only register methods if this version is the current version
-	if (_.version !== '0.1.7') return;
+	if (_.version !== '0.1.8') return;
 
 	// any methods that have dependencies but don't fall into a specific subset or namespace can be added here
 
@@ -2212,7 +2238,7 @@
 );
 (function($, _, _is){
 	// only register methods if this version is the current version
-	if (_.version !== '0.1.7') return;
+	if (_.version !== '0.1.8') return;
 
 	/**
 	 * @summary Contains common utility methods and members for the CSS animation property.
@@ -2438,7 +2464,7 @@
 );
 (function($, _, _is, _animation){
 	// only register methods if this version is the current version
-	if (_.version !== '0.1.7') return;
+	if (_.version !== '0.1.8') return;
 
 	/**
 	 * @summary Contains common utility methods and members for the CSS transition property.
@@ -2612,7 +2638,7 @@
 );
 (function ($, _, _is, _obj, _fn) {
 	// only register methods if this version is the current version
-	if (_.version !== '0.1.7') return;
+	if (_.version !== '0.1.8') return;
 
 	/**
 	 * @summary A base class providing some helper methods for prototypal inheritance.
@@ -2751,7 +2777,7 @@
 );
 (function (_, _is, _str) {
     // only register methods if this version is the current version
-    if (_.version !== '0.1.7') return;
+    if (_.version !== '0.1.8') return;
 
     _.Event = _.Class.extend(/** @lends FooGallery.utils.Event */{
         /**
@@ -3013,7 +3039,7 @@
 );
 (function($, _, _is){
 	// only register methods if this version is the current version
-	if (_.version !== '0.1.7') return;
+	if (_.version !== '0.1.8') return;
 
 	_.Bounds = _.Class.extend(/** @lends FooGallery.utils.Bounds */{
 		/**
@@ -3114,7 +3140,7 @@
 );
 (function($, _, _is, _fn, _obj){
     // only register methods if this version is the current version
-    if (_.version !== '0.1.7') return;
+    if (_.version !== '0.1.8') return;
 
     _.Timer = _.EventClass.extend(/** @lends FooGallery.utils.Timer */{
         /**
@@ -3408,7 +3434,7 @@
 
 (function($, _, _is, _fn){
 	// only register methods if this version is the current version
-	if (_.version !== '0.1.7') return;
+	if (_.version !== '0.1.8') return;
 
 	_.Factory = _.Class.extend(/** @lends FooGallery.utils.Factory */{
 		/**
@@ -3731,7 +3757,7 @@
 );
 (function(_, _fn, _str){
 	// only register methods if this version is the current version
-	if (_.version !== '0.1.7') return;
+	if (_.version !== '0.1.8') return;
 
 	// this is done to handle Content Security in Chrome and other browsers blocking access to the localStorage object under certain configurations.
 	// see: https://www.chromium.org/for-testers/bug-reporting-guidelines/uncaught-securityerror-failed-to-read-the-localstorage-property-from-window-access-is-denied-for-this-document
@@ -3837,7 +3863,7 @@
 );
 (function($, _, _fn){
     // only register methods if this version is the current version
-    if (_.version !== '0.1.7') return;
+    if (_.version !== '0.1.8') return;
 
     _.FullscreenAPI = _.EventClass.extend(/** @lends FooGallery.utils.FullscreenAPI */{
         /**
@@ -4229,12 +4255,37 @@
 		return complete;
 	};
 
+	/**
+	 * @summary A string array of supported EXIF properties.
+	 * @memberof FooGallery
+	 * @name supportedExifProperties
+	 * @type {string[]}
+	 */
+	_.supportedExifProperties = ["aperture","camera","date","exposure","focalLength","iso","orientation"];
+
+	/**
+	 * @memberof FooGallery.utils.is
+	 * @function exif
+	 * @param {*} value - The value to check.
+	 * @returns {boolean} `true` if the `value` contains any supported and valid EXIF properties.
+	 */
+	_is.exif = function(value){
+		if (_is.object(value)){
+			var keys = Object.keys(value);
+			return keys.length > 0 && keys.some(function(key){
+				return _.supportedExifProperties.indexOf(key) !== -1 && !_is.empty(value[key]);
+			});
+		}
+		return false;
+	};
+
 })(
-		FooGallery.$,
-		FooGallery,
-		FooGallery.utils,
-		FooGallery.utils.is,
-		FooGallery.utils.fn
+	FooGallery.$,
+	FooGallery,
+	FooGallery.utils,
+	FooGallery.utils.is,
+	FooGallery.utils.fn,
+	FooGallery.utils.str
 );
 (function($, _, _utils, _is, _obj) {
 
@@ -4971,6 +5022,9 @@
 				create: false,
 				children: false
 			};
+			self.robserver = new ResizeObserver(_fn.throttle(function () {
+				if (self.$el.is(":visible")) self.layout();
+			}, 250));
 		},
 
 		// ################
@@ -5061,6 +5115,7 @@
 			if (selector != null && !self.$el.is(selector)) {
 				self.$el.addClass(self.opt.classes);
 			}
+			self.robserver.observe(self.$el.get(0));
 
 			// if the container currently has no children make them
 			if (self.$el.children().not(self.sel.item.elem).length === 0) {
@@ -5350,6 +5405,7 @@
              * });
              */
             self.raise("destroy");
+			self.robserver.disconnect();
 			if (self._checkTimeout) clearTimeout(self._checkTimeout);
             self.$scrollParent.off(self.namespace);
             $(window).off(self.namespace);
@@ -5533,13 +5589,15 @@
 		 * @function
 		 * @name getCSSClass
 		 * @param {string} type - The specific type of CSS class to retrieve.
+		 * @param {string} [def=""] - The default value to return if no CSS class is found.
 		 * @returns {string}
 		 */
-		getCSSClass: function(type){
+		getCSSClass: function(type, def){
+			def = _is.empty(def) ? "" : def;
 			var regex = type instanceof RegExp ? type : (_is.string(type) && this.opt.regex.hasOwnProperty(type) ? this.opt.regex[type] : null),
 				className = (this.$el.prop("className") || ''),
 				match = regex != null ? className.match(regex) : null;
-			return match != null && match.length >= 2 ? match[1] : "";
+			return match != null && match.length >= 2 ? match[1] : def;
 		},
 
 		// ###############
@@ -7056,6 +7114,18 @@
 			 */
 			self.panelHide = self.opt.panelHide;
 			/**
+			 * @memberof FooGallery.Item#
+			 * @name exif
+			 * @type {Object}
+			 */
+			self.exif = self.opt.exif;
+			/**
+			 * @memberof FooGallery.Item#
+			 * @name hasExif
+			 * @type {boolean}
+			 */
+			self.hasExif = _is.exif(self.exif);
+			/**
 			 * @summary The cached result of the last call to the {@link FooGallery.Item#getThumbUrl|getThumbUrl} method.
 			 * @memberof FooGallery.Item#
 			 * @name _thumbUrl
@@ -7330,6 +7400,10 @@
 			self.description = data.description || data.captionDesc || self.description || self.alt;
 			self.noLightbox = self.$anchor.hasClass(cls.noLightbox);
 			self.panelHide = self.$anchor.hasClass(cls.panelHide);
+			if (_is.exif(data.exif)){
+				self.exif = _obj.extend(self.exif, data.exif);
+				self.hasExif = true;
+			}
 			// if the caption or description are not set yet try fetching it from the html
 			if (_is.empty(self.caption)) self.caption = $.trim(self.$caption.find(sel.caption.title).html());
 			if (_is.empty(self.description)) self.description = $.trim(self.$caption.find(sel.caption.description).html());
@@ -7366,6 +7440,9 @@
 				self._undo.placeholder = true;
 			}
 			self.$el.addClass(self.getTypeClass());
+			if (self.hasExif){
+				self.$el.addClass(cls.exif);
+			}
 			if (self.isCreated && self.isAttached && !self.isLoading && !self.isLoaded && !self.isError) {
 				self.$el.addClass(cls.idle);
 			}
@@ -7456,8 +7533,8 @@
 		 * @returns {boolean}
 		 */
 		doCreateItem: function () {
-			var self = this, o = self.tmpl.opt, cls = self.cls, attr = self.attr, type = self.getTypeClass();
-			attr.elem["class"] = [cls.elem, type, cls.idle].join(" ");
+			var self = this, o = self.tmpl.opt, cls = self.cls, attr = self.attr, type = self.getTypeClass(), exif = self.hasExif ? cls.exif : "";
+			attr.elem["class"] = [cls.elem, type, exif, cls.idle].join(" ");
 
 			attr.inner["class"] = cls.inner;
 
@@ -7967,6 +8044,15 @@
 			showCaptionDescription: true,
 			noLightbox: false,
 			panelHide: false,
+			exif: {
+				aperture: null,
+				camera: null,
+				date: null,
+				exposure: null,
+				focalLength: null,
+				iso: null,
+				orientation: null
+			},
 			attr: {
 				elem: {},
 				inner: {},
@@ -7984,6 +8070,7 @@
 		item: {
 			elem: "fg-item",
 			inner: "fg-item-inner",
+			exif: "fg-item-exif",
 			anchor: "fg-thumb",
 			overlay: "fg-image-overlay",
 			wrap: "fg-image-wrap",
@@ -8006,7 +8093,17 @@
 			}
 		}
 	}, {
-		item: {}
+		item: {
+			exif: {
+				aperture: "Aperture",
+				camera: "Camera",
+				date: "Date",
+				exposure: "Exposure",
+				focalLength: "Focal Length",
+				iso: "ISO",
+				orientation: "Orientation"
+			}
+		}
 	});
 
 	_.components.register("item", _.Item);
@@ -8860,8 +8957,6 @@
 			this.$el = template.$el;
 			this.options = $.extend(true, {}, _.Justified.defaults, options);
 			this._items = [];
-			this._lastRefresh = 0;
-			this._refresh = null;
 		},
 		init: function(){
 			var self = this;
@@ -8872,22 +8967,9 @@
 					self.options.maxRowHeight = parseInt(self.options.maxRowHeight);
 				}
 			}
-			$(window).on("resize.justified", {self: self}, self.onWindowResize);
-			this._refresh = setInterval(function(){
-				self.refresh();
-			}, self.options.refreshInterval);
 		},
 		destroy: function(){
-			if (this._refresh) clearInterval(this._refresh);
-			$(window).off("resize.justified");
 			this.$el.removeAttr("style");
-		},
-		refresh: function(){
-			var maxWidth = this.getContainerWidth();
-			if (maxWidth != this._lastRefresh){
-				this.layout();
-				this._lastRefresh = maxWidth;
-			}
 		},
 		parse: function(){
 			var self = this;
@@ -8920,19 +9002,14 @@
 			}
 			return self.$el.width();
 		},
-		layout: function(refresh, autoCorrect){
-			refresh = _is.boolean(refresh) ? refresh : false;
-			autoCorrect = _is.boolean(autoCorrect) ? autoCorrect : true;
-
-			if (refresh || this._items.length === 0){
-				this.parse();
-			}
+		layout: function(){
+			this.parse();
 
 			var self = this,
-					height = 0,
-					maxWidth = self.getContainerWidth(),
-					maxHeight = self.getMaxRowHeight(),
-					rows = self.rows(maxWidth, maxHeight);
+				height = 0,
+				maxWidth = self.getContainerWidth(),
+				maxHeight = self.getMaxRowHeight(),
+				rows = self.rows(maxWidth, maxHeight);
 
 			$.each(rows, function(ri, row){
 				if (row.visible){
@@ -8942,11 +9019,6 @@
 				self.render(row);
 			});
 			self.$el.height(height);
-			// if our layout caused the container width to get smaller
-			// i.e. makes a scrollbar appear then layout again to account for it
-			if (autoCorrect && self.getContainerWidth() < maxWidth){
-				self.layout(false, false);
-			}
 		},
 		render: function(row){
 			for (var j = 0, jl = row.items.length, item; j < jl; j++){
@@ -9126,9 +9198,6 @@
 			if (rows.length > 1) top += self.options.margins;
 			self.lastRow(row, top, maxWidth, maxHeight);
 			return rows;
-		},
-		onWindowResize: function(e){
-			e.data.self.layout( true );
 		}
 	});
 
@@ -9158,24 +9227,24 @@
 			self.justified.init();
 		},
 		onFirstLoad: function(event, self){
-			self.justified.layout( true );
+			self.justified.layout();
 		},
 		onReady: function(event, self){
-			self.justified.layout( true );
+			self.justified.layout();
 		},
 		onDestroy: function(event, self){
 			self.justified.destroy();
 		},
 		onLayout: function(event, self){
-			self.justified.layout( true );
+			self.justified.layout();
 		},
 		onAfterPageChange: function(event, self, current, prev, isFilter){
 			if (!isFilter){
-				self.justified.layout( true );
+				self.justified.layout();
 			}
 		},
 		onAfterFilterChange: function(event, self){
-			self.justified.layout( true );
+			self.justified.layout();
 		}
 	});
 
@@ -9221,13 +9290,12 @@
 		},
 		onPostInit: function(event, self){
 			self.checkCSS();
-			$(window).on("resize" + self.namespace, {self: self}, _fn.debounce(function () {
-				self.checkCSS();
-			}, 50));
 		},
 		onDestroy: function(event, self){
 			self.removeCSS();
-			$(window).off("resize" + self.namespace);
+		},
+		onLayout: function(event, self){
+			self.checkCSS();
 		},
 		checkCSS: function(){
 			var self = this, maxWidth = self.getContainerWidth(), current = maxWidth < self.template.columnWidth;
@@ -9561,7 +9629,7 @@
 		FooGallery,
 		FooGallery.utils.obj
 );
-(function ($, _, _utils, _obj) {
+(function ($, _, _utils, _obj, _is) {
 
 	_.triggerPostLoad = function (e, tmpl, current, prev, isFilter) {
 		if (e.type === "first-load" || (tmpl.initialized && ((e.type === "after-page-change" && !isFilter) || e.type === "after-filter-change"))) {
@@ -9591,15 +9659,35 @@
 		_.autoDefaults = _obj.merge(_.autoDefaults, options);
 	};
 
+	_.globalsMerged = false;
+
+	_.mergeGlobals = function(){
+		if (_.globalsMerged === true) return;
+		if (window.FooGallery_il8n && _is.object(window.FooGallery_il8n)){
+			var il8n = window.FooGallery_il8n;
+			for (var factory in il8n){
+				if (!il8n.hasOwnProperty(factory) || !(_[factory] instanceof _utils.Factory) || !_is.object(il8n[factory])) continue;
+				for (var component in il8n[factory]){
+					if (il8n[factory].hasOwnProperty(component)){
+						_[factory].configure(component, null, null, il8n[factory][component]);
+					}
+				}
+			}
+			_.globalsMerged = true;
+		}
+	};
+
 	_.load = _.reload = function(){
 		// this automatically initializes all templates on page load
 		$(function () {
+			_.mergeGlobals();
 			if (_.autoEnabled){
 				$('[id^="foogallery-gallery-"]:not(.fg-ready)').foogallery(_.autoDefaults);
 			}
 		});
 
 		_utils.ready(function () {
+			_.mergeGlobals();
 			if (_.autoEnabled){
 				$('[id^="foogallery-gallery-"].fg-ready').foogallery(_.autoDefaults);
 			}
@@ -9609,8 +9697,9 @@
 	_.load();
 
 })(
-		FooGallery.$,
-		FooGallery,
-		FooGallery.utils,
-		FooGallery.utils.obj
+	FooGallery.$,
+	FooGallery,
+	FooGallery.utils,
+	FooGallery.utils.obj,
+	FooGallery.utils.is
 );

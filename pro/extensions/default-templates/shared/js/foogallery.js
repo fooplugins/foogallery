@@ -1737,9 +1737,9 @@
 );
 /*!
 * FooGallery.utils - Contains common utility methods and classes used in our plugins.
-* @version 0.1.7
+* @version 0.1.8
 * @link https://github.com/steveush/foo-utils#readme
-* @copyright Steve Usher 2019
+* @copyright Steve Usher 2020
 * @license Released under the GPL-3.0 license.
 */
 /**
@@ -1790,7 +1790,7 @@
 		 * @name version
 		 * @type {string}
 		 */
-		version: '0.1.7'
+		version: '0.1.8'
 	};
 
 	/**
@@ -1886,7 +1886,7 @@
 })(jQuery);
 (function ($, _){
 	// only register methods if this version is the current version
-	if (_.version !== '0.1.7') return;
+	if (_.version !== '0.1.8') return;
 
 	/**
 	 * @summary Contains common type checking utility methods.
@@ -2240,7 +2240,7 @@
 );
 (function($, _, _is){
 	// only register methods if this version is the current version
-	if (_.version !== '0.1.7') return;
+	if (_.version !== '0.1.8') return;
 
 	/**
 	 * @memberof FooGallery.utils
@@ -2823,7 +2823,7 @@
 );
 (function(_, _is){
 	// only register methods if this version is the current version
-	if (_.version !== '0.1.7') return;
+	if (_.version !== '0.1.8') return;
 
 	/**
 	 * @summary Contains common url utility methods.
@@ -2962,7 +2962,7 @@
 );
 (function (_, _is, _fn) {
 	// only register methods if this version is the current version
-	if (_.version !== '0.1.7') return;
+	if (_.version !== '0.1.8') return;
 
 	/**
 	 * @summary Contains common string utility methods.
@@ -2995,6 +2995,32 @@
 			if (_is.string(p2)) return p2.toUpperCase();
 			return p1.toLowerCase();
 		});
+	};
+
+	/**
+	 * @summary Converts the given `target` to kebab case. Non-alphanumeric characters are converted to `-`.
+	 * @memberof FooGallery.utils.str
+	 * @function kebab
+	 * @param {string} target - The string to kebab case.
+	 * @returns {string}
+	 * @example {@run true}
+	 * // alias the FooGallery.utils.str namespace
+	 * var _str = FooGallery.utils.str;
+	 *
+	 * console.log( _str.kebab( "max-width" ) ); // => "max-width"
+	 * console.log( _str.kebab( "max--width" ) ); // => "max-width"
+	 * console.log( _str.kebab( "max Width" ) ); // => "max-width"
+	 * console.log( _str.kebab( "Max_width" ) ); // => "max-width"
+	 * console.log( _str.kebab( "MaxWidth" ) ); // => "max-width"
+	 * console.log( _str.kebab( "Non-alphanumeric ch@racters are converted to dashes!" ) ); // => "non-alphanumeric-ch-racters-are-converted-to-dashes"
+	 */
+	_.str.kebab = function(target){
+		if (_is.empty(target)) return target;
+		return target
+			.match(/[A-Z]{2,}(?=[A-Z][a-z0-9]*|\b)|[A-Z]?[a-z0-9]*|[A-Z]|[0-9]+/g)
+			.filter(Boolean)
+			.map(function(x){ return x.toLowerCase(); })
+			.join('-');
 	};
 
 	/**
@@ -3277,7 +3303,7 @@
 );
 (function($, _, _is, _fn, _str){
 	// only register methods if this version is the current version
-	if (_.version !== '0.1.7') return;
+	if (_.version !== '0.1.8') return;
 
 	/**
 	 * @summary Contains common object utility methods.
@@ -3609,7 +3635,7 @@
 );
 (function($, _, _is){
 	// only register methods if this version is the current version
-	if (_.version !== '0.1.7') return;
+	if (_.version !== '0.1.8') return;
 
 	// any methods that have dependencies but don't fall into a specific subset or namespace can be added here
 
@@ -3890,7 +3916,7 @@
 );
 (function($, _, _is){
 	// only register methods if this version is the current version
-	if (_.version !== '0.1.7') return;
+	if (_.version !== '0.1.8') return;
 
 	/**
 	 * @summary Contains common utility methods and members for the CSS animation property.
@@ -4116,7 +4142,7 @@
 );
 (function($, _, _is, _animation){
 	// only register methods if this version is the current version
-	if (_.version !== '0.1.7') return;
+	if (_.version !== '0.1.8') return;
 
 	/**
 	 * @summary Contains common utility methods and members for the CSS transition property.
@@ -4290,7 +4316,7 @@
 );
 (function ($, _, _is, _obj, _fn) {
 	// only register methods if this version is the current version
-	if (_.version !== '0.1.7') return;
+	if (_.version !== '0.1.8') return;
 
 	/**
 	 * @summary A base class providing some helper methods for prototypal inheritance.
@@ -4429,7 +4455,7 @@
 );
 (function (_, _is, _str) {
     // only register methods if this version is the current version
-    if (_.version !== '0.1.7') return;
+    if (_.version !== '0.1.8') return;
 
     _.Event = _.Class.extend(/** @lends FooGallery.utils.Event */{
         /**
@@ -4691,7 +4717,7 @@
 );
 (function($, _, _is){
 	// only register methods if this version is the current version
-	if (_.version !== '0.1.7') return;
+	if (_.version !== '0.1.8') return;
 
 	_.Bounds = _.Class.extend(/** @lends FooGallery.utils.Bounds */{
 		/**
@@ -4792,7 +4818,7 @@
 );
 (function($, _, _is, _fn, _obj){
     // only register methods if this version is the current version
-    if (_.version !== '0.1.7') return;
+    if (_.version !== '0.1.8') return;
 
     _.Timer = _.EventClass.extend(/** @lends FooGallery.utils.Timer */{
         /**
@@ -5086,7 +5112,7 @@
 
 (function($, _, _is, _fn){
 	// only register methods if this version is the current version
-	if (_.version !== '0.1.7') return;
+	if (_.version !== '0.1.8') return;
 
 	_.Factory = _.Class.extend(/** @lends FooGallery.utils.Factory */{
 		/**
@@ -5409,7 +5435,7 @@
 );
 (function(_, _fn, _str){
 	// only register methods if this version is the current version
-	if (_.version !== '0.1.7') return;
+	if (_.version !== '0.1.8') return;
 
 	// this is done to handle Content Security in Chrome and other browsers blocking access to the localStorage object under certain configurations.
 	// see: https://www.chromium.org/for-testers/bug-reporting-guidelines/uncaught-securityerror-failed-to-read-the-localstorage-property-from-window-access-is-denied-for-this-document
@@ -5515,7 +5541,7 @@
 );
 (function($, _, _fn){
     // only register methods if this version is the current version
-    if (_.version !== '0.1.7') return;
+    if (_.version !== '0.1.8') return;
 
     _.FullscreenAPI = _.EventClass.extend(/** @lends FooGallery.utils.FullscreenAPI */{
         /**
@@ -5907,12 +5933,37 @@
 		return complete;
 	};
 
+	/**
+	 * @summary A string array of supported EXIF properties.
+	 * @memberof FooGallery
+	 * @name supportedExifProperties
+	 * @type {string[]}
+	 */
+	_.supportedExifProperties = ["aperture","camera","date","exposure","focalLength","iso","orientation"];
+
+	/**
+	 * @memberof FooGallery.utils.is
+	 * @function exif
+	 * @param {*} value - The value to check.
+	 * @returns {boolean} `true` if the `value` contains any supported and valid EXIF properties.
+	 */
+	_is.exif = function(value){
+		if (_is.object(value)){
+			var keys = Object.keys(value);
+			return keys.length > 0 && keys.some(function(key){
+				return _.supportedExifProperties.indexOf(key) !== -1 && !_is.empty(value[key]);
+			});
+		}
+		return false;
+	};
+
 })(
-		FooGallery.$,
-		FooGallery,
-		FooGallery.utils,
-		FooGallery.utils.is,
-		FooGallery.utils.fn
+	FooGallery.$,
+	FooGallery,
+	FooGallery.utils,
+	FooGallery.utils.is,
+	FooGallery.utils.fn,
+	FooGallery.utils.str
 );
 (function($, _, _utils, _is, _obj){
 
@@ -5932,7 +5983,14 @@
                     "thumbs": '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"><path d="M3 3v10h-2v-11c0-0.552 0.448-1 1-1h12c0.552 0 1 0.448 1 1v12c0 0.552-0.448 1-1 1h-12c-0.552 0-1-0.448-1-1v-1h4v-2h-2v-2h2v-2h-2v-2h2v-2h2v10h6v-10h-10z"></path></svg>',
                     "cart": '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"><path d="M13.238 9c0.55 0 1.124-0.433 1.275-0.962l1.451-5.077c0.151-0.529-0.175-0.962-0.725-0.962h-10.238c0-1.105-0.895-2-2-2h-3v2h3v8.5c0 0.828 0.672 1.5 1.5 1.5h9.5c0.552 0 1-0.448 1-1s-0.448-1-1-1h-9v-1h8.238zM5 4h9.044l-0.857 3h-8.187v-3z"></path><path d="M6 14.5c0 0.828-0.672 1.5-1.5 1.5s-1.5-0.672-1.5-1.5c0-0.828 0.672-1.5 1.5-1.5s1.5 0.672 1.5 1.5z"></path><path d="M15 14.5c0 0.828-0.672 1.5-1.5 1.5s-1.5-0.672-1.5-1.5c0-0.828 0.672-1.5 1.5-1.5s1.5 0.672 1.5 1.5z"></path></svg>',
                     "circle-close": '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"><path d="M8 0c-4.418 0-8 3.582-8 8s3.582 8 8 8 8-3.582 8-8-3.582-8-8-8zM8 14.5c-3.59 0-6.5-2.91-6.5-6.5s2.91-6.5 6.5-6.5 6.5 2.91 6.5 6.5-2.91 6.5-6.5 6.5z"></path><path d="M10.5 4l-2.5 2.5-2.5-2.5-1.5 1.5 2.5 2.5-2.5 2.5 1.5 1.5 2.5-2.5 2.5 2.5 1.5-1.5-2.5-2.5 2.5-2.5z"></path></svg>',
-                    "auto-progress": '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"><path class="[ICON_CLASS]-idle" d="M11.39 8c2.152-1.365 3.61-3.988 3.61-7 0-0.339-0.019-0.672-0.054-1h-13.891c-0.036 0.328-0.054 0.661-0.054 1 0 3.012 1.457 5.635 3.609 7-2.152 1.365-3.609 3.988-3.609 7 0 0.339 0.019 0.672 0.054 1h13.891c0.036-0.328 0.054-0.661 0.054-1 0-3.012-1.457-5.635-3.609-7zM2.5 15c0-2.921 1.253-5.397 3.5-6.214v-1.572c-2.247-0.817-3.5-3.294-3.5-6.214v0h11c0 2.921-1.253 5.397-3.5 6.214v1.572c2.247 0.817 3.5 3.294 3.5 6.214h-11zM9.462 10.462c-1.12-0.635-1.181-1.459-1.182-1.959v-1.004c0-0.5 0.059-1.327 1.184-1.963 0.602-0.349 1.122-0.88 1.516-1.537h-6.4c0.395 0.657 0.916 1.188 1.518 1.538 1.12 0.635 1.181 1.459 1.182 1.959v1.004c0 0.5-0.059 1.327-1.184 1.963-1.135 0.659-1.98 1.964-2.236 3.537h7.839c-0.256-1.574-1.102-2.879-2.238-3.538z"/><circle class="[ICON_CLASS]-circle" r="4" cx="8" cy="8"/><path class="[ICON_CLASS]-play" d="M3 2l10 6-10 6z"/><path class="[ICON_CLASS]-pause" d="M2 2h5v12h-5zM9 2h5v12h-5z"/></svg>'
+                    "auto-progress": '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"><path class="[ICON_CLASS]-idle" d="M11.39 8c2.152-1.365 3.61-3.988 3.61-7 0-0.339-0.019-0.672-0.054-1h-13.891c-0.036 0.328-0.054 0.661-0.054 1 0 3.012 1.457 5.635 3.609 7-2.152 1.365-3.609 3.988-3.609 7 0 0.339 0.019 0.672 0.054 1h13.891c0.036-0.328 0.054-0.661 0.054-1 0-3.012-1.457-5.635-3.609-7zM2.5 15c0-2.921 1.253-5.397 3.5-6.214v-1.572c-2.247-0.817-3.5-3.294-3.5-6.214v0h11c0 2.921-1.253 5.397-3.5 6.214v1.572c2.247 0.817 3.5 3.294 3.5 6.214h-11zM9.462 10.462c-1.12-0.635-1.181-1.459-1.182-1.959v-1.004c0-0.5 0.059-1.327 1.184-1.963 0.602-0.349 1.122-0.88 1.516-1.537h-6.4c0.395 0.657 0.916 1.188 1.518 1.538 1.12 0.635 1.181 1.459 1.182 1.959v1.004c0 0.5-0.059 1.327-1.184 1.963-1.135 0.659-1.98 1.964-2.236 3.537h7.839c-0.256-1.574-1.102-2.879-2.238-3.538z"/><circle class="[ICON_CLASS]-circle" r="4" cx="8" cy="8"/><path class="[ICON_CLASS]-play" d="M3 2l10 6-10 6z"/><path class="[ICON_CLASS]-pause" d="M2 2h5v12h-5zM9 2h5v12h-5z"/></svg>',
+                    "exif-aperture": '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"><path d="M 8,0 C 3.5876443,0 0,3.5876443 0,8 c 0,4.412356 3.5876443,8 8,8 4.412356,0 8,-3.587644 8,-8 C 16,3.5876443 12.412356,0 8,0 Z m 0,1 c 3.871916,0 7,3.1280844 7,7 0,3.871916 -3.128084,7 -7,7 C 4.1280844,15 1,11.871916 1,8 1,4.1280844 4.1280844,1 8,1 Z M 7.53125,2.0214844 A 6,6 0 0 0 3.1835938,4.4335938 H 8.9257812 Z M 8.6132812,2.03125 C 9.5587451,3.6702105 10.504247,5.3091484 11.451172,6.9472656 L 12.863281,4.5 A 6,6 0 0 0 8.6132812,2.03125 Z M 2.5957031,5.4101562 A 6,6 0 0 0 2,8 6,6 0 0 0 2.5273438,10.439453 L 5.4296875,5.4101562 Z m 10.8261719,0.033203 -2.855469,4.9433598 h 2.935547 A 6,6 0 0 0 14,8 6,6 0 0 0 13.421875,5.4433592 Z M 4.5722656,8.8945312 3.0996094,11.449219 a 6,6 0 0 0 4.40625,2.527343 z m 2.5820313,2.4707028 1.4960937,2.591797 a 6,6 0 0 0 4.3144534,-2.591797 z"></path></svg>',
+                    "exif-camera": '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"><path d="m 8.0000002,5 a 4,4 0 0 0 -4,4 4,4 0 0 0 4,4 A 4,4 0 0 0 12,9 4,4 0 0 0 8.0000002,5 Z m 0.019531,1.015625 a 3,2.9814477 0 0 1 2.9804688,3 l -1,-0.00586 a 2,2 0 0 0 0,-0.00976 2,2 0 0 0 -1.9863279,-2 z M 5.125,1 C 4.5,1 4,1.5 4,2.125 V 3.0000004 L 1.125,3 C 0.5,2.9999999 0,3.5 0,4.125 v 9.75 C 0,14.5 0.5,15 1.125,15 h 13.75 C 15.5,15 16,14.5 16,13.875 V 4.125 C 16,3.5 15.5,3 14.875,3 H 12 V 2.125 C 12,1.5 11.5,1 10.875,1 Z M 5.25,2.0000004 h 5.5 c 0.125,0 0.25,0.1249996 0.25,0.25 v 1.75 h 3.75 c 0.125,0 0.25,0.1249996 0.25,0.25 V 13.75 C 15,13.875 14.875,14 14.75,14 H 1.25 C 1.125,14 1,13.875 1,13.75 V 4.25 C 1,4.125 1.125,4 1.25,4 l 3.75,4e-7 v -1.75 c 0,-0.1250004 0.125,-0.25 0.25,-0.25 z"></path></svg>',
+                    "exif-date": '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"><path d="M 3,1 V 2 H 1 V 15 H 16 V 2 H 14 V 1 H 13 V 2 H 4 V 1 Z M 2,4 H 15 V 14 H 2 Z M 6,5 V 7 H 8 V 5 Z m 3,0 v 2 h 2 V 5 Z m 3,0 v 2 h 2 V 5 Z M 3,8 v 2 H 5 V 8 Z m 3,0 v 2 H 8 V 8 Z m 3,0 v 2 h 2 V 8 Z m 3,0 v 2 h 2 V 8 Z m -9,3 v 2 h 2 v -2 z m 3,0 v 2 h 2 v -2 z m 3,0 v 2 h 2 v -2 z"></path></svg>',
+                    "exif-exposure": '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"><path d="M 8,0 C 3.5876443,0 -2.9415707e-8,3.5876443 0,8 c 2.3532563e-7,4.412356 3.5876445,8 8,8 4.412356,0 8,-3.587644 8,-8 C 16,3.5876443 12.412356,0 8,0 Z m 0,1 c 3.871916,0 7,3.1280844 7,7 0,3.871915 -3.128085,7 -7,7 -3.8719154,0 -6.9999998,-3.128085 -7,-7 -3e-8,-3.8719156 3.1280844,-7 7,-7 z M 11.646484,3.6464844 8.6445312,6.6484375 A 1.5,1.5 0 0 0 8,6.5 1.5,1.5 0 0 0 6.5,8 1.5,1.5 0 0 0 8,9.5 1.5,1.5 0 0 0 9.5,8 1.5,1.5 0 0 0 9.3515625,7.3554688 L 12.353516,4.3535156 Z M 2,7.5 v 1 h 2 v -1 z M 7.5,12 v 2 h 1 V 12 Z M 12,7.5 v 1 h 2 v -1 z M 7.5,2 v 2 h 1 V 2 Z"></path></svg>',
+                    "exif-focal-length": '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"><path d="m 1,4.125 -1,0.25 v 7.25 l 1,0.25 z M 5,1 2,4 v 8 l 3,3 h 6.875 C 12.500003,15 13,14.5 13,13.875 V 2.125 C 13,1.4999986 12.5,1 11.875,1 9.576807,0.99914375 7.1414067,0.96597644 5,1 Z M 5.5,2 H 6 V 14 H 5.5 L 3,11.5 v -7 z M 7,2 h 4.75 C 11.875,2 12,2.1249997 12,2.25 v 11.5 c 0,0.125 -0.125,0.250622 -0.25,0.25 H 7 Z m 7,0 c 1,2.2 1.5,4.35 1.5,6 0,1.65 -0.5,3.8 -1.5,6"></path></svg>',
+                    "exif-iso": '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"><path d="M 7.5,0 V 1.6015625 C 6.0969201,1.7146076 4.8392502,2.256185 3.828125,3.1210938 L 2.6035156,1.8964844 1.8964844,2.6035156 3.1210938,3.828125 C 2.256185,4.8392502 1.7146076,6.0969201 1.6015625,7.5 H 0 v 1 h 1.6015625 c 0.1130451,1.4030799 0.6546225,2.66075 1.5195313,3.671875 l -1.2246094,1.224609 0.7070312,0.707032 1.2246094,-1.22461 C 4.8392502,13.743815 6.0969201,14.285392 7.5,14.398438 V 16 h 1 v -1.601562 c 1.4030799,-0.113046 2.66075,-0.654623 3.671875,-1.519532 l 1.224609,1.22461 0.707032,-0.707032 -1.22461,-1.224609 C 13.743815,11.16075 14.285392,9.9030799 14.398438,8.5 H 16 v -1 H 14.398438 C 14.285392,6.0969201 13.743815,4.8392502 12.878906,3.828125 L 14.103516,2.6035156 13.396484,1.8964844 12.171875,3.1210938 C 11.16075,2.256185 9.9030799,1.7146076 8.5,1.6015625 V 0 Z M 8,2.5 c 3.043488,0 5.5,2.4565116 5.5,5.5 0,3.043488 -2.456512,5.5 -5.5,5.5 C 4.9565116,13.5 2.5,11.043488 2.5,8 2.5,4.9565116 4.9565116,2.5 8,2.5 Z"></path></svg>',
+                    "exif-orientation": '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"><path d="M 1.25,0 C 0.625,0 0,0.625 0,1.25 V 5 H 1 V 3 h 8 v 2 h 1 V 1.25 C 10,0.625 9.375,0 8.75,0 Z m 0,1 h 7.5 C 8.875,1 9,1.125 9,1.25 V 2 H 1 V 1.25 C 1,1.125 1.125,1 1.25,1 Z m 0,5 C 0.625,6 0,6.625 0,7.25 v 7.5 C 0,15.375 0.625,16 1.25,16 h 13.5 C 15.375,16 16,15.375 16,14.75 V 7.25 C 16,6.625 15.375,6 14.75,6 Z m 0,1 H 2 v 3 H 1 V 7.25 C 1,7.125 1.125,7 1.25,7 Z M 3,7 h 10 v 8 H 3 Z m 11,0 h 0.75 C 14.875,7 15,7.125 15,7.25 v 7.5 C 15,14.875 14.875,15 14.75,15 H 14 Z M 1,12 h 1 v 3 H 1.25 C 1.125,15 1,14.875 1,14.75 Z"></path></svg>'
                 }
             };
         },
@@ -7076,6 +7134,9 @@
 				create: false,
 				children: false
 			};
+			self.robserver = new ResizeObserver(_fn.throttle(function () {
+				if (self.$el.is(":visible")) self.layout();
+			}, 250));
 		},
 
 		// ################
@@ -7166,6 +7227,7 @@
 			if (selector != null && !self.$el.is(selector)) {
 				self.$el.addClass(self.opt.classes);
 			}
+			self.robserver.observe(self.$el.get(0));
 
 			// if the container currently has no children make them
 			if (self.$el.children().not(self.sel.item.elem).length === 0) {
@@ -7455,6 +7517,7 @@
              * });
              */
             self.raise("destroy");
+			self.robserver.disconnect();
 			if (self._checkTimeout) clearTimeout(self._checkTimeout);
             self.$scrollParent.off(self.namespace);
             $(window).off(self.namespace);
@@ -7638,13 +7701,15 @@
 		 * @function
 		 * @name getCSSClass
 		 * @param {string} type - The specific type of CSS class to retrieve.
+		 * @param {string} [def=""] - The default value to return if no CSS class is found.
 		 * @returns {string}
 		 */
-		getCSSClass: function(type){
+		getCSSClass: function(type, def){
+			def = _is.empty(def) ? "" : def;
 			var regex = type instanceof RegExp ? type : (_is.string(type) && this.opt.regex.hasOwnProperty(type) ? this.opt.regex[type] : null),
 				className = (this.$el.prop("className") || ''),
 				match = regex != null ? className.match(regex) : null;
-			return match != null && match.length >= 2 ? match[1] : "";
+			return match != null && match.length >= 2 ? match[1] : def;
 		},
 
 		// ###############
@@ -9161,6 +9226,18 @@
 			 */
 			self.panelHide = self.opt.panelHide;
 			/**
+			 * @memberof FooGallery.Item#
+			 * @name exif
+			 * @type {Object}
+			 */
+			self.exif = self.opt.exif;
+			/**
+			 * @memberof FooGallery.Item#
+			 * @name hasExif
+			 * @type {boolean}
+			 */
+			self.hasExif = _is.exif(self.exif);
+			/**
 			 * @summary The cached result of the last call to the {@link FooGallery.Item#getThumbUrl|getThumbUrl} method.
 			 * @memberof FooGallery.Item#
 			 * @name _thumbUrl
@@ -9435,6 +9512,10 @@
 			self.description = data.description || data.captionDesc || self.description || self.alt;
 			self.noLightbox = self.$anchor.hasClass(cls.noLightbox);
 			self.panelHide = self.$anchor.hasClass(cls.panelHide);
+			if (_is.exif(data.exif)){
+				self.exif = _obj.extend(self.exif, data.exif);
+				self.hasExif = true;
+			}
 			// if the caption or description are not set yet try fetching it from the html
 			if (_is.empty(self.caption)) self.caption = $.trim(self.$caption.find(sel.caption.title).html());
 			if (_is.empty(self.description)) self.description = $.trim(self.$caption.find(sel.caption.description).html());
@@ -9471,6 +9552,9 @@
 				self._undo.placeholder = true;
 			}
 			self.$el.addClass(self.getTypeClass());
+			if (self.hasExif){
+				self.$el.addClass(cls.exif);
+			}
 			if (self.isCreated && self.isAttached && !self.isLoading && !self.isLoaded && !self.isError) {
 				self.$el.addClass(cls.idle);
 			}
@@ -9561,8 +9645,8 @@
 		 * @returns {boolean}
 		 */
 		doCreateItem: function () {
-			var self = this, o = self.tmpl.opt, cls = self.cls, attr = self.attr, type = self.getTypeClass();
-			attr.elem["class"] = [cls.elem, type, cls.idle].join(" ");
+			var self = this, o = self.tmpl.opt, cls = self.cls, attr = self.attr, type = self.getTypeClass(), exif = self.hasExif ? cls.exif : "";
+			attr.elem["class"] = [cls.elem, type, exif, cls.idle].join(" ");
 
 			attr.inner["class"] = cls.inner;
 
@@ -10072,6 +10156,15 @@
 			showCaptionDescription: true,
 			noLightbox: false,
 			panelHide: false,
+			exif: {
+				aperture: null,
+				camera: null,
+				date: null,
+				exposure: null,
+				focalLength: null,
+				iso: null,
+				orientation: null
+			},
 			attr: {
 				elem: {},
 				inner: {},
@@ -10089,6 +10182,7 @@
 		item: {
 			elem: "fg-item",
 			inner: "fg-item-inner",
+			exif: "fg-item-exif",
 			anchor: "fg-thumb",
 			overlay: "fg-image-overlay",
 			wrap: "fg-image-wrap",
@@ -10111,7 +10205,17 @@
 			}
 		}
 	}, {
-		item: {}
+		item: {
+			exif: {
+				aperture: "Aperture",
+				camera: "Camera",
+				date: "Date",
+				exposure: "Exposure",
+				focalLength: "Focal Length",
+				iso: "ISO",
+				orientation: "Orientation"
+			}
+		}
 	});
 
 	_.components.register("item", _.Item);
@@ -11098,8 +11202,8 @@
 			prev: "Previous page",
 			next: "Next page",
 			last: "Last page",
-			prevMore: "Select from previous {LIMIT} pages",
-			nextMore: "Select from next {LIMIT} pages"
+			prevMore: "Show previous {LIMIT} pages",
+			nextMore: "Show next {LIMIT} pages"
 		}
 	});
 
@@ -11549,7 +11653,9 @@
 			var self = this, cls = self.filter.cls, sel = self.filter.sel;
 			self.lists.forEach(function($list, i){
 				$list.find(sel.item).removeClass(cls.selected).each(function(){
-					var $item = $(this), tag = $item.data("tag"), empty = _is.empty(tag);
+					var $item = $(this), tag = $item.data("tag");
+					if (!_is.string(tag)) tag += "";
+					var empty = _is.empty(tag);
 					$item.toggleClass(cls.selected, (empty && _is.empty(tags[i])) || (!empty && $.inArray(tag, tags[i]) !== -1));
 				});
 			});
@@ -11632,7 +11738,7 @@
     var instance_id = 0;
 
     _.Panel = _.EventComponent.extend({
-        construct: function(template, options, classes){
+        construct: function(template, options, classes, il8n){
             var self = this;
             self.instanceId = ++instance_id;
             self._super(template, "panel-");
@@ -11640,6 +11746,8 @@
             self.opt = _obj.extend({}, self.tmpl.opt.panel, options);
 
             self.cls = _obj.extend({}, self.tmpl.cls.panel, classes);
+
+            self.il8n = _obj.extend({}, self.tmpl.il8n.panel, il8n);
 
             var states = self.cls.states;
             self.cls.states.all = Object.keys(states).map(function (key) {
@@ -11747,7 +11855,7 @@
             var classes = [
                 self.cls.elem,
                 transition,
-                _is.string(self.opt.theme) ? self.opt.theme : self.tmpl.getCSSClass("theme"),
+                _is.string(self.opt.theme) ? self.opt.theme : self.tmpl.getCSSClass("theme", "fg-dark"),
                 _is.string(self.opt.loadingIcon) ? self.opt.loadingIcon : self.tmpl.getCSSClass("loadingIcon"),
                 _is.string(self.opt.hoverIcon) ? self.opt.hoverIcon : self.tmpl.getCSSClass("hoverIcon"),
                 _is.string(self.opt.videoIcon) ? self.opt.videoIcon : self.tmpl.getCSSClass("videoIcon"),
@@ -12102,6 +12210,7 @@
             infoVisible: false,
             infoOverlay: true,
             infoAutoHide: true,
+            exif: "none", // none | full | partial | minimal
 
             cart: "none", // none | top | bottom | left | right
             cartVisible: false,
@@ -12240,6 +12349,20 @@
                 }
             }
         }
+    },{
+        panel: {
+            buttons: {
+                prev: "Previous Media",
+                next: "Next Media",
+                close: "Close Modal",
+                maximize: "Toggle Maximize",
+                fullscreen: "Toggle Fullscreen",
+                autoProgress: "Auto Progress",
+                info: "Toggle Information",
+                thumbs: "Toggle Thumbnails",
+                cart: "Toggle Cart"
+            }
+        }
     });
 
 })(
@@ -12263,6 +12386,8 @@
 
             this.sel = panel.sel.buttons;
 
+            this.il8n = panel.il8n.buttons;
+
             this.$el = null;
 
             this.isCreated = false;
@@ -12277,7 +12402,7 @@
         registerCore: function(){
             this.register(new _.Panel.Button(this.panel, "prev", {
                 icon: "arrow-left",
-                label: "Previous Media",
+                label: this.il8n.prev,
                 click: this.panel.prev.bind(this.panel),
                 beforeLoad: function (media) {
                     this.disable(this.panel.prevItem == null);
@@ -12285,7 +12410,7 @@
             }), 10);
             this.register(new _.Panel.Button(this.panel, "next", {
                 icon: "arrow-right",
-                label: "Next Media",
+                label: this.il8n.next,
                 click: this.panel.next.bind(this.panel),
                 beforeLoad: function (media) {
                     this.disable(this.panel.nextItem == null);
@@ -12299,7 +12424,7 @@
             this.register(new _.Panel.Fullscreen(this.panel), 190);
             this.register(new _.Panel.Button(this.panel, "close", {
                 icon: "close",
-                label: "Close Modal",
+                label: this.il8n.close,
                 click: this.panel.close.bind(this.panel)
             }), 200);
         },
@@ -12644,7 +12769,7 @@
             self.__timer = new _utils.Timer();
             self._super(panel, "autoProgress", {
                 icon: "auto-progress",
-                label: "Auto Progress"
+                label: panel.il8n.buttons.autoProgress
             });
             self.$icon = null;
             self.$circle = null;
@@ -12741,7 +12866,7 @@
             var self = this;
             self._super(panel, "fullscreen", {
                 icon: ["expand", "shrink"],
-                label: "Fullscreen"
+                label: panel.il8n.buttons.fullscreen
             });
         },
         create: function(){
@@ -12810,7 +12935,7 @@
         construct: function(panel){
             this._super(panel, "maximize", {
                 icon: "maximize",
-                label: "Maximize"
+                label: panel.il8n.buttons.maximize
             });
             this.scrollPosition = [];
             this.$placeholder = $("<span/>");
@@ -13245,7 +13370,7 @@
         construct: function(panel){
             this._super(panel, "info", {
                 icon: "info",
-                label: "Information",
+                label: panel.il8n.buttons.info,
                 position: panel.opt.info,
                 overlay: panel.opt.infoOverlay,
                 visible: panel.opt.infoVisible,
@@ -13291,7 +13416,7 @@
         construct: function(panel){
             this._super(panel, "thumbs", {
                 icon: "thumbs",
-                label: "Thumbnails",
+                label: panel.il8n.buttons.thumbs,
                 position: panel.opt.thumbs,
                 captions: panel.opt.thumbsCaptions,
                 small: panel.opt.thumbsSmall,
@@ -13631,7 +13756,7 @@
         construct: function(panel){
             this._super(panel, "cart", {
                 icon: "cart",
-                label: "Cart",
+                label: panel.il8n.buttons.cart,
                 position: panel.opt.cart,
                 visible: panel.opt.cartVisible,
                 waitForUnload: false
@@ -13863,7 +13988,22 @@
                 caption: {
                     elem: "fg-media-caption",
                     title: "fg-media-caption-title",
-                    description: "fg-media-caption-description"
+                    description: "fg-media-caption-description",
+                    exif: {
+                        elem: "fg-media-caption-exif",
+                        auto: "fg-media-caption-exif-auto",
+                        full: "fg-media-caption-exif-full",
+                        partial: "fg-media-caption-exif-partial",
+                        minimal: "fg-media-caption-exif-minimal",
+                        prop: "fg-media-caption-exif-prop",
+                        icon: "fg-media-caption-exif-icon",
+                        content: "fg-media-caption-exif-content",
+                        label: "fg-media-caption-exif-label",
+                        value: "fg-media-caption-exif-value",
+                        tooltip: "fg-media-caption-exif-tooltip",
+                        tooltipPointer: "fg-media-caption-exif-tooltip-pointer",
+                        showTooltip: "fg-media-caption-exif-show-tooltip"
+                    }
                 },
                 product: {
                     elem: "fg-media-product",
@@ -13888,7 +14028,9 @@
     FooGallery.utils.str,
     FooGallery.utils.transition
 );
-(function ($, _, _utils, _is, _fn, _obj, _t) {
+(function ($, _, _icons, _utils, _is, _fn, _obj, _str, _t) {
+
+    var canHover = !!window.matchMedia && window.matchMedia("(hover: hover)").matches;
 
     _.Panel.Media.Caption = _utils.Class.extend({
         construct: function (panel, media) {
@@ -13903,11 +14045,13 @@
             self.isAttached = false;
             self.hasTitle = false;
             self.hasDescription = false;
+            self.hasExif = false;
         },
         canLoad: function(){
             this.hasTitle = !_is.empty(this.media.item.caption);
             this.hasDescription = !_is.empty(this.media.item.description);
-            return this.hasTitle || this.hasDescription;
+            this.hasExif = this.media.item.hasExif && $.inArray(this.opt.exif, ["auto","full","partial","minimal"]) !== -1;
+            return this.hasTitle || this.hasDescription || this.hasExif;
         },
         create: function(){
             if (!this.isCreated){
@@ -13929,7 +14073,59 @@
             if (this.hasDescription){
                 this.$el.append($("<div/>").addClass(this.cls.description).html(this.media.item.description));
             }
+            if (this.hasExif){
+                var exif = this.media.item.exif, $exif = $("<div/>", {"class": this.cls.exif.elem}).addClass(this.cls.exif[this.opt.exif]);
+                for (var prop in exif){
+                    if (!exif.hasOwnProperty(prop) || _is.empty(exif[prop])) continue;
+                    var icon = "exif-" + _str.kebab(prop), text = this.media.item.il8n.exif[prop], value = exif[prop];
+                    var $exifProp = $("<div/>", {"class": this.cls.exif.prop}).append(
+                        $("<div/>", {"class": this.cls.exif.icon}).append(_icons.get(icon, this.opt.icons)),
+                        $("<div/>", {"class": this.cls.exif.content}).append(
+                            $("<div/>", {"class": this.cls.exif.label}).text(text),
+                            $("<div/>", {"class": this.cls.exif.value}).text(value)
+                        ),
+                        $("<span/>", {"class": this.cls.exif.tooltip}).text(text + ": " + value).append(
+                            $("<span/>", {"class": this.cls.exif.tooltipPointer})
+                        )
+                    );
+                    if (!canHover){
+                        $exifProp.on("click", {self: this}, this.onExifClick);
+                    }
+                    $exif.append($exifProp);
+                }
+                this.$el.append($exif);
+            }
             return true;
+        },
+        onExifClick: function(e){
+            e.preventDefault();
+            var self = e.data.self, $this = $(this),
+                $tooltip = $this.find(self.sel.exif.tooltip),
+                $current = $(self.sel.exif.showTooltip);
+
+            $(self.sel.exif.prop).removeClass(self.cls.exif.showTooltip)
+                .find(self.sel.exif.tooltip).css("left", "")
+                .find(self.sel.exif.tooltipPointer).css("left", "");
+            if (!$current.is($this)){
+                $tooltip.css("display", "inline-block");
+
+                var left = $tooltip.offset().left,
+                    right = left + $tooltip.outerWidth(),
+                    diff = Math.ceil(right - window.innerWidth);
+
+                if (diff > 0){
+                    $tooltip.css("left", "calc(50% - " + diff + "px)")
+                        .find(self.sel.exif.tooltipPointer).css("left", "calc(50% + " + diff + "px)");
+                }
+                if (left < 0){
+                    left = Math.abs(left);
+                    $tooltip.css("left", "calc(50% + " + left + "px)")
+                        .find(self.sel.exif.tooltipPointer).css("left", "calc(50% - " + left + "px)");
+                }
+
+                $tooltip.css("display", "");
+                $this.addClass(self.cls.exif.showTooltip);
+            }
         },
         destroy: function(){
             if (this.isCreated){
@@ -14032,10 +14228,12 @@
 })(
     FooGallery.$,
     FooGallery,
+    FooGallery.icons,
     FooGallery.utils,
     FooGallery.utils.is,
     FooGallery.utils.fn,
     FooGallery.utils.obj,
+    FooGallery.utils.str,
     FooGallery.utils.transition
 );
 (function ($, _, _utils, _is, _fn, _obj, _t) {
@@ -15315,8 +15513,6 @@
 			this.$el = template.$el;
 			this.options = $.extend(true, {}, _.Justified.defaults, options);
 			this._items = [];
-			this._lastRefresh = 0;
-			this._refresh = null;
 		},
 		init: function(){
 			var self = this;
@@ -15327,22 +15523,9 @@
 					self.options.maxRowHeight = parseInt(self.options.maxRowHeight);
 				}
 			}
-			$(window).on("resize.justified", {self: self}, self.onWindowResize);
-			this._refresh = setInterval(function(){
-				self.refresh();
-			}, self.options.refreshInterval);
 		},
 		destroy: function(){
-			if (this._refresh) clearInterval(this._refresh);
-			$(window).off("resize.justified");
 			this.$el.removeAttr("style");
-		},
-		refresh: function(){
-			var maxWidth = this.getContainerWidth();
-			if (maxWidth != this._lastRefresh){
-				this.layout();
-				this._lastRefresh = maxWidth;
-			}
 		},
 		parse: function(){
 			var self = this;
@@ -15375,19 +15558,14 @@
 			}
 			return self.$el.width();
 		},
-		layout: function(refresh, autoCorrect){
-			refresh = _is.boolean(refresh) ? refresh : false;
-			autoCorrect = _is.boolean(autoCorrect) ? autoCorrect : true;
-
-			if (refresh || this._items.length === 0){
-				this.parse();
-			}
+		layout: function(){
+			this.parse();
 
 			var self = this,
-					height = 0,
-					maxWidth = self.getContainerWidth(),
-					maxHeight = self.getMaxRowHeight(),
-					rows = self.rows(maxWidth, maxHeight);
+				height = 0,
+				maxWidth = self.getContainerWidth(),
+				maxHeight = self.getMaxRowHeight(),
+				rows = self.rows(maxWidth, maxHeight);
 
 			$.each(rows, function(ri, row){
 				if (row.visible){
@@ -15397,11 +15575,6 @@
 				self.render(row);
 			});
 			self.$el.height(height);
-			// if our layout caused the container width to get smaller
-			// i.e. makes a scrollbar appear then layout again to account for it
-			if (autoCorrect && self.getContainerWidth() < maxWidth){
-				self.layout(false, false);
-			}
 		},
 		render: function(row){
 			for (var j = 0, jl = row.items.length, item; j < jl; j++){
@@ -15581,9 +15754,6 @@
 			if (rows.length > 1) top += self.options.margins;
 			self.lastRow(row, top, maxWidth, maxHeight);
 			return rows;
-		},
-		onWindowResize: function(e){
-			e.data.self.layout( true );
 		}
 	});
 
@@ -15613,24 +15783,24 @@
 			self.justified.init();
 		},
 		onFirstLoad: function(event, self){
-			self.justified.layout( true );
+			self.justified.layout();
 		},
 		onReady: function(event, self){
-			self.justified.layout( true );
+			self.justified.layout();
 		},
 		onDestroy: function(event, self){
 			self.justified.destroy();
 		},
 		onLayout: function(event, self){
-			self.justified.layout( true );
+			self.justified.layout();
 		},
 		onAfterPageChange: function(event, self, current, prev, isFilter){
 			if (!isFilter){
-				self.justified.layout( true );
+				self.justified.layout();
 			}
 		},
 		onAfterFilterChange: function(event, self){
-			self.justified.layout( true );
+			self.justified.layout();
 		}
 	});
 
@@ -15676,13 +15846,12 @@
 		},
 		onPostInit: function(event, self){
 			self.checkCSS();
-			$(window).on("resize" + self.namespace, {self: self}, _fn.debounce(function () {
-				self.checkCSS();
-			}, 50));
 		},
 		onDestroy: function(event, self){
 			self.removeCSS();
-			$(window).off("resize" + self.namespace);
+		},
+		onLayout: function(event, self){
+			self.checkCSS();
 		},
 		checkCSS: function(){
 			var self = this, maxWidth = self.getContainerWidth(), current = maxWidth < self.template.columnWidth;
@@ -16411,7 +16580,7 @@
     FooGallery.utils,
     FooGallery.utils.obj
 );
-(function ($, _, _utils, _obj) {
+(function ($, _, _utils, _obj, _is) {
 
 	_.triggerPostLoad = function (e, tmpl, current, prev, isFilter) {
 		if (e.type === "first-load" || (tmpl.initialized && ((e.type === "after-page-change" && !isFilter) || e.type === "after-filter-change"))) {
@@ -16441,15 +16610,35 @@
 		_.autoDefaults = _obj.merge(_.autoDefaults, options);
 	};
 
+	_.globalsMerged = false;
+
+	_.mergeGlobals = function(){
+		if (_.globalsMerged === true) return;
+		if (window.FooGallery_il8n && _is.object(window.FooGallery_il8n)){
+			var il8n = window.FooGallery_il8n;
+			for (var factory in il8n){
+				if (!il8n.hasOwnProperty(factory) || !(_[factory] instanceof _utils.Factory) || !_is.object(il8n[factory])) continue;
+				for (var component in il8n[factory]){
+					if (il8n[factory].hasOwnProperty(component)){
+						_[factory].configure(component, null, null, il8n[factory][component]);
+					}
+				}
+			}
+			_.globalsMerged = true;
+		}
+	};
+
 	_.load = _.reload = function(){
 		// this automatically initializes all templates on page load
 		$(function () {
+			_.mergeGlobals();
 			if (_.autoEnabled){
 				$('[id^="foogallery-gallery-"]:not(.fg-ready)').foogallery(_.autoDefaults);
 			}
 		});
 
 		_utils.ready(function () {
+			_.mergeGlobals();
 			if (_.autoEnabled){
 				$('[id^="foogallery-gallery-"].fg-ready').foogallery(_.autoDefaults);
 			}
@@ -16459,8 +16648,9 @@
 	_.load();
 
 })(
-		FooGallery.$,
-		FooGallery,
-		FooGallery.utils,
-		FooGallery.utils.obj
+	FooGallery.$,
+	FooGallery,
+	FooGallery.utils,
+	FooGallery.utils.obj,
+	FooGallery.utils.is
 );
