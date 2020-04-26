@@ -154,6 +154,18 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 			//region Images Tab
 			$tabs['thumb'] = __( 'Images', 'foogallery' );
 
+			$image_editor = str_replace( 'WP_Thumb_Image_Editor_', '', _wp_image_editor_choose( array( 'methods' => array( 'get_image' ) ) ) );
+			$gd_supported = extension_loaded( 'gd' ) ? __('yes', 'foogallery') : __('no', 'foogallery');
+			$imagick_supported = extension_loaded( 'imagick' ) ? __('yes', 'foogallery') : __('no', 'foogallery');
+
+			$settings[] = array(
+				'id'      => 'thumb_image_library',
+				'title'   => __( 'Thumbnail Image Library', 'foogallery' ),
+				'desc'    => sprintf( __('Currently active : %s.<br />Imagick supported : %s.<br />GD supported : %s.', 'foogallery'), '<strong>' . $image_editor . '</strong>', $imagick_supported, $gd_supported ),
+				'type'    => 'html',
+				'tab'     => 'thumb'
+			);
+
 			$settings[] = array(
 				'id'      => 'thumb_jpeg_quality',
 				'title'   => __( 'Thumbnail JPEG Quality', 'foogallery' ),
