@@ -27,14 +27,8 @@ if ( ! class_exists( 'FooGallery_Pro_Hover_Presets' ) ) {
 		 * @return mixed
 		 */
 		function add_preset_type( $choices ) {
-			$new_choices = array();
-
-			$choices_before = array_slice( $choices, 0, 1 );
-			$choices_after = array_slice( $choices, 1 );
-
-			$new_choices['preset'] = __( 'Preset',   'foogallery' );
-
-			return $choices_before + $new_choices + $choices_after;
+			$choices['preset'] = __( 'Preset',   'foogallery' );
+			return $choices;
 		}
 
 		/**

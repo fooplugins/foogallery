@@ -242,8 +242,8 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 					'type'     => 'radio',
 					'choices'  => apply_filters(
 						'foogallery_gallery_template_common_thumbnail_fields_hover_effect_type_choices', array(
-							'normal' => __( 'Normal', 'foogallery' ),
 							'none'   => __( 'None', 'foogallery' ),
+							'normal' => __( 'Normal', 'foogallery' ),
 						)
 					),
 					'spacer'   => '<span class="spacer"></span>',

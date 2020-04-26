@@ -206,19 +206,14 @@ if ( ! class_exists( 'FooGallery_Pro_Promotion' ) ) {
 		 * @return mixed
 		 */
 		function add_preset_type( $choices ) {
-			$new_choices = array();
-
-			$choices_before = array_slice( $choices, 0, 1 );
-			$choices_after = array_slice( $choices, 1 );
-
-			$new_choices['promo-presets'] = array(
+			$choices['promo-presets'] = array(
 				'label'   => __( 'Preset',   'foogallery' ),
                 'tooltip' => __('Choose from 11 stylish hover effect presets in FooGallery PRO.', 'foogallery'),
                 'class'   => 'foogallery-promo',
 				'icon'    => 'dashicons-star-filled'
             );
 
-			return $choices_before + $new_choices + $choices_after;
+			return $choices;
 		}
 
 		/**
