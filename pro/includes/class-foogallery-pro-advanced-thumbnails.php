@@ -64,6 +64,20 @@ if ( ! class_exists( 'FooGallery_Pro_Advanced_Thumbnails' ) ) {
                 )
             );
 
+	        $fields[] = array(
+		        'id'      => 'thumb_background_help',
+		        'title'   => __( 'Background Fill Help', 'foogallery' ),
+		        'desc'	  => __( 'PLEASE NOTE : the background fill cropping feature only works if your server supports the GD image library and it is currently active. You can force GD image library to be used from the settings page, under the Images tab.', 'foogallery '),
+		        'section' => __( 'Advanced', 'foogallery' ),
+		        'type'    => 'help',
+		        'row_data' => array(
+			        'data-foogallery-hidden'                => true,
+			        'data-foogallery-show-when-field'       => 'thumb_cropping_options',
+			        'data-foogallery-show-when-field-value' => 'background_fill',
+			        'data-foogallery-preview'               => 'shortcode'
+		        )
+	        );
+
             $fields[] = array(
                 'id'      => 'thumb_background_fill',
                 'title'   => __( 'Background Fill Color', 'foogallery' ),

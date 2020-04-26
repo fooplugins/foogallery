@@ -199,7 +199,8 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 			$settings[] = array(
 				'id'      => 'thumb_resize_upscale_small',
 				'title'   => __( 'Upscale Small Images', 'foogallery' ),
-				'desc'    => __( 'If the original image is smaller than the thumbnail size, then upscale the image thumbnail to match the size.', 'foogallery' ),
+				'desc'    => __( 'If the original image is smaller than the thumbnail size, then upscale the image thumbnail to match the size.', 'foogallery') . '<br/>' .
+                             __('PLEASE NOTE : this is only supported if your server supports the GD image library and it is currently active.', 'foogallery' ),
 				'type'    => 'checkbox',
 				'tab'     => 'thumb'
 			);
