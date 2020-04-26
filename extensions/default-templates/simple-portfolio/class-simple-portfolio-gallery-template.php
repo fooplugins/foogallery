@@ -15,7 +15,7 @@ if ( !class_exists( 'FooGallery_Simple_Portfolio_Gallery_Template' ) ) {
 			add_filter( 'foogallery_located_template-simple_portfolio', array( $this, 'enqueue_dependencies' ) );
 
 			//add extra fields to the templates
-			add_filter( 'foogallery_override_gallery_template_fields-simple_portfolio', array( $this, 'add_common_thumbnail_fields' ), 10, 2 );
+			add_filter( 'foogallery_override_gallery_template_fields-simple_portfolio', array( $this, 'add_common_thumbnail_fields' ), 101, 2 );
 
 			//add the data options needed for simple portfolio
 			add_filter( 'foogallery_build_container_data_options-simple_portfolio', array( $this, 'add_data_options' ), 10, 3 );
@@ -135,25 +135,7 @@ if ( !class_exists( 'FooGallery_Simple_Portfolio_Gallery_Template' ) ) {
                             'data-foogallery-value-selector' => 'input:checked',
                             'data-foogallery-preview' => 'shortcode',
                         )
-                    ),
-                    array(
-                        'id'      => 'caption_position',
-                        'title' => __('Caption Position', 'foogallery'),
-                        'desc' => __('Where the captions are displayed in relation to the thumbnail.', 'foogallery'),
-						'section' => __( 'Captions', 'foogallery' ),
-                        'default' => '',
-                        'type'    => 'radio',
-                        'spacer'  => '<span class="spacer"></span>',
-                        'choices' => array(
-                            '' => __( 'Below', 'foogallery' ),
-                            'fg-captions-top' => __( 'Above', 'foogallery' )
-                        ),
-						'row_data'=> array(
-							'data-foogallery-change-selector' => 'input:radio',
-							'data-foogallery-value-selector' => 'input:checked',
-							'data-foogallery-preview' => 'shortcode'
-						)
-                    ),
+                    )
                 ),
 			);
 
@@ -179,8 +161,37 @@ if ( !class_exists( 'FooGallery_Simple_Portfolio_Gallery_Template' ) ) {
 		 * @return array
 		 */
 		function add_common_thumbnail_fields( $fields, $template ) {
+			$new_fields[] = array(
+				'id'      => 'caption_position',
+				'title' => __('Caption Position', 'foogallery'),
+				'desc' => __('Where the captions are displayed in relation to the thumbnail.', 'foogallery'),
+				'section' => __( 'Captions', 'foogallery' ),
+				'default' => '',
+				'type'    => 'radio',
+				'spacer'  => '<span class="spacer"></span>',
+				'choices' => array(
+					'' => __( 'Below', 'foogallery' ),
+					'fg-captions-top' => __( 'Above', 'foogallery' )
+				),
+				'row_data'=> array(
+					'data-foogallery-change-selector' => 'input:radio',
+					'data-foogallery-value-selector' => 'input:checked',
+					'data-foogallery-preview' => 'shortcode'
+				)
+			);
+
+			$index_of_captions_field = 0;
+			$index = 0;
+
 			//update specific fields
 			foreach ($fields as &$field) {
+
+				if ( $index_of_captions_field === 0 && __( 'Captions', 'foogallery' ) === $field['section'] ) {
+					$index_of_captions_field = $index;
+				}
+
+				$index++;
+
 				if ( 'hover_effect_caption_visibility' === $field['id'] ) {
 					$field['default'] = 'fg-caption-always';
 					$field['choices'] = array(
@@ -196,8 +207,18 @@ if ( !class_exists( 'FooGallery_Simple_Portfolio_Gallery_Template' ) ) {
 					$field['row_data'] = array(
 						'data-foogallery-hidden' => true
 					);
+				} else if ( 'theme' === $field['id'] ) {
+					$field['default'] = 'fg-dark';
+					$field['choices'] = array(
+						'fg-light'  => __( 'Light', 'foogallery' ),
+						'fg-dark'   => __( 'Dark', 'foogallery' ),
+						'fg-transparent' => __( 'Transparent', 'foogallery' ),
+						'fg-custom' => __( 'Custom', 'foogallery' )
+					);
 				}
 			}
+
+			array_splice( $fields, $index_of_captions_field, 0, $new_fields );
 
 			return $fields;
 		}

@@ -290,6 +290,12 @@ if ( !class_exists( 'FooGallery_Masonry_Gallery_Template' ) ) {
 	                $field['default'] = 'fg-captions-bottom';
                 } else if ( 'theme' === $field['id'] ) {
 	                $field['default'] = 'fg-dark';
+	                $field['choices'] = array(
+		                'fg-light'  => __( 'Light', 'foogallery' ),
+		                'fg-dark'   => __( 'Dark', 'foogallery' ),
+		                'fg-transparent' => __( 'Transparent', 'foogallery' ),
+		                'fg-custom' => __( 'Custom', 'foogallery' )
+	                );
                 } else if ( 'drop_shadow' === $field['id'] ) {
 	                $field['default'] = 'fg-shadow-small';
                 } else if ( 'hover_effect_icon' === $field['id'] ) {
