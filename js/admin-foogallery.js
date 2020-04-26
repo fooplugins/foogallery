@@ -542,22 +542,29 @@
 			clickoutFiresChange: true
 		});
 
-		//lazy loading of images on the gallery edit page
-        var io = new IntersectionObserver(function(entries){
-            entries.forEach(function(entry){
-                if (entry.isIntersecting){
-                    var $target = $(entry.target);
-                    $target.attr("src", $target.data("src"));
-                    io.unobserve(entry.target);
-                }
-            });
-        }, {
-            root: $(".foogallery-attachments-list").get(0)
-        });
+		if (typeof IntersectionObserver === "undefined") {
+			$(".foogallery-attachments-list .attachment .thumbnail img").each(function(i, img){
+				var $img = $(img);
+				$img.attr("src", $img.data("src"));
+			});
+		} else {
+			//lazy loading of images on the gallery edit page
+			var io = new IntersectionObserver(function (entries) {
+				entries.forEach(function (entry) {
+					if (entry.isIntersecting) {
+						var $target = $(entry.target);
+						$target.attr("src", $target.data("src"));
+						io.unobserve(entry.target);
+					}
+				});
+			}, {
+				root: $(".foogallery-attachments-list").get(0)
+			});
 
-        $(".foogallery-attachments-list .attachment .thumbnail img").each(function(i, img){
-            io.observe(img);
-        });
+			$(".foogallery-attachments-list .attachment .thumbnail img").each(function(i, img){
+				io.observe(img);
+			});
+		}
     };
 
 }(window.FOOGALLERY = window.FOOGALLERY || {}, jQuery));
