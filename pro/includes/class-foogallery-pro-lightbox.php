@@ -486,6 +486,25 @@ if ( ! class_exists( 'FooGallery_Pro_Lightbox' ) ) {
 				);
 			}
 
+			$field[] = array(
+				'id'       => 'lightbox_show_caption_button',
+				'title'    => __( 'Show Caption Button', 'foogallery' ),
+				'desc'     => __( 'Whether of not to show the Caption button', 'foogallery' ),
+				'section'  => $section,
+				'spacer'   => '<span class="spacer"></span>',
+				'type'     => 'radio',
+				'default'  => 'yes',
+				'choices'  => apply_filters( 'foogallery_gallery_template_lightbox_show_caption_button_choices', array(
+					'yes' => __( 'Yes', 'foogallery' ),
+					'no'  => __( 'No', 'foogallery' ),
+				) ),
+				'row_data' => array(
+					'data-foogallery-change-selector' => 'input:radio',
+					'data-foogallery-preview'         => 'shortcode',
+					'data-foogallery-value-selector'  => 'input:checked',
+				)
+			);
+
 			//find the index of the first Hover Effect field
 			$index = $this->find_index_of_section( $fields, __( 'Hover Effects', 'foogallery' ) );
 
@@ -673,6 +692,11 @@ if ( ! class_exists( 'FooGallery_Pro_Lightbox' ) ) {
 			$show_maximise_button = foogallery_gallery_template_setting( 'lightbox_show_maximize_button', false );
 			if ( $show_maximise_button !== false ) {
 				$options['buttons']['maximize'] = ($show_maximise_button === 'yes');
+			}
+
+			$show_caption_button = foogallery_gallery_template_setting( 'lightbox_show_caption_button', false );
+			if ( $show_caption_button !== false ) {
+				$options['buttons']['info'] = ($show_caption_button === 'yes');
 			}
 
 			return $options;
