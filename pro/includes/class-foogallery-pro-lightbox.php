@@ -24,6 +24,12 @@ if ( ! class_exists( 'FooGallery_Pro_Lightbox' ) ) {
 
 			//add specific lightbox data attribute to the container div
 			add_filter( 'foogallery_build_container_attributes', array( $this, 'add_lightbox_data_attributes' ), 10, 2 );
+
+			//add attributes to front-end anchor
+			add_filter( 'foogallery_attachment_html_link_attributes', array( $this, 'alter_link_attributes' ), 30, 3 );
+
+			//add attachment field for custom type
+			add_filter( 'foogallery_attachment_custom_fields', array( $this, 'add_override_type_field' ), 50 );
 		}
 
 		/**
@@ -700,6 +706,58 @@ if ( ! class_exists( 'FooGallery_Pro_Lightbox' ) ) {
 			}
 
 			return $options;
+		}
+
+		/**
+		 * @uses "foogallery_attachment_html_link_attributes" filter
+		 *
+		 * @param                             $attr
+		 * @param                             $args
+		 * @param object|FooGalleryAttachment $attachment
+		 *
+		 * @return mixed
+		 */
+		public function alter_link_attributes( $attr, $args, $attachment ) {
+
+			//we only want to override the data-type if it has not been provided previously
+			if ( !array_key_exists( 'data-type', $attr ) ) {
+
+				//determine if the lightbox is being used together with custom URLs
+				if ( is_array( $args ) && array_key_exists( 'link', $args ) && 'custom' === $args['link'] ) {
+					$custom_url = $attachment->custom_url;
+					$href       = array_key_exists( 'href', $attr ) ? $attr['href'] : '';
+
+					if ( ! empty( $custom_url ) && $custom_url === $href ) {
+						$attr['data-type'] = 'iframe';
+					}
+				}
+			}
+
+			$override_class = get_post_meta( $attachment->ID, '_foogallery_override_type', true );
+
+			if ( !empty( $override_class ) ) {
+				$attr['data-type'] = $override_class;
+			}
+
+			return $attr;
+		}
+
+		/**
+		 * Adds a override type field to the attachments
+		 *
+		 * @param $fields array
+		 *
+		 * @return array
+		 */
+		function add_override_type_field( $fields ) {
+			$fields['foogallery_override_type'] = array(
+				'label'       =>  __( 'Override Type', 'foogallery' ),
+				'input'       => 'text',
+				'helps'       => __( 'Override the type of the attachment used by lightbox', 'foogallery' ),
+				'exclusions'  => array( 'audio', 'video' ),
+			);
+
+			return $fields;
 		}
 	}
 }
