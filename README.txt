@@ -211,10 +211,11 @@ Date Updated : 2020-04-24
 * New : Added global settings for upscaling small images when using larger thumbnail dimensions
 * New : Added Pro feature promotions in gallery settings
 * New : Added setting to force GD Image editor as the default
+* New : Added info for active image editor to Settings -> Images tab
 * Fix : Fixed bug with Safari when editing a gallery, not loading thumbs
 * Fix : Fixed gallery previews in certain situations
 * Update : Freemius SDK 2.3.2
-* Update : FooGallery client side 1.4.8
+* Update : FooGallery client side 1.4.11
 [//]: # fs_premium_only_begin
 * New : Added new Bulk Taxonomy Management modal when editing a gallery
 * New : Added new setting to Thumbnail gallery to Exclude Featured image (only works with PRO Lightbox)
