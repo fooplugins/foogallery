@@ -55,13 +55,15 @@ class FooGallery_Template_Loader {
 			$current_foogallery->gallery_template = $current_foogallery_template;
 
 			//we need to move the settings across
-			$new_settings = array();
-			foreach ( $current_foogallery->settings as $setting_key=>$setting_value ) {
-				$setting_key = $this->str_replace_first( "{$old_gallery_template}_", "{$current_foogallery_template}_", $setting_key );
-				$new_settings[$setting_key] = $setting_value;
-			}
+			if ( isset( $current_foogallery->settings ) && is_array( $current_foogallery->settings ) ) {
+				$new_settings = array();
+				foreach ( $current_foogallery->settings as $setting_key => $setting_value ) {
+					$setting_key                  = $this->str_replace_first( "{$old_gallery_template}_", "{$current_foogallery_template}_", $setting_key );
+					$new_settings[ $setting_key ] = $setting_value;
+				}
 
-			$current_foogallery->settings = $new_settings;
+				$current_foogallery->settings = $new_settings;
+			}
 		}
 
 		//potentially override attachment_ids from arguments
