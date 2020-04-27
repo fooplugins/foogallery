@@ -718,25 +718,29 @@ if ( ! class_exists( 'FooGallery_Pro_Lightbox' ) ) {
 		 * @return mixed
 		 */
 		public function alter_link_attributes( $attr, $args, $attachment ) {
+			//check if lightbox set to foogallery
+			$lightbox = foogallery_gallery_template_setting( 'lightbox', '' );
 
-			//we only want to override the data-type if it has not been provided previously
-			if ( !array_key_exists( 'data-type', $attr ) ) {
+			if ( 'foogallery' === $lightbox ) {
+				//we only want to override the data-type if it has not been provided previously
+				if ( ! array_key_exists( 'data-type', $attr ) ) {
 
-				//determine if the lightbox is being used together with custom URLs
-				if ( is_array( $args ) && array_key_exists( 'link', $args ) && 'custom' === $args['link'] ) {
-					$custom_url = $attachment->custom_url;
-					$href       = array_key_exists( 'href', $attr ) ? $attr['href'] : '';
+					//determine if the lightbox is being used together with custom URLs
+					if ( is_array( $args ) && array_key_exists( 'link', $args ) && 'custom' === $args['link'] ) {
+						$custom_url = $attachment->custom_url;
+						$href       = array_key_exists( 'href', $attr ) ? $attr['href'] : '';
 
-					if ( ! empty( $custom_url ) && $custom_url === $href ) {
-						$attr['data-type'] = 'iframe';
+						if ( ! empty( $custom_url ) && $custom_url === $href ) {
+							$attr['data-type'] = 'iframe';
+						}
 					}
 				}
-			}
 
-			$override_class = get_post_meta( $attachment->ID, '_foogallery_override_type', true );
+				$override_class = get_post_meta( $attachment->ID, '_foogallery_override_type', true );
 
-			if ( !empty( $override_class ) ) {
-				$attr['data-type'] = $override_class;
+				if ( ! empty( $override_class ) ) {
+					$attr['data-type'] = $override_class;
+				}
 			}
 
 			return $attr;
