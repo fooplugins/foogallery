@@ -445,28 +445,26 @@ if ( ! class_exists( 'FooGallery_Pro_Lightbox' ) ) {
 			);
 
 			//Only show this setting for gallery templates that use the lightbox
-			if ( $use_lightbox ) {
-				$field[] = array(
-					'id'       => 'lightbox_show_fullscreen_button',
-					'title'    => __( 'Show Fullscreen Button', 'foogallery' ),
-					'desc'     => __( 'Whether of not to show the Fullscreen button', 'foogallery' ),
-					'section'  => $section,
-					'spacer'   => '<span class="spacer"></span>',
-					'type'     => 'radio',
-					'default'  => 'yes',
-					'choices'  => apply_filters( 'foogallery_gallery_template_lightbox_show_fullscreen_button_choices', array(
-						'yes' => __( 'Yes', 'foogallery' ),
-						'no'  => __( 'No', 'foogallery' ),
-					) ),
-					'row_data' => array(
-						'data-foogallery-change-selector' => 'input:radio',
-						'data-foogallery-preview'         => 'shortcode',
-						'data-foogallery-value-selector'  => 'input:checked',
-					)
-				);
-			}
+			$field[] = array(
+				'id'       => 'lightbox_show_fullscreen_button',
+				'title'    => __( 'Show Fullscreen Button', 'foogallery' ),
+				'desc'     => __( 'Whether of not to show the Fullscreen button', 'foogallery' ),
+				'section'  => $section,
+				'spacer'   => '<span class="spacer"></span>',
+				'type'     => 'radio',
+				'default'  => $use_lightbox ? 'yes' : 'no',
+				'choices'  => apply_filters( 'foogallery_gallery_template_lightbox_show_fullscreen_button_choices', array(
+					'yes' => __( 'Yes', 'foogallery' ),
+					'no'  => __( 'No', 'foogallery' ),
+				) ),
+				'row_data' => array(
+					'data-foogallery-change-selector' => 'input:radio',
+					'data-foogallery-preview'         => 'shortcode',
+					'data-foogallery-value-selector'  => 'input:checked',
+				)
+			);
 
-			//Only add this setting for gallery templates that use the panel, not lightbox
+			//add this setting for gallery templates that use the panel, not lightbox
 			if ( !$use_lightbox ) {
 				$field[] = array(
 					'id'       => 'lightbox_show_maximize_button',
