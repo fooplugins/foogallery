@@ -17,9 +17,6 @@ if ( ! class_exists( 'FooGallery_Admin_Album_MetaBoxes' ) ) {
 			//save extra post data for a gallery
 			add_action( 'save_post', array( $this, 'save_album' ) );
 
-			//whitelist metaboxes for our album posttype
-			add_filter( 'foogallery-album_metabox_sanity', array( $this, 'whitelist_metaboxes' ) );
-
 			//add scripts used by metaboxes
 			add_action( 'admin_enqueue_scripts', array( $this, 'include_required_scripts' ) );
 
@@ -31,24 +28,6 @@ if ( ! class_exists( 'FooGallery_Admin_Album_MetaBoxes' ) ) {
 
 			// Save details for the gallery
 			add_action( 'foogallery_album_gallery_details_save', array( $this, 'gallery_details_save' ), 10, 3 );
-		}
-
-		public function whitelist_metaboxes() {
-			return array(
-				FOOGALLERY_CPT_GALLERY => array(
-					'whitelist'  => apply_filters( 'foogallery_metabox_sanity_foogallery-album',
-						array(
-							'submitdiv',
-							'slugdiv',
-							'postimagediv',
-							'foogalleryalbum_galleries',
-							'foogalleryalbum_shortcode'
-						)
-					),
-					'contexts'   => array( 'normal', 'advanced', 'side', ),
-					'priorities' => array( 'high', 'core', 'default', 'low', ),
-				)
-			);
 		}
 
 		public function add_meta_boxes( $post ) {

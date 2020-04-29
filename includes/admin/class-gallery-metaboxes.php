@@ -20,9 +20,6 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 			//save custom field on a page or post
 			add_action( 'save_post', array( $this, 'attach_gallery_to_post' ), 10, 2 );
 
-			//whitelist metaboxes for our gallery postype
-			add_filter( 'foogallery_metabox_sanity', array( $this, 'whitelist_metaboxes' ) );
-
 			//add scripts used by metaboxes
 			add_action( 'admin_enqueue_scripts', array( $this, 'include_required_scripts' ) );
 
@@ -31,29 +28,6 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 
 			// Ajax call for clearing thumb cache for the gallery
 			add_action( 'wp_ajax_foogallery_clear_gallery_thumb_cache', array( $this, 'ajax_clear_gallery_thumb_cache' ) );
-		}
-
-		public function whitelist_metaboxes() {
-			return array(
-				FOOGALLERY_CPT_GALLERY => array(
-					'whitelist'  => apply_filters( 'foogallery_metabox_sanity_foogallery',
-						array(
-							'submitdiv',
-							'slugdiv',
-							'postimagediv',
-							'foogallery_items',
-							'foogallery_settings',
-							'foogallery_help',
-							'foogallery_pages',
-							'foogallery_customcss',
-							'foogallery_sorting',
-							'foogallery_thumb_settings',
-							'foogallery_retina'
-						) ),
-					'contexts'   => array( 'normal', 'advanced', 'side', ),
-					'priorities' => array( 'high', 'core', 'default', 'low', ),
-				)
-			);
 		}
 
 		public function add_meta_boxes_to_gallery( $post ) {

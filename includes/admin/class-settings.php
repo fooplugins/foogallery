@@ -362,7 +362,6 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 				'type'    => 'checkbox',
 				'tab'     => 'advanced',
 			);
-
 			//endregion Advanced Tab
 
 			return apply_filters( 'foogallery_admin_settings_override', array(
