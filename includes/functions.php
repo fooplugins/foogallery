@@ -1138,7 +1138,7 @@ function foogallery_get_attachment_id_by_url($url) {
  */
 function foogallery_esc_attr( $text ) {
 	$safe_text = wp_check_invalid_utf8( $text );
-	$safe_text = _wp_specialchars( $safe_text, ENT_QUOTES );
+	$safe_text = _wp_specialchars( $safe_text, ENT_QUOTES, false, true );
 	return $safe_text;
 }
 
