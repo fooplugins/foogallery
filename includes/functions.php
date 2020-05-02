@@ -1420,3 +1420,16 @@ function foogallery_rgb_to_color_array( $rgba ) {
 	//return black if there was a problem getting the color
 	return array(0,0,0);
 }
+
+/**
+ * Sanitize HTML to make it safe to output. Used to sanitize potentially harmful HTML used for captions
+ *
+ * @since 1.9.23
+ *
+ * @param string $text
+ * @return string
+ */
+function foogallery_sanitize_html( $text ) {
+	$safe_text = wp_kses_post( $text );
+	return $safe_text;
+}

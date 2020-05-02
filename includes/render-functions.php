@@ -227,6 +227,8 @@ function foogallery_attachment_html_anchor( $foogallery_attachment, $args = arra
 function foogallery_build_attachment_html_caption( &$foogallery_attachment, $args = array() ) {
 	$captions = apply_filters( 'foogallery_build_attachment_html_caption_custom', false, $foogallery_attachment, $args);
 
+	$set_attachment_captions = false;
+
 	if ( false === $captions ) {
 
         $captions = array();
@@ -303,17 +305,30 @@ function foogallery_build_attachment_html_caption( &$foogallery_attachment, $arg
             $captions = false;
         }
     } else {
-	    if ( isset( $captions['title']) ) {
-            $foogallery_attachment->caption = $captions['title'];
-        } else {
-            $foogallery_attachment->caption = '';
-        }
-        if ( isset( $captions['desc'] ) ) {
-            $foogallery_attachment->description = $captions['desc'];
-        } else {
-            $foogallery_attachment->description = '';
-        }
+		$set_attachment_captions = true;
     }
+
+	//extra sanitization for HTML captions
+	if ( !empty( $captions['title']) ) {
+		$captions['title'] = foogallery_sanitize_html( $captions['title'] );
+	}
+	if ( !empty( $captions['desc']) ) {
+		$captions['desc'] = foogallery_sanitize_html( $captions['desc'] );
+	}
+
+	//custom captions were set, so we need to update the attachment object
+	if ( $set_attachment_captions ) {
+		if ( isset( $captions['title']) ) {
+			$foogallery_attachment->caption = $captions['title'];
+		} else {
+			$foogallery_attachment->caption = '';
+		}
+		if ( isset( $captions['desc'] ) ) {
+			$foogallery_attachment->description = $captions['desc'];
+		} else {
+			$foogallery_attachment->description = '';
+		}
+	}
 
 	return apply_filters( 'foogallery_build_attachment_html_caption', $captions, $foogallery_attachment, $args );
 }
