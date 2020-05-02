@@ -158,11 +158,11 @@ function foogallery_build_attachment_html_anchor_attributes( $foogallery_attachm
 	}
 
 	if ( ! empty( $foogallery_attachment->caption ) ) {
-		$attr['data-caption-title'] = $foogallery_attachment->caption;
+		$attr['data-caption-title'] = foogallery_sanitize_html( $foogallery_attachment->caption );
 	}
 
 	if ( !empty( $foogallery_attachment->description ) ) {
-		$attr['data-caption-desc'] = $foogallery_attachment->description;
+		$attr['data-caption-desc'] = foogallery_sanitize_html( $foogallery_attachment->description );
 	}
 
 	$attr['data-attachment-id'] = $foogallery_attachment->ID;
