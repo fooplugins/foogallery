@@ -31,6 +31,8 @@ if ( !class_exists( 'FooGallery_Simple_Portfolio_Gallery_Template' ) ) {
 
             //build up the arguments needed for rendering this template
             add_filter( 'foogallery_gallery_template_arguments-simple_portfolio', array( $this, 'build_gallery_template_arguments' ) );
+
+			add_filter( 'foogallery_build_class_attribute', array( $this, 'override_class_attributes' ), 99, 2 );
         }
 
 		/**
@@ -333,5 +335,25 @@ if ( !class_exists( 'FooGallery_Simple_Portfolio_Gallery_Template' ) ) {
 
             return $args;
         }
+
+		/**
+		 * Override the classes for the captions visibility
+		 *
+		 * @param $classes array
+		 * @param $gallery FooGallery
+		 *
+		 * @return array
+		 */
+		function override_class_attributes( $classes, $gallery ) {
+			if ( 'simple_portfolio' === $gallery->gallery_template ) {
+				if ( ( $key = array_search( 'fg-caption-hover', $classes ) ) !== false) {
+					unset( $classes[$key] );
+				}
+
+				$classes[] = 'fg-caption-always';
+			}
+
+			return $classes;
+		}
 	}
 }
