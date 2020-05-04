@@ -96,6 +96,8 @@ if ( ! class_exists( 'FooGalleryAttachment' ) ) {
 		}
 
 		/**
+		 * @deprecated 1.9.24 Functions inside render-functions.php should rather be used
+		 *
 		 * Returns the HTML img tag for the attachment
 		 * @param array $args
 		 *
@@ -133,6 +135,8 @@ if ( ! class_exists( 'FooGalleryAttachment' ) ) {
 		}
 
 		/**
+		 * @deprecated 1.9.24 Functions inside render-functions.php should rather be used
+		 *
 		 * Returns HTML for the attachment
 		 * @param array $args
 		 * @param bool $output_image
@@ -219,6 +223,8 @@ if ( ! class_exists( 'FooGalleryAttachment' ) ) {
 		}
 
 		/**
+		 * @deprecated 1.9.24 Functions inside render-functions.php should rather be used
+		 *
 		 * Returns generic html for captions
 		 *
 		 * @param $caption_content string Include title, desc, or both
