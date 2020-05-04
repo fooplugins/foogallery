@@ -24,13 +24,15 @@ if ( ! class_exists( 'FooGallery_Pro_WPLR_Support' ) ) {
         	//first check if the setting is enabled
 			if ( foogallery_get_setting('enable_sync_collections_to_galleries') === 'on' ) {
 
+				$foogallery_title = $name['name'];
+
 				//then check if we have already synced the collection to an existing gallery
 				$foogallery_wplr = get_option( 'foogallery_wplr_sync', array() );
 				if ( ! array_key_exists( $collection_id, $foogallery_wplr ) ) {
 
 					//create a new gallery
 					$foogallery_args = array(
-						'post_title'  => $name['name'],
+						'post_title'  => $foogallery_title,
 						'post_type'   => FOOGALLERY_CPT_GALLERY,
 						'post_status' => 'publish',
 					);
@@ -53,15 +55,39 @@ if ( ! class_exists( 'FooGallery_Pro_WPLR_Support' ) ) {
 
 					//make sure the datasource is set correctly
 					update_post_meta( $gallery_id, FOOGALLERY_META_DATASOURCE, 'lightroom' );
-					update_post_meta( $gallery_id, FOOGALLERY_META_DATASOURCE_VALUE, array( 'collectionId' => $collection_id, 'collection' => $name['name'] ) );
+					update_post_meta( $gallery_id, FOOGALLERY_META_DATASOURCE_VALUE, array( 'collectionId' => $collection_id, 'collection' => $foogallery_title ) );
 
 					//save the mapping so we dont do it again
 					$foogallery_wplr[$collection_id] = array(
 						'collectionId' => $collection_id,
-						'collection'   => $name['name'],
+						'collection'   => $foogallery_title,
 						'foogalleryId' => $gallery_id
 					);
 
+					update_option( 'foogallery_wplr_sync', $foogallery_wplr );
+				} else {
+					//collection has already been synced
+					$foogallery_sync_data = $foogallery_wplr[$collection_id];
+
+					//get the foogallery ID
+					$foogallery_id = intval( $foogallery_sync_data['foogalleryId'] );
+
+					//update the datasource metadata value
+					update_post_meta( $foogallery_id, FOOGALLERY_META_DATASOURCE_VALUE, array( 'collectionId' => $collection_id, 'collection' => $foogallery_title ) );
+
+					//update the gallery name
+					$gallery_post = array(
+						'ID'           => $foogallery_id,
+						'post_title'   => $foogallery_title
+					);
+					wp_update_post( $gallery_post );
+
+					//clear the gallery cache
+					$transient_key = '_foogallery_datasource_lightroom_' . $foogallery_id;
+					delete_transient( $transient_key );
+
+					//finally, update the synced data
+					$foogallery_sync_data['name'] = $foogallery_title;
 					update_option( 'foogallery_wplr_sync', $foogallery_wplr );
 				}
 			}
@@ -104,25 +130,65 @@ if ( ! class_exists( 'FooGallery_Pro_WPLR_Support' ) ) {
 
 			$synced = get_option( 'foogallery_wplr_sync', array() );
 
+			$save_synced_data = false;
+			$updated_sync_data = array();
+
+			if ( isset( $_GET['data'] ) ) {
+
+				if ( 'clean' === $_GET['data'] ) {
+					$synced = array();
+				} else if ( 'dummy' === $_GET['data'] ) {
+					$synced[2] = array(
+						'collectionId' => 2,
+						'collection'   => 'test collection 2',
+						'foogalleryId' => 345677
+					);
+
+					$synced[3] = array(
+						'collectionId' => 3,
+						'collection'   => 'test collection 3',
+						'foogalleryId' => 1121212
+					);
+
+					$synced[1] = array(
+						'collectionId' => 1,
+						'collection'   => 'test collection',
+						'foogalleryId' => 348
+					);
+				}
+				update_option( 'foogallery_wplr_sync', $synced );
+			}
+
 			if ( count ( $synced ) > 0 ) {
-				$sync_data = sprintf( '<table class="wp-list-table widefat striped"><thead><tr><td><strong>%s</strong></td><td><strong>%s</strong></td></tr></thead><tbody>', __('Collection', 'foogallery'), __('Gallery', 'foogallery'));
-				foreach ($synced as $sync) {
+				$sync_data = sprintf( '<table class="wp-list-table widefat striped"><thead><tr><td><strong>%s</strong></td><td><strong>%s</strong></td></tr></thead><tbody>', __( 'Collection', 'foogallery' ), __( 'Gallery', 'foogallery' ) );
+				foreach ( $synced as $sync ) {
 					$gallery_id = $sync['foogalleryId'];
-					$gallery = FooGallery::get_by_id( $gallery_id );
-					$gallery_url = get_edit_post_link( $gallery_id, 'url' );
-					$collection_id = $sync['collectionId'];
-					$collection = $sync['collection'];
-					$sync_data .= sprintf( '<tr><td>%s</td><td><a href="%s" target="_blank">%s</a></td></tr>', $collection . ' (id:' . $collection_id . ')', $gallery_url, $gallery->name );
+					$gallery    = FooGallery::get_by_id( $gallery_id );
+					if ( false === $gallery ) {
+						//gallery no longer exists
+						$save_synced_data = true;
+					} else {
+						$gallery_url                         = get_edit_post_link( $gallery_id, 'url' );
+						$collection_id                       = $sync['collectionId'];
+						$collection                          = $sync['collection'];
+						$updated_sync_data[ $collection_id ] = $sync;
+						$sync_data                           .= sprintf( '<tr><td>%s</td><td><a href="%s" target="_blank">%s</a></td></tr>', $collection . ' (id:' . $collection_id . ')', $gallery_url, $gallery->name );
+					}
 				}
 				$sync_data .= '</tbody></table>';
 
 				$settings['settings'][] = array(
-					'id'      => 'wplr_synced',
-					'title'   => __( 'Already Synced', 'foogallery' ),
-					'type'    => 'html',
-					'desc'    => $sync_data,
-					'tab'     => 'wplr'
+					'id'    => 'wplr_synced',
+					'title' => __( 'Already Synced', 'foogallery' ),
+					'type'  => 'html',
+					'desc'  => $sync_data,
+					'tab'   => 'wplr'
 				);
+
+				//update the synced data, clearing out any unused collections where galleries have been deleted
+				if ( $save_synced_data ) {
+					update_option( 'foogallery_wplr_sync', $updated_sync_data );
+				}
 			}
 
 			return $settings;

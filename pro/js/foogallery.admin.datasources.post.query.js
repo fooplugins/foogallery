@@ -67,7 +67,7 @@ jQuery(function ($) {
 
         FOOGALLERY.showHiddenAreas(false);
 
-        $('.foogallery-attachments-list').addClass('hidden');
+        $('.foogallery-attachments-list-container').addClass('hidden');
 
         $('.foogallery_preview_container').addClass('foogallery-preview-force-refresh');
     });

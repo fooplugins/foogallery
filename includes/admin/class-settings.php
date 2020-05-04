@@ -154,12 +154,24 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 			//region Images Tab
 			$tabs['thumb'] = __( 'Images', 'foogallery' );
 
+			$image_editor = str_replace( 'WP_Thumb_Image_Editor_', '', _wp_image_editor_choose( array( 'methods' => array( 'get_image' ) ) ) );
+			$gd_supported = extension_loaded( 'gd' ) ? __('yes', 'foogallery') : __('no', 'foogallery');
+			$imagick_supported = extension_loaded( 'imagick' ) ? __('yes', 'foogallery') : __('no', 'foogallery');
+
+			$settings[] = array(
+				'id'      => 'thumb_image_library',
+				'title'   => __( 'Thumbnail Image Library', 'foogallery' ),
+				'desc'    => sprintf( __('Currently active : %s.<br />Imagick supported : %s.<br />GD supported : %s.', 'foogallery'), '<strong>' . $image_editor . '</strong>', $imagick_supported, $gd_supported ),
+				'type'    => 'html',
+				'tab'     => 'thumb'
+			);
+
 			$settings[] = array(
 				'id'      => 'thumb_jpeg_quality',
 				'title'   => __( 'Thumbnail JPEG Quality', 'foogallery' ),
 				'desc'    => __( 'The image quality to be used when resizing JPEG images.', 'foogallery' ),
 				'type'    => 'text',
-				'default' => '80',
+				'default' => '90',
 				'tab'     => 'thumb'
 			);
 
@@ -197,10 +209,36 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 			);
 
 			$settings[] = array(
+				'id'      => 'thumb_resize_upscale_small',
+				'title'   => __( 'Upscale Small Images', 'foogallery' ),
+				'desc'    => __( 'If the original image is smaller than the thumbnail size, then upscale the image thumbnail to match the size.', 'foogallery') . '<br/>' .
+                             __('PLEASE NOTE : this is only supported if your server supports the GD image library and it is currently active.', 'foogallery' ),
+				'type'    => 'checkbox',
+				'tab'     => 'thumb'
+			);
+
+			$settings[] = array(
+				'id'      => 'thumb_resize_upscale_small_color',
+				'title'   => __( 'Upscale Background Color', 'foogallery' ),
+				'desc'    => __( 'The background color to use for upscaled images.', 'foogallery' ),
+				'type'    => 'text',
+				'default' => 'rgb(0,0,0)',
+				'tab'     => 'thumb'
+			);
+
+			$settings[] = array(
 				'id'      => 'thumb_generation_test',
 				'title'   => __( 'Thumbnail Generation Test', 'foogallery' ),
 				'desc'    => sprintf( __( 'Test to see if %s can generate the thumbnails it needs.', 'foogallery' ), foogallery_plugin_name() ),
 				'type'    => 'thumb_generation_test',
+				'tab'     => 'thumb'
+			);
+
+			$settings[] = array(
+				'id'      => 'force_gd_library',
+				'title'   => __( 'Force GD Library', 'foogallery' ),
+				'desc'    => __( 'By default, WordPress will use Imagick as the default Image Editor. This will force GD to be used as the default.', 'foogallery' ),
+				'type'    => 'checkbox',
 				'tab'     => 'thumb'
 			);
 
@@ -324,7 +362,6 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 				'type'    => 'checkbox',
 				'tab'     => 'advanced',
 			);
-
 			//endregion Advanced Tab
 
 			return apply_filters( 'foogallery_admin_settings_override', array(

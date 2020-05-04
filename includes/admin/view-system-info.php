@@ -66,6 +66,8 @@ if ( current_user_can( 'activate_plugins' ) ) {
 	$test_image_url_scheme = parse_url( $test_image_url ,PHP_URL_SCHEME );
 	$home_url_scheme = parse_url( home_url() ,PHP_URL_SCHEME );
 
+	$image_editor = _wp_image_editor_choose( array( 'methods' => array( 'get_image' ) ) );
+
 	$debug_info = array(
 		__( 'FooGallery version', 'foogallery' )  			=> $info['version'],
 		__( 'WordPress version', 'foogallery' )   			=> $wp_version,
@@ -73,12 +75,14 @@ if ( current_user_can( 'activate_plugins' ) ) {
 		__( 'WordPress URL', 'foogallery' )       			=> get_site_url(),
 		__( 'PHP version', 'foogallery' )         			=> phpversion(),
 		__( 'PHP GD', 'foogallery' )              			=> extension_loaded( 'gd' ) && function_exists( 'gd_info' ) ? __( 'Loaded', 'foogallery' ) . ' (V' . foogallery_gdversion() . ')' : __( 'Not found!', 'foogallery' ),
+		__( 'PHP Imagick', 'foogallery' )          			=> extension_loaded( 'imagick' ) ? __( 'Loaded', 'foogallery' ) : __( 'Not found!', 'foogallery' ),
 		__( 'PHP Open SSL', 'foogallery' )        			=> extension_loaded( 'openssl' ) ? __( 'Loaded', 'foogallery' ) : __( 'Not found!', 'foogallery' ),
 		__( 'PHP HTTP Wrapper', 'foogallery' )    			=> in_array( 'http', $stream_wrappers ) ? __( 'Found', 'foogallery' ) : __( 'Not found!', 'foogallery' ),
 		__( 'PHP HTTPS Wrapper', 'foogallery' )   			=> in_array( 'https', $stream_wrappers ) ? __( 'Found', 'foogallery' ) : __( 'Not found!', 'foogallery' ),
 		__( 'HTTPS Mismatch', 'foogallery' )      			=> $test_image_url_scheme === $home_url_scheme ? __( 'None', 'foogallery' ) : __( 'There is a protocol mismatch between your site URL and the actual URL!', 'foogallery' ),
 		__( 'PHP Config[allow_url_fopen]', 'foogallery' ) 	=> ini_get( 'allow_url_fopen' ),
 		__( 'PHP Config[allow_url_include]', 'foogallery' ) => ini_get( 'allow_url_fopen' ),
+		__( 'WP Image Editor', 'foogallery' )               => $image_editor,
 		__( 'Thumbnail Generation Test', 'foogallery') 		=> $test_image_url,
 		__( 'Extensions Endpoint', 'foogallery' ) 			=> $api->get_extensions_endpoint(),
 		__( 'Extensions Errors', 'foogallery' )   			=> $api->has_extension_loading_errors() == true ? $api->get_extension_loading_errors_response() : __( 'Nope, all good', 'foogallery' ),

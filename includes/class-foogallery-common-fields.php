@@ -20,14 +20,14 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 			//add common data options
 			add_filter( 'foogallery_build_container_data_options', array( $this, 'add_caption_data_options' ), 10, 3 );
 
-			//build up any preview arguments
-			add_filter( 'foogallery_preview_arguments', array( $this, 'preview_arguments' ), 10, 3 );
-
             //add common fields to the templates that support it
             add_filter( 'foogallery_override_gallery_template_fields', array( $this, 'add_common_fields' ), 10, 2 );
 
             //check that we are no longer on pro and have previously used a preset or a loaded effect
             add_filter( 'foogallery_render_gallery_template_field_value', array( $this, 'check_downgrade_values' ), 10, 4 );
+
+			//override settings for older versions
+			add_filter( 'foogallery_settings_override', array( $this, 'override_settings_for_older_versions' ), 10, 3 );
 		}
 
         function alter_gallery_template_field( $field, $gallery ) {
@@ -43,6 +43,11 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 							$field['lightbox'] = true;
 							$field['type']     = 'select';
 							$field['choices']  = foogallery_gallery_template_field_lightbox_choices();
+							$field['row_data'] = array(
+								'data-foogallery-value-selector' => 'select',
+								'data-foogallery-change-selector' => 'select',
+								'data-foogallery-preview' => 'shortcode'
+							);
 							break;
 					}
 				}
@@ -96,7 +101,7 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 					'row_data' => array(
 						'data-foogallery-change-selector' => 'input:radio',
 						'data-foogallery-value-selector'  => 'input:checked',
-						'data-foogallery-preview'         => 'shortcode class'
+						'data-foogallery-preview'         => 'shortcode'
 					)
 				);
 
@@ -116,7 +121,7 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 					),
 					'row_data' => array(
 						'data-foogallery-change-selector' => 'input:radio',
-						'data-foogallery-preview'         => 'class'
+						'data-foogallery-preview'         => 'shortcode'
 					)
 				);
 
@@ -137,7 +142,7 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 					),
 					'row_data' => array(
 						'data-foogallery-change-selector' => 'input:radio',
-						'data-foogallery-preview'         => 'class'
+						'data-foogallery-preview'         => 'shortcode'
 					)
 				);
 
@@ -158,7 +163,7 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 					),
 					'row_data' => array(
 						'data-foogallery-change-selector' => 'input:radio',
-						'data-foogallery-preview'         => 'class'
+						'data-foogallery-preview'         => 'shortcode'
 					)
 				);
 
@@ -178,7 +183,7 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 					),
 					'row_data' => array(
 						'data-foogallery-change-selector' => 'input:radio',
-						'data-foogallery-preview'         => 'class'
+						'data-foogallery-preview'         => 'shortcode'
 					)
 				);
 
@@ -203,7 +208,7 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 					'row_data' => array(
 						'data-foogallery-change-selector' => 'input:radio',
                         'data-foogallery-value-selector'  => 'input:checked',
-						'data-foogallery-preview'         => 'class'
+						'data-foogallery-preview'         => 'shortcode'
 					)
 				);
 
@@ -223,67 +228,61 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 					'row_data' => array(
 						'data-foogallery-change-selector' => 'select',
                         'data-foogallery-value-selector'  => 'select option:selected',
-						'data-foogallery-preview'         => 'class'
+						'data-foogallery-preview'         => 'shortcode'
 					)
 				);
 				//endregion
 
 				//region Hover Effects Fields
 				$fields[] = array(
-					'id'      => 'hover_effect_help',
-					'title'   => __( 'Hover Effect Help', 'foogallery' ),
-					'desc'    => __( 'A preset provides a stylish and pre-defined look &amp; feel for when you hover over the thumbnails.', 'foogallery' ),
-					'section' => __( 'Hover Effects', 'foogallery' ),
-					'type'    => 'help',
-					'row_data' => array(
-						'data-foogallery-hidden' => true,
-					)
-				);
-
-				$fields[] = array(
-					'id'       => 'hover_effect_preset',
-					'title'    => __( 'Preset', 'foogallery' ),
+					'id'       => 'hover_effect_type',
+					'title'    => __( 'Effect Type', 'foogallery' ),
 					'section'  => __( 'Hover Effects', 'foogallery' ),
-					'default'  => 'fg-custom',
+					'default'  => 'normal',
 					'type'     => 'radio',
 					'choices'  => apply_filters(
-						'foogallery_gallery_template_common_thumbnail_fields_hover_effect_preset_choices', array(
-						''          => __( 'None', 'foogallery' ),
-						'fg-custom' => __( 'Custom', 'foogallery' ),
-					)
+						'foogallery_gallery_template_common_thumbnail_fields_hover_effect_type_choices', array(
+							'none'   => __( 'None', 'foogallery' ),
+							'normal' => __( 'Normal', 'foogallery' ),
+						)
 					),
 					'spacer'   => '<span class="spacer"></span>',
-					'desc'     => __( 'A preset styling that is used for the captions. If you want to define your own custom captions, then choose Custom.', 'foogallery' ),
+					'desc'     => __( 'What type of hover effect do you want to show for your thumbnails?', 'foogallery' ),
 					'row_data' => array(
-						'data-foogallery-hidden'          => true,
 						'data-foogallery-change-selector' => 'input:radio',
 						'data-foogallery-value-selector'  => 'input:checked',
-						'data-foogallery-preview'         => 'class'
+						'data-foogallery-preview'         => 'shortcode'
 					)
 				);
 
 				$fields[] = array(
-					'id'       => 'hover_effect_preset_size',
-					'title'    => __( 'Preset Size', 'foogallery' ),
+					'id'       => 'caption_invert_color',
+					'title'    => __( 'Theme', 'foogallery' ),
+					'desc'     => __( 'You can choose either a dark or light hover effect.', 'foogallery' ),
 					'section'  => __( 'Hover Effects', 'foogallery' ),
-					'default'  => 'fg-preset-small',
-					'spacer'   => '<span class="spacer"></span>',
 					'type'     => 'radio',
-					'choices'  => apply_filters(
-						'foogallery_gallery_template_common_thumbnail_fields_hover_effect_preset_size_choices', array(
-						'fg-preset-small'  => __( 'Small', 'foogallery' ),
-						'fg-preset-medium' => __( 'Medium', 'foogallery' ),
-						'fg-preset-large'  => __( 'Large', 'foogallery' ),
-					)
-					),
-					'desc'     => __( 'Choose an appropriate size for the preset caption effects, based on the size of your thumbs. Choose small for thumbs 150-200 wide, medium for thumbs 200-400 wide, and large for thumbs over 400 wide.', 'foogallery' ),
+					'spacer'   => '<span class="spacer"></span>',
+					'default'  => '',
+					'choices'  => apply_filters( 'foogallery_gallery_template_common_thumbnail_fields_caption_invert_color_choices', array(
+						'' => array(
+							'label'   => __( 'Dark',   'foogallery' ),
+							'tooltip' => __('A dark overlay with white text is shown on hover', 'foogallery'),
+						),
+						'fg-light-overlays' => array(
+							'label'   => __( 'Light',   'foogallery' ),
+							'tooltip' => __('A white overlay with dark text is shown on hover', 'foogallery'),
+						),
+						'fg-transparent-overlays' => array(
+							'label'   => __( 'Transparent',   'foogallery' ),
+							'tooltip' => __('A transparent overlay with white text is shown on hover', 'foogallery'),
+						),
+					) ),
 					'row_data' => array(
-						'data-foogallery-change-selector'          => 'input:radio',
-						'data-foogallery-hidden'                   => true,
-						'data-foogallery-show-when-field'          => 'hover_effect_preset',
-						'data-foogallery-show-when-field-operator' => 'indexOf',
-						'data-foogallery-show-when-field-value'    => 'fg-preset',
-						'data-foogallery-preview'                  => 'class'
+						'data-foogallery-change-selector'       => 'input:radio',
+						'data-foogallery-hidden'                => true,
+						'data-foogallery-show-when-field'       => 'hover_effect_type',
+						'data-foogallery-show-when-field-value' => 'normal',
+						'data-foogallery-preview'               => 'shortcode'
 					)
 				);
 
@@ -305,9 +304,9 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 					'row_data' => array(
 						'data-foogallery-change-selector'       => 'input:radio',
 						'data-foogallery-hidden'                => true,
-						'data-foogallery-show-when-field'       => 'hover_effect_preset',
-						'data-foogallery-show-when-field-value' => 'fg-custom',
-						'data-foogallery-preview'               => 'class'
+						'data-foogallery-show-when-field'       => 'hover_effect_type',
+						'data-foogallery-show-when-field-value' => 'normal',
+						'data-foogallery-preview'               => 'shortcode'
 					)
 				);
 
@@ -322,15 +321,16 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 						'foogallery_gallery_template_common_thumbnail_fields_hover_effect_scale_choices', array(
 						''               => __( 'None', 'foogallery' ),
 						'fg-hover-scale' => __( 'Scaled', 'foogallery' ),
+						'fg-hover-zoomed' => __( 'Zoomed', 'foogallery' ),
 					)
 					),
 					'desc'     => __( 'Apply a slight scaling effect when hovering over a thumbnail.', 'foogallery' ),
 					'row_data' => array(
 						'data-foogallery-change-selector'       => 'input:radio',
 						'data-foogallery-hidden'                => true,
-						'data-foogallery-show-when-field'       => 'hover_effect_preset',
-						'data-foogallery-show-when-field-value' => 'fg-custom',
-						'data-foogallery-preview'               => 'class'
+						'data-foogallery-show-when-field'       => 'hover_effect_type',
+						'data-foogallery-show-when-field-value' => 'normal',
+						'data-foogallery-preview'               => 'shortcode'
 					)
 				);
 
@@ -352,9 +352,9 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 					'row_data' => array(
 						'data-foogallery-change-selector'       => 'input:radio',
 						'data-foogallery-hidden'                => true,
-						'data-foogallery-show-when-field'       => 'hover_effect_preset',
-						'data-foogallery-show-when-field-value' => 'fg-custom',
-						'data-foogallery-preview'               => 'class'
+						'data-foogallery-show-when-field'       => 'hover_effect_type',
+						'data-foogallery-show-when-field-value' => 'normal',
+						'data-foogallery-preview'               => 'shortcode'
 					)
 				);
 
@@ -377,9 +377,9 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 					'row_data' => array(
 						'data-foogallery-change-selector'       => 'select',
 						'data-foogallery-hidden'                => true,
-						'data-foogallery-show-when-field'       => 'hover_effect_preset',
-						'data-foogallery-show-when-field-value' => 'fg-custom',
-						'data-foogallery-preview'               => 'class'
+						'data-foogallery-show-when-field'       => 'hover_effect_type',
+						'data-foogallery-show-when-field-value' => 'normal',
+						'data-foogallery-preview'               => 'shortcode'
 					)
 				);
 
@@ -403,30 +403,9 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 					'row_data' => array(
 						'data-foogallery-change-selector'       => 'input:radio',
 						'data-foogallery-hidden'                => true,
-						'data-foogallery-show-when-field'       => 'hover_effect_preset',
-						'data-foogallery-show-when-field-value' => 'fg-custom',
-						'data-foogallery-preview'               => 'class'
-					)
-				);
-
-				$fields[] = array(
-					'id'       => 'caption_invert_color',
-					'title'    => __( 'Invert Colors', 'foogallery' ),
-					'desc'     => __( 'You can invert the hover effect and caption colors from dark to light.', 'foogallery' ),
-					'section'  => __( 'Hover Effects', 'foogallery' ),
-					'type'     => 'radio',
-					'spacer'   => '<span class="spacer"></span>',
-					'default'  => '',
-					'choices'  => apply_filters( 'foogallery_gallery_template_common_thumbnail_fields_caption_invert_color_choices', array(
-						''                  => __( 'Normal', 'foogallery' ),
-						'fg-light-overlays' => __( 'Inverted', 'foogallery' ),
-					) ),
-					'row_data' => array(
-						'data-foogallery-change-selector'       => 'input:radio',
-						'data-foogallery-hidden'                => true,
-						'data-foogallery-show-when-field'       => 'hover_effect_preset',
-						'data-foogallery-show-when-field-value' => 'fg-custom',
-						'data-foogallery-preview'               => 'class'
+						'data-foogallery-show-when-field'       => 'hover_effect_type',
+						'data-foogallery-show-when-field-value' => 'normal',
+						'data-foogallery-preview'               => 'shortcode'
 					)
 				);
 				//endregion Hover Effects Fields
@@ -582,21 +561,15 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 				$classes[] = $this->get_setting_from_gallery( $gallery, 'loading_icon', 'fg-loading-default' );
 				$classes[] = $this->get_setting_from_gallery( $gallery, 'loaded_effect', 'fg-loaded-fade-in' );
 
-				$caption_preset = $this->get_setting_from_gallery( $gallery,'hover_effect_preset', 'fg-custom' );
+				$hover_effect_type = $this->get_setting_from_gallery( $gallery,'hover_effect_type', '' );
 
-				$classes[] = $caption_preset;
-
-				if ( 'fg-custom' === $caption_preset ) {
-					//only set these caption classes if custom preset is selected
+				if ( 'normal' === $hover_effect_type ) {
 					$classes[] = $this->get_setting_from_gallery( $gallery, 'hover_effect_color', '' );
 					$classes[] = $this->get_setting_from_gallery( $gallery, 'hover_effect_scale', '' );
 					$classes[] = $this->get_setting_from_gallery( $gallery, 'hover_effect_caption_visibility', 'fg-caption-hover' );
 					$classes[] = $this->get_setting_from_gallery( $gallery, 'hover_effect_transition', 'fg-hover-fade' );
 					$classes[] = $this->get_setting_from_gallery( $gallery, 'hover_effect_icon', 'fg-hover-zoom' );
 					$classes[] = $this->get_setting_from_gallery( $gallery, 'caption_invert_color', '' );
-				} else if ( strpos( $caption_preset, 'fg-preset' ) !== false ) {
-					//set a preset size
-					$classes[] = $this->get_setting_from_gallery( $gallery, 'hover_effect_preset_size', 'fg-preset-small' );
 				}
 
 				if ( foogallery_get_setting( 'enable_custom_ready' ) ) {
@@ -642,26 +615,6 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 		}
 
 		/**
-		 * Build up a arguments used in the preview of the gallery
-		 * @param $args
-		 * @param $post_data
-		 * @param $template
-		 *
-		 * @return mixed
-		 */
-		function preview_arguments( $args, $post_data, $template ) {
-            $args['theme'] = $post_data[FOOGALLERY_META_SETTINGS][$template . '_theme'];
-			$args['caption_title_source'] = $post_data[FOOGALLERY_META_SETTINGS][$template . '_caption_title_source'];
-			$args['caption_desc_source'] = $post_data[FOOGALLERY_META_SETTINGS][$template . '_caption_desc_source'];
-			$args['captions_limit_length'] = $post_data[FOOGALLERY_META_SETTINGS][$template . '_captions_limit_length'];
-			if ( $args['captions_limit_length'] !== '' ) {
-				$args['caption_title_length'] = $post_data[FOOGALLERY_META_SETTINGS][$template . '_caption_title_length'];
-				$args['caption_desc_length']  = $post_data[FOOGALLERY_META_SETTINGS][$template . '_caption_desc_length'];
-			}
-			return $args;
-		}
-
-		/**
 		 * Build up the gallery data attributes for the common fields
 		 *
 		 * @param $attributes array
@@ -681,7 +634,7 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 		}
 
         /***
-         * Check if we have a value from FooBox free and change it if foobox free is no longer active
+         * Check if we have a value from PRO and change it if PRO is no longer active
          * @param $value
          * @param $field
          * @param $gallery
@@ -701,5 +654,39 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 
             return $value;
         }
+
+		/**
+		 * Override settings from older versions (pre v1.9.13)
+		 *
+		 * @param $settings
+		 * @param $gallery_template
+		 * @param $foogallery
+		 *
+		 * @return array
+		 */
+		function override_settings_for_older_versions( $settings, $gallery_template, $foogallery ) {
+			if ( is_array( $settings ) ) {
+				if ( ! array_key_exists( $gallery_template . '_hover_effect_type', $settings ) ) {
+					//we have no hover effect type
+
+					if ( array_key_exists( $gallery_template . '_hover_effect_preset', $settings ) ) {
+						$hover_effect_preset = $settings[ $gallery_template . '_hover_effect_preset' ];
+
+						if ( 'fg-custom' === $hover_effect_preset ) {
+							$settings[ $gallery_template . '_hover_effect_type' ] = 'normal';
+						} else if ( '' === $hover_effect_preset ) {
+							$settings[ $gallery_template . '_hover_effect_type' ] = 'none';
+						} else if ( strpos( $hover_effect_preset, 'fg-preset' ) !== false ) {
+							$settings[ $gallery_template . '_hover_effect_type' ] = 'preset';
+						}
+					} else {
+						//no hover effect type or hover effect preset set
+						$settings[ $gallery_template . '_hover_effect_type' ] = 'normal';
+					}
+				}
+			}
+
+			return $settings;
+		}
 	}
 }

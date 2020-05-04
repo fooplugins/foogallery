@@ -20,8 +20,6 @@ if ( !class_exists( 'FooGallery_FooBox_Compatibility' ) ) {
             //allow changing of field values
             add_filter( 'foogallery_render_gallery_template_field_value', array( $this, 'check_lightbox_value' ), 10, 4 );
 
-            add_filter( 'foogallery_override_gallery_template_fields', array( $this, 'add_foobox_help_field' ), 99, 2 );
-
             if ( class_exists( 'fooboxV2' ) ) {
 				//FooBox PRO specific functionality
 
@@ -38,41 +36,44 @@ if ( !class_exists( 'FooGallery_FooBox_Compatibility' ) ) {
 		}
 
 		function add_foobox_help_field( $fields, $template ) {
-			//see if the template has a lightbox field
-			$found_lightbox = false;
-			$position = 0;
-			foreach ($fields as $key => &$field) {
-				if ( 'lightbox' === $field['id'] ) {
-					$found_lightbox = true;
-					break;
+			//only show the hint to install FooBox if FooGallery Free is in use
+			if ( !class_exists( 'FooGallery_Pro' ) ) {
+				//see if the template has a lightbox field
+				$found_lightbox = false;
+				$position       = 0;
+				foreach ( $fields as $key => &$field ) {
+					if ( 'lightbox' === $field['id'] ) {
+						$found_lightbox = true;
+						break;
+					}
+					$position ++;
 				}
-				$position++;
-			}
-			if ( $found_lightbox && !$this->is_foobox_installed() ) {
-				$action = 'install-plugin';
-				$slug = 'foobox-image-lightbox';
-				$install_url = wp_nonce_url(
-					add_query_arg(
-						array(
-							'action' => $action,
-							'plugin' => $slug
+				if ( $found_lightbox && ! $this->is_foobox_installed() ) {
+					$action      = 'install-plugin';
+					$slug        = 'foobox-image-lightbox';
+					$install_url = wp_nonce_url(
+						add_query_arg(
+							array(
+								'action' => $action,
+								'plugin' => $slug
+							),
+							admin_url( 'update.php' )
 						),
-						admin_url( 'update.php' )
-					),
-					$action.'_'.$slug
-				);
+						$action . '_' . $slug
+					);
 
-				$foobox_help_field = array(
-					array(
-						'id'       => 'lightbox_foobox_help',
-						'title'    => __( 'FooBox Help', 'foogallery' ),
-						'desc'     => sprintf( __( 'Install our separate FooBox Lightbox plugin so that your gallery images will open in a beautiful responsive lightbox. %s', 'foogallery' ), '<a href="' . $install_url . '" target="_blank">' . __('Install it now!', 'foogallery'). '</a>' ) ,
-						'section'  => __( 'General', 'foogallery' ),
-						'type'     => 'help'
-					)
-				);
+					$foobox_help_field = array(
+						array(
+							'id'      => 'lightbox_foobox_help',
+							'title'   => __( 'FooBox Help', 'foogallery' ),
+							'desc'    => sprintf( __( 'Install our separate FooBox Lightbox plugin so that your gallery images will open in a beautiful responsive lightbox. %s', 'foogallery' ), '<a href="' . $install_url . '" target="_blank">' . __( 'Install it now!', 'foogallery' ) . '</a>' ),
+							'section' => __( 'General', 'foogallery' ),
+							'type'    => 'help'
+						)
+					);
 
-				array_splice( $fields, $position, 0, $foobox_help_field );
+					array_splice( $fields, $position, 0, $foobox_help_field );
+				}
 			}
 			return $fields;
 		}

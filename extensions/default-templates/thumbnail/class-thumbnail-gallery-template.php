@@ -14,9 +14,6 @@ if ( !class_exists( 'FooGallery_Thumbnail_Gallery_Template' ) ) {
 
 			add_filter( 'foogallery_located_template-thumbnail', array( $this, 'enqueue_dependencies' ) );
 
-			//build up any preview arguments
-			add_filter( 'foogallery_preview_arguments-thumbnail', array( $this, 'preview_arguments' ), 10, 2 );
-
 			//build up the thumb dimensions from some arguments
 			add_filter( 'foogallery_calculate_thumbnail_dimensions-thumbnail', array( $this, 'build_thumbnail_dimensions_from_arguments' ), 10, 2 );
 
@@ -104,7 +101,7 @@ if ( !class_exists( 'FooGallery_Thumbnail_Gallery_Template' ) ) {
                         ),
 						'row_data'=> array(
 							'data-foogallery-change-selector' => 'select',
-							'data-foogallery-preview' => 'class'
+							'data-foogallery-preview' => 'shortcode'
 						)
                     ),
                     array(
@@ -115,18 +112,6 @@ if ( !class_exists( 'FooGallery_Thumbnail_Gallery_Template' ) ) {
                         'type'    => 'checkbox',
                         'desc'	  => __( 'You can link your thumbnails to Custom URL\'s (if they are set on your attachments). Fallback will be to the full size image.', 'foogallery' )
                     ),
-//	                array(
-//		                'id'      => 'exclude_featured_image',
-//		                'title'   => __( 'Exclude Featured Image', 'foogallery' ),
-//		                'section' => __( 'General', 'foogallery' ),
-//		                'default' => '',
-//		                'type'    => 'checkbox',
-//		                'desc'	  => __( 'You can exclude the featured image from the images shown in the lightbox.', 'foogallery' ),
-//		                'row_data'=> array(
-//			                'data-foogallery-change-selector' => 'input',
-//			                'data-foogallery-preview' => 'shortcode'
-//		                )
-//	                ),
                     array(
                         'id'      => 'lightbox',
                         'title'   => __( 'Lightbox', 'foogallery' ),
@@ -134,7 +119,29 @@ if ( !class_exists( 'FooGallery_Thumbnail_Gallery_Template' ) ) {
                         'desc'    => __( 'Choose which lightbox you want to use.', 'foogallery' ),
                         'type'    => 'lightbox',
                         'default' => 'none',
+                        'row_data'=> array(
+	                        'data-foogallery-change-selector' => 'select',
+	                        'data-foogallery-preview'         => 'shortcode',
+                            'data-foogallery-value-selector'  => 'select'
+                        )
                     ),
+	                array(
+		                'id'      => 'exclude_featured_image',
+		                'title'   => __( 'Exclude Featured Image', 'foogallery' ),
+		                'section' => __( 'General', 'foogallery' ),
+		                'default' => '',
+		                'type'    => 'checkbox',
+		                'desc'	  => __( 'You can exclude the featured image from the images shown in the lightbox.', 'foogallery' ),
+		                'row_data'=> array(
+			                'data-foogallery-hidden'                   => true,
+			                'data-foogallery-show-when-field'          => 'lightbox',
+			                'data-foogallery-show-when-field-operator' => '===',
+			                'data-foogallery-show-when-field-value'    => 'foogallery',
+			                'data-foogallery-change-selector'          => 'input',
+			                'data-foogallery-preview'                  => 'shortcode',
+			                'data-foogallery-value-selector'           => 'input:checked',
+		                )
+	                ),
                     array(
                         'id'      => 'caption_title',
                         'title'   => __('Override Title', 'foogallery'),
@@ -170,23 +177,6 @@ if ( !class_exists( 'FooGallery_Thumbnail_Gallery_Template' ) ) {
 			//enqueue core files
 			foogallery_enqueue_core_gallery_template_style();
 			foogallery_enqueue_core_gallery_template_script();
-		}
-
-		/**
-		 * Build up a arguments used in the preview of the gallery
-		 * @param $args
-		 * @param $post_data
-		 *
-		 * @return mixed
-		 */
-		function preview_arguments( $args, $post_data ) {
-			$args['thumbnail_dimensions'] = $post_data[FOOGALLERY_META_SETTINGS]['thumbnail_thumbnail_dimensions'];
-			$args['caption_title'] = $post_data[FOOGALLERY_META_SETTINGS]['thumbnail_caption_title'];
-			$args['caption_description'] = $post_data[FOOGALLERY_META_SETTINGS]['thumbnail_caption_description'];
-//			if ( isset( $post_data[FOOGALLERY_META_SETTINGS]['thumbnail_exclude_featured_image'] ) ) {
-//				$args['exclude_featured_image'] = $post_data[ FOOGALLERY_META_SETTINGS ]['thumbnail_exclude_featured_image'];
-//			}
-			return $args;
 		}
 
 		/**

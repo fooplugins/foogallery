@@ -21,9 +21,6 @@ if ( !class_exists( 'FooGallery_Masonry_Gallery_Template' ) ) {
 			//add the data options needed for masonry
 			add_filter( 'foogallery_build_container_data_options-masonry', array( $this, 'add_masonry_options' ), 10, 3 );
 
-			//build up any preview arguments
-			add_filter( 'foogallery_preview_arguments-masonry', array( $this, 'preview_arguments' ), 10, 2 );
-
 			//build up the thumb dimensions from some arguments
 			add_filter( 'foogallery_calculate_thumbnail_dimensions-masonry', array( $this, 'build_thumbnail_dimensions_from_arguments' ), 10, 2 );
 
@@ -139,7 +136,7 @@ if ( !class_exists( 'FooGallery_Masonry_Gallery_Template' ) ) {
                             'data-foogallery-show-when-field' => 'layout',
                             'data-foogallery-show-when-field-operator' => '!==',
                             'data-foogallery-show-when-field-value' => 'fixed',
-							'data-foogallery-preview' => 'class'
+							'data-foogallery-preview' => 'shortcode'
                         )
                     ),
                     array(
@@ -159,7 +156,7 @@ if ( !class_exists( 'FooGallery_Masonry_Gallery_Template' ) ) {
 							'data-foogallery-show-when-field' => 'layout',
 							'data-foogallery-show-when-field-value' => 'fixed',
 							'data-foogallery-change-selector' => 'input:radio',
-							'data-foogallery-preview' => 'class'
+							'data-foogallery-preview' => 'shortcode'
 						)
                     ),
                     array(
@@ -241,20 +238,6 @@ if ( !class_exists( 'FooGallery_Masonry_Gallery_Template' ) ) {
 		}
 
 		/**
-		 * Build up a arguments used in the preview of the gallery
-		 * @param $args
-		 * @param $post_data
-		 *
-		 * @return mixed
-		 */
-		function preview_arguments( $args, $post_data ) {
-			$args['thumbnail_width'] = $post_data[FOOGALLERY_META_SETTINGS]['masonry_thumbnail_width'];
-			$args['layout'] = $post_data[FOOGALLERY_META_SETTINGS]['masonry_layout'];
-			$args['gutter_width'] = $post_data[FOOGALLERY_META_SETTINGS]['masonry_gutter_width'];
-			return $args;
-		}
-
-		/**
 		 * Builds thumb dimensions from arguments
 		 *
 		 * @param array $dimensions
@@ -302,7 +285,21 @@ if ( !class_exists( 'FooGallery_Masonry_Gallery_Template' ) ) {
             //update specific fields
             foreach ($fields as &$field) {
                 if ( 'hover_effect_caption_visibility' === $field['id'] ) {
+                	//add a new choice for captions to show below the thumbs
                     $field['choices']['fg-captions-bottom'] = __( 'Below Thumbnail', 'foogallery' );
+	                $field['default'] = 'fg-captions-bottom';
+                } else if ( 'theme' === $field['id'] ) {
+	                $field['default'] = 'fg-dark';
+	                $field['choices'] = array(
+		                'fg-light'  => __( 'Light', 'foogallery' ),
+		                'fg-dark'   => __( 'Dark', 'foogallery' ),
+		                'fg-transparent' => __( 'Transparent', 'foogallery' ),
+		                'fg-custom' => __( 'Custom', 'foogallery' )
+	                );
+                } else if ( 'drop_shadow' === $field['id'] ) {
+	                $field['default'] = 'fg-shadow-small';
+                } else if ( 'hover_effect_icon' === $field['id'] ) {
+	                $field['default'] = 'fg-hover-plus';
                 }
             }
 

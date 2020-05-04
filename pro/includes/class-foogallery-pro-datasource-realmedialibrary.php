@@ -303,7 +303,7 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_RealMediaLibrary' ) ) {
 						FOOGALLERY.showHiddenAreas(false);
 						$('#_foogallery_datasource_value').val(JSON.stringify(document.foogallery_datasource_value_temp));
 						$('.foogallery-datasource-rml').show().find('.foogallery-items-html').html(document.foogallery_datasource_value_temp.absolute);
-						$('.foogallery-attachments-list').addClass('hidden');
+						$('.foogallery-attachments-list-container').addClass('hidden');
 						$('.foogallery_preview_container').addClass('foogallery-preview-force-refresh');
 					});
 				});

@@ -102,7 +102,9 @@
                 'edit_and_echo_plugin_update_row'
             ), 11, 2 );
 
-            add_action( 'admin_head', array( &$this, 'catch_plugin_information_dialog_contents' ) );
+            if ( ! $this->_fs->has_any_active_valid_license() ) {
+                add_action( 'admin_head', array( &$this, 'catch_plugin_information_dialog_contents' ) );
+            }
 
             if ( ! WP_FS__IS_PRODUCTION_MODE ) {
                 add_filter( 'http_request_host_is_external', array(
@@ -238,6 +240,12 @@
          * @since  2.0.0
          */
         private function add_transient_filters() {
+            if ( $this->_fs->is_premium() && ! $this->_fs->is_tracking_allowed() ) {
+                $this->_logger->log( 'Opted out sites cannot receive automatic software updates.' );
+
+                return;
+            }
+
             add_filter( 'pre_set_site_transient_update_plugins', array(
                 &$this,
                 'pre_set_site_transient_update_plugins_filter'
@@ -487,13 +495,35 @@
                 return $transient_data;
             }
 
+            global $wp_current_filter;
+
+            $current_plugin_version = $this->_fs->get_plugin_version();
+
+            if ( ! empty( $wp_current_filter ) && 'upgrader_process_complete' === $wp_current_filter[0] ) {
+                if (
+                    is_null( $this->_update_details ) ||
+                    ( is_object( $this->_update_details ) && $this->_update_details->new_version !== $current_plugin_version )
+                ) {
+                    /**
+                     * After an update, clear the stored update details and reparse the plugin's main file in order to get
+                     * the updated version's information and prevent the previous update information from showing up on the
+                     * updates page.
+                     *
+                     * @author Leo Fajardo (@leorw)
+                     * @since 2.3.1
+                     */
+                    $this->_update_details  = null;
+                    $current_plugin_version = $this->_fs->get_plugin_version( true );
+                }
+            }
+
             if ( ! isset( $this->_update_details ) ) {
                 // Get plugin's newest update.
                 $new_version = $this->_fs->get_update(
                     false,
                     fs_request_get_bool( 'force-check' ),
                     WP_FS__TIME_24_HOURS_IN_SEC / 24,
-                    $this->_fs->get_plugin_version()
+                    $current_plugin_version
                 );
 
                 $this->_update_details = false;

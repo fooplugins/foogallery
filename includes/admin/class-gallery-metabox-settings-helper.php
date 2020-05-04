@@ -30,6 +30,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings_Helper' ) ) {
 		function __construct($gallery) {
 			$this->gallery = $gallery;
 			$this->hide_help = 'on' == foogallery_get_setting( 'hide_gallery_template_help' );
+			$this->hide_promo = 'on' == foogallery_get_setting( 'pro_promo_disabled' );
 
 			$this->gallery_templates = foogallery_gallery_templates();
 
@@ -72,6 +73,10 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings_Helper' ) ) {
 				foreach ( $section['fields'] as $field ) {
 					$field_type = isset( $field['type'] ) ? $field['type'] : 'unknown';
 					$field_class ="foogallery_template_field foogallery_template_field_type-{$field_type} foogallery_template_field_id-{$field['id']} foogallery_template_field_template-{$template['slug']} foogallery_template_field_template_id-{$template['slug']}-{$field['id']}";
+					$is_promo = array_key_exists( 'promo', $field );
+					if ( $is_promo ) {
+						$field_class .= ' foogallery_template_field_promo';
+                    }
 					$field_row_data_html = '';
 					if ( isset( $field['row_data'] ) ) {
 						$field_row_data = array_map( 'esc_attr', $field['row_data'] );
@@ -81,16 +86,31 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings_Helper' ) ) {
 					}
 					?>
 					<tr class="<?php echo $field_class; ?>"<?php echo $field_row_data_html; ?>>
-						<?php if ( 'help' == $field_type ) { ?>
+						<?php if ( 'help' === $field_type ) { ?>
 							<td colspan="2">
 								<div class="foogallery-help">
 									<?php echo $field['desc']; ?>
 								</div>
 							</td>
+						<?php } else if ( 'promo' === $field_type ) { ?>
+                            <td colspan="2">
+                                <div class="foogallery-promo">
+	                                <?php echo '<strong>' . $field['title'] . '</strong><br /><br />'; ?>
+									<?php
+                                    echo $field['desc'];
+									if ( array_key_exists( 'cta_text', $field ) ) {
+									    echo '<a class="button-primary" href="' . $field['cta_link'] . '" target="_blank">' . $field['cta_text'] . '</a>';
+                                    }
+									?>
+                                </div>
+                            </td>
 						<?php } else { ?>
 							<th>
 								<label for="FooGallerySettings_<?php echo $template['slug'] . '_' . $field['id']; ?>"><?php echo $field['title']; ?></label>
-								<?php if ( !empty( $field['desc'] ) ) { ?>
+								<?php if ( $is_promo ) { ?>
+                                    <span data-balloon-length="large" data-balloon-pos="right" data-balloon="<?php echo esc_attr($field['promo']); ?>"><i class="dashicons dashicons-star-filled"></i></span>
+								<?php } ?>
+                                <?php if ( !empty( $field['desc'] ) ) { ?>
 									<span data-balloon-length="large" data-balloon-pos="right" data-balloon="<?php echo esc_attr($field['desc']); ?>"><i class="dashicons dashicons-editor-help"></i></span>
 								<?php } ?>
 							</th>
@@ -143,6 +163,10 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings_Helper' ) ) {
 
 				if (isset($field['type']) && 'help' == $field['type'] && $this->hide_help) {
 					continue; //skip help if the 'hide help' setting is turned on
+				}
+
+				if (isset($field['type']) && 'promo' == $field['type'] && $this->hide_promo) {
+					continue; //skip promo if the 'hide promos' setting is turned on
 				}
 
 				$section_name = isset($field['section']) ? $field['section'] : __( 'General', 'foogallery' );

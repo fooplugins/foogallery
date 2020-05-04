@@ -61,14 +61,27 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Taxonomy_Base' ) ) {
 		 * @param $foogallery_id
 		 */
 		public function before_save_gallery_datasource_clear_datasource_cached_attachments( $foogallery_id ) {
-            //clear any previously cached post meta for the gallery
-            $previous_datasource_value = get_post_meta( $foogallery_id, FOOGALLERY_META_DATASOURCE_VALUE, true );
+            //clear any previously cached post meta for the taxonomy for the gallery
+			$cache_post_meta_key = FOOGALLERY_META_DATASOURCE_CACHED_ATTACHMENTS . '_' . $this->taxonomy;
+			delete_post_meta($foogallery_id, $cache_post_meta_key);
 
-            if ( is_array( $previous_datasource_value ) && array_key_exists( 'taxonomy', $previous_datasource_value ) ) {
-                $taxonomy = $previous_datasource_value['taxonomy'];
-                $cache_post_meta_key = FOOGALLERY_META_DATASOURCE_CACHED_ATTACHMENTS . '_' . $taxonomy;
-                delete_post_meta($foogallery_id, $cache_post_meta_key);
-            }
+			$this->clear_enhanced_cache_for_gallery( $foogallery_id, $cache_post_meta_key );
+        }
+
+	    /**
+         * Clears any enhanced cache for the gallery
+         *
+	     * @param $foogallery_id
+	     */
+        private function clear_enhanced_cache_for_gallery( $foogallery_id, $cache_post_meta_key ) {
+	        $meta = get_post_meta($foogallery_id);
+
+	        foreach ( $meta as $key=>$val ) {
+	            //if the post meta key starts with $cache_post_meta_key then delete the post meta
+		        if ( strpos( $key, $cache_post_meta_key ) === 0 ) {
+			        delete_post_meta( $foogallery_id, $key );
+		        }
+	        }
         }
 
         /**
@@ -84,6 +97,24 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Taxonomy_Base' ) ) {
 				$cache_post_meta_key = FOOGALLERY_META_DATASOURCE_CACHED_ATTACHMENTS . '_' . $taxonomy;
 
 				delete_post_meta_by_key( $cache_post_meta_key );
+
+				//make sure we clear all galleries that have enhanced caching
+				$args = array(
+                    'numberposts' => -1,
+					'post_type'   => FOOGALLERY_CPT_GALLERY,
+					'fields'      => 'ids',
+					'meta_query'  => array(
+						array(
+							'key'     => FOOGALLERY_META_DATASOURCE_CACHED_ATTACHMENTS . '_enhanced',
+							'compare' => 'EXISTS'
+						)
+					)
+				);
+
+				$galleries_with_enhanced_cache = get_posts( $args );
+				foreach ( $galleries_with_enhanced_cache as $foogallery_id ) {
+					$this->clear_enhanced_cache_for_gallery( $foogallery_id, $cache_post_meta_key );
+                }
 			}
         }
 
@@ -116,7 +147,10 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Taxonomy_Base' ) ) {
 
                 $cache_post_meta_key = FOOGALLERY_META_DATASOURCE_CACHED_ATTACHMENTS . '_' . $taxonomy;
 
+                $enhanced_cache = false;
+
                 if ( array_key_exists( 'enhanced_cache', $datasource_value ) ) {
+	                $enhanced_cache = true;
 	                $cache_post_meta_key .= '_values(' . implode( '|', $datasource_value['value'] ) . ')';
                 }
 
@@ -149,6 +183,10 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Taxonomy_Base' ) ) {
 					}
 					//save a cached list of attachments
 					update_post_meta( $foogallery->ID, $cache_post_meta_key, $attachment_ids );
+
+					if ( $enhanced_cache ) {
+						update_post_meta( $foogallery->ID, FOOGALLERY_META_DATASOURCE_CACHED_ATTACHMENTS . '_enhanced', true );
+                    }
 				} else {
 					$attachments = $helper->query_attachments( $foogallery,
 						array( 'post__in' => $cached_attachments )
@@ -253,7 +291,7 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Taxonomy_Base' ) ) {
 
 						FOOGALLERY.showHiddenAreas(false);
 
-						$('.foogallery-attachments-list').addClass('hidden');
+						$('.foogallery-attachments-list-container').addClass('hidden');
 
 						$('.foogallery_preview_container').addClass('foogallery-preview-force-refresh');
 					});

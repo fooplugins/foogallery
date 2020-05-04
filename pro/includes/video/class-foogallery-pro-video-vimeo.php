@@ -166,7 +166,14 @@ if ( !class_exists("FooGallery_Pro_Video_Vimeo") ){
 
 			// do basic validation on the parsed object
 			if (empty($json) || empty($json->thumbnail_url) || empty($json->title)) {
-				return $this->error_response("No video in response.");
+				//check if the video has been set to private
+				if ( !empty($json->domain_status_code) ) {
+					if ( 403 === $json->domain_status_code ) {
+						return $this->error_response("The privacy settings for the video do not allow embedding on this website. Please change the video's embedding privacy setting.");
+					}
+				}
+
+				return $this->error_response("No video was returned in the Vimeo API response.");
 			}
 
 			$response = array(

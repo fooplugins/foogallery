@@ -406,8 +406,8 @@ function foogallery_build_class_attribute( $gallery ) {
 	//extract any classes from the gallery arguments
 	global $current_foogallery_arguments;
 	if ( isset( $current_foogallery_arguments ) && is_array( $current_foogallery_arguments ) ) {
-		if ( array_key_exists( 'className', $current_foogallery_arguments ) ) {
-			$classes[] = $current_foogallery_arguments['className'];
+		if ( array_key_exists( 'classname', $current_foogallery_arguments ) ) {
+			$classes[] = $current_foogallery_arguments['classname'];
 		}
 
 		if ( array_key_exists( 'classes', $current_foogallery_arguments ) ) {
@@ -415,7 +415,7 @@ function foogallery_build_class_attribute( $gallery ) {
 		}
 	}
 
-	$classes = array_filter( $classes );
+	$classes = array_filter( $classes, 'strlen' );
 
 	return implode( ' ', $classes );
 }
@@ -1138,7 +1138,7 @@ function foogallery_get_attachment_id_by_url($url) {
  */
 function foogallery_esc_attr( $text ) {
 	$safe_text = wp_check_invalid_utf8( $text );
-	$safe_text = _wp_specialchars( $safe_text, ENT_QUOTES );
+	$safe_text = _wp_specialchars( $safe_text, ENT_QUOTES, false, true );
 	return $safe_text;
 }
 
@@ -1377,4 +1377,59 @@ function foogallery_allowed_post_types_for_usage() {
  */
 function foogallery_is_debug() {
     return foogallery_get_setting( 'enable_debugging', false );
+}
+
+/**
+ * Get the current gallery in the admin
+ * @param $post_gallery
+ *
+ * @return FooGallery|null
+ */
+function foogallery_admin_get_current_gallery( $post_gallery ) {
+	global $post;
+	global $current_foogallery_admin;
+
+	if ( is_admin() && isset( $post ) ) {
+		if ( !isset( $current_foogallery_admin ) || $post_gallery->ID !== $post->ID ) {
+			$current_foogallery_admin = FooGallery::get( $post_gallery );
+		}
+
+		return $current_foogallery_admin;
+	}
+
+	return null;
+}
+
+/**
+ * Takes an RGB string and returns an array of the colors
+ * @param string $rgba RBG color string in the format rgb(0,0,0)
+ *
+ * @return array|int[]
+ */
+function foogallery_rgb_to_color_array( $rgba ) {
+	if ( empty( $rgba ) ) {
+		return array(0,0,0);
+	}
+
+	preg_match( '/^rgba?[\s+]?\([\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?/i', $rgba, $by_color );
+
+	if ( count( $by_color ) >= 3 ) {
+		return array( $by_color[1], $by_color[2], $by_color[3] );
+	}
+
+	//return black if there was a problem getting the color
+	return array(0,0,0);
+}
+
+/**
+ * Sanitize HTML to make it safe to output. Used to sanitize potentially harmful HTML used for captions
+ *
+ * @since 1.9.23
+ *
+ * @param string $text
+ * @return string
+ */
+function foogallery_sanitize_html( $text ) {
+	$safe_text = wp_kses_post( $text );
+	return $safe_text;
 }

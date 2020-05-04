@@ -78,7 +78,29 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Fields' ) ) {
 						if ( $field['value'] == $value ) {
 							$selected = ' checked="checked"';
 						}
-						echo '<input' . $field_class . $selected . ' type="radio" name="' . FOOGALLERY_META_SETTINGS . '[' . $id . ']"  id="FooGallerySettings_' . $id . $i . '" value="' . $value . '"> <label for="FooGallerySettings_' . $id . $i . '">' . $label . '</label>';
+						echo '<input' . $field_class . $selected . ' type="radio" name="' . FOOGALLERY_META_SETTINGS . '[' . $id . ']"  id="FooGallerySettings_' . $id . $i . '" value="' . $value . '">';
+						echo '&nbsp;';
+
+						$label_class = '';
+						$label_icon = '';
+						$label_tooltip = '';
+						$label_tooltip_end = '';
+
+						if ( is_array( $label ) ) {
+							if ( array_key_exists( 'class', $label ) ) {
+								$label_class = ' class="' . $label['class'] . '"';
+							}
+							if ( array_key_exists( 'icon', $label ) ) {
+								$label_icon = '<i class="dashicons ' . $label['icon'] . '"></i>';
+							}
+							if ( array_key_exists( 'tooltip', $label ) ) {
+								$label_tooltip = '<span data-balloon-length="large" data-balloon-pos="right" data-balloon="' . $label['tooltip'] . '">';
+								$label_tooltip_end = '</span>';
+							}
+							$label = $label['label'];
+						}
+
+						echo '<label '.$label_class.' for="FooGallerySettings_' . $id . $i . '">' . $label_tooltip . $label . $label_icon . $label_tooltip_end . '</label>';
 						if ( $i < count( $choices ) - 1 ) {
 							echo $spacer;
 						}

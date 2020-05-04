@@ -10,9 +10,6 @@ if ( ! class_exists( 'FooGallery_Paging' ) ) {
 			if ( is_admin() ) {
 				//add extra fields to the templates that support paging
 				add_filter( 'foogallery_override_gallery_template_fields', array( $this, 'add_paging_fields' ), 10, 2 );
-
-				//build up any preview arguments
-				add_filter( 'foogallery_preview_arguments', array( $this, 'preview_arguments' ), 10, 3 );
 			}
 
 			//adds the paging property to a FooGallery
@@ -53,8 +50,8 @@ if ( ! class_exists( 'FooGallery_Paging' ) ) {
 					) ),
 					'row_data'=> array(
 						'data-foogallery-change-selector' => 'input',
-						'data-foogallery-preview' => 'shortcode',
-						'data-foogallery-value-selector' => 'input:checked',
+						'data-foogallery-preview'         => 'shortcode',
+						'data-foogallery-value-selector'  => 'input:checked',
 					)
 				);
 
@@ -73,8 +70,8 @@ if ( ! class_exists( 'FooGallery_Paging' ) ) {
 						'data-foogallery-preview' => 'shortcode',
 						'data-foogallery-hidden'                   => true,
 						'data-foogallery-show-when-field'          => 'paging_type',
-						'data-foogallery-show-when-field-operator' => '!==',
-						'data-foogallery-show-when-field-value'    => '',
+						'data-foogallery-show-when-field-operator' => 'regex',
+						'data-foogallery-show-when-field-value'    => 'dots|pagination|infinite|loadMore',
 					)
 				);
 
@@ -85,7 +82,7 @@ if ( ! class_exists( 'FooGallery_Paging' ) ) {
 					'section' => __( 'Paging', 'foogallery' ),
 					'spacer'  => '<span class="spacer"></span>',
 					'type'    => 'radio',
-					'default' => 'both',
+					'default' => 'bottom',
 					'choices' => apply_filters( 'foogallery_gallery_template_paging_position_choices', array(
 						''  => __( 'None', 'foogallery' ),
 						'top'   => __( 'Top', 'foogallery' ),
@@ -105,7 +102,7 @@ if ( ! class_exists( 'FooGallery_Paging' ) ) {
 				$fields[] = array(
 					'id'      => 'paging_theme',
 					'title'   => __( 'Theme', 'foogallery' ),
-					'desc'    => __( 'The theme used for paging.', 'foogallery' ),
+					'desc'    => __( 'The theme used for pagination.', 'foogallery' ),
 					'section' => __( 'Paging', 'foogallery' ),
 					'spacer'  => '<span class="spacer"></span>',
 					'type'    => 'radio',
@@ -119,8 +116,8 @@ if ( ! class_exists( 'FooGallery_Paging' ) ) {
 						'data-foogallery-preview' => 'shortcode',
 						'data-foogallery-hidden'                   => true,
 						'data-foogallery-show-when-field'          => 'paging_type',
-						'data-foogallery-show-when-field-operator' => '!==',
-						'data-foogallery-show-when-field-value'    => '',
+						'data-foogallery-show-when-field-operator' => 'regex',
+						'data-foogallery-show-when-field-value'    => 'dots|pagination|loadMore',
 					)
 				);
 
@@ -131,7 +128,7 @@ if ( ! class_exists( 'FooGallery_Paging' ) ) {
 					'section' => __( 'Paging', 'foogallery' ),
 					'type'    => 'radio',
 					'spacer'  => '<span class="spacer"></span>',
-					'default' => 'true',
+					'default' => 'false',
 					'choices' => array(
 						'true'  => __( 'Yes', 'foogallery' ),
 						'false'  => __( 'No', 'foogallery' ),
@@ -168,7 +165,7 @@ if ( ! class_exists( 'FooGallery_Paging' ) ) {
 				$fields[] = array(
 					'id'      => 'paging_showFirstLast',
 					'title'   => __( 'First &amp; Last Buttons', 'foogallery' ),
-					'desc'    => __( 'Whether or not to show the first &amp; last buttons for pagination.', 'foogallery' ),
+					'desc'    => __( 'Whether or not to show the first &amp; last buttons for numbered pagination.', 'foogallery' ),
 					'section' => __( 'Paging', 'foogallery' ),
 					'type'    => 'radio',
 					'spacer'  => '<span class="spacer"></span>',
@@ -189,7 +186,7 @@ if ( ! class_exists( 'FooGallery_Paging' ) ) {
 				$fields[] = array(
 					'id'      => 'paging_showPrevNext',
 					'title'   => __( 'Prev &amp; Next Buttons', 'foogallery' ),
-					'desc'    => __( 'Whether or not to show the previous &amp; next buttons for pagination.', 'foogallery' ),
+					'desc'    => __( 'Whether or not to show the previous &amp; next buttons for numbered pagination.', 'foogallery' ),
 					'section' => __( 'Paging', 'foogallery' ),
 					'type'    => 'radio',
 					'spacer'  => '<span class="spacer"></span>',
@@ -210,7 +207,7 @@ if ( ! class_exists( 'FooGallery_Paging' ) ) {
 				$fields[] = array(
 					'id'      => 'paging_showPrevNextMore',
 					'title'   => __( 'More Buttons', 'foogallery' ),
-					'desc'    => __( 'Whether or not to show the previous &amp; next more buttons for pagination.', 'foogallery' ),
+					'desc'    => __( 'Whether or not to show the previous &amp; next more buttons for numbered pagination.', 'foogallery' ),
 					'section' => __( 'Paging', 'foogallery' ),
 					'type'    => 'radio',
 					'spacer'  => '<span class="spacer"></span>',
@@ -246,8 +243,8 @@ if ( ! class_exists( 'FooGallery_Paging' ) ) {
 						'data-foogallery-value-selector' => 'input:checked',
 						'data-foogallery-hidden'                   => true,
 						'data-foogallery-show-when-field'          => 'paging_type',
-						'data-foogallery-show-when-field-operator' => '!==',
-						'data-foogallery-show-when-field-value'    => '',
+						'data-foogallery-show-when-field-operator' => 'regex',
+						'data-foogallery-show-when-field-value'    => 'dots|pagination|infinite|loadMore',
 					)
 				);
 			}
@@ -281,7 +278,7 @@ if ( ! class_exists( 'FooGallery_Paging' ) ) {
 			if ( isset( $gallery->paging ) && true === $gallery->paging) {
 
 				//check if we have arguments from the shortcode and override the saved settings
-				$paging = $this->get_foogallery_argument( $gallery, 'paging_type', 'paging', '' );
+				$paging = $this->get_foogallery_argument( $gallery, 'paging_type', 'paging_type', '' );
 
 				if ( '' !== $paging ) {
 					$paging_position = $this->get_foogallery_argument( $gallery, 'paging_position', 'paging_position', 'both' );

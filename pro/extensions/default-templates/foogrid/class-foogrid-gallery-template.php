@@ -46,9 +46,6 @@ if ( !class_exists( 'FooGallery_FooGrid_Gallery_Template' ) ) {
 			//override specific settings when saving the gallery
 			add_filter( 'foogallery_save_gallery_settings-foogridpro', array( $this, 'override_settings'), 10, 3 );
 
-			//build up any preview arguments
-			add_filter( 'foogallery_preview_arguments-foogridpro', array( $this, 'preview_arguments' ), 10, 2 );
-
 			//build up the thumb dimensions from some arguments
 			add_filter( 'foogallery_calculate_thumbnail_dimensions-foogridpro', array( $this, 'build_thumbnail_dimensions_from_arguments' ), 10, 2 );
 
@@ -61,6 +58,8 @@ if ( !class_exists( 'FooGallery_FooGrid_Gallery_Template' ) ) {
             add_filter( 'foogallery_gallery_template_arguments-foogridpro', array( $this, 'build_gallery_template_arguments' ) );
 
 			add_filter( 'foogallery_render_gallery_template_field_value', array( $this, 'alter_old_field_values'), 10, 4 );
+
+			add_filter( 'foogallery_build_class_attribute', array( $this, 'append_classes' ), 10, 2 );
         }
 
         /*
@@ -167,19 +166,6 @@ if ( !class_exists( 'FooGallery_FooGrid_Gallery_Template' ) ) {
 						'type'    => 'thumb_link',
 						'desc'	  => __('You can choose to either link each thumbnail to the full size image or to the image\'s attachment page.', 'foogallery')
 					),
-//					array(
-//						'id'      => 'theme',
-//						'section' => __( 'General', 'foogallery' ),
-//						'title' => __('Theme', 'foogallery'),
-//						'desc' => __('The theme for the content viewer.', 'foogallery'),
-//						'default' => '',
-//						'type'    => 'radio',
-//						'spacer'  => '<span class="spacer"></span>',
-//						'choices' => array(
-//							'' => __( 'Dark (Default)', 'foogallery' ),
-//							'foogrid-light' => __( 'Light', 'foogallery' )
-//						)
-//					),
 					array(
 						'id'      => 'transition',
 						'section' => __( 'General', 'foogallery' ),
@@ -237,7 +223,7 @@ if ( !class_exists( 'FooGallery_FooGrid_Gallery_Template' ) ) {
 						'row_data'=> array(
 							'data-foogallery-change-selector' => 'select',
 							'data-foogallery-value-selector' => 'option:selected',
-							'data-foogallery-preview' => 'class'
+							'data-foogallery-preview' => 'shortcode'
 						)
 					),
 					array(
@@ -363,26 +349,6 @@ if ( !class_exists( 'FooGallery_FooGrid_Gallery_Template' ) ) {
 		}
 
 		/**
-		 * Build up a arguments used in the preview of the gallery
-		 * @param $args
-		 * @param $post_data
-		 *
-		 * @return mixed
-		 */
-		function preview_arguments( $args, $post_data ) {
-			$args['thumbnail_width'] = $post_data[FOOGALLERY_META_SETTINGS]['foogridpro_thumbnail_size']['width'];
-			$args['thumbnail_height'] = $post_data[FOOGALLERY_META_SETTINGS]['foogridpro_thumbnail_size']['height'];
-			$args['thumbnail_crop'] = isset( $post_data[FOOGALLERY_META_SETTINGS]['foogridpro_thumbnail_size']['crop'] ) ? '1' : '0';
-			$args['scroll'] = $post_data[FOOGALLERY_META_SETTINGS]['foogridpro_scroll'];
-			$args['scroll_smooth'] = $post_data[FOOGALLERY_META_SETTINGS]['foogridpro_scroll_smooth'];
-			$args['scroll_offset'] = $post_data[FOOGALLERY_META_SETTINGS]['foogridpro_scroll_offset'];
-			$args['transition'] = $post_data[FOOGALLERY_META_SETTINGS]['foogridpro_transition'];
-			$args['captions'] = $post_data[FOOGALLERY_META_SETTINGS]['foogridpro_captions'];
-
-			return $args;
-		}
-
-		/**
 		 * Builds thumb dimensions from arguments
 		 *
 		 * @param array $dimensions
@@ -445,5 +411,24 @@ if ( !class_exists( 'FooGallery_FooGrid_Gallery_Template' ) ) {
 
             return $args;
         }
+
+		/**
+		 * Adds the classes onto the container
+		 *
+		 * @param $classes
+		 * @param $foogallery
+		 *
+		 * @return array
+		 */
+		function append_classes( $classes, $foogallery ) {
+
+			$columns = foogallery_gallery_template_setting( 'columns', '' );
+
+			if ( $columns !== '' ) {
+				$classes[] = $columns;
+			}
+
+			return $classes;
+		}
 	}
 }

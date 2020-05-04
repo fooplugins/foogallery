@@ -55,6 +55,9 @@ if ( !class_exists( 'FooGallery_Thumbnails' ) ) {
 				$args = wp_parse_args( $thumbnail_args, $args );
 			}
 
+			//allow for plugins to change the thumbnail creation args one final time
+			$args = apply_filters( 'foogallery_thumbnail_resize_args_final', $args, $original_image_src, $thumbnail_object );
+
 			$width  = (int)$args['width'];
 			$height = (int)$args['height'];
 			$crop   = (bool)$args['crop'];
@@ -111,12 +114,25 @@ if ( !class_exists( 'FooGallery_Thumbnails' ) ) {
 				unset( $args['height'] );
 			}
 
+			$force_resize = false;
+
+			//only worry about upscaling if we have supplied both a width and height for cropping
+			if ( array_key_exists( 'height', $args ) && $args['height'] > 0 &&
+			     array_key_exists( 'width', $args ) && $args['width'] > 0 ) {
+				//check if we must upscale smaller images
+				if ( 'on' === foogallery_get_setting( 'thumb_resize_upscale_small' ) ) {
+					$force_resize = true;
+					$colors                  = foogallery_rgb_to_color_array( foogallery_get_setting( 'thumb_resize_upscale_small_color', '' ) );
+					$args['background_fill'] = sprintf( "%03d%03d%03d000", $colors[0], $colors[1], $colors[2] );
+				}
+			}
+
 			//do some checks to see if the image is smaller
-			if ( $this->should_resize( $thumbnail_object, $args ) ) {
+			if ( $force_resize || $this->should_resize( $thumbnail_object, $args ) ) {
 				//save the generated thumb url to a global so that we can use it later if needed
 				$foogallery_last_generated_thumb_url = wpthumb( $original_image_src, $args );
 			} else {
-				$foogallery_last_generated_thumb_url = $original_image_src;
+				$foogallery_last_generated_thumb_url = apply_filters('foogallery_thumbnail_resize_small_image', $original_image_src, $args );
 			}
 
             return $foogallery_last_generated_thumb_url;

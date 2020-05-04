@@ -2,7 +2,7 @@
 /*
 Plugin Name: FooGallery
 Description: FooGallery is the most intuitive and extensible gallery management tool ever created for WordPress
-Version:     1.9.11
+Version:     1.9.23
 Author:      FooPlugins
 Plugin URI:  http://fooplugins.com/foogallery/
 Author URI:  http://fooplugins.com
@@ -28,7 +28,7 @@ if ( function_exists( 'foogallery_fs' ) ) {
 		define( 'FOOGALLERY_PATH', plugin_dir_path( __FILE__ ) );
 		define( 'FOOGALLERY_URL', plugin_dir_url( __FILE__ ) );
 		define( 'FOOGALLERY_FILE', __FILE__ );
-		define( 'FOOGALLERY_VERSION', '1.9.11' );
+		define( 'FOOGALLERY_VERSION', '1.9.23' );
 		define( 'FOOGALLERY_SETTINGS_VERSION', '2' );
 
 		require_once( FOOGALLERY_PATH . 'includes/constants.php' );
@@ -173,14 +173,26 @@ if ( function_exists( 'foogallery_fs' ) ) {
 				//init the default media library datasource
 				new FooGallery_Datasource_MediaLibrary();
 
+				$pro_code_included = false;
+
 				if ( foogallery_fs()->is__premium_only() ) {
 					if ( foogallery_fs()->can_use_premium_code() ) {
 						require_once FOOGALLERY_PATH . 'pro/foogallery-pro.php';
 
 						new FooGallery_Pro();
+
+						$pro_code_included = true;
 					}
-				} else {
+				}
+
+				if ( !$pro_code_included ) {
 					add_filter( 'foogallery_extensions_for_view', array( $this, 'add_foogallery_pro_extension' ) );
+
+					//only include if in admin
+					if ( is_admin() ) {
+						//include PRO promotion
+						new FooGallery_Pro_Promotion();
+					}
 				}
 
 				//init Gutenberg!

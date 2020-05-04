@@ -18,14 +18,13 @@ if ( !class_exists( 'FooGallery_Justified_Gallery_Template' ) ) {
 			//add the data options needed for justified
 			add_filter( 'foogallery_build_container_data_options-justified', array( $this, 'add_justified_options' ), 10, 3 );
 
-			//build up any preview arguments
-			add_filter( 'foogallery_preview_arguments-justified', array( $this, 'preview_arguments' ), 10, 2 );
-
 			//build up the thumb dimensions from some arguments
 			add_filter( 'foogallery_calculate_thumbnail_dimensions-justified', array( $this, 'build_thumbnail_dimensions_from_arguments' ), 10, 2 );
 
             //build up the arguments needed for rendering this template
             add_filter( 'foogallery_gallery_template_arguments-justified', array( $this, 'build_gallery_template_arguments' ) );
+
+			add_filter( 'foogallery_override_gallery_template_fields-justified', array( $this, 'adjust_default_field_values' ), 10, 2 );
         }
 
 		/**
@@ -79,7 +78,7 @@ if ( !class_exists( 'FooGallery_Justified_Gallery_Template' ) ) {
                         'section' => __( 'General', 'foogallery' ),
                         'type'    => 'number',
                         'class'   => 'small-text',
-                        'default' => 150,
+                        'default' => 200,
                         'step'    => '10',
                         'min'     => '0',
 						'row_data'=> array(
@@ -95,7 +94,7 @@ if ( !class_exists( 'FooGallery_Justified_Gallery_Template' ) ) {
                         'section' => __( 'General', 'foogallery' ),
                         'type'    => 'text',
                         'class'   => 'small-text',
-                        'default' => '200%',
+                        'default' => '150%',
 						'row_data'=> array(
 							'data-foogallery-change-selector' => 'input',
 							'data-foogallery-value-selector' => 'input',
@@ -109,7 +108,7 @@ if ( !class_exists( 'FooGallery_Justified_Gallery_Template' ) ) {
 						'section' => __( 'General', 'foogallery' ),
                         'type'    => 'number',
                         'class'   => 'small-text',
-                        'default' => 1,
+                        'default' => 2,
                         'step'    => '1',
                         'min'     => '0',
 						'row_data'=> array(
@@ -141,7 +140,7 @@ if ( !class_exists( 'FooGallery_Justified_Gallery_Template' ) ) {
                         'section' => __( 'General', 'foogallery' ),
                         'type'    => 'radio',
                         'spacer'  => '<span class="spacer"></span>',
-                        'default' => 'center',
+                        'default' => 'justify',
                         'choices' => array(
                             'hide' => __( 'Hide', 'foogallery' ),
                             'justify' => __( 'Justify', 'foogallery' ),
@@ -217,22 +216,6 @@ if ( !class_exists( 'FooGallery_Justified_Gallery_Template' ) ) {
 		}
 
 		/**
-		 * Build up a arguments used in the preview of the gallery
-		 * @param $args
-		 * @param $post_data
-		 *
-		 * @return mixed
-		 */
-		function preview_arguments( $args, $post_data ) {
-			$args['thumbnail_height'] = $post_data[FOOGALLERY_META_SETTINGS]['justified_thumb_height'];
-			$args['row_height'] = $post_data[FOOGALLERY_META_SETTINGS]['justified_row_height'];
-			$args['max_row_height'] = $post_data[FOOGALLERY_META_SETTINGS]['justified_max_row_height'];
-			$args['margins'] = $post_data[FOOGALLERY_META_SETTINGS]['justified_margins'];
-            $args['lastrow'] = $post_data[FOOGALLERY_META_SETTINGS]['justified_lastrow'];
-			return $args;
-		}
-
-		/**
 		 * Builds thumb dimensions from arguments
 		 *
 		 * @param array $dimensions
@@ -268,5 +251,31 @@ if ( !class_exists( 'FooGallery_Justified_Gallery_Template' ) ) {
 
             return $args;
         }
+
+		/**
+		 * Adjust the default values for the justified template
+		 *
+		 * @uses "foogallery_override_gallery_template_fields"
+		 * @param $fields
+		 * @param $template
+		 *
+		 * @return array
+		 */
+		function adjust_default_field_values( $fields, $template ) {
+			//update specific fields
+			foreach ($fields as &$field) {
+				if ( 'border_size' === $field['id'] ) {
+					$field['default'] = '';
+				} else if ( 'hover_effect_caption_visibility' == $field['id'] ) {
+					$field['default'] = 'fg-caption-always';
+				} else if ( 'hover_effect_icon' == $field['id'] ) {
+					$field['default'] = 'fg-hover-zoom2';
+				} else if ( 'caption_desc_source' == $field['id'] ) {
+					$field['default'] = 'none';
+				}
+			}
+
+			return $fields;
+		}
 	}
 }

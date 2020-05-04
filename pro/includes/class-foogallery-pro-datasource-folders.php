@@ -167,7 +167,18 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Folders' ) ) {
 		 */
 		private function build_attachments_from_folder( $folder, $metadata_source = 'file' ) {
 			global $wp_filesystem;
+			global $foogallery_gallery_preview;
+
+			$max_attachments = 0;
+			if ( isset( $foogallery_gallery_preview ) ) {
+				$max_attachments = 100;
+			}
+
 			$attachments = array();
+
+			if ( !function_exists( 'WP_Filesystem' ) ) {
+				require_once( ABSPATH . 'wp-admin/includes/file.php' );
+            }
 
 			if ( ! WP_Filesystem( true ) ) {
 				return $attachments;
@@ -256,6 +267,13 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Folders' ) ) {
 								}
 
 								$attachments[] = $attachment;
+
+								//if we are looking at a preview, then limit the gallery to 100 attachments
+								if ( $max_attachments > 0 ) {
+                                    if ( count( $attachments ) >= $max_attachments ) {
+                                        break;
+                                    }
+                                }
 							}
 						}
 					}

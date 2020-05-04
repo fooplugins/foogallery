@@ -9,8 +9,6 @@ if ( !class_exists( 'FooGallery_Slider_Gallery_Template' ) ) {
 		function __construct() {
 			add_filter( 'foogallery_gallery_templates', array( $this, 'add_template' ), 101 );
 
-			add_filter( 'foogallery_override_gallery_template_fields-slider', array( $this, 'add_additional_setting_fields' ), 10, 2 );
-
 			add_filter( 'foogallery_gallery_templates_files', array( $this, 'register_myself' ) );
 
 			add_filter( 'foogallery_located_template-slider', array( $this, 'enqueue_dependencies' ) );
@@ -23,9 +21,6 @@ if ( !class_exists( 'FooGallery_Slider_Gallery_Template' ) ) {
 
 			//override specific settings when saving the gallery
 			add_filter( 'foogallery_save_gallery_settings-slider', array( $this, 'override_settings'), 10, 3 );
-
-			//build up any preview arguments
-			add_filter( 'foogallery_preview_arguments-slider', array( $this, 'preview_arguments' ), 10, 2 );
 
 			//build up the thumb dimensions from some arguments
 			add_filter( 'foogallery_calculate_thumbnail_dimensions-slider', array( $this, 'build_thumbnail_dimensions_from_arguments' ), 10, 2 );
@@ -67,199 +62,10 @@ if ( !class_exists( 'FooGallery_Slider_Gallery_Template' ) ) {
 						'section' => __( 'General', 'foogallery' ),
 						'type'    => 'help',
 					),
-//					array(
-//						'id'      => 'layout',
-//						'title'   => __('Layout', 'foogallery'),
-//						'desc'    => __( 'You can choose either a horizontal or vertical layout for your responsive video gallery.', 'foogallery' ),
-//						'section' => __( 'General', 'foogallery' ),
-//						'type'    => 'icon',
-//						'default' => '',
-//						'choices' => array(
-//							'' => array( 'label' => __( 'Vertical' , 'foogallery' ), 'img' => plugin_dir_url( __FILE__ ) . 'assets/video-layout-vertical.png' ),
-//							'fgs-horizontal' => array( 'label' => __( 'Horizontal' , 'foogallery' ), 'img' => plugin_dir_url( __FILE__ ) . 'assets/video-layout-horizontal.png' )
-//						),
-//						'row_data' => array(
-//							'data-foogallery-change-selector' => 'input:radio',
-//							'data-foogallery-value-selector'  => 'input:checked',
-//							'data-foogallery-preview' => 'class',
-//						)
-//					),
-//					array(
-//						'id'      => 'buttons',
-//						'title'   => __('Navigation', 'foogallery'),
-//						'desc'    => __( 'You can choose to show navigation buttons in the slider.', 'foogallery' ),
-//						'section' => __( 'General', 'foogallery' ),
-//						'type'    => 'radio',
-//						'default' => '',
-//						'choices' => array(
-//							'' => __( 'None', 'foogallery' ),
-//							'fgs-content-nav' => __( 'Buttons', 'foogallery' )
-//						),
-//						'row_data' => array(
-//							'data-foogallery-change-selector' => 'input:radio',
-//							'data-foogallery-value-selector'  => 'input:checked',
-//							'data-foogallery-preview' => 'class',
-//						)
-//					),
-//					array(
-//						'id'      => 'viewport',
-//						'title'   => __('Use Viewport Width', 'foogallery'),
-//						'desc'    => __('Use the viewport width instead of the parent element width.', 'foogallery'),
-//						'section' => __( 'General', 'foogallery' ),
-//						'default' => '',
-//						'type'    => 'radio',
-//						'spacer'  => '<span class="spacer"></span>',
-//						'choices' => array(
-//							'' => __( 'No', 'foogallery' ),
-//							'yes' => __( 'Yes', 'foogallery' )
-//						),
-//						'row_data' => array(
-//							'data-foogallery-change-selector' => 'input:radio',
-//							'data-foogallery-value-selector'  => 'input:checked',
-//							'data-foogallery-preview' => 'shortcode',
-//						)
-//					),
 				)
 			);
 
 			return $gallery_templates;
-		}
-
-		/**
-		 * Add additional fields to the settings
-		 * @param $fields
-		 * @param $template
-		 *
-		 * @return array
-		 */
-		function add_additional_setting_fields( $fields, $template ) {
-
-//			$fields[] =	array(
-//				'id'      => 'highlight',
-//				'title'   => __('Highlight', 'foogallery'),
-//				'section' => __( 'Appearance', 'foogallery' ),
-//				'desc'    => __('The color that is used to highlight the selected video.', 'foogallery'),
-//				'default' => 'fgs-purple',
-//				'type'    => 'radio',
-//				'spacer'  => '<span class="spacer"></span>',
-//				'choices' => array(
-//					'fgs-purple' => __( 'Purple', 'foogallery' ),
-//					'fgs-blue' => __( 'Blue', 'foogallery' ),
-//					'fgs-green' => __( 'Green', 'foogallery' ),
-//					'fgs-orange' => __( 'Orange', 'foogallery' ),
-//					'fgs-red' => __( 'Red', 'foogallery' ),
-//					'fg-custom' => __( 'Custom', 'foogallery' )
-//				),
-//				'row_data' => array(
-//					'data-foogallery-change-selector' => 'input:radio',
-//					'data-foogallery-value-selector'  => 'input:checked',
-//					'data-foogallery-preview' => 'class',
-//				)
-//			);
-
-//			$fields[] = array(
-//				'id'      => 'thumbnail_captions',
-//				'title'   => __('Thumbnail Captions', 'foogallery'),
-//				'desc'    => __('You can choose to hide the captions for the small thumbnails in the slider.', 'foogallery'),
-//				'section' => __( 'Captions', 'foogallery' ),
-//				'default' => '',
-//				'type'    => 'radio',
-//				'spacer'  => '<span class="spacer"></span>',
-//				'choices' => array(
-//					'' => __( 'Show Captions', 'foogallery' ),
-//					'fgs-no-captions' => __( 'Hide Captions', 'foogallery' )
-//				),
-//				'row_data' => array(
-//					'data-foogallery-change-selector' => 'input:radio',
-//					'data-foogallery-value-selector'  => 'input:checked',
-//					'data-foogallery-preview' => 'class',
-//				)
-//			);
-
-			return $fields;
-		}
-
-		function unused_fields_for_future_version() {
-			$fields[] = array(
-				'id'      => 'theme_custom_bgcolor',
-				'title'   => __('Background Color', 'foogallery'),
-				'section' => __( 'Appearance', 'foogallery' ),
-				'type'    => 'colorpicker',
-				'default' => '#000000',
-				'opacity' => true,
-				'row_data' => array(
-					'data-foogallery-hidden'          		   => true,
-					'data-foogallery-show-when-field'          => 'theme',
-					'data-foogallery-show-when-field-value'    => 'fg-custom',
-				)
-			);
-			$fields[] = array(
-				'id'      => 'theme_custom_textcolor',
-				'title'   => __('Text Color', 'foogallery'),
-				'section' => __( 'Appearance', 'foogallery' ),
-				'type'    => 'colorpicker',
-				'default' => '#ffffff',
-				'opacity' => true,
-				'row_data' => array(
-					'data-foogallery-hidden'          		   => true,
-					'data-foogallery-show-when-field'          => 'theme',
-					'data-foogallery-show-when-field-value'    => 'fg-custom',
-				)
-			);
-			$fields[] = array(
-				'id'      => 'theme_custom_hovercolor',
-				'title'   => __('Hover BG Color', 'foogallery'),
-				'section' => __( 'Appearance', 'foogallery' ),
-				'type'    => 'colorpicker',
-				'default' => '#222222',
-				'opacity' => true,
-				'row_data' => array(
-					'data-foogallery-hidden'          		   => true,
-					'data-foogallery-show-when-field'          => 'theme',
-					'data-foogallery-show-when-field-value'    => 'fg-custom',
-				)
-			);
-			$fields[] =	array(
-				'id'      => 'theme_custom_dividercolor',
-				'title'   => __('Divider Color', 'foogallery'),
-				'section' => __( 'Appearance', 'foogallery' ),
-				'type'    => 'colorpicker',
-				'default' => '#2e2e2e',
-				'opacity' => true,
-				'row_data' => array(
-					'data-foogallery-hidden'          		   => true,
-					'data-foogallery-show-when-field'          => 'theme',
-					'data-foogallery-show-when-field-value'    => 'fg-custom',
-				)
-			);
-
-			$fields[] =	array(
-				'id'      => 'highlight_custom_bgcolor',
-				'title'   => __('Highlight BG Color', 'foogallery'),
-				'section' => __( 'Appearance', 'foogallery' ),
-				'type'    => 'colorpicker',
-				'default' => '#7816d6',
-				'opacity' => true,
-				'row_data' => array(
-					'data-foogallery-hidden'          		   => true,
-					'data-foogallery-show-when-field'          => 'highlight',
-					'data-foogallery-show-when-field-value'    => 'fg-custom',
-				)
-			);
-			$fields[] =	array(
-				'id'      => 'highlight_custom_textcolor',
-				'title'   => __('Highlight Text Color', 'foogallery'),
-				'section' => __( 'Appearance', 'foogallery' ),
-				'type'    => 'colorpicker',
-				'default' => 'rgba(255, 255, 255, 1)',
-				'opacity' => true,
-				'row_data' => array(
-					'data-foogallery-hidden'          		   => true,
-					'data-foogallery-show-when-field'          => 'highlight',
-					'data-foogallery-show-when-field-value'    => 'fg-custom',
-				)
-			);
-
 		}
 
 		/**
@@ -368,6 +174,8 @@ if ( !class_exists( 'FooGallery_Slider_Gallery_Template' ) ) {
 					$field['section'] = __( 'General', 'foogallery' );
 					$field['default'] = 'yes';
 				} else if ( 'lightbox_thumbs_size' === $field['id'] ) {
+					$field['section'] = __( 'General', 'foogallery' );
+				} else if ( 'lightbox_show_maximize_button' === $field['id'] ) {
 					$field['section'] = __( 'General', 'foogallery' );
 				}
 

@@ -15,6 +15,9 @@ if ( ! class_exists( 'FooGallery_Advanced_Gallery_Settings' ) ) {
 
 			//add custom attributes
 			add_filter( 'foogallery_build_container_attributes_html', array( $this, 'add_container_attributes' ), 10, 3 );
+
+			//add custom class to container
+			add_filter( 'foogallery_build_class_attribute', array( $this, 'add_custom_class' ), 10, 2 );
 		}
 
 		/**
@@ -41,6 +44,15 @@ if ( ! class_exists( 'FooGallery_Advanced_Gallery_Settings' ) ) {
 				'desc'     => __( 'Add any custom attributes to the gallery container. To be used by developers only!', 'foogallery' ),
 				'section'  => __( 'Advanced', 'foogallery' ),
 				'type'     => 'textarea',
+				'default'  => '',
+			);
+
+			$fields[] = array(
+				'id'       => 'custom_class',
+				'title'    => __( 'Custom Gallery Class', 'foogallery' ),
+				'desc'     => __( 'Add a custom class to the gallery container.', 'foogallery' ),
+				'section'  => __( 'Advanced', 'foogallery' ),
+				'type'     => 'text',
 				'default'  => '',
 			);
 
@@ -92,6 +104,29 @@ if ( ! class_exists( 'FooGallery_Advanced_Gallery_Settings' ) ) {
 			}
 
 			return $html;
+		}
+
+
+		/**
+		 * Add the custom class to the array of classes
+		 *
+		 * @param $classes
+		 * @param $gallery
+		 *
+		 * @return array
+		 */
+		function add_custom_class( $classes, $gallery ) {
+			global $current_foogallery;
+
+			if ( $current_foogallery === $gallery ) {
+				$custom_class = foogallery_gallery_template_setting( 'custom_class', '' );
+
+				if ( !empty( $custom_class ) ) {
+					$classes[] = $custom_class;
+				}
+			}
+
+			return $classes;
 		}
 	}
 }

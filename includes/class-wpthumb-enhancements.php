@@ -44,8 +44,7 @@ if ( ! class_exists( 'FooGallery_WPThumb_Enhancements' ) ) {
 
             $wpthumb_editors = array();
 
-            //replace the default image editors with the WPThumb image editors.
-            // also preserve the order so that certain hosts work as expected
+            //replace the default image editors with the WPThumb image editors, so that WPThumb continues to work
             foreach ($editors as $editor) {
                 switch ($editor) {
                     case 'WP_Image_Editor_Imagick':
@@ -57,6 +56,11 @@ if ( ! class_exists( 'FooGallery_WPThumb_Enhancements' ) ) {
                     default:
                         $wpthumb_editors[] = $editor;
                 }
+            }
+
+            //Make sure the order is correct
+            if ( foogallery_get_setting( 'force_gd_library', false ) ) {
+            	array_splice( $wpthumb_editors, 0, 0, array('WP_Thumb_Image_Editor_GD') );
             }
 
             //make sure we have a unique list of editors

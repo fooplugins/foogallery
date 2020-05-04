@@ -22,9 +22,6 @@ if ( ! class_exists( 'FooGallery_LazyLoad' ) ) {
             //add common fields to the templates that support it
             add_filter('foogallery_override_gallery_template_fields', array($this, 'add_lazyload_field'), 100, 2);
 
-            //build up preview arguments
-            add_filter( 'foogallery_preview_arguments', array( $this, 'preview_arguments' ), 10, 3 );
-
             //add some settings to allow forcing of the lazy loading to be disabled
             add_filter( 'foogallery_admin_settings_override', array( $this, 'add_settings' ) );
         }
@@ -164,22 +161,6 @@ if ( ! class_exists( 'FooGallery_LazyLoad' ) ) {
 
             return $fields;
         }
-
-        /**
-         * Build up a arguments used in the preview of the gallery
-         * @param $args
-         * @param $post_data
-         * @param $template
-         *
-         * @return mixed
-         */
-        function preview_arguments( $args, $post_data, $template ) {
-            if ( isset( $post_data[FOOGALLERY_META_SETTINGS][$template . '_lazyload'] ) ) {
-                $args['lazyload'] = $post_data[FOOGALLERY_META_SETTINGS][$template . '_lazyload'];
-            }
-            return $args;
-        }
-
 
         /**
          * Add some global settings

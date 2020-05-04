@@ -11,10 +11,7 @@ if ( ! class_exists( 'FooGallery_Pro_Advanced_Thumbnails' ) ) {
             //add fields to all templates
             add_filter( 'foogallery_override_gallery_template_fields', array( $this, 'add_advanced_thumb_fields' ), 100, 2 );
 
-            add_filter( 'foogallery_thumbnail_resize_args', array( $this, 'add_arguments' ), 10, 3 );
-
-			//build up any preview arguments
-	        add_filter( 'foogallery_preview_arguments', array( $this, 'preview_arguments' ), 10, 3 );
+            add_filter( 'foogallery_thumbnail_resize_args_final', array( $this, 'add_arguments' ), 10, 3 );
         }
 
         /**
@@ -29,19 +26,13 @@ if ( ! class_exists( 'FooGallery_Pro_Advanced_Thumbnails' ) ) {
             $thumb_cropping_options = foogallery_gallery_template_setting( 'thumb_cropping_options', '' );
 
             if ( 'background_fill' === $thumb_cropping_options ) {
-                $background_fill_color = foogallery_gallery_template_setting( 'thumb_background_fill', 'rbg(0,0,0)' );
-                $colors = $this->rgb_to_colors( $background_fill_color );
+                $background_fill_color = foogallery_gallery_template_setting( 'thumb_background_fill', 'rgb(0,0,0)' );
+                $colors = foogallery_rgb_to_color_array( $background_fill_color );
                 $args['background_fill'] = sprintf( "%03d%03d%03d000", $colors[0], $colors[1], $colors[2] );
                 $args['crop'] = false;
             }
 
             return $args;
-        }
-
-        function rgb_to_colors( $rgba ) {
-            preg_match( '/^rgba?[\s+]?\([\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?/i', $rgba, $by_color );
-
-            return array( $by_color[1], $by_color[2], $by_color[3] );
         }
 
         /**
@@ -61,6 +52,7 @@ if ( ! class_exists( 'FooGallery_Pro_Advanced_Thumbnails' ) ) {
                 'section'  => __( 'Advanced', 'foogallery' ),
                 'type'     => 'radio',
                 'default'  => '',
+                'spacer'   => '<span class="spacer"></span>',
                 'choices'  => array(
                     ''  => __( 'Default', 'foogallery' ),
                     'background_fill'   => __( 'Background Fill (No crop)', 'foogallery' ),
@@ -71,6 +63,20 @@ if ( ! class_exists( 'FooGallery_Pro_Advanced_Thumbnails' ) ) {
                     'data-foogallery-value-selector'  => 'input:checked',
                 )
             );
+
+	        $fields[] = array(
+		        'id'      => 'thumb_background_help',
+		        'title'   => __( 'Background Fill Help', 'foogallery' ),
+		        'desc'	  => __( 'PLEASE NOTE : the background fill cropping feature only works if your server supports the GD image library and it is currently active. You can force GD image library to be used from the settings page, under the Images tab.', 'foogallery '),
+		        'section' => __( 'Advanced', 'foogallery' ),
+		        'type'    => 'help',
+		        'row_data' => array(
+			        'data-foogallery-hidden'                => true,
+			        'data-foogallery-show-when-field'       => 'thumb_cropping_options',
+			        'data-foogallery-show-when-field-value' => 'background_fill',
+			        'data-foogallery-preview'               => 'shortcode'
+		        )
+	        );
 
             $fields[] = array(
                 'id'      => 'thumb_background_fill',
@@ -89,23 +95,5 @@ if ( ! class_exists( 'FooGallery_Pro_Advanced_Thumbnails' ) ) {
 
             return $fields;
         }
-
-	    /**
-	     * Build up a arguments used in the preview of the gallery
-	     * @param $args
-	     * @param $post_data
-	     * @param $template
-	     *
-	     * @return mixed
-	     */
-	    function preview_arguments( $args, $post_data, $template ) {
-		    if ( array_key_exists( $template . '_thumb_cropping_options', $post_data[FOOGALLERY_META_SETTINGS] ) ) {
-			    $args['thumb_cropping_options'] = $post_data[FOOGALLERY_META_SETTINGS][$template . '_thumb_cropping_options'];
-		    }
-		    if ( array_key_exists( $template . '_thumb_background_fill', $post_data[FOOGALLERY_META_SETTINGS] ) ) {
-			    $args['thumb_background_fill'] = $post_data[FOOGALLERY_META_SETTINGS][$template . '_thumb_background_fill'];
-		    }
-		    return $args;
-	    }
     }
 }

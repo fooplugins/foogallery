@@ -14,9 +14,6 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 				//set the settings icon for filtering
 				add_filter( 'foogallery_gallery_settings_metabox_section_icon', array( $this, 'add_section_icons' ) );
 
-				//build up any preview arguments
-				add_filter( 'foogallery_preview_arguments', array( $this, 'preview_arguments' ), 10, 3 );
-
 				//add a global setting to change the All filter
 				add_filter( 'foogallery_admin_settings_override', array( $this, 'add_language_settings' ) );
 			}
@@ -431,46 +428,6 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 			}
 
 			return $fields;
-		}
-
-		/**
-		 * Build up a arguments used in the preview of the gallery
-		 *
-		 * @param $args
-		 * @param $post_data
-		 * @param $template
-		 *
-		 * @return mixed
-		 */
-		function preview_arguments( $args, $post_data, $template ) {
-			$template_data = foogallery_get_gallery_template( $template );
-
-			//check the template supports filtering
-			if ( $template_data && array_key_exists( 'filtering_support', $template_data ) && true === $template_data['filtering_support'] ) {
-				if ( array_key_exists( $template . '_filtering_type', $post_data[FOOGALLERY_META_SETTINGS] ) ) {
-					$args['filtering_type'] = $post_data[FOOGALLERY_META_SETTINGS][$template . '_filtering_type'];
-
-					if ( $args['filtering_type'] !== '' ) {
-						$args['filtering_theme']                   = $post_data[FOOGALLERY_META_SETTINGS][$template . '_filtering_theme'];
-						$args['filtering_taxonomy']                = $post_data[FOOGALLERY_META_SETTINGS][$template . '_filtering_taxonomy'];
-						$args['filtering_position']                = $post_data[FOOGALLERY_META_SETTINGS][$template . '_filtering_position'];
-						$args['filtering_mode']                    = $post_data[FOOGALLERY_META_SETTINGS][$template . '_filtering_mode'];
-						$args['filtering_min']                     = $post_data[FOOGALLERY_META_SETTINGS][$template . '_filtering_min'];
-						$args['filtering_limit']                   = $post_data[FOOGALLERY_META_SETTINGS][$template . '_filtering_limit'];
-						$args['filtering_show_count']              = $post_data[FOOGALLERY_META_SETTINGS][$template . '_filtering_show_count'];
-						$args['filtering_adjust_size']             = $post_data[FOOGALLERY_META_SETTINGS][$template . '_filtering_adjust_size'];
-						$args['filtering_adjust_size_smallest']    = $post_data[FOOGALLERY_META_SETTINGS][$template . '_filtering_adjust_size_smallest'];
-						$args['filtering_adjust_size_largest']     = $post_data[FOOGALLERY_META_SETTINGS][$template . '_filtering_adjust_size_largest'];
-						$args['filtering_adjust_opacity']          = $post_data[FOOGALLERY_META_SETTINGS][$template . '_filtering_adjust_opacity'];
-						$args['filtering_adjust_opacity_lightest'] = $post_data[FOOGALLERY_META_SETTINGS][$template . '_filtering_adjust_opacity_lightest'];
-						$args['filtering_adjust_opacity_darkest']  = $post_data[FOOGALLERY_META_SETTINGS][$template . '_filtering_adjust_opacity_darkest'];
-						$args['filtering_override']                = $post_data[FOOGALLERY_META_SETTINGS][$template . '_filtering_override'];
-						$args['filtering_sort']                    = $post_data[FOOGALLERY_META_SETTINGS][$template . '_filtering_sort'];
-					}
-				}
-			}
-
-			return $args;
 		}
 
 		/**

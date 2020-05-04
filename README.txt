@@ -3,7 +3,7 @@ Contributors: bradvin, steveush, fooplugins
 Donate link: http://fooplugins.com
 Tags: gallery, image gallery, wordpress gallery plugin, responsive gallery, best gallery plugin
 Requires at least: 3.9
-Tested up to: 5.4
+Tested up to: 5.4.1
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -130,6 +130,10 @@ FooGallery is hosted on [GitHub](https://github.com/fooplugins/foogallery).
 
 == Frequently Asked Questions ==
 
+= How do I turn off all the PRO Promotions in the admin? =
+
+Goto FooGallery Settings -> Advanced Tab and check "Disable PRO Promotions" and then save your settings.
+
 = My galleries are not working. Thumbnails are greyed out and not loading when I scroll down the page. =
 
 Lazy loading is not working on your gallery. This could be due to a conflict between our plugin and your theme.
@@ -202,7 +206,37 @@ Update now to get all the latest features, bug fixes and improvements!
 
 == Changelog ==
 
+= 1.9.23 =
+Date Updated : 2020-05-02
+* New : Reworked hover effect settings to allow none
+* New : Added new zoomed hover effect
+* New : Added new transparent theme hover effect
+* New : Added new advanced setting to add custom class to the gallery container
+* New : Added global settings for upscaling small images when using larger thumbnail dimensions
+* New : Added Pro feature promotions in gallery settings
+* New : Added setting to force GD Image editor as the default
+* New : Added info for active image editor to Settings -> Images tab
+* New : Improved caption sanitization
+* Fix : Fixed bug with Safari when editing a gallery, not loading thumbs
+* Fix : Fixed gallery previews in certain situations
+* Update : Freemius SDK 2.3.2
+* Update : FooGallery client side 1.4.11
+[//]: # fs_premium_only_begin
+* New : Added new Bulk Taxonomy Management modal when editing a gallery
+* New : Added new setting to Thumbnail gallery to Exclude Featured image (only works with PRO Lightbox)
+* New : Added new setting to show/hide fullscreen button for lightbox
+* New : Added new setting to show/hide maximize button for Slider PRO and Grid PRO templates
+* Fix : Fixed fatal error bug with videos in dynamic galleries
+* Fix : Fixed background fill not working in some cases
+* Fix : Cleared cache for taxonomy datasource when using shortcode attributes
+* Fix : Server folders datasource has fatal error when cache clears in some cases
+* Fix : WP/LR Sync removes deleted galleries from synced collection list
+* Update : renamed "Pagination" paging to "Numbered"
+* Update : WP/LR Sync updates gallery names when syncing collections
+[//]: # fs_premium_only_end
+
 = 1.9.11 =
+Date Updated : 2020-03-29
 * Fix : Fix for Simple Portfolio template not saving "None" for captions.
 * Fix : Fixed albums when adding incorrect markup target="default"
 * Fix : Updated thumbnail generation test logic to be more resilient, and improved admin message.
@@ -221,6 +255,7 @@ Update now to get all the latest features, bug fixes and improvements!
 * Update : FooGallery client side 1.4.6 (including multiple bug fixes)
 
 = 1.9.8 =
+Date Updated : 2020-03-08
 * New : Added RankMath compatibility - sitemap image indexing.
 * New : Added new setting under Hover Effects : Invert Color. Invert the caption icon colors from dark to light.
 * New : All hover and loading icons converted to SVG format.
@@ -235,6 +270,7 @@ Update now to get all the latest features, bug fixes and improvements!
 * Update : FooGallery client side 1.4.0 (MAJOR UPDATE).
 
 = 1.8.20 =
+Date Updated : 2019-11-22
 * Fix : Fix for Masonry template layout issue in Firefox
 [//]: # fs_premium_only_begin
 * Fix : Fixed Media Library issues in WP 5.3
@@ -247,6 +283,7 @@ Update now to get all the latest features, bug fixes and improvements!
 * Update : FooGallery client side 1.3.6
 
 = 1.8.18 =
+Date Updated : 2019-10-23
 * New : Elementor compatibility - gallery previews in Elementor editor work, and added a FooGallery widget to the Elementor editor
 [//]: # fs_premium_only_begin
 * New : Instagram datasource - populate galleries from your Instagram account

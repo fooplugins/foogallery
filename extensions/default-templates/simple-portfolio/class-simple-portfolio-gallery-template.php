@@ -15,16 +15,13 @@ if ( !class_exists( 'FooGallery_Simple_Portfolio_Gallery_Template' ) ) {
 			add_filter( 'foogallery_located_template-simple_portfolio', array( $this, 'enqueue_dependencies' ) );
 
 			//add extra fields to the templates
-			add_filter( 'foogallery_override_gallery_template_fields-simple_portfolio', array( $this, 'add_common_thumbnail_fields' ), 10, 2 );
+			add_filter( 'foogallery_override_gallery_template_fields-simple_portfolio', array( $this, 'add_common_thumbnail_fields' ), 101, 2 );
 
 			//add the data options needed for simple portfolio
 			add_filter( 'foogallery_build_container_data_options-simple_portfolio', array( $this, 'add_data_options' ), 10, 3 );
 
 			//override specific settings when saving the gallery
 			add_filter( 'foogallery_save_gallery_settings-simple_portfolio', array( $this, 'override_settings'), 10, 3 );
-
-			//build up any preview arguments
-			add_filter( 'foogallery_preview_arguments-simple_portfolio', array( $this, 'preview_arguments' ), 10, 2 );
 
 			//build up the thumb dimensions from some arguments
 			add_filter( 'foogallery_calculate_thumbnail_dimensions-simple_portfolio', array( $this, 'build_thumbnail_dimensions_from_arguments' ), 10, 2 );
@@ -34,6 +31,8 @@ if ( !class_exists( 'FooGallery_Simple_Portfolio_Gallery_Template' ) ) {
 
             //build up the arguments needed for rendering this template
             add_filter( 'foogallery_gallery_template_arguments-simple_portfolio', array( $this, 'build_gallery_template_arguments' ) );
+
+			add_filter( 'foogallery_build_class_attribute', array( $this, 'override_class_attributes' ), 99, 2 );
         }
 
 		/**
@@ -138,25 +137,7 @@ if ( !class_exists( 'FooGallery_Simple_Portfolio_Gallery_Template' ) ) {
                             'data-foogallery-value-selector' => 'input:checked',
                             'data-foogallery-preview' => 'shortcode',
                         )
-                    ),
-                    array(
-                        'id'      => 'caption_position',
-                        'title' => __('Caption Position', 'foogallery'),
-                        'desc' => __('Where the captions are displayed in relation to the thumbnail.', 'foogallery'),
-						'section' => __( 'Captions', 'foogallery' ),
-                        'default' => '',
-                        'type'    => 'radio',
-                        'spacer'  => '<span class="spacer"></span>',
-                        'choices' => array(
-                            '' => __( 'Below', 'foogallery' ),
-                            'fg-captions-top' => __( 'Above', 'foogallery' )
-                        ),
-						'row_data'=> array(
-							'data-foogallery-change-selector' => 'input:radio',
-							'data-foogallery-value-selector' => 'input:checked',
-							'data-foogallery-preview' => 'class'
-						)
-                    ),
+                    )
                 ),
 			);
 
@@ -182,8 +163,37 @@ if ( !class_exists( 'FooGallery_Simple_Portfolio_Gallery_Template' ) ) {
 		 * @return array
 		 */
 		function add_common_thumbnail_fields( $fields, $template ) {
+			$new_fields[] = array(
+				'id'      => 'caption_position',
+				'title' => __('Caption Position', 'foogallery'),
+				'desc' => __('Where the captions are displayed in relation to the thumbnail.', 'foogallery'),
+				'section' => __( 'Captions', 'foogallery' ),
+				'default' => '',
+				'type'    => 'radio',
+				'spacer'  => '<span class="spacer"></span>',
+				'choices' => array(
+					'' => __( 'Below', 'foogallery' ),
+					'fg-captions-top' => __( 'Above', 'foogallery' )
+				),
+				'row_data'=> array(
+					'data-foogallery-change-selector' => 'input:radio',
+					'data-foogallery-value-selector' => 'input:checked',
+					'data-foogallery-preview' => 'shortcode'
+				)
+			);
+
+			$index_of_captions_field = 0;
+			$index = 0;
+
 			//update specific fields
 			foreach ($fields as &$field) {
+
+				if ( $index_of_captions_field === 0 && __( 'Captions', 'foogallery' ) === $field['section'] ) {
+					$index_of_captions_field = $index;
+				}
+
+				$index++;
+
 				if ( 'hover_effect_caption_visibility' === $field['id'] ) {
 					$field['default'] = 'fg-caption-always';
 					$field['choices'] = array(
@@ -192,15 +202,25 @@ if ( !class_exists( 'FooGallery_Simple_Portfolio_Gallery_Template' ) ) {
 					$field['row_data'] = array(
 						'data-foogallery-change-selector' => 'input:radio',
 						'data-foogallery-hidden' => true,
-						'data-foogallery-preview' => 'class'
+						'data-foogallery-preview' => 'shortcode'
 					);
 				} else if ( 'hover_effect_help' == $field['id'] ||
                             'captions_help' == $field['id']) {
 					$field['row_data'] = array(
 						'data-foogallery-hidden' => true
 					);
+				} else if ( 'theme' === $field['id'] ) {
+					$field['default'] = 'fg-dark';
+					$field['choices'] = array(
+						'fg-light'  => __( 'Light', 'foogallery' ),
+						'fg-dark'   => __( 'Dark', 'foogallery' ),
+						'fg-transparent' => __( 'Transparent', 'foogallery' ),
+						'fg-custom' => __( 'Custom', 'foogallery' )
+					);
 				}
 			}
+
+			array_splice( $fields, $index_of_captions_field, 0, $new_fields );
 
 			return $fields;
 		}
@@ -244,20 +264,6 @@ if ( !class_exists( 'FooGallery_Simple_Portfolio_Gallery_Template' ) ) {
 			$settings['simple_portfolio_hover_effect_caption_visibility'] = 'fg-caption-always';
 
 			return $settings;
-		}
-
-		/**
-		 * Build up a arguments used in the preview of the gallery
-		 * @param $args
-		 * @param $post_data
-		 *
-		 * @return mixed
-		 */
-		function preview_arguments( $args, $post_data ) {
-			$args['thumbnail_dimensions'] = $post_data[FOOGALLERY_META_SETTINGS]['simple_portfolio_thumbnail_dimensions'];
-			$args['gutter'] = $post_data[FOOGALLERY_META_SETTINGS]['simple_portfolio_gutter'];
-            $args['align'] = $post_data[FOOGALLERY_META_SETTINGS]['simple_portfolio_align'];
-			return $args;
 		}
 
 		/**
@@ -329,5 +335,25 @@ if ( !class_exists( 'FooGallery_Simple_Portfolio_Gallery_Template' ) ) {
 
             return $args;
         }
+
+		/**
+		 * Override the classes for the captions visibility
+		 *
+		 * @param $classes array
+		 * @param $gallery FooGallery
+		 *
+		 * @return array
+		 */
+		function override_class_attributes( $classes, $gallery ) {
+			if ( 'simple_portfolio' === $gallery->gallery_template ) {
+				if ( ( $key = array_search( 'fg-caption-hover', $classes ) ) !== false) {
+					unset( $classes[$key] );
+				}
+
+				$classes[] = 'fg-caption-always';
+			}
+
+			return $classes;
+		}
 	}
 }

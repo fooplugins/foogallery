@@ -10,7 +10,7 @@ if ( ! class_exists( 'FooGallery_Pro_Paging' ) ) {
 			add_filter( 'foogallery_gallery_template_paging_type_choices', array( $this, 'add_pro_paging_choices' ) );
 
 			if ( is_admin() ) {
-				//add a global setting to change the All filter
+				//add a global setting to change the Load More button text
 				add_filter( 'foogallery_admin_settings_override', array( $this, 'add_language_settings' ) );
 			}
 
@@ -26,7 +26,7 @@ if ( ! class_exists( 'FooGallery_Pro_Paging' ) ) {
 		 * @return mixed
 		 */
 		function add_pro_paging_choices( $choices ) {
-			$choices['pagination'] = __( 'Pagination', 'foogallery' );
+			$choices['pagination'] = __( 'Numbered', 'foogallery' );
 			$choices['infinite'] = __( 'Infinite Scroll', 'foogallery' );
 			$choices['loadMore'] = __( 'Load More', 'foogallery' );
 			return $choices;

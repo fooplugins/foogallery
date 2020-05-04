@@ -25,14 +25,12 @@
 	FOOGALLERY.showHiddenAreas = function( show ) {
         if ( show ) {
             $('.foogallery-items-add').removeClass('hidden');
-            $('.foogallery-attachments-list').addClass('hidden');
+            $('.foogallery-attachments-list-container').addClass('hidden');
             $('.foogallery-items-empty').removeClass('hidden');
-            $('.foogallery-attachments-list-bar').hide();
         } else {
             $('.foogallery-items-add').addClass('hidden');
-            $('.foogallery-attachments-list').removeClass('hidden');
+            $('.foogallery-attachments-list-container').removeClass('hidden');
             $('.foogallery-items-empty').addClass('hidden');
-            $('.foogallery-attachments-list-bar').show();
         }
 	};
 
@@ -82,25 +80,10 @@
 
 	FOOGALLERY.updateGalleryPreview = function( initGallery, setContainerHeight ) {
 		var $preview = $('.foogallery_preview_container .foogallery'),
-			$preview_container = $('.foogallery_preview_container'),
-			overrideClasses = false;
+			$preview_container = $('.foogallery_preview_container');
 
 		if ( setContainerHeight ) {
 			$preview_container.css('height', $preview_container.height());
-		}
-
-		//build up the container class
-		var $classFields = $('.foogallery-settings-container-active .foogallery-metabox-settings .foogallery_template_field[data-foogallery-preview*="class"]');
-
-		if ($classFields.length) {
-
-			var array = $classFields.find(' :input').serializeArray(),
-				mandatory_classes = $('#FooGallerySettings_GalleryTemplate').find(":selected").data('mandatory-classes');
-			overrideClasses = $.map(array, function (item) {
-					return item.value;
-				}).concat(['foogallery', mandatory_classes]).join(' ');
-
-			$preview.attr('class', overrideClasses);
 		}
 
 		//this allows any extensions to hook into the template change event
@@ -110,11 +93,6 @@
 		if ( $preview.data('fg-common-fields') ) {
 			if ( initGallery ) {
 				$preview.foogallery( {}, function() {
-					//set the classes
-					if ( overrideClasses !== false ) {
-						$preview.attr('class', overrideClasses);
-					}
-
 					$preview_container.css( 'height', '' );
 					if ( !$preview_container.find('.foogallery').data('foogallery-lightbox') ) {
 						$preview_container.find(".fg-thumb").off("click.foogallery").on("click", function (e) {
@@ -520,8 +498,12 @@
 			FOOGALLERY.openMediaModal(0);
         });
 
-		$(document).on('foogallery-datasource-changed', function() {
-            FOOGALLERY.calculateHiddenAreas();
+		$('.remove_all_media').on('click', function(e) {
+			$('.foogallery-attachments-list a.remove').click();
+		});
+
+		$(document).on('foogallery-datasource-changed', function(e, activeDatasource) {
+			FOOGALLERY.showHiddenAreas( activeDatasource === 'media_library' );
 		});
 
         FOOGALLERY.initAttachments();
@@ -560,22 +542,29 @@
 			clickoutFiresChange: true
 		});
 
-		//lazy loading of images on the gallery edit page
-        var io = new IntersectionObserver(function(entries){
-            entries.forEach(function(entry){
-                if (entry.isIntersecting){
-                    var $target = $(entry.target);
-                    $target.attr("src", $target.data("src"));
-                    io.unobserve(entry.target);
-                }
-            });
-        }, {
-            root: $(".foogallery-attachments-list").get(0)
-        });
+		if (typeof IntersectionObserver === "undefined") {
+			$(".foogallery-attachments-list .attachment .thumbnail img").each(function(i, img){
+				var $img = $(img);
+				$img.attr("src", $img.data("src"));
+			});
+		} else {
+			//lazy loading of images on the gallery edit page
+			var io = new IntersectionObserver(function (entries) {
+				entries.forEach(function (entry) {
+					if (entry.isIntersecting) {
+						var $target = $(entry.target);
+						$target.attr("src", $target.data("src"));
+						io.unobserve(entry.target);
+					}
+				});
+			}, {
+				root: $(".foogallery-attachments-list").get(0)
+			});
 
-        $(".foogallery-attachments-list .attachment .thumbnail img").each(function(i, img){
-            io.observe(img);
-        });
+			$(".foogallery-attachments-list .attachment .thumbnail img").each(function(i, img){
+				io.observe(img);
+			});
+		}
     };
 
 }(window.FOOGALLERY = window.FOOGALLERY || {}, jQuery));

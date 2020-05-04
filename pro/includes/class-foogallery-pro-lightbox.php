@@ -13,9 +13,6 @@ if ( ! class_exists( 'FooGallery_Pro_Lightbox' ) ) {
 			//add the data options needed for lightbox
 			add_filter( 'foogallery_build_container_data_options', array( $this, 'add_data_options' ), 10, 3 );
 
-			//build up any preview arguments
-			add_filter( 'foogallery_preview_arguments', array( $this, 'preview_arguments' ), 10, 3 );
-
 			//set the settings icon for lightbox
 			add_filter( 'foogallery_gallery_settings_metabox_section_icon', array( $this, 'add_section_icons' ) );
 
@@ -27,6 +24,15 @@ if ( ! class_exists( 'FooGallery_Pro_Lightbox' ) ) {
 
 			//add specific lightbox data attribute to the container div
 			add_filter( 'foogallery_build_container_attributes', array( $this, 'add_lightbox_data_attributes' ), 10, 2 );
+
+			//add attributes to front-end anchor
+			add_filter( 'foogallery_attachment_html_link_attributes', array( $this, 'alter_link_attributes' ), 30, 3 );
+
+			//add attachment field for custom type
+			add_filter( 'foogallery_attachment_custom_fields', array( $this, 'add_override_type_field' ), 50 );
+
+			//remove PRO lightbox option from albums
+			add_filter( 'foogallery_alter_gallery_template_field', array( $this, 'alter_gallery_template_field' ), 999, 2 );
 		}
 
 		/**
@@ -268,7 +274,6 @@ if ( ! class_exists( 'FooGallery_Pro_Lightbox' ) ) {
 				)
 			);
 
-
 			$field[] = array(
 				'id'      => 'lightbox_transition',
 				'title'   => __( 'Transition', 'foogallery' ),
@@ -448,6 +453,67 @@ if ( ! class_exists( 'FooGallery_Pro_Lightbox' ) ) {
 				)
 			);
 
+			//Only show this setting for gallery templates that use the lightbox
+			$field[] = array(
+				'id'       => 'lightbox_show_fullscreen_button',
+				'title'    => __( 'Show Fullscreen Button', 'foogallery' ),
+				'desc'     => __( 'Whether of not to show the Fullscreen button', 'foogallery' ),
+				'section'  => $section,
+				'spacer'   => '<span class="spacer"></span>',
+				'type'     => 'radio',
+				'default'  => $use_lightbox ? 'yes' : 'no',
+				'choices'  => apply_filters( 'foogallery_gallery_template_lightbox_show_fullscreen_button_choices', array(
+					'yes' => __( 'Yes', 'foogallery' ),
+					'no'  => __( 'No', 'foogallery' ),
+				) ),
+				'row_data' => array(
+					'data-foogallery-change-selector' => 'input:radio',
+					'data-foogallery-preview'         => 'shortcode',
+					'data-foogallery-value-selector'  => 'input:checked',
+				)
+			);
+
+			//add this setting for gallery templates that use the panel, not lightbox
+			if ( !$use_lightbox ) {
+				$field[] = array(
+					'id'       => 'lightbox_show_maximize_button',
+					'title'    => __( 'Show Maximise Button', 'foogallery' ),
+					'desc'     => __( 'Whether of not to show the Maximise button', 'foogallery' ),
+					'section'  => $section,
+					'spacer'   => '<span class="spacer"></span>',
+					'type'     => 'radio',
+					'default'  => 'yes',
+					'choices'  => apply_filters( 'foogallery_gallery_template_lightbox_show_maximize_button_choices', array(
+						'yes' => __( 'Yes', 'foogallery' ),
+						'no'  => __( 'No', 'foogallery' ),
+					) ),
+					'row_data' => array(
+						'data-foogallery-change-selector' => 'input:radio',
+						'data-foogallery-preview'         => 'shortcode',
+						'data-foogallery-value-selector'  => 'input:checked',
+					)
+				);
+			}
+
+			$field[] = array(
+				'id'       => 'lightbox_show_caption_button',
+				'title'    => __( 'Show Caption Button', 'foogallery' ),
+				'desc'     => __( 'Whether of not to show the Caption button', 'foogallery' ),
+				'section'  => $section,
+				'spacer'   => '<span class="spacer"></span>',
+				'type'     => 'radio',
+				'default'  => 'yes',
+				'choices'  => apply_filters( 'foogallery_gallery_template_lightbox_show_caption_button_choices', array(
+					'yes' => __( 'Yes', 'foogallery' ),
+					'no'  => __( 'No', 'foogallery' ),
+				) ),
+				'row_data' => array(
+					'data-foogallery-change-selector' => 'input:radio',
+					'data-foogallery-preview'         => 'shortcode',
+					'data-foogallery-value-selector'  => 'input:checked',
+				)
+			);
+
 			//find the index of the first Hover Effect field
 			$index = $this->find_index_of_section( $fields, __( 'Hover Effects', 'foogallery' ) );
 
@@ -494,89 +560,6 @@ if ( ! class_exists( 'FooGallery_Pro_Lightbox' ) ) {
 			}
 
 			return $options;
-		}
-
-		/**
-		 * Build up a arguments used in the preview of the gallery
-		 * @param $args
-		 * @param $post_data
-		 *
-		 * @return mixed
-		 */
-		function preview_arguments( $args, $post_data, $template ) {
-			if ( array_key_exists( $template . '_lightbox_theme', $post_data[FOOGALLERY_META_SETTINGS] ) ) {
-				$args['lightbox_theme'] = $post_data[FOOGALLERY_META_SETTINGS][$template . '_lightbox_theme'];
-			}
-
-			if ( array_key_exists( $template . '_lightbox_button_theme', $post_data[FOOGALLERY_META_SETTINGS] ) ) {
-				$args['lightbox_button_theme'] = $post_data[FOOGALLERY_META_SETTINGS][$template . '_lightbox_button_theme'];
-			}
-
-			if ( array_key_exists( $template . '_lightbox_custom_button_theme', $post_data[FOOGALLERY_META_SETTINGS] ) ) {
-				$args['lightbox_custom_button_theme'] = $post_data[FOOGALLERY_META_SETTINGS][$template . '_lightbox_custom_button_theme'];
-			}
-
-			if ( array_key_exists( $template . '_lightbox_button_highlight', $post_data[FOOGALLERY_META_SETTINGS] ) ) {
-				$args['lightbox_button_highlight'] = $post_data[FOOGALLERY_META_SETTINGS][$template . '_lightbox_button_highlight'];
-			}
-
-			if ( array_key_exists( $template . '_lightbox_custom_button_highlight', $post_data[FOOGALLERY_META_SETTINGS] ) ) {
-				$args['lightbox_custom_button_highlight'] = $post_data[FOOGALLERY_META_SETTINGS][$template . '_lightbox_custom_button_highlight'];
-			}
-
-			if ( array_key_exists( $template . '_lightbox_thumbs', $post_data[FOOGALLERY_META_SETTINGS] ) ) {
-				$args['lightbox_thumbs'] = $post_data[FOOGALLERY_META_SETTINGS][$template . '_lightbox_thumbs'];
-			}
-
-			if ( array_key_exists( $template . '_lightbox_thumbs_captions', $post_data[FOOGALLERY_META_SETTINGS] ) ) {
-				$args['lightbox_thumbs_captions'] = $post_data[FOOGALLERY_META_SETTINGS][$template . '_lightbox_thumbs_captions'];
-			}
-
-			if ( array_key_exists( $template . '_lightbox_thumbs_bestfit', $post_data[FOOGALLERY_META_SETTINGS] ) ) {
-				$args['lightbox_thumbs_bestfit'] = $post_data[FOOGALLERY_META_SETTINGS][$template . '_lightbox_thumbs_bestfit'];
-			}
-
-			if ( array_key_exists( $template . '_lightbox_thumbs_size', $post_data[FOOGALLERY_META_SETTINGS] ) ) {
-				$args['lightbox_thumbs_size'] = $post_data[FOOGALLERY_META_SETTINGS][$template . '_lightbox_thumbs_size'];
-			}
-
-			if ( array_key_exists( $template . '_lightbox_info_position', $post_data[FOOGALLERY_META_SETTINGS] ) ) {
-				$args['lightbox_info_position'] = $post_data[FOOGALLERY_META_SETTINGS][$template . '_lightbox_info_position'];
-			}
-
-			if ( array_key_exists( $template . '_lightbox_info_overlay', $post_data[FOOGALLERY_META_SETTINGS] ) ) {
-				$args['lightbox_info_overlay'] = $post_data[FOOGALLERY_META_SETTINGS][$template . '_lightbox_info_overlay'];
-			}
-
-			if ( array_key_exists( $template . '_lightbox_hover_buttons', $post_data[FOOGALLERY_META_SETTINGS] ) ) {
-				$args['lightbox_hover_buttons'] = $post_data[FOOGALLERY_META_SETTINGS][$template . '_lightbox_hover_buttons'];
-			}
-
-			if ( array_key_exists( $template . '_lightbox_transition', $post_data[FOOGALLERY_META_SETTINGS] ) ) {
-				$args['lightbox_transition'] = $post_data[FOOGALLERY_META_SETTINGS][$template . '_lightbox_transition'];
-			}
-
-			if ( array_key_exists( $template . '_lightbox_auto_progress', $post_data[FOOGALLERY_META_SETTINGS] ) ) {
-				$args['lightbox_auto_progress'] = $post_data[FOOGALLERY_META_SETTINGS][$template . '_lightbox_auto_progress'];
-			}
-
-			if ( array_key_exists( $template . '_lightbox_auto_progress_seconds', $post_data[FOOGALLERY_META_SETTINGS] ) ) {
-				$args['lightbox_auto_progress_seconds'] = $post_data[FOOGALLERY_META_SETTINGS][$template . '_lightbox_auto_progress_seconds'];
-			}
-
-			if ( array_key_exists( $template . '_lightbox_fit_media', $post_data[FOOGALLERY_META_SETTINGS] ) ) {
-				$args['lightbox_fit_media'] = $post_data[FOOGALLERY_META_SETTINGS][$template . '_lightbox_fit_media'];
-			}
-
-			if ( array_key_exists( $template . '_lightbox_no_scrollbars', $post_data[FOOGALLERY_META_SETTINGS] ) ) {
-				$args['lightbox_no_scrollbars'] = $post_data[FOOGALLERY_META_SETTINGS][$template . '_lightbox_no_scrollbars'];
-			}
-
-			if ( array_key_exists( $template . '_lightbox_buttons_display', $post_data[FOOGALLERY_META_SETTINGS] ) ) {
-				$args['lightbox_buttons_display'] = $post_data[FOOGALLERY_META_SETTINGS][$template . '_lightbox_buttons_display'];
-			}
-
-			return $args;
 		}
 
 		/**
@@ -710,7 +693,94 @@ if ( ! class_exists( 'FooGallery_Pro_Lightbox' ) ) {
 			$options['noScrollbars'] = foogallery_gallery_template_setting( 'lightbox_no_scrollbars', 'no' ) !== 'yes';
 			$options['preserveButtonSpace'] = foogallery_gallery_template_setting( 'lightbox_buttons_display', 'no' ) === 'no';
 
+			$show_fullscreen_button = foogallery_gallery_template_setting( 'lightbox_show_fullscreen_button', false );
+			if ( $show_fullscreen_button !== false ) {
+				$options['buttons']['fullscreen'] = ($show_fullscreen_button === 'yes');
+			}
+
+			$show_maximise_button = foogallery_gallery_template_setting( 'lightbox_show_maximize_button', false );
+			if ( $show_maximise_button !== false ) {
+				$options['buttons']['maximize'] = ($show_maximise_button === 'yes');
+			}
+
+			$show_caption_button = foogallery_gallery_template_setting( 'lightbox_show_caption_button', false );
+			if ( $show_caption_button !== false ) {
+				$options['buttons']['info'] = ($show_caption_button === 'yes');
+			}
+
 			return $options;
+		}
+
+		/**
+		 * @uses "foogallery_attachment_html_link_attributes" filter
+		 *
+		 * @param                             $attr
+		 * @param                             $args
+		 * @param object|FooGalleryAttachment $attachment
+		 *
+		 * @return mixed
+		 */
+		public function alter_link_attributes( $attr, $args, $attachment ) {
+			//check if lightbox set to foogallery
+			$lightbox = foogallery_gallery_template_setting( 'lightbox', '' );
+
+			if ( 'foogallery' === $lightbox ) {
+				//we only want to override the data-type if it has not been provided previously
+				if ( ! array_key_exists( 'data-type', $attr ) ) {
+
+					//determine if the lightbox is being used together with custom URLs
+					if ( is_array( $args ) && array_key_exists( 'link', $args ) && 'custom' === $args['link'] ) {
+						$custom_url = $attachment->custom_url;
+						$href       = array_key_exists( 'href', $attr ) ? $attr['href'] : '';
+
+						if ( ! empty( $custom_url ) && $custom_url === $href ) {
+							$attr['data-type'] = 'iframe';
+						}
+					}
+				}
+
+				$override_class = get_post_meta( $attachment->ID, '_foogallery_override_type', true );
+
+				if ( ! empty( $override_class ) ) {
+					$attr['data-type'] = $override_class;
+				}
+			}
+
+			return $attr;
+		}
+
+		/**
+		 * Adds a override type field to the attachments
+		 *
+		 * @param $fields array
+		 *
+		 * @return array
+		 */
+		function add_override_type_field( $fields ) {
+			$fields['foogallery_override_type'] = array(
+				'label'       =>  __( 'Override Type', 'foogallery' ),
+				'input'       => 'text',
+				'helps'       => __( 'Override the type of the attachment used by lightbox', 'foogallery' ),
+				'exclusions'  => array( 'audio', 'video' ),
+			);
+
+			return $fields;
+		}
+
+		/**
+		 * Override the lightbox field for albums only
+		 *
+		 * @param $field
+		 * @param $object
+		 */
+		function alter_gallery_template_field( $field, $object ) {
+			if ( is_a( $object, 'FooGalleryAlbum' ) ) {
+				if ( array_key_exists( 'lightbox', $field ) ) {
+					unset( $field['choices']['foogallery'] );
+				}
+			}
+
+			return $field;
 		}
 	}
 }
