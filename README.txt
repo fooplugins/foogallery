@@ -3,7 +3,7 @@ Contributors: bradvin, steveush, fooplugins
 Donate link: http://fooplugins.com
 Tags: gallery, image gallery, wordpress gallery plugin, responsive gallery, best gallery plugin
 Requires at least: 3.9
-Tested up to: 5.4
+Tested up to: 5.4.1
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -202,8 +202,8 @@ Update now to get all the latest features, bug fixes and improvements!
 
 == Changelog ==
 
-= 1.9.22 =
-Date Updated : 2020-04-24
+= 1.9.23 =
+Date Updated : 2020-05-02
 * New : Reworked hover effect settings to allow none
 * New : Added new zoomed hover effect
 * New : Added new transparent theme hover effect
@@ -212,6 +212,7 @@ Date Updated : 2020-04-24
 * New : Added Pro feature promotions in gallery settings
 * New : Added setting to force GD Image editor as the default
 * New : Added info for active image editor to Settings -> Images tab
+* New : Improved caption sanitization
 * Fix : Fixed bug with Safari when editing a gallery, not loading thumbs
 * Fix : Fixed gallery previews in certain situations
 * Update : Freemius SDK 2.3.2
