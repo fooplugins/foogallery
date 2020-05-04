@@ -374,12 +374,12 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 
 				$content = apply_filters( 'foogallery_create_gallery_page_content', $foogallery->shortcode(), $foogallery );
 
-				$post = array(
+				$post = apply_filters( 'foogallery_create_gallery_page_arguments', array(
 					'post_content' => $content,
 					'post_title'   => $foogallery->name,
 					'post_status'  => 'draft',
 					'post_type'    => 'page',
-				);
+				) );
 
 				wp_insert_post( $post );
 			}
