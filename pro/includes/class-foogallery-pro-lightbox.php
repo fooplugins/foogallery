@@ -30,6 +30,9 @@ if ( ! class_exists( 'FooGallery_Pro_Lightbox' ) ) {
 
 			//add attachment field for custom type
 			add_filter( 'foogallery_attachment_custom_fields', array( $this, 'add_override_type_field' ), 50 );
+
+			//remove PRO lightbox option from albums
+			add_filter( 'foogallery_alter_gallery_template_field', array( $this, 'alter_gallery_template_field' ), 999, 2 );
 		}
 
 		/**
@@ -762,6 +765,22 @@ if ( ! class_exists( 'FooGallery_Pro_Lightbox' ) ) {
 			);
 
 			return $fields;
+		}
+
+		/**
+		 * Override the lightbox field for albums only
+		 *
+		 * @param $field
+		 * @param $object
+		 */
+		function alter_gallery_template_field( $field, $object ) {
+			if ( is_a( $object, 'FooGalleryAlbum' ) ) {
+				if ( array_key_exists( 'lightbox', $field ) ) {
+					unset( $field['choices']['foogallery'] );
+				}
+			}
+
+			return $field;
 		}
 	}
 }
