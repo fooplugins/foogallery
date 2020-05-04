@@ -130,6 +130,10 @@ FooGallery is hosted on [GitHub](https://github.com/fooplugins/foogallery).
 
 == Frequently Asked Questions ==
 
+= How do I turn off all the PRO Promotions in the admin? =
+
+Goto FooGallery Settings -> Advanced Tab and check "Disable PRO Promotions" and then save your settings.
+
 = My galleries are not working. Thumbnails are greyed out and not loading when I scroll down the page. =
 
 Lazy loading is not working on your gallery. This could be due to a conflict between our plugin and your theme.
