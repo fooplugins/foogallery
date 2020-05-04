@@ -16,11 +16,11 @@ if ( !function_exists( 'foogallery_album_all_in_one_stack_render_gallery_attachm
 		echo '<li data-pile="' . esc_attr( $gallery->name ) . '">';
 		$args['link_attributes']['rel']   = 'lightbox[' . $gallery->ID . ']';
 		$args['link_attributes']['class'] = apply_filters( 'foogallery_album_stack_link_class_name', $lightbox );
-		echo $attachment->html( $args, false, false );
+		echo foogallery_attachment_html_anchor_opening( $attachment, $args );
 		if ( $attachment->caption ) {
 			echo '<span class="tp-info"><span>' . wp_filter_nohtml_kses( $attachment->caption ) . '</span></span>';
 		}
-		echo $attachment->html_img( $args );
+		echo foogallery_attachment_html_image( $attachment, $args );
 		echo '</a>';
 		echo '</li>';
 	}
