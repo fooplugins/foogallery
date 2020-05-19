@@ -105,7 +105,45 @@ if ( ! class_exists( 'FooGallery_Pro_Advanced_Captions' ) ) {
 	        	//check if we are dealing with ACF
 	        	if ( 'acf-form-data' === $key ) {
 
-	        		//extract all ACF fields here
+			        //extract all ACF fields here
+			        if ( function_exists( 'acf_get_field_groups' ) ) {
+
+				        $attachment = $this->find_most_recent_attachment();
+
+				        $acf_field_groups = acf_get_field_groups( array(
+					        'attachment_id' => $attachment->ID,
+					        'attachment' => $attachment->ID // Leave for backwards compatibility
+				        ) );
+
+				        if( !empty($acf_field_groups) ) {
+				        	//loop through all groups
+					        foreach( $acf_field_groups as $acf_field_group ) {
+
+					        	//get all fields
+						        $acf_fields = acf_get_fields( $acf_field_group );
+
+						        foreach( $acf_fields as $acf_field ) {
+							        $postmeta_html .= '<code>{{acf.' . $acf_field['name'] . '}}</code>';
+							        if ( isset( $acf_field['label'] ) ) {
+								        $postmeta_html .= ' - ' . $acf_field['label'];
+							        }
+							        $postmeta_html .= '<br />';
+						        }
+					        }
+				        }
+
+			        }
+
+		        } else if ( strpos( $key, 'pods_meta_' ) === 0 ) {
+
+	        		$key = str_replace( 'pods_meta_', '', $key );
+
+	        		//extract pods field
+			        $postmeta_html .= '<code>{{pods.' . $key . '}}</code>';
+			        if ( isset( $field['label'] ) ) {
+				        $postmeta_html .= ' - ' . $field['label'];
+			        }
+			        $postmeta_html .= '<br />';
 
 		        } else {
 			        $postmeta_html .= '<code>{{postmeta.' . $key . '}}</code>';
@@ -144,39 +182,47 @@ if ( ! class_exists( 'FooGallery_Pro_Advanced_Captions' ) ) {
             return $fields;
         }
 
-	    /**
-	     * Return a list of all fields that have been added for attachments
-	     */
-        function find_attachment_postmeta_fields() {
-	        $form_fields = array();
+        function find_most_recent_attachment() {
+        	global $foogallery_most_recent_attachment;
 
-	        if ( false === ( $form_fields = get_transient( FOOGALLERY_ADVANCED_CAPTIONS_FIELDS_TRANSIENT_KEY ) ) ) {
-
-		        $attachment = null;
-
-		        $args         = array(
+        	if ( !isset( $foogallery_most_recent_attachment ) ) {
+		        $args = array(
 			        'post_type'        => 'attachment',
 			        'post_mime_type'   => 'image',
 			        'post_status'      => 'inherit',
 			        'posts_per_page'   => 1,
 			        'suppress_filters' => 1,
 			        'orderby'          => 'date',
-			        'order'            => 'ASC'
+			        'order'            => 'DESC'
 		        );
 		        $query_images = new WP_Query( $args );
 		        foreach ( $query_images->posts as $post ) {
 			        //get the first attachment, then get out
-			        $attachment = $post;
+			        $foogallery_most_recent_attachment = $post;
 			        break;
 		        }
+	        }
+
+        	return $foogallery_most_recent_attachment;
+        }
+
+	    /**
+	     * Return a list of all fields that have been added for attachments
+	     */
+        function find_attachment_postmeta_fields() {
+	        $form_fields = array();
+
+//	        if ( false === ( $form_fields = get_transient( FOOGALLERY_ADVANCED_CAPTIONS_FIELDS_TRANSIENT_KEY ) ) ) {
+
+		        $attachment = $this->find_most_recent_attachment();
 		        $form_fields = array();
 		        $form_fields = apply_filters( 'attachment_fields_to_edit', $form_fields, $attachment );
 
 		        $expires = 30 * 60; //cache for 30 minutes
 
 		        //Cache the result
-		        set_transient( FOOGALLERY_ADVANCED_CAPTIONS_FIELDS_TRANSIENT_KEY, $form_fields, $expires );
-	        }
+//		        set_transient( FOOGALLERY_ADVANCED_CAPTIONS_FIELDS_TRANSIENT_KEY, $form_fields, $expires );
+//	        }
 
 	        return $form_fields;
         }
@@ -253,11 +299,38 @@ if ( ! class_exists( 'FooGallery_Pro_Advanced_Captions' ) ) {
                     $property = $matches[1];
                     if ( property_exists( $foogallery_attachment, $property ) ) {
                         return $foogallery_attachment->$property;
-                    } else if ( strpos( $property, 'postmeta.' ) === 0 ) {
-                        $post_meta_key = str_replace( 'postmeta.', '', $property );
-                        $post_meta_value = get_post_meta( $foogallery_attachment->ID, $post_meta_key, true );
+                    } else if ( strpos( $property, 'pods.' ) === 0 ) {
 
-                        return $post_meta_value;
+                    	//get pods field value
+	                    if ( function_exists( 'pods') ) {
+		                    $pods_meta_key = str_replace( 'pods.', '', $property );
+
+		                    $pod = pods( 'media', $foogallery_attachment->ID, true );
+		                    if ( $pod !== false ) {
+			                    $pod_value = $pod->field( array( 'name' => $pods_meta_key, 'in_form' => true ) );
+
+			                    if ( !is_array( $pod_value ) ) {
+				                    return $pod_value;
+			                    }
+		                    }
+	                    }
+                    } else if ( strpos( $property, 'acf.' ) === 0 ) {
+
+                    	//get the ACF field value
+	                    if ( function_exists( 'get_field' ) ) {
+		                    $acf_meta_key = str_replace( 'acf.', '', $property );
+		                    $acf_value = get_field( $acf_meta_key, $foogallery_attachment->ID );
+		                    if ( !is_array( $acf_value ) ) {
+			                    return $acf_value;
+		                    }
+	                    }
+
+                    } else if ( strpos( $property, 'postmeta.' ) === 0 ) {
+
+                    	//get normal post meta
+                        $post_meta_key = str_replace( 'postmeta.', '', $property );
+
+	                    return get_post_meta( $foogallery_attachment->ID, $post_meta_key, true );
                     }
 
                     return '';
