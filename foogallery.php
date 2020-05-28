@@ -110,6 +110,9 @@ if ( function_exists( 'foogallery_fs' ) ) {
 				//init FooPluginBase
 				$this->init( FOOGALLERY_FILE, FOOGALLERY_SLUG, FOOGALLERY_VERSION, 'FooGallery' );
 
+				//load text domain
+				$this->load_plugin_textdomain();
+
 				//setup gallery post type
 				new FooGallery_PostTypes();
 
