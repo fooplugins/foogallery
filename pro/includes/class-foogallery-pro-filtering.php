@@ -16,6 +16,15 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 
 				//add a global setting to change the All filter
 				add_filter( 'foogallery_admin_settings_override', array( $this, 'add_language_settings' ) );
+
+				//output the multi-level filtering custom field
+				add_action( 'foogallery_render_gallery_template_field_custom', array( $this, 'render_multi_field' ), 10, 3 );
+
+				add_action( 'foogallery_admin_enqueue_scripts', array( $this, 'enqueue_scripts_and_styles' ) );
+
+				add_action( 'admin_footer', array( $this, 'render_multi_level_modal' ) );
+
+				add_action( 'wp_ajax_foogallery_multi_filtering_content', array( $this, 'ajax_load_modal_content' ) );
 			}
 
 			//adds the filtering property to a FooGallery
@@ -66,11 +75,12 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 					'type'     => 'radio',
 					'default'  => '',
 					'choices'  => apply_filters(
-						'foogallery_gallery_template_filtering_type_choices', array(
-						''        => __( 'None', 'foogallery' ),
-						'simple' => __( 'Simple', 'foogallery' ),
-						'advanced'    => __( 'Advanced', 'foogallery' )
-					)
+							'foogallery_gallery_template_filtering_type_choices', array(
+							''        => __( 'None', 'foogallery' ),
+							'simple' => __( 'Simple', 'foogallery' ),
+							'advanced'    => __( 'Advanced', 'foogallery' ),
+							'multi'    => __( 'Multi-level', 'foogallery' )
+						)
 					),
 					'row_data' => array(
 						'data-foogallery-change-selector' => 'input',
@@ -145,6 +155,23 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 						'data-foogallery-show-when-field-operator' => '!==',
 						'data-foogallery-show-when-field'          => 'filtering_type',
 						'data-foogallery-show-when-field-value'    => '',
+						'data-foogallery-change-selector'          => 'input',
+						'data-foogallery-preview'                  => 'shortcode'
+					)
+				);
+
+				$fields[] = array(
+					'id'       => 'filtering_multi_override',
+					'title'    => __( 'Levels', 'foogallery' ),
+					'desc'     => __( 'The filtering levels that will be used for the gallery.', 'foogallery' ),
+					'section'  => __( 'Filtering', 'foogallery' ),
+					'type'     => 'filtering_multi',
+					'default'  => '',
+					'row_data' => array(
+						'data-foogallery-hidden'                   => true,
+						'data-foogallery-show-when-field-operator' => '===',
+						'data-foogallery-show-when-field'          => 'filtering_type',
+						'data-foogallery-show-when-field-value'    => 'multi',
 						'data-foogallery-change-selector'          => 'input',
 						'data-foogallery-preview'                  => 'shortcode'
 					)
@@ -617,6 +644,125 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 			);
 
 			return $settings;
+		}
+
+		public function render_multi_field( $field, $gallery, $template ) {
+			if ( 'filtering_multi' === $field['type'] ) {
+				echo '<button class="button button-primary button-small filtering-multi-builder">' . __( 'Select Levels', 'foogallery' ) . '</button>';
+			}
+		}
+
+		/**
+		 * Enqueues js assets
+		 */
+		public function enqueue_scripts_and_styles() {
+			wp_enqueue_style( 'foogallery.admin.filtering', FOOGALLERY_PRO_URL . 'css/foogallery.admin.filtering.css', array(), FOOGALLERY_VERSION );
+			wp_enqueue_script( 'foogallery.admin.filtering', FOOGALLERY_PRO_URL . 'js/foogallery.admin.filtering.js', array( 'jquery' ), FOOGALLERY_VERSION );
+		}
+
+		/**
+		 * Renders the multi-level modal for use on the gallery edit page
+		 */
+		public function render_multi_level_modal() {
+
+			global $post;
+
+			//check if the gallery edit page is being shown
+			$screen = get_current_screen();
+			if ( 'foogallery' !== $screen->id ) {
+				return;
+			}
+
+			?>
+			<div class="foogallery-multi-filtering-modal-wrapper" data-foogalleryid="<?php echo $post->ID; ?>" data-nonce="<?php echo wp_create_nonce( 'foogallery-multi-filtering-content' ); ?>" style="display: none;">
+				<div class="media-modal wp-core-ui">
+					<button type="button" class="media-modal-close foogallery-multi-filtering-modal-close">
+						<span class="media-modal-icon"><span class="screen-reader-text"><?php _e( 'Close', 'foogallery' ); ?></span>
+					</button>
+					<div class="media-modal-content">
+						<div class="media-frame wp-core-ui">
+							<div class="foogallery-multi-filtering-modal-title">
+								<h1><?php _e('Multi-level Filtering Builder', 'foogallery'); ?></h1>
+								<a class="foogallery-multi-filtering-modal-reload button" href="#"><span style="padding-top: 4px;" class="dashicons dashicons-update"></span> <?php _e('Reload', 'foogallery'); ?></a>
+							</div>
+							<div class="foogallery-multi-filtering-modal-container not-loaded">
+								<div class="spinner is-active"></div>
+							</div>
+							<div class="foogallery-multi-filtering-modal-toolbar">
+								<div class="foogallery-multi-filtering-modal-toolbar-inner">
+									<div class="media-toolbar-primary">
+										<a href="#"
+										   class="foogallery-multi-filtering-modal-close button button-large button-secondary"
+										   title="<?php esc_attr_e('Close', 'foogallery'); ?>"><?php _e('Close', 'foogallery'); ?></a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="media-modal-backdrop"></div>
+			</div>
+			<?php
+		}
+
+		/**
+		 * Render the attachment container
+		 *
+		 * @param $foogallery_id
+		 * @param $attachments
+		 */
+		public function render_content( $foogallery_id, $taxonomy ) {
+			echo '<div class="foogallery-multi-filtering-modal-content-inner">';
+
+			$terms = get_terms( array(
+				'taxonomy' => $taxonomy,
+				'hide_empty' => false,
+			) );
+
+			echo '<div class="foogallery-multi-filtering-modal-content-terms">';
+
+			foreach ($terms as $term) {
+				echo '<a href="#" class="button button-small foogallery-multi-filtering-select-term" data-term-id="' . $term->term_id . '">' . $term->name . '</a>';
+			}
+
+			echo '</div>';
+
+			echo '</div>';
+		}
+
+
+		/**
+		 * Outputs the modal content
+		 */
+		public function ajax_load_modal_content() {
+			$nonce = safe_get_from_request( 'nonce' );
+
+			if ( wp_verify_nonce( $nonce, 'foogallery-multi-filtering-content' ) ) {
+
+				$foogallery_id = intval( safe_get_from_request( 'foogallery_id' ) );
+
+				if ( empty( $taxonomy ) ) {
+					//select the taxonomy that is chosen for the gallery
+					$foogallery = FooGallery::get_by_id( $foogallery_id );
+					if ( !$foogallery->is_new() ) {
+						$taxonomy = $foogallery->get_setting( 'filtering_taxonomy', '' );
+					}
+				}
+
+				if ( empty( $taxonomy ) ) {
+					$taxonomy = FOOGALLERY_ATTACHMENT_TAXONOMY_TAG;
+				}
+
+				echo '<div class="foogallery-multi-filtering-modal-content">';
+				$this->render_content( $foogallery_id, $attachments, $taxonomy );
+				echo '</div>';
+
+				echo '<div class="foogallery-multi-filtering-modal-sidebar">';
+				echo '<h2>' . __( 'Multi Level Filtering Help', 'foogallery' ) . '</h2>';
+				echo '</div>';
+			}
+
+			die();
 		}
 	}
 }
