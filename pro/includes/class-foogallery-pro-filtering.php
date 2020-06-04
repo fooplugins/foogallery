@@ -674,7 +674,7 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 			}
 
 			?>
-			<div class="foogallery-multi-filtering-modal-wrapper" data-foogalleryid="<?php echo $post->ID; ?>" data-nonce="<?php echo wp_create_nonce( 'foogallery-multi-filtering-content' ); ?>" style="display: none;">
+			<div class="foogallery-multi-filtering-modal-wrapper" data-foogalleryid="<?php echo $post->ID; ?>" data-nonce="<?php echo wp_create_nonce( 'foogallery_multi_filtering_content' ); ?>" style="display: none;">
 				<div class="media-modal wp-core-ui">
 					<button type="button" class="media-modal-close foogallery-multi-filtering-modal-close">
 						<span class="media-modal-icon"><span class="screen-reader-text"><?php _e( 'Close', 'foogallery' ); ?></span>
@@ -719,6 +719,15 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 				'hide_empty' => false,
 			) );
 
+			$level = 1;
+
+			echo '<div class="foogallery-multi-filtering-modal-content-level-template">';
+
+			echo '<h3>' . __( 'Level', 'foogallery' ) . ' <span class="foogallery-multi-filtering-modal-content-level-count"></span></h3>';
+
+			echo '<label>' . sprintf( __( 'Level %s "All" Text : ' , 'foogallery' ), '<span class="foogallery-multi-filtering-modal-content-level-count"></span>' ) . '</label>';
+			echo '<input type="text" value="' . __('All', 'foogallery') . '" />';
+
 			echo '<div class="foogallery-multi-filtering-modal-content-terms">';
 
 			foreach ($terms as $term) {
@@ -726,6 +735,10 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 			}
 
 			echo '</div>';
+
+			echo '</div>';
+
+			echo '<a href="#" class="button button-primary foogallery-multi-filtering-add-level">' . __('Add Another Level') . '</a>';
 
 			echo '</div>';
 		}
@@ -737,9 +750,10 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 		public function ajax_load_modal_content() {
 			$nonce = safe_get_from_request( 'nonce' );
 
-			if ( wp_verify_nonce( $nonce, 'foogallery-multi-filtering-content' ) ) {
+			if ( wp_verify_nonce( $nonce, 'foogallery_multi_filtering_content' ) ) {
 
 				$foogallery_id = intval( safe_get_from_request( 'foogallery_id' ) );
+				$taxonomy = safe_get_from_request( 'taxonomy' );
 
 				if ( empty( $taxonomy ) ) {
 					//select the taxonomy that is chosen for the gallery
@@ -754,11 +768,13 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 				}
 
 				echo '<div class="foogallery-multi-filtering-modal-content">';
-				$this->render_content( $foogallery_id, $attachments, $taxonomy );
+				$this->render_content( $foogallery_id, $taxonomy );
 				echo '</div>';
 
 				echo '<div class="foogallery-multi-filtering-modal-sidebar">';
+				echo '<div class="foogallery-multi-filtering-modal-sidebar-inner">';
 				echo '<h2>' . __( 'Multi Level Filtering Help', 'foogallery' ) . '</h2>';
+				echo '</div>';
 				echo '</div>';
 			}
 

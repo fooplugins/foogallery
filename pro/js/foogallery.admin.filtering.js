@@ -24,38 +24,41 @@ jQuery(function ($) {
 		foogallery_multi_filtering_modal_load_content();
 	});
 
-	//select a term above the gallery items
-	$('.foogallery-multi-filtering-modal-container').on('click', '.foogallery-bulk-management-select-term', function(e) {
+	//select a term for a level
+	$('.foogallery-multi-filtering-modal-container').on('click', '.foogallery-multi-filtering-select-term', function(e) {
 		e.preventDefault();
 
-		var $this = $(this),
-			prev_selected_term_id = $('.foogallery-bulk-management-select-term.button-primary').data('term-id'),
-			current_selected_term_id = $this.data('term-id')
-
-		//deselect all tags
-		$('.foogallery-bulk-management-select-term.button-primary').removeClass('button-primary');
+		var $this = $(this);
 
 		//select the one that was clicked
 		$this.toggleClass('button-primary');
 
-		if ( current_selected_term_id === prev_selected_term_id ) {
-			$(this).toggleClass('button-primary');
-		} else {
-			//set the term in the selectize control
-			var $selectize = $('.foogallery-bulk-management-selectize.selectized');
-			if ($selectize.length) {
-				$selectize[0].selectize.setValue(current_selected_term_id, true);
-			}
-		}
+		foogallery_multi_filtering_modal_hide_terms();
+	});
 
-		foogallery_bulk_management_select_by_term();
+	//add a new level
+	$('.foogallery-multi-filtering-modal-container').on('click', '.foogallery-multi-filtering-add-level', function(e) {
+		e.preventDefault();
+
+		var $levels = $('.foogallery-multi-filtering-modal-content-level'),
+			$level = $('.foogallery-multi-filtering-modal-content-level-template').clone();
+
+		$level
+			.removeClass('foogallery-multi-filtering-modal-content-level-template')
+			.addClass('foogallery-multi-filtering-modal-content-level')
+			.find('.foogallery-multi-filtering-modal-content-level-count')
+				.html( $levels.length + 1);
+
+		$level.insertBefore($(this));
+
+		foogallery_multi_filtering_modal_hide_terms();
 	});
 
 	//load the terms and gallery items content
 	function foogallery_multi_filtering_modal_load_content() {
 		var $content = $('.foogallery-multi-filtering-modal-container'),
 			$wrapper = $('.foogallery-multi-filtering-modal-wrapper')
-			data = 'action=foogallery-multi-filtering-content' +
+			data = 'action=foogallery_multi_filtering_content' +
 				'&foogallery_id=' + $wrapper.data('foogalleryid') +
 				'&nonce=' + $wrapper.data('nonce');
 
@@ -68,35 +71,26 @@ jQuery(function ($) {
 			success: function(data) {
 				$('.foogallery-multi-filtering-modal-reload').show();
 				$content.html(data);
+				foogallery_multi_filtering_modal_hide_terms();
 			}
 		});
 	}
 
-	//select all gallery items by a specific term
-	function foogallery_multi_filtering_modal_select_by_term() {
-		var $selected = $('.foogallery-bulk-management-select-term.button-primary'),
-			selected_term_id = $selected.data('term-id');
+	function foogallery_multi_filtering_modal_hide_terms() {
+		var $levels = $('.foogallery-multi-filtering-modal-content-level');
 
-		//first remove term and selected class from all items
-		$('.foogallery-multi-filtering-modal-content ul li').removeClass('term selected');
+		//show all
+		$('.foogallery-multi-filtering-select-term').show();
 
-		if ( selected_term_id ) {
-			//then loop through and add term class if the term exists for the item
-			$('.foogallery-multi-filtering-modal-content ul li').each(function (e) {
-				var $this = $(this),
-					terms = $this.data('terms');
+		//loop through the levels and hide selected terms from other levels
+		$levels.each(function() {
+			var $level = $(this),
+				$other_levels = $levels.not( this ),
+				$selected = $level.find('.foogallery-multi-filtering-select-term.button-primary');
 
-				terms.forEach(function (item, index) {
-					if (item.id === selected_term_id) {
-						$this.addClass('term');
-					}
-				});
+			$selected.each(function() {
+				$other_levels.find('[data-term-id="' + $(this).data('term-id') + '"]').hide();
 			});
-
-			//then select items with the term class
-			$('.foogallery-multi-filtering-modal-content ul li.term').addClass('selected');
-		}
-
-		foogallery_bulk_management_select_items();
+		});
 	}
 });

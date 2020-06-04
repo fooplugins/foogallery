@@ -77,7 +77,7 @@
             margin: 15px 0;
         }
 
-        .foogallery-bulk-management-select-term.button.button-small {
+        .foogallery-multi-filtering-select-term.button.button-small {
             margin-right: 5px;
             margin-bottom: 5px;
             line-height: 1.8em;
@@ -113,12 +113,20 @@
 
         .foogallery-multi-filtering-modal-content-inner {
             margin: 0;
-            padding: 0;
-            height: 100%;
+            padding: 18px;
         }
 
+            .foogallery-multi-filtering-modal-content-level-template {
+                display: none;
+            }
+
+            .foogallery-multi-filtering-modal-content-level h3 {
+                margin-top: 0;
+            }
+
             .foogallery-multi-filtering-modal-content-terms {
-                padding: 18px 18px 0 18px;
+                margin-top: 18px;
+                margin-bottom: 18px;
             }
 
         .foogallery-multi-filtering-modal-content ul {
