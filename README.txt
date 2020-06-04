@@ -206,6 +206,21 @@ Update now to get all the latest features, bug fixes and improvements!
 
 == Changelog ==
 
+= 1.9.25 =
+Date Updated : 2020-06-04
+* Fix : Fixed bug to prevent infinite loop with ResizeObserver in some themes
+* Fix : Fixed possible text-domain issue
+* Update : FooGallery client side 1.4.13
+[//]: # fs_premium_only_begin
+New : Added support for ACF media fields for use with Advanced Custom Captions
+New : Added support for PODS media fields for use with Advanced Custom Captions
+[//]: # fs_premium_only_end
+
+= 1.9.24 =
+Date Updated : 2020-05-04
+* Fix : Fixed bug where thumbs were not loading on mobile in Justified and Portfolio galleries
+* Update : FooGallery client side 1.4.12
+
 = 1.9.23 =
 Date Updated : 2020-05-02
 * New : Reworked hover effect settings to allow none

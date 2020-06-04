@@ -48,8 +48,6 @@ if ( ! class_exists( 'FooGallery_Pro_Bulk_Management' ) ) {
 				return;
 			}
 
-			$datasources = foogallery_gallery_datasources();
-
 			?>
             <div class="foogallery-bulk-management-modal-wrapper" data-foogalleryid="<?php echo $post->ID; ?>" data-nonce="<?php echo wp_create_nonce( 'foogallery-bulk-management-content' ); ?>" style="display: none;">
                 <div class="media-modal wp-core-ui">
@@ -297,19 +295,6 @@ if ( ! class_exists( 'FooGallery_Pro_Bulk_Management' ) ) {
 			echo '<div style="display: none" class="spinner is-active"></div>';
 			echo '<div class="foogallery-bulk-management-modal-action-message"></div>';
 			echo '</div>';
-
-//			echo '<hr />';
-//			echo '<h2>' . sprintf( __( 'Select %s', 'foogallery' ), $taxonomy_object->label ) . '</h2>';
-//			echo '<p>' . __( 'Select a term below to easily see which gallery items are assigned to it.', 'foogallery' ) . '</p>';
-//
-//			$terms = get_terms( array(
-//				'taxonomy' => $taxonomy,
-//				'hide_empty' => false,
-//			) );
-//
-//			foreach ($terms as $term) {
-//				echo '<a href="#" class="button button-small foogallery-bulk-management-select-term" data-term-id="' . $term->term_id . '">' . $term->name . '</a>';
-//			}
 
 			echo '</div>';
         }

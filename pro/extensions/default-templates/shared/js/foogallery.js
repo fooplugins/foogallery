@@ -7124,6 +7124,8 @@
 			 */
 			self._initialize = null;
 			self._checkTimeout = null;
+			self._layoutTimeout = null;
+			self._layoutWidths = [];
 			self.initializing = false;
 			self.initialized = false;
             self.destroying = false;
@@ -7134,9 +7136,9 @@
 				create: false,
 				children: false
 			};
-			self.robserver = new ResizeObserver(_fn.throttle(function () {
+			self.robserver = new ResizeObserver(function () {
 				if (self.$el.is(":visible")) self.layout();
-			}, 250));
+			});
 		},
 
 		// ################
@@ -7659,8 +7661,8 @@
 		},
 
 		layout: function () {
-			var self = this;
-			if (self._initialize === null) return;
+			var self = this, width = self.getContainerWidth();
+			if (self._initialize === null || self._checkWidth(width)) return;
 			/**
 			 * @summary Raised when the templates' {@link FooGallery.Template#layout|layout} method is called.
 			 * @event FooGallery.Template~"layout.foogallery"
@@ -7677,7 +7679,30 @@
 			 * 	}
 			 * });
 			 */
-			self.raise("layout");
+			self.raise("layout", [width]);
+		},
+		/**
+		 * @summary This method was added to prevent an infinite loop in the ResizeObserver.
+		 * @description When the viewport has no scrollbar by default and is then resized down until the gallery layout requires a scrollbar
+		 * to show. There could be an infinite loop as follows:
+		 * 1. No scrollbar shown, layout occurs, scrollbar is then required.
+		 * 2. Scrollbar is shown, triggers ResizeObserver, layout occurs, scrollbar is no longer required, loops back round to #1.
+		 * To work around this the Template now has a 100ms two width memory and if the same size appears the layout is aborted exiting the loop.
+		 * @param {Number} width - The current width of the gallery.
+		 * @returns {boolean} True if the layout should be allowed to proceed.
+		 * @private
+		 */
+		_checkWidth: function(width){
+			var self = this, exists;
+			if (!(exists = (self._layoutWidths.indexOf(width) !== -1))){
+				self._layoutWidths.unshift(width);
+				self._layoutWidths.splice(2, self._layoutWidths.length - 2);
+				if (self._layoutTimeout != null) clearTimeout(self._layoutTimeout);
+				self._layoutTimeout = setTimeout(function(){
+					self._layoutWidths.splice(0, self._layoutWidths.length);
+				}, 100);
+			}
+			return exists;
 		},
 
 		/**
