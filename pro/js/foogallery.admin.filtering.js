@@ -17,6 +17,37 @@ jQuery(function ($) {
 		$('.foogallery_preview_container').addClass('foogallery-preview-force-refresh');
 	});
 
+	$('.foogallery-multi-filtering-modal-wrapper').on('click', '.foogallery-multi-filtering-modal-set', function (e) {
+		e.preventDefault();
+
+		//build up the levels data
+		var $levels = $('.foogallery-multi-filtering-modal-content-level'),
+			levels = [];
+
+		$levels.each(function() {
+			var $level = $(this),
+				$selected = $level.find('.foogallery-multi-filtering-select-term.button-primary'),
+				level = {
+					all: $level.find('input').val(),
+					tags: []
+				};
+
+			$selected.each(function() {
+				level.tags.push( $(this).html() + '' );
+			});
+
+			levels.push(level);
+		});
+
+		$('.filtering-multi-input:enabled').val( JSON.stringify( levels ) );
+
+		$('.foogallery-multi-filtering-modal-wrapper').hide();
+
+		//force a preview refresh
+		$('.foogallery_preview_container').addClass('foogallery-preview-force-refresh');
+	});
+
+
 	//Click on the reload button in the title
 	$('.foogallery-multi-filtering-modal-wrapper').on('click', '.foogallery-multi-filtering-modal-reload', function (e) {
 		e.preventDefault();
@@ -49,18 +80,38 @@ jQuery(function ($) {
 			.find('.foogallery-multi-filtering-modal-content-level-count')
 				.html( $levels.length + 1);
 
+		$level.find('ul').sortable({ items: 'li' });
+
 		$level.insertBefore($(this));
 
 		foogallery_multi_filtering_modal_hide_terms();
+	});
+
+	//remove a level
+	$('.foogallery-multi-filtering-modal-container').on('click', '.foogallery-multi-filtering-modal-content-level-remove', function(e) {
+		e.preventDefault();
+
+		$(this).closest('.foogallery-multi-filtering-modal-content-level').remove();
+
+		foogallery_multi_filtering_modal_hide_terms();
+
+		var $levels = $('.foogallery-multi-filtering-modal-content-level');
+		$levels.each(function(index) {
+			$(this).find('.foogallery-multi-filtering-modal-content-level-count')
+				.html( index + 1);
+		});
 	});
 
 	//load the terms and gallery items content
 	function foogallery_multi_filtering_modal_load_content() {
 		var $content = $('.foogallery-multi-filtering-modal-container'),
 			$wrapper = $('.foogallery-multi-filtering-modal-wrapper')
-			data = 'action=foogallery_multi_filtering_content' +
-				'&foogallery_id=' + $wrapper.data('foogalleryid') +
-				'&nonce=' + $wrapper.data('nonce');
+			data = {
+				action: 'foogallery_multi_filtering_content',
+				foogallery_id: $wrapper.data('foogalleryid'),
+				nonce: $wrapper.data('nonce'),
+				levels: JSON.parse( $('.filtering-multi-input:enabled').val() || '{}' )
+			};
 
 		$content.addClass('not-loaded').html('<div class="spinner is-active"></div>');
 
@@ -72,6 +123,7 @@ jQuery(function ($) {
 				$('.foogallery-multi-filtering-modal-reload').show();
 				$content.html(data);
 				foogallery_multi_filtering_modal_hide_terms();
+				$('.foogallery-multi-filtering-modal-content-level ul').sortable({ items: 'li' });
 			}
 		});
 	}

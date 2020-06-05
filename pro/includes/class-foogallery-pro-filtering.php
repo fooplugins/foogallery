@@ -20,10 +20,13 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 				//output the multi-level filtering custom field
 				add_action( 'foogallery_render_gallery_template_field_custom', array( $this, 'render_multi_field' ), 10, 3 );
 
+				//enqueue assets needed for the multi-level modal
 				add_action( 'foogallery_admin_enqueue_scripts', array( $this, 'enqueue_scripts_and_styles' ) );
 
+				//output the modal
 				add_action( 'admin_footer', array( $this, 'render_multi_level_modal' ) );
 
+				//ajax handler to render the modal content
 				add_action( 'wp_ajax_foogallery_multi_filtering_content', array( $this, 'ajax_load_modal_content' ) );
 			}
 
@@ -530,7 +533,18 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 							$filtering_options['tags'] = explode( ',', $filtering_override );
 							$filtering_options['tags'] = array_filter( array_map( 'trim', $filtering_options['tags'] ) ) ;
 						}
-					}
+					} else if ( 'multi' === $filtering ) {
+
+						$filtering_multi_override = $this->get_foogallery_argument( $gallery, 'filtering_multi_override', 'filtering_multi_override', '' );
+
+						if ( !empty( $filtering_multi_override ) ) {
+							$filtering_multi_override_array = @json_decode( wp_unslash( $filtering_multi_override ), true );
+
+							if ( isset( $filtering_multi_override_array ) ) {
+								$filtering_options['tags'] = $filtering_multi_override_array;
+							}
+						}
+                    }
 
 					$options['filtering']        = $gallery->filtering_options = $filtering_options;
 					$gallery->filtering_taxonomy = $this->get_foogallery_argument( $gallery, 'filtering_taxonomy', 'filtering_taxonomy', FOOGALLERY_ATTACHMENT_TAXONOMY_TAG );
@@ -648,7 +662,25 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 
 		public function render_multi_field( $field, $gallery, $template ) {
 			if ( 'filtering_multi' === $field['type'] ) {
+			    if ( isset( $field['value'] ) ) {
+			        $levels = @json_decode( $field['value'], true );
+			        if ( isset( $levels ) ) {
+			            echo '<table style="margin-bottom: 10px;" class="wp-list-table striped widefat"><thead><tr>';
+			            echo '<th style="width: 10%;">' . __( 'Level #', 'foogallery' ) . '</th>';
+				        echo '<th style="width: 10%;">' . __( 'All Text', 'foogallery' ) . '</th>';
+				        echo '<th>' . __( 'Terms', 'foogallery' ) . '</th></th></thead><tbody>';
+			            foreach ( $levels as $index => $level ) {
+			                echo '<tr>';
+			                echo '<td><strong>' . ($index + 1) . '</strong></td>';
+				            echo '<td>' . $level['all'] . '</td>';
+				            echo '<td><code>' . implode(', ', $level['tags'] ) . '</code></td>';
+                        }
+			            echo '</tbody></table>';
+                    }
+                }
+
 				echo '<button class="button button-primary button-small filtering-multi-builder">' . __( 'Select Levels', 'foogallery' ) . '</button>';
+				echo '<input class="filtering-multi-input" type="hidden" name=' . esc_attr( FOOGALLERY_META_SETTINGS . '[' . $template['slug'] . '_filtering_multi_override]' ) . ' value="' . esc_html( $field['value'] ) . '" />';
 			}
 		}
 
@@ -694,6 +726,9 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 										<a href="#"
 										   class="foogallery-multi-filtering-modal-close button button-large button-secondary"
 										   title="<?php esc_attr_e('Close', 'foogallery'); ?>"><?php _e('Close', 'foogallery'); ?></a>
+                                        <a href="#"
+                                           class="foogallery-multi-filtering-modal-set button button-large button-primary"
+                                           title="<?php esc_attr_e('Set Levels', 'foogallery'); ?>"><?php _e('Set Levels', 'foogallery'); ?></a>
 									</div>
 								</div>
 							</div>
@@ -711,7 +746,7 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 		 * @param $foogallery_id
 		 * @param $attachments
 		 */
-		public function render_content( $foogallery_id, $taxonomy ) {
+		public function render_content( $taxonomy, $levels ) {
 			echo '<div class="foogallery-multi-filtering-modal-content-inner">';
 
 			$terms = get_terms( array(
@@ -719,28 +754,79 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 				'hide_empty' => false,
 			) );
 
-			$level = 1;
+			$this->render_content_level( 0, array(), $terms, 'foogallery-multi-filtering-modal-content-level-template' );
 
-			echo '<div class="foogallery-multi-filtering-modal-content-level-template">';
-
-			echo '<h3>' . __( 'Level', 'foogallery' ) . ' <span class="foogallery-multi-filtering-modal-content-level-count"></span></h3>';
-
-			echo '<label>' . sprintf( __( 'Level %s "All" Text : ' , 'foogallery' ), '<span class="foogallery-multi-filtering-modal-content-level-count"></span>' ) . '</label>';
-			echo '<input type="text" value="' . __('All', 'foogallery') . '" />';
-
-			echo '<div class="foogallery-multi-filtering-modal-content-terms">';
-
-			foreach ($terms as $term) {
-				echo '<a href="#" class="button button-small foogallery-multi-filtering-select-term" data-term-id="' . $term->term_id . '">' . $term->name . '</a>';
+			foreach ( $levels as $index => $level ) {
+				$this->render_content_level( $index + 1, $level, $terms );
 			}
-
-			echo '</div>';
-
-			echo '</div>';
 
 			echo '<a href="#" class="button button-primary foogallery-multi-filtering-add-level">' . __('Add Another Level') . '</a>';
 
 			echo '</div>';
+		}
+
+		/**
+         * Render a level of filters/terms
+         *
+		 * @param $index
+		 * @param $level
+		 * @param $terms
+		 * @param string $class
+		 */
+		private function render_content_level( $index, $level, $terms, $class='foogallery-multi-filtering-modal-content-level' ) {
+			echo '<div class="' . esc_attr( $class ) . '">';
+
+			echo '<h3>' . __( 'Level', 'foogallery' ) . ' <span class="foogallery-multi-filtering-modal-content-level-count">' . esc_html( $index ) . '</span>';
+			echo '<a href="#" class="foogallery-multi-filtering-modal-content-level-remove" title="' . __('Remove Level', 'foogallery') . '"><i class="dashicons dashicons-no-alt" /></a>';
+			echo '</h3>';
+
+			echo '<label>' . sprintf( __( 'Level %s "All" Text : ' , 'foogallery' ), '<span class="foogallery-multi-filtering-modal-content-level-count">' . esc_html( $index ) . '</span>' ) . '</label>';
+
+			$all_value = array_key_exists( 'all', $level ) ? $level['all'] : __('All', 'foogallery');
+
+			echo '<input type="text" value="' . esc_html( $all_value ) . '" />';
+
+			echo '<ul class="foogallery-multi-filtering-modal-content-terms">';
+
+			$terms_added = array();
+
+			if ( array_key_exists( 'tags', $level ) ) {
+			    foreach ( $level['tags'] as $tag ) {
+                    $found_term = $this->find_term( $tag, $terms );
+                    if ( $found_term !== false ) {
+	                    echo '<li><a href="#" class="button-primary button button-small foogallery-multi-filtering-select-term" data-term-id="' . esc_attr( $found_term->term_id ) . '">' . esc_html( $found_term->name ) . '</a></li>';
+	                    $terms_added[] = $tag;
+                    }
+			    }
+			}
+
+			foreach ($terms as $term) {
+			    //check if we have already added a term
+			    if ( !in_array( $term->name, $terms_added ) ) {
+				    echo '<li><a href="#" class="button button-small foogallery-multi-filtering-select-term" data-term-id="' . esc_attr( $term->term_id ) . '">' . esc_html( $term->name ) . '</a></li>';
+			    }
+			}
+
+			echo '</ul><div style="clear: both"/>';
+
+			echo '</div>';
+		}
+
+		/**
+         * Find a term in the array
+         *
+		 * @param $name
+		 * @param $terms
+		 *
+		 * @return bool|mixed
+		 */
+		private function find_term( $name, $terms ) {
+			foreach ($terms as $term) {
+			    if ( $term->name === $name ) {
+			        return $term;
+			    }
+			}
+			return false;
 		}
 
 
@@ -754,6 +840,7 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 
 				$foogallery_id = intval( safe_get_from_request( 'foogallery_id' ) );
 				$taxonomy = safe_get_from_request( 'taxonomy' );
+				$levels = safe_get_from_request( 'levels' );
 
 				if ( empty( $taxonomy ) ) {
 					//select the taxonomy that is chosen for the gallery
@@ -767,13 +854,31 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 					$taxonomy = FOOGALLERY_ATTACHMENT_TAXONOMY_TAG;
 				}
 
+				if ( empty( $levels ) ) {
+				    //add the first level by default
+					$levels = array(
+                        array(
+                            'all'  => __( 'All', 'foogallery' ),
+                            'tags' => array()
+                        )
+                    );
+				}
+
 				echo '<div class="foogallery-multi-filtering-modal-content">';
-				$this->render_content( $foogallery_id, $taxonomy );
+				$this->render_content( $taxonomy, $levels );
 				echo '</div>';
 
 				echo '<div class="foogallery-multi-filtering-modal-sidebar">';
 				echo '<div class="foogallery-multi-filtering-modal-sidebar-inner">';
 				echo '<h2>' . __( 'Multi Level Filtering Help', 'foogallery' ) . '</h2>';
+				echo '<p>' . __( 'To add a new level, click on the "Add Another Level" button on the left.', 'foogallery' ) . '</p>';
+				echo '<p>' . __( 'For each level that you add, you can override the "All" text for that level.', 'foogallery' ) . '</p>';
+				echo '<p>' . __( 'Select the terms for each level by clicking on them. They will change to a selected state. To unselect a term, click on it again.', 'foogallery' ) . '</p>';
+				echo '<p>' . __( 'Once you select a term, it will not be available for the other levels.', 'foogallery' ) . '</p>';
+				echo '<p>' . __( 'You can sort the terms by dragging and dropping them.', 'foogallery' ) . '</p>';
+				echo '<p>' . __( 'To remove a level, click on the small "x" button next to the level title.', 'foogallery' ) . '</p>';
+				echo '<p>' . __( 'If you want to undo any changes, click the "Reload" button at the top.', 'foogallery' ) . '</p>';
+				echo '<p>' . __( 'Once you are happy with your levels, click the "Set Levels" button below.', 'foogallery' ) . '</p>';
 				echo '</div>';
 				echo '</div>';
 			}

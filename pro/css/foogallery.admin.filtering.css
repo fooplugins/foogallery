@@ -83,6 +83,9 @@
             line-height: 1.8em;
             padding: 2px 8px 0 8px;
         }
+            .foogallery-multi-filtering-select-term.button.button-small.button-primary {
+                background-color: #00a0d2;
+            }
 
 .foogallery-multi-filtering-modal-container {
     position: absolute;
@@ -120,76 +123,41 @@
                 display: none;
             }
 
+            .foogallery-multi-filtering-modal-content-level {
+                margin-bottom: 20px;
+            }
+
             .foogallery-multi-filtering-modal-content-level h3 {
                 margin-top: 0;
             }
 
+                .foogallery-multi-filtering-modal-content-level h3 .foogallery-multi-filtering-modal-content-level-remove {
+                    position: absolute;
+                    text-decoration: none;
+                    background-color: #ccc;
+                    border-radius: 50%;
+                    width: 15px;
+                    height: 15px;
+                    margin-left: 5px;
+                    margin-top: 2px;
+                }
+
+                    .foogallery-multi-filtering-modal-content-level h3 .foogallery-multi-filtering-modal-content-level-remove .dashicons {
+                        width: 15px;
+                        height: 15px;
+                        font-size: 15px;
+                    }
+
             .foogallery-multi-filtering-modal-content-terms {
                 margin-top: 18px;
                 margin-bottom: 18px;
+                clear: both;
             }
 
-        .foogallery-multi-filtering-modal-content ul {
-            margin: 0;
-            padding: 0;
-            height: auto;
-            display: inline-block;
-        }
-
-            .foogallery-multi-filtering-modal-content ul li {
-                width: 150px;
-                height: 150px;
-                float: left;
-                cursor: pointer;
-                margin: 18px 0 0 18px;
-                position: relative;
-            }
-
-                .foogallery-multi-filtering-modal-content ul li:hover {
-                    box-shadow: 0 0 0 1px #f1f1f1, 0 0 0 3px #1E8CBF;
+                .foogallery-multi-filtering-modal-content li {
+                    float: left;
+                    position: relative;
                 }
-
-                .foogallery-multi-filtering-modal-content ul li.selected {
-                    box-shadow: 0 0 0 1px #f1f1f1, 0 0 0 5px #1E8CBF !important;
-                }
-
-                    .foogallery-multi-filtering-modal-content ul li.selected:before {
-                        content: "\f147";
-                        font: 400 24px/1 dashicons !important;
-                        speak: none;
-                        color: #fff;
-                        background-color: #0073aa;
-                        height: 24px;
-                        width: 24px;
-                        padding: 0;
-                        border: 0;
-                        position: absolute;
-                        z-index: 10;
-                        top: -10px;
-                        right: -10px;
-                        outline: none;
-                    }
-
-                .foogallery-multi-filtering-modal-content ul li.term:not(.selected) {
-                    box-shadow: 0 0 0 1px #f1f1f1, 0 0 0 5px #BF1123 !important;
-                }
-
-                    .foogallery-multi-filtering-modal-content ul li.term:not(.selected):before {
-                        content: "\f335";
-                        font: 400 24px/1 dashicons !important;
-                        speak: none;
-                        color: #fff;
-                        background-color: #BF1123;
-                        height: 24px;
-                        width: 24px;
-                        padding: 0;
-                        border: 0;
-                        position: absolute;
-                        z-index: 10;
-                        top: -10px;
-                        right: -10px;
-                        outline: none;
-                    }
 
 .foogallery-multi-filtering-modal-toolbar {
     position: absolute;
@@ -212,4 +180,5 @@
 
 .foogallery-multi-filtering-modal-close {
     float: right;
+    margin-left: 5px !important;
 }
