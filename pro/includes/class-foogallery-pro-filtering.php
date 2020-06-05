@@ -542,6 +542,7 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 
 							if ( isset( $filtering_multi_override_array ) ) {
 								$filtering_options['tags'] = $filtering_multi_override_array;
+								$filtering_options['sortBy'] = 'none';
 							}
 						}
                     }
@@ -662,10 +663,13 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 
 		public function render_multi_field( $field, $gallery, $template ) {
 			if ( 'filtering_multi' === $field['type'] ) {
+
+			    $has_levels = false;
 			    if ( isset( $field['value'] ) ) {
 			        $levels = @json_decode( $field['value'], true );
 			        if ( isset( $levels ) ) {
-			            echo '<table style="margin-bottom: 10px;" class="wp-list-table striped widefat"><thead><tr>';
+				        $has_levels = true;
+			            echo '<table style="margin-bottom: 10px;" class="filtering-multi-table wp-list-table striped widefat"><thead><tr>';
 			            echo '<th style="width: 10%;">' . __( 'Level #', 'foogallery' ) . '</th>';
 				        echo '<th style="width: 10%;">' . __( 'All Text', 'foogallery' ) . '</th>';
 				        echo '<th>' . __( 'Terms', 'foogallery' ) . '</th></th></thead><tbody>';
@@ -677,6 +681,14 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
                         }
 			            echo '</tbody></table>';
                     }
+                }
+
+			    if ( !$has_levels ) {
+				    echo '<table style="margin-bottom: 10px; display: none" class="filtering-multi-table wp-list-table striped widefat"><thead><tr>';
+				    echo '<th style="width: 10%;">' . __( 'Level #', 'foogallery' ) . '</th>';
+				    echo '<th style="width: 10%;">' . __( 'All Text', 'foogallery' ) . '</th>';
+				    echo '<th>' . __( 'Terms', 'foogallery' ) . '</th></th></thead><tbody>';
+				    echo '</tbody></table>';
                 }
 
 				echo '<button class="button button-primary button-small filtering-multi-builder">' . __( 'Select Levels', 'foogallery' ) . '</button>';

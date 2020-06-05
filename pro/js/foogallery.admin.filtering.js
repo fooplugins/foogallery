@@ -24,17 +24,32 @@ jQuery(function ($) {
 		var $levels = $('.foogallery-multi-filtering-modal-content-level'),
 			levels = [];
 
-		$levels.each(function() {
+		//clear the table rows
+		$('.filtering-multi-table tbody tr').remove();
+
+		$levels.each(function(index) {
 			var $level = $(this),
 				$selected = $level.find('.foogallery-multi-filtering-select-term.button-primary'),
+				allText = $level.find('input').val(),
 				level = {
-					all: $level.find('input').val(),
+					all: allText,
 					tags: []
-				};
+				},
+				tableHtml = '<tr><td>' + (index + 1) + '</td><td>' + allText + '</td><td>';
 
 			$selected.each(function() {
-				level.tags.push( $(this).html() + '' );
+				if ( level.tags.length > 0 ) {
+					tableHtml += ', ';
+				}
+				var tag = $(this).html() + '';
+				level.tags.push( tag );
+				tableHtml += tag;
 			});
+
+			tableHtml += '</td>';
+
+			$(tableHtml).appendTo( $('.filtering-multi-table tbody') );
+			$('.filtering-multi-table').show();
 
 			levels.push(level);
 		});
