@@ -9099,8 +9099,8 @@
 			self.height = parseInt(self.$image.attr("height")) || self.height;
 			self.title = self.$image.attr("title") || self.title;
 			self.alt = self.$image.attr("alt") || self.alt;
-			self.caption = data.title || data.captionTitle || self.caption || self.title;
-			self.description = data.description || data.captionDesc || self.description || self.alt;
+			self.caption = data.title || data.captionTitle || self.caption;
+			self.description = data.description || data.captionDesc || self.description;
 			self.noLightbox = self.$anchor.hasClass(cls.noLightbox);
 			self.panelHide = self.$anchor.hasClass(cls.panelHide);
 			if (_is.exif(data.exif)){
