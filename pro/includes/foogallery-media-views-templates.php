@@ -57,14 +57,14 @@
 			<ul>
 				<li>http(s)://vimeo.com/[VIDEO_ID]</li>
 				<li>http(s)://player.vimeo.com/video/[VIDEO_ID]</li>
-				<li>http(s)://vimeo.com/album/[ALBUM_ID]/video/[VIDEO_ID]</li>
+                <li>http(s)://vimeo.com/showcase/[SHOWCASE_ID]/video/[VIDEO_ID]</li>
 				<li>http(s)://vimeo.com/channels/[CHANNEL_ID]/[VIDEO_ID]</li>
 			</ul>
 
-			<h4>Albums</h4>
-			<p>Import an entire album or a subselection of its' videos by entering its' url into the search input. The following URL format is supported:</p>
+			<h4>Showcases</h4>
+			<p>Import an entire showcase or a subselection of its' videos by entering its' url into the search input. The following URL formats are supported:</p>
 			<ul>
-				<li>http(s)://vimeo.com/album/[ALBUM_ID]</li>
+                <li>http(s)://vimeo.com/showcase/[SHOWCASE_ID]</li>
 			</ul>
 
 			<h4>Channels</h4>
@@ -81,7 +81,7 @@
 			</ul>
 
 			<h4>Access Token</h4>
-			<p>If you want to import multiple videos from an album, channel or user then you will need an API access token. You can generate one by following the basic instructions below or take a look at our <a href="https://fooplugins.link/vimeo-access-token" target="_blank">documentation</a> for more detailed steps.</p>
+			<p>If you want to import multiple videos from an album, showcase, channel or user then you will need an API access token. You can generate one by following the basic instructions below or take a look at our <a href="https://fooplugins.link/vimeo-access-token" target="_blank">documentation</a> for more detailed steps.</p>
 			<ul>
 				<li>
 					Visit <a href="https://developer.vimeo.com/apps/new" target="_blank">https://developer.vimeo.com/apps/new</a> and fill in the form. If you are not signed in you should be prompted to using your Vimeo account.
@@ -338,7 +338,7 @@
 <script type="text/html" id="tmpl-fgi-album-notification">
 
 <?php
-	$import_album = sprintf('<a href="#import-album">%s</a>', __("import the entire album", "foogallery"));
+	$import_album = sprintf('<a href="#import-album">%s</a>', __("import the entire showcase", "foogallery"));
 ?>
 
 	<# if (data.total === 1){ #>
