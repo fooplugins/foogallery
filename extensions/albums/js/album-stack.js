@@ -640,7 +640,7 @@ if (!window.FooGalleryStackAlbumModernizr) {
 							}
 
 						} ) :
-						this._applyTransition( $item, { opacity : 0 }, this.options.otherPileAnimation.closeSpeed );
+						this._applyTransition( $item, { visibility: 'hidden', opacity : 0 }, this.options.otherPileAnimation.closeSpeed );
 
 				}
 
@@ -724,7 +724,7 @@ if (!window.FooGalleryStackAlbumModernizr) {
 							++cnt;
 
 							if( $el.data( 'front' ) ) {
-								$el.find( 'div.tp-title' ).show();
+								$el.css({visibility: 'visible'}).find( 'div.tp-title' ).show();
 							} else {
 								$el.css({visibility: 'hidden', zIndex: 1});
 							}
@@ -742,7 +742,7 @@ if (!window.FooGalleryStackAlbumModernizr) {
 
 							var $el = $( this );
 							if( $el.data( 'front' ) ) {
-								$el.find( 'div.tp-title' ).show();
+								$el.css({visibility: 'visible'}).find( 'div.tp-title' ).show();
 							} else {
 								$el.css({visibility: 'hidden', zIndex: 1});
 							}

@@ -120,8 +120,8 @@ if ( !class_exists("FooGallery_Pro_Video_Vimeo") ){
 			if ($this->handles($url)) {
 				$matches = array();
 
-				// check if we are dealing with an album
-				if (preg_match('/vimeo\.com\/album\/(?<id>[0-9]*?)$/i', $url, $matches)) {
+				// check if we are dealing with an album/showcase
+				if (preg_match('/vimeo\.com\/(album|showcase)\/(?<id>[0-9]*?)$/i', $url, $matches)) {
 					// for albums the id is the last part of the url
 					return $this->fetch_stream("album", $matches["id"], $page, $offset);
 				}
