@@ -12999,7 +12999,8 @@
             this.panel.$el.removeClass(this.panel.cls.maximized).attr({
                 'role': null,
                 'aria-modal': null
-            }).insertBefore(this.$placeholder).focus();
+            }).insertBefore(this.$placeholder);
+            if (this.panel.isInline) this.panel.$el.focus();
             this.$placeholder.detach();
             if (this.isCreated) this.$el.attr("aria-pressed", false);
             this.panel.releaseFocus();
