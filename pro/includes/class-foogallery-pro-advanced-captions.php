@@ -17,93 +17,22 @@ if ( ! class_exists( 'FooGallery_Pro_Advanced_Captions' ) ) {
             add_filter( 'foogallery_build_attachment_html_caption_custom', array( &$this, 'customize_captions' ), 30, 3 );
         }
 
-        /**
-         * Add caption fields to the gallery template
-         *
-         * @param $fields
-         * @param $template
-         *
-         * @return array
-         */
-        function add_advanced_caption_fields( $fields, $template ) {
-            //add caption type field before other caption fields
+        function build_custom_captions_help() {
+        	global $foogallery_custom_caption_help_html;
 
-            $new_fields[] = array(
-                'id'       => 'captions_type',
-                'title'    => __( 'Caption Type', 'foogallery' ),
-                'desc'     => __( 'What type of captions do you want to display in the gallery. By default, captions will be built up from the image attributes for both the caption title and description.', 'foogallery' ),
-                'section'  => __( 'Captions', 'foogallery' ),
-                'type'     => 'radio',
-                'default'  => '',
-                'choices'  => array(
-                    ''  => __( 'Default (Captions will be built up from a title and description)', 'foogallery' ),
-                    'custom'   => __( 'Custom (Captions will be built up using a custom caption template)', 'foogallery' ),
-                ),
-                'row_data'=> array(
-                    'data-foogallery-change-selector' => 'input:radio',
-                    'data-foogallery-preview' => 'shortcode',
-                    'data-foogallery-value-selector'  => 'input:checked',
-                )
-            );
-
-            $field_index = $this->find_index_of_field( $fields, 'caption_title_source' );
-
-            array_splice( $fields, $field_index, 0, $new_fields );
-
-            //change the existing captions fields to only show if the default caption type is chosen
-            $caption_title_source_field = &$this->find_field( $fields, 'caption_title_source' );
-            $caption_title_source_field['row_data'] = array(
-                'data-foogallery-change-selector'       => 'input:radio',
-                'data-foogallery-hidden'                => true,
-                'data-foogallery-show-when-field'       => 'captions_type',
-                'data-foogallery-show-when-field-value' => '',
-                'data-foogallery-preview'               => 'shortcode'
-            );
-
-            $caption_desc_source_field = &$this->find_field( $fields, 'caption_desc_source' );
-            $caption_desc_source_field['row_data'] = array(
-                'data-foogallery-change-selector'       => 'input:radio',
-                'data-foogallery-hidden'                => true,
-                'data-foogallery-show-when-field'       => 'captions_type',
-                'data-foogallery-show-when-field-value' => '',
-                'data-foogallery-preview'               => 'shortcode'
-            );
-
-            $captions_limit_length_field = &$this->find_field( $fields, 'captions_limit_length' );
-            $captions_limit_length_field['row_data'] = array(
-                'data-foogallery-change-selector'       => 'input:radio',
-                'data-foogallery-hidden'                => true,
-                'data-foogallery-value-selector'        => 'input:checked',
-                'data-foogallery-show-when-field'       => 'captions_type',
-                'data-foogallery-show-when-field-value' => '',
-                'data-foogallery-preview'               => 'shortcode'
-            );
-
-            //then add some more caption fields
-            $fields[] = array(
-                'id'      => 'caption_custom_template',
-                'title'   => __( 'Custom Caption Template', 'foogallery' ),
-                'desc'	  => __( 'The template used to build up the custom template.', 'foogallery '),
-                'section' => __( 'Captions', 'foogallery' ),
-                'type'    => 'textarea',
-                'default' => '',
-                'row_data' => array(
-                    'data-foogallery-hidden'                => true,
-                    'data-foogallery-show-when-field'       => 'captions_type',
-                    'data-foogallery-show-when-field-value' => 'custom',
-                    'data-foogallery-preview'               => 'shortcode'
-                )
-            );
+        	if ( isset( $foogallery_custom_caption_help_html ) ) {
+        		return $foogallery_custom_caption_help_html;
+	        }
 
 	        $postmeta_fields = $this->find_attachment_postmeta_fields();
 	        $postmeta_html = '';
 	        foreach ( $postmeta_fields as $key => $field ) {
-	        	if ( '' === $postmeta_html ) {
-	        		$postmeta_html = '<br /><br />' . __( 'The following custom attachment metadata fields were found:', 'foogallery' ) . '<br /><br />';
+		        if ( '' === $postmeta_html ) {
+			        $postmeta_html = '<br /><br />' . __( 'The following custom attachment metadata fields were found:', 'foogallery' ) . '<br /><br />';
 		        }
 
-	        	//check if we are dealing with ACF
-	        	if ( 'acf-form-data' === $key ) {
+		        //check if we are dealing with ACF
+		        if ( 'acf-form-data' === $key ) {
 
 			        //extract all ACF fields here
 			        if ( function_exists( 'acf_get_field_groups' ) ) {
@@ -116,10 +45,10 @@ if ( ! class_exists( 'FooGallery_Pro_Advanced_Captions' ) ) {
 				        ) );
 
 				        if( !empty($acf_field_groups) ) {
-				        	//loop through all groups
+					        //loop through all groups
 					        foreach( $acf_field_groups as $acf_field_group ) {
 
-					        	//get all fields
+						        //get all fields
 						        $acf_fields = acf_get_fields( $acf_field_group );
 
 						        foreach( $acf_fields as $acf_field ) {
@@ -136,9 +65,9 @@ if ( ! class_exists( 'FooGallery_Pro_Advanced_Captions' ) ) {
 
 		        } else if ( strpos( $key, 'pods_meta_' ) === 0 ) {
 
-	        		$key = str_replace( 'pods_meta_', '', $key );
+			        $key = str_replace( 'pods_meta_', '', $key );
 
-	        		//extract pods field
+			        //extract pods field
 			        $postmeta_html .= '<code>{{pods.' . $key . '}}</code>';
 			        if ( isset( $field['label'] ) ) {
 				        $postmeta_html .= ' - ' . $field['label'];
@@ -154,7 +83,7 @@ if ( ! class_exists( 'FooGallery_Pro_Advanced_Captions' ) ) {
 		        }
 	        }
 
-	        $custom_caption_help_html = '<strong> ' . __('Custom Caption Help', 'foogallery') . '</strong><br />' . __('The custom caption template can use any HTML together with the following dynamic placeholders:', 'foogallery') . '<br /><br />' .
+	        $foogallery_custom_caption_help_html = '<strong> ' . __('Custom Caption Help', 'foogallery') . '</strong><br />' . __('The custom caption template can use any HTML together with the following dynamic placeholders:', 'foogallery') . '<br /><br />' .
 	                                    '<code>{{ID}}</code> - ' . __('Attachment ID', 'foogallery') . '<br />' .
 	                                    '<code>{{title}}</code> - ' . __('Attachment title', 'foogallery') . '<br />' .
 	                                    '<code>{{caption}}</code> - ' . __('Attachment caption', 'foogallery') . '<br />' .
@@ -167,19 +96,105 @@ if ( ! class_exists( 'FooGallery_Pro_Advanced_Captions' ) ) {
 	                                    '<code>{{height}}</code> - ' . __('Full-size image height', 'foogallery') . '<br /><br />' .
 	                                    __('You can also include custom attachment metadata by using <code>{{postmeta.metakey}}</code> where "metakey" is the key/slug/name of the metadata.', 'foogallery') . $postmeta_html;
 
-            $fields[] = array(
-                'id'      => 'caption_custom_help',
-                'title'   => __( 'Custom Caption Help', 'foogallery' ),
-                'desc'	  => $custom_caption_help_html,
-                'section' => __( 'Captions', 'foogallery' ),
-                'type'    => 'help',
-                'row_data' => array(
-                    'data-foogallery-hidden'                => true,
-                    'data-foogallery-show-when-field'       => 'captions_type',
-                    'data-foogallery-show-when-field-value' => 'custom',
-                    'data-foogallery-preview'               => 'shortcode'
-                )
-            );
+	        return $foogallery_custom_caption_help_html;
+        }
+
+        /**
+         * Add caption fields to the gallery template
+         *
+         * @param $fields
+         * @param $template
+         *
+         * @return array
+         */
+        function add_advanced_caption_fields( $fields, $template ) {
+        	//build up the help for custom captions
+	        $custom_caption_help_html = $this->build_custom_captions_help();
+
+	        if ( 'polaroid_new' !== $template['slug'] ) {
+
+		        //add caption type field before other caption fields
+		        $new_fields[] = array(
+			        'id'       => 'captions_type',
+			        'title'    => __( 'Caption Type', 'foogallery' ),
+			        'desc'     => __( 'What type of captions do you want to display in the gallery. By default, captions will be built up from the image attributes for both the caption title and description.', 'foogallery' ),
+			        'section'  => __( 'Captions', 'foogallery' ),
+			        'type'     => 'radio',
+			        'default'  => '',
+			        'choices'  => array(
+				        ''       => __( 'Default (Captions will be built up from a title and description)', 'foogallery' ),
+				        'custom' => __( 'Custom (Captions will be built up using a custom caption template)', 'foogallery' ),
+			        ),
+			        'row_data' => array(
+				        'data-foogallery-change-selector' => 'input:radio',
+				        'data-foogallery-preview'         => 'shortcode',
+				        'data-foogallery-value-selector'  => 'input:checked',
+			        )
+		        );
+
+		        $field_index = $this->find_index_of_field( $fields, 'caption_title_source' );
+
+		        array_splice( $fields, $field_index, 0, $new_fields );
+
+		        //change the existing captions fields to only show if the default caption type is chosen
+		        $caption_title_source_field             = &$this->find_field( $fields, 'caption_title_source' );
+		        $caption_title_source_field['row_data'] = array(
+			        'data-foogallery-change-selector'       => 'input:radio',
+			        'data-foogallery-hidden'                => true,
+			        'data-foogallery-show-when-field'       => 'captions_type',
+			        'data-foogallery-show-when-field-value' => '',
+			        'data-foogallery-preview'               => 'shortcode'
+		        );
+
+		        $caption_desc_source_field             = &$this->find_field( $fields, 'caption_desc_source' );
+		        $caption_desc_source_field['row_data'] = array(
+			        'data-foogallery-change-selector'       => 'input:radio',
+			        'data-foogallery-hidden'                => true,
+			        'data-foogallery-show-when-field'       => 'captions_type',
+			        'data-foogallery-show-when-field-value' => '',
+			        'data-foogallery-preview'               => 'shortcode'
+		        );
+
+		        $captions_limit_length_field             = &$this->find_field( $fields, 'captions_limit_length' );
+		        $captions_limit_length_field['row_data'] = array(
+			        'data-foogallery-change-selector'       => 'input:radio',
+			        'data-foogallery-hidden'                => true,
+			        'data-foogallery-value-selector'        => 'input:checked',
+			        'data-foogallery-show-when-field'       => 'captions_type',
+			        'data-foogallery-show-when-field-value' => '',
+			        'data-foogallery-preview'               => 'shortcode'
+		        );
+
+		        //then add some more caption fields
+		        $fields[] = array(
+			        'id'       => 'caption_custom_template',
+			        'title'    => __( 'Custom Caption Template', 'foogallery' ),
+			        'desc'     => __( 'The template used to build up the custom template.', 'foogallery ' ),
+			        'section'  => __( 'Captions', 'foogallery' ),
+			        'type'     => 'textarea',
+			        'default'  => '',
+			        'row_data' => array(
+				        'data-foogallery-hidden'                => true,
+				        'data-foogallery-show-when-field'       => 'captions_type',
+				        'data-foogallery-show-when-field-value' => 'custom',
+				        'data-foogallery-preview'               => 'shortcode'
+			        )
+		        );
+
+		        $fields[] = array(
+			        'id'       => 'caption_custom_help',
+			        'title'    => __( 'Custom Caption Help', 'foogallery' ),
+			        'desc'     => $custom_caption_help_html,
+			        'section'  => __( 'Captions', 'foogallery' ),
+			        'type'     => 'help',
+			        'row_data' => array(
+				        'data-foogallery-hidden'                => true,
+				        'data-foogallery-show-when-field'       => 'captions_type',
+				        'data-foogallery-show-when-field-value' => 'custom',
+				        'data-foogallery-preview'               => 'shortcode'
+			        )
+		        );
+	        }
 
 	        $use_lightbox = true;
 	        if ( $template && array_key_exists( 'panel_support', $template ) && true === $template['panel_support'] ) {
@@ -256,21 +271,9 @@ if ( ! class_exists( 'FooGallery_Pro_Advanced_Captions' ) ) {
 	     * Return a list of all fields that have been added for attachments
 	     */
         function find_attachment_postmeta_fields() {
+	        $attachment = $this->find_most_recent_attachment();
 	        $form_fields = array();
-
-//	        if ( false === ( $form_fields = get_transient( FOOGALLERY_ADVANCED_CAPTIONS_FIELDS_TRANSIENT_KEY ) ) ) {
-
-		        $attachment = $this->find_most_recent_attachment();
-		        $form_fields = array();
-		        $form_fields = apply_filters( 'attachment_fields_to_edit', $form_fields, $attachment );
-
-		        $expires = 30 * 60; //cache for 30 minutes
-
-		        //Cache the result
-//		        set_transient( FOOGALLERY_ADVANCED_CAPTIONS_FIELDS_TRANSIENT_KEY, $form_fields, $expires );
-//	        }
-
-	        return $form_fields;
+	        return apply_filters( 'attachment_fields_to_edit', $form_fields, $attachment );
         }
 
         /**
