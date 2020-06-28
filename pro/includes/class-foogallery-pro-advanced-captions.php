@@ -154,21 +154,23 @@ if ( ! class_exists( 'FooGallery_Pro_Advanced_Captions' ) ) {
 		        }
 	        }
 
+	        $custom_caption_help_html = '<strong> ' . __('Custom Caption Help', 'foogallery') . '</strong><br />' . __('The custom caption template can use any HTML together with the following dynamic placeholders:', 'foogallery') . '<br /><br />' .
+	                                    '<code>{{ID}}</code> - ' . __('Attachment ID', 'foogallery') . '<br />' .
+	                                    '<code>{{title}}</code> - ' . __('Attachment title', 'foogallery') . '<br />' .
+	                                    '<code>{{caption}}</code> - ' . __('Attachment caption', 'foogallery') . '<br />' .
+	                                    '<code>{{description}}</code> - ' . __('Attachment description', 'foogallery') . '<br />' .
+	                                    '<code>{{alt}}</code> - ' . __('Attachment ALT text', 'foogallery') . '<br />' .
+	                                    '<code>{{custom_url}}</code> - ' . __('Custom URL', 'foogallery') . '<br />' .
+	                                    '<code>{{custom_target}}</code> - ' . __('Custom target', 'foogallery') . '<br />' .
+	                                    '<code>{{url}}</code> - ' . __('Full-size image URL', 'foogallery') . '<br />' .
+	                                    '<code>{{width}}</code> - ' . __('Full-size image width', 'foogallery') . '<br />' .
+	                                    '<code>{{height}}</code> - ' . __('Full-size image height', 'foogallery') . '<br /><br />' .
+	                                    __('You can also include custom attachment metadata by using <code>{{postmeta.metakey}}</code> where "metakey" is the key/slug/name of the metadata.', 'foogallery') . $postmeta_html;
+
             $fields[] = array(
                 'id'      => 'caption_custom_help',
                 'title'   => __( 'Custom Caption Help', 'foogallery' ),
-                'desc'	  => '<strong> ' . __('Custom Caption Help', 'foogallery') . '</strong><br />' . __('The custom caption template can use any HTML together with the following dynamic placeholders:', 'foogallery') . '<br /><br />' .
-                    '<code>{{ID}}</code> - ' . __('Attachment ID', 'foogallery') . '<br />' .
-                    '<code>{{title}}</code> - ' . __('Attachment title', 'foogallery') . '<br />' .
-                    '<code>{{caption}}</code> - ' . __('Attachment caption', 'foogallery') . '<br />' .
-                    '<code>{{description}}</code> - ' . __('Attachment description', 'foogallery') . '<br />' .
-                    '<code>{{alt}}</code> - ' . __('Attachment ALT text', 'foogallery') . '<br />' .
-                    '<code>{{custom_url}}</code> - ' . __('Custom URL', 'foogallery') . '<br />' .
-                    '<code>{{custom_target}}</code> - ' . __('Custom target', 'foogallery') . '<br />' .
-                    '<code>{{url}}</code> - ' . __('Full-size image URL', 'foogallery') . '<br />' .
-                    '<code>{{width}}</code> - ' . __('Full-size image width', 'foogallery') . '<br />' .
-                    '<code>{{height}}</code> - ' . __('Full-size image height', 'foogallery') . '<br /><br />' .
-                    __('You can also include custom attachment metadata by using <code>{{postmeta.metakey}}</code> where "metakey" is the key/slug/name of the metadata.', 'foogallery') . $postmeta_html,
+                'desc'	  => $custom_caption_help_html,
                 'section' => __( 'Captions', 'foogallery' ),
                 'type'    => 'help',
                 'row_data' => array(
@@ -178,6 +180,50 @@ if ( ! class_exists( 'FooGallery_Pro_Advanced_Captions' ) ) {
                     'data-foogallery-preview'               => 'shortcode'
                 )
             );
+
+	        $use_lightbox = true;
+	        if ( $template && array_key_exists( 'panel_support', $template ) && true === $template['panel_support'] ) {
+		        $use_lightbox = false;
+	        }
+
+	        $section = $use_lightbox ? __( 'Lightbox', 'foogallery' ) : __( 'Panel', 'foogallery' );
+
+	        $fields[] = array(
+		        'id'      => 'lightbox_caption_custom_template',
+		        'title'   => __( 'Custom Caption Template', 'foogallery' ),
+		        'desc'    => __( 'The template used for the custom caption', 'foogallery' ),
+		        'section' => $section,
+		        'subsection' => array( 'lightbox-captions' => __( 'Captions', 'foogallery' ) ),
+		        'type'    => 'textarea',
+		        'default' => '',
+		        'row_data'=> array(
+			        'data-foogallery-hidden'                   => true,
+			        'data-foogallery-show-when-field'          => 'lightbox_caption_override',
+			        'data-foogallery-show-when-field-operator' => '===',
+			        'data-foogallery-show-when-field-value'    => 'custom',
+			        'data-foogallery-change-selector'          => 'input:radio',
+			        'data-foogallery-preview'                  => 'shortcode',
+			        'data-foogallery-value-selector'           => 'input:checked',
+		        )
+	        );
+
+	        $fields[] = array(
+		        'id'      => 'lightbox_caption_custom_template_help',
+		        'title'   => __( 'Custom Caption Template Help', 'foogallery' ),
+		        'desc'    => $custom_caption_help_html,
+		        'section' => $section,
+		        'subsection' => array( 'lightbox-captions' => __( 'Captions', 'foogallery' ) ),
+		        'type'    => 'help',
+		        'row_data'=> array(
+			        'data-foogallery-hidden'                   => true,
+			        'data-foogallery-show-when-field'          => 'lightbox_caption_override',
+			        'data-foogallery-show-when-field-operator' => '===',
+			        'data-foogallery-show-when-field-value'    => 'custom',
+			        'data-foogallery-change-selector'          => 'input:radio',
+			        'data-foogallery-preview'                  => 'shortcode',
+			        'data-foogallery-value-selector'           => 'input:checked',
+		        )
+	        );
 
             return $fields;
         }
@@ -278,7 +324,7 @@ if ( ! class_exists( 'FooGallery_Pro_Advanced_Captions' ) ) {
             if ( 'custom' === $caption_type ) {
                 $captions = array();
                 $template = foogallery_gallery_template_setting( 'caption_custom_template', '' );
-                $captions['desc'] = $this->build_custom_caption( $template, $foogallery_attachment );
+                $captions['desc'] = self::build_custom_caption( $template, $foogallery_attachment );
             }
 
             return $captions;
@@ -291,7 +337,7 @@ if ( ! class_exists( 'FooGallery_Pro_Advanced_Captions' ) ) {
          * @param $foogallery_attachment FooGalleryAttachment
          * @return string
          */
-        function build_custom_caption( $template, $foogallery_attachment ) {
+        static function build_custom_caption( $template, $foogallery_attachment ) {
             $html = $template;
 
             $html = preg_replace_callback( '/\{\{(.+?)\}\}/',
