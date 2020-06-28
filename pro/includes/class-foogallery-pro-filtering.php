@@ -164,23 +164,6 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 				);
 
 				$fields[] = array(
-					'id'       => 'filtering_multi_override',
-					'title'    => __( 'Levels', 'foogallery' ),
-					'desc'     => __( 'The filtering levels that will be used for the gallery.', 'foogallery' ),
-					'section'  => __( 'Filtering', 'foogallery' ),
-					'type'     => 'filtering_multi',
-					'default'  => '',
-					'row_data' => array(
-						'data-foogallery-hidden'                   => true,
-						'data-foogallery-show-when-field-operator' => '===',
-						'data-foogallery-show-when-field'          => 'filtering_type',
-						'data-foogallery-show-when-field-value'    => 'multi',
-						'data-foogallery-change-selector'          => 'input',
-						'data-foogallery-preview'                  => 'shortcode'
-					)
-				);
-
-				$fields[] = array(
 					'id'      => 'filtering_mode_help',
 					'title'   => __( 'Selection Mode Help', 'foogallery' ),
 					'desc'    => __( 'The default selection mode is Single, which allows you to choose a single filter at a time. You can also choose to filter by more than 1 filter by selecting Multiple. Multiple supports either a union (OR) or an intersect (AND) mode.', 'foogallery' ),
@@ -188,9 +171,9 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 					'type'    => 'help',
 					'row_data' => array(
 						'data-foogallery-hidden' => true,
-						'data-foogallery-show-when-field-operator' => '===',
 						'data-foogallery-show-when-field'          => 'filtering_type',
-						'data-foogallery-show-when-field-value'    => 'advanced',
+						'data-foogallery-show-when-field-operator' => 'regex',
+						'data-foogallery-show-when-field-value'    => 'advanced|multi',
 					)
 				);
 
@@ -211,9 +194,26 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 					),
 					'row_data' => array(
 						'data-foogallery-hidden'                   => true,
+						'data-foogallery-show-when-field'          => 'filtering_type',
+						'data-foogallery-show-when-field-operator' => 'regex',
+						'data-foogallery-show-when-field-value'    => 'advanced|multi',
+						'data-foogallery-change-selector'          => 'input',
+						'data-foogallery-preview'                  => 'shortcode'
+					)
+				);
+
+				$fields[] = array(
+					'id'       => 'filtering_multi_override',
+					'title'    => __( 'Levels', 'foogallery' ),
+					'desc'     => __( 'The filtering levels that will be used for the gallery.', 'foogallery' ),
+					'section'  => __( 'Filtering', 'foogallery' ),
+					'type'     => 'filtering_multi',
+					'default'  => '',
+					'row_data' => array(
+						'data-foogallery-hidden'                   => true,
 						'data-foogallery-show-when-field-operator' => '===',
 						'data-foogallery-show-when-field'          => 'filtering_type',
-						'data-foogallery-show-when-field-value'    => 'advanced',
+						'data-foogallery-show-when-field-value'    => 'multi',
 						'data-foogallery-change-selector'          => 'input',
 						'data-foogallery-preview'                  => 'shortcode'
 					)
@@ -545,6 +545,8 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 								$filtering_options['sortBy'] = 'none';
 							}
 						}
+
+						$filtering_options['mode'] = $this->get_foogallery_argument( $gallery, 'filtering_mode', 'filtering_mode', 'single' );
                     }
 
 					$options['filtering']        = $gallery->filtering_options = $filtering_options;
