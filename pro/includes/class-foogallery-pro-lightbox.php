@@ -40,6 +40,18 @@ if ( ! class_exists( 'FooGallery_Pro_Lightbox' ) ) {
 			add_filter( 'foogallery_build_attachment_json', array( $this, 'add_captions_to_json' ), 10, 6 );
 		}
 
+		/**
+		 * Add the lightbox captions to the json object
+		 *
+		 * @param $json_object
+		 * @param $foogallery_attachment
+		 * @param $args
+		 * @param $anchor_attributes
+		 * @param $image_attributes
+		 * @param $captions
+		 *
+		 * @return mixed
+		 */
 		function add_captions_to_json( $json_object, $foogallery_attachment, $args, $anchor_attributes, $image_attributes, $captions ) {
 			if ( array_key_exists('data-lightbox-title', $anchor_attributes ) ) {
 				$json_object->attr->anchor->{'data-lightbox-title'} = $anchor_attributes['data-lightbox-title'];
@@ -51,7 +63,6 @@ if ( ! class_exists( 'FooGallery_Pro_Lightbox' ) ) {
 
 			return $json_object;
 		}
-
 
 		/**
 		 * Handle custom captions for the lightbox
@@ -88,7 +99,7 @@ if ( ! class_exists( 'FooGallery_Pro_Lightbox' ) ) {
 					} else if ( 'none' === $caption_title_source ) {
 						$attr['data-lightbox-title'] = '';
 					} else {
-						$attr['data-lightbox-title'] = foogallery_get_caption_by_source( $foogallery_attachment, $caption_title_source, 'title' );
+						$attr['data-lightbox-title'] = foogallery_sanitize_html( foogallery_get_caption_by_source( $foogallery_attachment, $caption_title_source, 'title' ) );
 					}
 
 					$caption_desc_source = foogallery_gallery_template_setting('lightbox_caption_override_desc', '' );
@@ -99,13 +110,13 @@ if ( ! class_exists( 'FooGallery_Pro_Lightbox' ) ) {
 					} else if ( 'none' === $caption_desc_source ) {
 						$attr['data-lightbox-description'] = '';
 					} else {
-						$attr['data-lightbox-description'] = foogallery_get_caption_by_source( $foogallery_attachment, $caption_desc_source, 'description' );
+						$attr['data-lightbox-description'] = foogallery_sanitize_html( foogallery_get_caption_by_source( $foogallery_attachment, $caption_desc_source, 'description' ) );
 					}
 				} else if ( 'custom' === $source ) {
 
 					$template = foogallery_gallery_template_setting( 'lightbox_caption_custom_template', '' );
 					if ( !empty( $template ) ) {
-						$attr['data-lightbox-description'] = FooGallery_Pro_Advanced_Captions::build_custom_caption( $template, $foogallery_attachment );
+						$attr['data-lightbox-description'] = foogallery_sanitize_html( FooGallery_Pro_Advanced_Captions::build_custom_caption( $template, $foogallery_attachment ) );
 					}
 				}
 			}
