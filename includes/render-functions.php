@@ -225,9 +225,9 @@ function foogallery_attachment_html_anchor( $foogallery_attachment, $args = arra
  * @return array|bool
  */
 function foogallery_build_attachment_html_caption( &$foogallery_attachment, $args = array() ) {
-	$captions = apply_filters( 'foogallery_build_attachment_html_caption_custom', false, $foogallery_attachment, $args);
 
-	$set_attachment_captions = false;
+	//allow for custom captions to be set
+	$captions = apply_filters( 'foogallery_build_attachment_html_caption_custom', false, $foogallery_attachment, $args);
 
 	if ( false === $captions ) {
 
@@ -304,8 +304,6 @@ function foogallery_build_attachment_html_caption( &$foogallery_attachment, $arg
         } else {
             $captions = false;
         }
-    } else {
-		$set_attachment_captions = true;
     }
 
 	//extra sanitization for HTML captions
@@ -314,20 +312,6 @@ function foogallery_build_attachment_html_caption( &$foogallery_attachment, $arg
 	}
 	if ( !empty( $captions['desc']) ) {
 		$captions['desc'] = foogallery_sanitize_html( $captions['desc'] );
-	}
-
-	//custom captions were set, so we need to update the attachment object
-	if ( $set_attachment_captions ) {
-		if ( isset( $captions['title']) ) {
-			$foogallery_attachment->caption = $captions['title'];
-		} else {
-			$foogallery_attachment->caption = '';
-		}
-		if ( isset( $captions['desc'] ) ) {
-			$foogallery_attachment->description = $captions['desc'];
-		} else {
-			$foogallery_attachment->description = '';
-		}
 	}
 
 	return apply_filters( 'foogallery_build_attachment_html_caption', $captions, $foogallery_attachment, $args );

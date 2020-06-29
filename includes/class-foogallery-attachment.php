@@ -45,8 +45,8 @@ if ( ! class_exists( 'FooGalleryAttachment' ) ) {
 			$this->_post = $post;
 			$this->ID = $post->ID;
 			$this->title = trim( $post->post_title );
-			$this->caption = foogallery_get_caption_title_for_attachment( $post );
-			$this->description = foogallery_get_caption_desc_for_attachment( $post );
+			$this->caption = trim( $post->post_excerpt );
+			$this->description = trim( $post->post_content );
 			$this->alt = trim( get_post_meta( $this->ID, '_wp_attachment_image_alt', true ) );
 			$this->custom_url = get_post_meta( $this->ID, '_foogallery_custom_url', true );
 			$this->custom_target = get_post_meta( $this->ID, '_foogallery_custom_target', true );

@@ -9533,8 +9533,8 @@
 			self.height = parseInt(self.$image.attr("height")) || self.height;
 			self.title = self.$image.attr("title") || self.title;
 			self.alt = self.$image.attr("alt") || self.alt;
-			self.caption = data.title || data.captionTitle || self.caption || self.title;
-			self.description = data.description || data.captionDesc || self.description || self.alt;
+			self.caption = data.title || data.captionTitle || self.caption;
+			self.description = data.description || data.captionDesc || self.description;
 			self.noLightbox = self.$anchor.hasClass(cls.noLightbox);
 			self.panelHide = self.$anchor.hasClass(cls.panelHide);
 			if (_is.exif(data.exif)){
@@ -11281,28 +11281,20 @@
 		},
 		fromHash: function(hash){
 			var self = this, opt = self.tmpl.state.opt;
-			return hash.indexOf(opt.arraySeparator) === -1
-				? [hash.split(opt.array).map(function(part){ return decodeURIComponent(part.replace(/\+/g, '%20')); })]
-				: hash.split(opt.arraySeparator).map(function(arr){
-					return _is.empty(arr) ? [] : arr.split(opt.array).map(function(part){
-						return decodeURIComponent(part.replace(/\+/g, '%20'));
-					})
+			return hash.split(opt.arraySeparator).map(function(arr){
+				return _is.empty(arr) ? [] : arr.split(opt.array).map(function(part){
+					return decodeURIComponent(part);
 				});
+			});
 		},
 		toHash: function(value){
 			var self = this, opt = self.tmpl.state.opt, hash = null;
 			if (_is.array(value)){
-				if (_is.array(value[0])){
-					hash = $.map(value, function(tags){
-						return $.map(tags, function(tag){
-							return encodeURIComponent(tag);
-						}).join(opt.array);
-					}).join(opt.arraySeparator);
-				} else {
-					hash = $.map(value, function(tag){
-						return encodeURIComponent(tag);
-					}).join(opt.array);
-				}
+				hash = $.map(value, function(tags){
+					return (_is.array(tags) ? $.map(tags, function(tag){
+						return _is.undef(tag) ? "" : encodeURIComponent(tag);
+					}) : []).join(opt.array);
+				}).join(opt.arraySeparator);
 			}
 			return _is.empty(hash) ? null : hash;
 		},
@@ -13007,7 +12999,8 @@
             this.panel.$el.removeClass(this.panel.cls.maximized).attr({
                 'role': null,
                 'aria-modal': null
-            }).insertBefore(this.$placeholder).focus();
+            }).insertBefore(this.$placeholder);
+            if (this.panel.isInline) this.panel.$el.focus();
             this.$placeholder.detach();
             if (this.isCreated) this.$el.attr("aria-pressed", false);
             this.panel.releaseFocus();
@@ -14066,17 +14059,47 @@
             self.cls = media.cls.caption;
             self.sel = media.sel.caption;
             self.$el = null;
+            self.title = null;
+            self.description = null;
             self.isCreated = false;
             self.isAttached = false;
             self.hasTitle = false;
             self.hasDescription = false;
             self.hasExif = false;
+            self.init(media.item);
         },
         canLoad: function(){
-            this.hasTitle = !_is.empty(this.media.item.caption);
-            this.hasDescription = !_is.empty(this.media.item.description);
-            this.hasExif = this.media.item.hasExif && $.inArray(this.opt.exif, ["auto","full","partial","minimal"]) !== -1;
             return this.hasTitle || this.hasDescription || this.hasExif;
+        },
+        init: function(item){
+            if (!(item instanceof _.Item)) return;
+            var self = this, title, desc, supplied = false;
+            if (item.isCreated){
+                var data = item.$anchor.data() || {};
+                title = _is.string(data.lightboxTitle);
+                desc = _is.string(data.lightboxDescription);
+                if (title || desc){
+                    supplied = true;
+                    self.title = title ? data.lightboxTitle : "";
+                    self.description = desc ? data.lightboxDescription : "";
+                }
+            } else {
+                var attr = item.attr.anchor;
+                title = _is.string(attr["data-lightbox-title"]);
+                desc = _is.string(attr["data-lightbox-description"]);
+                if (title || desc){
+                    supplied = true;
+                    self.title = title ? attr["data-lightbox-title"] : "";
+                    self.description = desc ? attr["data-lightbox-description"] : "";
+                }
+            }
+            if (!supplied){
+                self.title = item.caption;
+                self.description = item.description;
+            }
+            self.hasTitle = !_is.empty(self.title);
+            self.hasDescription = !_is.empty(self.description);
+            self.hasExif = item.hasExif && $.inArray(self.opt.exif, ["auto","full","partial","minimal"]) !== -1;
         },
         create: function(){
             if (!this.isCreated){
@@ -14093,10 +14116,10 @@
         doCreate: function(){
             this.$el = $("<div/>").addClass(this.cls.elem);
             if (this.hasTitle){
-                this.$el.append($("<div/>").addClass(this.cls.title).html(this.media.item.caption));
+                this.$el.append($("<div/>").addClass(this.cls.title).html(this.title));
             }
             if (this.hasDescription){
-                this.$el.append($("<div/>").addClass(this.cls.description).html(this.media.item.description));
+                this.$el.append($("<div/>").addClass(this.cls.description).html(this.description));
             }
             if (this.hasExif){
                 var exif = this.media.item.exif, $exif = $("<div/>", {"class": this.cls.exif.elem}).addClass(this.cls.exif[this.opt.exif]);
