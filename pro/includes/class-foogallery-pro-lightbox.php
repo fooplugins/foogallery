@@ -281,7 +281,7 @@ if ( ! class_exists( 'FooGallery_Pro_Lightbox' ) ) {
 			$field[] = array(
 				'id'       => 'lightbox_thumbs',
 				'title'    => __( 'Thumbnail Strip', 'foogallery' ),
-				'desc'     => __( 'You can enable or disable thumbnails within the lightbox.', 'foogallery' ),
+				'desc'     => __( 'You can change the position of the thumbnails, or hide them completely.', 'foogallery' ),
 				'section'  => $section,
 				'subsection' => array( 'lightbox-thumbnails' => __( 'Thumbnails', 'foogallery' ) ),
 				'spacer'   => '<span class="spacer"></span>',
