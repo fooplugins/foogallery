@@ -1,24 +1,26 @@
-=== WordPress Gallery Plugin - FooGallery ===
+=== FooGallery - Responsive Photo and Image Gallery for WordPress ===
 Contributors: bradvin, steveush, fooplugins
 Donate link: http://fooplugins.com
-Tags: gallery, image gallery, wordpress gallery plugin, responsive gallery, best gallery plugin
+Tags: gallery, image gallery, photo gallery, responsive gallery, wordpress gallery plugin, best gallery plugin, albums, media gallery, video gallery, lightbox
 Requires at least: 3.9
-Tested up to: 5.4.1
+Tested up to: 5.4.2
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-FooGallery is an easy-to-use WordPress gallery plugin, with stunning gallery layouts. It is also responsive, retina-ready and supports lazy loading for lightning fast photo galleries.
+FooGallery is a powerful, responsive photo gallery plugin. Stunning gallery layouts with advanced settings for complete customization and control.
 
 == Description ==
 
-FooGallery is an easy-to-use WordPress gallery plugin, with stunning gallery layouts. It is also responsive, retina-ready and supports lazy loading for lightning fast photo galleries.
+Make gallery management in WordPress great again! With FooGallery you can easily add a stunning photo gallery to your website in minutes.
 
-Live previews are available while creating a gallery, and also within the Gutenberg block editor with our FooGallery Block. FooGallery was built to be highly configurable and extendable for developers or freelancers.
+Easy-to-use with a choice of stunning gallery layouts. Responsive, retina-ready and supports lazy loading for lightning fast page loads.
 
-We have done the research and compared the best free gallery plugins out there, and we know that the free version of FooGallery is the best gallery plugin available!
+Live gallery previews available in the WordPress dashboard, while editing your gallery, and also within the Gutenberg block editor.
 
-[View the FooGallery Homepage](http://fooplugins.com/foogallery)
+FooGallery was built to be highly configurable and extendable for developers or freelancers.
+
+[Visit the FooGallery Homepage](http://fooplugins.com/foogallery)
 
 **Features**
 
@@ -60,10 +62,10 @@ We have done the research and compared the best free gallery plugins out there, 
     *   Grid gallery template - [demo](https://fooplugins.com/foogallery/wordpress-grid-gallery/)
     *	Slider gallery template - [demo](https://fooplugins.com/foogallery/wordpress-slider-gallery/)
 *   Video Support - [demo](https://fooplugins.com/foogallery/wordpress-video-gallery/)
-*	Filtered Galleries using Media Tags or Categories - [demo](https://fooplugins.com/foogallery/wordpress-filtered-gallery/)
+*	Filtered Image Gallery using Media Tags or Categories - [demo](https://fooplugins.com/foogallery/wordpress-filtered-gallery/)
 *	Media tags and media category management for attachments
 *   PRO image and media lightbox built in! [demo](https://fooplugins.com/foogallery/foogallery-pro-lightbox/)
-*	Dynamic Galleries (load galleries from other sources):
+*	Dynamic Galleries (load images from other sources):
 	*	Load from a folder on the server
 	*	Load from a collection from Adobe Lightroom (using WP/LR Sync)
 	*	Load all attachments with Media Tags
@@ -75,7 +77,7 @@ We have done the research and compared the best free gallery plugins out there, 
 *   12 CSS thumbnail filters (Instagram) - [demo](https://fooplugins.com/foogallery/thumbnail-filters/)
 *   Numbered pagination - [demo](https://fooplugins.com/foogallery/gallery-pagination/#numbered)
 *   "Load More" pagination - [demo](https://fooplugins.com/foogallery/gallery-pagination/#load-more)
-*   Infinite scroll galleries - [demo](https://fooplugins.com/foogallery/gallery-pagination/#infinite-scroll)
+*   Infinite scroll image gallery - [demo](https://fooplugins.com/foogallery/gallery-pagination/#infinite-scroll)
 *   Animated Loaded Effects - [demo](https://fooplugins.com/foogallery/animated-loaded-effects/)
 *   Bulk Copy Gallery Settings - [more info](https://fooplugins.com/bulk-copy-foogallery-pro/)
 *   More on the way!
@@ -116,11 +118,7 @@ Albums are built in as an extension. Simply head over to the extensions page and
 
 **Built For Developers**
 
-FooGallery was designed to be the most developer-friendly gallery plugin available for WordPress. It was also built on top of a solid extension framework, which means different functionality is separated out into different areas in the codebase. It also means the core plugin is lightweight, but still allowing for the most flexibility.
-
-**Contribute**
-
-FooGallery is hosted on [GitHub](https://github.com/fooplugins/foogallery).
+FooGallery was designed to be the most developer-friendly image gallery plugin available for WordPress. It was also built on top of a solid extension framework, which means different functionality is separated out into different areas in the codebase. It also means the core plugin is lightweight, but still allowing for the most flexibility.
 
 == Installation ==
 
@@ -143,7 +141,7 @@ We can help you get it working, by contacting our support.
 = I have created a gallery in the backend, but when I look at it on the frontend, it does not show correctly. =
 
 Sometimes, there are issues when the theme does not follow WordPress best practices.
-In order for FooGallery to function properly, the theme needs to:
+In order for FooGallery to function properly, the theme needs to have:
     * A call to wp_head(); in the header.php file.
     * A call to wp_footer(); in the footer.php file.
 
@@ -205,6 +203,31 @@ Simply go to the FooGallery extensions page and activate the Albums extension. I
 Update now to get all the latest features, bug fixes and improvements!
 
 == Changelog ==
+
+= 1.9.28 =
+Date Updated : 2020-07-18
+* Fix : Fix for some installs showing thumbnail generation error
+* Update : better mobile support for admin settings tabs
+* Update : FooGallery client side 1.4.16
+[//]: # fs_premium_only_begin
+* New : Self hosted videos now support .OGV files
+* Fix : Fix for Slider PRO template settings
+* Fix : Fix for some Vimeo videos importing small thumbnails
+[//]: # fs_premium_only_end
+
+= 1.9.26 =
+Date Updated : 2020-06-29
+* Fix : Fix for All-In-One album hidden items still clickable
+* Fix : Fix for fatal error on some versions of PHP
+* Update : FooGallery client side 1.4.15
+[//]: # fs_premium_only_begin
+* New : Multi-level filtering support added
+* New : Override Lightbox captions to be different from thumbnail captions
+* New : Lightbox captions can use custom caption template
+* Update : Changed lightbox tabs to be on multiple levels
+* Fix : Fix for low resolution thumbnails importing when importing Vimeo videos
+* Fix : Fix for scroll-jump problem in Lightbox
+[//]: # fs_premium_only_end
 
 = 1.9.25 =
 Date Updated : 2020-06-04

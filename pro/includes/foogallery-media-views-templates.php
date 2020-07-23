@@ -57,14 +57,14 @@
 			<ul>
 				<li>http(s)://vimeo.com/[VIDEO_ID]</li>
 				<li>http(s)://player.vimeo.com/video/[VIDEO_ID]</li>
-				<li>http(s)://vimeo.com/album/[ALBUM_ID]/video/[VIDEO_ID]</li>
+                <li>http(s)://vimeo.com/showcase/[SHOWCASE_ID]/video/[VIDEO_ID]</li>
 				<li>http(s)://vimeo.com/channels/[CHANNEL_ID]/[VIDEO_ID]</li>
 			</ul>
 
-			<h4>Albums</h4>
-			<p>Import an entire album or a subselection of its' videos by entering its' url into the search input. The following URL format is supported:</p>
+			<h4>Showcases</h4>
+			<p>Import an entire showcase or a subselection of its' videos by entering its' url into the search input. The following URL formats are supported:</p>
 			<ul>
-				<li>http(s)://vimeo.com/album/[ALBUM_ID]</li>
+                <li>http(s)://vimeo.com/showcase/[SHOWCASE_ID]</li>
 			</ul>
 
 			<h4>Channels</h4>
@@ -81,7 +81,7 @@
 			</ul>
 
 			<h4>Access Token</h4>
-			<p>If you want to import multiple videos from an album, channel or user then you will need an API access token. You can generate one by following the basic instructions below or take a look at our <a href="https://fooplugins.link/vimeo-access-token" target="_blank">documentation</a> for more detailed steps.</p>
+			<p>If you want to import multiple videos from an album, showcase, channel or user then you will need an API access token. You can generate one by following the basic instructions below or take a look at our <a href="https://fooplugins.link/vimeo-access-token" target="_blank">documentation</a> for more detailed steps.</p>
 			<ul>
 				<li>
 					Visit <a href="https://developer.vimeo.com/apps/new" target="_blank">https://developer.vimeo.com/apps/new</a> and fill in the form. If you are not signed in you should be prompted to using your Vimeo account.
@@ -155,7 +155,7 @@
 		<h2><?php _e("Enter a supported URL or a YouTube search term, playlist or video ID in the input above.", "foogallery") ?></h2>
 		<p><?php _e("or", "foogallery") ?></p>
 		<button type="button" class="button button-hero fgi-select"
-						data-options='{"type": "video/mp4,video/ogg,video/webm", "title":"<?php _e("Select a video", "foogallery") ?>", "button":"<?php _e("Select Video", "foogallery") ?>"}'>
+						data-options='{"type": "video/mp4,video/ogg,video/ogv,video/webm", "title":"<?php _e("Select a video", "foogallery") ?>", "button":"<?php _e("Select Video", "foogallery") ?>"}'>
 			<?php _e("Choose a video from your Media Library", "foogallery") ?>
 		</button>
 		<p><small><?php printf(__("See the %s for more information.", "foogallery"), $help) ?></small></p>
@@ -223,26 +223,26 @@
 			<label class="fgi-row">
 				<span class="fgi-col-label"><?php _e("URL(s)", "foogallery") ?> *</span>
 				<span class="fgi-col-input">
-					<# var first = true; _(data.urls).each(function(url, type){ #>
+					<# var first = true; _(data.urls).each(function(url, name){ var type = data.types[name]; #>
 						<span class="fgi-browse">
 							<span class="fgi-browse-inner">
 								<span class="fgi-browse-col-type">
-									<span>{{type}}</span>
+									<span>{{name}}</span>
 								</span>
 								<span class="fgi-browse-col-input">
 									<# if (first){ first = false; #>
-									<input type="text" name="urls[{{type}}]" value="{{url}}" spellcheck="false" data-type="{{type}}"
-												 data-messages='{"required":"<?php _e("You must supply at least one URL.", "foogallery") ?>","pattern":"<?php printf(__("Please enter a .%s file.", "foogallery"), "{{type}}") ?>"}'
-												 data-pattern="(?:\/|=)(?<name>[^\/]+?)\.(?<ext>{{type}})(?:$|\?|&|#|,)" data-required="[name^='urls[']"/>
+									<input type="text" name="urls[{{name}}]" value="{{url}}" spellcheck="false" data-type="{{name}}"
+												 data-messages='{"required":"<?php _e("You must supply at least one URL.", "foogallery") ?>","pattern":"<?php printf(__("Please enter a %s file.", "foogallery"), "{{type.text}}") ?>"}'
+												 data-pattern="(?:\/|=)(?<name>[^\/]+?)\.(?<ext>{{type.pattern}})(?:$|\?|&|#|,)" data-required="[name^='urls[']"/>
 									<# } else { #>
-									<input type="text" name="urls[{{type}}]" value="{{url}}" spellcheck="false" data-type="{{type}}"
-												 data-messages='{"pattern":"<?php printf(__("Please enter a .%s file.", "foogallery"), "{{type}}") ?>"}'
-												 data-pattern="(?:\/|=)(?<name>[^\/]+?)\.(?<ext>{{type}})(?:$|\?|&|#|,)"/>
+									<input type="text" name="urls[{{name}}]" value="{{url}}" spellcheck="false" data-type="{{name}}"
+												 data-messages='{"pattern":"<?php printf(__("Please enter a %s file.", "foogallery"), "{{type.text}}") ?>"}'
+												 data-pattern="(?:\/|=)(?<name>[^\/]+?)\.(?<ext>{{type.pattern}})(?:$|\?|&|#|,)"/>
 									<# } #>
 								</span>
 								<span class="fgi-browse-col-button">
 									<button type="button" class="button button-secondary"
-													data-options='{"type": "video/{{type}}", "title":"<?php printf(__("Select a %s video", "foogallery"), "{{type}}") ?>", "button":"<?php _e("Select Video", "foogallery") ?>"}'
+													data-options='{"type": {{type.mime}}, "title":"<?php printf(__("Select a %s video", "foogallery"), "{{type.text}}") ?>", "button":"<?php _e("Select Video", "foogallery") ?>"}'
 									><?php _e("Select", "foogallery") ?></button>
 								</span>
 							</span>
@@ -338,7 +338,7 @@
 <script type="text/html" id="tmpl-fgi-album-notification">
 
 <?php
-	$import_album = sprintf('<a href="#import-album">%s</a>', __("import the entire album", "foogallery"));
+	$import_album = sprintf('<a href="#import-album">%s</a>', __("import the entire showcase", "foogallery"));
 ?>
 
 	<# if (data.total === 1){ #>

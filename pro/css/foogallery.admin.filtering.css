@@ -1,0 +1,184 @@
+.foogallery-multi-filtering-modal-title {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 50px;
+    z-index: 200;
+    padding-left: 16px;
+    border-bottom: 1px solid #ddd;
+}
+
+    .foogallery-multi-filtering-modal-title h1 {
+        display: inline-block;
+        margin-right: 15px;
+    }
+
+.foogallery-multi-filtering-modal-title select,
+.foogallery-multi-filtering-modal-title a.foogallery-multi-filtering-modal-reload.button {
+    vertical-align: top !important;
+    margin-top: 10px;
+    margin-right: 10px;
+}
+
+.foogallery-multi-filtering-modal-sidebar {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 500px;
+    z-index: 75;
+    background: #f3f3f3;
+    overflow: auto;
+    padding: 0;
+    -webkit-overflow-scrolling: touch;
+}
+
+    .foogallery-multi-filtering-modal-sidebar-inner {
+        padding: 16px;
+    }
+        .foogallery-multi-filtering-modal-sidebar-inner h2 {
+            font-size: 1.5em;
+            margin-bottom: 5px;
+            margin-top: 5px;
+        }
+
+        .foogallery-multi-filtering-modal-sidebar-inner h3 {
+            margin-bottom: 5px;
+        }
+
+        .foogallery-multi-filtering-modal-message {
+            padding: 5px 10px;
+        }
+
+        .foogallery-multi-filtering-modal-action-clear {
+            display: none;
+        }
+
+        .foogallery-multi-filtering-modal-actions {
+
+        }
+
+            .foogallery-multi-filtering-modal-actions button.button {
+                margin-right: 5px;
+            }
+
+                .foogallery-multi-filtering-modal-actions div.spinner {
+                    float: none;
+                    margin: 5px;
+                }
+
+            .foogallery-multi-filtering-modal-action-message {
+                display: inline-block;
+                padding: 5px;
+            }
+
+        .foogallery-multi-filtering-modal-sidebar-inner hr {
+            margin: 15px 0;
+        }
+
+        .foogallery-multi-filtering-select-term.button.button-small {
+            margin-right: 5px;
+            margin-bottom: 5px;
+            line-height: 1.8em;
+            padding: 2px 8px 0 8px;
+        }
+            .foogallery-multi-filtering-select-term.button.button-small.button-primary {
+                background-color: #00a0d2;
+            }
+
+.foogallery-multi-filtering-modal-container {
+    position: absolute;
+    top: 51px;
+    padding: 0;
+    right: 0;
+    left: 0;
+    bottom: 60px;
+    overflow: hidden;
+    outline: 0;
+}
+
+    .foogallery-multi-filtering-modal-container .spinner {
+        float: left;
+        margin: 15px;
+    }
+
+    .foogallery-multi-filtering-modal-content {
+        position: absolute;
+        top: 0;
+        padding: 0;
+        right: 500px;
+        left: 0;
+        bottom: 0;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+
+        .foogallery-multi-filtering-modal-content-inner {
+            margin: 0;
+            padding: 18px;
+        }
+
+            .foogallery-multi-filtering-modal-content-level-template {
+                display: none;
+            }
+
+            .foogallery-multi-filtering-modal-content-level {
+                margin-bottom: 20px;
+            }
+
+            .foogallery-multi-filtering-modal-content-level h3 {
+                margin-top: 0;
+            }
+
+                .foogallery-multi-filtering-modal-content-level h3 .foogallery-multi-filtering-modal-content-level-remove {
+                    position: absolute;
+                    text-decoration: none;
+                    background-color: #ccc;
+                    border-radius: 50%;
+                    width: 15px;
+                    height: 15px;
+                    margin-left: 5px;
+                    margin-top: 2px;
+                }
+
+                    .foogallery-multi-filtering-modal-content-level h3 .foogallery-multi-filtering-modal-content-level-remove .dashicons {
+                        width: 15px;
+                        height: 15px;
+                        font-size: 15px;
+                    }
+
+            .foogallery-multi-filtering-modal-content-terms {
+                margin-top: 18px;
+                margin-bottom: 18px;
+                clear: both;
+            }
+
+                .foogallery-multi-filtering-modal-content li {
+                    float: left;
+                    position: relative;
+                }
+
+.foogallery-multi-filtering-modal-toolbar {
+    position: absolute;
+    right: 0;
+    left: 0;
+    z-index: 100;
+    bottom: 0;
+    height: 60px;
+    border-top: 1px solid #ddd;
+}
+
+    .foogallery-multi-filtering-modal-toolbar-inner {
+        padding: 16px;
+        overflow: hidden;
+    }
+
+        .foogallery-datasource-modal-container-inner .spinner {
+            float: left;
+        }
+
+.foogallery-multi-filtering-modal-close {
+    float: right;
+    margin-left: 5px !important;
+}

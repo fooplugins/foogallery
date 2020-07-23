@@ -120,8 +120,8 @@ if ( !class_exists("FooGallery_Pro_Video_Vimeo") ){
 			if ($this->handles($url)) {
 				$matches = array();
 
-				// check if we are dealing with an album
-				if (preg_match('/vimeo\.com\/album\/(?<id>[0-9]*?)$/i', $url, $matches)) {
+				// check if we are dealing with an album/showcase
+				if (preg_match('/vimeo\.com\/(album|showcase)\/(?<id>[0-9]*?)$/i', $url, $matches)) {
 					// for albums the id is the last part of the url
 					return $this->fetch_stream("album", $matches["id"], $page, $offset);
 				}
@@ -150,8 +150,10 @@ if ( !class_exists("FooGallery_Pro_Video_Vimeo") ){
 				return $this->error_response("Invalid video id supplied.");
 			}
 
+			$vimeo_url = apply_filters( 'foogallery_video_json_get_vimeo_url', 'https://vimeo.com/api/oembed.json?width=1920&height=1080&url=' );
+
 			// we have as valid an id as we can hope for until we make the actual request so request it
-			$url = "https://vimeo.com/api/oembed.json?url=" . urlencode("https://vimeo.com/" . $id);
+			$url =  $vimeo_url . urlencode( 'https://vimeo.com/' . $id );
 
 			//filter the args so we can change per site if needed
 			$args = apply_filters( 'foogallery_video_json_get_vimeo', array( "headers" => array(  "Referer" => get_site_url() ) ) );
