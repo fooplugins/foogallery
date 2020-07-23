@@ -58,6 +58,9 @@
 			.addClass('foogallery-settings-container-active')
 			.find(':input').removeAttr('disabled');
 
+		//ensure the first tab is clicked
+		$settingsToShow.find('.foogallery-vertical-tab:first').click();
+
 		//include a preview CSS if possible
 		FOOGALLERY.includePreviewCss();
 

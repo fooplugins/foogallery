@@ -32,6 +32,24 @@ if ( !class_exists( 'FooGallery_Slider_Gallery_Template' ) ) {
 			add_filter( 'foogallery_gallery_template_arguments-slider', array( $this, 'build_gallery_template_arguments' ) );
 
 			add_filter( 'foogallery_build_class_attribute', array( $this, 'remove_classes' ), 99, 2 );
+
+			//set the settings icon for lightbox
+			add_filter( 'foogallery_gallery_settings_metabox_section_icon', array( $this, 'add_section_icons' ) );
+		}
+
+		/**
+		 * Returns the Dashicon that can be used in the settings tabs
+		 *
+		 * @param $section_slug
+		 *
+		 * @return string
+		 */
+		function add_section_icons( $section_slug ) {
+			if ( 'slider' === $section_slug ) {
+				return 'dashicons-align-left';
+			}
+
+			return $section_slug;
 		}
 
 		/**
@@ -59,7 +77,8 @@ if ( !class_exists( 'FooGallery_Slider_Gallery_Template' ) ) {
 						'id'      => 'slider_help',
 						'title'   => __('Help', 'foogallery'),
 						'desc'    => __( 'You can change the layout of the slider by changing the position of the thumbnails.', 'foogallery' ),
-						'section' => __( 'General', 'foogallery' ),
+						'section' => __( 'Slider', 'foogallery' ),
+						'subsection' => array( 'lightbox-general' => __( 'General', 'foogallery' ) ),
 						'type'    => 'help',
 					),
 				)
@@ -112,10 +131,16 @@ if ( !class_exists( 'FooGallery_Slider_Gallery_Template' ) ) {
 			$fields_to_remove[] = 'video_size_help';
 			$fields_to_remove[] = 'video_size';
 			$fields_to_remove[] = 'lightbox_theme';
+			$fields_to_remove[] = 'lightbox_no_scrollbars';
+			$fields_to_remove[] = 'lightbox_caption_override';
 
 			$indexes_to_remove = array();
 
 			foreach ($fields as $key => &$field) {
+				if ( $field['section'] === __( 'Panel', 'foogallery' ) ) {
+					$field['section'] = __( 'Slider', 'foogallery' );
+				}
+
 				if ( 'hover_effect_preset' === $field['id'] ) {
 					$field['default'] = 'fg-custom';
 					$field['choices'] = array(
@@ -131,56 +156,56 @@ if ( !class_exists( 'FooGallery_Slider_Gallery_Template' ) ) {
 					$field['title'] = __( 'Autoplay', 'foogallery' );
 					$field['desc'] = __( 'Try to autoplay the video when selected. This will only work with videos hosted on Youtube or Vimeo.', 'foogallery' );
 				} else if ( 'lightbox_fit_media' === $field['id'] ) {
-					$field['section'] = __( 'General', 'foogallery' );
+					//$field['section'] = __( 'General', 'foogallery' );
 					$field['default'] = 'yes';
 				} else if ( 'lightbox_buttons_display' === $field['id'] ) {
-					$field['section'] = __( 'General', 'foogallery' );
+					//$field['section'] = __( 'General', 'foogallery' );
 					$field['default'] = 'yes';
 				} else if ( 'lightbox_thumbs' === $field['id'] ) {
 					$field['title'] = __( 'Thumbnails', 'foogallery' );
-					$field['section'] = __( 'General', 'foogallery' );
+					//$field['section'] = __( 'General', 'foogallery' );
 					$field['default'] = 'right';
 				} else if ( 'lightbox_thumbs_captions' === $field['id'] ) {
 					$field['title'] = __( 'Thumbnail Captions', 'foogallery' );
-					$field['section'] = __( 'General', 'foogallery' );
+					//$field['section'] = __( 'General', 'foogallery' );
 					$field['default'] = 'yes';
 				} else if ( 'lightbox_info_position' === $field['id'] ) {
-					$field['section'] = __( 'General', 'foogallery' );
+					//$field['section'] = __( 'General', 'foogallery' );
 					$field['default'] = 'top';
 				} else if ( 'lightbox_theme' === $field['id'] ) {
-					$field['section'] = __( 'Appearance', 'foogallery' );
+					//$field['section'] = __( 'Appearance', 'foogallery' );
 				} else if ( 'lightbox_button_theme' === $field['id'] ) {
-					$field['section'] = __( 'Appearance', 'foogallery' );
+					//$field['section'] = __( 'Appearance', 'foogallery' );
 				} else if ( 'lightbox_custom_button_theme' === $field['id'] ) {
-					$field['section'] = __( 'Appearance', 'foogallery' );
+					//$field['section'] = __( 'Appearance', 'foogallery' );
 				} else if ( 'lightbox_button_highlight' === $field['id'] ) {
-					$field['section'] = __( 'Appearance', 'foogallery' );
+					//$field['section'] = __( 'Appearance', 'foogallery' );
 				} else if ( 'lightbox_custom_button_highlight' === $field['id'] ) {
-					$field['section'] = __( 'Appearance', 'foogallery' );
+					//$field['section'] = __( 'Appearance', 'foogallery' );
 				} else if ( 'lightbox_hover_buttons' === $field['id'] ) {
-					$field['section'] = __( 'General', 'foogallery' );
+					//$field['section'] = __( 'General', 'foogallery' );
 					$field['default'] = 'yes';
 				} else if ( 'lightbox_transition' === $field['id'] ) {
-					$field['section'] = __( 'General', 'foogallery' );
+					//$field['section'] = __( 'General', 'foogallery' );
 				} else if ( 'lightbox_auto_progress' === $field['id'] ) {
-					$field['section'] = __( 'General', 'foogallery' );
+					//$field['section'] = __( 'General', 'foogallery' );
 				} else if ( 'lightbox_auto_progress_seconds' === $field['id'] ) {
-					$field['section'] = __( 'General', 'foogallery' );
+					//$field['section'] = __( 'General', 'foogallery' );
 				} else if ( 'lightbox_no_scrollbars' === $field['id'] ) {
-					$field['section'] = __( 'General', 'foogallery' );
+					//$field['section'] = __( 'General', 'foogallery' );
 				} else if ( 'lightbox_info_overlay' === $field['id'] ) {
-					$field['section'] = __( 'General', 'foogallery' );
+					//$field['section'] = __( 'General', 'foogallery' );
 				} else if ( 'lightbox_thumbs_bestfit' === $field['id'] ) {
-					$field['section'] = __( 'General', 'foogallery' );
+					//$field['section'] = __( 'General', 'foogallery' );
 					$field['default'] = 'yes';
 				} else if ( 'lightbox_thumbs_size' === $field['id'] ) {
-					$field['section'] = __( 'General', 'foogallery' );
+					//$field['section'] = __( 'General', 'foogallery' );
 				} else if ( 'lightbox_show_maximize_button' === $field['id'] ) {
-					$field['section'] = __( 'General', 'foogallery' );
+					//$field['section'] = __( 'General', 'foogallery' );
 				} else if ( 'lightbox_show_fullscreen_button' === $field['id'] ) {
-					$field['section'] = __( 'General', 'foogallery' );
+					//$field['section'] = __( 'General', 'foogallery' );
 				} else if ( 'lightbox_show_caption_button' === $field['id'] ) {
-					$field['section'] = __( 'General', 'foogallery' );
+					//$field['section'] = __( 'General', 'foogallery' );
 				}
 
 

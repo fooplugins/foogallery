@@ -155,7 +155,7 @@
 		<h2><?php _e("Enter a supported URL or a YouTube search term, playlist or video ID in the input above.", "foogallery") ?></h2>
 		<p><?php _e("or", "foogallery") ?></p>
 		<button type="button" class="button button-hero fgi-select"
-						data-options='{"type": "video/mp4,video/ogg,video/webm", "title":"<?php _e("Select a video", "foogallery") ?>", "button":"<?php _e("Select Video", "foogallery") ?>"}'>
+						data-options='{"type": "video/mp4,video/ogg,video/ogv,video/webm", "title":"<?php _e("Select a video", "foogallery") ?>", "button":"<?php _e("Select Video", "foogallery") ?>"}'>
 			<?php _e("Choose a video from your Media Library", "foogallery") ?>
 		</button>
 		<p><small><?php printf(__("See the %s for more information.", "foogallery"), $help) ?></small></p>
@@ -223,26 +223,26 @@
 			<label class="fgi-row">
 				<span class="fgi-col-label"><?php _e("URL(s)", "foogallery") ?> *</span>
 				<span class="fgi-col-input">
-					<# var first = true; _(data.urls).each(function(url, type){ #>
+					<# var first = true; _(data.urls).each(function(url, name){ var type = data.types[name]; #>
 						<span class="fgi-browse">
 							<span class="fgi-browse-inner">
 								<span class="fgi-browse-col-type">
-									<span>{{type}}</span>
+									<span>{{name}}</span>
 								</span>
 								<span class="fgi-browse-col-input">
 									<# if (first){ first = false; #>
-									<input type="text" name="urls[{{type}}]" value="{{url}}" spellcheck="false" data-type="{{type}}"
-												 data-messages='{"required":"<?php _e("You must supply at least one URL.", "foogallery") ?>","pattern":"<?php printf(__("Please enter a .%s file.", "foogallery"), "{{type}}") ?>"}'
-												 data-pattern="(?:\/|=)(?<name>[^\/]+?)\.(?<ext>{{type}})(?:$|\?|&|#|,)" data-required="[name^='urls[']"/>
+									<input type="text" name="urls[{{name}}]" value="{{url}}" spellcheck="false" data-type="{{name}}"
+												 data-messages='{"required":"<?php _e("You must supply at least one URL.", "foogallery") ?>","pattern":"<?php printf(__("Please enter a %s file.", "foogallery"), "{{type.text}}") ?>"}'
+												 data-pattern="(?:\/|=)(?<name>[^\/]+?)\.(?<ext>{{type.pattern}})(?:$|\?|&|#|,)" data-required="[name^='urls[']"/>
 									<# } else { #>
-									<input type="text" name="urls[{{type}}]" value="{{url}}" spellcheck="false" data-type="{{type}}"
-												 data-messages='{"pattern":"<?php printf(__("Please enter a .%s file.", "foogallery"), "{{type}}") ?>"}'
-												 data-pattern="(?:\/|=)(?<name>[^\/]+?)\.(?<ext>{{type}})(?:$|\?|&|#|,)"/>
+									<input type="text" name="urls[{{name}}]" value="{{url}}" spellcheck="false" data-type="{{name}}"
+												 data-messages='{"pattern":"<?php printf(__("Please enter a %s file.", "foogallery"), "{{type.text}}") ?>"}'
+												 data-pattern="(?:\/|=)(?<name>[^\/]+?)\.(?<ext>{{type.pattern}})(?:$|\?|&|#|,)"/>
 									<# } #>
 								</span>
 								<span class="fgi-browse-col-button">
 									<button type="button" class="button button-secondary"
-													data-options='{"type": "video/{{type}}", "title":"<?php printf(__("Select a %s video", "foogallery"), "{{type}}") ?>", "button":"<?php _e("Select Video", "foogallery") ?>"}'
+													data-options='{"type": {{type.mime}}, "title":"<?php printf(__("Select a %s video", "foogallery"), "{{type.text}}") ?>", "button":"<?php _e("Select Video", "foogallery") ?>"}'
 									><?php _e("Select", "foogallery") ?></button>
 								</span>
 							</span>

@@ -196,15 +196,14 @@ if ( !class_exists( 'FooGallery_Thumbnails' ) ) {
 				$args         = array(
 					'post_type'        => 'attachment',
 					'post_mime_type'   => 'image',
-					'post_status'      => 'inherit',
-					'posts_per_page'   => 10,
-					'suppress_filters' => 1,
+					'post_status'      => 'any',
+					'numberposts'      => 10,
 					'orderby'          => 'date',
 					'order'            => 'ASC'
 				);
 				$query_images = new WP_Query( $args );
 				foreach ( $query_images->posts as $image ) {
-					$image_url = $image->guid;
+					$image_url = wp_get_attachment_url( $image->ID );
 
 					if ( $this->image_file_exists( $image_url ) ) {
 						return $image_url;
