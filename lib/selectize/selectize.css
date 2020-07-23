@@ -353,7 +353,7 @@
   color: #BBBBBB;
 }
 
-.selectize-control.loading:before {
+.media-modal-content .selectize-control.loading:before {
   content: "";
   position: absolute;
   display: inline;
@@ -367,7 +367,7 @@
   margin-left: -5px;
 }
 
-.selectize-control.loading .selectize-input {
+.media-modal-content .selectize-control.loading .selectize-input {
   background: transparent;
 }
 
