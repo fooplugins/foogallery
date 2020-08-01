@@ -351,7 +351,7 @@ if ( ! class_exists( 'FooGallery_Pro_Promotion' ) ) {
 		 * @return mixed
 		 */
 		function add_lightbox($lightboxes) {
-			$lightboxes['foogallery'] = __( 'FooGallery PRO Lightbox', 'foogallery' );
+			$lightboxes['foogallery'] = __( 'FooGallery PRO Lightbox (Not installed!)', 'foogallery' );
 			return $lightboxes;
 		}
 
@@ -418,7 +418,9 @@ if ( ! class_exists( 'FooGallery_Pro_Promotion' ) ) {
 					);
 					$foobox_free_html = ' <a href="' . $foobox_free_install_url . '" target="_blank">' . __( 'Install it now!', 'foogallery' ) . '</a>';
 
-					$lightbox_desc .= '<li><strong>' . __( 'FooBox Free', 'foogallery' ) . '</strong> - ' . __( 'Our free responsive lightbox that is just works.', 'foogallery' ) . $foobox_free_html . '</li>';
+					$foobox_free_info = __( 'Our free responsive lightbox that just works.', 'foogallery' ) . $foobox_free_html;
+
+					$lightbox_desc .= '<li><strong>' . __( 'FooBox Free', 'foogallery' ) . '</strong> - ' . $foobox_free_info . '</li>';
 				}
 
 				if ( !$foobox_pro_installed ) {
@@ -427,7 +429,8 @@ if ( ! class_exists( 'FooGallery_Pro_Promotion' ) ) {
 					$lightbox_desc .= '<li><strong>' . __( 'FooBox PRO', 'foogallery' ) . '</strong> - ' . __( 'The stand-alone PRO version of our Lightbox plugin with tons of extra features including social sharing.', 'foogallery' ) . $foobox_pro_html . '</li>';
 				}
 
-				$lightbox_desc .= '<li><strong>' . __( 'FooGallery PRO Lightbox', 'foogallery' ) . '</strong> - ' . __( 'Our built-in Lightbox plugin that comes with FooGallery PRO. Check out the Lightbox tab to see more details.', 'foogallery' ) . '</li>';
+				$foogallery_pro_lightbox_info = __( 'Our built-in Lightbox plugin that comes with FooGallery PRO. Check out the Lightbox tab to see more details.', 'foogallery' );
+				$lightbox_desc .= '<li><strong>' . __( 'FooGallery PRO Lightbox', 'foogallery' ) . '</strong> - ' . $foogallery_pro_lightbox_info . '</li>';
 
 				$lightbox_help_field = array(
 					array(
@@ -445,6 +448,42 @@ if ( ! class_exists( 'FooGallery_Pro_Promotion' ) ) {
 				);
 
 				array_splice( $fields, $position + 1, 0, $lightbox_help_field );
+
+				$lightbox_foogallery_help_field = array(
+					array(
+						'id'      => 'lightbox_promo_3',
+						'title'   => __( 'FooGallery PRO Lightbox', 'foogallery' ),
+						'desc'    => $foogallery_pro_lightbox_info,
+						'section' => __( 'General', 'foogallery' ),
+						'type'    => 'promo',
+						'row_data' => array(
+							'data-foogallery-hidden' 				   => true,
+							'data-foogallery-show-when-field'          => 'lightbox',
+							'data-foogallery-show-when-field-value'    => 'foogallery',
+						)
+					)
+				);
+
+				array_splice( $fields, $position + 2, 0, $lightbox_foogallery_help_field );
+
+				if ( !$foobox_free_installed ) {
+					$foobox_free_help_field = array(
+						array(
+							'id'       => 'lightbox_promo_4',
+							'title'    => __( 'FooBox Free Is Not Installed', 'foogallery' ),
+							'desc'     => '<strong>' . __( 'FooBox Free Lightbox', 'foogallery' ) . '</strong> - ' . $foobox_free_info,
+							'section'  => __( 'General', 'foogallery' ),
+							'type'     => 'help',
+							'row_data' => array(
+								'data-foogallery-hidden'                => true,
+								'data-foogallery-show-when-field'       => 'lightbox',
+								'data-foogallery-show-when-field-value' => 'foobox',
+							)
+						)
+					);
+
+					array_splice( $fields, $position + 3, 0, $foobox_free_help_field );
+				}
 			}
 
 			return $fields;
