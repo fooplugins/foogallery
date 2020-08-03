@@ -77,9 +77,9 @@ if ( ! class_exists( 'FooGallery_Pro_Lightbox' ) ) {
 
 			if ( !property_exists( $current_foogallery, 'lightbox' ) ) {
 				$template = foogallery_get_gallery_template( $current_foogallery->gallery_template );
-				$lightbox = '';
-				if ( $template && !array_key_exists( 'panel_support', $template ) ) {
-					$lightbox = foogallery_gallery_template_setting( 'lightbox', '' );
+				$lightbox = foogallery_gallery_template_setting( 'lightbox', '' );
+				if ( $template && isset( $template['panel_support'] ) && $template['panel_support'] ) {
+					$lightbox = 'foogallery';
 				}
 				$current_foogallery->lightbox = $lightbox;
 			}

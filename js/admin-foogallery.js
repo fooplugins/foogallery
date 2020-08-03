@@ -220,7 +220,14 @@
 
 	FOOGALLERY.initSettings = function() {
 		//move the template selector into the metabox heading
-        $('.foogallery-template-selector').appendTo( '#foogallery_settings .hndle span' ).removeClass('hidden');
+		var $metabox_heading = $('#foogallery_settings .hndle span');
+		//This check is done to accommodate a markup change in WP 5.5
+		if ( $metabox_heading.length === 0 ) {
+			$metabox_heading = $('#foogallery_settings .hndle');
+			$metabox_heading.addClass( 'foogallery-contains-template-selector' );
+		}
+
+        $('.foogallery-template-selector').appendTo( $metabox_heading ).removeClass('hidden');
 
 		//remove the loading spinner
 		$('.foogallery-gallery-items-metabox-title').remove();

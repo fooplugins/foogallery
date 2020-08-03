@@ -132,7 +132,7 @@ if ( !class_exists( 'FooGallery_Slider_Gallery_Template' ) ) {
 			$fields_to_remove[] = 'video_size';
 			$fields_to_remove[] = 'lightbox_theme';
 			$fields_to_remove[] = 'lightbox_no_scrollbars';
-			$fields_to_remove[] = 'lightbox_caption_override';
+			//$fields_to_remove[] = 'lightbox_caption_override';
 
 			$indexes_to_remove = array();
 
