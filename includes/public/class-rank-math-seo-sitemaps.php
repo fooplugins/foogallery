@@ -18,21 +18,25 @@ if ( ! class_exists( 'FooGallery_RankMath_Seo_Sitemap_Support' ) ) {
 
 			//get all the foogalleries used in the posts
 			$galleries = get_post_meta( $post_id, FOOGALLERY_META_POST_USAGE );
-			foreach ( $galleries as $gallery_id ) {
+			if ( is_array( $galleries ) ) {
+				foreach ( $galleries as $gallery_id ) {
 
-				//load each gallery
-				$gallery = FooGallery::get_by_id( $gallery_id );
+					//load each gallery
+					$gallery = FooGallery::get_by_id( $gallery_id );
 
-				if ( false === $gallery ) continue;
+					if ( false === $gallery ) {
+						continue;
+					}
 
-				//add each image to the sitemap image array
-				foreach ( $gallery->attachments() as $attachment ) {
-					$image = array(
-						'src'   => $attachment->url,
-						'title' => $attachment->caption,
-						'alt'   => $attachment->alt
-					);
-					$images[] = $image;
+					//add each image to the sitemap image array
+					foreach ( $gallery->attachments() as $attachment ) {
+						$image    = array(
+							'src'   => $attachment->url,
+							'title' => $attachment->caption,
+							'alt'   => $attachment->alt
+						);
+						$images[] = $image;
+					}
 				}
 			}
 
