@@ -1,9 +1,9 @@
-=== FooGallery - Responsive Photo and Image Gallery for WordPress ===
+=== FooGallery Image Gallery – Responsive Photo Gallery ===
 Contributors: bradvin, steveush, fooplugins
 Donate link: http://fooplugins.com
 Tags: gallery, image gallery, photo gallery, responsive gallery, wordpress gallery plugin, best gallery plugin, albums, media gallery, video gallery, lightbox
 Requires at least: 3.9
-Tested up to: 5.4.2
+Tested up to: 5.5
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -14,9 +14,9 @@ FooGallery is a powerful, responsive photo gallery plugin. Stunning gallery layo
 
 Make gallery management in WordPress great again! With FooGallery you can easily add a stunning photo gallery to your website in minutes.
 
-Easy-to-use with a choice of stunning gallery layouts. Responsive, retina-ready and supports lazy loading for lightning fast page loads.
+FooGallery is an easy-to-use image gallery plugin, with stunning gallery layouts. It is also responsive, retina-ready and supports lazy loading for lightning fast photo galleries.
 
-Live gallery previews available in the WordPress dashboard, while editing your gallery, and also within the Gutenberg block editor.
+Live previews are available while creating an image gallery, and also within the Gutenberg block editor with our FooGallery Block.
 
 FooGallery was built to be highly configurable and extendable for developers or freelancers.
 
@@ -102,7 +102,7 @@ From your website point of view, FooGallery never collects or stores any visitor
 
 **PHP 7 Compatible**
 
-FooGallery has been tried and tested on servers running up to PHP 7.3
+FooGallery has been tried and tested on servers running up to PHP 7.4
 
 **Retina Support**
 
@@ -120,6 +120,10 @@ Albums are built in as an extension. Simply head over to the extensions page and
 
 FooGallery was designed to be the most developer-friendly image gallery plugin available for WordPress. It was also built on top of a solid extension framework, which means different functionality is separated out into different areas in the codebase. It also means the core plugin is lightweight, but still allowing for the most flexibility.
 
+**Special Thanks**
+
+Thanks to Fortinet FortiGuard Labs for the security testing conducted on the plugin. FooGallery is a safer plugin thanks to them.
+
 == Installation ==
 
 1. Upload `foogallery` folder to the `/wp-content/plugins/` directory
@@ -127,10 +131,6 @@ FooGallery was designed to be the most developer-friendly image gallery plugin a
 3. You will be redirected to the FooGallery Help page to get your started
 
 == Frequently Asked Questions ==
-
-= How do I turn off all the PRO Promotions in the admin? =
-
-Goto FooGallery Settings -> Advanced Tab and check "Disable PRO Promotions" and then save your settings.
 
 = My galleries are not working. Thumbnails are greyed out and not loading when I scroll down the page. =
 
@@ -190,6 +190,10 @@ For the PRO version of FooGallery - No, we have built in a uniquely beautiful li
 
 Simply go to the FooGallery extensions page and activate the Albums extension. If you do not see a button to activate the albums extension, reload the extensions list by clicking the reload button.
 
+= How do I turn off all the PRO Promotions in the admin? =
+
+Goto FooGallery Settings -> Advanced Tab and check "Disable PRO Promotions" and then save your settings.
+
 == Screenshots ==
 
 1. Gallery Edit Page
@@ -200,33 +204,43 @@ Simply go to the FooGallery extensions page and activate the Albums extension. I
 
 == Upgrade Notice ==
 
-Update now to get all the latest features, bug fixes and improvements!
+Please update in order to for FooGallery to work in WP 5.5+!
 
 == Changelog ==
 
+= 1.9.30 =
+Date Updated : 2020-08-03
+*	Fix : IMPORTANT fix for WP 5.5 compatibility when editing galleries (gallery template selector was not showing)
+*	New : Support for All in One SEO Pack sitemaps
+*	Update : improved lightbox messages when no lightboxes are installed
+*	Update : Freemius SDK 2.4.0.1
+[//]: # fs_premium_only_begin
+*	Fix : Fix for Slider/Grid PRO custom captions
+[//]: # fs_premium_only_end
+
 = 1.9.28 =
 Date Updated : 2020-07-18
-* Fix : Fix for some installs showing thumbnail generation error
-* Update : better mobile support for admin settings tabs
-* Update : FooGallery client side 1.4.16
+*	Fix : Fix for some installs showing thumbnail generation error
+*	Update : better mobile support for admin settings tabs
+*	Update : FooGallery client side 1.4.16
 [//]: # fs_premium_only_begin
-* New : Self hosted videos now support .OGV files
-* Fix : Fix for Slider PRO template settings
-* Fix : Fix for some Vimeo videos importing small thumbnails
+*	New : Self hosted videos now support .OGV files
+*	Fix : Fix for Slider PRO template settings
+*	Fix : Fix for some Vimeo videos importing small thumbnails
 [//]: # fs_premium_only_end
 
 = 1.9.26 =
 Date Updated : 2020-06-29
-* Fix : Fix for All-In-One album hidden items still clickable
-* Fix : Fix for fatal error on some versions of PHP
-* Update : FooGallery client side 1.4.15
+*	Fix : Fix for All-In-One album hidden items still clickable
+*	Fix : Fix for fatal error on some versions of PHP
+*	Update : FooGallery client side 1.4.15
 [//]: # fs_premium_only_begin
-* New : Multi-level filtering support added
-* New : Override Lightbox captions to be different from thumbnail captions
-* New : Lightbox captions can use custom caption template
-* Update : Changed lightbox tabs to be on multiple levels
-* Fix : Fix for low resolution thumbnails importing when importing Vimeo videos
-* Fix : Fix for scroll-jump problem in Lightbox
+*	New : Multi-level filtering support added
+*	New : Override Lightbox captions to be different from thumbnail captions
+*	New : Lightbox captions can use custom caption template
+*	Update : Changed lightbox tabs to be on multiple levels
+*	Fix : Fix for low resolution thumbnails importing when importing Vimeo videos
+*	Fix : Fix for scroll-jump problem in Lightbox
 [//]: # fs_premium_only_end
 
 = 1.9.25 =
