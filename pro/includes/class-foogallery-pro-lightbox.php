@@ -897,6 +897,11 @@ if ( ! class_exists( 'FooGallery_Pro_Lightbox' ) ) {
 				$options['buttons']['info'] = ($show_caption_button === 'yes');
 			}
 
+			$autoplay = foogallery_gallery_template_setting( 'video_autoplay', 'yes' );
+			if ( 'yes' === $autoplay ) {
+				$options['video']['autoPlay'] = true;
+			}
+
 			return $options;
 		}
 
