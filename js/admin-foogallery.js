@@ -224,7 +224,7 @@
 		//This check is done to accommodate a markup change in WP 5.5
 		if ( $metabox_heading.length === 0 ) {
 			$metabox_heading = $('#foogallery_settings .hndle');
-			$metabox_heading.addClass( 'foogallery-contains-template-selector' );
+			$metabox_heading.addClass( 'foogallery-custom-metabox-header' );
 		}
 
         $('.foogallery-template-selector').appendTo( $metabox_heading ).removeClass('hidden');
@@ -233,7 +233,16 @@
 		$('.foogallery-gallery-items-metabox-title').remove();
 
 		//move the items switch selector into the metabox heading
-		$('.foogallery-items-view-switch-container').appendTo( '#foogallery_items .hndle span' ).removeClass('hidden');
+		//$('.foogallery-items-view-switch-container').appendTo( '#foogallery_items .hndle span' ).removeClass('hidden');
+
+		var $items_metabox_heading = $('#foogallery_items .hndle span');
+		//This check is done to accommodate a markup change in WP 5.5
+		if ( $items_metabox_heading.length === 0 ) {
+			$items_metabox_heading = $('#foogallery_items .hndle');
+			$items_metabox_heading.addClass( 'foogallery-custom-metabox-header' );
+		}
+
+		$('.foogallery-items-view-switch-container').appendTo( $items_metabox_heading ).removeClass('hidden');
 
 		$('.foogallery-items-view-switch-container a').click(function(e) {
 			e.preventDefault();

@@ -613,10 +613,10 @@ button[data-balloon]{overflow:visible}[data-balloon]{position:relative}[data-bal
 	margin-left: 5px;
 }
 
-.foogallery-contains-template-selector {
+.foogallery-custom-metabox-header {
 	justify-content: flex-start !important;
 }
 
-.foogallery-contains-template-selector .foogallery-template-selector {
+.foogallery-custom-metabox-header .foogallery-template-selector {
 	margin-left: 10px;
 }
