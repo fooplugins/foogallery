@@ -309,7 +309,8 @@ if ( ! class_exists( 'FooGallery_Pro_Advanced_Captions' ) ) {
                     return $field;
                 }
             }
-            return false;
+            $return = array();
+            return $return;
         }
 
         /**
