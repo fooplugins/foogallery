@@ -208,6 +208,19 @@ Please update in order to for FooGallery to work in WP 5.5+!
 
 == Changelog ==
 
+= 1.9.34 =
+Date Updated : 2020-08-30
+*	Fix : Fix for incorrect captions in some scenarios
+*   Fix : Compatibility with Owl Carousel Extension and others
+*   Update : FooGallery client side 1.4.18
+
+= 1.9.31 =
+Date Updated : 2020-08-07
+*	Fix : IMPORTANT fix for WP 5.5 compatibility when editing galleries (gallery preview button was not showing)
+[//]: # fs_premium_only_begin
+*	Fix : Fix for autoplaying Vimeo videos
+[//]: # fs_premium_only_end
+
 = 1.9.30 =
 Date Updated : 2020-08-03
 *	Fix : IMPORTANT fix for WP 5.5 compatibility when editing galleries (gallery template selector was not showing)

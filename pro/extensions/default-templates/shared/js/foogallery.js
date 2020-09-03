@@ -5824,11 +5824,13 @@
 			var current = element.data(_.DATA_TEMPLATE);
 			if (current instanceof _.Template) {
 				return current.destroy(true).then(function(){
-					return _.template.make(options, element).initialize();
+					var tmpl = _.template.make(options, element);
+					return tmpl instanceof _.Template ? tmpl.initialize() : _fn.rejected;
 				});
 			}
 		}
-		return _.template.make(options, element).initialize();
+		var tmpl = _.template.make(options, element);
+		return tmpl instanceof _.Template ? tmpl.initialize() : _fn.rejected;
 	};
 
 	_.initAll = function (options) {
@@ -6432,11 +6434,11 @@
 		},
 		type: function (options, element) {
 			element = _is.jq(element) ? element : $(element);
-			var self = this, type = _is.hash(options) && _is.hash(options) && _is.string(options.type) && self.contains(options.type) ? options.type : "core";
-			if (type === "core" && element.length > 0) {
+			var self = this, type = _is.hash(options) && _is.hash(options) && _is.string(options.type) && self.contains(options.type) ? options.type : null;
+			if (type === null && element.length > 0) {
 				var reg = self.registered, names = self.names(true);
 				for (var i = 0, l = names.length; i < l; i++) {
-					if (!reg.hasOwnProperty(names[i])) continue;
+					if (!reg.hasOwnProperty(names[i]) || names[i] === "core") continue;
 					var name = names[i], cls = reg[name].cls;
 					if (!_is.string(cls.container)) continue;
 					var selector = _utils.selectify(cls.container);
@@ -12216,6 +12218,7 @@
 
             loop: true,
             autoProgress: 0,
+            autoProgressStart: true,
             fitMedia: false,
             keyboard: true,
             noScrollbars: true,
@@ -12782,7 +12785,7 @@
     _.Panel.AutoProgress = _.Panel.Button.extend({
         construct: function(panel){
             var self = this;
-            self.__stopped = false;
+            self.__stopped = !panel.opt.autoProgressStart;
             self.__timer = new _utils.Timer();
             self._super(panel, "autoProgress", {
                 icon: "auto-progress",
@@ -15935,7 +15938,7 @@
 			}
 			self.fullWidth = maxWidth < width;
 			if (self.fullWidth){
-				rule = item + ' { max-width: 100%; margin: ' + gutter + 'px; }';
+				rule = item + ' { max-width: 100%; min-width: 100%; margin: ' + gutter + 'px; }';
 				sheet.insertRule(rule , 0);
 			} else {
 				rule = item + ' { max-width: ' + width + 'px; min-width: ' + width + 'px; margin: ' + gutter + 'px; }';

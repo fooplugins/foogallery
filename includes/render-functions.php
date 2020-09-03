@@ -165,6 +165,14 @@ function foogallery_build_attachment_html_anchor_attributes( $foogallery_attachm
 		$attr['data-caption-desc'] = foogallery_sanitize_html( $foogallery_attachment->description );
 	}
 
+	if ( isset( $foogallery_attachment->caption_title ) ) {
+		$attr['data-caption-title'] = foogallery_sanitize_html( $foogallery_attachment->caption_title );
+	}
+
+	if ( isset( $foogallery_attachment->caption_desc ) ) {
+		$attr['data-caption-desc'] = foogallery_sanitize_html( $foogallery_attachment->caption_desc );
+	}
+
 	$attr['data-attachment-id'] = $foogallery_attachment->ID;
 
 	//pull any custom attributes out the args
@@ -295,10 +303,10 @@ function foogallery_build_attachment_html_caption( &$foogallery_attachment, $arg
             }
 
             if ($caption_title && $show_caption_title) {
-                $captions['title'] = $caption_title;
+                $captions['title'] = $foogallery_attachment->caption_title = $caption_title;
             }
             if ($caption_desc && $show_caption_desc) {
-                $captions['desc'] = $caption_desc;
+                $captions['desc'] = $foogallery_attachment->caption_desc = $caption_desc;
             }
 
         } else {

@@ -560,6 +560,30 @@ if ( ! class_exists( 'FooGallery_Pro_Lightbox' ) ) {
 			);
 
 			$field[] = array(
+				'id'      => 'lightbox_auto_progress_start',
+				'title'   => __( 'Auto Progress Start', 'foogallery' ),
+				'desc'    => __( 'If the auto-progress will automatically start or not.', 'foogallery' ),
+				'section' => $section,
+				'subsection' => array( 'lightbox-general' => __( 'General', 'foogallery' ) ),
+				'type'    => 'radio',
+				'spacer'  => '<span class="spacer"></span>',
+				'choices' => array(
+					'yes' => __( 'Yes', 'foogallery' ),
+					'no'  => __( 'No', 'foogallery' ),
+				),
+				'default' => 'yes',
+				'row_data'=> array(
+					'data-foogallery-hidden'                   => true,
+					'data-foogallery-show-when-field'          => 'lightbox_auto_progress',
+					'data-foogallery-show-when-field-operator' => '===',
+					'data-foogallery-show-when-field-value'    => 'yes',
+					'data-foogallery-change-selector'          => 'input:radio',
+					'data-foogallery-preview'                  => 'shortcode',
+					'data-foogallery-value-selector'           => 'input:checked',
+				)
+			);
+
+			$field[] = array(
 				'id'      => 'lightbox_fit_media',
 				'title'   => __( 'Fit Media', 'foogallery' ),
 				'desc'    => __( 'Whether or not to force images to fill the content area. Aspect ratios are maintained, the image is simply scaled so it covers the entire available area.', 'foogallery' ),
@@ -875,6 +899,7 @@ if ( ! class_exists( 'FooGallery_Pro_Lightbox' ) ) {
 			$auto_progress = foogallery_gallery_template_setting( 'lightbox_auto_progress', 'no' ) === 'yes';
 			if ( $auto_progress ) {
 				$options['autoProgress'] = intval( foogallery_gallery_template_setting( 'lightbox_auto_progress_seconds', '10' ) );
+				$options['autoProgressStart'] = foogallery_gallery_template_setting( 'lightbox_auto_progress_start', 'yes' ) === 'yes';
 			}
 
 			$options['hoverButtons'] = foogallery_gallery_template_setting( 'lightbox_hover_buttons', 'no' ) === 'yes';
@@ -895,6 +920,11 @@ if ( ! class_exists( 'FooGallery_Pro_Lightbox' ) ) {
 			$show_caption_button = foogallery_gallery_template_setting( 'lightbox_show_caption_button', false );
 			if ( $show_caption_button !== false ) {
 				$options['buttons']['info'] = ($show_caption_button === 'yes');
+			}
+
+			$autoplay = foogallery_gallery_template_setting( 'video_autoplay', 'yes' );
+			if ( 'yes' === $autoplay ) {
+				$options['video']['autoPlay'] = true;
 			}
 
 			return $options;
