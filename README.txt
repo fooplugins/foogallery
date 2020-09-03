@@ -208,11 +208,11 @@ Please update in order to for FooGallery to work in WP 5.5+!
 
 == Changelog ==
 
-= 1.9.33 =
+= 1.9.34 =
 Date Updated : 2020-08-30
 *	Fix : Fix for incorrect captions in some scenarios
 *   Fix : Compatibility with Owl Carousel Extension and others
-*   Update : FooGallery client side 1.4.17
+*   Update : FooGallery client side 1.4.18
 
 = 1.9.31 =
 Date Updated : 2020-08-07
