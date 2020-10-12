@@ -132,9 +132,11 @@ class WP_Thumb {
 			return;
 		}
 
+		$base_url = set_url_scheme( $upload_dir['baseurl'] );
+
 		// If it's an uploaded file
-		if ( strpos( $file_path, $upload_dir['baseurl'] ) !== false ) {
-			$this->file_path = str_replace( $upload_dir['baseurl'], $upload_dir['basedir'], $file_path );
+		if ( strpos( $file_path, $base_url ) !== false ) {
+			$this->file_path = str_replace( $base_url, $upload_dir['basedir'], $file_path );
 		} else {
 			$this->file_path = str_replace( trailingslashit( home_url() ), self::get_home_path(), $file_path );
 		}
@@ -321,7 +323,7 @@ class WP_Thumb {
 			return '';
 		}
 
-		$original_filename = basename( $this->getFilePath() );
+		$original_filename = basename( $path );
 
 		// TODO use pathinfo
 		$parts = explode( '.', $original_filename );
@@ -332,22 +334,22 @@ class WP_Thumb {
 
 		$upload_dir = self::uploadDir();
 
-		if ( strpos( $this->getFilePath(), $upload_dir['basedir'] ) === 0 ) :
+		if ( strpos( $path, $upload_dir['basedir'] ) === 0 ) :
 
-			$subdir = dirname( str_replace( $upload_dir['basedir'], '', $this->getFilePath() ) );
+			$subdir = dirname( str_replace( $upload_dir['basedir'], '', $path ) );
 			$new_dir = $upload_dir['basedir'] . '/cache' . trailingslashit( $subdir ) . $filename_nice;
 
-		elseif ( strpos( $this->getFilePath(), WP_CONTENT_DIR ) === 0 ) :
+		elseif ( strpos( $path, WP_CONTENT_DIR ) === 0 ) :
 
-			$subdir = dirname( str_replace( WP_CONTENT_DIR, '', $this->getFilePath() ) );
+			$subdir = dirname( str_replace( WP_CONTENT_DIR, '', $path ) );
 			$new_dir = $upload_dir['basedir'] . '/cache' . trailingslashit( $subdir ) . $filename_nice;
 
-		elseif ( strpos( $this->getFilePath(), self::get_home_path() ) === 0 ) :
+		elseif ( strpos( $path, self::get_home_path() ) === 0 ) :
 			$new_dir = $upload_dir['basedir'] . '/cache/local';
 
 		else :
 
-			$parts = parse_url( $this->getFilePath() );
+			$parts = parse_url( $path );
 
 			if ( ! empty( $parts['host'] ) )
 				$new_dir = $upload_dir['basedir'] . '/cache/remote/' . sanitize_title( $parts['host'] );
@@ -604,7 +606,7 @@ class WP_Thumb {
 		$upload_dir = self::uploadDir();
 
 		if ( strpos( $path, $upload_dir['basedir'] ) !== false ) {
-			return str_replace( $upload_dir['basedir'], $upload_dir['baseurl'], $path );
+			return str_replace( $upload_dir['basedir'], set_url_scheme( $upload_dir['baseurl'] ), $path );
 
 		} else {
 			return str_replace( self::get_home_path(), trailingslashit( home_url() ), $path );
