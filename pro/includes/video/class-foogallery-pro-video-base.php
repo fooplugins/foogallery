@@ -37,9 +37,14 @@ if ( ! class_exists( 'FooGallery_Pro_Video_Base' ) ) {
 
 		protected function json_response($url, $args = array("method"=>"GET")) {
 			$remote = wp_remote_request($url, $args);
-			if (is_wp_error($remote)) {
+			if ( is_wp_error( $remote ) ) {
 				return $this->error_response("Error fetching JSON: " . $remote->get_error_message());
 			}
+			$response_code = wp_remote_retrieve_response_code( $remote );
+			if ( !empty( $response_code ) && $response_code === 404 ) {
+				return $this->error_response("Error fetching details : Not found!" );
+			}
+
 			// get the json string from the body of the response
 			$body = wp_remote_retrieve_body($remote);
 			// decode it into an object
