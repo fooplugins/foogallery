@@ -51,7 +51,7 @@ if ( !class_exists("FooGallery_Pro_Video_YouTube") ){
 		 * are exhausted.
 		 */
 		function is_video_id($value) {
-			return !empty($value) && is_string($value) && strlen($value) === 11 && strpos($value, " ") === false && $this->url_exists("https://www.youtube.com/watch?v=" . $value);
+			return !empty($value) && is_string($value) && strlen($value) === 11 && strpos($value, " ") === false; // && $this->url_exists("https://www.youtube.com/watch?v=" . $value);
 		}
 
 		/**
@@ -265,6 +265,15 @@ if ( !class_exists("FooGallery_Pro_Video_YouTube") ){
 			return $response;
 		}
 
+		function get_request_args( $default_args = array( 'method' => 'GET' ) ) {
+			return wp_parse_args( array(
+				'headers' => array(
+					'x-youtube-client-name' => '56',
+					'x-youtube-client-version' => '20200911'
+				)
+			), $default_args );
+		}
+
 		/**
 		 * Takes the supplied query and optional page number and performs a YouTube search.
 		 *
@@ -305,7 +314,7 @@ if ( !class_exists("FooGallery_Pro_Video_YouTube") ){
 
 			$url = "https://www.youtube.com/search_ajax?style=json&search_query=" . urlencode($query) . "&page=" . $page;
 			// get the json object from the supplied url
-			$json = $this->json_get($url);
+			$json = $this->json_get( $url, $this->get_request_args() );
 
 			// if an error occurred return it
 			if ($this->is_error($json)) {
