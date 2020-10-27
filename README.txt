@@ -215,6 +215,10 @@ Please update in order to for FooGallery to work in WP 5.5+!
 
 == Changelog ==
 
+= 1.9.36 =
+* Date Updated : 2020-10-27
+* Update : Freemius SDK 2.4.1
+
 = 1.9.35 =
 * Date Updated : 2020-10-12
 * Fix : Fix for thumbnail generation not working when upload folder is not HTTPS
