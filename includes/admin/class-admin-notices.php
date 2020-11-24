@@ -219,17 +219,15 @@ if ( ! class_exists( 'FooGallery_Admin_Notices' ) ) {
         }
 
         function should_display_foobar_notice() {
+		    //do not show the notice to people who have foobar installed and activated
+	        if ( class_exists( 'FooPlugins\FooBar\Init' ) ) {
+	            return false;
+	        }
+
 		    //do not show the notice to pro users
             if ( foogallery_is_pro() ) {
                 return false;
             }
-
-	        //first try to get the saved option
-	        $show_message = get_option( 'foogallery_admin_foobar_notice_dismiss', 0 );
-
-	        if ( 'hide' === $show_message ) {
-		        return false; //never show - user has dismissed
-	        }
 
             //only show on foogallery pages
             if ( function_exists( 'get_current_screen' ) ) {
@@ -238,7 +236,37 @@ if ( ! class_exists( 'FooGallery_Admin_Notices' ) ) {
                     if ( $screen->post_type === FOOGALLERY_CPT_GALLERY ||
                          $screen->post_type === FOOGALLERY_CPT_ALBUM ||
                          $screen->id === FOOGALLERY_ADMIN_MENU_SETTINGS_SLUG ) {
-                        return true;
+
+	                    //first try to get the saved option
+	                    $show_message = get_option( 'foogallery_admin_foobar_notice_dismiss', 0 );
+
+	                    if ( 'hide' === $show_message ) {
+		                    return false; //never show - user has dismissed
+	                    }
+
+	                    if ( 'show' === $show_message ) {
+		                    return true; //always show - user has created 5 or more galleries
+	                    }
+
+	                    if ( 0 === $show_message ) {
+		                    $oldest_gallery = get_posts( array(
+			                    'post_type'     => FOOGALLERY_CPT_GALLERY,
+			                    'post_status'	=> array( 'publish', 'draft' ),
+			                    'order_by' => 'publish_date',
+			                    'order' => 'ASC',
+                                'numberposts' => 1
+		                    ) );
+
+		                    if ( is_array( $oldest_gallery ) ) {
+			                    $oldest_gallery = $oldest_gallery[0];
+
+			                    if( strtotime( $oldest_gallery->post_date ) < strtotime('-7 days') ) {
+			                        //The oldest gallery is older than 7 days - so show the admin notice
+				                    update_option( 'foogallery_admin_foobar_notice_dismiss', 'show' );
+				                    return true;
+			                    }
+		                    }
+	                    }
                     }
                 }
             }
