@@ -379,3 +379,22 @@ function foogallery_album_uninstall() {
 		}
 	}
 }
+
+/**
+ * Render a foogallery album
+ *
+ * @param       $album_id int The id of the foogallery album you want to render
+ * @param array $args
+ */
+if (! function_exists( 'foogallery_render_album') ) {
+	function foogallery_render_album( $album_id, $args = array() ) {
+		//create new instance of template engine
+		$engine = new FooGallery_Album_Template_Loader();
+
+		$shortcode_args = wp_parse_args( $args, array(
+			'id' => $album_id
+		) );
+
+		$engine->render_template( $shortcode_args );
+	}
+}
