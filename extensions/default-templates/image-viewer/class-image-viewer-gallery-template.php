@@ -288,7 +288,11 @@ if ( !class_exists( 'FooGallery_Image_Viewer_Gallery_Template' ) ) {
          * @return array
          */
         function build_gallery_template_arguments( $args ) {
-            $args = foogallery_gallery_template_setting( 'thumbnail_size', 'thumbnail' );
+            $args = foogallery_gallery_template_setting( 'thumbnail_size', array(
+	            'width' => 640,
+	            'height' => 360,
+	            'crop' => true
+            ) );
             if ( !array_key_exists( 'crop', $args ) ) {
                 $args['crop'] = '1'; //we now force thumbs to be cropped by default
             }

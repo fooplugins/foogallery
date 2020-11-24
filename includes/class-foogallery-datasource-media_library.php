@@ -249,6 +249,12 @@ if ( ! class_exists( 'FooGallery_Datasource_MediaLibrary_Query_Helper' ) ) {
 				}
 			}
 
+			//set some sorting globals
+			global $foogallery_force_sort_orderby;
+			global $foogallery_force_sort_order;
+			$foogallery_force_sort_orderby = $attachment_query_args['orderby'];
+			$foogallery_force_sort_order = $attachment_query_args['order'];
+
 			//setup intercepting actions
 			add_action( 'pre_get_posts', array( $this, 'force_gallery_ordering' ), 99 );
 			add_action( 'pre_get_posts', array( $this, 'force_suppress_filters' ), PHP_INT_MAX );
@@ -259,7 +265,7 @@ if ( ! class_exists( 'FooGallery_Datasource_MediaLibrary_Query_Helper' ) ) {
 			remove_action( 'pre_get_posts', array( $this, 'force_gallery_ordering' ), 99 );
 			remove_action( 'pre_get_posts', array( $this, 'force_suppress_filters' ), PHP_INT_MAX );
 
-			$foogallery_force_sort = null;
+			$foogallery_force_sort = $foogallery_force_sort_orderby = $foogallery_force_sort_order = null;
 
 			foreach ( $attachment_posts as $attachment_post ) {
 				$attachments[] = apply_filters( 'foogallery_attachment_load', FooGalleryAttachment::get( $attachment_post ), $foogallery );
@@ -275,12 +281,18 @@ if ( ! class_exists( 'FooGallery_Datasource_MediaLibrary_Query_Helper' ) ) {
 		 */
 		public function force_gallery_ordering( $query ) {
 			global $foogallery_force_sort;
+			global $foogallery_force_sort_orderby;
+			global $foogallery_force_sort_order;
 
 			//only care about attachments
 			if ( isset( $foogallery_force_sort ) && array_key_exists( 'post_type', $query->query ) &&
 				'attachment' === $query->query['post_type'] ) {
-				$query->set( 'orderby', foogallery_sorting_get_posts_orderby_arg( $foogallery_force_sort ) );
-				$query->set( 'order', foogallery_sorting_get_posts_order_arg( $foogallery_force_sort ) );
+			    if ( isset( $foogallery_force_sort_orderby ) ) {
+				    $query->set( 'orderby', $foogallery_force_sort_orderby );
+			    }
+				if ( isset( $foogallery_force_sort_order ) ) {
+					$query->set( 'order', $foogallery_force_sort_order );
+				}
 			}
 		}
 

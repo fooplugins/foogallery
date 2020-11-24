@@ -570,7 +570,7 @@ class WP_Thumb {
 			$path = $this->getCacheFilePath();
 		}
 
-		if ( $this->args['return'] == 'path' )
+		if ( isset( $this->args ) && $this->args['return'] == 'path' )
 			return $path;
 
 		return $path ? $this->getFileURLForFilePath( $path ) : $path;

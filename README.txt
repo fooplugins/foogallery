@@ -3,7 +3,7 @@ Contributors: bradvin, steveush, fooplugins
 Donate link: http://fooplugins.com
 Tags: gallery, image gallery, photo gallery, responsive gallery, wordpress gallery plugin, best gallery plugin, albums, media gallery, video gallery, lightbox
 Requires at least: 3.9
-Tested up to: 5.5
+Tested up to: 5.6
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -11,6 +11,8 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 FooGallery is a powerful, responsive photo gallery plugin. Stunning gallery layouts with advanced settings for complete customization and control.
 
 == Description ==
+
+= Best Gallery Plugin =
 
 Make gallery management in WordPress great again! With FooGallery you can easily add a stunning photo gallery to your website in minutes.
 
@@ -22,11 +24,11 @@ FooGallery was built to be highly configurable and extendable for developers or 
 
 That is why we think FooGallery is the best gallery plugin. After using it, we hope you will agree.
 
-[Visit the FooGallery Homepage](http://fooplugins.com/foogallery)
+[Visit the FooGallery Wordpress Gallery Plugin Homepage](http://fooplugins.com/foogallery)
 
-**Features**
+= WordPress Gallery Plugin Features =
 
-The following free features make FooGallery the best gallery plugin on the market!
+The following free features make FooGallery the **best gallery plugin** on the market!
 
 *	6 Beautiful Image Gallery templates
 	*	Responsive Image Gallery - [demo](https://fooplugins.com/foogallery/wordpress-responsive-image-gallery/)
@@ -59,7 +61,7 @@ The following free features make FooGallery the best gallery plugin on the marke
 *	NextGen importer tool (albums and galleries and shortcodes)
 *	Multisite Support
 
-**PRO Features**
+= PRO Gallery Features =
 
 *   3 more beautiful PRO responsive gallery templates:
     *   Polaroid gallery template - [demo](https://fooplugins.com/foogallery/wordpress-polaroid-gallery/)
@@ -131,6 +133,12 @@ FooGallery was designed to be the most developer-friendly image gallery plugin a
 
 Thanks to Fortinet FortiGuard Labs for the security testing conducted on the plugin. FooGallery is a safer plugin thanks to them.
 
+== Best Wordpress Gallery Plugin ==
+
+We did the research. FooGallery has the best performance and has the most features out of any free WordPress gallery plugin. Read our blog post about it:
+
+[What is the Best WordPress Gallery Plugin?](https://fooplugins.com/best-wordpress-gallery-plugin/)
+
 == Installation ==
 
 1. Upload `foogallery` folder to the `/wp-content/plugins/` directory
@@ -201,6 +209,10 @@ Simply go to the FooGallery extensions page and activate the Albums extension. I
 
 Goto FooGallery Settings -> Advanced Tab and check "Disable PRO Promotions" and then save your settings.
 
+= How can you claim that FooGallery is the best WordPress gallery plugin? =
+
+We did the research and comparison. See our findings : [What is the Best WordPress Gallery Plugin?](https://fooplugins.com/best-wordpress-gallery-plugin/)
+
 == Screenshots ==
 
 1. Gallery Edit Page
@@ -214,6 +226,19 @@ Goto FooGallery Settings -> Advanced Tab and check "Disable PRO Promotions" and 
 Please update in order to for FooGallery to work in WP 5.5+!
 
 == Changelog ==
+
+= 1.9.38 =
+* Date Updated : 2020-11-02
+* Fix : Fixed PHP warning within thumbnail generation code when deleting attachments
+* New : Added function to render an album : foogallery_render_album
+
+= 1.9.37 =
+* Date Updated : 2020-10-29
+* Update : Ensure Gallery Items and Settings metaboxes are always visible when editing a gallery
+
+= 1.9.36 =
+* Date Updated : 2020-10-27
+* Update : Freemius SDK 2.4.1
 
 = 1.9.35 =
 * Date Updated : 2020-10-12

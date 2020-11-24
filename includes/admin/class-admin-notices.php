@@ -10,9 +10,12 @@ if ( ! class_exists( 'FooGallery_Admin_Notices' ) ) {
         public function __construct() {
             add_action( 'admin_notices', array( $this, 'display_thumb_test_notice') );
 			add_action( 'admin_notices', array( $this, 'display_rating_notice') );
-            add_action( 'foogallery_thumbnail_generation_test', array( $this, 'save_test_results') );
 
+            add_action( 'foogallery_thumbnail_generation_test', array( $this, 'save_test_results') );
 			add_action( 'wp_ajax_foogallery_admin_rating_notice_dismiss', array( $this, 'admin_rating_notice_dismiss' ) );
+
+	        add_action( 'admin_notices', array( $this, 'display_foobar_notice') );
+	        add_action( 'wp_ajax_foogallery_admin_foobar_notice_dismiss', array( $this, 'admin_foobar_notice_dismiss' ) );
         }
 
         function should_run_tests() {
@@ -160,6 +163,125 @@ if ( ! class_exists( 'FooGallery_Admin_Notices' ) ) {
                 }
             }
         }
+
+        function display_foobar_notice() {
+            if ( $this->should_display_foobar_notice() ) {
+
+	            $install_foobar = wp_nonce_url(
+		            add_query_arg(
+			            array(
+				            'action' => 'install-plugin',
+				            'plugin' => 'foobar-notifications-lite'
+			            ),
+			            admin_url( 'update.php' )
+		            ),
+		            'install-plugin_foobar-notifications-lite'
+	            );
+	            ?>
+                <script type="text/javascript">
+                    (function ($) {
+                        $(document).ready(function () {
+                            $('.foogallery-foobar-notice.is-dismissible')
+                                .on('click', '.notice-dismiss', function (e) {
+                                    e.preventDefault();
+                                    $.post(ajaxurl, {
+                                        action  : 'foogallery_admin_foobar_notice_dismiss',
+                                        url     : '<?php echo admin_url( 'admin-ajax.php' ); ?>',
+                                        _wpnonce: '<?php echo wp_create_nonce( 'foogallery_admin_foobar_notice_dismiss' ); ?>'
+                                    });
+                                });
+                        });
+                    })(jQuery);
+                </script>
+                <style>
+                    .foogallery-foobar-notice {
+                        border-left-color: #ff4800;
+                    }
+
+                    .foogallery-foobar-notice .dashicons-megaphone {
+                        color: #ff4800;
+                    }
+                </style>
+                <div class="foogallery-foobar-notice notice notice-success is-dismissible">
+                    <p>
+                        <strong><span class="dashicons dashicons-megaphone"></span> Do you want to grow your business?</strong>
+                        FooBar can help!
+                        <br />
+                        FooBar is a free plugin to help grow your business by showing sticky notification bars with call-to-actions. Add unlimited notifications to your site to increase visitor engagement and get your message across!
+                        <br />
+                        <br />
+                        <a class="button button-primary button-large" target="_blank" href="<?php echo $install_foobar; ?>">Install FooBar</a>
+                        <a class="button" target="_blank" href="https://wordpress.org/plugins/foobar-notifications-lite/">View Details</a>
+                    </p>
+                </div>
+	            <?php
+            }
+        }
+
+        function should_display_foobar_notice() {
+		    //do not show the notice to people who have foobar installed and activated
+	        if ( class_exists( 'FooPlugins\FooBar\Init' ) ) {
+	            return false;
+	        }
+
+		    //do not show the notice to pro users
+            if ( foogallery_is_pro() ) {
+                return false;
+            }
+
+            //only show on foogallery pages
+            if ( function_exists( 'get_current_screen' ) ) {
+                $screen = get_current_screen();
+                if ( isset( $screen ) ) {
+                    if ( $screen->post_type === FOOGALLERY_CPT_GALLERY ||
+                         $screen->post_type === FOOGALLERY_CPT_ALBUM ||
+                         $screen->id === FOOGALLERY_ADMIN_MENU_SETTINGS_SLUG ) {
+
+	                    //first try to get the saved option
+	                    $show_message = get_option( 'foogallery_admin_foobar_notice_dismiss', 0 );
+
+	                    if ( 'hide' === $show_message ) {
+		                    return false; //never show - user has dismissed
+	                    }
+
+	                    if ( 'show' === $show_message ) {
+		                    return true; //always show - user has created 5 or more galleries
+	                    }
+
+	                    if ( 0 === $show_message ) {
+		                    $oldest_gallery = get_posts( array(
+			                    'post_type'     => FOOGALLERY_CPT_GALLERY,
+			                    'post_status'	=> array( 'publish', 'draft' ),
+			                    'order_by' => 'publish_date',
+			                    'order' => 'ASC',
+                                'numberposts' => 1
+		                    ) );
+
+		                    if ( is_array( $oldest_gallery ) ) {
+			                    $oldest_gallery = $oldest_gallery[0];
+
+			                    if( strtotime( $oldest_gallery->post_date ) < strtotime('-7 days') ) {
+			                        //The oldest gallery is older than 7 days - so show the admin notice
+				                    update_option( 'foogallery_admin_foobar_notice_dismiss', 'show' );
+				                    return true;
+			                    }
+		                    }
+	                    }
+                    }
+                }
+            }
+
+	        return false;
+        }
+
+	    /**
+	     * Dismiss the admin foobar notice forever
+	     */
+	    function admin_foobar_notice_dismiss() {
+		    if ( check_admin_referer( 'foogallery_admin_foobar_notice_dismiss' ) ) {
+			    update_option( 'foogallery_admin_foobar_notice_dismiss', 'hide', false );
+		    }
+	    }
     }
 
 }

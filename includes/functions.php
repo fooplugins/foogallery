@@ -1433,3 +1433,19 @@ function foogallery_sanitize_html( $text ) {
 	$safe_text = wp_kses_post( $text );
 	return $safe_text;
 }
+
+/**
+ * Returns true if PRO is in use
+ * @return bool
+ */
+function foogallery_is_pro() {
+	$pro = false;
+
+	if ( foogallery_fs()->is__premium_only() ) {
+		if ( foogallery_fs()->can_use_premium_code() ) {
+			$pro = true;
+		}
+	}
+
+	return $pro;
+}
