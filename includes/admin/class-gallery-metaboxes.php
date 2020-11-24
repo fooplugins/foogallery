@@ -28,6 +28,11 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 
 			// Ajax call for clearing thumb cache for the gallery
 			add_action( 'wp_ajax_foogallery_clear_gallery_thumb_cache', array( $this, 'ajax_clear_gallery_thumb_cache' ) );
+
+			add_filter( 'hidden_meta_boxes', array( $this, 'get_hidden_meta_boxes' ), 10, 3 );
+
+			add_filter( 'postbox_classes_foogallery_foogallery_items' , array( $this, 'ensure_metabox_not_closed' ) );
+			add_filter( 'postbox_classes_foogallery_foogallery_settings' , array( $this, 'ensure_metabox_not_closed' ) );
 		}
 
 		public function add_meta_boxes_to_gallery( $post ) {
@@ -410,6 +415,41 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 			}
 
 			die();
+		}
+
+		/**
+		 * Returns a list of all hidden metaboxes
+		 *
+		 * @param string[]  $hidden       An array of IDs of hidden meta boxes.
+		 * @param WP_Screen $screen       WP_Screen object of the current screen.
+		 * @param bool      $use_defaults Whether to show the default meta boxes.
+		 *
+		 * @return mixed
+		 */
+		function get_hidden_meta_boxes( $hidden, $screen, $use_defaults ) {
+			if ( isset( $screen ) && $screen->post_type === FOOGALLERY_CPT_GALLERY ) {
+
+				$ensure_not_hidden = array(
+					'foogallery_items',
+					'foogallery_settings'
+				);
+
+				foreach ( $ensure_not_hidden as $item ) {
+					$key = array_search( $item, $hidden );
+					if ( $key !== false ) {
+						unset( $hidden[$key] );
+					}
+				}
+			}
+
+			return $hidden;
+		}
+
+		function ensure_metabox_not_closed( $classes ) {
+		    if ( is_array( $classes ) && in_array( 'closed', $classes ) ) {
+			    $classes = array_diff( $classes, array( 'closed' ) );
+		    }
+		    return $classes;
 		}
 	}
 }
