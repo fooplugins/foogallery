@@ -7055,3 +7055,225 @@ html.fg-panel-no-scroll body {
 /*        background-color: #000;*/
 /*    }*/
 /*}*/
+
+.foogallery-stack-album {
+    text-align: center;
+    overflow: hidden;
+}
+.foogallery-stack-album,
+.foogallery-stack-album * {
+    box-sizing: border-box;
+}
+
+.foogallery-stack-album.fg-align-left {
+    text-align: left;
+}
+.foogallery-stack-album.fg-align-center {
+    text-align: center;
+}
+.foogallery-stack-album.fg-align-right {
+    text-align: right;
+}
+
+.foogallery-stack-album.fg-disable-transitions,
+.foogallery-stack-album.fg-disable-transitions * {
+    transition: none !important;
+}
+
+.fg-header {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    padding: 0;
+    margin: 0;
+    box-shadow: 0 1px 0 #aaa, 0 -1px 0 #aaa;
+}
+
+.fg-header-title {
+    display: block;
+    margin: 0;
+    padding: 0 20px;
+    width: 100%;
+    text-align: left;
+}
+
+.fg-header-active {
+    display: block;
+    margin: 0;
+    padding: 0 20px;
+    visibility: hidden;
+    opacity: 0;
+    width: 100%;
+    text-align: right;
+    transition-property: opacity, visibility;
+    transition-duration: .3s;
+    transition-timing-function: ease-in-out;
+}
+
+.fg-header-back {
+    display: block;
+    padding: 0;
+    margin: 10px;
+    visibility: hidden;
+    opacity: 0;
+    min-width: 40px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 38px;
+    color: #999;
+    background: #ddd;
+    background: rgba(200,200,200,0.5);
+    cursor: pointer;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    transition-property: opacity, visibility;
+    transition-duration: .3s;
+    transition-timing-function: ease-in-out;
+}
+
+.fg-has-active .fg-header-back,
+.fg-has-active .fg-header-active {
+    visibility: visible;
+    opacity: 1;
+}
+
+
+.fg-piles {
+    display: inline-block;
+    position: relative;
+    transition-property: width, height;
+    transition-duration: .3s;
+    transition-timing-function: ease-in-out;
+}
+
+.fg-pile {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    visibility: visible;
+    opacity: 1;
+    transition-property: opacity, visibility, top, left, width, height;
+    transition-duration: .3s;
+    transition-timing-function: ease-in-out;
+}
+
+.fg-pile.fg-hidden {
+    visibility: hidden;
+    opacity: 0;
+}
+
+.fg-pile-item {
+    display: block;
+    position: absolute;
+    top: 25px;
+    left: 25px;
+    visibility: visible;
+    opacity: 1;
+    cursor: pointer;
+    border: 10px solid #fff;
+    background-color: #FFF;
+    box-shadow: 0 2px 3px rgba(0,0,0,0.2);
+    transition-property: opacity, visibility, top, left, transform;
+    transition-duration: .3s;
+    transition-timing-function: ease-in-out;
+    z-index: 1;
+    transform: rotate(0deg);
+}
+
+.fg-expanded .fg-pile-item {
+    z-index: 2;
+    transform: rotate(0deg) !important;
+}
+.fg-pile-item.fg-has-cover {
+    z-index: 10;
+    transform: rotate(0deg) !important;
+}
+
+.fg-pile-item:nth-child(2) {
+    z-index: 9;
+}
+.fg-pile-item:nth-child(3) {
+    z-index: 8;
+}
+.fg-pile-item:nth-child(4) {
+    z-index: 7;
+}
+.fg-pile-item:nth-child(1n+5) {
+    visibility: hidden;
+    opacity: 0;
+}
+.fg-expanded .fg-pile-item:nth-child(1n+4) {
+    visibility: visible;
+    opacity: 1;
+}
+
+.fg-pile-item-thumb {
+    display: block;
+}
+
+.fg-pile-item-image {
+    display: block;
+}
+
+.fg-pile-cover {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    visibility: visible;
+    opacity: 1;
+    cursor: pointer;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    transition-property: opacity, visibility;
+    transition-duration: .3s;
+    transition-timing-function: ease-in-out;
+}
+
+.fg-expanded .fg-pile-cover {
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.fg-pile-cover-content {
+    display: flex;
+    position: relative;
+    background: #fff;
+    color: #333;
+    width: 75%;
+    font-weight: 700;
+    box-shadow: 1px 1px 1px rgba(0,0,0,0.1), 5px 0 5px -3px rgba(0,0,0,0.4), inset 0 0 5px rgba(0,0,0,0.04);
+}
+
+.fg-pile-cover-title {
+    text-align: center;
+    padding: 10px;
+    width: 100%;
+}
+.fg-pile-cover-count {
+    color: #aaa;
+    padding: 10px 5px;
+    background: #F7F7F7;
+    height: 100%;
+}
