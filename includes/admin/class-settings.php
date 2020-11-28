@@ -362,6 +362,16 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 				'type'    => 'checkbox',
 				'tab'     => 'advanced',
 			);
+
+			if ( !foogallery_is_pro() ) {
+				$settings[] = array(
+					'id'    => 'force_hide_trial',
+					'title' => __( 'Force Hide Trial Notice', 'foogallery' ),
+					'desc'  => __( 'Force the trial notice admin banner to never show', 'foogallery' ),
+					'type'  => 'checkbox',
+					'tab'   => 'advanced'
+				);
+			}
 			//endregion Advanced Tab
 
 			return apply_filters( 'foogallery_admin_settings_override', array(
