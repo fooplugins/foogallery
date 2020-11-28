@@ -36,6 +36,13 @@ if ( ! class_exists( 'FooGallery_Albums_Extension' ) ) {
 			add_filter( 'foogallery_albums_supports_video-stack', '__return_true' );
 
 			add_filter( 'fooboxshare_use_permalink', array( $this, 'check_for_albums_for_fooboxshare' ) );
+
+			add_action( 'foogallery_located_album_template-stack', array( $this, 'load_stack_assets' ) );
+		}
+
+		function load_stack_assets( $current_foogallery_album ) {
+			foogallery_enqueue_core_gallery_template_script();
+			foogallery_enqueue_core_gallery_template_style();
 		}
 
 		function check_for_albums_for_fooboxshare( $default ) {
