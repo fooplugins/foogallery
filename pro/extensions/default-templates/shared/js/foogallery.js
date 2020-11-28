@@ -17039,11 +17039,11 @@
     _.loadStackAlbums = _.reloadStackAlbums = function(){
         // this automatically initializes all templates on page load
         $(function () {
-            $('[id^="foogallery-album-"]:not(.fg-ready)').foogalleryStackAlbum();
+            $('.foogallery-stack-album:not(.fg-ready)').foogalleryStackAlbum();
         });
 
         _utils.ready(function () {
-            $('[id^="foogallery-gallery-"].fg-ready').foogalleryStackAlbum();
+            $('.foogallery-stack-album.fg-ready').foogalleryStackAlbum();
         });
     };
 
