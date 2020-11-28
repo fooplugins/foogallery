@@ -1,0 +1,93 @@
+.foogallery-pile {
+    position: relative;
+    z-index: 10;
+    float: left;
+    margin: 10px 15px 15px 10px !important;
+}
+
+/* Image styles */
+.foogallery-pile .foogallery-gallery-select {
+    width: 150px;
+    height: 150px;
+    position: relative;
+    box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.1), inset 0 0 0 1px rgba(0, 0, 0, 0.05);
+    background: #eee;
+    vertical-align: bottom;
+    border: 8px solid #fff;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+/* Stacks creted by the use of generated content */
+.foogallery-pile:before, .foogallery-pile:after {
+    content: "";
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    border: 8px solid #fff;
+    left: 0;
+    -webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+    -moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+/* 1st element in stack (behind image) */
+.foogallery-pile:before {
+    top: -3px; z-index: -10;
+    -webkit-transform: rotate(2deg);
+    -moz-transform: rotate(2deg);
+    transform: rotate(2deg);
+}
+/* 2nd element in stack (behind image) */
+.foogallery-pile:after {
+    top: -2px; z-index: -20;
+    -webkit-transform: rotate(-2deg);
+    -moz-transform: rotate(-2deg);
+    transform: rotate(-2deg);
+}
+
+.foogallery-pile img {
+    width: 150px;
+}
+
+.foogallery-pile h3 {
+    background: #fff;
+    position: absolute;
+    display: block;
+    bottom: 0px;
+    padding: 5px;
+    width: 100%;
+    box-sizing: border-box;
+    margin: 0;
+    opacity: 0.8;
+}
+
+.foogallery-pile h3 span {
+    display: block;
+    font-size: 0.6em;
+}
+
+.foogallery-gallery-select.selected {
+    border-color: #1E8CBE;
+}
+
+.foogallery-gallery-select.selected::before {
+    content: "\f147" !important;
+    display: inline-block !important;
+    font: normal 60px/70px 'dashicons';
+    position: absolute;
+    color: #FFF;
+    top: 40%;
+    left: 50%;
+    margin-left: -30px;
+    margin-top: -30px;
+    -webkit-font-smoothing: antialiased;
+    background: #1E8CBE;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    z-index: 4;
+    padding-top:0 !important;
+}

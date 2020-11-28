@@ -45,6 +45,9 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Editor' ) ) {
 			add_action( 'admin_footer', array( $this, 'render_gallery_modal' ) );
 			add_action( 'wp_footer', array( $this, 'render_gallery_modal' ) );
 
+			$url = FOOGALLERY_URL . 'css/admin-foogallery-gallery-piles.css';
+			wp_enqueue_style( 'admin-foogallery-gallery-piles', $url, array(), FOOGALLERY_VERSION );
+
 			$foogallery = FooGallery_Plugin::get_instance();
 			$foogallery->register_and_enqueue_js( 'admin-foogallery-editor.js' );
 
@@ -140,102 +143,6 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Editor' ) ) {
 					display: inline-block;
 					margin-left: 5px;
 				}
-
-				.foogallery-pile {
-					position: relative;
-					z-index: 10;
-					float: left;
-					margin: 10px 20px 30px 20px !important;
-				}
-
-				.foogallery-pile .foogallery-gallery-select {
-					max-width: 100%;
-					vertical-align: bottom;
-					border: 8px solid #fff;
-					-webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
-					-moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
-					box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
-					overflow: hidden;
-					width: 200px;
-					height: 200px;
-					cursor: pointer;
-					background-position: center center;
-					background-size: cover !important;
-				}
-
-				/* Stacks creted by the use of generated content */
-				.foogallery-pile:before, .foogallery-pile:after {
-					content: "";
-					width: 100%;
-					height: 100%;
-					position: absolute;
-					border: 8px solid #fff;
-					left: 0;
-					-webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
-					-moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
-					box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
-					-webkit-box-sizing: border-box;
-					-moz-box-sizing: border-box;
-					box-sizing: border-box;
-				}
-				/* 1st element in stack (behind image) */
-				.foogallery-pile:before {
-					top: -3px; z-index: -10;
-					-webkit-transform: rotate(2deg);
-					-moz-transform: rotate(2deg);
-					transform: rotate(2deg);
-				}
-				/* 2nd element in stack (behind image) */
-				.foogallery-pile:after {
-					top: -2px; z-index: -20;
-					-webkit-transform: rotate(-2deg);
-					-moz-transform: rotate(-2deg);
-					transform: rotate(-2deg);
-				}
-
-				.foogallery-gallery-select.selected {
-					border-color: #1E8CBE;
-				}
-
-				.foogallery-gallery-select.selected::before {
-					content: "\f147";
-					display: inline-block;
-					font: normal 100px/110px 'dashicons';
-					position: absolute;
-					color: #FFF;
-					top: 40%;
-					left: 50%;
-					margin-left: -50px;
-					margin-top: -50px;
-					speak: none;
-					-webkit-font-smoothing: antialiased;
-					background: #1E8CBE;
-					border-radius: 50%;
-					width: 100px;
-					height: 100px;
-					z-index: 4;
-				}
-
-				.foogallery-gallery-select-inner {
-					opacity: 0.8;
-					position: absolute;
-					bottom: 8px;
-					left:8px;
-					right:8px;
-					padding: 5px;
-					background: #FFF;
-					text-align: center;
-				}
-
-					.foogallery-gallery-select-inner h3 {
-						display: block;
-						margin: 0;
-					}
-
-					.foogallery-gallery-select-inner span {
-						display: block;
-						font-size: 0.9em;
-					}
 
 				.foogallery-add-gallery {
 					background: #444;
@@ -357,23 +264,23 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Editor' ) ) {
 					'force_use_original_thumb' => true
 				) );
 				$images = $gallery->image_count();
+				$title = empty( $gallery->name ) ?
+					sprintf( __( '%s #%s', 'foogallery' ), foogallery_plugin_name(), $gallery->ID ) :
+					$gallery->name;
 				?>
-				<li class="foogallery-pile">
-					<div class="foogallery-gallery-select" data-foogallery-id="<?php echo $gallery->ID; ?>" style="background: url('<?php echo $img_src; ?>') no-repeat">
-						<div class="foogallery-gallery-select-inner" >
-							<?php
-
-							$title = empty( $gallery->name ) ?
-								sprintf( __( '%s #%s', 'foogallery' ), foogallery_plugin_name(), $gallery->ID ) :
-								$gallery->name;
-
-							?>
-							<h3><?php echo $title; ?></h3>
-							<span><?php echo $images; ?></span>
-							<code>[<?php echo foogallery_gallery_shortcode_tag(); ?> id="<?php echo $gallery->ID; ?>"]</code>
-						</div>
-					</div>
-				</li>
+                <li class="foogallery-pile">
+                    <div class="foogallery-gallery-select" data-foogallery-id="<?php echo $gallery->ID; ?>">
+                        <div style="display: table;">
+                            <div style="display: table-cell; vertical-align: middle; text-align: center;">
+                                <img src="<?php echo $img_src; ?>"/>
+                                <h3>
+									<?php echo esc_html( $title ); ?>
+                                    <span><?php echo $images; ?></span>
+                                </h3>
+                            </div>
+                        </div>
+                    </div>
+                </li>
 				<?php } ?>
 				<li class="foogallery-pile">
 					<div class="foogallery-gallery-select foogallery-add-gallery">
