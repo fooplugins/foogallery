@@ -1,6 +1,6 @@
 {
   "name": "foogallery",
-  "version": "1.9.39",
+  "version": "1.9.40",
   "description": "The Most Intuitive and Extensible Gallery Creation and Management Tool Ever Created for WordPress",
   "main": "Gruntfile.js",
   "repository": {

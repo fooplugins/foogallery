@@ -227,6 +227,17 @@ Please update in order to for FooGallery to work in WP 5.5+!
 
 == Changelog ==
 
+= 1.9.40 =
+* Date Updated : 2020-11-29
+* Fix : rewrite of All-in-one Stack album fixing many bugs
+* Fix : fixed some styling issues with album edit page and gallery select modal
+* New : Added setting 'Force Hide Trial Notice' to never show the trail upsell message again
+* Update : FooGallery client side 1.4.22
+
+= 1.9.39 =
+* Date Updated : 2020-11-24
+* Fix : Allow gallery thumb order to be overridden when using foogallery_attachment_get_posts_args filter
+
 = 1.9.38 =
 * Date Updated : 2020-11-02
 * Fix : Fixed PHP warning within thumbnail generation code when deleting attachments
