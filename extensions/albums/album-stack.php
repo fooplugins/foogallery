@@ -5,12 +5,29 @@
 global $current_foogallery_album;
 global $current_foogallery_album_arguments;
 global $current_foogallery;
+
+
 $args = foogallery_album_template_setting( 'thumbnail_dimensions', array() );
+$args['crop'] = true;
 $lightbox = foogallery_album_template_setting( 'lightbox', 'unknown' );
 $random_angle = foogallery_album_template_setting( 'random_angle', 'false' );
 $gutter = foogallery_album_template_setting( 'gutter', '40' );
-$delay = foogallery_album_template_setting( 'delay', '0' );
 $pile_angles = foogallery_album_template_setting( 'pile_angles', '2' );
+
+$data_options = array(
+	'itemWidth' => intval( $args['width'] ),
+	'itemHeight' => intval( $args['height'] ),
+    'gutter' => intval( $gutter ),
+    'angleStep' => intval( $pile_angles ),
+    'randomAngle' => 'true' === $random_angle
+);
+
+if ( defined( 'JSON_UNESCAPED_UNICODE' ) ) {
+	$data_options = json_encode( $data_options, JSON_UNESCAPED_UNICODE );
+} else {
+	$data_options = json_encode( $data_options );
+}
+
 if ( !function_exists( 'foogallery_album_all_in_one_stack_render_gallery_attachment2' ) ) {
 	function foogallery_album_all_in_one_stack_render_gallery_attachment2( $gallery, $attachment, $args ) {
 		echo '<li class="fg-pile-item">';
@@ -34,7 +51,7 @@ if ( !function_exists( 'foogallery_album_all_in_one_stack_render_gallery_attachm
 	}
 }
 ?>
-<div id="foogallery-album-<?php echo $current_foogallery_album->ID; ?>" class="foogallery-container foogallery-stack-album" data-foogallery='{"angleStep": 2,"randomAngle": false}'>
+<div id="foogallery-album-<?php echo $current_foogallery_album->ID; ?>" class="foogallery-container foogallery-stack-album" data-foogallery="<?php echo esc_attr( $data_options ); ?>">
     <div class="fg-header">
         <h2 class="fg-header-title"><?php echo $current_foogallery_album->name; ?></h2>
         <span class="fg-header-back">&larr;</span>
