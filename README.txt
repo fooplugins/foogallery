@@ -227,6 +227,16 @@ Please update in order to for FooGallery to work in WP 5.5+!
 
 == Changelog ==
 
+= 1.9.41 =
+* Date Updated : 2020-12-03
+* Fix : fixed caption bugs where FooBox was not picking up custom/override captions
+* Fix : removed use of deprecated functions in jQuery for WP 5.6
+* Fix : removed localStorage checks, so that browser does not say that cookies are in use
+* Update : FooGallery client side 1.4.23
+[//]: # fs_premium_only_begin
+* Fix : fixed caption bugs where FooGallery lightbox was not picking up custom captions
+[//]: # fs_premium_only_end
+
 = 1.9.40 =
 * Date Updated : 2020-11-29
 * Fix : rewrite of All-in-one Stack album fixing many bugs
