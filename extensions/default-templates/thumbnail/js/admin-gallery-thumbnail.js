@@ -18,7 +18,7 @@
 			FOOGALLERY_THUMBNAIL_TEMPLATE.setPreviewClasses();
 		});
 
-		$('.foogallery-thumbnail-preview').click(function(e) {
+		$('.foogallery-thumbnail-preview').on('click', function(e) {
 			e.preventDefault();
 		});
 	};

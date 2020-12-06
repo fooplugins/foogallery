@@ -1,5 +1,5 @@
 jQuery(document).ready(function() {
-    jQuery('.image-upload-button').click(function(e) {
+    jQuery('.image-upload-button').on('click',function(e) {
         e.preventDefault();
         tb_show('', 'media-upload.php?type=image&amp;TB_iframe=true');
         return false;

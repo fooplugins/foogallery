@@ -61,7 +61,7 @@
 
 	FOOPluginBaseAdminSettings.setupTabs = function() {
 
-		$(".foo-nav-tabs a.nav-tab").click( function(e) {
+		$(".foo-nav-tabs a.nav-tab").on('click', function(e) {
 			e.preventDefault();
 
 			$this = $(this);
