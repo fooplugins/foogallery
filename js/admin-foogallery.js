@@ -588,7 +588,7 @@
 
 }(window.FOOGALLERY = window.FOOGALLERY || {}, jQuery));
 
-jQuery(function ($) {
+FooGallery.utils.ready(function ($) {
 	if ( $('#foogallery_attachments').length > 0 ) {
 		FOOGALLERY.adminReady();
 	}

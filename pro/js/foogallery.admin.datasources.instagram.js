@@ -1,4 +1,4 @@
-jQuery(function ($) {
+FooGallery.utils.ready(function ($) {
 
 	$(document).on('change','.foogallery_instagram_input',function(){
 		$('.foogallery-datasource-modal-insert').removeAttr( 'disabled' );

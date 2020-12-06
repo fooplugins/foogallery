@@ -1,4 +1,4 @@
-jQuery(function ($) {
+FooGallery.utils.ready(function ($) {
 
 	//Launch the Bulk Management Modal
 	$('.foogallery-attachments-list-bar').on('click', '.bulk_media_management', function (e) {
