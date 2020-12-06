@@ -572,7 +572,7 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 					$classes[] = $this->get_setting_from_gallery( $gallery, 'caption_invert_color', '' );
 				}
 
-				if ( foogallery_get_setting( 'enable_custom_ready' ) ) {
+				if ( 'on' === foogallery_get_setting( 'enable_custom_ready', 'on' ) ) {
                     $classes[] = 'fg-ready';
                 }
 			}
