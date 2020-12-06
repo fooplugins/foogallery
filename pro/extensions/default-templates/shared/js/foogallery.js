@@ -1737,7 +1737,7 @@
 );
 /*!
 * FooGallery.utils - Contains common utility methods and classes used in our plugins.
-* @version 0.2.1
+* @version 0.2.2
 * @link https://github.com/steveush/foo-utils#readme
 * @copyright Steve Usher 2020
 * @license Released under the GPL-3.0 license.
@@ -1800,7 +1800,7 @@
 			 * @name version
 			 * @type {string}
 			 */
-			version: '0.2.1'
+			version: '0.2.2'
 		};
 	}
 
@@ -1809,7 +1809,7 @@
 })(jQuery);
 (function ($, _){
 	// only register methods if this version is the current version
-	if (_.version !== '0.2.1') return;
+	if (_.version !== '0.2.2') return;
 
 	/**
 	 * @summary Contains common type checking utility methods.
@@ -2163,7 +2163,7 @@
 );
 (function($, _, _is){
 	// only register methods if this version is the current version
-	if (_.version !== '0.2.1') return;
+	if (_.version !== '0.2.2') return;
 
 	/**
 	 * @memberof FooGallery.utils.
@@ -2750,7 +2750,7 @@
 );
 (function(_, _is){
 	// only register methods if this version is the current version
-	if (_.version !== '0.2.1') return;
+	if (_.version !== '0.2.2') return;
 
 	/**
 	 * @summary Contains common url utility methods.
@@ -2889,7 +2889,7 @@
 );
 (function (_, _is, _fn) {
 	// only register methods if this version is the current version
-	if (_.version !== '0.2.1') return;
+	if (_.version !== '0.2.2') return;
 
 	/**
 	 * @summary Contains common string utility methods.
@@ -3229,7 +3229,7 @@
 );
 (function($, _, _is, _fn, _str){
 	// only register methods if this version is the current version
-	if (_.version !== '0.2.1') return;
+	if (_.version !== '0.2.2') return;
 
 	/**
 	 * @summary Contains common object utility methods.
@@ -3561,7 +3561,7 @@
 );
 (function($, _, _is){
 	// only register methods if this version is the current version
-	if (_.version !== '0.2.1') return;
+	if (_.version !== '0.2.2') return;
 
 	// any methods that have dependencies but don't fall into a specific subset or namespace can be added here
 
@@ -3663,6 +3663,21 @@
 				if (result === false) break;
 			}
 		}
+	};
+
+	/**
+	 * @summary Checks if a value exists within an array.
+	 * @memberof FooGallery.utils.
+	 * @function inArray
+	 * @param {*} needle - The value to search for.
+	 * @param {[]} haystack - The array to search within.
+	 * @returns {number} Returns the index of the value if found otherwise -1.
+	 */
+	_.inArray = function(needle, haystack){
+		if (_is.array(haystack)){
+			return haystack.indexOf(needle);
+		}
+		return -1;
 	};
 
 	/**
@@ -3980,7 +3995,7 @@
 );
 (function($, _, _is){
 	// only register methods if this version is the current version
-	if (_.version !== '0.2.1') return;
+	if (_.version !== '0.2.2') return;
 
 	/**
 	 * @summary Contains common utility methods and members for the CSS animation property.
@@ -4217,7 +4232,7 @@
 );
 (function($, _, _is, _animation){
 	// only register methods if this version is the current version
-	if (_.version !== '0.2.1') return;
+	if (_.version !== '0.2.2') return;
 
 	/**
 	 * @summary Contains common utility methods and members for the CSS transition property.
@@ -4395,7 +4410,7 @@
 );
 (function ($, _, _is, _obj, _fn) {
 	// only register methods if this version is the current version
-	if (_.version !== '0.2.1') return;
+	if (_.version !== '0.2.2') return;
 
 	/**
 	 * @summary A base class providing some helper methods for prototypal inheritance.
@@ -4565,7 +4580,7 @@
 );
 (function (_, _is, _str) {
     // only register methods if this version is the current version
-    if (_.version !== '0.2.1') return;
+    if (_.version !== '0.2.2') return;
 
     /**
      * @summary A base event class providing just a type and defaultPrevented properties.
@@ -4908,7 +4923,7 @@
 );
 (function($, _, _is){
 	// only register methods if this version is the current version
-	if (_.version !== '0.2.1') return;
+	if (_.version !== '0.2.2') return;
 
 	/**
 	 * @summary A simple bounding rectangle class.
@@ -5050,7 +5065,7 @@
 );
 (function($, _, _is, _fn, _obj){
     // only register methods if this version is the current version
-    if (_.version !== '0.2.1') return;
+    if (_.version !== '0.2.2') return;
 
     /**
      * @summary A simple timer that triggers events.
@@ -5350,7 +5365,7 @@
 
 (function($, _, _is, _fn){
 	// only register methods if this version is the current version
-	if (_.version !== '0.2.1') return;
+	if (_.version !== '0.2.2') return;
 
 	/**
 	 * @summary A factory for classes allowing them to be registered and created using a friendly name.
@@ -5686,7 +5701,7 @@
 );
 (function($, _, _fn){
     // only register methods if this version is the current version
-    if (_.version !== '0.2.1') return;
+    if (_.version !== '0.2.2') return;
 
     /**
      * @summary A wrapper around the fullscreen API to ensure cross browser compatibility.
@@ -6393,10 +6408,10 @@
 					event.preventDefault();
 				} else if (_is.hash(self.opt.allowPageScroll)){
 					var dir = self.getDirection(self.startPoint, self.endPoint);
-					if (!self.opt.allowPageScroll.x && ['NE','E','SE','NW','W','SW'].indexOf(dir) !== -1){
+					if (!self.opt.allowPageScroll.x && _utils.inArray(dir, ['NE','E','SE','NW','W','SW']) !== -1){
 						event.preventDefault();
 					}
-					if (!self.opt.allowPageScroll.y && ['NW','N','NE','SW','S','SE'].indexOf(dir) !== -1){
+					if (!self.opt.allowPageScroll.y && _utils.inArray(dir, ['NW','N','NE','SW','S','SE']) !== -1){
 						event.preventDefault();
 					}
 				}
@@ -8100,7 +8115,7 @@
 	FooGallery.utils,
 	FooGallery.utils.is
 );
-(function($, _, _is, _str, _obj){
+(function($, _, _utils, _is, _str, _obj){
 
 	_.State = _.Component.extend(/** @lends FooGallery.State */{
 		/**
@@ -8212,7 +8227,7 @@
 		 * @returns {boolean}
 		 */
 		isPushOrReplace: function(value){
-			return ["push","replace"].indexOf(value) !== -1;
+			return _utils.inArray(value, ["push","replace"]) !== -1;
 		},
 		/**
 		 * @summary Check if the current url contains state for this template.
@@ -8464,6 +8479,7 @@
 })(
 	FooGallery.$,
 	FooGallery,
+	FooGallery.utils,
 	FooGallery.utils.is,
 	FooGallery.utils.str,
 	FooGallery.utils.obj
@@ -10731,7 +10747,7 @@
 		find: function (item) {
 			var self = this;
 			for (var i = 0, l = self._arr.length; i < l; i++) {
-				if (self._arr[i].indexOf(item) !== -1) {
+				if (_utils.inArray(item, self._arr[i]) !== -1) {
 					return i + 1;
 				}
 			}
@@ -10739,7 +10755,7 @@
 		},
 		contains: function (pageNumber, item) {
 			var items = this.get(pageNumber);
-			return items.indexOf(item) !== -1;
+			return _utils.inArray(item, items) !== -1;
 		},
 		first: function () {
 			this.goto(1);
@@ -10859,7 +10875,7 @@
 			pageNumber = self.number(pageNumber);
 			if (isFilter) self.tmpl.items.detach(self.tmpl.items.all());
 			for (var i = 0; i < pageNumber; i++){
-				var exists = self._created.indexOf(i);
+				var exists = _utils.inArray(i, self._created);
 				if (exists === -1){
 					var items = self.tmpl.items.create(self._arr[i], true);
 					if (items.length){
@@ -11170,7 +11186,7 @@
 			return this._super(pageNumber) || this.isKeyword(pageNumber);
 		},
 		isKeyword: function(pageNumber){
-			return _is.string(pageNumber) && this.pageKeywords.indexOf(pageNumber) !== -1;
+			return _is.string(pageNumber) && _utils.inArray(pageNumber, this.pageKeywords) !== -1;
 		},
 		number: function(value){
 			var self = this;
@@ -11472,7 +11488,7 @@
 				if (!_is.empty(t = items[i].tags)) {
 					result.__ALL__++;
 					for (var j = 0, jl = t.length, tag; j < jl; j++) {
-						if (!_is.empty(tag = t[j]) && (generate || (!generate && tags.indexOf(tag) !== -1))) {
+						if (!_is.empty(tag = t[j]) && (generate || (!generate && _utils.inArray(tag, tags) !== -1))) {
 							if (_is.number(result[tag])) {
 								result[tag]++;
 							} else {
@@ -11496,7 +11512,7 @@
 					var count = counts[prop], isAll = prop === "__ALL__";
 					if (self.min <= 0 || count >= self.min) {
 						if (tags.length > 0){
-							index = tags.indexOf(prop);
+							index = _utils.inArray(prop, tags);
 						} else {
 							index++;
 						}
@@ -11822,7 +11838,7 @@
 					var $item = $(this), tag = $item.data("tag");
 					if (!_is.string(tag)) tag += "";
 					var empty = _is.empty(tag);
-					$item.toggleClass(cls.selected, (empty && _is.empty(tags[i])) || (!empty && tags[i].indexOf(tag) !== -1));
+					$item.toggleClass(cls.selected, (empty && _is.empty(tags[i])) || (!empty && _utils.inArray(tag, tags[i]) !== -1));
 				});
 			});
 		},
@@ -11854,7 +11870,7 @@
 						if (!_is.array(tags[tag.level])){
 							tags[tag.level] = [];
 						}
-						i = tags[tag.level].indexOf(tag.value);
+						i = _utils.inArray(tag.value, tags[tag.level]);
 						if (i === -1){
 							tags[tag.level].push(tag.value);
 						} else {
@@ -14252,7 +14268,7 @@
             }
             self.hasTitle = !_is.empty(self.title);
             self.hasDescription = !_is.empty(self.description);
-            self.hasExif = item.hasExif && ["auto","full","partial","minimal"].indexOf(self.opt.exif) !== -1;
+            self.hasExif = item.hasExif && _utils.inArray(self.opt.exif, ["auto","full","partial","minimal"]) !== -1;
         },
         create: function(){
             if (!this.isCreated){
@@ -14990,7 +15006,7 @@
             this.selfHosted = _is.boolean(selfHosted) ? selfHosted : false;
             this.embedParams = _is.array(embedParams) ? embedParams : [];
             this.autoPlayParam = _is.hash(autoPlayParam) ? autoPlayParam : {};
-            this.canPlayType = this.selfHosted && _is.fn(videoEl.canPlayType) ? ['probably','maybe'].indexOf(videoEl.canPlayType(this.mimeType)) !== -1 : true;
+            this.canPlayType = this.selfHosted && _is.fn(videoEl.canPlayType) ? _utils.inArray(videoEl.canPlayType(this.mimeType), ['probably','maybe']) !== -1 : true;
         },
         canPlay: function(urlParts){
             return this.canPlayType && this.regex.test(urlParts.href);
