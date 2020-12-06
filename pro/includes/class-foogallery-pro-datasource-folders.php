@@ -479,22 +479,44 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Folders' ) ) {
 					//there is missing metadata
 					echo '<p><strong>' . sprintf( __( 'There are %d images with missing metadata!', 'foogallery' ), $image_count - $image_metadata_count ) . '</strong></p>';
 				}
-
-				echo '<p>' . __( 'Change the sort order of the images by drag and drop. Click the "i" icon to change the caption and other metadata for each image.', 'foogallery' ) . '</p>';
-				echo '<div class="foogallery-server-image-metadata-form"><form><h2>' . __( 'Edit Image Metadata', 'foogallery' ) . '</h2>';
-				echo '<p><label>' . __( 'File', 'foogallery' ) . '</label><span id="foogallery-server-image-metadata-form-file">filename.jpg</span></p>';
-				echo '<p><label for="foogallery-server-image-metadata-form-caption">' . __( 'Caption', 'foogallery' ) . '</label><textarea name="caption" id="foogallery-server-image-metadata-form-caption" /></p>';
-				echo '<p><label for="foogallery-server-image-metadata-form-description">' . __( 'Description', 'foogallery' ) . '</label><textarea name="description" id="foogallery-server-image-metadata-form-description" /></p>';
-				echo '<p><label for="foogallery-server-image-metadata-form-alt">' . __( 'Alt Text', 'foogallery' ) . '</label><input type="text" name="alt" id="foogallery-server-image-metadata-form-alt" /></p>';
-				echo '<p><label for="foogallery-server-image-metadata-form-custom_url">' . __( 'Custom URL', 'foogallery' ) . '</label><input type="text" name="custom_url" id="foogallery-server-image-metadata-form-custom_url" /></p>';
-				echo '<p><label for="foogallery-server-image-metadata-form-custom_target">' . __( 'Custom Target', 'foogallery' ) . '</label><input type="text" name="custom_target" id="foogallery-server-image-metadata-form-custom_target" /></p>';
-				echo '<p style="text-align: center">';
-				echo '<a href="#" class="foogallery-server-image-metadata-form-button-cancel button button-large">' . __( 'Cancel', 'foogallery' ) . '</a>';
-				echo '<a href="#" class="foogallery-server-image-metadata-form-button-save button button-large button-primary">' . __( 'Save', 'foogallery' ) . '</a>';
-				echo '<a href="#" class="foogallery-server-image-metadata-form-button-next button button-large button-primary">' . __( 'Save &amp; Next', 'foogallery' ) . '</a>';
-				echo '</p>';
-				echo '</form></div>';
-				echo '<a style="display: none;" href="#" class="foogallery-server-image-metadata-save button button-large button-primary">' . __( 'Save Metadata', 'foogallery' ) . '</a>';
+                ?>
+				<p><?php _e( 'Change the sort order of the images by drag and drop. Click the "i" icon to change the caption and other metadata for each image.', 'foogallery' ); ?></p>
+				<div class="foogallery-server-image-metadata-form">
+                    <form>
+                        <h2><?php _e( 'Edit Image Metadata', 'foogallery' ); ?></h2>
+				        <p>
+                            <label><?php _e( 'File', 'foogallery' ); ?></label>
+                            <span id="foogallery-server-image-metadata-form-file">filename.jpg</span>
+                        </p>
+                        <p>
+                            <label for="foogallery-server-image-metadata-form-caption"><?php _e( 'Caption', 'foogallery' ); ?></label>
+                            <textarea name="caption" id="foogallery-server-image-metadata-form-caption"></textarea>
+                        </p>
+                        <p>
+                            <label for="foogallery-server-image-metadata-form-description"><?php _e( 'Description', 'foogallery' ); ?></label>
+                            <textarea name="description" id="foogallery-server-image-metadata-form-description"></textarea>
+                        </p>
+                        <p>
+                            <label for="foogallery-server-image-metadata-form-alt"><?php _e( 'Alt Text', 'foogallery' ); ?></label>
+                            <input type="text" name="alt" id="foogallery-server-image-metadata-form-alt" />
+                        </p>
+				        <p>
+                            <label for="foogallery-server-image-metadata-form-custom_url"><?php _e( 'Custom URL', 'foogallery' ); ?></label>
+                            <input type="text" name="custom_url" id="foogallery-server-image-metadata-form-custom_url" />
+                        </p>
+                        <p>
+                            <label for="foogallery-server-image-metadata-form-custom_target"><?php _e( 'Custom Target', 'foogallery' ); ?></label>
+                            <input type="text" name="custom_target" id="foogallery-server-image-metadata-form-custom_target" />
+                        </p>
+                        <p style="text-align: center">
+				            <a href="#" class="foogallery-server-image-metadata-form-button-cancel button button-large"><?php _e( 'Cancel', 'foogallery' ); ?></a>
+                            <a href="#" class="foogallery-server-image-metadata-form-button-save button button-large button-primary"><?php _e( 'Save', 'foogallery' ); ?></a>
+				            <a href="#" class="foogallery-server-image-metadata-form-button-next button button-large button-primary"><?php _e( 'Save &amp; Next', 'foogallery' ); ?></a>
+				        </p>
+				    </form>
+                </div>
+				<a style="display: none;" href="#" class="foogallery-server-image-metadata-save button button-large button-primary"><?php _e( 'Save Metadata', 'foogallery' ); ?></a>
+                <?php
 			} else {
 				global $wp_filesystem;
 				// setup wp_filesystem api
@@ -634,7 +656,7 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Folders' ) ) {
 				if ( empty( $up_folder ) ) {
 					$up_folder = '/';
 				}
-				echo '<li><a title="' . __( 'Go up a level', 'foogallery' ) . '" href="#" data-folder="' . esc_attr( $up_folder ) . '"><span class="dashicons dashicons-category" />..</a></li>';
+				echo '<li><a title="' . __( 'Go up a level', 'foogallery' ) . '" href="#" data-folder="' . esc_attr( $up_folder ) . '"><i class="dashicons dashicons-category"></i>..</a></li>';
 			}
 
 			$folder_exists = $wp_filesystem->exists( $actual_path );
@@ -658,7 +680,7 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Folders' ) ) {
 					// output all folders
 					foreach ( $dir_array as $file => $file_info ) {
 						$dir = trailingslashit( $folder ) . $file_info['name'];
-						echo '<li><a href="#" data-folder="' . esc_attr( $dir ) . '"><span class="dashicons dashicons-category" />' . esc_html( $file_info['name'] ) . '</a></li>';
+						echo '<li><a href="#" data-folder="' . esc_attr( $dir ) . '"><i class="dashicons dashicons-category"></i>' . esc_html( $file_info['name'] ) . '</a></li>';
 					}
 				}
 			}
