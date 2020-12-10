@@ -55,6 +55,12 @@ if ( ! class_exists( 'FooGallery_Admin' ) ) {
 				return;
 			}
 
+			foogallery_enqueue_core_gallery_template_script();
+			foogallery_enqueue_core_gallery_template_style();
+
+            $foogallery = FooGallery_Plugin::get_instance();
+            $foogallery->register_and_enqueue_js( 'admin-foogallery-edit.js' );
+
 			do_action('foogallery_admin_enqueue_scripts' );
 		}
 
