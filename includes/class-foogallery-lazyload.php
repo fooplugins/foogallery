@@ -84,29 +84,35 @@ if ( ! class_exists( 'FooGallery_LazyLoad' ) ) {
 
                 if (isset($current_foogallery->lazyload_support) && true === $current_foogallery->lazyload_support) {
                     if (isset($attr['src'])) {
-                        //rename src => data-src
+                        //rename src => data-src-fg
                         $src = $attr['src'];
                         unset($attr['src']);
                         $attr['data-src-fg'] = $src;
                     }
 
                     if (isset($attr['srcset'])) {
-                        //rename srcset => data-srcset
+                        //rename srcset => data-srcset-fg
                         $src = $attr['srcset'];
                         unset($attr['srcset']);
                         $attr['data-srcset-fg'] = $src;
                     }
 
-                    //do not add the src attribute
-                    if ( false ) {
-						//set the src to a 1x1 transparent gif
-						$attr['src'] = FOOGALLERY_URL . 'assets/1x1.gif';
-					}
+                    if ( apply_filters( 'foogallery_img_src_placeholders', false ) ) {
+	                    //add a placeholder src
+	                    if ( isset( $attr['width'] ) && isset( $attr['height'] ) ) {
+		                    //set the src to a 1x1 transparent gif
+		                    $attr['src'] = $this->get_placeholder_image( $attr['width'], $attr['height'] );
+	                    }
+                    }
                 }
             }
 
             return $attr;
         }
+
+		public function get_placeholder_image( $w, $h ) {
+			return 'data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%20' . $w . '%20' . $h . '%22%3E%3C/svg%3E';
+		}
 
 
         /**
