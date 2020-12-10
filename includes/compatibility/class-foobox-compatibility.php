@@ -73,7 +73,7 @@ if ( !class_exists( 'FooGallery_FooBox_Compatibility' ) ) {
 			global $current_foogallery;
 
 			//check if lightbox set to foogallery
-			if ( 'foobox' === $current_foogallery->lightbox ) {
+			if ( isset( $current_foogallery->lightbox ) && 'foobox' === $current_foogallery->lightbox ) {
 
 				//check lightbox caption source
 				$source = foogallery_gallery_template_setting( 'lightbox_caption_override', '' );
