@@ -245,7 +245,7 @@
 		$('.foogallery-items-view-switch-container').appendTo( $items_metabox_heading ).removeClass('hidden');
 
 		$('.foogallery-items-view-switch-container a').on('click', function(e) {
-			e.preventDefault();
+			e.stopPropagation();
 
 			var $currentButton = $('.foogallery-items-view-switch-container a.current'),
 				currentSelector = $currentButton.data('container'),

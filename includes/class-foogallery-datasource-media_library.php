@@ -95,7 +95,7 @@ if ( ! class_exists( 'FooGallery_Datasource_MediaLibrary' ) ) {
 
 			//always output the ability to add via media library
 			$has_attachments = $foogallery->has_attachments();
-            $show_attachments = isset( $gallery->datasource_name ) && 'media_library' === $gallery->datasource_name;
+            $show_attachments = isset( $foogallery->datasource_name ) && 'media_library' === $foogallery->datasource_name;
 
 			$media_button_start = foogallery_get_setting('add_media_button_start', '' ) === 'on';
 			$attachment_ids = '';
@@ -104,7 +104,7 @@ if ( ! class_exists( 'FooGallery_Datasource_MediaLibrary' ) ) {
             }
 			?>
 			<input type="hidden" data-foogallery-preview="include" name='foogallery_attachments' id="foogallery_attachments" value="<?php echo $attachment_ids; ?>"/>
-            <div class="foogallery-attachments-list-container <?php echo $show_attachments ? '' : 'hidden'; ?>">
+            <div class="foogallery-attachments-list-container <?php echo $show_attachments && $has_attachments ? '' : 'hidden'; ?>">
                 <ul class="foogallery-attachments-list <?php echo $media_button_start ? 'foogallery-add-media-button-start' : ''; ?>">
                     <?php if ( $media_button_start ) {
                         $this->render_add_media_button( $foogallery->ID );
