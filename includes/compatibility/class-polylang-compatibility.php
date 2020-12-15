@@ -94,7 +94,7 @@ if ( ! class_exists( 'FooGallery_Polylang_Compatibility' ) ) {
 						<p>
 							<strong><?php _e( 'FooGallery + Polylang Alert : ', 'foogallery' ); ?></strong>
 							<?php _e( 'We noticed that you have Polylang installed and you have chosen to activate languages and translations for media.', 'foogallery' ); ?><br />
-							<?php _e( 'This may cause empty galleries on translated pages! To disable this feature, please visit Settings -> Languages -> Settings Tab.', 'foogallery' ); ?>
+							<?php _e( 'This may cause empty galleries on translated pages! To disable this feature, please visit Languages -> Settings.', 'foogallery' ); ?>
 						</p>
 					</div>
 					<?php
