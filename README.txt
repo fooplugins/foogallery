@@ -228,7 +228,8 @@ Please update in order to for FooGallery to work in WP 5.5+!
 == Changelog ==
 
 = 1.9.45 =
-* Date Updated : 2020-12-10
+* Date Updated : 2020-15-10
+* Fix : Updated albums to use FooGallery stylesheet enqueue function
 [//]: # fs_premium_only_begin
 * Fix : fixed bug in Multi-level modal where taxonomies were scrambled
 [//]: # fs_premium_only_end
