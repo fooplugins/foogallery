@@ -66,7 +66,7 @@
 	};
 
 	FOOGALLERYALBUM.initAlbumInfoButtons = function() {
-		$('.foogallery-album-gallery-list .attachment-preview').on('click', 'a.info', function(e) {
+		$('.foogallery-album-gallery-list').on('click', 'a.info', function(e) {
 
 			e.preventDefault();
 

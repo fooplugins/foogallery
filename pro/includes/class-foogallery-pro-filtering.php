@@ -791,14 +791,14 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 			echo '<div class="' . esc_attr( $class ) . '">';
 
 			echo '<h3>' . __( 'Level', 'foogallery' ) . ' <span class="foogallery-multi-filtering-modal-content-level-count">' . esc_html( $index ) . '</span>';
-			echo '<a href="#" class="foogallery-multi-filtering-modal-content-level-remove" title="' . __('Remove Level', 'foogallery') . '"><i class="dashicons dashicons-no-alt" /></a>';
+			echo '<a href="#" class="foogallery-multi-filtering-modal-content-level-remove" title="' . __('Remove Level', 'foogallery') . '"><span class="dashicons dashicons-no-alt"></span></a>';
 			echo '</h3>';
 
 			echo '<label>' . sprintf( __( 'Level %s "All" Text : ' , 'foogallery' ), '<span class="foogallery-multi-filtering-modal-content-level-count">' . esc_html( $index ) . '</span>' ) . '</label>';
 
 			$all_value = array_key_exists( 'all', $level ) ? $level['all'] : __('All', 'foogallery');
 
-			echo '<input type="text" value="' . esc_html( $all_value ) . '" />';
+			echo '<input type="text" value="' . esc_html( $all_value ) . '"/>';
 
 			echo '<ul class="foogallery-multi-filtering-modal-content-terms">';
 
@@ -821,7 +821,7 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 			    }
 			}
 
-			echo '</ul><div style="clear: both"/>';
+			echo '</ul><div style="clear: both"></div>';
 
 			echo '</div>';
 		}

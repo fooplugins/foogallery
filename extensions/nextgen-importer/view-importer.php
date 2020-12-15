@@ -324,7 +324,7 @@ if ( isset( $_POST['foogallery_nextgen_reset'] ) ) {
 		<div class="foogallery-help">
 			<?php _e( 'Importing albums is also really simple:', 'foogallery' ); ?>
 			<ol>
-				<li><?php _e( __( 'For all the albums you wish to import, make sure all the galleries have been imported FIRST. If not, then go back to the Galleries tab.', 'foogallery' )); ?></li>
+				<li><?php _e( 'For all the albums you wish to import, make sure all the galleries have been imported FIRST. If not, then go back to the Galleries tab.', 'foogallery' ); ?></li>
 				<li><?php _e( 'Click the Import Album button for each album to import the album and link all the galleries. If you do not see the button, then that means you first need to import the galleries.', 'foogallery' ); ?></li>
 				<li><?php _e( 'Once an album is imported, you can click on the link under the Album Name column to edit the album.', 'foogallery'); ?></li>
 			</ol>

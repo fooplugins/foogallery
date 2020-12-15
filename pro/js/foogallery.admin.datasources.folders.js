@@ -1,4 +1,4 @@
-jQuery(function ($) {
+FooGallery.utils.ready(function ($) {
 
 	/* Manage media javascript */
 	$('.foogallery-datasource-folder').on('click', 'button.remove', function (e) {

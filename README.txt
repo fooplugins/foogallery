@@ -227,6 +227,38 @@ Please update in order to for FooGallery to work in WP 5.5+!
 
 == Changelog ==
 
+= 1.9.45 =
+* Date Updated : 2020-15-10
+* Fix : Updated albums to use FooGallery stylesheet enqueue function
+[//]: # fs_premium_only_begin
+* Fix : fixed bug in Multi-level modal where taxonomies were scrambled
+[//]: # fs_premium_only_end
+
+= 1.9.44 =
+* Date Updated : 2020-12-06
+* New : Allow thumb width and height to be overridden with shortcode arguments override_width and override_height
+* Fix : fixed caption bugs where FooBox was not picking up custom/override captions
+* Fix : removed use of deprecated functions in jQuery for WP 5.6
+* Fix : removed localStorage checks, so that browser does not say that cookies are in use
+* Update : FooGallery client side 1.4.24
+* Update : Frontend gallery initialization now uses custom ready event by default, to avoid jQuery errors
+[//]: # fs_premium_only_begin
+* Fix : fixed caption bugs where FooGallery lightbox was not picking up custom captions
+* Fix : fixed server folder datasource admin bugs
+* Fix : fixed bug where attachment list was showing when another datasource was in use
+[//]: # fs_premium_only_end
+
+= 1.9.40 =
+* Date Updated : 2020-11-29
+* Fix : rewrite of All-in-one Stack album fixing many bugs
+* Fix : fixed some styling issues with album edit page and gallery select modal
+* New : Added setting 'Force Hide Trial Notice' to never show the trail upsell message again
+* Update : FooGallery client side 1.4.22
+
+= 1.9.39 =
+* Date Updated : 2020-11-24
+* Fix : Allow gallery thumb order to be overridden when using foogallery_attachment_get_posts_args filter
+
 = 1.9.38 =
 * Date Updated : 2020-11-02
 * Fix : Fixed PHP warning within thumbnail generation code when deleting attachments

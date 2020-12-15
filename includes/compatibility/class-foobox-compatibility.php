@@ -33,6 +33,76 @@ if ( !class_exists( 'FooGallery_FooBox_Compatibility' ) ) {
 				//FooBox Free specific functionality
 				add_filter( 'foogallery_album_stack_link_class_name', array($this, 'album_stack_link_class_name'));
 			}
+
+			//cater for different captions sources
+			add_filter( 'foogallery_attachment_html_link_attributes', array( $this, 'add_caption_attributes' ), 20, 3 );
+
+			//add custom captions
+			add_filter( 'foogallery_build_attachment_html_caption_custom', array( &$this, 'customize_captions' ), 90, 3 );
+		}
+
+		/**
+		 * Customize the captions if needed
+		 *
+		 * @param $captions
+		 * @param $foogallery_attachment    FooGalleryAttachment
+		 * @param $args array
+		 *
+		 * @return array
+		 */
+		function customize_captions( $captions, $foogallery_attachment, $args) {
+
+			if ( isset( $foogallery_attachment->custom_captions ) && $foogallery_attachment->custom_captions ) {
+				//specifically for foobox, make sure the custom captions are set
+				$foogallery_attachment->caption_title = ' ';
+				$foogallery_attachment->caption_desc  = $captions['desc'];
+			}
+
+			return $captions;
+		}
+
+		/**
+		 * Handle custom captions for the lightbox
+		 * @param $attr
+		 * @param $args
+		 * @param $foogallery_attachment
+		 *
+		 * @return mixed
+		 */
+		function add_caption_attributes( $attr, $args, $foogallery_attachment ) {
+			global $current_foogallery;
+
+			//check if lightbox set to foogallery
+			if ( isset( $current_foogallery->lightbox ) && 'foobox' === $current_foogallery->lightbox ) {
+
+				//check lightbox caption source
+				$source = foogallery_gallery_template_setting( 'lightbox_caption_override', '' );
+
+				if ( 'override' === $source ) {
+					$caption_title_source = foogallery_gallery_template_setting('lightbox_caption_override_title', '' );
+					if ( 'none' === $caption_title_source ) {
+						$attr['data-caption-title'] = ' ';
+					} else if ( '' !== $caption_title_source ) {
+						$attr['data-caption-title'] = foogallery_sanitize_html( foogallery_get_caption_by_source( $foogallery_attachment, $caption_title_source, 'title' ) );
+					}
+
+					$caption_desc_source = foogallery_gallery_template_setting('lightbox_caption_override_desc', '' );
+					if ( 'none' === $caption_desc_source ) {
+						$attr['data-caption-desc'] = ' ';
+					} else if ( '' !== $caption_desc_source ) {
+						$attr['data-caption-desc'] = foogallery_sanitize_html( foogallery_get_caption_by_source( $foogallery_attachment, $caption_desc_source, 'description' ) );
+					}
+				} else if ( 'custom' === $source ) {
+
+					$template = foogallery_gallery_template_setting( 'lightbox_caption_custom_template', '' );
+					if ( !empty( $template ) ) {
+						$attr['data-caption-title'] = ' ';
+						$attr['data-caption-desc'] = foogallery_sanitize_html( FooGallery_Pro_Advanced_Captions::build_custom_caption( $template, $foogallery_attachment ) );
+					}
+				}
+			}
+
+			return $attr;
 		}
 
 		function add_foobox_help_field( $fields, $template ) {

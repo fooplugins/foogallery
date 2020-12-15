@@ -2,7 +2,7 @@ jQuery(document).ready(function($) {
     $.admin_tabs = {
 
         init : function() {
-          $("a.nav-tab").click( function(e) {
+          $("a.nav-tab").on('click', function(e) {
               e.preventDefault();
 
               $this = $(this);
@@ -59,7 +59,7 @@ jQuery(document).ready(function($) {
     };
 
     FOOGALLERY.bindClearCssOptimizationButton = function() {
-        $('.foogallery_clear_css_optimizations').click(function(e) {
+        $('.foogallery_clear_css_optimizations').on('click', function(e) {
             e.preventDefault();
 
             var $button = $(this),
@@ -88,7 +88,7 @@ jQuery(document).ready(function($) {
     };
 
     FOOGALLERY.bindTestThumbnailButton = function() {
-        $('.foogallery_thumb_generation_test').click(function(e) {
+        $('.foogallery_thumb_generation_test').on('click', function(e) {
             e.preventDefault();
 
             var $button = $(this),
@@ -117,7 +117,7 @@ jQuery(document).ready(function($) {
     };
 
     FOOGALLERY.bindApplyRetinaDefaults = function() {
-        $('.foogallery_apply_retina_support').click(function(e) {
+        $('.foogallery_apply_retina_support').on('click', function(e) {
             e.preventDefault();
 
             var $button = $(this),
@@ -155,7 +155,7 @@ jQuery(document).ready(function($) {
     };
 
     FOOGALLERY.bindUninstallButton = function() {
-        $('.foogallery_uninstall').click(function(e) {
+        $('.foogallery_uninstall').on('click', function(e) {
             e.preventDefault();
 
             var $button = $(this),
@@ -184,7 +184,7 @@ jQuery(document).ready(function($) {
     };
 
     FOOGALLERY.bindClearHTMLCacheButton = function() {
-        $('.foogallery_clear_html_cache').click(function(e) {
+        $('.foogallery_clear_html_cache').on('click', function(e) {
             e.preventDefault();
 
             var $button = $(this),
@@ -214,7 +214,7 @@ jQuery(document).ready(function($) {
 
     //find all generic foogallery ajax buttons and bind them
     FOOGALLERY.bindSettingsAjaxButtons = function () {
-        $('.foogallery_settings_ajax').click(function(e) {
+        $('.foogallery_settings_ajax').on('click',function(e) {
             e.preventDefault();
 
             var $button = $(this),

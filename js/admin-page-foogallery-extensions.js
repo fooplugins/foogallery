@@ -76,7 +76,7 @@
 	};
 
 	FOOGALLERY.bindTabs = function() {
-		$("a.nav-tab").click( function(e) {
+		$("a.nav-tab").on('click', function(e) {
 			$this = $(this);
 
 			$this.parents(".nav-tab-wrapper:first").find(".nav-tab-active").removeClass("nav-tab-active");

@@ -1,4 +1,4 @@
-jQuery(function ($) {
+FooGallery.utils.ready(function ($) {
 
     $(document).on('change', '.foogallery_post_query_input', function () {
         $('.foogallery-datasource-modal-insert').removeAttr('disabled');

@@ -111,7 +111,7 @@
 			IMAGE_VIEWER_TEMPLATE_FOOGALLERY_EXTENSION.showHideRows();
 		});
 
-		$('.foogallery-image-viewer-preview').click(function(e) {
+		$('.foogallery-image-viewer-preview').on('click', function(e) {
 			e.preventDefault();
 		});
 	};

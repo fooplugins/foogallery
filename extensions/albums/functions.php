@@ -150,7 +150,7 @@ function foogallery_album_templates() {
 				'title'   => __( 'Thumbnail Size', 'foogallery' ),
 				'desc'    => __( 'Choose the size of your image stack thumbnails.', 'foogallery' ),
 				'section' => __( 'Thumbnail Settings', 'foogallery' ),
-				'type'    => 'thumb_size',
+				'type'    => 'thumb_size_no_crop',
 				'default' => array(
 					'width' => get_option( 'thumbnail_size_w' ),
 					'height' => get_option( 'thumbnail_size_h' ),
@@ -178,15 +178,6 @@ function foogallery_album_templates() {
 				'desc'    => __( 'The spacing between each image stack.', 'foogallery' ),
 				'type'    => 'number',
 				'default' => 50
-			),
-
-			array(
-				'id'      => 'delay',
-				'title'   => __( 'Expand Delay', 'foogallery' ),
-				'section' => __( 'Thumbnail Settings', 'foogallery' ),
-				'desc'    => __( 'The delay between expanding each image on a image stack.', 'foogallery' ),
-				'type'    => 'number',
-				'default' => 0
 			),
 
 			array(

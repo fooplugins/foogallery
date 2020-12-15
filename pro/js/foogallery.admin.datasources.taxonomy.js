@@ -1,4 +1,4 @@
-jQuery(function ($) {
+FooGallery.utils.ready(function ($) {
 	$('.foogallery-datasource-modal-container').on('click', '.datasource-taxonomy a', function (e) {
 		e.preventDefault();
 		$(this).toggleClass('button-primary');

@@ -328,7 +328,8 @@ if ( ! class_exists( 'FooGallery_Pro_Advanced_Captions' ) ) {
             if ( 'custom' === $caption_type ) {
                 $captions = array();
                 $template = foogallery_gallery_template_setting( 'caption_custom_template', '' );
-                $captions['desc'] = self::build_custom_caption( $template, $foogallery_attachment );
+	            $foogallery_attachment->caption_desc = $captions['desc'] = self::build_custom_caption( $template, $foogallery_attachment );
+	            $foogallery_attachment->custom_captions = true;
             }
 
             return $captions;

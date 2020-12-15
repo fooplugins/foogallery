@@ -26,7 +26,7 @@ $show_demos = apply_filters( 'foogallery_admin_help_show_demos', true );
 		$.admin_tabs = {
 
 			init : function() {
-				$("a.nav-tab").click( function(e) {
+				$("a.nav-tab").on( 'click', function(e) {
 					e.preventDefault();
 
 					$this = $(this);

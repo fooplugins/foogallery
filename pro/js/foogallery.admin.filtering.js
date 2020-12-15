@@ -1,4 +1,4 @@
-jQuery(function ($) {
+FooGallery.utils.ready(function ($) {
 
 	//Launch the Multi Level filter Modal
 	$('#foogallery_settings').on('click', '.filtering-multi-builder', function (e) {

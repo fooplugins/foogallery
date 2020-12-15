@@ -90,7 +90,7 @@ if ( ! class_exists( 'FooGallery_Admin_Columns' ) ) {
 			if ( $this->include_clipboard_script ) { ?>
 				<script>
 					jQuery(function($) {
-						$('.foogallery-shortcode').click( function () {
+						$('.foogallery-shortcode').on('click', function () {
 							try {
 								//select the contents
 								this.select();

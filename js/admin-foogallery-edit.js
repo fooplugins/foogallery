@@ -244,8 +244,8 @@
 
 		$('.foogallery-items-view-switch-container').appendTo( $items_metabox_heading ).removeClass('hidden');
 
-		$('.foogallery-items-view-switch-container a').click(function(e) {
-			e.preventDefault();
+		$('.foogallery-items-view-switch-container a').on('click', function(e) {
+			e.stopPropagation();
 
 			var $currentButton = $('.foogallery-items-view-switch-container a.current'),
 				currentSelector = $currentButton.data('container'),
@@ -588,7 +588,7 @@
 
 }(window.FOOGALLERY = window.FOOGALLERY || {}, jQuery));
 
-jQuery(function ($) {
+FooGallery.utils.ready(function ($) {
 	if ( $('#foogallery_attachments').length > 0 ) {
 		FOOGALLERY.adminReady();
 	}

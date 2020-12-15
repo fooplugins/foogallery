@@ -43,6 +43,9 @@ if ( ! class_exists( 'FooGallery_Admin' ) ) {
 			//output shortcode for javascript
 			add_action( 'admin_footer', array( $this, 'output_shortcode_variable' ), 200 );
 			add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts_and_styles' ) );
+
+			add_filter( 'fs_show_trial_foogallery', array( $this, 'force_trial_hide' ) );
+			add_action( 'admin_init', array( $this, 'force_hide_trial_notice' ), 99 );
 		}
 
 		public function enqueue_scripts_and_styles( $hook ) {
@@ -51,6 +54,12 @@ if ( ! class_exists( 'FooGallery_Admin' ) ) {
 			if ( 'foogallery' !== $screen->id ) {
 				return;
 			}
+
+			foogallery_enqueue_core_gallery_template_script();
+			foogallery_enqueue_core_gallery_template_style();
+
+            $foogallery = FooGallery_Plugin::get_instance();
+            $foogallery->register_and_enqueue_js( 'admin-foogallery-edit.js' );
 
 			do_action('foogallery_admin_enqueue_scripts' );
 		}
@@ -70,7 +79,7 @@ if ( ! class_exists( 'FooGallery_Admin' ) ) {
 		/**
 		 * @param $links
 		 *
-		 * @return string
+		 * @return string[]
 		 */
 		function plugin_listing_links( $links ) {
             if ( !is_array( $links ) ) {
@@ -92,6 +101,23 @@ if ( ! class_exists( 'FooGallery_Admin' ) ) {
 					window.FOOGALLERY_SHORTCODE = '<?php echo foogallery_gallery_shortcode_tag(); ?>';
 				</script>
 			<?php
+			}
+		}
+
+		function force_trial_hide( $show_trial ) {
+			if ( 'on' === foogallery_get_setting( 'force_hide_trial', false ) ) {
+				$show_trial = false;
+			}
+
+			return $show_trial;
+		}
+
+		function force_hide_trial_notice() {
+			if ( 'on' === foogallery_get_setting( 'force_hide_trial', false ) ) {
+				$freemius_sdk = foogallery_fs();
+				$plugin_id    = $freemius_sdk->get_slug();
+				$admin_notice_manager = FS_Admin_Notice_Manager::instance( $plugin_id );
+				$admin_notice_manager->remove_sticky( 'trial_promotion' );
 			}
 		}
 	}

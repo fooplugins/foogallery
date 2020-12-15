@@ -73,7 +73,7 @@
 			FOOGALLERY_DEF_TEMPLATE.showHideCaptionContent();
 		});
 
-		$('.foogallery-thumbnail-preview').click(function(e) {
+		$('.foogallery-thumbnail-preview').on('click', function(e) {
 			e.preventDefault();
 		});
 

@@ -302,9 +302,10 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
             $settings[] = array(
                 'id'      => 'enable_custom_ready',
                 'title'   => __( 'Custom Ready Event', 'foogallery' ),
-                'desc'    => sprintf( __( 'By default the jQuery ready event is used, but there are sometimes unavoidable javascript errors on the page, which could result in the default gallery templates not initializing correctly. Enable this setting to use a built-in custom ready event to overcome this if needed.', 'foogallery' ), foogallery_plugin_name() ),
+                'desc'    => sprintf( __( 'There are sometimes unavoidable javascript errors on the page, which could result in the gallery not initializing correctly. Enable this setting to use a built-in custom ready event to overcome this problem if needed.', 'foogallery' ), foogallery_plugin_name() ),
                 'type'    => 'checkbox',
-                'tab'     => 'advanced'
+                'tab'     => 'advanced',
+                'default' => 'on'
             );
 
             $settings[] = array(
@@ -362,6 +363,16 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 				'type'    => 'checkbox',
 				'tab'     => 'advanced',
 			);
+
+			if ( !foogallery_is_pro() ) {
+				$settings[] = array(
+					'id'    => 'force_hide_trial',
+					'title' => __( 'Force Hide Trial Notice', 'foogallery' ),
+					'desc'  => __( 'Force the trial notice admin banner to never show', 'foogallery' ),
+					'type'  => 'checkbox',
+					'tab'   => 'advanced'
+				);
+			}
 			//endregion Advanced Tab
 
 			return apply_filters( 'foogallery_admin_settings_override', array(

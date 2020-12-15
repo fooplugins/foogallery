@@ -74,7 +74,7 @@ class FooGallery_Album_Template_Loader {
 
 				//try to include some CSS
 				if ( false !== ($css_location = $loader->locate_file( "album-{$current_foogallery_album_template}.css" )) ) {
-					wp_enqueue_style( "foogallery-album-template-{$current_foogallery_album_template}", $css_location['url'] );
+					foogallery_enqueue_style( "foogallery-album-template-{$current_foogallery_album_template}", $css_location['url'] );
 				}
 
 				//finally include the actual php template!

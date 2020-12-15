@@ -234,8 +234,13 @@ if ( ! class_exists( 'FooGallery_Pro_Bulk_Management' ) ) {
                         'name' => $term->name
                     );
 				}
+				$meta_data = array(
+                    'Title' => $attachment_post->post_title,
+                    'Caption' => $attachment_post->post_excerpt,
+                    'File' => basename( $attachment_post->guid )
+                )
 				?>
-                <li data-attachment-id="<?php echo $attachment_id; ?>" data-terms="<?php echo esc_attr( json_encode( $term_data ) ); ?>">
+                <li data-attachment-id="<?php echo $attachment_id; ?>" data-terms="<?php echo esc_attr( json_encode( $term_data ) ); ?>" data-meta="<?php echo esc_attr( json_encode( $meta_data ) ); ?>">
                     <div>
 						<?php echo $img_tag; ?>
                     </div>
@@ -295,6 +300,11 @@ if ( ! class_exists( 'FooGallery_Pro_Bulk_Management' ) ) {
 			echo '<div style="display: none" class="spinner is-active"></div>';
 			echo '<div class="foogallery-bulk-management-modal-action-message"></div>';
 			echo '</div>';
+
+			echo '<div style="display: none" class="foogallery-bulk-management-modal-metadata">';
+            echo '<h3>' . __( 'Last Selected Image Details', 'foogallery' ) . '</h3>';
+            echo '<div class="foogallery-bulk-management-modal-metadata-inner"></div>';
+            echo '</div>';
 
 			echo '</div>';
         }

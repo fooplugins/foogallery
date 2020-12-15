@@ -1,4 +1,4 @@
-jQuery(function ($) {
+FooGallery.utils.ready(function ($) {
 
 	//Launch the Bulk Management Modal
 	$('.foogallery-attachments-list-bar').on('click', '.bulk_media_management', function (e) {
@@ -38,6 +38,16 @@ jQuery(function ($) {
 		$(this).toggleClass('selected');
 
 		foogallery_bulk_management_select_items();
+
+		if ( $(this).hasClass('selected') ) {
+			var item, html = '', meta = $(this).data('meta');
+			for (item in meta) {
+				html += '<b>' + item + ':</b><br />' + meta[item] + '<br /><br />';
+			};
+
+			$('.foogallery-bulk-management-modal-metadata-inner').html( html );
+			$('.foogallery-bulk-management-modal-metadata').show();
+		}
 	});
 
 	//Clear the selection of items

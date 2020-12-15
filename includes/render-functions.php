@@ -396,6 +396,16 @@ function foogallery_attachment_html( $foogallery_attachment, $args = array() ) {
         $args = foogallery_gallery_template_arguments();
     }
 
+    //allow width and height arguments to be overridden
+    $override_width = foogallery_gallery_template_setting( 'override_width', false );
+    if ( $override_width !== false && intval( $override_width ) > 0 ) {
+        $args['width'] = $override_width;
+    }
+    $override_height = foogallery_gallery_template_setting( 'override_height', false );
+    if ( $override_height !== false && intval( $override_height ) > 0 ) {
+        $args['height'] = $override_height;
+    }
+
     $caption = foogallery_attachment_html_caption( $foogallery_attachment, $args );
 
     $html = foogallery_attachment_html_item_opening( $foogallery_attachment, $args );
