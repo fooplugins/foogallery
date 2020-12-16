@@ -227,6 +227,18 @@ Please update in order to for FooGallery to work in WP 5.5+!
 
 == Changelog ==
 
+= 1.9.47 =
+* Date Updated : 2020-16-10
+[//]: # fs_premium_only_begin
+* Fix : fixed bug with YouTube video searches not working
+[//]: # fs_premium_only_end
+
+= 1.9.46 =
+* Date Updated : 2020-15-10
+[//]: # fs_premium_only_begin
+* Fix : fixed bug with attachment tags and categories not being editable in modal
+[//]: # fs_premium_only_end
+
 = 1.9.45 =
 * Date Updated : 2020-15-10
 * Fix : Updated albums to use FooGallery stylesheet enqueue function
