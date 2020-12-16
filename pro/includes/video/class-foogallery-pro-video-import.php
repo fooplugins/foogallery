@@ -209,10 +209,10 @@ if ( ! class_exists( "FooGallery_Pro_Video_Import" ) ) {
 			if ( ! empty( $video["provider"] ) ) {
 				switch ( $video["provider"] ) {
 					case "youtube":
-						$format = "http://img.youtube.com/vi/%1s/%2s.jpg";
+						$format = "https://img.youtube.com/vi/%1s/%2s.jpg";
 						/**
 						 * Possible filenames for images, in order of desirability. Should only ever use first one.
-						 * @see http://stackoverflow.com/questions/2068344/how-do-i-get-a-youtube-video-thumbnail-from-the-youtube-api
+						 * @see https://stackoverflow.com/questions/2068344/how-do-i-get-a-youtube-video-thumbnail-from-the-youtube-api
 						 */
 						$sizes = array(
 							'maxresdefault',

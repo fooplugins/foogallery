@@ -234,7 +234,7 @@ if ( !class_exists("FooGallery_Pro_Video_YouTube") ){
 			}
 
 			// we have as valid an id as we can hope for until we make the actual request so request it
-			$url = "http://www.youtube.com/oembed?url=" . urlencode("https://www.youtube.com/watch?v=" . $id);
+			$url = "https://www.youtube.com/oembed?url=" . urlencode("https://www.youtube.com/watch?v=" . $id);
 			// get the json object from the supplied url
 			$json = $this->json_get($url);
 
