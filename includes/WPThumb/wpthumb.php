@@ -5,7 +5,7 @@ Plugin URI: https://github.com/humanmade/WPThumb
 Description: An on-demand image generation replacement for WordPress' image resizing.
 Author: Human Made Limited
 Version: 0.10
-Author URI: http://www.hmn.md/
+Author URI: https://www.hmn.md/
 */
 
 /*  Copyright 2014 Human Made Limited  (email : hello@humanmade.co.uk)

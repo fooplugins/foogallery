@@ -102,7 +102,7 @@ if ( ! class_exists( 'FooGallery_Pro_WPLR_Support' ) ) {
 		function add_wplr_settings( $settings ) {
 			$settings['tabs']['wplr'] = __( 'WP/LR Sync', 'foogallery' );
 
-			$wplr_url = 'http://fooplugins.com/refer/wp-lr-sync/';
+			$wplr_url = 'https://fooplugins.com/refer/wp-lr-sync/';
 			$wplr_link = '<a href="' . $wplr_url . '" target="_blank">' . __('WP/LR Sync', 'foogallery') . '</a>';
 
 			$html = '<p>' . sprintf( __('%s is a Lightroom Publishing Service for WordPress. It exports your photos to WordPress, the folders and collections from Adobe Lightroom and keeps it all synchronized.', 'foogallery'), $wplr_link ) . '</p>';

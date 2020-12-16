@@ -40,7 +40,7 @@ if ( ! class_exists( 'FooGallery_Extension' ) ) {
 //				'description' => 'The best lightbox for WordPress just got even better!',
 //				'price' => '$27',
 //				'author' => 'FooPlugins',
-//				'author_url' => 'http://fooplugins.com',
+//				'author_url' => 'https://fooplugins.com',
 //				'thumbnail' => '/assets/extension_bg.png',
 //				'tags' => array( 'premium', 'lightbox', ),
 //				'source' => 'fooplugins',
@@ -48,7 +48,7 @@ if ( ! class_exists( 'FooGallery_Extension' ) ) {
 //					array(
 //						'text' => 'Buy - $27',
 //						'target' => '_blank',
-//						'href' => 'http://fooplugins.com/plugins/foobox',
+//						'href' => 'https://fooplugins.com/plugins/foobox',
 //						'confirm' => false,
 //					),
 //				'activated_by_default' => true,

@@ -129,7 +129,7 @@ if ( ! class_exists( 'FooGallery_FooVideo_Compatibility' ) ) {
 					$settings_link = '<a target="_blank" href="' . foogallery_admin_settings_url() . '#extensions">' . __('FooGallery Settings page', 'foogallery') . '</a>';
 					echo '<h4>' . sprintf( __( 'There is no FooVideo license key set for this site. Please set it via the %s under the extensions tab and try again.', 'foogallery' ), $settings_link ) . '</h4>';
 				} else {
-					$license_url = "http://fooplugins.com/api/{$license_key}/licensekey/";
+					$license_url = "https://fooplugins.com/api/{$license_key}/licensekey/";
 
 					//fetch the license info from FooPlugins.com
 					$response = wp_remote_get( $license_url, array( 'sslverify' => false ) );

@@ -17,7 +17,7 @@
  * Author:       FooPlugins
  * Author URI:  https://fooplugins.com
  * License:     GPL-2.0+
- * License URI: http://www.gnu.org/licenses/gpl-2.0.txt
+ * License URI: https://www.gnu.org/licenses/gpl-2.0.txt
  */
 
 if ( !class_exists( 'FooGallery_FooGrid_Gallery_Template' ) ) {

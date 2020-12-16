@@ -5,7 +5,7 @@
  *
  * Version: 2.1
  * Author: Brad Vincent
- * Author URI: http://fooplugins.com
+ * Author URI: https://fooplugins.com
  * License: GPL2
 */
 
