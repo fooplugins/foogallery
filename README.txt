@@ -12,7 +12,7 @@ FooGallery is a powerful, responsive photo gallery plugin. Stunning gallery layo
 
 == Description ==
 
-= Best Gallery Plugin =
+= WordPress Gallery Plugin =
 
 Make gallery management in WordPress great again! With FooGallery you can easily add a stunning photo gallery to your website in minutes.
 
