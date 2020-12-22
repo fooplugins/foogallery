@@ -1,18 +1,18 @@
 === Best Image Gallery & Responsive Photo Gallery - FooGallery ===
 Contributors: bradvin, steveush, fooplugins
-Donate link: http://fooplugins.com
+Donate link: https://fooplugins.com
 Tags: gallery, image gallery, photo gallery, responsive gallery, wordpress gallery plugin, best gallery plugin, albums, media gallery, video gallery, lightbox
 Requires at least: 3.9
 Tested up to: 5.6
 Stable tag: trunk
 License: GPLv2 or later
-License URI: http://www.gnu.org/licenses/gpl-2.0.html
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
 FooGallery is a powerful, responsive photo gallery plugin. Stunning gallery layouts with advanced settings for complete customization and control.
 
 == Description ==
 
-= Best Gallery Plugin =
+= WordPress Gallery Plugin =
 
 Make gallery management in WordPress great again! With FooGallery you can easily add a stunning photo gallery to your website in minutes.
 
@@ -24,7 +24,7 @@ FooGallery was built to be highly configurable and extendable for developers or 
 
 That is why we think FooGallery is the best gallery plugin. After using it, we hope you will agree.
 
-[Visit the FooGallery Wordpress Gallery Plugin Homepage](http://fooplugins.com/foogallery)
+[Visit the FooGallery Wordpress Gallery Plugin Homepage](https://fooplugins.com/foogallery)
 
 = WordPress Gallery Plugin Features =
 
@@ -226,6 +226,18 @@ We did the research and comparison. See our findings : [What is the Best WordPre
 Please update in order to for FooGallery to work in WP 5.5+!
 
 == Changelog ==
+
+= 1.9.47 =
+* Date Updated : 2020-16-10
+[//]: # fs_premium_only_begin
+* Fix : fixed bug with YouTube video searches not working
+[//]: # fs_premium_only_end
+
+= 1.9.46 =
+* Date Updated : 2020-15-10
+[//]: # fs_premium_only_begin
+* Fix : fixed bug with attachment tags and categories not being editable in modal
+[//]: # fs_premium_only_end
 
 = 1.9.45 =
 * Date Updated : 2020-15-10

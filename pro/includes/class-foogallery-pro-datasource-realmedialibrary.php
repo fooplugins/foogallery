@@ -195,7 +195,7 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_RealMediaLibrary' ) ) {
 		 * @param $foogallery_id
 		 */
 		function render_datasource_modal_content( $foogallery_id, $datasource_value ) {
-			$rml_url  = 'http://fooplugins.com/refer/real-media-library/';
+			$rml_url  = 'https://fooplugins.com/refer/real-media-library/';
 			$rml_link = '<a href="' . $rml_url . '" target="_blank">' . __( 'Real Media Library', 'foogallery' ) . '</a>';
 
 			//check for plugin version and show message

@@ -148,7 +148,7 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Lightroom' ) ) {
 				$collection = $datasource_value['collection'];
             }
 
-            $wplr_url = 'http://fooplugins.com/refer/wp-lr-sync/';
+            $wplr_url = 'https://fooplugins.com/refer/wp-lr-sync/';
             $wplr_link = '<a href="' . $wplr_url . '" target="_blank">' . __('WP/LR Sync', 'foogallery') . '</a>';
 
 			?>

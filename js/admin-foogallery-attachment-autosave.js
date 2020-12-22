@@ -1,11 +1,24 @@
 (function($, view){
 
-    var EXCLUDE_SELECTOR = '.foogallery-attachment-ignore-change';
+    var EXCLUDE_SELECTOR = '.foogallery-attachment-ignore-change',
+        SELECTIZE_SELECTOR = '.foogallery-attachment-selectize';
 
     // hold reference to the original prototype so we can call it's methods
     var original = view.AttachmentCompat.prototype;
     // replace the wp.media.view.AttachmentCompat with our own which allows us to filter fields from the auto-save
     view.AttachmentCompat = view.AttachmentCompat.extend({
+        render : function() {
+            var result = original.render.apply( this, arguments );
+
+            if ( !!result ) {
+                //we have a valid result and should run our code
+                var $selectizeInputs = result.$el.find(SELECTIZE_SELECTOR);
+                $selectizeInputs.each( function() {
+                    FOOGALLERY_SELECTIZE( this );
+                } );
+            }
+        },
+
         /**
          * @summary Called when the view is ready so we can bind events etc.
          * @description We override the original here so we can hook into the controllers "close" event. The controller

@@ -112,7 +112,7 @@ if ( ! class_exists( 'FooGallery_Rest_Routes' ) ) {
 		 */
 		public function get_item_schema() {
 			return array(
-				'$schema'    => 'http://json-schema.org/schema#',
+				'$schema'    => 'https://json-schema.org/schema#',
 				'title'      => 'foogallery',
 				'type'       => 'object',
 				'properties' => array(
