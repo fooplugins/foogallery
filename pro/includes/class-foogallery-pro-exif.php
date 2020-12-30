@@ -51,7 +51,7 @@ if ( ! class_exists( 'FooGallery_Pro_Exif' ) ) {
         function add_exif( $attr, $args, $foogallery_attachment ) {
             global $current_foogallery;
 
-            if ( $current_foogallery->lightbox != 'foogallery' ) {
+            if ( empty( $current_foogallery->lightbox ) || $current_foogallery->lightbox != 'foogallery' ) {
                 return $attr;
             }
 
