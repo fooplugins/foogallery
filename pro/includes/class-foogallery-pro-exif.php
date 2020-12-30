@@ -14,11 +14,8 @@ if ( ! class_exists( 'FooGallery_Pro_Exif' ) ) {
             //Add EXIF data
             add_filter( 'foogallery_attachment_html_link_attributes', array( $this, 'add_exif' ), 10, 3 );
             
-            //Add container class
-            add_filter( 'foogallery_build_class_attribute', array( $this, 'add_container_class' ), 10,  2 );
-            
             //Add lightbox EXIF options
-            add_filter( 'foogallery_build_container_attributes', array( $this, 'add_lightbox_data_attributes' ), 10, 2 );
+            add_filter( 'foogallery_build_container_attributes', array( $this, 'add_lightbox_data_attributes' ), 20, 2 );
         }
 
         /**
@@ -30,6 +27,7 @@ if ( ! class_exists( 'FooGallery_Pro_Exif' ) ) {
          * @return array
          */
         function add_lightbox_data_attributes( $attributes, $gallery ) {
+            //If the data-foogallery-lightbox value does not exist, then the lightbox attributes have not been set, and the lightbox is not enabled
             if ( empty( $attributes['data-foogallery-lightbox'] ) ) {
                 return $attributes;
             }
@@ -42,20 +40,6 @@ if ( ! class_exists( 'FooGallery_Pro_Exif' ) ) {
         }
 
         /**
-         * Customize the item container class
-         *
-         * @param $classes
-         * @param $gallery
-         * 
-         * @return array
-         */
-        function add_container_class( $classes, $gallery ) {
-            $classes[] = 'fg-exif-top-right fg-exif-dark fg-exif-rounded';
-
-            return $classes;
-        }
-
-        /**
          * Customize the item anchor EXIF data attributes
          * 
          * @param $attr
@@ -65,6 +49,12 @@ if ( ! class_exists( 'FooGallery_Pro_Exif' ) ) {
          * @return array
          */
         function add_exif( $attr, $args, $foogallery_attachment ) {
+            global $current_foogallery;
+
+            if ( $current_foogallery->lightbox != 'foogallery' ) {
+                return $attr;
+            }
+
         	$meta = wp_get_attachment_metadata( $foogallery_attachment->ID ); 
 
 			$attr['data-exif'] = json_encode( $meta['image_meta'] );
