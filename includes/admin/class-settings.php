@@ -527,8 +527,8 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 			$custom_assets = array();
 
 			//check if we have saved any custom JS
-			$custom_js = foogallery_get_setting( 'custom_js' );
-			if ( $custom_js !== false ) {
+			$custom_js = foogallery_get_setting( 'custom_js', '' );
+			if ( !empty( $custom_js ) ) {
 				$custom_js = '
 /*
 * FooGallery Custom Javascript
@@ -545,8 +545,8 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 			}
 
 			//check if we have saved any custom CSS
-			$custom_css = foogallery_get_setting( 'custom_css' );
-			if ( $custom_css !== false ) {
+			$custom_css = foogallery_get_setting( 'custom_css', '' );
+			if ( !empty( $custom_css ) ) {
 				$custom_css = '
 /*
 * FooGallery Custom CSS
