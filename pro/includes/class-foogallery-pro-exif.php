@@ -1,18 +1,18 @@
 <?php
 /**
- * Class for adding EXIF data attributes
+ * Class for Exchangeable image file format (EXIF) 
  */
 if ( ! class_exists( 'FooGallery_Pro_Exif' ) ) {
 
     class FooGallery_Pro_Exif {
         /**
-         * Constructor for the PM class
+         * Constructor for the class
          *
          * Sets up all the appropriate hooks and actions
          */
         function __construct() {
-            //Add EXIF data
-            add_filter( 'foogallery_attachment_html_link_attributes', array( $this, 'add_exif' ), 10, 3 );
+            //Add EXIF data attributes
+            add_filter( 'foogallery_attachment_html_link_attributes', array( $this, 'add_exif_data_attributes' ), 10, 3 );
             
             //Add lightbox EXIF options
             add_filter( 'foogallery_build_container_attributes', array( $this, 'add_lightbox_data_attributes' ), 20, 2 );
@@ -20,33 +20,63 @@ if ( ! class_exists( 'FooGallery_Pro_Exif' ) ) {
             if ( is_admin() ) {
                 //add extra fields to the templates that support exif
                 add_filter( 'foogallery_override_gallery_template_fields', array( $this, 'add_exif_fields' ), 20, 2 );
+
+                //set the settings icon for Exif
+                add_filter( 'foogallery_gallery_settings_metabox_section_icon', array( $this, 'add_section_icons' ) );
+
+                //add some settings for EXIF
+                add_filter( 'foogallery_admin_settings_override', array( $this, 'add_exif_settings' ) );
             }
 
-            //set the settings icon for Exif
-            add_filter( 'foogallery_gallery_settings_metabox_section_icon', array( $this, 'add_section_icons' ) );
+            //Add container class
+            add_filter( 'foogallery_build_class_attribute', array( $this, 'add_container_class' ), 10,  2 );
+        }
 
-            //add some settings for EXIF
-            add_filter( 'foogallery_admin_settings_override', array( $this, 'add_exif_settings' ) );
+        /** 
+         * Customize the item container class   
+         *  
+         * @param $classes  
+         * @param $gallery  
+         *  
+         * @return array    
+         */ 
+        function add_container_class( $classes, $gallery ) { 
+            global $current_foogallery;
 
-            //add the filtering attributes to the gallery container
-            //add_filter( 'foogallery_build_container_data_options', array( $this, 'add_filtering_data_options' ), 10, 3 );
+            if ( ! $this->is_enable_exif() ) {
+                return $classes;
+            }
+
+            $classes[] = empty( $current_foogallery->settings['default_exif_icon_position'] ) ? 'fg-exif-bottom-right' : $current_foogallery->settings['default_exif_icon_position'];
+            $classes[] = empty( $current_foogallery->settings['default_exif_icon_theme'] ) ? 'fg-exif-dark' : $current_foogallery->settings['default_exif_icon_theme'];
+
+            return $classes;    
+        }
+
+        /** 
+         * Checking the EXIF enable status   
+         *  
+         * @return Boolean    
+         */ 
+        function is_enable_exif() { 
+            global $current_foogallery;
+
+            //Checking active status for FooGallery PRO Lightbox
+            if ( empty( $current_foogallery->settings['default_lightbox'] ) || $current_foogallery->settings['default_lightbox'] != 'foogallery' ) {
+                return false;
+            }
+
+            //Checking EXIF Data View status
+            if ( empty( $current_foogallery->settings['default_exif_view_status'] ) || $current_foogallery->settings['default_exif_view_status'] != 'yes' ) {
+                return false;
+            }   
+
+            return true; 
         }
 
         /**
-         * Add the required filtering data options if needed
-         *
-         * @param $attributes array
-         * @param $gallery    FooGallery
-         *
-         * @return array
-         */
-        function add_filtering_data_options( $options, $gallery, $attributes ) {
-            $filtering_all_text = foogallery_get_setting( 'language_filtering_all', 'All' );
-            pmpr($filtering_all_text); die;
-        }
-
-        /**
-         * Add some WP/LR settings
+         * Add some EXIF settings
+         * 
          * @param $settings
          *
          * @return array
@@ -68,6 +98,7 @@ if ( ! class_exists( 'FooGallery_Pro_Exif' ) ) {
                 'id'      => 'exif_aperture_text',
                 'title'   => __( 'Aperture Text', 'foogallery' ),
                 'type'    => 'text',
+                'default' => __( 'Aperture', 'foogallery' ),
                 'tab'     => 'exif'
             );
 
@@ -75,13 +106,15 @@ if ( ! class_exists( 'FooGallery_Pro_Exif' ) ) {
                 'id'      => 'exif_camera_text',
                 'title'   => __( 'Camera Text', 'foogallery' ),
                 'type'    => 'text',
+                'default' => __( 'Camera', 'foogallery' ),
                 'tab'     => 'exif'
             );
 
             $settings['settings'][] = array(
-                'id'      => 'exif_date_text',
+                'id'      => 'exif_data_text',
                 'title'   => __( 'Date Text', 'foogallery' ),
                 'type'    => 'text',
+                'default' => __( 'Date', 'foogallery' ),
                 'tab'     => 'exif'
             );
 
@@ -89,6 +122,7 @@ if ( ! class_exists( 'FooGallery_Pro_Exif' ) ) {
                 'id'      => 'exif_exposure_text',
                 'title'   => __( 'Exposure Text', 'foogallery' ),
                 'type'    => 'text',
+                'default' => __( 'Exposure', 'foogallery' ),
                 'tab'     => 'exif'
             );
 
@@ -96,6 +130,7 @@ if ( ! class_exists( 'FooGallery_Pro_Exif' ) ) {
                 'id'      => 'exif_focal_length_text',
                 'title'   => __( 'Focal Length Text', 'foogallery' ),
                 'type'    => 'text',
+                'default' => __( 'Focal Length', 'foogallery' ),
                 'tab'     => 'exif'
             );
 
@@ -103,6 +138,7 @@ if ( ! class_exists( 'FooGallery_Pro_Exif' ) ) {
                 'id'      => 'exif_iso_text',
                 'title'   => __( 'ISO Text', 'foogallery' ),
                 'type'    => 'text',
+                'default' => __( 'ISO', 'foogallery' ),
                 'tab'     => 'exif'
             );
 
@@ -110,6 +146,7 @@ if ( ! class_exists( 'FooGallery_Pro_Exif' ) ) {
                 'id'      => 'exif_orientation_text',
                 'title'   => __( 'Orientation Text', 'foogallery' ),
                 'type'    => 'text',
+                'default' => __( 'Orientation', 'foogallery' ),
                 'tab'     => 'exif'
             );
 
@@ -152,9 +189,8 @@ if ( ! class_exists( 'FooGallery_Pro_Exif' ) ) {
         }
 
         /**
-         * Add paging fields to the gallery template
+         * Add EXIF fields to the gallery template
          *
-         * @uses "foogallery_override_gallery_template_fields"
          * @param $fields
          * @param $template
          *
@@ -222,8 +258,8 @@ if ( ! class_exists( 'FooGallery_Pro_Exif' ) ) {
                 'default'  => 'fg-exif-dark',
                 'type'     => 'select',
                 'choices'  => apply_filters( 'foogallery_gallery_template_exif_icon_theme_choices', array(
-                    'fg-exif-dark' => __( 'Light', 'foogallery' ),
-                    'fg-exif-light'  => __( 'Dark', 'foogallery' ),
+                    'fg-exif-light' => __( 'Light', 'foogallery' ),
+                    'fg-exif-dark'  => __( 'Dark', 'foogallery' ),
                 ) ),
                 'desc'     => __( 'Choose EXIF icon theme', 'foogallery' ),
                 'row_data'=> array(
@@ -279,16 +315,63 @@ if ( ! class_exists( 'FooGallery_Pro_Exif' ) ) {
          * @return array
          */
         function add_lightbox_data_attributes( $attributes, $gallery ) {
-            //If the data-foogallery-lightbox value does not exist, then the lightbox attributes have not been set, and the lightbox is not enabled
+            global $current_foogallery;
+            
+            if ( ! $this->is_enable_exif() ) {
+                return $attributes;
+            }
+
+            //If the data-foogallery-lightbox value does not exist, then the lightbox attributes have not been set, and the lightbox is not enabled.
             if ( empty( $attributes['data-foogallery-lightbox'] ) ) {
                 return $attributes;
             }
 
-            $decode = json_decode( $attributes['data-foogallery-lightbox'] );
-            $decode->exif = 'auto';
-            $attributes['data-foogallery-lightbox'] = json_encode( $decode );
+            $decode_lightbox_attrs       = json_decode( $attributes['data-foogallery-lightbox'] );
+            $decode_lightbox_attrs->exif = empty( $current_foogallery->settings['default_exif_display_layout'] ) ? 'auto' : $current_foogallery->settings['default_exif_display_layout'];
+
+            //Get il8n text for EXif attributes label.
+            $exif_il8n_labels = $this->get_exif_labels();
+
+            if ( ! empty( $exif_il8n_labels ) ) {
+                $decode_lightbox_attrs->il8n = array (
+                    'exif' => $exif_il8n_labels
+                );
+            }
+            
+            $attributes['data-foogallery-lightbox'] = json_encode( $decode_lightbox_attrs );
 
             return $attributes;
+        }
+
+        /**
+         * Get EXIF global setting's text
+         * 
+         * @return array
+         */
+        function get_exif_labels() {
+            $labels = array();
+            
+            //Mapping default EXIF label key with global settings.
+            $label_keys = array(
+                'aperture'    => 'exif_aperture_text',
+                'camera'      => 'exif_camera_text',
+                'date'        => 'exif_data_text',
+                'exposure'    => 'exif_exposure_text',
+                'focalLength' => 'exif_focal_length_text',
+                'iso'         => 'exif_iso_text',
+                'orientation' => 'exif_orientation_text',
+            );
+
+            //Filter default EXIF label with global settings EXIF label.
+            foreach ( $label_keys as $label_key => $field_name ) {
+                $text = foogallery_get_setting( $field_name, '' );
+
+                if ( ! empty( $text ) ) {
+                    $labels[$label_key] = $text;
+                }
+            }
+            
+            return $labels;
         }
 
         /**
@@ -300,16 +383,47 @@ if ( ! class_exists( 'FooGallery_Pro_Exif' ) ) {
          * 
          * @return array
          */
-        function add_exif( $attr, $args, $foogallery_attachment ) {
-            global $current_foogallery;
-
-            if ( empty( $current_foogallery->lightbox ) || $current_foogallery->lightbox != 'foogallery' ) {
-                return $attr;
+        function add_exif_data_attributes( $attr, $args, $foogallery_attachment ) {
+            if ( ! $this->is_enable_exif() ) {
+                return $attr; 
             }
 
         	$meta = wp_get_attachment_metadata( $foogallery_attachment->ID ); 
 
-			$attr['data-exif'] = json_encode( $meta['image_meta'] );
+            $exif_data_attributes = array();
+
+            //Mapping with default EXIF attributes and image meta attributes
+            $exif_attributes = array(
+                'aperture'    => empty( $meta['image_meta']['aperture'] ) ? null : $meta['image_meta']['aperture'],
+                'camera'      => empty( $meta['image_meta']['camera'] ) ? null : $meta['image_meta']['camera'],
+                'date'        => empty( $meta['image_meta']['created_timestamp'] ) ? null : $meta['image_meta']['created_timestamp'],
+                'exposure'    => empty( $meta['image_meta']['shutter_speed'] ) ? null : $meta['image_meta']['shutter_speed'],
+                'focalLength' => empty( $meta['image_meta']['focal_length'] ) ? null : $meta['image_meta']['focal_length'],
+                'iso'         => empty( $meta['image_meta']['iso'] ) ? null : $meta['image_meta']['iso'],
+                'orientation' => empty( $meta['image_meta']['orientation'] ) ? null : $meta['image_meta']['orientation'],
+            );
+
+            //Get global setting EXIF data attributes
+            $settings_attrs = foogallery_get_setting( 'exif_attributes', 'aperture,camera,date,exposure,focalLength,iso,orientation' );
+            $settings_attrs = str_replace( ' ', '', trim( $settings_attrs ) );
+            $settings_attrs = explode( ',', $settings_attrs );
+            
+            //Fiter default EXIF attributes accorind global settngs 
+            foreach ( $settings_attrs as $settings_attr ) {
+                if ( empty( $settings_attr ) ) {
+                    continue;
+                }
+
+                if ( ! array_key_exists( $settings_attr, $exif_attributes ) ) {
+                    continue;
+                }
+
+                $exif_data_attributes[$settings_attr] = $exif_attributes[$settings_attr];
+            }
+
+            if ( ! empty( $exif_data_attributes ) ) {
+                $attr['data-exif'] = json_encode( $exif_data_attributes );
+            }
 
 			return $attr;
         }
