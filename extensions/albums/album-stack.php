@@ -25,11 +25,7 @@ $data_options = array(
     'randomAngle' => 'true' === $random_angle
 );
 
-if ( defined( 'JSON_UNESCAPED_UNICODE' ) ) {
-	$data_options = json_encode( $data_options, JSON_UNESCAPED_UNICODE );
-} else {
-	$data_options = json_encode( $data_options );
-}
+$data_options = foogallery_json_encode( $data_options );
 
 if ( !function_exists( 'foogallery_album_all_in_one_stack_render_gallery_attachment2' ) ) {
 	function foogallery_album_all_in_one_stack_render_gallery_attachment2( $gallery, $attachment, $args ) {

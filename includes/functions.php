@@ -488,11 +488,7 @@ function foogallery_build_container_data_options( $gallery, $attributes ) {
 
 	$options = apply_filters( 'foogallery_build_container_data_options-'. $gallery->gallery_template, $options, $gallery, $attributes );
 
-	if ( defined( 'JSON_UNESCAPED_UNICODE' ) ) {
-		return json_encode( $options, JSON_UNESCAPED_UNICODE );
-	} else {
-		return json_encode( $options );
-	}
+	return foogallery_json_encode( $options );
 }
 
 /**
@@ -1448,4 +1444,19 @@ function foogallery_is_pro() {
 	}
 
 	return $pro;
+}
+
+/**
+ * Safe function for encoding objects to json which accounts for JSON_UNESCAPED_UNICODE
+ *
+ * @param $value
+ *
+ * @return false|string
+ */
+function foogallery_json_encode( $value ) {
+	if ( defined( 'JSON_UNESCAPED_UNICODE' ) ) {
+		return json_encode( $value, JSON_UNESCAPED_UNICODE );
+	} else {
+		return json_encode( $value );
+	}
 }
