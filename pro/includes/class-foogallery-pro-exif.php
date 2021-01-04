@@ -191,22 +191,22 @@ if ( ! class_exists( 'FooGallery_Pro_Exif' ) ) {
 
             $exif_fields[] = array(
                 'id'      => 'exif_help',
-                'title'   => __( 'Exif Help', 'foogallery' ),
+                'title'   => __( 'EXIF Help', 'foogallery' ),
                 'desc'    => __( 'EXIF data is only supported when the FooGallery PRO Lightbox is enabled, or with the Slider PRO and Grid PRO templates.', 'foogallery' ),
-                'section' => 'Exif',
+                'section' => 'EXIF',
                 'type'    => 'help'
             );
 
             $exif_fields[] = array(
                 'id'      => 'exif_view_status',
-                'title'   => __( 'Data View', 'foogallery' ),
-                'desc'    => __( 'EXIF data view control', 'foogallery' ),
-                'section' => __( 'Exif', 'foogallery' ),
+                'title'   => __( 'Show EXIF info', 'foogallery' ),
+                'desc'    => __( 'Do you want to show EXIF info in this gallery?', 'foogallery' ),
+                'section' => __( 'EXIF', 'foogallery' ),
                 'spacer'  => '<span class="spacer"></span>',
                 'type'    => 'radio',
                 'default' => 'no',
                 'choices' => apply_filters( 'foogallery_gallery_template_exif_view_choices', array(
-                    'yes'   => __( 'Enable', 'foogallery' ),
+                    'yes'   => __( 'Enabled', 'foogallery' ),
                     'no'  => __( 'Disabled', 'foogallery' ),
                 ) ),
                 'row_data'=> array(
@@ -219,7 +219,7 @@ if ( ! class_exists( 'FooGallery_Pro_Exif' ) ) {
             $exif_fields[] = array(
                 'id'       => 'exif_icon_position',
                 'title'    => __( 'Thumbnail Icon Position', 'foogallery' ),
-                'section'  => __( 'Exif', 'foogallery' ),
+                'section'  => __( 'EXIF', 'foogallery' ),
                 'default'  => 'fg-exif-bottom-right',
                 'type'     => 'select',
                 'choices'  => apply_filters( 'foogallery_gallery_template_exif_icon_position_choices', array(
@@ -228,7 +228,7 @@ if ( ! class_exists( 'FooGallery_Pro_Exif' ) ) {
                     'fg-exif-top-right'    => __( 'Top Right', 'foogallery' ),
                     'fg-exif-top-left'     => __( 'Top Left', 'foogallery' ),
                 ) ),
-                'desc'     => __( 'Choose where do you want to show the EXIF icon in your image', 'foogallery' ),
+                'desc'     => __( 'Choose where you want to show the EXIF icon in your thumbnails.', 'foogallery' ),
                 'row_data'=> array(
                     'data-foogallery-hidden'                   => true,
                     'data-foogallery-show-when-field'          => 'exif_view_status',
@@ -243,14 +243,14 @@ if ( ! class_exists( 'FooGallery_Pro_Exif' ) ) {
             $exif_fields[] = array(
                 'id'       => 'exif_icon_theme',
                 'title'    => __( 'Thumbnail Icon Theme', 'foogallery' ),
-                'section'  => __( 'Exif', 'foogallery' ),
+                'section'  => __( 'EXIF', 'foogallery' ),
                 'default'  => 'fg-exif-dark',
                 'type'     => 'select',
                 'choices'  => apply_filters( 'foogallery_gallery_template_exif_icon_theme_choices', array(
                     'fg-exif-light' => __( 'Light', 'foogallery' ),
                     'fg-exif-dark'  => __( 'Dark', 'foogallery' ),
                 ) ),
-                'desc'     => __( 'Choose EXIF icon theme', 'foogallery' ),
+                'desc'     => __( 'The EXIF color theme', 'foogallery' ),
                 'row_data'=> array(
                     'data-foogallery-hidden'                   => true,
                     'data-foogallery-show-when-field'          => 'exif_view_status',
@@ -264,17 +264,16 @@ if ( ! class_exists( 'FooGallery_Pro_Exif' ) ) {
 
             $exif_fields[] = array(
                 'id'      => 'exif_display_layout',
-                'title'   => __( 'Display layout', 'foogallery' ),
-                'desc'    => __( 'EXIF display layout control', 'foogallery' ),
-                'section' => __( 'Exif', 'foogallery' ),
-                'spacer'  => '<span class="spacer"></span>',
+                'title'   => __( 'Attribute layout', 'foogallery' ),
+                'desc'    => __( 'Choose the EXIF attribute layout when showing the different EXIF metadata.', 'foogallery' ),
+                'section' => __( 'EXIF', 'foogallery' ),
                 'type'    => 'radio',
                 'default' => 'auto',
                 'choices' => apply_filters( 'foogallery_gallery_template_exif_display_layout_choices', array(
-                    'auto'   => __( 'Auto', 'foogallery' ),
-                    'full'  => __( 'Full', 'foogallery' ),
-                    'partial'  => __( 'Partial', 'foogallery' ),
-                    'minimal'  => __( 'Minimal', 'foogallery' ),
+                    'auto'   => __( 'Auto (adjusts to screen size)', 'foogallery' ),
+                    'full'  => __( 'Full (Icon + Word + Value)', 'foogallery' ),
+                    'partial'  => __( 'Partial (Icon + Value)', 'foogallery' ),
+                    'minimal'  => __( 'Minimal (Icon only)', 'foogallery' ),
                 ) ),
                 'row_data'=> array(
                     'data-foogallery-hidden'                   => true,
