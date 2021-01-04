@@ -41,18 +41,13 @@ if ( ! class_exists( 'FooGallery_Pro_Exif' ) ) {
          * @return array    
          */ 
         function add_container_class( $classes, $gallery ) { 
-            if ( ! $this->is_enable_exif() ) {
-                return $classes;
+            if ( $this->is_exif_enabled() ) {
+	            //Set EXIF view button position class
+	            $classes[] = foogallery_gallery_template_setting( 'exif_icon_position', 'fg-exif-bottom-right' );
+
+	            //Set EXIF view button theme class
+	            $classes[] = foogallery_gallery_template_setting( 'exif_icon_theme', 'fg-exif-dark' );
             }
-
-            $position = foogallery_gallery_template_setting( 'exif_icon_position' );
-            $theme    = foogallery_gallery_template_setting( 'exif_icon_theme' );
-            
-            //Set EXIF view button position class
-            $classes[] = empty( $position ) ? 'fg-exif-bottom-right' : $position;
-
-            //Set EXIF view button theme class
-            $classes[] = empty( $theme ) ? 'fg-exif-dark' : $theme;
 
             return $classes;    
         }
