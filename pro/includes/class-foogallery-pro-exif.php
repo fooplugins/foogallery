@@ -72,14 +72,14 @@ if ( ! class_exists( 'FooGallery_Pro_Exif' ) ) {
          */
         function add_exif_settings( $settings ) {
             //region EXIF Tab
-            $settings['tabs']['exif'] = __( 'Exif', 'foogallery' );
+            $settings['tabs']['exif'] = __( 'EXIF', 'foogallery' );
 
             $settings['settings'][] = array(
                 'id'      => 'exif_attributes',
                 'title'   => __( 'Allowed EXIF Attributes', 'foogallery' ),
                 'type'    => 'text',
                 'default' => 'aperture,camera,date,exposure,focalLength,iso,orientation',
-                'desc'    => __('Add value separated by comma', 'foogallery'),
+                'desc'    => __('The allowed EXIF attributes that will be displayed in the lightbox. This is a comma-separated list e.g. aperture,camera,date', 'foogallery'),
                 'tab'     => 'exif'
             );
 
