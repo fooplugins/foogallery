@@ -15,7 +15,7 @@ if ( ! class_exists( 'FooGallery_Pro_Exif' ) ) {
             add_filter( 'foogallery_attachment_html_link_attributes', array( $this, 'add_exif_data_attributes' ), 10, 3 );
             
             //Add lightbox EXIF options
-            add_filter( 'foogallery_build_container_attributes', array( $this, 'add_lightbox_data_attributes' ), 20, 2 );
+            add_filter( 'foogallery_lightbox_data_attributes', array( $this, 'add_lightbox_data_attributes' ), 20 );
 
 	        //Add container class
 	        add_filter( 'foogallery_build_class_attribute', array( $this, 'add_container_class' ), 10,  2 );
@@ -302,30 +302,19 @@ if ( ! class_exists( 'FooGallery_Pro_Exif' ) ) {
          *
          * @return array
          */
-        function add_lightbox_data_attributes( $attributes, $gallery ) {
+        function add_lightbox_data_attributes( $attributes ) {
             if ( ! $this->is_exif_enabled() ) {
                 return $attributes;
             }
 
-            //If the data-foogallery-lightbox value does not exist, then the lightbox attributes have not been set, and the lightbox is not enabled.
-            if ( empty( $attributes['data-foogallery-lightbox'] ) ) {
-                return $attributes;
+	        $attributes['exif'] = foogallery_gallery_template_setting( 'exif_display_layout', 'auto' );
+
+            $exif_il8n_enabled = false;
+            if ( $exif_il8n_enabled ) {
+
+	            //Get il8n text for EXIF attributes label.
+	            $attributes['exif']['il8n'] = $this->get_exif_labels();
             }
-
-            $exif_display_layout         = foogallery_gallery_template_setting( 'exif_display_layout' );
-            $decode_lightbox_attrs       = json_decode( $attributes['data-foogallery-lightbox'] );
-            $decode_lightbox_attrs->exif = empty( $exif_display_layout ) ? 'auto' : $exif_display_layout;
-
-            //Get il8n text for EXif attributes label.
-            $exif_il8n_labels = $this->get_exif_labels();
-
-            if ( ! empty( $exif_il8n_labels ) ) {
-                $decode_lightbox_attrs->il8n = array (
-                    'exif' => $exif_il8n_labels
-                );
-            }
-            
-            $attributes['data-foogallery-lightbox'] = json_encode( $decode_lightbox_attrs );
 
             return $attributes;
         }
