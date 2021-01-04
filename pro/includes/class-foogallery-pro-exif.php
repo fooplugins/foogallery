@@ -17,6 +17,9 @@ if ( ! class_exists( 'FooGallery_Pro_Exif' ) ) {
             //Add lightbox EXIF options
             add_filter( 'foogallery_build_container_attributes', array( $this, 'add_lightbox_data_attributes' ), 20, 2 );
 
+	        //Add container class
+	        add_filter( 'foogallery_build_class_attribute', array( $this, 'add_container_class' ), 10,  2 );
+
             if ( is_admin() ) {
                 //add extra fields to the templates that support exif
                 add_filter( 'foogallery_override_gallery_template_fields', array( $this, 'add_exif_fields' ), 20, 2 );
@@ -27,9 +30,6 @@ if ( ! class_exists( 'FooGallery_Pro_Exif' ) ) {
                 //add some settings for EXIF
                 add_filter( 'foogallery_admin_settings_override', array( $this, 'add_exif_settings' ) );
             }
-
-            //Add container class
-            add_filter( 'foogallery_build_class_attribute', array( $this, 'add_container_class' ), 10,  2 );
         }
 
         /** 
