@@ -524,11 +524,7 @@ function foogallery_build_json_from_attachment( $foogallery_attachment, $args = 
 
 		$json_object = foogallery_build_json_object_from_attachment( $foogallery_attachment, $args );
 
-		if ( defined( 'JSON_UNESCAPED_UNICODE' ) ) {
-			return json_encode( $json_object, JSON_UNESCAPED_UNICODE );
-		} else {
-			return json_encode( $json_object );
-		}
+		return foogallery_json_encode( $json_object );
 	}
 
 	return '';

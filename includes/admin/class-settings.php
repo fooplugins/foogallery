@@ -11,6 +11,7 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 			add_filter( 'foogallery_admin_settings', array( $this, 'create_settings' ), 10, 2 );
 			add_action( 'foogallery_admin_settings_custom_type_render_setting', array( $this, 'render_custom_setting_types' ) );
 			add_action( 'foogallery_admin_settings_after_render_setting', array( $this, 'after_render_setting' ) );
+			add_action( 'update_option_foogallery', array( $this, 'generate_assets' ), 10, 3 );
 
 			// Ajax calls
 			add_action( 'wp_ajax_foogallery_clear_css_optimizations', array( $this, 'ajax_clear_css_optimizations' ) );
@@ -375,6 +376,28 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 			}
 			//endregion Advanced Tab
 
+			//region Custom JS & CSS
+			$tabs['custom_assets'] = __( 'Custom JS & CSS', 'foogallery' );
+
+			$settings[] = array(
+				'id'      => 'custom_js',
+				'title'   => __( 'Custom Javascript', 'foogallery' ),
+				'desc'    => __( 'Custom Javascript that will be added to the page when a gallery is rendered.', 'foogallery' ),
+				'type'    => 'textarea',
+				'tab'     => 'custom_assets',
+				'default' => ''
+			);
+
+			$settings[] = array(
+				'id'      => 'custom_css',
+				'title'   => __( 'Custom Stylesheet', 'foogallery' ),
+				'desc'    => __( 'Custom CSS that will be added to the page when a gallery is rendered.', 'foogallery' ),
+				'type'    => 'textarea',
+				'tab'     => 'custom_assets',
+				'default' => ''
+			);
+			//endregion Custom JS & CSS
+
 			return apply_filters( 'foogallery_admin_settings_override', array(
 				'tabs'     => $tabs,
 				'sections' => array(),
@@ -490,6 +513,77 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 				_e('All traces of the plugin were removed from your system!', 'foogallery' );
 				die();
 			}
+		}
+
+		function generate_assets( $old_value, $value, $option) {
+			if ( !is_admin() ) {
+				return;
+			}
+
+			if ( !current_user_can( 'manage_options' ) ) {
+				return;
+			}
+
+			$custom_assets = array();
+
+			//check if we have saved any custom JS
+			$custom_js = foogallery_get_setting( 'custom_js', '' );
+			if ( !empty( $custom_js ) ) {
+				$custom_js = '
+/*
+* FooGallery Custom Javascript
+* This file is created by adding custom JS on FooGallery Settings page in wp-admin
+* Created : ' . date( 'j M Y, g:i a', time() ) . '
+*/
+
+'. $custom_js;
+				//generate script in upload folder
+				$script_url = $this->generate_custom_asset( 'custom.js', $custom_js );
+				if ( $script_url !== false ) {
+					$custom_assets['script'] = $script_url;
+				}
+			}
+
+			//check if we have saved any custom CSS
+			$custom_css = foogallery_get_setting( 'custom_css', '' );
+			if ( !empty( $custom_css ) ) {
+				$custom_css = '
+/*
+* FooGallery Custom CSS
+* This file is created by adding custom CSS on FooGallery Settings page in wp-admin
+* Created : ' . date( 'j M Y, g:i a', time() ) . '
+*/
+
+'. $custom_css;
+				//generate stylesheet in upload folder
+				$style_url = $this->generate_custom_asset( 'custom.css', $custom_css );
+				if ( $style_url !== false ) {
+					$custom_assets['style'] = $style_url;
+				}
+			}
+
+			//set another option with the details
+			if ( count( $custom_assets ) > 0 ) {
+				update_option( FOOGALLERY_OPTION_CUSTOM_ASSETS, $custom_assets );
+			} else {
+				delete_option( FOOGALLERY_OPTION_CUSTOM_ASSETS );
+			}
+		}
+
+		function generate_custom_asset( $filename, $contents ) {
+			global $wp_filesystem;
+
+			$upload_dir = wp_upload_dir();
+			if ( !empty( $upload_dir['basedir'] ) ) {
+				$dir = trailingslashit( $upload_dir['basedir'] ) . 'foogallery/';
+				WP_Filesystem(); // Initial WP file system
+				$wp_filesystem->mkdir( $dir ); // Make a new folder for storing our file
+				if ( $wp_filesystem->put_contents( $dir . $filename, $contents, 0644 ) ) {
+					return set_url_scheme( trailingslashit( $upload_dir['baseurl'] ) . 'foogallery/' . $filename );
+				}
+			}
+
+			return false;
 		}
 	}
 }
