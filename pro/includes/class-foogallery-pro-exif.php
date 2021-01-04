@@ -41,14 +41,18 @@ if ( ! class_exists( 'FooGallery_Pro_Exif' ) ) {
          * @return array    
          */ 
         function add_container_class( $classes, $gallery ) { 
-            global $current_foogallery;
-
             if ( ! $this->is_enable_exif() ) {
                 return $classes;
             }
 
-            $classes[] = empty( $current_foogallery->settings['default_exif_icon_position'] ) ? 'fg-exif-bottom-right' : $current_foogallery->settings['default_exif_icon_position'];
-            $classes[] = empty( $current_foogallery->settings['default_exif_icon_theme'] ) ? 'fg-exif-dark' : $current_foogallery->settings['default_exif_icon_theme'];
+            $position = foogallery_gallery_template_setting( 'exif_icon_position' );
+            $theme    = foogallery_gallery_template_setting( 'exif_icon_theme' );
+            
+            //Set EXIF view button position class
+            $classes[] = empty( $position ) ? 'fg-exif-bottom-right' : $position;
+
+            //Set EXIF view button theme class
+            $classes[] = empty( $theme ) ? 'fg-exif-dark' : $theme;
 
             return $classes;    
         }
@@ -59,19 +63,15 @@ if ( ! class_exists( 'FooGallery_Pro_Exif' ) ) {
          * @return Boolean    
          */ 
         function is_enable_exif() { 
-            global $current_foogallery;
+            $lightbox    = foogallery_gallery_template_setting( 'lightbox' );
+            $exif_status = foogallery_gallery_template_setting( 'exif_view_status' );
 
-            //Checking active status for FooGallery PRO Lightbox
-            if ( empty( $current_foogallery->settings['default_lightbox'] ) || $current_foogallery->settings['default_lightbox'] != 'foogallery' ) {
-                return false;
-            }
+            //Checking active status for FooGallery PRO Lightbox and EXIF Data View status
+            if ( 'foogallery' == $lightbox &&  'yes' == $exif_status ) {
+                return true;
+            } 
 
-            //Checking EXIF Data View status
-            if ( empty( $current_foogallery->settings['default_exif_view_status'] ) || $current_foogallery->settings['default_exif_view_status'] != 'yes' ) {
-                return false;
-            }   
-
-            return true; 
+            return false; 
         }
 
         /**
@@ -315,8 +315,6 @@ if ( ! class_exists( 'FooGallery_Pro_Exif' ) ) {
          * @return array
          */
         function add_lightbox_data_attributes( $attributes, $gallery ) {
-            global $current_foogallery;
-            
             if ( ! $this->is_enable_exif() ) {
                 return $attributes;
             }
@@ -326,8 +324,9 @@ if ( ! class_exists( 'FooGallery_Pro_Exif' ) ) {
                 return $attributes;
             }
 
+            $exif_display_layout         = foogallery_gallery_template_setting( 'exif_display_layout' );
             $decode_lightbox_attrs       = json_decode( $attributes['data-foogallery-lightbox'] );
-            $decode_lightbox_attrs->exif = empty( $current_foogallery->settings['default_exif_display_layout'] ) ? 'auto' : $current_foogallery->settings['default_exif_display_layout'];
+            $decode_lightbox_attrs->exif = empty( $exif_display_layout ) ? 'auto' : $exif_display_layout;
 
             //Get il8n text for EXif attributes label.
             $exif_il8n_labels = $this->get_exif_labels();
@@ -408,7 +407,7 @@ if ( ! class_exists( 'FooGallery_Pro_Exif' ) ) {
             $settings_attrs = str_replace( ' ', '', trim( $settings_attrs ) );
             $settings_attrs = explode( ',', $settings_attrs );
             
-            //Fiter default EXIF attributes accorind global settngs 
+            //Fiter default EXIF attributes according global settngs 
             foreach ( $settings_attrs as $settings_attr ) {
                 if ( empty( $settings_attr ) ) {
                     continue;
