@@ -58,15 +58,9 @@ if ( ! class_exists( 'FooGallery_Pro_Exif' ) ) {
          * @return Boolean    
          */ 
         function is_exif_enabled() {
-            $lightbox    = foogallery_gallery_template_setting( 'lightbox' );
-            $exif_status = foogallery_gallery_template_setting( 'exif_view_status' );
-
             //Checking active status for FooGallery PRO Lightbox and EXIF Data View status
-            if ( 'foogallery' == $lightbox &&  'yes' == $exif_status ) {
-                return true;
-            } 
-
-            return false; 
+            return 'foogallery' === foogallery_gallery_template_setting( 'lightbox' ) &&
+                   'yes' === foogallery_gallery_template_setting( 'exif_view_status' );
         }
 
         /**
