@@ -78,7 +78,7 @@ if ( ! class_exists( 'FooGallery_Pro_Exif' ) ) {
                 'id'      => 'exif_attributes',
                 'title'   => __( 'Allowed EXIF Attributes', 'foogallery' ),
                 'type'    => 'text',
-                'default' => 'aperture,camera,date,exposure,focalLength,iso,orientation',
+                'default' => 'aperture,camera,created_timestamp,shutter_speed,focal_length,iso,orientation',
                 'desc'    => __('The allowed EXIF attributes that will be displayed in the lightbox. This is a comma-separated list e.g. aperture,camera,date', 'foogallery'),
                 'tab'     => 'exif'
             );
@@ -364,7 +364,12 @@ if ( ! class_exists( 'FooGallery_Pro_Exif' ) ) {
                 return $attr; 
             }
 
-        	$meta = wp_get_attachment_metadata( $foogallery_attachment->ID ); 
+        	$meta = wp_get_attachment_metadata( $foogallery_attachment->ID );
+
+            //get out early if there is no image_meta
+            if ( empty( $meta['image_meta'] ) ) {
+            	return $attr;
+            }
 
             $exif_data_attributes = array();
 
@@ -379,12 +384,14 @@ if ( ! class_exists( 'FooGallery_Pro_Exif' ) ) {
                 'orientation' => empty( $meta['image_meta']['orientation'] ) ? null : $meta['image_meta']['orientation'],
             );
 
+            $exif_attributes = $meta['image_meta'];
+
             //Get global setting EXIF data attributes
-            $settings_attrs = foogallery_get_setting( 'exif_attributes', 'aperture,camera,date,exposure,focalLength,iso,orientation' );
+            $settings_attrs = foogallery_get_setting( 'exif_attributes', 'aperture,camera,created_timestamp,shutter_speed,focal_length,iso,orientation' );
             $settings_attrs = str_replace( ' ', '', trim( $settings_attrs ) );
             $settings_attrs = explode( ',', $settings_attrs );
             
-            //Fiter default EXIF attributes according global settngs 
+            //Filter default EXIF attributes according global settings
             foreach ( $settings_attrs as $settings_attr ) {
                 if ( empty( $settings_attr ) ) {
                     continue;
@@ -394,11 +401,15 @@ if ( ! class_exists( 'FooGallery_Pro_Exif' ) ) {
                     continue;
                 }
 
+                if ( empty( $exif_attributes[$settings_attr] ) ) {
+                	continue;
+                }
+
                 $exif_data_attributes[$settings_attr] = $exif_attributes[$settings_attr];
             }
 
             if ( ! empty( $exif_data_attributes ) ) {
-                $attr['data-exif'] = json_encode( $exif_data_attributes );
+                $attr['data-exif'] = foogallery_json_encode( $exif_data_attributes );
             }
 
 			return $attr;
