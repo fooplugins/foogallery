@@ -62,7 +62,7 @@ if ( ! class_exists( 'FooGallery_Pro_Exif' ) ) {
          *  
          * @return Boolean    
          */ 
-        function is_enable_exif() { 
+        function is_exif_enabled() {
             $lightbox    = foogallery_gallery_template_setting( 'lightbox' );
             $exif_status = foogallery_gallery_template_setting( 'exif_view_status' );
 
@@ -315,7 +315,7 @@ if ( ! class_exists( 'FooGallery_Pro_Exif' ) ) {
          * @return array
          */
         function add_lightbox_data_attributes( $attributes, $gallery ) {
-            if ( ! $this->is_enable_exif() ) {
+            if ( ! $this->is_exif_enabled() ) {
                 return $attributes;
             }
 
@@ -383,7 +383,7 @@ if ( ! class_exists( 'FooGallery_Pro_Exif' ) ) {
          * @return array
          */
         function add_exif_data_attributes( $attr, $args, $foogallery_attachment ) {
-            if ( ! $this->is_enable_exif() ) {
+            if ( ! $this->is_exif_enabled() ) {
                 return $attr; 
             }
 
