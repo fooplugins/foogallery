@@ -92,7 +92,7 @@ if ( ! class_exists( 'FooGalleryAttachment' ) ) {
 		 * @return string
 		 */
 		public function html_img_src( $args = array() ) {
-			return apply_filters( 'foogallery_attachment_resize_thumbnail', $this->url, $args, $this );
+			return esc_url( apply_filters( 'foogallery_attachment_resize_thumbnail', $this->url, $args, $this ) );
 		}
 
 		/**
