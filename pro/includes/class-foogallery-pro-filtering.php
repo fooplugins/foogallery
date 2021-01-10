@@ -15,7 +15,7 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 				add_filter( 'foogallery_gallery_settings_metabox_section_icon', array( $this, 'add_section_icons' ) );
 
 				//add a global setting to change the All filter
-				add_filter( 'foogallery_admin_settings_override', array( $this, 'add_language_settings' ) );
+				add_filter( 'foogallery_admin_settings_override', array( $this, 'add_language_settings' ), 30 );
 
 				//output the multi-level filtering custom field
 				add_action( 'foogallery_render_gallery_template_field_custom', array( $this, 'render_multi_field' ), 10, 3 );
@@ -41,6 +41,44 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 
 			//add tags to the json output
 			add_filter( 'foogallery_build_attachment_json', array( $this, 'add_json_tags' ), 10, 6 );
+
+			//add localised text
+			add_filter( 'foogallery_il8n', array( $this, 'add_il8n' ) );
+		}
+
+		/**
+		 * Add localisation settings
+		 *
+		 * @param $il8n
+		 *
+		 * @return string
+		 */
+		function add_il8n( $il8n ) {
+
+			$filtering_all_entry = foogallery_get_language_array_value( 'language_filtering_all', __( 'All', 'foogallery' ) );
+			if ( $filtering_all_entry !== false ) {
+				$il8n = array_merge_recursive( $il8n, array(
+					'filtering' => array(
+						'tags' => array(
+							'all' => $filtering_all_entry
+						)
+					)
+				) );
+			}
+
+// Not implemented in JS yet
+//			$filtering_no_items_entry = foogallery_get_language_array_value( 'language_filtering_no_items', __( 'No items found.', 'foogallery' ) );
+//			if ( $filtering_no_items_entry !== false ) {
+//				$il8n = array_merge_recursive( $il8n, array(
+//					'filtering' => array(
+//						'tags' => array(
+//							'none' => $filtering_no_items_entry
+//						)
+//					)
+//				) );
+//			}
+
+			return $il8n;
 		}
 
 		/**
@@ -551,21 +589,6 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 
 					$options['filtering']        = $gallery->filtering_options = $filtering_options;
 					$gallery->filtering_taxonomy = $this->get_foogallery_argument( $gallery, 'filtering_taxonomy', 'filtering_taxonomy', FOOGALLERY_ATTACHMENT_TAXONOMY_TAG );
-
-					$filtering_all_text_default = __( 'All', 'foogallery' );
-					$filtering_all_text = foogallery_get_setting( 'language_filtering_all', $filtering_all_text_default );
-					if ( empty( $filtering_all_text ) ) {
-						$filtering_all_text = $filtering_all_text_default;
-					}
-					if ( $filtering_all_text_default !== $filtering_all_text ) {
-						if ( !array_key_exists( 'il8n', $options ) ) {
-							$options['il8n'] = array();
-						}
-
-						$options['il8n']['filtering'] = array(
-							'all' => $filtering_all_text
-						);
-					}
 				}
 			}
 
@@ -657,8 +680,19 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 				'title'   => __( 'Filtering All Text', 'foogallery' ),
 				'type'    => 'text',
 				'default' => __( 'All', 'foogallery' ),
+				'section' => __( 'Filtering', 'foogallery' ),
 				'tab'     => 'language'
 			);
+
+// Not implemented in JS yet
+//			$settings['settings'][] = array(
+//				'id'      => 'language_filtering_no_items',
+//				'title'   => __( 'Filtering No Items Text', 'foogallery' ),
+//				'type'    => 'text',
+//				'default' => __( 'No items found.', 'foogallery' ),
+//				'section' => __( 'Filtering', 'foogallery' ),
+//				'tab'     => 'language'
+//			);
 
 			return $settings;
 		}
