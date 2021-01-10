@@ -372,9 +372,9 @@ if ( ! class_exists( 'FooGallery_Pro_Exif' ) ) {
                     'data-foogallery-show-when-field'          => 'exif_view_status',
                     'data-foogallery-show-when-field-operator' => '===',
                     'data-foogallery-show-when-field-value'    => 'yes',
-                    'data-foogallery-change-selector'          => 'input:radio',
+                    'data-foogallery-change-selector'          => 'select',
                     'data-foogallery-preview'                  => 'shortcode',
-                    'data-foogallery-value-selector'           => 'input:checked',
+                    'data-foogallery-value-selector'           => 'select',
                 )
             );
 
@@ -383,7 +383,8 @@ if ( ! class_exists( 'FooGallery_Pro_Exif' ) ) {
                 'title'    => __( 'Thumbnail Icon Theme', 'foogallery' ),
                 'section'  => __( 'EXIF', 'foogallery' ),
                 'default'  => 'fg-exif-dark',
-                'type'     => 'select',
+                'spacer'  => '<span class="spacer"></span>',
+                'type'    => 'radio',
                 'choices'  => apply_filters( 'foogallery_gallery_template_exif_icon_theme_choices', array(
                     'fg-exif-light' => __( 'Light', 'foogallery' ),
                     'fg-exif-dark'  => __( 'Dark', 'foogallery' ),
