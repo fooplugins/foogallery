@@ -20,6 +20,9 @@ if ( ! class_exists( 'FooGallery_Pro_Exif' ) ) {
 	        //Add container class
 	        add_filter( 'foogallery_build_class_attribute', array( $this, 'add_container_class' ), 10,  2 );
 
+	        //add localised text
+	        add_filter( 'foogallery_il8n', array( $this, 'add_il8n' ) );
+
             if ( is_admin() ) {
                 //add extra fields to the templates that support exif
                 add_filter( 'foogallery_override_gallery_template_fields', array( $this, 'add_exif_fields' ), 20, 2 );
@@ -32,7 +35,135 @@ if ( ! class_exists( 'FooGallery_Pro_Exif' ) ) {
             }
         }
 
-        /** 
+	    /**
+	     * Add localisation settings
+	     *
+	     * @param $il8n
+	     *
+	     * @return string
+	     */
+	    function add_il8n( $il8n ) {
+
+		    //				'template' => array(
+		    //					'core' => array(
+		    //						'item' => array(
+		    //							'exif' => array(
+		    //								'aperture' => 'Aperture'
+		    //							)
+		    //						)
+		    //					)
+		    //				)
+
+		    $aperture_entry = foogallery_get_language_array_value( 'exif_aperture_text', __( 'Aperture', 'foogallery' ) );
+		    if ( $aperture_entry !== false ) {
+			    $il8n = array_merge_recursive( $il8n, array(
+				    'template' => array(
+					    'core' => array(
+					    	'item' => array(
+					    		'exif' => array(
+						            'aperture' => $aperture_entry
+							    )
+						    )
+					    )
+				    )
+			    ) );
+		    }
+
+		    $camera_entry = foogallery_get_language_array_value( 'exif_camera_text', __( 'Camera', 'foogallery' ) );
+		    if ( $camera_entry !== false ) {
+			    $il8n = array_merge_recursive( $il8n, array(
+				    'template' => array(
+					    'core' => array(
+						    'item' => array(
+							    'exif' => array(
+								    'camera' => $camera_entry
+							    )
+						    )
+					    )
+				    )
+			    ) );
+		    }
+
+		    $date_entry = foogallery_get_language_array_value( 'exif_date_text', __( 'Date', 'foogallery' ) );
+		    if ( $date_entry !== false ) {
+			    $il8n = array_merge_recursive( $il8n, array(
+				    'template' => array(
+					    'core' => array(
+						    'item' => array(
+							    'exif' => array(
+								    'created_timestamp' => $date_entry
+							    )
+						    )
+					    )
+				    )
+			    ) );
+		    }
+
+		    $exposure_entry = foogallery_get_language_array_value( 'exif_exposure_text', __( 'Exposure', 'foogallery' ) );
+		    if ( $exposure_entry !== false ) {
+			    $il8n = array_merge_recursive( $il8n, array(
+				    'template' => array(
+					    'core' => array(
+						    'item' => array(
+							    'exif' => array(
+								    'shutter_speed' => $exposure_entry
+							    )
+						    )
+					    )
+				    )
+			    ) );
+		    }
+
+		    $focal_entry = foogallery_get_language_array_value( 'exif_focal_length_text', __( 'Focal Length', 'foogallery' ) );
+		    if ( $focal_entry !== false ) {
+			    $il8n = array_merge_recursive( $il8n, array(
+				    'template' => array(
+					    'core' => array(
+						    'item' => array(
+							    'exif' => array(
+								    'focal_length' => $focal_entry
+							    )
+						    )
+					    )
+				    )
+			    ) );
+		    }
+
+		    $iso_entry = foogallery_get_language_array_value( 'exif_iso_text', __( 'ISO', 'foogallery' ) );
+		    if ( $iso_entry !== false ) {
+			    $il8n = array_merge_recursive( $il8n, array(
+				    'template' => array(
+					    'core' => array(
+						    'item' => array(
+							    'exif' => array(
+								    'iso' => $iso_entry
+							    )
+						    )
+					    )
+				    )
+			    ) );
+		    }
+
+		    $orientation_entry = foogallery_get_language_array_value( 'exif_orientation_text', __( 'Orientation', 'foogallery' ) );
+		    if ( $orientation_entry !== false ) {
+			    $il8n = array_merge_recursive( $il8n, array(
+				    'template' => array(
+					    'core' => array(
+						    'item' => array(
+							    'exif' => array(
+								    'orientation' => $orientation_entry
+							    )
+						    )
+					    )
+				    )
+			    ) );
+		    }
+
+		    return $il8n;
+	    }
+
+
+	    /**
          * Customize the item container class   
          *  
          * @param $classes  
@@ -88,6 +219,7 @@ if ( ! class_exists( 'FooGallery_Pro_Exif' ) ) {
                 'title'   => __( 'Aperture Text', 'foogallery' ),
                 'type'    => 'text',
                 'default' => __( 'Aperture', 'foogallery' ),
+                'section' => __( 'Language', 'foogallery' ),
                 'tab'     => 'exif'
             );
 
@@ -96,14 +228,16 @@ if ( ! class_exists( 'FooGallery_Pro_Exif' ) ) {
                 'title'   => __( 'Camera Text', 'foogallery' ),
                 'type'    => 'text',
                 'default' => __( 'Camera', 'foogallery' ),
+                'section' => __( 'Language', 'foogallery' ),
                 'tab'     => 'exif'
             );
 
             $settings['settings'][] = array(
-                'id'      => 'exif_data_text',
+                'id'      => 'exif_date_text',
                 'title'   => __( 'Date Text', 'foogallery' ),
                 'type'    => 'text',
                 'default' => __( 'Date', 'foogallery' ),
+                'section' => __( 'Language', 'foogallery' ),
                 'tab'     => 'exif'
             );
 
@@ -112,6 +246,7 @@ if ( ! class_exists( 'FooGallery_Pro_Exif' ) ) {
                 'title'   => __( 'Exposure Text', 'foogallery' ),
                 'type'    => 'text',
                 'default' => __( 'Exposure', 'foogallery' ),
+                'section' => __( 'Language', 'foogallery' ),
                 'tab'     => 'exif'
             );
 
@@ -120,6 +255,7 @@ if ( ! class_exists( 'FooGallery_Pro_Exif' ) ) {
                 'title'   => __( 'Focal Length Text', 'foogallery' ),
                 'type'    => 'text',
                 'default' => __( 'Focal Length', 'foogallery' ),
+                'section' => __( 'Language', 'foogallery' ),
                 'tab'     => 'exif'
             );
 
@@ -128,6 +264,7 @@ if ( ! class_exists( 'FooGallery_Pro_Exif' ) ) {
                 'title'   => __( 'ISO Text', 'foogallery' ),
                 'type'    => 'text',
                 'default' => __( 'ISO', 'foogallery' ),
+                'section' => __( 'Language', 'foogallery' ),
                 'tab'     => 'exif'
             );
 
@@ -136,6 +273,7 @@ if ( ! class_exists( 'FooGallery_Pro_Exif' ) ) {
                 'title'   => __( 'Orientation Text', 'foogallery' ),
                 'type'    => 'text',
                 'default' => __( 'Orientation', 'foogallery' ),
+                'section' => __( 'Language', 'foogallery' ),
                 'tab'     => 'exif'
             );
 
@@ -372,17 +510,6 @@ if ( ! class_exists( 'FooGallery_Pro_Exif' ) ) {
             }
 
             $exif_data_attributes = array();
-
-            //Mapping with default EXIF attributes and image meta attributes
-            $exif_attributes = array(
-                'aperture'    => empty( $meta['image_meta']['aperture'] ) ? null : $meta['image_meta']['aperture'],
-                'camera'      => empty( $meta['image_meta']['camera'] ) ? null : $meta['image_meta']['camera'],
-                'date'        => empty( $meta['image_meta']['created_timestamp'] ) ? null : $meta['image_meta']['created_timestamp'],
-                'exposure'    => empty( $meta['image_meta']['shutter_speed'] ) ? null : $meta['image_meta']['shutter_speed'],
-                'focalLength' => empty( $meta['image_meta']['focal_length'] ) ? null : $meta['image_meta']['focal_length'],
-                'iso'         => empty( $meta['image_meta']['iso'] ) ? null : $meta['image_meta']['iso'],
-                'orientation' => empty( $meta['image_meta']['orientation'] ) ? null : $meta['image_meta']['orientation'],
-            );
 
             $exif_attributes = $meta['image_meta'];
 
