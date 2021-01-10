@@ -273,10 +273,38 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 			$tabs['language'] = __( 'Language', 'foogallery' );
 
 			$settings[] = array(
+				'id'      => 'language_imageviewer_prev_text',
+				'title'   => __( 'Imageviewer "Prev" Text', 'foogallery' ),
+				'type'    => 'text',
+				'default' => __( 'Prev', 'foogallery' ),
+				'section' => __( 'Imageviewer', 'foogallery' ),
+				'tab'     => 'language'
+			);
+
+			$settings[] = array(
+				'id'      => 'language_imageviewer_next_text',
+				'title'   => __( 'Imageviewer "Next" Text', 'foogallery' ),
+				'type'    => 'text',
+				'default' => __( 'Next', 'foogallery' ),
+				'section' => __( 'Imageviewer', 'foogallery' ),
+				'tab'     => 'language'
+			);
+
+			$settings[] = array(
+				'id'      => 'language_imageviewer_of_text',
+				'title'   => __( 'Imageviewer "Of" Text', 'foogallery' ),
+				'type'    => 'text',
+				'default' => __( 'of', 'foogallery' ),
+				'section' => __( 'Imageviewer', 'foogallery' ),
+				'tab'     => 'language'
+			);
+
+			$settings[] = array(
 				'id'      => 'language_images_count_none_text',
 				'title'   => __( 'Image Count None Text', 'foogallery' ),
 				'type'    => 'text',
 				'default' => __( 'No images', 'foogallery' ),
+				'section' => __( 'Admin', 'foogallery' ),
 				'tab'     => 'language'
 			);
 
@@ -285,6 +313,7 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 				'title'   => __( 'Image Count Single Text', 'foogallery' ),
 				'type'    => 'text',
 				'default' => __( '1 image', 'foogallery' ),
+				'section' => __( 'Admin', 'foogallery' ),
 				'tab'     => 'language'
 			);
 
@@ -293,6 +322,7 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 				'title'   => __( 'Image Count Many Text', 'foogallery' ),
 				'type'    => 'text',
 				'default' => __( '%s images', 'foogallery' ),
+				'section' => __( 'Admin', 'foogallery' ),
 				'tab'     => 'language'
 			);
 			//endregion Language Tab

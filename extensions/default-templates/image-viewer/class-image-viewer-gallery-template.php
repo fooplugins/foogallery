@@ -152,43 +152,10 @@ if ( !class_exists( 'FooGallery_Image_Viewer_Gallery_Template' ) ) {
                     array(
                         'id'      => 'language-help',
                         'title'   => __( 'Language Help', 'foogallery' ),
-                        'desc'    => __( 'This gallery template shows the below items of text. Change them to suit your preference or language.', 'foogallery' ),
+                        'desc'    => __( 'You can change the "Prev", "Next" and "of" text used in the gallery from the settings page, under the Language tab.', 'foogallery' ),
 						'section' => __( 'General', 'foogallery' ),
                         'type'    => 'help'
-                    ),
-					array(
-						'id'      => 'text-prev',
-						'title'   => __( '"Prev" Text', 'foogallery' ),
-						'section' => __( 'General', 'foogallery' ),
-						'type'    => 'text',
-						'default' =>  __('Prev', 'foogallery'),
-						'row_data'=> array(
-							'data-foogallery-change-selector' => 'input',
-							'data-foogallery-preview' => 'shortcode'
-						)
-					),
-					array(
-						'id'      => 'text-of',
-						'title'   => __( '"of" Text', 'foogallery' ),
-						'section' => __( 'General', 'foogallery' ),
-						'type'    => 'text',
-						'default' =>  __('of', 'foogallery'),
-						'row_data'=> array(
-							'data-foogallery-change-selector' => 'input',
-							'data-foogallery-preview' => 'shortcode'
-						)
-					),
-					array(
-						'id'      => 'text-next',
-						'title'   => __( '"Next" Text', 'foogallery' ),
-						'section' => __( 'General', 'foogallery' ),
-						'type'    => 'text',
-						'default' =>  __('Next', 'foogallery'),
-						'row_data'=> array(
-							'data-foogallery-change-selector' => 'input',
-							'data-foogallery-preview' => 'shortcode'
-						)
-					)
+                    )
 				)
 			);
 

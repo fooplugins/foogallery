@@ -203,6 +203,9 @@ if ( function_exists( 'foogallery_fs' ) ) {
 
 				//init advanced settings
 				new FooGallery_Advanced_Gallery_Settings();
+
+				//init localization for FooGallery
+				new FooGallery_il8n();
 			}
 
 			function add_foogallery_pro_extension( $extensions ) {

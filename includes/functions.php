@@ -1460,3 +1460,23 @@ function foogallery_json_encode( $value ) {
 		return json_encode( $value );
 	}
 }
+
+
+/**
+ * Get a language array entry which gets a value from settings
+ * @param $setting_key
+ * @param $default
+ *
+ * @return string|false
+ */
+function foogallery_get_language_array_value( $setting_key, $default ) {
+	$setting_value = foogallery_get_setting( $setting_key, $default );
+	if ( empty( $setting_value ) ) {
+		$setting_value = $default;
+	}
+	if ( $default !== $setting_value ) {
+		return $setting_value;
+	}
+
+	return false;
+}
