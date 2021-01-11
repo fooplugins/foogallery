@@ -108,9 +108,9 @@ When you install FooGallery for the first time, the plugin asks you (the website
 
 From your website point of view, FooGallery never collects or stores any visitor information at all, when someone visits your website.
 
-**PHP 7 Compatible**
+**PHP 8 Compatible**
 
-FooGallery has been tried and tested on servers running up to PHP 7.4
+FooGallery has been tried and tested on servers running up to PHP 8
 
 **Retina Support**
 
@@ -226,6 +226,20 @@ We did the research and comparison. See our findings : [What is the Best WordPre
 Please update in order to for FooGallery to work in WP 5.5+!
 
 == Changelog ==
+
+= 1.9.48 =
+* Date Updated : 2021-11-01
+* New : Added global Custom JS & CSS settings which are included for all galleries
+* New : Added global language settings which apply to all galleries
+* Update : Updated All-in-one SEO support to work with AIOSEO v4
+* Update : FooGallery client side 1.4.25
+* Update : updated WPML compatibility to account for new language settings
+* Fix : image URL's with spaces - always ensure image URL's are escaped
+* Fix : fixed PHP warning on activation
+* Test : tested PHP8 support!
+[//]: # fs_premium_only_begin
+* New : Added EXIF feature whereby you can showcase the image metadata in your galleries
+[//]: # fs_premium_only_end
 
 = 1.9.47 =
 * Date Updated : 2020-16-10
