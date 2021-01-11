@@ -259,7 +259,7 @@ if ( ! class_exists( 'FooGallery_Admin_Notices' ) ) {
                                 'numberposts' => 1
 		                    ) );
 
-		                    if ( is_array( $oldest_gallery ) ) {
+		                    if ( is_array( $oldest_gallery ) && count( $oldest_gallery ) > 0 ) {
 			                    $oldest_gallery = $oldest_gallery[0];
 
 			                    if( strtotime( $oldest_gallery->post_date ) < strtotime('-7 days') ) {
