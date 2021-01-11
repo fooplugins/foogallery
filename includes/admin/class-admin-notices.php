@@ -22,15 +22,17 @@ if ( ! class_exists( 'FooGallery_Admin_Notices' ) ) {
             $option = get_option( FOOGALLERY_OPTION_THUMB_TEST );
             $option_value = $this->generate_option_value();
 
-            if ( !isset( $option ) ) {
+            if ( $option === false ) {
                 //we have never run tests before
                 return true;
             } else {
-                $option_key = $option['key'];
-                if ( $option_value !== $option_key ) {
-                    //either the PHP version or Host has changed. In either case, we should run tests again!
-                    return true;
-                }
+            	if ( is_array( $option ) && array_key_exists( 'key', $option ) ) {
+		            $option_key = $option['key'];
+		            if ( $option_value !== $option_key ) {
+			            //either the PHP version or Host has changed. In either case, we should run tests again!
+			            return true;
+		            }
+	            }
             }
 
             return false;
