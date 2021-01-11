@@ -44,16 +44,6 @@ if ( ! class_exists( 'FooGallery_Pro_Exif' ) ) {
 	     */
 	    function add_il8n( $il8n ) {
 
-		    //				'template' => array(
-		    //					'core' => array(
-		    //						'item' => array(
-		    //							'exif' => array(
-		    //								'aperture' => 'Aperture'
-		    //							)
-		    //						)
-		    //					)
-		    //				)
-
 		    $aperture_entry = foogallery_get_language_array_value( 'exif_aperture_text', __( 'Aperture', 'foogallery' ) );
 		    if ( $aperture_entry !== false ) {
 			    $il8n = array_merge_recursive( $il8n, array(

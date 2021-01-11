@@ -4,6 +4,24 @@
       <key name="language_filtering_all"/>
       <key name="language_paging_loadmore_text"/>
       <key name="language_back_to_album_text"/>
+      <key name="language_imageviewer_prev_text"/>
+      <key name="language_imageviewer_next_text"/>
+      <key name="language_imageviewer_of_text"/>
+      <key name="language_paging_current"/>
+      <key name="language_paging_page"/>
+      <key name="language_paging_first_text"/>
+      <key name="language_paging_prev_text"/>
+      <key name="language_paging_next_text"/>
+      <key name="language_paging_last_text"/>
+      <key name="language_paging_prev_more_text"/>
+      <key name="language_paging_next_more_text"/>
+      <key name="exif_aperture_text"/>
+      <key name="exif_camera_text"/>
+      <key name="exif_date_text"/>
+      <key name="exif_exposure_text"/>
+      <key name="exif_focal_length_text"/>
+      <key name="exif_iso_text"/>
+      <key name="exif_orientation_text"/>
     </key>
   </admin-texts>
 </wpml-config>
