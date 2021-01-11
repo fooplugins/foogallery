@@ -860,18 +860,13 @@ if ( ! class_exists( 'FooGallery_Pro_Lightbox' ) ) {
 			$template = foogallery_get_gallery_template( $gallery->gallery_template );
 			if ( $template && !array_key_exists( 'panel_support', $template ) ) {
 
-				$options = $this->get_options_from_settings();
-
-				if ( defined( 'JSON_UNESCAPED_UNICODE' ) ) {
-					$encoded_options = json_encode( $options, JSON_UNESCAPED_UNICODE );
-				} else {
-					$encoded_options = json_encode( $options );
-				}
-
 				//check if lightbox set to foogallery
-                $lightbox = foogallery_gallery_template_setting( 'lightbox', '' );
+				if ( 'foogallery' === foogallery_gallery_template_setting( 'lightbox', '' ) ) {
 
-				if ( 'foogallery' === $lightbox ) {
+					$options = apply_filters( 'foogallery_lightbox_data_attributes', $this->get_options_from_settings() );
+
+					$encoded_options = foogallery_json_encode( $options );
+
                     $attributes['data-foogallery-lightbox'] = $encoded_options;
                 }
 			}
