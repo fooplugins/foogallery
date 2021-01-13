@@ -43,10 +43,12 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings_Helper' ) ) {
 		private function render_gallery_template_settings_tabs( $template, $sections ) {
 			$tab_active = 'foogallery-tab-active';
 			foreach ( $sections as $section_slug => $section ) {
+				$subsection_active = '';
 			    //if there are no fields then set the slug to the first subsection
 				if ( isset( $section['subsections'] ) && count( $section['fields'] ) === 0 ) {
 				    foreach ( $section['subsections'] as $subsection_slug => $subsection ) {
 					    $section_slug = $subsection_slug;
+					    $subsection_active = 'foogallery-tab-active';
 					    break;
                     }
 				}
@@ -59,10 +61,12 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings_Helper' ) ) {
                     if ( isset( $section['subsections'] ) ) { ?>
                         <div class="foogallery-vertical-child-tabs">
                         <?php foreach ( $section['subsections'] as $subsection_slug => $subsection ) { ?>
-                            <div class="foogallery-vertical-child-tab" data-name="<?php echo esc_attr( $template['slug'] . '-' . $subsection_slug ); ?>">
+                            <div class="foogallery-vertical-child-tab <?php echo $subsection_active; ?>" data-name="<?php echo esc_attr( $template['slug'] . '-' . $subsection_slug ); ?>">
                                 <span class="foogallery-tab-text"><?php echo esc_html( $subsection['name'] ); ?></span>
                             </div>
-                        <?php } ?>
+                        <?php
+	                        $subsection_active = '';
+                            } ?>
                         </div>
                     <?php } ?>
 				</div>
@@ -72,14 +76,26 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings_Helper' ) ) {
 		}
 
 		private function render_gallery_template_settings_tab_contents( $template, $sections, $tab_active = 'foogallery-tab-active' ) {
-			foreach ( $sections as $section_slug => $section ) { ?>
+			foreach ( $sections as $section_slug => $section ) {
+				$subsection_active = '';
+
+				//if there are no fields then set the slug to the first subsection
+				if ( isset( $section['subsections'] ) && count( $section['fields'] ) === 0 ) {
+					foreach ( $section['subsections'] as $subsection_slug => $subsection ) {
+						$subsection_active = 'foogallery-tab-active';
+						break;
+					}
+				}
+
+				?>
 				<div class="foogallery-tab-content <?php echo $tab_active; ?>"
 					 data-name="<?php echo $template['slug']; ?>-<?php echo $section_slug; ?>">
 					<?php $this->render_gallery_template_settings_tab_contents_fields( $template, $section ); ?>
 				</div>
 				<?php
                 if ( isset( $section['subsections'] ) ) {
-                    $this->render_gallery_template_settings_tab_contents( $template, $section['subsections'], '' );
+                    $this->render_gallery_template_settings_tab_contents( $template, $section['subsections'], $subsection_active );
+	                $subsection_active = '';
                 }
 				$tab_active = '';
 			}
