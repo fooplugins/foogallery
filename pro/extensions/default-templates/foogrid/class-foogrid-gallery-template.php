@@ -319,18 +319,15 @@ if ( !class_exists( 'FooGallery_FooGrid_Gallery_Template' ) ) {
 			$scroll_smooth = foogallery_gallery_template_setting( 'scroll_smooth', 'yes' ) === 'yes';
 			$scroll_offset = foogallery_gallery_template_setting( 'scroll_offset', 0 );
 			$transition = foogallery_gallery_template_setting( 'transition', 'fade' );
-			$captions = foogallery_gallery_template_setting( 'captions', 'fade' );
 
 			//map to correct values
 			$transition = $this->get_correct_field_value( 'transition', $transition );
-			$captions = $this->get_correct_field_value( 'captions', $captions );
 
 			$options['template']['loop'] = $loop;
 			$options['template']['scroll'] = $scroll;
 			$options['template']['scrollSmooth'] = $scroll_smooth;
 			$options['template']['scrollOffset'] = intval( $scroll_offset );
 			$options['template']['transition'] = $transition;
-			$options['template']['info'] = $captions;
 
 			return $options;
 		}
