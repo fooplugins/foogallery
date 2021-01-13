@@ -443,10 +443,6 @@ if ( ! class_exists( 'FooGallery_Pro_Lightbox' ) ) {
 					'data-foogallery-change-selector' => 'input:radio',
 					'data-foogallery-preview'         => 'shortcode',
 					'data-foogallery-value-selector'  => 'input:checked',
-					'data-foogallery-hidden'                   => true,
-					'data-foogallery-show-when-field'          => 'lightbox',
-					'data-foogallery-show-when-field-operator' => '===',
-					'data-foogallery-show-when-field-value'    => 'foogallery',
 				)
 			);
 
@@ -464,10 +460,6 @@ if ( ! class_exists( 'FooGallery_Pro_Lightbox' ) ) {
 					'no'  => __( 'Inline', 'foogallery' ),
 				) ),
 				'row_data'=> array(
-					'data-foogallery-hidden'                   => true,
-					'data-foogallery-show-when-field'          => 'lightbox',
-					'data-foogallery-show-when-field-operator' => '===',
-					'data-foogallery-show-when-field-value'    => 'foogallery',
 					'data-foogallery-change-selector'          => 'input:radio',
 					'data-foogallery-preview'                  => 'shortcode',
 					'data-foogallery-value-selector'           => 'input:checked',
@@ -488,10 +480,6 @@ if ( ! class_exists( 'FooGallery_Pro_Lightbox' ) ) {
 					'custom'  => __( 'Custom', 'foogallery' ),
 				) ),
 				'row_data'=> array(
-					'data-foogallery-hidden'                   => true,
-					'data-foogallery-show-when-field'          => 'lightbox',
-					'data-foogallery-show-when-field-operator' => '!==',
-					'data-foogallery-show-when-field-value'    => 'none',
 					'data-foogallery-change-selector'          => 'input:radio',
 					'data-foogallery-preview'                  => 'shortcode',
 					'data-foogallery-value-selector'           => 'input:checked',
