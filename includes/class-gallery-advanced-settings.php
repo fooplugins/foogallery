@@ -76,7 +76,7 @@ if ( ! class_exists( 'FooGallery_Advanced_Gallery_Settings' ) ) {
 				$settings_array = @json_decode($custom_settings, true);
 
 				if ( isset( $settings_array ) ) {
-					$options = array_merge_recursive( $options, $settings_array );
+					$options = array_replace_recursive( $options, $settings_array );
 				}
 			}
 
