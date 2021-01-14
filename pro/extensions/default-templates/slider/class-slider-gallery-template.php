@@ -35,6 +35,20 @@ if ( !class_exists( 'FooGallery_Slider_Gallery_Template' ) ) {
 
 			//set the settings icon for lightbox
 			add_filter( 'foogallery_gallery_settings_metabox_section_icon', array( $this, 'add_section_icons' ) );
+
+			add_filter( 'foogallery_gallery_template_setting-lightbox_caption_override', array( $this, 'override_lightbox_caption_override' ) );
+		}
+
+		function override_lightbox_caption_override( $value ) {
+			global $current_foogallery;
+			global $current_foogallery_arguments;
+			global $current_foogallery_template;
+
+			if ( isset( $current_foogallery ) && isset( $current_foogallery_template ) && $current_foogallery_template === 'slider' ) {
+				return 'override';
+			}
+
+			return $value;
 		}
 
 		/**
@@ -132,9 +146,30 @@ if ( !class_exists( 'FooGallery_Slider_Gallery_Template' ) ) {
 			$fields_to_remove[] = 'video_size';
 			$fields_to_remove[] = 'lightbox_theme';
 			$fields_to_remove[] = 'lightbox_no_scrollbars';
+			$fields_to_remove[] = 'lightbox_caption_override';
+			$fields_to_remove[] = 'captions_help';
+			$fields_to_remove[] = 'caption_title_source';
+			$fields_to_remove[] = 'caption_desc_source';
+			$fields_to_remove[] = 'captions_limit_length';
+			$fields_to_remove[] = 'caption_title_length';
+			$fields_to_remove[] = 'caption_desc_length';
+			$fields_to_remove[] = 'captions_type';
+			$fields_to_remove[] = 'caption_custom_template';
+			$fields_to_remove[] = 'caption_custom_help';
+
 			//$fields_to_remove[] = 'lightbox_caption_override';
 
 			$indexes_to_remove = array();
+
+			$settings_link = sprintf( '<a target="blank" href="%s">%s</a>', foogallery_admin_settings_url(), __( 'settings', 'foogallery' ) );
+			$captions_choices = array(
+				'none'    => __( 'None', 'foogallery' ),
+				''        => sprintf( __( 'Default (as per %s)', 'foogallery' ), $settings_link ),
+				'title'   => foogallery_get_attachment_field_friendly_name( 'title' ),
+				'caption' => foogallery_get_attachment_field_friendly_name( 'caption' ),
+				'alt'     => foogallery_get_attachment_field_friendly_name( 'alt' ),
+				'desc'    => foogallery_get_attachment_field_friendly_name( 'desc' ),
+			);
 
 			foreach ($fields as $key => &$field) {
 				if ( $field['section'] === __( 'Panel', 'foogallery' ) ) {
@@ -156,56 +191,44 @@ if ( !class_exists( 'FooGallery_Slider_Gallery_Template' ) ) {
 					$field['title'] = __( 'Autoplay', 'foogallery' );
 					$field['desc'] = __( 'Try to autoplay the video when selected. This will only work with videos hosted on Youtube or Vimeo.', 'foogallery' );
 				} else if ( 'lightbox_fit_media' === $field['id'] ) {
-					//$field['section'] = __( 'General', 'foogallery' );
 					$field['default'] = 'yes';
 				} else if ( 'lightbox_buttons_display' === $field['id'] ) {
-					//$field['section'] = __( 'General', 'foogallery' );
 					$field['default'] = 'yes';
 				} else if ( 'lightbox_thumbs' === $field['id'] ) {
 					$field['title'] = __( 'Thumbnails', 'foogallery' );
-					//$field['section'] = __( 'General', 'foogallery' );
 					$field['default'] = 'right';
 				} else if ( 'lightbox_thumbs_captions' === $field['id'] ) {
 					$field['title'] = __( 'Thumbnail Captions', 'foogallery' );
-					//$field['section'] = __( 'General', 'foogallery' );
 					$field['default'] = 'yes';
 				} else if ( 'lightbox_info_position' === $field['id'] ) {
-					//$field['section'] = __( 'General', 'foogallery' );
 					$field['default'] = 'top';
-				} else if ( 'lightbox_theme' === $field['id'] ) {
-					//$field['section'] = __( 'Appearance', 'foogallery' );
-				} else if ( 'lightbox_button_theme' === $field['id'] ) {
-					//$field['section'] = __( 'Appearance', 'foogallery' );
-				} else if ( 'lightbox_custom_button_theme' === $field['id'] ) {
-					//$field['section'] = __( 'Appearance', 'foogallery' );
-				} else if ( 'lightbox_button_highlight' === $field['id'] ) {
-					//$field['section'] = __( 'Appearance', 'foogallery' );
-				} else if ( 'lightbox_custom_button_highlight' === $field['id'] ) {
-					//$field['section'] = __( 'Appearance', 'foogallery' );
 				} else if ( 'lightbox_hover_buttons' === $field['id'] ) {
-					//$field['section'] = __( 'General', 'foogallery' );
 					$field['default'] = 'yes';
-				} else if ( 'lightbox_transition' === $field['id'] ) {
-					//$field['section'] = __( 'General', 'foogallery' );
-				} else if ( 'lightbox_auto_progress' === $field['id'] ) {
-					//$field['section'] = __( 'General', 'foogallery' );
-				} else if ( 'lightbox_auto_progress_seconds' === $field['id'] ) {
-					//$field['section'] = __( 'General', 'foogallery' );
-				} else if ( 'lightbox_no_scrollbars' === $field['id'] ) {
-					//$field['section'] = __( 'General', 'foogallery' );
-				} else if ( 'lightbox_info_overlay' === $field['id'] ) {
-					//$field['section'] = __( 'General', 'foogallery' );
 				} else if ( 'lightbox_thumbs_bestfit' === $field['id'] ) {
-					//$field['section'] = __( 'General', 'foogallery' );
 					$field['default'] = 'yes';
-				} else if ( 'lightbox_thumbs_size' === $field['id'] ) {
-					//$field['section'] = __( 'General', 'foogallery' );
-				} else if ( 'lightbox_show_maximize_button' === $field['id'] ) {
-					//$field['section'] = __( 'General', 'foogallery' );
-				} else if ( 'lightbox_show_fullscreen_button' === $field['id'] ) {
-					//$field['section'] = __( 'General', 'foogallery' );
-				} else if ( 'lightbox_show_caption_button' === $field['id'] ) {
-					//$field['section'] = __( 'General', 'foogallery' );
+				} else if ( 'lightbox_caption_override_title' === $field['id'] ) {
+					$field['title'] = __( 'Caption Title', 'foogallery' );
+					unset( $field['desc'] );
+					$field['default'] = 'caption';
+
+					$field['choices'] = $captions_choices;
+					$field['row_data'] = array(
+						'data-foogallery-show-when-field-value'    => 'override',
+						'data-foogallery-change-selector'          => 'input:radio',
+						'data-foogallery-preview'                  => 'shortcode',
+						'data-foogallery-value-selector'           => 'input:checked',
+					);
+				} else if ( 'lightbox_caption_override_desc' === $field['id'] ) {
+					$field['title'] = __( 'Caption Description', 'foogallery' );
+					unset( $field['desc'] );
+					$field['default'] = 'desc';
+					$field['choices'] = $captions_choices;
+					$field['row_data'] = array(
+						'data-foogallery-show-when-field-value'    => 'override',
+						'data-foogallery-change-selector'          => 'input:radio',
+						'data-foogallery-preview'                  => 'shortcode',
+						'data-foogallery-value-selector'           => 'input:checked',
+					);
 				}
 
 

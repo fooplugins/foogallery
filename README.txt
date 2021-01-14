@@ -227,6 +227,15 @@ Please update in order to for FooGallery to work in WP 5.5+!
 
 == Changelog ==
 
+= 1.9.49 =
+* Date Updated : 2021-13-01
+* Fix : Advanced settings for a gallery to properly override settings rather than merge
+[//]: # fs_premium_only_begin
+* Fix : fixed settings in slider template not showing after save
+* Fix : fixed captions not working correctly in slider template
+* Fix : fixed captions not working correctly in grid template
+[//]: # fs_premium_only_end
+
 = 1.9.48 =
 * Date Updated : 2021-11-01
 * New : Added global Custom JS & CSS settings which are included for all galleries
