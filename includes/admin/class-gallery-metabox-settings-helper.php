@@ -79,11 +79,14 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings_Helper' ) ) {
 			foreach ( $sections as $section_slug => $section ) {
 				$subsection_active = '';
 
-				//if there are no fields then set the slug to the first subsection
-				if ( isset( $section['subsections'] ) && count( $section['fields'] ) === 0 ) {
-					foreach ( $section['subsections'] as $subsection_slug => $subsection ) {
-						$subsection_active = 'foogallery-tab-active';
-						break;
+				//if we are on an active section, then do the check for subsections
+				if ( $tab_active === 'foogallery-tab-active' ) {
+					//if there are no fields then set the slug to the first subsection
+					if ( isset( $section['subsections'] ) && count( $section['fields'] ) === 0 ) {
+						foreach ( $section['subsections'] as $subsection_slug => $subsection ) {
+							$subsection_active = 'foogallery-tab-active';
+							break;
+						}
 					}
 				}
 
