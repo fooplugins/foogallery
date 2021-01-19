@@ -523,7 +523,7 @@ if ( ! class_exists( 'FooGallery_Pro_Exif' ) ) {
                 	continue;
                 }
 
-                $exif_data_attributes[$settings_attr] = $exif_attributes[$settings_attr];
+                $exif_data_attributes[$settings_attr] = $this->format_exif_value( $settings_attr, $exif_attributes[$settings_attr] );
             }
 
             if ( ! empty( $exif_data_attributes ) ) {
@@ -531,6 +531,23 @@ if ( ! class_exists( 'FooGallery_Pro_Exif' ) ) {
             }
 
 			return $attr;
+        }
+
+	    /**
+	     * Format the value of the exif attribute
+	     * @param $attribute_key
+	     * @param $attribute_value
+	     *
+	     * @return string
+	     */
+        function format_exif_value( $attribute_key, $attribute_value ) {
+        	if ( 'created_timestamp' === $attribute_key || 'date' === $attribute_key ) {
+        		if ( (string)(int)$attribute_value == $attribute_value ) {
+        			return foogallery_format_date( $attribute_value );
+		        }
+	        }
+
+        	return apply_filters( 'foogallery_format_exif_value', $attribute_value, $attribute_key );
         }
     }
 }
