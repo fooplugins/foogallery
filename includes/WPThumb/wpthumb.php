@@ -618,6 +618,7 @@ class WP_Thumb {
 }
 
 /**
+ * MIGRATED
  * Resizes a given image (local).
  *
  * @param      mixed   absolute path to the image
@@ -636,6 +637,7 @@ function wpthumb( $url, $args = array() ) {
 }
 
 /**
+ * MIGRATION NOT NEEDED
  * Hook WP Thumb into the WordPress image functions
  *
  * Usage `the_post_thumbnail( 'width=100&height=200&crop=1' );`

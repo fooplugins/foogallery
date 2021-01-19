@@ -101,14 +101,6 @@ if ( !class_exists( 'FooGallery_Thumbnails' ) ) {
 				}
 			}
 
-			if ( $thumbnail_object->ID > 0 ) {
-				$crop_from_position = get_post_meta( $thumbnail_object->ID, 'wpthumb_crop_pos', true );
-
-				if ( !empty( $crop_from_position ) ) {
-					$args['crop_from_position'] = $crop_from_position;
-				}
-			}
-
 			//remove invalid resize args
 			if ( array_key_exists( 'height', $args ) && 0 === $args['height'] ) {
 				unset( $args['height'] );
@@ -122,15 +114,19 @@ if ( !class_exists( 'FooGallery_Thumbnails' ) ) {
 				//check if we must upscale smaller images
 				if ( 'on' === foogallery_get_setting( 'thumb_resize_upscale_small' ) ) {
 					$force_resize = true;
-					$colors                  = foogallery_rgb_to_color_array( foogallery_get_setting( 'thumb_resize_upscale_small_color', '' ) );
-					$args['background_fill'] = sprintf( "%03d%03d%03d000", $colors[0], $colors[1], $colors[2] );
+					$color = foogallery_get_setting( 'thumb_resize_upscale_small_color', '' );
+					if ( $color !== 'auto' && $color !== 'transparent' ) {
+						$colors = foogallery_rgb_to_color_array();
+						$color  = sprintf( "%03d%03d%03d000", $colors[0], $colors[1], $colors[2] );
+					}
+					$args['background_fill'] = $color;
 				}
 			}
 
 			//do some checks to see if the image is smaller
 			if ( $force_resize || $this->should_resize( $thumbnail_object, $args ) ) {
 				//save the generated thumb url to a global so that we can use it later if needed
-				$foogallery_last_generated_thumb_url = wpthumb( $original_image_src, $args );
+				$foogallery_last_generated_thumb_url = foogallery_thumb( $original_image_src, $args );
 			} else {
 				$foogallery_last_generated_thumb_url = apply_filters('foogallery_thumbnail_resize_small_image', $original_image_src, $args );
 			}

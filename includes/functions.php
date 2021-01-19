@@ -1480,3 +1480,22 @@ function foogallery_get_language_array_value( $setting_key, $default ) {
 
 	return false;
 }
+
+/**
+ * Safely returns the WP Filesystem instance for use in FooGallery
+ *
+ * @return WP_Filesystem_Base
+ */
+function foogallery_wp_filesystem() {
+	global $wp_filesystem;
+
+	if ( !function_exists( 'WP_Filesystem' ) ) {
+		require_once( ABSPATH . 'wp-admin/includes/file.php' );
+	}
+
+	if ( ! WP_Filesystem( true ) ) {
+		return false;
+	}
+
+	return $wp_filesystem;
+}

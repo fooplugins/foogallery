@@ -131,6 +131,9 @@ if ( function_exists( 'foogallery_fs' ) ) {
 					new FooGallery_Public();
 				}
 
+				//initialize the thumbnail manager
+				new FooGallery_Thumb_Manager();
+
 				new FooGallery_Shortcodes();
 
 				new FooGallery_Thumbnails();
@@ -138,8 +141,6 @@ if ( function_exists( 'foogallery_fs' ) ) {
 				new FooGallery_Attachment_Filters();
 
 				new FooGallery_Retina();
-
-				new FooGallery_WPThumb_Enhancements();
 
 				new FooGallery_Animated_Gif_Support();
 
@@ -161,7 +162,7 @@ if ( function_exists( 'foogallery_fs' ) ) {
 
 				new FooGallery_Extensions_Compatibility();
 
-				new FooGallery_Default_Crop_Position();
+				new FooGallery_Crop_Position();
 
 				new FooGallery_ForceHttps();
 

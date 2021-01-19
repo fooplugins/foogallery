@@ -17,13 +17,19 @@ require_once( FOOGALLERY_PATH . 'includes/class-foogallery-upgrade.php' );
 require_once( FOOGALLERY_PATH . 'includes/class-foogallery-widget.php' );
 require_once( FOOGALLERY_PATH . 'gutenberg/class-foogallery-gutenberg.php' );
 
-//check for WPThumb, include.
-if ( ! class_exists( 'WP_Thumb' ) ) {
-	require_once( FOOGALLERY_PATH . 'includes/WPThumb/wpthumb.php' );
-	//do not let WPThumb override build-in WordPress functions like the_post_thumbnail
-	remove_filter( 'image_downsize', 'wpthumb_post_image', 99 );
-}
-require_once( FOOGALLERY_PATH . 'includes/class-wpthumb-enhancements.php' );
+///** WPTHUMB BEGIN */
+////check for WPThumb, include.
+//if ( ! class_exists( 'WP_Thumb' ) ) {
+//	require_once( FOOGALLERY_PATH . 'includes/WPThumb/wpthumb.php' );
+//	//do not let WPThumb override build-in WordPress functions like the_post_thumbnail
+//	remove_filter( 'image_downsize', 'wpthumb_post_image', 99 );
+//}
+//require_once( FOOGALLERY_PATH . 'includes/class-wpthumb-enhancements.php' );
+///** WPTHUMB END */
+
+//include built-in thumbnail generation files
+require_once( FOOGALLERY_PATH . 'includes/thumbs/includes.php' );
+
 
 //include bundled extensions
 require_once( FOOGALLERY_PATH . 'extensions/albums/class-albums-extension.php' );
@@ -47,7 +53,7 @@ require_once( FOOGALLERY_PATH . 'includes/class-foogallery-lazyload.php' );
 require_once( FOOGALLERY_PATH . 'includes/class-foogallery-paging.php' );
 require_once( FOOGALLERY_PATH . 'includes/class-foogallery-attachment-custom-class.php' );
 require_once( FOOGALLERY_PATH . 'includes/class-foogallery-extensions-compatibility.php' );
-require_once( FOOGALLERY_PATH . 'includes/class-foogallery-default-crop-position.php' );
+require_once( FOOGALLERY_PATH . 'includes/class-foogallery-crop-position.php' );
 require_once( FOOGALLERY_PATH . 'includes/class-foogallery-force-https.php' );
 
 //Datasource includes
@@ -59,7 +65,6 @@ if ( is_admin() ) {
 	require_once( FOOGALLERY_PATH . 'includes/admin/class-admin.php' );
 	require_once( FOOGALLERY_PATH . 'includes/admin/class-extensions.php' );
 	require_once( FOOGALLERY_PATH . 'includes/admin/class-settings.php' );
-	require_once( FOOGALLERY_PATH . 'includes/admin/class-settings-image-optimization.php' );
 	require_once( FOOGALLERY_PATH . 'includes/admin/class-gallery-editor.php' );
 	require_once( FOOGALLERY_PATH . 'includes/admin/class-gallery-metaboxes.php' );
 	require_once( FOOGALLERY_PATH . 'includes/admin/class-gallery-metabox-items.php' );

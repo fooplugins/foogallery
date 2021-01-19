@@ -155,17 +155,34 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 			//region Images Tab
 			$tabs['thumb'] = __( 'Images', 'foogallery' );
 
-			$image_editor = str_replace( 'WP_Thumb_Image_Editor_', '', _wp_image_editor_choose( array( 'methods' => array( 'get_image' ) ) ) );
-			$gd_supported = extension_loaded( 'gd' ) ? __('yes', 'foogallery') : __('no', 'foogallery');
-			$imagick_supported = extension_loaded( 'imagick' ) ? __('yes', 'foogallery') : __('no', 'foogallery');
+			$engines = array();
+			foreach ( foogallery_thumb_available_engines() as $engine_key => $engine ) {
+				$engines[$engine_key] = '<strong>' . $engine['label'] . '</strong> - ' . $engine['description'];
+			}
 
 			$settings[] = array(
-				'id'      => 'thumb_image_library',
-				'title'   => __( 'Thumbnail Image Library', 'foogallery' ),
-				'desc'    => sprintf( __('Currently active : %s.<br />Imagick supported : %s.<br />GD supported : %s.', 'foogallery'), '<strong>' . $image_editor . '</strong>', $imagick_supported, $gd_supported ),
-				'type'    => 'html',
+				'id'      => 'thumb_engine',
+				'title'   => __( 'Thumbnail Engine', 'foogallery' ),
+				'desc'    => __( 'The thumbnail generation engine used when creating different sized thumbnails for your galleries.', 'foogallery' ),
+				'type'    => 'radio',
+				'default' => 'default',
+				'choices' => $engines,
 				'tab'     => 'thumb'
 			);
+
+			if ( foogallery_thumb_active_engine()->uses_image_editors() ) {
+				$image_editor      = str_replace( 'WP_Thumb_Image_Editor_', '', _wp_image_editor_choose( array( 'methods' => array( 'get_image' ) ) ) );
+				$gd_supported      = extension_loaded( 'gd' ) ? __( 'yes', 'foogallery' ) : __( 'no', 'foogallery' );
+				$imagick_supported = extension_loaded( 'imagick' ) ? __( 'yes', 'foogallery' ) : __( 'no', 'foogallery' );
+
+				$settings[] = array(
+					'id'    => 'thumb_image_library',
+					'title' => __( 'Thumbnail Image Library', 'foogallery' ),
+					'desc'  => sprintf( __( 'Currently active : %s.<br />Imagick supported : %s.<br />GD supported : %s.', 'foogallery' ), '<strong>' . $image_editor . '</strong>', $imagick_supported, $gd_supported ),
+					'type'  => 'html',
+					'tab'   => 'thumb'
+				);
+			}
 
 			$settings[] = array(
 				'id'      => 'thumb_jpeg_quality',
@@ -173,6 +190,17 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 				'desc'    => __( 'The image quality to be used when resizing JPEG images.', 'foogallery' ),
 				'type'    => 'text',
 				'default' => '90',
+				'tab'     => 'thumb'
+			);
+
+			$image_optimization_html = sprintf( __('We recommend %s! An easy-to-use, lightweight WordPress plugin that optimizes images & PDFs.', 'foogallery'),
+				'<a href="https://shortpixel.com/homepage/affiliate/foowww" target="_blank">' . __('ShortPixel Image Optimizer' , 'foogallery') . '</a>' );
+
+			$settings[] = array(
+				'id'      => 'image_optimization',
+				'title'   => __( 'Image Optimization', 'foogallery' ),
+				'type'    => 'html',
+				'desc'    => $image_optimization_html,
 				'tab'     => 'thumb'
 			);
 
@@ -186,20 +214,22 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 			);
 
 			$settings[] = array(
-					'id'      => 'use_original_thumbs',
-					'title'   => __( 'Use Original Thumbnails', 'foogallery' ),
-					'desc'    => __( 'Allow for the original thumbnails to be used when possible. This can be useful if your thumbs are animated gifs.<br/>PLEASE NOTE : this will only work if your gallery thumbnail sizes are identical to your thumbnail sizes under Settings -> Media.', 'foogallery' ),
-					'type'    => 'checkbox',
-					'tab'     => 'thumb'
-			);
-
-			$settings[] = array(
-				'id'      => 'thumb_resize_animations',
-				'title'   => __( 'Resize Animated GIFs', 'foogallery' ),
-				'desc'    => __( 'Should animated gifs be resized or not. If enabled, only the first frame is used in the resize.', 'foogallery' ),
+				'id'      => 'use_original_thumbs',
+				'title'   => __( 'Use Original Thumbnails', 'foogallery' ),
+				'desc'    => __( 'Allow for the original thumbnails to be used when possible. This can be useful if your thumbs are animated gifs.<br/>PLEASE NOTE : this will only work if your gallery thumbnail sizes are identical to your thumbnail sizes under Settings -> Media.', 'foogallery' ),
 				'type'    => 'checkbox',
 				'tab'     => 'thumb'
 			);
+
+// This setting is not ever used, so there is no point in showing it
+//
+//			$settings[] = array(
+//				'id'      => 'thumb_resize_animations',
+//				'title'   => __( 'Resize Animated GIFs', 'foogallery' ),
+//				'desc'    => __( 'Should animated gifs be resized or not. If enabled, only the first frame is used in the resize.', 'foogallery' ),
+//				'type'    => 'checkbox',
+//				'tab'     => 'thumb'
+//			);
 
 			$settings[] = array(
 				'id'      => 'animated_gif_use_original_image',
@@ -209,39 +239,44 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 				'tab'     => 'thumb'
 			);
 
-			$settings[] = array(
-				'id'      => 'thumb_resize_upscale_small',
-				'title'   => __( 'Upscale Small Images', 'foogallery' ),
-				'desc'    => __( 'If the original image is smaller than the thumbnail size, then upscale the image thumbnail to match the size.', 'foogallery') . '<br/>' .
-                             __('PLEASE NOTE : this is only supported if your server supports the GD image library and it is currently active.', 'foogallery' ),
-				'type'    => 'checkbox',
-				'tab'     => 'thumb'
-			);
+			if ( foogallery_thumb_active_engine()->has_local_cache() ) {
+				$settings[] = array(
+					'id'    => 'thumb_resize_upscale_small',
+					'title' => __( 'Upscale Small Images', 'foogallery' ),
+					'desc'  => __( 'If the original image is smaller than the thumbnail size, then upscale the image thumbnail to match the size.', 'foogallery' ) . '<br/>' . __( 'PLEASE NOTE : this is only supported if your server supports the GD image library and it is currently active.', 'foogallery' ),
+					'type'  => 'checkbox',
+					'tab'   => 'thumb'
+				);
 
-			$settings[] = array(
-				'id'      => 'thumb_resize_upscale_small_color',
-				'title'   => __( 'Upscale Background Color', 'foogallery' ),
-				'desc'    => __( 'The background color to use for upscaled images.', 'foogallery' ),
-				'type'    => 'text',
-				'default' => 'rgb(0,0,0)',
-				'tab'     => 'thumb'
-			);
+				$settings[] = array(
+					'id'      => 'thumb_resize_upscale_small_color',
+					'title'   => __( 'Upscale Background Color', 'foogallery' ),
+					'desc'    => __( 'The background color to use for upscaled images.', 'foogallery' ),
+					'type'    => 'text',
+					'default' => 'rgb(0,0,0)',
+					'tab'     => 'thumb'
+				);
+			}
 
-			$settings[] = array(
-				'id'      => 'thumb_generation_test',
-				'title'   => __( 'Thumbnail Generation Test', 'foogallery' ),
-				'desc'    => sprintf( __( 'Test to see if %s can generate the thumbnails it needs.', 'foogallery' ), foogallery_plugin_name() ),
-				'type'    => 'thumb_generation_test',
-				'tab'     => 'thumb'
-			);
+			if ( foogallery_thumb_active_engine()->requires_thumbnail_generation_tests() ) {
+				$settings[] = array(
+					'id'    => 'thumb_generation_test',
+					'title' => __( 'Thumbnail Generation Test', 'foogallery' ),
+					'desc'  => sprintf( __( 'Test to see if %s can generate the thumbnails it needs.', 'foogallery' ), foogallery_plugin_name() ),
+					'type'  => 'thumb_generation_test',
+					'tab'   => 'thumb'
+				);
+			}
 
-			$settings[] = array(
-				'id'      => 'force_gd_library',
-				'title'   => __( 'Force GD Library', 'foogallery' ),
-				'desc'    => __( 'By default, WordPress will use Imagick as the default Image Editor. This will force GD to be used as the default.', 'foogallery' ),
-				'type'    => 'checkbox',
-				'tab'     => 'thumb'
-			);
+			if ( foogallery_thumb_active_engine()->uses_image_editors() ) {
+				$settings[] = array(
+					'id'    => 'force_gd_library',
+					'title' => __( 'Force GD Library', 'foogallery' ),
+					'desc'  => __( 'By default, WordPress will use Imagick as the default Image Editor. This will force GD to be used as the default.', 'foogallery' ),
+					'type'  => 'checkbox',
+					'tab'   => 'thumb'
+				);
+			}
 
 			//endregion Thumbnail Tab
 
@@ -489,7 +524,7 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 		}
 
 		/**
-		 * AJAX endpoint for testing thumbnail generation using WPThumb
+		 * AJAX endpoint for testing thumbnail generation
 		 */
 		function ajax_thumb_generation_test() {
 			if ( check_admin_referer( 'foogallery_thumb_generation_test' ) ) {
@@ -601,15 +636,16 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 		}
 
 		function generate_custom_asset( $filename, $contents ) {
-			global $wp_filesystem;
-
 			$upload_dir = wp_upload_dir();
 			if ( !empty( $upload_dir['basedir'] ) ) {
 				$dir = trailingslashit( $upload_dir['basedir'] ) . 'foogallery/';
-				WP_Filesystem(); // Initial WP file system
-				$wp_filesystem->mkdir( $dir ); // Make a new folder for storing our file
-				if ( $wp_filesystem->put_contents( $dir . $filename, $contents, 0644 ) ) {
-					return set_url_scheme( trailingslashit( $upload_dir['baseurl'] ) . 'foogallery/' . $filename );
+
+				$fs = foogallery_wp_filesystem();
+				if ( true === $fs ) {
+					$fs->mkdir( $dir ); // Make a new folder for storing our file
+					if ( $fs->put_contents( $dir . $filename, $contents, 0644 ) ) {
+						return set_url_scheme( trailingslashit( $upload_dir['baseurl'] ) . 'foogallery/' . $filename );
+					}
 				}
 			}
 
