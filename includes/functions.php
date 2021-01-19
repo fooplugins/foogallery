@@ -1499,3 +1499,26 @@ function foogallery_wp_filesystem() {
 
 	return $wp_filesystem;
 }
+
+/**
+ * Returns a formatted date
+ *
+ * @param        $timestamp
+ * @param string $format
+ *
+ * @return string
+ */
+function foogallery_format_date( $timestamp, $format = null ) {
+	if ( !$format ) {
+		$format = get_option('date_format');
+	}
+
+	if ( function_exists( 'wp_date' ) ) {
+		return wp_date( $format , $timestamp );
+	} else {
+		$datetime = date_create( '@' . $timestamp );
+		$timezone = wp_timezone();
+		$datetime->setTimezone( $timezone );
+		return $datetime->format( $format );
+	}
+}
