@@ -2293,12 +2293,14 @@
 	 * _fn.apply( Test, ["My name", "My value"] ); // => "Test: name = My name, value = My value"
 	 */
 	_.fn.apply = function(klass, args){
-		args = _is.array(args) ? args : [];
-		function Class() {
-			return klass.apply(this, args);
-		}
-		Class.prototype = klass.prototype;
-		return new Class();
+		args.unshift(klass);
+		return new (Function.prototype.bind.apply(klass, args));
+		// args = _is.array(args) ? args : [];
+		// function Class() {
+		// 	return klass.apply(this, args);
+		// }
+		// Class.prototype = klass.prototype;
+		// return new Class();
 	};
 
 	/**
@@ -6104,7 +6106,7 @@
 	 * @name supportedExifProperties
 	 * @type {string[]}
 	 */
-	_.supportedExifProperties = ["aperture","camera","created_timestamp","shutter_speed","focal_length","iso","orientation"];
+	_.supportedExifProperties = ["camera","aperture","created_timestamp","shutter_speed","focal_length","iso","orientation"];
 
 	/**
 	 * @memberof FooGallery.utils.is

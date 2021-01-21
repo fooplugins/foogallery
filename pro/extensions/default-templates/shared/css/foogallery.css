@@ -365,7 +365,6 @@ html.fg-panel-no-scroll body {
 }
 
 .fg-panel-content-inner,
-.fg-panel-info-inner,
 .fg-panel-cart-inner,
 .fg-panel-thumbs-inner {
     pointer-events: auto;
@@ -375,6 +374,8 @@ html.fg-panel-no-scroll body {
 
 /* By default collapse and overlay the caption along the bottom on small screens */
 .fg-panel-info-inner {
+    pointer-events: auto;
+    display: flex;
     position: absolute;
     top: unset;
     bottom: 0;
@@ -1120,6 +1121,9 @@ html.fg-panel-no-scroll body {
     display: flex;
     height: 24px;
     padding: 0 7px;
+}
+.fg-media-caption-title + .fg-media-caption-exif .fg-media-caption-exif-prop,
+.fg-media-caption-description + .fg-media-caption-exif .fg-media-caption-exif-prop {
     margin-top: 10px;
 }
 .fg-media-caption-exif-full .fg-media-caption-exif-prop,
