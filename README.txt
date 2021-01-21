@@ -227,6 +227,13 @@ Please update in order to for FooGallery to work in WP 5.5+!
 
 == Changelog ==
 
+= 1.9.50 =
+* Date Updated : 2021-21-01
+[//]: # fs_premium_only_begin
+* Fix : fixed formatting for certain EXIF attributes
+[//]: # fs_premium_only_end
+* Fix : fixed incorrect settings showing for certain gallery templates
+
 = 1.9.49 =
 * Date Updated : 2021-13-01
 * Fix : Advanced settings for a gallery to properly override settings rather than merge
