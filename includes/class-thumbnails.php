@@ -8,7 +8,6 @@ if ( !class_exists( 'FooGallery_Thumbnails' ) ) {
 	class FooGallery_Thumbnails {
 
 		function __construct() {
-			//generate thumbs using WPThumb
 			add_filter( 'foogallery_attachment_resize_thumbnail', array( $this, 'resize' ), 10, 3 );
 
 			add_filter( 'foogallery_test_thumb_url', array( $this, 'find_first_image_in_media_library' ) );
@@ -116,7 +115,7 @@ if ( !class_exists( 'FooGallery_Thumbnails' ) ) {
 					$force_resize = true;
 					$color = foogallery_get_setting( 'thumb_resize_upscale_small_color', '' );
 					if ( $color !== 'auto' && $color !== 'transparent' ) {
-						$colors = foogallery_rgb_to_color_array();
+						$colors = foogallery_rgb_to_color_array( $color );
 						$color  = sprintf( "%03d%03d%03d000", $colors[0], $colors[1], $colors[2] );
 					}
 					$args['background_fill'] = $color;
@@ -155,6 +154,12 @@ if ( !class_exists( 'FooGallery_Thumbnails' ) ) {
 		}
 
 		function run_thumbnail_generation_tests() {
+			if ( !foogallery_thumb_active_engine()->requires_thumbnail_generation_tests() ) {
+				return array(
+					'success' => true
+				);
+			}
+
             $test_image_url = foogallery_test_thumb_url();
 
 			//next, generate a thumbnail
@@ -165,19 +170,19 @@ if ( !class_exists( 'FooGallery_Thumbnails' ) ) {
 				'jpeg_quality'            => foogallery_thumbnail_jpeg_quality()
 			);
 
-            //first, clear any previous cached files
-            $thumb = new WP_Thumb( $test_image_url, $test_args );
-            wpthumb_rmdir_recursive( $thumb->getCacheFileDirectory() );
+			//first, clear any previous cached files
+			$engine = foogallery_thumb_active_engine();
+			$engine->clear_local_cache_for_file( $test_image_url );
 
-			$test_thumb = new WP_Thumb( $test_image_url, $test_args );
-            $generated_thumb = $test_thumb->returnImage();
+            $generated_thumb = $engine->generate( $test_image_url, $test_args );
+
             $success = $test_image_url !== $generated_thumb;
 			$file_info = wp_check_filetype( $test_image_url );
 
 			$test_results = array(
 			    'success' => $success,
 				'thumb' => $generated_thumb,
-				'error' => $test_thumb->errored() ? $test_thumb->error : '',
+				'error' => $engine->get_last_error(),
 				'file_info' => $file_info
 			);
 

@@ -34,6 +34,12 @@ if ( ! class_exists( 'FooGallery_Thumb_Engine' ) ) {
 		abstract function clear_local_cache_for_file( $file );
 
 		/**
+		 * Returns the last error encountered when trying to generate a thumbnail
+		 * @return mixed
+		 */
+		abstract function get_last_error();
+
+		/**
 		 * Returns true if the engine utilizes WordPress Image Editors under the hood
 		 * By default, if the engine has a local cache, then they would also use image editors
 		 *

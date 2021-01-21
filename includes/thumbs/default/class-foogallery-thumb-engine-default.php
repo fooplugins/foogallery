@@ -7,6 +7,12 @@ if ( ! class_exists( 'FooGallery_Thumb_Engine_Default' ) ) {
 
 	class FooGallery_Thumb_Engine_Default extends FooGallery_Thumb_Engine {
 
+		/**
+		 * The last error that was encounted
+		 * @var mixed
+		 */
+		private $last_error;
+
 		public function init() {
 			add_filter( 'wp_image_editors', array( $this, 'override_image_editors' ), 999 );
 			add_filter( 'deleted_post', array( $this, 'delete_cache_folder_for_attachment' ), 10, 2 );
@@ -34,7 +40,17 @@ if ( ! class_exists( 'FooGallery_Thumb_Engine_Default' ) ) {
 		 */
 		function generate( $url, $args = array() ) {
 			$generator = new FooGallery_Thumb_Generator( $url, $args );
-			return $generator->generate();
+			$result = $generator->generate();
+			$this->last_error = $generator->error();
+			return $result;
+		}
+
+		/**
+		 * Returns the last error that was encountered
+		 * @return mixed
+		 */
+		function get_last_error() {
+			return $this->last_error;
 		}
 
 		/**

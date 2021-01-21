@@ -68,6 +68,10 @@ if ( ! class_exists( 'FooGallery_Thumb_Engine_Dummy' ) ) {
 		function has_local_cache() {
 			return false;
 		}
+
+		function get_last_error() {
+			return null;
+		}
 	}
 }
 

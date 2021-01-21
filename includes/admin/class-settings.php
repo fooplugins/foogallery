@@ -251,7 +251,7 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 				$settings[] = array(
 					'id'      => 'thumb_resize_upscale_small_color',
 					'title'   => __( 'Upscale Background Color', 'foogallery' ),
-					'desc'    => __( 'The background color to use for upscaled images.', 'foogallery' ),
+					'desc'    => __( 'The background color to use for upscaled images. You can also use "transparent" or "auto".', 'foogallery' ),
 					'type'    => 'text',
 					'default' => 'rgb(0,0,0)',
 					'tab'     => 'thumb'

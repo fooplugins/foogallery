@@ -151,7 +151,9 @@ if ( ! class_exists( 'FooGallery_Thumb_Generator_Background_Fill' ) ) {
 				$colors[$position] = str_pad( $c['red'], 3, '0', STR_PAD_LEFT ) . str_pad( $c['green'], 3, '0', STR_PAD_LEFT ) . str_pad( $c['blue'], 3, '0', STR_PAD_LEFT ) . str_pad( $c['alpha'], 3, '0', STR_PAD_LEFT );
 			}
 
-			return $colors;
+			return max( $colors );
+
+			//return $colors;
 		}
 	}
 }
