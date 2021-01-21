@@ -547,6 +547,10 @@ if ( ! class_exists( 'FooGallery_Pro_Exif' ) ) {
 		        }
 	        }
 
+        	if ( 'shutter_speed' === $attribute_key && is_string( $attribute_value ) && strlen( $attribute_value) >= 10 ) {
+        		return substr( $attribute_value, 0, 9 );
+	        }
+
         	return apply_filters( 'foogallery_format_exif_value', $attribute_value, $attribute_key );
         }
     }
