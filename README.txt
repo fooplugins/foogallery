@@ -227,10 +227,11 @@ Please update in order to for FooGallery to work in WP 5.5+!
 
 == Changelog ==
 
-= 1.9.51 =
+= 1.9.52 =
 * Date Updated : 2021-22-01
 [//]: # fs_premium_only_begin
 * New : added new option ("none") to hide the EXIF thumbnail position
+* Fix : fixed bug where EXIF data was not showing in Slider and Grid gallery templates
 [//]: # fs_premium_only_end
 
 = 1.9.50 =

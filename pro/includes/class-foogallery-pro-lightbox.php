@@ -846,14 +846,14 @@ if ( ! class_exists( 'FooGallery_Pro_Lightbox' ) ) {
 		 */
 		function add_lightbox_data_attributes( $attributes, $gallery ) {
 			$template = foogallery_get_gallery_template( $gallery->gallery_template );
+
+			//only add the lightbox data attribute for the templates where a panel is used and not a lightbox
 			if ( $template && !array_key_exists( 'panel_support', $template ) ) {
 
 				//check if lightbox set to foogallery
 				if ( 'foogallery' === foogallery_gallery_template_setting( 'lightbox', '' ) ) {
 
-					$options = apply_filters( 'foogallery_lightbox_data_attributes', $this->get_options_from_settings() );
-
-					$encoded_options = foogallery_json_encode( $options );
+					$encoded_options = foogallery_json_encode( $this->get_options_from_settings() );
 
                     $attributes['data-foogallery-lightbox'] = $encoded_options;
                 }
@@ -942,7 +942,7 @@ if ( ! class_exists( 'FooGallery_Pro_Lightbox' ) ) {
 				$options['video']['autoPlay'] = true;
 			}
 
-			return $options;
+			return apply_filters( 'foogallery_lightbox_data_attributes', $options );
 		}
 
 		/**
