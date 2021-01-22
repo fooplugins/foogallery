@@ -227,6 +227,12 @@ Please update in order to for FooGallery to work in WP 5.5+!
 
 == Changelog ==
 
+= 1.9.51 =
+* Date Updated : 2021-22-01
+[//]: # fs_premium_only_begin
+* New : added new option ("none") to hide the EXIF thumbnail position
+[//]: # fs_premium_only_end
+
 = 1.9.50 =
 * Date Updated : 2021-21-01
 [//]: # fs_premium_only_begin

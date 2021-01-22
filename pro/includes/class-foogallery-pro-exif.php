@@ -355,6 +355,7 @@ if ( ! class_exists( 'FooGallery_Pro_Exif' ) ) {
                     'fg-exif-bottom-left'  => __( 'Bottom Left', 'foogallery' ),
                     'fg-exif-top-right'    => __( 'Top Right', 'foogallery' ),
                     'fg-exif-top-left'     => __( 'Top Left', 'foogallery' ),
+                    ''                     => __( 'None', 'foogallery' ),
                 ) ),
                 'desc'     => __( 'Choose where you want to show the EXIF icon in your thumbnails.', 'foogallery' ),
                 'row_data'=> array(
