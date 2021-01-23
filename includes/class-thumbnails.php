@@ -10,7 +10,7 @@ if ( !class_exists( 'FooGallery_Thumbnails' ) ) {
 		function __construct() {
 			add_filter( 'foogallery_attachment_resize_thumbnail', array( $this, 'resize' ), 10, 3 );
 
-			add_filter( 'foogallery_test_thumb_url', array( $this, 'find_first_image_in_media_library' ) );
+			add_filter( 'foogallery_test_thumb_url', array( $this, 'override_test_thumb_url' ) );
 
 			add_filter( 'foogallery_thumbnail_resize_args', array( $this, 'check_for_force_original_thumb') );
 		}
@@ -34,7 +34,7 @@ if ( !class_exists( 'FooGallery_Thumbnails' ) ) {
 				'height'                  => 0,
 				'crop'                    => true,
 				'jpeg_quality'            => foogallery_thumbnail_jpeg_quality(),
-				'thumb_resize_animations' => foogallery_get_setting( 'thumb_resize_animations' ),
+				'thumb_resize_animations' => true,
 				'foogallery_attachment_id'=> $thumbnail_object->ID
 			);
 
@@ -191,24 +191,12 @@ if ( !class_exists( 'FooGallery_Thumbnails' ) ) {
             return $test_results;
 		}
 
-		function find_first_image_in_media_library( $test_thumb_url ) {
+		function override_test_thumb_url( $test_thumb_url ) {
 			if ( 'on' !== foogallery_get_setting( 'override_thumb_test', false ) ) {
-				//try the first 10 attachments from the media library
-				$args         = array(
-					'post_type'        => 'attachment',
-					'post_mime_type'   => 'image',
-					'post_status'      => 'any',
-					'numberposts'      => 10,
-					'orderby'          => 'date',
-					'order'            => 'ASC'
-				);
-				$query_images = new WP_Query( $args );
-				foreach ( $query_images->posts as $image ) {
-					$image_url = wp_get_attachment_url( $image->ID );
+				$image_url = $this->find_first_image_in_media_library();
 
-					if ( $this->image_file_exists( $image_url ) ) {
-						return $image_url;
-					}
+				if ( $image_url !== false ) {
+					return $image_url;
 				}
 			}
 
@@ -217,13 +205,35 @@ if ( !class_exists( 'FooGallery_Thumbnails' ) ) {
 			return 'https://s3.amazonaws.com/foocdn/test.jpg';
 		}
 
+		static function find_first_image_in_media_library() {
+			//try the first 10 attachments from the media library
+			$args         = array(
+				'post_type'        => 'attachment',
+				'post_mime_type'   => 'image',
+				'post_status'      => 'any',
+				'numberposts'      => 10,
+				'orderby'          => 'date',
+				'order'            => 'ASC'
+			);
+			$query_images = new WP_Query( $args );
+			foreach ( $query_images->posts as $image ) {
+				$image_url = wp_get_attachment_url( $image->ID );
+
+				if ( self::image_file_exists( $image_url ) ) {
+					return $image_url;
+				}
+			}
+
+			return false;
+		}
+
 		/**
 		 * Check if a remote image file exists.
 		 *
 		 * @param  string $url The url to the remote image.
 		 * @return bool        Whether the remote image exists.
 		 */
-		function image_file_exists( $url ) {
+		static function image_file_exists( $url ) {
 			$response = wp_remote_head( $url );
 			return 200 === wp_remote_retrieve_response_code( $response );
 		}

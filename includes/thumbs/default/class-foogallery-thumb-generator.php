@@ -97,20 +97,25 @@ if ( ! class_exists( 'FooGallery_Thumb_Generator' ) ) {
 			if ( strpos( $image_url, self::get_home_path() ) === 0 ) {
 				$image_path = $image_url;
 			} else {
+				//we are dealing with a URL
 
 				$upload_dir = wp_upload_dir();
 
 				$base_url = set_url_scheme( $upload_dir['baseurl'] );
 
-				// If it's an uploaded file
 				if ( strpos( $image_url, $base_url ) !== false ) {
+					//it's in the uploads folder
 					$image_path = str_replace( $base_url, $upload_dir['basedir'], $image_url );
 				} else {
+
 					$image_path = str_replace( trailingslashit( home_url() ), self::get_home_path(), $image_url );
 				}
 
 				//check if the file is local
 				if ( strpos( $image_url, trailingslashit( home_url() ) ) === 0 ) {
+					//strip all querystring params
+					$image_path = strtok( $image_path, '?' );
+
 					//check it exists
 					if ( ! file_exists( $image_path ) ) {
 						$this->error = new WP_Error( 'file-not-found' );
@@ -352,14 +357,6 @@ if ( ! class_exists( 'FooGallery_Thumb_Generator' ) ) {
 
 			// Create the image
 			$editor = wp_get_image_editor( $file_path, array( 'methods' => array( 'get_image' ) ) );
-
-			/**
-			 * Workaround to preserve image blending when images are not specifically resized (smaller than dimensions for example)
-			 */
-//			if ( is_a( $editor, 'FooGallery_Thumb_Image_Editor_GD' ) ) {
-//				imagealphablending( $editor->get_image(), false );
-//				imagesavealpha( $editor->get_image(), true );
-//			}
 
 			if ( is_wp_error( $editor ) ) {
 				$this->error = $editor;

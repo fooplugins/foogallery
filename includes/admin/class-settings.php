@@ -259,10 +259,12 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 			}
 
 			if ( foogallery_thumb_active_engine()->requires_thumbnail_generation_tests() ) {
+				$thumb_test_html = '<a href="' . admin_url( add_query_arg( array( 'page' => 'foogallery_thumb_test' ), foogallery_admin_menu_parent_slug() ) ) . '">' . __( 'View Thumb Test Page', 'foogallery' ) . '</a>';
+
 				$settings[] = array(
 					'id'    => 'thumb_generation_test',
 					'title' => __( 'Thumbnail Generation Test', 'foogallery' ),
-					'desc'  => sprintf( __( 'Test to see if %s can generate the thumbnails it needs.', 'foogallery' ), foogallery_plugin_name() ),
+					'desc'  => sprintf( __( 'Test to see if %s can generate the thumbnails it needs. %s', 'foogallery' ), foogallery_plugin_name(), $thumb_test_html ),
 					'type'  => 'thumb_generation_test',
 					'tab'   => 'thumb'
 				);

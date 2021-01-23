@@ -130,7 +130,6 @@ function foogallery_get_default( $key, $default = false ) {
 		'gallery_permalink'          => 'gallery',
 		'lightbox'                   => 'none',
 		'thumb_jpeg_quality'         => '80',
-		'thumb_resize_animations'    => true,
 		'gallery_sorting'            => '',
 		'datasource'				 => 'media_library'
 	);

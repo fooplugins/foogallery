@@ -34,6 +34,11 @@ if ( ! class_exists( 'FooGallery_Thumb_Generator_Background_Fill' ) ) {
 
 			$color = $this->args['background_fill'];
 
+			if ( is_null( $color ) ) {
+				//get out early if we do not have specific arguments
+				return $editor;
+			}
+
 			if ( $color === 'auto' ) {
 				$color = $this->get_background_colors();
 			} else if ( $color === 'transparent' ) {
@@ -95,7 +100,6 @@ if ( ! class_exists( 'FooGallery_Thumb_Generator_Background_Fill' ) ) {
 
 				// Fill right color
 				imagefilledrectangle( $new_image, $offsetLeft + $current_size['width'], 0, $size['width'], $size['height'], $colorToPaint );
-
 			}
 
 			if ( $current_size['height'] != $size['height'] ) {
@@ -117,7 +121,6 @@ if ( ! class_exists( 'FooGallery_Thumb_Generator_Background_Fill' ) ) {
 
 				// Fill bottom color
 				imagefilledrectangle( $new_image, 0, $offsetTop + $current_size['height'], $size['width'], $size['height'], $colorToPaint );
-
 			}
 
 			imagecopy( $new_image, $this->editor->get_image(), $offsetLeft, $offsetTop, 0, 0, $current_size['width'], $current_size['height'] );
