@@ -171,7 +171,7 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 			);
 
 			if ( foogallery_thumb_active_engine()->uses_image_editors() ) {
-				$image_editor      = str_replace( 'WP_Thumb_Image_Editor_', '', _wp_image_editor_choose( array( 'methods' => array( 'get_image' ) ) ) );
+				$image_editor      = str_replace( 'FooGallery_Thumb_Image_Editor_', '', _wp_image_editor_choose( array( 'methods' => array( 'get_image' ) ) ) );
 				$gd_supported      = extension_loaded( 'gd' ) ? __( 'yes', 'foogallery' ) : __( 'no', 'foogallery' );
 				$imagick_supported = extension_loaded( 'imagick' ) ? __( 'yes', 'foogallery' ) : __( 'no', 'foogallery' );
 

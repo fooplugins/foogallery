@@ -17,16 +17,6 @@ require_once( FOOGALLERY_PATH . 'includes/class-foogallery-upgrade.php' );
 require_once( FOOGALLERY_PATH . 'includes/class-foogallery-widget.php' );
 require_once( FOOGALLERY_PATH . 'gutenberg/class-foogallery-gutenberg.php' );
 
-///** WPTHUMB BEGIN */
-////check for WPThumb, include.
-//if ( ! class_exists( 'WP_Thumb' ) ) {
-//	require_once( FOOGALLERY_PATH . 'includes/WPThumb/wpthumb.php' );
-//	//do not let WPThumb override build-in WordPress functions like the_post_thumbnail
-//	remove_filter( 'image_downsize', 'wpthumb_post_image', 99 );
-//}
-//require_once( FOOGALLERY_PATH . 'includes/class-wpthumb-enhancements.php' );
-///** WPTHUMB END */
-
 //include built-in thumbnail generation files
 require_once( FOOGALLERY_PATH . 'includes/thumbs/includes.php' );
 
