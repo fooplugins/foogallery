@@ -227,6 +227,10 @@ Please update in order to for FooGallery to work in WP 5.5+!
 
 == Changelog ==
 
+= 1.9.53 =
+* Date Updated : 2021-23-01
+* Update : FooGallery client side 1.4.26
+
 = 1.9.52 =
 * Date Updated : 2021-22-01
 [//]: # fs_premium_only_begin
