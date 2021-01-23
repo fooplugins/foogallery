@@ -2293,12 +2293,14 @@
 	 * _fn.apply( Test, ["My name", "My value"] ); // => "Test: name = My name, value = My value"
 	 */
 	_.fn.apply = function(klass, args){
-		args = _is.array(args) ? args : [];
-		function Class() {
-			return klass.apply(this, args);
-		}
-		Class.prototype = klass.prototype;
-		return new Class();
+		args.unshift(klass);
+		return new (Function.prototype.bind.apply(klass, args));
+		// args = _is.array(args) ? args : [];
+		// function Class() {
+		// 	return klass.apply(this, args);
+		// }
+		// Class.prototype = klass.prototype;
+		// return new Class();
 	};
 
 	/**
@@ -6104,7 +6106,7 @@
 	 * @name supportedExifProperties
 	 * @type {string[]}
 	 */
-	_.supportedExifProperties = ["aperture","camera","created_timestamp","shutter_speed","focal_length","iso","orientation"];
+	_.supportedExifProperties = ["camera","aperture","created_timestamp","shutter_speed","focal_length","iso","orientation"];
 
 	/**
 	 * @memberof FooGallery.utils.is
@@ -14283,34 +14285,36 @@
             return this.isCreated;
         },
         doCreate: function(){
-            this.$el = $("<div/>").addClass(this.cls.elem);
-            if (this.hasTitle){
-                this.$el.append($("<div/>").addClass(this.cls.title).html(this.title));
+            var self = this;
+            self.$el = $("<div/>").addClass(self.cls.elem);
+            if (self.hasTitle){
+                self.$el.append($("<div/>").addClass(self.cls.title).html(self.title));
             }
-            if (this.hasDescription){
-                this.$el.append($("<div/>").addClass(this.cls.description).html(this.description));
+            if (self.hasDescription){
+                self.$el.append($("<div/>").addClass(self.cls.description).html(self.description));
             }
-            if (this.hasExif){
-                var exif = this.media.item.exif, $exif = $("<div/>", {"class": this.cls.exif.elem}).addClass(this.cls.exif[this.opt.exif]);
-                for (var prop in exif){
-                    if (!exif.hasOwnProperty(prop) || _is.empty(exif[prop])) continue;
-                    var icon = "exif-" + _str.kebab(prop), text = this.media.item.il8n.exif[prop], value = exif[prop];
-                    var $exifProp = $("<div/>", {"class": this.cls.exif.prop}).append(
-                        $("<div/>", {"class": this.cls.exif.icon}).append(_icons.get(icon, this.opt.icons)),
-                        $("<div/>", {"class": this.cls.exif.content}).append(
-                            $("<div/>", {"class": this.cls.exif.label}).text(text),
-                            $("<div/>", {"class": this.cls.exif.value}).text(value)
-                        ),
-                        $("<span/>", {"class": this.cls.exif.tooltip}).text(text + ": " + value).append(
-                            $("<span/>", {"class": this.cls.exif.tooltipPointer})
-                        )
-                    );
-                    if (!canHover){
-                        $exifProp.on("click", {self: this}, this.onExifClick);
+            if (self.hasExif){
+                var exif = self.media.item.exif, $exif = $("<div/>", {"class": self.cls.exif.elem}).addClass(self.cls.exif[self.opt.exif]);
+                _.supportedExifProperties.forEach(function(prop){
+                    if (!_is.empty(exif[prop])){
+                        var icon = "exif-" + _str.kebab(prop), text = self.media.item.il8n.exif[prop], value = exif[prop];
+                        var $exifProp = $("<div/>", {"class": self.cls.exif.prop}).append(
+                            $("<div/>", {"class": self.cls.exif.icon}).append(_icons.get(icon, self.opt.icons)),
+                            $("<div/>", {"class": self.cls.exif.content}).append(
+                                $("<div/>", {"class": self.cls.exif.label}).text(text),
+                                $("<div/>", {"class": self.cls.exif.value}).text(value)
+                            ),
+                            $("<span/>", {"class": self.cls.exif.tooltip}).text(text + ": " + value).append(
+                                $("<span/>", {"class": self.cls.exif.tooltipPointer})
+                            )
+                        );
+                        if (!canHover){
+                            $exifProp.on("click", {self: self}, self.onExifClick);
+                        }
+                        $exif.append($exifProp);
                     }
-                    $exif.append($exifProp);
-                }
-                this.$el.append($exif);
+                });
+                self.$el.append($exif);
             }
             return true;
         },

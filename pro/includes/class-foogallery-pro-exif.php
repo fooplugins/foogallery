@@ -355,6 +355,7 @@ if ( ! class_exists( 'FooGallery_Pro_Exif' ) ) {
                     'fg-exif-bottom-left'  => __( 'Bottom Left', 'foogallery' ),
                     'fg-exif-top-right'    => __( 'Top Right', 'foogallery' ),
                     'fg-exif-top-left'     => __( 'Top Left', 'foogallery' ),
+                    ''                     => __( 'None', 'foogallery' ),
                 ) ),
                 'desc'     => __( 'Choose where you want to show the EXIF icon in your thumbnails.', 'foogallery' ),
                 'row_data'=> array(
@@ -545,6 +546,10 @@ if ( ! class_exists( 'FooGallery_Pro_Exif' ) ) {
         		if ( (string)(int)$attribute_value == $attribute_value ) {
         			return foogallery_format_date( $attribute_value );
 		        }
+	        }
+
+        	if ( 'shutter_speed' === $attribute_key && is_string( $attribute_value ) && strlen( $attribute_value) >= 10 ) {
+        		return substr( $attribute_value, 0, 9 );
 	        }
 
         	return apply_filters( 'foogallery_format_exif_value', $attribute_value, $attribute_key );
