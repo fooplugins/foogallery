@@ -424,6 +424,25 @@ if ( ! class_exists( 'FooGallery_Pro_Lightbox' ) ) {
 			);
 
 			$field[] = array(
+				'id'      => 'lightbox_info_enabled',
+				'title'   => __( 'Captions Enabled', 'foogallery' ),
+				'section' => $section,
+				'subsection' => array( 'lightbox-captions' => __( 'Captions', 'foogallery' ) ),
+				'type'    => 'radio',
+				'default' => '',
+				'choices' => apply_filters( 'foogallery_gallery_template_lightbox_info_enabled_choices', array(
+					'' => __( 'Enabled', 'foogallery' ),
+					'hidden'    => __( 'Enabled (but hidden initially)', 'foogallery' ),
+					'disabled'   => __( 'Disabled', 'foogallery' ),
+				) ),
+				'row_data'=> array(
+					'data-foogallery-change-selector' => 'input:radio',
+					'data-foogallery-preview'         => 'shortcode',
+					'data-foogallery-value-selector'  => 'input:checked',
+				)
+			);
+
+			$field[] = array(
 				'id'      => 'lightbox_info_position',
 				'title'   => __( 'Caption Position', 'foogallery' ),
 				'desc'    => __( 'The position of the captions within the lightbox.', 'foogallery' ),
@@ -437,12 +456,16 @@ if ( ! class_exists( 'FooGallery_Pro_Lightbox' ) ) {
 					'top'    => __( 'Top', 'foogallery' ),
 					'left'   => __( 'Left', 'foogallery' ),
 					'right'  => __( 'Right', 'foogallery' ),
-					'none'  => __( 'Hidden', 'foogallery' ),
+					//'none'  => __( 'Hidden', 'foogallery' ),
 				) ),
 				'row_data'=> array(
-					'data-foogallery-change-selector' => 'input:radio',
-					'data-foogallery-preview'         => 'shortcode',
-					'data-foogallery-value-selector'  => 'input:checked',
+					'data-foogallery-change-selector'          => 'input:radio',
+					'data-foogallery-preview'                  => 'shortcode',
+					'data-foogallery-value-selector'           => 'input:checked',
+					'data-foogallery-hidden'                   => true,
+					'data-foogallery-show-when-field'          => 'lightbox_info_enabled',
+					'data-foogallery-show-when-field-operator' => '!==',
+					'data-foogallery-show-when-field-value'    => 'disabled',
 				)
 			);
 
@@ -463,6 +486,10 @@ if ( ! class_exists( 'FooGallery_Pro_Lightbox' ) ) {
 					'data-foogallery-change-selector'          => 'input:radio',
 					'data-foogallery-preview'                  => 'shortcode',
 					'data-foogallery-value-selector'           => 'input:checked',
+					'data-foogallery-hidden'                   => true,
+					'data-foogallery-show-when-field'          => 'lightbox_info_enabled',
+					'data-foogallery-show-when-field-operator' => '!==',
+					'data-foogallery-show-when-field-value'    => 'disabled',
 				)
 			);
 
@@ -483,6 +510,10 @@ if ( ! class_exists( 'FooGallery_Pro_Lightbox' ) ) {
 					'data-foogallery-change-selector'          => 'input:radio',
 					'data-foogallery-preview'                  => 'shortcode',
 					'data-foogallery-value-selector'           => 'input:checked',
+					'data-foogallery-hidden'                   => true,
+					'data-foogallery-show-when-field'          => 'lightbox_info_enabled',
+					'data-foogallery-show-when-field-operator' => '!==',
+					'data-foogallery-show-when-field-value'    => 'disabled',
 				)
 			);
 
@@ -902,10 +933,15 @@ if ( ! class_exists( 'FooGallery_Pro_Lightbox' ) ) {
 				$options['thumbsSmall'] = foogallery_gallery_template_setting( 'lightbox_thumbs_size', '' ) === 'small';
 			}
 
+			$info_enabled = foogallery_gallery_template_setting( 'lightbox_info_enabled', '' );
 			$info_position = foogallery_gallery_template_setting( 'lightbox_info_position', 'bottom' );
-			$options['info'] = $info_position;
-			if ( 'none' !== $info_position ) {
-				$options['infoVisible'] = true;
+
+			//check for legacy lightbox_info_position of 'none' or new lightbox_info_enabled setting
+			if ( 'none' === $info_position || 'disabled' === $info_enabled ) {
+				$options['info'] = false;
+			} else {
+				$options['info'] = $info_position;
+				$options['infoVisible'] = 'hidden' !== $info_enabled;
 				$options['infoOverlay'] = foogallery_gallery_template_setting( 'lightbox_info_overlay', 'yes' ) === 'yes';
 			}
 
