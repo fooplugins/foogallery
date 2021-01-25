@@ -123,8 +123,6 @@ if ( ! class_exists( 'FooGallery_Crop_Position' ) ) {
 		}
 
 		/**
-		 * wpthumb_media_form_crop_position function.
-		 *
 		 * Adds a back end for selecting the crop position of images.
 		 *
 		 * @access public
@@ -159,7 +157,7 @@ if ( ! class_exists( 'FooGallery_Crop_Position' ) ) {
 			$html .= '</div>';
 
 			$fields['crop-from-position'] = array(
-				'label' => __( 'Crop Position', 'wpthumb' ),
+				'label' => __( 'Crop Position', 'foogallery' ),
 				'input' => 'html',
 				'html'  => $html
 			);
