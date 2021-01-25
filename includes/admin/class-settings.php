@@ -643,7 +643,7 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 				$dir = trailingslashit( $upload_dir['basedir'] ) . 'foogallery/';
 
 				$fs = foogallery_wp_filesystem();
-				if ( true === $fs ) {
+				if ( false !== $fs ) {
 					$fs->mkdir( $dir ); // Make a new folder for storing our file
 					if ( $fs->put_contents( $dir . $filename, $contents, 0644 ) ) {
 						return set_url_scheme( trailingslashit( $upload_dir['baseurl'] ) . 'foogallery/' . $filename );
