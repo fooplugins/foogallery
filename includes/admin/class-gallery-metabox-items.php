@@ -120,7 +120,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Items' ) ) {
 					$args = apply_filters( 'foogallery_preview_arguments-' . $template, $args, $_POST );
 
 					if ( foogallery_is_debug() ) {
-                        echo '<pre>' . __('Preview Debug Arguments:', 'foogallery') . '<br>' . print_r( $args, true ) . '</pre>';
+                        echo '<pre style="display: none">' . __('Preview Debug Arguments:', 'foogallery') . '<br>' . print_r( $args, true ) . '</pre>';
                     }
 
 					foogallery_render_gallery( $foogallery_id, $args );

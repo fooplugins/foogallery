@@ -311,7 +311,11 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 		public function render_thumb_settings_metabox( $post ) {
 			$gallery = $this->get_gallery( $post );
 			$force_use_original_thumbs = get_post_meta( $post->ID, FOOGALLERY_META_FORCE_ORIGINAL_THUMBS, true );
-			$checked = 'true' === $force_use_original_thumbs; ?>
+			$checked = 'true' === $force_use_original_thumbs;
+
+			$engine = foogallery_thumb_active_engine();
+
+			if ( $engine->has_local_cache() ) { ?>
 			<p>
 				<?php _e( 'Clear all the previously cached thumbnails that have been generated for this gallery.', 'foogallery' ); ?>
 			</p>
@@ -320,6 +324,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 				<span id="foogallery_clear_thumb_cache_spinner" class="spinner"></span>
 				<?php wp_nonce_field( 'foogallery_clear_gallery_thumb_cache', 'foogallery_clear_gallery_thumb_cache_nonce', false ); ?>
 			</div>
+			<?php } ?>
 			<p>
 				<input type="checkbox" value="true" <?php checked( $checked ); ?> id="FooGallerySettings_ForceOriginalThumbs" name="<?php echo FOOGALLERY_META_FORCE_ORIGINAL_THUMBS; ?>" />
 				<label for="FooGallerySettings_ForceOriginalThumbs"><?php _e('Force Original Thumbs', 'foogallery'); ?></label>
@@ -394,24 +399,27 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 		public function ajax_clear_gallery_thumb_cache() {
 			if ( check_admin_referer( 'foogallery_clear_gallery_thumb_cache', 'foogallery_clear_gallery_thumb_cache_nonce' ) ) {
 
-				$foogallery_id = $_POST['foogallery_id'];
+				$engine = foogallery_thumb_active_engine();
 
-				$foogallery = FooGallery::get_by_id( $foogallery_id );
+				if ( $engine->has_local_cache() ) {
 
-				ob_start();
+					$foogallery_id = $_POST['foogallery_id'];
 
-				//loop through all images, get the full sized file
-				foreach ( $foogallery->attachments() as $attachment ) {
-					$meta_data = wp_get_attachment_metadata( $attachment->ID );
+					$foogallery = FooGallery::get_by_id( $foogallery_id );
 
-					$file = $meta_data['file'];
+					ob_start();
 
-					wpthumb_delete_cache_for_file( $file );
+					//loop through all images, get the full sized file
+					foreach ( $foogallery->attachments() as $attachment ) {
+						$engine->clear_local_cache_for_file( $attachment->url );
+					}
+
+					ob_end_clean();
+
+					echo __( 'The thumbnail cache has been cleared!', 'foogallery' );
+				} else {
+					echo __( 'There was no thumbnail cache to clear.', 'foogallery' );
 				}
-
-				ob_end_clean();
-
-				echo __( 'The thumbnail cache has been cleared!', 'foogallery' );
 			}
 
 			die();
