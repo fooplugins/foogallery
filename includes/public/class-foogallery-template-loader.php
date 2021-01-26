@@ -120,7 +120,9 @@ class FooGallery_Template_Loader {
 
 				//finally include the actual php template!
 				if ( $template_location ) {
+					do_action( 'foogallery_loaded_template_before', $current_foogallery );
 					$this->load_gallery_template( $current_foogallery, $template_location['path'] );
+					do_action( 'foogallery_loaded_template_after', $current_foogallery );
 				}
 
 				//cater for lightbox extensions needing to add styles and javascript
