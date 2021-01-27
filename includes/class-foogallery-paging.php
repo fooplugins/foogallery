@@ -21,7 +21,8 @@ if ( ! class_exists( 'FooGallery_Paging' ) ) {
 			//limit the number of attachments returned when rendering a gallery
             add_filter( 'foogallery_gallery_attachments_override_for_rendering', array( $this, 'attachments_override' ), 10, 3 );
 
-            add_action( 'foogallery_loaded_template_before', array( $this, 'output_pagination_placeholders_before' ), 10, 1 );
+            //output pagination placeholders
+            add_action( 'foogallery_loaded_template_before', array( $this, 'output_pagination_placeholders_before' ), 20, 1 );
 			add_action( 'foogallery_loaded_template_after', array( $this, 'output_pagination_placeholders_after' ), 10, 1 );
 
 			//output a script block with the rest of the attachments as json
@@ -34,13 +35,7 @@ if ( ! class_exists( 'FooGallery_Paging' ) ) {
 		 * @param $foogallery FooGallery
 		 */
 		function output_pagination_placeholders_before( $foogallery ) {
-			if ( isset( $foogallery->paging ) && true === $foogallery->paging) {
-
-				$paging_position = foogallery_gallery_template_setting( 'paging_position', 'both' );
-				if ( 'top' === $paging_position || 'both' === $paging_position ) {
-					$this->output_pagination_placeholder( $foogallery, 'top' );
-				}
-			}
+			$this->output_pagination_placeholder( $foogallery, 'top' );
 		}
 
 		/**
@@ -49,13 +44,7 @@ if ( ! class_exists( 'FooGallery_Paging' ) ) {
 		 * @param $foogallery FooGallery
 		 */
 		function output_pagination_placeholders_after( $foogallery ) {
-			if ( isset( $foogallery->paging ) && true === $foogallery->paging) {
-
-				$paging_position = foogallery_gallery_template_setting( 'paging_position', 'both' );
-				if ( 'bottom' === $paging_position || 'both' === $paging_position ) {
-					$this->output_pagination_placeholder( $foogallery, 'bottom' );
-				}
-			}
+			$this->output_pagination_placeholder( $foogallery, 'bottom' );
 		}
 
 		/**
@@ -65,14 +54,21 @@ if ( ! class_exists( 'FooGallery_Paging' ) ) {
 		 * @param $position
 		 */
 		function output_pagination_placeholder( $foogallery, $position ) {
-			$paging_type = foogallery_gallery_template_setting( 'paging_type', '' );
+			if ( isset( $foogallery->paging ) && true === $foogallery->paging) {
 
-			$paging_types_that_require_placeholders = apply_filters( 'foogallery_pagination_types_require_placeholders', array( 'dots' ) );
+				$paging_position = foogallery_gallery_template_setting( 'paging_position', 'both' );
+				if ( $position === $paging_position || 'both' === $paging_position ) {
 
-			if ( in_array( $paging_type, $paging_types_that_require_placeholders ) ) {
-				$paging_type = apply_filters( 'foogallery_pagination_format_type_for_placeholder', $paging_type );
+					$paging_type = foogallery_gallery_template_setting( 'paging_type', '' );
 
-				echo '<nav id="foogallery-' . $foogallery->ID . '_paging-' . $position . '" class="fg-paging-container fg-ph-' . $paging_type . '"></nav>';
+					$paging_types_that_require_placeholders = apply_filters( 'foogallery_pagination_types_require_placeholders', array( 'dots' ) );
+
+					if ( in_array( $paging_type, $paging_types_that_require_placeholders ) ) {
+						$paging_type = apply_filters( 'foogallery_pagination_format_type_for_placeholder', $paging_type );
+
+						echo '<nav id="' . $foogallery->container_id() . '_paging-' . $position . '" class="fg-paging-container fg-ph-' . $paging_type . '"></nav>';
+					}
+				}
 			}
 		}
 
