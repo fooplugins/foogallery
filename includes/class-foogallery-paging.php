@@ -72,7 +72,7 @@ if ( ! class_exists( 'FooGallery_Paging' ) ) {
 			if ( in_array( $paging_type, $paging_types_that_require_placeholders ) ) {
 				$paging_type = apply_filters( 'foogallery_pagination_format_type_for_placeholder', $paging_type );
 
-				echo '<nav id="foogallery-' . $foogallery->ID . '_paging-' . $position . '" class="fg-placeholder-' . $paging_type . '"></nav>';
+				echo '<nav id="foogallery-' . $foogallery->ID . '_paging-' . $position . '" class="fg-paging-container fg-ph-' . $paging_type . '"></nav>';
 			}
 		}
 
