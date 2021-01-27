@@ -453,7 +453,7 @@ function foogallery_build_class_attribute_render_safe( $gallery ) {
 function foogallery_build_container_attributes_safe( $gallery, $attributes ) {
 
 	//add the default gallery id
-	$attributes['id'] = 'foogallery-gallery-' . $gallery->ID;
+	$attributes['id'] = $gallery->container_id();
 
 	//add the standard data-foogallery attribute so that the JS initializes correctly
     $attributes['data-foogallery'] = foogallery_build_container_data_options( $gallery, $attributes );
