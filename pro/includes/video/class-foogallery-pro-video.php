@@ -41,9 +41,6 @@ if ( ! class_exists( 'FooGallery_Pro_Video' ) ) {
 			//add attributes to front-end anchor
 			add_filter( 'foogallery_attachment_html_link_attributes', array( $this, 'alter_video_link_attributes' ), 24, 3 );
 
-			//add class to front-end item
-			add_filter( 'foogallery_attachment_html_item_classes', array( $this, 'alter_video_item_attributes' ), 24, 3 );
-
 			//add video icon class to galleries
 			add_filter( 'foogallery_build_class_attribute', array( $this, 'foogallery_build_class_attribute' ) );
 
@@ -226,29 +223,31 @@ if ( ! class_exists( 'FooGallery_Pro_Video' ) ) {
 			return $fields;
 		}
 
+		/**
+		 * After the attachment is loaded, determine if the attachment is a video
+		 *
+		 * @param $foogallery_attachment
+		 * @param $post
+		 */
 		public function set_video_flag_on_attachment( $foogallery_attachment, $post ) {
 			$foogallery_attachment->is_video = false;
+			$foogallery_attachment->is_embed = false;
 
 			if ( foogallery_is_attachment_video( $foogallery_attachment ) ) {
+				//set the video flag
 				$foogallery_attachment->is_video = true;
-			}
-		}
 
-		/**
-		 * @uses "foogallery_attachment_html_item_classes" filter
-		 *
-		 * @param                             $classes
-		 * @param                             $args
-		 * @param object|FooGalleryAttachment $attachment
-		 *
-		 * @return mixed
-		 */
-		public function alter_video_item_attributes( $classes, $attachment, $args ) {
-			if ( isset( $attachment->is_video ) && $attachment->is_video === true ) {
-				$classes[] = 'fg-type-video';
-			}
+				//set the video data object
+				$foogallery_attachment->video_data = get_post_meta( $foogallery_attachment->ID, FOOGALLERY_VIDEO_POST_META, true );
 
-			return $classes;
+				//check if we have no video data and set flag
+				if ( empty( $foogallery_attachment->video_data ) ) {
+					$foogallery_attachment->is_video = false;
+				} else {
+					//set the embed flag
+					$foogallery_attachment->is_embed = isset( $foogallery_attachment->video_data['type'] ) && 'embed' === $foogallery_attachment->video_data['type'];
+				}
+			}
 		}
 
 		/**
@@ -266,53 +265,9 @@ if ( ! class_exists( 'FooGallery_Pro_Video' ) ) {
 			global $current_foogallery_album;
 
 			if ( isset( $attachment->is_video ) && $attachment->is_video === true ) {
-			    //allow video data to be stored directly against the attachment as an object
-			    $video_data = isset( $attachment->video_data ) ? $attachment->video_data : get_post_meta( $attachment->ID, FOOGALLERY_VIDEO_POST_META, true );
 
-				if ( empty( $video_data ) ) {
-					//get out early if we have no video data
-					return $attr;
-				}
-
+				//set a flag on the gallery level
 				$current_foogallery->has_videos = true;
-
-				$is_embed = false;
-
-				if ( isset( $video_data['type'] ) ) {
-
-					$is_embed = 'embed' === $video_data['type'];
-
-					$template_supports_embeds = false;
-
-					if ( isset( $current_foogallery_template ) ) {
-						//check that the gallery template supports embeds
-						$template_data = foogallery_get_gallery_template( $current_foogallery_template );
-
-						$template_supports_embeds = $template_data && array_key_exists( 'embed_support', $template_data ) && true === $template_data['embed_support'];
-					}
-
-					//check the template supports embeds
-					if ( $template_supports_embeds ) {
-						//do nothing
-						$attr['data-type'] = $is_embed ? 'embed' : 'video';
-					} else {
-						//should be for templates that do not support embeds natively e.g. responsive gallery
-						//we need to check that the lightbox is FooBox, because embeds will only then work with FooBox
-
-						$lightbox = '';
-						if ( isset( $current_foogallery_template ) ) {
-							$lightbox = foogallery_gallery_template_setting( 'lightbox' );
-						} else if ( isset( $current_foogallery_album ) ) {
-							$lightbox = foogallery_album_template_setting( 'lightbox' );
-						}
-
-						$is_embed = $is_embed && ( 'foobox' === $lightbox );
-//						if ( $is_embed ) {
-//							$attr['data-type'] = 'embed';
-//						}
-						$attr['data-type'] = $is_embed ? 'embed' : 'video';
-					}
-				}
 
 				//set the cover image for the video
 				$attr['data-cover'] = $attachment->url;
@@ -338,8 +293,7 @@ if ( ! class_exists( 'FooGallery_Pro_Video' ) ) {
 				}
 
 				//make some changes for embeds
-				if ( $is_embed ) {
-
+				if ( $attachment->is_embed ) {
 					$args = array();
 					if ( isset( $attr['data-width'] ) ) {
 						$args['width'] = $attr['data-width'];
@@ -351,29 +305,26 @@ if ( ! class_exists( 'FooGallery_Pro_Video' ) ) {
 						'id'            => 'foogallery_embed_'.$current_foogallery->ID . '-' . $attachment->ID,
 						'attachment_id' => $attachment->ID,
 						'url'           => $attachment->custom_url,
-						'provider'      => $video_data['provider'],
+						'provider'      => $attachment->video_data['provider'],
 						'html'          => $oembed_data->html
 					);
 
 					$current_foogallery->video_embeds[] = $data;
-
 					$attr['href'] = '#' . $data['id'];
-					//make sure FooBox opens the embed
-					$attr['target'] = 'foobox';
+
 				} else {
 					$attr['href'] = foogallery_get_video_url_from_attachment( $attachment );
 				}
 
 				if ( isset( $current_foogallery_template ) ) {
 					$lightbox = foogallery_gallery_template_setting( 'lightbox', 'unknown' );
+
 					//if no lightbox is being used then force to open in new tab
 					if ( 'unknown' === $lightbox || 'none' === $lightbox ) {
 						$attr['target'] = '_blank';
-					}
-
-					//remove the targets for slider and grid pro galleries
-					if ( array_key_exists( 'target', $attr ) && 'slider' === $current_foogallery_template || 'foogridpro' === $current_foogallery_template ) {
-						unset( $attr['target'] );
+					} else if ( 'foobox' === $lightbox ) {
+						//make sure FooBox opens the embed
+						$attr['target'] = 'foobox';
 					}
 				}
 			}

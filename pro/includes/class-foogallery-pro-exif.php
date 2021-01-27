@@ -23,6 +23,9 @@ if ( ! class_exists( 'FooGallery_Pro_Exif' ) ) {
 	        //add localised text
 	        add_filter( 'foogallery_il8n', array( $this, 'add_il8n' ) );
 
+	        //add class to fg-item
+	        add_filter( 'foogallery_attachment_html_item_classes', array( $this, 'add_class_to_item' ), 10, 3 );
+
             if ( is_admin() ) {
                 //add extra fields to the templates that support exif
                 add_filter( 'foogallery_override_gallery_template_fields', array( $this, 'add_exif_fields' ), 20, 2 );
@@ -33,6 +36,23 @@ if ( ! class_exists( 'FooGallery_Pro_Exif' ) ) {
                 //add some settings for EXIF
                 add_filter( 'foogallery_admin_settings_override', array( $this, 'add_exif_settings' ) );
             }
+        }
+
+	    /**
+	     * Add exif class onto item
+	     *
+	     * @param $classes
+	     * @param $foogallery_attachment
+	     * @param $args
+	     *
+	     * @return mixed
+	     */
+        function add_class_to_item( $classes, $foogallery_attachment, $args ) {
+	        if ( $this->is_exif_enabled() ) {
+		        $classes[] = 'fg-item-exif';
+	        }
+
+        	return $classes;
         }
 
 	    /**
@@ -174,14 +194,26 @@ if ( ! class_exists( 'FooGallery_Pro_Exif' ) ) {
         }
 
         /** 
-         * Checking the EXIF enable status   
+         * Checking the EXIF enabled status
          *  
          * @return Boolean    
          */ 
         function is_exif_enabled() {
+	        global $current_foogallery;
+
+	        if ( isset( $current_foogallery->exif ) && true === $current_foogallery->exif ) {
+	        	return true;
+	        }
+
             //Checking active status for FooGallery PRO Lightbox and EXIF Data View status
-            return 'foogallery' === foogallery_gallery_template_setting( 'lightbox' ) &&
+            $exif_enabled = 'foogallery' === foogallery_gallery_template_setting( 'lightbox' ) &&
                    'yes' === foogallery_gallery_template_setting( 'exif_view_status' );
+
+            if ( $exif_enabled ) {
+	            $current_foogallery->exif = true;
+            }
+
+            return $exif_enabled;
         }
 
         /**
