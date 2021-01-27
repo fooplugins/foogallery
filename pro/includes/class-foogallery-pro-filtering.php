@@ -44,6 +44,47 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 
 			//add localised text
 			add_filter( 'foogallery_il8n', array( $this, 'add_il8n' ) );
+
+			//output pagination placeholders
+			add_action( 'foogallery_loaded_template_before', array( $this, 'output_filtering_placeholders_before' ), 10, 1 );
+			add_action( 'foogallery_loaded_template_after', array( $this, 'output_filtering_placeholders_after' ), 20, 1 );
+		}
+
+		/**
+		 * Renders the top filtering placeholder
+		 *
+		 * @param $foogallery FooGallery
+		 */
+		function output_filtering_placeholders_before( $foogallery ) {
+			$this->output_filtering_placeholder( $foogallery, 'top' );
+		}
+
+		/**
+		 * Renders the bottom filtering placeholder
+		 *
+		 * @param $foogallery FooGallery
+		 */
+		function output_filtering_placeholders_after( $foogallery ) {
+			$this->output_filtering_placeholder( $foogallery, 'bottom' );
+		}
+
+		/**
+		 * render the filtering placeholder
+		 *
+		 * @param $foogallery
+		 * @param $position
+		 */
+		function output_filtering_placeholder( $foogallery, $position ) {
+			if ( isset( $foogallery->filtering ) && true === $foogallery->filtering ) {
+				$filtering_type = foogallery_gallery_template_setting( 'filtering_type', '' );
+
+				if ( '' !== $filtering_type ) {
+					$filtering_position = foogallery_gallery_template_setting( 'filtering_position', 'top' );
+					if ( $position === $filtering_position || 'both' === $filtering_position ) {
+						echo '<nav id="' . $foogallery->container_id() . '_filtering-' . $position . '" class="fg-filtering-container fg-ph-tags"></nav>';
+					}
+				}
+			}
 		}
 
 		/**
@@ -115,8 +156,7 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 					'spacer'   => '<span class="spacer"></span>',
 					'type'     => 'radio',
 					'default'  => '',
-					'choices'  => apply_filters(
-							'foogallery_gallery_template_filtering_type_choices', array(
+					'choices'  => apply_filters('foogallery_gallery_template_filtering_type_choices', array(
 							''        => __( 'None', 'foogallery' ),
 							'simple' => __( 'Simple', 'foogallery' ),
 							'advanced'    => __( 'Advanced', 'foogallery' ),
