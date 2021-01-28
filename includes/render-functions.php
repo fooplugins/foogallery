@@ -418,6 +418,7 @@ function foogallery_attachment_html( $foogallery_attachment, $args = array() ) {
     $html .= '<span class="fg-image-wrap">';
     $html .= foogallery_attachment_html_image( $foogallery_attachment, $args );
 	$html .= '</span>';
+	$html .= '<span class="fg-image-overlay"></span>';
     $html .= '</a>';
     $html .= $caption;
     $html .= '</figure><div class="fg-loader"></div></div>';
