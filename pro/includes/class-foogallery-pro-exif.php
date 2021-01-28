@@ -25,6 +25,9 @@ if ( ! class_exists( 'FooGallery_Pro_Exif' ) ) {
 
 	        //add class to fg-item
 	        add_filter( 'foogallery_attachment_html_item_classes', array( $this, 'add_class_to_item' ), 10, 3 );
+		
+	        //add exif to the json output
+	        add_filter( 'foogallery_build_attachment_json', array( $this, 'add_exif_to_json' ), 10, 6 );
 
             if ( is_admin() ) {
                 //add extra fields to the templates that support exif
@@ -54,6 +57,26 @@ if ( ! class_exists( 'FooGallery_Pro_Exif' ) ) {
 
         	return $classes;
         }
+
+	    /**
+	     * Add the exif data to the json object
+	     *
+	     * @param StdClass $json_object
+	     * @param FooGalleryAttachment $foogallery_attachment
+	     * @param array $args
+	     * @param array $anchor_attributes
+	     * @param array $image_attributes
+	     * @param array $captions
+	     *
+	     * @return mixed
+	     */
+	    public function add_exif_to_json(  $json_object, $foogallery_attachment, $args, $anchor_attributes, $image_attributes, $captions ) {
+		    if ( isset( $foogallery_attachment->exif ) ) {
+			    $json_object->exif = $foogallery_attachment->exif;
+		    }
+
+		    return $json_object;
+	    }
 
 	    /**
 	     * Add localisation settings
@@ -560,6 +583,7 @@ if ( ! class_exists( 'FooGallery_Pro_Exif' ) ) {
             }
 
             if ( ! empty( $exif_data_attributes ) ) {
+	            $foogallery_attachment->exif = $exif_data_attributes;
                 $attr['data-exif'] = foogallery_json_encode( $exif_data_attributes );
             }
 
