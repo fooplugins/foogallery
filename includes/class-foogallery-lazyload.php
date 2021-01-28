@@ -97,12 +97,10 @@ if ( ! class_exists( 'FooGallery_LazyLoad' ) ) {
                         $attr['data-srcset-fg'] = $src;
                     }
 
-                    if ( apply_filters( 'foogallery_img_src_placeholders', false ) ) {
-	                    //add a placeholder src
-	                    if ( isset( $attr['width'] ) && isset( $attr['height'] ) ) {
-		                    //set the src to a 1x1 transparent gif
-		                    $attr['src'] = $this->get_placeholder_image( $attr['width'], $attr['height'] );
-	                    }
+                    //add a placeholder src
+                    if ( isset( $attr['width'] ) && isset( $attr['height'] ) ) {
+	                    //set the src to a transparent SVG that has the correct width and height
+	                    $attr['src'] = $this->get_placeholder_image( $attr['width'], $attr['height'] );
                     }
                 }
             }
