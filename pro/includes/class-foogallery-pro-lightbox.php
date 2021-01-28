@@ -70,6 +70,7 @@ if ( ! class_exists( 'FooGallery_Pro_Lightbox' ) ) {
 			global $current_foogallery;
 
 			if ( !property_exists( $current_foogallery, 'lightbox' ) ) {
+				//TODO : rather use foogallery_current_gallery_check_template_has_supported_feature
 				$template = foogallery_get_gallery_template( $current_foogallery->gallery_template );
 				$lightbox = foogallery_gallery_template_setting( 'lightbox', '' );
 				if ( $template && isset( $template['panel_support'] ) && $template['panel_support'] ) {

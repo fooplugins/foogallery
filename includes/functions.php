@@ -1521,3 +1521,108 @@ function foogallery_format_date( $timestamp, $format = null ) {
 		return $datetime->format( $format );
 	}
 }
+
+/**
+ * Shortcut method to safely check if the current gallery template supports a specific feature
+ *
+ * e.g. panel_support, preview_support, common_fields_support, lazyload_support, paging_support, filtering_support
+ *
+ * @param      $feature_to_check
+ * @param bool $value_to_check
+ *
+ * @return bool
+ */
+function foogallery_current_gallery_check_template_has_supported_feature( $feature_to_check, $value_to_check = true ) {
+	global $current_foogallery;
+
+	//get out early if there is no current gallery
+	if ( !isset( $current_foogallery ) ) {
+		return false;
+	}
+
+	//check if we have previously checked before recently
+	if ( isset( $current_foogallery->supports ) && is_array( $current_foogallery->supports ) && array_key_exists( $feature_to_check, $current_foogallery->supports ) ) {
+		return $current_foogallery->supports[$feature_to_check] === $value_to_check;
+	} else {
+
+		//check if we need to init the array
+		if ( !isset( $current_foogallery->supports ) || !is_array( $current_foogallery->supports ) ) {
+			$current_foogallery->supports = array();
+		}
+
+		if ( !array_key_exists( $feature_to_check, $current_foogallery->supports ) ) {
+			$template_object = foogallery_get_gallery_template( $current_foogallery->gallery_template );
+			if ( $template_object && is_array( $template_object ) && array_key_exists( $feature_to_check, $template_object ) ) {
+				$current_foogallery->supports[$feature_to_check] = $template_object[$feature_to_check];
+			} else {
+				//this is not stored against the template config, so assume it does not have the feature support
+				$current_foogallery->supports[$feature_to_check] = false;
+			}
+		}
+		return $current_foogallery->supports[$feature_to_check] === $value_to_check;
+	}
+}
+
+/**
+ * Checks to see if we have a cached toggle storea against the current gallery
+ * Toggles are cached against the gallery if they have to be done multiple times, for example for each item in the gallery
+ *
+ * @param $toggle_name
+ *
+ * @return bool
+ */
+function foogallery_current_gallery_has_cached_toggle( $toggle_name ) {
+	global $current_foogallery;
+
+	//get out early if there is no current gallery
+	if ( !isset( $current_foogallery ) ) {
+		return true; //this is to ensure we short-circuit having to calculate the toggle value later
+	}
+
+	return isset( $current_foogallery->toggles ) && is_array( $current_foogallery->toggles ) && array_key_exists( $toggle_name, $current_foogallery->toggles );
+}
+
+/**
+ * Stores a value for a toggle for the current gallery
+ *
+ * @param $toggle_name
+ * @param $toggle_value
+ */
+function foogallery_current_gallery_set_cached_toggle( $toggle_name, $toggle_value ) {
+	global $current_foogallery;
+
+	//get out early if there is no current gallery
+	if ( !isset( $current_foogallery ) ) {
+		return;
+	}
+
+	//check if we need to init the array
+	if ( !isset( $current_foogallery->toggles ) || !is_array( $current_foogallery->toggles ) ) {
+		$current_foogallery->toggles = array();
+	}
+
+	//store the value for later use
+	$current_foogallery->toggles[$toggle_name] = $toggle_value;
+}
+
+/**
+ * Set the value of a cached toggle for the current gallery
+ *
+ * @param $toggle_name
+ *
+ * @return false|mixed
+ */
+function foogallery_current_gallery_get_cached_toggle( $toggle_name ) {
+	global $current_foogallery;
+
+	//get out early if there is no current gallery
+	if ( !isset( $current_foogallery ) ) {
+		return false;
+	}
+
+	if ( isset( $current_foogallery->toggles ) && is_array( $current_foogallery->toggles ) && array_key_exists( $toggle_name, $current_foogallery->toggles ) ) {
+		return $current_foogallery->toggles[ $toggle_name ];
+	}
+
+	return false;
+}

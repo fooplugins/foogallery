@@ -222,21 +222,22 @@ if ( ! class_exists( 'FooGallery_Pro_Exif' ) ) {
          * @return Boolean    
          */ 
         function is_exif_enabled() {
-	        global $current_foogallery;
+        	if ( !foogallery_current_gallery_has_cached_toggle('exif') ) {
 
-	        if ( isset( $current_foogallery->exif ) && true === $current_foogallery->exif ) {
-	        	return true;
+        		//check if the template has panel_support (is either Slider PRO or Grid PRO)
+        		if ( foogallery_current_gallery_check_template_has_supported_feature( 'panel_support' ) ) {
+        			//we therefore dont care about the lightbox
+			        $exif_enabled = 'yes' === foogallery_gallery_template_setting( 'exif_view_status' );
+		        } else {
+			        $exif_enabled = 'foogallery' === foogallery_gallery_template_setting( 'lightbox' ) &&
+			                        'yes' === foogallery_gallery_template_setting( 'exif_view_status' );
+		        }
+
+        		//set the toggle
+		        foogallery_current_gallery_set_cached_toggle( 'exif', $exif_enabled );
 	        }
 
-            //Checking active status for FooGallery PRO Lightbox and EXIF Data View status
-            $exif_enabled = 'foogallery' === foogallery_gallery_template_setting( 'lightbox' ) &&
-                   'yes' === foogallery_gallery_template_setting( 'exif_view_status' );
-
-            if ( $exif_enabled ) {
-	            $current_foogallery->exif = true;
-            }
-
-            return $exif_enabled;
+        	return foogallery_current_gallery_get_cached_toggle( 'exif' );
         }
 
         /**
