@@ -23,6 +23,9 @@ if ( ! class_exists( 'FooGallery_Pro_Exif' ) ) {
 	        //add localised text
 	        add_filter( 'foogallery_il8n', array( $this, 'add_il8n' ) );
 
+	        //add exif to the json output
+	        add_filter( 'foogallery_build_attachment_json', array( $this, 'add_exif_to_json' ), 10, 6 );
+
             if ( is_admin() ) {
                 //add extra fields to the templates that support exif
                 add_filter( 'foogallery_override_gallery_template_fields', array( $this, 'add_exif_fields' ), 20, 2 );
@@ -34,6 +37,26 @@ if ( ! class_exists( 'FooGallery_Pro_Exif' ) ) {
                 add_filter( 'foogallery_admin_settings_override', array( $this, 'add_exif_settings' ) );
             }
         }
+
+	    /**
+	     * Add the exif data to the json object
+	     *
+	     * @param StdClass $json_object
+	     * @param FooGalleryAttachment $foogallery_attachment
+	     * @param array $args
+	     * @param array $anchor_attributes
+	     * @param array $image_attributes
+	     * @param array $captions
+	     *
+	     * @return mixed
+	     */
+	    public function add_exif_to_json(  $json_object, $foogallery_attachment, $args, $anchor_attributes, $image_attributes, $captions ) {
+		    if ( isset( $foogallery_attachment->exif ) ) {
+			    $json_object->exif = $foogallery_attachment->exif;
+		    }
+
+		    return $json_object;
+	    }
 
 	    /**
 	     * Add localisation settings
@@ -528,6 +551,7 @@ if ( ! class_exists( 'FooGallery_Pro_Exif' ) ) {
             }
 
             if ( ! empty( $exif_data_attributes ) ) {
+	            $foogallery_attachment->exif = $exif_data_attributes;
                 $attr['data-exif'] = foogallery_json_encode( $exif_data_attributes );
             }
 
