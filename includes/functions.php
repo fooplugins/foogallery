@@ -1564,31 +1564,31 @@ function foogallery_current_gallery_check_template_has_supported_feature( $featu
 }
 
 /**
- * Checks to see if we have a cached toggle storea against the current gallery
- * Toggles are cached against the gallery if they have to be done multiple times, for example for each item in the gallery
+ * Checks to see if we have a cached value stored against the current gallery
+ * Certain values are cached against the gallery if they have to be done multiple times, for example for each item in the gallery
  *
- * @param $toggle_name
+ * @param $cache_key
  *
  * @return bool
  */
-function foogallery_current_gallery_has_cached_toggle( $toggle_name ) {
+function foogallery_current_gallery_has_cached_value( $cache_key ) {
 	global $current_foogallery;
 
 	//get out early if there is no current gallery
 	if ( !isset( $current_foogallery ) ) {
-		return true; //this is to ensure we short-circuit having to calculate the toggle value later
+		return true; //this is to ensure we short-circuit having to calculate the cached value later
 	}
 
-	return isset( $current_foogallery->toggles ) && is_array( $current_foogallery->toggles ) && array_key_exists( $toggle_name, $current_foogallery->toggles );
+	return isset( $current_foogallery->cached_values ) && is_array( $current_foogallery->cached_values ) && array_key_exists( $cache_key, $current_foogallery->cached_values );
 }
 
 /**
- * Stores a value for a toggle for the current gallery
+ * Stores a value against the current gallery
  *
- * @param $toggle_name
- * @param $toggle_value
+ * @param $cache_key
+ * @param $cache_value
  */
-function foogallery_current_gallery_set_cached_toggle( $toggle_name, $toggle_value ) {
+function foogallery_current_gallery_set_cached_value( $cache_key, $cache_value ) {
 	global $current_foogallery;
 
 	//get out early if there is no current gallery
@@ -1597,22 +1597,22 @@ function foogallery_current_gallery_set_cached_toggle( $toggle_name, $toggle_val
 	}
 
 	//check if we need to init the array
-	if ( !isset( $current_foogallery->toggles ) || !is_array( $current_foogallery->toggles ) ) {
-		$current_foogallery->toggles = array();
+	if ( !isset( $current_foogallery->cached_values ) || !is_array( $current_foogallery->cached_values ) ) {
+		$current_foogallery->cached_values = array();
 	}
 
 	//store the value for later use
-	$current_foogallery->toggles[$toggle_name] = $toggle_value;
+	$current_foogallery->cached_values[ $cache_key] = $cache_value;
 }
 
 /**
- * Set the value of a cached toggle for the current gallery
+ * Set the value of a cached value for the current gallery
  *
- * @param $toggle_name
+ * @param $cache_value
  *
- * @return false|mixed
+ * @return mixed
  */
-function foogallery_current_gallery_get_cached_toggle( $toggle_name ) {
+function foogallery_current_gallery_get_cached_value( $cache_value ) {
 	global $current_foogallery;
 
 	//get out early if there is no current gallery
@@ -1620,8 +1620,8 @@ function foogallery_current_gallery_get_cached_toggle( $toggle_name ) {
 		return false;
 	}
 
-	if ( isset( $current_foogallery->toggles ) && is_array( $current_foogallery->toggles ) && array_key_exists( $toggle_name, $current_foogallery->toggles ) ) {
-		return $current_foogallery->toggles[ $toggle_name ];
+	if ( isset( $current_foogallery->cached_values ) && is_array( $current_foogallery->cached_values ) && array_key_exists( $cache_value, $current_foogallery->cached_values ) ) {
+		return $current_foogallery->cached_values[ $cache_value ];
 	}
 
 	return false;

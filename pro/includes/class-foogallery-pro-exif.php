@@ -222,7 +222,7 @@ if ( ! class_exists( 'FooGallery_Pro_Exif' ) ) {
          * @return Boolean    
          */ 
         function is_exif_enabled() {
-        	if ( !foogallery_current_gallery_has_cached_toggle('exif') ) {
+        	if ( !foogallery_current_gallery_has_cached_value('exif') ) {
 
         		//check if the template has panel_support (is either Slider PRO or Grid PRO)
         		if ( foogallery_current_gallery_check_template_has_supported_feature( 'panel_support' ) ) {
@@ -234,10 +234,10 @@ if ( ! class_exists( 'FooGallery_Pro_Exif' ) ) {
 		        }
 
         		//set the toggle
-		        foogallery_current_gallery_set_cached_toggle( 'exif', $exif_enabled );
+		        foogallery_current_gallery_set_cached_value( 'exif', $exif_enabled );
 	        }
 
-        	return foogallery_current_gallery_get_cached_toggle( 'exif' );
+        	return foogallery_current_gallery_get_cached_value( 'exif' );
         }
 
         /**
