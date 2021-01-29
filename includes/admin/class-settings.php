@@ -393,14 +393,6 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 			);
 
 			$settings[] = array(
-				'id'      => 'output_json_to_script_block',
-				'title'   => __( 'Output Gallery JSON to Script Block', 'foogallery' ),
-				'desc'    => __( 'Some plugins conflict with the default way of rendering gallery items to the container. Enabling this setting will output gallery items to a separate script block.', 'foogallery' ),
-				'type'    => 'checkbox',
-				'tab'     => 'advanced'
-			);
-
-			$settings[] = array(
 				'id'      => 'enable_debugging',
 				'title'   => __( 'Enable Debugging', 'foogallery' ),
 				'desc'    => sprintf( __( 'Helps to debug problems and diagnose issues. Enable debugging if you need support for an issue you are having.', 'foogallery' ), foogallery_plugin_name() ),
