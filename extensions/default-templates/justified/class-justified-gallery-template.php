@@ -13,8 +13,6 @@ if ( !class_exists( 'FooGallery_Justified_Gallery_Template' ) ) {
 			add_filter( 'foogallery_gallery_templates_files', array( $this, 'register_myself' ) );
 			add_filter( 'foogallery_template_thumbnail_dimensions-justified', array( $this, 'get_thumbnail_dimensions' ), 10, 2 );
 
-			add_action( 'foogallery_located_template-justified', array( $this, 'enqueue_dependencies' ) );
-
 			//add the data options needed for justified
 			add_filter( 'foogallery_build_container_data_options-justified', array( $this, 'add_justified_options' ), 10, 3 );
 
@@ -55,6 +53,7 @@ if ( !class_exists( 'FooGallery_Justified_Gallery_Template' ) ) {
 				'mandatory_classes' => 'fg-justified',
 				'thumbnail_dimensions' => true,
 				'filtering_support' => true,
+                'enqueue_core' => true,
                 'fields'	  => array(
                     array(
                         'id'      => 'thumb_height',
@@ -176,15 +175,6 @@ if ( !class_exists( 'FooGallery_Justified_Gallery_Template' ) ) {
 				'width'  => 0,
 				'crop'   => false
 			);
-		}
-
-		/**
-		 * Enqueue scripts that the default gallery template relies on
-		 */
-		function enqueue_dependencies( $gallery ) {
-			//enqueue core files
-			foogallery_enqueue_core_gallery_template_style();
-			foogallery_enqueue_core_gallery_template_script();
 		}
 
 		/**

@@ -99,22 +99,29 @@ class FooGallery_Template_Loader {
 				do_action( 'foogallery_located_template', $current_foogallery );
 				do_action( "foogallery_located_template-{$current_foogallery_template}", $current_foogallery );
 
-				//try to include some JS, but allow template to opt-out based on some condition
-				if ( false !== apply_filters( "foogallery_template_load_js-{$current_foogallery_template}", true, $current_foogallery ) ) {
-					if ( false !== ( $js_location = $loader->locate_file( "gallery-{$current_foogallery_template}.js" ) ) ) {
-						$js_deps = apply_filters( "foogallery_template_js_deps-{$current_foogallery_template}", array(), $current_foogallery );
-						$js_ver = apply_filters( "foogallery_template_js_ver-{$current_foogallery_template}", FOOGALLERY_VERSION, $current_foogallery );
-						wp_enqueue_script( "foogallery-template-{$current_foogallery_template}", $js_location['url'], $js_deps, $js_ver );
-						do_action( 'foogallery_template_enqueue_script', $current_foogallery_template, $js_location['url'] );
+				$template_object = foogallery_get_gallery_template( $current_foogallery_template );
+				if ( isset( $template_object ) && is_array( $template_object ) && array_key_exists( 'enqueue_core', $template_object ) && $template_object['enqueue_core'] ) {
+					//enqueue core files
+					foogallery_enqueue_core_gallery_template_style();
+					foogallery_enqueue_core_gallery_template_script();
+				} else {
+					//try to include some JS, but allow template to opt-out based on some condition
+					if ( false !== apply_filters( "foogallery_template_load_js-{$current_foogallery_template}", true, $current_foogallery ) ) {
+						if ( false !== ( $js_location = $loader->locate_file( "gallery-{$current_foogallery_template}.js" ) ) ) {
+							$js_deps = apply_filters( "foogallery_template_js_deps-{$current_foogallery_template}", array(), $current_foogallery );
+							$js_ver = apply_filters( "foogallery_template_js_ver-{$current_foogallery_template}", FOOGALLERY_VERSION, $current_foogallery );
+							wp_enqueue_script( "foogallery-template-{$current_foogallery_template}", $js_location['url'], $js_deps, $js_ver );
+							do_action( 'foogallery_template_enqueue_script', $current_foogallery_template, $js_location['url'] );
+						}
 					}
-				}
 
-				//try to include some CSS, but allow template to opt-out based on some condition
-				if ( false !== apply_filters( "foogallery_template_load_css-{$current_foogallery_template}", true, $current_foogallery ) ) {
-					if ( false !== ( $css_location = $loader->locate_file( "gallery-{$current_foogallery_template}.css" ) ) ) {
-						$css_deps = apply_filters( "foogallery_template_css_deps-{$current_foogallery_template}", array(), $current_foogallery );
-						$css_ver = apply_filters( "foogallery_template_css_ver-{$current_foogallery_template}", FOOGALLERY_VERSION, $current_foogallery );
-						foogallery_enqueue_style( "foogallery-template-{$current_foogallery_template}", $css_location['url'], $css_deps, $css_ver );
+					//try to include some CSS, but allow template to opt-out based on some condition
+					if ( false !== apply_filters( "foogallery_template_load_css-{$current_foogallery_template}", true, $current_foogallery ) ) {
+						if ( false !== ( $css_location = $loader->locate_file( "gallery-{$current_foogallery_template}.css" ) ) ) {
+							$css_deps = apply_filters( "foogallery_template_css_deps-{$current_foogallery_template}", array(), $current_foogallery );
+							$css_ver = apply_filters( "foogallery_template_css_ver-{$current_foogallery_template}", FOOGALLERY_VERSION, $current_foogallery );
+							foogallery_enqueue_style( "foogallery-template-{$current_foogallery_template}", $css_location['url'], $css_deps, $css_ver );
+						}
 					}
 				}
 

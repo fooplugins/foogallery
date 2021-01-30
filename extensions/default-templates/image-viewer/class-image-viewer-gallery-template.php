@@ -14,8 +14,6 @@ if ( !class_exists( 'FooGallery_Image_Viewer_Gallery_Template' ) ) {
 			//add extra fields to the templates
 			add_filter( 'foogallery_override_gallery_template_fields-image-viewer', array( $this, 'add_common_thumbnail_fields' ), 10, 2 );
 
-			add_action( 'foogallery_located_template-image-viewer', array( $this, 'enqueue_dependencies' ) );
-
 			add_filter( 'foogallery_gallery_templates_files', array( $this, 'register_myself' ) );
 
 			add_filter( 'foogallery_template_thumbnail_dimensions-image-viewer', array( $this, 'get_thumbnail_dimensions' ), 10, 2 );
@@ -74,6 +72,7 @@ if ( !class_exists( 'FooGallery_Image_Viewer_Gallery_Template' ) ) {
 				'lazyload_support' => true,
 				'mandatory_classes' => 'fg-image-viewer',
 				'thumbnail_dimensions' => true,
+				'enqueue_core' => true,
 				'fields'	  => array(
                     array(
                         'id'      => 'thumbnail-help',
@@ -181,15 +180,6 @@ if ( !class_exists( 'FooGallery_Image_Viewer_Gallery_Template' ) ) {
 			}
 
 			return $fields;
-		}
-
-		/**
-		 * Enqueue scripts that the default gallery template relies on
-		 */
-		function enqueue_dependencies( $gallery ) {
-			//enqueue core files
-			foogallery_enqueue_core_gallery_template_style();
-			foogallery_enqueue_core_gallery_template_script();
 		}
 
 		/**

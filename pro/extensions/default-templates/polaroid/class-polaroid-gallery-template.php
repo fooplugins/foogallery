@@ -12,11 +12,6 @@ if ( !class_exists( 'FooGallery_Polaroid_Gallery_Template' ) ) {
 			add_filter( 'foogallery_gallery_templates', array( $this, 'add_template' ), 99, 1 );
 			add_filter( 'foogallery_gallery_templates_files', array( $this, 'register_myself' ) );
 
-			add_filter( 'foogallery_template_load_css-polaroid_new', '__return_false' );
-			add_filter( 'foogallery_template_load_js-polaroid_new', '__return_false' );
-
-			add_filter( 'foogallery_located_template-polaroid_new', array( $this, 'enqueue_dependencies' ) );
-
 			//add extra fields to the templates
 			add_filter( 'foogallery_override_gallery_template_fields-polaroid_new', array( $this, 'add_common_thumbnail_fields' ), 10, 2 );
 
@@ -71,6 +66,7 @@ if ( !class_exists( 'FooGallery_Polaroid_Gallery_Template' ) ) {
 				'mandatory_classes' => 'fg-simple_portfolio fg-preset fg-polaroid',
 				'thumbnail_dimensions' => true,
 				'filtering_support' => true,
+                'enqueue_core' => true,
                 'fields'	  => array(
                     array(
                         'id'      => 'thumbnail_dimensions',
@@ -160,15 +156,6 @@ if ( !class_exists( 'FooGallery_Polaroid_Gallery_Template' ) ) {
 			);
 
 			return $gallery_templates;
-		}
-
-		/**
-		 * Enqueue scripts that the polaroid template relies on
-		 */
-		function enqueue_dependencies() {
-			//enqueue core files
-			foogallery_enqueue_core_gallery_template_style();
-			foogallery_enqueue_core_gallery_template_script();
 		}
 
 		/**

@@ -12,8 +12,6 @@ if ( !class_exists( 'FooGallery_Thumbnail_Gallery_Template' ) ) {
 			add_filter( 'foogallery_gallery_templates', array( $this, 'add_template' ) );
 			add_filter( 'foogallery_gallery_templates_files', array( $this, 'register_myself' ) );
 
-			add_filter( 'foogallery_located_template-thumbnail', array( $this, 'enqueue_dependencies' ) );
-
 			//build up the thumb dimensions from some arguments
 			add_filter( 'foogallery_calculate_thumbnail_dimensions-thumbnail', array( $this, 'build_thumbnail_dimensions_from_arguments' ), 10, 2 );
 
@@ -61,6 +59,7 @@ if ( !class_exists( 'FooGallery_Thumbnail_Gallery_Template' ) ) {
                 'lazyload_support' => true,
 				'mandatory_classes' => 'fg-thumbnail',
 				'thumbnail_dimensions' => true,
+                'enqueue_core' => true,
                 'fields'	  => array(
                     array(
                         'id'	  => 'help',
@@ -168,15 +167,6 @@ if ( !class_exists( 'FooGallery_Thumbnail_Gallery_Template' ) ) {
 			);
 
 			return $gallery_templates;
-		}
-
-		/**
-		 * Enqueue scripts that the masonry gallery template relies on
-		 */
-		function enqueue_dependencies() {
-			//enqueue core files
-			foogallery_enqueue_core_gallery_template_style();
-			foogallery_enqueue_core_gallery_template_script();
 		}
 
 		/**

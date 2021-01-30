@@ -32,13 +32,9 @@ if ( !class_exists( 'FooGallery_FooGrid_Gallery_Template' ) ) {
 		function __construct() {
 			add_filter( 'foogallery_gallery_templates', array( $this, 'add_template' ), 100, 1 );
 			add_filter( 'foogallery_gallery_templates_files', array( $this, 'register_myself' ) );
-			add_filter( 'foogallery_located_template-foogridpro', array( $this, 'enqueue_dependencies' ) );
 
 			//get thumbnail dimensions
 			add_filter( 'foogallery_template_thumbnail_dimensions-foogridpro', array( $this, 'get_thumbnail_dimensions' ), 10, 2 );
-
-			add_filter( 'foogallery_template_load_css-foogridpro', '__return_false' );
-			add_filter( 'foogallery_template_load_js-foogridpro', '__return_false' );
 
 			//add the data options needed for grid pro
 			add_filter( 'foogallery_build_container_data_options-foogridpro', array( $this, 'add_data_options' ), 10, 3 );
@@ -114,16 +110,6 @@ if ( !class_exists( 'FooGallery_FooGrid_Gallery_Template' ) ) {
 		}
 
 		/**
-		 * Enqueue any script or stylesheet file dependencies that your gallery template relies on
-		 *
-		 * @param  $gallery
-		 */
-		function enqueue_dependencies( $gallery ) {
-            foogallery_enqueue_core_gallery_template_style();
-            foogallery_enqueue_core_gallery_template_script();
-		}
-
-		/**
 		 * Add our gallery template to the list of templates available for every gallery
 		 * @param $gallery_templates
 		 *
@@ -143,6 +129,7 @@ if ( !class_exists( 'FooGallery_FooGrid_Gallery_Template' ) ) {
 				'filtering_support' => true,
 				'embed_support' => true,
 				'panel_support' => true,
+				'enqueue_core' => true,
 				'fields'	  => array(
 					array(
 						'id'      => 'thumbnail_size',

@@ -16,12 +16,6 @@ if ( !class_exists( 'FooGallery_Justified_CSS_Gallery_Template' ) ) {
 
 			add_filter( 'foogallery_template_thumbnail_dimensions-' . self::template_id, array( $this, 'get_thumbnail_dimensions' ), 10, 2 );
 
-			add_action( 'foogallery_located_template-' . self::template_id, array( $this, 'enqueue_dependencies' ) );
-
-			//add the data options needed for justified css
-			//TODO : remove this and delete the associated function
-			//add_filter( 'foogallery_build_container_data_options-' . self::template_id, array( $this, 'add_justified_options' ), 10, 3 );
-
 			//build up the thumb dimensions from some arguments
 			add_filter( 'foogallery_calculate_thumbnail_dimensions-' . self::template_id, array( $this, 'build_thumbnail_dimensions_from_arguments' ), 10, 2 );
 
@@ -51,6 +45,7 @@ if ( !class_exists( 'FooGallery_Justified_CSS_Gallery_Template' ) ) {
 				'mandatory_classes' => 'fg-justified-css',
 				'thumbnail_dimensions' => true,
 				'filtering_support' => true,
+                'enqueue_core' => true,
                 'fields'	  => array(
                     array(
                         'id'      => 'thumb_height',
@@ -133,35 +128,6 @@ if ( !class_exists( 'FooGallery_Justified_CSS_Gallery_Template' ) ) {
 				'width'  => 0,
 				'crop'   => false
 			);
-		}
-
-		/**
-		 * Enqueue scripts that the default gallery template relies on
-		 */
-		function enqueue_dependencies( $gallery ) {
-			//enqueue core files
-			foogallery_enqueue_core_gallery_template_style();
-			foogallery_enqueue_core_gallery_template_script();
-		}
-
-		/**
-		 * Add the required justified options if needed
-		 *
-		 * @param $options
-		 * @param $gallery    FooGallery
-		 *
-		 * @param $attributes array
-		 *
-		 * @return array
-		 */
-		function add_justified_options($options, $gallery, $attributes) {
-
-			$row_height = foogallery_gallery_template_setting( 'row_height', '150' );
-			$margins = foogallery_gallery_template_setting( 'margins', '1' );
-
-			$options['template']['rowHeight'] = intval($row_height);
-
-			return $options;
 		}
 
 		/**
