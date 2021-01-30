@@ -75,13 +75,14 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 		 * @param $position
 		 */
 		function output_filtering_placeholder( $foogallery, $position ) {
-			if ( isset( $foogallery->filtering ) && true === $foogallery->filtering ) {
-				$filtering_type = foogallery_gallery_template_setting( 'filtering_type', '' );
+			if ( foogallery_current_gallery_has_cached_value( 'filtering' ) ) {
+				$filtering_options = foogallery_current_gallery_get_cached_value( 'filtering' );
+				$filtering_type = $filtering_options['type'];
 
 				if ( '' !== $filtering_type ) {
-					$filtering_position = foogallery_gallery_template_setting( 'filtering_position', 'top' );
+					$filtering_position = $filtering_options['position'];
 					if ( $position === $filtering_position || 'both' === $filtering_position ) {
-						echo '<nav id="' . $foogallery->container_id() . '_filtering-' . $position . '" class="fg-filtering-container fg-ph-tags"></nav>';
+						echo '<nav id="' . $foogallery->container_id() . '_filtering-' . $position . '" class="fg-filtering-container fg-ph-' . $filtering_type . '"></nav>';
 					}
 				}
 			}
@@ -544,12 +545,73 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 		 * @param $foogallery FooGallery
 		 */
 		function determine_filtering( $foogallery ) {
-			$template_data = foogallery_get_gallery_template( $foogallery->gallery_template );
+			if ( foogallery_current_gallery_check_template_has_supported_feature( 'filtering_support') ) {
 
-			//check the template supports filtering
-			$filtering = $template_data && array_key_exists( 'filtering_support', $template_data ) && true === $template_data['filtering_support'];
+				$filtering = foogallery_gallery_template_setting( 'filtering_type', '' );
 
-			$foogallery->filtering = apply_filters( 'foogallery_filtering', $filtering, $foogallery );
+				if ( '' !== $filtering ) {
+
+					$filtering_options = array(
+						'type'     => 'tags',
+						'position' => foogallery_gallery_template_setting( 'filtering_position', 'top' ),
+						'theme'    => foogallery_gallery_template_setting( 'filtering_theme', 'fg-light' ),
+						'taxonomy' => foogallery_gallery_template_setting( 'filtering_taxonomy', FOOGALLERY_ATTACHMENT_TAXONOMY_TAG )
+					);
+
+					if ( 'advanced' === $filtering ) {
+
+						$filtering_options['mode'         ] = foogallery_gallery_template_setting( 'filtering_mode', 'single' );
+						$filtering_options['min'          ] = intval( foogallery_gallery_template_setting( 'filtering_min', '0' ) );
+						$filtering_options['limit'        ] = intval( foogallery_gallery_template_setting( 'filtering_limit', '0' ) );
+						$filtering_options['showCount'    ] = foogallery_gallery_template_setting( 'filtering_show_count', '' ) === 'true';
+
+						$filtering_adjust_size    = foogallery_gallery_template_setting( 'filtering_adjust_size', 'no' ) === 'yes';
+						if ( $filtering_adjust_size ) {
+							$filtering_options['adjustSize'] = $filtering_adjust_size;
+							$filtering_options['smallest'] = intval( foogallery_gallery_template_setting( 'filtering_adjust_size_smallest', '12' ) );
+							$filtering_options['largest']  = intval( foogallery_gallery_template_setting( 'filtering_adjust_size_largest', '16' ) );
+						}
+
+						$filtering_adjust_opacity = foogallery_gallery_template_setting( 'filtering_adjust_opacity', 'no' ) === 'yes';
+						if ( $filtering_adjust_opacity ) {
+							$filtering_options['adjustOpacity'] = $filtering_adjust_opacity;
+							$filtering_options['lightest'] = foogallery_gallery_template_setting( 'filtering_adjust_opacity_lightest', '0.5' );
+							$filtering_options['darkest']  = foogallery_gallery_template_setting( 'filtering_adjust_opacity_darkest', '1' );
+						}
+
+						$filtering_sort = foogallery_gallery_template_setting( 'filtering_sort', 'value' );
+						if ( 'value' !== $filtering_sort ) {
+							if ( foo_contains( $filtering_sort, '_inverse' ) ) {
+								$filtering_sort = str_replace( '_inverse', '', $filtering_sort );
+								$filtering_options['sortInvert'] = true;
+							}
+							$filtering_options['sortBy'] = trim( $filtering_sort );
+						}
+
+						$filtering_override = foogallery_gallery_template_setting( 'filtering_override', '' );
+						if ( !empty( $filtering_override ) ) {
+							$filtering_options['tags'] = explode( ',', $filtering_override );
+							$filtering_options['tags'] = array_filter( array_map( 'trim', $filtering_options['tags'] ) ) ;
+						}
+					} else if ( 'multi' === $filtering ) {
+
+						$filtering_multi_override = foogallery_gallery_template_setting( 'filtering_multi_override', '' );
+
+						if ( !empty( $filtering_multi_override ) ) {
+							$filtering_multi_override_array = @json_decode( wp_unslash( $filtering_multi_override ), true );
+
+							if ( isset( $filtering_multi_override_array ) ) {
+								$filtering_options['tags'] = $filtering_multi_override_array;
+								$filtering_options['sortBy'] = 'none';
+							}
+						}
+
+						$filtering_options['mode'] = foogallery_gallery_template_setting( 'filtering_mode', 'single' );
+					}
+
+					foogallery_current_gallery_set_cached_value( 'filtering', $filtering_options );
+				}
+			}
 		}
 
 		/**
@@ -561,97 +623,11 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 		 * @return array
 		 */
 		function add_filtering_data_options( $options, $gallery, $attributes ) {
-			if ( isset( $gallery->filtering ) && true === $gallery->filtering ) {
-
-				//check if we have arguments from the shortcode and override the saved settings
-				$filtering = $this->get_foogallery_argument( $gallery, 'filtering_type', 'filtering_type', '' );
-
-				if ( '' !== $filtering ) {
-
-					$filtering_options = array(
-						'type'     => 'tags',
-						'position' => $this->get_foogallery_argument( $gallery, 'filtering_position', 'filtering_position', 'top' ),
-						'theme'    => $this->get_foogallery_argument( $gallery, 'filtering_theme', 'filtering_theme', 'fg-light' ),
-					);
-
-					if ( 'advanced' === $filtering ) {
-
-						$filtering_show_count = $this->get_foogallery_argument( $gallery, 'filtering_show_count', 'filtering_show_count', '' ) === 'true';
-
-						$filtering_options['mode'         ] = $this->get_foogallery_argument( $gallery, 'filtering_mode', 'filtering_mode', 'single' );
-						$filtering_options['min'          ] = intval( $this->get_foogallery_argument( $gallery, 'filtering_min', 'filtering_min', '0' ) );
-						$filtering_options['limit'        ] = intval( $this->get_foogallery_argument( $gallery, 'filtering_limit', 'filtering_limit', '0' ) );
-						$filtering_options['showCount'    ] = $filtering_show_count;
-
-						$filtering_adjust_size    = $this->get_foogallery_argument( $gallery, 'filtering_adjust_size', 'filtering_adjust_size', 'no' ) === 'yes';
-						if ( $filtering_adjust_size ) {
-							$filtering_options['adjustSize'] = $filtering_adjust_size;
-							$filtering_options['smallest'] = intval( $this->get_foogallery_argument( $gallery, 'filtering_adjust_size_smallest', 'filtering_adjust_size_smallest', '12' ) );
-							$filtering_options['largest']  = intval( $this->get_foogallery_argument( $gallery, 'filtering_adjust_size_largest', 'filtering_adjust_size_largest', '16' ) );
-						}
-
-						$filtering_adjust_opacity = $this->get_foogallery_argument( $gallery, 'filtering_adjust_opacity', 'filtering_adjust_opacity', 'no' ) === 'yes';
-						if ( $filtering_adjust_opacity ) {
-							$filtering_options['adjustOpacity'] = $filtering_adjust_opacity;
-							$filtering_options['lightest'] = $this->get_foogallery_argument( $gallery, 'filtering_adjust_opacity_lightest', 'filtering_adjust_opacity_lightest', '0.5' );
-							$filtering_options['darkest']  = intval( $this->get_foogallery_argument( $gallery, 'filtering_adjust_opacity_darkest', 'filtering_adjust_opacity_darkest', '1' ) );
-						}
-
-						$filtering_sort = $this->get_foogallery_argument( $gallery, 'filtering_sort', 'filtering_sort', 'value' );
-						if ( 'value' !== $filtering_sort ) {
-							if ( foo_contains( $filtering_sort, '_inverse' ) ) {
-								$filtering_sort = str_replace( '_inverse', '', $filtering_sort );
-								$filtering_options['sortInvert'] = true;
-							}
-							$filtering_options['sortBy'] = trim( $filtering_sort );
-						}
-
-						$filtering_override = $this->get_foogallery_argument( $gallery, 'filtering_override', 'filtering_override', '' );
-						if ( !empty( $filtering_override ) ) {
-							$filtering_options['tags'] = explode( ',', $filtering_override );
-							$filtering_options['tags'] = array_filter( array_map( 'trim', $filtering_options['tags'] ) ) ;
-						}
-					} else if ( 'multi' === $filtering ) {
-
-						$filtering_multi_override = $this->get_foogallery_argument( $gallery, 'filtering_multi_override', 'filtering_multi_override', '' );
-
-						if ( !empty( $filtering_multi_override ) ) {
-							$filtering_multi_override_array = @json_decode( wp_unslash( $filtering_multi_override ), true );
-
-							if ( isset( $filtering_multi_override_array ) ) {
-								$filtering_options['tags'] = $filtering_multi_override_array;
-								$filtering_options['sortBy'] = 'none';
-							}
-						}
-
-						$filtering_options['mode'] = $this->get_foogallery_argument( $gallery, 'filtering_mode', 'filtering_mode', 'single' );
-                    }
-
-					$options['filtering']        = $gallery->filtering_options = $filtering_options;
-					$gallery->filtering_taxonomy = $this->get_foogallery_argument( $gallery, 'filtering_taxonomy', 'filtering_taxonomy', FOOGALLERY_ATTACHMENT_TAXONOMY_TAG );
-				}
+			if ( foogallery_current_gallery_has_cached_value( 'filtering' ) ) {
+				$options['filtering'] = foogallery_current_gallery_get_cached_value( 'filtering' );
 			}
 
 			return $options;
-		}
-
-		/**
-		 * Private helper function to get the value of a setting for a gallery
-		 * @param $gallery
-		 * @param $setting_id
-		 * @param $argument_name
-		 * @param $default_value
-		 *
-		 * @return mixed
-		 */
-		private function get_foogallery_argument( $gallery, $setting_id, $argument_name, $default_value ) {
-			global $current_foogallery_arguments;
-
-			if ( isset( $current_foogallery_arguments ) && isset( $current_foogallery_arguments[$argument_name] ) ) {
-				return $current_foogallery_arguments[$argument_name];
-			} else {
-				return $gallery->get_setting( $setting_id, $default_value );
-			}
 		}
 
 		/**
@@ -666,10 +642,8 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 		 * @return array
 		 */
 		public function add_tag_attribute( $attr, $args, $attachment ) {
-			global $current_foogallery;
-
-			if ( isset( $current_foogallery->filtering_taxonomy ) && isset( $current_foogallery->filtering ) && true === $current_foogallery->filtering ) {
-				$taxonomy = $current_foogallery->filtering_taxonomy;
+			if ( foogallery_current_gallery_has_cached_value( 'filtering' ) ) {
+				$taxonomy = foogallery_current_gallery_get_cached_value( 'filtering' )['taxonomy'];
 
 				//allow other plugins to get the terms for the attachment for the particular taxonomy
 				$terms = apply_filters( 'foogallery_filtering_get_terms_for_attachment', false, $taxonomy, $attachment );
@@ -737,6 +711,13 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 			return $settings;
 		}
 
+		/**
+		 * Renders the multi field in admin
+		 *
+		 * @param $field
+		 * @param $gallery
+		 * @param $template
+		 */
 		public function render_multi_field( $field, $gallery, $template ) {
 			if ( 'filtering_multi' === $field['type'] ) {
 
@@ -773,7 +754,7 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 		}
 
 		/**
-		 * Enqueues js assets
+		 * Enqueues js assets in admin
 		 */
 		public function enqueue_scripts_and_styles() {
 			wp_enqueue_style( 'foogallery.admin.filtering', FOOGALLERY_PRO_URL . 'css/foogallery.admin.filtering.css', array(), FOOGALLERY_VERSION );
