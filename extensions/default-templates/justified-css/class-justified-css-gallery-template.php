@@ -209,9 +209,12 @@ if ( !class_exists( 'FooGallery_Justified_CSS_Gallery_Template' ) ) {
 
 			?>
 			<style>
+                #<?php echo $id; ?>.fg-justified-css .fg-image-wrap {
+                    max-height: <?php echo $thumb_height; ?>px;
+                }
                 #<?php echo $id; ?>.fg-justified-css .fg-item {
-                     margin: <?php echo $margins; ?>px;
-                 }
+                    margin: <?php echo $margins; ?>px;
+                }
 			</style>
 			<?php
 		}
