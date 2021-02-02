@@ -525,16 +525,6 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 			return $fields;
 		}
 
-		function get_setting_from_gallery( $gallery, $key, $default ) {
-		    global $current_foogallery;
-
-		    if ( isset( $current_foogallery ) && $current_foogallery->ID === $gallery->ID ) {
-		        return foogallery_gallery_template_setting( $key, $default );
-            }
-
-		    return $gallery->get_setting( $key, $default );
-        }
-
 		/**
 		 * Build up the gallery class attribute for the common fields
 		 *
@@ -544,32 +534,29 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 		 * @return array
 		 */
 		function add_common_fields_class_attributes( $classes, $gallery ) {
-			$template_data = foogallery_get_gallery_template( $gallery->gallery_template );
-
-			//check the template supports common fields
-			if ( $template_data && array_key_exists( 'common_fields_support', $template_data ) && true === $template_data['common_fields_support'] ) {
+			if ( foogallery_current_gallery_check_template_has_supported_feature('common_fields_support' ) ) {
 
 				//add the gallery template core class
 				$classes[] = 'fg-' . $gallery->gallery_template;
 
 				//get some default classes from common gallery settings
-				$classes[] = $this->get_setting_from_gallery( $gallery, 'theme', 'fg-light' );
-				$classes[] = $this->get_setting_from_gallery( $gallery, 'border_size', 'fg-border-thin' );
-				$classes[] = $this->get_setting_from_gallery( $gallery, 'rounded_corners', '' );
-				$classes[] = $this->get_setting_from_gallery( $gallery, 'drop_shadow', 'fg-shadow-outline' );
-				$classes[] = $this->get_setting_from_gallery( $gallery, 'inner_shadow', '' );
-				$classes[] = $this->get_setting_from_gallery( $gallery, 'loading_icon', 'fg-loading-default' );
-				$classes[] = $this->get_setting_from_gallery( $gallery, 'loaded_effect', 'fg-loaded-fade-in' );
+				$classes[] = foogallery_gallery_template_setting( 'theme', 'fg-light' );
+				$classes[] = foogallery_gallery_template_setting( 'border_size', 'fg-border-thin' );
+				$classes[] = foogallery_gallery_template_setting( 'rounded_corners', '' );
+				$classes[] = foogallery_gallery_template_setting( 'drop_shadow', 'fg-shadow-outline' );
+				$classes[] = foogallery_gallery_template_setting( 'inner_shadow', '' );
+				$classes[] = foogallery_gallery_template_setting( 'loading_icon', 'fg-loading-default' );
+				$classes[] = foogallery_gallery_template_setting( 'loaded_effect', 'fg-loaded-fade-in' );
 
-				$hover_effect_type = $this->get_setting_from_gallery( $gallery,'hover_effect_type', '' );
+				$hover_effect_type = foogallery_gallery_template_setting( 'hover_effect_type', '' );
 
 				if ( 'normal' === $hover_effect_type ) {
-					$classes[] = $this->get_setting_from_gallery( $gallery, 'hover_effect_color', '' );
-					$classes[] = $this->get_setting_from_gallery( $gallery, 'hover_effect_scale', '' );
-					$classes[] = $this->get_setting_from_gallery( $gallery, 'hover_effect_caption_visibility', 'fg-caption-hover' );
-					$classes[] = $this->get_setting_from_gallery( $gallery, 'hover_effect_transition', 'fg-hover-fade' );
-					$classes[] = $this->get_setting_from_gallery( $gallery, 'hover_effect_icon', 'fg-hover-zoom' );
-					$classes[] = $this->get_setting_from_gallery( $gallery, 'caption_invert_color', '' );
+					$classes[] = foogallery_gallery_template_setting( 'hover_effect_color', '' );
+					$classes[] = foogallery_gallery_template_setting( 'hover_effect_scale', '' );
+					$classes[] = foogallery_gallery_template_setting( 'hover_effect_caption_visibility', 'fg-caption-hover' );
+					$classes[] = foogallery_gallery_template_setting( 'hover_effect_transition', 'fg-hover-fade' );
+					$classes[] = foogallery_gallery_template_setting( 'hover_effect_icon', 'fg-hover-zoom' );
+					$classes[] = foogallery_gallery_template_setting( 'caption_invert_color', '' );
 				}
 
 				if ( 'on' === foogallery_get_setting( 'enable_custom_ready', 'on' ) ) {
@@ -591,10 +578,8 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 		 * @return array
 		 */
 		function add_caption_data_options($options, $gallery, $attributes) {
-			$template_data = foogallery_get_gallery_template( $gallery->gallery_template );
-
 			//check the template supports common fields
-			if ( $template_data && array_key_exists( 'common_fields_support', $template_data ) && true === $template_data['common_fields_support'] ) {
+			if ( foogallery_current_gallery_check_template_has_supported_feature('common_fields_support' ) ) {
 
 				$caption_title = foogallery_gallery_template_setting( 'caption_title_source', '' );
 				$caption_desc  = foogallery_gallery_template_setting( 'caption_desc_source', '' );
@@ -626,6 +611,7 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 			$template_data = foogallery_get_gallery_template( $gallery->gallery_template );
 
 			//check the template supports common fields
+			//TODO : check that we even need this?
 			if ( $template_data && array_key_exists( 'common_fields_support', $template_data ) && true === $template_data['common_fields_support'] ) {
 				$attributes['data-fg-common-fields'] = true;
 			}
