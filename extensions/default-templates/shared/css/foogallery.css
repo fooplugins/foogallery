@@ -1163,6 +1163,13 @@
 	clip: rect(0,0,0,0);
 	border: 0;
 }
+.fg-ph-dots:after {
+	display: block;
+	content: '';
+	width: 0;
+	height: 22px;
+}
+
 .fg-paging-container .fg-dots,
 .fg-paging-container .fg-dot-item {
 	display: inline-block;
@@ -1803,7 +1810,7 @@
 }
 .fg-justified .fg-item {
 	visibility: visible;
-	position: absolute;
+	position: relative;
 }
 .fg-justified .fg-item-inner {
 	position: relative;
@@ -1832,6 +1839,47 @@
 .fg-justified.fg-hover-zoomed .fg-item.fg-positioned:hover .fg-image {
 	transform: translateY(-50%) scale(1.15);
 }
+/* CSS justified layout. */
+.foogallery.fg-justified-css {
+	position: relative;
+	display: flex;
+	box-sizing: border-box;
+	align-items: center;
+	justify-content: stretch;
+	flex-wrap: wrap;
+}
+.foogallery.fg-justified-css:after {
+	display: block;
+	content: '';
+	flex-shrink: 0;
+	flex-grow: 10;
+	min-width: 60px;
+}
+.foogallery.fg-justified-css .fg-item,
+.foogallery.fg-justified-css .fg-item-inner,
+.foogallery.fg-justified-css .fg-thumb,
+.foogallery.fg-justified-css .fg-image {
+	display: block;
+}
+
+.foogallery.fg-justified-css .fg-item {
+	flex-shrink: 0;
+	flex-grow: 1;
+	margin: 5px;
+}
+.foogallery.fg-justified-css .fg-thumb {
+
+}
+.foogallery.fg-justified-css .fg-image-wrap {
+	display: flex;
+	align-items: center;
+	justify-content: stretch;
+	overflow: hidden;
+}
+.foogallery.fg-justified-css .fg-image {
+	width: 100%;
+	height: auto;
+}
 .fg-simple_portfolio {
     display: flex;
     flex-wrap: wrap;
@@ -1841,10 +1889,11 @@
 }
 .fg-simple_portfolio .fg-item {
     position: relative;
-    flex: 1;
+    flex-grow: 0;
+    flex-shrink: 0;
+    flex-basis: auto;
     margin: 10px;
-    min-width: 250px;
-    max-width: 250px;
+    max-width: 100%;
 }
 .fg-simple_portfolio .fg-item-inner {
     display: flex;

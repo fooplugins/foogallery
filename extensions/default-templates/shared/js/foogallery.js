@@ -2293,14 +2293,12 @@
 	 * _fn.apply( Test, ["My name", "My value"] ); // => "Test: name = My name, value = My value"
 	 */
 	_.fn.apply = function(klass, args){
-		args.unshift(klass);
-		return new (Function.prototype.bind.apply(klass, args));
-		// args = _is.array(args) ? args : [];
-		// function Class() {
-		// 	return klass.apply(this, args);
-		// }
-		// Class.prototype = klass.prototype;
-		// return new Class();
+		args = _is.array(args) ? args : [];
+		function Class() {
+			return klass.apply(this, args);
+		}
+		Class.prototype = klass.prototype;
+		return new Class();
 	};
 
 	/**
@@ -5953,15 +5951,6 @@
 (function ($, _, _utils, _is, _fn) {
 
 	/**
-	 * @summary The url of an empty 1x1 pixel image used as the default value for the `placeholder` and `error` {@link FooGallery.defaults|options}.
-	 * @memberof FooGallery
-	 * @name EMPTY_IMAGE
-	 * @type {string}
-	 * @default "data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
-	 */
-	_.EMPTY_IMAGE = "data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==";
-
-	/**
 	 * @summary The name to use when getting or setting an instance of a {@link FooGallery.Template|template} on an element using jQuery's `.data()` method.
 	 * @memberof FooGallery
 	 * @name DATA_TEMPLATE
@@ -5996,12 +5985,6 @@
 		}
 		var tmpl = _.template.make(options, element);
 		return tmpl instanceof _.Template ? tmpl.initialize() : _fn.rejected;
-	};
-
-	_.initAll = function (options) {
-		return _fn.when($(".foogallery").map(function (i, element) {
-			return _.init(options, element);
-		}).get());
 	};
 
 	/**
@@ -6451,15 +6434,220 @@
 		FooGallery.utils.is,
 		FooGallery.utils.obj
 );
+(function($, _, _utils, _is, _fn){
+
+    /**
+     * @summary A factory for classes allowing them to be registered and created using a friendly name.
+     * @memberof FooGallery.
+     * @class Factory
+     * @description This class allows other classes to register themselves for use at a later time. Depending on how you intend to use the registered classes you can also specify a load and execution order through the `priority` parameter of the {@link FooGallery.utils.Factory#register|register} method.
+     * @augments FooGallery.utils.Class
+     * @borrows FooGallery.utils.Class.extend as extend
+     * @borrows FooGallery.utils.Class.override as override
+     */
+    _.Factory = _utils.Class.extend(/** @lends FooGallery.Factory.prototype */{
+        /**
+         * @ignore
+         * @constructs
+         **/
+        construct: function(){
+            /**
+             * @summary An object containing all the required info to create a new instance of a registered class.
+             * @typedef {Object} FooGallery.Factory~RegisteredClass
+             * @property {string} name - The friendly name of the registered class.
+             * @property {function} klass - The constructor for the registered class.
+             * @property {number} priority - The priority for the registered class.
+             */
+
+            /**
+             * @summary An object containing all registered classes.
+             * @memberof FooGallery.Factory#
+             * @name registered
+             * @type {Object.<string, FooGallery.Factory~RegisteredClass>}
+             * @readonly
+             * @example {@caption The following shows the structure of this object. The `<name>` placeholders would be the name the class was registered with.}
+             * {
+             * 	"<name>": {
+             * 		"name": <string>,
+             * 		"klass": <function>,
+             * 		"priority": <number>
+             * 	},
+             * 	"<name>": {
+             * 		"name": <string>,
+             * 		"klass": <function>,
+             * 		"priority": <number>
+             * 	},
+             * 	...
+             * }
+             */
+            this.registered = {};
+        },
+        /**
+         * @summary Checks if the factory contains a class registered using the supplied `name`.
+         * @memberof FooGallery.Factory#
+         * @function contains
+         * @param {string} name - The name of the class to check.
+         * @returns {boolean}
+         * @example {@run true}
+         * // create a new instance of the factory, this is usually exposed by the class that will be using the factory.
+         * var factory = new FooGallery.Factory();
+         *
+         * // create a class to register
+         * function Test(){}
+         *
+         * // register the class with the factory with the default priority
+         * factory.register( "test", Test );
+         *
+         * // test if the class was registered
+         * console.log( factory.contains( "test" ) ); // => true
+         */
+        contains: function(name){
+            return !_is.undef(this.registered[name]);
+        },
+        /**
+         * @summary Create a new instance of a class registered with the supplied `name` and arguments.
+         * @memberof FooGallery.Factory#
+         * @function make
+         * @param {string} name - The name of the class to create.
+         * @param {*} [arg1] - The first argument to supply to the new instance.
+         * @param {...*} [argN] - Any number of additional arguments to supply to the new instance.
+         * @returns {Object}
+         * @example {@caption The following shows how to create a new instance of a registered class.}{@run true}
+         * // create a new instance of the factory, this is usually done by the class that will be using it.
+         * var factory = new FooGallery.Factory();
+         *
+         * // create a Logger class to register, this would usually be in another file
+         * var Logger = FooGallery.Class.extend({
+         * 	write: function( message ){
+         * 		console.log( "Logger#write: " + message );
+         * 	}
+         * });
+         *
+         * factory.register( "logger", Logger );
+         *
+         * // create a new instances of the class registered as "logger"
+         * var logger = factory.make( "logger" );
+         * logger.write( "My message" ); // => "Logger#write: My message"
+         */
+        make: function(name, arg1, argN){
+            var self = this, args = _fn.arg2arr(arguments), reg;
+            name = args.shift();
+            reg = self.registered[name];
+            if (_is.hash(reg) && _is.fn(reg.klass)){
+                return _fn.apply(reg.klass, args);
+            }
+            return null;
+        },
+        /**
+         * @summary Gets an array of all registered names.
+         * @memberof FooGallery.Factory#
+         * @function names
+         * @param {boolean} [prioritize=false] - Whether or not to order the names by the priority they were registered with.
+         * @returns {Array.<string>}
+         * @example {@run true}
+         * // create a new instance of the factory, this is usually exposed by the class that will be using the factory.
+         * var factory = new FooGallery.Factory();
+         *
+         * // create some classes to register
+         * function Test1(){}
+         * function Test2(){}
+         *
+         * // register the classes with the factory with the default priority
+         * factory.register( "test-1", Test1 );
+         * factory.register( "test-2", Test2, 1 );
+         *
+         * // log all registered names
+         * console.log( factory.names() ); // => ["test-1","test-2"]
+         * console.log( factory.names( true ) ); // => ["test-2","test-1"] ~ "test-2" appears before "test-1" as it was registered with a higher priority
+         */
+        names: function( prioritize ){
+            prioritize = _is.boolean(prioritize) ? prioritize : false;
+            var names = [], name;
+            if (prioritize){
+                var reg = [];
+                for (name in this.registered){
+                    if (!this.registered.hasOwnProperty(name)) continue;
+                    reg.push(this.registered[name]);
+                }
+                reg.sort(function(a, b){ return b.priority - a.priority; });
+                $.each(reg, function(i, r){
+                    names.push(r.name);
+                });
+            } else {
+                for (name in this.registered){
+                    if (!this.registered.hasOwnProperty(name)) continue;
+                    names.push(name);
+                }
+            }
+            return names;
+        },
+        /**
+         * @summary Registers a `klass` constructor with the factory using the given `name`.
+         * @memberof FooGallery.Factory#
+         * @function register
+         * @param {string} name - The friendly name of the class.
+         * @param {function} klass - The class constructor to register.
+         * @param {number} [priority=0] - This determines the index for the class when using the {@link FooGallery.Factory#names|names} method, a higher value equals a lower index.
+         * @returns {boolean} `true` if the `klass` was successfully registered.
+         * @description Once a class is registered you can use either the {@link FooGallery.Factory#make|make} method to create new instances.
+         * @example {@run true}
+         * // create a new instance of the factory, this is usually exposed by the class that will be using the factory.
+         * var factory = new FooGallery.Factory();
+         *
+         * // create a class to register
+         * function Test(){}
+         *
+         * // register the class with the factory with the default priority
+         * var succeeded = factory.register( "test", Test );
+         *
+         * console.log( succeeded ); // => true
+         * console.log( factory.registered.hasOwnProperty( "test" ) ); // => true
+         * console.log( factory.registered[ "test" ].name === "test" ); // => true
+         * console.log( factory.registered[ "test" ].klass === Test ); // => true
+         * console.log( factory.registered[ "test" ].priority === 0 ); // => true
+         */
+        register: function(name, klass, priority){
+            if (!_is.string(name) || _is.empty(name) || !_is.fn(klass)) return false;
+            priority = _is.number(priority) ? priority : 0;
+            var current = this.registered[name];
+            this.registered[name] = {
+                name: name,
+                klass: klass,
+                priority: !_is.undef(current) ? current.priority : priority
+            };
+            return true;
+        },
+        load: function(){
+            var self = this, result = [], reg = [], name;
+            for (name in self.registered){
+                if (!self.registered.hasOwnProperty(name)) continue;
+                reg.push(self.registered[name]);
+            }
+            reg.sort(function(a, b){ return b.priority - a.priority; });
+            $.each(reg, function(i, r){
+                result.push(self.make(r.name));
+            });
+            return result;
+        }
+    });
+
+})(
+    // dependencies
+    FooGallery.$,
+    FooGallery,
+    FooGallery.utils,
+    FooGallery.utils.is,
+    FooGallery.utils.fn
+);
 (function ($, _, _utils, _is, _fn, _obj) {
 
-	_.TemplateFactory = _utils.Factory.extend(/** @lends FooGallery.TemplateFactory */{
+	_.TemplateFactory = _.Factory.extend(/** @lends FooGallery.TemplateFactory */{
 		/**
 		 * @summary A factory for galleries allowing them to be easily registered and created.
 		 * @memberof FooGallery
 		 * @constructs TemplateFactory
 		 * @description The plugin makes use of an instance of this class exposed as {@link FooGallery.template}.
-		 * @augments FooGallery.utils.Factory
+		 * @augments FooGallery.Factory
 		 * @borrows FooGallery.utils.Class.extend as extend
 		 * @borrows FooGallery.utils.Class.override as override
 		 */
@@ -6595,17 +6783,17 @@
 		FooGallery.utils.fn,
 		FooGallery.utils.obj
 );
-(function(_, _utils, _is, _fn, _obj){
+(function(_, _is, _fn, _obj){
 
-	_.PagingFactory = _utils.Factory.extend(/** @lends FooGallery.PagingFactory */{
+	_.PagingFactory = _.Factory.extend(/** @lends FooGallery.PagingFactory */{
 		/**
 		 * @summary A factory for paging types allowing them to be easily registered and created.
 		 * @memberof FooGallery
 		 * @constructs PagingFactory
 		 * @description The plugin makes use of an instance of this class exposed as {@link FooGallery.paging}.
 		 * @augments FooGallery.Factory
-		 * @borrows FooGallery.Factory.extend as extend
-		 * @borrows FooGallery.Factory.override as override
+		 * @borrows FooGallery.utils.Class.extend as extend
+		 * @borrows FooGallery.utils.Class.override as override
 		 */
 		construct: function(){
 			/**
@@ -6734,7 +6922,6 @@
 
 })(
 		FooGallery,
-		FooGallery.utils,
 		FooGallery.utils.is,
 		FooGallery.utils.fn,
 		FooGallery.utils.obj
@@ -7050,7 +7237,7 @@
 			 * });
 			 */
 			var e = self.raise("init");
-			if (e.isDefaultPrevented()) return _fn.rejectWith("init default prevented");
+			if (e.isDefaultPrevented()) return _fn.reject("init default prevented");
 			return self.items.fetch();
 		},
 		/**
@@ -7379,17 +7566,14 @@
 			args = _is.array(args) ? args : [];
 			var self = this,
 					name = eventName.split(".")[0],
-					listener = _str.camel("on-" + name),
-					event = $.Event(name + ".foogallery");
+					listener = _str.camel("on-" + name);
 			args.unshift(self); // add self
 			var e = self.trigger(name, args);
-			if (e.defaultPrevented) event.preventDefault();
-			self.$el.trigger(event, args);
 			if (_is.fn(self[listener])) {
-				args.unshift(event); // add event
+				args.unshift(e); // add event
 				self[listener].apply(self.$el.get(0), args);
 			}
-			return event;
+			return e;
 		},
 
 		layout: function () {
@@ -7674,9 +7858,9 @@
 	 * @summary A factory for registering and creating basic gallery components.
 	 * @memberof FooGallery
 	 * @name components
-	 * @type {FooGallery.utils.Factory}
+	 * @type {FooGallery.Factory}
 	 */
-	_.components = new _utils.Factory();
+	_.components = new _.Factory();
 
 })(
 	FooGallery,
@@ -7988,8 +8172,12 @@
 					if (!!tmpl.pages){
 						tmpl.pages.setState(obj);
 					} else {
-						tmpl.items.detach(tmpl.items.all());
-						tmpl.items.create(tmpl.items.available(), true);
+						var available = tmpl.items.available();
+						if (!tmpl.items.isAll(available)){
+							var notAvailable = tmpl.items.not(available);
+							tmpl.items.detach(notAvailable);
+						}
+						tmpl.items.create(available, true);
 					}
 					if (obj.item){
 						if (self.opt.scrollTo) {
@@ -8054,7 +8242,7 @@
 );
 (function ($, _, _utils, _is, _fn, _obj) {
 
-	_.Items = _.Component.extend(/** @lends FooGallery.Items */{
+	_.Items = _.Component.extend(/** @lends FooGallery.Items.prototype */{
 		/**
 		 * @summary This class controls everything related to items and serves as the base class for the various paging types.
 		 * @memberof FooGallery
@@ -8079,6 +8267,7 @@
 			self._fetched = null;
 			self._arr = [];
 			self._available = [];
+			self._unavailable = [];
 			// add the .all caption selector
 			var cls = self.tmpl.cls.item.caption;
 			self.tmpl.sel.item.caption.all = _utils.selectify([cls.elem, cls.inner, cls.title, cls.description]);
@@ -8135,16 +8324,18 @@
 			self._fetched = null;
 			self._arr = [];
 			self._available = [];
+			self._unavailable = [];
 			self._super();
 		},
 		fetch: function (refresh) {
 			var self = this;
 			if (!refresh && _is.promise(self._fetched)) return self._fetched;
-			var fg = self.tmpl, selectors = fg.sel,
-					option = fg.opt.items,
-					def = $.Deferred();
+			var itemsId = self.tmpl.id + "_items",
+				selectors = self.tmpl.sel,
+				option = self.tmpl.opt.items,
+				def = $.Deferred();
 
-			var items = self.make(fg.$el.find(selectors.item.elem));
+			var items = self.make(self.tmpl.$el.find(selectors.item.elem));
 
 			if (!_is.empty(option)) {
 				if (_is.array(option)) {
@@ -8162,7 +8353,9 @@
 					def.resolve(items);
 				}
 			} else {
-				items.push.apply(items, self.make(window[fg.id + "-items"]));
+				if (_is.array(window[itemsId])) {
+					items.push.apply(items, self.make(window[itemsId]));
+				}
 				def.resolve(items);
 			}
 			def.then(function (items) {
@@ -8188,6 +8381,12 @@
 			}
 			return this._available.slice();
 		},
+		unavailable: function (where) {
+			if (_is.fn(where)){
+				return this._unavailable.filter(where, this);
+			}
+			return this._unavailable.slice();
+		},
 		get: function (idOrIndex) {
 			var map = _is.number(idOrIndex) ? 'index' : 'id';
 			return !!this.maps[map][idOrIndex] ? this.maps[map][idOrIndex] : null;
@@ -8196,10 +8395,19 @@
 			this._arr = _is.array(items) ? items : [];
 			this.maps = this.createMaps(this._arr);
 			this._available = this.all();
+			this._unavailable = [];
 		},
 		setAvailable: function (items) {
-			this.maps = this.createMaps(this._arr);
-			this._available = _is.array(items) ? items : [];
+			var self = this;
+			self.maps = self.createMaps(self._arr);
+			self._available = _is.array(items) ? items : [];
+			if (self._arr.length !== self._available.length){
+				self._unavailable = self._arr.filter(function(item){
+					return self._available.indexOf(item) === -1;
+				});
+			} else {
+				self._unavailable = [];
+			}
 		},
 		reset: function () {
 			this.setAvailable(this.all());
@@ -8214,6 +8422,21 @@
 				}
 			}
 			return null;
+		},
+		not: function(items){
+			var all = this.all();
+			if (_is.array(items)){
+				return all.filter(function(item){
+					return items.indexOf(item) === -1;
+				});
+			}
+			return all;
+		},
+		isAll: function(items){
+			if (_is.array(items)){
+				return this._arr.length === items.length;
+			}
+			return false;
 		},
 		first: function(where){
 			return this.find(this._available, where);
@@ -8273,13 +8496,15 @@
 		 * @returns {FooGallery.Item[]}
 		 */
 		loadable: function (items) {
-			var self = this, opt = self.tmpl.opt, viewport;
-			if (opt.lazy) {
-				viewport = _utils.getViewportBounds(opt.viewport);
+			var self = this, opt = self.tmpl.opt;
+			if (self.ALLOW_LOAD && _is.array(items)) {
+				return $.map(items, function (item) {
+					return item.isCreated && item.isAttached
+						&& !item.isLoading && !item.isLoaded && !item.isError
+						&& (!opt.lazy || (opt.lazy && item.inViewport())) ? item : null;
+				});
 			}
-			return self.ALLOW_LOAD && _is.array(items) ? $.map(items, function (item) {
-						return item.isCreated && item.isAttached && !item.isLoading && !item.isLoaded && !item.isError && (!opt.lazy || (opt.lazy && item.intersects(viewport))) ? item : null;
-					}) : [];
+			return [];
 		},
 		/**
 		 * @summary Filter the supplied `items` and return only those that can be created.
@@ -8432,8 +8657,12 @@
 			if (_is.hash(objOrElement)) {
 				type = objOrElement.type;
 			} else if (_is.element(objOrElement)) {
-				var $el = $(objOrElement), item = this.tmpl.sel.item;
-				type = $el.find(item.anchor).data("type");
+				var match = objOrElement.className.match(/(?:^|\s)?fg-type-(.*?)(?:$|\s)/);
+				if (match !== null && match.length === 2){
+					type = match[1];
+				}
+				// var $el = $(objOrElement), item = this.tmpl.sel.item;
+				// type = $el.find(item.anchor).data("type");
 			}
 			return _is.string(type) && _.components.contains(type) ? type : "image";
 		},
@@ -8683,7 +8912,12 @@
 					var loading = $.map(items, function (item) {
 						return item.load();
 					});
-					return _fn.when(loading).done(function (loaded) {
+					return _fn.allSettled(loading).then(function (results) {
+						var loaded = results.filter(function(result){
+							return result.status === "fulfilled";
+						}).map(function(result){
+							return result.value;
+						});
 						/**
 						 * @summary Raised after the template has loaded items.
 						 * @event FooGallery.Template~"loaded-items.foogallery"
@@ -8704,7 +8938,7 @@
 					});
 				}
 			}
-			return _fn.resolveWith([]);
+			return _fn.resolve([]);
 		}
 	});
 
@@ -8842,13 +9076,12 @@
 			 * @type {?jQuery}
 			 */
 			self.$caption = null;
-
 			/**
 			 * @memberof FooGallery.Item#
-			 * @name fixLayout
-			 * @type {boolean}
+			 * @name $loader
+			 * @type {?jQuery}
 			 */
-			self.fixLayout = self.tmpl.opt.fixLayout;
+			self.$loader = null;
 
 			/**
 			 * @memberof FooGallery.Item#
@@ -8881,6 +9114,12 @@
 			 * @type {string}
 			 */
 			self.href = self.opt.href;
+			/**
+			 * @memberof FooGallery.Item#
+			 * @name placeholder
+			 * @type {string}
+			 */
+			self.placeholder = self.opt.placeholder;
 			/**
 			 * @memberof FooGallery.Item#
 			 * @name src
@@ -8943,12 +9182,6 @@
 			self.tags = self.opt.tags;
 			/**
 			 * @memberof FooGallery.Item#
-			 * @name maxWidth
-			 * @type {?FooGallery.Item~maxWidthCallback}
-			 */
-			self.maxWidth = self.opt.maxWidth;
-			/**
-			 * @memberof FooGallery.Item#
 			 * @name maxCaptionLength
 			 * @type {number}
 			 */
@@ -8995,14 +9228,6 @@
 			 * @type {boolean}
 			 */
 			self.hasExif = _is.exif(self.exif);
-			/**
-			 * @summary The cached result of the last call to the {@link FooGallery.Item#getThumbUrl|getThumbUrl} method.
-			 * @memberof FooGallery.Item#
-			 * @name _thumbUrl
-			 * @type {?string}
-			 * @private
-			 */
-			self._thumbUrl = null;
 			/**
 			 * @summary This property is used to store the promise created when loading an item for the first time.
 			 * @memberof FooGallery.Item#
@@ -9129,9 +9354,9 @@
 					self.$wrap.remove();
 				}
 				if (self._undo.loader) {
-					self.$el.find(self.sel.loader).remove();
+					self.$loader.remove();
 				}
-				if (self._undo.placeholder && self.$image.prop("src") === _.EMPTY_IMAGE) {
+				if (self._undo.placeholder && self.$image.prop("src") === self.placeholder) {
 					self.$image.removeAttr("src");
 				}
 			} else if (self.isCreated) {
@@ -9196,7 +9421,6 @@
 			var e = self.tmpl.raise("parse-item", [self, $el]);
 			if (!e.isDefaultPrevented() && (self.isCreated = $el.is(self.sel.elem))) {
 				self.isParsed = self.doParseItem($el);
-				if (self.fixLayout) self.fix();
 				// We don't load the attributes when parsing as they are only ever used to create an item and if you're parsing it's already created.
 			}
 			if (self.isParsed) {
@@ -9229,16 +9453,19 @@
 		 * @returns {boolean}
 		 */
 		doParseItem: function ($el) {
-			var self = this, o = self.tmpl.opt, cls = self.cls, sel = self.sel;
+			var self = this, o = self.tmpl.opt, cls = self.cls, sel = self.sel, el = $el.get(0);
 
 			self._undo.classes = $el.attr("class") || "";
 			self._undo.style = $el.attr("style") || "";
 
 			self.$el = $el.data(_.DATA_ITEM, self);
-			self.$inner = self.$el.children(sel.inner);
-			self.$anchor = self.$inner.children(sel.anchor).on("click.foogallery", {self: self}, self.onAnchorClick);
-			self.$image = self.$anchor.find(sel.image);
-			self.$caption = self.$inner.children(sel.caption.elem).on("click.foogallery", {self: self}, self.onCaptionClick);
+			self.$inner = $(el.querySelector(sel.inner));//self.$el.children(sel.inner);
+			self.$anchor = $(el.querySelector(sel.anchor)).on("click.foogallery", {self: self}, self.onAnchorClick);
+			self.$image = $(el.querySelector(sel.image));
+			self.$caption = $(el.querySelector(sel.caption.elem)).on("click.foogallery", {self: self}, self.onCaptionClick);
+			self.$overlay = $(el.querySelector(sel.overlay));
+			self.$wrap = $(el.querySelector(sel.wrap));
+			self.$loader = $(el.querySelector(sel.loader));
 
 			if ( !self.$el.length || !self.$inner.length || !self.$anchor.length || !self.$image.length ){
 				console.error("FooGallery Error: Invalid HTML markup. Check the item markup for additional elements or malformed HTML in the title or description.", self);
@@ -9250,12 +9477,12 @@
 				return false;
 			}
 
-			self.isAttached = self.$el.parent().length > 0;
-			self.isLoading = self.$el.is(sel.loading);
-			self.isLoaded = self.$el.is(sel.loaded);
-			self.isError = self.$el.is(sel.error);
+			self.isAttached = el.parentNode !== null;
+			self.isLoading = self.$el.hasClass(cls.loading);
+			self.isLoaded = self.$el.hasClass(cls.loaded);
+			self.isError = self.$el.hasClass(cls.error);
 
-			var data = self.$anchor.attr("data-type", self.type).data();
+			var data = self.$anchor.data();
 			self.id = data.id || self.id;
 			self.productId = data.productId || self.productId;
 			self.tags = data.tags || self.tags;
@@ -9285,35 +9512,42 @@
 				self.$caption.find(sel.caption.description).html(self.description.substr(0, self.maxDescriptionLength) + "&hellip;");
 			}
 			// check if the item has an overlay
-			self.$overlay = self.$anchor.children(sel.overlay);
 			if (self.$overlay.length === 0) {
 				self.$overlay = $("<span/>", {"class": cls.overlay});
 				self.$anchor.append(self.$overlay);
 				self._undo.overlay = true;
 			}
 			// check if the item has a wrap
-			self.$wrap = self.$anchor.children(sel.wrap);
 			if (self.$wrap.length === 0) {
 				self.$wrap = $("<span/>", {"class": cls.wrap});
 				self.$anchor.append(self.$wrap.append(self.$image));
 				self._undo.wrap = true;
 			}
 			// check if the item has a loader
-			if (self.$el.children(sel.loader).length === 0) {
-				self.$el.append($("<div/>", {"class": cls.loader}));
+			if (self.$loader.length === 0) {
+				self.$loader = $("<div/>", {"class": cls.loader});
+				self.$el.append(self.$loader);
 				self._undo.loader = true;
 			}
 			// if the image has no src url then set the placeholder
 			var img = self.$image.get(0);
-			if (_is.empty(img.src)) {
-				img.src = _.EMPTY_IMAGE;
-				self._undo.placeholder = true;
+			if (!_is.string(img.src) || img.src.length === 0) {
+				if (!_is.string(self.placeholder) || self.placeholder.length === 0){
+					self.placeholder = self.createPlaceholder(self.width, self.height);
+				}
+				if (self.placeholder.length > 0){
+					img.src = self.placeholder;
+					self._undo.placeholder = true;
+				}
 			}
-			self.$el.addClass(self.getTypeClass());
-			if (self.hasExif){
+			var typeClass = self.getTypeClass();
+			if (!self.$el.hasClass(typeClass)){
+				self.$el.addClass(typeClass);
+			}
+			if (self.hasExif && !self.$el.hasClass(cls.exif)){
 				self.$el.addClass(cls.exif);
 			}
-			if (self.isCreated && self.isAttached && !self.isLoading && !self.isLoaded && !self.isError) {
+			if (self.isCreated && self.isAttached && !self.isLoading && !self.isLoaded && !self.isError && !self.$el.hasClass(cls.idle)) {
 				self.$el.addClass(cls.idle);
 			}
 			return true;
@@ -9397,6 +9631,18 @@
 			return self.isCreated;
 		},
 		/**
+		 * @memberof FooGallery.Item#
+		 * @function _setAttributes
+		 * @param element
+		 * @param attributes
+		 * @private
+		 */
+		_setAttributes: function(element, attributes){
+			Object.keys(attributes).forEach(function(key){
+				element.setAttribute(key, _is.string(attributes[key]) ? attributes[key] : JSON.stringify(attributes[key]));
+			});
+		},
+		/**
 		 * @summary Performs the actual create logic for the item.
 		 * @memberof FooGallery.Item#
 		 * @function doCreateItem
@@ -9404,9 +9650,15 @@
 		 */
 		doCreateItem: function () {
 			var self = this, o = self.tmpl.opt, cls = self.cls, attr = self.attr, type = self.getTypeClass(), exif = self.hasExif ? cls.exif : "";
-			attr.elem["class"] = [cls.elem, type, exif, cls.idle].join(" ");
 
-			attr.inner["class"] = cls.inner;
+
+			var elem = document.createElement("div");
+			self._setAttributes(elem, attr.elem);
+			elem.className = [cls.elem, type, exif, cls.idle].join(" ");
+
+			var inner = document.createElement("figure");
+			self._setAttributes(inner, attr.inner);
+			inner.className = cls.inner;
 
 			var anchorClasses = [cls.anchor];
 			if (self.noLightbox){
@@ -9415,68 +9667,102 @@
 			if (self.panelHide){
 				anchorClasses.push(cls.panelHide);
 			}
-			attr.anchor["class"] = anchorClasses.join(" ");
-			attr.anchor["href"] = self.href;
-			attr.anchor["data-type"] = self.type;
-			attr.anchor["data-id"] = self.id;
-			attr.anchor["data-title"] = self.caption;
-			attr.anchor["data-description"] = self.description;
+
+			var anchor = document.createElement("a");
+			self._setAttributes(anchor, attr.anchor);
+			anchor.className = anchorClasses.join(" ");
+			anchor.href = self.href;
+			anchor.setAttribute("data-type", self.type);
+			anchor.setAttribute("data-id", self.id);
+			anchor.setAttribute("data-title", self.caption);
+			anchor.setAttribute("data-description", self.description);
 			if (!_is.empty(self.tags)) {
-				attr.anchor["data-tags"] = JSON.stringify(self.tags);
+				anchor.setAttribute("data-tags", JSON.stringify(self.tags));
 			}
 			if (!_is.empty(self.productId)) {
-				attr.anchor["data-product-id"] = self.productId;
+				anchor.setAttribute("data-product-id", self.productId);
+			}
+			if (self.hasExif) {
+				anchor.setAttribute("data-exif", JSON.stringify(self.exif));
 			}
 
-			attr.image["class"] = cls.image;
-			attr.image[o.src] = self.src;
-			attr.image[o.srcset] = self.srcset;
-			attr.image["width"] = self.width;
-			attr.image["height"] = self.height;
-			attr.image["title"] = self.title;
-			attr.image["alt"] = self.alt;
+			var image = document.createElement("img");
+			self._setAttributes(image, attr.image);
+			image.className = cls.image;
+			if (!_is.string(self.placeholder) || self.placeholder.length === 0){
+				self.placeholder = self.createPlaceholder(self.width, self.height);
+			}
+			if (self.placeholder.length > 0){
+				image.src = self.placeholder;
+			}
+			image.setAttribute(o.src, self.src);
+			image.setAttribute(o.srcset, self.srcset);
+			image.setAttribute("width", self.width + '');
+			image.setAttribute("height", self.height + '');
+			image.setAttribute("title", self.title);
+			image.setAttribute("alt", self.alt);
 
-			self.$el = $("<div/>").attr(attr.elem).data(_.DATA_ITEM, self);
-			self.$inner = $("<figure/>").attr(attr.inner).appendTo(self.$el);
-			self.$anchor = $("<a/>").attr(attr.anchor).appendTo(self.$inner).on("click.foogallery", {self: self}, self.onAnchorClick);
-			self.$overlay = $("<span/>", {"class": cls.overlay}).appendTo(self.$anchor);
-			self.$wrap = $("<span/>", {"class": cls.wrap}).appendTo(self.$anchor);
-			self.$image = $("<img/>").attr(attr.image).appendTo(self.$wrap);
+			var overlay = document.createElement("span");
+			overlay.className = cls.overlay;
 
-			cls = self.cls.caption;
-			attr = self.attr.caption;
-			attr.elem["class"] = cls.elem;
-			self.$caption = $("<figcaption/>").attr(attr.elem).on("click.foogallery", {self: self}, self.onCaptionClick);
-			attr.inner["class"] = cls.inner;
-			var $inner = $("<div/>").attr(attr.inner).appendTo(self.$caption);
-			var hasTitle = self.showCaptionTitle && !_is.empty(self.caption), hasDesc = self.showCaptionDescription && !_is.empty(self.description);
-			if (hasTitle || hasDesc) {
-				attr.title["class"] = cls.title;
-				attr.description["class"] = cls.description;
-				if (hasTitle) {
-					var $title = $("<div/>").attr(attr.title), titleHtml = self.caption;
-					// enforce the max length for the caption
-					if (_is.number(self.maxCaptionLength) && self.maxCaptionLength > 0 && _is.string(self.caption) && self.caption.length > self.maxCaptionLength) {
-						titleHtml = self.caption.substr(0, self.maxCaptionLength) + "&hellip;";
-					}
-					$title.get(0).innerHTML = titleHtml;
-					$inner.append($title);
+			var wrap = document.createElement("span");
+			wrap.className = cls.wrap;
+
+			var loader = document.createElement("div");
+			loader.className = cls.loader;
+
+			var caption = document.createElement("figcaption");
+			self._setAttributes(caption, attr.caption.elem);
+			caption.className = cls.caption.elem;
+
+			var captionInner = document.createElement("div");
+			self._setAttributes(captionInner, attr.caption.inner);
+			captionInner.className = cls.caption.inner;
+
+			var captionTitle = null;
+			if (self.showCaptionTitle && _is.string(self.caption) && self.caption.length > 0) {
+				captionTitle = document.createElement("div");
+				self._setAttributes(captionTitle, attr.caption.title);
+				var titleHtml = self.caption;
+				// enforce the max length for the caption
+				if (_is.number(self.maxCaptionLength) && self.maxCaptionLength > 0 && self.caption.length > self.maxCaptionLength) {
+					titleHtml = self.caption.substr(0, self.maxCaptionLength) + "&hellip;";
 				}
-				if (hasDesc) {
-					var $desc = $("<div/>").attr(attr.description), descHtml = self.description;
-					// enforce the max length for the description
-					if (_is.number(self.maxDescriptionLength) && self.maxDescriptionLength > 0 && _is.string(self.description) && self.description.length > self.maxDescriptionLength) {
-						descHtml = self.description.substr(0, self.maxDescriptionLength) + "&hellip;";
-					}
-					$desc.get(0).innerHTML = descHtml;
-					$inner.append($desc);
+				captionTitle.innerHTML = titleHtml;
+			}
+			var captionDesc = null;
+			if (self.showCaptionDescription && _is.string(self.description) && self.description.length > 0) {
+				captionDesc = document.createElement("div");
+				self._setAttributes(captionDesc, attr.caption.description);
+				var descHtml = self.description;
+				// enforce the max length for the description
+				if (_is.number(self.maxDescriptionLength) && self.maxDescriptionLength > 0 && self.description.length > self.maxDescriptionLength) {
+					descHtml = self.description.substr(0, self.maxDescriptionLength) + "&hellip;";
 				}
+				captionDesc.innerHTML = descHtml;
 			}
-			self.$caption.appendTo(self.$inner);
-			// check if the item has a loader
-			if (self.$el.find(self.sel.loader).length === 0) {
-				self.$el.append($("<div/>", {"class": self.cls.loader}));
-			}
+
+			if (captionTitle !== null) captionInner.appendChild(captionTitle);
+			if (captionDesc !== null) captionInner.appendChild(captionDesc);
+			caption.appendChild(captionInner);
+
+			wrap.appendChild(image);
+			anchor.appendChild(overlay);
+			anchor.appendChild(wrap);
+			inner.appendChild(anchor);
+			inner.appendChild(caption);
+			elem.appendChild(inner);
+			elem.appendChild(loader);
+
+			self.$el = $(elem).data(_.DATA_ITEM, self);
+			self.$inner = $(inner);
+			self.$anchor = $(anchor).on("click.foogallery", {self: self}, self.onAnchorClick);
+			self.$overlay = $(overlay);
+			self.$wrap = $(wrap);
+			self.$image = $(image);
+			self.$caption = $(caption).on("click.foogallery", {self: self}, self.onCaptionClick);
+			self.$loader = $(loader);
+
 			return true;
 		},
 		/**
@@ -9534,7 +9820,6 @@
 				var e = self.tmpl.raise("append-item", [self]);
 				if (!e.isDefaultPrevented()) {
 					self.tmpl.$el.append(self.$el);
-					if (self.fixLayout || !self.isParsed) self.fix();
 					self.isAttached = true;
 				}
 				if (self.isAttached) {
@@ -9612,7 +9897,6 @@
 				var e = self.tmpl.raise("detach-item", [self]);
 				if (!e.isDefaultPrevented()) {
 					self.$el.detach();
-					if (self.fixLayout || !self.isParsed) self.unfix();
 					self.isAttached = false;
 				}
 				if (!self.isAttached) {
@@ -9646,9 +9930,9 @@
 		load: function () {
 			var self = this;
 			if (_is.promise(self._load)) return self._load;
-			if (!self.isCreated || !self.isAttached) return _fn.rejectWith("not created or attached");
+			if (!self.isCreated || !self.isAttached) return _fn.reject("not created or attached");
 			var e = self.tmpl.raise("load-item", [self]);
-			if (e.isDefaultPrevented()) return _fn.rejectWith("default prevented");
+			if (e.isDefaultPrevented()) return _fn.reject("default prevented");
 			var cls = self.cls, img = self.$image.get(0), placeholder = img.src;
 			self.isLoading = true;
 			self.$el.removeClass(cls.idle).removeClass(cls.loaded).removeClass(cls.error).addClass(cls.loading);
@@ -9658,7 +9942,6 @@
 					self.isLoading = false;
 					self.isLoaded = true;
 					self.$el.removeClass(cls.loading).addClass(cls.loaded);
-					if (self.fixLayout || !self.isParsed) self.unfix();
 					self.tmpl.raise("loaded-item", [self]);
 					def.resolve(self);
 				};
@@ -9674,70 +9957,26 @@
 					def.reject(self);
 				};
 				// set everything in motion by setting the src
-				img.src = self.getThumbUrl();
+				img.src = self.src;
+				img.srcset = self.srcset;
 				if (img.complete){
 					img.onload();
 				}
 			}).promise();
 		},
 		/**
-		 * @summary Attempts to set a inline width and height on the {@link FooGallery.Item#$image|$image} to prevent layout jumps.
+		 * @summary Create an empty placeholder image using the supplied dimensions.
 		 * @memberof FooGallery.Item#
-		 * @function fix
-		 * @returns {FooGallery.Item}
+		 * @function createPlaceholder
+		 * @param {number} width - The width of the placeholder.
+		 * @param {number} height - The height of the placeholder.
+		 * @returns {string}
 		 */
-		fix: function () {
-			var self = this;
-			if (self.tmpl == null) return self;
-			if (self.isCreated && !self.isLoading && !self.isLoaded && !self.isError) {
-				var w = self.width, h = self.height, img = self.$image.get(0);
-				// if we have a base width and height to work with
-				if (!isNaN(w) && !isNaN(h) && !!img) {
-					// figure out the max image width and calculate the height the image should be displayed as
-					var width = _is.fn(self.maxWidth) ? self.maxWidth(self) : self.$image.width();
-					if (width <= 0) width = w;
-					var ratio = width / w, height = h * ratio;
-					// actually set the inline css on the image
-					self.$image.css({width: width, height: height});
-				}
+		createPlaceholder: function(width, height){
+			if (_is.number(width) && _is.number(height)){
+				return "data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%20" + width + "%20" + height + "%22%3E%3C/svg%3E";
 			}
-			return self;
-		},
-		/**
-		 * @summary Removes any inline width and height values set on the {@link FooGallery.Item#$image|$image}.
-		 * @memberof FooGallery.Item#
-		 * @function unfix
-		 * @returns {FooGallery.Item}
-		 */
-		unfix: function () {
-			var self = this;
-			if (self.tmpl == null) return self;
-			if (self.isCreated) self.$image.css({width: '', height: ''});
-			return self;
-		},
-		/**
-		 * @summary Inspect the `src` and `srcset` properties to determine which url to load for the thumb.
-		 * @memberof FooGallery.Item#
-		 * @function getThumbSrc
-		 * @param {number} renderWidth - The rendered width of the image to fetch the url for.
-		 * @param {number} renderHeight - The rendered height of the image to fetch the url for.
-		 * @returns {string}
-		 */
-		getThumbSrc: function(renderWidth, renderHeight){
-			return _utils.src(this.src, this.srcset, this.width, this.height, renderWidth, renderHeight);
-		},
-		/**
-		 * @summary Inspect the `src` and `srcset` properties to determine which url to load for the thumb.
-		 * @memberof FooGallery.Item#
-		 * @function getThumbUrl
-		 * @param {boolean} [refresh=false] - Whether or not to force refreshing of the cached value.
-		 * @returns {string}
-		 */
-		getThumbUrl: function (refresh) {
-			refresh = _is.boolean(refresh) ? refresh : false;
-			var self = this;
-			if (!refresh && _is.string(self._thumbUrl)) return self._thumbUrl;
-			return self._thumbUrl = self.getThumbSrc(self.$anchor.innerWidth(), self.$anchor.innerHeight());
+			return "";
 		},
 		/**
 		 * @summary Gets the type specific CSS class for the item.
@@ -9746,7 +9985,7 @@
 		 * @returns {string}
 		 */
 		getTypeClass: function(){
-			return this.cls.types.hasOwnProperty(this.type) ? this.cls.types[this.type] : "";
+			return this.cls.types[this.type] || "";
 		},
 		/**
 		 * @summary Scroll the item into the center of the viewport.
@@ -9756,39 +9995,57 @@
 		scrollTo: function (align) {
 			var self = this;
 			if (self.isAttached) {
-				var ib = self.bounds(), vb = _utils.getViewportBounds();
-				switch (align) {
-					case "top": // attempts to center the item horizontally but aligns the top with the middle of the viewport
-						ib.left += (ib.width / 2) - (vb.width / 2);
-						ib.top -= (vb.height / 5);
-						break;
-					default: // attempts to center the item in the viewport
-						ib.left += (ib.width / 2) - (vb.width / 2);
-						ib.top += (ib.height / 2) - (vb.height / 2);
-						break;
+				var el = self.$el.get(0);
+				if (!!el.scrollIntoViewIfNeeded){
+					el.scrollIntoViewIfNeeded();
+				} else {
+					el.scrollIntoView(align === "top");
 				}
-				window.scrollTo(ib.left, ib.top);
 			}
 			return self;
 		},
 		/**
-		 * @summary Get the bounds for the item.
+		 * @summary Get the bounding rectangle for the item.
 		 * @memberof FooGallery.Item#
 		 * @function bounds
-		 * @returns {?FooGallery.utils.Bounds}
+		 * @returns {?Rect} Returns `null` if the item is not attached to the DOM.
 		 */
 		bounds: function () {
-			return this.isAttached ? _utils.getElementBounds(this.$el) : null;
+
+			/**
+			 * @typedef {Object} Rect
+			 * @property {number} x
+			 * @property {number} y
+			 * @property {number} width
+			 * @property {number} height
+			 * @property {number} top
+			 * @property {number} right
+			 * @property {number} bottom
+			 * @property {number} left
+			 */
+
+			if (this.isAttached){
+				var el = this.$el.get(0), rect = el.getBoundingClientRect();
+				return { x: rect.left, y: rect.top, width: rect.width, height: rect.height, top: rect.top, right: rect.right, bottom: rect.bottom, left: rect.left };
+			}
+			return null;
 		},
 		/**
-		 * @summary Checks if the item bounds intersects the supplied bounds.
+		 * @summary Checks if the item is within the viewport.
 		 * @memberof FooGallery.Item#
-		 * @function intersects
-		 * @param {FooGallery.utils.Bounds} bounds - The bounds to check.
+		 * @function inViewport
 		 * @returns {boolean}
 		 */
-		intersects: function (bounds) {
-			return this.isAttached ? this.bounds().intersects(bounds) : false;
+		inViewport: function(){
+			var self = this;
+			if (self.isAttached){
+				var rect = self.bounds();
+				return rect !== null && rect.bottom > 0 &&
+					rect.right > 0 &&
+					rect.left < window.innerWidth &&
+					rect.top < window.innerHeight;
+			}
+			return false;
 		},
 		/**
 		 * @summary Updates the current state to this item.
@@ -9859,19 +10116,6 @@
 	});
 
 	/**
-	 * @summary Called when setting an items' image size to prevent layout jumps.
-	 * @callback FooGallery.Item~maxWidthCallback
-	 * @param {FooGallery.Item} item - The item to determine the maxWidth for.
-	 * @returns {number} Returns the maximum width allowed for the {@link FooGallery.Item#$image|$image} element.
-	 * @example {@caption An example of the default behavior this callback replaces would look like the below.}
-	 * {
-	 * 	"maxWidth": function(item){
-	 * 		return item.$image.outerWidth();
-	 * 	}
-	 * }
-	 */
-
-	/**
 	 * @summary A simple object containing an items' default values.
 	 * @typedef {object} FooGallery.Item~Options
 	 * @property {?string} [type="item"] - The `data-type` attribute for the anchor element.
@@ -9886,7 +10130,6 @@
 	 * @property {?string} [caption=null] - The caption for the image. This can contain HTML content.
 	 * @property {?string} [description=null] - The description for the image. This can contain HTML content.
 	 * @property {string[]} [tags=[]] - The `data-tags` attribute for the outer element.
-	 * @property {?FooGallery.Item~maxWidthCallback} [maxWidth=null] - Called when setting an items' image size. If not supplied the images outer width is used.
 	 * @property {number} [maxCaptionLength=0] - The max length of the title for the caption.
 	 * @property {number} [maxDescriptionLength=0] - The max length of the description for the caption.
 	 * @property {boolean} [showCaptionTitle=true] - Whether or not the caption title should be displayed.
@@ -9898,6 +10141,7 @@
 			type: "item",
 			id: "",
 			href: "",
+			placeholder: "",
 			src: "",
 			srcset: "",
 			width: 0,
@@ -9907,7 +10151,6 @@
 			caption: "",
 			description: "",
 			tags: [],
-			maxWidth: null,
 			maxCaptionLength: 0,
 			maxDescriptionLength: 0,
 			showCaptionTitle: true,
@@ -10080,11 +10323,13 @@
 		},
 		setState: function(state){
 			this.rebuild();
+			var shouldScroll = false;
 			if (!!state.item && !this.contains(state.page, state.item)){
 				state.page = this.find(state.item);
 				state.page = state.page !== 0 ? state.page : 1;
+				shouldScroll = true;
 			}
-			this.set(state.page, false, false, true);
+			this.set(state.page, shouldScroll, false, false);
 		},
 		destroy: function () {
 			var self = this;
@@ -10154,10 +10399,19 @@
 		create: function (pageNumber, isFilter) {
 			var self = this;
 			pageNumber = self.number(pageNumber);
-			var index = pageNumber - 1;
-			self.tmpl.items.detach(self.tmpl.items.all());
+
+			var pageIndex = pageNumber - 1, pageItems = self._arr[pageIndex], detach;
+			if (isFilter){
+				detach = self.tmpl.items.all();
+			} else {
+				detach = self._arr.reduce(function(detach, page, index){
+					return index === pageIndex ? detach : detach.concat(page);
+				}, self.tmpl.items.unavailable());
+			}
+
 			self.current = pageNumber;
-			self.tmpl.items.create(self._arr[index], true);
+			self.tmpl.items.detach(detach);
+			self.tmpl.items.create(pageItems, true);
 		},
 		get: function (pageNumber) {
 			var self = this;
@@ -10170,6 +10424,7 @@
 		set: function (pageNumber, scroll, updateState, isFilter) {
 			var self = this;
 			if (self.isValid(pageNumber)) {
+				self.controls(pageNumber);
 				var num = self.number(pageNumber), state;
 				if (num !== self.current) {
 					var prev = self.current, setPage = function () {
@@ -10179,7 +10434,6 @@
 							state = self.tmpl.state.get();
 							self.tmpl.state.update(state, self.pushOrReplace);
 						}
-						self.controls(pageNumber);
 						self.create(num, isFilter);
 						if (updateState) {
 							state = self.tmpl.state.get();
@@ -10241,19 +10495,37 @@
 			self.pages = parent;
 			self.position = position;
 			self.$container = null;
+			self._containerExisted = false;
+			self._placeholderClasses = [];
 		},
 		create: function () {
 			var self = this;
-			self.$container = $("<nav/>", {"class": self.pages.cls.container}).addClass(self.pages.theme);
+			self.$container = $("#" + self.tmpl.id + "_paging-" + self.position);
+			if (self.$container.length > 0){
+				self._containerExisted = true;
+				self.$container.removeClass(function(i, classNames){
+					self._placeholderClasses = classNames.match(/(^|\s)fg-ph-\S+/g) || [];
+					return self._placeholderClasses.join(' ');
+				}).addClass([self.pages.cls.container, self.pages.theme].join(' '));
+			} else {
+				self.$container = $("<nav/>", {"class": [self.pages.cls.container, self.pages.theme].join(' ')});
+			}
 			return true;
 		},
 		destroy: function () {
 			var self = this;
-			self.$container.remove();
+			if (self._containerExisted){
+				self.$container.empty()
+					.removeClass()
+					.addClass(self._placeholderClasses.join(' '));
+			} else {
+				self.$container.remove();
+			}
 			self.$container = null;
 		},
 		append: function () {
 			var self = this;
+			if (self._containerExisted) return;
 			if (self.position === "top") {
 				self.$container.insertBefore(self.tmpl.$el);
 			} else {
@@ -10288,38 +10560,32 @@
 	_.DotsControl = _.PagingControl.extend({
 		construct: function(template, parent, position){
 			this._super(template, parent, position);
-			this.$container = $();
-			this.$list = $();
-			this.$items = $();
+			this.$list = null;
+			this.$items = null;
 		},
 		create: function(){
-			var self = this, cls = self.pages.cls, il8n = self.pages.il8n,
-				items = [], $list = $("<ul/>", {"class": cls.list});
-
-			for (var i = 0, l = self.pages.total, $item; i < l; i++){
-				items.push($item = self.createItem(i + 1, il8n.page));
-				$list.append($item);
-			}
-			self.$list = $list;
-			self.$container = $("<nav/>", {"class": cls.container}).addClass(self.pages.theme).append($list);
-			self.$items = $($.map(items, function($item){ return $item.get(); }));
-			return true;
-		},
-		append: function(){
 			var self = this;
-			if (self.position === "top"){
-				self.$container.insertBefore(self.tmpl.$el);
-			} else {
-				self.$container.insertAfter(self.tmpl.$el);
+			if (self._super()){
+				var cls = self.pages.cls, il8n = self.pages.il8n,
+					items = [], $list = $("<ul/>", {"class": cls.list});
+
+				for (var i = 0, l = self.pages.total, $item; i < l; i++){
+					items.push($item = self.createItem(i + 1, il8n.page));
+					$list.append($item);
+				}
+				self.$list = $list;
+				self.$items = $($.map(items, function($item){ return $item.get(); }));
+				self.$container.append($list);
+				return true;
 			}
+			return false;
 		},
 		destroy: function(){
 			var self = this, sel = self.pages.sel;
 			self.$list.find(sel.link).off("click.foogallery", self.onLinkClick);
-			self.$container.remove();
-			self.$container = $();
 			self.$list = $();
 			self.$items = $();
+			self._super();
 		},
 		update: function(pageNumber){
 			this.setSelected(pageNumber - 1);
@@ -10713,7 +10979,6 @@
 				event.preventDefault();
 				self.masonry.remove(item.$el);
 				item.isAttached = false;
-				item.unfix();
 			}
 		},
 		/**
@@ -10895,6 +11160,7 @@
 				item = row.items[j];
 				if (row.visible){
 					item.$item.css({
+						position: "absolute",
 						width: item.width,
 						height: item.height,
 						top: item.top,
@@ -11046,7 +11312,7 @@
 			for (var i = 0, il = items.length, item; i < il; i++){
 				item = items[i];
 				// first make all the items match the row height
-				if (item.height != self.options.rowHeight){
+				if (item.height !== self.options.rowHeight){
 					var ratio = self.options.rowHeight / item.height;
 					item.height = item.height * ratio;
 					item.width = item.width * ratio;
@@ -11087,7 +11353,7 @@
 		FooGallery.utils,
 		FooGallery.utils.is
 );
-(function($, _, _is){
+(function($, _){
 
 	_.JustifiedTemplate = _.Template.extend({
 		onPreInit: function(event, self){
@@ -11123,100 +11389,113 @@
 	});
 
 })(
-		FooGallery.$,
-		FooGallery,
-		FooGallery.utils.is
+	FooGallery.$,
+	FooGallery
+);
+(function($, _){
+
+	_.JustifiedCSSTemplate = _.Template.extend({});
+
+	_.template.register("justified-css", _.JustifiedCSSTemplate, null, {
+		container: "foogallery fg-justified-css"
+	});
+
+})(
+	FooGallery.$,
+	FooGallery
 );
 (function($, _, _utils, _is, _fn){
 
-	_.PortfolioTemplate = _.Template.extend({
-		construct: function(element, options){
-			this._super(element, options);
-			/**
-			 *
-			 * @type {?HTMLStyleElement}
-			 */
-			this.style = null;
+	// _.PortfolioTemplate = _.Template.extend({
+	// 	construct: function(element, options){
+	// 		this._super(element, options);
+	// 		/**
+	// 		 *
+	// 		 * @type {?HTMLStyleElement}
+	// 		 */
+	// 		this.style = null;
+	//
+	// 		this.fullWidth = false;
+	// 	},
+	// 	/**
+	// 	 * @summary Creates or gets the CSS stylesheet element for this template instance.
+	// 	 * @memberof FooGallery.MasonryTemplate#
+	// 	 * @function getStylesheet
+	// 	 * @returns {StyleSheet}
+	// 	 */
+	// 	getStylesheet: function(){
+	// 		var self = this;
+	// 		if (self.style === null){
+	// 			self.style = document.createElement("style");
+	// 			self.style.appendChild(document.createTextNode(""));
+	// 			document.head.appendChild(self.style);
+	// 		}
+	// 		return self.style.sheet;
+	// 	},
+	// 	onPreInit: function(event, self){
+	// 		self.appendCSS();
+	// 	},
+	// 	onPostInit: function(event, self){
+	// 		self.checkCSS();
+	// 	},
+	// 	onDestroy: function(event, self){
+	// 		self.removeCSS();
+	// 	},
+	// 	onLayout: function(event, self){
+	// 		self.checkCSS();
+	// 	},
+	// 	checkCSS: function(){
+	// 		var self = this, maxWidth = self.getContainerWidth(), current = maxWidth < self.template.columnWidth;
+	// 		if (current !== self.fullWidth){
+	// 			self.appendCSS(maxWidth);
+	// 		}
+	// 	},
+	// 	appendCSS: function(maxWidth){
+	// 		var self = this;
+	// 		maxWidth = _is.number(maxWidth) ? maxWidth : self.getContainerWidth();
+	//
+	// 		self.removeCSS();
+	//
+	// 		var sheet = self.getStylesheet(), rule,
+	// 			container = '#' + self.id + self.sel.container,
+	// 			item = container + ' ' + self.sel.item.elem,
+	// 			width = self.template.columnWidth,
+	// 			gutter = Math.ceil(self.template.gutter / 2);
+	//
+	// 		switch (self.template.align) {
+	// 			case "center":
+	// 				rule = container + ' { justify-content: center; }';
+	// 				sheet.insertRule(rule , 0);
+	// 				break;
+	// 			case "left":
+	// 				rule = container + ' { justify-content: flex-start; }';
+	// 				sheet.insertRule(rule , 0);
+	// 				break;
+	// 			case "right":
+	// 				rule = container + ' { justify-content: flex-end; }';
+	// 				sheet.insertRule(rule , 0);
+	// 				break;
+	// 		}
+	// 		self.fullWidth = maxWidth < width;
+	// 		if (self.fullWidth){
+	// 			rule = item + ' { max-width: 100%; min-width: 100%; margin: ' + gutter + 'px; }';
+	// 			sheet.insertRule(rule , 0);
+	// 		} else {
+	// 			rule = item + ' { max-width: ' + width + 'px; min-width: ' + width + 'px; margin: ' + gutter + 'px; }';
+	// 			sheet.insertRule(rule , 0);
+	// 		}
+	// 	},
+	// 	removeCSS: function(){
+	// 		var self = this;
+	// 		if (self.style && self.style.parentNode){
+	// 			self.style.parentNode.removeChild(self.style);
+	// 			self.style = null;
+	// 			self.fullWidth = false;
+	// 		}
+	// 	}
+	// });
 
-			this.fullWidth = false;
-		},
-		/**
-		 * @summary Creates or gets the CSS stylesheet element for this template instance.
-		 * @memberof FooGallery.MasonryTemplate#
-		 * @function getStylesheet
-		 * @returns {StyleSheet}
-		 */
-		getStylesheet: function(){
-			var self = this;
-			if (self.style === null){
-				self.style = document.createElement("style");
-				self.style.appendChild(document.createTextNode(""));
-				document.head.appendChild(self.style);
-			}
-			return self.style.sheet;
-		},
-		onPreInit: function(event, self){
-			self.appendCSS();
-		},
-		onPostInit: function(event, self){
-			self.checkCSS();
-		},
-		onDestroy: function(event, self){
-			self.removeCSS();
-		},
-		onLayout: function(event, self){
-			self.checkCSS();
-		},
-		checkCSS: function(){
-			var self = this, maxWidth = self.getContainerWidth(), current = maxWidth < self.template.columnWidth;
-			if (current !== self.fullWidth){
-				self.appendCSS(maxWidth);
-			}
-		},
-		appendCSS: function(maxWidth){
-			var self = this;
-			maxWidth = _is.number(maxWidth) ? maxWidth : self.getContainerWidth();
-
-			self.removeCSS();
-
-			var sheet = self.getStylesheet(), rule,
-				container = '#' + self.id + self.sel.container,
-				item = container + ' ' + self.sel.item.elem,
-				width = self.template.columnWidth,
-				gutter = Math.ceil(self.template.gutter / 2);
-
-			switch (self.template.align) {
-				case "center":
-					rule = container + ' { justify-content: center; }';
-					sheet.insertRule(rule , 0);
-					break;
-				case "left":
-					rule = container + ' { justify-content: flex-start; }';
-					sheet.insertRule(rule , 0);
-					break;
-				case "right":
-					rule = container + ' { justify-content: flex-end; }';
-					sheet.insertRule(rule , 0);
-					break;
-			}
-			self.fullWidth = maxWidth < width;
-			if (self.fullWidth){
-				rule = item + ' { max-width: 100%; min-width: 100%; margin: ' + gutter + 'px; }';
-				sheet.insertRule(rule , 0);
-			} else {
-				rule = item + ' { max-width: ' + width + 'px; min-width: ' + width + 'px; margin: ' + gutter + 'px; }';
-				sheet.insertRule(rule , 0);
-			}
-		},
-		removeCSS: function(){
-			var self = this;
-			if (self.style && self.style.parentNode){
-				self.style.parentNode.removeChild(self.style);
-				self.style = null;
-				self.fullWidth = false;
-			}
-		}
-	});
+	_.PortfolioTemplate = _.Template.extend({});
 
 	_.template.register("simple_portfolio", _.PortfolioTemplate, {
 		template: {
@@ -11352,7 +11631,7 @@
 		onAppendItem: function (event, self, item) {
 			event.preventDefault();
 			self.$inner.append(item.$el);
-			item.fix();
+			// item.fix();
 			item.isAttached = true;
 		},
 		onAfterPageChange: function(event, self, current, prev, isFilter){
@@ -11629,7 +11908,7 @@
             }
             _t.start(self.$piles, function($el){
                 $el.css({width: size.width + 'px', height: size.height + 'px'});
-            }, false, 350).then(function(){
+            }, null, 350).then(function(){
                 self.ignoreResize = false;
             });
         },
@@ -11959,7 +12238,7 @@
 		if (window.FooGallery_il8n && _is.object(window.FooGallery_il8n)){
 			var il8n = window.FooGallery_il8n;
 			for (var factory in il8n){
-				if (!il8n.hasOwnProperty(factory) || !(_[factory] instanceof _utils.Factory) || !_is.object(il8n[factory])) continue;
+				if (!il8n.hasOwnProperty(factory) || !(_[factory] instanceof _.Factory) || !_is.object(il8n[factory])) continue;
 				for (var component in il8n[factory]){
 					if (il8n[factory].hasOwnProperty(component)){
 						_[factory].configure(component, null, null, il8n[factory][component]);
