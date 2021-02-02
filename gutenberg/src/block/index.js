@@ -29,7 +29,7 @@ registerBlockType( 'fooplugins/foogallery', {
 	title: __( 'FooGallery' ), // Block title.
 	description: __( 'Insert a FooGallery into your content' ),
 	icon: 'format-gallery', // Block icon from Dashicons → https://developer.wordpress.org/resource/dashicons/.
-	category: 'common', // Block category — Group blocks together based on common traits E.g. common, formatting, layout widgets, embed.
+	category: 'media', // Block category — Group blocks together based on common traits E.g. common, formatting, layout widgets, embed.
 	keywords: [
 		__( 'foogallery' ),
 		__( 'gallery' ),
