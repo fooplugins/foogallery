@@ -25,7 +25,7 @@ if ( ! class_exists( 'FooGallery_Paging' ) ) {
 			add_action( 'foogallery_loaded_template_after', array( $this, 'output_pagination_placeholders_after' ), 10, 1 );
 
 			//output a script block with the rest of the attachments as json
-			add_action( 'foogallery_loaded_template', array( $this, 'output_paging_script_block' ) );
+			add_action( 'foogallery_loaded_template_after', array( $this, 'output_paging_script_block' ), 90, 1 );
 		}
 
 		/**
@@ -87,8 +87,6 @@ if ( ! class_exists( 'FooGallery_Paging' ) ) {
 		 */
 		function output_pagination_placeholders_after( $foogallery ) {
 			$this->output_pagination_placeholder( $foogallery, 'bottom' );
-
-			$this->output_paging_script_block( $foogallery );
 		}
 
 		/**
