@@ -26,6 +26,9 @@ if ( !class_exists( 'FooGallery_FooGrid_Gallery_Template' ) ) {
 	define('FOOGALLERY_FOOGRID_GALLERY_TEMPLATE_PATH', plugin_dir_path( __FILE__ ));
 
 	class FooGallery_FooGrid_Gallery_Template {
+
+		const template_id = 'foogridpro';
+
 		/**
 		 * Wire up everything we need to run the extension
 		 */
@@ -118,7 +121,7 @@ if ( !class_exists( 'FooGallery_FooGrid_Gallery_Template' ) ) {
 		function add_template( $gallery_templates ) {
 
 			$gallery_templates[] = array(
-				'slug'        => 'foogridpro',
+				'slug'        => self::template_id,
 				'name'        => __( 'Grid PRO', 'foogallery'),
                 'preview_support' => true,
                 'common_fields_support' => true,
@@ -143,6 +146,26 @@ if ( !class_exists( 'FooGallery_FooGrid_Gallery_Template' ) ) {
 						),
 						'row_data'=> array(
 							'data-foogallery-change-selector' => 'input',
+							'data-foogallery-preview' => 'shortcode'
+						)
+					),
+					array(
+						'id'      => 'aspect-ratio',
+						'section' => __( 'Panel', 'foogallery' ),
+						'subsection' => array( 'lightbox-general' => __( 'General', 'foogallery' ) ),
+						'title'   => __('Aspect Ratio', 'foogallery'),
+						'desc' => __('Select the aspect ratio the panel will use, to best suit your content.', 'foogallery'),
+						'default' => 'fg-16-9',
+						'type'    => 'radio',
+						'spacer'  => '<span class="spacer"></span>',
+						'choices' => array(
+							'fg-16-9' => __( '16:9', 'foogallery' ),
+							'fg-16-10' => __( '16:10', 'foogallery' ),
+							'fg-4-3' => __( '4:3', 'foogallery' ),
+						),
+						'row_data'=> array(
+							'data-foogallery-change-selector' => 'input',
+							'data-foogallery-value-selector' => 'input:checked',
 							'data-foogallery-preview' => 'shortcode'
 						)
 					),
@@ -341,11 +364,12 @@ if ( !class_exists( 'FooGallery_FooGrid_Gallery_Template' ) ) {
 		 * @return mixed
 		 */
 		function build_thumbnail_dimensions_from_arguments( $dimensions, $arguments ) {
-            if ( array_key_exists( 'thumbnail_height', $arguments) ) {
+            if ( array_key_exists( 'thumbnail_size', $arguments) ) {
+            	$thumbnail_size = $arguments['thumbnail_size'];
                 return array(
-                    'height' => intval($arguments['thumbnail_height']),
-                    'width' => intval($arguments['thumbnail_width']),
-                    'crop' => $arguments['thumbnail_crop'] === '1'
+                    'height' => intval( $thumbnail_size['height'] ),
+                    'width' => intval( $thumbnail_size['width'] ),
+                    'crop' => $thumbnail_size['crop'] === '1'
                 );
             }
             return null;
@@ -400,16 +424,23 @@ if ( !class_exists( 'FooGallery_FooGrid_Gallery_Template' ) ) {
 		 * Adds the classes onto the container
 		 *
 		 * @param $classes
-		 * @param $foogallery
+		 * @param $foogallery FooGallery
 		 *
 		 * @return array
 		 */
 		function append_classes( $classes, $foogallery ) {
+			if ( isset( $foogallery ) && isset( $foogallery->gallery_template ) && $foogallery->gallery_template === self::template_id ) {
+				$columns = foogallery_gallery_template_setting( 'columns', '' );
 
-			$columns = foogallery_gallery_template_setting( 'columns', '' );
+				if ( $columns !== '' ) {
+					$classes[] = $columns;
+				}
 
-			if ( $columns !== '' ) {
-				$classes[] = $columns;
+				$aspect_ratio = foogallery_gallery_template_setting( 'aspect-ratio', '' );
+
+				if ( $aspect_ratio !== '' ) {
+					$classes[] = $aspect_ratio;
+				}
 			}
 
 			return $classes;
