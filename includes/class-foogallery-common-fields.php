@@ -608,11 +608,8 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 		 * @return array
 		 */
 		function add_common_fields_data_attribute( $attributes, $gallery ) {
-			$template_data = foogallery_get_gallery_template( $gallery->gallery_template );
-
 			//check the template supports common fields
-			//TODO : check that we even need this?
-			if ( $template_data && array_key_exists( 'common_fields_support', $template_data ) && true === $template_data['common_fields_support'] ) {
+			if ( is_admin() && foogallery_current_gallery_check_template_has_supported_feature('common_fields_support' ) ) {
 				$attributes['data-fg-common-fields'] = true;
 			}
 
