@@ -430,16 +430,23 @@ if ( !class_exists( 'FooGallery_FooGrid_Gallery_Template' ) ) {
 		 */
 		function append_classes( $classes, $foogallery ) {
 			if ( isset( $foogallery ) && isset( $foogallery->gallery_template ) && $foogallery->gallery_template === self::template_id ) {
-				$columns = foogallery_gallery_template_setting( 'columns', '' );
 
+				//add a class for the columns
+				$columns = foogallery_gallery_template_setting( 'columns', '' );
 				if ( $columns !== '' ) {
 					$classes[] = $columns;
 				}
 
+				//add a class for the aspect ratio
 				$aspect_ratio = foogallery_gallery_template_setting( 'aspect-ratio', '' );
-
 				if ( $aspect_ratio !== '' ) {
 					$classes[] = $aspect_ratio;
+				}
+
+				//add a class for transition in the panel
+				$transition = foogallery_gallery_template_setting( 'lightbox_transition', '' );
+				if ( $transition !== '' ) {
+					$classes[] = "foogrid-transition-" . $transition;
 				}
 			}
 

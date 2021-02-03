@@ -424,7 +424,6 @@ if ( !class_exists( 'FooGallery_Slider_Gallery_Template' ) ) {
 
 				//add a class for aspect ratio
 				$aspect_ratio = foogallery_gallery_template_setting( 'aspect-ratio', '' );
-
 				if ( $aspect_ratio !== '' ) {
 					$classes[] = $aspect_ratio;
 				}
