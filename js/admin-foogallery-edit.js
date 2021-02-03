@@ -130,7 +130,7 @@
         }
 
         //clear any items just in case
-		window['foogallery-gallery-' + foogallery_id + '-items'] = null;
+		window['foogallery-gallery-' + foogallery_id + '_items'] = null;
 
         //add additional data for the preview
 		data.push({name: 'foogallery_id', value: foogallery_id});
