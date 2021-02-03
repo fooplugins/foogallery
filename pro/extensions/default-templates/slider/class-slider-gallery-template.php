@@ -29,7 +29,7 @@ if ( !class_exists( 'FooGallery_Slider_Gallery_Template' ) ) {
 			//build up the arguments needed for rendering this template
 			add_filter( 'foogallery_gallery_template_arguments-slider', array( $this, 'build_gallery_template_arguments' ) );
 
-			add_filter( 'foogallery_build_class_attribute', array( $this, 'remove_classes' ), 99, 2 );
+			add_filter( 'foogallery_build_class_attribute', array( $this, 'adjust_classes' ), 99, 2 );
 
 			//set the settings icon for lightbox
 			add_filter( 'foogallery_gallery_settings_metabox_section_icon', array( $this, 'add_section_icons' ) );
@@ -86,6 +86,26 @@ if ( !class_exists( 'FooGallery_Slider_Gallery_Template' ) ) {
 				'panel_support' => true,
 				'enqueue_core' => true,
 				'fields'	  => array(
+					array(
+						'id'      => 'aspect-ratio',
+						'section' => __( 'Slider', 'foogallery' ),
+						'subsection' => array( 'lightbox-general' => __( 'General', 'foogallery' ) ),
+						'title'   => __('Aspect Ratio', 'foogallery'),
+						'desc' => __('Select the aspect ratio the slider will use, to best suit your content.', 'foogallery'),
+						'default' => 'fg-16-9',
+						'type'    => 'radio',
+						'spacer'  => '<span class="spacer"></span>',
+						'choices' => array(
+							'fg-16-9' => __( '16:9', 'foogallery' ),
+							'fg-16-10' => __( '16:10', 'foogallery' ),
+							'fg-4-3' => __( '4:3', 'foogallery' ),
+						),
+						'row_data'=> array(
+							'data-foogallery-change-selector' => 'input',
+							'data-foogallery-value-selector' => 'input:checked',
+							'data-foogallery-preview' => 'shortcode'
+						)
+					),
 					array(
 						'id'      => 'slider_help',
 						'title'   => __('Help', 'foogallery'),
@@ -368,16 +388,21 @@ if ( !class_exists( 'FooGallery_Slider_Gallery_Template' ) ) {
 		}
 
 		/**
-		 * Remove certain classes from the container only if the slider gallery template is in use
+		 * Adjust classes for the slider
+		 *
+		 * Removes certain classes from the container
+		 * Adds an aspect ratio setting class
+		 *
 		 *
 		 * @param $classes
 		 * @param $gallery
 		 *
 		 * @return array
 		 */
-		function remove_classes( $classes, $gallery ) {
+		function adjust_classes( $classes, $gallery ) {
 			if ( 'slider' === $gallery->gallery_template ) {
 
+				//remove unneeded classes
 				if ( ( $key = array_search( 'slider', $classes ) ) !== false ) {
 					unset( $classes[$key] );
 				}
@@ -395,6 +420,13 @@ if ( !class_exists( 'FooGallery_Slider_Gallery_Template' ) ) {
 					if ( ( $key = array_search( 'fg-caption-hover', $classes ) ) !== false ) {
 						unset( $classes[$key] );
 					}
+				}
+
+				//add a class for aspect ratio
+				$aspect_ratio = foogallery_gallery_template_setting( 'aspect-ratio', '' );
+
+				if ( $aspect_ratio !== '' ) {
+					$classes[] = $aspect_ratio;
 				}
 			}
 
