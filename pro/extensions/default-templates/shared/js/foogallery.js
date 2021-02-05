@@ -12569,7 +12569,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
                 this.circumference = (radius * 2) * Math.PI;
                 this.$circle.css({
                     "stroke-dasharray": this.circumference + ' ' + this.circumference,
-                    "stroke-dashoffset": this.circumference
+                    "stroke-dashoffset": this.circumference + ''
                 });
                 this.__timer.on({
                     "start resume": this.onStartOrResume,
@@ -16049,19 +16049,29 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 			self.$section = null;
 			self.panel = new _.Panel( self, self.template );
 			self.isFirst = false;
+			self.disableTransitions = false;
 		},
 		onPreInit: function(event, self){
 			self.$section = $('<section/>', {'class': 'foogrid-content'});
+			var hasTransition = false;
 			if (self.panel.opt.transition === "none"){
 				if (self.$el.hasClass("foogrid-transition-horizontal")){
 					self.panel.opt.transition = "horizontal";
+					hasTransition = true;
 				}
 				if (self.$el.hasClass("foogrid-transition-vertical")){
 					self.panel.opt.transition = "vertical";
+					hasTransition = true;
 				}
 				if (self.$el.hasClass("foogrid-transition-fade")){
 					self.panel.opt.transition = "fade";
+					hasTransition = true;
 				}
+			}
+			if (self.template.transitionOpen || self.template.transitionRow){
+				hasTransition = hasTransition || self.$el.hasClass("foogrid-transition-horizontal foogrid-transition-vertical foogrid-transition-fade");
+				self.template.transitionOpen = self.template.transitionOpen && hasTransition;
+				self.template.transitionRow = self.template.transitionRow && hasTransition;
 			}
 			if (self.panel.opt.info === "none"){
 				if (self.$el.hasClass("foogrid-caption-below")){
@@ -16210,6 +16220,8 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 							$el.addClass(self.cls.visible);
 						}, null, 350).then(function(){
 							def.resolve();
+						}, function(err){
+							def.reject(err);
 						});
 					} else {
 						self.$section.addClass(self.cls.visible);
@@ -16224,6 +16236,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 				return self.panel.load(item);
 			}).then(function(){
 				self.$section.trigger('focus');
+			}).always(function(){
 				self.isBusy = false;
 			}).promise();
 		},
@@ -16249,12 +16262,18 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 						}, null, 350).then(function(){
 							self.panel.doClose(true, true).then(function(){
 								def.resolve();
+							}, function(err){
+								def.reject(err);
 							});
+						}, function(err){
+							def.reject(err);
 						});
 					} else {
 						self.$section.removeClass(self.cls.visible);
 						self.panel.doClose(true, true).then(function(){
 							def.resolve();
+						}, function(err){
+							def.reject(err);
 						});
 					}
 				} else {

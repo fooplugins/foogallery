@@ -6972,18 +6972,28 @@ html.fg-panel-no-scroll body {
 .foogallery.fg-slider {
     position: relative;
     display: block;
-    height: 0;
     width: 100%;
-    padding-top: 56.25%;
+    padding: 0;
     min-height: 315px;
 }
-.foogallery.fg-slider.fg-16-9 {
+.foogallery.fg-slider::before {
+    display: block;
+    content: '';
+    width: 100%;
+    max-width: 100%;
+    height: 0;
+    padding-top: 56.25%;
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+}
+.foogallery.fg-slider.fg-16-9::before {
     padding-top: 56.25%;
 }
-.foogallery.fg-slider.fg-16-10 {
+.foogallery.fg-slider.fg-16-10::before {
     padding-top: 62.5%;
 }
-.foogallery.fg-slider.fg-4-3 {
+.foogallery.fg-slider.fg-4-3::before {
     padding-top: 75%;
 }
 
