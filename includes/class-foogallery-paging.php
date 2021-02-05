@@ -92,24 +92,28 @@ if ( ! class_exists( 'FooGallery_Paging' ) ) {
 		/**
 		 * render the pagination placeholder
 		 *
-		 * @param $foogallery
+		 * @param $foogallery FooGallery
 		 * @param $position
 		 */
 		function output_pagination_placeholder( $foogallery, $position ) {
 			if ( foogallery_current_gallery_has_cached_value('paging' ) ) {
 				$paging_options = foogallery_current_gallery_get_cached_value( 'paging' );
 
-				$paging_position = $paging_options['position'];
-				if ( $position === $paging_position || 'both' === $paging_position ) {
+				//check to see if the page size is less than the number of items
+				if ( $foogallery->attachment_count() > intval( $paging_options['size'] ) ) {
 
-					$paging_type = $paging_options['type'];
+					$paging_position = $paging_options['position'];
+					if ( $position === $paging_position || 'both' === $paging_position ) {
 
-					$paging_types_that_require_placeholders = apply_filters( 'foogallery_pagination_types_require_placeholders', array( 'dots' ) );
+						$paging_type = $paging_options['type'];
 
-					if ( in_array( $paging_type, $paging_types_that_require_placeholders ) ) {
-						$paging_type = apply_filters( 'foogallery_pagination_format_type_for_placeholder', $paging_type );
+						$paging_types_that_require_placeholders = apply_filters( 'foogallery_pagination_types_require_placeholders', array( 'dots' ) );
 
-						echo '<nav id="' . $foogallery->container_id() . '_paging-' . $position . '" class="fg-paging-container fg-ph-' . $paging_type . '"></nav>';
+						if ( in_array( $paging_type, $paging_types_that_require_placeholders ) ) {
+							$paging_type = apply_filters( 'foogallery_pagination_format_type_for_placeholder', $paging_type );
+
+							echo '<nav id="' . $foogallery->container_id() . '_paging-' . $position . '" class="fg-paging-container fg-ph-' . $paging_type . '"></nav>';
+						}
 					}
 				}
 			}
