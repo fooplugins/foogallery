@@ -5,6 +5,9 @@ if ( !class_exists( 'FooGallery_Masonry_Gallery_Template' ) ) {
 	define('FOOGALLERY_MASONRY_GALLERY_TEMPLATE_URL', plugin_dir_url( __FILE__ ));
 
 	class FooGallery_Masonry_Gallery_Template {
+
+		const template_id = 'masonry';
+
 		/**
 		 * Wire up everything we need to run the extension
 		 */
@@ -32,7 +35,61 @@ if ( !class_exists( 'FooGallery_Masonry_Gallery_Template' ) ) {
 
 			//remove the captions if the captions are below thumbs
 			add_filter( 'foogallery_build_attachment_html_caption', array( $this, 'remove_captions' ), 10, 3 );
+
+			//add a style block for the gallery based on the field settings
+			add_action( 'foogallery_loaded_template_before', array( $this, 'add_style_block' ), 10, 1 );
+
+			add_filter( 'foogallery_build_class_attribute', array( $this, 'override_class_attributes' ), 99, 2 );
         }
+
+		/**
+		 * Override the classes for the layout
+		 *
+		 * @param $classes array
+		 * @param $gallery FooGallery
+		 *
+		 * @return array
+		 */
+		function override_class_attributes( $classes, $gallery ) {
+			if ( self::template_id === $gallery->gallery_template ) {
+				$classes[] = 'fg-masonry-' . foogallery_gallery_template_setting( 'layout', 'fixed' );
+			}
+
+			return $classes;
+		}
+
+		/**
+		 * Add a style block based on the field settings
+		 *
+		 * @param $gallery FooGallery
+		 */
+		function add_style_block( $gallery ) {
+			if ( self::template_id !== $gallery->gallery_template ) {
+				return;
+			}
+
+			$id = $gallery->container_id();
+			$layout = foogallery_gallery_template_setting( 'layout', 'fixed' );
+
+			//get out early if the layout is not fixed
+			if ( 'fixed' !== $layout ) {
+				return;
+			}
+
+			$thumbnail_width = intval( foogallery_gallery_template_setting( 'thumbnail_width', 150 ) );
+			$gutter_width = intval( foogallery_gallery_template_setting( 'gutter_width', 10 ) );
+
+			?>
+			<style>
+                #<?php echo $id; ?>.fg-masonry .fg-item {
+                    width: <?php echo $thumbnail_width; ?>px;
+                    margin-right: <?php echo $gutter_width; ?>px;
+                    margin-bottom: <?php echo $gutter_width; ?>px;
+                }
+			</style>
+			<?php
+		}
+
 
 		/**
 		 * Register myself so that all associated JS and CSS files can be found and automatically included
@@ -53,7 +110,7 @@ if ( !class_exists( 'FooGallery_Masonry_Gallery_Template' ) ) {
 		 */
 		function add_template( $gallery_templates ) {
 			$gallery_templates[] = array(
-                'slug'        => 'masonry',
+                'slug'        => self::template_id,
                 'name'        => __( 'Masonry Image Gallery', 'foogallery' ),
 				'preview_support' => true,
 				'common_fields_support' => true,
