@@ -5,6 +5,9 @@ if ( !class_exists( 'FooGallery_Justified_Gallery_Template' ) ) {
 	define('FOOGALLERY_JUSTIFIED_GALLERY_TEMPLATE_URL', plugin_dir_url( __FILE__ ));
 
 	class FooGallery_Justified_Gallery_Template {
+
+		const template_id = 'justified';
+
 		/**
 		 * Wire up everything we need to run the extension
 		 */
@@ -23,7 +26,33 @@ if ( !class_exists( 'FooGallery_Justified_Gallery_Template' ) ) {
             add_filter( 'foogallery_gallery_template_arguments-justified', array( $this, 'build_gallery_template_arguments' ) );
 
 			add_filter( 'foogallery_override_gallery_template_fields-justified', array( $this, 'adjust_default_field_values' ), 10, 2 );
+
+			//add a style block for the gallery based on the field settings
+			add_action( 'foogallery_loaded_template_before', array( $this, 'add_style_block' ), 10, 1 );
         }
+
+		/**
+		 * Add a style block based on the field settings
+		 *
+		 * @param $gallery FooGallery
+		 */
+		function add_style_block( $gallery ) {
+			if ( self::template_id !== $gallery->gallery_template ) {
+				return;
+			}
+
+			$id = $gallery->container_id();
+			$margins = intval( foogallery_gallery_template_setting( 'margins', 2 ) );
+
+			?>
+			<style>
+                #<?php echo $id; ?>.fg-justified .fg-item {
+                    margin-right: <?php echo $margins; ?>px;
+                    margin-bottom: <?php echo $margins; ?>px;
+				}
+			</style>
+			<?php
+		}
 
 		/**
 		 * Register myself so that all associated JS and CSS files can be found and automatically included
@@ -44,7 +73,7 @@ if ( !class_exists( 'FooGallery_Justified_Gallery_Template' ) ) {
 		 */
 		function add_template( $gallery_templates ) {
 			$gallery_templates[] = array(
-                'slug'        => 'justified',
+                'slug'        => self::template_id,
                 'name'        => __( 'Justified Gallery', 'foogallery' ),
 				'preview_support' => true,
 				'common_fields_support' => true,
