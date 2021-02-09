@@ -12,9 +12,6 @@ if ( ! class_exists( 'FooGallery_Pro_Attachment_Type' ) ) {
 
 			//add attributes to front-end anchor
 			add_filter( 'foogallery_attachment_html_link_attributes', array( $this, 'alter_link_attributes' ), 30, 3 );
-
-			//add type class to fg-item
-			add_filter( 'foogallery_attachment_html_item_classes', array( $this, 'add_type_class_to_item' ), 20, 3 );
 		}
 
 		/**
@@ -77,21 +74,6 @@ if ( ! class_exists( 'FooGallery_Pro_Attachment_Type' ) ) {
 			$attr['data-type'] = $attachment->type;
 
 			return $attr;
-		}
-
-		/**
-		 * Add type class onto item
-		 *
-		 * @param $classes
-		 * @param $foogallery_attachment
-		 * @param $args
-		 *
-		 * @return mixed
-		 */
-		function add_type_class_to_item( $classes, $foogallery_attachment, $args ) {
-			$classes[] = 'fg-type-' . $foogallery_attachment->type;
-
-			return $classes;
 		}
 	}
 }
