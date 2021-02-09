@@ -52,7 +52,7 @@ if ( !class_exists( 'FooGallery_Masonry_Gallery_Template' ) ) {
 		 */
 		function override_class_attributes( $classes, $gallery ) {
 			if ( self::template_id === $gallery->gallery_template ) {
-				$classes[] = 'fg-masonry-' . foogallery_gallery_template_setting( 'layout', 'fixed' );
+				$classes[] = 'fg-' . foogallery_gallery_template_setting( 'layout', 'fixed' );
 			}
 
 			return $classes;
