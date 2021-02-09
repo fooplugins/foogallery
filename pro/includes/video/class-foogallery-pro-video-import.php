@@ -147,10 +147,12 @@ if ( ! class_exists( "FooGallery_Pro_Video_Import" ) ) {
 
 			$filetype = $this->check_filetype( $video["thumbnail"], null );
 			if ( $filetype['ext'] === false ){
-				return array(
-					"type" => "error",
-					"message" => "Unable to determine file type for thumbnail."
-				);
+				//default to jpg
+				$filetype['ext'] = 'jpg';
+//				return array(
+//					"type" => "error",
+//					"message" => "Unable to determine file type for thumbnail."
+//				);
 			}
 			$thumbnail_filename = $video["id"] . '.' . $filetype['ext'];
 
