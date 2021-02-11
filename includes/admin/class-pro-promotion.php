@@ -104,19 +104,6 @@ if ( ! class_exists( 'FooGallery_Pro_Promotion' ) ) {
 				'tab'     => 'advanced'
 			);
 
-			if ( $this->can_show_promo() ) {
-				//include promo tabs and settings
-				$settings['tabs']['video'] = __( 'Video', 'foogallery' );
-
-				$settings['settings'][] = array(
-					'id'    => 'pro_promo_video',
-					'title' => __( 'Video Support', 'foogallery' ),
-					'desc'  => __( 'FooGallery ', 'foogallery' ),
-					'type'  => 'html',
-					'tab'   => 'video'
-				);
-			}
-
 			return $settings;
 		}
 
