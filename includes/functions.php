@@ -209,7 +209,7 @@ function foogallery_admin_freetrial_url() {
  * @param string	$key
  * @param string	$default
  *
- * @return bool
+ * @return mixed
  */
 function foogallery_gallery_template_setting( $key, $default = '' ) {
 	global $current_foogallery;

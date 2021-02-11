@@ -536,3 +536,19 @@ function foogallery_build_json_from_attachment( $foogallery_attachment, $args = 
 	return '';
 }
 
+/**
+ * Renders a script block with the JSON output for the attachments in a gallery
+ *
+ * @param $gallery FooGallery
+ * @param $attachments FooGalleryAttachment[]
+ */
+function foogallery_render_script_block_for_json_items( $gallery, $attachments ) {
+	if ( count( $attachments ) > 0 ) {
+		$attachments_json = array_map( 'foogallery_build_json_from_attachment', $attachments );
+		echo '<script type="text/javascript">';
+		echo '  window["' . $gallery->container_id() . '_items"] = [';
+		echo implode( ', ', $attachments_json );
+		echo '  ];';
+		echo '</script>';
+	}
+}

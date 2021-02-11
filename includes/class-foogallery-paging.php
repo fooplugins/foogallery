@@ -382,13 +382,8 @@ if ( ! class_exists( 'FooGallery_Paging' ) ) {
 
 				if ( $page_size > 0 ) {
 					//get the attachments that are not on the first page
-					$attachments      = array_slice( $gallery->attachments(), $page_size );
-					$attachments_json = array_map( 'foogallery_build_json_from_attachment', $attachments );
-					echo '<script type="text/javascript">';
-					echo '  window["' . $gallery->container_id() . '_items"] = [';
-					echo implode( ', ', $attachments_json );
-					echo '  ];';
-					echo '</script>';
+					$attachments = array_slice( $gallery->attachments(), $page_size );
+					foogallery_render_script_block_for_json_items( $gallery, $attachments );
 				}
 			}
 		}
