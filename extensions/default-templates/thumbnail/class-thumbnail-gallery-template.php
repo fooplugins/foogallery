@@ -5,6 +5,9 @@ if ( !class_exists( 'FooGallery_Thumbnail_Gallery_Template' ) ) {
 	define('FOOGALLERY_THUMBNAIL_GALLERY_TEMPLATE_URL', plugin_dir_url( __FILE__ ));
 
 	class FooGallery_Thumbnail_Gallery_Template {
+
+		const template_id = 'thumbnail';
+
 		/**
 		 * Wire up everything we need to run the extension
 		 */
@@ -18,19 +21,54 @@ if ( !class_exists( 'FooGallery_Thumbnail_Gallery_Template' ) ) {
 			//build up the thumb dimensions on save
 			add_filter( 'foogallery_template_thumbnail_dimensions-thumbnail', array( $this, 'get_thumbnail_dimensions' ), 10, 2 );
 
-			//alter the crop value if needed
-			add_filter( 'foogallery_render_gallery_template_field_value', array( $this, 'alter_field_value'), 10, 4 );
+			//add additional link attributes to each item
+			add_filter( 'foogallery_attachment_html_link_attributes', array( $this, 'alter_link_attributes'), 10, 3 );
+
+			//build up the arguments needed for rendering this template
+			add_filter( 'foogallery_gallery_template_arguments-thumbnail', array( $this, 'build_gallery_template_arguments' ) );
         }
 
-		function alter_field_value( $value, $field, $gallery, $template ) {
-		    //only do something if we are dealing with the thumbnail_dimensions field in this template
-		    if ( 'thumbnail' === $template['slug'] && 'thumbnail_dimensions' === $field['id'] ) {
-		        if ( !array_key_exists( 'crop', $value ) ) {
-                    $value['crop'] = true;
-                }
-            }
+		/**
+		 * Build up the arguments needed for rendering this gallery template
+		 *
+		 * @param $args
+		 *
+		 * @return array
+		 */
+		function build_gallery_template_arguments( $args ) {
+			$args         = foogallery_gallery_template_setting( 'thumbnail_dimensions', array() );
+			$args['crop'] = '1'; //we now force thumbs to be cropped
 
-		    return $value;
+			if ( foogallery_gallery_template_setting( 'link_custom_url', '' ) === 'on' ) {
+				$args['link'] = 'custom';
+			}
+
+			return $args;
+		}
+
+		/**
+		 * Add a rel attribute to all image links to make the lightboxes work
+		 *
+		 * @param $attr
+		 * @param $args
+		 * @param $foogallery_attachment FooGalleryAttachment
+		 *
+		 * @return mixed
+		 */
+        function alter_link_attributes($attr, $args, $foogallery_attachment) {
+	        global $current_foogallery;
+	        if ( isset( $current_foogallery ) && self::template_id === $current_foogallery->gallery_template ) {
+
+	        	//always set the rel so that lightboxes will group the images
+		        $attr['rel'] = 'lightbox[' . $current_foogallery->ID . ']';
+
+		        //check if we must hide the featured image within the lightbox
+		        if ( isset( $foogallery_attachment->featured ) && foogallery_gallery_template_setting( 'exclude_featured_image', '' ) === 'on' ) {
+			        $attr['class'] = 'fg-panel-hide';
+		        }
+	        }
+
+			return $attr;
         }
 
 		/**
@@ -59,6 +97,7 @@ if ( !class_exists( 'FooGallery_Thumbnail_Gallery_Template' ) ) {
                 'lazyload_support' => true,
 				'mandatory_classes' => 'fg-thumbnail',
 				'thumbnail_dimensions' => true,
+                'paging_support' => false,
                 'enqueue_core' => true,
                 'fields'	  => array(
                     array(
@@ -73,11 +112,10 @@ if ( !class_exists( 'FooGallery_Thumbnail_Gallery_Template' ) ) {
                         'title'   => __( 'Size', 'foogallery' ),
                         'desc'    => __( 'Choose the size of your thumbnail.', 'foogallery' ),
                         'section' => __( 'General', 'foogallery' ),
-                        'type'    => 'thumb_size',
+                        'type'    => 'thumb_size_no_crop',
                         'default' => array(
                             'width' => 250,
-                            'height' => 200,
-                            'crop' => true
+                            'height' => 200
                         ),
 						'row_data'=> array(
 							'data-foogallery-change-selector' => 'input',
@@ -182,7 +220,7 @@ if ( !class_exists( 'FooGallery_Thumbnail_Gallery_Template' ) ) {
                 return array(
                     'height' => intval($arguments['thumbnail_dimensions']['height']),
                     'width' => intval($arguments['thumbnail_dimensions']['width']),
-                    'crop' => $arguments['thumbnail_dimensions']['crop']
+                    'crop' => true
                 );
             }
             return null;
