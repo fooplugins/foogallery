@@ -5456,7 +5456,7 @@ FooGallery.utils, FooGallery.utils.is, FooGallery.utils.str);
 })( // dependencies
 FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 
-(function ($, _, _utils, _is, _fn) {
+(function ($, _, _utils, _is, _fn, _str) {
 
 	/**
 	 * @summary The name to use when getting or setting an instance of a {@link FooGallery.Template|template} on an element using jQuery's `.data()` method.
@@ -5613,6 +5613,22 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 			});
 		}
 		return false;
+	};
+
+	/**
+	 * @summary Trims the value if it exceeds the specified length and appends the suffix.
+	 * @memberof FooGallery.utils.str.
+	 * @function trimTo
+	 * @param {string} value - The value to trim if required.
+	 * @param {number} length - The length to trim the string to.
+	 * @param {string} [suffix="&hellip;"] - The suffix to append to a trimmed value.
+	 * @returns {string|null}
+	 */
+	_str.trimTo = function(value, length, suffix){
+		if (_is.string(value) && _is.number(length) && length > 0 && value.length > length) {
+			return value.substr(0, length) + (_is.string(suffix) ? suffix : "&hellip;");
+		}
+		return null;
 	};
 
 })(
@@ -6394,6 +6410,13 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 			 */
 			self.$el = _is.jq(element) ? element : $(element);
 			/**
+			 * @summary The element for the template container.
+			 * @memberof FooGallery.Template#
+			 * @name el
+			 * @type {?Element}
+			 */
+			self.el = self.$el.get(0) || null;
+			/**
 			 * @summary The jQuery object for the template containers scroll parent.
 			 * @memberof FooGallery.Template#
 			 * @name $scrollParent
@@ -6480,7 +6503,19 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 			self._initialize = null;
 			self._checkTimeout = null;
 			self._layoutTimeout = null;
+			/**
+			 * @memberof FooGallery.Template#
+			 * @name _layoutWidths
+			 * @type {Number[]}
+			 * @private
+			 */
 			self._layoutWidths = [];
+			/**
+			 * @memberof FooGallery.Template#
+			 * @name lastWidth
+			 * @type {Number}
+			 */
+			self.lastWidth = 0;
 			self.initializing = false;
 			self.initialized = false;
             self.destroying = false;
@@ -6491,9 +6526,16 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 				create: false,
 				children: false
 			};
-			self.robserver = new ResizeObserver(function () {
-				if (self.$el.is(":visible")) self.layout();
-			});
+			self.robserver = new ResizeObserver(_fn.throttle(function(entries) {
+				if (entries.length === 1 && entries[0].target === self.el){
+					// self.layout();
+					if (entries[0].contentBoxSize){
+						self.layout(entries[0].contentBoxSize[0].inlineSize);
+					} else {
+						self.layout(entries[0].contentRect.width);
+					}
+				}
+			}, 50));
 		},
 
 		// ################
@@ -6555,6 +6597,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 			}
 			if (self.$el.length === 0) {
 				self.$el = self.create();
+				self.el = self.$el.get(0);
 				self._undo.create = true;
 			}
 			if (parent.length > 0) {
@@ -6584,7 +6627,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 			if (selector != null && !self.$el.is(selector)) {
 				self.$el.addClass(self.opt.classes);
 			}
-			self.robserver.observe(self.$el.get(0));
+			self.robserver.observe(self.el);
 
 			// if the container currently has no children make them
 			if (self.$el.children().not(self.sel.item.elem).length === 0) {
@@ -6619,7 +6662,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 			 * 	}
 			 * });
 			 */
-			return !self.raise("pre-init").isDefaultPrevented();
+			return !self.trigger("pre-init").isDefaultPrevented();
 		},
 		/**
 		 * @summary Occurs as the template is initialized.
@@ -6671,7 +6714,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 			 * 	}
 			 * });
 			 */
-			var e = self.raise("init");
+			var e = self.trigger("init");
 			if (e.isDefaultPrevented()) return _fn.reject("init default prevented");
 			return self.items.fetch();
 		},
@@ -6726,7 +6769,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 			 * 	}
 			 * });
 			 */
-			var e = self.raise("post-init");
+			var e = self.trigger("post-init");
 			if (e.isDefaultPrevented()) return false;
 			self.state.init();
 			self.$scrollParent.on("scroll" + self.namespace, {self: self}, _fn.throttle(function () {
@@ -6761,7 +6804,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 			 * 	}
 			 * });
 			 */
-			self.raise("first-load");
+			self.trigger("first-load");
 			return self.loadAvailable();
 		},
 		/**
@@ -6794,7 +6837,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 			 * 	}
 			 * });
 			 */
-			self.raise("ready");
+			self.trigger("ready");
 			return true;
 		},
 		/**
@@ -6873,7 +6916,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
              * 	}
              * });
              */
-            self.raise("destroy");
+            self.trigger("destroy");
 			self.robserver.disconnect();
 			if (self._checkTimeout) clearTimeout(self._checkTimeout);
             self.$scrollParent.off(self.namespace);
@@ -6900,7 +6943,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
              * 	}
              * });
              */
-            self.raise("destroyed");
+            self.trigger("destroyed");
             self.$el.removeData(_.DATA_TEMPLATE);
 
             if (_is.empty(self._undo.classes)) self.$el.removeAttr("class");
@@ -6982,38 +7025,20 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 		// #############
 
 		/**
-		 * @summary Raises the supplied `eventName` on the template {@link FooGallery.Template#$el|element}.
 		 * @memberof FooGallery.Template#
-		 * @function raise
-		 * @param {string} eventName - The name of the event to raise.
-		 * @param {Array} [args] - An additional arguments to supply to the listeners for the event.
-		 * @returns {?jQuery.Event} The jQuery.Event object or null if no `eventName` was supplied.
-		 * @description This method also executes any listeners set on the template object itself. These listeners are not bound to the element but are executed after the event is raised but before any default logic is executed. The names of these listeners use the following convention; prefix the `eventName` with `"on-"` and then camel-case the result. e.g. `"pre-init"` becomes `onPreInit`.
-		 * @example {@caption The following displays a listener for the `"pre-init.foogallery"` event in a sub-classed template.}
-		 * FooGallery.MyTemplate = FooGallery.Template.extend({
-		 * 	onPreInit: function(event, template){
-		 * 		// do something
-		 * 	}
-		 * });
+		 * @function layout
 		 */
-		raise: function (eventName, args) {
-			if (this.destroying || this.destroyed || !_is.string(eventName) || _is.empty(eventName)) return null;
-			args = _is.array(args) ? args : [];
-			var self = this,
-					name = eventName.split(".")[0],
-					listener = _str.camel("on-" + name);
-			args.unshift(self); // add self
-			var e = self.trigger(name, args);
-			if (_is.fn(self[listener])) {
-				args.unshift(e); // add event
-				self[listener].apply(self.$el.get(0), args);
+		layout: function (width) {
+			var self = this;
+			if (self._initialize === null) return;
+			if (!_is.number(width)){
+				var rect = self.el.getBoundingClientRect();
+				width = rect.width;
 			}
-			return e;
-		},
+			if (width === 0 || self._checkWidth(width)) return;
 
-		layout: function () {
-			var self = this, width = self.getContainerWidth();
-			if (self._initialize === null || self._checkWidth(width)) return;
+			self.lastWidth = width;
+
 			/**
 			 * @summary Raised when the templates' {@link FooGallery.Template#layout|layout} method is called.
 			 * @event FooGallery.Template~"layout.foogallery"
@@ -7030,10 +7055,13 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 			 * 	}
 			 * });
 			 */
-			self.raise("layout", [width]);
+			self.trigger("layout", [width]);
+			self.loadAvailable();
 		},
 		/**
 		 * @summary This method was added to prevent an infinite loop in the ResizeObserver.
+		 * @memberof FooGallery.Template#
+		 * @function _checkWidth
 		 * @description When the viewport has no scrollbar by default and is then resized down until the gallery layout requires a scrollbar
 		 * to show. There could be an infinite loop as follows:
 		 * 1. No scrollbar shown, layout occurs, scrollbar is then required.
@@ -7129,6 +7157,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 			loadingIcon: /(?:\s|^)(fg-loading-(?:default|bars|dots|partial|pulse|trail))(?:\s|$)/,
 			hoverIcon: /(?:\s|^)(fg-hover-(?:zoom|zoom2|zoom3|plus|circle-plus|eye|external|tint))(?:\s|$)/,
 			videoIcon: /(?:\s|^)(fg-video-(?:default|1|2|3|4))(?:\s|$)/,
+			border: /(?:\s|^)(fg-border-(?:thin|medium|thick))(?:\s|$)/,
 			hoverColor: /(?:\s|^)(fg-hover-(?:colorize|grayscale))(?:\s|$)/,
 			hoverScale: /(?:\s|^)(fg-hover-scale)(?:\s|$)/,
 			stickyVideoIcon: /(?:\s|^)(fg-video-sticky)(?:\s|$)/,
@@ -7195,17 +7224,17 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 );
 (function(_, _utils, _is){
 
-	_.Component = _utils.Class.extend(/** @lend FooGallery.Component */{
+	_.Component = _utils.EventClass.extend(/** @lend FooGallery.Component */{
 		/**
 		 * @summary The base class for all child components of a {@link FooGallery.Template|template}.
-		 * @memberof FooGallery
-		 * @constructs Component
+		 * @constructs
 		 * @param {FooGallery.Template} template - The template creating the component.
-		 * @augments FooGallery.utils.Class
+		 * @augments FooGallery.utils.EventClass
 		 * @borrows FooGallery.utils.Class.extend as extend
 		 * @borrows FooGallery.utils.Class.override as override
 		 */
 		construct: function(template){
+			this._super();
 			/**
 			 * @summary The template that created this component.
 			 * @memberof FooGallery.Component#
@@ -7221,71 +7250,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 		 */
 		destroy: function(){
 			this.tmpl = null;
-		}
-	});
-
-	_.EventComponent = _utils.EventClass.extend(/** @lend FooGallery.EventComponent */{
-		/**
-		 * @summary The base class for all child components of a {@link FooGallery.Template|template} that raise there own events.
-		 * @constructs
-		 * @param {FooGallery.Template} template - The template creating the component.
-		 * @param {string} prefix - A prefix to prepend to any events bubbled up to the template.
-		 * @augments FooGallery.utils.EventClass
-		 * @borrows FooGallery.utils.Class.extend as extend
-		 * @borrows FooGallery.utils.Class.override as override
-		 */
-		construct: function(template, prefix){
-			this._super(template);
-			/**
-			 * @summary The template that created this component.
-			 * @memberof FooGallery.EventComponent#
-			 * @name tmpl
-			 * @type {FooGallery.Template}
-			 */
-			this.tmpl = template;
-			/**
-			 * @summary A prefix to prepend to any events bubbled up to the template.
-			 * @memberof FooGallery.EventComponent#
-			 * @name tmplEventPrefix
-			 * @type {string}
-			 */
-			this.tmplEventPrefix = prefix;
-		},
-		/**
-		 * @summary Destroy the component making it ready for garbage collection.
-		 * @memberof FooGallery.EventComponent#
-		 * @function destroy
-		 */
-		destroy: function(){
 			this._super();
-			this.tmpl = null;
-		},
-		/**
-		 * @summary Trigger an event on the current component.
-		 * @memberof FooGallery.EventComponent#
-		 * @function trigger
-		 * @param {(string|FooGallery.utils.Event)} event - Either a space-separated string of event types or a custom event object to raise.
-		 * @param {Array} [args] - An array of additional arguments to supply to the handlers after the event object.
-		 * @returns {(FooGallery.utils.Event|FooGallery.utils.Event[]|null)} Returns the {@link FooGallery.utils.Event|event object} of the triggered event. If more than one event was triggered an array of {@link FooGallery.utils.Event|event objects} is returned. If no `event` was supplied or triggered `null` is returned.
-		 */
-		trigger: function(event, args){
-			var self = this, result = self._super(event, args), name, e;
-			if (self.tmpl != null){
-				if (result instanceof _utils.Event && !result.isDefaultPrevented()){
-					name = result.namespace != null ? [result.type, result.namespace].join(".") : result.type;
-					e = self.tmpl.raise(self.tmplEventPrefix + name, args);
-					if (!!e && e.isDefaultPrevented()) result.preventDefault();
-				} else if (_is.array(result)){
-					result.forEach(function (evt) {
-						if (!evt.isDefaultPrevented()){
-							name = evt.namespace != null ? [evt.type, evt.namespace].join(".") : evt.type;
-							e = self.tmpl.raise(self.tmplEventPrefix + name, args);
-							if (!!e && e.isDefaultPrevented()) evt.preventDefault();
-						}
-					});
-				}
-			}
-			return _is.empty(result) ? null : (result.length === 1 ? result[0] : result);
 		}
 	});
 
@@ -7599,7 +7564,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 			if (_is.hash(state)){
 				var obj = _obj.extend({ filter: [], page: 1, item: null }, state);
 				tmpl.items.reset();
-				var e = tmpl.raise("before-state", [obj]);
+				var e = tmpl.trigger("before-state", [obj]);
 				if (!e.isDefaultPrevented()){
 					if (!!tmpl.filter){
 						tmpl.filter.setState(obj);
@@ -7624,7 +7589,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 						}
 					}
 					self.current = obj;
-					tmpl.raise("after-state", [obj]);
+					tmpl.trigger("after-state", [obj]);
 				}
 			}
 		},
@@ -7699,6 +7664,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 			 */
 			self._super(template);
 			self.maps = {};
+			self._typeRegex = /(?:^|\s)?fg-type-(.*?)(?:$|\s)/;
 			self._fetched = null;
 			self._arr = [];
 			self._available = [];
@@ -7732,7 +7698,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 				 * 	}
 				 * });
 				 */
-				self.tmpl.raise("destroy-items", [items]);
+				self.tmpl.trigger("destroy-items", [items]);
 				destroyed = $.map(items, function (item) {
 					return item.destroy() ? item : null;
 				});
@@ -7752,7 +7718,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 				 * 	}
 				 * });
 				 */
-				if (destroyed.length > 0) self.tmpl.raise("destroyed-items", [destroyed]);
+				if (destroyed.length > 0) self.tmpl.trigger("destroyed-items", [destroyed]);
 				// should we handle a case where the destroyed.length != items.length??
 			}
 			self.maps = {};
@@ -8032,7 +7998,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 				 * 	}
 				 * });
 				 */
-				var e = self.tmpl.raise("make-items", [arr]);
+				var e = self.tmpl.trigger("make-items", [arr]);
 				if (!e.isDefaultPrevented()) {
 					made = $.map(arr, function (obj) {
 						var type = self.type(obj), opt = _obj.extend(_is.hash(obj) ? obj : {}, {type: type});
@@ -8065,7 +8031,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 				 * 	}
 				 * });
 				 */
-				if (made.length > 0) self.tmpl.raise("made-items", [made]);
+				if (made.length > 0) self.tmpl.trigger("made-items", [made]);
 
 				/**
 				 * @summary Raised after the template has parsed any elements into an array of {@link FooGallery.Item|item} objects.
@@ -8083,16 +8049,16 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 				 * 	}
 				 * });
 				 */
-				if (parsed.length > 0) self.tmpl.raise("parsed-items", [parsed]);
+				if (parsed.length > 0) self.tmpl.trigger("parsed-items", [parsed]);
 			}
 			return made;
 		},
 		type: function (objOrElement) {
-			var type;
+			var self = this, type;
 			if (_is.hash(objOrElement)) {
 				type = objOrElement.type;
 			} else if (_is.element(objOrElement)) {
-				var match = objOrElement.className.match(/(?:^|\s)?fg-type-(.*?)(?:$|\s)/);
+				var match = objOrElement.className.match(self._typeRegex);
 				if (match !== null && match.length === 2){
 					type = match[1];
 				}
@@ -8145,7 +8111,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 				 * 	}
 				 * });
 				 */
-				var e = self.tmpl.raise("create-items", [creatable]);
+				var e = self.tmpl.trigger("create-items", [creatable]);
 				if (!e.isDefaultPrevented()) {
 					created = $.map(creatable, function (item) {
 						return item.create() ? item : null;
@@ -8167,7 +8133,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 				 * 	}
 				 * });
 				 */
-				if (created.length > 0) self.tmpl.raise("created-items", [created]);
+				if (created.length > 0) self.tmpl.trigger("created-items", [created]);
 			}
 			if (_is.boolean(append) ? append : false) return self.append(items);
 			return created;
@@ -8211,7 +8177,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 				 * 	}
 				 * });
 				 */
-				var e = self.tmpl.raise("append-items", [appendable]);
+				var e = self.tmpl.trigger("append-items", [appendable]);
 				if (!e.isDefaultPrevented()) {
 					appended = $.map(appendable, function (item) {
 						return item.append() ? item : null;
@@ -8233,7 +8199,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 					 * 	}
 					 * });
 				 */
-				if (appended.length > 0) self.tmpl.raise("appended-items", [appended]);
+				if (appended.length > 0) self.tmpl.trigger("appended-items", [appended]);
 			}
 			return appended;
 		},
@@ -8276,7 +8242,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 				 * 	}
 				 * });
 				 */
-				var e = self.tmpl.raise("detach-items", [detachable]);
+				var e = self.tmpl.trigger("detach-items", [detachable]);
 				if (!e.isDefaultPrevented()) {
 					detached = $.map(detachable, function (item) {
 						return item.detach() ? item : null;
@@ -8298,7 +8264,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 					 * 	}
 					 * });
 				 */
-				if (detached.length > 0) self.tmpl.raise("detached-items", [detached]);
+				if (detached.length > 0) self.tmpl.trigger("detached-items", [detached]);
 			}
 			return detached;
 		},
@@ -8342,7 +8308,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 				 * 	}
 				 * });
 				 */
-				var e = self.tmpl.raise("load-items", [items]);
+				var e = self.tmpl.trigger("load-items", [items]);
 				if (!e.isDefaultPrevented()) {
 					var loading = $.map(items, function (item) {
 						return item.load();
@@ -8369,7 +8335,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 						 * 	}
 						 * });
 						 */
-						self.tmpl.raise("loaded-items", [loaded]);
+						self.tmpl.trigger("loaded-items", [loaded]);
 					});
 				}
 			}
@@ -8475,6 +8441,12 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 			 * @type {?jQuery}
 			 */
 			self.$el = null;
+			/**
+			 * @memberof FooGallery.Item#
+			 * @name el
+			 * @type {?Element}
+			 */
+			self.el = null;
 			/**
 			 * @memberof FooGallery.Item#
 			 * @name $inner
@@ -8681,9 +8653,6 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 			self._undo = {
 				classes: "",
 				style: "",
-				loader: false,
-				wrap: false,
-				overlay: false,
 				placeholder: false
 			};
 		},
@@ -8737,7 +8706,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 			 * 	}
 			 * });
 			 */
-			var e = self.tmpl.raise("destroy-item", [self]);
+			var e = self.tmpl.trigger("destroy-item", [self]);
 			if (!e.isDefaultPrevented()) {
 				self.isDestroyed = self.doDestroyItem();
 			}
@@ -8758,7 +8727,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 					 * 	}
 					 * });
 				 */
-				self.tmpl.raise("destroyed-item", [self]);
+				self.tmpl.trigger("destroyed-item", [self]);
 				// call the original method that simply nulls the tmpl property
 				self._super();
 			}
@@ -8775,22 +8744,13 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 			if (self.isParsed) {
 				self.$anchor.add(self.$caption).off("click.foogallery");
 				self.append();
+
 				if (_is.empty(self._undo.classes)) self.$el.removeAttr("class");
 				else self.$el.attr("class", self._undo.classes);
 
 				if (_is.empty(self._undo.style)) self.$el.removeAttr("style");
 				else self.$el.attr("style", self._undo.style);
 
-				if (self._undo.overlay) {
-					self.$overlay.remove();
-				}
-				if (self._undo.wrap) {
-					self.$anchor.append(self.$image);
-					self.$wrap.remove();
-				}
-				if (self._undo.loader) {
-					self.$loader.remove();
-				}
 				if (self._undo.placeholder && self.$image.prop("src") === self.placeholder) {
 					self.$image.removeAttr("src");
 				}
@@ -8853,7 +8813,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 			 * 	}
 			 * });
 			 */
-			var e = self.tmpl.raise("parse-item", [self, $el]);
+			var e = self.tmpl.trigger("parse-item", [self, $el]);
 			if (!e.isDefaultPrevented() && (self.isCreated = $el.is(self.sel.elem))) {
 				self.isParsed = self.doParseItem($el);
 				// We don't load the attributes when parsing as they are only ever used to create an item and if you're parsing it's already created.
@@ -8876,7 +8836,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 				 * 	}
 				 * });
 				 */
-				self.tmpl.raise("parsed-item", [self]);
+				self.tmpl.trigger("parsed-item", [self]);
 			}
 			return self.isParsed;
 		},
@@ -8888,12 +8848,16 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 		 * @returns {boolean}
 		 */
 		doParseItem: function ($el) {
-			var self = this, o = self.tmpl.opt, cls = self.cls, sel = self.sel, el = $el.get(0);
+			var self = this,
+				cls = self.cls,
+				sel = self.sel,
+				el = $el.get(0);
 
 			self._undo.classes = $el.attr("class") || "";
 			self._undo.style = $el.attr("style") || "";
 
 			self.$el = $el.data(_.DATA_ITEM, self);
+			self.el = el;
 			self.$inner = $(el.querySelector(sel.inner));//self.$el.children(sel.inner);
 			self.$anchor = $(el.querySelector(sel.anchor)).on("click.foogallery", {self: self}, self.onAnchorClick);
 			self.$image = $(el.querySelector(sel.image));
@@ -8905,7 +8869,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 			if ( !self.$el.length || !self.$inner.length || !self.$anchor.length || !self.$image.length ){
 				console.error("FooGallery Error: Invalid HTML markup. Check the item markup for additional elements or malformed HTML in the title or description.", self);
 				self.isError = true;
-				self.tmpl.raise("error-item", [self]);
+				self.tmpl.trigger("error-item", [self]);
 				if (self.$el.length !== 0){
 					self.$el.remove();
 				}
@@ -8922,8 +8886,8 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 			self.productId = data.productId || self.productId;
 			self.tags = data.tags || self.tags;
 			self.href = data.href || self.$anchor.attr('href') || self.href;
-			self.src = self.$image.attr(o.src) || self.src;
-			self.srcset = self.$image.attr(o.srcset) || self.srcset;
+			self.src = self.$image.attr(self.tmpl.opt.src) || self.src;
+			self.srcset = self.$image.attr(self.tmpl.opt.srcset) || self.srcset;
 			self.width = parseInt(self.$image.attr("width")) || self.width;
 			self.height = parseInt(self.$image.attr("height")) || self.height;
 			self.title = self.$image.attr("title") || self.title;
@@ -8936,34 +8900,20 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 				self.exif = _obj.extend(self.exif, data.exif);
 				self.hasExif = true;
 			}
-			// if the caption or description are not set yet try fetching it from the html
-			if (_is.empty(self.caption)) self.caption = $.trim(self.$caption.find(sel.caption.title).html());
-			if (_is.empty(self.description)) self.description = $.trim(self.$caption.find(sel.caption.description).html());
 			// enforce the max lengths for the caption and description
-			if (_is.number(self.maxCaptionLength) && self.maxCaptionLength > 0 && !_is.empty(self.caption) && _is.string(self.caption) && self.caption.length > self.maxCaptionLength) {
-				self.$caption.find(sel.caption.title).html(self.caption.substr(0, self.maxCaptionLength) + "&hellip;");
+			if (self.maxCaptionLength > 0){
+				var title = _str.trimTo(self.caption, self.maxCaptionLength);
+				if (title !== self.caption) {
+					self.$caption.find(sel.caption.title).html(title);
+				}
 			}
-			if (_is.number(self.maxDescriptionLength) && self.maxDescriptionLength > 0 && !_is.empty(self.description) && _is.string(self.description) && self.description.length > self.maxDescriptionLength) {
-				self.$caption.find(sel.caption.description).html(self.description.substr(0, self.maxDescriptionLength) + "&hellip;");
+			if (self.maxDescriptionLength){
+				var desc = _str.trimTo(self.description, self.maxDescriptionLength);
+				if (desc !== self.description) {
+					self.$caption.find(sel.caption.description).html(desc);
+				}
 			}
-			// check if the item has an overlay
-			if (self.$overlay.length === 0) {
-				self.$overlay = $("<span/>", {"class": cls.overlay});
-				self.$anchor.append(self.$overlay);
-				self._undo.overlay = true;
-			}
-			// check if the item has a wrap
-			if (self.$wrap.length === 0) {
-				self.$wrap = $("<span/>", {"class": cls.wrap});
-				self.$anchor.append(self.$wrap.append(self.$image));
-				self._undo.wrap = true;
-			}
-			// check if the item has a loader
-			if (self.$loader.length === 0) {
-				self.$loader = $("<div/>", {"class": cls.loader});
-				self.$el.append(self.$loader);
-				self._undo.loader = true;
-			}
+
 			// if the image has no src url then set the placeholder
 			var img = self.$image.get(0);
 			if (!_is.string(img.src) || img.src.length === 0) {
@@ -9039,7 +8989,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 				 * 	}
 				 * });
 				 */
-				var e = self.tmpl.raise("create-item", [self]);
+				var e = self.tmpl.trigger("create-item", [self]);
 				if (!e.isDefaultPrevented()) {
 					self.isCreated = self.doCreateItem();
 				}
@@ -9060,7 +9010,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 					 * 	}
 					 * });
 					 */
-					self.tmpl.raise("created-item", [self]);
+					self.tmpl.trigger("created-item", [self]);
 				}
 			}
 			return self.isCreated;
@@ -9074,7 +9024,9 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 		 */
 		_setAttributes: function(element, attributes){
 			Object.keys(attributes).forEach(function(key){
-				element.setAttribute(key, _is.string(attributes[key]) ? attributes[key] : JSON.stringify(attributes[key]));
+				if (!_is.empty(attributes[key])){
+					element.setAttribute(key, _is.string(attributes[key]) ? attributes[key] : JSON.stringify(attributes[key]));
+				}
 			});
 		},
 		/**
@@ -9084,12 +9036,14 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 		 * @returns {boolean}
 		 */
 		doCreateItem: function () {
-			var self = this, o = self.tmpl.opt, cls = self.cls, attr = self.attr, type = self.getTypeClass(), exif = self.hasExif ? cls.exif : "";
-
+			var self = this,
+				cls = self.cls,
+				attr = self.attr,
+				exif = self.hasExif ? cls.exif : "";
 
 			var elem = document.createElement("div");
 			self._setAttributes(elem, attr.elem);
-			elem.className = [cls.elem, type, exif, cls.idle].join(" ");
+			elem.className = [cls.elem, self.getTypeClass(), exif, cls.idle].join(" ");
 
 			var inner = document.createElement("figure");
 			self._setAttributes(inner, attr.inner);
@@ -9105,37 +9059,34 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 
 			var anchor = document.createElement("a");
 			self._setAttributes(anchor, attr.anchor);
-			anchor.className = anchorClasses.join(" ");
-			anchor.href = self.href;
-			anchor.setAttribute("data-type", self.type);
-			anchor.setAttribute("data-id", self.id);
-			anchor.setAttribute("data-title", self.caption);
-			anchor.setAttribute("data-description", self.description);
-			if (!_is.empty(self.tags)) {
-				anchor.setAttribute("data-tags", JSON.stringify(self.tags));
-			}
-			if (!_is.empty(self.productId)) {
-				anchor.setAttribute("data-product-id", self.productId);
-			}
-			if (self.hasExif) {
-				anchor.setAttribute("data-exif", JSON.stringify(self.exif));
+			self._setAttributes(anchor, {
+				"class": anchorClasses.join(" "),
+				"href": self.href,
+				"data-id": self.id,
+				"data-type": self.type,
+				"data-title": self.caption,
+				"data-description": self.description,
+				"data-tags": self.tags,
+				"data-exif": self.exif,
+				"data-product-id": self.productId
+			});
+
+			if (!_is.string(self.placeholder) || self.placeholder.length === 0){
+				self.placeholder = self.createPlaceholder(self.width, self.height);
 			}
 
 			var image = document.createElement("img");
 			self._setAttributes(image, attr.image);
-			image.className = cls.image;
-			if (!_is.string(self.placeholder) || self.placeholder.length === 0){
-				self.placeholder = self.createPlaceholder(self.width, self.height);
-			}
-			if (self.placeholder.length > 0){
-				image.src = self.placeholder;
-			}
-			image.setAttribute(o.src, self.src);
-			image.setAttribute(o.srcset, self.srcset);
-			image.setAttribute("width", self.width + '');
-			image.setAttribute("height", self.height + '');
-			image.setAttribute("title", self.title);
-			image.setAttribute("alt", self.alt);
+			self._setAttributes(image, {
+				"class": cls.image,
+				"src": self.placeholder,
+				"width": self.width + "",
+				"height": self.height + "",
+				"title": self.title,
+				"alt": self.alt
+			});
+			image.setAttribute(self.tmpl.opt.src, self.src);
+			image.setAttribute(self.tmpl.opt.srcset, self.srcset);
 
 			var overlay = document.createElement("span");
 			overlay.className = cls.overlay;
@@ -9158,23 +9109,15 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 			if (self.showCaptionTitle && _is.string(self.caption) && self.caption.length > 0) {
 				captionTitle = document.createElement("div");
 				self._setAttributes(captionTitle, attr.caption.title);
-				var titleHtml = self.caption;
-				// enforce the max length for the caption
-				if (_is.number(self.maxCaptionLength) && self.maxCaptionLength > 0 && self.caption.length > self.maxCaptionLength) {
-					titleHtml = self.caption.substr(0, self.maxCaptionLength) + "&hellip;";
-				}
-				captionTitle.innerHTML = titleHtml;
+				captionTitle.className = cls.caption.title;
+				captionTitle.innerHTML = self.maxCaptionLength > 0 ? _str.trimTo(self.caption, self.maxCaptionLength) : self.caption;
 			}
 			var captionDesc = null;
 			if (self.showCaptionDescription && _is.string(self.description) && self.description.length > 0) {
 				captionDesc = document.createElement("div");
 				self._setAttributes(captionDesc, attr.caption.description);
-				var descHtml = self.description;
-				// enforce the max length for the description
-				if (_is.number(self.maxDescriptionLength) && self.maxDescriptionLength > 0 && self.description.length > self.maxDescriptionLength) {
-					descHtml = self.description.substr(0, self.maxDescriptionLength) + "&hellip;";
-				}
-				captionDesc.innerHTML = descHtml;
+				captionDesc.className = cls.caption.description;
+				captionDesc.innerHTML = self.maxDescriptionLength > 0 ? _str.trimTo(self.description, self.maxDescriptionLength) : self.description;
 			}
 
 			if (captionTitle !== null) captionInner.appendChild(captionTitle);
@@ -9190,6 +9133,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 			elem.appendChild(loader);
 
 			self.$el = $(elem).data(_.DATA_ITEM, self);
+			self.el = elem;
 			self.$inner = $(inner);
 			self.$anchor = $(anchor).on("click.foogallery", {self: self}, self.onAnchorClick);
 			self.$overlay = $(overlay);
@@ -9252,7 +9196,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 				 * 	}
 				 * });
 				 */
-				var e = self.tmpl.raise("append-item", [self]);
+				var e = self.tmpl.trigger("append-item", [self]);
 				if (!e.isDefaultPrevented()) {
 					self.tmpl.$el.append(self.$el);
 					self.isAttached = true;
@@ -9274,7 +9218,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 					 * 	}
 					 * });
 					 */
-					self.tmpl.raise("appended-item", [self]);
+					self.tmpl.trigger("appended-item", [self]);
 				}
 			}
 			return self.isAttached;
@@ -9329,7 +9273,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 				 * 	}
 				 * });
 				 */
-				var e = self.tmpl.raise("detach-item", [self]);
+				var e = self.tmpl.trigger("detach-item", [self]);
 				if (!e.isDefaultPrevented()) {
 					self.$el.detach();
 					self.isAttached = false;
@@ -9351,7 +9295,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 					 * 	}
 					 * });
 					 */
-					self.tmpl.raise("detached-item", [self]);
+					self.tmpl.trigger("detached-item", [self]);
 				}
 			}
 			return !self.isAttached;
@@ -9366,7 +9310,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 			var self = this;
 			if (_is.promise(self._load)) return self._load;
 			if (!self.isCreated || !self.isAttached) return _fn.reject("not created or attached");
-			var e = self.tmpl.raise("load-item", [self]);
+			var e = self.tmpl.trigger("load-item", [self]);
 			if (e.isDefaultPrevented()) return _fn.reject("default prevented");
 			var cls = self.cls, img = self.$image.get(0), placeholder = img.src;
 			self.isLoading = true;
@@ -9377,7 +9321,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 					self.isLoading = false;
 					self.isLoaded = true;
 					self.$el.removeClass(cls.loading).addClass(cls.loaded);
-					self.tmpl.raise("loaded-item", [self]);
+					self.tmpl.trigger("loaded-item", [self]);
 					def.resolve(self);
 				};
 				img.onerror = function () {
@@ -9388,7 +9332,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 					if (_is.string(placeholder)) {
 						self.$image.prop("src", placeholder);
 					}
-					self.tmpl.raise("error-item", [self]);
+					self.tmpl.trigger("error-item", [self]);
 					def.reject(self);
 				};
 				// set everything in motion by setting the src
@@ -9528,7 +9472,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 		 * @private
 		 */
 		onAnchorClick: function (e) {
-			var self = e.data.self, evt = self.tmpl.raise("anchor-click-item", [self]);
+			var self = e.data.self, evt = self.tmpl.trigger("anchor-click-item", [self]);
 			if (evt.isDefaultPrevented()) {
 				e.preventDefault();
 			} else {
@@ -9543,7 +9487,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 		 * @private
 		 */
 		onCaptionClick: function (e) {
-			var self = e.data.self, evt = self.tmpl.raise("caption-click-item", [self]);
+			var self = e.data.self, evt = self.tmpl.trigger("caption-click-item", [self]);
 			if (!evt.isDefaultPrevented() && self.$anchor.length > 0 && !$(e.target).is("a,:input")) {
 				self.$anchor.get(0).click();
 			}
@@ -10241,9 +10185,9 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 						self.tmpl.state.update(state, self.pushOrReplace);
 					}
 
-					self.tmpl.raise("after-filter-change", [self.current, prev]);
+					self.tmpl.trigger("after-filter-change", [self.current, prev]);
 				};
-				var e = self.tmpl.raise("before-filter-change", [self.current, tags, setFilter]);
+				var e = self.tmpl.trigger("before-filter-change", [self.current, tags, setFilter]);
 				if (e.isDefaultPrevented()) return false;
 				setFilter();
 				return true;
@@ -10793,15 +10737,16 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 							state = self.tmpl.state.get();
 							self.tmpl.state.update(state, self.pushOrReplace);
 						}
+						self.tmpl.trigger("page-change", [self.current, prev, isFilter]);
 						if (self.scrollToTop && _is.boolean(scroll) ? scroll : false) {
 							var page = self.get(self.current);
 							if (page.length > 0) {
 								page[0].scrollTo("top");
 							}
 						}
-						self.tmpl.raise("after-page-change", [self.current, prev, isFilter]);
+						self.tmpl.trigger("after-page-change", [self.current, prev, isFilter]);
 					};
-					var e = self.tmpl.raise("before-page-change", [self.current, num, setPage, isFilter]);
+					var e = self.tmpl.trigger("before-page-change", [self.current, num, setPage, isFilter]);
 					if (e.isDefaultPrevented()) return false;
 					setPage();
 					return true;
@@ -11488,13 +11433,24 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
     /**
      * @memberof FooGallery.
      * @class Panel
-     * @augments FooGallery.EventComponent
+     * @param template
+     * @param options
+     * @param classes
+     * @param il8n
+     * @augments FooGallery.Component
      */
-    _.Panel = _.EventComponent.extend(/** @lends FooGallery.Panel */{
+    _.Panel = _.Component.extend(/** @lends FooGallery.Panel */{
+        /**
+         * @constructs
+         * @param template
+         * @param options
+         * @param classes
+         * @param il8n
+         */
         construct: function(template, options, classes, il8n){
             var self = this;
             self.instanceId = ++instance_id;
-            self._super(template, "panel-");
+            self._super(template);
 
             self.opt = _obj.extend({}, self.tmpl.opt.panel, options);
 
@@ -11593,12 +11549,12 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
         create: function(){
             var self = this;
             if (!self.isCreated) {
-                var e = self.trigger("create", [self]);
+                var e = self.trigger("create");
                 if (!e.isDefaultPrevented()) {
                     self.isCreated = self.doCreate();
                 }
                 if (self.isCreated) {
-                    self.trigger("created", [self]);
+                    self.trigger("created");
                 }
             }
             return self.isCreated;
@@ -11649,24 +11605,24 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
             return $.Deferred(function (def) {
                 if (self.isLoading && _is.promise(self.__loading)) {
                     self.__loading.always(function () {
-                        var e = self.trigger("destroy", [self]);
+                        var e = self.trigger("destroy");
                         self.isDestroying = false;
                         if (!e.isDefaultPrevented()) {
                             self.isDestroyed = self.doDestroy();
                         }
                         if (self.isDestroyed) {
-                            self.trigger("destroyed", [self]);
+                            self.trigger("destroyed");
                         }
                         def.resolve();
                     });
                 } else {
-                    var e = self.trigger("destroy", [self]);
+                    var e = self.trigger("destroy");
                     self.isDestroying = false;
                     if (!e.isDefaultPrevented()) {
                         self.isDestroyed = self.doDestroy();
                     }
                     if (self.isDestroyed) {
-                        self.trigger("destroyed", [self]);
+                        self.trigger("destroyed");
                     }
                     def.resolve();
                 }
@@ -11690,12 +11646,12 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
         appendTo: function( parent ){
             var self = this;
             if ((self.isCreated || self.create()) && !self.isAttached){
-                var e = self.trigger("append", [self, parent]);
+                var e = self.trigger("append", [parent]);
                 if (!e.isDefaultPrevented()) {
                     self.isAttached = self.doAppendTo( parent );
                 }
                 if (self.isAttached) {
-                    self.trigger("appended", [self, parent]);
+                    self.trigger("appended", [parent]);
                 }
             }
             return self.isAttached;
@@ -11717,12 +11673,12 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
         detach: function(){
             var self = this;
             if (self.isCreated && self.isAttached) {
-                var e = self.trigger("detach", [self]);
+                var e = self.trigger("detach");
                 if (!e.isDefaultPrevented()) {
                     self.isAttached = !self.doDetach();
                 }
                 if (!self.isAttached) {
-                    self.trigger("detached", [self]);
+                    self.trigger("detached");
                 }
             }
             return !self.isAttached;
@@ -11805,7 +11761,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
                     def.rejectWith("no media to load");
                     return;
                 }
-                var e = self.trigger("load", [self, media, item]);
+                var e = self.trigger("load", [media, item]);
                 if (e.isDefaultPrevented()){
                     def.rejectWith("default prevented");
                     return;
@@ -11818,11 +11774,11 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
                 self.isLoading = false;
             }).then(function(){
                 self.isLoaded = true;
-                self.trigger("loaded", [self, item]);
+                self.trigger("loaded", [item]);
                 item.updateState();
             }).fail(function(){
                 self.isError = true;
-                self.trigger("error", [self, item]);
+                self.trigger("error", [item]);
             }).promise();
         },
         doLoad: function( media ){
@@ -11838,10 +11794,10 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
         open: function( item, parent ){
             var self = this;
             item = self.getItem(item);
-            var e = self.trigger("open", [self, item, parent]);
+            var e = self.trigger("open", [item, parent]);
             if (e.isDefaultPrevented()) return _fn.reject("default prevented");
             return self.doOpen(item, parent).then(function(){
-                self.trigger("opened", [self, item, parent]);
+                self.trigger("opened", [item, parent]);
             });
         },
         doOpen: function( item, parent ){
@@ -11865,10 +11821,10 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
         next: function(){
             var self = this, current = self.currentItem, next = self.nextItem;
             if (!(next instanceof _.Item)) return _fn.reject("no next item");
-            var e = self.trigger("next", [self, current, next]);
+            var e = self.trigger("next", [current, next]);
             if (e.isDefaultPrevented()) return _fn.reject("default prevented");
             return self.doNext(next).then(function(){
-                self.trigger("after-next", [self, current, next]);
+                self.trigger("after-next", [current, next]);
             });
         },
         doNext: function(item){
@@ -11877,20 +11833,20 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
         prev: function(){
             var self = this, current = self.currentItem, prev = self.prevItem;
             if (!(prev instanceof _.Item)) return _fn.reject("no prev item");
-            var e = self.trigger("prev", [self, current, prev]);
+            var e = self.trigger("prev", [current, prev]);
             if (e.isDefaultPrevented()) return _fn.reject("default prevented");
             return self.doPrev(prev).then(function(){
-                self.trigger("after-prev", [self, current, prev]);
+                self.trigger("after-prev", [current, prev]);
             });
         },
         doPrev: function(item){
             return this.load( item );
         },
         close: function(immediate){
-            var self = this, e = self.trigger("close", [self, self.currentItem]);
+            var self = this, e = self.trigger("close", [self.currentItem]);
             if (e.isDefaultPrevented()) return _fn.reject("default prevented");
             return self.doClose(immediate).then(function(){
-                self.trigger("closed", [self]);
+                self.trigger("closed");
             });
         },
         doClose: function(immediate, detach){
@@ -12662,7 +12618,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
             return false;
         },
         click: function(){
-            var self = this, pnl = self.panel.$el.get(0);
+            var self = this, pnl = self.panel.el;
             _.fullscreen.toggle(pnl).then(function(){
                 if (_.fullscreen.element() === pnl){
                     _.fullscreen.on("change error", self.onFullscreenChange, self);
@@ -12677,7 +12633,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
             self._super();
         },
         onFullscreenChange: function(){
-            if (_.fullscreen.element() !== this.panel.$el.get(0)){
+            if (_.fullscreen.element() !== this.panel.el){
                 this.exit();
             }
         },
@@ -14909,16 +14865,16 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
                 }, self);
             }
         },
-        onAnchorClickItem: function(e, tmpl, item){
+        onAnchorClickItem: function(e, item){
             if (!item.noLightbox){
                 e.preventDefault();
                 this.open(item);
             }
         },
-        onDestroyedTemplate: function(e, tmpl){
+        onDestroyedTemplate: function(){
             this.destroy();
         },
-        onAfterState: function(e, tmpl, state){
+        onAfterState: function(e, state){
             if (state.item instanceof _.Item && !state.item.noLightbox){
                 this.open(state.item);
             }
@@ -14934,7 +14890,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
     _.Template.override("construct", function(options, element){
         this._super(options, element);
         var data = this.$el.data("foogalleryLightbox"),
-            enabled = this.opt.lightbox.enabled || _is.hash(data) || (this.$el.length > 0 && this.$el.get(0).hasAttribute("data-foogallery-lightbox"));
+            enabled = this.opt.lightbox.enabled || _is.hash(data) || (this.$el.length > 0 && this.el.hasAttribute("data-foogallery-lightbox"));
 
         this.opt.lightbox = _obj.extend({}, this.opt.panel, this.opt.lightbox, { enabled: enabled }, data);
         this.lightbox = enabled ? new _.Lightbox(this, this.opt.lightbox) : null;
@@ -14963,382 +14919,83 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 
 	/**
 	 * @summary The Masonry template for FooGallery.
-	 * @memberof FooGallery
+	 * @memberof FooGallery.
 	 * @constructs MasonryTemplate
-	 * @param {FooGallery.MasonryTemplate~Options} [options] - The options for the template.
+	 * @param {Object} [options] - The options for the template.
 	 * @param {(jQuery|HTMLElement)} [element] - The jQuery object or HTMLElement of the template. If not supplied one will be created within the `parent` element supplied to the {@link FooGallery.Template#initialize|initialize} method.
 	 * @augments FooGallery.Template
 	 * @borrows FooGallery.utils.Class.extend as extend
 	 * @borrows FooGallery.utils.Class.override as override
 	 * @description This template makes use of the popular [Masonry library](http://masonry.desandro.com/) to perform its layout. It supports two basic layout types, fixed and column based.
-	 * @example {@caption The below shows the simplest way to create a Masonry gallery using this template, by simply initializing it on pre-existing elements.}{@lang html}
-	 * <!-- The container element for the template -->
-	 * <div id="gallery-1" class="foogallery fg-masonry">
-	 *   <!-- Used by the masonry to handle responsive sizing -->
-	 *   <div class="fg-column-width"></div>
-	 *   <div class="fg-gutter-width"></div>
-	 *   <!-- A single item -->
-	 *   <div class="fg-item" data-id="[item.id]">
-	 *     <div class="fg-item-inner">
-	 *       <a class="fg-thumb" href="[item.href]">
-	 *         <img class="fg-image" width="[item.width]" height="[item.height]"
-	 *         	title="[item.title]" alt="[item.description]"
-	 *         	data-src="[item.src]"
-	 *         	data-srcset="[item.srcset]" />
-	 *         <!-- Optional caption markup -->
-	 *         <div class="fg-caption">
-	 *         	<div class="fg-caption-inner">
-	 *         	 <div class="fg-caption-title">[item.title]</div>
-	 *         	 <div class="fg-caption-desc">[item.description]</div>
-	 *         	</div>
-	 *         </div>
-	 *       </a>
-	 *     </div>
-	 *   </div>
-	 *   <!-- Any number of additional items -->
-	 * </div>
-	 * <script>
-	 * 	jQuery(function($){
-	 * 		$("#gallery-1").foogallery();
-	 * 	});
-	 * </script>
-	 * @example {@caption Options can be supplied directly to the `.foogallery()` method or by supplying them using the `data-foogallery` attribute. If supplied using the attribute the value must follow [valid JSON syntax](http://en.wikipedia.org/wiki/JSON#Data_types.2C_syntax_and_example) including quoted property names.}{@lang html}
-	 * <!-- Supplying the options using the attribute -->
-	 * <div id="gallery-1" class="foogallery fg-masonry" data-foogallery='{"lazy": true, "template": {"layout": "col4"}}'>
-	 * 	<!-- Snip -->
-	 * </div>
-	 * <script>
-	 * 	jQuery(function($){
-	 * 		// Supply the options directly to the method
-	 * 		$("#gallery-1").foogallery({
-	 * 			lazy: true,
-	 * 			template: {
-	 * 				layout: "col4"
-	 * 			}
-	 * 		});
-	 * 	});
-	 * </script>
-	 * @example {@caption If required the templates container element can be created from just options however a parent element must be supplied to the `initialize` method. The created gallery container is appended to the supplied parent. When creating galleries this way all items must be supplied using the `items` option.}{@lang html}
-	 * <div id="gallery-parent"></div>
-	 * <script>
-	 * 	jQuery(function($){
-	 * 		// Create the template using just options
-	 * 		var tmpl = FooGallery.template.make({
-	 * 			type: "masonry", // required when creating from options
-	 * 			lazy: true,
-	 * 			template: {
-	 * 				layout: "col4"
-	 * 			},
-	 * 			items: [{
-	 * 				id: "item-1",
-	 * 				href: "https://url-to-your/full-image.jpg",
-	 * 				src: "https://url-to-your/thumb-image.jpg",
-	 * 				width: 250,
-	 * 				height: 300,
-	 * 				srcset: "https://url-to-your/thumb-image@2x.jpg 500w,https://url-to-your/thumb-image@3x.jpg 750w",
-	 * 				title: "Short Item Title",
-	 * 				description: "Longer item description but still fairly brief."
-	 * 			},{
-	 * 				// Any number of additional items
-	 * 			}]
-	 * 		});
-	 * 		// Supply the parent element to the initialize method
-	 * 		tmpl.initialize("#gallery-parent");
-	 * 	});
-	 * </script>
 	 */
 	_.MasonryTemplate = _.Template.extend(/** @lends FooGallery.MasonryTemplate */{
 		construct: function(options, element){
-			this._super(options, element);
-			/**
-			 * @summary The current Masonry instance for the template.
-			 * @memberof FooGallery.MasonryTemplate#
-			 * @name masonry
-			 * @type {?Masonry}
-			 * @description This value is `null` until after the {@link FooGallery.Template~event:"pre-init.foogallery"|`pre-init.foogallery`} event has been raised.
-			 */
-			this.masonry = null;
-			/**
-			 *
-			 * @type {?HTMLStyleElement}
-			 */
-			this.style = null;
-			this.$columnWidth = null;
-			/**
-			 * @summary The CSS classes for the Masonry template.
-			 * @memberof FooGallery.MasonryTemplate#
-			 * @name cls
-			 * @type {FooGallery.MasonryTemplate~CSSClasses}
-			 */
-			/**
-			 * @summary The CSS selectors for the Masonry template.
-			 * @memberof FooGallery.MasonryTemplate#
-			 * @name sel
-			 * @type {FooGallery.MasonryTemplate~CSSSelectors}
-			 */
-		},
-		/**
-		 * @summary Creates or gets the CSS stylesheet element for this template instance.
-		 * @memberof FooGallery.MasonryTemplate#
-		 * @function getStylesheet
-		 * @returns {CSSStyleSheet}
-		 */
-		getStylesheet: function(){
 			var self = this;
-			if (self.style === null){
-				self.style = document.createElement("style");
-				self.style.appendChild(document.createTextNode(""));
-				document.head.appendChild(self.style);
-			}
-			return self.style.sheet;
+			self._super(options, element);
+			self.masonry = null;
+			self.on({
+				"pre-init": self.onPreInit,
+				"destroyed": self.onDestroyed,
+				"appended-items": self.onAppendedItems,
+				"detach-item": self.onDetachItem,
+				"first-load layout after-filter-change": self.onLayoutRequired,
+				"page-change": self.onPageChange
+			}, self);
 		},
-		delayedLayout: function(){
-			var self = this;
-			if (self._delayedLayout) clearTimeout(self._delayedLayout);
-			self._delayedLayout = setTimeout(function () {
-				self._delayedLayout = null;
-				self.masonry.layout();
-			}, 20);
-		},
-		/**
-		 * @summary Listens for the {@link FooGallery.Template~event:"pre-init.foogallery"|`pre-init.foogallery`} event.
-		 * @memberof FooGallery.MasonryTemplate#
-		 * @function onPreInit
-		 * @param {jQuery.Event} event - The jQuery.Event object for the event.
-		 * @param {FooGallery.MasonryTemplate} self - The current instance of the template.
-		 * @this {HTMLElement} The templates container element that the event was raised on.
-		 * @description Performs all pre-initialization work required by the Masonry template, specifically handling the `layout` option and building up the required Masonry options.
-		 * @protected
-		 */
-		onPreInit: function(event, self){
-			var sel = self.sel, cls = self.cls;
-			// first update the templates classes to include one property containing all layouts
-			cls.layouts = $.map(cls.layout, function(value){
-				return value;
-			}).join(" ");
-			// check if the layout is supplied as a CSS class
-			var layouts = $.map(cls.layout, function(value, key){
-				return {key: key, value: value};
-			});
-			for (var i =0, l = layouts.length; i < l; i++){
-				if (self.$el.hasClass(layouts[i].value)){
-					self.template.layout = layouts[i].key;
-					break;
-				}
-			}
-			// check if the supplied layout is supported
-			if (!_is.string(cls.layout[self.template.layout])){
-				// if not set the default
-				self.template.layout = "col4";
-			}
-			// configure the base masonry options depending on the layout
-			var fixed = self.template.layout === "fixed", sheet, rule;
+		onPreInit: function(){
+			var self = this, sel = self.sel,
+				fixed = self.$el.hasClass("fg-fixed");
+
 			self.template.isFitWidth = fixed;
 			self.template.percentPosition = !fixed;
 			self.template.transitionDuration = 0;
 			self.template.itemSelector = sel.item.elem;
-			// remove any layout classes and then apply only the current to the container
-			self.$el.removeClass(cls.layouts).addClass(cls.layout[self.template.layout]);
-
 			if (!fixed){
-				// if the gutterWidth element does not exist create it
-				if (self.$el.find(sel.gutterWidth).length === 0){
-					self.$el.prepend($("<div/>").addClass(cls.gutterWidth));
-				}
 				self.template.gutter = sel.gutterWidth;
+				self.template.columnWidth = sel.columnWidth;
 			}
-
-			// if the columnWidth element does not exist create it
-			if (self.$el.find(sel.columnWidth).length === 0){
-				self.$el.prepend($("<div/>").addClass(cls.columnWidth));
-			}
-			if (fixed && _is.number(self.template.columnWidth)){
-				var $columnWidth = self.$el.find(sel.columnWidth).width(self.template.columnWidth);
-				sheet = self.getStylesheet();
-				rule = '#' + self.id + sel.container + ' ' + sel.item.elem + ' { width: ' + $columnWidth.outerWidth() + 'px; }';
-				sheet.insertRule(rule , 0);
-			}
-			self.template.columnWidth = sel.columnWidth;
-
-			// if this is a fixed layout and a number value is supplied as the gutter option then
-			// make sure to vertically space the items using  a CSS class and the same value
-			if (fixed && _is.number(self.template.gutter)){
-				sheet = self.getStylesheet();
-				rule = '#' + self.id + sel.container + ' ' + sel.item.elem + ' { margin-bottom: ' + self.template.gutter + 'px; }';
-				sheet.insertRule(rule , 0);
-			}
-			self.masonry = new Masonry( self.$el.get(0), self.template );
+			self.masonry = new Masonry( self.el, self.template );
 		},
-		onPostInit: function(event, self){
-			self.masonry.layout();
-		},
-		onFirstLoad: function(event, self){
-			self.masonry.layout();
-		},
-		onReady: function(event, self){
-			self.delayedLayout();
-		},
-		onDestroy: function(event, self){
-			if (self._delayedLayout) clearTimeout(self._delayedLayout);
-			self.$el.find(self.sel.columnWidth).remove();
-			self.$el.find(self.sel.gutterWidth).remove();
-			if (self.style && self.style.parentNode){
-				self.style.parentNode.removeChild(self.style);
-			}
-		},
-		onDestroyed: function(event, self){
+		onDestroyed: function(){
+			var self = this;
 			if (self.masonry instanceof Masonry){
 				self.masonry.destroy();
 			}
 		},
-		onLayout: function(event, self){
-			self.masonry.layout();
+		onLayoutRequired: function(){
+			this.masonry.layout();
 		},
-		/**
-		 * @summary Listens for the {@link FooGallery.Template~event:"parsed-items.foogallery"|`parsed-items.foogallery`} event.
-		 * @memberof FooGallery.MasonryTemplate#
-		 * @function onParsedItems
-		 * @param {jQuery.Event} event - The jQuery.Event object for the event.
-		 * @param {FooGallery.MasonryTemplate} self - The current instance of the template.
-		 * @param {FooGallery.Item[]} items - The array of items that were parsed.
-		 * @this {HTMLElement} The templates container element that the event was raised on.
-		 * @description Instructs Masonry to perform a layout operation whenever items are parsed.
-		 * @protected
-		 */
-		onParsedItems: function(event, self, items){
-			self.masonry.layout();
-		},
-		/**
-		 * @summary Listens for the {@link FooGallery.Template~event:"appended-items.foogallery"|`appended-items.foogallery`} event.
-		 * @memberof FooGallery.MasonryTemplate#
-		 * @function onAppendedItems
-		 * @param {jQuery.Event} event - The jQuery.Event object for the event.
-		 * @param {FooGallery.MasonryTemplate} self - The current instance of the template.
-		 * @param {FooGallery.Item[]} items - The array of items that were appended.
-		 * @this {HTMLElement} The templates container element that the event was raised on.
-		 * @description Instructs Masonry to perform a layout operation whenever items are appended.
-		 * @protected
-		 */
-		onAppendedItems: function(event, self, items){
-			items = self.items.jquerify(items);
-			items = self.masonry.addItems(items);
-			// add and layout the new items with no transitions
-			self.masonry.layoutItems(items, true);
-		},
-		/**
-		 * @summary Listens for the {@link FooGallery.Template~event:"detach-item.foogallery"|`detach-item.foogallery`} event.
-		 * @memberof FooGallery.MasonryTemplate#
-		 * @function onDetachItem
-		 * @param {jQuery.Event} event - The jQuery.Event object for the event.
-		 * @param {FooGallery.MasonryTemplate} self - The current instance of the template.
-		 * @param {FooGallery.Item} item - The item to detach.
-		 * @this {HTMLElement} The templates container element that the event was raised on.
-		 * @description If not already overridden this method will override the default logic to detach an item and replace it with Masonry specific logic.
-		 * @protected
-		 */
-		onDetachItem: function(event, self, item){
-			if (!event.isDefaultPrevented()){
-				event.preventDefault();
-				self.masonry.remove(item.$el);
-				item.isAttached = false;
+		onPageChange: function(event, current, prev, isFilter){
+			if (!isFilter){
+				this.masonry.layout();
 			}
 		},
-		/**
-		 * @summary Listens for the {@link FooGallery.Template~event:"detached-items.foogallery"|`detached-items.foogallery`} event.
-		 * @memberof FooGallery.MasonryTemplate#
-		 * @function onDetachedItems
-		 * @param {jQuery.Event} event - The jQuery.Event object for the event.
-		 * @param {FooGallery.MasonryTemplate} self - The current instance of the template.
-		 * @param {FooGallery.Item[]} items - The array of items that were detached.
-		 * @this {HTMLElement} The templates container element that the event was raised on.
-		 * @description Instructs Masonry to perform a layout operation whenever items are detached.
-		 * @protected
-		 */
-		onDetachedItems: function(event, self, items){
-			self.masonry.layout();
+		onAppendedItems: function(event, items){
+			var self = this,
+				elements = items.map(function(item){
+					return item.el;
+				}),
+				mItems = self.masonry.addItems(elements);
+			// add and layout the new items with no transitions
+			self.masonry.layoutItems(mItems, true);
 		},
-		onLoadedItems: function(event, self, items){
-			self.masonry.layout();
+		onDetachItem: function(event, item){
+			if (!event.isDefaultPrevented()){
+				event.preventDefault();
+				this.masonry.remove(item.el);
+				item.isAttached = false;
+			}
 		}
 	});
 
 	_.template.register("masonry", _.MasonryTemplate, {
 		fixLayout: true,
-		template: {
-			initLayout: false,
-			isInitLayout: false,
-			layout: "col4"
-		}
+		template: {}
 	}, {
 		container: "foogallery fg-masonry",
 		columnWidth: "fg-column-width",
-		gutterWidth: "fg-gutter-width",
-		layout: {
-			fixed: "fg-masonry-fixed",
-			col2: "fg-masonry-2col",
-			col3: "fg-masonry-3col",
-			col4: "fg-masonry-4col",
-			col5: "fg-masonry-5col"
-		}
+		gutterWidth: "fg-gutter-width"
 	});
-
-	/**
-	 * @summary An object containing the default options for the Masonry template.
-	 * @typedef {FooGallery.Template~Options} FooGallery.MasonryTemplate~Options
-	 * @property {object} [template] - An object containing the custom options for the Masonry template.
-	 * @property {string} [template.layout="col4"] - The layout to use for the template; "fixed", "col2", "col3", "col4" or "col5".
-	 * @property {FooGallery.MasonryTemplate~CSSClasses} [cls] - An object containing all CSS classes for the Masonry template.
-	 * @description Apart from the `layout` option the template object is identical to the standard {@link https://masonry.desandro.com/options.html|Masonry options}.
-	 * Note that the template overrides and sets its' own values for the following options based primarily on the `layout` value; `itemSelector`, `columnWidth`, `gutter`, `isFitWidth`, `percentPosition` and `transitionDuration`.
-	 * The `layout` value can be classed into two categories, fixed width and column type layouts. You can see in the examples below the options the template sets for each of these types of layouts.
-	 * @example {@caption For both fixed and column layouts the template sets the below option values.}
-	 * {
-	 * 	"itemSelector": ".fg-item", // this selector is generated from the classes.item.elem value.
-	 * 	"columnWidth": ".fg-column-width", // this selector is generated from the classes.masonry.columnWidth value.
-	 * 	"gutter": ".fg-gutter-width", // this selector is generated from the classes.masonry.gutterWidth value.
-	 * 	"transitionDuration": 0 // disables masonry's inline transitions to prevent them overriding our CSS class transitions
-	 * }
-	 * @example {@caption For fixed layouts (`"fixed"`) the template sets the below options. If a number was supplied for the `columnWidth` or `gutter` options it is applied to the relevant elements before they are replaced by the selector seen above.}
-	 * {
-	 * 	"isFitWidth": true,
-	 * 	"percentPosition": false
-	 * }
-	 * @example {@caption For column layouts (`"col2","col3","col4","col5"`) the template sets the below options.}
-	 * {
-	 * 	"isFitWidth": false,
-	 * 	"percentPosition": true
-	 * }
-	 */
-
-	/**
-	 * @summary An object containing the default CSS classes for the Masonry template.
-	 * @typedef {FooGallery.Template~CSSClasses} FooGallery.MasonryTemplate~CSSClasses
-	 * @property {string} [container="foogallery fg-masonry"] - The base CSS class names to apply to the container element.
-	 * @property {string} [columnWidth="fg-column-width"] - The CSS class name to apply to the Masonry column sizer element.
-	 * @property {string} [gutterWidth="fg-gutter-width"] - The CSS class name to apply to the Masonry gutter sizer element.
-	 * @property {object} [layout] - An object containing all layout classes.
-	 * @property {string} [layout.fixed="fg-masonry-fixed"] - The CSS class name for a fixed width layout.
-	 * @property {string} [layout.col2="fg-masonry-2col"] - The CSS class name for a two column layout.
-	 * @property {string} [layout.col3="fg-masonry-3col"] - The CSS class name for a three column layout.
-	 * @property {string} [layout.col4="fg-masonry-4col"] - The CSS class name for a four column layout.
-	 * @property {string} [layout.col5="fg-masonry-5col"] - The CSS class name for a five column layout.
-	 * @property {string} [layouts="fg-masonry-fixed fg-masonry-2col fg-masonry-3col fg-masonry-4col fg-masonry-5col"] - A space delimited string of all CSS class names from the `layout` object.
-	 */
-
-	/**
-	 * @summary An object containing all CSS selectors for the Masonry template.
-	 * @typedef {FooGallery.Template~CSSSelectors} FooGallery.MasonryTemplate~CSSSelectors
-	 * @property {string} [container=".foogallery.fg-masonry"] - The CSS selector for the container element.
-	 * @property {string} [columnWidth=".fg-column-width"] - The CSS selector for the Masonry column sizer element.
-	 * @property {string} [gutterWidth=".fg-gutter-width"] - The CSS selector for the Masonry gutter sizer element.
-	 * @property {object} [layout] - An object containing all layout CSS selectors.
-	 * @property {string} [layout.fixed=".fg-masonry-fixed"] - The CSS selector for a fixed width layout.
-	 * @property {string} [layout.col2=".fg-masonry-2col"] - The CSS selector for a two column layout.
-	 * @property {string} [layout.col3=".fg-masonry-3col"] - The CSS selector for a three column layout.
-	 * @property {string} [layout.col4=".fg-masonry-4col"] - The CSS selector for a four column layout.
-	 * @property {string} [layout.col5=".fg-masonry-5col"] - The CSS selector for a five column layout.
-	 * @description This object is automatically generated from a {@link FooGallery.MasonryTemplate~CSSClasses|classes} object and its properties mirror those except the class name values are converted into CSS selectors.
-	 */
 
 })(
 		FooGallery.$,
@@ -15350,263 +15007,221 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 
 	_.Justified = _utils.Class.extend({
 		construct: function(template, options){
-			this.tmpl = template;
-			this.$el = template.$el;
-			this.options = $.extend(true, {}, _.Justified.defaults, options);
-			this._items = [];
+			var self = this;
+			self.tmpl = template;
+			self.$el = template.$el;
+			self.options = $.extend(true, {}, _.Justified.defaults, options);
+			self._items = [];
+			self.maxRowHeight = 0;
+			self.borderSize = 0;
+			self.align = ["left","center","right"].indexOf(self.options.align) !== -1 ? self.options.align : "center";
 		},
 		init: function(){
 			var self = this;
-			if (_is.string(self.options.maxRowHeight)){
-				if (self.options.maxRowHeight.indexOf('%')){
-					self.options.maxRowHeight = self.options.rowHeight * (parseInt(self.options.maxRowHeight) / 100);
-				} else {
-					self.options.maxRowHeight = parseInt(self.options.maxRowHeight);
-				}
-			}
+			self.maxRowHeight = self.getMaxRowHeight(self.options.maxRowHeight, self.options.rowHeight);
+			self.borderSize = self.getBorderSize();
 		},
 		destroy: function(){
 			this.$el.removeAttr("style");
 		},
-		parse: function(){
-			var self = this;
-			return self._items = $.map(self.tmpl.getItems(), function(item, i){
-				return {
-					index: i,
-					width: item.width,
-					height: item.height,
-					top: 0,
-					left: 0,
-					$item: item.$el
-				};
-			});
+		getBorderSize: function(){
+			var border = this.tmpl.getCSSClass("border", "");
+			switch (border){
+				case "fg-border-thin":
+					return 4;
+				case "fg-border-medium":
+					return 10;
+				case "fg-border-thick":
+					return 16;
+				default:
+					return 0;
+			}
 		},
-		getMaxRowHeight: function() {
+		getMaxRowHeight: function(value, def) {
+			if (_is.string(value)){
+				var parsed = parseInt(value);
+				if (isNaN(parsed)) return def;
+				if (parsed <= 0) return Infinity;
+				return value.indexOf('%') !== -1 ? def * (parsed / 100) : parsed;
+			}
+			if (_is.number(value)){
+				if (value <= 0) return Infinity;
+				return value;
+			}
+			return def;
+		},
+		layout: function(width){
 			var self = this;
-			if (_is.string(self.options.maxRowHeight)){
-				if (self.options.maxRowHeight.indexOf('%')){
-					self.options.maxRowHeight = self.options.rowHeight * (parseInt(self.options.maxRowHeight) / 100);
-				} else {
-					self.options.maxRowHeight = parseInt(self.options.maxRowHeight);
+			if (!_is.number(width)){
+				width = self.$el.width();
+			}
+			if (width > 0){
+				var result = self.createRows(width);
+				if (result.height !== 0 && result.rows.length > 0){
+					self.$el.height(result.height);
+					result.rows.forEach(function(row, i){
+						self.render(row);
+					});
 				}
 			}
-			return _is.number(self.options.maxRowHeight) ? self.options.maxRowHeight : self.options.rowHeight;
-		},
-		getContainerWidth: function(){
-			var self = this, visible = self.$el.is(':visible');
-			if (!visible){
-				return self.$el.parents(':visible:first').innerWidth();
-			}
-			return self.$el.width();
-		},
-		layout: function(){
-			this.parse();
-
-			var self = this,
-				height = 0,
-				maxWidth = self.getContainerWidth(),
-				maxHeight = self.getMaxRowHeight(),
-				rows = self.rows(maxWidth, maxHeight);
-
-			$.each(rows, function(ri, row){
-				if (row.visible){
-					if (ri > 0) height += self.options.margins;
-					height += row.height;
-				}
-				self.render(row);
-			});
-			self.$el.height(height);
 		},
 		render: function(row){
-			for (var j = 0, jl = row.items.length, item; j < jl; j++){
-				item = row.items[j];
-				if (row.visible){
-					item.$item.css({
-						position: "absolute",
-						width: item.width,
-						height: item.height,
-						top: item.top,
-						left: item.left,
-						display: "",
-						maxHeight: this.options.maxRowHeight > 0 ? this.options.maxRowHeight : ""
-					}).addClass("fg-positioned");
-				} else {
-					item.$item.css("display", "none");
+			var self = this;
+			row.items.forEach(function(item){
+				if (item.elem){
+					if (row.visible){
+						item.elem.style.setProperty("position", "absolute");
+						item.elem.style.setProperty("width", item.width + "px");
+						item.elem.style.setProperty("height", item.height + "px");
+						item.elem.style.setProperty("top", item.top + "px");
+						item.elem.style.setProperty("left", item.left + "px");
+						item.elem.style.setProperty("margin", "0");
+						item.elem.style.removeProperty("display");
+						if (self.maxRowHeight > 0){
+							item.elem.style.setProperty("max-height", (self.maxRowHeight + (self.borderSize * 2)) + "px");
+						} else {
+							item.elem.style.removeProperty("max-height");
+						}
+						if (!item.elem.classList.contains("fg-positioned")){
+							item.elem.classList.add("fg-positioned");
+						}
+					} else {
+						item.elem.style.setProperty("display", "none");
+					}
 				}
-			}
+			});
 		},
 		justify: function(row, top, maxWidth, maxHeight){
 			var self = this,
-					margins = self.options.margins * (row.items.length - 1),
-					max = maxWidth - margins;
+				margin = self.options.margins,
+				margins = margin * (row.items.length - 1),
+				max = maxWidth - margins,
+				rowWidth = row.width - margins;
 
-			var w_ratio = max / row.width;
-			row.width = row.width * w_ratio;
+			var w_ratio = max / rowWidth;
+			row.width = rowWidth * w_ratio;
 			row.height = row.height * w_ratio;
+
+			if (row.height > (maxHeight + (self.borderSize * 2))){
+				var h_ratio = (maxHeight + (self.borderSize * 2)) / row.height;
+				row.width = row.width * h_ratio;
+				row.height = row.height * h_ratio;
+			}
+
 			row.top = top;
-
-			if (row.height > maxHeight){
-				row.height = maxHeight;
-			}
-
+			// default is left 0 because a full row starts at 0 and it matches default layouts
 			row.left = 0;
-			if (row.width < max){
-				// here I'm not sure if I should center, left or right align a row that cannot be displayed at 100% width
-				row.left = (max - row.width) / 2;
+			// if we don't have a full row and align !== left
+			if (self.align !== "left" && row.width < max){
+				if (self.align === "right"){
+					row.left = max - row.width;
+				} else {
+					row.left = (max - row.width) / 2;
+				}
 			}
+
 			row.width += margins;
 
 			var left = row.left;
-			for (var i = 0, l = row.items.length, item; i < l; i++){
-				if (i > 0) left += self.options.margins;
-				item = row.items[i];
+			row.items.forEach(function(item, i){
+				if (i > 0) left += margin;
 				item.left = left;
 				item.top = top;
-				item.width = item.width * w_ratio;
-				item.height = item.height * w_ratio;
-				if (item.height > maxHeight){
-					item.height = maxHeight;
-				}
+				var i_ratio = row.height / item.height;
+				item.width = item.width * i_ratio;
+				item.height = item.height * i_ratio;
 				left += item.width;
-			}
-
-			return row.height;
-		},
-		position: function(row, top, maxWidth, align){
-			var self = this,
-					margins = self.options.margins * (row.items.length - 1),
-					max = maxWidth - margins;
-
-			row.top = top;
-			row.left = 0;
-			if (row.width < max){
-				switch (align){
-					case "center":
-						row.left = (max - row.width) / 2;
-						break;
-					case "right":
-						row.left = max - row.width;
-						break;
-				}
-			}
-			row.width += margins;
-
-			var left = row.left;
-			for (var i = 0, l = row.items.length, item; i < l; i++){
-				if (i > 0) left += self.options.margins;
-				item = row.items[i];
-				item.left = left;
-				item.top = top;
-				left += item.width;
-			}
-
-			return row.height;
-		},
-		lastRow: function(row, top, maxWidth, maxHeight){
-			var self = this,
-					margins = self.options.margins * (row.items.length - 1),
-					max = maxWidth - margins,
-					threshold = row.width / max > self.options.justifyThreshold;
-
-			switch (self.options.lastRow){
-				case "hide":
-					if (threshold){
-						self.justify(row, top, maxWidth, maxHeight);
-					} else {
-						row.visible = false;
-					}
-					break;
-				case "justify":
-					self.justify(row, top, maxWidth, maxHeight);
-					break;
-				case "nojustify":
-					if (threshold){
-						self.justify(row, top, maxWidth, maxHeight);
-					} else {
-						self.position(row, top, maxWidth, "left");
-					}
-					break;
-				case "left":
-				case "center":
-				case "right":
-					if (threshold){
-						self.justify(row, top, maxWidth, maxHeight);
-					} else {
-						self.position(row, top, maxWidth, self.options.lastRow);
-					}
-					break;
-			}
-		},
-		items: function(){
-			return $.map(this._items, function(item){
-				return {
-					index: item.index,
-					width: item.width,
-					height: item.height,
-					$item: item.$item,
-					top: item.top,
-					left: item.left,
-				};
 			});
-		},
-		rows: function(maxWidth, maxHeight){
-			var self = this,
-					items = self.items(),
-					rows = [],
-					index = -1;
 
-			function create(){
-				var row = {
+			return row.height;
+		},
+		createRows: function(maxWidth){
+			var self = this,
+				margin = self.options.margins,
+				items = self.tmpl.getItems(),
+				rows = [],
+				index = -1;
+
+			function newRow(){
+				return {
 					index: ++index,
 					visible: true,
 					width: 0,
-					height: self.options.rowHeight,
+					height: self.options.rowHeight + (self.borderSize * 2),
 					top: 0,
 					left: 0,
 					items: []
 				};
-				// push the row into the result collection now
-				rows.push(row);
-				return row;
 			}
 
-			var row = create(), top = 0, tmp = 0;
-			for (var i = 0, il = items.length, item; i < il; i++){
-				item = items[i];
-				// first make all the items match the row height
-				if (item.height !== self.options.rowHeight){
-					var ratio = self.options.rowHeight / item.height;
-					item.height = item.height * ratio;
-					item.width = item.width * ratio;
+			function newItem(item, rowHeight){
+				var width = item.width, height = item.height;
+				// make the item match the row height
+				if (height !== rowHeight){
+					var ratio = rowHeight / height;
+					height = height * ratio;
+					width = width * ratio;
+				}
+				var maxRatio = self.maxRowHeight / rowHeight,
+					maxWidth = width * maxRatio,
+					maxHeight = height * maxRatio;
+				return {
+					__item: item,
+					elem: item.el,
+					width: width,
+					height: height,
+					maxWidth: maxWidth,
+					maxHeight: maxHeight,
+					top: 0,
+					left: 0
+				};
+			}
+
+			var row = newRow(), top = 0, max = 0;
+			items.forEach(function(fgItem){
+				var item = newItem(fgItem, row.height);
+				// adding this item to the row would exceed the max width
+				if (row.width + item.width > maxWidth && row.items.length > 0){
+					if (rows.length > 0) top += margin;
+					var height = self.justify(row, top, maxWidth, self.maxRowHeight); // first justify the current row
+					if (height > max) max = height;
+					top += height;
+					rows.push(row);
+					row = newRow(); // then make the new one
 				}
 
-				if (tmp + item.width > maxWidth && i > 0){
-					// adding this item to the row would exceed the max width
-					if (rows.length > 1) top += self.options.margins;
-					top += self.justify(row, top, maxWidth, maxHeight); // first justify the current row
-					row = create(); // then make the new one
-					tmp = 0;
-				}
-
-				if (row.items.length > 0) tmp += self.options.margins;
-				tmp += item.width;
+				if (row.items.length > 0) row.width += margin;
 				row.width += item.width;
 				row.items.push(item);
+			});
+
+			if (row.items.length > 0){
+				if (rows.length > 1) top += margin;
+				var height = self.justify(row, top, maxWidth, self.maxRowHeight);
+				if (max !== 0 && height > max){
+					var h_ratio = max / height,
+						w_ratio = (row.width * h_ratio) / maxWidth;
+
+					if (h_ratio < 0.9 || w_ratio < 0.9){
+						height = self.justify(row, top, maxWidth, max - (self.borderSize * 2));
+					}
+				}
+				top += height;
+				rows.push(row);
 			}
-			if (rows.length > 1) top += self.options.margins;
-			self.lastRow(row, top, maxWidth, maxHeight);
-			return rows;
+
+			return {
+				height: top,
+				rows: rows
+			};
 		}
 	});
 
 	_.Justified.defaults = {
-		itemSelector: ".fg-item",
 		rowHeight: 150,
 		maxRowHeight: "200%",
 		margins: 0,
-		lastRow: "center",
-		justifyThreshold: 1,
-		refreshInterval: 250
+		align: "center"
 	};
 
 })(
@@ -15618,31 +15233,38 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 (function($, _){
 
 	_.JustifiedTemplate = _.Template.extend({
-		onPreInit: function(event, self){
+		construct: function(options, element){
+			var self = this;
+			self._super(options, element);
+			self.justified = null;
+			self.on({
+				"pre-init": self.onPreInit,
+				"init": self.onInit,
+				"destroyed": self.onDestroyed,
+				"first-load layout after-filter-change": self.onLayoutRequired,
+				"page-change": self.onPageChange
+			}, self);
+		},
+		onPreInit: function(){
+			var self = this;
 			self.justified = new _.Justified( self, self.template );
 		},
-		onInit: function(event, self){
-			self.justified.init();
+		onInit: function(){
+			this.justified.init();
 		},
-		onFirstLoad: function(event, self){
-			self.justified.layout();
-		},
-		onReady: function(event, self){
-			self.justified.layout();
-		},
-		onDestroy: function(event, self){
-			self.justified.destroy();
-		},
-		onLayout: function(event, self){
-			self.justified.layout();
-		},
-		onAfterPageChange: function(event, self, current, prev, isFilter){
-			if (!isFilter){
-				self.justified.layout();
+		onDestroyed: function(){
+			var self = this;
+			if (self.justified instanceof _.Justified){
+				self.justified.destroy();
 			}
 		},
-		onAfterFilterChange: function(event, self){
-			self.justified.layout();
+		onLayoutRequired: function(){
+			this.justified.layout(this.lastWidth);
+		},
+		onPageChange: function(event, current, prev, isFilter){
+			if (!isFilter){
+				this.justified.layout(this.lastWidth);
+			}
 		}
 	});
 
@@ -15668,104 +15290,9 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 );
 (function($, _, _utils, _is, _fn){
 
-	// _.PortfolioTemplate = _.Template.extend({
-	// 	construct: function(element, options){
-	// 		this._super(element, options);
-	// 		/**
-	// 		 *
-	// 		 * @type {?HTMLStyleElement}
-	// 		 */
-	// 		this.style = null;
-	//
-	// 		this.fullWidth = false;
-	// 	},
-	// 	/**
-	// 	 * @summary Creates or gets the CSS stylesheet element for this template instance.
-	// 	 * @memberof FooGallery.MasonryTemplate#
-	// 	 * @function getStylesheet
-	// 	 * @returns {StyleSheet}
-	// 	 */
-	// 	getStylesheet: function(){
-	// 		var self = this;
-	// 		if (self.style === null){
-	// 			self.style = document.createElement("style");
-	// 			self.style.appendChild(document.createTextNode(""));
-	// 			document.head.appendChild(self.style);
-	// 		}
-	// 		return self.style.sheet;
-	// 	},
-	// 	onPreInit: function(event, self){
-	// 		self.appendCSS();
-	// 	},
-	// 	onPostInit: function(event, self){
-	// 		self.checkCSS();
-	// 	},
-	// 	onDestroy: function(event, self){
-	// 		self.removeCSS();
-	// 	},
-	// 	onLayout: function(event, self){
-	// 		self.checkCSS();
-	// 	},
-	// 	checkCSS: function(){
-	// 		var self = this, maxWidth = self.getContainerWidth(), current = maxWidth < self.template.columnWidth;
-	// 		if (current !== self.fullWidth){
-	// 			self.appendCSS(maxWidth);
-	// 		}
-	// 	},
-	// 	appendCSS: function(maxWidth){
-	// 		var self = this;
-	// 		maxWidth = _is.number(maxWidth) ? maxWidth : self.getContainerWidth();
-	//
-	// 		self.removeCSS();
-	//
-	// 		var sheet = self.getStylesheet(), rule,
-	// 			container = '#' + self.id + self.sel.container,
-	// 			item = container + ' ' + self.sel.item.elem,
-	// 			width = self.template.columnWidth,
-	// 			gutter = Math.ceil(self.template.gutter / 2);
-	//
-	// 		switch (self.template.align) {
-	// 			case "center":
-	// 				rule = container + ' { justify-content: center; }';
-	// 				sheet.insertRule(rule , 0);
-	// 				break;
-	// 			case "left":
-	// 				rule = container + ' { justify-content: flex-start; }';
-	// 				sheet.insertRule(rule , 0);
-	// 				break;
-	// 			case "right":
-	// 				rule = container + ' { justify-content: flex-end; }';
-	// 				sheet.insertRule(rule , 0);
-	// 				break;
-	// 		}
-	// 		self.fullWidth = maxWidth < width;
-	// 		if (self.fullWidth){
-	// 			rule = item + ' { max-width: 100%; min-width: 100%; margin: ' + gutter + 'px; }';
-	// 			sheet.insertRule(rule , 0);
-	// 		} else {
-	// 			rule = item + ' { max-width: ' + width + 'px; min-width: ' + width + 'px; margin: ' + gutter + 'px; }';
-	// 			sheet.insertRule(rule , 0);
-	// 		}
-	// 	},
-	// 	removeCSS: function(){
-	// 		var self = this;
-	// 		if (self.style && self.style.parentNode){
-	// 			self.style.parentNode.removeChild(self.style);
-	// 			self.style = null;
-	// 			self.fullWidth = false;
-	// 		}
-	// 	}
-	// });
-
 	_.PortfolioTemplate = _.Template.extend({});
 
-	_.template.register("simple_portfolio", _.PortfolioTemplate, {
-		template: {
-			gutter: 40,
-			align: "center",
-			columnWidth: 250
-		}
-	}, {
+	_.template.register("simple_portfolio", _.PortfolioTemplate, {}, {
 		container: "foogallery fg-simple_portfolio"
 	});
 
@@ -15780,7 +15307,8 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 
 	_.ImageViewerTemplate = _.Template.extend({
 		construct: function (options, element) {
-			this._super(_obj.extend({}, options, {
+			var self = this;
+			self._super(_obj.extend({}, options, {
 				paging: {
 					pushOrReplace: "replace",
 					theme: "fg-light",
@@ -15796,35 +15324,35 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 			 * @name $inner
 			 * @type {jQuery}
 			 */
-			this.$inner = $();
+			self.$inner = $();
 			/**
 			 * @summary The jQuery object that displays the current image count.
 			 * @memberof FooGallery.ImageViewerTemplate#
 			 * @name $current
 			 * @type {jQuery}
 			 */
-			this.$current = $();
+			self.$current = $();
 			/**
 			 * @summary The jQuery object that displays the current image count.
 			 * @memberof FooGallery.ImageViewerTemplate#
 			 * @name $current
 			 * @type {jQuery}
 			 */
-			this.$total = $();
+			self.$total = $();
 			/**
 			 * @summary The jQuery object for the previous button.
 			 * @memberof FooGallery.ImageViewerTemplate#
 			 * @name $prev
 			 * @type {jQuery}
 			 */
-			this.$prev = $();
+			self.$prev = $();
 			/**
 			 * @summary The jQuery object for the next button.
 			 * @memberof FooGallery.ImageViewerTemplate#
 			 * @name $next
 			 * @type {jQuery}
 			 */
-			this.$next = $();
+			self.$next = $();
 			/**
 			 * @summary The CSS classes for the Image Viewer template.
 			 * @memberof FooGallery.ImageViewerTemplate#
@@ -15837,6 +15365,15 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 			 * @name sel
 			 * @type {FooGallery.ImageViewerTemplate~CSSSelectors}
 			 */
+			self.on({
+				"pre-init": self.onPreInit,
+				"init": self.onInit,
+				"first-load": self.onFirstLoad,
+				"destroy": self.onDestroy,
+				"append-item": self.onAppendItem,
+				"after-page-change": self.onAfterPageChange,
+				"after-filter-change": self.onAfterFilterChange
+			}, self);
 		},
 		createChildren: function(){
 			var self = this;
@@ -15857,14 +15394,17 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 			var self = this;
 			self.$el.find(self.sel.inner).remove();
 		},
-		onPreInit: function(event, self){
+
+		onPreInit: function(event){
+			var self = this;
 			self.$inner = self.$el.find(self.sel.innerContainer);
 			self.$current = self.$el.find(self.sel.countCurrent);
 			self.$total = self.$el.find(self.sel.countTotal);
 			self.$prev = self.$el.find(self.sel.prev);
 			self.$next = self.$el.find(self.sel.next);
 		},
-		onInit: function (event, self) {
+		onInit: function (event) {
+			var self = this;
 			if (self.template.attachFooBox) {
 				self.$el.on('foobox.previous', {self: self}, self.onFooBoxPrev)
 						.on('foobox.next', {self: self}, self.onFooBoxNext);
@@ -15872,15 +15412,16 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 			self.$prev.on('click', {self: self}, self.onPrevClick);
 			self.$next.on('click', {self: self}, self.onNextClick);
 		},
-		onFirstLoad: function(event, self){
-			self.update();
+		onFirstLoad: function(event){
+			this.update();
 		},
 		/**
 		 * @summary Destroy the plugin cleaning up any bound events.
 		 * @memberof FooGallery.ImageViewerTemplate#
 		 * @function onDestroy
 		 */
-		onDestroy: function (event, self) {
+		onDestroy: function (event) {
+			var self = this;
 			if (self.template.attachFooBox) {
 				self.$el.off({
 					'foobox.previous': self.onFooBoxPrev,
@@ -15890,20 +15431,20 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 			self.$prev.off('click', self.onPrevClick);
 			self.$next.off('click', self.onNextClick);
 		},
-		onAppendItem: function (event, self, item) {
+		onAppendItem: function (event, item) {
 			event.preventDefault();
-			self.$inner.append(item.$el);
-			// item.fix();
+			this.$inner.append(item.$el);
 			item.isAttached = true;
 		},
-		onAfterPageChange: function(event, self, current, prev, isFilter){
+		onAfterPageChange: function(event, current, prev, isFilter){
 			if (!isFilter){
-				self.update();
+				this.update();
 			}
 		},
-		onAfterFilterChange: function(event, self){
-			self.update();
+		onAfterFilterChange: function(event){
+			this.update();
 		},
+
 		update: function(){
 			if (this.pages){
 				this.$current.text(this.pages.current);
@@ -16047,13 +15588,37 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 			var self = this;
 			self._super(options, element);
 			self.$section = null;
-			self.panel = new _.Panel( self, self.template );
 			self.isFirst = false;
 			self.disableTransitions = false;
+			self.panel = new _.Panel( self, self.template );
+			self.on({
+				"pre-init": self.onPreInit,
+				"parsed-item": self.onParsedItem,
+				"created-item": self.onCreatedItem,
+				"destroy-item": self.onDestroyItem,
+				"after-state": self.onAfterState,
+				"before-page-change": self.onBeforePageChange,
+				"before-filter-change": self.onBeforeFilterChange
+			}, self);
+			self.panel.on({
+				"next": self.onPanelNext,
+				"prev": self.onPanelPrev,
+				"close": self.onPanelClose,
+				"area-load": self.onPanelAreaLoad,
+				"area-unload": self.onPanelAreaUnload
+			}, self);
 		},
-		onPreInit: function(event, self){
+		destroy: function(preserveState){
+			var self = this, _super = self._super.bind(self);
+			return self.panel.destroy().then(function(){
+				self.$section.remove();
+				return _super(preserveState);
+			});
+		},
+
+		onPreInit: function(){
+			var self = this, hasTransition = false;
 			self.$section = $('<section/>', {'class': 'foogrid-content'});
-			var hasTransition = false;
 			if (self.panel.opt.transition === "none"){
 				if (self.$el.hasClass("foogrid-transition-horizontal")){
 					self.panel.opt.transition = "horizontal";
@@ -16091,63 +15656,59 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 				self.panel.opt.button = "fg-button-dark";
 			}
 		},
-		destroy: function(preserveState){
-			var self = this, _super = self._super.bind(self);
-			return self.panel.destroy().then(function(){
-				self.$section.remove();
-				return _super(preserveState);
-			});
-		},
-		onPanelNext: function(event, self, panel, currentItem, nextItem){
-			event.preventDefault();
-			self.open(nextItem);
-		},
-		onPanelPrev: function(event, self, panel, currentItem, prevItem){
-			event.preventDefault();
-			self.open(prevItem);
-		},
-		onPanelClose: function(event, self, panel){
-			event.preventDefault();
-			self.close(false, true);
-		},
-		onPanelAreaLoad: function(event, self, area, media){
-			if (area.name === "content"){
-				media.item.$el.addClass(self.cls.visible);
-			}
-		},
-		onPanelAreaUnload: function(event, self, area, media){
-			if (area.name === "content"){
-				media.item.$el.removeClass(self.cls.visible);
-			}
-		},
-		onParsedItem: function(event, self, item){
+		onParsedItem: function(event, item){
 			if (item.isError) return;
-			item.$anchor.off("click.foogallery").on("click.gg", {self: self, item: item}, self.onAnchorClick);
+			item.$anchor.off("click.foogallery").on("click.gg", {self: this, item: item}, this.onAnchorClick);
 		},
-		onCreatedItem: function(event, self, item){
+		onCreatedItem: function(event, item){
 			if (item.isError) return;
-			item.$anchor.off("click.foogallery").on("click.gg", {self: self, item: item}, self.onAnchorClick);
+			item.$anchor.off("click.foogallery").on("click.gg", {self: this, item: item}, this.onAnchorClick);
 		},
-		onDestroyItem: function(event, self, item){
+		onDestroyItem: function(event, item){
 			if (item.isError) return;
-			item.$anchor.off("click.gg", self.onAnchorClick);
+			item.$anchor.off("click.gg", this.onAnchorClick);
 		},
-		onAfterState: function(event, self, state){
+		onAfterState: function(event, state){
 			if (!(state.item instanceof _.Item)) return;
-			self.open(state.item);
+			this.open(state.item);
 		},
-		onBeforePageChange: function(event, self, current, next, setPage, isFilter){
+		onBeforePageChange: function(event, current, next, setPage, isFilter){
 			if (isFilter) return;
+			var self = this;
 			if (!self.panel.isMaximized) self.close(true, self.panel.isAttached);
 		},
-		onBeforeFilterChange: function(event, self, current, next, setFilter){
+		onBeforeFilterChange: function(){
+			var self = this;
 			if (!self.panel.isMaximized) self.close(true, self.panel.isAttached);
 		},
+
+		onPanelNext: function(event, currentItem, nextItem){
+			event.preventDefault();
+			this.open(nextItem);
+		},
+		onPanelPrev: function(event, currentItem, prevItem){
+			event.preventDefault();
+			this.open(prevItem);
+		},
+		onPanelClose: function(event){
+			event.preventDefault();
+			this.close(false, true);
+		},
+		onPanelAreaLoad: function(event, area, media){
+			if (area.name === "content"){
+				media.item.$el.addClass(this.cls.visible);
+			}
+		},
+		onPanelAreaUnload: function(event, area, media){
+			if (area.name === "content"){
+				media.item.$el.removeClass(this.cls.visible);
+			}
+		},
+
 		onAnchorClick: function(e){
 			e.preventDefault();
 			e.data.self.toggle(e.data.item);
 		},
-
 
 		transitionsEnabled: function(){
 			return !this.disableTransitions && this.panel.hasTransition;
@@ -16859,18 +16420,21 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 );
 (function ($, _, _utils, _obj, _is) {
 
-	_.triggerPostLoad = function (e, tmpl, current, prev, isFilter) {
-		if (e.type === "first-load" || (tmpl.initialized && ((e.type === "after-page-change" && !isFilter) || e.type === "after-filter-change"))) {
-			try {
-				// if the gallery is displayed within a FooBox do not trigger the post-load which would cause the lightbox to re-init
-				if (tmpl.$el.parents(".fbx-item").length > 0) return;
-				if (tmpl.$el.hasClass("fbx-instance") && !!window.FOOBOX && !!$.fn.foobox){
-					tmpl.$el.foobox(window.FOOBOX.o);
-				} else {
-					$("body").trigger("post-load");
+	_.triggerPostLoad = function (e, current, prev, isFilter) {
+		var tmpl = e.target;
+		if (tmpl instanceof _.Template){
+			if (e.type === "first-load" || (tmpl.initialized && ((e.type === "after-page-change" && !isFilter) || e.type === "after-filter-change"))) {
+				try {
+					// if the gallery is displayed within a FooBox do not trigger the post-load which would cause the lightbox to re-init
+					if (tmpl.$el.parents(".fbx-item").length > 0) return;
+					if (tmpl.$el.hasClass("fbx-instance") && !!window.FOOBOX && !!$.fn.foobox){
+						tmpl.$el.foobox(window.FOOBOX.o);
+					} else {
+						$("body").trigger("post-load");
+					}
+				} catch(err) {
+					console.error(err);
 				}
-			} catch(err) {
-				console.error(err);
 			}
 		}
 	};
