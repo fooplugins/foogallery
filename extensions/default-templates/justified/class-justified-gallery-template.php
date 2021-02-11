@@ -43,13 +43,16 @@ if ( !class_exists( 'FooGallery_Justified_Gallery_Template' ) ) {
 
 			$id = $gallery->container_id();
 			$margins = intval( foogallery_gallery_template_setting( 'margins', 2 ) );
-
+			$row_height = intval( foogallery_gallery_template_setting( 'row_height', 250 ) );
 			?>
 			<style>
                 #<?php echo $id; ?>.fg-justified .fg-item {
                     margin-right: <?php echo $margins; ?>px;
                     margin-bottom: <?php echo $margins; ?>px;
 				}
+                #<?php echo $id; ?>.fg-justified .fg-image {
+                    height: <?php echo $row_height; ?>px;
+                }
 			</style>
 			<?php
 		}
@@ -84,10 +87,26 @@ if ( !class_exists( 'FooGallery_Justified_Gallery_Template' ) ) {
 				'filtering_support' => true,
                 'enqueue_core' => true,
                 'fields'	  => array(
+	                array(
+		                'id'      => 'row_height',
+		                'title'   => __( 'Row Height', 'foogallery' ),
+		                'desc'    => __( 'The preferred height of your gallery rows. Depending on the aspect ratio of your images and the viewport, the row height might increase up to Max Row Height.', 'foogallery' ),
+		                'section' => __( 'General', 'foogallery' ),
+		                'type'    => 'number',
+		                'class'   => 'small-text',
+		                'default' => 200,
+		                'step'    => '10',
+		                'min'     => '0',
+		                'row_data'=> array(
+			                'data-foogallery-change-selector' => 'input',
+			                'data-foogallery-value-selector' => 'input',
+			                'data-foogallery-preview' => 'shortcode',
+		                )
+	                ),
                     array(
                         'id'      => 'thumb_height',
-                        'title'   => __( 'Thumb Height', 'foogallery' ),
-                        'desc'    => __( 'Choose the height of your thumbnails. Thumbnails will be generated on the fly and cached once generated', 'foogallery' ),
+                        'title'   => __( 'Max Row Height', 'foogallery' ),
+                        'desc'    => __( 'Choose the max height of your gallery rows. It should always be larger than Row Height by about 150%.', 'foogallery' ),
                         'section' => __( 'General', 'foogallery' ),
                         'type'    => 'number',
                         'class'   => 'small-text',
@@ -97,36 +116,6 @@ if ( !class_exists( 'FooGallery_Justified_Gallery_Template' ) ) {
 						'row_data'=> array(
 							'data-foogallery-preview' => 'shortcode',
 							'data-foogallery-change-selector' => 'input',
-						)
-                    ),
-                    array(
-                        'id'      => 'row_height',
-                        'title'   => __( 'Row Height', 'foogallery' ),
-                        'desc'    => __( 'The preferred height of your gallery rows. This can be different from the thumbnail height', 'foogallery' ),
-                        'section' => __( 'General', 'foogallery' ),
-                        'type'    => 'number',
-                        'class'   => 'small-text',
-                        'default' => 200,
-                        'step'    => '10',
-                        'min'     => '0',
-						'row_data'=> array(
-							'data-foogallery-change-selector' => 'input',
-							'data-foogallery-value-selector' => 'input',
-							'data-foogallery-preview' => 'shortcode',
-						)
-                    ),
-                    array(
-                        'id'      => 'max_row_height',
-                        'title'   => __( 'Max Row Height', 'foogallery' ),
-                        'desc'    => __( 'A number (e.g 200) which specifies the maximum row height in pixels. A negative value for no limits. Alternatively, use a percentage (e.g. 200% which means that the row height cannot exceed 2 * rowHeight)', 'foogallery' ),
-                        'section' => __( 'General', 'foogallery' ),
-                        'type'    => 'text',
-                        'class'   => 'small-text',
-                        'default' => '150%',
-						'row_data'=> array(
-							'data-foogallery-change-selector' => 'input',
-							'data-foogallery-value-selector' => 'input',
-							'data-foogallery-preview' => 'shortcode',
 						)
                     ),
                     array(
@@ -161,28 +150,25 @@ if ( !class_exists( 'FooGallery_Justified_Gallery_Template' ) ) {
                         'default' => 'none',
                         'type'    => 'lightbox',
                     ),
-                    array(
-                        'id'      => 'lastrow',
-                        'title'   => __( 'Last Row', 'foogallery' ),
-                        'desc'    => __( 'What should be done with the last row in the gallery?', 'foogallery' ),
-                        'section' => __( 'General', 'foogallery' ),
-                        'type'    => 'radio',
-                        'spacer'  => '<span class="spacer"></span>',
-                        'default' => 'justify',
-                        'choices' => array(
-                            'hide' => __( 'Hide', 'foogallery' ),
-                            'justify' => __( 'Justify', 'foogallery' ),
-                            'nojustify' => __( 'No Justify', 'foogallery' ),
-                            'right' => __( 'Right', 'foogallery' ),
-                            'center' => __( 'Center', 'foogallery' ),
-                            'left' => __( 'Left', 'foogallery' ),
-                        ),
-                        'row_data'=> array(
-                            'data-foogallery-change-selector' => 'input:radio',
-                            'data-foogallery-value-selector' => 'input:checked',
-                            'data-foogallery-preview' => 'shortcode',
-                        )
-                    ),
+	                array(
+		                'id'      => 'align',
+		                'title'   => __( 'Alignment', 'foogallery' ),
+		                'desc'    => __( 'For rows that cannot be justified, what alignment should be used?', 'foogallery' ),
+		                'section' => __( 'General', 'foogallery' ),
+		                'type'    => 'radio',
+		                'spacer'  => '<span class="spacer"></span>',
+		                'default' => 'center',
+		                'choices' => array(
+			                'left' => __( 'Left', 'foogallery' ),
+			                'center' => __( 'Center', 'foogallery' ),
+			                'right' => __( 'Right', 'foogallery' ),
+		                ),
+		                'row_data'=> array(
+			                'data-foogallery-change-selector' => 'input:radio',
+			                'data-foogallery-value-selector' => 'input:checked',
+			                'data-foogallery-preview' => 'shortcode',
+		                )
+	                ),
                 ),
 			);
 
@@ -198,9 +184,8 @@ if ( !class_exists( 'FooGallery_Justified_Gallery_Template' ) ) {
 		 * @return mixed
 		 */
 		function get_thumbnail_dimensions( $dimensions, $foogallery ) {
-			$height = $foogallery->get_meta( 'justified_thumb_height', false );
 			return array(
-				'height' => intval( $height ),
+				'height' => $this->max_row_height_from_current_gallery(),
 				'width'  => 0,
 				'crop'   => false
 			);
@@ -217,21 +202,52 @@ if ( !class_exists( 'FooGallery_Justified_Gallery_Template' ) ) {
 		 * @return array
 		 */
 		function add_justified_options($options, $gallery, $attributes) {
+			$this->calculate_row_heights_for_current_gallery();
 
-			$row_height = foogallery_gallery_template_setting( 'row_height', '150' );
-			$max_row_height = foogallery_gallery_template_setting( 'max_row_height', '200%' );
-			if ( strpos( $max_row_height, '%' ) === false ) {
-				$max_row_height = intval( $max_row_height );
-			}
+			$values = foogallery_current_gallery_get_cached_value( 'justified_row_height' );
+
 			$margins = foogallery_gallery_template_setting( 'margins', '1' );
-			$lastRow = foogallery_gallery_template_setting( 'lastrow', 'center' );
+			$align = foogallery_gallery_template_setting( 'align', 'center' );
 
-			$options['template']['rowHeight'] = intval($row_height);
-			$options['template']['maxRowHeight'] = $max_row_height;
-			$options['template']['margins'] = intval($margins);
-            $options['template']['lastRow'] = $lastRow;
+			$options['template']['rowHeight'] = intval( $values['row_height'] );
+			$options['template']['maxRowHeight'] = intval( $values['max_row_height'] );
+			$options['template']['margins'] = intval( $margins );
+            $options['template']['align'] = $align;
 
 			return $options;
+		}
+
+		/**
+		 * Calculates the row heights for the current gallery, also taking into account legacy settings
+		 */
+		function calculate_row_heights_for_current_gallery() {
+			if ( !foogallery_current_gallery_has_cached_value( 'justified_row_height') ) {
+				$row_height = foogallery_gallery_template_setting( 'row_height', '200' );
+
+				//check to see if there is a legacy max_row_height
+				$max_row_height = foogallery_gallery_template_setting( 'max_row_height', false );
+
+				if ( false === $max_row_height ) {
+					//we do not have a legacy max_row_height, so use the thumb_height
+					$max_row_height = intval( foogallery_gallery_template_setting( 'thumb_height', '250' ) );
+				} else {
+					if ( strpos( $max_row_height, '%' ) === false ) {
+						$max_row_height = intval( $max_row_height );
+					} else {
+						$max_row_height = intval( $row_height * intval( $max_row_height ) / 100 );
+					}
+				}
+
+				//check for a negative max_row_height
+				if ( $max_row_height < 0 ) {
+					$max_row_height = $row_height * 2;
+				}
+
+				foogallery_current_gallery_set_cached_value( 'justified_row_height', array(
+					'row_height' => intval( $row_height ),
+					'max_row_height' => $max_row_height
+				) );
+			}
 		}
 
 		/**
@@ -243,15 +259,22 @@ if ( !class_exists( 'FooGallery_Justified_Gallery_Template' ) ) {
 		 * @return mixed
 		 */
 		function build_thumbnail_dimensions_from_arguments( $dimensions, $arguments ) {
-		    if ( array_key_exists( 'thumbnail_height', $arguments) ) {
-                return array(
-                    'height' => intval($arguments['thumbnail_height']),
-                    'width' => 0,
-                    'crop' => false
-                );
-            }
+            return array(
+                'height' => $this->max_row_height_from_current_gallery(),
+                'width' => 0,
+                'crop' => false
+            );
+		}
 
-            return null;
+		/**
+		 * Returns the max_row_height for the current gallery
+		 *
+		 * @return int
+		 */
+		function max_row_height_from_current_gallery() {
+			$this->calculate_row_heights_for_current_gallery();
+			$values = foogallery_current_gallery_get_cached_value( 'justified_row_height' );
+			return intval( $values['max_row_height'] );
 		}
 
         /**
@@ -261,9 +284,8 @@ if ( !class_exists( 'FooGallery_Justified_Gallery_Template' ) ) {
          * @return array
          */
         function build_gallery_template_arguments( $args ) {
-            $height = foogallery_gallery_template_setting( 'thumb_height', '250' );
             $args = array(
-                'height' => $height,
+                'height' => $this->max_row_height_from_current_gallery(),
                 'link' => foogallery_gallery_template_setting( 'thumbnail_link', 'image' ),
 				'crop' => false
             );
