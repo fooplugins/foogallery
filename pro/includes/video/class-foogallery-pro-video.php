@@ -269,9 +269,6 @@ if ( ! class_exists( 'FooGallery_Pro_Video' ) ) {
 				//set a flag on the gallery level
 				$current_foogallery->has_videos = true;
 
-				//set the cover image for the video
-				$attr['data-cover'] = $attachment->url;
-
 				//if we have no widths or heights then use video default size
 				if ( ! isset( $attr['data-width'] ) ) {
 					$size = foogallery_gallery_template_setting( 'video_size', '640x360' );
