@@ -116,6 +116,8 @@ if ( ! class_exists( "FooGallery_Pro_Video_Import" ) ) {
 		}
 
 		private function create_attachment( &$video ) {
+			global $foogallery_video_upload;
+
 			//allow for really big imports that take a really long time!
 			@set_time_limit( 300 );
 
@@ -156,7 +158,14 @@ if ( ! class_exists( "FooGallery_Pro_Video_Import" ) ) {
 			}
 			$thumbnail_filename = $video["id"] . '.' . $filetype['ext'];
 
+			//set the global variable, so that the upload folder can be overridden if required
+			$foogallery_video_upload = $video;
+
 			$upload = wp_upload_bits( $thumbnail_filename, null, $thumbnail );
+
+			//reset the global, so that other uploads do not get saved incorrectly
+			$foogallery_video_upload = null;
+
 			if ($upload["error"] !== false){
 				return array(
 					"type" => "error",

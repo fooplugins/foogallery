@@ -66,7 +66,34 @@ if ( ! class_exists( 'FooGallery_Pro_Video' ) ) {
 			add_action( 'foogallery_loaded_album_template', array( $this, 'include_video_embeds_for_album' ) );
 
 			//ajax call to save the Vimeo access token
-			add_action('wp_ajax_fgi_save_access_token', array($this, 'save_vimeo_access_token'));
+			add_action( 'wp_ajax_fgi_save_access_token', array( $this, 'save_vimeo_access_token') );
+
+			if ( is_admin() ) {
+				add_filter( 'upload_dir', array( $this, 'override_video_upload_dir' ) );
+			}
+		}
+
+		/**
+		 * Override upload directory
+		 *
+		 * @return array Upload directory information
+		 */
+		function override_video_upload_dir( $upload ) {
+			global $foogallery_video_upload;
+
+			//only think about any changes if we are importing video thumbnails
+			if ( isset( $foogallery_video_upload ) ) {
+
+				$directory = foogallery_get_setting( 'video_thumbnail_directory' );
+
+				if ( !empty( $directory ) ) {
+					$upload['subdir'] = '/' . $directory . $upload['subdir'];
+					$upload['path'] = $upload['basedir'] . $upload['subdir'];
+					$upload['url']  = $upload['baseurl'] . $upload['subdir'];
+				}
+			}
+
+			return $upload;
 		}
 
 		/**
@@ -479,6 +506,15 @@ if ( ! class_exists( 'FooGallery_Pro_Video' ) ) {
 				'type'    => 'text',
 				'default' => __( '%s videos', 'foogallery' ),
 				'tab'     => 'language',
+			);
+
+			$settings['settings'][] = array(
+				'id'      => 'video_thumbnail_directory',
+				'title'   => __( 'Vimeo Thumbnail Directory', 'foogallery' ),
+				'desc'    => __( 'You can choose to override where the video thumbnail images will be saved within your media library. Leave blank to use the default location.', 'foogallery' ),
+				'type'    => 'text',
+				'default' => '',
+				'tab'     => 'video',
 			);
 
 			return $settings;
