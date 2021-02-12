@@ -6527,7 +6527,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 				children: false
 			};
 			self.robserver = new ResizeObserver(_fn.throttle(function(entries) {
-				if (entries.length === 1 && entries[0].target === self.el){
+				if (!self.destroying && !self.destroyed && entries.length === 1 && entries[0].target === self.el){
 					// self.layout();
 					if (entries[0].contentBoxSize){
 						self.layout(entries[0].contentBoxSize[0].inlineSize);
@@ -6773,7 +6773,9 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 			if (e.isDefaultPrevented()) return false;
 			self.state.init();
 			self.$scrollParent.on("scroll" + self.namespace, {self: self}, _fn.throttle(function () {
-				self.loadAvailable();
+				if (!self.destroying && !self.destroyed){
+					self.loadAvailable();
+				}
 			}, 50));
 			$(window).on("popstate" + self.namespace, {self: self}, self.onWindowPopState);
 			return true;
@@ -11516,15 +11518,17 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
             }).concat(["fg-landscape","fg-portrait"]).join(" ");
 
             self.robserver = new ResizeObserver(_fn.throttle(function (entries) {
-                entries.forEach(function (entry) {
-                    if (entry.target === self.el){
-                        if (entry.contentBoxSize){
-                            self.onResize(entry.contentBoxSize[0].inlineSize, entry.contentBoxSize[0].blockSize);
-                        } else {
-                            self.onResize(entry.contentRect.width, entry.contentRect.height);
+                if (!self.destroying && !self.destroyed){
+                    entries.forEach(function (entry) {
+                        if (entry.target === self.el){
+                            if (entry.contentBoxSize){
+                                self.onResize(entry.contentBoxSize[0].inlineSize, entry.contentBoxSize[0].blockSize);
+                            } else {
+                                self.onResize(entry.contentRect.width, entry.contentRect.height);
+                            }
                         }
-                    }
-                });
+                    });
+                }
             }, 50));
 
             self.__media = {};
@@ -12968,8 +12972,10 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
                     self.$inner.fgswipe({data: {self: self}, swipe: self.onSwipe, allowPageScroll: true});
                 }
                 self.robserver = new ResizeObserver(_fn.throttle(function () {
-                    // only the inner is being observed so if a change occurs we can safely just call resize
-                    self.resize();
+                    if (self.panel instanceof _.Panel && !self.panel.destroying && !self.panel.destroyed) {
+                        // only the inner is being observed so if a change occurs we can safely just call resize
+                        self.resize();
+                    }
                 }, 50));
                 self.robserver.observe(self.$inner.get(0));
                 return true;
@@ -13274,12 +13280,14 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
                 }, { root: self.$inner.get(0), rootMargin: "82px 300px" });
 
                 self.robserver = new ResizeObserver(_fn.throttle(function (entries) {
-                    // only the viewport is being observed so if a change occurs we can safely grab just the first entry
-                    var rect = entries[0].contentRect, viewport = self.info.viewport;
-                    var diffX = Math.floor(Math.abs(rect.width - viewport.width)),
-                        diffY = Math.floor(Math.abs(rect.height - viewport.height));
-                    if (self.isVisible && (diffX > 1 || diffY > 1)){
-                        self.resize();
+                    if (entries.length > 0 && self.panel instanceof _.Panel && !self.panel.destroying && !self.panel.destroyed) {
+                        // only the viewport is being observed so if a change occurs we can safely grab just the first entry
+                        var rect = entries[0].contentRect, viewport = self.info.viewport;
+                        var diffX = Math.floor(Math.abs(rect.width - viewport.width)),
+                            diffY = Math.floor(Math.abs(rect.height - viewport.height));
+                        if (self.isVisible && (diffX > 1 || diffY > 1)) {
+                            self.resize();
+                        }
                     }
                 }, 50));
 
@@ -15196,7 +15204,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 			});
 
 			if (row.items.length > 0){
-				if (rows.length > 1) top += margin;
+				if (rows.length > 0) top += margin;
 				var height = self.justify(row, top, maxWidth, self.maxRowHeight);
 				if (max !== 0 && height > max){
 					var h_ratio = max / height,

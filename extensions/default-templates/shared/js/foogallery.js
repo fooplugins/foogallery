@@ -2513,7 +2513,7 @@
 			});
 
 			if (row.items.length > 0){
-				if (rows.length > 1) top += margin;
+				if (rows.length > 0) top += margin;
 				var height = self.justify(row, top, maxWidth, self.maxRowHeight);
 				if (max !== 0 && height > max){
 					var h_ratio = max / height,
