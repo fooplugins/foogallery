@@ -69,7 +69,8 @@ if ( ! class_exists( 'FooGallery_Pro_Video' ) ) {
 			add_action( 'wp_ajax_fgi_save_access_token', array( $this, 'save_vimeo_access_token') );
 
 			if ( is_admin() ) {
-				add_filter( 'upload_dir', array( $this, 'override_video_upload_dir' ) );
+				//allow thumbnails for videos to be stored in a separate subdirectory
+				add_filter( 'upload_dir', array( $this, 'override_video_upload_dir' ), 99 );
 			}
 		}
 
