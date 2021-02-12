@@ -147,7 +147,12 @@ if ( !class_exists( 'FooGallery_Thumbnail_Gallery_Template' ) ) {
                         'section' => __( 'General', 'foogallery' ),
                         'default' => '',
                         'type'    => 'checkbox',
-                        'desc'	  => __( 'You can link your thumbnails to Custom URL\'s (if they are set on your attachments). Fallback will be to the full size image.', 'foogallery' )
+                        'desc'	  => __( 'You can link your thumbnails to Custom URL\'s (if they are set on your attachments). Fallback will be to the full size image.', 'foogallery' ),
+                        'row_data'=> array(
+	                        'data-foogallery-change-selector' => 'input',
+	                        'data-foogallery-preview' => 'shortcode',
+	                        'data-foogallery-value-selector' => 'input:checked',
+                        )
                     ),
                     array(
                         'id'      => 'lightbox',

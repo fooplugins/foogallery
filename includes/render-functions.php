@@ -241,71 +241,58 @@ function foogallery_build_attachment_html_caption( &$foogallery_attachment, $arg
 
         $captions = array();
 
-        $preset = foogallery_gallery_template_setting('caption_preset', 'fg-custom');
+        $preset = foogallery_gallery_template_setting( 'caption_preset', 'fg-custom' );
 
-        if ('none' !== $preset) {
+        if ( 'none' !== $preset ) {
 
             $show_caption_title = false;
             $show_caption_desc = false;
 
-            //check if we have provided overrides for the caption title
-            if (isset($args['override_caption_title'])) {
-                $caption_title = $args['override_caption_title'];
+            $caption_title_source = foogallery_gallery_template_setting( 'caption_title_source', '' );
+
+            //if we need to use the settings, then make sure our source is false
+            if ( empty( $caption_title_source ) ) {
+                $caption_title_source = false;
+            }
+
+            if ( 'fg-custom' === $preset ) {
+                $show_caption_title = $caption_title_source !== 'none';
+            } else {
+                //always show both title and desc for the presets
                 $show_caption_title = true;
-            } else {
-                $caption_title_source = foogallery_gallery_template_setting('caption_title_source', '');
-
-                //if we need to use the settings, then make sure our source is false
-                if (empty($caption_title_source)) {
-                    $caption_title_source = false;
-                }
-
-                if ('fg-custom' === $preset) {
-                    $show_caption_title = $caption_title_source !== 'none';
-                } else {
-                    //always show both title and desc for the presets
-                    $show_caption_title = true;
-                }
-
-                //get the correct captions
-                if ($foogallery_attachment->_post) {
-                    $caption_title = foogallery_get_caption_title_for_attachment($foogallery_attachment->_post, $caption_title_source);
-                } else {
-                    $caption_title = foogallery_get_caption_by_source($foogallery_attachment, $caption_title_source, 'title');
-                }
             }
 
-            //check if we have provided overrides for the caption description
-            if (isset($args['override_caption_desc'])) {
-                $caption_desc = $args['override_caption_desc'];
+            //get the correct captions
+            if ( $foogallery_attachment->_post ) {
+                $caption_title = foogallery_get_caption_title_for_attachment($foogallery_attachment->_post, $caption_title_source);
+            } else {
+                $caption_title = foogallery_get_caption_by_source($foogallery_attachment, $caption_title_source, 'title');
+            }
+
+            $caption_desc_source = foogallery_gallery_template_setting('caption_desc_source', '');
+
+            //if we need to use the settings, then make sure our source is false
+            if ( empty( $caption_desc_source ) ) {
+                $caption_desc_source = false;
+            }
+
+            if ( 'fg-custom' === $preset ) {
+                $show_caption_desc = $caption_desc_source !== 'none';
+            } else {
+                //always show both title and desc for the presets
                 $show_caption_desc = true;
-            } else {
-
-                $caption_desc_source = foogallery_gallery_template_setting('caption_desc_source', '');
-
-                //if we need to use the settings, then make sure our source is false
-                if (empty($caption_desc_source)) {
-                    $caption_desc_source = false;
-                }
-
-                if ('fg-custom' === $preset) {
-                    $show_caption_desc = $caption_desc_source !== 'none';
-                } else {
-                    //always show both title and desc for the presets
-                    $show_caption_desc = true;
-                }
-
-                if ($foogallery_attachment->_post) {
-                    $caption_desc = foogallery_get_caption_desc_for_attachment($foogallery_attachment->_post, $caption_desc_source);
-                } else {
-                    $caption_desc = foogallery_get_caption_by_source($foogallery_attachment, $caption_desc_source, 'desc');
-                }
             }
 
-            if ($caption_title && $show_caption_title) {
+            if ( $foogallery_attachment->_post ) {
+                $caption_desc = foogallery_get_caption_desc_for_attachment($foogallery_attachment->_post, $caption_desc_source);
+            } else {
+	            $caption_desc = foogallery_get_caption_by_source( $foogallery_attachment, $caption_desc_source, 'desc' );
+            }
+
+            if ( $caption_title && $show_caption_title ) {
                 $captions['title'] = $foogallery_attachment->caption_title = $caption_title;
             }
-            if ($caption_desc && $show_caption_desc) {
+            if ( $caption_desc && $show_caption_desc ) {
                 $captions['desc'] = $foogallery_attachment->caption_desc = $caption_desc;
             }
 
@@ -313,6 +300,14 @@ function foogallery_build_attachment_html_caption( &$foogallery_attachment, $arg
             $captions = false;
         }
     }
+
+	//extra sanitization for HTML captions
+	if ( isset( $args['override_caption_title'] ) ) {
+		$captions['override_title'] = foogallery_sanitize_html( $args['override_caption_title'] );
+	}
+	if ( isset( $args['override_caption_desc']) ) {
+		$captions['override_desc'] = foogallery_sanitize_html( $args['override_caption_desc'] );
+	}
 
 	//extra sanitization for HTML captions
 	if ( !empty( $captions['title']) ) {
@@ -340,13 +335,30 @@ function foogallery_attachment_html_caption( $foogallery_attachment, $args = arr
 	$html = '';
 
 	if ( $captions !== false ) {
+
+		$caption_title = null;
+		$caption_desc = null;
+
 		$html = '<figcaption class="fg-caption"><div class="fg-caption-inner">';
-		if ( array_key_exists( 'title', $captions ) ) {
-			$html .= '<div class="fg-caption-title">' . $captions['title'] . '</div>';
+
+		if ( array_key_exists( 'override_title', $captions ) ) {
+			$caption_title = $captions['override_title'];
+		} else if ( array_key_exists( 'title', $captions ) ) {
+			$caption_title = $captions['title'];
 		}
-		if ( array_key_exists( 'desc', $captions ) ) {
-			$html .= '<div class="fg-caption-desc">' . $captions['desc'] . '</div>';
+		if ( array_key_exists( 'override_desc', $captions ) ) {
+			$caption_desc = $captions['override_desc'];
+		} else if ( array_key_exists( 'desc', $captions ) ) {
+			$caption_desc = $captions['desc'];
 		}
+
+		if ( !empty( $caption_title ) ) {
+			$html .= '<div class="fg-caption-title">' . $caption_title . '</div>';
+		}
+		if ( !empty( $caption_desc ) ) {
+			$html .= '<div class="fg-caption-desc">' . $caption_desc . '</div>';
+		}
+
 		$html .= '</div></figcaption>';
 	}
 
