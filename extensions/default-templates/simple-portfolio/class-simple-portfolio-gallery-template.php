@@ -18,9 +18,6 @@ if ( !class_exists( 'FooGallery_Simple_Portfolio_Gallery_Template' ) ) {
 			//add extra fields to the templates
 			add_filter( 'foogallery_override_gallery_template_fields-simple_portfolio', array( $this, 'add_common_thumbnail_fields' ), 101, 2 );
 
-			//add the data options needed for simple portfolio
-			//add_filter( 'foogallery_build_container_data_options-simple_portfolio', array( $this, 'add_data_options' ), 10, 3 );
-
 			//override specific settings when saving the gallery
 			add_filter( 'foogallery_save_gallery_settings-simple_portfolio', array( $this, 'override_settings'), 10, 3 );
 
@@ -115,7 +112,7 @@ if ( !class_exists( 'FooGallery_Simple_Portfolio_Gallery_Template' ) ) {
 						'section' => __( 'General', 'foogallery' ),
                         'type'    => 'number',
                         'class'   => 'small-text',
-                        'default' => 40,
+                        'default' => 5,
                         'step'    => '1',
                         'min'     => '0',
 						'row_data'=> array(
@@ -219,32 +216,6 @@ if ( !class_exists( 'FooGallery_Simple_Portfolio_Gallery_Template' ) ) {
 			array_splice( $fields, $index_of_captions_field, 0, $new_fields );
 
 			return $fields;
-		}
-
-		/**
-		 * Add the required data options if needed
-		 *
-		 * @param $options
-		 * @param $gallery    FooGallery
-		 *
-		 * @param $attributes array
-		 *
-		 * @return array
-		 */
-		function add_data_options($options, $gallery, $attributes) {
-			$gutter = foogallery_gallery_template_setting( 'gutter', 40 );
-			$options['template']['gutter'] = intval($gutter);
-
-			$thumbnail_dimensions = foogallery_gallery_template_setting( 'thumbnail_dimensions', array() );
-			if ( array_key_exists( 'width', $thumbnail_dimensions ) ) {
-				$width                              = $thumbnail_dimensions['width'];
-				$options['template']['columnWidth'] = intval( $width );
-			}
-
-			$align = foogallery_gallery_template_setting( 'align', 'center' );
-            $options['template']['align'] = $align;
-
-			return $options;
 		}
 
 		/**
@@ -363,7 +334,7 @@ if ( !class_exists( 'FooGallery_Simple_Portfolio_Gallery_Template' ) ) {
 			}
 
 			$id = $gallery->container_id();
-			$gutter = intval( foogallery_gallery_template_setting( 'gutter', 40 ) );
+			$gutter = intval( foogallery_gallery_template_setting( 'gutter', 5 ) );
 			$alignment = foogallery_gallery_template_setting( 'align', 'center' );
 			if ( $alignment === 'left' ) {
 				$alignment = 'flex-start';
