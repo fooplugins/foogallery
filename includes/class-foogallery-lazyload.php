@@ -180,7 +180,7 @@ if ( ! class_exists( 'FooGallery_LazyLoad' ) ) {
                 'desc'    => __( 'This will disable lazy loading for ALL galleries. This is not recommended, but is sometimes needed when there are problems with the galleries displaying on some installs.', 'foogallery' ),
                 'type'    => 'checkbox',
                 'tab'     => 'general',
-                'section' => __( 'Lazy Loading', 'foogallery' )
+                'section' => __( 'Performance', 'foogallery' )
             );
 
             $new_settings = array_merge( $lazy_settings, $settings['settings'] );

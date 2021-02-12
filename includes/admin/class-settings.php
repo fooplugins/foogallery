@@ -35,7 +35,7 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 				'desc'    => sprintf( __( '%s optimizes the way it loads gallery stylesheets to improve page performance. This can lead to the incorrect CSS being loaded in some cases. Use this button to clear all the CSS optimizations that have been cached across all galleries.', 'foogallery' ), foogallery_plugin_name() ),
 				'type'    => 'clear_optimization_button',
 				'tab'     => 'general',
-				'section' => __( 'Cache', 'foogallery' )
+				'section' => __( 'Performance', 'foogallery' )
 			);
 
 	        $gallery_templates = foogallery_gallery_templates();
@@ -143,8 +143,8 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 
 			$settings[] = array(
 				'id'      => 'hide_editor_button',
-				'title'   => __( 'Hide WYSIWYG Editor Button', 'foogallery' ),
-				'desc'    => sprintf( __( 'If enabled, this will hide the "Add %s" button in the WYSIWYG editor.', 'foogallery' ), foogallery_plugin_name() ),
+				'title'   => __( 'Hide Classic Editor Button', 'foogallery' ),
+				'desc'    => sprintf( __( 'If enabled, this will hide the "Add %s" button in the Classic editor.', 'foogallery' ), foogallery_plugin_name() ),
 				'type'    => 'checkbox',
 				'tab'     => 'general',
 				'section' => __( 'Admin', 'foogallery' )
