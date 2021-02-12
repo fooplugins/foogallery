@@ -76,7 +76,7 @@ if ( !class_exists( 'FooGallery_Masonry_Gallery_Template' ) ) {
 				return;
 			}
 
-			$thumbnail_width = intval( foogallery_gallery_template_setting( 'thumbnail_width', 150 ) );
+			$thumbnail_width = intval( foogallery_gallery_template_setting( 'thumbnail_width', 250 ) );
 			$gutter_width = intval( foogallery_gallery_template_setting( 'gutter_width', 10 ) );
 
 			?>
@@ -127,7 +127,7 @@ if ( !class_exists( 'FooGallery_Masonry_Gallery_Template' ) ) {
                         'section' => __( 'General', 'foogallery' ),
                         'type'    => 'number',
                         'class'   => 'small-text',
-                        'default' => 150,
+                        'default' => 250,
                         'step'    => '1',
                         'min'     => '0',
 						'row_data'=> array(
@@ -143,10 +143,10 @@ if ( !class_exists( 'FooGallery_Masonry_Gallery_Template' ) ) {
                         'type'    => 'radio',
                         'choices' => array(
                             'fixed'  => __( 'Fixed Width', 'foogallery' ),
-                            'col2'   => __( '2 Columns', 'foogallery' ),
-                            'col3'   => __( '3 Columns', 'foogallery' ),
+                            'col5'   => __( '5 Columns', 'foogallery' ),
                             'col4'   => __( '4 Columns', 'foogallery' ),
-                            'col5'   => __( '5 Columns', 'foogallery' )
+                            'col3'   => __( '3 Columns', 'foogallery' ),
+                            'col2'   => __( '2 Columns', 'foogallery' ),
                         ),
                         'default' => 'fixed',
                         'row_data'=> array(
@@ -284,9 +284,8 @@ if ( !class_exists( 'FooGallery_Masonry_Gallery_Template' ) ) {
 		 */
 		function add_masonry_options($options, $gallery, $attributes) {
 			$layout = foogallery_gallery_template_setting( 'layout', 'fixed' );
-			$options['template']['layout'] = $layout;
 			if ( 'fixed' === $layout ) {
-				$width = foogallery_gallery_template_setting( 'thumbnail_width', '150' );
+				$width = foogallery_gallery_template_setting( 'thumbnail_width', '250' );
 				$gutter_width = foogallery_gallery_template_setting( 'gutter_width', '10' );
 				$options['template']['columnWidth'] = intval($width);
 				$options['template']['gutter'] = intval($gutter_width);
@@ -321,7 +320,7 @@ if ( !class_exists( 'FooGallery_Masonry_Gallery_Template' ) ) {
          */
         function build_gallery_template_arguments( $args ) {
             $args = array(
-                'width' => foogallery_gallery_template_setting( 'thumbnail_width', '150' ),
+                'width' => foogallery_gallery_template_setting( 'thumbnail_width', '250' ),
                 'link' => foogallery_gallery_template_setting( 'thumbnail_link', 'image' ),
                 'crop' => false
             );
