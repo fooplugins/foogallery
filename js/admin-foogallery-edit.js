@@ -1,3 +1,5 @@
+FooGallery.autoEnabled = false;
+
 (function (FOOGALLERY, $, undefined) {
 
     FOOGALLERY.media_uploader = false;
@@ -278,7 +280,7 @@
 		$(function() {
 
 			// Prevent inputs in settings meta box headings opening/closing contents.
-			$( '#foogallery_settings' ).find( '.hndle' ).unbind( 'click.postboxes' );
+			$( '#foogallery_settings' ).find( '.hndle' ).off( 'click.postboxes' );
 
 			$( '#foogallery_settings' ).on( 'click', '.hndle', function( event ) {
 
@@ -291,7 +293,7 @@
 			});
 
 			// Prevent inputs in items meta box headings opening/closing contents.
-			$( '#foogallery_items' ).find( '.hndle' ).unbind( 'click.postboxes' );
+			$( '#foogallery_items' ).find( '.hndle' ).off( 'click.postboxes' );
 
 			$( '#foogallery_items' ).on( 'click', '.hndle', function( event ) {
 
