@@ -832,6 +832,7 @@
 
 .fg-simple_portfolio .fg-caption-title {
     text-align: left;
+    white-space: normal;
 }
 .fg-simple_portfolio .fg-caption-desc {
     text-align: left;

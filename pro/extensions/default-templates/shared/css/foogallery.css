@@ -5630,6 +5630,7 @@ html.fg-panel-no-scroll body {
 
 .fg-simple_portfolio .fg-caption-title {
     text-align: left;
+    white-space: normal;
 }
 .fg-simple_portfolio .fg-caption-desc {
     text-align: left;

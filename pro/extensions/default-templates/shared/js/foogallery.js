@@ -5631,6 +5631,46 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 		return null;
 	};
 
+	/**
+	 * @typedef {Object} ResizeObserverSize
+	 * @property {number} inlineSize
+	 * @property {number} blockSize
+	 * @property {number} width
+	 * @property {number} height
+	 */
+	/**
+	 * @typedef {Object} ResizeObserverEntry
+	 * @property {ResizeObserverSize|Array<ResizeObserverSize>|undefined} contentBoxSize
+	 * @property {DOMRect} contentRect
+	 */
+	/**
+	 * @summary Gets the width and height from the ResizeObserverEntry
+	 * @memberof FooGallery.utils.
+	 * @function getResizeObserverSize
+	 * @param {ResizeObserverEntry} entry - The entry to retrieve the size from.
+	 * @returns {{width: Number,height: Number}}
+	 */
+	_utils.getResizeObserverSize = function(entry){
+		var width, height;
+		if(entry.contentBoxSize) {
+			// Checking for chrome as using a non-standard array
+			if (entry.contentBoxSize[0]) {
+				width = entry.contentBoxSize[0].inlineSize;
+				height = entry.contentBoxSize[0].blockSize;
+			} else {
+				width = entry.contentBoxSize.inlineSize;
+				height = entry.contentBoxSize.blockSize;
+			}
+		} else {
+			width = entry.contentRect.width;
+			height = entry.contentRect.height;
+		}
+		return {
+			width: width,
+			height: height
+		};
+	};
+
 })(
 	FooGallery.$,
 	FooGallery,
@@ -6528,12 +6568,8 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 			};
 			self.robserver = new ResizeObserver(_fn.throttle(function(entries) {
 				if (!self.destroying && !self.destroyed && entries.length === 1 && entries[0].target === self.el){
-					// self.layout();
-					if (entries[0].contentBoxSize){
-						self.layout(entries[0].contentBoxSize[0].inlineSize);
-					} else {
-						self.layout(entries[0].contentRect.width);
-					}
+					var size = _utils.getResizeObserverSize(entries[0]);
+					self.layout(size.width);
 				}
 			}, 50));
 		},
@@ -11521,11 +11557,8 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
                 if (!self.destroying && !self.destroyed){
                     entries.forEach(function (entry) {
                         if (entry.target === self.el){
-                            if (entry.contentBoxSize){
-                                self.onResize(entry.contentBoxSize[0].inlineSize, entry.contentBoxSize[0].blockSize);
-                            } else {
-                                self.onResize(entry.contentRect.width, entry.contentRect.height);
-                            }
+                            var size = _utils.getResizeObserverSize(entry);
+                            self.onResize(size.width, size.height);
                         }
                     });
                 }
@@ -13282,9 +13315,9 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
                 self.robserver = new ResizeObserver(_fn.throttle(function (entries) {
                     if (entries.length > 0 && self.panel instanceof _.Panel && !self.panel.destroying && !self.panel.destroyed) {
                         // only the viewport is being observed so if a change occurs we can safely grab just the first entry
-                        var rect = entries[0].contentRect, viewport = self.info.viewport;
-                        var diffX = Math.floor(Math.abs(rect.width - viewport.width)),
-                            diffY = Math.floor(Math.abs(rect.height - viewport.height));
+                        var size = _utils.getResizeObserverSize(entries[0]), viewport = self.info.viewport;
+                        var diffX = Math.floor(Math.abs(size.width - viewport.width)),
+                            diffY = Math.floor(Math.abs(size.height - viewport.height));
                         if (self.isVisible && (diffX > 1 || diffY > 1)) {
                             self.resize();
                         }
