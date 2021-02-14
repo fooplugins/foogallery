@@ -200,8 +200,6 @@ if ( !class_exists( 'FooGallery_Slider_Gallery_Template' ) ) {
 				} else if ( 'video_autoplay' === $field['id'] ) {
 					$field['title'] = __( 'Autoplay', 'foogallery' );
 					$field['desc'] = __( 'Try to autoplay the video when selected. This will only work with videos hosted on Youtube or Vimeo.', 'foogallery' );
-				} else if ( 'lightbox_fit_media' === $field['id'] ) {
-					$field['default'] = 'yes';
 				} else if ( 'lightbox_buttons_display' === $field['id'] ) {
 					$field['default'] = 'yes';
 				} else if ( 'lightbox_thumbs' === $field['id'] ) {
@@ -213,8 +211,6 @@ if ( !class_exists( 'FooGallery_Slider_Gallery_Template' ) ) {
 				} else if ( 'lightbox_info_position' === $field['id'] ) {
 					$field['default'] = 'top';
 				} else if ( 'lightbox_hover_buttons' === $field['id'] ) {
-					$field['default'] = 'yes';
-				} else if ( 'lightbox_thumbs_bestfit' === $field['id'] ) {
 					$field['default'] = 'yes';
 				} else if ( 'lightbox_caption_override_title' === $field['id'] ) {
 					$field['title'] = __( 'Caption Title', 'foogallery' );
