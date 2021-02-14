@@ -103,7 +103,12 @@ if ( !class_exists( 'FooGallery_Image_Viewer_Gallery_Template' ) ) {
                         'section' => __( 'General', 'foogallery' ),
                         'default' => 'image' ,
                         'type'    => 'thumb_link',
-                        'desc'	  => __( 'You can choose to either link each thumbnail to the full size image or to the image\'s attachment page', 'foogallery')
+                        'desc'	  => __( 'You can choose to either link each thumbnail to the full size image or to the image\'s attachment page', 'foogallery'),
+                        'row_data'=> array(
+	                        'data-foogallery-change-selector' => 'input:radio',
+	                        'data-foogallery-value-selector' => 'input:checked',
+	                        'data-foogallery-preview' => 'shortcode',
+                        )
                     ),
                     array(
                         'id'      => 'lightbox',
@@ -111,7 +116,11 @@ if ( !class_exists( 'FooGallery_Image_Viewer_Gallery_Template' ) ) {
                         'section' => __( 'General', 'foogallery' ),
                         'desc'    => __( 'Choose which lightbox you want to use in the gallery', 'foogallery' ),
                         'default' => 'none',
-                        'type'    => 'lightbox'
+                        'type'    => 'lightbox',
+                        'row_data'=> array(
+	                        'data-foogallery-change-selector' => 'select',
+	                        'data-foogallery-preview' => 'shortcode',
+                        )
                     ),
                     array(
                         'id'      => 'alignment',
