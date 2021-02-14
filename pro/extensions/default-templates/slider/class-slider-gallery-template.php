@@ -208,8 +208,6 @@ if ( !class_exists( 'FooGallery_Slider_Gallery_Template' ) ) {
 				} else if ( 'lightbox_thumbs_captions' === $field['id'] ) {
 					$field['title'] = __( 'Thumbnail Captions', 'foogallery' );
 					$field['default'] = 'yes';
-				} else if ( 'lightbox_info_position' === $field['id'] ) {
-					$field['default'] = 'top';
 				} else if ( 'lightbox_hover_buttons' === $field['id'] ) {
 					$field['default'] = 'yes';
 				} else if ( 'lightbox_caption_override_title' === $field['id'] ) {
