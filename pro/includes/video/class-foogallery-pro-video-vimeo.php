@@ -26,7 +26,7 @@ if ( !class_exists("FooGallery_Pro_Video_Vimeo") ){
 		function __construct() {
 			$this->regex_pattern = '/(player\.)?vimeo\.com/i';
 
-			add_action('wp_ajax_fgi_save', array($this, 'ajax'));
+			add_action('wp_ajax_fgi_save_vimeo_access_token', array($this, 'ajax'));
 		}
 
 		public function get_args(){
@@ -67,11 +67,11 @@ if ( !class_exists("FooGallery_Pro_Video_Vimeo") ){
 			));
 
 			if (is_wp_error($remote)) {
-				return $this->error_response("Error validating token: " . $remote->get_error_message());
+				return $this->error_response("Error verifying token: " . $remote->get_error_message());
 			}
 
-			if (wp_remote_retrieve_response_code($remote) == "401"){
-				return $this->error_response("Invalid token supplied unable to verify.");
+			if (wp_remote_retrieve_response_code($remote) !== 200){
+				return $this->error_response("Unable to verify token.");
 			}
 
 			return array(

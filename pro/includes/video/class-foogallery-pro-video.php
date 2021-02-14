@@ -488,6 +488,15 @@ if ( ! class_exists( 'FooGallery_Pro_Video' ) ) {
 			);
 
 			$settings['settings'][] = array(
+				'id'      => 'youtube_api_key',
+				'title'   => __( 'YouTube API Key', 'foogallery' ),
+				'desc'    => __( 'An API key is required by the YouTube API in order to search or import multiple videos from a playlist. This is not required to import a single video.', 'foogallery' ),
+				'type'    => 'text',
+				'default' => '',
+				'tab'     => 'video',
+			);
+
+			$settings['settings'][] = array(
 				'id'      => 'language_video_count_none_text',
 				'title'   => __( 'Video Count None Text', 'foogallery' ),
 				'type'    => 'text',

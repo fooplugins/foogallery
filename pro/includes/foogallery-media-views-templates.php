@@ -47,6 +47,27 @@
 
 			<h4>Search</h4>
 			<p>You can also perform a search on YouTube and select the videos to import from the results by simply typing your query into the search input.</p>
+
+            <h4>API Key</h4>
+            <p>If you want to import multiple videos from a playlist or search result you will need an API key. You can generate one by following the basic instructions below or take a look at our <a href="https://fooplugins.link/youtube-api-key" target="_blank">documentation</a> or the original <a href="https://developers.google.com/youtube/v3/getting-started" target="_blank">Google documentation</a> for more detailed steps.</p>
+            <ul>
+                <li>You will need a <a href="https://www.google.com/accounts/NewAccount">Google Account</a> to be able to generate an API key.</li>
+                <li>
+                    Create a new project in your <a href="https://console.developers.google.com/" target="_blank">Google Developers Console</a> and fill in the form. If you are not signed in you should be prompted to using your Google account.
+                    <ul>
+                        <li>In the <b>Project name</b> field enter a value like <b>My FooGallery</b>.</li>
+                        <li>You can leave the <b>Location</b> field as its default value of <b>No organization</b>.</li>
+                    </ul>
+                </li>
+                <li>Click the <b>Create</b> button and wait for the new projects dashboard to be displayed.</li>
+                <li>You should see a prompt informing you that you don't have any APIs available to use yet. Click the <b>Enable APIs and Services</b> button displayed at the top of the page.</li>
+                <li>You should now be in the <b>API Library</b>. Simply enter <b>YouTube</b> into the search input and then select the <b>YouTube Data API v3</b> from the results.</li>
+                <li>You will be redirected to the home page for the <b>YouTube Data API v3</b>, click the <b>Enable</b> button and wait for the operation to complete.</li>
+                <li>You will now be back on your projects <b>Overview</b> page. Click on the <b>Credentials</b> tab on the left of the screen.</li>
+                <li>At the top of the <b>Credentials</b> page click on the <b>Create Credentials</b> button displayed at the top of the page and select the <b>API key</b> option.</li>
+                <li>You should get a pop up titled <b>API key created</b> where you can copy <b>Your API key</b> and optionally restrict its usage. For more information about restricting the usage please see the <a href="https://cloud.google.com/docs/authentication/api-keys?hl=en&visit_id=637488474405711980-3007411940&rd=1#securing_an_api_key" target="_blank">Securing an API key</a> documentation.</li>
+                <li>Finally take your API key and enter it into either the prompt displayed during import or the <b>FooGallery > Settings > Video > YouTube API Key</b> option.</li>
+            </ul>
 		</dd>
 		<dt class="fgi-provider-title">Vimeo</dt>
 		<dd class="fgi-provider-content">
@@ -458,6 +479,25 @@
 			<input type="text" name="access_token" value="{{data.access_token}}" spellcheck="false" placeholder="<?php _e("Your access token", "foogallery") ?>"/>
 			<button type="button" class="button fgi-save" disabled="disabled"><?php _e("Save", "foogallery") ?></button>
 			<p class="fgi-vimeo-error-message"></p>
+		</div>
+		<p><small><?php printf(__("See the %s for more information.", "foogallery"), $help) ?></small></p>
+	</div>
+
+</script>
+<script type="text/html" id="tmpl-fgi-youtube">
+
+	<?php
+	$help = sprintf('<a href="#toggle-help">%s</a>', __("help", "foogallery"));
+	$developers_console = sprintf('<a href="https://console.developers.google.com/" target="_blank">%s</a>', __("Google Developers Console", "foogallery"));
+	?>
+
+	<div class="fgi-splash fgi-youtube-api-key">
+		<h2><?php _e("YouTube API key is required.", "foogallery") ?></h2>
+		<p><?php printf(__("Create a new project in your %s to generate an api key.", "foogallery"), $developers_console) ?></p>
+		<div class="button-hero-container">
+			<input type="text" name="api_key" value="{{data.api_key}}" spellcheck="false" placeholder="<?php _e("Your api key", "foogallery") ?>"/>
+			<button type="button" class="button fgi-save" disabled="disabled"><?php _e("Save", "foogallery") ?></button>
+			<p class="fgi-youtube-error-message"></p>
 		</div>
 		<p><small><?php printf(__("See the %s for more information.", "foogallery"), $help) ?></small></p>
 	</div>
