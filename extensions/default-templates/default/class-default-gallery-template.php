@@ -82,7 +82,7 @@ if ( ! class_exists( 'FooGallery_Default_Gallery_Template' ) ) {
 					),
 					array(
 						'id'      => 'thumbnail_link',
-						'title'   => __( 'Link To', 'foogallery' ),
+						'title'   => __( 'Thumbnail Link', 'foogallery' ),
 						'section' => __( 'General', 'foogallery' ),
 						'default' => 'image',
 						'type'    => 'thumb_link',

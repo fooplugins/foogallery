@@ -99,7 +99,7 @@ if ( !class_exists( 'FooGallery_Image_Viewer_Gallery_Template' ) ) {
                     ),
                     array(
                         'id'      => 'thumbnail_link',
-                        'title'   => __( 'Thumb Link', 'foogallery' ),
+                        'title'   => __( 'Thumbnail Link', 'foogallery' ),
                         'section' => __( 'General', 'foogallery' ),
                         'default' => 'image' ,
                         'type'    => 'thumb_link',
