@@ -96,11 +96,6 @@ if ( !class_exists( 'FooGallery_Simple_Portfolio_Gallery_Template' ) ) {
                         'default' => 'image',
                         'type'    => 'thumb_link',
                         'desc'	  => __( 'You can choose to link each thumbnail to the full size image, or to the image\'s attachment page, or you can choose to not link to anything.', 'foogallery' ),
-                        'row_data'=> array(
-	                        'data-foogallery-change-selector' => 'input:radio',
-	                        'data-foogallery-value-selector' => 'input:checked',
-	                        'data-foogallery-preview' => 'shortcode',
-                        )
                     ),
                     array(
                         'id'      => 'lightbox',
@@ -109,10 +104,6 @@ if ( !class_exists( 'FooGallery_Simple_Portfolio_Gallery_Template' ) ) {
                         'section' => __( 'General', 'foogallery' ),
                         'type'    => 'lightbox',
                         'default' => 'none',
-                        'row_data'=> array(
-	                        'data-foogallery-change-selector' => 'select',
-	                        'data-foogallery-preview' => 'shortcode',
-                        )
                     ),
                     array(
                         'id'      => 'gutter',

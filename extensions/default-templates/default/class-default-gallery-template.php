@@ -87,11 +87,6 @@ if ( ! class_exists( 'FooGallery_Default_Gallery_Template' ) ) {
 						'default' => 'image',
 						'type'    => 'thumb_link',
 						'desc'    => __( 'You can choose to link each thumbnail to the full size image, the image\'s attachment page, a custom URL, or you can choose to not link to anything.', 'foogallery' ),
-						'row_data'=> array(
-							'data-foogallery-change-selector' => 'input:radio',
-							'data-foogallery-value-selector' => 'input:checked',
-							'data-foogallery-preview' => 'shortcode',
-						)
 					),
 					array(
 						'id'      => 'lightbox',
@@ -99,11 +94,7 @@ if ( ! class_exists( 'FooGallery_Default_Gallery_Template' ) ) {
 						'desc'    => __( 'Choose which lightbox you want to use. The lightbox will generally only work if you set the thumbnail link to "Full Size Image".', 'foogallery' ),
 						'section' => __( 'General', 'foogallery' ),
 						'type'    => 'lightbox',
-						'default' => 'none',
-						'row_data'=> array(
-							'data-foogallery-change-selector' => 'select',
-							'data-foogallery-preview' => 'shortcode',
-						)
+						'default' => 'none'
 					),
 					array(
 						'id'       => 'spacing',

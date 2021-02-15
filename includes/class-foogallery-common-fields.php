@@ -38,16 +38,28 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 						case 'thumb_link':
 							$field['type']    = 'radio';
 							$field['choices'] = foogallery_gallery_template_field_thumb_link_choices();
+							if ( !isset( $field['row_data'] ) ) {
+								$field['row_data'] = array(
+									'data-foogallery-change-selector' => 'input:radio',
+									'data-foogallery-value-selector'  => 'input:checked',
+									'data-foogallery-preview'         => 'shortcode',
+								);
+							}
 							break;
 						case 'lightbox':
 							$field['lightbox'] = true;
 							$field['type']     = 'select';
 							$field['choices']  = foogallery_gallery_template_field_lightbox_choices();
-							$field['row_data'] = array(
-								'data-foogallery-value-selector' => 'select',
-								'data-foogallery-change-selector' => 'select',
-								'data-foogallery-preview' => 'shortcode'
-							);
+							if ( !isset( $field['row_data'] ) ) {
+								$field['row_data'] = array(
+									'data-foogallery-change-selector'          => 'select',
+									'data-foogallery-preview'                  => 'shortcode',
+									'data-foogallery-hidden'                   => true,
+									'data-foogallery-show-when-field-operator' => '!==',
+									'data-foogallery-show-when-field'          => 'thumbnail_link',
+									'data-foogallery-show-when-field-value'    => 'none',
+								);
+							}
 							break;
 					}
 				}

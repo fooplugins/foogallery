@@ -175,11 +175,6 @@ if ( !class_exists( 'FooGallery_FooGrid_Gallery_Template' ) ) {
 						'default' => 'image' ,
 						'type'    => 'thumb_link',
 						'desc'	  => __('You can choose to either link each thumbnail to the full size image or to the image\'s attachment page.', 'foogallery'),
-						'row_data'=> array(
-							'data-foogallery-change-selector' => 'input:radio',
-							'data-foogallery-value-selector' => 'input:checked',
-							'data-foogallery-preview' => 'shortcode',
-						)
 					),
 					array(
 						'id'      => 'transition',
