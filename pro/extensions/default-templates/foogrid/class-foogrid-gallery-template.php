@@ -48,6 +48,9 @@ if ( !class_exists( 'FooGallery_FooGrid_Gallery_Template' ) ) {
 			//build up the thumb dimensions from some arguments
 			add_filter( 'foogallery_calculate_thumbnail_dimensions-foogridpro', array( $this, 'build_thumbnail_dimensions_from_arguments' ), 10, 2 );
 
+			//change fields for the template
+			add_filter( 'foogallery_alter_gallery_template_field', array( $this, 'alter_gallery_template_field' ), 99, 2 );
+
 			//check if the old FooGrid is installed
 			if ( is_admin() ) {
                 add_action( 'admin_notices', array( $this, 'display_foogrid_notice') );
@@ -60,6 +63,25 @@ if ( !class_exists( 'FooGallery_FooGrid_Gallery_Template' ) ) {
 
 			add_filter( 'foogallery_build_class_attribute', array( $this, 'append_classes' ), 10, 2 );
         }
+
+		/**
+		 * Alter a field
+		 *
+		 * @uses "foogallery_override_gallery_template_fields"
+		 * @param $fields
+		 * @param $template
+		 *
+		 * @return array
+		 */
+		function alter_gallery_template_field( $field, $gallery ) {
+			if ( $gallery === self::template_id ) {
+				if ( 'thumbnail_link' === $field['id'] ) {
+					unset( $field['choices']['none'] );
+				}
+			}
+
+			return $field;
+		}
 
         /*
          * Map old field values
