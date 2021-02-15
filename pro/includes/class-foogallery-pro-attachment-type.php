@@ -29,7 +29,7 @@ if ( ! class_exists( 'FooGallery_Pro_Attachment_Type' ) ) {
 					$foogallery_attachment->type = 'embed';
 				}
 			} else {
-				$link = foogallery_gallery_template_setting( 'link', 'image' );
+				$link = foogallery_gallery_template_setting( 'thumbnail_link', 'image' );
 				if ( 'page' === $link || ( 'custom' === $link && !empty( $foogallery_attachment->custom_url ) ) ) {
 					$foogallery_attachment->type = 'iframe';
 				}
