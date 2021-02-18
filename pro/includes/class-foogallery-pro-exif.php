@@ -23,6 +23,9 @@ if ( ! class_exists( 'FooGallery_Pro_Exif' ) ) {
 	        //add localised text
 	        add_filter( 'foogallery_il8n', array( $this, 'add_il8n' ) );
 
+	        //add exif to the json output
+	        add_filter( 'foogallery_build_attachment_json', array( $this, 'add_exif_to_json' ), 10, 6 );
+
             if ( is_admin() ) {
                 //add extra fields to the templates that support exif
                 add_filter( 'foogallery_override_gallery_template_fields', array( $this, 'add_exif_fields' ), 20, 2 );
@@ -34,6 +37,26 @@ if ( ! class_exists( 'FooGallery_Pro_Exif' ) ) {
                 add_filter( 'foogallery_admin_settings_override', array( $this, 'add_exif_settings' ) );
             }
         }
+
+	    /**
+	     * Add the exif data to the json object
+	     *
+	     * @param StdClass $json_object
+	     * @param FooGalleryAttachment $foogallery_attachment
+	     * @param array $args
+	     * @param array $anchor_attributes
+	     * @param array $image_attributes
+	     * @param array $captions
+	     *
+	     * @return mixed
+	     */
+	    public function add_exif_to_json(  $json_object, $foogallery_attachment, $args, $anchor_attributes, $image_attributes, $captions ) {
+		    if ( isset( $foogallery_attachment->exif ) ) {
+			    $json_object->exif = $foogallery_attachment->exif;
+		    }
+
+		    return $json_object;
+	    }
 
 	    /**
 	     * Add localisation settings
@@ -528,6 +551,7 @@ if ( ! class_exists( 'FooGallery_Pro_Exif' ) ) {
             }
 
             if ( ! empty( $exif_data_attributes ) ) {
+	            $foogallery_attachment->exif = $exif_data_attributes;
                 $attr['data-exif'] = foogallery_json_encode( $exif_data_attributes );
             }
 
@@ -544,15 +568,55 @@ if ( ! class_exists( 'FooGallery_Pro_Exif' ) ) {
         function format_exif_value( $attribute_key, $attribute_value ) {
         	if ( 'created_timestamp' === $attribute_key || 'date' === $attribute_key ) {
         		if ( (string)(int)$attribute_value == $attribute_value ) {
-        			return foogallery_format_date( $attribute_value );
+			        $attribute_value = foogallery_format_date( $attribute_value );
 		        }
-	        }
-
-        	if ( 'shutter_speed' === $attribute_key && is_string( $attribute_value ) && strlen( $attribute_value) >= 10 ) {
-        		return substr( $attribute_value, 0, 9 );
+	        } else if ( 'shutter_speed' === $attribute_key ) {
+		        $attribute_value = $this->format_shutter_speed( $attribute_value );
 	        }
 
         	return apply_filters( 'foogallery_format_exif_value', $attribute_value, $attribute_key );
         }
+
+	    /**
+	     * Format the shutterspeed value
+	     *
+	     * @param $value
+	     *
+	     * @return string
+	     */
+        function format_shutter_speed( $value ) {
+        	if ( empty( $value ) || strpos( $value, '/' ) > 0 ) {
+        		return $value;
+	        }
+
+	        if ( floatval( $value ) > 0 ) {
+		        return $this->convert_to_fraction( floatval( $value ) ) . 's';
+	        }
+
+	        return $value;
+        }
+
+	    /**
+	     * Convert a float to a fraction
+	     *
+	     * @param       $n
+	     * @param float $tolerance
+	     *
+	     * @return string
+	     */
+	    function convert_to_fraction($n, $tolerance = 1.e-6) {
+		    $h1=1; $h2=0;
+		    $k1=0; $k2=1;
+		    $b = 1/$n;
+		    do {
+			    $b = 1/$b;
+			    $a = floor($b);
+			    $aux = $h1; $h1 = $a*$h1+$h2; $h2 = $aux;
+			    $aux = $k1; $k1 = $a*$k1+$k2; $k2 = $aux;
+			    $b = $b-$a;
+		    } while (abs($n-$h1/$k1) > $n*$tolerance);
+
+		    return "$h1/$k1";
+	    }
     }
 }
