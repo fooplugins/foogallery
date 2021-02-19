@@ -50,7 +50,7 @@ if ( ! class_exists( 'FooGallery_Thumb_Engine_Default' ) ) {
 			$this->render_thumb_test_html( 'https://s3.amazonaws.com/foocdn/test.jpg', 'Remote Resize to 50x50' );
 			$this->render_thumb_test_html( FooGallery_Thumbnails::find_first_image_in_media_library(), 'Media Resize to 50x50' );
 
-			$this->render_thumb_test_html( 'https://fooplugins.s3.amazonaws.com/exploit.php', 'Remote test for non image' );
+			$this->render_thumb_test_html( 'https://fooplugins.s3.amazonaws.com/test.php', 'Remote test for non image' );
 		}
 
 		/**
