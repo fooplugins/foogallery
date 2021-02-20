@@ -9,9 +9,9 @@ if ( ! class_exists( 'FooGallery_Crop_Position' ) ) {
 
 	class FooGallery_Crop_Position {
 
-		public const CROP_POSITION_META_KEY = 'foogallery_crop_pos';
-		private const CROP_POSITION_META_KEY_LEGACY = 'wpthumb_crop_pos';
-		public const CROP_POSITION_DEFAULT = 'center,center';
+		const CROP_POSITION_META_KEY = 'foogallery_crop_pos';
+		const CROP_POSITION_META_KEY_LEGACY = 'wpthumb_crop_pos';
+		const CROP_POSITION_DEFAULT = 'center,center';
 
 		function __construct() {
 			if ( is_admin() ) {

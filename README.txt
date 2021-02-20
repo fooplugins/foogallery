@@ -227,6 +227,10 @@ Please update in order to for FooGallery to work in WP 5.5+!
 
 == Changelog ==
 
+= 1.10.1 =
+* Date Updated : 2021-18-02
+* Fix : fixed a fatal error with PHP 5.6
+
 = 1.10.0 =
 * Date Updated : 2021-18-02
 * Update : Removed WPThumb library completely

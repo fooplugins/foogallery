@@ -1,13 +1,13 @@
 <?php
 
 //include the base engine class
-require_once 'class-foogallery-thumb-engine.php';
-
-//include the manager class
-require_once 'class-foogallery-thumb-manager.php';
+require_once( FOOGALLERY_PATH . 'includes/thumbs/class-foogallery-thumb-engine.php' );
 
 //include common functions
-require_once 'functions.php';
+require_once( FOOGALLERY_PATH . 'includes/thumbs/functions.php' );
+
+//include the manager class
+require_once( FOOGALLERY_PATH . 'includes/thumbs/class-foogallery-thumb-manager.php' );
 
 //include files for default engine
 require_once( FOOGALLERY_PATH . 'includes/thumbs/default/class-foogallery-thumb-engine-default.php' );
