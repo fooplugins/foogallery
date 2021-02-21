@@ -453,12 +453,14 @@
 	position: absolute;
 	top: 50%;
 	left: 50%;
-	transform: translateX(-50%) translateY(-50%);
+	margin-top: -0.5em;
+	margin-left: -0.5em;
 	width: 1em;
 	height: 1em;
 	font-size: 5px;
 	visibility: hidden;
 	opacity: 0;
+	pointer-events: none;
 }
 
 .foogallery .fg-loading .fg-loader {
@@ -476,8 +478,12 @@
 	-1.8em 1.8em 0 0 rgba(130, 130, 130, 0.2),
 	-2.6em 0 0 0 rgba(130, 130, 130, 0.5),
 	-1.8em -1.8em 0 0 rgba(130, 130, 130, 0.7);
-	-webkit-animation: loading-default 1.1s infinite steps(8, start);
-	animation: loading-default 1.1s infinite steps(8, start);
+	-webkit-animation: loading-default 1.1s infinite paused steps(8, start);
+	animation: loading-default 1.1s infinite paused steps(8, start);
+}
+.fg-loading-default .fg-loading .fg-loader {
+	-webkit-animation-play-state: running;
+	animation-play-state: running;
 }
 
 @-webkit-keyframes loading-default {
@@ -501,15 +507,23 @@
 .fg-loading-bars .fg-loader:before,
 .fg-loading-bars .fg-loader:after {
 	background: rgba(130, 130, 130, 1);
-	-webkit-animation: loading-bars 1s infinite ease-in-out;
-	animation: loading-bars 1s infinite ease-in-out;
 	width: 1em;
 	height: 4em;
+	-webkit-animation: loading-bars 1s infinite paused ease-in-out;
+	animation: loading-bars 1s infinite paused ease-in-out;
+}
+.fg-loading-bars .fg-loading .fg-loader,
+.fg-loading-bars .fg-loading .fg-loader:before,
+.fg-loading-bars .fg-loading .fg-loader:after {
+	-webkit-animation-play-state: running;
+	animation-play-state: running;
 }
 .fg-loading-bars .fg-loader {
 	color: rgba(130, 130, 130, 1);
 	text-indent: -9999em;
 	font-size: 4px;
+	margin-top: -2em;
+	margin-left: -0.5em;
 	-webkit-animation-delay: -0.16s;
 	animation-delay: -0.16s;
 }
@@ -553,13 +567,20 @@
 }
 .fg-loading-trail .fg-loader {
 	color: #828282;
+	margin-top: 0;
+	margin-left: 0;
 	font-size: 20px;
 	text-indent: -9999em;
 	overflow: hidden;
 	border-radius: 50%;
-	-webkit-animation: loading-trail-1 1.7s infinite ease, loading-trail-2 1.7s infinite ease;
-	animation: loading-trail-1 1.7s infinite ease, loading-trail-2 1.7s infinite ease;
+	-webkit-animation: loading-trail-1 1.7s infinite paused ease, loading-trail-2 1.7s infinite paused ease;
+	animation: loading-trail-1 1.7s infinite paused ease, loading-trail-2 1.7s infinite paused ease;
 }
+.fg-loading-trail .fg-loading .fg-loader {
+	-webkit-animation-play-state: running;
+	animation-play-state: running;
+}
+
 @-webkit-keyframes loading-trail-1 {
 	0% {
 		box-shadow: 0 -0.83em 0 -0.4em, 0 -0.83em 0 -0.42em, 0 -0.83em 0 -0.44em, 0 -0.83em 0 -0.46em, 0 -0.83em 0 -0.477em;
@@ -630,16 +651,22 @@
 	border-radius: 50%;
 	width: 2.5em;
 	height: 2.5em;
-	-webkit-animation-fill-mode: both;
-	animation-fill-mode: both;
-	-webkit-animation: loading-pulse 1.8s infinite ease-in-out;
-	animation: loading-pulse 1.8s infinite ease-in-out;
+	-webkit-animation: loading-pulse 1.8s infinite both paused ease-in-out;
+	animation: loading-pulse 1.8s infinite both paused ease-in-out;
 }
+.fg-loading-pulse .fg-loading .fg-loader,
+.fg-loading-pulse .fg-loading .fg-loader:before,
+.fg-loading-pulse .fg-loading .fg-loader:after {
+	-webkit-animation-play-state: running;
+	animation-play-state: running;
+}
+
 .fg-loading-pulse .fg-loader {
 	color: #828282;
 	font-size: 4px;
+	margin-top: -3.75em;
+	margin-left: -1.25em;
 	text-indent: -9999em;
-	transform: translateX(-50%) translateY(-150%);
 	-webkit-animation-delay: -0.16s;
 	animation-delay: -0.16s;
 }
@@ -682,9 +709,14 @@
 	font-size: 5px;
 	border-radius: 50%;
 	text-indent: -9999em;
-	-webkit-animation: loading-dots 1.3s infinite linear;
-	animation: loading-dots 1.3s infinite linear;
+	-webkit-animation: loading-dots 1.3s infinite paused linear;
+	animation: loading-dots 1.3s infinite paused linear;
 }
+.fg-loading-dots .fg-loading .fg-loader {
+	-webkit-animation-play-state: running;
+	animation-play-state: running;
+}
+
 @-webkit-keyframes loading-dots {
 	0%,
 	100% {
@@ -748,13 +780,20 @@
 .fg-loading-partial .fg-loader {
 	font-size: 4px;
 	text-indent: -9999em;
+	margin-top: 0;
+	margin-left: 0;
 	border-top: 1.1em solid rgba(130,130,130, 0.2);
 	border-right: 1.1em solid rgba(130,130,130, 0.2);
 	border-bottom: 1.1em solid rgba(130,130,130, 0.2);
 	border-left: 1.1em solid #828282;
-	-webkit-animation: loading-partial 1.1s infinite linear;
-	animation: loading-partial 1.1s infinite linear;
+	-webkit-animation: loading-partial 1.1s infinite paused linear;
+	animation: loading-partial 1.1s infinite paused linear;
 }
+.fg-loading-partial .fg-loading .fg-loader {
+	-webkit-animation-play-state: running;
+	animation-play-state: running;
+}
+
 @-webkit-keyframes loading-partial {
 	0% {
 		-webkit-transform: translateX(-50%) translateY(-50%) rotate(0deg);
