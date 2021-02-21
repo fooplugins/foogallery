@@ -119,8 +119,11 @@ FooGallery.autoEnabled = false;
 		//make sure the fields that should be hidden or shown are doing what they need to do
 		FOOGALLERY.handleSettingsShowRules();
 
+		var $preview_container = $('.foogallery_preview_container'),
+			$preview = $preview_container.find('.foogallery');
+
 		//set the preview height so there is no jump
-		$('.foogallery_preview_container').css('height', $('.foogallery_preview_container').height());
+		$preview_container.css('height', $preview_container.height());
 
 		//build up all the data to generate a preview
         var $shortcodeFields = $('.foogallery-settings-container-active .foogallery-metabox-settings .foogallery_template_field[data-foogallery-preview*="shortcode"]'),
@@ -152,7 +155,15 @@ FooGallery.autoEnabled = false;
 		data.push({name: '_wp_http_referer', value: encodeURIComponent($('input[name="_wp_http_referer"]').val())});
 
         $('#foogallery_preview_spinner').addClass('is-active');
-        $('.foogallery_preview_container').addClass('loading');
+		$preview_container.addClass('loading');
+
+		if ($preview.length > 0){
+			var fg = $preview.data("__FooGallery__");
+			if (fg instanceof FooGallery.Template){
+				fg.destroy(false);
+			}
+		}
+
         $.ajax({
             type: "POST",
             url: ajaxurl,
@@ -162,9 +173,9 @@ FooGallery.autoEnabled = false;
 				$('.foogallery_preview_container .foogallery').foogallery("destroy");
 
                 //updated the preview
-				$('.foogallery_preview_container').html(data);
+				$preview_container.html(data);
                 $('#foogallery_preview_spinner').removeClass('is-active');
-                $('.foogallery_preview_container').removeClass('loading foogallery-preview-force-refresh');
+				$preview_container.removeClass('loading foogallery-preview-force-refresh');
 
 				FOOGALLERY.updateGalleryPreview(true, true);
             }
