@@ -209,12 +209,12 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 					'choices'  => apply_filters(
 						'foogallery_gallery_template_common_thumbnail_fields_loading_icon_choices', array(
 						''                   => array( 'label' => __( 'None', 'foogallery' ), 'html' => '<div class="foogallery-setting-loading_icon"></div>' ),
-						'fg-loading-default' => array( 'label' => __( 'Default', 'foogallery' ), 'html' => '<div class="foogallery-setting-loading_icon fg-loading-default"><div class="fg-loading"><div class="fg-loader"></div></div></div>' ),
-						'fg-loading-bars'    => array( 'label' => __( 'Bars', 'foogallery' ), 'html' => '<div class="foogallery-setting-loading_icon fg-loading-bars"><div class="fg-loading"><div class="fg-loader"></div></div></div>' ),
-						'fg-loading-dots'    => array( 'label' => __( 'Dots', 'foogallery' ), 'html' => '<div class="foogallery-setting-loading_icon fg-loading-dots"><div class="fg-loading"><div class="fg-loader"></div></div></div>' ),
-						'fg-loading-partial' => array( 'label' => __( 'Partial', 'foogallery' ), 'html' => '<div class="foogallery-setting-loading_icon fg-loading-partial"><div class="fg-loading"><div class="fg-loader"></div></div></div>' ),
-						'fg-loading-pulse'   => array( 'label' => __( 'Pulse', 'foogallery' ), 'html' => '<div class="foogallery-setting-loading_icon fg-loading-pulse"><div class="fg-loading"><div class="fg-loader"></div></div></div>' ),
-						'fg-loading-trail'   => array( 'label' => __( 'Trail', 'foogallery' ), 'html' => '<div class="foogallery-setting-loading_icon fg-loading-trail"><div class="fg-loading"><div class="fg-loader"></div></div>' ),
+						'fg-loading-default' => array( 'label' => __( 'Default', 'foogallery' ), 'html' => '<div class="foogallery-setting-loading_icon foogallery fg-loading-default"><div class="fg-loading"><div class="fg-loader"></div></div></div>' ),
+						'fg-loading-bars'    => array( 'label' => __( 'Bars', 'foogallery' ), 'html' => '<div class="foogallery-setting-loading_icon foogallery fg-loading-bars"><div class="fg-loading"><div class="fg-loader"></div></div></div>' ),
+						'fg-loading-dots'    => array( 'label' => __( 'Dots', 'foogallery' ), 'html' => '<div class="foogallery-setting-loading_icon foogallery fg-loading-dots"><div class="fg-loading"><div class="fg-loader"></div></div></div>' ),
+						'fg-loading-partial' => array( 'label' => __( 'Partial', 'foogallery' ), 'html' => '<div class="foogallery-setting-loading_icon foogallery fg-loading-partial"><div class="fg-loading"><div class="fg-loader"></div></div></div>' ),
+						'fg-loading-pulse'   => array( 'label' => __( 'Pulse', 'foogallery' ), 'html' => '<div class="foogallery-setting-loading_icon foogallery fg-loading-pulse"><div class="fg-loading"><div class="fg-loader"></div></div></div>' ),
+						'fg-loading-trail'   => array( 'label' => __( 'Trail', 'foogallery' ), 'html' => '<div class="foogallery-setting-loading_icon foogallery fg-loading-trail"><div class="fg-loading"><div class="fg-loader"></div></div>' ),
 					)
 					),
 					'row_data' => array(
