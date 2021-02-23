@@ -734,7 +734,7 @@ if ( ! class_exists( 'FooGallery_Pro_Lightbox' ) ) {
 			if ( !$use_lightbox ) {
 				$field[] = array(
 					'id'       => 'lightbox_show_maximize_button',
-					'title'    => __( 'Show Maximise Button', 'foogallery' ),
+					'title'    => __( 'Maximise Button', 'foogallery' ),
 					'desc'     => __( 'Whether of not to show the Maximise button', 'foogallery' ),
 					'section'  => $section,
 					'subsection' => array( 'lightbox-controls' => __( 'Controls', 'foogallery' ) ),
@@ -742,8 +742,8 @@ if ( ! class_exists( 'FooGallery_Pro_Lightbox' ) ) {
 					'type'     => 'radio',
 					'default'  => 'yes',
 					'choices'  => apply_filters( 'foogallery_gallery_template_lightbox_show_maximize_button_choices', array(
-						'yes' => __( 'Yes', 'foogallery' ),
-						'no'  => __( 'No', 'foogallery' ),
+						'yes' => __( 'Shown', 'foogallery' ),
+						'no'  => __( 'Hidden', 'foogallery' ),
 					) ),
 					'row_data' => array(
 						'data-foogallery-change-selector' => 'input:radio',
@@ -755,7 +755,7 @@ if ( ! class_exists( 'FooGallery_Pro_Lightbox' ) ) {
 
 			$field[] = array(
 				'id'       => 'lightbox_show_caption_button',
-				'title'    => __( 'Show Caption Button', 'foogallery' ),
+				'title'    => __( 'Caption Button', 'foogallery' ),
 				'desc'     => __( 'Whether of not to show the Caption button', 'foogallery' ),
 				'section'  => $section,
 				'subsection' => array( 'lightbox-controls' => __( 'Controls', 'foogallery' ) ),
@@ -763,8 +763,28 @@ if ( ! class_exists( 'FooGallery_Pro_Lightbox' ) ) {
 				'type'     => 'radio',
 				'default'  => 'yes',
 				'choices'  => apply_filters( 'foogallery_gallery_template_lightbox_show_caption_button_choices', array(
-					'yes' => __( 'Yes', 'foogallery' ),
-					'no'  => __( 'No', 'foogallery' ),
+					'yes' => __( 'Shown', 'foogallery' ),
+					'no'  => __( 'Hidden', 'foogallery' ),
+				) ),
+				'row_data' => array(
+					'data-foogallery-change-selector' => 'input:radio',
+					'data-foogallery-preview'         => 'shortcode',
+					'data-foogallery-value-selector'  => 'input:checked',
+				)
+			);
+
+			$field[] = array(
+				'id'       => 'lightbox_show_thumbstrip_button',
+				'title'    => __( 'Thumbnail Strip Button', 'foogallery' ),
+				'desc'     => __( 'Whether of not to show the thumbnail strip control button', 'foogallery' ),
+				'section'  => $section,
+				'subsection' => array( 'lightbox-controls' => __( 'Controls', 'foogallery' ) ),
+				'spacer'   => '<span class="spacer"></span>',
+				'type'     => 'radio',
+				'default'  => 'no',
+				'choices'  => apply_filters( 'foogallery_gallery_template_lightbox_show_thumbstrip_button_choices', array(
+					'yes' => __( 'Shown', 'foogallery' ),
+					'no'  => __( 'Hidden', 'foogallery' ),
 				) ),
 				'row_data' => array(
 					'data-foogallery-change-selector' => 'input:radio',
@@ -966,6 +986,11 @@ if ( ! class_exists( 'FooGallery_Pro_Lightbox' ) ) {
 			$show_caption_button = foogallery_gallery_template_setting( 'lightbox_show_caption_button', false );
 			if ( $show_caption_button !== false ) {
 				$options['buttons']['info'] = ($show_caption_button === 'yes');
+			}
+
+			$show_thumbstrip_button = foogallery_gallery_template_setting( 'lightbox_show_thumbstrip_button', false );
+			if ( $show_thumbstrip_button !== false ) {
+				$options['buttons']['thumbs'] = ($show_thumbstrip_button === 'yes');
 			}
 
 			$autoplay = foogallery_gallery_template_setting( 'video_autoplay', 'yes' );
