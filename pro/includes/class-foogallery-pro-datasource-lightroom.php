@@ -241,6 +241,45 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Lightroom' ) ) {
 					<?php
 						global $wplr;
 						$hierarchy = $wplr->get_hierarchy();
+						if ( count( $hierarchy ) == 0 && defined('FOOGALLERY_WPLR_DEBUG' ) ) {
+							$hierarchy[] = array(
+								'id' => 1,
+								'level' => 1,
+								'type' => 'collection',
+								'name' => 'Test Collection',
+								'count' => 10,
+							);
+							$hierarchy[] = array(
+								'id' => 2,
+								'level' => 1,
+								'type' => 'folder',
+								'name' => 'Test Folder',
+								'count' => 5,
+								'children' => array(
+									array(
+										'id' => 4,
+										'level' => 2,
+										'type' => 'collection',
+										'name' => 'Child Collection 1',
+										'count' => 10,
+									),
+									array(
+										'id' => 5,
+										'level' => 2,
+										'type' => 'collection',
+										'name' => 'Child Collection 2',
+										'count' => 10,
+									)
+								)
+							);
+							$hierarchy[] = array(
+								'id' => 3,
+								'level' => 1,
+								'type' => 'collection',
+								'name' => 'Anoter Collection',
+								'count' => 5,
+							);
+						}
 						$this->output_lightroom_hierarchy( $hierarchy );
 					?>
 					<div class="foogallery-datasource-lightroom-collection-info"></div>
@@ -258,9 +297,9 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Lightroom' ) ) {
 				echo '<ul>';
 				foreach ( $hierarchy as $item ) {
 					if ( $item['type'] === 'collection' ) {
-						echo '<li><a href="#" data-collection="' . esc_attr( $item['name'] ) . '" data-collection-id="' . esc_attr( $item['id'] ) . '"><span class="dashicons dashicons-images-alt2" />' . esc_html( $item['name'] ) . '</a></li>';
+						echo '<li><a href="#" data-collection="' . esc_attr( $item['name'] ) . '" data-collection-id="' . esc_attr( $item['id'] ) . '"><i class="dashicons dashicons-images-alt2"></i>' . esc_html( $item['name'] ) . '</a></li>';
 					} elseif ( $item['type'] === 'folder' ) {
-						echo '<li><span class="dashicons dashicons-category" />';
+						echo '<li><i class="dashicons dashicons-category"></i>';
 						echo $item['name'];
 						if ( array_key_exists( 'children', $item ) ) {
 							$children = $item['children'];
