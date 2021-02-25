@@ -30,32 +30,6 @@ if ( ! class_exists( 'FooGallery_Pro_Lightbox' ) ) {
 
 			//cater for different captions sources
 			add_filter( 'foogallery_attachment_html_link_attributes', array( $this, 'add_caption_attributes' ), 10, 3 );
-
-			add_filter( 'foogallery_build_attachment_json', array( $this, 'add_captions_to_json' ), 10, 6 );
-		}
-
-		/**
-		 * Add the lightbox captions to the json object
-		 *
-		 * @param $json_object
-		 * @param $foogallery_attachment
-		 * @param $args
-		 * @param $anchor_attributes
-		 * @param $image_attributes
-		 * @param $captions
-		 *
-		 * @return mixed
-		 */
-		function add_captions_to_json( $json_object, $foogallery_attachment, $args, $anchor_attributes, $image_attributes, $captions ) {
-			if ( array_key_exists('data-lightbox-title', $anchor_attributes ) ) {
-				$json_object->attr->anchor->{'data-lightbox-title'} = $anchor_attributes['data-lightbox-title'];
-			}
-
-			if ( array_key_exists('data-lightbox-description', $anchor_attributes ) ) {
-				$json_object->attr->anchor->{'data-lightbox-description'} = $anchor_attributes['data-lightbox-description'];
-			}
-
-			return $json_object;
 		}
 
 		/**

@@ -484,6 +484,7 @@ function foogallery_build_json_object_from_attachment( $foogallery_attachment, $
 		}
 
 		$json_object       = new stdClass();
+
 		$json_object->href = $anchor_attributes['href'];
 		if ( array_key_exists( 'data-type', $anchor_attributes ) ) {
 			$json_object->type = $anchor_attributes['data-type'];
@@ -503,20 +504,21 @@ function foogallery_build_json_object_from_attachment( $foogallery_attachment, $
 
 		$json_object->alt = $foogallery_attachment->alt;
 
-		$json_object_attr_anchor                         = new stdClass();
-		$json_object_attr_anchor->{'data-attachment-id'} = $foogallery_attachment->ID;
+		if ( $foogallery_attachment->ID > 0 ) {
+			$json_object->id = $foogallery_attachment->ID;
+		}
 
 		if ( $captions !== false ) {
 			if ( array_key_exists( 'title', $captions ) ) {
-				$json_object->caption = $json_object->title = $json_object_attr_anchor->{'data-caption-title'} = $captions['title'];
+				$json_object->caption = $json_object->title = $captions['title'];
 			}
 			if ( array_key_exists( 'desc', $captions ) ) {
-				$json_object->description = $json_object_attr_anchor->{'data-caption-desc'} = $captions['desc'];
+				$json_object->description = $captions['desc'];
 			}
 		}
 
 		$json_object->attr         = new stdClass();
-		$json_object->attr->anchor = $json_object_attr_anchor;
+		$json_object->attr->anchor = foogallery_create_anchor_for_json_object( $anchor_attributes );
 
 		$json_object = apply_filters( 'foogallery_build_attachment_json', $json_object, $foogallery_attachment, $args, $anchor_attributes, $image_attributes, $captions );
 
@@ -524,6 +526,28 @@ function foogallery_build_json_object_from_attachment( $foogallery_attachment, $
 	}
 
 	return false;
+}
+
+/**
+ * Build up the anchor object that is used within the json object
+ *
+ * @param $anchor_attributes
+ *
+ * @return stdClass
+ */
+function foogallery_create_anchor_for_json_object( $anchor_attributes ) {
+	//unset a number of keys in the array that are already set on the high-level item
+	unset( $anchor_attributes['href'] );
+	unset( $anchor_attributes['data-type'] );
+
+	//create the anchor object
+	$object = new stdClass();
+
+	//loop through the anchor attributes and set them on the object
+	foreach ( $anchor_attributes as $key => $value ) {
+		$object->{$key} = $value;
+	}
+	return $object;
 }
 
 /**
