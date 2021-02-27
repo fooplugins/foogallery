@@ -66,7 +66,6 @@ if ( ! class_exists( 'FooGallery_Pro' ) ) {
 			new FooGallery_Pro_Datasource_Folders();
 			new FooGallery_Pro_Datasource_Lightroom();
 			new FooGallery_Pro_WPLR_Support();
-			new FooGallery_Pro_Datasource_Instagram();
 			new FooGallery_Pro_Datasource_RealMediaLibrary();
             new FooGallery_Pro_Datasource_Post_Query();
             new FooGallery_Pro_Lightbox();
