@@ -246,7 +246,7 @@ if ( !class_exists("FooGallery_Pro_Video_YouTube") ){
 				"provider" => "youtube",
 				"id" => $id,
 				"url" => "https://www.youtube.com/embed/" . $id,
-				"thumbnail" => $json->thumbnail_url,
+				"thumbnail" => $this->get_oembed_video_thumbnail($id, $json->thumbnail_url),
 				"title" => $json->title,
 				"description" => !empty($json->description) ? $json->description : ""
 			);
@@ -266,7 +266,6 @@ if ( !class_exists("FooGallery_Pro_Video_YouTube") ){
 			}
 
 			$api_key = foogallery_settings_get_youtube_api_key();
-
 			if (empty($api_key)){
 				return array(
 					"mode" => "youtube",
@@ -415,6 +414,27 @@ if ( !class_exists("FooGallery_Pro_Video_YouTube") ){
 			return false;
 		}
 
+		private function get_oembed_video_thumbnail($id, $default){
+			$format = "https://img.youtube.com/vi/%1s/%2s.jpg";
+			/**
+			 * Possible filenames for images, in order of desirability. Should only ever use first one.
+			 * @see https://stackoverflow.com/questions/2068344/how-do-i-get-a-youtube-video-thumbnail-from-the-youtube-api
+			 */
+			$sizes = array(
+				'maxresdefault',
+				'hqdefault',
+				'sddefault',
+				'default',
+				'0'
+			);
+			foreach ( $sizes as $size ) {
+				$url = sprintf( $format, $id, $size );
+				if ( $this->url_exists( $url ) ) {
+					return $url;
+				}
+			}
+			return $default;
+		}
 	}
 
 }

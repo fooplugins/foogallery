@@ -121,7 +121,6 @@ if ( ! class_exists( "FooGallery_Pro_Video_Import" ) ) {
 			//allow for really big imports that take a really long time!
 			@set_time_limit( 300 );
 
-			$video["thumbnail"] = $this->get_thumbnail_url( $video );
 			$response = wp_remote_get( $video["thumbnail"] );
 
 			if ( is_wp_error( $response ) ) {
@@ -214,35 +213,6 @@ if ( ! class_exists( "FooGallery_Pro_Video_Import" ) ) {
 				"type" => "success",
 				"attachment_id" => $attachment_id
 			);
-		}
-
-		private function get_thumbnail_url( $video ) {
-			if ( ! empty( $video["provider"] ) ) {
-				switch ( $video["provider"] ) {
-					case "youtube":
-						$format = "https://img.youtube.com/vi/%1s/%2s.jpg";
-						/**
-						 * Possible filenames for images, in order of desirability. Should only ever use first one.
-						 * @see https://stackoverflow.com/questions/2068344/how-do-i-get-a-youtube-video-thumbnail-from-the-youtube-api
-						 */
-						$sizes = array(
-							'maxresdefault',
-							'hqdefault',
-							'sddefault',
-							'default',
-							'0'
-						);
-						foreach ( $sizes as $size ) {
-							$url = sprintf( $format, $video["id"], $size );
-							if ( $this->url_exists( $url ) ) {
-								return $url;
-							}
-						}
-						break;
-				}
-			}
-
-			return $video["thumbnail"];
 		}
 
 		/**
