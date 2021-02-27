@@ -24,7 +24,6 @@ require_once( FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-datasource-me
 require_once( FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-datasource-mediacategories.php' );
 require_once( FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-datasource-folders.php' );
 require_once( FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-datasource-lightroom.php' );
-require_once( FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-datasource-instagram.php' );
 require_once( FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-wplr-support.php' );
 require_once( FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-instagram-helper.php' );
 require_once( FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-datasource-realmedialibrary.php' );
