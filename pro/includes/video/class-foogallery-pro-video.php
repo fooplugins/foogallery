@@ -520,7 +520,7 @@ if ( ! class_exists( 'FooGallery_Pro_Video' ) ) {
 
 			$settings['settings'][] = array(
 				'id'      => 'video_thumbnail_directory',
-				'title'   => __( 'Vimeo Thumbnail Directory', 'foogallery' ),
+				'title'   => __( 'Video Thumbnail Directory', 'foogallery' ),
 				'desc'    => __( 'You can choose to override where the video thumbnail images will be saved within your media library. Leave blank to use the default location.', 'foogallery' ),
 				'type'    => 'text',
 				'default' => '',
