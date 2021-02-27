@@ -476,6 +476,27 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 				);
 
 				$fields[] = array(
+					'id'       => 'caption_alignment',
+					'title'    => __( 'Alignment', 'foogallery' ),
+					'desc'     => __( 'Change the horizontal alignment of the thumbnail captions', 'foogallery' ),
+					'section'  => __( 'Captions', 'foogallery' ),
+					'type'     => 'radio',
+					'spacer'   => '<span class="spacer"></span>',
+					'default'  => '',
+					'choices'  => array(
+						''       => __( 'Default', 'foogallery' ),
+						'fg-c-l' => __( 'Left', 'foogallery' ),
+						'fg-c-c' => __( 'Center', 'foogallery' ),
+						'fg-c-r' => __( 'Right', 'foogallery' ),
+						'fg-c-j' => __( 'Justify', 'foogallery' ),
+					),
+					'row_data' => array(
+						'data-foogallery-change-selector'       => 'input:radio',
+						'data-foogallery-preview'               => 'shortcode'
+					)
+				);
+
+				$fields[] = array(
 					'id'      => 'captions_limit_length',
 					'title'   => __( 'Limit Caption Length', 'foogallery' ),
 					'desc'    => __( 'You can limit the length of caption title and descriptions in the thumbnails. This will NOT limit the length of captions from within the lightbox.', 'foogallery' ),
@@ -569,6 +590,7 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 					$classes[] = foogallery_gallery_template_setting( 'hover_effect_transition', 'fg-hover-fade' );
 					$classes[] = foogallery_gallery_template_setting( 'hover_effect_icon', 'fg-hover-zoom' );
 					$classes[] = foogallery_gallery_template_setting( 'caption_invert_color', '' );
+					$classes[] = foogallery_gallery_template_setting( 'caption_alignment', '' );
 				}
 
 				if ( 'on' === foogallery_get_setting( 'enable_custom_ready', 'on' ) ) {

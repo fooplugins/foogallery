@@ -292,7 +292,7 @@ if ( ! class_exists( 'FooGallery_Pro_Lightbox' ) ) {
 					'none'  => __( 'Hidden', 'foogallery' ),
 				) ),
 				'row_data' => array(
-					'data-foogallery-change-selector' => 'input',
+					'data-foogallery-change-selector' => 'input:radio',
 					'data-foogallery-preview'         => 'shortcode',
 					'data-foogallery-value-selector'  => 'input:checked',
 				)
@@ -319,6 +319,31 @@ if ( ! class_exists( 'FooGallery_Pro_Lightbox' ) ) {
 					'data-foogallery-change-selector'          => 'input:radio',
 					'data-foogallery-preview'                  => 'shortcode',
 					'data-foogallery-value-selector'           => 'input:checked',
+				)
+			);
+
+			$field[] = array(
+				'id'       => 'lightbox_thumbs_captions_alignment',
+				'title'    => __( 'Thumbnail Caption Alignment', 'foogallery' ),
+				'section' => $section,
+				'subsection' => array( 'lightbox-thumbnails' => __( 'Thumbnails', 'foogallery' ) ),
+				'type'     => 'radio',
+				'spacer'   => '<span class="spacer"></span>',
+				'default'  => 'default',
+				'choices'  => array(
+					'default' => __( 'Default', 'foogallery' ),
+					'left'    => __( 'Left', 'foogallery' ),
+					'center'  => __( 'Center', 'foogallery' ),
+					'right'   => __( 'Right', 'foogallery' ),
+					'justify' => __( 'Justify', 'foogallery' ),
+				),
+				'row_data' => array(
+					'data-foogallery-change-selector'          => 'input:radio',
+					'data-foogallery-preview'                  => 'shortcode',
+					'data-foogallery-hidden'                   => true,
+					'data-foogallery-show-when-field'          => 'lightbox_thumbs',
+					'data-foogallery-show-when-field-operator' => '!==',
+					'data-foogallery-show-when-field-value'    => 'none',
 				)
 			);
 
@@ -439,6 +464,32 @@ if ( ! class_exists( 'FooGallery_Pro_Lightbox' ) ) {
 			);
 
 			$field[] = array(
+				'id'       => 'lightbox_info_alignment',
+				'title'    => __( 'Caption Alignment', 'foogallery' ),
+				'desc'     => __( 'Change the horizontal alignment of the captions', 'foogallery' ),
+				'section' => $section,
+				'subsection' => array( 'lightbox-captions' => __( 'Captions', 'foogallery' ) ),
+				'type'     => 'radio',
+				'spacer'   => '<span class="spacer"></span>',
+				'default'  => 'default',
+				'choices'  => array(
+					'default' => __( 'Default', 'foogallery' ),
+					'left'    => __( 'Left', 'foogallery' ),
+					'center'  => __( 'Center', 'foogallery' ),
+					'right'   => __( 'Right', 'foogallery' ),
+					'justify' => __( 'Justify', 'foogallery' ),
+				),
+				'row_data' => array(
+					'data-foogallery-change-selector'          => 'input:radio',
+					'data-foogallery-preview'                  => 'shortcode',
+					'data-foogallery-hidden'                   => true,
+					'data-foogallery-show-when-field'          => 'lightbox_info_enabled',
+					'data-foogallery-show-when-field-operator' => '!==',
+					'data-foogallery-show-when-field-value'    => 'disabled',
+				)
+			);
+
+			$field[] = array(
 				'id'      => 'lightbox_info_overlay',
 				'title'   => __( 'Caption Display', 'foogallery' ),
 				'desc'    => __( 'Whether or not the caption is overlaid on top of the content, or is inline (outside of the content).', 'foogallery' ),
@@ -515,7 +566,7 @@ if ( ! class_exists( 'FooGallery_Pro_Lightbox' ) ) {
 
 			$field[] = array(
 				'id'      => 'lightbox_caption_override_desc',
-				'title'   => __( 'Override Caption Description', 'foogallery' ),
+				'title'   => __( 'Override Caption Desc.', 'foogallery' ),
 				'desc'    => __( 'You can override the caption description to be different from the thumbnail caption description.', 'foogallery' ),
 				'section' => $section,
 				'subsection' => array( 'lightbox-captions' => __( 'Captions', 'foogallery' ) ),
@@ -920,6 +971,7 @@ if ( ! class_exists( 'FooGallery_Pro_Lightbox' ) ) {
 				$options['thumbsCaptions'] = foogallery_gallery_template_setting( 'lightbox_thumbs_captions', 'no' ) === 'yes';
 				$options['thumbsBestFit'] = foogallery_gallery_template_setting( 'lightbox_thumbs_bestfit', '' ) === 'yes';
 				$options['thumbsSmall'] = foogallery_gallery_template_setting( 'lightbox_thumbs_size', '' ) === 'small';
+				$options['thumbsCaptionsAlign'] = foogallery_gallery_template_setting( 'lightbox_thumbs_captions_alignment', 'default' );
 			}
 
 			$info_enabled = foogallery_gallery_template_setting( 'lightbox_info_enabled', '' );
@@ -934,6 +986,7 @@ if ( ! class_exists( 'FooGallery_Pro_Lightbox' ) ) {
 				$options['infoOverlay'] = foogallery_gallery_template_setting( 'lightbox_info_overlay', 'yes' ) === 'yes';
 			}
 
+			$options['infoAlign'] = foogallery_gallery_template_setting( 'lightbox_info_alignment', 'default' );
 			$options['transition'] = foogallery_gallery_template_setting( 'lightbox_transition', 'fade' );
 
 			$auto_progress = foogallery_gallery_template_setting( 'lightbox_auto_progress', 'no' ) === 'yes';

@@ -166,6 +166,7 @@ if ( !class_exists( 'FooGallery_Slider_Gallery_Template' ) ) {
 			$fields_to_remove[] = 'captions_type';
 			$fields_to_remove[] = 'caption_custom_template';
 			$fields_to_remove[] = 'caption_custom_help';
+			$fields_to_remove[] = 'caption_alignment';
 
 			//$fields_to_remove[] = 'lightbox_caption_override';
 
