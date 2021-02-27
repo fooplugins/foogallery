@@ -11988,6 +11988,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
             infoVisible: false,
             infoOverlay: true,
             infoAutoHide: true,
+            infoAlign: "default", // default | left | center | right | justified
             exif: "none", // none | full | partial | minimal
 
             cart: "none", // none | top | bottom | left | right
@@ -11996,6 +11997,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
             thumbs: "none", // none | top | bottom | left | right
             thumbsVisible: true,
             thumbsCaptions: true,
+            thumbsCaptionsAlign: "default", // default | left | center | right | justified
             thumbsSmall: false,
             thumbsBestFit: true,
 
@@ -12101,7 +12103,13 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
             },
 
             info: {
-                overlay: "fg-panel-info-overlay"
+                overlay: "fg-panel-info-overlay",
+                align: {
+                    left: "fg-panel-media-caption-left",
+                    center: "fg-panel-media-caption-center",
+                    right: "fg-panel-media-caption-right",
+                    justified: "fg-panel-media-caption-justified"
+                }
             },
 
             cart: {},
@@ -12123,6 +12131,12 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
                     caption: "fg-panel-thumb-caption",
                     title: "fg-panel-thumb-title",
                     description: "fg-panel-thumb-description"
+                },
+                align: {
+                    left: "fg-panel-thumb-caption-left",
+                    center: "fg-panel-thumb-caption-center",
+                    right: "fg-panel-thumb-caption-right",
+                    justified: "fg-panel-thumb-caption-justified"
                 }
             }
         }
@@ -13207,9 +13221,20 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
                 overlay: panel.opt.infoOverlay,
                 visible: panel.opt.infoVisible,
                 autoHide: panel.opt.infoAutoHide,
+                align: panel.opt.infoAlign,
                 waitForUnload: false
             }, panel.cls.info);
             this.allPositionClasses += " " + this.cls.overlay;
+        },
+        doCreate: function(){
+            var self = this;
+            if (self.isEnabled() && self._super()) {
+                if (_is.string(self.opt.align) && self.cls.align.hasOwnProperty(self.opt.align)){
+                    self.panel.$el.addClass(self.cls.align[self.opt.align]);
+                }
+                return true;
+            }
+            return false;
         },
         getPosition: function(){
             var result = this._super();
@@ -13261,6 +13286,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
                 label: panel.il8n.buttons.thumbs,
                 position: panel.opt.thumbs,
                 captions: panel.opt.thumbsCaptions,
+                align: panel.opt.thumbsCaptionsAlign,
                 small: panel.opt.thumbsSmall,
                 bestFit: panel.opt.thumbsBestFit,
                 toggle: false,
@@ -13291,6 +13317,8 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
             if (self.isEnabled() && self._super()){
                 if (!self.opt.captions) self.panel.$el.addClass(self.cls.noCaptions);
                 if (self.opt.small) self.panel.$el.addClass(self.cls.small);
+                if (_is.string(self.opt.align) && self.cls.align.hasOwnProperty(self.opt.align)) self.panel.$el.addClass(self.cls.align[self.opt.align]);
+
                 self.$prev = $('<button/>', {type: 'button'}).addClass(self.cls.prev)
                     .append(_icons.get("arrow-left", self.panel.opt.icons))
                     .on("click.foogallery", {self: self}, self.onPrevClick)
@@ -15687,6 +15715,14 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 					self.panel.opt.info = "right";
 				}
 			}
+			if (self.panel.info.isEnabled() && self.panel.info.opt.align === "default"){
+				var align = null;
+				if (self.$el.hasClass("fg-c-l")) align = "left";
+				if (self.$el.hasClass("fg-c-c")) align = "center";
+				if (self.$el.hasClass("fg-c-r")) align = "right";
+				if (self.$el.hasClass("fg-c-j")) align = "justified";
+				if (align !== null) self.panel.info.opt.align = align;
+			}
 			if (self.panel.opt.theme === null){
 				self.panel.opt.theme = self.getCSSClass("theme");
 			}
@@ -15951,22 +15987,31 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
             self.panel = new _.Panel(self, self.template);
         },
         preInit: function(){
-            if (this._super()){
-                this.$el.toggleClass(this.cls.fitContainer, this.template.fitContainer);
-                this.template.horizontal = this.$el.hasClass("fgs-horizontal") || this.template.horizontal;
-                if (this.panel.opt.thumbs === null){
-                    this.panel.thumbs.opt.position = this.template.horizontal ? "bottom" : "right";
+            var self = this;
+            if (self._super()){
+                self.$el.toggleClass(self.cls.fitContainer, self.template.fitContainer);
+                self.template.horizontal = self.$el.hasClass("fgs-horizontal") || self.template.horizontal;
+                if (self.panel.opt.thumbs === null){
+                    self.panel.thumbs.opt.position = self.template.horizontal ? "bottom" : "right";
                 }
-                if (this.$el.hasClass("fgs-no-captions")){
-                    this.template.noCaptions = true;
-                    this.panel.thumbs.opt.captions = !this.template.noCaptions;
+                if (self.$el.hasClass("fgs-no-captions")){
+                    self.template.noCaptions = true;
+                    self.panel.thumbs.opt.captions = !self.template.noCaptions;
                 }
-                if (this.$el.hasClass("fgs-content-nav")){
-                    this.template.contentNav = true;
-                    this.panel.opt.buttons.prev = this.panel.opt.buttons.next = this.template.contentNav;
+                if (self.$el.hasClass("fgs-content-nav")){
+                    self.template.contentNav = true;
+                    self.panel.opt.buttons.prev = self.panel.opt.buttons.next = self.template.contentNav;
                 }
-                if (this.panel.opt.button === null){
-                    this.panel.opt.button = this.getPanelButtonClass();
+                if (self.panel.opt.button === null){
+                    self.panel.opt.button = this.getPanelButtonClass();
+                }
+                if (self.panel.info.isEnabled() && self.panel.info.opt.align === "default"){
+                    var align = null;
+                    if (self.$el.hasClass("fg-c-l")) align = "left";
+                    if (self.$el.hasClass("fg-c-c")) align = "center";
+                    if (self.$el.hasClass("fg-c-r")) align = "right";
+                    if (self.$el.hasClass("fg-c-j")) align = "justified";
+                    if (align !== null) self.panel.info.opt.align = align;
                 }
                 return true;
             }
