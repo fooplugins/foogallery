@@ -1446,18 +1446,22 @@ function foogallery_is_pro() {
 }
 
 /**
- * Safe function for encoding objects to json which accounts for JSON_UNESCAPED_UNICODE
+ * Safe function for encoding objects to json
  *
  * @param $value
  *
  * @return false|string
  */
 function foogallery_json_encode( $value ) {
+	$flags = JSON_UNESCAPED_SLASHES;
+
 	if ( defined( 'JSON_UNESCAPED_UNICODE' ) ) {
-		return json_encode( $value, JSON_UNESCAPED_UNICODE );
-	} else {
-		return json_encode( $value );
+		$flags = JSON_UNESCAPED_UNICODE | $flags;
 	}
+
+	$flags = apply_filters( 'foogallery_json_encode_flags', $flags );
+
+	return json_encode( $value, $flags );
 }
 
 
