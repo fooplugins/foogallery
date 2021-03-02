@@ -227,7 +227,7 @@ Please update in order to for FooGallery to work in WP 5.5+!
 
 == Changelog ==
 
-= 2.0.3 =
+2.0.3 =
 * Date Updated : 2021-28-02
 * New : Added "Alignment" gallery setting under "Captions" tab for changing horizontal alignment of thumbnail captions
 * Update : FooGallery client side 2.0.0
@@ -240,6 +240,10 @@ Please update in order to for FooGallery to work in WP 5.5+!
 * Fix : fixed WP/LR datasource modal content
 * Fix : fixed YouTube video search and playlist import. A Youtube API Key is now required.
 [//]: # fs_premium_only_end
+
+= 1.10.4 =
+* Date Updated : 2021-02-03
+* Fix : fix for fatal error running pre WP5 : Fatal error: Uncaught ArgumentCountError: Too few arguments to function FooGallery_Thumb_Engine_Default::delete_cache_folder_for_attachment()
 
 = 1.10.3 =
 * Date Updated : 2021-20-02
