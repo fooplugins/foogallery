@@ -82,7 +82,7 @@ if ( ! class_exists( 'FooGallery_LazyLoad' ) ) {
 					return $attr;
 				}
 
-                if (isset($current_foogallery->lazyload_support) && true === $current_foogallery->lazyload_support) {
+                if ( $this->gallery_lazyload_enabled( $current_foogallery ) ) {
                     if (isset($attr['src'])) {
                         //rename src => data-src-fg
                         $src = $attr['src'];
@@ -102,6 +102,8 @@ if ( ! class_exists( 'FooGallery_LazyLoad' ) ) {
 	                    //set the src to a transparent SVG that has the correct width and height
 	                    $attr['src'] = $this->get_placeholder_image( $attr['width'], $attr['height'] );
                     }
+                } else {
+	                //lazyload is disabled
                 }
             }
 
@@ -111,7 +113,6 @@ if ( ! class_exists( 'FooGallery_LazyLoad' ) ) {
 		public function get_placeholder_image( $w, $h ) {
 			return 'data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%20' . $w . '%20' . $h . '%22%3E%3C/svg%3E';
 		}
-
 
         /**
          * Add the required lazy load options if needed
@@ -123,10 +124,23 @@ if ( ! class_exists( 'FooGallery_LazyLoad' ) ) {
          */
         function add_lazyload_options($options, $gallery, $attributes)
         {
-            if ( isset( $gallery->lazyload_support ) && true === $gallery->lazyload_support ) {
-                $options['lazy'] = $gallery->lazyload_enabled && !$gallery->lazyload_forced_disabled;
-			}
+        	$lazyload_enabled = $this->gallery_lazyload_enabled( $gallery );
+            $options['lazy'] = $lazyload_enabled;
+            if ( !$lazyload_enabled ) {
+	            $options['src']    = 'src';
+	            $options['srcset'] = 'srcset';
+            }
             return $options;
+        }
+
+		/**
+		 * @param $gallery FooGallery
+		 */
+		private function gallery_lazyload_enabled( $gallery) {
+			if ( isset( $gallery->lazyload_support ) && true === $gallery->lazyload_support ) {
+				return $gallery->lazyload_enabled && ! $gallery->lazyload_forced_disabled;
+			}
+			return false;
         }
 
         /**
