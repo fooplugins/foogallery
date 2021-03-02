@@ -227,6 +227,10 @@ Please update in order to for FooGallery to work in WP 5.5+!
 
 == Changelog ==
 
+= 1.10.4 =
+* Date Updated : 2021-02-03
+* Fix : fix for fatal error running pre WP5 : Fatal error: Uncaught ArgumentCountError: Too few arguments to function FooGallery_Thumb_Engine_Default::delete_cache_folder_for_attachment()
+
 = 1.10.3 =
 * Date Updated : 2021-20-02
 * Fix : fixed a fatal error on some installs (only update if you have issues with 1.10.1)
