@@ -15,7 +15,7 @@ if ( ! class_exists( 'FooGallery_Thumb_Engine_Default' ) ) {
 
 		public function init() {
 			add_filter( 'wp_image_editors', array( $this, 'override_image_editors' ), 999 );
-			add_filter( 'deleted_post', array( $this, 'delete_cache_folder_for_attachment' ), 10, 1 );
+			add_action( 'deleted_post', array( $this, 'delete_cache_folder_for_attachment' ), 10, 1 );
 			add_action( 'foogallery_admin_menu_after', array( $this, 'add_test_thumb_menu' ) );
 
 			//add background fill functionality
