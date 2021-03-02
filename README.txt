@@ -227,13 +227,27 @@ Please update in order to for FooGallery to work in WP 5.5+!
 
 == Changelog ==
 
+= 2.0.3 =
+* Date Updated : 2021-28-02
+* New : Added "Alignment" gallery setting under "Captions" tab for changing horizontal alignment of thumbnail captions
+* Update : FooGallery client side 2.0.0
+* Fix : JSON objects get built using all attributes needed
+[//]: # fs_premium_only_begin
+* New : Added "Thumbnail Strip Button" gallery setting under "Lightbox -> Controls" to show/hide the thumbnail strip button inside the lightbox
+* New : Added "Alignment" gallery setting under "Lightbox -> Captions" for changing horizontal alignment of lightbox captions
+* New : Added "Thumbnail Caption Alignment" gallery setting under "Lightbox -> Thumbnails" for changing the alignment of the captions within the lightbox thumbnail strip
+* New : Added "Video Thumbnail Directory" global setting under "Video" tab to override the directory that video thumbnails are stored in
+* Fix : fixed WP/LR datasource modal content
+* Fix : fixed YouTube video search and playlist import. A Youtube API Key is now required.
+[//]: # fs_premium_only_end
+
 = 1.10.3 =
 * Date Updated : 2021-20-02
-* Fix : fixed a fatal error on some installs (only update if you have issues with 1.10.1)
+* Fix : fixed a fatal PHP error on some installs
 
 = 1.10.1 =
 * Date Updated : 2021-18-02
-* Fix : fixed a fatal error with PHP 5.6
+* Fix : fixed a fatal PHP error with PHP 5.6
 
 = 1.10.0 =
 * Date Updated : 2021-18-02
