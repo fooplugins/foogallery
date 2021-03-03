@@ -5628,7 +5628,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 		if (_is.string(value) && _is.number(length) && length > 0 && value.length > length) {
 			return value.substr(0, length) + (_is.string(suffix) ? suffix : "&hellip;");
 		}
-		return null;
+		return value;
 	};
 
 	/**
