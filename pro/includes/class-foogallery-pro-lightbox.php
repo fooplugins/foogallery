@@ -737,17 +737,17 @@ if ( ! class_exists( 'FooGallery_Pro_Lightbox' ) ) {
 			//Only show this setting for gallery templates that use the lightbox
 			$field[] = array(
 				'id'       => 'lightbox_show_fullscreen_button',
-				'title'    => __( 'Show Fullscreen Button', 'foogallery' ),
+				'title'    => __( 'Fullscreen Button', 'foogallery' ),
 				'desc'     => __( 'Whether of not to show the Fullscreen button', 'foogallery' ),
 				'section'  => $section,
 				'subsection' => array( 'lightbox-controls' => __( 'Controls', 'foogallery' ) ),
 				'spacer'   => '<span class="spacer"></span>',
 				'type'     => 'radio',
 				'default'  => $use_lightbox ? 'yes' : 'no',
-				'choices'  => apply_filters( 'foogallery_gallery_template_lightbox_show_fullscreen_button_choices', array(
-					'yes' => __( 'Yes', 'foogallery' ),
-					'no'  => __( 'No', 'foogallery' ),
-				) ),
+				'choices'  => array(
+					'yes' => __( 'Shown', 'foogallery' ),
+					'no'  => __( 'Hidden', 'foogallery' ),
+				),
 				'row_data' => array(
 					'data-foogallery-change-selector' => 'input:radio',
 					'data-foogallery-preview'         => 'shortcode',
@@ -766,10 +766,10 @@ if ( ! class_exists( 'FooGallery_Pro_Lightbox' ) ) {
 					'spacer'   => '<span class="spacer"></span>',
 					'type'     => 'radio',
 					'default'  => 'yes',
-					'choices'  => apply_filters( 'foogallery_gallery_template_lightbox_show_maximize_button_choices', array(
+					'choices'  => array(
 						'yes' => __( 'Shown', 'foogallery' ),
 						'no'  => __( 'Hidden', 'foogallery' ),
-					) ),
+					),
 					'row_data' => array(
 						'data-foogallery-change-selector' => 'input:radio',
 						'data-foogallery-preview'         => 'shortcode',
@@ -787,10 +787,10 @@ if ( ! class_exists( 'FooGallery_Pro_Lightbox' ) ) {
 				'spacer'   => '<span class="spacer"></span>',
 				'type'     => 'radio',
 				'default'  => 'yes',
-				'choices'  => apply_filters( 'foogallery_gallery_template_lightbox_show_caption_button_choices', array(
+				'choices'  => array(
 					'yes' => __( 'Shown', 'foogallery' ),
 					'no'  => __( 'Hidden', 'foogallery' ),
-				) ),
+				),
 				'row_data' => array(
 					'data-foogallery-change-selector' => 'input:radio',
 					'data-foogallery-preview'         => 'shortcode',
@@ -807,10 +807,30 @@ if ( ! class_exists( 'FooGallery_Pro_Lightbox' ) ) {
 				'spacer'   => '<span class="spacer"></span>',
 				'type'     => 'radio',
 				'default'  => 'no',
-				'choices'  => apply_filters( 'foogallery_gallery_template_lightbox_show_thumbstrip_button_choices', array(
+				'choices'  => array(
 					'yes' => __( 'Shown', 'foogallery' ),
 					'no'  => __( 'Hidden', 'foogallery' ),
-				) ),
+				),
+				'row_data' => array(
+					'data-foogallery-change-selector' => 'input:radio',
+					'data-foogallery-preview'         => 'shortcode',
+					'data-foogallery-value-selector'  => 'input:checked',
+				)
+			);
+
+			$field[] = array(
+				'id'       => 'lightbox_show_nav_buttons',
+				'title'    => __( 'Prev/Next Buttons', 'foogallery' ),
+				'desc'     => __( 'Whether of not to show the navigation (prev/next) buttons', 'foogallery' ),
+				'section'  => $section,
+				'subsection' => array( 'lightbox-controls' => __( 'Controls', 'foogallery' ) ),
+				'spacer'   => '<span class="spacer"></span>',
+				'type'     => 'radio',
+				'default'  => 'yes',
+				'choices'  => array(
+					'yes' => __( 'Shown', 'foogallery' ),
+					'no'  => __( 'Hidden', 'foogallery' ),
+				),
 				'row_data' => array(
 					'data-foogallery-change-selector' => 'input:radio',
 					'data-foogallery-preview'         => 'shortcode',
@@ -1018,6 +1038,11 @@ if ( ! class_exists( 'FooGallery_Pro_Lightbox' ) ) {
 			$show_thumbstrip_button = foogallery_gallery_template_setting( 'lightbox_show_thumbstrip_button', false );
 			if ( $show_thumbstrip_button !== false ) {
 				$options['buttons']['thumbs'] = ($show_thumbstrip_button === 'yes');
+			}
+
+			$show_nav_buttons = foogallery_gallery_template_setting( 'lightbox_show_nav_buttons', 'yes' );
+			if ( $show_nav_buttons !== 'yes' ) {
+				$options['buttons']['prev'] = $options['buttons']['next'] = false;
 			}
 
 			$autoplay = foogallery_gallery_template_setting( 'video_autoplay', 'yes' );
