@@ -184,14 +184,16 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 				);
 			}
 
-			$settings[] = array(
-				'id'      => 'thumb_jpeg_quality',
-				'title'   => __( 'Thumbnail JPEG Quality', 'foogallery' ),
-				'desc'    => __( 'The image quality to be used when resizing JPEG images.', 'foogallery' ),
-				'type'    => 'text',
-				'default' => '90',
-				'tab'     => 'thumb'
-			);
+			if ( foogallery_thumb_active_engine()->has_local_cache() ) {
+				$settings[] = array(
+					'id'      => 'thumb_jpeg_quality',
+					'title'   => __( 'Thumbnail JPEG Quality', 'foogallery' ),
+					'desc'    => __( 'The image quality to be used when resizing JPEG images.', 'foogallery' ),
+					'type'    => 'text',
+					'default' => '90',
+					'tab'     => 'thumb'
+				);
+			}
 
 			$image_optimization_html = sprintf( __('We recommend %s! An easy-to-use, lightweight WordPress plugin that optimizes images & PDFs.', 'foogallery'),
 				'<a href="https://shortpixel.com/homepage/affiliate/foowww" target="_blank">' . __('ShortPixel Image Optimizer' , 'foogallery') . '</a>' );

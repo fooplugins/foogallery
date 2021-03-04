@@ -1639,15 +1639,23 @@ function foogallery_current_gallery_get_cached_value( $cache_value ) {
  *
  * @return array
  */
-function foogallery_thumb_available_engines()
-{
+function foogallery_thumb_available_engines() {
+
+	$shortpixel_link = '<a href="https://shortpixel.com/otp/af/foowww" target="_blank">' . __( 'ShortPixel Adaptive Images', 'foogallery' ) . '</a>';
+
     $engines = array(
         'default' => array(
-        'label'       => __( 'Default', 'foogallery' ),
-        'description' => __( 'The default engine used to generate locally cached thumbnails.', 'foogallery' ),
-        'class'       => 'FooGallery_Thumb_Engine_Default',
-    ),
+	        'label'       => __( 'Default', 'foogallery' ),
+	        'description' => __( 'The default engine used to generate locally cached thumbnails.', 'foogallery' ),
+	        'class'       => 'FooGallery_Thumb_Engine_Default',
+        ),
+        'shortpixel' => array(
+	        'label'       => __( 'ShortPixel', 'foogallery' ),
+	        'description' => sprintf( __( 'Uses %s to generate all your gallery thumbnails. They will be optimized and offloaded to the ShortPixel global CDN!', 'foogallery' ), $shortpixel_link ),
+	        'class'       => 'FooGallery_Thumb_Engine_Shortpixel',
+        )
     );
+
     if ( foogallery_is_debug() ) {
         $engines['dummy'] = array(
             'label'       => __( 'Dummy', 'foogallery' ),

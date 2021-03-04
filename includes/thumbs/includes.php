@@ -13,3 +13,6 @@ require_once( FOOGALLERY_PATH . 'includes/thumbs/default/class-foogallery-thumb-
 
 //include files for dummy engine
 require_once( FOOGALLERY_PATH . 'includes/thumbs/dummy/class-foogallery-thumb-engine-dummy.php' );
+
+//include files for shortpixel engine
+require_once( FOOGALLERY_PATH . 'includes/thumbs/shortpixel/class-foogallery-thumb-engine-shortpixel.php' );
