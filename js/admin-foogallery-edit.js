@@ -436,16 +436,16 @@ FooGallery.autoEnabled = false;
 			var attachments = FOOGALLERY.media_uploader.state().get('selection').toJSON();
 
 			$.each(attachments, function(i, item) {
-				if (item && item.id && item.sizes) {
+				if ( item && item.id ) {
 					var attachment = {
 						id: item.id,
 						src: null,
 						subtype: null
 					};
-					if (item.sizes.thumbnail) {
+					if ( item.sizes && item.sizes.thumbnail) {
 						attachment.src = item.sizes.thumbnail.url;
 					} else {
-						//thumbnail could not be found for whatever reason
+						//thumbnail could not be found for whatever reason. Default to the full image URL
 						attachment.src = item.url;
 					}
 					if ( item.subtype ) {
@@ -455,6 +455,7 @@ FooGallery.autoEnabled = false;
 					FOOGALLERY.addAttachmentToGalleryList(attachment);
 				} else {
 					//there was a problem adding the item! Move on to the next
+					alert( 'There was a problem adding the item to the gallery!' );
 				}
 			});
 		})
