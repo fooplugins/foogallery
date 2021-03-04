@@ -110,7 +110,7 @@ if ( !class_exists( 'FooGallery_Justified_Gallery_Template' ) ) {
                         'section' => __( 'General', 'foogallery' ),
                         'type'    => 'number',
                         'class'   => 'small-text',
-                        'default' => 250,
+                        'default' => 300,
                         'step'    => '10',
                         'min'     => '0',
 						'row_data'=> array(
@@ -229,7 +229,7 @@ if ( !class_exists( 'FooGallery_Justified_Gallery_Template' ) ) {
 
 				if ( false === $max_row_height ) {
 					//we do not have a legacy max_row_height, so use the thumb_height
-					$max_row_height = intval( foogallery_gallery_template_setting( 'thumb_height', '250' ) );
+					$max_row_height = intval( foogallery_gallery_template_setting( 'thumb_height', '300' ) );
 				} else {
 					if ( strpos( $max_row_height, '%' ) === false ) {
 						$max_row_height = intval( $max_row_height );
