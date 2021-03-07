@@ -313,8 +313,8 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 						'data-foogallery-preview'                  => 'shortcode',
 						'data-foogallery-hidden'                   => true,
 						'data-foogallery-show-when-field'          => 'filtering_type',
-						'data-foogallery-show-when-field-operator' => '===',
-						'data-foogallery-show-when-field-value'    => 'advanced',
+						'data-foogallery-show-when-field-operator' => 'regex',
+						'data-foogallery-show-when-field-value'    => 'advanced|multi',
 					)
 				);
 
@@ -333,8 +333,8 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 						'data-foogallery-preview'                  => 'shortcode',
 						'data-foogallery-hidden'                   => true,
 						'data-foogallery-show-when-field'          => 'filtering_type',
-						'data-foogallery-show-when-field-operator' => '===',
-						'data-foogallery-show-when-field-value'    => 'advanced',
+						'data-foogallery-show-when-field-operator' => 'regex',
+						'data-foogallery-show-when-field-value'    => 'advanced|multi',
 					)
 				);
 
@@ -606,7 +606,9 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 							}
 						}
 
-						$filtering_options['mode'] = foogallery_gallery_template_setting( 'filtering_mode', 'single' );
+						$filtering_options['mode'     ] = foogallery_gallery_template_setting( 'filtering_mode', 'single' );
+						$filtering_options['min'      ] = intval( foogallery_gallery_template_setting( 'filtering_min', '0' ) );
+						$filtering_options['limit'    ] = intval( foogallery_gallery_template_setting( 'filtering_limit', '0' ) );
 					}
 
 					foogallery_current_gallery_set_cached_value( 'filtering', $filtering_options );
