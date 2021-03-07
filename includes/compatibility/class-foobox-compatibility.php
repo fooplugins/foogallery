@@ -39,6 +39,8 @@ if ( !class_exists( 'FooGallery_FooBox_Compatibility' ) ) {
 
 			//add custom captions
 			add_filter( 'foogallery_build_attachment_html_caption_custom', array( &$this, 'customize_captions' ), 90, 3 );
+
+			add_filter( 'foogallery_override_gallery_template_fields', array( $this, 'add_foobox_help_field' ), 99, 2 );
 		}
 
 		/**
@@ -106,45 +108,49 @@ if ( !class_exists( 'FooGallery_FooBox_Compatibility' ) ) {
 		}
 
 		function add_foobox_help_field( $fields, $template ) {
-			//only show the hint to install FooBox if FooGallery Free is in use
-			if ( !class_exists( 'FooGallery_Pro' ) ) {
-				//see if the template has a lightbox field
-				$found_lightbox = false;
-				$position       = 0;
-				foreach ( $fields as $key => &$field ) {
-					if ( 'lightbox' === $field['id'] ) {
-						$found_lightbox = true;
-						break;
-					}
-					$position ++;
-				}
-				if ( $found_lightbox && ! $this->is_foobox_installed() ) {
-					$action      = 'install-plugin';
-					$slug        = 'foobox-image-lightbox';
-					$install_url = wp_nonce_url(
-						add_query_arg(
-							array(
-								'action' => $action,
-								'plugin' => $slug
-							),
-							admin_url( 'update.php' )
-						),
-						$action . '_' . $slug
-					);
-
-					$foobox_help_field = array(
-						array(
-							'id'      => 'lightbox_foobox_help',
-							'title'   => __( 'FooBox Help', 'foogallery' ),
-							'desc'    => sprintf( __( 'Install our separate FooBox Lightbox plugin so that your gallery images will open in a beautiful responsive lightbox. %s', 'foogallery' ), '<a href="' . $install_url . '" target="_blank">' . __( 'Install it now!', 'foogallery' ) . '</a>' ),
-							'section' => __( 'General', 'foogallery' ),
-							'type'    => 'help'
-						)
-					);
-
-					array_splice( $fields, $position, 0, $foobox_help_field );
+			//see if the template has a lightbox field
+			$found_lightbox = false;
+			$position       = 0;
+			foreach ( $fields as $key => &$field ) {
+				$position ++;
+				if ( 'lightbox' === $field['id'] ) {
+					$found_lightbox = true;
+					break;
 				}
 			}
+			if ( $found_lightbox && ! $this->is_foobox_installed() ) {
+				$action      = 'install-plugin';
+				$slug        = 'foobox-image-lightbox';
+				$install_url = wp_nonce_url(
+					add_query_arg(
+						array(
+							'action' => $action,
+							'plugin' => $slug
+						),
+						admin_url( 'update.php' )
+					),
+					$action . '_' . $slug
+				);
+
+				$foobox_help_field = array(
+					array(
+						'id'      => 'lightbox_foobox_help',
+						'title'   => __( 'FooBox Help', 'foogallery' ),
+						'desc'    => sprintf( __( 'FooBox is our separate Lightbox plugin that enables your gallery images to open in a beautiful responsive lightbox. %s', 'foogallery' ), '<a href="' . $install_url . '" target="_blank">' . __( 'Install it now!', 'foogallery' ) . '</a>' ),
+						'section' => __( 'General', 'foogallery' ),
+						'type'    => 'help',
+						'row_data'=> array(
+							'data-foogallery-hidden' => true,
+							'data-foogallery-show-when-field' => 'lightbox',
+							'data-foogallery-show-when-field-value' => 'foobox',
+							'data-foogallery-change-selector' => 'input',
+						)
+					)
+				);
+
+				array_splice( $fields, $position, 0, $foobox_help_field );
+			}
+
 			return $fields;
 		}
 
