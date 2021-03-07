@@ -2553,7 +2553,10 @@
 .fg-filtering-container {
 	display: block;
 	padding: 15px;
-	margin: 0!important;
+	margin-top: 0!important;
+	margin-bottom: 0!important;
+	margin-left: auto;
+	margin-right: auto;
 	text-align: center;
 	font-family: -apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
 	-webkit-user-select: none;
@@ -2681,7 +2684,10 @@
 .fg-paging-container {
 	display: block;
 	padding: 15px;
-	margin: 0!important;
+	margin-top: 0!important;
+	margin-bottom: 0!important;
+	margin-left: auto;
+	margin-right: auto;
 	text-align: center;
 	font-family: -apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
 	-webkit-user-select: none;
@@ -5157,6 +5163,7 @@ html.fg-panel-no-scroll body {
 .fg-masonry .fg-item {
 	line-height: 0;
 	font-size: 0;
+	vertical-align: top;
 }
 
 /* 2 column layouts */
