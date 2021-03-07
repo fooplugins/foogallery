@@ -33,11 +33,15 @@ if ( ! class_exists( 'FooGallery_Thumb_Engine_Shortpixel' ) ) {
 
 			if ( array_key_exists( 'width', $args ) ) {
 				$width  = (int) $args['width'];
-				$params[] = 'w_' . $width;
+				if ( $width > 0 ) {
+					$params[] = 'w_' . $width;
+				}
 			}
 			if ( array_key_exists( 'height', $args ) ) {
 				$height = (int) $args['height'];
-				$params[] = 'h_' . $height;
+				if ( $height > 0 ) {
+					$params[] = 'h_' . $height;
+				}
 			}
 
 			//TODO : get image quality from settings
