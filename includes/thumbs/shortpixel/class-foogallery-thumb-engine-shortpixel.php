@@ -29,15 +29,14 @@ if ( ! class_exists( 'FooGallery_Thumb_Engine_Shortpixel' ) ) {
 
 			$result = 'https://cdn.shortpixel.ai/spai/';
 
-			$width  = (int) $args['width'];
-			$height = (int) $args['height'];
-
 			$params = array();
 
-			if ( $width > 0 ) {
+			if ( array_key_exists( 'width', $args ) ) {
+				$width  = (int) $args['width'];
 				$params[] = 'w_' . $width;
 			}
-			if ( $height > 0 ) {
+			if ( array_key_exists( 'height', $args ) ) {
+				$height = (int) $args['height'];
 				$params[] = 'h_' . $height;
 			}
 
@@ -52,7 +51,7 @@ if ( ! class_exists( 'FooGallery_Thumb_Engine_Shortpixel' ) ) {
 				$params[] = 'ret_' . $return_type;
 			}
 
-			$conversion = foogallery_get_setting( 'shortpixel_conversion', 'webp'); //webp or avif
+			$conversion = foogallery_get_setting( 'shortpixel_conversion', ''); //webp or avif
 			if ( !empty( $conversion ) ) {
 				$params[] = 'to_' . $conversion;
 			}
