@@ -3,7 +3,7 @@ Contributors: bradvin, steveush, fooplugins
 Donate link: https://fooplugins.com
 Tags: gallery, image gallery, photo gallery, responsive gallery, wordpress gallery plugin, best gallery plugin, albums, media gallery, video gallery, lightbox
 Requires at least: 3.9
-Tested up to: 5.6
+Tested up to: 5.7
 Stable tag: trunk
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -227,16 +227,22 @@ Please update in order to for FooGallery to work in WP 5.5+!
 
 == Changelog ==
 
-2.0.3 =
-* Date Updated : 2021-28-02
+= 2.0.4 =
+* Date Updated : 2021-04-03
+* New : Added first-class support for ShortPixel Adaptive Images as a thumbnail engine. (can be changed from settings)
 * New : Added "Alignment" gallery setting under "Captions" tab for changing horizontal alignment of thumbnail captions
-* Update : FooGallery client side 2.0.0
+* Update : FooGallery client side 2.0.1
 * Fix : JSON objects get built using all attributes needed
+* Fix : Could not add images to the gallery for some installs, due to no thumbnail sizes being returned. Made the logic more resilient.
 [//]: # fs_premium_only_begin
 * New : Added "Thumbnail Strip Button" gallery setting under "Lightbox -> Controls" to show/hide the thumbnail strip button inside the lightbox
+* New : Added "Prev/Next Buttons" gallery setting under "Lightbox -> Controls" to show/hide Prev/Next navigation buttons within the lightbox
+* New : Added "Thumbnail Strip Button" gallery setting under "Slider -> Controls" to show/hide the thumbnail strip button inside the slider
+* New : Added "Prev/Next Buttons" gallery setting under "Slider -> Controls" to show/hide Prev/Next navigation buttons within the slider
 * New : Added "Alignment" gallery setting under "Lightbox -> Captions" for changing horizontal alignment of lightbox captions
 * New : Added "Thumbnail Caption Alignment" gallery setting under "Lightbox -> Thumbnails" for changing the alignment of the captions within the lightbox thumbnail strip
 * New : Added "Video Thumbnail Directory" global setting under "Video" tab to override the directory that video thumbnails are stored in
+* Fix : fixed bug when setting a caption description length and descriptions not being shown if below that length
 * Fix : fixed WP/LR datasource modal content
 * Fix : fixed YouTube video search and playlist import. A Youtube API Key is now required.
 [//]: # fs_premium_only_end
