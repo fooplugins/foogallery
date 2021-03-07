@@ -507,6 +507,9 @@ button[data-balloon]{overflow:visible}[data-balloon]{position:relative}[data-bal
 	padding:20px;
 	text-align: center
 }
+.foogallery-items-view-preview {
+	overflow: hidden;
+}
 
 .foogallery-items-view .button-hero .dashicons {
 	vertical-align: middle;
