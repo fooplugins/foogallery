@@ -46,7 +46,7 @@ if ( ! class_exists( 'FooGallery_Thumb_Engine_Shortpixel' ) ) {
 				$params[] = 'q_' . $quality;
 			}
 
-			$return_type = foogallery_get_setting( 'shortpixel_return', 'wait'); //blank, img, wait
+			$return_type = foogallery_get_setting( 'shortpixel_return', ''); //blank, img, wait
 			if ( !empty( $return_type ) ) {
 				$params[] = 'ret_' . $return_type;
 			}
