@@ -60,6 +60,9 @@ if ( ! class_exists( 'FooGallery_Thumb_Engine_Shortpixel' ) ) {
 				$params[] = 'to_' . $conversion;
 			}
 
+			//allow for adjustments
+			$params = apply_filters( 'foogallery_thumb_engine_shortpixel_params', $params, $url, $args );
+
 			return $result . implode( '+', $params ) . '/' . $url;
 		}
 
