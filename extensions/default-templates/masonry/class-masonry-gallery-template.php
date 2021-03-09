@@ -252,7 +252,7 @@ if ( !class_exists( 'FooGallery_Masonry_Gallery_Template' ) ) {
 
 			//enqueue core files
 			foogallery_enqueue_core_gallery_template_style();
-			foogallery_enqueue_core_gallery_template_script();
+			foogallery_enqueue_core_gallery_template_script( array('jquery', 'masonry' ) );
 		}
 
 		/**
