@@ -44,13 +44,12 @@ if ( ! class_exists( 'FooGallery_Thumb_Engine_Shortpixel' ) ) {
 				}
 			}
 
-			//TODO : get image quality from settings
 			$quality = foogallery_get_setting( 'shortpixel_quality', 'lossy'); //lqip, lossless, glossy or lossy
 			if ( !empty( $quality ) ) {
 				$params[] = 'q_' . $quality;
 			}
 
-			$return_type = foogallery_get_setting( 'shortpixel_return', ''); //blank, img, wait
+			$return_type = foogallery_get_setting( 'shortpixel_return', 'wait'); //blank, img, wait
 			if ( !empty( $return_type ) ) {
 				$params[] = 'ret_' . $return_type;
 			}
@@ -132,6 +131,34 @@ if ( ! class_exists( 'FooGallery_Thumb_Engine_Shortpixel' ) ) {
 					'glossy' => __( 'Glossy - creates images that are almost pixel-perfect identical to the originals', 'foogallery'),
 					'lossless' => __( 'Lossless - the resulting image is pixel-identical with the original image', 'foogallery'),
 					'lqip' => __( 'LQIP (not recommended) - low quality SVG placeholders', 'foogallery'),
+				),
+				'tab'     => 'thumb'
+			);
+
+			$settings['settings'][] = array(
+				'id'      => 'shortpixel_return',
+				'title'   => __( 'ShortPixel Return', 'foogallery' ),
+				'type'    => 'radio',
+				'default' => 'wait',
+				'section' => __( 'ShortPixel Settings', 'foogallery' ),
+				'choices' => array(
+					'blank' => __( 'Blank - will immediately return a blank placeholder', 'foogallery'),
+					'img' => __( 'Image - redirect to the original image while the image is being processed', 'foogallery'),
+					'wait' => __( 'Wait - will make the image wait to be displayed until the new processed image is ready', 'foogallery'),
+				),
+				'tab'     => 'thumb'
+			);
+
+			$settings['settings'][] = array(
+				'id'      => 'shortpixel_conversion',
+				'title'   => __( 'ShortPixel Conversion', 'foogallery' ),
+				'type'    => 'radio',
+				'default' => '',
+				'section' => __( 'ShortPixel Settings', 'foogallery' ),
+				'choices' => array(
+					'' => __( 'Default - will not convert the image', 'foogallery'),
+					'webp' => __( 'WebP - convert to WebP', 'foogallery'),
+					'avif' => __( 'AVIF - convert to AVIF', 'foogallery'),
 				),
 				'tab'     => 'thumb'
 			);
