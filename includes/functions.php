@@ -1671,8 +1671,7 @@ function foogallery_thumb_available_engines() {
  *
  * @return FooGallery_Thumb_Engine
  */
-function foogallery_thumb_active_engine()
-{
+function foogallery_thumb_active_engine() {
     global  $foogallery_thumb_engine ;
     //if we already have an engine, return it early
     if ( isset( $foogallery_thumb_engine ) && is_a( $foogallery_thumb_engine, 'FooGallery_Thumb_Engine' ) ) {
@@ -1699,8 +1698,16 @@ function foogallery_thumb_active_engine()
  *
  * @return string|void (string) url to the image
  */
-function foogallery_thumb( $url, $args = array() )
-{
+function foogallery_thumb( $url, $args = array() ) {
     $engine = foogallery_thumb_active_engine();
     return $engine->generate( $url, $args );
+}
+
+/**
+ * @param $url string
+ *
+ * @return string
+ */
+function foogallery_process_image_url( $url ) {
+	return apply_filters( 'foogallery_process_image_url', $url );
 }

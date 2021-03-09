@@ -56,7 +56,7 @@ function foogallery_attachment_html_image( $foogallery_attachment, $args = array
  * @return array
  */
 function foogallery_build_attachment_html_image_attributes( $foogallery_attachment, $args = array() ) {
-	$attr['src'] = foogallery_attachment_html_image_src( $foogallery_attachment, $args );
+	$attr['src'] = foogallery_process_image_url( foogallery_attachment_html_image_src( $foogallery_attachment, $args ) );
 
 	if ( ! empty( $foogallery_attachment->alt ) ) {
 		$attr['alt'] = $foogallery_attachment->alt;
@@ -151,7 +151,7 @@ function foogallery_build_attachment_html_anchor_attributes( $foogallery_attachm
 
 	//only add href and target attributes to the anchor if the link is NOT set to 'none'
 	if ( $link !== 'none' ){
-		$attr['href'] = $url;
+		$attr['href'] = foogallery_process_image_url( $url );
 		if ( ! empty( $foogallery_attachment->custom_target ) && 'default' !== $foogallery_attachment->custom_target ) {
 			$attr['target'] = $foogallery_attachment->custom_target;
 		}
