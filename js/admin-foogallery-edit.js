@@ -328,10 +328,10 @@ FooGallery.autoEnabled = false;
 				selector = $fieldContainer.data('foogallery-change-selector');
 
             $fieldContainer.find(selector).change(function() {
-                if ( $fieldContainer.data('foogallery-preview').indexOf('shortcode') !== -1 ) {
+                if ( $fieldContainer.data('foogallery-preview') && $fieldContainer.data('foogallery-preview').indexOf('shortcode') !== -1 ) {
                     FOOGALLERY.reloadGalleryPreview();
                 } else {
-					FOOGALLERY.handleSettingFieldChange( $fieldContainer.data('foogallery-preview').indexOf('class') !== -1, true );
+					FOOGALLERY.handleSettingFieldChange( $fieldContainer.data('foogallery-preview') && $fieldContainer.data('foogallery-preview').indexOf('class') !== -1, true );
 				}
 			});
         });
