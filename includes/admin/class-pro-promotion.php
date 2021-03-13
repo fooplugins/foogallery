@@ -392,7 +392,7 @@ if ( ! class_exists( 'FooGallery_Pro_Promotion' ) ) {
 				$foobox_pro_installed = class_exists( 'fooboxV2' );
 				$foobox_free_installed = class_exists( 'FooBox' ) && !$foobox_pro_installed;
 
-				if ( !$foobox_free_installed ) {
+				if ( !$foobox_free_installed && !$foobox_pro_installed ) {
 					$foobox_free_install_url = wp_nonce_url(
 						add_query_arg(
 							array(
@@ -453,12 +453,11 @@ if ( ! class_exists( 'FooGallery_Pro_Promotion' ) ) {
 
 				array_splice( $fields, $position + 2, 0, $lightbox_foogallery_help_field );
 
-				if ( !$foobox_free_installed ) {
+				if ( !$foobox_free_installed && !$foobox_pro_installed) {
 					$foobox_free_help_field = array(
 						array(
 							'id'       => 'lightbox_promo_4',
-							'title'    => __( 'FooBox Free Is Not Installed', 'foogallery' ),
-							'desc'     => '<strong>' . __( 'FooBox Free Lightbox', 'foogallery' ) . '</strong> - ' . $foobox_free_info,
+							'desc'     => '<strong>' . __( 'Try FooBox FREE', 'foogallery' ) . '</strong> - ' . $foobox_free_info,
 							'section'  => __( 'General', 'foogallery' ),
 							'type'     => 'help',
 							'row_data' => array(
@@ -470,6 +469,22 @@ if ( ! class_exists( 'FooGallery_Pro_Promotion' ) ) {
 					);
 
 					array_splice( $fields, $position + 3, 0, $foobox_free_help_field );
+				} else if ( !$foobox_pro_installed ) {
+					$foobox_pro_help_field = array(
+						array(
+							'id'       => 'lightbox_promo_5',
+							'desc'     => '<strong>' . __( 'Try FooBox PRO!', 'foogallery' ) . '</strong> - ' . __( 'The stand-alone PRO version of our Lightbox plugin with tons of extra features including social sharing.', 'foogallery' ) . $foobox_pro_html,
+							'section'  => __( 'General', 'foogallery' ),
+							'type'     => 'help',
+							'row_data' => array(
+								'data-foogallery-hidden'                => true,
+								'data-foogallery-show-when-field'       => 'lightbox',
+								'data-foogallery-show-when-field-value' => 'foobox',
+							)
+						)
+					);
+
+					array_splice( $fields, $position + 3, 0, $foobox_pro_help_field );
 				}
 			}
 
