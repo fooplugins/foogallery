@@ -227,13 +227,16 @@ Please update in order to for FooGallery to work in WP 5.5+!
 
 == Changelog ==
 
-= 2.0.4 =
-* Date Updated : 2021-04-03
+= 2.0.10 =
+* Date Updated : 2021-13-03
 * New : Added first-class support for ShortPixel Adaptive Images as a thumbnail engine. (can be changed from settings)
 * New : Added "Alignment" gallery setting under "Captions" tab for changing horizontal alignment of thumbnail captions
-* Update : FooGallery client side 2.0.1
+* New : Added gallery settings to change the lightbox captions when FooBox is the selected lightbox
+* Update : FooGallery client side 2.0.2
 * Fix : JSON objects get built using all attributes needed
 * Fix : Could not add images to the gallery for some installs, due to no thumbnail sizes being returned. Made the logic more resilient.
+* Fix : Compatible with WP Rocket Lazy loading
+* Fix : Javascript error with Masonry related to script dependencies when using script minifiers
 [//]: # fs_premium_only_begin
 * New : Added "Thumbnail Strip Button" gallery setting under "Lightbox -> Controls" to show/hide the thumbnail strip button inside the lightbox
 * New : Added "Prev/Next Buttons" gallery setting under "Lightbox -> Controls" to show/hide Prev/Next navigation buttons within the lightbox
@@ -242,6 +245,7 @@ Please update in order to for FooGallery to work in WP 5.5+!
 * New : Added "Alignment" gallery setting under "Lightbox -> Captions" for changing horizontal alignment of lightbox captions
 * New : Added "Thumbnail Caption Alignment" gallery setting under "Lightbox -> Thumbnails" for changing the alignment of the captions within the lightbox thumbnail strip
 * New : Added "Video Thumbnail Directory" global setting under "Video" tab to override the directory that video thumbnails are stored in
+* Fix : Show the "Minimum" and "Limit" gallery settings under "Filtering" when "Multi-Level" filtering is chosen
 * Fix : fixed bug when setting a caption description length and descriptions not being shown if below that length
 * Fix : fixed WP/LR datasource modal content
 * Fix : fixed YouTube video search and playlist import. A Youtube API Key is now required.
