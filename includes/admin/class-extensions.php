@@ -55,7 +55,9 @@ if ( ! class_exists( 'FooGallery_Admin_Extensions' ) ) {
 				}
 
 				//if we get here then no fatal error - cool!
-				ob_end_clean();
+				if ( ob_get_length() > 0 ) {
+					ob_end_clean();
+				}
 
 				//store the result in a short-lived transient
 				if ( isset($result) ) {
