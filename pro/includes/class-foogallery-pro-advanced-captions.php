@@ -96,6 +96,12 @@ if ( ! class_exists( 'FooGallery_Pro_Advanced_Captions' ) ) {
 	                                    '<code>{{height}}</code> - ' . __('Full-size image height', 'foogallery') . '<br /><br />' .
 	                                    __('You can also include custom attachment metadata by using <code>{{postmeta.metakey}}</code> where "metakey" is the key/slug/name of the metadata.', 'foogallery') . $postmeta_html;
 
+	        $foogallery_custom_caption_help_html .= '<br />' . __('You can also include taxonomy lists by using <code>{{taxonomy.name}}</code> where "name" is the name of the taxonomy:', 'foogallery') . '<br /><br />';
+
+	        foreach ( get_object_taxonomies( 'attachment', 'objects' ) as $taxonomy_object ) {
+		        $foogallery_custom_caption_help_html .= '<code>{{taxonomy.' . $taxonomy_object->name . '}}</code> - ' . $taxonomy_object->label . '<br />';
+	        }
+
 	        return $foogallery_custom_caption_help_html;
         }
 
@@ -382,6 +388,13 @@ if ( ! class_exists( 'FooGallery_Pro_Advanced_Captions' ) ) {
                         $post_meta_key = str_replace( 'postmeta.', '', $property );
 
 	                    return get_post_meta( $foogallery_attachment->ID, $post_meta_key, true );
+                    } else if ( strpos( $property, 'taxonomy.' ) === 0 ) {
+
+                    	$taxonomy = str_replace( 'taxonomy.', '', $property );
+
+	                    $terms = wp_get_post_terms( $foogallery_attachment->ID, $taxonomy, array( 'fields' => 'names' ) );
+
+	                    return implode(', ', $terms );
                     }
 
                     return '';
