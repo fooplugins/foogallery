@@ -245,9 +245,6 @@ FooGallery.autoEnabled = false;
 		//remove the loading spinner
 		$('.foogallery-gallery-items-metabox-title').remove();
 
-		//move the items switch selector into the metabox heading
-		//$('.foogallery-items-view-switch-container').appendTo( '#foogallery_items .hndle span' ).removeClass('hidden');
-
 		var $items_metabox_heading = $('#foogallery_items .hndle span');
 		//This check is done to accommodate a markup change in WP 5.5
 		if ( $items_metabox_heading.length === 0 ) {
@@ -265,6 +262,11 @@ FooGallery.autoEnabled = false;
 				$nextButton = $(this),
 				nextSelector = $nextButton.data('container'),
 				value = $nextButton.data('value');
+
+			//if the preview button is already selected, and we are clicking it again, then force a preview refresh
+			if ( currentSelector === nextSelector && value === 'preview' ) {
+				$('.foogallery_preview_container').addClass('foogallery-preview-force-refresh');
+			}
 
 			//toggle the views
 			$(currentSelector).hide();
