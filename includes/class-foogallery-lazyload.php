@@ -66,6 +66,8 @@ if ( ! class_exists( 'FooGallery_LazyLoad' ) ) {
         }
 
         /**
+         * Change the src and srcset attributes for lazy loading
+         *
          * @param array $attr
          * @param array $args
          * @param FooGalleryAttachment $attachment
