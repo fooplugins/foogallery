@@ -143,6 +143,7 @@ if ( !class_exists( 'FooGallery_Masonry_Gallery_Template' ) ) {
                         'type'    => 'radio',
                         'choices' => array(
                             'fixed'  => __( 'Fixed Width', 'foogallery' ),
+                            'col6'   => __( '6 Columns', 'foogallery' ),
                             'col5'   => __( '5 Columns', 'foogallery' ),
                             'col4'   => __( '4 Columns', 'foogallery' ),
                             'col3'   => __( '3 Columns', 'foogallery' ),
