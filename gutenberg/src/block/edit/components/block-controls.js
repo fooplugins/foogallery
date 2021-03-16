@@ -1,6 +1,6 @@
 const { __ } = wp.i18n;
 const { Component } = wp.element;
-const { Toolbar, IconButton } = wp.components;
+const { ToolbarGroup, ToolbarButton } = wp.components;
 const { BlockControls } = !!wp.blockEditor ? wp.blockEditor : wp.editor;
 
 export default class FooGalleryEditBlockControls extends Component {
@@ -14,14 +14,14 @@ export default class FooGalleryEditBlockControls extends Component {
 
 		return (
 				<BlockControls>
-					<Toolbar>
-						<IconButton icon="trash" label={remove} onClick={onRequestBlockRemove} />
-					</Toolbar>
-					<Toolbar>
-						<IconButton icon="format-gallery" label={select} onClick={ onRequestModalOpen } />
-						{ canEdit ? <IconButton icon="edit" label={edit} onClick={ onRequestGalleryEdit } /> : null }
-						{ canReload ? <IconButton icon="update" label={reload} onClick={ onRequestGalleryReload } /> : null }
-					</Toolbar>
+					<ToolbarGroup className="foogallery__toolbar-group">
+						<ToolbarButton icon="trash" label={remove} onClick={onRequestBlockRemove} />
+					</ToolbarGroup>
+					<ToolbarGroup className="foogallery__toolbar-group">
+						<ToolbarButton icon="format-gallery" label={select} onClick={ onRequestModalOpen } />
+						{ canEdit ? <ToolbarButton icon="edit" label={edit} onClick={ onRequestGalleryEdit } /> : null }
+						{ canReload ? <ToolbarButton icon="update" label={reload} onClick={ onRequestGalleryReload } /> : null }
+					</ToolbarGroup>
 					{ children }
 				</BlockControls>
 		);

@@ -7,7 +7,7 @@ import FooGalleryEditModalItem from './item';
  */
 const { __ } = wp.i18n;
 const { Component } = wp.element;
-const { Button, IconButton, Placeholder, Modal, Spinner } = wp.components;
+const { Button, Placeholder, Modal, Spinner } = wp.components;
 
 /**
  * Create the FooGallery Select Modal Component
@@ -29,7 +29,7 @@ export default class FooGalleryEditModal extends Component {
 	}
 
 	async fetchGalleries(){
-		this.setState( { isLoading: true } );
+		this.setState( { data: null, isLoading: true } );
 		let data = await wp.apiFetch({ path: "/foogallery/v1/galleries/" });
 		data.forEach(gallery => {
 			gallery.lowerName = typeof gallery.name === 'string' ? gallery.name.toLowerCase() : '';
@@ -37,9 +37,16 @@ export default class FooGalleryEditModal extends Component {
 		this.setState( { data: data, isLoading: false } );
 	}
 
+	componentDidMount(){
+		const { data, isLoading } = this.state;
+		if ( data === null && !isLoading ){
+			this.fetchGalleries();
+		}
+	}
+
 	onReloadClick(event){
 		event.stopPropagation();
-		this.setState( { data: null } );
+		this.fetchGalleries();
 	}
 
 	onInsertClick(event){
@@ -77,7 +84,7 @@ export default class FooGalleryEditModal extends Component {
 					<div className="foogallery-modal__footer">
 						<input type="text" className="foogallery-modal__footer-search" placeholder={ search } value={ query } onChange={ this.onQueryChange } />
 						<div className="foogallery-modal__footer-buttons">
-							<IconButton isDefault icon="update" label={ reload } onClick={ this.onReloadClick } disabled={ isLoading }/>
+							<Button isSecondary icon="update" label={ reload } onClick={ this.onReloadClick } disabled={ isLoading }/>
 							<Button isPrimary onClick={ this.onInsertClick } disabled={ id === 0 }>{ insert }</Button>
 						</div>
 					</div>
@@ -90,16 +97,15 @@ export default class FooGalleryEditModal extends Component {
 		const { id, data, isLoading, query } = this.state;
 
 		if ( data === null && !isLoading ){
-			this.fetchGalleries();
 			return null;
 		}
 
 		if ( isLoading ){
-			return (<Placeholder className="foogallery-modal__content-placeholder" instructions={ loading }><Spinner/></Placeholder>);
+			return (<Placeholder className="foogallery-modal__content-placeholder" label={ loading }><Spinner/></Placeholder>);
 		}
 
 		if ( data === null || !data.length ){
-			return (<Placeholder className="foogallery-modal__content-placeholder" instructions={ empty }/>);
+			return (<Placeholder className="foogallery-modal__content-placeholder" label={ empty }/>);
 		}
 
 		let self = this,
@@ -112,6 +118,7 @@ export default class FooGalleryEditModal extends Component {
 		return filtered.map(gallery => {
 			return (
 					<FooGalleryEditModalItem
+							key={gallery.id}
 							data={ gallery }
 							isSelected={ id === gallery.id }
 							isDisabled={ disable.indexOf(gallery.id) !== -1 }
