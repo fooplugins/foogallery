@@ -227,8 +227,9 @@ Please update in order to for FooGallery to work in WP 5.5+!
 
 == Changelog ==
 
-= 2.0.10 =
+= 2.0.11 =
 * Date Updated : 2021-14-03
+* New : Added "Mobile Columns" gallery setting for Responsive Galleries
 * New : Added 6 Column option for Masonry galleries
 * New : Added first-class support for ShortPixel Adaptive Images as a thumbnail engine. (can be changed from settings)
 * New : Added "Alignment" gallery setting under "Captions" tab for changing horizontal alignment of thumbnail captions
