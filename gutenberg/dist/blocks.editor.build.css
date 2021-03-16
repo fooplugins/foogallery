@@ -9,6 +9,12 @@
  *
  * CSS for just Backend enqueued after style.scss which makes it higher in priority.
  */
+.foogallery__toolbar-group .components-button.has-icon .dashicon {
+  margin-left: 0;
+  margin-right: 0; }
+
+.foogallery__placeholder .components-placeholder__label .dashicon {
+  margin-right: .5em; }
 /**
  * #.# Common SCSS
  *
@@ -26,14 +32,38 @@
 
 .foogallery-modal__content-container {
   position: relative;
-  display: inline-block; }
+  display: block;
+  outline: none; }
 
-.foogallery-modal__content-placeholder {
+.foogallery-modal__content-container .components-placeholder.foogallery-modal__content-placeholder {
   background-color: transparent;
   min-height: 150px;
-  border: solid 3px transparent;
-  outline: solid 1px transparent;
-  margin: 10px; }
+  border: none;
+  outline: none;
+  -webkit-box-shadow: none;
+          box-shadow: none;
+  margin: 0;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-direction: column-reverse;
+      flex-direction: column-reverse;
+  -ms-flex-pack: center;
+      justify-content: center;
+  -ms-flex-align: center;
+      align-items: center; }
+
+.foogallery-modal__content-placeholder .components-placeholder__fieldset {
+  -ms-flex-pack: center;
+      justify-content: center;
+  -ms-flex-align: center;
+      align-items: center;
+  margin-bottom: 10px; }
+
+.foogallery-modal__content-placeholder .components-placeholder__fieldset .components-spinner {
+  margin: 0; }
+
+.foogallery-modal__content-placeholder .components-placeholder__label {
+  margin-bottom: 0; }
 
 .foogallery-modal__footer {
   border-top: 1px solid #e2e4e7;
@@ -54,7 +84,7 @@
   position: sticky;
   bottom: 0;
   z-index: 10;
-  margin: 16px -16px -16px; }
+  margin: 24px -24px -24px; }
 
 .foogallery-modal__footer-search {
   -ms-flex: 1;
@@ -79,6 +109,10 @@
 .foogallery-modal__footer-buttons .components-button:last-of-type {
   margin-right: 0; }
 
+.foogallery-modal__footer-buttons .components-button.has-icon .dashicon {
+  margin-right: 0;
+  margin-left: 0; }
+
 /* #.# FooGalleryItem Editor Styles */
 .foogallery-modal__item {
   display: inline-block;
@@ -91,7 +125,8 @@
   background-color: #f7f7f7;
   margin: 10px;
   cursor: pointer;
-  border-radius: 3px; }
+  border-radius: 3px;
+  outline: none; }
 
 .foogallery-modal__item:focus {
   border-style: dashed; }
@@ -105,7 +140,8 @@
 .foogallery-modal__item.is-selected {
   border-color: #0085ba;
   -webkit-box-shadow: 0 0 0 1px #00648c, inset 0 0 0 1px #00648c;
-          box-shadow: 0 0 0 1px #00648c, inset 0 0 0 1px #00648c; }
+          box-shadow: 0 0 0 1px #00648c, inset 0 0 0 1px #00648c;
+  outline: none; }
 
 .foogallery-modal__item.is-disabled {
   border-color: #e4e4e4;
@@ -149,17 +185,18 @@ svg.foogallery-modal__item-thumbnail {
   background: -o-linear-gradient(top, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.5) 15px, rgba(0, 0, 0, 0.5) 100%);
   background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.5) 15px, rgba(0, 0, 0, 0.5) 100%); }
 
-svg.dashicon.foogallery-modal__icon-selected,
-svg.dashicon.foogallery-modal__icon-disabled {
+.dashicon.foogallery-modal__icon-selected,
+.dashicon.foogallery-modal__icon-disabled {
   position: absolute;
   top: 50%;
   left: 50%;
   -webkit-transform: translateX(-50%) translateY(-50%);
       -ms-transform: translateX(-50%) translateY(-50%);
           transform: translateX(-50%) translateY(-50%);
-  fill: #FFF;
+  color: #FFF;
   width: 60px;
   height: 60px;
+  font-size: 60px;
   -webkit-filter: drop-shadow(0px 0px 5px #000);
           filter: drop-shadow(0px 0px 5px #000); }
 /**

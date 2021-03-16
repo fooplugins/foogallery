@@ -8,7 +8,7 @@ export default class FooGalleryEditPlaceholder extends Component {
 	render(){
 		const { className, children, ...props } = this.props;
 		return (
-				<Placeholder className={ classnames("editor-media-placeholder", className) } {...props}>
+				<Placeholder className={ classnames("editor-media-placeholder foogallery__placeholder", className) } {...props}>
 					{children}
 				</Placeholder>
 		);
