@@ -27,7 +27,9 @@ if ( ! class_exists( 'FooGallery_Thumb_Engine_Shortpixel' ) ) {
 			//make sure the url is the full url
 			$url = $this->normalize_url( $url );
 
-			$result = 'https://cdn.shortpixel.ai/spai/';
+			$settings = $this->get_settings();
+
+			$result = trailingslashit( $settings['url'] ); //https://cdn.shortpixel.ai/spai/';
 
 			$params = array();
 
@@ -44,17 +46,17 @@ if ( ! class_exists( 'FooGallery_Thumb_Engine_Shortpixel' ) ) {
 				}
 			}
 
-			$quality = foogallery_get_setting( 'shortpixel_quality', 'lossy'); //lqip, lossless, glossy or lossy
+			$quality = $settings['level']; //lqip, lossless, glossy or lossy
 			if ( !empty( $quality ) ) {
 				$params[] = 'q_' . $quality;
 			}
 
-			$return_type = foogallery_get_setting( 'shortpixel_return', 'wait'); //blank, img, wait
+			$return_type = $settings['ret']; //blank, img, wait
 			if ( !empty( $return_type ) ) {
 				$params[] = 'ret_' . $return_type;
 			}
 
-			$conversion = foogallery_get_setting( 'shortpixel_conversion', ''); //webp or avif
+			$conversion = $settings['to']; //webp or avif
 			if ( !empty( $conversion ) ) {
 				$params[] = 'to_' . $conversion;
 			}
@@ -113,6 +115,44 @@ if ( ! class_exists( 'FooGallery_Thumb_Engine_Shortpixel' ) ) {
 		}
 
 		/**
+		 * Returns true if SPAI plugin is activated
+		 * @return bool
+		 */
+		function is_spai_active() {
+			return class_exists( 'ShortPixel\AI\Options\Option' );
+		}
+
+		function get_settings() {
+			global $foogallery_shortpixel_settings;
+
+			if ( isset( $foogallery_shortpixel_settings ) ) {
+				return $foogallery_shortpixel_settings;
+			}
+
+			if ( $this->is_spai_active() ) {
+				//get settings from SPAI settings object
+				$options = ShortPixel\AI\Options::_();
+				$foogallery_shortpixel_settings = array(
+					'url' => $options->settings->behaviour->api_url,
+					'level' => $options->settings->compression->level,
+					'ret' => 'wait',
+					'to' => $options->settings->compression->webp ? 'webp' : ''
+				);
+
+			} else {
+				//get settings from foogallery
+				$foogallery_shortpixel_settings = array(
+					'url' => 'https://cdn.shortpixel.ai/spai/',
+					'level' => foogallery_get_setting( 'shortpixel_quality', 'lossy'),
+					'ret' => foogallery_get_setting( 'shortpixel_return', 'wait'),
+					'to' => foogallery_get_setting( 'shortpixel_conversion', '')
+				);
+			}
+
+			return $foogallery_shortpixel_settings;
+		}
+
+		/**
 		 * Adds ShortPixel settings to the admin page
 		 *
 		 * @param $settings
@@ -120,48 +160,62 @@ if ( ! class_exists( 'FooGallery_Thumb_Engine_Shortpixel' ) ) {
 		 * @return mixed
 		 */
 		function add_shortpixel_settings( $settings ) {
-			$settings['settings'][] = array(
-				'id'      => 'shortpixel_quality',
-				'title'   => __( 'ShortPixel Quality', 'foogallery' ),
-				'type'    => 'radio',
-				'default' => 'lossy',
-				'section' => __( 'ShortPixel Settings', 'foogallery' ),
-				'choices' => array(
-					'lossy' => __( 'Lossy (recommended) - offers the best compression rate', 'foogallery'),
-					'glossy' => __( 'Glossy - creates images that are almost pixel-perfect identical to the originals', 'foogallery'),
-					'lossless' => __( 'Lossless - the resulting image is pixel-identical with the original image', 'foogallery'),
-					'lqip' => __( 'LQIP (not recommended) - low quality SVG placeholders', 'foogallery'),
-				),
-				'tab'     => 'thumb'
-			);
+			if ( $this->is_spai_active() ) {
+				$spai_settings_link = '<a href="' . admin_url( 'options-general.php?page=shortpixel-ai-settings' ) . '">' . __( 'ShortPixel Adaptive Images settings' , 'foogallery' ) . '</a>';
 
-			$settings['settings'][] = array(
-				'id'      => 'shortpixel_return',
-				'title'   => __( 'ShortPixel Return', 'foogallery' ),
-				'type'    => 'radio',
-				'default' => 'wait',
-				'section' => __( 'ShortPixel Settings', 'foogallery' ),
-				'choices' => array(
-					'blank' => __( 'Blank - will immediately return a blank placeholder', 'foogallery'),
-					'img' => __( 'Image - redirect to the original image while the image is being processed', 'foogallery'),
-					'wait' => __( 'Wait - will make the image wait to be displayed until the new processed image is ready', 'foogallery'),
-				),
-				'tab'     => 'thumb'
-			);
+				$settings['settings'][] = array(
+					'id'      => 'shortpixel_settings',
+					'title'   => __( 'ShortPixel AI Detected!', 'foogallery' ),
+					'type'    => 'html',
+					'section' => __( 'ShortPixel Settings', 'foogallery' ),
+					'desc'    => sprintf( __( 'Settings will be inherited from the %s.', 'foogallery' ), $spai_settings_link ),
+					'tab'     => 'thumb'
+				);
+			} else {
 
-			$settings['settings'][] = array(
-				'id'      => 'shortpixel_conversion',
-				'title'   => __( 'ShortPixel Conversion', 'foogallery' ),
-				'type'    => 'radio',
-				'default' => '',
-				'section' => __( 'ShortPixel Settings', 'foogallery' ),
-				'choices' => array(
-					'' => __( 'Default - will not convert the image', 'foogallery'),
-					'webp' => __( 'WebP - convert to WebP', 'foogallery'),
-					'avif' => __( 'AVIF - convert to AVIF', 'foogallery'),
-				),
-				'tab'     => 'thumb'
-			);
+				$settings['settings'][] = array(
+					'id'      => 'shortpixel_quality',
+					'title'   => __( 'ShortPixel Quality', 'foogallery' ),
+					'type'    => 'radio',
+					'default' => 'lossy',
+					'section' => __( 'ShortPixel Settings', 'foogallery' ),
+					'choices' => array(
+						'lossy'    => __( 'Lossy (recommended) - offers the best compression rate', 'foogallery' ),
+						'glossy'   => __( 'Glossy - creates images that are almost pixel-perfect identical to the originals', 'foogallery' ),
+						'lossless' => __( 'Lossless - the resulting image is pixel-identical with the original image', 'foogallery' ),
+						'lqip'     => __( 'LQIP (not recommended) - low quality SVG placeholders', 'foogallery' ),
+					),
+					'tab'     => 'thumb'
+				);
+
+				$settings['settings'][] = array(
+					'id'      => 'shortpixel_return',
+					'title'   => __( 'ShortPixel Return', 'foogallery' ),
+					'type'    => 'radio',
+					'default' => 'wait',
+					'section' => __( 'ShortPixel Settings', 'foogallery' ),
+					'choices' => array(
+						'blank' => __( 'Blank - will immediately return a blank placeholder', 'foogallery' ),
+						'img'   => __( 'Image - redirect to the original image while the image is being processed', 'foogallery' ),
+						'wait'  => __( 'Wait - will make the image wait to be displayed until the new processed image is ready', 'foogallery' ),
+					),
+					'tab'     => 'thumb'
+				);
+
+				$settings['settings'][] = array(
+					'id'      => 'shortpixel_conversion',
+					'title'   => __( 'ShortPixel Conversion', 'foogallery' ),
+					'type'    => 'radio',
+					'default' => '',
+					'section' => __( 'ShortPixel Settings', 'foogallery' ),
+					'choices' => array(
+						''     => __( 'Default - will not convert the image', 'foogallery' ),
+						'webp' => __( 'WebP - convert to WebP', 'foogallery' ),
+						'avif' => __( 'AVIF - convert to AVIF', 'foogallery' ),
+					),
+					'tab'     => 'thumb'
+				);
+			}
 
 			return $settings;
 		}
