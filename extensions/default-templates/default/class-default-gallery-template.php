@@ -82,13 +82,13 @@ if ( ! class_exists( 'FooGallery_Default_Gallery_Template' ) ) {
 					),
 					array(
 						'id'       => 'mobile_columns',
-						'title'    => __( 'Mobile Columns', 'foogallery' ),
+						'title'    => __( 'Mobile Layout', 'foogallery' ),
 						'desc'     => __( 'Number of columns to show on mobile (screen widths less than 600px)', 'foogallery' ),
 						'section'  => __( 'General', 'foogallery' ),
 						'default'  => '',
 						'type'     => 'radio',
 						'choices'  => array(
-							''   => __( 'None', 'foogallery' ),
+							''   => __( 'Default', 'foogallery' ),
 							'fg-m-col1'   => __( '1 Column', 'foogallery' ),
 							'fg-m-col2' => __( '2 Columns', 'foogallery' ),
 							'fg-m-col3'  => __( '3 Columns', 'foogallery' ),
