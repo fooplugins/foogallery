@@ -411,14 +411,6 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 			);
 
 			$settings[] = array(
-				'id'      => 'use_future_endpoint',
-				'title'   => __( 'Use Beta Endpoint', 'foogallery' ),
-				'desc'    => __( 'The list of available extensions are pulled from an external URL. You can also pull from a "beta" endpoint which will sometimes contain beta extensions that are not publicly available.', 'foogallery' ),
-				'type'    => 'checkbox',
-				'tab'     => 'advanced',
-			);
-
-			$settings[] = array(
 				'id'      => 'override_thumb_test',
 				'title'   => __( 'Override Thumb Test', 'foogallery' ),
 				'desc'    => __( 'Sometimes there are problems running the thumbnail generation test. This overrides the test to use a remote image from our CDN.', 'foogallery' ),

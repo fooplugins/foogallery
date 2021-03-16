@@ -3,7 +3,7 @@ $instance = FooGallery_Plugin::get_instance();
 $api      = new FooGallery_Extensions_API();
 
 $extensions = $api->get_all_for_view();
-$has_errors = $api->has_extension_loading_errors();
+$has_errors = false;
 
 $show_message = safe_get_from_request( 'show_message' );
 
@@ -22,21 +22,12 @@ $tagline = apply_filters( 'foogallery_admin_extensions_tagline', sprintf( __( 'E
 	}
 </style>
 <div class="wrap foogallery-extensions">
-	<h2><?php printf( __( '%s Extensions', 'foogallery' ), foogallery_plugin_name() ); ?><span class="spinner"></span>
-		<div class="extension-reload">
-			<a class="ext_action button" title="<?php _e('Reload Extensions', 'foogallery' ); ?>" href="<?php echo esc_url( add_query_arg( 'action', 'reload' ) ); ?>"><span class="dashicons dashicons-update"></span></a>
-		</div>
-	</h2>
+	<h2><?php printf( __( '%s Extensions', 'foogallery' ), foogallery_plugin_name() ); ?><span class="spinner"></span></h2>
 	<div class="foogallery-text"><?php echo $tagline; ?></div>
 	<?php
 	if ( isset( $result ) ) { ?>
 		<div class="foogallery-message-<?php echo $result['type']; ?>">
 			<p><?php echo $result['message']; ?></p>
-		</div>
-	<?php }
-	if ( $has_errors ) { ?>
-		<div class="foogallery-message-error">
-			<p><?php _e( 'There was a problem loading all the public extensions! Only the default bundled extensions will be shown.', 'foogallery' ); ?></p>
 		</div>
 	<?php } ?>
 	<hr />

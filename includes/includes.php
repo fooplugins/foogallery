@@ -63,8 +63,6 @@ if ( is_admin() ) {
 	require_once( FOOGALLERY_PATH . 'includes/admin/class-gallery-metabox-settings-helper.php' );
 	require_once( FOOGALLERY_PATH . 'includes/admin/class-menu.php' );
 	require_once( FOOGALLERY_PATH . 'includes/admin/class-columns.php' );
-	require_once( FOOGALLERY_PATH . 'includes/admin/class-boilerplate-zip-generator.php' );
-	require_once( FOOGALLERY_PATH . 'includes/admin/class-boilerplate-download-handler.php' );
 	require_once( FOOGALLERY_PATH . 'includes/admin/class-attachment-fields.php' );
 	require_once( FOOGALLERY_PATH . 'includes/admin/class-admin-css-load-optimizer.php' );
 	require_once( FOOGALLERY_PATH . 'includes/admin/class-admin-notices.php' );

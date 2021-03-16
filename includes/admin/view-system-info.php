@@ -38,8 +38,6 @@ if ( current_user_can( 'activate_plugins' ) ) {
 	$title        = apply_filters( 'foogallery_admin_systeminfo_title', sprintf( __( '%s System Information', 'foogallery' ), foogallery_plugin_name() ) );
 	$support_text = apply_filters( 'foogallery_admin_systeminfo_supporttext', sprintf( __( 'Below is some information about your server configuration. You can use this info to help debug issues you may have with %s.' ), foogallery_plugin_name() ) );
 	$api          = new FooGallery_Extensions_API();
-	//clear any extenasion cache
-	$api->clear_cached_extensions();
 	$extension_slugs = $api->get_all_slugs();
 
 	//get all gallery templates
@@ -84,8 +82,6 @@ if ( current_user_can( 'activate_plugins' ) ) {
 		__( 'PHP Config[allow_url_include]', 'foogallery' ) => ini_get( 'allow_url_fopen' ),
 		__( 'WP Image Editor', 'foogallery' )               => $image_editor,
 		__( 'Thumbnail Generation Test', 'foogallery') 		=> $test_image_url,
-		__( 'Extensions Endpoint', 'foogallery' ) 			=> $api->get_extensions_endpoint(),
-		__( 'Extensions Errors', 'foogallery' )   			=> $api->has_extension_loading_errors() == true ? $api->get_extension_loading_errors_response() : __( 'Nope, all good', 'foogallery' ),
 		__( 'Extensions', 'foogallery' )          			=> $extension_slugs,
 		__( 'Extensions Active', 'foogallery' )   			=> array_keys( $api->get_active_extensions() ),
 		__( 'Gallery Templates', 'foogallery' )   			=> $template_slugs,
