@@ -227,7 +227,7 @@ Please update in order to for FooGallery to work in WP 5.5+!
 
 == Changelog ==
 
-= 2.0.11 =
+= 2.0.12 =
 * Date Updated : 2021-14-03
 * New : Added "Mobile Columns" gallery setting for Responsive Galleries
 * New : Added 6 Column option for Masonry galleries
@@ -237,6 +237,8 @@ Please update in order to for FooGallery to work in WP 5.5+!
 * New : Added gallery settings to change the lightbox captions when FooBox is the selected lightbox
 * New : Added ability to refresh gallery preview when editing by clicking preview button again
 * Update : FooGallery client side 2.0.3
+* Update : simplified extensions admin page and removed all build-your-own logic
+* Fix : Updated styling for FooGallery Block to look correct in latest version of Gutenberg
 * Fix : JSON objects get built using all attributes needed
 * Fix : Could not add images to the gallery for some installs, due to no thumbnail sizes being returned. Made the logic more resilient.
 * Fix : Compatible with WP Rocket Lazy loading
@@ -254,6 +256,7 @@ Please update in order to for FooGallery to work in WP 5.5+!
 * Fix : fixed bug when setting a caption description length and descriptions not being shown if below that length
 * Fix : fixed WP/LR datasource modal content
 * Fix : fixed YouTube video search and playlist import. A Youtube API Key is now required.
+* Fix : fixed a bug with Grid PRO gallery maximised lightbox not being fixed
 [//]: # fs_premium_only_end
 
 = 1.10.4 =
