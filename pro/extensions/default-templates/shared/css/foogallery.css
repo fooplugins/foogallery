@@ -7172,6 +7172,9 @@ html.fg-panel-no-scroll body {
     right: 0;
     bottom: 0;
 }
+.foogrid-panel.fg-panel.fg-panel-maximized {
+    position: fixed;
+}
 .foogrid-panel.fg-panel.fg-light {
     background-color: #eee;
     border: none;
