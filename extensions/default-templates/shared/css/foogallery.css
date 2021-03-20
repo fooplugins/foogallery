@@ -21,6 +21,9 @@
 	-ms-user-select: none;
 	user-select: none;
 }
+.foogallery .fg-item.fg-hidden {
+	display: none!important;
+}
 .foogallery .fg-item-inner {
 	display: block;
 	position: relative;
