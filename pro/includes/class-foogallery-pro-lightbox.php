@@ -465,8 +465,8 @@ if ( ! class_exists( 'FooGallery_Pro_Lightbox' ) ) {
 
 			$field[] = array(
 				'id'       => 'lightbox_info_alignment',
-				'title'    => __( 'Caption Alignment', 'foogallery' ),
-				'desc'     => __( 'Change the horizontal alignment of the captions', 'foogallery' ),
+				'title'    => __( 'Caption Text Alignment', 'foogallery' ),
+				'desc'     => __( 'Change the horizontal text alignment of the captions', 'foogallery' ),
 				'section' => $section,
 				'subsection' => array( 'lightbox-captions' => __( 'Captions', 'foogallery' ) ),
 				'type'     => 'radio',
