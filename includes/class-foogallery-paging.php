@@ -26,6 +26,16 @@ if ( ! class_exists( 'FooGallery_Paging' ) ) {
 
 			//output a script block with the rest of the attachments as json
 			add_action( 'foogallery_loaded_template_after', array( $this, 'output_paging_script_block' ), 90, 1 );
+
+			add_filter( 'foogallery_attachment_html_item_classes', array( $this, 'hide_item_for_html_output' ), 10, 3 );
+		}
+
+
+		function hide_item_for_html_output( $classes, $foogallery_attachment, $args ) {
+			if ( isset( $foogallery_attachment->class ) ) {
+				$classes[] = $foogallery_attachment->class;
+			}
+			return $classes;
 		}
 
 		/**
@@ -44,6 +54,7 @@ if ( ! class_exists( 'FooGallery_Paging' ) ) {
 					$paging_theme    = foogallery_gallery_template_setting( 'paging_theme', 'fg-light' );
 					$paging_size     = intval( foogallery_gallery_template_setting( 'paging_size', 20 ) );
 					$paging_scroll   = foogallery_gallery_template_setting( 'paging_scroll', 'true' ) === 'true';
+					$paging_output   = foogallery_gallery_template_setting( 'paging_output', '' );
 
 					//force bottom position for infinite and loadMore paging
 					if ( 'infinite' === $paging || 'loadMore' === $paging ) {
@@ -55,7 +66,8 @@ if ( ! class_exists( 'FooGallery_Paging' ) ) {
 						'theme'       => $paging_theme,
 						'size'        => $paging_size,
 						'position'    => $paging_position,
-						'scrollToTop' => $paging_scroll
+						'scrollToTop' => $paging_scroll,
+						'output'      => $paging_output
 					);
 
 					if ( 'pagination' === $paging ) {
@@ -323,6 +335,29 @@ if ( ! class_exists( 'FooGallery_Paging' ) ) {
 						'data-foogallery-preview' => 'shortcode'
 					)
 				);
+
+				$fields[] = array(
+					'id'      => 'paging_output',
+					'title'   => __( 'Paging Output', 'foogallery' ),
+					'desc'    => __( 'How the paging items are output. We recommend that very large galleries output as JSON.', 'foogallery' ),
+					'section' => __( 'Paging', 'foogallery' ),
+					'spacer'  => '<span class="spacer"></span>',
+					'type'    => 'radio',
+					'default' => '',
+					'choices' => array(
+						''  => __( 'Fastest (JSON)', 'foogallery' ),
+						'html'   => __( 'Legacy (HTML)', 'foogallery' )
+					),
+					'row_data'=> array(
+						'data-foogallery-change-selector' => 'input',
+						'data-foogallery-preview' => 'shortcode',
+						'data-foogallery-value-selector' => 'input:checked',
+						'data-foogallery-hidden'                   => true,
+						'data-foogallery-show-when-field'          => 'paging_type',
+						'data-foogallery-show-when-field-operator' => '!==',
+						'data-foogallery-show-when-field-value'    => '',
+					)
+				);
 			}
 
 			return $fields;
@@ -346,6 +381,7 @@ if ( ! class_exists( 'FooGallery_Paging' ) ) {
         /**
          * Override the attachments returned for rendering a paginated gallery to the first page only
          * The rest of the items will be added to the script block below the gallery as json items
+         * This is only when paging_output is JSON. When it's HTML then the all items are rendered
          *
          * @param bool $override
          * @param FooGallery $gallery
@@ -357,13 +393,25 @@ if ( ! class_exists( 'FooGallery_Paging' ) ) {
 
                 $paging_options = foogallery_current_gallery_get_cached_value( 'paging' );
 				$page_size = intval( $paging_options['size'] );
+				$output = $paging_options['output'];
 
                 if ( $page_size > 0 ) {
+	                $attachments = $gallery->attachments();
 
-                    $attachments = $gallery->attachments();
+                	if ( $output === 'html' ) {
+                		$index = 0;
+                		foreach ( $attachments as &$attachment ) {
+                			$index++;
+                			if ( $index > $page_size ) {
+				                $attachment->class = 'fg-hidden';
+			                }
+		                }
+                		return $attachments;
 
-                    //return the first page of attachments
-                    return array_splice( $attachments, 0, $page_size );
+	                } else {
+		                //return the first page of attachments
+		                return array_splice( $attachments, 0, $page_size );
+	                }
                 }
             }
 
@@ -379,8 +427,9 @@ if ( ! class_exists( 'FooGallery_Paging' ) ) {
 			if ( foogallery_current_gallery_has_cached_value('paging' ) ) {
 				$paging_options = foogallery_current_gallery_get_cached_value( 'paging' );
 				$page_size = intval( $paging_options['size'] );
+				$output = $paging_options['output'];
 
-				if ( $page_size > 0 ) {
+				if ( $page_size > 0 && $output === '' ) {
 					//get the attachments that are not on the first page
 					$attachments = array_slice( $gallery->attachments(), $page_size );
 					foogallery_render_script_block_for_json_items( $gallery, $attachments );
