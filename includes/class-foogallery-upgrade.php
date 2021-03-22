@@ -9,11 +9,11 @@ if ( ! class_exists( 'FooGallery_Upgrade' ) ) {
 
 		function __construct() {
 			//add_action( 'foogallery_admin_new_version_detected', array( $this, 'upgrade_all_galleries' ) );
-			add_filter( 'foogallery_settings_upgrade', array( $this, 'upgrade_gallery_settings' ), 10, 2 );
+			//add_filter( 'foogallery_settings_upgrade', array( $this, 'upgrade_gallery_settings' ), 10, 2 );
 
-			add_filter( 'foogallery_admin_settings_override', array( $this, 'add_force_upgrade_setting' ) );
-			add_action( 'foogallery_admin_settings_custom_type_render_setting', array( $this, 'render_force_upgrades_settings' ) );
-			add_action( 'wp_ajax_foogallery_force_upgrade', array( $this, 'ajax_force_upgrade' ) );
+			//add_filter( 'foogallery_admin_settings_override', array( $this, 'add_force_upgrade_setting' ) );
+			//add_action( 'foogallery_admin_settings_custom_type_render_setting', array( $this, 'render_force_upgrades_settings' ) );
+			//add_action( 'wp_ajax_foogallery_force_upgrade', array( $this, 'ajax_force_upgrade' ) );
 
 			add_action( 'add_meta_boxes_' . FOOGALLERY_CPT_GALLERY, array( $this, 'add_meta_boxes_to_gallery' ) );
 		}
