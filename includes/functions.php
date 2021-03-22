@@ -1606,7 +1606,7 @@ function foogallery_current_gallery_set_cached_value( $cache_key, $cache_value )
 	}
 
 	//store the value for later use
-	$current_foogallery->cached_values[ $cache_key] = $cache_value;
+	$current_foogallery->cached_values[$cache_key] = $cache_value;
 }
 
 /**

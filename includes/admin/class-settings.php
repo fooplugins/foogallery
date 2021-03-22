@@ -313,28 +313,28 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 
 			$settings[] = array(
 				'id'      => 'language_imageviewer_prev_text',
-				'title'   => __( 'Imageviewer "Prev" Text', 'foogallery' ),
+				'title'   => __( 'Image Viewer "Prev" Text', 'foogallery' ),
 				'type'    => 'text',
 				'default' => __( 'Prev', 'foogallery' ),
-				'section' => __( 'Imageviewer', 'foogallery' ),
+				'section' => __( 'Image Viewer Template', 'foogallery' ),
 				'tab'     => 'language'
 			);
 
 			$settings[] = array(
 				'id'      => 'language_imageviewer_next_text',
-				'title'   => __( 'Imageviewer "Next" Text', 'foogallery' ),
+				'title'   => __( 'Image Viewer "Next" Text', 'foogallery' ),
 				'type'    => 'text',
 				'default' => __( 'Next', 'foogallery' ),
-				'section' => __( 'Imageviewer', 'foogallery' ),
+				'section' => __( 'Image Viewer Template', 'foogallery' ),
 				'tab'     => 'language'
 			);
 
 			$settings[] = array(
 				'id'      => 'language_imageviewer_of_text',
-				'title'   => __( 'Imageviewer "Of" Text', 'foogallery' ),
+				'title'   => __( 'Image Viewer "Of" Text', 'foogallery' ),
 				'type'    => 'text',
 				'default' => __( 'of', 'foogallery' ),
-				'section' => __( 'Imageviewer', 'foogallery' ),
+				'section' => __( 'Image Viewer Template', 'foogallery' ),
 				'tab'     => 'language'
 			);
 
@@ -410,13 +410,15 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 				'tab'     => 'advanced'
 			);
 
-			$settings[] = array(
-				'id'      => 'override_thumb_test',
-				'title'   => __( 'Override Thumb Test', 'foogallery' ),
-				'desc'    => __( 'Sometimes there are problems running the thumbnail generation test. This overrides the test to use a remote image from our CDN.', 'foogallery' ),
-				'type'    => 'checkbox',
-				'tab'     => 'advanced',
-			);
+			if ( foogallery_thumb_active_engine()->has_local_cache() ) {
+				$settings[] = array(
+					'id'    => 'override_thumb_test',
+					'title' => __( 'Override Thumb Test', 'foogallery' ),
+					'desc'  => __( 'Sometimes there are problems running the thumbnail generation test. This overrides the test to use a remote image from our CDN.', 'foogallery' ),
+					'type'  => 'checkbox',
+					'tab'   => 'advanced',
+				);
+			}
 
 			if ( !foogallery_is_pro() ) {
 				$settings[] = array(
