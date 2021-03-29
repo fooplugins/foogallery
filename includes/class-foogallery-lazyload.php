@@ -106,11 +106,14 @@ if ( ! class_exists( 'FooGallery_LazyLoad' ) ) {
 
 
             } else {
-            	//if we get here then we are dealing with an album
+            	//if we get here then check we are dealing with an album
+	            global $current_foogallery_album;
 
-	            //check if we have lazy loading disabled
-	            if ( foogallery_get_setting('disable_lazy_loading') !== 'on' ) {
-		            $replace_attributes = true;
+	            if ( $current_foogallery_album !== null ) {
+		            //check if we have lazy loading disabled
+		            if ( foogallery_get_setting( 'disable_lazy_loading' ) !== 'on' ) {
+			            $replace_attributes = true;
+		            }
 	            }
             }
 
