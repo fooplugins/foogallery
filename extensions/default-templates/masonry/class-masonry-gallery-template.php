@@ -157,6 +157,23 @@ if ( !class_exists( 'FooGallery_Masonry_Gallery_Template' ) ) {
                         )
                     ),
                     array(
+	                    'id'      => 'horizontal',
+	                    'title'   => __( 'Horizontal Layout', 'foogallery' ),
+	                    'desc'    => __( 'You can choose to lay out items to (mostly) maintain horizontal left-to-right order.', 'foogallery' ),
+	                    'section' => __( 'General', 'foogallery' ),
+	                    'type'    => 'radio',
+	                    'choices' => array(
+		                    ''  => __( 'Disabled', 'foogallery' ),
+		                    'yes'   => __( 'Try to maintain lef-to-right order', 'foogallery' ),
+	                    ),
+	                    'default' => '',
+	                    'row_data'=> array(
+		                    'data-foogallery-change-selector' => 'input:radio',
+		                    'data-foogallery-value-selector' => 'input:checked',
+		                    'data-foogallery-preview' => 'shortcode'
+	                    )
+                    ),
+                    array(
                         'id'      => 'gutter_width',
                         'title'   => __( 'Gutter Width', 'foogallery' ),
                         'desc'    => __( 'The spacing between your thumbnails. Only applicable when using a fixed layout!', 'foogallery' ),
@@ -290,6 +307,10 @@ if ( !class_exists( 'FooGallery_Masonry_Gallery_Template' ) ) {
 				$gutter_width = foogallery_gallery_template_setting( 'gutter_width', '10' );
 				$options['template']['columnWidth'] = intval($width);
 				$options['template']['gutter'] = intval($gutter_width);
+			}
+			$horizontal = foogallery_gallery_template_setting( 'horizontal', '' );
+			if ( 'yes' === $horizontal ) {
+				$options['template']['horizontalOrder'] = true;
 			}
 			return $options;
 		}
