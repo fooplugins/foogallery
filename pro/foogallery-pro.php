@@ -17,7 +17,6 @@ require_once( FOOGALLERY_PATH . 'pro/includes/video/class-foogallery-pro-video-l
 require_once( FOOGALLERY_PATH . 'pro/includes/video/class-foogallery-pro-video-migration-helper.php' );
 require_once( FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-advanced-gallery-settings.php' );
 require_once( FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-instagram-filters.php' );
-require_once( FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-datasources.php' );
 require_once( FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-datasource-taxonomy-base.php' );
 require_once( FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-datasource-mediatags.php' );
 require_once( FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-datasource-mediacategories.php' );
@@ -57,7 +56,6 @@ if ( ! class_exists( 'FooGallery_Pro' ) ) {
 			new FooGallery_Pro_Advanced_Gallery_Settings();
 			new FooGallery_Pro_Video_Legacy();
 			new FooGallery_Pro_Instagram_Filters();
-			new FooGallery_Pro_Datasources();
 			new FooGallery_Pro_Datasource_MediaCategories();
 			new FooGallery_Pro_Datasource_MediaTags();
 			new FooGallery_Pro_Datasource_Folders();
