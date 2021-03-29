@@ -78,10 +78,7 @@ if ( ! class_exists( 'FooGallery_Pro_Promotion' ) ) {
 
 			$promotion = str_replace( 'foogallery-', '', $promotion );
 
-			return add_query_arg( array(
-				'utm_content' => 'feature-' . $promotion,
-				'utm_source' => 'foogallery-free',
-			), $this->urls[ $url_name ] );
+			return foogallery_admin_url( $this->urls[ $url_name ], 'promos', $promotion );
 		}
 
 		/**
