@@ -22,9 +22,6 @@ if ( ! class_exists( 'FooGallery_Nextgen_Gallery_Importer_Extension' ) ) {
 			add_action( 'foogallery_admin_menu_after', array( $this, 'add_menu' ) );
 			add_action( 'foogallery_extension_activated-nextgen', array( $this, 'add_menu' ) );
 
-			//hook into the foogallery menu
-			add_action( 'foogallery_admin_help_after_section_one', array( $this, 'show_nextgen_import_help' ) );
-
 			// Ajax calls for importing galleries
 			add_action( 'wp_ajax_foogallery_nextgen_import', array( $this, 'ajax_nextgen_start_import' ) );
 			add_action( 'wp_ajax_foogallery_nextgen_import_refresh', array(	$this, 'ajax_nextgen_continue_import' ) );
@@ -145,28 +142,6 @@ if ( ! class_exists( 'FooGallery_Nextgen_Gallery_Importer_Extension' ) ) {
 
 			}
 			die();
-		}
-
-		function show_nextgen_import_help() {
-			?>
-			<div class="changelog">
-
-				<div class="feature-section">
-					<h2><?php _e( 'Import Your NextGen Galleries', 'foogallery' ); ?></h2>
-
-					<img src="https://s3.amazonaws.com/foocdn/foogallery/admin-nextgen-import.jpg" class="foogallery-help-screenshot"/>
-
-					<h4><?php _e( 'Import Galleries', 'foogallery' ); ?></h4>
-
-					<p><?php printf( __( 'Import all your NextGen galleries in a single click, or choose the galleries you would like to migrate over to %s.', 'foogallery' ), foogallery_plugin_name() ); ?></p>
-
-					<h4><?php _e( 'Import Images', 'foogallery' ); ?></h4>
-
-					<p><?php _e( 'NextGen gallery images are imported into your WordPress media library, where they should be!', 'foogallery' ); ?></p>
-
-				</div>
-			</div>
-		<?php
 		}
 
 		function ajax_nextgen_find_shortcodes() {
