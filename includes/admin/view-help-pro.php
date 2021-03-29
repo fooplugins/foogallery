@@ -70,44 +70,46 @@ $features = array(
 ?>
 
 <div id="pro_section" class="foogallery-admin-help-section" style="display: none">
-	<?php if ( $show_trial_message ) { ?>
-		<div class="foogallery-admin-help-section-feature foogallery-admin-help-centered">
-			<h2><?php _e( 'FooBar PRO Free Trial 🤩', 'foogallery' );?></h2>
-			<p><?php _e( 'Want to test out all the PRO features below? No problem! You can start a 7-day free trial immediately!', 'foogallery' );?></p>
-			<a class="foogallery-admin-help-button-cta" href="<?php echo esc_url ( foogallery_admin_freetrial_url() ); ?>"><?php _e( 'Start Your 7-day Free Trial', 'foogallery' ); ?></a>
-		</div>
-	<?php } else if ( $show_thanks_for_pro ) { ?>
-		<div class="foogallery-admin-help-section-feature foogallery-admin-help-centered">
-			<h2><?php _e( 'Thanks for your support by purchasing a PRO license 😍', 'foogallery' );?></h2>
-			<p><?php _e( 'Check out the PRO features you can start using immediately...', 'foogallery' );?></p>
-		</div>
-	<?php } else if ( $is_trial ) { ?>
-		<div class="foogallery-admin-help-section-feature foogallery-admin-help-centered">
-			<h2><?php _e( 'Thanks for trying out PRO 😍', 'foogallery' );?></h2>
-			<p><?php _e( 'Check out the PRO features you can try out immediately...', 'foogallery' );?></p>
-		</div>
-	<?php } ?>
+    <section class="fgah-feature">
+        <?php if ( $show_trial_message ) { ?>
+            <header>
+                <h3><?php _e( 'FooBar PRO Free Trial 🤩', 'foogallery' );?></h3>
+                <p><?php _e( 'Want to test out all the PRO features below? No problem! You can start a 7-day free trial immediately!', 'foogallery' );?></p>
+            </header>
+            <footer>
+                <a class="foogallery-admin-help-button-cta" href="<?php echo esc_url ( foogallery_admin_freetrial_url() ); ?>"><?php _e( 'Start Your 7-day Free Trial', 'foogallery' ); ?></a>
+            </footer>
+        <?php } else if ( $show_thanks_for_pro ) { ?>
+            <header>
+                <h3><?php _e( 'Thanks for your support by purchasing a PRO license 😍', 'foogallery' );?></h3>
+                <p><?php _e( 'Check out the PRO features you can start using immediately...', 'foogallery' );?></p>
+            </header>
+        <?php } else if ( $is_trial ) { ?>
+            <header>
+                <h3><?php _e( 'Thanks for trying out PRO 😍', 'foogallery' );?></h3>
+                <p><?php _e( 'Check out the PRO features you can try out immediately...', 'foogallery' );?></p>
+            </header>
+        <?php } ?>
+    </section>
 
-	<?php foreach ( $features as $feature ) { ?>
-	<div class="foogallery-admin-help-section-feature">
-
-		<div class="foogallery-admin-help-2-columns">
-			<div class="foogallery-admin-help-column">
-				<h2>
-					<img src="<?php echo esc_url( 'https://assets.fooplugins.com/foogallery/plugin/green-tick.png' ); ?>" />
-					<span style="vertical-align: top"><?php echo esc_html( $feature['title']); ?></span>
-				</h2>
-				<p>
-					<?php echo esc_html( $feature['desc']); ?>
-					<a href="<?php echo esc_url( foogallery_admin_url( $feature['link'], 'help', $feature['utm_content'] ) ); ?>" target="_blank"><?php echo esc_html( $feature['link_text']); ?></a>
-				</p>
-			</div>
-			<div class="foogallery-admin-help-column">
-				<a href="<?php echo esc_url( foogallery_admin_url( $feature['link'], 'help', $feature['utm_content'] ) ); ?>" target="_blank">
-					<img src="<?php echo esc_url( $feature['image'] ); ?>" />
-				</a>
-			</div>
-		</div>
-	</div>
-	<?php } ?>
+	<?php foreach ( $features as $i => $feature ) { ?>
+    <section class="fgah-feature fgah-feature-pro<?php echo ( $i % 2 === 0 ) ? " fgah-feature-right" : ""; ?>">
+        <div>
+            <figure>
+                <a href="<?php echo esc_url( foogallery_admin_url( $feature['link'], 'help', $feature['utm_content'] ) ); ?>" target="_blank">
+                    <img src="<?php echo esc_url( $feature['image'] ); ?>" alt="<?php echo esc_html( $feature['title']); ?>" />
+                </a>
+            </figure>
+            <dl>
+                <dt><?php echo esc_html( $feature['title']); ?></dt>
+                <dd>
+                    <?php echo esc_html( $feature['desc']); ?>
+                    <br/>
+                    <br/>
+                    <a href="<?php echo esc_url( foogallery_admin_url( $feature['link'], 'help', $feature['utm_content'] ) ); ?>" target="_blank"><?php echo esc_html( $feature['link_text']); ?></a>
+                </dd>
+            </dl>
+        </div>
+    </section>
+    <?php } ?>
 </div>

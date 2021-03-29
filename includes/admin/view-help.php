@@ -10,6 +10,8 @@ $plugin_url = foogallery_admin_url( 'https://fooplugins.com/foogallery/', 'help'
 $support_url = foogallery_admin_url( 'https://fooplugins.link/support/', 'help' );
 
 $fooplugins_link = sprintf( '<a href="%s" target="_blank">%s</a>', $fooplugins_url, __( 'FooPlugins', 'foogallery' ) );
+$support_link = sprintf( '<a href="%s" target="_blank">%s</a>', $support_url, __( 'open a support ticket', 'foogallery' ) );
+$support_text = sprintf( __('Still stuck? Please %s and we will help!', 'foogallery'), $support_link );
 
 $link = sprintf('<a href="%s" target="_blank">%s</a>', $plugin_url, sprintf( __( 'Visit the %s Homepage', 'foogallery' ), $plugin_name ) );
 $tagline = sprintf( __( 'Thank you for choosing %s!<br />Better galleries for WordPress, that are faster, more flexible and beautiful!', 'foogallery' ), $plugin_name );
@@ -87,7 +89,7 @@ $show_demos = apply_filters( 'foogallery_admin_help_show_demos', true );
 								'_wp_http_referer': encodeURIComponent( $( 'input[name="_wp_http_referer"]' ).val() )
 							};
 
-						$this.addClass("foogallery-admin-help-loading").removeAttr('href');
+						$this.prop('disable', true).addClass("foogallery-admin-help-loading");
 
 						$.ajax({
 							type: 'POST',
@@ -96,11 +98,11 @@ $show_demos = apply_filters( 'foogallery_admin_help_show_demos', true );
 							cache: false,
 							success: function( html ) {
 								alert( html );
-								$('.foogallery-admin-help-create-demos').hide();
-								$('.foogallery-admin-help-created-demos').show();
+								$('.fgah-create-demos').hide();
+								$('.fgah-created-demos').show();
 							}
 						}).always(function(){
-							$this.removeClass("foogallery-admin-help-loading").attr('href', '#demo_content');
+							$this.removeClass("foogallery-admin-help-loading").prop('disable', false);
 						});
 					}
 				} );
@@ -158,235 +160,15 @@ $show_demos = apply_filters( 'foogallery_admin_help_show_demos', true );
 	});
 </script>
 <style>
-    body {
-        background-color: #484c50;
-    }
-    #wpcontent {
-        padding-right: 20px;
-    }
-    @media screen and (max-width: 782px){
-        .auto-fold #wpcontent {
-            padding-right: 10px;
-        }
-    }
-
-    .foogallery-admin-help {
-        max-width: 1000px;
-        margin: 24px auto;
-        clear: both;
-        background-color: #23282d;
-        border-radius: 20px;
-        color: #ffffff;
-    }
-
-    .foogallery-admin-help h2,
-    .foogallery-admin-help h3,
-    .foogallery-admin-help h4 {
-        color: inherit;
-    }
-
-    .foogallery-admin-help a {
-        color: #35beff;
-        text-decoration: none;
-    }
-    .foogallery-admin-help a:hover {
-        color: #0097de;
-    }
-    .foogallery-admin-help a:focus {
-        box-shadow: none;
-    }
-
-    .foogallery-admin-help-header {
-        margin: 0;
-        color: #FFFFFF;
-        position: relative;
-        text-align: center;
-        padding: 20px;
-    }
-    .foogallery-admin-help-header > img {
-        max-width: 100%;
-        height: auto;
-        margin: 3em 0;
-        box-sizing: border-box;
-    }
-
-    .foogallery-admin-help-tagline {
-        margin: 0;
-        padding: 10px;
-        font-size: 1.5em;
-    }
-
-    .foogallery-admin-help-ribbon {
-        position: absolute;
-        right: -5px;
-        top: -5px;
-        z-index: 1;
-        overflow: hidden;
-        width: 75px;
-        height: 75px;
-        text-align: right;
-    }
-    .foogallery-admin-help-ribbon span {
-        font-size: 10px;
-        font-weight: 600;
-        color: #2b2400;
-        text-transform: uppercase;
-        text-align: center;
-        line-height: 20px;
-        transform: rotate(45deg);
-        width: 100px;
-        display: block;
-        background: #d67935;
-        box-shadow: 0 3px 10px -5px rgba(0, 0, 0, 1);
-        position: absolute;
-        top: 19px; right: -21px;
-    }
-    .foogallery-admin-help-ribbon span::before {
-        content: "";
-        position: absolute;
-        left: 0;
-        top: 100%;
-        z-index: -1;
-        border-left: 3px solid #d67935;
-        border-right: 3px solid transparent;
-        border-bottom: 3px solid transparent;
-        border-top: 3px solid #d67935;
-    }
-    .foogallery-admin-help-ribbon span::after {
-        content: "";
-        position: absolute;
-        right: 0;
-        top: 100%;
-        z-index: -1;
-        border-left: 3px solid transparent;
-        border-right: 3px solid #d67935;
-        border-bottom: 3px solid transparent;
-        border-top: 3px solid #d67935;
-    }
-
-    .foogallery-admin-help nav {
-        background: #32373c;
-        clear: both;
-        padding-top: 0;
-        color: #0097de;
-        display: flex;
-    }
-
-    .foogallery-admin-help nav a {
-        margin-left: 0;
-        padding: 24px 32px 18px 32px;
-        font-size: 1.3em;
-        line-height: 1;
-        border-width: 0 0 6px;
-        border-style: solid;
-        border-color: transparent;
-        background: transparent;
-        color: inherit;
-        text-decoration: none;
-        font-weight: 600;
-        box-shadow: none;
-    }
-
-    .foogallery-admin-help nav a:hover {
-        background-color: #0073aa;
-        color: #ffffff;
-        border-width: 0;
-    }
-
-    .foogallery-admin-help nav a.foogallery-admin-help-tab-active {
-        background-color: #0073aa;
-        color: #ffffff;
-        border-color: #ffffff;
-    }
-
-    .foogallery-admin-help-section {
-    }
-
-    .foogallery-admin-help-centered {
-        text-align: center;
-    }
-
-    .foogallery-admin-help-section .foogallery-admin-help-section-feature {
-        margin: 32px;
-    }
-
-    .foogallery-admin-help-section .foogallery-admin-help-section-feature h2 {
-        text-align: center;
-        font-size: 1.6em;
-        margin: 0;
-        padding: 20px 0;
-        font-weight: 600;
-    }
-
-    .foogallery-admin-help-section .foogallery-admin-help-section-feature .foogallery-admin-help-2-columns {
-        display: -ms-grid;
-        display: grid;
-        grid-template-columns: 1fr 2fr;
-    }
-
-    .foogallery-admin-help-section .foogallery-admin-help-section-feature .foogallery-admin-help-2-columns .foogallery-admin-help-column {
-        padding: 20px;
-    }
-
-    .foogallery-admin-help-section .foogallery-admin-help-section-feature .foogallery-admin-help-2-columns .foogallery-admin-help-column h2 {
-	    text-align: left;
-    }
-
-    .foogallery-admin-help-button-cta {
-        background: #0073aa;
-        color: #ffffff !important;
-        padding: 12px 36px;
-        font-size: 1.3em;
-        border-radius: 10px;
-        text-decoration: none;
-        font-weight: 600;
-        display: inline-block;
-        min-width: 250px;
-    }
-    .foogallery-admin-help-button-cta:hover {
-        background: #016b99;
-    }
-
-    .foogallery-admin-help-button-cta.foogallery-admin-help-loading {
-        position: relative;
-        cursor: wait;
-    }
-
     .foogallery-admin-help-button-cta.foogallery-admin-help-loading:before {
-        content: '';
-        background: url('<?php echo $loader ?>') no-repeat;
-        background-size: 20px 20px;
-        display: inline-block;
-        opacity: 0.7;
-        filter: alpha(opacity=70);
-        width: 20px;
-        height: 20px;
-        border: none;
-        position: absolute;
-        top: 50%;
-        right: 8px;
-        transform: translateY(-50%);
+        background-image: url('<?php echo $loader ?>');
     }
-
-    .foogallery-admin-help-footer {
-        margin: 0;
-        color: #ffffff;
-        text-align: center;
-        padding: 20px;
-        font-size: 1.3em;
-    }
-
-    .foogallery-admin-help-column .foogallery-admin-help-button-cta {
-        min-width: auto;
-        padding: 12px 24px;
-    }
-
     <?php if ( $demos_created ) { ?>
-    .foogallery-admin-help-create-demos {
+    .fgah-create-demos {
 	    display: none;
     }
 	<?php } else { ?>
-    .foogallery-admin-help-created-demos {
+    .fgah-created-demos {
         display: none;
     }
 	<?php } ?>
@@ -422,23 +204,24 @@ $show_demos = apply_filters( 'foogallery_admin_help_show_demos', true );
 		<?php include FOOGALLERY_PATH . 'includes/admin/view-help-demos.php'; ?>
 
 		<div id="support_section" class="foogallery-admin-help-section" style="display: none">
-			<div class="foogallery-admin-help-section-feature">
-				<h2><?php _e( '🚑 Need help? We\'re here for you...' , 'foogallery' );?></h2>
-
-				<p>
-					<span class="dashicons dashicons-editor-help"></span>
-					<a href="<? echo esc_url( foogallery_admin_url( 'https://fooplugins.com/documentation/foogallery/', 'help') ); ?>" target="_blank"><?php _e('FooGallery Documentation','foogallery'); ?></a>
-					- <?php _e('Our documentation covers everything you need to know, from install instructions and account management, to troubleshooting common issues and extending the functionality.', 'foogallery'); ?></p>
-
-				<p><span class="dashicons dashicons-editor-help"></span><a href="https://wordpress.org/support/plugin/foogallery/" target="_blank"><?php _e('FooGallery WordPress.org Support','foogallery'); ?></a> - <?php _e('We actively monitor and answer all questions posted on WordPress.org for FooGallery.', 'foogallery'); ?></p>
-
-				<div class="feature-cta">
-					<p>
-						<?php _e('Still stuck? Please open a support ticket and we will help:', 'foogallery'); ?>
-						<a target="_blank" href="<?php echo esc_url ( $support_url ); ?>"><?php _e('Open a support ticket', 'fooplugins' ); ?></a>
-					</p>
-				</div>
-			</div>
+            <section class="fgah-feature">
+                <header>
+                    <h3><?php _e( '🚑 Need help? We\'re here for you...' , 'foogallery' );?></h3>
+                </header>
+                <ul class="fgah-help-list">
+                    <li>
+                        <a href="<? echo esc_url( foogallery_admin_url( 'https://fooplugins.com/documentation/foogallery/', 'help') ); ?>" target="_blank"><?php _e('FooGallery Documentation','foogallery'); ?></a>
+                        - <?php _e('Our documentation covers everything you need to know, from install instructions and account management, to troubleshooting common issues and extending the functionality.', 'foogallery'); ?>
+                    </li>
+                    <li>
+                        <a href="https://wordpress.org/support/plugin/foogallery/" target="_blank"><?php _e('FooGallery WordPress.org Support','foogallery'); ?></a>
+                        - <?php _e('We actively monitor and answer all questions posted on WordPress.org for FooGallery.', 'foogallery'); ?>
+                    </li>
+                </ul>
+                <footer>
+                    <?php echo $support_text; ?>
+                </footer>
+            </section>
 		</div>
 	</div>
 	<div class="foogallery-admin-help-footer">
