@@ -223,16 +223,6 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 				'tab'     => 'thumb'
 			);
 
-// This setting is not ever used, so there is no point in showing it
-//
-//			$settings[] = array(
-//				'id'      => 'thumb_resize_animations',
-//				'title'   => __( 'Resize Animated GIFs', 'foogallery' ),
-//				'desc'    => __( 'Should animated gifs be resized or not. If enabled, only the first frame is used in the resize.', 'foogallery' ),
-//				'type'    => 'checkbox',
-//				'tab'     => 'thumb'
-//			);
-
 			$settings[] = array(
 				'id'      => 'animated_gif_use_original_image',
 				'title'   => __( 'Show Animated Thumbnails', 'foogallery' ),
@@ -429,6 +419,14 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 					'tab'   => 'advanced'
 				);
 			}
+
+			$settings[] = array(
+				'id'    => 'demo_content',
+				'type'  => 'checkbox',
+				'title' => __( 'Demo Content Created', 'foogallery' ),
+				'desc'  => __( 'If the demo content has been created, then this will be checked. You can uncheck this to allow for demo content to be created again.', 'foogallery' ),
+				'tab'   => 'advanced'
+			);
 			//endregion Advanced Tab
 
 			//region Custom JS & CSS

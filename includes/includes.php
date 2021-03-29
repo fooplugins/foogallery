@@ -68,6 +68,7 @@ if ( is_admin() ) {
 	require_once( FOOGALLERY_PATH . 'includes/admin/class-admin-notices.php' );
     require_once( FOOGALLERY_PATH . 'includes/admin/class-gallery-datasources.php' );
 	require_once( FOOGALLERY_PATH . 'includes/admin/class-pro-promotion.php' );
+	require_once( FOOGALLERY_PATH . 'includes/admin/class-demo-content.php' );
 
 } else {
 

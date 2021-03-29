@@ -94,6 +94,20 @@ function foogallery_get_setting( $key, $default = false ) {
 }
 
 /**
+ * Sets a specific option based on a key
+ *
+ * @param $key
+ * @param $value
+ *
+ * @return mixed
+ */
+function foogallery_set_setting( $key, $value ) {
+	$foogallery = FooGallery_Plugin::get_instance();
+
+	return $foogallery->options()->save( $key, $value );
+}
+
+/**
  * Builds up a FooGallery gallery shortcode
  *
  * @param $gallery_id
@@ -139,6 +153,15 @@ function foogallery_get_default( $key, $default = false ) {
 
 	// Return the key specified.
 	return isset($defaults[ $key ]) ? $defaults[ $key ] : $default;
+}
+
+/**
+ * Returns the FooGallery Galleries Url within the admin
+ *
+ * @return string The Url to the FooGallery Gallery listing page in admin
+ */
+function foogallery_admin_gallery_listing_url() {
+	return admin_url( 'edit.php?post_type=' . FOOGALLERY_CPT_GALLERY );
 }
 
 /**
@@ -1710,4 +1733,39 @@ function foogallery_thumb( $url, $args = array() ) {
  */
 function foogallery_process_image_url( $url ) {
 	return apply_filters( 'foogallery_process_image_url', $url );
+}
+
+/**
+ * Build up a link to be used in the admin with the correct utm parameters
+ *
+ * @param      $url             string The original full URL
+ * @param      $utm_campaign    string The campaign or page that the link is on
+ * @param null $utm_medium      string The medium, so in this case we want to differentiate btw free and pro
+ * @param null $utm_content     string Optional extra data that can be used to differentiate between links in the same campaign
+ * @param      $utm_source      string The platform where the traffic originates. Should probably always be wp_plugin
+ *
+ * @return string
+ */
+function foogallery_admin_url( $url, $utm_campaign, $utm_content = null, $utm_medium = null, $utm_source = 'wp_plugin') {
+	if ( is_null( $utm_source ) ) {
+		$utm_source = 'wp_plugin';
+	}
+	if ( is_null( $utm_medium ) ) {
+		if ( foogallery_is_pro() ) {
+			$utm_medium = 'foogallery_pro';
+		} else {
+			$utm_medium = 'foogallery_free';
+		}
+	}
+	$params = array(
+		'utm_source' => $utm_source,
+		'utm_medium' => $utm_medium,
+		'utm_campaign' => $utm_campaign
+	);
+
+	if ( !is_null( $utm_content ) ) {
+		$params['utm_content'] = $utm_content;
+	}
+
+	return add_query_arg( $params, $url );
 }

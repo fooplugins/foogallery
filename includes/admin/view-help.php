@@ -1,20 +1,39 @@
 <?php
 $instance = FooGallery_Plugin::get_instance();
 $info = $instance->get_plugin_info();
-$title = apply_filters( 'foogallery_admin_help_title', sprintf( __( 'Welcome to %s %s', 'foogallery' ), foogallery_plugin_name(), $info['version'] ) );
-$tagline = apply_filters( 'foogallery_admin_help_tagline', sprintf( __( 'Thank you for choosing %s, the most intuitive and extensible gallery creation and management tool ever created for WordPress!', 'foogallery' ), foogallery_plugin_name() ) );
-$link = apply_filters( 'foogallery_admin_help_tagline_link', ' - <a href="https://fooplugins.com/foogallery/?utm_source=foogallery_plugin_help" target="_blank">' . __( 'Visit our homepage', 'foogallery' ) . '</a>' );
-$show_logo = apply_filters( 'foogallery_admin_help_show_logo', true );
-$show_tabs = apply_filters( 'foogallery_admin_help_show_tabs', true );
-$demo_link = '<a href="https://fooplugins.com/foogallery/demos/?utm_source=foogallery_plugin_help" target="_blank">' . __( 'gallery demos', 'foogallery' ) . '</a>';
-$support_url = 'https://fooplugins.link/support?utm_source=foogallery_plugin_help_support';
 
-$fs_instance = freemius( FOOGALLERY_SLUG );
-$show_upgrade = $fs_instance->is_free_plan();
-$show_trial_message = !$fs_instance->is_trial_utilized();
+$logo = FOOGALLERY_URL . 'assets/logo.png';
+$loader = FOOGALLERY_URL . 'assets/loader.gif';
+$plugin_name = foogallery_plugin_name();
+$fooplugins_url = foogallery_admin_url( 'https://fooplugins.com/', 'help' );
+$plugin_url = foogallery_admin_url( 'https://fooplugins.com/foogallery/', 'help' );
+$support_url = foogallery_admin_url( 'https://fooplugins.link/support/', 'help' );
+
+$fooplugins_link = sprintf( '<a href="%s" target="_blank">%s</a>', $fooplugins_url, __( 'FooPlugins', 'foogallery' ) );
+
+$link = sprintf('<a href="%s" target="_blank">%s</a>', $plugin_url, sprintf( __( 'Visit the %s Homepage', 'foogallery' ), $plugin_name ) );
+$tagline = sprintf( __( 'Thank you for choosing %s!<br />Easily create better galleries for WordPress, which are faster, more flexible and beautiful!', 'foogallery' ), $plugin_name );
+
+$made_by = __( 'Made with ❤️ by %s', 'foogallery' );
+$footer_text = sprintf( $made_by, $fooplugins_link );
+
+//allow the variables to be overwritten by other things!
+$logo = apply_filters( 'foogallery_admin_help_logo_url', $logo );
+
+$demos_created = foogallery_get_setting( 'demo_content' ) === 'on';
+
+$fs_instance = foogallery_fs();
+$is_free = $fs_instance->is_free_plan();
+$is_trial = $fs_instance->is_trial();
+$show_trial_message = !$is_trial && $is_free && !$fs_instance->is_trial_utilized();
+$show_thanks_for_pro = foogallery_is_pro();
+
 $upgrade_tab_text = __( 'Upgrade to PRO', 'foogallery' );
 $upgrade_button_text = __( 'Upgrade to PRO!', 'foogallery' );
-if ( $show_trial_message ) {
+
+if ( $show_thanks_for_pro ) {
+	$upgrade_tab_text = __( 'PRO Features', 'foogallery' );
+} else if ( $show_trial_message ) {
 	$upgrade_tab_text = __( 'Free Trial', 'foogallery' );
 	$upgrade_button_text = __( 'Already convinced? Upgrade to PRO!', 'foogallery' );
 }
@@ -23,259 +42,406 @@ $show_demos = apply_filters( 'foogallery_admin_help_show_demos', true );
 ?>
 <script type="text/javascript">
 	jQuery(document).ready(function($) {
-		$.admin_tabs = {
+		$.foogallery_help_tabs = {
 
 			init : function() {
-				$("a.nav-tab").on( 'click', function(e) {
+				$(".foogallery-admin-help nav a").click( function(e) {
 					e.preventDefault();
 
 					$this = $(this);
 
-					$this.parents(".nav-tab-wrapper:first").find(".nav-tab-active").removeClass("nav-tab-active");
-					$this.addClass("nav-tab-active");
+					$this.addClass("foogallery-admin-help-tab-active");
 
-					$(".nav-container:visible").hide();
+					$(".foogallery-admin-help-tab-active").not($this).removeClass("foogallery-admin-help-tab-active");
+
+					$(".foogallery-admin-help-section:visible").hide();
 
 					var hash = $this.attr("href");
 
 					$(hash+'_section').show();
 
 					window.location.hash = hash;
-				});
+				} );
 
 				if (window.location.hash) {
-					$('a.nav-tab[href="' + window.location.hash + '"]').click();
+					$('.foogallery-admin-help nav a[href="' + window.location.hash + '"]').click();
 				}
 
 				return false;
 			}
 
-		}; //End of admin_tabs
+		}; //End of foogallery_help_tabs
 
-		$.admin_tabs.init();
+		$.foogallery_help_tabs.init();
+
+		$.foogallery_import_data = {
+			init : function() {
+				$(".foogallery-admin-help-import-demos").click( function(e) {
+					e.preventDefault();
+
+					if ( confirm('Are you sure you want to create demo galleries? Images will be imported into your media library') ) {
+						var $this = $(this),
+							data = {
+								'action': 'foogallery_admin_import_demos',
+								'_wpnonce': $this.data( 'nonce' ),
+								'_wp_http_referer': encodeURIComponent( $( 'input[name="_wp_http_referer"]' ).val() )
+							};
+
+						$this.addClass("foogallery-admin-help-loading").removeAttr('href');
+
+						$.ajax({
+							type: 'POST',
+							url: ajaxurl,
+							data: data,
+							cache: false,
+							success: function( html ) {
+								alert( html );
+								$('.foogallery-admin-help-create-demos').hide();
+								$('.foogallery-admin-help-created-demos').show();
+							}
+						}).always(function(){
+							$this.removeClass("foogallery-admin-help-loading").attr('href', '#demo_content');
+						});
+					}
+				} );
+			}
+		};
+
+		$.foogallery_import_data.init();
+
+		$.foogallery_demos = {
+			init : function() {
+				$(".foogallery-admin-help-demo").click( function(e) {
+					e.preventDefault();
+
+					var $this = $(this),
+						demo_id = $this.data('foogallery-admin-help-demo'),
+						data = {
+							'action': 'foogallery_admin_help_demo',
+							'demo': demo_id,
+							'_wpnonce': $( '#foogallery_help_demo_nonce' ).val(),
+							'_wp_http_referer': encodeURIComponent( $( 'input[name="_wp_http_referer"]' ).val() )
+						};
+
+					$this.addClass("foogallery-admin-help-loading").removeAttr('href');
+
+					$.ajax({
+						type: 'POST',
+						url: ajaxurl,
+						data: data,
+						cache: false,
+						success: function( html ) {
+							FooBar.dismissAll(true);
+
+							//remove all foobars from the page
+							$('.foobar').remove();
+
+							var $html = $(html);
+
+							//append the bar content to end of body
+							$( 'body' ).append( $html );
+
+							//init the bar
+							const bar = FooBar.create( $html.attr('id') );
+							if ( bar instanceof FooBar.Bar ) {
+								bar.init();
+							}
+						}
+					}).always(function(){
+						$this.removeClass("foogallery-admin-help-loading").attr('href', '#demo');
+					});
+				} );
+			}
+		};
+
+		$.foogallery_demos.init();
 	});
 </script>
 <style>
-	.about-wrap img.foogallery-help-screenshot {
-		float:right;
-		margin-left: 20px;
-		width: inherit;
-	}
+    body {
+        background-color: #484c50;
+    }
+    #wpcontent {
+        padding-right: 20px;
+    }
+    @media screen and (max-width: 782px){
+        .auto-fold #wpcontent {
+            padding-right: 10px;
+        }
+    }
 
-	.foogallery-badge-logo {
-		position: absolute;
-		top: 15px;
-		right: 0;
-		background:url(<?php echo FOOGALLERY_URL; ?>assets/logo.png) no-repeat;
-		width:200px;
-		height:200px;
-	}
+    .foogallery-admin-help {
+        max-width: 1000px;
+        margin: 24px auto;
+        clear: both;
+        background-color: #23282d;
+        border-radius: 20px;
+        color: #ffffff;
+    }
 
-	.about-wrap h2.nav-tab-wrapper {
-		margin-bottom: 20px;
-	}
+    .foogallery-admin-help h2,
+    .foogallery-admin-help h3,
+    .foogallery-admin-help h4 {
+        color: inherit;
+    }
 
-	.foogallery-tip {
-		position: relative;
-		display: block;
-		line-height: 19px;
-		padding: 15px 10px 15px 50px;
-		font-size: 14px;
-		text-align: left;
-		margin: 5px 0 0 2px;
-		background-color: #1e8cbe;
-		border-radius: 3px;
-		-webkit-box-shadow: 0 1px 1px 0 rgba(0, 0, 0, .1);
-		box-shadow: 0 1px 1px 0 rgba(0, 0, 0, .1);
-		color: #fff;
-	}
+    .foogallery-admin-help a {
+        color: #35beff;
+        text-decoration: none;
+    }
+    .foogallery-admin-help a:hover {
+        color: #0097de;
+    }
+    .foogallery-admin-help a:focus {
+        box-shadow: none;
+    }
 
-	.foogallery-tip a {
-		color: #a4f2ff;
-		font-weight: bold;
-	}
+    .foogallery-admin-help-header {
+        margin: 0;
+        color: #FFFFFF;
+        position: relative;
+        text-align: center;
+        padding: 20px;
+    }
+    .foogallery-admin-help-header > img {
+        max-width: 100%;
+        height: auto;
+        margin: 3em 0;
+        box-sizing: border-box;
+    }
 
-	.foogallery-tip:before {
-		content: "\f348";
-		font: 400 30px/1 dashicons !important;
-		speak: none;
-		color: #fff;
-		display: inline-block;
-		-webkit-font-smoothing: antialiased;
-		-moz-osx-font-smoothing: grayscale;
-		vertical-align: bottom;
-		position: absolute;
-		left: 10px;
-		margin-top: -15px;
-		top: 50%;
-		height: 1em;
-	}
+    .foogallery-admin-help-tagline {
+        margin: 0;
+        padding: 10px;
+        font-size: 1.5em;
+    }
 
-	.feature-cta {
-		text-align: center;
-		display: block;
-		padding: 20px;
-	}
+    .foogallery-admin-help-ribbon {
+        position: absolute;
+        right: -5px;
+        top: -5px;
+        z-index: 1;
+        overflow: hidden;
+        width: 75px;
+        height: 75px;
+        text-align: right;
+    }
+    .foogallery-admin-help-ribbon span {
+        font-size: 10px;
+        font-weight: 600;
+        color: #2b2400;
+        text-transform: uppercase;
+        text-align: center;
+        line-height: 20px;
+        transform: rotate(45deg);
+        width: 100px;
+        display: block;
+        background: #d67935;
+        box-shadow: 0 3px 10px -5px rgba(0, 0, 0, 1);
+        position: absolute;
+        top: 19px; right: -21px;
+    }
+    .foogallery-admin-help-ribbon span::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 100%;
+        z-index: -1;
+        border-left: 3px solid #d67935;
+        border-right: 3px solid transparent;
+        border-bottom: 3px solid transparent;
+        border-top: 3px solid #d67935;
+    }
+    .foogallery-admin-help-ribbon span::after {
+        content: "";
+        position: absolute;
+        right: 0;
+        top: 100%;
+        z-index: -1;
+        border-left: 3px solid transparent;
+        border-right: 3px solid #d67935;
+        border-bottom: 3px solid transparent;
+        border-top: 3px solid #d67935;
+    }
 
-	.feature-cta a {
-		background: #0085ba;
-		border-color: #0073aa #006799 #006799;
-		-webkit-box-shadow: 0 1px 0 #006799;
-		box-shadow: 0 1px 0 #006799;
-		color: #fff;
-		text-decoration: none;
-		text-shadow: 0 -1px 1px #006799, 1px 0 1px #006799, 0 1px 1px #006799, -1px 0 1px #006799;
-		padding: 5px 20px;
-		border-radius: 3px;
-	}
+    .foogallery-admin-help nav {
+        background: #32373c;
+        clear: both;
+        padding-top: 0;
+        color: #0097de;
+        display: flex;
+    }
 
-	.feature-section .dashicons {
-		font-size: 1.8em;
-		padding-right: 10px;
-	}
+    .foogallery-admin-help nav a {
+        margin-left: 0;
+        padding: 24px 32px 18px 32px;
+        font-size: 1.3em;
+        line-height: 1;
+        border-width: 0 0 6px;
+        border-style: solid;
+        border-color: transparent;
+        background: transparent;
+        color: inherit;
+        text-decoration: none;
+        font-weight: 600;
+        box-shadow: none;
+    }
 
-	#freetrial_section .dashicons {
-		color: green;
-	}
+    .foogallery-admin-help nav a:hover {
+        background-color: #0073aa;
+        color: #ffffff;
+        border-width: 0;
+    }
 
-	#demos_section .dashicons {
-		color: #006799;
-	}
+    .foogallery-admin-help nav a.foogallery-admin-help-tab-active {
+        background-color: #0073aa;
+        color: #ffffff;
+        border-color: #ffffff;
+    }
 
-	#support_section .dashicons {
-		color: #006799;
-	}
+    .foogallery-admin-help-section {
+    }
 
-	#demos_section {
-		text-align: center;
-	}
+    .foogallery-admin-help-centered {
+        text-align: center;
+    }
 
-	.demos_masonry {
-		display: grid;
-		grid-gap: 2em; /* [1] Add some gap between rows and columns */
-		grid-template-columns: repeat( auto-fill, minmax( 200px, 1fr ) ); /* [2] Make columns adjust according to the available viewport */
-	}
+    .foogallery-admin-help-section .foogallery-admin-help-section-feature {
+        margin: 32px;
+    }
+
+    .foogallery-admin-help-section .foogallery-admin-help-section-feature h2 {
+        text-align: center;
+        font-size: 1.6em;
+        margin: 0;
+        padding: 20px 0;
+        font-weight: 600;
+    }
+
+    .foogallery-admin-help-section .foogallery-admin-help-section-feature .foogallery-admin-help-2-columns {
+        display: -ms-grid;
+        display: grid;
+        grid-template-columns: 1fr 2fr;
+    }
+
+    .foogallery-admin-help-section .foogallery-admin-help-section-feature .foogallery-admin-help-2-columns .foogallery-admin-help-column {
+        padding: 20px;
+    }
+
+    .foogallery-admin-help-section .foogallery-admin-help-section-feature .foogallery-admin-help-2-columns .foogallery-admin-help-column h2 {
+	    text-align: left;
+    }
+
+    .foogallery-admin-help-button-cta {
+        background: #0073aa;
+        color: #ffffff !important;
+        padding: 12px 36px;
+        font-size: 1.3em;
+        border-radius: 10px;
+        text-decoration: none;
+        font-weight: 600;
+        display: inline-block;
+        min-width: 250px;
+    }
+    .foogallery-admin-help-button-cta:hover {
+        background: #016b99;
+    }
+
+    .foogallery-admin-help-button-cta.foogallery-admin-help-loading {
+        position: relative;
+        cursor: wait;
+    }
+
+    .foogallery-admin-help-button-cta.foogallery-admin-help-loading:before {
+        content: '';
+        background: url('<?php echo $loader ?>') no-repeat;
+        background-size: 20px 20px;
+        display: inline-block;
+        opacity: 0.7;
+        filter: alpha(opacity=70);
+        width: 20px;
+        height: 20px;
+        border: none;
+        position: absolute;
+        top: 50%;
+        right: 8px;
+        transform: translateY(-50%);
+    }
+
+    .foogallery-admin-help-footer {
+        margin: 0;
+        color: #ffffff;
+        text-align: center;
+        padding: 20px;
+        font-size: 1.3em;
+    }
+
+    .foogallery-admin-help-column .foogallery-admin-help-button-cta {
+        min-width: auto;
+        padding: 12px 24px;
+    }
+
+    <?php if ( $demos_created ) { ?>
+    .foogallery-admin-help-create-demos {
+	    display: none;
+    }
+	<?php } else { ?>
+    .foogallery-admin-help-created-demos {
+        display: none;
+    }
+	<?php } ?>
 
 </style>
-<div class="wrap about-wrap">
-	<h1><?php echo $title; ?></h1>
-	<div class="about-text">
-		<?php echo $tagline. $link; ?>
+<div class="foogallery-admin-help">
+	<div class="foogallery-admin-help-header">
+		<div class="foogallery-admin-help-ribbon"><span><?php echo FOOGALLERY_VERSION; ?></span></div>
+		<img src="<?php echo $logo; ?>" width="200" height="200">
+		<p class="foogallery-admin-help-tagline"><?php echo $tagline; ?></p>
+		<p class="foogallery-admin-help-tagline"><?php echo $link; ?></p>
 	</div>
-	<?php if ( $show_logo ) { ?>
-	<div class="foogallery-badge-logo"></div>
-	<?php } ?>
-	<?php if ( $show_tabs ) { ?>
-	<h2 class="nav-tab-wrapper">
-		<a class="nav-tab nav-tab-active" href="#help">
+	<nav>
+		<a class="foogallery-admin-help-tab-active" href="#help">
 			<?php _e( 'Getting Started', 'foogallery' ); ?>
 		</a>
-		<?php if ( $show_upgrade ) { ?>
-		<a class="nav-tab" href="#freetrial">
+		<a href="#pro">
 			<?php _e( $upgrade_tab_text, 'foogallery' ); ?>
 		</a>
-		<?php } ?>
-		<?php if ( $show_demos ) { ?>
-			<a class="nav-tab" href="#demos">
-				<?php _e( 'Demos', 'foogallery' ); ?>
-			</a>
-		<?php } ?>
-		<a class="nav-tab" href="#support">
+		<a href="#demos">
+			<?php _e( 'Demo', 'foogallery' ); ?>
+		</a>
+		<a href="#support">
 			<?php _e( 'Support', 'foogallery' ); ?>
 		</a>
-	</h2>
-	<?php } else { ?><hr /><?php } ?>
-	<div id="help_section" class="feature-section nav-container">
-		<div class="changelog section-getting-started">
-			<div class="feature-section">
-				<h2><?php _e( 'Creating Your First Gallery', 'foogallery' );?></h2>
+	</nav>
+	<div class="foogallery-admin-help-content">
 
-				<img src="https://s3.amazonaws.com/foocdn/foogallery/admin-edit-gallery.jpg" class="foogallery-help-screenshot"/>
+		<?php include FOOGALLERY_PATH . 'includes/admin/view-help-getting-started.php'; ?>
 
-				<h4><?php printf( __( '1. <a href="%s">Galleries &rarr; Add New</a>', 'foogallery' ), esc_url ( admin_url( 'post-new.php?post_type=foogallery' ) ) ); ?></h4>
-				<p><?php _e( 'To create your first gallery, simply click the Add New button or click the Add Gallery link in the menu.', 'foogallery' ); ?></p>
+		<?php include FOOGALLERY_PATH . 'includes/admin/view-help-pro.php'; ?>
 
-				<h4><?php _e( '2. Add Media', 'foogallery' );?></h4>
-				<p><?php _e( 'Click the Add Media button and choose images from the media library to include in your gallery.', 'foogallery' );?></p>
+		<?php include FOOGALLERY_PATH . 'includes/admin/view-help-demos.php'; ?>
 
-				<h4><?php _e( '3. Choose a Template', 'foogallery' );?></h4>
-				<p><?php _e( 'We have loads of awesome built-in gallery templates to choose from.', 'foogallery' );?></p>
+		<div id="support_section" class="foogallery-admin-help-section" style="display: none">
+			<div class="foogallery-admin-help-section-feature">
+				<h2><?php _e( '🚑 Need help? We\'re here for you...' , 'foogallery' );?></h2>
 
-				<h4><?php _e( '4. Adjust Your Settings', 'foogallery' );?></h4>
-				<p><?php _e( 'There are tons of settings to help you customize the gallery to suit your needs.', 'foogallery' );?></p>
+				<p>
+					<span class="dashicons dashicons-editor-help"></span>
+					<a href="<? echo esc_url( foogallery_admin_url( 'https://fooplugins.com/documentation/foogallery/', 'help') ); ?>" target="_blank"><?php _e('FooGallery Documentation','foogallery'); ?></a>
+					- <?php _e('Our documentation covers everything you need to know, from install instructions and account management, to troubleshooting common issues and extending the functionality.', 'foogallery'); ?></p>
+
+				<p><span class="dashicons dashicons-editor-help"></span><a href="https://wordpress.org/support/plugin/foogallery/" target="_blank"><?php _e('FooGallery WordPress.org Support','foogallery'); ?></a> - <?php _e('We actively monitor and answer all questions posted on WordPress.org for FooGallery.', 'foogallery'); ?></p>
+
+				<div class="feature-cta">
+					<p>
+						<?php _e('Still stuck? Please open a support ticket and we will help:', 'foogallery'); ?>
+						<a target="_blank" href="<?php echo esc_url ( $support_url ); ?>"><?php _e('Open a support ticket', 'fooplugins' ); ?></a>
+					</p>
+				</div>
 			</div>
-		</div>
-
-		<div class="changelog section-getting-started">
-			<div class="foogallery-tip">
-				<?php printf( __( 'Not sure which gallery template to use? Check out all our different %s.', 'foogallery' ), $demo_link ); ?>
-			</div>
-		</div>
-
-		<?php do_action( 'foogallery_admin_help_after_section_one' ); ?>
-
-		<div class="changelog section-getting-started">
-			<div class="feature-section">
-				<h2><?php _e( 'Show Off Your Gallery', 'foogallery' );?></h2>
-
-				<img src="https://s3.amazonaws.com/foocdn/foogallery/admin-insert-shortcode.jpg" class="foogallery-help-screenshot"/>
-
-				<h4><?php printf( __( 'Gutenberg Editor','foogallery' ), foogallery_gallery_shortcode_tag() );?></h4>
-				<p><?php _e( 'Use the new block directly in the new visual editor that comes standard in WordPress 5.', 'foogallery' );?></p>
-
-				<h4><?php printf( __( 'The <em>[%s]</em> Short Code','foogallery' ), foogallery_gallery_shortcode_tag() );?></h4>
-				<p><?php _e( 'Simply copy the shortcode code from the gallery listing page and paste it into your posts or pages.', 'foogallery' );?></p>
-
-				<h4><?php _e( 'Copy To Clipboard','foogallery' );?></h4>
-				<p><?php _e( 'We make your life easy! Just click the shortcodes and they get copied to your clipboard automatically. ', 'foogallery' );?></p>
-
-			</div>
-		</div>
-
-		<?php do_action( 'foogallery_admin_help_after_section_two' ); ?>
-	</div>
-	<div id="freetrial_section" class="feature-section nav-container" style="display: none">
-		<?php if ( $show_trial_message ) { ?>
-			<div>
-				<h2><?php _e( 'FooGallery PRO Free Trial', 'foogallery' );?></h2>
-				<p><?php _e( 'Want to test out all the PRO features? No problem! You can start a 7-day free trial immediately. No credit card is required!', 'foogallery' );?></p>
-				<div class="feature-cta"><?php printf( '<a href="%s">%s</a>', esc_url ( foogallery_admin_freetrial_url() ), __( 'Start Your 7-day Free Trial', 'foogallery' ) ); ?></div>
-			</div>
-		<?php } ?>
-		<h2><?php _e( 'FooGallery PRO Features', 'foogallery' );?></h2>
-		<p><?php _e( 'Click on a link below to open a demo of the PRO feature in a new tab.', 'foogallery' );?></p>
-		<?php foreach ( foogallery_marketing_pro_features() as $feature ) {
-			?><p><span class="dashicons dashicons-yes"></span><strong><a href="<?php echo esc_url($feature['demo'] . '?utm_source=foogallery_plugin_help_features' ); ?>" target="_blank" title="<?php __('Open PRO demo in new tab','foogallery'); ?>"><?php echo $feature['feature']; ?></a></strong> - <?php echo $feature['desc']; ?></p><?php
-		}?>
-		<div class="feature-cta"><?php printf( '<a href="%s">%s</a>', esc_url ( foogallery_admin_pricing_url() ), $upgrade_button_text ); ?></div>
-	</div>
-	<div id="demos_section" class="feature-section nav-container" style="display: none">
-		<h2><?php _e( 'FooGallery Demos', 'foogallery' );?></h2>
-		<div class="demos_masonry">
-		<?php
-		$demo_section = '';
-		foreach ( foogallery_marketing_demos() as $demo ) {
-			if ( $demo_section !== $demo['section'] ) {
-				if ( '' !== $demo_section ) {
-					echo '</div>';
-				}
-				$demo_section = $demo['section'];
-				echo '<div class="demo_section"><h3>' . $demo_section . '</h3>';
-			}
-			?><p><span class="dashicons dashicons-format-image"></span><a href="<?php echo esc_url($demo['href'] . '?utm_source=foogallery_plugin_help_demos' ); ?>" target="_blank" title="<?php __('Open demo in new tab','foogallery'); ?>"><?php echo $demo['demo']; ?></a></p><?php
-		}?></div>
 		</div>
 	</div>
-	<div id="support_section" class="feature-section nav-container" style="display: none">
-		<h2><?php _e( 'Need help? We\'re here for you...' , 'foogallery' );?></h2>
-
-		<p><span class="dashicons dashicons-editor-help"></span><a href="https://fooplugins.com/documentation/foogallery/" target="_blank"><?php _e('FooPlugins Knowledgebase','foogallery'); ?></a> - <?php _e('A collection of common scenarios and questions. The knowledgebase articles will help you troubleshoot issues that have previously been solved.', 'foogallery'); ?></p>
-
-		<p><span class="dashicons dashicons-editor-help"></span><a href="https://wordpress.org/support/plugin/foogallery/" target="_blank"><?php _e('FooGallery WordPress.org Support','foogallery'); ?></a> - <?php _e('We actively monitor and answer all questions posted on WordPress.org for FooGallery.', 'foogallery'); ?></p>
-
-		<div class="feature-cta">
-			<p><?php _e('Still stuck? Please open a support ticket and we will help:', 'foogallery'); ?></p>
-			<a target="_blank" href="<?php echo esc_url ( $support_url ); ?>"><?php _e('Open a support ticket', 'fooplugins' ); ?></a>
-		</div>
+	<div class="foogallery-admin-help-footer">
+		<?php echo $footer_text; ?>
 	</div>
 </div>
