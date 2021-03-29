@@ -3,7 +3,7 @@
 return array(
 	array(
 		'key'         => 'responsive',
-		'post_title'  => 'Demo Gallery : Responsive',
+		'post_title'  => 'Demo : Responsive',
 		'post_status' => 'publish',
 		'post_type'   => FOOGALLERY_CPT_GALLERY,
 		'items'       => array( 'pixabay1', 'pixabay2', 'pixabay3', 'pixabay4', 'pixabay5', 'pixabay6' ),
@@ -18,7 +18,7 @@ return array(
 					'height' => '200',
 				),
 				'default_thumbnail_link'        => 'image',
-				'default_lightbox'              => 'foogallery',
+				'default_lightbox'              => foogallery_demo_content_determine_best_lightbox(),
 				'default_spacing'               => 'fg-gutter-10',
 				'default_alignment'             => 'fg-center',
 				//'default_layout'                => 'fixed',
@@ -73,13 +73,13 @@ return array(
 				'default_video_sticky_icon' => '',
 			),
 		),
-	),
+	), //Demo : Responsive
 	array(
 		'key'         => 'image-viewer',
-		'post_title'  => 'Demo Gallery : Image Viewer',
+		'post_title'  => 'Demo : Image Viewer',
 		'post_status' => 'publish',
 		'post_type'   => FOOGALLERY_CPT_GALLERY,
-		'items'       => array( 'pixabay1', 'pixabay3', 'pixabay5', 'pixabay10', 'pixabay11', 'pixabay12' ),
+		'items'       => array( 'pixabay3', 'pixabay1', 'pixabay5', 'pixabay10', 'pixabay11', 'pixabay12' ),
 		'meta_input'  => array(
 			FOOGALLERY_META_TEMPLATE => 'image-viewer',
 			FOOGALLERY_META_SETTINGS => array(
@@ -92,7 +92,7 @@ return array(
 					'crop'   => '1'
 				),
 				'image-viewer_thumbnail_link'        => 'image',
-				'image-viewer_lightbox'              => 'foogallery',
+				'image-viewer_lightbox'              => foogallery_demo_content_determine_best_lightbox(),
 				'image-viewer_alignment'             => 'fg-center',
 				'image-viewer_looping'               => 'enabled',
 
@@ -146,13 +146,13 @@ return array(
 				'image-viewer_video_sticky_icon' => '',
 			),
 		),
-	),
+	), //Demo : Image Viewer
 	array(
 		'key'         => 'justified',
-		'post_title'  => 'Demo Gallery : Justified',
+		'post_title'  => 'Demo : Justified',
 		'post_status' => 'publish',
 		'post_type'   => FOOGALLERY_CPT_GALLERY,
-		'items'       => array( 'pixabay1', 'pixabay2', 'pixabay3', 'pixabay4', 'pixabay5', 'pixabay6', 'pixabay7', 'pixabay8', 'pixabay9', 'pixabay10', 'pixabay11', 'pixabay12' ),
+		'items'       => array( 'pixabay2', 'pixabay1', 'pixabay3', 'pixabay4', 'pixabay5', 'pixabay6', 'pixabay7', 'pixabay8', 'pixabay9', 'pixabay10', 'pixabay11', 'pixabay12' ),
 		'meta_input'  => array(
 			FOOGALLERY_META_TEMPLATE => 'justified',
 			FOOGALLERY_META_SETTINGS => array(
@@ -162,7 +162,7 @@ return array(
 				'justified_row_height'            => '200',
 				'justified_thumb_height'          => '300',
 				'justified_thumbnail_link'        => 'image',
-				'justified_lightbox'              => 'foogallery',
+				'justified_lightbox'              => foogallery_demo_content_determine_best_lightbox(),
 				'justified_align'                 => 'center',
 				'justified_margins'               => '1',
 
@@ -212,13 +212,13 @@ return array(
 				'justified_video_sticky_icon' => '',
 			),
 		),
-	),
+	), //Demo : Justified
 	array(
 		'key'         => 'masonry',
-		'post_title'  => 'Demo Gallery : Masonry',
+		'post_title'  => 'Demo : Masonry',
 		'post_status' => 'publish',
 		'post_type'   => FOOGALLERY_CPT_GALLERY,
-		'items'       => array( 'pixabay1', 'pixabay2', 'pixabay3', 'pixabay4', 'pixabay5', 'pixabay6', 'pixabay7', 'pixabay8', 'pixabay9', 'pixabay10', 'pixabay11', 'pixabay12' ),
+		'items'       => array( 'pixabay4', 'pixabay2', 'pixabay3', 'pixabay1', 'pixabay5', 'pixabay6', 'pixabay7', 'pixabay8', 'pixabay9', 'pixabay10', 'pixabay11', 'pixabay12' ),
 		'meta_input'  => array(
 			FOOGALLERY_META_TEMPLATE => 'masonry',
 			FOOGALLERY_META_SETTINGS => array(
@@ -228,7 +228,7 @@ return array(
 				'masonry_thumbnail_width'       => '250',
 				'masonry_layout'                => 'fixed',
 				'masonry_thumbnail_link'        => 'image',
-				'masonry_lightbox'              => 'foogallery',
+				'masonry_lightbox'              => foogallery_demo_content_determine_best_lightbox(),
 				'masonry_align'                 => 'fg-center',
 				'masonry_gutter_width'          => '10',
 
@@ -278,5 +278,141 @@ return array(
 				'masonry_video_sticky_icon' => '',
 			),
 		),
-	),
+	), //Demo : Masonry
+	array(
+		'key'         => 'portfolio',
+		'post_title'  => 'Demo : Simple Portfolio',
+		'post_status' => 'publish',
+		'post_type'   => FOOGALLERY_CPT_GALLERY,
+		'items'       => array( 'pixabay5', 'pixabay1', 'pixabay2', 'pixabay3', 'pixabay4', 'pixabay6', 'pixabay7', 'pixabay8', 'pixabay9', 'pixabay10', 'pixabay11', 'pixabay12' ),
+		'meta_input'  => array(
+			FOOGALLERY_META_TEMPLATE => 'simple_portfolio',
+			FOOGALLERY_META_SETTINGS => array(
+				'foogallery_items_view'         => 'preview',
+
+				//General
+				'simple_portfolio_thumbnail_dimensions'  => array(
+					'width'  => '220',
+					'height' => '180',
+				),
+				'simple_portfolio_thumbnail_link'        => 'image',
+				'simple_portfolio_lightbox'              => foogallery_demo_content_determine_best_lightbox(),
+				'simple_portfolio_align'                 => 'center',
+				'simple_portfolio_gutter'                => '5',
+
+				//Appearance
+				'simple_portfolio_theme'                 => 'fg-light',              // options : 'fg-light', 'fg-dark', 'fg-custom'
+				'simple_portfolio_border_size'           => 'fg-border-thin',       // options : '', 'fg-border-thin', 'fg-border-medium', 'fg-border-thick'
+				'simple_portfolio_rounded_corners'       => '',                     // options : '', 'fg-round-small', 'fg-round-medium', 'fg-round-large', 'fg-round-full'
+				'simple_portfolio_drop_shadow'           => 'fg-shadow-small',      // options : '', 'fg-shadow-outline', 'fg-shadow-small', 'fg-shadow-medium', 'fg-shadow-large'
+				'simple_portfolio_inner_shadow'          => 'fg-shadow-inset-medium',                     // options : '', 'fg-shadow-inset-small', 'fg-shadow-inset-medium', 'fg-shadow-inset-large'
+				'simple_portfolio_loading_icon'          => 'fg-loading-default',   // options : '', 'fg-loading-default', 'fg-loading-bars', 'fg-loading-dots', 'fg-loading-partial', 'fg-loading-pulse', 'fg-loading-trail',
+
+				'simple_portfolio_loaded_effect'         => 'fg-loaded-swing-down',    // options : 'fg-loaded-fade-in', 'fg-loaded-scale-up'
+				'simple_portfolio_instagram'             => '',
+
+				//Captions
+				'simple_portfolio_captions_type'         => '',
+				'simple_portfolio_caption_title_source'  => '',
+				'simple_portfolio_caption_desc_source'   => '',
+				'simple_portfolio_captions_limit_length' => '',
+				'simple_portfolio_caption_alignment'     => 'fg-c-c',
+
+				//Hover Effects
+				'simple_portfolio_hover_effect_caption_visibility' => 'fg-caption-always', // options : '', 'fg-caption-hover', 'fg-caption-always', 'fg-captions-bottom'
+				'simple_portfolio_hover_effect_color'              => '',                   // options : '', 'fg-hover-colorize', 'fg-hover-grayscale
+				'simple_portfolio_hover_effect_icon'               => 'fg-hover-eye',      // options : 'fg-hover-zoom', 'fg-hover-zoom2', 'fg-hover-zoom3', 'fg-hover-plus', 'fg-hover-circle-plus', 'fg-hover-eye', 'fg-hover-external'
+				'simple_portfolio_hover_effect_preset'             => 'fg-custom',
+				'simple_portfolio_hover_effect_scale'              => '',    // options : '', 'fg-hover-scale', 'fg-hover-zoomed'
+				'simple_portfolio_hover_effect_transition'         => 'fg-hover-fade',      // options : 'fg-hover-instant', 'fg-hover-fade', 'fg-hover-slide-up', 'fg-hover-slide-down', 'fg-hover-slide-left', 'fg-hover-slide-right', 'fg-hover-push'
+				'simple_portfolio_hover_effect_type'               => 'normal',             // options : 'none', 'normal', 'preset'
+				'simple_portfolio_caption_invert_color'            => 'fg-light-overlays',                   // options : '', 'fg-light-overlays', 'fg-transparent-overlays'
+
+				//Filtering
+				'simple_portfolio_filtering_type' => '',
+
+				//Paging
+				'simple_portfolio_paging_type' => '',
+
+				//Advanced
+				'simple_portfolio_state' => 'no',
+				'simple_portfolio_custom_settings' => '',
+				'simple_portfolio_lazyload' => '',
+
+				//Video
+				'simple_portfolio_video_autoplay'    => 'yes',
+				'simple_portfolio_video_hover_icon'  => 'fg-video-default',
+				'simple_portfolio_video_size'        => '640x360',
+				'simple_portfolio_video_sticky_icon' => '',
+			),
+		),
+	), //Demo : Simple Portfolio
+	array(
+		'key'         => 'portfolio2',
+		'post_title'  => 'Demo : Simple Portfolio (Variation)',
+		'post_status' => 'publish',
+		'post_type'   => FOOGALLERY_CPT_GALLERY,
+		'items'       => array( 'pixabay6', 'pixabay1', 'pixabay2', 'pixabay3', 'pixabay4', 'pixabay5', 'pixabay7', 'pixabay8', 'pixabay9', 'pixabay10', 'pixabay11', 'pixabay12' ),
+		'meta_input'  => array(
+			FOOGALLERY_META_TEMPLATE => 'simple_portfolio',
+			FOOGALLERY_META_SETTINGS => array(
+				'foogallery_items_view'         => 'preview',
+
+				//General
+				'simple_portfolio_thumbnail_dimensions'  => array(
+					'width'  => '220',
+					'height' => '180',
+				),
+				'simple_portfolio_thumbnail_link'        => 'image',
+				'simple_portfolio_lightbox'              => foogallery_demo_content_determine_best_lightbox(),
+				'simple_portfolio_align'                 => 'center',
+				'simple_portfolio_gutter'                => '5',
+
+				//Appearance
+				'simple_portfolio_theme'                 => 'fg-transparent',              // options : 'fg-light', 'fg-dark', 'fg-custom'
+				'simple_portfolio_border_size'           => '',       // options : '', 'fg-border-thin', 'fg-border-medium', 'fg-border-thick'
+				'simple_portfolio_rounded_corners'       => 'fg-round-large',                     // options : '', 'fg-round-small', 'fg-round-medium', 'fg-round-large', 'fg-round-full'
+				'simple_portfolio_drop_shadow'           => '',      // options : '', 'fg-shadow-outline', 'fg-shadow-small', 'fg-shadow-medium', 'fg-shadow-large'
+				'simple_portfolio_inner_shadow'          => '',                     // options : '', 'fg-shadow-inset-small', 'fg-shadow-inset-medium', 'fg-shadow-inset-large'
+				'simple_portfolio_loading_icon'          => 'fg-loading-default',   // options : '', 'fg-loading-default', 'fg-loading-bars', 'fg-loading-dots', 'fg-loading-partial', 'fg-loading-pulse', 'fg-loading-trail',
+
+				'simple_portfolio_loaded_effect'         => 'fg-loaded-flip',    // options : 'fg-loaded-fade-in', 'fg-loaded-scale-up'
+				'simple_portfolio_instagram'             => '',
+
+				//Captions
+				'simple_portfolio_captions_type'         => '',
+				'simple_portfolio_caption_title_source'  => '',
+				'simple_portfolio_caption_desc_source'   => 'none',
+				'simple_portfolio_captions_limit_length' => '',
+				'simple_portfolio_caption_alignment'     => 'fg-c-c',
+
+				//Hover Effects
+				'simple_portfolio_hover_effect_caption_visibility' => 'fg-caption-always', // options : '', 'fg-caption-hover', 'fg-caption-always', 'fg-captions-bottom'
+				'simple_portfolio_hover_effect_color'              => '',                   // options : '', 'fg-hover-colorize', 'fg-hover-grayscale
+				'simple_portfolio_hover_effect_icon'               => 'fg-hover-zoom2',      // options : 'fg-hover-zoom', 'fg-hover-zoom2', 'fg-hover-zoom3', 'fg-hover-plus', 'fg-hover-circle-plus', 'fg-hover-eye', 'fg-hover-external'
+				'simple_portfolio_hover_effect_preset'             => 'fg-custom',
+				'simple_portfolio_hover_effect_scale'              => 'fg-hover-zoomed',    // options : '', 'fg-hover-scale', 'fg-hover-zoomed'
+				'simple_portfolio_hover_effect_transition'         => 'fg-hover-fade',      // options : 'fg-hover-instant', 'fg-hover-fade', 'fg-hover-slide-up', 'fg-hover-slide-down', 'fg-hover-slide-left', 'fg-hover-slide-right', 'fg-hover-push'
+				'simple_portfolio_hover_effect_type'               => 'normal',             // options : 'none', 'normal', 'preset'
+				'simple_portfolio_caption_invert_color'            => '',                   // options : '', 'fg-light-overlays', 'fg-transparent-overlays'
+
+				//Filtering
+				'simple_portfolio_filtering_type' => '',
+
+				//Paging
+				'simple_portfolio_paging_type' => '',
+
+				//Advanced
+				'simple_portfolio_state' => 'no',
+				'simple_portfolio_custom_settings' => '',
+				'simple_portfolio_lazyload' => '',
+
+				//Video
+				'simple_portfolio_video_autoplay'    => 'yes',
+				'simple_portfolio_video_hover_icon'  => 'fg-video-default',
+				'simple_portfolio_video_size'        => '640x360',
+				'simple_portfolio_video_sticky_icon' => '',
+			),
+		),
+	), //Demo : Simple Portfolio : Variation
 );
