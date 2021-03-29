@@ -12,7 +12,7 @@ $support_url = foogallery_admin_url( 'https://fooplugins.link/support/', 'help' 
 $fooplugins_link = sprintf( '<a href="%s" target="_blank">%s</a>', $fooplugins_url, __( 'FooPlugins', 'foogallery' ) );
 
 $link = sprintf('<a href="%s" target="_blank">%s</a>', $plugin_url, sprintf( __( 'Visit the %s Homepage', 'foogallery' ), $plugin_name ) );
-$tagline = sprintf( __( 'Thank you for choosing %s!<br />Easily create better galleries for WordPress, which are faster, more flexible and beautiful!', 'foogallery' ), $plugin_name );
+$tagline = sprintf( __( 'Thank you for choosing %s!<br />Better galleries for WordPress, that are faster, more flexible and beautiful!', 'foogallery' ), $plugin_name );
 
 $made_by = __( 'Made with ❤️ by %s', 'foogallery' );
 $footer_text = sprintf( $made_by, $fooplugins_link );
