@@ -109,7 +109,7 @@ if ( ! class_exists( 'FooGallery_Admin_Menu' ) ) {
 				$importer = new FooGallery_Admin_Demo_Content();
 				$results = $importer->import_demo_content();
 
-				//foogallery_set_setting( 'demo_content', 'on' );
+				foogallery_set_setting( 'demo_content', 'on' );
 
 				echo sprintf( __( '%d sample images imported, and %d demo galleries created!', 'foogallery' ), $results['attachments'], $results['galleries'] );
 			}
