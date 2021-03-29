@@ -12,6 +12,25 @@ if ( ! class_exists( 'FooGallery_Thumb_Engine_Shortpixel' ) ) {
 		function init() {
 			add_filter( 'foogallery_admin_settings_override', array( $this, 'add_shortpixel_settings' ), 10, 1 );
 			add_filter( 'foogallery_attachment_html_link_attributes', array( $this, 'alter_href_attribute' ), 10, 3);
+			add_action( 'foogallery_build_container_data_options', array( $this, 'add_shortpixel_data_options' ), 20, 3 );
+		}
+
+		/**
+		 * Add shortpixel options to the container for webp support
+		 *
+		 * @param            $options
+		 * @param FooGallery $gallery
+		 * @param            $attributes
+		 *
+		 * @return array
+		 */
+		function add_shortpixel_data_options( $options, $gallery, $attributes ) {
+			$settings = $this->get_settings();
+			if ( 'webp' === $settings['to'] ) {
+				$options['shortpixel'] = true;
+			}
+
+			return $options;
 		}
 
 		/**
@@ -29,7 +48,7 @@ if ( ! class_exists( 'FooGallery_Thumb_Engine_Shortpixel' ) ) {
 
 			$settings = $this->get_settings();
 
-			$result = trailingslashit( $settings['url'] ); //https://cdn.shortpixel.ai/spai/';
+			$result = trailingslashit( $settings['url'] );
 
 			$params = array();
 
@@ -64,7 +83,7 @@ if ( ! class_exists( 'FooGallery_Thumb_Engine_Shortpixel' ) ) {
 			//allow for adjustments
 			$params = apply_filters( 'foogallery_thumb_engine_shortpixel_params', $params, $url, $args );
 
-			return $result . implode( '+', $params ) . '/' . $url;
+			return $result . implode( ',', $params ) . '/' . $url;
 		}
 
 		/**
@@ -109,6 +128,7 @@ if ( ! class_exists( 'FooGallery_Thumb_Engine_Shortpixel' ) ) {
 
 			if ( is_array( $attr) && array_key_exists('href', $attr ) ) {
 				$attr['href'] = $this->generate( $attr['href'] );
+				$attr['data-spai-upd'] = 1;
 			}
 
 			return $attr;
@@ -122,6 +142,11 @@ if ( ! class_exists( 'FooGallery_Thumb_Engine_Shortpixel' ) ) {
 			return class_exists( 'ShortPixel\AI\Options\Option' );
 		}
 
+		/**
+		 * Returns ShortPixel settings from either SPAI plugin (if activated) or from FooGallery settings
+		 *
+		 * @return array
+		 */
 		function get_settings() {
 			global $foogallery_shortpixel_settings;
 
@@ -142,7 +167,7 @@ if ( ! class_exists( 'FooGallery_Thumb_Engine_Shortpixel' ) ) {
 			} else {
 				//get settings from foogallery
 				$foogallery_shortpixel_settings = array(
-					'url' => 'https://cdn.shortpixel.ai/spai/',
+					'url' => 'https://cdn.shortpixel.ai/client/',
 					'level' => foogallery_get_setting( 'shortpixel_quality', 'lossy'),
 					'ret' => foogallery_get_setting( 'shortpixel_return', 'wait'),
 					'to' => foogallery_get_setting( 'shortpixel_conversion', '')
@@ -211,7 +236,7 @@ if ( ! class_exists( 'FooGallery_Thumb_Engine_Shortpixel' ) ) {
 					'choices' => array(
 						''     => __( 'Default - will not convert the image', 'foogallery' ),
 						'webp' => __( 'WebP - convert to WebP', 'foogallery' ),
-						'avif' => __( 'AVIF - convert to AVIF', 'foogallery' ),
+						//'avif' => __( 'AVIF - convert to AVIF', 'foogallery' ), not supported yet
 					),
 					'tab'     => 'thumb'
 				);
