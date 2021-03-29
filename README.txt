@@ -227,15 +227,17 @@ Please update in order to for FooGallery to work in WP 5.5+!
 
 == Changelog ==
 
-= 2.0.12 =
-* Date Updated : 2021-14-03
+= 2.0.14 =
+* Date Updated : 2021-19-03
 * New : Added "Mobile Columns" gallery setting for Responsive Galleries
 * New : Added 6 Column option for Masonry galleries
+* New : Made all image loaded effects in PRO now available in free!!
 * New : Added first-class support for ShortPixel Adaptive Images as a thumbnail engine. (can be changed from settings)
 * New : Added "Alignment" gallery setting under "Captions" tab for changing horizontal alignment of thumbnail captions
 * New : Added "Image Title Attribute" gallery setting under "Advanced" tab for disabling the title attribute added to thumbnail img tags
 * New : Added gallery settings to change the lightbox captions when FooBox is the selected lightbox
 * New : Added ability to refresh gallery preview when editing by clicking preview button again
+* New : Added lazyload support to stack album, giving a major performance boost!
 * Update : FooGallery client side 2.0.3
 * Update : simplified extensions admin page and removed all build-your-own logic
 * Fix : Updated styling for FooGallery Block to look correct in latest version of Gutenberg
