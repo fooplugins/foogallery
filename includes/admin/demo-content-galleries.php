@@ -25,7 +25,7 @@ return array(
 
 
 				//Appearance
-				'default_theme'                 => 'fg-dark',               // options : 'fg-light', 'fg-dark', 'fg-custom'
+				'default_theme'                 => 'fg-light',               // options : 'fg-light', 'fg-dark', 'fg-custom'
 				'default_border_size'           => 'fg-border-thin',        // options : '', 'fg-border-thin', 'fg-border-medium', 'fg-border-thick'
 				'default_rounded_corners'       => '',                      // options : '', 'fg-round-small', 'fg-round-medium', 'fg-round-large', 'fg-round-full'
 				'default_drop_shadow'           => 'fg-shadow-outline',     // options : '', 'fg-shadow-outline', 'fg-shadow-small', 'fg-shadow-medium', 'fg-shadow-large'
@@ -210,6 +210,72 @@ return array(
 				'justified_video_hover_icon'  => 'fg-video-default',
 				'justified_video_size'        => '640x360',
 				'justified_video_sticky_icon' => '',
+			),
+		),
+	),
+	array(
+		'key'         => 'masonry',
+		'post_title'  => 'Demo Gallery : Masonry',
+		'post_status' => 'publish',
+		'post_type'   => FOOGALLERY_CPT_GALLERY,
+		'items'       => array( 'pixabay1', 'pixabay2', 'pixabay3', 'pixabay4', 'pixabay5', 'pixabay6', 'pixabay7', 'pixabay8', 'pixabay9', 'pixabay10', 'pixabay11', 'pixabay12' ),
+		'meta_input'  => array(
+			FOOGALLERY_META_TEMPLATE => 'masonry',
+			FOOGALLERY_META_SETTINGS => array(
+				'foogallery_items_view'         => 'preview',
+
+				//General
+				'masonry_thumbnail_width'       => '250',
+				'masonry_layout'                => 'fixed',
+				'masonry_thumbnail_link'        => 'image',
+				'masonry_lightbox'              => 'foogallery',
+				'masonry_align'                 => 'fg-center',
+				'masonry_gutter_width'          => '10',
+
+				//Appearance
+				'masonry_theme'                 => 'fg-dark',              // options : 'fg-light', 'fg-dark', 'fg-custom'
+				'masonry_border_size'           => 'fg-border-thin',       // options : '', 'fg-border-thin', 'fg-border-medium', 'fg-border-thick'
+				'masonry_rounded_corners'       => '',                     // options : '', 'fg-round-small', 'fg-round-medium', 'fg-round-large', 'fg-round-full'
+				'masonry_drop_shadow'           => 'fg-shadow-small',      // options : '', 'fg-shadow-outline', 'fg-shadow-small', 'fg-shadow-medium', 'fg-shadow-large'
+				'masonry_inner_shadow'          => '',                     // options : '', 'fg-shadow-inset-small', 'fg-shadow-inset-medium', 'fg-shadow-inset-large'
+				'masonry_loading_icon'          => 'fg-loading-default',   // options : '', 'fg-loading-default', 'fg-loading-bars', 'fg-loading-dots', 'fg-loading-partial', 'fg-loading-pulse', 'fg-loading-trail',
+
+				'masonry_loaded_effect'         => 'fg-loaded-fade-in',    // options : 'fg-loaded-fade-in', 'fg-loaded-scale-up'
+				'masonry_instagram'             => '',
+
+				//Captions
+				'masonry_captions_type'         => '',
+				'masonry_caption_title_source'  => '',
+				'masonry_caption_desc_source'   => '',
+				'masonry_captions_limit_length' => '',
+				'masonry_caption_alignment'     => '',
+
+				//Hover Effects
+				'masonry_hover_effect_caption_visibility' => 'fg-captions-bottom', // options : '', 'fg-caption-hover', 'fg-caption-always', 'fg-captions-bottom'
+				'masonry_hover_effect_color'              => '',                   // options : '', 'fg-hover-colorize', 'fg-hover-grayscale
+				'masonry_hover_effect_icon'               => 'fg-hover-plus',      // options : 'fg-hover-zoom', 'fg-hover-zoom2', 'fg-hover-zoom3', 'fg-hover-plus', 'fg-hover-circle-plus', 'fg-hover-eye', 'fg-hover-external'
+				'masonry_hover_effect_preset'             => 'fg-custom',
+				'masonry_hover_effect_scale'              => 'fg-hover-zoomed',    // options : '', 'fg-hover-scale', 'fg-hover-zoomed'
+				'masonry_hover_effect_transition'         => 'fg-hover-fade',      // options : 'fg-hover-instant', 'fg-hover-fade', 'fg-hover-slide-up', 'fg-hover-slide-down', 'fg-hover-slide-left', 'fg-hover-slide-right', 'fg-hover-push'
+				'masonry_hover_effect_type'               => 'normal',             // options : 'none', 'normal', 'preset'
+				'masonry_caption_invert_color'            => '',                   // options : '', 'fg-light-overlays', 'fg-transparent-overlays'
+
+				//Filtering
+				'masonry_filtering_type' => '',
+
+				//Paging
+				'masonry_paging_type' => '',
+
+				//Advanced
+				'masonry_state' => 'no',
+				'masonry_custom_settings' => '',
+				'masonry_lazyload' => '',
+
+				//Video
+				'masonry_video_autoplay'    => 'yes',
+				'masonry_video_hover_icon'  => 'fg-video-default',
+				'masonry_video_size'        => '640x360',
+				'masonry_video_sticky_icon' => '',
 			),
 		),
 	),
