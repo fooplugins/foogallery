@@ -228,17 +228,18 @@ Please update in order to for FooGallery to work in WP 5.5+!
 == Changelog ==
 
 = 2.0.14 =
-* Date Updated : 2021-19-03
+* Date Updated : 2021-30-03
 * New : Added "Mobile Columns" gallery setting for Responsive Galleries
-* New : Added 6 Column option for Masonry galleries
+* New : Added 6 Columns option for Masonry gallery layout
+* New : Added "Horizontal Layout" gallery setting for Masonry galleries, to try maintain left-to-right order of images
 * New : Made all image loaded effects in PRO now available in free!!
 * New : Added first-class support for ShortPixel Adaptive Images as a thumbnail engine. (can be changed from settings)
 * New : Added "Alignment" gallery setting under "Captions" tab for changing horizontal alignment of thumbnail captions
 * New : Added "Image Title Attribute" gallery setting under "Advanced" tab for disabling the title attribute added to thumbnail img tags
 * New : Added gallery settings to change the lightbox captions when FooBox is the selected lightbox
 * New : Added ability to refresh gallery preview when editing by clicking preview button again
-* New : Added lazyload support to stack album, giving a major performance boost!
-* Update : FooGallery client side 2.0.3
+* New : Added lazyload support to stack album, giving a major performance boost to very large albums!
+* Update : FooGallery client side 2.0.7
 * Update : simplified extensions admin page and removed all build-your-own logic
 * Fix : Updated styling for FooGallery Block to look correct in latest version of Gutenberg
 * Fix : JSON objects get built using all attributes needed
@@ -259,6 +260,7 @@ Please update in order to for FooGallery to work in WP 5.5+!
 * Fix : fixed WP/LR datasource modal content
 * Fix : fixed YouTube video search and playlist import. A Youtube API Key is now required.
 * Fix : fixed a bug with Grid PRO gallery maximised lightbox not being fixed
+* Fix : fixed incompatibility issue with videos that are not positioned correctly with themes that include FitVidJS library
 [//]: # fs_premium_only_end
 
 = 1.10.4 =
