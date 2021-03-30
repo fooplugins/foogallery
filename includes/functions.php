@@ -1781,3 +1781,14 @@ function foogallery_demo_content_determine_best_lightbox() {
 	}
 	return 'foobox';
 }
+
+/**
+ * Returns true if on the plugin activation page
+ *
+ * @return bool
+ */
+function foogallery_is_activation_page() {
+	$fs = foogallery_fs();
+
+	return $fs->is_activation_page();
+}

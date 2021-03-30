@@ -84,6 +84,10 @@ if ( ! class_exists( 'FooGallery_Admin_Notices' ) ) {
 				return true; //always show - user has created 5 or more galleries
 			}
 
+	        //do not show the notice if on activation page
+	        if ( foogallery_is_activation_page() ) {
+		        return false;
+	        }
 
 			//we must show the message - get out early
 			if ( 0 === $show_message ) {
@@ -229,6 +233,11 @@ if ( ! class_exists( 'FooGallery_Admin_Notices' ) ) {
 		    //do not show the notice to pro users
             if ( foogallery_is_pro() ) {
                 return false;
+            }
+
+	        //do not show the notice if on activation page
+            if ( foogallery_is_activation_page() ) {
+            	return false;
             }
 
             //only show on foogallery pages
