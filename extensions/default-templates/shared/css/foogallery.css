@@ -697,9 +697,88 @@
 .foogallery.fg-loaded-flip .fg-item.fg-loaded {
 	perspective: 1300px;
 }
+/* Drop */
+.foogallery.fg-loaded-drop .fg-item-inner {
+	transition-property: visibility, opacity, transform;
+	transform-style: preserve-3d;
+	transform: translateZ(400px) translateY(100%) rotateX(-90deg);
+}
+.foogallery.fg-loaded-drop .fg-loaded .fg-item-inner {
+	transform: translateZ(0px) translateY(0px) rotateX(0deg);
+}
 /* Fade In */
 .foogallery.fg-loaded-fade-in .fg-item-inner {
 	transition-property: visibility, opacity;
+}
+/* Flip */
+.foogallery.fg-loaded-flip .fg-item-inner {
+	transition-property: visibility, opacity, transform;
+	backface-visibility: hidden;
+	transform-style: preserve-3d;
+	transform: rotateY(-180deg);
+}
+.foogallery.fg-loaded-flip .fg-loaded .fg-item-inner {
+	transform: rotateY(0deg);
+}
+/* Fly */
+.foogallery.fg-loaded-fly .fg-item-inner {
+	transition-property: visibility, opacity, transform;
+	transform-style: preserve-3d;
+	transform-origin: 50% 50% -300px;
+	transform: rotateX(-180deg);
+}
+.foogallery.fg-loaded-fly .fg-loaded .fg-item-inner {
+	transform: rotateX(0deg);
+}
+/* Scale Up */
+.foogallery.fg-loaded-scale-up .fg-item-inner {
+	transition-property: visibility, opacity, transform;
+	transform: scale(0.6);
+}
+.foogallery.fg-loaded-scale-up .fg-loaded .fg-item-inner {
+	transform: scale(1);
+}
+/* Slide Up */
+.foogallery.fg-loaded-slide-up .fg-item-inner {
+	transition-property: visibility, opacity, transform;
+	transform: translateY(50%);
+}
+.foogallery.fg-loaded-slide-up .fg-loaded .fg-item-inner {
+	transform: translateY(0);
+}
+/* Slide Down */
+.foogallery.fg-loaded-slide-down .fg-item-inner {
+	transition-property: visibility, opacity, transform;
+	transform: translateY(-50%);
+}
+.foogallery.fg-loaded-slide-down .fg-loaded .fg-item-inner {
+	transform: translateY(0);
+}
+/* Slide Left */
+.foogallery.fg-loaded-slide-left .fg-item-inner {
+	transition-property: visibility, opacity, transform;
+	transform: translateX(50%);
+}
+.foogallery.fg-loaded-slide-left .fg-loaded .fg-item-inner {
+	transform: translateX(0);
+}
+/* Slide Right */
+.foogallery.fg-loaded-slide-right .fg-item-inner {
+	transition-property: visibility, opacity, transform;
+	transform: translateX(-50%);
+}
+.foogallery.fg-loaded-slide-right .fg-loaded .fg-item-inner {
+	transform: translateX(0);
+}
+/* Swing Down */
+.foogallery.fg-loaded-swing-down .fg-item-inner {
+	transition-property: visibility, opacity, transform;
+	transform-style: preserve-3d;
+	transform-origin: 0 0;
+	transform: rotateX(-80deg);
+}
+.foogallery.fg-loaded-swing-down .fg-loaded .fg-item-inner {
+	transform: rotateX(0deg);
 }
 /* Caption Styles */
 .foogallery .fg-caption {

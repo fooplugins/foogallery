@@ -14579,7 +14579,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
         doCreateContent: function(){
             this.urls = this.parseHref();
             this.isSelfHosted = $.map(this.urls, function(url){ return url.source.selfHosted ? true : null; }).length > 0;
-            return this.isSelfHosted ? $('<video/>', this.opt.attrs.video) : $('<iframe/>', this.opt.attrs.iframe);
+            return this.isSelfHosted ? $('<video/>', this.opt.attrs.video) : $('<iframe/>', this.opt.attrs.iframe).addClass("fitvidsignore");
         },
         doLoad: function(){
             var self = this;
@@ -16500,14 +16500,16 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
                         def.reject();
                     }
                 });
-                self.$image.prop('src', self.$image.attr(self.opt.src));
+                self.$image.prop('src', self.$image.attr(self.opt.src))
+                    .prop('srcset', self.$image.attr(self.opt.srcset));
             }).promise();
         }
     });
 
     _.StackAlbum.Item.defaults = {
         index: -1,
-        src: 'data-src-fg'
+        src: 'data-src-fg',
+        srcset: 'data-srcset-fg'
     };
 
 })(

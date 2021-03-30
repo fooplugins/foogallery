@@ -11343,14 +11343,16 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
                         def.reject();
                     }
                 });
-                self.$image.prop('src', self.$image.attr(self.opt.src));
+                self.$image.prop('src', self.$image.attr(self.opt.src))
+                    .prop('srcset', self.$image.attr(self.opt.srcset));
             }).promise();
         }
     });
 
     _.StackAlbum.Item.defaults = {
         index: -1,
-        src: 'data-src-fg'
+        src: 'data-src-fg',
+        srcset: 'data-srcset-fg'
     };
 
 })(
