@@ -30,6 +30,8 @@ if ( ! class_exists( 'FooGallery_Pro_Promotion' ) ) {
 		 * conditionally include promos
 		 */
 		function include_promos() {
+			global $foogallery_admin_datasource_instance;
+
 			add_filter( 'foogallery_admin_settings_override', array( $this, 'include_promo_settings' ) );
 
 			if ( $this->can_show_promo() ) {
@@ -60,7 +62,175 @@ if ( ! class_exists( 'FooGallery_Pro_Promotion' ) ) {
 				add_filter( 'foogallery_override_gallery_template_fields-polaroid_promo', array( $this, 'remove_all_fields_from_promo_gallery_template' ), 999, 2 );
 				add_filter( 'foogallery_override_gallery_template_fields-grid_promo', array( $this, 'remove_all_fields_from_promo_gallery_template' ), 999, 2 );
 				add_filter( 'foogallery_override_gallery_template_fields-slider_promo', array( $this, 'remove_all_fields_from_promo_gallery_template' ), 999, 2 );
+
+				//Datasource promos
+				add_action( 'foogallery_gallery_datasources', array( $this, 'add_promo_datasources' ), 99 );
+				add_action( 'foogallery_gallery_metabox_items_add', array( $this, 'add_datasources_css' ), 9 );
+				add_action( 'foogallery_admin_datasource_modal_content', array( $this, 'render_datasource_modal_content_default' ) );
+
+				add_action( 'foogallery-datasource-modal-content_folders_promo', array( $this, 'render_datasource_modal_content_folders_promo' ), 10, 3 );
+				add_action( 'foogallery-datasource-modal-content_media_tags_promo', array( $this, 'render_datasource_modal_content_taxonomy_promo' ), 10, 3 );
+				add_action( 'foogallery-datasource-modal-content_media_categories_promo', array( $this, 'render_datasource_modal_content_taxonomy_promo' ), 10, 3 );
+				add_action( 'foogallery-datasource-modal-content_lightroom_promo', array( $this, 'render_datasource_modal_content_lightroom_promo' ), 10, 3 );
+				add_action( 'foogallery-datasource-modal-content_rml_promo', array( $this, 'render_datasource_modal_content_rml_promo' ), 10, 3 );
+				add_action( 'foogallery-datasource-modal-content_post_query_promo', array( $this, 'render_datasource_modal_content_post_query_promo' ), 10, 3 );
+
+				remove_action( 'foogallery_admin_datasource_modal_content', array( $foogallery_admin_datasource_instance, 'render_datasource_modal_default_content' ) );
 			}
+		}
+
+		function add_datasources_css() {
+			?>
+			<style>
+                .gallery_datasources_button {
+                    color: #1d7b30 !important;
+                    border-color: #1d7b30 !important;
+	                background-color: #f7fff6 !important;
+				}
+			</style>
+			<?php
+		}
+
+		/**
+		 * Output the default datasource modal content
+		 *
+		 * @param $foogallery_id
+		 */
+		function render_datasource_modal_content_default() {
+			$this->render_datasource_modal_content(
+				__('Dynamic Galleries From Other Sources', 'foogallery' ),
+				__('Create dynamic galleries by using other sources for your images. Load images from a directory on your server, or load all images for a specific tag, or even sync your Adobe Lightroom images and show them in your gallery.', 'foogallery' )
+			);
+		}
+
+		/**
+		 * Output the server folders datasource modal content
+		 *
+		 * @param $foogallery_id
+		 */
+		function render_datasource_modal_content_folders_promo( $foogallery_id, $datasource_value ) {
+			$this->render_datasource_modal_content(
+				__('Server Folder Datasource', 'foogallery' ),
+				__('Create a dynamic gallery by loadings images directly from a folder/directory on your server.<br>This allows you to FTP or upload images directly to your server, and then your gallery will dynamically change to include all newly added/updated images.', 'foogallery' )
+			);
+		}
+
+		/**
+		 * Output the tags datasource modal content
+		 *
+		 * @param $foogallery_id
+		 */
+		function render_datasource_modal_content_taxonomy_promo( $foogallery_id, $datasource_value ) {
+			$this->render_datasource_modal_content(
+				__('Media Tags/Categories Datasource', 'foogallery' ),
+				__('Create a dynamic gallery by loadings images for specific tags or categories. This means you only need to upload a new image and add the correct tag, for it to show in the gallery. You can specify different tags or categories for each image or video in your media library.', 'foogallery' )
+			);
+		}
+
+
+		/**
+		 * Output the lightroom datasource modal content
+		 *
+		 * @param $foogallery_id
+		 */
+		function render_datasource_modal_content_lightroom_promo( $foogallery_id, $datasource_value ) {
+			$this->render_datasource_modal_content(
+				__('Adobe Lightroom Datasource', 'foogallery' ),
+				__('We have integrated with the WP/LR Sync plugin to enable you to create galleries from a collection within Adobe Lightroom.', 'foogallery' )
+			);
+		}
+
+		/**
+		 * Output the RML datasource modal content
+		 *
+		 * @param $foogallery_id
+		 */
+		function render_datasource_modal_content_rml_promo( $foogallery_id, $datasource_value ) {
+			$this->render_datasource_modal_content(
+				__('Real Media Library Datasource', 'foogallery' ),
+				__('Real Media Library is a media library organization plugin. It allows you to sort your library into folders and subfolders. You will need the plugin, available on Code Canyon, in order to create galleries from these folders in your media library.', 'foogallery' )
+			);
+		}
+
+		/**
+		 * Output the Post Query datasource modal content
+		 *
+		 * @param $foogallery_id
+		 */
+		function render_datasource_modal_content_post_query_promo( $foogallery_id, $datasource_value ) {
+			$this->render_datasource_modal_content(
+				__('Post Query Datasource', 'foogallery' ),
+				__('You can also pull a gallery from post types on your site. This includes items like your blog posts, pages or articles. Choose a post type, the number of items you want to show in your gallery, posts that you want to exclude, and whether you want the gallery to link to the featured image or the post itself.', 'foogallery' )
+			);
+		}
+
+		function render_datasource_modal_content( $datasouce_title, $datasource_desc, $datasource_url = 'https://fooplugins.com/load-galleries-from-other-sources/' ) {
+?>
+			<div class="foogallery_template_field_type-promo">
+				<div class="foogallery-promo">
+					<strong><?php _e('FooGallery PRO Feature', 'foogallery'); ?> : <?php echo $datasouce_title; ?></strong>
+					<br><br>
+					<?php echo $datasource_desc; ?>
+					<br><br>
+					<?php echo $this->build_promo_trial_html( 'datasources' ); ?>
+					<br><br>
+					<a class="button-primary" href="<?php echo esc_url( $datasource_url ); ?>" target="_blank"><?php echo __( 'Learn More About Using Other Sources', 'foogallery' ); ?></a>
+				</div>
+			</div>
+<?php
+		}
+
+		/**
+		 * Add the promotion datasources
+		 *
+		 * @param $datasources
+		 *
+		 * @return mixed
+		 */
+		function add_promo_datasources( $datasources ) {
+			$datasources['media_tags_promo'] = array(
+				'id'     => 'media_tags_promo',
+				'name'   => __( 'Media Tags', 'foogallery' ),
+				'menu'  => __( 'Media Tags', 'foogallery' ),
+				'public' => true,
+			);
+
+			$datasources['media_categories_promo'] = array(
+				'id'     => 'media_categories_promo',
+				'name'   => __( 'Media Categories', 'foogallery' ),
+				'menu'  => __( 'Media Categories', 'foogallery' ),
+				'public' => true,
+			);
+
+			$datasources['folders_promo'] = array(
+				'id'     => 'folders_promo',
+				'name'   => __( 'Server Folder', 'foogallery' ),
+				'menu'   => __( 'Server Folder', 'foogallery' ),
+				'public' => true
+			);
+
+			$datasources['lightroom_promo'] = array(
+				'id'     => 'lightroom_promo',
+				'name'   => __( 'Adobe Lightroom', 'foogallery' ),
+				'menu'   => __( 'Adobe Lightroom', 'foogallery' ),
+				'public' => true
+			);
+
+			$datasources['rml_promo'] = array(
+				'id'     => 'rml_promo',
+				'name'   => __( 'Real Media Library', 'foogallery' ),
+				'menu'   => __( 'Real Media Library', 'foogallery' ),
+				'public' => true
+			);
+
+			$datasources['post_query_promo'] = array(
+				'id'     => 'post_query_promo',
+				'name'   => __( 'Post Query', 'foogallery' ),
+				'menu'   => __( 'Post Query', 'foogallery' ),
+				'public' => true
+			);
+
+			return $datasources;
 		}
 
 		/**
@@ -163,7 +333,7 @@ if ( ! class_exists( 'FooGallery_Pro_Promotion' ) ) {
 								'<ul class="ul-disc"><li><strong>' . __('Numbered' ,'foogallery') . '</strong> ' . __( 'adds a numbered pagination control to top or bottom of your gallery.', 'foogallery' ) .
 								'</li><li><strong>' . __('Infinite Scroll' ,'foogallery') . '</strong> ' . __( 'adds the popular \'infinite scroll\' capability to your gallery, so as your visitors scroll, the gallery will load more items.', 'foogallery' ) .
 								'</li><li><strong>' . __('Load More' ,'foogallery') . '</strong> ' . __( 'adds a \'Load More\' button to the end of your gallery. When visitors click the button, the next set of items will load in the gallery.', 'foogallery' ) .
-					              '</li></ul>' . $this->build_promo_trial_html( 'pagination' ). '<br /><br />',
+					              '</li></ul>' . $this->build_promo_trial_html( 'pagination' ) . '<br /><br />',
 					'cta_text' => __( 'View Demos', 'foogallery' ),
 					'cta_link' => $this->build_url( 'foogallery-pagination' ),
 					'section'  => __( 'Paging', 'foogallery' ),
@@ -251,7 +421,7 @@ if ( ! class_exists( 'FooGallery_Pro_Promotion' ) ) {
 			$index_of_hover_effect_preset_field = $this->find_index_of_field( $fields, 'hover_effect_preset' );
 
 			$new_fields[] = array(
-				'id'       => 'hover_effect_help',
+				'id'       => 'hover_effect_preset_promo_help',
 				'title'    => __( 'FooGallery PRO Feature : Hover Effect Presets', 'foogallery' ),
 				'desc'     => __( 'There are 11 stylish hover effect presets to choose from, which takes all the hard work out of making your galleries look professional and elegant.', 'foogallery' ) .
 				              '<br />' . __( 'Some of the effects like "Sarah" add subtle colors on hover, while other effects like "Layla" and "Oscar" add different shapes to the thumbnail.', 'foogallery') .
@@ -500,19 +670,15 @@ if ( ! class_exists( 'FooGallery_Pro_Promotion' ) ) {
 		 */
 		function add_appearance_promo_fields( $fields, $template ) {
 
-			$filters_link_html = ' <a href="' . $this->build_url('foogallery-thumbnail-filters') . '" target="_blank">' . __( 'View Demos', 'foogallery' ) . '</a>.';
-			$loaded_effects_link_html = ' <a href="' . $this->build_url('foogallery-loaded-effects') . '" target="_blank">' . __( 'View Demos', 'foogallery' ) . '</a>.';
-
 			$fields[] = array(
 				'id'       => 'filter_promo',
-				'title'    => __( 'More Appearanace Features Available!', 'foogallery' ),
+				'title'    => __( 'FooGallery PRO Feature : Thumbnail Filters (Like Instagram!)', 'foogallery' ),
 				'section'  => __( 'Appearance', 'foogallery' ),
-				'desc'     => __( 'FooGallery PRO comes with extra features to make your galleries look amazing!', 'foogallery' ) .
-		              '<ul class="ul-disc">' .
-			              '<li><strong>' . __( 'Animated Loaded Effects', 'foogallery' ) . '</strong> - ' . __( 'Besides the Fade In animated effect, FooGallery PRO has 9 extra animations, including Slide, Scale, Swing, Drop, Fly &amp; Flip.', 'foogallery' ) . $loaded_effects_link_html . '</li>' .
-			              '<li><strong>' . __( 'Thumbnail Filters', 'foogallery' ) . '</strong> - ' . __( 'Apply a filter to your gallery thumbnails, just like you can in Instagram. Choose from 12 unique filters!', 'foogallery' ) . $filters_link_html . '</li>' .
-		              '</ul>' . $this->build_promo_trial_html( 'appearance' ),
-				'type'     => 'promo'
+				'desc'     => __( 'Apply a filter to your gallery thumbnails, just like you can in Instagram. Choose from 12 unique filters!', 'foogallery' )
+	                . '<br /><br />' . $this->build_promo_trial_html( 'appearance' ) . '<br /><br />',
+				'type'     => 'promo',
+				'cta_text' => __( 'View Demos', 'foogallery' ),
+				'cta_link' => $this->build_url( 'foogallery-thumbnail-filters' ),
 			);
 
 			return $fields;

@@ -14,6 +14,8 @@ if ( ! class_exists( 'FooGallery_Admin' ) ) {
 		 *
 		 */
 		function __construct() {
+			global $foogallery_admin_datasource_instance;
+
 			//init some other actions
 			add_action( 'init', array( $this, 'init' ) );
 
@@ -29,7 +31,7 @@ if ( ! class_exists( 'FooGallery_Admin' ) ) {
 			new FooGallery_Attachment_Fields();
             new FooGallery_Admin_CSS_Load_Optimizer();
 			new FooGallery_Admin_Notices();
-            new FooGallery_Admin_Gallery_Datasources();
+			$foogallery_admin_datasource_instance = new FooGallery_Admin_Gallery_Datasources();
 		}
 
 		function init() {
