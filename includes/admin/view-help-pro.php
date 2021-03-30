@@ -73,7 +73,7 @@ $features = array(
     <section class="fgah-feature">
         <?php if ( $show_trial_message ) { ?>
             <header>
-                <h3><?php _e( 'FooBar PRO Free Trial 🤩', 'foogallery' );?></h3>
+                <h3><?php _e( 'FooGallery PRO Free Trial 🤩', 'foogallery' );?></h3>
                 <p><?php _e( 'Want to test out all the PRO features below? No problem! You can start a 7-day free trial immediately!', 'foogallery' );?></p>
             </header>
             <footer>

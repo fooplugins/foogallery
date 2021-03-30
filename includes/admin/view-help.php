@@ -113,46 +113,7 @@ $show_demos = apply_filters( 'foogallery_admin_help_show_demos', true );
 
 		$.foogallery_demos = {
 			init : function() {
-				$(".foogallery-admin-help-demo").click( function(e) {
-					e.preventDefault();
 
-					var $this = $(this),
-						demo_id = $this.data('foogallery-admin-help-demo'),
-						data = {
-							'action': 'foogallery_admin_help_demo',
-							'demo': demo_id,
-							'_wpnonce': $( '#foogallery_help_demo_nonce' ).val(),
-							'_wp_http_referer': encodeURIComponent( $( 'input[name="_wp_http_referer"]' ).val() )
-						};
-
-					$this.addClass("foogallery-admin-help-loading").removeAttr('href');
-
-					$.ajax({
-						type: 'POST',
-						url: ajaxurl,
-						data: data,
-						cache: false,
-						success: function( html ) {
-							FooBar.dismissAll(true);
-
-							//remove all foobars from the page
-							$('.foobar').remove();
-
-							var $html = $(html);
-
-							//append the bar content to end of body
-							$( 'body' ).append( $html );
-
-							//init the bar
-							const bar = FooBar.create( $html.attr('id') );
-							if ( bar instanceof FooBar.Bar ) {
-								bar.init();
-							}
-						}
-					}).always(function(){
-						$this.removeClass("foogallery-admin-help-loading").attr('href', '#demo');
-					});
-				} );
 			}
 		};
 
