@@ -443,20 +443,25 @@ button[data-balloon]{overflow:visible}[data-balloon]{position:relative}[data-bal
 	margin-left: 10px;
 }
 
+.foogallery-items-view-switch-container .spinner {
+	margin: 2px 10px 0;
+}
+
 .foogallery-items-view-switch {
 	vertical-align: middle;
 	display: inline-block;
 }
 
 	.foogallery-items-view-switch a {
+		font-size: 11px;
 		padding: 4px 10px;
 		line-height: 12px;
-		border: 1px solid #ccc;
+		border: 1px solid #2271b1;
 		float: left;
 		display: inline-block;
 		text-decoration: none;
-		margin-right: 10px;
-		border-radius: 4px;
+		margin: 0;
+		border-radius: 3px;
 		text-align: center;
 		white-space: nowrap;
 		vertical-align: middle;
@@ -467,18 +472,32 @@ button[data-balloon]{overflow:visible}[data-balloon]{position:relative}[data-bal
 		-moz-user-select: none;
 		-ms-user-select: none;
 		user-select: none;
-		background: #f7f7f7;
-		color: #555;
+		/*background: #f7f7f7;*/
+		/*color: #555;*/
+
+		color: #2271b1;
+		background: #f6f7f7;
+	}
+	.foogallery-items-view-switch a:hover {
+		background: #f0f0f1;
+		border-color: #0a4b78;
+		color: #0a4b78;
+	}
+	.foogallery-items-view-switch a:focus {
+		box-shadow: none;
+		outline: none;
 	}
 
 	.foogallery-items-view-switch a:first-child:not(:last-child) {
 		border-top-right-radius: 0;
 		border-bottom-right-radius: 0;
+		border-right: none;
 	}
 
 	.foogallery-items-view-switch a:last-child:not(:first-child) {
 		border-top-left-radius: 0;
 		border-bottom-left-radius: 0;
+        border-left: none;
 	}
 
 	.foogallery-items-view-switch a:first-child {
@@ -486,7 +505,14 @@ button[data-balloon]{overflow:visible}[data-balloon]{position:relative}[data-bal
 	}
 
 	.foogallery-items-view-switch a.current {
-		background: #0085ba;
+		background: #2271b1;
+		border-color: #2271b1;
+		color: #fff;
+	}
+
+	.foogallery-items-view-switch a.current:hover {
+		background: #135e96;
+		border-color: #135e96;
 		color: #fff;
 	}
 
@@ -622,4 +648,9 @@ button[data-balloon]{overflow:visible}[data-balloon]{position:relative}[data-bal
 
 .foogallery-custom-metabox-header .foogallery-template-selector {
 	margin-left: 10px;
+}
+
+.foogallery-custom-metabox-header .foogallery-template-selector select {
+	font-size: 13px;
+	margin-left: 6px;
 }
