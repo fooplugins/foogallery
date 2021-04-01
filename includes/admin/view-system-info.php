@@ -92,6 +92,7 @@ if ( current_user_can( 'activate_plugins' ) ) {
 		$debug_info[ __( 'WP Image Editor', 'foogallery' ) ] = $image_editor;
 		$debug_info[ __( 'Thumbnail Generation Test', 'foogallery') ] = $test_image_url;
 		$debug_info[ __( 'HTTPS Thumb Mismatch', 'foogallery' )] = $test_image_url_scheme === $home_url_scheme ? __( 'None', 'foogallery' ) : __( 'There is a protocol mismatch between your site URL and the thumbnail URL!', 'foogallery' );
+		$debug_info[ __( 'Available Image Editors', 'foogallery' ) ] = apply_filters( 'wp_image_editors', array( 'WP_Image_Editor_Imagick', 'WP_Image_Editor_GD' ) );
 	}
 
 	$debug_info = array_merge( $debug_info, $extra_debug_info );
