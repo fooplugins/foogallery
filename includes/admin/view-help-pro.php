@@ -31,7 +31,7 @@ $features = array(
 		'link' => 'https://fooplugins.com/load-galleries-from-other-sources/',
 		'utm_content' => 'datasources',
 		'link_text' => __( 'Learn More','foogallery' ),
-		'image' => 'https://assets.fooplugins.com/foogallery/plugin/foogallery-admin-help-pro-datasources.png'
+		'image' => 'https://assets.fooplugins.com/foogallery/plugin/foogallery-admin-help-pro-datasources2.png'
 	),
 	array(
 		'title' => __( 'Custom Captions','foogallery' ),
