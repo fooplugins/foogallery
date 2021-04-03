@@ -117,7 +117,7 @@ if ( ! class_exists( 'FooGallery_Pro_Advanced_Captions' ) ) {
         	//build up the help for custom captions
 	        $custom_caption_help_html = $this->build_custom_captions_help();
 
-	        if ( 'polaroid_new' !== $template['slug'] ) {
+	        if ( 'polaroid_new' !== $template['slug'] ) {   //does not apply to polaroid template
 
 		        //add caption type field before other caption fields
 		        $new_fields[] = array(
