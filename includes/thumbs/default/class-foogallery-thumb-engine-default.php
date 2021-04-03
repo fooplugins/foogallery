@@ -37,6 +37,8 @@ if ( ! class_exists( 'FooGallery_Thumb_Engine_Default' ) ) {
 		 * renders a bunch of thumb tests
 		 */
 		function render_thumb_test_page() {
+			global $foogallery_thumbnail_generation_test_errors;
+
 			echo '<h2>Thumbnail Test Page</h2>';
 
 			$this->render_thumb_test_html( FOOGALLERY_URL . 'includes/thumbs/default/tests/test3', 'PNG+No extension Resize to 30x30', 30, 30 );
@@ -50,7 +52,26 @@ if ( ! class_exists( 'FooGallery_Thumb_Engine_Default' ) ) {
 			$this->render_thumb_test_html( 'https://assets.fooplugins.com/test.jpg', 'Remote Resize to 50x50' );
 			$this->render_thumb_test_html( FooGallery_Thumbnails::find_first_image_in_media_library(), 'Media Resize to 50x50' );
 
-			$this->render_thumb_test_html( 'https://fooplugins.s3.amazonaws.com/test.php', 'Remote test for non image' );
+			$this->render_thumb_test_html( 'https://fooplugins.s3.amazonaws.com/test.php', 'Remote test for non image', 50, 50, true );
+
+			echo '<h2>ERRORS</h2>';
+			echo '<textarea style="width: 100%;font-family: \'courier new\'; height: 500px;">';
+
+			if ( is_array( $foogallery_thumbnail_generation_test_errors) ) {
+				foreach ( $foogallery_thumbnail_generation_test_errors as $error ) {
+					echo $error['title'] . '
+=======================================
+URL : ' . $error['url'] . '
+Error : ';
+					print_r( $error['error'] );
+					echo "\n";
+					echo "\n";
+				}
+
+			} else {
+				echo 'None :)';
+			}
+			echo '</textarea>';
 		}
 
 		/**
@@ -61,7 +82,9 @@ if ( ! class_exists( 'FooGallery_Thumb_Engine_Default' ) ) {
 		 * @param int $width
 		 * @param int $height
 		 */
-		function render_thumb_test_html( $url, $title, $width = 50, $height = 50) {
+		function render_thumb_test_html( $url, $title, $width = 50, $height = 50, $expect_error = false ) {
+			global $foogallery_thumbnail_generation_test_errors;
+
 			if ( $url === false ) {
 				return;
 			}
@@ -83,11 +106,25 @@ if ( ! class_exists( 'FooGallery_Thumb_Engine_Default' ) ) {
 
 			if ( isset( $engine->last_error ) ) {
 				print_r( $engine->last_error );
+
+				if ( !$expect_error ) {
+					if ( !isset( $foogallery_thumbnail_generation_test_errors ) ) {
+						$foogallery_thumbnail_generation_test_errors = array();
+					}
+					$foogallery_thumbnail_generation_test_errors[] = array(
+						'title' => $title,
+						'url' => $url,
+						'error' => $engine->last_error
+					);
+				}
+
 			} else {
 				echo '<img src="' . $url . '" />';
 				echo '&nbsp;&nbsp;&nbsp;→→→&nbsp;&nbsp;&nbsp;';
 				echo '<img src="' . $resize_url . '" />';
 			}
+
+
 
 			echo '<br />';
 		}
