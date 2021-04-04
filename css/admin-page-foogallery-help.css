@@ -317,6 +317,35 @@ body {
     float: left;
 }
 
+.fgah-demo {
+    display: block;
+    position: relative;
+    max-width: 100%;
+    margin: 0;
+    padding: 16px;
+    font-size: 14px;
+    background-color: #2c3338;
+}
+.fgah-demo > header {
+    text-align: left;
+    margin: 16px;
+}
+.fgah-demo > header + * {
+    margin-top: 32px;
+}
+.fgah-demo > header > h3 {
+    font-size: 1.5em;
+    margin: 0;
+    padding: 0;
+    font-weight: 600;
+}
+.fgah-demo > header > h3 + p {
+    margin-top: 24px;
+}
+.fgah-demo > div.foogallery {
+    margin-bottom: 15px;
+}
+
 .foogallery-admin-help-button-cta {
     background-color: #007017;
     color: #ffffff !important;
