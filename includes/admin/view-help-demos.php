@@ -5,7 +5,7 @@
         <p><?php _e( 'The below shows our default Responsive gallery template.', 'foogallery' );?></p>
     </header>
 
-    <div id="foogallery-gallery-0" class="foogallery fg-default fg-center fg-gutter-10 fg-m-col2 fg-loading-default fg-loaded-fade-in fg-light fg-border-medium fg-shadow-outline fg-shadow-inset-small fg-caption-hover fg-hover-fade fg-c-l"
+    <div id="foogallery-gallery-0" class="foogallery fg-default fg-center fg-gutter-10 fg-m-col2 fg-loading-default fg-loaded-fade-in fg-light fg-border-thin fg-shadow-outline fg-shadow-inset-small fg-caption-hover fg-hover-fade fg-hover-zoom"
          data-foogallery="{&quot;lazy&quot;:true}"
          data-foogallery-lightbox="{&quot;exif&quot;:&quot;auto&quot;}">
 
