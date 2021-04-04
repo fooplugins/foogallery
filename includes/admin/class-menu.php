@@ -11,6 +11,20 @@ if ( ! class_exists( 'FooGallery_Admin_Menu' ) ) {
 			add_action( 'admin_menu', array( $this, 'register_menu_items' ) );
 
 			add_action( 'wp_ajax_foogallery_admin_import_demos', array( $this, 'create_demo_galleries' ) );
+
+			add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
+		}
+
+		/**
+		 * Load the foogallery assets on the help page
+		 *
+		 * @param $hook
+		 */
+		function enqueue_scripts( $hook ) {
+			if ( 'foogallery_page_foogallery-help' === $hook ) {
+				foogallery_enqueue_core_gallery_template_script();
+				foogallery_enqueue_core_gallery_template_style();
+			}
 		}
 
 		/**
