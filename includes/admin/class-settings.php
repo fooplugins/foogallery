@@ -379,7 +379,7 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 			$settings[] = array(
 				'id'      => 'enable_legacy_thumb_cropping',
 				'title'   => __( 'Enable Legacy Thumb Cropping', 'foogallery' ),
-				'desc'    => __( 'For when you want to enable legacy cropping options in certain gallery templates. This is not recommended.', 'foogallery' ),
+				'desc'    => __( 'Enables legacy thumbnail cropping for the Simple Portfolio gallery template, meaning it will not crop thumbnails.<br/>PLEASE NOTE : only enable this if you have been asked to by our support team.', 'foogallery' ),
 				'type'    => 'checkbox',
 				'tab'     => 'advanced'
 			);
