@@ -13,7 +13,7 @@
         <div class="fg-item fg-type-image fg-item-exif fg-idle">
             <figure class="fg-item-inner">
                 <a class="fg-thumb"
-                   href="<?php echo FOOGALLERY_URL . 'assets/demo/1.jpg' ?>"
+                   href="https://assets.fooplugins.com/foogallery/plugin/demo/1.jpg"
                    data-type="image"
                    data-title="Sunset"
                    data-description="Amazing sunset seen through the branches of a tree overlooking the ocean."
@@ -42,7 +42,7 @@
         <div class="fg-item fg-type-image fg-item-exif fg-idle">
             <figure class="fg-item-inner">
                 <a class="fg-thumb"
-                   href="<?php echo FOOGALLERY_URL . 'assets/demo/2.jpg' ?>"
+                   href="https://assets.fooplugins.com/foogallery/plugin/demo/2.jpg"
                    data-type="image"
                    data-title="Autumn"
                    data-description="Autumn leaves on a country path."
@@ -71,7 +71,7 @@
         <div class="fg-item fg-type-image fg-item-exif fg-idle">
             <figure class="fg-item-inner">
                 <a class="fg-thumb"
-                   href="<?php echo FOOGALLERY_URL . 'assets/demo/3.jpg' ?>"
+                   href="https://assets.fooplugins.com/foogallery/plugin/demo/3.jpg"
                    data-type="image"
                    data-title="Flowers"
                    data-description="White flowers in the shade of a tree."
@@ -100,7 +100,7 @@
         <div class="fg-item fg-type-image fg-item-exif fg-idle">
             <figure class="fg-item-inner">
                 <a class="fg-thumb"
-                   href="<?php echo FOOGALLERY_URL . 'assets/demo/4.jpg' ?>"
+                   href="https://assets.fooplugins.com/foogallery/plugin/demo/4.jpg"
                    data-type="image"
                    data-title="Misty Forest"
                    data-description="Peering through the mist up a hillside in a forest."
@@ -129,7 +129,7 @@
         <div class="fg-item fg-type-image fg-item-exif fg-idle">
             <figure class="fg-item-inner">
                 <a class="fg-thumb"
-                   href="<?php echo FOOGALLERY_URL . 'assets/demo/5.jpg' ?>"
+                   href="https://assets.fooplugins.com/foogallery/plugin/demo/5.jpg"
                    data-type="image"
                    data-title="Country Road"
                    data-description="Shafts of sunlight filtering through the trees over a country road."
@@ -158,7 +158,7 @@
         <div class="fg-item fg-type-image fg-item-exif fg-idle">
             <figure class="fg-item-inner">
                 <a class="fg-thumb"
-                   href="<?php echo FOOGALLERY_URL . 'assets/demo/6.jpg' ?>"
+                   href="https://assets.fooplugins.com/foogallery/plugin/demo/6.jpg"
                    data-type="image"
                    data-title="Stone Path"
                    data-description="A stone path in the foothills with a mountain in the background."
@@ -187,7 +187,7 @@
         <div class="fg-item fg-type-image fg-item-exif fg-idle">
             <figure class="fg-item-inner">
                 <a class="fg-thumb"
-                   href="<?php echo FOOGALLERY_URL . 'assets/demo/7.jpg' ?>"
+                   href="https://assets.fooplugins.com/foogallery/plugin/demo/7.jpg"
                    data-type="image"
                    data-title="Mountain Peak"
                    data-description="The sunset from a mountain peak above the clouds."
@@ -216,7 +216,7 @@
         <div class="fg-item fg-type-image fg-item-exif fg-idle">
             <figure class="fg-item-inner">
                 <a class="fg-thumb"
-                   href="<?php echo FOOGALLERY_URL . 'assets/demo/8.jpg' ?>"
+                   href="https://assets.fooplugins.com/foogallery/plugin/demo/8.jpg"
                    data-type="image"
                    data-title="Mountain Village"
                    data-description="A mountainside village with some morning mist."
@@ -245,7 +245,7 @@
         <div class="fg-item fg-type-image fg-item-exif fg-idle">
             <figure class="fg-item-inner">
                 <a class="fg-thumb"
-                   href="<?php echo FOOGALLERY_URL . 'assets/demo/9.jpg' ?>"
+                   href="https://assets.fooplugins.com/foogallery/plugin/demo/9.jpg"
                    data-type="image"
                    data-title="Valley"
                    data-description="The view down a valley as lightning strikes in the background."
