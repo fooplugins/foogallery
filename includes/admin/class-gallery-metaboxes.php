@@ -335,9 +335,8 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 		}
 
 		public function render_thumb_settings_metabox( $post ) {
-			$gallery = $this->get_gallery( $post );
-			$force_use_original_thumbs = $gallery->force_use_original_thumbs;
-			$checked = 'true' === $force_use_original_thumbs;
+			$force_use_original_thumbs = 'true' === get_post_meta( $post->ID, FOOGALLERY_META_FORCE_ORIGINAL_THUMBS, true );
+			$checked = $force_use_original_thumbs;
 
 			$engine = foogallery_thumb_active_engine();
 
