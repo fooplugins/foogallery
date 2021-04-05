@@ -695,6 +695,25 @@ if ( ! class_exists( 'FooGallery_Pro_Lightbox' ) ) {
 			);
 
 			$field[] = array(
+				'id'      => 'lightbox_mobile_layout',
+				'title'   => __( 'Mobile Layout', 'foogallery' ),
+				'desc'    => __( 'Which layout to use for the lightbox when on mobile.', 'foogallery' ),
+				'section' => $section,
+				'subsection' => array( 'lightbox-general' => __( 'General', 'foogallery' ) ),
+				'type'    => 'radio',
+				'default' => '',
+				'choices' => array(
+					'' => __( 'Mobile Optimized Layout', 'foogallery' ),
+					'no'  => __( 'Same As Desktop', 'foogallery' ),
+				),
+				'row_data'=> array(
+					'data-foogallery-change-selector'          => 'input:radio',
+					'data-foogallery-preview'                  => 'shortcode',
+					'data-foogallery-value-selector'           => 'input:checked',
+				)
+			);
+
+			$field[] = array(
 				'id'      => 'lightbox_buttons_display',
 				'title'   => __( 'Controls Display', 'foogallery' ),
 				'desc'    => __( 'Whether or not the control buttons are overlaid on top of the content, or are inline (outside of the content).', 'foogallery' ),
@@ -1019,6 +1038,11 @@ if ( ! class_exists( 'FooGallery_Pro_Lightbox' ) ) {
 			$options['fitMedia'] = foogallery_gallery_template_setting( 'lightbox_fit_media', 'no' ) === 'yes';
 			$options['noScrollbars'] = foogallery_gallery_template_setting( 'lightbox_no_scrollbars', 'no' ) !== 'yes';
 			$options['preserveButtonSpace'] = foogallery_gallery_template_setting( 'lightbox_buttons_display', 'no' ) === 'no';
+
+			$no_mobile = foogallery_gallery_template_setting( 'lightbox_mobile_layout', '' );
+			if ( $no_mobile !== '' ) {
+				$options['noMobile'] = true;
+			}
 
 			$show_fullscreen_button = foogallery_gallery_template_setting( 'lightbox_show_fullscreen_button', false );
 			if ( $show_fullscreen_button !== false ) {
