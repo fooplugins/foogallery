@@ -347,6 +347,7 @@ body {
 }
 
 .foogallery-admin-help-button-cta {
+    position: relative;
     background-color: #007017;
     color: #ffffff !important;
     padding: 12px 36px;
@@ -374,21 +375,49 @@ body {
     cursor: wait;
 }
 
-.foogallery-admin-help-button-cta.foogallery-admin-help-loading:before {
-    content: '';
-    /* background-image: @see <style> in view-help.php */
-    background-repeat: no-repeat;
-    background-size: 20px 20px;
-    display: inline-block;
-    opacity: 0.7;
-    filter: alpha(opacity=70);
-    width: 20px;
-    height: 20px;
-    border: none;
+.foogallery-admin-help-button-cta .progress {
+    border-radius: 3px;
+    width: 0;
+    background: #2271b1;
+    opacity: 0;
+    transition: all 0.3s ease;
     position: absolute;
-    top: 50%;
-    right: 8px;
-    transform: translateY(-50%);
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+}
+.foogallery-admin-help-button-cta.foogallery-admin-help-loading .progress {
+    opacity: 1;
+    animation: progress-anim 5s ease 0s;
+    animation-fill-mode: both;
+}
+
+@keyframes progress-anim {
+    0% {
+        width: 0%;
+    }
+    5% {
+        width: 0%;
+    }
+    10% {
+        width: 15%;
+    }
+    30% {
+        width: 40%;
+    }
+    50% {
+        width: 55%;
+    }
+    80% {
+        width: 70%;
+    }
+    90% {
+        width: 80%;
+    }
+    100% {
+        width: 95%;
+    }
 }
 
 .foogallery-admin-help-footer {

@@ -3,7 +3,7 @@ $instance = FooGallery_Plugin::get_instance();
 $info = $instance->get_plugin_info();
 
 $logo = FOOGALLERY_URL . 'assets/logo.png';
-$loader = FOOGALLERY_URL . 'assets/loader.gif';
+
 $plugin_name = foogallery_plugin_name();
 $fooplugins_url = foogallery_admin_url( 'https://fooplugins.com/', 'help' );
 $plugin_url = foogallery_admin_url( 'https://fooplugins.com/foogallery/', 'help' );
@@ -81,30 +81,29 @@ $show_demos = apply_filters( 'foogallery_admin_help_show_demos', true );
 				$(".foogallery-admin-help-import-demos").click( function(e) {
 					e.preventDefault();
 
-					if ( confirm('Are you sure you want to create demo galleries? Images will be imported into your media library') ) {
-						var $this = $(this),
-							data = {
-								'action': 'foogallery_admin_import_demos',
-								'_wpnonce': $this.data( 'nonce' ),
-								'_wp_http_referer': encodeURIComponent( $( 'input[name="_wp_http_referer"]' ).val() )
-							};
+					var $this = $(this),
+						data = {
+							'action': 'foogallery_admin_import_demos',
+							'_wpnonce': $this.data( 'nonce' ),
+							'_wp_http_referer': encodeURIComponent( $( 'input[name="_wp_http_referer"]' ).val() )
+						};
 
-						$this.prop('disable', true).addClass("foogallery-admin-help-loading");
+					$this.prop('disable', true).addClass("foogallery-admin-help-loading");
+					$('.fgah-create-demos-text').html( $this.data('working') );
 
-						$.ajax({
-							type: 'POST',
-							url: ajaxurl,
-							data: data,
-							cache: false,
-							success: function( html ) {
-								alert( html );
-								$('.fgah-create-demos').hide();
-								$('.fgah-created-demos').show();
-							}
-						}).always(function(){
-							$this.removeClass("foogallery-admin-help-loading").prop('disable', false);
-						});
-					}
+					$.ajax({
+						type: 'POST',
+						url: ajaxurl,
+						data: data,
+						cache: false,
+						success: function( html ) {
+							$('.fgah-demo-result').html( html );
+							$('.fgah-create-demos').hide();
+							$('.fgah-created-demos').show();
+						}
+					}).always(function(){
+						$this.removeClass("foogallery-admin-help-loading").prop('disable', false);
+					});
 				} );
 			}
 		};
@@ -121,9 +120,6 @@ $show_demos = apply_filters( 'foogallery_admin_help_show_demos', true );
 	});
 </script>
 <style>
-    .foogallery-admin-help-button-cta.foogallery-admin-help-loading:before {
-        background-image: url('<?php echo $loader ?>');
-    }
     <?php if ( $demos_created ) { ?>
     .fgah-create-demos {
 	    display: none;
@@ -133,7 +129,6 @@ $show_demos = apply_filters( 'foogallery_admin_help_show_demos', true );
         display: none;
     }
 	<?php } ?>
-
 </style>
 <div class="foogallery-admin-help">
 	<div class="foogallery-admin-help-header">

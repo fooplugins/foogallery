@@ -5,7 +5,13 @@
             <p><?php _e( 'It\'s always best to see what is possible by looking at the real thing. If you want to get started really quickly without any hassle, then we can import some demo galleries for you. This will create a number of pre-defined galleries which you can easily edit and make your own.', 'foogallery' ); ?></p>
         </header>
         <footer class="fgah-create-demos">
-            <button class="foogallery-admin-help-button-cta foogallery-admin-help-import-demos" data-nonce="<?php echo esc_attr( wp_create_nonce( 'foogallery_admin_import_demos' ) ); ?>"><?php _e( 'Create Demo Galleries *', 'foogallery' ); ?></button>
+            <button class="foogallery-admin-help-button-cta foogallery-admin-help-import-demos"
+                    data-working="<?php _e( 'Please wait...', 'foogallery' ); ?>"
+                    data-nonce="<?php echo esc_attr( wp_create_nonce( 'foogallery_admin_import_demos' ) ); ?>">
+	            <span class="progress"></span>
+	            <span class="fgah-create-demos-text" style="position: relative;"><?php _e( 'Create Demo Galleries *', 'foogallery' ); ?></span>
+            </button>
+
             <small><?php _e( '* Sample images will be imported into your media library', 'foogallery' ); ?></small>
         </footer>
 
@@ -15,6 +21,7 @@
         </header>
         <footer class="fgah-created-demos">
             <a class="foogallery-admin-help-button-cta" href="<?php echo esc_attr( foogallery_admin_gallery_listing_url() ); ?>"><?php _e( 'View Galleries', 'foogallery' ); ?></a>
+	        <small class="fgah-demo-result"></small>
         </footer>
     </section>
 
