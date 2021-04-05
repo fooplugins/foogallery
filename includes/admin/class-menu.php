@@ -22,7 +22,7 @@ if ( ! class_exists( 'FooGallery_Admin_Menu' ) ) {
 		 */
 		function enqueue_scripts( $hook ) {
 			if ( 'foogallery_page_foogallery-help' === $hook ) {
-				foogallery_enqueue_core_gallery_template_script();
+				foogallery_enqueue_core_gallery_template_script( array('jquery', 'masonry' ) );
 				foogallery_enqueue_core_gallery_template_style();
 			}
 		}

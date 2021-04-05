@@ -346,6 +346,29 @@ body {
     margin-bottom: 15px;
 }
 
+.foogallery-admin-help-button {
+    position: relative;
+    background-color: #007017;
+    color: #ffffff !important;
+    padding: 10px 20px;
+    font-size: 1em;
+    border-radius: 3px;
+    text-decoration: none;
+    font-weight: 400;
+    display: inline-block;
+    text-align: center;
+    line-height: 1.2;
+    border: none;
+    box-shadow: none;
+    outline: none;
+    cursor: pointer;
+    transition: background-color .1s ease-in-out;
+}
+
+.foogallery-admin-help-button-active {
+    background-color: #2271b1;
+}
+
 .foogallery-admin-help-button-cta {
     position: relative;
     background-color: #007017;
@@ -365,6 +388,7 @@ body {
     cursor: pointer;
     transition: background-color .1s ease-in-out;
 }
+
 .foogallery-admin-help-button-cta:hover,
 .foogallery-admin-help-button-cta:focus {
     background-color: #008a20;

@@ -112,7 +112,17 @@ $show_demos = apply_filters( 'foogallery_admin_help_show_demos', true );
 
 		$.foogallery_demos = {
 			init : function() {
+				$(".foogallery-admin-help-demo").click( function(e) {
+					e.preventDefault();
+					var $this = $(this),
+						$content = $( $this.attr('href') );
 
+					$('.foogallery-admin-help-demo').removeClass( 'foogallery-admin-help-button-active' );
+					$this.addClass( 'foogallery-admin-help-button-active' );
+
+					$('.foogallery-admin-help-demo-content').hide();
+					$content.show();
+				} );
 			}
 		};
 
