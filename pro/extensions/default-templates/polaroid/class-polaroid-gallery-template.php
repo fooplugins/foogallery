@@ -176,7 +176,8 @@ if ( !class_exists( 'FooGallery_Polaroid_Gallery_Template' ) ) {
                 'hover_effect_preset',
                 'hover_effect_caption_visibility',
                 'caption_desc_source',
-                'caption_desc_length'
+                'caption_desc_length',
+                'caption_alignment'
             );
 
 			$fields_to_remove = array();
