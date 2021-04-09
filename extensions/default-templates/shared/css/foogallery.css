@@ -2318,8 +2318,6 @@
 }
 .fg-justified .fg-image {
 	z-index: 1;
-	width: auto;
-	height: auto;
 }
 .fg-justified .fg-item.fg-positioned .fg-thumb,
 .fg-justified .fg-item.fg-positioned .fg-image-wrap {
