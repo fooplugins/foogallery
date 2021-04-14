@@ -106,9 +106,12 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Lightroom' ) ) {
 					global $wplr;
 					$media = $wplr->get_media_from_collection( $collectionId );
 
-					$attachments = $helper->query_attachments( $foogallery,
-						array( 'post__in' => $media )
-					);
+					if ( is_array( $media ) && count( $media ) > 0 ) {
+						$attachments = $helper->query_attachments( $foogallery, array( 'post__in' => $media ) );
+					} else {
+						//either there are no items in the collection, or there was a problem doing the query
+						//in either case, do nothing!
+					}
 
 					//save a cached list of attachments
 					set_transient( $transient_key, $attachments, $expiry );
