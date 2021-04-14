@@ -21,10 +21,12 @@ if ( ! class_exists( 'FooGallery_Admin_Demo_Content' ) ) {
 
 			foreach ( $image_data as $attachment_data ) {
 				$result = $this->import_attachment( $attachment_data );
-				if ( $result['imported'] ) {
-					$images_imported++;
+				if ( $result !== false ) {
+					if ( $result['imported'] ) {
+						$images_imported++;
+					}
+					$attachment_mappings[ $result['key'] ] = intval( $result['attachment_id'] );
 				}
-				$attachment_mappings[ $result['key'] ] = intval( $result['attachment_id'] );
 			}
 
 			$gallery_data = include( FOOGALLERY_PATH . 'includes/admin/demo-content-galleries.php' );
@@ -105,7 +107,7 @@ if ( ! class_exists( 'FooGallery_Admin_Demo_Content' ) ) {
 		 *
 		 * @param $attachment_data
 		 *
-		 * @return array
+		 * @return array|bool
 		 */
 		function import_attachment( $attachment_data ) {
 
@@ -129,10 +131,16 @@ if ( ! class_exists( 'FooGallery_Admin_Demo_Content' ) ) {
 
 			// Get the contents of the picture
 			$response = wp_remote_get( $attachment_data['url'] );
+			if ( is_wp_error( $response ) ) {
+				return false;
+			}
 			$contents = wp_remote_retrieve_body( $response );
 
 			// Upload and get file data
-			$upload    = wp_upload_bits( basename( $attachment_data['url'] ), null, $contents );
+			$upload = wp_upload_bits( basename( $attachment_data['url'] ), null, $contents );
+			if ( array_key_exists( 'error', $upload ) && $upload['error'] === true ) {
+				return false;
+			}
 			$guid      = $upload['url'];
 			$file      = $upload['file'];
 			$file_type = wp_check_filetype( basename( $file ), null );
