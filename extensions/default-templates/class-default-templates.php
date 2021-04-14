@@ -16,7 +16,6 @@ if ( ! class_exists( 'FooGallery_Default_Templates' ) ) {
     require_once( FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_PATH . 'default/class-default-gallery-template.php' );
     require_once( FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_PATH . 'image-viewer/class-image-viewer-gallery-template.php' );
     require_once( FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_PATH . 'justified/class-justified-gallery-template.php' );
-	//require_once( FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_PATH . 'justified-css/class-justified-css-gallery-template.php' );
     require_once( FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_PATH . 'masonry/class-masonry-gallery-template.php' );
     require_once( FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_PATH . 'simple-portfolio/class-simple-portfolio-gallery-template.php' );
     require_once( FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_PATH . 'thumbnail/class-thumbnail-gallery-template.php' );

@@ -16,7 +16,7 @@ FooGallery is a powerful, responsive photo gallery plugin. Stunning gallery layo
 
 Make gallery management in WordPress great again! With FooGallery you can easily add a stunning photo gallery to your website in minutes.
 
-FooGallery is an easy-to-use image gallery plugin, with stunning gallery layouts. It is also responsive, retina-ready and supports lazy loading for lightning fast photo galleries.
+FooGallery is an easy-to-use image gallery plugin, with stunning gallery layouts and a focus on speed. It is also responsive, retina-ready and supports lazy loading for lightning fast photo galleries.
 
 Live previews are available while creating an image gallery, and also within the Gutenberg block editor with our FooGallery Block.
 
@@ -25,6 +25,12 @@ FooGallery was built to be highly configurable and extendable for developers or 
 That is why we think FooGallery is the best gallery plugin. After using it, we hope you will agree.
 
 [Visit the FooGallery Wordpress Gallery Plugin Homepage](https://fooplugins.com/foogallery/)
+
+= Our Focus On Speed and SEO =
+
+We have optimized the FooGallery code for the best possible pagespeed scores in Google Lighthouse.
+We have focused on the speed of our javascript code, and also dramatically improved Cumulative Layout Shift on all gallery layouts.
+A better pagespeed score means a more favourable ranking from Google.
 
 = WordPress Gallery Plugin Features =
 
@@ -227,8 +233,9 @@ Please update in order to for FooGallery to work in WP 5.5+!
 
 == Changelog ==
 
-= 2.0.14 =
-* Date Updated : 2021-30-03
+= 2.0.20 =
+* Date Updated : 2021-11-04
+* New : Major performance optimizations for all gallery templates (improving javascript speed and reducing content layout shift for better scores in Google Lighthouse)
 * New : Added "Mobile Columns" gallery setting for Responsive Galleries
 * New : Added 6 Columns option for Masonry gallery layout
 * New : Added "Horizontal Layout" gallery setting for Masonry galleries, to try maintain left-to-right order of images
@@ -239,14 +246,19 @@ Please update in order to for FooGallery to work in WP 5.5+!
 * New : Added gallery settings to change the lightbox captions when FooBox is the selected lightbox
 * New : Added ability to refresh gallery preview when editing by clicking preview button again
 * New : Added lazyload support to stack album, giving a major performance boost to very large albums!
-* Update : FooGallery client side 2.0.7
-* Update : simplified extensions admin page and removed all build-your-own logic
+* New : Overhauled Help page when plugin is activated, including the ability create demo gallery content and view inline demos
+* New : Added ability to override captions for FooBox
+* Update : FooGallery client side 2.0.9
+* Update : Simplified extensions admin page and removed all build-your-own logic
+* Update : Updated the Justified gallery template. Removed "Max Row Height" and "Last Row" settings.
+* Update : Updated the Thumbnail gallery template. Removed "Thumbnail Crop" setting.
 * Fix : Updated styling for FooGallery Block to look correct in latest version of Gutenberg
 * Fix : JSON objects get built using all attributes needed
 * Fix : Could not add images to the gallery for some installs, due to no thumbnail sizes being returned. Made the logic more resilient.
 * Fix : Compatible with WP Rocket Lazy loading
 * Fix : Javascript error with Masonry related to script dependencies when using script minifiers
 [//]: # fs_premium_only_begin
+* New : Added "Mobile Layout" gallery setting under "Lightbox -> General" to choose which lightbox layout will be used on mobile devices
 * New : Added "Thumbnail Strip Button" gallery setting under "Lightbox -> Controls" to show/hide the thumbnail strip button inside the lightbox
 * New : Added "Prev/Next Buttons" gallery setting under "Lightbox -> Controls" to show/hide Prev/Next navigation buttons within the lightbox
 * New : Added "Thumbnail Strip Button" gallery setting under "Slider -> Controls" to show/hide the thumbnail strip button inside the slider
