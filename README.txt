@@ -233,10 +233,12 @@ Please update in order to for FooGallery to work in WP 5.5+!
 
 == Changelog ==
 
-= 2.0.21 =
-* Date Updated : 2021-14-04
+= 2.0.22 =
+* Update : FooGallery client side 2.0.10
+* Date Updated : 2021-15-04
 [//]: # fs_premium_only_begin
 * Fix : Fixed issue with empty collections in WP/LR Sync returning back all attachments in the media library!
+* Fix : Fixed bug wrt Safari/iOS Webview CSS Grid issue, with slider and grid templates
 [//]: # fs_premium_only_end
 
 = 2.0.20 =
