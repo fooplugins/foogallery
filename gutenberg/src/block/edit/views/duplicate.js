@@ -19,7 +19,7 @@ export default class FooGalleryEditDuplicate extends Component {
 				<Fragment>
 					<FooGalleryEditBlockControls { ...props } />
 					<FooGalleryEditPlaceholder { ...placeholderProps }>
-						<Button isDefault isLarge onClick={ props.onRequestModalOpen }>{ button }</Button>
+						<Button isSecondary onClick={ props.onRequestModalOpen }>{ button }</Button>
 					</FooGalleryEditPlaceholder>
 					<FooGalleryEditModal { ...props } />
 					<FooGalleryEditInspectorControls { ...props } />

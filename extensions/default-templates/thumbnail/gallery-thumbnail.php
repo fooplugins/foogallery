@@ -11,26 +11,12 @@ if ( !array_key_exists( 'crop', $args ) ) {
 $lightbox = foogallery_gallery_template_setting( 'lightbox', 'unknown' );
 $position = foogallery_gallery_template_setting( 'position', 'fg-center' );
 
-$caption_bgcolor = foogallery_gallery_template_setting( 'caption_bgcolor', 'rgba(0, 0, 0, 0.8)' );
-$caption_color = foogallery_gallery_template_setting( 'caption_color', '#fff' );
 $featured_attachment = $current_foogallery->featured_attachment( $args );
+$featured_attachment->featured = true;
+
 $args['override_caption_title'] = foogallery_gallery_template_setting( 'caption_title', '' );
 $args['override_caption_desc'] = foogallery_gallery_template_setting( 'caption_description', '' );
 
-$thumb_url = $featured_attachment->url;
-if ( foogallery_gallery_template_setting( 'link_custom_url', '' ) === 'on' ) {
-    if ( !empty( $featured_attachment->custom_url ) ) {
-        $thumb_url = $featured_attachment->custom_url;
-    }
-    $args['link'] = 'custom';
-}
-
-$args['link_attributes'] = array(
-    'rel' => 'lightbox[' . $current_foogallery->ID . ']'
-);
-if ( foogallery_gallery_template_setting( 'exclude_featured_image', '' ) === 'on' ) {
-	$args['link_attributes']['class']= 'fg-panel-hide';
-}
 $foogallery_single_thumbnail_classes = foogallery_build_class_attribute_safe( $current_foogallery, 'foogallery-single-thumbnail', 'foogallery-lightbox-' . $lightbox, $position );
 $foogallery_single_thumbnail_attributes = foogallery_build_container_attributes_safe( $current_foogallery, array( 'class' => $foogallery_single_thumbnail_classes ) );
 ?>
@@ -38,12 +24,9 @@ $foogallery_single_thumbnail_attributes = foogallery_build_container_attributes_
     <?php echo foogallery_attachment_html( $featured_attachment, $args ); ?>
     <div class="fg-st-hidden">
     <?php
-    unset( $args['override_caption_title'] );
-    unset( $args['override_caption_desc'] );
-    unset( $args['link_attributes'] );
     foreach ( foogallery_current_gallery_attachments_for_rendering() as $attachment ) {
         if ( $attachment->url !== $featured_attachment->url ) {
-            echo foogallery_attachment_html( $attachment, $args );
+            echo foogallery_attachment_html( $attachment );
         }
     } ?>
     </div>

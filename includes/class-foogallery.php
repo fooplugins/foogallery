@@ -511,4 +511,12 @@ class FooGallery extends stdClass {
     public function is_dynamic() {
 		return $this->datasource_name !== foogallery_default_datasource();
     }
+
+	/**
+	 * Returns the ID that is rendered on the container div of the gallery
+	 * @return string
+	 */
+    public function container_id() {
+    	return 'foogallery-gallery-' . $this->ID;
+    }
 }

@@ -11,7 +11,10 @@ if ( ! class_exists( 'FooGallery_LazyLoad' ) ) {
         function __construct()
         {
             //determine lazy loading for the gallery once up front before the template is loaded
-            add_action('foogallery_located_template', array($this, 'determine_lazyloading_for_gallery'));
+            add_action('foogallery_located_template', array($this, 'determine_lazyloading_for_gallery') );
+
+            //force lazy loading for stack album
+            add_action( 'foogallery_located_album_template-stack', array($this, 'force_lazyloading_for_galleries') );
 
             //change the image src attribute to data attributes if lazy loading is enabled
             add_filter('foogallery_attachment_html_image_attributes', array($this, 'change_src_attributes'), 99, 3);
@@ -24,6 +27,18 @@ if ( ! class_exists( 'FooGallery_LazyLoad' ) ) {
 
             //add some settings to allow forcing of the lazy loading to be disabled
             add_filter( 'foogallery_admin_settings_override', array( $this, 'add_settings' ) );
+        }
+
+		/**
+		 * Force lazy loading for all galleries in the stack album
+		 *
+		 * @param $current_foogallery_album
+		 */
+        function force_lazyloading_for_galleries( $current_foogallery_album ) {
+	        foreach ( $current_foogallery_album->galleries() as $gallery ) {
+		        $gallery->lazyload_support = $gallery->lazyload_enabled = true;
+		        $gallery->lazyload_forced_disabled = false;
+	        }
         }
 
         /**
@@ -66,14 +81,17 @@ if ( ! class_exists( 'FooGallery_LazyLoad' ) ) {
         }
 
         /**
+         * Change the src and srcset attributes for lazy loading
+         *
          * @param array $attr
          * @param array $args
          * @param FooGalleryAttachment $attachment
          * @return mixed
          */
-        function change_src_attributes($attr, $args, $attachment)
-        {
+        function change_src_attributes($attr, $args, $attachment) {
             global $current_foogallery;
+
+            $replace_attributes = false;
 
             if ($current_foogallery !== null) {
 
@@ -82,29 +100,43 @@ if ( ! class_exists( 'FooGallery_LazyLoad' ) ) {
 					return $attr;
 				}
 
-                if (isset($current_foogallery->lazyload_support) && true === $current_foogallery->lazyload_support) {
-                    if (isset($attr['src'])) {
-                        //rename src => data-src-fg
-                        $src = $attr['src'];
-                        unset($attr['src']);
-                        $attr['data-src-fg'] = $src;
-                    }
-
-                    if (isset($attr['srcset'])) {
-                        //rename srcset => data-srcset-fg
-                        $src = $attr['srcset'];
-                        unset($attr['srcset']);
-                        $attr['data-srcset-fg'] = $src;
-                    }
-
-                    if ( apply_filters( 'foogallery_img_src_placeholders', false ) ) {
-	                    //add a placeholder src
-	                    if ( isset( $attr['width'] ) && isset( $attr['height'] ) ) {
-		                    //set the src to a 1x1 transparent gif
-		                    $attr['src'] = $this->get_placeholder_image( $attr['width'], $attr['height'] );
-	                    }
-                    }
+                if ( $this->gallery_lazyload_enabled( $current_foogallery ) ) {
+					$replace_attributes = true;
                 }
+
+
+            } else {
+            	//if we get here then check we are dealing with an album
+	            global $current_foogallery_album;
+
+	            if ( $current_foogallery_album !== null ) {
+		            //check if we have lazy loading disabled
+		            if ( foogallery_get_setting( 'disable_lazy_loading' ) !== 'on' ) {
+			            $replace_attributes = true;
+		            }
+	            }
+            }
+
+            if ( $replace_attributes ) {
+	            if (isset($attr['src'])) {
+		            //rename src => data-src-fg
+		            $src = $attr['src'];
+		            unset($attr['src']);
+		            $attr['data-src-fg'] = $src;
+	            }
+
+	            if (isset($attr['srcset'])) {
+		            //rename srcset => data-srcset-fg
+		            $src = $attr['srcset'];
+		            unset($attr['srcset']);
+		            $attr['data-srcset-fg'] = $src;
+	            }
+
+	            //add a placeholder src
+	            if ( isset( $attr['width'] ) && isset( $attr['height'] ) ) {
+		            //set the src to a transparent SVG that has the correct width and height
+		            $attr['src'] = $this->get_placeholder_image( $attr['width'], $attr['height'] );
+	            }
             }
 
             return $attr;
@@ -113,7 +145,6 @@ if ( ! class_exists( 'FooGallery_LazyLoad' ) ) {
 		public function get_placeholder_image( $w, $h ) {
 			return 'data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%20' . $w . '%20' . $h . '%22%3E%3C/svg%3E';
 		}
-
 
         /**
          * Add the required lazy load options if needed
@@ -125,12 +156,23 @@ if ( ! class_exists( 'FooGallery_LazyLoad' ) ) {
          */
         function add_lazyload_options($options, $gallery, $attributes)
         {
-            if ( isset( $gallery->lazyload_support ) && true === $gallery->lazyload_support ) {
-                $options['lazy'] = $gallery->lazyload_enabled && !$gallery->lazyload_forced_disabled;
-				$options['src']    = 'data-src-fg';
-				$options['srcset'] = 'data-srcset-fg';
-			}
+        	$lazyload_enabled = $this->gallery_lazyload_enabled( $gallery );
+            $options['lazy'] = $lazyload_enabled;
+            if ( !$lazyload_enabled ) {
+	            $options['src']    = 'src';
+	            $options['srcset'] = 'srcset';
+            }
             return $options;
+        }
+
+		/**
+		 * @param $gallery FooGallery
+		 */
+		private function gallery_lazyload_enabled( $gallery ) {
+			if ( isset( $gallery->lazyload_support ) && true === $gallery->lazyload_support ) {
+				return $gallery->lazyload_enabled && ! $gallery->lazyload_forced_disabled;
+			}
+			return false;
         }
 
         /**
@@ -182,7 +224,7 @@ if ( ! class_exists( 'FooGallery_LazyLoad' ) ) {
                 'desc'    => __( 'This will disable lazy loading for ALL galleries. This is not recommended, but is sometimes needed when there are problems with the galleries displaying on some installs.', 'foogallery' ),
                 'type'    => 'checkbox',
                 'tab'     => 'general',
-                'section' => __( 'Lazy Loading', 'foogallery' )
+                'section' => __( 'Performance', 'foogallery' )
             );
 
             $new_settings = array_merge( $lazy_settings, $settings['settings'] );

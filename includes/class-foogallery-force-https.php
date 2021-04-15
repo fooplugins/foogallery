@@ -18,7 +18,7 @@ if ( ! class_exists( 'FooGallery_ForceHttps' ) ) {
 		 */
 		function enable_force() {
 			if ( 'on' === foogallery_get_setting( 'force_https' ) ) {
-				add_filter( 'foogallery_attachment_resize_thumbnail', array( $this, 'force_thumbnail_to_https' ), 99, 3 );
+				add_filter( 'foogallery_process_image_url', array( $this, 'force_images_to_https' ), 99 );
 				add_filter( 'foogallery_enqueue_style_src', array( $this, 'force_css_to_https'), 99, 2 );
 				add_filter( 'foogallery_core_gallery_script', array( $this, 'force_js_to_https'), 99 );
 			}
@@ -53,17 +53,14 @@ if ( ! class_exists( 'FooGallery_ForceHttps' ) ) {
 		}
 
 		/**
-		 * Force a thumbnail src to Https
+		 * Force an image URL to Https
 		 *
-		 * @param $original_image_src
-		 * @param $args
-		 * @param $thumbnail_object
+		 * @param $url
 		 *
 		 * @return string
 		 */
-		function force_thumbnail_to_https( $original_image_src, $args, $thumbnail_object ) {
-			$original_image_src = $this->force_https( $original_image_src );
-			return $original_image_src;
+		function force_images_to_https( $url ) {
+			return $this->force_https( $url );
 		}
 
 		/**

@@ -35,7 +35,7 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 				'desc'    => sprintf( __( '%s optimizes the way it loads gallery stylesheets to improve page performance. This can lead to the incorrect CSS being loaded in some cases. Use this button to clear all the CSS optimizations that have been cached across all galleries.', 'foogallery' ), foogallery_plugin_name() ),
 				'type'    => 'clear_optimization_button',
 				'tab'     => 'general',
-				'section' => __( 'Cache', 'foogallery' )
+				'section' => __( 'Performance', 'foogallery' )
 			);
 
 	        $gallery_templates = foogallery_gallery_templates();
@@ -143,8 +143,8 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 
 			$settings[] = array(
 				'id'      => 'hide_editor_button',
-				'title'   => __( 'Hide WYSIWYG Editor Button', 'foogallery' ),
-				'desc'    => sprintf( __( 'If enabled, this will hide the "Add %s" button in the WYSIWYG editor.', 'foogallery' ), foogallery_plugin_name() ),
+				'title'   => __( 'Hide Classic Editor Button', 'foogallery' ),
+				'desc'    => sprintf( __( 'If enabled, this will hide the "Add %s" button in the Classic editor.', 'foogallery' ), foogallery_plugin_name() ),
 				'type'    => 'checkbox',
 				'tab'     => 'general',
 				'section' => __( 'Admin', 'foogallery' )
@@ -184,14 +184,16 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 				);
 			}
 
-			$settings[] = array(
-				'id'      => 'thumb_jpeg_quality',
-				'title'   => __( 'Thumbnail JPEG Quality', 'foogallery' ),
-				'desc'    => __( 'The image quality to be used when resizing JPEG images.', 'foogallery' ),
-				'type'    => 'text',
-				'default' => '90',
-				'tab'     => 'thumb'
-			);
+			if ( foogallery_thumb_active_engine()->has_local_cache() ) {
+				$settings[] = array(
+					'id'      => 'thumb_jpeg_quality',
+					'title'   => __( 'Thumbnail JPEG Quality', 'foogallery' ),
+					'desc'    => __( 'The image quality to be used when resizing JPEG images.', 'foogallery' ),
+					'type'    => 'text',
+					'default' => '90',
+					'tab'     => 'thumb'
+				);
+			}
 
 			$image_optimization_html = sprintf( __('We recommend %s! An easy-to-use, lightweight WordPress plugin that optimizes images & PDFs.', 'foogallery'),
 				'<a href="https://shortpixel.com/homepage/affiliate/foowww" target="_blank">' . __('ShortPixel Image Optimizer' , 'foogallery') . '</a>' );
@@ -220,16 +222,6 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 				'type'    => 'checkbox',
 				'tab'     => 'thumb'
 			);
-
-// This setting is not ever used, so there is no point in showing it
-//
-//			$settings[] = array(
-//				'id'      => 'thumb_resize_animations',
-//				'title'   => __( 'Resize Animated GIFs', 'foogallery' ),
-//				'desc'    => __( 'Should animated gifs be resized or not. If enabled, only the first frame is used in the resize.', 'foogallery' ),
-//				'type'    => 'checkbox',
-//				'tab'     => 'thumb'
-//			);
 
 			$settings[] = array(
 				'id'      => 'animated_gif_use_original_image',
@@ -311,28 +303,28 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 
 			$settings[] = array(
 				'id'      => 'language_imageviewer_prev_text',
-				'title'   => __( 'Imageviewer "Prev" Text', 'foogallery' ),
+				'title'   => __( 'Image Viewer "Prev" Text', 'foogallery' ),
 				'type'    => 'text',
 				'default' => __( 'Prev', 'foogallery' ),
-				'section' => __( 'Imageviewer', 'foogallery' ),
+				'section' => __( 'Image Viewer Template', 'foogallery' ),
 				'tab'     => 'language'
 			);
 
 			$settings[] = array(
 				'id'      => 'language_imageviewer_next_text',
-				'title'   => __( 'Imageviewer "Next" Text', 'foogallery' ),
+				'title'   => __( 'Image Viewer "Next" Text', 'foogallery' ),
 				'type'    => 'text',
 				'default' => __( 'Next', 'foogallery' ),
-				'section' => __( 'Imageviewer', 'foogallery' ),
+				'section' => __( 'Image Viewer Template', 'foogallery' ),
 				'tab'     => 'language'
 			);
 
 			$settings[] = array(
 				'id'      => 'language_imageviewer_of_text',
-				'title'   => __( 'Imageviewer "Of" Text', 'foogallery' ),
+				'title'   => __( 'Image Viewer "Of" Text', 'foogallery' ),
 				'type'    => 'text',
 				'default' => __( 'of', 'foogallery' ),
-				'section' => __( 'Imageviewer', 'foogallery' ),
+				'section' => __( 'Image Viewer Template', 'foogallery' ),
 				'tab'     => 'language'
 			);
 
@@ -387,15 +379,7 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 			$settings[] = array(
 				'id'      => 'enable_legacy_thumb_cropping',
 				'title'   => __( 'Enable Legacy Thumb Cropping', 'foogallery' ),
-				'desc'    => __( 'For when you want to enable legacy cropping options in certain gallery templates. This is not recommended.', 'foogallery' ),
-				'type'    => 'checkbox',
-				'tab'     => 'advanced'
-			);
-
-			$settings[] = array(
-				'id'      => 'output_json_to_script_block',
-				'title'   => __( 'Output Gallery JSON to Script Block', 'foogallery' ),
-				'desc'    => __( 'Some plugins conflict with the default way of rendering gallery items to the container. Enabling this setting will output gallery items to a separate script block.', 'foogallery' ),
+				'desc'    => __( 'Enables legacy thumbnail cropping for the Simple Portfolio gallery template, meaning it will not crop thumbnails.<br/>PLEASE NOTE : only enable this if you have been asked to by our support team.', 'foogallery' ),
 				'type'    => 'checkbox',
 				'tab'     => 'advanced'
 			);
@@ -416,21 +400,15 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 				'tab'     => 'advanced'
 			);
 
-			$settings[] = array(
-				'id'      => 'use_future_endpoint',
-				'title'   => __( 'Use Beta Endpoint', 'foogallery' ),
-				'desc'    => __( 'The list of available extensions are pulled from an external URL. You can also pull from a "beta" endpoint which will sometimes contain beta extensions that are not publicly available.', 'foogallery' ),
-				'type'    => 'checkbox',
-				'tab'     => 'advanced',
-			);
-
-			$settings[] = array(
-				'id'      => 'override_thumb_test',
-				'title'   => __( 'Override Thumb Test', 'foogallery' ),
-				'desc'    => __( 'Sometimes there are problems running the thumbnail generation test. This overrides the test to use a remote image from our CDN.', 'foogallery' ),
-				'type'    => 'checkbox',
-				'tab'     => 'advanced',
-			);
+			if ( foogallery_thumb_active_engine()->has_local_cache() ) {
+				$settings[] = array(
+					'id'    => 'override_thumb_test',
+					'title' => __( 'Override Thumb Test', 'foogallery' ),
+					'desc'  => __( 'Sometimes there are problems running the thumbnail generation test. This overrides the test to use a remote image from our CDN.', 'foogallery' ),
+					'type'  => 'checkbox',
+					'tab'   => 'advanced',
+				);
+			}
 
 			if ( !foogallery_is_pro() ) {
 				$settings[] = array(
@@ -441,6 +419,14 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 					'tab'   => 'advanced'
 				);
 			}
+
+			$settings[] = array(
+				'id'    => 'demo_content',
+				'type'  => 'checkbox',
+				'title' => __( 'Demo Content Created', 'foogallery' ),
+				'desc'  => __( 'If the demo content has been created, then this will be checked. You can uncheck this to allow for demo content to be created again.', 'foogallery' ),
+				'tab'   => 'advanced'
+			);
 			//endregion Advanced Tab
 
 			//region Custom JS & CSS

@@ -1,9 +1,6 @@
 <?php
 if ( ! class_exists( 'FooGallery_Pro_Attachment_Taxonomies' ) ) {
 
-    define( 'FOOGALLERY_ATTACHMENT_TAXONOMY_TAG', 'foogallery_attachment_tag' );
-    define( 'FOOGALLERY_ATTACHMENT_TAXONOMY_CATEGORY', 'foogallery_attachment_category' );
-
     class FooGallery_Pro_Attachment_Taxonomies {
 
     	private $cached_terms = array();

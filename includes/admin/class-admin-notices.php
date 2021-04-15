@@ -84,20 +84,46 @@ if ( ! class_exists( 'FooGallery_Admin_Notices' ) ) {
 				return true; //always show - user has created 5 or more galleries
 			}
 
+	        //do not show the notice if on activation page
+	        if ( foogallery_is_activation_page() ) {
+		        return false;
+	        }
 
 			//we must show the message - get out early
 			if ( 0 === $show_message ) {
-				$gallery_count = count( get_posts( array(
+				$galleries = get_posts( array(
 					'post_type'     => FOOGALLERY_CPT_GALLERY,
 					'post_status'	=> array( 'publish', 'draft' ),
 					'cache_results' => false,
 					'nopaging'      => true,
-				) ) );
+				) );
+
+				$gallery_count = $this->count_excluding_demos( $galleries );
 
 				if ( $gallery_count >= 5 ) {
 					update_option( 'foogallery_admin_rating_notice_dismiss', 'show' );
 				}
 			}
+		}
+
+	    /**
+	     * Get a count of galleries that are not auto-generated demos
+	     * @param $galleries
+	     *
+	     * @return int
+	     */
+		function count_excluding_demos( $galleries ) {
+			if ( !is_array( $galleries ) ) {
+				return 0;
+			}
+
+			$count = 0;
+			foreach ( $galleries as $gallery ) {
+				if ( strpos( $gallery->post_title, 'Demo : ' ) === false ) {
+					$count++;
+				}
+			}
+			return $count;
 		}
 
 		function display_rating_notice() {
@@ -229,6 +255,11 @@ if ( ! class_exists( 'FooGallery_Admin_Notices' ) ) {
 		    //do not show the notice to pro users
             if ( foogallery_is_pro() ) {
                 return false;
+            }
+
+	        //do not show the notice if on activation page
+            if ( foogallery_is_activation_page() ) {
+            	return false;
             }
 
             //only show on foogallery pages

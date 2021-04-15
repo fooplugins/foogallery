@@ -46,7 +46,7 @@ if ( !class_exists("FooGallery_Pro_Video_Query") ){
 		public function get_args() {
 			return array(
 				"query" => !empty($_POST["query"]) ? trim($_POST["query"]) : null,
-				"page" => !empty($_POST["page"]) ? (int)$_POST["page"] : 1,
+				"page" => !empty($_POST["page"]) ? (is_numeric($_POST["page"]) ? (int)$_POST["page"] : $_POST["page"]) : 1,
 				"offset" => !empty($_POST["offset"]) ? (int)$_POST["offset"] : 0,
 				"nonce" => !empty($_POST["fgi_nonce"]) ? $_POST["fgi_nonce"] : null
 			);
@@ -84,7 +84,7 @@ if ( !class_exists("FooGallery_Pro_Video_Query") ){
 			if ($url !== false) {
 				// handle YouTube specific urls as we parse playlists etc.
 				if ($this->youtube->handles($url)) {
-					return $this->youtube->fetch($url);
+					return $this->youtube->fetch($url, $page, $offset);
 				}
 				// handle Vimeo specific urls as we parse albums etc.
 				if ($this->vimeo->handles($url)) {

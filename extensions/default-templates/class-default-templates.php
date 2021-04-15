@@ -26,6 +26,7 @@ if ( ! class_exists( 'FooGallery_Default_Templates' ) ) {
             new FooGallery_Default_Gallery_Template();
             new FooGallery_Image_Viewer_Gallery_Template();
             new FooGallery_Justified_Gallery_Template();
+	        //new FooGallery_Justified_CSS_Gallery_Template();
             new FooGallery_Masonry_Gallery_Template();
             new FooGallery_Simple_Portfolio_Gallery_Template();
             new FooGallery_Thumbnail_Gallery_Template();

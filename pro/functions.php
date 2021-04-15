@@ -43,6 +43,26 @@ function foogallery_settings_set_vimeo_access_token( $access_token ) {
 	$foogallery->options()->save( 'vimeo_access_token', $access_token );
 }
 
+
+/**
+ * Retrieve the YouTube API key from the foogallery settings
+ * @return mixed
+ */
+function foogallery_settings_get_youtube_api_key() {
+	return foogallery_get_setting( 'youtube_api_key' );
+}
+
+/**
+ * Save the YouTube API key to the foogallery settings
+ * @param $api_key
+ */
+function foogallery_settings_set_youtube_api_key( $api_key ) {
+	$foogallery = FooGallery_Plugin::get_instance();
+
+	$foogallery->options()->save( 'youtube_api_key', $api_key );
+}
+
+
 /**
  * Get terms hierarchy in a recursive way
  *

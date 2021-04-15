@@ -55,7 +55,9 @@ if ( ! class_exists( 'FooGallery_Admin_Extensions' ) ) {
 				}
 
 				//if we get here then no fatal error - cool!
-				ob_end_clean();
+				if ( ob_get_length() > 0 ) {
+					ob_end_clean();
+				}
 
 				//store the result in a short-lived transient
 				if ( isset($result) ) {
@@ -74,27 +76,6 @@ if ( ! class_exists( 'FooGallery_Admin_Extensions' ) ) {
 					wp_redirect( $redirect_url );
 					die();
 				}
-			} else if ( 'reload' === $action ) {
-				$api = new FooGallery_Extensions_API();
-				$api->reload();
-
-				//first, remove unwanted query args
-				$redirect_url = remove_query_arg( array( 'extension', 'action' ) );
-
-				if ( ! $api->has_extension_loading_errors() ) {
-					$result = array(
-						'message' => __( 'The extensions have been reloaded', 'foogallery' ),
-						'type'    => 'success',
-					);
-
-					set_transient( FOOGALLERY_EXTENSIONS_MESSAGE_TRANSIENT_KEY, $result, 30 );
-
-					//then add a query arg for our message
-					$redirect_url = add_query_arg( 'show_message', 'yes', $redirect_url );
-				}
-
-				wp_redirect( $redirect_url );
-				die();
 			} else if ( $has_error ) {
 				$api = new FooGallery_Extensions_API();
 				$api->deactivate( $extension_slug, true, false );

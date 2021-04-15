@@ -18,6 +18,30 @@ if ( ! class_exists( 'FooGallery_Advanced_Gallery_Settings' ) ) {
 
 			//add custom class to container
 			add_filter( 'foogallery_build_class_attribute', array( $this, 'add_custom_class' ), 10, 2 );
+
+			//remove the title attribute from the image
+			add_filter('foogallery_attachment_html_image_attributes', array($this, 'remove_title_attribute'), 99, 3);
+		}
+
+		/**
+		 * @param array $attr
+		 * @param array $args
+		 * @param FooGalleryAttachment $attachment
+		 * @return mixed
+		 */
+		function remove_title_attribute($attr, $args, $attachment) {
+			//make sure we use a cached value
+			if ( !foogallery_current_gallery_has_cached_value( 'include_title') ) {
+				foogallery_current_gallery_set_cached_value( 'include_title', foogallery_gallery_template_setting( 'include_title', '' ) );
+			}
+
+			if ( 'disabled' === foogallery_current_gallery_get_cached_value( 'include_title' ) ) {
+				if ( array_key_exists( 'title', $attr ) ) {
+					unset( $attr['title'] );
+				}
+			}
+
+			return $attr;
 		}
 
 		/**
@@ -54,6 +78,24 @@ if ( ! class_exists( 'FooGallery_Advanced_Gallery_Settings' ) ) {
 				'section'  => __( 'Advanced', 'foogallery' ),
 				'type'     => 'text',
 				'default'  => '',
+			);
+
+			$fields[] = array(
+				'id'      => 'include_title',
+				'title'   => __( 'Image Title Attribute', 'foogallery' ),
+				'desc'    => __( 'You can choose to include a title attribute on the thumbnail image or not.', 'foogallery' ),
+				'section' => __( 'Advanced', 'foogallery' ),
+				'type'     => 'radio',
+				'spacer'   => '<span class="spacer"></span>',
+				'default'  => '',
+				'choices'  => array(
+					'' => __( 'Enabled', 'foogallery' ),
+					'disabled' => __( 'Disabled', 'foogallery' ),
+				),
+				'row_data' => array(
+					'data-foogallery-change-selector' => 'input:radio',
+					'data-foogallery-preview' => 'shortcode'
+				)
 			);
 
 			return $fields;

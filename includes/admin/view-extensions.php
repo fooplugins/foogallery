@@ -3,63 +3,34 @@ $instance = FooGallery_Plugin::get_instance();
 $api      = new FooGallery_Extensions_API();
 
 $extensions = $api->get_all_for_view();
-$has_errors = $api->has_extension_loading_errors();
-$categories = $api->get_all_categories();
+$has_errors = false;
 
 $show_message = safe_get_from_request( 'show_message' );
 
 if ( 'yes' === $show_message ) {
 	$result = get_transient( FOOGALLERY_EXTENSIONS_MESSAGE_TRANSIENT_KEY );
+	if ( $result === false ) {
+		$result = null;
+	}
 }
-
 $tagline = apply_filters( 'foogallery_admin_extensions_tagline', sprintf( __( 'Extensions make %s even more awesome, without bloating the core plugin.', 'foogallery' ), foogallery_plugin_name() ) );
-$show_foobot = apply_filters( 'foogallery_admin_show_foobot', true );
 ?>
 <style>
-	.foogallery-badge-foobot {
-		position: absolute;
-		top: 5px;
-		right: 0;
-		background: url(<?php echo FOOGALLERY_URL; ?>assets/foobot_small.png) no-repeat;
-		width: 82px;
-		height: 150px;
-		z-index: 100;
-	}
 	.foogallery-text {
 		font-size: 18px;
 		margin: 10px 0;
 	}
 </style>
-<div class="wrap about-wrap extensions-wrap">
-<?php
-if ( isset( $result ) ) { ?>
-	<div class="foogallery-message-<?php echo $result['type']; ?>">
-		<p><?php echo $result['message']; ?></p>
-	</div>
-<?php }
-if ( $has_errors ) { ?>
-	<div class="foogallery-message-error">
-		<p><?php _e( 'There was a problem loading all the public extensions! Only the default bundled extensions will be shown.', 'foogallery' ); ?></p>
-	</div>
-<?php } ?>
-	<h1><?php printf( __( '%s Extensions', 'foogallery' ), foogallery_plugin_name() ); ?><span class="spinner"></span></h1>
-
+<div class="wrap foogallery-extensions">
+	<h2><?php printf( __( '%s Extensions', 'foogallery' ), foogallery_plugin_name() ); ?><span class="spinner"></span></h2>
 	<div class="foogallery-text"><?php echo $tagline; ?></div>
-	<?php if ( $show_foobot ) { ?><div class="foogallery-badge-foobot"></div><?php } ?>
-
-	<h2 class="foo-nav-tabs nav-tab-wrapper">
 	<?php
-	foreach ( $categories as $category_slug => $category ) {
-		echo "<a href=\"#{$category_slug}\" class=\"nav-tab nav-tab-{$category_slug}\">{$category['name']}</a>";
-	} ?>
-		<div class="extension-search-box">
-			<label class="screen-reader-text" for="plugin-search-input">Search Extensions:</label>
-			<input placeholder="<?php echo __( 'Search extensions...', 'foogallery' ); ?>" type="search" id="extensions-search-input">
+	if ( isset( $result ) ) { ?>
+		<div class="foogallery-message-<?php echo $result['type']; ?>">
+			<p><?php echo $result['message']; ?></p>
 		</div>
-		<div class="extension-reload">
-			<a class="ext_action button" href="<?php echo esc_url( add_query_arg( 'action', 'reload' ) ); ?>"><span class="dashicons dashicons-update"></span> <?php _e( 'Reload', 'foogallery' ); ?></a>
-		</div>
-	</h2>
+	<?php } ?>
+	<hr />
 </div>
 
 <div class="foogallery-extension-browser">
@@ -166,11 +137,4 @@ if ( $has_errors ) { ?>
 		</div>
 		<?php } ?>
 	</div>
-	<?php
-	$hide_build_your_own_tab = foogallery_get_setting( 'whitelabel_extensions_hide_build_your_own' );
-	if ( 'on' != $hide_build_your_own_tab ) { ?>
-	<div class="extension-page extension-page-build_your_own">
-		<?php include 'view-extensions-build-your-own.php'; ?>
-	</div>
-	<?php } ?>
 </div>
