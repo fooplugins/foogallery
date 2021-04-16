@@ -9106,7 +9106,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 				 */
 				var e = self.tmpl.trigger("append-item", [self]);
 				if (!e.isDefaultPrevented()) {
-					self.tmpl.$el.append(self.$el);
+					self.tmpl.$el.append(self.$el.removeClass(self.cls.hidden));
 					self.isAttached = true;
 				}
 				if (self.isAttached) {

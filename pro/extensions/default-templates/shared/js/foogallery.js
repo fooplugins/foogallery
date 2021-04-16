@@ -9106,7 +9106,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 				 */
 				var e = self.tmpl.trigger("append-item", [self]);
 				if (!e.isDefaultPrevented()) {
-					self.tmpl.$el.append(self.$el);
+					self.tmpl.$el.append(self.$el.removeClass(self.cls.hidden));
 					self.isAttached = true;
 				}
 				if (self.isAttached) {
@@ -11409,10 +11409,11 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
         isVisible: function(item){
             return item instanceof _.Item && !item.noLightbox && !item.panelHide;
         },
-        onItemsChanged: function(e, tmpl){
-            if (this.thumbs.isCreated && tmpl.initialized){
-                this.thumbs.doCreateThumbs(tmpl.items.available(this.isVisible));
-                if (this.isAttached) this.load(tmpl.items.first(this.isVisible));
+        onItemsChanged: function(e){
+            var self = this;
+            if (self.thumbs.isCreated && self.tmpl.initialized){
+                self.thumbs.doCreateThumbs(self.tmpl.items.available(self.isVisible));
+                if (self.isAttached) self.load(self.tmpl.items.first(self.isVisible));
             }
         },
         create: function(){
