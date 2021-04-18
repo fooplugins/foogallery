@@ -1,3 +1,5 @@
+FooGallery.autoEnabled = false;
+
 (function (FOOGALLERY, $, undefined) {
 
     FOOGALLERY.media_uploader = false;
@@ -117,8 +119,11 @@
 		//make sure the fields that should be hidden or shown are doing what they need to do
 		FOOGALLERY.handleSettingsShowRules();
 
+		var $preview_container = $('.foogallery_preview_container'),
+			$preview = $preview_container.find('.foogallery');
+
 		//set the preview height so there is no jump
-		$('.foogallery_preview_container').css('height', $('.foogallery_preview_container').height());
+		$preview_container.css('height', $preview_container.height());
 
 		//build up all the data to generate a preview
         var $shortcodeFields = $('.foogallery-settings-container-active .foogallery-metabox-settings .foogallery_template_field[data-foogallery-preview*="shortcode"]'),
@@ -130,7 +135,7 @@
         }
 
         //clear any items just in case
-		window['foogallery-gallery-' + foogallery_id + '-items'] = null;
+		window['foogallery-gallery-' + foogallery_id + '_items'] = null;
 
         //add additional data for the preview
 		data.push({name: 'foogallery_id', value: foogallery_id});
@@ -150,7 +155,15 @@
 		data.push({name: '_wp_http_referer', value: encodeURIComponent($('input[name="_wp_http_referer"]').val())});
 
         $('#foogallery_preview_spinner').addClass('is-active');
-        $('.foogallery_preview_container').addClass('loading');
+		$preview_container.addClass('loading');
+
+		if ($preview.length > 0){
+			var fg = $preview.data("__FooGallery__");
+			if (fg instanceof FooGallery.Template){
+				fg.destroy(false);
+			}
+		}
+
         $.ajax({
             type: "POST",
             url: ajaxurl,
@@ -160,9 +173,9 @@
 				$('.foogallery_preview_container .foogallery').foogallery("destroy");
 
                 //updated the preview
-				$('.foogallery_preview_container').html(data);
+				$preview_container.html(data);
                 $('#foogallery_preview_spinner').removeClass('is-active');
-                $('.foogallery_preview_container').removeClass('loading foogallery-preview-force-refresh');
+				$preview_container.removeClass('loading foogallery-preview-force-refresh');
 
 				FOOGALLERY.updateGalleryPreview(true, true);
             }
@@ -232,9 +245,6 @@
 		//remove the loading spinner
 		$('.foogallery-gallery-items-metabox-title').remove();
 
-		//move the items switch selector into the metabox heading
-		//$('.foogallery-items-view-switch-container').appendTo( '#foogallery_items .hndle span' ).removeClass('hidden');
-
 		var $items_metabox_heading = $('#foogallery_items .hndle span');
 		//This check is done to accommodate a markup change in WP 5.5
 		if ( $items_metabox_heading.length === 0 ) {
@@ -252,6 +262,11 @@
 				$nextButton = $(this),
 				nextSelector = $nextButton.data('container'),
 				value = $nextButton.data('value');
+
+			//if the preview button is already selected, and we are clicking it again, then force a preview refresh
+			if ( currentSelector === nextSelector && value === 'preview' ) {
+				$('.foogallery_preview_container').addClass('foogallery-preview-force-refresh');
+			}
 
 			//toggle the views
 			$(currentSelector).hide();
@@ -278,7 +293,7 @@
 		$(function() {
 
 			// Prevent inputs in settings meta box headings opening/closing contents.
-			$( '#foogallery_settings' ).find( '.hndle' ).unbind( 'click.postboxes' );
+			$( '#foogallery_settings' ).find( '.hndle' ).off( 'click.postboxes' );
 
 			$( '#foogallery_settings' ).on( 'click', '.hndle', function( event ) {
 
@@ -291,7 +306,7 @@
 			});
 
 			// Prevent inputs in items meta box headings opening/closing contents.
-			$( '#foogallery_items' ).find( '.hndle' ).unbind( 'click.postboxes' );
+			$( '#foogallery_items' ).find( '.hndle' ).off( 'click.postboxes' );
 
 			$( '#foogallery_items' ).on( 'click', '.hndle', function( event ) {
 
@@ -315,10 +330,10 @@
 				selector = $fieldContainer.data('foogallery-change-selector');
 
             $fieldContainer.find(selector).change(function() {
-                if ( $fieldContainer.data('foogallery-preview').indexOf('shortcode') !== -1 ) {
+                if ( $fieldContainer.data('foogallery-preview') && $fieldContainer.data('foogallery-preview').indexOf('shortcode') !== -1 ) {
                     FOOGALLERY.reloadGalleryPreview();
                 } else {
-					FOOGALLERY.handleSettingFieldChange( $fieldContainer.data('foogallery-preview').indexOf('class') !== -1, true );
+					FOOGALLERY.handleSettingFieldChange( $fieldContainer.data('foogallery-preview') && $fieldContainer.data('foogallery-preview').indexOf('class') !== -1, true );
 				}
 			});
         });
@@ -423,16 +438,16 @@
 			var attachments = FOOGALLERY.media_uploader.state().get('selection').toJSON();
 
 			$.each(attachments, function(i, item) {
-				if (item && item.id && item.sizes) {
+				if ( item && item.id ) {
 					var attachment = {
 						id: item.id,
 						src: null,
 						subtype: null
 					};
-					if (item.sizes.thumbnail) {
+					if ( item.sizes && item.sizes.thumbnail) {
 						attachment.src = item.sizes.thumbnail.url;
 					} else {
-						//thumbnail could not be found for whatever reason
+						//thumbnail could not be found for whatever reason. Default to the full image URL
 						attachment.src = item.url;
 					}
 					if ( item.subtype ) {
@@ -442,6 +457,7 @@
 					FOOGALLERY.addAttachmentToGalleryList(attachment);
 				} else {
 					//there was a problem adding the item! Move on to the next
+					alert( 'There was a problem adding the item to the gallery!' );
 				}
 			});
 		})

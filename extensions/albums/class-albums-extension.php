@@ -21,9 +21,6 @@ if ( ! class_exists( 'FooGallery_Albums_Extension' ) ) {
 				new FooGallery_Albums_Admin_Columns();
 				new FooGallery_Admin_Album_MetaBoxes();
 
-				//add language settings
-				add_filter( 'foogallery_admin_settings_override', array( $this, 'include_album_language_settings' ) );
-
 				//add some global settings for albums
 				add_filter( 'foogallery_admin_settings_override', array($this, 'add_album_settings' ) );
 
@@ -88,18 +85,6 @@ if ( ! class_exists( 'FooGallery_Albums_Extension' ) ) {
 			flush_rewrite_rules();
 		}
 
-		function include_album_language_settings( $settings ) {
-			$settings['settings'][] = array(
-				'id'      => 'language_back_to_album_text',
-				'title'   => __( 'Back To Album Text', 'foogallery' ),
-				'type'    => 'text',
-				'default' => __( '&laquo; back to album', 'foogallery' ),
-				'tab'     => 'language'
-			);
-
-			return $settings;
-		}
-
 		function add_album_settings( $settings ) {
 
 			$settings['tabs']['albums'] = __( 'Albums', 'foogallery' );
@@ -111,6 +96,14 @@ if ( ! class_exists( 'FooGallery_Albums_Extension' ) ) {
 					'default' => 'gallery',
 					'desc'    => __( 'The slug that is used when generating gallery URL\'s for albums. PLEASE NOTE : if you change this value, you might need to save your Permalinks again.', 'foogallery' ),
 					'tab'     => 'albums'
+			);
+
+			$settings['settings'][] = array(
+				'id'      => 'language_back_to_album_text',
+				'title'   => __( 'Back To Album Text', 'foogallery' ),
+				'type'    => 'text',
+				'default' => __( '&laquo; back to album', 'foogallery' ),
+				'tab'     => 'albums'
 			);
 
 			return $settings;

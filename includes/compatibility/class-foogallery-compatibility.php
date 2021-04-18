@@ -24,7 +24,7 @@ if ( ! class_exists( 'FooGallery_Compatibility' ) ) {
 			new FooGallery_FooVideo_Compatibility();
 			new FooGallery_ElasticPress_Compatibility();
 			new FooGallery_Elementor_Compatibility();
-			//new FooGallery_WPRocket_Compatibility(); this has not been fully tested
+			new FooGallery_WPRocket_Compatibility();
 		}
 	}
 }

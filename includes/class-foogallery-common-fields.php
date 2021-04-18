@@ -38,16 +38,29 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 						case 'thumb_link':
 							$field['type']    = 'radio';
 							$field['choices'] = foogallery_gallery_template_field_thumb_link_choices();
+							if ( !isset( $field['row_data'] ) ) {
+								$field['row_data'] = array(
+									'data-foogallery-change-selector' => 'input:radio',
+									'data-foogallery-value-selector'  => 'input:checked',
+									'data-foogallery-preview'         => 'shortcode',
+								);
+							}
 							break;
 						case 'lightbox':
 							$field['lightbox'] = true;
 							$field['type']     = 'select';
 							$field['choices']  = foogallery_gallery_template_field_lightbox_choices();
-							$field['row_data'] = array(
-								'data-foogallery-value-selector' => 'select',
-								'data-foogallery-change-selector' => 'select',
-								'data-foogallery-preview' => 'shortcode'
-							);
+							if ( !isset( $field['row_data'] ) ) {
+								$field['row_data'] = array(
+									'data-foogallery-change-selector'          => 'select',
+									'data-foogallery-value-selector'           => 'select',
+									'data-foogallery-preview'                  => 'shortcode',
+									'data-foogallery-hidden'                   => true,
+									'data-foogallery-show-when-field-operator' => '!==',
+									'data-foogallery-show-when-field'          => 'thumbnail_link',
+									'data-foogallery-show-when-field-value'    => 'none',
+								);
+							}
 							break;
 					}
 				}
@@ -197,12 +210,12 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 					'choices'  => apply_filters(
 						'foogallery_gallery_template_common_thumbnail_fields_loading_icon_choices', array(
 						''                   => array( 'label' => __( 'None', 'foogallery' ), 'html' => '<div class="foogallery-setting-loading_icon"></div>' ),
-						'fg-loading-default' => array( 'label' => __( 'Default', 'foogallery' ), 'html' => '<div class="foogallery-setting-loading_icon fg-loading-default"><div class="fg-loader"></div></div>' ),
-						'fg-loading-bars'    => array( 'label' => __( 'Bars', 'foogallery' ), 'html' => '<div class="foogallery-setting-loading_icon fg-loading-bars"><div class="fg-loader"></div></div>' ),
-						'fg-loading-dots'    => array( 'label' => __( 'Dots', 'foogallery' ), 'html' => '<div class="foogallery-setting-loading_icon fg-loading-dots"><div class="fg-loader"></div></div>' ),
-						'fg-loading-partial' => array( 'label' => __( 'Partial', 'foogallery' ), 'html' => '<div class="foogallery-setting-loading_icon fg-loading-partial"><div class="fg-loader"></div></div>' ),
-						'fg-loading-pulse'   => array( 'label' => __( 'Pulse', 'foogallery' ), 'html' => '<div class="foogallery-setting-loading_icon fg-loading-pulse"><div class="fg-loader"></div></div>' ),
-						'fg-loading-trail'   => array( 'label' => __( 'Trail', 'foogallery' ), 'html' => '<div class="foogallery-setting-loading_icon fg-loading-trail"><div class="fg-loader"></div></div>' ),
+						'fg-loading-default' => array( 'label' => __( 'Default', 'foogallery' ), 'html' => '<div class="foogallery-setting-loading_icon foogallery fg-loading-default"><div class="fg-loading"><div class="fg-loader"></div></div></div>' ),
+						'fg-loading-bars'    => array( 'label' => __( 'Bars', 'foogallery' ), 'html' => '<div class="foogallery-setting-loading_icon foogallery fg-loading-bars"><div class="fg-loading"><div class="fg-loader"></div></div></div>' ),
+						'fg-loading-dots'    => array( 'label' => __( 'Dots', 'foogallery' ), 'html' => '<div class="foogallery-setting-loading_icon foogallery fg-loading-dots"><div class="fg-loading"><div class="fg-loader"></div></div></div>' ),
+						'fg-loading-partial' => array( 'label' => __( 'Partial', 'foogallery' ), 'html' => '<div class="foogallery-setting-loading_icon foogallery fg-loading-partial"><div class="fg-loading"><div class="fg-loader"></div></div></div>' ),
+						'fg-loading-pulse'   => array( 'label' => __( 'Pulse', 'foogallery' ), 'html' => '<div class="foogallery-setting-loading_icon foogallery fg-loading-pulse"><div class="fg-loading"><div class="fg-loader"></div></div></div>' ),
+						'fg-loading-trail'   => array( 'label' => __( 'Trail', 'foogallery' ), 'html' => '<div class="foogallery-setting-loading_icon foogallery fg-loading-trail"><div class="fg-loading"><div class="fg-loader"></div></div>' ),
 					)
 					),
 					'row_data' => array(
@@ -221,9 +234,18 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 					'type'     => 'select',
 					'choices'  => apply_filters(
 						'foogallery_gallery_template_common_thumbnail_fields_loaded_effect_choices', array(
-						''                      => __( 'None', 'foogallery' ),
-						'fg-loaded-fade-in'     => __( 'Fade In', 'foogallery' ),
-					)
+							''                      => __( 'None', 'foogallery' ),
+							'fg-loaded-fade-in'     => __( 'Fade In', 'foogallery' ),
+							'fg-loaded-slide-up'    => __( 'Slide Up', 'foogallery' ),
+							'fg-loaded-slide-down'  => __( 'Slide Down', 'foogallery' ),
+							'fg-loaded-slide-left'  => __( 'Slide Left', 'foogallery' ),
+							'fg-loaded-slide-right' => __( 'Slide Right', 'foogallery' ),
+							'fg-loaded-scale-up'    => __( 'Scale Up', 'foogallery' ),
+							'fg-loaded-swing-down'  => __( 'Swing Down', 'foogallery' ),
+							'fg-loaded-drop'        => __( 'Drop', 'foogallery' ),
+							'fg-loaded-fly'         => __( 'Fly', 'foogallery' ),
+							'fg-loaded-flip'        => __( 'Flip', 'foogallery' ),
+						)
 					),
 					'row_data' => array(
 						'data-foogallery-change-selector' => 'select',
@@ -464,6 +486,27 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 				);
 
 				$fields[] = array(
+					'id'       => 'caption_alignment',
+					'title'    => __( 'Alignment', 'foogallery' ),
+					'desc'     => __( 'Change the horizontal alignment of the thumbnail captions', 'foogallery' ),
+					'section'  => __( 'Captions', 'foogallery' ),
+					'type'     => 'radio',
+					'spacer'   => '<span class="spacer"></span>',
+					'default'  => '',
+					'choices'  => array(
+						''       => __( 'Default', 'foogallery' ),
+						'fg-c-l' => __( 'Left', 'foogallery' ),
+						'fg-c-c' => __( 'Center', 'foogallery' ),
+						'fg-c-r' => __( 'Right', 'foogallery' ),
+						'fg-c-j' => __( 'Justify', 'foogallery' ),
+					),
+					'row_data' => array(
+						'data-foogallery-change-selector'       => 'input:radio',
+						'data-foogallery-preview'               => 'shortcode'
+					)
+				);
+
+				$fields[] = array(
 					'id'      => 'captions_limit_length',
 					'title'   => __( 'Limit Caption Length', 'foogallery' ),
 					'desc'    => __( 'You can limit the length of caption title and descriptions in the thumbnails. This will NOT limit the length of captions from within the lightbox.', 'foogallery' ),
@@ -525,16 +568,6 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 			return $fields;
 		}
 
-		function get_setting_from_gallery( $gallery, $key, $default ) {
-		    global $current_foogallery;
-
-		    if ( isset( $current_foogallery ) && $current_foogallery->ID === $gallery->ID ) {
-		        return foogallery_gallery_template_setting( $key, $default );
-            }
-
-		    return $gallery->get_setting( $key, $default );
-        }
-
 		/**
 		 * Build up the gallery class attribute for the common fields
 		 *
@@ -544,32 +577,30 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 		 * @return array
 		 */
 		function add_common_fields_class_attributes( $classes, $gallery ) {
-			$template_data = foogallery_get_gallery_template( $gallery->gallery_template );
-
-			//check the template supports common fields
-			if ( $template_data && array_key_exists( 'common_fields_support', $template_data ) && true === $template_data['common_fields_support'] ) {
+			if ( foogallery_current_gallery_check_template_has_supported_feature('common_fields_support' ) ) {
 
 				//add the gallery template core class
 				$classes[] = 'fg-' . $gallery->gallery_template;
 
 				//get some default classes from common gallery settings
-				$classes[] = $this->get_setting_from_gallery( $gallery, 'theme', 'fg-light' );
-				$classes[] = $this->get_setting_from_gallery( $gallery, 'border_size', 'fg-border-thin' );
-				$classes[] = $this->get_setting_from_gallery( $gallery, 'rounded_corners', '' );
-				$classes[] = $this->get_setting_from_gallery( $gallery, 'drop_shadow', 'fg-shadow-outline' );
-				$classes[] = $this->get_setting_from_gallery( $gallery, 'inner_shadow', '' );
-				$classes[] = $this->get_setting_from_gallery( $gallery, 'loading_icon', 'fg-loading-default' );
-				$classes[] = $this->get_setting_from_gallery( $gallery, 'loaded_effect', 'fg-loaded-fade-in' );
+				$classes[] = foogallery_gallery_template_setting( 'theme', 'fg-light' );
+				$classes[] = foogallery_gallery_template_setting( 'border_size', 'fg-border-thin' );
+				$classes[] = foogallery_gallery_template_setting( 'rounded_corners', '' );
+				$classes[] = foogallery_gallery_template_setting( 'drop_shadow', 'fg-shadow-outline' );
+				$classes[] = foogallery_gallery_template_setting( 'inner_shadow', '' );
+				$classes[] = foogallery_gallery_template_setting( 'loading_icon', 'fg-loading-default' );
+				$classes[] = foogallery_gallery_template_setting( 'loaded_effect', 'fg-loaded-fade-in' );
 
-				$hover_effect_type = $this->get_setting_from_gallery( $gallery,'hover_effect_type', '' );
+				$hover_effect_type = foogallery_gallery_template_setting( 'hover_effect_type', '' );
 
 				if ( 'normal' === $hover_effect_type ) {
-					$classes[] = $this->get_setting_from_gallery( $gallery, 'hover_effect_color', '' );
-					$classes[] = $this->get_setting_from_gallery( $gallery, 'hover_effect_scale', '' );
-					$classes[] = $this->get_setting_from_gallery( $gallery, 'hover_effect_caption_visibility', 'fg-caption-hover' );
-					$classes[] = $this->get_setting_from_gallery( $gallery, 'hover_effect_transition', 'fg-hover-fade' );
-					$classes[] = $this->get_setting_from_gallery( $gallery, 'hover_effect_icon', 'fg-hover-zoom' );
-					$classes[] = $this->get_setting_from_gallery( $gallery, 'caption_invert_color', '' );
+					$classes[] = foogallery_gallery_template_setting( 'hover_effect_color', '' );
+					$classes[] = foogallery_gallery_template_setting( 'hover_effect_scale', '' );
+					$classes[] = foogallery_gallery_template_setting( 'hover_effect_caption_visibility', 'fg-caption-hover' );
+					$classes[] = foogallery_gallery_template_setting( 'hover_effect_transition', 'fg-hover-fade' );
+					$classes[] = foogallery_gallery_template_setting( 'hover_effect_icon', 'fg-hover-zoom' );
+					$classes[] = foogallery_gallery_template_setting( 'caption_invert_color', '' );
+					$classes[] = foogallery_gallery_template_setting( 'caption_alignment', '' );
 				}
 
 				if ( 'on' === foogallery_get_setting( 'enable_custom_ready', 'on' ) ) {
@@ -591,10 +622,8 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 		 * @return array
 		 */
 		function add_caption_data_options($options, $gallery, $attributes) {
-			$template_data = foogallery_get_gallery_template( $gallery->gallery_template );
-
 			//check the template supports common fields
-			if ( $template_data && array_key_exists( 'common_fields_support', $template_data ) && true === $template_data['common_fields_support'] ) {
+			if ( foogallery_current_gallery_check_template_has_supported_feature('common_fields_support' ) ) {
 
 				$caption_title = foogallery_gallery_template_setting( 'caption_title_source', '' );
 				$caption_desc  = foogallery_gallery_template_setting( 'caption_desc_source', '' );
@@ -623,10 +652,8 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 		 * @return array
 		 */
 		function add_common_fields_data_attribute( $attributes, $gallery ) {
-			$template_data = foogallery_get_gallery_template( $gallery->gallery_template );
-
 			//check the template supports common fields
-			if ( $template_data && array_key_exists( 'common_fields_support', $template_data ) && true === $template_data['common_fields_support'] ) {
+			if ( is_admin() && foogallery_current_gallery_check_template_has_supported_feature('common_fields_support' ) ) {
 				$attributes['data-fg-common-fields'] = true;
 			}
 

@@ -1,8 +1,3 @@
-.extensions-wrap {
-	margin-left: 0;
-	width: 98%;
-	max-width: 98%;
-}
 
 .foogallery-extension-browser .extension-controls {
 	margin-bottom: 10px;
@@ -12,36 +7,14 @@
 	margin:0;
 }
 
-.extension-search-box {
-	display: inline-block;
-	margin-left: 20px;
-	float: left;
-}
-
-	.extension-search-box #extensions-search-input {
-		position: relative;
-		top: -4px;
-		margin: 0;
-		width: 280px;
-		font-size: 16px;
-		font-weight: 300;
-		line-height: 1.4em;
-	}
-
 .extension-reload {
-	float: left;
 	display: inline-block;
-	margin-left: 20px;
 	vertical-align: middle;
 }
 
-.extension-reload .button {
-	vertical-align: middle;
-}
-
-	.extension-reload span.dashicons {
-		vertical-align: middle;
-		font-size: 18px;
+	.extension-reload .button {
+		padding: 3px 5px 0 5px;
+		line-height: 0;
 	}
 
 	.extension-reload .button.disabled span.dashicons {

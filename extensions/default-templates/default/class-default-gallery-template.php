@@ -11,8 +11,6 @@ if ( ! class_exists( 'FooGallery_Default_Gallery_Template' ) ) {
 		function __construct() {
 			add_filter( 'foogallery_gallery_templates', array( $this, 'add_template' ) );
 
-			add_action( 'foogallery_located_template-default', array( $this, 'enqueue_dependencies' ) );
-
 			add_filter( 'foogallery_gallery_templates_files', array( $this, 'register_myself' ) );
 
 			//build up the thumb dimensions from some arguments
@@ -65,6 +63,7 @@ if ( ! class_exists( 'FooGallery_Default_Gallery_Template' ) ) {
 				'mandatory_classes'     => 'fg-default',
 				'thumbnail_dimensions'  => true,
 				'filtering_support'     => true,
+				'enqueue_core'          => true,
 				'fields'                => array(
 					array(
 						'id'       => 'thumbnail_dimensions',
@@ -82,8 +81,26 @@ if ( ! class_exists( 'FooGallery_Default_Gallery_Template' ) ) {
 						)
 					),
 					array(
+						'id'       => 'mobile_columns',
+						'title'    => __( 'Mobile Layout', 'foogallery' ),
+						'desc'     => __( 'Number of columns to show on mobile (screen widths less than 600px)', 'foogallery' ),
+						'section'  => __( 'General', 'foogallery' ),
+						'default'  => '',
+						'type'     => 'radio',
+						'choices'  => array(
+							''   => __( 'Default', 'foogallery' ),
+							'fg-m-col1'   => __( '1 Column', 'foogallery' ),
+							'fg-m-col2' => __( '2 Columns', 'foogallery' ),
+							'fg-m-col3'  => __( '3 Columns', 'foogallery' ),
+						),
+						'row_data' => array(
+							'data-foogallery-change-selector' => 'input:radio',
+							'data-foogallery-preview'         => 'shortcode'
+						)
+					),
+					array(
 						'id'      => 'thumbnail_link',
-						'title'   => __( 'Link To', 'foogallery' ),
+						'title'   => __( 'Thumbnail Link', 'foogallery' ),
 						'section' => __( 'General', 'foogallery' ),
 						'default' => 'image',
 						'type'    => 'thumb_link',
@@ -139,15 +156,6 @@ if ( ! class_exists( 'FooGallery_Default_Gallery_Template' ) ) {
 			);
 
 			return $gallery_templates;
-		}
-
-		/**
-		 * Enqueue scripts that the default gallery template relies on
-		 */
-		function enqueue_dependencies( $gallery ) {
-			//enqueue core files
-			foogallery_enqueue_core_gallery_template_style();
-			foogallery_enqueue_core_gallery_template_script();
 		}
 
 		/**

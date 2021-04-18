@@ -23,6 +23,9 @@ if ( ! class_exists( 'FooGallery_Pro_Exif' ) ) {
 	        //add localised text
 	        add_filter( 'foogallery_il8n', array( $this, 'add_il8n' ) );
 
+	        //add class to fg-item
+	        add_filter( 'foogallery_attachment_html_item_classes', array( $this, 'add_class_to_item' ), 10, 3 );
+		
 	        //add exif to the json output
 	        add_filter( 'foogallery_build_attachment_json', array( $this, 'add_exif_to_json' ), 10, 6 );
 
@@ -36,6 +39,23 @@ if ( ! class_exists( 'FooGallery_Pro_Exif' ) ) {
                 //add some settings for EXIF
                 add_filter( 'foogallery_admin_settings_override', array( $this, 'add_exif_settings' ) );
             }
+        }
+
+	    /**
+	     * Add exif class onto item
+	     *
+	     * @param $classes
+	     * @param $foogallery_attachment
+	     * @param $args
+	     *
+	     * @return mixed
+	     */
+        function add_class_to_item( $classes, $foogallery_attachment, $args ) {
+	        if ( $this->is_exif_enabled() ) {
+		        $classes[] = 'fg-item-exif';
+	        }
+
+        	return $classes;
         }
 
 	    /**
@@ -197,14 +217,27 @@ if ( ! class_exists( 'FooGallery_Pro_Exif' ) ) {
         }
 
         /** 
-         * Checking the EXIF enable status   
+         * Checking the EXIF enabled status
          *  
          * @return Boolean    
          */ 
         function is_exif_enabled() {
-            //Checking active status for FooGallery PRO Lightbox and EXIF Data View status
-            return 'foogallery' === foogallery_gallery_template_setting( 'lightbox' ) &&
-                   'yes' === foogallery_gallery_template_setting( 'exif_view_status' );
+        	if ( !foogallery_current_gallery_has_cached_value('exif') ) {
+
+        		//check if the template has panel_support (is either Slider PRO or Grid PRO)
+        		if ( foogallery_current_gallery_check_template_has_supported_feature( 'panel_support' ) ) {
+        			//we therefore dont care about the lightbox
+			        $exif_enabled = 'yes' === foogallery_gallery_template_setting( 'exif_view_status' );
+		        } else {
+			        $exif_enabled = 'foogallery' === foogallery_gallery_template_setting( 'lightbox' ) &&
+			                        'yes' === foogallery_gallery_template_setting( 'exif_view_status' );
+		        }
+
+        		//set the toggle
+		        foogallery_current_gallery_set_cached_value( 'exif', $exif_enabled );
+	        }
+
+        	return foogallery_current_gallery_get_cached_value( 'exif' );
         }
 
         /**

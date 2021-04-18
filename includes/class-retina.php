@@ -65,7 +65,7 @@ if ( !class_exists( 'FooGallery_Retina' ) ) {
                                 $args['height'] = $retina_height;
 
                                 //build up the retina attributes
-                                $srcset[] = $attachment->html_img_src( $args ) . ' ' . $retina_width . 'w';
+                                $srcset[] = $attachment->html_img_src( $args ) . ' ' . $pixel_density_int . 'x';
                             }
                         }
                     }
