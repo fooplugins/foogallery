@@ -48,7 +48,6 @@ if (!class_exists('class-css-load-optimizer.php')) {
 
         /**
          * Checks the post meta for any FooGallery CSS that needs to be added to the head
-         *
          */
         function include_gallery_css() {
             global $enqueued_foogallery_styles;
@@ -75,7 +74,8 @@ if (!class_exists('class-css-load-optimizer.php')) {
 				if ( empty( $css ) || !is_array( $css ) ) return;
 
                 foreach ($css as $css_item) {
-                    if (!$css_item) continue;
+                    if ( !$css_item ) continue;
+	                if ( empty( $css_item ) || !is_array( $css_item ) ) return; //make sure we are dealing with an array
                     foreach ($css_item as $handle => $style) {
                         //only enqueue the stylesheet once
                         if ( !array_key_exists( $handle, $enqueued_foogallery_styles ) ) {
@@ -127,9 +127,10 @@ if (!class_exists('class-css-load-optimizer.php')) {
                         $style = $this->get_old_style_post_meta_value( $post_id, $style_handle );
 
                         if ( false !== $style ) {
+                        	//delete it from the post
                             delete_post_meta( $post_id, FOOGALLERY_META_POST_USAGE_CSS, array( $style_handle => $style ) );
 
-                            //unset the handle from, to force the save of the post meta
+                            //unset the handle, to force the save of the post meta
                             unset( $enqueued_foogallery_styles[$style_handle] );
                         }
                     }
@@ -153,19 +154,31 @@ if (!class_exists('class-css-load-optimizer.php')) {
 					if ( !array_key_exists( $style_handle, $foogallery_styles_to_persist ) ) {
 						$foogallery_styles_to_persist[$style_handle] = $style;
 					}
-
-//                    add_post_meta( $post_id, FOOGALLERY_META_POST_USAGE_CSS, array( $style_handle => $style ), false );
-//
-//					$cache_buster_key = $this->create_cache_buster_key( $style_handle, $ver, home_url() );
-//					$enqueued_foogallery_styles[$style_handle] = $cache_buster_key;
                 }
             }
         }
 
+	    /**
+	     * Create a key that will be used to cache
+	     *
+	     * @param        $name
+	     * @param        $version
+	     * @param string $site
+	     *
+	     * @return string
+	     */
         function create_cache_buster_key( $name, $version, $site = '' ) {
             return "{$site}::{$name}_{$version}";
         }
 
+	    /**
+	     * Get the old style handle that was linked to the post
+	     *
+	     * @param $post_id
+	     * @param $handle_to_find
+	     *
+	     * @return false|mixed
+	     */
         function get_old_style_post_meta_value( $post_id, $handle_to_find ) {
             $css = get_post_meta($post_id, FOOGALLERY_META_POST_USAGE_CSS);
 
