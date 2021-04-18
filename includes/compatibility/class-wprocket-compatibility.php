@@ -22,7 +22,13 @@ if ( ! class_exists( 'FooGallery_WPRocket_Compatibility' ) ) {
 			if ( defined( 'WP_ROCKET_VERSION' ) ) {
 				//add_filter( 'foogallery_process_image_url', array( $this, 'force_images_to_use_rocket_cdn' ), 999 );
 				add_filter( 'foogallery_attachment_html_image_attributes', array( $this, 'alter_image_attributes' ), 10, 3 );
+				add_filter( 'rocket_excluded_inline_js_content', array( $this, 'ensure_foogallery_items_excluded' ) );
 			}
+		}
+
+		function ensure_foogallery_items_excluded( $excluded_inline ) {
+			$excluded_inline[] = 'window["foogallery-gallery-';
+			return $excluded_inline;
 		}
 
 		/**
