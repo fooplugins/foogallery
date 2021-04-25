@@ -14962,13 +14962,13 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 				if (result.height !== 0 && result.rows.length > 0){
 					self.$el.height(result.height);
 					result.rows.forEach(function(row, i){
-						self.render(row);
+						self.render(row, i === result.rows.length - 1);
 					});
 				}
 			}
 		},
-		render: function(row){
-			var self = this;
+		render: function(row, isLast){
+			var self = this, applyMaxHeight = !isLast && self.options.lastRow !== "justify";
 			row.items.forEach(function(item){
 				if (item.elem){
 					if (row.visible){
@@ -14979,7 +14979,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 						item.elem.style.setProperty("left", item.left + "px");
 						item.elem.style.setProperty("margin", "0");
 						item.elem.style.removeProperty("display");
-						if (self.maxRowHeight > 0){
+						if (self.maxRowHeight > 0 && applyMaxHeight){
 							item.elem.style.setProperty("max-height", (self.maxRowHeight + (self.borderSize * 2)) + "px");
 						} else {
 							item.elem.style.removeProperty("max-height");
@@ -15098,17 +15098,32 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 			});
 
 			if (row.items.length > 0){
-				if (rows.length > 0) top += margin;
-				var height = self.justify(row, top, maxWidth, self.maxRowHeight);
-				if (max !== 0 && height > max){
-					var h_ratio = max / height,
-						w_ratio = (row.width * h_ratio) / maxWidth;
+				var height, top_start = top + margin;
+				switch (self.options.lastRow){
+					case "smart":
+						height = self.justify(row, top_start, maxWidth, self.maxRowHeight);
+						if (max !== 0 && height > max){
+							var h_ratio = max / height,
+								w_ratio = (row.width * h_ratio) / maxWidth;
 
-					if (h_ratio < 0.9 || w_ratio < 0.9){
-						height = self.justify(row, top, maxWidth, max - (self.borderSize * 2));
-					}
+							if (h_ratio < 0.9 || w_ratio < 0.9){
+								height = self.justify(row, top_start, maxWidth, max - (self.borderSize * 2));
+							}
+						}
+						break;
+					case "justify":
+						height = self.justify(row, top_start, maxWidth, 99999);
+						break;
+					case "hide":
+						height = self.justify(row, top_start, maxWidth, self.maxRowHeight);
+						if (row.width < maxWidth){
+							row.visible = false;
+						}
+						break;
 				}
-				top += height;
+				if (row.visible){
+					top += height + margin;
+				}
 				rows.push(row);
 			}
 
@@ -15123,7 +15138,8 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 		rowHeight: 150,
 		maxRowHeight: "200%",
 		margins: 0,
-		align: "center"
+		align: "center",
+		lastRow: "smart" // "smart","justify","hide"
 	};
 
 })(
