@@ -3,17 +3,14 @@
  * FooGallery single thumbnail gallery template
  */
 global $current_foogallery;
-global $current_foogallery_arguments;
-$args = foogallery_gallery_template_setting( 'thumbnail_dimensions', array() );
-if ( !array_key_exists( 'crop', $args ) ) {
-    $args['crop'] = '1'; //we now force thumbs to be cropped by default
-}
+
 $lightbox = foogallery_gallery_template_setting( 'lightbox', 'unknown' );
 $position = foogallery_gallery_template_setting( 'position', 'fg-center' );
 
-$featured_attachment = $current_foogallery->featured_attachment( $args );
+$featured_attachment = $current_foogallery->featured_attachment();
 $featured_attachment->featured = true;
 
+$args = foogallery_gallery_template_arguments();
 $args['override_caption_title'] = foogallery_gallery_template_setting( 'caption_title', '' );
 $args['override_caption_desc'] = foogallery_gallery_template_setting( 'caption_description', '' );
 
