@@ -34,6 +34,57 @@ if ( ! class_exists( 'FooGallery_Albums_Extension' ) ) {
 			add_filter( 'fooboxshare_use_permalink', array( $this, 'check_for_albums_for_fooboxshare' ) );
 
 			add_action( 'foogallery_located_album_template-stack', array( $this, 'load_stack_assets' ) );
+
+			add_filter( 'foogallery_album_default_gallery_content', array( $this, 'render_gallery_description' ), 10, 2 );
+
+			add_filter( 'foogallery_gallery_posttype_register_args', array( $this, 'override_gallery_posttype_register_args' ) );
+
+			add_filter( 'foogallery_allowed_post_types_for_attachment', array( $this, 'allow_albums' ) );
+		}
+
+		/**
+		 * Add the album post type to the allowed list of post types that galleries can be attached to.
+		 * This will then show albums in the Usage column for the galleries
+		 *
+		 * @param array $allowed The allowed list of post types.
+		 *
+		 * @return array
+		 */
+		public function allow_albums( $allowed ) {
+			$allowed[] = FOOGALLERY_CPT_ALBUM;
+			return $allowed;
+		}
+
+		/**
+		 * Overrides the gallery posttype register args
+		 *
+		 * @param array $args The arguments.
+		 *
+		 * @return array
+		 */
+		public function override_gallery_posttype_register_args( $args ) {
+			if ( 'on' === foogallery_get_setting( 'enable_gallery_descriptions' ) ) {
+				$args['supports'][] = 'editor';
+			}
+			return $args;
+		}
+
+		/**
+		 * Render the gallery description
+		 *
+		 * @param string     $content    The default content to be rendered.
+		 * @param FooGallery $foogallery The gallery we are showing.
+		 *
+		 * @return string
+		 */
+		public function render_gallery_description( $content, $foogallery ) {
+			if ( 'on' === foogallery_get_setting( 'enable_gallery_descriptions' ) ) {
+				if ( isset( $foogallery->_post ) && ! empty( $foogallery->_post->post_content ) ) {
+					$content = apply_filters( 'the_content', $foogallery->_post->post_content );
+				}
+			}
+
+			return $content;
 		}
 
 		function load_stack_assets( $current_foogallery_album ) {
@@ -53,17 +104,17 @@ if ( ! class_exists( 'FooGallery_Albums_Extension' ) ) {
 		}
 
 		function includes() {
-			require_once( FOOGALLERY_ALBUM_PATH . 'functions.php' );
-			require_once( FOOGALLERY_ALBUM_PATH . 'class-posttypes.php' );
-			require_once( FOOGALLERY_ALBUM_PATH . 'class-foogallery-album.php' );
-			require_once( FOOGALLERY_ALBUM_PATH . 'public/class-rewrite-rules.php' );
-			require_once( FOOGALLERY_ALBUM_PATH . 'public/class-shortcodes.php' );
-			require_once( FOOGALLERY_ALBUM_PATH . 'public/class-foogallery-album-template-loader.php' );
+			require_once FOOGALLERY_ALBUM_PATH . 'functions.php';
+			require_once FOOGALLERY_ALBUM_PATH . 'class-posttypes.php';
+			require_once FOOGALLERY_ALBUM_PATH . 'class-foogallery-album.php';
+			require_once FOOGALLERY_ALBUM_PATH . 'public/class-rewrite-rules.php';
+			require_once FOOGALLERY_ALBUM_PATH . 'public/class-shortcodes.php';
+			require_once FOOGALLERY_ALBUM_PATH . 'public/class-foogallery-album-template-loader.php';
 
 			if ( is_admin() ) {
-				//only admin
-				require_once( FOOGALLERY_ALBUM_PATH . 'admin/class-metaboxes.php' );
-				require_once( FOOGALLERY_ALBUM_PATH . 'admin/class-columns.php' );
+				// only admin.
+				require_once FOOGALLERY_ALBUM_PATH . 'admin/class-metaboxes.php';
+				require_once FOOGALLERY_ALBUM_PATH . 'admin/class-columns.php';
 			}
 		}
 
@@ -90,12 +141,12 @@ if ( ! class_exists( 'FooGallery_Albums_Extension' ) ) {
 			$settings['tabs']['albums'] = __( 'Albums', 'foogallery' );
 
 			$settings['settings'][] = array(
-					'id'      => 'album_gallery_slug',
-					'title'   => __( 'Gallery Slug', 'foogallery' ),
-					'type'    => 'text',
-					'default' => 'gallery',
-					'desc'    => __( 'The slug that is used when generating gallery URL\'s for albums. PLEASE NOTE : if you change this value, you might need to save your Permalinks again.', 'foogallery' ),
-					'tab'     => 'albums'
+				'id'      => 'album_gallery_slug',
+				'title'   => __( 'Gallery Slug', 'foogallery' ),
+				'type'    => 'text',
+				'default' => 'gallery',
+				'desc'    => __( 'The slug that is used when generating gallery URL\'s for albums. PLEASE NOTE : if you change this value, you might need to save your Permalinks again.', 'foogallery' ),
+				'tab'     => 'albums',
 			);
 
 			$settings['settings'][] = array(
@@ -103,7 +154,15 @@ if ( ! class_exists( 'FooGallery_Albums_Extension' ) ) {
 				'title'   => __( 'Back To Album Text', 'foogallery' ),
 				'type'    => 'text',
 				'default' => __( '&laquo; back to album', 'foogallery' ),
-				'tab'     => 'albums'
+				'tab'     => 'albums',
+			);
+
+			$settings['settings'][] = array(
+				'id'    => 'enable_gallery_descriptions',
+				'title' => __( 'Enable Gallery Descriptions', 'foogallery' ),
+				'desc'  => __( 'Enable descriptions for galleries. These descriptions will be displayed under the gallery title within the Responsive Album Layout.', 'foogallery' ),
+				'type'  => 'checkbox',
+				'tab'   => 'albums',
 			);
 
 			return $settings;

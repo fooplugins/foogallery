@@ -128,6 +128,11 @@ if ( ! class_exists( 'FooGallery_Admin_Album_MetaBoxes' ) ) {
 					update_post_meta( $post_id, FOOGALLERY_META_CUSTOM_CSS, $custom_css );
 				}
 
+				// update usage for each of the galleries.
+				foreach ( $galleries as $gallery_id ) {
+					add_post_meta( $post_id, FOOGALLERY_META_POST_USAGE, $gallery_id, false );
+				}
+
 				do_action( 'foogallery_after_save_album', $post_id, $_POST );
 			}
 		}
