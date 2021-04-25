@@ -178,6 +178,24 @@ if ( ! class_exists( 'FooGallery_Justified_Gallery_Template' ) ) {
 							'data-foogallery-preview'         => 'shortcode',
 						),
 					),
+					array(
+						'id'       => 'last-row',
+						'title'    => __( 'Last Row', 'foogallery' ),
+						'desc'     => __( 'Decide what happens to the last row, when there are not enough images to full it completely.', 'foogallery' ),
+						'section'  => __( 'General', 'foogallery' ),
+						'type'     => 'radio',
+						'default'  => 'smart',
+						'choices'  => array(
+							'smart'   => __( 'Default - the last row is justified and aligned, but adheres to the max row height and also compares itself to the average height of all rows.', 'foogallery' ),
+							'justify' => __( 'Justify - the last row is forced to be justified, ignoring the max row height. This can enlarge images to very large sizes in some scenarios.', 'foogallery' ),
+							'hide'    => __( 'Hide - the last row is hidden if it does not fill the entire row.', 'foogallery' ),
+						),
+						'row_data' => array(
+							'data-foogallery-change-selector' => 'input:radio',
+							'data-foogallery-value-selector'  => 'input:checked',
+							'data-foogallery-preview'         => 'shortcode',
+						),
+					),
 				),
 			);
 
@@ -215,13 +233,15 @@ if ( ! class_exists( 'FooGallery_Justified_Gallery_Template' ) ) {
 
 			$values = foogallery_current_gallery_get_cached_value( 'justified_row_height' );
 
-			$margins = foogallery_gallery_template_setting( 'margins', '1' );
-			$align   = foogallery_gallery_template_setting( 'align', 'center' );
+			$margins  = foogallery_gallery_template_setting( 'margins', '1' );
+			$align    = foogallery_gallery_template_setting( 'align', 'center' );
+			$last_row = foogallery_gallery_template_setting( 'last-row', 'smart' );
 
 			$options['template']['rowHeight']    = intval( $values['row_height'] );
 			$options['template']['maxRowHeight'] = intval( $values['max_row_height'] );
 			$options['template']['margins']      = intval( $margins );
 			$options['template']['align']        = $align;
+			$options['template']['lastRow']      = $last_row;
 
 			return $options;
 		}
