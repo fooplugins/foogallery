@@ -1,0 +1,16 @@
+{
+  "name": "fooplugins/foogallery",
+  "description": "FooGallery is the most intuitive and extensible gallery management tool ever created for WordPress",
+  "minimum-stability": "stable",
+  "license": "GPL 3.0",
+  "authors": [
+    {
+      "name": "Foo Plugins",
+      "email": "brad@fooplugins.com"
+    }
+  ],
+  "require-dev": {
+    "squizlabs/php_codesniffer": "3.*",
+    "wp-coding-standards/wpcs": "2.*"
+  }
+}
