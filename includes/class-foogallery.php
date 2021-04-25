@@ -24,30 +24,31 @@ class FooGallery extends stdClass {
 	 *  Sets the default when a new gallery is instantiated
 	 */
 	private function set_defaults() {
-		$this->_post = null;
-		$this->ID = 0;
-		$this->attachment_ids = array();
-		$this->_attachments = false;
-		$this->datasource_name = foogallery_default_datasource();
-		$this->settings = array();
-		$this->sorting = '';
+		$this->_post                     = null;
+		$this->ID                        = 0;
+		$this->attachment_ids            = array();
+		$this->_attachments              = false;
+		$this->datasource_name           = foogallery_default_datasource();
+		$this->settings                  = array();
+		$this->sorting                   = '';
 		$this->force_use_original_thumbs = false;
-		$this->retina = array();
+		$this->retina                    = array();
 	}
 
 	/**
 	 * private gallery load function
+	 *
 	 * @param $post
 	 */
 	private function load( $post ) {
-		$this->_post = $post;
-		$this->ID = $post->ID;
-		$this->slug = $post->post_name;
-		$this->name = $post->post_title;
-		$this->author = $post->post_author;
+		$this->_post       = $post;
+		$this->ID          = $post->ID;
+		$this->slug        = $post->post_name;
+		$this->name        = $post->post_title;
+		$this->author      = $post->post_author;
 		$this->post_status = $post->post_status;
 
-		$attachment_meta = get_post_meta( $post->ID, FOOGALLERY_META_ATTACHMENTS, true );
+		$attachment_meta      = get_post_meta( $post->ID, FOOGALLERY_META_ATTACHMENTS, true );
 		$this->attachment_ids = is_array( $attachment_meta ) ? array_filter( $attachment_meta ) : array();
 
 		$this->load_meta( $post->ID );
@@ -57,20 +58,21 @@ class FooGallery extends stdClass {
 
 	/**
 	 * private meta data load function
+	 *
 	 * @param $post_id int
 	 */
 	private function load_meta( $post_id ) {
 		$this->gallery_template = get_post_meta( $post_id, FOOGALLERY_META_TEMPLATE, true );
-		$this->settings = $this->load_settings( $post_id );
-		$this->custom_css = get_post_meta( $post_id, FOOGALLERY_META_CUSTOM_CSS, true );
-		$this->sorting = get_post_meta( $post_id, FOOGALLERY_META_SORT, true );
-		$this->datasource_name = get_post_meta( $post_id, FOOGALLERY_META_DATASOURCE, true );
+		$this->settings         = $this->load_settings( $post_id );
+		$this->custom_css       = get_post_meta( $post_id, FOOGALLERY_META_CUSTOM_CSS, true );
+		$this->sorting          = get_post_meta( $post_id, FOOGALLERY_META_SORT, true );
+		$this->datasource_name  = get_post_meta( $post_id, FOOGALLERY_META_DATASOURCE, true );
 		if ( empty( $this->datasource_name ) ) {
 			$this->datasource_name = foogallery_default_datasource();
 		} else {
-            $this->datasource_value = get_post_meta( $post_id, FOOGALLERY_META_DATASOURCE_VALUE, true );
-        }
-        $this->retina = get_post_meta( $post_id, FOOGALLERY_META_RETINA, true );
+			$this->datasource_value = get_post_meta( $post_id, FOOGALLERY_META_DATASOURCE_VALUE, true );
+		}
+		$this->retina                    = get_post_meta( $post_id, FOOGALLERY_META_RETINA, true );
 		$this->force_use_original_thumbs = 'true' === get_post_meta( $post_id, FOOGALLERY_META_FORCE_ORIGINAL_THUMBS, true );
 	}
 
@@ -81,23 +83,24 @@ class FooGallery extends stdClass {
 		$is_new = empty( $this->gallery_template );
 
 		//if we have no settings, and the gallery is not new, then allow for an upgrade
-		if ( empty( $settings ) && !$is_new ) {
+		if ( empty( $settings ) && ! $is_new ) {
 			$settings = apply_filters( 'foogallery_settings_upgrade', $settings, $this );
 		}
 
 		//if we still have no settings, then get default settings for the gallery template
-        if ( empty( $settings ) && !$is_new ) {
-		    $settings = foogallery_build_default_settings_for_gallery_template( $this->gallery_template );
+		if ( empty( $settings ) && ! $is_new ) {
+			$settings = foogallery_build_default_settings_for_gallery_template( $this->gallery_template );
 
-            $settings = apply_filters('foogallery_default_settings-' . $this->gallery_template, $settings, $this);
-        }
+			$settings = apply_filters( 'foogallery_default_settings-' . $this->gallery_template, $settings, $this );
+		}
 
-        //allow the settings to be overridden
+		//allow the settings to be overridden
 		return apply_filters( 'foogallery_settings_override', $settings, $this->gallery_template, $this );
 	}
 
 	/**
 	 * private function to load a gallery by an id
+	 *
 	 * @param $post_id
 	 */
 	private function load_by_id( $post_id ) {
@@ -110,6 +113,7 @@ class FooGallery extends stdClass {
 	/**
 	 * private function to load a gallery by the slug.
 	 * Will be used when loading gallery shortcodes
+	 *
 	 * @param $slug
 	 */
 	private function load_by_slug( $slug ) {
@@ -130,6 +134,7 @@ class FooGallery extends stdClass {
 
 	/**
 	 * Static function to build a dynamic gallery that does not exist in the database
+	 *
 	 * @param $template
 	 * @param $attachment_ids
 	 *
@@ -139,7 +144,7 @@ class FooGallery extends stdClass {
 		$gallery = new self( null );
 
 		$gallery->gallery_template = $template;
-		$gallery->attachment_ids = $attachment_ids;
+		$gallery->attachment_ids   = $attachment_ids;
 
 		//loads all meta data from the default gallery
 		$default_gallery_id = foogallery_get_setting( 'default_gallery_settings' );
@@ -165,6 +170,7 @@ class FooGallery extends stdClass {
 		}
 
 		$gallery->datasource_name = $datasource;
+
 		//set the datasource_value from a filter
 
 		return $gallery;
@@ -172,6 +178,7 @@ class FooGallery extends stdClass {
 
 	/**
 	 * Static function to load a Gallery instance by passing in a post object
+	 *
 	 * @static
 	 *
 	 * @param $post
@@ -195,6 +202,7 @@ class FooGallery extends stdClass {
 		if ( ! $gallery->does_exist() ) {
 			return false;
 		}
+
 		return $gallery;
 	}
 
@@ -211,11 +219,13 @@ class FooGallery extends stdClass {
 		if ( ! $gallery->does_exist() ) {
 			return false;
 		}
+
 		return $gallery;
 	}
 
 	/**
 	 * Get a setting using the current template and meta key
+	 *
 	 * @param $key
 	 * @param $default
 	 *
@@ -227,6 +237,7 @@ class FooGallery extends stdClass {
 
 	/**
 	 * Get a meta value using a full key
+	 *
 	 * @param $key
 	 * @param $default
 	 *
@@ -256,17 +267,20 @@ class FooGallery extends stdClass {
 
 	/**
 	 * Returns the number of attachments in the current gallery, that were added from the media library
+	 *
 	 * @return int
 	 */
 	public function attachment_count() {
 		if ( is_array( $this->attachment_ids ) ) {
 			return count( $this->attachment_ids );
 		}
+
 		return 0;
 	}
 
 	/**
 	 * Checks if the gallery has attachments. There will only be attachments if they were added from the media library.
+	 *
 	 * @return bool
 	 */
 	public function has_attachments() {
@@ -275,6 +289,7 @@ class FooGallery extends stdClass {
 
 	/**
 	 * Checks if the gallery exists
+	 *
 	 * @return bool
 	 */
 	public function does_exist() {
@@ -283,6 +298,7 @@ class FooGallery extends stdClass {
 
 	/**
 	 * Returns true if the gallery is published
+	 *
 	 * @return bool
 	 */
 	public function is_published() {
@@ -294,17 +310,20 @@ class FooGallery extends stdClass {
 	 */
 	public function is_new() {
 		$template = get_post_meta( $this->ID, FOOGALLERY_META_TEMPLATE, true );
+
 		return empty( $template );
 	}
 
 	/**
 	 * Get a comma separated list of attachment ids
+	 *
 	 * @return string
 	 */
 	public function attachment_id_csv() {
 		if ( is_array( $this->attachment_ids ) ) {
 			return implode( ',', $this->attachment_ids );
 		}
+
 		return '';
 	}
 
@@ -332,7 +351,8 @@ class FooGallery extends stdClass {
 	}
 
 	/**
-	 * Gets the featured image FooGalleryAttachment object. If no featured image is set, then get back the first image in the gallery
+	 * Gets the featured image FooGalleryAttachment object. If no featured image is set, then get back the first image
+	 * in the gallery
 	 *
 	 * @return bool|FooGalleryAttachment
 	 */
@@ -344,7 +364,7 @@ class FooGallery extends stdClass {
 		}
 
 		//then get the featured image from the datasource
-		$default_placeholder_attachment = new FooGalleryAttachment();
+		$default_placeholder_attachment      = new FooGalleryAttachment();
 		$default_placeholder_attachment->url = foogallery_image_placeholder_src();
 
 		return $this->apply_datasource_filter( 'featured_image', $default_placeholder_attachment );
@@ -352,10 +372,11 @@ class FooGallery extends stdClass {
 
 	/**
 	 * Returns the string representation of the number of items in the gallery
+	 *
 	 * @return string
 	 */
 	public function image_count() {
-		$no_images_text = foogallery_get_setting( 'language_images_count_none_text',   __( 'No images', 'foogallery' ) );
+		$no_images_text = foogallery_get_setting( 'language_images_count_none_text', __( 'No images', 'foogallery' ) );
 		$singular_text  = foogallery_get_setting( 'language_images_count_single_text', __( '1 image', 'foogallery' ) );
 		$plural_text    = foogallery_get_setting( 'language_images_count_plural_text', __( '%s images', 'foogallery' ) );
 
@@ -369,7 +390,7 @@ class FooGallery extends stdClass {
 				$count_text = $singular_text === false ? __( '1 image', 'foogallery' ) : $singular_text;
 				break;
 			default:
-				$count_text = sprintf( $plural_text === false ?  __( '%s images', 'foogallery' ) : $plural_text, $count );
+				$count_text = sprintf( $plural_text === false ? __( '%s images', 'foogallery' ) : $plural_text, $count );
 		}
 
 		return esc_html( apply_filters( 'foogallery_image_count', $count_text, $this, $count ) );
@@ -381,13 +402,12 @@ class FooGallery extends stdClass {
 	 * @return string
 	 */
 	public function safe_name() {
-		return empty( $this->name ) ?
-				sprintf( __( '%s #%s', 'foogallery' ), foogallery_plugin_name(), $this->ID ) :
-				$this->name;
+		return empty( $this->name ) ? sprintf( __( '%s #%s', 'foogallery' ), foogallery_plugin_name(), $this->ID ) : $this->name;
 	}
 
 	/**
 	 * Finds usages of the FooGallery
+	 *
 	 * @return WP_Post[]
 	 */
 	public function find_usages() {
@@ -408,6 +428,7 @@ class FooGallery extends stdClass {
 
 	/**
 	 * Returns the current gallery template details
+	 *
 	 * @return array|bool
 	 */
 	public function gallery_template_details() {
@@ -425,6 +446,7 @@ class FooGallery extends stdClass {
 
 	/**
 	 * Returns the name of the gallery template
+	 *
 	 * @return string
 	 */
 	public function gallery_template_name() {
@@ -432,11 +454,13 @@ class FooGallery extends stdClass {
 		if ( false !== $template ) {
 			return $template['name'];
 		}
+
 		return __( 'Unknown', 'foogallery' );
 	}
 
 	/**
 	 * Returns true if the gallery template has a field of a certain type
+	 *
 	 * @param $field_type
 	 *
 	 * @return bool
@@ -453,6 +477,7 @@ class FooGallery extends stdClass {
 				}
 			}
 		}
+
 		return false;
 	}
 
@@ -470,17 +495,20 @@ class FooGallery extends stdClass {
 
 	/**
 	 * Small helper function to apply the datasource-specific filters in a consistent way
+	 *
 	 * @param $filter_name
 	 * @param $filter_default_value
-	 * @since 1.8.0
+	 *
 	 * @return mixed
+	 * @since 1.8.0
 	 */
 	private function apply_datasource_filter( $filter_name, $filter_default_value ) {
-		return apply_filters( "foogallery_datasource_{$this->datasource_name}_{$filter_name}" , $filter_default_value, $this );
+		return apply_filters( "foogallery_datasource_{$this->datasource_name}_{$filter_name}", $filter_default_value, $this );
 	}
 
 	/**
 	 * Does the current gallery contain any items
+	 *
 	 * @return bool
 	 * @since 1.8.0
 	 */
@@ -490,33 +518,35 @@ class FooGallery extends stdClass {
 
 	/**
 	 * Return the number of items in the gallery. This is determined by querying the gallery datasource
+	 *
 	 * @return bool
 	 * @since 1.8.0
 	 */
 	public function item_count() {
-		return $this->apply_datasource_filter('item_count', 0 );
+		return $this->apply_datasource_filter( 'item_count', 0 );
 	}
 
 	public function is_empty() {
-	    if ( foogallery_default_datasource() ===  $this->datasource_name ) {
-	        return $this->attachment_count() === 0;
-        }
+		if ( foogallery_default_datasource() === $this->datasource_name ) {
+			return $this->attachment_count() === 0;
+		}
 
-        return empty( $this->datasource_value );
-    }
+		return empty( $this->datasource_value );
+	}
 
 	/**
 	 * Returns true if the datasource is not media_library
 	 */
-    public function is_dynamic() {
+	public function is_dynamic() {
 		return $this->datasource_name !== foogallery_default_datasource();
-    }
+	}
 
 	/**
 	 * Returns the ID that is rendered on the container div of the gallery
+	 *
 	 * @return string
 	 */
-    public function container_id() {
-    	return 'foogallery-gallery-' . $this->ID;
-    }
+	public function container_id() {
+		return 'foogallery-gallery-' . $this->ID;
+	}
 }
