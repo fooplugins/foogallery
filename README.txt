@@ -4,7 +4,7 @@ Donate link: https://fooplugins.com
 Tags: gallery, image gallery, photo gallery, responsive gallery, wordpress gallery plugin, best gallery plugin, albums, media gallery, video gallery, lightbox
 Requires at least: 3.9
 Tested up to: 5.7
-Stable tag: trunk
+Stable tag: 2.0.24
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -26,11 +26,16 @@ That is why we think FooGallery is the best gallery plugin. After using it, we h
 
 [Visit the FooGallery Wordpress Gallery Plugin Homepage](https://fooplugins.com/foogallery/)
 
-= Our Focus On Speed and SEO =
+= Major Updates for Google's Core Web Vitals =
 
-We have optimized the FooGallery code for the best possible pagespeed scores in Google Lighthouse.
-We have focused on the speed of our javascript code, and also dramatically improved Cumulative Layout Shift on all gallery layouts.
-A better pagespeed score means a more favourable ranking from Google.
+A faster gallery now means a more favourable ranking in Google!
+FooGallery has been specifically optimized to score better for Google's Core Web Vitals update in May 2021.
+We have focused on the speed of our javascript code, and also improved the visual stability of all gallery layouts.
+This has led to dramatically better scores for the 3 key factors including:
+
+*   Largest Contentful Paint - galleries load and appear quicker for your visitors
+*   First Input Delay - you can interact with the gallery sooner
+*   Cumulative Layout Shift - gallery images shift around a lot less than before!
 
 = WordPress Gallery Plugin Features =
 
@@ -99,6 +104,12 @@ The following free features make FooGallery the **best gallery plugin** on the m
 *   More on the way!
 
 [See More Demos](https://fooplugins.com/foogallery/demos/)
+
+**Test Drive**
+
+Take FooGallery for a test drive! Spin up your very own WP instance with FooGallery pre-installed:
+
+[Start FooGallery Test Drive!](https://tastewp.com/new/?pre-installed-plugin-slug=foogallery)
 
 **Documentation**
 
@@ -233,6 +244,16 @@ Please update in order to for FooGallery to work in WP 5.5+!
 
 == Changelog ==
 
+= 2.0.27 =
+* Date Updated : 2021-26-04
+* New : Added compatibility for Jetpack Lazyload module, Jetpack Boost & WPMU Smush
+* New : Added "Enable Gallery Descriptions" setting for Albums
+* New : Galleries used in albums will now show a link to the album in the Usage column on the gallery listing page
+* Update : FooGallery client side 2.0.12
+* Update : Updated the thumbnail generation test image to use a local image within the plugin
+* Update : Added "Last Row" gallery setting back for Justified Galleries
+* Fix : Fixed bug with custom URL's not working for Single Thumbnail galleries
+
 = 2.0.24 =
 * Date Updated : 2021-18-04
 * Update : FooGallery client side 2.0.11
@@ -246,7 +267,7 @@ Please update in order to for FooGallery to work in WP 5.5+!
 
 = 2.0.20 =
 * Date Updated : 2021-11-04
-* New : Major performance optimizations for all gallery templates (improving javascript speed and reducing content layout shift for better scores in Google Lighthouse)
+* New : Major performance improvements for all gallery templates (improving scores for Core Web Vitals)
 * New : Added "Mobile Columns" gallery setting for Responsive Galleries
 * New : Added 6 Columns option for Masonry gallery layout
 * New : Added "Horizontal Layout" gallery setting for Masonry galleries, to try maintain left-to-right order of images
