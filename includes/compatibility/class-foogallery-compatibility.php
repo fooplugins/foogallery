@@ -14,6 +14,7 @@ require_once FOOGALLERY_PATH . 'includes/compatibility/class-foovideo-compatibil
 require_once FOOGALLERY_PATH . 'includes/compatibility/class-elasticpress-compatibility.php';
 require_once FOOGALLERY_PATH . 'includes/compatibility/class-elementor-compatibility.php';
 require_once FOOGALLERY_PATH . 'includes/compatibility/class-jetpack-compatibility.php';
+require_once FOOGALLERY_PATH . 'includes/compatibility/class-wpoptimize-compatibility.php';
 
 if ( ! class_exists( 'FooGallery_Compatibility' ) ) {
 
@@ -35,6 +36,7 @@ if ( ! class_exists( 'FooGallery_Compatibility' ) ) {
 			new FooGallery_Elementor_Compatibility();
 			new FooGallery_WPRocket_Compatibility();
 			new FooGallery_Jetpack_Compatibility();
+			new FooGallery_WPOptimize_Compatibility();
 		}
 	}
 }
