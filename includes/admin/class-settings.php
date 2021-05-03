@@ -427,6 +427,19 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 				'desc'  => __( 'If the demo content has been created, then this will be checked. You can uncheck this to allow for demo content to be created again.', 'foogallery' ),
 				'tab'   => 'advanced'
 			);
+
+			$settings[] = array(
+				'id'    => 'attachment_id_attribute',
+				'type'  => 'radio',
+				'title' => __( 'Item ID Attribute', 'foogallery' ),
+				'desc'  => __( 'Each item has an ID attribute which identifies itself. Changing the attribute will change what is used for deeplinking.', 'foogallery' ),
+				'choices' => array(
+					'data-attachment-id' => __( 'data-attachment-id', 'foogallery' ),
+					'data-id' => __( 'data-id', 'foogallery' ),
+				),
+				'tab'   => 'advanced'
+			);
+
 			//endregion Advanced Tab
 
 			//region Custom JS & CSS
