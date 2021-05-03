@@ -244,15 +244,20 @@ Please update in order to for FooGallery to work in WP 5.5+!
 
 == Changelog ==
 
-= 2.0.27 =
-* Date Updated : 2021-26-04
-* New : Added compatibility for Jetpack Lazyload module, Jetpack Boost & WPMU Smush
+= 2.0.30 =
+* Date Updated : 2021-03-05
+* New : Added lazyload compatibility for Jetpack, Jetpack Boost, WPMU Smush, EWWW Image Optimizer, W3 Total Cache, WP Optimize
 * New : Added "Enable Gallery Descriptions" setting for Albums
 * New : Galleries used in albums will now show a link to the album in the Usage column on the gallery listing page
+* New : output gallery debug info when debugging setting is enable
 * Update : FooGallery client side 2.0.12
 * Update : Updated the thumbnail generation test image to use a local image within the plugin
 * Update : Added "Last Row" gallery setting back for Justified Galleries
 * Fix : Fixed bug with custom URL's not working for Single Thumbnail galleries
+[//]: # fs_premium_only_begin
+* New : Added advanced setting "Item ID Attribute" which changes how deeplinking will work with opening an item in PRO lightbox
+* Fix : Fixed bug with images set as custom URL's opening in iframe in lightbox
+[//]: # fs_premium_only_end
 
 = 2.0.24 =
 * Date Updated : 2021-18-04
