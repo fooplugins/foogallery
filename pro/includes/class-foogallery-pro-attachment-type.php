@@ -30,16 +30,34 @@ if ( ! class_exists( 'FooGallery_Pro_Attachment_Type' ) ) {
 				}
 			} else {
 				$link = foogallery_gallery_template_setting( 'thumbnail_link', 'image' );
-				if ( 'page' === $link || ( 'custom' === $link && !empty( $foogallery_attachment->custom_url ) ) ) {
-					$foogallery_attachment->type = 'iframe';
+				if ( 'page' === $link || ( 'custom' === $link && ! empty( $foogallery_attachment->custom_url ) ) ) {
+					// let's check if the custom Url is an image.
+					if ( $this->check_maybe_image( $foogallery_attachment->custom_url ) ) {
+						$foogallery_attachment->type = 'image';
+					} else {
+						$foogallery_attachment->type = 'iframe';
+					}
 				}
 			}
 
-			//check if we have overridden the type
+			// check if we have overridden the type for the attachment
 			$override_type = get_post_meta( $foogallery_attachment->ID, '_foogallery_override_type', true );
 			if ( ! empty( $override_type ) ) {
 				$foogallery_attachment->type = $override_type;
 			}
+		}
+
+		/**
+		 * Checks to see if the url is maybe an image based on the extension
+		 *
+		 * @param string $url The url to check.
+		 *
+		 * @return false
+		 */
+		private function check_maybe_image( $url ) {
+			$known_image_extensions = array( 'gif', 'jpg', 'jpeg', 'png', 'tiff', 'tif', 'bmp', 'svg', 'webp' );
+			$url_extension          = pathinfo( $url, PATHINFO_EXTENSION );
+			return in_array( $url_extension, $known_image_extensions, true );
 		}
 
 		/**
