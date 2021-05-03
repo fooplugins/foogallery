@@ -13,13 +13,13 @@ require_once FOOGALLERY_PATH . 'includes/extensions/class-extensions-api.php';
 require_once FOOGALLERY_PATH . 'includes/extensions/class-extensions-loader.php';
 require_once FOOGALLERY_PATH . 'includes/class-attachment-filters.php';
 require_once FOOGALLERY_PATH . 'includes/class-retina.php';
-require_once FOOGALLERY_PATH . 'includes/class-foogallery-upgrade.php';
 require_once FOOGALLERY_PATH . 'includes/class-foogallery-widget.php';
 require_once FOOGALLERY_PATH . 'gutenberg/class-foogallery-gutenberg.php';
+require_once FOOGALLERY_PATH . 'includes/class-foogallery-debug.php';
+
 
 // Include built-in thumbnail generation files.
 require_once FOOGALLERY_PATH . 'includes/thumbs/includes.php';
-
 
 // Include bundled extensions.
 require_once FOOGALLERY_PATH . 'extensions/albums/class-albums-extension.php';
@@ -31,7 +31,7 @@ require_once FOOGALLERY_PATH . 'extensions/demo-content-generator/class-demo-con
 // load Template Loader files.
 require_once FOOGALLERY_PATH . 'includes/public/class-foogallery-template-loader.php';
 
-// Load all C patibility files.
+// Load all Compatibility files.
 require_once FOOGALLERY_PATH . 'includes/compatibility/class-foogallery-compatibility.php';
 
 require_once FOOGALLERY_PATH . 'includes/class-version-check.php';

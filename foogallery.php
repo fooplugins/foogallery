@@ -156,8 +156,6 @@ if ( function_exists( 'foogallery_fs' ) ) {
 
 				new FooGallery_Attachment_Custom_Class();
 
-				new FooGallery_Upgrade();
-
 				new FooGallery_Compatibility();
 
 				new FooGallery_Extensions_Compatibility();
@@ -165,6 +163,8 @@ if ( function_exists( 'foogallery_fs' ) ) {
 				new FooGallery_Crop_Position();
 
 				new FooGallery_ForceHttps();
+
+				new FooGallery_Debug();
 
 				$checker = new FooGallery_Version_Check();
 				$checker->wire_up_checker();
