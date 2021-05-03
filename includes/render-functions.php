@@ -471,9 +471,9 @@ function foogallery_build_json_object_from_attachment( $foogallery_attachment, $
 			$args = foogallery_gallery_template_arguments();
 		}
 
+		$captions          = foogallery_build_attachment_html_caption( $foogallery_attachment, $args );
 		$anchor_attributes = foogallery_build_attachment_html_anchor_attributes( $foogallery_attachment, $args );
 		$image_attributes  = foogallery_build_attachment_html_image_attributes( $foogallery_attachment, $args );
-		$captions          = foogallery_build_attachment_html_caption( $foogallery_attachment, $args );
 
 		if ( array_key_exists( 'data-src-fg', $image_attributes ) ) {
 			$src = $image_attributes['data-src-fg'];
