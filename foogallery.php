@@ -2,7 +2,7 @@
 /*
 Plugin Name: FooGallery
 Description: FooGallery is the most intuitive and extensible gallery management tool ever created for WordPress
-Version:     2.0.24
+Version:     2.0.30
 Author:      FooPlugins
 Plugin URI:  http://fooplugins.com/foogallery/
 Author URI:  http://fooplugins.com
@@ -28,10 +28,10 @@ if ( function_exists( 'foogallery_fs' ) ) {
 		define( 'FOOGALLERY_PATH', plugin_dir_path( __FILE__ ) );
 		define( 'FOOGALLERY_URL', plugin_dir_url( __FILE__ ) );
 		define( 'FOOGALLERY_FILE', __FILE__ );
-		define( 'FOOGALLERY_VERSION', '2.0.24' );
+		define( 'FOOGALLERY_VERSION', '2.0.30' );
 		define( 'FOOGALLERY_SETTINGS_VERSION', '2' );
 
-		require_once( FOOGALLERY_PATH . 'includes/constants.php' );
+		require_once FOOGALLERY_PATH . 'includes/constants.php';
 
 		// Create a helper function for easy SDK access.
 		function foogallery_fs() {
@@ -74,7 +74,7 @@ if ( function_exists( 'foogallery_fs' ) ) {
 		do_action( 'foogallery_fs_loaded' );
 
 
-		require_once( FOOGALLERY_PATH . 'includes/foopluginbase/bootstrapper.php' );
+		require_once FOOGALLERY_PATH . 'includes/foopluginbase/bootstrapper.php';
 
 		/**
 		 * FooGallery_Plugin class
@@ -156,8 +156,6 @@ if ( function_exists( 'foogallery_fs' ) ) {
 
 				new FooGallery_Attachment_Custom_Class();
 
-				new FooGallery_Upgrade();
-
 				new FooGallery_Compatibility();
 
 				new FooGallery_Extensions_Compatibility();
@@ -165,6 +163,8 @@ if ( function_exists( 'foogallery_fs' ) ) {
 				new FooGallery_Crop_Position();
 
 				new FooGallery_ForceHttps();
+
+				new FooGallery_Debug();
 
 				$checker = new FooGallery_Version_Check();
 				$checker->wire_up_checker();

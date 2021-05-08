@@ -134,23 +134,23 @@ function foogallery_build_attachment_html_anchor_attributes( $foogallery_attachm
 	$link = $args['link'];
 
 	if ( 'page' === $link ) {
-		//get the URL to the attachment page
+		// get the URL to the attachment page.
 		$url = get_attachment_link( $foogallery_attachment->ID );
-	} else if ( 'custom' === $link ) {
+	} elseif ( 'custom' === $link ) {
 		$url = $args['custom_link'];
 	} else {
 		$url = $foogallery_attachment->url;
 	}
 
-	//fallback for images that might not have a custom url
+	// fallback for images that might not have a custom url.
 	if ( empty( $url ) ) {
 		$url = $foogallery_attachment->url;
 	}
 
 	$attr = array();
 
-	//only add href and target attributes to the anchor if the link is NOT set to 'none'
-	if ( $link !== 'none' ){
+	// only add href and target attributes to the anchor if the link is NOT set to 'none'.
+	if ( 'none' !== $link ) {
 		$attr['href'] = foogallery_process_image_url( $url );
 		if ( ! empty( $foogallery_attachment->custom_target ) && 'default' !== $foogallery_attachment->custom_target ) {
 			$attr['target'] = $foogallery_attachment->custom_target;
@@ -161,7 +161,7 @@ function foogallery_build_attachment_html_anchor_attributes( $foogallery_attachm
 		$attr['data-caption-title'] = foogallery_sanitize_html( $foogallery_attachment->caption );
 	}
 
-	if ( !empty( $foogallery_attachment->description ) ) {
+	if ( ! empty( $foogallery_attachment->description ) ) {
 		$attr['data-caption-desc'] = foogallery_sanitize_html( $foogallery_attachment->description );
 	}
 
@@ -173,17 +173,21 @@ function foogallery_build_attachment_html_anchor_attributes( $foogallery_attachm
 		$attr['data-caption-desc'] = foogallery_sanitize_html( $foogallery_attachment->caption_desc );
 	}
 
-	$attr['data-attachment-id'] = $foogallery_attachment->ID;
+	// set the ID attribute for the attachment.
+	if ( $foogallery_attachment->ID > 0 ) {
+		$attribute_key          = foogallery_get_setting( 'attachment_id_attribute', 'data-attachment-id' );
+		$attr[ $attribute_key ] = $foogallery_attachment->ID;
+	}
 
-	//pull any custom attributes out the args
+	// pull any custom attributes out the args.
 	if ( isset( $args['link_attributes'] ) && is_array( $args['link_attributes'] ) ) {
 		$attr = array_merge( $attr, $args['link_attributes'] );
 	}
 
 	$attr = apply_filters( 'foogallery_attachment_html_link_attributes', $attr, $args, $foogallery_attachment );
 
-	//always add the fg-thumb class
-	if ( array_key_exists( 'class', $attr ) && !empty( $attr['class'] ) ) {
+	// always add the fg-thumb class.
+	if ( array_key_exists( 'class', $attr ) && ! empty( $attr['class'] ) ) {
 		$attr['class'] .= ' fg-thumb';
 	} else {
 		$attr['class'] = 'fg-thumb';
@@ -467,9 +471,9 @@ function foogallery_build_json_object_from_attachment( $foogallery_attachment, $
 			$args = foogallery_gallery_template_arguments();
 		}
 
+		$captions          = foogallery_build_attachment_html_caption( $foogallery_attachment, $args );
 		$anchor_attributes = foogallery_build_attachment_html_anchor_attributes( $foogallery_attachment, $args );
 		$image_attributes  = foogallery_build_attachment_html_image_attributes( $foogallery_attachment, $args );
-		$captions          = foogallery_build_attachment_html_caption( $foogallery_attachment, $args );
 
 		if ( array_key_exists( 'data-src-fg', $image_attributes ) ) {
 			$src = $image_attributes['data-src-fg'];

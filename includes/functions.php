@@ -143,16 +143,16 @@ function foogallery_get_default( $key, $default = false ) {
 		'gallery_permalinks_enabled' => false,
 		'gallery_permalink'          => 'gallery',
 		'lightbox'                   => 'none',
-		'thumb_jpeg_quality'         => '80',
+		'thumb_jpeg_quality'         => '90',
 		'gallery_sorting'            => '',
-		'datasource'				 => 'media_library'
+		'datasource'                 => 'media_library',
 	);
 
-	// A handy filter to override the defaults
+	// A handy filter to override the defaults.
 	$defaults = apply_filters( 'foogallery_defaults', $defaults );
 
 	// Return the key specified.
-	return isset($defaults[ $key ]) ? $defaults[ $key ] : $default;
+	return isset( $defaults[ $key ] ) ? $defaults[ $key ] : $default;
 }
 
 /**
@@ -1515,8 +1515,8 @@ function foogallery_get_language_array_value( $setting_key, $default ) {
 function foogallery_wp_filesystem() {
 	global $wp_filesystem;
 
-	if ( !function_exists( 'WP_Filesystem' ) ) {
-		require_once( ABSPATH . 'wp-admin/includes/file.php' );
+	if ( ! function_exists( 'WP_Filesystem' ) ) {
+		require_once ABSPATH . 'wp-admin/includes/file.php';
 	}
 
 	if ( ! WP_Filesystem( true ) ) {
@@ -1791,4 +1791,27 @@ function foogallery_is_activation_page() {
 	$fs = foogallery_fs();
 
 	return $fs->is_activation_page();
+}
+
+/**
+ * Render an array of debug info
+ *
+ * @param array $array an array of data to render.
+ */
+function foogallery_render_debug_array( $array, $level = 0 ) {
+	foreach ( $array as $key => $value ) {
+		if ( ! empty( $value ) ) {
+			if ( $level > 0 ) {
+				echo esc_html( str_repeat( '   ', $level ) );
+			}
+			echo esc_html( $key ) . ' => ';
+			if ( is_array( $value ) ) {
+				echo "\r\n";
+				foogallery_render_debug_array( $value, $level + 1 );
+			} else {
+				echo esc_html( $value );
+				echo "\r\n";
+			}
+		}
+	}
 }

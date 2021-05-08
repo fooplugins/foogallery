@@ -228,6 +228,7 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Folders' ) ) {
 								$attachment->ID           = 0;
 								$attachment->title        = $file;
 								$attachment->url          = $url;
+								$attachment->type         = 'image';
 								$attachment->has_metadata = false;
 								$attachment->sort         = PHP_INT_MAX;
 								if ( $size !== false ) {

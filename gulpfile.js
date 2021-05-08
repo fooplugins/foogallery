@@ -12,7 +12,7 @@ require( 'gulp-freemius-deploy' )( gulp, {
     add_contributor: true
 } );
 
-var buildInclude = [ '**/*', '!package*.json', '!./{node_modules,node_modules/**/*}', '!./{dist,dist/**/*}', '!fs-config.json' ];
+var buildInclude = [ '**/*', '!package*.json', '!./{node_modules,node_modules/**/*}', '!./{dist,dist/**/*}', '!fs-config.json', '!./{vendor,vendor/**/*}', '!composer.*', '!README.md', '!Gruntfile.js', '!gulpfile.js' ];
 
 gulp.task('zip', function () {
     return gulp.src( buildInclude, {base: './'})

@@ -1,5 +1,5 @@
 <?php
-/*
+/**
  * Foo_Plugin_Base
  * A base class for WordPress plugins. Get up and running quickly with this opinionated, convention based, plugin framework
  *
@@ -11,7 +11,7 @@
  * Author: Brad Vincent
  * Author URI: https://fooplugins.com
  * License: GPL2
-*/
+ */
 
 if ( !class_exists( 'Foo_Plugin_Base_v2_4' ) ) {
 
@@ -79,67 +79,70 @@ if ( !class_exists( 'Foo_Plugin_Base_v2_4' ) ) {
 				'title'   => $this->plugin_title,
 				'version' => $this->plugin_version,
 				'dir'     => $this->plugin_dir,
-				'url'     => $this->plugin_url
+				'url'     => $this->plugin_url,
 			);
 		}
 
 		/*
 		 * Initializes the plugin.
 		 */
-		function init($file, $slug = false, $version = '0.0.1', $title = false) {
+		function init( $file, $slug = false, $version = '0.0.1', $title = false ) {
 
 			//check to make sure the mandatory plugin fields have been set
-			if ( empty($file) ) {
-				throw new Exception('Required plugin variable not set : \'plugin_file\'. Please set this in the init() function of your plugin.');
+			if ( empty( $file ) ) {
+				throw new Exception( 'Required plugin variable not set : \'plugin_file\'. Please set this in the init() function of your plugin.' );
 			}
 			if ( empty( $version ) ) {
-				throw new Exception('Required plugin variable not set : \'plugin_version\'. Please set this in the init() function of your plugin.');
+				throw new Exception( 'Required plugin variable not set : \'plugin_version\'. Please set this in the init() function of your plugin.' );
 			}
 
 			$this->plugin_file     = $file;
 			$this->plugin_dir      = plugin_dir_path( $file );
 			$this->plugin_dir_name = plugin_basename( $this->plugin_dir );
 			$this->plugin_url      = plugin_dir_url( $file );
-			$this->plugin_slug 	= $slug !== false ? $slug : plugin_basename( $file );
-			$this->plugin_title 	= $title !== false ? $title : foo_title_case( $this->plugin_slug );
-			$this->plugin_version = $version;
+			$this->plugin_slug     = $slug !== false ? $slug : plugin_basename( $file );
+			$this->plugin_title    = $title !== false ? $title : foo_title_case( $this->plugin_slug );
+			$this->plugin_version  = $version;
 
 			//instantiate our option class
-			$this->_options  = new Foo_Plugin_Options_v2_1($this->plugin_slug);
+			$this->_options = new Foo_Plugin_Options_v2_1( $this->plugin_slug );
 
 			//check we are using php 5
 			foo_check_php_version( $this->plugin_title, '5.0.0' );
 
 			// Load plugin text domain
-			add_action( 'init', array($this, 'load_plugin_textdomain') );
+			add_action( 'init', array( $this, 'load_plugin_textdomain' ) );
 
 			// Render any inline styles that need to go at the end of the head tag
-			add_action( 'wp_head', array($this, 'inline_styles'), 100 );
+			add_action( 'wp_head', array( $this, 'inline_styles' ), 100 );
 
 			// Render any inline scripts at the bottom of the page just before the closing body tag
-			add_action( 'wp_footer', array($this, 'inline_scripts'), 200 );
+			add_action( 'wp_footer', array( $this, 'inline_scripts' ), 200 );
 
 			if ( is_admin() ) {
 				//instantiate our settings class
-				$this->_settings = new Foo_Plugin_Settings_v2_2($this->plugin_slug);
+				$this->_settings = new Foo_Plugin_Settings_v2_2( $this->plugin_slug );
 
 				//instantiate our metabox sanity class
-				new Foo_Plugin_Metabox_Sanity_v1($this->plugin_slug);
+				new Foo_Plugin_Metabox_Sanity_v1( $this->plugin_slug );
 
 				// Add a settings page menu item
-				add_action( 'admin_menu', array($this, 'admin_settings_page_menu') );
+				add_action( 'admin_menu', array( $this, 'admin_settings_page_menu' ) );
 
 				// Add a links to the plugin listing
-				add_filter( 'plugin_action_links_' . plugin_basename( $this->plugin_file ), array($this, 'admin_plugin_listing_actions') );
+				add_filter( 'plugin_action_links_' . plugin_basename( $this->plugin_file ), array(
+					$this,
+					'admin_plugin_listing_actions',
+				) );
 
 				// output CSS to the admin pages
-				add_action( 'admin_print_styles', array($this, 'admin_print_styles') );
+				add_action( 'admin_print_styles', array( $this, 'admin_print_styles' ) );
 
 				// output JS to the admin pages
-				add_action( 'admin_print_scripts', array($this, 'admin_print_scripts') );
+				add_action( 'admin_print_scripts', array( $this, 'admin_print_scripts' ) );
 			}
 
-			do_action( $this->plugin_slug . (is_admin() ? '_admin' : '') . '_init' );
+			do_action( $this->plugin_slug . ( is_admin() ? '_admin' : '' ) . '_init' );
 		}
 
 		/**
@@ -147,17 +150,13 @@ if ( !class_exists( 'Foo_Plugin_Base_v2_4' ) ) {
 		 *
 		 * @param string $languages_directory The default language directory location. Default location is /languages/
 		 */
-		public function load_plugin_textdomain($languages_directory = '/languages/') {
-			Foo_Plugin_TextDomain_v1_0::load_textdomain(
-				$this->plugin_file,
-				$this->plugin_slug,
-				$languages_directory
-			);
+		public function load_plugin_textdomain( $languages_directory = '/languages/' ) {
+			Foo_Plugin_TextDomain_v1_0::load_textdomain( $this->plugin_file, $this->plugin_slug, $languages_directory );
 		}
 
 		//wrapper around the apply_filters function that appends the plugin slug to the tag
-		function apply_filters($tag, $value) {
-			if ( !foo_starts_with( $tag, $this->plugin_slug ) ) {
+		function apply_filters( $tag, $value ) {
+			if ( ! foo_starts_with( $tag, $this->plugin_slug ) ) {
 				$tag = $this->plugin_slug . '-' . $tag;
 			}
 
@@ -165,21 +164,21 @@ if ( !class_exists( 'Foo_Plugin_Base_v2_4' ) ) {
 		}
 
 		// register and enqueue a script
-		function register_and_enqueue_js($file, $d = array('jquery'), $v = false, $f = false) {
+		function register_and_enqueue_js( $file, $d = array( 'jquery' ), $v = false, $f = false ) {
 			if ( $v === false ) {
 				$v = $this->plugin_version;
 			}
 
 			$js_src_url = $file;
-			if ( !foo_contains( $file, '://' ) ) {
+			if ( ! foo_contains( $file, '://' ) ) {
 
 				//check for the file in plugin root js directory
 				$js_src_url = $this->plugin_url . 'js/' . $file;
-				if ( !file_exists( $this->plugin_dir . 'js/' . $file ) ) {
+				if ( ! file_exists( $this->plugin_dir . 'js/' . $file ) ) {
 
 					//check for the file in relative js directory
 					$js_src_url = plugin_dir_url( __FILE__ ) . 'js/' . $file;
-					if ( !file_exists( plugin_dir_path( __FILE__ ) . 'js/' . $file ) ) {
+					if ( ! file_exists( plugin_dir_path( __FILE__ ) . 'js/' . $file ) ) {
 						return;
 					}
 
@@ -187,12 +186,7 @@ if ( !class_exists( 'Foo_Plugin_Base_v2_4' ) ) {
 			}
 			$h = str_replace( '.', '-', pathinfo( $file, PATHINFO_FILENAME ) );
 
-			wp_register_script(
-				$handle = $h,
-				$src = $js_src_url,
-				$deps = $d,
-				$ver = $v,
-				$in_footer = $f );
+			wp_register_script( $handle = $h, $src = $js_src_url, $deps = $d, $ver = $v, $in_footer = $f );
 
 			wp_enqueue_script( $h );
 
@@ -200,24 +194,22 @@ if ( !class_exists( 'Foo_Plugin_Base_v2_4' ) ) {
 		}
 
 		// register and enqueue a CSS
-		function register_and_enqueue_css($file, $d = array(), $v = false) {
+		function register_and_enqueue_css( $file, $d = array(), $v = false ) {
 			if ( $v === false ) {
 				$v = $this->plugin_version;
 			}
 
 			$css_src_url = $file;
-			if ( !foo_contains( $file, '://' ) ) {
+			if ( ! foo_contains( $file, '://' ) ) {
 				$css_src_url = $this->plugin_url . 'css/' . $file;
-				if ( !file_exists( $this->plugin_dir . 'css/' . $file ) ) return;
+				if ( ! file_exists( $this->plugin_dir . 'css/' . $file ) ) {
+					return;
+				}
 			}
 
 			$h = str_replace( '.', '-', pathinfo( $file, PATHINFO_FILENAME ) );
 
-			wp_register_style(
-				$handle = $h,
-				$src = $css_src_url,
-				$deps = $d,
-				$ver = $v );
+			wp_register_style( $handle = $h, $src = $css_src_url, $deps = $d, $ver = $v );
 
 			wp_enqueue_style( $h );
 
@@ -244,7 +236,7 @@ if ( !class_exists( 'Foo_Plugin_Base_v2_4' ) ) {
 
 			//add any scripts for the current post type
 			$post_type = foo_current_screen_post_type();
-			if ( !empty($post_type) ) {
+			if ( ! empty( $post_type ) ) {
 				$this->register_and_enqueue_js( 'admin-' . $post_type . '.js' );
 			}
 
@@ -270,7 +262,7 @@ if ( !class_exists( 'Foo_Plugin_Base_v2_4' ) ) {
 
 			//add any scripts for the current post type /css/admin-foobar.css
 			$post_type = foo_current_screen_post_type();
-			if ( !empty($post_type) ) {
+			if ( ! empty( $post_type ) ) {
 				$this->register_and_enqueue_css( 'admin-' . $post_type . '.css' );
 			}
 
@@ -280,10 +272,10 @@ if ( !class_exists( 'Foo_Plugin_Base_v2_4' ) ) {
 			do_action( $this->plugin_slug . '_admin_print_styles' );
 		}
 
-		function admin_plugin_listing_actions($links) {
+		function admin_plugin_listing_actions( $links ) {
 			if ( $this->has_admin_settings_page() ) {
 				// Add the 'Settings' link to the plugin page
-				$links[] = '<a href="options-general.php?page=' . $this->plugin_slug . '"><b>' . __('Settings', $this->plugin_slug) .'</b></a>';
+				$links[] = '<a href="options-general.php?page=' . $this->plugin_slug . '"><b>' . __( 'Settings', $this->plugin_slug ) . '</b></a>';
 			}
 
 			return apply_filters( $this->plugin_slug . '_admin_plugin_action_links', $links );
@@ -302,7 +294,10 @@ if ( !class_exists( 'Foo_Plugin_Base_v2_4' ) ) {
 				$page_title = $this->apply_filters( $this->plugin_slug . '_admin_settings_page_title', $this->plugin_title . __( ' Settings', $this->plugin_slug ) );
 				$menu_title = $this->apply_filters( $this->plugin_slug . '_admin_settings_menu_title', $this->plugin_title );
 
-				add_options_page( $page_title, $menu_title, 'manage_options', $this->plugin_slug, array($this, 'admin_settings_render_page') );
+				add_options_page( $page_title, $menu_title, 'manage_options', $this->plugin_slug, array(
+					$this,
+					'admin_settings_render_page',
+				) );
 			}
 		}
 
@@ -311,24 +306,24 @@ if ( !class_exists( 'Foo_Plugin_Base_v2_4' ) ) {
 			$settings = apply_filters( $this->plugin_slug . '_admin_settings', false );
 			$this->_settings->add_settings( $settings );
 
-			$current_directory = trailingslashit(dirname(plugin_dir_path( __FILE__ )));
+			$current_directory = trailingslashit( dirname( plugin_dir_path( __FILE__ ) ) );
 
 			//check if a settings.php file exists in the views folder. If so then include it
 			if ( file_exists( $current_directory . 'views/settings.php' ) ) {
 
 				//global variable that can be used by the included settings pages
-				include_once( $current_directory . 'views/settings.php');
+				include_once( $current_directory . 'views/settings.php' );
 			}
 
 			do_action( $this->plugin_slug . '_admin_settings_render_page', $this->_settings );
 		}
 
 		function inline_styles() {
-			do_action( $this->plugin_slug . (is_admin() ? '_admin' : '') . '_inline_styles', $this );
+			do_action( $this->plugin_slug . ( is_admin() ? '_admin' : '' ) . '_inline_styles', $this );
 		}
 
 		function inline_scripts() {
-			do_action( $this->plugin_slug . (is_admin() ? '_admin' : '') . '_inline_scripts', $this );
+			do_action( $this->plugin_slug . ( is_admin() ? '_admin' : '' ) . '_inline_scripts', $this );
 		}
 	}
 }
