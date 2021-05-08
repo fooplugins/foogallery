@@ -29,7 +29,6 @@ if ( ! class_exists( 'FooGallery_Admin' ) ) {
 			new FooGallery_Admin_Columns();
 			new FooGallery_Admin_Extensions();
 			new FooGallery_Attachment_Fields();
-            new FooGallery_Admin_CSS_Load_Optimizer();
 			new FooGallery_Admin_Notices();
 			$foogallery_admin_datasource_instance = new FooGallery_Admin_Gallery_Datasources();
 		}
