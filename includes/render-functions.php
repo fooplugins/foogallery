@@ -382,7 +382,6 @@ function foogallery_attachment_html_caption( $foogallery_attachment, $args = arr
 function foogallery_attachment_html_item_opening($foogallery_attachment, $args = array() ) {
 
 	$classes[] = 'fg-item';
-	$classes[] = 'fg-idle';
 
 	//set the type of an item
 	$classes['type'] = 'fg-type-' . $foogallery_attachment->type;
