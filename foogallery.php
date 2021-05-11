@@ -122,7 +122,6 @@ if ( function_exists( 'foogallery_fs' ) ) {
 				if ( is_admin() ) {
 					new FooGallery_Admin();
 					add_action( 'wpmu_new_blog', array( $this, 'set_default_extensions_for_multisite_network_activated' ) );
-					add_action( 'admin_page_access_denied', array( $this, 'check_for_access_denied' ) );
 					foogallery_fs()->add_filter( 'connect_message_on_update', array( $this, 'override_connect_message_on_update' ), 10, 6 );
 					foogallery_fs()->add_filter( 'is_submenu_visible', array( $this, 'is_submenu_visible' ), 10, 2 );
 					foogallery_fs()->add_filter( 'plugin_icon', array( $this, 'freemius_plugin_icon' ), 10, 1 );
@@ -234,20 +233,6 @@ if ( function_exists( 'foogallery_fs' ) ) {
 				array_unshift( $extensions, $extension );
 
 				return $extensions;
-			}
-
-			/**
-			 * Checks for the access denied page after we have activated/updated the plugin
-			 */
-			function check_for_access_denied() {
-				global $plugin_page;
-
-				if ( FOOGALLERY_ADMIN_MENU_HELP_SLUG === $plugin_page ||
-					FOOGALLERY_ADMIN_MENU_SETTINGS_SLUG === $plugin_page ||
-					FOOGALLERY_ADMIN_MENU_EXTENSIONS_SLUG === $plugin_page ||
-					FOOGALLERY_ADMIN_MENU_SYSTEMINFO_SLUG === $plugin_page ) {
-					//fs_redirect( 'admin.php?page=' . FOOGALLERY_SLUG );
-				}
 			}
 
 			/**
