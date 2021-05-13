@@ -12,12 +12,32 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 			add_action( 'foogallery_admin_settings_custom_type_render_setting', array( $this, 'render_custom_setting_types' ) );
 			add_action( 'foogallery_admin_settings_after_render_setting', array( $this, 'after_render_setting' ) );
 			add_action( 'update_option_foogallery', array( $this, 'generate_assets' ), 10, 3 );
+			add_filter( 'pre_update_option_foogallery', array( $this, 'sanitize_settings' ), 10, 3 );
 
-			// Ajax calls
+			// Ajax calls.
 			add_action( 'wp_ajax_foogallery_clear_css_optimizations', array( $this, 'ajax_clear_css_optimizations' ) );
 			add_action( 'wp_ajax_foogallery_thumb_generation_test', array( $this, 'ajax_thumb_generation_test' ) );
 			add_action( 'wp_ajax_foogallery_apply_retina_defaults', array( $this, 'ajax_apply_retina_defaults' ) );
 			add_action( 'wp_ajax_foogallery_uninstall', array( $this, 'ajax_uninstall' ) );
+		}
+
+		/**
+		 * Sanitize the foogallery settings.
+		 *
+		 * @param mixed  $value The value of the settings.
+		 * @param mixed  $old_value The old value.
+		 * @param string $option The setting name. Should be 'foogallery'.
+		 *
+		 * @return mixed
+		 */
+		public function sanitize_settings( $value, $old_value, $option ) {
+			if ( is_array( $value ) && array_key_exists( 'custom_js', $value ) ) {
+				$value['custom_js'] = foogallery_sanitize_html( $value['custom_js'] );
+			}
+			if ( is_array( $value ) && array_key_exists( 'custom_css', $value ) ) {
+				$value['custom_css'] = foogallery_sanitize_html( $value['custom_css'] );
+			}
+			return $value;
 		}
 
 		/**
