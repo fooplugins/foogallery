@@ -1815,3 +1815,81 @@ function foogallery_render_debug_array( $array, $level = 0 ) {
 		}
 	}
 }
+
+/**
+ * Insert a new attachment from a URL.
+ *
+ * @param array $attachment_data The image attachment data.
+ *
+ * @return false|int|WP_Error
+ */
+function foogallery_import_attachment( $attachment_data ) {
+	// Include image.php so we can call wp_generate_attachment_metadata().
+	require_once ABSPATH . 'wp-admin/includes/image.php';
+
+	// Get the contents of the picture.
+	$response = wp_remote_get( $attachment_data['url'] );
+	if ( is_wp_error( $response ) ) {
+		return $response;
+	}
+
+	$contents = wp_remote_retrieve_body( $response );
+
+	// Upload and get file data.
+	$upload = wp_upload_bits( basename( $attachment_data['url'] ), null, $contents );
+	if ( array_key_exists( 'error', $upload ) && false !== $upload['error'] ) {
+		return new WP_Error( 'foogallery_import_attachment_upload_fail', $upload['error'] );
+	}
+	$guid      = $upload['url'];
+	$file      = $upload['file'];
+	$file_type = wp_check_filetype( basename( $file ), null );
+
+	// Create attachment.
+	$attachment_args = array(
+		'ID'             => 0,
+		'guid'           => $guid,
+		'post_title'     => $attachment_data['title'],
+		'post_excerpt'   => $attachment_data['caption'],
+		'post_content'   => $attachment_data['description'] ?? '',
+		'post_date'      => '',
+		'post_mime_type' => $attachment_data['mime_type'] ?? $file_type['type'],
+	);
+
+	$attachment_args['meta_input'] = array();
+
+	if ( isset( $attachment_data['alt'] ) && ! empty( $attachment_data['alt'] ) ) {
+		$attachment_args['meta_input']['_wp_attachment_image_alt'] = $attachment_data['alt'];
+	}
+
+	if ( isset( $attachment_data['custom_url'] ) && ! empty( $attachment_data['custom_url'] ) ) {
+		$attachment_args['meta_input']['_foogallery_custom_url'] = $attachment_data['custom_url'];
+	}
+
+	if ( isset( $attachment_data['custom_target'] ) && ! empty( $attachment_data['custom_target'] ) ) {
+		$attachment_args['meta_input']['_foogallery_custom_target'] = $attachment_data['custom_target'];
+	}
+
+	// Insert the attachment.
+	$attachment_id = wp_insert_attachment( $attachment_args, $file, 0, true );
+	if ( is_wp_error( $attachment_id ) ) {
+		return $attachment_id;
+	}
+	$attachment_meta = wp_generate_attachment_metadata( $attachment_id, $file );
+	wp_update_attachment_metadata( $attachment_id, $attachment_meta );
+
+	if ( ! empty( $tags ) ) {
+		if ( taxonomy_exists( FOOGALLERY_ATTACHMENT_TAXONOMY_TAG ) ) {
+			// Save tags.
+			wp_set_object_terms( $attachment_id, $tags, FOOGALLERY_ATTACHMENT_TAXONOMY_TAG, false );
+		}
+	}
+
+	if ( ! empty( $categories ) ) {
+		if ( taxonomy_exists( FOOGALLERY_ATTACHMENT_TAXONOMY_CATEGORY ) ) {
+			// Save categories.
+			wp_set_object_terms( $attachment_id, $categories, FOOGALLERY_ATTACHMENT_TAXONOMY_CATEGORY, false );
+		}
+	}
+
+	return $attachment_id;
+}
