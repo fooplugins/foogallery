@@ -41,6 +41,10 @@ class FooGallery extends stdClass {
 	 * @param $post
 	 */
 	private function load( $post ) {
+		if ( $post->post_type !== FOOGALLERY_CPT_GALLERY ) {
+			return;
+		}
+
 		$this->_post       = $post;
 		$this->ID          = $post->ID;
 		$this->slug        = $post->post_name;
