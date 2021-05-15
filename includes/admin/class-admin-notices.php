@@ -110,6 +110,9 @@ if ( ! class_exists( 'FooGallery_Admin_Notices' ) ) {
 
 				if ( $gallery_count >= 5 ) {
 					update_option( 'foogallery_admin_rating_notice_dismiss', 'show' );
+					return true;
+				} else {
+					return false;
 				}
 			}
 
