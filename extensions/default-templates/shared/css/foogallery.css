@@ -104,6 +104,16 @@
 	height: auto;
 	margin: 0;
 }
+.foogallery picture.fg-image > img {
+	display: block;
+	position: relative;
+	border: none;
+	outline: 0;
+	text-decoration: none;
+	max-width: 100%;
+	height: auto;
+	margin: 0;
+}
 .foogallery .fg-loaded .fg-thumb {
 	z-index: 6;
 }

@@ -5673,7 +5673,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 
 	/**
 	 * @summary Whether or not the current browser supports "webp" images.
-	 * @memberof FooGallery
+	 * @memberof FooGallery.
 	 * @name supportsWebP
 	 * @type {boolean}
 	 * @default false
@@ -5688,6 +5688,14 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 		_.supportsWebP = false;
 	};
 	webp.src = 'data:image/webp;base64,UklGRhoAAABXRUJQVlA4TA0AAAAvAAAAEAcQERGIiP4HAA==';
+
+	/**
+	 * @summary Simple test to see if the browser supports the <picture> element.
+	 * @memberof FooGallery.
+	 * @name supportsPicture
+	 * @type {boolean}
+	 */
+	_.supportsPicture = !!window.HTMLPictureElement;
 
 })(
 	FooGallery.$,
@@ -8319,6 +8327,14 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 			 */
 			self.isParsed = false;
 			/**
+			 * @summary Whether or not this items image is a <picture> element.
+			 * @memberof FooGallery.Item#
+			 * @name isPicture
+			 * @type {boolean}
+			 * @readonly
+			 */
+			self.isPicture = false;
+			/**
 			 * @memberof FooGallery.Item#
 			 * @name $el
 			 * @type {?jQuery}
@@ -8422,6 +8438,12 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 			 * @type {string}
 			 */
 			self.srcset = self.opt.srcset;
+			/**
+			 * @memberof FooGallery.Item#
+			 * @name sources
+			 * @type {Object[]}
+			 */
+			self.sources = self.opt.sources;
 			/**
 			 * @memberof FooGallery.Item#
 			 * @name width
@@ -8704,7 +8726,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 				// We don't load the attributes when parsing as they are only ever used to create an item and if you're parsing it's already created.
 			}
 			if (self.isParsed) {
-				self.tmpl.items.observe(self);
+				if (!self.isLoaded) self.tmpl.items.observe(self);
 				/**
 				 * @summary Raised after an item has been parsed from an element.
 				 * @event FooGallery.Template~"parsed-item.foogallery"
@@ -8772,12 +8794,30 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 			self.productId = data.productId || self.productId;
 			self.tags = data.tags || self.tags;
 			self.href = data.href || self.$anchor.attr('href') || self.href;
-			self.src = self.$image.attr(self.tmpl.opt.src) || self.src;
-			self.srcset = self.$image.attr(self.tmpl.opt.srcset) || self.srcset;
-			self.width = parseInt(self.$image.attr("width")) || self.width;
-			self.height = parseInt(self.$image.attr("height")) || self.height;
-			self.title = self.$image.attr("title") || self.title;
-			self.alt = self.$image.attr("alt") || self.alt;
+
+			var $img;
+			if (self.$image.is("picture")){
+				self.isPicture = true;
+				self.sources = self.$image.find("source").map(function(i, source){
+					return {
+						srcset: source.getAttribute(self.tmpl.opt.srcset),
+						type: source.getAttribute("type"),
+						media: source.getAttribute("media"),
+						sizes: source.getAttribute("sizes")
+					};
+				}).get();
+				$img = self.$image.find("img");
+			} else {
+				$img = self.$image;
+			}
+
+			self.src = $img.attr(self.tmpl.opt.src) || self.src;
+			self.srcset = $img.attr(self.tmpl.opt.srcset) || self.srcset;
+			self.width = parseInt($img.attr("width")) || self.width;
+			self.height = parseInt($img.attr("height")) || self.height;
+			self.title = $img.attr("title") || self.title;
+			self.alt = $img.attr("alt") || self.alt;
+
 			self.caption = data.title || data.captionTitle || self.caption;
 			self.description = data.description || data.captionDesc || self.description;
 			self.noLightbox = self.$anchor.hasClass(cls.noLightbox);
@@ -8801,7 +8841,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 			}
 
 			// if the image has no src url then set the placeholder
-			var img = self.$image.get(0);
+			var img = $img.get(0);
 			if (!_is.string(img.src) || img.src.length === 0) {
 				if (!_is.string(self.placeholder) || self.placeholder.length === 0){
 					self.placeholder = self.createPlaceholder(self.width, self.height);
@@ -8811,6 +8851,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 					self._undo.placeholder = true;
 				}
 			}
+
 			var typeClass = self.getTypeClass();
 			if (!self.$el.hasClass(typeClass)){
 				self.$el.addClass(typeClass);
@@ -8947,11 +8988,15 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 				attr = self.attr,
 				exif = self.hasExif ? cls.exif : "";
 
+			self.isLoaded = !self.tmpl.opt.lazy;
+			self.isPicture = self.sources.length > 0;
+
 			self.doShortPixel();
 
 			var elem = document.createElement("div");
 			self._setAttributes(elem, attr.elem);
-			elem.className = [cls.elem, self.getTypeClass(), exif, cls.idle].join(" ");
+
+			elem.className = [cls.elem, self.getTypeClass(), exif, self.isLoaded ? cls.loaded : cls.idle].join(" ");
 
 			var inner = document.createElement("figure");
 			self._setAttributes(inner, attr.inner);
@@ -8985,16 +9030,45 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 
 			var image = document.createElement("img");
 			self._setAttributes(image, attr.image);
-			self._setAttributes(image, {
+			var imageAttrs = {
 				"class": cls.image,
 				"src": self.placeholder,
 				"width": self.width + "",
 				"height": self.height + "",
 				"title": self.title,
 				"alt": self.alt
-			});
-			image.setAttribute(self.tmpl.opt.src, self.src);
-			image.setAttribute(self.tmpl.opt.srcset, self.srcset);
+			};
+			if (self.isLoaded){
+				imageAttrs["src"] = self.src;
+				imageAttrs["srcset"] = self.srcset;
+			} else {
+				imageAttrs[self.tmpl.opt.src] = self.src;
+				imageAttrs[self.tmpl.opt.srcset] = self.srcset;
+			}
+			self._setAttributes(image, imageAttrs);
+
+			var picture;
+			if (self.isPicture){
+				picture = document.createElement("picture");
+				self._setAttributes(picture, attr.picture);
+				self.sources.forEach(function(opt){
+					var source = document.createElement("source"),
+						sourceAttrs = {
+							media: opt.media,
+							sizes: opt.sizes,
+							type: opt.type
+						};
+					if (self.isLoaded){
+						sourceAttrs["srcset"] = opt.srcset;
+					} else {
+						sourceAttrs[self.tmpl.opt.srcset] = opt.srcset;
+					}
+
+					self._setAttributes(source, sourceAttrs);
+					picture.appendChild(source);
+				});
+				picture.appendChild(image);
+			}
 
 			var overlay = document.createElement("span");
 			overlay.className = cls.overlay;
@@ -9031,8 +9105,11 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 			if (captionTitle !== null) captionInner.appendChild(captionTitle);
 			if (captionDesc !== null) captionInner.appendChild(captionDesc);
 			caption.appendChild(captionInner);
-
-			wrap.appendChild(image);
+			if (self.isPicture){
+				wrap.appendChild(picture);
+			} else {
+				wrap.appendChild(image);
+			}
 			anchor.appendChild(overlay);
 			anchor.appendChild(wrap);
 			inner.appendChild(anchor);
@@ -9046,7 +9123,11 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 			self.$anchor = $(anchor).on("click.foogallery", {self: self}, self.onAnchorClick);
 			self.$overlay = $(overlay);
 			self.$wrap = $(wrap);
-			self.$image = $(image);
+			if (self.isPicture) {
+				self.$image = $(picture);
+			} else {
+				self.$image = $(image);
+			}
 			self.$caption = $(caption).on("click.foogallery", {self: self}, self.onCaptionClick);
 			self.$loader = $(loader);
 
@@ -9110,7 +9191,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 					self.isAttached = true;
 				}
 				if (self.isAttached) {
-					self.tmpl.items.observe(self);
+					if (!self.isLoaded) self.tmpl.items.observe(self);
 					/**
 					 * @summary Raised after an item has appended its' elements to the template.
 					 * @event FooGallery.Template~"appended-item.foogallery"
@@ -9219,36 +9300,87 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 		load: function () {
 			var self = this;
 			if (_is.promise(self._load)) return self._load;
-			if (!self.isCreated || !self.isAttached) return _fn.reject("not created or attached");
-			var e = self.tmpl.trigger("load-item", [self]);
-			if (e.isDefaultPrevented()) return _fn.reject("default prevented");
-			var cls = self.cls, img = self.$image.get(0), placeholder = img.src;
-			self.isLoading = true;
-			self.tmpl.items.unobserve(self);
-			self.$el.removeClass(cls.idle).removeClass(cls.hidden).removeClass(cls.loaded).removeClass(cls.error).addClass(cls.loading);
 			return self._load = $.Deferred(function (def) {
-				img.onload = function () {
-					img.onload = img.onerror = null;
+				if (self.isLoaded){
+					return def.resolve(self);
+				}
+				if (!self.isCreated || !self.isAttached) {
+					return def.reject("not created or attached");
+				}
+				var e = self.tmpl.trigger("load-item", [self]);
+				if (e.isDefaultPrevented()){
+					return def.reject("default prevented");
+				}
+
+				self.isLoading = true;
+				self.tmpl.items.unobserve(self);
+				self.$el.removeClass(self.cls.idle)
+					.removeClass(self.cls.hidden)
+					.removeClass(self.cls.loaded)
+					.removeClass(self.cls.error)
+					.addClass(self.cls.loading);
+
+				self.loadIMG().then(function(){
 					self.isLoading = false;
 					self.isLoaded = true;
-					self.$el.removeClass(cls.loading).addClass(cls.loaded);
+					self.$el.removeClass(self.cls.loading).addClass(self.cls.loaded);
 					self.tmpl.trigger("loaded-item", [self]);
 					def.resolve(self);
+				}).catch(function(reason){
+					self.isLoading = false;
+					self.isError = true;
+					self.$el.removeClass(self.cls.loading).addClass(self.cls.error);
+					self.tmpl.trigger("error-item", [self]);
+					def.reject(reason);
+				});
+
+			}).promise();
+		},
+		/**
+		 * @summary Load the items' {@link FooGallery.Item#$image|$image} if it is an actual <img> element.
+		 * @memberof FooGallery.Item#
+		 * @function loadIMG
+		 * @returns {Promise.<FooGallery.Item>}
+		 */
+		loadIMG: function(){
+			var self = this;
+			return new $.Deferred(function(def){
+				var img = self.isPicture ? self.$image.find("img").get(0) : self.$image.get(0);
+				if (!img){
+					return def.reject("Unable to find img element.");
+				}
+				var ph_src = img.src, ph_srcset = img.srcset;
+				img.onload = function () {
+					img.onload = img.onerror = null;
+					def.resolve();
 				};
 				img.onerror = function () {
 					img.onload = img.onerror = null;
-					self.isLoading = false;
-					self.isError = true;
-					self.$el.removeClass(cls.loading).addClass(cls.error);
-					if (_is.string(placeholder)) {
-						self.$image.prop("src", placeholder);
+					if (!_is.empty(ph_src)) {
+						img.src = ph_src;
+					} else {
+						img.removeAttribute("src");
 					}
-					self.tmpl.trigger("error-item", [self]);
+					if (!_is.empty(ph_srcset)) {
+						img.srcset = ph_srcset;
+					} else {
+						img.removeAttribute("srcset");
+					}
 					def.reject(self);
 				};
-				// set everything in motion by setting the src
+				// set everything in motion by setting the src & srcset
+				if (self.isPicture){
+					self.$image.find("source").each(function(i, source){
+						var srcset = source.getAttribute(self.tmpl.opt.srcset);
+						if (!_is.empty(srcset)){
+							source.srcset = srcset;
+						}
+					});
+				}
 				img.src = self.src;
-				img.srcset = self.srcset;
+				if (!_is.empty(self.srcset)){
+					img.srcset = self.srcset;
+				}
 				if (img.complete){
 					img.onload();
 				}
@@ -9391,6 +9523,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 			placeholder: "",
 			src: "",
 			srcset: "",
+			sources: [],
 			width: 0,
 			height: 0,
 			title: "",
@@ -9418,6 +9551,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 				inner: {},
 				anchor: {},
 				image: {},
+				picture: {},
 				caption: {
 					elem: {},
 					inner: {},

@@ -366,17 +366,6 @@ if ( !class_exists( 'Foo_Plugin_Settings_v2_2' ) ) {
 				return false;
 			}
 
-//            if (empty($input['sample_text'])) {
-//
-//                add_settings_error(
-//                    'sample_text',           // setting title
-//                    'sample_text_error',            // error ID
-//                    'Please enter some sample text',   // error message
-//                    'error'                        // type of message
-//                );
-//
-//            }
-
 			if ( empty( $this->_settings ) ) {
 				$settings = apply_filters( $this->plugin_slug . '_admin_settings', false );
 				$this->add_settings( $settings );

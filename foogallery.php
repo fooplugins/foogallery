@@ -102,36 +102,35 @@ if ( function_exists( 'foogallery_fs' ) ) {
 			 */
 			private function __construct() {
 
-				//include everything we need!
-				require_once( FOOGALLERY_PATH . 'includes/includes.php' );
+				// include everything we need!
+				require_once FOOGALLERY_PATH . 'includes/includes.php';
 
 				register_activation_hook( __FILE__, array( 'FooGallery_Plugin', 'activate' ) );
 
-				//init FooPluginBase
+				// init FooPluginBase.
 				$this->init( FOOGALLERY_FILE, FOOGALLERY_SLUG, FOOGALLERY_VERSION, 'FooGallery' );
 
-				//load text domain
+				// load text domain.
 				$this->load_plugin_textdomain();
 
-				//setup gallery post type
+				// setup gallery post type.
 				new FooGallery_PostTypes();
 
-				//load any extensions
+				// load any extensions.
 				new FooGallery_Extensions_Loader();
 
 				if ( is_admin() ) {
 					new FooGallery_Admin();
 					add_action( 'wpmu_new_blog', array( $this, 'set_default_extensions_for_multisite_network_activated' ) );
-					add_action( 'admin_page_access_denied', array( $this, 'check_for_access_denied' ) );
 					foogallery_fs()->add_filter( 'connect_message_on_update', array( $this, 'override_connect_message_on_update' ), 10, 6 );
 					foogallery_fs()->add_filter( 'is_submenu_visible', array( $this, 'is_submenu_visible' ), 10, 2 );
-					foogallery_fs()->add_filter( 'plugin_icon',	array( $this, 'freemius_plugin_icon' ), 10, 1 );
+					foogallery_fs()->add_filter( 'plugin_icon', array( $this, 'freemius_plugin_icon' ), 10, 1 );
 					add_action( 'foogallery_admin_menu_before', array( $this, 'add_freemius_activation_menu' ) );
 				} else {
 					new FooGallery_Public();
 				}
 
-				//initialize the thumbnail manager
+				// initialize the thumbnail manager.
 				new FooGallery_Thumb_Manager();
 
 				new FooGallery_Shortcodes();
@@ -171,10 +170,10 @@ if ( function_exists( 'foogallery_fs' ) ) {
 
 				new FooGallery_Widget_Init();
 
-				//include the default templates no matter what!
+				// include the default templates no matter what!
 				new FooGallery_Default_Templates();
 
-				//init the default media library datasource
+				// init the default media library datasource.
 				new FooGallery_Datasource_MediaLibrary();
 
 				$pro_code_included = false;
@@ -189,23 +188,23 @@ if ( function_exists( 'foogallery_fs' ) ) {
 					}
 				}
 
-				if ( !$pro_code_included ) {
+				if ( ! $pro_code_included ) {
 					add_filter( 'foogallery_extensions_for_view', array( $this, 'add_foogallery_pro_extension' ) );
 
-					//only include if in admin
+					// only include if in admin.
 					if ( is_admin() ) {
-						//include PRO promotion
+						// include PRO promotion.
 						new FooGallery_Pro_Promotion();
 					}
 				}
 
-				//init Gutenberg!
+				// init Gutenberg!
 				new FooGallery_Gutenberg();
 
-				//init advanced settings
+				// init advanced settings.
 				new FooGallery_Advanced_Gallery_Settings();
 
-				//init localization for FooGallery
+				// init localization for FooGallery.
 				new FooGallery_il8n();
 			}
 
@@ -223,31 +222,17 @@ if ( function_exists( 'foogallery_fs' ) ) {
 					'thumbnail'       => 'https://s3.amazonaws.com/foogallery/extensions/foogallerypro.png',
 					'tags'            => array( 'premium' ),
 					'source'          => 'fooplugins',
-					"download_button" => array(
-						"text"    => "Start FREE Trial",
-						"target"  => "_self",
-						"href"    => foogallery_fs()->checkout_url( WP_FS__PERIOD_ANNUALLY, true ),
-						"confirm" => false
-					)
+					'download_button' => array(
+						'text'    => 'Start FREE Trial',
+						'target'  => '_self',
+						'href'    => foogallery_fs()->checkout_url( WP_FS__PERIOD_ANNUALLY, true ),
+						'confirm' => false,
+					),
 				);
 
 				array_unshift( $extensions, $extension );
 
 				return $extensions;
-			}
-
-			/**
-			 * Checks for the access denied page after we have activated/updated the plugin
-			 */
-			function check_for_access_denied() {
-				global $plugin_page;
-
-				if ( FOOGALLERY_ADMIN_MENU_HELP_SLUG === $plugin_page ||
-					FOOGALLERY_ADMIN_MENU_SETTINGS_SLUG === $plugin_page ||
-					FOOGALLERY_ADMIN_MENU_EXTENSIONS_SLUG === $plugin_page ||
-					FOOGALLERY_ADMIN_MENU_SYSTEMINFO_SLUG === $plugin_page ) {
-					//fs_redirect( 'admin.php?page=' . FOOGALLERY_SLUG );
-				}
 			}
 
 			/**

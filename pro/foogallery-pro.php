@@ -51,29 +51,32 @@ if ( ! class_exists( 'FooGallery_Pro' ) ) {
 		 */
 		public function __construct() {
 			new FooGallery_Pro_Hover_Presets();
-			new FooGallery_Pro_Paging();
-			new FooGallery_Pro_Default_Templates();
-			new FooGallery_Pro_Bulk_Copy();
-			new FooGallery_Pro_Gallery_Shortcode_Override();
-			new FooGallery_Pro_Attachment_Type();
-			new FooGallery_Pro_Attachment_Taxonomies();
-			new FooGallery_Pro_Filtering();
-			new FooGallery_Pro_Video();
-			new FooGallery_Pro_Advanced_Gallery_Settings();
-			new FooGallery_Pro_Video_Legacy();
-			new FooGallery_Pro_Instagram_Filters();
-			new FooGallery_Pro_Datasource_MediaCategories();
-			new FooGallery_Pro_Datasource_MediaTags();
-			new FooGallery_Pro_Datasource_Folders();
-			new FooGallery_Pro_Datasource_Lightroom();
-			new FooGallery_Pro_WPLR_Support();
-			new FooGallery_Pro_Datasource_RealMediaLibrary();
-			new FooGallery_Pro_Datasource_Post_Query();
 			new FooGallery_Pro_Lightbox();
-			new FooGallery_Pro_Advanced_Captions();
-			new FooGallery_Pro_Advanced_Thumbnails();
-			new FooGallery_Pro_Bulk_Management();
-			new FooGallery_Pro_Exif();
+			new FooGallery_Pro_Default_Templates();
+			new FooGallery_Pro_Instagram_Filters();
+
+			if ( foogallery_fs()->is_plan_or_trial( 'pro' ) ) {
+				new FooGallery_Pro_Advanced_Gallery_Settings();
+				new FooGallery_Pro_Paging();
+				new FooGallery_Pro_Bulk_Copy();
+				new FooGallery_Pro_Gallery_Shortcode_Override();
+				new FooGallery_Pro_Attachment_Type();
+				new FooGallery_Pro_Attachment_Taxonomies();
+				new FooGallery_Pro_Filtering();
+				new FooGallery_Pro_Video();
+				new FooGallery_Pro_Video_Legacy();
+				new FooGallery_Pro_Datasource_MediaCategories();
+				new FooGallery_Pro_Datasource_MediaTags();
+				new FooGallery_Pro_Datasource_Folders();
+				new FooGallery_Pro_Datasource_Lightroom();
+				new FooGallery_Pro_WPLR_Support();
+				new FooGallery_Pro_Datasource_RealMediaLibrary();
+				new FooGallery_Pro_Datasource_Post_Query();
+				new FooGallery_Pro_Advanced_Captions();
+				new FooGallery_Pro_Advanced_Thumbnails();
+				new FooGallery_Pro_Bulk_Management();
+				new FooGallery_Pro_Exif();
+			}
 		}
 	}
 }
