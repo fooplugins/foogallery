@@ -172,13 +172,12 @@ if ( ! class_exists( 'FooGallery_Admin_Notices' ) ) {
 				</style>
 				<div class="foogallery-rating-notice notice notice-success is-dismissible">
 					<p>
-						<strong><?php _e( 'Thanks for using FooGallery' ) ?> <span
-								class="dashicons dashicons-heart"></span></strong><br/>
-						<?php _e( 'We noticed you have created 5 galleries in FooGallery. If you love FooGallery, please consider giving it a 5 star rating on WordPress.org. Your positive ratings help spread the word and help us grow.', 'foogallery' ); ?>
+						<strong><?php _e( 'Thanks for using FooGallery' ) ?> <span class="dashicons dashicons-heart"></span></strong>
+						<br/>
+						<?php _e( 'We noticed you have created 5 galleries in FooGallery. If you love FooGallery, please consider giving it a 5 star rating. Your positive ratings help spread the word and help us grow.', 'foogallery' ); ?>
 						<br/>
 						<br/>
-						<a class="button button-primary button-large" target="_blank"
-						   href="<?php echo $url; ?>"><?php _e( 'Rate FooGallery on WordPress.org', 'foogallery' ); ?></a>
+						<a class="button button-primary button-large" target="_blank" href="<?php echo $url; ?>"><?php _e( 'Rate FooGallery', 'foogallery' ); ?></a>
 					</p>
 				</div>
 				<?php
