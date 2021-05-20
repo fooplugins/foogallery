@@ -244,13 +244,14 @@ Please update in order to for FooGallery to work in WP 5.5+!
 
 == Changelog ==
 
-= 2.0.32 =
-* Date Updated : 2021-03-11
-* Fix : Added lazyload compatibility for Imagify. (Need to disable lazy loading in FooGallery!)
-* Update : FooGallery client side
+= 2.0.33 =
+* Date Updated : 2021-05-15
+* Update : updated how gallery usage is determined
+* Fix : sanitised gallery custom CSS and global custom CSS & JS admin settings
+* Fix : only show rating admin message after 5 galleries have been created (was showing always!)
 
 = 2.0.30 =
-* Date Updated : 2021-03-05
+* Date Updated : 2021-05-03
 * New : Added lazyload compatibility for Jetpack, Jetpack Boost, WPMU Smush, EWWW Image Optimizer, W3 Total Cache, WP Optimize
 * New : Added "Enable Gallery Descriptions" setting for Albums
 * New : Galleries used in albums will now show a link to the album in the Usage column on the gallery listing page

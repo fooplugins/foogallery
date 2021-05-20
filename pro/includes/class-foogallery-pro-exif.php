@@ -371,7 +371,7 @@ if ( ! class_exists( 'FooGallery_Pro_Exif' ) ) {
          */
         function add_exif_fields( $fields, $template ) {
 
-            $exif_fields = [];
+            $exif_fields = array();
 
             $exif_fields[] = array(
                 'id'      => 'exif_help',
