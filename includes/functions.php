@@ -1850,9 +1850,9 @@ function foogallery_import_attachment( $attachment_data ) {
 		'guid'           => $guid,
 		'post_title'     => $attachment_data['title'],
 		'post_excerpt'   => $attachment_data['caption'],
-		'post_content'   => $attachment_data['description'] ?? '',
+		'post_content'   => isset( $attachment_data['description'] ) ? $attachment_data['description'] : '',
 		'post_date'      => '',
-		'post_mime_type' => $attachment_data['mime_type'] ?? $file_type['type'],
+		'post_mime_type' => isset( $attachment_data['mime_type'] ) ? $attachment_data['mime_type'] : $file_type['type'],
 	);
 
 	$attachment_args['meta_input'] = array();
