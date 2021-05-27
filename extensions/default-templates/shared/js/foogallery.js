@@ -6452,7 +6452,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 		 * @summary The primary class for FooGallery, this controls the flow of the plugin across all templates.
 		 * @memberof FooGallery
 		 * @constructs Template
-		 * @param {FooGallery~Options} [options] - The options for the template.
+		 * @param {FooGallery.Template~Options} [options] - The options for the template.
 		 * @param {jQuery} [element] - The jQuery object of the templates' container element. If not supplied one will be created within the `parent` element supplied to the {@link FooGallery.Template#initialize|initialize} method.
 		 * @augments FooGallery.utils.Class
 		 * @borrows FooGallery.utils.Class.extend as extend
@@ -6493,14 +6493,14 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 			 * @summary The options for the template.
 			 * @memberof FooGallery.Template#
 			 * @name opt
-			 * @type {FooGallery~Options}
+			 * @type {FooGallery.Template~Options}
 			 */
 			self.opt = options;
 			/**
 			 * @summary Any custom options for the template.
 			 * @memberof FooGallery.Template#
 			 * @name template
-			 * @type {object}
+			 * @type {Object}
 			 */
 			self.template = options.template;
 			/**
@@ -6514,21 +6514,21 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 			 * @summary The CSS classes for the template.
 			 * @memberof FooGallery.Template#
 			 * @name cls
-			 * @type {FooGallery~CSSClasses}
+			 * @type {FooGallery.Template~CSSClasses}
 			 */
 			self.cls = options.cls;
 			/**
 			 * @summary The il8n strings for the template.
 			 * @memberof FooGallery.Template#
 			 * @name il8n
-			 * @type {FooGallery~il8n}
+			 * @type {FooGallery.Template~il8n}
 			 */
 			self.il8n = options.il8n;
 			/**
 			 * @summary The CSS selectors for the template.
 			 * @memberof FooGallery.Template#
 			 * @name sel
-			 * @type {FooGallery~CSSSelectors}
+			 * @type {FooGallery.Template~CSSSelectors}
 			 */
 			self.sel = _utils.selectify(self.cls);
 			/**
@@ -7124,6 +7124,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 		shortpixel: false,
 		srcset: "data-srcset-fg",
 		src: "data-src-fg",
+		protected: false,
 		template: {},
 		regex: {
 			theme: /(?:\s|^)(fg-(?:light|dark|custom))(?:\s|$)/,
@@ -7149,6 +7150,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 	 * @property {string} [classes=""] - A space delimited string of any additional CSS classes to append to the container element of the template.
 	 * @property {object} [on={}] - An object containing any template events to bind to.
 	 * @property {boolean} [lazy=true] - Whether or not to enable lazy loading of images.
+	 * @property {boolean} [protected=false] - Whether or not to enable basic image protection.
 	 * @property {(FooGallery.Item~Options[]|FooGallery.Item[]| string)} [items=[]] - An array of items to load when required. A url can be provided and the items will be fetched using an ajax call, the response should be a properly formatted JSON array of {@link FooGallery.Item~Options|item} object.
 	 * @property {string} [scrollParent=null] - The selector used to bind to the scroll parent for the gallery. If not supplied the template will attempt to find the element itself.
 	 * @property {number} [delay=0] - The number of milliseconds to delay the initialization of a template.
@@ -9352,7 +9354,10 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 				var ph_src = img.src, ph_srcset = img.srcset;
 				img.onload = function () {
 					img.onload = img.onerror = null;
-					def.resolve();
+					if (self.tmpl.opt.protected){
+						img.oncontextmenu = function(){ return false; };
+					}
+					def.resolve(img);
 				};
 				img.onerror = function () {
 					img.onload = img.onerror = null;
@@ -9366,7 +9371,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 					} else {
 						img.removeAttribute("srcset");
 					}
-					def.reject(self);
+					def.reject(img);
 				};
 				// set everything in motion by setting the src & srcset
 				if (self.isPicture){
@@ -11330,7 +11335,8 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 					// if the gallery is displayed within a FooBox do not trigger the post-load which would cause the lightbox to re-init
 					if (tmpl.$el.parents(".fbx-item").length > 0) return;
 					if (tmpl.$el.hasClass("fbx-instance") && !!window.FOOBOX && !!$.fn.foobox){
-						tmpl.$el.foobox(window.FOOBOX.o);
+						var opts = $.extend({}, window.FOOBOX.o, (tmpl.opt.protected ? { images: { noRightClick: true } } : {}));
+						tmpl.$el.foobox(opts);
 					} else {
 						$("body").trigger("post-load");
 					}
