@@ -244,11 +244,13 @@ Please update in order to for FooGallery to work in WP 5.5+!
 
 == Changelog ==
 
-= 2.0.33 =
-* Date Updated : 2021-05-15
-* Update : updated how gallery usage is determined
+= 2.0.35 =
+* Date Updated : 2021-05-20
+* New : Added lazyload compatibility for Imagify (replace img tags with picture tags)
+* Fix : updated how gallery usage is determined
 * Fix : sanitised gallery custom CSS and global custom CSS & JS admin settings
 * Fix : only show rating admin message after 5 galleries have been created (was showing always!)
+* Update : FooGallery client side 2.0.13
 
 = 2.0.30 =
 * Date Updated : 2021-05-03
