@@ -94,18 +94,18 @@ if ( ! class_exists( 'FooGallery_Crop_Position' ) ) {
 		 */
 		function render_crop_position_setting( $args ) {
 			 if ( 'crop' === $args['type'] ) {
-				$current_position = foogallery_get_setting( 'default_crop_position', 'center,center'); ?>
+				$current_position = foogallery_get_setting( $args['id'], $args['default'] ); ?>
 				<style>.foogallery_crop_pos input { margin: 5px !important; width: auto; }</style>
 				<div class="foogallery_crop_pos">
-					<input type="radio" name="foogallery[default_crop_position]" value="left,top" title="Left, Top" <?php checked( 'left,top', $current_position ) ?>/>
-					<input type="radio" name="foogallery[default_crop_position]" value="center,top" title="Center, Top" <?php checked( 'center,top', $current_position ) ?>/>
-					<input type="radio" name="foogallery[default_crop_position]" value="right,top" title="Right, Top" <?php checked( 'right,top', $current_position ) ?>/><br/>
-					<input type="radio" name="foogallery[default_crop_position]" value="left,center" title="Left, Center" <?php checked( 'left,center', $current_position ) ?>/>
-					<input type="radio" name="foogallery[default_crop_position]" value="center,center" title="Center, Center" <?php checked( 'center,center', $current_position ) ?>/>
-					<input type="radio" name="foogallery[default_crop_position]" value="right,center" title="Right, Center" <?php checked( 'right,center', $current_position ) ?>/><br/>
-					<input type="radio" name="foogallery[default_crop_position]" value="left,bottom" title="Left, Bottom" <?php checked( 'left,bottom', $current_position ) ?>/>
-					<input type="radio" name="foogallery[default_crop_position]" value="center,bottom" title="Center, Bottom" <?php checked( 'center,bottom', $current_position ) ?>/>
-					<input type="radio" name="foogallery[default_crop_position]" value="right,bottom" title="Right, Bottom" <?php checked( 'right,bottom', $current_position ) ?>/>
+					<input type="radio" name="foogallery[<?php echo $args['id']; ?>]" value="left,top" title="Left, Top" <?php checked( 'left,top', $current_position ) ?>/>
+					<input type="radio" name="foogallery[<?php echo $args['id']; ?>]" value="center,top" title="Center, Top" <?php checked( 'center,top', $current_position ) ?>/>
+					<input type="radio" name="foogallery[<?php echo $args['id']; ?>]" value="right,top" title="Right, Top" <?php checked( 'right,top', $current_position ) ?>/><br/>
+					<input type="radio" name="foogallery[<?php echo $args['id']; ?>]" value="left,center" title="Left, Center" <?php checked( 'left,center', $current_position ) ?>/>
+					<input type="radio" name="foogallery[<?php echo $args['id']; ?>]" value="center,center" title="Center, Center" <?php checked( 'center,center', $current_position ) ?>/>
+					<input type="radio" name="foogallery[<?php echo $args['id']; ?>]" value="right,center" title="Right, Center" <?php checked( 'right,center', $current_position ) ?>/><br/>
+					<input type="radio" name="foogallery[<?php echo $args['id']; ?>]" value="left,bottom" title="Left, Bottom" <?php checked( 'left,bottom', $current_position ) ?>/>
+					<input type="radio" name="foogallery[<?php echo $args['id']; ?>]" value="center,bottom" title="Center, Bottom" <?php checked( 'center,bottom', $current_position ) ?>/>
+					<input type="radio" name="foogallery[<?php echo $args['id']; ?>]" value="right,bottom" title="Right, Bottom" <?php checked( 'right,bottom', $current_position ) ?>/>
 				</div>
 			<?php }
 		}
