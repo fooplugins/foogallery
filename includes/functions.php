@@ -1893,3 +1893,37 @@ function foogallery_import_attachment( $attachment_data ) {
 
 	return $attachment_id;
 }
+
+/**
+ * Returns an array of data associated with the attachment, including full size image URL, full size width and height.
+ *
+ * @param int $attachment_id The attachment ID.
+ *
+ * @return array|false
+ */
+function foogallery_get_full_size_image_data( $attachment_id ) {
+	// Get the URL to the full size image.
+	$src = wp_get_attachment_url( $attachment_id );
+
+	// If we cannot get an attachment URL, then get out early.
+	if ( false === $src ) {
+		return false;
+	}
+
+	// First try to get the image metadata.
+	$image_data = wp_get_attachment_metadata( $attachment_id );
+
+	if ( ! is_array( $image_data ) ) {
+		$image_data = wp_get_attachment_image_src( $attachment_id, 'full' );
+	}
+
+	if ( is_array( $image_data ) ) {
+		$width  = $image_data['width'];
+		$height = $image_data['height'];
+	} else {
+		// If nothing is stored in meta, then get the size from the physical file. Not ideal, but might be needed in some cases.
+		list( $width, $height ) = wp_getimagesize( $src );
+	}
+
+	return array( $src, $width, $height );
+}

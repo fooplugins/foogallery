@@ -51,7 +51,7 @@ if ( ! class_exists( 'FooGalleryAttachment' ) ) {
 			$this->alt = trim( get_post_meta( $this->ID, '_wp_attachment_image_alt', true ) );
 			$this->custom_url = get_post_meta( $this->ID, '_foogallery_custom_url', true );
 			$this->custom_target = get_post_meta( $this->ID, '_foogallery_custom_target', true );
-			$image_attributes = wp_get_attachment_image_src( $this->ID, 'full' );
+			$image_attributes = foogallery_get_full_size_image_data( $this->ID );
 			if ( $image_attributes ) {
 				$this->url = $image_attributes[0];
 				$this->width = $image_attributes[1];
