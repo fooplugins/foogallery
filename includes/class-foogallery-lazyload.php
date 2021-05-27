@@ -31,6 +31,28 @@ if ( ! class_exists( 'FooGallery_LazyLoad' ) ) {
 
 			// add some settings to allow forcing of the lazy loading to be disabled.
 			add_filter( 'foogallery_admin_settings_override', array( $this, 'add_settings' ) );
+
+			add_filter( 'foogallery_attachment_html_item_classes', array( $this, 'add_item_classes_for_lazy_loading' ), 10, 3 );
+		}
+
+		/**
+		 * Add the classes needed for lazy loading onto the items
+		 *
+		 * @param array                $classes The array of classes to add to the item.
+		 * @param FooGalleryAttachment $foogallery_attachment The current attachment we are working with.
+		 * @param array                $args Any extra args.
+		 *
+		 * @return array The array of classes to add to the item.
+		 */
+		public function add_item_classes_for_lazy_loading( $classes, $foogallery_attachment, $args ) {
+			global $current_foogallery;
+			if ( $this->gallery_lazyload_enabled( $current_foogallery ) ) {
+				$classes[] = 'fg-idle';
+			} else {
+				$classes[] = 'fg-loaded';
+			}
+
+			return $classes;
 		}
 
 		/**
@@ -47,7 +69,7 @@ if ( ! class_exists( 'FooGallery_LazyLoad' ) ) {
 		}
 
 		/**
-		 * Determine all the lazu loading variables that can be set on a gallery
+		 * Determine all the lazy loading variables that can be set on a gallery
 		 *
 		 * @param $foogallery
 		 */

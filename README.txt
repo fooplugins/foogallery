@@ -4,7 +4,7 @@ Donate link: https://fooplugins.com
 Tags: gallery, image gallery, photo gallery, responsive gallery, wordpress gallery plugin, best gallery plugin, albums, media gallery, video gallery, lightbox
 Requires at least: 3.9
 Tested up to: 5.7
-Stable tag: 2.0.24
+Stable tag: 2.0.30
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -244,8 +244,16 @@ Please update in order to for FooGallery to work in WP 5.5+!
 
 == Changelog ==
 
+= 2.0.35 =
+* Date Updated : 2021-05-20
+* New : Added lazyload compatibility for Imagify (replace img tags with picture tags)
+* Fix : updated how gallery usage is determined
+* Fix : sanitised gallery custom CSS and global custom CSS & JS admin settings
+* Fix : only show rating admin message after 5 galleries have been created (was showing always!)
+* Update : FooGallery client side 2.0.13
+
 = 2.0.30 =
-* Date Updated : 2021-03-05
+* Date Updated : 2021-05-03
 * New : Added lazyload compatibility for Jetpack, Jetpack Boost, WPMU Smush, EWWW Image Optimizer, W3 Total Cache, WP Optimize
 * New : Added "Enable Gallery Descriptions" setting for Albums
 * New : Galleries used in albums will now show a link to the album in the Usage column on the gallery listing page

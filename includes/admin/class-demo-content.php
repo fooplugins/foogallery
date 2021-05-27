@@ -126,65 +126,25 @@ if ( ! class_exists( 'FooGallery_Admin_Demo_Content' ) ) {
 				}
 			}
 
-			// Include image.php so we can call wp_generate_attachment_metadata()
-			require_once( ABSPATH . 'wp-admin/includes/image.php' );
+			$attachment_id = foogallery_import_attachment( $attachment_data );
 
-			// Get the contents of the picture
-			$response = wp_remote_get( $attachment_data['url'] );
-			if ( is_wp_error( $response ) ) {
-				return false;
-			}
-			$contents = wp_remote_retrieve_body( $response );
+			if ( ! is_wp_error( $attachment_id ) && intval( $attachment_id ) > 0 ) {
 
-			// Upload and get file data
-			$upload = wp_upload_bits( basename( $attachment_data['url'] ), null, $contents );
-			if ( array_key_exists( 'error', $upload ) && $upload['error'] === true ) {
-				return false;
-			}
-			$guid      = $upload['url'];
-			$file      = $upload['file'];
-			$file_type = wp_check_filetype( basename( $file ), null );
+				$imported_attachments[ $attachment_data['key'] ] = $attachment_id;
 
-			// Create attachment
-			$attachment_args = array(
-				'ID'             => 0,
-				'guid'           => $guid,
-				'post_title'     => $attachment_data['title'],
-				'post_excerpt'   => $attachment_data['caption'],
-				'post_content'   => $attachment_data['desc'],
-				'post_date'      => '',
-				'post_mime_type' => isset( $attachment_data['mime_type'] ) ? $attachment_data['mime_type'] : $file_type['type'],
-			);
+				update_option( FOOGALLERY_OPTION_DEMO_CONTENT_ATTACHMENTS, $imported_attachments );
 
-			if ( isset( $attachment_data['alt'] ) ) {
-				$attachment_args['meta_input'] = array(
-					'_wp_attachment_image_alt' => $attachment_data['alt']
+				return array(
+					'key'           => $attachment_data['key'],
+					'attachment_id' => $attachment_id,
+					'imported'      => true,
 				);
 			}
 
-			// Insert the attachment
-			$attachment_id   = wp_insert_attachment( $attachment_args, $file, 0 );
-			$attachment_meta = wp_generate_attachment_metadata( $attachment_id, $file );
-			wp_update_attachment_metadata( $attachment_id, $attachment_meta );
-
-			if ( isset( $attachment_data['tags'] ) ) {
-				// Save tags
-				wp_set_object_terms( $attachment_id, $attachment_data['tags'], FOOGALLERY_ATTACHMENT_TAXONOMY_TAG, false );
-			}
-
-			if ( isset( $attachment_data['categories'] ) ) {
-				// Save categories
-				wp_set_object_terms( $attachment_id, $attachment_data['categories'], FOOGALLERY_ATTACHMENT_TAXONOMY_CATEGORY, false );
-			}
-
-			$imported_attachments[$attachment_data['key']] = $attachment_id;
-
-			update_option( FOOGALLERY_OPTION_DEMO_CONTENT_ATTACHMENTS, $imported_attachments );
-
 			return array(
-				'key' => $attachment_data['key'],
-				'attachment_id' => $attachment_id,
-				'imported' => true
+				'key'           => $attachment_data['key'],
+				'attachment_id' => false,
+				'imported'      => false,
 			);
 		}
 	}

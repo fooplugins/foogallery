@@ -23,6 +23,24 @@ if ( ! class_exists( 'FooGallery_Debug' ) ) {
 			}
 
 			add_action( 'foogallery_loaded_template_after', array( $this, 'output_gallery_debug_info' ), 10, 1 );
+
+			add_filter( 'foogallery_build_class_attribute', array( $this, 'add_debug_class' ), 10, 2 );
+		}
+
+		/**
+		 * Add a debug class onto the container if in debug
+		 *
+		 * @param array      $classes The list of classes.
+		 * @param FooGallery $gallery The gallery we are working with.
+		 *
+		 * @return array
+		 */
+		public function add_debug_class( $classes, $gallery ) {
+			if ( foogallery_is_debug() ) {
+				$classes[] = 'fg-debug';
+			}
+
+			return $classes;
 		}
 
 		/**

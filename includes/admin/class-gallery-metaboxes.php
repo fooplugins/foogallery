@@ -171,8 +171,8 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 					update_post_meta( $post_id, FOOGALLERY_META_SORT, $_POST[FOOGALLERY_META_SORT] );
 				}
 
-				$custom_css = isset($_POST[FOOGALLERY_META_CUSTOM_CSS]) ?
-					$_POST[FOOGALLERY_META_CUSTOM_CSS] : '';
+				$custom_css = foogallery_sanitize_html( isset( $_POST[FOOGALLERY_META_CUSTOM_CSS] ) ?
+					$_POST[FOOGALLERY_META_CUSTOM_CSS] : '' );
 
 				if ( empty( $custom_css ) ) {
 					delete_post_meta( $post_id, FOOGALLERY_META_CUSTOM_CSS );
@@ -198,36 +198,70 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 
 		public function attach_gallery_to_post( $post_id, $post ) {
 
-			// check autosave
+			// check autosave.
 			if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
-				return $post_id;
+				return;
+			}
+
+			if ( ! is_object( $post ) ) {
+				return;
+			}
+
+			if ( FOOGALLERY_CPT_GALLERY === $post->post_type || FOOGALLERY_CPT_ALBUM === $post->post_type ) {
+				return;
 			}
 
 			$allowed_post_types = foogallery_allowed_post_types_for_usage();
 
-			//only do this check for a page or post
-			if ( in_array( $post->post_type, $allowed_post_types ) ) {
+			// only do this check for a page or post.
+			if ( in_array( $post->post_type, $allowed_post_types, true ) ) {
 
-                do_action( 'foogallery_start_attach_gallery_to_post', $post_id );
-
-				//Clear any foogallery usages that the post might have
+				// clear any foogallery usages that the post might have.
 				delete_post_meta( $post_id, FOOGALLERY_META_POST_USAGE );
 
-				//get all foogallery shortcodes that are on the page/post
-				$gallery_shortcodes = foogallery_extract_gallery_shortcodes( $post->post_content );
+				// clear any foogallery css usage that the post might have.
+				delete_post_meta( $post_id, FOOGALLERY_META_POST_USAGE_CSS );
 
-                if ( is_array( $gallery_shortcodes ) && count( $gallery_shortcodes ) > 0 ) {
+				$galleries = $this->find_galleries_in_post( $post );
 
-                    foreach ( $gallery_shortcodes as $id => $shortcode ) {
-                        //if the content contains the foogallery shortcode then add a custom field
-                        add_post_meta( $post_id, FOOGALLERY_META_POST_USAGE, $id, false );
+				if ( is_array( $galleries ) ) {
+					foreach ( $galleries as $gallery_id ) {
+						if ( intval( $gallery_id ) > 0 ) {
+							// if the content contains the foogallery shortcode then add usage post meta.
+							add_post_meta( $post_id, FOOGALLERY_META_POST_USAGE, $gallery_id, false );
 
-                        do_action( 'foogallery_attach_gallery_to_post', $post_id, $id );
-                    }
-                }
-
-                do_action( 'foogallery_attach_gallery_to_post', $post_id, $post );
+							do_action( 'foogallery_attach_gallery_to_post', $post_id, $gallery_id );
+						}
+					}
+				}
 			}
+		}
+
+		/**
+		 * Find all galleries in a post.
+		 *
+		 * @param WP_Post $post The post to check.
+		 *
+		 * @return array array of all galleries found in the post.
+		 */
+		private function find_galleries_in_post( $post ) {
+			$galleries = array();
+
+			if ( ! is_object( $post ) ) {
+				return $galleries;
+			}
+
+			// get all foogallery shortcodes that are on the page/post.
+			$gallery_shortcodes = foogallery_extract_gallery_shortcodes( $post->post_content );
+
+			if ( is_array( $gallery_shortcodes ) && count( $gallery_shortcodes ) > 0 ) {
+
+				foreach ( $gallery_shortcodes as $id => $shortcode ) {
+					$galleries[] = $id;
+				}
+			}
+
+			return apply_filters( 'foogallery_find_galleries_in_post', $galleries, $post );
 		}
 
 		public function render_gallery_shortcode_metabox( $post ) {
