@@ -1,0 +1,21 @@
+FooPluginBase Changelog
+=======================
+
+> Last updated 10 July 2014
+
+2014.07.10 - version 2.3
+* reworked the action and filter names to be more standard
+* Upgraded settings to v2.1
+
+2014.05.24 - version 2.2.?
+* Added Foo_Plugin_File_Loader_v1 class to help locating files in current theme and plugin
+* Added Foo_Plugin_Metabox_Sanity_v1 class to help whitelist metaboxes for custom post types
+
+2014.05.23 - version 2.2
+* Added Foo_Friendly_Dates class and related helper functions in functions/dates.php
+
+2014.04.01 - version 2.1
+* Refactored TextDomain loading into separate class
+* Added is_checked method onto Foo_Plugin_Options
+* Upgraded to use version of Foo_Plugin_Options_v2_1
+* Updated inline style and script action names
