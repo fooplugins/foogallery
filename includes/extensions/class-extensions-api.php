@@ -122,6 +122,20 @@ if ( ! class_exists( 'FooGallery_Extensions_API' ) ) {
 				'tags' => array( 'tools' ),
 				'source' => 'bundled',
 			);
+
+			//Custom Branding
+			$this->extensions[] = array(
+				'slug' => 'foogallery-custom-branding',
+				'class' => 'Custom_Branding_FooGallery_Extension',
+				'categories' => array( 'Premium' ),
+				'title' => 'Custom Branding',
+				'description' => 'Rebrand FooGallery to whatever you like for your clients. Ideal for freelancers and agencies.',
+				'author' => 'FooPlugins',
+				'author_url' => 'https://fooplugins.com',
+				'thumbnail' => 'https://via.placeholder.com/400x300',
+				'tags' => array( 'premium' ),
+                'source' => 'bundled'
+			);
 		}
 
 		/**
