@@ -6693,6 +6693,13 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 				self._undo.children = true;
 			}
 
+			if (self.opt.protected){
+				self.el.oncontextmenu = function(e){
+					e.preventDefault();
+					return false;
+				};
+			}
+
 			/**
 			 * @summary Raised before the template is fully initialized.
 			 * @event FooGallery.Template~"pre-init.foogallery"
@@ -9354,9 +9361,6 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 				var ph_src = img.src, ph_srcset = img.srcset;
 				img.onload = function () {
 					img.onload = img.onerror = null;
-					if (self.tmpl.opt.protected){
-						img.oncontextmenu = function(){ return false; };
-					}
 					def.resolve(img);
 				};
 				img.onerror = function () {
@@ -11572,6 +11576,12 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
             var self = this;
             self.$el = self.createElem();
             self.el = self.$el.get(0);
+            if (self.tmpl.opt.protected){
+                self.el.oncontextmenu = function(e){
+                    e.preventDefault();
+                    return false;
+                };
+            }
             if (self.opt.keyboard){
                 self.$el.attr("tabindex", -1).on("keydown.foogallery", {self: self}, self.onKeyDown);
             }
@@ -14286,9 +14296,6 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
                 var img = self.$content.get(0);
                 img.onload = function () {
                     img.onload = img.onerror = null;
-                    if (self.panel.tmpl.opt.protected){
-                        img.oncontextmenu = function(){ return false; };
-                    }
                     def.resolve(self);
                 };
                 img.onerror = function () {
