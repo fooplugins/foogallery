@@ -31,18 +31,16 @@ if ( !class_exists( 'Custom_Branding_FooGallery_Extension' ) ) {
 	define( 'CUSTOM_BRANDING_FOOGALLERY_EXTENSION_UPDATE_URL', 'http://fooplugins.com/api/foogallery-branding/check' );
 	define( 'CUSTOM_BRANDING_FOOGALLERY_EXTENSION_FOOGALLERY_MIN_VERSION', '1.1.8' );
 
-	require_once( CUSTOM_BRANDING_FOOGALLERY_EXTENSION_PATH . 'foogallery-custom-branding-init.php' );
-	require_once( CUSTOM_BRANDING_FOOGALLERY_EXTENSION_PATH . 'includes/foopluginbase/bootstrapper.php' );
-	require_once( CUSTOM_BRANDING_FOOGALLERY_EXTENSION_PATH . 'includes/foolic.php' );
+	require_once( FOOGALLERY_PATH . '/includes/foopluginbase/bootstrapper.php' );
 
-	class Custom_Branding_FooGallery_Extension extends Foo_Plugin_Base_v2_3 {
+	class Custom_Branding_FooGallery_Extension extends Foo_Plugin_Base_v2_4 {
 
 		/**
 		 * Wire up everything we need to run the extension
 		 */
 		function __construct() {
 			//init FooPluginBase
-			$this->init( __FILE__, CUSTOM_BRANDING_FOOGALLERY_EXTENSION_SLUG, CUSTOM_BRANDING_FOOGALLERY_EXTENSION_VERSION, 'FooGallery Custom Branding' );
+			$this->init( __FILE__, FOOGALLERY_SLUG, CUSTOM_BRANDING_FOOGALLERY_EXTENSION_VERSION, 'FooGallery Custom Branding' );
 
 			//setup text domain
 			$this->load_plugin_textdomain();
@@ -76,14 +74,13 @@ if ( !class_exists( 'Custom_Branding_FooGallery_Extension' ) ) {
 				add_filter( 'foogallery_admin_menu_labels', array($this, 'override_menu_labels') );
 
 				//create all our settings
-				add_filter( 'foogallery-custom-branding_admin_settings', array($this, 'create_settings'), 10, 2 );
-				add_action( 'foogallery-custom-branding_admin_settings_custom_type_render_setting', array($this, 'import_export_settings') );
+				add_filter( CUSTOM_BRANDING_FOOGALLERY_EXTENSION_SLUG . '_admin_settings', array($this, 'create_settings'), 10, 2 );
+				add_action( CUSTOM_BRANDING_FOOGALLERY_EXTENSION_SLUG . '_admin_settings_custom_type_render_setting', array($this, 'import_export_settings') );
 
 				//FooGallery version check
 				add_action( 'admin_notices', array($this, 'foogallery_version_check') );
 			}
 
-			Custom_Branding_FooGallery_Extension_Fooplugins::get_instance();
 		}
 
 		function get_setting( $key, $default = '' ) {
@@ -237,18 +234,7 @@ if ( !class_exists( 'Custom_Branding_FooGallery_Extension' ) ) {
 
 		function create_settings() {
 
-			$tabs['general'] = __( 'General', 'foogallery-custom-branding' );
-
-			$settings[] = array(
-				'id'           => 'license',
-				'title'        => __( 'License Key', 'foogallery-custom-branding' ),
-				'desc'         => __( 'The license key is used to access automatic updates and support for this plugin.', 'foogallery-custom-branding' ),
-				'type'         => 'license',
-				'section'      => 'license',
-				'tab'          => 'general',
-				'setting_name' => 'foogallery-custom-branding-key',
-				'update_url'   => CUSTOM_BRANDING_FOOGALLERY_EXTENSION_UPDATE_URL
-			);
+			$tabs['whitelabelling'] = __( 'Whitelabelling', 'foogallery-custom-branding' );
 
 			$settings[] = array(
 		        'id'      => 'custom_branding_name',
@@ -256,7 +242,7 @@ if ( !class_exists( 'Custom_Branding_FooGallery_Extension' ) ) {
 		        'desc'    => __('Rename "FooGallery" to something more client friendly, for example "Pro Gallery"', 'foogallery-custom-branding'),
 		        'default' => 'FooGallery',
 		        'type'    => 'text',
-		        'tab'     => 'general'
+		        'tab'     => 'whitelabelling'
 	        );
 
 			$shortcode = '<code>[' . foogallery_gallery_shortcode_tag() . ']</code>';
@@ -267,7 +253,7 @@ if ( !class_exists( 'Custom_Branding_FooGallery_Extension' ) ) {
 				'desc'    => sprintf( __('Override the default shortcode to something more client friendly, for example "progallery". (please do not include square brackets)<br />The shortcode currently looks like %s.', 'foogallery-custom-branding'), $shortcode ),
 				'default' => 'foogallery',
 				'type'    => 'text',
-				'tab'     => 'general'
+				'tab'     => 'whitelabelling'
 			);
 
 			$settings[] = array(
@@ -275,7 +261,7 @@ if ( !class_exists( 'Custom_Branding_FooGallery_Extension' ) ) {
 				'title'   => __('Hide FooBot Images', 'foogallery-custom-branding'),
 				'desc'    => __('Hide the FooBot images on the help and extension pages.', 'foogallery-custom-branding'),
 				'type'    => 'checkbox',
-				'tab'     => 'general'
+				'tab'     => 'whitelabelling'
 			);
 
 			$tabs['menu'] = __( 'Menu', 'foogallery-custom-branding' );
@@ -290,7 +276,7 @@ if ( !class_exists( 'Custom_Branding_FooGallery_Extension' ) ) {
 				'desc'    => __('Move all FooGallery menu items under the WordPress media menu.', 'foogallery-custom-branding'),
 				'section' => 'position',
 				'type'    => 'checkbox',
-				'tab'     => 'menu'
+				'tab'     => 'whitelabelling'
 			);
 
 			$sections['visibility'] = array(
@@ -309,7 +295,7 @@ if ( !class_exists( 'Custom_Branding_FooGallery_Extension' ) ) {
 					'publish_posts' => 'Authors',
 					'edit_posts' => 'Contributors'
 				),
-				'tab'     => 'menu'
+				'tab'     => 'whitelabelling'
 			);
 
 			$settings[] = array(
@@ -318,7 +304,7 @@ if ( !class_exists( 'Custom_Branding_FooGallery_Extension' ) ) {
 				'desc'    => __('Hide the settings menu item.', 'foogallery-custom-branding'),
 				'section' => 'visibility',
 				'type'    => 'checkbox',
-				'tab'     => 'menu'
+				'tab'     => 'whitelabelling'
 			);
 
 			$settings[] = array(
@@ -327,7 +313,7 @@ if ( !class_exists( 'Custom_Branding_FooGallery_Extension' ) ) {
 				'desc'    => __('Hide the extension menu item.', 'foogallery-custom-branding'),
 				'section' => 'visibility',
 				'type'    => 'checkbox',
-				'tab'     => 'menu'
+				'tab'     => 'whitelabelling'
 			);
 
 			$settings[] = array(
@@ -336,7 +322,7 @@ if ( !class_exists( 'Custom_Branding_FooGallery_Extension' ) ) {
 				'desc'    => __('Hide the help menu item.', 'foogallery-custom-branding'),
 				'section' => 'visibility',
 				'type'    => 'checkbox',
-				'tab'     => 'menu'
+				'tab'     => 'whitelabelling'
 			);
 
 			$sections['labels'] = array(
@@ -349,7 +335,7 @@ if ( !class_exists( 'Custom_Branding_FooGallery_Extension' ) ) {
 				'desc'    => __('Change the settings menu text.', 'foogallery-custom-branding'),
 				'section' => 'labels',
 				'type'    => 'text',
-				'tab'     => 'menu'
+				'tab'     => 'whitelabelling'
 			);
 
 			$settings[] = array(
@@ -358,7 +344,7 @@ if ( !class_exists( 'Custom_Branding_FooGallery_Extension' ) ) {
 				'desc'    => __('Change the extensions menu text.', 'foogallery-custom-branding'),
 				'section' => 'labels',
 				'type'    => 'text',
-				'tab'     => 'menu'
+				'tab'     => 'whitelabelling'
 			);
 
 			$settings[] = array(
@@ -367,7 +353,7 @@ if ( !class_exists( 'Custom_Branding_FooGallery_Extension' ) ) {
 				'desc'    => __('Change the help menu text.', 'foogallery-custom-branding'),
 				'section' => 'labels',
 				'type'    => 'text',
-				'tab'     => 'menu'
+				'tab'     => 'whitelabelling'
 			);
 
 			$tabs['extensions'] = __( 'Extensions', 'foogallery-custom-branding' );
@@ -387,7 +373,7 @@ if ( !class_exists( 'Custom_Branding_FooGallery_Extension' ) ) {
 				'title'   => __('Hide Extensions', 'foogallery-custom-branding'),
 				'desc'    => sprintf( __('Hide everything related to extensions from all users. (This will override other settings)%s', 'foogallery-custom-branding'), $extensions_link ),
 				'type'    => 'checkbox',
-				'tab'     => 'extensions'
+				'tab'     => 'whitelabelling'
 			);
 
 			$extensions_url = '<br />' . __('The default URL is ', 'foogallery-custom-branding') . '<code>' . FOOGALLERY_EXTENSIONS_ENDPOINT . '</code>';
@@ -397,7 +383,7 @@ if ( !class_exists( 'Custom_Branding_FooGallery_Extension' ) ) {
 				'title'   => __('Extensions URL', 'foogallery-custom-branding'),
 				'desc'    => __('The list of available extensions are pulled from an external URL. Change this URL to pull your own custom list of extensions.', 'foogallery-custom-branding') . $extensions_url,
 				'type'    => 'text',
-				'tab'     => 'extensions'
+				'tab'     => 'whitelabelling'
 			);
 
 			$settings[] = array(
@@ -406,7 +392,7 @@ if ( !class_exists( 'Custom_Branding_FooGallery_Extension' ) ) {
 				'desc'    => __('Change the tagline paragraph of the FooGallery extensions page. The tagline is directly underneath the page title.', 'foogallery-custom-branding'),
 				'section' => 'extensions_page',
 				'type'    => 'text',
-				'tab'     => 'extensions'
+				'tab'     => 'whitelabelling'
 			);
 
 			$settings[] = array(
@@ -415,7 +401,7 @@ if ( !class_exists( 'Custom_Branding_FooGallery_Extension' ) ) {
 				'desc'    => __('Hide the "Build Your Own" tab on the FooGallery extensions page.', 'foogallery-custom-branding'),
 				'section' => 'extensions_page',
 				'type'    => 'checkbox',
-				'tab'     => 'extensions'
+				'tab'     => 'whitelabelling'
 			);
 
 			$tabs['help'] = __( 'Help Page', 'foogallery-custom-branding' );
@@ -425,7 +411,7 @@ if ( !class_exists( 'Custom_Branding_FooGallery_Extension' ) ) {
 				'title'   => __('Page title', 'foogallery-custom-branding'),
 				'desc'    => __('Change the title of the FooGallery help page.', 'foogallery-custom-branding'),
 				'type'    => 'text',
-				'tab'     => 'help'
+				'tab'     => 'whitelabelling'
 			);
 
 			$settings[] = array(
@@ -433,7 +419,7 @@ if ( !class_exists( 'Custom_Branding_FooGallery_Extension' ) ) {
 				'title'   => __('Page Tagline', 'foogallery-custom-branding'),
 				'desc'    => __('Change the tagline paragraph of the FooGallery help page. The tagline is directly underneath the page title.', 'foogallery-custom-branding'),
 				'type'    => 'text',
-				'tab'     => 'help'
+				'tab'     => 'whitelabelling'
 			);
 
 			$settings[] = array(
@@ -441,7 +427,7 @@ if ( !class_exists( 'Custom_Branding_FooGallery_Extension' ) ) {
 				'title'   => __('Page Tagline Link', 'foogallery-custom-branding'),
 				'desc'    => __('Change the link that is displayed at the end of the tagline paragraph on the FooGallery help page. You can use HTML.', 'foogallery-custom-branding'),
 				'type'    => 'text',
-				'tab'     => 'help'
+				'tab'     => 'whitelabelling'
 			);
 
 			$settings[] = array(
@@ -449,7 +435,7 @@ if ( !class_exists( 'Custom_Branding_FooGallery_Extension' ) ) {
 				'title'   => __('Hide Tabs', 'foogallery-custom-branding'),
 				'desc'    => __('Hide the tabs on the FooGallery help page.', 'foogallery-custom-branding'),
 				'type'    => 'checkbox',
-				'tab'     => 'help'
+				'tab'     => 'whitelabelling'
 			);
 
 			$settings[] = array(
@@ -457,7 +443,7 @@ if ( !class_exists( 'Custom_Branding_FooGallery_Extension' ) ) {
 				'title'   => __('Hide "Extensions" Section', 'foogallery-custom-branding'),
 				'desc'    => __('Hide the extensions section on the FooGallery help page.', 'foogallery-custom-branding'),
 				'type'    => 'checkbox',
-				'tab'     => 'help'
+				'tab'     => 'whitelabelling'
 			);
 
 			return array(

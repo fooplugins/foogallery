@@ -128,11 +128,11 @@ if ( ! class_exists( 'FooGallery_Extensions_API' ) ) {
 				'slug' => 'foogallery-custom-branding',
 				'class' => 'Custom_Branding_FooGallery_Extension',
 				'categories' => array( 'Premium' ),
-				'title' => 'Custom Branding',
+				'title' => 'WhiteLabelling',
 				'description' => 'Rebrand FooGallery to whatever you like for your clients. Ideal for freelancers and agencies.',
 				'author' => 'FooPlugins',
 				'author_url' => 'https://fooplugins.com',
-				'thumbnail' => 'https://via.placeholder.com/400x300',
+				'thumbnail' => 'https://via.placeholder.com/400x300', // TODO: put extension image
 				'tags' => array( 'premium' ),
                 'source' => 'bundled'
 			);
