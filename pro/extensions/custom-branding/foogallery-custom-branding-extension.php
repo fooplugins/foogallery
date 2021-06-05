@@ -27,9 +27,6 @@ if ( !class_exists( 'Custom_Branding_FooGallery_Extension' ) ) {
 	define( 'CUSTOM_BRANDING_FOOGALLERY_EXTENSION_FILE', __FILE__);
 	define( 'CUSTOM_BRANDING_FOOGALLERY_EXTENSION_PATH', plugin_dir_path( __FILE__ ) );
 	define( 'CUSTOM_BRANDING_FOOGALLERY_EXTENSION_URL', plugin_dir_url( __FILE__ ) );
-	define( 'CUSTOM_BRANDING_FOOGALLERY_EXTENSION_VERSION', '1.0.1' );
-	define( 'CUSTOM_BRANDING_FOOGALLERY_EXTENSION_UPDATE_URL', 'http://fooplugins.com/api/foogallery-branding/check' );
-	define( 'CUSTOM_BRANDING_FOOGALLERY_EXTENSION_FOOGALLERY_MIN_VERSION', '1.1.8' );
 
 	require_once( FOOGALLERY_PATH . '/includes/foopluginbase/bootstrapper.php' );
 
@@ -49,12 +46,6 @@ if ( !class_exists( 'Custom_Branding_FooGallery_Extension' ) ) {
 			add_filter( 'foogallery_gallery_shortcode_tag', array( $this, 'shortcode_tag' ) );
 
 			if ( is_admin() ) {
-				add_filter( 'foogallery_admin_help_title', array($this, 'admin_help_title') );
-				add_filter( 'foogallery_admin_help_tagline', array($this, 'admin_help_tagline') );
-				add_filter( 'foogallery_admin_help_tagline_link', array($this, 'admin_help_tagline_link') );
-				add_filter( 'foogallery_admin_show_foobot', array($this, 'admin_show_foobot') );
-				add_filter( 'foogallery_admin_help_show_tabs', array($this, 'admin_help_show_tabs') );
-				add_filter( 'foogallery_admin_help_show_extensions_section', array($this, 'admin_help_show_extensions_section') );
 
 				//extensions
 				add_filter( 'foogallery_admin_extensions_tagline', array($this, 'admin_extensions_tagline') );
@@ -76,9 +67,6 @@ if ( !class_exists( 'Custom_Branding_FooGallery_Extension' ) ) {
 				//create all our settings
 				add_filter( CUSTOM_BRANDING_FOOGALLERY_EXTENSION_SLUG . '_admin_settings', array($this, 'create_settings'), 10, 2 );
 				add_action( CUSTOM_BRANDING_FOOGALLERY_EXTENSION_SLUG . '_admin_settings_custom_type_render_setting', array($this, 'import_export_settings') );
-
-				//FooGallery version check
-				add_action( 'admin_notices', array($this, 'foogallery_version_check') );
 			}
 
 		}
@@ -97,9 +85,6 @@ if ( !class_exists( 'Custom_Branding_FooGallery_Extension' ) ) {
 		}
 
 		function alter_extension_categories( $categories ) {
-			if ( 'on' == $this->get_setting( 'custom_branding_extensions_hide_build_your_own' ) ) {
-				unset( $categories['build_your_own'] );
-			}
 			return $categories;
 		}
 
@@ -133,20 +118,6 @@ if ( !class_exists( 'Custom_Branding_FooGallery_Extension' ) ) {
 				return $override;
 			}
 			return $default;
-		}
-
-		function admin_show_foobot() {
-			if ( 'on' == $this->get_setting( 'custom_branding_hide_foobot' ) ) {
-				return false;
-			}
-			return true;
-		}
-
-		function admin_help_show_tabs() {
-			if ( 'on' == $this->get_setting( 'custom_branding_help_hide_tabs' ) ) {
-				return false;
-			}
-			return true;
 		}
 
 		function admin_help_show_extensions_section() {
@@ -253,14 +224,6 @@ if ( !class_exists( 'Custom_Branding_FooGallery_Extension' ) ) {
 				'desc'    => sprintf( __('Override the default shortcode to something more client friendly, for example "progallery". (please do not include square brackets)<br />The shortcode currently looks like %s.', 'foogallery-custom-branding'), $shortcode ),
 				'default' => 'foogallery',
 				'type'    => 'text',
-				'tab'     => 'whitelabelling'
-			);
-
-			$settings[] = array(
-				'id'      => 'custom_branding_hide_foobot',
-				'title'   => __('Hide FooBot Images', 'foogallery-custom-branding'),
-				'desc'    => __('Hide the FooBot images on the help and extension pages.', 'foogallery-custom-branding'),
-				'type'    => 'checkbox',
 				'tab'     => 'whitelabelling'
 			);
 
@@ -395,15 +358,6 @@ if ( !class_exists( 'Custom_Branding_FooGallery_Extension' ) ) {
 				'tab'     => 'whitelabelling'
 			);
 
-			$settings[] = array(
-				'id'      => 'custom_branding_extensions_hide_build_your_own',
-				'title'   => __('Hide "Build Your Own" Tab', 'foogallery-custom-branding'),
-				'desc'    => __('Hide the "Build Your Own" tab on the FooGallery extensions page.', 'foogallery-custom-branding'),
-				'section' => 'extensions_page',
-				'type'    => 'checkbox',
-				'tab'     => 'whitelabelling'
-			);
-
 			$tabs['help'] = __( 'Help Page', 'foogallery-custom-branding' );
 
 			$settings[] = array(
@@ -438,37 +392,11 @@ if ( !class_exists( 'Custom_Branding_FooGallery_Extension' ) ) {
 				'tab'     => 'whitelabelling'
 			);
 
-			$settings[] = array(
-				'id'      => 'custom_branding_extensions_hide_help_section',
-				'title'   => __('Hide "Extensions" Section', 'foogallery-custom-branding'),
-				'desc'    => __('Hide the extensions section on the FooGallery help page.', 'foogallery-custom-branding'),
-				'type'    => 'checkbox',
-				'tab'     => 'whitelabelling'
-			);
-
 			return array(
 				'tabs' => $tabs,
 				'sections' => $sections,
 				'settings' => $settings
 			);
-		}
-
-		function import_export_settings( $args ) {
-			if ( 'license' === $args['type'] ) {
-				$data = apply_filters( 'foolic_get_validation_data-'.$this->plugin_slug, false );
-				if ($data === false) return;
-				echo $data['html'];
-			}
-		}
-
-		function foogallery_version_check() {
-			if ( current_user_can( 'activate_plugins' ) &&
-				version_compare( FOOGALLERY_VERSION, CUSTOM_BRANDING_FOOGALLERY_EXTENSION_FOOGALLERY_MIN_VERSION ) < 0 ) { ?>
-				<div class="error">
-					<h3><?php _e('FooGallery Custom Branding Error', 'foogallery-custom-branding'); ?></h3>
-					<p><?php printf( __('The FooGallery Custom Branding plugin requires at least version %s of FooGallery to function correctly.', 'foogallery-custom-branding'), CUSTOM_BRANDING_FOOGALLERY_EXTENSION_FOOGALLERY_MIN_VERSION ); ?></p>
-				</div><?php
-			}
 		}
 
 	}
