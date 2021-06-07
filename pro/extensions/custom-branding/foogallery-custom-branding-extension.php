@@ -24,23 +24,19 @@
 if ( !class_exists( 'Custom_Branding_FooGallery_Extension' ) ) {
 
 	define( 'CUSTOM_BRANDING_FOOGALLERY_EXTENSION_SLUG', 'foogallery-custom-branding' );
-	define( 'CUSTOM_BRANDING_FOOGALLERY_EXTENSION_FILE', __FILE__);
-	define( 'CUSTOM_BRANDING_FOOGALLERY_EXTENSION_PATH', plugin_dir_path( __FILE__ ) );
-	define( 'CUSTOM_BRANDING_FOOGALLERY_EXTENSION_URL', plugin_dir_url( __FILE__ ) );
+	class Custom_Branding_FooGallery_Extension {
 
-	require_once( FOOGALLERY_PATH . '/includes/foopluginbase/bootstrapper.php' );
-
-	class Custom_Branding_FooGallery_Extension extends Foo_Plugin_Base_v2_4 {
-
+	    protected $foogallery_instance = null;
+	    
 		/**
 		 * Wire up everything we need to run the extension
 		 */
 		function __construct() {
-			//init FooPluginBase
-			$this->init( __FILE__, FOOGALLERY_SLUG, CUSTOM_BRANDING_FOOGALLERY_EXTENSION_VERSION, 'FooGallery Custom Branding' );
+		    
+		    $this->foogallery_instance = FooGallery_Plugin::get_instance();
 
 			//setup text domain
-			$this->load_plugin_textdomain();
+			$this->foogallery_instance->load_plugin_textdomain();
 
 			add_filter( 'foogallery_plugin_name', array( $this, 'plugin_name' ) );
 			add_filter( 'foogallery_gallery_shortcode_tag', array( $this, 'shortcode_tag' ) );
@@ -66,22 +62,21 @@ if ( !class_exists( 'Custom_Branding_FooGallery_Extension' ) ) {
 
 				//create all our settings
 				add_filter( CUSTOM_BRANDING_FOOGALLERY_EXTENSION_SLUG . '_admin_settings', array($this, 'create_settings'), 10, 2 );
-				add_action( CUSTOM_BRANDING_FOOGALLERY_EXTENSION_SLUG . '_admin_settings_custom_type_render_setting', array($this, 'import_export_settings') );
 			}
 
 		}
 
 		function get_setting( $key, $default = '' ) {
-			$override = $this->options()->get( $key, '' );
+			$override = $this->foogallery_instance->options()->get( $key, '' );
 			return empty( $override ) ? $default : $override;
 		}
 
 		function plugin_name( $default ) {
-			return $this->get_setting( 'custom_branding_name', $default );
+			return $this->foogallery_instance->options()->get( 'custom_branding_name', $default );
 		}
 
 		function shortcode_tag( $default ) {
-			return $this->get_setting( 'custom_branding_shortcode', $default );
+			return $this->foogallery_instance->options()->get( 'custom_branding_shortcode', $default );
 		}
 
 		function alter_extension_categories( $categories ) {
@@ -89,7 +84,7 @@ if ( !class_exists( 'Custom_Branding_FooGallery_Extension' ) ) {
 		}
 
 		function change_extensions_endpoint( $default ) {
-			$override = $this->get_setting( 'custom_branding_extensions_endpoint', $default );
+			$override = $this->foogallery_instance->options()->get( 'custom_branding_extensions_endpoint', $default );
 			if ( $override != $default && ! empty( $override ) ) {
 				return $override;
 			}
@@ -97,7 +92,7 @@ if ( !class_exists( 'Custom_Branding_FooGallery_Extension' ) ) {
 		}
 
 		function admin_help_title( $default ) {
-			$override = $this->get_setting( 'custom_branding_help_title', $default );
+			$override = $this->foogallery_instance->options()->get( 'custom_branding_help_title', $default );
 			if ( $override != $default && ! empty( $override ) ) {
 				return $override;
 			}
@@ -105,7 +100,7 @@ if ( !class_exists( 'Custom_Branding_FooGallery_Extension' ) ) {
 		}
 
 		function admin_help_tagline( $default ) {
-			$override = $this->get_setting( 'custom_branding_help_tagline', $default );
+			$override = $this->foogallery_instance->options()->get( 'custom_branding_help_tagline', $default );
 			if ( $override != $default && ! empty( $override ) ) {
 				return $override;
 			}
@@ -113,7 +108,7 @@ if ( !class_exists( 'Custom_Branding_FooGallery_Extension' ) ) {
 		}
 
 		function admin_help_tagline_link( $default ) {
-			$override = $this->get_setting( 'custom_branding_help_link', $default );
+			$override = $this->foogallery_instance->options()->get( 'custom_branding_help_link', $default );
 			if ( $override != $default && ! empty( $override ) ) {
 				return $override;
 			}
@@ -121,8 +116,8 @@ if ( !class_exists( 'Custom_Branding_FooGallery_Extension' ) ) {
 		}
 
 		function admin_help_show_extensions_section() {
-			if ( 'on' == $this->get_setting( 'custom_branding_hide_extensions' ) ||
-				'on' == $this->get_setting( 'custom_branding_extensions_hide_help_section' ) ) {
+			if ( 'on' == $this->foogallery_instance->options()->get( 'custom_branding_hide_extensions' ) ||
+				'on' == $this->foogallery_instance->options()->get( 'custom_branding_extensions_hide_help_section' ) ) {
 				return false;
 			}
 
@@ -130,7 +125,7 @@ if ( !class_exists( 'Custom_Branding_FooGallery_Extension' ) ) {
 		}
 
 		function admin_extensions_tagline( $default ) {
-			$override = $this->get_setting( 'custom_branding_extensions_tagline' );
+			$override = $this->foogallery_instance->options()->get( 'custom_branding_extensions_tagline' );
 			if ( $override != $default && ! empty( $override ) ) {
 				return $override;
 			}
@@ -138,28 +133,28 @@ if ( !class_exists( 'Custom_Branding_FooGallery_Extension' ) ) {
 		}
 
 		function change_menu_parent_slug( $default ) {
-			if ( 'on' == $this->get_setting( 'custom_branding_move_menu_under_media' ) ) {
+			if ( 'on' == $this->foogallery_instance->options()->get( 'custom_branding_move_menu_under_media' ) ) {
 				return 'upload.php';
 			}
 			return $default;
 		}
 
 		function remove_posttype_menus($args) {
-			if ( 'on' == $this->get_setting( 'custom_branding_move_menu_under_media' ) ) {
+			if ( 'on' == $this->foogallery_instance->options()->get( 'custom_branding_move_menu_under_media' ) ) {
 				$args['show_in_menu'] = false;
 			}
 			return $args;
 		}
 
 		function create_menus() {
-			if ( 'on' == $this->get_setting( 'custom_branding_move_menu_under_media' ) ) {
+			if ( 'on' == $this->foogallery_instance->options()->get( 'custom_branding_move_menu_under_media' ) ) {
 				add_media_page( __( 'Galleries', 'foogallery' ), __( 'Galleries', 'foogallery' ), 'upload_files', 'edit.php?post_type=' . FOOGALLERY_CPT_GALLERY );
 				add_media_page( __( 'Add Gallery', 'foogallery' ), __( 'Add Gallery', 'foogallery' ), 'upload_files', 'post-new.php?post_type=' . FOOGALLERY_CPT_GALLERY );
 			}
 		}
 
 		function menu_capability( $default ) {
-			$override = $this->get_setting( 'custom_branding_menu_capability' );
+			$override = $this->foogallery_instance->options()->get( 'custom_branding_menu_capability' );
 
 			if ( $default != $override && ! empty( $override ) ) {
 				return $override;
@@ -169,24 +164,24 @@ if ( !class_exists( 'Custom_Branding_FooGallery_Extension' ) ) {
 		}
 
 		function hide_menus() {
-			if ( 'on' == $this->get_setting( 'custom_branding_hide_settings_menu' ) ) {
+			if ( 'on' == $this->foogallery_instance->options()->get( 'custom_branding_hide_settings_menu' ) ) {
 				remove_submenu_page( foogallery_admin_menu_parent_slug(), 'foogallery-settings' );
 			}
 
-			if ( 'on' == $this->get_setting( 'custom_branding_hide_extensions' ) ||
-				'on' == $this->get_setting( 'custom_branding_hide_extensions_menu' ) ) {
+			if ( 'on' == $this->foogallery_instance->options()->get( 'custom_branding_hide_extensions' ) ||
+				'on' == $this->foogallery_instance->options()->get( 'custom_branding_hide_extensions_menu' ) ) {
 				remove_submenu_page( foogallery_admin_menu_parent_slug(), 'foogallery-extensions' );
 			}
 
-			if ( 'on' == $this->get_setting( 'custom_branding_hide_help_menu' ) ) {
+			if ( 'on' == $this->foogallery_instance->options()->get( 'custom_branding_hide_help_menu' ) ) {
 				remove_submenu_page( foogallery_admin_menu_parent_slug(), 'foogallery-help' );
 			}
 		}
 
 		function override_menu_labels( $menu_labels ) {
-			$settings_label = $this->get_setting( 'custom_branding_label_settings_menu' );
-			$extensions_label = $this->get_setting( 'custom_branding_label_extensions_menu' );
-			$help_label = $this->get_setting( 'custom_branding_label_help_menu' );
+			$settings_label = $this->foogallery_instance->options()->get( 'custom_branding_label_settings_menu' );
+			$extensions_label = $this->foogallery_instance->options()->get( 'custom_branding_label_extensions_menu' );
+			$help_label = $this->foogallery_instance->options()->get( 'custom_branding_label_help_menu' );
 
 			if ( ! empty( $settings_label ) ) {
 				$menu_labels[0]['menu_title'] = $settings_label;
@@ -336,16 +331,6 @@ if ( !class_exists( 'Custom_Branding_FooGallery_Extension' ) ) {
 				'title'   => __('Hide Extensions', 'foogallery-custom-branding'),
 				'desc'    => sprintf( __('Hide everything related to extensions from all users. (This will override other settings)%s', 'foogallery-custom-branding'), $extensions_link ),
 				'type'    => 'checkbox',
-				'tab'     => 'whitelabelling'
-			);
-
-			$extensions_url = '<br />' . __('The default URL is ', 'foogallery-custom-branding') . '<code>' . FOOGALLERY_EXTENSIONS_ENDPOINT . '</code>';
-
-			$settings[] = array(
-				'id'      => 'custom_branding_extensions_endpoint',
-				'title'   => __('Extensions URL', 'foogallery-custom-branding'),
-				'desc'    => __('The list of available extensions are pulled from an external URL. Change this URL to pull your own custom list of extensions.', 'foogallery-custom-branding') . $extensions_url,
-				'type'    => 'text',
 				'tab'     => 'whitelabelling'
 			);
 
