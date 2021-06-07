@@ -306,7 +306,7 @@ if ( !class_exists( 'Foo_Plugin_Base_v2_4' ) ) {
             // TODO: this must be refactored. It works in wrong way - filter simply return value instead of processing argument.
 		    $settings = apply_filters( $this->plugin_slug . '_admin_settings', false );
             // Whitelabelling - this block will be removed when refactoring done for _admin_settings filters
-            $whitelabelling_settings = apply_filters( CUSTOM_BRANDING_FOOGALLERY_EXTENSION_SLUG . '_admin_settings', false );
+            $whitelabelling_settings = apply_filters( WHITELABELLING_FOOGALLERY_EXTENSION_SLUG . '_admin_settings', false );
             if( $whitelabelling_settings ) {
                 $settings = array_merge_recursive( $settings, $whitelabelling_settings );
             }

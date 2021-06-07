@@ -123,10 +123,10 @@ if ( ! class_exists( 'FooGallery_Extensions_API' ) ) {
 				'source' => 'bundled',
 			);
 
-			//Custom Branding
+			// WhiteLabelling
 			$this->extensions[] = array(
-				'slug' => 'foogallery-custom-branding',
-				'class' => 'Custom_Branding_FooGallery_Extension',
+				'slug' => 'foogallery-whitelabelling',
+				'class' => 'Whitelabelling_FooGallery_Extension',
 				'categories' => array( 'Premium' ),
 				'title' => 'WhiteLabelling',
 				'description' => 'Rebrand FooGallery to whatever you like for your clients. Ideal for freelancers and agencies.',
