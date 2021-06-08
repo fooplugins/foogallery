@@ -244,9 +244,14 @@ Please update in order to for FooGallery to work in WP 5.5+!
 
 == Changelog ==
 
-= 2.0.36 =
+= 2.0.37 =
 * Date Updated : 2021-05-27
 * Fix : Changed how attachment full size image details are determined, when there are issues in certain setups.
+* Fix : jQuery backwards compatibility
+* Update : FooGallery client side 2.0.15
+[//]: # fs_premium_only_begin
+* New : [Commerce Plan] Introduced new Protection feature (No right click and watermark generation for images)
+[//]: # fs_premium_only_end
 
 = 2.0.35 =
 * Date Updated : 2021-05-20
