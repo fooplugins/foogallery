@@ -9335,7 +9335,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 					self.$el.removeClass(self.cls.loading).addClass(self.cls.loaded);
 					self.tmpl.trigger("loaded-item", [self]);
 					def.resolve(self);
-				}).catch(function(reason){
+				}, function(reason){
 					self.isLoading = false;
 					self.isError = true;
 					self.$el.removeClass(self.cls.loading).addClass(self.cls.error);
