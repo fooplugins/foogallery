@@ -233,7 +233,7 @@ if ( ! class_exists( 'FooGallery_Pro_Protection' ) ) {
 		public function render_custom_field( $field, $gallery, $template ) {
 			if ( isset( $field ) && is_array( $field ) && isset( $field['type'] ) && 'watermark_status' === $field['type'] ) {
 				$setting_key = $template['slug'] . '_protection_watermarking';
-				if ( array_key_exists( $setting_key, $gallery->settings ) && 'yes' === $gallery->settings[ $setting_key ] ) {
+				if ( is_array( $gallery->settings ) && array_key_exists( $setting_key, $gallery->settings ) && 'yes' === $gallery->settings[ $setting_key ] ) {
 					$this->render_watermark_status_field( $gallery );
 				} else {
 					echo esc_html( __( 'You have to save the gallery after enabling watermarking to see the status!', 'foogallery' ) );
