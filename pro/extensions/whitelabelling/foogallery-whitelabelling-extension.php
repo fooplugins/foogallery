@@ -72,39 +72,6 @@ if ( !class_exists('Whitelabelling_FooGallery_Extension') ) {
 			return $default;
 		}
 
-		function admin_help_title( $default ) {
-			$override = foogallery_get_setting( 'whitelabelling_help_title', $default );
-			if ( $override != $default && ! empty( $override ) ) {
-				return $override;
-			}
-			return $default;
-		}
-
-		function admin_help_tagline( $default ) {
-			$override = foogallery_get_setting( 'whitelabelling_help_tagline', $default );
-			if ( $override != $default && ! empty( $override ) ) {
-				return $override;
-			}
-			return $default;
-		}
-
-		function admin_help_tagline_link( $default ) {
-			$override = foogallery_get_setting( 'whitelabelling_help_link', $default );
-			if ( $override != $default && ! empty( $override ) ) {
-				return $override;
-			}
-			return $default;
-		}
-
-		function admin_help_show_extensions_section() {
-			if ( 'on' == foogallery_get_setting( 'whitelabelling_hide_extensions' ) ||
-				'on' == foogallery_get_setting( 'whitelabelling_extensions_hide_help_section' ) ) {
-				return false;
-			}
-
-			return true;
-		}
-
 		function admin_extensions_tagline( $default ) {
 			$override = foogallery_get_setting( 'whitelabelling_extensions_tagline' );
 			if ( $override != $default && ! empty( $override ) ) {
@@ -297,10 +264,6 @@ if ( !class_exists('Whitelabelling_FooGallery_Extension') ) {
 
 			$tabs['extensions'] = __( 'Extensions', 'foogallery-whitelabelling' );
 
-			$sections['help_page'] = array(
-				'name' => __( 'Help Page', 'foogallery-whitelabelling' )
-			);
-
 			$sections['extensions_page'] = array(
 				'name' => __( 'Extensions Page', 'foogallery-whitelabelling' )
 			);
@@ -320,32 +283,6 @@ if ( !class_exists('Whitelabelling_FooGallery_Extension') ) {
 				'title'   => __('Page Tagline', 'foogallery-whitelabelling'),
 				'desc'    => __('Change the tagline paragraph of the FooGallery extensions page. The tagline is directly underneath the page title.', 'foogallery-whitelabelling'),
 				'section' => 'extensions_page',
-				'type'    => 'text',
-				'tab'     => 'whitelabelling'
-			);
-
-			$tabs['help'] = __( 'Help Page', 'foogallery-whitelabelling' );
-
-			$settings[] = array(
-				'id'      => 'whitelabelling_help_title',
-				'title'   => __('Page title', 'foogallery-whitelabelling'),
-				'desc'    => __('Change the title of the FooGallery help page.', 'foogallery-whitelabelling'),
-				'type'    => 'text',
-				'tab'     => 'whitelabelling'
-			);
-
-			$settings[] = array(
-				'id'      => 'whitelabelling_help_tagline',
-				'title'   => __('Page Tagline', 'foogallery-whitelabelling'),
-				'desc'    => __('Change the tagline paragraph of the FooGallery help page. The tagline is directly underneath the page title.', 'foogallery-whitelabelling'),
-				'type'    => 'text',
-				'tab'     => 'whitelabelling'
-			);
-
-			$settings[] = array(
-				'id'      => 'whitelabelling_help_link',
-				'title'   => __('Page Tagline Link', 'foogallery-whitelabelling'),
-				'desc'    => __('Change the link that is displayed at the end of the tagline paragraph on the FooGallery help page. You can use HTML.', 'foogallery-whitelabelling'),
 				'type'    => 'text',
 				'tab'     => 'whitelabelling'
 			);
