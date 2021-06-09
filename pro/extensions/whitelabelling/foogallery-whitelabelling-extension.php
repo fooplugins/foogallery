@@ -17,7 +17,6 @@ if ( !class_exists('Whitelabelling_FooGallery_Extension') ) {
 		    $this->foogallery_instance = FooGallery_Plugin::get_instance();
 
 			add_filter( 'foogallery_plugin_name', array( $this, 'plugin_name' ) );
-			add_filter( 'foogallery_gallery_shortcode_tag', array( $this, 'shortcode_tag' ) );
 
 			if ( is_admin() ) {
 
@@ -45,10 +44,6 @@ if ( !class_exists('Whitelabelling_FooGallery_Extension') ) {
 
 		function plugin_name( $default ) {
 			return foogallery_get_setting( 'whitelabelling_name', $default );
-		}
-
-		function shortcode_tag( $default ) {
-			return foogallery_get_setting( 'whitelabelling_shortcode', $default );
 		}
 
 		function alter_extension_categories( $categories ) {
