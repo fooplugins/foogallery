@@ -2,6 +2,32 @@
 /**
  * FooGallery WhiteLabelling Extension
  */
+add_filter( 'foogallery_available_extensions', 'foogallery_whitelabelling_admin_extensions_list_register' );
+
+/**
+ * Filter - Add Whitelabelling extension to extensions list
+ *
+ * @param $extensions_list
+ *
+ * @return array
+ */
+function foogallery_whitelabelling_admin_extensions_list_register( $extensions_list ) {
+    $extensions_list[] = array(
+        'slug' => 'foogallery-whitelabelling',
+        'class' => 'Whitelabelling_FooGallery_Extension',
+        'categories' => array( 'Premium' ),
+        'title' => 'WhiteLabelling',
+        'description' => 'Rebrand FooGallery to whatever you like for your clients. Ideal for freelancers and agencies.',
+        'author' => 'FooPlugins',
+        'author_url' => 'https://fooplugins.com',
+        'thumbnail' => 'https://via.placeholder.com/400x300', // TODO: put extension image
+        'tags' => array( 'premium' ),
+        'source' => 'bundled'
+    );
+
+    return $extensions_list;
+}
+
 if ( !class_exists('Whitelabelling_FooGallery_Extension') ) {
 
 	define( 'WHITELABELLING_FOOGALLERY_EXTENSION_SLUG', 'foogallery-whitelabelling' );
@@ -21,10 +47,10 @@ if ( !class_exists('Whitelabelling_FooGallery_Extension') ) {
 			if ( is_admin() ) {
 
 				//extensions
-				add_filter( 'foogallery_admin_extensions_tagline', array($this, 'admin_extensions_tagline') );
-				add_filter( 'foogallery_extension_categories', array($this, 'alter_extension_categories') );
+                add_filter( 'foogallery_admin_extensions_tagline', array($this, 'admin_extensions_tagline') );
+                add_filter( 'foogallery_extension_categories', array($this, 'alter_extension_categories') );
 
-				//move menu under media
+                //move menu under media
 				add_filter( 'foogallery_gallery_posttype_register_args', array($this, 'remove_posttype_menus') );
 				add_filter( 'foogallery_admin_menu_parent_slug', array($this, 'change_menu_parent_slug') );
 				add_action( 'foogallery_admin_menu_before', array($this, 'create_menus') );
@@ -57,6 +83,8 @@ if ( !class_exists('Whitelabelling_FooGallery_Extension') ) {
 			}
 			return $default;
 		}
+
+
 
 		function change_menu_parent_slug( $default ) {
 			if ( 'on' == foogallery_get_setting( 'whitelabelling_move_menu_under_media' ) ) {
