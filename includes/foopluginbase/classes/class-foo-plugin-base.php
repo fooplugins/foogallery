@@ -303,7 +303,8 @@ if ( !class_exists( 'Foo_Plugin_Base_v2_4' ) ) {
 
 		// render the setting page
 		function admin_settings_render_page() {
-			$settings = apply_filters( $this->plugin_slug . '_admin_settings', false );
+		    $settings = apply_filters( $this->plugin_slug . '_admin_settings', array() );
+
 			$this->_settings->add_settings( $settings );
 
 			$current_directory = trailingslashit( dirname( plugin_dir_path( __FILE__ ) ) );
