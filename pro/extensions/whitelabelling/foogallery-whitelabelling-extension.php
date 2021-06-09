@@ -48,16 +48,16 @@ if ( !class_exists('Whitelabelling_FooGallery_Extension') ) {
 		}
 
 		function get_setting( $key, $default = '' ) {
-			$override = $this->foogallery_instance->options()->get( $key, '' );
+			$override = foogallery_get_setting( $key, '' );
 			return empty( $override ) ? $default : $override;
 		}
 
 		function plugin_name( $default ) {
-			return $this->foogallery_instance->options()->get( 'whitelabelling_name', $default );
+			return foogallery_get_setting( 'whitelabelling_name', $default );
 		}
 
 		function shortcode_tag( $default ) {
-			return $this->foogallery_instance->options()->get( 'whitelabelling_shortcode', $default );
+			return foogallery_get_setting( 'whitelabelling_shortcode', $default );
 		}
 
 		function alter_extension_categories( $categories ) {
@@ -65,7 +65,7 @@ if ( !class_exists('Whitelabelling_FooGallery_Extension') ) {
 		}
 
 		function change_extensions_endpoint( $default ) {
-			$override = $this->foogallery_instance->options()->get( 'whitelabelling_extensions_endpoint', $default );
+			$override = foogallery_get_setting( 'whitelabelling_extensions_endpoint', $default );
 			if ( $override != $default && ! empty( $override ) ) {
 				return $override;
 			}
@@ -73,7 +73,7 @@ if ( !class_exists('Whitelabelling_FooGallery_Extension') ) {
 		}
 
 		function admin_help_title( $default ) {
-			$override = $this->foogallery_instance->options()->get( 'whitelabelling_help_title', $default );
+			$override = foogallery_get_setting( 'whitelabelling_help_title', $default );
 			if ( $override != $default && ! empty( $override ) ) {
 				return $override;
 			}
@@ -81,7 +81,7 @@ if ( !class_exists('Whitelabelling_FooGallery_Extension') ) {
 		}
 
 		function admin_help_tagline( $default ) {
-			$override = $this->foogallery_instance->options()->get( 'whitelabelling_help_tagline', $default );
+			$override = foogallery_get_setting( 'whitelabelling_help_tagline', $default );
 			if ( $override != $default && ! empty( $override ) ) {
 				return $override;
 			}
@@ -89,7 +89,7 @@ if ( !class_exists('Whitelabelling_FooGallery_Extension') ) {
 		}
 
 		function admin_help_tagline_link( $default ) {
-			$override = $this->foogallery_instance->options()->get( 'whitelabelling_help_link', $default );
+			$override = foogallery_get_setting( 'whitelabelling_help_link', $default );
 			if ( $override != $default && ! empty( $override ) ) {
 				return $override;
 			}
@@ -97,8 +97,8 @@ if ( !class_exists('Whitelabelling_FooGallery_Extension') ) {
 		}
 
 		function admin_help_show_extensions_section() {
-			if ( 'on' == $this->foogallery_instance->options()->get( 'whitelabelling_hide_extensions' ) ||
-				'on' == $this->foogallery_instance->options()->get( 'whitelabelling_extensions_hide_help_section' ) ) {
+			if ( 'on' == foogallery_get_setting( 'whitelabelling_hide_extensions' ) ||
+				'on' == foogallery_get_setting( 'whitelabelling_extensions_hide_help_section' ) ) {
 				return false;
 			}
 
@@ -106,7 +106,7 @@ if ( !class_exists('Whitelabelling_FooGallery_Extension') ) {
 		}
 
 		function admin_extensions_tagline( $default ) {
-			$override = $this->foogallery_instance->options()->get( 'whitelabelling_extensions_tagline' );
+			$override = foogallery_get_setting( 'whitelabelling_extensions_tagline' );
 			if ( $override != $default && ! empty( $override ) ) {
 				return $override;
 			}
@@ -114,28 +114,28 @@ if ( !class_exists('Whitelabelling_FooGallery_Extension') ) {
 		}
 
 		function change_menu_parent_slug( $default ) {
-			if ( 'on' == $this->foogallery_instance->options()->get( 'whitelabelling_move_menu_under_media' ) ) {
+			if ( 'on' == foogallery_get_setting( 'whitelabelling_move_menu_under_media' ) ) {
 				return 'upload.php';
 			}
 			return $default;
 		}
 
 		function remove_posttype_menus($args) {
-			if ( 'on' == $this->foogallery_instance->options()->get( 'whitelabelling_move_menu_under_media' ) ) {
+			if ( 'on' == foogallery_get_setting( 'whitelabelling_move_menu_under_media' ) ) {
 				$args['show_in_menu'] = false;
 			}
 			return $args;
 		}
 
 		function create_menus() {
-			if ( 'on' == $this->foogallery_instance->options()->get( 'whitelabelling_move_menu_under_media' ) ) {
+			if ( 'on' == foogallery_get_setting( 'whitelabelling_move_menu_under_media' ) ) {
 				add_media_page( __( 'Galleries', 'foogallery' ), __( 'Galleries', 'foogallery' ), 'upload_files', 'edit.php?post_type=' . FOOGALLERY_CPT_GALLERY );
 				add_media_page( __( 'Add Gallery', 'foogallery' ), __( 'Add Gallery', 'foogallery' ), 'upload_files', 'post-new.php?post_type=' . FOOGALLERY_CPT_GALLERY );
 			}
 		}
 
 		function menu_capability( $default ) {
-			$override = $this->foogallery_instance->options()->get( 'whitelabelling_menu_capability' );
+			$override = foogallery_get_setting( 'whitelabelling_menu_capability' );
 
 			if ( $default != $override && ! empty( $override ) ) {
 				return $override;
@@ -145,24 +145,24 @@ if ( !class_exists('Whitelabelling_FooGallery_Extension') ) {
 		}
 
 		function hide_menus() {
-			if ( 'on' == $this->foogallery_instance->options()->get( 'whitelabelling_hide_settings_menu' ) ) {
+			if ( 'on' == foogallery_get_setting( 'whitelabelling_hide_settings_menu' ) ) {
 				remove_submenu_page( foogallery_admin_menu_parent_slug(), 'foogallery-settings' );
 			}
 
-			if ( 'on' == $this->foogallery_instance->options()->get( 'whitelabelling_hide_extensions' ) ||
-				'on' == $this->foogallery_instance->options()->get( 'whitelabelling_hide_extensions_menu' ) ) {
+			if ( 'on' == foogallery_get_setting( 'whitelabelling_hide_extensions' ) ||
+				'on' == foogallery_get_setting( 'whitelabelling_hide_extensions_menu' ) ) {
 				remove_submenu_page( foogallery_admin_menu_parent_slug(), 'foogallery-extensions' );
 			}
 
-			if ( 'on' == $this->foogallery_instance->options()->get( 'whitelabelling_hide_help_menu' ) ) {
+			if ( 'on' == foogallery_get_setting( 'whitelabelling_hide_help_menu' ) ) {
 				remove_submenu_page( foogallery_admin_menu_parent_slug(), 'foogallery-help' );
 			}
 		}
 
 		function override_menu_labels( $menu_labels ) {
-			$settings_label = $this->foogallery_instance->options()->get( 'whitelabelling_label_settings_menu' );
-			$extensions_label = $this->foogallery_instance->options()->get( 'whitelabelling_label_extensions_menu' );
-			$help_label = $this->foogallery_instance->options()->get( 'whitelabelling_label_help_menu' );
+			$settings_label = foogallery_get_setting( 'whitelabelling_label_settings_menu' );
+			$extensions_label = foogallery_get_setting( 'whitelabelling_label_extensions_menu' );
+			$help_label = foogallery_get_setting( 'whitelabelling_label_help_menu' );
 
 			if ( ! empty( $settings_label ) ) {
 				$menu_labels[0]['menu_title'] = $settings_label;
