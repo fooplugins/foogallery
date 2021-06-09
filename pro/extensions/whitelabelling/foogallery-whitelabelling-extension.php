@@ -268,16 +268,6 @@ if ( !class_exists('Whitelabelling_FooGallery_Extension') ) {
 				'name' => __( 'Extensions Page', 'foogallery-whitelabelling' )
 			);
 
-			$extensions_link = '<br /><a href="' . foogallery_admin_extensions_url() . '">' . __('Click here to access the extensions page', 'foogallery-whitelabelling') . '</a>';
-
-			$settings[] = array(
-				'id'      => 'whitelabelling_hide_extensions',
-				'title'   => __('Hide Extensions', 'foogallery-whitelabelling'),
-				'desc'    => sprintf( __('Hide everything related to extensions from all users. (This will override other settings)%s', 'foogallery-whitelabelling'), $extensions_link ),
-				'type'    => 'checkbox',
-				'tab'     => 'whitelabelling'
-			);
-
 			$settings[] = array(
 				'id'      => 'whitelabelling_extensions_tagline',
 				'title'   => __('Page Tagline', 'foogallery-whitelabelling'),
