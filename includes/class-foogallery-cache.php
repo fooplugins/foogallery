@@ -173,7 +173,7 @@ if ( ! class_exists( 'FooGallery_Cache' ) ) {
 				'desc'    => __( 'The gallery HTML that is generated can be cached. This can reduce the number of calls to the database when displaying a gallery and can increase site performance.', 'foogallery' ),
 				'type'    => 'checkbox',
 				'tab'     => 'general',
-				'section' => __( 'Cache', 'foogallery' )
+				'section' => __( 'Performance', 'foogallery' )
 			);
 
 			$cache_settings[] = array(
@@ -182,7 +182,7 @@ if ( ! class_exists( 'FooGallery_Cache' ) ) {
 				'desc'    => __( 'If you enable the HTML cache, then you can use this button to clear the gallery HTML that has been cached for all galleries.', 'foogallery' ),
 				'type'    => 'clear_gallery_cache_button',
 				'tab'     => 'general',
-				'section' => __( 'Cache', 'foogallery' )
+				'section' => __( 'Performance', 'foogallery' )
 			);
 
 			$new_settings = array_merge( $cache_settings, $settings['settings'] );

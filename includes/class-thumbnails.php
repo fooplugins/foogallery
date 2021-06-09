@@ -202,7 +202,7 @@ if ( !class_exists( 'FooGallery_Thumbnails' ) ) {
 
 			//if we get here, then either, we have set the override_thumb_test setting,
 			//or there are no good images to use from the media library
-			return 'https://s3.amazonaws.com/foocdn/test.jpg';
+			return $test_thumb_url;
 		}
 
 		static function find_first_image_in_media_library() {

@@ -12,8 +12,7 @@ if ( ! class_exists( 'FooGallery_Thumbnail_Dimensions' ) ) {
 
     class FooGallery_Thumbnail_Dimensions
     {
-        function __construct()
-        {
+        function __construct() {
             //hook into the filter that build up the img attributes
             // and add the width and height attributes if the gallery requires them
             add_filter( 'foogallery_attachment_html_image_attributes', array( $this, 'include_thumb_dimension_attributes' ), 10, 3 );

@@ -5,6 +5,9 @@ if ( !class_exists( 'FooGallery_Simple_Portfolio_Gallery_Template' ) ) {
 	define('FOOGALLERY_SIMPLE_PORTFOLIO_GALLERY_TEMPLATE_URL', plugin_dir_url( __FILE__ ));
 
 	class FooGallery_Simple_Portfolio_Gallery_Template {
+
+		const template_id = 'simple_portfolio';
+
 		/**
 		 * Wire up everything we need to run the extension
 		 */
@@ -12,13 +15,8 @@ if ( !class_exists( 'FooGallery_Simple_Portfolio_Gallery_Template' ) ) {
 			add_filter( 'foogallery_gallery_templates', array( $this, 'add_template' ) );
 			add_filter( 'foogallery_gallery_templates_files', array( $this, 'register_myself' ) );
 
-			add_filter( 'foogallery_located_template-simple_portfolio', array( $this, 'enqueue_dependencies' ) );
-
 			//add extra fields to the templates
 			add_filter( 'foogallery_override_gallery_template_fields-simple_portfolio', array( $this, 'add_common_thumbnail_fields' ), 101, 2 );
-
-			//add the data options needed for simple portfolio
-			add_filter( 'foogallery_build_container_data_options-simple_portfolio', array( $this, 'add_data_options' ), 10, 3 );
 
 			//override specific settings when saving the gallery
 			add_filter( 'foogallery_save_gallery_settings-simple_portfolio', array( $this, 'override_settings'), 10, 3 );
@@ -33,6 +31,9 @@ if ( !class_exists( 'FooGallery_Simple_Portfolio_Gallery_Template' ) ) {
             add_filter( 'foogallery_gallery_template_arguments-simple_portfolio', array( $this, 'build_gallery_template_arguments' ) );
 
 			add_filter( 'foogallery_build_class_attribute', array( $this, 'override_class_attributes' ), 99, 2 );
+
+			//add a style block for the gallery based on the field settings for gutter, align and columnWidth
+			add_action( 'foogallery_loaded_template_before', array( $this, 'add_style_block' ), 10, 1 );
         }
 
 		/**
@@ -54,7 +55,7 @@ if ( !class_exists( 'FooGallery_Simple_Portfolio_Gallery_Template' ) ) {
 		 */
 		function add_template( $gallery_templates ) {
 			$gallery_templates[] = array(
-                'slug'        => 'simple_portfolio',
+                'slug'        => self::template_id,
                 'name'        => __( 'Simple Portfolio', 'foogallery' ),
 				'preview_support' => true,
 				'common_fields_support' => true,
@@ -63,6 +64,7 @@ if ( !class_exists( 'FooGallery_Simple_Portfolio_Gallery_Template' ) ) {
 				'mandatory_classes' => 'fg-simple_portfolio',
 				'thumbnail_dimensions' => true,
 				'filtering_support' => true,
+                'enqueue_core' => true,
                 'fields'	  => array(
                     array(
                         'id'	  => 'help',
@@ -93,7 +95,7 @@ if ( !class_exists( 'FooGallery_Simple_Portfolio_Gallery_Template' ) ) {
                         'section' => __( 'General', 'foogallery' ),
                         'default' => 'image',
                         'type'    => 'thumb_link',
-                        'desc'	  => __( 'You can choose to link each thumbnail to the full size image, or to the image\'s attachment page, or you can choose to not link to anything.', 'foogallery' )
+                        'desc'	  => __( 'You can choose to link each thumbnail to the full size image, or to the image\'s attachment page, or you can choose to not link to anything.', 'foogallery' ),
                     ),
                     array(
                         'id'      => 'lightbox',
@@ -110,7 +112,7 @@ if ( !class_exists( 'FooGallery_Simple_Portfolio_Gallery_Template' ) ) {
 						'section' => __( 'General', 'foogallery' ),
                         'type'    => 'number',
                         'class'   => 'small-text',
-                        'default' => 40,
+                        'default' => 5,
                         'step'    => '1',
                         'min'     => '0',
 						'row_data'=> array(
@@ -142,15 +144,6 @@ if ( !class_exists( 'FooGallery_Simple_Portfolio_Gallery_Template' ) ) {
 			);
 
 			return $gallery_templates;
-		}
-
-		/**
-		 * Enqueue scripts that the simple portfolio template relies on
-		 */
-		function enqueue_dependencies() {
-			//enqueue core files
-			foogallery_enqueue_core_gallery_template_style();
-			foogallery_enqueue_core_gallery_template_script();
 		}
 
 		/**
@@ -223,32 +216,6 @@ if ( !class_exists( 'FooGallery_Simple_Portfolio_Gallery_Template' ) ) {
 			array_splice( $fields, $index_of_captions_field, 0, $new_fields );
 
 			return $fields;
-		}
-
-		/**
-		 * Add the required data options if needed
-		 *
-		 * @param $options
-		 * @param $gallery    FooGallery
-		 *
-		 * @param $attributes array
-		 *
-		 * @return array
-		 */
-		function add_data_options($options, $gallery, $attributes) {
-			$gutter = foogallery_gallery_template_setting( 'gutter', 40 );
-			$options['template']['gutter'] = intval($gutter);
-
-			$thumbnail_dimensions = foogallery_gallery_template_setting( 'thumbnail_dimensions', array() );
-			if ( array_key_exists( 'width', $thumbnail_dimensions ) ) {
-				$width                              = $thumbnail_dimensions['width'];
-				$options['template']['columnWidth'] = intval( $width );
-			}
-
-			$align = foogallery_gallery_template_setting( 'align', 'center' );
-            $options['template']['align'] = $align;
-
-			return $options;
 		}
 
 		/**
@@ -345,7 +312,7 @@ if ( !class_exists( 'FooGallery_Simple_Portfolio_Gallery_Template' ) ) {
 		 * @return array
 		 */
 		function override_class_attributes( $classes, $gallery ) {
-			if ( 'simple_portfolio' === $gallery->gallery_template ) {
+			if ( self::template_id === $gallery->gallery_template ) {
 				if ( ( $key = array_search( 'fg-caption-hover', $classes ) ) !== false) {
 					unset( $classes[$key] );
 				}
@@ -354,6 +321,42 @@ if ( !class_exists( 'FooGallery_Simple_Portfolio_Gallery_Template' ) ) {
 			}
 
 			return $classes;
+		}
+
+		/**
+		 * Add a style block based on the field settings
+		 *
+		 * @param $gallery FooGallery
+		 */
+		function add_style_block( $gallery ) {
+			if ( self::template_id !== $gallery->gallery_template ) {
+				return;
+			}
+
+			$id = $gallery->container_id();
+			$gutter = intval( foogallery_gallery_template_setting( 'gutter', 5 ) );
+			$alignment = foogallery_gallery_template_setting( 'align', 'center' );
+			if ( $alignment === 'left' ) {
+				$alignment = 'flex-start';
+			} else if ( $alignment === 'right' ) {
+				$alignment = 'flex-end';
+			}
+			$thumb_width = 250;
+			$thumbnail_dimensions = foogallery_gallery_template_setting( 'thumbnail_dimensions', array() );
+			if ( array_key_exists( 'width', $thumbnail_dimensions ) ) {
+				$thumb_width = intval( $thumbnail_dimensions['width'] );
+			}
+			?>
+			<style>
+                #<?php echo $id; ?>.fg-simple_portfolio {
+                    justify-content: <?php echo $alignment; ?>;
+                }
+                #<?php echo $id; ?>.fg-simple_portfolio .fg-item {
+                    flex-basis: <?php echo $thumb_width; ?>px;
+                    margin: <?php echo $gutter; ?>px;
+                }
+			</style>
+			<?php
 		}
 	}
 }

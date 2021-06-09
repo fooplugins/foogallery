@@ -57,39 +57,6 @@
 	background-color: #eee;
 }
 
-.foogallery-setting-loading_icon .fg-loader {
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translateX(-50%) translateY(-50%);
-	width: 1em;
-	height: 1em;
-	font-size: 5px;
-}
-
-.foogallery-setting-loading_icon.fg-loading-bars .fg-loader {
-	font-size: 4px;
-	width: 1em;
-	height: 4em;
-}
-
-.foogallery-setting-loading_icon.fg-loading-partial .fg-loader {
-	font-size: 4px;
-	width: 10em;
-	height: 10em;
-}
-
-.foogallery-setting-loading_icon.fg-loading-pulse .fg-loader {
-	font-size: 4px;
-	width: 2.5em;
-	height: 2.5em;
-	transform: translateX(-50%) translateY(-150%);
-}
-
-.foogallery-setting-loading_icon.fg-loading-trail .fg-loader {
-	font-size: 20px;
-}
-
 .fg-item-inner {
 	margin: 0;
 }

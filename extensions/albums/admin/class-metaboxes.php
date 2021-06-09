@@ -119,13 +119,18 @@ if ( ! class_exists( 'FooGallery_Admin_Album_MetaBoxes' ) ) {
 					delete_post_meta( $post_id, FOOGALLERY_META_SETTINGS_OLD );
 				}
 
-				$custom_css = isset($_POST[FOOGALLERY_META_CUSTOM_CSS]) ?
-					$_POST[FOOGALLERY_META_CUSTOM_CSS] : '';
+				$custom_css = foogallery_sanitize_html( isset( $_POST[FOOGALLERY_META_CUSTOM_CSS] ) ?
+					$_POST[FOOGALLERY_META_CUSTOM_CSS] : '' );
 
 				if ( empty( $custom_css ) ) {
 					delete_post_meta( $post_id, FOOGALLERY_META_CUSTOM_CSS );
 				} else {
 					update_post_meta( $post_id, FOOGALLERY_META_CUSTOM_CSS, $custom_css );
+				}
+
+				// update usage for each of the galleries.
+				foreach ( $galleries as $gallery_id ) {
+					add_post_meta( $post_id, FOOGALLERY_META_POST_USAGE, $gallery_id, false );
 				}
 
 				do_action( 'foogallery_after_save_album', $post_id, $_POST );

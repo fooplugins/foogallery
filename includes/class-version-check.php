@@ -40,10 +40,6 @@ if ( ! class_exists( 'FooGallery_Version_Check' ) ) {
 			// this will catch both manual and auto updates!
 			do_action( 'foogallery_admin_new_version_detected' );
 
-			//clear the cached extensions if foogallery was updated
-			$api = new FooGallery_Extensions_API();
-			$api->clear_cached_extensions();
-
 			//we need to clear the foogallery css load optimizations when we update the plugin, to ensure the latest CSS files are loaded
 			foogallery_clear_all_css_load_optimizations();
 		}

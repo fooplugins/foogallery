@@ -94,6 +94,20 @@ function foogallery_get_setting( $key, $default = false ) {
 }
 
 /**
+ * Sets a specific option based on a key
+ *
+ * @param $key
+ * @param $value
+ *
+ * @return mixed
+ */
+function foogallery_set_setting( $key, $value ) {
+	$foogallery = FooGallery_Plugin::get_instance();
+
+	return $foogallery->options()->save( $key, $value );
+}
+
+/**
  * Builds up a FooGallery gallery shortcode
  *
  * @param $gallery_id
@@ -129,16 +143,25 @@ function foogallery_get_default( $key, $default = false ) {
 		'gallery_permalinks_enabled' => false,
 		'gallery_permalink'          => 'gallery',
 		'lightbox'                   => 'none',
-		'thumb_jpeg_quality'         => '80',
+		'thumb_jpeg_quality'         => '90',
 		'gallery_sorting'            => '',
-		'datasource'				 => 'media_library'
+		'datasource'                 => 'media_library',
 	);
 
-	// A handy filter to override the defaults
+	// A handy filter to override the defaults.
 	$defaults = apply_filters( 'foogallery_defaults', $defaults );
 
 	// Return the key specified.
-	return isset($defaults[ $key ]) ? $defaults[ $key ] : $default;
+	return isset( $defaults[ $key ] ) ? $defaults[ $key ] : $default;
+}
+
+/**
+ * Returns the FooGallery Galleries Url within the admin
+ *
+ * @return string The Url to the FooGallery Gallery listing page in admin
+ */
+function foogallery_admin_gallery_listing_url() {
+	return admin_url( 'edit.php?post_type=' . FOOGALLERY_CPT_GALLERY );
 }
 
 /**
@@ -209,7 +232,7 @@ function foogallery_admin_freetrial_url() {
  * @param string	$key
  * @param string	$default
  *
- * @return bool
+ * @return mixed
  */
 function foogallery_gallery_template_setting( $key, $default = '' ) {
 	global $current_foogallery;
@@ -453,7 +476,7 @@ function foogallery_build_class_attribute_render_safe( $gallery ) {
 function foogallery_build_container_attributes_safe( $gallery, $attributes ) {
 
 	//add the default gallery id
-	$attributes['id'] = 'foogallery-gallery-' . $gallery->ID;
+	$attributes['id'] = $gallery->container_id();
 
 	//add the standard data-foogallery attribute so that the JS initializes correctly
     $attributes['data-foogallery'] = foogallery_build_container_data_options( $gallery, $attributes );
@@ -1446,18 +1469,22 @@ function foogallery_is_pro() {
 }
 
 /**
- * Safe function for encoding objects to json which accounts for JSON_UNESCAPED_UNICODE
+ * Safe function for encoding objects to json
  *
  * @param $value
  *
  * @return false|string
  */
 function foogallery_json_encode( $value ) {
+	$flags = JSON_UNESCAPED_SLASHES;
+
 	if ( defined( 'JSON_UNESCAPED_UNICODE' ) ) {
-		return json_encode( $value, JSON_UNESCAPED_UNICODE );
-	} else {
-		return json_encode( $value );
+		$flags = JSON_UNESCAPED_UNICODE | $flags;
 	}
+
+	$flags = apply_filters( 'foogallery_json_encode_flags', $flags );
+
+	return json_encode( $value, $flags );
 }
 
 
@@ -1488,8 +1515,8 @@ function foogallery_get_language_array_value( $setting_key, $default ) {
 function foogallery_wp_filesystem() {
 	global $wp_filesystem;
 
-	if ( !function_exists( 'WP_Filesystem' ) ) {
-		require_once( ABSPATH . 'wp-admin/includes/file.php' );
+	if ( ! function_exists( 'WP_Filesystem' ) ) {
+		require_once ABSPATH . 'wp-admin/includes/file.php';
 	}
 
 	if ( ! WP_Filesystem( true ) ) {
@@ -1520,4 +1547,349 @@ function foogallery_format_date( $timestamp, $format = null ) {
 		$datetime->setTimezone( $timezone );
 		return $datetime->format( $format );
 	}
+}
+
+/**
+ * Shortcut method to safely check if the current gallery template supports a specific feature
+ *
+ * e.g. panel_support, preview_support, common_fields_support, lazyload_support, paging_support, filtering_support
+ *
+ * @param      $feature_to_check
+ * @param bool $value_to_check
+ *
+ * @return bool
+ */
+function foogallery_current_gallery_check_template_has_supported_feature( $feature_to_check, $value_to_check = true ) {
+	global $current_foogallery;
+
+	//get out early if there is no current gallery
+	if ( !isset( $current_foogallery ) ) {
+		return false;
+	}
+
+	//check if we have previously checked before recently
+	if ( isset( $current_foogallery->supports ) && is_array( $current_foogallery->supports ) && array_key_exists( $feature_to_check, $current_foogallery->supports ) ) {
+		return $current_foogallery->supports[$feature_to_check] === $value_to_check;
+	} else {
+
+		//check if we need to init the array
+		if ( !isset( $current_foogallery->supports ) || !is_array( $current_foogallery->supports ) ) {
+			$current_foogallery->supports = array();
+		}
+
+		if ( !array_key_exists( $feature_to_check, $current_foogallery->supports ) ) {
+			$template_object = foogallery_get_gallery_template( $current_foogallery->gallery_template );
+			if ( $template_object && is_array( $template_object ) && array_key_exists( $feature_to_check, $template_object ) ) {
+				$current_foogallery->supports[$feature_to_check] = $template_object[$feature_to_check];
+			} else {
+				//this is not stored against the template config, so assume it does not have the feature support
+				$current_foogallery->supports[$feature_to_check] = false;
+			}
+		}
+		return $current_foogallery->supports[$feature_to_check] === $value_to_check;
+	}
+}
+
+/**
+ * Checks to see if we have a cached value stored against the current gallery
+ * Certain values are cached against the gallery if they have to be done multiple times, for example for each item in the gallery
+ *
+ * @param $cache_key
+ *
+ * @return bool
+ */
+function foogallery_current_gallery_has_cached_value( $cache_key ) {
+	global $current_foogallery;
+
+	//get out early if there is no current gallery
+	if ( !isset( $current_foogallery ) ) {
+		return true; //this is to ensure we short-circuit having to calculate the cached value later
+	}
+
+	return isset( $current_foogallery->cached_values ) && is_array( $current_foogallery->cached_values ) && array_key_exists( $cache_key, $current_foogallery->cached_values );
+}
+
+/**
+ * Stores a value against the current gallery
+ *
+ * @param $cache_key
+ * @param $cache_value
+ */
+function foogallery_current_gallery_set_cached_value( $cache_key, $cache_value ) {
+	global $current_foogallery;
+
+	//get out early if there is no current gallery
+	if ( !isset( $current_foogallery ) ) {
+		return;
+	}
+
+	//check if we need to init the array
+	if ( !isset( $current_foogallery->cached_values ) || !is_array( $current_foogallery->cached_values ) ) {
+		$current_foogallery->cached_values = array();
+	}
+
+	//store the value for later use
+	$current_foogallery->cached_values[$cache_key] = $cache_value;
+}
+
+/**
+ * Set the value of a cached value for the current gallery
+ *
+ * @param $cache_value
+ *
+ * @return mixed
+ */
+function foogallery_current_gallery_get_cached_value( $cache_value ) {
+	global $current_foogallery;
+
+	//get out early if there is no current gallery
+	if ( !isset( $current_foogallery ) ) {
+		return false;
+	}
+
+	if ( isset( $current_foogallery->cached_values ) && is_array( $current_foogallery->cached_values ) && array_key_exists( $cache_value, $current_foogallery->cached_values ) ) {
+		return $current_foogallery->cached_values[ $cache_value ];
+	}
+
+	return false;
+}
+
+/**
+ * functions related to thumbnail generation within FooGallery
+ */
+/**
+ * Returns the array of available engines
+ *
+ * @return array
+ */
+function foogallery_thumb_available_engines() {
+
+	$shortpixel_link = '<a href="https://shortpixel.com/otp/af/foowww" target="_blank">' . __( 'ShortPixel Adaptive Images', 'foogallery' ) . '</a>';
+
+    $engines = array(
+        'default' => array(
+	        'label'       => __( 'Default', 'foogallery' ),
+	        'description' => __( 'The default engine used to generate locally cached thumbnails.', 'foogallery' ),
+	        'class'       => 'FooGallery_Thumb_Engine_Default',
+        ),
+        'shortpixel' => array(
+	        'label'       => __( 'ShortPixel', 'foogallery' ),
+	        'description' => sprintf( __( 'Uses %s to generate all your gallery thumbnails. They will be optimized and offloaded to the ShortPixel global CDN!', 'foogallery' ), $shortpixel_link ),
+	        'class'       => 'FooGallery_Thumb_Engine_Shortpixel',
+        )
+    );
+
+    if ( foogallery_is_debug() ) {
+        $engines['dummy'] = array(
+            'label'       => __( 'Dummy', 'foogallery' ),
+            'description' => __( 'A dummy thumbnail engine that can be used for testing. (uses dummyimage.com)', 'foogallery' ),
+            'class'       => 'FooGallery_Thumb_Engine_Dummy',
+        );
+    }
+    return apply_filters( 'foogallery_thumb_available_engines', $engines );
+}
+
+/**
+ * Returns the active thumb engine, based on settings
+ *
+ * @return FooGallery_Thumb_Engine
+ */
+function foogallery_thumb_active_engine() {
+    global  $foogallery_thumb_engine ;
+    //if we already have an engine, return it early
+    if ( isset( $foogallery_thumb_engine ) && is_a( $foogallery_thumb_engine, 'FooGallery_Thumb_Engine' ) ) {
+        return $foogallery_thumb_engine;
+    }
+    $engine = foogallery_get_setting( 'thumb_engine', 'default' );
+    $engines = foogallery_thumb_available_engines();
+    
+    if ( array_key_exists( $engine, $engines ) ) {
+        $active_engine = $engines[$engine];
+        $foogallery_thumb_engine = new $active_engine['class']();
+    } else {
+        $foogallery_thumb_engine = new FooGallery_Thumb_Engine_Default();
+    }
+    
+    return $foogallery_thumb_engine;
+}
+
+/**
+ * Resizes a given image using the active thumb engine.
+ *
+ * @param       $url
+ * @param array $args
+ *
+ * @return string|void (string) url to the image
+ */
+function foogallery_thumb( $url, $args = array() ) {
+    $engine = foogallery_thumb_active_engine();
+    return $engine->generate( $url, $args );
+}
+
+/**
+ * @param $url string
+ *
+ * @return string
+ */
+function foogallery_process_image_url( $url ) {
+	return apply_filters( 'foogallery_process_image_url', $url );
+}
+
+/**
+ * Build up a link to be used in the admin with the correct utm parameters
+ *
+ * @param      $url             string The original full URL
+ * @param      $utm_campaign    string The campaign or page that the link is on
+ * @param null $utm_medium      string The medium, so in this case we want to differentiate btw free and pro
+ * @param null $utm_content     string Optional extra data that can be used to differentiate between links in the same campaign
+ * @param      $utm_source      string The platform where the traffic originates. Should probably always be wp_plugin
+ *
+ * @return string
+ */
+function foogallery_admin_url( $url, $utm_campaign, $utm_content = null, $utm_medium = null, $utm_source = 'wp_plugin') {
+	if ( is_null( $utm_source ) ) {
+		$utm_source = 'wp_plugin';
+	}
+	if ( is_null( $utm_medium ) ) {
+		if ( foogallery_is_pro() ) {
+			$utm_medium = 'foogallery_pro';
+		} else {
+			$utm_medium = 'foogallery_free';
+		}
+	}
+	$params = array(
+		'utm_source' => $utm_source,
+		'utm_medium' => $utm_medium,
+		'utm_campaign' => $utm_campaign
+	);
+
+	if ( !is_null( $utm_content ) ) {
+		$params['utm_content'] = $utm_content;
+	}
+
+	return add_query_arg( $params, $url );
+}
+
+/**
+ * Determines the best lightbox to use for a demo gallery
+ *
+ * @return string
+ */
+function foogallery_demo_content_determine_best_lightbox() {
+	if ( foogallery_is_pro() ) {
+		return 'foogallery';
+	}
+	return 'foobox';
+}
+
+/**
+ * Returns true if on the plugin activation page
+ *
+ * @return bool
+ */
+function foogallery_is_activation_page() {
+	$fs = foogallery_fs();
+
+	return $fs->is_activation_page();
+}
+
+/**
+ * Render an array of debug info
+ *
+ * @param array $array an array of data to render.
+ */
+function foogallery_render_debug_array( $array, $level = 0 ) {
+	foreach ( $array as $key => $value ) {
+		if ( ! empty( $value ) ) {
+			if ( $level > 0 ) {
+				echo esc_html( str_repeat( '   ', $level ) );
+			}
+			echo esc_html( $key ) . ' => ';
+			if ( is_array( $value ) ) {
+				echo "\r\n";
+				foogallery_render_debug_array( $value, $level + 1 );
+			} else {
+				echo esc_html( $value );
+				echo "\r\n";
+			}
+		}
+	}
+}
+
+/**
+ * Insert a new attachment from a URL.
+ *
+ * @param array $attachment_data The image attachment data.
+ *
+ * @return false|int|WP_Error
+ */
+function foogallery_import_attachment( $attachment_data ) {
+	// Include image.php so we can call wp_generate_attachment_metadata().
+	require_once ABSPATH . 'wp-admin/includes/image.php';
+
+	// Get the contents of the picture.
+	$response = wp_remote_get( $attachment_data['url'] );
+	if ( is_wp_error( $response ) ) {
+		return $response;
+	}
+
+	$contents = wp_remote_retrieve_body( $response );
+
+	// Upload and get file data.
+	$upload = wp_upload_bits( basename( $attachment_data['url'] ), null, $contents );
+	if ( array_key_exists( 'error', $upload ) && false !== $upload['error'] ) {
+		return new WP_Error( 'foogallery_import_attachment_upload_fail', $upload['error'] );
+	}
+	$guid      = $upload['url'];
+	$file      = $upload['file'];
+	$file_type = wp_check_filetype( basename( $file ), null );
+
+	// Create attachment.
+	$attachment_args = array(
+		'ID'             => 0,
+		'guid'           => $guid,
+		'post_title'     => $attachment_data['title'],
+		'post_excerpt'   => $attachment_data['caption'],
+		'post_content'   => isset( $attachment_data['description'] ) ? $attachment_data['description'] : '',
+		'post_date'      => '',
+		'post_mime_type' => isset( $attachment_data['mime_type'] ) ? $attachment_data['mime_type'] : $file_type['type'],
+	);
+
+	$attachment_args['meta_input'] = array();
+
+	if ( isset( $attachment_data['alt'] ) && ! empty( $attachment_data['alt'] ) ) {
+		$attachment_args['meta_input']['_wp_attachment_image_alt'] = $attachment_data['alt'];
+	}
+
+	if ( isset( $attachment_data['custom_url'] ) && ! empty( $attachment_data['custom_url'] ) ) {
+		$attachment_args['meta_input']['_foogallery_custom_url'] = $attachment_data['custom_url'];
+	}
+
+	if ( isset( $attachment_data['custom_target'] ) && ! empty( $attachment_data['custom_target'] ) ) {
+		$attachment_args['meta_input']['_foogallery_custom_target'] = $attachment_data['custom_target'];
+	}
+
+	// Insert the attachment.
+	$attachment_id = wp_insert_attachment( $attachment_args, $file, 0, true );
+	if ( is_wp_error( $attachment_id ) ) {
+		return $attachment_id;
+	}
+	$attachment_meta = wp_generate_attachment_metadata( $attachment_id, $file );
+	wp_update_attachment_metadata( $attachment_id, $attachment_meta );
+
+	if ( ! empty( $tags ) ) {
+		if ( taxonomy_exists( FOOGALLERY_ATTACHMENT_TAXONOMY_TAG ) ) {
+			// Save tags.
+			wp_set_object_terms( $attachment_id, $tags, FOOGALLERY_ATTACHMENT_TAXONOMY_TAG, false );
+		}
+	}
+
+	if ( ! empty( $categories ) ) {
+		if ( taxonomy_exists( FOOGALLERY_ATTACHMENT_TAXONOMY_CATEGORY ) ) {
+			// Save categories.
+			wp_set_object_terms( $attachment_id, $categories, FOOGALLERY_ATTACHMENT_TAXONOMY_CATEGORY, false );
+		}
+	}
+
+	return $attachment_id;
 }

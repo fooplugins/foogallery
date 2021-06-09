@@ -26,19 +26,18 @@ if ( !class_exists( 'FooGallery_FooGrid_Gallery_Template' ) ) {
 	define('FOOGALLERY_FOOGRID_GALLERY_TEMPLATE_PATH', plugin_dir_path( __FILE__ ));
 
 	class FooGallery_FooGrid_Gallery_Template {
+
+		const template_id = 'foogridpro';
+
 		/**
 		 * Wire up everything we need to run the extension
 		 */
 		function __construct() {
 			add_filter( 'foogallery_gallery_templates', array( $this, 'add_template' ), 100, 1 );
 			add_filter( 'foogallery_gallery_templates_files', array( $this, 'register_myself' ) );
-			add_filter( 'foogallery_located_template-foogridpro', array( $this, 'enqueue_dependencies' ) );
 
 			//get thumbnail dimensions
 			add_filter( 'foogallery_template_thumbnail_dimensions-foogridpro', array( $this, 'get_thumbnail_dimensions' ), 10, 2 );
-
-			add_filter( 'foogallery_template_load_css-foogridpro', '__return_false' );
-			add_filter( 'foogallery_template_load_js-foogridpro', '__return_false' );
 
 			//add the data options needed for grid pro
 			add_filter( 'foogallery_build_container_data_options-foogridpro', array( $this, 'add_data_options' ), 10, 3 );
@@ -48,6 +47,9 @@ if ( !class_exists( 'FooGallery_FooGrid_Gallery_Template' ) ) {
 
 			//build up the thumb dimensions from some arguments
 			add_filter( 'foogallery_calculate_thumbnail_dimensions-foogridpro', array( $this, 'build_thumbnail_dimensions_from_arguments' ), 10, 2 );
+
+			//change fields for the template
+			add_filter( 'foogallery_alter_gallery_template_field', array( $this, 'alter_gallery_template_field' ), 99, 2 );
 
 			//check if the old FooGrid is installed
 			if ( is_admin() ) {
@@ -61,6 +63,25 @@ if ( !class_exists( 'FooGallery_FooGrid_Gallery_Template' ) ) {
 
 			add_filter( 'foogallery_build_class_attribute', array( $this, 'append_classes' ), 10, 2 );
         }
+
+		/**
+		 * Alter a field
+		 *
+		 * @uses "foogallery_override_gallery_template_fields"
+		 * @param $fields
+		 * @param $template
+		 *
+		 * @return array
+		 */
+		function alter_gallery_template_field( $field, $gallery ) {
+			if ( $gallery === self::template_id ) {
+				if ( 'thumbnail_link' === $field['id'] ) {
+					unset( $field['choices']['none'] );
+				}
+			}
+
+			return $field;
+		}
 
         /*
          * Map old field values
@@ -114,16 +135,6 @@ if ( !class_exists( 'FooGallery_FooGrid_Gallery_Template' ) ) {
 		}
 
 		/**
-		 * Enqueue any script or stylesheet file dependencies that your gallery template relies on
-		 *
-		 * @param  $gallery
-		 */
-		function enqueue_dependencies( $gallery ) {
-            foogallery_enqueue_core_gallery_template_style();
-            foogallery_enqueue_core_gallery_template_script();
-		}
-
-		/**
 		 * Add our gallery template to the list of templates available for every gallery
 		 * @param $gallery_templates
 		 *
@@ -132,7 +143,7 @@ if ( !class_exists( 'FooGallery_FooGrid_Gallery_Template' ) ) {
 		function add_template( $gallery_templates ) {
 
 			$gallery_templates[] = array(
-				'slug'        => 'foogridpro',
+				'slug'        => self::template_id,
 				'name'        => __( 'Grid PRO', 'foogallery'),
                 'preview_support' => true,
                 'common_fields_support' => true,
@@ -143,6 +154,7 @@ if ( !class_exists( 'FooGallery_FooGrid_Gallery_Template' ) ) {
 				'filtering_support' => true,
 				'embed_support' => true,
 				'panel_support' => true,
+				'enqueue_core' => true,
 				'fields'	  => array(
 					array(
 						'id'      => 'thumbnail_size',
@@ -160,11 +172,31 @@ if ( !class_exists( 'FooGallery_FooGrid_Gallery_Template' ) ) {
 						)
 					),
 					array(
+						'id'      => 'aspect-ratio',
+						'section' => __( 'Panel', 'foogallery' ),
+						'subsection' => array( 'lightbox-general' => __( 'General', 'foogallery' ) ),
+						'title'   => __('Aspect Ratio', 'foogallery'),
+						'desc' => __('Select the aspect ratio the panel will use, to best suit your content.', 'foogallery'),
+						'default' => 'fg-16-9',
+						'type'    => 'radio',
+						'spacer'  => '<span class="spacer"></span>',
+						'choices' => array(
+							'fg-16-9' => __( '16:9', 'foogallery' ),
+							'fg-16-10' => __( '16:10', 'foogallery' ),
+							'fg-4-3' => __( '4:3', 'foogallery' ),
+						),
+						'row_data'=> array(
+							'data-foogallery-change-selector' => 'input',
+							'data-foogallery-value-selector' => 'input:checked',
+							'data-foogallery-preview' => 'shortcode'
+						)
+					),
+					array(
 						'id'      => 'thumbnail_link',
 						'title'   => __('Thumbnail Link', 'foogallery'),
 						'default' => 'image' ,
 						'type'    => 'thumb_link',
-						'desc'	  => __('You can choose to either link each thumbnail to the full size image or to the image\'s attachment page.', 'foogallery')
+						'desc'	  => __('You can choose to either link each thumbnail to the full size image or to the image\'s attachment page.', 'foogallery'),
 					),
 					array(
 						'id'      => 'transition',
@@ -252,7 +284,7 @@ if ( !class_exists( 'FooGallery_FooGrid_Gallery_Template' ) ) {
 						'section' => __( 'General', 'foogallery' ),
 						'title' => __('Scroll', 'foogallery'),
 						'desc' => __('Whether the page is scrolled to the selected item.', 'foogallery'),
-						'default' => 'yes',
+						'default' => 'no',
 						'type'    => 'radio',
 						'spacer'  => '<span class="spacer"></span>',
 						'choices' => array(
@@ -354,11 +386,12 @@ if ( !class_exists( 'FooGallery_FooGrid_Gallery_Template' ) ) {
 		 * @return mixed
 		 */
 		function build_thumbnail_dimensions_from_arguments( $dimensions, $arguments ) {
-            if ( array_key_exists( 'thumbnail_height', $arguments) ) {
+            if ( array_key_exists( 'thumbnail_size', $arguments) ) {
+            	$thumbnail_size = $arguments['thumbnail_size'];
                 return array(
-                    'height' => intval($arguments['thumbnail_height']),
-                    'width' => intval($arguments['thumbnail_width']),
-                    'crop' => $arguments['thumbnail_crop'] === '1'
+                    'height' => intval( $thumbnail_size['height'] ),
+                    'width' => intval( $thumbnail_size['width'] ),
+                    'crop' => $thumbnail_size['crop'] === '1'
                 );
             }
             return null;
@@ -413,16 +446,30 @@ if ( !class_exists( 'FooGallery_FooGrid_Gallery_Template' ) ) {
 		 * Adds the classes onto the container
 		 *
 		 * @param $classes
-		 * @param $foogallery
+		 * @param $foogallery FooGallery
 		 *
 		 * @return array
 		 */
 		function append_classes( $classes, $foogallery ) {
+			if ( isset( $foogallery ) && isset( $foogallery->gallery_template ) && $foogallery->gallery_template === self::template_id ) {
 
-			$columns = foogallery_gallery_template_setting( 'columns', '' );
+				//add a class for the columns
+				$columns = foogallery_gallery_template_setting( 'columns', '' );
+				if ( $columns !== '' ) {
+					$classes[] = $columns;
+				}
 
-			if ( $columns !== '' ) {
-				$classes[] = $columns;
+				//add a class for the aspect ratio
+				$aspect_ratio = foogallery_gallery_template_setting( 'aspect-ratio', '' );
+				if ( $aspect_ratio !== '' ) {
+					$classes[] = $aspect_ratio;
+				}
+
+				//add a class for transition in the panel
+				$transition = foogallery_gallery_template_setting( 'lightbox_transition', '' );
+				if ( $transition !== '' ) {
+					$classes[] = "foogrid-transition-" . $transition;
+				}
 			}
 
 			return $classes;

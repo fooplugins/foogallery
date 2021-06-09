@@ -11,7 +11,7 @@ class FooGallery_Silent_Installer_Skin extends WP_Upgrader_Skin {
 	public function footer() { }
 	public function before() { }
 	public function after() { }
-	public function feedback( $feedback ) {
+	public function feedback( $feedback, ...$args  ) {
 		$this->feedback = $feedback;
 	}
 }

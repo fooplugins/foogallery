@@ -16,7 +16,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Fields' ) ) {
 		 * @param       $gallery FooGallery
 		 * @param       $template
 		 */
-		function render_gallery_template_field( $field = array(), $gallery, $template ) {
+		function render_gallery_template_field( $field, $gallery, $template ) {
 			$template_slug = $template['slug'];
 
 			//only declare up front so no debug warnings are shown

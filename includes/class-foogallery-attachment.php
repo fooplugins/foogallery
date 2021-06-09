@@ -26,6 +26,7 @@ if ( ! class_exists( 'FooGalleryAttachment' ) ) {
 		private function set_defaults() {
 			$this->_post = null;
 			$this->ID = 0;
+			$this->type = 'image'; // set the default type to image.
 			$this->title = '';
 			$this->caption = '';
 			$this->description = '';

@@ -9,6 +9,10 @@ if ( ! class_exists( 'FooGallery_Pro_Paging' ) ) {
 		function __construct() {
 			add_filter( 'foogallery_gallery_template_paging_type_choices', array( $this, 'add_pro_paging_choices' ) );
 
+			add_filter( 'foogallery_pagination_types_require_placeholders', array( $this, 'add_pro_pagination_types_require_placeholders' ) );
+
+			add_filter( 'foogallery_pagination_format_type_for_placeholder', array( $this, 'format_pro_types_for_placeholders' ) );
+
 			if ( is_admin() ) {
 				//add a global setting to change the Load More button text
 				add_filter( 'foogallery_admin_settings_override', array( $this, 'add_language_settings' ), 40 );
@@ -149,6 +153,34 @@ if ( ! class_exists( 'FooGallery_Pro_Paging' ) ) {
 			}
 
 			return $il8n;
+		}
+
+		/**
+		 * Formats the type used in the pagination placeholder
+		 *
+		 * @param $paging_type
+		 *
+		 * @return mixed|string
+		 */
+		function format_pro_types_for_placeholders( $paging_type ) {
+			if ( 'loadMore' === $paging_type ) {
+				$paging_type = 'load-more';
+			}
+
+			return $paging_type;
+		}
+
+		/**
+		 * Add the pro types that require placeholders
+		 *
+		 * @param $types
+		 *
+		 * @return mixed
+		 */
+		function add_pro_pagination_types_require_placeholders( $types ) {
+			$types[] = 'pagination';
+			$types[] = 'loadMore';
+			return $types;
 		}
 
 		/**

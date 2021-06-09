@@ -5,12 +5,26 @@
 
 if ( ! class_exists( 'FooGallery_Admin_Menu' ) ) {
 
-
-
 	class FooGallery_Admin_Menu {
 
 		function __construct() {
 			add_action( 'admin_menu', array( $this, 'register_menu_items' ) );
+
+			add_action( 'wp_ajax_foogallery_admin_import_demos', array( $this, 'create_demo_galleries' ) );
+
+			add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
+		}
+
+		/**
+		 * Load the foogallery assets on the help page
+		 *
+		 * @param $hook
+		 */
+		function enqueue_scripts( $hook ) {
+			if ( 'foogallery_page_foogallery-help' === $hook ) {
+				foogallery_enqueue_core_gallery_template_script( array('jquery', 'masonry' ) );
+				foogallery_enqueue_core_gallery_template_style();
+			}
 		}
 
 		/**
@@ -101,6 +115,19 @@ if ( ! class_exists( 'FooGallery_Admin_Menu' ) ) {
 
 		function foogallery_systeminfo() {
 			require_once FOOGALLERY_PATH . 'includes/admin/view-system-info.php';
+		}
+
+		function create_demo_galleries() {
+			if ( check_admin_referer( 'foogallery_admin_import_demos' ) ) {
+
+				$importer = new FooGallery_Admin_Demo_Content();
+				$results = $importer->import_demo_content();
+
+				foogallery_set_setting( 'demo_content', 'on' );
+
+				echo sprintf( __( '%d sample images imported, and %d demo galleries created!', 'foogallery' ), $results['attachments'], $results['galleries'] );
+			}
+			die();
 		}
 	}
 }

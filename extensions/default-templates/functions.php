@@ -21,11 +21,21 @@ function foogallery_enqueue_core_gallery_template_style() {
 
 /**
  * Enqueue the core FooGallery script used by all default templates
+ *
+ * @param string[] $deps
  */
-function foogallery_enqueue_core_gallery_template_script() {
+function foogallery_enqueue_core_gallery_template_script( $deps = null ) {
+	if ( isset( $deps ) ) {
+		//ensure we deregister the previous one
+		wp_deregister_script( 'foogallery-core' );
+	} else {
+		//set the default
+		$deps = array( 'jquery' );
+	}
+
 	$filename = foogallery_is_debug() ? '' : '.min';
 	$js = apply_filters( 'foogallery_core_gallery_script', FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_SHARED_URL . 'js/foogallery' . $filename . '.js' );
-	wp_enqueue_script( 'foogallery-core', $js, array('jquery'), FOOGALLERY_VERSION );
+	wp_enqueue_script( 'foogallery-core', $js, $deps, FOOGALLERY_VERSION );
 	do_action( 'foogallery_enqueue_script-core', $js );
 
 	if ( foogallery_get_setting( 'custom_js', '' ) !== '' ) {

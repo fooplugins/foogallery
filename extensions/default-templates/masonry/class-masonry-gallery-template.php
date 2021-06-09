@@ -5,6 +5,9 @@ if ( !class_exists( 'FooGallery_Masonry_Gallery_Template' ) ) {
 	define('FOOGALLERY_MASONRY_GALLERY_TEMPLATE_URL', plugin_dir_url( __FILE__ ));
 
 	class FooGallery_Masonry_Gallery_Template {
+
+		const template_id = 'masonry';
+
 		/**
 		 * Wire up everything we need to run the extension
 		 */
@@ -32,7 +35,61 @@ if ( !class_exists( 'FooGallery_Masonry_Gallery_Template' ) ) {
 
 			//remove the captions if the captions are below thumbs
 			add_filter( 'foogallery_build_attachment_html_caption', array( $this, 'remove_captions' ), 10, 3 );
+
+			//add a style block for the gallery based on the field settings
+			add_action( 'foogallery_loaded_template_before', array( $this, 'add_style_block' ), 10, 1 );
+
+			add_filter( 'foogallery_build_class_attribute', array( $this, 'override_class_attributes' ), 99, 2 );
         }
+
+		/**
+		 * Override the classes for the layout
+		 *
+		 * @param $classes array
+		 * @param $gallery FooGallery
+		 *
+		 * @return array
+		 */
+		function override_class_attributes( $classes, $gallery ) {
+			if ( self::template_id === $gallery->gallery_template ) {
+				$classes[] = 'fg-' . foogallery_gallery_template_setting( 'layout', 'fixed' );
+			}
+
+			return $classes;
+		}
+
+		/**
+		 * Add a style block based on the field settings
+		 *
+		 * @param $gallery FooGallery
+		 */
+		function add_style_block( $gallery ) {
+			if ( self::template_id !== $gallery->gallery_template ) {
+				return;
+			}
+
+			$id = $gallery->container_id();
+			$layout = foogallery_gallery_template_setting( 'layout', 'fixed' );
+
+			//get out early if the layout is not fixed
+			if ( 'fixed' !== $layout ) {
+				return;
+			}
+
+			$thumbnail_width = intval( foogallery_gallery_template_setting( 'thumbnail_width', 250 ) );
+			$gutter_width = intval( foogallery_gallery_template_setting( 'gutter_width', 10 ) );
+
+			?>
+			<style>
+                #<?php echo $id; ?>.fg-masonry .fg-item {
+                    width: <?php echo $thumbnail_width; ?>px;
+                    margin-right: <?php echo $gutter_width; ?>px;
+                    margin-bottom: <?php echo $gutter_width; ?>px;
+                }
+			</style>
+			<?php
+		}
+
 
 		/**
 		 * Register myself so that all associated JS and CSS files can be found and automatically included
@@ -53,7 +110,7 @@ if ( !class_exists( 'FooGallery_Masonry_Gallery_Template' ) ) {
 		 */
 		function add_template( $gallery_templates ) {
 			$gallery_templates[] = array(
-                'slug'        => 'masonry',
+                'slug'        => self::template_id,
                 'name'        => __( 'Masonry Image Gallery', 'foogallery' ),
 				'preview_support' => true,
 				'common_fields_support' => true,
@@ -70,7 +127,7 @@ if ( !class_exists( 'FooGallery_Masonry_Gallery_Template' ) ) {
                         'section' => __( 'General', 'foogallery' ),
                         'type'    => 'number',
                         'class'   => 'small-text',
-                        'default' => 150,
+                        'default' => 250,
                         'step'    => '1',
                         'min'     => '0',
 						'row_data'=> array(
@@ -86,10 +143,11 @@ if ( !class_exists( 'FooGallery_Masonry_Gallery_Template' ) ) {
                         'type'    => 'radio',
                         'choices' => array(
                             'fixed'  => __( 'Fixed Width', 'foogallery' ),
-                            'col2'   => __( '2 Columns', 'foogallery' ),
-                            'col3'   => __( '3 Columns', 'foogallery' ),
+                            'col6'   => __( '6 Columns', 'foogallery' ),
+                            'col5'   => __( '5 Columns', 'foogallery' ),
                             'col4'   => __( '4 Columns', 'foogallery' ),
-                            'col5'   => __( '5 Columns', 'foogallery' )
+                            'col3'   => __( '3 Columns', 'foogallery' ),
+                            'col2'   => __( '2 Columns', 'foogallery' ),
                         ),
                         'default' => 'fixed',
                         'row_data'=> array(
@@ -97,6 +155,23 @@ if ( !class_exists( 'FooGallery_Masonry_Gallery_Template' ) ) {
                             'data-foogallery-value-selector' => 'input:checked',
 							'data-foogallery-preview' => 'shortcode'
                         )
+                    ),
+                    array(
+	                    'id'      => 'horizontal',
+	                    'title'   => __( 'Horizontal Layout', 'foogallery' ),
+	                    'desc'    => __( 'You can choose to lay out items to (mostly) maintain horizontal left-to-right order.', 'foogallery' ),
+	                    'section' => __( 'General', 'foogallery' ),
+	                    'type'    => 'radio',
+	                    'choices' => array(
+		                    ''  => __( 'Disabled', 'foogallery' ),
+		                    'yes'   => __( 'Try to maintain lef-to-right order', 'foogallery' ),
+	                    ),
+	                    'default' => '',
+	                    'row_data'=> array(
+		                    'data-foogallery-change-selector' => 'input:radio',
+		                    'data-foogallery-value-selector' => 'input:checked',
+		                    'data-foogallery-preview' => 'shortcode'
+	                    )
                     ),
                     array(
                         'id'      => 'gutter_width',
@@ -161,7 +236,7 @@ if ( !class_exists( 'FooGallery_Masonry_Gallery_Template' ) ) {
                     ),
                     array(
                         'id'      => 'thumbnail_link',
-                        'title'   => __( 'Thumb Link', 'foogallery' ),
+                        'title'   => __( 'Thumbnail Link', 'foogallery' ),
                         'default' => 'image' ,
                         'type'    => 'thumb_link',
                         'desc'	  => __( 'You can choose to link each thumbnail to the full size image, or to the image\'s attachment page, or you can choose to not link to anything', 'foogallery' ),
@@ -195,7 +270,7 @@ if ( !class_exists( 'FooGallery_Masonry_Gallery_Template' ) ) {
 
 			//enqueue core files
 			foogallery_enqueue_core_gallery_template_style();
-			foogallery_enqueue_core_gallery_template_script();
+			foogallery_enqueue_core_gallery_template_script( array('jquery', 'masonry' ) );
 		}
 
 		/**
@@ -227,12 +302,15 @@ if ( !class_exists( 'FooGallery_Masonry_Gallery_Template' ) ) {
 		 */
 		function add_masonry_options($options, $gallery, $attributes) {
 			$layout = foogallery_gallery_template_setting( 'layout', 'fixed' );
-			$options['template']['layout'] = $layout;
 			if ( 'fixed' === $layout ) {
-				$width = foogallery_gallery_template_setting( 'thumbnail_width', '150' );
+				$width = foogallery_gallery_template_setting( 'thumbnail_width', '250' );
 				$gutter_width = foogallery_gallery_template_setting( 'gutter_width', '10' );
 				$options['template']['columnWidth'] = intval($width);
 				$options['template']['gutter'] = intval($gutter_width);
+			}
+			$horizontal = foogallery_gallery_template_setting( 'horizontal', '' );
+			if ( 'yes' === $horizontal ) {
+				$options['template']['horizontalOrder'] = true;
 			}
 			return $options;
 		}
@@ -264,7 +342,7 @@ if ( !class_exists( 'FooGallery_Masonry_Gallery_Template' ) ) {
          */
         function build_gallery_template_arguments( $args ) {
             $args = array(
-                'width' => foogallery_gallery_template_setting( 'thumbnail_width', '150' ),
+                'width' => foogallery_gallery_template_setting( 'thumbnail_width', '250' ),
                 'link' => foogallery_gallery_template_setting( 'thumbnail_link', 'image' ),
                 'crop' => false
             );

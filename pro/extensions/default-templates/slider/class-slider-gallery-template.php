@@ -11,8 +11,6 @@ if ( !class_exists( 'FooGallery_Slider_Gallery_Template' ) ) {
 
 			add_filter( 'foogallery_gallery_templates_files', array( $this, 'register_myself' ) );
 
-			add_filter( 'foogallery_located_template-slider', array( $this, 'enqueue_dependencies' ) );
-
 			//change fields for the template
 			add_filter( 'foogallery_override_gallery_template_fields-slider', array( $this, 'change_common_thumbnail_fields' ), 10, 2 );
 
@@ -31,7 +29,7 @@ if ( !class_exists( 'FooGallery_Slider_Gallery_Template' ) ) {
 			//build up the arguments needed for rendering this template
 			add_filter( 'foogallery_gallery_template_arguments-slider', array( $this, 'build_gallery_template_arguments' ) );
 
-			add_filter( 'foogallery_build_class_attribute', array( $this, 'remove_classes' ), 99, 2 );
+			add_filter( 'foogallery_build_class_attribute', array( $this, 'adjust_classes' ), 99, 2 );
 
 			//set the settings icon for lightbox
 			add_filter( 'foogallery_gallery_settings_metabox_section_icon', array( $this, 'add_section_icons' ) );
@@ -86,7 +84,28 @@ if ( !class_exists( 'FooGallery_Slider_Gallery_Template' ) ) {
 				'mandatory_classes' => 'fg-slider',
 				'embed_support' => true,
 				'panel_support' => true,
+				'enqueue_core' => true,
 				'fields'	  => array(
+					array(
+						'id'      => 'aspect-ratio',
+						'section' => __( 'Slider', 'foogallery' ),
+						'subsection' => array( 'lightbox-general' => __( 'General', 'foogallery' ) ),
+						'title'   => __('Aspect Ratio', 'foogallery'),
+						'desc' => __('Select the aspect ratio the slider will use, to best suit your content.', 'foogallery'),
+						'default' => 'fg-16-9',
+						'type'    => 'radio',
+						'spacer'  => '<span class="spacer"></span>',
+						'choices' => array(
+							'fg-16-9' => __( '16:9', 'foogallery' ),
+							'fg-16-10' => __( '16:10', 'foogallery' ),
+							'fg-4-3' => __( '4:3', 'foogallery' ),
+						),
+						'row_data'=> array(
+							'data-foogallery-change-selector' => 'input',
+							'data-foogallery-value-selector' => 'input:checked',
+							'data-foogallery-preview' => 'shortcode'
+						)
+					),
 					array(
 						'id'      => 'slider_help',
 						'title'   => __('Help', 'foogallery'),
@@ -110,15 +129,6 @@ if ( !class_exists( 'FooGallery_Slider_Gallery_Template' ) ) {
 		function register_myself( $extensions ) {
 			$extensions[] = __FILE__;
 			return $extensions;
-		}
-
-		/**
-		 * Enqueue scripts that the template relies on
-		 */
-		function enqueue_dependencies() {
-			//enqueue core files
-			foogallery_enqueue_core_gallery_template_style();
-			foogallery_enqueue_core_gallery_template_script();
 		}
 
 		/**
@@ -156,6 +166,7 @@ if ( !class_exists( 'FooGallery_Slider_Gallery_Template' ) ) {
 			$fields_to_remove[] = 'captions_type';
 			$fields_to_remove[] = 'caption_custom_template';
 			$fields_to_remove[] = 'caption_custom_help';
+			$fields_to_remove[] = 'caption_alignment';
 
 			//$fields_to_remove[] = 'lightbox_caption_override';
 
@@ -190,8 +201,6 @@ if ( !class_exists( 'FooGallery_Slider_Gallery_Template' ) ) {
 				} else if ( 'video_autoplay' === $field['id'] ) {
 					$field['title'] = __( 'Autoplay', 'foogallery' );
 					$field['desc'] = __( 'Try to autoplay the video when selected. This will only work with videos hosted on Youtube or Vimeo.', 'foogallery' );
-				} else if ( 'lightbox_fit_media' === $field['id'] ) {
-					$field['default'] = 'yes';
 				} else if ( 'lightbox_buttons_display' === $field['id'] ) {
 					$field['default'] = 'yes';
 				} else if ( 'lightbox_thumbs' === $field['id'] ) {
@@ -200,11 +209,7 @@ if ( !class_exists( 'FooGallery_Slider_Gallery_Template' ) ) {
 				} else if ( 'lightbox_thumbs_captions' === $field['id'] ) {
 					$field['title'] = __( 'Thumbnail Captions', 'foogallery' );
 					$field['default'] = 'yes';
-				} else if ( 'lightbox_info_position' === $field['id'] ) {
-					$field['default'] = 'top';
 				} else if ( 'lightbox_hover_buttons' === $field['id'] ) {
-					$field['default'] = 'yes';
-				} else if ( 'lightbox_thumbs_bestfit' === $field['id'] ) {
 					$field['default'] = 'yes';
 				} else if ( 'lightbox_caption_override_title' === $field['id'] ) {
 					$field['title'] = __( 'Caption Title', 'foogallery' );
@@ -378,16 +383,21 @@ if ( !class_exists( 'FooGallery_Slider_Gallery_Template' ) ) {
 		}
 
 		/**
-		 * Remove certain classes from the container only if the slider gallery template is in use
+		 * Adjust classes for the slider
+		 *
+		 * Removes certain classes from the container
+		 * Adds an aspect ratio setting class
+		 *
 		 *
 		 * @param $classes
 		 * @param $gallery
 		 *
 		 * @return array
 		 */
-		function remove_classes( $classes, $gallery ) {
+		function adjust_classes( $classes, $gallery ) {
 			if ( 'slider' === $gallery->gallery_template ) {
 
+				//remove unneeded classes
 				if ( ( $key = array_search( 'slider', $classes ) ) !== false ) {
 					unset( $classes[$key] );
 				}
@@ -405,6 +415,12 @@ if ( !class_exists( 'FooGallery_Slider_Gallery_Template' ) ) {
 					if ( ( $key = array_search( 'fg-caption-hover', $classes ) ) !== false ) {
 						unset( $classes[$key] );
 					}
+				}
+
+				//add a class for aspect ratio
+				$aspect_ratio = foogallery_gallery_template_setting( 'aspect-ratio', '' );
+				if ( $aspect_ratio !== '' ) {
+					$classes[] = $aspect_ratio;
 				}
 			}
 

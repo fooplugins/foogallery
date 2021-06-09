@@ -2,7 +2,7 @@ import './editor.scss';
 
 const { __ } = wp.i18n;
 const { Component } = wp.element;
-const { Button, IconButton } = wp.components;
+const { Button } = wp.components;
 const { InspectorControls } = !!wp.blockEditor ? wp.blockEditor : wp.editor;
 
 export default class FooGalleryEditInspectorControls extends Component {
@@ -11,8 +11,8 @@ export default class FooGalleryEditInspectorControls extends Component {
 		return (
 				<InspectorControls>
 					<div className="foogallery-inspector-controls__button-container">
-						{ canEdit ? <IconButton isDefault isLarge onClick={ onRequestGalleryEdit } icon="edit" label={ edit }/> : null }&nbsp;
-						<Button isPrimary isLarge onClick={ onRequestModalOpen }>{ select }</Button>
+						{ canEdit ? <Button isSecondary onClick={ onRequestGalleryEdit } icon="edit" label={ edit }/> : null }&nbsp;
+						<Button isPrimary onClick={ onRequestModalOpen }>{ select }</Button>
 					</div>
 					{ children }
 				</InspectorControls>
