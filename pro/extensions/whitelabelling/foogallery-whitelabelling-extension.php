@@ -16,9 +16,6 @@ if ( !class_exists('Whitelabelling_FooGallery_Extension') ) {
 		    
 		    $this->foogallery_instance = FooGallery_Plugin::get_instance();
 
-			//setup text domain
-			$this->foogallery_instance->load_plugin_textdomain();
-
 			add_filter( 'foogallery_plugin_name', array( $this, 'plugin_name' ) );
 			add_filter( 'foogallery_gallery_shortcode_tag', array( $this, 'shortcode_tag' ) );
 
@@ -144,17 +141,6 @@ if ( !class_exists('Whitelabelling_FooGallery_Extension') ) {
 		        'type'    => 'text',
 		        'tab'     => 'whitelabelling'
 	        );
-
-			$shortcode = '<code>[' . foogallery_gallery_shortcode_tag() . ']</code>';
-
-			$settings[] = array(
-				'id'      => 'whitelabelling_shortcode',
-				'title'   => __('Shortcode', 'foogallery-whitelabelling'),
-				'desc'    => sprintf( __('Override the default shortcode to something more client friendly, for example "progallery". (please do not include square brackets)<br />The shortcode currently looks like %s.', 'foogallery-whitelabelling'), $shortcode ),
-				'default' => 'foogallery',
-				'type'    => 'text',
-				'tab'     => 'whitelabelling'
-			);
 
 			$tabs['menu'] = __( 'Menu', 'foogallery-whitelabelling' );
 
