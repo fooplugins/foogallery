@@ -27,7 +27,6 @@ if ( !class_exists('Whitelabelling_FooGallery_Extension') ) {
 				//extensions
 				add_filter( 'foogallery_admin_extensions_tagline', array($this, 'admin_extensions_tagline') );
 				add_filter( 'foogallery_extension_categories', array($this, 'alter_extension_categories') );
-				add_filter( 'foogallery_extension_api_endpoint', array($this, 'change_extensions_endpoint') );
 
 				//move menu under media
 				add_filter( 'foogallery_gallery_posttype_register_args', array($this, 'remove_posttype_menus') );
@@ -47,11 +46,6 @@ if ( !class_exists('Whitelabelling_FooGallery_Extension') ) {
 
 		}
 
-		function get_setting( $key, $default = '' ) {
-			$override = foogallery_get_setting( $key, '' );
-			return empty( $override ) ? $default : $override;
-		}
-
 		function plugin_name( $default ) {
 			return foogallery_get_setting( 'whitelabelling_name', $default );
 		}
@@ -62,14 +56,6 @@ if ( !class_exists('Whitelabelling_FooGallery_Extension') ) {
 
 		function alter_extension_categories( $categories ) {
 			return $categories;
-		}
-
-		function change_extensions_endpoint( $default ) {
-			$override = foogallery_get_setting( 'whitelabelling_extensions_endpoint', $default );
-			if ( $override != $default && ! empty( $override ) ) {
-				return $override;
-			}
-			return $default;
 		}
 
 		function admin_extensions_tagline( $default ) {
