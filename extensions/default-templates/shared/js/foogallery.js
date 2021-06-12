@@ -9405,7 +9405,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 		 */
 		createPlaceholder: function(width, height){
 			if (_is.number(width) && _is.number(height)){
-				return "data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%20" + width + "%20" + height + "%22%3E%3C/svg%3E";
+				return "data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20width=%22" + width + "%22%20height=%22" + height + "%22%20viewBox=%220%200%20" + width + "%20" + height + "%22%3E%3C/svg%3E";
 			}
 			return "";
 		},
