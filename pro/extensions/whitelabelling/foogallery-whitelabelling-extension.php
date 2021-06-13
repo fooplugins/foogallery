@@ -2,35 +2,10 @@
 /**
  * FooGallery WhiteLabelling Extension
  */
-add_filter( 'foogallery_available_extensions', 'foogallery_whitelabelling_admin_extensions_list_register' );
 
-/**
- * Filter - Add Whitelabelling extension to extensions list
- *
- * @param $extensions_list
- *
- * @return array
- */
-function foogallery_whitelabelling_admin_extensions_list_register( $extensions_list ) {
-    $extensions_list[] = array(
-        'slug' => 'foogallery-whitelabelling',
-        'class' => 'Whitelabelling_FooGallery_Extension',
-        'categories' => array( 'Premium' ),
-        'title' => 'WhiteLabelling',
-        'description' => 'Rebrand FooGallery to whatever you like for your clients. Ideal for freelancers and agencies.',
-        'author' => 'FooPlugins',
-        'author_url' => 'https://fooplugins.com',
-        'thumbnail' => 'https://via.placeholder.com/400x300', // TODO: put extension image
-        'tags' => array( 'premium' ),
-        'source' => 'bundled'
-    );
+if ( ! class_exists('FooGallery_Pro_Whitelabelling_Extension') ) {
 
-    return $extensions_list;
-}
-
-if ( !class_exists('Whitelabelling_FooGallery_Extension') ) {
-
-	class Whitelabelling_FooGallery_Extension {
+	class FooGallery_Pro_Whitelabelling_Extension {
 
 	    protected $foogallery_instance = null;
 	    

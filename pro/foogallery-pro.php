@@ -7,7 +7,6 @@ require_once FOOGALLERY_PATH . 'pro/functions.php';
 require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-presets.php';
 require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-paging.php';
 require_once FOOGALLERY_PATH . 'pro/extensions/default-templates/class-foogallery-pro-default-templates.php';
-require_once FOOGALLERY_PATH . 'pro/extensions/whitelabelling/foogallery-whitelabelling-extension.php';
 require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-bulk-copy.php';
 require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-gallery-override.php';
 require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-filtering.php';
@@ -38,6 +37,9 @@ require_once FOOGALLERY_PATH . 'pro/includes/protection/class-foogallery-waterma
 require_once FOOGALLERY_PATH . 'pro/includes/protection/class-foogallery-image-editor-helper-base.php';
 require_once FOOGALLERY_PATH . 'pro/includes/protection/class-foogallery-image-editor-helper-gd.php';
 require_once FOOGALLERY_PATH . 'pro/includes/protection/class-foogallery-image-editor-helper-imagick.php';
+
+require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-whitelabelling.php';
+require_once FOOGALLERY_PATH . 'pro/extensions/whitelabelling/foogallery-whitelabelling-extension.php';
 
 /**
  * FooGallery PRO Main Class
@@ -85,6 +87,7 @@ if ( ! class_exists( 'FooGallery_Pro' ) ) {
 			}
 			if ( foogallery_fs()->is_plan_or_trial( 'commerce' ) ) {
 				new FooGallery_Pro_Protection();
+				new FooGallery_Pro_Whitelabelling();
 			}
 		}
 	}
