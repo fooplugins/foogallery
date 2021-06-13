@@ -64,15 +64,16 @@ if ( ! class_exists( 'FooGallery_Thumb_Generator' ) ) {
 		 *
 		 * @param string $image_url
 		 * @param array  $args      . (default: array())
+		 * @param bool   $override_args
 		 */
-		public function __construct( $image_url, $args = array() ) {
+		public function __construct( $image_url, $args = array(), $override_args = false ) {
 			$this->image_url = $image_url;
 
 			//converts URL's to paths if needed
 			$this->set_file_path( $image_url );
 
 			if ( $args ) {
-				$this->set_args( $args );
+				$this->set_args( $args, $override_args );
 			}
 		}
 
@@ -131,44 +132,54 @@ if ( ! class_exists( 'FooGallery_Thumb_Generator' ) ) {
 		 * Parse the args and merge with defaults
 		 *
 		 * @param array $args
+		 * @param bool  $override_args
 		 */
-		public function set_args( $args ) {
+		public function set_args( $args, $override_args = false ) {
+			if ( $override_args ) {
+				// Just set the args and do no more.
+				$this->args = $args;
+			} else {
 
-			//these are the default arguments
-			$arg_defaults = apply_filters( 'foogallery_thumb_default_args', array(
-				'width'                   => 0,
-				'height'                  => 0,
-				'crop'                    => false,
-				'crop_from_position'      => foogallery_get_setting( 'default_crop_position', FooGallery_Crop_Position::CROP_POSITION_DEFAULT ),
-				'resize'                  => true,
-				'watermark_options'       => array(),
-				'cache'                   => true,
-				'skip_remote_check'       => false,  //not used. Only kept in to preserve the generated cache file name
-				'default'                 => null,
-				'jpeg_quality'            => 90,
-				'resize_animations'       => true,
-				'return'                  => 'url',  //not used. Only kept in to preserve the generated cache file name
-				'custom'                  => false,  //not used. Only kept in to preserve the generated cache file name
-				'background_fill'         => null,
-				'output_file'             => false,
-				'cache_with_query_params' => false   //not used. Only kept in to preserve the generated cache file name
-			) );
+				//these are the default arguments
+				$arg_defaults = apply_filters( 'foogallery_thumb_default_args', array(
+					'width'                   => 0,
+					'height'                  => 0,
+					'crop'                    => false,
+					'crop_from_position'      => foogallery_get_setting( 'default_crop_position', FooGallery_Crop_Position::CROP_POSITION_DEFAULT ),
+					'resize'                  => true,
+					'watermark_options'       => array(),
+					'cache'                   => true,
+					'skip_remote_check'       => false,
+					//not used. Only kept in to preserve the generated cache file name
+					'default'                 => null,
+					'jpeg_quality'            => 90,
+					'resize_animations'       => true,
+					'return'                  => 'url',
+					//not used. Only kept in to preserve the generated cache file name
+					'custom'                  => false,
+					//not used. Only kept in to preserve the generated cache file name
+					'background_fill'         => null,
+					'output_file'             => false,
+					'cache_with_query_params' => false
+					//not used. Only kept in to preserve the generated cache file name
+				) );
 
-			$args = wp_parse_args( $args, $arg_defaults );
+				$args = wp_parse_args( $args, $arg_defaults );
 
-			// Cast some args
-			$args['crop']   = (bool) $args['crop'];
-			$args['resize'] = (bool) $args['resize'];
-			$args['cache']  = (bool) $args['cache'];
-			$args['width']  = (int) $args['width'];
-			$args['height'] = (int) $args['height'];
+				// Cast some args
+				$args['crop']   = (bool) $args['crop'];
+				$args['resize'] = (bool) $args['resize'];
+				$args['cache']  = (bool) $args['cache'];
+				$args['width']  = (int) $args['width'];
+				$args['height'] = (int) $args['height'];
 
-			// Format the crop from position arg
-			if ( is_string( $args['crop_from_position'] ) && $args['crop_from_position'] ) {
-				$args['crop_from_position'] = explode( ',', $args['crop_from_position'] );
+				// Format the crop from position arg
+				if ( is_string( $args['crop_from_position'] ) && $args['crop_from_position'] ) {
+					$args['crop_from_position'] = explode( ',', $args['crop_from_position'] );
+				}
+
+				$this->args = apply_filters( 'foogallery_thumb_args', $args );
 			}
-
-			$this->args = apply_filters( 'foogallery_thumb_args', $args );
 		}
 
 		/**
@@ -215,16 +226,19 @@ if ( ! class_exists( 'FooGallery_Thumb_Generator' ) ) {
 				return dirname( $this->get_arg( 'output_file' ) );
 			}
 
-			//check we have a path first
+			// check we have a path first.
 			if ( ! $this->file_path ) {
 				return '';
 			}
 
-			//get a safe filename
+			// get a safe filename.
 			$original_filename = basename( $this->file_path );
-			$parts = explode( '.', $original_filename );
+			$parts             = explode( '.', $original_filename );
 			array_pop( $parts );
 			$filename_nice = implode( '_', $parts );
+			if ( $this->get_arg( 'override_directory' ) ) {
+				$filename_nice = $this->get_arg( 'override_directory' );
+			}
 
 			$upload_dir = wp_upload_dir();
 
@@ -235,7 +249,7 @@ if ( ! class_exists( 'FooGallery_Thumb_Generator' ) ) {
 
 			} elseif ( strpos( $this->file_path, WP_CONTENT_DIR ) === 0 ) {
 
-				$sub_dir  = dirname( str_replace( WP_CONTENT_DIR, '', $this->file_path ) );
+				$sub_dir = dirname( str_replace( WP_CONTENT_DIR, '', $this->file_path ) );
 				$new_dir = $upload_dir['basedir'] . '/cache' . trailingslashit( $sub_dir ) . $filename_nice;
 
 			} elseif ( strpos( $this->file_path, self::get_home_path() ) === 0 ) {
@@ -244,19 +258,16 @@ if ( ! class_exists( 'FooGallery_Thumb_Generator' ) ) {
 
 			} else {
 
-				$parts = parse_url( $this->file_path );
+				$parts = wp_parse_url( $this->file_path );
 
 				if ( ! empty( $parts['host'] ) ) {
 					$new_dir = $upload_dir['basedir'] . '/cache/remote/' . sanitize_title( $parts['host'] );
 				} else {
 					$new_dir = $upload_dir['basedir'] . '/cache/remote';
 				}
-
 			}
 
-			$new_dir = str_replace( '/cache/cache', '/cache', $new_dir );
-
-			return $new_dir;
+			return str_replace( '/cache/cache', '/cache', $new_dir );
 		}
 
 		/**
@@ -305,6 +316,15 @@ if ( ! class_exists( 'FooGallery_Thumb_Generator' ) ) {
 			}
 
 			return strtolower( $ext );
+		}
+
+		/**
+		 * Returns the URL of the generated file.
+		 *
+		 * @return string
+		 */
+		public function get_cache_file_url() {
+			return $this->convert_path_to_url( $this->get_cache_file_path() );
 		}
 
 		/**

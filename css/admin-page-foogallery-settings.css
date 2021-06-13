@@ -6,3 +6,40 @@
 	width: 500px;
 	height: 300px;
 }
+
+.foogallery_settings_radioicon label {
+	display:inline-block;
+	margin-right:10px;
+	border:solid 3px transparent;
+	background:#aaa;
+	border-radius: 3px;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	padding:5px;
+	line-height: 0;
+	margin-bottom: 10px;
+}
+
+.foogallery_settings_radioicon input:checked + label {
+	border:solid 3px #444;
+	background: #888;
+}
+
+.foogallery_settings_radioicon label:hover {
+	border:solid 3px #444;
+}
+
+.foogallery_settings_short_text {
+	width: 5em;
+}
+
+.foogallery_settings_long_text {
+	width: 50em;
+}
+
+tr.foogallery_settings_radio td input[type="radio"] {
+	margin: 0.25rem 0.25rem 0.5rem 0;
+}
+tr.foogallery_settings_radio td input[type="radio"] + label {
+	vertical-align: text-top;
+}

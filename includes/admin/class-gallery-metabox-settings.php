@@ -48,6 +48,8 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings' ) ) {
 			$settings->render_hidden_gallery_template_selector();
 
 			$settings->render_gallery_settings();
+
+			do_action( 'foogallery_after_render_gallery_settings_metabox', $gallery );
 		}
 
         /***
