@@ -7,23 +7,14 @@ if ( ! class_exists('FooGallery_Pro_Whitelabelling_Extension') ) {
 
 	class FooGallery_Pro_Whitelabelling_Extension {
 
-	    protected $foogallery_instance = null;
-	    
 		/**
 		 * Wire up everything we need to run the extension
 		 */
 		function __construct() {
-		    
-		    $this->foogallery_instance = FooGallery_Plugin::get_instance();
-
 			add_filter( 'foogallery_plugin_name', array( $this, 'plugin_name' ) );
+			add_filter( 'foogallery_gallery_shortcode_tag', array( $this, 'shortcode_tag' ) );
 
 			if ( is_admin() ) {
-
-				//extensions
-                add_filter( 'foogallery_admin_extensions_tagline', array($this, 'admin_extensions_tagline') );
-                add_filter( 'foogallery_extension_categories', array($this, 'alter_extension_categories') );
-
                 //move menu under media
 				add_filter( 'foogallery_gallery_posttype_register_args', array($this, 'remove_posttype_menus') );
 				add_filter( 'foogallery_admin_menu_parent_slug', array($this, 'change_menu_parent_slug') );
@@ -37,28 +28,17 @@ if ( ! class_exists('FooGallery_Pro_Whitelabelling_Extension') ) {
 				add_filter( 'foogallery_admin_menu_labels', array($this, 'override_menu_labels') );
 
 				//create all our settings
-				add_filter( $this->foogallery_instance->get_slug() . '_admin_settings', array($this, 'create_settings'), 9999, 2 );
+				add_filter( 'foogallery_admin_settings', array($this, 'create_settings'), 9999, 2 );
 			}
-
 		}
 
 		function plugin_name( $default ) {
 			return foogallery_get_setting( 'whitelabelling_name', $default );
 		}
 
-		function alter_extension_categories( $categories ) {
-			return $categories;
+		function shortcode_tag( $shortcode_tag ) {
+			return foogallery_get_setting( 'whitelabelling_shortcode', $shortcode_tag );
 		}
-
-		function admin_extensions_tagline( $default ) {
-			$override = foogallery_get_setting( 'whitelabelling_extensions_tagline' );
-			if ( $override != $default && ! empty( $override ) ) {
-				return $override;
-			}
-			return $default;
-		}
-
-
 
 		function change_menu_parent_slug( $default ) {
 			if ( 'on' == foogallery_get_setting( 'whitelabelling_move_menu_under_media' ) ) {
@@ -128,41 +108,44 @@ if ( ! class_exists('FooGallery_Pro_Whitelabelling_Extension') ) {
 
 		function create_settings( $settings ) {
 
-			$whitelabelling_tabs['whitelabelling'] = __( 'Whitelabelling', 'foogallery-whitelabelling' );
+			$whitelabelling_tabs['whitelabelling'] = __( 'White Labelling', 'foogallery' );
 
 			$whitelabelling_settings[] = array(
 		        'id'      => 'whitelabelling_name',
-		        'title'   => __('Plugin Name', 'foogallery-whitelabelling'),
-		        'desc'    => __('Rename "FooGallery" to something more client friendly, for example "Pro Gallery"', 'foogallery-whitelabelling'),
+		        'title'   => __('Plugin Name', 'foogallery'),
+		        'desc'    => __('Rename "FooGallery" to something more client friendly, for example "Pro Gallery"', 'foogallery'),
 		        'default' => 'FooGallery',
 		        'type'    => 'text',
 		        'tab'     => 'whitelabelling'
 	        );
 
-			$whitelabelling_tabs['menu'] = __( 'Menu', 'foogallery-whitelabelling' );
+			$whitelabelling_settings[] = array(
+				'id'      => 'whitelabelling_shortcode',
+				'title'   => __('Shortcode', 'foogallery'),
+				'desc'    => __('Override the shortcode to something more client friendly, for example "progallery". (Please do not include square brackets!)', 'foogallery'),
+				'default' => 'foogallery',
+				'type'    => 'text',
+				'tab'     => 'whitelabelling'
+			);
 
-			$whitelabelling_sections['position'] = array(
-				'name' => __( 'Positioning', 'foogallery-whitelabelling' )
+			$whitelabelling_sections['menu'] = array(
+				'name' => __( 'Menu', 'foogallery' )
 			);
 
 			$whitelabelling_settings[] = array(
 				'id'      => 'whitelabelling_move_menu_under_media',
-				'title'   => __('Use Media Menu', 'foogallery-whitelabelling'),
-				'desc'    => __('Move all FooGallery menu items under the WordPress media menu.', 'foogallery-whitelabelling'),
-				'section' => 'position',
+				'title'   => __('Move Under Media Menu', 'foogallery'),
+				'desc'    => __('Move all FooGallery menu items under the WordPress media menu.', 'foogallery'),
+				'section' => 'menu',
 				'type'    => 'checkbox',
 				'tab'     => 'whitelabelling'
 			);
 
-			$whitelabelling_sections['visibility'] = array(
-				'name' => __( 'Visibility', 'foogallery-whitelabelling' )
-			);
-
 			$whitelabelling_settings[] = array(
 				'id'      => 'whitelabelling_menu_capability',
-				'title'   => __('Menu Visibility', 'foogallery-whitelabelling'),
-				'desc'    => __('Who can see the Help, Extensions and Settings menu items.', 'foogallery-whitelabelling'),
-				'section' => 'visibility',
+				'title'   => __('Menu Visibility', 'foogallery'),
+				'desc'    => __('Who can see the Help, Extensions and Settings menu items.', 'foogallery'),
+				'section' => 'menu',
 				'type'    => 'select',
 				'choices' => array(
 					'manage_options' => 'Administrators',
@@ -175,87 +158,60 @@ if ( ! class_exists('FooGallery_Pro_Whitelabelling_Extension') ) {
 
 			$whitelabelling_settings[] = array(
 				'id'      => 'whitelabelling_hide_settings_menu',
-				'title'   => __('Hide Settings Menu', 'foogallery-whitelabelling'),
-				'desc'    => __('Hide the settings menu item.', 'foogallery-whitelabelling'),
-				'section' => 'visibility',
+				'title'   => __('Hide Settings Menu', 'foogallery'),
+				'desc'    => __('Hide the settings menu item.', 'foogallery'),
+				'section' => 'menu',
 				'type'    => 'checkbox',
 				'tab'     => 'whitelabelling'
 			);
 
 			$whitelabelling_settings[] = array(
 				'id'      => 'whitelabelling_hide_extensions_menu',
-				'title'   => __('Hide Extensions Menu', 'foogallery-whitelabelling'),
-				'desc'    => __('Hide the extension menu item.', 'foogallery-whitelabelling'),
-				'section' => 'visibility',
+				'title'   => __('Hide Extensions Menu', 'foogallery'),
+				'desc'    => __('Hide the extension menu item.', 'foogallery'),
+				'section' => 'menu',
 				'type'    => 'checkbox',
 				'tab'     => 'whitelabelling'
 			);
 
 			$whitelabelling_settings[] = array(
 				'id'      => 'whitelabelling_hide_help_menu',
-				'title'   => __('Hide Help Menu', 'foogallery-whitelabelling'),
-				'desc'    => __('Hide the help menu item.', 'foogallery-whitelabelling'),
-				'section' => 'visibility',
+				'title'   => __('Hide Help Menu', 'foogallery'),
+				'desc'    => __('Hide the help menu item.', 'foogallery'),
+				'section' => 'menu',
 				'type'    => 'checkbox',
 				'tab'     => 'whitelabelling'
 			);
 
-			$whitelabelling_sections['labels'] = array(
-				'name' => __( 'Labels', 'foogallery-whitelabelling' )
-			);
-
 			$whitelabelling_settings[] = array(
 				'id'      => 'whitelabelling_label_settings_menu',
-				'title'   => __('Setting Menu Label', 'foogallery-whitelabelling'),
-				'desc'    => __('Change the settings menu text.', 'foogallery-whitelabelling'),
-				'section' => 'labels',
+				'title'   => __('Settings Menu Label', 'foogallery'),
+				'desc'    => __('Change the settings menu text.', 'foogallery'),
+				'section' => 'menu',
 				'type'    => 'text',
 				'tab'     => 'whitelabelling'
 			);
 
 			$whitelabelling_settings[] = array(
 				'id'      => 'whitelabelling_label_extensions_menu',
-				'title'   => __('Extension Menu Label', 'foogallery-whitelabelling'),
-				'desc'    => __('Change the extensions menu text.', 'foogallery-whitelabelling'),
-				'section' => 'labels',
+				'title'   => __('Extension Menu Label', 'foogallery'),
+				'desc'    => __('Change the extensions menu text.', 'foogallery'),
+				'section' => 'menu',
 				'type'    => 'text',
 				'tab'     => 'whitelabelling'
 			);
 
 			$whitelabelling_settings[] = array(
 				'id'      => 'whitelabelling_label_help_menu',
-				'title'   => __('Help Menu Label', 'foogallery-whitelabelling'),
-				'desc'    => __('Change the help menu text.', 'foogallery-whitelabelling'),
-				'section' => 'labels',
+				'title'   => __('Help Menu Label', 'foogallery'),
+				'desc'    => __('Change the help menu text.', 'foogallery'),
+				'section' => 'menu',
 				'type'    => 'text',
-				'tab'     => 'whitelabelling'
-			);
-
-			$whitelabelling_tabs['extensions'] = __( 'Extensions', 'foogallery-whitelabelling' );
-
-			$whitelabelling_sections['extensions_page'] = array(
-				'name' => __( 'Extensions Page', 'foogallery-whitelabelling' )
-			);
-
-			$whitelabelling_settings[] = array(
-				'id'      => 'whitelabelling_extensions_tagline',
-				'title'   => __('Page Tagline', 'foogallery-whitelabelling'),
-				'desc'    => __('Change the tagline paragraph of the FooGallery extensions page. The tagline is directly underneath the page title.', 'foogallery-whitelabelling'),
-				'section' => 'extensions_page',
-				'type'    => 'text',
-				'tab'     => 'whitelabelling'
-			);
-
-			$whitelabelling_settings[] = array(
-				'id'      => 'whitelabelling_help_hide_tabs',
-				'title'   => __('Hide Tabs', 'foogallery-whitelabelling'),
-				'desc'    => __('Hide the tabs on the FooGallery help page.', 'foogallery-whitelabelling'),
-				'type'    => 'checkbox',
 				'tab'     => 'whitelabelling'
 			);
 
             $settings = array_merge_recursive( $settings, array(
-                'tabs' => $whitelabelling_tabs,
+            	'tabs'     => $whitelabelling_tabs,
                 'sections' => $whitelabelling_sections,
                 'settings' => $whitelabelling_settings,
             ) );
