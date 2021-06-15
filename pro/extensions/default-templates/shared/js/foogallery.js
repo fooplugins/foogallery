@@ -8550,6 +8550,18 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 			 */
 			self.hasExif = _is.exif(self.exif);
 			/**
+			 * @memberof FooGallery.Item#
+			 * @name ribbon
+			 * @type {{"type": string,"text": string}}
+			 */
+			self.ribbon = self.opt.ribbon;
+			/**
+			 * @memberof FooGallery.Item#
+			 * @name hasRibbon
+			 * @type {boolean}
+			 */
+			self.hasRibbon = _is.hash(self.ribbon) && _is.string(self.ribbon.text) && _is.string(self.ribbon.type);
+			/**
 			 * @summary This property is used to store the promise created when loading an item for the first time.
 			 * @memberof FooGallery.Item#
 			 * @name _load
@@ -9079,6 +9091,15 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 				picture.appendChild(image);
 			}
 
+			var ribbon;
+			if (self.hasRibbon){
+				ribbon = document.createElement("div");
+				ribbon.className = self.ribbon.type;
+				var ribbonText = document.createElement("span");
+				ribbonText.innerHTML = self.ribbon.text;
+				ribbon.appendChild(ribbonText);
+			}
+
 			var overlay = document.createElement("span");
 			overlay.className = cls.overlay;
 
@@ -9123,6 +9144,9 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 			anchor.appendChild(wrap);
 			inner.appendChild(anchor);
 			inner.appendChild(caption);
+			if (self.hasRibbon){
+				elem.appendChild(ribbon);
+			}
 			elem.appendChild(inner);
 			elem.appendChild(loader);
 

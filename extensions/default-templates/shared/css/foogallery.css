@@ -914,6 +914,7 @@
 .foogallery.fg-hover-eye:not(.fg-preset) 				.fg-caption-inner:before,
 .foogallery.fg-hover-external:not(.fg-preset) 		    .fg-caption-inner:before,
 .foogallery.fg-hover-tint:not(.fg-preset) 				.fg-caption-inner:before,
+.foogallery.fg-hover-cart:not(.fg-preset)               .fg-caption-inner:before,
 .foogallery.fg-video-default:not(.fg-preset)            .fg-caption-inner:before,
 .foogallery.fg-video-1:not(.fg-preset)                  .fg-caption-inner:before,
 .foogallery.fg-video-2:not(.fg-preset)                  .fg-caption-inner:before,
@@ -930,6 +931,7 @@
 .foogallery.fg-hover-eye:not(.fg-preset) 				.fg-item-inner:hover .fg-image-overlay,
 .foogallery.fg-hover-external:not(.fg-preset) 		    .fg-item-inner:hover .fg-image-overlay,
 .foogallery.fg-hover-tint:not(.fg-preset) 				.fg-item-inner:hover .fg-image-overlay,
+.foogallery.fg-hover-cart:not(.fg-preset)               .fg-item-inner:hover .fg-image-overlay,
 .foogallery.fg-video-default:not(.fg-preset)            .fg-type-video .fg-item-inner:hover .fg-image-overlay,
 .foogallery.fg-video-1:not(.fg-preset)                  .fg-type-video .fg-item-inner:hover .fg-image-overlay,
 .foogallery.fg-video-2:not(.fg-preset)                  .fg-type-video .fg-item-inner:hover .fg-image-overlay,
@@ -1009,6 +1011,15 @@
 .foogallery.fg-light-overlays.fg-hover-external .fg-image-overlay:before,
 .foogallery.fg-light-overlays.fg-hover-external .fg-caption-inner:before {
 	background-image: url('../img/icons.svg#external-dark');
+}
+
+.foogallery.fg-hover-cart .fg-image-overlay:before,
+.foogallery.fg-hover-cart .fg-caption-inner:before {
+	background-image: url('../img/icons.svg#cart-light');
+}
+.foogallery.fg-light-overlays.fg-hover-cart .fg-image-overlay:before,
+.foogallery.fg-light-overlays.fg-hover-cart .fg-caption-inner:before {
+	background-image: url('../img/icons.svg#cart-dark');
 }
 
 .foogallery.fg-video-default .fg-type-video .fg-image-overlay:before,
