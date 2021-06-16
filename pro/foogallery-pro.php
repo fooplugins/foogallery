@@ -38,6 +38,7 @@ require_once FOOGALLERY_PATH . 'pro/includes/protection/class-foogallery-image-e
 require_once FOOGALLERY_PATH . 'pro/includes/protection/class-foogallery-image-editor-helper-gd.php';
 require_once FOOGALLERY_PATH . 'pro/includes/protection/class-foogallery-image-editor-helper-imagick.php';
 
+require_once FOOGALLERY_PATH . 'pro/includes/woocommerce/class-foogallery-pro-woocommerce.php';
 require_once FOOGALLERY_PATH . 'pro/includes/woocommerce/class-foogallery-pro-datasource-products.php';
 
 /**
@@ -86,6 +87,7 @@ if ( ! class_exists( 'FooGallery_Pro' ) ) {
 			}
 			if ( foogallery_fs()->is_plan_or_trial( 'commerce' ) ) {
 				new FooGallery_Pro_Protection();
+				new FooGallery_Pro_Woocommerce();
 				new FooGallery_Pro_Datasource_Products();
 			}
 		}
