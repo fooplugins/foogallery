@@ -118,6 +118,13 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Products' ) ) {
 		}
 
 		/**
+		 * Check if WooCommerce is activated
+		 */
+		function is_woocommerce_activated() {
+			return class_exists( 'woocommerce' );
+		}
+
+		/**
 		 * Add the woocommerce Datasource
 		 *
 		 * @param $datasources
@@ -125,12 +132,14 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Products' ) ) {
 		 * @return mixed
 		 */
 		public function add_datasource( $datasources ) {
-			$datasources['woocommerce'] = array(
-				'id'     => 'woocommerce',
-				'name'   => __( 'WooCommerce Products', 'foogallery' ),
-				'menu'   => __( 'WooCommerce Products', 'foogallery' ),
-				'public' => true
-			);
+			if ( $this->is_woocommerce_activated() ) {
+				$datasources['woocommerce'] = array(
+					'id'     => 'woocommerce',
+					'name'   => __( 'WooCommerce Products', 'foogallery' ),
+					'menu'   => __( 'WooCommerce Products', 'foogallery' ),
+					'public' => true
+				);
+			}
 
 			return $datasources;
 		}
@@ -182,33 +191,54 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Products' ) ) {
 
 			$query_args = apply_filters( 'foogallery_datasource_woocommerce_arguments', $args, $foogallery->ID );
 
-			$posts = get_posts( $query_args );
+			$products = wc_get_products( $query_args );
 
-			foreach ( $posts as $post ) {
+			foreach ( $products as $product ) {
 				$attachment = new FooGalleryAttachment();
 
-				$post_thumbnail_id = get_post_thumbnail_id( $post );
-				$post_thumbnail_url = get_the_post_thumbnail_url( $post->ID,'full' );
+				$post_thumbnail_id = get_post_thumbnail_id( $product->get_id() );
+				$post_thumbnail_url = get_the_post_thumbnail_url( $product->get_id(),'full' );
 
 				$attachment->ID            = $post_thumbnail_id;
-				$attachment->title         = $post->post_title;
+				$attachment->title         = $product->get_title();
 				$attachment->url           = $post_thumbnail_url;
 				$attachment->has_metadata  = false;
 				$attachment->sort          = PHP_INT_MAX;
 
 
-				$attachment->caption       = $post->$caption_title_source;
-				$attachment->description   = $post->$caption_desc_source;
+				$attachment->caption       = $this->get_caption( $product, $caption_title_source );
+				$attachment->description   = $this->get_caption( $product, $caption_desc_source );
 
-				$attachment->alt           = $post->post_title;
-				$attachment->custom_url    = get_permalink( $post->ID );
+				$attachment->alt           = $product->get_title();
+				$attachment->custom_url    = get_permalink( $product->get_id() );
 				$attachment->custom_target = '';
 
-				$attachment    = apply_filters( 'foogallery_datasource_woocommerce_build_attachment', $attachment, $post );
+				$attachment    = apply_filters( 'foogallery_datasource_woocommerce_build_attachment', $attachment, $product );
 				$attachments[] = $attachment;
 			}
 
 			return $attachments;
+		}
+
+		/**
+		 * @param  $product
+		 * @param string $source
+		 *
+		 * @return string
+		 */
+		private function get_caption( $product, $source ) {
+			switch ( $source ) {
+				case 'price':
+					return $product->get_price_html();
+				case 'post_title':
+					return $product->get_title();
+				case 'post_excerpt':
+					return $product->get_short_description();
+				case 'post_content':
+					return $product->get_description();
+				default:
+					return '';
+			}
 		}
 
 		/**
@@ -218,9 +248,10 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Products' ) ) {
 		 */
 		public function render_datasource_modal_content( $foogallery_id, $datasource_value ) {
 			$caption_sources = array(
-				'post_title'   => __( 'Product Title', 'foogallery' ),
-				'post_excerpt' => __( 'Product Short Description', 'foogallery' ),
-				'post_content' => __( 'Product Content', 'foogallery' ),
+				'post_title'   => __( 'Title', 'foogallery' ),
+				'post_excerpt' => __( 'Short Description', 'foogallery' ),
+				'post_content' => __( 'Content', 'foogallery' ),
+				'price'        => __( 'Price', 'foogallery' ),
 			);
 
 			$selected_categories = array();
