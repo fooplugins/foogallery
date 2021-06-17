@@ -1927,3 +1927,15 @@ function foogallery_get_full_size_image_data( $attachment_id ) {
 
 	return array( $src, $width, $height );
 }
+
+/**
+ * Generate an SVG image placeholder
+ *
+ * @param $w
+ * @param $h
+ *
+ * @return string
+ */
+function foogallery_get_svg_placeholder_image( $w, $h ) {
+	return 'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22' . $w . '%22%20height%3D%22' . $h . '%22%20viewBox%3D%220%200%20' . $w . '%20' . $h . '%22%3E%3C%2Fsvg%3E';
+}
