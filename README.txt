@@ -2,9 +2,9 @@
 Contributors: bradvin, steveush, fooplugins
 Donate link: https://fooplugins.com
 Tags: gallery, image gallery, photo gallery, responsive gallery, wordpress gallery plugin, best gallery plugin, albums, media gallery, video gallery, lightbox
-Requires at least: 3.9
+Requires at least: 4.6
 Tested up to: 5.7
-Stable tag: 2.0.30
+Stable tag: 2.0.35
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -74,6 +74,7 @@ The following free features make FooGallery the **best gallery plugin** on the m
 
 = PRO Gallery Features =
 
+*   Get started from $19! (Different plans available)
 *   3 more beautiful PRO responsive gallery templates:
     *   Polaroid gallery template - [demo](https://fooplugins.com/foogallery/wordpress-polaroid-gallery/)
     *   Grid gallery template - [demo](https://fooplugins.com/foogallery/wordpress-grid-gallery/)
@@ -211,7 +212,7 @@ Have you enabled retina support for your galleries? To enable retina support, ed
 
 = Can I add videos to my galleries? =
 
-Yes, video is supported in FooGallery PRO!
+Yes, video is supported in FooGallery PRO Expert!
 
 = Do I need to install a separate plugin to show a lightbox? =
 
@@ -243,6 +244,18 @@ We did the research and comparison. See our findings : [What is the Best WordPre
 Please update in order to for FooGallery to work in WP 5.5+!
 
 == Changelog ==
+
+= 2.0.39 =
+* Date Updated : 2021-06-12
+* Fix : Changed how attachment full size image details are determined, when there are issues in certain setups
+* Fix : jQuery backwards compatibility
+* Fix : Fixed issues with thumb widths for certain theme css
+* Fix : Updated lazyload placeholder SVG to include width and height attributes
+* Fix : Updated help page demo's to use correct placeholders
+* Update : FooGallery client side 2.0.16
+[//]: # fs_premium_only_begin
+* New : [Commerce Plan] Introduced new Protection feature (No right click and watermark generation for images)
+[//]: # fs_premium_only_end
 
 = 2.0.35 =
 * Date Updated : 2021-05-20

@@ -32,6 +32,11 @@ require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-advanced-thumb
 require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-bulk-management.php';
 require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-exif.php';
 
+require_once FOOGALLERY_PATH . 'pro/includes/protection/class-foogallery-pro-protection.php';
+require_once FOOGALLERY_PATH . 'pro/includes/protection/class-foogallery-watermark.php';
+require_once FOOGALLERY_PATH . 'pro/includes/protection/class-foogallery-image-editor-helper-base.php';
+require_once FOOGALLERY_PATH . 'pro/includes/protection/class-foogallery-image-editor-helper-gd.php';
+require_once FOOGALLERY_PATH . 'pro/includes/protection/class-foogallery-image-editor-helper-imagick.php';
 
 /**
  * FooGallery PRO Main Class
@@ -76,6 +81,9 @@ if ( ! class_exists( 'FooGallery_Pro' ) ) {
 				new FooGallery_Pro_Advanced_Thumbnails();
 				new FooGallery_Pro_Bulk_Management();
 				new FooGallery_Pro_Exif();
+			}
+			if ( foogallery_fs()->is_plan_or_trial( 'commerce' ) ) {
+				new FooGallery_Pro_Protection();
 			}
 		}
 	}

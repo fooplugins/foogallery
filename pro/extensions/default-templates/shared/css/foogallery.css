@@ -100,9 +100,10 @@
 	outline: 0;
 	text-decoration: none;
 	z-index: 5;
-	max-width: none;
+	max-width: 100%;
 	height: auto;
 	margin: 0;
+	width: auto;
 }
 .foogallery picture.fg-image > img {
 	display: block;
@@ -113,6 +114,7 @@
 	max-width: 100%;
 	height: auto;
 	margin: 0;
+	width: auto;
 }
 .foogallery .fg-loaded .fg-thumb {
 	z-index: 6;
@@ -5232,9 +5234,6 @@ html.fg-panel-no-scroll body {
 }
 .fg-masonry .fg-thumb {
 	display: block;
-}
-.fg-masonry.fg-fixed .fg-thumb {
-	display: inline-block;
 }
 .fg-masonry.fg-fixed .fg-item,
 .fg-masonry.fg-fixed .fg-image,

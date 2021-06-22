@@ -1893,3 +1893,49 @@ function foogallery_import_attachment( $attachment_data ) {
 
 	return $attachment_id;
 }
+
+/**
+ * Returns an array of data associated with the attachment, including full size image URL, full size width and height.
+ *
+ * @param int $attachment_id The attachment ID.
+ *
+ * @return array|false
+ */
+function foogallery_get_full_size_image_data( $attachment_id ) {
+	// Get the URL to the full size image.
+	$src = wp_get_attachment_url( $attachment_id );
+
+	// If we cannot get an attachment URL, then get out early.
+	if ( false === $src ) {
+		return false;
+	}
+
+	// First try to get the image metadata.
+	$image_data = wp_get_attachment_metadata( $attachment_id );
+
+	if ( ! is_array( $image_data ) ) {
+		$image_data = wp_get_attachment_image_src( $attachment_id, 'full' );
+	}
+
+	if ( is_array( $image_data ) ) {
+		$width  = $image_data['width'];
+		$height = $image_data['height'];
+	} else {
+		// If nothing is stored in meta, then get the size from the physical file. Not ideal, but might be needed in some cases.
+		list( $width, $height ) = wp_getimagesize( $src );
+	}
+
+	return array( $src, $width, $height );
+}
+
+/**
+ * Generate an SVG image placeholder
+ *
+ * @param $w
+ * @param $h
+ *
+ * @return string
+ */
+function foogallery_get_svg_placeholder_image( $w, $h ) {
+	return 'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22' . $w . '%22%20height%3D%22' . $h . '%22%20viewBox%3D%220%200%20' . $w . '%20' . $h . '%22%3E%3C%2Fsvg%3E';
+}

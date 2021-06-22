@@ -1,7 +1,7 @@
 <?php
 
 function foogallery_admin_help_demo_item( $seed, $width, $height, $title, $desc, $href ) {
-	$placeholder = 'data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%20' . $width . '%20' . $height . '%22%3E%3C/svg%3E';
+	$placeholder = foogallery_get_svg_placeholder_image( $width, $height );
 ?><div class="fg-item fg-type-image fg-idle">
 	<figure class="fg-item-inner">
 		<a class="fg-thumb"

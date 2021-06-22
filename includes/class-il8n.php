@@ -11,6 +11,12 @@ if ( ! class_exists( 'FooGallery_il8n' ) ) {
 		}
 
 		function enqueue_il8n( $js ) {
+			global $foogallery_enqueue_il8n;
+
+			if ( $foogallery_enqueue_il8n ) {
+				return;
+			}
+
 			$il8n = array();
 
 			$imageviewer_prev_entry = foogallery_get_language_array_value( 'language_imageviewer_prev_text', __( 'Prev', 'foogallery' ) );
@@ -51,6 +57,8 @@ if ( ! class_exists( 'FooGallery_il8n' ) ) {
 			$script = "var FooGallery_il8n = " . foogallery_json_encode( $il8n ) . ';';
 
 			wp_add_inline_script( 'foogallery-core', $script, 'before' );
+
+			$foogallery_enqueue_il8n = true; // To ensure we do not add multiple times on a page with more than 1 gallery.
 		}
 	}
 }

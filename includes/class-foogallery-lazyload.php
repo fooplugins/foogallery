@@ -161,15 +161,11 @@ if ( ! class_exists( 'FooGallery_LazyLoad' ) ) {
 				// add a placeholder src.
 				if ( isset( $attr['width'] ) && isset( $attr['height'] ) ) {
 					// set the src to a transparent SVG that has the correct width and height.
-					$attr['src'] = $this->get_placeholder_image( $attr['width'], $attr['height'] );
+					$attr['src'] = foogallery_get_svg_placeholder_image( $attr['width'], $attr['height'] );
 				}
 			}
 
 			return $attr;
-		}
-
-		public function get_placeholder_image( $w, $h ) {
-			return 'data:image/svg+xml,%3Csvg%20xmlns=%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox=%220%200%20' . $w . '%20' . $h . '%22%3E%3C/svg%3E';
 		}
 
 		/**
