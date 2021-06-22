@@ -47,29 +47,7 @@ FooGallery.utils.ready(function ($) {
     $(document).on('click', '.foogallery-datasource-woocommerce-form .foogallery_woocommerce_categories a', function (e) {
         e.preventDefault();
         $(this).toggleClass('button-primary');
-        var $selected = $(this).parents('ul:first').find('a.button-primary'),
-            taxonomy_values = [],
-            html = '';
-
-        //validate if the OK button can be pressed.
-        if ( $selected.length > 0 ) {
-            $('.foogallery-datasource-modal-insert').removeAttr( 'disabled' );
-
-            $selected.each(function() {
-                taxonomy_values.push( $(this).data('termId') );
-                html += '<li>' + $(this).text() + '</li>';
-            });
-
-        } else {
-            $('.foogallery-datasource-modal-insert').attr('disabled','disabled');
-            html = '';
-        }
-
-        //set the selection
-        document.foogallery_datasource_woocommerce_temp = {
-            "categories" : taxonomy_values,
-            "categories_html" : '<ul>' + html + '</ul>'
-        };
+        foogallery_woocommerce_set_selected_categories();
     });
 
     $(document).on('foogallery-datasource-changed-woocommerce', function () {
@@ -102,3 +80,28 @@ FooGallery.utils.ready(function ($) {
         $('.foogallery_preview_container').addClass('foogallery-preview-force-refresh');
     });
 });
+
+function foogallery_woocommerce_set_selected_categories() {
+    var $selected = jQuery('ul.foogallery_woocommerce_categories').find('a.button-primary'),
+        taxonomy_values = [],
+        html = '';
+
+    jQuery('.foogallery-datasource-modal-insert').removeAttr( 'disabled' );
+
+    //validate if the OK button can be pressed.
+    if ( $selected.length > 0 ) {
+        $selected.each(function() {
+            taxonomy_values.push( jQuery(this).data('termId') );
+            html += '<li>' + jQuery(this).text() + '</li>';
+        });
+
+    } else {
+        html = '';
+    }
+
+    //set the selection
+    document.foogallery_datasource_woocommerce_temp = {
+        "categories" : taxonomy_values,
+        "categories_html" : '<ul>' + html + '</ul>'
+    };
+}
