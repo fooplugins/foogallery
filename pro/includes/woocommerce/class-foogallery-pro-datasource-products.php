@@ -230,11 +230,11 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Products' ) ) {
 			switch ( $source ) {
 				case 'price':
 					return $product->get_price_html();
-				case 'post_title':
+				case 'title':
 					return $product->get_title();
-				case 'post_excerpt':
+				case 'short_description':
 					return $product->get_short_description();
-				case 'post_content':
+				case 'description':
 					return $product->get_description();
 				default:
 					return '';
@@ -248,10 +248,10 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Products' ) ) {
 		 */
 		public function render_datasource_modal_content( $foogallery_id, $datasource_value ) {
 			$caption_sources = array(
-				'post_title'   => __( 'Title', 'foogallery' ),
-				'post_excerpt' => __( 'Short Description', 'foogallery' ),
-				'post_content' => __( 'Content', 'foogallery' ),
-				'price'        => __( 'Price', 'foogallery' ),
+				'title'             => __( 'Title', 'foogallery' ),
+				'short_description' => __( 'Short Description', 'foogallery' ),
+				'description'       => __( 'Content', 'foogallery' ),
+				'price'             => __( 'Price', 'foogallery' ),
 			);
 
 			$selected_categories = array();
@@ -351,6 +351,9 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Products' ) ) {
                     </tbody>
                 </table>
             </form>
+			<script type="text/javascript">
+				foogallery_woocommerce_set_selected_categories();
+			</script>
 			<?php
 		}
 
@@ -391,7 +394,9 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Products' ) ) {
                 <div class="foogallery-items-html">
 	                <?php echo __('Categories : ', 'foogallery'); ?><span id="foogallery-datasource-woocommerce-categories"><?php echo $categories_html; ?></span><br />
 	                <?php echo __('No. of Products : ', 'foogallery'); ?><span id="foogallery-datasource-woocommerce-no_of_post"><?php echo $no_of_post; ?></span><br />
+	                <?php if ( !empty( $exclude ) ) { ?>
 	                <?php echo __('Excludes : ', 'foogallery'); ?><span id="foogallery-datasource-woocommerce-exclude"><?php echo $exclude; ?></span><br />
+					<?php } ?>
 	                <?php echo __('Caption Title Source : ', 'foogallery'); ?><span id="foogallery-datasource-woocommerce-caption_title_source"><?php echo $caption_title_source; ?></span><br />
 	                <?php echo __('Caption Desc Source : ', 'foogallery'); ?><span id="foogallery-datasource-woocommerce-caption_desc_source"><?php echo $caption_desc_source; ?></span><br />
                 </div>
