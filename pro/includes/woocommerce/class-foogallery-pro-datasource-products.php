@@ -193,6 +193,8 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Products' ) ) {
 
 			$products = wc_get_products( $query_args );
 
+			$attachments = array();
+
 			foreach ( $products as $product ) {
 				$attachment = new FooGalleryAttachment();
 
@@ -204,7 +206,6 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Products' ) ) {
 				$attachment->url           = $post_thumbnail_url;
 				$attachment->has_metadata  = false;
 				$attachment->sort          = PHP_INT_MAX;
-
 
 				$attachment->caption       = $this->get_caption( $product, $caption_title_source );
 				$attachment->description   = $this->get_caption( $product, $caption_desc_source );

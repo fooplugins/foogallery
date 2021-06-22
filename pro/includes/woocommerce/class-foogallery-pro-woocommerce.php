@@ -44,10 +44,10 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 		 * @return mixed
 		 */
 		function determine_product_ribbon( $attachment, $product ) {
-			if ( 'yes' === foogallery_gallery_template_setting( 'eccommerce_sale_ribbon' ) ) {
+			if ( 'yes' === foogallery_gallery_template_setting( 'ecommerce_sale_ribbon' ) ) {
 				if ( $product->is_on_sale() ) {
-					$attachment->ribbon_type = foogallery_gallery_template_setting( 'eccommerce_sale_ribbon_type', 'fg-ribbon-5' );
-					$attachment->ribbon_text = foogallery_gallery_template_setting( 'eccommerce_sale_ribbon_text', __( 'Sale!', 'foogallery' ) );
+					$attachment->ribbon_type = foogallery_gallery_template_setting( 'ecommerce_sale_ribbon_type', 'fg-ribbon-5' );
+					$attachment->ribbon_text = foogallery_gallery_template_setting( 'ecommerce_sale_ribbon_text', __( 'Sale!', 'foogallery' ) );
 				}
 			}
 
@@ -110,7 +110,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 			if ( $this->is_woocommerce_activated() ) {
 
 				$new_fields[] = array(
-					'id'       => 'eccommerce_sale_ribbon',
+					'id'       => 'ecommerce_sale_ribbon',
 					'title'    => __( 'Show Sale Ribbon', 'foogallery' ),
 					'desc'     => __( 'Shows a sale ribbon on the thumbnail for products that are on sale. (Only available if you are using the WooCommerce Product Datasource)', 'foogallery' ),
 					'section'  => __( 'Ecommerce', 'foogallery' ),
@@ -129,16 +129,16 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 				);
 
 				$new_fields[] = array(
-					'id'       => 'eccommerce_sale_ribbon_type',
+					'id'       => 'ecommerce_sale_ribbon_type',
 					'title'    => __( 'Sale Ribbon Type', 'foogallery' ),
 					'desc'     => __( 'The type of ribbon to display for products that are on sale.', 'foogallery' ),
 					'section'  => __( 'Ecommerce', 'foogallery' ),
 					'type'     => 'select',
-					'default'  => 'no',
+					'default'  => 'fg-ribbon-5',
 					'choices'  => FooGallery_Pro_Ribbons::get_ribbon_choices(),
 					'row_data' => array(
 						'data-foogallery-hidden'                   => true,
-						'data-foogallery-show-when-field'          => 'eccommerce_sale_ribbon',
+						'data-foogallery-show-when-field'          => 'ecommerce_sale_ribbon',
 						'data-foogallery-show-when-field-operator' => '===',
 						'data-foogallery-show-when-field-value'    => 'yes',
 						'data-foogallery-change-selector'          => 'select',
@@ -148,15 +148,15 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 				);
 
 				$new_fields[] = array(
-					'id'       => 'eccommerce_sale_ribbon_text',
+					'id'       => 'ecommerce_sale_ribbon_text',
 					'title'    => __( 'Sale Ribbon Text', 'foogallery' ),
 					'desc'     => __( 'The text inside the ribbon to display for products that are on sale.', 'foogallery' ),
 					'section'  => __( 'Ecommerce', 'foogallery' ),
 					'type'     => 'text',
-					'default'  => __( 'Sale!', 'foogallery' ),
+					'default'  => __( 'Sale', 'foogallery' ),
 					'row_data' => array(
 						'data-foogallery-hidden'                   => true,
-						'data-foogallery-show-when-field'          => 'eccommerce_sale_ribbon',
+						'data-foogallery-show-when-field'          => 'ecommerce_sale_ribbon',
 						'data-foogallery-show-when-field-operator' => '===',
 						'data-foogallery-show-when-field-value'    => 'yes',
 						'data-foogallery-change-selector'          => 'input',
