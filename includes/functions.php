@@ -604,9 +604,28 @@ function foogallery_activate_default_templates_extension() {
  * @param string $media
  */
 function foogallery_enqueue_style( $handle, $src, $deps = array(), $ver = false, $media = 'all' ) {
-	$src = apply_filters( 'foogallery_enqueue_style_src', $src, $handle );
+    /**
+     * Filters the style to be enqueued
+     *
+     * @hook foogallery_enqueue_style_src
+     * @param {string} $src The style URL
+     * @param {string} $title Unique style identifier
+     * @returns {string} Filtered style URL
+     */
+    $src = apply_filters( 'foogallery_enqueue_style_src', $src, $handle );
 
 	wp_enqueue_style( $handle, $src, $deps, $ver, $media );
+
+	/**
+     * Allow FooGallery to enqueue stylesheet and allow them to be enqueued in the head on the next page load
+     *
+     * @hook foogallery_enqueue_style
+     * @param {string} $handle Name of the stylesheet. Should be unique
+     * @param {string} $src Full URL of the stylesheet, or path of the stylesheet relative to the WordPress root directory
+     * @param {array} $deps An array of registered stylesheet handles this stylesheet depends on
+     * @param {string|bool|null} $ver String specifying stylesheet version number
+     * @param {string} $media The media for which this stylesheet has been defined
+     */
 	do_action( 'foogallery_enqueue_style', $handle, $src, $deps, $ver, $media );
 }
 

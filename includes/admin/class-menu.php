@@ -34,9 +34,20 @@ if ( ! class_exists( 'FooGallery_Admin_Menu' ) ) {
 			//we rely on the register_post_type call to add our main menu items
 			$parent_slug = foogallery_admin_menu_parent_slug();
 
-			//allow extensions to add their own menu items beforehand
-			do_action( 'foogallery_admin_menu_before' );
+            /**
+             * Allow extensions to add their own menu items beforehand
+             *
+             * @hook foogallery_admin_menu_before
+             */
+            do_action( 'foogallery_admin_menu_before' );
 
+            /**
+             * Plugin admin menu labels filter
+             *
+             * @hook foogallery_admin_menu_labels
+             * @param {array} $menu_label Menu labels
+             * @returns {array} Filtered menu labels
+             */
 			$menu_labels = apply_filters( 'foogallery_admin_menu_labels',
 				array(
 					array(
@@ -68,8 +79,12 @@ if ( ! class_exists( 'FooGallery_Admin_Menu' ) ) {
 				add_submenu_page( $parent_slug, $menu_labels[3]['page_title'], $menu_labels[3]['menu_title'], $capability, 'foogallery-systeminfo', array( $this, 'foogallery_systeminfo' ) );
 			}
 
-			//allow extensions to add their own menu items afterwards
-			do_action( 'foogallery_admin_menu_after' );
+            /**
+             * Allow extensions to add their own menu items after plugin menu items
+             *
+             * @hook foogallery_admin_menu_after
+             */
+            do_action( 'foogallery_admin_menu_after' );
 		}
 
 		function foogallery_settings() {
@@ -88,13 +103,23 @@ if ( ! class_exists( 'FooGallery_Admin_Menu' ) ) {
 			}
 
 			if ( $show_reset_message ) {
-				do_action( 'foogallery_settings_reset' );
+                /**
+                 * Event on plugin settings reset
+                 *
+                 * @hook foogallery_settings_reset
+                 */
+			    do_action( 'foogallery_settings_reset' );
 				?>
 				<div id="message" class="updated">
 					<p><strong><?php printf( __( '%s settings reset to defaults.', 'foogallery' ), foogallery_plugin_name() ); ?></strong></p>
 				</div>
 			<?php } else if ( isset($_GET['settings-updated']) ) {
-				do_action( 'foogallery_settings_updated' );
+                /**
+                 * Action on plugin settings update
+                 *
+                 * @hook foogallery_settings_updated
+                 */
+			    do_action( 'foogallery_settings_updated' );
 				?>
 				<div id="message" class="updated">
 					<p><strong><?php printf( __( '%s settings updated.', 'foogallery' ), foogallery_plugin_name() ); ?></strong></p>
