@@ -1,0 +1,14 @@
+{
+  "recurseDepth": 100,
+  "opts": {
+    "template": "templates/wp-hookdoc/template",
+    "destination": "dist/docs"
+  },
+  "source": {
+    "includePattern": ".(php)$",
+    "excludePattern": "freemius/*"
+  },
+  "plugins": [
+    "node_modules/wp-hookdoc/plugin"
+  ]
+}

@@ -1,6 +1,7 @@
 var gulp = require('gulp'), notify = require("gulp-notify"), zip = require('gulp-zip'),
     fs_config = require('./fs-config.json'),
-    packageJSON = require('./package.json'), fileName = packageJSON.name, fileVersion = packageJSON.version;
+    packageJSON = require('./package.json'), fileName = packageJSON.name, fileVersion = packageJSON.version,
+    shell = require('gulp-shell');
 
 require( 'gulp-freemius-deploy' )( gulp, {
     developer_id: fs_config.developer_id,
@@ -20,3 +21,7 @@ gulp.task('zip', function () {
         .pipe(gulp.dest('dist/'))
         .pipe(notify({message: 'Zip task complete', onLast: true}));
 });
+
+gulp.task('hookdoc', shell.task([
+    'jsdoc -r -c hookdoc-conf.json ./'
+]));

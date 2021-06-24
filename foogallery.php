@@ -70,9 +70,12 @@ if ( function_exists( 'foogallery_fs' ) ) {
 		// Init Freemius.
 		foogallery_fs();
 
-		// Signal that SDK was initiated.
-		do_action( 'foogallery_fs_loaded' );
-
+        /**
+         * SDK Initiated event
+         *
+         * @hook foogallery_fs_loaded
+         */
+        do_action( 'foogallery_fs_loaded' );
 
 		require_once FOOGALLERY_PATH . 'includes/foopluginbase/bootstrapper.php';
 
