@@ -339,7 +339,7 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_RealMediaLibrary' ) ) {
 		 * @return bool
 		 */
 		function get_rml_terms_for_attachment( $terms, $taxonomy, $attachment ) {
-		    return false;
+		    return $terms;
         }
 
 		/**
