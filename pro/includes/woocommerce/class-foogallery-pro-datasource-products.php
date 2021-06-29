@@ -16,6 +16,22 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Products' ) ) {
 
 			add_action( 'foogallery-datasource-modal-content_woocommerce', array( $this, 'render_datasource_modal_content' ), 10, 2 );
 			add_action( 'foogallery_gallery_metabox_items_list', array( $this, 'render_datasource_item' ), 10, 1 );
+
+			add_filter( 'foogallery_filtering_get_terms_for_attachment', array( $this, 'get_terms_from_product' ), 10, 3 );
+		}
+
+		public function get_terms_from_product( $terms, $taxonomy, $attachment ) {
+			if ( isset( $attachment->product ) ) {
+
+				// if tag, then get product tags. If category, get product category.
+				if ( $taxonomy === FOOGALLERY_ATTACHMENT_TAXONOMY_TAG ) {
+					$terms = wp_get_post_terms( $attachment->product->get_id(), 'product_tag', array( 'fields' => 'names' ) );
+				} elseif ( $taxonomy === FOOGALLERY_ATTACHMENT_TAXONOMY_CATEGORY ) {
+					$terms = wp_get_post_terms( $attachment->product->get_id(), 'product_cat', array( 'fields' => 'names' ) );
+				}
+			}
+
+			return $terms;
 		}
 
 		/**
