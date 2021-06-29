@@ -39,6 +39,7 @@ require_once FOOGALLERY_PATH . 'pro/includes/protection/class-foogallery-image-e
 require_once FOOGALLERY_PATH . 'pro/includes/protection/class-foogallery-image-editor-helper-imagick.php';
 
 require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-ribbons.php';
+require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-buttons.php';
 require_once FOOGALLERY_PATH . 'pro/includes/woocommerce/class-foogallery-pro-woocommerce.php';
 require_once FOOGALLERY_PATH . 'pro/includes/woocommerce/class-foogallery-pro-datasource-products.php';
 
@@ -91,6 +92,7 @@ if ( ! class_exists( 'FooGallery_Pro' ) ) {
 				new FooGallery_Pro_Woocommerce();
 				new FooGallery_Pro_Datasource_Products();
 				new FooGallery_Pro_Ribbons();
+				new FooGallery_Pro_Buttons();
 			}
 		}
 	}
