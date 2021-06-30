@@ -824,13 +824,92 @@
 	text-overflow: ellipsis;
 	font-size: 16px;
 	font-weight: 400;
-	padding: 5px;
+	padding: 0;
+	margin: 0.4em;
+	height: 1.3em;
+	min-height: 1.3em;
+	line-height: 1.3em;
 }
 .foogallery .fg-caption-desc {
-	padding: 5px;
+	padding: 0;
+	margin: 0.4em;
+	overflow: hidden;
+	height: 100%;
+	max-height: 100%;
 }
 .foogallery .fg-caption-title+.fg-caption-desc {
-	padding-top: 0;
+	margin-top: 0;
+}
+
+.foogallery .fg-caption-buttons {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	padding: 5px;
+	margin: 0;
+}
+
+.foogallery .fg-caption-buttons > a {
+	display: inline-block;
+	padding: 0.4em 0.8em;
+	margin: 1px;
+	max-width: 100%;
+	font-family: -apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+	font-size: 12px;
+	font-weight: 400;
+	line-height: 1.42857143;
+	text-align: center;
+	white-space: nowrap;
+	vertical-align: middle;
+	cursor: pointer;
+	user-select: none;
+	background-image: none;
+	text-decoration: none;
+	border: 1px solid transparent;
+	border-radius: 4px;
+	box-shadow: none;
+	outline: none;
+	opacity: 1;
+	transition-timing-function: ease-out;
+	transition-duration: 0.3s;
+	transition-property: color, opacity, border-color, background-color;
+}
+
+@media only screen and (max-width: 600px) {
+	.foogallery .fg-caption-buttons {
+		align-items: stretch;
+	}
+	.foogallery .fg-caption-buttons > a {
+		flex: 1;
+	}
+}
+
+/* Light */
+.foogallery .fg-caption-buttons > a {
+	color: #333;
+	background-color: #fff;
+	border-color: #ccc;
+}
+.foogallery .fg-caption-buttons > a:hover {
+	color: #333;
+	background-color: #e6e6e6;
+	border-color: #adadad;
+	border-bottom: solid 1px;
+}
+
+/* Dark */
+.foogallery.fg-light-overlays .fg-caption-buttons > a {
+	color: #9d9d9d;
+	background-color: #333;
+	border-color: #222;
+}
+.foogallery.fg-light-overlays .fg-caption-buttons > a:hover {
+	color: #FFF;
+	background-color: #444;
+	border-color: #333;
 }
 
 /* Always */
@@ -852,12 +931,17 @@
 
 /* On Hover */
 .foogallery.fg-caption-hover .fg-caption .fg-caption-inner {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
 	width: 100%;
 	max-height: 100%;
 	position: absolute;
 	top: 50%;
 	left: 0;
 	transform: translateY(-50%);
+	padding: 0.4em;
 }
 .foogallery.fg-caption-hover .fg-item.fg-loaded .fg-image-overlay {
 	display: none;
@@ -893,6 +977,8 @@
 	background-size: 32px 32px;
 	background-position: center center;
 	background-repeat: no-repeat;
+	min-width: 32px;
+	min-height: 32px;
 }
 .foogallery .fg-caption-inner:before {
 	content: "";
@@ -900,11 +986,13 @@
 	position: relative;
 	width: 32px;
 	height: 32px;
-	margin: 10px auto 5px auto;
+	margin: 0.4em;
 	background-size: 32px 32px;
 	vertical-align: middle;
 	background-position: center center;
 	background-repeat: no-repeat;
+	min-width: 32px;
+	min-height: 32px;
 }
 .foogallery.fg-hover-zoom:not(.fg-preset) 				.fg-caption-inner:before,
 .foogallery.fg-hover-zoom2:not(.fg-preset) 				.fg-caption-inner:before,
