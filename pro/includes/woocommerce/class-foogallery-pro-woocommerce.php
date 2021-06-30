@@ -32,8 +32,35 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 				// Determine ribbon/button data from product.
 				add_filter( 'foogallery_datasource_woocommerce_build_attachment', array( $this, 'determine_extra_data_for_product' ), 10, 2 );
 			}
+			add_action( 'foogallery_located_template', array( $this, 'enqueue_wc_scripts') );
+			add_filter( 'foogallery_attachment_html_link_attributes', array( $this, 'add_product_attributes' ), 10, 3 );
 		}
 
+		/**
+		 * Add product attributes onto the anchor for an item.
+		 *
+		 * @param $attr
+		 * @param $args
+		 * @param $foogallery_attachment
+		 *
+		 * @return array
+		 */
+		public function add_product_attributes( $attr, $args, $foogallery_attachment ) {
+			if ( isset( $foogallery_attachment->product ) ) {
+				$attr['data-product-id'] = $foogallery_attachment->product->get_id();
+			}
+			return $attr;
+		}
+
+		/**
+		 * Enqueue the WooCommerce scripts if add to cart ajax is enabled for one of the action buttons
+		 */
+		public function enqueue_wc_scripts() {
+			if ( 'fg-woo-add-to-cart-ajax' === foogallery_gallery_template_setting( 'ecommerce_action_button_1' ) ||
+			     'fg-woo-add-to-cart-ajax' === foogallery_gallery_template_setting( 'ecommerce_action_button_2' ) ) {
+				wp_enqueue_script( 'wc-add-to-cart' );
+			}
+		}
 
 		/**
 		 * Determine if ribbons/buttons are needed for the product
