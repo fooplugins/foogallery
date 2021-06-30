@@ -221,11 +221,10 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Products' ) ) {
 //				$prod->get_tags()
 
 				$post_thumbnail_id = get_post_thumbnail_id( $product->get_id() );
-				$post_thumbnail_url = get_the_post_thumbnail_url( $product->get_id(),'full' );
+				$attachment->load_attachment_image_data( $post_thumbnail_id );
 
 				$attachment->ID            = $post_thumbnail_id;
 				$attachment->title         = $product->get_title();
-				$attachment->url           = $post_thumbnail_url;
 				$attachment->has_metadata  = false;
 				$attachment->sort          = PHP_INT_MAX;
 

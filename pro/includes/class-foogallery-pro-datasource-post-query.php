@@ -149,17 +149,16 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Post_Query' ) ) {
 				$attachment = new FooGalleryAttachment();
 
 				$post_thumbnail_id = get_post_thumbnail_id( $post );
-				$post_thumbnail_url = get_the_post_thumbnail_url( $post->ID,'full' );
+				$attachment->load_attachment_image_data( $post_thumbnail_id );
 
 				if ( $link_to == 'image' ) {
-					$url = $post_thumbnail_url;
+					$url = $attachment->url;
 				} else {
 					$url = get_permalink( $post->ID );
                 }
 
 				$attachment->ID            = $post_thumbnail_id;
 				$attachment->title         = $post->post_title;
-				$attachment->url           = $post_thumbnail_url;
 				$attachment->has_metadata  = false;
 				$attachment->sort          = PHP_INT_MAX;
 				$attachment->caption       = $post->post_title;
