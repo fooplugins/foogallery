@@ -35,6 +35,7 @@ function foogallery_enqueue_core_gallery_template_script( $deps = null ) {
 
 	$filename = foogallery_is_debug() ? '' : '.min';
 	$js = apply_filters( 'foogallery_core_gallery_script', FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_SHARED_URL . 'js/foogallery' . $filename . '.js' );
+	$deps = apply_filters( 'foogallery_core_gallery_script_deps', $deps );
 	wp_enqueue_script( 'foogallery-core', $js, $deps, FOOGALLERY_VERSION );
 	do_action( 'foogallery_enqueue_script-core', $js );
 
