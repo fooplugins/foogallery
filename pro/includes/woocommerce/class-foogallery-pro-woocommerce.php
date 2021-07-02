@@ -31,9 +31,39 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 
 				// Determine ribbon/button data from product.
 				add_filter( 'foogallery_datasource_woocommerce_build_attachment', array( $this, 'determine_extra_data_for_product' ), 10, 2 );
+
+				// Add attachment custom fields.
+				add_filter( 'foogallery_attachment_custom_fields', array( $this, 'attachment_custom_fields' ), 50 );
 			}
+
+			// Enqueue WooCommerce scripts if applicable.
 			add_action( 'foogallery_located_template', array( $this, 'enqueue_wc_scripts') );
+
+			// Append product attributes onto the anchor in the galleries.
 			add_filter( 'foogallery_attachment_html_link_attributes', array( $this, 'add_product_attributes' ), 10, 3 );
+
+			// Load product data after attachment has loaded.
+			add_action( 'foogallery_attachment_instance_after_load', array( $this, 'load_product_data' ), 10, 2 );
+		}
+
+		/**
+		 * Loads product data for an attachment.
+		 *
+		 * @param $foogallery_attachment
+		 * @param $post
+		 */
+		public function load_product_data( $foogallery_attachment, $post ) {
+			// Check if we already have a product linked. If so, then get out early.
+			if ( isset( $foogallery_attachment->product ) ) {
+				return;
+			}
+
+			$product_id = get_post_meta( $post->ID, '_foogallery_product', true );
+			if ( !empty( $product_id ) ) {
+				$foogallery_attachment->product = wc_get_product( $product_id );
+
+				$this->determine_extra_data_for_product( $foogallery_attachment, $foogallery_attachment->product );
+			}
 		}
 
 		/**
@@ -192,6 +222,14 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 			if ( $this->is_woocommerce_activated() ) {
 
 				$new_fields[] = array(
+					'id'      => 'ecommerce_info',
+					'title'   => __( 'Ecommerce Info', 'foogallery' ),
+					'desc'    => __( 'The below settings will only apply if you are using the WooCommerce Product datasource, or if individual attachments are linked to WooCommerce products.', 'foogallery' ),
+					'section' => __( 'Ecommerce', 'foogallery' ),
+					'type'    => 'help',
+				);
+
+				$new_fields[] = array(
 					'id'       => 'ecommerce_sale_ribbon_type',
 					'title'    => __( 'Sale Ribbon', 'foogallery' ),
 					'desc'     => __( 'The type of ribbon to display for products that are on sale.', 'foogallery' ),
@@ -321,6 +359,25 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 				'fg-woo-add-to-cart-redirect' => __( 'Add to cart and redirect to cart', 'foogallery' ),
 				'fg-woo-add-to-cart-checkout' => __( 'Add to cart and redirect to checkout', 'foogallery' ),
 			);
+		}
+
+		/**
+		 * Add Ribbon specific custom fields.
+		 *
+		 * @uses "foogallery_attachment_custom_fields" filter
+		 *
+		 * @param array $fields
+		 *
+		 * @return array
+		 */
+		public function attachment_custom_fields( $fields ) {
+			$fields['foogallery_product']  = array(
+				'label'       => __( 'Product ID', 'foogallery' ),
+				'input'       => 'text',
+				'application' => 'image/foogallery',
+			);
+
+			return $fields;
 		}
 
 		/**
