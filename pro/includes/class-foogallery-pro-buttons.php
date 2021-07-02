@@ -33,7 +33,9 @@ if ( ! class_exists( 'FooGallery_Pro_Buttons' ) ) {
 			if ( !empty( $button_text ) ) {
 				$button_url = get_post_meta( $post->ID, '_foogallery_button_url', true );
 				if ( !empty( $button_url ) ) {
-					$foogallery_attachment->buttons   = array();
+					if ( !isset( $foogallery_attachment->buttons ) ) {
+						$foogallery_attachment->buttons = array();
+					}
 					$foogallery_attachment->buttons[] = array(
 						'text' => $button_text,
 						'url'  => $button_url,

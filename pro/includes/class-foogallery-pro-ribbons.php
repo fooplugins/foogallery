@@ -29,8 +29,9 @@ if ( ! class_exists( 'FooGallery_Pro_Ribbons' ) ) {
 		 * @param $post
 		 */
 		public function load_ribbon_meta( $foogallery_attachment, $post ) {
-			$foogallery_attachment->ribbon_type = get_post_meta( $post->ID, '_foogallery_ribbon', true );
-			if ( !empty( $foogallery_attachment->ribbon_type ) ) {
+			$ribbon_type = get_post_meta( $post->ID, '_foogallery_ribbon', true );
+			if ( !empty( $ribbon_type ) ) {
+				$foogallery_attachment->ribbon_type = $ribbon_type;
 				$foogallery_attachment->ribbon_text = get_post_meta( $post->ID, '_foogallery_ribbon_text', true );
 			}
 		}
