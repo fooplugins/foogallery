@@ -87,7 +87,7 @@ if ( ! class_exists( 'FooGallery_Pro' ) ) {
 				new FooGallery_Pro_Bulk_Management();
 				new FooGallery_Pro_Exif();
 			}
-			if ( foogallery_fs()->is_plan_or_trial( 'commerce' ) ) {
+			if ( foogallery_fs()->is_plan_or_trial( 'ecommerce' ) ) {
 				new FooGallery_Pro_Protection();
 				new FooGallery_Pro_Woocommerce();
 				new FooGallery_Pro_Datasource_Products();
