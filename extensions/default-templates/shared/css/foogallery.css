@@ -843,6 +843,7 @@
 
 .foogallery .fg-caption-buttons {
 	display: flex;
+	position: relative;
 	flex-direction: row;
 	flex-wrap: wrap;
 	align-items: center;
@@ -854,6 +855,7 @@
 
 .foogallery .fg-caption-buttons > a {
 	display: inline-block;
+	position: relative;
 	padding: 0.4em 0.8em;
 	margin: 1px;
 	max-width: 100%;
@@ -893,23 +895,35 @@
 	background-color: #fff;
 	border-color: #ccc;
 }
-.foogallery .fg-caption-buttons > a:hover {
+.foogallery .fg-caption-buttons > a:not(.fg-disabled):hover {
 	color: #333;
 	background-color: #e6e6e6;
 	border-color: #adadad;
 	border-bottom: solid 1px;
 }
+.foogallery .fg-caption-buttons > a.fg-disabled {
+	color: #9d9d9d;
+}
+.foogallery .fg-caption-buttons > a.fg-disabled:hover {
+	border-bottom: solid 1px;
+}
 
 /* Dark */
 .foogallery.fg-light-overlays .fg-caption-buttons > a {
+	color: #FFF;
+	background-color: #444;
+	border-color: #333;
+}
+.foogallery.fg-light-overlays .fg-caption-buttons > a:not(.fg-disabled):hover {
 	color: #9d9d9d;
 	background-color: #333;
 	border-color: #222;
 }
-.foogallery.fg-light-overlays .fg-caption-buttons > a:hover {
-	color: #FFF;
-	background-color: #444;
-	border-color: #333;
+.foogallery.fg-light-overlays .fg-caption-buttons > a.fg-disabled {
+	color: #9d9d9d;
+}
+.foogallery.fg-light-overlays .fg-caption-buttons > a.fg-disabled:hover {
+	border-bottom: solid 1px;
 }
 
 /* Always */
@@ -1895,11 +1909,12 @@
 	pointer-events: none;
 }
 
-.fg-masonry.fg-col6 .fg-image,
-.fg-masonry.fg-col5 .fg-image,
-.fg-masonry.fg-col4 .fg-image,
-.fg-masonry.fg-col3 .fg-image,
-.fg-masonry.fg-col2 .fg-image {
+.fg-masonry.fg-fixed .fg-item .fg-image,
+.fg-masonry.fg-col6 .fg-item .fg-image,
+.fg-masonry.fg-col5 .fg-item .fg-image,
+.fg-masonry.fg-col4 .fg-item .fg-image,
+.fg-masonry.fg-col3 .fg-item .fg-image,
+.fg-masonry.fg-col2 .fg-item .fg-image {
 	width: 100%;
 	height: auto;
 	max-width: 100%;
