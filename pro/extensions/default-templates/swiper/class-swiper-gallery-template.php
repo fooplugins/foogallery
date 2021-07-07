@@ -163,117 +163,117 @@ if ( !class_exists( 'FooGallery_Swiper_Template' ) ) {
             );
 
             $fields[] = [
-                "id" => "slides_per_view",
-                "title" => "Slides Per View",
-                "desc" => "Number of slides per view (slides visible at the same time on slider's container).",
-                "section" => "Swiper",
-                "subsection" => [
-                    "lightbox-general" => "General"
+                'id' => 'slides_per_view',
+                'title' => __( 'Slides Per View', 'foogallery' ),
+                'desc' => __( 'Number of slides per view (slides visible at the same time on slider\'s container).', 'foogallery' ),
+                'section' => __( 'Swiper', 'foogallery' ),
+                'subsection' => [
+                    'lightbox-general' => __( 'General', 'foogallery' )
                 ],
-                "row_data" => [
-                    "data-foogallery-hidden" => 1,
-                    "data-foogallery-show-when-field" => "effect",
-                    "data-foogallery-show-when-field-operator" => "regex",
-                    "data-foogallery-show-when-field-value" => "default|coverflow",
-                    "data-foogallery-change-selector" => "input",
-                    "data-foogallery-preview" => "shortcode",
-                    "data-foogallery-value-selector" => "input"
+                'row_data' => [
+                    'data-foogallery-hidden' => 1,
+                    'data-foogallery-show-when-field' => 'effect',
+                    'data-foogallery-show-when-field-operator' => 'regex',
+                    'data-foogallery-show-when-field-value' => 'default|coverflow',
+                    'data-foogallery-change-selector' => 'input',
+                    'data-foogallery-preview' => 'shortcode',
+                    'data-foogallery-value-selector' => 'input'
                 ],
-                "type" => "text",
-                "default" => 1,
+                'type' => 'text',
+                'default' => 1,
 
             ];
 
             $fields[] = [
-                "id" => "space_between",
-                "title" => "Space Between",
-                "desc" => "Distance between slides in px.",
-                "section" => "Swiper",
-                "subsection" => [
-                    "lightbox-general" => "General"
+                'id' => 'space_between',
+                'title' => __( 'Space Between', 'foogallery' ),
+                'desc' => __( 'Distance between slides in px.', 'foogallery' ),
+                'section' => __( 'Swiper', 'foogallery' ),
+                'subsection' => [
+                    'lightbox-general' => 'General'
                 ],
-                "type" => "text",
-                "default" => 10,
-                "row_data" => [
-                    "data-foogallery-change-selector" => "input",
-                    "data-foogallery-preview" => "shortcode",
-                    "data-foogallery-value-selector" => "input"
+                'type' => 'text',
+                'default' => 10,
+                'row_data' => [
+                    'data-foogallery-change-selector' => 'input',
+                    'data-foogallery-preview' => 'shortcode',
+                    'data-foogallery-value-selector' => 'input'
                 ]
             ];
 
             $fields[] = [
-                "id" => "effect",
-                "title" => "Animation Effect",
-                "desc" => "Animation on change slide",
-                "section" => "Swiper",
-                "subsection" => [
-                    "lightbox-general" => "General"
+                'id' => 'effect',
+                'title' => __( 'Animation Effect', 'foogallery' ),
+                'desc' => __( 'Animation on change slide', 'foogallery' ),
+                'section' => __( 'Swiper', 'foogallery' ),
+                'subsection' => [
+                    'lightbox-general' => __( 'General', 'foogallery' )
                 ],
-                "type" => "radio",
-                "default" => "fade",
-                "spacer" => '<span class="spacer"></span>',
-                "choices" =>  [
-                    "default" => "Default",
-                    "fade" => "Fade",
-                    "coverflow" => "Coverflow",
-                    "flip" => "Flip",
-                    "cube" => "Cube"
+                'type' => 'radio',
+                'default' => 'fade',
+                'spacer' => '<span class="spacer"></span>',
+                'choices' =>  [
+                    'default' => __( 'Default', 'foogallery' ),
+                    'fade' => __( 'Fade', 'foogallery' ),
+                    'coverflow' => __( 'Coverflow', 'foogallery' ),
+                    'flip' => __( 'Flip', 'foogallery' ),
+                    'cube' => __( 'Cube', 'foogallery' )
                 ],
-                "row_data" => [
-                    "data-foogallery-change-selector" => "input",
-                    "data-foogallery-preview" => "shortcode",
-                    "data-foogallery-value-selector" => "input:checked"
+                'row_data' => [
+                    'data-foogallery-change-selector' => 'input',
+                    'data-foogallery-preview' => 'shortcode',
+                    'data-foogallery-value-selector' => 'input:checked'
                 ]
             ];
 
             $fields[] = [
-                "id" => "height_container",
-                "title" => "Swiper Height (vertical)",
-                "desc" => "Height size of container Swiper in px",
-                "section" => "Swiper",
-                "subsection" => [
-                    "lightbox-general" => "General"
+                'id' => 'height_container',
+                'title' => __( 'Swiper Height (vertical)', 'foogallery' ),
+                'desc' => __( 'Height size of container Swiper in px', 'foogallery' ),
+                'section' => __( 'Swiper', 'foogallery' ),
+                'subsection' => [
+                    'lightbox-general' => __( 'General', 'foogallery' )
                 ],
-                "type" => "text",
-                "default" => 400,
-                "row_data" => [
-                    "data-foogallery-change-selector" => "input",
-                    "data-foogallery-preview" => "shortcode",
-                    "data-foogallery-value-selector" => "input"
+                'type' => 'text',
+                'default' => 400,
+                'row_data' => [
+                    'data-foogallery-change-selector' => 'input',
+                    'data-foogallery-preview' => 'shortcode',
+                    'data-foogallery-value-selector' => 'input'
                 ]
             ];
 
             $fields[] = [
-                "id" => "height_image_container",
-                "title" => "Image Height",
-                "desc" => "Height size images slides in px",
-                "section" => "Swiper",
-                "subsection" => [
-                    "lightbox-thumbnails" => "Thumbnails"
+                'id' => 'height_image_container',
+                'title' => __( 'Image Height', 'foogallery' ),
+                'desc' => __( 'Height size images slides in px', 'foogallery' ),
+                'section' => __( 'Swiper', 'foogallery' ),
+                'subsection' => [
+                    'lightbox-thumbnails' => __( 'Thumbnails', 'foogallery' )
                 ],
-                "type" => "text",
-                "default" => 200,
-                "row_data" => [
-                    "data-foogallery-change-selector" => "input",
-                    "data-foogallery-preview" => "shortcode",
-                    "data-foogallery-value-selector" => "input"
+                'type' => 'text',
+                'default' => 200,
+                'row_data' => [
+                    'data-foogallery-change-selector' => 'input',
+                    'data-foogallery-preview' => 'shortcode',
+                    'data-foogallery-value-selector' => 'input'
                 ]
             ];
 
             $fields[] = [
-                "id" => "width_image_container",
-                "title" => "Image Width",
-                "desc" => "Width size images slides in px",
-                "section" => "Swiper",
-                "subsection" => [
-                    "lightbox-thumbnails" => "Thumbnails"
+                'id' => 'width_image_container',
+                'title' => __( 'Image Width', 'foogallery' ),
+                'desc' => __( 'Width size images slides in px', 'foogallery' ),
+                'section' => __( 'Swiper', 'foogallery' ),
+                'subsection' => [
+                    'lightbox-thumbnails' => __( 'Thumbnails', 'foogallery' )
                 ],
-                "type" => "text",
-                "default" => 400,
-                "row_data" => [
-                    "data-foogallery-change-selector" => "input",
-                    "data-foogallery-preview" => "shortcode",
-                    "data-foogallery-value-selector" => "input"
+                'type' => 'text',
+                'default' => 400,
+                'row_data' => [
+                    'data-foogallery-change-selector' => 'input',
+                    'data-foogallery-preview' => 'shortcode',
+                    'data-foogallery-value-selector' => 'input'
                 ]
             ];
 
@@ -282,19 +282,14 @@ if ( !class_exists( 'FooGallery_Swiper_Template' ) ) {
                     $field['section'] = __( 'Swiper', 'foogallery' );
                 }
 
-                /*if (isset($field['subsection']['lightbox-thumbnails'])) {
-                    $fields_to_remove[] = $field['id'];
-                }*/
-
                 if (isset($field['subsection']['lightbox-captions'])) {
                     $fields_to_remove[] = $field['id'];
                 }
 
-
                 if ( 'lightbox_auto_progress' === $field['id'] ) {
-                    $field['subsection'] = ['lightbox-controls' => 'Controls'];
+                    $field['subsection'] = ['lightbox-controls' => __( 'Controls', 'foogallery' )];
                 } elseif ( 'lightbox_auto_progress_seconds' === $field['id'] ) {
-                    $field['subsection'] = ['lightbox-controls' => 'Controls'];
+                    $field['subsection'] = ['lightbox-controls' => __( 'Controls', 'foogallery' )];
                     $field["row_data"] = [
                         "data-foogallery-change-selector" => "input",
                         "data-foogallery-preview" => "shortcode",
@@ -317,10 +312,9 @@ if ( !class_exists( 'FooGallery_Swiper_Template' ) ) {
                         'horizontal'  => __( 'Horizontal', 'foogallery' ),
                         'vertical'  => __( 'Vertical', 'foogallery' )
                     );
-
                 } elseif( 'lightbox_show_maximize_button' === $field['id'] ) {
-                    $field['title'] = 'Unlimited Scroll';
-                    $field['desc'] = 'Loop slider for unlimited scroll after end';
+                    $field['title'] = __( 'Unlimited Scroll', 'foogallery' );
+                    $field['desc'] = __( 'Loop slider for unlimited scroll after end', 'foogallery' );
                     $field['default'] = 'yes';
                     $field['choices'] = array(
                         'yes'  => __( 'Yes', 'foogallery' ),
@@ -336,8 +330,8 @@ if ( !class_exists( 'FooGallery_Swiper_Template' ) ) {
                         "data-foogallery-value-selector" => "input:checked"
                     ];
                 } elseif( 'lightbox_show_caption_button' === $field['id'] ) {
-                    $field['title'] = 'Grab Cursor';
-                    $field['desc'] = 'Show hand cursor on slides';
+                    $field['title'] = __( 'Grab Cursor', 'foogallery' );
+                    $field['desc'] = __( 'Show hand cursor on slides', 'foogallery' );
                     $field['default'] = 'yes';
                     $field['choices'] = array(
                         'yes'  => __( 'Yes', 'foogallery' ),
@@ -349,8 +343,8 @@ if ( !class_exists( 'FooGallery_Swiper_Template' ) ) {
                         "data-foogallery-value-selector" => "input:checked"
                     ];
                 } elseif( 'lightbox_show_thumbstrip_button' === $field['id'] ) {
-                    $field['title'] = 'Pagination';
-                    $field['desc'] = 'Show pagination dots';
+                    $field['title'] = __( 'Pagination', 'foogallery' );
+                    $field['desc'] = __( 'Show pagination dots', 'foogallery' );
                 } else if ( 'video_autoplay' === $field['id'] ) {
                     $field['title'] = __( 'Autoplay', 'foogallery' );
                     $field['desc'] = __( 'Try to autoplay the video when selected. This will only work with videos hosted on Youtube or Vimeo.', 'foogallery' );
@@ -395,7 +389,6 @@ if ( !class_exists( 'FooGallery_Swiper_Template' ) ) {
                         'data-foogallery-value-selector'           => 'input:checked',
                     );
                 }
-
 
                 if ( in_array( $field['id'], $fields_to_remove ) ) {
                     $indexes_to_remove[] = $key;
