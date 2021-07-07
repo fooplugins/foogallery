@@ -10,10 +10,8 @@ $columns = foogallery_gallery_template_setting( 'columns', 'swiper-cols-4' );
 $foogallery_default_classes = foogallery_build_class_attribute_safe( $current_foogallery, 'swiper', $columns );
 $foogallery_default_attributes = foogallery_build_container_attributes_safe( $current_foogallery, array( 'class' => $foogallery_default_classes ) );
 
-if($_POST['action'] == 'foogallery_preview') {
-    //$current_foogallery->settings = $_POST['_foogallery_settings'];
-}
-    ?><div <?php echo $foogallery_default_attributes; ?>>
+?>
+<div <?php echo $foogallery_default_attributes; ?>>
     <div class="swiper-container">
         <div class="swiper-wrapper">
             <?php foreach(foogallery_current_gallery_attachments_for_rendering() as $attachment) { ?>
@@ -78,7 +76,6 @@ if($_POST['action'] == 'foogallery_preview') {
     var swiper_loop = false;
     <?php } ?>
 </script>
-
 <?php
 // For Preview in Edit Gallery
 if($_POST['action'] == 'foogallery_preview') { ?>
@@ -104,7 +101,6 @@ if($_POST['action'] == 'foogallery_preview') { ?>
                 autoHeight: swiper_autoHeight,
                 height: swiper_height,
                 slidesPerView: swiper_slides_per_view,
-                
             });
         }
     </script>
