@@ -44,6 +44,45 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 
 			// Load product data after attachment has loaded.
 			add_action( 'foogallery_attachment_instance_after_load', array( $this, 'load_product_data' ), 10, 2 );
+
+			// Append a nonce that will be used in variation ajax calls.
+			add_filter( 'foogallery_lightbox_data_attributes', array( $this, 'add_nonce_to_lightbox_options' ) );
+
+			// Build up a product variation table for a product.
+			add_filter( 'wp_ajax_foogallery_product_variations', array( $this, 'build_product_variation_table' ) );
+			add_filter( 'wp_ajax_nopriv_foogallery_product_variations', array( $this, 'build_product_variation_table' ) );
+		}
+
+		/**
+		 * Build up the product variation HTML table to show in the lightbox.
+		 */
+		public function build_product_variation_table() {
+			$request = stripslashes_deep( $_REQUEST );
+
+			if ( wp_verify_nonce( $request['nonce'], $request['nonce_time'] . 'foogallery_product_variations' ) ) {
+
+				$product_id = sanitize_text_field( wp_unslash( $request['product_id'] ) );
+
+				$product = wc_get_product( $product_id );
+
+				echo $product->get_title();
+			}
+			die();
+		}
+
+		/**
+		 * Appends a nonce onto the lightbox options
+		 *
+		 * @param $options
+		 *
+		 * @return mixed
+		 */
+		public function add_nonce_to_lightbox_options( $options ) {
+			$time = time();
+			$options['nonce_time'] = $time;
+			$options['nonce'] = wp_create_nonce( $time . 'foogallery_product_variations' );
+			$options['admin-ajax'] = admin_url( 'admin-ajax.php' );
+			return $options;
 		}
 
 		/**
