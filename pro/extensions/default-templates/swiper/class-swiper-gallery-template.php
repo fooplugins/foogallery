@@ -224,11 +224,15 @@ if ( ! class_exists( 'FooGallery_Swiper_Template' ) ) {
 					'flip'      => __( 'Flip', 'foogallery' ),
 					'cube'      => __( 'Cube', 'foogallery' )
 				],
-				'row_data'   => [
-					'data-foogallery-change-selector' => 'input',
-					'data-foogallery-preview'         => 'shortcode',
-					'data-foogallery-value-selector'  => 'input:checked'
-				]
+                'row_data' => [
+                    'data-foogallery-change-selector' => 'input',
+                    'data-foogallery-preview' => 'shortcode',
+                    'data-foogallery-value-selector' => 'input:checked',
+                    "data-foogallery-hidden" => 1,
+                    "data-foogallery-show-when-field" => "lightbox_transition",
+                    "data-foogallery-show-when-field-operator" => "===",
+                    "data-foogallery-show-when-field-value" => "horizontal",
+                ]
 			];
 
 			$fields[] = [
@@ -295,11 +299,15 @@ if ( ! class_exists( 'FooGallery_Swiper_Template' ) ) {
 					$field['subsection'] = [ 'lightbox-controls' => __( 'Controls', 'foogallery' ) ];
 				} elseif ( 'lightbox_auto_progress_seconds' === $field['id'] ) {
 					$field['subsection'] = [ 'lightbox-controls' => __( 'Controls', 'foogallery' ) ];
-					$field["row_data"]   = [
-						"data-foogallery-change-selector" => "input",
-						"data-foogallery-preview"         => "shortcode",
-						"data-foogallery-value-selector"  => "input"
-					];
+                    $field["row_data"] = [
+                        "data-foogallery-hidden" => 1,
+                        "data-foogallery-show-when-field" => "lightbox_auto_progress",
+                        "data-foogallery-show-when-field-operator" => "===",
+                        "data-foogallery-show-when-field-value" => "yes",
+                        "data-foogallery-change-selector" => "input",
+                        "data-foogallery-preview" => "shortcode",
+                        "data-foogallery-value-selector" => "input"
+                    ];
 				} elseif ( 'hover_effect_preset' === $field['id'] ) {
 					$field['default']  = 'fg-custom';
 					$field['choices']  = array(
