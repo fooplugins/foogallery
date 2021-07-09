@@ -49,35 +49,66 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 			add_filter( 'foogallery_lightbox_data_attributes', array( $this, 'add_nonce_to_lightbox_options' ) );
 
 			// Build up a product variation table for a product.
-			add_filter( 'wp_ajax_foogallery_product_variations', array( $this, 'ajax_build_product_variation_table' ) );
-			add_filter( 'wp_ajax_nopriv_foogallery_product_variations', array( $this, 'ajax_build_product_variation_table' ) );
+			add_filter( 'wp_ajax_foogallery_product_variations', array( $this, 'ajax_build_product_info' ) );
+			add_filter( 'wp_ajax_nopriv_foogallery_product_variations', array( $this, 'ajax_build_product_info' ) );
 		}
 
 		/**
-		 * AJAX request to build up the product variation HTML table to show in the lightbox.
+		 * AJAX request to build up the product info HTML to show in the lightbox.
 		 */
-		public function ajax_build_product_variation_table() {
+		public function ajax_build_product_info() {
 			$request = stripslashes_deep( $_REQUEST );
 
 			if ( wp_verify_nonce( $request['nonce'], $request['nonce_time'] . 'foogallery_product_variations' ) ) {
 
 				$product_id = sanitize_text_field( wp_unslash( $request['product_id'] ) );
 
-				echo $this->build_product_variation_table( $product_id );
+				$info = $this->build_product_info( $product_id );
+
+				wp_send_json_success( $info );
+			} else {
+				wp_send_json_error( array( 'error' => __( 'Not allowed!', 'foogallery' ) ) );
 			}
+
 			die();
+		}
+
+		public function build_product_info( $product_id ) {
+			$product = wc_get_product( $product_id );
+
+			$response = array();
+
+			if ( empty( $product ) ) {
+				$response['error'] = __( 'No product found!', 'foogallery' );
+			} else {
+				$html = '<h2>' . esc_html( $product->get_name() ) . '</h2>';
+				$html .= '<p>' . esc_html( $product->get_description() ) . '</p>';
+
+				if ( is_a( $product, 'WC_Product_Variable' ) ) {
+					$html .= $this->build_product_variation_table( $product );
+				}
+
+				$response['body'] = $html;
+			}
+
+			return $response;
 		}
 
 		/**
 		 * Build up the product variation HTML table to show in the lightbox.
 		 *
-		 * @param $product_id
+		 * @param $product
 		 *
 		 * @return string
 		 */
-		public function build_product_variation_table( $product_id ) {
+		public function build_product_variation_table( $product ) {
+			if ( !is_a( $product, 'WC_Product_Variable' ) ) {
+				$product = wc_get_product( $product );
+			}
 
-			$product = wc_get_product( $product_id );
+			if ( empty( $product ) ) {
+				return null;
+			}
 
 			// Get the variations for the product.
 			$variations = $product->get_children();
@@ -104,13 +135,13 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 
 			// Build up the table body.
 			$html .= '<tbody>';
-
+			$checked = ' checked="checked"';
 			foreach ( $variations as $value ) {
 				$single_variation = new WC_Product_Variation( $value );
 
 				if ( $single_variation->is_purchasable() ) {
 					$variation_id = $single_variation->get_id();
-					$html         .= '<tr data-variation_id="' . esc_attr( $variation_id ) . '">';
+					$html         .= '<tr data-variation_id="' . esc_attr( $variation_id ) . '" title="' . esc_attr( $single_variation->get_description() ) .  '">';
 
 					if ( $single_variation->is_on_sale() ) {
 						$price = wc_price( $single_variation->get_sale_price() ) . " <del>" . wc_price( $single_variation->get_regular_price() ) . "</del>";
@@ -119,7 +150,8 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 					}
 					$price = $single_variation->get_price_html();
 
-					$html .= '<td><input type="radio" name="foogallery_product_variation_' . esc_attr( $product_id ) . '" value="' . esc_attr( $variation_id ) . ' title="' . esc_attr( $single_variation->get_description() ) .  ' /></td>';
+					$html .= '<td><input type="radio" name="foogallery_product_variation_' . esc_attr( $product->get_id() ) . '" value="' . esc_attr( $variation_id ) . '" ' . $checked . ' /></td>';
+					$checked = '';
 					//$html .= '<td><span title="' . esc_attr( $single_variation->get_attribute_summary() ) . '">' . $single_variation->get_name() . '</span></td>';
 					foreach ( $attributes as $attribute_key => $attribute_label ) {
 						$html .= '<td>' . $single_variation->get_attribute( $attribute_key ) . '</td>';
@@ -238,6 +270,8 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 					);
 				}
 			}
+
+			//$info = $this->build_product_info( $product->get_id() );
 
 			return $attachment;
 		}
