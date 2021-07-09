@@ -145,7 +145,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 			$time = time();
 			$options['nonce_time'] = $time;
 			$options['nonce'] = wp_create_nonce( $time . 'foogallery_product_variations' );
-			$options['admin-ajax'] = admin_url( 'admin-ajax.php' );
+			$options['admin_ajax'] = admin_url( 'admin-ajax.php' );
 			return $options;
 		}
 
