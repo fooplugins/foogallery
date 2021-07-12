@@ -1939,3 +1939,18 @@ function foogallery_get_full_size_image_data( $attachment_id ) {
 function foogallery_get_svg_placeholder_image( $w, $h ) {
 	return 'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22' . $w . '%22%20height%3D%22' . $h . '%22%20viewBox%3D%220%200%20' . $w . '%20' . $h . '%22%3E%3C%2Fsvg%3E';
 }
+
+/**
+ * Extracts the gallery ID from a full gallery ID
+ *
+ * @param $full_gallery_id
+ *
+ * @return int
+ */
+function foogallery_extract_gallery_id( $full_gallery_id ) {
+	preg_match_all('/^.*?(\d+?)(?:_|$)/', $full_gallery_id, $matches );
+	if ( is_array( $matches ) ) {
+		return intval( $matches[1][0] );
+	}
+	return 0;
+}
