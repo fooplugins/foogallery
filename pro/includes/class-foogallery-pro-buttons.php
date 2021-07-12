@@ -32,15 +32,16 @@ if ( ! class_exists( 'FooGallery_Pro_Buttons' ) ) {
 			$button_text = get_post_meta( $post->ID, '_foogallery_button_text', true );
 			if ( !empty( $button_text ) ) {
 				$button_url = get_post_meta( $post->ID, '_foogallery_button_url', true );
+				$button = array(
+					'text' => $button_text,
+				);
 				if ( !empty( $button_url ) ) {
-					if ( !isset( $foogallery_attachment->buttons ) ) {
-						$foogallery_attachment->buttons = array();
-					}
-					$foogallery_attachment->buttons[] = array(
-						'text' => $button_text,
-						'url'  => $button_url,
-					);
+					$button['url'] = $button_url;
 				}
+				if ( !isset( $foogallery_attachment->buttons ) ) {
+					$foogallery_attachment->buttons = array();
+				}
+				$foogallery_attachment->buttons[] = $button;
 			}
 		}
 
@@ -57,10 +58,13 @@ if ( ! class_exists( 'FooGallery_Pro_Buttons' ) ) {
 			if ( isset( $foogallery_attachment->buttons ) && is_array( $foogallery_attachment->buttons ) ) {
 				$button_html = '<div class="fg-caption-buttons">';
 				foreach ( $foogallery_attachment->buttons as $button ) {
-					$button_html .= foogallery_html_opening_tag( 'a', array(
+					$button_args = array(
 						'class' => isset( $button['class'] ) ? $button['class'] : '',
-						'href' => isset( $button['url'] ) ? $button['url'] : '',
-					) );
+					);
+					if ( isset( $button['url'] ) && !empty( $button['url'] ) ) {
+						$button_args['href'] = $button['url'];
+					}
+					$button_html .= foogallery_html_opening_tag( 'a', $button_args );
 					$button_html .= isset( $button['text'] ) ? esc_html( $button['text'] ) : '';
 					$button_html .= '</a>';
 				}
