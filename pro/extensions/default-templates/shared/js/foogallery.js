@@ -6393,6 +6393,14 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 			}
 			return type;
 		},
+		/**
+		 * @memberof FooGallery.TemplateFactory#
+		 * @function configure
+		 * @param {string} name
+		 * @param {object} options
+		 * @param {object} classes
+		 * @param {object} il8n
+		 */
 		configure: function (name, options, classes, il8n) {
 			var self = this;
 			if (self.contains(name)) {
@@ -9148,10 +9156,12 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 				captionButtons = document.createElement("div");
 				captionButtons.className = cls.caption.buttons;
 				_utils.each(self.buttons, function(button){
-					if (_is.hash(button) && _is.string(button.text) && _is.string(button.url)){
+					if (_is.hash(button) && _is.string(button.text)){
 						var captionButton = document.createElement("a");
-						captionButton.href = button.url;
 						captionButton.innerHTML = button.text;
+						if (_is.string(button.url) && button.url.length > 0){
+							captionButton.href = button.url;
+						}
 						if (_is.string(button.rel) && button.rel.length > 0){
 							captionButton.rel = button.rel;
 						}
@@ -11576,8 +11586,9 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
             self.content = new _.Panel.Content(self);
             self.info = new _.Panel.Info(self);
             self.thumbs = new _.Panel.Thumbs(self);
+            self.cart = new _.Panel.Cart(self);
 
-            self.areas = [self.content, self.info, self.thumbs];
+            self.areas = [self.content, self.info, self.thumbs, self.cart];
 
             self.$el = null;
 
@@ -12064,6 +12075,9 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 
             cart: "none", // none | top | bottom | left | right
             cartVisible: false,
+            cartAjax: null,
+            cartNonce: null,
+            cartTimeout: null,
 
             thumbs: "none", // none | top | bottom | left | right
             thumbsVisible: true,
@@ -12086,7 +12100,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
                 autoProgress: true,
                 info: true,
                 thumbs: false,
-                cart: false
+                cart: true
             },
             breakpoints: [{
                 name: "medium",
@@ -13692,6 +13706,42 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
     FooGallery.utils.fn,
     FooGallery.utils.transition
 );
+(function($, _, _fn, _t){
+
+    _.Panel.Cart = _.Panel.SideArea.extend({
+        construct: function(panel){
+            this._super(panel, "cart", {
+                icon: "cart",
+                label: panel.il8n.buttons.cart,
+                position: panel.opt.cart,
+                visible: panel.opt.cartVisible,
+                waitForUnload: false,
+                toggle: false
+            }, panel.cls.cart);
+        },
+        canLoad: function(media){
+            return this._super(media) && media.product.canLoad();
+        },
+        doLoad: function(media, reverseTransition){
+            if (this.canLoad(media)){
+                media.product.appendTo(this.$inner);
+                media.product.load();
+            }
+            return _fn.resolved;
+        },
+        doUnload: function(media, reverseTransition){
+            media.product.unload();
+            media.product.detach();
+            return _fn.resolved;
+        }
+    });
+
+})(
+    FooGallery.$,
+    FooGallery,
+    FooGallery.utils.fn,
+    FooGallery.utils.transition
+);
 (function($, _, _utils, _is, _fn, _obj, _str, _t){
 
     _.Panel.Media = _utils.Class.extend({
@@ -13707,6 +13757,8 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
             self.cls = _obj.extend({}, panel.cls.media);
 
             self.sel = _obj.extend({}, panel.sel.media);
+
+            self.il8n = _obj.extend({}, panel.il8n.media);
 
             self.caption = new _.Panel.Media.Caption(panel, self);
 
@@ -13917,7 +13969,19 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
                     inner: "fg-media-product-inner",
                     header: "fg-media-product-header",
                     body: "fg-media-product-body",
-                    footer: "fg-media-product-footer"
+                    footer: "fg-media-product-footer",
+                    button: "fg-panel-button",
+                    hidden: "fg-hidden",
+                    disabled: "fg-disabled"
+                }
+            }
+        }
+    }, {
+        panel: {
+            media: {
+                product: {
+                    title: "Product Information",
+                    button: "Add to Cart"
                 }
             }
         }
@@ -14175,7 +14239,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
     FooGallery.utils.str,
     FooGallery.utils.transition
 );
-(function ($, _, _utils, _is, _fn, _obj, _t) {
+(function ($, _, _utils, _is, _fn, _obj, _t, _wcp) {
 
     _.Panel.Media.Product = _utils.Class.extend({
         construct: function (panel, media) {
@@ -14185,6 +14249,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
             self.opt = panel.opt;
             self.cls = media.cls.product;
             self.sel = media.sel.product;
+            self.il8n = media.il8n.product;
             self.$el = null;
             self.$inner = null;
             self.$header = null;
@@ -14196,44 +14261,45 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
             self.__requestId = null;
         },
         canLoad: function(){
-            return !_is.empty(this.media.item.productId);
+            return !_is.empty(this.media.item.productId) && ((this.panel.opt.admin && !_wcp) || !!_wcp);
         },
         create: function(){
-            if (!this.isCreated){
-                var e = this.panel.trigger("product-create", [this]);
+            var self = this;
+            if (!self.isCreated){
+                var e = self.panel.trigger("product-create", [self]);
                 if (!e.isDefaultPrevented()){
-                    this.isCreated = this.doCreate();
-                    if (this.isCreated){
-                        this.panel.trigger("product-created", [this]);
+                    self.isCreated = self.doCreate();
+                    if (self.isCreated){
+                        self.panel.trigger("product-created", [self]);
                     }
                 }
             }
-            return this.isCreated;
+            return self.isCreated;
         },
         doCreate: function(){
-            this.$el = $("<div/>").addClass(this.cls.elem).append(
-                $("<div/>").addClass(this.panel.cls.loader)
+            var self = this;
+            self.$el = $("<div/>").addClass(self.cls.elem).append(
+                $("<div/>").addClass(self.panel.cls.loader)
             );
-            this.$inner = $("<div/>").addClass(this.cls.inner).appendTo(this.$el);
-            this.$header = $("<div/>").addClass(this.cls.header).text("Add To Cart").appendTo(this.$inner);
-            this.$body = $("<div/>").addClass(this.cls.body).appendTo(this.$inner);
-            this.$footer = $("<div/>").addClass(this.cls.footer).append(
-                $("<div/>").addClass("fg-panel-button fg-product-button").text("Add to Cart"),
-                $("<div/>").addClass("fg-panel-button fg-product-button").text("View Cart")
-            ).appendTo(this.$inner);
+            self.$inner = $("<div/>").addClass(self.cls.inner).appendTo(self.$el);
+            self.$header = $("<div/>").addClass(self.cls.header).html(self.il8n.title).appendTo(self.$inner);
+            self.$body = $("<div/>").addClass(self.cls.body).appendTo(self.$inner);
+            self.$button = $("<button/>").addClass(self.cls.button).html(self.il8n.button).on("click", {self: self}, self.onButtonClick);
+            self.$footer = $("<div/>").addClass(self.cls.footer).append(self.$button).appendTo(self.$inner);
             return true;
         },
         destroy: function(){
-            if (this.isCreated){
-                var e = this.panel.trigger("product-destroy", [this]);
+            var self = this;
+            if (self.isCreated){
+                var e = self.panel.trigger("product-destroy", [self]);
                 if (!e.isDefaultPrevented()){
-                    this.isCreated = !this.doDestroy();
-                    if (!this.isCreated){
-                        this.panel.trigger("product-destroyed", [this]);
+                    self.isCreated = !self.doDestroy();
+                    if (!self.isCreated){
+                        self.panel.trigger("product-destroyed", [self]);
                     }
                 }
             }
-            return !this.isCreated;
+            return !self.isCreated;
         },
         doDestroy: function(){
             this.$el.remove();
@@ -14298,13 +14364,56 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
         },
         doLoad: function(){
             var self = this;
-            if (self.__loaded != null) return self.__loaded;
-            return self.__loaded = $.Deferred(function(def){
-                self.__requestId = setTimeout(function(){
-                    self.$body.append("loaded!");
-                    def.resolve();
-                }, 3000);
+            if (self.__loaded !== null) return self.__loaded;
+            return self.__loaded = $.ajax({
+                type: "POST",
+                url: self.panel.opt.cartAjax,
+                data: {
+                    action: "foogallery_product_variations",
+                    nonce: self.panel.opt.cartNonce,
+                    nonce_time: self.panel.opt.cartTimeout,
+                    product_id: self.media.item.productId,
+                    gallery_id: self.panel.tmpl.id
+                }
+            }).then(function(response){
+                if (response.error){
+                    console.log("Ajax add to cart error", response.error);
+                    return;
+                }
+                if (self.panel.opt.admin){
+                    self.$button.toggleClass(self.cls.disabled, true);
+                } else {
+                    self.$button.toggleClass(self.cls.hidden, !_wcp || !response.purchasable);
+                }
+                self.$body.html(response.body).find("tr").on("click", {self: self}, self.onRowClick);
+                if (_is.string(response.title)){
+                    self.$header.html(response.title);
+                } else {
+                    self.$header.html(self.il8n.title);
+                }
+                console.log("Ajax add to cart success");
             }).promise();
+            // return self.__loaded = $.Deferred(function(def){
+            //     self.__requestId = setTimeout(function(){
+            //         var response = {
+            //             purchasable: true,
+            //             title: "My Awesome Product with a Long Title",
+            //             body: '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum sagittis orci ac odio dictum tincidunt. Donec ut metus leo. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Sed luctus, dui eu sagittis sodales, nulla nibh sagittis augue, vel porttitor diam enim non metus. Vestibulum aliquam augue neque. Phasellus tincidunt odio eget ullamcorper efficitur. Cras placerat ut turpis pellentesque vulputate. Nam sed consequat tortor. Curabitur finibus sapien dolor. Ut eleifend tellus nec erat pulvinar dignissim. Nam non arcu purus. Vivamus et massa massa.</p><table class="fg-media-product-variations"><thead><tr><th></th><th>Color</th><th>Logo</th><th>Price</th></tr></thead><tbody><tr data-variation_id="61" title="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum sagittis orci ac odio dictum tincidunt. Donec ut metus leo. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Sed luctus, dui eu sagittis sodales, nulla nibh sagittis augue, vel porttitor diam enim non metus. Vestibulum aliquam augue neque. Phasellus tincidunt odio eget ullamcorper efficitur. Cras placerat ut turpis pellentesque vulputate. Nam sed consequat tortor. Curabitur finibus sapien dolor. Ut eleifend tellus nec erat pulvinar dignissim. Nam non arcu purus. Vivamus et massa massa." ><td><input type="radio" name="foogallery_product_variation_38" value="61" /></td><td>Blue</td><td>Yes</td><td><span class="woocommerce-Price-amount amount"><bdi><span class="woocommerce-Price-currencySymbol">&#36;</span>45.00</bdi></span></td></tr><tr data-variation_id="54"><td><input type="radio" name="foogallery_product_variation_38" value="54" title="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum sagittis orci ac odio dictum tincidunt. Donec ut metus leo. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Sed luctus, dui eu sagittis sodales, nulla nibh sagittis augue, vel porttitor diam enim non metus. Vestibulum aliquam augue neque. Phasellus tincidunt odio eget ullamcorper efficitur. Cras placerat ut turpis pellentesque vulputate. Nam sed consequat tortor. Curabitur finibus sapien dolor. Ut eleifend tellus nec erat pulvinar dignissim. Nam non arcu purus. Vivamus et massa massa." /></td><td>Red</td><td>No</td><td><del aria-hidden="true"><span class="woocommerce-Price-amount amount"><bdi><span class="woocommerce-Price-currencySymbol">&#36;</span>45.00</bdi></span></del> <ins><span class="woocommerce-Price-amount amount"><bdi><span class="woocommerce-Price-currencySymbol">&#36;</span>42.00</bdi></span></ins></td></tr><tr data-variation_id="55"><td><input type="radio" name="foogallery_product_variation_38" value="55" title="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum sagittis orci ac odio dictum tincidunt. Donec ut metus leo. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Sed luctus, dui eu sagittis sodales, nulla nibh sagittis augue, vel porttitor diam enim non metus. Vestibulum aliquam augue neque. Phasellus tincidunt odio eget ullamcorper efficitur. Cras placerat ut turpis pellentesque vulputate. Nam sed consequat tortor. Curabitur finibus sapien dolor. Ut eleifend tellus nec erat pulvinar dignissim. Nam non arcu purus. Vivamus et massa massa." /></td><td>Green</td><td>No</td><td><span class="woocommerce-Price-amount amount"><bdi><span class="woocommerce-Price-currencySymbol">&#36;</span>45.00</bdi></span></td></tr><tr data-variation_id="56"><td><input type="radio" name="foogallery_product_variation_38" value="56" title="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum sagittis orci ac odio dictum tincidunt. Donec ut metus leo. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Sed luctus, dui eu sagittis sodales, nulla nibh sagittis augue, vel porttitor diam enim non metus. Vestibulum aliquam augue neque. Phasellus tincidunt odio eget ullamcorper efficitur. Cras placerat ut turpis pellentesque vulputate. Nam sed consequat tortor. Curabitur finibus sapien dolor. Ut eleifend tellus nec erat pulvinar dignissim. Nam non arcu purus. Vivamus et massa massa." /></td><td>Blue</td><td>No</td><td><span class="woocommerce-Price-amount amount"><bdi><span class="woocommerce-Price-currencySymbol">&#36;</span>45.00</bdi></span></td></tr></tbody></table>'
+            //         };
+            //         self.$body.html(response.body).find("tr").on("click", {self: self}, self.onRowClick);
+            //         if (self.panel.opt.admin){
+            //             self.$button.toggleClass(self.cls.disabled, true);
+            //         } else {
+            //             self.$button.toggleClass(self.cls.hidden, !_wcp || !response.purchasable);
+            //         }
+            //         if (_is.string(response.title)){
+            //             self.$header.html(response.title);
+            //         } else {
+            //             self.$header.html(self.il8n.title);
+            //         }
+            //         def.resolve();
+            //     }, 3000);
+            // }).promise();
         },
         unload: function(){
             var self = this;
@@ -14326,6 +14435,24 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
         doUnload: function(){
 
             return _fn.resolved;
+        },
+        onButtonClick: function(e){
+            e.preventDefault();
+            var $this = $(this),
+                self = e.data.self,
+                variation_id = self.$body.find(":radio:checked").val(),
+                product_id = variation_id || self.media.item.productId;
+
+            self.media.item.addToCart($this, product_id, 1).then(function(){
+                console.log("Added to cart, do something here!");
+            });
+        },
+        onRowClick: function(e){
+            if (!$(e.target).is(":radio")){
+                e.preventDefault();
+                e.stopPropagation();
+                $(this).find(":radio").prop("checked", true);
+            }
         }
     });
 
@@ -14336,7 +14463,8 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
     FooGallery.utils.is,
     FooGallery.utils.fn,
     FooGallery.utils.obj,
-    FooGallery.utils.transition
+    FooGallery.utils.transition,
+    window.woocommerce_params
 );
 (function($, _, _utils, _obj){
 
@@ -15064,40 +15192,56 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
         if ($this.hasClass(cls.disabled)){
             return false;
         }
-        var $body = $(document.body),
-            successMsg = $this.attr("data-success") || false,
-            data = [{
-                "name": "product_id",
-                "value": $this.attr("data-variation-id") || self.productId
-            },{
-                "name": "quantity",
-                "value": $this.attr("data-quantity") || 1
-            }];
+        var successMsg = $this.attr("data-success") || false,
+            productId = $this.attr("data-variation-id") || self.productId,
+            quantity = $this.attr("data-quantity") || 1;
 
         $this.removeClass(cls.added)
             .addClass(cls.adding)
             .addClass(cls.disabled);
 
-        $body.trigger('adding_to_cart', [$this, data]);
-        $.ajax({
-            type: 'POST',
-            url: _wcp.wc_ajax_url.toString().replace('%%endpoint%%', 'add_to_cart'),
-            data: data
-        }).then(function(response) {
-            if (response.error && response.product_url) {
-                window.location = response.product_url;
-                return;
-            }
+        self.addToCart($this, productId, quantity).then(function(){
             $this.removeClass(cls.adding).addClass(cls.added);
             if (successMsg){
                 $this.html(successMsg);
             }
-            $body.trigger('added_to_cart', [response.fragments, response.cart_hash, $this]);
-        }, function(response, textStatus, errorThrown) {
-            console.log("FooGallery: Add to cart ajax error.", response, textStatus, errorThrown);
-            window.location = $this.attr("href");
         });
         return false;
+    };
+
+    _.Item.prototype.addToCart = function($button, productId, quantity){
+        var $body = $(document.body),
+            data = [{
+                "name": "product_id",
+                "value": productId
+            },{
+                "name": "quantity",
+                "value": quantity
+            }],
+            fallback = "?add-to-cart=" + productId;
+
+        $body.trigger('adding_to_cart', [$button, data]);
+        return $.ajax({
+            type: 'POST',
+            url: _wcp.wc_ajax_url.toString().replace('%%endpoint%%', 'add_to_cart'),
+            data: data
+        }).then(function(response) {
+            if (!response){
+                console.log("An unexpected response was returned from the server.");
+                return;
+            }
+            if (response.error) {
+                if (_is.string(response.product_url)){
+                    window.location = response.product_url;
+                }
+                window.location = fallback;
+                return;
+            }
+            $body.trigger('added_to_cart', [response.fragments, response.cart_hash]);
+        }, function(response, textStatus, errorThrown) {
+            console.log("FooGallery: Add to cart ajax error.", response, textStatus, errorThrown);
+            window.location = fallback;
+        });
     };
 
     _.Item.override("doParseItem", function($el){

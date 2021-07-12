@@ -3962,9 +3962,10 @@ html.fg-panel-no-scroll body {
 }
 .fg-panel-button.fg-disabled {
     pointer-events: none;
+    opacity: 0.7;
 }
 .fg-panel-button.fg-hidden {
-    display: none;
+    display: none!important;
 }
 .fg-panel.fg-portrait .fg-panel-buttons .fg-panel-button {
     border-bottom-width: 1px;
@@ -4599,6 +4600,103 @@ html.fg-panel-no-scroll body {
         display: inline-block;
     }
 }
+.fg-media-product, .fg-media-product * {
+    box-sizing: border-box;
+}
+.fg-media-product {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    max-width: 100%;
+    max-height: 100%;
+    font-family: -apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.4;
+}
+.fg-media-product-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    transition: opacity 0.3ms ease-in-out, visibility 0.3ms ease-in-out;
+    opacity: 0;
+    visibility: hidden;
+}
+.fg-media-product.fg-loaded .fg-media-product-inner {
+    opacity: 1;
+    visibility: visible;
+}
+.fg-media-product-header {
+    min-height: 32px;
+    width: 100%;
+    line-height: 22px;
+    padding: 0 10px 10px;
+    font-weight: 600;
+    font-size: large;
+}
+.fg-media-product-body {
+    max-height: 100%;
+    width: 100%;
+    border-style: solid;
+    border-width: 0;
+    border-top-width: 1px;
+    border-bottom-width: 1px;
+    padding: 10px;
+    overflow: auto;
+}
+.fg-media-product-body h2 {
+    font-size: large;
+    font-weight: 600;
+    margin: 10px 0;
+}
+.fg-media-product-body p {
+    font-size: inherit;
+    font-weight: normal;
+    margin: 10px 0;
+}
+.fg-media-product-body table {
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+    margin: 0;
+    text-align: center;
+}
+.fg-media-product-body table > thead > tr > th,
+.fg-media-product-body table > tbody > tr > td {
+    padding: 2px;
+    background-color: transparent!important;
+}
+.fg-media-product-body table > thead > tr > th:last-child,
+.fg-media-product-body table > tbody > tr > td:last-child {
+    text-align: right;
+}
+
+.fg-media-product-body table > tbody > tr > td del {
+    opacity: 0.5;
+}
+.fg-media-product-body table > tbody > tr > td ins {
+    text-decoration: none;
+}
+.fg-media-product-footer {
+    height: 42px;
+    min-height: 42px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    justify-content: center;
+}
+.fg-media-product-footer .fg-panel-button {
+    margin: 10px;
+    border-width: 1px;
+    border-radius: 3px;
+    height: 32px;
+    line-height: 32px;
+    text-align: center;
+}
 .fg-panel.fg-light {
     color: #333;
 }
@@ -4611,7 +4709,7 @@ html.fg-panel-no-scroll body {
 .fg-panel.fg-light .fg-panel-info-inner,
 .fg-panel.fg-light .fg-panel-cart-inner,
 .fg-panel.fg-light .fg-panel-thumbs-inner,
-.fg-panel.fg-light .fg-product-body,
+.fg-panel.fg-light .fg-media-product-body,
 .fg-panel.fg-light.fg-panel-preserve-button-space .fg-media-iframe .fg-media-content,
 .fg-panel.fg-light .fg-panel-thumb.fg-idle .fg-panel-thumb-media,
 .fg-panel.fg-light .fg-panel-thumb.fg-loading .fg-panel-thumb-media,
@@ -4623,7 +4721,7 @@ html.fg-panel-no-scroll body {
 .fg-panel.fg-dark .fg-panel-info-inner,
 .fg-panel.fg-dark .fg-panel-cart-inner,
 .fg-panel.fg-dark .fg-panel-thumbs-inner,
-.fg-panel.fg-dark .fg-product-body,
+.fg-panel.fg-dark .fg-media-product-body,
 .fg-panel.fg-dark.fg-panel-preserve-button-space .fg-media-iframe .fg-media-content,
 .fg-panel.fg-dark .fg-panel-thumb.fg-idle .fg-panel-thumb-media,
 .fg-panel.fg-dark .fg-panel-thumb.fg-loading .fg-panel-thumb-media,
@@ -4638,11 +4736,17 @@ html.fg-panel-no-scroll body {
 .fg-panel.fg-light .fg-panel-thumb.fg-error .fg-panel-thumb-media {
     background-color: #EEE;
 }
+.fg-panel.fg-light .fg-media-product {
+    background-color: #EEE;
+}
 .fg-panel.fg-dark,
 .fg-panel.fg-dark .fg-panel-thumb.fg-idle .fg-panel-thumb-media,
 .fg-panel.fg-dark .fg-panel-thumb.fg-loading .fg-panel-thumb-media,
 .fg-panel.fg-dark .fg-panel-thumb.fg-error .fg-panel-thumb-media {
     background-color: #151515;
+}
+.fg-panel.fg-dark .fg-media-product {
+    background-color: #444;
 }
 
 .fg-panel.fg-light .fg-panel-info-inner {

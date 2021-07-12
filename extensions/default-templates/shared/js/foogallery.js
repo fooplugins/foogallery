@@ -6393,6 +6393,14 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 			}
 			return type;
 		},
+		/**
+		 * @memberof FooGallery.TemplateFactory#
+		 * @function configure
+		 * @param {string} name
+		 * @param {object} options
+		 * @param {object} classes
+		 * @param {object} il8n
+		 */
 		configure: function (name, options, classes, il8n) {
 			var self = this;
 			if (self.contains(name)) {
@@ -9148,10 +9156,12 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 				captionButtons = document.createElement("div");
 				captionButtons.className = cls.caption.buttons;
 				_utils.each(self.buttons, function(button){
-					if (_is.hash(button) && _is.string(button.text) && _is.string(button.url)){
+					if (_is.hash(button) && _is.string(button.text)){
 						var captionButton = document.createElement("a");
-						captionButton.href = button.url;
 						captionButton.innerHTML = button.text;
+						if (_is.string(button.url) && button.url.length > 0){
+							captionButton.href = button.url;
+						}
 						if (_is.string(button.rel) && button.rel.length > 0){
 							captionButton.rel = button.rel;
 						}
