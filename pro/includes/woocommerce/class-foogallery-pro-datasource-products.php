@@ -211,14 +211,9 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Products' ) ) {
 
 			$attachments = array();
 
-			/**
-			 *
-			 */
 			foreach ( $products as $product ) {
 				$attachment = new FooGalleryAttachment();
 				$attachment->product = $product; // Store the product object.
-//				$prod = new WC_Product();
-//				$prod->get_tags()
 
 				$post_thumbnail_id = get_post_thumbnail_id( $product->get_id() );
 				$attachment->load_attachment_image_data( $post_thumbnail_id );
