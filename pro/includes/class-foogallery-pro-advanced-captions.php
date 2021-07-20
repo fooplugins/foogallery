@@ -83,24 +83,35 @@ if ( ! class_exists( 'FooGallery_Pro_Advanced_Captions' ) ) {
 		        }
 	        }
 
-	        $foogallery_custom_caption_help_html = '<strong> ' . __('Custom Caption Help', 'foogallery') . '</strong><br />' . __('The custom caption template can use any HTML together with the following dynamic placeholders:', 'foogallery') . '<br /><br />' .
-	                                    '<code>{{ID}}</code> - ' . __('Attachment ID', 'foogallery') . '<br />' .
-	                                    '<code>{{title}}</code> - ' . __('Attachment title', 'foogallery') . '<br />' .
-	                                    '<code>{{caption}}</code> - ' . __('Attachment caption', 'foogallery') . '<br />' .
-	                                    '<code>{{description}}</code> - ' . __('Attachment description', 'foogallery') . '<br />' .
-	                                    '<code>{{alt}}</code> - ' . __('Attachment ALT text', 'foogallery') . '<br />' .
-	                                    '<code>{{custom_url}}</code> - ' . __('Custom URL', 'foogallery') . '<br />' .
-	                                    '<code>{{custom_target}}</code> - ' . __('Custom target', 'foogallery') . '<br />' .
-	                                    '<code>{{url}}</code> - ' . __('Full-size image URL', 'foogallery') . '<br />' .
-	                                    '<code>{{width}}</code> - ' . __('Full-size image width', 'foogallery') . '<br />' .
-	                                    '<code>{{height}}</code> - ' . __('Full-size image height', 'foogallery') . '<br /><br />' .
-	                                    __('You can also include custom attachment metadata by using <code>{{postmeta.metakey}}</code> where "metakey" is the key/slug/name of the metadata.', 'foogallery') . $postmeta_html;
+	        $help_html_default = apply_filters( 'foogallery_build_custom_captions_help-default',
+	            '<h3> ' . __('Custom Caption Help', 'foogallery') . '</h3>' .
+	            __('The custom caption template can use any HTML together with the following dynamic placeholders:', 'foogallery') . '<br /><br />' .
+                '<code>{{ID}}</code> - ' . __('Attachment ID', 'foogallery') . '<br />' .
+                '<code>{{title}}</code> - ' . __('Attachment title', 'foogallery') . '<br />' .
+                '<code>{{caption}}</code> - ' . __('Attachment caption', 'foogallery') . '<br />' .
+                '<code>{{description}}</code> - ' . __('Attachment description', 'foogallery') . '<br />' .
+                '<code>{{alt}}</code> - ' . __('Attachment ALT text', 'foogallery') . '<br />' .
+                '<code>{{custom_url}}</code> - ' . __('Custom URL', 'foogallery') . '<br />' .
+                '<code>{{custom_target}}</code> - ' . __('Custom target', 'foogallery') . '<br />' .
+                '<code>{{url}}</code> - ' . __('Full-size image URL', 'foogallery') . '<br />' .
+                '<code>{{width}}</code> - ' . __('Full-size image width', 'foogallery') . '<br />' .
+                '<code>{{height}}</code> - ' . __('Full-size image height', 'foogallery') . '<br /><br />'
+	        );
 
-	        $foogallery_custom_caption_help_html .= '<br />' . __('You can also include taxonomy lists by using <code>{{taxonomy.name}}</code> where "name" is the name of the taxonomy:', 'foogallery') . '<br /><br />';
+	        $help_html_meta = apply_filters( 'foogallery_build_custom_captions_help-metadata',
+		        __('You can also include custom attachment metadata by using <code>{{postmeta.metakey}}</code> where "metakey" is the key/slug/name of the metadata.', 'foogallery') . $postmeta_html
+	        );
+
+	        $help_html_taxonomies = '<br />' .
+		        __('You can also include taxonomy lists by using <code>{{taxonomy.name}}</code> where "name" is the name of the taxonomy:', 'foogallery') . '<br /><br />';
 
 	        foreach ( get_object_taxonomies( 'attachment', 'objects' ) as $taxonomy_object ) {
-		        $foogallery_custom_caption_help_html .= '<code>{{taxonomy.' . $taxonomy_object->name . '}}</code> - ' . $taxonomy_object->label . '<br />';
+		        $help_html_taxonomies .= '<code>{{taxonomy.' . $taxonomy_object->name . '}}</code> - ' . $taxonomy_object->label . '<br />';
 	        }
+
+	        $help_html_taxonomies = apply_filters( 'foogallery_build_custom_captions_help-taxonomies', $help_html_taxonomies );
+
+	        $foogallery_custom_caption_help_html = apply_filters( 'foogallery_build_custom_captions_help', $help_html_default . $help_html_meta . $help_html_taxonomies );
 
 	        return $foogallery_custom_caption_help_html;
         }

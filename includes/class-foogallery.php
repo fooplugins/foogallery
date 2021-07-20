@@ -545,12 +545,36 @@ class FooGallery extends stdClass {
 		return $this->datasource_name !== foogallery_default_datasource();
 	}
 
+	private $container_id;
+
 	/**
 	 * Returns the ID that is rendered on the container div of the gallery
 	 *
 	 * @return string
 	 */
 	public function container_id() {
-		return 'foogallery-gallery-' . $this->ID;
+		if ( isset( $this->container_id ) ) {
+			return $this->container_id;
+		}
+
+		global $foogallery_container_ids;
+
+		if ( !isset( $foogallery_container_ids ) ) {
+			$foogallery_container_ids = array();
+		}
+		$foogallery_container_id = 'foogallery-gallery-' . $this->ID;
+
+		if ( array_key_exists( $this->ID, $foogallery_container_ids ) ) {
+			//The FooGallery has already been added to the page, so we need to generate a new container_id
+
+			$count = count( $foogallery_container_ids[$this->ID] );
+			$foogallery_container_id .= '_' . $count;
+		}
+
+		$foogallery_container_ids[$this->ID][] = $foogallery_container_id;
+
+		$this->container_id = $foogallery_container_id;
+
+		return $foogallery_container_id;
 	}
 }
