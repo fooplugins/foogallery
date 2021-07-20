@@ -549,7 +549,7 @@ if ( ! class_exists( 'FooGallery_Pro_Protection' ) ) {
 		 * @return array
 		 */
 		public function add_watermark_settings( $settings ) {
-			$settings['tabs']['watermarks'] = __( 'Watermarks', 'foogallery' );
+			$settings['tabs']['watermarks'] = __( 'Protection', 'foogallery' );
 
 			$preview_html = '<a target="_blank" href="' . admin_url( add_query_arg( array( 'page' => 'foogallery_watermark_test' ), foogallery_admin_menu_parent_slug() ) ) . '">' . __( 'Open watermark preview test page', 'foogallery' ) . '</a>';
 
