@@ -31,6 +31,9 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 
 				// Add attachment custom fields.
 				add_filter( 'foogallery_attachment_custom_fields', array( $this, 'attachment_custom_fields' ), 50 );
+
+				// Add some settings for woocommerce.
+				add_filter( 'foogallery_admin_settings_override', array( $this, 'add_ecommerce_settings' ) );
 			}
 
 			// Determine ribbon/button data from product.
@@ -51,6 +54,22 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 			// Build up a product variation table for a product.
 			add_filter( 'wp_ajax_foogallery_product_variations', array( $this, 'ajax_build_product_info' ) );
 			add_filter( 'wp_ajax_nopriv_foogallery_product_variations', array( $this, 'ajax_build_product_info' ) );
+
+			//add localised text
+			add_filter( 'foogallery_il8n', array( $this, 'add_il8n' ) );
+		}
+
+		/**
+		 * Display custom item data in the cart
+		 */
+		function override_get_item_data( $item_data, $cart_item_data ) {
+			if ( isset( $cart_item_data['pr_field'] ) ) {
+				$item_data[] = array(
+					'key' => __( 'Image', 'foogallery' ),
+					'value' => wc_clean( $cart_item_data['pr_field'] )
+				);
+			}
+			return $item_data;
 		}
 
 		/**
@@ -74,6 +93,14 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 			die();
 		}
 
+		/**
+		 * Build up product info that is passed back to the front end
+		 *
+		 * @param $product_id
+		 * @param $gallery_id
+		 *
+		 * @return array
+		 */
 		public function build_product_info( $product_id, $gallery_id ) {
 			$product = wc_get_product( $product_id );
 
@@ -87,13 +114,17 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 				$html = ''; //'<h2>' . esc_html( $product->get_name() ) . '</h2>';
 				$html .= '<p>' . esc_html( $product->get_description() ) . '</p>';
 
-				if ( is_a( $product, 'WC_Product_Variable' ) ) {
-					$html .= $this->build_product_variation_table( $product );
-				}
 				$response['title'] = $product->get_name();
 				$response['purchasable'] = $product->is_purchasable();
-
-				if ( 'on' === $gallery->get_setting( 'ecommerce_lightbox_show_view_product_button', '' ) ) {
+				if ( '' === $gallery->get_setting( 'ecommerce_lightbox_show_add_to_cart_button', 'shown' ) ) {
+					// Hide the "Add to Cart" button based on setting.
+					$response['purchasable'] = false;
+				}
+				// Only if its purchasable and a variable product, then build up the variation html.
+				if ( $response['purchasable'] && is_a( $product, 'WC_Product_Variable' ) ) {
+					$html .= $this->build_product_variation_table( $product );
+				}
+				if ( '' !== $gallery->get_setting( 'ecommerce_lightbox_show_view_product_button', '' ) ) {
 					$response['product_url'] = $product->get_permalink();
 				}
 
@@ -151,17 +182,9 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 				if ( $single_variation->is_purchasable() ) {
 					$variation_id = $single_variation->get_id();
 					$html         .= '<tr data-variation_id="' . esc_attr( $variation_id ) . '" title="' . esc_attr( $single_variation->get_description() ) .  '">';
-
-					if ( $single_variation->is_on_sale() ) {
-						$price = wc_price( $single_variation->get_sale_price() ) . " <del>" . wc_price( $single_variation->get_regular_price() ) . "</del>";
-					} else {
-						$price = wc_price( $single_variation->get_regular_price() );
-					}
 					$price = $single_variation->get_price_html();
-
 					$html .= '<td><input type="radio" name="foogallery_product_variation_' . esc_attr( $product->get_id() ) . '" value="' . esc_attr( $variation_id ) . '" ' . $checked . ' /></td>';
 					$checked = '';
-					//$html .= '<td><span title="' . esc_attr( $single_variation->get_attribute_summary() ) . '">' . $single_variation->get_name() . '</span></td>';
 					foreach ( $attributes as $attribute_key => $attribute_label ) {
 						$html .= '<td>' . $single_variation->get_attribute( $attribute_key ) . '</td>';
 					}
@@ -183,13 +206,17 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 		 * @return mixed
 		 */
 		public function add_to_lightbox_options( $options ) {
-			$time = time();
-			$options['cart'] = 'right';
-			$options['cartVisible'] = true;
-			$options['cartTimeout'] = $time;
-			$options['cartNonce'] = wp_create_nonce( $time . 'foogallery_product_variations' );
-			$options['cartAjax'] = admin_url( 'admin-ajax.php' );
-			$options['admin'] = is_admin();
+			$ecommerce_lightbox_product_information = foogallery_gallery_template_setting( 'ecommerce_lightbox_product_information', 'none' );
+
+			if ( 'none' !== $ecommerce_lightbox_product_information ) {
+				$time                   = time();
+				$options['cart']        = $ecommerce_lightbox_product_information;
+				$options['cartVisible'] = true;
+				$options['cartTimeout'] = $time;
+				$options['cartNonce']   = wp_create_nonce( $time . 'foogallery_product_variations' );
+				$options['cartAjax']    = admin_url( 'admin-ajax.php' );
+				$options['admin']       = is_admin();
+			}
 			return $options;
 		}
 
@@ -275,6 +302,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 				$button_variable = foogallery_gallery_template_setting( 'ecommerce_button_variable', '' );
 				if ( '' !== $button_variable ) {
 					$attachment->buttons[] = array(
+						'class' => 'fg-woo-select-variation',
 						'text'  => foogallery_gallery_template_setting( 'ecommerce_button_variable_text', __( 'Select Options', 'foogallery' ) ),
 					);
 				}
@@ -283,11 +311,14 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 			// Do we need to add "View Product" button?
 			$button_view_product = foogallery_gallery_template_setting( 'ecommerce_button_view_product', '' );
 			if ( '' !== $button_view_product ) {
+				$button_view_product_behaviour = foogallery_gallery_template_setting( 'ecommerce_button_view_product_behaviour', 'fg-woo-view-product' );
 				$button = array(
-					'class' => 'fg-woo-view-product',
+					'class' => $button_view_product_behaviour,
 					'text'  => foogallery_gallery_template_setting( 'ecommerce_button_view_product_text', __( 'View Product', 'foogallery' ) ),
-					'url'   => $product->get_permalink(),
 				);
+				if ( '' !== $button_view_product_behaviour ) {
+					$button['url'] = $product->get_permalink();
+				}
 
 				if ( 'first' === $button_view_product ) {
 					if ( !isset( $attachment->buttons ) ) {
@@ -385,52 +416,8 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 					'title'   => __( 'Ecommerce Info', 'foogallery' ),
 					'desc'    => __( 'The below settings will only apply if you are using the WooCommerce Product datasource, or if individual attachments are linked to WooCommerce products.', 'foogallery' ),
 					'section' => __( 'Ecommerce', 'foogallery' ),
+					'subsection' => array( 'ecommerce-features' => __( 'Features', 'foogallery' ) ),
 					'type'    => 'help',
-				);
-
-				$new_fields[] = array(
-					'id'       => 'ecommerce_lightbox_product_information',
-					'title'    => __( 'Lightbox Product Info', 'foogallery' ),
-					'desc'     => __( 'You can show product information in the PRO lightbox, including product variations, which the visitor can add to cart.', 'foogallery' ),
-					'section'  => __( 'Ecommerce', 'foogallery' ),
-					'type'     => 'radio',
-					'default'  => 'right',
-					'spacer'   => '<span class="spacer"></span>',
-					'choices'  => array(
-						'top'    => __( 'Top', 'foogallery'),
-						'bottom' => __( 'Bottom', 'foogallery'),
-						'left'   => __( 'Left', 'foogallery'),
-						'right'  => __( 'Right', 'foogallery'),
-						'none'   => __( 'None', 'foogallery'),
-					),
-					'row_data' => array(
-						'data-foogallery-change-selector'          => 'select',
-						'data-foogallery-preview'                  => 'shortcode',
-						'data-foogallery-value-selector'           => 'input:checked',
-					),
-				);
-
-				$new_fields[] = array(
-					'id'       => 'ecommerce_lightbox_show_view_product_button',
-					'title'    => __( 'Lightbox "View Product" Button', 'foogallery' ),
-					'desc'     => __( 'Shows an extra button that opens the product page.', 'foogallery' ),
-					'section'  => __( 'Ecommerce', 'foogallery' ),
-					'type'     => 'radio',
-					'default'  => '',
-					'spacer'   => '<span class="spacer"></span>',
-					'choices'  => array(
-						'shown' => __( 'Shown', 'foogallery'),
-						''    => __( 'Hidden', 'foogallery'),
-					),
-					'row_data' => array(
-						'data-foogallery-hidden'                   => true,
-						'data-foogallery-show-when-field'          => 'ecommerce_lightbox_product_information',
-						'data-foogallery-show-when-field-operator' => '!==',
-						'data-foogallery-show-when-field-value'    => 'none',
-						'data-foogallery-change-selector'          => 'input',
-						'data-foogallery-preview'                  => 'shortcode',
-						'data-foogallery-value-selector'           => 'input:checked',
-					),
 				);
 
 				$new_fields[] = array(
@@ -438,8 +425,9 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 					'title'    => __( 'Sale Ribbon', 'foogallery' ),
 					'desc'     => __( 'The type of ribbon to display for products that are on sale.', 'foogallery' ),
 					'section'  => __( 'Ecommerce', 'foogallery' ),
+					'subsection' => array( 'ecommerce-features' => __( 'Features', 'foogallery' ) ),
 					'type'     => 'select',
-					'default'  => 'fg-ribbon-5',
+					'default'  => 'fg-ribbon-3',
 					'choices'  => FooGallery_Pro_Ribbons::get_ribbon_choices(),
 					'row_data' => array(
 						'data-foogallery-change-selector'          => 'select',
@@ -453,6 +441,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 					'title'    => __( 'Sale Ribbon Text', 'foogallery' ),
 					'desc'     => __( 'The text inside the ribbon to display for products that are on sale.', 'foogallery' ),
 					'section'  => __( 'Ecommerce', 'foogallery' ),
+					'subsection' => array( 'ecommerce-features' => __( 'Features', 'foogallery' ) ),
 					'type'     => 'text',
 					'default'  => __( 'Sale', 'foogallery' ),
 					'row_data' => array(
@@ -471,6 +460,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 					'title'    => __( '"View Product" Button', 'foogallery' ),
 					'desc'     => __( 'Shows a button which redirects to the product page.', 'foogallery' ),
 					'section'  => __( 'Ecommerce', 'foogallery' ),
+					'subsection' => array( 'ecommerce-features' => __( 'Features', 'foogallery' ) ),
 					'type'     => 'radio',
 					'spacer'   => '<span class="spacer"></span>',
 					'default'  => '',
@@ -487,10 +477,35 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 				);
 
 				$new_fields[] = array(
+					'id'       => 'ecommerce_button_view_product_behaviour',
+					'title'    => __( '"View Product" Button Behaviour', 'foogallery' ),
+					'desc'     => __( 'What happens when the "View Product" button is clicked.', 'foogallery' ),
+					'section'  => __( 'Ecommerce', 'foogallery' ),
+					'subsection' => array( 'ecommerce-features' => __( 'Features', 'foogallery' ) ),
+					'type'     => 'select',
+					'choices'  => array(
+						'fg-woo-view-product' => __( 'Redirect to product page', 'foogallery' ),
+						'' => __( 'Open lightbox', 'foogallery' ),
+					),
+					'default'  => 'fg-woo-view-product',
+					'row_data' => array(
+						'data-foogallery-hidden'                   => true,
+						'data-foogallery-show-when-field'          => 'ecommerce_button_view_product',
+						'data-foogallery-show-when-field-operator' => '!==',
+						'data-foogallery-show-when-field-value'    => '',
+						'data-foogallery-change-selector'          => 'select',
+						'data-foogallery-preview'                  => 'shortcode',
+						'data-foogallery-value-selector'           => 'select :selected',
+					),
+				);
+
+
+				$new_fields[] = array(
 					'id'       => 'ecommerce_button_view_product_text',
 					'title'    => __( '"View Product" Button Text', 'foogallery' ),
 					'desc'     => __( 'The text displayed on the "View Product" button.', 'foogallery' ),
 					'section'  => __( 'Ecommerce', 'foogallery' ),
+					'subsection' => array( 'ecommerce-features' => __( 'Features', 'foogallery' ) ),
 					'type'     => 'text',
 					'default'  => __( 'View Product', 'foogallery' ),
 					'row_data' => array(
@@ -509,6 +524,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 					'title'    => __( '"Add To Cart" Button', 'foogallery' ),
 					'desc'     => __( 'Shows an "Add To Cart" button for the product. Will only show for purchasable products.', 'foogallery' ),
 					'section'  => __( 'Ecommerce', 'foogallery' ),
+					'subsection' => array( 'ecommerce-features' => __( 'Features', 'foogallery' ) ),
 					'type'     => 'radio',
 					'spacer'   => '<span class="spacer"></span>',
 					'choices'  => array(
@@ -528,6 +544,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 					'title'    => __( '"Add To Cart" Button Behaviour', 'foogallery' ),
 					'desc'     => __( 'What happens when the "Add to Cart" button is clicked.', 'foogallery' ),
 					'section'  => __( 'Ecommerce', 'foogallery' ),
+					'subsection' => array( 'ecommerce-features' => __( 'Features', 'foogallery' ) ),
 					'type'     => 'select',
 					'choices'  => self::get_button_behaviour_choices(),
 					'default'  => 'fg-woo-add-to-cart-ajax',
@@ -547,6 +564,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 					'title'    => __( '"Add To Cart" Button Text', 'foogallery' ),
 					'desc'     => __( 'The text displayed on the "Add To Cart" action button.', 'foogallery' ),
 					'section'  => __( 'Ecommerce', 'foogallery' ),
+					'subsection' => array( 'ecommerce-features' => __( 'Features', 'foogallery' ) ),
 					'type'     => 'text',
 					'default'  => __( 'Add To Cart', 'foogallery' ),
 					'row_data' => array(
@@ -565,6 +583,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 					'title'    => __( '"Select Options" Button', 'foogallery' ),
 					'desc'     => __( 'Shows a "Select Options" button for the variable products only.', 'foogallery' ),
 					'section'  => __( 'Ecommerce', 'foogallery' ),
+					'subsection' => array( 'ecommerce-features' => __( 'Features', 'foogallery' ) ),
 					'type'     => 'radio',
 					'spacer'   => '<span class="spacer"></span>',
 					'choices'  => array(
@@ -584,6 +603,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 					'title'    => __( '"Select Options" Button Text', 'foogallery' ),
 					'desc'     => __( 'The text displayed on the "Select Options" button for variable products.', 'foogallery' ),
 					'section'  => __( 'Ecommerce', 'foogallery' ),
+					'subsection' => array( 'ecommerce-features' => __( 'Features', 'foogallery' ) ),
 					'type'     => 'text',
 					'default'  => __( 'Select Options', 'foogallery' ),
 					'row_data' => array(
@@ -594,6 +614,84 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 						'data-foogallery-change-selector'          => 'input',
 						'data-foogallery-preview'                  => 'shortcode',
 						'data-foogallery-value-selector'           => 'input',
+					),
+				);
+
+				$new_fields[] = array(
+					'id'      => 'ecommerce_lightbox_info',
+					'title'   => __( 'Ecommerce Lightbox Info', 'foogallery' ),
+					'desc'    => __( 'You can choose to display product information within the lightbox, if items are linked to a WooCommerce Product. This only works with the PRO lightbox.', 'foogallery' ),
+					'section' => __( 'Ecommerce', 'foogallery' ),
+					'subsection' => array( 'ecommerce-lightbox' => __( 'Lightbox', 'foogallery' ) ),
+					'type'    => 'help',
+				);
+
+				$new_fields[] = array(
+					'id'       => 'ecommerce_lightbox_product_information',
+					'title'    => __( 'Lightbox Product Info', 'foogallery' ),
+					'desc'     => __( 'You can show product information in the PRO lightbox, including product variations, which the visitor can add to cart.', 'foogallery' ),
+					'section'  => __( 'Ecommerce', 'foogallery' ),
+					'subsection' => array( 'ecommerce-lightbox' => __( 'Lightbox', 'foogallery' ) ),
+					'type'     => 'radio',
+					'default'  => 'none',
+					'spacer'   => '<span class="spacer"></span>',
+					'choices'  => array(
+						'left'   => __( 'Left Panel', 'foogallery'),
+						'right'  => __( 'Right Panel', 'foogallery'),
+						'none'   => __( 'Do Not Show', 'foogallery'),
+					),
+					'row_data' => array(
+						'data-foogallery-change-selector'          => 'input',
+						'data-foogallery-preview'                  => 'shortcode',
+						'data-foogallery-value-selector'           => 'input:checked',
+					),
+				);
+
+				$new_fields[] = array(
+					'id'       => 'ecommerce_lightbox_show_add_to_cart_button',
+					'title'    => __( 'Show "Add to Cart" Button', 'foogallery' ),
+					'desc'     => __( 'Within the lightbox, shows the "Add to Cart" button.', 'foogallery' ),
+					'section'  => __( 'Ecommerce', 'foogallery' ),
+					'subsection' => array( 'ecommerce-lightbox' => __( 'Lightbox', 'foogallery' ) ),
+					'type'     => 'radio',
+					'default'  => 'shown',
+					'spacer'   => '<span class="spacer"></span>',
+					'choices'  => array(
+						'shown' => __( 'Shown', 'foogallery'),
+						''    => __( 'Hidden', 'foogallery'),
+					),
+					'row_data' => array(
+						'data-foogallery-hidden'                   => true,
+						'data-foogallery-show-when-field'          => 'ecommerce_lightbox_product_information',
+						'data-foogallery-show-when-field-operator' => '!==',
+						'data-foogallery-show-when-field-value'    => 'none',
+						'data-foogallery-change-selector'          => 'input',
+						'data-foogallery-preview'                  => 'shortcode',
+						'data-foogallery-value-selector'           => 'input:checked',
+					),
+				);
+
+				$new_fields[] = array(
+					'id'       => 'ecommerce_lightbox_show_view_product_button',
+					'title'    => __( 'Show "View Product" Button', 'foogallery' ),
+					'desc'     => __( 'Within the lightbox, shows an extra button that redirects to the product page.', 'foogallery' ),
+					'section'  => __( 'Ecommerce', 'foogallery' ),
+					'subsection' => array( 'ecommerce-lightbox' => __( 'Lightbox', 'foogallery' ) ),
+					'type'     => 'radio',
+					'default'  => '',
+					'spacer'   => '<span class="spacer"></span>',
+					'choices'  => array(
+						'shown' => __( 'Shown', 'foogallery'),
+						''    => __( 'Hidden', 'foogallery'),
+					),
+					'row_data' => array(
+						'data-foogallery-hidden'                   => true,
+						'data-foogallery-show-when-field'          => 'ecommerce_lightbox_product_information',
+						'data-foogallery-show-when-field-operator' => '!==',
+						'data-foogallery-show-when-field-value'    => 'none',
+						'data-foogallery-change-selector'          => 'input',
+						'data-foogallery-preview'                  => 'shortcode',
+						'data-foogallery-value-selector'           => 'input:checked',
 					),
 				);
 			} else {
@@ -615,6 +713,140 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 		}
 
 		/**
+		 * Add some ecommerce settings
+		 *
+		 * @param array $settings The settings array.
+		 *
+		 * @return array
+		 */
+		public function add_ecommerce_settings( $settings ) {
+			$settings['tabs']['ecommerce'] = __( 'Ecommerce', 'foogallery' );
+
+			$settings['settings'][] = array(
+				'id'      => 'ecommerce_lightbox_add_to_cart_text',
+				'title'   => __( 'Add to Cart Text', 'foogallery' ),
+				'desc'    => __( 'The "Add to Cart" button text that is shown within the lightbox.', 'foogallery' ),
+				'type'    => 'text',
+				'default' => __( 'Add to Cart', 'foogallery' ),
+				'section' => __( 'Language', 'foogallery' ),
+				'tab'     => 'ecommerce'
+			);
+
+			$settings['settings'][] = array(
+				'id'      => 'ecommerce_lightbox_view_product_text',
+				'title'   => __( 'View Product Text', 'foogallery' ),
+				'desc'    => __( 'The "View Product" button text that is shown within the lightbox.', 'foogallery' ),
+				'type'    => 'text',
+				'default' => __( 'View Product', 'foogallery' ),
+				'section' => __( 'Language', 'foogallery' ),
+				'tab'     => 'ecommerce'
+			);
+
+			$settings['settings'][] = array(
+				'id'      => 'ecommerce_lightbox_success_text',
+				'title'   => __( 'Success Message Text', 'foogallery' ),
+				'desc'    => __( 'The success message shown after a product has been added to the cart, within the lightbox.', 'foogallery' ),
+				'type'    => 'text',
+				'default' => __( 'Successfully added to cart.', 'foogallery' ),
+				'section' => __( 'Language', 'foogallery' ),
+				'tab'     => 'ecommerce'
+			);
+
+			$settings['settings'][] = array(
+				'id'      => 'ecommerce_lightbox_error_text',
+				'title'   => __( 'Error Message Text', 'foogallery' ),
+				'desc'    => __( 'The error message shown after a product could not be added to the cart, within the lightbox.', 'foogallery' ),
+				'type'    => 'text',
+				'default' => __( 'Something went wrong adding to cart!', 'foogallery' ),
+				'section' => __( 'Language', 'foogallery' ),
+				'tab'     => 'ecommerce'
+			);
+
+			return $settings;
+		}
+
+		/**
+		 * Add localisation settings
+		 *
+		 * @param $il8n
+		 *
+		 * @return string
+		 */
+		function add_il8n( $il8n ) {
+
+			$add_to_cart_text = foogallery_get_language_array_value( 'ecommerce_lightbox_add_to_cart_text', __( 'Add to Cart', 'foogallery' ) );
+			if ( $add_to_cart_text !== false ) {
+				$il8n = array_merge_recursive( $il8n, array(
+					'template' => array(
+						'core' => array(
+							'panel' => array(
+								'media' => array(
+									'product' => array(
+										'addToCart' => $add_to_cart_text
+									)
+								)
+							)
+						)
+					)
+				) );
+			}
+
+			$view_product_text = foogallery_get_language_array_value( 'ecommerce_lightbox_view_product_text', __( 'View Product', 'foogallery' ) );
+			if ( $view_product_text !== false ) {
+				$il8n = array_merge_recursive( $il8n, array(
+					'template' => array(
+						'core' => array(
+							'panel' => array(
+								'media' => array(
+									'product' => array(
+										'viewProduct' => $view_product_text
+									)
+								)
+							)
+						)
+					)
+				) );
+			}
+
+			$success_message_text = foogallery_get_language_array_value( 'ecommerce_lightbox_success_text', __( 'Successfully added to cart.', 'foogallery' ) );
+			if ( $success_message_text !== false ) {
+				$il8n = array_merge_recursive( $il8n, array(
+					'template' => array(
+						'core' => array(
+							'panel' => array(
+								'media' => array(
+									'product' => array(
+										'success' => $success_message_text
+									)
+								)
+							)
+						)
+					)
+				) );
+			}
+
+			$error_message_text = foogallery_get_language_array_value( 'ecommerce_lightbox_error_text', __( 'Something went wrong adding to cart.', 'foogallery' ) );
+			if ( $error_message_text !== false ) {
+				$il8n = array_merge_recursive( $il8n, array(
+					'template' => array(
+						'core' => array(
+							'panel' => array(
+								'media' => array(
+									'product' => array(
+										'error' => $error_message_text
+									)
+								)
+							)
+						)
+					)
+				) );
+			}
+
+			return $il8n;
+		}
+
+
+		/**
 		 * Returns the list of button behaviour choices.
 		 *
 		 * @return array
@@ -622,11 +854,9 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 		public static function get_button_behaviour_choices() {
 			return array(
 				'fg-woo-add-to-cart-ajax' => __( 'Add to cart (AJAX)', 'foogallery' ),
-				//'fg-woo-view-product' => __( 'View product page', 'foogallery' ),
 				'fg-woo-add-to-cart' => __( 'Add to cart and refresh page', 'foogallery' ),
 				'fg-woo-add-to-cart-redirect' => __( 'Add to cart and redirect to cart', 'foogallery' ),
 				'fg-woo-add-to-cart-checkout' => __( 'Add to cart and redirect to checkout', 'foogallery' ),
-				//'' => __( 'Hidden', 'foogallery' ),
 			);
 		}
 
