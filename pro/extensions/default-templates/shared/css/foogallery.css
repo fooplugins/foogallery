@@ -1286,7 +1286,7 @@ div.fg-ribbon-6 {
 	cursor: pointer;
 	user-select: none;
 	background-image: none;
-	text-decoration: none;
+	text-decoration: none!important;
 	border: 1px solid transparent;
 	border-radius: 4px;
 	box-shadow: none;
@@ -1307,39 +1307,39 @@ div.fg-ribbon-6 {
 }
 
 /* Light */
-.foogallery .fg-caption-buttons > a {
+.foogallery .fg-caption .fg-caption-buttons > a {
 	color: #333;
 	background-color: #fff;
 	border-color: #ccc;
 }
-.foogallery .fg-caption-buttons > a:not(.fg-disabled):hover {
+.foogallery .fg-caption .fg-caption-buttons > a:not(.fg-disabled):hover {
 	color: #333;
 	background-color: #e6e6e6;
 	border-color: #adadad;
 	border-bottom: solid 1px;
 }
-.foogallery .fg-caption-buttons > a.fg-disabled {
+.foogallery .fg-caption .fg-caption-buttons > a.fg-disabled {
 	color: #9d9d9d;
 }
-.foogallery .fg-caption-buttons > a.fg-disabled:hover {
+.foogallery .fg-caption .fg-caption-buttons > a.fg-disabled:hover {
 	border-bottom: solid 1px;
 }
 
 /* Dark */
-.foogallery.fg-light-overlays .fg-caption-buttons > a {
+.foogallery.fg-light-overlays .fg-caption .fg-caption-buttons > a {
 	color: #FFF;
 	background-color: #444;
 	border-color: #333;
 }
-.foogallery.fg-light-overlays .fg-caption-buttons > a:not(.fg-disabled):hover {
+.foogallery.fg-light-overlays .fg-caption .fg-caption-buttons > a:not(.fg-disabled):hover {
 	color: #9d9d9d;
 	background-color: #333;
 	border-color: #222;
 }
-.foogallery.fg-light-overlays .fg-caption-buttons > a.fg-disabled {
+.foogallery.fg-light-overlays .fg-caption .fg-caption-buttons > a.fg-disabled {
 	color: #9d9d9d;
 }
-.foogallery.fg-light-overlays .fg-caption-buttons > a.fg-disabled:hover {
+.foogallery.fg-light-overlays .fg-caption .fg-caption-buttons > a.fg-disabled:hover {
 	border-bottom: solid 1px;
 }
 
@@ -3959,6 +3959,7 @@ html.fg-panel-no-scroll body {
     display: inline-block;
     text-align: center;
     align-items: flex-start;
+    text-decoration: none;
 }
 .fg-panel-button.fg-disabled {
     pointer-events: none;
@@ -3967,6 +3968,68 @@ html.fg-panel-no-scroll body {
 .fg-panel-button.fg-hidden {
     display: none!important;
 }
+.fg-panel-button.fg-loading {
+    color: transparent!important;
+}
+.fg-panel-button.fg-loading:before {
+    content: '';
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -.5em;
+    margin-left: -.5em;
+    width: 1em;
+    height: 1em;
+    font-size: 0.3em;
+    pointer-events: none;
+    border-radius: 50%;
+    text-indent: -9999em;
+    box-shadow: 0 -2.6em 0 0    rgba(130, 130, 130, 1),
+    1.8em -1.8em 0 0            rgba(130, 130, 130, 0.2),
+    2.5em 0 0 0                 rgba(130, 130, 130, 0.2),
+    1.75em 1.75em 0 0           rgba(130, 130, 130, 0.2),
+    0 2.5em 0 0                 rgba(130, 130, 130, 0.2),
+    -1.8em 1.8em 0 0            rgba(130, 130, 130, 0.2),
+    -2.6em 0 0 0                rgba(130, 130, 130, 0.5),
+    -1.8em -1.8em 0 0           rgba(130, 130, 130, 0.7);
+    -webkit-animation: button-loading 1.1s infinite steps(8, start);
+    animation: button-loading 1.1s infinite steps(8, start);
+}
+.fg-panel.fg-button-blue .fg-panel-button.fg-loading:before,
+.fg-panel.fg-button-dark .fg-panel-button.fg-loading:before,
+.fg-panel.fg-button-green .fg-panel-button.fg-loading:before,
+.fg-panel.fg-button-purple .fg-panel-button.fg-loading:before,
+.fg-panel.fg-button-orange .fg-panel-button.fg-loading:before,
+.fg-panel.fg-button-red .fg-panel-button.fg-loading:before {
+    box-shadow: 0 -2.6em 0 0    rgba(255, 255, 255, 1),
+    1.8em -1.8em 0 0            rgba(255, 255, 255, 0.2),
+    2.5em 0 0 0                 rgba(255, 255, 255, 0.2),
+    1.75em 1.75em 0 0           rgba(255, 255, 255, 0.2),
+    0 2.5em 0 0                 rgba(255, 255, 255, 0.2),
+    -1.8em 1.8em 0 0            rgba(255, 255, 255, 0.2),
+    -2.6em 0 0 0                rgba(255, 255, 255, 0.5),
+    -1.8em -1.8em 0 0           rgba(255, 255, 255, 0.7);
+}
+
+@-webkit-keyframes button-loading {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes button-loading {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
 .fg-panel.fg-portrait .fg-panel-buttons .fg-panel-button {
     border-bottom-width: 1px;
 }
@@ -4681,20 +4744,24 @@ html.fg-panel-no-scroll body {
     text-decoration: none;
 }
 .fg-media-product-footer {
-    height: 42px;
     min-height: 42px;
+    padding: 10px;
     width: 100%;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     align-content: center;
     justify-content: center;
 }
 .fg-media-product-footer .fg-panel-button {
-    margin: 10px;
+    margin: 0 0 3px 0;
     border-width: 1px;
     border-radius: 3px;
     height: 32px;
     line-height: 32px;
+    text-align: center;
+}
+.fg-media-product-footer p {
+    margin: 7px 3px 0;
     text-align: center;
 }
 .fg-panel.fg-light {
@@ -5525,10 +5592,10 @@ html.fg-panel-no-scroll body {
 .fg-panel.fg-hover-scale .fg-panel-thumb:hover {
     transform: scale(1.048);
 }
-.foogallery .fg-caption-buttons > .fg-woo-add-to-cart-ajax.fg-woo-adding {
-    color: transparent;
+.foogallery .fg-caption .fg-caption-buttons > .fg-woo-add-to-cart-ajax.fg-woo-adding {
+    color: transparent!important;
 }
-.foogallery .fg-caption-buttons > .fg-woo-add-to-cart-ajax.fg-woo-adding:before {
+.foogallery .fg-caption .fg-caption-buttons > .fg-woo-add-to-cart-ajax.fg-woo-adding:before {
     content: '';
     display: block;
     position: absolute;
@@ -5570,9 +5637,6 @@ html.fg-panel-no-scroll body {
     100% {
         transform: rotate(360deg);
     }
-}
-.foogallery .fg-caption-buttons > .fg-woo-add-to-cart-ajax.fg-woo-added {
-
 }
 /* Base styles */
 .fg-default:after {

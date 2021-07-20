@@ -9570,7 +9570,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 		 */
 		onCaptionClick: function (e) {
 			var self = e.data.self, evt = self.tmpl.trigger("caption-click-item", [self]);
-			if (!evt.isDefaultPrevented() && self.$anchor.length > 0 && !$(e.target).is("a,:input")) {
+			if (!evt.isDefaultPrevented() && self.$anchor.length > 0 && !$(e.target).is("a[href],:input")) {
 				self.$anchor.get(0).click();
 			}
 		}

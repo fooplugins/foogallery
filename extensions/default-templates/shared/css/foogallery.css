@@ -869,7 +869,7 @@
 	cursor: pointer;
 	user-select: none;
 	background-image: none;
-	text-decoration: none;
+	text-decoration: none!important;
 	border: 1px solid transparent;
 	border-radius: 4px;
 	box-shadow: none;
@@ -890,39 +890,39 @@
 }
 
 /* Light */
-.foogallery .fg-caption-buttons > a {
+.foogallery .fg-caption .fg-caption-buttons > a {
 	color: #333;
 	background-color: #fff;
 	border-color: #ccc;
 }
-.foogallery .fg-caption-buttons > a:not(.fg-disabled):hover {
+.foogallery .fg-caption .fg-caption-buttons > a:not(.fg-disabled):hover {
 	color: #333;
 	background-color: #e6e6e6;
 	border-color: #adadad;
 	border-bottom: solid 1px;
 }
-.foogallery .fg-caption-buttons > a.fg-disabled {
+.foogallery .fg-caption .fg-caption-buttons > a.fg-disabled {
 	color: #9d9d9d;
 }
-.foogallery .fg-caption-buttons > a.fg-disabled:hover {
+.foogallery .fg-caption .fg-caption-buttons > a.fg-disabled:hover {
 	border-bottom: solid 1px;
 }
 
 /* Dark */
-.foogallery.fg-light-overlays .fg-caption-buttons > a {
+.foogallery.fg-light-overlays .fg-caption .fg-caption-buttons > a {
 	color: #FFF;
 	background-color: #444;
 	border-color: #333;
 }
-.foogallery.fg-light-overlays .fg-caption-buttons > a:not(.fg-disabled):hover {
+.foogallery.fg-light-overlays .fg-caption .fg-caption-buttons > a:not(.fg-disabled):hover {
 	color: #9d9d9d;
 	background-color: #333;
 	border-color: #222;
 }
-.foogallery.fg-light-overlays .fg-caption-buttons > a.fg-disabled {
+.foogallery.fg-light-overlays .fg-caption .fg-caption-buttons > a.fg-disabled {
 	color: #9d9d9d;
 }
-.foogallery.fg-light-overlays .fg-caption-buttons > a.fg-disabled:hover {
+.foogallery.fg-light-overlays .fg-caption .fg-caption-buttons > a.fg-disabled:hover {
 	border-bottom: solid 1px;
 }
 

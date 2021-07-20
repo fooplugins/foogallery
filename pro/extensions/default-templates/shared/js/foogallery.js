@@ -9570,7 +9570,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 		 */
 		onCaptionClick: function (e) {
 			var self = e.data.self, evt = self.tmpl.trigger("caption-click-item", [self]);
-			if (!evt.isDefaultPrevented() && self.$anchor.length > 0 && !$(e.target).is("a,:input")) {
+			if (!evt.isDefaultPrevented() && self.$anchor.length > 0 && !$(e.target).is("a[href],:input")) {
 				self.$anchor.get(0).click();
 			}
 		}
@@ -12065,6 +12065,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
             swipe: true,
             stackSideAreas: true,
             preserveButtonSpace: true,
+            admin: false,
 
             info: "bottom", // none | top | bottom | left | right
             infoVisible: false,
@@ -13972,7 +13973,8 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
                     footer: "fg-media-product-footer",
                     button: "fg-panel-button",
                     hidden: "fg-hidden",
-                    disabled: "fg-disabled"
+                    disabled: "fg-disabled",
+                    loading: "fg-loading"
                 }
             }
         }
@@ -13981,7 +13983,10 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
             media: {
                 product: {
                     title: "Product Information",
-                    button: "Add to Cart"
+                    addToCart: "Add to Cart",
+                    viewProduct: "View Product",
+                    success: "Successfully added to cart.",
+                    error: "Something went wrong adding to cart."
                 }
             }
         }
@@ -14284,8 +14289,9 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
             self.$inner = $("<div/>").addClass(self.cls.inner).appendTo(self.$el);
             self.$header = $("<div/>").addClass(self.cls.header).html(self.il8n.title).appendTo(self.$inner);
             self.$body = $("<div/>").addClass(self.cls.body).appendTo(self.$inner);
-            self.$button = $("<button/>").addClass(self.cls.button).html(self.il8n.button).on("click", {self: self}, self.onButtonClick);
-            self.$footer = $("<div/>").addClass(self.cls.footer).append(self.$button).appendTo(self.$inner);
+            self.$addToCart = $("<button/>").addClass(self.cls.button).html(self.il8n.addToCart).on("click", {self: self}, self.onAddToCartClick);
+            self.$viewProduct = $("<a/>").addClass(self.cls.button).html(self.il8n.viewProduct);
+            self.$footer = $("<div/>").addClass(self.cls.footer).append(self.$addToCart).append(self.$viewProduct).appendTo(self.$inner);
             return true;
         },
         destroy: function(){
@@ -14377,13 +14383,22 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
                 }
             }).then(function(response){
                 if (response.error){
-                    console.log("Ajax add to cart error", response.error);
+                    console.log("Error fetching product information from server.", response.error);
                     return;
                 }
                 if (self.panel.opt.admin){
-                    self.$button.toggleClass(self.cls.disabled, true);
+                    self.$addToCart.toggleClass(self.cls.disabled, true);
                 } else {
-                    self.$button.toggleClass(self.cls.hidden, !_wcp || !response.purchasable);
+                    self.$addToCart.toggleClass(self.cls.hidden, !_wcp || !response.purchasable);
+                }
+                if (_is.string(response.product_url)){
+                    if (self.panel.opt.admin){
+                        self.$viewProduct.toggleClass(self.cls.disabled, true);
+                    } else {
+                        self.$viewProduct.prop("href", response.product_url);
+                    }
+                } else {
+                    self.$viewProduct.toggleClass(self.cls.hidden, true);
                 }
                 self.$body.html(response.body).find("tr").on("click", {self: self}, self.onRowClick);
                 if (_is.string(response.title)){
@@ -14391,20 +14406,29 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
                 } else {
                     self.$header.html(self.il8n.title);
                 }
-                console.log("Ajax add to cart success");
             }).promise();
             // return self.__loaded = $.Deferred(function(def){
             //     self.__requestId = setTimeout(function(){
             //         var response = {
             //             purchasable: true,
+            //             product_url: "https://google.com",
             //             title: "My Awesome Product with a Long Title",
             //             body: '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum sagittis orci ac odio dictum tincidunt. Donec ut metus leo. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Sed luctus, dui eu sagittis sodales, nulla nibh sagittis augue, vel porttitor diam enim non metus. Vestibulum aliquam augue neque. Phasellus tincidunt odio eget ullamcorper efficitur. Cras placerat ut turpis pellentesque vulputate. Nam sed consequat tortor. Curabitur finibus sapien dolor. Ut eleifend tellus nec erat pulvinar dignissim. Nam non arcu purus. Vivamus et massa massa.</p><table class="fg-media-product-variations"><thead><tr><th></th><th>Color</th><th>Logo</th><th>Price</th></tr></thead><tbody><tr data-variation_id="61" title="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum sagittis orci ac odio dictum tincidunt. Donec ut metus leo. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Sed luctus, dui eu sagittis sodales, nulla nibh sagittis augue, vel porttitor diam enim non metus. Vestibulum aliquam augue neque. Phasellus tincidunt odio eget ullamcorper efficitur. Cras placerat ut turpis pellentesque vulputate. Nam sed consequat tortor. Curabitur finibus sapien dolor. Ut eleifend tellus nec erat pulvinar dignissim. Nam non arcu purus. Vivamus et massa massa." ><td><input type="radio" name="foogallery_product_variation_38" value="61" /></td><td>Blue</td><td>Yes</td><td><span class="woocommerce-Price-amount amount"><bdi><span class="woocommerce-Price-currencySymbol">&#36;</span>45.00</bdi></span></td></tr><tr data-variation_id="54"><td><input type="radio" name="foogallery_product_variation_38" value="54" title="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum sagittis orci ac odio dictum tincidunt. Donec ut metus leo. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Sed luctus, dui eu sagittis sodales, nulla nibh sagittis augue, vel porttitor diam enim non metus. Vestibulum aliquam augue neque. Phasellus tincidunt odio eget ullamcorper efficitur. Cras placerat ut turpis pellentesque vulputate. Nam sed consequat tortor. Curabitur finibus sapien dolor. Ut eleifend tellus nec erat pulvinar dignissim. Nam non arcu purus. Vivamus et massa massa." /></td><td>Red</td><td>No</td><td><del aria-hidden="true"><span class="woocommerce-Price-amount amount"><bdi><span class="woocommerce-Price-currencySymbol">&#36;</span>45.00</bdi></span></del> <ins><span class="woocommerce-Price-amount amount"><bdi><span class="woocommerce-Price-currencySymbol">&#36;</span>42.00</bdi></span></ins></td></tr><tr data-variation_id="55"><td><input type="radio" name="foogallery_product_variation_38" value="55" title="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum sagittis orci ac odio dictum tincidunt. Donec ut metus leo. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Sed luctus, dui eu sagittis sodales, nulla nibh sagittis augue, vel porttitor diam enim non metus. Vestibulum aliquam augue neque. Phasellus tincidunt odio eget ullamcorper efficitur. Cras placerat ut turpis pellentesque vulputate. Nam sed consequat tortor. Curabitur finibus sapien dolor. Ut eleifend tellus nec erat pulvinar dignissim. Nam non arcu purus. Vivamus et massa massa." /></td><td>Green</td><td>No</td><td><span class="woocommerce-Price-amount amount"><bdi><span class="woocommerce-Price-currencySymbol">&#36;</span>45.00</bdi></span></td></tr><tr data-variation_id="56"><td><input type="radio" name="foogallery_product_variation_38" value="56" title="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum sagittis orci ac odio dictum tincidunt. Donec ut metus leo. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Sed luctus, dui eu sagittis sodales, nulla nibh sagittis augue, vel porttitor diam enim non metus. Vestibulum aliquam augue neque. Phasellus tincidunt odio eget ullamcorper efficitur. Cras placerat ut turpis pellentesque vulputate. Nam sed consequat tortor. Curabitur finibus sapien dolor. Ut eleifend tellus nec erat pulvinar dignissim. Nam non arcu purus. Vivamus et massa massa." /></td><td>Blue</td><td>No</td><td><span class="woocommerce-Price-amount amount"><bdi><span class="woocommerce-Price-currencySymbol">&#36;</span>45.00</bdi></span></td></tr></tbody></table>'
             //         };
             //         self.$body.html(response.body).find("tr").on("click", {self: self}, self.onRowClick);
             //         if (self.panel.opt.admin){
-            //             self.$button.toggleClass(self.cls.disabled, true);
+            //             self.$addToCart.toggleClass(self.cls.disabled, true);
             //         } else {
-            //             self.$button.toggleClass(self.cls.hidden, !_wcp || !response.purchasable);
+            //             self.$addToCart.toggleClass(self.cls.hidden, !_wcp || !response.purchasable);
+            //         }
+            //         if (_is.string(response.product_url)){
+            //             if (self.panel.opt.admin){
+            //                 self.$viewProduct.toggleClass(self.cls.disabled, true);
+            //             } else {
+            //                 self.$viewProduct.prop("href", response.product_url);
+            //             }
+            //         } else {
+            //             self.$viewProduct.toggleClass(self.cls.hidden, true);
             //         }
             //         if (_is.string(response.title)){
             //             self.$header.html(response.title);
@@ -14436,15 +14460,22 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 
             return _fn.resolved;
         },
-        onButtonClick: function(e){
+        onAddToCartClick: function(e){
             e.preventDefault();
             var $this = $(this),
                 self = e.data.self,
                 variation_id = self.$body.find(":radio:checked").val(),
                 product_id = variation_id || self.media.item.productId;
 
-            self.media.item.addToCart($this, product_id, 1).then(function(){
-                console.log("Added to cart, do something here!");
+            self.$addToCart.addClass(self.cls.disabled).addClass(self.cls.loading);
+            self.media.item.addToCart($this, product_id, 1, false).then(function(response){
+                if (!response || response.error){
+                    self.$footer.append("<p>" + self.il8n.error + "</p>");
+                } else {
+                    self.$footer.append("<p>" + self.il8n.success + "</p>");
+                }
+            }).always(function(){
+                self.$addToCart.removeClass(self.cls.disabled).removeClass(self.cls.loading);
             });
         },
         onRowClick: function(e){
@@ -15192,24 +15223,22 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
         if ($this.hasClass(cls.disabled)){
             return false;
         }
-        var successMsg = $this.attr("data-success") || false,
-            productId = $this.attr("data-variation-id") || self.productId,
+        var productId = $this.attr("data-variation-id") || self.productId,
             quantity = $this.attr("data-quantity") || 1;
 
         $this.removeClass(cls.added)
             .addClass(cls.adding)
             .addClass(cls.disabled);
 
-        self.addToCart($this, productId, quantity).then(function(){
-            $this.removeClass(cls.adding).addClass(cls.added);
-            if (successMsg){
-                $this.html(successMsg);
-            }
+        self.addToCart($this, productId, quantity, true).then(function(){
+            $this.removeClass(cls.adding)
+                .removeClass(cls.disabled)
+                .addClass(cls.added);
         });
         return false;
     };
 
-    _.Item.prototype.addToCart = function($button, productId, quantity){
+    _.Item.prototype.addToCart = function($button, productId, quantity, redirectOnError){
         var $body = $(document.body),
             data = [{
                 "name": "product_id",
@@ -15227,20 +15256,23 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
             data: data
         }).then(function(response) {
             if (!response){
-                console.log("An unexpected response was returned from the server.");
-                return;
-            }
-            if (response.error) {
-                if (_is.string(response.product_url)){
-                    window.location = response.product_url;
+                console.log("An unexpected response was returned from the server.", response);
+            } else if (response.error) {
+                if (redirectOnError){
+                    if (_is.string(response.product_url)){
+                        window.location = response.product_url;
+                    }
+                    window.location = fallback;
                 }
-                window.location = fallback;
-                return;
+            } else {
+                $body.trigger('added_to_cart', [response.fragments, response.cart_hash]);
             }
-            $body.trigger('added_to_cart', [response.fragments, response.cart_hash]);
+            return response;
         }, function(response, textStatus, errorThrown) {
             console.log("FooGallery: Add to cart ajax error.", response, textStatus, errorThrown);
-            window.location = fallback;
+            if (redirectOnError) {
+                window.location = fallback;
+            }
         });
     };
 
