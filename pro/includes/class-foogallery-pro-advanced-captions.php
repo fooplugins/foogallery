@@ -406,6 +406,8 @@ if ( ! class_exists( 'FooGallery_Pro_Advanced_Captions' ) ) {
 	                    $terms = wp_get_post_terms( $foogallery_attachment->ID, $taxonomy, array( 'fields' => 'names' ) );
 
 	                    return implode(', ', $terms );
+                    } else {
+                    	return apply_filters( 'foogallery_build_custom_caption_placeholder_replacement', '', $property, $foogallery_attachment );
                     }
 
                     return '';

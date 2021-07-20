@@ -34,6 +34,8 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 
 				// Add some settings for woocommerce.
 				add_filter( 'foogallery_admin_settings_override', array( $this, 'add_ecommerce_settings' ) );
+
+				add_filter( 'foogallery_build_custom_captions_help-default', array( $this, 'add_product_custom_captoin_help' ) );
 			}
 
 			// Determine ribbon/button data from product.
@@ -51,18 +53,87 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 			// Append a nonce that will be used in variation ajax calls.
 			add_filter( 'foogallery_lightbox_data_attributes', array( $this, 'add_to_lightbox_options' ) );
 
-			// Build up a product variation table for a product.
+			// Build up a product info for a product.
 			add_filter( 'wp_ajax_foogallery_product_variations', array( $this, 'ajax_build_product_info' ) );
 			add_filter( 'wp_ajax_nopriv_foogallery_product_variations', array( $this, 'ajax_build_product_info' ) );
 
 			//add localised text
 			add_filter( 'foogallery_il8n', array( $this, 'add_il8n' ) );
+
+			// Build up captions based on product data.
+			add_filter( 'foogallery_build_custom_caption_placeholder_replacement', array( $this, 'build_product_captions' ), 10, 3 );
+		}
+
+		public function build_product_captions( $caption, $placeholder, $foogallery_attachment ) {
+			if ( strpos( $placeholder, 'product.' ) === 0 && isset( $foogallery_attachment->product ) ) {
+				$property = str_replace( 'product.', '', $placeholder );
+				$product = $foogallery_attachment->product;
+				switch ( $property ) {
+					case 'ID':
+					case 'id':
+						return $product->get_id();
+					case 'short-description':
+					case 'short_description':
+						return $product->get_short_description();
+					case 'url':
+						return $product->get_permalink();
+					case 'price':
+						return $product->get_price_html();
+					case 'discount%':
+						return $this->calculate_percentage_discount( $product );
+					case 'rating':
+						return wc_get_rating_html( $product->get_average_rating(), $product->get_rating_count() );
+					default:
+						if ( method_exists( $product, 'get_' . $property ) ) {
+							return call_user_func( array( $product, 'get_' . $property ) );
+						}
+				}
+			}
+			return $caption;
+		}
+
+		/**
+		 * @param WC_Product $product
+		 *
+		 * @return string
+		 */
+		private function calculate_percentage_discount( $product ) {
+			if( $product->is_on_sale() && ! $product->is_type('variable') ){
+
+				// Get product prices.
+				$regular_price = (float) $product->get_regular_price();
+				$sale_price = (float) $product->get_sale_price();
+
+				$saving_percentage = intval( 100 - ( $sale_price / $regular_price * 100 ) );
+
+				return $saving_percentage . '%';
+			}
+			return '';
+		}
+
+		/**
+		 * Append some help to the custom captions help, specific for products.
+		 *
+		 * @param $html
+		 *
+		 * @return string
+		 */
+		public function add_product_custom_captoin_help( $html ) {
+			$html .= __('You can also use the follow product-specific placeholders, if the attachment is linked to a product:', 'foogallery') . '<br /><br />' .
+			         '<code>{{product.ID}}</code> - ' . __('Product ID', 'foogallery') . '<br />' .
+			         '<code>{{product.title}}</code> - ' . __('Product title', 'foogallery') . '<br />' .
+			         '<code>{{product.sku}}</code> - ' . __('Product SKU', 'foogallery') . '<br />' .
+			         '<code>{{product.description}}</code> - ' . __('Product description', 'foogallery') . '<br />' .
+					 '<code>{{product.short_description}}</code> - ' . __('Product short description', 'foogallery') . '<br />' .
+					 '<code>{{product.price}}</code> - ' . __('Product Price', 'foogallery') . '<br />' .
+					 '<code>{{product.url}}</code> - ' . __('Product Page URL', 'foogallery') . '<br /><br />';
+			return $html;
 		}
 
 		/**
 		 * Display custom item data in the cart
 		 */
-		function override_get_item_data( $item_data, $cart_item_data ) {
+		public function override_get_item_data( $item_data, $cart_item_data ) {
 			if ( isset( $cart_item_data['pr_field'] ) ) {
 				$item_data[] = array(
 					'key' => __( 'Image', 'foogallery' ),
@@ -281,6 +352,9 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 				if ( $product->is_on_sale() ) {
 					$attachment->ribbon_type = $ribbon_type;
 					$attachment->ribbon_text = foogallery_gallery_template_setting( 'ecommerce_sale_ribbon_text', __( 'Sale', 'foogallery' ) );
+					if ( strpos( $attachment->ribbon_text, '{{%}}' ) > 0 ) {
+						$attachment->ribbon_text = str_replace( '{{%}}', $this->calculate_percentage_discount( $product ), $attachment->ribbon_text );
+					}
 				}
 			}
 
@@ -439,7 +513,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 				$new_fields[] = array(
 					'id'       => 'ecommerce_sale_ribbon_text',
 					'title'    => __( 'Sale Ribbon Text', 'foogallery' ),
-					'desc'     => __( 'The text inside the ribbon to display for products that are on sale.', 'foogallery' ),
+					'desc'     => __( 'The text inside the ribbon to display for products that are on sale. Use "{{%}}" to display the percentage discount.', 'foogallery' ),
 					'section'  => __( 'Ecommerce', 'foogallery' ),
 					'subsection' => array( 'ecommerce-features' => __( 'Features', 'foogallery' ) ),
 					'type'     => 'text',
