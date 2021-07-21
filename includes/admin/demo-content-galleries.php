@@ -86,7 +86,7 @@ return array(
 				'foogallery_items_view'         => 'preview',
 
 				//General
-				'image-viewer_thumbnail_dimensions'  => array(
+				'image-viewer_thumbnail_size'  => array(
 					'width'  => '640',
 					'height' => '360',
 					'crop'   => '1'
