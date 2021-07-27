@@ -245,6 +245,15 @@ Please update in order to for FooGallery to work in WP 5.5+!
 
 == Changelog ==
 
+= 2.1.1 =
+* Date Updated : 2021-07-25
+[//]: # fs_premium_only_begin
+* New : [Commerce Plan] Introduced new Ecommerce features
+* New : [Commerce Plan] Deep integration with WooCommerce
+* New : [Commerce Plan] Gallery item ribbons
+* New : [Commerce Plan] Gallery item buttons
+[//]: # fs_premium_only_end
+
 = 2.0.40 =
 * Date Updated : 2021-07-20
 * Fix : Added a custom CSS to 3 gallery templates, to avoid incorrect thumb widths with certain themes and SVG thumbnails.
