@@ -4762,6 +4762,9 @@ html.fg-panel-no-scroll body {
     align-content: center;
     justify-content: center;
 }
+.fg-media-product-footer.fg-hidden {
+    display: none!important;
+}
 .fg-media-product-footer .fg-panel-button {
     margin: 0 0 3px 0;
     border-width: 1px;
