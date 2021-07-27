@@ -182,7 +182,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 			if ( empty( $product ) ) {
 				$response['error'] = __( 'No product found!', 'foogallery' );
 			} else {
-				$html = ''; //'<h2>' . esc_html( $product->get_name() ) . '</h2>';
+				$html = '';
 				$html .= '<p>' . esc_html( $product->get_description() ) . '</p>';
 
 				$response['title'] = $product->get_name();
