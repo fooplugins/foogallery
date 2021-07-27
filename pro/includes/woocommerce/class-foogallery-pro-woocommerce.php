@@ -611,7 +611,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 					'type'     => 'radio',
 					'spacer'   => '<span class="spacer"></span>',
 					'choices'  => array(
-						'first' => __( 'Shown', 'foogallery' ),
+						'shown' => __( 'Shown', 'foogallery' ),
 						'' => __( 'Hidden', 'foogallery' ),
 					),
 					'default'  => '',
