@@ -420,11 +420,15 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 				switch ( $url_type ) {
 					case 'fg-woo-add-to-cart':
 					case 'fg-woo-add-to-cart-ajax':
-						return trailingslashit( get_home_url() ) . '?add-to-cart=' . $product->get_id();
+						if ( is_admin() ) {
+							return trailingslashit( get_home_url() ) . '?add-to-cart=' . $product->get_id();
+						} else {
+							return add_query_arg( array( 'add-to-cart' => $product->get_id() ) );
+						}
 					case 'fg-woo-add-to-cart-redirect' :
-						return trailingslashit( wc_get_cart_url() ) . '?add-to-cart=' . $product->get_id();
+						return add_query_arg( array( 'add-to-cart' => $product->get_id() ), wc_get_cart_url() );
 					case 'fg-woo-add-to-cart-checkout':
-						return trailingslashit( wc_get_checkout_url() ) . '?add-to-cart=' . $product->get_id();
+						return add_query_arg( array( 'add-to-cart' => $product->get_id() ), wc_get_checkout_url() );
 				}
 			}
 			return '';
