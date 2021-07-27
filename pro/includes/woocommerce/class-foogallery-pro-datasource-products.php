@@ -276,7 +276,14 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Products' ) ) {
 				$selected_categories = $datasource_value['categories'];
 			}
 			$categories = get_terms( 'product_cat', array('hide_empty' => false) );
-			$category_count = count( $categories );
+
+			// Set some defaults.
+			if ( ! isset( $datasource_value['caption_title_source'] ) ) {
+				$datasource_value['caption_title_source'] = 'title';
+			}
+			if ( ! isset( $datasource_value['caption_desc_source'] ) ) {
+				$datasource_value['caption_desc_source'] = 'price';
+			}
 			?>
             <p>
 				<?php _e('Choose the settings for your gallery below. The gallery will be dynamically populated using the post query settings below.', 'foogallery' ); ?>
