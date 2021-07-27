@@ -158,7 +158,12 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 
 				wp_send_json( $info );
 			} else {
-				wp_send_json( array( 'error' => __( 'Not allowed!', 'foogallery' ) ) );
+				wp_send_json( array(
+					'error' => __( 'Invalid NONCE!', 'foogallery' ),
+					'title' => __( 'Oops!', 'foogallery' ),
+					'body' => __( 'Something went wrong! Please try refreshing the page and try again.', 'foogallery' ),
+					'purchasable' => false,
+				) );
 			}
 
 			die();
@@ -180,11 +185,11 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 			$response = array();
 
 			if ( empty( $product ) ) {
-				$response['error'] = __( 'No product found!', 'foogallery' );
+				$response['error'] = $response['title'] = __( 'No product found!', 'foogallery' );
+				$response['body'] = __( 'We could not load any product information, as the product was not found!', 'foogallery' );
+				$response['purchasable'] = false;
 			} else {
-				$html = '';
-				$html .= '<p>' . esc_html( $product->get_description() ) . '</p>';
-
+				$html = wp_kses( $product->get_description(), wp_kses_allowed_html() );
 				$response['title'] = $product->get_name();
 				$response['purchasable'] = $product->is_purchasable();
 				if ( '' === $gallery->get_setting( 'ecommerce_lightbox_show_add_to_cart_button', 'shown' ) ) {
