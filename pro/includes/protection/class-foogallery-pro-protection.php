@@ -728,7 +728,7 @@ if ( ! class_exists( 'FooGallery_Pro_Protection' ) ) {
 					FOOGALLERY_PRO_URL . 'includes/protection/watermarks/watermark-copyright.png',
 				);
 				?>
-				<input class="foogallery_settings_long_text" type="text" id="watermark_image" name="foogallery[watermark_image]" value="<? echo esc_url( $watermark_image ); ?>" />
+				<input class="foogallery_settings_long_text" type="text" id="watermark_image" name="foogallery[watermark_image]" value="<?php echo esc_url( $watermark_image ); ?>" />
 				<input type="button" class="button foogallery_settings_watermark_image_select" value="<?php echo esc_html( __( 'Select Image', 'foogallery' ) ); ?>" />
 				<br /><small><?php echo esc_html( __( 'The URL of the image you want to use as a watermark. Or use one of our predefined watermarks:', 'foogallery' ) ); ?></small>
 				<br />
