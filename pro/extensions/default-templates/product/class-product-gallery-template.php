@@ -56,7 +56,7 @@ if ( !class_exists( 'FooGallery_Product_Gallery_Template' ) ) {
 				'common_fields_support' => true,
                 'lazyload_support' => true,
 				'paging_support' => true,
-				'mandatory_classes' => 'fg-simple_portfolio',
+				'mandatory_classes' => 'fg-simple_portfolio fg-caption-always',
 				'thumbnail_dimensions' => true,
 				'filtering_support' => true,
                 'enqueue_core' => true,
@@ -156,6 +156,7 @@ if ( !class_exists( 'FooGallery_Product_Gallery_Template' ) ) {
 				'hover_effect_help',
 				'hover_effect_scale',
 				'hover_effect_preset',
+				'hover_effect_caption_visibility'
 			);
 
 			$fields_to_remove = array();
@@ -166,16 +167,18 @@ if ( !class_exists( 'FooGallery_Product_Gallery_Template' ) ) {
 					$fields_to_remove[] = $key;
 				}
 
-				if ( 'hover_effect_caption_visibility' === $field['id'] ) {
+				if ( 'hover_effect_type' === $field['id'] ) {
+					unset( $field['choices']['preset'] );
+				} else if ( 'hover_effect_caption_visibility' === $field['id'] ) {
 					$field['default'] = 'fg-caption-always';
 					$field['choices'] = array(
 						'fg-caption-always' => __( 'Always Visible', 'foogallery' ),
 					);
-					$field['row_data'] = array(
-						'data-foogallery-change-selector' => 'input:radio',
-						'data-foogallery-hidden' => true,
-						'data-foogallery-preview' => 'shortcode'
-					);
+//					$field['row_data'] = array(
+//						'data-foogallery-change-selector' => 'input:radio',
+//						'data-foogallery-hidden' => true,
+//						'data-foogallery-preview' => 'shortcode'
+//					);
 				} else if ( 'border_size' === $field['id'] ) {
 					$field['default'] = 'fg-border-medium';
 				} else if ( 'rounded_corners' === $field['id'] ) {
