@@ -269,6 +269,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 			// Build up the table body.
 			$html .= '<tbody>';
 			$checked = ' checked="checked"';
+			$purchasable_variation_count = 0;
 			foreach ( $variations as $value ) {
 				$single_variation = new WC_Product_Variation( $value );
 
@@ -278,8 +279,16 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 					$price = $single_variation->get_price_html();
 					$html .= '<td><input type="radio" name="foogallery_product_variation_' . esc_attr( $product->get_id() ) . '" value="' . esc_attr( $variation_id ) . '" ' . $checked . ' /></td>';
 					$checked = '';
+					$has_all_attributes_set = true;
 					foreach ( $attributes as $attribute_key => $attribute_label ) {
-						$html .= '<td>' . $single_variation->get_attribute( $attribute_key ) . '</td>';
+						$attribute_value = $single_variation->get_attribute( $attribute_key );
+						if ( empty( $attribute_value ) ) {
+							$has_all_attributes_set = false;
+						}
+						$html .= '<td>' . $attribute_value . '</td>';
+					}
+					if ( $has_all_attributes_set ) {
+						$purchasable_variation_count++;
 					}
 					$html .= '<td>' . $price . '</td>';
 					$html .= '</tr>';
@@ -287,6 +296,10 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 			}
 
 			$html .= '</tbody></table>';
+
+			if ( $purchasable_variation_count === 0 ) {
+				return '';
+			}
 
 			return $html;
 		}
