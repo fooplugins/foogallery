@@ -64,11 +64,7 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Products' ) ) {
 		 */
 		public function get_gallery_featured_attachment( $default, $foogallery ) {
 			$attachments = $this->get_gallery_attachments_from_products( $foogallery );
-			if ( is_array( $attachments ) && count( $attachments ) > 0 ) {
-				return $attachments[0];
-			}
-
-			return false;
+			return reset( $attachments );
 		}
 
 		/**
