@@ -9,9 +9,10 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Products' ) ) {
 			add_action( 'foogallery_gallery_datasources', array( $this, 'add_datasource' ) );
 			add_action( 'foogallery_admin_enqueue_scripts', array( $this, 'enqueue_scripts_and_styles' ) );
 
-			add_filter( 'foogallery_datasource_woocommerce_item_count', array( $this, 'get_gallery_attachment_count'	), 10, 2 );
-			add_filter( 'foogallery_datasource_woocommerce_attachments', array( $this, 'get_gallery_attachments'	), 10, 2 );
+			add_filter( 'foogallery_datasource_woocommerce_item_count', array( $this, 'get_gallery_attachment_count' ), 10, 2 );
+			add_filter( 'foogallery_datasource_woocommerce_attachments', array( $this, 'get_gallery_attachments' ), 10, 2 );
 			add_filter( 'foogallery_datasource_woocommerce_featured_image', array( $this, 'get_gallery_featured_attachment' ), 10, 2 );
+			add_filter( 'foogallery_datasource_woocommerce_attachment_ids', array( $this, 'get_gallery_attachment_ids' ), 10, 2 );
 			add_action( 'foogallery_before_save_gallery_datasource', array( $this, 'before_save_gallery_datasource_clear_datasource_cached_images' ) );
 
 			add_action( 'foogallery-datasource-modal-content_woocommerce', array( $this, 'render_datasource_modal_content' ), 10, 2 );
@@ -80,6 +81,18 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Products' ) ) {
 		 */
 		public function get_gallery_attachment_count( $count, $foogallery ) {
 			return count( $this->get_gallery_attachments_from_products( $foogallery ) );
+		}
+
+		/**
+		 * Returns an array of the attachment ID's for the gallery
+		 *
+		 * @param $attachment_ids
+		 * @param $foogallery
+		 *
+		 * @return array
+		 */
+		public function get_gallery_attachment_ids( $attachment_ids, $foogallery ) {
+			return array_keys( $this->get_gallery_attachments_from_products( $foogallery ) );
 		}
 
 		/**
@@ -231,7 +244,7 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Products' ) ) {
 				$attachment->custom_target = '';
 
 				$attachment    = apply_filters( 'foogallery_datasource_woocommerce_build_attachment', $attachment, $product );
-				$attachments[] = $attachment;
+				$attachments[$post_thumbnail_id] = $attachment;
 			}
 
 			return $attachments;
