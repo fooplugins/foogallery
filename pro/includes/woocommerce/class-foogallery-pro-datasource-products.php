@@ -177,13 +177,13 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Products' ) ) {
 		 */
 		function build_attachments( $foogallery ) {
 			$categories           = ! empty( $foogallery->datasource_value['categories'] ) ? $foogallery->datasource_value['categories'] : '';
-			$no_of_post           = ! empty( $foogallery->datasource_value['no_of_post'] ) ? $foogallery->datasource_value['no_of_post'] : 20;
+			$no_of_post           = ! empty( $foogallery->datasource_value['no_of_post'] ) ? $foogallery->datasource_value['no_of_post'] : -1;
 			$exclude              = ! empty( $foogallery->datasource_value['exclude'] ) ? $foogallery->datasource_value['exclude'] : '';
 			$caption_title_source = ! empty( $foogallery->datasource_value['caption_title_source'] ) ? $foogallery->datasource_value['caption_title_source'] : 'post_title';
 			$caption_desc_source  = ! empty( $foogallery->datasource_value['caption_desc_source'] ) ? $foogallery->datasource_value['caption_desc_source'] : 'post_content';
 
 			$args = array(
-				'posts_per_page' => $no_of_post,
+				'limit'          => $no_of_post,
 				'post_type'      => 'product',
 				'post_status'    => 'publish',
 				'post__not_in'   => explode( ',', $exclude ),
@@ -389,7 +389,7 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Products' ) ) {
 		function render_datasource_item( $gallery ) {
 			// Setup some defaults.
 			$show_container = false;
-			$no_of_post = 5;
+			$no_of_post = '';
 			$exclude = '';
 			$caption_title_source = 'post_title';
 			$caption_desc_source = 'post_excerpt';
@@ -404,6 +404,10 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Products' ) ) {
 				$exclude              = array_key_exists( 'exclude', $gallery->datasource_value ) ? $gallery->datasource_value['exclude'] : '';
 				$caption_title_source = array_key_exists( 'caption_title_source', $gallery->datasource_value ) ? $gallery->datasource_value['caption_title_source'] : 'post_title';
 				$caption_desc_source  = array_key_exists( 'caption_desc_source', $gallery->datasource_value ) ? $gallery->datasource_value['caption_desc_source'] : 'post_excerpt';
+			}
+
+			if ( empty( $no_of_post ) ) {
+				$no_of_post = __( 'unlimited', 'foogallery' );
 			}
 
 
