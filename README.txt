@@ -245,13 +245,14 @@ Please update in order to for FooGallery to work in WP 5.5+!
 
 == Changelog ==
 
-= 2.1.3 =
-* Date Updated : 2021-07-27
+= 2.1.4 =
+* Date Updated : 2021-07-28
 [//]: # fs_premium_only_begin
 * New : [Commerce Plan] Introduced new Ecommerce features
 * New : [Commerce Plan] Deep integration with WooCommerce
 * New : [Commerce Plan] Gallery item ribbons
 * New : [Commerce Plan] Gallery item buttons
+* New : [Commerce Plan] Product Gallery template
 [//]: # fs_premium_only_end
 
 = 2.0.40 =
