@@ -86,7 +86,7 @@ if ( ! class_exists( 'FooGallery_Pro_Protection' ) ) {
 					if ( empty( $progress ) ) {
 						// there is no progress, so start!
 						$gallery = FooGallery::get_by_id( $foogallery_id );
-						$images  = $gallery->attachment_count();
+						$images  = $gallery->item_count();
 
 						$progress = array(
 							'total'       => $images,
@@ -94,7 +94,7 @@ if ( ! class_exists( 'FooGallery_Pro_Protection' ) ) {
 							'progress'    => 0,
 							'count'       => 0,
 							'message'     => sprintf( __( '%d watermarked images to generate...', 'foogallery' ), $images ),
-							'attachments' => $gallery->attachment_ids,
+							'attachments' => $gallery->item_attachment_ids(),
 						);
 					} else {
 						// What if there are no attachments left?
@@ -105,6 +105,12 @@ if ( ! class_exists( 'FooGallery_Pro_Protection' ) ) {
 							$progress['progress'] = $progress['progress'] + 1;
 							$progress['count']    = $progress['count'] + 1;
 							$progress['percent']  = intval( $progress['progress'] / $progress['total'] * 100 );
+						}
+						if ( 0 === $progress['count'] && 0 === $progress['total'] ) {
+							$progress['percent'] = 100;
+						}
+						if ( !is_array( $progress['attachments'] ) || 0 === count( $progress['attachments'] ) ) {
+							$progress['percent'] = 100;
 						}
 						if ( $progress['percent'] < 100 ) {
 							$progress['message'] = sprintf( __( '%1$d / %2$d watermarked images generated...', 'foogallery' ), $progress['progress'], $progress['total'] );
