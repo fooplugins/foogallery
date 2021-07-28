@@ -217,6 +217,17 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 		}
 
 		/**
+		 * Check if string contains any html tags.
+		 *
+		 * @param $string
+		 *
+		 * @return bool
+		 */
+		private function is_html( $string ) {
+			return preg_match('/<\s?[^\>]*\/?\s?>/i', $string);
+		}
+
+		/**
 		 * Build up the product variation HTML table to show in the lightbox.
 		 *
 		 * @param $product
