@@ -189,7 +189,13 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 				$response['body'] = __( 'We could not load any product information, as the product was not found!', 'foogallery' );
 				$response['purchasable'] = false;
 			} else {
-				$html = wp_kses( $product->get_description(), wp_kses_allowed_html() );
+				$description = $product->get_description();
+				if ( $this->is_html( $description ) ) {
+					$description = wp_kses( $description, wp_kses_allowed_html() );
+				} else {
+					$description = '<p>' . esc_html( $description ) . '</p>';
+				}
+				$html = $description;
 				$response['title'] = $product->get_name();
 				$response['purchasable'] = $product->is_purchasable();
 				if ( '' === $gallery->get_setting( 'ecommerce_lightbox_show_add_to_cart_button', 'shown' ) ) {
