@@ -10,6 +10,7 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Post_Query' ) ) {
 			add_action( 'foogallery-datasource-modal-content_post_query', array( $this, 'render_datasource_modal_content' ), 10, 2 );
 			add_action( 'foogallery_gallery_metabox_items_list', array( $this, 'render_datasource_item' ), 10, 1 );
 			add_filter( 'foogallery_datasource_post_query_item_count', array( $this, 'get_gallery_attachment_count'	), 10, 2 );
+			add_filter( 'foogallery_datasource_post_query_attachment_ids', array( $this, 'get_gallery_attachment_ids' ), 10, 2 );
 			add_filter( 'foogallery_datasource_post_query_attachments', array( $this, 'get_gallery_attachments'	), 10, 2 );
 			add_filter( 'foogallery_datasource_post_query_featured_image', array( $this, 'get_gallery_featured_attachment' ), 10, 2 );
 			add_action( 'foogallery_before_save_gallery_datasource', array( $this, 'before_save_gallery_datasource_clear_datasource_cached_images' ) );
@@ -45,11 +46,7 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Post_Query' ) ) {
 		 */
 		public function get_gallery_featured_attachment( $default, $foogallery ) {
 			$attachments = $this->get_gallery_attachments_from_post_query( $foogallery );
-			if ( is_array( $attachments ) && count( $attachments ) > 0 ) {
-				return $attachments[0];
-			}
-
-			return false;
+			return reset( $attachments );
 		}
 
 		/**
@@ -62,6 +59,18 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Post_Query' ) ) {
 		 */
 		public function get_gallery_attachment_count( $count, $foogallery ) {
 			return count( $this->get_gallery_attachments_from_post_query( $foogallery ) );
+		}
+
+		/**
+		 * Returns an array of the attachment ID's for the gallery
+		 *
+		 * @param $attachment_ids
+		 * @param $foogallery
+		 *
+		 * @return array
+		 */
+		public function get_gallery_attachment_ids( $attachment_ids, $foogallery ) {
+			return array_keys( $this->get_gallery_attachments_from_post_query( $foogallery ) );
 		}
 
 		/**
@@ -125,7 +134,7 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Post_Query' ) ) {
 		 * @return array(FooGalleryAttachment)
 		 */
 		function build_attachments_from_post_query( $foogallery ) {
-			$totalPosts = ! empty( $foogallery->datasource_value['no_of_post'] ) ? $foogallery->datasource_value['no_of_post'] : 5;
+			$totalPosts = ! empty( $foogallery->datasource_value['no_of_post'] ) ? $foogallery->datasource_value['no_of_post'] : -1;
 			$postType   = ! empty( $foogallery->datasource_value['gallery_post_type'] ) ? $foogallery->datasource_value['gallery_post_type'] : 'post';
 			$link_to    = ! empty( $foogallery->datasource_value['link_to'] ) ? $foogallery->datasource_value['link_to'] : 'image';
 			$exclude    = ! empty( $foogallery->datasource_value['exclude'] ) ? $foogallery->datasource_value['exclude'] : '';
@@ -169,7 +178,7 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Post_Query' ) ) {
 				$attachment->sort          = '';
 
 				$attachment    = apply_filters( 'foogallery_datasource_post_query_build_attachment', $attachment, $post );
-				$attachments[] = $attachment;
+				$attachments[$post_thumbnail_id] = $attachment;
 			}
 
 			return $attachments;
