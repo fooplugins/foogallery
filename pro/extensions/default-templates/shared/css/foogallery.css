@@ -1236,6 +1236,7 @@ div.fg-ribbon-6 {
 }
 
 .foogallery .fg-caption-title {
+	box-sizing: content-box;
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
