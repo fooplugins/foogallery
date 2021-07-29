@@ -35,7 +35,8 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 				// Add some settings for woocommerce.
 				add_filter( 'foogallery_admin_settings_override', array( $this, 'add_ecommerce_settings' ) );
 
-				add_filter( 'foogallery_build_custom_captions_help-default', array( $this, 'add_product_custom_captoin_help' ) );
+				// Add some help for custom captions.
+				add_filter( 'foogallery_build_custom_captions_help-default', array( $this, 'add_product_custom_caption_help' ) );
 			}
 
 			// Determine ribbon/button data from product.
@@ -118,15 +119,17 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 		 *
 		 * @return string
 		 */
-		public function add_product_custom_captoin_help( $html ) {
-			$html .= __('You can also use the follow product-specific placeholders, if the attachment is linked to a product:', 'foogallery') . '<br /><br />' .
-			         '<code>{{product.ID}}</code> - ' . __('Product ID', 'foogallery') . '<br />' .
-			         '<code>{{product.title}}</code> - ' . __('Product title', 'foogallery') . '<br />' .
-			         '<code>{{product.sku}}</code> - ' . __('Product SKU', 'foogallery') . '<br />' .
-			         '<code>{{product.description}}</code> - ' . __('Product description', 'foogallery') . '<br />' .
-					 '<code>{{product.short_description}}</code> - ' . __('Product short description', 'foogallery') . '<br />' .
-					 '<code>{{product.price}}</code> - ' . __('Product Price', 'foogallery') . '<br />' .
-					 '<code>{{product.url}}</code> - ' . __('Product Page URL', 'foogallery') . '<br /><br />';
+		public function add_product_custom_caption_help( $html ) {
+			if ( $this->is_woocommerce_activated() ) {
+				$html .= __('You can also use the follow product-specific placeholders, if the attachment is linked to a product:', 'foogallery') . '<br /><br />' .
+				         '<code>{{product.ID}}</code> - ' . __('Product ID', 'foogallery') . '<br />' .
+				         '<code>{{product.title}}</code> - ' . __('Product title', 'foogallery') . '<br />' .
+				         '<code>{{product.sku}}</code> - ' . __('Product SKU', 'foogallery') . '<br />' .
+				         '<code>{{product.description}}</code> - ' . __('Product description', 'foogallery') . '<br />' .
+						 '<code>{{product.short_description}}</code> - ' . __('Product short description', 'foogallery') . '<br />' .
+						 '<code>{{product.price}}</code> - ' . __('Product Price', 'foogallery') . '<br />' .
+						 '<code>{{product.url}}</code> - ' . __('Product Page URL', 'foogallery') . '<br /><br />';
+			}
 			return $html;
 		}
 
