@@ -6393,6 +6393,14 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 			}
 			return type;
 		},
+		/**
+		 * @memberof FooGallery.TemplateFactory#
+		 * @function configure
+		 * @param {string} name
+		 * @param {object} options
+		 * @param {object} classes
+		 * @param {object} il8n
+		 */
 		configure: function (name, options, classes, il8n) {
 			var self = this;
 			if (self.contains(name)) {
@@ -8550,6 +8558,30 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 			 */
 			self.hasExif = _is.exif(self.exif);
 			/**
+			 * @memberof FooGallery.Item#
+			 * @name ribbon
+			 * @type {FooGallery.Item~Ribbon}
+			 */
+			self.ribbon = self.opt.ribbon;
+			/**
+			 * @memberof FooGallery.Item#
+			 * @name hasRibbon
+			 * @type {boolean}
+			 */
+			self.hasRibbon = _is.hash(self.ribbon) && _is.string(self.ribbon.text) && _is.string(self.ribbon.type);
+			/**
+			 * @memberof FooGallery.Item#
+			 * @name buttons
+			 * @type {FooGallery.Item~Button[]}
+			 */
+			self.buttons = self.opt.buttons;
+			/**
+			 * @memberof FooGallery.Item#
+			 * @name hasButtons
+			 * @type {boolean}
+			 */
+			self.hasButtons = _is.array(self.buttons) && self.buttons.length > 0;
+			/**
 			 * @summary This property is used to store the promise created when loading an item for the first time.
 			 * @memberof FooGallery.Item#
 			 * @name _load
@@ -9079,6 +9111,15 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 				picture.appendChild(image);
 			}
 
+			var ribbon;
+			if (self.hasRibbon){
+				ribbon = document.createElement("div");
+				ribbon.className = self.ribbon.type;
+				var ribbonText = document.createElement("span");
+				ribbonText.innerHTML = self.ribbon.text;
+				ribbon.appendChild(ribbonText);
+			}
+
 			var overlay = document.createElement("span");
 			overlay.className = cls.overlay;
 
@@ -9110,9 +9151,38 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 				captionDesc.className = cls.caption.description;
 				captionDesc.innerHTML = self.maxDescriptionLength > 0 ? _str.trimTo(self.description, self.maxDescriptionLength) : self.description;
 			}
+			var captionButtons = null;
+			if (self.hasButtons){
+				captionButtons = document.createElement("div");
+				captionButtons.className = cls.caption.buttons;
+				_utils.each(self.buttons, function(button){
+					if (_is.hash(button) && _is.string(button.text)){
+						var captionButton = document.createElement("a");
+						captionButton.innerHTML = button.text;
+						if (_is.string(button.url) && button.url.length > 0){
+							captionButton.href = button.url;
+						}
+						if (_is.string(button.rel) && button.rel.length > 0){
+							captionButton.rel = button.rel;
+						}
+						if (_is.string(button.target) && button.target.length > 0){
+							captionButton.target = button.target;
+						}
+						if (_is.string(button.classes) && button.classes.length > 0){
+							captionButton.className = button.classes;
+						}
+						if (_is.hash(button.attr)){
+							self._setAttributes(captionButton, button.attr);
+						}
+						captionButtons.appendChild(captionButton);
+					}
+				});
+			}
 
 			if (captionTitle !== null) captionInner.appendChild(captionTitle);
 			if (captionDesc !== null) captionInner.appendChild(captionDesc);
+			if (self.hasButtons && captionButtons !== null) captionInner.appendChild(captionButtons);
+
 			caption.appendChild(captionInner);
 			if (self.isPicture){
 				wrap.appendChild(picture);
@@ -9123,6 +9193,9 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 			anchor.appendChild(wrap);
 			inner.appendChild(anchor);
 			inner.appendChild(caption);
+			if (self.hasRibbon){
+				elem.appendChild(ribbon);
+			}
 			elem.appendChild(inner);
 			elem.appendChild(loader);
 
@@ -9497,7 +9570,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 		 */
 		onCaptionClick: function (e) {
 			var self = e.data.self, evt = self.tmpl.trigger("caption-click-item", [self]);
-			if (!evt.isDefaultPrevented() && self.$anchor.length > 0 && !$(e.target).is("a,:input")) {
+			if (!evt.isDefaultPrevented() && self.$anchor.length > 0 && !$(e.target).is("a[href],:input")) {
 				self.$anchor.get(0).click();
 			}
 		}
@@ -9523,6 +9596,8 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 	 * @property {boolean} [showCaptionTitle=true] - Whether or not the caption title should be displayed.
 	 * @property {boolean} [showCaptionDescription=true] - Whether or not the caption description should be displayed.
 	 * @property {FooGallery.Item~Attributes} [attr] - Additional attributes to apply to the items' elements.
+	 * @property {FooGallery.Item~Button[]} [buttons=[]] - An array of buttons to append to the caption.
+	 * @property {FooGallery.Item~Ribbon} [ribbon] - The ribbon type and text to display for the item.
 	 */
 	_.template.configure("core", {
 		item: {
@@ -9546,6 +9621,11 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 			showCaptionDescription: true,
 			noLightbox: false,
 			panelHide: false,
+			buttons: [],
+			ribbon: {
+				type: null,
+				text: null
+			},
 			exif: {
 				aperture: null,
 				camera: null,
@@ -9593,7 +9673,9 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 				elem: "fg-caption",
 				inner: "fg-caption-inner",
 				title: "fg-caption-title",
-				description: "fg-caption-desc"
+				description: "fg-caption-desc",
+				buttons: "fg-caption-buttons",
+				button: "fg-caption-button"
 			}
 		}
 	}, {
@@ -9615,6 +9697,23 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 	// ######################
 	// ## Type Definitions ##
 	// ######################
+
+	/**
+	 * @summary An object containing properties for a button to add to the item caption.
+	 * @typedef {object} FooGallery.Item~Button
+	 * @property {string} url - The url the button opens.
+	 * @property {string} text - The text displayed within the button.
+	 * @property {string} [rel=""] - The rel attribute for the button.
+	 * @property {string} [target="_blank"] - The target attribute for the button.
+	 * @property {string} [classes=""] - Additional CSS class names to apply to the button.
+	 */
+
+	/**
+	 * @summary An object containing the ribbon information.
+	 * @typedef {object} FooGallery.Item~Ribbon
+	 * @property {string} type - The type of ribbon to display.
+	 * @property {string} text - The text displayed within the ribbon.
+	 */
 
 	/**
 	 * @summary A simple object containing the CSS classes used by an item.
@@ -11488,8 +11587,9 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
             self.content = new _.Panel.Content(self);
             self.info = new _.Panel.Info(self);
             self.thumbs = new _.Panel.Thumbs(self);
+            self.cart = new _.Panel.Cart(self);
 
-            self.areas = [self.content, self.info, self.thumbs];
+            self.areas = [self.content, self.info, self.thumbs, self.cart];
 
             self.$el = null;
 
@@ -11966,6 +12066,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
             swipe: true,
             stackSideAreas: true,
             preserveButtonSpace: true,
+            admin: false,
 
             info: "bottom", // none | top | bottom | left | right
             infoVisible: false,
@@ -11976,6 +12077,9 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 
             cart: "none", // none | top | bottom | left | right
             cartVisible: false,
+            cartAjax: null,
+            cartNonce: null,
+            cartTimeout: null,
 
             thumbs: "none", // none | top | bottom | left | right
             thumbsVisible: true,
@@ -11998,7 +12102,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
                 autoProgress: true,
                 info: true,
                 thumbs: false,
-                cart: false
+                cart: true
             },
             breakpoints: [{
                 name: "medium",
@@ -13604,6 +13708,42 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
     FooGallery.utils.fn,
     FooGallery.utils.transition
 );
+(function($, _, _fn, _t){
+
+    _.Panel.Cart = _.Panel.SideArea.extend({
+        construct: function(panel){
+            this._super(panel, "cart", {
+                icon: "cart",
+                label: panel.il8n.buttons.cart,
+                position: panel.opt.cart,
+                visible: panel.opt.cartVisible,
+                waitForUnload: false,
+                toggle: true
+            }, panel.cls.cart);
+        },
+        canLoad: function(media){
+            return this._super(media) && media.product.canLoad();
+        },
+        doLoad: function(media, reverseTransition){
+            if (this.canLoad(media)){
+                media.product.appendTo(this.$inner);
+                media.product.load();
+            }
+            return _fn.resolved;
+        },
+        doUnload: function(media, reverseTransition){
+            media.product.unload();
+            media.product.detach();
+            return _fn.resolved;
+        }
+    });
+
+})(
+    FooGallery.$,
+    FooGallery,
+    FooGallery.utils.fn,
+    FooGallery.utils.transition
+);
 (function($, _, _utils, _is, _fn, _obj, _str, _t){
 
     _.Panel.Media = _utils.Class.extend({
@@ -13619,6 +13759,8 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
             self.cls = _obj.extend({}, panel.cls.media);
 
             self.sel = _obj.extend({}, panel.sel.media);
+
+            self.il8n = _obj.extend({}, panel.il8n.media);
 
             self.caption = new _.Panel.Media.Caption(panel, self);
 
@@ -13829,7 +13971,23 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
                     inner: "fg-media-product-inner",
                     header: "fg-media-product-header",
                     body: "fg-media-product-body",
-                    footer: "fg-media-product-footer"
+                    footer: "fg-media-product-footer",
+                    button: "fg-panel-button",
+                    hidden: "fg-hidden",
+                    disabled: "fg-disabled",
+                    loading: "fg-loading"
+                }
+            }
+        }
+    }, {
+        panel: {
+            media: {
+                product: {
+                    title: "Product Information",
+                    addToCart: "Add to Cart",
+                    viewProduct: "View Product",
+                    success: "Successfully added to cart.",
+                    error: "Something went wrong adding to cart."
                 }
             }
         }
@@ -14087,7 +14245,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
     FooGallery.utils.str,
     FooGallery.utils.transition
 );
-(function ($, _, _utils, _is, _fn, _obj, _t) {
+(function ($, _, _utils, _is, _fn, _obj, _t, _wcp) {
 
     _.Panel.Media.Product = _utils.Class.extend({
         construct: function (panel, media) {
@@ -14097,6 +14255,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
             self.opt = panel.opt;
             self.cls = media.cls.product;
             self.sel = media.sel.product;
+            self.il8n = media.il8n.product;
             self.$el = null;
             self.$inner = null;
             self.$header = null;
@@ -14108,44 +14267,46 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
             self.__requestId = null;
         },
         canLoad: function(){
-            return !_is.empty(this.media.item.productId);
+            return !_is.empty(this.media.item.productId) && ((this.panel.opt.admin && !_wcp) || !!_wcp);
         },
         create: function(){
-            if (!this.isCreated){
-                var e = this.panel.trigger("product-create", [this]);
+            var self = this;
+            if (!self.isCreated){
+                var e = self.panel.trigger("product-create", [self]);
                 if (!e.isDefaultPrevented()){
-                    this.isCreated = this.doCreate();
-                    if (this.isCreated){
-                        this.panel.trigger("product-created", [this]);
+                    self.isCreated = self.doCreate();
+                    if (self.isCreated){
+                        self.panel.trigger("product-created", [self]);
                     }
                 }
             }
-            return this.isCreated;
+            return self.isCreated;
         },
         doCreate: function(){
-            this.$el = $("<div/>").addClass(this.cls.elem).append(
-                $("<div/>").addClass(this.panel.cls.loader)
+            var self = this;
+            self.$el = $("<div/>").addClass(self.cls.elem).append(
+                $("<div/>").addClass(self.panel.cls.loader)
             );
-            this.$inner = $("<div/>").addClass(this.cls.inner).appendTo(this.$el);
-            this.$header = $("<div/>").addClass(this.cls.header).text("Add To Cart").appendTo(this.$inner);
-            this.$body = $("<div/>").addClass(this.cls.body).appendTo(this.$inner);
-            this.$footer = $("<div/>").addClass(this.cls.footer).append(
-                $("<div/>").addClass("fg-panel-button fg-product-button").text("Add to Cart"),
-                $("<div/>").addClass("fg-panel-button fg-product-button").text("View Cart")
-            ).appendTo(this.$inner);
+            self.$inner = $("<div/>").addClass(self.cls.inner).appendTo(self.$el);
+            self.$header = $("<div/>").addClass(self.cls.header).html(self.il8n.title).appendTo(self.$inner);
+            self.$body = $("<div/>").addClass(self.cls.body).appendTo(self.$inner);
+            self.$addToCart = $("<button/>").addClass(self.cls.button).html(self.il8n.addToCart).on("click", {self: self}, self.onAddToCartClick);
+            self.$viewProduct = $("<a/>").addClass(self.cls.button).html(self.il8n.viewProduct);
+            self.$footer = $("<div/>").addClass(self.cls.footer).append(self.$addToCart).append(self.$viewProduct).appendTo(self.$inner);
             return true;
         },
         destroy: function(){
-            if (this.isCreated){
-                var e = this.panel.trigger("product-destroy", [this]);
+            var self = this;
+            if (self.isCreated){
+                var e = self.panel.trigger("product-destroy", [self]);
                 if (!e.isDefaultPrevented()){
-                    this.isCreated = !this.doDestroy();
-                    if (!this.isCreated){
-                        this.panel.trigger("product-destroyed", [this]);
+                    self.isCreated = !self.doDestroy();
+                    if (!self.isCreated){
+                        self.panel.trigger("product-destroyed", [self]);
                     }
                 }
             }
-            return !this.isCreated;
+            return !self.isCreated;
         },
         doDestroy: function(){
             this.$el.remove();
@@ -14210,12 +14371,42 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
         },
         doLoad: function(){
             var self = this;
-            if (self.__loaded != null) return self.__loaded;
-            return self.__loaded = $.Deferred(function(def){
-                self.__requestId = setTimeout(function(){
-                    self.$body.append("loaded!");
-                    def.resolve();
-                }, 3000);
+            if (self.__loaded !== null) return self.__loaded;
+            return self.__loaded = $.ajax({
+                type: "POST",
+                url: self.panel.opt.cartAjax,
+                data: {
+                    action: "foogallery_product_variations",
+                    nonce: self.panel.opt.cartNonce,
+                    nonce_time: self.panel.opt.cartTimeout,
+                    product_id: self.media.item.productId,
+                    gallery_id: self.panel.tmpl.id
+                }
+            }).then(function(response){
+                if (response.error){
+                    console.log("Error fetching product information from server.", response.error);
+                    self.$footer.addClass(self.cls.hidden);
+                }
+                if (self.panel.opt.admin){
+                    self.$addToCart.toggleClass(self.cls.disabled, true);
+                } else {
+                    self.$addToCart.toggleClass(self.cls.hidden, !_wcp || !response.purchasable);
+                }
+                if (_is.string(response.product_url)){
+                    if (self.panel.opt.admin){
+                        self.$viewProduct.toggleClass(self.cls.disabled, true);
+                    } else {
+                        self.$viewProduct.prop("href", response.product_url);
+                    }
+                } else {
+                    self.$viewProduct.toggleClass(self.cls.hidden, true);
+                }
+                self.$body.html(response.body).find("tr").on("click", {self: self}, self.onRowClick);
+                if (_is.string(response.title)){
+                    self.$header.html(response.title);
+                } else {
+                    self.$header.html(self.il8n.title);
+                }
             }).promise();
         },
         unload: function(){
@@ -14238,6 +14429,31 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
         doUnload: function(){
 
             return _fn.resolved;
+        },
+        onAddToCartClick: function(e){
+            e.preventDefault();
+            var $this = $(this),
+                self = e.data.self,
+                variation_id = self.$body.find(":radio:checked").val(),
+                product_id = variation_id || self.media.item.productId;
+
+            self.$addToCart.addClass(self.cls.disabled).addClass(self.cls.loading);
+            self.media.item.addToCart($this, product_id, 1, false).then(function(response){
+                if (!response || response.error){
+                    self.$footer.append("<p>" + self.il8n.error + "</p>");
+                } else {
+                    self.$footer.append("<p>" + self.il8n.success + "</p>");
+                }
+            }).always(function(){
+                self.$addToCart.removeClass(self.cls.disabled).removeClass(self.cls.loading);
+            });
+        },
+        onRowClick: function(e){
+            if (!$(e.target).is(":radio")){
+                e.preventDefault();
+                e.stopPropagation();
+                $(this).find(":radio").prop("checked", true);
+            }
         }
     });
 
@@ -14248,7 +14464,8 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
     FooGallery.utils.is,
     FooGallery.utils.fn,
     FooGallery.utils.obj,
-    FooGallery.utils.transition
+    FooGallery.utils.transition,
+    window.woocommerce_params
 );
 (function($, _, _utils, _obj){
 
@@ -14953,6 +15170,115 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
     FooGallery,
     FooGallery.utils.is,
     FooGallery.utils.obj
+);
+(function($, _, _utils, _is, _obj, _wcp){
+
+    _.template.configure("core", {}, {
+        woo: {
+            button: "fg-woo-add-to-cart-ajax",
+            disabled: "fg-disabled",
+            added: "fg-woo-added",
+            adding: "fg-woo-adding"
+        }
+    });
+
+    _.Item.prototype.onAddToCart = function(e){
+        var self = e.data.self, $this = $(this);
+        if (!_wcp){
+            console.log("woocommerce_params not found!");
+            return;
+        }
+        var cls = self.tmpl.cls.woo;
+        e.preventDefault();
+        if ($this.hasClass(cls.disabled)){
+            return false;
+        }
+        var productId = $this.attr("data-variation-id") || self.productId,
+            quantity = $this.attr("data-quantity") || 1;
+
+        $this.removeClass(cls.added)
+            .addClass(cls.adding)
+            .addClass(cls.disabled);
+
+        self.addToCart($this, productId, quantity, true).then(function(){
+            $this.removeClass(cls.adding)
+                .removeClass(cls.disabled)
+                .addClass(cls.added);
+        });
+        return false;
+    };
+
+    _.Item.prototype.addToCart = function($button, productId, quantity, redirectOnError){
+        var $body = $(document.body),
+            data = [{
+                "name": "product_id",
+                "value": productId
+            },{
+                "name": "quantity",
+                "value": quantity
+            }],
+            fallback = "?add-to-cart=" + productId;
+
+        $body.trigger('adding_to_cart', [$button, data]);
+        return $.ajax({
+            type: 'POST',
+            url: _wcp.wc_ajax_url.toString().replace('%%endpoint%%', 'add_to_cart'),
+            data: data
+        }).then(function(response) {
+            if (!response){
+                console.log("An unexpected response was returned from the server.", response);
+            } else if (response.error) {
+                if (redirectOnError){
+                    if (_is.string(response.product_url)){
+                        window.location = response.product_url;
+                    }
+                    window.location = fallback;
+                }
+            } else {
+                $body.trigger('added_to_cart', [response.fragments, response.cart_hash]);
+            }
+            return response;
+        }, function(response, textStatus, errorThrown) {
+            console.log("FooGallery: Add to cart ajax error.", response, textStatus, errorThrown);
+            if (redirectOnError) {
+                window.location = fallback;
+            }
+        });
+    };
+
+    _.Item.override("doParseItem", function($el){
+        var self = this;
+        if (self._super($el)){
+            $el.find(self.tmpl.sel.woo.button).on("click.foogallery", { self: self }, self.onAddToCart);
+            return true
+        }
+        return false;
+    });
+
+    _.Item.override("doCreateItem", function(){
+        var self = this;
+        if (self._super()){
+            self.$el.find(self.tmpl.sel.woo.button).on("click.foogallery", { self: self }, self.onAddToCart);
+            return true
+        }
+        return false;
+    });
+
+    _.Item.override("doDestroyItem", function(){
+        var self = this;
+        if (self.isParsed) {
+            self.$el.find(self.tmpl.sel.woo.button).off("click.foogallery");
+        }
+        return self._super();
+    });
+
+})(
+    FooGallery.$,
+    FooGallery,
+    FooGallery.utils,
+    FooGallery.utils.is,
+    FooGallery.utils.obj,
+    window.woocommerce_params
 );
 (function($, _, _utils){
 
