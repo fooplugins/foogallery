@@ -291,6 +291,10 @@ tr.foogallery_template_field[data-foogallery-hidden] {
 	display: none;
 }
 
+tr.foogallery_template_field[data-foogallery-invisible] {
+	display: none;
+}
+
 .foogallery_template_field_type-promo .foogallery-promo {
 	position: relative;
 	display: block;
