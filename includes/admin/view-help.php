@@ -179,14 +179,18 @@ $show_demos = apply_filters( 'foogallery_admin_help_show_demos', true );
                         <a href="<? echo esc_url( foogallery_admin_url( 'https://fooplugins.com/documentation/foogallery/', 'help') ); ?>" target="_blank"><?php _e('FooGallery Documentation','foogallery'); ?></a>
                         - <?php _e('Our documentation covers everything you need to know, from install instructions and account management, to troubleshooting common issues and extending the functionality.', 'foogallery'); ?>
                     </li>
+	                <?php if ( $is_free ) { ?>
                     <li>
                         <a href="https://wordpress.org/support/plugin/foogallery/" target="_blank"><?php _e('FooGallery WordPress.org Support','foogallery'); ?></a>
                         - <?php _e('We actively monitor and answer all questions posted on WordPress.org for FooGallery.', 'foogallery'); ?>
                     </li>
+	                <?php } else { ?>
+		                <li>
+			                <a href="<?php echo esc_url( $support_url ); ?>" target="_blank"><?php _e('Premium Support','foogallery'); ?></a>
+			                - <?php _e('Open a support ticket and our dedicated support team will assist. This is the fasted way to get help!', 'foogallery'); ?>
+		                </li>
+	                <?php } ?>
                 </ul>
-                <footer>
-                    <?php echo $support_text; ?>
-                </footer>
             </section>
 		</div>
 	</div>
