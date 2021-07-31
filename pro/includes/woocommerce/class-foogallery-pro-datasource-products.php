@@ -402,6 +402,7 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Products' ) ) {
 			$exclude = '';
 			$caption_title_source = 'post_title';
 			$caption_desc_source = 'post_excerpt';
+			$categories_html = '';
 
 			if ( isset( $gallery->datasource_name ) ) {
 				$show_container = 'woocommerce' === $gallery->datasource_name;
