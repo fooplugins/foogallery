@@ -847,9 +847,11 @@ if ( ! class_exists( 'FooGallery_Pro_Protection' ) ) {
 
 			echo '<h2>' . esc_html( __( 'Watermarked Image', 'foogallery' ) ) . '</h2>';
 
-			$image_base64 = $watermark->get_image_editor_helper()->get_image_base64( $editor->get_image() );
+			$image = $editor->get_image();
 
-			$watermark->get_image_editor_helper()->cleanup( $editor->get_image() );
+			$image_base64 = $watermark->get_image_editor_helper()->get_image_base64( $image );
+
+			$watermark->get_image_editor_helper()->cleanup( $image );
 
 			echo '<img src="data:image/png;base64,' . $image_base64 . '" />';
 
