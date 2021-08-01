@@ -25,7 +25,7 @@ body {
     max-width: 1000px;
     margin: 24px auto;
     clear: both;
-    background-color: #1d2327;/*#23282d;*/
+    background-color: #1d2327;
     border-radius: 20px;
     color: #ffffff;
     font-size: 14px;
@@ -270,24 +270,81 @@ body {
     margin: 32px 0 16px 0;
 }
 
-.fgah-feature-pro > div > dl > dt {
+.fgah-feature-pro {
+    counter-increment: number-counter;
+}
 
+.fgah-feature-pro > div > dl > dd > p > a {
+    text-decoration: underline;
 }
 
 .fgah-feature-pro > div > dl > dt::before {
-    content: "\2713";
+    content: counters(number-counter, ".") " ";
+    line-height: 30px;
     display: inline-block;
-    background-color: #008a20;
-    color: #FFFFFF;
-    border-radius: 50%;
-    line-height: 1;
-    width: 1em;
-    height: 1em;
-    padding: 0.14em;
+    min-width: 20px;
+    margin: 0 8px 0 0;
+    padding: 0 5px;
     text-align: center;
-    margin-right: 0.4em;
-    transform: rotate(9deg);
-    border: solid 2px #FFFFFF;
+    vertical-align: 1px;
+    color: #fff;
+    border-radius: 3px;
+    background: #4098D7;
+    background: linear-gradient(45deg, #6638b8 0%, #4098D7 100%);
+}
+
+span.fgah-plan-prostarter {
+    color: #4098D7;
+    font-weight: bold;
+}
+
+.fgah-feature-pro.fgah-feature-plan-pro > div > dl > dt::before {
+    background: #2CA03D;
+    background: linear-gradient(45deg, #6638b8 0%, #2CA03D 100%);
+}
+
+span.fgah-plan-pro {
+    color: #2CA03D;
+    font-weight: bold;
+}
+
+.fgah-feature-pro.fgah-feature-plan-commerce > div > dl > dt::before {
+    background: #B0459D;
+    background: linear-gradient(45deg, #6638b8 0%, #B0459D 100%);
+}
+
+span.fgah-plan-commerce {
+    color: #B0459D;
+    font-weight: bold;
+}
+
+.fgah-feature-sub-title {
+    margin-bottom: 16px;
+}
+
+.fgah-feature-sub-title h4 {
+    margin: 0px 0px 5px 0;
+}
+
+.fgah-feature-sub-title span {
+    background: #6d6d6d;
+    color: #191a1f;
+    padding: 1px 6px;
+    border-radius: 3px;
+    margin-right: 3px;
+    font-weight: 500;
+}
+
+.fgah-feature-sub-title span.fgah-plan-prostarter {
+    background: #3397C1;
+}
+
+.fgah-feature-sub-title span.fgah-plan-pro {
+    background: #2CA03D;
+}
+
+.fgah-feature-sub-title span.fgah-plan-commerce {
+    background: #B0459D;
 }
 
 .fgah-help-list {

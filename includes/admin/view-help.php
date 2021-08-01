@@ -8,6 +8,7 @@ $plugin_name = foogallery_plugin_name();
 $fooplugins_url = foogallery_admin_url( 'https://fooplugins.com/', 'help' );
 $plugin_url = foogallery_admin_url( 'https://fooplugins.com/foogallery/', 'help' );
 $support_url = foogallery_admin_url( 'https://fooplugins.link/support/', 'help' );
+$plans_url = foogallery_admin_url( 'https://fooplugins.link/foogallery-plans/', 'help' );
 
 $fooplugins_link = sprintf( '<a href="%s" target="_blank">%s</a>', $fooplugins_url, __( 'FooPlugins', 'foogallery' ) );
 $support_link = sprintf( '<a href="%s" target="_blank">%s</a>', $support_url, __( 'open a support ticket', 'foogallery' ) );
@@ -25,6 +26,7 @@ $logo = apply_filters( 'foogallery_admin_help_logo_url', $logo );
 $demos_created = foogallery_get_setting( 'demo_content' ) === 'on';
 
 $fs_instance = foogallery_fs();
+$foogallery_current_plan = $fs_instance->get_plan_name();
 $is_free = $fs_instance->is_free_plan();
 $is_trial = $fs_instance->is_trial();
 $show_trial_message = !$is_trial && $is_free && !$fs_instance->is_trial_utilized();
