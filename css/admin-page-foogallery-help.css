@@ -139,6 +139,7 @@ body {
     flex-wrap: nowrap;
     padding-left: 10px;
     padding-right: 10px;
+    border-bottom: 3px solid #fff;
 }
 
 .foogallery-admin-help nav a {
@@ -157,7 +158,6 @@ body {
     font-weight: 600;
     box-shadow: none;
     text-align: center;
-    border-bottom-color: #fff;
 }
 
 .foogallery-admin-help nav a.foogallery-admin-help-tab-active {
@@ -166,6 +166,7 @@ body {
     border-color: #ffffff;
     border-bottom: none;
     border-bottom-color: #2c3338;
+    margin-bottom: -3px;
 }
 
 .fgah-feature {
