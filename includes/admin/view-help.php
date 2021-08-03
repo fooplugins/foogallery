@@ -2,13 +2,13 @@
 $instance = FooGallery_Plugin::get_instance();
 $info = $instance->get_plugin_info();
 
-$logo = FOOGALLERY_URL . 'assets/logo.png';
+$logo = FOOGALLERY_URL . 'assets/logo2.png';
 
 $plugin_name = foogallery_plugin_name();
 $fooplugins_url = foogallery_admin_url( 'https://fooplugins.com/', 'help' );
 $plugin_url = foogallery_admin_url( 'https://fooplugins.com/foogallery/', 'help' );
 $support_url = foogallery_admin_url( 'https://fooplugins.link/support/', 'help' );
-$plans_url = foogallery_admin_url( 'https://fooplugins.link/foogallery-plans/', 'help' );
+$plans_url = foogallery_admin_url( 'https://fooplugins.com/foogallery/compare-plans/', 'help' );
 
 $fooplugins_link = sprintf( '<a href="%s" target="_blank">%s</a>', $fooplugins_url, __( 'FooPlugins', 'foogallery' ) );
 $support_link = sprintf( '<a href="%s" target="_blank">%s</a>', $support_url, __( 'open a support ticket', 'foogallery' ) );
@@ -145,13 +145,11 @@ $show_demos = apply_filters( 'foogallery_admin_help_show_demos', true );
 <div class="foogallery-admin-help">
 	<div class="foogallery-admin-help-header">
 		<div class="foogallery-admin-help-ribbon"><span><?php echo FOOGALLERY_VERSION; ?></span></div>
-		<img src="<?php echo $logo; ?>" width="200" height="200">
-		<p class="foogallery-admin-help-tagline"><?php echo $tagline; ?></p>
-		<p class="foogallery-admin-help-tagline"><?php echo $link; ?></p>
+		<img src="<?php echo $logo; ?>" width="200">
 	</div>
 	<nav>
 		<a class="foogallery-admin-help-tab-active" href="#help">
-			<?php _e( 'Getting Started', 'foogallery' ); ?>
+			<?php _e( 'Welcome', 'foogallery' ); ?>
 		</a>
 		<a href="#pro">
 			<?php _e( $upgrade_tab_text, 'foogallery' ); ?>

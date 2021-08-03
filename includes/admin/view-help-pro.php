@@ -1,9 +1,9 @@
 <?php
 
 $foogallery_plans = array(
-	'prostarter' => __( 'PRO Starter', 'foogallery' ),
-	'pro'        => __( 'PRO Expert', 'foogallery' ),
-	'commerce'  => __( 'PRO Commerce', 'foogallery' ),
+	FOOGALLERY_PRO_PLAN_STARTER  => __( 'PRO Starter', 'foogallery' ),
+	FOOGALLERY_PRO_PLAN_EXPERT   => __( 'PRO Expert', 'foogallery' ),
+	FOOGALLERY_PRO_PLAN_COMMERCE => __( 'PRO Commerce', 'foogallery' ),
 );
 
 $foogallery_pro_features = array(
@@ -14,8 +14,8 @@ $foogallery_pro_features = array(
 		'utm_content' => 'gallery_templates',
 		'link_text' => __( 'Learn More','foogallery' ),
 		'image' => 'https://assets.fooplugins.com/foogallery/plugin/foogallery-admin-help-pro-templates.png',
-		'plan' => 'prostarter',
-		'plans' => array( 'prostarter', 'pro', 'commerce' ),
+		'plan' => FOOGALLERY_PRO_PLAN_STARTER,
+		'plans' => array( FOOGALLERY_PRO_PLAN_STARTER, FOOGALLERY_PRO_PLAN_EXPERT, FOOGALLERY_PRO_PLAN_COMMERCE ),
 	),
 	array(
 		'title' => __( 'PRO Lightbox','foogallery' ),
@@ -24,8 +24,8 @@ $foogallery_pro_features = array(
 		'utm_content' => 'lightbox',
 		'link_text' => __( 'Learn More','foogallery' ),
 		'image' => 'https://assets.fooplugins.com/foogallery/plugin/foogallery-admin-help-pro-lightbox.png',
-		'plan' => 'prostarter',
-		'plans' => array( 'prostarter', 'pro', 'commerce' ),
+		'plan' => FOOGALLERY_PRO_PLAN_STARTER,
+		'plans' => array( FOOGALLERY_PRO_PLAN_STARTER, FOOGALLERY_PRO_PLAN_EXPERT, FOOGALLERY_PRO_PLAN_COMMERCE ),
 	),
 	array(
 		'title' => __( 'Animated Hover Effect Presets','foogallery' ),
@@ -34,8 +34,8 @@ $foogallery_pro_features = array(
 		'utm_content' => 'hover_presets',
 		'link_text' => __( 'Learn More','foogallery' ),
 		'image' => 'https://assets.fooplugins.com/foogallery/plugin/foogallery-admin-help-pro-presets.png',
-	    'plan' => 'prostarter',
-		'plans' => array( 'prostarter', 'pro', 'commerce' ),
+	    'plan' => FOOGALLERY_PRO_PLAN_STARTER,
+		'plans' => array( FOOGALLERY_PRO_PLAN_STARTER, FOOGALLERY_PRO_PLAN_EXPERT, FOOGALLERY_PRO_PLAN_COMMERCE ),
 	),
 	array(
 		'title' => __( 'Image Filter Effects','foogallery' ),
@@ -44,8 +44,8 @@ $foogallery_pro_features = array(
 		'utm_content' => 'filter_effects',
 		'link_text' => __( 'Learn More','foogallery' ),
 		'image' => 'https://assets.fooplugins.com/foogallery/plugin/foogallery-admin-help-pro-effects.png',
-		'plan' => 'prostarter',
-		'plans' => array( 'prostarter', 'pro', 'commerce' ),
+		'plan' => FOOGALLERY_PRO_PLAN_STARTER,
+		'plans' => array( FOOGALLERY_PRO_PLAN_STARTER, FOOGALLERY_PRO_PLAN_EXPERT, FOOGALLERY_PRO_PLAN_COMMERCE ),
 	),
 	array(
 		'title' => __( 'Video Galleries','foogallery' ),
@@ -54,8 +54,8 @@ $foogallery_pro_features = array(
 		'utm_content' => 'videos',
 		'link_text' => __( 'Learn More','foogallery' ),
 		'image' => 'https://assets.fooplugins.com/foogallery/plugin/foogallery-admin-help-pro-videos.png',
-		'plan' => 'pro',
-		'plans' => array( 'pro', 'commerce' ),
+		'plan' => FOOGALLERY_PRO_PLAN_EXPERT,
+		'plans' => array( FOOGALLERY_PRO_PLAN_EXPERT, FOOGALLERY_PRO_PLAN_COMMERCE ),
 	),
 	array(
 		'title' => __( 'Multi-Level Tag Filtering','foogallery' ),
@@ -64,8 +64,8 @@ $foogallery_pro_features = array(
 		'utm_content' => 'filtering',
 		'link_text' => __( 'Learn More','foogallery' ),
 		'image' => 'https://assets.fooplugins.com/foogallery/plugin/foogallery-admin-help-pro-filtering.png',
-		'plan' => 'pro',
-		'plans' => array( 'pro', 'commerce' ),
+		'plan' => FOOGALLERY_PRO_PLAN_EXPERT,
+		'plans' => array( FOOGALLERY_PRO_PLAN_EXPERT, FOOGALLERY_PRO_PLAN_COMMERCE ),
 	),
 	array(
 		'title' => __( 'Advanced Pagination','foogallery' ),
@@ -74,8 +74,8 @@ $foogallery_pro_features = array(
 		'utm_content' => 'pagination',
 		'link_text' => __( 'Learn More','foogallery' ),
 		'image' => 'https://assets.fooplugins.com/foogallery/plugin/foogallery-admin-help-pro-pagination.png',
-		'plan' => 'pro',
-		'plans' => array( 'pro', 'commerce' ),
+		'plan' => FOOGALLERY_PRO_PLAN_EXPERT,
+		'plans' => array( FOOGALLERY_PRO_PLAN_EXPERT, FOOGALLERY_PRO_PLAN_COMMERCE ),
 	),
 	array(
 		'title' => __( 'Dynamic Galleries','foogallery' ),
@@ -84,8 +84,8 @@ $foogallery_pro_features = array(
 		'utm_content' => 'datasources',
 		'link_text' => __( 'Learn More','foogallery' ),
 		'image' => 'https://assets.fooplugins.com/foogallery/plugin/foogallery-admin-help-pro-datasources2.png',
-		'plan' => 'pro',
-		'plans' => array( 'pro', 'commerce' ),
+		'plan' => FOOGALLERY_PRO_PLAN_EXPERT,
+		'plans' => array( FOOGALLERY_PRO_PLAN_EXPERT, FOOGALLERY_PRO_PLAN_COMMERCE ),
 	),
 	array(
 		'title' => __( 'Custom Captions','foogallery' ),
@@ -94,8 +94,8 @@ $foogallery_pro_features = array(
 		'utm_content' => 'captions',
 		'link_text' => __( 'Learn More','foogallery' ),
 		'image' => 'https://assets.fooplugins.com/foogallery/plugin/foogallery-admin-help-pro-captions.png',
-		'plan' => 'pro',
-		'plans' => array( 'pro', 'commerce' ),
+		'plan' => FOOGALLERY_PRO_PLAN_EXPERT,
+		'plans' => array( FOOGALLERY_PRO_PLAN_EXPERT, FOOGALLERY_PRO_PLAN_COMMERCE ),
 	),
 	array(
 		'title' => __( 'EXIF Metadata','foogallery' ),
@@ -104,8 +104,8 @@ $foogallery_pro_features = array(
 		'utm_content' => 'exif',
 		'link_text' => __( 'Learn More','foogallery' ),
 		'image' => 'https://assets.fooplugins.com/foogallery/plugin/foogallery-admin-help-pro-exif.png',
-        'plan' => 'pro',
-		'plans' => array( 'pro', 'commerce' ),
+        'plan' => FOOGALLERY_PRO_PLAN_EXPERT,
+		'plans' => array( FOOGALLERY_PRO_PLAN_EXPERT, FOOGALLERY_PRO_PLAN_COMMERCE ),
 	),
 	array(
 		'title' => __( 'Bulk Copy Gallery Settings','foogallery' ),
@@ -114,8 +114,8 @@ $foogallery_pro_features = array(
 		'utm_content' => 'bulk_copy_settings',
 		'link_text' => __( 'Learn More','foogallery' ),
 		'image' => 'https://assets.fooplugins.com/foogallery/plugin/foogallery-admin-help-pro-bulk-copy-settings.png',
-        'plan' => 'pro',
-		'plans' => array( 'pro', 'commerce' ),
+        'plan' => FOOGALLERY_PRO_PLAN_EXPERT,
+		'plans' => array( FOOGALLERY_PRO_PLAN_EXPERT, FOOGALLERY_PRO_PLAN_COMMERCE ),
 	),
 	array(
 		'title' => __( 'WooCommerce Product Datasource','foogallery' ),
@@ -124,8 +124,8 @@ $foogallery_pro_features = array(
 		'utm_content' => 'cta_buttons',
 		'link_text' => __( 'Learn More','foogallery' ),
 		'image' => 'https://assets.fooplugins.com/foogallery/plugin/foogallery-admin-help-pro-woocommerce-datasource.png',
-		'plan' => 'commerce',
-		'plans' => array( 'commerce' ),
+		'plan' => FOOGALLERY_PRO_PLAN_COMMERCE,
+		'plans' => array( FOOGALLERY_PRO_PLAN_COMMERCE ),
 	),
 	array(
 		'title' => __( 'Product Gallery Template','foogallery' ),
@@ -134,8 +134,8 @@ $foogallery_pro_features = array(
 		'utm_content' => 'product_gallery',
 		'link_text' => __( 'Learn More','foogallery' ),
 		'image' => 'https://assets.fooplugins.com/foogallery/plugin/foogallery-admin-help-pro-product-gallery.png',
-		'plan' => 'commerce',
-		'plans' => array( 'commerce' ),
+		'plan' => FOOGALLERY_PRO_PLAN_COMMERCE,
+		'plans' => array( FOOGALLERY_PRO_PLAN_COMMERCE ),
 	),
 	array(
 		'title' => __( 'Watermarking &amp; Protection','foogallery' ),
@@ -144,8 +144,8 @@ $foogallery_pro_features = array(
 		'utm_content' => 'protection',
 		'link_text' => __( 'Learn More','foogallery' ),
 		'image' => 'https://assets.fooplugins.com/foogallery/plugin/foogallery-admin-help-pro-watermarking.png',
-		'plan' => 'commerce',
-		'plans' => array( 'commerce' ),
+		'plan' => FOOGALLERY_PRO_PLAN_COMMERCE,
+		'plans' => array( FOOGALLERY_PRO_PLAN_COMMERCE ),
 	),
 	array(
 		'title' => __( 'Lightbox Product Info','foogallery' ),
@@ -154,8 +154,8 @@ $foogallery_pro_features = array(
 		'utm_content' => 'product_info_lightbox',
 		'link_text' => __( 'Learn More','foogallery' ),
 		'image' => 'https://assets.fooplugins.com/foogallery/plugin/foogallery-admin-help-pro-product-info-lightbox.png',
-		'plan' => 'commerce',
-		'plans' => array( 'commerce' ),
+		'plan' => FOOGALLERY_PRO_PLAN_COMMERCE,
+		'plans' => array( FOOGALLERY_PRO_PLAN_COMMERCE ),
 	),
 	array(
 		'title' => __( 'CTA Buttons','foogallery' ),
@@ -164,8 +164,8 @@ $foogallery_pro_features = array(
 		'utm_content' => 'cta_buttons',
 		'link_text' => __( 'Learn More','foogallery' ),
 		'image' => 'https://assets.fooplugins.com/foogallery/plugin/foogallery-admin-help-pro-buttons.png',
-		'plan' => 'commerce',
-		'plans' => array( 'commerce' ),
+		'plan' => FOOGALLERY_PRO_PLAN_COMMERCE,
+		'plans' => array( FOOGALLERY_PRO_PLAN_COMMERCE ),
 	),
 	array(
 		'title' => __( 'Ribbons','foogallery' ),
@@ -174,8 +174,8 @@ $foogallery_pro_features = array(
 		'utm_content' => 'cta_ribbons',
 		'link_text' => __( 'Learn More','foogallery' ),
 		'image' => 'https://assets.fooplugins.com/foogallery/plugin/foogallery-admin-help-pro-ribbons.png',
-		'plan' => 'commerce',
-		'plans' => array( 'commerce' ),
+		'plan' => FOOGALLERY_PRO_PLAN_COMMERCE,
+		'plans' => array( FOOGALLERY_PRO_PLAN_COMMERCE ),
 	),
 );
 

@@ -116,6 +116,9 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings_Helper' ) ) {
 					if ( $is_promo ) {
 						$field_class .= ' foogallery_template_field_promo';
                     }
+					if ( array_key_exists( 'class', $field ) ) {
+						$field_class .= ' ' . $field['class'];
+					}
 					$field_row_data_html = '';
 					if ( isset( $field['row_data'] ) ) {
 						$field_row_data = array_map( 'esc_attr', $field['row_data'] );
@@ -140,6 +143,12 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings_Helper' ) ) {
 									if ( array_key_exists( 'cta_text', $field ) ) {
 									    echo '<a class="button-primary" href="' . $field['cta_link'] . '" target="_blank">' . $field['cta_text'] . '</a>';
                                     }
+									if ( array_key_exists( 'cta', $field ) ) {
+										foreach ( $field['cta'] as $cta ) {
+											$button_class = isset( $cta['class'] ) ? $cta['class'] : 'button-primary';
+											echo '<a class="' . $button_class . '" href="' . $cta['link'] . '" target="_blank">' . $cta['text'] . '</a>';
+										}
+									}
 									?>
                                 </div>
                             </td>
