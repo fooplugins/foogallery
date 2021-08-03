@@ -21,6 +21,7 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_RealMediaLibrary' ) ) {
 			add_action( 'RML/Item/MoveFinished', array( $this, 'rml_item_move_finished' ), 10, 5 );
 
 			add_filter( 'foogallery_datasource_rml_item_count', array( $this, 'get_gallery_attachment_count' ), 10, 2 );
+			add_filter( 'foogallery_datasource_rml_attachment_ids', array( $this, 'get_gallery_attachment_ids' ), 10, 2 );
 			add_filter( 'foogallery_datasource_rml_featured_image', array( $this, 'get_gallery_featured_attachment' ), 10, 2 );
 			add_filter( 'foogallery_datasource_rml_attachments', array( $this, 'get_gallery_attachments' ), 10, 2 );
 
@@ -108,6 +109,23 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_RealMediaLibrary' ) ) {
 		 */
 		public function get_gallery_attachment_count( $count, $foogallery ) {
 			return count( $this->get_gallery_attachments( array(), $foogallery ) );
+		}
+
+		/**
+		 * Returns an array of the attachment ID's for the gallery
+		 *
+		 * @param $attachment_ids
+		 * @param $foogallery
+		 *
+		 * @return array
+		 */
+		public function get_gallery_attachment_ids( $attachment_ids, $foogallery ) {
+			$attachment_ids = array();
+			$attachments = $this->get_gallery_attachments( array(), $foogallery );
+			foreach ( $attachments as $attachment ) {
+				$attachment_ids[] = $attachment->ID;
+			}
+			return $attachment_ids;
 		}
 
 		/**
