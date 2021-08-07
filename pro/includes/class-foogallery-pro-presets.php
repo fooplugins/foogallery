@@ -32,44 +32,6 @@ if ( ! class_exists( 'FooGallery_Pro_Hover_Presets' ) ) {
 		}
 
 		/**
-		 * Return the index of the requested section
-		 *
-		 * @param $fields
-		 * @param $section
-		 *
-		 * @return int
-		 */
-		private function find_index_of_section( $fields, $section ) {
-			$index = 0;
-			foreach ( $fields as $field ) {
-				if ( isset( $field['section'] ) && $section === $field['section'] ) {
-					return $index;
-				}
-				$index++;
-			}
-			return $index;
-		}
-
-		/**
-		 * Return the index of the requested field
-		 *
-		 * @param $fields
-		 * @param $field_id
-		 *
-		 * @return int
-		 */
-		private function find_index_of_field( $fields, $field_id ) {
-			$index = 0;
-			foreach ( $fields as $field ) {
-				if ( isset( $field['id'] ) && $field_id === $field['id'] ) {
-					return $index;
-				}
-				$index++;
-			}
-			return $index;
-		}
-
-		/**
 		 * Add the fields for presets
 		 *
 		 * @uses "foogallery_override_gallery_template_fields"
@@ -79,7 +41,7 @@ if ( ! class_exists( 'FooGallery_Pro_Hover_Presets' ) ) {
 		 * @return array
 		 */
 		function add_preset_fields( $fields, $template ) {
-			$index_of_hover_effect_preset_field = $this->find_index_of_field( $fields, 'hover_effect_preset' );
+			$index_of_hover_effect_preset_field = foogallery_admin_fields_find_index_of_field( $fields, 'hover_effect_preset' );
 
 			$new_fields[] = array(
 				'id'      => 'hover_effect_help',

@@ -65,6 +65,15 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 			add_filter( 'foogallery_build_custom_caption_placeholder_replacement', array( $this, 'build_product_captions' ), 10, 3 );
 		}
 
+		/**
+		 * Build up a caption based on product info.
+		 *
+		 * @param $caption
+		 * @param $placeholder
+		 * @param $foogallery_attachment
+		 *
+		 * @return false|mixed|string
+		 */
 		public function build_product_captions( $caption, $placeholder, $foogallery_attachment ) {
 			if ( strpos( $placeholder, 'product.' ) === 0 && isset( $foogallery_attachment->product ) ) {
 				$property = str_replace( 'product.', '', $placeholder );
@@ -814,14 +823,14 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 				$new_fields[] = array(
 					'id'      => 'ecommerce_error',
 					'title'   => __( 'Ecommerce Error', 'foogallery' ),
-					'desc'    => __( 'WooCommerce is not installed!', 'foogallery' ),
+					'desc'    => __( 'WooCommerce is not installed! Ecommerce features are only available when WooCommerce is activated.', 'foogallery' ),
 					'section' => __( 'Ecommerce', 'foogallery' ),
 					'type'    => 'help',
 				);
 			}
 
 			// find the index of the advanced section.
-			$index = $this->find_index_of_section( $fields, __( 'Advanced', 'foogallery' ) );
+			$index = foogallery_admin_fields_find_index_of_section( $fields, __( 'Advanced', 'foogallery' ) );
 
 			array_splice( $fields, $index, 0, $new_fields );
 
@@ -995,23 +1004,5 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 			return $fields;
 		}
 
-		/**
-		 * Return the index of the requested section
-		 *
-		 * @param array  $fields The fields we are searching through.
-		 * @param string $section The section we are looking for.
-		 *
-		 * @return int
-		 */
-		private function find_index_of_section( $fields, $section ) {
-			$index = 0;
-			foreach ( $fields as $field ) {
-				if ( isset( $field['section'] ) && $section === $field['section'] ) {
-					return $index;
-				}
-				$index++;
-			}
-			return $index;
-		}
 	}
 }

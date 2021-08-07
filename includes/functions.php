@@ -2002,3 +2002,41 @@ function foogallery_extract_gallery_id( $full_gallery_id ) {
 	}
 	return 0;
 }
+
+/**
+ * Return the index of a specific section with the gallery template fields array
+ *
+ * @param $fields
+ * @param $section
+ *
+ * @return int
+ */
+function foogallery_admin_fields_find_index_of_section( $fields, $section ) {
+	$index = 0;
+	foreach ( $fields as $field ) {
+		if ( isset( $field['section'] ) && $section === $field['section'] ) {
+			return $index;
+		}
+		$index++;
+	}
+	return $index;
+}
+
+/**
+ * Return the index of a specific field within the gallery template fields array
+ *
+ * @param $fields
+ * @param $field_id
+ *
+ * @return int
+ */
+function foogallery_admin_fields_find_index_of_field( $fields, $field_id ) {
+	$index = 0;
+	foreach ( $fields as $field ) {
+		if ( isset( $field['id'] ) && $field_id === $field['id'] ) {
+			return $index;
+		}
+		$index++;
+	}
+	return $index;
+}

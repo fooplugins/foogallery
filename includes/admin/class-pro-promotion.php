@@ -201,7 +201,7 @@ if ( ! class_exists( 'FooGallery_Pro_Promotion' ) ) {
 				)
 			);
 
-			$field_index = $this->find_index_of_field( $fields, 'caption_title_source' );
+			$field_index = foogallery_admin_fields_find_index_of_field( $fields, 'caption_title_source' );
 
 			array_splice( $fields, $field_index, 0, $new_fields );
 
@@ -507,44 +507,6 @@ if ( ! class_exists( 'FooGallery_Pro_Promotion' ) ) {
 		}
 
 		/**
-		 * Return the index of the requested section
-		 *
-		 * @param $fields
-		 * @param $section
-		 *
-		 * @return int
-		 */
-		private function find_index_of_section( $fields, $section ) {
-			$index = 0;
-			foreach ( $fields as $field ) {
-				if ( isset( $field['section'] ) && $section === $field['section'] ) {
-					return $index;
-				}
-				$index++;
-			}
-			return $index;
-		}
-
-		/**
-		 * Return the index of the requested field
-		 *
-		 * @param $fields
-		 * @param $field_id
-		 *
-		 * @return int
-		 */
-		private function find_index_of_field( $fields, $field_id ) {
-			$index = 0;
-			foreach ( $fields as $field ) {
-				if ( isset( $field['id'] ) && $field_id === $field['id'] ) {
-					return $index;
-				}
-				$index++;
-			}
-			return $index;
-		}
-
-		/**
 		 * Add the fields for presets promos
 		 *
 		 * @uses "foogallery_override_gallery_template_fields"
@@ -554,7 +516,7 @@ if ( ! class_exists( 'FooGallery_Pro_Promotion' ) ) {
 		 * @return array
 		 */
 		function add_preset_promo_fields( $fields, $template ) {
-			$index_of_hover_effect_preset_field = $this->find_index_of_field( $fields, 'hover_effect_preset' );
+			$index_of_hover_effect_preset_field = foogallery_admin_fields_find_index_of_field( $fields, 'hover_effect_preset' );
 
 			$new_fields[] = array(
 				'id'       => 'hover_effect_preset_promo_help',
@@ -717,7 +679,7 @@ if ( ! class_exists( 'FooGallery_Pro_Promotion' ) ) {
 				);
 
 				//find the index of the first Hover Effect field
-				$index = $this->find_index_of_section( $fields, __( 'Hover Effects', 'foogallery' ) );
+				$index = foogallery_admin_fields_find_index_of_section( $fields, __( 'Hover Effects', 'foogallery' ) );
 
 				array_splice( $fields, $index, 0, $field_promo );
 

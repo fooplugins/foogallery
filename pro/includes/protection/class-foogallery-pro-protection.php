@@ -540,7 +540,7 @@ if ( ! class_exists( 'FooGallery_Pro_Protection' ) ) {
 			);
 
 			// find the index of the advanced section.
-			$index = $this->find_index_of_section( $fields, __( 'Advanced', 'foogallery' ) );
+			$index = foogallery_admin_fields_find_index_of_section( $fields, __( 'Advanced', 'foogallery' ) );
 
 			array_splice( $fields, $index, 0, $new_fields );
 
@@ -858,25 +858,6 @@ if ( ! class_exists( 'FooGallery_Pro_Protection' ) ) {
 			echo '<h2>' . esc_html( __( 'Original Image', 'foogallery' ) ) . '</h2>';
 
 			echo '<img src="' . esc_url( $test_image_url ) . '" />';
-		}
-
-		/**
-		 * Return the index of the requested section
-		 *
-		 * @param array  $fields The fields we are searching through.
-		 * @param string $section The section we are looking for.
-		 *
-		 * @return int
-		 */
-		private function find_index_of_section( $fields, $section ) {
-			$index = 0;
-			foreach ( $fields as $field ) {
-				if ( isset( $field['section'] ) && $section === $field['section'] ) {
-					return $index;
-				}
-				$index++;
-			}
-			return $index;
 		}
 	}
 }

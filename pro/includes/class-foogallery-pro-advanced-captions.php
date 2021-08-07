@@ -149,7 +149,7 @@ if ( ! class_exists( 'FooGallery_Pro_Advanced_Captions' ) ) {
 			        )
 		        );
 
-		        $field_index = $this->find_index_of_field( $fields, 'caption_title_source' );
+		        $field_index = foogallery_admin_fields_find_index_of_field( $fields, 'caption_title_source' );
 
 		        array_splice( $fields, $field_index, 0, $new_fields );
 
@@ -291,25 +291,6 @@ if ( ! class_exists( 'FooGallery_Pro_Advanced_Captions' ) ) {
 	        $attachment = $this->find_most_recent_attachment();
 	        $form_fields = array();
 	        return apply_filters( 'attachment_fields_to_edit', $form_fields, $attachment );
-        }
-
-        /**
-         * Return the index of the requested field
-         *
-         * @param $fields
-         * @param $field_id
-         *
-         * @return int
-         */
-        private function find_index_of_field( $fields, $field_id ) {
-            $index = 0;
-            foreach ( $fields as $field ) {
-                if ( isset( $field['id'] ) && $field_id === $field['id'] ) {
-                    return $index;
-                }
-                $index++;
-            }
-            return $index;
         }
 
         /**

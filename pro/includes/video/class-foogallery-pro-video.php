@@ -168,8 +168,8 @@ if ( ! class_exists( 'FooGallery_Pro_Video' ) ) {
 		 *
 		 * @return mixed
 		 */
-		public function all_template_fields( $fields ) {
-			$fields[] = array(
+		public function add_video_fields( $fields ) {
+			$video_fields[] = array(
 				'id'       => 'video_hover_icon',
 				'section'  => __( 'Video', 'foogallery' ),
 				'title'    => __( 'Video Hover Icon', 'foogallery' ),
@@ -190,7 +190,7 @@ if ( ! class_exists( 'FooGallery_Pro_Video' ) ) {
 					'data-foogallery-preview'         => 'shortcode'
 				)
 			);
-			$fields[] = array(
+			$video_fields[] = array(
 				'id'       => 'video_sticky_icon',
 				'section'  => __( 'Video', 'foogallery' ),
 				'title'    => __( 'Sticky Video Icon', 'foogallery' ),
@@ -208,7 +208,7 @@ if ( ! class_exists( 'FooGallery_Pro_Video' ) ) {
 				)
 			);
 
-			$fields[] = array(
+			$video_fields[] = array(
 				'id'      => 'video_size_help',
 				'title'   => __( 'Video Size Help', 'foogallery' ),
 				'desc'    => __( 'The lightbox video size can be overridden on each individual video by editing the attachment info, and changing the Override Width and Override Height properties.', 'foogallery' ),
@@ -216,7 +216,7 @@ if ( ! class_exists( 'FooGallery_Pro_Video' ) ) {
 				'type'    => 'help',
 			);
 
-			$fields[] = array(
+			$video_fields[] = array(
 				'id'      => 'video_size',
 				'section' => __( 'Video', 'foogallery' ),
 				'title'   => __( 'Lightbox Video Size', 'foogallery' ),
@@ -235,7 +235,7 @@ if ( ! class_exists( 'FooGallery_Pro_Video' ) ) {
 				),
 			);
 
-			$fields[] = array(
+			$video_fields[] = array(
 				'id'      => 'video_autoplay',
 				'section' => __( 'Video', 'foogallery' ),
 				'title'   => __( 'Lightbox Autoplay', 'foogallery' ),
@@ -248,6 +248,11 @@ if ( ! class_exists( 'FooGallery_Pro_Video' ) ) {
 					'no'  => __( 'No', 'foogallery' ),
 				),
 			);
+
+			//find the index of the Advanced section
+			$index = foogallery_admin_fields_find_index_of_section( $fields, __( 'Advanced', 'foogallery' ) );
+
+			array_splice( $fields, $index, 0, $video_fields );
 
 			return $fields;
 		}
