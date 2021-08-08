@@ -140,7 +140,7 @@ if ( ! class_exists( 'FooGallery_Pro_Promotion' ) ) {
 					add_filter( 'foogallery_override_gallery_template_fields', array( $this, 'add_protection_promo_fields' ), 80, 2 );
 
 					//Watermarking & Protection global settings (TODO)
-					
+
 					//Ecommerce global settings (TODO)
 				}
 			}

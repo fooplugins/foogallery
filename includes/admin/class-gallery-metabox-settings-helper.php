@@ -137,6 +137,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings_Helper' ) ) {
 						<?php } else if ( 'promo' === $field_type ) { ?>
                             <td colspan="2">
                                 <div class="foogallery-promo">
+	                                <button class="foogallery-admin-promo-dismiss notice-dismiss"></button>
 	                                <?php echo '<strong>' . $field['title'] . '</strong><br /><br />'; ?>
 									<?php
                                     echo $field['desc'];
