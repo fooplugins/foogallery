@@ -24,6 +24,10 @@ if ( ! class_exists( 'FooGallery_Pro_Promotion' ) ) {
 			'foogallery-pricing'           => 'https://fooplugins.com/foogallery/#pricing',
 			'foogallery-plans'             => 'https://fooplugins.com/foogallery/compare-plans/',
 			'foobox-pro'                   => 'https://fooplugins.com/foobox/',
+			'foogallery-datasources'       => 'https://fooplugins.com/load-galleries-from-other-sources/',
+			'foogallery-commerce'          => 'https://fooplugins.com/foogallery/woocommerce-integration/',
+			'foogallery-product-gallery'   => 'https://fooplugins.com/foogallery/woocommerce-product-gallery/',
+			'foogallery-protection'        => 'https://fooplugins.com/foogallery/photo-watermark/'
 		);
 
 		function __construct() {
@@ -86,14 +90,13 @@ if ( ! class_exists( 'FooGallery_Pro_Promotion' ) ) {
 
 					//filtering
 					add_filter( 'foogallery_override_gallery_template_fields', array( $this, 'add_filtering_promo_fields' ), 10, 2 );
-					add_filter( 'foogallery_gallery_settings_metabox_section_icon', array( $this, 'add_section_icons' ) );
 
 					//paging
 					add_filter( 'foogallery_gallery_template_paging_type_choices', array( $this, 'add_promo_paging_choices' ) );
 					add_filter( 'foogallery_override_gallery_template_fields', array( $this, 'add_paging_promo_fields' ), 10, 2 );
 
 					//Datasource promos
-					add_action( 'foogallery_gallery_datasources', array( $this, 'add_promo_datasources' ), 99 );
+					add_action( 'foogallery_gallery_datasources', array( $this, 'add_expert_promo_datasources' ), 99 );
 					//add_action( 'foogallery_gallery_metabox_items_add', array( $this, 'add_datasources_css' ), 9 );
 					add_action( 'foogallery_admin_datasource_modal_content', array( $this, 'render_datasource_modal_content_default' ) );
 					add_action( 'foogallery-datasource-modal-content_folders_promo', array( $this, 'render_datasource_modal_content_folders_promo' ), 10, 3 );
@@ -107,20 +110,38 @@ if ( ! class_exists( 'FooGallery_Pro_Promotion' ) ) {
 					//Custom Captions
 					add_filter( 'foogallery_override_gallery_template_fields', array( $this, 'add_advanced_caption_fields' ), 100, 2 );
 
-					//EXIF,including global settings (TODO)
+					//EXIF
 					add_filter( 'foogallery_override_gallery_template_fields', array( $this, 'add_exif_promo_fields' ), 10, 2 );
 
-					//Bulk Copy Settings (TODO)
+					//Bulk Copy Settings
 					add_action( 'add_meta_boxes_' . FOOGALLERY_CPT_GALLERY, array( $this, 'add_bulk_copy_meta_box_to_gallery' ) );
+
+					add_filter( 'foogallery_gallery_settings_metabox_section_icon', array( $this, 'add_expert_section_icons' ) );
+
+					//EXIF global settings (TODO)
 				}
 
 				if ( $show_commerce_promos ) {
 
-					//Ecommerce Settings, including global settings (TODO)
+					add_filter( 'foogallery_gallery_settings_metabox_section_icon', array( $this, 'add_commerce_section_icons' ) );
 
-					//Product Gallery Template (TODO)
+					//Ecommerce Settings
+					add_filter( 'foogallery_override_gallery_template_fields', array( $this, 'add_ecommerce_promo_fields' ), 90, 2 );
 
-					//Watermarking & Protection, including global settings (TODO)
+					//Product Datasource
+					add_action( 'foogallery_gallery_datasources', array( $this, 'add_commerce_promo_datasources' ), 99 );
+					add_action( 'foogallery-datasource-modal-content_products_promo', array( $this, 'render_datasource_modal_content_products_promo' ), 10, 3 );
+
+					//Product Gallery Template
+					add_filter( 'foogallery_gallery_templates', array( $this, 'add_commerce_promo_templates' ), 999, 1 );
+					add_filter( 'foogallery_override_gallery_template_fields-product_promo', array( $this, 'remove_all_fields_from_promo_gallery_template' ), 999, 2 );
+
+					//Watermarking & Protection Settings
+					add_filter( 'foogallery_override_gallery_template_fields', array( $this, 'add_protection_promo_fields' ), 80, 2 );
+
+					//Watermarking & Protection global settings (TODO)
+					
+					//Ecommerce global settings (TODO)
 				}
 			}
 		}
@@ -294,20 +315,20 @@ if ( ! class_exists( 'FooGallery_Pro_Promotion' ) ) {
 		}
 
 		function render_datasource_modal_content( $datasouce_title, $datasource_desc,
-			$datasource_url = 'https://fooplugins.com/load-galleries-from-other-sources/', $plan = null ) {
+			$datasource_url_name = 'foogallery-datasources', $plan = null, $class = '' ) {
 			if ( !isset( $plan ) ) {
-				$plan = __('PRO Expert Feature', 'foogallery');
+				$plan = __('PRO Expert', 'foogallery');
 			}
 ?>
-			<div class="foogallery_template_field_type-promo">
+			<div class="foogallery_template_field_type-promo <?php echo $class; ?>">
 				<div class="foogallery-promo">
-					<strong><?php echo $plan; ?> : <?php echo $datasouce_title; ?></strong>
+					<strong><?php echo $plan; ?> <?php _e('Feature', 'foogallery' ); ?> : <?php echo $datasouce_title; ?></strong>
 					<br><br>
 					<?php echo $datasource_desc; ?>
 					<br><br>
 					<?php echo $this->build_promo_trial_html( 'datasources', $plan ); ?>
 					<br><br>
-					<a class="button-primary" href="<?php echo esc_url( $datasource_url ); ?>" target="_blank"><?php echo __( 'Learn More', 'foogallery' ); ?></a>
+					<a class="button-primary" href="<?php echo esc_url( $this->build_url( $datasource_url_name ) ); ?>" target="_blank"><?php echo __( 'Learn More', 'foogallery' ); ?></a>
 					<a class="button-secondary" href="<?php echo esc_url( $this->build_url( 'foogallery-plans' ) ); ?>" target="_blank"><?php echo __( 'Compare Plans', 'foogallery' ); ?></a>
 				</div>
 			</div>
@@ -315,13 +336,13 @@ if ( ! class_exists( 'FooGallery_Pro_Promotion' ) ) {
 		}
 
 		/**
-		 * Add the promotion datasources
+		 * Add the expert promotion datasources
 		 *
 		 * @param $datasources
 		 *
 		 * @return mixed
 		 */
-		function add_promo_datasources( $datasources ) {
+		function add_expert_promo_datasources( $datasources ) {
 			$datasources['media_tags_promo'] = array(
 				'id'     => 'media_tags_promo',
 				'name'   => __( 'Media Tags', 'foogallery' ),
@@ -612,7 +633,7 @@ if ( ! class_exists( 'FooGallery_Pro_Promotion' ) ) {
 		 *
 		 * @return string
 		 */
-		function add_section_icons( $section_slug ) {
+		function add_expert_section_icons( $section_slug ) {
 			if ( 'filtering' === $section_slug ) {
 				return 'dashicons-filter';
 			}
@@ -965,6 +986,172 @@ if ( ! class_exists( 'FooGallery_Pro_Promotion' ) ) {
 			}
 
 			return $remaining_fields;
+		}
+
+		/**
+		 * Add Ecommerce fields to the gallery templates
+		 *
+		 * @uses "foogallery_override_gallery_template_fields"
+		 *
+		 * @param $fields
+		 * @param $template
+		 *
+		 * @return array
+		 */
+		function add_ecommerce_promo_fields( $fields, $template ) {
+			$new_fields[] = array(
+				'id'       => 'promo_ecommerce',
+				'title'    => __( 'PRO Commerce Feature : WooCommerce Integration', 'foogallery' ),
+				'section'  => __( 'Ecommerce', 'foogallery' ),
+				'desc'     => __( 'Start making money from selling your photographs, with our deep integration with WooCommerce:', 'foogallery' ) .
+				              '<ul class="ul-disc"><li><strong>' . __( 'Product Datasource', 'foogallery' ) . '</strong> - ' . __( 'Create a dynamic product gallery that updates when you add or change products.', 'foogallery' ) .
+				              '</li><li><strong>' . __( 'Filter By Product Categories', 'foogallery' ) . '</strong> - ' . __( 'Filter your gallery images by product category.', 'foogallery' ) .
+				              '</li><li><strong>' . __( 'Sale Ribbons', 'foogallery' ) . '</strong> - ' . __( 'Draw attention to products on sale, and show a cool ribbon over your product.', 'foogallery' ) .
+				              '</li><li><strong>' . __( 'Add To Cart Buttons', 'foogallery' ) . '</strong> - ' . __( 'Add buttons to your products to easily add to cart or view.', 'foogallery' ) .
+				              '</li><li><strong>' . __( 'Custom Caption Support', 'foogallery' ) . '</strong> - ' . __( 'Already using our advanced custom captions? Now you can include any product info in your caption template.', 'foogallery' ) .
+				              '</li><li><strong>' . __( 'Product Variation Support', 'foogallery' ) . '</strong> - ' . __( 'Using variable products? No problem! Show variations in the lightbox and add directly to cart from the lightbox.', 'foogallery' ) .
+				              '</li><li><strong>' . __( 'Manually Link Products', 'foogallery' ) . '</strong> - ' . __( 'You can also manually link a product to each item in your gallery for complete control.', 'foogallery' ) .
+				              '</li></ul>' . $this->build_promo_trial_html( 'ecommerce', __( 'PRO Commerce', 'foogallery' )  ) . '<br /><br />',
+				'cta' => $this->build_cta_buttons( 'foogallery-commerce' ),
+				'class'   => 'foogallery_promo_commerce',
+				'type'     => 'promo',
+				'row_data' => array(
+					'data-foogallery-change-selector' => 'input',
+					'data-foogallery-value-selector'  => 'input:checked',
+				)
+			);
+
+			// find the index of the advanced section.
+			$index = foogallery_admin_fields_find_index_of_section( $fields, __( 'Advanced', 'foogallery' ) );
+
+			array_splice( $fields, $index, 0, $new_fields );
+
+			return $fields;
+		}
+
+
+		/**
+		 * Add Protection fields to the gallery templates
+		 *
+		 * @uses "foogallery_override_gallery_template_fields"
+		 *
+		 * @param $fields
+		 * @param $template
+		 *
+		 * @return array
+		 */
+		function add_protection_promo_fields( $fields, $template ) {
+			$new_fields[] = array(
+				'id'       => 'promo_protection',
+				'title'    => __( 'PRO Commerce Feature : Image Protection', 'foogallery' ),
+				'section'  => __( 'Protection', 'foogallery' ),
+				'desc'     => __( 'Protect your images from theft:', 'foogallery' ) .
+				              '<ul class="ul-disc"><li><strong>' . __( 'Disable Right Click', 'foogallery' ) . '</strong> - ' . __( 'Prevent your visitors from being able to right click on thumbnails and full size images in the lightbox.', 'foogallery' ) .
+				              '</li><li><strong>' . __( 'Watermark Generation', 'foogallery' ) . '</strong> - ' . __( 'Generate advanced watermarks for all images in your gallery.', 'foogallery' ) .
+				              '</li><li><strong>' . __( 'Built-in watermark designs', 'foogallery' ) . '</strong> - ' . __( 'You can choose one of our built-in repeating watermarks, or you can upload and use your own.', 'foogallery' ) .
+				              '</li></ul>' . $this->build_promo_trial_html( 'protection', __( 'PRO Commerce', 'foogallery' )  ) . '<br /><br />',
+				'cta' => $this->build_cta_buttons( 'foogallery-protection' ),
+				'class'   => 'foogallery_promo_commerce',
+				'type'     => 'promo',
+				'row_data' => array(
+					'data-foogallery-change-selector' => 'input',
+					'data-foogallery-value-selector'  => 'input:checked',
+				)
+			);
+
+			// find the index of the advanced section.
+			$index = foogallery_admin_fields_find_index_of_section( $fields, __( 'Advanced', 'foogallery' ) );
+
+			array_splice( $fields, $index, 0, $new_fields );
+
+			return $fields;
+		}
+
+		/**
+		 * Add the commerce promotion datasources
+		 *
+		 * @param $datasources
+		 *
+		 * @return mixed
+		 */
+		function add_commerce_promo_datasources( $datasources ) {
+			$datasources['products_promo'] = array(
+				'id'     => 'products_promo',
+				'name'   => __( 'WooCommerce Products', 'foogallery' ),
+				'menu'  => __( 'WooCommerce Products', 'foogallery' ),
+				'public' => true,
+			);
+
+			return $datasources;
+		}
+
+		/**
+		 * Output the server folders datasource modal content
+		 *
+		 * @param $foogallery_id
+		 */
+		function render_datasource_modal_content_products_promo( $foogallery_id, $datasource_value ) {
+			$this->render_datasource_modal_content(
+				__( 'WooCommerce Product Datasource', 'foogallery' ),
+				__( 'Create a dynamic gallery from your WooCommerce products.<br>You can limit how many products, only show certain categories or exclude specific products from your product gallery. Your gallery will dynamically update when you add or change any of your products.', 'foogallery' ),
+				'foogallery-product-gallery',
+				__( 'PRO Commerce', 'foogallery' ),
+				'foogallery_promo_commerce'
+			);
+		}
+
+		/**
+		 * Returns the Dashicon that can be used in the settings tabs
+		 *
+		 * @param $section_slug
+		 *
+		 * @return string
+		 */
+		function add_commerce_section_icons( $section_slug ) {
+			if ( 'ecommerce' === strtolower( $section_slug ) ) {
+				return 'dashicons-cart';
+			}
+
+			if ( 'protection' === strtolower( $section_slug ) ) {
+				return 'dashicons-lock';
+			}
+
+			return $section_slug;
+		}
+
+		/**
+		 * Add our commerce promo gallery templates
+		 * @param $gallery_templates
+		 *
+		 * @return array
+		 */
+		function add_commerce_promo_templates( $gallery_templates ) {
+			$gallery_templates[] = array(
+				'slug'                  => 'product_promo',
+				'name'                  => __( 'Product Gallery', 'foogallery' ),
+				'preview_support'       => false,
+				'common_fields_support' => false,
+				'lazyload_support'      => false,
+				'paging_support'        => false,
+				'thumbnail_dimensions'  => false,
+				'filtering_support'     => false,
+				'fields'                => array(
+					array(
+						'id'            => 'product_promo',
+						'title'         => __( 'Product Gallery Template', 'foogallery' ),
+						'desc'          => __( 'Only available in the Commerce PRO plan, the Product Gallery template works out of the box with the WooCommerce Product Datasource, making it very easy for you to start selling your photographs online.', 'foogallery' ) .
+						                   '<br />' . '<img src="https://assets.fooplugins.com/foogallery/foogallery-product-gallery.png" />' .
+						                   '<br /><br />' . $this->build_promo_trial_html( 'product-gallery', __( 'PRO Commerce', 'foogallery' ) ) . '<br /><br />',
+						'section'       => __( 'General', 'foogallery' ),
+						'type'          => 'promo',
+						'class'         => 'foogallery_promo_commerce',
+						'keep_in_promo' => true,
+						'cta'           => $this->build_cta_buttons( 'foogallery-product-gallery' )
+					)
+				)
+			);
+
+			return $gallery_templates;
 		}
 	}
 }

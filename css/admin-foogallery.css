@@ -314,6 +314,11 @@ tr.foogallery_template_field[data-foogallery-invisible] {
 	background-color: #f6fffe;
 }
 
+.foogallery_template_field_type-promo.foogallery_promo_commerce .foogallery-promo {
+	border-color: #B0459D;
+	background-color: #fdf6ff;
+}
+
 .foogallery_template_field_type-promo .foogallery-promo:before {
 	/* content: "\f313";  award */
 	content: "\f155"; /* star */
@@ -331,6 +336,10 @@ tr.foogallery_template_field[data-foogallery-invisible] {
 
 .foogallery_template_field_type-promo.foogallery_promo_prostarter .foogallery-promo:before {
 	color: #3397C1;
+}
+
+.foogallery_template_field_type-promo.foogallery_promo_commerce .foogallery-promo:before {
+	color: #B0459D;
 }
 
 #post-body.columns-2 #postbox-container-1 .foogallery-promo {
@@ -363,6 +372,16 @@ tr.foogallery_template_field[data-foogallery-invisible] {
 	color: #3397C1;
 }
 
+.foogallery_template_field_type-promo.foogallery_promo_commerce .foogallery-promo .button-primary {
+	background: #B0459D;
+	border-color: #B0459D;
+}
+
+.foogallery_template_field_type-promo.foogallery_promo_commerce .foogallery-promo .button-secondary {
+	border-color: #B0459D;
+	color: #B0459D;
+}
+
 .foogallery_template_field_promo th .dashicons {
 	color: #31be4d;
 }
@@ -379,6 +398,14 @@ tr.foogallery_template_field[data-foogallery-invisible] {
 	font: 400 15px/1 dashicons !important;
 	speak: none;
 	color: #3397C1;
+	vertical-align: inherit;
+	padding-left: 2px;
+}
+
+.foogallery_metabox_field-radio label.foogallery_promo_commerce i {
+	font: 400 15px/1 dashicons !important;
+	speak: none;
+	color: #B0459D;
 	vertical-align: inherit;
 	padding-left: 2px;
 }
