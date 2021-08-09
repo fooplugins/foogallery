@@ -40,7 +40,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 			}
 
 			// Determine ribbon/button data from product.
-			add_filter( 'foogallery_datasource_woocommerce_build_attachment', array( $this, 'determine_extra_data_for_product' ), 10, 2 );
+			add_filter( 'foogallery_datasource_woocommerce_build_attachment', array( $this, 'determine_data_for_product' ), 10, 2 );
 
 			// Enqueue WooCommerce scripts if applicable.
 			add_action( 'foogallery_located_template', array( $this, 'enqueue_wc_scripts') );
@@ -90,7 +90,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 					case 'price':
 						return $product->get_price_html();
 					case 'discount%':
-						return $this->calculate_percentage_discount( $product );
+						return self::calculate_percentage_discount( $product );
 					case 'rating':
 						return wc_get_rating_html( $product->get_average_rating(), $product->get_rating_count() );
 					default:
@@ -107,8 +107,8 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 		 *
 		 * @return string
 		 */
-		private function calculate_percentage_discount( $product ) {
-			if( $product->is_on_sale() && ! $product->is_type('variable') ){
+		static function calculate_percentage_discount( $product ) {
+			if ( $product->is_on_sale() && ! $product->is_type('variable') ) {
 
 				// Get product prices.
 				$regular_price = (float) $product->get_regular_price();
@@ -129,7 +129,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 		 * @return string
 		 */
 		public function add_product_custom_caption_help( $html ) {
-			if ( $this->is_woocommerce_activated() ) {
+			if ( self::is_woocommerce_activated() ) {
 				$html .= __('You can also use the follow product-specific placeholders, if the attachment is linked to a product:', 'foogallery') . '<br /><br />' .
 				         '<code>{{product.ID}}</code> - ' . __('Product ID', 'foogallery') . '<br />' .
 				         '<code>{{product.title}}</code> - ' . __('Product title', 'foogallery') . '<br />' .
@@ -140,19 +140,6 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 						 '<code>{{product.url}}</code> - ' . __('Product Page URL', 'foogallery') . '<br /><br />';
 			}
 			return $html;
-		}
-
-		/**
-		 * Display custom item data in the cart
-		 */
-		public function override_get_item_data( $item_data, $cart_item_data ) {
-			if ( isset( $cart_item_data['pr_field'] ) ) {
-				$item_data[] = array(
-					'key' => __( 'Image', 'foogallery' ),
-					'value' => wc_clean( $cart_item_data['pr_field'] )
-				);
-			}
-			return $item_data;
 		}
 
 		/**
@@ -354,7 +341,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 			if ( !empty( $product_id ) ) {
 				$foogallery_attachment->product = wc_get_product( $product_id );
 
-				$this->determine_extra_data_for_product( $foogallery_attachment, $foogallery_attachment->product );
+				self::determine_extra_data_for_product( $foogallery_attachment, $foogallery_attachment->product );
 			}
 		}
 
@@ -392,7 +379,21 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 		 *
 		 * @return mixed
 		 */
-		function determine_extra_data_for_product( $attachment, $product ) {
+		public function determine_data_for_product( $attachment, $product ) {
+			self::determine_extra_data_for_product( $attachment, $product );
+
+			return $attachment;
+		}
+
+		/**
+		 * Determine if ribbons/buttons are needed for the product
+		 *
+		 * @param $attachment
+		 * @param WC_Product $product
+		 *
+		 * @return mixed
+		 */
+		static function determine_extra_data_for_product( &$attachment, $product ) {
 			// Do we need to add ribbons?
 			$ribbon_type = foogallery_gallery_template_setting( 'ecommerce_sale_ribbon_type', 'fg-ribbon-5' );
 			if ( 'none' !== $ribbon_type ) {
@@ -400,7 +401,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 					$attachment->ribbon_type = $ribbon_type;
 					$attachment->ribbon_text = foogallery_gallery_template_setting( 'ecommerce_sale_ribbon_text', __( 'Sale', 'foogallery' ) );
 					if ( strpos( $attachment->ribbon_text, '{{%}}' ) > 0 ) {
-						$attachment->ribbon_text = str_replace( '{{%}}', $this->calculate_percentage_discount( $product ), $attachment->ribbon_text );
+						$attachment->ribbon_text = str_replace( '{{%}}', self::calculate_percentage_discount( $product ), $attachment->ribbon_text );
 					}
 				}
 			}
@@ -410,7 +411,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 				$button_add_to_cart = foogallery_gallery_template_setting( 'ecommerce_button_add_to_cart', '' );
 				if ( '' !== $button_add_to_cart ) {
 					$button_add_to_cart_behaviour = foogallery_gallery_template_setting( 'ecommerce_button_add_to_cart_behaviour', 'fg-woo-add-to-cart-ajax' );
-					$button_add_to_cart_url       = $this->determine_url( $button_add_to_cart_behaviour, $product );
+					$button_add_to_cart_url       = self::determine_url( $button_add_to_cart_behaviour, $product, $attachment );
 					if ( ! empty( $button_add_to_cart_url ) ) {
 						$attachment->buttons[] = array(
 							'class' => $button_add_to_cart_behaviour,
@@ -459,23 +460,36 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 		 *
 		 * @param string $url_type
 		 * @param WC_Product $product
+		 * @param FooGalleryAttachment $attachment
 		 *
 		 * @return string
 		 */
-		private function determine_url( $url_type, $product ) {
+		static function determine_url( $url_type, $product, $attachment ) {
+			global $current_foogallery;
+
 			if ( $product->is_purchasable() ) {
+				$args = array(
+					'add-to-cart' => $product->get_id(),
+				);
+				if ( isset( $current_foogallery ) ) {
+					$args['foogallery_id'] = $current_foogallery->ID;
+					if ( isset( $attachment ) && $attachment->ID > 0 ) {
+						$args['foogallery_attachment_id'] = $attachment->ID;
+					}
+				}
+				
 				switch ( $url_type ) {
 					case 'fg-woo-add-to-cart':
 					case 'fg-woo-add-to-cart-ajax':
 						if ( is_admin() ) {
-							return trailingslashit( get_home_url() ) . '?add-to-cart=' . $product->get_id();
+							return add_query_arg( $args, get_home_url() );
 						} else {
-							return add_query_arg( array( 'add-to-cart' => $product->get_id() ) );
+							return add_query_arg( $args );
 						}
 					case 'fg-woo-add-to-cart-redirect' :
-						return add_query_arg( array( 'add-to-cart' => $product->get_id() ), wc_get_cart_url() );
+						return add_query_arg( $args, wc_get_cart_url() );
 					case 'fg-woo-add-to-cart-checkout':
-						return add_query_arg( array( 'add-to-cart' => $product->get_id() ), wc_get_checkout_url() );
+						return add_query_arg( $args, wc_get_checkout_url() );
 				}
 			}
 			return '';
@@ -489,7 +503,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 		 * @return mixed
 		 */
 		function add_cart_hover_icon( $hover_icons ) {
-			if ( $this->is_woocommerce_activated() ) {
+			if ( self::is_woocommerce_activated() ) {
 				$hover_icons['fg-hover-cart'] = array(
 					'label' => __( 'Cart', 'foogallery' ),
 					'html'  => '<div class="foogallery-setting-caption_icon fg-hover-cart"></div>'
@@ -502,7 +516,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 		/**
 		 * Check if WooCommerce is activated
 		 */
-		function is_woocommerce_activated() {
+		static function is_woocommerce_activated() {
 			return class_exists( 'woocommerce' );
 		}
 
@@ -534,7 +548,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 
 			$new_fields = array();
 
-			if ( $this->is_woocommerce_activated() ) {
+			if ( self::is_woocommerce_activated() ) {
 
 				$new_fields[] = array(
 					'id'      => 'ecommerce_info',
