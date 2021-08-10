@@ -49,7 +49,50 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce_Master_Product' ) ) {
 
 				// Override the order item thumbnail in admin.
 				add_filter( 'woocommerce_admin_order_item_thumbnail',  array( $this, 'adjust_order_item_thumbnail' ), 10, 3 );
+
+				// Override order meta keys.
+				add_filter( 'woocommerce_order_item_display_meta_key', array( $this, 'adjust_order_item_display_meta_key' ), 10, 3 );
+
+				add_filter( 'woocommerce_order_item_display_meta_value', array( $this, 'adjust_order_item_display_meta_value' ), 10, 3 );
 			}
+		}
+
+		/**
+		 * Override the keys for metadata within the order.
+		 *
+		 * @param $display_key
+		 * @param $meta
+		 * @param $order_item
+		 *
+		 * @return mixed|string|void
+		 */
+		public function adjust_order_item_display_meta_key( $display_key, $meta, $order_item ) {
+			if ( '_foogallery_id' === $meta->key ) {
+				$display_key = __( 'FooGallery', 'foogallery' );
+			} else if ( '_foogallery_attachment_id' === $meta->key ) {
+				$display_key = __( 'Attachment', 'foogallery' );
+			} else if ( '_foogallery_attachment_url' === $meta->key ) {
+				$display_key = __( 'Attachment Public URL', 'foogallery' );
+			}
+			return $display_key;
+		}
+
+		/**
+		 * Override the keys for metadata within the order.
+		 *
+		 * @param $display_value
+		 * @param $meta
+		 * @param $order_item
+		 *
+		 * @return mixed|string|void
+		 */
+		public function adjust_order_item_display_meta_value( $display_value, $meta, $order_item ) {
+			if ( '_foogallery_id' === $meta->key ) {
+				$display_value = get_edit_post_link( $display_value );
+			} else if ( '_foogallery_attachment_id' === $meta->key ) {
+				$display_value = get_edit_post_link( $display_value );
+			}
+			return $display_value;
 		}
 
 		/**
