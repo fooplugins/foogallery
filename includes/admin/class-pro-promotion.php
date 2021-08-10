@@ -1011,6 +1011,7 @@ if ( ! class_exists( 'FooGallery_Pro_Promotion' ) ) {
 				              '</li><li><strong>' . __( 'Custom Caption Support', 'foogallery' ) . '</strong> - ' . __( 'Already using our advanced custom captions? Now you can include any product info in your caption template.', 'foogallery' ) .
 				              '</li><li><strong>' . __( 'Product Variation Support', 'foogallery' ) . '</strong> - ' . __( 'Using variable products? No problem! Show variations in the lightbox and add directly to cart from the lightbox.', 'foogallery' ) .
 				              '</li><li><strong>' . __( 'Manually Link Products', 'foogallery' ) . '</strong> - ' . __( 'You can also manually link a product to each item in your gallery for complete control.', 'foogallery' ) .
+				              '</li><li><strong>' . __( 'Master Product', 'foogallery' ) . '</strong> - ' . __( 'You can set a "Master Product" for all items in the gallery. Info from the attachment will be transferred to items in the cart and order.', 'foogallery' ) .
 				              '</li></ul>' . $this->build_promo_trial_html( 'ecommerce', __( 'PRO Commerce', 'foogallery' )  ) . '<br /><br />',
 				'cta' => $this->build_cta_buttons( 'foogallery-commerce' ),
 				'class'   => 'foogallery_promo_commerce',
