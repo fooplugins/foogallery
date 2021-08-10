@@ -134,18 +134,18 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce_Master_Product' ) ) {
 				$new_fields[] = array(
 					'id'      => 'ecommerce_transfer_mode_info',
 					'title'   => __( 'Transfer Mode Info', 'foogallery' ),
-					'desc'    => __( 'You can choose to transfer info from the attachment to the linked product when it is added to the cart and ordered.', 'foogallery' ),
+					'desc'    => __( 'You can choose to transfer info from the attachment to the linked product when it is added to the cart and ordered. This works best when you want to use a master product for all items in your gallery.', 'foogallery' ),
 					'section' => __( 'Ecommerce', 'foogallery' ),
-					'subsection' => array( 'ecommerce-master-product' => __( 'Cart & Orders', 'foogallery' ) ),
+					'subsection' => array( 'ecommerce-master-product' => __( 'Advanced', 'foogallery' ) ),
 					'type'    => 'help',
 				);
 
 				$new_fields[] = array(
 					'id'       => 'ecommerce_transfer_mode',
-					'title'    => __( 'Cart Info Transfer Mode', 'foogallery' ),
+					'title'    => __( 'Transfer Mode', 'foogallery' ),
 					'desc'     => __( 'When the product is added to the cart or ordered, details from the attachment can be transferred to the cart and order items.', 'foogallery' ),
 					'section'  => __( 'Ecommerce', 'foogallery' ),
-					'subsection' => array( 'ecommerce-master-product' => __( 'Cart & Orders', 'foogallery' ) ),
+					'subsection' => array( 'ecommerce-master-product' => __( 'Advanced', 'foogallery' ) ),
 					'type'     => 'radio',
 					'spacer'   => '<span class="spacer"></span>',
 					'default'  => '',
@@ -165,7 +165,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce_Master_Product' ) ) {
 					'title'   => __( 'Master Product Info', 'foogallery' ),
 					'desc'    => __( 'You can set a master product for the whole gallery, which will link that product to every item. You can still manually link items to individual products. All items that are not linked to a product will be linked to the master product.', 'foogallery' ),
 					'section' => __( 'Ecommerce', 'foogallery' ),
-					'subsection' => array( 'ecommerce-master-product' => __( 'Cart & Orders', 'foogallery' ) ),
+					'subsection' => array( 'ecommerce-master-product' => __( 'Advanced', 'foogallery' ) ),
 					'type'    => 'help',
 					'row_data' => array(
 						'data-foogallery-hidden'                   => true,
@@ -180,7 +180,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce_Master_Product' ) ) {
 					'title'    => __( 'Master Product ID', 'foogallery' ),
 					'desc'     => __( 'The ID of the product that will be used as the master product for every item in the gallery.', 'foogallery' ),
 					'section'  => __( 'Ecommerce', 'foogallery' ),
-					'subsection' => array( 'ecommerce-master-product' => __( 'Cart & Orders', 'foogallery' ) ),
+					'subsection' => array( 'ecommerce-master-product' => __( 'Advanced', 'foogallery' ) ),
 					'type'     => 'text',
 					'default'  => '',
 					'row_data' => array(
@@ -199,7 +199,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce_Master_Product' ) ) {
 					'title'    => __( 'Add Variation Attributes', 'foogallery' ),
 					'desc'     => __( 'When a variable product is added to the cart, add the attribute data to the cart and order item.', 'foogallery' ),
 					'section'  => __( 'Ecommerce', 'foogallery' ),
-					'subsection' => array( 'ecommerce-master-product' => __( 'Cart & Orders', 'foogallery' ) ),
+					'subsection' => array( 'ecommerce-master-product' => __( 'Advanced', 'foogallery' ) ),
 					'type'     => 'radio',
 					'spacer'   => '<span class="spacer"></span>',
 					'default'  => 'add',
@@ -222,7 +222,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce_Master_Product' ) ) {
 					'title'    => __( 'Product Name Source', 'foogallery' ),
 					'desc'     => __( 'When the product is added to the cart, the name is updated from which field of the attachment', 'foogallery' ),
 					'section'  => __( 'Ecommerce', 'foogallery' ),
-					'subsection' => array( 'ecommerce-master-product' => __( 'Cart & Orders', 'foogallery' ) ),
+					'subsection' => array( 'ecommerce-master-product' => __( 'Advanced', 'foogallery' ) ),
 					'type'     => 'radio',
 					'spacer'   => '<span class="spacer"></span>',
 					'default'  => 'title',
