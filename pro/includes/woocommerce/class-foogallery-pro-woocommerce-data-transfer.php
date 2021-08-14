@@ -428,10 +428,12 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce_Master_Product' ) ) {
 				$item_data  = $cart_item['data'];
 				$attributes = $item_data->get_attributes();
 				foreach ( $attributes as $attr_key => $attr_value ) {
-					$cart_item_data[] = array(
-						'name'  => $attr_key,
-						'value' => $attr_value,
-					);
+					if ( is_string( $attr_value ) ) {
+						$cart_item_data[] = array(
+							'name'  => $attr_key,
+							'value' => $attr_value,
+						);
+					}
 				}
 			}
 			return $cart_item_data;
