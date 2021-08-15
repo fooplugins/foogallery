@@ -330,6 +330,9 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Taxonomy_Base' ) ) {
 					<?php _e( 'Open Media Library', 'foogallery' ); ?>
 				</button>
 				<?php } ?>
+				<button type="button" class="button bulk_media_management">
+					<?php _e( 'Bulk Taxonomy Manager', 'foogallery' ); ?>
+				</button>
 				<button type="button" class="button help">
 					<?php _e( 'Show Help', 'foogallery' ); ?>
 				</button>
