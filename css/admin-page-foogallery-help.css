@@ -90,7 +90,7 @@ body {
 }
 .foogallery-admin-help-ribbon span {
     font-size: 10px;
-    font-weight: 600;
+    font-weight: bold;
     color: #2b2400;
     text-transform: uppercase;
     text-align: center;
@@ -98,7 +98,7 @@ body {
     transform: rotate(45deg);
     width: 100px;
     display: block;
-    background: #d67935;
+    background: #b04cff;
     box-shadow: 0 3px 10px -5px rgba(0, 0, 0, 1);
     position: absolute;
     top: 19px; right: -21px;
@@ -109,10 +109,10 @@ body {
     left: 0;
     top: 100%;
     z-index: -1;
-    border-left: 3px solid #d67935;
+    border-left: 3px solid #6a00b8;
     border-right: 3px solid transparent;
     border-bottom: 3px solid transparent;
-    border-top: 3px solid #d67935;
+    border-top: 3px solid #6a00b8;
 }
 .foogallery-admin-help-ribbon span::after {
     content: "";
@@ -121,9 +121,9 @@ body {
     top: 100%;
     z-index: -1;
     border-left: 3px solid transparent;
-    border-right: 3px solid #d67935;
+    border-right: 3px solid #6a00b8;
     border-bottom: 3px solid transparent;
-    border-top: 3px solid #d67935;
+    border-top: 3px solid #6a00b8;
 }
 
 .foogallery-admin-help nav {
@@ -368,7 +368,7 @@ span.fgah-plan-commerce {
 .fgah-help-list li::before {
     content: "\003F";
     display: inline-block;
-    background-color: #2271b1;
+    background-color: #1897ff;
     color: #FFFFFF;
     border-radius: 50%;
     line-height: 1;
@@ -430,7 +430,7 @@ span.fgah-plan-commerce {
 }
 
 .foogallery-admin-help-button-active {
-    background-color: #2271b1;
+    background-color: #1897ff;
 }
 
 .foogallery-admin-help-button-cta {
@@ -466,7 +466,7 @@ span.fgah-plan-commerce {
 .foogallery-admin-help-button-cta .progress {
     border-radius: 5px;
     width: 0;
-    background: #2271b1;
+    background: #1897ff;
     opacity: 0;
     transition: all 0.3s ease;
     position: absolute;
