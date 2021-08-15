@@ -140,7 +140,8 @@ if ( ! class_exists( 'FooGallery_Pro_Lightbox' ) ) {
 				'choices' => apply_filters( 'foogallery_gallery_template_lightbox_theme_choices', array(
 					''  => __( 'Inherit', 'foogallery' ),
 					'fg-light'  => __( 'Light', 'foogallery' ),
-					'fg-dark'   => __( 'Dark', 'foogallery' )
+					'fg-dark'   => __( 'Dark', 'foogallery' ),
+					'fg-custom' => __( 'Custom', 'foogallery' ),
 				) ),
 				'row_data'=> array(
 					'data-foogallery-change-selector' => 'input',

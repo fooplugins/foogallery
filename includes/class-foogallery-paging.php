@@ -221,6 +221,7 @@ if ( ! class_exists( 'FooGallery_Paging' ) ) {
 					'choices' => apply_filters( 'foogallery_gallery_template_paging_theme_choices', array(
 						'fg-light'  => __( 'Light', 'foogallery' ),
 						'fg-dark'   => __( 'Dark', 'foogallery' ),
+						'fg-custom' => __( 'Custom', 'foogallery' ),
 					) ),
 					'row_data'=> array(
 						'data-foogallery-change-selector' => 'input',
