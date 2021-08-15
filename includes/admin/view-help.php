@@ -2,7 +2,7 @@
 $instance = FooGallery_Plugin::get_instance();
 $info = $instance->get_plugin_info();
 
-$logo = FOOGALLERY_URL . 'assets/logo.png';
+$logo = FOOGALLERY_URL . 'assets/logo.png?v=2';
 
 $plugin_name = foogallery_plugin_name();
 $fooplugins_url = foogallery_admin_url( 'https://fooplugins.com/', 'help' );
