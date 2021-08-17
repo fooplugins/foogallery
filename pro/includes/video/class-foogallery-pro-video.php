@@ -20,20 +20,17 @@ if ( ! class_exists( 'FooGallery_Pro_Video' ) ) {
 			new FooGallery_Pro_Video_Query();
 			new FooGallery_Pro_Video_Import();
 
-			//setup script includes
-			add_action( 'wp_enqueue_media', array( $this, 'enqueue_assets' ) );
+			//check if the gallery is using foobox free and also has a video and if so, enqueue foobox video scripts.
+			add_action( 'foogallery_loaded_template', array( $this, 'enqueue_foobox_free_dependencies' ) );
 
-			//make sure the gallery items render with a video icon
-			add_filter( 'foogallery_admin_render_gallery_item_extra_classes', array( $this, 'render_gallery_item_with_video_icon' ), 10, 2 );
+			//check if the album is using foobox free and also has a video and if so, enqueue foobox video scripts.
+			add_action( 'foogallery_loaded_album_template', array( $this, 'enqueue_foobox_free_dependencies_for_album' ) );
 
-			//add attachment custom fields
-			add_filter( 'foogallery_attachment_custom_fields', array( $this, 'attachment_custom_fields' ) );
+			//output the embeds after the gallery if needed
+			add_action( 'foogallery_loaded_template', array( $this, 'include_video_embeds' ) );
 
-			//add extra fields to all templates
-			add_filter( 'foogallery_override_gallery_template_fields', array( $this, 'all_template_fields' ) );
-
-			// add additional templates
-			add_action( 'admin_footer', array( $this, 'add_media_templates' ) );
+			//output the embeds after the album if needed
+			add_action( 'foogallery_loaded_album_template', array( $this, 'include_video_embeds_for_album' ) );
 
 			//load all video info into the attachment, so that it is only done once
 			add_action( 'foogallery_attachment_instance_after_load', array( $this, 'set_video_flag_on_attachment' ), 10, 2 );
@@ -44,31 +41,35 @@ if ( ! class_exists( 'FooGallery_Pro_Video' ) ) {
 			//add video icon class to galleries
 			add_filter( 'foogallery_build_class_attribute', array( $this, 'foogallery_build_class_attribute' ) );
 
-			//intercept gallery save and calculate how many videos are in the gallery
-			add_action( 'foogallery_after_save_gallery', array( $this, 'calculate_video_count' ) );
-
-			//change the image count to include videos if they are present in the gallery
-			add_filter( 'foogallery_image_count', array( $this, 'include_video_count' ), 11, 3 );
-
-			//check if the gallery is using foobox free and also has a video and if so, enqueue foobox video scripts.
-			add_action( 'foogallery_loaded_template', array( $this, 'enqueue_foobox_free_dependencies' ) );
-
-			//check if the album is using foobox free and also has a video and if so, enqueue foobox video scripts.
-			add_action( 'foogallery_loaded_album_template', array( $this, 'enqueue_foobox_free_dependencies_for_album' ) );
-
-			//add settings for video
-			add_filter( 'foogallery_admin_settings_override', array( $this, 'include_video_settings' ) );
-
-			//output the embeds after the gallery if needed
-			add_action( 'foogallery_loaded_template', array( $this, 'include_video_embeds' ) );
-
-			//output the embeds after the album if needed
-			add_action( 'foogallery_loaded_album_template', array( $this, 'include_video_embeds_for_album' ) );
-
-			//ajax call to save the Vimeo access token
-			add_action( 'wp_ajax_fgi_save_access_token', array( $this, 'save_vimeo_access_token') );
-
 			if ( is_admin() ) {
+
+				//setup script includes
+				add_action( 'wp_enqueue_media', array( $this, 'enqueue_assets' ) );
+
+				//make sure the gallery items render with a video icon
+				add_filter( 'foogallery_admin_render_gallery_item_extra_classes', array( $this, 'render_gallery_item_with_video_icon' ), 10, 2 );
+
+				//add attachment custom fields
+				add_filter( 'foogallery_attachment_custom_fields', array( $this, 'attachment_custom_fields' ) );
+
+				//add extra fields to all templates
+				add_filter( 'foogallery_override_gallery_template_fields', array( $this, 'add_video_fields' ) );
+
+				// add additional templates
+				add_action( 'admin_footer', array( $this, 'add_media_templates' ) );
+
+				//intercept gallery save and calculate how many videos are in the gallery
+				add_action( 'foogallery_after_save_gallery', array( $this, 'calculate_video_count' ) );
+
+				//change the image count to include videos if they are present in the gallery
+				add_filter( 'foogallery_image_count', array( $this, 'include_video_count' ), 11, 3 );
+
+				//add settings for video
+				add_filter( 'foogallery_admin_settings_override', array( $this, 'include_video_settings' ) );
+
+				//ajax call to save the Vimeo access token
+				add_action( 'wp_ajax_fgi_save_access_token', array( $this, 'save_vimeo_access_token') );
+
 				//allow thumbnails for videos to be stored in a separate subdirectory
 				add_filter( 'upload_dir', array( $this, 'override_video_upload_dir' ), 99 );
 			}
@@ -167,8 +168,8 @@ if ( ! class_exists( 'FooGallery_Pro_Video' ) ) {
 		 *
 		 * @return mixed
 		 */
-		public function all_template_fields( $fields ) {
-			$fields[] = array(
+		public function add_video_fields( $fields ) {
+			$video_fields[] = array(
 				'id'       => 'video_hover_icon',
 				'section'  => __( 'Video', 'foogallery' ),
 				'title'    => __( 'Video Hover Icon', 'foogallery' ),
@@ -189,7 +190,7 @@ if ( ! class_exists( 'FooGallery_Pro_Video' ) ) {
 					'data-foogallery-preview'         => 'shortcode'
 				)
 			);
-			$fields[] = array(
+			$video_fields[] = array(
 				'id'       => 'video_sticky_icon',
 				'section'  => __( 'Video', 'foogallery' ),
 				'title'    => __( 'Sticky Video Icon', 'foogallery' ),
@@ -207,7 +208,7 @@ if ( ! class_exists( 'FooGallery_Pro_Video' ) ) {
 				)
 			);
 
-			$fields[] = array(
+			$video_fields[] = array(
 				'id'      => 'video_size_help',
 				'title'   => __( 'Video Size Help', 'foogallery' ),
 				'desc'    => __( 'The lightbox video size can be overridden on each individual video by editing the attachment info, and changing the Override Width and Override Height properties.', 'foogallery' ),
@@ -215,7 +216,7 @@ if ( ! class_exists( 'FooGallery_Pro_Video' ) ) {
 				'type'    => 'help',
 			);
 
-			$fields[] = array(
+			$video_fields[] = array(
 				'id'      => 'video_size',
 				'section' => __( 'Video', 'foogallery' ),
 				'title'   => __( 'Lightbox Video Size', 'foogallery' ),
@@ -234,7 +235,7 @@ if ( ! class_exists( 'FooGallery_Pro_Video' ) ) {
 				),
 			);
 
-			$fields[] = array(
+			$video_fields[] = array(
 				'id'      => 'video_autoplay',
 				'section' => __( 'Video', 'foogallery' ),
 				'title'   => __( 'Lightbox Autoplay', 'foogallery' ),
@@ -247,6 +248,11 @@ if ( ! class_exists( 'FooGallery_Pro_Video' ) ) {
 					'no'  => __( 'No', 'foogallery' ),
 				),
 			);
+
+			//find the index of the Advanced section
+			$index = foogallery_admin_fields_find_index_of_section( $fields, __( 'Advanced', 'foogallery' ) );
+
+			array_splice( $fields, $index, 0, $video_fields );
 
 			return $fields;
 		}

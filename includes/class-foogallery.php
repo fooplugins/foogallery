@@ -530,6 +530,15 @@ class FooGallery extends stdClass {
 		return $this->apply_datasource_filter( 'item_count', 0 );
 	}
 
+	/**
+	 * Returns an array of the attachment ID's within the gallery
+	 *
+	 * @return array
+	 */
+	public function item_attachment_ids() {
+		return $this->apply_datasource_filter( 'attachment_ids', $this->attachment_ids );
+	}
+
 	public function is_empty() {
 		if ( foogallery_default_datasource() === $this->datasource_name ) {
 			return $this->attachment_count() === 0;

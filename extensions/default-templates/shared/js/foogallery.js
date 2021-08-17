@@ -6393,6 +6393,14 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 			}
 			return type;
 		},
+		/**
+		 * @memberof FooGallery.TemplateFactory#
+		 * @function configure
+		 * @param {string} name
+		 * @param {object} options
+		 * @param {object} classes
+		 * @param {object} il8n
+		 */
 		configure: function (name, options, classes, il8n) {
 			var self = this;
 			if (self.contains(name)) {
@@ -8550,6 +8558,24 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 			 */
 			self.hasExif = _is.exif(self.exif);
 			/**
+			 * @memberof FooGallery.Item#
+			 * @name ribbon
+			 * @type {FooGallery.Item~Ribbon}
+			 */
+			self.ribbon = self.opt.ribbon;
+			/**
+			 * @memberof FooGallery.Item#
+			 * @name hasRibbon
+			 * @type {boolean}
+			 */
+			self.hasRibbon = _is.hash(self.ribbon) && _is.string(self.ribbon.text) && _is.string(self.ribbon.type);
+			/**
+			 * @memberof FooGallery.Item#
+			 * @name buttons
+			 * @type {FooGallery.Item~Button[]}
+			 */
+			self.buttons = self.opt.buttons;
+			/**
 			 * @summary This property is used to store the promise created when loading an item for the first time.
 			 * @memberof FooGallery.Item#
 			 * @name _load
@@ -9079,6 +9105,15 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 				picture.appendChild(image);
 			}
 
+			var ribbon;
+			if (self.hasRibbon){
+				ribbon = document.createElement("div");
+				ribbon.className = self.ribbon.type;
+				var ribbonText = document.createElement("span");
+				ribbonText.innerHTML = self.ribbon.text;
+				ribbon.appendChild(ribbonText);
+			}
+
 			var overlay = document.createElement("span");
 			overlay.className = cls.overlay;
 
@@ -9096,24 +9131,52 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 			self._setAttributes(captionInner, attr.caption.inner);
 			captionInner.className = cls.caption.inner;
 
-			var captionTitle = null;
-			if (self.showCaptionTitle && _is.string(self.caption) && self.caption.length > 0) {
+			var captionTitle = null, hasTitle = self.showCaptionTitle && _is.string(self.caption) && self.caption.length > 0;
+			if (hasTitle) {
 				captionTitle = document.createElement("div");
 				self._setAttributes(captionTitle, attr.caption.title);
 				captionTitle.className = cls.caption.title;
 				captionTitle.innerHTML = self.maxCaptionLength > 0 ? _str.trimTo(self.caption, self.maxCaptionLength) : self.caption;
+				captionInner.appendChild(captionTitle);
 			}
-			var captionDesc = null;
-			if (self.showCaptionDescription && _is.string(self.description) && self.description.length > 0) {
+			var captionDesc = null, hasDescription = self.showCaptionDescription && _is.string(self.description) && self.description.length > 0;
+			if (hasDescription) {
 				captionDesc = document.createElement("div");
 				self._setAttributes(captionDesc, attr.caption.description);
 				captionDesc.className = cls.caption.description;
 				captionDesc.innerHTML = self.maxDescriptionLength > 0 ? _str.trimTo(self.description, self.maxDescriptionLength) : self.description;
+				captionInner.appendChild(captionDesc);
 			}
-
-			if (captionTitle !== null) captionInner.appendChild(captionTitle);
-			if (captionDesc !== null) captionInner.appendChild(captionDesc);
+			var captionButtons = null, hasButtons = _is.array(self.buttons) && self.buttons.length > 0;
+			if (hasButtons){
+				captionButtons = document.createElement("div");
+				captionButtons.className = cls.caption.buttons;
+				_utils.each(self.buttons, function(button){
+					if (_is.hash(button) && _is.string(button.text)){
+						var captionButton = document.createElement("a");
+						captionButton.innerHTML = button.text;
+						if (_is.string(button.url) && button.url.length > 0){
+							captionButton.href = button.url;
+						}
+						if (_is.string(button.rel) && button.rel.length > 0){
+							captionButton.rel = button.rel;
+						}
+						if (_is.string(button.target) && button.target.length > 0){
+							captionButton.target = button.target;
+						}
+						if (_is.string(button.classes) && button.classes.length > 0){
+							captionButton.className = button.classes;
+						}
+						if (_is.hash(button.attr)){
+							self._setAttributes(captionButton, button.attr);
+						}
+						captionButtons.appendChild(captionButton);
+					}
+				});
+				captionInner.appendChild(captionButtons);
+			}
 			caption.appendChild(captionInner);
+
 			if (self.isPicture){
 				wrap.appendChild(picture);
 			} else {
@@ -9122,7 +9185,12 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 			anchor.appendChild(overlay);
 			anchor.appendChild(wrap);
 			inner.appendChild(anchor);
-			inner.appendChild(caption);
+			if (hasTitle || hasDescription || hasButtons){
+				inner.appendChild(caption);
+			}
+			if (self.hasRibbon){
+				elem.appendChild(ribbon);
+			}
 			elem.appendChild(inner);
 			elem.appendChild(loader);
 
@@ -9497,7 +9565,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 		 */
 		onCaptionClick: function (e) {
 			var self = e.data.self, evt = self.tmpl.trigger("caption-click-item", [self]);
-			if (!evt.isDefaultPrevented() && self.$anchor.length > 0 && !$(e.target).is("a,:input")) {
+			if (!evt.isDefaultPrevented() && self.$anchor.length > 0 && !$(e.target).is("a[href],:input")) {
 				self.$anchor.get(0).click();
 			}
 		}
@@ -9523,6 +9591,8 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 	 * @property {boolean} [showCaptionTitle=true] - Whether or not the caption title should be displayed.
 	 * @property {boolean} [showCaptionDescription=true] - Whether or not the caption description should be displayed.
 	 * @property {FooGallery.Item~Attributes} [attr] - Additional attributes to apply to the items' elements.
+	 * @property {FooGallery.Item~Button[]} [buttons=[]] - An array of buttons to append to the caption.
+	 * @property {FooGallery.Item~Ribbon} [ribbon] - The ribbon type and text to display for the item.
 	 */
 	_.template.configure("core", {
 		item: {
@@ -9546,6 +9616,11 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 			showCaptionDescription: true,
 			noLightbox: false,
 			panelHide: false,
+			buttons: [],
+			ribbon: {
+				type: null,
+				text: null
+			},
 			exif: {
 				aperture: null,
 				camera: null,
@@ -9593,7 +9668,9 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 				elem: "fg-caption",
 				inner: "fg-caption-inner",
 				title: "fg-caption-title",
-				description: "fg-caption-desc"
+				description: "fg-caption-desc",
+				buttons: "fg-caption-buttons",
+				button: "fg-caption-button"
 			}
 		}
 	}, {
@@ -9615,6 +9692,23 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 	// ######################
 	// ## Type Definitions ##
 	// ######################
+
+	/**
+	 * @summary An object containing properties for a button to add to the item caption.
+	 * @typedef {object} FooGallery.Item~Button
+	 * @property {string} url - The url the button opens.
+	 * @property {string} text - The text displayed within the button.
+	 * @property {string} [rel=""] - The rel attribute for the button.
+	 * @property {string} [target="_blank"] - The target attribute for the button.
+	 * @property {string} [classes=""] - Additional CSS class names to apply to the button.
+	 */
+
+	/**
+	 * @summary An object containing the ribbon information.
+	 * @typedef {object} FooGallery.Item~Ribbon
+	 * @property {string} type - The type of ribbon to display.
+	 * @property {string} text - The text displayed within the ribbon.
+	 */
 
 	/**
 	 * @summary A simple object containing the CSS classes used by an item.

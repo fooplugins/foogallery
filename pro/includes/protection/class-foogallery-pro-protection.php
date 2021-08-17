@@ -86,7 +86,7 @@ if ( ! class_exists( 'FooGallery_Pro_Protection' ) ) {
 					if ( empty( $progress ) ) {
 						// there is no progress, so start!
 						$gallery = FooGallery::get_by_id( $foogallery_id );
-						$images  = $gallery->attachment_count();
+						$images  = $gallery->item_count();
 
 						$progress = array(
 							'total'       => $images,
@@ -94,7 +94,7 @@ if ( ! class_exists( 'FooGallery_Pro_Protection' ) ) {
 							'progress'    => 0,
 							'count'       => 0,
 							'message'     => sprintf( __( '%d watermarked images to generate...', 'foogallery' ), $images ),
-							'attachments' => $gallery->attachment_ids,
+							'attachments' => $gallery->item_attachment_ids(),
 						);
 					} else {
 						// What if there are no attachments left?
@@ -105,6 +105,12 @@ if ( ! class_exists( 'FooGallery_Pro_Protection' ) ) {
 							$progress['progress'] = $progress['progress'] + 1;
 							$progress['count']    = $progress['count'] + 1;
 							$progress['percent']  = intval( $progress['progress'] / $progress['total'] * 100 );
+						}
+						if ( 0 === $progress['count'] && 0 === $progress['total'] ) {
+							$progress['percent'] = 100;
+						}
+						if ( !is_array( $progress['attachments'] ) || 0 === count( $progress['attachments'] ) ) {
+							$progress['percent'] = 100;
 						}
 						if ( $progress['percent'] < 100 ) {
 							$progress['message'] = sprintf( __( '%1$d / %2$d watermarked images generated...', 'foogallery' ), $progress['progress'], $progress['total'] );
@@ -534,7 +540,7 @@ if ( ! class_exists( 'FooGallery_Pro_Protection' ) ) {
 			);
 
 			// find the index of the advanced section.
-			$index = $this->find_index_of_section( $fields, __( 'Advanced', 'foogallery' ) );
+			$index = foogallery_admin_fields_find_index_of_section( $fields, __( 'Advanced', 'foogallery' ) );
 
 			array_splice( $fields, $index, 0, $new_fields );
 
@@ -549,7 +555,7 @@ if ( ! class_exists( 'FooGallery_Pro_Protection' ) ) {
 		 * @return array
 		 */
 		public function add_watermark_settings( $settings ) {
-			$settings['tabs']['watermarks'] = __( 'Watermarks', 'foogallery' );
+			$settings['tabs']['watermarks'] = __( 'Protection', 'foogallery' );
 
 			$preview_html = '<a target="_blank" href="' . admin_url( add_query_arg( array( 'page' => 'foogallery_watermark_test' ), foogallery_admin_menu_parent_slug() ) ) . '">' . __( 'Open watermark preview test page', 'foogallery' ) . '</a>';
 
@@ -728,7 +734,7 @@ if ( ! class_exists( 'FooGallery_Pro_Protection' ) ) {
 					FOOGALLERY_PRO_URL . 'includes/protection/watermarks/watermark-copyright.png',
 				);
 				?>
-				<input class="foogallery_settings_long_text" type="text" id="watermark_image" name="foogallery[watermark_image]" value="<? echo esc_url( $watermark_image ); ?>" />
+				<input class="foogallery_settings_long_text" type="text" id="watermark_image" name="foogallery[watermark_image]" value="<?php echo esc_url( $watermark_image ); ?>" />
 				<input type="button" class="button foogallery_settings_watermark_image_select" value="<?php echo esc_html( __( 'Select Image', 'foogallery' ) ); ?>" />
 				<br /><small><?php echo esc_html( __( 'The URL of the image you want to use as a watermark. Or use one of our predefined watermarks:', 'foogallery' ) ); ?></small>
 				<br />
@@ -841,34 +847,17 @@ if ( ! class_exists( 'FooGallery_Pro_Protection' ) ) {
 
 			echo '<h2>' . esc_html( __( 'Watermarked Image', 'foogallery' ) ) . '</h2>';
 
-			$image_base64 = $watermark->get_image_editor_helper()->get_image_base64( $editor->get_image() );
+			$image = $editor->get_image();
 
-			$watermark->get_image_editor_helper()->cleanup( $editor->get_image() );
+			$image_base64 = $watermark->get_image_editor_helper()->get_image_base64( $image );
+
+			$watermark->get_image_editor_helper()->cleanup( $image );
 
 			echo '<img src="data:image/png;base64,' . $image_base64 . '" />';
 
 			echo '<h2>' . esc_html( __( 'Original Image', 'foogallery' ) ) . '</h2>';
 
 			echo '<img src="' . esc_url( $test_image_url ) . '" />';
-		}
-
-		/**
-		 * Return the index of the requested section
-		 *
-		 * @param array  $fields The fields we are searching through.
-		 * @param string $section The section we are looking for.
-		 *
-		 * @return int
-		 */
-		private function find_index_of_section( $fields, $section ) {
-			$index = 0;
-			foreach ( $fields as $field ) {
-				if ( isset( $field['section'] ) && $section === $field['section'] ) {
-					return $index;
-				}
-				$index++;
-			}
-			return $index;
 		}
 	}
 }

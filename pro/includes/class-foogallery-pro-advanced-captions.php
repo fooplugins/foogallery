@@ -149,7 +149,7 @@ if ( ! class_exists( 'FooGallery_Pro_Advanced_Captions' ) ) {
 			        )
 		        );
 
-		        $field_index = $this->find_index_of_field( $fields, 'caption_title_source' );
+		        $field_index = foogallery_admin_fields_find_index_of_field( $fields, 'caption_title_source' );
 
 		        array_splice( $fields, $field_index, 0, $new_fields );
 
@@ -294,25 +294,6 @@ if ( ! class_exists( 'FooGallery_Pro_Advanced_Captions' ) ) {
         }
 
         /**
-         * Return the index of the requested field
-         *
-         * @param $fields
-         * @param $field_id
-         *
-         * @return int
-         */
-        private function find_index_of_field( $fields, $field_id ) {
-            $index = 0;
-            foreach ( $fields as $field ) {
-                if ( isset( $field['id'] ) && $field_id === $field['id'] ) {
-                    return $index;
-                }
-                $index++;
-            }
-            return $index;
-        }
-
-        /**
          * Return the requested field
          *
          * @param $fields
@@ -406,6 +387,8 @@ if ( ! class_exists( 'FooGallery_Pro_Advanced_Captions' ) ) {
 	                    $terms = wp_get_post_terms( $foogallery_attachment->ID, $taxonomy, array( 'fields' => 'names' ) );
 
 	                    return implode(', ', $terms );
+                    } else {
+                    	return apply_filters( 'foogallery_build_custom_caption_placeholder_replacement', '', $property, $foogallery_attachment );
                     }
 
                     return '';

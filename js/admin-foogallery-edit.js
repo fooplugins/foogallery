@@ -600,6 +600,11 @@ FooGallery.autoEnabled = false;
 				io.observe(img);
 			});
 		}
+
+	    $('.foogallery-admin-promo-dismiss').on('click', function(e) {
+		    e.preventDefault();
+		    alert( 'If you want to turn off these promotional messages forever, goto FooGallery Settings -> Advanced, and set the "Disable PRO Promotions" setting. Thank you for using FooGallery :)')
+	    } );
     };
 
 }(window.FOOGALLERY = window.FOOGALLERY || {}, jQuery));

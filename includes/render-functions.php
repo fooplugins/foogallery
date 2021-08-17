@@ -35,12 +35,7 @@ function foogallery_attachment_html_image_src( $foogallery_attachment, $args = a
 function foogallery_attachment_html_image( $foogallery_attachment, $args = array() ) {
 	$attr = foogallery_build_attachment_html_image_attributes( $foogallery_attachment, $args );
 
-	$html = '<img';
-	foreach ( $attr as $name => $value ) {
-        $name = str_replace(' ', '', $name); //ensure we have no spaces!
-		$html .= " $name=" . '"' . foogallery_esc_attr($value) . '"';
-	}
-	$html .= ' />';
+	$html = foogallery_html_opening_tag( 'img', $attr );
 
 	return apply_filters( 'foogallery_attachment_html_image', $html, $args, $foogallery_attachment );
 }
@@ -103,12 +98,7 @@ function foogallery_build_attachment_html_image_attributes( $foogallery_attachme
 function foogallery_attachment_html_anchor_opening( $foogallery_attachment, $args = array() ) {
 	$attr = foogallery_build_attachment_html_anchor_attributes( $foogallery_attachment, $args );
 
-    $html = '<a';
-    foreach ( $attr as $name => $value ) {
-		$name = str_replace(' ', '', $name); //ensure we have no spaces!
-        $html .= " $name=" . '"' . foogallery_esc_attr($value) . '"';
-    }
-    $html .= '>';
+	$html = foogallery_html_opening_tag( 'a', $attr );
 
     return apply_filters( 'foogallery_attachment_html_anchor_opening', $html, $args, $foogallery_attachment );
 }
@@ -592,4 +582,23 @@ function foogallery_render_script_block_for_json_items( $gallery, $attachments )
 		echo '  ];';
 		echo '</script>';
 	}
+}
+
+/**
+ * Generates the HTML for a tag
+ *
+ * @param $tag
+ * @param $attributes
+ *
+ * @return string
+ */
+function foogallery_html_opening_tag( $tag, $attributes ) {
+	$html = '<' . $tag;
+	foreach ( $attributes as $name => $value ) {
+		if ( empty( $name ) || empty( $value ) ) continue;
+		$name = str_replace(' ', '', $name); //ensure we have no spaces!
+		$html .= " $name=" . '"' . foogallery_esc_attr($value) . '"';
+	}
+	$html .= '>';
+	return $html;
 }

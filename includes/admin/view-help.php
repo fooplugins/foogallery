@@ -2,12 +2,13 @@
 $instance = FooGallery_Plugin::get_instance();
 $info = $instance->get_plugin_info();
 
-$logo = FOOGALLERY_URL . 'assets/logo.png';
+$logo = FOOGALLERY_URL . 'assets/logo.png?v=2';
 
 $plugin_name = foogallery_plugin_name();
 $fooplugins_url = foogallery_admin_url( 'https://fooplugins.com/', 'help' );
 $plugin_url = foogallery_admin_url( 'https://fooplugins.com/foogallery/', 'help' );
 $support_url = foogallery_admin_url( 'https://fooplugins.link/support/', 'help' );
+$plans_url = foogallery_admin_url( 'https://fooplugins.com/foogallery/pricing/#plans', 'help' );
 
 $fooplugins_link = sprintf( '<a href="%s" target="_blank">%s</a>', $fooplugins_url, __( 'FooPlugins', 'foogallery' ) );
 $support_link = sprintf( '<a href="%s" target="_blank">%s</a>', $support_url, __( 'open a support ticket', 'foogallery' ) );
@@ -25,6 +26,7 @@ $logo = apply_filters( 'foogallery_admin_help_logo_url', $logo );
 $demos_created = foogallery_get_setting( 'demo_content' ) === 'on';
 
 $fs_instance = foogallery_fs();
+$foogallery_current_plan = $fs_instance->get_plan_name();
 $is_free = $fs_instance->is_free_plan();
 $is_trial = $fs_instance->is_trial();
 $show_trial_message = !$is_trial && $is_free && !$fs_instance->is_trial_utilized();
@@ -143,13 +145,11 @@ $show_demos = apply_filters( 'foogallery_admin_help_show_demos', true );
 <div class="foogallery-admin-help">
 	<div class="foogallery-admin-help-header">
 		<div class="foogallery-admin-help-ribbon"><span><?php echo FOOGALLERY_VERSION; ?></span></div>
-		<img src="<?php echo $logo; ?>" width="200" height="200">
-		<p class="foogallery-admin-help-tagline"><?php echo $tagline; ?></p>
-		<p class="foogallery-admin-help-tagline"><?php echo $link; ?></p>
+		<img src="<?php echo $logo; ?>" width="200">
 	</div>
 	<nav>
 		<a class="foogallery-admin-help-tab-active" href="#help">
-			<?php _e( 'Getting Started', 'foogallery' ); ?>
+			<?php _e( 'Welcome', 'foogallery' ); ?>
 		</a>
 		<a href="#pro">
 			<?php _e( $upgrade_tab_text, 'foogallery' ); ?>
@@ -179,14 +179,18 @@ $show_demos = apply_filters( 'foogallery_admin_help_show_demos', true );
                         <a href="<? echo esc_url( foogallery_admin_url( 'https://fooplugins.com/documentation/foogallery/', 'help') ); ?>" target="_blank"><?php _e('FooGallery Documentation','foogallery'); ?></a>
                         - <?php _e('Our documentation covers everything you need to know, from install instructions and account management, to troubleshooting common issues and extending the functionality.', 'foogallery'); ?>
                     </li>
+	                <?php if ( $is_free ) { ?>
                     <li>
                         <a href="https://wordpress.org/support/plugin/foogallery/" target="_blank"><?php _e('FooGallery WordPress.org Support','foogallery'); ?></a>
                         - <?php _e('We actively monitor and answer all questions posted on WordPress.org for FooGallery.', 'foogallery'); ?>
                     </li>
+	                <?php } else { ?>
+		                <li>
+			                <a href="<?php echo esc_url( $support_url ); ?>" target="_blank"><?php _e('Premium Support','foogallery'); ?></a>
+			                - <?php _e('Open a support ticket and our dedicated support team will assist. This is the fasted way to get help!', 'foogallery'); ?>
+		                </li>
+	                <?php } ?>
                 </ul>
-                <footer>
-                    <?php echo $support_text; ?>
-                </footer>
             </section>
 		</div>
 	</div>
