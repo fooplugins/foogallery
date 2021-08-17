@@ -245,20 +245,24 @@ Please update in order to for FooGallery to work in WP 5.5+!
 
 == Changelog ==
 
-= 2.1.6 =
-* Date Updated : 2021-07-28
+= 2.1.12 =
+* Date Updated : 2021-08-15
+* Update : FooGallery client side 2.0.19
+* Update : Updated FooGallery Help page in admin to match new branding
+* Update : Updated internal promotions to match plans
+* Fix : fixed bug in WP 5.8 when not all attachments showing in media modal
+* Fix : Added a custom CSS to 3 gallery templates, to avoid incorrect thumb widths with certain themes and SVG thumbnails.
+* Fix : Added logic to generate unique ID's for the gallery container if the gallery is included more than once on a page.
+* New : Added custom pagination theme
 [//]: # fs_premium_only_begin
 * New : [Commerce Plan] Introduced new Ecommerce features
 * New : [Commerce Plan] Deep integration with WooCommerce
 * New : [Commerce Plan] Gallery item ribbons
 * New : [Commerce Plan] Gallery item buttons
 * New : [Commerce Plan] Product Gallery template
+* New : [Commerce Plan] Master Product feature
+* New : [Expert Plan] Added Bulk Taxonomy Manager to galleries using tag/category datasource
 [//]: # fs_premium_only_end
-
-= 2.0.40 =
-* Date Updated : 2021-07-20
-* Fix : Added a custom CSS to 3 gallery templates, to avoid incorrect thumb widths with certain themes and SVG thumbnails.
-* Fix : Added logic to generate unique ID's for the gallery container if the gallery is included more than once on a page.
 
 = 2.0.39 =
 * Date Updated : 2021-06-12
