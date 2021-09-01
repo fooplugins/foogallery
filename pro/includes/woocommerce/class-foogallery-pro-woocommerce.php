@@ -152,8 +152,9 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 
 				$product_id = sanitize_text_field( wp_unslash( $request['product_id'] ) );
 				$gallery_id = foogallery_extract_gallery_id( sanitize_text_field( wp_unslash( $request['gallery_id'] ) ) );
+				$attachment_id = intval( sanitize_text_field( wp_unslash( $_REQUEST['attachment_id'] ) ) );
 
-				$info = $this->build_product_info( $product_id, $gallery_id );
+				$info = $this->build_product_info( $product_id, $gallery_id, $attachment_id );
 
 				wp_send_json( $info );
 			} else {
@@ -173,10 +174,11 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 		 *
 		 * @param $product_id
 		 * @param $gallery_id
+		 * @param $attachment_id
 		 *
 		 * @return array
 		 */
-		public function build_product_info( $product_id, $gallery_id ) {
+		public function build_product_info( $product_id, $gallery_id, $attachment_id ) {
 			$product = wc_get_product( $product_id );
 
 			$gallery = FooGallery::get_by_id( $gallery_id );
@@ -210,6 +212,8 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 				}
 
 				$response['body'] = $html;
+
+				$response = apply_filters( 'foogallery_ecommerce_build_product_info_response', $response, $product, $gallery, $attachment_id );
 			}
 
 			return $response;
