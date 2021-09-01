@@ -2590,6 +2590,7 @@
 }
 .fg-simple_portfolio .fg-caption-title {
     white-space: normal;
+    height: auto;
 }
 
 .fg-simple_portfolio.fg-light .fg-caption,
