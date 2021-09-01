@@ -43,6 +43,11 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce_Master_Product' ) ) {
 			// Override the order item permalink.
 			add_filter( 'woocommerce_order_item_permalink', array( $this, 'adjust_order_item_permalink' ), 10, 3 );
 
+			// Ensure we use the correct data attributes when rendering the gallery
+			add_filter( 'foogallery_attachment_html_link_attributes', array( $this, 'adjust_attachment_link_data_attributes' ), 10, 3 );
+
+			add_filter( 'foogallery_ecommerce_build_product_info_response', array( $this, 'adjust_product_info_response' ), 10, 4 );
+
 			if ( is_admin() ) {
 				// Add extra fields to the templates.
 				add_filter( 'foogallery_override_gallery_template_fields', array( $this, 'add_more_ecommerce_fields' ), 40, 2 );
@@ -55,6 +60,46 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce_Master_Product' ) ) {
 
 				add_filter( 'woocommerce_order_item_display_meta_value', array( $this, 'adjust_order_item_display_meta_value' ), 10, 3 );
 			}
+		}
+
+		/**
+		 * Adjust the product info title to return the correct name if a master product is used.
+		 *
+		 * @param $response
+		 * @param $product
+		 * @param $gallery FooGallery
+		 * @param $attachment_id
+		 *
+		 * @return mixed
+		 */
+		public function adjust_product_info_response( $response, $product, $gallery, $attachment_id ) {
+			$master_product_id = intval( $gallery->get_setting( 'ecommerce_master_product_id', '0' ) );
+			if ( $master_product_id > 0 ) {
+				$response['title'] = $this->get_product_name( $response['title'], $gallery->ID, $attachment_id );
+			}
+			return $response;
+		}
+
+		/**
+		 * Adjusts the data attributes for an anchor to work with master products
+		 *
+		 * @param $attr
+		 * @param $args
+		 * @param $foogallery_attachment
+		 *
+		 * @return mixed
+		 */
+		public function adjust_attachment_link_data_attributes( $attr, $args, $foogallery_attachment ) {
+			$product_id = $this->get_master_product_id_from_current_gallery();
+			if ( $product_id > 0 ) {
+				// The data-attachment-id attribute does not work with master products, so we need to make sure it is data-id
+				if ( array_key_exists( 'data-attachment-id', $attr ) ) {
+					unset( $attr[ 'data-attachment-id' ] );
+					$attr[ 'data-id' ] = $foogallery_attachment->ID;
+				}
+			}
+
+			return $attr;
 		}
 
 		/**
@@ -305,14 +350,29 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce_Master_Product' ) ) {
 			if ( isset( $foogallery_attachment->product ) ) {
 				return;
 			}
-			if ( 'transfer' === foogallery_gallery_template_setting( 'ecommerce_transfer_mode' ) ) {
-				$product_id = intval( foogallery_gallery_template_setting( 'ecommerce_master_product_id', '0' ) );
-				if ( $product_id > 0 ) {
-					$foogallery_attachment->product = wc_get_product( $product_id );
+			$product_id = $this->get_master_product_id_from_current_gallery();
+			if ( $product_id > 0 ) {
+				$foogallery_attachment->product = wc_get_product( $product_id );
 
-					FooGallery_Pro_Woocommerce::determine_extra_data_for_product( $foogallery_attachment, $foogallery_attachment->product );
-				}
+				FooGallery_Pro_Woocommerce::determine_extra_data_for_product( $foogallery_attachment, $foogallery_attachment->product );
 			}
+		}
+
+		/**
+		 * Helper function to return the master product ID for the current gallery
+		 *
+		 * @return int
+		 */
+		private function get_master_product_id_from_current_gallery() {
+			if ( ! foogallery_current_gallery_has_cached_value( 'ecommerce_master_product_id' ) ) {
+				$master_product_id = 0;
+				if ( 'transfer' === foogallery_gallery_template_setting( 'ecommerce_transfer_mode' ) ) {
+					$master_product_id = intval( foogallery_gallery_template_setting( 'ecommerce_master_product_id', '0' ) );
+				}
+				foogallery_current_gallery_set_cached_value( 'ecommerce_master_product_id', $master_product_id );
+			}
+
+			return intval( foogallery_current_gallery_get_cached_value( 'ecommerce_master_product_id' ) );
 		}
 
 		/**
@@ -454,22 +514,18 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce_Master_Product' ) ) {
 			if ( $foogallery_id > 0 ) {
 				$foogallery = FooGallery::get_by_id( $foogallery_id );
 
-				// Check if we must transfer attachment data.
-				if ( 'transfer' === $foogallery->get_setting( 'ecommerce_transfer_mode', '' ) ) {
+				// Check if we have a master product.
+				$product_id = $this->get_master_product_id_from_current_gallery();
+				if ( $product_id > 0 ) {
+					$cart_item_data['foogallery_id'] = $foogallery_id;
 
-					// Check if we have a master product.
-					$product_id = intval( $foogallery->get_setting( 'ecommerce_master_product_id', '0' ) );
-					if ( $product_id > 0 ) {
-						$cart_item_data['foogallery_id'] = $foogallery_id;
+					$attachment_id = intval( sanitize_text_field( wp_unslash( $_REQUEST['foogallery_attachment_id'] ) ) );
+					if ( $attachment_id > 0 ) {
+						$cart_item_data['foogallery_attachment_id'] = $attachment_id;
+					}
 
-						$attachment_id = intval( sanitize_text_field( wp_unslash( $_REQUEST['foogallery_attachment_id'] ) ) );
-						if ( $attachment_id > 0 ) {
-							$cart_item_data['foogallery_attachment_id'] = $attachment_id;
-						}
-
-						if ( 'add' === $foogallery->get_setting( 'ecommerce_transfer_add_variable_attributes', '' ) ) {
-							$cart_item_data['foogallery_add_attributes'] = true;
-						}
+					if ( 'add' === $foogallery->get_setting( 'ecommerce_transfer_add_variable_attributes', '' ) ) {
+						$cart_item_data['foogallery_add_attributes'] = true;
 					}
 				}
 			}
