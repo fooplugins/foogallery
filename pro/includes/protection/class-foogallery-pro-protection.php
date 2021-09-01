@@ -254,12 +254,17 @@ if ( ! class_exists( 'FooGallery_Pro_Protection' ) ) {
 				$image_count            = $summary_watermark_data['images'];
 				$watermark_count        = $summary_watermark_data['watermarks'];
 				$outdated_count         = $summary_watermark_data['outdated'];
+				$error_count            = $summary_watermark_data['errors'];
 				if ( 0 === $image_count ) {
 					echo esc_html( __( 'No images found! You may need to save your gallery, if you have added images.', 'foogallery' ) );
 				} else {
 					echo esc_html( sprintf( __( '%1$d / %2$d watermarked images have been generated.', 'foogallery' ), $watermark_count, $image_count ) );
-					if ( $summary_watermark_data['outdated'] > 0 ) {
+					if ( $outdated_count > 0 ) {
 						echo ' ' . esc_html( sprintf( __( '%d are outdated and need to be re-generated!', 'foogallery' ), $outdated_count ) );
+					}
+					if ( $error_count > 0 ) {
+						echo '<br /><br />';
+						echo esc_html( sprintf( __( '%d had errors and could not be generated!', 'foogallery' ), $error_count ) );
 					}
 					echo '<br /><br />';
 					echo '<button type="button" class="button button-primary button-large protection_generate">';
@@ -345,7 +350,7 @@ if ( ! class_exists( 'FooGallery_Pro_Protection' ) ) {
 								'has_watermark' => false,
 							);
 						}
-						if ( $attachment_watermark['has_watermark'] ) {
+						if ( isset( $attachment_watermark['has_watermark'] ) && $attachment_watermark['has_watermark'] ) {
 							$watermark_image_count++;
 							$attachment_watermark['outdated'] = $attachment_watermark['checksum'] !== $watermark_checksum;
 
@@ -409,8 +414,14 @@ if ( ! class_exists( 'FooGallery_Pro_Protection' ) ) {
 			$watermark_path = $generator->get_cache_file_path();
 			$watermark_url  = $generator->get_cache_file_url();
 
+			$attachment_path = get_attached_file( $attachment->ID );
+			if ( $attachment_path === false ) {
+				// Fallback to URL, if the path cannot be determined.
+				$attachment_path = $attachment->url;
+			}
+
 			// Create the image.
-			$editor = wp_get_image_editor( $attachment->url, array( 'methods' => array( 'get_image' ) ) );
+			$editor = wp_get_image_editor( $attachment_path, array( 'methods' => array( 'get_image' ) ) );
 
 			if ( ! is_wp_error( $editor ) ) {
 				$watermark = new FooGallery_Watermark( $editor );
