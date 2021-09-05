@@ -515,8 +515,8 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce_Master_Product' ) ) {
 				$foogallery = FooGallery::get_by_id( $foogallery_id );
 
 				// Check if we have a master product.
-				$product_id = $this->get_master_product_id_from_current_gallery();
-				if ( $product_id > 0 ) {
+				$master_product_id = intval( $foogallery->get_setting( 'ecommerce_master_product_id', '0' ) );
+				if ( $master_product_id > 0 ) {
 					$cart_item_data['foogallery_id'] = $foogallery_id;
 
 					$attachment_id = intval( sanitize_text_field( wp_unslash( $_REQUEST['foogallery_attachment_id'] ) ) );
