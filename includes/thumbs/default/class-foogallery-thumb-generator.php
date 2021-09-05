@@ -88,15 +88,17 @@ if ( ! class_exists( 'FooGallery_Thumb_Generator' ) ) {
 		}
 
 		/**
-		 * Set the correct file path of the original image from the image URL
+		 * Returns the path of an image URL
 		 *
-		 * @param string $image_url
+		 * @param $image_url
+		 *
+		 * @return string|false
 		 */
-		public function set_file_path( $image_url ) {
+		public static function get_file_path( $image_url ) {
 
 			//check if the $file_path is already a path within the site
 			if ( strpos( $image_url, self::get_home_path() ) === 0 ) {
-				$image_path = $image_url;
+				return $image_url;
 			} else {
 				//we are dealing with a URL
 
@@ -118,14 +120,27 @@ if ( ! class_exists( 'FooGallery_Thumb_Generator' ) ) {
 					$image_path = strtok( $image_path, '?' );
 
 					//check it exists
-					if ( ! file_exists( $image_path ) ) {
-						$this->error = new WP_Error( 'file-not-found' );
-						return;
+					if ( !file_exists( $image_path ) ) {
+						return false;
 					}
 				}
 			}
 
-			$this->file_path = $image_path;
+			return $image_path;
+		}
+
+		/**
+		 * Set the correct file path of the original image from the image URL
+		 *
+		 * @param string $image_url
+		 */
+		public function set_file_path( $image_url ) {
+			$file_path = self::get_file_path( $image_url );
+			if ( false === $file_path ) {
+				$this->error = new WP_Error( 'file-not-found' );
+			} else {
+				$this->file_path = $file_path;
+			}
 		}
 
 		/**

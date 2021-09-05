@@ -414,7 +414,7 @@ if ( ! class_exists( 'FooGallery_Pro_Protection' ) ) {
 			$watermark_path = $generator->get_cache_file_path();
 			$watermark_url  = $generator->get_cache_file_url();
 
-			$attachment_path = get_attached_file( $attachment->ID );
+			$attachment_path = foogallery_local_url_to_path( $attachment->url );
 			if ( $attachment_path === false ) {
 				// Fallback to URL, if the path cannot be determined.
 				$attachment_path = $attachment->url;
@@ -425,7 +425,8 @@ if ( ! class_exists( 'FooGallery_Pro_Protection' ) ) {
 
 			if ( ! is_wp_error( $editor ) ) {
 				$watermark = new FooGallery_Watermark( $editor );
-				$watermark->apply_watermark_image( $watermark_options['image'], $watermark_options );
+				$watermark_image_path = foogallery_local_url_to_path( $watermark_options['image'] );
+				$watermark->apply_watermark_image( $watermark_image_path, $watermark_options );
 
 				// Save the watermarked image to disk.
 				$result = $editor->save( $watermark_path );
@@ -841,7 +842,7 @@ if ( ! class_exists( 'FooGallery_Pro_Protection' ) ) {
 
 			$test_image_url = FooGallery_Thumbnails::find_first_image_in_media_library();
 
-			$file_path = $test_image_url;
+			$file_path = foogallery_local_url_to_path( $test_image_url );
 
 			// Create the image.
 			$editor = wp_get_image_editor( $file_path, array( 'methods' => array( 'get_image' ) ) );
@@ -854,7 +855,7 @@ if ( ! class_exists( 'FooGallery_Pro_Protection' ) ) {
 			$watermark_options = FooGallery_Pro_Protection::get_watermark_options();
 
 			$watermark = new FooGallery_Watermark( $editor );
-			$watermark->apply_watermark_image( $watermark_options['image'], $watermark_options );
+			$watermark->apply_watermark_image( foogallery_local_url_to_path( $watermark_options['image'] ), $watermark_options );
 
 			echo '<h2>' . esc_html( __( 'Watermarked Image', 'foogallery' ) ) . '</h2>';
 

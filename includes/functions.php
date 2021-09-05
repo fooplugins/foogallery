@@ -2040,3 +2040,14 @@ function foogallery_admin_fields_find_index_of_field( $fields, $field_id ) {
 	}
 	return $index;
 }
+
+/**
+ * Returns the path of the URL
+ *
+ * @param $url
+ *
+ * @return false|string
+ */
+function foogallery_local_url_to_path( $url ) {
+	return FooGallery_Thumb_Generator::get_file_path( $url );
+}
