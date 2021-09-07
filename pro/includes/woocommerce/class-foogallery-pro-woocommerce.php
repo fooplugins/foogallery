@@ -63,6 +63,29 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 
 			// Build up captions based on product data.
 			add_filter( 'foogallery_build_custom_caption_placeholder_replacement', array( $this, 'build_product_captions' ), 10, 3 );
+
+			// Add button data to the json output
+			add_filter( 'foogallery_build_attachment_json', array( $this, 'add_button_to_json' ), 40, 6 );
+		}
+
+		/**
+		 * Add the productId to the json object.
+		 *
+		 * @param StdClass $json_object
+		 * @param FooGalleryAttachment $foogallery_attachment
+		 * @param array $args
+		 * @param array $anchor_attributes
+		 * @param array $image_attributes
+		 * @param array $captions
+		 *
+		 * @return mixed
+		 */
+		public function add_button_to_json(  $json_object, $foogallery_attachment, $args, $anchor_attributes, $image_attributes, $captions ) {
+			if ( isset( $foogallery_attachment->product ) ) {
+				$json_object->productId = $foogallery_attachment->product->get_id();
+			}
+
+			return $json_object;
 		}
 
 		/**
