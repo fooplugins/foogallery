@@ -26,7 +26,7 @@ if ( ! class_exists( 'FooGallery_Pro_Promotion' ) ) {
 			'foobox-pro'                   => 'https://fooplugins.com/foobox/',
 			'foogallery-datasources'       => 'https://fooplugins.com/load-galleries-from-other-sources/',
 			'foogallery-commerce'          => 'https://fooplugins.com/foogallery/woocommerce-integration/',
-			'foogallery-product-gallery'   => 'https://fooplugins.com/foogallery/woocommerce-product-gallery/',
+			'foogallery-product-gallery'   => 'https://fooplugins.com/foogallery/woocommerce-integration/#product-gallery',
 			'foogallery-protection'        => 'https://fooplugins.com/foogallery/photo-watermark/',
 		);
 
