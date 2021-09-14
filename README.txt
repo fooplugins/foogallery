@@ -245,8 +245,8 @@ Please update in order to for FooGallery to work in WP 5.5+!
 
 == Changelog ==
 
-= 2.1.14 =
-* Date Updated : 2021-08-31
+= 2.1.18 =
+* Date Updated : 2021-09-01
 * Update : FooGallery client side 2.0.20
 * Update : Updated FooGallery Help page in admin to match new branding
 * Update : Updated internal promotions to match plans
@@ -262,6 +262,8 @@ Please update in order to for FooGallery to work in WP 5.5+!
 * New : [Commerce Plan] Product Gallery template
 * New : [Commerce Plan] Master Product feature
 * New : [Expert Plan] Added Bulk Taxonomy Manager to galleries using tag/category datasource
+* Fix : [Commerce Plan] Fixed watermarks not generating on some installs.
+* Fix : [Expert Plan] Using attachments with the post query datasource now works.
 [//]: # fs_premium_only_end
 
 = 2.0.39 =
