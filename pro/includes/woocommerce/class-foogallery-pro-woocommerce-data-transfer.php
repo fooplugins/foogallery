@@ -46,6 +46,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce_Master_Product' ) ) {
 			// Ensure we use the correct data attributes when rendering the gallery
 			add_filter( 'foogallery_attachment_html_link_attributes', array( $this, 'adjust_attachment_link_data_attributes' ), 10, 3 );
 
+			// Override the product info response.
 			add_filter( 'foogallery_ecommerce_build_product_info_response', array( $this, 'adjust_product_info_response' ), 10, 4 );
 
 			if ( is_admin() ) {
@@ -251,7 +252,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce_Master_Product' ) ) {
 				$new_fields[] = array(
 					'id'      => 'ecommerce_master_product_info',
 					'title'   => __( 'Master Product Info', 'foogallery' ),
-					'desc'    => __( 'You can set a master product for the whole gallery, which will link that product to every item. You can still manually link items to individual products. All items that are not linked to a product will be linked to the master product.', 'foogallery' ),
+					'desc'    => __( 'You can set a master product for the whole gallery, which will link that product to every item. You can still manually link items to individual products. All items that are not linked to a product will be linked to the master product. PLEASE NOTE : the master product needs to published and NOT private, in order to work correctly.', 'foogallery' ),
 					'section' => __( 'Ecommerce', 'foogallery' ),
 					'subsection' => array( 'ecommerce-master-product' => __( 'Advanced', 'foogallery' ) ),
 					'type'    => 'help',
