@@ -1,4 +1,14 @@
 <div id="help_section" class="foogallery-admin-help-section">
+	<section class="fgah-feature">
+		<header>
+			<h3><?php _e( 'Thank you for choosing FooGallery!', 'foogallery' );?></h3>
+			<p><?php _e( 'Better galleries for WordPress, that are faster, more flexible and beautiful!', 'foogallery' ); ?></p>
+		</header>
+		<footer>
+			<a class="foogallery-admin-help-button-cta" target="_blank" href="<?php echo esc_url ( $plugin_url ); ?>"><?php echo sprintf( __( 'Visit the %s Homepage', 'foogallery' ), $plugin_name ); ?></a>
+		</footer>
+	</section>
+
     <section class="fgah-feature foogallery-admin-help-create-demos">
         <header class="fgah-create-demos">
             <h3><?php _e( 'Demo Galleries', 'foogallery' );?></h3>
@@ -27,7 +37,7 @@
 
 	<section class="fgah-feature">
         <header>
-            <h3><?php _e( 'Create a Gallery', 'foogallery' );?></h3>
+            <h3><?php _e( 'Create Your First Gallery', 'foogallery' );?></h3>
             <p><?php _e( 'It couldn\'t be any easier:', 'foogallery' ); ?></p>
         </header>
         <div>

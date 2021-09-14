@@ -3,8 +3,8 @@ Contributors: bradvin, steveush, fooplugins
 Donate link: https://fooplugins.com
 Tags: gallery, image gallery, photo gallery, responsive gallery, wordpress gallery plugin, best gallery plugin, albums, media gallery, video gallery, lightbox
 Requires at least: 4.6
-Tested up to: 5.7
-Stable tag: 2.0.35
+Tested up to: 5.8
+Stable tag: 2.0.39
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -244,6 +244,27 @@ We did the research and comparison. See our findings : [What is the Best WordPre
 Please update in order to for FooGallery to work in WP 5.5+!
 
 == Changelog ==
+
+= 2.1.18 =
+* Date Updated : 2021-09-01
+* Update : FooGallery client side 2.0.20
+* Update : Updated FooGallery Help page in admin to match new branding
+* Update : Updated internal promotions to match plans
+* Fix : fixed bug in WP 5.8 when not all attachments showing in media modal
+* Fix : Added custom CSS for 3 gallery templates, to avoid incorrect thumb widths with certain themes and SVG thumbnails.
+* Fix : Added logic to generate unique ID's for the gallery container if the gallery is included more than once on a page.
+* New : Added custom pagination theme
+[//]: # fs_premium_only_begin
+* New : [Commerce Plan] Introduced new Ecommerce features
+* New : [Commerce Plan] Deep integration with WooCommerce
+* New : [Commerce Plan] Gallery item ribbons
+* New : [Commerce Plan] Gallery item buttons
+* New : [Commerce Plan] Product Gallery template
+* New : [Commerce Plan] Master Product feature
+* New : [Expert Plan] Added Bulk Taxonomy Manager to galleries using tag/category datasource
+* Fix : [Commerce Plan] Fixed watermarks not generating on some installs.
+* Fix : [Expert Plan] Using attachments with the post query datasource now works.
+[//]: # fs_premium_only_end
 
 = 2.0.39 =
 * Date Updated : 2021-06-12

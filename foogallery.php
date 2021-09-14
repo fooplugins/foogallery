@@ -2,10 +2,10 @@
 /*
 Plugin Name: FooGallery
 Description: FooGallery is the most intuitive and extensible gallery management tool ever created for WordPress
-Version:     2.0.39
+Version:     2.1.18
 Author:      FooPlugins
-Plugin URI:  http://fooplugins.com/foogallery/
-Author URI:  http://fooplugins.com
+Plugin URI:  https://fooplugins.com/foogallery/
+Author URI:  https://fooplugins.com
 Text Domain: foogallery
 License:     GPL-2.0+
 Domain Path: /languages
@@ -28,7 +28,7 @@ if ( function_exists( 'foogallery_fs' ) ) {
 		define( 'FOOGALLERY_PATH', plugin_dir_path( __FILE__ ) );
 		define( 'FOOGALLERY_URL', plugin_dir_url( __FILE__ ) );
 		define( 'FOOGALLERY_FILE', __FILE__ );
-		define( 'FOOGALLERY_VERSION', '2.0.39' );
+		define( 'FOOGALLERY_VERSION', '2.1.18' );
 		define( 'FOOGALLERY_SETTINGS_VERSION', '2' );
 
 		require_once FOOGALLERY_PATH . 'includes/constants.php';
@@ -190,12 +190,6 @@ if ( function_exists( 'foogallery_fs' ) ) {
 
 				if ( ! $pro_code_included ) {
 					add_filter( 'foogallery_extensions_for_view', array( $this, 'add_foogallery_pro_extension' ) );
-
-					// only include if in admin.
-					if ( is_admin() ) {
-						// include PRO promotion.
-						new FooGallery_Pro_Promotion();
-					}
 				}
 
 				// init Gutenberg!
@@ -284,7 +278,7 @@ if ( function_exists( 'foogallery_fs' ) ) {
 			 * @return string
 			 */
 			public function freemius_plugin_icon( $icon ) {
-				return FOOGALLERY_PATH . 'assets/foogallery.png';
+				return FOOGALLERY_PATH . 'assets/foogallery.jpg';
 			}
 
 			/**

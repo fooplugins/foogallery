@@ -39,3 +39,7 @@ define( 'FOOGALLERY_ADMIN_MENU_PRICING_SLUG', 'foogallery-pricing' );
 
 define( 'FOOGALLERY_ATTACHMENT_TAXONOMY_TAG', 'foogallery_attachment_tag' );
 define( 'FOOGALLERY_ATTACHMENT_TAXONOMY_CATEGORY', 'foogallery_attachment_category' );
+
+define( 'FOOGALLERY_PRO_PLAN_STARTER', 'prostarter' );
+define( 'FOOGALLERY_PRO_PLAN_EXPERT', 'pro' );
+define( 'FOOGALLERY_PRO_PLAN_COMMERCE', 'commerce' );

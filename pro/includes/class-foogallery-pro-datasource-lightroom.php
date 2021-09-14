@@ -9,6 +9,7 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Lightroom' ) ) {
     	public function __construct() {
 			add_action( 'foogallery_gallery_datasources', array($this, 'add_datasource'), 6 );
 			add_filter( 'foogallery_datasource_lightroom_item_count', array( $this, 'get_gallery_attachment_count' ), 10, 2 );
+		    add_filter( 'foogallery_datasource_lightroom_attachment_ids', array( $this, 'get_gallery_attachment_ids' ), 10, 2 );
 			add_filter( 'foogallery_datasource_lightroom_featured_image', array( $this, 'get_gallery_featured_attachment' ), 10, 2 );
 			add_filter( 'foogallery_datasource_lightroom_attachments', array( $this, 'get_gallery_attachments' ), 10, 2 );
 
@@ -139,6 +140,23 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Lightroom' ) ) {
 
 			return false;
 		}
+
+	    /**
+	     * Returns an array of the attachment ID's for the gallery
+	     *
+	     * @param $attachment_ids
+	     * @param $foogallery
+	     *
+	     * @return array
+	     */
+	    public function get_gallery_attachment_ids( $attachment_ids, $foogallery ) {
+		    $attachment_ids = array();
+		    $attachments = $this->get_gallery_attachments_from_lightroom( $foogallery );
+		    foreach ( $attachments as $attachment ) {
+			    $attachment_ids[] = $attachment->ID;
+		    }
+		    return $attachment_ids;
+	    }
 
 		/**
 		 * Output the datasource modal content

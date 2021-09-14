@@ -150,7 +150,7 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 		 */
 		function add_filtering_fields( $fields, $template ) {
 			if ( $template && array_key_exists( 'filtering_support', $template ) && true === $template['filtering_support'] ) {
-				$fields[] = array(
+				$filtering_fields[] = array(
 					'id'       => 'filtering_type',
 					'title'    => __( 'Filtering', 'foogallery' ),
 					'section'  => __( 'Filtering', 'foogallery' ),
@@ -171,7 +171,7 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 					)
 				);
 
-				$fields[] = array(
+				$filtering_fields[] = array(
 					'id'      => 'filtering_theme',
 					'title'   => __( 'Theme', 'foogallery' ),
 					'desc'    => __( 'The theme used for filtering.', 'foogallery' ),
@@ -200,7 +200,7 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 					$taxonomy_choices[$taxonomy_object->name] = $taxonomy_object->label;
 				}
 
-				$fields[] = array(
+				$filtering_fields[] = array(
 					'id'       => 'filtering_taxonomy',
 					'title'    => __( 'Filtering Source', 'foogallery' ),
 					'desc'     => __( 'What will be used as the source for your gallery filters. All attachment taxonomies will be listed.', 'foogallery' ),
@@ -219,7 +219,7 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 					)
 				);
 
-				$fields[] = array(
+				$filtering_fields[] = array(
 					'id'       => 'filtering_position',
 					'title'    => __( 'Position', 'foogallery' ),
 					'desc'     => __( 'The position of the filters relative to the gallery.', 'foogallery' ),
@@ -242,7 +242,7 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 					)
 				);
 
-				$fields[] = array(
+				$filtering_fields[] = array(
 					'id'      => 'filtering_mode_help',
 					'title'   => __( 'Selection Mode Help', 'foogallery' ),
 					'desc'    => __( 'The default selection mode is Single, which allows you to choose a single filter at a time. You can also choose to filter by more than 1 filter by selecting Multiple. Multiple supports either a union (OR) or an intersect (AND) mode.', 'foogallery' ),
@@ -256,7 +256,7 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 					)
 				);
 
-				$fields[] = array(
+				$filtering_fields[] = array(
 					'id'       => 'filtering_mode',
 					'title'    => __( 'Selection Mode', 'foogallery' ),
 					'desc'     => __( 'The selection mode to use when filtering.', 'foogallery' ),
@@ -281,7 +281,7 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 					)
 				);
 
-				$fields[] = array(
+				$filtering_fields[] = array(
 					'id'       => 'filtering_multi_override',
 					'title'    => __( 'Levels', 'foogallery' ),
 					'desc'     => __( 'The filtering levels that will be used for the gallery.', 'foogallery' ),
@@ -298,7 +298,7 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 					)
 				);
 
-				$fields[] = array(
+				$filtering_fields[] = array(
 					'id'       => 'filtering_min',
 					'title'    => __( 'Minimum', 'foogallery' ),
 					'desc'     => __( 'The minimum count before a filter is shown, 0 = disabled and all are shown.', 'foogallery' ),
@@ -318,7 +318,7 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 					)
 				);
 
-				$fields[] = array(
+				$filtering_fields[] = array(
 					'id'       => 'filtering_limit',
 					'title'    => __( 'Limit', 'foogallery' ),
 					'desc'     => __( 'The maximum number of filters to show, 0 = disabled and all are shown.', 'foogallery' ),
@@ -338,7 +338,7 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 					)
 				);
 
-				$fields[] = array(
+				$filtering_fields[] = array(
 					'id'       => 'filtering_show_count',
 					'title'    => __( 'Show Count', 'foogallery' ),
 					'desc'     => __( 'Whether or not to show the counts within each filter.', 'foogallery' ),
@@ -362,7 +362,7 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 					)
 				);
 
-				$fields[] = array(
+				$filtering_fields[] = array(
 					'id'       => 'filtering_adjust_size',
 					'title'    => __( 'Adjust Size', 'foogallery' ),
 					'desc'     => __( 'Whether or not to adjust the size of each filter depending on the count.', 'foogallery' ),
@@ -387,7 +387,7 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 					)
 				);
 
-				$fields[] = array(
+				$filtering_fields[] = array(
 					'id'       => 'filtering_adjust_size_smallest',
 					'title'    => __( 'Smallest Size', 'foogallery' ),
 					'desc'     => __( 'The smallest possible font size to use, when Adjust Size is used.', 'foogallery' ),
@@ -407,7 +407,7 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 					)
 				);
 
-				$fields[] = array(
+				$filtering_fields[] = array(
 					'id'       => 'filtering_adjust_size_largest',
 					'title'    => __( 'Largest Size', 'foogallery' ),
 					'desc'     => __( 'The largest possible font size to use, when Adjust Size is used.', 'foogallery' ),
@@ -427,7 +427,7 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 					)
 				);
 
-				$fields[] = array(
+				$filtering_fields[] = array(
 					'id'       => 'filtering_adjust_opacity',
 					'title'    => __( 'Adjust Opacity', 'foogallery' ),
 					'desc'     => __( 'Whether or not to adjust the opacity of each filter depending on the count.', 'foogallery' ),
@@ -452,7 +452,7 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 					)
 				);
 
-				$fields[] = array(
+				$filtering_fields[] = array(
 					'id'       => 'filtering_adjust_opacity_lightest',
 					'title'    => __( 'Lightest Opacity', 'foogallery' ),
 					'desc'     => __( 'The lightest or most transparent opacity to use, when Adjust Opacity is used.', 'foogallery' ),
@@ -472,7 +472,7 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 					)
 				);
 
-				$fields[] = array(
+				$filtering_fields[] = array(
 					'id'       => 'filtering_adjust_opacity_darkest',
 					'title'    => __( 'Darkest Opacity', 'foogallery' ),
 					'desc'     => __( 'The darkest or most opaque opacity to use, when Adjust Opacity is used.', 'foogallery' ),
@@ -492,7 +492,7 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 					)
 				);
 
-				$fields[] = array(
+				$filtering_fields[] = array(
 					'id'       => 'filtering_sort',
 					'title'    => __( 'Sort Mode', 'foogallery' ),
 					'desc'     => __( 'How do you want to sort your filters? Default is by the filter name.', 'foogallery' ),
@@ -518,7 +518,7 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 					)
 				);
 
-				$fields[] = array(
+				$filtering_fields[] = array(
 					'id'       => 'filtering_override',
 					'title'    => __( 'Override', 'foogallery' ),
 					'desc'     => __( 'You can override which filters are shown, by providing a comma-separated list. Leave blank for them to be auto-generated.', 'foogallery' ),
@@ -534,6 +534,11 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 						'data-foogallery-show-when-field-value'    => 'advanced',
 					)
 				);
+
+				//find the index of the Advanced section
+				$index = foogallery_admin_fields_find_index_of_section( $fields, __( 'Advanced', 'foogallery' ) );
+
+				array_splice( $fields, $index, 0, $filtering_fields );
 			}
 
 			return $fields;

@@ -31,7 +31,7 @@ if ( ! class_exists( 'FooGallery_Pro_Exif' ) ) {
 
             if ( is_admin() ) {
                 //add extra fields to the templates that support exif
-                add_filter( 'foogallery_override_gallery_template_fields', array( $this, 'add_exif_fields' ), 20, 2 );
+                add_filter( 'foogallery_override_gallery_template_fields', array( $this, 'add_exif_fields' ), 50, 2 );
 
                 //set the settings icon for Exif
                 add_filter( 'foogallery_gallery_settings_metabox_section_icon', array( $this, 'add_section_icons' ) );
@@ -343,25 +343,6 @@ if ( ! class_exists( 'FooGallery_Pro_Exif' ) ) {
         }
 
         /**
-         * Return the index of the requested section
-         *
-         * @param $fields
-         * @param $section
-         *
-         * @return int
-         */
-        private function find_index_of_section( $fields, $section ) {
-            $index = 0;
-            foreach ( $fields as $field ) {
-                if ( isset( $field['section'] ) && $section === $field['section'] ) {
-                    return $index;
-                }
-                $index++;
-            }
-            return $index;
-        }
-
-        /**
          * Add EXIF fields to the gallery template
          *
          * @param $fields
@@ -472,8 +453,8 @@ if ( ! class_exists( 'FooGallery_Pro_Exif' ) ) {
                 )
             );
 
-            //find the index of the first Hover Effect field
-            $index = $this->find_index_of_section( $fields, __( 'Advanced', 'foogallery' ) );
+            //find the index of the Advanced section
+            $index = foogallery_admin_fields_find_index_of_section( $fields, __( 'Advanced', 'foogallery' ) );
 
             array_splice( $fields, $index, 0, $exif_fields );
 
