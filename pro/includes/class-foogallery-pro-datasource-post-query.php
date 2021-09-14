@@ -152,12 +152,21 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Post_Query' ) ) {
 				)
 			), $foogallery->ID );
 
+			// Make some exceptions for attachments!
+			if ( 'attachment' === $postType ) {
+				unset( $query_args['meta_query'] );
+				$query_args['post_status'] = 'inherit';
+			}
+
 			$posts = get_posts( $query_args );
 
 			foreach ( $posts as $post ) {
 				$attachment = new FooGalleryAttachment();
 
 				$post_thumbnail_id = get_post_thumbnail_id( $post );
+				if ( 'attachment' === $postType ) {
+					$post_thumbnail_id = $post->ID;
+				}
 				$attachment->load_attachment_image_data( $post_thumbnail_id );
 
 				if ( $link_to == 'image' ) {
