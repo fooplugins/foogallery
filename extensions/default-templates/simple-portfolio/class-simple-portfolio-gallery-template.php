@@ -324,12 +324,26 @@ if ( !class_exists( 'FooGallery_Simple_Portfolio_Gallery_Template' ) ) {
 		}
 
 		/**
+		 * @param $gallery
+		 *
+		 * @return bool|mixed|void
+		 */
+		function is_simple_portfolio_gallery_template( $gallery ) {
+			if ( self::template_id === $gallery->gallery_template ) {
+				return true;
+			}
+
+			return apply_filters( 'foogallery_is_simple_portfolio_gallery_template', false, $gallery );
+		}
+
+		/**
 		 * Add a style block based on the field settings
 		 *
 		 * @param $gallery FooGallery
 		 */
 		function add_style_block( $gallery ) {
-			if ( self::template_id !== $gallery->gallery_template ) {
+			//check if the template is a "Simple Portfolio" clone
+			if ( !$this->is_simple_portfolio_gallery_template( $gallery ) ) {
 				return;
 			}
 
