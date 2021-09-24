@@ -392,8 +392,35 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 		 * Enqueue the WooCommerce scripts if add to cart ajax is enabled for one of the action buttons
 		 */
 		public function enqueue_wc_scripts() {
-			if ( 'fg-woo-add-to-cart-ajax' === foogallery_gallery_template_setting( 'ecommerce_action_button_1' ) ||
-			     'fg-woo-add-to-cart-ajax' === foogallery_gallery_template_setting( 'ecommerce_action_button_2' ) ) {
+			$enqueue = false;
+
+			// View Products Buttons
+			$ecommerce_button_view_product = foogallery_gallery_template_setting( 'ecommerce_button_view_product' );
+			$ecommerce_button_view_product_behaviour = foogallery_gallery_template_setting( 'ecommerce_button_view_product_behaviour' );
+
+			// Add To Cart Buttons
+			$ecommerce_button_add_to_cart = foogallery_gallery_template_setting( 'ecommerce_button_add_to_cart' );
+			$ecommerce_button_add_to_cart_behaviour = foogallery_gallery_template_setting( 'ecommerce_button_add_to_cart_behaviour' );
+
+			// Select Options Buttons
+			$ecommerce_button_variable = foogallery_gallery_template_setting( 'ecommerce_button_variable' );
+
+			// If the View Product button is visible and behaviour is to open lightbox.
+			if ( $ecommerce_button_view_product !== '' && $ecommerce_button_view_product_behaviour === '' ) {
+				$enqueue = true;
+			}
+
+			// If Add To Cart buttons is shown and behaviour is ajax add to cart.
+			if ( $ecommerce_button_add_to_cart === 'shown' && $ecommerce_button_add_to_cart_behaviour === 'fg-woo-add-to-cart-ajax' ) {
+				$enqueue = true;
+			}
+
+			// If Select Options button is shown.
+			if ( $ecommerce_button_variable === 'shown' ) {
+				$enqueue = true;
+			}
+
+			if ( $enqueue ) {
 				wp_enqueue_script( 'wc-add-to-cart' );
 			}
 		}
