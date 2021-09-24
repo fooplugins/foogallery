@@ -56,6 +56,7 @@ FooGallery.utils.ready(function ($) {
         //build up the datasource_value
         var value = {
             "no_of_post": $('#foogallery_woocommerce_no_of_post').val(),
+            "sort": $(".foogallery_woocommerce_sort:checked").val(),
             "exclude": $('#foogallery_woocommerce_exclude').val(),
             "caption_title_source": $(".foogallery_woocommerce_caption_title_source:checked").val(),
             "caption_desc_source": $(".foogallery_woocommerce_caption_desc_source:checked").val(),
@@ -66,6 +67,7 @@ FooGallery.utils.ready(function ($) {
         //save the datasource_value
         $('#_foogallery_datasource_value').val(JSON.stringify(value));
         $('#foogallery-datasource-woocommerce-categories').html( value.categories_html );
+        $('#foogallery-datasource-woocommerce-sort').html( value.sort );
         $('#foogallery-datasource-woocommerce-no_of_post').html( value.no_of_post );
         $('#foogallery-datasource-woocommerce-exclude').html( value.exclude );
         $('#foogallery-datasource-woocommerce-caption_title_source').html( value.caption_title_source );
