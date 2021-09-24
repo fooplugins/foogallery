@@ -1917,6 +1917,9 @@ function foogallery_import_attachment( $attachment_data ) {
 		$attachment_args['meta_input']['_foogallery_custom_target'] = $attachment_data['custom_target'];
 	}
 
+	// Save the original URL, so that we do not import it again!
+	$attachment_args['meta_input']['_foogallery_imported_from'] = $attachment_data['url'];
+
 	// Insert the attachment.
 	$attachment_id = wp_insert_attachment( $attachment_args, $file, 0, true );
 	if ( is_wp_error( $attachment_id ) ) {
@@ -1925,17 +1928,17 @@ function foogallery_import_attachment( $attachment_data ) {
 	$attachment_meta = wp_generate_attachment_metadata( $attachment_id, $file );
 	wp_update_attachment_metadata( $attachment_id, $attachment_meta );
 
-	if ( ! empty( $tags ) ) {
+	if ( isset( $attachment_data['tags'] ) && is_array( $attachment_data['tags'] ) && count( $attachment_data['tags'] ) > 0 ) {
 		if ( taxonomy_exists( FOOGALLERY_ATTACHMENT_TAXONOMY_TAG ) ) {
 			// Save tags.
-			wp_set_object_terms( $attachment_id, $tags, FOOGALLERY_ATTACHMENT_TAXONOMY_TAG, false );
+			wp_set_object_terms( $attachment_id, $attachment_data['tags'], FOOGALLERY_ATTACHMENT_TAXONOMY_TAG, false );
 		}
 	}
 
-	if ( ! empty( $categories ) ) {
+	if ( isset( $attachment_data['categories'] ) && is_array( $attachment_data['categories'] ) && count( $attachment_data['categories'] ) > 0 ) {
 		if ( taxonomy_exists( FOOGALLERY_ATTACHMENT_TAXONOMY_CATEGORY ) ) {
 			// Save categories.
-			wp_set_object_terms( $attachment_id, $categories, FOOGALLERY_ATTACHMENT_TAXONOMY_CATEGORY, false );
+			wp_set_object_terms( $attachment_id, $attachment_data['categories'], FOOGALLERY_ATTACHMENT_TAXONOMY_CATEGORY, false );
 		}
 	}
 
