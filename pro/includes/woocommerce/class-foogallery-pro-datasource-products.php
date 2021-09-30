@@ -197,12 +197,12 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Products' ) ) {
 				'post_type'      => 'product',
 				'post_status'    => 'publish',
 				'post__not_in'   => explode( ',', $exclude ),
-//				'meta_query'     => array(
-//					array(
-//						'key'     => '_thumbnail_id',
-//						'compare' => 'EXISTS'
-//					)
-//              )
+				'meta_query'     => array(
+					array(
+						'key'     => '_thumbnail_id',
+						'compare' => 'EXISTS'
+					)
+                )
 			);
 
 			if ( ! empty( $categories ) ) {
