@@ -374,7 +374,7 @@ if ( ! class_exists( 'FooGallery_Paging' ) ) {
 		 */
 		function add_paging_data_options($options, $gallery, $attributes) {
 			if ( foogallery_current_gallery_has_cached_value('paging' ) ) {
-				$options['paging'] = foogallery_current_gallery_get_cached_value( 'paging' );;
+				$options['paging'] = foogallery_current_gallery_get_cached_value( 'paging' );
 			}
 			return $options;
 		}
