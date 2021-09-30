@@ -22,7 +22,7 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Products' ) ) {
 		}
 
 		public function get_terms_from_product( $terms, $taxonomy, $attachment ) {
-			if ( isset( $attachment->product ) ) {
+			if ( isset( $attachment->product_datasource_used ) ) {
 
 				// if tag, then get product tags. If category, get product category.
 				if ( $taxonomy === FOOGALLERY_ATTACHMENT_TAXONOMY_TAG ) {
@@ -254,6 +254,7 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Products' ) ) {
 			foreach ( $products as $product ) {
 				$attachment = new FooGalleryAttachment();
 				$attachment->product = $product; // Store the product object.
+				$attachment->product_datasource_used = true; // Store the fact that the product was loaded from the datasource.
 
 				$post_thumbnail_id = get_post_thumbnail_id( $product->get_id() );
 				$attachment->load_attachment_image_data( $post_thumbnail_id );
