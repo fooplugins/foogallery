@@ -109,7 +109,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 					case 'short_description':
 						return $product->get_short_description();
 					case 'url':
-						return $product->get_permalink();
+						return self::build_product_permalink( $product, $foogallery_attachment->ID );
 					case 'price':
 						return $product->get_price_html();
 					case 'discount%':
@@ -231,7 +231,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 					$html .= $this->build_product_variation_table( $product );
 				}
 				if ( '' !== $gallery->get_setting( 'ecommerce_lightbox_show_view_product_button', '' ) ) {
-					$response['product_url'] = $product->get_permalink();
+					$response['product_url'] = self::build_product_permalink( $product, $attachment_id );
 				}
 
 				$response['body'] = $html;
@@ -240,6 +240,24 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 			}
 
 			return $response;
+		}
+
+		/**
+		 * Build up a product permalink URL
+		 *
+		 * @param      $product
+		 * @param      $attachment_id
+		 * @param null $gallery
+		 *
+		 * @return string
+		 */
+		static function build_product_permalink( $product, $attachment_id, $gallery = null ) {
+			if ( is_null( $gallery ) ) {
+				global $current_foogallery;
+				$gallery = $current_foogallery;
+			}
+
+			return apply_filters( 'foogallery_ecommerce_build_product_permalink', $product->get_permalink(), $product, $attachment_id, $gallery );
 		}
 
 		/**
@@ -493,7 +511,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 					'text'  => foogallery_gallery_template_setting( 'ecommerce_button_view_product_text', __( 'View Product', 'foogallery' ) ),
 				);
 				if ( '' !== $button_view_product_behaviour ) {
-					$button['url'] = $product->get_permalink();
+					$button['url'] = self::build_product_permalink( $product, $attachment->ID );
 				}
 
 				if ( 'first' === $button_view_product ) {
