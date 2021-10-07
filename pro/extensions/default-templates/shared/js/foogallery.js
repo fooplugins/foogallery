@@ -10130,6 +10130,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 			var self = this, result = [];
 			// first get a count of the tags
 			var counts = self.count(items, tags), min = Infinity, max = 0, index = -1;
+			if (counts.__ALL__ === 0) return result;
 			for (var prop in counts) {
 				if (counts.hasOwnProperty(prop)) {
 					var count = counts[prop], isAll = prop === "__ALL__";
@@ -10196,12 +10197,15 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 			var self = this, items = useAvailable ? self.tmpl.items.available() : self.tmpl.items.all();
 			self.isMultiLevel = self.opt.tags.length > 0 && _is.object(self.opt.tags[0]);
 			if (items.length > 0) {
+				var tagObjects;
 				if (self.isMultiLevel){
 					$.each(self.opt.tags, function(i, level){
-						self.tags.push(self.createTagObjects(items, level.tags, i, level.all || self.il8n.all));
+						tagObjects = self.createTagObjects(items, level.tags, i, level.all || self.il8n.all);
+						if (!_is.empty(tagObjects)) self.tags.push(tagObjects);
 					});
 				} else {
-					self.tags.push(self.createTagObjects(items, self.opt.tags, 0, self.il8n.all));
+					tagObjects = self.createTagObjects(items, self.opt.tags, 0, self.il8n.all);
+					if (!_is.empty(tagObjects)) self.tags.push(tagObjects);
 				}
 			}
 
