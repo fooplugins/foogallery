@@ -194,8 +194,32 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 					)
 				);
 
+				$filtering_fields[] = array(
+					'id'       => 'filtering_search',
+					'title'    => __( 'Include Search', 'foogallery' ),
+					'desc'     => __( 'Include a search input where users can filter the gallery by typing in a search term.', 'foogallery' ),
+					'section'  => __( 'Filtering', 'foogallery' ),
+					'spacer'   => '<span class="spacer"></span>',
+					'type'     => 'radio',
+					'default'  => '',
+					'choices'  =>  array(
+						''    => __( 'Disabled', 'foogallery' ),
+						'true' => __( 'Enabled', 'foogallery' ),
+					),
+					'row_data' => array(
+						'data-foogallery-hidden'                   => true,
+						'data-foogallery-show-when-field-operator' => '!==',
+						'data-foogallery-show-when-field'          => 'filtering_type',
+						'data-foogallery-show-when-field-value'    => '',
+						'data-foogallery-change-selector'          => 'input',
+						'data-foogallery-preview'                  => 'shortcode'
+					)
+				);
+
 				$taxonomy_objects = get_object_taxonomies( 'attachment', 'objects' );
-				$taxonomy_choices = array();
+				$taxonomy_choices = array(
+					'' => __( 'None', '' )
+				);
 				foreach ( $taxonomy_objects as $taxonomy_object ) {
 					$taxonomy_choices[$taxonomy_object->name] = $taxonomy_object->label;
 				}
@@ -556,12 +580,22 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 
 				if ( '' !== $filtering ) {
 
+					$filtering_source = foogallery_gallery_template_setting( 'filtering_taxonomy', FOOGALLERY_ATTACHMENT_TAXONOMY_TAG );
+
 					$filtering_options = array(
 						'type'     => 'tags',
 						'position' => foogallery_gallery_template_setting( 'filtering_position', 'top' ),
 						'theme'    => foogallery_gallery_template_setting( 'filtering_theme', 'fg-light' ),
-						'taxonomy' => foogallery_gallery_template_setting( 'filtering_taxonomy', FOOGALLERY_ATTACHMENT_TAXONOMY_TAG )
 					);
+
+					if ( $filtering_source !== '') {
+						$filtering_options['taxonomy'] = $filtering_source;
+					}
+
+					$filtering_search = foogallery_gallery_template_setting( 'filtering_search' ) !== '';
+					if ( $filtering_search ) {
+						$filtering_options['search'] = true;
+					}
 
 					if ( 'advanced' === $filtering ) {
 
