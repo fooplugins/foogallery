@@ -57,6 +57,7 @@ FooGallery.utils.ready(function ($) {
         var value = {
             "no_of_post": $('#foogallery_woocommerce_no_of_post').val(),
             "sort": $(".foogallery_woocommerce_sort:checked").val(),
+            "stock": $(".foogallery_woocommerce_stock:checked").val(),
             "exclude": $('#foogallery_woocommerce_exclude').val(),
             "caption_title_source": $(".foogallery_woocommerce_caption_title_source:checked").val(),
             "caption_desc_source": $(".foogallery_woocommerce_caption_desc_source:checked").val(),
@@ -64,11 +65,16 @@ FooGallery.utils.ready(function ($) {
             "categories_html" : document.foogallery_datasource_woocommerce_temp.categories_html
         };
 
+        var sort = ( value.sort !== '' ) ? value.sort : 'newest first',
+            stock = ( value.stock !== '' ) ? value.stock : 'any',
+            no_of_post = ( value.no_of_post !== '' ) ? value.no_of_post : 'unlimited';
+
         //save the datasource_value
         $('#_foogallery_datasource_value').val(JSON.stringify(value));
         $('#foogallery-datasource-woocommerce-categories').html( value.categories_html );
-        $('#foogallery-datasource-woocommerce-sort').html( value.sort );
-        $('#foogallery-datasource-woocommerce-no_of_post').html( value.no_of_post );
+        $('#foogallery-datasource-woocommerce-sort').html( sort );
+        $('#foogallery-datasource-woocommerce-stock').html( stock );
+        $('#foogallery-datasource-woocommerce-no_of_post').html( no_of_post );
         $('#foogallery-datasource-woocommerce-exclude').html( value.exclude );
         $('#foogallery-datasource-woocommerce-caption_title_source').html( value.caption_title_source );
         $('#foogallery-datasource-woocommerce-caption_desc_source').html( value.caption_desc_source );

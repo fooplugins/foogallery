@@ -191,6 +191,7 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Products' ) ) {
 			$exclude              = ! empty( $foogallery->datasource_value['exclude'] ) ? $foogallery->datasource_value['exclude'] : '';
 			$caption_title_source = ! empty( $foogallery->datasource_value['caption_title_source'] ) ? $foogallery->datasource_value['caption_title_source'] : 'post_title';
 			$caption_desc_source  = ! empty( $foogallery->datasource_value['caption_desc_source'] ) ? $foogallery->datasource_value['caption_desc_source'] : 'post_content';
+			$stock                = ! empty( $foogallery->datasource_value['stock'] ) ? $foogallery->datasource_value['stock'] : '';
 
 			$args = array(
 				'limit'          => $no_of_post,
@@ -213,6 +214,10 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Products' ) ) {
 						'terms'     => $categories
 					)
 				);
+			}
+
+			if ( ! empty( $stock ) ) {
+				$args['stock_status'] = $stock;
 			}
 
 			switch ( $sort ) {
@@ -321,6 +326,13 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Products' ) ) {
 				'rating'     => __( 'Rating', 'foogallery' ),
 			);
 
+			$stock_choices = array(
+				''            => __( 'Any', 'foogallery' ),
+				'instock'     => __( 'In Stock', 'foogallery' ),
+				'outofstock'  => __( 'Out Of Stock', 'foogallery' ),
+				'onbackorder' => __( 'On Backorder', 'foogallery' ),
+			);
+
 			$selected_categories = array();
 			if ( is_array( $datasource_value ) && array_key_exists( 'categories', $datasource_value ) ) {
 				$selected_categories = $datasource_value['categories'];
@@ -336,6 +348,9 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Products' ) ) {
 			}
 			if ( ! isset( $datasource_value['sort'] ) ) {
 				$datasource_value['sort'] = '';
+			}
+			if ( ! isset( $datasource_value['stock'] ) ) {
+				$datasource_value['stock'] = '';
 			}
 			?>
             <p>
@@ -375,6 +390,25 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Products' ) ) {
 						                    <?php echo ( isset( $datasource_value['sort'] ) && $datasource_value['sort'] === $sort_choice ) ? 'checked="checked"' : '' ?>
 					                    />
 					                    <span><?php echo $sort_choice_label; ?></span>
+				                    </label>
+			                    <?php } ?>
+		                    </fieldset>
+	                    </td>
+                    </tr>
+                    <tr>
+	                    <th scope="row"><?php _e( 'Stock Status', 'foogallery' ); ?></th>
+	                    <td>
+		                    <fieldset>
+			                    <?php foreach ( $stock_choices as $stock_choice => $stock_choice_label ) { ?>
+				                    <label style="padding-right: 10px">
+					                    <input
+						                    type="radio"
+						                    name="stock"
+						                    value="<?php echo $stock_choice; ?>"
+						                    class="foogallery_woocommerce_stock foogallery_woocommerce_input"
+						                    <?php echo ( isset( $datasource_value['stock'] ) && $datasource_value['stock'] === $stock_choice ) ? 'checked="checked"' : '' ?>
+					                    />
+					                    <span><?php echo $stock_choice_label; ?></span>
 				                    </label>
 			                    <?php } ?>
 		                    </fieldset>
@@ -467,6 +501,7 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Products' ) ) {
 			$caption_title_source = 'post_title';
 			$caption_desc_source = 'post_excerpt';
 			$categories_html = '';
+			$stock = '';
 
 			if ( isset( $gallery->datasource_name ) ) {
 				$show_container = 'woocommerce' === $gallery->datasource_name;
@@ -479,6 +514,7 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Products' ) ) {
 				$exclude              = array_key_exists( 'exclude', $gallery->datasource_value ) ? $gallery->datasource_value['exclude'] : '';
 				$caption_title_source = array_key_exists( 'caption_title_source', $gallery->datasource_value ) ? $gallery->datasource_value['caption_title_source'] : 'post_title';
 				$caption_desc_source  = array_key_exists( 'caption_desc_source', $gallery->datasource_value ) ? $gallery->datasource_value['caption_desc_source'] : 'post_excerpt';
+				$stock                = array_key_exists( 'stock', $gallery->datasource_value ) ? $gallery->datasource_value['stock'] : '';
 			}
 
 			if ( empty( $no_of_post ) ) {
@@ -487,6 +523,10 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Products' ) ) {
 
 			if ( empty( $sort ) ) {
 				$sort = __( 'newest first', 'foogallery' );
+			}
+
+			if ( empty( $stock ) ) {
+				$stock = __( 'any', 'foogallery' );
 			}
 
 			?>
@@ -500,6 +540,7 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Products' ) ) {
                 <div class="foogallery-items-html">
 	                <?php echo __('Categories : ', 'foogallery'); ?><span id="foogallery-datasource-woocommerce-categories"><?php echo $categories_html; ?></span><br />
 	                <?php echo __('Sort by : ', 'foogallery'); ?><span id="foogallery-datasource-woocommerce-sort"><?php echo $sort; ?></span><br />
+	                <?php echo __('Stock Status : ', 'foogallery'); ?><span id="foogallery-datasource-woocommerce-stock"><?php echo $stock; ?></span><br />
 	                <?php echo __('No. of Products : ', 'foogallery'); ?><span id="foogallery-datasource-woocommerce-no_of_post"><?php echo $no_of_post; ?></span><br />
 	                <?php if ( !empty( $exclude ) ) { ?>
 	                <?php echo __('Excludes : ', 'foogallery'); ?><span id="foogallery-datasource-woocommerce-exclude"><?php echo $exclude; ?></span><br />
