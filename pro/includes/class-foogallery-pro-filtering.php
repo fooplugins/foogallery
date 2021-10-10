@@ -207,11 +207,40 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 						'true' => __( 'Enabled', 'foogallery' ),
 					),
 					'row_data' => array(
+						'data-foogallery-value-selector'           => 'input:checked',
 						'data-foogallery-hidden'                   => true,
 						'data-foogallery-show-when-field-operator' => '!==',
 						'data-foogallery-show-when-field'          => 'filtering_type',
 						'data-foogallery-show-when-field-value'    => '',
 						'data-foogallery-change-selector'          => 'input',
+						'data-foogallery-preview'                  => 'shortcode'
+					)
+				);
+
+				$filtering_fields[] = array(
+					'id'       => 'filtering_search_position',
+					'title'    => __( 'Search Position', 'foogallery' ),
+					'desc'     => __( 'The position of the search input, relative to the other filters.', 'foogallery' ),
+					'section'  => __( 'Filtering', 'foogallery' ),
+					'spacer'   => '<span class="spacer"></span>',
+					'type'     => 'select',
+					'default'  => 'above-center',
+					'choices'  =>  array(
+						''             => __( 'Above Center', 'foogallery' ),
+						'above-right'  => __( 'Above Right', 'foogallery' ),
+						'above-left'   => __( 'Above Left', 'foogallery' ),
+						'below-center' => __( 'Below Center', 'foogallery' ),
+						'below-right'  => __( 'Below Right', 'foogallery' ),
+						'below-left'   => __( 'Below Left', 'foogallery' ),
+						'before'   => __( 'Before', 'foogallery' ),
+						'after'   => __( 'After', 'foogallery' ),
+					),
+					'row_data' => array(
+						'data-foogallery-hidden'                   => true,
+						'data-foogallery-show-when-field-operator' => '!==',
+						'data-foogallery-show-when-field'          => 'filtering_search',
+						'data-foogallery-show-when-field-value'    => '',
+						'data-foogallery-change-selector'          => 'select',
 						'data-foogallery-preview'                  => 'shortcode'
 					)
 				);
@@ -595,6 +624,7 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 					$filtering_search = foogallery_gallery_template_setting( 'filtering_search' ) !== '';
 					if ( $filtering_search ) {
 						$filtering_options['search'] = true;
+						$filtering_options['searchPosition'] = foogallery_gallery_template_setting( 'filtering_search_position', 'above-center' );
 					}
 
 					if ( 'advanced' === $filtering ) {
