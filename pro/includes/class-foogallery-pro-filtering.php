@@ -108,6 +108,17 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 				) );
 			}
 
+			$filtering_search_entry = foogallery_get_language_array_value( 'language_filtering_search', __( 'Search gallery...', 'foogallery' ) );
+			if ( $filtering_search_entry !== false ) {
+				$il8n = array_merge_recursive( $il8n, array(
+					'filtering' => array(
+						'tags' => array(
+							'searchPlaceholder' => $filtering_search_entry
+						)
+					)
+				) );
+			}
+
 // Not implemented in JS yet
 //			$filtering_no_items_entry = foogallery_get_language_array_value( 'language_filtering_no_items', __( 'No items found.', 'foogallery' ) );
 //			if ( $filtering_no_items_entry !== false ) {
@@ -765,6 +776,15 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 				'title'   => __( 'Filtering All Text', 'foogallery' ),
 				'type'    => 'text',
 				'default' => __( 'All', 'foogallery' ),
+				'section' => __( 'Filtering', 'foogallery' ),
+				'tab'     => 'language'
+			);
+
+			$settings['settings'][] = array(
+				'id'      => 'language_filtering_search',
+				'title'   => __( 'Search Input Placeholder', 'foogallery' ),
+				'type'    => 'text',
+				'default' => __( 'Search gallery...', 'foogallery' ),
 				'section' => __( 'Filtering', 'foogallery' ),
 				'tab'     => 'language'
 			);
