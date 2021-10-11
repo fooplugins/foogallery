@@ -725,19 +725,22 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 		 */
 		public function add_tag_attribute( $attr, $args, $attachment ) {
 			if ( foogallery_current_gallery_has_cached_value( 'filtering' ) ) {
-				$taxonomy = foogallery_current_gallery_get_cached_value( 'filtering' )['taxonomy'];
+				$filtering = foogallery_current_gallery_get_cached_value( 'filtering' );
+				if ( array_key_exists( 'taxonomy', $filtering ) ) {
+					$taxonomy = $filtering['taxonomy'];
 
-				//allow other plugins to get the terms for the attachment for the particular taxonomy
-				$terms = apply_filters( 'foogallery_filtering_get_terms_for_attachment', false, $taxonomy, $attachment );
+					//allow other plugins to get the terms for the attachment for the particular taxonomy
+					$terms = apply_filters( 'foogallery_filtering_get_terms_for_attachment', false, $taxonomy, $attachment );
 
-				//if no terms were returned, then do the default
-				if ( false === $terms ) {
-					$terms = wp_get_post_terms( $attachment->ID, $taxonomy, array( 'fields' => 'names' ) );
+					//if no terms were returned, then do the default
+					if ( false === $terms ) {
+						$terms = wp_get_post_terms( $attachment->ID, $taxonomy, array( 'fields' => 'names' ) );
+					}
+
+					$attachment->tags = $terms;
+
+					$attr['data-tags'] = json_encode( $terms );
 				}
-
-				$attachment->tags = $terms;
-
-				$attr['data-tags'] = json_encode($terms);
 			}
 
 			return $attr;
