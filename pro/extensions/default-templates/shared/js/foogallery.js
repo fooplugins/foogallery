@@ -10493,23 +10493,25 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 			return false;
 		},
 		createSearch: function(search){
-			var self = this, cls = self.filter.cls.search;
+			var self = this, cls = self.filter.cls.search, il8n = self.filter.il8n;
 
 			self.search.$wrap = $("<div/>", {"class": cls.wrap});
 
 			self.search.$inner = $("<div/>", {"class": cls.inner}).appendTo(self.search.$wrap);
 
-			self.search.$input = $("<input/>", {"type": "text", "class": cls.input, "placeholder": self.filter.il8n.searchPlaceholder})
+			self.search.$input = $("<input/>", {"type": "text", "class": cls.input, "placeholder": il8n.searchPlaceholder})
 				.on("input.foogallery", {self: self}, self.onSearchInput)
 				.on("keydown.foogallery", {self: self}, self.onSearchKeydown)
 				.appendTo(self.search.$inner);
 
 			self.search.$clear = $("<button/>", {"type": "button","class": cls.clear})
+				.append($("<span/>", {"class": cls.reader, text: il8n.searchClear}))
 				.append(_.icons.get("close"))
 				.on("click.foogallery", {self: self}, self.onSearchClear)
 				.appendTo(self.search.$inner);
 
 			self.search.$submit = $("<button/>", {"type": "button","class": cls.submit})
+				.append($("<span/>", {"class": cls.reader, text: il8n.searchSubmit}))
 				.append(_.icons.get("search"))
 				.on("click.foogallery", {self: self}, self.onSearchSubmit)
 				.appendTo(self.search.$inner);
@@ -10649,12 +10651,15 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 			input: "fg-search-input",
 			clear: "fg-search-clear",
 			submit: "fg-search-submit",
-			hasValue: "fg-search-has-value"
+			hasValue: "fg-search-has-value",
+			reader: "fg-sr-only"
 		}
 	}, {
 		all: "All",
 		none: "No items found.",
-		searchPlaceholder: "Search gallery..."
+		searchPlaceholder: "Search gallery...",
+		searchSubmit: "Submit search",
+		searchClear: "Clear search"
 	}, -100);
 
 })(
