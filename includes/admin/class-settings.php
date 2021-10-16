@@ -465,10 +465,20 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 			//region Custom JS & CSS
 			$tabs['custom_assets'] = __( 'Custom JS & CSS', 'foogallery' );
 
+			$custom_assets = get_option( FOOGALLERY_OPTION_CUSTOM_ASSETS );
+			$custom_style = '';
+			if ( is_array( $custom_assets ) && array_key_exists( 'style', $custom_assets ) ) {
+				$custom_style = '<br /><a target="_blank" href="' . $custom_assets['style'] . '">' . __( 'Open Custom Stylesheet', 'foogallery' ) . '</a>';
+			}
+			$custom_script = '';
+			if ( is_array( $custom_assets ) && array_key_exists( 'script', $custom_assets ) ) {
+				$custom_script = '<br /><a target="_blank" href="' . $custom_assets['script'] . '">' . __( 'Open Custom Script', 'foogallery' ) . '</a>';
+			}
+
 			$settings[] = array(
 				'id'      => 'custom_js',
 				'title'   => __( 'Custom Javascript', 'foogallery' ),
-				'desc'    => __( 'Custom Javascript that will be added to the page when a gallery is rendered.', 'foogallery' ),
+				'desc'    => __( 'Custom Javascript that will be added to the page when a gallery is rendered.', 'foogallery' ) . $custom_script,
 				'type'    => 'textarea',
 				'tab'     => 'custom_assets',
 				'default' => ''
@@ -477,7 +487,7 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 			$settings[] = array(
 				'id'      => 'custom_css',
 				'title'   => __( 'Custom Stylesheet', 'foogallery' ),
-				'desc'    => __( 'Custom CSS that will be added to the page when a gallery is rendered.', 'foogallery' ),
+				'desc'    => __( 'Custom CSS that will be added to the page when a gallery is rendered.', 'foogallery' ) . $custom_style,
 				'type'    => 'textarea',
 				'tab'     => 'custom_assets',
 				'default' => ''
