@@ -296,9 +296,10 @@ Please update in order to for FooGallery to work in WP 5.5+!
 
 == Changelog ==
 
-= 2.1.21 =
-* Date Updated : 2021-10-07
+= 2.1.24 =
+* Date Updated : 2021-10-16
 [//]: # fs_premium_only_begin
+* New : [Expert Plan] Added a search input so that visitors can filter by their own search term.
 * New : [Commerce Plan] Added sort to product datasource to sort products by date, price, popularity and rating.
 * New : [Commerce Plan] Added stock status filter to product datasource to filter by in stock, out of stock and backordered.
 * Fix : [Expert Plan] Fixed layout issue with Polaroid gallery in certain scenarios.
