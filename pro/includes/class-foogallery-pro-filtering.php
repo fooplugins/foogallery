@@ -108,6 +108,39 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 				) );
 			}
 
+			$filtering_search_entry = foogallery_get_language_array_value( 'language_filtering_search', __( 'Search gallery...', 'foogallery' ) );
+			if ( $filtering_search_entry !== false ) {
+				$il8n = array_merge_recursive( $il8n, array(
+					'filtering' => array(
+						'tags' => array(
+							'searchPlaceholder' => $filtering_search_entry
+						)
+					)
+				) );
+			}
+
+			$filtering_search_submit_entry = foogallery_get_language_array_value( 'language_filtering_search_submit', __( 'Submit search', 'foogallery' ) );
+			if ( $filtering_search_submit_entry !== false ) {
+				$il8n = array_merge_recursive( $il8n, array(
+					'filtering' => array(
+						'tags' => array(
+							'searchSubmit' => $filtering_search_submit_entry
+						)
+					)
+				) );
+			}
+
+			$filtering_search_clear_entry = foogallery_get_language_array_value( 'language_filtering_search_clear', __( 'Clear search', 'foogallery' ) );
+			if ( $filtering_search_clear_entry !== false ) {
+				$il8n = array_merge_recursive( $il8n, array(
+					'filtering' => array(
+						'tags' => array(
+							'searchClear' => $filtering_search_clear_entry
+						)
+					)
+				) );
+			}
+
 // Not implemented in JS yet
 //			$filtering_no_items_entry = foogallery_get_language_array_value( 'language_filtering_no_items', __( 'No items found.', 'foogallery' ) );
 //			if ( $filtering_no_items_entry !== false ) {
@@ -194,8 +227,61 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 					)
 				);
 
+				$filtering_fields[] = array(
+					'id'       => 'filtering_search',
+					'title'    => __( 'Include Search', 'foogallery' ),
+					'desc'     => __( 'Include a search input where users can filter the gallery by typing in a search term.', 'foogallery' ),
+					'section'  => __( 'Filtering', 'foogallery' ),
+					'spacer'   => '<span class="spacer"></span>',
+					'type'     => 'radio',
+					'default'  => '',
+					'choices'  =>  array(
+						''    => __( 'Disabled', 'foogallery' ),
+						'true' => __( 'Enabled', 'foogallery' ),
+					),
+					'row_data' => array(
+						'data-foogallery-value-selector'           => 'input:checked',
+						'data-foogallery-hidden'                   => true,
+						'data-foogallery-show-when-field-operator' => '!==',
+						'data-foogallery-show-when-field'          => 'filtering_type',
+						'data-foogallery-show-when-field-value'    => '',
+						'data-foogallery-change-selector'          => 'input',
+						'data-foogallery-preview'                  => 'shortcode'
+					)
+				);
+
+				$filtering_fields[] = array(
+					'id'       => 'filtering_search_position',
+					'title'    => __( 'Search Position', 'foogallery' ),
+					'desc'     => __( 'The position of the search input, relative to the other filters.', 'foogallery' ),
+					'section'  => __( 'Filtering', 'foogallery' ),
+					'spacer'   => '<span class="spacer"></span>',
+					'type'     => 'select',
+					'default'  => 'above-center',
+					'choices'  =>  array(
+						''             => __( 'Above Center', 'foogallery' ),
+						'above-right'  => __( 'Above Right', 'foogallery' ),
+						'above-left'   => __( 'Above Left', 'foogallery' ),
+						'below-center' => __( 'Below Center', 'foogallery' ),
+						'below-right'  => __( 'Below Right', 'foogallery' ),
+						'below-left'   => __( 'Below Left', 'foogallery' ),
+						'before'   => __( 'Before', 'foogallery' ),
+						'after'   => __( 'After', 'foogallery' ),
+					),
+					'row_data' => array(
+						'data-foogallery-hidden'                   => true,
+						'data-foogallery-show-when-field-operator' => '!==',
+						'data-foogallery-show-when-field'          => 'filtering_search',
+						'data-foogallery-show-when-field-value'    => '',
+						'data-foogallery-change-selector'          => 'select',
+						'data-foogallery-preview'                  => 'shortcode'
+					)
+				);
+
 				$taxonomy_objects = get_object_taxonomies( 'attachment', 'objects' );
-				$taxonomy_choices = array();
+				$taxonomy_choices = array(
+					'' => __( 'None', '' )
+				);
 				foreach ( $taxonomy_objects as $taxonomy_object ) {
 					$taxonomy_choices[$taxonomy_object->name] = $taxonomy_object->label;
 				}
@@ -556,12 +642,23 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 
 				if ( '' !== $filtering ) {
 
+					$filtering_source = foogallery_gallery_template_setting( 'filtering_taxonomy', FOOGALLERY_ATTACHMENT_TAXONOMY_TAG );
+
 					$filtering_options = array(
 						'type'     => 'tags',
 						'position' => foogallery_gallery_template_setting( 'filtering_position', 'top' ),
 						'theme'    => foogallery_gallery_template_setting( 'filtering_theme', 'fg-light' ),
-						'taxonomy' => foogallery_gallery_template_setting( 'filtering_taxonomy', FOOGALLERY_ATTACHMENT_TAXONOMY_TAG )
 					);
+
+					if ( $filtering_source !== '') {
+						$filtering_options['taxonomy'] = $filtering_source;
+					}
+
+					$filtering_search = foogallery_gallery_template_setting( 'filtering_search' ) !== '';
+					if ( $filtering_search ) {
+						$filtering_options['search'] = true;
+						$filtering_options['searchPosition'] = foogallery_gallery_template_setting( 'filtering_search_position', 'above-center' );
+					}
 
 					if ( 'advanced' === $filtering ) {
 
@@ -650,19 +747,22 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 		 */
 		public function add_tag_attribute( $attr, $args, $attachment ) {
 			if ( foogallery_current_gallery_has_cached_value( 'filtering' ) ) {
-				$taxonomy = foogallery_current_gallery_get_cached_value( 'filtering' )['taxonomy'];
+				$filtering = foogallery_current_gallery_get_cached_value( 'filtering' );
+				if ( array_key_exists( 'taxonomy', $filtering ) ) {
+					$taxonomy = $filtering['taxonomy'];
 
-				//allow other plugins to get the terms for the attachment for the particular taxonomy
-				$terms = apply_filters( 'foogallery_filtering_get_terms_for_attachment', false, $taxonomy, $attachment );
+					//allow other plugins to get the terms for the attachment for the particular taxonomy
+					$terms = apply_filters( 'foogallery_filtering_get_terms_for_attachment', false, $taxonomy, $attachment );
 
-				//if no terms were returned, then do the default
-				if ( false === $terms ) {
-					$terms = wp_get_post_terms( $attachment->ID, $taxonomy, array( 'fields' => 'names' ) );
+					//if no terms were returned, then do the default
+					if ( false === $terms ) {
+						$terms = wp_get_post_terms( $attachment->ID, $taxonomy, array( 'fields' => 'names' ) );
+					}
+
+					$attachment->tags = $terms;
+
+					$attr['data-tags'] = json_encode( $terms );
 				}
-
-				$attachment->tags = $terms;
-
-				$attr['data-tags'] = json_encode($terms);
 			}
 
 			return $attr;
@@ -701,6 +801,33 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 				'title'   => __( 'Filtering All Text', 'foogallery' ),
 				'type'    => 'text',
 				'default' => __( 'All', 'foogallery' ),
+				'section' => __( 'Filtering', 'foogallery' ),
+				'tab'     => 'language'
+			);
+
+			$settings['settings'][] = array(
+				'id'      => 'language_filtering_search',
+				'title'   => __( 'Search Input Placeholder', 'foogallery' ),
+				'type'    => 'text',
+				'default' => __( 'Search gallery...', 'foogallery' ),
+				'section' => __( 'Filtering', 'foogallery' ),
+				'tab'     => 'language'
+			);
+
+			$settings['settings'][] = array(
+				'id'      => 'language_filtering_search_submit',
+				'title'   => __( 'Search Submit (accessibility)', 'foogallery' ),
+				'type'    => 'text',
+				'default' => __( 'Submit search', 'foogallery' ),
+				'section' => __( 'Filtering', 'foogallery' ),
+				'tab'     => 'language'
+			);
+
+			$settings['settings'][] = array(
+				'id'      => 'language_filtering_search_clear',
+				'title'   => __( 'Search Clear (accessibility)', 'foogallery' ),
+				'type'    => 'text',
+				'default' => __( 'Clear search', 'foogallery' ),
 				'section' => __( 'Filtering', 'foogallery' ),
 				'tab'     => 'language'
 			);
