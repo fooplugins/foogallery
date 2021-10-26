@@ -25,7 +25,7 @@ FooGallery was built to be highly configurable and extendable for developers or 
 
 That is why we think FooGallery is the best WordPress gallery plugin. After using it, we hope you will agree.
 
-[Visit the FooGallery Wordpress Gallery Plugin Homepage](https://fooplugins.com/foogallery/)
+[Visit the FooGallery Wordpress Gallery Plugin Homepage](https://fooplugins.com/foogallery-wordpress-gallery-plugin/)
 
 = Performance Updates for Google's Core Web Vitals =
 
@@ -43,22 +43,22 @@ This has led to dramatically better scores for the 3 key lighthouse factors incl
 The following free features make FooGallery the **best gallery plugin** on the market!
 
 *	6 Beautiful Image Gallery templates
-	*	Responsive Image Gallery - [demo](https://fooplugins.com/foogallery/wordpress-responsive-image-gallery/)
-	*	Image Viewer Gallery - [demo](https://fooplugins.com/foogallery/wordpress-image-viewer-gallery/)
-	*	Masonry Gallery - [demo](https://fooplugins.com/foogallery/wordpress-masonry-gallery/)
-	*	Simple Portfolio - [demo](https://fooplugins.com/foogallery/wordpress-portfolio-gallery/)
-	*	Justified Gallery - [demo](https://fooplugins.com/foogallery/wordpress-justified-gallery/)
-	*	Single Thumbnail Gallery - [demo](https://fooplugins.com/foogallery/wordpress-single-thumbnail-gallery/)
+	*	Responsive Image Gallery - [demo](https://fooplugins.com/foogallery-wordpress-gallery-plugin/responsive-image-gallery/)
+	*	Image Viewer Gallery - [demo](https://fooplugins.com/foogallery-wordpress-gallery-plugin/image-viewer-gallery/)
+	*	Masonry Gallery - [demo](https://fooplugins.com/foogallery-wordpress-gallery-plugin/masonry-gallery/)
+	*	Simple Portfolio - [demo](https://fooplugins.com/foogallery-wordpress-gallery-plugin/wordpress-portfolio-gallery/)
+	*	Justified Gallery - [demo](https://fooplugins.com/foogallery-wordpress-gallery-plugin/justified-gallery/)
+	*	Single Thumbnail Gallery - [demo](https://fooplugins.com/foogallery-wordpress-gallery-plugin/single-thumbnail-gallery/)
 *   Easy to customize!
     *   Adjust thumbnail size, spacing & alignment
     *   Adjust border size, rounded corners, drop shadows, inner shadows
     *   Choose from a selection of loading icons
-	*	Animated loaded effects - [demo](https://fooplugins.com/foogallery/animated-loaded-effects/)
+	*	Animated loaded effects - [demo](https://fooplugins.com/foogallery-wordpress-gallery-plugin/animated-loaded-effects/)
     *   Awesome hover effects - adjust colors, scaling and icons
 	*	Complete control over captions
 *	Focus on Performance
 	*	Lazy Loading options
-	*	Simple pagination [demo](https://fooplugins.com/foogallery/gallery-pagination/)
+	*	Simple pagination [demo](https://fooplugins.com/foogallery-wordpress-gallery-plugin/gallery-pagination/)
 	*	Optimized code
 	*	Reduced content layout shift
 *	Focus on SEO
@@ -67,8 +67,8 @@ The following free features make FooGallery the **best gallery plugin** on the m
 	*	Rank Math SEO sitemap integration
 	*	AIOSEO sitemap integration
 *   Albums built-in! (just activate the albums extension)
-	*	Responsive album layout - [demo](https://fooplugins.com/foogallery/wordpress-album-gallery/)
-	*	All-in-one Stack album - [demo](https://fooplugins.com/foogallery/wordpress-album-gallery/#all-in-one)
+	*	Responsive album layout - [demo](https://fooplugins.com/foogallery-wordpress-gallery-plugin/wordpress-album-gallery/)
+	*	All-in-one Stack album - [demo](https://fooplugins.com/foogallery-wordpress-gallery-plugin/wordpress-album-gallery/#all-in-one)
 *	Gutenberg ready (Gallery previews inside the new editor!)
 *	Live previews as you make changes!
 *	Retina thumbnail support
@@ -85,26 +85,26 @@ The following free features make FooGallery the **best gallery plugin** on the m
 
 There are 3 PRO plans available for any budget. Get started with premium features from $19!
 
-[PRO Starter](https://fooplugins.com/foogallery/#pro-starter-features) | [PRO Expert](https://fooplugins.com/foogallery/#pro-expert-features) | [PRO Commerce](https://fooplugins.com/foogallery/#pro-commerce-features)
+[PRO Starter](https://fooplugins.com/foogallery-wordpress-gallery-plugin/#pro-starter-features) | [PRO Expert](https://fooplugins.com/foogallery-wordpress-gallery-plugin/#pro-expert-features) | [PRO Commerce](https://fooplugins.com/foogallery-wordpress-gallery-plugin/#pro-commerce-features)
 
 **PRO Starter Features**
 
 *   3 more beautiful PRO responsive gallery templates:
-    *   Polaroid gallery template - [demo](https://fooplugins.com/foogallery/wordpress-polaroid-gallery/)
-    *   Grid gallery template - [demo](https://fooplugins.com/foogallery/wordpress-grid-gallery/)
-    *	Slider gallery template - [demo](https://fooplugins.com/foogallery/wordpress-slider-gallery/)
-*   PRO image and media lightbox built in! [demo](https://fooplugins.com/foogallery/foogallery-pro-lightbox/)
-*   11 beautiful hover effect presets - [demo](https://fooplugins.com/foogallery/hover-presets/)
-*   12 CSS thumbnail filters (Instagram) - [demo](https://fooplugins.com/foogallery/thumbnail-filters/)
+    *   Polaroid gallery template - [demo](https://fooplugins.com/foogallery-wordpress-gallery-plugin/polaroid-gallery/)
+    *   Grid gallery template - [demo](https://fooplugins.com/foogallery-wordpress-gallery-plugin/grid-gallery/)
+    *	Slider gallery template - [demo](https://fooplugins.com/foogallery-wordpress-gallery-plugin/slider-gallery/)
+*   PRO image and media lightbox built in! [demo](https://fooplugins.com/foogallery-wordpress-gallery-plugin/pro-lightbox/)
+*   11 beautiful hover effect presets - [demo](https://fooplugins.com/foogallery-wordpress-gallery-plugin/hover-presets/)
+*   12 CSS thumbnail filters (Instagram) - [demo](https://fooplugins.com/foogallery-wordpress-gallery-plugin/filter-effects/)
 
 **PRO Expert Features**
 
-*   Video Support - [demo](https://fooplugins.com/foogallery/wordpress-video-gallery/)
+*   Video Support - [demo](https://fooplugins.com/foogallery-wordpress-gallery-plugin/video-gallery/)
 	*	Import video from Youtube, Vimeo and others
 	*	Self-hosted videos
 *	Filtering
-	*	Add filters using Media Tags or Categories - [demo](https://fooplugins.com/foogallery/wordpress-filtered-gallery/)
-	*	Multi-level filtering for galleries [demo](https://fooplugins.com/foogallery/wordpress-filtered-gallery/#multi-level)
+	*	Add filters using Media Tags or Categories - [demo](https://fooplugins.com/foogallery-wordpress-gallery-plugin/filtering/)
+	*	Multi-level filtering for galleries [demo](https://fooplugins.com/foogallery-wordpress-gallery-plugin/filtering/#multi-level)
 	*	Bulk media tags and category management for attachments
 *	Dynamic Galleries (load images from other sources):
 	*	Load from a folder on the server
@@ -112,22 +112,22 @@ There are 3 PRO plans available for any budget. Get started with premium feature
 	*	Load all attachments with Media Tags
 	*	Load all attachments with Media Categories
 	*	Load from a folder in Real Media Library
-	*	Load featured images from a post/page/custom post type - [demo](https://fooplugins.com/foogallery/post-query-gallery/)
+	*	Load featured images from a post/page/custom post type - [demo](https://fooplugins.com/foogallery-wordpress-gallery-plugin/post-query-gallery/)
 *	Advanced Pagination
-	*   Numbered pagination - [demo](https://fooplugins.com/foogallery/gallery-pagination/#numbered)
-	*   "Load More" pagination - [demo](https://fooplugins.com/foogallery/gallery-pagination/#load-more)
-	*   Infinite scroll image gallery - [demo](https://fooplugins.com/foogallery/gallery-pagination/#infinite-scroll)
-*	Advanced Custom Captions - [demo](https://fooplugins.com/foogallery/custom-captions-wordpress-gallery/)
-*	EXIF metadata gallery - [demo](https://fooplugins.com/foogallery/exif-data-foogallery/)
+	*   Numbered pagination - [demo](https://fooplugins.com/foogallery-wordpress-gallery-plugin/pagination/#numbered)
+	*   "Load More" pagination - [demo](https://fooplugins.com/foogallery-wordpress-gallery-plugin/pagination/#load-more)
+	*   Infinite scroll image gallery - [demo](https://fooplugins.com/foogallery-wordpress-gallery-plugin/pagination/#infinite-scroll)
+*	Advanced Custom Captions - [demo](hhttps://fooplugins.com/foogallery-wordpress-gallery-plugin/custom-captions/)
+*	EXIF metadata gallery - [demo](https://fooplugins.com/foogallery-wordpress-gallery-plugin/exif-data/)
 *   Bulk Copy Gallery Settings - [more info](https://fooplugins.com/bulk-copy-foogallery-pro/)
 *	Deeplinking support for pages and filters
 
 **PRO Commerce Features**
 
 *	Image Protection
-	*	Photo watermarking - [demo](https://fooplugins.com/foogallery/photo-watermark/)
-	*	No right-click protection - [demo](https://fooplugins.com/foogallery/photo-watermark/)
-*	Deep WooCommerce integration - [demo](https://fooplugins.com/foogallery/woocommerce-integration/#product-gallery)
+	*	Photo watermarking - [demo](https://fooplugins.com/foogallery-wordpress-gallery-plugin/photo-watermark/)
+	*	No right-click protection - [demo](https://fooplugins.com/foogallery-wordpress-gallery-plugin/photo-watermark/)
+*	Deep WooCommerce integration - [demo](https://fooplugins.com/foogallery-wordpress-gallery-plugin/woocommerce-integration/#product-gallery)
 	*	Create a dynamic gallery from your WooCommerce products in seconds!
 	*	Filter using WooCommerce product categories
 	*	Show sales ribbons for products on sale
@@ -138,7 +138,7 @@ There are 3 PRO plans available for any budget. Get started with premium feature
 	*	Link all your gallery items to a single master product
 	*	Supports variations
 
-[See More Demos](https://fooplugins.com/foogallery/demos/)
+[See More Demos](https://fooplugins.com/foogallery-wordpress-gallery-plugin/demos/)
 
 **Test Drive**
 
@@ -250,11 +250,11 @@ Have you enabled retina support for your galleries? To enable retina support, ed
 
 = Can I add videos to my galleries? =
 
-Yes, video is supported in [FooGallery PRO Expert](https://fooplugins.com/foogallery/#pro-expert-features)!
+Yes, video is supported in [FooGallery PRO Expert](https://fooplugins.com/foogallery-wordpress-gallery-plugin/#pro-expert-features)!
 
 = Can I sell photographs from a gallery? =
 
-Yes, that is why we built [FooGallery PRO Commerce](https://fooplugins.com/foogallery/#pro-commerce-features)!
+Yes, that is why we built [FooGallery PRO Commerce](https://fooplugins.com/foogallery-wordpress-gallery-plugin/#pro-commerce-features)!
 You can choose to create a gallery based of your products, or you can link all images in a gallery to a master product. This allows you complete control over how you want to run your image store and how they are sold on your website.
 
 = Do I need to install a separate plugin to show a lightbox? =
@@ -295,6 +295,14 @@ We did the research and comparison. See our findings : [What is the Best WordPre
 Please update in order to for FooGallery to work in WP 5.5+!
 
 == Changelog ==
+
+= 2.1.27 =
+* Date Updated : 2021-10-26
+* Fix : Fixed issue when no attachments being saved when updating gallery, in some scenarios.
+[//]: # fs_premium_only_begin
+* Fix : [Expert Plan] Fix for self hosted videos not playing in lightbox on mobiles.
+* Update : [Expert Plan] Moved search settings into it's own tab under Filtering within gallery settings.
+[//]: # fs_premium_only_end
 
 = 2.1.24 =
 * Date Updated : 2021-10-16
