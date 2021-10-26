@@ -627,7 +627,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 					'title'   => __( 'Ecommerce Info', 'foogallery' ),
 					'desc'    => __( 'The below settings will only apply if you are using the WooCommerce Product datasource, or if individual attachments are linked to WooCommerce products.', 'foogallery' ),
 					'section' => __( 'Ecommerce', 'foogallery' ),
-					'subsection' => array( 'ecommerce-features' => __( 'Features', 'foogallery' ) ),
+					'subsection' => array( 'ecommerce-general' => __( 'General', 'foogallery' ) ),
 					'type'    => 'help',
 				);
 
@@ -636,7 +636,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 					'title'    => __( 'Sale Ribbon', 'foogallery' ),
 					'desc'     => __( 'The type of ribbon to display for products that are on sale.', 'foogallery' ),
 					'section'  => __( 'Ecommerce', 'foogallery' ),
-					'subsection' => array( 'ecommerce-features' => __( 'Features', 'foogallery' ) ),
+					'subsection' => array( 'ecommerce-general' => __( 'General', 'foogallery' ) ),
 					'type'     => 'select',
 					'default'  => 'fg-ribbon-3',
 					'choices'  => FooGallery_Pro_Ribbons::get_ribbon_choices(),
@@ -652,7 +652,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 					'title'    => __( 'Sale Ribbon Text', 'foogallery' ),
 					'desc'     => __( 'The text inside the ribbon to display for products that are on sale. Use "{{%}}" to display the percentage discount.', 'foogallery' ),
 					'section'  => __( 'Ecommerce', 'foogallery' ),
-					'subsection' => array( 'ecommerce-features' => __( 'Features', 'foogallery' ) ),
+					'subsection' => array( 'ecommerce-general' => __( 'General', 'foogallery' ) ),
 					'type'     => 'text',
 					'default'  => __( 'Sale', 'foogallery' ),
 					'row_data' => array(
@@ -671,7 +671,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 					'title'    => __( '"View Product" Button', 'foogallery' ),
 					'desc'     => __( 'Shows a button which redirects to the product page.', 'foogallery' ),
 					'section'  => __( 'Ecommerce', 'foogallery' ),
-					'subsection' => array( 'ecommerce-features' => __( 'Features', 'foogallery' ) ),
+					'subsection' => array( 'ecommerce-general' => __( 'General', 'foogallery' ) ),
 					'type'     => 'radio',
 					'spacer'   => '<span class="spacer"></span>',
 					'default'  => '',
@@ -692,7 +692,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 					'title'    => __( '"View Product" Button Behaviour', 'foogallery' ),
 					'desc'     => __( 'What happens when the "View Product" button is clicked.', 'foogallery' ),
 					'section'  => __( 'Ecommerce', 'foogallery' ),
-					'subsection' => array( 'ecommerce-features' => __( 'Features', 'foogallery' ) ),
+					'subsection' => array( 'ecommerce-general' => __( 'General', 'foogallery' ) ),
 					'type'     => 'select',
 					'choices'  => array(
 						'fg-woo-view-product' => __( 'Redirect to product page', 'foogallery' ),
@@ -716,7 +716,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 					'title'    => __( '"View Product" Button Text', 'foogallery' ),
 					'desc'     => __( 'The text displayed on the "View Product" button.', 'foogallery' ),
 					'section'  => __( 'Ecommerce', 'foogallery' ),
-					'subsection' => array( 'ecommerce-features' => __( 'Features', 'foogallery' ) ),
+					'subsection' => array( 'ecommerce-general' => __( 'General', 'foogallery' ) ),
 					'type'     => 'text',
 					'default'  => __( 'View Product', 'foogallery' ),
 					'row_data' => array(
@@ -735,7 +735,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 					'title'    => __( '"Add To Cart" Button', 'foogallery' ),
 					'desc'     => __( 'Shows an "Add To Cart" button for the product. Will only show for purchasable products.', 'foogallery' ),
 					'section'  => __( 'Ecommerce', 'foogallery' ),
-					'subsection' => array( 'ecommerce-features' => __( 'Features', 'foogallery' ) ),
+					'subsection' => array( 'ecommerce-general' => __( 'General', 'foogallery' ) ),
 					'type'     => 'radio',
 					'spacer'   => '<span class="spacer"></span>',
 					'choices'  => array(
@@ -755,7 +755,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 					'title'    => __( '"Add To Cart" Button Behaviour', 'foogallery' ),
 					'desc'     => __( 'What happens when the "Add to Cart" button is clicked.', 'foogallery' ),
 					'section'  => __( 'Ecommerce', 'foogallery' ),
-					'subsection' => array( 'ecommerce-features' => __( 'Features', 'foogallery' ) ),
+					'subsection' => array( 'ecommerce-general' => __( 'General', 'foogallery' ) ),
 					'type'     => 'select',
 					'choices'  => self::get_button_behaviour_choices(),
 					'default'  => 'fg-woo-add-to-cart-ajax',
@@ -775,7 +775,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 					'title'    => __( '"Add To Cart" Button Text', 'foogallery' ),
 					'desc'     => __( 'The text displayed on the "Add To Cart" action button.', 'foogallery' ),
 					'section'  => __( 'Ecommerce', 'foogallery' ),
-					'subsection' => array( 'ecommerce-features' => __( 'Features', 'foogallery' ) ),
+					'subsection' => array( 'ecommerce-general' => __( 'General', 'foogallery' ) ),
 					'type'     => 'text',
 					'default'  => __( 'Add To Cart', 'foogallery' ),
 					'row_data' => array(
@@ -794,7 +794,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 					'title'    => __( '"Select Options" Button', 'foogallery' ),
 					'desc'     => __( 'Shows a "Select Options" button for the variable products only.', 'foogallery' ),
 					'section'  => __( 'Ecommerce', 'foogallery' ),
-					'subsection' => array( 'ecommerce-features' => __( 'Features', 'foogallery' ) ),
+					'subsection' => array( 'ecommerce-general' => __( 'General', 'foogallery' ) ),
 					'type'     => 'radio',
 					'spacer'   => '<span class="spacer"></span>',
 					'choices'  => array(
@@ -814,7 +814,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 					'title'    => __( '"Select Options" Button Text', 'foogallery' ),
 					'desc'     => __( 'The text displayed on the "Select Options" button for variable products.', 'foogallery' ),
 					'section'  => __( 'Ecommerce', 'foogallery' ),
-					'subsection' => array( 'ecommerce-features' => __( 'Features', 'foogallery' ) ),
+					'subsection' => array( 'ecommerce-general' => __( 'General', 'foogallery' ) ),
 					'type'     => 'text',
 					'default'  => __( 'Select Options', 'foogallery' ),
 					'row_data' => array(
