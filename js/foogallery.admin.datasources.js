@@ -50,8 +50,6 @@ jQuery(function ($) {
 
 		$content.show();
 
-		$('#foogallery_datasource').val(datasource);
-
 		var datasource_value = $('#_foogallery_datasource_value').val();
 
 		if ( $content.hasClass('not-loaded') ) {
