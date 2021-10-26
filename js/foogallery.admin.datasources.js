@@ -2,7 +2,6 @@ jQuery(function ($) {
 	$('.gallery_datasources_button').on('click', function(e) {
 		e.preventDefault();
 		$('.foogallery-datasources-modal-wrapper').show();
-		//$('.foogallery-datasource-modal-selector:first').click();
 	});
 
 	$('.foogallery-datasources-modal-wrapper').on('click', '.media-modal-close, .foogallery-datasource-modal-cancel', function(e) {
@@ -10,7 +9,6 @@ jQuery(function ($) {
 	});
 
 	$('.foogallery-datasources-modal-wrapper').on('click', '.foogallery-datasource-modal-insert', function(e) {
-		//alert( $('#foogallery_datasource_text').val() + ' --- ' + $('#foogallery_datasource_value').val() );
 		var activeDatasource = $('.foogallery-datasource-modal-selector.active').data('datasource');
 
 		//set the datasource
