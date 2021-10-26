@@ -157,14 +157,12 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Products' ) ) {
 		 * @return mixed
 		 */
 		public function add_datasource( $datasources ) {
-			if ( $this->is_woocommerce_activated() ) {
-				$datasources['woocommerce'] = array(
-					'id'     => 'woocommerce',
-					'name'   => __( 'WooCommerce Products', 'foogallery' ),
-					'menu'   => __( 'WooCommerce Products', 'foogallery' ),
-					'public' => true
-				);
-			}
+			$datasources['woocommerce'] = array(
+				'id'     => 'woocommerce',
+				'name'   => __( 'WooCommerce Products', 'foogallery' ),
+				'menu'   => __( 'WooCommerce Products', 'foogallery' ),
+				'public' => true
+			);
 
 			return $datasources;
 		}
@@ -310,6 +308,15 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Products' ) ) {
 		 * @param $foogallery_id
 		 */
 		public function render_datasource_modal_content( $foogallery_id, $datasource_value ) {
+			if ( ! $this->is_woocommerce_activated() ) {
+				?>
+				<p>
+					<?php _e('Woocommerce is not installed! This datasource is not available.', 'foogallery' ); ?>
+				</p>
+				<?php
+				return;
+			}
+
 			$caption_sources = array(
 				'title'             => __( 'Title', 'foogallery' ),
 				'short_description' => __( 'Short Description', 'foogallery' ),
