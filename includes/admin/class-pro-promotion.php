@@ -169,7 +169,7 @@ if ( ! class_exists( 'FooGallery_Pro_Promotion' ) ) {
 			$this->render_datasource_modal_content(
 				__('Bulk Copy Settings', 'foogallery' ),
 				__('Copy settings from one gallery to other galleries in bulk. You can choose which settings, and what galleries to copy them to.', 'foogallery' ),
-				$this->build_url( 'foogallery-bulk-copy' )
+				'foogallery-bulk-copy'
 			);
 		}
 
