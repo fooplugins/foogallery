@@ -17,6 +17,9 @@ FooGallery.autoEnabled = false;
 
         $('#foogallery_attachments').val( sorted.join(',') );
 
+        // Force the datasource to be 'media_library' so that we do not get into a strange state with other datasources that were previously selected.
+        $('#foogallery_datasource').val('media_library');
+
 		$('.foogallery_preview_container').addClass('foogallery-preview-force-refresh');
     };
 
