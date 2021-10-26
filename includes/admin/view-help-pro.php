@@ -10,7 +10,7 @@ $foogallery_pro_features = array(
 	array(
 		'title' => __( 'PRO Gallery Templates','foogallery' ),
 		'desc' => __( '3 more advanced gallery templates to help you showcase your photography, including Slider PRO, Grid PRO and Polaroid PRO.', 'foogallery' ),
-		'link' => 'https://fooplugins.com/foogallery/beautiful-gallery-templates/',
+		'link' => 'https://fooplugins.com/foogallery-wordpress-gallery-plugin/gallery-templates/',
 		'utm_content' => 'gallery_templates',
 		'link_text' => __( 'Learn More','foogallery' ),
 		'image' => 'https://assets.fooplugins.com/foogallery/plugin/foogallery-admin-help-pro-templates.png',
@@ -20,7 +20,7 @@ $foogallery_pro_features = array(
 	array(
 		'title' => __( 'PRO Lightbox','foogallery' ),
 		'desc' => __( 'Our PRO Lightbox is a responsive, full-featured and completely customizable. You can change the color scheme, show a thumbnail strip, enable a slideshow, customize the captions and so much more!', 'foogallery' ),
-		'link' => 'https://fooplugins.com/foogallery/foogallery-pro-lightbox/',
+		'link' => 'https://fooplugins.com/foogallery-wordpress-gallery-plugin/pro-lightbox/',
 		'utm_content' => 'lightbox',
 		'link_text' => __( 'Learn More','foogallery' ),
 		'image' => 'https://assets.fooplugins.com/foogallery/plugin/foogallery-admin-help-pro-lightbox.png',
@@ -30,7 +30,7 @@ $foogallery_pro_features = array(
 	array(
 		'title' => __( 'Animated Hover Effect Presets','foogallery' ),
 		'desc' => __( 'Choose from 11 animated hover effect presets, to add that professional and elegant look to your galleries.', 'foogallery' ),
-		'link' => 'https://fooplugins.com/foogallery/hover-presets/',
+		'link' => 'https://fooplugins.com/foogallery-wordpress-gallery-plugin/hover-presets/',
 		'utm_content' => 'hover_presets',
 		'link_text' => __( 'Learn More','foogallery' ),
 		'image' => 'https://assets.fooplugins.com/foogallery/plugin/foogallery-admin-help-pro-presets.png',
@@ -40,7 +40,7 @@ $foogallery_pro_features = array(
 	array(
 		'title' => __( 'Image Filter Effects','foogallery' ),
 		'desc' => __( 'Mage your galleries pop, by adding one of 12 image filter effects to your thumbnails, just like you can do with Instagram. Make your galleries stand out from the competition!', 'foogallery' ),
-		'link' => 'https://fooplugins.com/foogallery/thumbnail-filters/',
+		'link' => 'https://fooplugins.com/foogallery-wordpress-gallery-plugin/filter-effects/',
 		'utm_content' => 'filter_effects',
 		'link_text' => __( 'Learn More','foogallery' ),
 		'image' => 'https://assets.fooplugins.com/foogallery/plugin/foogallery-admin-help-pro-effects.png',
@@ -50,7 +50,7 @@ $foogallery_pro_features = array(
 	array(
 		'title' => __( 'Video Galleries','foogallery' ),
 		'desc' => __( 'Showcase your videos! Create amazing video galleries by importing videos from YouTube, Vimeo and other sources. Also create galleries from self-hosted videos that you have uploaded to your media library. You can also create mixed galleries with both videos and images.', 'foogallery' ),
-		'link' => 'https://fooplugins.com/foogallery/wordpress-video-gallery/',
+		'link' => 'https://fooplugins.com/foogallery-wordpress-gallery-plugin/video-gallery/',
 		'utm_content' => 'videos',
 		'link_text' => __( 'Learn More','foogallery' ),
 		'image' => 'https://assets.fooplugins.com/foogallery/plugin/foogallery-admin-help-pro-videos.png',
@@ -60,7 +60,7 @@ $foogallery_pro_features = array(
 	array(
 		'title' => __( 'Multi-Level Tag Filtering','foogallery' ),
 		'desc' => __( 'Add tags or categories to your images or videos, and then allow your visitors to filter your gallery. Distinguish between your tags by showing count, or changing the size or opacity. You can also setup multi-level filtering!', 'foogallery' ),
-		'link' => 'https://fooplugins.com/foogallery/wordpress-filtered-gallery/',
+		'link' => 'https://fooplugins.com/foogallery-wordpress-gallery-plugin/filtering/',
 		'utm_content' => 'filtering',
 		'link_text' => __( 'Learn More','foogallery' ),
 		'image' => 'https://assets.fooplugins.com/foogallery/plugin/foogallery-admin-help-pro-filtering.png',
@@ -70,7 +70,7 @@ $foogallery_pro_features = array(
 	array(
 		'title' => __( 'Advanced Pagination','foogallery' ),
 		'desc' => __( 'Add more advanced types of pagination to your galleries, including page numbering and the popular "Infinite Scroll" and "Load More" variations. Paging is a very useful for larger galleries, as it means your visitors do not need to load the entire gallery all at once.', 'foogallery' ),
-		'link' => 'https://fooplugins.com/foogallery/gallery-pagination/',
+		'link' => 'https://fooplugins.com/foogallery-wordpress-gallery-plugin/pagination/',
 		'utm_content' => 'pagination',
 		'link_text' => __( 'Learn More','foogallery' ),
 		'image' => 'https://assets.fooplugins.com/foogallery/plugin/foogallery-admin-help-pro-pagination.png',
@@ -90,7 +90,7 @@ $foogallery_pro_features = array(
 	array(
 		'title' => __( 'Custom Captions','foogallery' ),
 		'desc' => __( 'Customize your gallery captions, by building dynamic captions using HTML and pre-defined placeholders. Integrates with popular solutions like ACF and Pods for unlimited possibilities.', 'foogallery' ),
-		'link' => 'https://fooplugins.com/foogallery/custom-captions-wordpress-gallery/',
+		'link' => 'https://fooplugins.com/foogallery-wordpress-gallery-plugin/custom-captions/',
 		'utm_content' => 'captions',
 		'link_text' => __( 'Learn More','foogallery' ),
 		'image' => 'https://assets.fooplugins.com/foogallery/plugin/foogallery-admin-help-pro-captions.png',
@@ -100,7 +100,7 @@ $foogallery_pro_features = array(
 	array(
 		'title' => __( 'EXIF Metadata','foogallery' ),
 		'desc' => __( 'Show image metadata within your galleries. A must-have for professional photographers wanting to showcase specific metadata about each image.', 'foogallery' ),
-		'link' => 'https://fooplugins.com/foogallery/exif-metadata/',
+		'link' => 'https://fooplugins.com/foogallery-wordpress-gallery-plugin/exif-data/',
 		'utm_content' => 'exif',
 		'link_text' => __( 'Learn More','foogallery' ),
 		'image' => 'https://assets.fooplugins.com/foogallery/plugin/foogallery-admin-help-pro-exif.png',
@@ -120,7 +120,7 @@ $foogallery_pro_features = array(
 	array(
 		'title' => __( 'WooCommerce Product Datasource','foogallery' ),
 		'desc' => __( 'Create a dynamic product gallery from your WooCommerce products. You can filter and limit the products shown.', 'foogallery' ),
-		'link' => 'https://fooplugins.com/foogallery/woocommerce-product-gallery/',
+		'link' => 'https://fooplugins.com/foogallery-wordpress-gallery-plugin/woocommerce-product-gallery/',
 		'utm_content' => 'cta_buttons',
 		'link_text' => __( 'Learn More','foogallery' ),
 		'image' => 'https://assets.fooplugins.com/foogallery/plugin/foogallery-admin-help-pro-woocommerce-datasource.png',
@@ -130,7 +130,7 @@ $foogallery_pro_features = array(
 	array(
 		'title' => __( 'Product Gallery Template','foogallery' ),
 		'desc' => __( 'We created a new gallery template specifically for showcasing products, with all the default settings you need to take the most advantage of the commerce features.', 'foogallery' ),
-		'link' => 'https://fooplugins.com/foogallery/woocommerce-product-gallery/',
+		'link' => 'https://fooplugins.com/foogallery-wordpress-gallery-plugin/woocommerce-product-gallery/',
 		'utm_content' => 'product_gallery',
 		'link_text' => __( 'Learn More','foogallery' ),
 		'image' => 'https://assets.fooplugins.com/foogallery/plugin/foogallery-admin-help-pro-product-gallery.png',
@@ -140,7 +140,7 @@ $foogallery_pro_features = array(
 	array(
 		'title' => __( 'Watermarking &amp; Protection','foogallery' ),
 		'desc' => __( 'Protect your images by not allowing visitors to right click, and also by adding watermarks to images in your galleries. Beautiful looking repeating watermarks are built-in, or use your own custom image.', 'foogallery' ),
-		'link' => 'https://fooplugins.com/foogallery/image-protection-watermarking/',
+		'link' => 'https://fooplugins.com/foogallery-wordpress-gallery-plugin/photo-watermark/',
 		'utm_content' => 'protection',
 		'link_text' => __( 'Learn More','foogallery' ),
 		'image' => 'https://assets.fooplugins.com/foogallery/plugin/foogallery-admin-help-pro-watermarking.png',
@@ -150,7 +150,7 @@ $foogallery_pro_features = array(
 	array(
 		'title' => __( 'Lightbox Product Info','foogallery' ),
 		'desc' => __( 'Our lightbox integrates with WooCommerce, to show product information, including listing all variations and add to cart buttons.', 'foogallery' ),
-		'link' => 'https://fooplugins.com/foogallery/woocommerce-product-info-lightbox/',
+		'link' => 'https://fooplugins.com/foogallery-wordpress-gallery-plugin/woocommerce-integration/#product-variations',
 		'utm_content' => 'product_info_lightbox',
 		'link_text' => __( 'Learn More','foogallery' ),
 		'image' => 'https://assets.fooplugins.com/foogallery/plugin/foogallery-admin-help-pro-product-info-lightbox.png',
@@ -160,7 +160,7 @@ $foogallery_pro_features = array(
 	array(
 		'title' => __( 'CTA Buttons','foogallery' ),
 		'desc' => __( 'Add Call-to-Action buttons to your gallery images or videos. You can link to product pages or allow visitors to add to cart.', 'foogallery' ),
-		'link' => 'https://fooplugins.com/foogallery/cta-buttons/',
+		'link' => 'https://fooplugins.com/foogallery-wordpress-gallery-plugin/woocommerce-integration/#cta-buttons',
 		'utm_content' => 'cta_buttons',
 		'link_text' => __( 'Learn More','foogallery' ),
 		'image' => 'https://assets.fooplugins.com/foogallery/plugin/foogallery-admin-help-pro-buttons.png',
@@ -170,7 +170,7 @@ $foogallery_pro_features = array(
 	array(
 		'title' => __( 'Ribbons','foogallery' ),
 		'desc' => __( 'Add attention-grabbing ribbons to your images to highlight sales or special offers, to increase conversions.', 'foogallery' ),
-		'link' => 'https://fooplugins.com/foogallery/ribbons/',
+		'link' => 'https://fooplugins.com/foogallery-wordpress-gallery-plugin/woocommerce-integration/#sales-ribbons',
 		'utm_content' => 'cta_ribbons',
 		'link_text' => __( 'Learn More','foogallery' ),
 		'image' => 'https://assets.fooplugins.com/foogallery/plugin/foogallery-admin-help-pro-ribbons.png',
