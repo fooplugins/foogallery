@@ -296,9 +296,10 @@ Please update in order to for FooGallery to work in WP 5.5+!
 
 == Changelog ==
 
-= 2.1.27 =
-* Date Updated : 2021-10-26
+= 2.1.28 =
+* Date Updated : 2021-10-27
 * Fix : Fixed issue when no attachments being saved when updating gallery, in some scenarios.
+* Update : Updated features on help page. Updated links to correct URL's.
 [//]: # fs_premium_only_begin
 * Fix : [Expert Plan] Fix for self hosted videos not playing in lightbox on mobiles.
 * Update : [Expert Plan] Moved search settings into it's own tab under Filtering within gallery settings.
