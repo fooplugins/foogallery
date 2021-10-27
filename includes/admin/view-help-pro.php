@@ -120,7 +120,7 @@ $foogallery_pro_features = array(
 	array(
 		'title' => __( 'WooCommerce Product Datasource','foogallery' ),
 		'desc' => __( 'Create a dynamic product gallery from your WooCommerce products. You can filter and limit the products shown.', 'foogallery' ),
-		'link' => 'https://fooplugins.com/foogallery-wordpress-gallery-plugin/woocommerce-product-gallery/',
+		'link' => 'https://fooplugins.com/foogallery-wordpress-gallery-plugin/woocommerce-integration/',
 		'utm_content' => 'cta_buttons',
 		'link_text' => __( 'Learn More','foogallery' ),
 		'image' => 'https://assets.fooplugins.com/foogallery/plugin/foogallery-admin-help-pro-woocommerce-datasource.png',
@@ -128,9 +128,19 @@ $foogallery_pro_features = array(
 		'plans' => array( FOOGALLERY_PRO_PLAN_COMMERCE ),
 	),
 	array(
+		'title' => __( 'Sell Images With A Master Product','foogallery' ),
+		'desc' => __( 'Create a single "Master Product" with variations and link it to all the images in your gallery. This means you can start selling your image just a stock photo website!', 'foogallery' ),
+		'link' => 'https://fooplugins.com/foogallery-wordpress-gallery-plugin/woocommerce-integration/#master-product',
+		'utm_content' => 'product_gallery',
+		'link_text' => __( 'Learn More','foogallery' ),
+		'image' => 'https://assets.fooplugins.com/foogallery/plugin/foogallery-sell-images-master-product.png',
+		'plan' => FOOGALLERY_PRO_PLAN_COMMERCE,
+		'plans' => array( FOOGALLERY_PRO_PLAN_COMMERCE ),
+	),
+	array(
 		'title' => __( 'Product Gallery Template','foogallery' ),
 		'desc' => __( 'We created a new gallery template specifically for showcasing products, with all the default settings you need to take the most advantage of the commerce features.', 'foogallery' ),
-		'link' => 'https://fooplugins.com/foogallery-wordpress-gallery-plugin/woocommerce-product-gallery/',
+		'link' => 'https://fooplugins.com/foogallery-wordpress-gallery-plugin/woocommerce-integration/#product-gallery',
 		'utm_content' => 'product_gallery',
 		'link_text' => __( 'Learn More','foogallery' ),
 		'image' => 'https://assets.fooplugins.com/foogallery/plugin/foogallery-admin-help-pro-product-gallery.png',
@@ -168,7 +178,7 @@ $foogallery_pro_features = array(
 		'plans' => array( FOOGALLERY_PRO_PLAN_COMMERCE ),
 	),
 	array(
-		'title' => __( 'Ribbons','foogallery' ),
+		'title' => __( 'Sales Ribbons','foogallery' ),
 		'desc' => __( 'Add attention-grabbing ribbons to your images to highlight sales or special offers, to increase conversions.', 'foogallery' ),
 		'link' => 'https://fooplugins.com/foogallery-wordpress-gallery-plugin/woocommerce-integration/#sales-ribbons',
 		'utm_content' => 'cta_ribbons',
