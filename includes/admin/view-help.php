@@ -6,9 +6,9 @@ $logo = FOOGALLERY_URL . 'assets/logo.png?v=2';
 
 $plugin_name = foogallery_plugin_name();
 $fooplugins_url = foogallery_admin_url( 'https://fooplugins.com/', 'help' );
-$plugin_url = foogallery_admin_url( 'https://fooplugins.com/foogallery/', 'help' );
+$plugin_url = foogallery_admin_url( 'https://fooplugins.com/foogallery-wordpress-gallery-plugin/', 'help' );
 $support_url = foogallery_admin_url( 'https://fooplugins.link/support/', 'help' );
-$plans_url = foogallery_admin_url( 'https://fooplugins.com/foogallery/pricing/#plans', 'help' );
+$plans_url = foogallery_admin_url( 'https://fooplugins.com/foogallery-wordpress-gallery-plugin/pricing/#plans', 'help' );
 
 $fooplugins_link = sprintf( '<a href="%s" target="_blank">%s</a>', $fooplugins_url, __( 'FooPlugins', 'foogallery' ) );
 $support_link = sprintf( '<a href="%s" target="_blank">%s</a>', $support_url, __( 'open a support ticket', 'foogallery' ) );

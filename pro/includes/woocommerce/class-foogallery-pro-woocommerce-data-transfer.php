@@ -49,6 +49,9 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce_Master_Product' ) ) {
 			// Override the product info response.
 			add_filter( 'foogallery_ecommerce_build_product_info_response', array( $this, 'adjust_product_info_response' ), 10, 4 );
 
+			// Adjust product permalinks to pass query params
+			add_filter( 'foogallery_ecommerce_build_product_permalink', array( $this, 'adjust_product_permalink' ), 10, 4 );
+
 			if ( is_admin() ) {
 				// Add extra fields to the templates.
 				add_filter( 'foogallery_override_gallery_template_fields', array( $this, 'add_more_ecommerce_fields' ), 40, 2 );
@@ -61,6 +64,32 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce_Master_Product' ) ) {
 
 				add_filter( 'woocommerce_order_item_display_meta_value', array( $this, 'adjust_order_item_display_meta_value' ), 10, 3 );
 			}
+		}
+
+		/**
+		 * Adjust the product permalink to include params for the gallery and attachment
+		 *
+		 * @param $permalink
+		 * @param $product
+		 * @param $attachment_id
+		 * @param $gallery
+		 *
+		 * @return string
+		 */
+		public function adjust_product_permalink( $permalink, $product, $attachment_id, $gallery) {
+			if ( !isset( $product ) || !isset( $gallery ) ) {
+				return $permalink;
+			}
+
+			$master_product_id = intval( $gallery->get_setting( 'ecommerce_master_product_id', '0' ) );
+			if ( $master_product_id === 0 ) {
+				return $permalink;
+			}
+
+			return add_query_arg( array(
+				'fg_id' => $gallery->ID,
+				'fga_id' => $attachment_id
+			), $permalink );
 		}
 
 		/**

@@ -5,6 +5,9 @@ if ( !class_exists( 'FooGallery_Polaroid_Gallery_Template' ) ) {
 	define('FOOGALLERY_POLAROID_GALLERY_TEMPLATE_URL', plugin_dir_url( __FILE__ ));
 
 	class FooGallery_Polaroid_Gallery_Template {
+
+		const template_id = 'polaroid_new';
+
 		/**
 		 * Wire up everything we need to run the extension
 		 */
@@ -35,7 +38,26 @@ if ( !class_exists( 'FooGallery_Polaroid_Gallery_Template' ) ) {
             //build up the arguments needed for rendering this template
             add_filter( 'foogallery_gallery_template_arguments-polaroid_new', array( $this, 'build_gallery_template_arguments' ) );
 
+            // Append classed needed for the gallery template
 			add_filter( 'foogallery_build_class_attribute', array( $this, 'append_classes' ), 10, 2 );
+
+			// Ensure we output the inline styling needed for a simple portfolio gallery template
+			add_filter( 'foogallery_is_simple_portfolio_gallery_template', array( $this, 'is_simple_portfolio_gallery_template' ), 10, 2 );
+        }
+
+		/**
+		 * Returns if this is a simple portfolio style gallery
+		 *
+		 * @param $return bool
+		 * @param $gallery
+		 *
+		 * @return bool
+		 */
+        function is_simple_portfolio_gallery_template( $return, $gallery ) {
+			if ( is_object( $gallery ) && is_a( $gallery, 'FooGallery' ) && self::template_id === $gallery->gallery_template ) {
+				return true;
+			}
+			return $return;
         }
 
 		/**
@@ -57,7 +79,7 @@ if ( !class_exists( 'FooGallery_Polaroid_Gallery_Template' ) ) {
 		 */
 		function add_template( $gallery_templates ) {
 			$gallery_templates[] = array(
-                'slug'        => 'polaroid_new',
+                'slug'        => self::template_id,
                 'name'        => __( 'Polaroid PRO', 'foogallery' ),
 				'preview_support' => true,
 				'common_fields_support' => true,
@@ -106,7 +128,7 @@ if ( !class_exists( 'FooGallery_Polaroid_Gallery_Template' ) ) {
 						'section' => __( 'General', 'foogallery' ),
                         'type'    => 'number',
                         'class'   => 'small-text',
-                        'default' => 40,
+                        'default' => 20,
                         'step'    => '1',
                         'min'     => '0',
 						'row_data'=> array(
