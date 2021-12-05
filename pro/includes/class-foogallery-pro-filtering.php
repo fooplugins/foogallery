@@ -79,7 +79,7 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 				$filtering_options = foogallery_current_gallery_get_cached_value( 'filtering' );
 				$filtering_type = $filtering_options['type'];
 
-				if ( '' !== $filtering_type ) {
+				if ( '' !== $filtering_type && isset( $filtering_options['position'] ) )  {
 					$filtering_position = $filtering_options['position'];
 					if ( $position === $filtering_position || 'both' === $filtering_position ) {
 						echo '<nav id="' . $foogallery->container_id() . '_filtering-' . $position . '" class="fg-filtering-container fg-ph-' . $filtering_type . '"></nav>';
