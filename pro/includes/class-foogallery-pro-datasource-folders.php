@@ -112,12 +112,16 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Folders' ) ) {
 					} else {
 						$metadata = 'file'; //set the default metadata source to be the server file
 					}
+					$sort = '';
+					if ( array_key_exists( 'sort', $datasource_value ) ) {
+						$sort = $datasource_value['sort'];
+					}
 
 					$expiry_hours = apply_filters( 'foogallery_datasource_folder_expiry', 24 );
 					$expiry       = $expiry_hours * 60 * 60;
 
 					//find all image files in the folder
-					$attachments = $this->build_attachments_from_folder( $folder, $metadata );
+					$attachments = $this->build_attachments_from_folder( $folder, $metadata, $sort );
 
 					//save a cached list of attachments
 					set_transient( $transient_key, $attachments, $expiry );
@@ -165,9 +169,12 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Folders' ) ) {
 		 *
 		 * @return array(FooGalleryAttachment)
 		 */
-		private function build_attachments_from_folder( $folder, $metadata_source = 'file' ) {
+		private function build_attachments_from_folder( $folder, $metadata_source = 'file', $sort = '' ) {
 			global $wp_filesystem;
 			global $foogallery_gallery_preview;
+			global $foogallery_folder_sort;
+
+			$foogallery_folder_sort = $sort;
 
 			$max_attachments = 0;
 			if ( isset( $foogallery_gallery_preview ) ) {
@@ -295,6 +302,14 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Folders' ) ) {
 		 * @return int
 		 */
 		function sort_attachments( $a, $b ) {
+			global $foogallery_folder_sort;
+
+			if ( $foogallery_folder_sort === 'filename' ) {
+				return strnatcmp( $a->title, $b->title );
+			} else if ( $foogallery_folder_sort === 'filename-desc' ) {
+				return strnatcmp( $b->title, $a->title );
+			}
+
 			if ( $a->sort == $b->sort ) {
 				return 0;
 			}
@@ -375,21 +390,35 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Folders' ) ) {
 			if ( is_array( $datasource_value ) && array_key_exists( 'metadata', $datasource_value ) ) {
 				$metadata_source = $datasource_value['metadata'];
 			}
+			$sort_order = '';
+			if ( is_array( $datasource_value ) && array_key_exists( 'sort', $datasource_value ) ) {
+				$sort_order = $datasource_value['sort'];
+			}
 			?>
 			<script type="text/javascript">
 				document.foogalleryDatasourceFolderNonce = '<?php echo wp_create_nonce( "foogallery_datasource_folder_change" ); ?>';
 			</script>
 			<p><?php _e( 'Select which folder on the server you want to load images from. You also need to choose the source of the image metadata. Image metadata allows you to change the caption title, caption description, alt text and the order of the images. This metadata can be read from a file on the server (metadata.json) or from the WordPress database.', 'foogallery' ); ?></p>
-			<p class="foogallery-datasource-folder-metadata-selector">
+			<p class="foogallery-datasource-folder-selector">
 				<?php _e( 'Image Metadata : ', 'foogallery' ); ?>
 				<input type="radio" name="foogallery-datasource-folder-metadata" id="foogallery-datasource-folder-metadata-file" value="file" <?php echo $metadata_source === 'file' ? 'checked="checked"' : ''; ?>>
 				<label for="foogallery-datasource-folder-metadata-file"><?php _e( 'Load from file on server', 'foogallery' ); ?></label>
 				<input type="radio" name="foogallery-datasource-folder-metadata" id="foogallery-datasource-folder-metadata-database" value="database" <?php echo $metadata_source === 'database' ? 'checked="checked"' : ''; ?>>
 				<label for="foogallery-datasource-folder-metadata-database"><?php _e( 'Load from WordPress database', 'foogallery' ); ?></label>
-				<span class="spinner"></span>
 			</p>
-			<p style="clear: both"><?php _e( 'Selected Folder : ', 'foogallery' ); ?>
+			<p class="foogallery-datasource-folder-selector">
+				<?php _e( 'Sort Order : ', 'foogallery' ); ?>
+				<input type="radio" name="foogallery-datasource-folder-sort" id="foogallery-datasource-folder-sort-default" value="" <?php echo $sort_order === '' ? 'checked="checked"' : ''; ?>>
+				<label for="foogallery-datasource-folder-sort-default"><?php _e( 'Default', 'foogallery' ); ?></label>
+				<input type="radio" name="foogallery-datasource-folder-sort" id="foogallery-datasource-folder-sort-filename" value="filename" <?php echo $sort_order === 'filename' ? 'checked="checked"' : ''; ?>>
+				<label for="foogallery-datasource-folder-sort-filename"><?php _e( 'Filename', 'foogallery' ); ?></label>
+				<input type="radio" name="foogallery-datasource-folder-sort" id="foogallery-datasource-folder-sort-filename-desc" value="filename-desc" <?php echo $sort_order === 'filename' ? 'checked="checked"' : ''; ?>>
+				<label for="foogallery-datasource-folder-sort-filename-desc"><?php _e( 'Filename (Reversed)', 'foogallery' ); ?></label>
+			</p>
+			<p>
+				<span style="float:left;"><?php _e( 'Selected Folder : ', 'foogallery' ); ?></span>
 				<span class="foogallery-datasource-folder-selected"><?php echo empty( $folder ) ? __( 'nothing yet', 'foogallery' ) : $folder; ?></span>
+				<span class="foogallery-datasource-folder-spinner spinner"></span>
 			</p>
 			<div class="foogallery-datasource-folder-container">
 				<?php
@@ -406,7 +435,8 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Folders' ) ) {
 		function render_folder_structure() {
 			if ( check_admin_referer( 'foogallery_datasource_folder_change', 'nonce' ) ) {
 				$folder   = urldecode( $_POST['folder'] );
-				$metadata = $_POST['metadata'];
+				$metadata = sanitize_text_field( $_POST['metadata'] );
+				$sort = sanitize_text_field( $_POST['sort'] );
 
 				if ( array_key_exists( 'json', $_POST ) ) {
 					$json = $_POST['json'];
@@ -420,7 +450,7 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Folders' ) ) {
 					delete_option( $option_key );
 				}
 
-				$this->render_folder( $folder, $metadata );
+				$this->render_folder( $folder, $metadata, $sort );
 			}
 
 			die();
@@ -694,8 +724,8 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Folders' ) ) {
 		 * @param string $folder
 		 * @param string $metadata
 		 */
-		function render_folder( $folder = '/', $metadata_source = 'file' ) {
-			$attachments = $this->build_attachments_from_folder( $folder, $metadata_source );
+		function render_folder( $folder = '/', $metadata_source = 'file', $sort = '' ) {
+			$attachments = $this->build_attachments_from_folder( $folder, $metadata_source, $sort );
 			?>
 			<div class="foogallery-datasource-folder-list">
 				<?php $this->render_filesystem_tree( $folder ); ?>
