@@ -296,6 +296,13 @@ Please update in order to for FooGallery to work in WP 5.5+!
 
 == Changelog ==
 
+= 2.1.29 =
+* Date Updated : 2021-12-29
+[//]: # fs_premium_only_begin
+* New : [Expert Plan] Added sort order option for server folder datasource.
+* Fix : [Expert Plan] Fixed PHP warning when using gallery search.
+[//]: # fs_premium_only_end
+
 = 2.1.28 =
 * Date Updated : 2021-10-27
 * Fix : Fixed issue when no attachments being saved when updating gallery, in some scenarios.
