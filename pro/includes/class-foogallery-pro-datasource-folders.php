@@ -412,7 +412,7 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Folders' ) ) {
 				<label for="foogallery-datasource-folder-sort-default"><?php _e( 'Default', 'foogallery' ); ?></label>
 				<input type="radio" name="foogallery-datasource-folder-sort" id="foogallery-datasource-folder-sort-filename" value="filename" <?php echo $sort_order === 'filename' ? 'checked="checked"' : ''; ?>>
 				<label for="foogallery-datasource-folder-sort-filename"><?php _e( 'Filename', 'foogallery' ); ?></label>
-				<input type="radio" name="foogallery-datasource-folder-sort" id="foogallery-datasource-folder-sort-filename-desc" value="filename-desc" <?php echo $sort_order === 'filename' ? 'checked="checked"' : ''; ?>>
+				<input type="radio" name="foogallery-datasource-folder-sort" id="foogallery-datasource-folder-sort-filename-desc" value="filename-desc" <?php echo $sort_order === 'filename-desc' ? 'checked="checked"' : ''; ?>>
 				<label for="foogallery-datasource-folder-sort-filename-desc"><?php _e( 'Filename (Reversed)', 'foogallery' ); ?></label>
 			</p>
 			<p>
@@ -422,7 +422,7 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Folders' ) ) {
 			</p>
 			<div class="foogallery-datasource-folder-container">
 				<?php
-				$this->render_folder( $folder, $metadata_source );
+				$this->render_folder( $folder, $metadata_source, $sort_order );
 				?>
 			</div>
 			<?php
