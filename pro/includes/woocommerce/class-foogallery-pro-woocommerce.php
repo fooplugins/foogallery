@@ -37,6 +37,12 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 
 				// Add some help for custom captions.
 				add_filter( 'foogallery_build_custom_captions_help-default', array( $this, 'add_product_custom_caption_help' ) );
+
+				// Add a new tab to the product to override button or ribbon.
+				add_filter( 'woocommerce_product_data_tabs', array( $this, 'add_product_settings_tabs' ) );
+
+				// Add some fields to the new FooGallery product setting panel.
+				add_action( 'woocommerce_product_data_panels', array( $this, 'add_fields_to_product_panel' ) );
 			}
 
 			// Determine ribbon/button data from product.
@@ -66,6 +72,45 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 
 			// Add button data to the json output
 			add_filter( 'foogallery_build_attachment_json', array( $this, 'add_button_to_json' ), 40, 6 );
+		}
+
+		/**
+		 * Adds a new tab to the products data settings.
+		 *
+		 * @param $tabs
+		 *
+		 * @return mixed
+		 */
+		public function add_product_settings_tabs( $tabs ) {
+			$tabs['foogallery'] = array(
+				'label'    => __( 'FooGallery', 'foogallery' ),
+				'target'   => 'foogallery_product_data',
+				//'class'    => array('show_if_virtual'),
+				'priority' => 71,
+			);
+
+			return $tabs;
+		}
+
+		/**
+		 * Add FooGallery-specific fields to the product panel
+		 *
+		 * @return void
+		 */
+		public function add_fields_to_product_panel() {
+			?>
+			<style>
+				#woocommerce-product-data ul.wc-tabs li.foogallery_options.foogallery_tab a:before {
+                    content: "\f161";
+                }
+			</style>
+
+			<div id="foogallery_product_data" class="panel woocommerce_options_panel hidden">
+			<?php
+
+			do_action( 'foogallery_woocommerce_product_data_panels' );
+
+			echo '</div>';
 		}
 
 		/**
