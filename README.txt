@@ -3,7 +3,7 @@ Contributors: bradvin, steveush, fooplugins
 Donate link: https://fooplugins.com
 Tags: gallery, image gallery, photo gallery, responsive gallery, wordpress gallery plugin, best gallery plugin, albums, media gallery, video gallery, lightbox
 Requires at least: 4.6
-Tested up to: 5.8
+Tested up to: 5.9
 Stable tag: 2.1.18
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -83,7 +83,7 @@ The following free features make FooGallery the **best gallery plugin** on the m
 
 = PRO Gallery Features =
 
-There are 3 PRO plans available for any budget. Get started with premium features from $19!
+There are 3 PRO plans available, that will work with any budget:
 
 [PRO Starter](https://fooplugins.com/foogallery-wordpress-gallery-plugin/#pro-starter-features) | [PRO Expert](https://fooplugins.com/foogallery-wordpress-gallery-plugin/#pro-expert-features) | [PRO Commerce](https://fooplugins.com/foogallery-wordpress-gallery-plugin/#pro-commerce-features)
 
@@ -296,9 +296,10 @@ Please update in order to for FooGallery to work in WP 5.5+!
 
 == Changelog ==
 
-= 2.1.29 =
-* Date Updated : 2021-12-29
+= 2.1.30 =
+* Date Updated : 2022-01-06
 [//]: # fs_premium_only_begin
+* New : [Commerce Plan] Added FooGallery tab to product data metabox, to allow overrides for buttons and ribbons per product (when using the product datasource)
 * New : [Expert Plan] Added sort order option for server folder datasource.
 * Fix : [Expert Plan] Fixed PHP warning when using gallery search.
 [//]: # fs_premium_only_end

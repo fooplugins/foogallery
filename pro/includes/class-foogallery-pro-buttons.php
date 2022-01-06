@@ -45,9 +45,9 @@ if ( ! class_exists( 'FooGallery_Pro_Buttons' ) ) {
 
 				if ( !empty( $foogallery_buttons_clear ) ) {
 					update_post_meta( $id, '_foogallery_buttons_clear', $foogallery_buttons_clear );
-				} else {
-					delete_post_meta( $id, '_foogallery_buttons_clear' );
 				}
+			} else {
+				delete_post_meta( $id, '_foogallery_buttons_clear' );
 			}
 
 			if ( isset( $_POST['foogallery_button_text'] ) ) {
