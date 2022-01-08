@@ -48,6 +48,9 @@
 .foogallery-setting-video_overlay.fg-video-4 {
 	background-image: url('../img/icons.svg#video-4-light');
 }
+.foogallery-setting-caption_icon.fg-hover-cart {
+	background-image: url('../img/icons.svg#cart-light');
+}
 
 .foogallery_template_field_type-htmlicon.foogallery_template_field_id-loading_icon td label {
 	background-color: #eee;

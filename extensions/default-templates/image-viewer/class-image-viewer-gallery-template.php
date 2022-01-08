@@ -5,6 +5,9 @@ if ( !class_exists( 'FooGallery_Image_Viewer_Gallery_Template' ) ) {
 	define('FOOGALLERY_IMAGE_VIEWER_GALLERY_TEMPLATE_URL', plugin_dir_url( __FILE__ ));
 
 	class FooGallery_Image_Viewer_Gallery_Template {
+
+		const TEMPLATE_ID = 'image-viewer';
+
 		/**
 		 * Wire up everything we need to run the extension
 		 */
@@ -12,7 +15,7 @@ if ( !class_exists( 'FooGallery_Image_Viewer_Gallery_Template' ) ) {
 			add_filter( 'foogallery_gallery_templates', array( $this, 'add_template' ) );
 
 			//add extra fields to the templates
-			add_filter( 'foogallery_override_gallery_template_fields-image-viewer', array( $this, 'add_common_thumbnail_fields' ), 10, 2 );
+			add_filter( 'foogallery_override_gallery_template_fields-image-viewer', array( $this, 'adjust_fields' ), 10, 2 );
 
 			add_filter( 'foogallery_gallery_templates_files', array( $this, 'register_myself' ) );
 
@@ -32,11 +35,41 @@ if ( !class_exists( 'FooGallery_Image_Viewer_Gallery_Template' ) ) {
 
 			//add the data options needed for image viewer
 			add_filter( 'foogallery_build_container_data_options-image-viewer', array( $this, 'add_data_options' ), 10, 3 );
+
+			// add a style block for the gallery based on the thumbnail width.
+			add_action( 'foogallery_loaded_template_before', array( $this, 'add_width_style_block' ), 10, 1 );
         }
+
+		/**
+		 * Add a style block based on the width thumbnail size
+		 *
+		 * @param $gallery FooGallery
+		 */
+		function add_width_style_block( $gallery ) {
+			if ( self::TEMPLATE_ID !== $gallery->gallery_template ) {
+				return;
+			}
+
+			$id         = $gallery->container_id();
+			$dimensions = foogallery_gallery_template_setting('thumbnail_size');
+			if ( is_array( $dimensions ) && array_key_exists( 'width', $dimensions ) && intval( $dimensions['width'] ) > 0 ) {
+				$width      = intval( $dimensions['width'] );
+
+				// @formatter:off
+				?>
+<style type="text/css">
+	<?php echo '#' . $id; ?> .fg-image {
+        width: <?php echo $width; ?>px;
+    }
+</style>
+				<?php
+				// @formatter:on
+			}
+		}
 
         function alter_field_value( $value, $field, $gallery, $template ) {
             //only do something if we are dealing with the thumbnail_dimensions field in this template
-            if ( 'image-viewer' === $template['slug'] && 'thumbnail_size' === $field['id'] ) {
+            if ( self::TEMPLATE_ID === $template['slug'] && 'thumbnail_size' === $field['id'] ) {
                 if ( !array_key_exists( 'crop', $value ) ) {
                     $value['crop'] = true;
                 }
@@ -65,7 +98,7 @@ if ( !class_exists( 'FooGallery_Image_Viewer_Gallery_Template' ) ) {
 		function add_template( $gallery_templates ) {
 
 			$gallery_templates[] = array(
-				'slug'        => 'image-viewer',
+				'slug'        => self::TEMPLATE_ID,
 				'name'        => __( 'Image Viewer', 'foogallery' ),
 				'preview_support' => true,
 				'common_fields_support' => true,
@@ -170,7 +203,7 @@ if ( !class_exists( 'FooGallery_Image_Viewer_Gallery_Template' ) ) {
 		 *
 		 * @return array
 		 */
-		function add_common_thumbnail_fields( $fields, $template ) {
+		function adjust_fields( $fields, $template ) {
 
 			//update specific fields
 			foreach ($fields as &$field) {

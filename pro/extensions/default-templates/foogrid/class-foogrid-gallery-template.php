@@ -62,7 +62,37 @@ if ( !class_exists( 'FooGallery_FooGrid_Gallery_Template' ) ) {
 			add_filter( 'foogallery_render_gallery_template_field_value', array( $this, 'alter_old_field_values'), 10, 4 );
 
 			add_filter( 'foogallery_build_class_attribute', array( $this, 'append_classes' ), 10, 2 );
+
+			// add a style block for the gallery based on the thumbnail width.
+			add_action( 'foogallery_loaded_template_before', array( $this, 'add_width_style_block' ), 10, 1 );
         }
+
+		/**
+		 * Add a style block based on the width thumbnail size
+		 *
+		 * @param $gallery FooGallery
+		 */
+		function add_width_style_block( $gallery ) {
+			if ( self::template_id !== $gallery->gallery_template ) {
+				return;
+			}
+
+			$id         = $gallery->container_id();
+			$dimensions = foogallery_gallery_template_setting('thumbnail_size');
+			if ( is_array( $dimensions ) && array_key_exists( 'width', $dimensions ) && intval( $dimensions['width'] ) > 0 ) {
+				$width      = intval( $dimensions['width'] );
+
+				// @formatter:off
+				?>
+<style type="text/css">
+	<?php echo '#' . $id; ?> .fg-image {
+        width: <?php echo $width; ?>px;
+    }
+</style>
+				<?php
+				// @formatter:on
+			}
+		}
 
 		/**
 		 * Alter a field

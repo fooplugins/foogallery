@@ -143,6 +143,10 @@ if ( ! class_exists( 'FooGallery_Debug' ) ) {
 					#foogallery_debug table { font-size: 0.8em; }
 					#foogallery_debug td { vertical-align: top; }
 				</style>
+				<h3>Template</h3>
+				<?php echo esc_html( $gallery->gallery_template ); ?>
+				<h3>Datasource</h3>
+				<?php echo esc_html( $gallery->datasource_name ); ?>
 				<h3>Settings</h3>
 				<div style="width:100%; height: 300px; overflow: scroll">
 					<?php var_dump( $settings ); ?>

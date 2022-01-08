@@ -1038,10 +1038,58 @@ function foogallery_get_fields_for_template( $template ) {
     // Also passes the $template along so you can inspect and conditionally alter fields based on the template properties
     $fields = apply_filters( "foogallery_override_gallery_template_fields-{$template['slug']}", $fields, $template );
 
-    foreach ( $fields as &$field ) {
-        //allow for the field to be altered by extensions. Also used by the build-in fields, e.g. lightbox
+    // Easily remove fields.
+	$fields_to_remove = apply_filters( 'foogallery_override_gallery_template_fields_remove', array(), $template );
+	$fields_to_remove = apply_filters( "foogallery_override_gallery_template_fields_remove-{$template['slug']}", $fields_to_remove );
+
+	// Easily set defaults for fields.
+	$override_fields_defaults = apply_filters( 'foogallery_override_gallery_template_fields_defaults', array(), $template );
+	$override_fields_defaults = apply_filters( "foogallery_override_gallery_template_fields_defaults-{$template['slug']}", $override_fields_defaults );
+
+	// Easily hide certain fields.
+	$fields_to_hide = apply_filters( 'foogallery_override_gallery_template_fields_hidden', array(), $template );
+	$fields_to_hide = apply_filters( "foogallery_override_gallery_template_fields_hidden-{$template['slug']}", $fields_to_hide );
+
+	$indexes_to_remove = array();
+
+	foreach ( $fields as $key => &$field ) {
+        // Allow for the field to be altered by extensions. Also used by the build-in fields, e.g. lightbox.
         $field = apply_filters( 'foogallery_alter_gallery_template_field', $field, $template['slug'] );
+
+		if ( in_array( $field['id'], $fields_to_remove ) ) {
+			$indexes_to_remove[] = $key;
+		} else {
+			// Last time to set field defaults.
+			if ( array_key_exists( $field['id'], $override_fields_defaults ) ) {
+				$field['default'] = $override_fields_defaults[ $field['id'] ];
+			}
+
+			// Make fields invisible.
+			if ( in_array( $field['id'], $fields_to_hide ) ) {
+
+				// Make sure the field is not visible.
+				$field['row_data']['data-foogallery-invisible'] = true;
+
+				// Force the field to not be hidden, which means it's values can be used in previews.
+				if ( isset( $field['row_data']['data-foogallery-hidden'] ) ) {
+					unset( $field['row_data']['data-foogallery-hidden'] );
+				}
+
+				// Remove the conditionals to FORCE the field to never be shown.
+				if ( isset( $field['row_data']['data-foogallery-show-when-field'] ) ) {
+					unset( $field['row_data']['data-foogallery-show-when-field'] );
+				}
+				if ( isset( $field['row_data']['data-foogallery-show-when-field-value'] ) ) {
+					unset( $field['row_data']['data-foogallery-show-when-field-value'] );
+				}
+			}
+		}
     }
+
+	// Finally, remove the fields that were marked for removal.
+	foreach ( $indexes_to_remove as $index ) {
+		unset( $fields[$index] );
+	}
 
     return $fields;
 }
@@ -1256,70 +1304,70 @@ function foogallery_marketing_demos() {
 	$demos[] = array(
 		'demo'	  => __('Responsive Image Gallery', 'foogallery'),
 		'section' => __('Standard Gallery Demos', 'foogallery'),
-		'href'	  => 'https://fooplugins.com/foogallery/wordpress-responsive-image-gallery/'
+		'href'	  => 'https://fooplugins.com/foogallery-wordpress-gallery-plugin/responsive-image-gallery/'
 	);
 	$demos[] = array(
 		'demo'	  => __('Masonry Image Gallery', 'foogallery'),
 		'section' => __('Standard Gallery Demos', 'foogallery'),
-		'href'	  => 'https://fooplugins.com/foogallery/wordpress-masonry-gallery/'
+		'href'	  => 'https://fooplugins.com/foogallery-wordpress-gallery-plugin/masonry-gallery/'
 	);
 	$demos[] = array(
 		'demo'	  => __('Justified Gallery', 'foogallery'),
 		'section' => __('Standard Gallery Demos', 'foogallery'),
-		'href'	  => 'https://fooplugins.com/foogallery/wordpress-justified-gallery/'
+		'href'	  => 'https://fooplugins.com/foogallery-wordpress-gallery-plugin/justified-gallery/'
 	);
 	$demos[] = array(
 		'demo'	  => __('Image Viewer Gallery', 'foogallery'),
 		'section' => __('Standard Gallery Demos', 'foogallery'),
-		'href'	  => 'https://fooplugins.com/foogallery/wordpress-image-viewer-gallery/'
+		'href'	  => 'https://fooplugins.com/foogallery-wordpress-gallery-plugin/image-viewer-gallery/'
 	);
 	$demos[] = array(
 		'demo'	  => __('Simple Portfolio Gallery', 'foogallery'),
 		'section' => __('Standard Gallery Demos', 'foogallery'),
-		'href'	  => 'https://fooplugins.com/foogallery/wordpress-portfolio-gallery/'
+		'href'	  => 'https://fooplugins.com/foogallery-wordpress-gallery-plugin/wordpress-portfolio-gallery/'
 	);
 	$demos[] = array(
 		'demo'	  => __('Single Thumbnail Gallery', 'foogallery'),
 		'section' => __('Standard Gallery Demos', 'foogallery'),
-		'href'	  => 'https://fooplugins.com/foogallery/wordpress-single-thumbnail-gallery/'
+		'href'	  => 'https://fooplugins.com/foogallery-wordpress-gallery-plugin/single-thumbnail-gallery/'
 	);
 
 	$demos[] = array(
 		'demo'	  => __('Grid PRO Gallery', 'foogallery'),
 		'section' => __('PRO Gallery Demos', 'foogallery'),
-		'href'	  => 'https://fooplugins.com/foogallery/wordpress-grid-gallery/'
+		'href'	  => 'https://fooplugins.com/foogallery-wordpress-gallery-plugin/grid-gallery/'
 	);
 	$demos[] = array(
 		'demo'	  => __('Polaroid PRO Gallery', 'foogallery'),
 		'section' => __('PRO Gallery Demos', 'foogallery'),
-		'href'	  => 'https://fooplugins.com/foogallery/wordpress-polaroid-gallery/'
+		'href'	  => 'https://fooplugins.com/foogallery-wordpress-gallery-plugin/polaroid-gallery/'
 	);
 	$demos[] = array(
 		'demo'	  => __('Slider PRO Gallery', 'foogallery'),
 		'section' => __('PRO Gallery Demos', 'foogallery'),
-		'href'	  => 'https://fooplugins.com/foogallery/wordpress-slider-gallery/'
+		'href'	  => 'https://fooplugins.com/foogallery-wordpress-gallery-plugin/slider-gallery/'
 	);
 
 	$demos[] = array(
 		'demo'	  => __('Hover Presets Demo', 'foogallery'),
 		'section' => __('PRO Features', 'foogallery'),
-		'href'	  => 'https://fooplugins.com/foogallery/hover-presets/'
+		'href'	  => 'https://fooplugins.com/foogallery-wordpress-gallery-plugin/hover-presets/'
 	);
 	$demos[] = array(
 		'demo'	  => __('Filtering Demos', 'foogallery'),
 		'section' => __('PRO Features', 'foogallery'),
-		'href'	  => 'https://fooplugins.com/foogallery/wordpress-filtered-gallery/'
+		'href'	  => 'https://fooplugins.com/foogallery-wordpress-gallery-plugin/filtering/'
 	);
 	$demos[] = array(
 		'demo'	  => __('Pagination Types Demo', 'foogallery'),
 		'section' => __('PRO Features', 'foogallery'),
-		'href'	  => 'https://fooplugins.com/foogallery/gallery-pagination/'
+		'href'	  => 'https://fooplugins.com/foogallery-wordpress-gallery-plugin/pagination/'
 	);
 
 	$demos[] = array(
 		'demo'	  => __('Video Gallery Demos', 'foogallery'),
 		'section' => __('PRO Features', 'foogallery'),
-		'href'	  => 'https://fooplugins.com/foogallery/wordpress-video-gallery/'
+		'href'	  => 'https://fooplugins.com/foogallery-wordpress-gallery-plugin/video-gallery/'
 	);
 
 	$demos[] = array(
@@ -1331,7 +1379,7 @@ function foogallery_marketing_demos() {
 	$demos[] = array(
 		'demo'	  => __('Albums', 'foogallery'),
 		'section' => __('Album Demos', 'foogallery'),
-		'href'	  => 'https://fooplugins.com/foogallery/wordpress-album-gallery/'
+		'href'	  => 'https://fooplugins.com/foogallery-wordpress-gallery-plugin/wordpress-album-gallery/'
 	);
 
 	return $demos;
@@ -1346,12 +1394,12 @@ function foogallery_marketing_pro_features() {
 	$features[] = array(
 		'feature' => __( 'Video Galleries', 'foogallery' ),
 		'desc'    => __( 'Create beautiful video galleries from YouTube, Vimeo, Facebook, Wistia and more!', 'foogallery' ),
-		'demo'	  => 'https://fooplugins.com/foogallery/wordpress-video-gallery/'
+		'demo'	  => 'https://fooplugins.com/foogallery-wordpress-gallery-plugin/video-gallery/'
 	);
 	$features[] = array(
 		'feature' => __( 'Media Tags + Filtering', 'foogallery' ),
 		'desc'    => __( 'Assign tags to your media, which allows visitors to filter the galleries by tag.', 'foogallery' ),
-		'demo'	  => 'https://fooplugins.com/foogallery/wordpress-filtered-gallery/'
+		'demo'	  => 'https://fooplugins.com/foogallery-wordpress-gallery-plugin/filtering/'
 	);
 	$features[] = array(
 		'feature' => __( 'More Gallery Templates', 'foogallery' ),
@@ -1361,17 +1409,17 @@ function foogallery_marketing_pro_features() {
 	$features[] = array(
 		'feature' => __( 'Preset Hover Effects', 'foogallery' ),
 		'desc'    => __( 'Choose from 11 beautifully designed preset hover effects.', 'foogallery' ),
-		'demo'	  => 'https://fooplugins.com/foogallery/hover-presets/'
+		'demo'	  => 'https://fooplugins.com/foogallery-wordpress-gallery-plugin/hover-presets/'
 	);
 	$features[] = array(
 		'feature' => __( 'Advanced Pagination + Infinite Scroll', 'foogallery' ),
 		'desc'    => __( 'Choose from more paging types like numbered, load more or infinite scroll.', 'foogallery' ),
-		'demo'	  => 'https://fooplugins.com/foogallery/gallery-pagination/'
+		'demo'	  => 'https://fooplugins.com/foogallery-wordpress-gallery-plugin/pagination/'
 	);
 	$features[] = array(
 		'feature' => __( 'Animated Loading Effects', 'foogallery' ),
 		'desc'    => __( 'Choose from 9 awesome animation effects to display as your galleries load.', 'foogallery' ),
-		'demo'	  => 'https://fooplugins.com/foogallery/animated-loaded-effects/'
+		'demo'	  => 'https://fooplugins.com/foogallery-wordpress-gallery-plugin/animated-loaded-effects/'
 	);
 	$features[] = array(
 		'feature' => __( 'Bulk Copy Settings', 'foogallery' ),
@@ -1869,6 +1917,9 @@ function foogallery_import_attachment( $attachment_data ) {
 		$attachment_args['meta_input']['_foogallery_custom_target'] = $attachment_data['custom_target'];
 	}
 
+	// Save the original URL, so that we do not import it again!
+	$attachment_args['meta_input']['_foogallery_imported_from'] = $attachment_data['url'];
+
 	// Insert the attachment.
 	$attachment_id = wp_insert_attachment( $attachment_args, $file, 0, true );
 	if ( is_wp_error( $attachment_id ) ) {
@@ -1877,17 +1928,17 @@ function foogallery_import_attachment( $attachment_data ) {
 	$attachment_meta = wp_generate_attachment_metadata( $attachment_id, $file );
 	wp_update_attachment_metadata( $attachment_id, $attachment_meta );
 
-	if ( ! empty( $tags ) ) {
+	if ( isset( $attachment_data['tags'] ) && is_array( $attachment_data['tags'] ) && count( $attachment_data['tags'] ) > 0 ) {
 		if ( taxonomy_exists( FOOGALLERY_ATTACHMENT_TAXONOMY_TAG ) ) {
 			// Save tags.
-			wp_set_object_terms( $attachment_id, $tags, FOOGALLERY_ATTACHMENT_TAXONOMY_TAG, false );
+			wp_set_object_terms( $attachment_id, $attachment_data['tags'], FOOGALLERY_ATTACHMENT_TAXONOMY_TAG, false );
 		}
 	}
 
-	if ( ! empty( $categories ) ) {
+	if ( isset( $attachment_data['categories'] ) && is_array( $attachment_data['categories'] ) && count( $attachment_data['categories'] ) > 0 ) {
 		if ( taxonomy_exists( FOOGALLERY_ATTACHMENT_TAXONOMY_CATEGORY ) ) {
 			// Save categories.
-			wp_set_object_terms( $attachment_id, $categories, FOOGALLERY_ATTACHMENT_TAXONOMY_CATEGORY, false );
+			wp_set_object_terms( $attachment_id, $attachment_data['categories'], FOOGALLERY_ATTACHMENT_TAXONOMY_CATEGORY, false );
 		}
 	}
 
@@ -1938,4 +1989,68 @@ function foogallery_get_full_size_image_data( $attachment_id ) {
  */
 function foogallery_get_svg_placeholder_image( $w, $h ) {
 	return 'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22' . $w . '%22%20height%3D%22' . $h . '%22%20viewBox%3D%220%200%20' . $w . '%20' . $h . '%22%3E%3C%2Fsvg%3E';
+}
+
+/**
+ * Extracts the gallery ID from a full gallery ID
+ *
+ * @param $full_gallery_id
+ *
+ * @return int
+ */
+function foogallery_extract_gallery_id( $full_gallery_id ) {
+	preg_match_all('/^.*?(\d+?)(?:_|$)/', $full_gallery_id, $matches );
+	if ( is_array( $matches ) ) {
+		return intval( $matches[1][0] );
+	}
+	return 0;
+}
+
+/**
+ * Return the index of a specific section with the gallery template fields array
+ *
+ * @param $fields
+ * @param $section
+ *
+ * @return int
+ */
+function foogallery_admin_fields_find_index_of_section( $fields, $section ) {
+	$index = 0;
+	foreach ( $fields as $field ) {
+		if ( isset( $field['section'] ) && $section === $field['section'] ) {
+			return $index;
+		}
+		$index++;
+	}
+	return $index;
+}
+
+/**
+ * Return the index of a specific field within the gallery template fields array
+ *
+ * @param $fields
+ * @param $field_id
+ *
+ * @return int
+ */
+function foogallery_admin_fields_find_index_of_field( $fields, $field_id ) {
+	$index = 0;
+	foreach ( $fields as $field ) {
+		if ( isset( $field['id'] ) && $field_id === $field['id'] ) {
+			return $index;
+		}
+		$index++;
+	}
+	return $index;
+}
+
+/**
+ * Returns the path of the URL
+ *
+ * @param $url
+ *
+ * @return false|string
+ */
+function foogallery_local_url_to_path( $url ) {
+	return FooGallery_Thumb_Generator::get_file_path( $url );
 }

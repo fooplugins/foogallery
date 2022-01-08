@@ -17,6 +17,9 @@ FooGallery.autoEnabled = false;
 
         $('#foogallery_attachments').val( sorted.join(',') );
 
+        // Force the datasource to be 'media_library' so that we do not get into a strange state with other datasources that were previously selected.
+        $('#foogallery_datasource').val('media_library');
+
 		$('.foogallery_preview_container').addClass('foogallery-preview-force-refresh');
     };
 
@@ -600,6 +603,11 @@ FooGallery.autoEnabled = false;
 				io.observe(img);
 			});
 		}
+
+	    $('.foogallery-admin-promo-dismiss').on('click', function(e) {
+		    e.preventDefault();
+		    alert( 'If you want to turn off these promotional messages forever, goto FooGallery Settings -> Advanced, and set the "Disable PRO Promotions" setting. Thank you for using FooGallery :)')
+	    } );
     };
 
 }(window.FOOGALLERY = window.FOOGALLERY || {}, jQuery));

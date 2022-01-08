@@ -2,7 +2,6 @@ jQuery(function ($) {
 	$('.gallery_datasources_button').on('click', function(e) {
 		e.preventDefault();
 		$('.foogallery-datasources-modal-wrapper').show();
-		//$('.foogallery-datasource-modal-selector:first').click();
 	});
 
 	$('.foogallery-datasources-modal-wrapper').on('click', '.media-modal-close, .foogallery-datasource-modal-cancel', function(e) {
@@ -10,7 +9,6 @@ jQuery(function ($) {
 	});
 
 	$('.foogallery-datasources-modal-wrapper').on('click', '.foogallery-datasource-modal-insert', function(e) {
-		//alert( $('#foogallery_datasource_text').val() + ' --- ' + $('#foogallery_datasource_value').val() );
 		var activeDatasource = $('.foogallery-datasource-modal-selector.active').data('datasource');
 
 		//set the datasource
@@ -29,7 +27,8 @@ jQuery(function ($) {
 	$('.foogallery-datasources-modal-wrapper').on('click', '.foogallery-datasource-modal-reload', function(e) {
 		e.preventDefault();
 
-		var datasource = $('#foogallery_datasource').val(),
+		var $wrapper = $('.foogallery-datasources-modal-wrapper'),
+			datasource = $wrapper.data('datasource'),
 			$content = $('.foogallery-datasource-modal-container-inner.' + datasource);
 
 		$content.addClass('not-loaded');
@@ -52,8 +51,6 @@ jQuery(function ($) {
 
 		$content.show();
 
-		$('#foogallery_datasource').val(datasource);
-
 		var datasource_value = $('#_foogallery_datasource_value').val();
 
 		if ( $content.hasClass('not-loaded') ) {
@@ -73,6 +70,7 @@ jQuery(function ($) {
 				data: data,
 				success: function(data) {
 					$('.foogallery-datasource-modal-reload').show();
+					$wrapper.data('datasource', datasource );
 
 					$content.html(data);
 					//raise a event so that datasource-specific code can run

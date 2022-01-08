@@ -210,13 +210,22 @@ if ( ! class_exists( 'FooGallery_Pro_Bulk_Management' ) ) {
 
 			$foogallery = FooGallery::get_by_id( $foogallery_id );
 
-			$attachment_query_args = array(
-				'post_type'      => 'attachment',
-				'posts_per_page' => -1,
-				'post__in'       => explode( ',', $attachments ),
-				'orderby'        => foogallery_sorting_get_posts_orderby_arg( $foogallery->sorting ),
-				'order'          => foogallery_sorting_get_posts_order_arg( $foogallery->sorting )
-			);
+			if ( !empty( $attachments ) ) {
+				$attachment_query_args = array(
+					'post_type'      => 'attachment',
+					'posts_per_page' => -1,
+					'post__in'       => explode( ',', $attachments ),
+					'orderby'        => foogallery_sorting_get_posts_orderby_arg( $foogallery->sorting ),
+					'order'          => foogallery_sorting_get_posts_order_arg( $foogallery->sorting )
+				);
+			} else {
+				$attachment_query_args = array(
+					'post_type'      => 'attachment',
+					'posts_per_page' => 100,
+				);
+			}
+
+			$attachment_query_args = apply_filters( 'foogallery_bulk_taxonomy_manager_attachments_query_args', $attachment_query_args, $foogallery_id, $attachments, $taxonomy );
 
 			$attachment_posts = get_posts( $attachment_query_args );
 

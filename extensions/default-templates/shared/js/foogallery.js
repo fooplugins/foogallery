@@ -5724,6 +5724,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
                     "cart": '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"><path d="M13.238 9c0.55 0 1.124-0.433 1.275-0.962l1.451-5.077c0.151-0.529-0.175-0.962-0.725-0.962h-10.238c0-1.105-0.895-2-2-2h-3v2h3v8.5c0 0.828 0.672 1.5 1.5 1.5h9.5c0.552 0 1-0.448 1-1s-0.448-1-1-1h-9v-1h8.238zM5 4h9.044l-0.857 3h-8.187v-3z"></path><path d="M6 14.5c0 0.828-0.672 1.5-1.5 1.5s-1.5-0.672-1.5-1.5c0-0.828 0.672-1.5 1.5-1.5s1.5 0.672 1.5 1.5z"></path><path d="M15 14.5c0 0.828-0.672 1.5-1.5 1.5s-1.5-0.672-1.5-1.5c0-0.828 0.672-1.5 1.5-1.5s1.5 0.672 1.5 1.5z"></path></svg>',
                     "circle-close": '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"><path d="M8 0c-4.418 0-8 3.582-8 8s3.582 8 8 8 8-3.582 8-8-3.582-8-8-8zM8 14.5c-3.59 0-6.5-2.91-6.5-6.5s2.91-6.5 6.5-6.5 6.5 2.91 6.5 6.5-2.91 6.5-6.5 6.5z"></path><path d="M10.5 4l-2.5 2.5-2.5-2.5-1.5 1.5 2.5 2.5-2.5 2.5 1.5 1.5 2.5-2.5 2.5 2.5 1.5-1.5-2.5-2.5 2.5-2.5z"></path></svg>',
                     "auto-progress": '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"><path class="[ICON_CLASS]-idle" d="M11.39 8c2.152-1.365 3.61-3.988 3.61-7 0-0.339-0.019-0.672-0.054-1h-13.891c-0.036 0.328-0.054 0.661-0.054 1 0 3.012 1.457 5.635 3.609 7-2.152 1.365-3.609 3.988-3.609 7 0 0.339 0.019 0.672 0.054 1h13.891c0.036-0.328 0.054-0.661 0.054-1 0-3.012-1.457-5.635-3.609-7zM2.5 15c0-2.921 1.253-5.397 3.5-6.214v-1.572c-2.247-0.817-3.5-3.294-3.5-6.214v0h11c0 2.921-1.253 5.397-3.5 6.214v1.572c2.247 0.817 3.5 3.294 3.5 6.214h-11zM9.462 10.462c-1.12-0.635-1.181-1.459-1.182-1.959v-1.004c0-0.5 0.059-1.327 1.184-1.963 0.602-0.349 1.122-0.88 1.516-1.537h-6.4c0.395 0.657 0.916 1.188 1.518 1.538 1.12 0.635 1.181 1.459 1.182 1.959v1.004c0 0.5-0.059 1.327-1.184 1.963-1.135 0.659-1.98 1.964-2.236 3.537h7.839c-0.256-1.574-1.102-2.879-2.238-3.538z"/><circle class="[ICON_CLASS]-circle" r="4" cx="8" cy="8"/><path class="[ICON_CLASS]-play" d="M3 2l10 6-10 6z"/><path class="[ICON_CLASS]-pause" d="M2 2h5v12h-5zM9 2h5v12h-5z"/></svg>',
+                    "search": '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"><path d="M16 13.5l-4.695-4.695c0.444-0.837 0.695-1.792 0.695-2.805 0-3.314-2.686-6-6-6s-6 2.686-6 6 2.686 6 6 6c1.013 0 1.968-0.252 2.805-0.695l4.695 4.695 2.5-2.5zM2 6c0-2.209 1.791-4 4-4s4 1.791 4 4-1.791 4-4 4-4-1.791-4-4z"></path></svg>',
                     "exif-aperture": '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"><path d="M 8,0 C 3.5876443,0 0,3.5876443 0,8 c 0,4.412356 3.5876443,8 8,8 4.412356,0 8,-3.587644 8,-8 C 16,3.5876443 12.412356,0 8,0 Z m 0,1 c 3.871916,0 7,3.1280844 7,7 0,3.871916 -3.128084,7 -7,7 C 4.1280844,15 1,11.871916 1,8 1,4.1280844 4.1280844,1 8,1 Z M 7.53125,2.0214844 A 6,6 0 0 0 3.1835938,4.4335938 H 8.9257812 Z M 8.6132812,2.03125 C 9.5587451,3.6702105 10.504247,5.3091484 11.451172,6.9472656 L 12.863281,4.5 A 6,6 0 0 0 8.6132812,2.03125 Z M 2.5957031,5.4101562 A 6,6 0 0 0 2,8 6,6 0 0 0 2.5273438,10.439453 L 5.4296875,5.4101562 Z m 10.8261719,0.033203 -2.855469,4.9433598 h 2.935547 A 6,6 0 0 0 14,8 6,6 0 0 0 13.421875,5.4433592 Z M 4.5722656,8.8945312 3.0996094,11.449219 a 6,6 0 0 0 4.40625,2.527343 z m 2.5820313,2.4707028 1.4960937,2.591797 a 6,6 0 0 0 4.3144534,-2.591797 z"></path></svg>',
                     "exif-camera": '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"><path d="m 8.0000002,5 a 4,4 0 0 0 -4,4 4,4 0 0 0 4,4 A 4,4 0 0 0 12,9 4,4 0 0 0 8.0000002,5 Z m 0.019531,1.015625 a 3,2.9814477 0 0 1 2.9804688,3 l -1,-0.00586 a 2,2 0 0 0 0,-0.00976 2,2 0 0 0 -1.9863279,-2 z M 5.125,1 C 4.5,1 4,1.5 4,2.125 V 3.0000004 L 1.125,3 C 0.5,2.9999999 0,3.5 0,4.125 v 9.75 C 0,14.5 0.5,15 1.125,15 h 13.75 C 15.5,15 16,14.5 16,13.875 V 4.125 C 16,3.5 15.5,3 14.875,3 H 12 V 2.125 C 12,1.5 11.5,1 10.875,1 Z M 5.25,2.0000004 h 5.5 c 0.125,0 0.25,0.1249996 0.25,0.25 v 1.75 h 3.75 c 0.125,0 0.25,0.1249996 0.25,0.25 V 13.75 C 15,13.875 14.875,14 14.75,14 H 1.25 C 1.125,14 1,13.875 1,13.75 V 4.25 C 1,4.125 1.125,4 1.25,4 l 3.75,4e-7 v -1.75 c 0,-0.1250004 0.125,-0.25 0.25,-0.25 z"></path></svg>',
                     "exif-created-timestamp": '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"><path d="M 3,1 V 2 H 1 V 15 H 16 V 2 H 14 V 1 H 13 V 2 H 4 V 1 Z M 2,4 H 15 V 14 H 2 Z M 6,5 V 7 H 8 V 5 Z m 3,0 v 2 h 2 V 5 Z m 3,0 v 2 h 2 V 5 Z M 3,8 v 2 H 5 V 8 Z m 3,0 v 2 H 8 V 8 Z m 3,0 v 2 h 2 V 8 Z m 3,0 v 2 h 2 V 8 Z m -9,3 v 2 h 2 v -2 z m 3,0 v 2 h 2 v -2 z m 3,0 v 2 h 2 v -2 z"></path></svg>',
@@ -6393,6 +6394,14 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 			}
 			return type;
 		},
+		/**
+		 * @memberof FooGallery.TemplateFactory#
+		 * @function configure
+		 * @param {string} name
+		 * @param {object} options
+		 * @param {object} classes
+		 * @param {object} il8n
+		 */
 		configure: function (name, options, classes, il8n) {
 			var self = this;
 			if (self.contains(name)) {
@@ -8550,6 +8559,24 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 			 */
 			self.hasExif = _is.exif(self.exif);
 			/**
+			 * @memberof FooGallery.Item#
+			 * @name ribbon
+			 * @type {FooGallery.Item~Ribbon}
+			 */
+			self.ribbon = self.opt.ribbon;
+			/**
+			 * @memberof FooGallery.Item#
+			 * @name hasRibbon
+			 * @type {boolean}
+			 */
+			self.hasRibbon = _is.hash(self.ribbon) && _is.string(self.ribbon.text) && _is.string(self.ribbon.type);
+			/**
+			 * @memberof FooGallery.Item#
+			 * @name buttons
+			 * @type {FooGallery.Item~Button[]}
+			 */
+			self.buttons = self.opt.buttons;
+			/**
 			 * @summary This property is used to store the promise created when loading an item for the first time.
 			 * @memberof FooGallery.Item#
 			 * @name _load
@@ -9079,6 +9106,15 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 				picture.appendChild(image);
 			}
 
+			var ribbon;
+			if (self.hasRibbon){
+				ribbon = document.createElement("div");
+				ribbon.className = self.ribbon.type;
+				var ribbonText = document.createElement("span");
+				ribbonText.innerHTML = self.ribbon.text;
+				ribbon.appendChild(ribbonText);
+			}
+
 			var overlay = document.createElement("span");
 			overlay.className = cls.overlay;
 
@@ -9096,24 +9132,52 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 			self._setAttributes(captionInner, attr.caption.inner);
 			captionInner.className = cls.caption.inner;
 
-			var captionTitle = null;
-			if (self.showCaptionTitle && _is.string(self.caption) && self.caption.length > 0) {
+			var captionTitle = null, hasTitle = self.showCaptionTitle && _is.string(self.caption) && self.caption.length > 0;
+			if (hasTitle) {
 				captionTitle = document.createElement("div");
 				self._setAttributes(captionTitle, attr.caption.title);
 				captionTitle.className = cls.caption.title;
 				captionTitle.innerHTML = self.maxCaptionLength > 0 ? _str.trimTo(self.caption, self.maxCaptionLength) : self.caption;
+				captionInner.appendChild(captionTitle);
 			}
-			var captionDesc = null;
-			if (self.showCaptionDescription && _is.string(self.description) && self.description.length > 0) {
+			var captionDesc = null, hasDescription = self.showCaptionDescription && _is.string(self.description) && self.description.length > 0;
+			if (hasDescription) {
 				captionDesc = document.createElement("div");
 				self._setAttributes(captionDesc, attr.caption.description);
 				captionDesc.className = cls.caption.description;
 				captionDesc.innerHTML = self.maxDescriptionLength > 0 ? _str.trimTo(self.description, self.maxDescriptionLength) : self.description;
+				captionInner.appendChild(captionDesc);
 			}
-
-			if (captionTitle !== null) captionInner.appendChild(captionTitle);
-			if (captionDesc !== null) captionInner.appendChild(captionDesc);
+			var captionButtons = null, hasButtons = _is.array(self.buttons) && self.buttons.length > 0;
+			if (hasButtons){
+				captionButtons = document.createElement("div");
+				captionButtons.className = cls.caption.buttons;
+				_utils.each(self.buttons, function(button){
+					if (_is.hash(button) && _is.string(button.text)){
+						var captionButton = document.createElement("a");
+						captionButton.innerHTML = button.text;
+						if (_is.string(button.url) && button.url.length > 0){
+							captionButton.href = button.url;
+						}
+						if (_is.string(button.rel) && button.rel.length > 0){
+							captionButton.rel = button.rel;
+						}
+						if (_is.string(button.target) && button.target.length > 0){
+							captionButton.target = button.target;
+						}
+						if (_is.string(button.classes) && button.classes.length > 0){
+							captionButton.className = button.classes;
+						}
+						if (_is.hash(button.attr)){
+							self._setAttributes(captionButton, button.attr);
+						}
+						captionButtons.appendChild(captionButton);
+					}
+				});
+				captionInner.appendChild(captionButtons);
+			}
 			caption.appendChild(captionInner);
+
 			if (self.isPicture){
 				wrap.appendChild(picture);
 			} else {
@@ -9122,7 +9186,12 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 			anchor.appendChild(overlay);
 			anchor.appendChild(wrap);
 			inner.appendChild(anchor);
-			inner.appendChild(caption);
+			if (hasTitle || hasDescription || hasButtons){
+				inner.appendChild(caption);
+			}
+			if (self.hasRibbon){
+				elem.appendChild(ribbon);
+			}
 			elem.appendChild(inner);
 			elem.appendChild(loader);
 
@@ -9497,7 +9566,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 		 */
 		onCaptionClick: function (e) {
 			var self = e.data.self, evt = self.tmpl.trigger("caption-click-item", [self]);
-			if (!evt.isDefaultPrevented() && self.$anchor.length > 0 && !$(e.target).is("a,:input")) {
+			if (!evt.isDefaultPrevented() && self.$anchor.length > 0 && !$(e.target).is("a[href],:input")) {
 				self.$anchor.get(0).click();
 			}
 		}
@@ -9523,6 +9592,8 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 	 * @property {boolean} [showCaptionTitle=true] - Whether or not the caption title should be displayed.
 	 * @property {boolean} [showCaptionDescription=true] - Whether or not the caption description should be displayed.
 	 * @property {FooGallery.Item~Attributes} [attr] - Additional attributes to apply to the items' elements.
+	 * @property {FooGallery.Item~Button[]} [buttons=[]] - An array of buttons to append to the caption.
+	 * @property {FooGallery.Item~Ribbon} [ribbon] - The ribbon type and text to display for the item.
 	 */
 	_.template.configure("core", {
 		item: {
@@ -9546,6 +9617,11 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 			showCaptionDescription: true,
 			noLightbox: false,
 			panelHide: false,
+			buttons: [],
+			ribbon: {
+				type: null,
+				text: null
+			},
 			exif: {
 				aperture: null,
 				camera: null,
@@ -9593,7 +9669,9 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 				elem: "fg-caption",
 				inner: "fg-caption-inner",
 				title: "fg-caption-title",
-				description: "fg-caption-desc"
+				description: "fg-caption-desc",
+				buttons: "fg-caption-buttons",
+				button: "fg-caption-button"
 			}
 		}
 	}, {
@@ -9615,6 +9693,23 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 	// ######################
 	// ## Type Definitions ##
 	// ######################
+
+	/**
+	 * @summary An object containing properties for a button to add to the item caption.
+	 * @typedef {object} FooGallery.Item~Button
+	 * @property {string} url - The url the button opens.
+	 * @property {string} text - The text displayed within the button.
+	 * @property {string} [rel=""] - The rel attribute for the button.
+	 * @property {string} [target="_blank"] - The target attribute for the button.
+	 * @property {string} [classes=""] - Additional CSS class names to apply to the button.
+	 */
+
+	/**
+	 * @summary An object containing the ribbon information.
+	 * @typedef {object} FooGallery.Item~Ribbon
+	 * @property {string} type - The type of ribbon to display.
+	 * @property {string} text - The text displayed within the ribbon.
+	 */
 
 	/**
 	 * @summary A simple object containing the CSS classes used by an item.

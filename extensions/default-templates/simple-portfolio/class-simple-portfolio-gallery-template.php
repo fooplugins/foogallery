@@ -16,7 +16,7 @@ if ( !class_exists( 'FooGallery_Simple_Portfolio_Gallery_Template' ) ) {
 			add_filter( 'foogallery_gallery_templates_files', array( $this, 'register_myself' ) );
 
 			//add extra fields to the templates
-			add_filter( 'foogallery_override_gallery_template_fields-simple_portfolio', array( $this, 'add_common_thumbnail_fields' ), 101, 2 );
+			add_filter( 'foogallery_override_gallery_template_fields-simple_portfolio', array( $this, 'adjust_fields' ), 101, 2 );
 
 			//override specific settings when saving the gallery
 			add_filter( 'foogallery_save_gallery_settings-simple_portfolio', array( $this, 'override_settings'), 10, 3 );
@@ -155,7 +155,7 @@ if ( !class_exists( 'FooGallery_Simple_Portfolio_Gallery_Template' ) ) {
 		 *
 		 * @return array
 		 */
-		function add_common_thumbnail_fields( $fields, $template ) {
+		function adjust_fields( $fields, $template ) {
 			$new_fields[] = array(
 				'id'      => 'caption_position',
 				'title' => __('Caption Position', 'foogallery'),
@@ -324,12 +324,26 @@ if ( !class_exists( 'FooGallery_Simple_Portfolio_Gallery_Template' ) ) {
 		}
 
 		/**
+		 * @param $gallery
+		 *
+		 * @return bool|mixed|void
+		 */
+		function is_simple_portfolio_gallery_template( $gallery ) {
+			if ( self::template_id === $gallery->gallery_template ) {
+				return true;
+			}
+
+			return apply_filters( 'foogallery_is_simple_portfolio_gallery_template', false, $gallery );
+		}
+
+		/**
 		 * Add a style block based on the field settings
 		 *
 		 * @param $gallery FooGallery
 		 */
 		function add_style_block( $gallery ) {
-			if ( self::template_id !== $gallery->gallery_template ) {
+			//check if the template is a "Simple Portfolio" clone
+			if ( !$this->is_simple_portfolio_gallery_template( $gallery ) ) {
 				return;
 			}
 

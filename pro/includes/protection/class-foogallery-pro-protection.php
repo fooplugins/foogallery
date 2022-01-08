@@ -86,7 +86,7 @@ if ( ! class_exists( 'FooGallery_Pro_Protection' ) ) {
 					if ( empty( $progress ) ) {
 						// there is no progress, so start!
 						$gallery = FooGallery::get_by_id( $foogallery_id );
-						$images  = $gallery->attachment_count();
+						$images  = $gallery->item_count();
 
 						$progress = array(
 							'total'       => $images,
@@ -94,7 +94,7 @@ if ( ! class_exists( 'FooGallery_Pro_Protection' ) ) {
 							'progress'    => 0,
 							'count'       => 0,
 							'message'     => sprintf( __( '%d watermarked images to generate...', 'foogallery' ), $images ),
-							'attachments' => $gallery->attachment_ids,
+							'attachments' => $gallery->item_attachment_ids(),
 						);
 					} else {
 						// What if there are no attachments left?
@@ -105,6 +105,12 @@ if ( ! class_exists( 'FooGallery_Pro_Protection' ) ) {
 							$progress['progress'] = $progress['progress'] + 1;
 							$progress['count']    = $progress['count'] + 1;
 							$progress['percent']  = intval( $progress['progress'] / $progress['total'] * 100 );
+						}
+						if ( 0 === $progress['count'] && 0 === $progress['total'] ) {
+							$progress['percent'] = 100;
+						}
+						if ( !is_array( $progress['attachments'] ) || 0 === count( $progress['attachments'] ) ) {
+							$progress['percent'] = 100;
 						}
 						if ( $progress['percent'] < 100 ) {
 							$progress['message'] = sprintf( __( '%1$d / %2$d watermarked images generated...', 'foogallery' ), $progress['progress'], $progress['total'] );
@@ -248,12 +254,17 @@ if ( ! class_exists( 'FooGallery_Pro_Protection' ) ) {
 				$image_count            = $summary_watermark_data['images'];
 				$watermark_count        = $summary_watermark_data['watermarks'];
 				$outdated_count         = $summary_watermark_data['outdated'];
+				$error_count            = $summary_watermark_data['errors'];
 				if ( 0 === $image_count ) {
 					echo esc_html( __( 'No images found! You may need to save your gallery, if you have added images.', 'foogallery' ) );
 				} else {
 					echo esc_html( sprintf( __( '%1$d / %2$d watermarked images have been generated.', 'foogallery' ), $watermark_count, $image_count ) );
-					if ( $summary_watermark_data['outdated'] > 0 ) {
+					if ( $outdated_count > 0 ) {
 						echo ' ' . esc_html( sprintf( __( '%d are outdated and need to be re-generated!', 'foogallery' ), $outdated_count ) );
+					}
+					if ( $error_count > 0 ) {
+						echo '<br /><br />';
+						echo esc_html( sprintf( __( '%d had errors and could not be generated!', 'foogallery' ), $error_count ) );
 					}
 					echo '<br /><br />';
 					echo '<button type="button" class="button button-primary button-large protection_generate">';
@@ -339,7 +350,7 @@ if ( ! class_exists( 'FooGallery_Pro_Protection' ) ) {
 								'has_watermark' => false,
 							);
 						}
-						if ( $attachment_watermark['has_watermark'] ) {
+						if ( isset( $attachment_watermark['has_watermark'] ) && $attachment_watermark['has_watermark'] ) {
 							$watermark_image_count++;
 							$attachment_watermark['outdated'] = $attachment_watermark['checksum'] !== $watermark_checksum;
 
@@ -403,12 +414,19 @@ if ( ! class_exists( 'FooGallery_Pro_Protection' ) ) {
 			$watermark_path = $generator->get_cache_file_path();
 			$watermark_url  = $generator->get_cache_file_url();
 
+			$attachment_path = foogallery_local_url_to_path( $attachment->url );
+			if ( $attachment_path === false ) {
+				// Fallback to URL, if the path cannot be determined.
+				$attachment_path = $attachment->url;
+			}
+
 			// Create the image.
-			$editor = wp_get_image_editor( $attachment->url, array( 'methods' => array( 'get_image' ) ) );
+			$editor = wp_get_image_editor( $attachment_path, array( 'methods' => array( 'get_image' ) ) );
 
 			if ( ! is_wp_error( $editor ) ) {
 				$watermark = new FooGallery_Watermark( $editor );
-				$watermark->apply_watermark_image( $watermark_options['image'], $watermark_options );
+				$watermark_image_path = foogallery_local_url_to_path( $watermark_options['image'] );
+				$watermark->apply_watermark_image( $watermark_image_path, $watermark_options );
 
 				// Save the watermarked image to disk.
 				$result = $editor->save( $watermark_path );
@@ -534,7 +552,7 @@ if ( ! class_exists( 'FooGallery_Pro_Protection' ) ) {
 			);
 
 			// find the index of the advanced section.
-			$index = $this->find_index_of_section( $fields, __( 'Advanced', 'foogallery' ) );
+			$index = foogallery_admin_fields_find_index_of_section( $fields, __( 'Advanced', 'foogallery' ) );
 
 			array_splice( $fields, $index, 0, $new_fields );
 
@@ -549,7 +567,7 @@ if ( ! class_exists( 'FooGallery_Pro_Protection' ) ) {
 		 * @return array
 		 */
 		public function add_watermark_settings( $settings ) {
-			$settings['tabs']['watermarks'] = __( 'Watermarks', 'foogallery' );
+			$settings['tabs']['watermarks'] = __( 'Protection', 'foogallery' );
 
 			$preview_html = '<a target="_blank" href="' . admin_url( add_query_arg( array( 'page' => 'foogallery_watermark_test' ), foogallery_admin_menu_parent_slug() ) ) . '">' . __( 'Open watermark preview test page', 'foogallery' ) . '</a>';
 
@@ -728,7 +746,7 @@ if ( ! class_exists( 'FooGallery_Pro_Protection' ) ) {
 					FOOGALLERY_PRO_URL . 'includes/protection/watermarks/watermark-copyright.png',
 				);
 				?>
-				<input class="foogallery_settings_long_text" type="text" id="watermark_image" name="foogallery[watermark_image]" value="<? echo esc_url( $watermark_image ); ?>" />
+				<input class="foogallery_settings_long_text" type="text" id="watermark_image" name="foogallery[watermark_image]" value="<?php echo esc_url( $watermark_image ); ?>" />
 				<input type="button" class="button foogallery_settings_watermark_image_select" value="<?php echo esc_html( __( 'Select Image', 'foogallery' ) ); ?>" />
 				<br /><small><?php echo esc_html( __( 'The URL of the image you want to use as a watermark. Or use one of our predefined watermarks:', 'foogallery' ) ); ?></small>
 				<br />
@@ -824,7 +842,7 @@ if ( ! class_exists( 'FooGallery_Pro_Protection' ) ) {
 
 			$test_image_url = FooGallery_Thumbnails::find_first_image_in_media_library();
 
-			$file_path = $test_image_url;
+			$file_path = foogallery_local_url_to_path( $test_image_url );
 
 			// Create the image.
 			$editor = wp_get_image_editor( $file_path, array( 'methods' => array( 'get_image' ) ) );
@@ -837,38 +855,21 @@ if ( ! class_exists( 'FooGallery_Pro_Protection' ) ) {
 			$watermark_options = FooGallery_Pro_Protection::get_watermark_options();
 
 			$watermark = new FooGallery_Watermark( $editor );
-			$watermark->apply_watermark_image( $watermark_options['image'], $watermark_options );
+			$watermark->apply_watermark_image( foogallery_local_url_to_path( $watermark_options['image'] ), $watermark_options );
 
 			echo '<h2>' . esc_html( __( 'Watermarked Image', 'foogallery' ) ) . '</h2>';
 
-			$image_base64 = $watermark->get_image_editor_helper()->get_image_base64( $editor->get_image() );
+			$image = $editor->get_image();
 
-			$watermark->get_image_editor_helper()->cleanup( $editor->get_image() );
+			$image_base64 = $watermark->get_image_editor_helper()->get_image_base64( $image );
+
+			$watermark->get_image_editor_helper()->cleanup( $image );
 
 			echo '<img src="data:image/png;base64,' . $image_base64 . '" />';
 
 			echo '<h2>' . esc_html( __( 'Original Image', 'foogallery' ) ) . '</h2>';
 
 			echo '<img src="' . esc_url( $test_image_url ) . '" />';
-		}
-
-		/**
-		 * Return the index of the requested section
-		 *
-		 * @param array  $fields The fields we are searching through.
-		 * @param string $section The section we are looking for.
-		 *
-		 * @return int
-		 */
-		private function find_index_of_section( $fields, $section ) {
-			$index = 0;
-			foreach ( $fields as $field ) {
-				if ( isset( $field['section'] ) && $section === $field['section'] ) {
-					return $index;
-				}
-				$index++;
-			}
-			return $index;
 		}
 	}
 }

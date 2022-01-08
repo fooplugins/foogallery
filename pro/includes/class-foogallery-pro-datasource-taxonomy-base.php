@@ -14,6 +14,7 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Taxonomy_Base' ) ) {
     		$this->datasource_name = $datasource_name;
 
 			add_filter( "foogallery_datasource_{$datasource_name}_item_count", array( $this, 'get_gallery_attachment_count' ), 10, 2 );
+		    add_filter( "foogallery_datasource_{$datasource_name}_attachment_ids", array( $this, 'get_gallery_attachment_ids' ), 10, 2 );
 			add_filter( "foogallery_datasource_{$datasource_name}_featured_image", array( $this, 'get_gallery_featured_attachment' ), 10, 2 );
 			add_filter( "foogallery_datasource_{$datasource_name}_attachments", array( $this, 'get_gallery_attachments' ), 10, 2 );
 			add_action( "foogallery-datasource-modal-content_{$datasource_name}", array( $this, 'render_datasource_modal_content' ), 10, 3 );
@@ -129,6 +130,23 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Taxonomy_Base' ) ) {
 		public function get_gallery_attachment_count( $count, $foogallery ) {
             return count( $this->get_gallery_attachments( array(), $foogallery ) );
 		}
+
+	    /**
+	     * Returns an array of the attachment ID's for the gallery
+	     *
+	     * @param $attachment_ids
+	     * @param $foogallery
+	     *
+	     * @return array
+	     */
+	    public function get_gallery_attachment_ids( $attachment_ids, $foogallery ) {
+		    $attachment_ids = array();
+		    $attachments = $this->get_gallery_attachments( array(), $foogallery );
+		    foreach ( $attachments as $attachment ) {
+			    $attachment_ids[] = $attachment->ID;
+		    }
+		    return $attachment_ids;
+	    }
 
 		/**
 		 * Returns an array of FooGalleryAttachments from the datasource
@@ -312,6 +330,9 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Taxonomy_Base' ) ) {
 					<?php _e( 'Open Media Library', 'foogallery' ); ?>
 				</button>
 				<?php } ?>
+				<button type="button" class="button bulk_media_management">
+					<?php _e( 'Bulk Taxonomy Manager', 'foogallery' ); ?>
+				</button>
 				<button type="button" class="button help">
 					<?php _e( 'Show Help', 'foogallery' ); ?>
 				</button>

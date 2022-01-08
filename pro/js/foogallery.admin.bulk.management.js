@@ -1,7 +1,7 @@
 FooGallery.utils.ready(function ($) {
 
 	//Launch the Bulk Management Modal
-	$('.foogallery-attachments-list-bar').on('click', '.bulk_media_management', function (e) {
+	$('#foogallery_items').on('click', '.bulk_media_management', function (e) {
 		e.preventDefault();
 		$('.foogallery-bulk-management-modal-wrapper').show();
 

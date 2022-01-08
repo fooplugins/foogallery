@@ -1,44 +1,40 @@
 <?php
 
-if ( !class_exists( 'FooGallery_Polaroid_Gallery_Template' ) ) {
+if ( !class_exists( 'FooGallery_Product_Gallery_Template' ) ) {
 
-	define('FOOGALLERY_POLAROID_GALLERY_TEMPLATE_URL', plugin_dir_url( __FILE__ ));
+	class FooGallery_Product_Gallery_Template {
 
-	class FooGallery_Polaroid_Gallery_Template {
-
-		const template_id = 'polaroid_new';
+		const template_id = 'product';
 
 		/**
 		 * Wire up everything we need to run the extension
 		 */
 		function __construct() {
-			add_filter( 'foogallery_gallery_templates', array( $this, 'add_template' ), 99, 1 );
+			add_filter( 'foogallery_gallery_templates', array( $this, 'add_template' ), 101, 1 );
 			add_filter( 'foogallery_gallery_templates_files', array( $this, 'register_myself' ) );
 
-			//add extra fields to the templates
-			add_filter( 'foogallery_override_gallery_template_fields-polaroid_new', array( $this, 'add_common_thumbnail_fields' ), 10, 2 );
+			// Make adjustments to the template fields.
+			add_filter( 'foogallery_override_gallery_template_fields-product', array( $this, 'adjust_fields' ), 10, 2 );
+			add_filter( 'foogallery_override_gallery_template_fields_remove-product', array( $this, 'remove_fields' ), 10, 1 );
+			add_filter( 'foogallery_override_gallery_template_fields_defaults-product', array( $this, 'field_defaults' ), 10, 1 );
+			add_filter( 'foogallery_override_gallery_template_fields_hidden-product', array( $this, 'hidden_fields' ), 10, 1 );
 
 			//add the data options needed for polaroid
-			add_filter( 'foogallery_build_container_data_options-polaroid_new', array( $this, 'add_data_options' ), 10, 3 );
+			add_filter( 'foogallery_build_container_data_options-product', array( $this, 'add_data_options' ), 10, 3 );
 
 			//override specific settings when saving the gallery
-			add_filter( 'foogallery_save_gallery_settings-polaroid_new', array( $this, 'override_settings'), 10, 3 );
+			add_filter( 'foogallery_save_gallery_settings-product', array( $this, 'override_settings'), 10, 3 );
 
 			//build up the thumb dimensions from some arguments
-			add_filter( 'foogallery_calculate_thumbnail_dimensions-polaroid_new', array( $this, 'build_thumbnail_dimensions_from_arguments' ), 10, 2 );
+			add_filter( 'foogallery_calculate_thumbnail_dimensions-product', array( $this, 'build_thumbnail_dimensions_from_arguments' ), 10, 2 );
 
             //build up the thumb dimensions on save
-            add_filter( 'foogallery_template_thumbnail_dimensions-polaroid_new', array( $this, 'get_thumbnail_dimensions' ), 10, 2 );
-
-            //check if the old Polaroid is installed
-            if ( is_admin() ) {
-                add_action( 'admin_notices', array( $this, 'display_polaroid_notice') );
-            }
+            add_filter( 'foogallery_template_thumbnail_dimensions-product', array( $this, 'get_thumbnail_dimensions' ), 10, 2 );
 
             //build up the arguments needed for rendering this template
-            add_filter( 'foogallery_gallery_template_arguments-polaroid_new', array( $this, 'build_gallery_template_arguments' ) );
+            add_filter( 'foogallery_gallery_template_arguments-product', array( $this, 'build_gallery_template_arguments' ) );
 
-            // Append classed needed for the gallery template
+            // Add classes needed for the gallery template.
 			add_filter( 'foogallery_build_class_attribute', array( $this, 'append_classes' ), 10, 2 );
 
 			// Ensure we output the inline styling needed for a simple portfolio gallery template
@@ -53,12 +49,13 @@ if ( !class_exists( 'FooGallery_Polaroid_Gallery_Template' ) ) {
 		 *
 		 * @return bool
 		 */
-        function is_simple_portfolio_gallery_template( $return, $gallery ) {
+		function is_simple_portfolio_gallery_template( $return, $gallery ) {
 			if ( is_object( $gallery ) && is_a( $gallery, 'FooGallery' ) && self::template_id === $gallery->gallery_template ) {
 				return true;
 			}
 			return $return;
-        }
+		}
+
 
 		/**
 		 * Register myself so that all associated JS and CSS files can be found and automatically included
@@ -80,16 +77,24 @@ if ( !class_exists( 'FooGallery_Polaroid_Gallery_Template' ) ) {
 		function add_template( $gallery_templates ) {
 			$gallery_templates[] = array(
                 'slug'        => self::template_id,
-                'name'        => __( 'Polaroid PRO', 'foogallery' ),
+                'name'        => __( 'Product Gallery', 'foogallery' ),
 				'preview_support' => true,
 				'common_fields_support' => true,
                 'lazyload_support' => true,
 				'paging_support' => true,
-				'mandatory_classes' => 'fg-simple_portfolio fg-preset fg-polaroid',
+				'mandatory_classes' => 'fg-simple_portfolio fg-caption-always',
 				'thumbnail_dimensions' => true,
 				'filtering_support' => true,
                 'enqueue_core' => true,
                 'fields'	  => array(
+	                array(
+		                'id'	  => 'help',
+		                'title'	  => __( 'Tip', 'foogallery' ),
+		                'section' => __( 'General', 'foogallery' ),
+		                'type'	  => 'html',
+		                'help'	  => true,
+		                'desc'	  => __( 'The Product Gallery template works best with the WooCommerce Products datasource. It is the same as the Simple Portfolio template, but with different defaults to make your life easier.', 'foogallery' ),
+	                ),
                     array(
                         'id'      => 'thumbnail_dimensions',
                         'title'   => __( 'Thumbnail Size', 'foogallery' ),
@@ -98,7 +103,7 @@ if ( !class_exists( 'FooGallery_Polaroid_Gallery_Template' ) ) {
                         'type'    => 'thumb_size',
                         'default' => array(
                             'width' => 250,
-                            'height' => 200,
+                            'height' => 250,
                             'crop' => true,
                         ),
 						'row_data'=> array(
@@ -155,25 +160,7 @@ if ( !class_exists( 'FooGallery_Polaroid_Gallery_Template' ) ) {
                             'data-foogallery-value-selector' => 'input:checked',
                             'data-foogallery-preview' => 'shortcode',
                         )
-                    ),
-                    array(
-                        'id'      => 'caption_position',
-                        'title' => __('Caption Position', 'foogallery'),
-                        'desc' => __('Where the captions are displayed in relation to the thumbnail.', 'foogallery'),
-						'section' => __( 'Captions', 'foogallery' ),
-                        'default' => '',
-                        'type'    => 'radio',
-                        'spacer'  => '<span class="spacer"></span>',
-                        'choices' => array(
-                            '' => __( 'Below', 'foogallery' ),
-                            'fg-captions-top' => __( 'Above', 'foogallery' )
-                        ),
-						'row_data'=> array(
-							'data-foogallery-change-selector' => 'input:radio',
-							'data-foogallery-value-selector' => 'input:checked',
-							'data-foogallery-preview' => 'shortcode'
-						)
-                    ),
+                    )
                 ),
 			);
 
@@ -181,63 +168,68 @@ if ( !class_exists( 'FooGallery_Polaroid_Gallery_Template' ) ) {
 		}
 
 		/**
-		 * Add thumbnail fields to the gallery template
+		 * Return an array of the fields to remove from the template
 		 *
-		 * @uses "foogallery_override_gallery_template_fields"
-		 * @param $fields
-		 * @param $template
+		 * @param $fields_to_remove
 		 *
-		 * @return array
+		 * @return string[]
 		 */
-		function add_common_thumbnail_fields( $fields, $template ) {
-			$field_ids_to_remove = array(
-                'captions_help',
-                'hover_effect_help',
-                'hover_effect_scale',
-                'captions_type',
-                'hover_effect_preset',
-                'hover_effect_caption_visibility',
-                'caption_desc_source',
-                'caption_desc_length',
-                'caption_alignment'
-            );
+		function remove_fields( $fields_to_remove ) {
+			return array(
+				'captions_help',
+				'hover_effect_help',
+				'hover_effect_preset'
+			);
+		}
 
-			$fields_to_remove = array();
+		/**
+		 * Return an array of the fields to hide from the template
+		 *
+		 * @param $fields_to_hide
+		 *
+		 * @return string[]
+		 */
+		function hidden_fields( $fields_to_hide ) {
+			return array(
+				'hover_effect_caption_visibility'
+			);
+		}
 
+		/**
+		 * Return an array of field defaults for the template
+		 *
+		 * @param $field_defaults
+		 *
+		 * @return string[]
+		 */
+		function field_defaults( $field_defaults ) {
+			return array(
+				'hover_effect_caption_visibility' => 'fg-caption-always',
+				'border_size' => 'fg-border-medium',
+				'rounded_corners' => 'fg-round-medium',
+				'loaded_effect' => 'fg-loaded-flip',
+				'caption_invert_color' => 'fg-light-overlays',
+				'hover_effect_icon' => 'fg-hover-cart',
+				'caption_alignment' => 'fg-c-c',
+				'filtering_type' => 'simple',
+				'filtering_taxonomy' => FOOGALLERY_ATTACHMENT_TAXONOMY_CATEGORY,
+				'ecommerce_button_add_to_cart' => 'shown',
+				'ecommerce_button_variable' => 'shown',
+				'ecommerce_lightbox_product_information' => 'right',
+				'hover_effect_scale' => 'fg-hover-zoomed',
+			);
+		}
+
+		function adjust_fields( $fields, $template ) {
 			//update specific fields
 			foreach ($fields as $key => &$field) {
-			    if ( in_array( $field['id'], $field_ids_to_remove ) ) {
-				    $fields_to_remove[] = $key;
-                }
-
-				if ( 'hover_effect_preset' === $field['id'] ) {
-					$field['default'] = 'fg-custom';
-					$field['choices'] = array(
-						'fg-custom'  => __( 'Polaroid', 'foogallery' )
-					);
-					$field['row_data'] = array(
-						'data-foogallery-hidden' => true,
-						'data-foogallery-change-selector' => 'input:radio',
-						'data-foogallery-value-selector' => 'input:checked',
-						'data-foogallery-preview' => 'class'
-					);
+				if ( 'hover_effect_type' === $field['id'] ) {
+					unset( $field['choices']['preset'] );
 				} else if ( 'hover_effect_caption_visibility' === $field['id'] ) {
-					$field['default'] = 'fg-caption-always';
 					$field['choices'] = array(
 						'fg-caption-always' => __( 'Always Visible', 'foogallery' ),
 					);
-					$field['row_data'] = array(
-						'data-foogallery-change-selector' => 'input:radio',
-						'data-foogallery-hidden' => true,
-						'data-foogallery-preview' => 'class'
-					);
-				} else if ( 'hover_effect_type' == $field['id'] ) {
-					unset( $field['choices']['preset'] );
 				}
-			}
-
-			foreach ($fields_to_remove as $key) {
-				unset($fields[$key]);
 			}
 
 			return $fields;
@@ -272,8 +264,8 @@ if ( !class_exists( 'FooGallery_Polaroid_Gallery_Template' ) ) {
 		 * @return mixed
 		 */
 		function override_settings($settings, $post_id, $form_data) {
-			$settings['polaroid_new_hover_effect_preset'] = 'fg-custom';
-			$settings['polaroid_new_hover_effect_caption_visibility'] = 'fg-caption-always';
+			$settings['product_hover_effect_preset'] = 'fg-custom';
+			$settings['product_hover_effect_caption_visibility'] = 'fg-caption-always';
 
 			return $settings;
 		}
@@ -306,31 +298,12 @@ if ( !class_exists( 'FooGallery_Polaroid_Gallery_Template' ) ) {
          * @return mixed
          */
         function get_thumbnail_dimensions( $dimensions, $foogallery ) {
-            $dimensions = $foogallery->get_meta( 'polaroid_new_thumbnail_dimensions', array(
+            $dimensions = $foogallery->get_meta( 'product_thumbnail_dimensions', array(
                 'width' => 250,
                 'height' => 200
             ) );
             $dimensions['crop'] = true;
             return $dimensions;
-        }
-
-        /**
-         * Display a message if the Polaroid extension is also installed
-         */
-        function display_polaroid_notice() {
-            if ( class_exists('FooGallery_Polaroid_Template_Extension') ) {
-                ?>
-                <div class="notice error">
-                    <p>
-                        <strong><?php _e('Polaroid Extension Redundant!', 'foogallery'); ?></strong><br/>
-                        <?php _e('You have both FooGallery PRO and the old Polaroid extension activated. FooGallery PRO includes the Polaroid PRO gallery template, which makes the free Polaroid extension redundant.', 'foogallery'); ?>
-                        <br/>
-                        <?php _e('Please edit all galleries that use the old Polaroid gallery template and change them to use the Polaroid PRO gallery template. Once this is done, you can delete the free Polaroid extension.', 'foogallery'); ?>
-                        <br/>
-                    </p>
-                </div>
-                <?php
-            }
         }
 
         /**

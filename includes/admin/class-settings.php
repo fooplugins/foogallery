@@ -465,10 +465,30 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 			//region Custom JS & CSS
 			$tabs['custom_assets'] = __( 'Custom JS & CSS', 'foogallery' );
 
+			$custom_assets = get_option( FOOGALLERY_OPTION_CUSTOM_ASSETS );
+			$custom_style_extra = '';
+			if ( is_array( $custom_assets ) && array_key_exists( 'style', $custom_assets ) ) {
+				$custom_style_extra = '<br /><a target="_blank" href="' . $custom_assets['style'] . '">' . __( 'Open Custom Stylesheet', 'foogallery' ) . '</a>';
+			}
+			$custom_script_extra = '';
+			if ( is_array( $custom_assets ) && array_key_exists( 'script', $custom_assets ) ) {
+				$custom_script_extra = '<br /><a target="_blank" href="' . $custom_assets['script'] . '">' . __( 'Open Custom Script', 'foogallery' ) . '</a>';
+			}
+
+			$custom_js = foogallery_get_setting( 'custom_js', '' );
+			if ( !empty( $custom_js ) && empty( $custom_script_extra ) ) {
+				$custom_script_extra = '<br /><strong>' . __( 'There was a problem generating the custom JS file! This is usually caused by a permissions issue on your server.', 'foogallery' ) . '</strong>';
+			}
+
+			$custom_css = foogallery_get_setting( 'custom_css', '' );
+			if ( !empty( $custom_css ) && empty( $custom_style_extra ) ) {
+				$custom_style_extra = '<br /><strong>' . __( 'There was a problem generating the custom CSS file! This is usually caused by a permissions issue on your server.', 'foogallery' ) . '</strong>';
+			}
+
 			$settings[] = array(
 				'id'      => 'custom_js',
 				'title'   => __( 'Custom Javascript', 'foogallery' ),
-				'desc'    => __( 'Custom Javascript that will be added to the page when a gallery is rendered.', 'foogallery' ),
+				'desc'    => __( 'Custom Javascript that will be added to the page when a gallery is rendered.', 'foogallery' ) . $custom_script_extra,
 				'type'    => 'textarea',
 				'tab'     => 'custom_assets',
 				'default' => ''
@@ -477,7 +497,7 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 			$settings[] = array(
 				'id'      => 'custom_css',
 				'title'   => __( 'Custom Stylesheet', 'foogallery' ),
-				'desc'    => __( 'Custom CSS that will be added to the page when a gallery is rendered.', 'foogallery' ),
+				'desc'    => __( 'Custom CSS that will be added to the page when a gallery is rendered.', 'foogallery' ) . $custom_style_extra,
 				'type'    => 'textarea',
 				'tab'     => 'custom_assets',
 				'default' => ''
@@ -615,8 +635,7 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 			//check if we have saved any custom JS
 			$custom_js = foogallery_get_setting( 'custom_js', '' );
 			if ( !empty( $custom_js ) ) {
-				$custom_js = '
-/*
+				$custom_js = '/*
 * FooGallery Custom Javascript
 * This file is created by adding custom JS on FooGallery Settings page in wp-admin
 * Created : ' . date( 'j M Y, g:i a', time() ) . '
@@ -633,8 +652,7 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 			//check if we have saved any custom CSS
 			$custom_css = foogallery_get_setting( 'custom_css', '' );
 			if ( !empty( $custom_css ) ) {
-				$custom_css = '
-/*
+				$custom_css = '/*
 * FooGallery Custom CSS
 * This file is created by adding custom CSS on FooGallery Settings page in wp-admin
 * Created : ' . date( 'j M Y, g:i a', time() ) . '

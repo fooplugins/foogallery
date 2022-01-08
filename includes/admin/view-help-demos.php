@@ -46,7 +46,7 @@ function foogallery_admin_help_demo_item( $seed, $width, $height, $title, $desc,
 		<a href="#foogallery-admin-help-demo-3" class="foogallery-admin-help-demo foogallery-admin-help-button"><?php _e( 'Image Viewer Demo', 'foogallery' ); ?></a>
 		<a href="#foogallery-admin-help-demo-4" class="foogallery-admin-help-demo foogallery-admin-help-button"><?php _e( 'Justified Demo', 'foogallery' ); ?></a>
 		<a href="#foogallery-admin-help-demo-5" class="foogallery-admin-help-demo foogallery-admin-help-button"><?php _e( 'Simple Portfolio Demo', 'foogallery' ); ?></a>
-		<a href="<?php echo esc_url( foogallery_admin_url( 'https://fooplugins.com/foogallery/demos/', 'help' ) ); ?>" target="_blank" class="foogallery-admin-help-button"><?php _e( 'More Demos', 'foogallery' ); ?></a>
+		<a href="<?php echo esc_url( foogallery_admin_url( 'https://fooplugins.com/foogallery-wordpress-gallery-plugin/demos/', 'help' ) ); ?>" target="_blank" class="foogallery-admin-help-button"><?php _e( 'More Demos', 'foogallery' ); ?></a>
 	</header>
 
 	<div id="foogallery-admin-help-demo-1" class="foogallery-admin-help-demo-content">
