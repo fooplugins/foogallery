@@ -7661,16 +7661,26 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 			var cls = self.tmpl.cls.item.caption;
 			self.tmpl.sel.item.caption.all = _utils.selectify([cls.elem, cls.inner, cls.title, cls.description]);
 
+			self._wait = [];
+			self._layoutTimeout = null;
 			self.iobserver = new IntersectionObserver(function(entries){
 				if (!self.tmpl.destroying && !self.tmpl.destroyed){
+					clearTimeout(self._layoutTimeout);
 					entries.forEach(function(entry){
 						if (entry.isIntersecting){
 							var item = self._observed.get(entry.target);
 							if (item instanceof _.Item){
-								item.load();
+								self._wait.push(item.load());
 							}
 						}
 					});
+					self._layoutTimeout = setTimeout(function(){
+						if (self._wait.length > 0){
+							_fn.allSettled(self._wait.splice(0)).then(function(){
+								self.tmpl.layout();
+							});
+						}
+					}, 100);
 				}
 			});
 		},
@@ -9430,6 +9440,8 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 				var ph_src = img.src, ph_srcset = img.srcset;
 				img.onload = function () {
 					img.onload = img.onerror = null;
+					img.style.removeProperty("width");
+					img.style.removeProperty("height");
 					def.resolve(img);
 				};
 				img.onerror = function () {
@@ -9455,6 +9467,10 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 						}
 					});
 				}
+				var size = img.getBoundingClientRect();
+				img.style.width = size.width;
+				img.style.height = size.height;
+
 				img.src = self.src;
 				if (!_is.empty(self.srcset)){
 					img.srcset = self.srcset;

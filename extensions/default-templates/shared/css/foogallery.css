@@ -1210,18 +1210,12 @@
 }
 /* Colorize */
 .foogallery.fg-hover-colorize .fg-image {
-	/* Firefox 10+, Firefox on Android */
-	filter: url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'grayscale\'><feColorMatrix type=\'saturate\' values=\'0\'/></filter></svg>#grayscale");
-	/* IE 6-9 */
-	filter: gray;
-	/* Chrome 19+, Safari 6+, Safari 6+ iOS */
-	-webkit-filter: grayscale(100%);
-	-webkit-transition-property: -webkit-filter;
+	filter: grayscale(100%);
 	transition-property: filter;
 }
-.foogallery.fg-hover-colorize .fg-item-inner:hover .fg-image {
-	-webkit-filter: none;
-	filter: none;
+.foogallery.fg-hover-colorize .fg-item-inner:hover .fg-image,
+.foogallery.fg-hover-colorize .fg-item-inner:focus-within .fg-image {
+	filter: grayscale(0%);
 }
 .foogallery.fg-hover-colorize .fg-image-overlay,
 .foogallery.fg-caption-hover.fg-hover-colorize .fg-caption {
@@ -1232,7 +1226,9 @@
 	transition-property: visibility, opacity, background-color;
 }
 .foogallery.fg-hover-colorize .fg-item-inner:hover .fg-image-overlay,
-.foogallery.fg-caption-hover.fg-hover-colorize .fg-item-inner:hover .fg-caption {
+.foogallery.fg-caption-hover.fg-hover-colorize .fg-item-inner:hover .fg-caption,
+.foogallery.fg-hover-colorize .fg-item-inner:focus-within .fg-image-overlay,
+.foogallery.fg-caption-hover.fg-hover-colorize .fg-item-inner:focus-within .fg-caption {
 	visibility: visible;
 	opacity: 1;
 }
@@ -1246,26 +1242,20 @@
 	transition-property: visibility, opacity, background-color;
 }
 .foogallery.fg-hover-fade .fg-loaded .fg-item-inner:hover .fg-image-overlay,
-.foogallery.fg-caption-hover.fg-hover-fade .fg-loaded .fg-item-inner:hover .fg-caption {
+.foogallery.fg-caption-hover.fg-hover-fade .fg-loaded .fg-item-inner:hover .fg-caption,
+.foogallery.fg-hover-fade .fg-loaded .fg-item-inner:focus-within .fg-image-overlay,
+.foogallery.fg-caption-hover.fg-hover-fade .fg-loaded .fg-item-inner:focus-within .fg-caption {
 	visibility: visible;
 	opacity: 1;
 }
 /* Grayscale */
 .foogallery.fg-hover-grayscale .fg-image {
-	-webkit-filter: none;
-	filter: none;
-	-webkit-transition-property: -webkit-filter;
+	filter: grayscale(0%);
 	transition-property: filter;
 }
-.foogallery.fg-hover-grayscale .fg-item-inner:hover .fg-image {
-	/* For Webkit browsers */
-	-webkit-filter: grayscale(1);
-	-webkit-filter: grayscale(100%);
-	/* Standard */
+.foogallery.fg-hover-grayscale .fg-item-inner:hover .fg-image,
+.foogallery.fg-hover-grayscale .fg-item-inner:focus-within .fg-image {
 	filter: grayscale(100%);
-	/* For IE 6 - 9 */
-	filter: gray;
-	opacity: 1;
 }
 .foogallery.fg-hover-grayscale .fg-image-overlay,
 .foogallery.fg-caption-hover.fg-hover-grayscale .fg-caption {
@@ -1276,7 +1266,9 @@
 	transition-property: visibility, opacity, background-color;
 }
 .foogallery.fg-hover-grayscale .fg-item-inner:hover .fg-image-overlay,
-.foogallery.fg-caption-hover.fg-hover-grayscale .fg-item-inner:hover .fg-caption {
+.foogallery.fg-caption-hover.fg-hover-grayscale .fg-item-inner:hover .fg-caption,
+.foogallery.fg-hover-grayscale .fg-item-inner:focus-within .fg-image-overlay,
+.foogallery.fg-caption-hover.fg-hover-grayscale .fg-item-inner:focus-within .fg-caption {
 	visibility: visible;
 	opacity: 1;
 }
@@ -1290,7 +1282,9 @@
 	transition-property: none;
 }
 .foogallery.fg-hover-instant .fg-loaded .fg-item-inner:hover .fg-image-overlay,
-.foogallery.fg-caption-hover.fg-hover-instant .fg-loaded .fg-item-inner:hover .fg-caption {
+.foogallery.fg-caption-hover.fg-hover-instant .fg-loaded .fg-item-inner:hover .fg-caption,
+.foogallery.fg-hover-instant .fg-loaded .fg-item-inner:focus-within .fg-image-overlay,
+.foogallery.fg-caption-hover.fg-hover-instant .fg-loaded .fg-item-inner:focus-within .fg-caption {
 	visibility: visible;
 	opacity: 1;
 }
@@ -1309,11 +1303,14 @@
 .foogallery.fg-caption-hover.fg-hover-push .fg-loaded .fg-caption {
 	transition-property: transform;
 }
-.foogallery.fg-caption-hover.fg-hover-push .fg-loaded .fg-item-inner:hover .fg-caption {
+.foogallery.fg-caption-hover.fg-hover-push .fg-loaded .fg-item-inner:hover .fg-caption,
+.foogallery.fg-caption-hover.fg-hover-push .fg-loaded .fg-item-inner:focus-within .fg-caption {
 	transform: translateY(0);
 }
 .foogallery.fg-hover-push .fg-loaded .fg-item-inner:hover .fg-thumb,
-.foogallery.fg-caption-hover.fg-hover-push .fg-loaded .fg-item-inner:hover .fg-thumb {
+.foogallery.fg-caption-hover.fg-hover-push .fg-loaded .fg-item-inner:hover .fg-thumb,
+.foogallery.fg-hover-push .fg-loaded .fg-item-inner .fg-thumb:focus,
+.foogallery.fg-caption-hover.fg-hover-push .fg-loaded .fg-item-inner .fg-thumb:focus {
 	transform: translateX(-100%);
 }
 /* Scale */
@@ -1322,7 +1319,8 @@
 	z-index: 4;
 }
 
-.foogallery.fg-hover-scale .fg-item:hover {
+.foogallery.fg-hover-scale .fg-item:hover,
+.foogallery.fg-hover-scale .fg-item:focus-within {
 	transform: scale(1.048);
 	z-index: 10;
 }
@@ -1335,7 +1333,9 @@
 	transition-property: visibility, opacity, background-color;
 }
 .foogallery.fg-hover-scale .fg-item-inner:hover .fg-image-overlay,
-.foogallery.fg-caption-hover.fg-hover-scale .fg-item-inner:hover .fg-caption {
+.foogallery.fg-caption-hover.fg-hover-scale .fg-item-inner:hover .fg-caption,
+.foogallery.fg-hover-scale .fg-item-inner:focus-within .fg-image-overlay,
+.foogallery.fg-caption-hover.fg-hover-scale .fg-item-inner:focus-within .fg-caption {
 	visibility: visible;
 	opacity: 1;
 }
@@ -1344,7 +1344,8 @@
     transition-property: transform;
     z-index: 4;
 }
-.foogallery.fg-hover-zoomed .fg-item:hover .fg-image {
+.foogallery.fg-hover-zoomed .fg-item:hover .fg-image,
+.foogallery.fg-hover-zoomed .fg-item:focus-within .fg-image {
     transform: scale(1.15);
 }
 .foogallery.fg-hover-zoomed .fg-image-wrap {
@@ -1360,7 +1361,9 @@
     transition-property: visibility, opacity, background-color;
 }
 .foogallery.fg-hover-zoomed .fg-item-inner:hover .fg-image-overlay,
-.foogallery.fg-caption-hover.fg-hover-zoomed .fg-item-inner:hover .fg-caption {
+.foogallery.fg-caption-hover.fg-hover-zoomed .fg-item-inner:hover .fg-caption,
+.foogallery.fg-hover-zoomed .fg-item-inner:focus-within .fg-image-overlay,
+.foogallery.fg-caption-hover.fg-hover-zoomed .fg-item-inner:focus-within .fg-caption {
     visibility: visible;
     opacity: 1;
 }
@@ -1388,7 +1391,15 @@
 .foogallery.fg-hover-slide-left .fg-loaded .fg-item-inner:hover .fg-image-overlay,
 .foogallery.fg-caption-hover.fg-hover-slide-left .fg-loaded .fg-item-inner:hover .fg-caption,
 .foogallery.fg-hover-slide-right .fg-loaded .fg-item-inner:hover .fg-image-overlay,
-.foogallery.fg-caption-hover.fg-hover-slide-right .fg-loaded .fg-item-inner:hover .fg-caption {
+.foogallery.fg-caption-hover.fg-hover-slide-right .fg-loaded .fg-item-inner:hover .fg-caption,
+.foogallery.fg-hover-slide-up .fg-loaded .fg-item-inner:focus-within .fg-image-overlay,
+.foogallery.fg-caption-hover.fg-hover-slide-up .fg-loaded .fg-item-inner:focus-within .fg-caption,
+.foogallery.fg-hover-slide-down .fg-loaded .fg-item-inner:focus-within .fg-image-overlay,
+.foogallery.fg-caption-hover.fg-hover-slide-down .fg-loaded .fg-item-inner:focus-within .fg-caption,
+.foogallery.fg-hover-slide-left .fg-loaded .fg-item-inner:focus-within .fg-image-overlay,
+.foogallery.fg-caption-hover.fg-hover-slide-left .fg-loaded .fg-item-inner:focus-within .fg-caption,
+.foogallery.fg-hover-slide-right .fg-loaded .fg-item-inner:focus-within .fg-image-overlay,
+.foogallery.fg-caption-hover.fg-hover-slide-right .fg-loaded .fg-item-inner:focus-within .fg-caption {
 	transform: translateY(0) translateX(0);
 }
 
