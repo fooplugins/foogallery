@@ -296,8 +296,11 @@ Please update in order to for FooGallery to work in WP 5.5+!
 
 == Changelog ==
 
-= 2.1.30 =
-* Date Updated : 2022-01-06
+= 2.1.31 =
+* Date Updated : 2022-01-10
+* Update : FooGallery client side 2.0.24
+* Fix : Ensure gallery layout is triggered in certain scenarios.
+* Fix : Updated the hover effects and presets to trigger on focus for better accessibility.
 [//]: # fs_premium_only_begin
 * New : [Commerce Plan] Added FooGallery tab to product data metabox, to allow overrides for buttons and ribbons per product (when using the product datasource)
 * New : [Expert Plan] Added sort order option for server folder datasource.
