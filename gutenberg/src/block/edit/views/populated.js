@@ -11,16 +11,16 @@ export default class FooGalleryEditPopulated extends Component {
 	render(){
 		const { block, attributes, reload, ...props } = this.props;
 		return (
-				<Fragment className="wp-block-fooplugins-foogallery">
-					<FooGalleryEditBlockControls { ...props } />
-					<FooGalleryEditServerSideRender
-							block={ block }
-							attributes={ attributes }
-							reload={ reload }
-					/>
-					<FooGalleryEditModal { ...props } />
-					<FooGalleryEditInspectorControls { ...props } />
-				</Fragment>
+			<Fragment>
+				<FooGalleryEditBlockControls { ...props } />
+				<FooGalleryEditServerSideRender
+						block={ block }
+						attributes={ attributes }
+						reload={ reload }
+				/>
+				<FooGalleryEditModal { ...props } />
+				<FooGalleryEditInspectorControls { ...props } />
+			</Fragment>
 		);
 	}
 }
