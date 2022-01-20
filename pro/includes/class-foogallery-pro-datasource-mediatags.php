@@ -7,7 +7,7 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_MediaTags' ) ) {
     class FooGallery_Pro_Datasource_MediaTags extends FooGallery_Pro_Datasource_Taxonomy_Base {
     	public function __construct() {
 			parent::__construct( 'media_tags', FOOGALLERY_ATTACHMENT_TAXONOMY_TAG );
-			add_action( 'foogallery_gallery_datasources', array($this, 'add_datasource'), 5 );
+		    add_filter( 'foogallery_gallery_datasources', array($this, 'add_datasource'), 5 );
 		}
 
 		/**
