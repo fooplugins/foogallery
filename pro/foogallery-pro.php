@@ -22,6 +22,7 @@ require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-datasource-med
 require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-datasource-mediacategories.php';
 require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-datasource-folders.php';
 require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-datasource-lightroom.php';
+require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-datasource-opensea.php';
 require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-wplr-support.php';
 require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-instagram-helper.php';
 require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-datasource-realmedialibrary.php';
@@ -97,6 +98,7 @@ if ( ! class_exists( 'FooGallery_Pro' ) ) {
 				new FooGallery_Pro_Buttons();
 				new FooGallery_Product_Gallery_Template();
 				new FooGallery_Pro_Woocommerce_Data_Transfer();
+				new FooGallery_Pro_Datasource_Opensea();
 			}
 		}
 	}
