@@ -1,10 +1,10 @@
-=== Photo Gallery by FooGallery - Best Responsive Image Gallery ===
+=== Best WordPress Gallery Plugin – FooGallery ===
 Contributors: bradvin, steveush, fooplugins
 Donate link: https://fooplugins.com
 Tags: gallery, image gallery, photo gallery, responsive gallery, wordpress gallery plugin, best gallery plugin, albums, media gallery, video gallery, lightbox
 Requires at least: 4.6
 Tested up to: 5.9
-Stable tag: 2.1.18
+Stable tag: 2.1.33
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -25,7 +25,7 @@ FooGallery was built to be highly configurable and extendable for developers or 
 
 That is why we think FooGallery is the best WordPress gallery plugin. After using it, we hope you will agree.
 
-[Visit the FooGallery Wordpress Gallery Plugin Homepage](https://fooplugins.com/foogallery-wordpress-gallery-plugin/)
+[Visit the FooGallery Homepage](https://fooplugins.com/foogallery-wordpress-gallery-plugin/)
 
 = Performance Updates for Google's Core Web Vitals =
 

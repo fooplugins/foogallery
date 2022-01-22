@@ -68,7 +68,7 @@ $foogallery_pro_features = array(
 		'plans' => array( FOOGALLERY_PRO_PLAN_EXPERT, FOOGALLERY_PRO_PLAN_COMMERCE ),
 	),
 	array(
-		'title' => __( 'Search Filtering','foogallery' ),
+		'title' => __( 'Gallery Search','foogallery' ),
 		'desc' => __( 'Add a search input to your gallery to allow your visitors to search the gallery by the caption or tags.', 'foogallery' ),
 		'link' => 'https://fooplugins.com/foogallery-wordpress-gallery-plugin/filtering/#search',
 		'utm_content' => 'search-filtering',
