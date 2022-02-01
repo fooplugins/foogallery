@@ -7885,6 +7885,22 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 			}
 			return null;
 		},
+		get: function( indexOrElement, all ){
+			const self = this;
+			const items = all ? self._all : self._available;
+			if ( _is.number( indexOrElement ) ){
+				if ( indexOrElement >= 0 && indexOrElement < self._all.length ){
+					return items[ indexOrElement ];
+				}
+				return null;
+			}
+			return self.find( items, function( item ){
+				return item.el === indexOrElement;
+			} );
+		},
+		indexOf: function( item, all ){
+			return ( all ? this._all : this._available ).indexOf( item );
+		},
 		/**
 		 * @summary Filter the supplied `items` and return only those that can be created.
 		 * @memberof FooGallery.Items#

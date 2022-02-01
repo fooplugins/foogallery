@@ -7479,6 +7479,117 @@ html.fg-panel-no-scroll body {
 .foogallery.fg-thumbnail .fg-st-hidden {
 	display: none;
 }
+.foogallery.fg-carousel {
+    position: relative;
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: minmax(48px, 1fr) auto minmax(48px, 1fr);
+    grid-template-rows: auto 32px;
+    padding: 10px 0;
+}
+.fg-carousel-left {
+    position: relative;
+    grid-column: 1/2;
+    grid-row: 1/2;
+}
+.fg-carousel-center {
+    position: relative;
+    grid-column: 2/3;
+    grid-row: 1/2;
+}
+.fg-carousel-right {
+    position: relative;
+    grid-column: 3/4;
+    grid-row: 1/2;
+}
+.fg-carousel-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    grid-column: 1/4;
+    grid-row: 2/3;
+    padding: 10px 0 0;
+}
+.fg-carousel-bullet {
+    width: 10px;
+    height: 10px;
+    display: block;
+    padding: 0;
+    margin: 5px;
+    border-radius: 50%;
+    border: none;
+    outline: none;
+    box-shadow: none;
+    opacity: 0.2;
+}
+.fg-carousel-bullet.fg-bullet-active {
+    opacity: 1;
+}
+.fg-carousel-prev,
+.fg-carousel-next {
+    position: absolute;
+    height: 100%;
+    width: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #FFF;
+    font-size: 48px;
+    background: none;
+    border: none;
+    box-shadow: none;
+    outline: none;
+    z-index: 11;
+}
+.fg-carousel-prev .fg-icon,
+.fg-carousel-next .fg-icon {
+    width: 1em;
+    height: 1em;
+}
+.fg-carousel-prev {
+    left: 0;
+    top: 0;
+}
+.fg-carousel-next {
+    right: 0;
+    top: 0;
+}
+
+.foogallery.fg-carousel .fg-item {
+    display: block;
+    opacity: 0;
+    visibility: hidden;
+    grid-column: 2/3;
+    grid-row: 1/2;
+    transform-origin: center center;
+    transform: translateX(1000%) scale(0.6);
+    transition-timing-function: ease-in-out;
+    transition-duration: 300ms;
+    transition-property: background-color,transform,transform-origin,opacity,visibility;
+}
+.foogallery.fg-carousel .fg-item.fg-loaded {
+    transform: translateX(0) scale(0.6);
+    transition-timing-function: ease-in-out;
+    transition-duration: 300ms;
+    transition-property: background-color,transform,transform-origin,opacity,visibility;
+}
+.foogallery.fg-carousel .fg-item.fg-item-active,
+.foogallery.fg-carousel .fg-item.fg-item-prev,
+.foogallery.fg-carousel .fg-item.fg-item-next {
+    opacity: 1;
+    visibility: visible;
+}
+.foogallery.fg-carousel .fg-item.fg-item-active {
+    transform: translateX(0) scale(1);
+    z-index: 20;
+}
+.foogallery.fg-carousel .fg-item.fg-item-prev {
+    transform-origin: left center;
+}
+.foogallery.fg-carousel .fg-item.fg-item-next {
+    transform-origin: right center;
+}
 .foogrid,
 .foogrid.fg-gutter-small {
 	margin: 0 0 -0.5% 0;
