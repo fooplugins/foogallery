@@ -5697,6 +5697,78 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 	 */
 	_.supportsPicture = !!window.HTMLPictureElement;
 
+	/**
+	 * Utility class to make working with anonymous event listeners a bit simpler.
+	 * @memberof FooGallery.utils.
+	 * @class DOMEventListeners
+	 * @augments FooGallery.utils.Class
+	 * @borrows FooGallery.utils.Class.extend as extend
+	 * @borrows FooGallery.utils.Class.override as override
+	 */
+	_utils.DOMEventListeners = _utils.Class.extend( /** @lends FooGallery.utils.DOMEventListeners.prototype */ {
+		/**
+		 * @ignore
+		 * @constructs
+		 **/
+		construct: function(){
+			/**
+			 * A simple object containing the event listener and options.
+			 * @typedef {Object} EventEntry
+			 * @property {EventListener} listener
+			 * @property {EventListenerOptions|boolean} [options]
+			 */
+			/**
+			 * The map object containing all listeners.
+			 * @type {Map<EventTarget, Map<string, EventEntry>>}
+			 */
+			this.eventTargets = new Map();
+		},
+		/**
+		 * Add an event listener to the eventTarget.
+		 * @param {EventTarget} eventTarget
+		 * @param {string} type
+		 * @param {EventListener} listener
+		 * @param {AddEventListenerOptions|boolean} [options]
+		 * @returns {boolean} False if a listener already exists for the element.
+		 */
+		add: function( eventTarget, type, listener, options ){
+			eventTarget.addEventListener( type, listener, options );
+			let listeners = this.eventTargets.get( eventTarget );
+			if ( !listeners ){
+				listeners = new Map();
+				this.eventTargets.set( eventTarget, listeners );
+			}
+			let entry = listeners.get( type );
+			if ( !entry ){
+				listeners.set( type, { listener: listener, options: options } );
+				return true;
+			}
+			return false;
+		},
+		/**
+		 * Remove an event listener from the eventTarget.
+		 * @param {EventTarget} eventTarget
+		 * @param {string} type
+		 */
+		remove: function( eventTarget, type ){
+			let listeners = this.eventTargets.get( eventTarget );
+			if ( !listeners ) return;
+			let entry = listeners.get( type );
+			if ( !entry ) return;
+			eventTarget.removeEventListener( type, entry.listener, entry.options );
+		},
+		/**
+		 * Removes all event listeners from all eventTargets.
+		 */
+		clear: function(){
+			this.eventTargets.forEach( function( listeners, eventTarget ){
+				listeners.forEach( function( entry, type ){
+					eventTarget.removeEventListener( type, entry.listener, entry.options );
+				} );
+			} );
+		}
+	} );
+
 })(
 	FooGallery.$,
 	FooGallery,
@@ -5758,6 +5830,33 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
                 }).join(" ");
 
             return $(icon).addClass(classNames);
+        },
+        element: function(name, setNameOrObject){
+            const self = this;
+
+            let setName = "default",
+                icons = _obj.extend({}, self.registered.default);
+
+            if (_is.string(setNameOrObject) && setNameOrObject !== "default"){
+                setName = setNameOrObject;
+                icons = _obj.extend(icons, self.registered[setNameOrObject]);
+            } else if (_is.hash(setNameOrObject)){
+                setName = "custom";
+                icons = _obj.extend(icons, setNameOrObject);
+            }
+
+            const iconString = _is.string(name) && icons.hasOwnProperty(name) ? icons[name].replace(/\[ICON_CLASS]/g, self.className + "-" + name) : null;
+            if ( iconString !== null ){
+                const fragment = document.createRange().createContextualFragment(iconString);
+                const svg = fragment.querySelector("svg");
+                if ( svg ){
+                    ["", "-" + name, "-" + setName].forEach(function(suffix){
+                        svg.classList.add(self.className + suffix);
+                    });
+                    return svg;
+                }
+            }
+            return null;
         }
     });
 
@@ -16144,11 +16243,33 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
                 right: null,
                 bottom: null,
                 prev: null,
-                next: null
+                next: null,
+                progress: null
             };
             self.activeItem = null;
             self._showPerSide = -1;
             self._itemWidth = 0;
+            self._leftExclude = [ self.sel.activeItem, self.sel.nextItem ].join( "," );
+            self._rightExclude = [ self.sel.activeItem, self.sel.prevItem ].join( "," );
+            /**
+             *
+             * @type {FooGallery.utils.DOMEventListeners}
+             * @private
+             */
+            self._centerListeners = new _utils.DOMEventListeners();
+            /**
+             *
+             * @type {FooGallery.utils.DOMEventListeners}
+             * @private
+             */
+            self._listeners = new _utils.DOMEventListeners();
+            /**
+             *
+             * @type {FooGallery.utils.Timer}
+             * @private
+             */
+            self._timer = new _utils.Timer();
+            self._timerRestart = null;
         },
         init: function(){
             const self = this;
@@ -16158,7 +16279,8 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
                 right: self.el.querySelector( self.sel.right ),
                 bottom: self.el.querySelector( self.sel.bottom ),
                 prev: self.el.querySelector( self.sel.prev ),
-                next: self.el.querySelector( self.sel.next )
+                next: self.el.querySelector( self.sel.next ),
+                progress: self.el.querySelector( self.sel.progress )
             };
         },
         postInit: function(){
@@ -16172,30 +16294,86 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 
             self._showPerSide = ( self.opt.show - 1 ) / 2;
 
-            $( self.elem.prev ).on( "click", function(e){
-                e.preventDefault();
+            self._listeners.add( self.elem.prev, "click", function( event ){
+                event.preventDefault();
                 self.activeItem = self.getPrev();
-                self.layout( self.tmpl.lastWidth );
-            } ).append( _icons.get( "arrow-left" ) );
+                self.layout();
+            } );
+            self.elem.prev.appendChild( _icons.element( "arrow-left" ) );
 
-            $( self.elem.next ).on( "click", function(e){
-                e.preventDefault();
+            self._listeners.add( self.elem.next, "click", function( event ){
+                event.preventDefault();
                 self.activeItem = self.getNext();
-                self.layout( self.tmpl.lastWidth );
-            } ).append( _icons.get( "arrow-right" ) );
+                self.layout();
+            } );
+            self.elem.next.appendChild( _icons.element( "arrow-right" ) );
 
-            for (var i = 0; i < count; i++){
+            for (let i = 0; i < count; i++){
                 const bullet = document.createElement( "button" );
                 bullet.type = "button";
                 bullet.classList.add( self.cls.bullet );
                 if ( i === 0 ) bullet.classList.add( self.cls.activeBullet );
-                bullet.dataset.index = i + "";
-                $( bullet ).on( "click", function(e){
-                    e.preventDefault();
-                    self.activeItem = self.tmpl.items.get( parseInt( this.dataset.index ) );
-                    self.layout( self.tmpl.lastWidth );
+                self._listeners.add( bullet, "click", function( event ){
+                    event.preventDefault();
+                    self.activeItem = self.tmpl.items.get( i );
+                    self.layout();
                 } );
                 self.elem.bottom.appendChild( bullet );
+            }
+
+            let startX = 0, endX = 0;
+            self._listeners.add( self.el, "touchstart", function( event ){
+                startX = event.changedTouches[0].screenX;
+            }, { passive: true } );
+
+            self._listeners.add( self.el, "touchend", function( event ){
+                endX = event.changedTouches[0].screenX;
+                if ( endX < startX ){ // swipe left
+                    self.activeItem = self.getNext();
+                    self.layout();
+                } else { // swipe right
+                    self.activeItem = self.getPrev();
+                    self.layout();
+                }
+                endX = 0;
+                startX = 0;
+            }, { passive: true } );
+
+            if ( self.opt.duration > 0 ){
+                if ( self.opt.pauseOnHover ){
+                    self._listeners.add( self.el, "mouseenter", function( event ){
+                        self._timer.pause();
+                        if ( self._timerRestart !== null ){
+                            clearTimeout( self._timerRestart );
+                            self._timerRestart = null;
+                        }
+                    }, { passive: true } );
+                    self._listeners.add( self.el, "mouseleave", function( event ){
+                        if ( !self._timer.canResume ) self._timer.restart();
+                        else self._timer.resume();
+                    }, { passive: true } );
+                }
+                const progress = self.elem.progress.style;
+                progress.setProperty( "width", "0%" );
+                progress.setProperty( "transition-duration", "0s" );
+                self._timer.countdown( self.opt.duration );
+                self._timer.on( {
+                    "tick": function( event, current, total ){
+                        const percent = Math.min( ( ( total - ( current - 1 ) ) / total ) * 100, 100 );
+                        progress.setProperty( "width", percent + "%" );
+                        progress.removeProperty( "transition-duration" );
+                    },
+                    "complete": function(){
+                        progress.setProperty( "width", "0%" );
+                        progress.setProperty( "transition-duration", "0s" );
+                        self.activeItem = self.getNext();
+                        self.layout();
+                        self._timerRestart = setTimeout( function(){
+                            self._timerRestart = null;
+                            self._timer.restart();
+                        }, 650 );
+                    }
+                } );
             }
         },
         getNext: function(){
@@ -16205,67 +16383,78 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
             return this.tmpl.items.prev( this.activeItem, null, true );
         },
         destroy: function(){
-
-        },
-        layout: function( width ){
             const self = this;
-            if ( width <= 0 ) return;
+            self._listeners.clear();
+            self._centerListeners.clear();
+        },
 
-            if ( self.activeItem === null ){
-                self.activeItem = self.tmpl.items.first();
-            }
-            if ( ! ( self.activeItem instanceof _.Item ) ) return;
+        cleanup: function( selector, className, exclude ){
+            const self = this;
+            const hasExclude = _is.string( exclude );
+            Array.from( self.el.querySelectorAll( selector ) ).forEach( function( node ){
+                node.classList.remove( className );
+                if ( self.opt.centerOnClick ){
+                    self._centerListeners.remove( node, "click" );
+                }
 
-            Array.from( self.el.querySelectorAll( self.sel.activeItem ) ).forEach( function( node ){
-                node.classList.remove( self.cls.activeItem );
+                if ( hasExclude && node.matches( exclude ) ) return;
+
                 node.style.removeProperty( "transform" );
                 node.style.removeProperty( "z-index" );
             } );
-            self.activeItem.el.classList.add( self.cls.activeItem );
+        },
+        layout: function(){
+            const self = this;
+            if ( self.activeItem === null ){
+                self.activeItem = self.tmpl.items.first();
+            }
+            if ( self.renderActive() ){
+                const itemWidth = self.elem.center.getBoundingClientRect().width;
+                self.renderSide( "left", self.sel.prevItem, self._leftExclude, self.cls.prevItem, itemWidth, self.elem.left.getBoundingClientRect().width );
+                self.renderSide( "right", self.sel.nextItem, self._rightExclude, self.cls.nextItem, itemWidth, self.elem.right.getBoundingClientRect().width );
+            }
+        },
+        round: function( value, precision ){
+            let multiplier = Math.pow(10, precision || 0);
+            return Math.round(value * multiplier) / multiplier;
+        },
+        renderActive: function(){
+            const self = this;
+            if ( ! ( self.activeItem instanceof _.Item ) ) return false;
+            const el = self.activeItem.el;
+            self.cleanup( self.sel.activeItem, self.cls.activeItem );
+            el.classList.add( self.cls.activeItem );
+            el.style.removeProperty( "transform" );
+            el.style.removeProperty( "z-index" );
 
             const ai = self.tmpl.items.indexOf( self.activeItem );
             Array.from( self.el.querySelectorAll( self.sel.bullet ) ).forEach( function( node, i ){
                 node.classList.remove( self.cls.activeBullet );
                 if ( i === ai ) node.classList.add( self.cls.activeBullet );
             } );
-
-            const itemWidth = self.elem.center.getBoundingClientRect().width;
-            self.renderSide( "left", self.sel.prevItem, self.cls.prevItem, itemWidth, self.elem.left.getBoundingClientRect().width );
-            self.renderSide( "right", self.sel.nextItem, self.cls.nextItem, itemWidth, self.elem.right.getBoundingClientRect().width );
+            return true;
         },
-        round: function( value, precision ){
-            var multiplier = Math.pow(10, precision || 0);
-            return Math.round(value * multiplier) / multiplier;
-        },
-        renderSide: function( side, selector, cls, itemWidth, maxWidth ) {
+        renderSide: function( side, selector, exclude, cls, itemWidth, maxWidth ) {
             const self = this;
-            if ( ["left","right"].indexOf(side) === -1 ) return;
+            if ( [ "left","right" ].indexOf( side ) === -1 ) return;
 
-            console.log( "renderSide( " + side + " )" );
+            self.cleanup( selector, cls, exclude );
 
-            Array.from( self.el.querySelectorAll( selector ) ).forEach( function( node ){
-                node.classList.remove( cls );
-                node.style.removeProperty( "transform" );
-                node.style.removeProperty( "z-index" );
-            } );
+            let remaining = maxWidth, lastX = 0, place = self.activeItem, zIndex = 20; // the active item has a z-index of 20
 
-            var remaining = maxWidth;
-            var lastX = 0;
-            var place = self.activeItem;
-            var zIndex = 20; // the active item has a z-index of 20
-
-            for (var i = 0; i < self._showPerSide; i++ ){
-                var item;
+            for (let i = 0; i < self._showPerSide; i++ ){
+                let item;
                 if ( side === "left" ){
                     item = self.tmpl.items.prev( place, null, true );
                 } else {
                     item = self.tmpl.items.next( place, null, true );
                 }
                 if ( item instanceof _.Item ){
-                    var scale = self.round( 1 - ( ( i + 1 ) * self.opt.scale ), 2 );
-                    var width = self.round( itemWidth * scale );
-                    var max = self.round( width * self.opt.max );
-                    var x = self.round( maxWidth - ( remaining / 2 ) );
+
+                    let scale = self.round( 1 - ( ( i + 1 ) * self.opt.scale ), 2 );
+                    let width = self.round( itemWidth * scale );
+                    let max = self.round( width * self.opt.max );
+                    let x = self.round( maxWidth - ( remaining / 2 ) );
                     if ( x - lastX > max ){
                         x = lastX + max;
                         remaining -= max;
@@ -16273,14 +16462,22 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
                         remaining /= 2;
                     }
                     lastX = x;
-                    var transform = "translateX(" + ( side === "left" ? "-" : "" ) + x + "px) scale(" + scale + ")";
-                    var z = --zIndex + "";
-                    console.log( "transform: " + transform + "; z-index: " + z + ";" );
+
+                    let transform = "translateX(" + ( side === "left" ? "-" : "" ) + x + "px) scale(" + scale + ")";
+                    let z = --zIndex + "";
                     item.el.classList.add( cls );
-                    item.el.style.transform = transform;
-                    item.el.style.zIndex = z;
-                    // item.el.style.setProperty( "transform", transform );
-                    // item.el.style.setProperty( "zIndex", z );
+                    item.el.style.setProperty( "transform", transform );
+                    item.el.style.setProperty( "z-index", z );
+
+                    if ( self.opt.centerOnClick ){
+                        self._centerListeners.add( item.el, "click", function( event ){
+                            event.preventDefault();
+                            event.stopPropagation();
+                            self.activeItem = item;
+                            self.layout();
+                        }, true );
+                    }
+
                     place = item;
                 } else {
                     // exit early if no item was found
@@ -16342,8 +16539,11 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
     _.template.register("carousel", _.CarouselTemplate, {
         template: {
             show: 5,
-            scale: 0.2,
-            max: 0.8
+            scale: 0.12,
+            max: 0.8,
+            centerOnClick: true,
+            duration: 5,
+            pauseOnHover: true
         }
     }, {
         container: "foogallery fg-carousel",
@@ -16358,7 +16558,8 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
             activeBullet: "fg-bullet-active",
             activeItem: "fg-item-active",
             prevItem: "fg-item-prev",
-            nextItem: "fg-item-next"
+            nextItem: "fg-item-next",
+            progress: "fg-carousel-progress"
         }
     });
 
