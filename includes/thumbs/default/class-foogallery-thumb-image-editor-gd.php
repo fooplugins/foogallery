@@ -17,21 +17,6 @@ if ( ! class_exists( 'FooGallery_Thumb_Image_Editor_GD' ) ) {
 			return parent::update_size( $width, $height );
 		}
 
-		public static function supports_mime_type( $mime_type ) {
-			$image_types = imagetypes();
-			switch( $mime_type ) {
-				case 'image/jpeg':
-				case 'image/jpg':
-					return ($image_types & IMG_JPG) != 0;
-				case 'image/png':
-					return ($image_types & IMG_PNG) != 0;
-				case 'image/gif':
-					return ($image_types & IMG_GIF) != 0;
-			}
-
-			return false;
-		}
-
 		/**
 		 * Get the color at a specific coordinate
 		 *
