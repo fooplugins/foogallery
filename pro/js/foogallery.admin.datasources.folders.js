@@ -60,10 +60,8 @@ FooGallery.utils.ready(function ($) {
 	$(document).on('foogallery-datasource-content-loaded-folders', function () {
 		foogalleryInitSortable();
 
-		$('input:radio[name=foogallery-datasource-folder-metadata]').change(function(e) {
+		$('input:radio[name=foogallery-datasource-folder-metadata], input:radio[name=foogallery-datasource-folder-sort]').change(function(e) {
 			e.preventDefault();
-
-			$('.foogallery-datasource-folder-metadata-selector .spinner').addClass('is-active');
 
 			var folder = $('.foogallery-datasource-folder-selected').text();
 			foogalleryRefreshDatasourceFolderContainer(folder);
@@ -75,7 +73,7 @@ FooGallery.utils.ready(function ($) {
 			var $this = $(this),
 				folder = $this.data('folder');
 
-			$this.append('<span class="is-active spinner"></span>');
+			//$this.append('<span class="is-active spinner"></span>');
 
 			$('.foogallery-datasource-folder-selected').text(folder);
 
@@ -117,7 +115,7 @@ FooGallery.utils.ready(function ($) {
 		$('.foogallery-datasource-folder-container').on('click', '.foogallery-server-image-metadata-save', function(e) {
 			e.preventDefault();
 
-			$(this).after('<span class="is-active spinner"></span>');
+			//$(this).after('<span class="is-active spinner"></span>');
 
 			var json = { "items" : [] };
 
@@ -167,12 +165,16 @@ FooGallery.utils.ready(function ($) {
 
 	function foogalleryRefreshDatasourceFolderContainer( folder ) {
 		var metadata = $('input:radio[name="foogallery-datasource-folder-metadata"]:checked').val(),
+			sort = $('input:radio[name="foogallery-datasource-folder-sort"]:checked').val()
 			$container = $('.foogallery-datasource-folder-container');
+
+		$('.foogallery-datasource-folder-spinner').addClass('is-active');
 
 		//set the selection
 		document.foogallery_datasource_value_temp = {
 			"value" : folder,
-			"metadata" : metadata
+			"metadata" : metadata,
+			"sort" : sort
 		};
 
 		$('.foogallery-datasource-modal-insert').removeAttr( 'disabled' );
@@ -181,6 +183,7 @@ FooGallery.utils.ready(function ($) {
 			action: 'foogallery_datasource_folder_change',
 			folder: encodeURIComponent(folder),
 			metadata: encodeURIComponent(metadata),
+			sort: encodeURIComponent(sort),
 			nonce: document.foogalleryDatasourceFolderNonce
 		};
 
@@ -197,7 +200,7 @@ FooGallery.utils.ready(function ($) {
 			url: ajaxurl,
 			data: data,
 			success: function(data) {
-				$('.foogallery-datasource-folder-metadata-selector .spinner').removeClass('is-active');
+				$('.foogallery-datasource-folder-spinner').removeClass('is-active');
 				$container.html(data);
 				foogalleryInitSortable();
 			}

@@ -1,10 +1,10 @@
-=== Photo Gallery by FooGallery - Best Responsive Image Gallery ===
+=== Best WordPress Gallery Plugin – FooGallery ===
 Contributors: bradvin, steveush, fooplugins
 Donate link: https://fooplugins.com
 Tags: gallery, image gallery, photo gallery, responsive gallery, wordpress gallery plugin, best gallery plugin, albums, media gallery, video gallery, lightbox
 Requires at least: 4.6
-Tested up to: 5.8
-Stable tag: 2.1.18
+Tested up to: 5.9
+Stable tag: 2.1.34
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -25,7 +25,7 @@ FooGallery was built to be highly configurable and extendable for developers or 
 
 That is why we think FooGallery is the best WordPress gallery plugin. After using it, we hope you will agree.
 
-[Visit the FooGallery Wordpress Gallery Plugin Homepage](https://fooplugins.com/foogallery-wordpress-gallery-plugin/)
+[Visit the FooGallery Homepage](https://fooplugins.com/foogallery-wordpress-gallery-plugin/)
 
 = Performance Updates for Google's Core Web Vitals =
 
@@ -83,7 +83,7 @@ The following free features make FooGallery the **best gallery plugin** on the m
 
 = PRO Gallery Features =
 
-There are 3 PRO plans available for any budget. Get started with premium features from $19!
+There are 3 PRO plans available, that will work with any budget:
 
 [PRO Starter](https://fooplugins.com/foogallery-wordpress-gallery-plugin/#pro-starter-features) | [PRO Expert](https://fooplugins.com/foogallery-wordpress-gallery-plugin/#pro-expert-features) | [PRO Commerce](https://fooplugins.com/foogallery-wordpress-gallery-plugin/#pro-commerce-features)
 
@@ -295,6 +295,25 @@ We did the research and comparison. See our findings : [What is the Best WordPre
 Please update in order to for FooGallery to work in WP 5.5+!
 
 == Changelog ==
+
+= 2.1.34 =
+* Date Updated : 2022-02-01
+* Fix : Fixed bug where WebP images could not be uploaded when using the GD image editor
+* Fix : Security Fix in wp-admin
+* Update : Update to Freemius SDK
+
+= 2.1.33 =
+* Date Updated : 2022-01-15
+* Update : FooGallery client side 2.0.24
+* Fix : Ensure gallery layout is triggered in certain scenarios.
+* Fix : Updated the hover effects and presets to trigger on focus for better accessibility.
+* Fix : il8n bug where il8n script was not being included in page in some scenarios.
+* Fix : Removed Gutenberg editor warnings when using the FooGallery block.
+[//]: # fs_premium_only_begin
+* New : [Commerce Plan] Added FooGallery tab to product data metabox, to allow overrides for buttons and ribbons per product (when using the product datasource)
+* New : [Expert Plan] Added sort order option for server folder datasource.
+* Fix : [Expert Plan] Fixed PHP warning when using gallery search.
+[//]: # fs_premium_only_end
 
 = 2.1.28 =
 * Date Updated : 2021-10-27

@@ -24,9 +24,11 @@
 }
 
 .foogallery-datasource-folder-selected {
-	padding: 3px 6px;
+	padding: 0px 6px;
 	background: #efefef;
 	border-radius: 3px;
+	float: left;
+	margin: 0px 6px;
 }
 
 .foogallery-datasource-folder-container textarea {
@@ -95,12 +97,12 @@
 	background: #eee;
 }
 
-.foogallery-datasource-folder-metadata-selector {
+.foogallery-datasource-folder-selector div {
 	float:left;
 }
 
-.foogallery-datasource-folder-metadata-selector .spinner {
-	float: right;
+.foogallery-datasource-folder-selector .spinner {
+	float:left;
 }
 
 .foogallery-server-image-metadata-form {
@@ -144,6 +146,11 @@
 	display: inline-block;
 	vertical-align: top;
 	text-align: right;
+}
+
+.foogallery-datasource-folder-container {
+	margin-top: 45px;
+	clear: both;
 }
 
 .foogallery-datasource-folder-container .foogallery-server-image-metadata-form input,

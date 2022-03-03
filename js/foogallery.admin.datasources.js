@@ -27,7 +27,8 @@ jQuery(function ($) {
 	$('.foogallery-datasources-modal-wrapper').on('click', '.foogallery-datasource-modal-reload', function(e) {
 		e.preventDefault();
 
-		var datasource = $('#foogallery_datasource').val(),
+		var $wrapper = $('.foogallery-datasources-modal-wrapper'),
+			datasource = $wrapper.data('datasource'),
 			$content = $('.foogallery-datasource-modal-container-inner.' + datasource);
 
 		$content.addClass('not-loaded');
@@ -69,6 +70,7 @@ jQuery(function ($) {
 				data: data,
 				success: function(data) {
 					$('.foogallery-datasource-modal-reload').show();
+					$wrapper.data('datasource', datasource );
 
 					$content.html(data);
 					//raise a event so that datasource-specific code can run

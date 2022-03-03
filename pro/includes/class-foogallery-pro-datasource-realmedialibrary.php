@@ -10,7 +10,7 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_RealMediaLibrary' ) ) {
 		}
 
 		public function plugins_loaded() {
-			add_action( 'foogallery_gallery_datasources', array( $this, 'add_datasource' ), 6 );
+			add_filter( 'foogallery_gallery_datasources', array( $this, 'add_datasource' ), 6 );
 			add_action( 'foogallery-datasource-modal-content_rml', array( $this, 'render_datasource_modal_content' ), 10, 3 );
 			add_action( 'foogallery_gallery_metabox_items_list', array( $this, 'render_datasource_item' ), 10, 1 );
 			add_action( 'foogallery_before_save_gallery_datasource', array( $this, 'before_save_gallery_datasource_clear_datasource_cached_attachments' ) );

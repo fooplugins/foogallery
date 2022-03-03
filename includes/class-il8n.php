@@ -8,8 +8,16 @@ if ( ! class_exists( 'FooGallery_il8n' ) ) {
 
 		function __construct() {
 			add_action( 'foogallery_enqueue_script-core', array( $this, 'enqueue_il8n' ), 10, 1 );
+			add_action( 'foogallery_dequeue_script-core', array( $this, 'dequeue_core' ) );
 		}
 
+		/**
+		 * Enqueue the il8n script
+		 *
+		 * @param $js
+		 *
+		 * @return void
+		 */
 		function enqueue_il8n( $js ) {
 			global $foogallery_enqueue_il8n;
 
@@ -54,11 +62,23 @@ if ( ! class_exists( 'FooGallery_il8n' ) ) {
 
 			$il8n = apply_filters( 'foogallery_il8n', $il8n );
 
-			$script = "var FooGallery_il8n = " . foogallery_json_encode( $il8n ) . ';';
-
-			wp_add_inline_script( 'foogallery-core', $script, 'before' );
+			// Only add the script to the page if there is data to be added.
+			if ( count( $il8n ) > 0 ) {
+				$script = "var FooGallery_il8n = " . foogallery_json_encode( $il8n ) . ';';
+				wp_add_inline_script( 'foogallery-core', $script, 'before' );
+			}
 
 			$foogallery_enqueue_il8n = true; // To ensure we do not add multiple times on a page with more than 1 gallery.
+		}
+
+		/**
+		 * Clears
+		 *
+		 * @return void
+		 */
+		function dequeue_core() {
+			global $foogallery_enqueue_il8n;
+			$foogallery_enqueue_il8n = null; // To ensure we once again add the correct il8n script
 		}
 	}
 }

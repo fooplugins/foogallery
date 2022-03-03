@@ -6,7 +6,7 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Post_Query' ) ) {
 
 	class FooGallery_Pro_Datasource_Post_Query {
 		public function __construct() {
-			add_action( 'foogallery_gallery_datasources', array( $this, 'add_datasource' ) );
+			add_filter( 'foogallery_gallery_datasources', array( $this, 'add_datasource' ) );
 			add_action( 'foogallery-datasource-modal-content_post_query', array( $this, 'render_datasource_modal_content' ), 10, 2 );
 			add_action( 'foogallery_gallery_metabox_items_list', array( $this, 'render_datasource_item' ), 10, 1 );
 			add_filter( 'foogallery_datasource_post_query_item_count', array( $this, 'get_gallery_attachment_count'	), 10, 2 );
@@ -212,7 +212,7 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Post_Query' ) ) {
 		}
 
 		/**
-		 * Enqueues folders-specific assets
+		 * Enqueues post query assets
 		 */
 		public function enqueue_scripts_and_styles() {
 			wp_enqueue_script( 'foogallery.admin.datasources.post.query', FOOGALLERY_PRO_URL . 'js/foogallery.admin.datasources.post.query.js', array( 'jquery' ), FOOGALLERY_VERSION );
