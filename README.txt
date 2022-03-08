@@ -2,7 +2,7 @@
 Contributors: bradvin, steveush, fooplugins
 Donate link: https://fooplugins.com
 Tags: gallery, image gallery, photo gallery, responsive gallery, wordpress gallery plugin, best gallery plugin, albums, media gallery, video gallery, lightbox
-Requires at least: 4.6
+Requires at least: 5.2
 Tested up to: 5.9
 Stable tag: 2.1.34
 License: GPLv2 or later
