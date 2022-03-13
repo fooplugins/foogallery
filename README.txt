@@ -297,6 +297,12 @@ Please update in order to for FooGallery to work in WP 5.5+!
 == Changelog ==
 
 = 2.1.35 =
+* Date Updated : 2022-03-12
+[//]: # fs_premium_only_begin
+* New : Added Master Gallery feature, which allows you to create templates from galleries that other galleries can inherit settings from.
+[//]: # fs_premium_only_end
+
+= 2.1.35 =
 * Date Updated : 2022-03-08
 * Fix : Fixed PHP warning on Widget Editor page in admin
 [//]: # fs_premium_only_begin
