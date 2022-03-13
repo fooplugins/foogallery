@@ -22,10 +22,54 @@ if ( ! class_exists( 'FooGallery_Pro_Master_Galleries' ) ) {
 			add_filter( 'foogallery_should_render_gallery_settings_metabox', array( $this, 'override_settings_metabox'), 10, 2 );
 			add_action( 'foogallery_after_render_gallery_settings_metabox', array( $this, 'show_master_gallery_info_in_settings_metabox' ), 10, 1 );
 
+			// Hide other metaboxes when a master gallery is being used.
+	        add_action( 'add_meta_boxes_' . FOOGALLERY_CPT_GALLERY, array( $this, 'hide_metaboxes' ), 99 );
+
 			// Admin notice for master gallery
 	        add_action( 'admin_notices', array( $this, 'display_master_gallery_notice' ) );
+
+			// Override where the settings for a gallery are loaded from. In this case, from the master gallery.
+	        add_filter( 'foogallery_load_gallery_settings_id', array( $this, 'load_settings_from_master_gallery' ) );
         }
 
+		function load_settings_from_master_gallery( $foogallery_id ) {
+			$master_gallery = $this->get_master_gallery( $foogallery_id );
+			if ( $master_gallery !== false ) {
+				return $master_gallery->ID;
+			}
+
+			return $foogallery_id;
+		}
+
+	    /**
+	     * Hide the metaboxes which don't make sense, if a master gallery is being used.
+	     *
+	     * @param $post
+	     *
+	     * @return void
+	     */
+		function hide_metaboxes( $post ) {
+			$master_gallery = $this->get_master_gallery( $post->ID );
+			if ( false !== $master_gallery ) {
+				remove_meta_box( 'foogallery_customcss', FOOGALLERY_CPT_GALLERY, 'normal' );
+
+				remove_meta_box( 'foogallery_bulk_copy', FOOGALLERY_CPT_GALLERY, 'normal' );
+
+				remove_meta_box( 'foogallery_retina', FOOGALLERY_CPT_GALLERY, 'side' );
+
+				remove_meta_box( 'foogallery_sorting', FOOGALLERY_CPT_GALLERY, 'side' );
+
+				remove_meta_box( 'foogallery_thumb_settings', FOOGALLERY_CPT_GALLERY, 'side' );
+			}
+		}
+
+	    /**
+	     * Get all galleries that are using the master gallery.
+	     *
+	     * @param $master_gallery_id
+	     *
+	     * @return FooGallery[]
+	     */
 		function get_master_gallery_usage( $master_gallery_id ) {
 			return foogallery_get_all_galleries( false, array(
 				'meta_key'   => FOOGALLERY_META_MASTER_SET,
@@ -73,7 +117,7 @@ if ( ! class_exists( 'FooGallery_Pro_Master_Galleries' ) ) {
 					    <span class="dashicons dashicons-warning"></span>
 					    <strong><?php _e( 'Editing Master Gallery!' ) ?></strong>
 					    <br/>
-					    <?php printf( __( 'PLEASE NOTE : you are editing a master gallery. Editing settings for this master gallery will affect %s galleries. To see which galleries, scroll down to the Master Galleries metabox.', 'foogallery' ), $gallery_usage_count ); ?>
+					    <?php printf( __( 'PLEASE NOTE : you are editing a master gallery. Editing settings for this master gallery will affect %s galleries. To see which galleries, scroll down to the Master Gallery Settings metabox.', 'foogallery' ), $gallery_usage_count ); ?>
 				    </p>
 			    </div>
 			    <?php
@@ -119,10 +163,10 @@ if ( ! class_exists( 'FooGallery_Pro_Master_Galleries' ) ) {
          * Add a metabox to the gallery for master galleries
          * @param $post
          */
-        function add_master_gallery_meta_box_to_gallery($post) {
+        function add_master_gallery_meta_box_to_gallery( $post ) {
             add_meta_box(
                 'foogallery_master',
-                __( 'Master Galleries', 'foogallery' ),
+                __( 'Master Gallery Settings', 'foogallery' ),
                 array( $this, 'render_metabox' ),
                 FOOGALLERY_CPT_GALLERY,
                 'normal',
@@ -209,10 +253,22 @@ if ( ! class_exists( 'FooGallery_Pro_Master_Galleries' ) ) {
 	     * @return int
 	     */
 	    function get_master_gallery( $foogallery_id ) {
+			global $foogallery_admin_master_gallery_cache;
+
+			if ( isset( $foogallery_admin_master_gallery_cache ) &&
+			     is_array( $foogallery_admin_master_gallery_cache ) && array_key_exists( $foogallery_id, $foogallery_admin_master_gallery_cache ) ) {
+				return $foogallery_admin_master_gallery_cache[$foogallery_id];
+			}
+
 		    $master_gallery_id = $this->get_master_gallery_id( $foogallery_id );
 
 			if ( $master_gallery_id > 0 ) {
-				return FooGallery::get_by_id( $master_gallery_id );
+				$master_gallery = FooGallery::get_by_id( $master_gallery_id );
+				if ( !isset( $foogallery_admin_master_gallery_cache ) ) {
+					$foogallery_admin_master_gallery_cache = array();
+				}
+				$foogallery_admin_master_gallery_cache[$foogallery_id] = $master_gallery;
+				return $master_gallery;
 			}
 
 			return false;
@@ -312,7 +368,7 @@ if ( ! class_exists( 'FooGallery_Pro_Master_Galleries' ) ) {
 			if ( $this->is_master_gallery( $foogallery_id ) ) {
 				$galleries_using_master = $this->get_master_gallery_usage( $foogallery_id );
 				if ( count ( $galleries_using_master ) === 0 ) {
-					echo __( 'To use this master gallery, edit another gallery and set the master gallery in the Master Galleries metabox.', 'foogallery' );
+					echo __( 'To use this master gallery, edit another gallery and set the master gallery in the Master Gallery Settings metabox.', 'foogallery' );
 				} else { ?>
 					<p>
 						<?php _e( 'This master gallery is being used by the following galleries:', 'foogallery' ); ?>
@@ -341,6 +397,9 @@ if ( ! class_exists( 'FooGallery_Pro_Master_Galleries' ) ) {
 					<button class="button button-primary" id="foogallery_master_gallery_set"><?php _e( 'Set', 'foogallery'); ?></button>
 					<?php wp_nonce_field( 'foogallery_master_gallery_set', 'foogallery_master_gallery_set_nonce', false ); ?>
 					<span class="foogallery_master_gallery_set_spinner spinner"></span>
+					<p>
+						<?php _e( 'PLEASE NOTE : If you set a master gallery, the following features will be hidden for the gallery : Bulk Copy, Custom CSS, Retina Support, Gallery Sorting. Instead, these settings will be inherited from the master gallery.', 'foogallery' ); ?>
+					</p>
 					<?php
 				}
 			}
