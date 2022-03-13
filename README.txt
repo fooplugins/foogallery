@@ -2,9 +2,9 @@
 Contributors: bradvin, steveush, fooplugins
 Donate link: https://fooplugins.com
 Tags: gallery, image gallery, photo gallery, responsive gallery, wordpress gallery plugin, best gallery plugin, albums, media gallery, video gallery, lightbox
-Requires at least: 4.6
+Requires at least: 5.2
 Tested up to: 5.9
-Stable tag: 2.1.33
+Stable tag: 2.1.34
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -295,6 +295,25 @@ We did the research and comparison. See our findings : [What is the Best WordPre
 Please update in order to for FooGallery to work in WP 5.5+!
 
 == Changelog ==
+
+= 2.1.35 =
+* Date Updated : 2022-03-12
+[//]: # fs_premium_only_begin
+* New : Added Master Gallery feature, which allows you to create templates from galleries that other galleries can inherit settings from.
+[//]: # fs_premium_only_end
+
+= 2.1.35 =
+* Date Updated : 2022-03-08
+* Fix : Fixed PHP warning on Widget Editor page in admin
+[//]: # fs_premium_only_begin
+* Fix : Fixed bug where Bulk Copy feature was removed.
+[//]: # fs_premium_only_end
+
+= 2.1.34 =
+* Date Updated : 2022-03-01
+* Fix : Fixed bug where WebP images could not be uploaded when using the GD image editor
+* Fix : Security Fix in wp-admin
+* Update : Update to Freemius SDK
 
 = 2.1.33 =
 * Date Updated : 2022-01-15
