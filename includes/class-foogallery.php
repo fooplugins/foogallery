@@ -55,7 +55,9 @@ class FooGallery extends stdClass {
 		$attachment_meta      = get_post_meta( $post->ID, FOOGALLERY_META_ATTACHMENTS, true );
 		$this->attachment_ids = is_array( $attachment_meta ) ? array_filter( $attachment_meta ) : array();
 
-		$this->load_meta( $post->ID );
+		$gallery_id = apply_filters( 'foogallery_load_gallery_settings_id', $post->ID, $post );
+
+		$this->load_meta( $gallery_id );
 
 		do_action( 'foogallery_instance_after_load', $this, $post );
 	}

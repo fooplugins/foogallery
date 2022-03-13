@@ -296,8 +296,15 @@ Please update in order to for FooGallery to work in WP 5.5+!
 
 == Changelog ==
 
+= 2.1.35 =
+* Date Updated : 2022-03-08
+* Fix : Fixed PHP warning on Widget Editor page in admin
+[//]: # fs_premium_only_begin
+* Fix : Fixed bug where Bulk Copy feature was removed.
+[//]: # fs_premium_only_end
+
 = 2.1.34 =
-* Date Updated : 2022-02-01
+* Date Updated : 2022-03-01
 * Fix : Fixed bug where WebP images could not be uploaded when using the GD image editor
 * Fix : Security Fix in wp-admin
 * Update : Update to Freemius SDK
