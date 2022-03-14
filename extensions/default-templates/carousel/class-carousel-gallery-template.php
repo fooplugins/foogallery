@@ -75,7 +75,7 @@ if ( ! class_exists( 'FooGallery_Carousel_Gallery_Template' ) ) {
 		function add_template( $gallery_templates ) {
 			$gallery_templates[] = array(
 				'slug'                  => self::TEMPLATE_ID,
-				'name'                  => __( 'Image Carousel', 'foogallery' ),
+				'name'                  => __( 'Carousel', 'foogallery' ),
 				'preview_support'       => true,
 				'common_fields_support' => true,
 				'paging_support'        => true,
