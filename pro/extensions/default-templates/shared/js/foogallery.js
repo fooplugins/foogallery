@@ -4646,11 +4646,10 @@ FooGallery.utils, FooGallery.utils.is, FooGallery.utils.str);
    * @memberof FooGallery.utils.
    * @class Timer
    * @param {number} [interval=1000] - The internal tick interval of the timer.
-   * @augments FooGallery.utils.EventClass
    */
 
   _.Timer = _.EventClass.extend(
-  /** @lends FooGallery.utils.Timer.prototype */
+  /** @lends FooGallery.utils.Timer */
   {
     /**
      * @ignore
@@ -4937,7 +4936,6 @@ FooGallery.utils, FooGallery.utils.is, FooGallery.utils.str);
       if (self.isRunning) {
         self.isRunning = false;
         self.isPaused = true;
-        self.canResume = self.__remaining > 0;
         self.trigger("pause", self.__eventArgs());
       }
 
@@ -8714,13 +8712,13 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 			 * @name caption
 			 * @type {string}
 			 */
-			self.caption = _is.empty(self.opt.caption) ? self.title : self.opt.caption;
+			self.caption = self.opt.caption;
 			/**
 			 * @memberof FooGallery.Item#
 			 * @name description
 			 * @type {string}
 			 */
-			self.description = _is.empty(self.opt.description) ? self.alt : self.opt.description;
+			self.description = self.opt.description;
 			/**
 			 * @memberof FooGallery.Item#
 			 * @name attrItem
