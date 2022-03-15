@@ -4646,10 +4646,11 @@ FooGallery.utils, FooGallery.utils.is, FooGallery.utils.str);
    * @memberof FooGallery.utils.
    * @class Timer
    * @param {number} [interval=1000] - The internal tick interval of the timer.
+   * @augments FooGallery.utils.EventClass
    */
 
   _.Timer = _.EventClass.extend(
-  /** @lends FooGallery.utils.Timer */
+  /** @lends FooGallery.utils.Timer.prototype */
   {
     /**
      * @ignore
@@ -4936,6 +4937,7 @@ FooGallery.utils, FooGallery.utils.is, FooGallery.utils.str);
       if (self.isRunning) {
         self.isRunning = false;
         self.isPaused = true;
+        self.canResume = self.__remaining > 0;
         self.trigger("pause", self.__eventArgs());
       }
 

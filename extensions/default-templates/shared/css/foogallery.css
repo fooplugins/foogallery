@@ -3439,7 +3439,11 @@
 :root {
     --fg-carousel-perspective: 150px;
     --fg-carousel-navigation-size: 48px;
+    --fg-carousel-pagination-size: 14px;
     --fg-carousel-progress-size: 4px;
+    --fg-carousel-navigation-opacity: 0.3;
+    --fg-carousel-transition-speed: 650ms;
+    --fg-carousel-ui-speed: 300ms;
 }
 .foogallery.fg-carousel {
     --fg-carousel-inverse-perspective: calc( -1 *  var(--fg-carousel-perspective) );
@@ -3483,6 +3487,7 @@
     height: var(--fg-carousel-progress-size);
     border-radius: calc( var(--fg-carousel-progress-size) / 2 );
     transition: width 100ms linear;
+    opacity: var(--fg-carousel-navigation-opacity);
 }
 .fg-carousel-bottom {
     display: flex;
@@ -3490,7 +3495,7 @@
     justify-content: center;
     position: relative;
     grid-area: bottom;
-    font-size: 14px;
+    font-size: var(--fg-carousel-pagination-size);
     padding: 0;
     margin-bottom: 10px;
 }
@@ -3505,9 +3510,10 @@
     background: none;
     box-shadow: none;
     outline: none;
-    opacity: 0.2;
+    opacity: var(--fg-carousel-navigation-opacity);
     cursor: pointer;
     font-size: inherit;
+    transition: opacity var(--fg-carousel-ui-speed) ease-in;
 }
 @media only screen and (max-width: 782px) {
     .fg-carousel-bullet {
@@ -3516,6 +3522,12 @@
     }
 }
 
+.fg-carousel-bullet:hover {
+    background: none;
+    box-shadow: none;
+    outline: none;
+    opacity: 1;
+}
 .fg-carousel-bullet.fg-bullet-active {
     opacity: 1;
 }
@@ -3534,6 +3546,16 @@
     outline: none;
     z-index: 11;
     cursor: pointer;
+    opacity: var(--fg-carousel-navigation-opacity);
+    transition: opacity var(--fg-carousel-ui-speed) ease-in;
+}
+.fg-carousel-prev:hover,
+.fg-carousel-next:hover {
+    background: none;
+    border: none;
+    box-shadow: none;
+    outline: none;
+    opacity: 1;
 }
 .fg-carousel-prev .fg-icon,
 .fg-carousel-next .fg-icon {
@@ -3555,13 +3577,13 @@
     transform-origin: center center;
     transform: translate3d(0, 200%, var(--fg-carousel-inverse-perspective));
     transition-timing-function: ease-in-out;
-    transition-duration: 650ms;
+    transition-duration: var(--fg-carousel-transition-speed);
     transition-property: background-color,transform,transform-origin,opacity,visibility;
 }
 .foogallery.fg-carousel .fg-item.fg-loaded {
     transform: translate3d(0, 0, var(--fg-carousel-inverse-perspective));
     transition-timing-function: ease-in-out;
-    transition-duration: 650ms;
+    transition-duration: var(--fg-carousel-transition-speed);
     transition-property: background-color,transform,transform-origin,opacity,visibility;
 }
 .foogallery.fg-carousel .fg-item.fg-item-active,
@@ -3588,8 +3610,8 @@
     color: #FFF;
 }
 .fg-light .fg-carousel-progress {
-    background-color: #e6e6e6;
-    box-shadow: inset 0 0 0 1px #ccc;
+    background-color: #444;
+    box-shadow: inset 0 0 0 1px #333;
 }
 .fg-light .fg-carousel-bullet {
     background-color: #444;
@@ -3597,5 +3619,5 @@
 }
 .fg-light .fg-carousel-prev,
 .fg-light .fg-carousel-next {
-    color: #bebebe;
+    color: #444;
 }
