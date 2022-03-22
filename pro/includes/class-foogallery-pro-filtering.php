@@ -280,6 +280,53 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 				);
 
 				$filtering_fields[] = array(
+					'id'       => 'filtering_hideall',
+					'title'    => __( 'Hide "All" Button', 'foogallery' ),
+					'desc'     => __( 'You can choose to hide the default "All" Button.', 'foogallery' ),
+					'section'  => __( 'Filtering', 'foogallery' ),
+					'subsection' => array( 'filtering-general' => __( 'General', 'foogallery' ) ),
+					'spacer'   => '<span class="spacer"></span>',
+					'type'     => 'radio',
+					'default'  => '',
+					'choices'  => array(
+						'hide'    => __( 'Hide "All"', 'foogallery' ),
+						'' => __( 'Show "All"', 'foogallery' ),
+					),
+					'row_data' => array(
+						'data-foogallery-hidden'                   => true,
+						'data-foogallery-show-when-field-operator' => '!==',
+						'data-foogallery-show-when-field'          => 'filtering_type',
+						'data-foogallery-show-when-field-value'    => '',
+						'data-foogallery-change-selector'          => 'input',
+						'data-foogallery-value-selector'           => 'input:checked',
+						'data-foogallery-preview'                  => 'shortcode'
+					)
+				);
+
+				$filtering_fields[] = array(
+					'id'       => 'filtering_autoSelected',
+					'title'    => __( 'Auto Select First Filter', 'foogallery' ),
+					'desc'     => __( 'You can auto select the first filter, if "All" is hidden.', 'foogallery' ),
+					'section'  => __( 'Filtering', 'foogallery' ),
+					'subsection' => array( 'filtering-general' => __( 'General', 'foogallery' ) ),
+					'spacer'   => '<span class="spacer"></span>',
+					'type'     => 'radio',
+					'default'  => '',
+					'choices'  => array(
+						'' => __( 'Disabled', 'foogallery' ),
+						'true'    => __( 'Enabled', 'foogallery' ),
+					),
+					'row_data' => array(
+						'data-foogallery-hidden'                   => true,
+						'data-foogallery-show-when-field-operator' => '===',
+						'data-foogallery-show-when-field'          => 'filtering_hideall',
+						'data-foogallery-show-when-field-value'    => 'hide',
+						'data-foogallery-change-selector'          => 'input',
+						'data-foogallery-preview'                  => 'shortcode'
+					)
+				);
+
+				$filtering_fields[] = array(
 					'id'      => 'filtering_mode_help',
 					'title'   => __( 'Selection Mode Help', 'foogallery' ),
 					'desc'    => __( 'The default selection mode is Single, which allows you to choose a single filter at a time. You can also choose to filter by more than 1 filter by selecting Multiple. Multiple supports either a union (OR) or an intersect (AND) mode.', 'foogallery' ),
@@ -659,12 +706,18 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 				if ( '' !== $filtering ) {
 
 					$filtering_source = foogallery_gallery_template_setting( 'filtering_taxonomy', FOOGALLERY_ATTACHMENT_TAXONOMY_TAG );
+					$filtering_hideall = foogallery_gallery_template_setting( 'filtering_hideall', '' ) === 'hide';
 
 					$filtering_options = array(
 						'type'     => 'tags',
 						'position' => foogallery_gallery_template_setting( 'filtering_position', 'top' ),
 						'theme'    => foogallery_gallery_template_setting( 'filtering_theme', 'fg-light' ),
+						'noAll'    => $filtering_hideall,
 					);
+
+					if ( $filtering_hideall ) {
+						$filtering_options['autoSelected'] = foogallery_gallery_template_setting( 'filtering_autoSelected', '' ) === 'true';
+					}
 
 					if ( $filtering_source !== '') {
 						$filtering_options['taxonomy'] = $filtering_source;
