@@ -10282,6 +10282,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 			self.limit = self.opt.limit;
 			self.showCount = self.opt.showCount;
 			self.noAll = self.opt.noAll;
+			self.autoSelected = self.opt.autoSelected;
 
 			self.adjustSize = self.opt.adjustSize;
 			self.smallest = self.opt.smallest;
@@ -10325,7 +10326,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 			var self = this;
 			self.rebuild();
 			var toSet = state.filter;
-			if ( self.noAll && ( !_is.array( state.filter ) || state.filter.length === 0 ) && self.tags.length > 0 ){
+			if ( self.autoSelected && ( !_is.array( state.filter ) || state.filter.length === 0 ) && self.tags.length > 0 ){
 				toSet = [];
 				for (var i = 0; i < self.tags.length; i++){
 					if ( !_is.array(self.tags[i]) ) continue;
@@ -10671,6 +10672,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 		sortInvert: false, // the direction of the sorting
 		search: false,
 		noAll: false,
+		autoSelected: false,
 		tags: [],
 		min: 0,
 		limit: 0,
@@ -10770,7 +10772,8 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 				$list = $("<ul/>", {"class": cls.list});
 
 			for (var i = 0, l = tags.length; i < l; i++){
-				$list.append(self.createItem(tags[i]).toggleClass(cls.selected, i === 0));
+				var $item = self.createItem(tags[i]);
+				$list.append($item.toggleClass(cls.selected, i === 0 && (self.filter.autoSelected || _is.empty(tags[i].value) )));
 			}
 			return $list;
 		},
