@@ -296,13 +296,15 @@ Please update in order to for FooGallery to work in WP 5.5+!
 
 == Changelog ==
 
-= 2.2.0 =
-* Date Updated : 2022-03-12
+= 2.2.2 =
+* Date Updated : 2022-03-22
 * New : Added new gallery template : Carousel
 * Fix : Fixed bug with captions showing alternatives when using paging
-* Update : FooGallery client side 2.0.25 (develop)
+* Update : FooGallery client side 2.0.27
 [//]: # fs_premium_only_begin
 * New : Added Master Gallery feature, which allows you to create templates from galleries that other galleries can inherit settings from.
+* New : Added setting to filtering to hide the default "All" tag.
+* New : Added setting to filtering to auto select first filter when "All" tag is hidden.
 [//]: # fs_premium_only_end
 
 = 2.1.35 =
