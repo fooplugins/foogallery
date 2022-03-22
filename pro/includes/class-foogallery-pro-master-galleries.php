@@ -357,14 +357,21 @@ if ( ! class_exists( 'FooGallery_Pro_Master_Galleries' ) ) {
 	     *
 	     * @return void
 	     */
-		function render_master_gallery_container( $foogallery_id ) {
+		function render_master_gallery_container( $foogallery_id, $message = null ) {
+			$selected_master_gallery_id = $this->get_master_gallery_id( $foogallery_id );
+			if ( $selected_master_gallery_id === 0 ) { ?>
+				<button class="button button-primary button-large" id="foogallery_master_gallery_toggle"><?php echo $this->get_toggle_button_text( $foogallery_id ); ?></button>
+				<?php wp_nonce_field( 'foogallery_master_gallery_toggle', 'foogallery_master_gallery_toggle_nonce', false ); ?>
+			<?php
+				if ( isset( $message ) ) {
+					echo $message;
+				}
 			?>
-			<button class="button button-primary button-large" id="foogallery_master_gallery_toggle"><?php echo $this->get_toggle_button_text( $foogallery_id ); ?></button>
-			<?php wp_nonce_field( 'foogallery_master_gallery_toggle', 'foogallery_master_gallery_toggle_nonce', false ); ?>
 			<span class="foogallery_master_gallery_spinner spinner"></span>
 			<br />
 			<br />
 			<?php
+			}
 			if ( $this->is_master_gallery( $foogallery_id ) ) {
 				$galleries_using_master = $this->get_master_gallery_usage( $foogallery_id );
 				if ( count ( $galleries_using_master ) === 0 ) {
@@ -381,13 +388,15 @@ if ( ! class_exists( 'FooGallery_Pro_Master_Galleries' ) ) {
 				<?php }
 			} else {
 				$master_galleries = $this->get_all_master_galleries();
-				$selected_master_gallery_id = $this->get_master_gallery_id( $foogallery_id );
+
 				if ( count( $master_galleries ) === 0 ) {
 					echo __( 'There are no master galleries available at the moment!', 'foogallery' );
 				} else {
-					_e( 'or', 'foogallery' ); ?>
-					<br /><br />
-					<?php echo __( 'Choose a master gallery : ', 'foogallery' ); ?>
+					if ( $selected_master_gallery_id === 0 ) {
+						_e( 'or', 'foogallery' );
+						echo '<br /><br />';
+					}
+					echo __( 'Choose a master gallery : ', 'foogallery' ); ?>
 					<select id="foogallery_master_gallery_select"><option></option>
 					<?php foreach ( $this->get_all_master_galleries() as $gallery ) {
 						$selected = ( $selected_master_gallery_id === $gallery->ID ) ? ' selected="selected"' : '';
@@ -413,12 +422,19 @@ if ( ! class_exists( 'FooGallery_Pro_Master_Galleries' ) ) {
 	    public function ajax_master_toggle() {
 		    if (check_admin_referer('foogallery_master_gallery_toggle', 'foogallery_master_gallery_toggle_nonce')) {
 			    $foogallery_id = intval( sanitize_key( $_POST['foogallery'] ) );
+				$message = null;
 			    if ( $this->is_master_gallery( $foogallery_id ) ) {
-					$this->unset_as_master_gallery( $foogallery_id );
+				    $galleries_using_master = $this->get_master_gallery_usage( $foogallery_id );
+				    if ( count ( $galleries_using_master ) === 0 ) {
+					    $this->unset_as_master_gallery( $foogallery_id );
+				    } else {
+						//do nothing!
+					    $message = __( 'The master gallery cannot be unset, as it is being used by other galleries!', 'foogallery' );
+				    }
 			    } else {
 					$this->set_as_master_gallery( $foogallery_id );
 			    }
-				$this->render_master_gallery_container( $foogallery_id );
+				$this->render_master_gallery_container( $foogallery_id, $message );
 		    }
 
 		    die();
@@ -434,7 +450,11 @@ if ( ! class_exists( 'FooGallery_Pro_Master_Galleries' ) ) {
 			    $foogallery_id = intval( sanitize_key( $_POST['foogallery'] ) );
 			    $master_foogallery_id = intval( sanitize_key( $_POST['master'] ) );
 			    $this->set_master_gallery( $foogallery_id, $master_foogallery_id );
-			    echo __('The master gallery has been set.', 'foogallery' );
+				if ( $master_foogallery_id > 0 ) {
+					echo __( 'The master gallery has been set.', 'foogallery' );
+				} else {
+					echo __( 'The master gallery has been cleared.', 'foogallery' );
+				}
 
 				$foogallery = FooGallery::get_by_id( $foogallery_id );
 				if ( $foogallery->is_new() ) {
