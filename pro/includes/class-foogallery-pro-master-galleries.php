@@ -93,9 +93,8 @@ if ( ! class_exists( 'FooGallery_Pro_Master_Galleries' ) ) {
 
 		    $screen_id = foo_current_screen_id();
 
-		    //only include scripts if we on the foogallery add/edit page
-		    if ( FOOGALLERY_CPT_GALLERY === $screen_id ||
-		         'edit-' . FOOGALLERY_CPT_GALLERY === $screen_id ) {
+		    //only include scripts if we on the foogallery edit page
+		    if ( FOOGALLERY_CPT_GALLERY === $screen_id ) {
 
 				if ( !$this->is_master_gallery( $foogallery_id ) ) {
 					return;
