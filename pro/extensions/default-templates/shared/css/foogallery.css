@@ -7468,8 +7468,13 @@ html.fg-panel-no-scroll body {
     perspective: var(--fg-carousel-perspective);
     transform: translate3d(0, 0, 0);
     transform-style: preserve-3d;
+    backface-visibility: hidden;
     will-change: contents;
 }
+.foogallery_preview_container .fg-carousel-inner {
+    transform-style: unset;
+}
+
 .fg-carousel-center {
     position: relative;
     z-index: -1;
@@ -7533,8 +7538,8 @@ html.fg-panel-no-scroll body {
 .fg-carousel-bullet.fg-bullet-active {
     opacity: 1;
 }
-.fg-carousel-prev,
-.fg-carousel-next {
+button.fg-carousel-prev,
+button.fg-carousel-next {
     position: relative;
     height: 100%;
     width: 100%;
@@ -7550,9 +7555,11 @@ html.fg-panel-no-scroll body {
     cursor: pointer;
     opacity: var(--fg-carousel-navigation-opacity);
     transition: opacity var(--fg-carousel-ui-speed) ease-in;
+    padding: 0;
+    margin: 0;
 }
-.fg-carousel-prev:hover,
-.fg-carousel-next:hover {
+button.fg-carousel-prev:hover,
+button.fg-carousel-next:hover {
     background: none;
     border: none;
     box-shadow: none;
@@ -7579,13 +7586,14 @@ html.fg-panel-no-scroll body {
     transform-origin: center center;
     transform: translate3d(0, 200%, var(--fg-carousel-inverse-perspective));
     transition-timing-function: ease-in-out;
-    transition-duration: var(--fg-carousel-transition-speed);
+    transition-duration: 0s;
     transition-property: background-color,transform,transform-origin,opacity,visibility;
+    backface-visibility: hidden;
 }
 .foogallery.fg-carousel .fg-item.fg-loaded {
     transform: translate3d(0, 0, var(--fg-carousel-inverse-perspective));
     transition-timing-function: ease-in-out;
-    transition-duration: var(--fg-carousel-transition-speed);
+    transition-duration: calc( var(--fg-carousel-transition-speed) / 2 );
     transition-property: background-color,transform,transform-origin,opacity,visibility;
 }
 .foogallery.fg-carousel .fg-item.fg-item-active,
@@ -7599,29 +7607,31 @@ html.fg-panel-no-scroll body {
     transform: translate3d(0, 0, 0);
 }
 
-.fg-dark .fg-carousel-progress {
+.foogallery.fg-carousel.fg-dark .fg-carousel-progress {
     background-color: #FFF;
     box-shadow: inset 0 0 0 1px #9d9d9d;
 }
-.fg-dark .fg-carousel-bullet {
+.foogallery.fg-carousel.fg-dark button.fg-carousel-bullet {
     background-color: #FFF;
     border-color: #ccc;
 }
-.fg-dark .fg-carousel-prev,
-.fg-dark .fg-carousel-next {
+.foogallery.fg-carousel.fg-dark button.fg-carousel-prev,
+.foogallery.fg-carousel.fg-dark button.fg-carousel-next {
     color: #FFF;
+    background-color: transparent;
 }
-.fg-light .fg-carousel-progress {
+.foogallery.fg-carousel.fg-light .fg-carousel-progress {
     background-color: #444;
     box-shadow: inset 0 0 0 1px #333;
 }
-.fg-light .fg-carousel-bullet {
+.foogallery.fg-carousel.fg-light button.fg-carousel-bullet {
     background-color: #444;
     border-color: #333;
 }
-.fg-light .fg-carousel-prev,
-.fg-light .fg-carousel-next {
+.foogallery.fg-carousel.fg-light button.fg-carousel-prev,
+.foogallery.fg-carousel.fg-light button.fg-carousel-next {
     color: #444;
+    background-color: transparent;
 }
 .foogrid,
 .foogrid.fg-gutter-small {
