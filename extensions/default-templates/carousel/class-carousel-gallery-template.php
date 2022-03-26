@@ -89,7 +89,7 @@ if ( ! class_exists( 'FooGallery_Carousel_Gallery_Template' ) ) {
 			$gutter = foogallery_gallery_template_setting( 'gutter', array( 'min' => -40, 'max' => -20, 'units' => '%' ) );
 			$gutter_min = $gutter['min'];
 			$gutter_max = $gutter['max'];
-			$gutter_unit = $gutter['unit'];
+			$gutter_units = $gutter['units'];
 			$centerOnClick = foogallery_gallery_template_setting( 'centerOnClick', 'false' ) === 'true';
 			$autoplay_interaction = foogallery_gallery_template_setting( 'autoplay_interaction', 'pause' );
 			$autoplay_time = foogallery_gallery_template_setting( 'autoplay_time', 0 );
@@ -98,7 +98,7 @@ if ( ! class_exists( 'FooGallery_Carousel_Gallery_Template' ) ) {
 			$options['template']['scale'] = floatval( $scale );
 			$options['template']['gutter']['min'] = intval( $gutter_min );
 			$options['template']['gutter']['max'] = intval( $gutter_max );
-			$options['template']['gutter']['unit'] = $gutter_unit;
+			$options['template']['gutter']['unit'] = $gutter_units;
 			$options['template']['autoplay']['time'] = intval( $autoplay_time );
 			$options['template']['autoplay']['interaction'] = $autoplay_interaction;
 			$options['template']['centerOnClick'] = $centerOnClick;
@@ -218,7 +218,7 @@ if ( ! class_exists( 'FooGallery_Carousel_Gallery_Template' ) ) {
 					array(
 						'id'       => 'autoplay_time',
 						'title'    => __( 'Autoplay Time', 'foogallery' ),
-						'desc'     => __( 'The number in seconds an item is displayed.', 'foogallery' ),
+						'desc'     => __( 'The number in seconds an item is displayed. Set to zero to turn off autoplay.', 'foogallery' ),
 						'section'  => __( 'General', 'foogallery' ),
 						'default'  => '0',
 						'min'      => 0,
