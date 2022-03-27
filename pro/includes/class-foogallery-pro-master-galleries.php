@@ -396,7 +396,7 @@ if ( ! class_exists( 'FooGallery_Pro_Master_Galleries' ) ) {
 						echo '<br /><br />';
 					}
 					echo __( 'Choose a master gallery : ', 'foogallery' ); ?>
-					<select id="foogallery_master_gallery_select"><option></option>
+					<select id="foogallery_master_gallery_select"><option><?php _e('None', 'foogallery' ); ?></option>
 					<?php foreach ( $this->get_all_master_galleries() as $gallery ) {
 						$selected = ( $selected_master_gallery_id === $gallery->ID ) ? ' selected="selected"' : '';
 						echo '<option ' . $selected . ' value="' . $gallery->ID . '">' . $gallery->name . ' [' . $gallery->ID . ']</option>';
