@@ -41,11 +41,12 @@ function foogallery_admin_help_demo_item( $seed, $width, $height, $title, $desc,
 	<header>
 		<h3><?php _e( 'Gallery Demos 😎', 'foogallery' );?></h3>
 		<p><?php _e( 'Select a demo below to see it in action!', 'foogallery' ); ?></p>
-		<a href="#foogallery-admin-help-demo-1" class="foogallery-admin-help-demo foogallery-admin-help-button foogallery-admin-help-button-active"><?php _e( 'Default Demo', 'foogallery' ); ?></a>
-		<a href="#foogallery-admin-help-demo-2" class="foogallery-admin-help-demo foogallery-admin-help-button"><?php _e( 'Masonry Demo', 'foogallery' ); ?></a>
-		<a href="#foogallery-admin-help-demo-3" class="foogallery-admin-help-demo foogallery-admin-help-button"><?php _e( 'Image Viewer Demo', 'foogallery' ); ?></a>
-		<a href="#foogallery-admin-help-demo-4" class="foogallery-admin-help-demo foogallery-admin-help-button"><?php _e( 'Justified Demo', 'foogallery' ); ?></a>
-		<a href="#foogallery-admin-help-demo-5" class="foogallery-admin-help-demo foogallery-admin-help-button"><?php _e( 'Simple Portfolio Demo', 'foogallery' ); ?></a>
+		<a href="#foogallery-admin-help-demo-1" class="foogallery-admin-help-demo foogallery-admin-help-button foogallery-admin-help-button-active"><?php _e( 'Default', 'foogallery' ); ?></a>
+		<a href="#foogallery-admin-help-demo-2" class="foogallery-admin-help-demo foogallery-admin-help-button"><?php _e( 'Masonry', 'foogallery' ); ?></a>
+		<a href="#foogallery-admin-help-demo-3" class="foogallery-admin-help-demo foogallery-admin-help-button"><?php _e( 'Image Viewer', 'foogallery' ); ?></a>
+		<a href="#foogallery-admin-help-demo-4" class="foogallery-admin-help-demo foogallery-admin-help-button"><?php _e( 'Justified', 'foogallery' ); ?></a>
+		<a href="#foogallery-admin-help-demo-5" class="foogallery-admin-help-demo foogallery-admin-help-button"><?php _e( 'Simple Portfolio', 'foogallery' ); ?></a>
+		<a href="#foogallery-admin-help-demo-6" class="foogallery-admin-help-demo foogallery-admin-help-button"><?php _e( 'Carousel', 'foogallery' ); ?></a>
 		<a href="<?php echo esc_url( foogallery_admin_url( 'https://fooplugins.com/foogallery-wordpress-gallery-plugin/demos/', 'help' ) ); ?>" target="_blank" class="foogallery-admin-help-button"><?php _e( 'More Demos', 'foogallery' ); ?></a>
 	</header>
 
@@ -176,6 +177,29 @@ function foogallery_admin_help_demo_item( $seed, $width, $height, $title, $desc,
 			<?php foogallery_admin_help_demo_item( '45',  250, 200, 'Quisque ut Libero'  , 'Pellentesque in ipsum id orci porta dapibus. Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem.', '#portfolio_demo' ); ?>
 			<?php foogallery_admin_help_demo_item( '46',  250, 200, 'Velit Nisi'         , 'Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus.', '#portfolio_demo' ); ?>
 			<?php foogallery_admin_help_demo_item( '47',  250, 200, 'Quis Dolor'         , 'Curabitur arcu erat, accumsan id imperdiet et. Vestibulum ac diam sit amet.', '#portfolio_demo' ); ?>
+		</div>
+	</div>
+
+	<div id="foogallery-admin-help-demo-6" class="foogallery-admin-help-demo-content" style="display: none">
+		<header class="foogallery-admin-help-header">
+			<h3 id="portfolio_demo"><?php _e( 'Carousel Gallery Demo', 'foogallery' );?></h3>
+			<p><?php _e( 'A responsive carousel gallery allows you to showcase your images in a single row.', 'foogallery' );?></p>
+		</header>
+		<div id="foogallery-gallery-5" class="foogallery foogallery-container foogallery-carousel foogallery-lightbox-foogallery fg-carousel fg-light fg-border-thin fg-shadow-outline fg-loading-default fg-loaded-fade-in fg-hover-fade fg-hover-zoom fg-c-c fg-ready"
+		     data-foogallery="{&quot;item&quot;:{&quot;showCaptionTitle&quot;:true,&quot;showCaptionDescription&quot;:false},&quot;lazy&quot;:true,&quot;template&quot;:{&quot;maxItems&quot;:5,&quot;scale&quot;:0.12,&quot;gutter&quot;:{&quot;min&quot;:-40,&quot;max&quot;:-20,&quot;unit&quot;:&quot;%&quot;},&quot;autoplay&quot;:{&quot;time&quot;:6,&quot;interaction&quot;:&quot;pause&quot;},&quot;centerOnClick&quot;:true}}">
+			<button type="button" class="fg-carousel-prev"></button>
+			<div class="fg-carousel-inner">
+				<div class="fg-carousel-center"></div>
+				<?php foogallery_admin_help_demo_item( '48',  250, 200, 'Lorem Ipsum'        , 'Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae', '#portfolio_demo' ); ?>
+				<?php foogallery_admin_help_demo_item( '49',  250, 200, 'Dolor Sit Amet'     , 'Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula. Donec sollicitudin molestie malesuada.', '#carousel_demo' ); ?>
+				<?php foogallery_admin_help_demo_item( '50',  250, 200, 'Nulla Quis Lorem'   , 'Quisque velit nisi, pretium ut lacinia in, elementum id enim. Quisque velit nisi, pretium ut lacinia in, elementum id enim.', '#carousel_demo' ); ?>
+				<?php foogallery_admin_help_demo_item( '51',  250, 200, 'Quisque ut Libero'  , 'Pellentesque in ipsum id orci porta dapibus. Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem.', '#carousel_demo' ); ?>
+				<?php foogallery_admin_help_demo_item( '52',  250, 200, 'Velit Nisi'         , 'Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus.', '#carousel_demo' ); ?>
+				<?php foogallery_admin_help_demo_item( '53',  250, 200, 'Quis Dolor'         , 'Curabitur arcu erat, accumsan id imperdiet et. Vestibulum ac diam sit amet.', '#carousel_demo' ); ?>
+			</div>
+			<div class="fg-carousel-bottom"></div>
+			<div class="fg-carousel-progress"></div>
+			<button type="button" class="fg-carousel-next"></button>
 		</div>
 	</div>
 </div>
