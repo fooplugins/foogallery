@@ -7607,29 +7607,38 @@ button.fg-carousel-next:hover {
     transform: translate3d(0, 0, 0);
 }
 
-.foogallery.fg-carousel.fg-dark .fg-carousel-progress {
+.foogallery.fg-carousel.fg-dark .fg-carousel-progress,
+.foogallery.fg-carousel.fg-light.fg-inverted .fg-carousel-progress {
     background-color: #FFF;
     box-shadow: inset 0 0 0 1px #9d9d9d;
 }
-.foogallery.fg-carousel.fg-dark button.fg-carousel-bullet {
+.foogallery.fg-carousel.fg-dark button.fg-carousel-bullet,
+.foogallery.fg-carousel.fg-light.fg-inverted button.fg-carousel-bullet {
     background-color: #FFF;
     border-color: #ccc;
 }
 .foogallery.fg-carousel.fg-dark button.fg-carousel-prev,
-.foogallery.fg-carousel.fg-dark button.fg-carousel-next {
+.foogallery.fg-carousel.fg-dark button.fg-carousel-next,
+.foogallery.fg-carousel.fg-light.fg-inverted button.fg-carousel-prev,
+.foogallery.fg-carousel.fg-light.fg-inverted button.fg-carousel-next {
     color: #FFF;
     background-color: transparent;
 }
-.foogallery.fg-carousel.fg-light .fg-carousel-progress {
+
+.foogallery.fg-carousel.fg-light .fg-carousel-progress,
+.foogallery.fg-carousel.fg-dark.fg-inverted .fg-carousel-progress {
     background-color: #444;
     box-shadow: inset 0 0 0 1px #333;
 }
-.foogallery.fg-carousel.fg-light button.fg-carousel-bullet {
+.foogallery.fg-carousel.fg-light button.fg-carousel-bullet,
+.foogallery.fg-carousel.fg-dark.fg-inverted button.fg-carousel-bullet {
     background-color: #444;
     border-color: #333;
 }
 .foogallery.fg-carousel.fg-light button.fg-carousel-prev,
-.foogallery.fg-carousel.fg-light button.fg-carousel-next {
+.foogallery.fg-carousel.fg-light button.fg-carousel-next,
+.foogallery.fg-carousel.fg-dark.fg-inverted button.fg-carousel-prev,
+.foogallery.fg-carousel.fg-dark.fg-inverted button.fg-carousel-next {
     color: #444;
     background-color: transparent;
 }
