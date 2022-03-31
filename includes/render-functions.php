@@ -82,6 +82,9 @@ function foogallery_build_attachment_html_image_attributes( $foogallery_attachme
 		$attr['class'] = 'fg-image';
 	}
 
+	// Always output the loading attribute on the img tags.
+	$attr['loading'] = 'eager';
+
 	return $attr;
 }
 
