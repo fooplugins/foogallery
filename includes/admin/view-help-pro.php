@@ -200,7 +200,7 @@ $foogallery_pro_features = array(
 	array(
 		'title' => __( 'Master Galleries','foogallery' ),
 		'desc' => __( 'Setup master galleries, and then allow other galleries to inherit all settings from a master.', 'foogallery' ),
-		'link' => 'https://fooplugins.com/foogallery-wordpress-gallery-plugin/master-galleries/',
+		'link' => 'https://fooplugins.com/documentation/foogallery/pro-commerce/use-master-gallery/',
 		'utm_content' => 'cta_master_galleries',
 		'link_text' => __( 'Learn More','foogallery' ),
 		'image' => 'https://assets.fooplugins.com/foogallery/plugin/foogallery-admin-help-pro-master-galleries.png',
