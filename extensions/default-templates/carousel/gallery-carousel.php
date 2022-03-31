@@ -5,8 +5,8 @@
 global $current_foogallery;
 
 $lightbox = foogallery_gallery_template_setting( 'lightbox', 'unknown' );
-
-$foogallery_default_classes = foogallery_build_class_attribute_safe( $current_foogallery, 'foogallery-lightbox-' . $lightbox );
+$inverted = foogallery_gallery_template_setting( 'inverted', '' );
+$foogallery_default_classes = foogallery_build_class_attribute_safe( $current_foogallery, 'foogallery-lightbox-' . $lightbox, $inverted );
 $foogallery_default_attributes = foogallery_build_container_attributes_safe( $current_foogallery, array( 'class' => $foogallery_default_classes ) );
 $foogallery_active_class = 'fg-item-active';
 $args = foogallery_gallery_template_arguments();

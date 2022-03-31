@@ -245,6 +245,23 @@ if ( ! class_exists( 'FooGallery_Carousel_Gallery_Template' ) ) {
 						)
 					),
 					array(
+						'id'       => 'inverted',
+						'title'    => __( 'Invert Control Theme', 'foogallery' ),
+						'desc'     => __( 'Inverts the theme used for the carousel controls (paging and navigation buttons) based on the theme under appearance.', 'foogallery' ),
+						'section'  => __( 'General', 'foogallery' ),
+						'default'  => '',
+						'type'     => 'radio',
+						'spacer'   => '<span class="spacer"></span>',
+						'choices' => array(
+							'' => __( 'Same', 'foogallery' ),
+							'fg-inverted' => __( 'Inverted', 'foogallery' ),
+						),
+						'row_data' => array(
+							'data-foogallery-change-selector' => 'input',
+							'data-foogallery-preview'         => 'shortcode'
+						)
+					),
+					array(
 						'id'      => 'thumbnail_link',
 						'title'   => __( 'Thumbnail Link', 'foogallery' ),
 						'section' => __( 'General', 'foogallery' ),
