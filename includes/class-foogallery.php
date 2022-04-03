@@ -52,10 +52,21 @@ class FooGallery extends stdClass {
 		$this->author      = $post->post_author;
 		$this->post_status = $post->post_status;
 
+		// Load attachment metadata.
 		$attachment_meta      = get_post_meta( $post->ID, FOOGALLERY_META_ATTACHMENTS, true );
 		$this->attachment_ids = is_array( $attachment_meta ) ? array_filter( $attachment_meta ) : array();
 
-		$this->load_meta( $post->ID );
+		// Load datasource metadata.
+		$this->datasource_name  = get_post_meta( $post->ID, FOOGALLERY_META_DATASOURCE, true );
+		if ( empty( $this->datasource_name ) ) {
+			$this->datasource_name = foogallery_default_datasource();
+		} else {
+			$this->datasource_value = get_post_meta( $post->ID, FOOGALLERY_META_DATASOURCE_VALUE, true );
+		}
+
+		$gallery_id = apply_filters( 'foogallery_load_gallery_settings_id', $post->ID, $post );
+
+		$this->load_meta( $gallery_id );
 
 		do_action( 'foogallery_instance_after_load', $this, $post );
 	}
@@ -66,16 +77,10 @@ class FooGallery extends stdClass {
 	 * @param $post_id int
 	 */
 	private function load_meta( $post_id ) {
-		$this->gallery_template = get_post_meta( $post_id, FOOGALLERY_META_TEMPLATE, true );
-		$this->settings         = $this->load_settings( $post_id );
-		$this->custom_css       = get_post_meta( $post_id, FOOGALLERY_META_CUSTOM_CSS, true );
-		$this->sorting          = get_post_meta( $post_id, FOOGALLERY_META_SORT, true );
-		$this->datasource_name  = get_post_meta( $post_id, FOOGALLERY_META_DATASOURCE, true );
-		if ( empty( $this->datasource_name ) ) {
-			$this->datasource_name = foogallery_default_datasource();
-		} else {
-			$this->datasource_value = get_post_meta( $post_id, FOOGALLERY_META_DATASOURCE_VALUE, true );
-		}
+		$this->gallery_template          = get_post_meta( $post_id, FOOGALLERY_META_TEMPLATE, true );
+		$this->settings                  = $this->load_settings( $post_id );
+		$this->custom_css                = get_post_meta( $post_id, FOOGALLERY_META_CUSTOM_CSS, true );
+		$this->sorting                   = get_post_meta( $post_id, FOOGALLERY_META_SORT, true );
 		$this->retina                    = get_post_meta( $post_id, FOOGALLERY_META_RETINA, true );
 		$this->force_use_original_thumbs = 'true' === get_post_meta( $post_id, FOOGALLERY_META_FORCE_ORIGINAL_THUMBS, true );
 	}

@@ -1404,7 +1404,7 @@ function foogallery_marketing_pro_features() {
 	$features[] = array(
 		'feature' => __( 'More Gallery Templates', 'foogallery' ),
 		'desc'    => __( '3 more awesome gallery templates, including Slider, Grid and Polaroid.', 'foogallery' ),
-		'demo'	  => 'https://fooplugins.com/foogallery/wordpress-slider-gallery/'
+		'demo'	  => 'https://fooplugins.com/foogallery-wordpress-gallery-plugin/slider-gallery/'
 	);
 	$features[] = array(
 		'feature' => __( 'Preset Hover Effects', 'foogallery' ),
