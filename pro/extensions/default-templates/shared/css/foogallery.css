@@ -3806,6 +3806,9 @@ html.fg-panel-no-scroll body {
 	outline: none;
 	box-sizing: content-box;
 }
+.rtl .fg-panel {
+	text-align: right;
+}
 .fg-panel-maximized {
 	position: fixed;
 	top: 0;
@@ -4358,6 +4361,10 @@ html.fg-panel-no-scroll body {
     height: 32px;
     margin: 5px 5px 0 0;
 }
+.rtl .fg-panel.fg-medium .fg-panel-buttons .fg-panel-button,
+.rtl .fg-panel.fg-panel-no-mobile .fg-panel-buttons .fg-panel-button {
+    margin: 5px 0 0 5px;
+}
 
 .fg-panel.fg-medium .fg-panel-buttons .fg-panel-button-prev,
 .fg-panel.fg-medium .fg-panel-buttons .fg-panel-button-next,
@@ -4368,8 +4375,7 @@ html.fg-panel-no-scroll body {
     transform: translateY(-50%);
     width: 32px;
     height: 82px;
-    margin-top: unset;
-    margin-right: unset;
+    margin: unset !important;
 }
 .fg-panel.fg-medium .fg-panel-buttons .fg-panel-button-prev,
 .fg-panel.fg-panel-no-mobile .fg-panel-buttons .fg-panel-button-prev {
@@ -4378,6 +4384,16 @@ html.fg-panel-no-scroll body {
 .fg-panel.fg-medium .fg-panel-buttons .fg-panel-button-next,
 .fg-panel.fg-panel-no-mobile .fg-panel-buttons .fg-panel-button-next {
     right: 5px;
+}
+.rtl .fg-panel.fg-medium .fg-panel-buttons .fg-panel-button-prev,
+.rtl .fg-panel.fg-panel-no-mobile .fg-panel-buttons .fg-panel-button-prev {
+    right: 5px;
+    left: auto;
+}
+.rtl .fg-panel.fg-medium .fg-panel-buttons .fg-panel-button-next,
+.rtl .fg-panel.fg-panel-no-mobile .fg-panel-buttons .fg-panel-button-next {
+    left: 5px;
+    right: auto;
 }
 
 /* Hover buttons */
@@ -4424,6 +4440,11 @@ html.fg-panel-no-scroll body {
 .fg-panel-no-mobile.fg-panel-info-overlay .fg-panel-info .fg-panel-area-toggle {
     right: 42px;
 }
+.rtl .fg-medium.fg-panel-info-overlay .fg-panel-info .fg-panel-area-toggle,
+.rtl .fg-panel-no-mobile.fg-panel-info-overlay .fg-panel-info .fg-panel-area-toggle {
+    left: 42px;
+    right: auto;
+}
 
 
 /* icons */
@@ -4457,6 +4478,10 @@ html.fg-panel-no-scroll body {
 }
 .fg-panel-thumbs-bottom .fg-panel-button-thumbs .fg-icon {
     transform: translateX(-50%) translateY(-50%) rotate(-90deg);
+}
+.rtl .fg-panel-button-prev .fg-icon,
+.rtl .fg-panel-button-next .fg-icon {
+    transform: translateX(-50%) translateY(-50%) rotate(180deg);
 }
 .fg-panel:not(.fg-panel-maximized):not(.fg-panel-fullscreen) {
     border-style: solid;
@@ -4842,6 +4867,9 @@ html.fg-panel-no-scroll body {
     border: none;
     text-align: left;
 }
+.rtl .fg-media-caption-exif {
+    text-align: right;
+}
 .fg-media-caption-exif.fg-media-caption-exif-auto,
 .fg-media-caption-exif.fg-media-caption-exif-full,
 .fg-media-caption-exif.fg-media-caption-exif-partial,
@@ -4890,6 +4918,12 @@ html.fg-panel-no-scroll body {
 .fg-media-caption-exif-partial .fg-media-caption-exif-icon,
 .fg-panel.fg-medium .fg-media-caption-exif-auto .fg-media-caption-exif-icon {
     margin-right: 6px;
+}
+.rtl .fg-media-caption-exif-full .fg-media-caption-exif-icon,
+.rtl .fg-media-caption-exif-partial .fg-media-caption-exif-icon,
+.rtl .fg-panel.fg-medium .fg-media-caption-exif-auto .fg-media-caption-exif-icon {
+    margin-left: 6px;
+    margin-right: 0;
 }
 .fg-media-caption-exif-icon .fg-icon {
     position: absolute;
@@ -7194,6 +7228,18 @@ html.fg-panel-no-scroll body {
 .fg-image-viewer .fiv-inner .fiv-ctrls .fiv-count span {
 	margin: 0 4px;
 }
+.rtl .fg-image-viewer .fiv-inner .fiv-ctrls .fiv-prev {
+	float: right;
+}
+.rtl .fg-image-viewer .fiv-inner .fiv-ctrls .fiv-prev:before {
+	content: '\2192';
+}
+.rtl .fg-image-viewer .fiv-inner .fiv-ctrls .fiv-next {
+	float: left;
+}
+.rtl .fg-image-viewer .fiv-inner .fiv-ctrls .fiv-next:before {
+	content: '\2190';
+}
 
 /* Captions */
 
@@ -7496,6 +7542,10 @@ html.fg-panel-no-scroll body {
     transition: width 100ms linear;
     opacity: var(--fg-carousel-navigation-opacity);
 }
+.rtl .fg-carousel-progress {
+    left: auto;
+    right: 0;
+}
 .fg-carousel-bottom {
     display: flex;
     align-items: center;
@@ -7570,6 +7620,10 @@ button.fg-carousel-next:hover {
 .fg-carousel-next .fg-icon {
     width: 1em;
     height: 1em;
+}
+.rtl .fg-carousel-prev .fg-icon,
+.rtl .fg-carousel-next .fg-icon {
+    transform: rotate(180deg);
 }
 .fg-carousel-prev {
     grid-area: prev;
