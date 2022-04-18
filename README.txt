@@ -299,6 +299,10 @@ Please update in order to for FooGallery to work in WP 5.5+!
 
 == Changelog ==
 
+= 2.2.8 =
+* Date Updated : 2022-04-18
+* Fix : Fixed custom JS & CSS being saved as double encoded
+
 = 2.2.7 =
 * Date Updated : 2022-04-15
 * Fix : Fixed carousel not working when no lightbox is available
