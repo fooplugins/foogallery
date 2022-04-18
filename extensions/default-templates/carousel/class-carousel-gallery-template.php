@@ -160,7 +160,7 @@ if ( ! class_exists( 'FooGallery_Carousel_Gallery_Template' ) ) {
 						'title'    => __( 'Max Items To Show', 'foogallery' ),
 						'desc'     => __( 'The total number of items displayed in the carousel. This should be an ODD number as the active item is the center and the remainder make up each side.', 'foogallery' ),
 						'section'  => __( 'General', 'foogallery' ),
-						'default'  => '3',
+						'default'  => '5',
 						'type'     => 'number',
 						'row_data' => array(
 							'data-foogallery-change-selector' => 'input',
