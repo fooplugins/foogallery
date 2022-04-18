@@ -28,6 +28,7 @@ function foogallery_enqueue_core_gallery_template_script( $deps = null ) {
 	if ( isset( $deps ) ) {
 		//ensure we deregister the previous one
 		wp_deregister_script( 'foogallery-core' );
+		do_action( 'foogallery_dequeue_script-core' );
 	} else {
 		//set the default
 		$deps = array( 'jquery' );

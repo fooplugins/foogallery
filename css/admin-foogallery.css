@@ -128,8 +128,10 @@
 .foogallery_template_field th {
 	vertical-align: top;
 	text-align: left;
-	padding-top: 0.3em;
-	padding-right: 10px;
+	padding: 0.3em 10px 0;
+}
+.rtl .foogallery_template_field th {
+	text-align: right;
 }
 
 .foogallery_template_field textarea {
@@ -262,6 +264,13 @@
 	box-shadow: 0 1px 1px 0 rgba(0, 0, 0, .1);
 }
 
+.rtl .foogallery-help {
+	padding: 11px 40px 11px 10px;
+	text-align: right;
+	border-left: none;
+	border-right: 4px solid #1e8cbe;
+}
+
 .foogallery-help:before {
 	content: "\f223";
 	font: 400 30px/1 dashicons !important;
@@ -278,9 +287,19 @@
 	height: 1em;
 }
 
+.rtl .foogallery-help:before {
+	left: auto;
+	right: 5px;
+}
+
 #post-body.columns-2 #postbox-container-1 .foogallery-help {
 	padding-left: 11px;
 	margin-left: 5px;
+}
+
+.rtl #post-body.columns-2 #postbox-container-1 .foogallery-help {
+	padding-right: 11px;
+	margin-right: 5px;
 }
 
 #post-body.columns-2 #postbox-container-1 .foogallery-help:before {
@@ -308,6 +327,13 @@ tr.foogallery_template_field[data-foogallery-invisible] {
 	-webkit-box-shadow: 0 1px 1px 0 rgba(0, 0, 0, .1);
 	box-shadow: 0 1px 1px 0 rgba(0, 0, 0, .1);
 }
+.rtl .foogallery_template_field_type-promo .foogallery-promo {
+	padding: 11px 40px 11px 10px;
+	text-align: right;
+	margin: 2px 0 0 5px;
+	border-left: none;
+	border-right: 4px solid #31be4d;
+}
 
 .foogallery_template_field_type-promo.foogallery_promo_prostarter .foogallery-promo {
 	border-color: #3397C1;
@@ -333,6 +359,10 @@ tr.foogallery_template_field[data-foogallery-invisible] {
 	margin-top: -5px;
 	height: 1em;
 }
+.rtl .foogallery_template_field_type-promo .foogallery-promo:before {
+	left: auto;
+	right: 5px;
+}
 
 .foogallery_template_field_type-promo.foogallery_promo_prostarter .foogallery-promo:before {
 	color: #3397C1;
@@ -346,6 +376,10 @@ tr.foogallery_template_field[data-foogallery-invisible] {
 	padding-left: 11px;
 	margin-left: 5px;
 }
+.rtl #post-body.columns-2 #postbox-container-1 .foogallery-promo {
+	padding-right: 11px;
+	margin-right: 5px;
+}
 
 #post-body.columns-2 #postbox-container-1 .foogallery-promo:before {
 	content: '';
@@ -355,6 +389,10 @@ tr.foogallery_template_field[data-foogallery-invisible] {
 	background: #1d7b30;
 	border-color: #1d7b30;
 	margin-right: 10px;
+}
+.rtl .foogallery_template_field_type-promo .foogallery-promo .button-primary {
+	margin-left: 10px;
+	margin-right: 0;
 }
 
 .foogallery_template_field_type-promo .foogallery-promo .button-secondary {
@@ -503,8 +541,8 @@ button[data-balloon]{overflow:visible}[data-balloon]{position:relative}[data-bal
 }
 
 .foogallery-items-view-switch-container {
-	display: inline-block;
-	margin-left: 10px;
+	display: inline-flex;
+	margin: 0 10px;
 }
 
 .foogallery-items-view-switch-container .spinner {
@@ -609,6 +647,10 @@ button[data-balloon]{overflow:visible}[data-balloon]{position:relative}[data-bal
 	font-size: 24px;
 	font-weight: normal;
 }
+.rtl .foogallery-items-view .button-hero .dashicons {
+	padding-left: 10px;
+	padding-right: 0;
+}
 
 .foogallery_preview_container.loading:after {
 	content: '';
@@ -627,12 +669,25 @@ button[data-balloon]{overflow:visible}[data-balloon]{position:relative}[data-bal
 	line-height: 1.2;
 }
 
+.foogallery_metabox_field-thumb_size_no_crop {
+	display: inline-flex;
+	align-items: center;
+}
+
 .foogallery_template_field_type-thumb_size_no_crop input.small-text+label {
 	margin-left: 10px;
+}
+.rtl .foogallery_template_field_type-thumb_size_no_crop input.small-text+label {
+	margin-left: 0;
+	margin-right: 10px;
 }
 
 .foogallery_template_field_type-thumb_size_no_crop label+input {
 	margin-left: 5px;
+}
+.rtl .foogallery_template_field_type-thumb_size_no_crop label+input {
+	margin-left: 0;
+	margin-right: 5px;
 }
 
 /* changes to the media modal */
@@ -671,10 +726,10 @@ button[data-balloon]{overflow:visible}[data-balloon]{position:relative}[data-bal
 }
 
 .foogallery-custom-metabox-header .foogallery-template-selector {
-	margin-left: 10px;
+	margin: 0 10px;
 }
 
 .foogallery-custom-metabox-header .foogallery-template-selector select {
 	font-size: 13px;
-	margin-left: 6px;
+	margin: 0 6px;
 }

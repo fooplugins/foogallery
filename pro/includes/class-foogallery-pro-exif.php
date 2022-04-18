@@ -52,7 +52,9 @@ if ( ! class_exists( 'FooGallery_Pro_Exif' ) ) {
 	     */
         function add_class_to_item( $classes, $foogallery_attachment, $args ) {
 	        if ( $this->is_exif_enabled() ) {
-		        $classes[] = 'fg-item-exif';
+		        if ( isset( $foogallery_attachment->exif ) ) {
+			        $classes[] = 'fg-item-exif';
+		        }
 	        }
 
         	return $classes;

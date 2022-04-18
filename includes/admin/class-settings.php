@@ -32,10 +32,10 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 		 */
 		public function sanitize_settings( $value, $old_value, $option ) {
 			if ( is_array( $value ) && array_key_exists( 'custom_js', $value ) ) {
-				$value['custom_js'] = foogallery_sanitize_html( $value['custom_js'] );
+				$value['custom_js'] = sanitize_textarea_field( $value['custom_js'] );
 			}
 			if ( is_array( $value ) && array_key_exists( 'custom_css', $value ) ) {
-				$value['custom_css'] = foogallery_sanitize_html( $value['custom_css'] );
+				$value['custom_css'] = sanitize_textarea_field( $value['custom_css'] );
 			}
 			return $value;
 		}

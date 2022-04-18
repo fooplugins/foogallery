@@ -220,6 +220,10 @@ if ( !class_exists( 'Foo_Plugin_Settings_v2_2' ) ) {
 				}
 			}
 
+            if ( $options === '' ) {
+                $options = array();
+            }
+
 			$has_options = $options !== false;
 
 			if ( !isset($options[$id]) && $type != 'checkbox' ) {

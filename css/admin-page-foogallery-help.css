@@ -195,6 +195,9 @@ body {
 .fgah-feature > header {
     text-align: left;
 }
+.rtl .fgah-feature > header {
+    text-align: right;
+}
 
 .fgah-feature > header > h3 {
     font-size: 1.5em;
@@ -241,9 +244,17 @@ body {
     text-align: center;
     padding-right: 32px;
 }
+.rtl .fgah-feature > div > figure {
+    padding-right: 0;
+    padding-left: 32px;
+}
 .fgah-feature-right > div > figure {
     padding-right: 0;
     padding-left: 32px;
+}
+.rtl .fgah-feature-right > div > figure {
+    padding-right: 32px;
+    padding-left: 0;
 }
 
 .fgah-feature > div > ol {
@@ -298,6 +309,9 @@ body {
     border-radius: 3px;
     background: #4098D7;
     background: linear-gradient(45deg, #6638b8 0%, #4098D7 100%);
+}
+.rtl .fgah-feature-pro > div > dl > dt::before {
+    margin: 0 0 0 8px;
 }
 
 span.fgah-plan-prostarter {
@@ -380,6 +394,11 @@ span.fgah-plan-commerce {
     border: solid 2px #FFFFFF;
     float: left;
 }
+.rtl .fgah-help-list li::before {
+    margin-right: 0;
+    margin-left: 0.4em;
+    float: right;
+}
 
 .fgah-demo {
     display: block;
@@ -393,6 +412,9 @@ span.fgah-plan-commerce {
 .fgah-demo > header {
     text-align: left;
     margin: 16px;
+}
+.rtl .fgah-demo > header {
+    text-align: right;
 }
 .fgah-demo > header + * {
     margin-top: 32px;
