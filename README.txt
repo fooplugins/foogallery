@@ -300,8 +300,13 @@ Please update in order to for FooGallery to work in WP 5.5+!
 == Changelog ==
 
 = 2.2.8 =
-* Date Updated : 2022-04-18
+* Date Updated : 2022-05-01
 * Fix : Fixed custom JS & CSS being saved as double encoded
+* Fix : Removed filter support for older AIOSEO versions.
+[//]: # fs_premium_only_begin
+* New : Added Import/Export feature, so you can export galleries on one install, and import into another.
+* Fix : Fixed server folders not finding files on some server setups.
+[//]: # fs_premium_only_end
 
 = 2.2.7 =
 * Date Updated : 2022-04-15

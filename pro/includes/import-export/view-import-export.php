@@ -44,6 +44,8 @@ $import_helper = new FooGallery_Import_View_Helper();
 <h2 class="foo-nav-tabs nav-tab-wrapper">
 	<a href="#import" data-tab="foogallery_import_galleries" class="nav-tab nav-tab-active"><?php _e('Import', 'foogallery'); ?></a>
 	<a href="#export" data-tab="foogallery_export_galleries" class="nav-tab"><?php _e('Export', 'foogallery'); ?></a>
+
+
 </h2>
 
 <div class="foo-nav-container" id="foogallery_import_galleries">

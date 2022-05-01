@@ -6,6 +6,12 @@ if ( ! class_exists( 'FooGallery_Export_View_Helper' ) ) {
 	 * Class FooGallery_Export_View_Helper
 	 */
 	class FooGallery_Export_View_Helper {
+        /**
+         * Renders the export form for a number of galleries.
+         *
+         * @param $galleries
+         * @return void
+         */
 		public function render_export_form( $galleries ) {
 			?>
 			<style>
