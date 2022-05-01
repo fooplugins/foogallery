@@ -429,7 +429,8 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Folders' ) ) {
 		}
 
 		function get_root_folder() {
-			return trailingslashit( apply_filters( 'foogallery_filesystem_root', ABSPATH ) );
+            $root = isset( $_SERVER["DOCUMENT_ROOT"] ) ? $_SERVER["DOCUMENT_ROOT"] : ABSPATH;
+			return trailingslashit( apply_filters( 'foogallery_filesystem_root', $root ) );
 		}
 
 		function render_folder_structure() {
