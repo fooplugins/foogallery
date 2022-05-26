@@ -321,6 +321,9 @@ if ( ! class_exists( 'FooGallery_Pro_Attachment_Taxonomies' ) ) {
                 'rewrite'           => false,
                 'show_admin_column' => false,
                 'show_in_menu'      => false,
+                'public'            => false,  /**makes taxonomy not be visible publicly for front-end users.**/
+                'show_ui'           => true,    /** allow a UI for managing terms in this taxonomy in the admin **/
+
                 'update_count_callback' => '_update_generic_term_count'
             );
 
@@ -345,6 +348,9 @@ if ( ! class_exists( 'FooGallery_Pro_Attachment_Taxonomies' ) ) {
                 'rewrite'           => false,
                 'show_admin_column' => true,
                 'show_in_menu'      => false,
+                'public'            => false,  /**makes taxonomy not be visible publicly for front-end users.**/
+                'show_ui'           => true,    /** allow a UI for managing terms in this taxonomy in the admin **/
+
                 'update_count_callback' => '_update_generic_term_count'
             );
 
