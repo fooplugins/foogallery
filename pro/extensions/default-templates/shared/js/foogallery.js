@@ -17882,7 +17882,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 	_.triggerPostLoad = function (e, current, prev, isFilter) {
 		var tmpl = e.target;
 		if (tmpl instanceof _.Template){
-			if (tmpl.initialized && (e.type === "after-page-change" && !isFilter || e.type === "after-filter-change")) {
+			if (tmpl.initialized && ((e.type === "after-page-change" && !isFilter) || e.type === "after-filter-change")) {
 				try {
 					// if the gallery is displayed within a FooBox do not trigger the post-load which would cause the lightbox to re-init
 					if (tmpl.$el.parents(".fbx-item").length > 0) return;

@@ -7548,6 +7548,7 @@ html.fg-panel-no-scroll body {
 }
 .fg-carousel-bottom {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     justify-content: center;
     position: relative;
