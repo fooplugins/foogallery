@@ -126,6 +126,7 @@ if ( function_exists( 'foogallery_fs' ) ) {
 					foogallery_fs()->add_filter( 'is_submenu_visible', array( $this, 'is_submenu_visible' ), 10, 2 );
 					foogallery_fs()->add_filter( 'plugin_icon', array( $this, 'freemius_plugin_icon' ), 10, 1 );
 					add_action( 'foogallery_admin_menu_before', array( $this, 'add_freemius_activation_menu' ) );
+                    new FooGallery_Import_Export();
 				} else {
 					new FooGallery_Public();
 				}

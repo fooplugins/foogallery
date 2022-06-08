@@ -3,14 +3,14 @@
  * FooGallery - Import Export Class
  */
 
-if ( ! class_exists( 'FooGallery_Pro_Import_Export' ) ) {
+if ( ! class_exists( 'FooGallery_Import_Export' ) ) {
 
 	require_once 'functions.php';
 
 	/**
-	 * Class FooGallery_Export_Import
+	 * Class FooGallery_Import_Export
 	 */
-	class FooGallery_Pro_Import_Export {
+	class FooGallery_Import_Export {
 
 		/**
 		 * Wire up everything we need to run the extension
