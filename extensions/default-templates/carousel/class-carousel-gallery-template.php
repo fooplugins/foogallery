@@ -132,7 +132,7 @@ if ( ! class_exists( 'FooGallery_Carousel_Gallery_Template' ) ) {
 				'name'                  => __( 'Carousel', 'foogallery' ),
 				'preview_support'       => true,
 				'common_fields_support' => true,
-				'paging_support'        => true,
+				'paging_support'        => false,
 				'lazyload_support'      => true,
 				'mandatory_classes'     => 'fg-carousel',
 				'thumbnail_dimensions'  => true,
@@ -261,6 +261,54 @@ if ( ! class_exists( 'FooGallery_Carousel_Gallery_Template' ) ) {
 							'data-foogallery-preview'         => 'shortcode'
 						)
 					),
+                    array(
+                        'id'       => 'show_nav_arrows',
+                        'title'    => __( 'Show Nav. Arrows', 'foogallery' ),
+                        'section'  => __( 'General', 'foogallery' ),
+                        'default'  => '',
+                        'type'     => 'radio',
+                        'spacer'   => '<span class="spacer"></span>',
+                        'choices' => array(
+                            '' => __( 'Shown', 'foogallery' ),
+                            'fg-carousel-hide-nav-arrows' => __( 'Hidden', 'foogallery' ),
+                        ),
+                        'row_data' => array(
+                            'data-foogallery-change-selector' => 'input',
+                            'data-foogallery-preview'         => 'shortcode'
+                        )
+                    ),
+                    array(
+                        'id'       => 'show_pagination',
+                        'title'    => __( 'Show Pagination', 'foogallery' ),
+                        'section'  => __( 'General', 'foogallery' ),
+                        'default'  => '',
+                        'type'     => 'radio',
+                        'spacer'   => '<span class="spacer"></span>',
+                        'choices' => array(
+                            '' => __( 'Shown', 'foogallery' ),
+                            'fg-carousel-hide-pagination' => __( 'Hidden', 'foogallery' ),
+                        ),
+                        'row_data' => array(
+                            'data-foogallery-change-selector' => 'input',
+                            'data-foogallery-preview'         => 'shortcode'
+                        )
+                    ),
+                    array(
+                        'id'       => 'show_progress',
+                        'title'    => __( 'Show Progress Bar', 'foogallery' ),
+                        'section'  => __( 'General', 'foogallery' ),
+                        'default'  => '',
+                        'type'     => 'radio',
+                        'spacer'   => '<span class="spacer"></span>',
+                        'choices' => array(
+                            '' => __( 'Shown', 'foogallery' ),
+                            'fg-carousel-hide-progress-bar' => __( 'Hidden', 'foogallery' ),
+                        ),
+                        'row_data' => array(
+                            'data-foogallery-change-selector' => 'input',
+                            'data-foogallery-preview'         => 'shortcode'
+                        )
+                    ),
 					array(
 						'id'      => 'thumbnail_link',
 						'title'   => __( 'Thumbnail Link', 'foogallery' ),
