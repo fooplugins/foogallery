@@ -6,7 +6,10 @@ global $current_foogallery;
 
 $lightbox = foogallery_gallery_template_setting( 'lightbox', 'unknown' );
 $inverted = foogallery_gallery_template_setting( 'inverted', '' );
-$foogallery_default_classes = foogallery_build_class_attribute_safe( $current_foogallery, 'foogallery-lightbox-' . $lightbox, $inverted );
+$show_nav_arrows = foogallery_gallery_template_setting( 'show_nav_arrows', '' );
+$show_pagination = foogallery_gallery_template_setting( 'show_pagination', '' );
+$show_progress = foogallery_gallery_template_setting( 'show_progress', '' );
+$foogallery_default_classes = foogallery_build_class_attribute_safe( $current_foogallery, 'foogallery-lightbox-' . $lightbox, $inverted, $show_nav_arrows, $show_pagination, $show_progress );
 $foogallery_default_attributes = foogallery_build_container_attributes_safe( $current_foogallery, array( 'class' => $foogallery_default_classes ) );
 $foogallery_active_class = 'fg-item-active';
 $args = foogallery_gallery_template_arguments();
