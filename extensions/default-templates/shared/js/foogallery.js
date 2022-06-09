@@ -12045,6 +12045,16 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
                 self.el.style.removeProperty( "--fg-carousel-perspective" );
             }
         },
+        getSize: function( element, inner ){
+            const rect = element.getBoundingClientRect();
+            const size = { width: rect.width, height: rect.height };
+            if ( inner ){
+                const style = getComputedStyle( element );
+                size.width -= parseFloat( style.paddingLeft ) + parseFloat( style.paddingRight ) + parseFloat( style.borderLeftWidth ) + parseFloat( style.borderRightWidth );
+                size.height -= parseFloat( style.paddingTop ) + parseFloat( style.paddingBottom ) + parseFloat( style.borderTopWidth ) + parseFloat( style.borderBottomWidth );
+            }
+            return size;
+        },
         layout: function( width ){
             const self = this;
             if ( self.activeItem === null ){
@@ -12072,8 +12082,8 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
             if ( self.cache.has("layout") && self.cache.get("width") === width ){
                 return self.cache.get("layout");
             }
-            const itemWidth = self.elem.center.getBoundingClientRect().width;
-            const maxOffset = ( self.elem.inner.getBoundingClientRect().width / 2 ) + ( itemWidth / 2 );
+            const itemWidth = self.getSize( self.elem.center ).width;
+            const maxOffset = ( self.getSize( self.elem.inner, true ).width / 2 ) + ( itemWidth / 2 );
             const layout = self.calculate( itemWidth, maxOffset );
             self.cache.set( "width", width );
             self.cache.set( "layout", layout );

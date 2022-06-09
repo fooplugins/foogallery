@@ -7697,6 +7697,29 @@ button.fg-carousel-next:hover {
     color: #444;
     background-color: transparent;
 }
+
+.fg-shadow-outline .fg-carousel-inner {
+    padding: 1px;
+}
+.fg-shadow-small .fg-carousel-inner {
+    padding: 4px;
+}
+.fg-shadow-medium .fg-carousel-inner {
+    padding: 10px;
+}
+.fg-shadow-large .fg-carousel-inner {
+    padding: 16px;
+}
+
+.foogallery.fg-carousel-hide-nav-arrows {
+    --fg-carousel-navigation-size: 0px;
+}
+.foogallery.fg-carousel-hide-nav-arrows .fg-carousel-prev,
+.foogallery.fg-carousel-hide-nav-arrows .fg-carousel-next,
+.foogallery.fg-carousel-hide-pagination .fg-carousel-bottom,
+.foogallery.fg-carousel-hide-progress-bar .fg-carousel-progress {
+    display: none;
+}
 .foogrid,
 .foogrid.fg-gutter-small {
 	margin: 0 0 -0.5% 0;
