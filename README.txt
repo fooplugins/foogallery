@@ -299,11 +299,12 @@ Please update in order to for FooGallery to work in WP 5.5+!
 
 == Changelog ==
 
-= 2.2.9 =
+= 2.2.10 =
 * Date Updated : 2022-06-08
 * New : Added Import/Export feature, so you can export galleries on one install, and import into another.
-* Fix : Fixed layout issues with Carousel gallery
-* Update : FooGallery client side 2.0.33
+* New : Added settings to hide nav/paging/progress for Carousel.
+* Fix : Fixed layout issues with Carousel gallery.
+* Update : FooGallery client side 2.0.34
 
 = 2.2.8 =
 * Date Updated : 2022-05-01
