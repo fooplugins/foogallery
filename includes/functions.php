@@ -2054,3 +2054,35 @@ function foogallery_admin_fields_find_index_of_field( $fields, $field_id ) {
 function foogallery_local_url_to_path( $url ) {
 	return FooGallery_Thumb_Generator::get_file_path( $url );
 }
+
+/**
+ * Sanitizes a code field for saving to the database.
+ *
+ * @param string $text
+ *
+ * @return false|string
+ */
+function foogallery_sanitize_code( $text ) {
+    if ( !empty( $text ) ){
+        $text = wp_check_invalid_utf8( $text, true );
+        $text = htmlentities( $text );
+        return apply_filters( 'foogallery_sanitize_code', $text );
+    }
+    return false;
+}
+
+/**
+ * Prepares a code field for use after it has been sanitized.
+ *
+ * @param string $text
+ *
+ * @return false|string
+ */
+function foogallery_prepare_code( $text ) {
+    if ( !empty( $text ) ){
+        $text = stripslashes( $text );
+        $text = html_entity_decode( $text );
+        return apply_filters( 'foogallery_prepare_code', $text );
+    }
+    return false;
+}
