@@ -48,8 +48,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 			$screen_id = foo_current_screen_id();
 
 			//only include scripts if we on the foogallery add/edit page
-			if ( FOOGALLERY_CPT_GALLERY === $screen_id ||
-			     'edit-' . FOOGALLERY_CPT_GALLERY === $screen_id ) {
+			if ( FOOGALLERY_CPT_GALLERY === $screen_id ) {
 
 				$gallery = $this->get_gallery( $post );
 
