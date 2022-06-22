@@ -2080,7 +2080,6 @@ function foogallery_sanitize_code( $text ) {
  */
 function foogallery_prepare_code( $text ) {
     if ( !empty( $text ) ){
-        $text = stripslashes( $text );
         $text = html_entity_decode( $text );
         return apply_filters( 'foogallery_prepare_code', $text );
     }
