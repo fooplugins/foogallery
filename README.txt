@@ -299,12 +299,17 @@ Please update in order to for FooGallery to work in WP 5.5+!
 
 == Changelog ==
 
-= 2.2.10 =
-* Date Updated : 2022-06-08
+= 2.2.11 =
+* Date Updated : 2022-06-18
 * New : Added Import/Export feature, so you can export galleries on one install, and import into another.
 * New : Added settings to hide nav/paging/progress for Carousel.
 * Fix : Fixed layout issues with Carousel gallery.
+* Fix : Fixed custom JS & CSS being saved as double encoded (for real this time).
 * Update : FooGallery client side 2.0.34
+[//]: # fs_premium_only_begin
+* Fix : Undid previous server folder root change which broke server folder galleries on some installs.
+* New : Added setting (Server Folder Root) which allows you to choose your server folder root on some server setups.
+[//]: # fs_premium_only_end
 
 = 2.2.8 =
 * Date Updated : 2022-05-01
