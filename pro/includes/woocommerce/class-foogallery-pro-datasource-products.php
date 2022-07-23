@@ -6,7 +6,7 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Products' ) ) {
 
 	class FooGallery_Pro_Datasource_Products {
 		public function __construct() {
-			add_action( 'foogallery_gallery_datasources', array( $this, 'add_datasource' ) );
+			add_filter( 'foogallery_gallery_datasources', array( $this, 'add_datasource' ) );
 			add_action( 'foogallery_admin_enqueue_scripts', array( $this, 'enqueue_scripts_and_styles' ) );
 
 			add_filter( 'foogallery_datasource_woocommerce_item_count', array( $this, 'get_gallery_attachment_count' ), 10, 2 );

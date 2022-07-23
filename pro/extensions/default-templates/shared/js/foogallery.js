@@ -4646,10 +4646,11 @@ FooGallery.utils, FooGallery.utils.is, FooGallery.utils.str);
    * @memberof FooGallery.utils.
    * @class Timer
    * @param {number} [interval=1000] - The internal tick interval of the timer.
+   * @augments FooGallery.utils.EventClass
    */
 
   _.Timer = _.EventClass.extend(
-  /** @lends FooGallery.utils.Timer */
+  /** @lends FooGallery.utils.Timer.prototype */
   {
     /**
      * @ignore
@@ -4936,6 +4937,7 @@ FooGallery.utils, FooGallery.utils.is, FooGallery.utils.str);
       if (self.isRunning) {
         self.isRunning = false;
         self.isPaused = true;
+        self.canResume = self.__remaining > 0;
         self.trigger("pause", self.__eventArgs());
       }
 
@@ -5697,6 +5699,171 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 	 */
 	_.supportsPicture = !!window.HTMLPictureElement;
 
+	/**
+	 * Utility class to make working with anonymous event listeners a bit simpler.
+	 * @memberof FooGallery.utils.
+	 * @class DOMEventListeners
+	 * @augments FooGallery.utils.Class
+	 * @borrows FooGallery.utils.Class.extend as extend
+	 * @borrows FooGallery.utils.Class.override as override
+	 */
+	_utils.DOMEventListeners = _utils.Class.extend( /** @lends FooGallery.utils.DOMEventListeners.prototype */ {
+		/**
+		 * @ignore
+		 * @constructs
+		 **/
+		construct: function(){
+			/**
+			 * A simple object containing the event listener and options.
+			 * @typedef {Object} EventEntry
+			 * @property {EventListener} listener
+			 * @property {EventListenerOptions|boolean} [options]
+			 */
+			/**
+			 * The map object containing all listeners.
+			 * @type {Map<EventTarget, Map<string, EventEntry>>}
+			 */
+			this.eventTargets = new Map();
+		},
+		/**
+		 * Add an event listener to the eventTarget.
+		 * @param {EventTarget} eventTarget
+		 * @param {string} type
+		 * @param {EventListener} listener
+		 * @param {AddEventListenerOptions|boolean} [options]
+		 * @returns {boolean} False if a listener already exists for the element.
+		 */
+		add: function( eventTarget, type, listener, options ){
+			eventTarget.addEventListener( type, listener, options );
+			let listeners = this.eventTargets.get( eventTarget );
+			if ( !listeners ){
+				listeners = new Map();
+				this.eventTargets.set( eventTarget, listeners );
+			}
+			let entry = listeners.get( type );
+			if ( !entry ){
+				listeners.set( type, { listener: listener, options: options } );
+				return true;
+			}
+			return false;
+		},
+		/**
+		 * Remove an event listener from the eventTarget.
+		 * @param {EventTarget} eventTarget
+		 * @param {string} type
+		 */
+		remove: function( eventTarget, type ){
+			let listeners = this.eventTargets.get( eventTarget );
+			if ( !listeners ) return;
+			let entry = listeners.get( type );
+			if ( !entry ) return;
+			eventTarget.removeEventListener( type, entry.listener, entry.options );
+			listeners.delete( type );
+			if ( listeners.size === 0 ) this.eventTargets.delete( eventTarget );
+		},
+		/**
+		 * Removes all event listeners from all eventTargets.
+		 */
+		clear: function(){
+			this.eventTargets.forEach( function( listeners, eventTarget ){
+				listeners.forEach( function( entry, type ){
+					eventTarget.removeEventListener( type, entry.listener, entry.options );
+				} );
+			} );
+			this.eventTargets.clear();
+		}
+	} );
+
+	/**
+	 * Utility class to help with managing timeouts.
+	 * @memberof FooGallery.utils.
+	 * @class Timeouts
+	 * @augments FooGallery.utils.Class
+	 * @borrows FooGallery.utils.Class.extend as extend
+	 * @borrows FooGallery.utils.Class.override as override
+	 */
+	_utils.Timeouts = _utils.Class.extend( /** @lends FooGallery.utils.Timeouts.prototype */ {
+		/**
+		 * @ignore
+		 * @constructs
+		 */
+		construct: function(){
+			const self = this;
+			/**
+			 * @typedef {Object} Timeout
+			 * @property {number} id
+			 * @property {number} delay
+			 * @property {function} fn
+			 */
+			/**
+			 * @type {Map<string, Timeout>}
+			 * @private
+			 */
+			self.instances = new Map();
+		},
+		/**
+		 * Returns a boolean indicating whether a timeout with the specified key exists or not.
+		 * @param {string} key
+		 * @returns {boolean}
+		 */
+		has: function( key ){
+			return this.instances.has( key );
+		},
+		/**
+		 * Returns the specified timeout if it exists.
+		 * @param {string} key
+		 * @returns {Timeout}
+		 */
+		get: function( key ){
+			return this.instances.get( key );
+		},
+		/**
+		 * Adds or updates a specified timeout.
+		 * @param {string} key
+		 * @param {function} callback
+		 * @param {number} delay
+		 * @returns {FooGallery.utils.Timeouts}
+		 */
+		set: function( key, callback, delay ){
+			const self = this;
+			self.delete( key );
+			const timeout = {
+				id: setTimeout( function(){
+					self.instances.delete( key );
+					callback.call( self );
+				}, delay ),
+				delay: delay,
+				fn: callback
+			};
+			this.instances.set( key, timeout );
+			return self;
+		},
+		/**
+		 * Removes the specified timeout if it exists.
+		 * @param {string} key
+		 * @returns {boolean}
+		 */
+		delete: function( key ){
+			const self = this;
+			if ( self.instances.has( key ) ){
+				const timeout = self.instances.get( key );
+				clearTimeout( timeout.id );
+				return self.instances.delete( key );
+			}
+			return false;
+		},
+		/**
+		 * Removes all timeouts.
+		 */
+		clear: function(){
+			const self = this;
+			self.instances.forEach( function( timeout ){
+				clearTimeout( timeout.id );
+			} );
+			self.instances.clear();
+		}
+	} );
+
 })(
 	FooGallery.$,
 	FooGallery,
@@ -5758,6 +5925,33 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
                 }).join(" ");
 
             return $(icon).addClass(classNames);
+        },
+        element: function(name, setNameOrObject){
+            const self = this;
+
+            let setName = "default",
+                icons = _obj.extend({}, self.registered.default);
+
+            if (_is.string(setNameOrObject) && setNameOrObject !== "default"){
+                setName = setNameOrObject;
+                icons = _obj.extend(icons, self.registered[setNameOrObject]);
+            } else if (_is.hash(setNameOrObject)){
+                setName = "custom";
+                icons = _obj.extend(icons, setNameOrObject);
+            }
+
+            const iconString = _is.string(name) && icons.hasOwnProperty(name) ? icons[name].replace(/\[ICON_CLASS]/g, self.className + "-" + name) : null;
+            if ( iconString !== null ){
+                const fragment = document.createRange().createContextualFragment(iconString);
+                const svg = fragment.querySelector("svg");
+                if ( svg ){
+                    ["", "-" + name, "-" + setName].forEach(function(suffix){
+                        svg.classList.add(self.className + suffix);
+                    });
+                    return svg;
+                }
+            }
+            return null;
         }
     });
 
@@ -6488,7 +6682,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 			 * @summary The element for the template container.
 			 * @memberof FooGallery.Template#
 			 * @name el
-			 * @type {?Element}
+			 * @type {?HTMLElement}
 			 */
 			self.el = self.$el.get(0) || null;
 			/**
@@ -7644,6 +7838,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 			var self = this;
 			self.ALLOW_CREATE = true;
 			self.ALLOW_APPEND = true;
+			self.LAYOUT_AFTER_LOAD = true;
 			/**
 			 * @ignore
 			 * @memberof FooGallery.Items#
@@ -7661,16 +7856,28 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 			var cls = self.tmpl.cls.item.caption;
 			self.tmpl.sel.item.caption.all = _utils.selectify([cls.elem, cls.inner, cls.title, cls.description]);
 
+			self._wait = [];
+			self._layoutTimeout = null;
 			self.iobserver = new IntersectionObserver(function(entries){
 				if (!self.tmpl.destroying && !self.tmpl.destroyed){
+					if ( self.LAYOUT_AFTER_LOAD ) clearTimeout(self._layoutTimeout);
 					entries.forEach(function(entry){
 						if (entry.isIntersecting){
 							var item = self._observed.get(entry.target);
 							if (item instanceof _.Item){
-								item.load();
+								self._wait.push(item.load());
 							}
 						}
 					});
+					if ( self.LAYOUT_AFTER_LOAD ){
+						self._layoutTimeout = setTimeout(function(){
+							if (self._wait.length > 0){
+								_fn.allSettled(self._wait.splice(0)).then(function(){
+									self.tmpl.layout();
+								});
+							}
+						}, 100);
+					}
 				}
 			});
 		},
@@ -7874,6 +8081,22 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 				return this.find(items, where);
 			}
 			return null;
+		},
+		get: function( indexOrElement, all ){
+			const self = this;
+			const items = all ? self._all : self._available;
+			if ( _is.number( indexOrElement ) ){
+				if ( indexOrElement >= 0 && indexOrElement < self._all.length ){
+					return items[ indexOrElement ];
+				}
+				return null;
+			}
+			return self.find( items, function( item ){
+				return item.el === indexOrElement;
+			} );
+		},
+		indexOf: function( item, all ){
+			return ( all ? this._all : this._available ).indexOf( item );
 		},
 		/**
 		 * @summary Filter the supplied `items` and return only those that can be created.
@@ -8491,13 +8714,13 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 			 * @name caption
 			 * @type {string}
 			 */
-			self.caption = _is.empty(self.opt.caption) ? self.title : self.opt.caption;
+			self.caption = self.opt.caption;
 			/**
 			 * @memberof FooGallery.Item#
 			 * @name description
 			 * @type {string}
 			 */
-			self.description = _is.empty(self.opt.description) ? self.alt : self.opt.description;
+			self.description = self.opt.description;
 			/**
 			 * @memberof FooGallery.Item#
 			 * @name attrItem
@@ -9430,6 +9653,8 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 				var ph_src = img.src, ph_srcset = img.srcset;
 				img.onload = function () {
 					img.onload = img.onerror = null;
+					img.style.removeProperty("width");
+					img.style.removeProperty("height");
 					def.resolve(img);
 				};
 				img.onerror = function () {
@@ -9455,6 +9680,10 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 						}
 					});
 				}
+				var size = img.getBoundingClientRect();
+				img.style.width = size.width;
+				img.style.height = size.height;
+
 				img.src = self.src;
 				if (!_is.empty(self.srcset)){
 					img.srcset = self.srcset;
@@ -10052,6 +10281,8 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 			self.min = self.opt.min;
 			self.limit = self.opt.limit;
 			self.showCount = self.opt.showCount;
+			self.noAll = self.opt.noAll;
+			self.autoSelected = self.opt.autoSelected;
 
 			self.adjustSize = self.opt.adjustSize;
 			self.smallest = self.opt.smallest;
@@ -10092,8 +10323,18 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 			}) ? this.current.slice() : null;
 		},
 		setState: function(state){
-			this.rebuild();
-			this.set(state.filter, "", false);
+			var self = this;
+			self.rebuild();
+			var toSet = state.filter;
+			if ( self.autoSelected && ( !_is.array( state.filter ) || state.filter.length === 0 ) && self.tags.length > 0 ){
+				toSet = [];
+				for (var i = 0; i < self.tags.length; i++){
+					if ( !_is.array(self.tags[i]) ) continue;
+					if ( i === 0 ) toSet.push( [ self.tags[i][0].value ] );
+					else toSet.push( [] );
+				}
+			}
+			self.set(toSet, "", false);
 		},
 		destroy: function () {
 			var self = this;
@@ -10134,6 +10375,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 			for (var prop in counts) {
 				if (counts.hasOwnProperty(prop)) {
 					var count = counts[prop], isAll = prop === "__ALL__";
+					if ( self.noAll && isAll ) continue;
 					if (self.min <= 0 || count >= self.min) {
 						if (tags.length > 0){
 							index = _utils.inArray(prop, tags);
@@ -10429,6 +10671,8 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 		sortBy: "value", // "value", "count", "index", "none"
 		sortInvert: false, // the direction of the sorting
 		search: false,
+		noAll: false,
+		autoSelected: false,
 		tags: [],
 		min: 0,
 		limit: 0,
@@ -10528,7 +10772,8 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 				$list = $("<ul/>", {"class": cls.list});
 
 			for (var i = 0, l = tags.length; i < l; i++){
-				$list.append(self.createItem(tags[i]).toggleClass(cls.selected, i === 0));
+				var $item = self.createItem(tags[i]);
+				$list.append($item.toggleClass(cls.selected, i === 0 && (self.filter.autoSelected || _is.empty(tags[i].value) )));
 			}
 			return $list;
 		},
@@ -15794,18 +16039,6 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 	FooGallery.$,
 	FooGallery
 );
-(function($, _){
-
-	_.JustifiedCSSTemplate = _.Template.extend({});
-
-	_.template.register("justified-css", _.JustifiedCSSTemplate, null, {
-		container: "foogallery fg-justified-css"
-	});
-
-})(
-	FooGallery.$,
-	FooGallery
-);
 (function($, _, _utils, _is, _fn){
 
 	_.PortfolioTemplate = _.Template.extend({});
@@ -16094,6 +16327,710 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 		FooGallery.$,
 		FooGallery,
 		FooGallery.utils.obj
+);
+(function($, _, _icons, _utils, _is){
+
+    _utils.Progress = _utils.EventClass.extend( {
+        construct: function( tickRate ){
+            const self = this;
+            self._super();
+            self.percent = 0;
+            self.tickRate = _is.number( tickRate ) ? tickRate : 100;
+            self.isPaused = false;
+            self.isActive = false;
+            self._intervalId = null;
+            self._total = 0;
+            self._target = null;
+            self.onTick = self.onTick.bind( self );
+        },
+        destroy: function(){
+            const self = this;
+            self._reset();
+            self._super();
+        },
+        _reset: function(){
+            const self = this;
+            if ( self._intervalId !== null ) clearInterval( self._intervalId );
+            self.percent = 0;
+            self._total = 0;
+            self._intervalId = null;
+            self._target = null;
+            self.isActive = false;
+            self.isPaused = false;
+        },
+        stop: function(){
+            const self = this;
+            if ( self.isActive ){
+                self._reset();
+                self.trigger( "stop" );
+            }
+        },
+        start: function( seconds ){
+            const self = this;
+            self.stop();
+            if ( !self.isActive && _is.number( seconds ) && seconds > 0 ){
+                self._total = seconds * 1000;
+                self._target = Date.now() + self._total;
+                self._intervalId = setInterval( self.onTick, self.tickRate );
+                self.isActive = true;
+                self.trigger( "start" );
+            }
+        },
+        pause: function(){
+            const self = this;
+            if ( self.isActive && !self.isPaused && self.percent < 100 ){
+                if ( self._intervalId !== null ) clearInterval( self._intervalId );
+                self._intervalId = null;
+                self._target = null;
+                self.isPaused = true;
+                self.trigger( "pause" );
+            }
+        },
+        resume: function(){
+            const self = this;
+            if ( self.isActive && self.isPaused ){
+                const remaining = self._total - ( ( self._total * self.percent ) / 100 );
+                self._target = Date.now() + remaining;
+                self._intervalId = setInterval( self.onTick, self.tickRate );
+                self.isPaused = false;
+                self.trigger( "resume" );
+            } else if ( self._total > 0 ){
+                self.start( self._total / 1000 );
+            }
+        },
+        onTick: function(){
+            const self = this;
+            const diff = self._total - Math.max( self._target - Date.now(), 0 );
+            self.percent = Math.min( ( diff / self._total ) * 100, 100 );
+            self.trigger( "tick", [ self.percent ] );
+            if ( self.percent >= 100 ){
+                if ( self._intervalId !== null ) clearInterval( self._intervalId );
+                self._intervalId = null;
+                self._target = null;
+                self.isActive = false;
+                self.trigger( "complete" );
+            }
+        }
+    } );
+
+    /**
+     * @memberof FooGallery.
+     * @class Carousel
+     * @extends FooGallery.utils.Class
+     */
+    _.Carousel = _utils.Class.extend( /** @lends FooGallery.Carousel.prototype */ {
+        /**
+         * @ignore
+         * @constructs
+         * @param {FooGallery.Template} template
+         * @param {object} opt
+         * @param {object} cls
+         * @param {object} sel
+         */
+        construct: function(template, opt, cls, sel){
+            const self = this;
+            self.tmpl = template;
+            self.el = template.el;
+            self.opt = opt;
+            self.cls = cls;
+            self.sel = sel;
+            self.elem = {
+                inner: null,
+                center: null,
+                bottom: null,
+                prev: null,
+                next: null,
+                progress: null
+            };
+            self.activeItem = null;
+            self._itemWidth = 0;
+            self._leftExclude = [ self.sel.activeItem, self.sel.nextItem ].join( "," );
+            self._rightExclude = [ self.sel.activeItem, self.sel.prevItem ].join( "," );
+            /**
+             *
+             * @type {FooGallery.utils.DOMEventListeners}
+             * @private
+             */
+            self._centerListeners = new _utils.DOMEventListeners();
+            /**
+             *
+             * @type {FooGallery.utils.DOMEventListeners}
+             * @private
+             */
+            self._listeners = new _utils.DOMEventListeners();
+            /**
+             *
+             * @type {FooGallery.utils.Progress}
+             * @private
+             */
+            self._progress = new _utils.Progress();
+            self._canHover = window.matchMedia("(hover: hover)").matches;
+            self.cache = new Map();
+            self.timeouts = new _utils.Timeouts();
+            self.interacted = false;
+            self.isRTL = false;
+            self._firstLayout = true;
+        },
+
+        //#region Transform Utils
+
+        /**
+         * @summary Calculate the screen X co-ord given a 3D points' X, Z co-ords and the perspective.
+         * @memberof
+         * @param {number} vectorX - The 3D point X co-ord.
+         * @param {number} vectorZ - The 3D point Z co-ord.
+         * @param {number} perspective - The visual perspective.
+         * @returns {number} The screen X co-ord.
+         */
+        getScreenX: function( vectorX, vectorZ, perspective ){
+            return ( perspective / ( perspective + vectorZ ) ) * vectorX;
+        },
+        /**
+         * @summary Calculate a 3D points' X co-ord given the screens' X co-ord, the 3D points' Z co-ord and the perspective.
+         * @param {number} screenX - The screen X co-ord.
+         * @param {number} vectorZ - The 3D point Z co-ord.
+         * @param {number} perspective - The visual perspective.
+         * @returns {number} The 3D point X co-ord.
+         */
+        getVectorX: function( screenX, vectorZ, perspective ){
+            return ( ( perspective + vectorZ ) / perspective ) * screenX;
+        },
+        /**
+         * @summary Calculate the incremental Z co-ord for a 3D point that is part of a scaled sequence.
+         * @param {number} index - The index within the sequence for this iteration.
+         * @param {number} scale - The scale to adjust each iteration by.
+         * @param {number} perspective - The visual perspective.
+         * @returns {number} The 3D point Z co-ord
+         */
+        getSequentialZFromScale: function( index, scale, perspective ){
+            return perspective * ( scale * ( index + 1 ) );
+        },
+        /**
+         * @summary Scales the value to the given 3D points' Z co-ord and perspective.
+         * @param {number} value - The value to be scaled.
+         * @param {number} vectorZ - The 3D point Z co-ord.
+         * @param {number} perspective - The visual perspective.
+         * @returns {number} The scaled value.
+         */
+        scaleToZ: function( value, vectorZ, perspective ){
+            return value * ( 1 - vectorZ / ( perspective + vectorZ ) );
+        },
+
+        //#endregion
+
+        //#region Autoplay
+
+        pause: function(){
+            this._progress.pause();
+        },
+        resume: function(){
+            this._progress.resume();
+        },
+        start: function(){
+            if ( this.opt.autoplay.interaction === "disable" && this.interacted ) return;
+            this._progress.start( this.opt.autoplay.time );
+        },
+        stop: function(){
+            this._progress.stop();
+        },
+
+        //#endregion
+
+        init: function(){
+            const self = this;
+            self.isRTL = window.getComputedStyle(self.el).direction === "rtl";
+
+            self.elem = {
+                inner: self.el.querySelector( self.sel.inner ),
+                center: self.el.querySelector( self.sel.center ),
+                bottom: self.el.querySelector( self.sel.bottom ),
+                prev: self.el.querySelector( self.sel.prev ),
+                next: self.el.querySelector( self.sel.next ),
+                progress: self.el.querySelector( self.sel.progress )
+            };
+
+            if ( self.opt.perspective !== 150 ){
+                self.el.style.setProperty( "--fg-carousel-perspective", self.opt.perspective + "px" );
+            }
+        },
+        postInit: function(){
+            const self = this;
+            self.activeItem = self.tmpl.items.first();
+            self.initNavigation();
+            self.initPagination();
+            self.initSwipe();
+            self.initAutoplay();
+        },
+        initNavigation: function(){
+            const self = this;
+            self._listeners.add( self.elem.prev, "click", function( event ){
+                event.preventDefault();
+                self.interacted = true;
+                self.previous();
+            } );
+            if ( self.elem.prev.type !== "button" ) self.elem.prev.type = "button";
+            self.elem.prev.appendChild( _icons.element( "arrow-left" ) );
+
+            self._listeners.add( self.elem.next, "click", function( event ){
+                event.preventDefault();
+                self.interacted = true;
+                self.next();
+            } );
+            if ( self.elem.next.type !== "button" ) self.elem.next.type = "button";
+            self.elem.next.appendChild( _icons.element( "arrow-right" ) );
+        },
+        initPagination: function(){
+            const self = this;
+            const count = self.tmpl.items.count();
+            for (let i = 0; i < count; i++){
+                const bullet = document.createElement( "button" );
+                bullet.type = "button";
+                bullet.classList.add( self.cls.bullet );
+                if ( i === 0 ) bullet.classList.add( self.cls.activeBullet );
+                self._listeners.add( bullet, "click", function( event ){
+                    event.preventDefault();
+                    self.interacted = true;
+                    self.goto( self.tmpl.items.get( i ) );
+                } );
+                self.elem.bottom.appendChild( bullet );
+            }
+        },
+        initSwipe: function(){
+            const self = this;
+            let startX = 0, endX = 0;
+            self._listeners.add( self.elem.inner, "touchstart", function( event ){
+                self.interacted = true;
+                startX = event.changedTouches[0].screenX;
+            }, { passive: true } );
+
+            self._listeners.add( self.elem.inner, "touchend", function( event ){
+                endX = event.changedTouches[0].screenX;
+                if ( endX < startX ){ // swipe left
+                    self.next();
+                } else { // swipe right
+                    self.previous();
+                }
+                endX = 0;
+                startX = 0;
+            }, { passive: true } );
+        },
+        initAutoplay: function(){
+            const self = this, opt = self.opt.autoplay;
+            if ( opt.time <= 0 || !( self.elem.progress instanceof HTMLElement ) ) return;
+
+            const progressElement = self.elem.progress.style;
+
+            let frame = null;
+            function update( percent, immediate ){
+                _utils.cancelFrame( frame );
+                _utils.requestFrame( function(){
+                    progressElement.setProperty( "width", percent + "%" );
+                    if ( immediate ){
+                        progressElement.setProperty( "transition-duration", "0s" );
+                    } else {
+                        progressElement.setProperty( "transition-duration", self._progress.tickRate + "ms" );
+                    }
+                } );
+            }
+
+            self._progress.on( {
+                "start stop": function(){
+                    update( 0, true );
+                },
+                "pause resume": function(){
+                    update( self._progress.percent, true );
+                },
+                "tick": function() {
+                    update( self._progress.percent, false );
+                },
+                "complete": function() {
+                    self.next( function(){
+                        self._progress.start( opt.time );
+                    } );
+                }
+            } );
+
+            if ( opt.interaction === "pause" ){
+                if ( self._canHover ) {
+                    self._listeners.add( self.el, "mouseenter", function( event ) {
+                        self._progress.pause();
+                    }, { passive: true } );
+                    self._listeners.add( self.el, "mouseleave", function( event ) {
+                        self._progress.resume();
+                    }, { passive: true } );
+                } else {
+                    // handle touch only
+                    self._listeners.add( self.el, "touchstart", function( event ) {
+                        self.timeouts.delete( "autoplay" );
+                        self._progress.pause();
+                    }, { passive: true } );
+
+                    self._listeners.add( self.el, "touchend", function( event ) {
+                        self.timeouts.set( "autoplay", function(){
+                            self._progress.resume();
+                        }, opt.time * 1000 );
+                    }, { passive: true } );
+                }
+            }
+            self._progress.start( opt.time );
+        },
+        getFirst: function(){
+            return this.tmpl.items.first();
+        },
+        getNext: function( item ){
+            return this.tmpl.items.next( !( item instanceof _.Item ) ? this.activeItem : item, null, true );
+        },
+        getPrev: function( item ){
+            return this.tmpl.items.prev( !( item instanceof _.Item ) ? this.activeItem : item, null, true );
+        },
+        goto: function( item, callback ){
+            const self = this;
+            if ( !( item instanceof _.Item ) ){
+                return;
+            }
+            const autoplay = self.opt.autoplay;
+            const restart = !self._canHover && self.timeouts.has( "autoplay" );
+            self.timeouts.delete( "autoplay" );
+            self.timeouts.delete( "navigation" );
+
+            const pause = self._progress.isPaused;
+            if ( self._progress.isActive ){
+                self._progress.stop();
+            }
+
+            self.activeItem = item;
+            self.layout();
+
+            self.timeouts.set( "navigation", function(){
+                if ( autoplay.time > 0 && ( autoplay.interaction === "pause" || ( autoplay.interaction === "disable" && !self.interacted ) ) ){
+                    self._progress.start( autoplay.time );
+                    if ( pause ){
+                        self._progress.pause();
+                    }
+                    if ( restart ){
+                        self.timeouts.set( "autoplay", function(){
+                            self._progress.resume();
+                        }, autoplay.time * 1000 );
+                    }
+                }
+                if ( _is.fn( callback ) ) callback.call( self );
+            }, self.opt.speed );
+        },
+        next: function( callback ){
+            this.goto( this.getNext(), callback );
+        },
+        previous: function( callback ){
+            this.goto( this.getPrev(), callback );
+        },
+        destroy: function(){
+            const self = this;
+            self.cache.clear();
+            self.timeouts.clear();
+            self._listeners.clear();
+            self._centerListeners.clear();
+            if ( self.opt.perspective !== 150 ){
+                self.el.style.removeProperty( "--fg-carousel-perspective" );
+            }
+        },
+        getSize: function( element, inner ){
+            const rect = element.getBoundingClientRect();
+            const size = { width: rect.width, height: rect.height };
+            if ( inner ){
+                const style = getComputedStyle( element );
+                size.width -= parseFloat( style.paddingLeft ) + parseFloat( style.paddingRight ) + parseFloat( style.borderLeftWidth ) + parseFloat( style.borderRightWidth );
+                size.height -= parseFloat( style.paddingTop ) + parseFloat( style.paddingBottom ) + parseFloat( style.borderTopWidth ) + parseFloat( style.borderBottomWidth );
+            }
+            return size;
+        },
+        layout: function( width ){
+            const self = this;
+            if ( self.activeItem === null ){
+                self.activeItem = self.tmpl.items.first();
+            }
+            if ( !_is.number( width ) && self.cache.has( "width" ) ){
+                width = self.cache.get( "width" );
+            }
+            if ( !_is.number( width ) ) return;
+
+            const layout = self.getLayout( width );
+            if ( self._layoutFrame !== null ) _utils.cancelFrame( self._layoutFrame );
+            self._layoutFrame = _utils.requestFrame( function(){
+                self._layoutFrame = null;
+                if ( self.renderActive( layout ) ){
+                    self.renderSide( "left", self.sel.prevItem, self._leftExclude, self.cls.prevItem, layout );
+                    self.renderSide( "right", self.sel.nextItem, self._rightExclude, self.cls.nextItem, layout );
+                    self._firstLayout = false;
+                }
+            } );
+        },
+        getLayout: function( width ){
+            const self = this;
+
+            if ( self.cache.has("layout") && self.cache.get("width") === width ){
+                return self.cache.get("layout");
+            }
+            const itemWidth = self.getSize( self.elem.center ).width;
+            const maxOffset = ( self.getSize( self.elem.inner, true ).width / 2 ) + ( itemWidth / 2 );
+            const layout = self.calculate( itemWidth, maxOffset );
+            self.cache.set( "width", width );
+            self.cache.set( "layout", layout );
+            return layout;
+        },
+        round: function( value, precision ){
+            let multiplier = Math.pow(10, precision || 0);
+            return Math.round(value * multiplier) / multiplier;
+        },
+        getShowPerSide: function(){
+            const self = this, count = self.tmpl.items.count();
+            let perSide = self.opt.maxItems;
+            if ( perSide === "auto" || perSide <= 0 ) perSide = ( count % 2 === 0 ? count - 1 : count );
+            if ( perSide % 2 === 0 ) perSide -= 1;
+            if ( perSide < 1 ) perSide = 1;
+            if ( perSide > count ) perSide = ( count % 2 === 0 ? count - 1 : count );
+            return ( perSide - 1 ) / 2;
+        },
+        calculate: function( itemWidth, maxOffset, gutter, showPerSide ){
+            const self = this;
+            if ( !_is.number( gutter ) ){
+                gutter = self.opt.gutter.max;
+            }
+            if ( !_is.number( showPerSide ) ){
+                showPerSide = self.getShowPerSide();
+            }
+
+            const result = {
+                zIndex: showPerSide + 10,
+                gutter: gutter,
+                perSide: showPerSide,
+                side: []
+            };
+
+            let offset = itemWidth, zIndex = result.zIndex - 1;
+            for (let i = 0; i < showPerSide; i++, zIndex--){
+                const z = self.getSequentialZFromScale( i, self.opt.scale, self.opt.perspective );
+                const width = self.scaleToZ( itemWidth, z, self.opt.perspective );
+                const diff = ( itemWidth - width ) / 2;
+
+                offset -= diff;
+
+                const gutterStep = 1;
+                const gutterValue = self.opt.gutter.unit === "%" ? itemWidth * Math.abs( gutter / 100 ) : Math.abs( gutter );
+                const gutterOffset = self.opt.gutter.unit === "%" ? self.scaleToZ( gutterValue, z, self.opt.perspective ) : gutterValue;
+                if (gutter > 0){
+                    offset += gutterOffset;
+                } else {
+                    offset -= gutterOffset;
+                }
+                if ( offset + width + diff > maxOffset ){
+                    if ( gutter - gutterStep < self.opt.gutter.min ){
+                        return self.calculate( itemWidth, maxOffset, self.opt.gutter.max, showPerSide - 1);
+                    }
+                    return self.calculate( itemWidth, maxOffset, gutter - gutterStep, showPerSide);
+                }
+
+                const x = self.getVectorX( offset, z, self.opt.perspective );
+
+                offset += width + diff;
+
+                result.side.push({x: x, z: z, zIndex: zIndex });
+            }
+            return result;
+        },
+        cleanup: function( selector, className, exclude ){
+            const self = this;
+            const hasExclude = _is.string( exclude );
+            Array.from( self.el.querySelectorAll( selector ) ).forEach( function( node ){
+
+                node.classList.remove( className );
+                if ( self.opt.centerOnClick ){
+                    self._centerListeners.remove( node, "click" );
+                }
+
+                if ( hasExclude && node.matches( exclude ) ) return;
+
+                node.style.removeProperty( "transition-duration" );
+                node.style.removeProperty( "transform" );
+                node.style.removeProperty( "z-index" );
+            } );
+        },
+        renderActive: function( layout ){
+            const self = this;
+            if ( ! ( self.activeItem instanceof _.Item ) ) return false;
+            const el = self.activeItem.el;
+
+            self.cleanup( self.sel.activeItem, self.cls.activeItem );
+
+            el.classList.add( self.cls.activeItem );
+            el.style.setProperty("transition-duration", self.opt.speed + "ms" );
+            el.style.setProperty( "z-index", layout.zIndex );
+            el.style.removeProperty( "transform" );
+
+            const ai = self.tmpl.items.indexOf( self.activeItem );
+            Array.from( self.el.querySelectorAll( self.sel.bullet ) ).forEach( function( node, i ){
+                node.classList.remove( self.cls.activeBullet );
+                if ( i === ai ) node.classList.add( self.cls.activeBullet );
+            } );
+            return true;
+        },
+        renderSide: function( side, selector, exclude, cls, layout ) {
+            const self = this;
+            if ( [ "left","right" ].indexOf( side ) === -1 ) return;
+
+            self.cleanup( selector, cls, exclude );
+
+            let place = self.activeItem;
+            for (let i = 0; i < layout.side.length; i++ ){
+                const values = layout.side[i];
+                const item = side === "left" ? self.getPrev( place ) : self.getNext( place );
+                if ( item instanceof _.Item ){
+                    let transform = "translate3d(" + ( ( side === "left" && !self.isRTL ) || ( side === "right" && self.isRTL ) ? "-" : "" ) + values.x + "px, 0,-" + values.z + "px)";
+                    item.el.classList.add( cls );
+                    if ( !item.isLoaded ){
+                        item.el.style.setProperty("transition-duration", "0ms" );
+                        item.el.style.setProperty( "transform", "translate3d(0,0,-" + self.opt.perspective + "px)" );
+                        item.el.offsetHeight;
+                    }
+                    item.el.style.setProperty("transition-duration", ( self._firstLayout ? 0 : self.opt.speed ) + "ms" );
+                    item.el.style.setProperty( "transform", transform );
+                    item.el.style.setProperty( "z-index", values.zIndex );
+
+                    if ( self.opt.centerOnClick ){
+                        self._centerListeners.add( item.el, "click", function( event ){
+                            event.preventDefault();
+                            event.stopPropagation();
+                            self.interacted = true;
+                            self.goto( item );
+                        }, true );
+                    }
+
+                    place = item;
+                } else {
+                    // exit early if no item was found
+                    break;
+                }
+            }
+        }
+    });
+
+})(
+    FooGallery.$,
+    FooGallery,
+    FooGallery.icons,
+    FooGallery.utils,
+    FooGallery.utils.is
+);
+(function($, _, _obj){
+
+    _.CarouselTemplate = _.Template.extend({
+        construct: function(options, element){
+            const self = this;
+            self._super(_obj.extend({}, options, {
+                paging: {
+                    type: "none"
+                }
+            }), element);
+            self.items.LAYOUT_AFTER_LOAD = false;
+            self.carousel = null;
+            self.on({
+                "pre-init": self.onPreInit,
+                "init": self.onInit,
+                "post-init": self.onPostInit,
+                "destroyed": self.onDestroyed,
+                "append-item": self.onAppendItem,
+                "after-filter-change": self.onAfterFilterChange,
+                "layout": self.onLayout
+            }, self);
+            if ( !!_.Panel && self.lightbox instanceof _.Panel ){
+                self.lightbox.on({
+                    "open": self.onLightboxOpen,
+                    "closed": self.onLightboxClosed,
+                    "next": self.onLightboxNext,
+                    "prev": self.onLightboxPrev
+                }, self);
+            }
+        },
+        onPreInit: function(){
+            const self = this;
+            self.carousel = new _.Carousel( self, self.template, self.cls.carousel, self.sel.carousel );
+        },
+        onInit: function(){
+            this.carousel.init();
+        },
+        onPostInit: function(){
+            this.carousel.postInit();
+        },
+        onDestroyed: function(){
+            const self = this;
+            if (self.carousel instanceof _.Carousel){
+                self.carousel.destroy();
+            }
+        },
+        onAppendItem: function (event, item) {
+            event.preventDefault();
+            this.carousel.elem.inner.appendChild(item.el);
+            item.isAttached = true;
+        },
+        onAfterFilterChange: function(){
+            this.carousel.cache.delete( "layout" );
+            this.carousel.interacted = true;
+            this.carousel.goto(this.carousel.getFirst());
+        },
+        onLayout: function(){
+            this.carousel.layout(this.lastWidth);
+        },
+        onLightboxOpen: function(){
+            this.carousel.interacted = true;
+            this.carousel.stop();
+        },
+        onLightboxClosed: function(){
+            this.carousel.start();
+        },
+        onLightboxNext: function(){
+            this.carousel.next();
+        },
+        onLightboxPrev: function(){
+            this.carousel.previous();
+        }
+    });
+
+    _.template.register("carousel", _.CarouselTemplate, {
+        template: {
+            maxItems: 0, // "auto" or 0 will be calculated on the fly.
+            perspective: 150,
+            scale: 0.12,
+            speed: 300,
+            centerOnClick: true,
+            gutter: {
+                min: -40,
+                max: -20,
+                unit: "%"
+            },
+            autoplay: {
+                time: 0,
+                interaction: "pause" // "pause" or "disable"
+            }
+        }
+    }, {
+        container: "foogallery fg-carousel",
+        carousel: {
+            inner: "fg-carousel-inner",
+            center: "fg-carousel-center",
+            bottom: "fg-carousel-bottom",
+            prev: "fg-carousel-prev",
+            next: "fg-carousel-next",
+            bullet: "fg-carousel-bullet",
+            activeBullet: "fg-bullet-active",
+            activeItem: "fg-item-active",
+            prevItem: "fg-item-prev",
+            nextItem: "fg-item-next",
+            progress: "fg-carousel-progress"
+        }
+    });
+
+})(
+    FooGallery.$,
+    FooGallery,
+    FooGallery.utils.obj
 );
 (function($, _, _is, _fn, _obj, _t){
 
@@ -16955,7 +17892,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 	_.triggerPostLoad = function (e, current, prev, isFilter) {
 		var tmpl = e.target;
 		if (tmpl instanceof _.Template){
-			if (tmpl.initialized && (e.type === "after-page-change" && !isFilter || e.type === "after-filter-change")) {
+			if (tmpl.initialized && (e.type === "ready" || (e.type === "after-page-change" && !isFilter) || e.type === "after-filter-change")) {
 				try {
 					// if the gallery is displayed within a FooBox do not trigger the post-load which would cause the lightbox to re-init
 					if (tmpl.$el.parents(".fbx-item").length > 0) return;
@@ -16974,7 +17911,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 
 	_.autoDefaults = {
 		on: {
-			"after-page-change after-filter-change": _.triggerPostLoad
+			"ready after-page-change after-filter-change": _.triggerPostLoad
 		}
 	};
 

@@ -43,11 +43,14 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings' ) ) {
 
 			$gallery = apply_filters( 'foogallery_render_gallery_settings_metabox', $gallery );
 
-			$settings = new FooGallery_Admin_Gallery_MetaBox_Settings_Helper( $gallery );
+			if ( true === apply_filters( 'foogallery_should_render_gallery_settings_metabox', true, $gallery ) ) {
 
-			$settings->render_hidden_gallery_template_selector();
+				$settings = new FooGallery_Admin_Gallery_MetaBox_Settings_Helper( $gallery );
 
-			$settings->render_gallery_settings();
+				$settings->render_hidden_gallery_template_selector();
+
+				$settings->render_gallery_settings();
+			}
 
 			do_action( 'foogallery_after_render_gallery_settings_metabox', $gallery );
 		}

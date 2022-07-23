@@ -19,6 +19,7 @@ if ( ! class_exists( 'FooGallery_Default_Templates' ) ) {
     require_once FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_PATH . 'masonry/class-masonry-gallery-template.php';
     require_once FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_PATH . 'simple-portfolio/class-simple-portfolio-gallery-template.php';
     require_once FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_PATH . 'thumbnail/class-thumbnail-gallery-template.php';
+	require_once FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_PATH . 'carousel/class-carousel-gallery-template.php';
 
     class FooGallery_Default_Templates {
 
@@ -26,10 +27,10 @@ if ( ! class_exists( 'FooGallery_Default_Templates' ) ) {
             new FooGallery_Default_Gallery_Template();
             new FooGallery_Image_Viewer_Gallery_Template();
             new FooGallery_Justified_Gallery_Template();
-	        //new FooGallery_Justified_CSS_Gallery_Template();
             new FooGallery_Masonry_Gallery_Template();
             new FooGallery_Simple_Portfolio_Gallery_Template();
             new FooGallery_Thumbnail_Gallery_Template();
+	        new FooGallery_Carousel_Gallery_Template();
 
             add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_assets' ) );
         }

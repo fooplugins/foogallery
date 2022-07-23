@@ -1210,18 +1210,12 @@
 }
 /* Colorize */
 .foogallery.fg-hover-colorize .fg-image {
-	/* Firefox 10+, Firefox on Android */
-	filter: url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'grayscale\'><feColorMatrix type=\'saturate\' values=\'0\'/></filter></svg>#grayscale");
-	/* IE 6-9 */
-	filter: gray;
-	/* Chrome 19+, Safari 6+, Safari 6+ iOS */
-	-webkit-filter: grayscale(100%);
-	-webkit-transition-property: -webkit-filter;
+	filter: grayscale(100%);
 	transition-property: filter;
 }
-.foogallery.fg-hover-colorize .fg-item-inner:hover .fg-image {
-	-webkit-filter: none;
-	filter: none;
+.foogallery.fg-hover-colorize .fg-item-inner:hover .fg-image,
+.foogallery.fg-hover-colorize .fg-item-inner:focus-within .fg-image {
+	filter: grayscale(0%);
 }
 .foogallery.fg-hover-colorize .fg-image-overlay,
 .foogallery.fg-caption-hover.fg-hover-colorize .fg-caption {
@@ -1232,7 +1226,9 @@
 	transition-property: visibility, opacity, background-color;
 }
 .foogallery.fg-hover-colorize .fg-item-inner:hover .fg-image-overlay,
-.foogallery.fg-caption-hover.fg-hover-colorize .fg-item-inner:hover .fg-caption {
+.foogallery.fg-caption-hover.fg-hover-colorize .fg-item-inner:hover .fg-caption,
+.foogallery.fg-hover-colorize .fg-item-inner:focus-within .fg-image-overlay,
+.foogallery.fg-caption-hover.fg-hover-colorize .fg-item-inner:focus-within .fg-caption {
 	visibility: visible;
 	opacity: 1;
 }
@@ -1246,26 +1242,20 @@
 	transition-property: visibility, opacity, background-color;
 }
 .foogallery.fg-hover-fade .fg-loaded .fg-item-inner:hover .fg-image-overlay,
-.foogallery.fg-caption-hover.fg-hover-fade .fg-loaded .fg-item-inner:hover .fg-caption {
+.foogallery.fg-caption-hover.fg-hover-fade .fg-loaded .fg-item-inner:hover .fg-caption,
+.foogallery.fg-hover-fade .fg-loaded .fg-item-inner:focus-within .fg-image-overlay,
+.foogallery.fg-caption-hover.fg-hover-fade .fg-loaded .fg-item-inner:focus-within .fg-caption {
 	visibility: visible;
 	opacity: 1;
 }
 /* Grayscale */
 .foogallery.fg-hover-grayscale .fg-image {
-	-webkit-filter: none;
-	filter: none;
-	-webkit-transition-property: -webkit-filter;
+	filter: grayscale(0%);
 	transition-property: filter;
 }
-.foogallery.fg-hover-grayscale .fg-item-inner:hover .fg-image {
-	/* For Webkit browsers */
-	-webkit-filter: grayscale(1);
-	-webkit-filter: grayscale(100%);
-	/* Standard */
+.foogallery.fg-hover-grayscale .fg-item-inner:hover .fg-image,
+.foogallery.fg-hover-grayscale .fg-item-inner:focus-within .fg-image {
 	filter: grayscale(100%);
-	/* For IE 6 - 9 */
-	filter: gray;
-	opacity: 1;
 }
 .foogallery.fg-hover-grayscale .fg-image-overlay,
 .foogallery.fg-caption-hover.fg-hover-grayscale .fg-caption {
@@ -1276,7 +1266,9 @@
 	transition-property: visibility, opacity, background-color;
 }
 .foogallery.fg-hover-grayscale .fg-item-inner:hover .fg-image-overlay,
-.foogallery.fg-caption-hover.fg-hover-grayscale .fg-item-inner:hover .fg-caption {
+.foogallery.fg-caption-hover.fg-hover-grayscale .fg-item-inner:hover .fg-caption,
+.foogallery.fg-hover-grayscale .fg-item-inner:focus-within .fg-image-overlay,
+.foogallery.fg-caption-hover.fg-hover-grayscale .fg-item-inner:focus-within .fg-caption {
 	visibility: visible;
 	opacity: 1;
 }
@@ -1290,7 +1282,9 @@
 	transition-property: none;
 }
 .foogallery.fg-hover-instant .fg-loaded .fg-item-inner:hover .fg-image-overlay,
-.foogallery.fg-caption-hover.fg-hover-instant .fg-loaded .fg-item-inner:hover .fg-caption {
+.foogallery.fg-caption-hover.fg-hover-instant .fg-loaded .fg-item-inner:hover .fg-caption,
+.foogallery.fg-hover-instant .fg-loaded .fg-item-inner:focus-within .fg-image-overlay,
+.foogallery.fg-caption-hover.fg-hover-instant .fg-loaded .fg-item-inner:focus-within .fg-caption {
 	visibility: visible;
 	opacity: 1;
 }
@@ -1309,11 +1303,14 @@
 .foogallery.fg-caption-hover.fg-hover-push .fg-loaded .fg-caption {
 	transition-property: transform;
 }
-.foogallery.fg-caption-hover.fg-hover-push .fg-loaded .fg-item-inner:hover .fg-caption {
+.foogallery.fg-caption-hover.fg-hover-push .fg-loaded .fg-item-inner:hover .fg-caption,
+.foogallery.fg-caption-hover.fg-hover-push .fg-loaded .fg-item-inner:focus-within .fg-caption {
 	transform: translateY(0);
 }
 .foogallery.fg-hover-push .fg-loaded .fg-item-inner:hover .fg-thumb,
-.foogallery.fg-caption-hover.fg-hover-push .fg-loaded .fg-item-inner:hover .fg-thumb {
+.foogallery.fg-caption-hover.fg-hover-push .fg-loaded .fg-item-inner:hover .fg-thumb,
+.foogallery.fg-hover-push .fg-loaded .fg-item-inner .fg-thumb:focus,
+.foogallery.fg-caption-hover.fg-hover-push .fg-loaded .fg-item-inner .fg-thumb:focus {
 	transform: translateX(-100%);
 }
 /* Scale */
@@ -1322,7 +1319,8 @@
 	z-index: 4;
 }
 
-.foogallery.fg-hover-scale .fg-item:hover {
+.foogallery.fg-hover-scale .fg-item:hover,
+.foogallery.fg-hover-scale .fg-item:focus-within {
 	transform: scale(1.048);
 	z-index: 10;
 }
@@ -1335,7 +1333,9 @@
 	transition-property: visibility, opacity, background-color;
 }
 .foogallery.fg-hover-scale .fg-item-inner:hover .fg-image-overlay,
-.foogallery.fg-caption-hover.fg-hover-scale .fg-item-inner:hover .fg-caption {
+.foogallery.fg-caption-hover.fg-hover-scale .fg-item-inner:hover .fg-caption,
+.foogallery.fg-hover-scale .fg-item-inner:focus-within .fg-image-overlay,
+.foogallery.fg-caption-hover.fg-hover-scale .fg-item-inner:focus-within .fg-caption {
 	visibility: visible;
 	opacity: 1;
 }
@@ -1344,7 +1344,8 @@
     transition-property: transform;
     z-index: 4;
 }
-.foogallery.fg-hover-zoomed .fg-item:hover .fg-image {
+.foogallery.fg-hover-zoomed .fg-item:hover .fg-image,
+.foogallery.fg-hover-zoomed .fg-item:focus-within .fg-image {
     transform: scale(1.15);
 }
 .foogallery.fg-hover-zoomed .fg-image-wrap {
@@ -1360,7 +1361,9 @@
     transition-property: visibility, opacity, background-color;
 }
 .foogallery.fg-hover-zoomed .fg-item-inner:hover .fg-image-overlay,
-.foogallery.fg-caption-hover.fg-hover-zoomed .fg-item-inner:hover .fg-caption {
+.foogallery.fg-caption-hover.fg-hover-zoomed .fg-item-inner:hover .fg-caption,
+.foogallery.fg-hover-zoomed .fg-item-inner:focus-within .fg-image-overlay,
+.foogallery.fg-caption-hover.fg-hover-zoomed .fg-item-inner:focus-within .fg-caption {
     visibility: visible;
     opacity: 1;
 }
@@ -1388,7 +1391,15 @@
 .foogallery.fg-hover-slide-left .fg-loaded .fg-item-inner:hover .fg-image-overlay,
 .foogallery.fg-caption-hover.fg-hover-slide-left .fg-loaded .fg-item-inner:hover .fg-caption,
 .foogallery.fg-hover-slide-right .fg-loaded .fg-item-inner:hover .fg-image-overlay,
-.foogallery.fg-caption-hover.fg-hover-slide-right .fg-loaded .fg-item-inner:hover .fg-caption {
+.foogallery.fg-caption-hover.fg-hover-slide-right .fg-loaded .fg-item-inner:hover .fg-caption,
+.foogallery.fg-hover-slide-up .fg-loaded .fg-item-inner:focus-within .fg-image-overlay,
+.foogallery.fg-caption-hover.fg-hover-slide-up .fg-loaded .fg-item-inner:focus-within .fg-caption,
+.foogallery.fg-hover-slide-down .fg-loaded .fg-item-inner:focus-within .fg-image-overlay,
+.foogallery.fg-caption-hover.fg-hover-slide-down .fg-loaded .fg-item-inner:focus-within .fg-caption,
+.foogallery.fg-hover-slide-left .fg-loaded .fg-item-inner:focus-within .fg-image-overlay,
+.foogallery.fg-caption-hover.fg-hover-slide-left .fg-loaded .fg-item-inner:focus-within .fg-caption,
+.foogallery.fg-hover-slide-right .fg-loaded .fg-item-inner:focus-within .fg-image-overlay,
+.foogallery.fg-caption-hover.fg-hover-slide-right .fg-loaded .fg-item-inner:focus-within .fg-caption {
 	transform: translateY(0) translateX(0);
 }
 
@@ -2441,47 +2452,6 @@
 	height: auto!important;
 	min-height: 100%;
 }
-/* CSS justified layout. */
-.foogallery.fg-justified-css {
-	position: relative;
-	display: flex;
-	box-sizing: border-box;
-	align-items: center;
-	justify-content: stretch;
-	flex-wrap: wrap;
-}
-.foogallery.fg-justified-css:after {
-	display: block;
-	content: '';
-	flex-shrink: 0;
-	flex-grow: 10;
-	min-width: 60px;
-}
-.foogallery.fg-justified-css .fg-item,
-.foogallery.fg-justified-css .fg-item-inner,
-.foogallery.fg-justified-css .fg-thumb,
-.foogallery.fg-justified-css .fg-image {
-	display: block;
-}
-
-.foogallery.fg-justified-css .fg-item {
-	flex-shrink: 0;
-	flex-grow: 1;
-	margin: 5px;
-}
-.foogallery.fg-justified-css .fg-thumb {
-
-}
-.foogallery.fg-justified-css .fg-image-wrap {
-	display: flex;
-	align-items: center;
-	justify-content: stretch;
-	overflow: hidden;
-}
-.foogallery.fg-justified-css .fg-image {
-	width: 100%;
-	height: auto;
-}
 .fg-simple_portfolio {
     display: flex;
     flex-wrap: wrap;
@@ -2954,6 +2924,18 @@
 }
 .fg-image-viewer .fiv-inner .fiv-ctrls .fiv-count span {
 	margin: 0 4px;
+}
+.rtl .fg-image-viewer .fiv-inner .fiv-ctrls .fiv-prev {
+	float: right;
+}
+.rtl .fg-image-viewer .fiv-inner .fiv-ctrls .fiv-prev:before {
+	content: '\2192';
+}
+.rtl .fg-image-viewer .fiv-inner .fiv-ctrls .fiv-next {
+	float: left;
+}
+.rtl .fg-image-viewer .fiv-inner .fiv-ctrls .fiv-next:before {
+	content: '\2190';
 }
 
 /* Captions */
@@ -3465,4 +3447,240 @@
     padding: 10px 5px;
     background: #F7F7F7;
     height: 100%;
+}
+:root {
+    --fg-carousel-perspective: 150px;
+    --fg-carousel-navigation-size: 48px;
+    --fg-carousel-pagination-size: 14px;
+    --fg-carousel-progress-size: 4px;
+    --fg-carousel-navigation-opacity: 0.3;
+    --fg-carousel-transition-speed: 650ms;
+    --fg-carousel-ui-speed: 300ms;
+}
+.foogallery.fg-carousel {
+    --fg-carousel-inverse-perspective: calc( -1 *  var(--fg-carousel-perspective) );
+    position: relative;
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: var(--fg-carousel-navigation-size) auto var(--fg-carousel-navigation-size);
+    grid-template-rows: auto auto;
+    grid-template-areas: "prev inner next"
+                         "bottom bottom bottom";
+}
+.fg-carousel-inner {
+    position: relative;
+    grid-area: inner;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    grid-template-rows: auto;
+    grid-template-areas: "left center right";
+    padding: 10px 0;
+    perspective: var(--fg-carousel-perspective);
+    transform: translate3d(0, 0, 0);
+    transform-style: preserve-3d;
+    backface-visibility: hidden;
+    will-change: contents;
+}
+.foogallery_preview_container .fg-carousel-inner {
+    transform-style: unset;
+}
+
+.fg-carousel-center {
+    position: relative;
+    z-index: -1;
+    pointer-events: none;
+    visibility: hidden;
+}
+.fg-carousel-center {
+    grid-area: center;
+}
+.fg-carousel-progress {
+    display: block;
+    position: absolute;
+    visibility: visible;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: var(--fg-carousel-progress-size);
+    border-radius: calc( var(--fg-carousel-progress-size) / 2 );
+    transition: width 100ms linear;
+    opacity: var(--fg-carousel-navigation-opacity);
+}
+.rtl .fg-carousel-progress {
+    left: auto;
+    right: 0;
+}
+.fg-carousel-bottom {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    grid-area: bottom;
+    font-size: var(--fg-carousel-pagination-size);
+    padding: 0;
+    margin-bottom: 10px;
+}
+.fg-carousel-bullet {
+    width: 1em;
+    height: 1em;
+    display: block;
+    padding: 0;
+    margin: 0.3em;
+    border-radius: 50%;
+    border: solid 1px transparent;
+    background: none;
+    box-shadow: none;
+    outline: none;
+    opacity: var(--fg-carousel-navigation-opacity);
+    cursor: pointer;
+    font-size: inherit;
+    transition: opacity var(--fg-carousel-ui-speed) ease-in;
+}
+@media only screen and (max-width: 782px) {
+    .fg-carousel-bullet {
+        width: 1.25em;
+        height: 1.25em;
+    }
+}
+
+.fg-carousel-bullet:hover {
+    background: none;
+    box-shadow: none;
+    outline: none;
+    opacity: 1;
+}
+.fg-carousel-bullet.fg-bullet-active {
+    opacity: 1;
+}
+button.fg-carousel-prev,
+button.fg-carousel-next {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: var(--fg-carousel-navigation-size);
+    background: none;
+    border: none;
+    box-shadow: none;
+    outline: none;
+    z-index: 11;
+    cursor: pointer;
+    opacity: var(--fg-carousel-navigation-opacity);
+    transition: opacity var(--fg-carousel-ui-speed) ease-in;
+    padding: 0;
+    margin: 0;
+}
+button.fg-carousel-prev:hover,
+button.fg-carousel-next:hover {
+    background: none;
+    border: none;
+    box-shadow: none;
+    outline: none;
+    opacity: 1;
+}
+.fg-carousel-prev .fg-icon,
+.fg-carousel-next .fg-icon {
+    width: 1em;
+    height: 1em;
+}
+.rtl .fg-carousel-prev .fg-icon,
+.rtl .fg-carousel-next .fg-icon {
+    transform: rotate(180deg);
+}
+.fg-carousel-prev {
+    grid-area: prev;
+}
+.fg-carousel-next {
+    grid-area: next;
+}
+
+.foogallery.fg-carousel .fg-item {
+    display: block;
+    opacity: 0;
+    visibility: hidden;
+    grid-area: center;
+    transform-origin: center center;
+    transform: translate3d(0, 200%, var(--fg-carousel-inverse-perspective));
+    transition-timing-function: ease-in-out;
+    transition-duration: 0s;
+    transition-property: background-color,transform,transform-origin,opacity,visibility;
+    backface-visibility: hidden;
+}
+.foogallery.fg-carousel .fg-item.fg-loaded {
+    transform: translate3d(0, 0, var(--fg-carousel-inverse-perspective));
+    transition-timing-function: ease-in-out;
+    transition-duration: calc( var(--fg-carousel-transition-speed) / 2 );
+    transition-property: background-color,transform,transform-origin,opacity,visibility;
+}
+.foogallery.fg-carousel .fg-item.fg-item-active,
+.foogallery.fg-carousel .fg-item.fg-item-prev,
+.foogallery.fg-carousel .fg-item.fg-item-next {
+    opacity: 1;
+    visibility: visible;
+    /*-webkit-box-reflect: below 5px -webkit-linear-gradient(bottom,rgba(255,0,0,.1) 0%,transparent 32px,transparent 100%);*/
+}
+.foogallery.fg-carousel .fg-item.fg-item-active {
+    transform: translate3d(0, 0, 0);
+}
+
+.foogallery.fg-carousel.fg-dark .fg-carousel-progress,
+.foogallery.fg-carousel.fg-light.fg-inverted .fg-carousel-progress {
+    background-color: #FFF;
+    box-shadow: inset 0 0 0 1px #9d9d9d;
+}
+.foogallery.fg-carousel.fg-dark button.fg-carousel-bullet,
+.foogallery.fg-carousel.fg-light.fg-inverted button.fg-carousel-bullet {
+    background-color: #FFF;
+    border-color: #ccc;
+}
+.foogallery.fg-carousel.fg-dark button.fg-carousel-prev,
+.foogallery.fg-carousel.fg-dark button.fg-carousel-next,
+.foogallery.fg-carousel.fg-light.fg-inverted button.fg-carousel-prev,
+.foogallery.fg-carousel.fg-light.fg-inverted button.fg-carousel-next {
+    color: #FFF;
+    background-color: transparent;
+}
+
+.foogallery.fg-carousel.fg-light .fg-carousel-progress,
+.foogallery.fg-carousel.fg-dark.fg-inverted .fg-carousel-progress {
+    background-color: #444;
+    box-shadow: inset 0 0 0 1px #333;
+}
+.foogallery.fg-carousel.fg-light button.fg-carousel-bullet,
+.foogallery.fg-carousel.fg-dark.fg-inverted button.fg-carousel-bullet {
+    background-color: #444;
+    border-color: #333;
+}
+.foogallery.fg-carousel.fg-light button.fg-carousel-prev,
+.foogallery.fg-carousel.fg-light button.fg-carousel-next,
+.foogallery.fg-carousel.fg-dark.fg-inverted button.fg-carousel-prev,
+.foogallery.fg-carousel.fg-dark.fg-inverted button.fg-carousel-next {
+    color: #444;
+    background-color: transparent;
+}
+
+.fg-shadow-outline .fg-carousel-inner {
+    padding: 1px;
+}
+.fg-shadow-small .fg-carousel-inner {
+    padding: 4px;
+}
+.fg-shadow-medium .fg-carousel-inner {
+    padding: 10px;
+}
+.fg-shadow-large .fg-carousel-inner {
+    padding: 16px;
+}
+
+.foogallery.fg-carousel-hide-nav-arrows {
+    --fg-carousel-navigation-size: 0px;
+}
+.foogallery.fg-carousel-hide-nav-arrows .fg-carousel-prev,
+.foogallery.fg-carousel-hide-nav-arrows .fg-carousel-next,
+.foogallery.fg-carousel-hide-pagination .fg-carousel-bottom,
+.foogallery.fg-carousel-hide-progress-bar .fg-carousel-progress {
+    display: none;
 }

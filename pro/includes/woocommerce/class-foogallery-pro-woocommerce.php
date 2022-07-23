@@ -1081,7 +1081,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 				) );
 			}
 
-			$error_message_text = foogallery_get_language_array_value( 'ecommerce_lightbox_error_text', __( 'Something went wrong adding to cart.', 'foogallery' ) );
+			$error_message_text = foogallery_get_language_array_value( 'ecommerce_lightbox_error_text', __( 'Something went wrong adding to cart!', 'foogallery' ) );
 			if ( $error_message_text !== false ) {
 				$il8n = array_merge_recursive( $il8n, array(
 					'template' => array(

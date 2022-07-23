@@ -2,7 +2,7 @@
 /*
 Plugin Name: FooGallery
 Description: FooGallery is the most intuitive and extensible gallery management tool ever created for WordPress
-Version:     2.1.30
+Version:     2.2.12
 Author:      FooPlugins
 Plugin URI:  https://fooplugins.com/foogallery-wordpress-gallery-plugin/
 Author URI:  https://fooplugins.com
@@ -28,7 +28,7 @@ if ( function_exists( 'foogallery_fs' ) ) {
 		define( 'FOOGALLERY_PATH', plugin_dir_path( __FILE__ ) );
 		define( 'FOOGALLERY_URL', plugin_dir_url( __FILE__ ) );
 		define( 'FOOGALLERY_FILE', __FILE__ );
-		define( 'FOOGALLERY_VERSION', '2.1.30' );
+		define( 'FOOGALLERY_VERSION', '2.2.12' );
 		define( 'FOOGALLERY_SETTINGS_VERSION', '2' );
 
 		require_once FOOGALLERY_PATH . 'includes/constants.php';
@@ -126,6 +126,7 @@ if ( function_exists( 'foogallery_fs' ) ) {
 					foogallery_fs()->add_filter( 'is_submenu_visible', array( $this, 'is_submenu_visible' ), 10, 2 );
 					foogallery_fs()->add_filter( 'plugin_icon', array( $this, 'freemius_plugin_icon' ), 10, 1 );
 					add_action( 'foogallery_admin_menu_before', array( $this, 'add_freemius_activation_menu' ) );
+                    new FooGallery_Import_Export();
 				} else {
 					new FooGallery_Public();
 				}
