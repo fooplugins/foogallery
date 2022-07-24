@@ -27,7 +27,7 @@ require_once FOOGALLERY_PATH . 'extensions/default-templates/class-default-templ
 require_once FOOGALLERY_PATH . 'extensions/default-templates/class-default-templates.php';
 require_once FOOGALLERY_PATH . 'extensions/nextgen-importer/class-nextgen-gallery-importer-extension.php';
 require_once FOOGALLERY_PATH . 'extensions/demo-content-generator/class-demo-content-generator.php';
-require_once FOOGALLERY_PATH . 'extensions/import-export/class-foogallery-import-export.php';
+require_once FOOGALLERY_PATH . 'extensions/import-export/class-foogallery-import-export-extension.php';
 
 // load Template Loader files.
 require_once FOOGALLERY_PATH . 'includes/public/class-foogallery-template-loader.php';

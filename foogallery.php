@@ -119,6 +119,9 @@ if ( function_exists( 'foogallery_fs' ) ) {
 				// load any extensions.
 				new FooGallery_Extensions_Loader();
 
+                // Load any bundled extension initializers.
+                new FooGallery_Import_Export_Extension();
+
 				if ( is_admin() ) {
 					new FooGallery_Admin();
 					add_action( 'wpmu_new_blog', array( $this, 'set_default_extensions_for_multisite_network_activated' ) );
