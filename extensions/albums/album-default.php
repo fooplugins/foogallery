@@ -13,7 +13,7 @@ if ( !empty( $gallery ) ) {
 	$foogallery = FooGallery::get_by_slug( $gallery );
 
 	//check to see if the gallery belongs to the album
-	if ( !$current_foogallery_album->includes_gallery( $foogallery->ID ) ) {
+	if ( $foogallery !== false && !$current_foogallery_album->includes_gallery( $foogallery->ID ) ) {
 		$foogallery = false;
 	}
 }
