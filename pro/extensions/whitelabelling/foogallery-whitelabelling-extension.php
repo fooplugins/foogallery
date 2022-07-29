@@ -29,6 +29,14 @@ if ( ! class_exists('FooGallery_Pro_Whitelabelling_Extension') ) {
 
 				//create all our settings
 				add_filter( 'foogallery_admin_settings', array($this, 'create_settings'), 9999, 2 );
+
+				// Remove datasource menu from add gallery
+				add_filter( 'foogallery_gallery_datasources', array( $this, 'remove_datasource' ) );
+
+				//add_action( 'admin_menu', array( $this, 'remove_submenu' ), 99999 );
+				add_action( 'admin_init', array( $this, 'remove_submenu' ), 99999 );
+
+
 			}
 		}
 
@@ -84,6 +92,18 @@ if ( ! class_exists('FooGallery_Pro_Whitelabelling_Extension') ) {
 			if ( 'on' == foogallery_get_setting( 'whitelabelling_hide_help_menu' ) ) {
 				remove_submenu_page( foogallery_admin_menu_parent_slug(), 'foogallery-help' );
 			}
+
+			if ( 'on' == foogallery_get_setting( 'whitelabelling_hide_system_info_menu' ) ) {
+				remove_submenu_page( foogallery_admin_menu_parent_slug(), 'foogallery-systeminfo' );
+			}
+
+			if ( 'on' == foogallery_get_setting( 'whitelabelling_hide_account_menu' ) ) {
+				remove_submenu_page( foogallery_admin_menu_parent_slug(), 'foogallery-account' );
+			}
+
+			if ( 'on' == foogallery_get_setting( 'whitelabelling_hide_pricing_menu' ) ) {
+				remove_submenu_page( foogallery_admin_menu_parent_slug(), 'foogallery-pricing' );
+			}
 		}
 
 		function override_menu_labels( $menu_labels ) {
@@ -108,7 +128,7 @@ if ( ! class_exists('FooGallery_Pro_Whitelabelling_Extension') ) {
 
 		function create_settings( $settings ) {
 
-			$whitelabelling_tabs['whitelabelling'] = __( 'White Labelling', 'foogallery' );
+			$whitelabelling_tabs['whitelabelling'] = __( 'White Labeling', 'foogallery' );
 
 			$whitelabelling_settings[] = array(
 		        'id'      => 'whitelabelling_name',
@@ -135,7 +155,7 @@ if ( ! class_exists('FooGallery_Pro_Whitelabelling_Extension') ) {
 			$whitelabelling_settings[] = array(
 				'id'      => 'whitelabelling_move_menu_under_media',
 				'title'   => __('Move Under Media Menu', 'foogallery'),
-				'desc'    => __('Move all FooGallery menu items under the WordPress media menu.', 'foogallery'),
+				'desc'    => sprintf( __( 'Move all %s menu items under the WordPress media menu.', 'foogallery' ), foogallery_plugin_name() ),
 				'section' => 'menu',
 				'type'    => 'checkbox',
 				'tab'     => 'whitelabelling'
@@ -184,6 +204,33 @@ if ( ! class_exists('FooGallery_Pro_Whitelabelling_Extension') ) {
 			);
 
 			$whitelabelling_settings[] = array(
+				'id'      => 'whitelabelling_hide_system_info_menu',
+				'title'   => __('Hide System Info Menu', 'foogallery'),
+				'desc'    => __('Hide the system info menu item.', 'foogallery'),
+				'section' => 'menu',
+				'type'    => 'checkbox',
+				'tab'     => 'whitelabelling'
+			);
+
+			$whitelabelling_settings[] = array(
+				'id'      => 'whitelabelling_hide_account_menu',
+				'title'   => __('Hide Account Menu', 'foogallery'),
+				'desc'    => __('Hide the account menu item.', 'foogallery'),
+				'section' => 'menu',
+				'type'    => 'checkbox',
+				'tab'     => 'whitelabelling'
+			);
+
+			$whitelabelling_settings[] = array(
+				'id'      => 'whitelabelling_hide_pricing_menu',
+				'title'   => __('Hide Pricing Menu', 'foogallery'),
+				'desc'    => __('Hide the pricing menu item.', 'foogallery'),
+				'section' => 'menu',
+				'type'    => 'checkbox',
+				'tab'     => 'whitelabelling'
+			);
+
+			$whitelabelling_settings[] = array(
 				'id'      => 'whitelabelling_label_settings_menu',
 				'title'   => __('Settings Menu Label', 'foogallery'),
 				'desc'    => __('Change the settings menu text.', 'foogallery'),
@@ -210,6 +257,73 @@ if ( ! class_exists('FooGallery_Pro_Whitelabelling_Extension') ) {
 				'tab'     => 'whitelabelling'
 			);
 
+			$whitelabelling_sections['data-sources'] = array(
+				'name' => __( 'Data Sources', 'foogallery' )
+			);
+
+			$whitelabelling_settings[] = array(
+				'id'      => 'whitelabelling_hide_media_tags_menu',
+				'title'   => __('Hide Media Tags Menu', 'foogallery'),
+				'desc'    => __('Hide the media tags menu item.', 'foogallery'),
+				'section' => 'data-sources',
+				'type'    => 'checkbox',
+				'tab'     => 'whitelabelling'
+			);
+
+			$whitelabelling_settings[] = array(
+				'id'      => 'whitelabelling_hide_media_categories_menu',
+				'title'   => __('Hide Media Categories Menu', 'foogallery'),
+				'desc'    => __('Hide the media categories menu item.', 'foogallery'),
+				'section' => 'data-sources',
+				'type'    => 'checkbox',
+				'tab'     => 'whitelabelling'
+			);		
+
+			$whitelabelling_settings[] = array(
+				'id'      => 'whitelabelling_hide_server_folder_menu',
+				'title'   => __('Hide Server Folder Menu', 'foogallery'),
+				'desc'    => __('Hide the server folder menu item.', 'foogallery'),
+				'section' => 'data-sources',
+				'type'    => 'checkbox',
+				'tab'     => 'whitelabelling'
+			);
+
+			$whitelabelling_settings[] = array(
+				'id'      => 'whitelabelling_hide_adobe_lightroom_menu',
+				'title'   => __('Hide Adobe Lightroom Menu', 'foogallery'),
+				'desc'    => __('Hide the adobe lightroom menu item.', 'foogallery'),
+				'section' => 'data-sources',
+				'type'    => 'checkbox',
+				'tab'     => 'whitelabelling'
+			);
+			
+			$whitelabelling_settings[] = array(
+				'id'      => 'whitelabelling_hide_real_media_lib_menu',
+				'title'   => __('Hide Real Media Library Menu', 'foogallery'),
+				'desc'    => __('Hide the real media library menu item.', 'foogallery'),
+				'section' => 'data-sources',
+				'type'    => 'checkbox',
+				'tab'     => 'whitelabelling'
+			);
+
+			$whitelabelling_settings[] = array(
+				'id'      => 'whitelabelling_hide_post_query_menu',
+				'title'   => __('Hide Post Query Menu', 'foogallery'),
+				'desc'    => __('Hide the post query menu item.', 'foogallery'),
+				'section' => 'data-sources',
+				'type'    => 'checkbox',
+				'tab'     => 'whitelabelling'
+			);
+
+			$whitelabelling_settings[] = array(
+				'id'      => 'whitelabelling_hide_woo_products_menu',
+				'title'   => __('Hide Woocommerce Products Menu', 'foogallery'),
+				'desc'    => __('Hide the woocommerce products menu item.', 'foogallery'),
+				'section' => 'data-sources',
+				'type'    => 'checkbox',
+				'tab'     => 'whitelabelling'
+			);	
+
             $settings = array_merge_recursive( $settings, array(
             	'tabs'     => $whitelabelling_tabs,
                 'sections' => $whitelabelling_sections,
@@ -219,5 +333,50 @@ if ( ! class_exists('FooGallery_Pro_Whitelabelling_Extension') ) {
 			return $settings;
 		}
 
+		function remove_submenu() {
+
+			if ( 'on' == foogallery_get_setting( 'whitelabelling_hide_account_menu' ) ) {
+				remove_submenu_page( foogallery_admin_menu_parent_slug(), 'foogallery-account' );
+			}
+
+			if ( 'on' == foogallery_get_setting( 'whitelabelling_hide_pricing_menu' ) ) {
+				remove_submenu_page( foogallery_admin_menu_parent_slug(), 'foogallery-pricing' );
+			}
+		}
+
+		public function remove_datasource( $datasources ) {
+
+			if ( 'on' == foogallery_get_setting( 'whitelabelling_hide_media_tags_menu' ) ) {
+				unset($datasources['media_tags']);
+			}
+
+			if ( 'on' == foogallery_get_setting( 'whitelabelling_hide_media_categories_menu' ) ) {
+				unset($datasources['media_categories']);
+			}
+
+			if ( 'on' == foogallery_get_setting( 'whitelabelling_hide_server_folder_menu' ) ) {
+				unset($datasources['folders']);
+			}
+
+			if ( 'on' == foogallery_get_setting( 'whitelabelling_hide_adobe_lightroom_menu' ) ) {
+				unset($datasources['lightroom']);
+			}
+
+			if ( 'on' == foogallery_get_setting( 'whitelabelling_hide_real_media_lib_menu' ) ) {
+				unset($datasources['rml']);
+			}
+
+			if ( 'on' == foogallery_get_setting( 'whitelabelling_hide_post_query_menu' ) ) {
+				unset($datasources['post_query']);
+			}
+
+			if ( 'on' == foogallery_get_setting( 'whitelabelling_hide_woo_products_menu' ) ) {
+				unset($datasources['woocommerce']);
+			}
+
+			return $datasources;
+		}
+
 	}
+
 }
