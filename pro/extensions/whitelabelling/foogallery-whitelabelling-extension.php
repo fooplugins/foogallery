@@ -263,8 +263,8 @@ if ( ! class_exists('FooGallery_Pro_Whitelabelling_Extension') ) {
 
 			$whitelabelling_settings[] = array(
 				'id'      => 'whitelabelling_hide_media_tags_menu',
-				'title'   => __('Hide Media Tags Menu', 'foogallery'),
-				'desc'    => __('Hide the media tags menu item.', 'foogallery'),
+				'title'   => __('Hide Media Tags', 'foogallery'),
+				'desc'    => __('Hide the media tags datasource.', 'foogallery'),
 				'section' => 'data-sources',
 				'type'    => 'checkbox',
 				'tab'     => 'whitelabelling'
@@ -272,8 +272,8 @@ if ( ! class_exists('FooGallery_Pro_Whitelabelling_Extension') ) {
 
 			$whitelabelling_settings[] = array(
 				'id'      => 'whitelabelling_hide_media_categories_menu',
-				'title'   => __('Hide Media Categories Menu', 'foogallery'),
-				'desc'    => __('Hide the media categories menu item.', 'foogallery'),
+				'title'   => __('Hide Media Categories', 'foogallery'),
+				'desc'    => __('Hide the media categories datasource.', 'foogallery'),
 				'section' => 'data-sources',
 				'type'    => 'checkbox',
 				'tab'     => 'whitelabelling'
@@ -281,8 +281,8 @@ if ( ! class_exists('FooGallery_Pro_Whitelabelling_Extension') ) {
 
 			$whitelabelling_settings[] = array(
 				'id'      => 'whitelabelling_hide_server_folder_menu',
-				'title'   => __('Hide Server Folder Menu', 'foogallery'),
-				'desc'    => __('Hide the server folder menu item.', 'foogallery'),
+				'title'   => __('Hide Server Folder', 'foogallery'),
+				'desc'    => __('Hide the server folder datasource.', 'foogallery'),
 				'section' => 'data-sources',
 				'type'    => 'checkbox',
 				'tab'     => 'whitelabelling'
@@ -290,8 +290,8 @@ if ( ! class_exists('FooGallery_Pro_Whitelabelling_Extension') ) {
 
 			$whitelabelling_settings[] = array(
 				'id'      => 'whitelabelling_hide_adobe_lightroom_menu',
-				'title'   => __('Hide Adobe Lightroom Menu', 'foogallery'),
-				'desc'    => __('Hide the adobe lightroom menu item.', 'foogallery'),
+				'title'   => __('Hide Adobe Lightroom', 'foogallery'),
+				'desc'    => __('Hide the adobe lightroom datasource.', 'foogallery'),
 				'section' => 'data-sources',
 				'type'    => 'checkbox',
 				'tab'     => 'whitelabelling'
@@ -299,8 +299,8 @@ if ( ! class_exists('FooGallery_Pro_Whitelabelling_Extension') ) {
 			
 			$whitelabelling_settings[] = array(
 				'id'      => 'whitelabelling_hide_real_media_lib_menu',
-				'title'   => __('Hide Real Media Library Menu', 'foogallery'),
-				'desc'    => __('Hide the real media library menu item.', 'foogallery'),
+				'title'   => __('Hide Real Media Library', 'foogallery'),
+				'desc'    => __('Hide the real media library datasource.', 'foogallery'),
 				'section' => 'data-sources',
 				'type'    => 'checkbox',
 				'tab'     => 'whitelabelling'
@@ -308,8 +308,8 @@ if ( ! class_exists('FooGallery_Pro_Whitelabelling_Extension') ) {
 
 			$whitelabelling_settings[] = array(
 				'id'      => 'whitelabelling_hide_post_query_menu',
-				'title'   => __('Hide Post Query Menu', 'foogallery'),
-				'desc'    => __('Hide the post query menu item.', 'foogallery'),
+				'title'   => __('Hide Post Query', 'foogallery'),
+				'desc'    => __('Hide the post query datasource.', 'foogallery'),
 				'section' => 'data-sources',
 				'type'    => 'checkbox',
 				'tab'     => 'whitelabelling'
@@ -317,8 +317,8 @@ if ( ! class_exists('FooGallery_Pro_Whitelabelling_Extension') ) {
 
 			$whitelabelling_settings[] = array(
 				'id'      => 'whitelabelling_hide_woo_products_menu',
-				'title'   => __('Hide Woocommerce Products Menu', 'foogallery'),
-				'desc'    => __('Hide the woocommerce products menu item.', 'foogallery'),
+				'title'   => __('Hide Woocommerce Products', 'foogallery'),
+				'desc'    => __('Hide the woocommerce products datasource.', 'foogallery'),
 				'section' => 'data-sources',
 				'type'    => 'checkbox',
 				'tab'     => 'whitelabelling'
