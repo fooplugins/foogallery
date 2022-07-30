@@ -36,6 +36,9 @@ if ( ! class_exists('FooGallery_Pro_Whitelabelling_Extension') ) {
 				//add_action( 'admin_menu', array( $this, 'remove_submenu' ), 99999 );
 				add_action( 'admin_init', array( $this, 'remove_submenu' ), 99999 );
 
+				// Redirect to media parent menu if setting enabled
+				add_action( 'admin_init', array( $this, 'redirect_plugin_parent' ), 1 );
+
 
 			}
 		}
@@ -375,6 +378,19 @@ if ( ! class_exists('FooGallery_Pro_Whitelabelling_Extension') ) {
 			}
 
 			return $datasources;
+		}
+
+		function redirect_plugin_parent() {
+			$request_uri = 	$_SERVER['REQUEST_URI'];
+			$parse_url = wp_parse_url($request_uri);
+
+			if ( is_array( $parse_url ) && !empty ( $parse_url ) && !empty ( $parse_url['path'] ) ) {
+				if ( isset( $_GET['post_type'] ) && 'foogallery' == $_GET['post_type'] && 'on' == foogallery_get_setting( 'whitelabelling_move_menu_under_media' ) ) {
+					wp_redirect( admin_url( 'upload.php?page=foogallery-settings#whitelabelling' ) );
+					exit;
+				} 
+			}
+	
 		}
 
 	}
