@@ -167,7 +167,7 @@ if ( ! class_exists('FooGallery_Pro_Whitelabelling_Extension') ) {
 			$whitelabelling_settings[] = array(
 				'id'      => 'whitelabelling_menu_capability',
 				'title'   => __('Menu Visibility', 'foogallery'),
-				'desc'    => __('Who can see the Help, Extensions and Settings menu items.', 'foogallery'),
+				'desc'    => __('Who can see the Help, Features and Settings menu items.', 'foogallery'),
 				'section' => 'menu',
 				'type'    => 'select',
 				'choices' => array(
@@ -190,7 +190,7 @@ if ( ! class_exists('FooGallery_Pro_Whitelabelling_Extension') ) {
 
 			$whitelabelling_settings[] = array(
 				'id'      => 'whitelabelling_hide_extensions_menu',
-				'title'   => __('Hide Extensions Menu', 'foogallery'),
+				'title'   => __('Hide Features Menu', 'foogallery'),
 				'desc'    => __('Hide the extension menu item.', 'foogallery'),
 				'section' => 'menu',
 				'type'    => 'checkbox',
