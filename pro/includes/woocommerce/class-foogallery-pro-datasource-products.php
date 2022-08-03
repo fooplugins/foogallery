@@ -19,6 +19,7 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Products' ) ) {
 			add_action( 'foogallery_gallery_metabox_items_list', array( $this, 'render_datasource_item' ), 10, 1 );
 
 			add_filter( 'foogallery_filtering_get_terms_for_attachment', array( $this, 'get_terms_from_product' ), 10, 3 );
+
 			// Price range filter add for wc_get_products query
 			add_filter( 'woocommerce_product_data_store_cpt_get_products_query', array( $this, 'handle_price_range_query_var' ), 10, 2 );
 		}
@@ -211,6 +212,7 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Products' ) ) {
 			if ($max_price_range > 0) {
 				$args['price_range'] = "$min_price_range | $max_price_range "; // The first price is separated from the 2nd one with a pipe
 			}
+
 			if ( ! empty( $categories ) ) {
 				$args['tax_query'] = array(
 					array(
@@ -401,6 +403,7 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Products' ) ) {
 	                    <td>
 							<input
                                     type="number"
+									placeholder="Minimum Price"
 									min="0"
                                     class="foogallery_woocommerce_input"
                                     name="min_price_range"
@@ -409,6 +412,7 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Products' ) ) {
                             />
 							<input
                                     type="number"
+									placeholder="Maximum Price"
 									min="0"
                                     class="foogallery_woocommerce_input"
                                     name="max_price_range"
@@ -604,6 +608,7 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Products' ) ) {
             </div>
 			<?php
 		}
+
 		function handle_price_range_query_var( $query, $query_vars ) {
 			if ( ! empty( $query_vars['price_range'] ) ) {
 				$price_range = explode( ' | ', esc_attr($query_vars['price_range']) );
