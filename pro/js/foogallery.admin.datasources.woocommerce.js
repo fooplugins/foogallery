@@ -62,12 +62,16 @@ FooGallery.utils.ready(function ($) {
             "caption_title_source": $(".foogallery_woocommerce_caption_title_source:checked").val(),
             "caption_desc_source": $(".foogallery_woocommerce_caption_desc_source:checked").val(),
             "categories" : document.foogallery_datasource_woocommerce_temp.categories,
-            "categories_html" : document.foogallery_datasource_woocommerce_temp.categories_html
+            "categories_html" : document.foogallery_datasource_woocommerce_temp.categories_html,
+            "min_price_range": $('#foogallery_woocommerce_min_price_range').val(),
+            "max_price_range": $('#foogallery_woocommerce_max_price_range').val(),
         };
 
         var sort = ( value.sort !== '' ) ? value.sort : 'newest first',
             stock = ( value.stock !== '' ) ? value.stock : 'any',
-            no_of_post = ( value.no_of_post !== '' ) ? value.no_of_post : 'unlimited';
+            no_of_post = ( value.no_of_post !== '' ) ? value.no_of_post : 'unlimited',
+            min_price_range = ( value.min_price_range !== '' ) ? value.min_price_range : 0
+            max_price_range = ( value.max_price_range !== '' ) ? value.max_price_range : 0;
 
         //save the datasource_value
         $('#_foogallery_datasource_value').val(JSON.stringify(value));
@@ -75,6 +79,7 @@ FooGallery.utils.ready(function ($) {
         $('#foogallery-datasource-woocommerce-sort').html( sort );
         $('#foogallery-datasource-woocommerce-stock').html( stock );
         $('#foogallery-datasource-woocommerce-no_of_post').html( no_of_post );
+        $('#foogallery-datasource-woocommerce-price-range').html( min_price_range + ' - ' + max_price_range );
         $('#foogallery-datasource-woocommerce-exclude').html( value.exclude );
         $('#foogallery-datasource-woocommerce-caption_title_source').html( value.caption_title_source );
         $('#foogallery-datasource-woocommerce-caption_desc_source').html( value.caption_desc_source );
