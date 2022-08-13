@@ -44,8 +44,8 @@ if ( ! class_exists( 'FooGallery_Admin_Menu' ) ) {
 						'menu_title' => __( 'Settings', 'foogallery' ),
 					),
 					array(
-						'page_title' => sprintf( __( '%s Extensions', 'foogallery' ), foogallery_plugin_name() ),
-						'menu_title' => __( 'Extensions', 'foogallery' ),
+						'page_title' => sprintf( __( '%s Features', 'foogallery' ), foogallery_plugin_name() ),
+						'menu_title' => __( 'Features', 'foogallery' ),
 					),
 					array(
 						'page_title' => sprintf( __( '%s Help', 'foogallery' ), foogallery_plugin_name() ),
@@ -93,9 +93,7 @@ if ( ! class_exists( 'FooGallery_Admin_Menu' ) ) {
 				<div id="message" class="updated">
 					<p><strong><?php printf( __( '%s settings reset to defaults.', 'foogallery' ), foogallery_plugin_name() ); ?></strong></p>
 				</div>
-			<?php } else if ( isset($_GET['settings-updated']) ) {
-				do_action( 'foogallery_settings_updated' );
-				?>
+			<?php } else if ( isset($_GET['settings-updated']) ) { ?>
 				<div id="message" class="updated">
 					<p><strong><?php printf( __( '%s settings updated.', 'foogallery' ), foogallery_plugin_name() ); ?></strong></p>
 				</div>

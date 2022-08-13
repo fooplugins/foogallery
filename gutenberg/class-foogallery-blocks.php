@@ -46,7 +46,7 @@ if ( ! class_exists( 'FooGallery_Blocks' ) ) {
 				'wp-element',
 				'foogallery-core',
 				'wp-components',
-				'wp-editor',
+				'wp-block-editor',
 				'underscore'
 			);
 

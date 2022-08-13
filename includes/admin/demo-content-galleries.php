@@ -415,4 +415,82 @@ return array(
 			),
 		),
 	), //Demo : Simple Portfolio : Variation
+    array(
+        'key'         => 'carousel',
+        'post_title'  => 'Demo : Carousel',
+        'post_status' => 'publish',
+        'post_type'   => FOOGALLERY_CPT_GALLERY,
+        'items'       => array( 'pixabay7', 'pixabay1', 'pixabay2', 'pixabay3', 'pixabay4', 'pixabay5', 'pixabay7', 'pixabay8', 'pixabay9', 'pixabay10', 'pixabay11', 'pixabay12' ),
+        'meta_input'  => array(
+            FOOGALLERY_META_TEMPLATE => 'carousel',
+            FOOGALLERY_META_SETTINGS => array(
+                'foogallery_items_view'         => 'preview',
+                'carousel_autoplay_interaction'=> 'pause',
+                'carousel_autoplay_time' => '0',
+                'carousel_centerOnClick'=> 'true',
+                'carousel_maxItems'=> '5',
+                'carousel_scale'=> '0.12',
+                'carousel_gutter'=>
+                    array(
+                        'min'=> '-40',
+                        'max'=> '-20',
+                        'units'=> '%',
+                    ),
+                'carousel_inverted'=> '',
+
+                //General
+                'carousel_thumbnail_dimensions'  => array(
+                    'width'  => '200',
+                    'height' => '200',
+                ),
+                'carousel_thumbnail_link'                => 'image',
+                'carousel_lightbox'                      => foogallery_demo_content_determine_best_lightbox(),
+
+
+                //Appearance
+                'carousel_theme'                 => 'fg-light',              // options : 'fg-light', 'fg-dark', 'fg-custom'
+                'carousel_border_size'           => 'fg-border-thin',       // options : '', 'fg-border-thin', 'fg-border-medium', 'fg-border-thick'
+                'carousel_rounded_corners'       => '',                     // options : '', 'fg-round-small', 'fg-round-medium', 'fg-round-large', 'fg-round-full'
+                'carousel_drop_shadow'           => 'fg-shadow-outline',      // options : '', 'fg-shadow-outline', 'fg-shadow-small', 'fg-shadow-medium', 'fg-shadow-large'
+                'carousel_inner_shadow'          => '',                     // options : '', 'fg-shadow-inset-small', 'fg-shadow-inset-medium', 'fg-shadow-inset-large'
+                'carousel_loading_icon'          => 'fg-loading-bars',   // options : '', 'fg-loading-default', 'fg-loading-bars', 'fg-loading-dots', 'fg-loading-partial', 'fg-loading-pulse', 'fg-loading-trail',
+
+                'carousel_loaded_effect'         => 'fg-loaded-flip',    // options : 'fg-loaded-fade-in', 'fg-loaded-scale-up'
+                'carousel_instagram'             => '',
+
+                //Captions
+                'carousel_captions_type'         => '',
+                'carousel_caption_title_source'  => '',
+                'carousel_caption_desc_source'   => 'none',
+                'carousel_captions_limit_length' => '',
+
+                //Hover Effects
+                'carousel_hover_effect_caption_visibility' => 'fg-caption-hover', // options : '', 'fg-caption-hover', 'fg-caption-always', 'fg-captions-bottom'
+                'carousel_hover_effect_color'              => '',                   // options : '', 'fg-hover-colorize', 'fg-hover-grayscale
+                'carousel_hover_effect_icon'               => 'fg-hover-zoom3',      // options : 'fg-hover-zoom', 'fg-hover-zoom2', 'fg-hover-zoom3', 'fg-hover-plus', 'fg-hover-circle-plus', 'fg-hover-eye', 'fg-hover-external'
+                'carousel_hover_effect_preset'             => 'fg-custom',
+                'carousel_hover_effect_scale'              => 'fg-hover-zoomed',    // options : '', 'fg-hover-scale', 'fg-hover-zoomed'
+                'carousel_hover_effect_transition'         => 'fg-hover-fade',      // options : 'fg-hover-instant', 'fg-hover-fade', 'fg-hover-slide-up', 'fg-hover-slide-down', 'fg-hover-slide-left', 'fg-hover-slide-right', 'fg-hover-push'
+                'carousel_hover_effect_type'               => 'normal',             // options : 'none', 'normal', 'preset'
+                'carousel_caption_invert_color'            => '',                   // options : '', 'fg-light-overlays', 'fg-transparent-overlays'
+
+                //Filtering
+                'carousel_filtering_type' => '',
+
+                //Paging
+                'carousel_paging_type' => '',
+
+                //Advanced
+                'carousel_state' => 'no',
+                'carousel_custom_settings' => '',
+                'carousel_lazyload' => '',
+
+                //Video
+                'carousel_video_autoplay'    => 'yes',
+                'carousel_video_hover_icon'  => 'fg-video-default',
+                'carousel_video_size'        => '640x360',
+                'carousel_video_sticky_icon' => '',
+            ),
+        ),
+    ), //Demo : Carousel
 );

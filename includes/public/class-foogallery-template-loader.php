@@ -48,6 +48,9 @@ class FooGallery_Template_Loader {
 			$current_foogallery_template = foogallery_get_default( 'gallery_template' );
 		}
 
+        // Allow for the template of the gallery to be overridden!
+        $current_foogallery_template = apply_filters( 'foogallery_render_template_template_override', $current_foogallery_template, $current_foogallery, $current_foogallery_arguments );
+
 		//override the template if needed
 		if ( $current_foogallery->gallery_template !== $current_foogallery_template ) {
 			$old_gallery_template = $current_foogallery->gallery_template;

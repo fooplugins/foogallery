@@ -16,7 +16,31 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Folders' ) ) {
 			add_action( 'foogallery_gallery_metabox_items_list', array( $this, 'render_datasource_item' ), 10, 1 );
 			add_action( 'foogallery_before_save_gallery_datasource', array( $this, 'before_save_gallery_datasource_clear_datasource_cached_images' ) );
 			add_action( 'foogallery_admin_enqueue_scripts', array( $this, 'enqueue_scripts_and_styles' ) );
+            add_filter( 'foogallery_admin_settings_override', array( $this, 'add_settings' ) );
 		}
+
+        /**
+         * Add a setting so that the root can be overridden.
+         *
+         * @param $settings
+         * @return array
+         */
+        function add_settings( $settings ) {
+
+            $settings['settings'][] = array(
+                'id'    => 'root_folder',
+                'type'  => 'radio',
+                'title' => __( 'Server Folder Root', 'foogallery' ),
+                'desc'  => __( 'Some server configurations require a different root folder to be used when scanning the server.', 'foogallery' ),
+                'choices' => array(
+                    '' => __( 'ABSPATH (Default)', 'foogallery' ),
+                    'DOCUMENT_ROOT' => __( '$_SERVER["DOCUMENT_ROOT"]', 'foogallery' ),
+                ),
+                'tab'   => 'advanced'
+            );
+
+            return $settings;
+        }
 
 		/**
 		 * Add the Folders Datasource
@@ -428,8 +452,18 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Folders' ) ) {
 			<?php
 		}
 
+        /**
+         * Returns the root folder used for scanning the server.
+         * @return string
+         */
 		function get_root_folder() {
-			return trailingslashit( apply_filters( 'foogallery_filesystem_root', ABSPATH ) );
+            $root_folder_setting = foogallery_get_setting( 'root_folder' );
+            if ( 'DOCUMENT_ROOT' === $root_folder_setting && isset( $_SERVER["DOCUMENT_ROOT"] ) ) {
+                $root = $_SERVER["DOCUMENT_ROOT"];
+            } else {
+                $root = ABSPATH;
+            }
+			return trailingslashit( apply_filters( 'foogallery_filesystem_root', $root ) );
 		}
 
 		function render_folder_structure() {

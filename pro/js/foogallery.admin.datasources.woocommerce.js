@@ -52,53 +52,52 @@ FooGallery.utils.ready(function ($) {
 
     $(document).on('foogallery-datasource-changed-woocommerce', function () {
 
-        var $container = $('.foogallery-datasource-woocommerce');
-        var min_price = $.isNumeric( $( '#foogallery_woocommerce_min_price_range' ).val() );
-        var max_price = $.isNumeric( $( '#foogallery_woocommerce_max_price_range' ).val() );
+        var $container = $('.foogallery-datasource-woocommerce'),
+            min_price = $('#foogallery_woocommerce_min_price_range').val(),
+            max_price = $( '#foogallery_woocommerce_max_price_range' ).val(),
+            price_range = 'any';
 
-        if ( !min_price ) {
-            alert( 'Minimum price must be a number only' ) ;
-        } else if ( !max_price ) {
-            alert( 'Maximum price must be a number only' ) ;
+        if ( $.isNumeric( min_price ) && $.isNumeric( max_price ) ) {
+            price_range = min_price + ' - ' + max_price;
         } else {
-            //build up the datasource_value
-            var value = {
-                "no_of_post": $('#foogallery_woocommerce_no_of_post').val(),
-                "sort": $(".foogallery_woocommerce_sort:checked").val(),
-                "stock": $(".foogallery_woocommerce_stock:checked").val(),
-                "exclude": $('#foogallery_woocommerce_exclude').val(),
-                "caption_title_source": $(".foogallery_woocommerce_caption_title_source:checked").val(),
-                "caption_desc_source": $(".foogallery_woocommerce_caption_desc_source:checked").val(),
-                "categories" : document.foogallery_datasource_woocommerce_temp.categories,
-                "categories_html" : document.foogallery_datasource_woocommerce_temp.categories_html,
-                "min_price_range": $('#foogallery_woocommerce_min_price_range').val(),
-                "max_price_range": $('#foogallery_woocommerce_max_price_range').val(),
-            };
-
-            var sort = ( value.sort !== '' ) ? value.sort : 'newest first',
-                stock = ( value.stock !== '' ) ? value.stock : 'any',
-                no_of_post = ( value.no_of_post !== '' ) ? value.no_of_post : 'unlimited',
-                min_price_range = ( value.min_price_range !== '' ) ? value.min_price_range : 0
-                max_price_range = ( value.max_price_range !== '' ) ? value.max_price_range : 0;
-
-            //save the datasource_value
-            $('#_foogallery_datasource_value').val(JSON.stringify(value));
-            $('#foogallery-datasource-woocommerce-categories').html( value.categories_html );
-            $('#foogallery-datasource-woocommerce-sort').html( sort );
-            $('#foogallery-datasource-woocommerce-stock').html( stock );
-            $('#foogallery-datasource-woocommerce-no_of_post').html( no_of_post );
-            $('#foogallery-datasource-woocommerce-price-range').html( min_price_range + ' - ' + max_price_range );
-            $('#foogallery-datasource-woocommerce-exclude').html( value.exclude );
-            $('#foogallery-datasource-woocommerce-caption_title_source').html( value.caption_title_source );
-            $('#foogallery-datasource-woocommerce-caption_desc_source').html( value.caption_desc_source );
-
-            $container.show();
-
-            FOOGALLERY.showHiddenAreas(false);
-
-            $('.foogallery-attachments-list-container').addClass('hidden');
-            $('.foogallery_preview_container').addClass('foogallery-preview-force-refresh');
+            min_price = max_price = '';
         }
+
+        //build up the datasource_value
+        var value = {
+            "no_of_post": $('#foogallery_woocommerce_no_of_post').val(),
+            "sort": $(".foogallery_woocommerce_sort:checked").val(),
+            "stock": $(".foogallery_woocommerce_stock:checked").val(),
+            "exclude": $('#foogallery_woocommerce_exclude').val(),
+            "caption_title_source": $(".foogallery_woocommerce_caption_title_source:checked").val(),
+            "caption_desc_source": $(".foogallery_woocommerce_caption_desc_source:checked").val(),
+            "categories" : document.foogallery_datasource_woocommerce_temp.categories,
+            "categories_html" : document.foogallery_datasource_woocommerce_temp.categories_html,
+            "min_price_range": min_price,
+            "max_price_range": max_price,
+        };
+
+        var sort = ( value.sort !== '' ) ? value.sort : 'newest first',
+            stock = ( value.stock !== '' ) ? value.stock : 'any',
+            no_of_post = ( value.no_of_post !== '' ) ? value.no_of_post : 'unlimited';
+
+        //save the datasource_value
+        $('#_foogallery_datasource_value').val(JSON.stringify(value));
+        $('#foogallery-datasource-woocommerce-categories').html( value.categories_html );
+        $('#foogallery-datasource-woocommerce-sort').html( sort );
+        $('#foogallery-datasource-woocommerce-stock').html( stock );
+        $('#foogallery-datasource-woocommerce-no_of_post').html( no_of_post );
+        $('#foogallery-datasource-woocommerce-price-range').html( price_range );
+        $('#foogallery-datasource-woocommerce-exclude').html( value.exclude );
+        $('#foogallery-datasource-woocommerce-caption_title_source').html( value.caption_title_source );
+        $('#foogallery-datasource-woocommerce-caption_desc_source').html( value.caption_desc_source );
+
+        $container.show();
+
+        FOOGALLERY.showHiddenAreas(false);
+
+        $('.foogallery-attachments-list-container').addClass('hidden');
+        $('.foogallery_preview_container').addClass('foogallery-preview-force-refresh');
     });
 });
 

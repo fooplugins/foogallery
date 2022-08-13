@@ -2,9 +2,9 @@
 Contributors: bradvin, steveush, fooplugins
 Donate link: https://fooplugins.com
 Tags: gallery, image gallery, photo gallery, responsive gallery, wordpress gallery plugin, best gallery plugin, albums, media gallery, video gallery, lightbox
-Requires at least: 4.6
-Tested up to: 5.9
-Stable tag: 2.1.34
+Requires at least: 5.2
+Tested up to: 6.0
+Stable tag: 2.2.7
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -42,13 +42,14 @@ This has led to dramatically better scores for the 3 key lighthouse factors incl
 
 The following free features make FooGallery the **best gallery plugin** on the market!
 
-*	6 Beautiful Image Gallery templates
+*	7 Beautiful Image Gallery templates
 	*	Responsive Image Gallery - [demo](https://fooplugins.com/foogallery-wordpress-gallery-plugin/responsive-image-gallery/)
 	*	Image Viewer Gallery - [demo](https://fooplugins.com/foogallery-wordpress-gallery-plugin/image-viewer-gallery/)
 	*	Masonry Gallery - [demo](https://fooplugins.com/foogallery-wordpress-gallery-plugin/masonry-gallery/)
 	*	Simple Portfolio - [demo](https://fooplugins.com/foogallery-wordpress-gallery-plugin/wordpress-portfolio-gallery/)
 	*	Justified Gallery - [demo](https://fooplugins.com/foogallery-wordpress-gallery-plugin/justified-gallery/)
 	*	Single Thumbnail Gallery - [demo](https://fooplugins.com/foogallery-wordpress-gallery-plugin/single-thumbnail-gallery/)
+	*	Carousel Gallery - [demo](https://fooplugins.com/foogallery-wordpress-gallery-plugin/wordpress-carousel/)
 *   Easy to customize!
     *   Adjust thumbnail size, spacing & alignment
     *   Adjust border size, rounded corners, drop shadows, inner shadows
@@ -137,6 +138,8 @@ There are 3 PRO plans available, that will work with any budget:
 *	Sell your images online - [demo](https://footest.tastewp.com/)
 	*	Link all your gallery items to a single master product
 	*	Supports variations
+*	Master Galleries
+    *   Set a gallery as a master and then all galleries who use that master will inherit all settings from the master - [docs](https://fooplugins.com/documentation/foogallery/pro-commerce/use-master-gallery/)
 
 [See More Demos](https://fooplugins.com/foogallery-wordpress-gallery-plugin/demos/)
 
@@ -296,8 +299,58 @@ Please update in order to for FooGallery to work in WP 5.5+!
 
 == Changelog ==
 
+= 2.2.14 =
+* Date Updated : 2022-08-13
+* New : Added Import/Export feature, so you can export galleries on one install, and import into another.
+* New : Added settings to hide nav/paging/progress for Carousel.
+* New : Added filter 'foogallery_render_template_template_override' which allows developers to override the gallery template.
+* New : Renamed Extensions page to Features. This will allow core plugin features to move to Features which can be toggled on/off.
+* Fix : Fixed layout issues with Carousel gallery.
+* Fix : Fixed custom JS & CSS being saved as double encoded (for real this time).
+* Fix : Better integration with FooBox and FooGallery.
+* Fix : Removed PHP warnings in albums extension.
+* Update : FooGallery client side 2.0.35
+[//]: # fs_premium_only_begin
+* Fix : Undid previous server folder root change which broke server folder galleries on some installs.
+* New : Added setting (Server Folder Root) which allows you to choose your server folder root on some server setups.
+* New : Added new min/max price filter for the product datasource
+[//]: # fs_premium_only_end
+
+= 2.2.8 =
+* Date Updated : 2022-05-01
+* Fix : Fixed custom JS & CSS being saved as double encoded
+* Fix : Removed filter support for older AIOSEO versions.
+[//]: # fs_premium_only_begin
+* Fix : Fixed server folders not finding files on some server setups.
+[//]: # fs_premium_only_end
+
+= 2.2.7 =
+* Date Updated : 2022-04-15
+* Fix : Fixed carousel not working when no lightbox is available
+* Fix : Fixed RTL styles on FooGallery admin pages
+* Update : FooGallery client side 2.0.32
+
+= 2.2.6 =
+* Date Updated : 2022-03-31
+* New : Added new gallery template : Carousel
+* Fix : Fixed bug with captions showing alternatives when using paging
+* Fix : Fixed conflict with image lazy loading in Safari 15.4, by adding loading=eager
+* Update : FooGallery client side 2.0.30
+[//]: # fs_premium_only_begin
+* New : Added Master Gallery feature, which allows you to create templates from galleries that other galleries can inherit settings from.
+* New : Added setting to filtering to hide the default "All" tag.
+* New : Added setting to filtering to auto select first filter when "All" tag is hidden.
+[//]: # fs_premium_only_end
+
+= 2.1.35 =
+* Date Updated : 2022-03-08
+* Fix : Fixed PHP warning on Widget Editor page in admin
+[//]: # fs_premium_only_begin
+* Fix : Fixed bug where Bulk Copy feature was removed.
+[//]: # fs_premium_only_end
+
 = 2.1.34 =
-* Date Updated : 2022-02-01
+* Date Updated : 2022-03-01
 * Fix : Fixed bug where WebP images could not be uploaded when using the GD image editor
 * Fix : Security Fix in wp-admin
 * Update : Update to Freemius SDK

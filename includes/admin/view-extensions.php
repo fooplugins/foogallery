@@ -13,7 +13,7 @@ if ( 'yes' === $show_message ) {
 		$result = null;
 	}
 }
-$tagline = apply_filters( 'foogallery_admin_extensions_tagline', sprintf( __( 'Extensions make %s even more awesome, without bloating the core plugin.', 'foogallery' ), foogallery_plugin_name() ) );
+$tagline = apply_filters( 'foogallery_admin_extensions_tagline', sprintf( __( 'Enable additional features to make %s even more awesome!', 'foogallery' ), foogallery_plugin_name() ) );
 ?>
 <style>
 	.foogallery-text {
@@ -22,7 +22,7 @@ $tagline = apply_filters( 'foogallery_admin_extensions_tagline', sprintf( __( 'E
 	}
 </style>
 <div class="wrap foogallery-extensions">
-	<h2><?php printf( __( '%s Extensions', 'foogallery' ), foogallery_plugin_name() ); ?><span class="spinner"></span></h2>
+	<h2><?php printf( __( '%s Features', 'foogallery' ), foogallery_plugin_name() ); ?><span class="spinner"></span></h2>
 	<div class="foogallery-text"><?php echo $tagline; ?></div>
 	<?php
 	if ( isset( $result ) ) { ?>

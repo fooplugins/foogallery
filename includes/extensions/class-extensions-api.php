@@ -43,8 +43,8 @@ if ( ! class_exists( 'FooGallery_Extensions_API' ) ) {
 		 * Reset all previous errors
 		 */
 		public function reset_errors() {
-			delete_option( FOOGALLERY_EXTENSIONS_LOADING_ERRORS );
-			delete_option( FOOGALLERY_EXTENSIONS_LOADING_ERRORS_RESPONSE );
+			//delete_option( FOOGALLERY_EXTENSIONS_LOADING_ERRORS );
+			//delete_option( FOOGALLERY_EXTENSIONS_LOADING_ERRORS_RESPONSE );
 		}
 
 		/**
@@ -367,7 +367,7 @@ if ( ! class_exists( 'FooGallery_Extensions_API' ) ) {
 						$failure = deactivate_plugins( $plugin['file'], true, false );
 						if ( null !== $failure ) {
 							return array(
-								'message' => sprintf( __( 'The extension %s could NOT be deactivated!', 'foogallery' ), "<strong>{$extension['title']}</strong>" ),
+								'message' => sprintf( __( 'The feature %s could NOT be deactivated!', 'foogallery' ), "<strong>{$extension['title']}</strong>" ),
 								'type' => 'error'
 							);
 						}
@@ -392,12 +392,12 @@ if ( ! class_exists( 'FooGallery_Extensions_API' ) ) {
 				do_action( 'foogallery_extension_deactivated-' . $slug );
 
 				return apply_filters( 'foogallery_extensions_deactivated_message-' . $slug, array(
-					'message' => sprintf( __( 'The extension %s was successfully deactivated', 'foogallery' ), "<strong>{$extension['title']}</strong>" ),
+					'message' => sprintf( __( 'The feature %s was successfully deactivated', 'foogallery' ), "<strong>{$extension['title']}</strong>" ),
 					'type' => 'success',
 				) );
 			}
 			return array(
-				'message' => sprintf( __( 'Unknown extension : %s', 'foogallery' ), $slug ),
+				'message' => sprintf( __( 'Unknown feature : %s', 'foogallery' ), $slug ),
 				'type' => 'error',
 			);
 		}
@@ -429,7 +429,7 @@ if ( ! class_exists( 'FooGallery_Extensions_API' ) ) {
 							if ( version_compare( $actual_version, $minimum_version ) < 0 ) {
 								$this->add_to_error_extensions( $slug, sprintf( __( 'Requires %s version %s','foogallery' ), $extension['title'], $minimum_version ) );
 								return array(
-									'message' => sprintf( __( 'The extension %s could not be activated, because you are using an outdated version! Please update %s to at least version %s.', 'foogallery' ), $extension['title'], $extension['title'], $minimum_version ),
+									'message' => sprintf( __( 'The feature %s could not be activated, because you are using an outdated version! Please update %s to at least version %s.', 'foogallery' ), $extension['title'], $extension['title'], $minimum_version ),
 									'type' => 'error',
 								);
 							}
@@ -439,7 +439,7 @@ if ( ! class_exists( 'FooGallery_Extensions_API' ) ) {
 						$failure = activate_plugin( $plugin['file'], '', false, false );
 						if ( null !== $failure ) {
 							return array(
-								'message' => sprintf( __( 'The extension %s could NOT be activated!', 'foogallery' ), "<strong>{$extension['title']}</strong>" ),
+								'message' => sprintf( __( 'The feature %s could NOT be activated!', 'foogallery' ), "<strong>{$extension['title']}</strong>" ),
 								'type' => 'error',
 							);
 						}
@@ -457,12 +457,12 @@ if ( ! class_exists( 'FooGallery_Extensions_API' ) ) {
 
 				//return our result
 				return apply_filters( 'foogallery_extension_activated_message-' . $slug, array(
-					'message' => sprintf( __( 'The extension %s was successfully activated', 'foogallery' ), "<strong>{$extension['title']}</strong>" ),
+					'message' => sprintf( __( 'The feature %s was successfully activated', 'foogallery' ), "<strong>{$extension['title']}</strong>" ),
 					'type' => 'success',
 				) );
 			}
 			return array(
-				'message' => sprintf( __( 'Unknown extension : %s', 'foogallery' ), $slug ),
+				'message' => sprintf( __( 'Unknown feature : %s', 'foogallery' ), $slug ),
 				'type' => 'error',
 			);
 		}
@@ -542,7 +542,7 @@ if ( ! class_exists( 'FooGallery_Extensions_API' ) ) {
 				//check we have something to download
 				if ( empty( $download_link ) ) {
 					return array(
-						'message' => sprintf( __( 'The extension %s has no download link!', 'foogallery' ), $slug ),
+						'message' => sprintf( __( 'The feature %s has no download link!', 'foogallery' ), $slug ),
 						'type' => 'error',
 					);
 				}
@@ -562,14 +562,14 @@ if ( ! class_exists( 'FooGallery_Extensions_API' ) ) {
 
 					//we had an error along the way
 					return apply_filters( 'foogallery_extensions_download_failure-' . $slug, array(
-						'message' => sprintf( __( 'The extension %s could NOT be downloaded! Error : %s', 'foogallery' ), "<strong>{$extension['title']}</strong>", $error_message ),
+						'message' => sprintf( __( 'The feature %s could NOT be downloaded! Error : %s', 'foogallery' ), "<strong>{$extension['title']}</strong>", $error_message ),
 						'type' => 'error'
 					) );
 				}
 
 				//return our result
 				return apply_filters( 'foogallery_extensions_download_success-' . $slug, array(
-					'message' => sprintf( __( 'The extension %s was successfully downloaded and can now be activated. %s', 'foogallery' ),
+					'message' => sprintf( __( 'The feature %s was successfully downloaded and can now be activated. %s', 'foogallery' ),
 						"<strong>{$extension['title']}</strong>",
 						'<a href="' . esc_url( add_query_arg( array(
 								'action' => 'activate',
@@ -579,7 +579,7 @@ if ( ! class_exists( 'FooGallery_Extensions_API' ) ) {
 				) );
 			}
 			return array(
-				'message' => sprintf( __( 'Unknown extension : %s', 'foogallery' ), $slug ),
+				'message' => sprintf( __( 'Unknown feature : %s', 'foogallery' ), $slug ),
 				'type' => 'error',
 			);
 		}
@@ -630,7 +630,7 @@ if ( ! class_exists( 'FooGallery_Extensions_API' ) ) {
 			$error_extensions = $this->get_error_extensions();
 
 			if ( empty($error_message) ) {
-				$error_message = __( 'Error loading extension!', 'foogallery' );
+				$error_message = __( 'Error loading feature!', 'foogallery' );
 			}
 
 			if ( array_key_exists( $slug, $error_extensions ) &&
