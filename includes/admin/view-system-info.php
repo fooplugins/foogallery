@@ -74,7 +74,7 @@ if ( current_user_can( 'activate_plugins' ) ) {
 		__( 'PHP Config[allow_url_fopen]', 'foogallery' ) 	=> ini_get( 'allow_url_fopen' ),
 		__( 'PHP Config[allow_url_include]', 'foogallery' ) => ini_get( 'allow_url_include' ),
 
-		__( 'Extensions Active', 'foogallery' )   			=> array_keys( $api->get_active_extensions() ),
+		__( 'Features Active', 'foogallery' )   			=> array_keys( $api->get_active_extensions() ),
 		__( 'Gallery Templates', 'foogallery' )   			=> $template_slugs,
 		__( 'Lightboxes', 'foogallery' )          			=> apply_filters( 'foogallery_gallery_template_field_lightboxes', array() ),
 		__( 'Settings', 'foogallery' )            			=> $settings,

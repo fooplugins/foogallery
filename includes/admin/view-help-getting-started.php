@@ -1,7 +1,7 @@
 <div id="help_section" class="foogallery-admin-help-section">
 	<section class="fgah-feature">
 		<header>
-			<h3><?php _e( 'Thank you for choosing FooGallery!', 'foogallery' );?></h3>
+			<h3><?php printf( __(  'Thank you for choosing %s!', 'foogallery' ), foogallery_plugin_name() );?></h3>
 			<p><?php _e( 'Better galleries for WordPress, that are faster, more flexible and beautiful!', 'foogallery' ); ?></p>
 		</header>
 		<footer>
@@ -67,7 +67,7 @@
                 <img width="556" height="407" src="<?php echo esc_url( 'https://assets.fooplugins.com/foogallery/plugin/foogallery-admin-help-embed.png' ); ?>" alt="Show off your gallery" />
             </figure>
             <dl>
-                <dt><?php _e( 'FooGallery Block','foogallery' ); ?></dt>
+                <dt><?php printf(  __( '%s Block','foogallery' ), foogallery_plugin_name() ); ?></dt>
                 <dd><?php _e( 'Use our block to embed a gallery in the Gutenberg editor. Live previews help you visualize how the gallery will really look on the frontend.', 'foogallery' );?></dd>
                 <dt><?php printf( __( 'The <code>[%s]</code> Shortcode','foogallery' ), foogallery_gallery_shortcode_tag() );?></dt>
                 <dd><?php _e( 'Copy and paste the gallery shortcode into any page. You can find the shortcode from the gallery listing or within the Gallery Shortcode metabox when you edit a gallery.', 'foogallery' );?></dd>

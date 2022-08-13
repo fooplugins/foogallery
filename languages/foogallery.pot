@@ -1479,7 +1479,7 @@ msgstr ""
 #: includes/admin/class-admin.php:67 includes/admin/class-menu.php:34
 #: includes/admin/class-settings.php:155 includes/admin/view-help.php:47
 #: includes/admin/view-system-info.php:83
-msgid "Extensions"
+msgid "Features"
 msgstr ""
 
 #: includes/admin/class-admin.php:69 includes/admin/class-menu.php:38
@@ -1747,7 +1747,7 @@ msgstr ""
 
 #: includes/admin/class-menu.php:33 includes/admin/view-extensions.php:45
 #, php-format
-msgid "%s Extensions"
+msgid "%s Features"
 msgstr ""
 
 #: includes/admin/class-menu.php:37
@@ -2068,7 +2068,7 @@ msgid "A cool description about what your cool thing can do"
 msgstr ""
 
 #: includes/admin/view-extensions-build-your-own.php:95
-msgid "Build Your Own FooGallery Extensions!"
+msgid "Build Your Own FooGallery Features!"
 msgstr ""
 
 #: includes/admin/view-extensions-build-your-own.php:97
@@ -2263,7 +2263,7 @@ msgstr ""
 
 #: includes/admin/view-extensions.php:15
 #, php-format
-msgid "Extensions make %s even more awesome, without bloating the core plugin."
+msgid "Features make %s even more awesome, without bloating the core plugin."
 msgstr ""
 
 #: includes/admin/view-extensions.php:42
@@ -2507,11 +2507,11 @@ msgid "PHP Config[allow_url_include]"
 msgstr ""
 
 #: includes/admin/view-system-info.php:81
-msgid "Extensions Endpoint"
+msgid "Features Endpoint"
 msgstr ""
 
 #: includes/admin/view-system-info.php:82
-msgid "Extensions Errors"
+msgid "Features Errors"
 msgstr ""
 
 #: includes/admin/view-system-info.php:82
@@ -2519,7 +2519,7 @@ msgid "Nope, all good"
 msgstr ""
 
 #: includes/admin/view-system-info.php:84
-msgid "Extensions Active"
+msgid "Features Active"
 msgstr ""
 
 #: includes/admin/view-system-info.php:85
