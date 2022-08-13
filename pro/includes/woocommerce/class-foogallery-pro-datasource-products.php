@@ -19,6 +19,9 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Products' ) ) {
 			add_action( 'foogallery_gallery_metabox_items_list', array( $this, 'render_datasource_item' ), 10, 1 );
 
 			add_filter( 'foogallery_filtering_get_terms_for_attachment', array( $this, 'get_terms_from_product' ), 10, 3 );
+
+			// Price range filter add for wc_get_products query
+			add_filter( 'woocommerce_product_data_store_cpt_get_products_query', array( $this, 'handle_price_range_query_var' ), 10, 2 );
 		}
 
 		public function get_terms_from_product( $terms, $taxonomy, $attachment ) {
@@ -190,6 +193,8 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Products' ) ) {
 			$caption_title_source = ! empty( $foogallery->datasource_value['caption_title_source'] ) ? $foogallery->datasource_value['caption_title_source'] : 'post_title';
 			$caption_desc_source  = ! empty( $foogallery->datasource_value['caption_desc_source'] ) ? $foogallery->datasource_value['caption_desc_source'] : 'post_content';
 			$stock                = ! empty( $foogallery->datasource_value['stock'] ) ? $foogallery->datasource_value['stock'] : '';
+			$min_price_range      = ! empty( $foogallery->datasource_value['min_price_range'] ) ? $foogallery->datasource_value['min_price_range'] : 0;
+			$max_price_range      = ! empty( $foogallery->datasource_value['max_price_range'] ) ? $foogallery->datasource_value['max_price_range'] : 0;
 
 			$args = array(
 				'limit'          => $no_of_post,
@@ -203,6 +208,10 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Products' ) ) {
 					)
                 )
 			);
+
+			if ($max_price_range > 0) {
+				$args['price_range'] = "$min_price_range | $max_price_range "; // The first price is separated from the 2nd one with a pipe
+			}
 
 			if ( ! empty( $categories ) ) {
 				$args['tax_query'] = array(
@@ -359,6 +368,12 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Products' ) ) {
 			if ( ! isset( $datasource_value['stock'] ) ) {
 				$datasource_value['stock'] = '';
 			}
+			if ( ! isset( $datasource_value['min_price_range'] ) ) {
+				$datasource_value['min_price_range'] = '';
+			}
+			if ( ! isset( $datasource_value['max_price_range'] ) ) {
+				$datasource_value['max_price_range'] = '';
+			}
 			?>
             <p>
 				<?php _e('Choose the settings for your gallery below. The gallery will be dynamically populated using the post query settings below.', 'foogallery' ); ?>
@@ -381,6 +396,29 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Products' ) ) {
 			                    }
 			                    ?>
 		                    </ul>
+	                    </td>
+                    </tr>
+					<tr>
+	                    <th scope="row"><?php _e( 'Price Range', 'foogallery' ); ?></th>
+	                    <td>
+							<input
+                                    type="number"
+									placeholder="Minimum Price"
+									min="0"
+                                    class="foogallery_woocommerce_input"
+                                    name="min_price_range"
+                                    id="foogallery_woocommerce_min_price_range"
+                                    value="<?php echo isset( $datasource_value['min_price_range'] ) ? $datasource_value['min_price_range'] : '' ?>"
+                            />
+							<input
+                                    type="number"
+									placeholder="Maximum Price"
+									min="0"
+                                    class="foogallery_woocommerce_input"
+                                    name="max_price_range"
+                                    id="foogallery_woocommerce_max_price_range"
+                                    value="<?php echo isset( $datasource_value['max_price_range'] ) ? $datasource_value['max_price_range'] : '' ?>"
+                            />
 	                    </td>
                     </tr>
                     <tr>
@@ -508,6 +546,8 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Products' ) ) {
 			$caption_title_source = 'post_title';
 			$caption_desc_source = 'post_excerpt';
 			$categories_html = '';
+			$min_price_range      = 0;
+			$max_price_range      = 0;
 			$stock = '';
 
 			if ( isset( $gallery->datasource_name ) ) {
@@ -516,6 +556,8 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Products' ) ) {
 
 			if ( isset( $gallery->datasource_value ) && is_array( $gallery->datasource_value ) ) {
 				$categories_html      = array_key_exists( 'categories_html', $gallery->datasource_value ) ? $gallery->datasource_value['categories_html'] : '';
+				$min_price_range      = array_key_exists( 'min_price_range', $gallery->datasource_value ) ? $gallery->datasource_value['min_price_range'] : '';
+				$max_price_range      = array_key_exists( 'max_price_range', $gallery->datasource_value ) ? $gallery->datasource_value['max_price_range'] : '';
 				$sort                 = array_key_exists( 'sort', $gallery->datasource_value ) ? $gallery->datasource_value['sort'] : '';
 				$no_of_post           = array_key_exists( 'no_of_post', $gallery->datasource_value ) ? $gallery->datasource_value['no_of_post'] : '';
 				$exclude              = array_key_exists( 'exclude', $gallery->datasource_value ) ? $gallery->datasource_value['exclude'] : '';
@@ -546,6 +588,7 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Products' ) ) {
                 </p>
                 <div class="foogallery-items-html">
 	                <?php echo __('Categories : ', 'foogallery'); ?><span id="foogallery-datasource-woocommerce-categories"><?php echo $categories_html; ?></span><br />
+					        <?php echo __('Price Range : ', 'foogallery'); ?><span id="foogallery-datasource-woocommerce-price-range"><?php echo $min_price_range; ?> - <?php echo $max_price_range; ?></span><br />
 	                <?php echo __('Sort by : ', 'foogallery'); ?><span id="foogallery-datasource-woocommerce-sort"><?php echo $sort; ?></span><br />
 	                <?php echo __('Stock Status : ', 'foogallery'); ?><span id="foogallery-datasource-woocommerce-stock"><?php echo $stock; ?></span><br />
 	                <?php echo __('No. of Products : ', 'foogallery'); ?><span id="foogallery-datasource-woocommerce-no_of_post"><?php echo $no_of_post; ?></span><br />
@@ -564,6 +607,31 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Products' ) ) {
                 </button>
             </div>
 			<?php
+		}
+
+		function handle_price_range_query_var( $query, $query_vars ) {
+			if ( ! empty( $query_vars['price_range'] ) ) {
+				$price_range = explode( ' | ', esc_attr($query_vars['price_range']) );
+		
+				if ( is_array($price_range) && count($price_range) == 2 ) {
+					$query['meta_query']['relation'] = 'AND';
+		
+					$query['meta_query'][] = array(
+						'key'     => '_price',
+						'value'   => reset($price_range), // From price value
+						'compare' => '>=',
+						'type'    => 'NUMERIC'
+					);
+		
+					$query['meta_query'][] = array(
+						'key'     => '_price',
+						'value'   => end($price_range), // To price value
+						'compare' => '<=',
+						'type'    => 'NUMERIC'
+					);
+				}
+			}
+			return $query;
 		}
 	}
 }
