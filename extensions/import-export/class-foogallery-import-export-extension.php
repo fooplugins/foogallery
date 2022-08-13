@@ -32,7 +32,7 @@ if ( ! class_exists('FooGallery_Import_Export_Extension') ) {
                 'description' => __( 'Export your galleries, and then import them into another WordPress install.', 'foogallery' ),
                 'author' => 'FooPlugins',
                 'author_url' => 'https://fooplugins.com',
-                'thumbnail' => 'https://picsum.photos/400/300/?blur=5',
+                'thumbnail' => 'https://foogallery.s3.amazonaws.com/extensions/import_export.jpg',
                 'tags' => array( 'utils' ),
                 'source' => 'bundled'
             );
