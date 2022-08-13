@@ -30,7 +30,7 @@ if ( ! class_exists('FooGallery_Pro_Import_Export') ) {
 				'description' => __( 'Import/Export Galleries to and from another WordPress install', 'foogallery' ),
 				'author' => 'FooPlugins',
 				'author_url' => 'https://fooplugins.com',
-				'thumbnail' => 'https://foogallery.s3.amazonaws.com/extensions/white_labelling.png',
+				'thumbnail' => 'https://foogallery.s3.amazonaws.com/extensions/import_export.jpg',
 				'tags' => array( 'premium' ),
 				'source' => 'bundled'
 			);
