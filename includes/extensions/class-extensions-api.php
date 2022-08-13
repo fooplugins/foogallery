@@ -43,8 +43,8 @@ if ( ! class_exists( 'FooGallery_Extensions_API' ) ) {
 		 * Reset all previous errors
 		 */
 		public function reset_errors() {
-			delete_option( FOOGALLERY_EXTENSIONS_LOADING_ERRORS );
-			delete_option( FOOGALLERY_EXTENSIONS_LOADING_ERRORS_RESPONSE );
+			//delete_option( FOOGALLERY_EXTENSIONS_LOADING_ERRORS );
+			//delete_option( FOOGALLERY_EXTENSIONS_LOADING_ERRORS_RESPONSE );
 		}
 
 		/**
