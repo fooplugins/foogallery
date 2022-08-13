@@ -59,7 +59,7 @@ if ( ! class_exists( 'FooGallery_Pro_Attachment_Taxonomies' ) ) {
 
 				//make the attachment taxonomies awesome
 				add_action( 'admin_head', array( $this, 'include_inline_taxonomy_data_script' ) );
-				add_filter( 'attachment_fields_to_edit', array( $this, 'inject_code_into_field' ), 10, 2 );
+				add_filter( 'attachment_fields_to_edit', array( $this, 'add_taxonomy_fields' ), 0, 2 );
 
 				//ajax actions from the media modal
 				add_action( 'wp_ajax_foogallery-taxonomies-add-term', array( $this, 'ajax_add_term' ) );
@@ -168,30 +168,34 @@ if ( ! class_exists( 'FooGallery_Pro_Attachment_Taxonomies' ) ) {
 		 * @param object $post An object for the current post
 		 * @return array $fields An array with all fields to edit
 		 */
-		public function inject_code_into_field($fields, $post) {
-			if ( array_key_exists( FOOGALLERY_ATTACHMENT_TAXONOMY_TAG, $fields ) ) {
+		public function add_taxonomy_fields( $fields, $post ) {
+            $allowed_taxonomies = array ( FOOGALLERY_ATTACHMENT_TAXONOMY_TAG, FOOGALLERY_ATTACHMENT_TAXONOMY_CATEGORY );
 
-				$value = trim( $fields[FOOGALLERY_ATTACHMENT_TAXONOMY_TAG]['value'] );
+            foreach ( get_attachment_taxonomies( $post ) as $taxonomy ) {
 
-				$fields[FOOGALLERY_ATTACHMENT_TAXONOMY_TAG] = array(
-					'show_in_edit' => false,
-					'input' => 'html',
-					'html' => $this->build_taxonomy_html( FOOGALLERY_ATTACHMENT_TAXONOMY_TAG, $post, $value ),
-					'label' => __( 'Media Tags', 'foogallery' )
-				);
-			}
+                if ( in_array( $taxonomy, $allowed_taxonomies ) ) {
 
-			if ( array_key_exists( FOOGALLERY_ATTACHMENT_TAXONOMY_CATEGORY, $fields ) ) {
+                    $t = (array) get_taxonomy( $taxonomy );
 
-				$value = trim( $fields[FOOGALLERY_ATTACHMENT_TAXONOMY_CATEGORY]['value'] );
+                    $terms = get_object_term_cache( $post->ID, $taxonomy );
 
-				$fields[FOOGALLERY_ATTACHMENT_TAXONOMY_CATEGORY] = array(
-					'show_in_edit' => false,
-					'input' => 'html',
-					'html' => $this->build_taxonomy_html( FOOGALLERY_ATTACHMENT_TAXONOMY_CATEGORY, $post, $value ),
-					'label' => __( 'Media Categories', 'foogallery' )
-				);
-			}
+                    if ( false === $terms ) {
+                        $terms = wp_get_object_terms( $post->ID, $taxonomy, array() );
+                    }
+
+                    $values = array();
+
+                    foreach ( $terms as $term ) {
+                        $values[] = $term->slug;
+                    }
+
+                    $t['value'] = implode( ', ', $values );
+                    $t['show_in_edit'] = false;
+					$t['input'] = 'html';
+                    $t['html'] = $this->build_taxonomy_html( $taxonomy, $post, $t['value'] );
+                    $fields[ $taxonomy ] = $t;
+                }
+            }
 
 			return $fields;
 		}
