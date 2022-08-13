@@ -311,6 +311,7 @@ Please update in order to for FooGallery to work in WP 5.5+!
 * Fix : Removed PHP warnings in albums extension.
 * Update : FooGallery client side 2.0.35
 [//]: # fs_premium_only_begin
+* New : [Commerce Plan] Added White Labeling feature, so you can rename 'FooGallery' to anything you want.
 * Fix : Undid previous server folder root change which broke server folder galleries on some installs.
 * New : Added setting (Server Folder Root) which allows you to choose your server folder root on some server setups.
 * New : Added new min/max price filter for the product datasource
