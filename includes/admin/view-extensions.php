@@ -13,7 +13,7 @@ if ( 'yes' === $show_message ) {
 		$result = null;
 	}
 }
-$tagline = apply_filters( 'foogallery_admin_extensions_tagline', sprintf( __( 'Features make %s even more awesome, without bloating the core plugin.', 'foogallery' ), foogallery_plugin_name() ) );
+$tagline = apply_filters( 'foogallery_admin_extensions_tagline', sprintf( __( 'Enable additional features to make %s even more awesome!', 'foogallery' ), foogallery_plugin_name() ) );
 ?>
 <style>
 	.foogallery-text {
