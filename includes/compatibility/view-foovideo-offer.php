@@ -111,7 +111,7 @@ $message = apply_filters('foogallery_foovideo_discount_offer_message', '' );
 	<?php if ( !empty( $message ) ) { ?>
 	<p><?php echo $message; ?></p>
 	<?php } ?>
-	<p><?php _e('Click the "Redeem Now" button below to retrieve your discount code based on the FooVideo license you have entered for this site. If you have not entered your FooVideo license, please enter it on the FooGallery Settings page, under the Extensions tab, and then try again.','foogallery'); ?></p>
+	<p><?php _e('Click the "Redeem Now" button below to retrieve your discount code based on the FooVideo license you have entered for this site. If you have not entered your FooVideo license, please enter it on the FooGallery Settings page, under the Features tab, and then try again.','foogallery'); ?></p>
 
 	<p>
 		<?php _e('You can also log a support ticket through to our help desk if you are having any problems.', 'foogallery'); ?>
