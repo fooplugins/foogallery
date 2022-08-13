@@ -51,7 +51,17 @@ FooGallery.utils.ready(function ($) {
     });
 
     $(document).on('foogallery-datasource-changed-woocommerce', function () {
-        var $container = $('.foogallery-datasource-woocommerce');
+
+        var $container = $('.foogallery-datasource-woocommerce'),
+            min_price = $('#foogallery_woocommerce_min_price_range').val(),
+            max_price = $( '#foogallery_woocommerce_max_price_range' ).val(),
+            price_range = 'any';
+
+        if ( $.isNumeric( min_price ) && $.isNumeric( max_price ) ) {
+            price_range = min_price + ' - ' + max_price;
+        } else {
+            min_price = max_price = '';
+        }
 
         //build up the datasource_value
         var value = {
@@ -62,7 +72,9 @@ FooGallery.utils.ready(function ($) {
             "caption_title_source": $(".foogallery_woocommerce_caption_title_source:checked").val(),
             "caption_desc_source": $(".foogallery_woocommerce_caption_desc_source:checked").val(),
             "categories" : document.foogallery_datasource_woocommerce_temp.categories,
-            "categories_html" : document.foogallery_datasource_woocommerce_temp.categories_html
+            "categories_html" : document.foogallery_datasource_woocommerce_temp.categories_html,
+            "min_price_range": min_price,
+            "max_price_range": max_price,
         };
 
         var sort = ( value.sort !== '' ) ? value.sort : 'newest first',
@@ -75,6 +87,7 @@ FooGallery.utils.ready(function ($) {
         $('#foogallery-datasource-woocommerce-sort').html( sort );
         $('#foogallery-datasource-woocommerce-stock').html( stock );
         $('#foogallery-datasource-woocommerce-no_of_post').html( no_of_post );
+        $('#foogallery-datasource-woocommerce-price-range').html( price_range );
         $('#foogallery-datasource-woocommerce-exclude').html( value.exclude );
         $('#foogallery-datasource-woocommerce-caption_title_source').html( value.caption_title_source );
         $('#foogallery-datasource-woocommerce-caption_desc_source').html( value.caption_desc_source );
@@ -84,7 +97,6 @@ FooGallery.utils.ready(function ($) {
         FOOGALLERY.showHiddenAreas(false);
 
         $('.foogallery-attachments-list-container').addClass('hidden');
-
         $('.foogallery_preview_container').addClass('foogallery-preview-force-refresh');
     });
 });
