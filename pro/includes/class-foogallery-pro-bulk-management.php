@@ -139,27 +139,26 @@ if ( ! class_exists( 'FooGallery_Pro_Bulk_Management' ) ) {
 
 				$errors = $assignments = $removals = 0;
 
-				foreach ( $taxonomies as $taxonomy ) {
-					$taxonomy_data = safe_get_from_request( 'taxonomy_data_' . $taxonomy );
-					if ( !empty( $taxonomy_data ) ) {
-						$term_ids = array_unique( array_map( 'intval', explode( ',', $taxonomy_data ) ) );
+                foreach ( $taxonomies as $taxonomy ) {
+                    $taxonomy_data = safe_get_from_request( 'taxonomy_data_' . $taxonomy );
+                    if ( !empty( $taxonomy_data ) ) {
+                        $term_ids = array_unique( array_map( 'intval', explode( ',', $taxonomy_data ) ) );
 
-						if ( count( $taxonomy_data ) > 0 ) {
-							foreach ( $attachments as $attachment ) {
-							    if ( $attachment > 0 ) {
-								    $results[] = wp_set_post_terms( $attachment, $term_ids, $taxonomy, true );
-							    }
-							}
-							foreach ( $attachments_to_remove as $attachment_to_remove ) {
-							    if ( $attachment_to_remove > 0 ) {
-								    $results[] = wp_remove_object_terms( $attachment_to_remove, $term_ids, $taxonomy );
-								    $removals++;
-							    }
-							}
-						}
-					}
-				}
-
+                        if ( is_array( $term_ids ) && count( $term_ids ) > 0 ) {
+                            foreach ( $attachments as $attachment ) {
+                                if ( $attachment > 0 ) {
+                                    $results[] = wp_set_post_terms( $attachment, $term_ids, $taxonomy, true );
+                                }
+                            }
+                            foreach ( $attachments_to_remove as $attachment_to_remove ) {
+                                if ( $attachment_to_remove > 0 ) {
+                                    $results[] = wp_remove_object_terms( $attachment_to_remove, $term_ids, $taxonomy );
+                                    $removals++;
+                                }
+                            }
+                        }
+                    }
+                }
 
 				foreach ( $results as $result ) {
 					if ( is_wp_error( $result ) ) {
