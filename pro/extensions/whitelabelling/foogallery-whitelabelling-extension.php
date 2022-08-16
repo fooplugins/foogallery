@@ -39,9 +39,29 @@ if ( ! class_exists('FooGallery_Pro_Whitelabelling_Extension') ) {
 				// Redirect to media parent menu if setting enabled
 				add_action( 'admin_init', array( $this, 'redirect_plugin_parent' ), 1 );
 
-
+                add_filter( 'wp_redirect', array( $this, 'redirect_after_menu_updated' ), 10, 2 );
 			}
 		}
+
+        /**
+         * Handles redirections after the menu is set back to the FooGallery main menu.
+         * Before this would result in an admin permissions error.
+         *
+         * @param $location
+         * @param $status
+         * @return array|mixed|string|string[]
+         */
+        function redirect_after_menu_updated( $location, $status ) {
+            parse_str( parse_url( $location, PHP_URL_QUERY ) , $output );
+            if ( array_key_exists( 'page', $output ) && 'foogallery-settings' === $output['page'] ) {
+                if ( 'on' !== foogallery_get_setting( 'whitelabelling_move_menu_under_media' ) &&
+                 !array_key_exists( 'post_type', $output ) ) {
+                    $location = str_replace( 'upload.php?', 'edit.php?post_type=' . FOOGALLERY_CPT_GALLERY . '&settings-updated=true&', $location );
+                }
+            }
+
+            return $location;
+        }
 
 		function plugin_name( $default ) {
 			return foogallery_get_setting( 'whitelabelling_name', $default );
@@ -191,7 +211,7 @@ if ( ! class_exists('FooGallery_Pro_Whitelabelling_Extension') ) {
 			$whitelabelling_settings[] = array(
 				'id'      => 'whitelabelling_hide_extensions_menu',
 				'title'   => __('Hide Features Menu', 'foogallery'),
-				'desc'    => __('Hide the extension menu item.', 'foogallery'),
+				'desc'    => __('Hide the features menu item.', 'foogallery'),
 				'section' => 'menu',
 				'type'    => 'checkbox',
 				'tab'     => 'whitelabelling'
@@ -244,8 +264,8 @@ if ( ! class_exists('FooGallery_Pro_Whitelabelling_Extension') ) {
 
 			$whitelabelling_settings[] = array(
 				'id'      => 'whitelabelling_label_extensions_menu',
-				'title'   => __('Extension Menu Label', 'foogallery'),
-				'desc'    => __('Change the extensions menu text.', 'foogallery'),
+				'title'   => __('Features Menu Label', 'foogallery'),
+				'desc'    => __('Change the features menu text.', 'foogallery'),
 				'section' => 'menu',
 				'type'    => 'text',
 				'tab'     => 'whitelabelling'
@@ -266,8 +286,8 @@ if ( ! class_exists('FooGallery_Pro_Whitelabelling_Extension') ) {
 
 			$whitelabelling_settings[] = array(
 				'id'      => 'whitelabelling_hide_media_tags_menu',
-				'title'   => __('Hide Media Tags', 'foogallery'),
-				'desc'    => __('Hide the media tags datasource.', 'foogallery'),
+				'title'   => __('Disable Media Tags', 'foogallery'),
+				'desc'    => __('Disable the media tags datasource.', 'foogallery'),
 				'section' => 'data-sources',
 				'type'    => 'checkbox',
 				'tab'     => 'whitelabelling'
@@ -275,8 +295,8 @@ if ( ! class_exists('FooGallery_Pro_Whitelabelling_Extension') ) {
 
 			$whitelabelling_settings[] = array(
 				'id'      => 'whitelabelling_hide_media_categories_menu',
-				'title'   => __('Hide Media Categories', 'foogallery'),
-				'desc'    => __('Hide the media categories datasource.', 'foogallery'),
+				'title'   => __('Disable Media Categories', 'foogallery'),
+				'desc'    => __('Disable the media categories datasource.', 'foogallery'),
 				'section' => 'data-sources',
 				'type'    => 'checkbox',
 				'tab'     => 'whitelabelling'
@@ -284,8 +304,8 @@ if ( ! class_exists('FooGallery_Pro_Whitelabelling_Extension') ) {
 
 			$whitelabelling_settings[] = array(
 				'id'      => 'whitelabelling_hide_server_folder_menu',
-				'title'   => __('Hide Server Folder', 'foogallery'),
-				'desc'    => __('Hide the server folder datasource.', 'foogallery'),
+				'title'   => __('Disable Server Folder', 'foogallery'),
+				'desc'    => __('Disable the server folder datasource.', 'foogallery'),
 				'section' => 'data-sources',
 				'type'    => 'checkbox',
 				'tab'     => 'whitelabelling'
@@ -293,8 +313,8 @@ if ( ! class_exists('FooGallery_Pro_Whitelabelling_Extension') ) {
 
 			$whitelabelling_settings[] = array(
 				'id'      => 'whitelabelling_hide_adobe_lightroom_menu',
-				'title'   => __('Hide Adobe Lightroom', 'foogallery'),
-				'desc'    => __('Hide the adobe lightroom datasource.', 'foogallery'),
+				'title'   => __('Disable Adobe Lightroom', 'foogallery'),
+				'desc'    => __('Disable the adobe lightroom datasource.', 'foogallery'),
 				'section' => 'data-sources',
 				'type'    => 'checkbox',
 				'tab'     => 'whitelabelling'
@@ -302,8 +322,8 @@ if ( ! class_exists('FooGallery_Pro_Whitelabelling_Extension') ) {
 			
 			$whitelabelling_settings[] = array(
 				'id'      => 'whitelabelling_hide_real_media_lib_menu',
-				'title'   => __('Hide Real Media Library', 'foogallery'),
-				'desc'    => __('Hide the real media library datasource.', 'foogallery'),
+				'title'   => __('Disable Real Media Library', 'foogallery'),
+				'desc'    => __('Disable the real media library datasource.', 'foogallery'),
 				'section' => 'data-sources',
 				'type'    => 'checkbox',
 				'tab'     => 'whitelabelling'
@@ -311,8 +331,8 @@ if ( ! class_exists('FooGallery_Pro_Whitelabelling_Extension') ) {
 
 			$whitelabelling_settings[] = array(
 				'id'      => 'whitelabelling_hide_post_query_menu',
-				'title'   => __('Hide Post Query', 'foogallery'),
-				'desc'    => __('Hide the post query datasource.', 'foogallery'),
+				'title'   => __('Disable Post Query', 'foogallery'),
+				'desc'    => __('Disable the post query datasource.', 'foogallery'),
 				'section' => 'data-sources',
 				'type'    => 'checkbox',
 				'tab'     => 'whitelabelling'
@@ -320,8 +340,8 @@ if ( ! class_exists('FooGallery_Pro_Whitelabelling_Extension') ) {
 
 			$whitelabelling_settings[] = array(
 				'id'      => 'whitelabelling_hide_woo_products_menu',
-				'title'   => __('Hide Woocommerce Products', 'foogallery'),
-				'desc'    => __('Hide the woocommerce products datasource.', 'foogallery'),
+				'title'   => __('Disable Woocommerce Products', 'foogallery'),
+				'desc'    => __('Disable the woocommerce products datasource.', 'foogallery'),
 				'section' => 'data-sources',
 				'type'    => 'checkbox',
 				'tab'     => 'whitelabelling'
