@@ -103,7 +103,7 @@ if ( ! class_exists('FooGallery_Pro_Whitelabelling_Extension') ) {
 		}
 
 		function hide_menus() {
-			if ( 'on' == foogallery_get_setting( 'whitelabelling_hide_settings_menu' ) ) {
+			if ( 'on' == foogallery_get_setting( 'whitelabelling_hide_settings_menu' ) && !current_user_can( 'administrator' ) ) {
 				remove_submenu_page( foogallery_admin_menu_parent_slug(), 'foogallery-settings' );
 			}
 
@@ -202,7 +202,7 @@ if ( ! class_exists('FooGallery_Pro_Whitelabelling_Extension') ) {
 			$whitelabelling_settings[] = array(
 				'id'      => 'whitelabelling_hide_settings_menu',
 				'title'   => __('Hide Settings Menu', 'foogallery'),
-				'desc'    => __('Hide the settings menu item.', 'foogallery'),
+				'desc'    => __('Hide the settings menu item. Please note : this menu will still be shown if you are an administrator!', 'foogallery'),
 				'section' => 'menu',
 				'type'    => 'checkbox',
 				'tab'     => 'whitelabelling'
