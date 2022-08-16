@@ -282,6 +282,10 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Taxonomy_Base' ) ) {
 		 */
 		function render_datasource_item( $gallery ) {
 			$datasources = foogallery_gallery_datasources();
+            // Check if the datasource actually exists!
+            if ( !array_key_exists( $this->datasource_name, $datasources ) ) {
+                return;
+            }
 			$datasource = $datasources[$this->datasource_name];
 
 			$html = isset( $gallery->datasource_value['html'] ) ? $gallery->datasource_value['html'] : '';

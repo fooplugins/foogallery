@@ -299,8 +299,8 @@ Please update in order to for FooGallery to work in WP 5.5+!
 
 == Changelog ==
 
-= 2.2.15 =
-* Date Updated : 2022-08-13
+= 2.2.16 =
+* Date Updated : 2022-08-16
 * New : Added Import/Export feature, so you can export galleries on one install, and import into another.
 * New : Added settings to hide nav/paging/progress for Carousel.
 * New : Added filter 'foogallery_render_template_template_override' which allows developers to override the gallery template.
@@ -310,6 +310,7 @@ Please update in order to for FooGallery to work in WP 5.5+!
 * Fix : Better integration with FooBox and FooGallery.
 * Fix : Removed PHP warnings in albums extension.
 * Update : FooGallery client side 2.0.35
+* Update : Updated to Freemius SDK 2.4.5
 [//]: # fs_premium_only_begin
 * New : [Commerce Plan] Added White Labeling feature, so you can rename 'FooGallery' to anything you want.
 * New : Added setting (Server Folder Root) which allows you to choose your server folder root on some server setups.
