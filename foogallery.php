@@ -399,3 +399,147 @@ if ( function_exists( 'foogallery_fs' ) ) {
 
 	FooGallery_Plugin::get_instance();
 }
+
+// Generate image edit modal on gallery creation
+add_action( 'wp_ajax_open_foogallery_image_edit_modal', 'open_foogallery_image_edit_modal_ajax' );
+function open_foogallery_image_edit_modal_ajax() {
+	global $wpdb;
+	ob_start();
+	$img_id = $_POST['img_id'];
+	$img_post = get_post( $img_id );
+	$image_attributes = wp_get_attachment_image_src( $img_id );
+	$title = $img_post->post_title;
+	$caption = $img_post->post_excerpt;
+	$description = $img_post->post_content;
+	$file_url = get_the_guid( $img_id );
+	$image_alt = get_post_meta( $img_id, '_wp_attachment_image_alt', true );
+	$custom_url = get_post_meta( $img_id, '_foogallery_custom_url', true );
+	$custom_target = ( get_post_meta( $img_id, '_foogallery_custom_target', true ) ? get_post_meta( $img_id, '_foogallery_custom_target', true ) : 'default' );
+	$custom_class = get_post_meta( $img_id, '_foogallery_custom_class', true );
+	?>
+	<div class="foogallery-image-edit-main">
+		<div class="foogallery-image-edit-view">
+		<?php if ( $image_attributes ) : ?>
+			<img src="<?php echo $image_attributes[0]; ?>" width="<?php echo $image_attributes[1]; ?>" height="<?php echo $image_attributes[2]; ?>" />
+		<?php endif; ?>
+		</div>
+		<div class="foogallery-image-edit-button">
+		<input type="button" id="imgedit-open-btn-<?php echo $img_id; ?>" onclick='imageEdit.open( <?php echo $img_id; ?>, "627a22308f" )' class="button" value="Edit Image">
+		</div>
+	</div>
+	<div class="foogallery-image-edit-meta">
+		<div class="tabset">
+			<!-- Tab 1 -->
+			<input type="radio" name="tabset" id="foogallery-tab-main" aria-controls="foogallery-panel-main" checked>
+			<label for="foogallery-tab-main">Main</label>
+			<!-- Tab 2 -->
+			<input type="radio" name="tabset" id="foogallery-tab-taxonomies" aria-controls="foogallery-panel-taxonomies">
+			<label for="foogallery-tab-taxonomies">Taxonomies</label>
+			<!-- Tab 3 -->
+			<input type="radio" name="tabset" id="foogallery-tab-thumbnails" aria-controls="foogallery-panel-thumbnails">
+			<label for="foogallery-tab-thumbnails">Thumbnails</label>
+			<!-- Tab 4 -->
+			<input type="radio" name="tabset" id="foogallery-tab-watermark" aria-controls="foogallery-panel-watermark">
+			<label for="foogallery-tab-watermark">Watermark</label>
+			<!-- Tab 5 -->
+			<input type="radio" name="tabset" id="foogallery-tab-exif" aria-controls="foogallery-panel-exif">
+			<label for="foogallery-tab-exif">EXIF</label>
+			<!-- Tab 6 -->
+			<input type="radio" name="tabset" id="foogallery-tab-more" aria-controls="foogallery-panel-more">
+			<label for="foogallery-tab-more">More</label>
+			<!-- Tab 7 -->
+			<input type="radio" name="tabset" id="foogallery-tab-info" aria-controls="foogallery-panel-info">
+			<label for="foogallery-tab-info">Info</label>
+			
+			<div class="tab-panels">
+				<section id="foogallery-panel-main" class="tab-panel">
+					<div class="settings">								
+						<span class="setting" data-setting="title">
+							<label for="attachment-details-two-column-title" class="name">Title</label>
+							<input type="text" id="attachment-details-two-column-title" value="<?php echo $title;?>">
+						</span>								
+						<span class="setting" data-setting="caption">
+							<label for="attachment-details-two-column-caption" class="name">Caption</label>
+							<textarea id="attachment-details-two-column-caption"><?php echo $caption;?></textarea>
+						</span>
+						<span class="setting" data-setting="description">
+							<label for="attachment-details-two-column-description" class="name">Description</label>
+							<textarea id="attachment-details-two-column-description"><?php echo $description;?></textarea>
+						</span>
+						<span class="setting has-description" data-setting="alt">
+							<label for="attachment-details-two-column-alt-text" class="name">Alternative Text</label>
+							<input type="text" id="attachment-details-two-column-alt-text" value="<?php echo $image_alt;?>" aria-describedby="alt-text-description">
+						</span>
+						<p class="description" id="alt-text-description"><a href="https://www.w3.org/WAI/tutorials/images/decision-tree" target="_blank" rel="noopener">Learn how to describe the purpose of the image<span class="screen-reader-text"> (opens in a new tab)</span></a>. Leave empty if the image is purely decorative.</p>
+						<span class="setting" data-setting="url">
+							<label for="attachment-details-two-column-copy-link" class="name">File URL:</label>
+							<input type="text" class="attachment-details-copy-link" id="attachment-details-two-column-copy-link" value="<?php echo $file_url;?>" readonly="">
+							<span class="copy-to-clipboard-container">
+								<button type="button" class="button button-small copy-attachment-url" data-clipboard-target="#attachment-details-two-column-copy-link">Copy URL to clipboard</button>
+								<span class="success hidden" aria-hidden="true">Copied!</span>
+							</span>
+						</span>
+						<span class="setting" data-setting="custom_url">
+							<label for="attachments-foogallery-custom-url" class="name">Custom URL</label>
+							<input type="text" id="attachments-foogallery-custom-url" value="<?php echo $custom_url;?>">
+						</span>
+						<span class="setting" data-setting="custom_target">
+							<label for="attachments-foogallery-custom-target" class="name">Custom Class</label>
+							<select name="attachments-foogallery-custom-target">
+								<option value="default" <?php selected( 'default', $custom_target, true ); ?>>Default</option>
+								<option value="_blank" <?php selected( '_blank', $custom_target, true ); ?>>New tab (_blank)</option>
+								<option value="_self" <?php selected( '_self', $custom_target, true ); ?>>Same tab (_self)</option>
+								<option value="foobox" <?php selected( 'foobox', $custom_target, true ); ?>>FooBox</option>
+							</select>
+						</span>
+						<span class="setting" data-setting="custom_class">
+							<label for="attachments-foogallery-custom-class" class="name">Custom Class</label>
+							<input type="text" id="attachments-foogallery-custom-class" value="<?php echo $custom_class;?>">
+						</span>	
+					</div>
+				</section>
+				<section id="foogallery-panel-taxonomies" class="tab-panel">
+					<h2>Taxonomies</h2>
+				</section>
+				<section id="foogallery-panel-thumbnails" class="tab-panel">
+					<h2>Thumbnails</h2>
+				</section>
+				<section id="foogallery-panel-watermark" class="tab-panel">
+					<h2>Watermark</h2>
+				</section>
+				<section id="foogallery-panel-exif" class="tab-panel">
+					<h2>EXIF</h2>
+				</section>
+				<section id="foogallery-panel-more" class="tab-panel">
+					<h2>More</h2>
+				</section>
+				<section id="foogallery-panel-info" class="tab-panel">
+					<h2>Info</h2>
+				</section>
+			</div>		
+		</div>
+	</div>
+	<?php //echo ob_get_clean();
+	wp_die();
+}
+
+// Admin modal wrapper for gallery image edit
+add_action( 'admin_footer', 'foogallery_image_editor_modal' );
+function foogallery_image_editor_modal() { ?>
+	<div id="foogallery-image-edit-modal" style="display: none;">
+		<div class="media-modal wp-core-ui">
+			<div class="media-modal-content">
+				<div class="edit-attachment-frame mode-select hide-menu hide-router">
+					<div class="edit-media-header">
+						<button type="button" class="media-modal-close" onclick="close_foogallery_img_modal();"><span class="media-modal-icon"><span class="screen-reader-text">Close dialog</span></span></button>
+					</div>
+					<div class="media-frame-title"><h1>Foogallery attachment details</h1></div>
+					<div class="media-frame-content">
+						<div class="attachment-details save-ready">
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+<?php }

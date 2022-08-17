@@ -426,8 +426,20 @@ FooGallery.autoEnabled = false;
 
 		var createModal = $.isFunction(wp.foogallery) ? wp.foogallery : wp.media;
 
+		$.ajax({	
+			type: "POST",	
+			url: ajaxurl,	
+			data: {'img_id': selected_attachment_id, 'action': 'open_foogallery_image_edit_modal'},	
+			success: function(data) {	
+				//refresh page	
+				//location.reload();	
+				$('#foogallery-image-edit-modal .media-modal-content .edit-attachment-frame .media-frame-content .attachment-details').html(data);	
+				$('#foogallery-image-edit-modal').show();	
+			}	
+		});
+
 		// Create our FooGallery media frame.
-		FOOGALLERY.media_uploader = createModal({
+		/*FOOGALLERY.media_uploader = createModal({
 			frame: "select",
 			multiple: 'add',
 			title: FOOGALLERY.mediaModalTitle,
@@ -481,7 +493,7 @@ FooGallery.autoEnabled = false;
 		});
 
 		// Finally, open the modal
-		FOOGALLERY.media_uploader.open();
+		FOOGALLERY.media_uploader.open();*/
 	};
 
 	FOOGALLERY.initUsageMetabox = function() {
@@ -617,3 +629,7 @@ FooGallery.utils.ready(function ($) {
 		FOOGALLERY.adminReady();
 	}
 });
+
+function close_foogallery_img_modal() {
+	document.getElementById('foogallery-image-edit-modal').style.display = "none";  
+}
