@@ -415,7 +415,30 @@ function open_foogallery_image_edit_modal_ajax() {
 	$image_alt = get_post_meta( $img_id, '_wp_attachment_image_alt', true );
 	$custom_url = get_post_meta( $img_id, '_foogallery_custom_url', true );
 	$custom_target = ( get_post_meta( $img_id, '_foogallery_custom_target', true ) ? get_post_meta( $img_id, '_foogallery_custom_target', true ) : 'default' );
+	$attachment_watermark = get_post_meta( $img_id, FOOGALLERY_META_WATERMARK, true );
 	$custom_class = get_post_meta( $img_id, '_foogallery_custom_class', true );
+	$progress = get_post_meta( $gallery->ID, FOOGALLERY_META_WATERMARK_PROGRESS, true );
+	$category_taxonomy = 'foogallery_attachment_category';
+	$tag_taxonomy = 'foogallery_attachment_tag';
+	$img_categories = get_the_terms( $img_id, $category_taxonomy );
+	$img_tags = get_the_terms( $img_id, $tag_taxonomy );
+	$selected_categories = array();
+	$selected_tags = array();
+	$nonce = wp_create_nonce( 'foogallery_image_edit_'.$img_id );
+	foreach ( $img_categories as $cat ) {
+		$selected_categories[] = $cat->term_id;
+	}
+	foreach ( $img_tags as $tag ) {
+		$selected_tags[] = $tag->term_id;
+	}
+	$categories = $terms = get_terms( array(
+		'taxonomy' => $category_taxonomy,
+		'hide_empty' => false,
+	) );
+	$tags = $terms = get_terms( array(
+		'taxonomy' => $tag_taxonomy,
+		'hide_empty' => false,
+	) );
 	?>
 	<div class="foogallery-image-edit-main">
 		<div class="foogallery-image-edit-view">
@@ -451,8 +474,9 @@ function open_foogallery_image_edit_modal_ajax() {
 			<input type="radio" name="tabset" id="foogallery-tab-info" aria-controls="foogallery-panel-info">
 			<label for="foogallery-tab-info">Info</label>
 			
+			
 			<div class="tab-panels">
-				<section id="foogallery-panel-main" class="tab-panel">
+				<section id="foogallery-panel-main" class="tab-panel" data-nonce="<?php echo $nonce;?>">
 					<div class="settings">								
 						<span class="setting" data-setting="title">
 							<label for="attachment-details-two-column-title" class="name">Title</label>
@@ -499,13 +523,80 @@ function open_foogallery_image_edit_modal_ajax() {
 					</div>
 				</section>
 				<section id="foogallery-panel-taxonomies" class="tab-panel">
-					<h2>Taxonomies</h2>
+					<label for="foogallery_woocommerce_tags">Media Tags:</label>
+					<ul class="foogallery_woocommerce_tags">
+						<?php
+						foreach ($tags as $tag) {
+							$tag_selected = in_array($tag->term_id, $selected_tags);
+							?>
+							<li>
+								<a href="javascript:void(0);" class="button button-small<?php echo $tag_selected ? ' button-primary' : ''; ?>"
+									data-term-id="<?php echo $tag->term_id; ?>"><?php echo $tag->name; ?></a>
+							</li><?php
+						}
+						?>
+					</ul>
+					<br class="clear">
+					<label for="foogallery_woocommerce_categories">Media Categories:</label>
+					<ul class="foogallery_woocommerce_categories">
+						<?php
+						foreach ($categories as $category) {
+							$cat_selected = in_array($category->term_id, $selected_categories);
+							?>
+							<li>
+								<a href="javascript:void(0);" class="button button-small<?php echo $cat_selected ? ' button-primary' : ''; ?>"
+									data-term-id="<?php echo $category->term_id; ?>"><?php echo $category->name; ?></a>
+							</li><?php
+						}
+						?>
+					</ul>
+					<br class="clear">
 				</section>
 				<section id="foogallery-panel-thumbnails" class="tab-panel">
-					<h2>Thumbnails</h2>
+					<label for="attachments-crop-from-position">Crop Position</label>
+					<div id="foogallery_crop_pos">
+						<?php $foogallery_crop_pos = 'attachments[' . $img_id . '][foogallery_crop_pos]'; ?>
+						<input type="radio" name="<?php echo $foogallery_crop_pos;?>" value="left,top" title="Left, Top">
+						<input type="radio" name="<?php echo $foogallery_crop_pos;?>" value="center,top" title="Center, Top">
+						<input type="radio" name="<?php echo $foogallery_crop_pos;?>" value="right,top" title="Right, Top"><br>
+						<input type="radio" name="<?php echo $foogallery_crop_pos;?>" value="left,center" title="Left, Center">
+						<input type="radio" name="<?php echo $foogallery_crop_pos;?>" value="center,center" title="Center, Center" checked="checked">
+						<input type="radio" name="<?php echo $foogallery_crop_pos;?>" value="right,center" title="Right, Center"><br>
+						<input type="radio" name="<?php echo $foogallery_crop_pos;?>" value="left,bottom" title="Left, Bottom">
+						<input type="radio" name="<?php echo $foogallery_crop_pos;?>" value="center,bottom" title="Center, Bottom">
+						<input type="radio" name="<?php echo $foogallery_crop_pos;?>" value="right,bottom" title="Right, Bottom">
+					</div>
+					<div class="foogallery-attachments-list-bar">
+						<button type="button" class="button button-primary button-large upload_image_button"
+								data-uploader-title="<?php _e( 'Override Thumbnail Image', 'foogallery' ); ?>"
+								data-uploader-button-text="<?php _e( 'Override Thumbnail Image', 'foogallery' ); ?>"
+								data-post-id="<?php echo $foogallery->ID; ?>">
+							<?php _e( 'Override Thumbnail Image', 'foogallery' ); ?>
+						</button>
+					</div>
 				</section>
 				<section id="foogallery-panel-watermark" class="tab-panel">
-					<h2>Watermark</h2>
+					<?php if ( $attachment_watermark ) { ?>
+						<div id="foogallery-panel-watermark-preview">
+							<label for="attachments-crop-from-position">Watermark Image Preview: </label>
+							<a href="<?php echo $attachment_watermark['url']; ?>" target="_blank">
+								<img width="150" src="<?php echo $attachment_watermark['url']; ?>" alt="watermark">
+							</a>
+						</div>
+					<?php }  ?>
+					<div class="foogallery_metabox_field-watermark_status">
+						<button type="button" class="button button-primary button-large protection_generate">
+						<?php
+						if ( empty( $progress ) ) {
+							echo esc_html( __( 'Generate Watermarked Images', 'foogallery' ) );
+						} else {
+							echo esc_html( __( 'Continue Generating', 'foogallery' ) );
+						}
+						?>
+						</button>
+						<span style="position: absolute" class="spinner foogallery_protection_generate_spinner"></span>
+						<span style="padding-left: 40px; line-height: 25px;" class="foogallery_protection_generate_progress"></span>
+					</div>
 				</section>
 				<section id="foogallery-panel-exif" class="tab-panel">
 					<h2>EXIF</h2>
@@ -543,3 +634,43 @@ function foogallery_image_editor_modal() { ?>
 		</div>
 	</div>
 <?php }
+
+/**
+ * Adds a custom field to the attachments for override thumbnail
+ *
+ * @param $fields array
+ *
+ * @return array
+ */
+function foogallery_add_override_thumbnail_field( $fields ) {
+	$fields['foogallery_override_thumbnail'] = array(
+		'label'       =>  __( 'Override Thumbnail', 'foogallery' ),
+		'input'       => 'text',
+		'helps'       => __( 'Add another image to override this attachment', 'foogallery' ),
+	);
+
+	return $fields;
+}
+add_filter( 'foogallery_attachment_custom_fields', 'foogallery_add_override_thumbnail_field' );
+
+add_action( 'wp_ajax_foogallery_save_modal_metadata', 'foogallery_save_modal_metadata' );
+function foogallery_save_modal_metadata() {
+	$img_id = $_POST['id'];
+	$gallery_id = $_POST['post_id'];
+	$meta = $_POST['meta'];
+
+	print_r($_POST);
+	if ( array_key_exists( 'foogallery_custom_url', $meta ) ) {
+		update_post_meta( $img_id, '_foogallery_custom_url', $meta['foogallery_custom_url'] );
+	}
+
+	if ( array_key_exists( 'tags', $meta ) ) {
+		$tags = array();
+		foreach ( $meta['tags'] as $tag ) {
+			$tags[] = (int) $tag;
+		}
+		var_dump($meta['tags']);
+		wp_set_object_terms( $img_id, $tags, 'foogallery_attachment_tag', false );
+	}
+	wp_die();
+}

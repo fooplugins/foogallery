@@ -276,3 +276,30 @@
 #foogallery-panel-main select {
     margin: 0px 8px;
 }
+#foogallery-panel-taxonomies label{
+    margin-bottom: 10px;
+    display: block;
+}
+.foogallery_woocommerce_tags li {
+    position: relative;
+    float: left;
+    margin-right: 8px;
+    margin-bottom: 10px;
+}
+#foogallery-panel-thumbnails label {
+    display: inline-block;
+    vertical-align: text-bottom;
+    margin-right: 30px;
+}
+#foogallery-panel-thumbnails #foogallery_crop_pos {
+    display: inline-block;
+    vertical-align: text-top;
+    margin-bottom: 20px;
+}
+#foogallery-panel-watermark-preview {
+    margin-bottom: 20px;
+}
+#foogallery-panel-watermark-preview label {
+    margin-bottom: 10px;
+    display: block;
+}
