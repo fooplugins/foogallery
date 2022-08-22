@@ -427,11 +427,17 @@ FooGallery.autoEnabled = false;
 
 		var createModal = $.isFunction(wp.foogallery) ? wp.foogallery : wp.media;
 
-		if (selected_attachment_id > 0) {
+		var modal_style = $('#foogallery-image-edit-modal').data('modal_style');
+		if (selected_attachment_id > 0 && modal_style == 'on') {
+			var nonce = $('#foogallery-image-edit-modal').data('nonce');
 			$.ajax({	
 				type: "POST",	
 				url: ajaxurl,	
-				data: {'img_id': selected_attachment_id, 'action': 'open_foogallery_image_edit_modal'},	
+				data: {
+					'img_id': selected_attachment_id, 
+					'nonce': nonce,
+					'action': 'open_foogallery_image_edit_modal'
+				},	
 				success: function(data) {	
 					//refresh page	
 					//location.reload();	
