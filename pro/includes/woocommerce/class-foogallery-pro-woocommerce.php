@@ -126,7 +126,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 		 * @return mixed
 		 */
 		public function add_button_to_json(  $json_object, $foogallery_attachment, $args, $anchor_attributes, $image_attributes, $captions ) {
-			if ( isset( $foogallery_attachment->product ) ) {
+			if ( self::is_product( $foogallery_attachment->product ) ) {
 				$json_object->productId = $foogallery_attachment->product->get_id();
 			}
 
@@ -143,7 +143,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 		 * @return false|mixed|string
 		 */
 		public function build_product_captions( $caption, $placeholder, $foogallery_attachment ) {
-			if ( strpos( $placeholder, 'product.' ) === 0 && isset( $foogallery_attachment->product ) ) {
+			if ( strpos( $placeholder, 'product.' ) === 0 && self::is_product( $foogallery_attachment->product ) ) {
 				$property = str_replace( 'product.', '', $placeholder );
 				$product = $foogallery_attachment->product;
 				switch ( $property ) {
@@ -435,6 +435,10 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 			}
 		}
 
+        private static function is_product( $product ) {
+            return isset( $product ) && is_object( $product ) && is_a( $product, 'WC_Product' );
+        }
+
 		/**
 		 * Add product attributes onto the anchor for an item.
 		 *
@@ -445,7 +449,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 		 * @return array
 		 */
 		public function add_product_attributes( $attr, $args, $foogallery_attachment ) {
-			if ( isset( $foogallery_attachment->product ) ) {
+			if ( self::is_product( $foogallery_attachment->product ) ) {
 				$attr['data-product-id'] = $foogallery_attachment->product->get_id();
 			}
 			return $attr;
@@ -511,6 +515,10 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 		 * @return mixed
 		 */
 		static function determine_extra_data_for_product( &$attachment, $product ) {
+            if ( !self::is_product( $product ) ) {
+                return $attachment;
+            }
+
 			// Do we need to add ribbons?
 			$ribbon_type = foogallery_gallery_template_setting( 'ecommerce_sale_ribbon_type', 'fg-ribbon-5' );
 			if ( 'none' !== $ribbon_type ) {
