@@ -67,9 +67,10 @@ The following free features make FooGallery the **best gallery plugin** on the m
 	*	Yoast SEO sitemap integration
 	*	Rank Math SEO sitemap integration
 	*	AIOSEO sitemap integration
-*   Albums built-in! (just activate the albums extension)
+*   Albums built-in! (just activate the albums feature)
 	*	Responsive album layout - [demo](https://fooplugins.com/foogallery-wordpress-gallery-plugin/wordpress-album-gallery/)
 	*	All-in-one Stack album - [demo](https://fooplugins.com/foogallery-wordpress-gallery-plugin/wordpress-album-gallery/#all-in-one)
+*   Import / Export galleries between WP installs
 *	Gutenberg ready (Gallery previews inside the new editor!)
 *	Live previews as you make changes!
 *	Retina thumbnail support
@@ -140,6 +141,8 @@ There are 3 PRO plans available, that will work with any budget:
 	*	Supports variations
 *	Master Galleries
     *   Set a gallery as a master and then all galleries who use that master will inherit all settings from the master - [docs](https://fooplugins.com/documentation/foogallery/pro-commerce/use-master-gallery/)
+*   White Labeling
+    *   Rebrand FooGallery to whatever you like for your clients. Ideal for freelancers and agencies.
 
 [See More Demos](https://fooplugins.com/foogallery-wordpress-gallery-plugin/demos/)
 
@@ -182,7 +185,7 @@ Sell your photographs online with our full WooCommerce integration, available in
 
 **Albums Built In**
 
-Albums are built in as an extension. Simply head over to the extensions page and activate the albums extension. A new menu item will appear that allows you to add albums just as easily as galleries.
+Albums are built in as an feature. Simply head over to the Features page and activate the albums feature. A new menu item will appear that allows you to add albums just as easily as galleries.
 
 **Built For Developers**
 
@@ -265,9 +268,19 @@ You can choose to create a gallery based of your products, or you can link all i
 For the Free version of FooGallery - Yes, you will need to install FooBox Image Lightbox.
 For the PRO version of FooGallery - No, we have built in a uniquely beautiful lightbox!
 
+= How do I import galleries from another install? =
+
+Simply go to the FooGallery Features page and activate the Import/Export feature on your source installation and your destination installation.
+Login into your source WordPress install, and click on the FooGallery -> Import/Export menu item.
+Click the Export tab and select the galleries you want to export and click Export.
+Copy the export data that is generated.
+Login into your destination WordPress install, and click on the FooGallery -> Import/Export menu item.
+Paste the export data and click Import.
+Please note : the images in your source install need to be accessible to your destination install (this means you cannot lock down your source install if you want this to work).
+
 = How do I get albums working? =
 
-Simply go to the FooGallery extensions page and activate the Albums extension. If you do not see a button to activate the albums extension, reload the extensions list by clicking the reload button.
+Simply go to the FooGallery Features page and activate the Albums feature.
 
 = Can I add a watermark to my images? =
 
