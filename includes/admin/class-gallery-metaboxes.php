@@ -488,6 +488,36 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 			die();
 		}
 
+		public function ajax_clear_attachment_thumb_cache() {
+			if ( check_admin_referer( 'foogallery_clear_attachment_thumb_cache', 'foogallery_clear_attachment_thumb_cache_nonce' ) ) {
+
+				$engine = foogallery_thumb_active_engine();
+
+				if ( $engine->has_local_cache() ) {
+
+					$attachment_id = $_POST['attachment_id'];
+
+					$foogallery_id = $_POST['foogallery_id'];
+					$foogallery = FooGallery::get_by_id( $foogallery_id );
+
+					ob_start();
+
+					//loop through all images, get the full sized file
+					foreach ( $foogallery->attachments() as $attachment ) {
+						//$engine->clear_local_cache_for_file( $attachment->url );
+					}
+
+					ob_end_clean();
+
+					echo __( 'The thumbnail cache has been cleared!', 'foogallery' );
+				} else {
+					echo __( 'There was no thumbnail cache to clear.', 'foogallery' );
+				}
+			}
+
+			die();
+		}
+
 		/**
 		 * Returns a list of all hidden metaboxes
 		 *

@@ -434,7 +434,7 @@ FooGallery.autoEnabled = false;
 				type: "POST",	
 				url: ajaxurl,	
 				data: {
-					'img_id': selected_attachment_id, 
+					'img_id': selected_attachment_id,
 					'nonce': nonce,
 					'action': 'open_foogallery_image_edit_modal'
 				},	
@@ -631,44 +631,19 @@ FooGallery.autoEnabled = false;
 		    alert( 'If you want to turn off these promotional messages forever, goto FooGallery Settings -> Advanced, and set the "Disable PRO Promotions" setting. Thank you for using FooGallery :)')
 	    } );
 
-		$(document).on('click', '#foogallery-panel-taxonomies .foogallery_woocommerce_categories a', function(e){
-			$(this).toggleClass('button-primary');
-			var data = {
-				'action': 'save-attachment-compat',
-
-			}
-			$.ajax({
-				type: "POST",
-				url: ajaxurl,
-				data: data,
-				cache: false,
-				success: function(data) {
-					$('.foogallery_preview_container .foogallery').foogallery("destroy");
-	
-					//updated the preview
-					$preview_container.html(data);
-					$('#foogallery_preview_spinner').removeClass('is-active');
-					$preview_container.removeClass('loading foogallery-preview-force-refresh');
-	
-					FOOGALLERY.updateGalleryPreview(true, true);
-				}
-			});
-		});
-
 		$(document).on('click', '#foogallery-panel-taxonomies .foogallery_woocommerce_tags a', function(e){
 			$(this).toggleClass('button-primary');
 			var nonce = $('#foogallery-panel-main').data('nonce');
+			var img_id = $('.foogallery-image-edit-main').data('img_id');
 			var tags = [];
 			$('.foogallery_woocommerce_tags a.button-primary').each(function(){
 				var term_id = parseInt($(this).data('term-id'));
 				tags.push(term_id);
 			});
-
 			var data = {
 				'action': 'foogallery_save_modal_metadata',
 				'nonce': nonce,
-				'id': 149,
-				'post_id': 9,
+				'id': img_id,
 				'meta': {
 					'tags': tags
 				},
@@ -681,14 +656,117 @@ FooGallery.autoEnabled = false;
 				success: function(res) {
 					console.log(res);
 				}
-			});
-			
+			});			
 		});
 
-		$(document).on('click', '.foogallery-attachments-list .attachment .attachment-preview a.info', function(e) {
-			//alert('here');
+		$(document).on('click', '#foogallery-panel-taxonomies .foogallery_woocommerce_categories a', function(e){
+			$(this).toggleClass('button-primary');
+			var nonce = $('#foogallery-panel-main').data('nonce');
+			var img_id = $('.foogallery-image-edit-main').data('img_id');
+			var categories = [];
+			$('.foogallery_woocommerce_categories a.button-primary').each(function(){
+				var term_id = parseInt($(this).data('term-id'));
+				categories.push(term_id);
+			});
+			var data = {
+				'action': 'foogallery_save_modal_metadata',
+				'nonce': nonce,
+				'id': img_id,
+				'meta': {
+					'categories': categories
+				},
+			};
+			$.ajax({
+				type: "POST",
+				url: ajaxurl,
+				data: data,
+				cache: false,
+				success: function(res) {
+					console.log(res);
+				}
+			});			
 		});
-		
+
+		$(document).on('focusout', '#foogallery-image-edit-modal input[type="text"], #foogallery-image-edit-modal textarea', function(e){
+			var nonce = $('#foogallery-panel-main').data('nonce');
+			var img_id = $('.foogallery-image-edit-main').data('img_id');
+			var input_id = $(this).attr('id');
+			var input_val = $(this).val();
+			var data = {
+				'action': 'foogallery_save_modal_metadata',
+				'nonce': nonce,
+				'id': img_id,
+				'meta': {
+					'input_id': input_id,
+					'input_val': input_val
+				},
+			};
+			$.ajax({
+				type: "POST",
+				url: ajaxurl,
+				data: data,
+				cache: false,
+				success: function(res) {
+					console.log(res);
+				}
+			});
+		});
+
+		$(document).on('change', '#foogallery-image-edit-modal select', function(e){
+			var nonce = $('#foogallery-panel-main').data('nonce');
+			var img_id = $('.foogallery-image-edit-main').data('img_id');
+			var input_id = $(this).attr('id');
+			var input_val = $(this).val();
+			var data = {
+				'action': 'foogallery_save_modal_metadata',
+				'nonce': nonce,
+				'id': img_id,
+				'meta': {
+					'input_id': input_id,
+					'input_val': input_val
+				},
+			};
+			$.ajax({
+				type: "POST",
+				url: ajaxurl,
+				data: data,
+				cache: false,
+				success: function(res) {
+					console.log(res);
+				}
+			});
+		});
+
+		$(document).on('change', '#foogallery-image-edit-modal .tab-panels input[type="radio"]', function(e){
+			var nonce = $('#foogallery-panel-main').data('nonce');
+			var img_id = $('.foogallery-image-edit-main').data('img_id');
+			var input_id = $(this).attr('name');
+			var input_val = $(this).val();
+			var data = {
+				'action': 'foogallery_save_modal_metadata',
+				'nonce': nonce,
+				'id': img_id,
+				'meta': {
+					'input_id': input_id,
+					'input_val': input_val
+				},
+			};
+			$.ajax({
+				type: "POST",
+				url: ajaxurl,
+				data: data,
+				cache: false,
+				success: function(res) {
+					console.log(res);
+				}
+			});
+		});
+
+		$(document).on('click', '.copy-attachment-file-name', function(e) {
+			var file_name = $('#attachment-details-two-column-copy-file-name').text();
+			alert(file_name);
+			navigator.clipboard.writeText(file_name);
+		})
     };
 
 }(window.FOOGALLERY = window.FOOGALLERY || {}, jQuery));
