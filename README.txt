@@ -312,6 +312,12 @@ Please update in order to for FooGallery to work in WP 5.5+!
 
 == Changelog ==
 
+= 2.2.17 =
+* Date Updated : 2022-08-26
+* Fix : Fixed Justified last row + filter bug
+* Fix : Fixed iOS swipe bug
+* Update : FooGallery client side 2.0.36
+
 = 2.2.16 =
 * Date Updated : 2022-08-16
 * New : Added Import/Export feature, so you can export galleries on one install, and import into another.
