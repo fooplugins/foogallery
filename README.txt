@@ -312,10 +312,11 @@ Please update in order to for FooGallery to work in WP 5.5+!
 
 == Changelog ==
 
-= 2.2.17 =
-* Date Updated : 2022-08-26
-* Fix : Fixed Justified last row + filter bug
-* Fix : Fixed iOS swipe bug
+= 2.2.18 =
+* Date Updated : 2022-08-27
+* Fix : Fixed Justified last row + filter bug.
+* Fix : Fixed iOS swipe bug.
+* Fix : Fixed PHP warning when using taxonomy datasource originating from woocommerce product linking.
 * Update : FooGallery client side 2.0.36
 
 = 2.2.16 =
