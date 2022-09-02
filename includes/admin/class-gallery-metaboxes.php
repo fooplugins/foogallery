@@ -28,6 +28,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 
 			// Ajax call for clearing thumb cache for the gallery
 			add_action( 'wp_ajax_foogallery_clear_gallery_thumb_cache', array( $this, 'ajax_clear_gallery_thumb_cache' ) );
+			add_action( 'wp_ajax_foogallery_clear_attachment_thumb_cache', array( $this, 'ajax_clear_attachment_thumb_cache' ) );
 
 			add_filter( 'hidden_meta_boxes', array( $this, 'get_hidden_meta_boxes' ), 10, 3 );
 
@@ -496,16 +497,11 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 				if ( $engine->has_local_cache() ) {
 
 					$attachment_id = $_POST['attachment_id'];
-
-					$foogallery_id = $_POST['foogallery_id'];
-					$foogallery = FooGallery::get_by_id( $foogallery_id );
+					$attachment = get_post( $attachment_id );
 
 					ob_start();
 
-					//loop through all images, get the full sized file
-					foreach ( $foogallery->attachments() as $attachment ) {
-						//$engine->clear_local_cache_for_file( $attachment->url );
-					}
+					$engine->clear_local_cache_for_file( $attachment->url );
 
 					ob_end_clean();
 

@@ -744,7 +744,7 @@ button[data-balloon]{overflow:visible}[data-balloon]{position:relative}[data-bal
     padding: 20px 0;
 }
 #foogallery-image-edit-modal .foogallery-image-edit-meta{
-    padding: 10px;
+    padding: 10px 0px;
 }
 #foogallery-image-edit-modal .attachment-details {
     display: grid;
@@ -759,26 +759,20 @@ button[data-balloon]{overflow:visible}[data-balloon]{position:relative}[data-bal
 /*
  CSS for the main interaction
 */
-.tabset > input[type="radio"] {
+#foogallery-image-edit-modal .tabset .foogallery-img-modal-tab-wrapper > input[type="radio"] {
     position: absolute;
     left: -200vw;
   }
   
-  .tabset .tab-panel {
+  #foogallery-image-edit-modal .tab-panel {
     display: none;
-  }
-  
-  .tabset > input:first-child:checked ~ .tab-panels > .tab-panel:first-child,
-  .tabset > input:nth-child(3):checked ~ .tab-panels > .tab-panel:nth-child(2),
-  .tabset > input:nth-child(5):checked ~ .tab-panels > .tab-panel:nth-child(3),
-  .tabset > input:nth-child(7):checked ~ .tab-panels > .tab-panel:nth-child(4),
-  .tabset > input:nth-child(9):checked ~ .tab-panels > .tab-panel:nth-child(5),
-  .tabset > input:nth-child(11):checked ~ .tab-panels > .tab-panel:nth-child(6),
-  .tabset > input:nth-child(13):checked ~ .tab-panels > .tab-panel:nth-child(7){
-    display: block;
-  }
-
-  .tabset > label {
+    padding: 30px 0;
+    /* border-top: 1px solid #ccc; */
+}
+#foogallery-image-edit-modal .tab-panel.active {
+	display: block;
+}
+#foogallery-image-edit-modal .tabset .foogallery-img-modal-tab-wrapper > label {
     position: relative;
     display: inline-block;
     padding: 5px 10px 5px;
@@ -786,49 +780,25 @@ button[data-balloon]{overflow:visible}[data-balloon]{position:relative}[data-bal
     border-bottom: 0;
     cursor: pointer;
     font-weight: 600;
-  }
-  
-  /*.tabset > label::after {
-    content: "";
-    position: absolute;
-    left: 15px;
-    bottom: 10px;
-    width: 22px;
-    height: 4px;
-    background: #8d8d8d;
-  }*/
-  
-  .tabset > label:hover,
-  .tabset > input:focus + label {
+  }  
+  #foogallery-image-edit-modal .tabset .foogallery-img-modal-tab-wrapper > label:hover,
+  #foogallery-image-edit-modal .tabset .foogallery-img-modal-tab-wrapper > input:focus + label {
     color: #06c;
   }
-  
-  /*.tabset > label:hover::after,
-  .tabset > input:focus + label::after,
-  .tabset > input:checked + label::after {
-    background: #06c;
-  }*/
-  .tabset > input:checked + label {
+  #foogallery-image-edit-modal .tabset .foogallery-img-modal-tab-wrapper > input:checked + label {
     border-color: #ccc;
     border-bottom: 1px solid #fff !important;
     margin-bottom: -0.7px;
     cursor: pointer;
 }
-  
-  .tab-panel {
-    padding: 30px 0;
-    border-top: 1px solid #ccc;
-  }
-  
-  .tabset {
-    max-width: 65em;
-  }
   .foogallery-image-edit-meta {
     background-color: #fff;
     padding: 10px;
 }
 #foogallery-image-edit-modal .tabset{
-    max-width: 75em;
+    max-width: 100%;
+    padding: 0px 10px;
+    border-bottom: 1px solid #ccc;
 }
 #foogallery-panel-main select {
     margin: 0px 8px;
@@ -878,4 +848,37 @@ button[data-balloon]{overflow:visible}[data-balloon]{position:relative}[data-bal
 #foogallery-image-edit-modal .foogallery-attachments-list-bar.clear-thumbnail .button {
 	background: #d63638;
     border-color: #d63638;
+}
+#foogallery-image-edit-modal .spinner.is-active{
+	float: unset;
+	height: 300px;
+    background-position: center center;
+	margin: 0 auto;
+    display: block;
+}
+.foogallery-img-modal-tab-wrapper {
+    display: inline-block;
+}
+#foogallery-image-edit-modal .tab-panels .settings span.setting {
+	display: grid;
+	grid-template-columns: 35% auto;
+	grid-gap: 30px;
+}
+#foogallery-image-edit-modal .tab-panels .settings span.setting input, #foogallery-image-edit-modal .tab-panels .settings span.setting select, #foogallery-image-edit-modal .tab-panels .settings span.setting textarea {
+    width: calc(100% - 10px);
+    box-sizing: border-box;
+    max-width: 100%;
+    margin-left: 0px !important;
+    margin-right: 0px !important;
+}
+#foogallery-image-edit-modal .tab-panels {
+    padding: 0px 10px;
+}
+#foogallery-image-edit-modal .tab-panels .settings span.setting input[type="radio"] {
+    width: auto;
+    margin: 8px 3px 0 !important;
+}
+#foogallery-panel-thumbnails .button-large{
+	max-width: 225px;
+
 }
