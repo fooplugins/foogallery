@@ -70,7 +70,7 @@ The following free features make FooGallery the **best gallery plugin** on the m
 *   Albums built-in! (just activate the albums feature)
 	*	Responsive album layout - [demo](https://fooplugins.com/foogallery-wordpress-gallery-plugin/wordpress-album-gallery/)
 	*	All-in-one Stack album - [demo](https://fooplugins.com/foogallery-wordpress-gallery-plugin/wordpress-album-gallery/#all-in-one)
-*   Import / Export galleries between WP installs
+*   Import / Export galleries between WP installs - [docs](https://fooplugins.com/documentation/foogallery/getting-started-foogallery/import-export/)
 *	Gutenberg ready (Gallery previews inside the new editor!)
 *	Live previews as you make changes!
 *	Retina thumbnail support
@@ -109,11 +109,11 @@ There are 3 PRO plans available, that will work with any budget:
 	*	Multi-level filtering for galleries [demo](https://fooplugins.com/foogallery-wordpress-gallery-plugin/filtering/#multi-level)
 	*	Bulk media tags and category management for attachments
 *	Dynamic Galleries (load images from other sources):
-	*	Load from a folder on the server
-	*	Load from a collection from Adobe Lightroom (using WP/LR Sync)
-	*	Load all attachments with Media Tags
-	*	Load all attachments with Media Categories
-	*	Load from a folder in Real Media Library
+	*	Load from a folder on the server [docs](https://fooplugins.com/documentation/foogallery/pro-expert/loading-galleries-server-folders/)
+	*	Load from a collection from Adobe Lightroom (using WP/LR Sync) [docs](https://fooplugins.com/documentation/foogallery/pro-expert/dynamic-gallery-from-lightroom-collection/)
+	*	Load all attachments with Media Tags [docs](https://fooplugins.com/documentation/foogallery/pro-expert/loading-galleries-media-tags/)
+	*	Load all attachments with Media Categories [docs](https://fooplugins.com/documentation/foogallery/pro-expert/loading-galleries-media-categories/)
+	*	Load from a folder in Real Media Library [docs](https://fooplugins.com/documentation/foogallery/pro-expert/loading-galleries-real-media-library/)
 	*	Load featured images from a post/page/custom post type - [demo](https://fooplugins.com/foogallery-wordpress-gallery-plugin/post-query-gallery/)
 *	Advanced Pagination
 	*   Numbered pagination - [demo](https://fooplugins.com/foogallery-wordpress-gallery-plugin/pagination/#numbered)
@@ -142,7 +142,7 @@ There are 3 PRO plans available, that will work with any budget:
 *	Master Galleries
     *   Set a gallery as a master and then all galleries who use that master will inherit all settings from the master - [docs](https://fooplugins.com/documentation/foogallery/pro-commerce/use-master-gallery/)
 *   White Labeling
-    *   Rebrand FooGallery to whatever you like for your clients. Ideal for freelancers and agencies.
+    *   Rebrand FooGallery to whatever you like for your clients. Ideal for freelancers and agencies. [docs](https://fooplugins.com/documentation/foogallery/pro-commerce/white-labeling/)
 
 [See More Demos](https://fooplugins.com/foogallery-wordpress-gallery-plugin/demos/)
 
@@ -312,12 +312,15 @@ Please update in order to for FooGallery to work in WP 5.5+!
 
 == Changelog ==
 
-= 2.2.18 =
-* Date Updated : 2022-08-27
+= 2.2.19 =
+* Date Updated : 2022-09-02
 * Fix : Fixed Justified last row + filter bug.
 * Fix : Fixed iOS swipe bug.
 * Fix : Fixed PHP warning when using taxonomy datasource originating from woocommerce product linking.
-* Update : FooGallery client side 2.0.36
+* Update : FooGallery client side 2.0.37
+[//]: # fs_premium_only_begin
+* Fix : Fix for lightbox woocommerce cart issue, where cart button was always greyed out in some scenarios.
+[//]: # fs_premium_only_end
 
 = 2.2.16 =
 * Date Updated : 2022-08-16
