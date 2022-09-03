@@ -28,6 +28,9 @@ if ( ! class_exists( 'FooGallery_Pro_Promotion' ) ) {
 			'foogallery-commerce'          => 'https://fooplugins.com/foogallery-wordpress-gallery-plugin/woocommerce-integration/',
 			'foogallery-product-gallery'   => 'https://fooplugins.com/foogallery-wordpress-gallery-plugin/woocommerce-integration/#product-gallery',
 			'foogallery-protection'        => 'https://fooplugins.com/foogallery-wordpress-gallery-plugin/photo-watermark/',
+            'foogallery-master'            => 'https://fooplugins.com/documentation/foogallery/pro-commerce/use-master-gallery/',
+            'foogallery-import-export'     => 'https://fooplugins.com/documentation/foogallery/getting-started-foogallery/import-export/',
+            'foogallery_whitelabeling'     => 'https://fooplugins.com/documentation/foogallery/pro-commerce/white-labeling/'
 		);
 
 		function __construct() {
