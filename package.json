@@ -1,6 +1,6 @@
 {
   "name": "foogallery",
-  "version": "2.2.19",
+  "version": "2.2.20",
   "description": "The Most Intuitive and Extensible Gallery Creation and Management Tool Ever Created for WordPress",
   "main": "gulpfile.js",
   "repository": {

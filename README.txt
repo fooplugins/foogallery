@@ -312,12 +312,12 @@ Please update in order to for FooGallery to work in WP 5.5+!
 
 == Changelog ==
 
-= 2.2.19 =
-* Date Updated : 2022-09-02
+= 2.2.20 =
+* Date Updated : 2022-09-05
 * Fix : Fixed Justified last row + filter bug.
 * Fix : Fixed iOS swipe bug.
 * Fix : Fixed PHP warning when using taxonomy datasource originating from woocommerce product linking.
-* Update : FooGallery client side 2.0.37
+* Update : FooGallery client side 2.0.38
 [//]: # fs_premium_only_begin
 * Fix : Fix for lightbox woocommerce cart issue, where cart button was always greyed out in some scenarios.
 [//]: # fs_premium_only_end
