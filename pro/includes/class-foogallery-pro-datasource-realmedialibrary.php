@@ -1,6 +1,6 @@
 <?php
 /**
- * The Gallery Datasource which pulls attachments for a specific Media Category Taxonomy
+ * The Gallery Datasource which pulls attachments from a folder within Real Media Library
  */
 if ( ! class_exists( 'FooGallery_Pro_Datasource_RealMediaLibrary' ) ) {
 
@@ -63,7 +63,7 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_RealMediaLibrary' ) ) {
 		 */
 		public function get_gallery_featured_attachment( $default, $foogallery ) {
 			// Check if cover image is set
-			if ( ! empty( $foogallery->datasource_value ) ) {
+			if ( function_exists('get_media_folder_meta' ) && ! empty( $foogallery->datasource_value ) ) {
 				$datasource_value = $foogallery->datasource_value;
 				$fid              = $datasource_value['value'];
 				$coverImage       = (int) get_media_folder_meta( $fid, "coverImage", true );
