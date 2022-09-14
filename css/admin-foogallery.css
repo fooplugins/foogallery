@@ -787,8 +787,8 @@ button[data-balloon]{overflow:visible}[data-balloon]{position:relative}[data-bal
   }
   #foogallery-image-edit-modal .tabset .foogallery-img-modal-tab-wrapper > input:checked + label {
     border-color: #ccc;
-    border-bottom: 1px solid #fff !important;
-    margin-bottom: -0.7px;
+    border-bottom: 2px solid #fff !important;
+    margin-bottom: -1.7px;
     cursor: pointer;
 }
   .foogallery-image-edit-meta {
