@@ -741,7 +741,7 @@ button[data-balloon]{overflow:visible}[data-balloon]{position:relative}[data-bal
 
 #foogallery-image-edit-modal .foogallery-image-edit-main {
     text-align: center;
-    padding: 20px 0;
+    padding: 0 0 20px;
 }
 #foogallery-image-edit-modal .foogallery-image-edit-meta{
     padding: 10px 0px;
@@ -749,7 +749,7 @@ button[data-balloon]{overflow:visible}[data-balloon]{position:relative}[data-bal
 #foogallery-image-edit-modal .attachment-details {
     display: grid;
     grid-template-columns: 1fr 2fr;
-    grid-gap: 15px;
+    /*grid-gap: 15px;*/
     padding: 0;
     background: #f0f0f1;
 }
@@ -787,8 +787,9 @@ button[data-balloon]{overflow:visible}[data-balloon]{position:relative}[data-bal
   }
   #foogallery-image-edit-modal .tabset .foogallery-img-modal-tab-wrapper > input:checked + label {
     border-color: #ccc;
-    border-bottom: 1px solid #fff !important;
-    margin-bottom: -0.7px;
+    border-bottom-color: rgb(204, 204, 204);
+    border-bottom: 2px solid #fff !important;
+    margin-bottom: -1.7px;
     cursor: pointer;
 }
   .foogallery-image-edit-meta {
@@ -845,6 +846,9 @@ button[data-balloon]{overflow:visible}[data-balloon]{position:relative}[data-bal
 #foogallery-image-edit-modal .foogallery-attachments-list-bar {
     margin-top: 20px;
 }
+#foogallery-image-edit-modal .foogallery-attachments-list-bar.clear-thumbnail {
+    margin-top: 0;
+}
 #foogallery-image-edit-modal .foogallery-attachments-list-bar.clear-thumbnail .button, #foogallery-img-modal-alternate-image-delete {
 	background: #d63638;
     border-color: #d63638;
@@ -880,14 +884,48 @@ button[data-balloon]{overflow:visible}[data-balloon]{position:relative}[data-bal
 }
 #foogallery-panel-thumbnails .button-large {
 	max-width: 225px;
-
+	width: 100%;
 }
 #foogallery-image-edit-modal .media-modal-close {
 	border-left: 1px solid #dcdcde;
 }
 #foogallery-panel-info .foogallery-panel-info-inner {
-	text-align: left;
-	padding: 10px 20px;
+    text-align: left;
+    padding: 10px 20px;
+    column-count: 2;
+    column-rule: 2px solid #000;
+    column-gap: 50px;
+    margin-bottom: 20px;
+    -webkit-column-break-inside: avoid;
+    page-break-inside: avoid;
+    break-inside: avoid;
+    column-fill: balance;
+}
+.foogallery-panel-info-inner > div {
+	webkit-column-break-inside: avoid;
+	page-break-inside: avoid;
+	break-inside: avoid;
+}
+.foogallery-modal-info-fields * {
+    font-weight: 600;
+	vertical-align: middle;
+	font-size: 13px;
+}
+#foogallery-img-modal-alternate-image-delete {
+    background-color: #f6f7f7;
+    color: #2271b1;
+    border: 1px solid #2271b1;
+}
+#foogallery-img-modal-alternate-image-delete:hover {
+    color: #0a4b78;
+    background-color: #f0f0f1;
+    border-color: #0a4b78;
+}
+#foogallery-image-edit-modal .tab-panels .settings span.setting.alternate-image-upload-settings {
+	grid-template-columns: 1fr;
+}
+#foogallery-image-edit-modal .tab-panels .alternate-image-upload-wrap {
+	margin-left: 43px;
 }
 #foogallery-image-edit-modal .tab-panels .settings span.setting.override-thumbnail, #foogallery-image-edit-modal .tab-panels .settings span.setting.override-thumbnail-preview, #foogallery-image-edit-modal .tab-panels .settings span.setting.alternate-image-delete {
 	display: none;

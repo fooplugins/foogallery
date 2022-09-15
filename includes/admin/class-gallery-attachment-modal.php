@@ -473,6 +473,17 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
 								<label for="attachments-foogallery-custom-class" class="name"><?php _e('Custom Class', 'foogallery'); ?></label>
 								<input type="text" id="attachments-foogallery-custom-class" value="<?php echo $this->img_modal['custom_class'];?>">
 							</span>	
+							<span class="setting" data-setting="file_url">
+								<label for="attachments-foogallery-file-url" class="name"><?php _e('File URL', 'foogallery'); ?></label>
+								<input type="text" id="attachments-foogallery-file-url" value="<?php echo $this->img_modal['file_url'];?>">
+							</span>
+							<span class="setting" data-setting="file_url_copy">
+								<label for="attachments-foogallery-file-url-copy" class="name"><?php _e('', 'foogallery'); ?></label>
+								<span class="copy-to-clipboard-container">
+									<button type="button" class="button button-small copy-attachment-file-url" data-clipboard-target="#attachments-foogallery-file-url"><?php _e('Copy URL to clipboard', 'foogallery'); ?></button>
+									<span class="success hidden" aria-hidden="true"><?php _e('Copied!', 'foogallery'); ?></span>
+								</span>
+							</span>
 						</div>
 					</section>
 					<?php echo ob_get_clean();
@@ -579,24 +590,22 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
 										<label for="attachment-details-two-column-override-thumbnail-preview" class="name"><?php _e('Alternate Thumbnail Preview', 'foogallery'); ?></label>
 										<img id="attachment-details-two-column-override-thumbnail-preview" src="<?php echo $this->img_modal['alternate_img_src']; ?>" alt="Alternate Thumbnail">
 								</span>
-								<span class="setting" data-setting="alternate-image-upload">
-									<label class="name"></label>
-									<button type="button" class="button button-primary button-large" id="foogallery-img-modal-alternate-image-upload"
-											data-uploader-title="<?php _e( 'Override Thumbnail Image', 'foogallery' ); ?>"
-											data-uploader-button-text="<?php _e( 'Override Thumbnail Image', 'foogallery' ); ?>"
-											data-img-id="<?php echo $this->img_modal['img_id']; ?>">
-										<?php _e( 'Override Thumbnail Image', 'foogallery' ); ?>
-									</button>
-								</span>
-								<span class="setting alternate-image-delete <?php echo $this->img_modal['override_class']; ?>" data-setting="alternate-image-delete">
-									<label class="name"></label>
-									<button type="button" class="button button-primary button-large <?php echo $this->img_modal['override_class']; ?>" id="foogallery-img-modal-alternate-image-delete"
-											data-uploader-title="<?php _e( 'Clear Override Thumbnail', 'foogallery' ); ?>"
-											data-uploader-button-text="<?php _e( 'Clear Override Thumbnail', 'foogallery' ); ?>"
-											data-img-id="<?php echo $this->img_modal['img_id']; ?>">
-										<?php _e( 'Clear Override Thumbnail', 'foogallery' ); ?>
-									</button>
-									<span id="foogallery_clear_alternate_img_spinner" class="spinner"></span>
+								<span class="setting alternate-image-upload-settings" data-setting="alternate-image-upload">
+									<div class="alternate-image-upload-wrap">
+										<button type="button" class="button button-primary button-large" id="foogallery-img-modal-alternate-image-upload"
+												data-uploader-title="<?php _e( 'Override Thumbnail Image', 'foogallery' ); ?>"
+												data-uploader-button-text="<?php _e( 'Override Thumbnail Image', 'foogallery' ); ?>"
+												data-img-id="<?php echo $this->img_modal['img_id']; ?>">
+											<?php _e( 'Override Thumbnail Image', 'foogallery' ); ?>
+										</button>
+										<button type="button" class="button button-primary button-large <?php echo $this->img_modal['override_class']; ?>" id="foogallery-img-modal-alternate-image-delete"
+												data-uploader-title="<?php _e( 'Clear Override Thumbnail', 'foogallery' ); ?>"
+												data-uploader-button-text="<?php _e( 'Clear Override Thumbnail', 'foogallery' ); ?>"
+												data-img-id="<?php echo $this->img_modal['img_id']; ?>">
+											<?php _e( 'Clear Override Thumbnail', 'foogallery' ); ?>
+										</button>
+										<span id="foogallery_clear_alternate_img_spinner" class="spinner"></span>
+									</div>
 								</span>
 							</div>
 						</div>
@@ -787,31 +796,33 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
 					} ?>
 					<section id="foogallery-panel-info">
 						<div class="foogallery-panel-info-inner">
-							<div>
+							<div class="foogallery-modal-info-fields">
 								<label for="attachment-details-two-column-uploaded-on" class="name"><?php _e('Uploaded On: ', 'foogallery'); ?></label>
 								<span><?php echo $this->img_modal['post_date']; ?></span>
 							</div>
-							<div>
+							<div class="foogallery-modal-info-fields">
 								<label for="attachment-details-two-column-uploaded-by" class="name"><?php _e('Uploaded By: ', 'foogallery'); ?></label>
 								<span><?php echo $this->img_modal['author_name']; ?></span>
 							</div>
-							<div>
+							<div class="foogallery-modal-info-fields">
 								<label for="attachment-details-two-column-file-name" class="name"><?php _e('File Name: ', 'foogallery'); ?></label>
 								<span id="attachment-details-two-column-copy-file-name"><?php echo $this->img_modal['img_title']; ?></span>
+								<?php /* ?>
 								<span class="copy-to-clipboard-container">
 									<button type="button" class="button button-small copy-attachment-file-name" data-clipboard-target="#attachment-details-two-column-copy-file-name"><?php _e('Copy file name to clipboard', 'foogallery'); ?></button>
 									<span class="success hidden" aria-hidden="true"><?php _e('Copied!', 'foogallery'); ?></span>
 								</span>
+								<?php */ ?>
 							</div>
-							<div>
+							<div class="foogallery-modal-info-fields">
 								<label for="attachment-details-two-column-file-type" class="name"><?php _e('File Type: ', 'foogallery'); ?></label>
 								<span><?php echo $this->img_modal['file_type']; ?></span>
 							</div>
-							<div>
+							<div class="foogallery-modal-info-fields">
 								<label for="attachment-details-two-column-file-size" class="name"><?php _e('File Size: ', 'foogallery'); ?></label>
 								<span><?php echo $file_size; ?></span>
 							</div>
-							<div>
+							<div class="foogallery-modal-info-fields">
 								<label for="attachment-details-two-column-dimensions" class="name"><?php _e('Dimensions: ', 'foogallery'); ?></label>
 								<span><?php echo $dimensions; ?></span>
 							</div>
