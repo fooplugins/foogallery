@@ -851,6 +851,11 @@ FooGallery.autoEnabled = false;
 			navigator.clipboard.writeText(file_name);
 		});
 
+		$(document).on('click', '.copy-attachment-file-url', function(e) {
+			var file_url = $('#attachments-foogallery-file-url').val();
+			navigator.clipboard.writeText(file_url);
+		});
+
 		$(document).on('click', '#foogallery-image-edit-modal .foogallery-img-modal-tab-wrapper', function(e) {
 			var panel = '#' + $(this).data('tab_id');
 			$('#foogallery-image-edit-modal .tab-panel').removeClass('active');

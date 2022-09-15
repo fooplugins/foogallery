@@ -67,9 +67,10 @@ The following free features make FooGallery the **best gallery plugin** on the m
 	*	Yoast SEO sitemap integration
 	*	Rank Math SEO sitemap integration
 	*	AIOSEO sitemap integration
-*   Albums built-in! (just activate the albums extension)
+*   Albums built-in! (just activate the albums feature)
 	*	Responsive album layout - [demo](https://fooplugins.com/foogallery-wordpress-gallery-plugin/wordpress-album-gallery/)
 	*	All-in-one Stack album - [demo](https://fooplugins.com/foogallery-wordpress-gallery-plugin/wordpress-album-gallery/#all-in-one)
+*   Import / Export galleries between WP installs - [docs](https://fooplugins.com/documentation/foogallery/getting-started-foogallery/import-export/)
 *	Gutenberg ready (Gallery previews inside the new editor!)
 *	Live previews as you make changes!
 *	Retina thumbnail support
@@ -108,11 +109,11 @@ There are 3 PRO plans available, that will work with any budget:
 	*	Multi-level filtering for galleries [demo](https://fooplugins.com/foogallery-wordpress-gallery-plugin/filtering/#multi-level)
 	*	Bulk media tags and category management for attachments
 *	Dynamic Galleries (load images from other sources):
-	*	Load from a folder on the server
-	*	Load from a collection from Adobe Lightroom (using WP/LR Sync)
-	*	Load all attachments with Media Tags
-	*	Load all attachments with Media Categories
-	*	Load from a folder in Real Media Library
+	*	Load from a folder on the server [docs](https://fooplugins.com/documentation/foogallery/pro-expert/loading-galleries-server-folders/)
+	*	Load from a collection from Adobe Lightroom (using WP/LR Sync) [docs](https://fooplugins.com/documentation/foogallery/pro-expert/dynamic-gallery-from-lightroom-collection/)
+	*	Load all attachments with Media Tags [docs](https://fooplugins.com/documentation/foogallery/pro-expert/loading-galleries-media-tags/)
+	*	Load all attachments with Media Categories [docs](https://fooplugins.com/documentation/foogallery/pro-expert/loading-galleries-media-categories/)
+	*	Load from a folder in Real Media Library [docs](https://fooplugins.com/documentation/foogallery/pro-expert/loading-galleries-real-media-library/)
 	*	Load featured images from a post/page/custom post type - [demo](https://fooplugins.com/foogallery-wordpress-gallery-plugin/post-query-gallery/)
 *	Advanced Pagination
 	*   Numbered pagination - [demo](https://fooplugins.com/foogallery-wordpress-gallery-plugin/pagination/#numbered)
@@ -140,6 +141,8 @@ There are 3 PRO plans available, that will work with any budget:
 	*	Supports variations
 *	Master Galleries
     *   Set a gallery as a master and then all galleries who use that master will inherit all settings from the master - [docs](https://fooplugins.com/documentation/foogallery/pro-commerce/use-master-gallery/)
+*   White Labeling
+    *   Rebrand FooGallery to whatever you like for your clients. Ideal for freelancers and agencies. [docs](https://fooplugins.com/documentation/foogallery/pro-commerce/white-labeling/)
 
 [See More Demos](https://fooplugins.com/foogallery-wordpress-gallery-plugin/demos/)
 
@@ -182,7 +185,7 @@ Sell your photographs online with our full WooCommerce integration, available in
 
 **Albums Built In**
 
-Albums are built in as an extension. Simply head over to the extensions page and activate the albums extension. A new menu item will appear that allows you to add albums just as easily as galleries.
+Albums are built in as an feature. Simply head over to the Features page and activate the albums feature. A new menu item will appear that allows you to add albums just as easily as galleries.
 
 **Built For Developers**
 
@@ -265,9 +268,19 @@ You can choose to create a gallery based of your products, or you can link all i
 For the Free version of FooGallery - Yes, you will need to install FooBox Image Lightbox.
 For the PRO version of FooGallery - No, we have built in a uniquely beautiful lightbox!
 
+= How do I import galleries from another install? =
+
+Simply go to the FooGallery Features page and activate the Import/Export feature on your source installation and your destination installation.
+Login into your source WordPress install, and click on the FooGallery -> Import/Export menu item.
+Click the Export tab and select the galleries you want to export and click Export.
+Copy the export data that is generated.
+Login into your destination WordPress install, and click on the FooGallery -> Import/Export menu item.
+Paste the export data and click Import.
+Please note : the images in your source install need to be accessible to your destination install (this means you cannot lock down your source install if you want this to work).
+
 = How do I get albums working? =
 
-Simply go to the FooGallery extensions page and activate the Albums extension. If you do not see a button to activate the albums extension, reload the extensions list by clicking the reload button.
+Simply go to the FooGallery Features page and activate the Albums feature.
 
 = Can I add a watermark to my images? =
 
@@ -298,6 +311,16 @@ We did the research and comparison. See our findings : [What is the Best WordPre
 Please update in order to for FooGallery to work in WP 5.5+!
 
 == Changelog ==
+
+= 2.2.20 =
+* Date Updated : 2022-09-05
+* Fix : Fixed Justified last row + filter bug.
+* Fix : Fixed iOS swipe bug.
+* Fix : Fixed PHP warning when using taxonomy datasource originating from woocommerce product linking.
+* Update : FooGallery client side 2.0.38
+[//]: # fs_premium_only_begin
+* Fix : Fix for lightbox woocommerce cart issue, where cart button was always greyed out in some scenarios.
+[//]: # fs_premium_only_end
 
 = 2.2.16 =
 * Date Updated : 2022-08-16
