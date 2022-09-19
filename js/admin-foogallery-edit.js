@@ -468,26 +468,6 @@ FooGallery.autoEnabled = false;
 						$('#foogallery-image-edit-modal .tab-panels .settings span.setting.alternate-image-delete').addClass('is-override-thumbnail');
 						$('#attachment-details-two-column-override-thumbnail-preview').attr('src', attachment.src)
 
-						var nonce = $('#foogallery-panel-main').data('nonce');
-						var img_id = $('.foogallery-image-edit-main').data('img_id');
-						var data = {
-							'action': 'foogallery_save_modal_metadata',
-							'nonce': nonce,
-							'id': img_id,
-							'meta': {
-								'input_id': 'attachments-foogallery-override-thumbnail-id',
-								'input_val': attachment.id
-							},
-						};
-						$.ajax({
-							type: "POST",
-							url: ajaxurl,
-							data: data,
-							cache: false,
-							success: function(res) {
-								console.log(res);
-							}
-						});
 
 						//FOOGALLERY.addAttachmentToGalleryList(attachment);
 					} else {
@@ -717,124 +697,32 @@ FooGallery.autoEnabled = false;
 
 		$(document).on('click', '#foogallery-panel-taxonomies .foogallery_woocommerce_tags a', function(e){
 			$(this).toggleClass('button-primary');
-			var nonce = $('#foogallery-panel-main').data('nonce');
-			var img_id = $('.foogallery-image-edit-main').data('img_id');
 			var tags = [];
 			$('.foogallery_woocommerce_tags a.button-primary').each(function(){
-				var term_id = parseInt($(this).data('term-id'));
+				var term_id = $(this).data('term-id');
 				tags.push(term_id);
 			});
-			var data = {
-				'action': 'foogallery_save_modal_metadata',
-				'nonce': nonce,
-				'id': img_id,
-				'meta': {
-					'tags': tags
-				},
-			};
-			$.ajax({
-				type: "POST",
-				url: ajaxurl,
-				data: data,
-				cache: false,
-				success: function(res) {
-					console.log(res);
-				}
-			});			
-		});
+			var tag_str = tags.toString();
+			$('#foogallery_woocommerce_tags_selected').val(tag_str);
+		}); 
 
 		$(document).on('click', '#foogallery-panel-taxonomies .foogallery_woocommerce_categories a', function(e){
 			$(this).toggleClass('button-primary');
-			var nonce = $('#foogallery-panel-main').data('nonce');
-			var img_id = $('.foogallery-image-edit-main').data('img_id');
 			var categories = [];
 			$('.foogallery_woocommerce_categories a.button-primary').each(function(){
-				var term_id = parseInt($(this).data('term-id'));
+				var term_id = $(this).data('term-id');
 				categories.push(term_id);
 			});
-			var data = {
-				'action': 'foogallery_save_modal_metadata',
-				'nonce': nonce,
-				'id': img_id,
-				'meta': {
-					'categories': categories
-				},
-			};
-			$.ajax({
-				type: "POST",
-				url: ajaxurl,
-				data: data,
-				cache: false,
-				success: function(res) {
-					console.log(res);
-				}
-			});			
+			var cat_str = categories.toString();
+			$('#foogallery_woocommerce_taxonomies_selected').val(cat_str);
 		});
 
-		$(document).on('focusout', '#foogallery-image-edit-modal input[type="text"], #foogallery-image-edit-modal textarea', function(e){
-			var nonce = $('#foogallery-panel-main').data('nonce');
-			var img_id = $('.foogallery-image-edit-main').data('img_id');
-			var input_id = $(this).attr('id');
-			var input_val = $(this).val();
-			var data = {
-				'action': 'foogallery_save_modal_metadata',
-				'nonce': nonce,
-				'id': img_id,
-				'meta': {
-					'input_id': input_id,
-					'input_val': input_val
-				},
-			};
-			$.ajax({
-				type: "POST",
-				url: ajaxurl,
-				data: data,
-				cache: false,
-				success: function(res) {
-					console.log(res);
-				}
-			});
-		});
 
-		$(document).on('change', '#foogallery-image-edit-modal select', function(e){
-			var nonce = $('#foogallery-panel-main').data('nonce');
-			var img_id = $('.foogallery-image-edit-main').data('img_id');
-			var input_id = $(this).attr('id');
-			var input_val = $(this).val();
-			var data = {
-				'action': 'foogallery_save_modal_metadata',
-				'nonce': nonce,
-				'id': img_id,
-				'meta': {
-					'input_id': input_id,
-					'input_val': input_val
-				},
-			};
-			$.ajax({
-				type: "POST",
-				url: ajaxurl,
-				data: data,
-				cache: false,
-				success: function(res) {
-					console.log(res);
-				}
-			});
-		});
 
-		$(document).on('change', '#foogallery-image-edit-modal .tab-panels input[type="radio"]', function(e){
-			var nonce = $('#foogallery-panel-main').data('nonce');
-			var img_id = $('.foogallery-image-edit-main').data('img_id');
-			var input_id = $(this).attr('name');
-			var input_val = $(this).val();
-			var data = {
-				'action': 'foogallery_save_modal_metadata',
-				'nonce': nonce,
-				'id': img_id,
-				'meta': {
-					'input_id': input_id,
-					'input_val': input_val
-				},
-			};
+		$(document).on('click', '#attachments-data-save-btn', function(e){
+			e.preventDefault();
+			var data = $('#foogallery_attachment_modal_save_form').serialize();
+			console.log(data);
 			$.ajax({
 				type: "POST",
 				url: ajaxurl,
