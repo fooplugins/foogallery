@@ -745,6 +745,7 @@ button[data-balloon]{overflow:visible}[data-balloon]{position:relative}[data-bal
 }
 #foogallery-image-edit-modal .foogallery-image-edit-meta{
     padding: 10px 0px;
+	position: relative;
 }
 #foogallery-image-edit-modal .attachment-details {
     display: grid;
@@ -826,6 +827,7 @@ button[data-balloon]{overflow:visible}[data-balloon]{position:relative}[data-bal
 }
 #foogallery-panel-watermark-preview {
     margin-bottom: 20px;
+	display: none;
 }
 #foogallery-panel-watermark-preview label {
     margin-bottom: 10px;
@@ -882,9 +884,39 @@ button[data-balloon]{overflow:visible}[data-balloon]{position:relative}[data-bal
     width: auto;
     margin: 8px 3px 0 !important;
 }
-#foogallery-panel-thumbnails .button-large {
+#foogallery-panel-thumbnails .button-large, #foogallery-panel-watermark .attachment_protection_generate {
 	max-width: 225px;
 	width: 100%;
+}
+#foogallery-image-edit-modal .attachment-details #foogallery-panel-taxonomies .setting .name {
+	padding-top: 5px;
+}
+#foogallery-panel-watermark .attachment_protection_generate {
+	float: left;
+}
+.foogallery-modal-footer-wrap {
+    text-align: right;
+    margin-bottom: 10px;
+    margin-right: 20px;
+}
+#foogallery-panel-watermark-preview.watermark-preview-show {
+	display: block;
+}
+.foogallery-modal-footer-wrap {
+    text-align: right;
+    margin-bottom: 10px;
+    margin-right: 20px;
+}
+.foogallery-image-edit-footer {
+	position: absolute;
+    bottom: 10px;
+    width: 100%;
+	right: 20px;
+	text-align: right;
+}
+#foogallery-panel-taxonomies .foogallery_woocommerce_tags, #foogallery-panel-taxonomies .foogallery_woocommerce_categories {
+	margin: 0;
+	padding: 0;
 }
 #foogallery-image-edit-modal .media-modal-close {
 	border-left: 1px solid #dcdcde;
