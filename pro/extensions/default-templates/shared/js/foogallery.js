@@ -14608,7 +14608,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
     FooGallery.utils.str,
     FooGallery.utils.transition
 );
-(function ($, _, _utils, _is, _fn, _obj, _t, _wcp) {
+(function ($, _, _utils, _is, _fn, _obj, _t) {
 
     _.Panel.Media.Product = _utils.Class.extend({
         construct: function (panel, media) {
@@ -14629,8 +14629,11 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
             self.__loaded = null;
             self.__requestId = null;
         },
+        hasWooCommerce: function(){
+            return !!window.woocommerce_params;
+        },
         canLoad: function(){
-            return !_is.empty(this.media.item.productId) && ((this.panel.opt.admin && !_wcp) || !!_wcp);
+            return !_is.empty(this.media.item.productId) && ((this.panel.opt.admin && !this.hasWooCommerce()) || this.hasWooCommerce());
         },
         create: function(){
             var self = this;
@@ -14754,7 +14757,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
                 if (self.panel.opt.admin){
                     self.$addToCart.toggleClass(self.cls.disabled, true);
                 } else {
-                    self.$addToCart.toggleClass(self.cls.hidden, !_wcp || !response.purchasable);
+                    self.$addToCart.toggleClass(self.cls.hidden, !self.hasWooCommerce() || !response.purchasable);
                 }
                 if (_is.string(response.product_url)){
                     if (self.panel.opt.admin){
@@ -14828,8 +14831,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
     FooGallery.utils.is,
     FooGallery.utils.fn,
     FooGallery.utils.obj,
-    FooGallery.utils.transition,
-    window.woocommerce_params
+    FooGallery.utils.transition
 );
 (function($, _, _utils, _obj){
 
@@ -15533,7 +15535,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
     FooGallery.utils.is,
     FooGallery.utils.obj
 );
-(function($, _, _utils, _is, _obj, _wcp){
+(function($, _, _is){
 
     _.template.configure("core", {}, {
         woo: {
@@ -15544,9 +15546,17 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
         }
     });
 
+    _.Item.prototype.hasWooCommerce = function(){
+        return !!window.woocommerce_params;
+    };
+
+    _.Item.prototype.getWooCommerceEndPoint = function(){
+        return this.hasWooCommerce() ? window.woocommerce_params.wc_ajax_url.toString().replace('%%endpoint%%', 'add_to_cart') : '';
+    };
+
     _.Item.prototype.onAddToCart = function(e){
         var self = e.data.self, $this = $(this);
-        if (!_wcp){
+        if (!self.hasWooCommerce()){
             console.log("woocommerce_params not found!");
             return;
         }
@@ -15591,7 +15601,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
         $body.trigger('adding_to_cart', [$button, data]);
         return $.ajax({
             type: 'POST',
-            url: _wcp.wc_ajax_url.toString().replace('%%endpoint%%', 'add_to_cart'),
+            url: self.getWooCommerceEndPoint(),
             data: data
         }).then(function(response) {
             if (!response){
@@ -15644,10 +15654,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 })(
     FooGallery.$,
     FooGallery,
-    FooGallery.utils,
-    FooGallery.utils.is,
-    FooGallery.utils.obj,
-    window.woocommerce_params
+    FooGallery.utils.is
 );
 (function($, _, _utils){
 
@@ -15961,7 +15968,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 						break;
 					case "hide":
 						height = self.justify(row, top_start, maxWidth, self.maxRowHeight);
-						if (row.width < maxWidth){
+						if (row.width < maxWidth && rows.length > 1){
 							row.visible = false;
 						}
 						break;
@@ -16515,6 +16522,15 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
         scaleToZ: function( value, vectorZ, perspective ){
             return value * ( 1 - vectorZ / ( perspective + vectorZ ) );
         },
+        /**
+         * @summary Returns the absolute difference between 2 numbers.
+         * @param {number} num1
+         * @param {number} num2
+         * @returns {number}
+         */
+        getDiff: function( num1, num2 ){
+            return num1 > num2 ? num1 - num2 : num2 - num1;
+        },
 
         //#endregion
 
@@ -16597,7 +16613,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
         },
         initSwipe: function(){
             const self = this;
-            let startX = 0, endX = 0;
+            let startX = 0, endX = 0, min = 25 * (window.devicePixelRatio || 1);
             self._listeners.add( self.elem.inner, "touchstart", function( event ){
                 self.interacted = true;
                 startX = event.changedTouches[0].screenX;
@@ -16605,10 +16621,13 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 
             self._listeners.add( self.elem.inner, "touchend", function( event ){
                 endX = event.changedTouches[0].screenX;
-                if ( endX < startX ){ // swipe left
-                    self.next();
-                } else { // swipe right
-                    self.previous();
+                const diff = self.getDiff( startX, endX );
+                if ( diff > min ){
+                    if ( endX < startX ){ // swipe left
+                        self.next();
+                    } else { // swipe right
+                        self.previous();
+                    }
                 }
                 endX = 0;
                 startX = 0;
