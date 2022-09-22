@@ -138,10 +138,19 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
 				<?php do_action( 'foogallery_img_modal_after_tabs' ); ?>
 				
 			</div>
+            <?php
 
-			<?php do_action( 'foogallery_img_modal_after_tab_container' ); ?>	
+            do_action( 'foogallery_img_modal_after_tab_container' );
 				
-			<?php echo wp_send_json( array( 'html' => ob_get_clean(), 'slide_num' => $this->img_modal['slide_num'], 'prev_slide' => $this->img_modal['prev_slide'], 'next_slide' => $this->img_modal['next_slide'], 'next_img_id' => $this->img_modal['next_img_id'], 'prev_img_id' => $this->img_modal['prev_img_id'], 'override_thumbnail' => $this->img_modal['foogallery_override_thumbnail'] ) );
+			wp_send_json( array(
+                'html' => ob_get_clean(),
+                'slide_num' => $this->img_modal['slide_num'],
+                'prev_slide' => $this->img_modal['prev_slide'],
+                'next_slide' => $this->img_modal['next_slide'],
+                'next_img_id' => $this->img_modal['next_img_id'],
+                'prev_img_id' => $this->img_modal['prev_img_id'],
+                'override_thumbnail' => $this->img_modal['foogallery_override_thumbnail']
+            ) );
 		}
 
 		/**
