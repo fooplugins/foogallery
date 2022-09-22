@@ -101,7 +101,7 @@ if ( ! class_exists( 'FooGallery_Pro_Protection' ) ) {
 						$next_attachment_id = intval( array_shift( $progress['attachments'] ) );
 						if ( $next_attachment_id > 0 ) {
 							// Generate watermark!
-							$this->generate_watermark( $next_attachment_id, self::get_watermark_options() );
+							$this->generate_watermark( $next_attachment_id );
 							$progress['progress'] = $progress['progress'] + 1;
 							$progress['count']    = $progress['count'] + 1;
 							$progress['percent']  = intval( $progress['progress'] / $progress['total'] * 100 );
@@ -397,10 +397,14 @@ if ( ! class_exists( 'FooGallery_Pro_Protection' ) ) {
 		 *
 		 * @return array
 		 */
-		private function generate_watermark( $attachment, $watermark_options ) {
+		public function generate_watermark( $attachment, $watermark_options = null) {
 			if ( ! is_object( $attachment ) && intval( $attachment ) > 0 ) {
 				$attachment = FooGalleryAttachment::get_by_id( $attachment );
 			}
+
+            if ( ! isset( $watermark_options ) ) {
+                $watermark_options = self::get_watermark_options();
+            }
 
 			// Generate the checksum before making any changes to the options!
 			$watermark_checksum = $this->generate_checksum( $watermark_options );

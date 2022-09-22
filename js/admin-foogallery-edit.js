@@ -417,71 +417,157 @@ FooGallery.autoEnabled = false;
 
 	FOOGALLERY.openMediaModal = function(selected_attachment_id) {
 		if (!selected_attachment_id) { selected_attachment_id = 0; }
-		FOOGALLERY.selected_attachment_id = selected_attachment_id;
 
-		if (FOOGALLERY.media_uploader !== false){
-			FOOGALLERY.media_uploader.open();
-			return;
-		}
+		var modal_style = $('#foogallery-image-edit-modal').data('modal_style');
+		var img_type = $('#foogallery-image-edit-modal').data('img_type');
 
-		var createModal = $.isFunction(wp.foogallery) ? wp.foogallery : wp.media;
+		if (selected_attachment_id > 0 && modal_style == 'on') {
 
-		// Create our FooGallery media frame.
-		FOOGALLERY.media_uploader = createModal({
-			frame: "select",
-			multiple: 'add',
-			title: FOOGALLERY.mediaModalTitle,
-			button: {
-				text: FOOGALLERY.mediaModalButtonText
-			},
-			library: {
-				type: "image"
-			}
-		}).on("select", function(){
-			var attachments = FOOGALLERY.media_uploader.state().get('selection').toJSON();
+			if (img_type == 'normal') {
+				open_modal_ajax(selected_attachment_id);
+			} else if (img_type == 'alternate') {
+				$('#foogallery-image-edit-modal').data('img_type', 'normal');
+				var createModal = $.isFunction(wp.foogallery) ? wp.foogallery : wp.media;
 
-			$.each(attachments, function(i, item) {
-				if ( item && item.id ) {
-					var attachment = {
-						id: item.id,
-						src: null,
-						subtype: null
-					};
-					if ( item.sizes && item.sizes.thumbnail) {
-						attachment.src = item.sizes.thumbnail.url;
+			// Create our FooGallery media frame.
+			FOOGALLERY.media_uploader = createModal({
+				frame: "select",
+				multiple: 'add',
+				title: FOOGALLERY.mediaModalTitle,
+				button: {
+					text: FOOGALLERY.mediaModalButtonText
+				},
+				library: {
+					type: "image"
+				}
+			}).on("select", function(){
+				var attachments = FOOGALLERY.media_uploader.state().get('selection').toJSON();
+
+				$.each(attachments, function(i, item) {
+					if ( item && item.id ) {
+						var attachment = {
+							id: item.id,
+							src: null,
+							subtype: null
+						};
+						if ( item.sizes && item.sizes.thumbnail) {
+							attachment.src = item.sizes.thumbnail.url;
+						} else {
+							//thumbnail could not be found for whatever reason. Default to the full image URL
+							attachment.src = item.url;
+						}
+						if ( item.subtype ) {
+							attachment.subtype = item.subtype;
+						}
+
+						$('#attachments-foogallery-override-thumbnail-id').val(attachment.id);
+						$('#attachment-details-two-column-override-thumbnail-preview').attr('src', attachment.src);
+						$('#attachments-foogallery-override-thumbnail').val(attachment.src);
+						$('#foogallery-image-edit-modal .tab-panels .settings span.setting.override-thumbnail').addClass('is-override-thumbnail');
+						$('#foogallery-image-edit-modal .tab-panels .settings span.setting.override-thumbnail-preview').addClass('is-override-thumbnail');
+						$('#foogallery-image-edit-modal .tab-panels .settings span.setting.alternate-image-delete').addClass('is-override-thumbnail');
+						$('#attachment-details-two-column-override-thumbnail-preview').attr('src', attachment.src)
+
+
+						//FOOGALLERY.addAttachmentToGalleryList(attachment);
 					} else {
-						//thumbnail could not be found for whatever reason. Default to the full image URL
-						attachment.src = item.url;
+						//there was a problem adding the item! Move on to the next
+						alert( 'There was a problem adding the item to the gallery!' );
 					}
-					if ( item.subtype ) {
-						attachment.subtype = item.subtype;
-					}
+				});
+			})
+			.on( 'open', function() {
+				var selection = FOOGALLERY.media_uploader.state().get('selection');
+				if (selection && !$.isFunction(wp.foogallery)) {
+					//clear any previous selections
+					selection.reset();
+				}
 
-					FOOGALLERY.addAttachmentToGalleryList(attachment);
+				if (FOOGALLERY.selected_attachment_id > 0) {
+					var attachment = wp.media.attachment(FOOGALLERY.selected_attachment_id);
+					attachment.fetch();
+					selection.add( attachment ? [ attachment ] : [] );
+					console.log('A');
+					console.log(attachment);
 				} else {
-					//there was a problem adding the item! Move on to the next
-					alert( 'There was a problem adding the item to the gallery!' );
+					//would be nice to have all previously added media selected
 				}
 			});
-		})
-		.on( 'open', function() {
-			var selection = FOOGALLERY.media_uploader.state().get('selection');
-			if (selection && !$.isFunction(wp.foogallery)) {
-				//clear any previous selections
-				selection.reset();
+
+			// Finally, open the modal
+			FOOGALLERY.media_uploader.open();
+
+
+
+			}
+		} else {
+
+			FOOGALLERY.selected_attachment_id = selected_attachment_id;
+
+			if (FOOGALLERY.media_uploader !== false){
+				FOOGALLERY.media_uploader.open();
+				return;
 			}
 
-			if (FOOGALLERY.selected_attachment_id > 0) {
-				var attachment = wp.media.attachment(FOOGALLERY.selected_attachment_id);
-				attachment.fetch();
-				selection.add( attachment ? [ attachment ] : [] );
-			} else {
-				//would be nice to have all previously added media selected
-			}
-		});
+			var createModal = $.isFunction(wp.foogallery) ? wp.foogallery : wp.media;
 
-		// Finally, open the modal
-		FOOGALLERY.media_uploader.open();
+			// Create our FooGallery media frame.
+			FOOGALLERY.media_uploader = createModal({
+				frame: "select",
+				multiple: 'add',
+				title: FOOGALLERY.mediaModalTitle,
+				button: {
+					text: FOOGALLERY.mediaModalButtonText
+				},
+				library: {
+					type: "image"
+				}
+			}).on("select", function(){
+				var attachments = FOOGALLERY.media_uploader.state().get('selection').toJSON();
+
+				$.each(attachments, function(i, item) {
+					if ( item && item.id ) {
+						var attachment = {
+							id: item.id,
+							src: null,
+							subtype: null
+						};
+						if ( item.sizes && item.sizes.thumbnail) {
+							attachment.src = item.sizes.thumbnail.url;
+						} else {
+							//thumbnail could not be found for whatever reason. Default to the full image URL
+							attachment.src = item.url;
+						}
+						if ( item.subtype ) {
+							attachment.subtype = item.subtype;
+						}
+
+						FOOGALLERY.addAttachmentToGalleryList(attachment);
+					} else {
+						//there was a problem adding the item! Move on to the next
+						alert( 'There was a problem adding the item to the gallery!' );
+					}
+				});
+			})
+			.on( 'open', function() {
+				var selection = FOOGALLERY.media_uploader.state().get('selection');
+				if (selection && !$.isFunction(wp.foogallery)) {
+					//clear any previous selections
+					selection.reset();
+				}
+
+				if (FOOGALLERY.selected_attachment_id > 0) {
+					var attachment = wp.media.attachment(FOOGALLERY.selected_attachment_id);
+					attachment.fetch();
+					selection.add( attachment ? [ attachment ] : [] );
+				} else {
+					//would be nice to have all previously added media selected
+				}
+			});
+
+			// Finally, open the modal
+			FOOGALLERY.media_uploader.open();
+		}
 	};
 
 	FOOGALLERY.initUsageMetabox = function() {
@@ -608,6 +694,127 @@ FooGallery.autoEnabled = false;
 		    e.preventDefault();
 		    alert( 'If you want to turn off these promotional messages forever, goto FooGallery Settings -> Advanced, and set the "Disable PRO Promotions" setting. Thank you for using FooGallery :)')
 	    } );
+
+		$(document).on('click', '#foogallery-panel-taxonomies .foogallery_woocommerce_tags a', function(e){
+			$(this).toggleClass('button-primary');
+			var tags = [];
+			$('.foogallery_woocommerce_tags a.button-primary').each(function(){
+				var term_id = $(this).data('term-id');
+				tags.push(term_id);
+			});
+			var tag_str = tags.toString();
+			$('#foogallery_woocommerce_tags_selected').val(tag_str);
+		}); 
+
+		$(document).on('click', '#foogallery-panel-taxonomies .foogallery_woocommerce_categories a', function(e){
+			$(this).toggleClass('button-primary');
+			var categories = [];
+			$('.foogallery_woocommerce_categories a.button-primary').each(function(){
+				var term_id = $(this).data('term-id');
+				categories.push(term_id);
+			});
+			var cat_str = categories.toString();
+			$('#foogallery_woocommerce_taxonomies_selected').val(cat_str);
+		});
+
+
+
+		$(document).on('click', '#attachments-data-save-btn', function(e){
+			e.preventDefault();
+			var data = $('#foogallery_attachment_modal_save_form').serialize();
+			console.log(data);
+			$.ajax({
+				type: "POST",
+				url: ajaxurl,
+				data: data,
+				cache: false,
+				success: function(res) {
+					console.log(res);
+				}
+			});
+		});
+
+		$(document).on('click', '.copy-attachment-file-name', function(e) {
+			var file_name = $('#attachment-details-two-column-copy-file-name').text();
+			navigator.clipboard.writeText(file_name);
+		});
+
+		$(document).on('click', '.copy-attachment-file-url', function(e) {
+			var file_url = $('#attachments-foogallery-file-url').val();
+			navigator.clipboard.writeText(file_url);
+		});
+
+		$(document).on('click', '#foogallery-image-edit-modal .foogallery-img-modal-tab-wrapper', function(e) {
+			var panel = '#' + $(this).data('tab_id');
+			$('#foogallery-image-edit-modal .tab-panel').removeClass('active');
+			$(panel).addClass('active');
+		});
+
+		$(document).on('click', '#foogallery_clear_img_thumb_cache', function(e) {
+			e.preventDefault();
+
+			$('#foogallery_clear_img_thumb_cache_spinner').addClass('is-active');
+			var data = 'action=foogallery_clear_attachment_thumb_cache' +
+				'&img_id=' + $('.foogallery-image-edit-main').data('img_id') +
+				'&foogallery_clear_attachment_thumb_cache_nonce=' + $('#foogallery_clear_attachment_thumb_cache_nonce').val() +
+				'&_wp_http_referer=' + encodeURIComponent($('input[name="_wp_http_referer"]').val());
+
+			$.ajax({
+				type: "POST",
+				url: ajaxurl,
+				data: data,
+				success: function(data) {
+					$('#foogallery_clear_thumb_cache_spinner').removeClass('is-active');
+				}
+			});
+		});
+
+		/*$(document).on('click', '#foogallery-img-modal-alternate-image-upload', function(e) {
+			$('.foogallery-attachments-list-container .upload_alternate_image').trigger('click');
+		});*/
+
+		$(document).on('click', '#foogallery-img-modal-alternate-image-upload', function(e) {
+            e.preventDefault();
+			$('#foogallery-image-edit-modal').data('img_type', 'alternate');
+			FOOGALLERY.mediaModalTitle = $(this).data( 'uploader-title' );
+			FOOGALLERY.mediaModalButtonText = $(this).data( 'uploader-button-text' );
+			var img_id = $(this).data('img-id');
+			FOOGALLERY.openMediaModal(img_id);
+        });
+
+		$(document).on('click', '#foogallery-image-edit-modal .edit-media-header button', function(e) {
+			var selected_attachment_id = 0;
+			if( $(this).hasClass('left') ) {	
+				selected_attachment_id = $(this).attr('data-prev');
+			}
+			if( $(this).hasClass('right') ) {	
+				selected_attachment_id = $(this).attr('data-next');
+			}
+			if( parseInt(selected_attachment_id) > 0 ) {	
+				open_modal_ajax(selected_attachment_id);
+			}
+		});
+
+		$(document).on('click', '#foogallery-img-modal-alternate-image-delete', function(){
+			$('#foogallery_clear_alternate_img_spinner').addClass('is-active');
+			var img_id = $(this).attr('data-img-id');
+			var nonce = $('#foogallery-panel-main').data('nonce');
+			$.ajax({
+				type: "POST",
+				url: ajaxurl,
+				data: {
+					'action': 'foogallery_remove_alternate_img',
+					'img_id': img_id,
+					'nonce': nonce
+				},
+				success: function(data) {
+					$('#foogallery_clear_alternate_img_spinner').removeClass('is-active');
+					$('#foogallery-image-edit-modal .tab-panels .settings span.setting.override-thumbnail').removeClass('is-override-thumbnail');
+					$('#foogallery-image-edit-modal .tab-panels .settings span.setting.override-thumbnail-preview').removeClass('is-override-thumbnail');
+					$('#foogallery-image-edit-modal .tab-panels .settings span.setting.alternate-image-delete').removeClass('is-override-thumbnail');
+				}
+			});
+		});
     };
 
 }(window.FOOGALLERY = window.FOOGALLERY || {}, jQuery));
@@ -617,3 +824,53 @@ FooGallery.utils.ready(function ($) {
 		FOOGALLERY.adminReady();
 	}
 });
+
+function close_foogallery_img_modal() {
+	var $content = document.getElementById('foogallery-image-edit-modal'),
+	$wrapper = document.querySelector('#foogallery-image-edit-modal .media-frame-content .attachment-details'),
+	$loader = document.querySelector('#foogallery-image-edit-modal .media-frame-content .spinner');
+
+	$content.style.display = "none";  
+	$wrapper.classList.add('not-loaded');
+	$loader.classList.add('is-active');
+}
+
+function open_modal_ajax(img_id) {
+	var $content = jQuery('#foogallery-image-edit-modal'),
+		$wrapper = jQuery('#foogallery-image-edit-modal .media-frame-content .attachment-details'),
+		$loader = jQuery('#foogallery-image-edit-modal .media-frame-content .spinner'),
+		nonce = jQuery('#foogallery-image-edit-modal').data('nonce'),
+		gallery_id = jQuery('#foogallery-image-edit-modal').data('gallery_id');
+
+	$content.show();
+	$wrapper.addClass('not-loaded').html('<div class="spinner is-active"></div>');
+	$wrapper.css({'grid-template-columns': '1fr'});
+	$loader.addClass('is-active');
+
+	jQuery.ajax({	
+		type: "POST",	
+		url: ajaxurl,	
+		data: {
+			'img_id': img_id,
+			'gallery_id': gallery_id,
+			'nonce': nonce,
+			'action': 'open_foogallery_image_edit_modal'
+		},	
+		success: function(json) {	
+			jQuery('#foogallery-image-edit-modal .edit-media-header button').attr('data-key', json.slide_num);
+			jQuery('#foogallery-image-edit-modal .edit-media-header button.left').attr('disabled', json.prev_slide);
+			jQuery('#foogallery-image-edit-modal .edit-media-header button.right').attr('disabled', json.next_slide);
+			jQuery('#foogallery-image-edit-modal .edit-media-header button').attr('data-next', json.next_img_id);
+			jQuery('#foogallery-image-edit-modal .edit-media-header button').attr('data-prev', json.prev_img_id);
+			if ( json.override_thumbnail ) {
+				jQuery('#foogallery-image-edit-modal .tab-panels .settings span.setting.override-thumbnail').addClass('is-override-thumbnail');
+				jQuery('#foogallery-image-edit-modal .tab-panels .settings span.setting.override-thumbnail-preview').addClass('is-override-thumbnail');
+			}
+			
+			jQuery('#foogallery-image-edit-modal .media-modal-content .edit-attachment-frame .media-frame-content .attachment-details').html(json.html);
+			$wrapper.removeClass('not-loaded');
+			$wrapper.css({'grid-template-columns': '1fr 2fr'});
+			$loader.removeClass('is-active');
+		},
+	});
+}
