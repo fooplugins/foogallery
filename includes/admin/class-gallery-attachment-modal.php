@@ -225,7 +225,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
 		/**
 		 * Save main tab data content
 		 * 
-		 * @param $img_id attachment id to update data
+		 * @param $img_id int attachment id to update data
 		 * 
 		 * @param $foogallery array of form post data
 		 * 
@@ -277,7 +277,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
 		/**
 		 * Save taxonomies tab data content
 		 * 
-		 * @param $img_id attachment id to update data
+		 * @param $img_id int attachment id to update data
 		 * 
 		 * @param $foogallery array of form post data
 		 * 
@@ -305,7 +305,6 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
 						wp_set_object_terms( $img_id, $categories, FOOGALLERY_ATTACHMENT_TAXONOMY_CATEGORY, false );
 					}
 				}
-			
 			}
 
 		}
@@ -313,7 +312,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
 		/**
 		 * Save thumbnails tab data content
 		 * 
-		 * @param $img_id attachment id to update data
+		 * @param $img_id int attachment id to update data
 		 * 
 		 * @param $foogallery array of form post data
 		 * 
@@ -339,7 +338,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
 		/**
 		 * Save watermark tab data content
 		 * 
-		 * @param $img_id attachment id to update data
+		 * @param $img_id int attachment id to update data
 		 * 
 		 * @param $foogallery array of form post data
 		 * 
@@ -356,7 +355,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
 		/**
 		 * Save EXIF tab data content
 		 * 
-		 * @param $img_id attachment id to update data
+		 * @param $img_id int attachment id to update data
 		 * 
 		 * @param $foogallery array of form post data
 		 * 
@@ -404,7 +403,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
 		/**
 		 * Save more tab data content
 		 * 
-		 * @param $img_id attachment id to update data
+		 * @param $img_id int attachment id to update data
 		 * 
 		 * @param $foogallery array of form post data
 		 * 
