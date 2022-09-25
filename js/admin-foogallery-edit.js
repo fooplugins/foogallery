@@ -750,6 +750,7 @@ FooGallery.autoEnabled = false;
 			var panel = '#' + $(this).data('tab_id');
 			$('#foogallery-image-edit-modal .tab-panel').removeClass('active');
 			$(panel).addClass('active');
+			$('#foogallery-image-edit-modal').data( 'current_tab', $(this).data('tab_id') );
 		});
 
 		$(document).on('click', '#foogallery_clear_img_thumb_cache', function(e) {
@@ -830,7 +831,8 @@ FooGallery.autoEnabled = false;
 			$wrapper = jQuery('#foogallery-image-edit-modal .media-frame-content .attachment-details'),
 			$loader = jQuery('#foogallery-image-edit-modal .media-frame-content .spinner'),
 			nonce = $content.data('nonce'),
-			gallery_id = $content.data('gallery_id');
+			gallery_id = $content.data('gallery_id'),
+			current_tab = $content.data('current_tab');
 
 		$content.show();
 		$wrapper.addClass('not-loaded').html('<div class="spinner is-active"></div>');
@@ -843,6 +845,7 @@ FooGallery.autoEnabled = false;
 			data: {
 				'img_id': img_id,
 				'gallery_id': gallery_id,
+				'current_tab': current_tab,
 				'nonce': nonce,
 				'action': 'foogallery_attachment_modal_open'
 			},
@@ -860,6 +863,11 @@ FooGallery.autoEnabled = false;
 				}
 
 				jQuery('#foogallery-image-edit-modal .media-modal-content .edit-attachment-frame .media-frame-content .attachment-details').html(json.html);
+
+				if ( json.current_tab ) {
+					jQuery('.foogallery-img-modal-tab-wrapper[data-tab_id="' + json.current_tab + '"] input').click();
+				}
+
 				$wrapper.removeClass('not-loaded');
 				$wrapper.css({'grid-template-columns': '1fr 2fr'});
 				$loader.removeClass('is-active');

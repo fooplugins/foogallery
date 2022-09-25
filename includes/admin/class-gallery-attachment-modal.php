@@ -168,12 +168,12 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
 				
 			wp_send_json( array(
                 'html' => ob_get_clean(),
-                'slide_num' => $modal_data['slide_num'],
                 'prev_slide' => $modal_data['prev_slide'],
                 'next_slide' => $modal_data['next_slide'],
                 'next_img_id' => $modal_data['next_img_id'],
                 'prev_img_id' => $modal_data['prev_img_id'],
-                'override_thumbnail' => $modal_data['foogallery_override_thumbnail']
+                'override_thumbnail' => $modal_data['foogallery_override_thumbnail'],
+                'current_tab' => $modal_data['current_tab']
             ) );
 		}
 
@@ -481,6 +481,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
             if ( is_array ( $data ) && isset( $data['img_id'] ) && isset( $data['gallery_id'] ) ) {
                 $modal_data['img_id'] = $attachment_id = intval( sanitize_text_field( $data['img_id'] ) );
                 $modal_data['gallery_id'] = $gallery_id = intval( sanitize_text_field( $data['gallery_id'] ) );
+                $modal_data['current_tab'] = isset( $data['current_tab'] ) ? sanitize_text_field( $data['current_tab'] ) : '';
                 $modal_data['nonce'] = wp_create_nonce( 'foogallery-modal-nonce' );
                 $modal_data = apply_filters( 'foogallery_attachment_modal_data', $modal_data, $data, $attachment_id, $gallery_id );
             }
@@ -588,7 +589,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
 		 */
 		public function foogallery_attachment_modal_data_watermark( $modal_data, $data, $attachment_id, $gallery_id ) {
             if ( $attachment_id > 0 ) {
-                $modal_data['attachment_watermark'] = get_post_meta($attachment_id, FOOGALLERY_META_WATERMARK, true);
+                $modal_data['attachment_watermark'] = get_post_meta( $attachment_id, FOOGALLERY_META_WATERMARK, true );
             }
 			return $modal_data;
 		}
