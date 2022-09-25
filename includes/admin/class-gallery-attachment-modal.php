@@ -84,7 +84,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
 			add_action( 'foogallery_attachment_modal_tab_content', array( $this, 'display_tab_content_exif' ), 50, 1 );
 			add_action( 'foogallery_attachment_modal_tab_content', array( $this, 'display_tab_content_more' ), 60, 1 );
 
-
+            add_action( 'foogallery_attachment_modal_after_tab_container', array( $this, 'extra_content_for_watermark' ), 40, 1 );
 
 			add_action( 'wp_ajax_foogallery_remove_alternate_img', array( $this, 'ajax_alternate_img_remove' ) );
 
@@ -106,10 +106,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
 			add_action( 'foogallery_attachment_save_data', array( $this, 'foogallery_attachment_save_data_more' ), 60, 2 );
 			
 			// Callback for the generate watermark ajax call.
-			add_action( 'wp_ajax_foogallery_attachment_protection_generate', array( $this, 'ajax_attachment_generate_watermark' ) );
-
-			// Append some custom script after the gallery settings metabox.
-			add_action( 'foogallery_after_render_gallery_settings_metabox', array( $this, 'append_script_for_watermarking' ), 10, 1 );
+			add_action( 'wp_ajax_foogallery_attachment_modal_watermark_generate', array( $this, 'ajax_generate_watermark' ) );
 		}
 
 		/**
@@ -930,9 +927,37 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
 		 * Image modal watermark tab content
 		 */
 		public function display_tab_content_watermark( $modal_data ) {
-			if ( is_array( $modal_data ) && !empty ( $modal_data ) ) {
-				if ( $modal_data['img_id'] > 0 && isset( $modal_data['attachment_watermark'] ) && is_array( $modal_data['attachment_watermark'] ) ) { ?>
+            if ( is_array( $modal_data ) && !empty ( $modal_data ) ) {
+                if ( $modal_data['img_id'] > 0 ) {
+                    $has_watermark = false;
+                    $watermark_status = __( 'No watermark has been generated! Please generate a watermark.', 'foogallery' );
+
+                    if ( isset( $modal_data['attachment_watermark'] ) && is_array( $modal_data['attachment_watermark'] ) ) {
+                        $has_watermark = isset( $modal_data['attachment_watermark']['has_watermark'] ) && $modal_data['attachment_watermark']['has_watermark'];
+                        if ( $has_watermark ) {
+
+                            $watermark_status = __( 'An up to date watermark has been generated.', 'foogallery' );
+
+                            $protection = new FooGallery_Pro_Protection();
+                            $watermark_options = $protection->get_watermark_options();
+                            // Generate a checksum we can use to check if the watermark is outdated.
+                            $checksum = crc32( foogallery_json_encode( $watermark_options ) );
+
+                            $actual_checksum = isset( $modal_data['attachment_watermark']['checksum'] ) ? $modal_data['attachment_watermark']['checksum'] : '';
+
+                            if ( $actual_checksum !== $checksum ) {
+                                $watermark_status = __( 'An outdated watermark has been generated. Generate a new watermark to use the latest watermark settings.', 'foogallery' );
+                            }
+                        }
+                    } ?>
 					<section id="foogallery-panel-watermark" class="tab-panel">
+                        <div id="foogallery-panel-watermark-status" class="settings">
+							<span class="setting" data-setting="watermark-status">
+								<label for="attachments-watermark-status" class="name"><?php _e('Watermark Status', 'foogallery'); ?></label>
+								<?php echo esc_html( $watermark_status ); ?>
+							</span>
+                        </div>
+                        <?php if ( $has_watermark ) { ?>
 						<div id="foogallery-panel-watermark-preview" class="settings <?php echo isset( $modal_data['attachment_watermark']['url'] ) ? 'watermark-preview-show' : ''; ?>">
 							<span class="setting" data-setting="watermark-image-preview">
 								<label for="attachments-watermark-image-preview" class="name"><?php _e('Watermark Image Preview', 'foogallery'); ?></label>
@@ -941,14 +966,17 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
 								</a>
 							</span>
 						</div>
+                        <?php } ?>
 						<div class="foogallery_metabox_field-watermark_status settings">
 							<span class="setting" data-setting="watermark-generate-button">
-								<label for="attachments-watermark-generate-btn" class="name"><?php _e('Click on the button to generate watermarked image', 'foogallery'); ?></label>
-								<button id="attachments-watermark-generate-btn" type="button" class="button button-primary button-large attachment_protection_generate" data-attach_id="<?php echo $modal_data['img_id']; ?>">
-								<?php echo esc_html( __( 'Generate Watermarked Image', 'foogallery' ) ); ?>
+								<label for="attachments-watermark-generate-btn" class="name"><?php _e('Generate Watermark', 'foogallery'); ?></label>
+								<button id="attachments-watermark-generate-btn" type="button"
+                                        class="button button-primary button-large attachment_modal_watermark_generate"
+                                        data-attach_id="<?php echo $modal_data['img_id']; ?>"
+                                        data-nonce="<?php echo wp_create_nonce('foogallery_attachment_modal_watermark_generate'); ?>">
+								<?php echo esc_html( __( 'Generate', 'foogallery' ) ); ?>
 								</button>
 								<span style="position: absolute" class="spinner foogallery_protection_generate_spinner"></span>
-								<span style="padding-left: 40px; line-height: 25px; float:none;" class="foogallery_protection_generate_progress"></span>
 							</span>
 						</div>
 					</section>
@@ -956,6 +984,43 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
 				}
 			}
 		}
+
+        public function extra_content_for_watermark( $modal_data ) {
+            ?>
+            <script>
+                jQuery( function() {
+                    jQuery(document).on('click', '.attachment_modal_watermark_generate', function(e) {
+                        e.preventDefault();
+
+                        var $this = jQuery( this ),
+                            attach_id = $this.attr('data-attach_id'),
+                            nonce = $this.attr('data-nonce');
+
+                        jQuery('.foogallery_protection_generate_spinner').addClass('is-active');
+
+                        var data = 'action=foogallery_attachment_modal_watermark_generate' +
+                            '&attachment_id=' + attach_id +
+                            '&nonce=' + nonce;
+
+                        jQuery.ajax({
+                            type: "POST",
+                            url: ajaxurl,
+                            data: data,
+                            success: function(result) {
+                                if ( result.html ) {
+                                    jQuery( '#foogallery-panel-watermark' ).replaceWith( result.html );
+                                    jQuery( '#foogallery-panel-watermark' ).addClass('active');
+                                }
+                            },
+                            error: function() {
+                                alert( 'Oops!' );
+                            }
+                        });
+                    });
+                });
+            </script>
+            <?php
+        }
 
 		/**
 		 * Image modal EXIF tab content
@@ -1131,181 +1196,32 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
 		/**
 		 * Ajax callback for generating watermarked image for single attachment.
 		 */
-		public function ajax_attachment_generate_watermark() {
-			if ( check_admin_referer( 'foogallery_protection_generate' ) ) {
-				$progress = array();
+		public function ajax_generate_watermark() {
+			// Check for nonce security
+			if ( ! wp_verify_nonce( $_POST['nonce'], 'foogallery_attachment_modal_watermark_generate' ) ) {
+                die ( 'Busted!');
+            }
 
-				if ( isset( $_POST['attachment_id'] ) ) {
-					//$foogallery_id = intval( sanitize_text_field( wp_unslash( $_POST['foogallery'] ) ) );
-					$attachment_id = intval( sanitize_text_field( wp_unslash( $_POST['attachment_id'] ) ) );
+            if ( isset( $_POST['attachment_id'] ) ) {
+                $attachment_id = intval( sanitize_text_field( wp_unslash( $_POST['attachment_id'] ) ) );
 
-					// Generate watermark image for given attachment id
-					$protection = new FooGallery_Pro_Protection(); 
-					$protection->generate_watermark( $attachment_id );
+                // Generate watermark image for given attachment id
+                $protection = new FooGallery_Pro_Protection();
+                $protection->generate_watermark( $attachment_id );
 
-					$progress['message'] = 'Watermark image generated.';
-					$progress['title'] = 'Continue Generating';
+                ob_start();
+                $modal_data = array(
+                    'img_id' => $attachment_id
+                );
+                $modal_data = $this->foogallery_attachment_modal_data_watermark( $modal_data, null, $attachment_id, 0 );
+                $this->display_tab_content_watermark( $modal_data );
 
-					ob_start();
-					$this->render_attachment_watermark_status_field( $attachment_id );
-					$progress['refreshfield'] = true;
-					$progress['fieldhtml']    = ob_get_contents();
-					ob_end_clean();
-
-					// Set attachment watermark image from meta field
-					$this->img_modal['attachment_watermark'] = get_post_meta( $attachment_id, FOOGALLERY_META_WATERMARK, true );
-					$progress['image'] = $this->img_modal['attachment_watermark']['url'];
-					
-					wp_send_json_success( $progress );
-				}
-			}
+                wp_send_json( array(
+                    'html' => ob_get_clean()
+                ) );
+            }
 
 			die();
-		}
-
-		/**
-		 * Append some script for the generation button.
-		 *
-		 * @param FooGallery $gallery The gallery.
-		 */
-		public function append_script_for_watermarking( $gallery ) {
-			wp_nonce_field( 'foogallery_protection_generate', 'foogallery_nonce_protection_generate', false );
-			?>
-			<script>
-				jQuery( function() {
-					jQuery(document).on('click', '.attachment_protection_generate', function(e) {
-						e.preventDefault();
-
-						var $this = jQuery( this );
-						var attach_id = $this.attr('data-attach_id');
-
-						jQuery('.foogallery_protection_generate_spinner').addClass('is-active');
-
-						var nonce = jQuery('#foogallery_nonce_protection_generate').val(),
-							data = 'action=foogallery_attachment_protection_generate' +
-						           '&foogallery=<?php echo $gallery->ID; ?>' +
-								   '&attachment_id=' + attach_id +
-						           '&_wpnonce=' + nonce +
-						           '&_wp_http_referer=' + encodeURIComponent( jQuery('input[name="_wp_http_referer"]').val() );
-
-						jQuery.ajax({
-							type: "POST",
-							url: ajaxurl,
-							data: data,
-							success: function(result) {
-								if ( result.data ) {
-									jQuery( '.foogallery_protection_generate_progress' ).html( result.data.message );
-									$this.text( result.data.title );
-									jQuery('#foogallery-panel-watermark-preview').addClass( 'watermark-preview-show' );
-									jQuery('#foogallery-panel-watermark-preview img').attr( 'src', result.data.image );
-									jQuery( '.foogallery_protection_generate_spinner' ).removeClass( 'is-active' );
-
-									if ( result.data.refreshfield ) {
-										jQuery('.foogallery_metabox_field-watermark_status').html(result.data.fieldhtml);
-									}
-								}
-							},
-							error: function() {
-								jQuery('#foogallery-panel-watermark-preview').removeClass( 'watermark-preview-show' );
-								jQuery( '.foogallery_protection_generate_spinner' ).removeClass( 'is-active' );
-								jQuery( '.foogallery_protection_generate_progress' ).html( '<?php echo esc_html( __( 'There was an error! Please try again.', 'foogallery' ) ); ?>' );
-							}
-						});
-					});
-				});
-			</script>
-			<?php
-		}
-
-		/**
-		 * Get the watermark data for an attachment.
-		 *
-		 * @param FooGallery $attachment_id The image id we are working with.
-		 *
-		 * @return array
-		 */
-
-		private function build_attachment_watermark_data( $attachment_id ) {
-			global $foogallery_watermark_data;
-
-			// We do not want to fetch this info every time for every template, so store it globally to save time.
-			if ( ! isset( $foogallery_watermark_data ) ) {
-				$protection = new FooGallery_Pro_Protection(); 
-				$watermark_options = $protection->get_watermark_options();
-
-				$foogallery_watermark_data = array();
-
-				$outdated_count        = 0;
-				$error_count           = 0;
-
-				// Generate a checksum we can use to check if the watermark is outdated.
-				$watermark_checksum = crc32( foogallery_json_encode( $watermark_options ) );
-
-				// Check if the attachment has a watermark.
-				$attachment_watermark = get_post_meta( $attachment_id, FOOGALLERY_META_WATERMARK, true );
-
-				if ( ! is_array( $attachment_watermark ) ) {
-					$attachment_watermark = array(
-						'has_watermark' => false,
-					);
-				}
-
-				if ( isset( $attachment_watermark['has_watermark'] ) && $attachment_watermark['has_watermark'] ) {
-					$attachment_watermark['outdated'] = $attachment_watermark['checksum'] !== $watermark_checksum;
-
-					if ( $attachment_watermark['outdated'] ) {
-						$outdated_count ++;
-					}
-				}
-				if ( isset( $attachment_watermark['error'] ) ) {
-					$error_count++;
-				}
-
-				$foogallery_watermark_data[ $attachment_id ] = $attachment_watermark;
-
-				$foogallery_watermark_data['summary'] = array(
-					'errors'     => $error_count,
-					'outdated'   => $outdated_count,
-				);
-			}
-
-			return $foogallery_watermark_data;
-			
-		}
-
-		private function render_attachment_watermark_status_field( $attachment_id ) {
-			$watermark_data = $this->build_attachment_watermark_data( $attachment_id );
-
-			echo '<span class="setting" data-setting="watermark-generate-button">';
-			echo '<label for="attachments-watermark-generate-btn" class="name">';
-			echo esc_html( __('Click on the button to generate watermarked image', 'foogallery') );
-			echo '</label><div><span class="foogallery-watermark-response-message">';
-
-			if ( is_array( $watermark_data ) && array_key_exists( 'summary', $watermark_data ) ) {
-				$summary_watermark_data = $watermark_data['summary'];
-				$outdated_count         = $summary_watermark_data['outdated'];
-				$error_count            = $summary_watermark_data['errors'];
-
-				echo esc_html( sprintf( __( 'Watermarked image have been generated.', 'foogallery' ) ) );
-				if ( $outdated_count > 0 ) {
-					echo ' ' . esc_html( sprintf( __( '%d are outdated and need to be re-generated!', 'foogallery' ), $outdated_count ) );
-				}
-				if ( $error_count > 0 ) {
-					echo '<br /><br />';
-					echo esc_html( sprintf( __( '%d had errors and could not be generated!', 'foogallery' ), $error_count ) );
-				}
-				echo '</span><br /><br />';
-				echo '<button id="attachments-watermark-generate-btn" type="button" class="button button-primary button-large attachment_protection_generate" data-attach_id="'.$this->img_modal['img_id'].'">';
-				echo esc_html( __( 'Generate Watermarked Images', 'foogallery' ) );
-				echo '</button>';
-				echo '<span style="position: absolute" class="spinner foogallery_protection_generate_spinner"></span>';
-				echo '<span style="padding-left: 40px; line-height: 25px; float: none;" class="foogallery_protection_generate_progress"></span>';
-			} else {
-				echo esc_html( __( 'Something went wrong!', 'foogallery' ) );
-			}
-
-			echo '</div></span>';
-
 		}
 
 		public function foogallery_img_modal_save_btn() {
