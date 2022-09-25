@@ -424,7 +424,7 @@ FooGallery.autoEnabled = false;
 		if (selected_attachment_id > 0 && modal_style == 'on') {
 
 			if (img_type == 'normal') {
-				open_modal_ajax(selected_attachment_id);
+				FOOGALLERY.openAttachmentModal(selected_attachment_id);
 			} else if (img_type == 'alternate') {
 				$('#foogallery-image-edit-modal').data('img_type', 'normal');
 				var createModal = $.isFunction(wp.foogallery) ? wp.foogallery : wp.media;
@@ -638,6 +638,8 @@ FooGallery.autoEnabled = false;
 
 		FOOGALLERY.initThumbCacheMetabox();
 
+		FOOGALLERY.initAttachmentModal();
+
         $('.foogallery-attachments-list')
             .on('click' ,'a.remove', function(e) {
 				e.preventDefault();
@@ -783,15 +785,9 @@ FooGallery.autoEnabled = false;
         });
 
 		$(document).on('click', '#foogallery-image-edit-modal .edit-media-header button', function(e) {
-			var selected_attachment_id = 0;
-			if( $(this).hasClass('left') ) {	
-				selected_attachment_id = $(this).attr('data-prev');
-			}
-			if( $(this).hasClass('right') ) {	
-				selected_attachment_id = $(this).attr('data-next');
-			}
-			if( parseInt(selected_attachment_id) > 0 ) {	
-				open_modal_ajax(selected_attachment_id);
+			var selected_attachment_id = parseInt( $(this).data('attachment') );
+			if ( selected_attachment_id > 0 ) {
+				FOOGALLERY.openAttachmentModal(selected_attachment_id);
 			}
 		});
 
@@ -817,6 +813,60 @@ FooGallery.autoEnabled = false;
 		});
     };
 
+	FOOGALLERY.initAttachmentModal = function() {
+		jQuery('#foogallery-image-edit-modal .media-modal-close').click(function() {
+			var $content = jQuery('#foogallery-image-edit-modal'),
+				$wrapper = jQuery('#foogallery-image-edit-modal .media-frame-content .attachment-details'),
+				$loader = jQuery('#foogallery-image-edit-modal .media-frame-content .spinner');
+
+			$content.hide();
+			$wrapper.addClass('not-loaded');
+			$loader.addClass('is-active');
+		});
+	};
+
+	FOOGALLERY.openAttachmentModal = function(img_id) {
+		var $content = jQuery('#foogallery-image-edit-modal'),
+			$wrapper = jQuery('#foogallery-image-edit-modal .media-frame-content .attachment-details'),
+			$loader = jQuery('#foogallery-image-edit-modal .media-frame-content .spinner'),
+			nonce = $content.data('nonce'),
+			gallery_id = $content.data('gallery_id');
+
+		$content.show();
+		$wrapper.addClass('not-loaded').html('<div class="spinner is-active"></div>');
+		$wrapper.css({'grid-template-columns': '1fr'});
+		$loader.addClass('is-active');
+
+		jQuery.ajax({
+			type: "POST",
+			url: ajaxurl,
+			data: {
+				'img_id': img_id,
+				'gallery_id': gallery_id,
+				'nonce': nonce,
+				'action': 'foogallery_attachment_modal_open'
+			},
+			success: function(json) {
+				jQuery('#foogallery-image-edit-modal .edit-media-header button.left')
+					.attr('disabled', !json.prev_slide)
+					.data('attachment', json.prev_img_id);
+				jQuery('#foogallery-image-edit-modal .edit-media-header button.right')
+					.attr('disabled', !json.next_slide)
+					.data('attachment', json.next_img_id);
+
+				if ( json.override_thumbnail ) {
+					jQuery('#foogallery-image-edit-modal .tab-panels .settings span.setting.override-thumbnail').addClass('is-override-thumbnail');
+					jQuery('#foogallery-image-edit-modal .tab-panels .settings span.setting.override-thumbnail-preview').addClass('is-override-thumbnail');
+				}
+
+				jQuery('#foogallery-image-edit-modal .media-modal-content .edit-attachment-frame .media-frame-content .attachment-details').html(json.html);
+				$wrapper.removeClass('not-loaded');
+				$wrapper.css({'grid-template-columns': '1fr 2fr'});
+				$loader.removeClass('is-active');
+			},
+		});
+	};
+
 }(window.FOOGALLERY = window.FOOGALLERY || {}, jQuery));
 
 FooGallery.utils.ready(function ($) {
@@ -824,53 +874,3 @@ FooGallery.utils.ready(function ($) {
 		FOOGALLERY.adminReady();
 	}
 });
-
-function close_foogallery_img_modal() {
-	var $content = document.getElementById('foogallery-image-edit-modal'),
-	$wrapper = document.querySelector('#foogallery-image-edit-modal .media-frame-content .attachment-details'),
-	$loader = document.querySelector('#foogallery-image-edit-modal .media-frame-content .spinner');
-
-	$content.style.display = "none";  
-	$wrapper.classList.add('not-loaded');
-	$loader.classList.add('is-active');
-}
-
-function open_modal_ajax(img_id) {
-	var $content = jQuery('#foogallery-image-edit-modal'),
-		$wrapper = jQuery('#foogallery-image-edit-modal .media-frame-content .attachment-details'),
-		$loader = jQuery('#foogallery-image-edit-modal .media-frame-content .spinner'),
-		nonce = jQuery('#foogallery-image-edit-modal').data('nonce'),
-		gallery_id = jQuery('#foogallery-image-edit-modal').data('gallery_id');
-
-	$content.show();
-	$wrapper.addClass('not-loaded').html('<div class="spinner is-active"></div>');
-	$wrapper.css({'grid-template-columns': '1fr'});
-	$loader.addClass('is-active');
-
-	jQuery.ajax({	
-		type: "POST",	
-		url: ajaxurl,	
-		data: {
-			'img_id': img_id,
-			'gallery_id': gallery_id,
-			'nonce': nonce,
-			'action': 'open_foogallery_image_edit_modal'
-		},	
-		success: function(json) {	
-			jQuery('#foogallery-image-edit-modal .edit-media-header button').attr('data-key', json.slide_num);
-			jQuery('#foogallery-image-edit-modal .edit-media-header button.left').attr('disabled', json.prev_slide);
-			jQuery('#foogallery-image-edit-modal .edit-media-header button.right').attr('disabled', json.next_slide);
-			jQuery('#foogallery-image-edit-modal .edit-media-header button').attr('data-next', json.next_img_id);
-			jQuery('#foogallery-image-edit-modal .edit-media-header button').attr('data-prev', json.prev_img_id);
-			if ( json.override_thumbnail ) {
-				jQuery('#foogallery-image-edit-modal .tab-panels .settings span.setting.override-thumbnail').addClass('is-override-thumbnail');
-				jQuery('#foogallery-image-edit-modal .tab-panels .settings span.setting.override-thumbnail-preview').addClass('is-override-thumbnail');
-			}
-			
-			jQuery('#foogallery-image-edit-modal .media-modal-content .edit-attachment-frame .media-frame-content .attachment-details').html(json.html);
-			$wrapper.removeClass('not-loaded');
-			$wrapper.css({'grid-template-columns': '1fr 2fr'});
-			$loader.removeClass('is-active');
-		},
-	});
-}
