@@ -171,9 +171,9 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 			);
 
 			$settings[] = array(
-				'id'      => 'hide_admin_gallery_attachment_modal',
-				'title'   => __( 'Hide Attachment Modal', 'foogallery' ),
-				'desc'    => __( 'If enabled, this will hide default gallery attachment modal & show tabs view of gallery attachment modal view.', 'foogallery' ),
+				'id'      => 'advanced_attachment_modal',
+				'title'   => __( 'Enable Advanced Attachment Modal (BETA)', 'foogallery' ),
+				'desc'    => __( 'If enabled, this will use the advanced attachment modal which allows for faster and easier editing of attachment details, when creating your galleries.', 'foogallery' ),
 				'type'    => 'checkbox',
 				'tab'     => 'general',
 				'section' => __( 'Admin', 'foogallery' )

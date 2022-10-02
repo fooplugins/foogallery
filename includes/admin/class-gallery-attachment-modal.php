@@ -178,7 +178,21 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
 		 * 	Admin modal wrapper for gallery image edit 
 		 */ 
 		public function foogallery_image_editor_modal() {
-			$modal_style = foogallery_get_setting( 'hide_admin_gallery_attachment_modal' );
+            global $post;
+
+            // Check if the gallery edit page is being shown.
+            $screen = get_current_screen();
+            if ( 'foogallery' !== $screen->id ) {
+                return;
+            }
+
+			$modal_style = foogallery_get_setting( 'advanced_attachment_modal' );
+
+            // Only show the attachment modal if the setting is turned on.
+            if ( 'on' !== $modal_style ) {
+                return;
+            }
+
 			?>
 			<div id="foogallery-image-edit-modal" style="display: none;" data-img_type="normal" data-nonce="<?php echo wp_create_nonce( 'foogallery_attachment_modal_open' ); ?>" data-gallery_id="<?php echo $_GET['post']; ?>" data-modal_style="<?php echo $modal_style; ?>">
 				<div class="media-modal wp-core-ui">
