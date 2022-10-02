@@ -31,7 +31,6 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings_Helper' ) ) {
 			$this->gallery = $gallery;
 			$this->hide_help = 'on' == foogallery_get_setting( 'hide_gallery_template_help' );
 			$this->hide_promo = 'on' == foogallery_get_setting( 'pro_promo_disabled' );
-			$this->hide_admin_gallery_attachment_modal = 'on' == foogallery_get_setting( 'hide_admin_gallery_attachment_modal' );
 
 			$this->gallery_templates = foogallery_gallery_templates();
 
