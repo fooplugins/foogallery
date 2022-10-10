@@ -11,7 +11,7 @@ if ( ! class_exists('FooGallery_Pro_GooglePhotos_Extension') ) {
 		 * Wire up everything we need to run the extension
 		 */
 		function __construct() {
-			add_filter( 'foogallery_admin_settings_override', array( $this, 'add_settings' ) );
+			
 		}
 
 	}
