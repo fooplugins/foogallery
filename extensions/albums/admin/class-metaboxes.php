@@ -292,7 +292,6 @@ if ( ! class_exists( 'FooGallery_Admin_Album_MetaBoxes' ) ) {
 				$album_template = $available_templates[0]['slug'];
 			}
 			$hide_help = 'on' == foogallery_get_setting( 'hide_gallery_template_help' );
-			$hide_admin_gallery_attachment_modal = 'on' == foogallery_get_setting( 'hide_admin_gallery_attachment_modal' );
 			?>
 			<table class="foogallery-album-metabox-settings">
 				<tbody>
