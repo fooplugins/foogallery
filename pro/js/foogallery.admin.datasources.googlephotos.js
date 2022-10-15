@@ -1,42 +1,101 @@
-jQuery(document).ready(function ($) {
+FooGallery.utils.ready(function ($) {
 
-	// Generate google account token on button click
-	$(document).on('click','#foogallery-google-photos-token-btn',function(e){
+	// Define with default values
+	document.foogallery_datasource_value_temp = {
+		"album_id" : '',
+		"album_title" : '',
+		"sort" : ''
+	};
+
+	/* Manage media javascript */
+	$('.foogallery-datasource-googlephotos').on('click', 'button.remove', function (e) {
+		e.preventDefault();
+
+		//hide the previous info
+		$(this).parents('.foogallery-datasource-googlephotos').hide();
+
+		//clear the datasource value
+		$('#_foogallery_datasource_value').val('');
+
+		//clear the datasource
+		$('#foogallery_datasource').val('');
+
+		//make sure the modal insert button is not active
+		$('.foogallery-datasource-modal-insert').attr('disabled','disabled');
+
+		FOOGALLERY.showHiddenAreas( true );
+
+		//ensure the preview will be refreshed
+		$('.foogallery_preview_container').addClass('foogallery-preview-force-refresh');
+	});
+
+	/* Show google photos tab in modal */
+	$('.foogallery-datasource-googlephotos').on('click', 'button.edit', function (e) {
+		e.preventDefault();
+
+		//show the modal
+		$('.foogallery-datasources-modal-wrapper').show();
+
+		//select the google photos datasource
+		$('.foogallery-datasource-modal-selector[data-datasource="googlephotos"]').click();
+	});
+
+	/* Hide google photos data source */
+	$(document).on('foogallery-datasource-changed', function(e, activeDatasource) {
+		$('.foogallery-datasource-googlephotos').hide();
+
+		if ( activeDatasource !== 'googlephotos' ) {
+			//clear the selected google photos
+		}
+	});
+
+	$(document).on('foogallery-datasource-changed-googlephotos', function() {
+		var $container = $('.foogallery-datasource-googlephotos');
+
+		$('#_foogallery_datasource_value').val(JSON.stringify(document.foogallery_datasource_value_temp));
+
+		$container.find('.foogallery-items-html #foogallery-datasource-googlephotos-album-name').html(document.foogallery_datasource_value_temp.album_title);
+
+		$container.show();
+
+		FOOGALLERY.showHiddenAreas( false );
+
+		$('.foogallery-attachments-list-container').addClass('hidden');
+
+		$('.foogallery_preview_container').addClass('foogallery-preview-force-refresh');
+	});
+
+	// Disable click event on google photos album thumbnail
+	$(document).on('click', '.foogallery-datasource-googlephotos-albums a', function(e){
+		e.preventDefault();
+
 		var $clicked = $(this);
-		var provider = 'google';
-		var result = $('#foogalery-' + provider + '-result');
-		var args = {
-			'action': 'foogallery_google_photos_token', 
-			'provider': provider, 
-			'code': $('#foogallery-' + provider + '-oauth-code').val(), 
-			'state': $('#foogallery-' + provider + '-oauth-state').val(), 
-			'_ajax_nonce': $clicked.data('foogallery-nonce') 
+
+		// Get data from click element
+		var album_id = $clicked.attr('data-album_id');
+		var album_title = $clicked.attr('data-label');
+
+		// Set the selection
+		document.foogallery_datasource_value_temp = {
+			"album_id" : album_id,
+			"album_title" : album_title,
+			"sort" : ''
 		};
 
-		// Send ajax call to set code and state value in database and save toeken after generate
-		$.post(ajaxurl, args, function(data) {
-			//data = $.parseJSON(data);
-			console.log(data);
-			$("<span class='button button-disabled'></span>").insertBefore(result);
-			$(result).html('<strong>Refresh Token:</strong> <code id="' + provider + '-token">' + data['refresh_token'] + '</code>');
-            var a = $("<a href='#' class='button button-primary' data-foogallery-provider='" + provider + "' data-foogallery-nonce='" + data['nonce'] +"'>Save Token</a>");
-			a.insertAfter(result);
-			
-			var token_status = data['status'];
-			var result = '';
-			// Show token status before redirect
-			if ( token_status == 'success' ) {
-				result = '<p><strong>Status: </strong>Token generate successfully.</p><p><strong>Token: </strong>' + data['refresh_token'] + '</p>';
-			} else {
-				result = '<p><strong>Status: </strong>Token could not generate.</p>';
-			}
-			$('#foogallery-google-result').html(result);
+		//make sure the modal insert button is active
+        $('.foogallery-datasource-modal-insert').attr('disabled', false);
 
-			// Redirect to google photos tab on settings page after success or fail in generate token
-			setTimeout(function(){
-				window.location.href = google_photos.setting_url
-			}, 3000);
-		});
 	});
-	
+
+	// Display photos from google album thumbnail double click
+	$(document).on('dblclick', '.foogallery-datasource-googlephotos-albums a', function(e){
+		e.preventDefault();
+		var $clicked = $(this);
+		//make sure the modal insert button is active
+        $('.foogallery-datasource-modal-insert').attr('disabled', false);
+
+		$(document).find('.foogallery-datasource-googlephotos-albums a').removeClass('active');
+		$clicked.addClass('active');		
+	});
+
 });

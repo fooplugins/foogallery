@@ -1,3 +1,55 @@
-#foogallery-datasource-googlephotos .button-disabled {
-    pointer-events: none;
+div#foogallery-datasource-googlephotos ul.foogallery-datasource-googlephotos-albums {
+    display: grid;
+    grid-template-columns: repeat(5,1fr);
+    grid-gap: 20px;
 }
+div#foogallery-datasource-googlephotos ul.foogallery-datasource-googlephotos-albums li * {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    object-fit: cover;
+}
+
+div#foogallery-datasource-googlephotos ul.foogallery-datasource-googlephotos-albums li a {
+    font-size: 16px;
+    text-align: center;
+    text-decoration: none;
+    color: #000;
+    font-weight: 600;
+    display: block;
+    border: 1px solid #cccccc;
+    padding-bottom: 15px;
+    box-shadow: unset !important;
+}
+div#foogallery-datasource-googlephotos ul.foogallery-datasource-googlephotos-albums li a img {
+    margin-bottom: 15px;
+    padding: 3px;
+}
+div#foogallery-datasource-googlephotos ul.foogallery-datasource-googlephotos-albums li a.active {
+    border-color: rgb(0 0 0 / 80%) !important;
+    box-shadow: 0px 2px 6px 0px rgb(0 0 0 / 40%) !important;
+}
+@media(max-width: 1200px){
+    div#foogallery-datasource-googlephotos ul.foogallery-datasource-googlephotos-albums {
+        grid-template-columns: repeat(4,1fr);
+    }
+    div#foogallery-datasource-googlephotos ul.foogallery-datasource-googlephotos-albums li a{
+        font-size: 14px;
+    }
+}
+@media(max-width: 991px){
+    div#foogallery-datasource-googlephotos ul.foogallery-datasource-googlephotos-albums {
+        grid-template-columns: repeat(3,1fr);
+    }
+}
+@media(max-width: 800px){
+    div#foogallery-datasource-googlephotos ul.foogallery-datasource-googlephotos-albums {
+        grid-template-columns: repeat(2,1fr);
+    }
+}
+@media(max-width: 575px){
+    div#foogallery-datasource-googlephotos ul.foogallery-datasource-googlephotos-albums {
+        grid-template-columns: repeat(1,1fr);
+    }
+}
+
