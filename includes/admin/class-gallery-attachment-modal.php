@@ -559,11 +559,11 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
                 $categories = get_the_terms( $attachment_id, FOOGALLERY_ATTACHMENT_TAXONOMY_CATEGORY );
                 $tags = get_the_terms( $attachment_id, FOOGALLERY_ATTACHMENT_TAXONOMY_TAG );
 
-                if (is_array($categories) && !empty ($categories)) {
+                if ( is_array( $categories ) && !empty ( $categories ) ) {
                     $modal_data['img_categories'] = $categories;
                 }
 
-                if (is_array($categories) && !empty ($categories)) {
+                if ( is_array( $tags ) && !empty ( $tags ) ) {
                     $modal_data['img_tags'] = $tags;
                 }
             }
