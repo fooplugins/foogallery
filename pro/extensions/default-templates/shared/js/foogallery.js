@@ -4646,11 +4646,10 @@ FooGallery.utils, FooGallery.utils.is, FooGallery.utils.str);
    * @memberof FooGallery.utils.
    * @class Timer
    * @param {number} [interval=1000] - The internal tick interval of the timer.
-   * @augments FooGallery.utils.EventClass
    */
 
   _.Timer = _.EventClass.extend(
-  /** @lends FooGallery.utils.Timer.prototype */
+  /** @lends FooGallery.utils.Timer */
   {
     /**
      * @ignore
@@ -4937,7 +4936,6 @@ FooGallery.utils, FooGallery.utils.is, FooGallery.utils.str);
       if (self.isRunning) {
         self.isRunning = false;
         self.isPaused = true;
-        self.canResume = self.__remaining > 0;
         self.trigger("pause", self.__eventArgs());
       }
 
@@ -6289,7 +6287,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 		FooGallery.utils.is,
 		FooGallery.utils.obj
 );
-(function($, _, _utils, _is, _fn){
+(function($, _, _utils, _is, _fn, _obj){
 
     /**
      * @summary A factory for classes allowing them to be registered and created using a friendly name.
@@ -6483,6 +6481,23 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
                 result.push(self.make(r.name));
             });
             return result;
+        },
+        /**
+         * @memberof FooGallery.Factory#
+         * @function configure
+         * @param {string} name
+         * @param {object} options
+         * @param {object} classes
+         * @param {object} il8n
+         */
+        configure: function(name, options, classes, il8n){
+            var self = this;
+            if (self.contains(name)) {
+                var reg = self.registered;
+                _obj.extend(reg[name].opt, options);
+                _obj.extend(reg[name].cls, classes);
+                _obj.extend(reg[name].il8n, il8n);
+            }
         }
     });
 
@@ -6492,7 +6507,8 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
     FooGallery,
     FooGallery.utils,
     FooGallery.utils.is,
-    FooGallery.utils.fn
+    FooGallery.utils.fn,
+    FooGallery.utils.obj
 );
 (function ($, _, _utils, _is, _fn, _obj) {
 
@@ -6587,23 +6603,6 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 				}
 			}
 			return type;
-		},
-		/**
-		 * @memberof FooGallery.TemplateFactory#
-		 * @function configure
-		 * @param {string} name
-		 * @param {object} options
-		 * @param {object} classes
-		 * @param {object} il8n
-		 */
-		configure: function (name, options, classes, il8n) {
-			var self = this;
-			if (self.contains(name)) {
-				var reg = self.registered;
-				_obj.extend(reg[name].opt, options);
-				_obj.extend(reg[name].cls, classes);
-				_obj.extend(reg[name].il8n, il8n);
-			}
 		},
 		options: function (name, options) {
 			options = _obj.extend({type: name}, options);
@@ -10201,15 +10200,6 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 			}
 			return options;
 		},
-		configure: function(name, options, classes, il8n){
-			var self = this;
-			if (self.contains(name)){
-				var reg = self.registered;
-				_obj.extend(reg[name].opt, options);
-				_obj.extend(reg[name].cls, classes);
-				_obj.extend(reg[name].il8n, il8n);
-			}
-		},
 		/**
 		 * @summary Checks if the factory contains a control registered using the supplied `name`.
 		 * @memberof FooGallery.FilteringFactory#
@@ -11002,15 +10992,6 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 				options.il8n = _obj.extend(options.il8n, {paging: def_il8n}, {paging: il8n});
 			}
 			return options;
-		},
-		configure: function(name, options, classes, il8n){
-			var self = this;
-			if (self.contains(name)){
-				var reg = self.registered;
-				_obj.extend(reg[name].opt, options);
-				_obj.extend(reg[name].cls, classes);
-				_obj.extend(reg[name].il8n, il8n);
-			}
 		},
 		/**
 		 * @summary Checks if the factory contains a control registered using the supplied `name`.
@@ -17908,16 +17889,67 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 );
 (function ($, _, _utils, _obj, _is) {
 
+	/**
+	 * Contains any FooBox specific integration code.
+	 *
+	 * @namespace FooGallery.__foobox__
+	 * @private
+	 */
+	_.__foobox__ = {
+		/**
+		 * Check if the element is displayed within FooBox.
+		 *
+		 * @param {jQuery} $element
+		 * @return {boolean}
+		 */
+		owns: function( $element ){
+			return $element.parents(".fbx-item").length > 0;
+		},
+		/**
+		 * Check if the template can be handled by FooBox.
+		 *
+		 * @param {FooGallery.Template} template
+		 * @return {boolean}
+		 */
+		handles: function( template ){
+			return template.$el.hasClass("fbx-instance") && _is.object( window[ 'FOOBOX' ] ) && !!$.fn[ 'foobox' ];
+		},
+		/**
+		 * Updates the template's FooBox.
+		 *
+		 * @param {FooGallery.Template} template
+		 */
+		update: function( template ){
+			const opts = [{}];
+			if ( _is.object( window[ 'FOOBOX' ][ 'o' ] ) ) {
+				opts.push( window[ 'FOOBOX' ][ 'o' ] );
+			}
+			if ( template.opt.protected ) {
+				opts.push( { images: { noRightClick: true } } );
+			}
+			if ( _is.fn( template.$el[ 'foobox' ] ) ) {
+				template.$el[ 'foobox' ]( _obj.extend.apply( null, opts ) );
+			}
+		}
+	};
+
+	/**
+	 * Handles the ready, after-page-change and after-filter-change events and conditional raises a post-load event
+	 * on the document body to notify other plugins that content has changed.
+	 * @param e
+	 * @param current
+	 * @param prev
+	 * @param isFilter
+	 */
 	_.triggerPostLoad = function (e, current, prev, isFilter) {
-		var tmpl = e.target;
+		const tmpl = e.target;
 		if (tmpl instanceof _.Template){
 			if (tmpl.initialized && (e.type === "ready" || (e.type === "after-page-change" && !isFilter) || e.type === "after-filter-change")) {
 				try {
-					// if the gallery is displayed within a FooBox do not trigger the post-load which would cause the lightbox to re-init
-					if (tmpl.$el.parents(".fbx-item").length > 0) return;
-					if (tmpl.$el.hasClass("fbx-instance") && !!window.FOOBOX && !!$.fn.foobox){
-						var opts = $.extend({}, window.FOOBOX.o, (tmpl.opt.protected ? { images: { noRightClick: true } } : {}));
-						tmpl.$el.foobox(opts);
+					if ( _.__foobox__.owns( tmpl.$el ) ) return;
+
+					if ( _.__foobox__.handles( tmpl ) ){
+						_.__foobox__.update( tmpl );
 					} else {
 						$("body").trigger("post-load");
 					}
@@ -17928,42 +17960,97 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 		}
 	};
 
+	/**
+	 * The options applied to all galleries initialized using the auto mechanism.
+	 *
+	 * @memberof FooGallery.
+	 * @name autoDefaults
+	 * @type {object}
+	 */
 	_.autoDefaults = {
 		on: {
 			"ready after-page-change after-filter-change": _.triggerPostLoad
 		}
 	};
 
+	/**
+	 * If set to FALSE then FooGallery will not automatically initialize itself on all valid elements
+	 * with an ID starting with 'foogallery-gallery-'.
+	 *
+	 * @memberof FooGallery.
+	 * @name autoEnabled
+	 * @type {boolean}
+	 * @default true
+	 */
 	_.autoEnabled = true;
 
+	/**
+	 * Allows you to merge options into the FooGallery.autoDefaults object.
+	 *
+	 * @memberof FooGallery.
+	 * @function auto
+	 * @param {object} options
+	 * @returns {object} The result of the merged options.
+	 */
 	_.auto = function (options) {
-		_.autoDefaults = _obj.merge(_.autoDefaults, options);
+		return _.autoDefaults = _obj.merge(_.autoDefaults, options);
 	};
 
+	/**
+	 * Indicates if any globally supplied variables such as the FooGallery_il8n object have been merged.
+	 *
+	 * @memberof FooGallery.
+	 * @name globalsMerged
+	 * @type {boolean}
+	 * @default false
+	 * @readonly
+	 */
 	_.globalsMerged = false;
 
+	/**
+	 * Merges any globally supplied variables such as the FooGallery_il8n object into the various component configurations for the plugin.
+	 */
 	_.mergeGlobals = function(){
-		if (_.globalsMerged === true) return;
-		if (window.FooGallery_il8n && _is.object(window.FooGallery_il8n)){
-			var il8n = window.FooGallery_il8n;
-			for (var factory in il8n){
-				if (!il8n.hasOwnProperty(factory) || !(_[factory] instanceof _.Factory) || !_is.object(il8n[factory])) continue;
-				for (var component in il8n[factory]){
-					if (il8n[factory].hasOwnProperty(component)){
-						_[factory].configure(component, null, null, il8n[factory][component]);
-					}
-				}
-			}
+		// if this has already been done, don't do it again
+		if ( _.globalsMerged === true ) return;
+
+		if ( _is.object( window[ 'FooGallery_il8n' ] ) ){
+			_.merge_il8n( window[ 'FooGallery_il8n' ] );
 			_.globalsMerged = true;
 		}
 	};
 
+	/**
+	 * Merges an "il8n" configuration object into the various component configurations for the plugin.
+	 * @param configuration
+	 */
+	_.merge_il8n = function( configuration ){
+		if ( !_is.object( configuration ) ) return;
+		Object.keys( configuration ).forEach( ( factoryName ) => {
+			if ( _is.object( configuration[ factoryName ] ) && _[ factoryName ] instanceof _.Factory ) {
+				const factory = /** @type FooGallery.Factory */ _[ factoryName ],
+					componentConfiguration = configuration[ factoryName ];
+
+				Object.keys( componentConfiguration ).forEach( ( componentName ) => {
+					if ( _is.object( componentConfiguration[ componentName ] ) ) {
+						factory.configure( componentName, null, null, componentConfiguration[ componentName ] );
+					}
+				} );
+			}
+		} );
+	};
+
 	_.load = _.reload = function(){
+		let jqReady = false, customReady = false;
 		// this automatically initializes all templates on page load
 		$(function () {
 			_.mergeGlobals();
 			if (_.autoEnabled){
 				$('[id^="foogallery-gallery-"]:not(.fg-ready)').foogallery(_.autoDefaults);
+			}
+			jqReady = true;
+			if ( jqReady && customReady ){
+				document.dispatchEvent( new CustomEvent( 'foogallery-loaded', { detail: _ } ) );
 			}
 		});
 
@@ -17972,8 +18059,14 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 			if (_.autoEnabled){
 				$('[id^="foogallery-gallery-"].fg-ready').foogallery(_.autoDefaults);
 			}
+			customReady = true;
+			if ( jqReady && customReady ){
+				document.dispatchEvent( new CustomEvent( 'foogallery-loaded', { detail: _ } ) );
+			}
 		});
 	};
+
+	document.dispatchEvent( new CustomEvent( 'foogallery-ready', { detail: _ } ) );
 
 	_.load();
 
