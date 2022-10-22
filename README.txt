@@ -312,6 +312,13 @@ Please update in order to for FooGallery to work in WP 5.5+!
 
 == Changelog ==
 
+= 2.2.21 =
+* Date Updated : 2022-10-22
+* New : Added new BETA attachment modal on gallery edit page, which is an easier way to edit attachment info. (Turned on from settings)
+[//]: # fs_premium_only_begin
+* Fix : Fix for watermarks not generating when Shortpixel engine is chosen.
+[//]: # fs_premium_only_end
+
 = 2.2.20 =
 * Date Updated : 2022-09-05
 * Fix : Fixed Justified last row + filter bug.
