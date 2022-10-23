@@ -242,6 +242,10 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
 
 			if ( is_array( $foogallery ) && !empty( $foogallery ) ) {
 
+                if ( !$this->attachments_have_taxonomies() ) {
+                    return;
+                }
+
 				foreach( $foogallery as $key => $val ) {
 					if ( $key == 'tags' ) {
 						$tags = array();
@@ -397,7 +401,11 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
 		public function foogallery_attachment_modal_data_taxonomies( $modal_data, $data, $attachment_id, $gallery_id ) {
             if ( $attachment_id > 0 ) {
 
-                // Rather use $taxonomies = get_object_taxonomies( 'attachments' ); and loop through all taxonomies for an attachment
+                if ( !$this->attachments_have_taxonomies() ) {
+                    return $modal_data;
+                }
+
+                // Rather use $taxonomies = get_object_taxonomies( 'attachment' ); and loop through all taxonomies for an attachment
 
                 $categories = get_the_terms( $attachment_id, FOOGALLERY_ATTACHMENT_TAXONOMY_CATEGORY );
                 $tags = get_the_terms( $attachment_id, FOOGALLERY_ATTACHMENT_TAXONOMY_TAG );
@@ -514,7 +522,12 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
 		/**
 		 * Image modal taxonomies & tags title
 		 */
-		public function display_tab_taxonomies() { ?>
+		public function display_tab_taxonomies() {
+            if ( !$this->attachments_have_taxonomies() ) {
+                return;
+            }
+
+        ?>
 			<div class="foogallery-img-modal-tab-wrapper" data-tab_id="foogallery-panel-taxonomies">
 				<input type="radio" name="tabset" id="foogallery-tab-taxonomies" aria-controls="foogallery-panel-taxonomies">
 				<label for="foogallery-tab-taxonomies"><?php _e('Taxonomies', 'foogallery'); ?></label>
@@ -531,7 +544,15 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
 			</div>
 		<?php }
 
-
+        /**
+         * Returns true if attachments have any taxonomies registered.
+         *
+         * @return bool
+         */
+        function attachments_have_taxonomies() {
+            $taxonomies = get_object_taxonomies( 'attachment' );
+            return count( $taxonomies ) > 0;
+        }
 
 
 
@@ -608,6 +629,10 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
 		 * Image modal taxonomies & tags tab content
 		 */
 		public function display_tab_content_taxonomies( $modal_data ) {
+            if ( !$this->attachments_have_taxonomies() ) {
+                return;
+            }
+
             if ( is_array( $modal_data ) && !empty ( $modal_data ) ) {
                 if ( $modal_data['img_id'] > 0 ) {
 					$selected_categories = $selected_tags = array();
