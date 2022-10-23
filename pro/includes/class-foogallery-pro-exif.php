@@ -719,28 +719,28 @@ if ( ! class_exists( 'FooGallery_Pro_Exif' ) ) {
 
                 $image_meta = wp_get_attachment_metadata( $img_id );
                 foreach( $foogallery as $key => $val ) {
-                    if ( $key == 'aperture' ) {
+                    if ( $key === 'aperture' ) {
                         $image_meta['image_meta']['aperture'] = $val;
                     }
-                    if ( $key == 'camera' ) {
+                    if ( $key === 'camera' ) {
                         $image_meta['image_meta']['camera'] = $val;
                     }
-                    if ( $key == 'created-timestamp' ) {
+                    if ( $key === 'created-timestamp' ) {
                         $image_meta['image_meta']['created_timestamp'] = $val;
                     }
-                    if ( $key == 'shutter-speed' ) {
+                    if ( $key === 'shutter-speed' ) {
                         $image_meta['image_meta']['shutter_speed'] = $val;
                     }
-                    if ( $key == 'focal-length' ) {
+                    if ( $key === 'focal-length' ) {
                         $image_meta['image_meta']['focal_length'] = $val;
                     }
-                    if ( $key == 'iso' ) {
+                    if ( $key === 'iso' ) {
                         $image_meta['image_meta']['iso'] = $val;
                     }
-                    if ( $key == 'orientation' ) {
+                    if ( $key === 'orientation' ) {
                         $image_meta['image_meta']['orientation'] = $val;
                     }
-                    if ( $key == 'keywords' ) {
+                    if ( $key === 'keywords' ) {
                         $keywords = explode(',', $val);
                         $image_meta['image_meta']['keywords'] = $keywords;
                     }

@@ -13,15 +13,13 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
 		public function __construct() {
             add_action( 'admin_footer', array( $this, 'foogallery_image_editor_modal' ) );
 
-            add_filter( 'foogallery_attachment_custom_fields', array( $this, 'foogallery_add_override_thumbnail_field' ) );
-
 			add_action( 'wp_ajax_foogallery_attachment_modal_open', array( $this, 'ajax_open_modal' ) );
 			add_action( 'wp_ajax_foogallery_attachment_modal_save', array( $this, 'ajax_save_modal' ) );
 
 			add_action( 'foogallery_attachment_modal_tabs_view', array( $this, 'display_tab_main' ), 10 );
 			add_action( 'foogallery_attachment_modal_tabs_view', array( $this, 'display_tab_taxonomies' ), 20 );
 			add_action( 'foogallery_attachment_modal_tabs_view', array( $this, 'display_tab_thumbnails' ), 30 );
-            add_action( 'foogallery_attachment_modal_tabs_view', array( $this, 'display_tab_more' ), 60 );
+            add_action( 'foogallery_attachment_modal_tabs_view', array( $this, 'display_tab_more' ), 200 );
 
             add_action( 'foogallery_attachment_modal_tab_content', array( $this, 'display_tab_content_main' ), 10, 1 );
             add_action( 'foogallery_attachment_modal_tab_content', array( $this, 'display_tab_content_taxonomies' ), 20, 1 );
@@ -307,29 +305,14 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
 
 			if ( is_array( $foogallery ) && !empty( $foogallery ) ) {
 				foreach( $foogallery as $key => $val ) {
-					if ( $key == 'data-width' ) {						
+					if ( $key === 'data-width' ) {
 						update_post_meta( $img_id, '_data-width', $val );
 					}
-					if ( $key == 'data-height' ) {
+					if ( $key === 'data-height' ) {
 						update_post_meta( $img_id, '_data-height', $val );
 					}
-					if ( $key == 'override-type' ) {
-						update_post_meta( $img_id, '_foogallery_override_type', $val );
-					}
-					if ( $key == 'button-text' ) {
-						update_post_meta( $img_id, '_foogallery_button_text', $val );
-					}
-					if ( $key == 'button-url' ) {
-						update_post_meta( $img_id, '_foogallery_button_url', $val );
-					}
-					if ( $key == 'ribbon' ) {
-						update_post_meta( $img_id, '_foogallery_ribbon', $val );
-					}
-					if ( $key == 'ribbon-text' ) {
-						update_post_meta( $img_id, '_foogallery_ribbon_text', $val );
-					}
-					if ( $key == 'product-id' ) {
-						update_post_meta( $img_id, '_foogallery_product', $val );
+					if ( $key === 'panning' ) {
+						update_post_meta( $img_id, '_foobox_panning', $val );
 					}
 				}
 			}

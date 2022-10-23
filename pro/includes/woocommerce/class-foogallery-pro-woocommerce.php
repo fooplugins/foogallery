@@ -1211,42 +1211,25 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
          *
          */
         public function attachment_modal_save_data( $img_id, $foogallery ) {
-
-            if ( is_array( $foogallery ) && !empty( $foogallery ) ) {
-
-                $image_meta = wp_get_attachment_metadata( $img_id );
-                foreach( $foogallery as $key => $val ) {
-                    if ( $key == 'aperture' ) {
-                        $image_meta['image_meta']['aperture'] = $val;
-                    }
-                    if ( $key == 'camera' ) {
-                        $image_meta['image_meta']['camera'] = $val;
-                    }
-                    if ( $key == 'created-timestamp' ) {
-                        $image_meta['image_meta']['created_timestamp'] = $val;
-                    }
-                    if ( $key == 'shutter-speed' ) {
-                        $image_meta['image_meta']['shutter_speed'] = $val;
-                    }
-                    if ( $key == 'focal-length' ) {
-                        $image_meta['image_meta']['focal_length'] = $val;
-                    }
-                    if ( $key == 'iso' ) {
-                        $image_meta['image_meta']['iso'] = $val;
-                    }
-                    if ( $key == 'orientation' ) {
-                        $image_meta['image_meta']['orientation'] = $val;
-                    }
-                    if ( $key == 'keywords' ) {
-                        $keywords = explode(',', $val);
-                        $image_meta['image_meta']['keywords'] = $keywords;
-                    }
-                }
-
-                wp_update_attachment_metadata( $img_id, $image_meta );
-
-            }
-
+			if ( is_array( $foogallery ) && !empty( $foogallery ) ) {
+				foreach( $foogallery as $key => $val ) {
+					if ( $key === 'button-text' ) {
+						update_post_meta( $img_id, '_foogallery_button_text', $val );
+					}
+					if ( $key === 'button-url' ) {
+						update_post_meta( $img_id, '_foogallery_button_url', $val );
+					}
+					if ( $key === 'ribbon' ) {
+						update_post_meta( $img_id, '_foogallery_ribbon', $val );
+					}
+					if ( $key === 'ribbon-text' ) {
+						update_post_meta( $img_id, '_foogallery_ribbon_text', $val );
+					}
+					if ( $key === 'product-id' ) {
+						update_post_meta( $img_id, '_foogallery_product', $val );
+					}
+				}
+			}
         }
 
 
