@@ -8,56 +8,6 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
 	class FooGallery_Admin_Gallery_Attachment_Modal {
 
 		/**
-		 * Default variables set for image modal
-		 */
-		private $img_modal = array(
-			'img_id' => 0,
-			'gallery_id' => 0,
-			'img_post' => '',
-			'image_attributes' => array(),
-			'img_title' => '',
-			'caption' => '',
-			'description' => '',
-			'post_date' => '',
-			'file_type' => '',
-			'author_id' => 0,
-			'author_name' => '',
-			'file_url' => '',
-			'image_alt' => '',
-			'custom_url' => '',
-			'custom_target' => '',
-			'attachment_watermark' => '',
-			'custom_class' => '',
-			'override_type' => '',
-			'data_width' => '',
-			'data_height' => '',
-			'foogallery_ribbon' => '',
-			'foogallery_ribbon_text' => '',
-			'foogallery_button_text' => '',
-			'foogallery_button_url' => '',
-			'foogallery_product' => '',
-			'panning' => '',
-			'progress' => '',
-			'img_categories' => array(),
-			'img_tags' => array(),
-			'nonce' => '',
-			'meta' => array(),
-			'foogallery_crop_pos' => 'foogallery[crop_pos]',
-			'foogallery_crop_pos_val' => 'center,center',
-			'foogallery_override_thumbnail' => '',
-			'image_size' => 'medium',
-			'img_path' => '',
-			'foogallery_attachments' => array(),
-			'slide_num' => -1,
-			'prev_slide' => FALSE,
-			'next_slide' => FALSE,
-			'next_img_id' => 0,
-			'prev_img_id' => 0,
-			'alternate_img_src' => '',
-			'override_class' => '',
-		);
-
-		/**
 		 * Primary class constructor.
 		 */
 		public function __construct() {
@@ -71,28 +21,18 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
 			add_action( 'foogallery_attachment_modal_tabs_view', array( $this, 'display_tab_main' ), 10 );
 			add_action( 'foogallery_attachment_modal_tabs_view', array( $this, 'display_tab_taxonomies' ), 20 );
 			add_action( 'foogallery_attachment_modal_tabs_view', array( $this, 'display_tab_thumbnails' ), 30 );
-			add_action( 'foogallery_attachment_modal_tabs_view', array( $this, 'display_tab_watermark' ), 40 );
-			add_action( 'foogallery_attachment_modal_tabs_view', array( $this, 'display_tab_exif' ), 50 );
-			add_action( 'foogallery_attachment_modal_tabs_view', array( $this, 'display_tab_more' ), 60 );
-
-            add_action( 'foogallery_attachment_modal_before_thumbnail', array( $this, 'display_attachment_info' ), 10, 1 );
+            add_action( 'foogallery_attachment_modal_tabs_view', array( $this, 'display_tab_more' ), 60 );
 
             add_action( 'foogallery_attachment_modal_tab_content', array( $this, 'display_tab_content_main' ), 10, 1 );
-			add_action( 'foogallery_attachment_modal_tab_content', array( $this, 'display_tab_content_taxonomies' ), 20, 1 );
-			add_action( 'foogallery_attachment_modal_tab_content', array( $this, 'display_tab_content_thumbnails' ), 30, 1 );
-			add_action( 'foogallery_attachment_modal_tab_content', array( $this, 'display_tab_content_watermark' ), 40, 1 );
-			add_action( 'foogallery_attachment_modal_tab_content', array( $this, 'display_tab_content_exif' ), 50, 1 );
-			add_action( 'foogallery_attachment_modal_tab_content', array( $this, 'display_tab_content_more' ), 60, 1 );
+            add_action( 'foogallery_attachment_modal_tab_content', array( $this, 'display_tab_content_taxonomies' ), 20, 1 );
+            add_action( 'foogallery_attachment_modal_tab_content', array( $this, 'display_tab_content_thumbnails' ), 30, 1 );
+            add_action( 'foogallery_attachment_modal_tab_content', array( $this, 'display_tab_content_more' ), 60, 1 );
 
-            add_action( 'foogallery_attachment_modal_after_tab_container', array( $this, 'extra_content_for_watermark' ), 40, 1 );
-
-			add_action( 'wp_ajax_foogallery_remove_alternate_img', array( $this, 'ajax_alternate_img_remove' ) );
+            add_action( 'foogallery_attachment_modal_before_thumbnail', array( $this, 'display_attachment_info' ), 10, 1 );
 
 			add_filter( 'foogallery_attachment_modal_data', array( $this, 'foogallery_attachment_modal_data_main' ), 10, 4 );
 			add_filter( 'foogallery_attachment_modal_data', array( $this, 'foogallery_attachment_modal_data_taxonomies' ), 20, 4 );
 			add_filter( 'foogallery_attachment_modal_data', array( $this, 'foogallery_attachment_modal_data_thumbnails' ), 30, 4 );
-			add_filter( 'foogallery_attachment_modal_data', array( $this, 'foogallery_attachment_modal_data_watermark' ), 40, 4 );
-			add_filter( 'foogallery_attachment_modal_data', array( $this, 'foogallery_attachment_modal_data_exif' ), 50, 4 );
 			add_filter( 'foogallery_attachment_modal_data', array( $this, 'foogallery_attachment_modal_data_more' ), 60, 4 );
 			add_filter( 'foogallery_attachment_modal_data', array( $this, 'foogallery_attachment_modal_data_info' ), 70, 4 );
 
@@ -101,12 +41,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
 			add_action( 'foogallery_attachment_save_data', array( $this, 'foogallery_attachment_save_data_main' ), 10, 2 );
 			add_action( 'foogallery_attachment_save_data', array( $this, 'foogallery_attachment_save_data_taxonomies' ), 20, 2 );
 			add_action( 'foogallery_attachment_save_data', array( $this, 'foogallery_attachment_save_data_thumbnails' ), 30, 2 );
-			add_action( 'foogallery_attachment_save_data', array( $this, 'foogallery_attachment_save_data_watermark' ), 40, 2 );
-			add_action( 'foogallery_attachment_save_data', array( $this, 'foogallery_attachment_save_data_exif' ), 50, 2 );
 			add_action( 'foogallery_attachment_save_data', array( $this, 'foogallery_attachment_save_data_more' ), 60, 2 );
-			
-			// Callback for the generate watermark ajax call.
-			add_action( 'wp_ajax_foogallery_attachment_modal_watermark_generate', array( $this, 'ajax_generate_watermark' ) );
 		}
 
 		/**
@@ -194,7 +129,10 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
             }
 
 			?>
-			<div id="foogallery-image-edit-modal" style="display: none;" data-img_type="normal" data-nonce="<?php echo wp_create_nonce( 'foogallery_attachment_modal_open' ); ?>" data-gallery_id="<?php echo $_GET['post']; ?>" data-modal_style="<?php echo $modal_style; ?>">
+			<div id="foogallery-image-edit-modal" style="display: none;"
+                 data-nonce="<?php echo wp_create_nonce( 'foogallery_attachment_modal_open' ); ?>"
+                 data-gallery_id="<?php echo $_GET['post']; ?>"
+                 data-modal_style="<?php echo $modal_style; ?>">
 				<div class="media-modal wp-core-ui">
 					<div class="media-modal-content">
 						<div class="edit-attachment-frame mode-select hide-menu hide-router">
@@ -214,22 +152,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
 			</div>
 		<?php }
 
-		/**
-		 * Adds a custom field to the attachments for override thumbnail
-		 *
-		 * @param $fields array
-		 *
-		 * @return array
-		 */
-		public function foogallery_add_override_thumbnail_field( $fields ) {
-			$fields['foogallery_override_thumbnail'] = array(
-				'label'       =>  __( 'Override Thumbnail', 'foogallery' ),
-				'input'       => 'text',
-				'helps'       => __( 'Add another image to override this attachment', 'foogallery' ),
-			);
 
-			return $fields;
-		}
 
 		/**
 		 * Save modal form data to database
@@ -369,70 +292,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
 
 		}
 
-		/**
-		 * Save watermark tab data content
-		 * 
-		 * @param $img_id int attachment id to update data
-		 * 
-		 * @param $foogallery array of form post data
-		 * 
-		 */
 
-		public function foogallery_attachment_save_data_watermark( $img_id, $foogallery ) {
-
-			if ( is_array( $foogallery ) && !empty( $foogallery ) ) {
-
-			}
-
-		}
-
-		/**
-		 * Save EXIF tab data content
-		 * 
-		 * @param $img_id int attachment id to update data
-		 * 
-		 * @param $foogallery array of form post data
-		 * 
-		 */
-
-		public function foogallery_attachment_save_data_exif( $img_id, $foogallery ) {
-
-			if ( is_array( $foogallery ) && !empty( $foogallery ) ) {
-
-				$image_meta = wp_get_attachment_metadata( $img_id );
-				foreach( $foogallery as $key => $val ) {
-					if ( $key == 'aperture' ) {
-						$image_meta['image_meta']['aperture'] = $val;
-					}
-					if ( $key == 'camera' ) {
-						$image_meta['image_meta']['camera'] = $val;
-					}
-					if ( $key == 'created-timestamp' ) {
-						$image_meta['image_meta']['created_timestamp'] = $val;
-					}
-					if ( $key == 'shutter-speed' ) {
-						$image_meta['image_meta']['shutter_speed'] = $val;
-					}
-					if ( $key == 'focal-length' ) {
-						$image_meta['image_meta']['focal_length'] = $val;
-					}
-					if ( $key == 'iso' ) {
-						$image_meta['image_meta']['iso'] = $val;
-					}
-					if ( $key == 'orientation' ) {
-						$image_meta['image_meta']['orientation'] = $val;
-					}
-					if ( $key == 'keywords' ) {
-						$keywords = explode(',', $val);
-						$image_meta['image_meta']['keywords'] = $keywords;
-					}
-				}
-
-				wp_update_attachment_metadata( $img_id, $image_meta );
-				
-			}
-
-		}
 
 		/**
 		 * Save more tab data content
@@ -554,7 +414,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
 		public function foogallery_attachment_modal_data_taxonomies( $modal_data, $data, $attachment_id, $gallery_id ) {
             if ( $attachment_id > 0 ) {
 
-                // Rather use $taxonomies = get_object_taxonomies( 'post' ); and loop through all taxonomies for an attachment
+                // Rather use $taxonomies = get_object_taxonomies( 'attachments' ); and loop through all taxonomies for an attachment
 
                 $categories = get_the_terms( $attachment_id, FOOGALLERY_ATTACHMENT_TAXONOMY_CATEGORY );
                 $tags = get_the_terms( $attachment_id, FOOGALLERY_ATTACHMENT_TAXONOMY_TAG );
@@ -595,39 +455,18 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
 			return $modal_data;
 		}
 
-		/**
-		 * Image modal watermark tab data update
-		 */
-		public function foogallery_attachment_modal_data_watermark( $modal_data, $data, $attachment_id, $gallery_id ) {
-            if ( $attachment_id > 0 ) {
-                $modal_data['attachment_watermark'] = get_post_meta( $attachment_id, FOOGALLERY_META_WATERMARK, true );
-            }
-			return $modal_data;
-		}
 
-		/**
-		 * Image modal exif tab data update
-		 */
-		public function foogallery_attachment_modal_data_exif( $modal_data, $data, $attachment_id, $gallery_id ) {
-            if ( $attachment_id > 0 ) {
-                //Get any EXIF data
-            }
-			return $modal_data;
-		}
+
 
 		/**
 		 * Image modal more tab data update
 		 */
 		public function foogallery_attachment_modal_data_more( $modal_data, $data, $attachment_id, $gallery_id ) {
             if ( $attachment_id > 0 ) {
-                $modal_data['data_width'] =             get_post_meta( $attachment_id, '_data-width', true );
-                $modal_data['data_height'] =            get_post_meta( $attachment_id, '_data-height', true );
-                $modal_data['override_type'] =          get_post_meta( $attachment_id, '_foogallery_override_type', true );
-                $modal_data['foogallery_button_text'] = get_post_meta( $attachment_id, '_foogallery_button_text', true );
-                $modal_data['foogallery_button_url'] =  get_post_meta( $attachment_id, '_foogallery_button_url', true );
-                $modal_data['foogallery_ribbon'] =      get_post_meta( $attachment_id, '_foogallery_ribbon', true );
-                $modal_data['foogallery_ribbon_text'] = get_post_meta( $attachment_id, '_foogallery_ribbon_text', true );
-                $modal_data['foogallery_product'] =     get_post_meta( $attachment_id, '_foogallery_product', true );
+                $modal_data['data_width'] =    get_post_meta( $attachment_id, '_data-width', true );
+                $modal_data['data_height'] =   get_post_meta( $attachment_id, '_data-height', true );
+                $modal_data['panning'] =       get_post_meta( $attachment_id, '_foobox_panning', true );
+                $modal_data['override_type'] = get_post_meta( $attachment_id, '_foogallery_override_type', true );
             }
 			return $modal_data;
 		}
@@ -709,25 +548,9 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
 			</div>
 		<?php }
 
-		/**
-		 * Image modal watermark tab title
-		 */
-		public function display_tab_watermark() { ?>
-			<div class="foogallery-img-modal-tab-wrapper" data-tab_id="foogallery-panel-watermark">
-				<input type="radio" name="tabset" id="foogallery-tab-watermark" aria-controls="foogallery-panel-watermark">
-				<label for="foogallery-tab-watermark"><?php _e('Watermark', 'foogallery'); ?></label>
-			</div>
-		<?php }
 
-		/**
-		 * Image modal EXIF tab title
-		 */
-		public function display_tab_exif() { ?>
-			<div class="foogallery-img-modal-tab-wrapper" data-tab_id="foogallery-panel-exif">
-				<input type="radio" name="tabset" id="foogallery-tab-exif" aria-controls="foogallery-panel-exif">
-				<label for="foogallery-tab-exif"><?php _e('EXIF', 'foogallery'); ?></label>
-			</div>
-		<?php }
+
+
 
 		/**
 		 * Image modal more tab title
@@ -889,204 +712,22 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
 									<input type="radio" name="<?php echo $modal_data['foogallery_crop_pos'];?>" value="right,bottom" title="<?php _e('Right, Bottom', 'foogallery'); ?>" <?php checked( 'right,bottom', $modal_data['foogallery_crop_pos_val'], true); ?>>
 								</div>
 							</span>
-						
-						<div class="foogallery-attachments-list-bar">
-							<div class="settings">								
-								<span class="setting override-thumbnail <?php echo $modal_data['override_class']; ?>" data-setting="override-thumbnail">
-									<label for="attachment-details-two-column-override-thumbnail" class="name"><?php _e('Alternate Thumbnail URL', 'foogallery'); ?></label>
-									<input type="text" id="attachments-foogallery-override-thumbnail" value="<?php echo $modal_data['alternate_img_src']; ?>" readonly>
-									<input type="hidden" name="foogallery[override-thumbnail-id]" id="attachments-foogallery-override-thumbnail-id" value="<?php echo $modal_data['foogallery_override_thumbnail']; ?>">
-								</span>
-								<span class="setting override-thumbnail-preview <?php echo $modal_data['override_class']; ?>" data-setting="override-thumbnail-preview">
-										<label for="attachment-details-two-column-override-thumbnail-preview" class="name"><?php _e('Alternate Thumbnail Preview', 'foogallery'); ?></label>
-										<img id="attachment-details-two-column-override-thumbnail-preview" src="<?php echo $modal_data['alternate_img_src']; ?>" alt="Alternate Thumbnail">
-								</span>
-								<span class="setting alternate-image-upload-settings" data-setting="alternate-image-upload">
-									<div class="alternate-image-upload-wrap">
-										<button type="button" class="button button-primary button-large" id="foogallery-img-modal-alternate-image-upload"
-												data-uploader-title="<?php _e( 'Override Thumbnail Image', 'foogallery' ); ?>"
-												data-uploader-button-text="<?php _e( 'Override Thumbnail Image', 'foogallery' ); ?>"
-												data-img-id="<?php echo $modal_data['img_id']; ?>">
-											<?php _e( 'Override Thumbnail Image', 'foogallery' ); ?>
-										</button>
-										<button type="button" class="button button-primary button-large <?php echo $modal_data['override_class']; ?>" id="foogallery-img-modal-alternate-image-delete"
-												data-uploader-title="<?php _e( 'Clear Override Thumbnail', 'foogallery' ); ?>"
-												data-uploader-button-text="<?php _e( 'Clear Override Thumbnail', 'foogallery' ); ?>"
-												data-img-id="<?php echo $modal_data['img_id']; ?>">
-											<?php _e( 'Clear Override Thumbnail', 'foogallery' ); ?>
-										</button>
-										<span id="foogallery_clear_alternate_img_spinner" class="spinner"></span>
-									</div>
-								</span>
-							</div>
-						</div>
+
 						<?php if ( $engine->has_local_cache() ) { ?>
-						<div class="foogallery-attachments-list-bar clear-thumbnail">
-							<span class="setting" data-setting="clear-image-cache">
-								<label class="name"></label>
-								<button class="button button-primary button-large" id="foogallery_clear_img_thumb_cache"><?php _e( 'Clear Thumbnail Cache', 'foogallery' ); ?></button>
-								<span id="foogallery_clear_img_thumb_cache_spinner" class="spinner"></span>
-								<?php wp_nonce_field( 'foogallery_clear_attachment_thumb_cache', 'foogallery_clear_attachment_thumb_cache_nonce', false ); ?>
-							</span>
-						</div>
-						<?php } ?>
-						</div>
+                            <div class="foogallery-attachments-list-bar clear-thumbnail">
+                                <span class="setting" data-setting="clear-image-cache">
+                                    <label class="name"></label>
+                                    <button class="button button-primary button-large" id="foogallery_clear_img_thumb_cache"><?php _e( 'Clear Thumbnail Cache', 'foogallery' ); ?></button>
+                                    <span id="foogallery_clear_img_thumb_cache_spinner" class="spinner"></span>
+                                    <?php wp_nonce_field( 'foogallery_clear_attachment_thumb_cache', 'foogallery_clear_attachment_thumb_cache_nonce', false ); ?>
+                                </span>
+                            </div>
+						<?php }
+
+                        do_action( 'foogallery_attachment_modal_tab_content_thumbnails', $modal_data );
+                        ?></div>
 					</section>
 					<?php echo ob_get_clean();
-				}
-			}
-		}
-
-		/**
-		 * Image modal watermark tab content
-		 */
-		public function display_tab_content_watermark( $modal_data ) {
-            if ( is_array( $modal_data ) && !empty ( $modal_data ) ) {
-                if ( $modal_data['img_id'] > 0 ) {
-                    $has_watermark = false;
-                    $watermark_status = __( 'No watermark has been generated! Please generate a watermark.', 'foogallery' );
-
-                    if ( isset( $modal_data['attachment_watermark'] ) && is_array( $modal_data['attachment_watermark'] ) ) {
-                        $has_watermark = isset( $modal_data['attachment_watermark']['has_watermark'] ) && $modal_data['attachment_watermark']['has_watermark'];
-                        if ( $has_watermark ) {
-
-                            $watermark_status = __( 'An up to date watermark has been generated.', 'foogallery' );
-
-                            $protection = new FooGallery_Pro_Protection();
-                            $watermark_options = $protection->get_watermark_options();
-                            // Generate a checksum we can use to check if the watermark is outdated.
-                            $checksum = crc32( foogallery_json_encode( $watermark_options ) );
-
-                            $actual_checksum = isset( $modal_data['attachment_watermark']['checksum'] ) ? $modal_data['attachment_watermark']['checksum'] : '';
-
-                            if ( $actual_checksum !== $checksum ) {
-                                $watermark_status = __( 'An outdated watermark has been generated. Generate a new watermark to use the latest watermark settings.', 'foogallery' );
-                            }
-                        }
-                    } ?>
-					<section id="foogallery-panel-watermark" class="tab-panel">
-                        <div id="foogallery-panel-watermark-status" class="settings">
-							<span class="setting" data-setting="watermark-status">
-								<label for="attachments-watermark-status" class="name"><?php _e('Watermark Status', 'foogallery'); ?></label>
-								<?php echo esc_html( $watermark_status ); ?>
-							</span>
-                        </div>
-                        <?php if ( $has_watermark ) { ?>
-						<div id="foogallery-panel-watermark-preview" class="settings <?php echo isset( $modal_data['attachment_watermark']['url'] ) ? 'watermark-preview-show' : ''; ?>">
-							<span class="setting" data-setting="watermark-image-preview">
-								<label for="attachments-watermark-image-preview" class="name"><?php _e('Watermark Image Preview', 'foogallery'); ?></label>
-								<a id="attachments-watermark-image-preview" href="<?php echo $modal_data['attachment_watermark']['url']; ?>" target="_blank">
-									<img width="150" src="<?php echo $modal_data['attachment_watermark']['url']; ?>" alt="watermark">
-								</a>
-							</span>
-						</div>
-                        <?php } ?>
-						<div class="foogallery_metabox_field-watermark_status settings">
-							<span class="setting" data-setting="watermark-generate-button">
-								<label for="attachments-watermark-generate-btn" class="name"><?php _e('Generate Watermark', 'foogallery'); ?></label>
-								<button id="attachments-watermark-generate-btn" type="button"
-                                        class="button button-primary button-large attachment_modal_watermark_generate"
-                                        data-attach_id="<?php echo $modal_data['img_id']; ?>"
-                                        data-nonce="<?php echo wp_create_nonce('foogallery_attachment_modal_watermark_generate'); ?>">
-								<?php echo esc_html( __( 'Generate', 'foogallery' ) ); ?>
-								</button>
-								<span style="position: absolute" class="spinner foogallery_protection_generate_spinner"></span>
-							</span>
-						</div>
-					</section>
-					<?php
-				}
-			}
-		}
-
-        public function extra_content_for_watermark( $modal_data ) {
-            ?>
-            <script>
-                jQuery( function() {
-                    jQuery(document).on('click', '.attachment_modal_watermark_generate', function(e) {
-                        e.preventDefault();
-
-                        var $this = jQuery( this ),
-                            attach_id = $this.attr('data-attach_id'),
-                            nonce = $this.attr('data-nonce');
-
-                        jQuery('.foogallery_protection_generate_spinner').addClass('is-active');
-
-                        var data = 'action=foogallery_attachment_modal_watermark_generate' +
-                            '&attachment_id=' + attach_id +
-                            '&nonce=' + nonce;
-
-                        jQuery.ajax({
-                            type: "POST",
-                            url: ajaxurl,
-                            data: data,
-                            success: function(result) {
-                                if ( result.html ) {
-                                    jQuery( '#foogallery-panel-watermark' ).replaceWith( result.html );
-                                    jQuery( '#foogallery-panel-watermark' ).addClass('active');
-                                }
-                            },
-                            error: function() {
-                                alert( 'Oops!' );
-                            }
-                        });
-                    });
-                });
-            </script>
-            <?php
-        }
-
-		/**
-		 * Image modal EXIF tab content
-		 */
-		public function display_tab_content_exif( $modal_data ) {
-			if ( is_array( $modal_data ) && !empty ( $modal_data ) ) {
-				if ( $modal_data['img_id'] > 0 ) {
-					if ( is_array ( $modal_data['meta'] ) && !empty ( $modal_data['meta'] ) ) {
-						$keywords = '';
-						$image_meta = array_key_exists( 'image_meta', $modal_data['meta'] ) ? $modal_data['meta']['image_meta'] : '';
-						if ( is_array( $image_meta ) && !empty ( $image_meta ) ) {				
-							$keywords_str = array_key_exists( 'keywords', $image_meta ) ? implode( ',', $modal_data['meta']['image_meta']['keywords'] ) : '';
-							$keywords = rtrim( $keywords_str, ',' );
-						} ?>
-						<section id="foogallery-panel-exif" class="tab-panel">							
-							<div class="settings">	
-								<span class="setting" data-setting="title">
-									<label for="attachment-details-two-column-aperture" class="name"><?php _e('Aperture Text', 'foogallery'); ?></label>
-									<input type="text" name="foogallery[aperture]" id="attachment-details-two-column-aperture" value="<?php echo $modal_data['meta']['image_meta']['aperture'];?>">
-								</span>		
-								<span class="setting" data-setting="camera">
-									<label for="attachment-details-two-column-camera" class="name"><?php _e('Camera Text', 'foogallery'); ?></label>
-									<input type="text" name="foogallery[camera]" id="attachment-details-two-column-camera" value="<?php echo $modal_data['meta']['image_meta']['camera'];?>">
-								</span>	
-								<span class="setting" data-setting="created-timestamp">
-									<label for="attachment-details-two-column-created-timestamp" class="name"><?php _e('Created Timestamp', 'foogallery'); ?></label>
-									<input type="text" name="foogallery[created-timestamp]" id="attachment-details-two-column-created-timestamp" value="<?php echo $modal_data['meta']['image_meta']['created_timestamp'];?>">
-								</span>	
-								<span class="setting" data-setting="shutter-speed">
-									<label for="attachment-details-two-column-shutter-speed" class="name"><?php _e('Shutter Speed Text', 'foogallery'); ?></label>
-									<input type="text" name="foogallery[shutter-speed]" id="attachment-details-two-column-shutter-speed" value="<?php echo $modal_data['meta']['image_meta']['shutter_speed'];?>">
-								</span>			
-								<span class="setting" data-setting="focal-length">
-									<label for="attachment-details-two-column-focal-length" class="name"><?php _e('Focal Length Text', 'foogallery'); ?></label>
-									<input type="text" name="foogallery[focal-length]" id="attachment-details-two-column-focal-length" value="<?php echo $modal_data['meta']['image_meta']['focal_length'];?>">
-								</span>		
-								<span class="setting" data-setting="iso">
-									<label for="attachment-details-two-column-iso" class="name"><?php _e('ISO Text', 'foogallery'); ?></label>
-									<input type="text" name="foogallery[iso]" id="attachment-details-two-column-iso" value="<?php echo $modal_data['meta']['image_meta']['iso'];?>">
-								</span>	
-								<span class="setting" data-setting="orientation">
-									<label for="attachment-details-two-column-orientation" class="name"><?php _e('Orientation', 'foogallery'); ?></label>
-									<input type="text" name="foogallery[orientation]" id="attachment-details-two-column-orientation" value="<?php echo $modal_data['meta']['image_meta']['orientation'];?>">
-								</span>	
-								<span class="setting" data-setting="keywords">
-									<label for="attachment-details-two-column-keywords" class="name"><?php _e('Keywords', 'foogallery'); ?></label>
-									<input type="text" name="foogallery[keywords]" id="attachment-details-two-column-keywords" value="<?php echo $keywords;?>">
-								</span>	
-							</div>
-						</section>
-						<?php
-					}
 				}
 			}
 		}
@@ -1114,34 +755,6 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
 							<span class="setting" data-setting="override-type">
 								<label for="attachment-details-two-column-override-type" class="name"><?php _e('Override Type', 'foogallery'); ?></label>
 								<input type="text" name="foogallery[override-type]" id="attachment-details-two-column-override-type" value="<?php echo $modal_data['override_type']; ?>">
-							</span>	
-							<span class="setting" data-setting="button-text">
-								<label for="attachment-details-two-column-button-text" class="name"><?php _e('Button Text', 'foogallery'); ?></label>
-								<input type="text" name="foogallery[button-text]" id="attachment-details-two-column-button-text" value="<?php echo $modal_data['foogallery_button_text']; ?>">
-							</span>	
-							<span class="setting" data-setting="button-url">
-								<label for="attachment-details-two-column-button-url" class="name"><?php _e('Button URL', 'foogallery'); ?></label>
-								<input type="text" name="foogallery[button-url]" id="attachment-details-two-column-button-url" value="<?php echo $modal_data['foogallery_button_url']; ?>">
-							</span>	
-							<span class="setting" data-setting="ribbon">
-								<label for="attachment-details-two-column-ribbon" class="name"><?php _e('Ribbon', 'foogallery'); ?></label>
-								<select id="attachment-details-two-column-ribbon" name="foogallery[ribbon]">
-									<option selected="selected" value=""><?php _e('None', 'foogallery'); ?></option>
-									<option value="fg-ribbon-5" <?php selected( $modal_data['foogallery_ribbon'], 'fg-ribbon-5', true ); ?>><?php _e('Type 1 (top-right, diagonal, green)', 'foogallery'); ?></option>
-									<option value="fg-ribbon-3" <?php selected( $modal_data['foogallery_ribbon'], 'fg-ribbon-3', true ); ?>><?php _e('Type 2 (top-left, small, blue)', 'foogallery'); ?></option>
-									<option value="fg-ribbon-4" <?php selected( $modal_data['foogallery_ribbon'], 'fg-ribbon-4', true ); ?>><?php _e('Type 3 (top, full-width, yellow)', 'foogallery'); ?></option>
-									<option value="fg-ribbon-6" <?php selected( $modal_data['foogallery_ribbon'], 'fg-ribbon-6', true ); ?>><?php _e('Type 4 (top-right, rounded, pink)', 'foogallery'); ?></option>
-									<option value="fg-ribbon-2" <?php selected( $modal_data['foogallery_ribbon'], 'fg-ribbon-2', true ); ?>><?php _e('Type 5 (top-left, medium, purple)', 'foogallery'); ?></option>
-									<option value="fg-ribbon-1" <?php selected( $modal_data['foogallery_ribbon'], 'fg-ribbon-1', true ); ?>><?php _e('Type 6 (top-left, vertical, orange)', 'foogallery'); ?></option>
-								</select>
-							</span>	
-							<span class="setting" data-setting="ribbon-text">
-								<label for="attachment-details-two-column-ribbon-text" class="name"><?php _e('Ribbon Text', 'foogallery'); ?></label>
-								<input type="text" name="foogallery[ribbon-text]" id="attachment-details-two-column-ribbon-text" value="<?php echo $modal_data['foogallery_ribbon_text']; ?>">
-							</span>
-							<span class="setting" data-setting="product-id">
-								<label for="attachment-details-two-column-product-id" class="name"><?php _e('Product ID', 'foogallery'); ?></label>
-								<input type="text" name="foogallery[product-id]" id="attachment-details-two-column-product-id" value="<?php echo $modal_data['foogallery_product']; ?>">
 							</span>	
 						</div>
 					</section>
@@ -1189,59 +802,8 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
 			}
 		}
 
-		/**
-		 * Ajax function to remove alternate image
-		 */
-		public function ajax_alternate_img_remove() {
-
-			// Check for nonce security      
-			if ( ! wp_verify_nonce( $_POST['nonce'], 'foogallery-modal-nonce' ) ) {
-				die ( 'Busted!');
-			}
-
-			$img_id = sanitize_text_field( $_POST['img_id'] );
-
-			delete_post_meta( $img_id, '_foogallery_override_thumbnail' );
-
-			wp_die();
-
-		}
-
-		/**
-		 * Ajax callback for generating watermarked image for single attachment.
-		 */
-		public function ajax_generate_watermark() {
-			// Check for nonce security
-			if ( ! wp_verify_nonce( $_POST['nonce'], 'foogallery_attachment_modal_watermark_generate' ) ) {
-                die ( 'Busted!');
-            }
-
-            if ( isset( $_POST['attachment_id'] ) ) {
-                $attachment_id = intval( sanitize_text_field( wp_unslash( $_POST['attachment_id'] ) ) );
-
-                // Generate watermark image for given attachment id
-                $protection = new FooGallery_Pro_Protection();
-                $protection->generate_watermark( $attachment_id );
-
-                ob_start();
-                $modal_data = array(
-                    'img_id' => $attachment_id
-                );
-                $modal_data = $this->foogallery_attachment_modal_data_watermark( $modal_data, null, $attachment_id, 0 );
-                $this->display_tab_content_watermark( $modal_data );
-
-                wp_send_json( array(
-                    'html' => ob_get_clean()
-                ) );
-            }
-
-			die();
-		}
-
 		public function foogallery_img_modal_save_btn() {
 			echo '<div class="foogallery-image-edit-footer"><button id="attachments-data-save-btn" type="submit" class="button button-primary button-large">'. __( 'Save Attachment Details', 'foogallery' ) .'</button></div>';
 		}
-
 	}
-
 }

@@ -419,89 +419,10 @@ FooGallery.autoEnabled = false;
 		if (!selected_attachment_id) { selected_attachment_id = 0; }
 
 		var modal_style = $('#foogallery-image-edit-modal').data('modal_style');
-		var img_type = $('#foogallery-image-edit-modal').data('img_type');
 
-		if (selected_attachment_id > 0 && modal_style == 'on') {
-
-			if (img_type == 'normal') {
-				FOOGALLERY.openAttachmentModal(selected_attachment_id);
-			} else if (img_type == 'alternate') {
-				$('#foogallery-image-edit-modal').data('img_type', 'normal');
-				var createModal = $.isFunction(wp.foogallery) ? wp.foogallery : wp.media;
-
-			// Create our FooGallery media frame.
-			FOOGALLERY.media_uploader = createModal({
-				frame: "select",
-				multiple: 'add',
-				title: FOOGALLERY.mediaModalTitle,
-				button: {
-					text: FOOGALLERY.mediaModalButtonText
-				},
-				library: {
-					type: "image"
-				}
-			}).on("select", function(){
-				var attachments = FOOGALLERY.media_uploader.state().get('selection').toJSON();
-
-				$.each(attachments, function(i, item) {
-					if ( item && item.id ) {
-						var attachment = {
-							id: item.id,
-							src: null,
-							subtype: null
-						};
-						if ( item.sizes && item.sizes.thumbnail) {
-							attachment.src = item.sizes.thumbnail.url;
-						} else {
-							//thumbnail could not be found for whatever reason. Default to the full image URL
-							attachment.src = item.url;
-						}
-						if ( item.subtype ) {
-							attachment.subtype = item.subtype;
-						}
-
-						$('#attachments-foogallery-override-thumbnail-id').val(attachment.id);
-						$('#attachment-details-two-column-override-thumbnail-preview').attr('src', attachment.src);
-						$('#attachments-foogallery-override-thumbnail').val(attachment.src);
-						$('#foogallery-image-edit-modal .tab-panels .settings span.setting.override-thumbnail').addClass('is-override-thumbnail');
-						$('#foogallery-image-edit-modal .tab-panels .settings span.setting.override-thumbnail-preview').addClass('is-override-thumbnail');
-						$('#foogallery-image-edit-modal .tab-panels .settings span.setting.alternate-image-delete').addClass('is-override-thumbnail');
-						$('#attachment-details-two-column-override-thumbnail-preview').attr('src', attachment.src)
-
-
-						//FOOGALLERY.addAttachmentToGalleryList(attachment);
-					} else {
-						//there was a problem adding the item! Move on to the next
-						alert( 'There was a problem adding the item to the gallery!' );
-					}
-				});
-			})
-			.on( 'open', function() {
-				var selection = FOOGALLERY.media_uploader.state().get('selection');
-				if (selection && !$.isFunction(wp.foogallery)) {
-					//clear any previous selections
-					selection.reset();
-				}
-
-				if (FOOGALLERY.selected_attachment_id > 0) {
-					var attachment = wp.media.attachment(FOOGALLERY.selected_attachment_id);
-					attachment.fetch();
-					selection.add( attachment ? [ attachment ] : [] );
-					console.log('A');
-					console.log(attachment);
-				} else {
-					//would be nice to have all previously added media selected
-				}
-			});
-
-			// Finally, open the modal
-			FOOGALLERY.media_uploader.open();
-
-
-
-			}
+		if ( selected_attachment_id > 0 && modal_style === 'on') {
+			FOOGALLERY.openAttachmentModal( selected_attachment_id );
 		} else {
-
 			FOOGALLERY.selected_attachment_id = selected_attachment_id;
 
 			if (FOOGALLERY.media_uploader !== false){
@@ -719,8 +640,6 @@ FooGallery.autoEnabled = false;
 			$('#foogallery_woocommerce_taxonomies_selected').val(cat_str);
 		});
 
-
-
 		$(document).on('click', '#attachments-data-save-btn', function(e){
 			e.preventDefault();
 			var data = $('#foogallery_attachment_modal_save_form').serialize();
@@ -772,45 +691,11 @@ FooGallery.autoEnabled = false;
 			});
 		});
 
-		/*$(document).on('click', '#foogallery-img-modal-alternate-image-upload', function(e) {
-			$('.foogallery-attachments-list-container .upload_alternate_image').trigger('click');
-		});*/
-
-		$(document).on('click', '#foogallery-img-modal-alternate-image-upload', function(e) {
-            e.preventDefault();
-			$('#foogallery-image-edit-modal').data('img_type', 'alternate');
-			FOOGALLERY.mediaModalTitle = $(this).data( 'uploader-title' );
-			FOOGALLERY.mediaModalButtonText = $(this).data( 'uploader-button-text' );
-			var img_id = $(this).data('img-id');
-			FOOGALLERY.openMediaModal(img_id);
-        });
-
 		$(document).on('click', '#foogallery-image-edit-modal .edit-media-header button', function(e) {
 			var selected_attachment_id = parseInt( $(this).data('attachment') );
 			if ( selected_attachment_id > 0 ) {
 				FOOGALLERY.openAttachmentModal(selected_attachment_id);
 			}
-		});
-
-		$(document).on('click', '#foogallery-img-modal-alternate-image-delete', function(){
-			$('#foogallery_clear_alternate_img_spinner').addClass('is-active');
-			var img_id = $(this).attr('data-img-id');
-			var nonce = $('#foogallery-panel-main').data('nonce');
-			$.ajax({
-				type: "POST",
-				url: ajaxurl,
-				data: {
-					'action': 'foogallery_remove_alternate_img',
-					'img_id': img_id,
-					'nonce': nonce
-				},
-				success: function(data) {
-					$('#foogallery_clear_alternate_img_spinner').removeClass('is-active');
-					$('#foogallery-image-edit-modal .tab-panels .settings span.setting.override-thumbnail').removeClass('is-override-thumbnail');
-					$('#foogallery-image-edit-modal .tab-panels .settings span.setting.override-thumbnail-preview').removeClass('is-override-thumbnail');
-					$('#foogallery-image-edit-modal .tab-panels .settings span.setting.alternate-image-delete').removeClass('is-override-thumbnail');
-				}
-			});
 		});
     };
 
