@@ -312,15 +312,17 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
 					if ( $key === 'data-width' ) {
 						update_post_meta( $img_id, '_data-width', $val );
 					}
-					if ( $key === 'data-height' ) {
+                    else if ( $key === 'data-height' ) {
 						update_post_meta( $img_id, '_data-height', $val );
 					}
-					if ( $key === 'panning' ) {
+					else if ( $key === 'panning' ) {
 						update_post_meta( $img_id, '_foobox_panning', $val );
 					}
+                    else if ( $key === 'override_type' ) {
+                        update_post_meta( $img_id, '_foogallery_override_type', $val );
+                    }
 				}
 			}
-
 		}
 
 		/**
@@ -427,7 +429,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
 		public function foogallery_attachment_modal_data_thumbnails( $modal_data, $data, $attachment_id, $gallery_id ) {
             if ( $attachment_id > 0 ) {
 
-                $modal_data['foogallery_crop_pos_val'] = get_post_meta( $attachment_id, 'foogallery_crop_pos', true );
+                $modal_data['foogallery_crop_pos'] = get_post_meta( $attachment_id, 'foogallery_crop_pos', true );
 
                 $foogallery_override_thumbnail = get_post_meta( $attachment_id, '_foogallery_override_thumbnail', true );
 
@@ -703,21 +705,23 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
 			if ( is_array( $modal_data ) && !empty ( $modal_data ) ) {
 				if ( $modal_data['img_id'] > 0 ) {
 					$engine = foogallery_thumb_active_engine();
+
+                    $crop_pos = !empty( $modal_data['foogallery_crop_pos'] ) ? $modal_data['foogallery_crop_pos'] : 'center,center';
 					?>
 					<section id="foogallery-panel-thumbnails" class="tab-panel">
 						<div class="settings">
 							<span class="setting" data-setting="crop-from-position">
 								<label for="attachments-crop-from-position" class="name"><?php _e('Crop Position', 'foogallery'); ?></label>
 								<div id="foogallery_crop_pos">
-									<input type="radio" name="<?php echo $modal_data['foogallery_crop_pos'];?>" value="left,top" title="<?php _e('Left, Top', 'foogallery'); ?>" <?php checked( 'left,top', $modal_data['foogallery_crop_pos_val'], true); ?>>
-									<input type="radio" name="<?php echo $modal_data['foogallery_crop_pos'];?>" value="center,top" title="<?php _e('Center, Top', 'foogallery'); ?>" <?php checked( 'center,top', $modal_data['foogallery_crop_pos_val'], true); ?>>
-									<input type="radio" name="<?php echo $modal_data['foogallery_crop_pos'];?>" value="right,top" title="<?php _e('Right, Top', 'foogallery'); ?>" <?php checked( 'right,top', $modal_data['foogallery_crop_pos_val'], true); ?>><br>
-									<input type="radio" name="<?php echo $modal_data['foogallery_crop_pos'];?>" value="left,center" title="<?php _e('Left, Center', 'foogallery'); ?>" <?php checked( 'left,center', $modal_data['foogallery_crop_pos_val'], true); ?>>
-									<input type="radio" name="<?php echo $modal_data['foogallery_crop_pos'];?>" value="center,center" title="<?php _e('Center, Center', 'foogallery'); ?>" <?php checked( 'center,center', $modal_data['foogallery_crop_pos'], true); ?>>
-									<input type="radio" name="<?php echo $modal_data['foogallery_crop_pos'];?>" value="right,center" title="<?php _e('Right, Center', 'foogallery'); ?>" <?php checked( 'right,center', $modal_data['foogallery_crop_pos_val'], true); ?>><br>
-									<input type="radio" name="<?php echo $modal_data['foogallery_crop_pos'];?>" value="left,bottom" title="<?php _e('Left, Bottom', 'foogallery'); ?>" <?php checked( 'left,bottom', $modal_data['foogallery_crop_pos_val'], true); ?>>
-									<input type="radio" name="<?php echo $modal_data['foogallery_crop_pos'];?>" value="center,bottom" title="<?php _e('Center, Bottom', 'foogallery'); ?>" <?php checked( 'center,bottom', $modal_data['foogallery_crop_pos_val'], true); ?>>
-									<input type="radio" name="<?php echo $modal_data['foogallery_crop_pos'];?>" value="right,bottom" title="<?php _e('Right, Bottom', 'foogallery'); ?>" <?php checked( 'right,bottom', $modal_data['foogallery_crop_pos_val'], true); ?>>
+									<input type="radio" name="foogallery[crop_pos]" value="left,top" title="<?php _e('Left, Top', 'foogallery'); ?>" <?php checked( 'left,top', $crop_pos, true); ?>>
+									<input type="radio" name="foogallery[crop_pos]" value="center,top" title="<?php _e('Center, Top', 'foogallery'); ?>" <?php checked( 'center,top', $crop_pos, true); ?>>
+									<input type="radio" name="foogallery[crop_pos]" value="right,top" title="<?php _e('Right, Top', 'foogallery'); ?>" <?php checked( 'right,top', $crop_pos, true); ?>><br>
+									<input type="radio" name="foogallery[crop_pos]" value="left,center" title="<?php _e('Left, Center', 'foogallery'); ?>" <?php checked( 'left,center', $crop_pos, true); ?>>
+									<input type="radio" name="foogallery[crop_pos]" value="center,center" title="<?php _e('Center, Center', 'foogallery'); ?>" <?php checked( 'center,center', $crop_pos, true); ?>>
+									<input type="radio" name="foogallery[crop_pos]" value="right,center" title="<?php _e('Right, Center', 'foogallery'); ?>" <?php checked( 'right,center', $crop_pos, true); ?>><br>
+									<input type="radio" name="foogallery[crop_pos]" value="left,bottom" title="<?php _e('Left, Bottom', 'foogallery'); ?>" <?php checked( 'left,bottom', $crop_pos, true); ?>>
+									<input type="radio" name="foogallery[crop_pos]" value="center,bottom" title="<?php _e('Center, Bottom', 'foogallery'); ?>" <?php checked( 'center,bottom', $crop_pos, true); ?>>
+									<input type="radio" name="foogallery[crop_pos]" value="right,bottom" title="<?php _e('Right, Bottom', 'foogallery'); ?>" <?php checked( 'right,bottom', $crop_pos, true); ?>>
 								</div>
 							</span>
 
@@ -762,7 +766,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
 							</span>	
 							<span class="setting" data-setting="override-type">
 								<label for="attachment-details-two-column-override-type" class="name"><?php _e('Override Type', 'foogallery'); ?></label>
-								<input type="text" name="foogallery[override-type]" id="attachment-details-two-column-override-type" value="<?php echo $modal_data['override_type']; ?>">
+								<input type="text" name="foogallery[override_type]" id="attachment-details-two-column-override-type" value="<?php echo $modal_data['override_type']; ?>">
 							</span>	
 						</div>
 					</section>
