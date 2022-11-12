@@ -739,7 +739,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
                         do_action( 'foogallery_attachment_modal_tab_content_thumbnails', $modal_data );
                         ?></div>
 					</section>
-					<?php echo ob_get_clean();
+					<?php
 				}
 			}
 		}
