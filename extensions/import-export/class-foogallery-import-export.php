@@ -5,7 +5,7 @@
 
 if ( ! class_exists( 'FooGallery_Import_Export' ) ) {
 
-	require_once 'functions.php';
+	require_once plugin_dir_path( __FILE__ ) . 'functions.php';
 
 	/**
 	 * Class FooGallery_Import_Export
