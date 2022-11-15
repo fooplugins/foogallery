@@ -38,6 +38,11 @@ if ( ! class_exists( 'FooGallery_Pro_Exif' ) ) {
 
                 //add some settings for EXIF
                 add_filter( 'foogallery_admin_settings_override', array( $this, 'add_exif_settings' ) );
+
+                // Attachment modal actions:
+                add_action( 'foogallery_attachment_modal_tabs_view', array( $this, 'attachment_modal_display_tab' ), 50 );
+                add_action( 'foogallery_attachment_modal_tab_content', array( $this, 'attachment_modal_display_tab_content' ), 50, 1 );
+                add_action( 'foogallery_attachment_save_data', array( $this, 'attachment_modal_save_data' ), 50, 2 );
             }
         }
 
@@ -634,5 +639,117 @@ if ( ! class_exists( 'FooGallery_Pro_Exif' ) ) {
 
 		    return "$h1/$k1";
 	    }
+
+        /**
+         * Image modal EXIF tab title
+         */
+        public function attachment_modal_display_tab() { ?>
+            <div class="foogallery-img-modal-tab-wrapper" data-tab_id="foogallery-panel-exif">
+                <input type="radio" name="tabset" id="foogallery-tab-exif" aria-controls="foogallery-panel-exif">
+                <label for="foogallery-tab-exif"><?php _e('EXIF', 'foogallery'); ?></label>
+            </div>
+        <?php }
+
+        /**
+         * Image modal EXIF tab content
+         */
+        public function attachment_modal_display_tab_content( $modal_data ) {
+            if ( is_array( $modal_data ) && !empty ( $modal_data ) ) {
+                if ( $modal_data['img_id'] > 0 ) {
+                    if ( is_array ( $modal_data['meta'] ) && !empty ( $modal_data['meta'] ) ) {
+                        $keywords = '';
+                        $image_meta = array_key_exists( 'image_meta', $modal_data['meta'] ) ? $modal_data['meta']['image_meta'] : '';
+                        if ( is_array( $image_meta ) && !empty ( $image_meta ) ) {
+                            $keywords_str = array_key_exists( 'keywords', $image_meta ) ? implode( ',', $modal_data['meta']['image_meta']['keywords'] ) : '';
+                            $keywords = rtrim( $keywords_str, ',' );
+                        } ?>
+                        <section id="foogallery-panel-exif" class="tab-panel">
+                            <div class="settings">
+								<span class="setting" data-setting="title">
+									<label for="attachment-details-two-column-aperture" class="name"><?php _e('Aperture Text', 'foogallery'); ?></label>
+									<input type="text" name="foogallery[aperture]" id="attachment-details-two-column-aperture" value="<?php echo $modal_data['meta']['image_meta']['aperture'];?>">
+								</span>
+                                <span class="setting" data-setting="camera">
+									<label for="attachment-details-two-column-camera" class="name"><?php _e('Camera Text', 'foogallery'); ?></label>
+									<input type="text" name="foogallery[camera]" id="attachment-details-two-column-camera" value="<?php echo $modal_data['meta']['image_meta']['camera'];?>">
+								</span>
+                                <span class="setting" data-setting="created-timestamp">
+									<label for="attachment-details-two-column-created-timestamp" class="name"><?php _e('Created Timestamp', 'foogallery'); ?></label>
+									<input type="text" name="foogallery[created-timestamp]" id="attachment-details-two-column-created-timestamp" value="<?php echo $modal_data['meta']['image_meta']['created_timestamp'];?>">
+								</span>
+                                <span class="setting" data-setting="shutter-speed">
+									<label for="attachment-details-two-column-shutter-speed" class="name"><?php _e('Shutter Speed Text', 'foogallery'); ?></label>
+									<input type="text" name="foogallery[shutter-speed]" id="attachment-details-two-column-shutter-speed" value="<?php echo $modal_data['meta']['image_meta']['shutter_speed'];?>">
+								</span>
+                                <span class="setting" data-setting="focal-length">
+									<label for="attachment-details-two-column-focal-length" class="name"><?php _e('Focal Length Text', 'foogallery'); ?></label>
+									<input type="text" name="foogallery[focal-length]" id="attachment-details-two-column-focal-length" value="<?php echo $modal_data['meta']['image_meta']['focal_length'];?>">
+								</span>
+                                <span class="setting" data-setting="iso">
+									<label for="attachment-details-two-column-iso" class="name"><?php _e('ISO Text', 'foogallery'); ?></label>
+									<input type="text" name="foogallery[iso]" id="attachment-details-two-column-iso" value="<?php echo $modal_data['meta']['image_meta']['iso'];?>">
+								</span>
+                                <span class="setting" data-setting="orientation">
+									<label for="attachment-details-two-column-orientation" class="name"><?php _e('Orientation', 'foogallery'); ?></label>
+									<input type="text" name="foogallery[orientation]" id="attachment-details-two-column-orientation" value="<?php echo $modal_data['meta']['image_meta']['orientation'];?>">
+								</span>
+                                <span class="setting" data-setting="keywords">
+									<label for="attachment-details-two-column-keywords" class="name"><?php _e('Keywords', 'foogallery'); ?></label>
+									<input type="text" name="foogallery[keywords]" id="attachment-details-two-column-keywords" value="<?php echo $keywords;?>">
+								</span>
+                            </div>
+                        </section>
+                        <?php
+                    }
+                }
+            }
+        }
+
+        /**
+         * Save EXIF tab data content
+         *
+         * @param $img_id int attachment id to update data
+         *
+         * @param $foogallery array of form post data
+         *
+         */
+        public function attachment_modal_save_data( $img_id, $foogallery ) {
+
+            if ( is_array( $foogallery ) && !empty( $foogallery ) ) {
+
+                $image_meta = wp_get_attachment_metadata( $img_id );
+                foreach( $foogallery as $key => $val ) {
+                    if ( $key === 'aperture' ) {
+                        $image_meta['image_meta']['aperture'] = $val;
+                    }
+                    if ( $key === 'camera' ) {
+                        $image_meta['image_meta']['camera'] = $val;
+                    }
+                    if ( $key === 'created-timestamp' ) {
+                        $image_meta['image_meta']['created_timestamp'] = $val;
+                    }
+                    if ( $key === 'shutter-speed' ) {
+                        $image_meta['image_meta']['shutter_speed'] = $val;
+                    }
+                    if ( $key === 'focal-length' ) {
+                        $image_meta['image_meta']['focal_length'] = $val;
+                    }
+                    if ( $key === 'iso' ) {
+                        $image_meta['image_meta']['iso'] = $val;
+                    }
+                    if ( $key === 'orientation' ) {
+                        $image_meta['image_meta']['orientation'] = $val;
+                    }
+                    if ( $key === 'keywords' ) {
+                        $keywords = explode(',', $val);
+                        $image_meta['image_meta']['keywords'] = $keywords;
+                    }
+                }
+
+                wp_update_attachment_metadata( $img_id, $image_meta );
+
+            }
+
+        }
     }
 }

@@ -43,6 +43,12 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 
 				// Add some fields to the new FooGallery product setting panel.
 				add_action( 'woocommerce_product_data_panels', array( $this, 'add_fields_to_product_panel' ) );
+
+                // Attachment modal actions:
+                add_action( 'foogallery_attachment_modal_tabs_view', array( $this, 'attachment_modal_display_tab' ), 60 );
+                add_action( 'foogallery_attachment_modal_tab_content', array( $this, 'attachment_modal_display_tab_content' ), 60, 1 );
+                add_action( 'foogallery_attachment_save_data', array( $this, 'attachment_modal_save_data' ), 60, 2 );
+                add_filter( 'foogallery_attachment_modal_data', array( $this, 'attachment_modal_data' ), 70, 4 );
 			}
 
 			// Determine ribbon/button data from product.
@@ -1141,6 +1147,104 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 			);
 
 			return $fields;
+		}
+
+        /**
+         * Image modal EXIF tab title
+         */
+        public function attachment_modal_display_tab() { ?>
+            <div class="foogallery-img-modal-tab-wrapper" data-tab_id="foogallery-panel-commerce">
+                <input type="radio" name="tabset" id="foogallery-tab-commerce" aria-controls="foogallery-panel-commerce">
+                <label for="foogallery-tab-commerce"><?php _e('Commerce', 'foogallery'); ?></label>
+            </div>
+        <?php }
+
+        /**
+         * Image modal EXIF tab content
+         */
+        public function attachment_modal_display_tab_content( $modal_data ) {
+			if ( is_array( $modal_data ) && !empty ( $modal_data ) ) {
+				if ( $modal_data['img_id'] > 0 ) { ?>
+					<section id="foogallery-panel-commerce" class="tab-panel">
+						<div class="settings">
+							<span class="setting" data-setting="button-text">
+								<label for="attachment-details-two-column-button-text" class="name"><?php _e('Button Text', 'foogallery'); ?></label>
+								<input type="text" name="foogallery[button-text]" id="attachment-details-two-column-button-text" value="<?php echo $modal_data['foogallery_button_text']; ?>">
+							</span>
+							<span class="setting" data-setting="button-url">
+								<label for="attachment-details-two-column-button-url" class="name"><?php _e('Button URL', 'foogallery'); ?></label>
+								<input type="text" name="foogallery[button-url]" id="attachment-details-two-column-button-url" value="<?php echo $modal_data['foogallery_button_url']; ?>">
+							</span>
+							<span class="setting" data-setting="ribbon">
+								<label for="attachment-details-two-column-ribbon" class="name"><?php _e('Ribbon', 'foogallery'); ?></label>
+								<select id="attachment-details-two-column-ribbon" name="foogallery[ribbon]">
+									<option selected="selected" value=""><?php _e('None', 'foogallery'); ?></option>
+									<option value="fg-ribbon-5" <?php selected( $modal_data['foogallery_ribbon'], 'fg-ribbon-5', true ); ?>><?php _e('Type 1 (top-right, diagonal, green)', 'foogallery'); ?></option>
+									<option value="fg-ribbon-3" <?php selected( $modal_data['foogallery_ribbon'], 'fg-ribbon-3', true ); ?>><?php _e('Type 2 (top-left, small, blue)', 'foogallery'); ?></option>
+									<option value="fg-ribbon-4" <?php selected( $modal_data['foogallery_ribbon'], 'fg-ribbon-4', true ); ?>><?php _e('Type 3 (top, full-width, yellow)', 'foogallery'); ?></option>
+									<option value="fg-ribbon-6" <?php selected( $modal_data['foogallery_ribbon'], 'fg-ribbon-6', true ); ?>><?php _e('Type 4 (top-right, rounded, pink)', 'foogallery'); ?></option>
+									<option value="fg-ribbon-2" <?php selected( $modal_data['foogallery_ribbon'], 'fg-ribbon-2', true ); ?>><?php _e('Type 5 (top-left, medium, purple)', 'foogallery'); ?></option>
+									<option value="fg-ribbon-1" <?php selected( $modal_data['foogallery_ribbon'], 'fg-ribbon-1', true ); ?>><?php _e('Type 6 (top-left, vertical, orange)', 'foogallery'); ?></option>
+								</select>
+							</span>
+							<span class="setting" data-setting="ribbon-text">
+								<label for="attachment-details-two-column-ribbon-text" class="name"><?php _e('Ribbon Text', 'foogallery'); ?></label>
+								<input type="text" name="foogallery[ribbon-text]" id="attachment-details-two-column-ribbon-text" value="<?php echo $modal_data['foogallery_ribbon_text']; ?>">
+							</span>
+							<span class="setting" data-setting="product-id">
+								<label for="attachment-details-two-column-product-id" class="name"><?php _e('Product ID', 'foogallery'); ?></label>
+								<input type="text" name="foogallery[product-id]" id="attachment-details-two-column-product-id" value="<?php echo $modal_data['foogallery_product']; ?>">
+							</span>
+						</div>
+					</section>
+					<?php
+				}
+			}
+        }
+
+        /**
+         * Save EXIF tab data content
+         *
+         * @param $img_id int attachment id to update data
+         *
+         * @param $foogallery array of form post data
+         *
+         */
+        public function attachment_modal_save_data( $img_id, $foogallery ) {
+			if ( is_array( $foogallery ) && !empty( $foogallery ) ) {
+				foreach( $foogallery as $key => $val ) {
+					if ( $key === 'button-text' ) {
+						update_post_meta( $img_id, '_foogallery_button_text', $val );
+					}
+					if ( $key === 'button-url' ) {
+						update_post_meta( $img_id, '_foogallery_button_url', $val );
+					}
+					if ( $key === 'ribbon' ) {
+						update_post_meta( $img_id, '_foogallery_ribbon', $val );
+					}
+					if ( $key === 'ribbon-text' ) {
+						update_post_meta( $img_id, '_foogallery_ribbon_text', $val );
+					}
+					if ( $key === 'product-id' ) {
+						update_post_meta( $img_id, '_foogallery_product', $val );
+					}
+				}
+			}
+        }
+
+
+		/**
+		 * Image modal more tab data update
+		 */
+		public function attachment_modal_data( $modal_data, $data, $attachment_id, $gallery_id ) {
+            if ( $attachment_id > 0 ) {
+                $modal_data['foogallery_button_text'] = get_post_meta( $attachment_id, '_foogallery_button_text', true );
+                $modal_data['foogallery_button_url'] =  get_post_meta( $attachment_id, '_foogallery_button_url', true );
+                $modal_data['foogallery_ribbon'] =      get_post_meta( $attachment_id, '_foogallery_ribbon', true );
+                $modal_data['foogallery_ribbon_text'] = get_post_meta( $attachment_id, '_foogallery_ribbon_text', true );
+                $modal_data['foogallery_product'] =     get_post_meta( $attachment_id, '_foogallery_product', true );
+            }
+			return $modal_data;
 		}
 
 	}

@@ -207,6 +207,16 @@ $foogallery_pro_features = array(
 		'plan' => FOOGALLERY_PRO_PLAN_COMMERCE,
 		'plans' => array( FOOGALLERY_PRO_PLAN_COMMERCE ),
 	),
+    array(
+        'title' => __( 'White Labeling','foogallery' ),
+        'desc' => __( 'Rebrand FooGallery to whatever you like for your clients. Move or hide menu items too. Ideal for freelancers and agencies.', 'foogallery' ),
+        'link' => 'https://fooplugins.com/documentation/foogallery/pro-commerce/white-labeling/',
+        'utm_content' => 'cta_white_labeling',
+        'link_text' => __( 'Learn More','foogallery' ),
+        'image' => 'https://assets.fooplugins.com/foogallery/plugin/foogallery-admin-help-pro-white-labeling.png',
+        'plan' => FOOGALLERY_PRO_PLAN_COMMERCE,
+        'plans' => array( FOOGALLERY_PRO_PLAN_COMMERCE ),
+    ),
 );
 
 ?>

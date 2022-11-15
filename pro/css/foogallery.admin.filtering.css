@@ -177,8 +177,3 @@
         .foogallery-datasource-modal-container-inner .spinner {
             float: left;
         }
-
-.foogallery-multi-filtering-modal-close {
-    float: right;
-    margin-left: 5px !important;
-}

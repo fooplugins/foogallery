@@ -170,6 +170,15 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 				'section' => __( 'Admin', 'foogallery' )
 			);
 
+			$settings[] = array(
+				'id'      => 'advanced_attachment_modal',
+				'title'   => __( 'Enable Advanced Attachment Modal (BETA)', 'foogallery' ),
+				'desc'    => __( 'If enabled, this will use the advanced attachment modal which allows for faster and easier editing of attachment details, when creating your galleries.', 'foogallery' ),
+				'type'    => 'checkbox',
+				'tab'     => 'general',
+				'section' => __( 'Admin', 'foogallery' )
+			);
+
 			//endregion General
 
 			//region Images Tab
