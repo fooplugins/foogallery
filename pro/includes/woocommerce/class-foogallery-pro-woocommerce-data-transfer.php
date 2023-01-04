@@ -281,7 +281,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce_Master_Product' ) ) {
 				$new_fields[] = array(
 					'id'      => 'ecommerce_master_product_info',
 					'title'   => __( 'Master Product Info', 'foogallery' ),
-					'desc'    => __( 'You can set a master product for the whole gallery, which will link that product to every item. You can still manually link items to individual products. All items that are not linked to a product will be linked to the master product. PLEASE NOTE : the master product needs to published and NOT private, in order to work correctly.', 'foogallery' ),
+					'desc'    => __( 'You can set a master product for the whole gallery, which will link that product to every item. You can still manually link items to individual products. All items that are not linked to a product will be linked to the master product. PLEASE NOTE : the master product needs to be published and NOT private, in order to work correctly.', 'foogallery' ),
 					'section' => __( 'Ecommerce', 'foogallery' ),
 					'subsection' => array( 'ecommerce-master-product' => __( 'Advanced', 'foogallery' ) ),
 					'type'    => 'help',
@@ -415,7 +415,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce_Master_Product' ) ) {
 		 * @return mixed|string
 		 */
 		public function adjust_cart_thumbnail( $image, $cart_item, $cart_item_key ) {
-			if ( array_key_exists( 'foogallery_attachment_id', $cart_item ) ) {
+			if ( is_array( $cart_item ) && array_key_exists( 'foogallery_attachment_id', $cart_item ) ) {
 				return wp_get_attachment_image( $cart_item['foogallery_attachment_id'] );
 			}
 
