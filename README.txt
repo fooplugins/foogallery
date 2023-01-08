@@ -312,6 +312,16 @@ Please update in order to for FooGallery to work in WP 5.5+!
 
 == Changelog ==
 
+[//]: # fs_premium_only_begin
+= 2.2.28 =
+* Date Updated : 2023-01-02
+* Fix : Added check for thumb overrides within woocommerce in some setups, causing errors.
+
+= 2.2.27 =
+* Date Updated : 2022-11-19
+* Fix : Re-release of 2.2.26 but with smaller zip, which was causing problems.
+[//]: # fs_premium_only_end
+
 = 2.2.26 =
 * Date Updated : 2022-11-12
 * Fix : import/export include error on some installs.
