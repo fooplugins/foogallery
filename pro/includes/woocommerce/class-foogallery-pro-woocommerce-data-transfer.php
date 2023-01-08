@@ -56,12 +56,23 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce_Master_Product' ) ) {
 				// Add extra fields to the templates.
 				add_filter( 'foogallery_override_gallery_template_fields', array( $this, 'add_more_ecommerce_fields' ), 40, 2 );
 
+                //output the master product custom field
+                add_action( 'foogallery_render_gallery_template_field_custom', array( $this, 'render_master_product_custom_field' ), 10, 3 );
+
+                //enqueue assets needed for the product selector modal
+                add_action( 'foogallery_admin_enqueue_scripts', array( $this, 'enqueue_scripts_and_styles' ) );
+
+                //output the modal
+                add_action( 'admin_footer', array( $this, 'render_master_product_modal' ) );
+
+                //ajax handler to render the modal content
+                add_action( 'wp_ajax_foogallery_master_product_content', array( $this, 'ajax_load_modal_content' ) );
+
 				// Override the order item thumbnail in admin.
 				add_filter( 'woocommerce_admin_order_item_thumbnail',  array( $this, 'adjust_order_item_thumbnail' ), 10, 3 );
 
-				// Override order meta keys.
+				// Override order meta keys and values.
 				add_filter( 'woocommerce_order_item_display_meta_key', array( $this, 'adjust_order_item_display_meta_key' ), 10, 3 );
-
 				add_filter( 'woocommerce_order_item_display_meta_value', array( $this, 'adjust_order_item_display_meta_value' ), 10, 3 );
 			}
 		}
@@ -295,11 +306,11 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce_Master_Product' ) ) {
 
 				$new_fields[] = array(
 					'id'       => 'ecommerce_master_product_id',
-					'title'    => __( 'Master Product ID', 'foogallery' ),
-					'desc'     => __( 'The ID of the product that will be used as the master product for every item in the gallery.', 'foogallery' ),
+					'title'    => __( 'Master Product', 'foogallery' ),
+					'desc'     => __( 'The product that will be used as the master product for every item in the gallery.', 'foogallery' ),
 					'section'  => __( 'Ecommerce', 'foogallery' ),
 					'subsection' => array( 'ecommerce-master-product' => __( 'Advanced', 'foogallery' ) ),
-					'type'     => 'text',
+					'type'     => 'ecommerce_master_product',
 					'default'  => '',
 					'row_data' => array(
 						'data-foogallery-hidden'                   => true,
@@ -308,7 +319,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce_Master_Product' ) ) {
 						'data-foogallery-show-when-field-value'    => '',
 						'data-foogallery-change-selector'          => 'input',
 						'data-foogallery-preview'                  => 'shortcode',
-						'data-foogallery-value-selector'           => 'input',
+						'data-foogallery-value-selector'           => '.ecommerce-master-product-input',
 					),
 				);
 
@@ -368,6 +379,146 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce_Master_Product' ) ) {
 
 			return $fields;
 		}
+
+        /**
+         * Renders the master_product custom field field in admin
+         *
+         * @param $field
+         * @param $gallery
+         * @param $template
+         */
+        public function render_master_product_custom_field( $field, $gallery, $template ) {
+            if ( 'ecommerce_master_product' === $field['type'] ) {
+
+                if ( isset( $field['value'] ) ) {
+                    // check that the product exists and is valid
+                    $product_id = intval( $field['value'] );
+                    if ( $product_id > 0 ) {
+                        $product = wc_get_product( $product_id );
+
+                        echo '<strong>' . esc_html( $product->get_name( 'edit' ) ) . '</strong>';
+                        echo ' (ID : ' . esc_html( $product_id ) . ')';
+                        $url = get_edit_post_link( $product_id );
+                        echo ' <a class="post-edit-link" target="_blank" href="' . esc_url( $url ) . '">' . __( 'edit', 'textdomain' ) . '</a>';
+
+                        $validation_response = $this->validate_master_product( $product );
+
+                        if ( isset( $validation_response ) && array_key_exists( 'errors', $validation_response ) && count( $validation_response['errors'] ) > 0 ) {
+                            foreach ( $validation_response['errors'] as $error ) {
+                                echo '<p><span class="dashicons dashicons-warning"></span>' . esc_html( $error ) . '</p>';
+                            }
+                        } else {
+                            echo '<p><span class="dashicons dashicons-yes-alt"></span>' . __( 'This product has been setup correctly to be a master product.', 'foogallery' ) . '</p>';
+                        }
+                    }
+                }
+
+                echo '<button class="button button-primary button-small ecommerce-master-product-selector">' . __( 'Select Master Product', 'foogallery' ) . '</button>';
+                $field_name = FOOGALLERY_META_SETTINGS . '[' . $template['slug'] . '_' . $field['id'] . ']';
+                echo '<input class="ecommerce-master-product-input" type="hidden" name=' . esc_attr( $field_name ) . ' value="' . esc_html( $field['value'] ) . '" />';
+            }
+        }
+
+        /**
+         * Generates a new Master Product that can be used for a gallery.
+         *
+         * @return int
+         * @throws WC_Data_Exception
+         */
+        private function generate_master_product() {
+            $master_product = new WC_Product_Variable();
+            $master_product->set_name(__( 'FooGallery Generated Master Product', 'foogallery' ) );
+            $master_product->set_attributes( array(
+                'name' => __( 'Size', 'foogallery' ),
+                'slug' => 'size',
+                'position' => '0',
+                'visible' => 'true',
+                'variation' => 'true',
+                'options' => array( 'small','medium', 'large' )
+            ) );
+            $master_product->set_variation_attributes( array(
+                array(
+                    'regular_price' => '9.99',
+                    'attributes' => array(
+                        array(
+                            'name' => 'size',
+                            'options' => 'small'
+                        )
+
+                    )
+                ),
+                array(
+                    'regular_price' => '19.99',
+                    'attributes' => array(
+                        array(
+                            'name' => 'size',
+                            'options' => 'medium'
+                        )
+                    )
+                ),
+                array(
+                    'regular_price' => '99.99',
+                    'attributes' => array(
+                        array(
+                            'name' => 'size',
+                            'options' => 'large'
+                        )
+                    )
+                ),
+            ) );
+            $master_product->set_catalog_visibility( 'hidden' );
+            return $master_product->save();
+        }
+
+        /**
+         * Validates the product to determine if it can be a master product.
+         *
+         * @param $product
+         * @return array
+         */
+        private function validate_master_product( $product ) {
+            if ( is_numeric( $product ) ) {
+                $product = wc_get_product( $product );
+            }
+
+            $exists = false;
+            $validation_errors = array();
+
+            if ( FooGallery_Pro_Woocommerce::is_product( $product ) ) {
+                $exists = true;
+
+                // Check the product is published.
+                $product_data = $product->get_data();
+                if ( isset( $product_data ) ) {
+                    if ( 'publish' !== $product_data['status'] ) {
+                        $validation_errors[] = __( 'The product must be published.', 'foogallery' );
+                    }
+                }
+
+                // Check the product type is variable.
+                if ( !$product->is_type( 'variable' ) ) {
+                    $validation_errors[] = __( 'The product is not a variable product. Make sure it is variable and has multiple variations.', 'foogallery' );
+                } else {
+                    $variations = $product->get_children();
+                    if ( count( $variations ) == 0 ) {
+                        $validation_errors[] = __( 'The product does not have any variations. Create variations for the product.', 'foogallery' );
+                    }
+                }
+
+                // Check the visibility.
+                if ( 'hidden' !== $product->get_catalog_visibility( 'edit' ) ) {
+                    $validation_errors[] = __( 'The master product should not be visible. Set the Catalog Visibility to "Hidden".', 'foogallery' );
+                }
+
+            } else {
+                $validation_errors[] = __( 'ERROR : the product was not found!', 'foogallery' );
+            }
+
+            return array(
+                'exists' => $exists,
+                'errors' => $validation_errors
+            );
+        }
 
 		/**
 		 * Loads master product data for an attachment.
@@ -562,5 +713,87 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce_Master_Product' ) ) {
 
 			return $cart_item_data;
 		}
+
+        /**
+         * Enqueues js assets in admin
+         */
+        public function enqueue_scripts_and_styles() {
+            wp_enqueue_style( 'foogallery.admin.woocommerce', FOOGALLERY_PRO_URL . 'css/foogallery.admin.woocommerce.css', array(), FOOGALLERY_VERSION );
+            wp_enqueue_script( 'foogallery.admin.woocommerce', FOOGALLERY_PRO_URL . 'js/foogallery.admin.woocommerce.js', array( 'jquery' ), FOOGALLERY_VERSION );
+        }
+
+        /**
+         * Renders the master product select modal for use on the gallery edit page
+         */
+        public function render_master_product_modal() {
+
+            global $post;
+
+            //check if the gallery edit page is being shown
+            $screen = get_current_screen();
+            if ( 'foogallery' !== $screen->id ) {
+                return;
+            }
+
+            ?>
+            <div class="foogallery-master-product-modal-wrapper" data-foogalleryid="<?php echo $post->ID; ?>" data-nonce="<?php echo wp_create_nonce( 'foogallery_master_product_content' ); ?>" style="display: none;">
+                <div class="media-modal wp-core-ui">
+                    <button type="button" class="media-modal-close foogallery-master-product-modal-close">
+						<span class="media-modal-icon"><span class="screen-reader-text"><?php _e( 'Close', 'foogallery' ); ?></span>
+                    </button>
+                    <div class="media-modal-content">
+                        <div class="media-frame wp-core-ui">
+                            <div class="foogallery-master-product-modal-title">
+                                <h1><?php _e('Select a Master Product', 'foogallery'); ?></h1>
+                                <a class="foogallery-master-product-modal-reload button" href="#"><span style="padding-top: 4px;" class="dashicons dashicons-update"></span> <?php _e('Reload', 'foogallery'); ?></a>
+                            </div>
+                            <div class="foogallery-master-product-modal-container not-loaded">
+                                <div class="spinner is-active"></div>
+                            </div>
+                            <div class="foogallery-master-product-modal-toolbar">
+                                <div class="foogallery-master-product-modal-toolbar-inner">
+                                    <div class="media-toolbar-primary">
+                                        <a href="#"
+                                           class="foogallery-master-product-modal-close button button-large button-secondary"
+                                           title="<?php esc_attr_e('Close', 'foogallery'); ?>"><?php _e('Close', 'foogallery'); ?></a>
+                                        <a href="#"
+                                           class="foogallery-master-product-modal-set button button-large button-primary"
+                                           title="<?php esc_attr_e('Select Master Product', 'foogallery'); ?>"><?php _e('Select Master Product', 'foogallery'); ?></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="media-modal-backdrop"></div>
+            </div>
+            <?php
+        }
+
+        /**
+         * Outputs the modal content
+         */
+        public function ajax_load_modal_content() {
+            $nonce = safe_get_from_request( 'nonce' );
+
+            if ( wp_verify_nonce( $nonce, 'foogallery_master_product_content' ) ) {
+
+                $foogallery_id = intval( safe_get_from_request( 'foogallery_id' ) );
+                $product_id = intval( safe_get_from_request( 'product_id' ) );
+
+                echo '<div class="foogallery-master-product-modal-content">';
+                echo $product_id;
+                echo '</div>';
+
+                echo '<div class="foogallery-master-product-modal-sidebar">';
+                echo '<div class="foogallery-master-product-modal-sidebar-inner">';
+                echo '<h2>' . __( 'Master Product Help', 'foogallery' ) . '</h2>';
+                echo '<p>' . __( 'Some help on selecting a master product', 'foogallery' ) . '</p>';
+                echo '</div>';
+                echo '</div>';
+            }
+
+            die();
+        }
 	}
 }
