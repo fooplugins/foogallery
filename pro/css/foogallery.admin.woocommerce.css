@@ -119,44 +119,42 @@
             padding: 18px;
         }
 
-            .foogallery-master-product-modal-content-level-template {
-                display: none;
+            .foogallery-master-product-modal-content-inner li {
+                color: #3c434a;
+                cursor: pointer;
+                list-style: none;
+                text-align: center;
+                -webkit-user-select: none;
+                user-select: none;
+                box-sizing: border-box;
+                float: left;
+                border: solid 1px #ddd;
+                padding: 5px;
+                margin-left: 10px;
             }
 
-            .foogallery-master-product-modal-content-level {
-                margin-bottom: 20px;
-            }
-
-            .foogallery-master-product-modal-content-level h3 {
-                margin-top: 0;
-            }
-
-                .foogallery-master-product-modal-content-level h3 .foogallery-master-product-modal-content-level-remove {
-                    position: absolute;
-                    text-decoration: none;
-                    background-color: #ccc;
-                    border-radius: 50%;
-                    width: 15px;
-                    height: 15px;
-                    margin-left: 5px;
-                    margin-top: 2px;
+                .foogallery-master-product-modal-content-inner li:hover,
+                .foogallery-master-product-modal-content-inner li.selected {
+                    border: solid 1px #2271b1;
                 }
 
-                    .foogallery-master-product-modal-content-level h3 .foogallery-master-product-modal-content-level-remove .dashicons {
-                        width: 15px;
-                        height: 15px;
-                        font-size: 15px;
-                    }
+                .foogallery-master-product-modal-content-inner li img {
+                    background: #e8e8e8;
+                    width: 150px;
+                    height: 150px;
+                }
 
-            .foogallery-master-product-modal-content-terms {
-                margin-top: 18px;
-                margin-bottom: 18px;
-                clear: both;
-            }
+                .foogallery-master-product-modal-content-inner li h3 {
+                    display: block;
+                    text-align: center;
+                    font-weight: bold;
+                    font-size: 1em;
+                    margin: 0;
+                }
 
-                .foogallery-master-product-modal-content li {
-                    float: left;
-                    position: relative;
+                .foogallery-master-product-modal-content-inner li > span {
+                    display: block;
+                    text-align: center;
                 }
 
 .foogallery-master-product-modal-toolbar {

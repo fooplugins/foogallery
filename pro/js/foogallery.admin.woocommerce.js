@@ -1,6 +1,6 @@
 FooGallery.utils.ready(function ($) {
 
-	//Launch the Multi Level filter Modal
+	//Launch the Master Product selector Modal
 	$('#foogallery_settings').on('click', '.ecommerce-master-product-selector', function (e) {
 		e.preventDefault();
 		$('.foogallery-master-product-modal-wrapper').show();
@@ -21,8 +21,8 @@ FooGallery.utils.ready(function ($) {
 
 	$('.foogallery-master-product-modal-wrapper').on('click', '.foogallery-master-product-modal-set', function (e) {
 		e.preventDefault();
-
-		//set .ecommerce-master-product-input
+		var product_id = $('.foogallery-master-product-modal-content-inner li.selected').data('id');
+		$('.foogallery-tab-active .ecommerce-master-product-input').val(product_id);
 
 		$('.foogallery-master-product-modal-wrapper').hide();
 
@@ -30,12 +30,18 @@ FooGallery.utils.ready(function ($) {
 		$('.foogallery_preview_container').addClass('foogallery-preview-force-refresh');
 	});
 
+	$('.foogallery-master-product-modal-wrapper').on('click', '.foogallery-master-product-modal-content-inner li', function (e) {
+		e.preventDefault();
+		$('.foogallery-master-product-modal-content-inner li.selected').removeClass('selected');
+		$(this).addClass('selected');
+	});
 
-	//Click on the reload button in the title
+	// Click on the reload button in the title
 	$('.foogallery-master-product-modal-wrapper').on('click', '.foogallery-master-product-modal-reload', function (e) {
 		e.preventDefault();
+		var product_id = $('.foogallery-master-product-modal-content').data('selected');
 
-		foogallery_master_product_modal_load_content();
+		foogallery_master_product_modal_load_content(product_id);
 	});
 
 	//load the terms and gallery items content

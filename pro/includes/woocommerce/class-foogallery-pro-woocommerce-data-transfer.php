@@ -781,8 +781,40 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce_Master_Product' ) ) {
                 $foogallery_id = intval( safe_get_from_request( 'foogallery_id' ) );
                 $product_id = intval( safe_get_from_request( 'product_id' ) );
 
-                echo '<div class="foogallery-master-product-modal-content">';
-                echo $product_id;
+                echo '<div class="foogallery-master-product-modal-content" data-selected="' . $product_id . '">';
+                echo '<div class="foogallery-master-product-modal-content-inner">';
+                $args = array(
+                    'limit'       => 100,
+                    'post_type'   => 'product',
+                    'post_status' => 'any',
+                    'orderby'     => 'date',
+					'order'       => 'DESC'
+                );
+                /** @var $products array<WC_Product>*/
+                $products = wc_get_products( $args );
+                if ( count( $products ) === 0 ) {
+                    echo 'No products found!';
+                } else {
+                    echo '<ul>';
+                    foreach ( $products as $product ) {
+                        $post_thumbnail_id = get_post_thumbnail_id( $product->get_id() );
+                        $thumb_url = wp_get_attachment_thumb_url( $post_thumbnail_id );
+                        if ( empty( $thumb_url ) ) {
+                            $thumb_url = 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs%3D';
+                        }
+                        $class = $product_id === $product->get_id() ? 'class="selected"' : '';
+                        echo '<li ' . $class . ' data-id="' . $product->get_id() . '">';
+                        echo '<img src="' . $thumb_url . '" />';
+                        echo '<h3>' . $product->get_title() . '</h3>';
+                        echo '<span>' . $product->get_price_html() . '</span>';
+                        echo '</li>';
+                    }
+                    echo '</ul>';
+                }
+
+
+                //echo $product_id;
+                echo '</div>';
                 echo '</div>';
 
                 echo '<div class="foogallery-master-product-modal-sidebar">';
