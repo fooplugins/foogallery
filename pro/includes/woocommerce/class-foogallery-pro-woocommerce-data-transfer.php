@@ -68,6 +68,9 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce_Master_Product' ) ) {
                 //ajax handler to render the modal content
                 add_action( 'wp_ajax_foogallery_master_product_content', array( $this, 'ajax_load_modal_content' ) );
 
+                //ajax handler to render the product details
+                add_action( 'wp_ajax_foogallery_master_product_details', array( $this, 'ajax_render_master_product_details' ) );
+
 				// Override the order item thumbnail in admin.
 				add_filter( 'woocommerce_admin_order_item_thumbnail',  array( $this, 'adjust_order_item_thumbnail' ), 10, 3 );
 
@@ -393,29 +396,35 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce_Master_Product' ) ) {
                 if ( isset( $field['value'] ) ) {
                     // check that the product exists and is valid
                     $product_id = intval( $field['value'] );
-                    if ( $product_id > 0 ) {
-                        $product = wc_get_product( $product_id );
-
-                        echo '<strong>' . esc_html( $product->get_name( 'edit' ) ) . '</strong>';
-                        echo ' (ID : ' . esc_html( $product_id ) . ')';
-                        $url = get_edit_post_link( $product_id );
-                        echo ' <a class="post-edit-link" target="_blank" href="' . esc_url( $url ) . '">' . __( 'edit', 'textdomain' ) . '</a>';
-
-                        $validation_response = $this->validate_master_product( $product );
-
-                        if ( isset( $validation_response ) && array_key_exists( 'errors', $validation_response ) && count( $validation_response['errors'] ) > 0 ) {
-                            foreach ( $validation_response['errors'] as $error ) {
-                                echo '<p><span class="dashicons dashicons-warning"></span>' . esc_html( $error ) . '</p>';
-                            }
-                        } else {
-                            echo '<p><span class="dashicons dashicons-yes-alt"></span>' . __( 'This product has been setup correctly to be a master product.', 'foogallery' ) . '</p>';
-                        }
-                    }
+                    echo '<div class="foogallery-master-product-field-container">';
+                    $this->render_master_product_details( $product_id );
+                    echo '</div>';
                 }
 
                 echo '<button class="button button-primary button-small ecommerce-master-product-selector">' . __( 'Select Master Product', 'foogallery' ) . '</button>';
                 $field_name = FOOGALLERY_META_SETTINGS . '[' . $template['slug'] . '_' . $field['id'] . ']';
                 echo '<input class="ecommerce-master-product-input" type="hidden" name=' . esc_attr( $field_name ) . ' value="' . esc_html( $field['value'] ) . '" />';
+            }
+        }
+
+        public function render_master_product_details( $product_id ) {
+            if ( $product_id > 0 ) {
+                $product = wc_get_product( $product_id );
+
+                echo '<strong>' . esc_html( $product->get_name( 'edit' ) ) . '</strong>';
+                echo ' (ID : ' . esc_html( $product_id ) . ')';
+                $url = get_edit_post_link( $product_id );
+                echo ' <a class="post-edit-link" target="_blank" href="' . esc_url( $url ) . '">' . __( 'edit', 'textdomain' ) . '</a>';
+
+                $validation_response = $this->validate_master_product( $product );
+
+                if ( isset( $validation_response ) && array_key_exists( 'errors', $validation_response ) && count( $validation_response['errors'] ) > 0 ) {
+                    foreach ( $validation_response['errors'] as $error ) {
+                        echo '<p><span class="dashicons dashicons-warning"></span>' . esc_html( $error ) . '</p>';
+                    }
+                } else {
+                    echo '<p><span class="dashicons dashicons-yes-alt"></span>' . __( 'This product has been setup correctly to be a master product.', 'foogallery' ) . '</p>';
+                }
             }
         }
 
@@ -756,7 +765,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce_Master_Product' ) ) {
                                         <a href="#"
                                            class="foogallery-master-product-modal-close button button-large button-secondary"
                                            title="<?php esc_attr_e('Close', 'foogallery'); ?>"><?php _e('Close', 'foogallery'); ?></a>
-                                        <a href="#"
+                                        <a href="#" disabled="disabled"
                                            class="foogallery-master-product-modal-set button button-large button-primary"
                                            title="<?php esc_attr_e('Select Master Product', 'foogallery'); ?>"><?php _e('Select Master Product', 'foogallery'); ?></a>
                                     </div>
@@ -818,11 +827,36 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce_Master_Product' ) ) {
                 echo '</div>';
 
                 echo '<div class="foogallery-master-product-modal-sidebar">';
-                echo '<div class="foogallery-master-product-modal-sidebar-inner">';
+                $class = $product_id === 0 ? ' hidden' : '';
+                echo '<div class="foogallery-master-product-modal-sidebar-inner foogallery-master-product-modal-details' . $class . '">';
+                if ( $product_id > 0 ) {
+                    echo '<h2>' . __( 'Selected Master Product', 'foogallery' ) . '</h2>';
+                    echo '<div class="foogallery-master-product-modal-details-inner">';
+                    $this->render_master_product_details( $product_id );
+                    echo '</div>';
+                }
+                echo '</div>';
+                echo '<div class="foogallery-master-product-modal-sidebar-inner foogallery-master-product-modal-help">';
                 echo '<h2>' . __( 'Master Product Help', 'foogallery' ) . '</h2>';
                 echo '<p>' . __( 'Some help on selecting a master product', 'foogallery' ) . '</p>';
                 echo '</div>';
                 echo '</div>';
+            }
+
+            die();
+        }
+
+        /**
+         * Outputs the master product details.
+         */
+        public function ajax_render_master_product_details() {
+            $nonce = safe_get_from_request('nonce');
+
+            if (wp_verify_nonce($nonce, 'foogallery_master_product_content')) {
+                $product_id = intval( safe_get_from_request( 'product_id' ) );
+                if ( $product_id > 0 ) {
+                    $this->render_master_product_details( $product_id );
+                }
             }
 
             die();

@@ -43,8 +43,8 @@
             margin-top: 5px;
         }
 
-        .foogallery-master-product-modal-sidebar-inner h3 {
-            margin-bottom: 5px;
+        .foogallery-master-product-modal-container .foogallery-master-product-modal-sidebar-inner .foogallery-master-product-modal-details-inner .spinner {
+            margin: 0;
         }
 
         .foogallery-master-product-modal-message {
@@ -76,16 +76,6 @@
         .foogallery-master-product-modal-sidebar-inner hr {
             margin: 15px 0;
         }
-
-        .foogallery-master-product-select-term.button.button-small {
-            margin-right: 5px;
-            margin-bottom: 5px;
-            line-height: 1.8em;
-            padding: 2px 8px 0 8px;
-        }
-            .foogallery-master-product-select-term.button.button-small.button-primary {
-                background-color: #00a0d2;
-            }
 
 .foogallery-master-product-modal-container {
     position: absolute;
