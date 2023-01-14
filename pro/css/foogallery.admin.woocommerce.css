@@ -47,34 +47,9 @@
             margin: 0;
         }
 
-        .foogallery-master-product-modal-message {
-            padding: 5px 10px;
-        }
-
-        .foogallery-master-product-modal-action-clear {
-            display: none;
-        }
-
-        .foogallery-master-product-modal-actions {
-
-        }
-
-            .foogallery-master-product-modal-actions button.button {
-                margin-right: 5px;
-            }
-
-                .foogallery-master-product-modal-actions div.spinner {
-                    float: none;
-                    margin: 5px;
-                }
-
-            .foogallery-master-product-modal-action-message {
-                display: inline-block;
-                padding: 5px;
-            }
-
-        .foogallery-master-product-modal-sidebar-inner hr {
-            margin: 15px 0;
+        .foogallery-master-product-modal-sidebar-inner.foogallery-master-product-modal-help .spinner {
+            float: none;
+            margin: 3px 5px;
         }
 
 .foogallery-master-product-modal-container {
@@ -161,7 +136,3 @@
         padding: 16px;
         overflow: hidden;
     }
-
-        .foogallery-datasource-modal-container-inner .spinner {
-            float: left;
-        }

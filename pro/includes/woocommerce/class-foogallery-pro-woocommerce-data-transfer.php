@@ -71,6 +71,9 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce_Master_Product' ) ) {
                 //ajax handler to render the product details
                 add_action( 'wp_ajax_foogallery_master_product_details', array( $this, 'ajax_render_master_product_details' ) );
 
+                //ajax handler to generate a master product
+                add_action( 'wp_ajax_foogallery_master_product_generate', array( $this, 'ajax_generate_master_product' ) );
+
 				// Override the order item thumbnail in admin.
 				add_filter( 'woocommerce_admin_order_item_thumbnail',  array( $this, 'adjust_order_item_thumbnail' ), 10, 3 );
 
@@ -407,6 +410,12 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce_Master_Product' ) ) {
             }
         }
 
+        /**
+         * Only renders the master product validation details.
+         *
+         * @param $product_id
+         * @return void
+         */
         public function render_master_product_details( $product_id ) {
             if ( $product_id > 0 ) {
                 $product = wc_get_product( $product_id );
@@ -420,10 +429,10 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce_Master_Product' ) ) {
 
                 if ( isset( $validation_response ) && array_key_exists( 'errors', $validation_response ) && count( $validation_response['errors'] ) > 0 ) {
                     foreach ( $validation_response['errors'] as $error ) {
-                        echo '<p><span class="dashicons dashicons-warning"></span>' . esc_html( $error ) . '</p>';
+                        echo '<p><span class="dashicons dashicons-warning" style="color:#aa0000"></span>' . esc_html( $error ) . '</p>';
                     }
                 } else {
-                    echo '<p><span class="dashicons dashicons-yes-alt"></span>' . __( 'This product has been setup correctly to be a master product.', 'foogallery' ) . '</p>';
+                    echo '<p><span class="dashicons dashicons-yes-alt" style="color:#00aa00"></span>' . __( 'This product has been setup correctly to be a master product.', 'foogallery' ) . '</p>';
                 }
             }
         }
@@ -436,47 +445,46 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce_Master_Product' ) ) {
          */
         private function generate_master_product() {
             $master_product = new WC_Product_Variable();
-            $master_product->set_name(__( 'FooGallery Generated Master Product', 'foogallery' ) );
-            $master_product->set_attributes( array(
-                'name' => __( 'Size', 'foogallery' ),
-                'slug' => 'size',
-                'position' => '0',
-                'visible' => 'true',
-                'variation' => 'true',
-                'options' => array( 'small','medium', 'large' )
-            ) );
-            $master_product->set_variation_attributes( array(
-                array(
-                    'regular_price' => '9.99',
-                    'attributes' => array(
-                        array(
-                            'name' => 'size',
-                            'options' => 'small'
-                        )
-
-                    )
-                ),
-                array(
-                    'regular_price' => '19.99',
-                    'attributes' => array(
-                        array(
-                            'name' => 'size',
-                            'options' => 'medium'
-                        )
-                    )
-                ),
-                array(
-                    'regular_price' => '99.99',
-                    'attributes' => array(
-                        array(
-                            'name' => 'size',
-                            'options' => 'large'
-                        )
-                    )
-                ),
-            ) );
+            $master_product->set_name(__( 'Generated Master Product', 'foogallery' ) );
             $master_product->set_catalog_visibility( 'hidden' );
-            return $master_product->save();
+
+            $attribute = new WC_Product_Attribute();
+            $attribute->set_name( __( 'Size', 'foogallery' ) );
+            $attribute->set_options( array( 'small','medium', 'large' ) );
+            $attribute->set_visible( true );
+            $attribute->set_variation( true );
+            $attributes[] = $attribute;
+
+            $master_product->set_attributes( $attributes );
+            $master_product->save();
+
+            $variation = new WC_Product_Variation();
+            $variation->set_parent_id( $master_product->get_id() );
+            $variation->set_attributes( array( 'size' => 'small' ) );
+            $variation->set_status('publish');
+            $variation->set_regular_price( '9.99' );
+            $variation->save();
+
+            $variation = new WC_Product_Variation();
+            $variation->set_parent_id( $master_product->get_id() );
+            $variation->set_attributes( array( 'size' => 'medium' ) );
+            $variation->set_status('publish');
+            $variation->set_regular_price( '19.99' );
+            $variation->save();
+
+            $variation = new WC_Product_Variation();
+            $variation->set_parent_id( $master_product->get_id() );
+            $variation->set_attributes( array( 'size' => 'large' ) );
+            $variation->set_status('publish');
+            $variation->set_regular_price( '99.99' );
+            $variation->save();
+
+            $data_store = $master_product->get_data_store();
+            $data_store->sort_all_product_variations( $master_product->get_id() );
+
+            add_post_meta( $master_product->get_id(), 'foogallery_master_product', true, true );
+
+            return $master_product->get_id();
         }
 
         /**
@@ -520,7 +528,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce_Master_Product' ) ) {
                 }
 
             } else {
-                $validation_errors[] = __( 'ERROR : the product was not found!', 'foogallery' );
+                $validation_errors[] = __( 'ERROR : the product was not found, or had been deleted!', 'foogallery' );
             }
 
             return array(
@@ -745,7 +753,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce_Master_Product' ) ) {
             }
 
             ?>
-            <div class="foogallery-master-product-modal-wrapper" data-foogalleryid="<?php echo $post->ID; ?>" data-nonce="<?php echo wp_create_nonce( 'foogallery_master_product_content' ); ?>" style="display: none;">
+            <div class="foogallery-master-product-modal-wrapper" data-foogalleryid="<?php echo $post->ID; ?>" data-nonce="<?php echo wp_create_nonce( 'foogallery_master_product' ); ?>" style="display: none;">
                 <div class="media-modal wp-core-ui">
                     <button type="button" class="media-modal-close foogallery-master-product-modal-close">
 						<span class="media-modal-icon"><span class="screen-reader-text"><?php _e( 'Close', 'foogallery' ); ?></span>
@@ -785,7 +793,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce_Master_Product' ) ) {
         public function ajax_load_modal_content() {
             $nonce = safe_get_from_request( 'nonce' );
 
-            if ( wp_verify_nonce( $nonce, 'foogallery_master_product_content' ) ) {
+            if ( wp_verify_nonce( $nonce, 'foogallery_master_product' ) ) {
 
                 $foogallery_id = intval( safe_get_from_request( 'foogallery_id' ) );
                 $product_id = intval( safe_get_from_request( 'product_id' ) );
@@ -809,7 +817,10 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce_Master_Product' ) ) {
                         $post_thumbnail_id = get_post_thumbnail_id( $product->get_id() );
                         $thumb_url = wp_get_attachment_thumb_url( $post_thumbnail_id );
                         if ( empty( $thumb_url ) ) {
-                            $thumb_url = 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs%3D';
+                            $thumb_url = wc_placeholder_img_src();
+//                            if ( !isset( $thumb_url) ) {
+//                                $thumb_url = 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs%3D';
+//                            }
                         }
                         $class = $product_id === $product->get_id() ? 'class="selected"' : '';
                         echo '<li ' . $class . ' data-id="' . $product->get_id() . '">';
@@ -821,24 +832,30 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce_Master_Product' ) ) {
                     echo '</ul>';
                 }
 
-
-                //echo $product_id;
                 echo '</div>';
                 echo '</div>';
 
                 echo '<div class="foogallery-master-product-modal-sidebar">';
                 $class = $product_id === 0 ? ' hidden' : '';
                 echo '<div class="foogallery-master-product-modal-sidebar-inner foogallery-master-product-modal-details' . $class . '">';
+                echo '<h2>' . __( 'Selected Master Product', 'foogallery' ) . '</h2>';
+                echo '<div class="foogallery-master-product-modal-details-inner">';
                 if ( $product_id > 0 ) {
-                    echo '<h2>' . __( 'Selected Master Product', 'foogallery' ) . '</h2>';
-                    echo '<div class="foogallery-master-product-modal-details-inner">';
-                    $this->render_master_product_details( $product_id );
-                    echo '</div>';
+                    $this->render_master_product_details($product_id);
                 }
+                echo '</div>';
                 echo '</div>';
                 echo '<div class="foogallery-master-product-modal-sidebar-inner foogallery-master-product-modal-help">';
                 echo '<h2>' . __( 'Master Product Help', 'foogallery' ) . '</h2>';
-                echo '<p>' . __( 'Some help on selecting a master product', 'foogallery' ) . '</p>';
+                echo '<p>' . __( 'A master product can be set for a gallery, so that every item within the gallery will use details from the master product. This allows you to setup a single product across all images, and will save you time when configuring your gallery in order to sell your images online.', 'foogallery' ) . '</p>';
+                echo '<p>' . __( 'A master product should be a variable product with multiple variations that you can configure to have different prices. Usually these variations are different by size, but you can have variations that use more attributes, e.g. size/format, print material, frame, etc.', 'foogallery' ) . '</p>';
+                echo '<p>' . __( 'Additionally, a master product should be published and the Catalog Visibility should set to "Hidden".', 'foogallery' ) . '</p>';
+                $generated_product_id = $this->find_generated_master_product();
+                if ( $generated_product_id === 0 ) {
+                    echo '<p>' . __('To help you get started, we can generate a master product that meets these requirements, which you can customize to your needs:', 'foogallery') . '</p>';
+                    echo '<a href="#" class="foogallery-master-product-generate button button-small button-primary" title="' . esc_attr__('Generate Master Product', 'foogallery') . '">' . esc_html__('Generate Master Product', 'foogallery') . '</a>';
+                    echo '<div class="spinner"></div>';
+                }
                 echo '</div>';
                 echo '</div>';
             }
@@ -852,11 +869,54 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce_Master_Product' ) ) {
         public function ajax_render_master_product_details() {
             $nonce = safe_get_from_request('nonce');
 
-            if (wp_verify_nonce($nonce, 'foogallery_master_product_content')) {
+            if ( wp_verify_nonce( $nonce, 'foogallery_master_product' ) ) {
                 $product_id = intval( safe_get_from_request( 'product_id' ) );
                 if ( $product_id > 0 ) {
                     $this->render_master_product_details( $product_id );
                 }
+            }
+
+            die();
+        }
+
+        /**
+         * Finds a previously generated master product.
+         *
+         * @return int
+         */
+        private function find_generated_master_product() {
+            $args = array(
+                'limit'       => 1,
+                'post_type'   => 'product',
+                'post_status' => 'publish',
+                'orderby'     => 'date',
+                'order'       => 'DESC',
+                'meta_key'    => 'foogallery_master_product'
+            );
+
+            $generated_master_products = get_posts( $args );
+            if ( count( $generated_master_products ) === 0 ) {
+                return 0;
+            } else {
+                return $generated_master_products[0]->ID;
+            }
+        }
+
+
+        /**
+         * Ajax handler that generates a master product.
+         * @return void
+         */
+        public function ajax_generate_master_product() {
+            $nonce = safe_get_from_request('nonce');
+
+            if ( wp_verify_nonce( $nonce, 'foogallery_master_product' ) ) {
+                $product_id = $this->find_generated_master_product();
+                if ( $product_id === 0 ) {
+                    $product_id = $this->generate_master_product();
+                }
+
+                wp_send_json_success( array( 'productId' => $product_id ) );
             }
 
             die();
