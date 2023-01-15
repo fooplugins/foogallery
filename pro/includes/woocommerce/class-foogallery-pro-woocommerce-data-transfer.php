@@ -429,10 +429,10 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce_Master_Product' ) ) {
 
                 if ( isset( $validation_response ) && array_key_exists( 'errors', $validation_response ) && count( $validation_response['errors'] ) > 0 ) {
                     foreach ( $validation_response['errors'] as $error ) {
-                        echo '<p><span class="dashicons dashicons-warning" style="color:#aa0000"></span>' . esc_html( $error ) . '</p>';
+                        echo '<p><span class="dashicons dashicons-warning" style="color:#d63638"></span>' . esc_html( $error ) . '</p>';
                     }
                 } else {
-                    echo '<p><span class="dashicons dashicons-yes-alt" style="color:#00aa00"></span>' . __( 'This product has been setup correctly to be a master product.', 'foogallery' ) . '</p>';
+                    echo '<p><span class="dashicons dashicons-yes-alt" style="color:#00a32a"></span>' . __( 'This product has been setup correctly to be a master product.', 'foogallery' ) . '</p>';
                 }
             }
         }
