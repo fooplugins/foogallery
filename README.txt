@@ -181,7 +181,7 @@ You can also easily create mixed galleries with both images and videos!
 
 **WooCommerce**
 
-Sell your photographs online with our full WooCommerce integration, available in PRO Commerce. You can either create a dyanmic gallery from your existing products, or you can sell images in a gallery by linking them to a single master product. With full support for variations. Highlight products for sale with ribbons. Add call-to-action buttons to your items, for example AJAX Add to Cart buttons.
+Sell your photographs online with our full WooCommerce integration, available in PRO Commerce. You can either create a dynamic gallery from your existing products, or you can sell images in a gallery by linking them to a single master product. With full support for variations. Highlight products for sale with ribbons. Add call-to-action buttons to your images, for example Add to Cart buttons.
 
 **Albums Built In**
 
@@ -258,10 +258,10 @@ Have you enabled retina support for your galleries? To enable retina support, ed
 
 Yes, video is supported in [FooGallery PRO Expert](https://fooplugins.com/foogallery-wordpress-gallery-plugin/#pro-expert-features)!
 
-= Can I sell photographs from a gallery? =
+= Can I sell my photography online with this plugin? =
 
 Yes, that is why we built [FooGallery PRO Commerce](https://fooplugins.com/foogallery-wordpress-gallery-plugin/#pro-commerce-features)!
-You can choose to create a gallery based of your products, or you can link all images in a gallery to a master product. This allows you complete control over how you want to run your image store and how they are sold on your website.
+You can choose to create a gallery based off your existing WooCommerce products, or you can link all images in a gallery to a master product. This allows you complete control over how you want to run your image store and how they are sold on your website.
 
 = Do I need to install a separate plugin to show a lightbox? =
 
@@ -311,6 +311,16 @@ We did the research and comparison. See our findings : [What is the Best WordPre
 Please update in order to for FooGallery to work in WP 5.5+!
 
 == Changelog ==
+
+= 2.2.29 =
+* Date Updated : 2023-01-15
+* Update : Updated to Freemius SDK 2.5.3
+* Fix : fixed album shortcode bug when gallery shortcode is changed with the white labelling feature.
+[//]: # fs_premium_only_begin
+* New : [Commerce Plan] Added modal for easily selecting master product.
+* New : [Commerce Plan] Created Generate Master Product button on modal to easily generate a working Master Product, that is configured correctly.
+* New : [Commerce Plan] Added validation to the master product, so you can see what changes are needed.
+[//]: # fs_premium_only_end
 
 [//]: # fs_premium_only_begin
 = 2.2.28 =
