@@ -420,19 +420,23 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce_Master_Product' ) ) {
             if ( $product_id > 0 ) {
                 $product = wc_get_product( $product_id );
 
-                echo '<strong>' . esc_html( $product->get_name( 'edit' ) ) . '</strong>';
-                echo ' (ID : ' . esc_html( $product_id ) . ')';
-                $url = get_edit_post_link( $product_id );
-                echo ' <a class="post-edit-link" target="_blank" href="' . esc_url( $url ) . '">' . __( 'edit', 'textdomain' ) . '</a>';
-
-                $validation_response = $this->validate_master_product( $product );
-
-                if ( isset( $validation_response ) && array_key_exists( 'errors', $validation_response ) && count( $validation_response['errors'] ) > 0 ) {
-                    foreach ( $validation_response['errors'] as $error ) {
-                        echo '<p><span class="dashicons dashicons-warning" style="color:#d63638"></span>' . esc_html( $error ) . '</p>';
-                    }
+                if ( $product === false ) {
+                    echo '<p><span class="dashicons dashicons-warning" style="color:#d63638"></span>' . __('The master product does not exist! Please select another product.', 'foogallery') . '</p>';
                 } else {
-                    echo '<p><span class="dashicons dashicons-yes-alt" style="color:#00a32a"></span>' . __( 'This product has been setup correctly to be a master product.', 'foogallery' ) . '</p>';
+                    echo '<strong>' . esc_html($product->get_name('edit')) . '</strong>';
+                    echo ' (ID : ' . esc_html($product_id) . ')';
+                    $url = get_edit_post_link($product_id);
+                    echo ' <a class="post-edit-link" target="_blank" href="' . esc_url($url) . '">' . __('edit', 'foogallery') . '</a>';
+
+                    $validation_response = $this->validate_master_product($product);
+
+                    if (isset($validation_response) && array_key_exists('errors', $validation_response) && count($validation_response['errors']) > 0) {
+                        foreach ($validation_response['errors'] as $error) {
+                            echo '<p><span class="dashicons dashicons-warning" style="color:#d63638"></span>' . esc_html($error) . '</p>';
+                        }
+                    } else {
+                        echo '<p><span class="dashicons dashicons-yes-alt" style="color:#00a32a"></span>' . __('This product has been setup correctly to be a master product.', 'foogallery') . '</p>';
+                    }
                 }
             }
         }
