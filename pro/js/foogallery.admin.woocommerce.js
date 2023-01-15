@@ -80,13 +80,21 @@ FooGallery.utils.ready(function ($) {
 		});
 	});
 
+	//Click on the search button
+	$wrapper.on('click', '.foogallery-master-product-search', function (e) {
+		e.preventDefault();
+		var product_id = $('.foogallery-master-product-modal-content').data('selected');
+
+		foogallery_master_product_modal_load_content(product_id);
+	});
+
 	//make and ajax call to load the list of products that can be selected as the master product.
 	function foogallery_master_product_modal_load_content(product_id) {
 		var $content = $('.foogallery-master-product-modal-container'),
 			$wrapper = $('.foogallery-master-product-modal-wrapper')
 			data = {
 				action: 'foogallery_master_product_content',
-				foogallery_id: $wrapper.data('foogalleryid'),
+				search: $('.foogallery-master-product-modal-content-inner-search input').val(),
 				nonce: $wrapper.data('nonce'),
 				product_id: product_id
 			};

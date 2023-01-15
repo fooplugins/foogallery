@@ -80,6 +80,9 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce_Master_Product' ) ) {
 				// Override order meta keys and values.
 				add_filter( 'woocommerce_order_item_display_meta_key', array( $this, 'adjust_order_item_display_meta_key' ), 10, 3 );
 				add_filter( 'woocommerce_order_item_display_meta_value', array( $this, 'adjust_order_item_display_meta_value' ), 10, 3 );
+
+                // Allow for search in master product modal.
+                add_filter( 'woocommerce_product_data_store_cpt_get_products_query', array( $this, 'support_product_search' ), 10, 2 );
 			}
 		}
 
@@ -298,7 +301,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce_Master_Product' ) ) {
 				$new_fields[] = array(
 					'id'      => 'ecommerce_master_product_info',
 					'title'   => __( 'Master Product Info', 'foogallery' ),
-					'desc'    => __( 'You can set a master product for the whole gallery, which will link that product to every item. You can still manually link items to individual products. All items that are not linked to a product will be linked to the master product. PLEASE NOTE : the master product needs to be published and NOT private, in order to work correctly.', 'foogallery' ),
+					'desc'    => __( 'You can set a master product for the whole gallery, which will link that product to every item. You can still manually link items to individual products. All items that are not linked to a product will be linked to the master product.', 'foogallery' ),
 					'section' => __( 'Ecommerce', 'foogallery' ),
 					'subsection' => array( 'ecommerce-master-product' => __( 'Advanced', 'foogallery' ) ),
 					'type'    => 'help',
@@ -799,17 +802,22 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce_Master_Product' ) ) {
 
             if ( wp_verify_nonce( $nonce, 'foogallery_master_product' ) ) {
 
-                $foogallery_id = intval( safe_get_from_request( 'foogallery_id' ) );
+                $search = safe_get_from_request( 'search' );
                 $product_id = intval( safe_get_from_request( 'product_id' ) );
 
                 echo '<div class="foogallery-master-product-modal-content" data-selected="' . $product_id . '">';
                 echo '<div class="foogallery-master-product-modal-content-inner">';
+                echo '<div class="foogallery-master-product-modal-content-inner-search">';
+                echo '<input type="search" value="' . esc_attr( $search ) . '" />';
+                echo '<a href="#" class="foogallery-master-product-search button button-primary" title="' . esc_attr__('Search for a product', 'foogallery') . '">' . esc_html__('Search', 'foogallery') . '</a>';
+                echo '</div>';
                 $args = array(
-                    'limit'       => 100,
+                    'limit'       => 50,
                     'post_type'   => 'product',
                     'post_status' => 'any',
                     'orderby'     => 'date',
-					'order'       => 'DESC'
+					'order'       => 'DESC',
+                    'foogallery_master_product_search' => $search
                 );
                 /** @var $products array<WC_Product>*/
                 $products = wc_get_products( $args );
@@ -822,9 +830,6 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce_Master_Product' ) ) {
                         $thumb_url = wp_get_attachment_thumb_url( $post_thumbnail_id );
                         if ( empty( $thumb_url ) ) {
                             $thumb_url = wc_placeholder_img_src();
-//                            if ( !isset( $thumb_url) ) {
-//                                $thumb_url = 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs%3D';
-//                            }
                         }
                         $class = $product_id === $product->get_id() ? 'class="selected"' : '';
                         echo '<li ' . $class . ' data-id="' . $product->get_id() . '">';
@@ -924,6 +929,18 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce_Master_Product' ) ) {
             }
 
             die();
+        }
+
+        /**
+         * Add support for 'foogallery_master_product_search' query var
+         */
+        function support_product_search( $query, $query_vars ) {
+            if ( empty( $query_vars['foogallery_master_product_search'] ) ) {
+                return $query;
+            }
+
+            $query['s'] = $query_vars['foogallery_master_product_search'];
+            return $query;
         }
 	}
 }

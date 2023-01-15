@@ -79,9 +79,17 @@
         overflow-x: hidden;
     }
 
+        .foogallery-master-product-modal-content-inner-search {
+            padding: 10px 10px 0 10px;
+        }
+
+            .foogallery-master-product-modal-content-inner-search .button {
+                margin-left: 5px;
+            }
+
         .foogallery-master-product-modal-content-inner {
             margin: 0;
-            padding: 18px;
+            padding: 0;
         }
 
             .foogallery-master-product-modal-content-inner li {
@@ -136,3 +144,15 @@
         padding: 16px;
         overflow: hidden;
     }
+
+@media only screen and (max-width: 1000px), screen and (max-height: 400px) {
+
+    .foogallery-master-product-modal-content {
+        right:50%;
+    }
+
+    .foogallery-master-product-modal-sidebar {
+        width: 50%;
+    }
+
+}
