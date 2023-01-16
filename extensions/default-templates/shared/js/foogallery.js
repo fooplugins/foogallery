@@ -4646,10 +4646,11 @@ FooGallery.utils, FooGallery.utils.is, FooGallery.utils.str);
    * @memberof FooGallery.utils.
    * @class Timer
    * @param {number} [interval=1000] - The internal tick interval of the timer.
+   * @augments FooGallery.utils.EventClass
    */
 
   _.Timer = _.EventClass.extend(
-  /** @lends FooGallery.utils.Timer */
+  /** @lends FooGallery.utils.Timer.prototype */
   {
     /**
      * @ignore
@@ -4936,6 +4937,7 @@ FooGallery.utils, FooGallery.utils.is, FooGallery.utils.str);
       if (self.isRunning) {
         self.isRunning = false;
         self.isPaused = true;
+        self.canResume = self.__remaining > 0;
         self.trigger("pause", self.__eventArgs());
       }
 
@@ -6423,8 +6425,8 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
                     reg.push(this.registered[name]);
                 }
                 reg.sort(function(a, b){ return b.priority - a.priority; });
-                $.each(reg, function(i, r){
-                    names.push(r.name);
+                reg.forEach(function(registered){
+                    names.push(registered.name);
                 });
             } else {
                 for (name in this.registered){
@@ -6470,15 +6472,17 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
             };
             return true;
         },
-        load: function(){
-            var self = this, result = [], reg = [], name;
+        load: function(arg1, argN){
+            var self = this, args = _fn.arg2arr(arguments), result = [], reg = [], name;
             for (name in self.registered){
                 if (!self.registered.hasOwnProperty(name)) continue;
                 reg.push(self.registered[name]);
             }
             reg.sort(function(a, b){ return b.priority - a.priority; });
-            $.each(reg, function(i, r){
-                result.push(self.make(r.name));
+            reg.forEach(function(registered){
+                var makeArgs = args.slice();
+                makeArgs.unshift(registered.name);
+                result.push(self.make.apply(self, makeArgs));
             });
             return result;
         },
@@ -7450,7 +7454,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 );
 (function($, _, _utils, _is, _str, _obj){
 
-	_.State = _.Component.extend(/** @lends FooGallery.State */{
+	_.State = _.Component.extend(/** @lends FooGallery.State.prototype */{
 		/**
 		 * @summary This class manages all the getting and setting of its' parent templates' state.
 		 * @memberof FooGallery
@@ -7473,7 +7477,6 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 			 * @memberof FooGallery.State#
 			 * @name apiEnabled
 			 * @type {boolean}
-			 * @readonly
 			 */
 			self.apiEnabled = !!window.history && !!history.replaceState;
 			/**
@@ -7529,6 +7532,20 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 				masked: new RegExp("^#"+masked+"\\"+values+".+?"),
 				values: new RegExp("(\\w+)"+pair+"([^"+values+"]+)", "g")
 			};
+			/**
+			 * @summary Whether or not the component listens to the popstate event.
+			 * @memberof FooGallery.State#
+			 * @name usePopState
+			 * @type {boolean}
+			 */
+			self.usePopState = self.opt.usePopState;
+			// force context
+			self.onPopState = self.onPopState.bind(self);
+		},
+		init: function(){
+			var self = this;
+			self.set(self.initial());
+			if (self.enabled && self.apiEnabled && self.usePopState) window.addEventListener( 'popstate', self.onPopState );
 		},
 		/**
 		 * @summary Destroy the component clearing any current state from the url and preparing it for garbage collection.
@@ -7538,12 +7555,10 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 		 */
 		destroy: function(preserve){
 			var self = this;
+			if (self.enabled && self.apiEnabled && self.usePopState) window.removeEventListener( 'popstate', self.onPopState );
 			if (!preserve) self.clear();
 			self.opt = self.regex = {};
 			self._super();
-		},
-		init: function(){
-			this.set(this.initial());
 		},
 		getIdNumber: function(){
 			return this.tmpl.id.match(/\d+/g)[0];
@@ -7774,6 +7789,12 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 				}
 			}
 		},
+		onPopState: function(e){
+			var self = this, parsed = self.parse();
+			if ( Object.keys( parsed ).length ){
+				self.set( parsed );
+			}
+		}
 	});
 
 	_.template.configure("core", {
@@ -7782,6 +7803,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 			scrollTo: true,
 			pushOrReplace: "replace",
 			mask: "foogallery-gallery-{id}",
+			usePopState: true,
 			values: "/",
 			pair: ":",
 			array: "+",
@@ -7798,11 +7820,15 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 	/**
 	 * @summary An object containing the state options for the template.
 	 * @typedef {object} FooGallery.State~Options
-	 * @property {boolean} [enabled=false] - Whether or not state is enabled for the template.
+	 * @property {boolean} [enabled=false] - Whether state is enabled for the template.
+	 * @property {boolean} [scrollTo=true] - Whether the page is scrolled to the current state item.
 	 * @property {string} [pushOrReplace="replace"] - Which method of the history API to use by default when updating the state.
+	 * @property {string} [mask="foogallery-gallery-{id}"] - The mask used to generate the full ID from just the ID number.
+	 * @property {boolean} [usePopState=true] - Whether state listens to the 'popstate' event and updates the gallery.
 	 * @property {string} [values="/"] - The delimiter used between key value pairs in the hash.
 	 * @property {string} [pair=":"] - The delimiter used between a key and a value in the hash.
 	 * @property {string} [array="+"] - The delimiter used for array values in the hash.
+	 * @property {string} [arraySeparator=","] - The delimiter used to separate multiple array values in the hash.
 	 */
 
 	/**
@@ -8486,7 +8512,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 );
 (function ($, _, _utils, _is, _fn, _obj, _str) {
 
-	_.Item = _.Component.extend(/** @lends FooGallery.Item */{
+	_.Item = _.Component.extend(/** @lends FooGallery.Item.prototype */{
 		/**
 		 * @summary The base class for an item.
 		 * @memberof FooGallery
@@ -9213,7 +9239,17 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 		_setAttributes: function(element, attributes){
 			Object.keys(attributes).forEach(function(key){
 				if (!_is.empty(attributes[key])){
-					element.setAttribute(key, _is.string(attributes[key]) ? attributes[key] : JSON.stringify(attributes[key]));
+					if (key === 'class') {
+						var classes = _is.array( attributes[key] )
+							? attributes[key]
+							: ( _is.string( attributes[key] ) ? attributes[key].split( ' ' ) : [] );
+
+						classes.forEach( function( className ){
+							element.classList.add( className );
+						} );
+					} else {
+						element.setAttribute(key, _is.string(attributes[key]) ? attributes[key] : JSON.stringify(attributes[key]));
+					}
 				}
 			});
 		},
@@ -9253,12 +9289,15 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 
 			var elem = document.createElement("div");
 			self._setAttributes(elem, attr.elem);
-
-			elem.className = [cls.elem, self.getTypeClass(), exif, self.isLoaded ? cls.loaded : cls.idle].join(" ");
+			self._setAttributes(elem, {
+				"class": [cls.elem, self.getTypeClass(), exif, self.isLoaded ? cls.loaded : cls.idle]
+			});
 
 			var inner = document.createElement("figure");
 			self._setAttributes(inner, attr.inner);
-			inner.className = cls.inner;
+			self._setAttributes(inner, {
+				"class": cls.inner
+			});
 
 			var anchorClasses = [cls.anchor];
 			if (self.noLightbox){
@@ -9348,11 +9387,15 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 
 			var caption = document.createElement("figcaption");
 			self._setAttributes(caption, attr.caption.elem);
-			caption.className = cls.caption.elem;
+			self._setAttributes(caption, {
+				"class": cls.caption.elem
+			});
 
 			var captionInner = document.createElement("div");
 			self._setAttributes(captionInner, attr.caption.inner);
-			captionInner.className = cls.caption.inner;
+			self._setAttributes(captionInner, {
+				"class": cls.caption.inner
+			});
 
 			var captionTitle = null, hasTitle = self.showCaptionTitle && _is.string(self.caption) && self.caption.length > 0;
 			if (hasTitle) {
