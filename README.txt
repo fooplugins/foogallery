@@ -312,9 +312,10 @@ Please update in order to for FooGallery to work in WP 5.5+!
 
 == Changelog ==
 
-= 2.2.29 =
+= 2.2.30 =
 * Date Updated : 2023-01-15
 * Update : Updated to Freemius SDK 2.5.3
+* Update : FooGallery client side 2.0.40
 * Fix : fixed album shortcode bug when gallery shortcode is changed with the white labelling feature.
 [//]: # fs_premium_only_begin
 * New : [Commerce Plan] Added modal for easily selecting master product.
