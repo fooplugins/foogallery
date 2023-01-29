@@ -1,3 +1,18 @@
+<?php
+$migrator_url = wp_nonce_url(
+    add_query_arg(
+        array(
+            'action' => 'install-plugin',
+            'plugin' => 'foogallery-migrate'
+        ),
+        admin_url( 'update.php' )
+    ),
+    'install-plugin_foogallery-migrate'
+);
+
+$migrator_link = sprintf( '<a href="%s" target="_blank">%s</a>', 'https://wordpress.org/plugins/foogallery-migrate/', __( 'Find out more!', 'foogallery' ) );
+
+?>
 <div id="help_section" class="foogallery-admin-help-section">
 	<section class="fgah-feature">
 		<header>
@@ -8,6 +23,19 @@
 			<a class="foogallery-admin-help-button-cta" target="_blank" href="<?php echo esc_url ( $plugin_url ); ?>"><?php echo sprintf( __( 'Visit the %s Homepage', 'foogallery' ), $plugin_name ); ?></a>
 		</footer>
 	</section>
+
+    <section class="fgah-feature">
+        <header>
+            <h3><?php _e(  'Are you migrating from another gallery plugin?', 'foogallery' ); ?></h3>
+            <p>
+                <?php printf( __( 'We have built a separate migration tool to help you seamlessly migrate from other gallery plugins to %s.', 'foogallery' ), foogallery_plugin_name() ); ?>
+                <?php echo $migrator_link; ?>
+            </p>
+        </header>
+        <footer>
+            <a class="foogallery-admin-help-button-cta" target="_blank" href="<?php echo esc_url ( $migrator_url ); ?>"><?php echo sprintf( __( 'Install our migrator!', 'foogallery' ), $plugin_name ); ?></a>
+        </footer>
+    </section>
 
     <section class="fgah-feature foogallery-admin-help-create-demos">
         <header class="fgah-create-demos">
