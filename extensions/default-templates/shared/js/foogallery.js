@@ -9245,7 +9245,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 							: ( _is.string( attributes[key] ) ? attributes[key].split( ' ' ) : [] );
 
 						classes.forEach( function( className ){
-							element.classList.add( className );
+							if ( !_is.empty( className ) ) element.classList.add( className );
 						} );
 					} else {
 						element.setAttribute(key, _is.string(attributes[key]) ? attributes[key] : JSON.stringify(attributes[key]));

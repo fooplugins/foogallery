@@ -9245,7 +9245,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 							: ( _is.string( attributes[key] ) ? attributes[key].split( ' ' ) : [] );
 
 						classes.forEach( function( className ){
-							element.classList.add( className );
+							if ( !_is.empty( className ) ) element.classList.add( className );
 						} );
 					} else {
 						element.setAttribute(key, _is.string(attributes[key]) ? attributes[key] : JSON.stringify(attributes[key]));
@@ -12026,6 +12026,10 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 
             self.lastBreakpoint = null;
 
+            self.isSmallScreen = false;
+            self.isMediumScreen = false;
+            self.isLargeScreen = false;
+
             self.breakpointClassNames = self.opt.breakpoints.map(function(bp){
                 return "fg-" + bp.name + " fg-" + bp.name + "-width" + " fg-" + bp.name + "-height";
             }).concat(["fg-landscape","fg-portrait"]).join(" ");
@@ -12099,6 +12103,8 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
             var classes = [
                 self.cls.elem,
                 transition,
+                self.cls.buttons.portrait[self.opt.buttonsPortrait] || "",
+                self.cls.buttons.landscape[self.opt.buttonsLandscape] || "",
                 _is.string(self.opt.theme) ? self.opt.theme : self.tmpl.getCSSClass("theme", "fg-dark"),
                 _is.string(self.opt.loadingIcon) ? self.opt.loadingIcon : self.tmpl.getCSSClass("loadingIcon"),
                 _is.string(self.opt.hoverIcon) ? self.opt.hoverIcon : self.tmpl.getCSSClass("hoverIcon"),
@@ -12216,6 +12222,10 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
         resize: function(){
             var self = this;
             self.$el.removeClass(self.breakpointClassNames).addClass(self.lastBreakpoint);
+            self.isMediumScreen = self.$el.hasClass("fg-medium");
+            self.isLargeScreen = self.$el.hasClass("fg-large");
+            self.isXLargeScreen = self.$el.hasClass("fg-x-large");
+            self.isSmallScreen = !self.isMediumScreen && !self.isLargeScreen && !self.isXLargeScreen;
             self.areas.forEach(function (area) {
                 area.resize();
             });
@@ -12442,6 +12452,12 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
     _.template.configure("core", {
         panel: {
             classNames: "",
+            noMobile: false,
+            hoverButtons: false,
+            icons: "default",
+            transition: "none", // none | fade | horizontal | vertical
+
+            // the below are CSS class names to use, if not supplied the lightbox will inherit the value from the gallery
             theme: null,
             button: null,
             highlight: null,
@@ -12453,10 +12469,6 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
             hoverScale: null,
             insetShadow: null,
             filter: null,
-            noMobile: false,
-            hoverButtons: false,
-            icons: "default",
-            transition: "none", // none | fade | horizontal | vertical
 
             loop: true,
             autoProgress: 0,
@@ -12467,6 +12479,8 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
             swipe: true,
             stackSideAreas: true,
             preserveButtonSpace: true,
+            buttonsPortrait: "top", // top | bottom
+            buttonsLandscape: "right", // left | right
             admin: false,
 
             info: "bottom", // none | top | bottom | left | right
@@ -12477,7 +12491,10 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
             exif: "none", // none | full | partial | minimal
 
             cart: "none", // none | top | bottom | left | right
+            cartAutoHide: true,
             cartVisible: false,
+            cartOriginal: false,
+            cartOverlay: true,
             cartAjax: null,
             cartNonce: null,
             cartTimeout: null,
@@ -12507,16 +12524,16 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
             },
             breakpoints: [{
                 name: "medium",
-                width: 480,
-                height: 480
+                width: 800,
+                height: 800
             },{
                 name: "large",
-                width: 768,
-                height: 640
+                width: 1024,
+                height: 1024
             },{
                 name: "x-large",
-                width: 1024,
-                height: 768
+                width: 1280,
+                height: 1280
             }]
         }
     },{
@@ -12543,6 +12560,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
                 error: "fg-error",
                 visible: "fg-visible",
                 reverse: "fg-reverse",
+                toggled: "fg-toggled",
                 selected: "fg-selected",
                 disabled: "fg-disabled",
                 hidden: "fg-hidden",
@@ -12553,6 +12571,14 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
             },
 
             buttons: {
+                portrait: {
+                    top: "fg-panel-buttons-top",
+                    bottom: "fg-panel-buttons-bottom"
+                },
+                landscape: {
+                    right: "fg-panel-buttons-right",
+                    left: "fg-panel-buttons-left"
+                },
                 container: "fg-panel-buttons",
                 prev: "fg-panel-button fg-panel-button-prev",
                 next: "fg-panel-button fg-panel-button-next",
@@ -12600,7 +12626,9 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
                 }
             },
 
-            cart: {},
+            cart: {
+                original: "fg-panel-cart-original"
+            },
 
             thumbs: {
                 prev: "fg-panel-thumbs-button fg-panel-thumbs-prev",
@@ -12753,6 +12781,18 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
             button.disable(disable);
         },
 
+        press: function( name, pressed ){
+            var self = this, button = self.get(name);
+            if ( self.panel.isSmallScreen && pressed && _is.string(button.groupName) ){
+                self.each(function(btn){
+                    if ( button !== btn && btn instanceof _.Panel.SideAreaButton && button.groupName === btn.groupName ){
+                        btn.area.toggle( false );
+                    }
+                });
+            }
+            button.press( pressed );
+        },
+
         destroy: function(){
             var self = this;
             var e = self.panel.trigger("buttons-destroy", [self]);
@@ -12879,6 +12919,9 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
                 label: null,
                 visible: !!panel.opt.buttons[name],
                 disabled: false,
+                toggle: false,
+                pressed: false,
+                group: null,
                 click: $.noop,
                 beforeLoad: $.noop,
                 afterLoad: $.noop,
@@ -12890,8 +12933,11 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
                 states: panel.cls.states
             };
             this.$el = null;
+            this.groupName = this.opt.group;
             this.isVisible = this.opt.visible;
             this.isDisabled = this.opt.disabled;
+            this.isToggle = this.opt.toggle;
+            this.isPressed = this.opt.pressed;
             this.isCreated = false;
             this.isAttached = false;
         },
@@ -12920,6 +12966,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
                 var enabled = self.isEnabled();
                 self.toggle(enabled);
                 self.disable(!enabled);
+                if (self.isToggle) self.press( self.opt.pressed );
             }
             return self.isCreated;
         },
@@ -12954,6 +13001,11 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
                 "aria-disabled": this.isDisabled,
                 "disabled": this.isDisabled
             });
+        },
+        press: function(pressed){
+            if ( !this.isCreated ) return;
+            this.isPressed = pressed;
+            this.$el.attr("aria-pressed", this.isPressed);
         },
         beforeLoad: function(media){
             this.opt.beforeLoad.call(this, media);
@@ -12992,7 +13044,10 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
                 icon: area.opt.icon,
                 label: area.opt.label,
                 autoHideArea: area.opt.autoHide,
-                click: area.toggle.bind(area)
+                click: area.toggle.bind(area),
+                toggle: true,
+                pressed: area.opt.visible,
+                group: area.opt.group
             });
             this.area = area;
             this.__isVisible = null;
@@ -13016,11 +13071,11 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
         },
         checkAutoHide: function(enabled, supported){
             if (enabled && supported && this.opt.autoHideArea === true){
-                if (this.__autoHide == null && _is.empty(this.panel.lastBreakpoint)){
+                if (this.__autoHide == null && this.panel.isSmallScreen) {
                     this.__autoHide = this.area.isVisible;
                     this.area.toggle(false);
                     this.area.button.toggle(true);
-                } else if (_is.boolean(this.__autoHide) && !_is.empty(this.panel.lastBreakpoint)) {
+                } else if (_is.boolean(this.__autoHide) && !this.panel.isSmallScreen) {
                     this.area.button.toggle(this.area.button.isEnabled() && this.area.opt.toggle);
                     this.area.toggle(this.__autoHide);
                     this.__autoHide = null;
@@ -13146,15 +13201,9 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
             var self = this;
             self._super(panel, "fullscreen", {
                 icon: ["expand", "shrink"],
-                label: panel.il8n.buttons.fullscreen
+                label: panel.il8n.buttons.fullscreen,
+                toggle: true
             });
-        },
-        create: function(){
-            if (this._super()){
-                this.$el.attr("aria-pressed", false);
-                return true;
-            }
-            return false;
         },
         click: function(){
             var self = this, pnl = self.panel.el;
@@ -13187,7 +13236,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
                 }).trigger('focus');
                 this.panel.trapFocus();
             }
-            if (this.isCreated) this.$el.attr("aria-pressed", true);
+            this.panel.buttons.press('fullscreen', true);
             this.panel.buttons.toggle('maximize', false);
         },
         exit: function(){
@@ -13200,7 +13249,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
                 }).trigger('focus');
                 this.panel.releaseFocus();
             }
-            if (this.isCreated) this.$el.attr("aria-pressed", false);
+            this.panel.buttons.press('fullscreen', false);
             this.panel.buttons.toggle('maximize', this.panel.isInline && this.panel.buttons.opt.maximize);
             this.panel.isFullscreen = false;
         }
@@ -13217,17 +13266,11 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
         construct: function(panel){
             this._super(panel, "maximize", {
                 icon: "maximize",
-                label: panel.il8n.buttons.maximize
+                label: panel.il8n.buttons.maximize,
+                toggle: true
             });
             this.scrollPosition = [];
             this.$placeholder = $("<span/>");
-        },
-        create: function(){
-            if (this._super()){
-                this.$el.attr("aria-pressed", false);
-                return true;
-            }
-            return false;
         },
         click: function(){
             this.set(!this.panel.isMaximized);
@@ -13251,7 +13294,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
                 'role': 'dialog',
                 'aria-modal': true
             }).trigger('focus');
-            if (this.isCreated) this.$el.attr("aria-pressed", true);
+            this.panel.buttons.press('maximize', true);
             this.panel.trapFocus();
             if (this.panel.opt.noScrollbars){
                 this.scrollPosition = [window.scrollX, window.scrollY];
@@ -13267,7 +13310,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
             }).insertBefore(this.$placeholder);
             if (this.panel.isInline) this.panel.$el.trigger('focus');
             this.$placeholder.detach();
-            if (this.isCreated) this.$el.attr("aria-pressed", false);
+            this.panel.buttons.press('maximize', false);
             this.panel.releaseFocus();
             if (this.panel.opt.noScrollbars){
                 $("html").removeClass(this.panel.cls.noScrollbars)
@@ -13672,6 +13715,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
             if (_is.jq(this.panel.$el)) {
                 this.panel.$el.toggleClass(this.cls.visible, this.isVisible);
             }
+            this.panel.buttons.press( this.name, this.isVisible );
         },
         onToggleClick: function(e){
             e.preventDefault();
@@ -13710,7 +13754,8 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
                 visible: panel.opt.infoVisible,
                 autoHide: panel.opt.infoAutoHide,
                 align: panel.opt.infoAlign,
-                waitForUnload: false
+                waitForUnload: false,
+                group: "overlay"
             }, panel.cls.info);
             this.allPositionClasses += " " + this.cls.overlay;
         },
@@ -14118,8 +14163,9 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
                 label: panel.il8n.buttons.cart,
                 position: panel.opt.cart,
                 visible: panel.opt.cartVisible,
+                autoHide: panel.opt.cartAutoHide,
                 waitForUnload: false,
-                toggle: true
+                group: "overlay"
             }, panel.cls.cart);
         },
         canLoad: function(media){
