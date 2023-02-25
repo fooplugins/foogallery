@@ -1,4 +1,4 @@
-var gulp = require('gulp'), notify = require("gulp-notify"), zip = require('gulp-zip'),
+var gulp = require('gulp'), notify = require("gulp-notify"), zip = require('gulp-zip'), wpPot = require('gulp-wp-pot'),
     fs_config = require('./fs-config.json'),
     packageJSON = require('./package.json'), fileName = packageJSON.name, fileVersion = packageJSON.version;
 
@@ -19,4 +19,16 @@ gulp.task('zip', function () {
         .pipe(zip(fileName + '.v' + fileVersion + '.zip'))
         .pipe(gulp.dest('dist/'))
         .pipe(notify({message: 'Zip task complete', onLast: true}));
+});
+
+gulp.task('translate', function () {
+    return gulp.src('./**/*.php')
+        .pipe(wpPot( {
+            domain: 'foogallery',
+            package: 'FooGallery',
+            bugReport: 'https://fooplugins.com',
+            lastTranslator: 'Brad Vincent <brad@fooplugins.com>',
+            team: 'FooPlugins <info@fooplugins.com>',
+        } ))
+        .pipe(gulp.dest('./languages/foogallery-latest.pot'));
 });
