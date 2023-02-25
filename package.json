@@ -14,7 +14,10 @@
   },
   "scripts": {
     "start": "node gutenberg/scripts/start.js",
-    "build": "node gutenberg/scripts/build.js"
+    "build": "node gutenberg/scripts/build.js",
+    "translate": "gulp translate",
+    "zip": "gulp zip",
+    "deploy": "gulp gulp-freemius-deploy"
   },
   "dependencies": {
     "autoprefixer": "^7.2.4",
@@ -38,7 +41,7 @@
     "fs-extra": "^5.0.0",
     "gzip-size": "^4.1.0",
     "inquirer": "^5.0.0",
-    "node-sass": "^5.0.0",
+    "sass": "^1.58.3",
     "ora": "^1.3.0",
     "postcss-loader": "^2.0.10",
     "raw-loader": "^0.5.1",
