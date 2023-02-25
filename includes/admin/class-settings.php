@@ -421,6 +421,14 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 				'tab'     => 'advanced'
 			);
 
+            $settings[] = array(
+                'id'      => 'enqueue_polyfills',
+                'title'   => __( 'Enqueue Polyfills', 'foogallery' ),
+                'desc'    => sprintf( __( '%s uses modern JavaScript API\'s which may not be supported in older browsers. Enable the enqueueing of polyfills for better backwards compatibility.', 'foogallery' ), foogallery_plugin_name() ),
+                'type'    => 'checkbox',
+                'tab'     => 'advanced'
+            );
+
 			$settings[] = array(
 				'id'      => 'uninstall',
 				'title'   => __( 'Full Uninstall', 'foogallery' ),

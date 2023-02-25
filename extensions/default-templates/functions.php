@@ -37,6 +37,12 @@ function foogallery_enqueue_core_gallery_template_script( $deps = null ) {
 	$filename = foogallery_is_debug() ? '' : '.min';
 	$js = apply_filters( 'foogallery_core_gallery_script', FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_SHARED_URL . 'js/foogallery' . $filename . '.js' );
 	$deps = apply_filters( 'foogallery_core_gallery_script_deps', $deps );
+
+    if ( foogallery_get_setting( 'enqueue_polyfills', false ) ) {
+        foogallery_enqueue_polyfills();
+        $deps[] = 'foogallery-polyfills';
+    }
+
 	wp_enqueue_script( 'foogallery-core', $js, $deps, FOOGALLERY_VERSION );
 	do_action( 'foogallery_enqueue_script-core', $js );
 
@@ -46,4 +52,14 @@ function foogallery_enqueue_core_gallery_template_script( $deps = null ) {
 			wp_enqueue_script( 'foogallery-custom', $custom_assets['script'], array('foogallery-core'), FOOGALLERY_VERSION );
 		}
 	}
+}
+
+/**
+ * @return void
+ *
+ */
+function foogallery_enqueue_polyfills() {
+    $suffix = foogallery_is_debug() ? '' : '.min';
+    $src    = apply_filters( 'foogallery_polyfills_src', FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_SHARED_URL . 'js/foogallery.polyfills' . $suffix . '.js', $suffix );
+    wp_enqueue_script( 'foogallery-polyfills', $src, array(), FOOGALLERY_VERSION );
 }
