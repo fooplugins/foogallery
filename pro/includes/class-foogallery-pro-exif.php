@@ -650,6 +650,18 @@ if ( ! class_exists( 'FooGallery_Pro_Exif' ) ) {
             </div>
         <?php }
 
+        private function get_meta_value( $array, $key, $empty_value = '', $default = '') {
+            $value = $default;
+
+            if ( array_key_exists( $key, $array ) ) {
+                $value = $array[$key];
+                if ( $value === $empty_value ) {
+                    $value = $default;
+                }
+            }
+            return $value;
+        }
+
         /**
          * Image modal EXIF tab content
          */
@@ -662,36 +674,44 @@ if ( ! class_exists( 'FooGallery_Pro_Exif' ) ) {
                         if ( is_array( $image_meta ) && !empty ( $image_meta ) ) {
                             $keywords_str = array_key_exists( 'keywords', $image_meta ) ? implode( ',', $modal_data['meta']['image_meta']['keywords'] ) : '';
                             $keywords = rtrim( $keywords_str, ',' );
-                        } ?>
+                        }
+                        $aperture = $this->get_meta_value( $modal_data['meta']['image_meta'], 'aperture', '0' );
+                        $camera = $this->get_meta_value( $modal_data['meta']['image_meta'], 'camera' );
+                        $created_timestamp = $this->get_meta_value( $modal_data['meta']['image_meta'], 'created_timestamp', '0' );
+                        $shutter_speed = $this->get_meta_value( $modal_data['meta']['image_meta'], 'shutter_speed', '0' );
+                        $focal_length = $this->get_meta_value( $modal_data['meta']['image_meta'], 'focal_length', '0' );
+                        $iso = $this->get_meta_value( $modal_data['meta']['image_meta'], 'iso', '0' );
+                        $orientation = $this->get_meta_value( $modal_data['meta']['image_meta'], 'orientation', '0' );
+                        ?>
                         <section id="foogallery-panel-exif" class="tab-panel">
                             <div class="settings">
 								<span class="setting" data-setting="title">
-									<label for="attachment-details-two-column-aperture" class="name"><?php _e('Aperture Text', 'foogallery'); ?></label>
-									<input type="text" name="foogallery[aperture]" id="attachment-details-two-column-aperture" value="<?php echo $modal_data['meta']['image_meta']['aperture'];?>">
+									<label for="attachment-details-two-column-aperture" class="name"><?php _e('Aperture', 'foogallery'); ?></label>
+									<input type="text" name="foogallery[aperture]" id="attachment-details-two-column-aperture" value="<?php echo $aperture; ?>">
 								</span>
                                 <span class="setting" data-setting="camera">
-									<label for="attachment-details-two-column-camera" class="name"><?php _e('Camera Text', 'foogallery'); ?></label>
-									<input type="text" name="foogallery[camera]" id="attachment-details-two-column-camera" value="<?php echo $modal_data['meta']['image_meta']['camera'];?>">
+									<label for="attachment-details-two-column-camera" class="name"><?php _e('Camera', 'foogallery'); ?></label>
+									<input type="text" name="foogallery[camera]" id="attachment-details-two-column-camera" value="<?php echo $camera; ?>">
 								</span>
                                 <span class="setting" data-setting="created-timestamp">
 									<label for="attachment-details-two-column-created-timestamp" class="name"><?php _e('Created Timestamp', 'foogallery'); ?></label>
-									<input type="text" name="foogallery[created-timestamp]" id="attachment-details-two-column-created-timestamp" value="<?php echo $modal_data['meta']['image_meta']['created_timestamp'];?>">
+									<input type="text" name="foogallery[created-timestamp]" id="attachment-details-two-column-created-timestamp" value="<?php echo $created_timestamp; ?>">
 								</span>
                                 <span class="setting" data-setting="shutter-speed">
-									<label for="attachment-details-two-column-shutter-speed" class="name"><?php _e('Shutter Speed Text', 'foogallery'); ?></label>
-									<input type="text" name="foogallery[shutter-speed]" id="attachment-details-two-column-shutter-speed" value="<?php echo $modal_data['meta']['image_meta']['shutter_speed'];?>">
+									<label for="attachment-details-two-column-shutter-speed" class="name"><?php _e('Shutter Speed', 'foogallery'); ?></label>
+									<input type="text" name="foogallery[shutter-speed]" id="attachment-details-two-column-shutter-speed" value="<?php echo $shutter_speed; ?>">
 								</span>
                                 <span class="setting" data-setting="focal-length">
-									<label for="attachment-details-two-column-focal-length" class="name"><?php _e('Focal Length Text', 'foogallery'); ?></label>
-									<input type="text" name="foogallery[focal-length]" id="attachment-details-two-column-focal-length" value="<?php echo $modal_data['meta']['image_meta']['focal_length'];?>">
+									<label for="attachment-details-two-column-focal-length" class="name"><?php _e('Focal Length', 'foogallery'); ?></label>
+									<input type="text" name="foogallery[focal-length]" id="attachment-details-two-column-focal-length" value="<?php echo $focal_length; ?>">
 								</span>
                                 <span class="setting" data-setting="iso">
-									<label for="attachment-details-two-column-iso" class="name"><?php _e('ISO Text', 'foogallery'); ?></label>
-									<input type="text" name="foogallery[iso]" id="attachment-details-two-column-iso" value="<?php echo $modal_data['meta']['image_meta']['iso'];?>">
+									<label for="attachment-details-two-column-iso" class="name"><?php _e('ISO', 'foogallery'); ?></label>
+									<input type="text" name="foogallery[iso]" id="attachment-details-two-column-iso" value="<?php echo $iso; ?>">
 								</span>
                                 <span class="setting" data-setting="orientation">
 									<label for="attachment-details-two-column-orientation" class="name"><?php _e('Orientation', 'foogallery'); ?></label>
-									<input type="text" name="foogallery[orientation]" id="attachment-details-two-column-orientation" value="<?php echo $modal_data['meta']['image_meta']['orientation'];?>">
+									<input type="text" name="foogallery[orientation]" id="attachment-details-two-column-orientation" value="<?php echo $orientation; ?>">
 								</span>
                                 <span class="setting" data-setting="keywords">
 									<label for="attachment-details-two-column-keywords" class="name"><?php _e('Keywords', 'foogallery'); ?></label>
@@ -747,9 +767,7 @@ if ( ! class_exists( 'FooGallery_Pro_Exif' ) ) {
                 }
 
                 wp_update_attachment_metadata( $img_id, $image_meta );
-
             }
-
         }
     }
 }
