@@ -16,6 +16,8 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
 			add_action( 'wp_ajax_foogallery_attachment_modal_open', array( $this, 'ajax_open_modal' ) );
 			add_action( 'wp_ajax_foogallery_attachment_modal_save', array( $this, 'ajax_save_modal' ) );
 
+            add_action( 'wp_ajax_foogallery_attachment_modal_taxonomy_add', array( $this, 'ajax_add_taxonomy' ) );
+
 			add_action( 'foogallery_attachment_modal_tabs_view', array( $this, 'display_tab_main' ), 10 );
 			add_action( 'foogallery_attachment_modal_tabs_view', array( $this, 'display_tab_taxonomies' ), 20 );
 			add_action( 'foogallery_attachment_modal_tabs_view', array( $this, 'display_tab_thumbnails' ), 30 );
@@ -150,8 +152,6 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
 			</div>
 		<?php }
 
-
-
 		/**
 		 * Save modal form data to database
 		 */
@@ -177,6 +177,44 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
 			wp_die();
 		}
 
+        /**
+         * Save new taxonomy
+         */
+        public function ajax_add_taxonomy() {
+            // Check for nonce security
+            if ( ! wp_verify_nonce( $_POST['nonce'], 'foogallery_attachment_modal_taxonomies' ) ) {
+                die ( 'Busted!');
+            }
+
+            $img_id = intval( sanitize_text_field( $_POST['img_id'] ) );
+            $taxonomy = sanitize_text_field( $_POST['taxonomy'] );
+            $term = sanitize_text_field( $_POST['term'] );
+
+            if ( $img_id > 0 && strlen( $taxonomy ) > 0 && strlen( $term ) > 0 ) {
+                $new_term = wp_insert_term( $term, $taxonomy );
+                if ( is_wp_error( $new_term ) ) {
+                    wp_send_json_error( array(
+                        'message' => __( 'Could not add new taxonomy term!', 'foogallery' )
+                    ));
+                } else {
+                    $new_term_obj = null;
+
+                    if ( isset( $new_term['term_id'] ) ) {
+                        $new_term_obj = get_term( $new_term['term_id'] );
+
+                        wp_send_json_success( array(
+                            'id' => $new_term_obj->term_id,
+                            'name' => $new_term_obj->name
+                        ));
+                    }
+                }
+            } else {
+                wp_send_json_error( array(
+                    'message' => __( 'Invalid data!', 'foogallery' )
+                ));
+            }
+        }
+
 		/**
 		 * Save main tab data content
 		 * 
@@ -185,7 +223,6 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
 		 * @param $foogallery array of form post data
 		 * 
 		 */
-
 		 public function foogallery_attachment_save_data_main( $img_id, $foogallery ) {
 
 			if ( is_array( $foogallery ) && !empty( $foogallery ) ) {
@@ -246,26 +283,16 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
                     return;
                 }
 
-				foreach( $foogallery as $key => $val ) {
-					if ( $key == 'tags' ) {
-						$tags = array();
-						$selected_tags = explode( ',', $val );
-						foreach ( $selected_tags as $tag ) {
-							$tags[] = (int) $tag;
-						}
-						wp_set_object_terms( $img_id, $tags, FOOGALLERY_ATTACHMENT_TAXONOMY_TAG, false );
-					}
-					if ( $key == 'taxonomies' ) {
-						$categories = array();
-						$selected_cats = explode( ',', $val );
-						foreach ( $selected_cats as $category ) {
-							$categories[] = (int) $category;
-						}
-						wp_set_object_terms( $img_id, $categories, FOOGALLERY_ATTACHMENT_TAXONOMY_CATEGORY, false );
-					}
-				}
+                if ( array_key_exists( 'taxonomies', $foogallery ) ) {
+                    foreach ( $foogallery['taxonomies'] as $taxonomy => $taxonomy_value ) {
+                        $terms = explode( ',', $taxonomy_value );
+                        if ( is_array( $terms ) ) {
+                            $terms = array_map( 'intval', $terms );
+                            wp_set_object_terms( $img_id, $terms, $taxonomy, false );
+                        }
+                    }
+                }
 			}
-
 		}
 
 		/**
@@ -294,8 +321,6 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
 
 		}
 
-
-
 		/**
 		 * Save more tab data content
 		 * 
@@ -304,7 +329,6 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
 		 * @param $foogallery array of form post data
 		 * 
 		 */
-
 		public function foogallery_attachment_save_data_more( $img_id, $foogallery ) {
 
 			if ( is_array( $foogallery ) && !empty( $foogallery ) ) {
@@ -407,19 +431,18 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
                     return $modal_data;
                 }
 
-                // Rather use $taxonomies = get_object_taxonomies( 'attachment' ); and loop through all taxonomies for an attachment
+                $modal_data['taxonomies'] = array();
 
-                $categories = get_the_terms( $attachment_id, FOOGALLERY_ATTACHMENT_TAXONOMY_CATEGORY );
-                $tags = get_the_terms( $attachment_id, FOOGALLERY_ATTACHMENT_TAXONOMY_TAG );
+                $taxonomies = get_object_taxonomies( 'attachment', 'objects' );
 
-                if ( is_array( $categories ) && !empty ( $categories ) ) {
-                    $modal_data['img_categories'] = $categories;
-                }
-
-                if ( is_array( $tags ) && !empty ( $tags ) ) {
-                    $modal_data['img_tags'] = $tags;
+                foreach ( $taxonomies as $tax_name => $taxonomy ) {
+                    $modal_data['taxonomies'][$tax_name] = array(
+                        'label' => $taxonomy->label,
+                        'terms' => get_the_terms( $attachment_id, $tax_name )
+                    );
                 }
             }
+
 			return $modal_data;
 		}
 
@@ -447,9 +470,6 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
 
 			return $modal_data;
 		}
-
-
-
 
 		/**
 		 * Image modal more tab data update
@@ -486,7 +506,6 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
                     $next_slide_id = 0;
                     foreach ( $gallery_attachments as $gallery_attachment_id ) {
                         if ( $attachment_id === intval( $gallery_attachment_id ) ) {
-                            //$prev_slide_id = $current_slide_id;
                             $prev_slide_enabled = $prev_slide_id > 0;
                             $current_slide_id = $attachment_id;
                         } else if ( $next_slide_id > 0 ) {
@@ -555,8 +574,6 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
             $taxonomies = get_object_taxonomies( 'attachment' );
             return count( $taxonomies ) > 0;
         }
-
-
 
 		/**
 		 * Image modal more tab title
@@ -635,65 +652,60 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
                 return;
             }
 
-            if ( is_array( $modal_data ) && !empty ( $modal_data ) ) {
+            if ( is_array( $modal_data ) && array_key_exists( 'taxonomies', $modal_data ) ) {
                 if ( $modal_data['img_id'] > 0 ) {
-					$selected_categories = $selected_tags = array();
-					$tags = get_terms( array(
-						'taxonomy' => FOOGALLERY_ATTACHMENT_TAXONOMY_TAG,
-						'hide_empty' => false,
-					) );
-					$categories = get_terms( array(
-						'taxonomy' => FOOGALLERY_ATTACHMENT_TAXONOMY_CATEGORY,
-						'hide_empty' => false,
-					) );
-					if ( is_array ( $modal_data['img_categories'] ) && !empty ( $modal_data['img_categories'] ) ) {
-						foreach ( $modal_data['img_categories'] as $cat ) {
-							$selected_categories[] = $cat->term_id;
-						}
-					}
-					if ( is_array ( $modal_data['img_tags'] ) && !empty ( $modal_data['img_tags'] ) ) {
-						foreach ( $modal_data['img_tags'] as $tag ) {
-							$selected_tags[] = $tag->term_id;
-						}
-					}
-					?>
-					<section id="foogallery-panel-taxonomies" class="tab-panel">
+                    $taxonomies = get_object_taxonomies( 'attachment', 'objects' );
+
+                    ?>
+                        <section id="foogallery-panel-taxonomies" class="tab-panel" data-nonce="<?php echo wp_create_nonce('foogallery_attachment_modal_taxonomies'); ?>">
 						<div class="settings">
-							<span class="setting">
-								<label for="foogallery_woocommerce_tags" class="name"><?php _e('Media Tags:', 'foogallery'); ?></label>
-								<ul class="foogallery_woocommerce_tags">
-									<?php
-									foreach ($tags as $tag) {
-										$tag_selected = in_array($tag->term_id, $selected_tags);
-										?>
-										<li>
-											<a href="javascript:void(0);" class="button button-small<?php echo $tag_selected ? ' button-primary' : ''; ?>"
-												data-term-id="<?php echo $tag->term_id; ?>"><?php echo $tag->name; ?></a>
-										</li><?php
-									}
-									?>
-								</ul>
-								<input type="hidden" id="foogallery_woocommerce_tags_selected"  name="foogallery[tags]" value="<?php echo implode( ',', $selected_tags ); ?>">
-							</span>
-							<span class="setting">
-								<label for="foogallery_woocommerce_categories" class="name"><?php _e('Media Categories:', 'foogallery'); ?></label>
-								<ul class="foogallery_woocommerce_categories">
-									<?php
-									foreach ($categories as $category) {
-										$cat_selected = in_array($category->term_id, $selected_categories);
-										?>
-										<li>
-											<a href="javascript:void(0);" class="button button-small<?php echo $cat_selected ? ' button-primary' : ''; ?>"
-												data-term-id="<?php echo $category->term_id; ?>"><?php echo $category->name; ?></a>
-										</li><?php
-									}
-									?>
-								</ul>
-								<input type="hidden" id="foogallery_woocommerce_taxonomies_selected"  name="foogallery[taxonomies]" value="<?php echo implode( ',', $selected_categories ); ?>">
-							</span>
-						</div>
-					</section>
-					<?php
+                    <?php
+
+                    foreach ( $taxonomies as $tax_name => $taxonomy ) {
+                        $terms = get_terms( array(
+                            'taxonomy' => $tax_name,
+                            'hide_empty' => false,
+                        ) );
+
+                        $selected_terms = array();
+
+                        if ( array_key_exists( $tax_name, $modal_data['taxonomies'] ) ) {
+                            foreach ( $modal_data['taxonomies'][$tax_name]['terms'] as $term ) {
+                                $selected_terms[] = $term->term_id;
+                            }
+                        }
+
+                        ?>
+
+                        <span class="setting">
+                            <label for="foogallery_attachment_taxonomy_<?php echo $tax_name; ?>" class="name"><?php echo $modal_data['taxonomies'][$tax_name]['label']; ?></label>
+                            <ul data-taxonomy="<?php echo $tax_name; ?>">
+                                <?php
+                                foreach ($terms as $term) {
+                                    $term_selected = in_array( $term->term_id, $selected_terms );
+                                    ?>
+                                    <li>
+                                    <a href="javascript:void(0);" class="button button-small<?php echo $term_selected ? ' button-primary' : ''; ?>"
+                                       data-term-id="<?php echo $term->term_id; ?>"><?php echo $term->name; ?></a>
+                                    </li><?php
+                                }
+                                ?>
+                                <li class="taxonomy_add">
+                                    <a href="javascript:void(0);" class="button button-small active foogallery_attachment_taxonomy_add" data-action="add">+</a>
+                                    <input type="text" class="foogallery_attachment_taxonomy_add" style="display: none" />
+                                    <a href="javascript:void(0);" class="button button-small active foogallery_attachment_taxonomy_add" style="display: none" data-action="save"><?php echo __( 'Save','foogallery' ); ?></a>
+                                </li>
+                            </ul>
+                            <input type="hidden" id="foogallery_attachment_taxonomy_<?php echo $tax_name; ?>_selected" name="foogallery[taxonomies][<?php echo $tax_name; ?>]" value="<?php echo implode( ',', $selected_terms ); ?>">
+                        </span>
+
+                        <?php
+                    }
+
+                    ?>
+                        </div>
+                        </section>
+                    <?php
 				}
 			}
 		}
