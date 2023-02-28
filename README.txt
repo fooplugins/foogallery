@@ -312,12 +312,15 @@ Please update in order to for FooGallery to work in WP 5.5+!
 
 == Changelog ==
 
-= 2.2.32 =
-* Date Updated : 2023-02-25
+= 2.2.33 =
+* Date Updated : 2023-02-28
 * Update : Updated to Freemius SDK 2.5.3
 * Update : FooGallery client side 2.0.42
+* Update : Updated package.json to latest dependencies. Updated Gutenberg block build process.
+* Update : Updated translation POT file.
+* New : Multiple improvements to Attachment Modal.
 * New : Added new setting to enqueue polyfills JS, if you require more browser backwards compatability.
-* Fix : Fixed album shortcode bug when gallery shortcode is changed with the white labelling feature.
+* Fix : Fixed album shortcode bug when gallery shortcode is changed with the white-labelling feature.
 [//]: # fs_premium_only_begin
 * New : [Commerce Plan] Added modal for easily selecting master product.
 * New : [Commerce Plan] Created Generate Master Product button on modal to easily generate a working Master Product, that is configured correctly.

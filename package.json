@@ -1,6 +1,6 @@
 {
   "name": "foogallery",
-  "version": "2.2.32",
+  "version": "2.2.33",
   "title": "FooGallery",
   "description": "The Most Intuitive and Extensible Gallery Creation and Management Tool Ever Created for WordPress",
   "repository": "https://github.com/fooplugins/foogallery",
@@ -11,6 +11,7 @@
     "develop": "set NODE_ENV=development&& wp-scripts build --config=./gutenberg/config/blocks.js",
     "build": "wp-scripts build --config=./gutenberg/config/blocks.js",
     "package": "npm run build && gulp",
+    "gulp": "gulp",
     "deploy": "gulp freemius-deploy"
   },
   "devDependencies": {
