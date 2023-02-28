@@ -32,8 +32,7 @@ if ( ! class_exists( 'FooGallery_Rest_Routes' ) ) {
 				array(
 					'methods'  			  => WP_REST_Server::READABLE,
 					'callback' 			  => array( $this, 'get_galleries' ),
-					'permission_callback' => array( $this, 'get_galleries_permissions_check' ),
-					'schema' 			  => array( $this, 'get_galleries_schema' ),
+					'permission_callback' => array( $this, 'get_galleries_permissions_check' )
 				)
 			);
 		}
@@ -100,42 +99,6 @@ if ( ! class_exists( 'FooGallery_Rest_Routes' ) ) {
 			}
 
 			return rest_ensure_response( $result );
-		}
-
-		/**
-		 * Retrieves block's output schema, conforming to JSON Schema.
-		 *
-		 * @since  2.8.0
-		 * @access public
-		 *
-		 * @return array Item schema data.
-		 */
-		public function get_item_schema() {
-			return array(
-				'$schema'    => 'https://json-schema.org/schema#',
-				'title'      => 'foogallery',
-				'type'       => 'object',
-				'properties' => array(
-					'id' => array(
-						'description' => __( 'The FooGallery ID.', 'foogallery' ),
-						'type'        => 'int',
-						'required'    => true,
-						'context'     => array( 'edit' ),
-					),
-					'name' => array(
-						'description' => __( 'The FooGallery Name.', 'foogallery' ),
-						'type'        => 'string',
-						'required'    => false,
-						'context'     => array( 'edit' ),
-					),
-					'thumbnail' => array(
-						'description' => __( 'The FooGallery Thumbnail.', 'foogallery' ),
-						'type'        => 'string',
-						'required'    => false,
-						'context'     => array( 'edit' ),
-					),
-				),
-			);
 		}
 	}
 }

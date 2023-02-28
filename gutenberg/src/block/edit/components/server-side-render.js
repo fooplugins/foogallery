@@ -3,12 +3,12 @@ import FooGalleryEditPlaceholder from './placeholder';
 /**
  * WordPress dependencies.
  */
-const { __, sprintf } = wp.i18n;
-const { Component, createRef, createElement } = wp.element;
-const { Spinner } = wp.components;
-const apiFetch = wp.apiFetch;
-const { addQueryArgs } = wp.url;
-const { isEqual, debounce } = lodash;
+import { __, sprintf } from '@wordpress/i18n';
+import { Component, createRef, createElement } from '@wordpress/element';
+import { Spinner } from '@wordpress/components';
+import apiFetch from '@wordpress/api-fetch';
+import { addQueryArgs } from '@wordpress/url';
+import { isEqual, debounce } from 'lodash';
 
 export function rendererPath( block, attributes = null, urlQueryArgs = {} ) {
 	return addQueryArgs( `/wp/v2/block-renderer/${ block }`, {

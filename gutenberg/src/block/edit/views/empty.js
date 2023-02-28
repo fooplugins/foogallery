@@ -5,9 +5,9 @@ import {
 	FooGalleryEditInspectorControls
 } from '../components';
 
-const { __ } = wp.i18n;
-const { Component, Fragment } = wp.element;
-const { Button } = wp.components;
+import { __ } from '@wordpress/i18n';
+import { Button } from '@wordpress/components';
+import { Component, Fragment } from '@wordpress/element';
 
 export default class FooGalleryEditEmpty extends Component {
 	render(){

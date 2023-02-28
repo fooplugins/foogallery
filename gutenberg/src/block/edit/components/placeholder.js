@@ -1,8 +1,6 @@
 import classnames from 'classnames';
-
-const { __ } = wp.i18n;
-const { Component } = wp.element;
-const { Placeholder } = wp.components;
+import { Component } from '@wordpress/element';
+import { Placeholder } from '@wordpress/components';
 
 export default class FooGalleryEditPlaceholder extends Component {
 	render(){

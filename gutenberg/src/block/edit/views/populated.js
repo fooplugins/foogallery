@@ -5,7 +5,7 @@ import {
 	FooGalleryEditInspectorControls
 } from '../components';
 
-const { Component, Fragment } = wp.element;
+import { Component, Fragment } from '@wordpress/element';
 
 export default class FooGalleryEditPopulated extends Component {
 	render(){

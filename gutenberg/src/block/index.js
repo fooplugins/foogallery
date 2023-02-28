@@ -3,13 +3,11 @@
  *
  * Registering a basic FooGallery block with Gutenberg.
  */
-
-import './style.scss';
 import './editor.scss';
-import FooGalleryEdit from './edit';
 
-const { __ } = wp.i18n; // Import __() from wp.i18n
-const { registerBlockType } = wp.blocks; // Import registerBlockType() from wp.blocks
+import FooGalleryEdit from './edit';
+import { __ } from '@wordpress/i18n';
+import { registerBlockType } from '@wordpress/blocks';
 
 /**
  * Register: aa Gutenberg Block.

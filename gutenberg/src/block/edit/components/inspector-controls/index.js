@@ -1,9 +1,9 @@
 import './editor.scss';
 
-const { __ } = wp.i18n;
-const { Component } = wp.element;
-const { Button } = wp.components;
-const { InspectorControls } = !!wp.blockEditor ? wp.blockEditor : wp.editor;
+import { __ } from '@wordpress/i18n';
+import { Component } from '@wordpress/element';
+import { Button } from '@wordpress/components';
+import { InspectorControls } from '@wordpress/block-editor';
 
 export default class FooGalleryEditInspectorControls extends Component {
 	render(){

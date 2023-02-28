@@ -5,9 +5,10 @@ import {
 	FooGalleryEditDuplicate
 } from './views';
 
-const { sprintf } = wp.i18n;
-const { dispatch } = wp.data;
-const { Component } = wp.element;
+import { sprintf } from '@wordpress/i18n';
+import { dispatch } from '@wordpress/data';
+import { Component } from '@wordpress/element';
+
 const { editGalleryUrl } = window.FOOGALLERY_BLOCK;
 
 export default class FooGalleryEdit extends Component {
