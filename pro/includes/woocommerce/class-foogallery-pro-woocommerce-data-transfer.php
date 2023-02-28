@@ -832,10 +832,14 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce_Master_Product' ) ) {
                             $thumb_url = wc_placeholder_img_src();
                         }
                         $class = $product_id === $product->get_id() ? 'class="selected"' : '';
+                        $price = $product->get_price_html();
+                        if ( empty( $price ) ) {
+                            $price = '&nbsp;';
+                        }
                         echo '<li ' . $class . ' data-id="' . $product->get_id() . '">';
                         echo '<img src="' . $thumb_url . '" />';
                         echo '<h3>' . $product->get_title() . '</h3>';
-                        echo '<span>' . $product->get_price_html() . '</span>';
+                        echo '<span>' . $price . '</span>';
                         echo '</li>';
                     }
                     echo '</ul>';
