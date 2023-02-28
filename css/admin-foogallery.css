@@ -761,14 +761,13 @@ button[data-balloon]{overflow:visible}[data-balloon]{position:relative}[data-bal
  CSS for the main interaction
 */
 #foogallery-image-edit-modal .tabset .foogallery-img-modal-tab-wrapper > input[type="radio"] {
-    position: absolute;
-    left: -200vw;
-  }
+	position: absolute;
+	left: -200vw;
+}
   
-  #foogallery-image-edit-modal .tab-panel {
-    display: none;
-    padding: 30px 0;
-    /* border-top: 1px solid #ccc; */
+#foogallery-image-edit-modal .tab-panel {
+	display: none;
+	padding: 30px 0;
 }
 #foogallery-image-edit-modal .tab-panel.active {
 	display: block;
@@ -781,19 +780,19 @@ button[data-balloon]{overflow:visible}[data-balloon]{position:relative}[data-bal
     border-bottom: 0;
     cursor: pointer;
     font-weight: 600;
-  }  
-  #foogallery-image-edit-modal .tabset .foogallery-img-modal-tab-wrapper > label:hover,
-  #foogallery-image-edit-modal .tabset .foogallery-img-modal-tab-wrapper > input:focus + label {
+}
+#foogallery-image-edit-modal .tabset .foogallery-img-modal-tab-wrapper > label:hover,
+#foogallery-image-edit-modal .tabset .foogallery-img-modal-tab-wrapper > input:focus + label {
     color: #06c;
-  }
-  #foogallery-image-edit-modal .tabset .foogallery-img-modal-tab-wrapper > input:checked + label {
+}
+#foogallery-image-edit-modal .tabset .foogallery-img-modal-tab-wrapper > input:checked + label {
     border-color: #ccc;
     border-bottom-color: rgb(204, 204, 204);
     border-bottom: 2px solid #fff !important;
     margin-bottom: -1.7px;
     cursor: pointer;
 }
-  .foogallery-image-edit-meta {
+.foogallery-image-edit-meta {
     background-color: #fff;
     padding: 10px;
 }
@@ -802,6 +801,19 @@ button[data-balloon]{overflow:visible}[data-balloon]{position:relative}[data-bal
     padding: 0px 10px;
     border-bottom: 1px solid #ccc;
 }
+
+#foogallery-image-edit-modal .media-frame-title h1 {
+	float: left;
+}
+#foogallery-image-edit-modal .media-frame-title .attachment-modal-autosave {
+	float: right;
+	display: inline-block;
+	margin: 15px;
+}
+#foogallery-image-edit-modal .media-frame-title .attachment-modal-autosave label {
+	vertical-align: text-bottom;
+}
+
 #foogallery-panel-main select {
     margin: 0px 8px;
 }
@@ -866,12 +878,8 @@ button[data-balloon]{overflow:visible}[data-balloon]{position:relative}[data-bal
 	background: #d63638;
     border-color: #d63638;
 }
-#foogallery-image-edit-modal .spinner.is-active{
-	float: unset;
-	height: 300px;
-    background-position: center center;
-	margin: 0 auto;
-    display: block;
+#foogallery-image-edit-modal .not-loaded .spinner.is-active{
+	margin: 10px;
 }
 .foogallery-img-modal-tab-wrapper {
     display: inline-block;
@@ -881,12 +889,17 @@ button[data-balloon]{overflow:visible}[data-balloon]{position:relative}[data-bal
 	grid-template-columns: 35% auto;
 	grid-gap: 30px;
 }
-#foogallery-image-edit-modal .tab-panels .settings span.setting input, #foogallery-image-edit-modal .tab-panels .settings span.setting select, #foogallery-image-edit-modal .tab-panels .settings span.setting textarea {
+#foogallery-image-edit-modal .tab-panels .settings span.setting input,
+#foogallery-image-edit-modal .tab-panels .settings span.setting select,
+#foogallery-image-edit-modal .tab-panels .settings span.setting textarea {
     width: calc(100% - 10px);
     box-sizing: border-box;
     max-width: 100%;
     margin-left: 0px !important;
     margin-right: 0px !important;
+}
+#foogallery-image-edit-modal .tab-panels .settings span.setting span {
+	text-align: left;
 }
 #foogallery-image-edit-modal .tab-panels {
     padding: 0px 10px;
@@ -894,10 +907,6 @@ button[data-balloon]{overflow:visible}[data-balloon]{position:relative}[data-bal
 #foogallery-image-edit-modal .tab-panels .settings span.setting input[type="radio"] {
     width: auto;
     margin: 8px 3px 0 !important;
-}
-#foogallery-panel-thumbnails .button-large, #foogallery-panel-watermark .attachment_protection_generate {
-	max-width: 225px;
-	width: 100%;
 }
 #foogallery-image-edit-modal .attachment-details #foogallery-panel-taxonomies .setting .name {
 	padding-top: 5px;
@@ -922,12 +931,24 @@ button[data-balloon]{overflow:visible}[data-balloon]{position:relative}[data-bal
 	position: absolute;
     bottom: 10px;
     width: 100%;
-	right: 20px;
+	right: 10px;
 	text-align: right;
+}
+.foogallery-image-edit-footer .spinner {
+	margin-top: 5px;
+	float: unset;
+}
+#attachments-data-save-btn {
+	float: right;
 }
 #foogallery-panel-taxonomies ul {
 	margin: 0;
 	padding: 0;
+}
+#foogallery-panel-taxonomies ul:after {
+	content: '';
+	display: block;
+	clear: both;
 }
 #foogallery-image-edit-modal .media-modal-close {
 	border-left: 1px solid #dcdcde;
@@ -950,9 +971,11 @@ button[data-balloon]{overflow:visible}[data-balloon]{position:relative}[data-bal
 	break-inside: avoid;
 }
 .foogallery-modal-info-fields * {
-    font-weight: 600;
 	vertical-align: middle;
 	font-size: 13px;
+}
+.foogallery-modal-info-fields label {
+	font-weight: 600;
 }
 #foogallery-img-modal-alternate-image-delete {
     background-color: #f6f7f7;

@@ -137,11 +137,18 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
 					<div class="media-modal-content">
 						<div class="edit-attachment-frame mode-select hide-menu hide-router">
 							<div class="edit-media-header">
-								<button class="left dashicons"><span class="screen-reader-text"><?php _e( 'Edit previous attachment in the gallery', 'foogallery' ); ?></span></button>
-								<button class="right dashicons"><span class="screen-reader-text"><?php _e( 'Edit next attachment in the gallery', 'foogallery' ); ?></span></button>
+
+								<button title="<?php _e( 'Edit previous attachment in the gallery', 'foogallery' ); ?>" class="left dashicons"><span class="screen-reader-text"><?php _e( 'Edit previous attachment in the gallery', 'foogallery' ); ?></span></button>
+								<button title="<?php _e( 'Edit next attachment in the gallery', 'foogallery' ); ?>" class="right dashicons"><span class="screen-reader-text"><?php _e( 'Edit next attachment in the gallery', 'foogallery' ); ?></span></button>
 								<button type="button" class="media-modal-close"><span class="media-modal-icon"><span class="screen-reader-text"><?php _e('Close dialog', 'foogallery'); ?></span></span></button>
 							</div>
-							<div class="media-frame-title"><h1><?php _e('Edit Attachment Details', 'foogallery'); ?></h1></div>
+							<div class="media-frame-title">
+                                <h1><?php _e('Edit Attachment Details', 'foogallery'); ?></h1>
+                                <div class="attachment-modal-autosave">
+                                    <input id="attachment-modal-autosave" type="checkbox" />
+                                    <label for="attachment-modal-autosave"><?php _e( 'Autosave', 'foogallery' ); ?></label>
+                                </div>
+                            </div>
 							<div class="media-frame-content">
 								<div class="attachment-details save-ready">
 								</div>
@@ -383,7 +390,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
                 if ( is_a( $attachment_post, 'WP_Post' ) ) {
                     $modal_data['file_url'] = get_attached_file( $attachment_id );
                     $modal_data['file_name'] = basename( $modal_data['file_url'] );
-                    $modal_data['file_type'] = $attachment_post->post_mime_type;
+                    $modal_data['file_type'] = apply_filters( 'foogallery_attachment_modal_info_file_type', $attachment_post->post_mime_type );
                     $modal_data['author_id'] = intval( $attachment_post->post_author );
                     $modal_data['author_name'] = get_the_author_meta( 'display_name', $modal_data['author_id'] );
                     $modal_data['post_date'] = date('F d, Y', strtotime( $attachment_post->post_date ) );
@@ -679,24 +686,30 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
 
                         <span class="setting">
                             <label for="foogallery_attachment_taxonomy_<?php echo $tax_name; ?>" class="name"><?php echo $modal_data['taxonomies'][$tax_name]['label']; ?></label>
-                            <ul data-taxonomy="<?php echo $tax_name; ?>">
-                                <?php
-                                foreach ($terms as $term) {
-                                    $term_selected = in_array( $term->term_id, $selected_terms );
+                            <div>
+                                <ul data-taxonomy="<?php echo $tax_name; ?>">
+                                    <?php
+                                    foreach ($terms as $term) {
+                                        $term_selected = in_array( $term->term_id, $selected_terms );
+                                        ?>
+                                        <li>
+                                        <a href="javascript:void(0);" class="button button-small<?php echo $term_selected ? ' button-primary' : ''; ?>"
+                                           data-term-id="<?php echo $term->term_id; ?>"><?php echo $term->name; ?></a>
+                                        </li><?php
+                                    }
                                     ?>
-                                    <li>
-                                    <a href="javascript:void(0);" class="button button-small<?php echo $term_selected ? ' button-primary' : ''; ?>"
-                                       data-term-id="<?php echo $term->term_id; ?>"><?php echo $term->name; ?></a>
-                                    </li><?php
-                                }
-                                ?>
-                                <li class="taxonomy_add">
-                                    <a href="javascript:void(0);" class="button button-small active foogallery_attachment_taxonomy_add" data-action="add">+</a>
-                                    <input type="text" class="foogallery_attachment_taxonomy_add" style="display: none" />
-                                    <a href="javascript:void(0);" class="button button-small active foogallery_attachment_taxonomy_add" style="display: none" data-action="save"><?php echo __( 'Save','foogallery' ); ?></a>
-                                </li>
-                            </ul>
+                                    <li class="taxonomy_add">
+                                        <a href="javascript:void(0);" class="button button-small active foogallery_attachment_taxonomy_add" data-action="add">+</a>
+                                        <input type="text" class="foogallery_attachment_taxonomy_add" style="display: none" />
+                                        <a href="javascript:void(0);" class="button button-small active foogallery_attachment_taxonomy_add" style="display: none" data-action="save"><?php echo __( 'Save','foogallery' ); ?></a>
+                                    </li>
+                                </ul>
+                                <div>
+                                    <a target="_blank" href="<?php echo admin_url( 'edit-tags.php?taxonomy=' . $tax_name ); ?>"?><?php printf( __('Manage %s', 'foogallery' ), $taxonomy->labels->name ); ?></a>
+                                </div>
+                            </div>
                             <input type="hidden" id="foogallery_attachment_taxonomy_<?php echo $tax_name; ?>_selected" name="foogallery[taxonomies][<?php echo $tax_name; ?>]" value="<?php echo implode( ',', $selected_terms ); ?>">
+
                         </span>
 
                         <?php
@@ -741,13 +754,13 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
                             <div class="foogallery-attachments-list-bar clear-thumbnail">
                                 <span class="setting" data-setting="clear-image-cache">
                                     <label class="name"></label>
-                                    <button class="button button-primary button-large" id="foogallery_clear_img_thumb_cache"><?php _e( 'Clear Thumbnail Cache', 'foogallery' ); ?></button>
+                                    <button class="button button-primary button-large" style="width: 180px"
+                                            id="foogallery_clear_img_thumb_cache"><?php _e( 'Clear Thumbnail Cache', 'foogallery' ); ?></button>
                                     <span id="foogallery_clear_img_thumb_cache_spinner" class="spinner"></span>
                                     <?php wp_nonce_field( 'foogallery_clear_attachment_thumb_cache', 'foogallery_clear_attachment_thumb_cache_nonce', false ); ?>
                                 </span>
                             </div>
 						<?php }
-
                         do_action( 'foogallery_attachment_modal_tab_content_thumbnails', $modal_data );
                         ?></div>
 					</section>
@@ -827,7 +840,14 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
 		}
 
 		public function foogallery_img_modal_save_btn() {
-			echo '<div class="foogallery-image-edit-footer"><button id="attachments-data-save-btn" type="submit" class="button button-primary button-large">'. __( 'Save Attachment Details', 'foogallery' ) .'</button></div>';
+			?>
+            <div class="foogallery-image-edit-footer">
+                <button id="attachments-data-save-btn" type="submit"
+                        class="button button-primary button-large"><?php _e( 'Save Attachment Details', 'foogallery' ); ?>
+                </button>
+                <span class="spinner"></span>
+            </div>
+            <?php
 		}
 	}
 }

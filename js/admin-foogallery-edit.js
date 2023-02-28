@@ -681,18 +681,7 @@ FooGallery.autoEnabled = false;
 
 		$(document).on('click', '#attachments-data-save-btn', function(e){
 			e.preventDefault();
-			var data = $('#foogallery_attachment_modal_save_form').serialize();
-			console.log(data);
-			$.ajax({
-				type: "POST",
-				url: ajaxurl,
-				data: data,
-				cache: false,
-				success: function(res) {
-					console.log(res);
-					//TODO : show a successful save animation
-				}
-			});
+			FOOGALLERY.saveAttachmentModal();
 		});
 
 		$(document).on('click', '.copy-attachment-file-url', function(e) {
@@ -727,9 +716,41 @@ FooGallery.autoEnabled = false;
 		});
 
 		$(document).on('click', '#foogallery-image-edit-modal .edit-media-header button', function(e) {
-			var selected_attachment_id = parseInt( $(this).data('attachment') );
+			e.preventDefault();
+
+			$(this).attr( 'disabled', 'disabled' );
+			var selected_attachment_id = parseInt( $(this).data('attachment') ),
+				autosave = jQuery('#attachment-modal-autosave').is(':checked');
 			if ( selected_attachment_id > 0 ) {
-				FOOGALLERY.openAttachmentModal(selected_attachment_id);
+
+				// Check if we must save the data first!
+				if ( autosave ) {
+					FOOGALLERY.saveAttachmentModal(function () {
+						$(this).removeAttr( 'disabled' );
+						FOOGALLERY.openAttachmentModal(selected_attachment_id);
+					});
+				} else {
+					$(this).removeAttr( 'disabled' );
+					FOOGALLERY.openAttachmentModal(selected_attachment_id);
+				}
+			}
+		});
+	};
+
+	FOOGALLERY.saveAttachmentModal = function(callback) {
+		var data = $('#foogallery_attachment_modal_save_form').serialize(),
+			$spinner = $('.foogallery-image-edit-footer .spinner');
+		$spinner.addClass('is-active');
+		$.ajax({
+			type: "POST",
+			url: ajaxurl,
+			data: data,
+			cache: false,
+			success: function(res) {
+				$spinner.removeClass('is-active');
+				if ( $.isFunction(callback) ) {
+					callback();
+				}
 			}
 		});
 	};
