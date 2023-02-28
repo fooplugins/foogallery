@@ -327,6 +327,8 @@ tr.foogallery_template_field[data-foogallery-invisible] {
 	-webkit-box-shadow: 0 1px 1px 0 rgba(0, 0, 0, .1);
 	box-shadow: 0 1px 1px 0 rgba(0, 0, 0, .1);
 }
+
+
 .rtl .foogallery_template_field_type-promo .foogallery-promo {
 	padding: 11px 40px 11px 10px;
 	text-align: right;
@@ -359,6 +361,7 @@ tr.foogallery_template_field[data-foogallery-invisible] {
 	margin-top: -5px;
 	height: 1em;
 }
+
 .rtl .foogallery_template_field_type-promo .foogallery-promo:before {
 	left: auto;
 	right: 5px;
@@ -710,6 +713,12 @@ button[data-balloon]{overflow:visible}[data-balloon]{position:relative}[data-bal
 	border: 1px solid #ccd0d4;
 	padding: 10px;
 }
+.foogallery-attachments-list-bar {
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-end;
+	align-items: center;
+}
 .foogallery-attachments-list:after,
 .foogallery-attachments-list-bar:after {
 	content: '';
@@ -998,4 +1007,25 @@ button[data-balloon]{overflow:visible}[data-balloon]{position:relative}[data-bal
 }
 #foogallery-image-edit-modal .tab-panels .settings span.setting.override-thumbnail.is-override-thumbnail, #foogallery-image-edit-modal .tab-panels .settings span.setting.override-thumbnail-preview.is-override-thumbnail, #foogallery-image-edit-modal .tab-panels .settings span.alternate-image-delete.is-override-thumbnail {
 	display: grid;
+}
+
+.foogallery-feature-promo {
+	position: relative;
+	padding-left: 40px;
+	vertical-align: middle;
+	flex: 1;
+}
+
+.foogallery-feature-promo:before {
+	content: "\f348";
+	font: 400 30px/1 dashicons !important;
+	speak: none;
+	color: #2271b1;
+	display: inline-block;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	position: absolute;
+	left: 5px;
+	margin-top: -5px;
+	height: 1em;
 }

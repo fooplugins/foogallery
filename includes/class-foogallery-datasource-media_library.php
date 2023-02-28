@@ -123,18 +123,35 @@ if ( ! class_exists( 'FooGallery_Datasource_MediaLibrary' ) ) {
                 <div style="clear: both;"></div>
                 <textarea style="display: none" id="foogallery-attachment-template"><?php $this->render_attachment_item(); ?></textarea>
                 <div class="foogallery-attachments-list-bar">
+                    <?php
+                    $modal_style = foogallery_get_setting( 'advanced_attachment_modal' );
+
+                    if ( 'on' !== $modal_style ) {
+                        $attachment_modal_url = 'https://fooplugins.com/documentation/foogallery/getting-started-foogallery/advanced-attachment-modal/';
+                        $attachment_modal_link_html = sprintf('<a target="_blank" href="%s">%s</a>',$attachment_modal_url, __( 'Advanced Attachment Modal', 'foogallery' ) );
+                        ?>
+
+                        <span class="foogallery-feature-promo">
+                            <?php printf( __( 'Try the new %s. A better way to update your attachment details!', 'foogallery' ), $attachment_modal_link_html ); ?>
+                            <a target="_blank" href="<?php echo foogallery_admin_settings_url() . '#advanced_attachment_modal'; ?>"><?php _e( 'Goto Settings', 'foogallery' ); ?></a>
+                        </span>
+                        <?php
+                    }
+                    ?>
+
+                    <?php do_action('foogallery_attachments_list_bar_buttons', $foogallery ); ?>
+
                     <button type="button" class="button button-primary button-large alignright upload_image_button"
                             data-uploader-title="<?php _e( 'Add Media To Gallery', 'foogallery' ); ?>"
                             data-uploader-button-text="<?php _e( 'Add Media', 'foogallery' ); ?>"
                             data-post-id="<?php echo $foogallery->ID; ?>">
                         <?php _e( 'Add Media', 'foogallery' ); ?>
                     </button>
-                    &nbsp;
+
                     <button type="button" class="button button-primary button-large alignright remove_all_media">
 		                <?php _e( 'Remove All Media', 'foogallery' ); ?>
                     </button>
 
-                    <?php do_action('foogallery_attachments_list_bar_buttons', $foogallery ); ?>
                 </div>
             </div>
 			<?php

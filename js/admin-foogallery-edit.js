@@ -635,7 +635,7 @@ FooGallery.autoEnabled = false;
 		$(document).on('click', '#foogallery-panel-taxonomies ul a', function(e){
 			var term_id = parseInt( $(this).data('term-id') ),
 				$ul = $(this).parents('ul').first();
-			if ( term_id != NaN && term_id > 0 ) {
+			if ( !isNaN(term_id) && term_id > 0 ) {
 				$(this).toggleClass('button-primary');
 				var terms = [];
 				$ul.find('a.button-primary').each(function () {
@@ -715,7 +715,7 @@ FooGallery.autoEnabled = false;
 			});
 		});
 
-		$(document).on('click', '#foogallery-image-edit-modal .edit-media-header button', function(e) {
+		$(document).on('click', '#foogallery-image-edit-modal .edit-media-header button:not(.media-modal-close)', function(e) {
 			e.preventDefault();
 
 			$(this).attr( 'disabled', 'disabled' );
