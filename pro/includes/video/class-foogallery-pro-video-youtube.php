@@ -167,7 +167,7 @@ if ( !class_exists("FooGallery_Pro_Video_YouTube") ){
 				$list = $query_string["list"];
 				// if the id does not exist in the query string then we are dealing with a YouTube
 				// short or embed url so grab the id from the last part of the url
-				if (empty($id) && preg_match('/(www\.)?youtube\.com\/embed|youtu\.be/i', $url)) {
+				if (empty($id) && preg_match('/(www\.)?youtube\.com\/(embed|shorts)|youtu\.be/i', $url)) {
 					// here we split the url on all forward-slashes
 					$parts = explode("/", $url_parts["path"]);
 					// then grab the last part to use as the id
