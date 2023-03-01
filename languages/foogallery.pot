@@ -8,7 +8,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language-Team: FooPlugins <info@fooplugins.com> (https://fooplugins.com)\n"
 "Last-Translator: FooPlugins <info@fooplugins.com> (https://fooplugins.com)\n"
-"POT-Creation-Date: 2023-02-28 19:23+0000\n"
+"POT-Creation-Date: 2023-03-01 17:37+0000\n"
 "Report-Msgid-Bugs-To: https://github.com/fooplugins/foogallery/issues\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-KeywordsList: __;_e;_ex:1,2c;_n:1,2;_n_noop:1,2;_nx:1,2,4c;_nx_noop:1,2,3c;_x:1,2c;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c\n"
@@ -1535,7 +1535,7 @@ msgstr ""
 msgid "View Troubleshooting Documentation"
 msgstr ""
 
-#: includes/admin/class-admin.php:95, includes/admin/class-menu.php:52, pro/extensions/default-templates/slider/class-slider-gallery-template.php:111, pro/includes/foogallery-media-views-templates.php:194
+#: includes/admin/class-admin.php:95, includes/admin/class-menu.php:52, pro/extensions/default-templates/slider/class-slider-gallery-template.php:111, pro/includes/foogallery-media-views-templates.php:195
 msgid "Help"
 msgstr ""
 
@@ -1615,7 +1615,7 @@ msgstr ""
 msgid "Thumbnails"
 msgstr ""
 
-#: includes/admin/class-gallery-attachment-modal.php:604, includes/class-foogallery-common-fields.php:448, pro/includes/foogallery-media-views-templates.php:233, pro/includes/foogallery-media-views-templates.php:454, pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:330
+#: includes/admin/class-gallery-attachment-modal.php:604, includes/class-foogallery-common-fields.php:448, pro/includes/foogallery-media-views-templates.php:234, pro/includes/foogallery-media-views-templates.php:455, pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:330
 msgid "Title"
 msgstr ""
 
@@ -1623,7 +1623,7 @@ msgstr ""
 msgid "Caption"
 msgstr ""
 
-#: includes/admin/class-gallery-attachment-modal.php:612, includes/class-foogallery-common-fields.php:469, pro/includes/class-foogallery-pro-datasource-folders.php:561, pro/includes/foogallery-media-views-templates.php:239, pro/includes/foogallery-media-views-templates.php:460
+#: includes/admin/class-gallery-attachment-modal.php:612, includes/class-foogallery-common-fields.php:469, pro/includes/class-foogallery-pro-datasource-folders.php:561, pro/includes/foogallery-media-views-templates.php:240, pro/includes/foogallery-media-views-templates.php:461
 msgid "Description"
 msgstr ""
 
@@ -1651,7 +1651,7 @@ msgstr ""
 msgid "Copied!"
 msgstr ""
 
-#: includes/admin/class-gallery-attachment-modal.php:704, pro/includes/class-foogallery-pro-datasource-folders.php:578, pro/includes/foogallery-media-views-templates.php:480, pro/includes/foogallery-media-views-templates.php:499
+#: includes/admin/class-gallery-attachment-modal.php:704, pro/includes/class-foogallery-pro-datasource-folders.php:578, pro/includes/foogallery-media-views-templates.php:481, pro/includes/foogallery-media-views-templates.php:500
 msgid "Save"
 msgstr ""
 
@@ -1747,7 +1747,7 @@ msgstr ""
 msgid "Save Attachment Details"
 msgstr ""
 
-#: includes/admin/class-gallery-datasources.php:156, includes/admin/view-help-pro.php:230, pro/includes/class-foogallery-pro-master-galleries.php:395, pro/includes/foogallery-media-views-templates.php:177
+#: includes/admin/class-gallery-datasources.php:156, includes/admin/view-help-pro.php:230, pro/includes/class-foogallery-pro-master-galleries.php:395, pro/includes/foogallery-media-views-templates.php:178
 msgid "or"
 msgstr ""
 
@@ -1763,7 +1763,7 @@ msgstr ""
 msgid "Reload"
 msgstr ""
 
-#: includes/admin/class-gallery-datasources.php:217, includes/admin/class-gallery-datasources.php:217, includes/admin/class-gallery-editor.php:226, includes/admin/class-gallery-editor.php:226, pro/includes/class-foogallery-pro-datasource-folders.php:577, pro/includes/foogallery-media-views-templates.php:531
+#: includes/admin/class-gallery-datasources.php:217, includes/admin/class-gallery-datasources.php:217, includes/admin/class-gallery-editor.php:226, includes/admin/class-gallery-editor.php:226, pro/includes/class-foogallery-pro-datasource-folders.php:577, pro/includes/foogallery-media-views-templates.php:532
 msgid "Cancel"
 msgstr ""
 
@@ -5881,7 +5881,7 @@ msgstr ""
 msgid "Manage your %s"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-taxonomy-base.php:322, pro/includes/foogallery-media-views-templates.php:545
+#: pro/includes/class-foogallery-pro-datasource-taxonomy-base.php:322, pro/includes/foogallery-media-views-templates.php:546
 msgid "Media Library"
 msgstr ""
 
@@ -7029,275 +7029,275 @@ msgstr ""
 msgid "Already Synced"
 msgstr ""
 
-#: pro/includes/foogallery-media-views-templates.php:172, pro/includes/foogallery-media-views-templates.php:472, pro/includes/foogallery-media-views-templates.php:490
+#: pro/includes/foogallery-media-views-templates.php:173, pro/includes/foogallery-media-views-templates.php:473, pro/includes/foogallery-media-views-templates.php:491
 msgid "help"
 msgstr ""
 
-#: pro/includes/foogallery-media-views-templates.php:176
+#: pro/includes/foogallery-media-views-templates.php:177
 msgid "Enter a supported URL or a YouTube search term, playlist or video ID in the input above."
 msgstr ""
 
-#: pro/includes/foogallery-media-views-templates.php:179
+#: pro/includes/foogallery-media-views-templates.php:180
 msgid "Select a video"
 msgstr ""
 
-#: pro/includes/foogallery-media-views-templates.php:179, pro/includes/foogallery-media-views-templates.php:266
+#: pro/includes/foogallery-media-views-templates.php:180, pro/includes/foogallery-media-views-templates.php:267
 msgid "Select Video"
 msgstr ""
 
-#: pro/includes/foogallery-media-views-templates.php:180
+#: pro/includes/foogallery-media-views-templates.php:181
 msgid "Choose a video from your Media Library"
 msgstr ""
 
-#: pro/includes/foogallery-media-views-templates.php:182, pro/includes/foogallery-media-views-templates.php:483, pro/includes/foogallery-media-views-templates.php:502
+#: pro/includes/foogallery-media-views-templates.php:183, pro/includes/foogallery-media-views-templates.php:484, pro/includes/foogallery-media-views-templates.php:503
 msgid "See the %s for more information."
 msgstr ""
 
-#: pro/includes/foogallery-media-views-templates.php:189
+#: pro/includes/foogallery-media-views-templates.php:190
 msgid "Enter a supported URL or a YouTube search term, playlist or video ID"
 msgstr ""
 
-#: pro/includes/foogallery-media-views-templates.php:207
+#: pro/includes/foogallery-media-views-templates.php:208
 msgid "Enter the details for your video below and then click the Import button."
 msgstr ""
 
-#: pro/includes/foogallery-media-views-templates.php:214, pro/includes/foogallery-media-views-templates.php:435
+#: pro/includes/foogallery-media-views-templates.php:215, pro/includes/foogallery-media-views-templates.php:436
 msgid "Thumbnail"
 msgstr ""
 
-#: pro/includes/foogallery-media-views-templates.php:220, pro/includes/foogallery-media-views-templates.php:441
+#: pro/includes/foogallery-media-views-templates.php:221, pro/includes/foogallery-media-views-templates.php:442
 msgid "You must supply a thumbnail for the video."
 msgstr ""
 
-#: pro/includes/foogallery-media-views-templates.php:220, pro/includes/foogallery-media-views-templates.php:441
+#: pro/includes/foogallery-media-views-templates.php:221, pro/includes/foogallery-media-views-templates.php:442
 msgid "Please enter a .jpg, .jpeg, .png or .gif file."
 msgstr ""
 
-#: pro/includes/foogallery-media-views-templates.php:225, pro/includes/foogallery-media-views-templates.php:446
+#: pro/includes/foogallery-media-views-templates.php:226, pro/includes/foogallery-media-views-templates.php:447
 msgid "Select a thumbnail for the video"
 msgstr ""
 
-#: pro/includes/foogallery-media-views-templates.php:225, pro/includes/foogallery-media-views-templates.php:446, pro/includes/protection/class-foogallery-pro-protection.php:761
+#: pro/includes/foogallery-media-views-templates.php:226, pro/includes/foogallery-media-views-templates.php:447, pro/includes/protection/class-foogallery-pro-protection.php:761
 msgid "Select Image"
 msgstr ""
 
-#: pro/includes/foogallery-media-views-templates.php:226, pro/includes/foogallery-media-views-templates.php:267, pro/includes/foogallery-media-views-templates.php:447
+#: pro/includes/foogallery-media-views-templates.php:227, pro/includes/foogallery-media-views-templates.php:268, pro/includes/foogallery-media-views-templates.php:448
 msgid "Select"
 msgstr ""
 
-#: pro/includes/foogallery-media-views-templates.php:245
+#: pro/includes/foogallery-media-views-templates.php:246
 msgid "URL(s)"
 msgstr ""
 
-#: pro/includes/foogallery-media-views-templates.php:256
+#: pro/includes/foogallery-media-views-templates.php:257
 msgid "You must supply at least one URL."
 msgstr ""
 
-#: pro/includes/foogallery-media-views-templates.php:256, pro/includes/foogallery-media-views-templates.php:260
+#: pro/includes/foogallery-media-views-templates.php:257, pro/includes/foogallery-media-views-templates.php:261
 msgid "Please enter a %s file."
 msgstr ""
 
-#: pro/includes/foogallery-media-views-templates.php:266
+#: pro/includes/foogallery-media-views-templates.php:267
 msgid "Select a %s video"
 msgstr ""
 
-#: pro/includes/foogallery-media-views-templates.php:273
+#: pro/includes/foogallery-media-views-templates.php:274
 msgid "We recommend using .mp4 videos for the best cross browser compatibility however the more types you supply the better the compatibility becomes. If you already have the URL you can simply paste it into the appropriate input."
 msgstr ""
 
-#: pro/includes/foogallery-media-views-templates.php:276
+#: pro/includes/foogallery-media-views-templates.php:277
 msgid "As you enter URLs above the below compatibility list will be updated giving you an idea of which browsers will be able to play your video."
 msgstr ""
 
-#: pro/includes/foogallery-media-views-templates.php:280
+#: pro/includes/foogallery-media-views-templates.php:281
 msgid "For more information on compatibility please see the following links: %s, %s and %s"
 msgstr ""
 
-#: pro/includes/foogallery-media-views-templates.php:313, pro/includes/foogallery-media-views-templates.php:366, pro/includes/foogallery-media-views-templates.php:379, pro/includes/foogallery-media-views-templates.php:392, pro/includes/foogallery-media-views-templates.php:405
+#: pro/includes/foogallery-media-views-templates.php:314, pro/includes/foogallery-media-views-templates.php:367, pro/includes/foogallery-media-views-templates.php:380, pro/includes/foogallery-media-views-templates.php:393, pro/includes/foogallery-media-views-templates.php:406
 msgid "Confirm the video is correct and then click the Import button."
 msgstr ""
 
-#: pro/includes/foogallery-media-views-templates.php:315
+#: pro/includes/foogallery-media-views-templates.php:316
 msgid "Select the videos to import by clicking the thumbnails and then click the Import button."
 msgstr ""
 
-#: pro/includes/foogallery-media-views-templates.php:343
+#: pro/includes/foogallery-media-views-templates.php:344
 msgid "load more"
 msgstr ""
 
-#: pro/includes/foogallery-media-views-templates.php:344
+#: pro/includes/foogallery-media-views-templates.php:345
 msgid "try again"
 msgstr ""
 
-#: pro/includes/foogallery-media-views-templates.php:348
+#: pro/includes/foogallery-media-views-templates.php:349
 msgid "Displaying %s of %s results."
 msgstr ""
 
-#: pro/includes/foogallery-media-views-templates.php:351
+#: pro/includes/foogallery-media-views-templates.php:352
 msgid "Loading..."
 msgstr ""
 
-#: pro/includes/foogallery-media-views-templates.php:352
+#: pro/includes/foogallery-media-views-templates.php:353
 msgid "Would you like to %s?"
 msgstr ""
 
-#: pro/includes/foogallery-media-views-templates.php:353
+#: pro/includes/foogallery-media-views-templates.php:354
 msgid "An error occurred loading additional results, %s?"
 msgstr ""
 
-#: pro/includes/foogallery-media-views-templates.php:362
+#: pro/includes/foogallery-media-views-templates.php:363
 msgid "import the entire showcase"
 msgstr ""
 
-#: pro/includes/foogallery-media-views-templates.php:368, pro/includes/foogallery-media-views-templates.php:381, pro/includes/foogallery-media-views-templates.php:394, pro/includes/foogallery-media-views-templates.php:407
+#: pro/includes/foogallery-media-views-templates.php:369, pro/includes/foogallery-media-views-templates.php:382, pro/includes/foogallery-media-views-templates.php:395, pro/includes/foogallery-media-views-templates.php:408
 msgid "Select the videos to import by clicking the thumbnails and then click the Import button, or would you like to %s?"
 msgstr ""
 
-#: pro/includes/foogallery-media-views-templates.php:375
+#: pro/includes/foogallery-media-views-templates.php:376
 msgid "import the entire channel"
 msgstr ""
 
-#: pro/includes/foogallery-media-views-templates.php:388
+#: pro/includes/foogallery-media-views-templates.php:389
 msgid "import the entire playlist"
 msgstr ""
 
-#: pro/includes/foogallery-media-views-templates.php:401
+#: pro/includes/foogallery-media-views-templates.php:402
 msgid "import all videos for the user"
 msgstr ""
 
-#: pro/includes/foogallery-media-views-templates.php:414
+#: pro/includes/foogallery-media-views-templates.php:415
 msgid "Enter any missing details for the oEmbed video below and then click the Import button."
 msgstr ""
 
-#: pro/includes/foogallery-media-views-templates.php:420
+#: pro/includes/foogallery-media-views-templates.php:421
 msgid "URL"
 msgstr ""
 
-#: pro/includes/foogallery-media-views-templates.php:426
+#: pro/includes/foogallery-media-views-templates.php:427
 msgid "Provider"
 msgstr ""
 
-#: pro/includes/foogallery-media-views-templates.php:430
+#: pro/includes/foogallery-media-views-templates.php:431
 msgid "The oEmbed standards do not specify that a provider must supply a thumbnail, title or description but to display a video within a gallery it must have an image to use as a thumbnail. The inputs below allow you to edit or supply any missing information and then continue with the import."
 msgstr ""
 
-#: pro/includes/foogallery-media-views-templates.php:476
+#: pro/includes/foogallery-media-views-templates.php:477
 msgid "Vimeo API access token is required."
 msgstr ""
 
-#: pro/includes/foogallery-media-views-templates.php:477
+#: pro/includes/foogallery-media-views-templates.php:478
 msgid "Create a new app on Vimeo to generate an access token."
 msgstr ""
 
-#: pro/includes/foogallery-media-views-templates.php:479
+#: pro/includes/foogallery-media-views-templates.php:480
 msgid "Your access token"
 msgstr ""
 
-#: pro/includes/foogallery-media-views-templates.php:491
+#: pro/includes/foogallery-media-views-templates.php:492
 msgid "Google Developers Console"
 msgstr ""
 
-#: pro/includes/foogallery-media-views-templates.php:495
+#: pro/includes/foogallery-media-views-templates.php:496
 msgid "YouTube API key is required."
 msgstr ""
 
-#: pro/includes/foogallery-media-views-templates.php:496
+#: pro/includes/foogallery-media-views-templates.php:497
 msgid "Create a new project in your %s to generate an api key."
 msgstr ""
 
-#: pro/includes/foogallery-media-views-templates.php:498
+#: pro/includes/foogallery-media-views-templates.php:499
 msgid "Your api key"
 msgstr ""
 
-#: pro/includes/foogallery-media-views-templates.php:508, pro/includes/foogallery-media-views-templates.php:540
+#: pro/includes/foogallery-media-views-templates.php:509, pro/includes/foogallery-media-views-templates.php:541
 msgid "video"
 msgstr ""
 
-#: pro/includes/foogallery-media-views-templates.php:509, pro/includes/foogallery-media-views-templates.php:541
+#: pro/includes/foogallery-media-views-templates.php:510, pro/includes/foogallery-media-views-templates.php:542
 msgid "videos"
 msgstr ""
 
-#: pro/includes/foogallery-media-views-templates.php:513
+#: pro/includes/foogallery-media-views-templates.php:514
 msgid "Confirm multiple video import"
 msgstr ""
 
-#: pro/includes/foogallery-media-views-templates.php:514
+#: pro/includes/foogallery-media-views-templates.php:515
 msgid "Please note that depending on the source of the videos this process may take some time. If you like you can click the No button and change your selection."
 msgstr ""
 
-#: pro/includes/foogallery-media-views-templates.php:515
+#: pro/includes/foogallery-media-views-templates.php:516
 msgid "Are you sure you want to import %s videos?"
 msgstr ""
 
-#: pro/includes/foogallery-media-views-templates.php:517
+#: pro/includes/foogallery-media-views-templates.php:518
 msgid "No - Change Selection"
 msgstr ""
 
-#: pro/includes/foogallery-media-views-templates.php:518
+#: pro/includes/foogallery-media-views-templates.php:519
 msgid "Yes - Import Videos"
 msgstr ""
 
-#: pro/includes/foogallery-media-views-templates.php:523
+#: pro/includes/foogallery-media-views-templates.php:524
 msgid "Importing %s please wait..."
 msgstr ""
 
-#: pro/includes/foogallery-media-views-templates.php:529
+#: pro/includes/foogallery-media-views-templates.php:530
 msgid "Cancelling the import will not remove any videos already imported into your Media Library, it simply stops the process as soon as possible."
 msgstr ""
 
-#: pro/includes/foogallery-media-views-templates.php:546
+#: pro/includes/foogallery-media-views-templates.php:547
 msgid "this video"
 msgstr ""
 
-#: pro/includes/foogallery-media-views-templates.php:547
+#: pro/includes/foogallery-media-views-templates.php:548
 msgid "these videos"
 msgstr ""
 
-#: pro/includes/foogallery-media-views-templates.php:549
+#: pro/includes/foogallery-media-views-templates.php:550
 msgid "try importing %s again"
 msgstr ""
 
-#: pro/includes/foogallery-media-views-templates.php:550
+#: pro/includes/foogallery-media-views-templates.php:551
 msgid "Toggle failed list"
 msgstr ""
 
-#: pro/includes/foogallery-media-views-templates.php:551
+#: pro/includes/foogallery-media-views-templates.php:552
 msgid "failed to import. Would you like to %s?"
 msgstr ""
 
-#: pro/includes/foogallery-media-views-templates.php:554
+#: pro/includes/foogallery-media-views-templates.php:555
 msgid "import %s"
 msgstr ""
 
-#: pro/includes/foogallery-media-views-templates.php:555
+#: pro/includes/foogallery-media-views-templates.php:556
 msgid "Toggle cancelled list"
 msgstr ""
 
-#: pro/includes/foogallery-media-views-templates.php:556
+#: pro/includes/foogallery-media-views-templates.php:557
 msgid "were cancelled. Would you like to %s?"
 msgstr ""
 
-#: pro/includes/foogallery-media-views-templates.php:562
+#: pro/includes/foogallery-media-views-templates.php:563
 msgid "Successfully imported %s %s"
 msgstr ""
 
-#: pro/includes/foogallery-media-views-templates.php:564
+#: pro/includes/foogallery-media-views-templates.php:565
 msgid "All imported videos have been added to the current %s selection."
 msgstr ""
 
-#: pro/includes/foogallery-media-views-templates.php:566
+#: pro/includes/foogallery-media-views-templates.php:567
 msgid "The imported video has been added to the current %s selection."
 msgstr ""
 
-#: pro/includes/foogallery-media-views-templates.php:569
+#: pro/includes/foogallery-media-views-templates.php:570
 msgid "No videos were imported."
 msgstr ""
 
-#: pro/includes/foogallery-media-views-templates.php:599
+#: pro/includes/foogallery-media-views-templates.php:600
 msgid "Import More Videos"
 msgstr ""
 
-#: pro/includes/foogallery-media-views-templates.php:600
+#: pro/includes/foogallery-media-views-templates.php:601
 msgid "Add Videos to Gallery"
 msgstr ""
 
