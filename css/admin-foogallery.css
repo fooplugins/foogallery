@@ -1014,6 +1014,7 @@ button[data-balloon]{overflow:visible}[data-balloon]{position:relative}[data-bal
 	padding-left: 40px;
 	vertical-align: middle;
 	flex: 1;
+	line-height: 2;
 }
 
 .foogallery-feature-promo:before {
@@ -1026,6 +1027,5 @@ button[data-balloon]{overflow:visible}[data-balloon]{position:relative}[data-bal
 	-moz-osx-font-smoothing: grayscale;
 	position: absolute;
 	left: 5px;
-	margin-top: -5px;
 	height: 1em;
 }

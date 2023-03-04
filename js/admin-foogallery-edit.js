@@ -617,6 +617,25 @@ FooGallery.autoEnabled = false;
 		    e.preventDefault();
 		    alert( 'If you want to turn off these promotional messages forever, goto FooGallery Settings -> Advanced, and set the "Disable PRO Promotions" setting. Thank you for using FooGallery :)')
 	    } );
+
+		$('.foogallery-attachment-modal-toggle').on('click', function(e) {
+			e.preventDefault();
+			$(this).attr('disabled', 'disabled');
+
+			$.ajax({
+				type: "POST",
+				url: ajaxurl,
+				data: {
+					action: 'foogallery_attachment_modal_toggle',
+					'nonce' : $(this).data('nonce')
+				},
+				success: function(data) {
+					alert(data);
+					//refresh page
+					location.reload();
+				}
+			});
+		} );
     };
 
 	FOOGALLERY.initAttachmentModal = function() {
