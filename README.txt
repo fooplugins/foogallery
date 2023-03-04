@@ -312,10 +312,10 @@ Please update in order to for FooGallery to work in WP 5.5+!
 
 == Changelog ==
 
-= 2.2.34 =
-* Date Updated : 1 Mar 2023
+= 2.2.35 =
+* Date Updated : 4 Mar 2023
 * Update : Updated to Freemius SDK 2.5.3
-* Update : FooGallery client side 2.0.43
+* Update : FooGallery client side 2.0.44
 * Update : Updated package.json to latest dependencies. Updated Gutenberg block build process.
 * Update : Updated translation POT file.
 * New : Multiple improvements to Attachment Modal.
