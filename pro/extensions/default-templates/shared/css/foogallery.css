@@ -7359,6 +7359,7 @@ html.fg-panel-no-scroll body {
     transform-style: preserve-3d;
     backface-visibility: hidden;
     will-change: contents;
+    pointer-events: none;
 }
 .foogallery_preview_container .fg-carousel-inner {
     transform-style: unset;
@@ -7487,6 +7488,7 @@ button.fg-carousel-next:hover {
     transition-duration: 0s;
     transition-property: background-color,transform,transform-origin,opacity,visibility;
     backface-visibility: hidden;
+    pointer-events: auto;
 }
 .foogallery.fg-carousel .fg-item.fg-loaded {
     transform: translate3d(0, 0, var(--fg-carousel-inverse-perspective));
