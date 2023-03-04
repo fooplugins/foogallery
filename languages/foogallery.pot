@@ -8,7 +8,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language-Team: FooPlugins <info@fooplugins.com> (https://fooplugins.com)\n"
 "Last-Translator: FooPlugins <info@fooplugins.com> (https://fooplugins.com)\n"
-"POT-Creation-Date: 2023-03-01 17:37+0000\n"
+"POT-Creation-Date: 2023-03-04 11:33+0000\n"
 "Report-Msgid-Bugs-To: https://github.com/fooplugins/foogallery/issues\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-KeywordsList: __;_e;_ex:1,2c;_n:1,2;_n_noop:1,2;_nx:1,2,4c;_nx_noop:1,2,3c;_x:1,2c;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c\n"
@@ -2696,7 +2696,7 @@ msgid "If enabled, this will hide the \"Add %s\" button in the Classic editor."
 msgstr ""
 
 #: includes/admin/class-settings.php:175
-msgid "Enable Advanced Attachment Modal (BETA)"
+msgid "Enable Advanced Attachment Modal"
 msgstr ""
 
 #: includes/admin/class-settings.php:176
@@ -3945,39 +3945,55 @@ msgstr ""
 msgid "The default crop position when resizing thumbnails."
 msgstr ""
 
-#: includes/class-foogallery-datasource-media_library.php:79, includes/class-foogallery-datasource-media_library.php:145, includes/class-foogallery-datasource-media_library.php:163
+#: includes/class-foogallery-datasource-media_library.php:38
+msgid "The Attachment Modal feature has been enabled. The page will now refresh."
+msgstr ""
+
+#: includes/class-foogallery-datasource-media_library.php:35
+msgid "The Attachment Modal feature has been disabled. The page will now refresh."
+msgstr ""
+
+#: includes/class-foogallery-datasource-media_library.php:106, includes/class-foogallery-datasource-media_library.php:173, includes/class-foogallery-datasource-media_library.php:191
 msgid "Add Media To Gallery"
 msgstr ""
 
-#: includes/class-foogallery-datasource-media_library.php:80, includes/class-foogallery-datasource-media_library.php:146, includes/class-foogallery-datasource-media_library.php:148, includes/class-foogallery-datasource-media_library.php:164
+#: includes/class-foogallery-datasource-media_library.php:107, includes/class-foogallery-datasource-media_library.php:174, includes/class-foogallery-datasource-media_library.php:176, includes/class-foogallery-datasource-media_library.php:192
 msgid "Add Media"
 msgstr ""
 
-#: includes/class-foogallery-datasource-media_library.php:82, includes/class-foogallery-datasource-media_library.php:166
+#: includes/class-foogallery-datasource-media_library.php:109, includes/class-foogallery-datasource-media_library.php:194
 msgid "Add From Media Library"
 msgstr ""
 
-#: includes/class-foogallery-datasource-media_library.php:131
+#: includes/class-foogallery-datasource-media_library.php:158
 msgid "Advanced Attachment Modal"
 msgstr ""
 
-#: includes/class-foogallery-datasource-media_library.php:135
-msgid "Try the new %s. A better way to update your attachment details!"
+#: includes/class-foogallery-datasource-media_library.php:164
+msgid "The new %s feature is enabled and ready to use!"
 msgstr ""
 
-#: includes/class-foogallery-datasource-media_library.php:136
-msgid "Goto Settings"
+#: includes/class-foogallery-datasource-media_library.php:165
+msgid "Disable it now!"
 msgstr ""
 
-#: includes/class-foogallery-datasource-media_library.php:152
+#: includes/class-foogallery-datasource-media_library.php:161
+msgid "Try the new %s feature : a better way to update your attachment details!"
+msgstr ""
+
+#: includes/class-foogallery-datasource-media_library.php:162
+msgid "Enable it now!"
+msgstr ""
+
+#: includes/class-foogallery-datasource-media_library.php:180
 msgid "Remove All Media"
 msgstr ""
 
-#: includes/class-foogallery-datasource-media_library.php:196
+#: includes/class-foogallery-datasource-media_library.php:224
 msgid "Edit Info"
 msgstr ""
 
-#: includes/class-foogallery-datasource-media_library.php:199
+#: includes/class-foogallery-datasource-media_library.php:227
 msgid "Remove from gallery"
 msgstr ""
 
