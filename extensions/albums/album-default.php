@@ -26,7 +26,7 @@ if ( false !== $foogallery ) {
 	echo '<' . $gallery_title_size . '>' . $foogallery->name . '</'. $gallery_title_size . '>';
 	echo apply_filters('foogallery_album_default_gallery_content', '', $foogallery);
 	echo '</div>';
-	echo do_shortcode('[foogallery id="' . $foogallery->ID . '"]');
+	echo do_shortcode( foogallery_build_gallery_shortcode( $foogallery->ID ) );
 } else {
 	$title_bg = foogallery_album_template_setting( 'title_bg', '#ffffff' );
 	$title_font_color = foogallery_album_template_setting( 'title_font_color', '#000000' );

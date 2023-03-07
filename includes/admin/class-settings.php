@@ -172,7 +172,7 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 
 			$settings[] = array(
 				'id'      => 'advanced_attachment_modal',
-				'title'   => __( 'Enable Advanced Attachment Modal (BETA)', 'foogallery' ),
+				'title'   => __( 'Enable Advanced Attachment Modal', 'foogallery' ),
 				'desc'    => __( 'If enabled, this will use the advanced attachment modal which allows for faster and easier editing of attachment details, when creating your galleries.', 'foogallery' ),
 				'type'    => 'checkbox',
 				'tab'     => 'general',
@@ -420,6 +420,14 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 				'type'    => 'checkbox',
 				'tab'     => 'advanced'
 			);
+
+            $settings[] = array(
+                'id'      => 'enqueue_polyfills',
+                'title'   => __( 'Enqueue Polyfills', 'foogallery' ),
+                'desc'    => sprintf( __( '%s uses modern JavaScript API\'s which may not be supported in older browsers. Enable the enqueueing of polyfills for better backwards compatibility.', 'foogallery' ), foogallery_plugin_name() ),
+                'type'    => 'checkbox',
+                'tab'     => 'advanced'
+            );
 
 			$settings[] = array(
 				'id'      => 'uninstall',

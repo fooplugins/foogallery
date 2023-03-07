@@ -441,7 +441,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 			}
 		}
 
-        private static function is_product( $product ) {
+        public static function is_product( $product ) {
             return isset( $product ) && is_object( $product ) && is_a( $product, 'WC_Product' );
         }
 

@@ -924,7 +924,7 @@ if ( ! class_exists( 'FooGallery_Pro_Protection' ) ) {
                         <div id="foogallery-panel-watermark-status" class="settings">
 							<span class="setting" data-setting="watermark-status">
 								<label for="attachments-watermark-status" class="name"><?php _e('Watermark Status', 'foogallery'); ?></label>
-								<?php echo esc_html( $watermark_status ); ?>
+								<span><?php echo esc_html( $watermark_status ); ?></span>
 							</span>
                         </div>
                         <?php if ( $has_watermark ) { ?>
@@ -940,13 +940,15 @@ if ( ! class_exists( 'FooGallery_Pro_Protection' ) ) {
                         <div class="foogallery_metabox_field-watermark_status settings">
 							<span class="setting" data-setting="watermark-generate-button">
 								<label for="attachments-watermark-generate-btn" class="name"><?php _e('Generate Watermark', 'foogallery'); ?></label>
-								<button id="attachments-watermark-generate-btn" type="button"
-                                        class="button button-primary button-large attachment_modal_watermark_generate"
-                                        data-attach_id="<?php echo $modal_data['img_id']; ?>"
-                                        data-nonce="<?php echo wp_create_nonce('foogallery_attachment_modal_watermark_generate'); ?>">
-								<?php echo esc_html( __( 'Generate', 'foogallery' ) ); ?>
-								</button>
-								<span style="position: absolute" class="spinner foogallery_protection_generate_spinner"></span>
+                                <div>
+                                    <button id="attachments-watermark-generate-btn" type="button" style="width: 100px"
+                                            class="button button-primary button-large attachment_modal_watermark_generate"
+                                            data-attach_id="<?php echo $modal_data['img_id']; ?>"
+                                            data-nonce="<?php echo wp_create_nonce('foogallery_attachment_modal_watermark_generate'); ?>">
+                                    <?php echo esc_html( __( 'Generate', 'foogallery' ) ); ?>
+                                    </button>
+                                    <span style="position: absolute" class="spinner foogallery_protection_generate_spinner"></span>
+                                </div>
 							</span>
                         </div>
                     </section>

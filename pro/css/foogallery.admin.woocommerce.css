@@ -1,0 +1,158 @@
+.foogallery-master-product-modal-title {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 50px;
+    z-index: 200;
+    padding-left: 16px;
+    border-bottom: 1px solid #ddd;
+}
+
+    .foogallery-master-product-modal-title h1 {
+        display: inline-block;
+        margin-right: 15px;
+    }
+
+.foogallery-master-product-modal-title select,
+.foogallery-master-product-modal-title a.foogallery-master-product-modal-reload.button {
+    vertical-align: top !important;
+    margin-top: 10px;
+    margin-right: 10px;
+}
+
+.foogallery-master-product-modal-sidebar {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 500px;
+    z-index: 75;
+    background: #f3f3f3;
+    overflow: auto;
+    padding: 0;
+    -webkit-overflow-scrolling: touch;
+}
+
+    .foogallery-master-product-modal-sidebar-inner {
+        padding: 16px;
+    }
+        .foogallery-master-product-modal-sidebar-inner h2 {
+            font-size: 1.5em;
+            margin-bottom: 5px;
+            margin-top: 5px;
+        }
+
+        .foogallery-master-product-modal-container .foogallery-master-product-modal-sidebar-inner .foogallery-master-product-modal-details-inner .spinner {
+            margin: 0;
+        }
+
+        .foogallery-master-product-modal-sidebar-inner.foogallery-master-product-modal-help .spinner {
+            float: none;
+            margin: 3px 5px;
+        }
+
+.foogallery-master-product-modal-container {
+    position: absolute;
+    top: 51px;
+    padding: 0;
+    right: 0;
+    left: 0;
+    bottom: 60px;
+    overflow: hidden;
+    outline: 0;
+}
+
+    .foogallery-master-product-modal-container .spinner {
+        float: left;
+        margin: 15px;
+    }
+
+    .foogallery-master-product-modal-content {
+        position: absolute;
+        top: 0;
+        padding: 0;
+        right: 500px;
+        left: 0;
+        bottom: 0;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+
+        .foogallery-master-product-modal-content-inner-search {
+            padding: 10px 10px 0 10px;
+        }
+
+            .foogallery-master-product-modal-content-inner-search .button {
+                margin-left: 5px;
+            }
+
+        .foogallery-master-product-modal-content-inner {
+            margin: 0;
+            padding: 0;
+        }
+
+            .foogallery-master-product-modal-content-inner li {
+                color: #3c434a;
+                cursor: pointer;
+                list-style: none;
+                text-align: center;
+                -webkit-user-select: none;
+                user-select: none;
+                box-sizing: border-box;
+                float: left;
+                border: solid 1px #ddd;
+                padding: 5px;
+                margin-left: 10px;
+            }
+
+                .foogallery-master-product-modal-content-inner li:hover,
+                .foogallery-master-product-modal-content-inner li.selected {
+                    border: solid 1px #2271b1;
+                }
+
+                .foogallery-master-product-modal-content-inner li img {
+                    background: #e8e8e8;
+                    width: 150px;
+                    height: 150px;
+                }
+
+                .foogallery-master-product-modal-content-inner li h3 {
+                    display: block;
+                    text-align: center;
+                    font-weight: bold;
+                    font-size: 1em;
+                    margin: 0;
+                }
+
+                .foogallery-master-product-modal-content-inner li > span {
+                    display: block;
+                    text-align: center;
+                }
+
+.foogallery-master-product-modal-toolbar {
+    position: absolute;
+    right: 0;
+    left: 0;
+    z-index: 100;
+    bottom: 0;
+    height: 60px;
+    border-top: 1px solid #ddd;
+}
+
+    .foogallery-master-product-modal-toolbar-inner {
+        padding: 16px;
+        overflow: hidden;
+    }
+
+@media only screen and (max-width: 1000px), screen and (max-height: 400px) {
+
+    .foogallery-master-product-modal-content {
+        right:50%;
+    }
+
+    .foogallery-master-product-modal-sidebar {
+        width: 50%;
+    }
+
+}

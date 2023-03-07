@@ -618,51 +618,94 @@ FooGallery.autoEnabled = false;
 		    alert( 'If you want to turn off these promotional messages forever, goto FooGallery Settings -> Advanced, and set the "Disable PRO Promotions" setting. Thank you for using FooGallery :)')
 	    } );
 
-		$(document).on('click', '#foogallery-panel-taxonomies .foogallery_woocommerce_tags a', function(e){
-			$(this).toggleClass('button-primary');
-			var tags = [];
-			$('.foogallery_woocommerce_tags a.button-primary').each(function(){
-				var term_id = $(this).data('term-id');
-				tags.push(term_id);
-			});
-			var tag_str = tags.toString();
-			$('#foogallery_woocommerce_tags_selected').val(tag_str);
-		}); 
+		$('.foogallery-attachment-modal-toggle').on('click', function(e) {
+			e.preventDefault();
+			$(this).attr('disabled', 'disabled');
 
-		$(document).on('click', '#foogallery-panel-taxonomies .foogallery_woocommerce_categories a', function(e){
-			$(this).toggleClass('button-primary');
-			var categories = [];
-			$('.foogallery_woocommerce_categories a.button-primary').each(function(){
-				var term_id = $(this).data('term-id');
-				categories.push(term_id);
+			$.ajax({
+				type: "POST",
+				url: ajaxurl,
+				data: {
+					action: 'foogallery_attachment_modal_toggle',
+					'nonce' : $(this).data('nonce')
+				},
+				success: function(data) {
+					alert(data);
+					//refresh page
+					location.reload();
+				}
 			});
-			var cat_str = categories.toString();
-			$('#foogallery_woocommerce_taxonomies_selected').val(cat_str);
+		} );
+    };
+
+	FOOGALLERY.initAttachmentModal = function() {
+		//close attachments modal
+		jQuery('#foogallery-image-edit-modal .media-modal-close').click(function() {
+			var $content = jQuery('#foogallery-image-edit-modal'),
+				$wrapper = jQuery('#foogallery-image-edit-modal .media-frame-content .attachment-details'),
+				$loader = jQuery('#foogallery-image-edit-modal .media-frame-content .spinner');
+
+			$content.hide();
+			$wrapper.addClass('not-loaded');
+			$loader.addClass('is-active');
+		});
+
+		// Attachment taxonomy button toggles
+		$(document).on('click', '#foogallery-panel-taxonomies ul a', function(e){
+			var term_id = parseInt( $(this).data('term-id') ),
+				$ul = $(this).parents('ul').first();
+			if ( !isNaN(term_id) && term_id > 0 ) {
+				$(this).toggleClass('button-primary');
+				var terms = [];
+				$ul.find('a.button-primary').each(function () {
+					term_id = $(this).data('term-id');
+					terms.push(term_id);
+				});
+				var terms_str = terms.toString();
+				$('#foogallery_attachment_taxonomy_' + $ul.data('taxonomy') + '_selected').val(terms_str);
+			} else {
+				var action = $(this).data('action');
+				if ( action === 'add' ) {
+					$ul.find('.foogallery_attachment_taxonomy_add').toggle();
+					$ul.find('.taxonomy_add input').focus();
+				} else {
+					var term_to_add = $ul.find('input.foogallery_attachment_taxonomy_add').val();
+					if ( term_to_add && term_to_add.length > 0 ) {
+						var nonce = $('#foogallery-panel-taxonomies').data('nonce');
+						$.ajax({
+							type: "POST",
+							url: ajaxurl,
+							data: {
+								'img_id': $('.foogallery-image-edit-main').data('img_id'),
+								'nonce': nonce,
+								'action': 'foogallery_attachment_modal_taxonomy_add',
+								'taxonomy' : $ul.data('taxonomy'),
+								'term': term_to_add
+							},
+							cache: false,
+							success: function(res) {
+								var html = '<li><a href="javascript:void(0);" class="button button-small recently-added" data-term-id="' + res.data.id + '">' + res.data.name + '</a></li>';
+								$ul.find('.taxonomy_add').before(html);
+								$ul.find('a.recently-added').removeClass('recently-added').click();
+								$ul.find('input.foogallery_attachment_taxonomy_add').val('');
+								$ul.find('.foogallery_attachment_taxonomy_add').toggle();
+							}
+						});
+					} else {
+						$ul.find('.foogallery_attachment_taxonomy_add').toggle();
+					}
+				}
+			}
 		});
 
 		$(document).on('click', '#attachments-data-save-btn', function(e){
 			e.preventDefault();
-			var data = $('#foogallery_attachment_modal_save_form').serialize();
-			console.log(data);
-			$.ajax({
-				type: "POST",
-				url: ajaxurl,
-				data: data,
-				cache: false,
-				success: function(res) {
-					console.log(res);
-				}
-			});
-		});
-
-		$(document).on('click', '.copy-attachment-file-name', function(e) {
-			var file_name = $('#attachment-details-two-column-copy-file-name').text();
-			navigator.clipboard.writeText(file_name);
+			FOOGALLERY.saveAttachmentModal();
 		});
 
 		$(document).on('click', '.copy-attachment-file-url', function(e) {
-			var file_url = $('#attachments-foogallery-file-url').val();
-			navigator.clipboard.writeText(file_url);
+			$('#attachments-foogallery-file-url').select();
+			document.execCommand('copy');
 		});
 
 		$(document).on('click', '#foogallery-image-edit-modal .foogallery-img-modal-tab-wrapper', function(e) {
@@ -691,23 +734,43 @@ FooGallery.autoEnabled = false;
 			});
 		});
 
-		$(document).on('click', '#foogallery-image-edit-modal .edit-media-header button', function(e) {
-			var selected_attachment_id = parseInt( $(this).data('attachment') );
+		$(document).on('click', '#foogallery-image-edit-modal .edit-media-header button:not(.media-modal-close)', function(e) {
+			e.preventDefault();
+
+			$(this).attr( 'disabled', 'disabled' );
+			var selected_attachment_id = parseInt( $(this).data('attachment') ),
+				autosave = jQuery('#attachment-modal-autosave').is(':checked');
 			if ( selected_attachment_id > 0 ) {
-				FOOGALLERY.openAttachmentModal(selected_attachment_id);
+
+				// Check if we must save the data first!
+				if ( autosave ) {
+					FOOGALLERY.saveAttachmentModal(function () {
+						$(this).removeAttr( 'disabled' );
+						FOOGALLERY.openAttachmentModal(selected_attachment_id);
+					});
+				} else {
+					$(this).removeAttr( 'disabled' );
+					FOOGALLERY.openAttachmentModal(selected_attachment_id);
+				}
 			}
 		});
-    };
+	};
 
-	FOOGALLERY.initAttachmentModal = function() {
-		jQuery('#foogallery-image-edit-modal .media-modal-close').click(function() {
-			var $content = jQuery('#foogallery-image-edit-modal'),
-				$wrapper = jQuery('#foogallery-image-edit-modal .media-frame-content .attachment-details'),
-				$loader = jQuery('#foogallery-image-edit-modal .media-frame-content .spinner');
-
-			$content.hide();
-			$wrapper.addClass('not-loaded');
-			$loader.addClass('is-active');
+	FOOGALLERY.saveAttachmentModal = function(callback) {
+		var data = $('#foogallery_attachment_modal_save_form').serialize(),
+			$spinner = $('.foogallery-image-edit-footer .spinner');
+		$spinner.addClass('is-active');
+		$.ajax({
+			type: "POST",
+			url: ajaxurl,
+			data: data,
+			cache: false,
+			success: function(res) {
+				$spinner.removeClass('is-active');
+				if ( $.isFunction(callback) ) {
+					callback();
+				}
+			}
 		});
 	};
 

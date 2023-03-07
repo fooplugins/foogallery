@@ -34,7 +34,8 @@
 			<ul>
 				<li>http(s)://www.youtube.com/watch?v=[VIDEO_ID]</li>
 				<li>http(s)://youtu.be/[VIDEO_ID]</li>
-				<li>http(s)://www.youtube.com/embed/[VIDEO_ID]</li>
+                <li>http(s)://www.youtube.com/embed/[VIDEO_ID]</li>
+                <li>http(s)://www.youtube.com/shorts/[VIDEO_ID]</li>
 			</ul>
 			<p>You can also provide just the videos' ID in the search input.</p>
 
@@ -61,11 +62,11 @@
                 </li>
                 <li>Click the <b>Create</b> button and wait for the new projects dashboard to be displayed.</li>
                 <li>You should see a prompt informing you that you don't have any APIs available to use yet. Click the <b>Enable APIs and Services</b> button displayed at the top of the page.</li>
-                <li>You should now be in the <b>API Library</b>. Simply enter <b>YouTube</b> into the search input and then select the <b>YouTube Data API v3</b> from the results.</li>
+                <li>You should now be in the <b>API Library</b>. Simply enter <b>YouTube</b> into the search input and then select <b>YouTube Data API v3</b> from the results.</li>
                 <li>You will be redirected to the home page for the <b>YouTube Data API v3</b>, click the <b>Enable</b> button and wait for the operation to complete.</li>
                 <li>You will now be back on your projects <b>Overview</b> page. Click on the <b>Credentials</b> tab on the left of the screen.</li>
-                <li>At the top of the <b>Credentials</b> page click on the <b>Create Credentials</b> button displayed at the top of the page and select the <b>API key</b> option.</li>
-                <li>You should get a pop up titled <b>API key created</b> where you can copy <b>Your API key</b> and optionally restrict its usage. For more information about restricting the usage please see the <a href="https://cloud.google.com/docs/authentication/api-keys?hl=en&visit_id=637488474405711980-3007411940&rd=1#securing_an_api_key" target="_blank">Securing an API key</a> documentation.</li>
+                <li>At the top of the <b>Credentials</b> page click on the <b>Create Credentials</b> button and select the <b>API key</b> option.</li>
+                <li>You should then get a prompt titled <b>API key created</b> where you can copy <b>Your API key</b> and optionally restrict its usage. For more information about restricting the usage please see the <a href="https://cloud.google.com/docs/authentication/api-keys?hl=en&visit_id=637488474405711980-3007411940&rd=1#securing_an_api_key" target="_blank">Securing an API key</a> documentation.</li>
                 <li>Finally take your API key and enter it into either the prompt displayed during import or the <b>FooGallery > Settings > Video > YouTube API Key</b> option.</li>
             </ul>
 		</dd>

@@ -5,9 +5,9 @@ import FooGalleryEditModalItem from './item';
 /**
  * Internal block libraries
  */
-const { __ } = wp.i18n;
-const { Component } = wp.element;
-const { Button, Placeholder, Modal, Spinner } = wp.components;
+import { __ } from '@wordpress/i18n';
+import { Component } from '@wordpress/element';
+import { Button, Placeholder, Modal, Spinner } from '@wordpress/components';
 
 /**
  * Create the FooGallery Select Modal Component

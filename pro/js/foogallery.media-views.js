@@ -79,10 +79,7 @@
 		},
 		compatibility: {
 			supported: "Supported.",
-			desktopEdgeWebM: "Progressive sources not supported.",
-			mobileOperaWebM: "Requires codec.",
-			desktopEdgeOgg: "Supported from 17 onward.",
-			mobileFirefoxMP4: "Hardware acceleration not supported."
+			mobileSafariWebM: "Requires VP8 codec used in WebRTC."
 		},
 		import: {
 			cancel: "Cancel",
@@ -309,16 +306,16 @@
 				name: "WebM",
 				aliases: ["webm","video/webm"],
 				browsers: {
-					desktop: {ie: false, edge: l10n.compatibility.desktopEdgeWebM, firefox: true, chrome: true, opera: true, safari: false},
-					mobile: {firefox: true, chrome: true, opera: l10n.mobileOperaWebM, safari: false, uc: true, samsung: true}
+					desktop: {ie: false, edge: true, firefox: true, chrome: true, opera: true, safari: true},
+					mobile: {firefox: true, chrome: true, opera: true, safari: l10n.compatibility.mobileSafariWebM, uc: true, samsung: true}
 				}
 			},
 			ogg: {
 				name: "Ogg",
 				aliases: ["ogg","video/ogg","ogv","video/ogv"],
 				browsers: {
-					desktop: {ie: false, edge: l10n.compatibility.desktopEdgeOgg, firefox: true, chrome: true, opera: true, safari: false},
-					mobile: {firefox: true, chrome: true, opera: false, safari: false, uc: true, samsung: true}
+					desktop: {ie: false, edge: true, firefox: true, chrome: true, opera: true, safari: false},
+					mobile: {firefox: true, chrome: false, opera: false, safari: false, uc: true, samsung: false}
 				}
 			},
 			mp4: {
@@ -326,7 +323,7 @@
 				aliases: ["mp4","video/mp4"],
 				browsers: {
 					desktop: {ie: true, edge: true, firefox: true, chrome: true, opera: true, safari: true},
-					mobile: {firefox: l10n.compatibility.mobileFirefoxMP4, chrome: true, opera: true, safari: true, uc: true, samsung: true}
+					mobile: {firefox: true, chrome: true, opera: true, safari: true, uc: true, samsung: true}
 				}
 			}
 		}
@@ -2059,7 +2056,7 @@
 			this.$el.on("click" + this.namespace, this.sel.tryAgain, _.bind(this.onLoadMoreClick, this));
 		},
 		deactivate: function(){
-			this.mediaFrame.off("toolbar:button:import", this.onImportClick, this);
+			this.mediaFrame.off("toolbar:button:import", this.import, this);
 			this.$(this.sel.list).off(this.namespace);
 			this.$el.off(this.namespace);
 		},

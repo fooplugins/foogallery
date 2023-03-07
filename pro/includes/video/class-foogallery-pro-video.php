@@ -72,8 +72,24 @@ if ( ! class_exists( 'FooGallery_Pro_Video' ) ) {
 
 				//allow thumbnails for videos to be stored in a separate subdirectory
 				add_filter( 'upload_dir', array( $this, 'override_video_upload_dir' ), 99 );
+
+                //override the file_type in attachment modal
+                add_filter( 'foogallery_attachment_modal_info_file_type', array( $this, 'override_attachment_modal_file_type' ) );
 			}
 		}
+
+        /**
+         * Override the file_type in attachment modal for videos.
+         *
+         * @param $file_type string
+         * @return string
+         */
+        function override_attachment_modal_file_type( $file_type ) {
+            if ( 'image/foogallery' === $file_type ) {
+                return 'video';
+            }
+            return $file_type;
+        }
 
 		/**
 		 * Override upload directory

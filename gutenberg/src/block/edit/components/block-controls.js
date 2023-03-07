@@ -1,7 +1,7 @@
-const { __ } = wp.i18n;
-const { Component } = wp.element;
-const { ToolbarGroup, ToolbarButton } = wp.components;
-const { BlockControls } = !!wp.blockEditor ? wp.blockEditor : wp.editor;
+import { __ } from '@wordpress/i18n';
+import { Component } from '@wordpress/element';
+import { ToolbarGroup, ToolbarButton } from '@wordpress/components';
+import { BlockControls } from '@wordpress/block-editor';
 
 export default class FooGalleryEditBlockControls extends Component {
 	render(){

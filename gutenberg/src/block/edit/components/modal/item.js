@@ -1,7 +1,6 @@
 import classnames from 'classnames';
-
-const { Dashicon } = wp.components;
-const { Component } = wp.element;
+import { Component } from '@wordpress/element';
+import { Dashicon } from '@wordpress/components';
 
 export default class FooGalleryEditModalItem extends Component {
 	render(){

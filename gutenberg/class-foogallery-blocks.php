@@ -40,33 +40,29 @@ if ( ! class_exists( 'FooGallery_Blocks' ) ) {
 			foogallery_enqueue_core_gallery_template_script();
 			foogallery_enqueue_core_gallery_template_style();
 
-			$deps = array(
-				'wp-blocks',
-				'wp-i18n',
-				'wp-element',
-				'foogallery-core',
-				'wp-components',
-				'wp-block-editor',
-				'underscore'
-			);
+            $path = FOOGALLERY_PATH . 'gutenberg/assets/blocks';
+            $url = FOOGALLERY_URL . 'gutenberg/assets/blocks';
+            $asset = require_once( $path . '.asset.php' );
 
-			$js_url = plugins_url( 'gutenberg/dist/blocks.build.js', dirname( __FILE__ ) );
+            if ( is_array( $asset[ 'dependencies' ] ) ){
+                $asset[ 'dependencies' ][] = 'foogallery-core';
+            }
 
 			// Scripts.
 			wp_enqueue_script(
 				'foogallery-block-js', // Handle.
-				$js_url, // Block.build.js: We register the block here. Built with Webpack.
-				$deps, // Dependencies, defined above.
-				// filemtime( plugin_dir_path( __DIR__ ) . 'dist/blocks.build.js' ), // Version: filemtime — Gets file modification time.
+                $url . '.js', // Block.build.js: We register the block here. Built with Webpack.
+                $asset[ 'dependencies' ], // Dependencies, defined above.
+                $asset[ 'version' ],
 				true // Enqueue the script in the footer.
 			);
 
 			// Styles.
 			wp_enqueue_style(
 				'foogallery-block-editor-css', // Handle.
-				plugins_url( 'gutenberg/dist/blocks.editor.build.css', dirname( __FILE__ ) ), // Block editor CSS.
-				array( 'wp-edit-blocks', 'foogallery-core' ) // Dependency to include the CSS after it.
-				// filemtime( plugin_dir_path( __DIR__ ) . 'dist/blocks.editor.build.css' ) // Version: filemtime — Gets file modification time.
+				$url . '.css', // Block editor CSS.
+				array( 'dashicons', 'wp-components', 'wp-edit-blocks', 'foogallery-core' ), // Dependency to include the CSS after it.
+                $asset[ 'version' ]
 			);
 
 			$local_data = false;

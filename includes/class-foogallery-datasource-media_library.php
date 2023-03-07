@@ -11,11 +11,38 @@ if ( ! class_exists( 'FooGallery_Datasource_MediaLibrary' ) ) {
 			add_filter( 'foogallery_datasource_media_library_featured_image', array( $this, 'get_gallery_featured_attachment' ), 10, 2 );
 			add_filter( 'foogallery_datasource_media_library_attachments', array( $this, 'get_gallery_attachments' ), 10, 2 );
 
-			add_action( 'foogallery_gallery_metabox_items_add', array( $this, 'output_add_button' ), 8, 1 );
-			add_action( 'foogallery_gallery_metabox_items_list', array( $this, 'output_attachment_items' ), 10, 1 );
+            if ( is_admin() ) {
+                add_action('foogallery_gallery_metabox_items_add', array($this, 'output_add_button'), 8, 1);
+                add_action('foogallery_gallery_metabox_items_list', array($this, 'output_attachment_items'), 10, 1);
 
-			add_action( 'foogallery_before_save_gallery', array( $this, 'save_gallery_attachments' ), 10, 2 );
+                add_action('foogallery_before_save_gallery', array($this, 'save_gallery_attachments'), 10, 2);
+
+                add_action( 'wp_ajax_foogallery_attachment_modal_toggle', array( $this, 'attachment_modal_toggle' ) );
+            }
 		}
+
+        /**
+         * Toggles the attachment modal setting.
+         */
+        public function attachment_modal_toggle() {
+            $nonce = safe_get_from_request( 'nonce' );
+
+            if ( wp_verify_nonce( $nonce, 'foogallery_toggle_attachment_modal' ) ) {
+
+                $setting_value = foogallery_get_setting( 'advanced_attachment_modal' );
+                if ( 'on' === $setting_value ) {
+                    $setting_value = '';
+                    echo __( 'The Attachment Modal feature has been disabled. The page will now refresh.' ,'foogallery' );
+                } else {
+                    $setting_value = 'on';
+                    echo __( 'The Attachment Modal feature has been enabled. The page will now refresh.' ,'foogallery' );
+                }
+
+                foogallery_set_setting( 'advanced_attachment_modal', $setting_value );
+            }
+
+            die();
+        }
 
 		/**
 		 * Returns the number of attachments used from the media library
@@ -123,18 +150,36 @@ if ( ! class_exists( 'FooGallery_Datasource_MediaLibrary' ) ) {
                 <div style="clear: both;"></div>
                 <textarea style="display: none" id="foogallery-attachment-template"><?php $this->render_attachment_item(); ?></textarea>
                 <div class="foogallery-attachments-list-bar">
+                    <span class="foogallery-feature-promo">
+                    <?php
+                    $modal_enabled = foogallery_get_setting( 'advanced_attachment_modal' );
+                    $toggle_attachment_modal_nonce = wp_create_nonce( 'foogallery_toggle_attachment_modal' );
+                    $attachment_modal_url = 'https://fooplugins.com/documentation/foogallery/getting-started-foogallery/advanced-attachment-modal/';
+                    $attachment_modal_link_html = sprintf('<a target="_blank" href="%s">%s</a>',$attachment_modal_url, __( 'Advanced Attachment Modal', 'foogallery' ) );
+
+                    if ( 'on' !== $modal_enabled ) {
+                        printf( __( 'Try the new %s feature : a better way to update your attachment details!', 'foogallery' ), $attachment_modal_link_html );
+                        $attachment_modal_action = __( 'Enable it now!', 'foogallery' );
+                    } else {
+                        printf( __( 'The new %s feature is enabled and ready to use!', 'foogallery' ), $attachment_modal_link_html );
+                        $attachment_modal_action = __( 'Disable it now!', 'foogallery' );
+                    }
+                    ?>
+                        <a data-nonce="<?php echo $toggle_attachment_modal_nonce; ?>" class="button button-small button-secondary foogallery-attachment-modal-toggle" target="_blank" href="#advanced_attachment_modal"><?php echo $attachment_modal_action; ?></a>
+                    </span>
+                    <?php do_action('foogallery_attachments_list_bar_buttons', $foogallery ); ?>
+
                     <button type="button" class="button button-primary button-large alignright upload_image_button"
                             data-uploader-title="<?php _e( 'Add Media To Gallery', 'foogallery' ); ?>"
                             data-uploader-button-text="<?php _e( 'Add Media', 'foogallery' ); ?>"
                             data-post-id="<?php echo $foogallery->ID; ?>">
                         <?php _e( 'Add Media', 'foogallery' ); ?>
                     </button>
-                    &nbsp;
+
                     <button type="button" class="button button-primary button-large alignright remove_all_media">
 		                <?php _e( 'Remove All Media', 'foogallery' ); ?>
                     </button>
 
-                    <?php do_action('foogallery_attachments_list_bar_buttons', $foogallery ); ?>
                 </div>
             </div>
 			<?php
