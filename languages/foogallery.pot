@@ -8,7 +8,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language-Team: FooPlugins <info@fooplugins.com> (https://fooplugins.com)\n"
 "Last-Translator: FooPlugins <info@fooplugins.com> (https://fooplugins.com)\n"
-"POT-Creation-Date: 2023-03-04 11:33+0000\n"
+"POT-Creation-Date: 2023-03-25 14:49+0000\n"
 "Report-Msgid-Bugs-To: https://github.com/fooplugins/foogallery/issues\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-KeywordsList: __;_e;_ex:1,2c;_n:1,2;_n_noop:1,2;_nx:1,2,4c;_nx_noop:1,2,3c;_x:1,2c;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c\n"
@@ -101,7 +101,7 @@ msgstr ""
 msgid "Invalid Gallery!"
 msgstr ""
 
-#: extensions/albums/admin/class-metaboxes.php:534, extensions/albums/functions.php:82, extensions/default-templates/default/class-default-gallery-template.php:117, includes/admin/class-attachment-fields.php:19, includes/admin/class-gallery-attachment-modal.php:626, includes/admin/class-pro-promotion.php:198, includes/admin/view-help-demos.php:44, includes/class-foogallery-common-fields.php:213, includes/class-foogallery-common-fields.php:497, includes/functions.php:538, includes/functions.php:1719, pro/includes/class-foogallery-pro-advanced-thumbnails.php:57, pro/includes/class-foogallery-pro-datasource-folders.php:436, pro/includes/class-foogallery-pro-lightbox.php:335, pro/includes/class-foogallery-pro-lightbox.php:361, pro/includes/class-foogallery-pro-lightbox.php:477, pro/includes/class-foogallery-pro-lightbox.php:688, pro/includes/video/class-foogallery-pro-video.php:496
+#: extensions/albums/admin/class-metaboxes.php:534, extensions/albums/functions.php:82, extensions/default-templates/default/class-default-gallery-template.php:117, includes/admin/class-attachment-fields.php:19, includes/admin/class-gallery-attachment-modal.php:626, includes/admin/class-pro-promotion.php:198, includes/admin/view-help-demos.php:44, includes/class-foogallery-common-fields.php:213, includes/class-foogallery-common-fields.php:497, includes/functions.php:538, includes/functions.php:1717, pro/includes/class-foogallery-pro-advanced-thumbnails.php:57, pro/includes/class-foogallery-pro-datasource-folders.php:436, pro/includes/class-foogallery-pro-lightbox.php:335, pro/includes/class-foogallery-pro-lightbox.php:361, pro/includes/class-foogallery-pro-lightbox.php:477, pro/includes/class-foogallery-pro-lightbox.php:688, pro/includes/video/class-foogallery-pro-video.php:496
 msgid "Default"
 msgstr ""
 
@@ -129,7 +129,7 @@ msgstr ""
 msgid "Media"
 msgstr ""
 
-#: extensions/albums/admin/class-metaboxes.php:561, extensions/albums/functions.php:83, includes/admin/class-attachment-fields.php:27, includes/admin/class-gallery-attachment-modal.php:620, includes/functions.php:1126, pro/includes/class-foogallery-pro-advanced-captions.php:94, pro/includes/class-foogallery-pro-datasource-folders.php:569
+#: extensions/albums/admin/class-metaboxes.php:561, extensions/albums/functions.php:83, includes/admin/class-attachment-fields.php:27, includes/admin/class-gallery-attachment-modal.php:620, includes/functions.php:1124, pro/includes/class-foogallery-pro-advanced-captions.php:94, pro/includes/class-foogallery-pro-datasource-folders.php:569
 msgid "Custom URL"
 msgstr ""
 
@@ -153,7 +153,7 @@ msgstr ""
 msgid "&laquo; back to album"
 msgstr ""
 
-#: extensions/albums/class-albums-extension.php:141, extensions/albums/class-posttypes.php:26, extensions/albums/class-posttypes.php:36, extensions/albums/class-posttypes.php:37, extensions/nextgen-importer/view-importer.php:295, includes/functions.php:1380
+#: extensions/albums/class-albums-extension.php:141, extensions/albums/class-posttypes.php:26, extensions/albums/class-posttypes.php:36, extensions/albums/class-posttypes.php:37, extensions/nextgen-importer/view-importer.php:295, includes/functions.php:1378
 msgid "Albums"
 msgstr ""
 
@@ -547,7 +547,7 @@ msgstr ""
 msgid "How to scale the items that are not in the center. Each item to the side is scaled down by this factor."
 msgstr ""
 
-#: extensions/default-templates/carousel/class-carousel-gallery-template.php:178, includes/admin/view-system-info.php:94, includes/class-foogallery-common-fields.php:130, includes/class-foogallery-common-fields.php:150, includes/class-foogallery-common-fields.php:171, includes/class-foogallery-common-fields.php:192, includes/class-foogallery-common-fields.php:212, includes/class-foogallery-common-fields.php:237, includes/class-foogallery-common-fields.php:267, includes/class-foogallery-common-fields.php:320, includes/class-foogallery-common-fields.php:344, includes/class-foogallery-common-fields.php:368, includes/class-foogallery-common-fields.php:416, includes/class-foogallery-common-fields.php:454, includes/class-foogallery-common-fields.php:475, includes/class-foogallery-paging.php:159, includes/class-foogallery-paging.php:198, includes/compatibility/class-foobox-compatibility.php:216, includes/compatibility/class-foobox-compatibility.php:241, includes/functions.php:1137, pro/extensions/default-templates/foogrid/class-foogrid-gallery-template.php:243, pro/extensions/default-templates/foogrid/class-foogrid-gallery-template.php:304, pro/extensions/default-templates/slider/class-slider-gallery-template.php:177, pro/includes/class-foogallery-pro-exif.php:402, pro/includes/class-foogallery-pro-filtering.php:195, pro/includes/class-foogallery-pro-instagram-filters.php:53, pro/includes/class-foogallery-pro-lightbox.php:412, pro/includes/class-foogallery-pro-lightbox.php:555, pro/includes/class-foogallery-pro-lightbox.php:582, pro/includes/class-foogallery-pro-master-galleries.php:399, pro/includes/class-foogallery-pro-ribbons.php:207, pro/includes/video/class-foogallery-pro-video.php:196, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:1181
+#: extensions/default-templates/carousel/class-carousel-gallery-template.php:178, includes/admin/view-system-info.php:94, includes/class-foogallery-common-fields.php:130, includes/class-foogallery-common-fields.php:150, includes/class-foogallery-common-fields.php:171, includes/class-foogallery-common-fields.php:192, includes/class-foogallery-common-fields.php:212, includes/class-foogallery-common-fields.php:237, includes/class-foogallery-common-fields.php:267, includes/class-foogallery-common-fields.php:320, includes/class-foogallery-common-fields.php:344, includes/class-foogallery-common-fields.php:368, includes/class-foogallery-common-fields.php:416, includes/class-foogallery-common-fields.php:454, includes/class-foogallery-common-fields.php:475, includes/class-foogallery-paging.php:159, includes/class-foogallery-paging.php:198, includes/compatibility/class-foobox-compatibility.php:216, includes/compatibility/class-foobox-compatibility.php:241, includes/functions.php:1135, pro/extensions/default-templates/foogrid/class-foogrid-gallery-template.php:243, pro/extensions/default-templates/foogrid/class-foogrid-gallery-template.php:304, pro/extensions/default-templates/slider/class-slider-gallery-template.php:177, pro/includes/class-foogallery-pro-exif.php:402, pro/includes/class-foogallery-pro-filtering.php:195, pro/includes/class-foogallery-pro-instagram-filters.php:53, pro/includes/class-foogallery-pro-lightbox.php:412, pro/includes/class-foogallery-pro-lightbox.php:555, pro/includes/class-foogallery-pro-lightbox.php:582, pro/includes/class-foogallery-pro-master-galleries.php:399, pro/includes/class-foogallery-pro-ribbons.php:207, pro/includes/video/class-foogallery-pro-video.php:196, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:1181
 msgid "None"
 msgstr ""
 
@@ -659,7 +659,7 @@ msgstr ""
 msgid "Choose which lightbox you want to use. The lightbox will generally only work if you set the thumbnail link to \"Full Size Image\"."
 msgstr ""
 
-#: extensions/default-templates/default/class-default-gallery-template.php:84, includes/functions.php:1305
+#: extensions/default-templates/default/class-default-gallery-template.php:84, includes/functions.php:1303
 msgid "Responsive Image Gallery"
 msgstr ""
 
@@ -787,7 +787,7 @@ msgstr ""
 msgid "Next"
 msgstr ""
 
-#: extensions/default-templates/justified/class-justified-gallery-template.php:89, includes/functions.php:1315
+#: extensions/default-templates/justified/class-justified-gallery-template.php:89, includes/functions.php:1313
 msgid "Justified Gallery"
 msgstr ""
 
@@ -847,7 +847,7 @@ msgstr ""
 msgid "Hide - the last row is hidden if it does not fill the entire row."
 msgstr ""
 
-#: extensions/default-templates/masonry/class-masonry-gallery-template.php:114, includes/functions.php:1310
+#: extensions/default-templates/masonry/class-masonry-gallery-template.php:114, includes/functions.php:1308
 msgid "Masonry Image Gallery"
 msgstr ""
 
@@ -999,7 +999,7 @@ msgstr ""
 msgid "Always Visible"
 msgstr ""
 
-#: extensions/default-templates/thumbnail/class-thumbnail-gallery-template.php:94, includes/functions.php:1330
+#: extensions/default-templates/thumbnail/class-thumbnail-gallery-template.php:94, includes/functions.php:1328
 msgid "Single Thumbnail Gallery"
 msgstr ""
 
@@ -1007,7 +1007,7 @@ msgstr ""
 msgid "This gallery template only shows a single thumbnail, but the true power shines through when the thumbnail is clicked, because then the lightbox takes over and the user can view all the images in the gallery."
 msgstr ""
 
-#: extensions/default-templates/thumbnail/class-thumbnail-gallery-template.php:112, pro/includes/woocommerce/class-foogallery-pro-woocommerce-data-transfer.php:459
+#: extensions/default-templates/thumbnail/class-thumbnail-gallery-template.php:112, pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:459
 msgid "Size"
 msgstr ""
 
@@ -1119,7 +1119,7 @@ msgstr ""
 msgid "Images"
 msgstr ""
 
-#: extensions/demo-content-generator/view-demo-content.php:59, pro/includes/class-foogallery-pro-filtering.php:641, pro/includes/class-foogallery-pro-filtering.php:661, pro/includes/woocommerce/class-foogallery-pro-woocommerce-data-transfer.php:812
+#: extensions/demo-content-generator/view-demo-content.php:59, pro/includes/class-foogallery-pro-filtering.php:641, pro/includes/class-foogallery-pro-filtering.php:661, pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:772
 msgid "Search"
 msgstr ""
 
@@ -1759,7 +1759,7 @@ msgstr ""
 msgid "Add To Gallery From Another Source"
 msgstr ""
 
-#: includes/admin/class-gallery-datasources.php:190, includes/admin/class-gallery-editor.php:192, pro/includes/class-foogallery-pro-bulk-management.php:69, pro/includes/class-foogallery-pro-filtering.php:1002, pro/includes/woocommerce/class-foogallery-pro-woocommerce-data-transfer.php:772
+#: includes/admin/class-gallery-datasources.php:190, includes/admin/class-gallery-editor.php:192, pro/includes/class-foogallery-pro-bulk-management.php:69, pro/includes/class-foogallery-pro-filtering.php:1002, pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:732
 msgid "Reload"
 msgstr ""
 
@@ -1987,7 +1987,7 @@ msgstr ""
 msgid "Bulk Copy"
 msgstr ""
 
-#: includes/admin/class-pro-promotion.php:173, includes/functions.php:1425
+#: includes/admin/class-pro-promotion.php:173, includes/functions.php:1423
 msgid "Bulk Copy Settings"
 msgstr ""
 
@@ -2387,7 +2387,7 @@ msgstr ""
 msgid "Take your galleries to the next level with full video support:"
 msgstr ""
 
-#: includes/admin/class-pro-promotion.php:858, includes/admin/view-help-pro.php:51, includes/functions.php:1395
+#: includes/admin/class-pro-promotion.php:858, includes/admin/view-help-pro.php:51, includes/functions.php:1393
 msgid "Video Galleries"
 msgstr ""
 
@@ -2475,7 +2475,7 @@ msgstr ""
 msgid "PRO Commerce Feature : WooCommerce Integration"
 msgstr ""
 
-#: includes/admin/class-pro-promotion.php:1008, pro/includes/woocommerce/class-foogallery-pro-woocommerce-data-transfer.php:276, pro/includes/woocommerce/class-foogallery-pro-woocommerce-data-transfer.php:285, pro/includes/woocommerce/class-foogallery-pro-woocommerce-data-transfer.php:305, pro/includes/woocommerce/class-foogallery-pro-woocommerce-data-transfer.php:320, pro/includes/woocommerce/class-foogallery-pro-woocommerce-data-transfer.php:339, pro/includes/woocommerce/class-foogallery-pro-woocommerce-data-transfer.php:362, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:972, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:688, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:697, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:713, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:732, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:753, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:777, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:796, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:816, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:836, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:855, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:875, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:894, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:903, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:924, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:948, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:993
+#: includes/admin/class-pro-promotion.php:1008, pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:276, pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:285, pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:305, pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:320, pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:339, pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:362, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:972, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:688, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:697, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:713, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:732, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:753, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:777, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:796, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:816, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:836, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:855, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:875, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:894, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:903, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:924, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:948, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:993
 msgid "Ecommerce"
 msgstr ""
 
@@ -2539,7 +2539,7 @@ msgstr ""
 msgid "You can also manually link a product to each item in your gallery for complete control."
 msgstr ""
 
-#: includes/admin/class-pro-promotion.php:1017, pro/includes/woocommerce/class-foogallery-pro-woocommerce-data-transfer.php:318
+#: includes/admin/class-pro-promotion.php:1017, pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:318
 msgid "Master Product"
 msgstr ""
 
@@ -2551,7 +2551,7 @@ msgstr ""
 msgid "PRO Commerce"
 msgstr ""
 
-#: includes/admin/class-pro-promotion.php:1029, includes/admin/class-pro-promotion.php:1067, includes/admin/class-settings.php:389, includes/class-foogallery-lazyload.php:217, includes/class-gallery-advanced-settings.php:60, includes/class-gallery-advanced-settings.php:69, includes/class-gallery-advanced-settings.php:78, includes/class-gallery-advanced-settings.php:87, pro/includes/class-foogallery-pro-advanced-gallery-settings.php:31, pro/includes/class-foogallery-pro-advanced-gallery-settings.php:50, pro/includes/class-foogallery-pro-advanced-thumbnails.php:52, pro/includes/class-foogallery-pro-advanced-thumbnails.php:71, pro/includes/class-foogallery-pro-advanced-thumbnails.php:85, pro/includes/class-foogallery-pro-exif.php:464, pro/includes/class-foogallery-pro-filtering.php:197, pro/includes/class-foogallery-pro-filtering.php:686, pro/includes/protection/class-foogallery-pro-protection.php:566, pro/includes/video/class-foogallery-pro-video.php:269, pro/includes/woocommerce/class-foogallery-pro-woocommerce-data-transfer.php:277, pro/includes/woocommerce/class-foogallery-pro-woocommerce-data-transfer.php:286, pro/includes/woocommerce/class-foogallery-pro-woocommerce-data-transfer.php:306, pro/includes/woocommerce/class-foogallery-pro-woocommerce-data-transfer.php:321, pro/includes/woocommerce/class-foogallery-pro-woocommerce-data-transfer.php:340, pro/includes/woocommerce/class-foogallery-pro-woocommerce-data-transfer.php:363, pro/includes/woocommerce/class-foogallery-pro-woocommerce-data-transfer.php:385, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:978
+#: includes/admin/class-pro-promotion.php:1029, includes/admin/class-pro-promotion.php:1067, includes/admin/class-settings.php:389, includes/class-foogallery-lazyload.php:217, includes/class-gallery-advanced-settings.php:60, includes/class-gallery-advanced-settings.php:69, includes/class-gallery-advanced-settings.php:78, includes/class-gallery-advanced-settings.php:87, pro/includes/class-foogallery-pro-advanced-gallery-settings.php:31, pro/includes/class-foogallery-pro-advanced-gallery-settings.php:50, pro/includes/class-foogallery-pro-advanced-thumbnails.php:52, pro/includes/class-foogallery-pro-advanced-thumbnails.php:71, pro/includes/class-foogallery-pro-advanced-thumbnails.php:85, pro/includes/class-foogallery-pro-exif.php:464, pro/includes/class-foogallery-pro-filtering.php:197, pro/includes/class-foogallery-pro-filtering.php:686, pro/includes/protection/class-foogallery-pro-protection.php:566, pro/includes/video/class-foogallery-pro-video.php:269, pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:277, pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:286, pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:306, pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:321, pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:340, pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:363, pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:385, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:978
 msgid "Advanced"
 msgstr ""
 
@@ -3457,7 +3457,7 @@ msgstr ""
 msgid "Already convinced? Upgrade to PRO!"
 msgstr ""
 
-#: includes/admin/view-help.php:38, includes/functions.php:1353, includes/functions.php:1358, includes/functions.php:1363, includes/functions.php:1369, includes/functions.php:1375
+#: includes/admin/view-help.php:38, includes/functions.php:1351, includes/functions.php:1356, includes/functions.php:1361, includes/functions.php:1367, includes/functions.php:1373
 msgid "PRO Features"
 msgstr ""
 
@@ -4331,19 +4331,19 @@ msgstr ""
 msgid "You can override the caption title to be different from the thumbnail caption title."
 msgstr ""
 
-#: includes/compatibility/class-foobox-compatibility.php:212, includes/compatibility/class-foobox-compatibility.php:237, includes/functions.php:1009, pro/includes/class-foogallery-pro-lightbox.php:551, pro/includes/class-foogallery-pro-lightbox.php:578, pro/includes/woocommerce/class-foogallery-pro-woocommerce-data-transfer.php:368
+#: includes/compatibility/class-foobox-compatibility.php:212, includes/compatibility/class-foobox-compatibility.php:237, includes/functions.php:1007, pro/includes/class-foogallery-pro-lightbox.php:551, pro/includes/class-foogallery-pro-lightbox.php:578, pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:368
 msgid "Attachment Title"
 msgstr ""
 
-#: includes/compatibility/class-foobox-compatibility.php:213, includes/compatibility/class-foobox-compatibility.php:238, includes/functions.php:1011, pro/includes/class-foogallery-pro-lightbox.php:552, pro/includes/class-foogallery-pro-lightbox.php:579, pro/includes/woocommerce/class-foogallery-pro-woocommerce-data-transfer.php:369
+#: includes/compatibility/class-foobox-compatibility.php:213, includes/compatibility/class-foobox-compatibility.php:238, includes/functions.php:1009, pro/includes/class-foogallery-pro-lightbox.php:552, pro/includes/class-foogallery-pro-lightbox.php:579, pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:369
 msgid "Attachment Caption"
 msgstr ""
 
-#: includes/compatibility/class-foobox-compatibility.php:214, includes/compatibility/class-foobox-compatibility.php:239, includes/functions.php:1015, pro/includes/class-foogallery-pro-lightbox.php:553, pro/includes/class-foogallery-pro-lightbox.php:580
+#: includes/compatibility/class-foobox-compatibility.php:214, includes/compatibility/class-foobox-compatibility.php:239, includes/functions.php:1013, pro/includes/class-foogallery-pro-lightbox.php:553, pro/includes/class-foogallery-pro-lightbox.php:580
 msgid "Attachment Alt"
 msgstr ""
 
-#: includes/compatibility/class-foobox-compatibility.php:215, includes/compatibility/class-foobox-compatibility.php:240, includes/functions.php:1013, pro/includes/class-foogallery-pro-lightbox.php:554, pro/includes/class-foogallery-pro-lightbox.php:581
+#: includes/compatibility/class-foobox-compatibility.php:215, includes/compatibility/class-foobox-compatibility.php:240, includes/functions.php:1011, pro/includes/class-foogallery-pro-lightbox.php:554, pro/includes/class-foogallery-pro-lightbox.php:581
 msgid "Attachment Description"
 msgstr ""
 
@@ -4651,139 +4651,139 @@ msgstr ""
 msgid "4x"
 msgstr ""
 
-#: includes/functions.php:1124
+#: includes/functions.php:1122
 msgid "Full Size Image"
 msgstr ""
 
-#: includes/functions.php:1125
+#: includes/functions.php:1123
 msgid "Image Attachment Page"
 msgstr ""
 
-#: includes/functions.php:1127
+#: includes/functions.php:1125
 msgid "Not linked"
 msgstr ""
 
-#: includes/functions.php:1306, includes/functions.php:1311, includes/functions.php:1316, includes/functions.php:1321, includes/functions.php:1326, includes/functions.php:1331
+#: includes/functions.php:1304, includes/functions.php:1309, includes/functions.php:1314, includes/functions.php:1319, includes/functions.php:1324, includes/functions.php:1329
 msgid "Standard Gallery Demos"
 msgstr ""
 
-#: includes/functions.php:1320
+#: includes/functions.php:1318
 msgid "Image Viewer Gallery"
 msgstr ""
 
-#: includes/functions.php:1325
+#: includes/functions.php:1323
 msgid "Simple Portfolio Gallery"
 msgstr ""
 
-#: includes/functions.php:1336
+#: includes/functions.php:1334
 msgid "Grid PRO Gallery"
 msgstr ""
 
-#: includes/functions.php:1337, includes/functions.php:1342, includes/functions.php:1347
+#: includes/functions.php:1335, includes/functions.php:1340, includes/functions.php:1345
 msgid "PRO Gallery Demos"
 msgstr ""
 
-#: includes/functions.php:1341
+#: includes/functions.php:1339
 msgid "Polaroid PRO Gallery"
 msgstr ""
 
-#: includes/functions.php:1346
+#: includes/functions.php:1344
 msgid "Slider PRO Gallery"
 msgstr ""
 
-#: includes/functions.php:1352
+#: includes/functions.php:1350
 msgid "Hover Presets Demo"
 msgstr ""
 
-#: includes/functions.php:1357
+#: includes/functions.php:1355
 msgid "Filtering Demos"
 msgstr ""
 
-#: includes/functions.php:1362
+#: includes/functions.php:1360
 msgid "Pagination Types Demo"
 msgstr ""
 
-#: includes/functions.php:1368
+#: includes/functions.php:1366
 msgid "Video Gallery Demos"
 msgstr ""
 
-#: includes/functions.php:1374
+#: includes/functions.php:1372
 msgid "Bulk Copy (admin)"
 msgstr ""
 
-#: includes/functions.php:1381
+#: includes/functions.php:1379
 msgid "Album Demos"
 msgstr ""
 
-#: includes/functions.php:1396
+#: includes/functions.php:1394
 msgid "Create beautiful video galleries from YouTube, Vimeo, Facebook, Wistia and more!"
 msgstr ""
 
-#: includes/functions.php:1400
+#: includes/functions.php:1398
 msgid "Media Tags + Filtering"
 msgstr ""
 
-#: includes/functions.php:1401
+#: includes/functions.php:1399
 msgid "Assign tags to your media, which allows visitors to filter the galleries by tag."
 msgstr ""
 
-#: includes/functions.php:1405
+#: includes/functions.php:1403
 msgid "More Gallery Templates"
 msgstr ""
 
-#: includes/functions.php:1406
+#: includes/functions.php:1404
 msgid "3 more awesome gallery templates, including Slider, Grid and Polaroid."
 msgstr ""
 
-#: includes/functions.php:1410
+#: includes/functions.php:1408
 msgid "Preset Hover Effects"
 msgstr ""
 
-#: includes/functions.php:1411
+#: includes/functions.php:1409
 msgid "Choose from 11 beautifully designed preset hover effects."
 msgstr ""
 
-#: includes/functions.php:1415
+#: includes/functions.php:1413
 msgid "Advanced Pagination + Infinite Scroll"
 msgstr ""
 
-#: includes/functions.php:1416
+#: includes/functions.php:1414
 msgid "Choose from more paging types like numbered, load more or infinite scroll."
 msgstr ""
 
-#: includes/functions.php:1420
+#: includes/functions.php:1418
 msgid "Animated Loading Effects"
 msgstr ""
 
-#: includes/functions.php:1421
+#: includes/functions.php:1419
 msgid "Choose from 9 awesome animation effects to display as your galleries load."
 msgstr ""
 
-#: includes/functions.php:1426
+#: includes/functions.php:1424
 msgid "Bulk copy your gallery settings to other galleries in a flash."
 msgstr ""
 
-#: includes/functions.php:1715
+#: includes/functions.php:1713
 msgid "ShortPixel Adaptive Images"
 msgstr ""
 
-#: includes/functions.php:1720
+#: includes/functions.php:1718
 msgid "The default engine used to generate locally cached thumbnails."
 msgstr ""
 
-#: includes/functions.php:1724
+#: includes/functions.php:1722
 msgid "ShortPixel"
 msgstr ""
 
-#: includes/functions.php:1725
+#: includes/functions.php:1723
 msgid "Uses %s to generate all your gallery thumbnails. They will be optimized and offloaded to the ShortPixel global CDN!"
 msgstr ""
 
-#: includes/functions.php:1732
+#: includes/functions.php:1730
 msgid "Dummy"
 msgstr ""
 
-#: includes/functions.php:1733
+#: includes/functions.php:1731
 msgid "A dummy thumbnail engine that can be used for testing. (uses dummyimage.com)"
 msgstr ""
 
@@ -5479,7 +5479,7 @@ msgstr ""
 msgid "Bulk Taxonomy Manager"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-bulk-management.php:79, pro/includes/class-foogallery-pro-bulk-management.php:79, pro/includes/class-foogallery-pro-datasource-taxonomy-base.php:322, pro/includes/class-foogallery-pro-filtering.php:996, pro/includes/class-foogallery-pro-filtering.php:1012, pro/includes/class-foogallery-pro-filtering.php:1012, pro/includes/woocommerce/class-foogallery-pro-woocommerce-data-transfer.php:766, pro/includes/woocommerce/class-foogallery-pro-woocommerce-data-transfer.php:782, pro/includes/woocommerce/class-foogallery-pro-woocommerce-data-transfer.php:782
+#: pro/includes/class-foogallery-pro-bulk-management.php:79, pro/includes/class-foogallery-pro-bulk-management.php:79, pro/includes/class-foogallery-pro-datasource-taxonomy-base.php:322, pro/includes/class-foogallery-pro-filtering.php:996, pro/includes/class-foogallery-pro-filtering.php:1012, pro/includes/class-foogallery-pro-filtering.php:1012, pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:726, pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:742, pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:742
 msgid "Close"
 msgstr ""
 
@@ -8021,151 +8021,191 @@ msgstr ""
 msgid "Caption Desc Source : "
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-woocommerce-data-transfer.php:170
+#: pro/includes/woocommerce/class-foogallery-pro-woocommerce-downloads.php:113, pro/includes/woocommerce/class-foogallery-pro-woocommerce-downloads.php:187, pro/includes/woocommerce/class-foogallery-pro-woocommerce-downloads.php:311, pro/includes/woocommerce/class-foogallery-pro-woocommerce-downloads.php:420, pro/includes/woocommerce/class-foogallery-pro-woocommerce-downloads.php:464
+msgid "Image %s"
+msgstr ""
+
+#: pro/includes/woocommerce/class-foogallery-pro-woocommerce-downloads.php:392
+msgid "Image File"
+msgstr ""
+
+#: pro/includes/woocommerce/class-foogallery-pro-woocommerce-downloads.php:493
+msgid "Enable Downloads"
+msgstr ""
+
+#: pro/includes/woocommerce/class-foogallery-pro-woocommerce-downloads.php:495
+msgid "If this is enabled, files will be downloadable when ordered."
+msgstr ""
+
+#: pro/includes/woocommerce/class-foogallery-pro-woocommerce-downloads.php:501
+msgid "Download Limit"
+msgstr ""
+
+#: pro/includes/woocommerce/class-foogallery-pro-woocommerce-downloads.php:502
+msgid "Unlimited"
+msgstr ""
+
+#: pro/includes/woocommerce/class-foogallery-pro-woocommerce-downloads.php:505
+msgid "Leave blank for unlimited downloads."
+msgstr ""
+
+#: pro/includes/woocommerce/class-foogallery-pro-woocommerce-downloads.php:511
+msgid "Download Expiry"
+msgstr ""
+
+#: pro/includes/woocommerce/class-foogallery-pro-woocommerce-downloads.php:512
+msgid "Never"
+msgstr ""
+
+#: pro/includes/woocommerce/class-foogallery-pro-woocommerce-downloads.php:515
+msgid "The number of days before a download expires, or leave blank."
+msgstr ""
+
+#: pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:170
 msgid "Attachment Public URL"
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-woocommerce-data-transfer.php:168
+#: pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:168
 msgid "Attachment"
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-woocommerce-data-transfer.php:166, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:92
+#: pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:166, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:92
 msgid "FooGallery"
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-woocommerce-data-transfer.php:274
+#: pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:274
 msgid "Transfer Mode Info"
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-woocommerce-data-transfer.php:275
+#: pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:275
 msgid "You can choose to transfer info from the attachment to the linked product when it is added to the cart and ordered. This works best when you want to use a master product for all items in your gallery."
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-woocommerce-data-transfer.php:283
+#: pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:283
 msgid "Transfer Mode"
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-woocommerce-data-transfer.php:284
+#: pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:284
 msgid "When the product is added to the cart or ordered, details from the attachment can be transferred to the cart and order items."
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-woocommerce-data-transfer.php:291, pro/includes/woocommerce/class-foogallery-pro-woocommerce-data-transfer.php:346
+#: pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:291, pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:346
 msgid "Do Nothing"
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-woocommerce-data-transfer.php:292
+#: pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:292
 msgid "Transfer Attachment Details"
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-woocommerce-data-transfer.php:303
+#: pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:303
 msgid "Master Product Info"
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-woocommerce-data-transfer.php:304
+#: pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:304
 msgid "You can set a master product for the whole gallery, which will link that product to every item. You can still manually link items to individual products. All items that are not linked to a product will be linked to the master product."
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-woocommerce-data-transfer.php:319
+#: pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:319
 msgid "The product that will be used as the master product for every item in the gallery."
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-woocommerce-data-transfer.php:337
+#: pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:337
 msgid "Add Variation Attributes"
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-woocommerce-data-transfer.php:338
+#: pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:338
 msgid "When a variable product is added to the cart, add the attribute data to the cart and order item."
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-woocommerce-data-transfer.php:345
+#: pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:345
 msgid "Add Attribute Data"
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-woocommerce-data-transfer.php:360
+#: pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:360
 msgid "Product Name Source"
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-woocommerce-data-transfer.php:361
+#: pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:361
 msgid "When the product is added to the cart, the name is updated from which field of the attachment"
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-woocommerce-data-transfer.php:370
+#: pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:370
 msgid "Do Not Change Product Name"
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-woocommerce-data-transfer.php:410, pro/includes/woocommerce/class-foogallery-pro-woocommerce-data-transfer.php:785, pro/includes/woocommerce/class-foogallery-pro-woocommerce-data-transfer.php:785
+#: pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:410, pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:745, pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:745
 msgid "Select Master Product"
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-woocommerce-data-transfer.php:432
+#: pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:432
 msgid "edit"
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-woocommerce-data-transfer.php:441
+#: pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:441
 msgid "This product has been setup correctly to be a master product."
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-woocommerce-data-transfer.php:427
+#: pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:427
 msgid "The master product does not exist! Please select another product."
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-woocommerce-data-transfer.php:455
+#: pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:455
 msgid "Generated Master Product"
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-woocommerce-data-transfer.php:538
+#: pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:538
 msgid "ERROR : the product was not found, or had been deleted!"
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-woocommerce-data-transfer.php:518
+#: pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:518
 msgid "The product must be published."
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-woocommerce-data-transfer.php:528
+#: pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:528
 msgid "The product does not have any variations. Create variations for the product."
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-woocommerce-data-transfer.php:524
+#: pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:524
 msgid "The product is not a variable product. Make sure it is variable and has multiple variations."
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-woocommerce-data-transfer.php:534
+#: pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:534
 msgid "The master product should not be visible. Set the Catalog Visibility to \"Hidden\"."
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-woocommerce-data-transfer.php:771
+#: pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:731
 msgid "Select a Master Product"
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-woocommerce-data-transfer.php:812
+#: pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:772
 msgid "Search for a product"
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-woocommerce-data-transfer.php:854
+#: pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:814
 msgid "Selected Master Product"
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-woocommerce-data-transfer.php:862
+#: pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:822
 msgid "Master Product Help"
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-woocommerce-data-transfer.php:863
+#: pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:823
 msgid "A master product can be set for a gallery, so that every item within the gallery will use details from the master product. This allows you to setup a single product across all images, and will save you time when configuring your gallery in order to sell your images online."
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-woocommerce-data-transfer.php:864
+#: pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:824
 msgid "A master product should be a variable product with multiple variations that you can configure to have different prices. Usually these variations are different by size, but you can have variations that use more attributes, e.g. size/format, print material, frame, etc."
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-woocommerce-data-transfer.php:865
+#: pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:825
 msgid "Additionally, a master product should be published and the Catalog Visibility should set to \"Hidden\"."
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-woocommerce-data-transfer.php:868
+#: pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:828
 msgid "To help you get started, we can generate a master product that meets these requirements, which you can customize to your needs:"
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-woocommerce-data-transfer.php:869, pro/includes/woocommerce/class-foogallery-pro-woocommerce-data-transfer.php:869
+#: pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:829, pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:829
 msgid "Generate Master Product"
 msgstr ""
 
