@@ -388,7 +388,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
                 $attachment_post = get_post( $attachment_id );
 
                 if ( is_a( $attachment_post, 'WP_Post' ) ) {
-                    $modal_data['file_url'] = get_attached_file( $attachment_id );
+                    $modal_data['file_url'] = wp_get_attachment_url( $attachment_id );
                     $modal_data['file_name'] = basename( $modal_data['file_url'] );
                     $modal_data['file_type'] = apply_filters( 'foogallery_attachment_modal_info_file_type', $attachment_post->post_mime_type );
                     $modal_data['author_id'] = intval( $attachment_post->post_author );
