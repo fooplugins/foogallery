@@ -32,7 +32,7 @@ if ( ! class_exists( 'FooGallery_Pro_Buttons' ) ) {
 		}
 
 		/**
-		 * Save the ribbon product meta
+		 * Save the button product meta
 		 *
 		 * @param $id
 		 * @param $post
