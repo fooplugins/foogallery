@@ -1032,6 +1032,15 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 				'tab'     => 'ecommerce'
 			);
 
+            $settings['settings'][] = array(
+				'id'      => 'ecommerce_alternative_download_paths',
+				'title'   => __( 'Use Alternative File Download Paths', 'foogallery' ),
+				'desc'    => __( 'To overcome some limitations found in WooCommerce, we adjust the default file download paths by default. Enabling this will turn off those adjustments.', 'foogallery' ),
+				'type'    => 'checkbox',
+				'section' => __( 'File Downloads', 'foogallery' ),
+				'tab'     => 'ecommerce'
+			);
+
 			return $settings;
 		}
 

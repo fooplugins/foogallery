@@ -18,8 +18,8 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce_Downloads' ) ) {
 		 * Sets up all the appropriate hooks and actions
 		 */
 		public function __construct() {
-            // Create downloadable permissions when an order is completed.
-            add_action( 'woocommerce_order_status_completed', array( $this, 'add_files_to_order' ), 99, 2 );
+            // Create downloadable permissions when an order is completed or processed.
+            add_action( 'woocommerce_grant_product_download_permissions', array( $this, 'add_files_to_order' ) );
 
             // Adjust the downloads for an order item.
             add_filter( 'woocommerce_get_item_downloads', array( $this, 'get_item_downloads' ), 10, 3 );
@@ -156,7 +156,14 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce_Downloads' ) ) {
                     'height' => $height,
                     'resize' => true
                 );
-                return foogallery_thumb( $filepath, $args );
+                $filepath = foogallery_thumb( $filepath, $args );
+            }
+
+            if ( 'on' !== foogallery_get_setting('ecommerce_alternative_download_paths' ) ) {
+                // Do some clever replacements to avoid woocommerce bug for downloads.
+                if (strpos($filepath, get_site_url()) === 0) {
+                    $filepath = str_replace(get_site_url(), '', $filepath);
+                }
             }
 
             return apply_filters('foogallery_woocommerce_download_filepath', $filepath, $attachment_id, $order_id, $item_id );
@@ -252,16 +259,27 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce_Downloads' ) ) {
          */
         private function is_downloadable( $product ) {
             if ( is_a( $product, 'WC_Product' ) ) {
-                $product_id = $product->get_id();
-                if ($product->is_type('variation')) {
-                    $product_id = $product->get_parent_id();
-                }
-                $enable_downloads = get_post_meta($product_id, '_foogallery_enable_downloads', true);
+                $enable_downloads = get_post_meta( $this->get_product_id( $product ), '_foogallery_enable_downloads', true );
                 if ( !empty( $enable_downloads ) ) {
                     return true;
                 }
             }
             return false;
+        }
+
+        /**
+         * Returns the parent product ID if the current product is a variation.
+         *
+         * @param $product
+         * @return int
+         */
+        private function get_product_id( $product ) {
+            if ( is_a( $product, 'WC_Product' ) ) {
+                if ( $product->is_type('variation') ) {
+                    return $product->get_parent_id();
+                }
+            }
+            return $product->get_id();
         }
 
         /**
@@ -290,10 +308,12 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce_Downloads' ) ) {
          * @param $order_id
          * @return void
          */
-        function add_files_to_order( $order_id, $order ) {
+        function add_files_to_order( $order_id ) {
             // Load the order.
-            if ( is_null( $order ) ) {
-                $order = new WC_Order( $order_id );
+            $order = new WC_Order( $order_id );
+
+            if ( !$order ) {
+                return;
             }
 
             foreach( $order->get_items() as $item ) {
@@ -302,6 +322,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce_Downloads' ) ) {
                     $gallery_id = intval( $item->get_meta( '_foogallery_id') );
                     if ( $attachment_id > 0 && $gallery_id > 0 ) {
                         $product = $item->get_product();
+
                         if ( $this->is_downloadable( $product ) ) {
 
                             $download_id = 'foogallery_file_download|' . $item->get_id();
@@ -314,6 +335,12 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce_Downloads' ) ) {
                                 'gallery_id' => $gallery_id,
                                 'attachment_id' => $attachment_id
                             );
+
+                            $product_id = $this->get_product_id( $product );
+                            $download_limit = get_post_meta( $product_id, '_foogallery_download_limit', true );
+                            $product->set_download_limit( $download_limit );
+                            $download_expiry = get_post_meta( $product_id, '_foogallery_download_expires', true );
+                            $product->set_download_expiry( $download_expiry );
 
                             wc_downloadable_file_permission( $download_id, $product, $order, $item->get_quantity(), $item );
                             add_post_meta( $order_id, '_foogallery_files', $file );
@@ -571,7 +598,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce_Downloads' ) ) {
                     'label'       => __( 'Download Width', 'texdomain' ),
                     'placeholder' => '',
                     'desc_tip'    => 'true',
-                    'description' => __( 'Download Width', 'texdomain' ),
+                    'description' => __( 'Restrict the file\'s download width. Leave blank to use the full size image.', 'texdomain' ),
                     'value'       => get_post_meta( $variation->ID, '_foogallery_width', true )
                 )
             );
@@ -582,7 +609,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce_Downloads' ) ) {
                     'label'       => __( 'Download Height', 'texdomain' ),
                     'placeholder' => '',
                     'desc_tip'    => 'true',
-                    'description' => __( 'Download Width', 'texdomain' ),
+                    'description' => __( 'Restrict the file\'s download height. Leave blank to use the full size image.', 'texdomain' ),
                     'value'       => get_post_meta( $variation->ID, '_foogallery_height', true )
                 )
             );
