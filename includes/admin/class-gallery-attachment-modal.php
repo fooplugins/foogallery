@@ -612,11 +612,11 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
 								<label for="attachment-details-two-column-description" class="name"><?php _e('Description', 'foogallery'); ?></label>
 								<textarea id="attachment-details-two-column-description" name="foogallery[description]"><?php echo $modal_data['description'];?></textarea>
 							</span>
-							<span class="setting has-description" data-setting="alt">
+							<span class="setting" data-setting="alt">
 								<label for="attachment-details-two-column-alt-text" class="name"><?php _e('ALT Text', 'foogallery'); ?></label>
 								<input type="text" id="attachment-details-two-column-alt-text" name="foogallery[alt-text]" value="<?php echo $modal_data['image_alt'];?>" aria-describedby="alt-text-description">
 							</span>
-							<span class="setting" data-setting="custom_url">
+                            <span class="setting" data-setting="custom_url">
 								<label for="attachments-foogallery-custom-url" class="name"><?php _e('Custom URL', 'foogallery'); ?></label>
 								<input type="text" id="attachments-foogallery-custom-url" name="foogallery[custom-url]" value="<?php echo $modal_data['custom_url'];?>">
 							</span>
@@ -629,20 +629,19 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
 									<option value="foobox" <?php selected( 'foobox', $modal_data['custom_target'], true ); ?>><?php _e('FooBox', 'foogallery'); ?></option>
 								</select>
 							</span>
-							<span class="setting" data-setting="custom_class">
+							<span class="setting has-description" data-setting="custom_class">
 								<label for="attachments-foogallery-custom-class" class="name"><?php _e('Custom Class', 'foogallery'); ?></label>
 								<input type="text" id="attachments-foogallery-custom-class" name="foogallery[custom-class]" value="<?php echo $modal_data['custom_class'];?>">
-							</span>	
+							</span>
+                            <p class="description">
+                                <?php _e( 'The custom class will be applied to the anchor tag of the image, which you can target with custom CSS.', 'foogallery' ); ?>
+                            </p>
 							<span class="setting" data-setting="file_url">
 								<label for="attachments-foogallery-file-url" class="name"><?php _e('File URL', 'foogallery'); ?></label>
-								<input type="text" id="attachments-foogallery-file-url" value="<?php echo $modal_data['file_url'];?>" readonly>
-							</span>
-							<span class="setting" data-setting="file_url_copy">
-								<label for="attachments-foogallery-file-url-copy" class="name"><?php _e('', 'foogallery'); ?></label>
-								<span class="copy-to-clipboard-container">
-									<button type="button" class="button button-small copy-attachment-file-url" data-clipboard-target="#attachments-foogallery-file-url"><?php _e('Copy URL to clipboard', 'foogallery'); ?></button>
-									<span class="success hidden" aria-hidden="true"><?php _e('Copied!', 'foogallery'); ?></span>
-								</span>
+                                <div class="setting-with-buttons">
+                                    <input type="text" id="attachments-foogallery-file-url" value="<?php echo $modal_data['file_url'];?>" readonly />
+                                    <button type="button" class="button button-small copy-attachment-file-url" data-clipboard-target="#attachments-foogallery-file-url"><?php _e('Copy to clipboard', 'foogallery'); ?></button>
+                                </div>
 							</span>
 						</div>
 					</section>
