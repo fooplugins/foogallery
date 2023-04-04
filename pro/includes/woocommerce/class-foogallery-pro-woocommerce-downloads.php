@@ -33,6 +33,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce_Downloads' ) ) {
             // Override some product properties, to make downloads work.
             add_filter( 'woocommerce_is_downloadable', array( $this, 'override_is_downloadable' ), 10, 2 );
             add_filter( 'woocommerce_product_file', array( $this, 'override_product_file' ), 10, 3 );
+            add_filter( 'woocommerce_product_get_downloads', array( $this, 'override_get_downloads' ), 10, 2 );
             add_filter( 'woocommerce_product_variation_get_downloads', array( $this, 'override_get_downloads' ), 10, 2 );
 
             if ( is_admin() ) {
