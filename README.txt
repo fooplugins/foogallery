@@ -312,8 +312,9 @@ Please update in order to for FooGallery to work in WP 5.5+!
 
 == Changelog ==
 
-= 2.2.36 =
-* Date Updated : 25 Mar 2023
+= 2.2.38 =
+* Date Updated : 4 Apr 2023
+* Update : Updated to Freemius SDK 2.5.5
 [//]: # fs_premium_only_begin
 * New : [Commerce Plan] Added support for file downloads when using a master product!
 [//]: # fs_premium_only_end
