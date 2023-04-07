@@ -211,6 +211,7 @@ if ( ! class_exists( 'FooGallery_Pro_Ribbons' ) ) {
 				'fg-ribbon-6' => __( 'Type 4 (top-right, rounded, pink)', 'foogallery' ),
 				'fg-ribbon-2' => __( 'Type 5 (top-left, medium, purple)', 'foogallery' ),
 				'fg-ribbon-1' => __( 'Type 6 (top-left, vertical, orange)', 'foogallery' ),
+                'fg-ribbon-7' => __( 'Type 7 (bottom, full-width, grey)', 'foogallery' ),
 			);
 		}
 	}

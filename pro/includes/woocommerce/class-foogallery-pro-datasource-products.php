@@ -24,6 +24,14 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Products' ) ) {
 			add_filter( 'woocommerce_product_data_store_cpt_get_products_query', array( $this, 'handle_price_range_query_var' ), 10, 2 );
 		}
 
+        /**
+         * Get terms from the product to show instead of attachment terms.
+         *
+         * @param $terms
+         * @param $taxonomy
+         * @param $attachment
+         * @return array|mixed|WP_Error
+         */
 		public function get_terms_from_product( $terms, $taxonomy, $attachment ) {
 			if ( isset( $attachment->product_datasource_used ) ) {
 
