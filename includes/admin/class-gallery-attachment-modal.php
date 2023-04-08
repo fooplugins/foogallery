@@ -121,6 +121,10 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
                 return;
             }
 
+            if ( !is_a( $post, 'WP_Post' ) ) {
+                return;
+            }
+
 			$modal_style = foogallery_get_setting( 'advanced_attachment_modal' );
 
             // Only show the attachment modal if the setting is turned on.
@@ -131,7 +135,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
 			?>
 			<div id="foogallery-image-edit-modal" style="display: none;"
                  data-nonce="<?php echo wp_create_nonce( 'foogallery_attachment_modal_open' ); ?>"
-                 data-gallery_id="<?php echo $_GET['post']; ?>"
+                 data-gallery_id="<?php echo $post->ID; ?>"
                  data-modal_style="<?php echo $modal_style; ?>">
 				<div class="media-modal wp-core-ui">
 					<div class="media-modal-content">
