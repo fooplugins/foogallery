@@ -435,7 +435,12 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce_Master_Product' ) ) {
 
                     if (isset($validation_response) && array_key_exists('errors', $validation_response) && count($validation_response['errors']) > 0) {
                         foreach ($validation_response['errors'] as $error) {
-                            echo '<p><span class="dashicons dashicons-warning" style="color:#d63638"></span>' . esc_html($error) . '</p>';
+                            if ( 'critical' === $error['severity'] ) {
+                                echo '<p><span class="dashicons dashicons-warning" style="color:#d63638"></span>';
+                            } else {
+                                echo '<p><span class="dashicons dashicons-info" style="color:#d0621c"></span>';
+                            }
+                            echo esc_html($error['message']) . '</p>';
                         }
                     } else {
                         echo '<p><span class="dashicons dashicons-yes-alt" style="color:#00a32a"></span>' . __('This product has been setup correctly to be a master product.', 'foogallery') . '</p>';
@@ -515,27 +520,42 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce_Master_Product' ) ) {
                 $product_data = $product->get_data();
                 if ( isset( $product_data ) ) {
                     if ( 'publish' !== $product_data['status'] ) {
-                        $validation_errors[] = __( 'The product must be published.', 'foogallery' );
+                        $validation_errors[] = array(
+                            'message' => __( 'The product must be published.', 'foogallery' ),
+                            'severity' => 'critical'
+                        );
                     }
                 }
 
                 // Check the product type is variable.
                 if ( !$product->is_type( 'variable' ) ) {
-                    $validation_errors[] = __( 'The product is not a variable product. Make sure it is variable and has multiple variations.', 'foogallery' );
+                    $validation_errors[] = array(
+                        'message' => __( 'The product is not a variable product. We recommend using a variable product, but you can still use a simple product.', 'foogallery' ),
+                        'severity' => 'warning'
+                    );
                 } else {
                     $variations = $product->get_children();
                     if ( count( $variations ) == 0 ) {
-                        $validation_errors[] = __( 'The product does not have any variations. Create variations for the product.', 'foogallery' );
+                        $validation_errors[] = array(
+                            'message' => __( 'The product does not have any variations. Create variations for the product.', 'foogallery' ),
+                            'severity' => 'critical'
+                        );
                     }
                 }
 
                 // Check the visibility.
                 if ( 'hidden' !== $product->get_catalog_visibility( 'edit' ) ) {
-                    $validation_errors[] = __( 'The master product should not be visible. Set the Catalog Visibility to "Hidden".', 'foogallery' );
+                    $validation_errors[] = array(
+                        'message' => __( 'The master product should not be visible. Set the Catalog Visibility to "Hidden".', 'foogallery' ),
+                        'severity' => 'critical'
+                    );
                 }
 
             } else {
-                $validation_errors[] = __( 'ERROR : the product was not found, or had been deleted!', 'foogallery' );
+                $validation_errors[] = array(
+                    'message' => __( 'ERROR : the product was not found, or had been deleted!', 'foogallery' ),
+                    'severity' => 'critical'
+                );
             }
 
             return array(
@@ -719,6 +739,10 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce_Master_Product' ) ) {
                 return;
             }
 
+            if ( !is_a( $post, 'WP_Post' ) ) {
+                return;
+            }
+
             ?>
             <div class="foogallery-master-product-modal-wrapper" data-foogalleryid="<?php echo $post->ID; ?>" data-nonce="<?php echo wp_create_nonce( 'foogallery_master_product' ); ?>" style="display: none;">
                 <div class="media-modal wp-core-ui">
@@ -822,6 +846,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce_Master_Product' ) ) {
                 echo '<h2>' . __( 'Master Product Help', 'foogallery' ) . '</h2>';
                 echo '<p>' . __( 'A master product can be set for a gallery, so that every item within the gallery will use details from the master product. This allows you to setup a single product across all images, and will save you time when configuring your gallery in order to sell your images online.', 'foogallery' ) . '</p>';
                 echo '<p>' . __( 'A master product should be a variable product with multiple variations that you can configure to have different prices. Usually these variations are different by size, but you can have variations that use more attributes, e.g. size/format, print material, frame, etc.', 'foogallery' ) . '</p>';
+                echo '<p>' . __( 'A master product will work as a simple product, but we recommend using a variable product.', 'foogallery' ) . '</p>';
                 echo '<p>' . __( 'Additionally, a master product should be published and the Catalog Visibility should set to "Hidden".', 'foogallery' ) . '</p>';
                 $generated_product_id = $this->find_generated_master_product();
                 if ( $generated_product_id === 0 ) {
