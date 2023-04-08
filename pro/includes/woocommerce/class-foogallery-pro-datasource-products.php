@@ -272,11 +272,20 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Products' ) ) {
 			$attachments = array();
 
 			foreach ( $products as $product ) {
+                if ( 'hidden' === $product->get_catalog_visibility() ) {
+                    continue;
+                }
+
 				$attachment = new FooGalleryAttachment();
 				$attachment->product = $product; // Store the product object.
 				$attachment->product_datasource_used = true; // Store the fact that the product was loaded from the datasource.
 
 				$post_thumbnail_id = get_post_thumbnail_id( $product->get_id() );
+
+                if ( 0 === $post_thumbnail_id ) {
+                    continue;
+                }
+
 				$attachment->load_attachment_image_data( $post_thumbnail_id );
 
 				$attachment->ID            = $post_thumbnail_id;
