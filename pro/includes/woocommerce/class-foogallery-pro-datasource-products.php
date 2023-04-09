@@ -272,7 +272,9 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Products' ) ) {
 			$attachments = array();
 
 			foreach ( $products as $product ) {
-                if ( 'hidden' === $product->get_catalog_visibility() ) {
+
+                // Do not show products that are not visible.
+                if ( !$product->is_visible() ) {
                     continue;
                 }
 
