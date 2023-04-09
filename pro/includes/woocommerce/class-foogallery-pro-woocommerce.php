@@ -554,6 +554,15 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 				}
 			}
 
+            // Do we need to add a featured ribbon?
+			$featured_ribbon_type = foogallery_gallery_template_setting( 'ecommerce_featured_ribbon_type', '' );
+			if ( '' !== $featured_ribbon_type ) {
+				if ( $product->is_featured() ) {
+					$attachment->ribbon_type = $featured_ribbon_type;
+					$attachment->ribbon_text = foogallery_gallery_template_setting( 'ecommerce_featured_ribbon_text', __( 'Featured!', 'foogallery' ) );
+				}
+			}
+
 			if ( !is_a( $product, 'WC_Product_Variable' ) ) {
 				// Do we need "Add To Cart" button?
 				if ( $product->is_purchasable() ) {
@@ -806,6 +815,41 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 					'row_data' => array(
 						'data-foogallery-hidden'                   => true,
 						'data-foogallery-show-when-field'          => 'ecommerce_backorder_ribbon_type',
+						'data-foogallery-show-when-field-operator' => '!==',
+						'data-foogallery-show-when-field-value'    => '',
+						'data-foogallery-change-selector'          => 'input',
+						'data-foogallery-preview'                  => 'shortcode',
+						'data-foogallery-value-selector'           => 'input',
+					),
+				);
+
+                $new_fields[] = array(
+					'id'       => 'ecommerce_featured_ribbon_type',
+					'title'    => __( 'Featured Ribbon', 'foogallery' ),
+					'desc'     => __( 'The type of ribbon to display for products that are featured.', 'foogallery' ),
+					'section'  => __( 'Ecommerce', 'foogallery' ),
+					'subsection' => array( 'ecommerce-general' => __( 'General', 'foogallery' ) ),
+					'type'     => 'select',
+					'default'  => '',
+					'choices'  => FooGallery_Pro_Ribbons::get_ribbon_choices(),
+					'row_data' => array(
+						'data-foogallery-change-selector'          => 'select',
+						'data-foogallery-preview'                  => 'shortcode',
+						'data-foogallery-value-selector'           => 'select :selected',
+					),
+				);
+
+				$new_fields[] = array(
+					'id'       => 'ecommerce_featured_ribbon_text',
+					'title'    => __( 'Featured Ribbon Text', 'foogallery' ),
+					'desc'     => __( 'The text inside the ribbon to display for products that are featured.', 'foogallery' ),
+					'section'  => __( 'Ecommerce', 'foogallery' ),
+					'subsection' => array( 'ecommerce-general' => __( 'General', 'foogallery' ) ),
+					'type'     => 'text',
+					'default'  => __( 'Featured!', 'foogallery' ),
+					'row_data' => array(
+						'data-foogallery-hidden'                   => true,
+						'data-foogallery-show-when-field'          => 'ecommerce_featured_ribbon_type',
 						'data-foogallery-show-when-field-operator' => '!==',
 						'data-foogallery-show-when-field-value'    => '',
 						'data-foogallery-change-selector'          => 'input',
