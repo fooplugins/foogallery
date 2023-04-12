@@ -644,7 +644,9 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
 								<label for="attachments-foogallery-file-url" class="name"><?php _e('File URL', 'foogallery'); ?></label>
                                 <div class="setting-with-buttons">
                                     <input type="text" id="attachments-foogallery-file-url" value="<?php echo $modal_data['file_url'];?>" readonly />
-                                    <button type="button" class="button button-small copy-attachment-file-url" data-clipboard-target="#attachments-foogallery-file-url"><?php _e('Copy to clipboard', 'foogallery'); ?></button>
+                                    <div>
+                                        <button type="button" class="button button-small copy-attachment-file-url" data-clipboard-target="#attachments-foogallery-file-url"><?php _e('Copy to clipboard', 'foogallery'); ?></button>
+                                    </div>
                                 </div>
 							</span>
 						</div>

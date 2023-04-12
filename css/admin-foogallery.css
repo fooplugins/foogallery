@@ -919,17 +919,24 @@ button[data-balloon]{overflow:visible}[data-balloon]{position:relative}[data-bal
 	margin: 0;
 }
 #foogallery-image-edit-modal .tab-panels .settings span.setting .setting-with-buttons {
-	display: grid;
-	grid-template-columns: 82% auto;
-	grid-gap: 5px;
+	display: flex;
+	flex-wrap: nowrap;
+	grid-template-columns: unset;
+	grid-gap: unset;
 }
+
 #foogallery-image-edit-modal .tab-panels .settings span.setting .setting-with-buttons input {
-	width:auto;
-	float:none;
+	width: 100%;
 }
-#foogallery-image-edit-modal .tab-panels .settings span.setting .setting-with-buttons button {
-	height: 100%;
+
+#foogallery-image-edit-modal .tab-panels .settings span.setting .setting-with-buttons > div {
+	display: flex;
 }
+
+#foogallery-image-edit-modal .tab-panels .settings span.setting .setting-with-buttons > div > button {
+	margin-left: 5px;
+}
+
 #foogallery-image-edit-modal .tab-panels .settings span.setting span {
 	text-align: left;
 }
