@@ -24,6 +24,14 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Products' ) ) {
 			add_filter( 'woocommerce_product_data_store_cpt_get_products_query', array( $this, 'handle_price_range_query_var' ), 10, 2 );
 		}
 
+        /**
+         * Get terms from the product to show instead of attachment terms.
+         *
+         * @param $terms
+         * @param $taxonomy
+         * @param $attachment
+         * @return array|mixed|WP_Error
+         */
 		public function get_terms_from_product( $terms, $taxonomy, $attachment ) {
 			if ( isset( $attachment->product_datasource_used ) ) {
 
@@ -264,11 +272,22 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Products' ) ) {
 			$attachments = array();
 
 			foreach ( $products as $product ) {
+
+                // Do not show products that are not visible.
+                if ( !$product->is_visible() ) {
+                    continue;
+                }
+
 				$attachment = new FooGalleryAttachment();
 				$attachment->product = $product; // Store the product object.
 				$attachment->product_datasource_used = true; // Store the fact that the product was loaded from the datasource.
 
 				$post_thumbnail_id = get_post_thumbnail_id( $product->get_id() );
+
+                if ( 0 === $post_thumbnail_id ) {
+                    continue;
+                }
+
 				$attachment->load_attachment_image_data( $post_thumbnail_id );
 
 				$attachment->ID            = $post_thumbnail_id;

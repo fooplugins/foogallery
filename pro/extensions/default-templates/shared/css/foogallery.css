@@ -958,6 +958,10 @@
 	transform: rotateX(0deg);
 }
 div[class^="fg-ribbon-"] {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
     position: absolute;
     z-index: 6;
     color: #39bbac;
@@ -972,16 +976,22 @@ div[class^="fg-ribbon-"] {
 
     pointer-events: none;
 }
-div[class^="fg-ribbon-"] span {
+div[class^="fg-ribbon-"] > span {
     color: #FFF;
-    display: block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
     white-space: nowrap;
     overflow: hidden;
     text-transform: uppercase;
     font-size: 1em;
+    line-height: 1em;
     position: relative;
     text-align: center;
+}
+div[class^="fg-ribbon-"] > span > .dashicons + span {
+    margin-left: 0.4em;
 }
 .fg-loaded div[class^="fg-ribbon-"] {
     visibility: visible;
@@ -1012,7 +1022,6 @@ div.fg-ribbon-1 {
     border-top-left-radius: 3px;
     text-orientation: upright;
     writing-mode: vertical-rl;
-    line-height: 4em;
     max-height: calc(100% - 1em);
     max-width: calc(100% - 25px);
 }
@@ -1041,10 +1050,15 @@ div.fg-ribbon-1 {
 div.fg-ribbon-1 > span {
     letter-spacing: -0.2em;
 }
+
+div.fg-ribbon-1 > span > .dashicons + span {
+    margin-left: 0;
+    margin-top: 0.4em;
+}
 div.fg-ribbon-2 {
     height: 3em;
     line-height: 3em;
-    padding: 0 0.8em 0 1em;
+    padding: 0 0.5em 0 1em;
     left: -2px;
     top: 20px;
     max-height: calc(100% - 20px);
@@ -1067,10 +1081,10 @@ div.fg-ribbon-2 {
     height: 0;
     width: 0;
     top: 0;
-    right: -0.4em;
+    right: -0.75em;
     border-top: 1.5em solid transparent;
     border-bottom: 1.5em solid transparent;
-    border-left: 0.4em solid #c50084;
+    border-left: 0.8em solid #c50084;
 }
 div.fg-ribbon-3 {
     top: 15px;
@@ -1133,7 +1147,12 @@ div.fg-ribbon-4 {
     border-top: 2px solid #6c4f0b;
     border-right: 2px solid transparent;
 }
-.fg-ribbon-4 > span {
+div.fg-ribbon-4 > span {
+    display: flex;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    position: absolute;
     height: 3em;
     line-height: 3em;
     background: #cc8111;
@@ -1160,6 +1179,7 @@ div.fg-ribbon-5 {
 .fg-ribbon-5:before {
     width: 3em;
     height: 2px;
+    top: 0;
     right: 6.6em;
     background: #4D6530;
     border-radius: 2px 2px 0 0;
@@ -1173,6 +1193,10 @@ div.fg-ribbon-5 {
     border-radius: 0 2px 2px 0;
 }
 div.fg-ribbon-5 > span {
+    display: flex;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
     width: 16em;
     height: 3em;
     line-height: 3em;
@@ -1195,7 +1219,7 @@ div.fg-ribbon-6 {
     right: 20px;
     max-width: calc(100% - 26px);
     background-color: #ff0a00;
-    padding: 0 0.8em 0.7em;
+    padding: 0.5em 0.8em 0.8em;
     border-radius: 0 3px 50% 50%;
     line-height: 2em;
     box-shadow: -1px 2px 3px rgba(0,0,0,.3);
@@ -1218,6 +1242,52 @@ div.fg-ribbon-6 {
     top: 0;
     border-radius: 3px 3px 0 0;
     background: #941825;
+}
+div.fg-ribbon-7 {
+    display: block;
+    width: calc(100% + 4px);
+    height: calc(100% + 4px);
+    max-width: calc(100% + 4px);
+    max-height: calc(100% + 4px);
+    top: -2px;
+    left: -2px;
+    overflow: hidden;
+}
+.fg-ribbon-7:before, .fg-ribbon-7:after {
+    content: "";
+    position: absolute;
+}
+.fg-ribbon-7:before {
+    height: 0;
+    width: 0;
+    bottom: 5em;
+    left: 0;
+    border-top: 2px solid #333;
+    border-left: 2px solid transparent;
+}
+.fg-ribbon-7:after {
+    height: 0;
+    width: 0;
+    right: 0;
+    bottom: 5em;
+    border-top: 2px solid #333;
+    border-right: 2px solid transparent;
+}
+div.fg-ribbon-7 > span {
+    display: flex;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    position: absolute;
+    height: 3em;
+    line-height: 3em;
+    background: #444;
+    bottom: 2em;
+    box-shadow: 0 10px 10px -12px rgba(0, 0, 0, 0.6);
+    outline: 1px dashed #adadad;
+    outline-offset: -3px;
+    width: calc(100% + 6px);
+    left: -3px;
 }
 /* Caption Styles */
 .foogallery .fg-caption {

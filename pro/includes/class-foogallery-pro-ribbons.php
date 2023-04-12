@@ -29,7 +29,23 @@ if ( ! class_exists( 'FooGallery_Pro_Ribbons' ) ) {
 
 			// Override the ribbon based on product metadata.
 			add_filter( 'foogallery_datasource_woocommerce_build_attachment', array( $this, 'override_ribbon_from_product' ), 20, 2 );
+
+            // Check if we need to enqueue dashicons.
+            add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_dashicons' ) );
 		}
+
+        /**
+         * Enqueues dashicons CSS if they have been used in the ribbon html.
+         *
+         * @return void
+         */
+        public function enqueue_dashicons() {
+            global $foogallery_ribbons_uses_dashicons;
+
+            if ( true === $foogallery_ribbons_uses_dashicons ) {
+                wp_enqueue_style('dashicons');
+            }
+        }
 
 		/**
 		 * Save the ribbon product meta
@@ -142,11 +158,37 @@ if ( ! class_exists( 'FooGallery_Pro_Ribbons' ) ) {
 		public function add_ribbon_html( $html, $foogallery_attachment, $args ) {
 			if ( isset( $foogallery_attachment->ribbon_type ) && isset( $foogallery_attachment->ribbon_text ) ) {
 				//Add the ribbon HTML!!!
-				$ribbon_html = '<div class="' . $foogallery_attachment->ribbon_type . '"><span>' . esc_html( $foogallery_attachment->ribbon_text ) . '</span></div>';
+				$ribbon_html = '<div class="' . $foogallery_attachment->ribbon_type . '"><span>' . $this->generate_ribbon_html( $foogallery_attachment->ribbon_text ) . '</span></div>';
 				$html = str_replace( '<figure class=',  $ribbon_html . '<figure class=', $html );
 			}
 			return $html;
 		}
+
+        /**
+         * Generates the HTML for the ribbon text.
+         *
+         * @param $ribbon_text
+         * @return array|string|string[]|null
+         */
+        private function generate_ribbon_html( $ribbon_text ) {
+            global $foogallery_ribbons_uses_dashicons;
+
+            $replacements = array(
+                '/icon-star/' => 'icon-star-filled',
+                '/icon-money/' => 'icon-money-alt',
+                '/icon-(\S+)/' => '<i class="dashicons dashicons-$1"></i>',
+            );
+
+            $ribbon_text = esc_html( $ribbon_text );
+
+            $ribbon_text = preg_replace( array_keys( $replacements ), array_values( $replacements ), $ribbon_text );
+
+            if ( strpos( $ribbon_text, 'dashicons') !== false ) {
+                $foogallery_ribbons_uses_dashicons = true;
+            }
+
+            return $ribbon_text;
+        }
 
 		/**
 		 * Add the ribbon data to the json object.
@@ -164,7 +206,7 @@ if ( ! class_exists( 'FooGallery_Pro_Ribbons' ) ) {
 			if ( isset( $foogallery_attachment->ribbon_type ) && isset( $foogallery_attachment->ribbon_text ) ) {
 				$json_object->ribbon = array(
 					'type' => $foogallery_attachment->ribbon_type,
-                    'text' => $foogallery_attachment->ribbon_text
+                    'text' => $this->generate_ribbon_html( $foogallery_attachment->ribbon_text )
 				);
 			}
 
@@ -208,9 +250,10 @@ if ( ! class_exists( 'FooGallery_Pro_Ribbons' ) ) {
 				'fg-ribbon-5' => __( 'Type 1 (top-right, diagonal, green)', 'foogallery' ),
 				'fg-ribbon-3' => __( 'Type 2 (top-left, small, blue)', 'foogallery' ),
 				'fg-ribbon-4' => __( 'Type 3 (top, full-width, yellow)', 'foogallery' ),
-				'fg-ribbon-6' => __( 'Type 4 (top-right, rounded, pink)', 'foogallery' ),
-				'fg-ribbon-2' => __( 'Type 5 (top-left, medium, purple)', 'foogallery' ),
+				'fg-ribbon-6' => __( 'Type 4 (top-right, rounded, red)', 'foogallery' ),
+				'fg-ribbon-2' => __( 'Type 5 (top-left, medium, pink)', 'foogallery' ),
 				'fg-ribbon-1' => __( 'Type 6 (top-left, vertical, orange)', 'foogallery' ),
+                'fg-ribbon-7' => __( 'Type 7 (bottom, full-width, grey)', 'foogallery' ),
 			);
 		}
 	}

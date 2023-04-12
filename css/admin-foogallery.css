@@ -898,15 +898,45 @@ button[data-balloon]{overflow:visible}[data-balloon]{position:relative}[data-bal
 	grid-template-columns: 35% auto;
 	grid-gap: 30px;
 }
-#foogallery-image-edit-modal .tab-panels .settings span.setting input,
-#foogallery-image-edit-modal .tab-panels .settings span.setting select,
-#foogallery-image-edit-modal .tab-panels .settings span.setting textarea {
+#foogallery-image-edit-modal .tab-panels .settings span.setting.has-description {
+	margin-bottom: 0px;
+}
+#foogallery-image-edit-modal .tab-panels .settings .description {
+	padding-left: calc(35% + 30px);
+	float: none;
+	width: auto;
+}
+#foogallery-image-edit-modal .tab-panels .settings span.setting > *:not(label) {
     width: calc(100% - 10px);
     box-sizing: border-box;
     max-width: 100%;
     margin-left: 0px !important;
     margin-right: 0px !important;
 }
+#foogallery-image-edit-modal .tab-panels .settings span.setting input,
+#foogallery-image-edit-modal .tab-panels .settings span.setting textarea,
+#foogallery-image-edit-modal .tab-panels .settings span.setting select {
+	margin: 0;
+}
+#foogallery-image-edit-modal .tab-panels .settings span.setting .setting-with-buttons {
+	display: flex;
+	flex-wrap: nowrap;
+	grid-template-columns: unset;
+	grid-gap: unset;
+}
+
+#foogallery-image-edit-modal .tab-panels .settings span.setting .setting-with-buttons input {
+	width: 100%;
+}
+
+#foogallery-image-edit-modal .tab-panels .settings span.setting .setting-with-buttons > div {
+	display: flex;
+}
+
+#foogallery-image-edit-modal .tab-panels .settings span.setting .setting-with-buttons > div > button {
+	margin-left: 5px;
+}
+
 #foogallery-image-edit-modal .tab-panels .settings span.setting span {
 	text-align: left;
 }

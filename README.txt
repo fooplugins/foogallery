@@ -3,8 +3,8 @@ Contributors: bradvin, steveush, fooplugins
 Donate link: https://fooplugins.com
 Tags: gallery, image gallery, photo gallery, responsive gallery, wordpress gallery plugin, best gallery plugin, albums, media gallery, video gallery, lightbox
 Requires at least: 5.2
-Tested up to: 6.1
-Stable tag: 2.2.26
+Tested up to: 6.2
+Stable tag: 2.2.35
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -133,12 +133,17 @@ There are 3 PRO plans available, that will work with any budget:
 	*	Create a dynamic gallery from your WooCommerce products in seconds!
 	*	Filter using WooCommerce product categories
 	*	Show sales ribbons for products on sale
+	*	Show ribbons for featured products, products that are out of stock, or products on backorder
 	*	Add-to-cart buttons on thumbnails
 	*	Support for product variations
 	*	Show product details (including variations) in Lightbox
 *	Sell your images online - [demo](https://footest.tastewp.com/)
 	*	Link all your gallery items to a single master product
-	*	Supports variations
+	*	Supports variations, e.g. sell images of different sizes
+	*   Supports file downloads, e.g. customers can download different sized images
+*   Buttons and Ribbons
+    *   Add custom buttons to your images
+    *   Add custom ribbons to your images to attract attention
 *	Master Galleries
     *   Set a gallery as a master and then all galleries who use that master will inherit all settings from the master - [docs](https://fooplugins.com/documentation/foogallery/pro-commerce/use-master-gallery/)
 *   White Labeling
@@ -311,6 +316,19 @@ We did the research and comparison. See our findings : [What is the Best WordPre
 Please update in order to for FooGallery to work in WP 5.5+!
 
 == Changelog ==
+
+= 2.2.41 =
+* Date Updated : 10 Apr 2023
+* Update : Updated to Freemius SDK 2.5.6
+* Update : FooGallery client side 2.0.45
+* Fix : Minor bug and styling fixes in advanced attachment modal.
+* Fix : Minor security issue fixed on the FooGallery edit page (logged in administrators only)
+[//]: # fs_premium_only_begin
+* New : [Commerce Plan] Added support for file downloads when using a master product!
+* New : [Commerce Plan] Added settings to add a ribbon to out of stock, backorder and featured products when using product datasource.
+* New : [Commerce Plan] Added ability to include icons (dashicons) within ribbons.
+* New : [Commerce Plan] Added new ribbon option type (bottom, full-width, grey).
+[//]: # fs_premium_only_end
 
 = 2.2.35 =
 * Date Updated : 4 Mar 2023

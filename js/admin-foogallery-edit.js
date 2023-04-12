@@ -7,6 +7,10 @@ FooGallery.autoEnabled = false;
     FOOGALLERY.attachments = [];
     FOOGALLERY.selected_attachment_id = 0;
 
+	// Used for selecting files from the media modal.
+	FOOGALLERY.current_media_selector_modal = false;
+	FOOGALLERY.current_media_selector_input = false;
+
     FOOGALLERY.calculateAttachmentIds = function() {
         var sorted = [];
         $('.foogallery-attachments-list li:not(.add-attachment)').each(function() {
@@ -561,6 +565,8 @@ FooGallery.autoEnabled = false;
 
 		FOOGALLERY.initAttachmentModal();
 
+		FOOGALLERY.initMediaSelector();
+
         $('.foogallery-attachments-list')
             .on('click' ,'a.remove', function(e) {
 				e.preventDefault();
@@ -637,6 +643,104 @@ FooGallery.autoEnabled = false;
 			});
 		} );
     };
+
+	FOOGALLERY.initMediaSelector = function() {
+		$(document).on('click', '.foogallery-media-selector-choose', function(e){
+			e.preventDefault();
+
+			var $el = $( this );
+
+			if ( $el.data( 'input' ) ) {
+				// The input has been set by data-input="#my-input"
+				FOOGALLERY.current_media_selector_input = $( $el.data('input') );
+			} else {
+				// Try and be smart and find the input.
+				FOOGALLERY.current_media_selector_input = $el.parent().find( 'input[type="text"]')
+			}
+
+			// If we do not have an input then get out!
+			if ( FOOGALLERY.current_media_selector_input.length === 0 ) {
+				return;
+			}
+
+			// If the media frame already exists, reopen it.
+			if ( FOOGALLERY.current_media_selector_modal ) {
+				FOOGALLERY.current_media_selector_modal.open();
+				return;
+			}
+
+			var
+				modalTitle = $el.data('modal-title') ? $el.data( 'modal-title' ) : 'Choose Image',
+				modalButton = $el.data('modal-button') ? $el.data( 'modal-button' ) : 'Select Image',
+				modalMultiple = $el.data('modal-multiple' ) ? $el.data( 'modal-multiple' ) === 'yes' : true;
+				states = [
+					// Main states.
+					new wp.media.controller.Library( {
+						library: wp.media.query(),
+						multiple: modalMultiple,
+						title: modalTitle,
+						priority: 20,
+						filterable: 'uploaded',
+					} ),
+				];
+
+			// Create the media frame.
+			FOOGALLERY.current_media_selector_modal = wp.media.frames.downloadable_file = wp.media(
+				{
+					// Set the title of the modal.
+					title: modalTitle,
+					library: {
+						type: '',
+					},
+					button: {
+						text: modalButton,
+					},
+					multiple: modalMultiple,
+					states: states,
+				}
+			);
+
+			// When an image is selected, run a callback.
+			FOOGALLERY.current_media_selector_modal.on( 'select', function () {
+				var file_path = '',
+					selection = FOOGALLERY.current_media_selector_modal.state().get( 'selection' );
+
+				selection.map( function ( attachment ) {
+					attachment = attachment.toJSON();
+					if ( attachment.url ) {
+						file_path = attachment.url;
+					}
+				} );
+
+				FOOGALLERY.current_media_selector_input.val( file_path ).trigger( 'change' );
+			} );
+
+			// Finally, open the modal.
+			FOOGALLERY.current_media_selector_modal.open();
+		});
+
+		$(document).on('click', '.foogallery-media-selector-clear', function(e){
+			e.preventDefault();
+
+			var $el = $( this );
+
+			if ( $el.data( 'input' ) ) {
+				// The input has been set by data-input="#my-input"
+				FOOGALLERY.current_media_selector_input = $( $el.data('input') );
+			} else {
+				// Try and be smart and find the input.
+				FOOGALLERY.current_media_selector_input = $el.parent().find( 'input[type="text"]')
+			}
+
+			// If we do not have an input then get out!
+			if ( FOOGALLERY.current_media_selector_input.length === 0 ) {
+				return;
+			}
+
+			// Clear the input.
+			FOOGALLERY.current_media_selector_input.val( '' ).trigger( 'change' );
+		});
+	};
 
 	FOOGALLERY.initAttachmentModal = function() {
 		//close attachments modal

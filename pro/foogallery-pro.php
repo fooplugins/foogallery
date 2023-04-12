@@ -44,7 +44,9 @@ require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-ribbons.php';
 require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-buttons.php';
 require_once FOOGALLERY_PATH . 'pro/includes/woocommerce/class-foogallery-pro-woocommerce.php';
 require_once FOOGALLERY_PATH . 'pro/includes/woocommerce/class-foogallery-pro-datasource-products.php';
-require_once FOOGALLERY_PATH . 'pro/includes/woocommerce/class-foogallery-pro-woocommerce-data-transfer.php';
+require_once FOOGALLERY_PATH . 'pro/includes/woocommerce/class-foogallery-pro-woocommerce-base.php';
+require_once FOOGALLERY_PATH . 'pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php';
+require_once FOOGALLERY_PATH . 'pro/includes/woocommerce/class-foogallery-pro-woocommerce-downloads.php';
 require_once FOOGALLERY_PATH . 'pro/extensions/default-templates/product/class-product-gallery-template.php';
 require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-master-galleries.php';
 
@@ -99,7 +101,8 @@ if ( ! class_exists( 'FooGallery_Pro' ) ) {
 				new FooGallery_Pro_Ribbons();
 				new FooGallery_Pro_Buttons();
 				new FooGallery_Product_Gallery_Template();
-				new FooGallery_Pro_Woocommerce_Data_Transfer();
+				new FooGallery_Pro_Woocommerce_Master_Product();
+                new FooGallery_Pro_Woocommerce_Downloads();
 				new FooGallery_Pro_Whitelabelling();
 				new FooGallery_Pro_Master_Galleries();
 			}

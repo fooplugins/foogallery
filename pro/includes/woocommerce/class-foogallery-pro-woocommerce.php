@@ -91,7 +91,6 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 			$tabs['foogallery'] = array(
 				'label'    => __( 'FooGallery', 'foogallery' ),
 				'target'   => 'foogallery_product_data',
-				//'class'    => array('show_if_virtual'),
 				'priority' => 71,
 			);
 
@@ -525,11 +524,11 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
                 return $attachment;
             }
 
-			// Do we need to add ribbons?
-			$ribbon_type = foogallery_gallery_template_setting( 'ecommerce_sale_ribbon_type', 'fg-ribbon-5' );
-			if ( 'none' !== $ribbon_type ) {
+			// Do we need to add a sales ribbons?
+			$sale_ribbon_type = foogallery_gallery_template_setting( 'ecommerce_sale_ribbon_type', 'fg-ribbon-5' );
+			if ( '' !== $sale_ribbon_type ) {
 				if ( $product->is_on_sale() ) {
-					$attachment->ribbon_type = $ribbon_type;
+					$attachment->ribbon_type = $sale_ribbon_type;
 					$attachment->ribbon_text = foogallery_gallery_template_setting( 'ecommerce_sale_ribbon_text', __( 'Sale', 'foogallery' ) );
 					if ( strpos( $attachment->ribbon_text, '{{%}}' ) > 0 ) {
 						$attachment->ribbon_text = str_replace( '{{%}}', self::calculate_percentage_discount( $product ), $attachment->ribbon_text );
@@ -537,20 +536,49 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 				}
 			}
 
+            // Do we need to add a featured ribbon?
+			$featured_ribbon_type = foogallery_gallery_template_setting( 'ecommerce_featured_ribbon_type', '' );
+			if ( '' !== $featured_ribbon_type ) {
+				if ( $product->is_featured() ) {
+					$attachment->ribbon_type = $featured_ribbon_type;
+					$attachment->ribbon_text = foogallery_gallery_template_setting( 'ecommerce_featured_ribbon_text', __( 'Featured!', 'foogallery' ) );
+				}
+			}
+
+            // Do we need to add an outofstock ribbon?
+			$out_of_stock_ribbon_type = foogallery_gallery_template_setting( 'ecommerce_outofstock_ribbon_type', '' );
+			if ( '' !== $out_of_stock_ribbon_type ) {
+				if ( !$product->is_in_stock() ) {
+					$attachment->ribbon_type = $out_of_stock_ribbon_type;
+					$attachment->ribbon_text = foogallery_gallery_template_setting( 'ecommerce_outofstock_ribbon_text', __( 'Out Of Stock', 'foogallery' ) );
+				}
+			}
+
+            // Do we need to add a backorder ribbon?
+			$backorder_ribbon_type = foogallery_gallery_template_setting( 'ecommerce_backorder_ribbon_type', '' );
+			if ( '' !== $out_of_stock_ribbon_type ) {
+				if ( $product->is_on_backorder() ) {
+					$attachment->ribbon_type = $backorder_ribbon_type;
+					$attachment->ribbon_text = foogallery_gallery_template_setting( 'ecommerce_backorder_ribbon_text', __( 'On Backorder', 'foogallery' ) );
+				}
+			}
+
 			if ( !is_a( $product, 'WC_Product_Variable' ) ) {
 				// Do we need "Add To Cart" button?
-				$button_add_to_cart = foogallery_gallery_template_setting( 'ecommerce_button_add_to_cart', '' );
-				if ( '' !== $button_add_to_cart ) {
-					$button_add_to_cart_behaviour = foogallery_gallery_template_setting( 'ecommerce_button_add_to_cart_behaviour', 'fg-woo-add-to-cart-ajax' );
-					$button_add_to_cart_url       = self::determine_url( $button_add_to_cart_behaviour, $product, $attachment );
-					if ( ! empty( $button_add_to_cart_url ) ) {
-						$attachment->buttons[] = array(
-							'class' => $button_add_to_cart_behaviour,
-							'text'  => foogallery_gallery_template_setting( 'ecommerce_button_add_to_cart_text', __( 'Add To Cart', 'foogallery' ) ),
-							'url'   => $button_add_to_cart_url,
-						);
-					}
-				}
+				if ( $product->is_purchasable() ) {
+                    $button_add_to_cart = foogallery_gallery_template_setting( 'ecommerce_button_add_to_cart', '' );
+                    if ( '' !== $button_add_to_cart ) {
+                        $button_add_to_cart_behaviour = foogallery_gallery_template_setting( 'ecommerce_button_add_to_cart_behaviour', 'fg-woo-add-to-cart-ajax' );
+                        $button_add_to_cart_url       = self::determine_url( $button_add_to_cart_behaviour, $product, $attachment );
+                        if ( ! empty( $button_add_to_cart_url ) ) {
+                            $attachment->buttons[] = array(
+                                'class' => $button_add_to_cart_behaviour,
+                                'text'  => foogallery_gallery_template_setting( 'ecommerce_button_add_to_cart_text', __( 'Add To Cart', 'foogallery' ) ),
+                                'url'   => $button_add_to_cart_url,
+                            );
+                        }
+                    }
+                }
 			} else {
 				$button_variable = foogallery_gallery_template_setting( 'ecommerce_button_variable', '' );
 				if ( '' !== $button_variable ) {
@@ -684,53 +712,18 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 				$new_fields[] = array(
 					'id'      => 'ecommerce_info',
 					'title'   => __( 'Ecommerce Info', 'foogallery' ),
-					'desc'    => __( 'The below settings will only apply if you are using the WooCommerce Product datasource, or if individual attachments are linked to WooCommerce products.', 'foogallery' ),
+					'desc'    => __( 'Buttons will only show if you are using the WooCommerce Product datasource, or if individual attachments are linked to WooCommerce products.', 'foogallery' ),
 					'section' => __( 'Ecommerce', 'foogallery' ),
-					'subsection' => array( 'ecommerce-general' => __( 'General', 'foogallery' ) ),
+					'subsection' => array( 'ecommerce-buttons' => __( 'Buttons', 'foogallery' ) ),
 					'type'    => 'help',
 				);
 
-				$new_fields[] = array(
-					'id'       => 'ecommerce_sale_ribbon_type',
-					'title'    => __( 'Sale Ribbon', 'foogallery' ),
-					'desc'     => __( 'The type of ribbon to display for products that are on sale.', 'foogallery' ),
-					'section'  => __( 'Ecommerce', 'foogallery' ),
-					'subsection' => array( 'ecommerce-general' => __( 'General', 'foogallery' ) ),
-					'type'     => 'select',
-					'default'  => 'fg-ribbon-3',
-					'choices'  => FooGallery_Pro_Ribbons::get_ribbon_choices(),
-					'row_data' => array(
-						'data-foogallery-change-selector'          => 'select',
-						'data-foogallery-preview'                  => 'shortcode',
-						'data-foogallery-value-selector'           => 'select :selected',
-					),
-				);
-
-				$new_fields[] = array(
-					'id'       => 'ecommerce_sale_ribbon_text',
-					'title'    => __( 'Sale Ribbon Text', 'foogallery' ),
-					'desc'     => __( 'The text inside the ribbon to display for products that are on sale. Use "{{%}}" to display the percentage discount.', 'foogallery' ),
-					'section'  => __( 'Ecommerce', 'foogallery' ),
-					'subsection' => array( 'ecommerce-general' => __( 'General', 'foogallery' ) ),
-					'type'     => 'text',
-					'default'  => __( 'Sale', 'foogallery' ),
-					'row_data' => array(
-						'data-foogallery-hidden'                   => true,
-						'data-foogallery-show-when-field'          => 'ecommerce_sale_ribbon_type',
-						'data-foogallery-show-when-field-operator' => '!==',
-						'data-foogallery-show-when-field-value'    => '',
-						'data-foogallery-change-selector'          => 'input',
-						'data-foogallery-preview'                  => 'shortcode',
-						'data-foogallery-value-selector'           => 'input',
-					),
-				);
-
-				$new_fields[] = array(
+                $new_fields[] = array(
 					'id'       => 'ecommerce_button_view_product',
 					'title'    => __( '"View Product" Button', 'foogallery' ),
 					'desc'     => __( 'Shows a button which redirects to the product page.', 'foogallery' ),
 					'section'  => __( 'Ecommerce', 'foogallery' ),
-					'subsection' => array( 'ecommerce-general' => __( 'General', 'foogallery' ) ),
+					'subsection' => array( 'ecommerce-buttons' => __( 'Buttons', 'foogallery' ) ),
 					'type'     => 'radio',
 					'spacer'   => '<span class="spacer"></span>',
 					'default'  => '',
@@ -751,7 +744,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 					'title'    => __( '"View Product" Button Behaviour', 'foogallery' ),
 					'desc'     => __( 'What happens when the "View Product" button is clicked.', 'foogallery' ),
 					'section'  => __( 'Ecommerce', 'foogallery' ),
-					'subsection' => array( 'ecommerce-general' => __( 'General', 'foogallery' ) ),
+					'subsection' => array( 'ecommerce-buttons' => __( 'Buttons', 'foogallery' ) ),
 					'type'     => 'select',
 					'choices'  => array(
 						'fg-woo-view-product' => __( 'Redirect to product page', 'foogallery' ),
@@ -775,7 +768,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 					'title'    => __( '"View Product" Button Text', 'foogallery' ),
 					'desc'     => __( 'The text displayed on the "View Product" button.', 'foogallery' ),
 					'section'  => __( 'Ecommerce', 'foogallery' ),
-					'subsection' => array( 'ecommerce-general' => __( 'General', 'foogallery' ) ),
+					'subsection' => array( 'ecommerce-buttons' => __( 'Buttons', 'foogallery' ) ),
 					'type'     => 'text',
 					'default'  => __( 'View Product', 'foogallery' ),
 					'row_data' => array(
@@ -794,7 +787,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 					'title'    => __( '"Add To Cart" Button', 'foogallery' ),
 					'desc'     => __( 'Shows an "Add To Cart" button for the product. Will only show for purchasable products.', 'foogallery' ),
 					'section'  => __( 'Ecommerce', 'foogallery' ),
-					'subsection' => array( 'ecommerce-general' => __( 'General', 'foogallery' ) ),
+					'subsection' => array( 'ecommerce-buttons' => __( 'Buttons', 'foogallery' ) ),
 					'type'     => 'radio',
 					'spacer'   => '<span class="spacer"></span>',
 					'choices'  => array(
@@ -814,7 +807,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 					'title'    => __( '"Add To Cart" Button Behaviour', 'foogallery' ),
 					'desc'     => __( 'What happens when the "Add to Cart" button is clicked.', 'foogallery' ),
 					'section'  => __( 'Ecommerce', 'foogallery' ),
-					'subsection' => array( 'ecommerce-general' => __( 'General', 'foogallery' ) ),
+					'subsection' => array( 'ecommerce-buttons' => __( 'Buttons', 'foogallery' ) ),
 					'type'     => 'select',
 					'choices'  => self::get_button_behaviour_choices(),
 					'default'  => 'fg-woo-add-to-cart-ajax',
@@ -834,7 +827,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 					'title'    => __( '"Add To Cart" Button Text', 'foogallery' ),
 					'desc'     => __( 'The text displayed on the "Add To Cart" action button.', 'foogallery' ),
 					'section'  => __( 'Ecommerce', 'foogallery' ),
-					'subsection' => array( 'ecommerce-general' => __( 'General', 'foogallery' ) ),
+					'subsection' => array( 'ecommerce-buttons' => __( 'Buttons', 'foogallery' ) ),
 					'type'     => 'text',
 					'default'  => __( 'Add To Cart', 'foogallery' ),
 					'row_data' => array(
@@ -853,7 +846,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 					'title'    => __( '"Select Options" Button', 'foogallery' ),
 					'desc'     => __( 'Shows a "Select Options" button for the variable products only.', 'foogallery' ),
 					'section'  => __( 'Ecommerce', 'foogallery' ),
-					'subsection' => array( 'ecommerce-general' => __( 'General', 'foogallery' ) ),
+					'subsection' => array( 'ecommerce-buttons' => __( 'Buttons', 'foogallery' ) ),
 					'type'     => 'radio',
 					'spacer'   => '<span class="spacer"></span>',
 					'choices'  => array(
@@ -873,7 +866,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 					'title'    => __( '"Select Options" Button Text', 'foogallery' ),
 					'desc'     => __( 'The text displayed on the "Select Options" button for variable products.', 'foogallery' ),
 					'section'  => __( 'Ecommerce', 'foogallery' ),
-					'subsection' => array( 'ecommerce-general' => __( 'General', 'foogallery' ) ),
+					'subsection' => array( 'ecommerce-buttons' => __( 'Buttons', 'foogallery' ) ),
 					'type'     => 'text',
 					'default'  => __( 'Select Options', 'foogallery' ),
 					'row_data' => array(
@@ -885,6 +878,178 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 						'data-foogallery-preview'                  => 'shortcode',
 						'data-foogallery-value-selector'           => 'input',
 					),
+				);
+
+                $new_fields[] = array(
+					'id'      => 'ecommerce_ribbon_info',
+					'title'   => __( 'Ecommerce Ribbon Info', 'foogallery' ),
+					'desc'    => __( 'You can show different ribbons for products that are on sale, out of stock, on backorder or featured.', 'foogallery' ),
+					'section' => __( 'Ecommerce', 'foogallery' ),
+					'subsection' => array( 'ecommerce-ribbons' => __( 'Ribbons', 'foogallery' ) ),
+					'type'    => 'help',
+				);
+
+				$new_fields[] = array(
+					'id'       => 'ecommerce_sale_ribbon_type',
+					'title'    => __( 'Sale Ribbon', 'foogallery' ),
+					'desc'     => __( 'The type of ribbon to display for products that are on sale.', 'foogallery' ),
+					'section'  => __( 'Ecommerce', 'foogallery' ),
+					'subsection' => array( 'ecommerce-ribbons' => __( 'Ribbons', 'foogallery' ) ),
+					'type'     => 'select',
+					'default'  => 'fg-ribbon-3',
+					'choices'  => FooGallery_Pro_Ribbons::get_ribbon_choices(),
+					'row_data' => array(
+						'data-foogallery-change-selector'          => 'select',
+						'data-foogallery-preview'                  => 'shortcode',
+						'data-foogallery-value-selector'           => 'select :selected',
+					),
+				);
+
+				$new_fields[] = array(
+					'id'       => 'ecommerce_sale_ribbon_text',
+					'title'    => __( 'Sale Ribbon Text', 'foogallery' ),
+					'desc'     => __( 'The text inside the ribbon to display for products that are on sale. Use "{{%}}" to display the percentage discount.', 'foogallery' ),
+					'section'  => __( 'Ecommerce', 'foogallery' ),
+					'subsection' => array( 'ecommerce-ribbons' => __( 'Ribbons', 'foogallery' ) ),
+					'type'     => 'text',
+					'default'  => __( 'Sale', 'foogallery' ),
+					'row_data' => array(
+						'data-foogallery-hidden'                   => true,
+						'data-foogallery-show-when-field'          => 'ecommerce_sale_ribbon_type',
+						'data-foogallery-show-when-field-operator' => '!==',
+						'data-foogallery-show-when-field-value'    => '',
+						'data-foogallery-change-selector'          => 'input',
+						'data-foogallery-preview'                  => 'shortcode',
+						'data-foogallery-value-selector'           => 'input',
+					),
+				);
+
+                $new_fields[] = array(
+					'id'       => 'ecommerce_featured_ribbon_type',
+					'title'    => __( 'Featured Ribbon', 'foogallery' ),
+					'desc'     => __( 'The type of ribbon to display for products that are featured.', 'foogallery' ),
+					'section'  => __( 'Ecommerce', 'foogallery' ),
+					'subsection' => array( 'ecommerce-ribbons' => __( 'Ribbons', 'foogallery' ) ),
+					'type'     => 'select',
+					'default'  => '',
+					'choices'  => FooGallery_Pro_Ribbons::get_ribbon_choices(),
+					'row_data' => array(
+						'data-foogallery-change-selector'          => 'select',
+						'data-foogallery-preview'                  => 'shortcode',
+						'data-foogallery-value-selector'           => 'select :selected',
+					),
+				);
+
+				$new_fields[] = array(
+					'id'       => 'ecommerce_featured_ribbon_text',
+					'title'    => __( 'Featured Ribbon Text', 'foogallery' ),
+					'desc'     => __( 'The text inside the ribbon to display for products that are featured.', 'foogallery' ),
+					'section'  => __( 'Ecommerce', 'foogallery' ),
+					'subsection' => array( 'ecommerce-ribbons' => __( 'Ribbons', 'foogallery' ) ),
+					'type'     => 'text',
+					'default'  => 'icon-star',
+					'row_data' => array(
+						'data-foogallery-hidden'                   => true,
+						'data-foogallery-show-when-field'          => 'ecommerce_featured_ribbon_type',
+						'data-foogallery-show-when-field-operator' => '!==',
+						'data-foogallery-show-when-field-value'    => '',
+						'data-foogallery-change-selector'          => 'input',
+						'data-foogallery-preview'                  => 'shortcode',
+						'data-foogallery-value-selector'           => 'input',
+					),
+				);
+
+                $new_fields[] = array(
+					'id'       => 'ecommerce_outofstock_ribbon_type',
+					'title'    => __( 'Out Of Stock Ribbon', 'foogallery' ),
+					'desc'     => __( 'The type of ribbon to display for products that are out of stock.', 'foogallery' ),
+					'section'  => __( 'Ecommerce', 'foogallery' ),
+					'subsection' => array( 'ecommerce-ribbons' => __( 'Ribbons', 'foogallery' ) ),
+					'type'     => 'select',
+					'default'  => '',
+					'choices'  => FooGallery_Pro_Ribbons::get_ribbon_choices(),
+					'row_data' => array(
+						'data-foogallery-change-selector'          => 'select',
+						'data-foogallery-preview'                  => 'shortcode',
+						'data-foogallery-value-selector'           => 'select :selected',
+					),
+				);
+
+				$new_fields[] = array(
+					'id'       => 'ecommerce_outofstock_ribbon_text',
+					'title'    => __( 'Out Of Stock Ribbon Text', 'foogallery' ),
+					'desc'     => __( 'The text inside the ribbon to display for products that are out of stock.', 'foogallery' ),
+					'section'  => __( 'Ecommerce', 'foogallery' ),
+					'subsection' => array( 'ecommerce-ribbons' => __( 'Ribbons', 'foogallery' ) ),
+					'type'     => 'text',
+					'default'  => __( 'Out Of Stock', 'foogallery' ),
+					'row_data' => array(
+						'data-foogallery-hidden'                   => true,
+						'data-foogallery-show-when-field'          => 'ecommerce_outofstock_ribbon_type',
+						'data-foogallery-show-when-field-operator' => '!==',
+						'data-foogallery-show-when-field-value'    => '',
+						'data-foogallery-change-selector'          => 'input',
+						'data-foogallery-preview'                  => 'shortcode',
+						'data-foogallery-value-selector'           => 'input',
+					),
+				);
+
+                $new_fields[] = array(
+					'id'       => 'ecommerce_backorder_ribbon_type',
+					'title'    => __( 'Backorder Ribbon', 'foogallery' ),
+					'desc'     => __( 'The type of ribbon to display for products that are on backorder.', 'foogallery' ),
+					'section'  => __( 'Ecommerce', 'foogallery' ),
+					'subsection' => array( 'ecommerce-ribbons' => __( 'Ribbons', 'foogallery' ) ),
+					'type'     => 'select',
+					'default'  => '',
+					'choices'  => FooGallery_Pro_Ribbons::get_ribbon_choices(),
+					'row_data' => array(
+						'data-foogallery-change-selector'          => 'select',
+						'data-foogallery-preview'                  => 'shortcode',
+						'data-foogallery-value-selector'           => 'select :selected',
+					),
+				);
+
+				$new_fields[] = array(
+					'id'       => 'ecommerce_backorder_ribbon_text',
+					'title'    => __( 'Backorder Ribbon Text', 'foogallery' ),
+					'desc'     => __( 'The text inside the ribbon to display for products that are on backorder.', 'foogallery' ),
+					'section'  => __( 'Ecommerce', 'foogallery' ),
+					'subsection' => array( 'ecommerce-ribbons' => __( 'Ribbons', 'foogallery' ) ),
+					'type'     => 'text',
+					'default'  => __( 'On Backorder', 'foogallery' ),
+					'row_data' => array(
+						'data-foogallery-hidden'                   => true,
+						'data-foogallery-show-when-field'          => 'ecommerce_backorder_ribbon_type',
+						'data-foogallery-show-when-field-operator' => '!==',
+						'data-foogallery-show-when-field-value'    => '',
+						'data-foogallery-change-selector'          => 'input',
+						'data-foogallery-preview'                  => 'shortcode',
+						'data-foogallery-value-selector'           => 'input',
+					),
+				);
+
+                $ribbon_help_html = '<h3> ' . __('Show Icons In Your Ribbons', 'foogallery') . '</h3>' .
+                    __( 'You can also show icons within your ribbons, by including the text "icon-star" or similar. Below are a list of icons that you might find useful for your shop:', 'foogallery' ) .
+                    '<br /><br />' .
+                    '<code>icon-star</code> : <i class="dashicons dashicons-star-filled" style="margin-right:50px;"></i>' .
+                    '<code>icon-money</code> : <i class="dashicons dashicons-money-alt" style="margin-right:50px;"></i>' .
+                    '<code>icon-bell</code> : <i class="dashicons dashicons-bell" style="margin-right:50px;"></i>' .
+                    '<code>icon-warning</code> : <i class="dashicons dashicons-warning" style="margin-right:50px;"></i>' .
+                    '<code>icon-awards</code> : <i class="dashicons dashicons-awards" style="margin-right:50px;"></i>' .
+                    '<code>icon-clock</code> : <i class="dashicons dashicons-clock" style="margin-right:50px;"></i>' .
+                    '<code>icon-paperclip</code> : <i class="dashicons dashicons-paperclip" style="margin-right:50px;"></i>' .
+                    '<code>icon-thumbs-up</code> : <i class="dashicons dashicons-thumbs-up" style="margin-right:50px;"></i>' .
+                    '<code>icon-flag</code> : <i class="dashicons dashicons-flag" style="margin-right:50px;"></i><br /><br />' .
+                    __( 'Please note : any dashicon will work in the ribbons.', 'foogallery' );
+
+                $new_fields[] = array(
+					'id'      => 'ecommerce_ribbon_help',
+					'title'   => __( 'Ecommerce Ribbon Info', 'foogallery' ),
+					'desc'    => $ribbon_help_html,
+					'section' => __( 'Ecommerce', 'foogallery' ),
+					'subsection' => array( 'ecommerce-ribbons' => __( 'Ribbons', 'foogallery' ) ),
+					'type'    => 'help',
 				);
 
 				$new_fields[] = array(
@@ -1032,6 +1197,15 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 				'tab'     => 'ecommerce'
 			);
 
+            $settings['settings'][] = array(
+				'id'      => 'ecommerce_alternative_download_paths',
+				'title'   => __( 'Use Alternative File Download Paths', 'foogallery' ),
+				'desc'    => __( 'To overcome some limitations found in WooCommerce, we adjust the default file download paths by default. Enabling this will turn off those adjustments.', 'foogallery' ),
+				'type'    => 'checkbox',
+				'section' => __( 'File Downloads', 'foogallery' ),
+				'tab'     => 'ecommerce'
+			);
+
 			return $settings;
 		}
 
@@ -1164,37 +1338,69 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
          */
         public function attachment_modal_display_tab_content( $modal_data ) {
 			if ( is_array( $modal_data ) && !empty ( $modal_data ) ) {
+
 				if ( $modal_data['img_id'] > 0 ) { ?>
 					<section id="foogallery-panel-commerce" class="tab-panel">
 						<div class="settings">
-							<span class="setting" data-setting="button-text">
+							<span class="setting has-description" data-setting="button-text">
 								<label for="attachment-details-two-column-button-text" class="name"><?php _e('Button Text', 'foogallery'); ?></label>
 								<input type="text" name="foogallery[button-text]" id="attachment-details-two-column-button-text" value="<?php echo $modal_data['foogallery_button_text']; ?>">
 							</span>
-							<span class="setting" data-setting="button-url">
+							<p class="description">
+                                <?php _e( 'Show another button for this image by providing the button text. Leave blank to not add another button.', 'foogallery' ); ?>
+                            </p>
+							<span class="setting has-description" data-setting="button-url">
 								<label for="attachment-details-two-column-button-url" class="name"><?php _e('Button URL', 'foogallery'); ?></label>
 								<input type="text" name="foogallery[button-url]" id="attachment-details-two-column-button-url" value="<?php echo $modal_data['foogallery_button_url']; ?>">
 							</span>
-							<span class="setting" data-setting="ribbon">
+							<p class="description">
+                                <?php _e( 'The URL that will open when the button is clicked, if another button is added above.', 'foogallery' ); ?>
+                            </p>
+							<span class="setting has-description" data-setting="ribbon">
 								<label for="attachment-details-two-column-ribbon" class="name"><?php _e('Ribbon', 'foogallery'); ?></label>
 								<select id="attachment-details-two-column-ribbon" name="foogallery[ribbon]">
-									<option selected="selected" value=""><?php _e('None', 'foogallery'); ?></option>
-									<option value="fg-ribbon-5" <?php selected( $modal_data['foogallery_ribbon'], 'fg-ribbon-5', true ); ?>><?php _e('Type 1 (top-right, diagonal, green)', 'foogallery'); ?></option>
-									<option value="fg-ribbon-3" <?php selected( $modal_data['foogallery_ribbon'], 'fg-ribbon-3', true ); ?>><?php _e('Type 2 (top-left, small, blue)', 'foogallery'); ?></option>
-									<option value="fg-ribbon-4" <?php selected( $modal_data['foogallery_ribbon'], 'fg-ribbon-4', true ); ?>><?php _e('Type 3 (top, full-width, yellow)', 'foogallery'); ?></option>
-									<option value="fg-ribbon-6" <?php selected( $modal_data['foogallery_ribbon'], 'fg-ribbon-6', true ); ?>><?php _e('Type 4 (top-right, rounded, pink)', 'foogallery'); ?></option>
-									<option value="fg-ribbon-2" <?php selected( $modal_data['foogallery_ribbon'], 'fg-ribbon-2', true ); ?>><?php _e('Type 5 (top-left, medium, purple)', 'foogallery'); ?></option>
-									<option value="fg-ribbon-1" <?php selected( $modal_data['foogallery_ribbon'], 'fg-ribbon-1', true ); ?>><?php _e('Type 6 (top-left, vertical, orange)', 'foogallery'); ?></option>
+									<?php foreach ( FooGallery_Pro_Ribbons::get_ribbon_choices() as $ribbon => $label ) { ?>
+									<option value="<?php echo $ribbon; ?>" <?php selected( $modal_data['foogallery_ribbon'], $ribbon, true ); ?>><?php echo $label; ?></option>
+									<?php } ?>
 								</select>
 							</span>
-							<span class="setting" data-setting="ribbon-text">
+							<p class="description">
+                                <?php _e( 'Force a specific ribbon to always show for this image.', 'foogallery' ); ?>
+                            </p>
+							<span class="setting has-description" data-setting="ribbon-text">
 								<label for="attachment-details-two-column-ribbon-text" class="name"><?php _e('Ribbon Text', 'foogallery'); ?></label>
 								<input type="text" name="foogallery[ribbon-text]" id="attachment-details-two-column-ribbon-text" value="<?php echo $modal_data['foogallery_ribbon_text']; ?>">
 							</span>
-							<span class="setting" data-setting="product-id">
+							<p class="description">
+                                <?php _e( 'The ribbon text that will show, if a ribbon is selected above.', 'foogallery' ); ?>
+                            </p>
+							<span class="setting has-description" data-setting="product-id">
 								<label for="attachment-details-two-column-product-id" class="name"><?php _e('Product ID', 'foogallery'); ?></label>
 								<input type="text" name="foogallery[product-id]" id="attachment-details-two-column-product-id" value="<?php echo $modal_data['foogallery_product']; ?>">
 							</span>
+							<p class="description">
+                                <?php _e( 'Link this image to a WooCommerce product. This will override the master product (if used).', 'foogallery' ); ?>
+                            </p>
+                            <span class="setting has-description" data-setting="download_file">
+								<label for="attachment-details-download-file" class="name"><?php _e('Download File', 'foogallery'); ?></label>
+								<div class="setting-with-buttons">
+                                    <input type="text" name="foogallery[download-file]" id="attachment-details-download-file" value="<?php echo $modal_data['foogallery_download_file']; ?>">
+                                    <div>
+                                        <button type="button" class="button button-primary button-small foogallery-media-selector-choose"
+                                            data-input="#attachment-details-download-file"
+                                            data-modal-title="<?php _e( 'Select Download File', 'foogallery' ); ?>"
+                                            data-modal-button="<?php _e( 'Select File', 'foogallery' ); ?>"
+                                            data-modal-multiple="no"><?php _e( 'Choose', 'foogallery' ); ?>
+                                        </button>
+                                        <button type="button" class="button button-secondary button-small foogallery-media-selector-clear"
+                                            data-input="#attachment-details-download-file"><?php _e( 'Clear', 'foogallery' ); ?>
+                                        </button>
+                                    </div>
+                                </div>
+							</span>
+							<p class="description">
+                                <?php _e( 'You can override the default file that is used for downloads. This file will typically be a larger version of the original.', 'foogallery' ); ?>
+                            </p>
 						</div>
 					</section>
 					<?php
@@ -1216,17 +1422,20 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 					if ( $key === 'button-text' ) {
 						update_post_meta( $img_id, '_foogallery_button_text', $val );
 					}
-					if ( $key === 'button-url' ) {
+					else if ( $key === 'button-url' ) {
 						update_post_meta( $img_id, '_foogallery_button_url', $val );
 					}
-					if ( $key === 'ribbon' ) {
+					else if ( $key === 'ribbon' ) {
 						update_post_meta( $img_id, '_foogallery_ribbon', $val );
 					}
-					if ( $key === 'ribbon-text' ) {
+					else if ( $key === 'ribbon-text' ) {
 						update_post_meta( $img_id, '_foogallery_ribbon_text', $val );
 					}
-					if ( $key === 'product-id' ) {
+					else if ( $key === 'product-id' ) {
 						update_post_meta( $img_id, '_foogallery_product', $val );
+					}
+                    else if ( $key === 'download-file' ) {
+						update_post_meta( $img_id, '_foogallery_download_file', $val );
 					}
 				}
 			}
@@ -1238,11 +1447,12 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 		 */
 		public function attachment_modal_data( $modal_data, $data, $attachment_id, $gallery_id ) {
             if ( $attachment_id > 0 ) {
-                $modal_data['foogallery_button_text'] = get_post_meta( $attachment_id, '_foogallery_button_text', true );
-                $modal_data['foogallery_button_url'] =  get_post_meta( $attachment_id, '_foogallery_button_url', true );
-                $modal_data['foogallery_ribbon'] =      get_post_meta( $attachment_id, '_foogallery_ribbon', true );
-                $modal_data['foogallery_ribbon_text'] = get_post_meta( $attachment_id, '_foogallery_ribbon_text', true );
-                $modal_data['foogallery_product'] =     get_post_meta( $attachment_id, '_foogallery_product', true );
+                $modal_data['foogallery_button_text'] =   get_post_meta( $attachment_id, '_foogallery_button_text', true );
+                $modal_data['foogallery_button_url'] =    get_post_meta( $attachment_id, '_foogallery_button_url', true );
+                $modal_data['foogallery_ribbon'] =        get_post_meta( $attachment_id, '_foogallery_ribbon', true );
+                $modal_data['foogallery_ribbon_text'] =   get_post_meta( $attachment_id, '_foogallery_ribbon_text', true );
+                $modal_data['foogallery_product'] =       get_post_meta( $attachment_id, '_foogallery_product', true );
+                $modal_data['foogallery_download_file'] = get_post_meta( $attachment_id, '_foogallery_download_file', true );
             }
 			return $modal_data;
 		}
