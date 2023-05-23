@@ -6,6 +6,7 @@ FooGallery.autoEnabled = false;
     FOOGALLERY.previous_post_id = 0;
     FOOGALLERY.attachments = [];
     FOOGALLERY.selected_attachment_id = 0;
+	FOOGALLERY.selected_gallery_template = '';
 
 	// Used for selecting files from the media modal.
 	FOOGALLERY.current_media_selector_modal = false;
@@ -55,7 +56,12 @@ FooGallery.autoEnabled = false;
 	FOOGALLERY.galleryTemplateChanged = function(reloadPreview) {
 		var selectedTemplate = FOOGALLERY.getSelectedTemplate(),
 			$settingsToShow = $('.foogallery-settings-container-' + selectedTemplate),
-			$settingsToHide = $('.foogallery-settings-container').not($settingsToShow);
+			$settingsToHide = $('.foogallery-settings-container').not($settingsToShow),
+			currentTab = $settingsToHide.find('.foogallery-vertical-tab.foogallery-tab-active').data('name'),
+			currentChildTab = $settingsToHide.find('.foogallery-vertical-child-tab.foogallery-tab-active').data('name'),
+			previousSelectedTemplate = FOOGALLERY.selected_gallery_template;
+
+		FOOGALLERY.selected_gallery_template = selectedTemplate;
 
 		//hide all template fields
 		$settingsToHide.hide()
@@ -67,8 +73,24 @@ FooGallery.autoEnabled = false;
 			.addClass('foogallery-settings-container-active')
 			.find(':input').removeAttr('disabled');
 
-		//ensure the first tab is clicked
-		$settingsToShow.find('.foogallery-vertical-tab:first').click();
+		if (currentTab) {
+			currentTab = currentTab.replace( previousSelectedTemplate, selectedTemplate );
+
+			//ensure the previously active tab is clicked
+			$settingsToShow.find('.foogallery-vertical-tab[data-name="' + currentTab + '"]').click();
+
+			if (currentChildTab) {
+				currentChildTab = currentChildTab.replace( previousSelectedTemplate, selectedTemplate );
+
+				//ensure the previously active child tab is clicked
+				$settingsToShow.find('.foogallery-vertical-child-tab[data-name="' + currentChildTab + '"]').click();
+			}
+		}
+
+		// always ensure a tab is clicked
+		if ( $settingsToShow.find('.foogallery-vertical-tab.foogallery-tab-active').length === 0 ) {
+			$settingsToShow.find('.foogallery-vertical-tab:first').click();
+		}
 
 		//include a preview CSS if possible
 		FOOGALLERY.includePreviewCss();
