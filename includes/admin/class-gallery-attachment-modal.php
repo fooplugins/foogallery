@@ -626,7 +626,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
 							</span>
 							<span class="setting" data-setting="custom_target">
 								<label for="attachments-foogallery-custom-target" class="name"><?php _e('Custom Target', 'foogallery'); ?></label>
-								<select name="foogallery[custom-target']" id="attachments-foogallery-custom-target">
+								<select name="foogallery[custom-target]" id="attachments-foogallery-custom-target">
 									<option value="default" <?php selected( 'default', $modal_data['custom_target'], true ); ?>><?php _e('Default', 'foogallery'); ?></option>
 									<option value="_blank" <?php selected( '_blank', $modal_data['custom_target'], true ); ?>><?php _e('New tab (_blank)', 'foogallery'); ?></option>
 									<option value="_self" <?php selected( '_self', $modal_data['custom_target'], true ); ?>><?php _e('Same tab (_self)', 'foogallery'); ?></option>
