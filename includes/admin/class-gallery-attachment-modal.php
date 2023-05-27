@@ -231,42 +231,44 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
 		 * 
 		 * @param $img_id int attachment id to update data
 		 * 
-		 * @param $foogallery array of form post data
+		 * @param $data array of form post data
 		 * 
 		 */
-		 public function foogallery_attachment_save_data_main( $img_id, $foogallery ) {
+		 public function foogallery_attachment_save_data_main( $img_id, $data ) {
 
-			if ( is_array( $foogallery ) && !empty( $foogallery ) ) {
+			if ( is_array( $data ) && !empty( $data ) ) {
 
 				$foogallery_post = array(
 					'ID' => $img_id
 				);
 
-				foreach( $foogallery as $key => $val ) {
-					
-					if ( $key == 'title' ) {
-						$foogallery_post['post_title'] = $val;
-					}
-					if ( $key == 'caption' ) {
-						$foogallery_post['post_excerpt'] = $val;
-					}
-					if ( $key == 'description' ) {
-						$foogallery_post['post_content'] = $val;
-					}
+				if ( array_key_exists( 'title', $data ) ) {
+					$foogallery_post['post_title'] = $data['title'];
+				}
 
-					// Update post meta values
-					if ( $key == 'alt-text' ) {
-						update_post_meta( $img_id, '_wp_attachment_image_alt', $val );
-					}
-					if ( $key == 'custom-url' ) {
-						update_post_meta( $img_id, '_foogallery_custom_url', $val );
-					}
-					if ( $key == 'custom-target' ) {
-						update_post_meta( $img_id, '_foogallery_custom_target', $val );
-					}
-					if ( $key == 'custom-class' ) {
-						update_post_meta( $img_id, '_foogallery_custom_class', $val );
-					}
+				if ( array_key_exists( 'caption', $data ) ) {
+					$foogallery_post['post_excerpt'] = $data['caption'];
+				}
+
+				if ( array_key_exists( 'description', $data ) ) {
+					$foogallery_post['post_content'] = $data['description'];
+				}
+
+				// Update post meta values
+				if ( array_key_exists( 'alt-text', $data ) ) {
+					update_post_meta( $img_id, '_wp_attachment_image_alt', $data['alt-text'] );
+				}
+
+				if ( array_key_exists( 'custom-url', $data ) ) {
+					update_post_meta( $img_id, '_foogallery_custom_url', $data['custom-url'] );
+				}
+
+				if ( array_key_exists( 'custom-target', $data ) ) {
+					update_post_meta( $img_id, '_foogallery_custom_target', $data['custom-target'] );
+				}
+
+				if ( array_key_exists( 'custom-class', $data ) ) {
+					update_post_meta( $img_id, '_foogallery_custom_class', $data['custom-class'] );
 				}
 
 				if ( is_array( $foogallery_post ) && count( $foogallery_post ) > 1 ) {
@@ -274,7 +276,6 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
 					wp_update_post( $foogallery_post );
 				}
 			}
-
 		}
 
 		/**
@@ -282,20 +283,20 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
 		 * 
 		 * @param $img_id int attachment id to update data
 		 * 
-		 * @param $foogallery array of form post data
+		 * @param $data array of form post data
 		 * 
 		 */
 
-		public function foogallery_attachment_save_data_taxonomies( $img_id, $foogallery ) {
+		public function foogallery_attachment_save_data_taxonomies( $img_id, $data ) {
 
-			if ( is_array( $foogallery ) && !empty( $foogallery ) ) {
+			if ( is_array( $data ) && !empty( $data ) ) {
 
                 if ( !$this->attachments_have_taxonomies() ) {
                     return;
                 }
 
-                if ( array_key_exists( 'taxonomies', $foogallery ) ) {
-                    foreach ( $foogallery['taxonomies'] as $taxonomy => $taxonomy_value ) {
+                if ( array_key_exists( 'taxonomies', $data ) ) {
+                    foreach ( $data['taxonomies'] as $taxonomy => $taxonomy_value ) {
                         $terms = explode( ',', $taxonomy_value );
                         if ( is_array( $terms ) ) {
                             $terms = array_map( 'intval', $terms );
@@ -311,25 +312,21 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
 		 * 
 		 * @param $img_id int attachment id to update data
 		 * 
-		 * @param $foogallery array of form post data
+		 * @param $data array of form post data
 		 * 
 		 */
+		public function foogallery_attachment_save_data_thumbnails( $img_id, $data ) {
 
-		public function foogallery_attachment_save_data_thumbnails( $img_id, $foogallery ) {
+			if ( is_array( $data ) && !empty( $data ) ) {
 
-			if ( is_array( $foogallery ) && !empty( $foogallery ) ) {
-
-				foreach( $foogallery as $key => $val ) {
-					if ( $key == 'crop_pos' ) {
-						update_post_meta( $img_id, 'foogallery_crop_pos', $val );
-					}
-					if ( $key == 'override-thumbnail-id' ) {
-						update_post_meta( $img_id, 'foogallery_override_thumbnail', $val );
-					}
+				if ( array_key_exists( 'crop_pos', $data ) ) {
+					update_post_meta( $img_id, 'foogallery_crop_pos', $data['crop_pos'] );
 				}
 
+				if ( array_key_exists( 'override-thumbnail-id', $data ) ) {
+					update_post_meta( $img_id, 'foogallery_override_thumbnail', $data['override-thumbnail-id'] );
+				}
 			}
-
 		}
 
 		/**
@@ -337,25 +334,26 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
 		 * 
 		 * @param $img_id int attachment id to update data
 		 * 
-		 * @param $foogallery array of form post data
+		 * @param $data array of form post data
 		 * 
 		 */
-		public function foogallery_attachment_save_data_more( $img_id, $foogallery ) {
+		public function foogallery_attachment_save_data_more($img_id, $data ) {
 
-			if ( is_array( $foogallery ) && !empty( $foogallery ) ) {
-				foreach( $foogallery as $key => $val ) {
-					if ( $key === 'data-width' ) {
-						update_post_meta( $img_id, '_data-width', $val );
-					}
-                    else if ( $key === 'data-height' ) {
-						update_post_meta( $img_id, '_data-height', $val );
-					}
-					else if ( $key === 'panning' ) {
-						update_post_meta( $img_id, '_foobox_panning', $val );
-					}
-                    else if ( $key === 'override_type' ) {
-                        update_post_meta( $img_id, '_foogallery_override_type', $val );
-                    }
+			if ( is_array( $data ) && !empty( $data ) ) {
+				if ( array_key_exists( 'data-width', $data ) ) {
+					update_post_meta( $img_id, '_data-width', $data['data-width'] );
+				}
+
+				if ( array_key_exists( 'data-height', $data ) ) {
+					update_post_meta( $img_id, '_data-height', $data['data-height'] );
+				}
+
+				if ( array_key_exists( 'panning', $data ) ) {
+					update_post_meta( $img_id, '_foobox_panning', $data['panning'] );
+				}
+
+				if ( array_key_exists( 'override_type', $data ) ) {
+					update_post_meta( $img_id, '_foogallery_override_type', $data['override_type'] );
 				}
 			}
 		}
