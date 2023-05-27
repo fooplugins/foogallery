@@ -52,7 +52,12 @@ if ( ! class_exists('FooGallery_Pro_Whitelabelling_Extension') ) {
          * @return array|mixed|string|string[]
          */
         function redirect_after_menu_updated( $location, $status ) {
-            parse_str( parse_url( $location, PHP_URL_QUERY ) , $output );
+            $url = parse_url( $location, PHP_URL_QUERY );
+            if ( empty( $url ) ) {
+                return $location;
+            }
+
+            parse_str( $url , $output );
             if ( array_key_exists( 'page', $output ) && 'foogallery-settings' === $output['page'] ) {
                 if ( 'on' !== foogallery_get_setting( 'whitelabelling_move_menu_under_media' ) &&
                  !array_key_exists( 'post_type', $output ) ) {
