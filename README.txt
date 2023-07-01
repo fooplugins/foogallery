@@ -317,12 +317,22 @@ Please update in order to for FooGallery to work in WP 5.5+!
 
 == Changelog ==
 
+= 2.2.42 =
+* Date Updated : 31 May 2023
+* Update : Updated to Freemius SDK 2.5.8
+* Fix : Attachment custom target bug in attachment modal.
+* Update : Improved UX : when changing gallery template, settings tab state is remembered.
+[//]: # fs_premium_only_begin
+* Update : [Commerce Plan] Improved UX : watermarks can be generated on new galleries without needing page to refresh.
+* Update : [Expert Plan] Added EXIF descriptions and examples to attachment modal.
+[//]: # fs_premium_only_end
+
 = 2.2.41 =
 * Date Updated : 10 Apr 2023
 * Update : Updated to Freemius SDK 2.5.6
 * Update : FooGallery client side 2.0.45
 * Fix : Minor bug and styling fixes in advanced attachment modal.
-* Fix : Minor security issue fixed on the FooGallery edit page (logged in administrators only)
+* Fix : Minor security issue fixed on the FooGallery edit page (logged in administrators only).
 [//]: # fs_premium_only_begin
 * New : [Commerce Plan] Added support for file downloads when using a master product!
 * New : [Commerce Plan] Added settings to add a ribbon to out of stock, backorder and featured products when using product datasource.
