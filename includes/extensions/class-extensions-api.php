@@ -112,7 +112,7 @@ if ( ! class_exists( 'FooGallery_Extensions_API' ) ) {
 			// The FooGallery Migrate feature.
 			$this->extensions[] = array(
 				'slug' => 'foogallery-migrate',
-				'class' => 'FooGallery_Migrate_Extension',
+				'class' => ' ',
 				'categories' => array( 'Free' ),
 				'title' => 'FooGallery Migrate',
 				'description' => 'Migrate to FooGallery from other gallery plugins',
@@ -122,9 +122,9 @@ if ( ! class_exists( 'FooGallery_Extensions_API' ) ) {
 				'tags' => array( 'tools'),
 				'source' => 'repo',
 				'download_link' => 'https://downloads.wordpress.org/plugin/foogallery-migrate.latest-stable.zip',
-		);
+			);
 
-	}
+		}
 
 		/**
 		 * Get all loaded extensions
