@@ -121,7 +121,7 @@ if ( ! class_exists( 'FooGallery_Extensions_API' ) ) {
 				'thumbnail' => 'https://ps.w.org/foogallery-migrate/assets/icon-128x128.png?rev=2856451',
 				'tags' => array( 'tools'),
 				'source' => 'repo',
-				'download_link' => 'https://downloads.wordpress.org/plugin/foogallery-migrate.1.2.zip',
+				'download_link' => 'https://downloads.wordpress.org/plugin/foogallery-migrate.latest-stable.zip',
 		);
 
 	}
