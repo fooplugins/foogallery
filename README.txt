@@ -80,7 +80,7 @@ The following free features make FooGallery the **best gallery plugin** on the m
 *	Custom CSS for both galleries and albums
 *	Copy to clipboard shortcodes
 *	One-click gallery page creation
-*	NextGen importer tool (albums and galleries and shortcodes)
+*	FooGallery tool
 *	Multisite Support
 
 = PRO Gallery Features =
