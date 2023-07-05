@@ -147,8 +147,11 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Folders' ) ) {
 					//find all image files in the folder
 					$attachments = $this->build_attachments_from_folder( $folder, $metadata, $sort );
 
-					//save a cached list of attachments
-					set_transient( $transient_key, $attachments, $expiry );
+					//only set the transient if we are not showing a preview
+					if ( !isset( $foogallery_gallery_preview ) ) {
+						//save a cached list of attachments
+						set_transient($transient_key, $attachments, $expiry);
+					}
 				} else {
 					$attachments = $cached_attachments;
 				}
