@@ -93,7 +93,18 @@ if ( ! class_exists( 'FooGallery_Pro_Protection' ) ) {
 					if ( empty( $progress ) ) {
 						// there is no progress, so start!
 						$gallery = FooGallery::get_by_id( $foogallery_id );
-						$images  = $gallery->item_count();
+
+						if ( isset( $_POST['attachments'] ) ) {
+							$attachments = sanitize_text_field( wp_unslash( $_POST['attachments'] ) );
+							if ( !empty( $attachments ) ) {
+								$attachments = explode(',', $attachments );
+							} else {
+								$attachments = array();
+							}
+						} else {
+							$attachments = $gallery->item_attachment_ids();
+						}
+						$images  = count( $attachments);
 
 						$progress = array(
 							'total'       => $images,
@@ -101,8 +112,14 @@ if ( ! class_exists( 'FooGallery_Pro_Protection' ) ) {
 							'progress'    => 0,
 							'count'       => 0,
 							'message'     => sprintf( __( '%d watermarked images to generate...', 'foogallery' ), $images ),
-							'attachments' => $gallery->item_attachment_ids(),
+							'attachments' => $attachments,
+							'continue'    => true
 						);
+
+						// Check if there are no attachments to watermark.
+						if ( $images === 0 ) {
+							$progress['continue'] = false;
+						}
 					} else {
 						// What if there are no attachments left?
 						$next_attachment_id = intval( array_shift( $progress['attachments'] ) );
@@ -124,13 +141,13 @@ if ( ! class_exists( 'FooGallery_Pro_Protection' ) ) {
 						} else {
 							$progress['message'] = sprintf( __( 'Completed. %d watermarked images generated.', 'foogallery' ), $progress['total'] );
 						}
-					}
 
-					if ( $progress['count'] > FOOGALLERY_PROTECTION_MAX_GENERATION_COUNT ) {
-						$progress['continue'] = false;
-						$progress['count']    = 0;  // Reset the counter.
-					} else {
-						$progress['continue'] = true;
+						if ( $progress['count'] > FOOGALLERY_PROTECTION_MAX_GENERATION_COUNT ) {
+							$progress['continue'] = false;
+							$progress['count']    = 0;  // Reset the counter.
+						} else {
+							$progress['continue'] = true;
+						}
 					}
 
 					if ( 100 === $progress['percent'] ) {
@@ -145,7 +162,7 @@ if ( ! class_exists( 'FooGallery_Pro_Protection' ) ) {
 					if ( false === $progress['continue'] ) {
 						ob_start();
 						$gallery = FooGallery::get_by_id( $foogallery_id );
-						$this->render_watermark_status_field( $gallery );
+						$this->render_watermark_status_field( $gallery, $progress['count'] );
 						$progress['refreshfield'] = true;
 						$progress['fieldhtml']    = ob_get_contents();
 						ob_end_clean();
@@ -175,9 +192,12 @@ if ( ! class_exists( 'FooGallery_Pro_Protection' ) ) {
 
 						jQuery('.foogallery_protection_generate_spinner').addClass('is-active');
 
+						//alert( FOOGALLERY.attachments );
+
 						var nonce = jQuery('#foogallery_nonce_protection_generate').val(),
 							data = 'action=foogallery_protection_generate' +
 						           '&foogallery=<?php echo $gallery->ID; ?>' +
+								   '&attachments=' + FOOGALLERY.attachments +
 						           '&_wpnonce=' + nonce +
 						           '&_wp_http_referer=' + encodeURIComponent( jQuery('input[name="_wp_http_referer"]').val() );
 
@@ -246,15 +266,15 @@ if ( ! class_exists( 'FooGallery_Pro_Protection' ) ) {
 		public function render_custom_field( $field, $gallery, $template ) {
 			if ( isset( $field ) && is_array( $field ) && isset( $field['type'] ) && 'watermark_status' === $field['type'] ) {
 				$setting_key = $template['slug'] . '_protection_watermarking';
-				if ( is_array( $gallery->settings ) && array_key_exists( $setting_key, $gallery->settings ) && 'yes' === $gallery->settings[ $setting_key ] ) {
-					$this->render_watermark_status_field( $gallery );
-				} else {
-					echo esc_html( __( 'You have to save the gallery after enabling watermarking to see the status!', 'foogallery' ) );
-				}
+				//if ( is_array( $gallery->settings ) && array_key_exists( $setting_key, $gallery->settings ) && 'yes' === $gallery->settings[ $setting_key ] ) {
+				$this->render_watermark_status_field( $gallery );
+				//} else {
+				//	echo esc_html( __( 'You have to save the gallery after enabling watermarking to see the status!', 'foogallery' ) );
+				//}
 			}
 		}
 
-		private function render_watermark_status_field( $gallery ) {
+		private function render_watermark_status_field( $gallery, $progress_count = 0 ) {
 			$watermark_data = $this->build_watermark_data( $gallery );
 			if ( is_array( $watermark_data ) && array_key_exists( 'summary', $watermark_data ) ) {
 				$summary_watermark_data = $watermark_data['summary'];
@@ -262,29 +282,33 @@ if ( ! class_exists( 'FooGallery_Pro_Protection' ) ) {
 				$watermark_count        = $summary_watermark_data['watermarks'];
 				$outdated_count         = $summary_watermark_data['outdated'];
 				$error_count            = $summary_watermark_data['errors'];
-				if ( 0 === $image_count ) {
-					echo esc_html( __( 'No images found! You may need to save your gallery, if you have added images.', 'foogallery' ) );
-				} else {
-					echo esc_html( sprintf( __( '%1$d / %2$d watermarked images have been generated.', 'foogallery' ), $watermark_count, $image_count ) );
-					if ( $outdated_count > 0 ) {
-						echo ' ' . esc_html( sprintf( __( '%d are outdated and need to be re-generated!', 'foogallery' ), $outdated_count ) );
-					}
-					if ( $error_count > 0 ) {
-						echo '<br /><br />';
-						echo esc_html( sprintf( __( '%d had errors and could not be generated!', 'foogallery' ), $error_count ) );
-					}
-					echo '<br /><br />';
-					echo '<button type="button" class="button button-primary button-large protection_generate">';
-					$progress = get_post_meta( $gallery->ID, FOOGALLERY_META_WATERMARK_PROGRESS, true );
-					if ( empty( $progress ) ) {
-						echo esc_html( __( 'Generate Watermarked Images', 'foogallery' ) );
-					} else {
-						echo esc_html( __( 'Continue Generating', 'foogallery' ) );
-					}
-					echo '</button>';
-					echo '<span style="position: absolute" class="spinner foogallery_protection_generate_spinner"></span>';
-					echo '<span style="padding-left: 40px; line-height: 25px;" class="foogallery_protection_generate_progress"></span>';
+				if ( $progress_count > 0 ) {
+					$image_count = $watermark_count = $progress_count;
 				}
+				if ( 0 === $image_count ) {
+					echo esc_html( __( 'No images found. Add images to the gallery first.', 'foogallery' ) );
+				} else {
+					echo esc_html(sprintf(__('%1$d / %2$d watermarked images have been generated.', 'foogallery'), $watermark_count, $image_count));
+				}
+				if ( $outdated_count > 0 ) {
+					echo ' ' . esc_html( sprintf( __( '%d are outdated and need to be re-generated!', 'foogallery' ), $outdated_count ) );
+				}
+				if ( $error_count > 0 ) {
+					echo '<br /><br />';
+					echo esc_html( sprintf( __( '%d had errors and could not be generated!', 'foogallery' ), $error_count ) );
+				}
+				echo '<br /><br />';
+				echo '<button type="button" class="button button-primary button-large protection_generate">';
+				$progress = get_post_meta( $gallery->ID, FOOGALLERY_META_WATERMARK_PROGRESS, true );
+				if ( empty( $progress ) ) {
+					echo esc_html( __( 'Generate Watermarked Images', 'foogallery' ) );
+				} else {
+					echo esc_html( __( 'Continue Generating', 'foogallery' ) );
+				}
+				echo '</button>';
+				echo '<span style="position: absolute" class="spinner foogallery_protection_generate_spinner"></span>';
+				echo '<span style="padding-left: 40px; line-height: 25px;" class="foogallery_protection_generate_progress"></span>';
+
 			} else {
 				echo esc_html( __( 'Something went wrong!', 'foogallery' ) );
 			}

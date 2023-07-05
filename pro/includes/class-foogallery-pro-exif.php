@@ -685,38 +685,69 @@ if ( ! class_exists( 'FooGallery_Pro_Exif' ) ) {
                         ?>
                         <section id="foogallery-panel-exif" class="tab-panel">
                             <div class="settings">
-								<span class="setting" data-setting="title">
-									<label for="attachment-details-two-column-aperture" class="name"><?php _e('Aperture', 'foogallery'); ?></label>
-									<input type="text" name="foogallery[aperture]" id="attachment-details-two-column-aperture" value="<?php echo $aperture; ?>">
-								</span>
-                                <span class="setting" data-setting="camera">
+                                <span class="setting has-description" data-setting="camera">
 									<label for="attachment-details-two-column-camera" class="name"><?php _e('Camera', 'foogallery'); ?></label>
-									<input type="text" name="foogallery[camera]" id="attachment-details-two-column-camera" value="<?php echo $camera; ?>">
+									<input placeholder="eg. Nikon D750" type="text" name="foogallery[camera]" id="attachment-details-two-column-camera" value="<?php echo $camera; ?>">
 								</span>
-                                <span class="setting" data-setting="created-timestamp">
-									<label for="attachment-details-two-column-created-timestamp" class="name"><?php _e('Created Timestamp', 'foogallery'); ?></label>
-									<input type="text" name="foogallery[created-timestamp]" id="attachment-details-two-column-created-timestamp" value="<?php echo $created_timestamp; ?>">
+								<p class="description">
+									<?php _e( 'The camera that was used to take the photo.', 'foogallery' ); ?>
+								</p>
+
+								<span class="setting has-description" data-setting="aperture">
+									<label for="attachment-details-two-column-aperture" class="name"><?php _e('Aperture', 'foogallery'); ?></label>
+									<input placeholder="eg. f/2.8" type="text" name="foogallery[aperture]" id="attachment-details-two-column-aperture" value="<?php echo $aperture; ?>">
 								</span>
-                                <span class="setting" data-setting="shutter-speed">
+								<p class="description">
+									<?php _e( 'The aperture setting that was used, such as f/1.8, f/4, f/8, etc.', 'foogallery' ); ?>
+								</p>
+
+								<span class="setting has-description" data-setting="shutter-speed">
 									<label for="attachment-details-two-column-shutter-speed" class="name"><?php _e('Shutter Speed', 'foogallery'); ?></label>
-									<input type="text" name="foogallery[shutter-speed]" id="attachment-details-two-column-shutter-speed" value="<?php echo $shutter_speed; ?>">
+									<input placeholder="eg. 1/500s" type="text" name="foogallery[shutter-speed]" id="attachment-details-two-column-shutter-speed" value="<?php echo $shutter_speed; ?>">
 								</span>
-                                <span class="setting" data-setting="focal-length">
-									<label for="attachment-details-two-column-focal-length" class="name"><?php _e('Focal Length', 'foogallery'); ?></label>
-									<input type="text" name="foogallery[focal-length]" id="attachment-details-two-column-focal-length" value="<?php echo $focal_length; ?>">
-								</span>
-                                <span class="setting" data-setting="iso">
+								<p class="description">
+									<?php _e( 'The shutter speed setting (or exposure time) that was used, such as 1/30s, 1/500s, 1/1000s, etc.', 'foogallery' ); ?>
+								</p>
+
+								<span class="setting has-description" data-setting="iso">
 									<label for="attachment-details-two-column-iso" class="name"><?php _e('ISO', 'foogallery'); ?></label>
-									<input type="text" name="foogallery[iso]" id="attachment-details-two-column-iso" value="<?php echo $iso; ?>">
+									<input placeholder="eg. ISO 400" type="text" name="foogallery[iso]" id="attachment-details-two-column-iso" value="<?php echo $iso; ?>">
 								</span>
-                                <span class="setting" data-setting="orientation">
+								<p class="description">
+									<?php _e( 'The ISO sensitivity setting that was used, such as ISO 100, ISO 400, ISO 800, etc.', 'foogallery' ); ?>
+								</p>
+
+								<span class="setting has-description" data-setting="focal-length">
+									<label for="attachment-details-two-column-focal-length" class="name"><?php _e('Focal Length', 'foogallery'); ?></label>
+									<input placeholder="eg. 50mm" type="text" name="foogallery[focal-length]" id="attachment-details-two-column-focal-length" value="<?php echo $focal_length; ?>">
+								</span>
+								<p class="description">
+									<?php _e( 'The focal length setting that was used, typically measured in millimeters (mm).', 'foogallery' ); ?>
+								</p>
+
+								<span class="setting has-description" data-setting="orientation">
 									<label for="attachment-details-two-column-orientation" class="name"><?php _e('Orientation', 'foogallery'); ?></label>
-									<input type="text" name="foogallery[orientation]" id="attachment-details-two-column-orientation" value="<?php echo $orientation; ?>">
+									<input placeholder="eg. Normal" type="text" name="foogallery[orientation]" id="attachment-details-two-column-orientation" value="<?php echo $orientation; ?>">
 								</span>
-                                <span class="setting" data-setting="keywords">
+								<p class="description">
+									<?php _e( 'The orientation or rotation of the image, as intended by the photographer when the photo was taken.', 'foogallery' ); ?>
+								</p>
+
+                                <span class="setting has-description" data-setting="created-timestamp">
+									<label for="attachment-details-two-column-created-timestamp" class="name"><?php _e('Created Timestamp', 'foogallery'); ?></label>
+									<input placeholder="eg. May 27 2023, 2:30 PM" type="text" name="foogallery[created-timestamp]" id="attachment-details-two-column-created-timestamp" value="<?php echo $created_timestamp; ?>">
+								</span>
+								<p class="description">
+									<?php _e( 'The timestamp of when the photo was taken.', 'foogallery' ); ?>
+								</p>
+
+                                <span class="setting has-description" data-setting="keywords">
 									<label for="attachment-details-two-column-keywords" class="name"><?php _e('Keywords', 'foogallery'); ?></label>
-									<input type="text" name="foogallery[keywords]" id="attachment-details-two-column-keywords" value="<?php echo $keywords;?>">
+									<input placeholder="eg. portrait, architecture, nature, food, travel" type="text" name="foogallery[keywords]" id="attachment-details-two-column-keywords" value="<?php echo $keywords;?>">
 								</span>
+								<p class="description">
+									<?php _e( 'Additional keywords or tags to describe the photo.', 'foogallery' ); ?>
+								</p>
                             </div>
                         </section>
                         <?php
