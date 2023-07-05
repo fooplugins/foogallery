@@ -109,19 +109,6 @@ if ( ! class_exists( 'FooGallery_Extensions_API' ) ) {
 				'minimum_version' => '1.0.2.1',
 			);
 
-			//The NextGen importer
-			$this->extensions[] = array(
-				'slug' => 'nextgen',
-				'class' => 'FooGallery_Nextgen_Gallery_Importer_Extension',
-				'categories' => array( 'Free' ),
-				'title' => 'NextGen Importer',
-				'description' => 'Imports all your existing NextGen galleries',
-				'author' => 'FooPlugins',
-				'author_url' => 'https://fooplugins.com',
-				'thumbnail' => 'https://s3.amazonaws.com/foogallery/extensions/nextgen_importer.png',
-				'tags' => array( 'tools' ),
-				'source' => 'bundled',
-			);
 		}
 
 		/**
