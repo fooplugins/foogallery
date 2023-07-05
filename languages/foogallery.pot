@@ -8,7 +8,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language-Team: FooPlugins <info@fooplugins.com> (https://fooplugins.com)\n"
 "Last-Translator: FooPlugins <info@fooplugins.com> (https://fooplugins.com)\n"
-"POT-Creation-Date: 2023-05-31 17:03+0000\n"
+"POT-Creation-Date: 2023-07-05 08:40+0000\n"
 "Report-Msgid-Bugs-To: https://github.com/fooplugins/foogallery/issues\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-KeywordsList: __;_e;_ex:1,2c;_n:1,2;_n_noop:1,2;_nx:1,2,4c;_nx_noop:1,2,3c;_x:1,2c;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c\n"
@@ -101,7 +101,7 @@ msgstr ""
 msgid "Invalid Gallery!"
 msgstr ""
 
-#: extensions/albums/admin/class-metaboxes.php:534, extensions/albums/functions.php:82, extensions/default-templates/default/class-default-gallery-template.php:117, includes/admin/class-attachment-fields.php:19, includes/admin/class-gallery-attachment-modal.php:628, includes/admin/class-pro-promotion.php:198, includes/admin/view-help-demos.php:44, includes/class-foogallery-common-fields.php:213, includes/class-foogallery-common-fields.php:497, includes/functions.php:538, includes/functions.php:1717, pro/includes/class-foogallery-pro-advanced-thumbnails.php:57, pro/includes/class-foogallery-pro-datasource-folders.php:436, pro/includes/class-foogallery-pro-lightbox.php:335, pro/includes/class-foogallery-pro-lightbox.php:361, pro/includes/class-foogallery-pro-lightbox.php:477, pro/includes/class-foogallery-pro-lightbox.php:688, pro/includes/video/class-foogallery-pro-video.php:496
+#: extensions/albums/admin/class-metaboxes.php:534, extensions/albums/functions.php:82, extensions/default-templates/default/class-default-gallery-template.php:117, includes/admin/class-attachment-fields.php:19, includes/admin/class-gallery-attachment-modal.php:628, includes/admin/class-pro-promotion.php:198, includes/admin/view-help-demos.php:44, includes/class-foogallery-common-fields.php:213, includes/class-foogallery-common-fields.php:497, includes/functions.php:538, includes/functions.php:1717, pro/includes/class-foogallery-pro-advanced-thumbnails.php:57, pro/includes/class-foogallery-pro-datasource-folders.php:439, pro/includes/class-foogallery-pro-lightbox.php:335, pro/includes/class-foogallery-pro-lightbox.php:361, pro/includes/class-foogallery-pro-lightbox.php:477, pro/includes/class-foogallery-pro-lightbox.php:688, pro/includes/video/class-foogallery-pro-video.php:496
 msgid "Default"
 msgstr ""
 
@@ -129,7 +129,7 @@ msgstr ""
 msgid "Media"
 msgstr ""
 
-#: extensions/albums/admin/class-metaboxes.php:561, extensions/albums/functions.php:83, includes/admin/class-attachment-fields.php:27, includes/admin/class-gallery-attachment-modal.php:622, includes/functions.php:1124, pro/includes/class-foogallery-pro-advanced-captions.php:94, pro/includes/class-foogallery-pro-datasource-folders.php:569
+#: extensions/albums/admin/class-metaboxes.php:561, extensions/albums/functions.php:83, includes/admin/class-attachment-fields.php:27, includes/admin/class-gallery-attachment-modal.php:622, includes/functions.php:1124, pro/includes/class-foogallery-pro-advanced-captions.php:94, pro/includes/class-foogallery-pro-datasource-folders.php:572
 msgid "Custom URL"
 msgstr ""
 
@@ -137,7 +137,7 @@ msgstr ""
 msgid "Point your gallery to a custom URL"
 msgstr ""
 
-#: extensions/albums/admin/class-metaboxes.php:567, includes/admin/class-attachment-fields.php:34, includes/admin/class-gallery-attachment-modal.php:626, pro/includes/class-foogallery-pro-datasource-folders.php:573
+#: extensions/albums/admin/class-metaboxes.php:567, includes/admin/class-attachment-fields.php:34, includes/admin/class-gallery-attachment-modal.php:626, pro/includes/class-foogallery-pro-datasource-folders.php:576
 msgid "Custom Target"
 msgstr ""
 
@@ -1619,11 +1619,11 @@ msgstr ""
 msgid "Title"
 msgstr ""
 
-#: includes/admin/class-gallery-attachment-modal.php:610, pro/includes/class-foogallery-pro-datasource-folders.php:557
+#: includes/admin/class-gallery-attachment-modal.php:610, pro/includes/class-foogallery-pro-datasource-folders.php:560
 msgid "Caption"
 msgstr ""
 
-#: includes/admin/class-gallery-attachment-modal.php:614, includes/class-foogallery-common-fields.php:469, pro/includes/class-foogallery-pro-datasource-folders.php:561, pro/includes/foogallery-media-views-templates.php:240, pro/includes/foogallery-media-views-templates.php:461
+#: includes/admin/class-gallery-attachment-modal.php:614, includes/class-foogallery-common-fields.php:469, pro/includes/class-foogallery-pro-datasource-folders.php:564, pro/includes/foogallery-media-views-templates.php:240, pro/includes/foogallery-media-views-templates.php:461
 msgid "Description"
 msgstr ""
 
@@ -1647,7 +1647,7 @@ msgstr ""
 msgid "Copy to clipboard"
 msgstr ""
 
-#: includes/admin/class-gallery-attachment-modal.php:707, pro/includes/class-foogallery-pro-datasource-folders.php:578, pro/includes/foogallery-media-views-templates.php:481, pro/includes/foogallery-media-views-templates.php:500
+#: includes/admin/class-gallery-attachment-modal.php:707, pro/includes/class-foogallery-pro-datasource-folders.php:581, pro/includes/foogallery-media-views-templates.php:481, pro/includes/foogallery-media-views-templates.php:500
 msgid "Save"
 msgstr ""
 
@@ -1759,7 +1759,7 @@ msgstr ""
 msgid "Reload"
 msgstr ""
 
-#: includes/admin/class-gallery-datasources.php:217, includes/admin/class-gallery-datasources.php:217, includes/admin/class-gallery-editor.php:226, includes/admin/class-gallery-editor.php:226, pro/includes/class-foogallery-pro-datasource-folders.php:577, pro/includes/foogallery-media-views-templates.php:532
+#: includes/admin/class-gallery-datasources.php:217, includes/admin/class-gallery-datasources.php:217, includes/admin/class-gallery-editor.php:226, includes/admin/class-gallery-editor.php:226, pro/includes/class-foogallery-pro-datasource-folders.php:580, pro/includes/foogallery-media-views-templates.php:532
 msgid "Cancel"
 msgstr ""
 
@@ -5589,159 +5589,159 @@ msgstr ""
 msgid "$_SERVER[\"DOCUMENT_ROOT\"]"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:425
+#: pro/includes/class-foogallery-pro-datasource-folders.php:428
 msgid "Select which folder on the server you want to load images from. You also need to choose the source of the image metadata. Image metadata allows you to change the caption title, caption description, alt text and the order of the images. This metadata can be read from a file on the server (metadata.json) or from the WordPress database."
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:427
+#: pro/includes/class-foogallery-pro-datasource-folders.php:430
 msgid "Image Metadata : "
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:429
+#: pro/includes/class-foogallery-pro-datasource-folders.php:432
 msgid "Load from file on server"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:431
+#: pro/includes/class-foogallery-pro-datasource-folders.php:434
 msgid "Load from WordPress database"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:434
+#: pro/includes/class-foogallery-pro-datasource-folders.php:437
 msgid "Sort Order : "
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:438
+#: pro/includes/class-foogallery-pro-datasource-folders.php:441
 msgid "Filename"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:440
+#: pro/includes/class-foogallery-pro-datasource-folders.php:443
 msgid "Filename (Reversed)"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:443
+#: pro/includes/class-foogallery-pro-datasource-folders.php:446
 msgid "Selected Folder : "
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:444, pro/includes/class-foogallery-pro-datasource-lightroom.php:260
+#: pro/includes/class-foogallery-pro-datasource-folders.php:447, pro/includes/class-foogallery-pro-datasource-lightroom.php:260
 msgid "nothing yet"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:609
+#: pro/includes/class-foogallery-pro-datasource-folders.php:612
 msgid "Loading metadata from %s"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:632
+#: pro/includes/class-foogallery-pro-datasource-folders.php:635
 msgid "NO metadata file found in folder!"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:633
+#: pro/includes/class-foogallery-pro-datasource-folders.php:636
 msgid "We read JSON metadata information about each image from the file (%s) which you need to save to the same folder."
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:628
+#: pro/includes/class-foogallery-pro-datasource-folders.php:631
 msgid "Woohoo! There is no missing metadata!"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:626, pro/includes/class-foogallery-pro-datasource-folders.php:545
+#: pro/includes/class-foogallery-pro-datasource-folders.php:629, pro/includes/class-foogallery-pro-datasource-folders.php:548
 msgid "There are %d images with missing metadata!"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:620
+#: pro/includes/class-foogallery-pro-datasource-folders.php:623
 msgid "ERROR reading metadata file!"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:621
+#: pro/includes/class-foogallery-pro-datasource-folders.php:624
 msgid "There was a problem reading metadata from %s. Please check that the file contains valid JSON. You can use a website like %s to help validate your JSON data."
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:622
+#: pro/includes/class-foogallery-pro-datasource-folders.php:625
 msgid "Error : "
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:644
+#: pro/includes/class-foogallery-pro-datasource-folders.php:647
 msgid "Below is the JSON metadata read from file:"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:642
+#: pro/includes/class-foogallery-pro-datasource-folders.php:645
 msgid "Below is the automatically generated JSON metadata, merged together with the existing metadata read from file:"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:639
+#: pro/includes/class-foogallery-pro-datasource-folders.php:642
 msgid "Below is the automatically generated JSON metadata for all images found in the folder."
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:640
+#: pro/includes/class-foogallery-pro-datasource-folders.php:643
 msgid "To use it: copy the JSON data below, change it to your liking, save it to a file named %s, and finally upload/transfer/FTP the file into the same folder on your server."
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:651
+#: pro/includes/class-foogallery-pro-datasource-folders.php:654
 msgid "Please note : you can change the sort order of the images by changing the order of the metadata within the metadata file."
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:538
+#: pro/includes/class-foogallery-pro-datasource-folders.php:541
 msgid "Loading metadata from WordPress database option %s"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:539
+#: pro/includes/class-foogallery-pro-datasource-folders.php:542
 msgid "Clear Metadata"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:548
+#: pro/includes/class-foogallery-pro-datasource-folders.php:551
 msgid "Change the sort order of the images by drag and drop. Click the \"i\" icon to change the caption and other metadata for each image."
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:551
+#: pro/includes/class-foogallery-pro-datasource-folders.php:554
 msgid "Edit Image Metadata"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:553
+#: pro/includes/class-foogallery-pro-datasource-folders.php:556
 msgid "File"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:565
+#: pro/includes/class-foogallery-pro-datasource-folders.php:568
 msgid "Alt Text"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:579
+#: pro/includes/class-foogallery-pro-datasource-folders.php:582
 msgid "Save &amp; Next"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:583
+#: pro/includes/class-foogallery-pro-datasource-folders.php:586
 msgid "Save Metadata"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:689
+#: pro/includes/class-foogallery-pro-datasource-folders.php:692
 msgid "No images found in the folder."
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:668
+#: pro/includes/class-foogallery-pro-datasource-folders.php:671
 msgid "%s images found in the folder."
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:674
+#: pro/includes/class-foogallery-pro-datasource-folders.php:677
 msgid "Edit the metadata for this image"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:676
+#: pro/includes/class-foogallery-pro-datasource-folders.php:679
 msgid "Missing Metadata!"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:724
+#: pro/includes/class-foogallery-pro-datasource-folders.php:727
 msgid "Go up a level"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:795
+#: pro/includes/class-foogallery-pro-datasource-folders.php:798
 msgid "Datasource : Server Folder"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:796
+#: pro/includes/class-foogallery-pro-datasource-folders.php:799
 msgid "This gallery will be dynamically populated with all images within the following folder on your server:"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:800, pro/includes/class-foogallery-pro-datasource-realmedialibrary.php:342
+#: pro/includes/class-foogallery-pro-datasource-folders.php:803, pro/includes/class-foogallery-pro-datasource-realmedialibrary.php:342
 msgid "Change Folder"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:803, pro/includes/class-foogallery-pro-datasource-realmedialibrary.php:345
+#: pro/includes/class-foogallery-pro-datasource-folders.php:806, pro/includes/class-foogallery-pro-datasource-realmedialibrary.php:345
 msgid "Remove Folder"
 msgstr ""
 
