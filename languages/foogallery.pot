@@ -21,7 +21,7 @@ msgstr ""
 msgid "Template"
 msgstr ""
 
-#: extensions/albums/admin/class-columns.php:20, extensions/nextgen-importer/view-importer.php:294, includes/class-posttypes.php:26, includes/class-posttypes.php:37, pro/extensions/whitelabelling/foogallery-whitelabelling-extension.php:90, pro/extensions/whitelabelling/foogallery-whitelabelling-extension.php:90
+#: extensions/albums/admin/class-columns.php:20, includes/class-posttypes.php:26, includes/class-posttypes.php:37, pro/extensions/whitelabelling/foogallery-whitelabelling-extension.php:90, pro/extensions/whitelabelling/foogallery-whitelabelling-extension.php:90
 msgid "Galleries"
 msgstr ""
 
@@ -153,7 +153,7 @@ msgstr ""
 msgid "&laquo; back to album"
 msgstr ""
 
-#: extensions/albums/class-albums-extension.php:141, extensions/albums/class-posttypes.php:26, extensions/albums/class-posttypes.php:36, extensions/albums/class-posttypes.php:37, extensions/nextgen-importer/view-importer.php:295, includes/functions.php:1378
+#: extensions/albums/class-albums-extension.php:141, extensions/albums/class-posttypes.php:26, extensions/albums/class-posttypes.php:36, extensions/albums/class-posttypes.php:37, includes/functions.php:1378
 msgid "Albums"
 msgstr ""
 
@@ -1131,7 +1131,7 @@ msgstr ""
 msgid "Something went wrong with the export!"
 msgstr ""
 
-#: extensions/import-export/class-foogallery-export-view-helper.php:66, extensions/nextgen-importer/class-nextgen-helper.php:245
+#: extensions/import-export/class-foogallery-export-view-helper.php:66
 msgid "Select All"
 msgstr ""
 
@@ -1245,250 +1245,6 @@ msgstr ""
 
 #: extensions/import-export/view-import-export.php:62
 msgid "There are no galleries to export!"
-msgstr ""
-
-#: extensions/nextgen-importer/class-nextgen-gallery-importer-extension.php:41
-msgid "NextGen Importer"
-msgstr ""
-
-#: extensions/nextgen-importer/class-nextgen-gallery-importer-extension.php:156
-msgid "Replace Shortcodes"
-msgstr ""
-
-#: extensions/nextgen-importer/class-nextgen-gallery-importer-extension.php:203
-msgid "NO posts were found containing the shortcode"
-msgstr ""
-
-#: extensions/nextgen-importer/class-nextgen-gallery-importer-extension.php:195
-msgid "posts found containing the shortcode"
-msgstr ""
-
-#: extensions/nextgen-importer/class-nextgen-gallery-importer-extension.php:197
-msgid "shortcodes found that can be replaced!"
-msgstr ""
-
-#: extensions/nextgen-importer/class-nextgen-gallery-importer-extension.php:200
-msgid "shortcodes found that cannot be replaced, due to the gallery not being imported."
-msgstr ""
-
-#: extensions/nextgen-importer/class-nextgen-gallery-importer-extension.php:231
-msgid "NO replacements were made for the shortcode"
-msgstr ""
-
-#: extensions/nextgen-importer/class-nextgen-gallery-importer-extension.php:229
-msgid "shortcodes were replaced!"
-msgstr ""
-
-#: extensions/nextgen-importer/class-nextgen-helper.php:250
-msgid "NextGen Gallery"
-msgstr ""
-
-#: extensions/nextgen-importer/class-nextgen-helper.php:253
-msgid "%s Name"
-msgstr ""
-
-#: extensions/nextgen-importer/class-nextgen-helper.php:256
-msgid "Import Progress"
-msgstr ""
-
-#: extensions/nextgen-importer/class-nextgen-helper.php:324
-msgid "(%s images)"
-msgstr ""
-
-#: extensions/nextgen-importer/class-nextgen-helper.php:365
-msgid "Stop Import"
-msgstr ""
-
-#: extensions/nextgen-importer/class-nextgen-helper.php:363
-msgid "Resume Import"
-msgstr ""
-
-#: extensions/nextgen-importer/class-nextgen-helper.php:361
-msgid "Start Import"
-msgstr ""
-
-#: extensions/nextgen-importer/class-nextgen-helper.php:369
-msgid "Reset All Gallery Imports"
-msgstr ""
-
-#: extensions/nextgen-importer/class-nextgen-helper.php:396
-msgid "NextGen Album"
-msgstr ""
-
-#: extensions/nextgen-importer/class-nextgen-helper.php:399
-msgid "Album Name"
-msgstr ""
-
-#: extensions/nextgen-importer/class-nextgen-helper.php:402
-msgid "NextGen Galleries"
-msgstr ""
-
-#: extensions/nextgen-importer/class-nextgen-helper.php:405
-msgid "Import Options"
-msgstr ""
-
-#: extensions/nextgen-importer/class-nextgen-helper.php:470
-msgid "imported"
-msgstr ""
-
-#: extensions/nextgen-importer/class-nextgen-helper.php:470
-msgid "not imported"
-msgstr ""
-
-#: extensions/nextgen-importer/class-nextgen-helper.php:450
-msgid "[Album] "
-msgstr ""
-
-#: extensions/nextgen-importer/class-nextgen-helper.php:455
-msgid "nested albums not supported"
-msgstr ""
-
-#: extensions/nextgen-importer/class-nextgen-helper.php:500
-msgid "No galleries imported yet!!"
-msgstr ""
-
-#: extensions/nextgen-importer/class-nextgen-helper.php:495
-msgid "%d/%d galleries will be linked"
-msgstr ""
-
-#: extensions/nextgen-importer/class-nextgen-helper.php:497
-msgid "(Only previously imported galleries can be linked)"
-msgstr ""
-
-#: extensions/nextgen-importer/class-nextgen-helper.php:493
-msgid "All galleries will be linked"
-msgstr ""
-
-#: extensions/nextgen-importer/class-nextgen-helper.php:518
-msgid "Reset All Album Imports"
-msgstr ""
-
-#: extensions/nextgen-importer/class-nextgen-import-progress-album.php:23
-msgid "Album not imported"
-msgstr ""
-
-#: extensions/nextgen-importer/class-nextgen-import-progress-album.php:26
-msgid "Done! %d galleries(s) linked"
-msgstr ""
-
-#: extensions/nextgen-importer/class-nextgen-import-progress-album.php:30, extensions/nextgen-importer/class-nextgen-import-progress.php:71
-msgid "Unknown status!"
-msgstr ""
-
-#: extensions/nextgen-importer/class-nextgen-import-progress.php:50
-msgid "Not imported"
-msgstr ""
-
-#: extensions/nextgen-importer/class-nextgen-import-progress.php:53
-msgid "Queued for import"
-msgstr ""
-
-#: extensions/nextgen-importer/class-nextgen-import-progress.php:56
-msgid "Imported %d of %d image(s)"
-msgstr ""
-
-#: extensions/nextgen-importer/class-nextgen-import-progress.php:60
-msgid "Done! %d image(s) imported"
-msgstr ""
-
-#: extensions/nextgen-importer/class-nextgen-import-progress.php:66
-msgid "Error while importing!"
-msgstr ""
-
-#: extensions/nextgen-importer/class-nextgen-import-progress.php:64
-msgid "No images to import!"
-msgstr ""
-
-#: extensions/nextgen-importer/view-importer.php:115
-msgid "Something went wrong with the import and the page will now reload. Once it has reloaded, click \"Resume Import\" to continue with the import."
-msgstr ""
-
-#: extensions/nextgen-importer/view-importer.php:156
-msgid "Are you sure you want to cancel?"
-msgstr ""
-
-#: extensions/nextgen-importer/view-importer.php:163
-msgid "Are you sure you want to reset all NextGen gallery import data? This may result in duplicate galleries and media attachments!"
-msgstr ""
-
-#: extensions/nextgen-importer/view-importer.php:170
-msgid "Are you sure you want to reset all NextGen album import data? This may result in duplicate albums if you decide to import again!"
-msgstr ""
-
-#: extensions/nextgen-importer/view-importer.php:200
-msgid "Something went wrong with the import and the page will now reload."
-msgstr ""
-
-#: extensions/nextgen-importer/view-importer.php:229
-msgid "Something went wrong with finding shortcodes, so the page will now reload."
-msgstr ""
-
-#: extensions/nextgen-importer/view-importer.php:258
-msgid "Something went wrong with replacing shortcodes, so the page will now reload."
-msgstr ""
-
-#: extensions/nextgen-importer/view-importer.php:291
-msgid "NextGen Gallery And Album Importer"
-msgstr ""
-
-#: extensions/nextgen-importer/view-importer.php:296, pro/includes/class-foogallery-pro-gallery-override.php:25
-msgid "Shortcodes"
-msgstr ""
-
-#: extensions/nextgen-importer/view-importer.php:305
-msgid "Importing galleries is really simple:"
-msgstr ""
-
-#: extensions/nextgen-importer/view-importer.php:307
-msgid "Choose the NextGen galleries you want to import into %s by checking their checkboxes."
-msgstr ""
-
-#: extensions/nextgen-importer/view-importer.php:308
-msgid "Click the Start Import button to start the import process."
-msgstr ""
-
-#: extensions/nextgen-importer/view-importer.php:309
-msgid "Once a gallery is imported, you can click on the link under the %s Name column to edit the gallery."
-msgstr ""
-
-#: extensions/nextgen-importer/view-importer.php:311
-msgid "Please note: importing large galleries with lots of images can take a while!"
-msgstr ""
-
-#: extensions/nextgen-importer/view-importer.php:302
-msgid "There are no NextGen galleries to import!"
-msgstr ""
-
-#: extensions/nextgen-importer/view-importer.php:325
-msgid "Importing albums is also really simple:"
-msgstr ""
-
-#: extensions/nextgen-importer/view-importer.php:327
-msgid "For all the albums you wish to import, make sure all the galleries have been imported FIRST. If not, then go back to the Galleries tab."
-msgstr ""
-
-#: extensions/nextgen-importer/view-importer.php:328
-msgid "Click the Import Album button for each album to import the album and link all the galleries. If you do not see the button, then that means you first need to import the galleries."
-msgstr ""
-
-#: extensions/nextgen-importer/view-importer.php:329
-msgid "Once an album is imported, you can click on the link under the Album Name column to edit the album."
-msgstr ""
-
-#: extensions/nextgen-importer/view-importer.php:322
-msgid "There are no NextGen albums to import!"
-msgstr ""
-
-#: extensions/nextgen-importer/view-importer.php:340
-msgid "Replacing NextGen shortcodes will only work with galleries that have already been imported."
-msgstr ""
-
-#: extensions/nextgen-importer/view-importer.php:342
-msgid "Supported NextGen shortcodes: [ngg_images], [nggallery], [slideshow], [imagebrowse]"
-msgstr ""
-
-#: extensions/nextgen-importer/view-importer.php:345
-msgid "Find Shortcodes"
 msgstr ""
 
 #: foogallery.php:241
