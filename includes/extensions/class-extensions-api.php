@@ -109,19 +109,21 @@ if ( ! class_exists( 'FooGallery_Extensions_API' ) ) {
 				'minimum_version' => '1.0.2.1',
 			);
 
-			//The NextGen importer
+			// The FooGallery Migrate feature.
 			$this->extensions[] = array(
-				'slug' => 'nextgen',
-				'class' => 'FooGallery_Nextgen_Gallery_Importer_Extension',
+				'slug' => 'foogallery-migrate',
+				'class' => ' ',
 				'categories' => array( 'Free' ),
-				'title' => 'NextGen Importer',
-				'description' => 'Imports all your existing NextGen galleries',
+				'title' => 'FooGallery Migrate',
+				'description' => 'Migrate to FooGallery from other gallery plugins',
 				'author' => 'FooPlugins',
 				'author_url' => 'https://fooplugins.com',
-				'thumbnail' => 'https://s3.amazonaws.com/foogallery/extensions/nextgen_importer.png',
-				'tags' => array( 'tools' ),
-				'source' => 'bundled',
+				'thumbnail' => 'https://ps.w.org/foogallery-migrate/assets/icon-128x128.png?rev=2856451',
+				'tags' => array( 'tools'),
+				'source' => 'repo',
+				'download_link' => 'https://downloads.wordpress.org/plugin/foogallery-migrate.latest-stable.zip',
 			);
+
 		}
 
 		/**
