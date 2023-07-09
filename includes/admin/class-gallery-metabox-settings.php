@@ -109,8 +109,8 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings' ) ) {
          * @param string $section_slug
          * @return string
         */
-        function add_section_icons($section_slug) {
-            switch ($section_slug) {
+        function add_section_icons( $section_slug ) {
+            switch ( $section_slug ) {
                 case 'general':
                     return 'dashicons-format-gallery';
                 case 'advanced':
