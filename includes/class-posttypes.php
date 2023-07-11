@@ -16,6 +16,9 @@ if ( ! class_exists( 'FooGallery_PostTypes' ) ) {
 
 			//update post bulk messages
 			add_filter( 'bulk_post_updated_messages', array( $this, 'update_bulk_messages' ), 10, 2 );
+
+			// Role-based permissions check for gallery creation.
+            add_action( 'admin_init', array( $this, 'gallery_creation_permission_check' ) );
 		}
 
 		function register() {
@@ -48,11 +51,7 @@ if ( ! class_exists( 'FooGallery_PostTypes' ) ) {
 					'supports'      => array( 'title', 'thumbnail' ),
 				)
             );
-
             register_post_type( FOOGALLERY_CPT_GALLERY, $args );
-
-            // Role-based permissions check for gallery creation.
-            add_action( 'admin_init', array( $this, 'gallery_creation_permission_check' ) );
         }
 
 		/**
@@ -75,7 +74,6 @@ if ( ! class_exists( 'FooGallery_PostTypes' ) ) {
 
 					// Check if the current user does not have the required role to create galleries.
 					if ( ! in_array( $gallery_creator_role, $current_user->roles ) ) {
-						// Display an error message or perform a redirect to prevent gallery creation.
 						wp_die( 'You do not have permission to create galleries.' );
 					}
 				}
