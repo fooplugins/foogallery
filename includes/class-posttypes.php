@@ -44,10 +44,36 @@ if ( ! class_exists( 'FooGallery_PostTypes' ) ) {
 					'menu_icon'     => 'dashicons-format-gallery',
 					'supports'      => array( 'title', 'thumbnail', ),
 				)
-			);
+            );
 
-			register_post_type( FOOGALLERY_CPT_GALLERY, $args );
-		}
+            register_post_type( FOOGALLERY_CPT_GALLERY, $args );
+
+            // Role-based permissions check for gallery creation
+            add_action( 'admin_init', array( $this, 'gallery_creation_permission_check' ) );
+        }
+
+        /**
+         * Role-based permissions check for gallery creation
+         */
+        function gallery_creation_permission_check() {
+            global $pagenow;
+
+            // Run the check only on the post-new.php page (add new gallery) and not on other pages.
+            if ( 'post-new.php' === $pagenow ) {
+                $foogallery_options = get_option( 'foogallery' );
+                if ( isset( $foogallery_options['gallery_creator_role'] ) ) {
+                    $gallery_creator_role = $foogallery_options['gallery_creator_role'];
+                    $current_user = wp_get_current_user();
+
+                    // Check if the current user does not have the required role to create galleries.
+                    if ( ! in_array( $gallery_creator_role, $current_user->roles ) ) {
+                        // Display an error message or perform a redirect to prevent gallery creation.
+                        wp_die( 'You do not have permission to create galleries.' );
+                    }
+                }
+            }
+        }
+
 
 		/**
 		 * Customize the update messages for a gallery
