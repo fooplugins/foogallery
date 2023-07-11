@@ -17,18 +17,22 @@ if ( ! class_exists( 'FooGallery_PostTypes' ) ) {
 			//update post bulk messages
 			add_filter( 'bulk_post_updated_messages', array( $this, 'update_bulk_messages' ), 10, 2 );
 
-			// Role-based permissions check for gallery creation.
-            add_action( 'admin_init', array( $this, 'gallery_creation_permission_check' ) );
 		}
 
+		/**
+		 * Registers the custom post type for galleries.
+		 *
+		 * This function is responsible for registering the custom post type 'gallery' used by the FooGallery plugin.
+		 */
 		function register() {
-			$foogallery_options = get_option( 'foogallery' );
+			$foogallery_options   = get_option( 'foogallery' );
 			$gallery_creator_role = $foogallery_options['gallery_creator_role'];
 
-			//allow extensions to override the gallery post type.
-			$args = apply_filters( 'foogallery_gallery_posttype_register_args',
+			// Allow extensions to override the gallery post type.
+			$args = apply_filters(
+				'foogallery_gallery_posttype_register_args',
 				array(
-					'labels'        => array(
+					'labels'       => array(
 						'name'               => __( 'Galleries', 'foogallery' ),
 						'singular_name'      => __( 'Gallery', 'foogallery' ),
 						'add_new'            => __( 'Add Gallery', 'foogallery' ),
@@ -40,44 +44,37 @@ if ( ! class_exists( 'FooGallery_PostTypes' ) ) {
 						'not_found'          => __( 'No Galleries found', 'foogallery' ),
 						'not_found_in_trash' => __( 'No Galleries found in Trash', 'foogallery' ),
 						'menu_name'          => foogallery_plugin_name(),
-						'all_items'          => __( 'Galleries', 'foogallery' )
+						'all_items'          => __( 'Galleries', 'foogallery' ),
 					),
-					'hierarchical'  => false,
-					'public'        => false,
-					'rewrite'       => false,
-					'show_ui'       => true,
-					'show_in_menu'  => ( current_user_can( 'administrator' ) || current_user_can( $gallery_creator_role ) ),
-					'menu_icon'     => 'dashicons-format-gallery',
-					'supports'      => array( 'title', 'thumbnail' ),
+					'hierarchical' => false,
+					'public'       => false,
+					'rewrite'      => false,
+					'show_ui'      => true,
+					'menu_icon'    => 'dashicons-format-gallery',
+					'supports'     => array( 'title', 'thumbnail' ),
+					'capabilities' => array(
+						'create_posts' => $gallery_creator_role,
+						'create_post'  => $gallery_creator_role,
+						'edit_posts'   => $gallery_creator_role,
+						'edit_post'    => $gallery_creator_role,
+						'delete_post'  => $gallery_creator_role,
+						'delete_posts' => $gallery_creator_role,
+						'read-post'    => $gallery_creator_role,
+					),
+					'capabilities' => array(
+						'create_posts'       => 'administrator',
+						'create_post'        => 'administrator',
+						'edit_posts'         => 'administrator',
+						'edit_post'          => 'administrator',
+						'delete_post'        => 'administrator',
+						'delete_posts'       => 'administrator',
+						'read-post'          => 'administrator',
+						'read_private_posts' => 'administrator',
+						'edit_others_posts'  => 'administrator',
+					),
 				)
-            );
-            register_post_type( FOOGALLERY_CPT_GALLERY, $args );
-        }
-
-		/**
-		 * Role-based permissions check for gallery creation.
-		 */
-		function gallery_creation_permission_check() {
-			global $pagenow;
-
-			// Run the check only on the post-new.php page (add new gallery) and not on other pages.
-			if ( 'post-new.php' === $pagenow ) {
-				$foogallery_options = get_option( 'foogallery' );
-				if ( isset( $foogallery_options['gallery_creator_role'] ) ) {
-					$gallery_creator_role = $foogallery_options['gallery_creator_role'];
-					$current_user = wp_get_current_user();
-
-					// Allow administrators to always have the capability to create galleries.
-					if ( in_array( 'administrator', $current_user->roles ) ) {
-						return;
-					}
-
-					// Check if the current user does not have the required role to create galleries.
-					if ( ! in_array( $gallery_creator_role, $current_user->roles ) ) {
-						wp_die( 'You do not have permission to create galleries.' );
-					}
-				}
-			}
+			);
+			register_post_type( FOOGALLERY_CPT_GALLERY, $args );
 		}
 
 		/**
