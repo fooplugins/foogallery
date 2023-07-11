@@ -19,7 +19,10 @@ if ( ! class_exists( 'FooGallery_PostTypes' ) ) {
 		}
 
 		function register() {
-			//allow extensions to override the gallery post type
+			$foogallery_options = get_option( 'foogallery' );
+			$gallery_creator_role = $foogallery_options['gallery_creator_role'];
+
+			//allow extensions to override the gallery post type.
 			$args = apply_filters( 'foogallery_gallery_posttype_register_args',
 				array(
 					'labels'        => array(
@@ -40,9 +43,9 @@ if ( ! class_exists( 'FooGallery_PostTypes' ) ) {
 					'public'        => false,
 					'rewrite'       => false,
 					'show_ui'       => true,
-					'show_in_menu'  => true,
+					'show_in_menu'  => ( current_user_can( 'administrator' ) || current_user_can( $gallery_creator_role ) ),
 					'menu_icon'     => 'dashicons-format-gallery',
-					'supports'      => array( 'title', 'thumbnail', ),
+					'supports'      => array( 'title', 'thumbnail' ),
 				)
             );
 
@@ -57,19 +60,19 @@ if ( ! class_exists( 'FooGallery_PostTypes' ) ) {
 		 */
 		function gallery_creation_permission_check() {
 			global $pagenow;
-		
+
 			// Run the check only on the post-new.php page (add new gallery) and not on other pages.
 			if ( 'post-new.php' === $pagenow ) {
 				$foogallery_options = get_option( 'foogallery' );
 				if ( isset( $foogallery_options['gallery_creator_role'] ) ) {
 					$gallery_creator_role = $foogallery_options['gallery_creator_role'];
 					$current_user = wp_get_current_user();
-		
+
 					// Allow administrators to always have the capability to create galleries.
 					if ( in_array( 'administrator', $current_user->roles ) ) {
 						return;
 					}
-		
+
 					// Check if the current user does not have the required role to create galleries.
 					if ( ! in_array( $gallery_creator_role, $current_user->roles ) ) {
 						// Display an error message or perform a redirect to prevent gallery creation.
@@ -78,8 +81,6 @@ if ( ! class_exists( 'FooGallery_PostTypes' ) ) {
 				}
 			}
 		}
-		
-
 
 		/**
 		 * Customize the update messages for a gallery
@@ -94,7 +95,7 @@ if ( ! class_exists( 'FooGallery_PostTypes' ) ) {
 
 			global $post;
 
-			// Add our gallery messages
+			// Add our gallery messages.
 			$messages[FOOGALLERY_CPT_GALLERY] = apply_filters( 'foogallery_gallery_posttype_update_messages',
 				array(
 					0  => '',
