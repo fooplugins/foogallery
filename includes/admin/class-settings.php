@@ -118,22 +118,22 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 				'section' => __( 'Gallery Defaults', 'foogallery' )
 			);
 
-			$roles        = wp_roles()->roles;
-			$role_choices = array();
-			foreach ( $roles as $role_slug => $role_data ) {
-				$role_choices[ $role_slug ] = $role_data['name'];
-			}
-
-			$settings[] = array(
-				'id'      => 'gallery_creator_role',
-				'title'   => __( 'Gallery Creator Role', 'foogallery' ),
-				'desc'    => __( 'Select the user role allowed to create galleries', 'foogallery' ),
-				'default' => 'administrator',
-				'type'    => 'select',
-				'choices' => array_merge( array( 'administrator' => __( 'Administrator', 'foogallery' ) ), $role_choices ),
-				'tab'     => 'general',
-				'section' => __( 'Gallery Permissions', 'foogallery' ),
-			);
+		       $roles = wp_roles()->roles;
+		       $role_choices = array();
+	
+		       foreach ($roles as $role_slug => $role_data) {
+			  $role_choices[$role_slug] = $role_data['name'];
+		       }
+	
+		       $settings[] = array(
+			  'id'      => 'gallery_creator_role',
+			  'title'   => __('Gallery Creator Role', 'foogallery'),
+			  'desc'    => __('Select the user role allowed to create galleries', 'foogallery'),   
+			  'type'    => 'select',
+			  'choices' => $role_choices,
+			  'tab'     => 'general',
+			  'section' => __('Gallery Permissions', 'foogallery'),
+		        );
 
 			$settings[] = array(
 				'id'      => 'caption_title_source',
