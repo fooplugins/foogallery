@@ -24,45 +24,46 @@ if ( ! class_exists( 'FooGallery_PostTypes' ) ) {
 		 * This function is responsible for registering the custom post type 'gallery' used by the FooGallery plugin.
 		 */
 		function register() {
-			$foogallery_options   = get_option( 'foogallery' );
-			$gallery_creator_role = $foogallery_options['gallery_creator_role'];
-
-			// Allow extensions to override the gallery post type.
-			$args = apply_filters(
-				'foogallery_gallery_posttype_register_args',
-				array(
-					'labels'       => array(
-						'name'               => __( 'Galleries', 'foogallery' ),
-						'singular_name'      => __( 'Gallery', 'foogallery' ),
-						'add_new'            => __( 'Add Gallery', 'foogallery' ),
-						'add_new_item'       => __( 'Add New Gallery', 'foogallery' ),
-						'edit_item'          => __( 'Edit Gallery', 'foogallery' ),
-						'new_item'           => __( 'New Gallery', 'foogallery' ),
-						'view_item'          => __( 'View Gallery', 'foogallery' ),
-						'search_items'       => __( 'Search Galleries', 'foogallery' ),
-						'not_found'          => __( 'No Galleries found', 'foogallery' ),
-						'not_found_in_trash' => __( 'No Galleries found in Trash', 'foogallery' ),
-						'menu_name'          => foogallery_plugin_name(),
-						'all_items'          => __( 'Galleries', 'foogallery' ),
-					),
-					'hierarchical' => false,
-					'public'       => false,
-					'rewrite'      => false,
-					'show_ui'      => true,
-					'menu_icon'    => 'dashicons-format-gallery',
-					'supports'     => array( 'title', 'thumbnail' ),
-					'capabilities' => array(
-						'create_posts' => $gallery_creator_role,
-						'create_post'  => $gallery_creator_role,
-						'edit_posts'   => $gallery_creator_role,
-						'edit_post'    => $gallery_creator_role,
-						'delete_post'  => $gallery_creator_role,
-						'delete_posts' => $gallery_creator_role,
-						'read-post'    => $gallery_creator_role,
-					),
-				)
-			);
-			register_post_type( FOOGALLERY_CPT_GALLERY, $args );
+		    $foogallery_options = get_option( 'foogallery' );
+		    $gallery_creator_role = foogallery_get_setting( 'gallery_creator_role', false );
+		
+		    $args = array(
+		        'labels'       => array(
+		            'name'               => __( 'Galleries', 'foogallery' ),
+		            'singular_name'      => __( 'Gallery', 'foogallery' ),
+		            'add_new'            => __( 'Add Gallery', 'foogallery' ),
+		            'add_new_item'       => __( 'Add New Gallery', 'foogallery' ),
+		            'edit_item'          => __( 'Edit Gallery', 'foogallery' ),
+		            'new_item'           => __( 'New Gallery', 'foogallery' ),
+		            'view_item'          => __( 'View Gallery', 'foogallery' ),
+		            'search_items'       => __( 'Search Galleries', 'foogallery' ),
+		            'not_found'          => __( 'No Galleries found', 'foogallery' ),
+		            'not_found_in_trash' => __( 'No Galleries found in Trash', 'foogallery' ),
+		            'menu_name'          => foogallery_plugin_name(),
+		            'all_items'          => __( 'Galleries', 'foogallery' ),
+		        ),
+		        'hierarchical' => false,
+		        'public'       => false,
+		        'rewrite'      => false,
+		        'show_ui'      => true,
+		        'menu_icon'    => 'dashicons-format-gallery',
+		        'supports'     => array( 'title', 'thumbnail' ),
+		    );
+		
+		    if ( false !== $gallery_creator_role ) {
+		        $args['capabilities'] = array(
+		            'create_posts' => $gallery_creator_role,
+		            'create_post'  => $gallery_creator_role,
+		            'edit_posts'   => $gallery_creator_role,
+		            'edit_post'    => $gallery_creator_role,
+		            'delete_post'  => $gallery_creator_role,
+		            'delete_posts' => $gallery_creator_role,
+		            'read-post'    => $gallery_creator_role,
+		        );
+		    }
+		
+		    $args = apply_filters( 'foogallery_gallery_posttype_register_args', $args );
+		    register_post_type( FOOGALLERY_CPT_GALLERY, $args );
 		}
 
 		/**
