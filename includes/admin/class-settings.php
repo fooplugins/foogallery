@@ -118,7 +118,7 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 				'section' => __( 'Gallery Defaults', 'foogallery' )
 			);
 
-		       $roles = wp_roles()->roles;
+		       $roles = get_editable_roles();
 		       $role_choices = array();
 	
 		       foreach ($roles as $role_slug => $role_data) {
