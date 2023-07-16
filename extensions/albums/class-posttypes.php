@@ -1,29 +1,37 @@
 <?php
-/*
+
+/**
  * FooGallery Album Custom Post Types
+ *
+ * @package FooGallery
  */
 
 if ( ! class_exists( 'FooGallery_Albums_PostTypes' ) ) {
-
+	/**
+	 * Class FooGallery_Post_Type
+	 *
+	 * Handles the registration and management of custom post types for FooGallery.
+	 */
 	class FooGallery_Albums_PostTypes {
 
-		function __construct() {
-			//register the post types.
+		/**
+		 * Constructor method.
+		 */
+		public function __construct() {
+			// register the post types.
 			add_action( 'init', array( $this, 'register_posttype' ) );
 
-			//update post type messages.
+			// update post type messages.
 			add_filter( 'post_updated_messages', array( $this, 'update_messages' ) );
 
-			//update post bulk messages.
+			// update post bulk messages.
 			add_filter( 'bulk_post_updated_messages', array( $this, 'update_bulk_messages' ), 10, 2 );
 		}
 
 		/**
-		 * Registers the custom post type for albums.
-		 *
-		 * This function is responsible for registering the custom post type 'albums' used by the FooGallery plugin.
+		 * Registers the custom post types.
 		 */
-		function register_posttype() {
+		public function register_posttype() {
 			$album_creator_role   = foogallery_get_setting( 'album_creator_role', 'inherit' );
 			$gallery_creator_role = foogallery_get_setting( 'gallery_creator_role', '' );
 
@@ -94,7 +102,7 @@ if ( ! class_exists( 'FooGallery_Albums_PostTypes' ) ) {
 		 *
 		 * @global object $post     The current post object.
 		 *
-		 * @param array   $messages Array of default post updated messages.
+		 * @param array $messages Array of default post updated messages.
 		 *
 		 * @return array $messages Amended array of post updated messages.
 		 */
@@ -102,20 +110,21 @@ if ( ! class_exists( 'FooGallery_Albums_PostTypes' ) ) {
 
 			global $post;
 
-			// Add our album messages
-			$messages[FOOGALLERY_CPT_ALBUM] = apply_filters( 'foogallery_album_posttype_update_messages',
+			// Add our album messages.
+			$messages[ FOOGALLERY_CPT_ALBUM ] = apply_filters(
+				'foogallery_album_posttype_update_messages',
 				array(
 					0  => '',
 					1  => __( 'Album updated.', 'foogallery' ),
 					2  => __( 'Album custom field updated.', 'foogallery' ),
 					3  => __( 'Album custom field deleted.', 'foogallery' ),
 					4  => __( 'Album updated.', 'foogallery' ),
-					5  => isset($_GET['revision']) ? sprintf( __( 'Album restored to revision from %s.', 'foogallery' ), wp_post_revision_title( (int) $_GET['revision'], false ) ) : false,
+					5  => isset( $_GET['revision'] ) ? sprintf( __( 'Album restored to revision from %s.', 'foogallery' ), wp_post_revision_title( (int) $_GET['revision'], false ) ) : false,
 					6  => __( 'Album published.', 'foogallery' ),
 					7  => __( 'Album saved.', 'foogallery' ),
 					8  => __( 'Album submitted.', 'foogallery' ),
 					9  => sprintf( __( 'Album scheduled for: <strong>%1$s</strong>.', 'foogallery' ), date_i18n( __( 'M j, Y @ G:i' ), strtotime( $post->post_date ) ) ),
-					10 => __( 'Album draft updated.', 'foogallery' )
+					10 => __( 'Album draft updated.', 'foogallery' ),
 				)
 			);
 
@@ -131,9 +140,10 @@ if ( ! class_exists( 'FooGallery_Albums_PostTypes' ) ) {
 		 *
 		 * @return array mixed            Amended array of bulk updated messages.
 		 */
-		function update_bulk_messages( $bulk_messages, $bulk_counts ) {
+		public function update_bulk_messages( $bulk_messages, $bulk_counts ) {
 
-			$bulk_messages[FOOGALLERY_CPT_ALBUM] = apply_filters( 'foogallery_album_posttype_bulk_update_messages',
+			$bulk_messages[ FOOGALLERY_CPT_ALBUM ] = apply_filters(
+				'foogallery_album_posttype_bulk_update_messages',
 				array(
 					'updated'   => _n( '%s Album updated.', '%s Albums updated.', $bulk_counts['updated'], 'foogallery' ),
 					'locked'    => _n( '%s Album not updated, somebody is editing it.', '%s Albums not updated, somebody is editing them.', $bulk_counts['locked'], 'foogallery' ),

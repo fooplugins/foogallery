@@ -198,11 +198,11 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 				'section' => __( 'Admin', 'foogallery' )
 			);
 
-			//endregion General
+			// endregion General
 
 			// region Album Tab.
 			$tabs['album'] = __( 'Album', 'foogallery' );
-			$roles        = get_editable_roles();
+			$roles         = get_editable_roles();
 			$role_choices = array(
 				'inherit' => __( 'Inherit from gallery creator role', 'foogallery' ),
 			);
@@ -221,7 +221,7 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 				'tab'     => 'album',
 				'section' => __( 'Admin', 'foogallery' ),
 			);
-
+			// end of album region.
 
 			//region Images Tab
 			$tabs['thumb'] = __( 'Images', 'foogallery' );
