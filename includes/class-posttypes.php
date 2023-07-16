@@ -24,7 +24,6 @@ if ( ! class_exists( 'FooGallery_PostTypes' ) ) {
 		 * This function is responsible for registering the custom post type 'gallery' used by the FooGallery plugin.
 		 */
 		function register() {
-			$foogallery_options   = get_option( 'foogallery' );
 			$gallery_creator_role = foogallery_get_setting( 'gallery_creator_role', '' );
 
 			$args = array(
