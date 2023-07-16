@@ -105,23 +105,24 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings' ) ) {
 
         /**
          * Returns the Dashicon that can be used in the settings tabs
-         * @param $section_slug
+         *
+         * @param string $section_slug
          * @return string
-         */
+        */
         function add_section_icons( $section_slug ) {
             switch ( $section_slug ) {
                 case 'general':
-                    return 'dashicons-format-image';
+                    return 'dashicons-format-gallery';
                 case 'advanced':
-                    return 'dashicons-admin-generic';
+                    return 'dashicons-admin-tools';
                 case 'appearance':
                     return 'dashicons-admin-appearance';
                 case 'video':
-                    return 'dashicons-format-video';
-				case 'hover effects':
-					return 'dashicons-admin-tools';
-				case 'captions':
-					return 'dashicons-testimonial';
+                    return 'dashicons-video-alt3';
+                case 'hover effects':
+                    return 'dashicons-star-filled';
+                case 'captions':
+                    return 'dashicons-editor-quote';
                 case 'paging':
                     return 'dashicons-admin-page';
             }

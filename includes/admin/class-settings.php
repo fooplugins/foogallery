@@ -161,6 +161,25 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 				'section' => __( 'Admin', 'foogallery' )
 			);
 
+			$roles        = get_editable_roles();
+			$role_choices = array(
+				'' => __( 'No Default', 'foogallery' )
+			);
+
+			foreach ( $roles as $role_slug => $role_data ) {
+				$role_choices[ $role_slug ] = $role_data['name'];
+			}
+
+			$settings[] = array(
+				'id'      => 'gallery_creator_role',
+				'title'   => __( 'Gallery Creator Role', 'foogallery' ),
+				'desc'    => __( 'Select the user role allowed to create galleries', 'foogallery' ),
+				'type'    => 'select',
+				'choices' => $role_choices,
+				'tab'     => 'general',
+				'section' => __( 'Admin', 'foogallery' ),
+			);
+
 			$settings[] = array(
 				'id'      => 'hide_editor_button',
 				'title'   => __( 'Hide Classic Editor Button', 'foogallery' ),
@@ -179,7 +198,29 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 				'section' => __( 'Admin', 'foogallery' )
 			);
 
-			//endregion General
+			// endregion General
+
+			// region Album Tab.
+			$tabs['albums'] = __( 'Albums', 'foogallery' );
+			$roles         = get_editable_roles();
+			$role_choices = array(
+				'inherit' => __( 'Inherit from gallery creator role', 'foogallery' ),
+			);
+
+			foreach ( $roles as $role_slug => $role_data ) {
+				$role_choices[ $role_slug ] = $role_data['name'];
+			}
+
+			$settings[] = array(
+				'id'      => 'album_creator_role',
+				'title'   => __( 'Album Creator Role', 'foogallery' ),
+				'desc'    => __( 'Set the default role for album creators.', 'foogallery' ),
+				'type'    => 'select',
+				'choices' => $role_choices,
+				'default' => 'inherit',
+				'tab'     => 'albums',
+			);
+			// end of album region.
 
 			//region Images Tab
 			$tabs['thumb'] = __( 'Images', 'foogallery' );
