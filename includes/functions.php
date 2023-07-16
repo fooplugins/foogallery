@@ -1962,14 +1962,23 @@ function foogallery_get_full_size_image_data( $attachment_id ) {
 	// First try to get the image metadata.
 	$image_data = wp_get_attachment_metadata( $attachment_id );
 
-	if ( ! is_array( $image_data ) ) {
+    $width = $height = 0;
+
+    if ( is_array( $image_data ) ) {
+        if ( array_key_exists( 'width', $image_data ) ) {
+            $width = $image_data['width'];
+        }
+        if ( array_key_exists( 'height', $image_data ) ) {
+            $height = $image_data['height'];
+        }
+    } else {
 		$image_data = wp_get_attachment_image_src( $attachment_id, 'full' );
+        $width = $image_data[1];
+        $height = $image_data[2];
 	}
 
-	if ( is_array( $image_data ) ) {
-		$width  = $image_data['width'];
-		$height = $image_data['height'];
-	} else {
+    // Do a last check for the height and width.
+    if ( $width === $height && 0 === $height ) {
 		// If nothing is stored in meta, then get the size from the physical file. Not ideal, but might be needed in some cases.
 		list( $width, $height ) = wp_getimagesize( $src );
 	}
