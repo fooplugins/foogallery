@@ -8,43 +8,84 @@ if ( ! class_exists( 'FooGallery_Albums_PostTypes' ) ) {
 	class FooGallery_Albums_PostTypes {
 
 		function __construct() {
-			//register the post types
+			//register the post types.
 			add_action( 'init', array( $this, 'register_posttype' ) );
 
-			//update post type messages
+			//update post type messages.
 			add_filter( 'post_updated_messages', array( $this, 'update_messages' ) );
 
-			//update post bulk messages
+			//update post bulk messages.
 			add_filter( 'bulk_post_updated_messages', array( $this, 'update_bulk_messages' ), 10, 2 );
 		}
 
+		/**
+		 * Registers the custom post type for albums.
+		 *
+		 * This function is responsible for registering the custom post type 'albums' used by the FooGallery plugin.
+		 */
 		function register_posttype() {
-			//allow extensions to override the album post type
-			$args = apply_filters( 'foogallery_album_posttype_register_args',
-				array(
-					'labels'        => array(
-						'name'               => __( 'Albums', 'foogallery' ),
-						'singular_name'      => __( 'Album', 'foogallery' ),
-						'add_new'            => __( 'Add Album', 'foogallery' ),
-						'add_new_item'       => __( 'Add New Album', 'foogallery' ),
-						'edit_item'          => __( 'Edit Album', 'foogallery' ),
-						'new_item'           => __( 'New Album', 'foogallery' ),
-						'view_item'          => __( 'View Album', 'foogallery' ),
-						'search_items'       => __( 'Search Albums', 'foogallery' ),
-						'not_found'          => __( 'No Albums found', 'foogallery' ),
-						'not_found_in_trash' => __( 'No Albums found in Trash', 'foogallery' ),
-						'menu_name'          => __( 'Albums', 'foogallery' ),
-						'all_items'          => __( 'Albums', 'foogallery' )
-					),
-					'hierarchical'  => false,
-					'public'        => false,
-					'rewrite'       => false,
-					'show_ui'       => true,
-					'show_in_menu'  => foogallery_admin_menu_parent_slug(),
-					'supports'      => array( 'title' ),
-				)
+			$album_creator_role   = foogallery_get_setting( 'album_creator_role', 'inherit' );
+			$gallery_creator_role = foogallery_get_setting( 'gallery_creator_role', '' );
+
+			$args = array(
+				'labels'       => array(
+					'name'               => __( 'Albums', 'foogallery' ),
+					'singular_name'      => __( 'Album', 'foogallery' ),
+					'add_new'            => __( 'Add Album', 'foogallery' ),
+					'add_new_item'       => __( 'Add New Album', 'foogallery' ),
+					'edit_item'          => __( 'Edit Album', 'foogallery' ),
+					'new_item'           => __( 'New Album', 'foogallery' ),
+					'view_item'          => __( 'View Album', 'foogallery' ),
+					'search_items'       => __( 'Search Albums', 'foogallery' ),
+					'not_found'          => __( 'No Albums found', 'foogallery' ),
+					'not_found_in_trash' => __( 'No Albums found in Trash', 'foogallery' ),
+					'menu_name'          => __( 'Albums', 'foogallery' ),
+					'all_items'          => __( 'Albums', 'foogallery' ),
+				),
+				'hierarchical' => false,
+				'public'       => false,
+				'rewrite'      => false,
+				'show_ui'      => true,
+				'supports'     => array( 'title' ),
 			);
 
+			if ( 'inherit' !== $album_creator_role && '' !== $album_creator_role ) {
+				$args['capabilities'] = array(
+					'create_posts'         => $album_creator_role,
+					'create_post'          => $album_creator_role,
+					'edit_posts'           => $album_creator_role,
+					'edit_post'            => $album_creator_role,
+					'edit_others_posts'    => $album_creator_role,
+					'edit_others_post'     => $album_creator_role,
+					'publish_posts'        => $album_creator_role,
+					'publish_post'         => $album_creator_role,
+					'read_private_posts'   => $album_creator_role,
+					'read_private_post'    => $album_creator_role,
+					'delete_posts'         => $album_creator_role,
+					'delete_post'          => $album_creator_role,
+					'delete_private_posts' => $album_creator_role,
+					'delete_private_post'  => $album_creator_role,
+				);
+			} elseif ( '' !== $gallery_creator_role ) {
+				$args['capabilities'] = array(
+					'create_posts'         => $gallery_creator_role,
+					'create_post'          => $gallery_creator_role,
+					'edit_posts'           => $gallery_creator_role,
+					'edit_post'            => $gallery_creator_role,
+					'edit_others_posts'    => $gallery_creator_role,
+					'edit_others_post'     => $gallery_creator_role,
+					'publish_posts'        => $gallery_creator_role,
+					'publish_post'         => $gallery_creator_role,
+					'read_private_posts'   => $gallery_creator_role,
+					'read_private_post'    => $gallery_creator_role,
+					'delete_posts'         => $gallery_creator_role,
+					'delete_post'          => $gallery_creator_role,
+					'delete_private_posts' => $gallery_creator_role,
+					'delete_private_post'  => $gallery_creator_role,
+				);
+			}
+
+			$args = apply_filters( 'foogallery_album_posttype_register_args', $args );
 			register_post_type( FOOGALLERY_CPT_ALBUM, $args );
 		}
 

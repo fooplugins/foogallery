@@ -200,6 +200,29 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 
 			//endregion General
 
+			// region Album Tab.
+			$tabs['album'] = __( 'Album', 'foogallery' );
+			$roles        = get_editable_roles();
+			$role_choices = array(
+				'inherit' => __( 'Inherit from gallery creator role', 'foogallery' ),
+			);
+
+			foreach ( $roles as $role_slug => $role_data ) {
+				$role_choices[ $role_slug ] = $role_data['name'];
+			}
+
+			$settings[] = array(
+				'id'      => 'album_creator_role',
+				'title'   => __( 'Album Creator Role', 'foogallery' ),
+				'desc'    => __( 'Set the default role for album creators.', 'foogallery' ),
+				'type'    => 'select',
+				'choices' => $role_choices,
+				'default' => 'inherit',
+				'tab'     => 'album',
+				'section' => __( 'Admin', 'foogallery' ),
+			);
+
+
 			//region Images Tab
 			$tabs['thumb'] = __( 'Images', 'foogallery' );
 
