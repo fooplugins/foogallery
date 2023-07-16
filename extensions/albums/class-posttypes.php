@@ -75,7 +75,7 @@ if ( ! class_exists( 'FooGallery_Albums_PostTypes' ) ) {
 					'edit_post'    => $gallery_creator_role,
 					'delete_post'  => $gallery_creator_role,
 					'delete_posts' => $gallery_creator_role,
-					'read-post'    => $gallery_creator_role
+					'read-post'    => $gallery_creator_role,
 				);
 			}
 
