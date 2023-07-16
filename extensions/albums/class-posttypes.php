@@ -63,33 +63,19 @@ if ( ! class_exists( 'FooGallery_Albums_PostTypes' ) ) {
 					'create_post'          => $album_creator_role,
 					'edit_posts'           => $album_creator_role,
 					'edit_post'            => $album_creator_role,
-					'edit_others_posts'    => $album_creator_role,
-					'edit_others_post'     => $album_creator_role,
-					'publish_posts'        => $album_creator_role,
-					'publish_post'         => $album_creator_role,
-					'read_private_posts'   => $album_creator_role,
-					'read_private_post'    => $album_creator_role,
 					'delete_posts'         => $album_creator_role,
 					'delete_post'          => $album_creator_role,
-					'delete_private_posts' => $album_creator_role,
-					'delete_private_post'  => $album_creator_role,
+					'read_post'            => $album_creator_role,
 				);
 			} elseif ( '' !== $gallery_creator_role ) {
 				$args['capabilities'] = array(
-					'create_posts'         => $gallery_creator_role,
-					'create_post'          => $gallery_creator_role,
-					'edit_posts'           => $gallery_creator_role,
-					'edit_post'            => $gallery_creator_role,
-					'edit_others_posts'    => $gallery_creator_role,
-					'edit_others_post'     => $gallery_creator_role,
-					'publish_posts'        => $gallery_creator_role,
-					'publish_post'         => $gallery_creator_role,
-					'read_private_posts'   => $gallery_creator_role,
-					'read_private_post'    => $gallery_creator_role,
-					'delete_posts'         => $gallery_creator_role,
-					'delete_post'          => $gallery_creator_role,
-					'delete_private_posts' => $gallery_creator_role,
-					'delete_private_post'  => $gallery_creator_role,
+					'create_posts' => $gallery_creator_role,
+					'create_post'  => $gallery_creator_role,
+					'edit_posts'   => $gallery_creator_role,
+					'edit_post'    => $gallery_creator_role,
+					'delete_post'  => $gallery_creator_role,
+					'delete_posts' => $gallery_creator_role,
+					'read-post'    => $gallery_creator_role
 				);
 			}
 
