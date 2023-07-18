@@ -148,6 +148,8 @@ if ( function_exists( 'foogallery_fs' ) ) {
 
 				new FooGallery_Cache();
 
+                new FooGallery_Lightbox();
+
 				new FooGallery_Common_Fields();
 
 				new FooGallery_LazyLoad();
