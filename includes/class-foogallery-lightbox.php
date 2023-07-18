@@ -121,7 +121,7 @@ if ( ! class_exists( 'FooGallery_Lightbox' ) ) {
 				'id'  => 'lightbox',
 				'title'   => __( 'lightbox', 'foogallery' ),
 				'desc'    => __('choose which lightbox you want to use. The lightbox will generally only work if you set the thumbnail link to "Full size image'),
-				'section' => $section,
+				'section' => 'Lightbox',
 				'subsection' => array( 'lightbox-lightbox' => __( 'lightbox', 'foogallery' ) ),
 				'spacer'  => '<span class="spacer"></span>',
 				'type'    => 'select',
@@ -135,6 +135,20 @@ if ( ! class_exists( 'FooGallery_Lightbox' ) ) {
 					'data-foogallery-show-when-field'          => 'thumbnail_link',
 					'data-foogallery-show-when-field-value'    => 'none',
 				),				
+			);
+            
+			$field[] = array(
+				'id'      => 'lightbox_promo',
+				'title'   => __( 'Your Gallery Needs A Lightbox!', 'foogallery' ),
+				'desc'    => __( 'Website visitors prefer a gallery with a lightbox. A lightbox allows you to showcase your images, as well as improve navigation between images in your gallery.', 'foogallery' ),
+				'section' => __( 'Lightbox', 'foogallery' ),
+                'subsection' => array( 'lightbox-lightbox' => __( 'lightbox', 'foogallery' ) ),
+				'type'    => 'promo',
+				'row_data' => array(
+					'data-foogallery-hidden' 				   => true,
+					'data-foogallery-show-when-field'          => 'lightbox',
+					'data-foogallery-show-when-field-value'    => 'none',
+                ),
 			);
 			
 			$field[] = array(
@@ -168,7 +182,7 @@ if ( ! class_exists( 'FooGallery_Lightbox' ) ) {
 					'subsection' => array( 'lightbox-controls' => __( 'Controls', 'foogallery' ) ),
 					'type'    => 'help'
 				);
-			}
+			}            
 
 			$field[] = array(
 				'id'      => 'lightbox_button_theme',
