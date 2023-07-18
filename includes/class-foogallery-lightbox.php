@@ -117,6 +117,26 @@ if ( ! class_exists( 'FooGallery_Lightbox' ) ) {
 
 			$section = $use_lightbox ? __( 'Lightbox', 'foogallery' ) : __( 'Panel', 'foogallery' );
 
+            $field[] = array(
+				'id'  => 'lightbox',
+				'title'   => __( 'lightbox', 'foogallery' ),
+				'desc'    => __('choose which lightbox you want to use. The lightbox will generally only work if you set the thumbnail link to "Full size image'),
+				'section' => $section,
+				'subsection' => array( 'lightbox-lightbox' => __( 'lightbox', 'foogallery' ) ),
+				'spacer'  => '<span class="spacer"></span>',
+				'type'    => 'select',
+				'choices' => foogallery_gallery_template_field_lightbox_choices(),
+				'row_data'=> array(
+					'data-foogallery-change-selector'          => 'select',
+					'data-foogallery-value-selector'           => 'select',
+					'data-foogallery-preview'                  => 'shortcode',
+					'data-foogallery-hidden'                   => true,
+					'data-foogallery-show-when-field-operator' => '!==',
+					'data-foogallery-show-when-field'          => 'thumbnail_link',
+					'data-foogallery-show-when-field-value'    => 'none',
+				),				
+			);
+
 			if ( $use_lightbox ) {
                 $field[] = array(
                     'id'      => 'lightbox_help',
