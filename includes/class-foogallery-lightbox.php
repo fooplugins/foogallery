@@ -131,7 +131,7 @@ if ( ! class_exists( 'FooGallery_Lightbox' ) ) {
 				'id'  => 'lightbox',
 				'title'   => __( 'lightbox', 'foogallery' ),
 				'desc'    => __('choose which lightbox you want to use. The lightbox will generally only work if you set the thumbnail link to "Full size image'),
-				'section' => 'Lightbox',
+				'section' => $section,
 				'subsection' => array( 'lightbox-lightbox' => __( 'lightbox', 'foogallery' ) ),
 				'spacer'  => '<span class="spacer"></span>',
 				'type'    => 'select',
