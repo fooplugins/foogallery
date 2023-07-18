@@ -171,6 +171,10 @@ if ( ! class_exists( 'FooGallery_Lightbox' ) ) {
 					'data-foogallery-change-selector' => 'input',
 					'data-foogallery-preview' => 'shortcode',
 					'data-foogallery-value-selector' => 'input:checked',
+                    'data-foogallery-hidden' 				   => true,
+					'data-foogallery-show-when-field'          => 'lightbox',
+                    'data-foogallery-show-when-field-operator' => '===',
+					'data-foogallery-show-when-field-value'    => 'FooGallery Lightbox',
 				)
 			);
 
@@ -181,7 +185,13 @@ if ( ! class_exists( 'FooGallery_Lightbox' ) ) {
 					'desc'    => __( 'The below settings are only applied and used if you have your lightbox set to "FooGallery Lightbox"', 'foogallery' ),
 					'section' => $section,
 					'subsection' => array( 'lightbox-controls' => __( 'Controls', 'foogallery' ) ),
-					'type'    => 'help'
+					'type'    => 'help',
+					'row_data'=> array(
+						'data-foogallery-hidden'                   => true,
+						'data-foogallery-show-when-field'          => 'lightbox',
+						'data-foogallery-show-when-field-operator' => '===',
+						'data-foogallery-show-when-field-value'    => 'FooGallery Lightbox',
+					)
 				);
 			}            
 
@@ -202,6 +212,10 @@ if ( ! class_exists( 'FooGallery_Lightbox' ) ) {
 					'data-foogallery-change-selector' => 'input',
 					'data-foogallery-preview' => 'shortcode',
 					'data-foogallery-value-selector' => 'input:checked',
+                    'data-foogallery-hidden' 				   => true,
+					'data-foogallery-show-when-field'          => 'lightbox',
+                    'data-foogallery-show-when-field-operator' => '===',
+					'data-foogallery-show-when-field-value'    => 'FooGallery Lightbox',
 				)
 			);
 
@@ -231,6 +245,9 @@ if ( ! class_exists( 'FooGallery_Lightbox' ) ) {
 					'data-foogallery-show-when-field'          => 'lightbox_button_theme',
 					'data-foogallery-show-when-field-operator' => '===',
 					'data-foogallery-show-when-field-value'    => 'custom',
+					'data-foogallery-show-when-field'          => 'lightbox',
+                    'data-foogallery-show-when-field-operator' => '===',
+					'data-foogallery-show-when-field-value'    => 'FooGallery Lightbox',
 				)
 			);
 
@@ -251,6 +268,10 @@ if ( ! class_exists( 'FooGallery_Lightbox' ) ) {
 					'data-foogallery-change-selector' => 'input',
 					'data-foogallery-preview' => 'shortcode',
 					'data-foogallery-value-selector' => 'input:checked',
+                    'data-foogallery-hidden' 				   => true,
+					'data-foogallery-show-when-field'          => 'lightbox',
+                    'data-foogallery-show-when-field-operator' => '===',
+					'data-foogallery-show-when-field-value'    => 'FooGallery Lightbox',
 				)
 			);
 
@@ -280,6 +301,9 @@ if ( ! class_exists( 'FooGallery_Lightbox' ) ) {
 					'data-foogallery-show-when-field'          => 'lightbox_button_highlight',
 					'data-foogallery-show-when-field-operator' => '===',
 					'data-foogallery-show-when-field-value'    => 'custom',
+					'data-foogallery-show-when-field'          => 'lightbox',
+                    'data-foogallery-show-when-field-operator' => '===',
+					'data-foogallery-show-when-field-value'    => 'FooGallery Lightbox',
 				)
 			);
 
@@ -296,7 +320,13 @@ if ( ! class_exists( 'FooGallery_Lightbox' ) ) {
 					'desc'    => __( 'The below settings are only applied and used if you have your lightbox set to "FooGallery Lightbox"', 'foogallery' ),
 					'section' => $section,
 					'subsection' => array( 'lightbox-thumbnails' => __( 'Thumbnails', 'foogallery' ) ),
-					'type'    => 'help'
+					'type'    => 'help',
+					'row_data' => array(
+						'data-foogallery-hidden'                   => true,
+						'data-foogallery-show-when-field'          => 'lightbox',
+						'data-foogallery-show-when-field-operator' => '===',
+						'data-foogallery-show-when-field-value'    => 'FooGallery Lightbox',
+					),
 				);
 			}
 
@@ -320,6 +350,10 @@ if ( ! class_exists( 'FooGallery_Lightbox' ) ) {
 					'data-foogallery-change-selector' => 'input:radio',
 					'data-foogallery-preview'         => 'shortcode',
 					'data-foogallery-value-selector'  => 'input:checked',
+					'data-foogallery-hidden' 				   => true,
+					'data-foogallery-show-when-field'          => 'lightbox',
+                    'data-foogallery-show-when-field-operator' => '===',
+					'data-foogallery-show-when-field-value'    => 'FooGallery Lightbox',
 				)
 			);
 
@@ -344,6 +378,9 @@ if ( ! class_exists( 'FooGallery_Lightbox' ) ) {
 					'data-foogallery-change-selector'          => 'input:radio',
 					'data-foogallery-preview'                  => 'shortcode',
 					'data-foogallery-value-selector'           => 'input:checked',
+					'data-foogallery-show-when-field'          => 'lightbox',
+                    'data-foogallery-show-when-field-operator' => '===',
+					'data-foogallery-show-when-field-value'    => 'FooGallery Lightbox',
 				)
 			);
 
@@ -369,6 +406,9 @@ if ( ! class_exists( 'FooGallery_Lightbox' ) ) {
 					'data-foogallery-show-when-field'          => 'lightbox_thumbs',
 					'data-foogallery-show-when-field-operator' => '!==',
 					'data-foogallery-show-when-field-value'    => 'none',
+					'data-foogallery-show-when-field'          => 'lightbox',
+                    'data-foogallery-show-when-field-operator' => '===',
+					'data-foogallery-show-when-field-value'    => 'FooGallery Lightbox',
 				)
 			);
 
@@ -393,6 +433,9 @@ if ( ! class_exists( 'FooGallery_Lightbox' ) ) {
 					'data-foogallery-change-selector'          => 'input:radio',
 					'data-foogallery-preview'                  => 'shortcode',
 					'data-foogallery-value-selector'           => 'input:checked',
+					'data-foogallery-show-when-field'          => 'lightbox',
+                    'data-foogallery-show-when-field-operator' => '===',
+					'data-foogallery-show-when-field-value'    => 'FooGallery Lightbox',
 				)
 			);
 
@@ -417,6 +460,9 @@ if ( ! class_exists( 'FooGallery_Lightbox' ) ) {
 					'data-foogallery-change-selector'          => 'input:radio',
 					'data-foogallery-preview'                  => 'shortcode',
 					'data-foogallery-value-selector'           => 'input:checked',
+					'data-foogallery-show-when-field'          => 'lightbox',
+                    'data-foogallery-show-when-field-operator' => '===',
+					'data-foogallery-show-when-field-value'    => 'FooGallery Lightbox',
 				)
 			);
 
@@ -439,6 +485,10 @@ if ( ! class_exists( 'FooGallery_Lightbox' ) ) {
 					'data-foogallery-change-selector' => 'input',
 					'data-foogallery-preview' => 'shortcode',
 					'data-foogallery-value-selector' => 'input:checked',
+					'data-foogallery-hidden' 				   => true,
+					'data-foogallery-show-when-field'          => 'lightbox',
+                    'data-foogallery-show-when-field-operator' => '===',
+					'data-foogallery-show-when-field-value'    => 'FooGallery Lightbox',
 				)
 			);
 
@@ -458,6 +508,10 @@ if ( ! class_exists( 'FooGallery_Lightbox' ) ) {
 					'data-foogallery-change-selector' => 'input:radio',
 					'data-foogallery-preview'         => 'shortcode',
 					'data-foogallery-value-selector'  => 'input:checked',
+					'data-foogallery-hidden' 				   => true,
+					'data-foogallery-show-when-field'          => 'lightbox',
+                    'data-foogallery-show-when-field-operator' => '===',
+					'data-foogallery-show-when-field-value'    => 'FooGallery Lightbox',
 				)
 			);
 
@@ -485,6 +539,9 @@ if ( ! class_exists( 'FooGallery_Lightbox' ) ) {
 					'data-foogallery-show-when-field'          => 'lightbox_info_enabled',
 					'data-foogallery-show-when-field-operator' => '!==',
 					'data-foogallery-show-when-field-value'    => 'disabled',
+					'data-foogallery-show-when-field'          => 'lightbox',
+                    'data-foogallery-show-when-field-operator' => '===',
+					'data-foogallery-show-when-field-value'    => 'FooGallery Lightbox',
 				)
 			);
 
@@ -511,6 +568,9 @@ if ( ! class_exists( 'FooGallery_Lightbox' ) ) {
 					'data-foogallery-show-when-field'          => 'lightbox_info_enabled',
 					'data-foogallery-show-when-field-operator' => '!==',
 					'data-foogallery-show-when-field-value'    => 'disabled',
+					'data-foogallery-show-when-field'          => 'lightbox',
+                    'data-foogallery-show-when-field-operator' => '===',
+					'data-foogallery-show-when-field-value'    => 'FooGallery Lightbox',
 				)
 			);
 
@@ -535,6 +595,9 @@ if ( ! class_exists( 'FooGallery_Lightbox' ) ) {
 					'data-foogallery-show-when-field'          => 'lightbox_info_enabled',
 					'data-foogallery-show-when-field-operator' => '!==',
 					'data-foogallery-show-when-field-value'    => 'disabled',
+					'data-foogallery-show-when-field'          => 'lightbox',
+                    'data-foogallery-show-when-field-operator' => '===',
+					'data-foogallery-show-when-field-value'    => 'FooGallery Lightbox',
 				)
 			);
 
@@ -559,6 +622,9 @@ if ( ! class_exists( 'FooGallery_Lightbox' ) ) {
 					'data-foogallery-show-when-field'          => 'lightbox_info_enabled',
 					'data-foogallery-show-when-field-operator' => '!==',
 					'data-foogallery-show-when-field-value'    => 'disabled',
+					'data-foogallery-show-when-field'          => 'lightbox',
+                    'data-foogallery-show-when-field-operator' => '===',
+					'data-foogallery-show-when-field-value'    => 'FooGallery Lightbox',
 				)
 			);
 
@@ -586,6 +652,9 @@ if ( ! class_exists( 'FooGallery_Lightbox' ) ) {
 					'data-foogallery-change-selector'          => 'input:radio',
 					'data-foogallery-preview'                  => 'shortcode',
 					'data-foogallery-value-selector'           => 'input:checked',
+					'data-foogallery-show-when-field'          => 'lightbox',
+                    'data-foogallery-show-when-field-operator' => '===',
+					'data-foogallery-show-when-field-value'    => 'FooGallery Lightbox',
 				)
 			);
 
@@ -613,6 +682,9 @@ if ( ! class_exists( 'FooGallery_Lightbox' ) ) {
 					'data-foogallery-change-selector'          => 'input:radio',
 					'data-foogallery-preview'                  => 'shortcode',
 					'data-foogallery-value-selector'           => 'input:checked',
+					'data-foogallery-show-when-field'          => 'lightbox',
+                    'data-foogallery-show-when-field-operator' => '===',
+					'data-foogallery-show-when-field-value'    => 'FooGallery Lightbox',
 				)
 			);
 
@@ -633,6 +705,10 @@ if ( ! class_exists( 'FooGallery_Lightbox' ) ) {
 					'data-foogallery-change-selector'          => 'input:radio',
 					'data-foogallery-preview'                  => 'shortcode',
 					'data-foogallery-value-selector'           => 'input:checked',
+					'data-foogallery-hidden' 				   => true,
+					'data-foogallery-show-when-field'          => 'lightbox',
+                    'data-foogallery-show-when-field-operator' => '===',
+					'data-foogallery-show-when-field-value'    => 'FooGallery Lightbox',
 				)
 			);
 
@@ -652,6 +728,9 @@ if ( ! class_exists( 'FooGallery_Lightbox' ) ) {
 					'data-foogallery-change-selector'          => 'input:radio',
 					'data-foogallery-preview'                  => 'shortcode',
 					'data-foogallery-value-selector'           => 'input:checked',
+					'data-foogallery-show-when-field'          => 'lightbox',
+                    'data-foogallery-show-when-field-operator' => '===',
+					'data-foogallery-show-when-field-value'    => 'FooGallery Lightbox',
 				)
 			);
 
@@ -676,6 +755,9 @@ if ( ! class_exists( 'FooGallery_Lightbox' ) ) {
 					'data-foogallery-change-selector'          => 'input:radio',
 					'data-foogallery-preview'                  => 'shortcode',
 					'data-foogallery-value-selector'           => 'input:checked',
+					'data-foogallery-show-when-field'          => 'lightbox',
+                    'data-foogallery-show-when-field-operator' => '===',
+					'data-foogallery-show-when-field-value'    => 'FooGallery Lightbox',
 				)
 			);
 
@@ -696,6 +778,10 @@ if ( ! class_exists( 'FooGallery_Lightbox' ) ) {
 					'data-foogallery-change-selector'          => 'input:radio',
 					'data-foogallery-preview'                  => 'shortcode',
 					'data-foogallery-value-selector'           => 'input:checked',
+					'data-foogallery-hidden' 				   => true,
+					'data-foogallery-show-when-field'          => 'lightbox',
+                    'data-foogallery-show-when-field-operator' => '===',
+					'data-foogallery-show-when-field-value'    => 'FooGallery Lightbox',
 				)
 			);
 
@@ -716,6 +802,10 @@ if ( ! class_exists( 'FooGallery_Lightbox' ) ) {
 					'data-foogallery-change-selector'          => 'input:radio',
 					'data-foogallery-preview'                  => 'shortcode',
 					'data-foogallery-value-selector'           => 'input:checked',
+					'data-foogallery-hidden' 				   => true,
+					'data-foogallery-show-when-field'          => 'lightbox',
+                    'data-foogallery-show-when-field-operator' => '===',
+					'data-foogallery-show-when-field-value'    => 'FooGallery Lightbox',
 				)
 			);
 
@@ -735,6 +825,10 @@ if ( ! class_exists( 'FooGallery_Lightbox' ) ) {
 					'data-foogallery-change-selector'          => 'input:radio',
 					'data-foogallery-preview'                  => 'shortcode',
 					'data-foogallery-value-selector'           => 'input:checked',
+					'data-foogallery-hidden' 				   => true,
+					'data-foogallery-show-when-field'          => 'lightbox',
+                    'data-foogallery-show-when-field-operator' => '===',
+					'data-foogallery-show-when-field-value'    => 'FooGallery Lightbox',
 				)
 			);
 
@@ -755,6 +849,10 @@ if ( ! class_exists( 'FooGallery_Lightbox' ) ) {
 					'data-foogallery-change-selector' => 'input:radio',
 					'data-foogallery-preview'         => 'shortcode',
 					'data-foogallery-value-selector'  => 'input:checked',
+					'data-foogallery-hidden' 				   => true,
+					'data-foogallery-show-when-field'          => 'lightbox',
+                    'data-foogallery-show-when-field-operator' => '===',
+					'data-foogallery-show-when-field-value'    => 'FooGallery Lightbox',
 				)
 			);
 
@@ -775,6 +873,10 @@ if ( ! class_exists( 'FooGallery_Lightbox' ) ) {
 					'data-foogallery-change-selector'          => 'input:radio',
 					'data-foogallery-preview'                  => 'shortcode',
 					'data-foogallery-value-selector'           => 'input:checked',
+					'data-foogallery-hidden' 				   => true,
+					'data-foogallery-show-when-field'          => 'lightbox',
+                    'data-foogallery-show-when-field-operator' => '===',
+					'data-foogallery-show-when-field-value'    => 'FooGallery Lightbox',
 				)
 			);
 
@@ -796,6 +898,10 @@ if ( ! class_exists( 'FooGallery_Lightbox' ) ) {
 					'data-foogallery-change-selector' => 'input:radio',
 					'data-foogallery-preview'         => 'shortcode',
 					'data-foogallery-value-selector'  => 'input:checked',
+					'data-foogallery-hidden' 				   => true,
+					'data-foogallery-show-when-field'          => 'lightbox',
+                    'data-foogallery-show-when-field-operator' => '===',
+					'data-foogallery-show-when-field-value'    => 'FooGallery Lightbox',
 				)
 			);
 
@@ -818,6 +924,10 @@ if ( ! class_exists( 'FooGallery_Lightbox' ) ) {
 						'data-foogallery-change-selector' => 'input:radio',
 						'data-foogallery-preview'         => 'shortcode',
 						'data-foogallery-value-selector'  => 'input:checked',
+						'data-foogallery-hidden' 				   => true,
+						'data-foogallery-show-when-field'          => 'lightbox',
+						'data-foogallery-show-when-field-operator' => '===',
+						'data-foogallery-show-when-field-value'    => 'FooGallery Lightbox',
 					)
 				);
 			}
@@ -839,6 +949,10 @@ if ( ! class_exists( 'FooGallery_Lightbox' ) ) {
 					'data-foogallery-change-selector' => 'input:radio',
 					'data-foogallery-preview'         => 'shortcode',
 					'data-foogallery-value-selector'  => 'input:checked',
+					'data-foogallery-hidden' 				   => true,
+					'data-foogallery-show-when-field'          => 'lightbox',
+                    'data-foogallery-show-when-field-operator' => '===',
+					'data-foogallery-show-when-field-value'    => 'FooGallery Lightbox',
 				)
 			);
 
@@ -859,6 +973,10 @@ if ( ! class_exists( 'FooGallery_Lightbox' ) ) {
 					'data-foogallery-change-selector' => 'input:radio',
 					'data-foogallery-preview'         => 'shortcode',
 					'data-foogallery-value-selector'  => 'input:checked',
+					'data-foogallery-hidden' 				   => true,
+					'data-foogallery-show-when-field'          => 'lightbox',
+                    'data-foogallery-show-when-field-operator' => '===',
+					'data-foogallery-show-when-field-value'    => 'FooGallery Lightbox',
 				)
 			);
 
@@ -879,6 +997,10 @@ if ( ! class_exists( 'FooGallery_Lightbox' ) ) {
 					'data-foogallery-change-selector' => 'input:radio',
 					'data-foogallery-preview'         => 'shortcode',
 					'data-foogallery-value-selector'  => 'input:checked',
+					'data-foogallery-hidden' 				   => true,
+					'data-foogallery-show-when-field'          => 'lightbox',
+                    'data-foogallery-show-when-field-operator' => '===',
+					'data-foogallery-show-when-field-value'    => 'FooGallery Lightbox',
 				)
 			);
 
