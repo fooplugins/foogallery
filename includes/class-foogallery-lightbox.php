@@ -147,6 +147,7 @@ if ( ! class_exists( 'FooGallery_Lightbox' ) ) {
 				'row_data' => array(
 					'data-foogallery-hidden' 				   => true,
 					'data-foogallery-show-when-field'          => 'lightbox',
+                    'data-foogallery-show-when-field-operator' => '===',
 					'data-foogallery-show-when-field-value'    => 'none',
                 ),
 			);
