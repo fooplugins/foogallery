@@ -136,18 +136,7 @@ if ( ! class_exists( 'FooGallery_Lightbox' ) ) {
 					'data-foogallery-show-when-field-value'    => 'none',
 				),				
 			);
-
-			if ( $use_lightbox ) {
-                $field[] = array(
-                    'id'      => 'lightbox_help',
-                    'title'   => __( 'Lightbox Help', 'foogallery' ),
-                    'desc'    => __( 'The below settings are only applied and used if you have your lightbox set to "FooGallery Lightbox"', 'foogallery' ),
-                    'section' => $section,
-                    'subsection' => array( 'lightbox-general' => __( 'General', 'foogallery' ) ),
-                    'type'    => 'help'
-                );
-            }
-
+			
 			$field[] = array(
 				'id'      => 'lightbox_theme',
 				'title'   => __( 'Theme', 'foogallery' ),
