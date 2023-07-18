@@ -193,9 +193,36 @@ FooGallery.autoEnabled = false;
 		var selectedTemplate = FOOGALLERY.getSelectedTemplate();
 
 		//hide any fields that need to be hidden initially
-		$('.foogallery-settings-container-active .foogallery_template_field[data-foogallery-hidden]').hide()
-			.addClass('foogallery_template_field_template_hidden')
-			.find(':input').attr('disabled', true);
+		$('.foogallery-settings-container-active .foogallery_template_field[data-foogallery-show-when-field]').each(function() {
+            var $field = $(this);
+            var fieldId = $field.data('foogallery-show-when-field');
+            var fieldValue = $field.data('foogallery-show-when-field-value');
+            var fieldOperator = $field.data('foogallery-show-when-field-operator');
+            var $fieldRow = $('.foogallery_template_field_template_id-' + selectedTemplate + '-' + fieldId);
+            var $fieldElement = $fieldRow.find(':input');
+          
+            if ($fieldElement.length) {
+                var actualFieldValue = $fieldElement.val();
+                var showField = false;
+                
+                if (fieldOperator === '===') {
+                    if (actualFieldValue === fieldValue) {
+                        showField = true;
+                    }
+                }
+                
+                if (showField) {
+                    $field.show()
+                        .removeClass('foogallery_template_field_template_hidden')
+                        .find(':input').removeAttr('disabled');
+                } else {
+                    $field.hide()
+                        .addClass('foogallery_template_field_template_hidden')
+                        .find(':input').attr('disabled', true);
+                }
+            }
+        });
+        
 
 		$('.foogallery-settings-container-active .foogallery_template_field[data-foogallery-show-when-field]').each(function(index, item) {
 			var $item = $(item),
