@@ -188,7 +188,7 @@ if ( ! class_exists( 'FooGallery_Lightbox' ) ) {
 					'data-foogallery-hidden' => true,
 					'data-foogallery-show-when-field' => 'lightbox',
 					'data-foogallery-show-when-field-operator' => '===',
-					'data-foogallery-show-when-field-value' => 'FooGallery Lightbox',
+					'data-foogallery-show-when-field-value' => 'foogallery',
 				)
 			);
 
@@ -204,7 +204,7 @@ if ( ! class_exists( 'FooGallery_Lightbox' ) ) {
 						'data-foogallery-hidden'                   => true,
 						'data-foogallery-show-when-field'          => 'lightbox',
 						'data-foogallery-show-when-field-operator' => '===',
-						'data-foogallery-show-when-field-value'    => 'FooGallery Lightbox',
+						'data-foogallery-show-when-field-value'    => 'foogallery',
 					),
 				);
 			}
@@ -229,7 +229,7 @@ if ( ! class_exists( 'FooGallery_Lightbox' ) ) {
 					'data-foogallery-hidden' => true,
 					'data-foogallery-show-when-field'          => 'lightbox',
 					'data-foogallery-show-when-field-operator' => '===',
-					'data-foogallery-show-when-field-value'    => 'FooGallery Lightbox',
+					'data-foogallery-show-when-field-value'    => 'foogallery',
 				),
 			);
 
@@ -261,7 +261,7 @@ if ( ! class_exists( 'FooGallery_Lightbox' ) ) {
 					'data-foogallery-show-when-field-value'    => 'custom',
 					'data-foogallery-show-when-field'          => 'lightbox',
                     'data-foogallery-show-when-field-operator' => '===',
-					'data-foogallery-show-when-field-value'    => 'FooGallery Lightbox',
+					'data-foogallery-show-when-field-value'    => 'foogallery',
 				),
 			);
 
@@ -285,7 +285,7 @@ if ( ! class_exists( 'FooGallery_Lightbox' ) ) {
                     'data-foogallery-hidden' 				   => true,
 					'data-foogallery-show-when-field'          => 'lightbox',
                     'data-foogallery-show-when-field-operator' => '===',
-					'data-foogallery-show-when-field-value'    => 'FooGallery Lightbox',
+					'data-foogallery-show-when-field-value'    => 'foogallery',
 				),
 			);
 
@@ -317,7 +317,7 @@ if ( ! class_exists( 'FooGallery_Lightbox' ) ) {
 					'data-foogallery-show-when-field-value'    => 'custom',
 					'data-foogallery-show-when-field'          => 'lightbox',
                     'data-foogallery-show-when-field-operator' => '===',
-					'data-foogallery-show-when-field-value'    => 'FooGallery Lightbox',
+					'data-foogallery-show-when-field-value'    => 'foogallery',
 				)
 			);
 
@@ -339,7 +339,7 @@ if ( ! class_exists( 'FooGallery_Lightbox' ) ) {
 						'data-foogallery-hidden'                   => true,
 						'data-foogallery-show-when-field'          => 'lightbox',
 						'data-foogallery-show-when-field-operator' => '===',
-						'data-foogallery-show-when-field-value'    => 'FooGallery Lightbox',
+						'data-foogallery-show-when-field-value'    => 'foogallery',
 					),
 				);
 			}
@@ -367,7 +367,7 @@ if ( ! class_exists( 'FooGallery_Lightbox' ) ) {
 					'data-foogallery-hidden' 				   => true,
 					'data-foogallery-show-when-field'          => 'lightbox',
                     'data-foogallery-show-when-field-operator' => '===',
-					'data-foogallery-show-when-field-value'    => 'FooGallery Lightbox',
+					'data-foogallery-show-when-field-value'    => 'foogallery',
 				)
 			);
 
@@ -394,7 +394,7 @@ if ( ! class_exists( 'FooGallery_Lightbox' ) ) {
 					'data-foogallery-value-selector'           => 'input:checked',
 					'data-foogallery-show-when-field'          => 'lightbox',
                     'data-foogallery-show-when-field-operator' => '===',
-					'data-foogallery-show-when-field-value'    => 'FooGallery Lightbox',
+					'data-foogallery-show-when-field-value'    => 'foogallery',
 				)
 			);
 
@@ -422,7 +422,7 @@ if ( ! class_exists( 'FooGallery_Lightbox' ) ) {
 					'data-foogallery-show-when-field-value'    => 'none',
 					'data-foogallery-show-when-field'          => 'lightbox',
                     'data-foogallery-show-when-field-operator' => '===',
-					'data-foogallery-show-when-field-value'    => 'FooGallery Lightbox',
+					'data-foogallery-show-when-field-value'    => 'foogallery',
 				)
 			);
 
@@ -449,7 +449,7 @@ if ( ! class_exists( 'FooGallery_Lightbox' ) ) {
 					'data-foogallery-value-selector'           => 'input:checked',
 					'data-foogallery-show-when-field'          => 'lightbox',
                     'data-foogallery-show-when-field-operator' => '===',
-					'data-foogallery-show-when-field-value'    => 'FooGallery Lightbox',
+					'data-foogallery-show-when-field-value'    => 'foogallery',
 				)
 			);
 
@@ -476,7 +476,7 @@ if ( ! class_exists( 'FooGallery_Lightbox' ) ) {
 					'data-foogallery-value-selector'           => 'input:checked',
 					'data-foogallery-show-when-field'          => 'lightbox',
                     'data-foogallery-show-when-field-operator' => '===',
-					'data-foogallery-show-when-field-value'    => 'FooGallery Lightbox',
+					'data-foogallery-show-when-field-value'    => 'foogallery',
 				)
 			);
 
@@ -502,7 +502,7 @@ if ( ! class_exists( 'FooGallery_Lightbox' ) ) {
 					'data-foogallery-hidden' 				   => true,
 					'data-foogallery-show-when-field'          => 'lightbox',
                     'data-foogallery-show-when-field-operator' => '===',
-					'data-foogallery-show-when-field-value'    => 'FooGallery Lightbox',
+					'data-foogallery-show-when-field-value'    => 'foogallery',
 				)
 			);
 
@@ -525,7 +525,7 @@ if ( ! class_exists( 'FooGallery_Lightbox' ) ) {
 					'data-foogallery-hidden' 				   => true,
 					'data-foogallery-show-when-field'          => 'lightbox',
                     'data-foogallery-show-when-field-operator' => '===',
-					'data-foogallery-show-when-field-value'    => 'FooGallery Lightbox',
+					'data-foogallery-show-when-field-value'    => 'foogallery',
 				)
 			);
 
@@ -555,7 +555,7 @@ if ( ! class_exists( 'FooGallery_Lightbox' ) ) {
 					'data-foogallery-show-when-field-value'    => 'disabled',
 					'data-foogallery-show-when-field'          => 'lightbox',
                     'data-foogallery-show-when-field-operator' => '===',
-					'data-foogallery-show-when-field-value'    => 'FooGallery Lightbox',
+					'data-foogallery-show-when-field-value'    => 'foogallery',
 				)
 			);
 
@@ -584,7 +584,7 @@ if ( ! class_exists( 'FooGallery_Lightbox' ) ) {
 					'data-foogallery-show-when-field-value'    => 'disabled',
 					'data-foogallery-show-when-field'          => 'lightbox',
                     'data-foogallery-show-when-field-operator' => '===',
-					'data-foogallery-show-when-field-value'    => 'FooGallery Lightbox',
+					'data-foogallery-show-when-field-value'    => 'foogallery',
 				)
 			);
 
@@ -611,7 +611,7 @@ if ( ! class_exists( 'FooGallery_Lightbox' ) ) {
 					'data-foogallery-show-when-field-value'    => 'disabled',
 					'data-foogallery-show-when-field'          => 'lightbox',
                     'data-foogallery-show-when-field-operator' => '===',
-					'data-foogallery-show-when-field-value'    => 'FooGallery Lightbox',
+					'data-foogallery-show-when-field-value'    => 'foogallery',
 				)
 			);
 
@@ -638,7 +638,7 @@ if ( ! class_exists( 'FooGallery_Lightbox' ) ) {
 					'data-foogallery-show-when-field-value'    => 'disabled',
 					'data-foogallery-show-when-field'          => 'lightbox',
                     'data-foogallery-show-when-field-operator' => '===',
-					'data-foogallery-show-when-field-value'    => 'FooGallery Lightbox',
+					'data-foogallery-show-when-field-value'    => 'foogallery',
 				)
 			);
 
@@ -668,7 +668,7 @@ if ( ! class_exists( 'FooGallery_Lightbox' ) ) {
 					'data-foogallery-value-selector'           => 'input:checked',
 					'data-foogallery-show-when-field'          => 'lightbox',
                     'data-foogallery-show-when-field-operator' => '===',
-					'data-foogallery-show-when-field-value'    => 'FooGallery Lightbox',
+					'data-foogallery-show-when-field-value'    => 'foogallery',
 				)
 			);
 
@@ -698,7 +698,7 @@ if ( ! class_exists( 'FooGallery_Lightbox' ) ) {
 					'data-foogallery-value-selector'           => 'input:checked',
 					'data-foogallery-show-when-field'          => 'lightbox',
                     'data-foogallery-show-when-field-operator' => '===',
-					'data-foogallery-show-when-field-value'    => 'FooGallery Lightbox',
+					'data-foogallery-show-when-field-value'    => 'foogallery',
 				)
 			);
 
@@ -722,7 +722,7 @@ if ( ! class_exists( 'FooGallery_Lightbox' ) ) {
 					'data-foogallery-hidden' 				   => true,
 					'data-foogallery-show-when-field'          => 'lightbox',
                     'data-foogallery-show-when-field-operator' => '===',
-					'data-foogallery-show-when-field-value'    => 'FooGallery Lightbox',
+					'data-foogallery-show-when-field-value'    => 'foogallery',
 				)
 			);
 
@@ -744,7 +744,7 @@ if ( ! class_exists( 'FooGallery_Lightbox' ) ) {
 					'data-foogallery-value-selector'           => 'input:checked',
 					'data-foogallery-show-when-field'          => 'lightbox',
                     'data-foogallery-show-when-field-operator' => '===',
-					'data-foogallery-show-when-field-value'    => 'FooGallery Lightbox',
+					'data-foogallery-show-when-field-value'    => 'foogallery',
 				)
 			);
 
@@ -771,7 +771,7 @@ if ( ! class_exists( 'FooGallery_Lightbox' ) ) {
 					'data-foogallery-value-selector'           => 'input:checked',
 					'data-foogallery-show-when-field'          => 'lightbox',
                     'data-foogallery-show-when-field-operator' => '===',
-					'data-foogallery-show-when-field-value'    => 'FooGallery Lightbox',
+					'data-foogallery-show-when-field-value'    => 'foogallery',
 				)
 			);
 
@@ -795,7 +795,7 @@ if ( ! class_exists( 'FooGallery_Lightbox' ) ) {
 					'data-foogallery-hidden' 				   => true,
 					'data-foogallery-show-when-field'          => 'lightbox',
                     'data-foogallery-show-when-field-operator' => '===',
-					'data-foogallery-show-when-field-value'    => 'FooGallery Lightbox',
+					'data-foogallery-show-when-field-value'    => 'foogallery',
 				)
 			);
 
@@ -819,7 +819,7 @@ if ( ! class_exists( 'FooGallery_Lightbox' ) ) {
 					'data-foogallery-hidden' 				   => true,
 					'data-foogallery-show-when-field'          => 'lightbox',
                     'data-foogallery-show-when-field-operator' => '===',
-					'data-foogallery-show-when-field-value'    => 'FooGallery Lightbox',
+					'data-foogallery-show-when-field-value'    => 'foogallery',
 				)
 			);
 
@@ -842,7 +842,7 @@ if ( ! class_exists( 'FooGallery_Lightbox' ) ) {
 					'data-foogallery-hidden' 				   => true,
 					'data-foogallery-show-when-field'          => 'lightbox',
                     'data-foogallery-show-when-field-operator' => '===',
-					'data-foogallery-show-when-field-value'    => 'FooGallery Lightbox',
+					'data-foogallery-show-when-field-value'    => 'foogallery',
 				)
 			);
 
@@ -866,7 +866,7 @@ if ( ! class_exists( 'FooGallery_Lightbox' ) ) {
 					'data-foogallery-hidden' 				   => true,
 					'data-foogallery-show-when-field'          => 'lightbox',
                     'data-foogallery-show-when-field-operator' => '===',
-					'data-foogallery-show-when-field-value'    => 'FooGallery Lightbox',
+					'data-foogallery-show-when-field-value'    => 'foogallery',
 				)
 			);
 
@@ -890,7 +890,7 @@ if ( ! class_exists( 'FooGallery_Lightbox' ) ) {
 					'data-foogallery-hidden' 				   => true,
 					'data-foogallery-show-when-field'          => 'lightbox',
                     'data-foogallery-show-when-field-operator' => '===',
-					'data-foogallery-show-when-field-value'    => 'FooGallery Lightbox',
+					'data-foogallery-show-when-field-value'    => 'foogallery',
 				)
 			);
 
@@ -915,7 +915,7 @@ if ( ! class_exists( 'FooGallery_Lightbox' ) ) {
 					'data-foogallery-hidden' 				   => true,
 					'data-foogallery-show-when-field'          => 'lightbox',
                     'data-foogallery-show-when-field-operator' => '===',
-					'data-foogallery-show-when-field-value'    => 'FooGallery Lightbox',
+					'data-foogallery-show-when-field-value'    => 'foogallery',
 				)
 			);
 
@@ -941,7 +941,7 @@ if ( ! class_exists( 'FooGallery_Lightbox' ) ) {
 						'data-foogallery-hidden' 				   => true,
 						'data-foogallery-show-when-field'          => 'lightbox',
 						'data-foogallery-show-when-field-operator' => '===',
-						'data-foogallery-show-when-field-value'    => 'FooGallery Lightbox',
+						'data-foogallery-show-when-field-value'    => 'foogallery',
 					)
 				);
 			}
@@ -966,7 +966,7 @@ if ( ! class_exists( 'FooGallery_Lightbox' ) ) {
 					'data-foogallery-hidden' 				   => true,
 					'data-foogallery-show-when-field'          => 'lightbox',
                     'data-foogallery-show-when-field-operator' => '===',
-					'data-foogallery-show-when-field-value'    => 'FooGallery Lightbox',
+					'data-foogallery-show-when-field-value'    => 'foogallery',
 				)
 			);
 
@@ -990,7 +990,7 @@ if ( ! class_exists( 'FooGallery_Lightbox' ) ) {
 					'data-foogallery-hidden' 				   => true,
 					'data-foogallery-show-when-field'          => 'lightbox',
                     'data-foogallery-show-when-field-operator' => '===',
-					'data-foogallery-show-when-field-value'    => 'FooGallery Lightbox',
+					'data-foogallery-show-when-field-value'    => 'foogallery',
 				)
 			);
 
@@ -1014,7 +1014,7 @@ if ( ! class_exists( 'FooGallery_Lightbox' ) ) {
 					'data-foogallery-hidden' 				   => true,
 					'data-foogallery-show-when-field'          => 'lightbox',
                     'data-foogallery-show-when-field-operator' => '===',
-					'data-foogallery-show-when-field-value'    => 'FooGallery Lightbox',
+					'data-foogallery-show-when-field-value'    => 'foogallery',
 				)
 			);
 
