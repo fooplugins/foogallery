@@ -1,6 +1,6 @@
 <?php
 /**
- * FooGallery Pro Lightbox class
+ * FooGallery Lightbox class
  */
 if ( ! class_exists( 'FooGallery_Lightbox' ) ) {
 
@@ -19,7 +19,7 @@ if ( ! class_exists( 'FooGallery_Lightbox' ) ) {
 			//add the FooGallery lightbox option
 			add_filter( 'foogallery_gallery_template_field_lightboxes', array($this, 'add_lightbox') );
 
-			//alter the default lightbox to be FooGallery PRO Lightbox
+			//alter the default lightbox to be FooGallery Lightbox
 			add_filter( 'foogallery_alter_gallery_template_field', array( $this, 'make_foogallery_default_lightbox' ), 99, 2 );
 
 			//add specific lightbox data attribute to the container div
@@ -141,7 +141,7 @@ if ( ! class_exists( 'FooGallery_Lightbox' ) ) {
                 $field[] = array(
                     'id'      => 'lightbox_help',
                     'title'   => __( 'Lightbox Help', 'foogallery' ),
-                    'desc'    => __( 'The below settings are only applied and used if you have your lightbox set to "FooGallery PRO Lightbox"', 'foogallery' ),
+                    'desc'    => __( 'The below settings are only applied and used if you have your lightbox set to "FooGallery Lightbox"', 'foogallery' ),
                     'section' => $section,
                     'subsection' => array( 'lightbox-general' => __( 'General', 'foogallery' ) ),
                     'type'    => 'help'
@@ -174,7 +174,7 @@ if ( ! class_exists( 'FooGallery_Lightbox' ) ) {
 				$field[] = array(
 					'id'      => 'lightbox_help_controls',
 					'title'   => __( 'Lightbox Help', 'foogallery' ),
-					'desc'    => __( 'The below settings are only applied and used if you have your lightbox set to "FooGallery PRO Lightbox"', 'foogallery' ),
+					'desc'    => __( 'The below settings are only applied and used if you have your lightbox set to "FooGallery Lightbox"', 'foogallery' ),
 					'section' => $section,
 					'subsection' => array( 'lightbox-controls' => __( 'Controls', 'foogallery' ) ),
 					'type'    => 'help'
@@ -289,7 +289,7 @@ if ( ! class_exists( 'FooGallery_Lightbox' ) ) {
 				$field[] = array(
 					'id'      => 'lightbox_help_thumbnails',
 					'title'   => __( 'Lightbox Help', 'foogallery' ),
-					'desc'    => __( 'The below settings are only applied and used if you have your lightbox set to "FooGallery PRO Lightbox"', 'foogallery' ),
+					'desc'    => __( 'The below settings are only applied and used if you have your lightbox set to "FooGallery Lightbox"', 'foogallery' ),
 					'section' => $section,
 					'subsection' => array( 'lightbox-thumbnails' => __( 'Thumbnails', 'foogallery' ) ),
 					'type'    => 'help'
@@ -923,13 +923,13 @@ if ( ! class_exists( 'FooGallery_Lightbox' ) ) {
 		}
 
 		/**
-		 * Add the FooGallery PRO lightbox
+		 * Add the FooGallery Lightbox
 		 * @param $lightboxes
 		 *
 		 * @return mixed
 		 */
 		function add_lightbox($lightboxes) {
-			$lightboxes['foogallery'] = __( 'FooGallery PRO Lightbox', 'foogallery' );
+			$lightboxes['foogallery'] = __( 'FooGallery Lightbox', 'foogallery' );
 			return $lightboxes;
 		}
 
