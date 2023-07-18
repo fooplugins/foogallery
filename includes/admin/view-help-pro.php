@@ -18,16 +18,6 @@ $foogallery_pro_features = array(
 		'plans' => array( FOOGALLERY_PRO_PLAN_STARTER, FOOGALLERY_PRO_PLAN_EXPERT, FOOGALLERY_PRO_PLAN_COMMERCE ),
 	),
 	array(
-		'title' => __( 'PRO Lightbox','foogallery' ),
-		'desc' => __( 'Our PRO Lightbox is a responsive, full-featured and completely customizable. You can change the color scheme, show a thumbnail strip, enable a slideshow, customize the captions and so much more!', 'foogallery' ),
-		'link' => 'https://fooplugins.com/foogallery-wordpress-gallery-plugin/pro-lightbox/',
-		'utm_content' => 'lightbox',
-		'link_text' => __( 'Learn More','foogallery' ),
-		'image' => 'https://assets.fooplugins.com/foogallery/plugin/foogallery-admin-help-pro-lightbox.png',
-		'plan' => FOOGALLERY_PRO_PLAN_STARTER,
-		'plans' => array( FOOGALLERY_PRO_PLAN_STARTER, FOOGALLERY_PRO_PLAN_EXPERT, FOOGALLERY_PRO_PLAN_COMMERCE ),
-	),
-	array(
 		'title' => __( 'Animated Hover Effect Presets','foogallery' ),
 		'desc' => __( 'Choose from 11 animated hover effect presets, to add that professional and elegant look to your galleries.', 'foogallery' ),
 		'link' => 'https://fooplugins.com/foogallery-wordpress-gallery-plugin/hover-presets/',
