@@ -85,3 +85,5 @@ if ( is_admin() ) {
 require_once FOOGALLERY_PATH . 'includes/public/class-shortcodes.php';
 require_once FOOGALLERY_PATH . 'includes/class-gallery-advanced-settings.php';
 require_once FOOGALLERY_PATH . 'includes/class-il8n.php';
+
+require_once FOOGALLERY_PATH . 'includes/class-foogallery-lightbox.php';
