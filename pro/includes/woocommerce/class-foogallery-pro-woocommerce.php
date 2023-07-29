@@ -433,7 +433,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 			}
 
 			$product_id = get_post_meta( $post->ID, '_foogallery_product', true );
-			if ( !empty( $product_id ) ) {
+			if ( !empty( $product_id ) && function_exists( 'wc_get_product' ) ) {
 				$foogallery_attachment->product = wc_get_product( $product_id );
 
 				self::determine_extra_data_for_product( $foogallery_attachment, $foogallery_attachment->product );
