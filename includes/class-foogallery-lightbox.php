@@ -56,7 +56,7 @@ if ( ! class_exists( 'FooGallery_Lightbox' ) ) {
 			if ( ! property_exists( $current_foogallery, 'lightbox' ) ) {
 				// TODO : rather use foogallery_current_gallery_check_template_has_supported_feature.
 				$template = foogallery_get_gallery_template( $current_foogallery->gallery_template );
-				$lightbox = foogallery_gallery_template_setting( 'lightbox', '' );
+				$lightbox = foogallery_gallery_template_setting_lightbox();
 				if ( $template && isset( $template['panel_support'] ) && $template['panel_support'] ) {
 					$lightbox = 'foogallery';
 				}
@@ -127,41 +127,22 @@ if ( ! class_exists( 'FooGallery_Lightbox' ) ) {
 
 			$section = $use_lightbox ? __( 'Lightbox', 'foogallery' ) : __( 'Panel', 'foogallery' );
 
-			$field[] = array(
-				'id'  => 'lightbox',
-				'title'   => __( 'lightbox', 'foogallery' ),
-				'desc'    => __('choose which lightbox you want to use. The lightbox will generally only work if you set the thumbnail link to "Full size image'),
-				'section' => $section,
-				'subsection' => array( 'lightbox-general' => __( 'General', 'foogallery' ) ),
-				'default'    => 'foogallery',
-				'spacer'  => '<span class="spacer"></span>',
-				'type'    => 'select',
-				'choices' => foogallery_gallery_template_field_lightbox_choices(),
-				'row_data'=> array(
-					'data-foogallery-change-selector'          => 'select',
-					'data-foogallery-value-selector'           => 'select',
-					'data-foogallery-preview'                  => 'shortcode',
-					'data-foogallery-hidden'                   => true,
-					'data-foogallery-show-when-field-operator' => '!==',
-					'data-foogallery-show-when-field'          => 'thumbnail_link',
-					'data-foogallery-show-when-field-value'    => 'none',
-				),
-			);
-
-			$field[] = array(
-				'id'      => 'lightbox_promo',
-				'title'   => __( 'Your Gallery Needs A Lightbox!', 'foogallery' ),
-				'desc'    => __( 'Website visitors prefer a gallery with a lightbox. A lightbox allows you to showcase your images, as well as improve navigation between images in your gallery.', 'foogallery' ),
-				'section' => $section,
-				'subsection' => array( 'lightbox-general' => __( 'General', 'foogallery' ) ),
-				'type'    => 'promo',
-				'row_data' => array(
-					'data-foogallery-hidden' 				   => true,
-					'data-foogallery-show-when-field'          => 'lightbox',
-					'data-foogallery-show-when-field-operator' => '===',
-					'data-foogallery-show-when-field-value'    => 'none',
-				),
-			);
+            if ( $use_lightbox ) {
+                $field[] = array(
+                    'id' => 'lightbox_promo',
+                    'title' => __('Your Gallery Needs A Lightbox!', 'foogallery'),
+                    'desc' => __('Website visitors prefer a gallery with a lightbox. A lightbox allows you to showcase your images, as well as improve navigation between images in your gallery.', 'foogallery'),
+                    'section' => $section,
+                    'subsection' => array('lightbox-general' => __('General', 'foogallery')),
+                    'type' => 'help',
+                    'row_data' => array(
+                        'data-foogallery-hidden' => true,
+                        'data-foogallery-show-when-field' => 'lightbox',
+                        'data-foogallery-show-when-field-operator' => '===',
+                        'data-foogallery-show-when-field-value' => 'none',
+                    ),
+                );
+            }
 
 			$field[] = array(
 				'id'         => 'lightbox_theme',
@@ -195,8 +176,8 @@ if ( ! class_exists( 'FooGallery_Lightbox' ) ) {
 			if ( $use_lightbox ) {
 				$field[] = array(
 					'id'      => 'lightbox_help_controls',
-					'title'   => __( 'Lightbox Help', 'foogallery' ),
-					'desc'    => __( 'The below settings are only applied and used if you have your lightbox set to "FooGallery Lightbox"', 'foogallery' ),
+                    'title'      => __( 'Lightbox Control Settings', 'foogallery' ),
+					'desc'    => __( 'The Lightbox Controls are the action buttons that are shown within the lightbox, e.g. the Close button or the Navigation buttons', 'foogallery' ),
 					'section' => $section,
 					'subsection' => array( 'lightbox-controls' => __( 'Controls', 'foogallery' ) ),
 					'type'    => 'help',
@@ -207,6 +188,20 @@ if ( ! class_exists( 'FooGallery_Lightbox' ) ) {
 						'data-foogallery-show-when-field-value'    => 'foogallery',
 					),
 				);
+
+                $field[] = array(
+                    'id'      => 'lightbox_help_controls_2',
+                    'desc'    => __( 'The Lightbox Controls settings are only available when your lightbox is set to "FooGallery Lightbox"', 'foogallery' ),
+                    'section' => $section,
+                    'subsection' => array( 'lightbox-controls' => __( 'Controls', 'foogallery' ) ),
+                    'type'    => 'help',
+                    'row_data'   => array(
+                        'data-foogallery-hidden'                   => true,
+                        'data-foogallery-show-when-field'          => 'lightbox',
+                        'data-foogallery-show-when-field-operator' => '!==',
+                        'data-foogallery-show-when-field-value'    => 'foogallery',
+                    ),
+                );
 			}
 
 			$field[] = array(
@@ -259,9 +254,6 @@ if ( ! class_exists( 'FooGallery_Lightbox' ) ) {
 					'data-foogallery-show-when-field'          => 'lightbox_button_theme',
 					'data-foogallery-show-when-field-operator' => '===',
 					'data-foogallery-show-when-field-value'    => 'custom',
-					'data-foogallery-show-when-field'          => 'lightbox',
-                    'data-foogallery-show-when-field-operator' => '===',
-					'data-foogallery-show-when-field-value'    => 'foogallery',
 				),
 			);
 
@@ -315,9 +307,6 @@ if ( ! class_exists( 'FooGallery_Lightbox' ) ) {
 					'data-foogallery-show-when-field'          => 'lightbox_button_highlight',
 					'data-foogallery-show-when-field-operator' => '===',
 					'data-foogallery-show-when-field-value'    => 'custom',
-					'data-foogallery-show-when-field'          => 'lightbox',
-                    'data-foogallery-show-when-field-operator' => '===',
-					'data-foogallery-show-when-field-value'    => 'foogallery',
 				)
 			);
 
@@ -330,8 +319,8 @@ if ( ! class_exists( 'FooGallery_Lightbox' ) ) {
 			if ( $use_lightbox ) {
 				$field[] = array(
 					'id'      => 'lightbox_help_thumbnails',
-					'title'   => __( 'Lightbox Help', 'foogallery' ),
-					'desc'    => __( 'The below settings are only applied and used if you have your lightbox set to "FooGallery Lightbox"', 'foogallery' ),
+					'title'   => __( 'Thumbnail Strip Settings', 'foogallery' ),
+					'desc'    => __( 'The below settings will control the thumbnail strip that is shown within the lightbox.', 'foogallery' ),
 					'section' => $section,
 					'subsection' => array( 'lightbox-thumbnails' => __( 'Thumbnails', 'foogallery' ) ),
 					'type'    => 'help',
@@ -342,6 +331,20 @@ if ( ! class_exists( 'FooGallery_Lightbox' ) ) {
 						'data-foogallery-show-when-field-value'    => 'foogallery',
 					),
 				);
+
+                $field[] = array(
+                    'id'      => 'lightbox_help_thumbnails_2',
+                    'desc'    => __( 'The Lightbox Thumbnails settings are only available when your lightbox is set to "FooGallery Lightbox"', 'foogallery' ),
+                    'section' => $section,
+                    'subsection' => array( 'lightbox-thumbnails' => __( 'Thumbnails', 'foogallery' ) ),
+                    'type'    => 'help',
+                    'row_data'   => array(
+                        'data-foogallery-hidden'                   => true,
+                        'data-foogallery-show-when-field'          => 'lightbox',
+                        'data-foogallery-show-when-field-operator' => '!==',
+                        'data-foogallery-show-when-field-value'    => 'foogallery',
+                    ),
+                );
 			}
 
 			$field[] = array(
@@ -392,9 +395,6 @@ if ( ! class_exists( 'FooGallery_Lightbox' ) ) {
 					'data-foogallery-change-selector'          => 'input:radio',
 					'data-foogallery-preview'                  => 'shortcode',
 					'data-foogallery-value-selector'           => 'input:checked',
-					'data-foogallery-show-when-field'          => 'lightbox',
-                    'data-foogallery-show-when-field-operator' => '===',
-					'data-foogallery-show-when-field-value'    => 'foogallery',
 				)
 			);
 
@@ -420,9 +420,6 @@ if ( ! class_exists( 'FooGallery_Lightbox' ) ) {
 					'data-foogallery-show-when-field'          => 'lightbox_thumbs',
 					'data-foogallery-show-when-field-operator' => '!==',
 					'data-foogallery-show-when-field-value'    => 'none',
-					'data-foogallery-show-when-field'          => 'lightbox',
-                    'data-foogallery-show-when-field-operator' => '===',
-					'data-foogallery-show-when-field-value'    => 'foogallery',
 				)
 			);
 
@@ -447,9 +444,6 @@ if ( ! class_exists( 'FooGallery_Lightbox' ) ) {
 					'data-foogallery-change-selector'          => 'input:radio',
 					'data-foogallery-preview'                  => 'shortcode',
 					'data-foogallery-value-selector'           => 'input:checked',
-					'data-foogallery-show-when-field'          => 'lightbox',
-                    'data-foogallery-show-when-field-operator' => '===',
-					'data-foogallery-show-when-field-value'    => 'foogallery',
 				)
 			);
 
@@ -474,9 +468,6 @@ if ( ! class_exists( 'FooGallery_Lightbox' ) ) {
 					'data-foogallery-change-selector'          => 'input:radio',
 					'data-foogallery-preview'                  => 'shortcode',
 					'data-foogallery-value-selector'           => 'input:checked',
-					'data-foogallery-show-when-field'          => 'lightbox',
-                    'data-foogallery-show-when-field-operator' => '===',
-					'data-foogallery-show-when-field-value'    => 'foogallery',
 				)
 			);
 
@@ -553,9 +544,6 @@ if ( ! class_exists( 'FooGallery_Lightbox' ) ) {
 					'data-foogallery-show-when-field'          => 'lightbox_info_enabled',
 					'data-foogallery-show-when-field-operator' => '!==',
 					'data-foogallery-show-when-field-value'    => 'disabled',
-					'data-foogallery-show-when-field'          => 'lightbox',
-                    'data-foogallery-show-when-field-operator' => '===',
-					'data-foogallery-show-when-field-value'    => 'foogallery',
 				)
 			);
 
@@ -582,9 +570,6 @@ if ( ! class_exists( 'FooGallery_Lightbox' ) ) {
 					'data-foogallery-show-when-field'          => 'lightbox_info_enabled',
 					'data-foogallery-show-when-field-operator' => '!==',
 					'data-foogallery-show-when-field-value'    => 'disabled',
-					'data-foogallery-show-when-field'          => 'lightbox',
-                    'data-foogallery-show-when-field-operator' => '===',
-					'data-foogallery-show-when-field-value'    => 'foogallery',
 				)
 			);
 
@@ -609,9 +594,6 @@ if ( ! class_exists( 'FooGallery_Lightbox' ) ) {
 					'data-foogallery-show-when-field'          => 'lightbox_info_enabled',
 					'data-foogallery-show-when-field-operator' => '!==',
 					'data-foogallery-show-when-field-value'    => 'disabled',
-					'data-foogallery-show-when-field'          => 'lightbox',
-                    'data-foogallery-show-when-field-operator' => '===',
-					'data-foogallery-show-when-field-value'    => 'foogallery',
 				)
 			);
 
@@ -636,9 +618,6 @@ if ( ! class_exists( 'FooGallery_Lightbox' ) ) {
 					'data-foogallery-show-when-field'          => 'lightbox_info_enabled',
 					'data-foogallery-show-when-field-operator' => '!==',
 					'data-foogallery-show-when-field-value'    => 'disabled',
-					'data-foogallery-show-when-field'          => 'lightbox',
-                    'data-foogallery-show-when-field-operator' => '===',
-					'data-foogallery-show-when-field-value'    => 'foogallery',
 				)
 			);
 
@@ -666,9 +645,6 @@ if ( ! class_exists( 'FooGallery_Lightbox' ) ) {
 					'data-foogallery-change-selector'          => 'input:radio',
 					'data-foogallery-preview'                  => 'shortcode',
 					'data-foogallery-value-selector'           => 'input:checked',
-					'data-foogallery-show-when-field'          => 'lightbox',
-                    'data-foogallery-show-when-field-operator' => '===',
-					'data-foogallery-show-when-field-value'    => 'foogallery',
 				)
 			);
 
@@ -696,9 +672,6 @@ if ( ! class_exists( 'FooGallery_Lightbox' ) ) {
 					'data-foogallery-change-selector'          => 'input:radio',
 					'data-foogallery-preview'                  => 'shortcode',
 					'data-foogallery-value-selector'           => 'input:checked',
-					'data-foogallery-show-when-field'          => 'lightbox',
-                    'data-foogallery-show-when-field-operator' => '===',
-					'data-foogallery-show-when-field-value'    => 'foogallery',
 				)
 			);
 
@@ -742,9 +715,6 @@ if ( ! class_exists( 'FooGallery_Lightbox' ) ) {
 					'data-foogallery-change-selector'          => 'input:radio',
 					'data-foogallery-preview'                  => 'shortcode',
 					'data-foogallery-value-selector'           => 'input:checked',
-					'data-foogallery-show-when-field'          => 'lightbox',
-                    'data-foogallery-show-when-field-operator' => '===',
-					'data-foogallery-show-when-field-value'    => 'foogallery',
 				)
 			);
 
@@ -769,9 +739,6 @@ if ( ! class_exists( 'FooGallery_Lightbox' ) ) {
 					'data-foogallery-change-selector'          => 'input:radio',
 					'data-foogallery-preview'                  => 'shortcode',
 					'data-foogallery-value-selector'           => 'input:checked',
-					'data-foogallery-show-when-field'          => 'lightbox',
-                    'data-foogallery-show-when-field-operator' => '===',
-					'data-foogallery-show-when-field-value'    => 'foogallery',
 				)
 			);
 

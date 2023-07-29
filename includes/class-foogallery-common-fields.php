@@ -47,10 +47,29 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 							}
 							break;
 						case 'lightbox':
+                            $field['lightbox'] = true;
+                            $field['title'] = __( 'Lightbox', 'foogallery' );
+                            $field['type'] = 'select';
+                            $field['choices'] = foogallery_gallery_template_field_lightbox_choices();
+                            if ( !array_key_exists( 'desc', $field ) ) {
+                                $field['desc'] = __( 'Choose which lightbox you want to use. The lightbox will generally only work if you set the thumbnail link to "Full Size Image".', 'foogallery' );
+                            }
+                            if ( !array_key_exists( 'section', $field ) ) {
+                                $field['section'] = __( 'Lightbox', 'foogallery' );
+                            }
+                            $field['subsection'] = array( 'lightbox-general' => __( 'General', 'foogallery' ) );
+                            $field['default'] = 'foogallery';
+
 							if ( !isset( $field['row_data'] ) ) {
 								$field['row_data'] = array(
-									'data-foogallery-hidden'                   => true,
-								);
+                                    'data-foogallery-change-selector'          => 'select',
+                                    'data-foogallery-value-selector'           => 'select',
+                                    'data-foogallery-preview'                  => 'shortcode',
+                                    'data-foogallery-hidden'                   => true,
+                                    'data-foogallery-show-when-field-operator' => '!==',
+                                    'data-foogallery-show-when-field'          => 'thumbnail_link',
+                                    'data-foogallery-show-when-field-value'    => 'none',
+                                );
 							}
 							break;
 					}

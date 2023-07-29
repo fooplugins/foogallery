@@ -52,9 +52,9 @@ if ( ! class_exists( 'FooGallery_Shortcodes' ) ) {
 		 */
 		function handle_lightbox_field( $gallery ) {
 			if ( $gallery->gallery_template_has_field_of_type( 'lightbox' ) ) {
-				$lightbox = foogallery_gallery_template_setting( 'lightbox' );
+				$lightbox = foogallery_gallery_template_setting_lightbox();
 
-				if ( false != $lightbox ) {
+				if ( !empty( $lightbox ) ) {
 					do_action( "foogallery_template_lightbox-{$lightbox}", $gallery );
 				}
 			}

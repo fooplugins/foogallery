@@ -243,10 +243,7 @@ if ( !class_exists( 'FooGallery_Masonry_Gallery_Template' ) ) {
                     ),
                     array(
                         'id'      => 'lightbox',
-                        'title'   => __( 'Lightbox', 'foogallery' ),
-                        'desc'    => __( 'Choose which lightbox you want to display images with. The lightbox will only work if you set the thumbnail link to "Full Size Image"', 'foogallery' ),
                         'type'    => 'lightbox',
-                        'default' => 'none',
                     ),
                 ),
 			);
