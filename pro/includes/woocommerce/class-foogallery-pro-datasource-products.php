@@ -267,7 +267,11 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Products' ) ) {
 
 			$query_args = apply_filters( 'foogallery_datasource_woocommerce_arguments', $args, $foogallery->ID );
 
-			$products = wc_get_products( $query_args );
+			if ( function_exists( 'wc_get_product' ) ) {
+				$products = wc_get_products($query_args);
+			} else {
+				$products = array();
+			}
 
 			$attachments = array();
 
