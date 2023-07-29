@@ -227,36 +227,48 @@ FooGallery.autoEnabled = false;
 				$fieldRow = $('.foogallery_template_field_template_id-' + selectedTemplate + '-' + fieldId),
 				$fieldSelector = $fieldRow.data('foogallery-value-selector'),
 				fieldValueAttribute = $fieldRow.data('foogallery-value-attribute'),
-				$field = $fieldRow.find($fieldSelector);
+				$field = $fieldRow.find($fieldSelector),
+				showField = false;
 
-			$field.each(function() {
-				var actualFieldValue = fieldValueAttribute ? $(this).attr(fieldValueAttribute) : $(this).val(),
-					showField = false;
+			if ( $fieldRow.length === 0 ) {
+				// No matching field was found, which means we can un-hide
+				showField = true;
+			} else {
 
-				if ( fieldOperator === '!==' ) {
-					if (actualFieldValue !== fieldValue) {
-						showField = true;
-					}
-				} else if ( fieldOperator === 'regex' ) {
-					var re = new RegExp(fieldValue);
-					if ( re.test(actualFieldValue) ) {
-						showField = true;
-					}
-				} else if ( fieldOperator === 'indexOf' ) {
-					if ( actualFieldValue.indexOf(fieldValue) !== -1 ) {
-						showField = true;
-					}
-				} else if ( actualFieldValue === fieldValue ) {
-					showField = true;
+				if ( $fieldRow.hasClass( 'foogallery_template_field_template_hidden' ) ) {
+					// The field we are checking is hidden, which means we should not rely on it
+				} else {
+
+					$field.each(function () {
+						var actualFieldValue = fieldValueAttribute ? $(this).attr(fieldValueAttribute) : $(this).val();
+
+						if (fieldOperator === '!==') {
+							if (actualFieldValue !== fieldValue) {
+								showField = true;
+							}
+						} else if (fieldOperator === 'regex') {
+							var re = new RegExp(fieldValue);
+							if (re.test(actualFieldValue)) {
+								showField = true;
+							}
+						} else if (fieldOperator === 'indexOf') {
+							if (actualFieldValue.indexOf(fieldValue) !== -1) {
+								showField = true;
+							}
+						} else if (actualFieldValue === fieldValue) {
+							showField = true;
+						}
+					});
 				}
 
-				if (showField) {
-					$item.show()
-						.removeClass('foogallery_template_field_template_hidden')
-						.find(':input').removeAttr('disabled')
-						.end().find('.colorpicker').spectrum("enable");
-				}
-			});
+			}
+
+			if (showField) {
+				$item.show()
+					.removeClass('foogallery_template_field_template_hidden')
+					.find(':input').removeAttr('disabled')
+					.end().find('.colorpicker').spectrum("enable");
+			}
 		});
 	};
 
