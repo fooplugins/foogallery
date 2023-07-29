@@ -97,7 +97,6 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 				//region Appearance Fields
 				$fields[] = array(
 					'id'      => 'theme_custom_help',
-					'title'   => __( 'Theme Help', 'foogallery' ),
 					'desc'    => __( 'If you choose to use the Custom theme, then you will need to provide your own Custom CSS in order to style the gallery to suit your needs.', 'foogallery' ),
 					'section' => __( 'Appearance', 'foogallery' ),
 					'type'    => 'help',
@@ -445,7 +444,6 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 				//region Caption Fields
 				$fields[] = array(
 					'id'      => 'captions_help',
-					'title'   => __( 'Captions Help', 'foogallery' ),
 					'desc'    => __( 'You can change when captions are shown using the "Hover Effects -> Caption Visibility" setting.', 'foogallery' ),
 					'section' => __( 'Captions', 'foogallery' ),
 					'type'    => 'help'

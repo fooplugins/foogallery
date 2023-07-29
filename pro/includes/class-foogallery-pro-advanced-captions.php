@@ -200,7 +200,6 @@ if ( ! class_exists( 'FooGallery_Pro_Advanced_Captions' ) ) {
 
 		        $fields[] = array(
 			        'id'       => 'caption_custom_help',
-			        'title'    => __( 'Custom Caption Help', 'foogallery' ),
 			        'desc'     => $custom_caption_help_html,
 			        'section'  => __( 'Captions', 'foogallery' ),
 			        'type'     => 'help',
@@ -241,7 +240,6 @@ if ( ! class_exists( 'FooGallery_Pro_Advanced_Captions' ) ) {
 
 	        $fields[] = array(
 		        'id'      => 'lightbox_caption_custom_template_help',
-		        'title'   => __( 'Custom Caption Template Help', 'foogallery' ),
 		        'desc'    => $custom_caption_help_html,
 		        'section' => $section,
 		        'subsection' => array( 'lightbox-captions' => __( 'Captions', 'foogallery' ) ),

@@ -711,7 +711,6 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 
 				$new_fields[] = array(
 					'id'      => 'ecommerce_info',
-					'title'   => __( 'Ecommerce Info', 'foogallery' ),
 					'desc'    => __( 'Buttons will only show if you are using the WooCommerce Product datasource, or if individual attachments are linked to WooCommerce products.', 'foogallery' ),
 					'section' => __( 'Ecommerce', 'foogallery' ),
 					'subsection' => array( 'ecommerce-buttons' => __( 'Buttons', 'foogallery' ) ),
@@ -882,7 +881,6 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 
                 $new_fields[] = array(
 					'id'      => 'ecommerce_ribbon_info',
-					'title'   => __( 'Ecommerce Ribbon Info', 'foogallery' ),
 					'desc'    => __( 'You can show different ribbons for products that are on sale, out of stock, on backorder or featured.', 'foogallery' ),
 					'section' => __( 'Ecommerce', 'foogallery' ),
 					'subsection' => array( 'ecommerce-ribbons' => __( 'Ribbons', 'foogallery' ) ),
@@ -1045,7 +1043,6 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 
                 $new_fields[] = array(
 					'id'      => 'ecommerce_ribbon_help',
-					'title'   => __( 'Ecommerce Ribbon Info', 'foogallery' ),
 					'desc'    => $ribbon_help_html,
 					'section' => __( 'Ecommerce', 'foogallery' ),
 					'subsection' => array( 'ecommerce-ribbons' => __( 'Ribbons', 'foogallery' ) ),
@@ -1054,7 +1051,6 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 
 				$new_fields[] = array(
 					'id'      => 'ecommerce_lightbox_info',
-					'title'   => __( 'Ecommerce Lightbox Info', 'foogallery' ),
 					'desc'    => __( 'You can choose to display product information within the lightbox, if items are linked to a WooCommerce Product. This only works with the PRO lightbox.', 'foogallery' ),
 					'section' => __( 'Ecommerce', 'foogallery' ),
 					'subsection' => array( 'ecommerce-lightbox' => __( 'Lightbox', 'foogallery' ) ),
@@ -1132,7 +1128,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 			} else {
 				$new_fields[] = array(
 					'id'      => 'ecommerce_error',
-					'title'   => __( 'Ecommerce Error', 'foogallery' ),
+					'title'   => __( 'WooCommerce Error!', 'foogallery' ),
 					'desc'    => __( 'WooCommerce is not installed! Ecommerce features are only available when WooCommerce is activated.', 'foogallery' ),
 					'section' => __( 'Ecommerce', 'foogallery' ),
 					'type'    => 'help',

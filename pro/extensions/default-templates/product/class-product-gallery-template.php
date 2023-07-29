@@ -89,7 +89,6 @@ if ( !class_exists( 'FooGallery_Product_Gallery_Template' ) ) {
                 'fields'	  => array(
 	                array(
 		                'id'	  => 'help',
-		                'title'	  => __( 'Tip', 'foogallery' ),
 		                'section' => __( 'General', 'foogallery' ),
 		                'type'	  => 'html',
 		                'help'	  => true,

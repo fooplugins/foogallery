@@ -363,8 +363,8 @@ if ( ! class_exists( 'FooGallery_Pro_Exif' ) ) {
 
             $exif_fields[] = array(
                 'id'      => 'exif_help',
-                'title'   => __( 'EXIF Help', 'foogallery' ),
-                'desc'    => __( 'EXIF data is only supported when the FooGallery PRO Lightbox is enabled, or with the Slider PRO and Grid PRO templates.', 'foogallery' ),
+                'title'   => __( 'PLEASE NOTE!', 'foogallery' ),
+                'desc'    => __( 'EXIF data is only supported when the FooGallery Lightbox is enabled, or with the Slider PRO and Grid PRO templates.', 'foogallery' ),
                 'section' => 'EXIF',
                 'type'    => 'help'
             );

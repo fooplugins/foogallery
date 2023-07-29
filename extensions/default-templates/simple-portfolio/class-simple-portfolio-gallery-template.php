@@ -68,7 +68,6 @@ if ( !class_exists( 'FooGallery_Simple_Portfolio_Gallery_Template' ) ) {
                 'fields'	  => array(
                     array(
                         'id'	  => 'help',
-                        'title'	  => __( 'Tip', 'foogallery' ),
                         'section' => __( 'General', 'foogallery' ),
                         'type'	  => 'html',
                         'help'	  => true,
