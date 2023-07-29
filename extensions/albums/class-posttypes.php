@@ -47,7 +47,6 @@ if ( ! class_exists( 'FooGallery_Albums_PostTypes' ) ) {
 					'search_items'       => __( 'Search Albums', 'foogallery' ),
 					'not_found'          => __( 'No Albums found', 'foogallery' ),
 					'not_found_in_trash' => __( 'No Albums found in Trash', 'foogallery' ),
-					'menu_name'          => __( 'Albums', 'foogallery' ),
 					'all_items'          => __( 'Albums', 'foogallery' ),
 				),
 				'hierarchical' => false,
@@ -55,6 +54,7 @@ if ( ! class_exists( 'FooGallery_Albums_PostTypes' ) ) {
 				'rewrite'      => false,
 				'show_ui'      => true,
 				'supports'     => array( 'title' ),
+                'show_in_menu' => foogallery_admin_menu_parent_slug()
 			);
 
 			if ( 'inherit' !== $album_creator_role && '' !== $album_creator_role ) {
