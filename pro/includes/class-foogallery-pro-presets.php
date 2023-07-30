@@ -45,7 +45,6 @@ if ( ! class_exists( 'FooGallery_Pro_Hover_Presets' ) ) {
 
 			$new_fields[] = array(
 				'id'      => 'hover_effect_help',
-				'title'   => __( 'Hover Effect Help', 'foogallery' ),
 				'desc'    => __( 'A preset provides a stylish, pre-defined look &amp; feel for the effect when you hover over the thumbnails.', 'foogallery' ),
 				'section' => __( 'Hover Effects', 'foogallery' ),
 				'type'    => 'help',
@@ -77,7 +76,7 @@ if ( ! class_exists( 'FooGallery_Pro_Hover_Presets' ) ) {
 						'fg-preset fg-zoe'     => __( 'Zoe',     'foogallery' ),
 					)
 				),
-				'spacer'   => '<span class="spacer"></span>',
+				//'spacer'   => '<span class="spacer"></span>',
 				'desc'     => __( 'A preset styling that is used for the hover effect.', 'foogallery' ),
 				'row_data' => array(
 					'data-foogallery-change-selector'       => 'input:radio',

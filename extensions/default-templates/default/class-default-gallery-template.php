@@ -134,11 +134,7 @@ if ( ! class_exists( 'FooGallery_Default_Gallery_Template' ) ) {
 					),
 					array(
 						'id'      => 'lightbox',
-						'title'   => __( 'Lightbox', 'foogallery' ),
-						'desc'    => __( 'Choose which lightbox you want to use. The lightbox will generally only work if you set the thumbnail link to "Full Size Image".', 'foogallery' ),
-						'section' => __( 'General', 'foogallery' ),
 						'type'    => 'lightbox',
-						'default' => 'none'
 					),
 					array(
 						'id'       => 'spacing',

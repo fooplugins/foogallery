@@ -109,7 +109,6 @@ if ( !class_exists( 'FooGallery_Image_Viewer_Gallery_Template' ) ) {
 				'fields'	  => array(
                     array(
                         'id'      => 'thumbnail-help',
-                        'title'   => __( 'Thumbnail Help', 'foogallery' ),
                         'desc'    => __( 'It is recommended to crop your thumbnails, so that your gallery remains a constant size. If you do not crop, then the size of the gallery could potentially change for each thumbnail.', 'foogallery' ),
                         'section' => __( 'General', 'foogallery' ),
                         'type'    => 'help'
@@ -140,10 +139,7 @@ if ( !class_exists( 'FooGallery_Image_Viewer_Gallery_Template' ) ) {
                     ),
                     array(
                         'id'      => 'lightbox',
-                        'title'   => __( 'Lightbox', 'foogallery' ),
-                        'section' => __( 'General', 'foogallery' ),
                         'desc'    => __( 'Choose which lightbox you want to use in the gallery', 'foogallery' ),
-                        'default' => 'none',
                         'type'    => 'lightbox',
                     ),
                     array(
@@ -183,7 +179,6 @@ if ( !class_exists( 'FooGallery_Image_Viewer_Gallery_Template' ) ) {
 					),
                     array(
                         'id'      => 'language-help',
-                        'title'   => __( 'Language Help', 'foogallery' ),
                         'desc'    => __( 'You can change the "Prev", "Next" and "of" text used in the gallery from the settings page, under the Language tab.', 'foogallery' ),
 						'section' => __( 'General', 'foogallery' ),
                         'type'    => 'help'

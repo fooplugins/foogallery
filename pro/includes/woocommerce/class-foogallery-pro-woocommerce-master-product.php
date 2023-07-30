@@ -271,7 +271,6 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce_Master_Product' ) ) {
 
 				$new_fields[] = array(
 					'id'      => 'ecommerce_transfer_mode_info',
-					'title'   => __( 'Transfer Mode Info', 'foogallery' ),
 					'desc'    => __( 'You can choose to transfer info from the attachment to the linked product when it is added to the cart and ordered. This works best when you want to use a master product for all items in your gallery.', 'foogallery' ),
 					'section' => __( 'Ecommerce', 'foogallery' ),
 					'subsection' => array( 'ecommerce-master-product' => __( 'Advanced', 'foogallery' ) ),
@@ -300,7 +299,6 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce_Master_Product' ) ) {
 
 				$new_fields[] = array(
 					'id'      => 'ecommerce_master_product_info',
-					'title'   => __( 'Master Product Info', 'foogallery' ),
 					'desc'    => __( 'You can set a master product for the whole gallery, which will link that product to every item. You can still manually link items to individual products. All items that are not linked to a product will be linked to the master product.', 'foogallery' ),
 					'section' => __( 'Ecommerce', 'foogallery' ),
 					'subsection' => array( 'ecommerce-master-product' => __( 'Advanced', 'foogallery' ) ),

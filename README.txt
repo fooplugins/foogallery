@@ -3,8 +3,8 @@ Contributors: bradvin, steveush, fooplugins
 Donate link: https://fooplugins.com
 Tags: gallery, image gallery, photo gallery, responsive gallery, wordpress gallery plugin, best gallery plugin, albums, media gallery, video gallery, lightbox
 Requires at least: 5.2
-Tested up to: 6.2
-Stable tag: 2.2.44
+Tested up to: 6.3
+Stable tag: 2.3.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -50,6 +50,10 @@ The following free features make FooGallery the **best gallery plugin** on the m
 	*	Justified Gallery - [demo](https://fooplugins.com/foogallery-wordpress-gallery-plugin/justified-gallery/)
 	*	Single Thumbnail Gallery - [demo](https://fooplugins.com/foogallery-wordpress-gallery-plugin/single-thumbnail-gallery/)
 	*	Carousel Gallery - [demo](https://fooplugins.com/foogallery-wordpress-gallery-plugin/wordpress-carousel/)
+*   Lightbox built-in!
+    *   Adjust lightbox colors, transitions and more!
+    *   Includes thumb strip, fullscreen mode and auto progress control
+    *   Override captions shown in lightbox
 *   Easy to customize!
     *   Adjust thumbnail size, spacing & alignment
     *   Adjust border size, rounded corners, drop shadows, inner shadows
@@ -95,7 +99,6 @@ There are 3 PRO plans available, that will work with any budget:
     *   Polaroid gallery template - [demo](https://fooplugins.com/foogallery-wordpress-gallery-plugin/polaroid-gallery/)
     *   Grid gallery template - [demo](https://fooplugins.com/foogallery-wordpress-gallery-plugin/grid-gallery/)
     *	Slider gallery template - [demo](https://fooplugins.com/foogallery-wordpress-gallery-plugin/slider-gallery/)
-*   PRO image and media lightbox built in! [demo](https://fooplugins.com/foogallery-wordpress-gallery-plugin/pro-lightbox/)
 *   11 beautiful hover effect presets - [demo](https://fooplugins.com/foogallery-wordpress-gallery-plugin/hover-presets/)
 *   12 CSS thumbnail filters (Instagram) - [demo](https://fooplugins.com/foogallery-wordpress-gallery-plugin/filter-effects/)
 
@@ -270,8 +273,7 @@ You can choose to create a gallery based off your existing WooCommerce products,
 
 = Do I need to install a separate plugin to show a lightbox? =
 
-For the Free version of FooGallery - Yes, you will need to install FooBox Image Lightbox.
-For the PRO version of FooGallery - No, we have built in a uniquely beautiful lightbox!
+No, we have built in a uniquely beautiful lightbox!
 
 = How do I import galleries from another install? =
 
@@ -316,6 +318,12 @@ We did the research and comparison. See our findings : [What is the Best WordPre
 Please update in order to for FooGallery to work in WP 5.5+!
 
 == Changelog ==
+
+= 2.3.0 =
+* Date Updated : 29 July 2023
+* New : Lightbox is now included in FREE!
+* New : Added settings to control which role can manage galleries and albums
+* Update : FooGallery client side 2.1.0
 
 = 2.2.44 =
 * Date Updated : 1 July 2023

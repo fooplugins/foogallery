@@ -156,16 +156,7 @@ if ( !class_exists( 'FooGallery_Thumbnail_Gallery_Template' ) ) {
                     ),
                     array(
                         'id'      => 'lightbox',
-                        'title'   => __( 'Lightbox', 'foogallery' ),
-                        'section' => __( 'General', 'foogallery' ),
-                        'desc'    => __( 'Choose which lightbox you want to use.', 'foogallery' ),
                         'type'    => 'lightbox',
-                        'default' => 'none',
-                        'row_data'=> array(
-	                        'data-foogallery-change-selector' => 'select',
-	                        'data-foogallery-preview'         => 'shortcode',
-                            'data-foogallery-value-selector'  => 'select'
-                        )
                     ),
 	                array(
 		                'id'      => 'exclude_featured_image',

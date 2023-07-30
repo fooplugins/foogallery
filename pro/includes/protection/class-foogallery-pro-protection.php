@@ -525,7 +525,6 @@ if ( ! class_exists( 'FooGallery_Pro_Protection' ) ) {
 
 			$new_fields[] = array(
 				'id'      => 'protection_help',
-				'title'   => __( 'Protection Help', 'foogallery' ),
 				'desc'    => __( 'Image protection is only enabled on your full size images. Protecting thumbnails is not necessary!', 'foogallery' ),
 				'section' => __( 'Protection', 'foogallery' ),
 				'type'    => 'help',

@@ -136,7 +136,7 @@ class FooGallery_Template_Loader {
 				}
 
 				//cater for lightbox extensions needing to add styles and javascript
-				$lightbox = foogallery_gallery_template_setting( 'lightbox' );
+				$lightbox = foogallery_gallery_template_setting_lightbox();
 				if ( !empty( $lightbox ) ) {
 					do_action( "foogallery_template_lightbox-{$lightbox}", $current_foogallery );
 				}

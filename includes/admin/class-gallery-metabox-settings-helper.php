@@ -131,6 +131,9 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings_Helper' ) ) {
 						<?php if ( 'help' === $field_type ) { ?>
 							<td colspan="2">
 								<div class="foogallery-help">
+									<?php if ( array_key_exists( 'title', $field ) ) { ?>
+									<?php echo '<strong>' . $field['title'] . '</strong><br /><br />'; ?>
+									<?php } ?>
 									<?php echo $field['desc']; ?>
 								</div>
 							</td>

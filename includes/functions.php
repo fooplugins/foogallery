@@ -142,7 +142,7 @@ function foogallery_get_default( $key, $default = false ) {
 		'gallery_template'           => 'default',
 		'gallery_permalinks_enabled' => false,
 		'gallery_permalink'          => 'gallery',
-		'lightbox'                   => 'none',
+		'lightbox'                   => 'foogallery',
 		'thumb_jpeg_quality'         => '90',
 		'gallery_sorting'            => '',
 		'datasource'                 => 'media_library',
@@ -256,6 +256,15 @@ function foogallery_gallery_template_setting( $key, $default = '' ) {
 	$value = apply_filters( 'foogallery_gallery_template_setting-' . $key, $value );
 
 	return $value;
+}
+
+/**
+ * Returns the gallery template setting for lightbox
+ *
+ * @return string
+ */
+function foogallery_gallery_template_setting_lightbox() {
+    return foogallery_gallery_template_setting('lightbox', 'foogallery' );
 }
 
 /**
