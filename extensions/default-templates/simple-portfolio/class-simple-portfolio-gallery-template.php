@@ -176,7 +176,9 @@ if ( !class_exists( 'FooGallery_Simple_Portfolio_Gallery_Template' ) ) {
 			//update specific fields
 			foreach ($fields as &$field) {
 
-				if ( $index_of_captions_field === 0 && __( 'Captions', 'foogallery' ) === $field['section'] ) {
+				$field_section = array_key_exists( 'section', $field ) ? $field['section'] : '';
+
+				if ( $index_of_captions_field === 0 && __( 'Captions', 'foogallery' ) === $field_section ) {
 					$index_of_captions_field = $index;
 				}
 
