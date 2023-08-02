@@ -659,7 +659,7 @@ if ( ! class_exists( 'FooGallery_Pro_Promotion' ) ) {
 		 * @return mixed
 		 */
 		function add_lightbox($lightboxes) {
-			$lightboxes['foogallery'] = __( 'FooGallery PRO Lightbox (Not installed!)', 'foogallery' );
+			$lightboxes['foogallery'] = __( 'FooGallery Lightbox (Not installed!)', 'foogallery' );
 			return $lightboxes;
 		}
 
@@ -738,7 +738,7 @@ if ( ! class_exists( 'FooGallery_Pro_Promotion' ) ) {
 				}
 
 				$foogallery_pro_lightbox_info = __( 'Our built-in Lightbox plugin that comes with FooGallery PRO Starter. Check out the Lightbox tab to see more details.', 'foogallery' );
-				$lightbox_desc .= '<li><strong>' . __( 'FooGallery PRO Lightbox', 'foogallery' ) . '</strong> - ' . $foogallery_pro_lightbox_info . '</li>';
+				$lightbox_desc .= '<li><strong>' . __( 'FooGallery Lightbox', 'foogallery' ) . '</strong> - ' . $foogallery_pro_lightbox_info . '</li>';
 
 				$lightbox_help_field = array(
 					array(
@@ -760,7 +760,7 @@ if ( ! class_exists( 'FooGallery_Pro_Promotion' ) ) {
 				$lightbox_foogallery_help_field = array(
 					array(
 						'id'      => 'lightbox_promo_3',
-						'title'   => __( 'FooGallery PRO Lightbox', 'foogallery' ),
+						'title'   => __( 'FooGallery Lightbox', 'foogallery' ),
 						'desc'    => $foogallery_pro_lightbox_info,
 						'section' => __( 'General', 'foogallery' ),
 						'type'    => 'promo',
