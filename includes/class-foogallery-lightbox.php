@@ -149,6 +149,21 @@ if ( ! class_exists( 'FooGallery_Lightbox' ) ) {
                 );
             }
 
+            $field[] = array(
+				'id'      => 'lightbox_promo',
+				'title'   => __( 'Your Gallery Needs A Lightbox!', 'foogallery' ),
+				'desc'    => __( 'Website visitors prefer a gallery with a lightbox. A lightbox allows you to showcase your images, as well as improve navigation between images in your gallery.', 'foogallery' ),
+				'section' => $section,
+				'subsection' => array( 'lightbox-general' => __( 'General', 'foogallery' ) ),
+				'type'    => 'promo',
+				'row_data' => array(
+					'data-foogallery-hidden' 				   => true,
+					'data-foogallery-show-when-field'          => 'lightbox',
+					'data-foogallery-show-when-field-operator' => '===',
+					'data-foogallery-show-when-field-value'    => 'none',
+				),
+			);
+
 			$field[] = array(
 				'id'      => 'lightbox_theme',
 				'title'   => __( 'Theme', 'foogallery' ),
