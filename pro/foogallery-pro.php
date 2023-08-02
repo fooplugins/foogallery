@@ -26,7 +26,6 @@ require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-wplr-support.p
 require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-instagram-helper.php';
 require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-datasource-realmedialibrary.php';
 require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-datasource-post-query.php';
-require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-lightbox.php';
 require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-advanced-captions.php';
 require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-advanced-thumbnails.php';
 require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-bulk-management.php';
@@ -68,7 +67,6 @@ if ( ! class_exists( 'FooGallery_Pro' ) ) {
 		 */
 		public function __construct() {
 			new FooGallery_Pro_Hover_Presets();
-			new FooGallery_Pro_Lightbox();
 			new FooGallery_Pro_Default_Templates();
 			new FooGallery_Pro_Instagram_Filters();
 

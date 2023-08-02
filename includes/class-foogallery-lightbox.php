@@ -1,10 +1,10 @@
 <?php
 /**
- * FooGallery Pro Lightbox class
+ * FooGallery Lightbox class
  */
-if ( ! class_exists( 'FooGallery_Pro_Lightbox' ) ) {
+if ( ! class_exists( 'FooGallery_Lightbox' ) ) {
 
-	class FooGallery_Pro_Lightbox {
+	class FooGallery_Lightbox {
 
 		function __construct() {
 			//add lightbox custom fields

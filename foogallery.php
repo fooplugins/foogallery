@@ -138,6 +138,8 @@ if ( function_exists( 'foogallery_fs' ) ) {
 
 				new FooGallery_Shortcodes();
 
+				new FooGallery_Lightbox();
+
 				new FooGallery_Thumbnails();
 
 				new FooGallery_Attachment_Filters();
