@@ -138,17 +138,6 @@ if ( ! class_exists( 'FooGallery_Lightbox' ) ) {
 				),
 			);
 
-			if ( $use_lightbox ) {
-                $field[] = array(
-                    'id'      => 'lightbox_help',
-                    'title'   => __( 'Lightbox Help', 'foogallery' ),
-                    'desc'    => __( 'The below settings are only applied and used if you have your lightbox set to "FooGallery Lightbox"', 'foogallery' ),
-                    'section' => $section,
-                    'subsection' => array( 'lightbox-general' => __( 'General', 'foogallery' ) ),
-                    'type'    => 'help'
-                );
-            }
-
             $field[] = array(
 				'id'      => 'lightbox_promo',
 				'title'   => __( 'Your Gallery Needs A Lightbox!', 'foogallery' ),
