@@ -65,7 +65,7 @@ $tagline = apply_filters( 'foogallery_admin_extensions_tagline', sprintf( __( 'E
 			if ( foo_starts_with( $thumbnail, '/') ) {
 				$thumbnail = rtrim( FOOGALLERY_URL, '/' ) . $thumbnail;
 			}
-			$base_url = add_query_arg( 'extension', $slug );
+			$base_url = add_query_arg( array( 'extension' => $slug, '_wpnonce' => wp_create_nonce( 'foogallery_extension_action') ) );
 			$download_url = add_query_arg( 'action', 'download', $base_url );
 			$activate_url = add_query_arg( 'action', 'activate', $base_url );
 			$deactivate_url = add_query_arg( 'action', 'deactivate', $base_url );

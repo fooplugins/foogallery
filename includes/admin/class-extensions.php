@@ -31,9 +31,16 @@ if ( ! class_exists( 'FooGallery_Admin_Extensions' ) ) {
 		}
 
 		function handle_extension_action() {
+
 			$action         = safe_get_from_request( 'action' );
 			$extension_slug = safe_get_from_request( 'extension' );
 			$has_error      = safe_get_from_request( 'has_error' );
+
+            if ( !empty( $extension_slug ) || $has_error ) {
+                if ( !check_admin_referer( 'foogallery_extension_action' ) ) {
+                    return;
+                }
+            }
 
 			if ( ( 'download' === $action || 'activate' === $action || 'deactivate' === $action ) && $extension_slug ) {
 				$api = new FooGallery_Extensions_API();
