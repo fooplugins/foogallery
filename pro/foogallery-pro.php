@@ -5,7 +5,10 @@
  */
 require_once FOOGALLERY_PATH . 'pro/functions.php';
 require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-presets.php';
+
 require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-paging.php';
+require_once FOOGALLERY_PATH . 'pro/extensions/paging/foogallery-paging-extension.php';
+
 require_once FOOGALLERY_PATH . 'pro/extensions/default-templates/class-foogallery-pro-default-templates.php';
 require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-bulk-copy.php';
 require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-gallery-override.php';
