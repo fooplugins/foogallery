@@ -30,7 +30,7 @@ if ( ! class_exists('FooGallery_Pro_Paging') ) {
 				'description' => __( 'Add advanced pagination options: numbered, infinite scroll, and load more.', 'foogallery' ),
 				'author' => 'FooPlugins',
 				'author_url' => 'https://fooplugins.com',
-				'thumbnail' => 'https://lh3.googleusercontent.com/bip/APOwr82TUK2u7YlC6c2nONPFqhue2JOcXqoVFIF4HMhVNop1eSwVyum2ujEpe31AvDBUW_n4bDaUjrcemrZMkY1AaH25NSyDe4mQf5VbMudhT-qI14IQs2Kzz8xJwsS13Mce79L-ubXalcn8HHIo=w250-h200-p',
+				'thumbnail' => 'https://i.pinimg.com/474x/62/f9/e0/62f9e07f0df68e37a5a1d3e9e77b8c83.jpg',
 				'tags' => array( 'premium' ),
 				'source' => 'bundled'
 			);
