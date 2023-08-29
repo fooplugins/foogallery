@@ -18,8 +18,15 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 		 *
 		 * Sets up all the appropriate hooks and actions
 		 */
-		public function __construct() {
-			if ( is_admin() ) {
+		function __construct() {
+            add_action( 'plugins_loaded', array( $this, 'load_feature' ) );
+
+            add_filter( 'foogallery_available_extensions', array( $this, 'register_extension' ) );
+		}
+
+		function load_feature() {
+            if ( foogallery_feature_enabled( 'foogallery-woocommerce' ) ) {
+                if ( is_admin() ) {
 				// Add extra fields to the templates.
 				add_filter( 'foogallery_override_gallery_template_fields', array( $this, 'add_ecommerce_fields' ), 30, 2 );
 
@@ -78,7 +85,27 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 
 			// Add button data to the json output
 			add_filter( 'foogallery_build_attachment_json', array( $this, 'add_button_to_json' ), 40, 6 );
-		}
+            }
+        }
+
+		function register_extension( $extensions_list ) {
+            $extensions_list[] = array(
+                'slug' => 'foogallery-woocommerce',
+                'class' => 'FooGallery_Pro_Woocommerce',
+                'categories' => array( 'Premium' ),
+                'title' => __( 'Ecommerce', 'foogallery' ),
+                'description' => __( 'Extend the functionality of your gallery with seamless ecommerce integration.', 'foogallery' ),
+                'author' => 'FooPlugins',
+                'author_url' => 'https://fooplugins.com',
+                'thumbnail' => 'https://i.pinimg.com/474x/62/f9/e0/62f9e07f0df68e37a5a1d3e9e77b8c83.jpg',
+                'tags' => array( 'premium' ),
+                'source' => 'bundled',
+                'activated_by_default' => true,
+                'feature' => true
+            );
+
+            return $extensions_list;
+        }
 
 		/**
 		 * Adds a new tab to the products data settings.
