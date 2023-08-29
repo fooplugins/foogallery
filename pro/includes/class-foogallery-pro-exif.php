@@ -11,39 +11,68 @@ if ( ! class_exists( 'FooGallery_Pro_Exif' ) ) {
          * Sets up all the appropriate hooks and actions
          */
         function __construct() {
-            //Add EXIF data attributes
-            add_filter( 'foogallery_attachment_html_link_attributes', array( $this, 'add_exif_data_attributes' ), 10, 3 );
+            add_action( 'plugins_loaded', array( $this, 'load_feature' ) );
+
+            add_filter( 'foogallery_available_extensions', array( $this, 'register_extension' ) );
+		}
+
+        function load_feature(){
+            if ( foogallery_feature_enabled( 'foogallery-exif' ) ){
+
+				//Add EXIF data attributes
+				add_filter( 'foogallery_attachment_html_link_attributes', array( $this, 'add_exif_data_attributes' ), 10, 3 );
             
-            //Add lightbox EXIF options
-            add_filter( 'foogallery_lightbox_data_attributes', array( $this, 'add_lightbox_data_attributes' ), 20 );
+				//Add lightbox EXIF options
+				add_filter( 'foogallery_lightbox_data_attributes', array( $this, 'add_lightbox_data_attributes' ), 20 );
+	
+				//Add container class
+				add_filter( 'foogallery_build_class_attribute', array( $this, 'add_container_class' ), 10,  2 );
+	
+				//add localised text
+				add_filter( 'foogallery_il8n', array( $this, 'add_il8n' ) );
+	
+				//add class to fg-item
+				add_filter( 'foogallery_attachment_html_item_classes', array( $this, 'add_class_to_item' ), 10, 3 );
+			
+				//add exif to the json output
+				add_filter( 'foogallery_build_attachment_json', array( $this, 'add_exif_to_json' ), 10, 6 );
 
-	        //Add container class
-	        add_filter( 'foogallery_build_class_attribute', array( $this, 'add_container_class' ), 10,  2 );
+                if ( is_admin() ) {
+                    //add extra fields to the templates that support exif
+                    add_filter( 'foogallery_override_gallery_template_fields', array( $this, 'add_exif_fields' ), 50, 2 );
+    
+                    //set the settings icon for Exif
+                    add_filter( 'foogallery_gallery_settings_metabox_section_icon', array( $this, 'add_section_icons' ) );
+    
+                    //add some settings for EXIF
+                    add_filter( 'foogallery_admin_settings_override', array( $this, 'add_exif_settings' ) );
+    
+                    // Attachment modal actions:
+                    add_action( 'foogallery_attachment_modal_tabs_view', array( $this, 'attachment_modal_display_tab' ), 50 );
+                    add_action( 'foogallery_attachment_modal_tab_content', array( $this, 'attachment_modal_display_tab_content' ), 50, 1 );
+                    add_action( 'foogallery_attachment_save_data', array( $this, 'attachment_modal_save_data' ), 50, 2 );
+                }
 
-	        //add localised text
-	        add_filter( 'foogallery_il8n', array( $this, 'add_il8n' ) );
-
-	        //add class to fg-item
-	        add_filter( 'foogallery_attachment_html_item_classes', array( $this, 'add_class_to_item' ), 10, 3 );
-		
-	        //add exif to the json output
-	        add_filter( 'foogallery_build_attachment_json', array( $this, 'add_exif_to_json' ), 10, 6 );
-
-            if ( is_admin() ) {
-                //add extra fields to the templates that support exif
-                add_filter( 'foogallery_override_gallery_template_fields', array( $this, 'add_exif_fields' ), 50, 2 );
-
-                //set the settings icon for Exif
-                add_filter( 'foogallery_gallery_settings_metabox_section_icon', array( $this, 'add_section_icons' ) );
-
-                //add some settings for EXIF
-                add_filter( 'foogallery_admin_settings_override', array( $this, 'add_exif_settings' ) );
-
-                // Attachment modal actions:
-                add_action( 'foogallery_attachment_modal_tabs_view', array( $this, 'attachment_modal_display_tab' ), 50 );
-                add_action( 'foogallery_attachment_modal_tab_content', array( $this, 'attachment_modal_display_tab_content' ), 50, 1 );
-                add_action( 'foogallery_attachment_save_data', array( $this, 'attachment_modal_save_data' ), 50, 2 );
             }
+        }
+
+		function register_extension( $extensions_list ) {
+            $extensions_list[] = array(
+                'slug' => 'foogallery-exif',
+                'class' => 'FooGallery_Pro_Exif',
+                'categories' => array( 'Premium' ),
+                'title' => __( 'Exif', 'foogallery' ),
+                'description' => __( 'Enables compatibility with Exchangeable Image File Format (Exif) for your gallery', 'foogallery' ),
+                'author' => 'FooPlugins',
+                'author_url' => 'https://fooplugins.com',
+                'thumbnail' => 'https://i.pinimg.com/474x/62/f9/e0/62f9e07f0df68e37a5a1d3e9e77b8c83.jpg',
+                'tags' => array( 'premium' ),
+                'source' => 'bundled',
+                'activated_by_default' => true,
+                'feature' => true
+            );
+
+            return $extensions_list;
         }
 
 	    /**
