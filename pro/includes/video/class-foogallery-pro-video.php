@@ -95,7 +95,7 @@ if ( ! class_exists( 'FooGallery_Pro_Video' ) ) {
                 'description' => __( 'Add video support into your galleries.', 'foogallery' ),
                 'author' => 'FooPlugins',
                 'author_url' => 'https://fooplugins.com',
-                'thumbnail' => 'https://i.pinimg.com/474x/62/f9/e0/62f9e07f0df68e37a5a1d3e9e77b8c83.jpg',
+                'thumbnail' => 'https://i.pinimg.com/474x/b0/e6/5c/b0e65c39fb51ae92d23261098b3fe5e5.jpg',
                 'tags' => array( 'premium' ),
                 'source' => 'bundled',
                 'activated_by_default' => true,

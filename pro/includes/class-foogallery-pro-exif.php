@@ -65,7 +65,7 @@ if ( ! class_exists( 'FooGallery_Pro_Exif' ) ) {
                 'description' => __( 'Enables compatibility with Exchangeable Image File Format (Exif) for your gallery', 'foogallery' ),
                 'author' => 'FooPlugins',
                 'author_url' => 'https://fooplugins.com',
-                'thumbnail' => 'https://i.pinimg.com/474x/62/f9/e0/62f9e07f0df68e37a5a1d3e9e77b8c83.jpg',
+                'thumbnail' => 'https://d2h3urvha2kmgw.cloudfront.net/c68413d0-1dbf-427c-be1d-0086bd06975b-preview.png?v=1693303946',
                 'tags' => array( 'premium' ),
                 'source' => 'bundled',
                 'activated_by_default' => true,

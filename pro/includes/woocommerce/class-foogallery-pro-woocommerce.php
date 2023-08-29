@@ -97,7 +97,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
                 'description' => __( 'Extend the functionality of your gallery with seamless ecommerce integration.', 'foogallery' ),
                 'author' => 'FooPlugins',
                 'author_url' => 'https://fooplugins.com',
-                'thumbnail' => 'https://i.pinimg.com/474x/62/f9/e0/62f9e07f0df68e37a5a1d3e9e77b8c83.jpg',
+                'thumbnail' => 'https://i.pinimg.com/474x/53/7e/5c/537e5cbbfe49090b7911a2af97959a06.jpg',
                 'tags' => array( 'premium' ),
                 'source' => 'bundled',
                 'activated_by_default' => true,

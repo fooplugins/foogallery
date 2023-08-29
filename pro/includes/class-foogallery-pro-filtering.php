@@ -67,7 +67,7 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
                 'description' => __( 'Enhance your gallery experience with advanced filtering capabilities', 'foogallery' ),
                 'author' => 'FooPlugins',
                 'author_url' => 'https://fooplugins.com',
-                'thumbnail' => 'https://i.pinimg.com/474x/62/f9/e0/62f9e07f0df68e37a5a1d3e9e77b8c83.jpg',
+                'thumbnail' => 'https://i.pinimg.com/474x/23/52/1b/23521be3ed34d424256129ce2e3ff7ec.jpg',
                 'tags' => array( 'premium' ),
                 'source' => 'bundled',
                 'activated_by_default' => true,

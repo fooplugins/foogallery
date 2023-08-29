@@ -49,7 +49,7 @@ if ( ! class_exists( 'FooGallery_Pro_Master_Galleries' ) ) {
                 'description' => __( 'Allows you to setup galleries that other galleries inherit all settings from.', 'foogallery' ),
                 'author' => 'FooPlugins',
                 'author_url' => 'https://fooplugins.com',
-                'thumbnail' => 'https://i.pinimg.com/474x/62/f9/e0/62f9e07f0df68e37a5a1d3e9e77b8c83.jpg',
+                'thumbnail' => 'https://d2h3urvha2kmgw.cloudfront.net/342df57b-2796-41fc-8779-29ac6cb37c3a-preview.png?v=1693304301',
                 'tags' => array( 'premium' ),
                 'source' => 'bundled',
                 'activated_by_default' => true,

@@ -79,7 +79,7 @@ if ( ! class_exists( 'FooGallery_Pro_Protection' ) ) {
                 'description' => __( 'Protect your gallery images with an added layer of security.', 'foogallery' ),
                 'author' => 'FooPlugins',
                 'author_url' => 'https://fooplugins.com',
-                'thumbnail' => 'https://i.pinimg.com/474x/62/f9/e0/62f9e07f0df68e37a5a1d3e9e77b8c83.jpg',
+                'thumbnail' => 'https://i.pinimg.com/474x/a2/16/d9/a216d995aef431dfa4b3c2c0148b9f4e.jpg',
                 'tags' => array( 'premium' ),
                 'source' => 'bundled',
                 'activated_by_default' => true,
