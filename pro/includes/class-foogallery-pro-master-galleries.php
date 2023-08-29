@@ -9,27 +9,54 @@ if ( ! class_exists( 'FooGallery_Pro_Master_Galleries' ) ) {
 	    const ENABLED = 'enabled';
 
         function __construct() {
-            // Add the master gallery metabox.
-            add_action( 'add_meta_boxes_' . FOOGALLERY_CPT_GALLERY, array( $this, 'add_master_gallery_meta_box_to_gallery' ) );
+            add_action( 'plugins_loaded', array( $this, 'load_feature' ) );
 
-	        // Ajax handler for toggling the master gallery.
-	        add_action( 'wp_ajax_foogallery_master_gallery_toggle', array( $this, 'ajax_master_toggle' ) );
+            add_filter( 'foogallery_available_extensions', array( $this, 'register_extension' ) );
+		}
 
-			// Ajax handler for setting the master gallery.
-			add_action( 'wp_ajax_foogallery_master_gallery_set', array( $this, 'ajax_master_set' ) );
+		function load_feature() {
+            if ( foogallery_feature_enabled( 'foogallery-master-galleries' ) ) {
+                // Add the master gallery metabox.
+				add_action( 'add_meta_boxes_' . FOOGALLERY_CPT_GALLERY, array( $this, 'add_master_gallery_meta_box_to_gallery' ) );
 
-			// Override the settings metabox.
-			add_filter( 'foogallery_should_render_gallery_settings_metabox', array( $this, 'override_settings_metabox'), 10, 2 );
-			add_action( 'foogallery_after_render_gallery_settings_metabox', array( $this, 'show_master_gallery_info_in_settings_metabox' ), 10, 1 );
+				// Ajax handler for toggling the master gallery.
+				add_action( 'wp_ajax_foogallery_master_gallery_toggle', array( $this, 'ajax_master_toggle' ) );
 
-			// Hide other metaboxes when a master gallery is being used.
-	        add_action( 'add_meta_boxes_' . FOOGALLERY_CPT_GALLERY, array( $this, 'hide_metaboxes' ), 99 );
+				// Ajax handler for setting the master gallery.
+				add_action( 'wp_ajax_foogallery_master_gallery_set', array( $this, 'ajax_master_set' ) );
 
-			// Admin notice for master gallery
-	        add_action( 'admin_notices', array( $this, 'display_master_gallery_notice' ) );
+				// Override the settings metabox.
+				add_filter( 'foogallery_should_render_gallery_settings_metabox', array( $this, 'override_settings_metabox'), 10, 2 );
+				add_action( 'foogallery_after_render_gallery_settings_metabox', array( $this, 'show_master_gallery_info_in_settings_metabox' ), 10, 1 );
 
-			// Override where the settings for a gallery are loaded from. In this case, from the master gallery.
-	        add_filter( 'foogallery_load_gallery_settings_id', array( $this, 'load_settings_from_master_gallery' ) );
+				// Hide other metaboxes when a master gallery is being used.
+				add_action( 'add_meta_boxes_' . FOOGALLERY_CPT_GALLERY, array( $this, 'hide_metaboxes' ), 99 );
+
+				// Admin notice for master gallery
+				add_action( 'admin_notices', array( $this, 'display_master_gallery_notice' ) );
+
+				// Override where the settings for a gallery are loaded from. In this case, from the master gallery.
+				add_filter( 'foogallery_load_gallery_settings_id', array( $this, 'load_settings_from_master_gallery' ) );
+            }
+        }
+
+		function register_extension( $extensions_list ) {
+            $extensions_list[] = array(
+                'slug' => 'foogallery-master-galleries',
+                'class' => 'FooGallery_Pro_Master_Galleries',
+                'categories' => array( 'Premium' ),
+                'title' => __( 'Master Gallery', 'foogallery' ),
+                'description' => __( 'Allows you to setup galleries that other galleries inherit all settings from.', 'foogallery' ),
+                'author' => 'FooPlugins',
+                'author_url' => 'https://fooplugins.com',
+                'thumbnail' => 'https://i.pinimg.com/474x/62/f9/e0/62f9e07f0df68e37a5a1d3e9e77b8c83.jpg',
+                'tags' => array( 'premium' ),
+                'source' => 'bundled',
+                'activated_by_default' => true,
+                'feature' => true
+            );
+
+            return $extensions_list;
         }
 
 		function load_settings_from_master_gallery( $foogallery_id ) {
