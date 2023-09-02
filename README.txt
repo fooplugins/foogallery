@@ -319,11 +319,13 @@ Please update in order to for FooGallery to work in WP 5.5+!
 
 == Changelog ==
 
-= 2.3.0 =
-* Date Updated : 29 July 2023
+= 2.3.1 =
+* Date Updated : 2 Sep 2023
 * New : Lightbox is now included in FREE!
 * New : Added settings to control which role can manage galleries and albums
+* Fix : Added nonce checks and extra sanitisation to extensions page.
 * Update : FooGallery client side 2.1.0
+* Update : Updated to Freemius SDK 2.5.11
 
 = 2.2.44 =
 * Date Updated : 1 July 2023
