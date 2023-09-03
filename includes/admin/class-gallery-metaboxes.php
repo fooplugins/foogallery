@@ -44,13 +44,13 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
             $extensions_list[] = array(
 				'slug' => 'foogallery-custom-css',
 				'class' => 'FooGallery_Admin_Gallery_MetaBoxes',
-				'categories' => array('Premium'),
+				'categories' => array('free'),
 				'title' => __('Custom CSS', 'foogallery'),
 				'description' => __('Adds custom CSS support to your galleries.', 'foogallery'),
 				'external_link_text' => 'see documentation',
                 'external_link_url' => 'https://fooplugins.com/documentation/foogallery/developers/customize-gallery-custom-css/',
 				'dashicon'          => 'dashicons-editor-code',
-				'tags' => array('free, Premium'),
+				'tags' => array('free'),
 				'source' => 'bundled',
 				'activated_by_default' => true,
 				'feature' => true

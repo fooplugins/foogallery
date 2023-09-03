@@ -33,7 +33,7 @@ if ( ! class_exists('FooGallery_Import_Export_Extension') ) {
                 'external_link_text' => 'view documentation',
                 'external_link_url' => 'https://fooplugins.com/documentation/foogallery/getting-started-foogallery/import-export/',
                 'dashicon'          => 'dashicons-update',
-                'tags' => array( 'utils' ),
+                'tags' => array( 'utils', 'free', ),
                 'source' => 'bundled'
             );
 

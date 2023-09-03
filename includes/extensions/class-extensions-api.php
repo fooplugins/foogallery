@@ -63,7 +63,7 @@ if ( ! class_exists( 'FooGallery_Extensions_API' ) ) {
 				'external_link_text' => 'See documentation',
                 'external_link_url' => 'https://fooplugins.com/documentation/foogallery/getting-started-foogallery/adding-albums/',
 				'dashicon'          => 'dashicons-book-alt',
-				'tags' => array( 'functionality' ),
+				'tags' => array( 'functionality', 'free', ),
 				'source' => 'bundled'
 			);
 
@@ -79,7 +79,7 @@ if ( ! class_exists( 'FooGallery_Extensions_API' ) ) {
 				'external_link_text' => 'See documentation',
                 'external_link_url' => 'https://fooplugins.com/documentation/foobox/pro-features/',
 				'dashicon'          => 'dashicons-lightbulb',
-				'tags' => array( 'premium', 'lightbox', ),
+				'tags' => array( 'Premium', 'lightbox', ),
 				'source' => 'fooplugins',
 				'download_button' =>
 					array(
@@ -103,7 +103,7 @@ if ( ! class_exists( 'FooGallery_Extensions_API' ) ) {
 				'external_link_text' => 'visit external site',
                 'external_link_url' => 'https://fooplugins.com/foobox/',
 				'dashicon'          => 'dashicons-lightbulb',
-				'tags' => array( 'lightbox' ),
+				'tags' => array( 'lightbox', 'free', ),
 				'source' => 'repo',
 				'activated_by_default' => true,
 				'minimum_version' => '1.0.2.1',
@@ -120,7 +120,7 @@ if ( ! class_exists( 'FooGallery_Extensions_API' ) ) {
 				'external_link_text' => 'visit  external site',
                 'external_link_url' => 'https://fooplugins.com/foogallery-migrate-for-wordpress-galleries/',
 				'dashicon'          => 'dashicons-migrate',
-				'tags' => array( 'tools'),
+				'tags' => array( 'tools', 'free', ),
 				'source' => 'repo',
 				'download_link' => 'https://downloads.wordpress.org/plugin/foogallery-migrate.latest-stable.zip',
 			);

@@ -17,9 +17,6 @@ if ('yes' === $show_message) {
     }
 }
 
-
-
-// Define the counts for different statuses
 $total_count = count($extensions);
 $active_count = count(array_filter($extensions, function ($extension) {
     return isset($extension['is_active']) && $extension['is_active'];
@@ -93,15 +90,46 @@ $premium_count = count(array_filter($extensions, function ($extension) {
     </div>
 
     <form method="get">
-        <input type="hidden" name="post_type" value="foogallery" />
-        <input type="hidden" name="page" value="foogallery-extensions" />
-        <p class="search-box">
-            <label class="screen-reader-text" for="extension-search-input">
-                <?php _e('Search Extensions', 'foogallery'); ?>:</label>
-            <input type="search" id="extension-search-input" placeholder="search features..."
-                name="s" value="<?php echo esc_attr(isset($_REQUEST['s']) ? $_REQUEST['s'] : ''); ?>" />
-        </p>
-    </form>
+    <input type="hidden" name="post_type" value="foogallery" />
+    <input type="hidden" name="page" value="foogallery-extensions" />
+	<div style="display:flex; justify-content:space-evenly; align-items:center;">
+
+    <p>
+		<label for="tag-filter"><?php _e('Filter by Tag:', 'foogallery'); ?></label>
+		<select id="tag-filter" name="tag">
+			<option value="all"><?php _e('All Tags', 'foogallery'); ?></option>
+			<?php
+			// Get all unique tags from extensions data
+			$all_tags = array();
+			foreach ($extensions as $extension) {
+				if (isset($extension['tags'])) {
+					foreach ($extension['tags'] as $tag) {
+						if (!in_array($tag, $all_tags)) {
+							$all_tags[] = $tag;
+						}
+					}
+				}
+			}
+
+			// Output options for each tag
+			foreach ($all_tags as $tag) {
+				$selected = isset($_GET['tag']) && $_GET['tag'] === $tag ? 'selected' : '';
+				echo '<option value="' . esc_attr($tag) . '" ' . $selected . '>' . esc_html($tag) . '</option>';
+			}
+			?>
+		</select>
+	</p>
+
+	<p class="search-box">
+        <label class="screen-reader-text" for="extension-search-input">
+            <?php _e('Search Extensions', 'foogallery'); ?>:</label>
+        <input type="search" id="extension-search-input" placeholder="Search features..."
+            name="s" value="<?php echo esc_attr(isset($_REQUEST['s']) ? $_REQUEST['s'] : ''); ?>" />
+    </p>
+	</div>
+
+</form>
+
 </div>
 
 <?php
@@ -119,6 +147,14 @@ if ($status_filter !== 'all') {
         return false;
     });
 }
+
+if (isset($_GET['tag']) && $_GET['tag'] !== 'all') {
+    $tag_to_filter = sanitize_text_field($_GET['tag']);
+    $extensions = array_filter($extensions, function ($extension) use ($tag_to_filter) {
+        return in_array($tag_to_filter, $extension['tags']);
+    });
+}
+
 
 // Define sortable columns
 $sortable_columns = array(
@@ -245,7 +281,20 @@ $extensions_table->display();
             }
         });
     });
+
+	const tagFilter = document.getElementById('tag-filter');
+
+    function reloadPageWithFilter() {
+        const selectedTag = tagFilter.value;
+        const currentUrl = window.location.href;
+        const url = new URL(currentUrl);
+        url.searchParams.set('tag', selectedTag);
+        window.location.href = url.toString();
+    }
+
+    tagFilter.addEventListener('change', reloadPageWithFilter);
 </script>
+
 
 
 
