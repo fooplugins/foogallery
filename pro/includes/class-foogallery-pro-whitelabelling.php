@@ -28,10 +28,10 @@ if ( ! class_exists('FooGallery_Pro_Whitelabelling') ) {
 				'categories' => array( 'Premium' ),
 				'title' => __( 'White Labeling', 'foogallery' ),
 				'description' => __( 'Rebrand FooGallery to whatever you like for your clients. Ideal for freelancers and agencies.', 'foogallery' ),
-				'author' => 'FooPlugins',
-				'author_url' => 'https://fooplugins.com',
-				'thumbnail' => 'https://foogallery.s3.amazonaws.com/extensions/white_labelling.png',
-				'tags' => array( 'premium' ),
+				'external_link_text' => 'visit external site',
+                'external_link_url' => 'https://fooplugins.com/foogallery-wordpress-gallery-plugin',
+				'dashicon'          => 'dashicons dashicons-admin-plugins',
+				'tags' => array( 'Premium' ),
 				'source' => 'bundled'
 			);
 

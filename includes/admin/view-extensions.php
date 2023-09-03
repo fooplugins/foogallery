@@ -1,140 +1,252 @@
-<?php
+<?php 
 $instance = FooGallery_Plugin::get_instance();
-$api      = new FooGallery_Extensions_API();
+$api = new FooGallery_Extensions_API();
 
+// Filter extensions based on user selection (active, inactive, lightbox, premium).
+$status_filter = isset( $_GET['status'] ) ? sanitize_text_field( $_GET['status'] ) : 'all';
 $extensions = $api->get_all_for_view();
+
 $has_errors = false;
 
-$show_message = safe_get_from_request( 'show_message' );
+$show_message = safe_get_from_request('show_message');
 
-if ( 'yes' === $show_message ) {
-	$result = get_transient( FOOGALLERY_EXTENSIONS_MESSAGE_TRANSIENT_KEY );
-	if ( $result === false ) {
-		$result = null;
-	}
+if ('yes' === $show_message) {
+    $result = get_transient(FOOGALLERY_EXTENSIONS_MESSAGE_TRANSIENT_KEY);
+    if ($result === false) {
+        $result = null;
+    }
 }
-$tagline = apply_filters( 'foogallery_admin_extensions_tagline', sprintf( __( 'Enable additional features to make %s even more awesome!', 'foogallery' ), foogallery_plugin_name() ) );
+
+
+
+// Define the counts for different statuses
+$total_count = count($extensions);
+$active_count = count(array_filter($extensions, function ($extension) {
+    return isset($extension['is_active']) && $extension['is_active'];
+}));
+$inactive_count = count(array_filter($extensions, function ($extension) {
+    return isset($extension['is_active']) && !$extension['is_active'];
+}));
+$lightbox_count = count(array_filter($extensions, function ($extension) {
+    return in_array('lightbox', $extension['tags']);
+}));
+$premium_count = count(array_filter($extensions, function ($extension) {
+    return in_array('Premium', $extension['categories']);
+}));
 ?>
+
 <style>
-	.foogallery-text {
-		font-size: 18px;
-		margin: 10px 0;
-	}
+    .foogallery-text {
+        font-size: 18px;
+        margin: 10px 0;
+    }
+	/* Define the column widths */
+    .column-icon {
+        width: 5%;
+    }
+
+    .column-name {
+        width: 30%;
+    }
+
+    .column-description {
+        width: 60%;
+    }
 </style>
 <div class="wrap foogallery-extensions">
-	<h2><?php printf( __( '%s Features', 'foogallery' ), foogallery_plugin_name() ); ?><span class="spinner"></span></h2>
-	<div class="foogallery-text"><?php echo $tagline; ?></div>
-	<?php
-	if ( isset( $result ) ) { ?>
-		<div class="foogallery-message-<?php echo $result['type']; ?>">
-			<p><?php echo $result['message']; ?></p>
-		</div>
-	<?php } ?>
-	<hr />
+    <h2>
+        <?php printf(__('%s Features', 'foogallery'), foogallery_plugin_name()); ?>
+        <span class="spinner"></span>
+    </h2>
+
+    <?php
+    if (isset($result)) { ?>
+        <div class="foogallery-message-<?php echo $result['type']; ?>">
+            <p><?php echo $result['message']; ?></p>
+        </div>
+    <?php } ?>
+    <hr />
 </div>
 
-<div class="foogallery-extension-browser">
-	<div class="extensions">
-		<?php foreach ( $extensions as $extension ) {
-			$slug = $extension['slug'];
-			$classes = array('extension', 'all', 'extension-' . $slug);
+<div style="display: flex; justify-content: space-between; align-items: center;">
+    <div class="foogallery-status-tabs">
+        <a href="<?php echo admin_url('edit.php?post_type=foogallery&page=foogallery-extensions&status=all'); ?>"
+            class="foogallery-status-tab <?php echo $status_filter === 'all' ? 'current' : ''; ?>"
+            style=" text-decoration: none;">
+            <?php printf(__('All (%d)', 'foogallery'), $total_count); ?></a> |
+        <a href="<?php echo admin_url('edit.php?post_type=foogallery&page=foogallery-extensions&status=active'); ?>"
+            class="foogallery-status-tab <?php echo $status_filter === 'active' ? 'current' : ''; ?>"
+            style=" text-decoration: none;">
+            <?php printf(__('Active (%d)', 'foogallery'), $active_count); ?></a> |
+        <a href="<?php echo admin_url('edit.php?post_type=foogallery&page=foogallery-extensions&status=inactive'); ?>"
+            class="foogallery-status-tab <?php echo $status_filter === 'inactive' ? 'current' : ''; ?>"
+            style=" text-decoration: none;">
+            <?php printf(__('Inactive (%d)', 'foogallery'), $inactive_count); ?></a> |
+        <a href="<?php echo admin_url('edit.php?post_type=foogallery&page=foogallery-extensions&status=lightbox'); ?>"
+            class="foogallery-status-tab <?php echo $status_filter === 'lightbox' ? 'current' : ''; ?>"
+            style=" text-decoration: none;">
+            <?php printf(__('Lightbox (%d)', 'foogallery'), $lightbox_count); ?></a> |
+        <a href="<?php echo admin_url('edit.php?post_type=foogallery&page=foogallery-extensions&status=premium'); ?>"
+            class="foogallery-status-tab <?php echo $status_filter === 'premium' ? 'current' : ''; ?>"
+            style=" text-decoration: none;">
+            <?php printf(__('Premium (%d)', 'foogallery'), $premium_count); ?></a>
+    </div>
 
-			$downloaded = isset( $extension['downloaded'] ) && true === $extension['downloaded'];
-			$is_active = isset( $extension['is_active'] ) && true === $extension['is_active'];
-			$has_errors = isset( $extension['has_errors'] ) && true === $extension['has_errors'];
+    <form method="get">
+        <input type="hidden" name="post_type" value="foogallery" />
+        <input type="hidden" name="page" value="foogallery-extensions" />
+        <p class="search-box">
+            <label class="screen-reader-text" for="extension-search-input">
+                <?php _e('Search Extensions', 'foogallery'); ?>:</label>
+            <input type="search" id="extension-search-input" placeholder="search features..."
+                name="s" value="<?php echo esc_attr(isset($_REQUEST['s']) ? $_REQUEST['s'] : ''); ?>" />
+        </p>
+    </form>
+</div>
 
-			$banner_text = '';
+<?php
+if ($status_filter !== 'all') {
+    $extensions = array_filter($extensions, function ($extension) use ($status_filter) {
+        if ($status_filter === 'premium') {
+            return in_array('Premium', $extension['categories']);
+        } elseif ($status_filter === 'lightbox') {
+            return in_array('lightbox', $extension['tags']);
+        } elseif ($status_filter === 'active') {
+            return isset($extension['is_active']) && $extension['is_active'];
+        } elseif ($status_filter === 'inactive') {
+            return isset($extension['is_active']) && !$extension['is_active'];
+        }
+        return false;
+    });
+}
 
-			$tag_html = '';
-			if ( isset( $extension['tags'] ) ) {
-				foreach ( $extension['tags'] as $tag ) {
-					$classes[] = $tag;
-					$tag_html .= '<span class="tag ' . $tag . '">'. $tag . '</span>';
+// Define sortable columns
+$sortable_columns = array(
+    'name' => 'Name',
+);
+
+class Extensions_List_Table extends WP_List_Table {
+
+    private $extensions;
+
+    public function __construct($extensions) {
+        parent::__construct(array(
+            'singular' => 'extension',
+            'plural'   => 'extensions',
+            'ajax'     => false,
+        ));
+
+        $this->extensions = $extensions;
+    }
+
+    public function prepare_items() {
+        $columns  = $this->get_columns();
+        $hidden   = array();
+        $sortable = $this->get_sortable_columns();
+
+        $this->_column_headers = array($columns, $hidden, $sortable);
+
+        // Apply search filter
+        $search = isset($_REQUEST['s']) ? sanitize_text_field($_REQUEST['s']) : '';
+        if (!empty($search)) {
+            $this->extensions = array_filter($this->extensions, function ($extension) use ($search) {
+                return stripos($extension['title'], $search) !== false || stripos($extension['description'], $search) !== false;
+            });
+        }
+
+		// Apply sorting
+        $orderby = isset($_GET['orderby']) ? sanitize_text_field($_GET['orderby']) : 'name';
+        $order = isset($_GET['order']) && in_array($_GET['order'], ['asc', 'desc']) ? $_GET['order'] : 'asc';
+
+        if ($orderby === 'name') {
+            usort($this->extensions, function ($a, $b) use ($order) {
+                $result = strcmp($a['title'], $b['title']);
+                return $order === 'asc' ? $result : -$result;
+            });
+        }
+
+        $this->items = $this->extensions;
+    }
+
+    public function get_columns() {
+        return array(
+            'icon'          => 'Icon',
+            'name'          => 'Name',
+            'description'   => 'Description',
+        );
+    }
+
+    public function column_default($item, $column_name) {
+		switch ($column_name) {
+			case 'icon':
+				return '<span class="' .  $item['dashicon'] . '"></span>';
+	
+			case 'name':
+				$downloaded = isset( $item['downloaded'] ) && true === $item['downloaded'];
+				$is_active = isset( $item['is_active'] ) && true === $item['is_active'];
+				$has_errors = isset( $item['has_errors'] ) && true === $item['has_errors'];
+	
+				$actions = '';
+				if ( ! $downloaded ) {
+					$base_url = add_query_arg( array( 'extension' => $item['slug'], '_wpnonce' => wp_create_nonce( 'foogallery_extension_action') ) );
+					$download_url = add_query_arg( 'action', 'download', $base_url );
+					$actions .= '<a href="' . esc_url( $download_url ) . '">Download</a>';
+				} elseif ( $is_active ) {
+					$base_url = add_query_arg( array( 'extension' => $item['slug'], '_wpnonce' => wp_create_nonce( 'foogallery_extension_action') ) );
+					$deactivate_url = add_query_arg( 'action', 'deactivate', $base_url );
+					$actions .= '<a href="' . esc_url( $deactivate_url ) . '">Deactivate</a>';
+				} else {
+					$base_url = add_query_arg( array( 'extension' => $item['slug'], '_wpnonce' => wp_create_nonce( 'foogallery_extension_action') ) );
+					$activate_url = add_query_arg( 'action', 'activate', $base_url );
+					$actions .= '<a href="' . esc_url( $activate_url ) . '">Activate</a>';
 				}
-			}
+	
+				return '<strong>' . $item['title'] . '</strong><br>' . $actions;
+	
+			case 'description':
+				$external_link_url   = $item['external_link_url'];
+				$external_link_text  = $item['external_link_text'];
+	
+				return $item['description'] . '<br><a href="' . esc_url($external_link_url) . '" target="_blank">' . esc_html($external_link_text) . '</a>';
+	
+			default:
+				return isset($item[$column_name]) ? $item[$column_name] : '';
+		}
+	}
+	
 
-			foreach ( $extension['categories'] as $category ) {
-				$classes[] = foo_convert_to_key( $category );
-			}
+    public function get_sortable_columns() {
+        return array(
+            'name' => array('name', true),
+        );
+    }
+}
 
-			if ( isset( $extension['css_class'] ) ) {
-				$classes[] = $extension['css_class'];
-			}
+$extensions_table = new Extensions_List_Table($extensions);
+$extensions_table->prepare_items();
+$extensions_table->display();
+?>
 
-			$thumbnail = $extension['thumbnail'];
-			if ( foo_starts_with( $thumbnail, '/') ) {
-				$thumbnail = rtrim( FOOGALLERY_URL, '/' ) . $thumbnail;
-			}
-			$base_url = add_query_arg( array( 'extension' => $slug, '_wpnonce' => wp_create_nonce( 'foogallery_extension_action') ) );
-			$download_url = add_query_arg( 'action', 'download', $base_url );
-			$activate_url = add_query_arg( 'action', 'activate', $base_url );
-			$deactivate_url = add_query_arg( 'action', 'deactivate', $base_url );
+<script>
+    const searchInput = document.getElementById('extension-search-input');
+    const extensionsTable = document.querySelector('.wp-list-table');
 
-			$download_button_html = '';
+    searchInput.addEventListener('input', function () {
+        const searchTerm = searchInput.value.toLowerCase();
+        Array.from(extensionsTable.querySelectorAll('tbody tr')).forEach(function (row) {
+            const titleCell = row.querySelector('td.column-name');
+            if (titleCell) {
+                const titleText = titleCell.textContent.toLowerCase();
+                if (titleText.includes(searchTerm)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            }
+        });
+    });
+</script>
 
-			//check if we want to override the download button
-			if ( isset( $extension['download_button'] ) ) {
-				$download_button = $extension['download_button'];
-				$download_button_href = esc_url( isset( $download_button['href'] ) ? $download_button['href'] : $download_url );
-				$download_button_target = isset( $download_button['target'] ) ? ' target="' . $download_button['target'] . '" ' : '';
-				$download_button_text = isset( $download_button['text'] ) ? __( $download_button['text'], 'foogallery' ) : '';
-				$download_button_banner_text = ' data-banner-text="' . (isset( $download_button['banner-text'] ) ? $download_button['banner-text'] : __( 'downloading...', 'foogallery')) . '"';
-				$download_button_confirm = isset( $download_button['confirm'] ) ? ' data-confirm="' .$download_button['confirm'] . '" ' : '';
-				$download_button_html = "<a class=\"ext_action button button-primary download\" {$download_button_banner_text} {$download_button_target} href=\"{$download_button_href}\" >{$download_button_text}</a>";
-			}
 
-			//build up a freemius buy button
-			if ( isset( $extension['freemius_button'] ) ) {
-				$downloaded = $is_active = false;
-				$freemius_button = $extension['freemius_button'];
-				$freemius_button_text = isset( $freemius_button['text'] ) ? __( $freemius_button['text'], 'foogallery' ) : '';
-				$plugin_id = esc_attr( $freemius_button['plugin_id'] );
-				$pricing_id = esc_attr( $freemius_button['pricing_id'] );
 
-				$href = foogallery_fs()->addon_checkout_url( $plugin_id, $pricing_id );
 
-				$download_button_html = "<a class=\"ext_action button button-primary download\" href=\"{$href}\" >{$freemius_button_text}</a>";
-			}
-
-			if ( $downloaded ) {
-				$classes[] = 'downloaded';
-			} else {
-				$classes[] = 'download';
-			}
-
-			if ( $downloaded && $is_active ) {
-				$classes[] = 'activated';
-				$banner_text = __( 'Activated', 'foogallery' );
-			}
-
-			if ( $has_errors ) {
-				$classes[] = 'has_error';
-				$banner_text = $api->get_error_message( $slug );
-			}
-
-			?>
-		<div class="<?php echo implode(' ', $classes); ?>">
-
-			<div class="screenshot" style="background: url(<?php echo $thumbnail; ?>) no-repeat"></div>
-
-			<div class="extension-details">
-				<p class="search-me"><?php echo $extension['description']; ?></p>
-				<a target="_blank" href="<?php echo esc_url( $extension['author_url'] ); ?>">By <?php echo $extension['author']; ?></a>
-			</div>
-
-			<h3 class="search-me"><?php echo $extension['title'] . $tag_html; ?></h3>
-
-			<div class="extension-actions">
-				<?php if ( ! empty( $download_button_html ) ) {
-					echo $download_button_html;
-				} else { ?>
-				<a class="ext_action button button-primary download" data-banner-text="<?php _e( 'downloading...', 'foogallery'); ?>" data-confirm="<?php _e( 'Are you sure you want to download this extension?', 'foogallery' ); ?>" href="<?php echo esc_url( $download_url ); ?>"><?php _e( 'Download', 'foogallery' ); ?></a>
-				<?php } ?>
-				<a class="ext_action button button-primary activate" data-banner-text="<?php _e( 'activating...', 'foogallery'); ?>" href="<?php echo esc_url( $activate_url ); ?>"><?php _e( 'Activate', 'foogallery' ); ?></a>
-				<a class="ext_action button button-secondary deactivate" data-banner-text="<?php _e( 'deactivating...', 'foogallery'); ?>" href="<?php echo esc_url( $deactivate_url ); ?>"><?php _e( 'Deactivate', 'foogallery' ); ?></a>
-			</div>
-			<div class="banner"><?php echo $banner_text; ?></div>
-		</div>
-		<?php } ?>
-	</div>
-</div>
