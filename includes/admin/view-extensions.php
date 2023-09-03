@@ -307,57 +307,58 @@ class Extensions_List_Table extends WP_List_Table {
 	 */
 	public function get_columns() {
 		return array(
-			'icon'        => 'Icon',
-			'name'        => 'Name',
+			'name' => 'Name',
 			'description' => 'Description',
 		);
 	}
 
+
 	/**
-	 * Render the default column output.
-	 *
-	 * @param array  $item         The item being displayed.
-	 * @param string $column_name  The name of the current column.
-	 *
-	 * @return mixed The rendered column content.
-	 */
-	public function column_default( $item, $column_name ) {
-		switch ( $column_name ) {
-			case 'icon':
-				return '<span class="dashicons ' . $item['dashicon'] . '"></span>';
+ * Render the default column output.
+ *
+ * @param array  $item         The item being displayed.
+ * @param string $column_name  The name of the current column.
+ *
+ * @return mixed The rendered column content.
+ */
+public function column_default( $item, $column_name ) {
+    switch ( $column_name ) {
+        case 'name':
+            $downloaded  = isset( $item['downloaded'] ) && true === $item['downloaded'];
+            $is_active   = isset( $item['is_active'] ) && true === $item['is_active'];
+            $has_errors  = isset( $item['has_errors'] ) && true === $item['has_errors'];
+            $actions     = '';
 
-			case 'name':
-				$downloaded  = isset( $item['downloaded'] ) && true === $item['downloaded'];
-				$is_active   = isset( $item['is_active'] ) && true === $item['is_active'];
-				$has_errors  = isset( $item['has_errors'] ) && true === $item['has_errors'];
-				$actions     = '';
+            if ( ! $downloaded ) {
+                $base_url     = add_query_arg( array( 'extension' => $item['slug'], '_wpnonce' => wp_create_nonce( 'foogallery_extension_action' ) ) );
+                $download_url = add_query_arg( 'action', 'download', $base_url );
+                $actions     .= '<a href="' . esc_url( $download_url ) . '">Download</a>';
+            } elseif ( $is_active ) {
+                $base_url         = add_query_arg( array( 'extension' => $item['slug'], '_wpnonce' => wp_create_nonce( 'foogallery_extension_action' ) ) );
+                $deactivate_url   = add_query_arg( 'action', 'deactivate', $base_url );
+                $actions         .= '<a href="' . esc_url( $deactivate_url ) . '">Deactivate</a>';
+            } else {
+                $base_url     = add_query_arg( array( 'extension' => $item['slug'], '_wpnonce' => wp_create_nonce( 'foogallery_extension_action' ) ) );
+                $activate_url = add_query_arg( 'action', 'activate', $base_url );
+                $actions     .= '<a href="' . esc_url( $activate_url ) . '">Activate</a>';
+            }
 
-				if ( ! $downloaded ) {
-					$base_url     = add_query_arg( array( 'extension' => $item['slug'], '_wpnonce' => wp_create_nonce( 'foogallery_extension_action' ) ) );
-					$download_url = add_query_arg( 'action', 'download', $base_url );
-					$actions     .= '<a href="' . esc_url( $download_url ) . '">Download</a>';
-				} elseif ( $is_active ) {
-					$base_url         = add_query_arg( array( 'extension' => $item['slug'], '_wpnonce' => wp_create_nonce( 'foogallery_extension_action' ) ) );
-					$deactivate_url   = add_query_arg( 'action', 'deactivate', $base_url );
-					$actions         .= '<a href="' . esc_url( $deactivate_url ) . '">Deactivate</a>';
-				} else {
-					$base_url     = add_query_arg( array( 'extension' => $item['slug'], '_wpnonce' => wp_create_nonce( 'foogallery_extension_action' ) ) );
-					$activate_url = add_query_arg( 'action', 'activate', $base_url );
-					$actions     .= '<a href="' . esc_url( $activate_url ) . '">Activate</a>';
-				}
+            // Include the icon
+            $icon = '<span class="dashicons ' . $item['dashicon'] . '" style="margin-right: 10px;"></span>';
 
-				return '<strong>' . $item['title'] . '</strong><br>' . $actions;
+            return $icon . ' <strong>' . $item['title'] . '</strong><br>' . ' <div style="margin-left: 35px;">' . $actions .'</div>';
 
-			case 'description':
-				$external_link_url  = $item['external_link_url'];
-				$external_link_text = $item['external_link_text'];
+        case 'description':
+            $external_link_url  = $item['external_link_url'];
+            $external_link_text = $item['external_link_text'];
 
-				return $item['description'] . '<br><a href="' . esc_url( $external_link_url ) . '" target="_blank">' . esc_html( $external_link_text ) . '</a>';
+            return $item['description'] . '<br><a href="' . esc_url( $external_link_url ) . '" target="_blank">' . esc_html( $external_link_text ) . '</a>';
 
-			default:
-				return isset( $item[ $column_name ] ) ? $item[ $column_name ] : '';
-		}
-	}
+        default:
+            return isset( $item[ $column_name ] ) ? $item[ $column_name ] : '';
+    }
+}
+
 
 	/**
 	 * Define sortable columns for the table.
