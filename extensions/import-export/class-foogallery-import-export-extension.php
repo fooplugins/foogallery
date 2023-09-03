@@ -30,10 +30,10 @@ if ( ! class_exists('FooGallery_Import_Export_Extension') ) {
                 'categories' => array( 'Utilities' ),
                 'title' => __( 'Import Export', 'foogallery' ),
                 'description' => __( 'Export your galleries, and then import them into another WordPress install.', 'foogallery' ),
-                'author' => 'FooPlugins',
-                'author_url' => 'https://fooplugins.com',
-                'thumbnail' => 'https://foogallery.s3.amazonaws.com/extensions/import_export.jpg',
-                'tags' => array( 'utils' ),
+                'external_link_text' => 'view documentation',
+                'external_link_url' => 'https://fooplugins.com/documentation/foogallery/getting-started-foogallery/import-export/',
+                'dashicon'          => 'dashicons-update',
+                'tags' => array( 'utils', 'free', ),
                 'source' => 'bundled'
             );
 

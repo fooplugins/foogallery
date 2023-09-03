@@ -8,7 +8,7 @@
 
 if ( ! class_exists( 'FooGallery_Pro_Woocommerce_Master_Product' ) ) {
 	/**
-	 * Class FooGallery_Pro_Woocommerce_Master_Product
+	 * Class FooGallery_Pro_Woocommerce_Master_Product.
 	 */
 	class FooGallery_Pro_Woocommerce_Master_Product extends FooGallery_Pro_Woocommerce_Base {
 
@@ -18,8 +18,12 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce_Master_Product' ) ) {
 		 * Sets up all the appropriate hooks and actions
 		 */
 		public function __construct() {
+			add_action( 'plugins_loaded', array( $this, 'load_feature' ) );		
+		}
 
-			// Load product data after attachment has loaded.
+		function load_feature() {
+            if ( foogallery_feature_enabled( 'foogallery-woocommerce' ) ) {
+                // Load product data after attachment has loaded.
 			add_action( 'foogallery_attachment_instance_after_load', array( $this, 'load_master_product_data' ), 20, 2 );
 
 			// Add custom data to the cart when added.
@@ -84,8 +88,11 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce_Master_Product' ) ) {
                 // Allow for search in master product modal.
                 add_filter( 'woocommerce_product_data_store_cpt_get_products_query', array( $this, 'support_product_search' ), 10, 2 );
 			}
-		}
 
+                
+
+            }
+        }
 		/**
 		 * Adjust the product permalink to include params for the gallery and attachment
 		 *
