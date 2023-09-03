@@ -179,7 +179,7 @@ class Extensions_List_Table extends WP_List_Table {
     public function column_default($item, $column_name) {
 		switch ($column_name) {
 			case 'icon':
-				return '<span class="' .  $item['dashicon'] . '"></span>';
+				return '<span class="dashicons ' .  $item['dashicon'] . '"></span>';
 	
 			case 'name':
 				$downloaded = isset( $item['downloaded'] ) && true === $item['downloaded'];

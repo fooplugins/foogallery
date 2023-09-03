@@ -62,7 +62,7 @@ if ( ! class_exists( 'FooGallery_Extensions_API' ) ) {
 				'html' => 'Group your galleries into albums. Boom!',
 				'external_link_text' => 'See documentation',
                 'external_link_url' => 'https://fooplugins.com/documentation/foogallery/getting-started-foogallery/adding-albums/',
-				'dashicon'          => 'dashicons dashicons-admin-plugins',
+				'dashicon'          => 'dashicons-book-alt',
 				'tags' => array( 'functionality' ),
 				'source' => 'bundled'
 			);
@@ -78,7 +78,7 @@ if ( ! class_exists( 'FooGallery_Extensions_API' ) ) {
 				'price' => '$27',
 				'external_link_text' => 'See documentation',
                 'external_link_url' => 'https://fooplugins.com/documentation/foobox/pro-features/',
-				'dashicon'          => 'dashicons dashicons-admin-plugins',
+				'dashicon'          => 'dashicons-lightbulb',
 				'tags' => array( 'premium', 'lightbox', ),
 				'source' => 'fooplugins',
 				'download_button' =>
@@ -102,7 +102,7 @@ if ( ! class_exists( 'FooGallery_Extensions_API' ) ) {
 				'description' => 'The best lightbox for WordPress. Free',
 				'external_link_text' => 'visit external site',
                 'external_link_url' => 'https://fooplugins.com/foobox/',
-				'dashicon'          => 'dashicons dashicons-admin-plugins',
+				'dashicon'          => 'dashicons-lightbulb',
 				'tags' => array( 'lightbox' ),
 				'source' => 'repo',
 				'activated_by_default' => true,
@@ -119,7 +119,7 @@ if ( ! class_exists( 'FooGallery_Extensions_API' ) ) {
 				'description' => 'Migrate to FooGallery from other gallery plugins',
 				'external_link_text' => 'visit  external site',
                 'external_link_url' => 'https://fooplugins.com/foogallery-migrate-for-wordpress-galleries/',
-				'dashicon'          => 'dashicons dashicons-admin-plugins',
+				'dashicon'          => 'dashicons-migrate',
 				'tags' => array( 'tools'),
 				'source' => 'repo',
 				'download_link' => 'https://downloads.wordpress.org/plugin/foogallery-migrate.latest-stable.zip',

@@ -39,7 +39,7 @@ if ( ! class_exists( 'FooGallery_Pro_Paging' ) ) {
                 'description' => __( 'Adds pagination features to your galleries.', 'foogallery' ),
                 'external_link_text' => 'visit external site',
                 'external_link_url' => 'https://fooplugins.com/foogallery-wordpress-gallery-plugin/pagination/',
-				'dashicon'          => 'dashicons dashicons-admin-plugins',
+				'dashicon'          => 'dashicons-arrow-right-alt',
                 'tags' => array( 'Premium' ),
                 'source' => 'bundled',
                 'activated_by_default' => true,

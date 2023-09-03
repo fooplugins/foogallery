@@ -30,7 +30,7 @@ if ( ! class_exists('FooGallery_Pro_Whitelabelling') ) {
 				'description' => __( 'Rebrand FooGallery to whatever you like for your clients. Ideal for freelancers and agencies.', 'foogallery' ),
 				'external_link_text' => 'visit external site',
                 'external_link_url' => 'https://fooplugins.com/foogallery-wordpress-gallery-plugin',
-				'dashicon'          => 'dashicons dashicons-admin-plugins',
+				'dashicon'          => 'dashicons-tag',
 				'tags' => array( 'Premium' ),
 				'source' => 'bundled'
 			);

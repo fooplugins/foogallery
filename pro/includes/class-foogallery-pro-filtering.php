@@ -67,7 +67,7 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
                 'description' => __( 'Enhance your gallery experience with advanced filtering capabilities', 'foogallery' ),
                 'external_link_text' => 'visit external site',
                 'external_link_url' => 'https://fooplugins.com/foogallery-wordpress-gallery-plugin/filtering/',
-				'dashicon'          => 'dashicons dashicons-admin-plugins',
+				'dashicon'          => 'dashicons-filter',
                 'tags' => array( 'Premium' ),
                 'source' => 'bundled',
                 'activated_by_default' => true,

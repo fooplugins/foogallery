@@ -218,7 +218,7 @@ if ( function_exists( 'foogallery_fs' ) ) {
 					'price'           => '$49',
 					'external_link_text' => 'visit external site',
 					'external_link_url' => 'https://fooplugins.com/foogallery-wordpress-gallery-plugin',
-					'dashicon'          => 'dashicons dashicons-admin-plugins',
+					'dashicon'          => 'dashicons-star-filled',
 					'tags'            => array( 'Premium' ),
 					'source'          => 'fooplugins',
 					'download_button' => array(

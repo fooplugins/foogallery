@@ -49,7 +49,7 @@ if ( ! class_exists( 'FooGallery_Pro_Master_Galleries' ) ) {
                 'description' => __( 'Allows you to setup galleries that other galleries inherit all settings from.', 'foogallery' ),
                 'external_link_text' => 'see documentation',
                 'external_link_url' => 'https://fooplugins.com/documentation/foogallery/pro-commerce/use-master-gallery/',
-				'dashicon'          => 'dashicons dashicons-admin-plugins',
+				'dashicon'          => 'dashicons-networking',
                 'tags' => array( 'Premium' ),
                 'source' => 'bundled',
                 'activated_by_default' => true,

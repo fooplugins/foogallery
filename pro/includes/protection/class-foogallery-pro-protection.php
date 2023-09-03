@@ -79,7 +79,7 @@ if ( ! class_exists( 'FooGallery_Pro_Protection' ) ) {
                 'description' => __( 'Protect your gallery images with an added layer of security.', 'foogallery' ),
                 'external_link_text' => 'visit external site',
                 'external_link_url' => 'https://fooplugins.com/wordpress-gallery-protection/',
-				'dashicon'          => 'dashicons dashicons-admin-plugins',
+				'dashicon'          => 'dashicons-lock',
                 'tags' => array( 'Premium' ),
                 'source' => 'bundled',
                 'activated_by_default' => true,

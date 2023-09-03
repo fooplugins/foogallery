@@ -95,7 +95,7 @@ if ( ! class_exists( 'FooGallery_Pro_Video' ) ) {
                 'description' => __( 'Add video support into your galleries.', 'foogallery' ),
                 'external_link_text' => 'visit external site',
                 'external_link_url' => 'https://fooplugins.com/foogallery-wordpress-gallery-plugin/video-gallery/',
-                'dashicon'          => 'dashicons dashicons-admin-plugins',
+                'dashicon'          => 'dashicons-video-alt3',
                 'tags' => array( 'Premium' ),
                 'source' => 'bundled',
                 'activated_by_default' => true,

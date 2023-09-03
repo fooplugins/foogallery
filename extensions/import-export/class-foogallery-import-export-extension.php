@@ -32,7 +32,7 @@ if ( ! class_exists('FooGallery_Import_Export_Extension') ) {
                 'description' => __( 'Export your galleries, and then import them into another WordPress install.', 'foogallery' ),
                 'external_link_text' => 'view documentation',
                 'external_link_url' => 'https://fooplugins.com/documentation/foogallery/getting-started-foogallery/import-export/',
-                'dashicon'          => 'dashicons dashicons-admin-plugins',
+                'dashicon'          => 'dashicons-update',
                 'tags' => array( 'utils' ),
                 'source' => 'bundled'
             );
