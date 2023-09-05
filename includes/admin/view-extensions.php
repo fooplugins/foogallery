@@ -117,6 +117,12 @@ $premium_count = count( array_filter( $extensions, function ( $extension ) {
 	.column-description {
 		width: 60%;
 	}
+
+	.dashicons {
+    	font-size: 24px;
+		vertical-align: middle;
+	}
+
 </style>
 <div class="wrap foogallery-extensions">
 	<h2>
