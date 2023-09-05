@@ -106,10 +106,7 @@ $premium_count = count( array_filter( $extensions, function ( $extension ) {
 		margin: 10px 0;
 	}
 	/* Define the column widths */
-	.column-icon {
-		width: 5%;
-	}
-
+	
 	.column-name {
 		width: 30%;
 	}
