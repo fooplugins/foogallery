@@ -1461,8 +1461,17 @@ function foogallery_marketing_pro_features() {
  * @return array
  */
 function foogallery_allowed_post_types_for_usage() {
-	return apply_filters( 'foogallery_allowed_post_types_for_attachment', array( 'post', 'page' ) );
+    $allowed_post_types = apply_filters( 'foogallery_allowed_post_types_for_attachment', array( 'post', 'page' ) );
+
+    // Get the selected custom post types from options.
+    $selected_custom_post_types = get_option( 'allowed_custom_post_types', array() );
+
+    // Merge the selected custom post types with the default allowed post types.
+    $allowed_post_types = array_merge( $allowed_post_types, $selected_custom_post_types );
+
+    return $allowed_post_types;
 }
+
 
 /**
  * Returns true if FooGallery is in debug mode
