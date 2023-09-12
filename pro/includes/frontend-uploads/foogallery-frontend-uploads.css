@@ -44,7 +44,17 @@
 .right-column {
     flex: 0 0 40%;
 }
+.image-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    justify-content: flex-start;
+    align-items: flex-start;
+    margin-top: 10px;
+}
+
 .image-grid img {
-    width: 100%;
-    max-height: 500px;
+    width: 200px;
+    height: 200px;
+    margin: 5px 7px;
 }
