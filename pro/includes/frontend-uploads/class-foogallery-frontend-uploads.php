@@ -34,11 +34,6 @@ if ( ! class_exists( 'FooGallery_Image_Upload_Form_Shortcode' ) ) {
             if ( ! $gallery_id) {
                 $output = 'Gallery ID not specified.';
             } else {
-                $upload_success_transient = get_transient('foogallery_upload_success_' . $gallery_id);
-                if ($upload_success_transient) {
-                    $output = 'Image uploaded successfully.';
-                    delete_transient('foogallery_upload_success_' . $gallery_id);
-                }                
                 ob_start();
                 ?>
                 <form method="post" enctype="multipart/form-data">
@@ -46,60 +41,43 @@ if ( ! class_exists( 'FooGallery_Image_Upload_Form_Shortcode' ) ) {
                         <input type="hidden" name="gallery_id" value="<?php echo esc_attr($gallery_id); ?>" />
                         <input type="file" name="foogallery_images[]" id="image-upload" accept="image/*" multiple style="display: none;" />
                         <label for="image-upload" style="cursor: pointer;">
-                            <p>Click to <span style="text-decoration: underline;">browse</span> or drag & drop images here</p>
+                            <p>Click to <span style="text-decoration: underline;">browse</span> or drag & drop image(s) here</p>
                         </label>
                     </div>
-
-
-                    <!-- Pop-up content -->
+                    
                     <div class="popup-overlay" id="popup">
                         <div class="popup-content">
                             <span class="close-button" id="close-popup">&times;</span>
                             <div class="popup-inner">
                                 <div class="left-column">
                                     <div class="image-grid" id="uploaded-images">
-                                        <!-- Image displayed here -->
+                                        <!-- Uploaded images displayed here -->
                                     </div>
                                 </div>
                                 <div class="right-column">
-                                    <div>
-                                        <label for="caption">Caption:</label>
-                                        <input type="text" name="caption" id="caption" />
-                                    </div>
-                                    <div>
-                                        <label for="description">Description:</label>
-                                        <textarea name="description" id="description"></textarea>
-                                    </div>
-                                    <div>
-                                        <label for="alt">Alt Text:</label>
-                                        <input type="text" name="alt" id="alt" />
-                                    </div>
-                                    <div>
-                                        <label for="custom_url">Custom URL:</label>
-                                        <input type="text" name="custom_url" id="custom_url" />
-                                    </div>
-                                    <div>
-                                        <label for="custom_target">Custom Target:</label>
-                                        <input type="text" name="custom_target" id="custom_target" />
+                                    <div id="metadata-container">
+                                        <!-- Metadata input fields added here dynamically -->
                                     </div>
                                     <div style="margin-top: 10px;">
-                                        <input type="submit" name="foogallery_image_upload" value="Upload Image" />
+                                        <input type="submit" name="foogallery_image_upload" value="Upload Images" />
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </form>               
 
+                </form>
 
                 <script>
                     const imageUploadInput = document.getElementById('image-upload');
+                    const metadataContainer = document.getElementById('metadata-container');
                     const popup = document.getElementById('popup');
                     const closePopupButton = document.getElementById('close-popup');
                     const uploadedImagesContainer = document.getElementById('uploaded-images');
 
                     imageUploadInput.addEventListener('change', function () {
                         if (this.files.length > 0) {
+                            addMetadataFields(this.files.length);
                             displayPopup();
                             displayUploadedImages(this.files);
                         }
@@ -108,6 +86,33 @@ if ( ! class_exists( 'FooGallery_Image_Upload_Form_Shortcode' ) ) {
                     closePopupButton.addEventListener('click', function () {
                         closePopup();
                     });
+
+                    function addMetadataFields(numImages) {
+                        metadataContainer.innerHTML = '';
+
+                        for (let i = 0; i < numImages; i++) {
+                            const metadataFields = `
+                                <div class="metadata-fields" style="margin-bottom: 10px;">
+                                    <label for="caption_${i}">Caption:</label>
+                                    <input type="text" name="caption[]" id="caption_${i}" />
+
+                                    <label for="description_${i}">Description:</label>
+                                    <textarea name="description[]" id="description_${i}"></textarea>
+
+                                    <label for="alt_${i}">Alt Text:</label>
+                                    <input type="text" name="alt[]" id="alt_${i}" />
+
+                                    <label for="custom_url_${i}">Custom URL:</label>
+                                    <input type="text" name="custom_url[]" id="custom_url_${i}" />
+
+                                    <label for="custom_target_${i}">Custom Target:</label>
+                                    <input type="text" name="custom_target[]" id="custom_target_${i}" />
+                                </div>
+                            `;
+                            metadataContainer.innerHTML += metadataFields;
+                        }
+                    }
+
 
                     function displayPopup() {
                         popup.style.display = 'flex';
@@ -129,7 +134,6 @@ if ( ! class_exists( 'FooGallery_Image_Upload_Form_Shortcode' ) ) {
                         }
                     }
                 </script>
-
                 <?php
                 $output .= ob_get_clean();
             }
@@ -138,66 +142,72 @@ if ( ! class_exists( 'FooGallery_Image_Upload_Form_Shortcode' ) ) {
         }
 
         /**
- * Handle the image upload
- */
-function handle_image_upload() {
-    // Check if the form was submitted
-    if (isset($_POST['foogallery_image_upload'])) {
-        // Get the gallery ID from the form data
-        $gallery_id = isset($_POST['gallery_id']) ? intval($_POST['gallery_id']) : null;
+         * Handle the image upload
+         */
+        function handle_image_upload() {
+            // Check if the form was submitted
+            if (isset($_POST['foogallery_image_upload'])) {
+                // Get the gallery ID from the form data
+                $gallery_id = isset($_POST['gallery_id']) ? intval($_POST['gallery_id']) : null;
 
-        // Check if a file was uploaded
-        if (isset($_FILES['foogallery_image']) && $_FILES['foogallery_image']['error'] === 0) {
-            $uploaded_file = $_FILES['foogallery_image'];
+                // Check if files were uploaded
+                if (isset($_FILES['foogallery_images'])) {
+                    $uploaded_files = $_FILES['foogallery_images'];
 
-            // Define the server folder where you want to save the uploaded images
-            $upload_dir = wp_upload_dir(); // Get the default WordPress uploads directory
-            $gallery_folder = $upload_dir['basedir'] . '/users_uploads/' . $gallery_id . '/'; // Replace 'gallery_uploads' with your desired folder name
+                    // server folder to save the uploaded images
+                    $upload_dir = wp_upload_dir(); // Get the default WordPress uploads directory
+                    $gallery_folder = $upload_dir['basedir'] . '/users_uploads/' . $gallery_id . '/';
 
-            // Create the gallery folder if it doesn't exist
-            if (!file_exists($gallery_folder)) {
-                wp_mkdir_p($gallery_folder);
+                    // Create the gallery folder if it doesn't exist
+                    if (!file_exists($gallery_folder)) {
+                        wp_mkdir_p($gallery_folder);
+                    }
+
+                    // Loop through uploaded files
+                    foreach ($uploaded_files['name'] as $key => $filename) {
+                        // Check if the file is an image
+                        if ($uploaded_files['type'][$key] && strpos($uploaded_files['type'][$key], 'image/') === 0) {
+                            // Generate a unique file name for the uploaded image
+                            $unique_filename = wp_unique_filename($gallery_folder, $filename);
+                            $target_file = $gallery_folder . $unique_filename;
+
+                            // Move the uploaded file to the target directory
+                            if (move_uploaded_file($uploaded_files['tmp_name'][$key], $target_file)) {
+                                // Create an array to store image metadata
+                                $image_metadata = array(
+                                    "file" => $unique_filename,
+                                    "caption" => isset($_POST['caption'][$key]) ? sanitize_text_field($_POST['caption'][$key]) : "",
+                                    "description" => isset($_POST['description'][$key]) ? sanitize_text_field($_POST['description'][$key]) : "",
+                                    "alt" => isset($_POST['alt'][$key]) ? sanitize_text_field($_POST['alt'][$key]) : "",
+                                    "custom_url" => isset($_POST['custom_url'][$key]) ? esc_url($_POST['custom_url'][$key]) : "",
+                                    "custom_target" => isset($_POST['custom_target'][$key]) ? sanitize_text_field($_POST['custom_target'][$key]) : ""
+                                );
+
+                                // Load existing metadata if it exists.
+                                $metadata_file = $gallery_folder . 'metadata.json';
+                                $existing_metadata = file_exists($metadata_file) ? json_decode(file_get_contents($metadata_file), true) : array("items" => array());
+
+                                // Add the new image's metadata to the array.
+                                $existing_metadata["items"][] = $image_metadata;
+
+                                // Encode the metadata as JSON and save it to the metadata file.
+                                file_put_contents($metadata_file, json_encode($existing_metadata, JSON_PRETTY_PRINT));
+                            } else {
+                                echo 'Error uploading the file.';
+                            }
+                        } else {
+                            echo 'File is not an image.';
+                        }
+                    }
+
+                    // Display a success message.
+                    set_transient('foogallery_upload_success_' . $gallery_id, true, 10);
+                    exit();
+                } else {
+                    echo 'No files uploaded or an error occurred.';
+                }
             }
-
-            // Generate a unique file name for the uploaded image
-            $unique_filename = wp_unique_filename($gallery_folder, $uploaded_file['name']);
-            $target_file = $gallery_folder . $unique_filename;
-
-            // Move the uploaded file to the target directory
-            if (move_uploaded_file($uploaded_file['tmp_name'], $target_file)) {
-                // Create an array to store image metadata
-                $image_metadata = array(
-                    "file" => $unique_filename,
-                    "caption" => "",
-                    "description" => "",
-                    "alt" => "",
-                    "custom_url" => "",
-                    "custom_target" => ""
-                );
-
-                // Load existing metadata if it exists
-                $metadata_file = $gallery_folder . 'metadata.json';
-                $existing_metadata = file_exists($metadata_file) ? json_decode(file_get_contents($metadata_file), true) : array("items" => array());
-
-                // Add the new image's metadata to the array
-                $existing_metadata["items"][] = $image_metadata;
-
-                // Encode the metadata as JSON and save it to the metadata file
-                file_put_contents($metadata_file, json_encode($existing_metadata, JSON_PRETTY_PRINT));
-
-                // Display a success message or redirect the user
-                set_transient('foogallery_upload_success_' . $gallery_id, true, 10);
-
-                exit();
-            } else {
-                echo 'Error uploading the file.';
-            }
-        } else {
-            echo 'No file uploaded or an error occurred.';
         }
     }
 }
-
-
-    }
-}
+?>
