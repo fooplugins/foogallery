@@ -193,7 +193,7 @@ if ( ! class_exists( 'FooGallery_Image_Upload_Form_Shortcode' ) ) {
                                 // Encode the metadata as JSON and save it to the metadata file.
                                 file_put_contents($metadata_file, json_encode($existing_metadata, JSON_PRETTY_PRINT));
                             } else {
-                                echo 'Error uploading the file.';
+                                echo 'Error uploading the file(s).';
                             }
                         } else {
                             echo 'File is not an image.';
@@ -210,4 +210,3 @@ if ( ! class_exists( 'FooGallery_Image_Upload_Form_Shortcode' ) ) {
         }
     }
 }
-?>
