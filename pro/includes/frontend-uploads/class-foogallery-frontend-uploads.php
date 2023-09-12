@@ -74,6 +74,7 @@ if ( ! class_exists( 'FooGallery_Image_Upload_Form_Shortcode' ) ) {
                     const popup = document.getElementById('popup');
                     const closePopupButton = document.getElementById('close-popup');
                     const uploadedImagesContainer = document.getElementById('uploaded-images');
+                    const uploadForm = document.querySelector('form');                    
 
                     imageUploadInput.addEventListener('change', function () {
                         if (this.files.length > 0) {
@@ -133,6 +134,14 @@ if ( ! class_exists( 'FooGallery_Image_Upload_Form_Shortcode' ) ) {
                             }
                         }
                     }
+
+                    uploadForm.addEventListener('submit', function (e) {
+                        e.preventDefault();
+                    });
+
+                    setTimeout(function() {
+                        document.querySelector(".success-message").style.display = "none";
+                    }, 3000);
                 </script>
                 <?php
                 $output .= ob_get_clean();
@@ -155,7 +164,7 @@ if ( ! class_exists( 'FooGallery_Image_Upload_Form_Shortcode' ) ) {
                     $uploaded_files = $_FILES['foogallery_images'];
 
                     // server folder to save the uploaded images
-                    $upload_dir = wp_upload_dir(); // Get the default WordPress uploads directory
+                    $upload_dir = wp_upload_dir();
                     $gallery_folder = $upload_dir['basedir'] . '/users_uploads/' . $gallery_id . '/';
 
                     // Create the gallery folder if it doesn't exist
@@ -163,7 +172,6 @@ if ( ! class_exists( 'FooGallery_Image_Upload_Form_Shortcode' ) ) {
                         wp_mkdir_p($gallery_folder);
                     }
 
-                    // Loop through uploaded files
                     foreach ($uploaded_files['name'] as $key => $filename) {
                         // Check if the file is an image
                         if ($uploaded_files['type'][$key] && strpos($uploaded_files['type'][$key], 'image/') === 0) {
@@ -200,9 +208,8 @@ if ( ! class_exists( 'FooGallery_Image_Upload_Form_Shortcode' ) ) {
                         }
                     }
 
-                    // Display a success message.
-                    set_transient('foogallery_upload_success_' . $gallery_id, true, 10);
-                    exit();
+                    // Display a success message with green text
+                    echo '<div class="success-message" style="color: green; text-align: center;">' . __('Image(s) successfully uploaded', 'foogallery') . '</div>';
                 } else {
                     echo 'No files uploaded or an error occurred.';
                 }
