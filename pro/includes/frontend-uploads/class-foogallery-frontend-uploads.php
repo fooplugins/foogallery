@@ -208,7 +208,6 @@ if ( ! class_exists( 'FooGallery_Image_Upload_Form_Shortcode' ) ) {
                         }
                     }
 
-                    // Display a success message with green text
                     echo '<div class="success-message" style="color: green; text-align: center;">' . __('Image(s) successfully uploaded', 'foogallery') . '</div>';
                 } else {
                     echo 'No files uploaded or an error occurred.';
