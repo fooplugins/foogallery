@@ -1,0 +1,2 @@
+<?php
+// image moderation page
