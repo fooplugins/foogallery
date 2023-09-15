@@ -10,11 +10,38 @@ if ( ! class_exists( 'FooGallery_Pro_Advanced_Captions' ) ) {
     class FooGallery_Pro_Advanced_Captions {
 
         function __construct() {
-            //add fields to all templates
-            add_filter( 'foogallery_override_gallery_template_fields', array( $this, 'add_advanced_caption_fields' ), 100, 2 );
+            add_action( 'plugins_loaded', array( $this, 'load_feature' ) );
 
-            //add custom captions
-            add_filter( 'foogallery_build_attachment_html_caption_custom', array( &$this, 'customize_captions' ), 30, 3 );
+            add_filter( 'foogallery_available_extensions', array( $this, 'register_extension' ) );
+		}
+
+		function load_feature() {
+            if ( foogallery_feature_enabled( 'foogallery-advanced-captions' ) ) {
+                //add fields to all templates
+            	add_filter( 'foogallery_override_gallery_template_fields', array( $this, 'add_advanced_caption_fields' ), 100, 2 );
+
+            	//add custom captions
+            	add_filter( 'foogallery_build_attachment_html_caption_custom', array( &$this, 'customize_captions' ), 30, 3 );
+            }
+        }
+
+		function register_extension( $extensions_list ) {
+            $extensions_list[] = array(
+                'slug' => 'foogallery-advanced-captions',
+                'class' => 'FooGallery_Pro_Advanced_Captions',
+                'categories' => array( 'Premium' ),
+                'title' => __( 'Advanced captions', 'foogallery' ),
+                'description' => __( 'Elevate your gallery with advanced custom caption features.', 'foogallery' ),
+                'external_link_text' => 'see documentation',
+                'external_link_url' => 'https://fooplugins.com/documentation/foogallery/pro-expert/using-custom-captions/',
+				'dashicon' => 'dashicons-editor-justify',
+                'tags' => array( 'Premium' ),
+                'source' => 'bundled',
+                'activated_by_default' => true,
+                'feature' => true
+            );
+
+            return $extensions_list;
         }
 
         function build_custom_captions_help() {
