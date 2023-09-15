@@ -48,13 +48,14 @@ if ( ! class_exists( 'FooGallery_Admin_Menu' ) ) {
 						'menu_title' => __( 'Features', 'foogallery' ),
 					),
 					array(
-						'page_title' => sprintf( __( '%s Help', 'foogallery' ), foogallery_plugin_name() ),
-						'menu_title' => __( 'Help', 'foogallery' ),
-					),
-					array(
 						'page_title' => sprintf( __( '%s Image moderation', 'foogallery' ), foogallery_plugin_name() ),
 						'menu_title' => __( 'Image moderation', 'foogallery' ),
 					),
+					array(
+						'page_title' => sprintf( __( '%s Help', 'foogallery' ), foogallery_plugin_name() ),
+						'menu_title' => __( 'Help', 'foogallery' ),
+					),
+					
 					array(
 						'page_title' => sprintf( __( '%s System Information', 'foogallery' ), foogallery_plugin_name() ),
 						'menu_title' => __( 'System Info', 'foogallery' ),
@@ -66,9 +67,9 @@ if ( ! class_exists( 'FooGallery_Admin_Menu' ) ) {
 			$capability = apply_filters( 'foogallery_admin_menu_capability', 'manage_options' );
 
 			add_submenu_page( $parent_slug, $menu_labels[0]['page_title'], $menu_labels[0]['menu_title'], $capability, 'foogallery-settings', array( $this, 'foogallery_settings' ) );
-			add_submenu_page( $parent_slug, $menu_labels[1]['page_title'], $menu_labels[1]['menu_title'], $capability, 'foogallery-extensions', array( $this, 'foogallery_extensions' ) );
-			add_submenu_page( $parent_slug, $menu_labels[2]['page_title'], $menu_labels[2]['menu_title'], $capability, 'foogallery-help', array( $this, 'foogallery_help' ) );
-			add_submenu_page( $parent_slug, $menu_labels[3]['page_title'], $menu_labels[3]['menu_title'], $capability, 'foogallery-image-moderation', array( $this, 'foogallery_image_moderation' ) );
+			add_submenu_page( $parent_slug, $menu_labels[1]['page_title'], $menu_labels[1]['menu_title'], $capability, 'foogallery-extensions', array( $this, 'foogallery_extensions' ) );			
+			add_submenu_page( $parent_slug, $menu_labels[2]['page_title'], $menu_labels[2]['menu_title'], $capability, 'foogallery-image-moderation', array( $this, 'foogallery_image_moderation' ) );
+			add_submenu_page( $parent_slug, $menu_labels[3]['page_title'], $menu_labels[3]['menu_title'], $capability, 'foogallery-help', array( $this, 'foogallery_help' ) );
 
 			if ( current_user_can( 'activate_plugins' ) ) {
 				add_submenu_page( $parent_slug, $menu_labels[4]['page_title'], $menu_labels[4]['menu_title'], $capability, 'foogallery-systeminfo', array( $this, 'foogallery_systeminfo' ) );
