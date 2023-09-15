@@ -7,9 +7,36 @@ if ( ! class_exists( 'FooGallery_Pro_WPLR_Support' ) ) {
 	class FooGallery_Pro_WPLR_Support {
 
 		function __construct() {
-			//add some settings for WP/LR
-			add_filter( 'foogallery_admin_settings_override', array( $this, 'add_wplr_settings' ) );
-			add_action( 'wplr_create_collection', array( $this, 'sync_collection_to_gallery'), 10, 3 );
+            add_action( 'plugins_loaded', array( $this, 'load_feature' ) );
+
+            add_filter( 'foogallery_available_extensions', array( $this, 'register_extension' ) );
+		}
+
+		function load_feature() {
+            if ( foogallery_feature_enabled( 'foogallery-wplr-support' ) ) {
+                //add some settings for WP/LR
+				add_filter( 'foogallery_admin_settings_override', array( $this, 'add_wplr_settings' ) );
+				add_action( 'wplr_create_collection', array( $this, 'sync_collection_to_gallery'), 10, 3 );
+            }
+        }
+
+		function register_extension( $extensions_list ) {
+            $extensions_list[] = array(
+                'slug' => 'foogallery-wplr-support',
+                'class' => 'FooGallery_Pro_WPLR_Support',
+                'categories' => array( 'Premium' ),
+                'title' => __( 'WP/LR sync', 'foogallery' ),
+                'description' => __( 'Sync your Galleries with the photos stored in Adobe Lightroom.', 'foogallery' ),
+                'external_link_text' => 'see documentation',
+                'external_link_url' => 'https://fooplugins.com/documentation/foogallery/pro-expert/foogallery-wp-lr-sync/',
+				'dashicon' => 'dashicons-randomize',
+                'tags' => array( 'Premium' ),
+                'source' => 'bundled',
+                'activated_by_default' => true,
+                'feature' => true
+            );
+
+            return $extensions_list;
         }
 
 		/**
