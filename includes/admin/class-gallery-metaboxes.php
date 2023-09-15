@@ -42,6 +42,22 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 
 		function register_extension( $extensions_list ) {          
 
+			$extensions_list[] = array(
+				'slug' => 'foogallery-shortcode',
+				'class' => 'FooGallery_Admin_Gallery_MetaBoxes',
+				'categories' => array('free'),
+				'title' => __('Gallery shortcode', 'foogallery'),
+				'description' => __('Enables a gallery shortcode metabox on the "Add Gallery" page for easy shortcode copying.', 'foogallery'),
+				'external_link_text' => 'see documentation',
+                'external_link_url' => 'https://fooplugins.com/documentation/foogallery/?s=gallery+shortcode',
+				'dashicon' => 'dashicons-editor-code',
+
+				'tags' => array('free'),
+				'source' => 'bundled',
+				'activated_by_default' => true,
+				'feature' => true
+			);
+
             $extensions_list[] = array(
 				'slug' => 'foogallery-custom-css',
 				'class' => 'FooGallery_Admin_Gallery_MetaBoxes',
@@ -120,14 +136,18 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 
 		public function add_meta_boxes_to_gallery( $post ) {
 
-			add_meta_box(
-				'foogallery_help',
-				__( 'Gallery Shortcode', 'foogallery' ),
-				array( $this, 'render_gallery_shortcode_metabox' ),
-				FOOGALLERY_CPT_GALLERY,
-				'side',
-				'default'
-			);
+			if ( foogallery_feature_enabled( 'foogallery-shortcode' ) ){
+				add_meta_box(
+					'foogallery_help',
+					__( 'Gallery Shortcode', 'foogallery' ),
+					array( $this, 'render_gallery_shortcode_metabox' ),
+					FOOGALLERY_CPT_GALLERY,
+					'side',
+					'default'
+				);
+			}
+
+			
 
 			if ( 'publish' == $post->post_status ) {
 				add_meta_box( 'foogallery_pages',
