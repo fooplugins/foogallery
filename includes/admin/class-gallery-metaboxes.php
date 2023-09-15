@@ -56,6 +56,21 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 				'feature' => true
 			);
 
+            $extensions_list[] = array(
+				'slug' => 'foogallery-retina-support',
+				'class' => 'FooGallery_Admin_Gallery_MetaBoxes',
+				'categories' => array('free'),
+				'title' => __('Retina support', 'foogallery'),
+				'description' => __('Adds retina support to your galleries.', 'foogallery'),
+				'external_link_text' => 'see documentation',
+                'external_link_url' => 'https://fooplugins.com/documentation/foogallery/getting-started-foogallery/retina-ready-images/',
+				'dashicon' => 'dashicons-images-alt2',
+				'tags' => array('free'),
+				'source' => 'bundled',
+				'activated_by_default' => true,
+				'feature' => true
+			);
+
             return $extensions_list;
         }
 
@@ -118,16 +133,17 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 					'low'
 				);
 			}
-			
 
-			add_meta_box(
-				'foogallery_retina',
-				__( 'Retina Support', 'foogallery' ),
-				array( $this, 'render_retina_metabox' ),
-				FOOGALLERY_CPT_GALLERY,
-				'side',
-				'default'
-			);
+			if ( foogallery_feature_enabled( 'foogallery-retina-support' ) ){
+				add_meta_box(
+					'foogallery_retina',
+					__( 'Retina Support', 'foogallery' ),
+					array( $this, 'render_retina_metabox' ),
+					FOOGALLERY_CPT_GALLERY,
+					'side',
+					'default'
+				);
+			}
 
 			add_meta_box(
 				'foogallery_sorting',
