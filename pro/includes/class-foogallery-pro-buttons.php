@@ -7,29 +7,56 @@ if ( ! class_exists( 'FooGallery_Pro_Buttons' ) ) {
 	class FooGallery_Pro_Buttons {
 
 		function __construct() {
-			if ( is_admin() ) {
-				// Add attachment custom fields.
-				add_filter( 'foogallery_attachment_custom_fields', array( $this, 'attachment_custom_fields' ), 40 );
+            add_action( 'plugins_loaded', array( $this, 'load_feature' ) );
 
-				// Add some fields to the woocommerce product.
-				add_action( 'foogallery_woocommerce_product_data_panels', array( $this, 'add_button_fields_to_product' ) );
-
-				// Save product meta.
-				add_action( 'woocommerce_process_product_meta', array( $this, 'save_product_meta' ), 10, 2 );
-			}
-
-			// Load button meta after attachment has loaded.
-			add_action( 'foogallery_attachment_instance_after_load', array( $this, 'load_button_meta' ), 10, 2 );
-
-			// Append button HTML to the gallery output.
-			add_filter( 'foogallery_attachment_html_caption', array( $this, 'add_button_html' ), 10, 3 );
-
-			// Add button data to the json output
-			add_filter( 'foogallery_build_attachment_json', array( $this, 'add_button_to_json' ), 20, 6 );
-
-			// Override the buttons based on product metadata.
-			add_filter( 'foogallery_datasource_woocommerce_build_attachment', array( $this, 'override_buttons_from_product' ), 20, 2 );
+            add_filter( 'foogallery_available_extensions', array( $this, 'register_extension' ) );
 		}
+
+		function load_feature() {
+            if ( foogallery_feature_enabled( 'foogallery-pro-buttons' ) ) {
+                if ( is_admin() ) {
+					// Add attachment custom fields.
+					add_filter( 'foogallery_attachment_custom_fields', array( $this, 'attachment_custom_fields' ), 40 );
+	
+					// Add some fields to the woocommerce product.
+					add_action( 'foogallery_woocommerce_product_data_panels', array( $this, 'add_button_fields_to_product' ) );
+	
+					// Save product meta.
+					add_action( 'woocommerce_process_product_meta', array( $this, 'save_product_meta' ), 10, 2 );
+				}
+	
+				// Load button meta after attachment has loaded.
+				add_action( 'foogallery_attachment_instance_after_load', array( $this, 'load_button_meta' ), 10, 2 );
+	
+				// Append button HTML to the gallery output.
+				add_filter( 'foogallery_attachment_html_caption', array( $this, 'add_button_html' ), 10, 3 );
+	
+				// Add button data to the json output
+				add_filter( 'foogallery_build_attachment_json', array( $this, 'add_button_to_json' ), 20, 6 );
+	
+				// Override the buttons based on product metadata.
+				add_filter( 'foogallery_datasource_woocommerce_build_attachment', array( $this, 'override_buttons_from_product' ), 20, 2 );
+            }
+        }
+
+		function register_extension( $extensions_list ) {
+            $extensions_list[] = array(
+                'slug' => 'foogallery-pro-buttons',
+                'class' => 'FooGallery_Pro_Buttons',
+                'categories' => array( 'Premium' ),
+                'title' => __( 'Buttons', 'foogallery' ),
+                'description' => __( 'eccormece buttons', 'foogallery' ),
+                'external_link_text' => 'see documentation',
+                'external_link_url' => 'https://fooplugins.com/documentation/foogallery/pro-expert/foogallery-wp-lr-sync/',
+				'dashicon' => 'dashicons-randomize',
+                'tags' => array( 'Premium' ),
+                'source' => 'bundled',
+                'activated_by_default' => true,
+                'feature' => true
+            );
+
+            return $extensions_list;
+        }
 
 		/**
 		 * Save the button product meta
