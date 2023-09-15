@@ -51,7 +51,6 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 				'external_link_text' => 'see documentation',
                 'external_link_url' => 'https://fooplugins.com/documentation/foogallery/?s=gallery+shortcode',
 				'dashicon' => 'dashicons-editor-code',
-
 				'tags' => array('free'),
 				'source' => 'bundled',
 				'activated_by_default' => true,
