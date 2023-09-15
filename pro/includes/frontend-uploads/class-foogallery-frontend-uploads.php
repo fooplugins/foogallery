@@ -37,13 +37,13 @@ if ( ! class_exists( 'FooGallery_Image_Upload_Form_Shortcode' ) ) {
                 ob_start();
                 ?>
                 <form method="post" enctype="multipart/form-data">
-                    <div style="max-width: 500px; max-height: 200px; border: 1px dashed #999; text-align: center; padding: 20px; margin-top: 10px;">
-                        <input type="hidden" name="gallery_id" value="<?php echo esc_attr($gallery_id); ?>" />
-                        <input type="file" name="foogallery_images[]" id="image-upload" accept="image/*" multiple style="display: none;" />
-                        <label for="image-upload" style="cursor: pointer;">
-                            <p>Click to <span style="text-decoration: underline;">browse</span> or drag & drop image(s) here</p>
-                        </label>
-                    </div>
+                <div style="max-width: 500px; max-height: 200px; border: 1px dashed #999; text-align: center; padding: 20px; margin-top: 10px;">
+                    <input type="hidden" name="gallery_id" value="<?php echo esc_attr($gallery_id); ?>" /> <!-- Add gallery_id as a hidden input -->
+                    <input type="file" name="foogallery_images[]" id="image-upload" accept="image/*" multiple style="display: none;" />
+                    <label for="image-upload" style="cursor: pointer;">
+                        <p>Click to <span style="text-decoration: underline;">browse</span> or drag & drop image(s) here</p>
+                    </label>
+                </div>
                     
                     <div class="popup-overlay" id="popup">
                         <div class="popup-content">
@@ -163,42 +163,41 @@ if ( ! class_exists( 'FooGallery_Image_Upload_Form_Shortcode' ) ) {
                 if (isset($_FILES['foogallery_images'])) {
                     $uploaded_files = $_FILES['foogallery_images'];
 
-                    // server folder to save the uploaded images
-                    $upload_dir = wp_upload_dir();
-                    $gallery_folder = $upload_dir['basedir'] . '/users_uploads/' . $gallery_id . '/';
+                    // user folder to store the uploaded images
+                    $user_folder = wp_upload_dir()['basedir'] . '/users_uploads/' . $gallery_id . '/';
 
-                    // Create the gallery folder if it doesn't exist
-                    if (!file_exists($gallery_folder)) {
-                        wp_mkdir_p($gallery_folder);
+                    // Create the user folder if it doesn't exist.
+                    if (!file_exists($user_folder)) {
+                        wp_mkdir_p($user_folder);
                     }
 
                     foreach ($uploaded_files['name'] as $key => $filename) {
                         // Check if the file is an image
                         if ($uploaded_files['type'][$key] && strpos($uploaded_files['type'][$key], 'image/') === 0) {
-                            // Generate a unique file name for the uploaded image
-                            $unique_filename = wp_unique_filename($gallery_folder, $filename);
-                            $target_file = $gallery_folder . $unique_filename;
-
-                            // Move the uploaded file to the target directory
-                            if (move_uploaded_file($uploaded_files['tmp_name'][$key], $target_file)) {
+                            // Generate a unique file name for the uploaded image in the user folder
+                            $unique_filename = wp_unique_filename($user_folder, $filename);
+                            $user_file = $user_folder . $unique_filename;
+                
+                            // Move the uploaded file to the user folder
+                            if (move_uploaded_file($uploaded_files['tmp_name'][$key], $user_file)) {
                                 // Create an array to store image metadata
                                 $image_metadata = array(
                                     "file" => $unique_filename,
+                                    "gallery_id" => $gallery_id, // Add the gallery ID to metadata
                                     "caption" => isset($_POST['caption'][$key]) ? sanitize_text_field($_POST['caption'][$key]) : "",
                                     "description" => isset($_POST['description'][$key]) ? sanitize_text_field($_POST['description'][$key]) : "",
                                     "alt" => isset($_POST['alt'][$key]) ? sanitize_text_field($_POST['alt'][$key]) : "",
                                     "custom_url" => isset($_POST['custom_url'][$key]) ? esc_url($_POST['custom_url'][$key]) : "",
                                     "custom_target" => isset($_POST['custom_target'][$key]) ? sanitize_text_field($_POST['custom_target'][$key]) : ""
                                 );
-
-                                // Load existing metadata if it exists.
-                                $metadata_file = $gallery_folder . 'metadata.json';
+                                
+                                $metadata_file = $user_folder . 'metadata.json';
                                 $existing_metadata = file_exists($metadata_file) ? json_decode(file_get_contents($metadata_file), true) : array("items" => array());
-
-                                // Add the new image's metadata to the array.
+                
+                                // Add the new image's metadata to the array
                                 $existing_metadata["items"][] = $image_metadata;
-
-                                // Encode the metadata as JSON and save it to the metadata file.
+                
+                                // Encode the metadata as JSON and save it to the metadata file
                                 file_put_contents($metadata_file, json_encode($existing_metadata, JSON_PRETTY_PRINT));
                             } else {
                                 echo 'Error uploading the file(s).';
@@ -207,12 +206,13 @@ if ( ! class_exists( 'FooGallery_Image_Upload_Form_Shortcode' ) ) {
                             echo 'File is not an image.';
                         }
                     }
-
-                    echo '<div class="success-message" style="color: green; text-align: center;">' . __('Image(s) successfully uploaded', 'foogallery') . '</div>';
+                
+                    echo '<div class="success-message" style="color: green; text-align: center;">' . __('Image(s) successfully uploaded and awaiting moderation', 'foogallery') . '</div>';
                 } else {
                     echo 'No files uploaded or an error occurred.';
                 }
             }
         }
+
     }
 }
