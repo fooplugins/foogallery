@@ -85,6 +85,34 @@ if ( ! class_exists( 'FooGallery_Pro_Protection' ) ) {
                 'activated_by_default' => true,
                 'feature' => true
             );
+            $extensions_list[] = array(
+                'slug' => 'foogallery-protection-no-right-click',
+                'class' => 'FooGallery_Pro_Protection',
+                'categories' => array( 'Premium' ),
+                'title' => __( 'No right clicking', 'foogallery' ),
+                'description' => __( 'Protect your gallery images by disabling the right-click functionality, preventing users from downloading or copying your images.', 'foogallery' ),
+                'external_link_text' => 'view documentation',
+                'external_link_url' => 'https://fooplugins.com/documentation/foogallery/pro-commerce/right-click-image-protection/',
+				'dashicon'          => 'dashicons-lock',
+                'tags' => array( 'Premium', 'Protection' ),
+                'source' => 'bundled',
+                'activated_by_default' => true,
+                'feature' => true
+            );
+            $extensions_list[] = array(
+                'slug' => 'foogallery-protection-watermarking',
+                'class' => 'FooGallery_Pro_Protection',
+                'categories' => array( 'Premium' ),
+                'title' => __( 'Watermarking', 'foogallery' ),
+                'description' => __( 'Add professional watermarks to your gallery images to secure and brand your photos effectively.', 'foogallery' ),
+                'external_link_text' => 'visit external site',
+                'external_link_url' => 'https://fooplugins.com/foogallery-wordpress-gallery-plugin/photo-watermark/',
+				'dashicon'          => 'dashicons-lock',
+                'tags' => array( 'Premium', 'Protection' ),
+                'source' => 'bundled',
+                'activated_by_default' => true,
+                'feature' => true
+            );
 
             return $extensions_list;
         }
@@ -557,43 +585,51 @@ if ( ! class_exists( 'FooGallery_Pro_Protection' ) ) {
 				'type'    => 'help',
 			);
 
-			$new_fields[] = array(
-				'id'       => 'protection_no_right_click',
-				'title'    => __( 'Right Click Protection', 'foogallery' ),
-				'desc'     => __( 'Disable right-click on full size images.', 'foogallery' ),
-				'section'  => __( 'Protection', 'foogallery' ),
-				'spacer'   => '<span class="spacer"></span>',
-				'type'     => 'radio',
-				'default'  => 'no',
-				'choices'  => array(
-					'yes' => __( 'Enabled', 'foogallery' ),
-					'no'  => __( 'Disabled', 'foogallery' ),
-				),
-				'row_data' => array(
-					'data-foogallery-change-selector' => 'input:radio',
-					'data-foogallery-preview'         => 'shortcode',
-					'data-foogallery-value-selector'  => 'input:checked',
-				),
-			);
+			
 
-			$new_fields[] = array(
-				'id'       => 'protection_watermarking',
-				'title'    => __( 'Watermark Images', 'foogallery' ),
-				'desc'     => __( 'Your full size images will be watermarked according to the global watermark settings.', 'foogallery' ),
-				'section'  => __( 'Protection', 'foogallery' ),
-				'spacer'   => '<span class="spacer"></span>',
-				'default'  => 'no',
-				'type'     => 'radio',
-				'choices'  => array(
-					'yes' => __( 'Use Watermarked Images', 'foogallery' ),
-					'no'  => __( 'Use Original Images', 'foogallery' ),
-				),
-				'row_data' => array(
-					'data-foogallery-change-selector' => 'input:radio',
-					'data-foogallery-preview'         => 'shortcode',
-					'data-foogallery-value-selector'  => 'input:checked',
-				),
-			);
+			if ( foogallery_feature_enabled( 'foogallery-protection-no-right-click' ) ){
+				$new_fields[] = array(
+					'id'       => 'protection_no_right_click',
+					'title'    => __( 'Right Click Protection', 'foogallery' ),
+					'desc'     => __( 'Disable right-click on full size images.', 'foogallery' ),
+					'section'  => __( 'Protection', 'foogallery' ),
+					'spacer'   => '<span class="spacer"></span>',
+					'type'     => 'radio',
+					'default'  => 'no',
+					'choices'  => array(
+						'yes' => __( 'Enabled', 'foogallery' ),
+						'no'  => __( 'Disabled', 'foogallery' ),
+					),
+					'row_data' => array(
+						'data-foogallery-change-selector' => 'input:radio',
+						'data-foogallery-preview'         => 'shortcode',
+						'data-foogallery-value-selector'  => 'input:checked',
+					),
+				);
+			}
+
+			if ( foogallery_feature_enabled( 'foogallery-protection-watermarking' ) ){
+				$new_fields[] = array(
+					'id'       => 'protection_watermarking',
+					'title'    => __( 'Watermark Images', 'foogallery' ),
+					'desc'     => __( 'Your full size images will be watermarked according to the global watermark settings.', 'foogallery' ),
+					'section'  => __( 'Protection', 'foogallery' ),
+					'spacer'   => '<span class="spacer"></span>',
+					'default'  => 'no',
+					'type'     => 'radio',
+					'choices'  => array(
+						'yes' => __( 'Use Watermarked Images', 'foogallery' ),
+						'no'  => __( 'Use Original Images', 'foogallery' ),
+					),
+					'row_data' => array(
+						'data-foogallery-change-selector' => 'input:radio',
+						'data-foogallery-preview'         => 'shortcode',
+						'data-foogallery-value-selector'  => 'input:checked',
+					),
+				);
+			}
+
+			
 
 			$new_fields[] = array(
 				'id'       => 'protection_watermarking_status',
