@@ -36,7 +36,7 @@ if ( ! class_exists( 'FooGallery_Pro_Hover_Presets' ) ) {
                 'description' => __( 'Add pre-styled hover effects to your galleries.', 'foogallery' ),
                 'external_link_text' => 'see documentation',
                 'external_link_url' => 'https://fooplugins.com/documentation/foogallery/pro-starter/hover-effect-presets/',
-				'dashicon' => 'dashicons-randomize',
+				'dashicon' => 'dashicons-art',
                 'tags' => array( 'Premium' ),
                 'source' => 'bundled',
                 'activated_by_default' => true,
