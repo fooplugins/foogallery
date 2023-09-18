@@ -74,6 +74,66 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
                 'feature' => true
             );
 
+            $extensions_list[] = array(
+                'slug' => 'filtering-search',
+                'class' => 'FooGallery_Pro_Filtering',
+                'categories' => array( 'Premium' ),
+                'title' => __( 'Filtering search', 'foogallery' ),
+                'description' => __( 'Improve your gallery with search functionality.', 'foogallery' ),
+                'external_link_text' => 'see documentation',
+                'external_link_url' => 'https://fooplugins.com/documentation/foogallery/pro-expert/adding-search/',
+				'dashicon'          => 'dashicons-filter',
+                'tags' => array( 'Premium' ),
+                'source' => 'bundled',
+                'activated_by_default' => true,
+                'feature' => true
+            );
+
+            $extensions_list[] = array(
+                'slug' => 'foogallery-filtering-simple',
+                'class' => 'FooGallery_Pro_Filtering',
+                'categories' => array( 'Premium' ),
+                'title' => __( 'Simple Filtering', 'foogallery' ),
+                'description' => __( 'Simplify your gallery filtering options.', 'foogallery' ),
+                'external_link_text' => 'see documentation',
+                'external_link_url' => 'https://fooplugins.com/documentation/foogallery/pro-expert/filtering-settings/',
+				'dashicon'          => 'dashicons-filter',
+                'tags' => array( 'Premium' ),
+                'source' => 'bundled',
+                'activated_by_default' => true,
+                'feature' => true
+            );
+
+            $extensions_list[] = array(
+                'slug' => 'foogallery-filtering-advanced',
+                'class' => 'FooGallery_Pro_Filtering',
+                'categories' => array( 'Premium' ),
+                'title' => __( 'Advanced Filtering', 'foogallery' ),
+                'description' => __( 'Enhance your gallery with advanced filtering.', 'foogallery' ),
+                'external_link_text' => 'see documentation',
+                'external_link_url' => 'https://fooplugins.com/documentation/foogallery/pro-expert/filtering-settings/',
+				'dashicon'          => 'dashicons-filter',
+                'tags' => array( 'Premium' ),
+                'source' => 'bundled',
+                'activated_by_default' => true,
+                'feature' => true
+            );
+			
+            $extensions_list[] = array(
+                'slug' => 'foogallery-filtering-multi',
+                'class' => 'FooGallery_Pro_Filtering',
+                'categories' => array( 'Premium' ),
+                'title' => __( 'Multi-Level Filtering', 'foogallery' ),
+                'description' => __( 'Enable multi-level filtering for your gallery.', 'foogallery' ),
+                'external_link_text' => 'see documentation',
+                'external_link_url' => 'https://fooplugins.com/documentation/foogallery/pro-expert/filtering-settings/',
+				'dashicon'          => 'dashicons-filter',
+                'tags' => array( 'Premium' ),
+                'source' => 'bundled',
+                'activated_by_default' => true,
+                'feature' => true
+            );
+
             return $extensions_list;
         }
 
@@ -210,27 +270,41 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 		 */
 		function add_filtering_fields( $fields, $template ) {
 			if ( $template && array_key_exists( 'filtering_support', $template ) && true === $template['filtering_support'] ) {
-				$filtering_fields[] = array(
-					'id'       => 'filtering_type',
-					'title'    => __( 'Filtering', 'foogallery' ),
-					'section'  => __( 'Filtering', 'foogallery' ),
-					'subsection' => array( 'filtering-general' => __( 'General', 'foogallery' ) ),
-					'spacer'   => '<span class="spacer"></span>',
-					'type'     => 'radio',
-					'default'  => '',
-					'choices'  => apply_filters('foogallery_gallery_template_filtering_type_choices', array(
-							''        => __( 'None', 'foogallery' ),
-							'simple' => __( 'Simple', 'foogallery' ),
-							'advanced'    => __( 'Advanced', 'foogallery' ),
-							'multi'    => __( 'Multi-level', 'foogallery' )
-						)
-					),
-					'row_data' => array(
-						'data-foogallery-change-selector' => 'input',
-						'data-foogallery-preview'         => 'shortcode',
-						'data-foogallery-value-selector'  => 'input:checked',
-					)
-				);
+				// Define the choices array with the default option.
+$choices = array(
+    '' => __( 'None', 'foogallery' ),
+);
+
+// Check for features and add choices accordingly.
+if (foogallery_feature_enabled('foogallery-filtering-simple')) {
+    $choices['simple'] = __( 'Simple', 'foogallery' );
+}
+
+if (foogallery_feature_enabled('foogallery-filtering-advanced')) {
+    $choices['advanced'] = __( 'Advanced', 'foogallery' );
+}
+
+if (foogallery_feature_enabled('foogallery-filtering-multi')) {
+    $choices['multi'] = __( 'Multi-level', 'foogallery' );
+}
+
+// Create the filtering_fields array with the choices.
+$filtering_fields[] = array(
+    'id'       => 'filtering_type',
+    'title'    => __( 'Filtering', 'foogallery' ),
+    'section'  => __( 'Filtering', 'foogallery' ),
+    'subsection' => array( 'filtering-general' => __( 'General', 'foogallery' ) ),
+    'spacer'   => '<span class="spacer"></span>',
+    'type'     => 'radio',
+    'default'  => '',
+    'choices'  => apply_filters('foogallery_gallery_template_filtering_type_choices', $choices),
+    'row_data' => array(
+        'data-foogallery-change-selector' => 'input',
+        'data-foogallery-preview'         => 'shortcode',
+        'data-foogallery-value-selector'  => 'input:checked',
+    )
+);
+
 
 				$filtering_fields[] = array(
 					'id'      => 'filtering_theme',
@@ -659,55 +733,57 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 					)
 				);
 
-				$filtering_fields[] = array(
-					'id'       => 'filtering_search',
-					'title'    => __( 'Include Search', 'foogallery' ),
-					'desc'     => __( 'Include a search input where users can filter the gallery by typing in a search term.', 'foogallery' ),
-					'section'  => __( 'Filtering', 'foogallery' ),
-					'subsection' => array( 'filtering-search' => __( 'Search', 'foogallery' ) ),
-					'spacer'   => '<span class="spacer"></span>',
-					'type'     => 'radio',
-					'default'  => '',
-					'choices'  =>  array(
-						''    => __( 'Disabled', 'foogallery' ),
-						'true' => __( 'Enabled', 'foogallery' ),
-					),
-					'row_data' => array(
-						'data-foogallery-change-selector'          => 'input',
-						'data-foogallery-preview'                  => 'shortcode',
-						'data-foogallery-value-selector'           => 'input:checked',
-					)
-				);
-
-				$filtering_fields[] = array(
-					'id'       => 'filtering_search_position',
-					'title'    => __( 'Search Position', 'foogallery' ),
-					'desc'     => __( 'The position of the search input, relative to the other filters.', 'foogallery' ),
-					'section'  => __( 'Filtering', 'foogallery' ),
-					'subsection' => array( 'filtering-search' => __( 'Search', 'foogallery' ) ),
-					'spacer'   => '<span class="spacer"></span>',
-					'type'     => 'select',
-					'default'  => 'above-center',
-					'choices'  =>  array(
-						''             => __( 'Above Center', 'foogallery' ),
-						'above-right'  => __( 'Above Right', 'foogallery' ),
-						'above-left'   => __( 'Above Left', 'foogallery' ),
-						'below-center' => __( 'Below Center', 'foogallery' ),
-						'below-right'  => __( 'Below Right', 'foogallery' ),
-						'below-left'   => __( 'Below Left', 'foogallery' ),
-						'before'   => __( 'Before Tags/Categories', 'foogallery' ),
-						'after'   => __( 'After Tags/Categories', 'foogallery' ),
-					),
-					'row_data' => array(
-						'data-foogallery-hidden'                   => true,
-						'data-foogallery-show-when-field-operator' => '!==',
-						'data-foogallery-show-when-field'          => 'filtering_search',
-						'data-foogallery-show-when-field-value'    => '',
-						'data-foogallery-change-selector'          => 'select',
-						'data-foogallery-preview'                  => 'shortcode'
-					)
-				);
-
+				if ( foogallery_feature_enabled( 'filtering-search' ) ){
+					$filtering_fields[] = array(
+						'id'       => 'filtering_search',
+						'title'    => __( 'Include Search', 'foogallery' ),
+						'desc'     => __( 'Include a search input where users can filter the gallery by typing in a search term.', 'foogallery' ),
+						'section'  => __( 'Filtering', 'foogallery' ),
+						'subsection' => array( 'filtering-search' => __( 'Search', 'foogallery' ) ),
+						'spacer'   => '<span class="spacer"></span>',
+						'type'     => 'radio',
+						'default'  => '',
+						'choices'  =>  array(
+							''    => __( 'Disabled', 'foogallery' ),
+							'true' => __( 'Enabled', 'foogallery' ),
+						),
+						'row_data' => array(
+							'data-foogallery-change-selector'          => 'input',
+							'data-foogallery-preview'                  => 'shortcode',
+							'data-foogallery-value-selector'           => 'input:checked',
+						)
+					);
+					
+					$filtering_fields[] = array(
+						'id'       => 'filtering_search_position',
+						'title'    => __( 'Search Position', 'foogallery' ),
+						'desc'     => __( 'The position of the search input, relative to the other filters.', 'foogallery' ),
+						'section'  => __( 'Filtering', 'foogallery' ),
+						'subsection' => array( 'filtering-search' => __( 'Search', 'foogallery' ) ),
+						'spacer'   => '<span class="spacer"></span>',
+						'type'     => 'select',
+						'default'  => 'above-center',
+						'choices'  =>  array(
+							''             => __( 'Above Center', 'foogallery' ),
+							'above-right'  => __( 'Above Right', 'foogallery' ),
+							'above-left'   => __( 'Above Left', 'foogallery' ),
+							'below-center' => __( 'Below Center', 'foogallery' ),
+							'below-right'  => __( 'Below Right', 'foogallery' ),
+							'below-left'   => __( 'Below Left', 'foogallery' ),
+							'before'   => __( 'Before Tags/Categories', 'foogallery' ),
+							'after'   => __( 'After Tags/Categories', 'foogallery' ),
+						),
+						'row_data' => array(
+							'data-foogallery-hidden'                   => true,
+							'data-foogallery-show-when-field-operator' => '!==',
+							'data-foogallery-show-when-field'          => 'filtering_search',
+							'data-foogallery-show-when-field-value'    => '',
+							'data-foogallery-change-selector'          => 'select',
+							'data-foogallery-preview'                  => 'shortcode'
+						)
+					);
+				}				
+				
 				//find the index of the Advanced section
 				$index = foogallery_admin_fields_find_index_of_section( $fields, __( 'Advanced', 'foogallery' ) );
 
