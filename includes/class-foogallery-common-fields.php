@@ -89,6 +89,76 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
                 'activated_by_default' => true,
                 'feature' => true
             );
+            $extensions_list[] = array(
+                'slug' => 'foogallery-border-size',
+                'class' => 'FooGallery_Common_Fields',
+                'categories' => array( 'Free' ),
+                'title' => __( 'Border size', 'foogallery' ),
+                'description' => __( 'Customize border effects.', 'foogallery' ),
+                'external_link_text' => 'see documentation',
+                'external_link_url' => 'https://fooplugins.com/documentation/foogallery/appearance-foogallery/appearance-settings/',
+				'dashicon' => 'dashicons-art',
+                'tags' => array( 'Free','Appearance' ),
+                'source' => 'bundled',
+                'activated_by_default' => true,
+                'feature' => true
+            );
+            $extensions_list[] = array(
+                'slug' => 'foogallery-rounded-corners',
+                'class' => 'FooGallery_Common_Fields',
+                'categories' => array( 'Free' ),
+                'title' => __( 'Rounded corners', 'foogallery' ),
+                'description' => __( 'Apply rounded corner effects.', 'foogallery' ),
+                'external_link_text' => 'see documentation',
+                'external_link_url' => 'https://fooplugins.com/documentation/foogallery/appearance-foogallery/appearance-settings/',
+				'dashicon' => 'dashicons-art',
+                'tags' => array( 'Free','Appearance' ),
+                'source' => 'bundled',
+                'activated_by_default' => true,
+                'feature' => true
+            );
+            $extensions_list[] = array(
+                'slug' => 'foogallery-shadow-shadow',
+                'class' => 'FooGallery_Common_Fields',
+                'categories' => array( 'Free' ),
+                'title' => __( 'Shadow', 'foogallery' ),
+                'description' => __( 'Add drop and inner shadow effects.', 'foogallery' ),
+                'external_link_text' => 'see documentation',
+                'external_link_url' => 'https://fooplugins.com/documentation/foogallery/appearance-foogallery/appearance-settings/',
+				'dashicon' => 'dashicons-art',
+                'tags' => array( 'Free','Appearance' ),
+                'source' => 'bundled',
+                'activated_by_default' => true,
+                'feature' => true
+            );
+            $extensions_list[] = array(
+                'slug' => 'foogallery-loading-icon',
+                'class' => 'FooGallery_Common_Fields',
+                'categories' => array( 'Free' ),
+                'title' => __( 'Loading Icon', 'foogallery' ),
+                'description' => __( 'Configure the loading icon appearance.', 'foogallery' ),
+                'external_link_text' => 'see documentation',
+                'external_link_url' => 'https://fooplugins.com/documentation/foogallery/appearance-foogallery/appearance-settings/',
+				'dashicon' => 'dashicons-image-rotate',
+                'tags' => array( 'Free','Appearance' ),
+                'source' => 'bundled',
+                'activated_by_default' => true,
+                'feature' => true
+            );
+            $extensions_list[] = array(
+                'slug' => 'foogallery-loaded-effect',
+                'class' => 'FooGallery_Common_Fields',
+                'categories' => array( 'Free' ),
+                'title' => __( 'Loaded effect', 'foogallery' ),
+                'description' => __( 'Define effects for the gallery after it is loaded.', 'foogallery' ),
+                'external_link_text' => 'see documentation',
+                'external_link_url' => 'https://fooplugins.com/documentation/foogallery/appearance-foogallery/appearance-settings/',
+				'dashicon' => 'dashicons-art',
+                'tags' => array( 'Free','Appearance' ),
+                'source' => 'bundled',
+                'activated_by_default' => true,
+                'feature' => true
+            );
 
             return $extensions_list;
         }
@@ -190,141 +260,152 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 					)
 				);
 
-				$fields[] = array(
-					'id'       => 'border_size',
-					'title'    => __( 'Border Size', 'foogallery' ),
-					'desc'     => __( 'The border size applied to each thumbnail', 'foogallery' ),
-					'section'  => __( 'Appearance', 'foogallery' ),
-					'type'     => 'radio',
-					'spacer'   => '<span class="spacer"></span>',
-					'default'  => 'fg-border-thin',
-					'choices'  => array(
-						''                 => __( 'None', 'foogallery' ),
-						'fg-border-thin'   => __( 'Thin', 'foogallery' ),
-						'fg-border-medium' => __( 'Medium', 'foogallery' ),
-						'fg-border-thick'  => __( 'Thick', 'foogallery' ),
-					),
-					'row_data' => array(
-						'data-foogallery-change-selector' => 'input:radio',
-						'data-foogallery-preview'         => 'shortcode'
-					)
-				);
-
-				$fields[] = array(
-					'id'       => 'rounded_corners',
-					'title'    => __( 'Rounded Corners', 'foogallery' ),
-					'desc'     => __( 'The border radius, or rounded corners applied to each thumbnail', 'foogallery' ),
-					'section'  => __( 'Appearance', 'foogallery' ),
-					'type'     => 'radio',
-					'spacer'   => '<span class="spacer"></span>',
-					'default'  => '',
-					'choices'  => array(
-						''                => __( 'None', 'foogallery' ),
-						'fg-round-small'  => __( 'Small', 'foogallery' ),
-						'fg-round-medium' => __( 'Medium', 'foogallery' ),
-						'fg-round-large'  => __( 'Large', 'foogallery' ),
-						'fg-round-full'   => __( 'Full', 'foogallery' ),
-					),
-					'row_data' => array(
-						'data-foogallery-change-selector' => 'input:radio',
-						'data-foogallery-preview'         => 'shortcode'
-					)
-				);
-
-				$fields[] = array(
-					'id'       => 'drop_shadow',
-					'title'    => __( 'Drop Shadow', 'foogallery' ),
-					'desc'     => __( 'The outer or drop shadow applied to each thumbnail', 'foogallery' ),
-					'section'  => __( 'Appearance', 'foogallery' ),
-					'type'     => 'radio',
-					'spacer'   => '<span class="spacer"></span>',
-					'default'  => 'fg-shadow-outline',
-					'choices'  => array(
-						''                  => __( 'None', 'foogallery' ),
-						'fg-shadow-outline' => __( 'Outline', 'foogallery' ),
-						'fg-shadow-small'   => __( 'Small', 'foogallery' ),
-						'fg-shadow-medium'  => __( 'Medium', 'foogallery' ),
-						'fg-shadow-large'   => __( 'Large', 'foogallery' ),
-					),
-					'row_data' => array(
-						'data-foogallery-change-selector' => 'input:radio',
-						'data-foogallery-preview'         => 'shortcode'
-					)
-				);
-
-				$fields[] = array(
-					'id'       => 'inner_shadow',
-					'title'    => __( 'Inner Shadow', 'foogallery' ),
-					'desc'     => __( 'The inner shadow applied to each thumbnail', 'foogallery' ),
-					'section'  => __( 'Appearance', 'foogallery' ),
-					'type'     => 'radio',
-					'spacer'   => '<span class="spacer"></span>',
-					'default'  => '',
-					'choices'  => array(
-						''                       => __( 'None', 'foogallery' ),
-						'fg-shadow-inset-small'  => __( 'Small', 'foogallery' ),
-						'fg-shadow-inset-medium' => __( 'Medium', 'foogallery' ),
-						'fg-shadow-inset-large'  => __( 'Large', 'foogallery' ),
-					),
-					'row_data' => array(
-						'data-foogallery-change-selector' => 'input:radio',
-						'data-foogallery-preview'         => 'shortcode'
-					)
-				);
-
-				$fields[] = array(
-					'id'       => 'loading_icon',
-					'title'    => __( 'Loading Icon', 'foogallery' ),
-					'desc'     => __( 'An animated loading icon can be shown while the thumbnails are busy loading.', 'foogallery' ),
-					'section'  => __( 'Appearance', 'foogallery' ),
-					'default'  => 'fg-loading-default',
-					'type'     => 'htmlicon',
-					'choices'  => apply_filters(
-						'foogallery_gallery_template_common_thumbnail_fields_loading_icon_choices', array(
-						''                   => array( 'label' => __( 'None', 'foogallery' ), 'html' => '<div class="foogallery-setting-loading_icon"></div>' ),
-						'fg-loading-default' => array( 'label' => __( 'Default', 'foogallery' ), 'html' => '<div class="foogallery-setting-loading_icon foogallery fg-loading-default"><div class="fg-loading"><div class="fg-loader"></div></div></div>' ),
-						'fg-loading-bars'    => array( 'label' => __( 'Bars', 'foogallery' ), 'html' => '<div class="foogallery-setting-loading_icon foogallery fg-loading-bars"><div class="fg-loading"><div class="fg-loader"></div></div></div>' ),
-						'fg-loading-dots'    => array( 'label' => __( 'Dots', 'foogallery' ), 'html' => '<div class="foogallery-setting-loading_icon foogallery fg-loading-dots"><div class="fg-loading"><div class="fg-loader"></div></div></div>' ),
-						'fg-loading-partial' => array( 'label' => __( 'Partial', 'foogallery' ), 'html' => '<div class="foogallery-setting-loading_icon foogallery fg-loading-partial"><div class="fg-loading"><div class="fg-loader"></div></div></div>' ),
-						'fg-loading-pulse'   => array( 'label' => __( 'Pulse', 'foogallery' ), 'html' => '<div class="foogallery-setting-loading_icon foogallery fg-loading-pulse"><div class="fg-loading"><div class="fg-loader"></div></div></div>' ),
-						'fg-loading-trail'   => array( 'label' => __( 'Trail', 'foogallery' ), 'html' => '<div class="foogallery-setting-loading_icon foogallery fg-loading-trail"><div class="fg-loading"><div class="fg-loader"></div></div>' ),
-					)
-					),
-					'row_data' => array(
-						'data-foogallery-change-selector' => 'input:radio',
-                        'data-foogallery-value-selector'  => 'input:checked',
-						'data-foogallery-preview'         => 'shortcode'
-					)
-				);
-
-				$fields[] = array(
-					'id'       => 'loaded_effect',
-					'title'    => __( 'Loaded Effect', 'foogallery' ),
-					'desc'     => __( 'The animation effect used to display the thumbnail, once it has loaded.', 'foogallery' ),
-					'section'  => __( 'Appearance', 'foogallery' ),
-					'default'  => 'fg-loaded-fade-in',
-					'type'     => 'select',
-					'choices'  => apply_filters(
-						'foogallery_gallery_template_common_thumbnail_fields_loaded_effect_choices', array(
-							''                      => __( 'None', 'foogallery' ),
-							'fg-loaded-fade-in'     => __( 'Fade In', 'foogallery' ),
-							'fg-loaded-slide-up'    => __( 'Slide Up', 'foogallery' ),
-							'fg-loaded-slide-down'  => __( 'Slide Down', 'foogallery' ),
-							'fg-loaded-slide-left'  => __( 'Slide Left', 'foogallery' ),
-							'fg-loaded-slide-right' => __( 'Slide Right', 'foogallery' ),
-							'fg-loaded-scale-up'    => __( 'Scale Up', 'foogallery' ),
-							'fg-loaded-swing-down'  => __( 'Swing Down', 'foogallery' ),
-							'fg-loaded-drop'        => __( 'Drop', 'foogallery' ),
-							'fg-loaded-fly'         => __( 'Fly', 'foogallery' ),
-							'fg-loaded-flip'        => __( 'Flip', 'foogallery' ),
+				if ( foogallery_feature_enabled( 'foogallery-border-size' ) ) {
+					$fields[] = array(
+						'id'       => 'border_size',
+						'title'    => __( 'Border Size', 'foogallery' ),
+						'desc'     => __( 'The border size applied to each thumbnail', 'foogallery' ),
+						'section'  => __( 'Appearance', 'foogallery' ),
+						'type'     => 'radio',
+						'spacer'   => '<span class="spacer"></span>',
+						'default'  => 'fg-border-thin',
+						'choices'  => array(
+							''                 => __( 'None', 'foogallery' ),
+							'fg-border-thin'   => __( 'Thin', 'foogallery' ),
+							'fg-border-medium' => __( 'Medium', 'foogallery' ),
+							'fg-border-thick'  => __( 'Thick', 'foogallery' ),
+						),
+						'row_data' => array(
+							'data-foogallery-change-selector' => 'input:radio',
+							'data-foogallery-preview'         => 'shortcode'
 						)
-					),
-					'row_data' => array(
-						'data-foogallery-change-selector' => 'select',
-                        'data-foogallery-value-selector'  => 'select option:selected',
-						'data-foogallery-preview'         => 'shortcode'
-					)
-				);
+					);
+				}				
+
+				if ( foogallery_feature_enabled( 'foogallery-rounded-corners' ) ) {
+					$fields[] = array(
+						'id'       => 'rounded_corners',
+						'title'    => __( 'Rounded Corners', 'foogallery' ),
+						'desc'     => __( 'The border radius, or rounded corners applied to each thumbnail', 'foogallery' ),
+						'section'  => __( 'Appearance', 'foogallery' ),
+						'type'     => 'radio',
+						'spacer'   => '<span class="spacer"></span>',
+						'default'  => '',
+						'choices'  => array(
+							''                => __( 'None', 'foogallery' ),
+							'fg-round-small'  => __( 'Small', 'foogallery' ),
+							'fg-round-medium' => __( 'Medium', 'foogallery' ),
+							'fg-round-large'  => __( 'Large', 'foogallery' ),
+							'fg-round-full'   => __( 'Full', 'foogallery' ),
+						),
+						'row_data' => array(
+							'data-foogallery-change-selector' => 'input:radio',
+							'data-foogallery-preview'         => 'shortcode'
+						)
+					);
+				}				
+
+				if ( foogallery_feature_enabled( 'foogallery-shadow-shadow' ) ) {
+					$fields[] = array(
+						'id'       => 'drop_shadow',
+						'title'    => __( 'Drop Shadow', 'foogallery' ),
+						'desc'     => __( 'The outer or drop shadow applied to each thumbnail', 'foogallery' ),
+						'section'  => __( 'Appearance', 'foogallery' ),
+						'type'     => 'radio',
+						'spacer'   => '<span class="spacer"></span>',
+						'default'  => 'fg-shadow-outline',
+						'choices'  => array(
+							''                  => __( 'None', 'foogallery' ),
+							'fg-shadow-outline' => __( 'Outline', 'foogallery' ),
+							'fg-shadow-small'   => __( 'Small', 'foogallery' ),
+							'fg-shadow-medium'  => __( 'Medium', 'foogallery' ),
+							'fg-shadow-large'   => __( 'Large', 'foogallery' ),
+						),
+						'row_data' => array(
+							'data-foogallery-change-selector' => 'input:radio',
+							'data-foogallery-preview'         => 'shortcode'
+						)
+					);
+	
+					$fields[] = array(
+						'id'       => 'inner_shadow',
+						'title'    => __( 'Inner Shadow', 'foogallery' ),
+						'desc'     => __( 'The inner shadow applied to each thumbnail', 'foogallery' ),
+						'section'  => __( 'Appearance', 'foogallery' ),
+						'type'     => 'radio',
+						'spacer'   => '<span class="spacer"></span>',
+						'default'  => '',
+						'choices'  => array(
+							''                       => __( 'None', 'foogallery' ),
+							'fg-shadow-inset-small'  => __( 'Small', 'foogallery' ),
+							'fg-shadow-inset-medium' => __( 'Medium', 'foogallery' ),
+							'fg-shadow-inset-large'  => __( 'Large', 'foogallery' ),
+						),
+						'row_data' => array(
+							'data-foogallery-change-selector' => 'input:radio',
+							'data-foogallery-preview'         => 'shortcode'
+						)
+					);
+				}
+				
+				if ( foogallery_feature_enabled( 'foogallery-loading-icon' ) ) {
+					$fields[] = array(
+						'id'       => 'loading_icon',
+						'title'    => __( 'Loading Icon', 'foogallery' ),
+						'desc'     => __( 'An animated loading icon can be shown while the thumbnails are busy loading.', 'foogallery' ),
+						'section'  => __( 'Appearance', 'foogallery' ),
+						'default'  => 'fg-loading-default',
+						'type'     => 'htmlicon',
+						'choices'  => apply_filters(
+							'foogallery_gallery_template_common_thumbnail_fields_loading_icon_choices', array(
+							''                   => array( 'label' => __( 'None', 'foogallery' ), 'html' => '<div class="foogallery-setting-loading_icon"></div>' ),
+							'fg-loading-default' => array( 'label' => __( 'Default', 'foogallery' ), 'html' => '<div class="foogallery-setting-loading_icon foogallery fg-loading-default"><div class="fg-loading"><div class="fg-loader"></div></div></div>' ),
+							'fg-loading-bars'    => array( 'label' => __( 'Bars', 'foogallery' ), 'html' => '<div class="foogallery-setting-loading_icon foogallery fg-loading-bars"><div class="fg-loading"><div class="fg-loader"></div></div></div>' ),
+							'fg-loading-dots'    => array( 'label' => __( 'Dots', 'foogallery' ), 'html' => '<div class="foogallery-setting-loading_icon foogallery fg-loading-dots"><div class="fg-loading"><div class="fg-loader"></div></div></div>' ),
+							'fg-loading-partial' => array( 'label' => __( 'Partial', 'foogallery' ), 'html' => '<div class="foogallery-setting-loading_icon foogallery fg-loading-partial"><div class="fg-loading"><div class="fg-loader"></div></div></div>' ),
+							'fg-loading-pulse'   => array( 'label' => __( 'Pulse', 'foogallery' ), 'html' => '<div class="foogallery-setting-loading_icon foogallery fg-loading-pulse"><div class="fg-loading"><div class="fg-loader"></div></div></div>' ),
+							'fg-loading-trail'   => array( 'label' => __( 'Trail', 'foogallery' ), 'html' => '<div class="foogallery-setting-loading_icon foogallery fg-loading-trail"><div class="fg-loading"><div class="fg-loader"></div></div>' ),
+						)
+						),
+						'row_data' => array(
+							'data-foogallery-change-selector' => 'input:radio',
+							'data-foogallery-value-selector'  => 'input:checked',
+							'data-foogallery-preview'         => 'shortcode'
+						)
+					);
+				}
+
+				if ( foogallery_feature_enabled( 'foogallery-loaded-effect' ) ) {
+					$fields[] = array(
+						'id'       => 'loaded_effect',
+						'title'    => __( 'Loaded Effect', 'foogallery' ),
+						'desc'     => __( 'The animation effect used to display the thumbnail, once it has loaded.', 'foogallery' ),
+						'section'  => __( 'Appearance', 'foogallery' ),
+						'default'  => 'fg-loaded-fade-in',
+						'type'     => 'select',
+						'choices'  => apply_filters(
+							'foogallery_gallery_template_common_thumbnail_fields_loaded_effect_choices', array(
+								''                      => __( 'None', 'foogallery' ),
+								'fg-loaded-fade-in'     => __( 'Fade In', 'foogallery' ),
+								'fg-loaded-slide-up'    => __( 'Slide Up', 'foogallery' ),
+								'fg-loaded-slide-down'  => __( 'Slide Down', 'foogallery' ),
+								'fg-loaded-slide-left'  => __( 'Slide Left', 'foogallery' ),
+								'fg-loaded-slide-right' => __( 'Slide Right', 'foogallery' ),
+								'fg-loaded-scale-up'    => __( 'Scale Up', 'foogallery' ),
+								'fg-loaded-swing-down'  => __( 'Swing Down', 'foogallery' ),
+								'fg-loaded-drop'        => __( 'Drop', 'foogallery' ),
+								'fg-loaded-fly'         => __( 'Fly', 'foogallery' ),
+								'fg-loaded-flip'        => __( 'Flip', 'foogallery' ),
+							)
+						),
+						'row_data' => array(
+							'data-foogallery-change-selector' => 'select',
+							'data-foogallery-value-selector'  => 'select option:selected',
+							'data-foogallery-preview'         => 'shortcode'
+						)
+					);
+				}				
+				
 				//endregion
 
 				//region Hover Effects Fields
