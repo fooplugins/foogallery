@@ -68,7 +68,7 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
                 'external_link_text' => 'visit external site',
                 'external_link_url' => 'https://fooplugins.com/foogallery-wordpress-gallery-plugin/filtering/',
 				'dashicon'          => 'dashicons-filter',
-                'tags' => array( 'Premium' ),
+                'tags' => array( 'Premium', 'Filtering' ),
                 'source' => 'bundled',
                 'activated_by_default' => true,
                 'feature' => true
@@ -83,7 +83,7 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
                 'external_link_text' => 'see documentation',
                 'external_link_url' => 'https://fooplugins.com/documentation/foogallery/pro-expert/adding-search/',
 				'dashicon'          => 'dashicons-filter',
-                'tags' => array( 'Premium' ),
+                'tags' => array( 'Premium', 'Filtering' ),
                 'source' => 'bundled',
                 'activated_by_default' => true,
                 'feature' => true
@@ -98,7 +98,7 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
                 'external_link_text' => 'see documentation',
                 'external_link_url' => 'https://fooplugins.com/documentation/foogallery/pro-expert/filtering-settings/',
 				'dashicon'          => 'dashicons-filter',
-                'tags' => array( 'Premium' ),
+                'tags' => array( 'Premium', 'Filtering' ),
                 'source' => 'bundled',
                 'activated_by_default' => true,
                 'feature' => true
@@ -113,12 +113,12 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
                 'external_link_text' => 'see documentation',
                 'external_link_url' => 'https://fooplugins.com/documentation/foogallery/pro-expert/filtering-settings/',
 				'dashicon'          => 'dashicons-filter',
-                'tags' => array( 'Premium' ),
+                'tags' => array( 'Premium', 'Filtering' ),
                 'source' => 'bundled',
                 'activated_by_default' => true,
                 'feature' => true
             );
-			
+
             $extensions_list[] = array(
                 'slug' => 'foogallery-filtering-multi',
                 'class' => 'FooGallery_Pro_Filtering',
@@ -128,7 +128,7 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
                 'external_link_text' => 'see documentation',
                 'external_link_url' => 'https://fooplugins.com/documentation/foogallery/pro-expert/filtering-settings/',
 				'dashicon'          => 'dashicons-filter',
-                'tags' => array( 'Premium' ),
+                'tags' => array( 'Premium', 'Filtering' ),
                 'source' => 'bundled',
                 'activated_by_default' => true,
                 'feature' => true

@@ -37,7 +37,7 @@ if ( ! class_exists( 'FooGallery_Pro_Hover_Presets' ) ) {
                 'external_link_text' => 'see documentation',
                 'external_link_url' => 'https://fooplugins.com/documentation/foogallery/pro-starter/hover-effect-presets/',
 				'dashicon' => 'dashicons-art',
-                'tags' => array( 'Premium' ),
+                'tags' => array( 'Premium', 'Hover' ),
                 'source' => 'bundled',
                 'activated_by_default' => true,
                 'feature' => true
