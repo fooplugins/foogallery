@@ -7,7 +7,7 @@ if ( ! class_exists( 'FooGallery_Pro_Buttons' ) ) {
 	class FooGallery_Pro_Buttons {
 
 		function __construct() {
-			if ( is_admin() ) {
+            if ( is_admin() ) {
 				// Add attachment custom fields.
 				add_filter( 'foogallery_attachment_custom_fields', array( $this, 'attachment_custom_fields' ), 40 );
 
@@ -30,7 +30,7 @@ if ( ! class_exists( 'FooGallery_Pro_Buttons' ) ) {
 			// Override the buttons based on product metadata.
 			add_filter( 'foogallery_datasource_woocommerce_build_attachment', array( $this, 'override_buttons_from_product' ), 20, 2 );
 		}
-
+				
 		/**
 		 * Save the button product meta
 		 *

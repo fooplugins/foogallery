@@ -40,17 +40,63 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 			add_filter( 'foogallery_available_extensions', array( $this, 'register_extension' ) );
 		}
 
-		function register_extension( $extensions_list ) {
+		function register_extension( $extensions_list ) {          
+
+			$extensions_list[] = array(
+				'slug' => 'foogallery-shortcode',
+				'class' => 'FooGallery_Admin_Gallery_MetaBoxes',
+				'categories' => array('Free'),
+				'title' => __('Gallery shortcode', 'foogallery'),
+				'description' => __('Enables a gallery shortcode metabox on the "Add Gallery" page for easy shortcode copying.', 'foogallery'),
+				'external_link_text' => 'see documentation',
+                'external_link_url' => 'https://fooplugins.com/documentation/foogallery/?s=gallery+shortcode',
+				'dashicon' => 'dashicons-editor-code',
+				'tags' => array('Free'),
+				'source' => 'bundled',
+				'activated_by_default' => true,
+				'feature' => true
+			);
+
             $extensions_list[] = array(
 				'slug' => 'foogallery-custom-css',
 				'class' => 'FooGallery_Admin_Gallery_MetaBoxes',
-				'categories' => array('free'),
+				'categories' => array('Free'),
 				'title' => __('Custom CSS', 'foogallery'),
 				'description' => __('Adds custom CSS support to your galleries.', 'foogallery'),
 				'external_link_text' => 'see documentation',
                 'external_link_url' => 'https://fooplugins.com/documentation/foogallery/developers/customize-gallery-custom-css/',
 				'dashicon'          => 'dashicons-editor-code',
-				'tags' => array('free'),
+				'tags' => array('Free'),
+				'source' => 'bundled',
+				'activated_by_default' => true,
+				'feature' => true
+			);
+
+            $extensions_list[] = array(
+				'slug' => 'foogallery-retina-support',
+				'class' => 'FooGallery_Admin_Gallery_MetaBoxes',
+				'categories' => array('Free'),
+				'title' => __('Retina support', 'foogallery'),
+				'description' => __('Adds retina support to your galleries.', 'foogallery'),
+				'external_link_text' => 'see documentation',
+                'external_link_url' => 'https://fooplugins.com/documentation/foogallery/getting-started-foogallery/retina-ready-images/',
+				'dashicon' => 'dashicons-images-alt2',
+				'tags' => array('Free'),
+				'source' => 'bundled',
+				'activated_by_default' => true,
+				'feature' => true
+			);
+
+            $extensions_list[] = array(
+				'slug' => 'foogallery-gallery-sorting',
+				'class' => 'FooGallery_Admin_Gallery_MetaBoxes',
+				'categories' => array('Free'),
+				'title' => __('Gallery Sorting', 'foogallery'),
+				'description' => __('Change the way images are sorted within your galleries.', 'foogallery'),
+				'external_link_text' => 'see documentation',
+                'external_link_url' => 'https://fooplugins.com/documentation/foogallery/troubleshooting-foogallery/gallery-sorting/',
+				'dashicon' => 'dashicons-sort',
+				'tags' => array('Free'),
 				'source' => 'bundled',
 				'activated_by_default' => true,
 				'feature' => true
@@ -89,14 +135,18 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 
 		public function add_meta_boxes_to_gallery( $post ) {
 
-			add_meta_box(
-				'foogallery_help',
-				__( 'Gallery Shortcode', 'foogallery' ),
-				array( $this, 'render_gallery_shortcode_metabox' ),
-				FOOGALLERY_CPT_GALLERY,
-				'side',
-				'default'
-			);
+			if ( foogallery_feature_enabled( 'foogallery-shortcode' ) ){
+				add_meta_box(
+					'foogallery_help',
+					__( 'Gallery Shortcode', 'foogallery' ),
+					array( $this, 'render_gallery_shortcode_metabox' ),
+					FOOGALLERY_CPT_GALLERY,
+					'side',
+					'default'
+				);
+			}
+
+			
 
 			if ( 'publish' == $post->post_status ) {
 				add_meta_box( 'foogallery_pages',
@@ -118,25 +168,29 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 					'low'
 				);
 			}
+
+			if ( foogallery_feature_enabled( 'foogallery-retina-support' ) ){
+				add_meta_box(
+					'foogallery_retina',
+					__( 'Retina Support', 'foogallery' ),
+					array( $this, 'render_retina_metabox' ),
+					FOOGALLERY_CPT_GALLERY,
+					'side',
+					'default'
+				);
+			}
+
+			if ( foogallery_feature_enabled( 'foogallery-gallery-sorting' ) ){
+				add_meta_box(
+					'foogallery_sorting',
+					__( 'Gallery Sorting', 'foogallery' ),
+					array( $this, 'render_sorting_metabox' ),
+					FOOGALLERY_CPT_GALLERY,
+					'side',
+					'default'
+				);
+			}
 			
-
-			add_meta_box(
-				'foogallery_retina',
-				__( 'Retina Support', 'foogallery' ),
-				array( $this, 'render_retina_metabox' ),
-				FOOGALLERY_CPT_GALLERY,
-				'side',
-				'default'
-			);
-
-			add_meta_box(
-				'foogallery_sorting',
-				__( 'Gallery Sorting', 'foogallery' ),
-				array( $this, 'render_sorting_metabox' ),
-				FOOGALLERY_CPT_GALLERY,
-				'side',
-				'default'
-			);
 
 			add_meta_box(
 				'foogallery_thumb_settings',

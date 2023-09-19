@@ -104,6 +104,50 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
                 'feature' => true
             );
 
+            $extensions_list[] = array(
+                'slug' => 'foogallery-ecommerce-ribbons',
+                'class' => 'FooGallery_Pro_Woocommerce',
+                'categories' => array( 'Premium' ),
+                'title' => __( 'Ribbons', 'foogallery' ),
+                'description' => __( 'Add sales ribbons to your image galleries', 'foogallery' ),
+                'external_link_text' => 'visit external site',
+                'external_link_url' => 'https://fooplugins.com/foogallery-wordpress-gallery-plugin/sale-ribbons-and-buttons/',
+				'dashicon'          => 'dashicons-cart',
+                'tags' => array( 'Premium' ),
+                'source' => 'bundled',
+                'activated_by_default' => true,
+                'feature' => true
+            );
+
+            $extensions_list[] = array(
+                'slug' => 'foogallery-ecommerce-buttons',
+                'class' => 'FooGallery_Pro_Woocommerce',
+                'categories' => array( 'Premium' ),
+                'title' => __( 'Buttons', 'foogallery' ),
+                'description' => __( 'Add buttons to your image galleries.', 'foogallery' ),
+                'external_link_text' => 'visit external site',
+                'external_link_url' => 'https://fooplugins.com/foogallery-wordpress-gallery-plugin/sale-ribbons-and-buttons/',
+				'dashicon'          => 'dashicons-cart',
+                'tags' => array( 'Premium' ),
+                'source' => 'bundled',
+                'activated_by_default' => true,
+                'feature' => true
+            );
+            $extensions_list[] = array(
+                'slug' => 'foogallery-ecommerce-lightbox',
+                'class' => 'FooGallery_Pro_Woocommerce',
+                'categories' => array( 'Premium' ),
+                'title' => __( 'Ecommerce Lightbox', 'foogallery' ),
+                'description' => __( 'Enable lightbox functionality in WooCommerce', 'foogallery' ),
+                'external_link_text' => 'visit external site',
+                'external_link_url' => 'https://fooplugins.com/woocommerce-lightbox/',
+				'dashicon'          => 'dashicons-cart',
+                'tags' => array( 'Premium' ),
+                'source' => 'bundled',
+                'activated_by_default' => true,
+                'feature' => true
+            );
+
             return $extensions_list;
         }
 
@@ -736,422 +780,429 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 
 			if ( self::is_woocommerce_activated() ) {
 
-				$new_fields[] = array(
-					'id'      => 'ecommerce_info',
-					'desc'    => __( 'Buttons will only show if you are using the WooCommerce Product datasource, or if individual attachments are linked to WooCommerce products.', 'foogallery' ),
-					'section' => __( 'Ecommerce', 'foogallery' ),
-					'subsection' => array( 'ecommerce-buttons' => __( 'Buttons', 'foogallery' ) ),
-					'type'    => 'help',
-				);
+				if ( foogallery_feature_enabled( 'foogallery-ecommerce-buttons' ) ){
+					$new_fields[] = array(
+						'id'      => 'ecommerce_info',
+						'desc'    => __( 'Buttons will only show if you are using the WooCommerce Product datasource, or if individual attachments are linked to WooCommerce products.', 'foogallery' ),
+						'section' => __( 'Ecommerce', 'foogallery' ),
+						'subsection' => array( 'ecommerce-buttons' => __( 'Buttons', 'foogallery' ) ),
+						'type'    => 'help',
+					);
+	
+					$new_fields[] = array(
+						'id'       => 'ecommerce_button_view_product',
+						'title'    => __( '"View Product" Button', 'foogallery' ),
+						'desc'     => __( 'Shows a button which redirects to the product page.', 'foogallery' ),
+						'section'  => __( 'Ecommerce', 'foogallery' ),
+						'subsection' => array( 'ecommerce-buttons' => __( 'Buttons', 'foogallery' ) ),
+						'type'     => 'radio',
+						'spacer'   => '<span class="spacer"></span>',
+						'default'  => '',
+						'choices'  => array(
+							'first' => __( 'Shown (first)', 'foogallery' ),
+							'last' => __( 'Shown (last)', 'foogallery' ),
+							'' => __( 'Hidden', 'foogallery' ),
+						),
+						'row_data' => array(
+							'data-foogallery-change-selector' => 'input',
+							'data-foogallery-preview'         => 'shortcode',
+							'data-foogallery-value-selector'  => 'input:checked',
+						),
+					);
+	
+					$new_fields[] = array(
+						'id'       => 'ecommerce_button_view_product_behaviour',
+						'title'    => __( '"View Product" Button Behaviour', 'foogallery' ),
+						'desc'     => __( 'What happens when the "View Product" button is clicked.', 'foogallery' ),
+						'section'  => __( 'Ecommerce', 'foogallery' ),
+						'subsection' => array( 'ecommerce-buttons' => __( 'Buttons', 'foogallery' ) ),
+						'type'     => 'select',
+						'choices'  => array(
+							'fg-woo-view-product' => __( 'Redirect to product page', 'foogallery' ),
+							'' => __( 'Open lightbox', 'foogallery' ),
+						),
+						'default'  => 'fg-woo-view-product',
+						'row_data' => array(
+							'data-foogallery-hidden'                   => true,
+							'data-foogallery-show-when-field'          => 'ecommerce_button_view_product',
+							'data-foogallery-show-when-field-operator' => '!==',
+							'data-foogallery-show-when-field-value'    => '',
+							'data-foogallery-change-selector'          => 'select',
+							'data-foogallery-preview'                  => 'shortcode',
+							'data-foogallery-value-selector'           => 'select :selected',
+						),
+					);
+	
+					$new_fields[] = array(
+						'id'       => 'ecommerce_button_view_product_text',
+						'title'    => __( '"View Product" Button Text', 'foogallery' ),
+						'desc'     => __( 'The text displayed on the "View Product" button.', 'foogallery' ),
+						'section'  => __( 'Ecommerce', 'foogallery' ),
+						'subsection' => array( 'ecommerce-buttons' => __( 'Buttons', 'foogallery' ) ),
+						'type'     => 'text',
+						'default'  => __( 'View Product', 'foogallery' ),
+						'row_data' => array(
+							'data-foogallery-hidden'                   => true,
+							'data-foogallery-show-when-field'          => 'ecommerce_button_view_product',
+							'data-foogallery-show-when-field-operator' => '!==',
+							'data-foogallery-show-when-field-value'    => '',
+							'data-foogallery-change-selector'          => 'input',
+							'data-foogallery-preview'                  => 'shortcode',
+							'data-foogallery-value-selector'           => 'input',
+						),
+					);
+	
+					$new_fields[] = array(
+						'id'       => 'ecommerce_button_add_to_cart',
+						'title'    => __( '"Add To Cart" Button', 'foogallery' ),
+						'desc'     => __( 'Shows an "Add To Cart" button for the product. Will only show for purchasable products.', 'foogallery' ),
+						'section'  => __( 'Ecommerce', 'foogallery' ),
+						'subsection' => array( 'ecommerce-buttons' => __( 'Buttons', 'foogallery' ) ),
+						'type'     => 'radio',
+						'spacer'   => '<span class="spacer"></span>',
+						'choices'  => array(
+							'shown' => __( 'Shown', 'foogallery' ),
+							'' => __( 'Hidden', 'foogallery' ),
+						),
+						'default'  => '',
+						'row_data' => array(
+							'data-foogallery-change-selector' => 'input',
+							'data-foogallery-preview'         => 'shortcode',
+							'data-foogallery-value-selector'  => 'input:checked',
+						),
+					);
+	
+					$new_fields[] = array(
+						'id'       => 'ecommerce_button_add_to_cart_behaviour',
+						'title'    => __( '"Add To Cart" Button Behaviour', 'foogallery' ),
+						'desc'     => __( 'What happens when the "Add to Cart" button is clicked.', 'foogallery' ),
+						'section'  => __( 'Ecommerce', 'foogallery' ),
+						'subsection' => array( 'ecommerce-buttons' => __( 'Buttons', 'foogallery' ) ),
+						'type'     => 'select',
+						'choices'  => self::get_button_behaviour_choices(),
+						'default'  => 'fg-woo-add-to-cart-ajax',
+						'row_data' => array(
+							'data-foogallery-hidden'                   => true,
+							'data-foogallery-show-when-field'          => 'ecommerce_button_add_to_cart',
+							'data-foogallery-show-when-field-operator' => '!==',
+							'data-foogallery-show-when-field-value'    => '',
+							'data-foogallery-change-selector'          => 'select',
+							'data-foogallery-preview'                  => 'shortcode',
+							'data-foogallery-value-selector'           => 'select :selected',
+						),
+					);
+	
+					$new_fields[] = array(
+						'id'       => 'ecommerce_button_add_to_cart_text',
+						'title'    => __( '"Add To Cart" Button Text', 'foogallery' ),
+						'desc'     => __( 'The text displayed on the "Add To Cart" action button.', 'foogallery' ),
+						'section'  => __( 'Ecommerce', 'foogallery' ),
+						'subsection' => array( 'ecommerce-buttons' => __( 'Buttons', 'foogallery' ) ),
+						'type'     => 'text',
+						'default'  => __( 'Add To Cart', 'foogallery' ),
+						'row_data' => array(
+							'data-foogallery-hidden'                   => true,
+							'data-foogallery-show-when-field'          => 'ecommerce_button_add_to_cart',
+							'data-foogallery-show-when-field-operator' => '!==',
+							'data-foogallery-show-when-field-value'    => '',
+							'data-foogallery-change-selector'          => 'input',
+							'data-foogallery-preview'                  => 'shortcode',
+							'data-foogallery-value-selector'           => 'input',
+						),
+					);
+	
+					$new_fields[] = array(
+						'id'       => 'ecommerce_button_variable',
+						'title'    => __( '"Select Options" Button', 'foogallery' ),
+						'desc'     => __( 'Shows a "Select Options" button for the variable products only.', 'foogallery' ),
+						'section'  => __( 'Ecommerce', 'foogallery' ),
+						'subsection' => array( 'ecommerce-buttons' => __( 'Buttons', 'foogallery' ) ),
+						'type'     => 'radio',
+						'spacer'   => '<span class="spacer"></span>',
+						'choices'  => array(
+							'shown' => __( 'Shown', 'foogallery' ),
+							'' => __( 'Hidden', 'foogallery' ),
+						),
+						'default'  => '',
+						'row_data' => array(
+							'data-foogallery-change-selector' => 'input',
+							'data-foogallery-preview'         => 'shortcode',
+							'data-foogallery-value-selector'  => 'input:checked',
+						),
+					);
+	
+					$new_fields[] = array(
+						'id'       => 'ecommerce_button_variable_text',
+						'title'    => __( '"Select Options" Button Text', 'foogallery' ),
+						'desc'     => __( 'The text displayed on the "Select Options" button for variable products.', 'foogallery' ),
+						'section'  => __( 'Ecommerce', 'foogallery' ),
+						'subsection' => array( 'ecommerce-buttons' => __( 'Buttons', 'foogallery' ) ),
+						'type'     => 'text',
+						'default'  => __( 'Select Options', 'foogallery' ),
+						'row_data' => array(
+							'data-foogallery-hidden'                   => true,
+							'data-foogallery-show-when-field'          => 'ecommerce_button_variable',
+							'data-foogallery-show-when-field-operator' => '!==',
+							'data-foogallery-show-when-field-value'    => '',
+							'data-foogallery-change-selector'          => 'input',
+							'data-foogallery-preview'                  => 'shortcode',
+							'data-foogallery-value-selector'           => 'input',
+						),
+					);
+				}				
 
-                $new_fields[] = array(
-					'id'       => 'ecommerce_button_view_product',
-					'title'    => __( '"View Product" Button', 'foogallery' ),
-					'desc'     => __( 'Shows a button which redirects to the product page.', 'foogallery' ),
-					'section'  => __( 'Ecommerce', 'foogallery' ),
-					'subsection' => array( 'ecommerce-buttons' => __( 'Buttons', 'foogallery' ) ),
-					'type'     => 'radio',
-					'spacer'   => '<span class="spacer"></span>',
-					'default'  => '',
-					'choices'  => array(
-						'first' => __( 'Shown (first)', 'foogallery' ),
-						'last' => __( 'Shown (last)', 'foogallery' ),
-						'' => __( 'Hidden', 'foogallery' ),
-					),
-					'row_data' => array(
-						'data-foogallery-change-selector' => 'input',
-						'data-foogallery-preview'         => 'shortcode',
-						'data-foogallery-value-selector'  => 'input:checked',
-					),
-				);
+				if ( foogallery_feature_enabled( 'foogallery-ecommerce-ribbons' ) ){
+					
+					$new_fields[] = array(
+						'id'      => 'ecommerce_ribbon_info',
+						'desc'    => __( 'You can show different ribbons for products that are on sale, out of stock, on backorder or featured.', 'foogallery' ),
+						'section' => __( 'Ecommerce', 'foogallery' ),
+						'subsection' => array( 'ecommerce-ribbons' => __( 'Ribbons', 'foogallery' ) ),
+						'type'    => 'help',
+					);
+	
+					$new_fields[] = array(
+						'id'       => 'ecommerce_sale_ribbon_type',
+						'title'    => __( 'Sale Ribbon', 'foogallery' ),
+						'desc'     => __( 'The type of ribbon to display for products that are on sale.', 'foogallery' ),
+						'section'  => __( 'Ecommerce', 'foogallery' ),
+						'subsection' => array( 'ecommerce-ribbons' => __( 'Ribbons', 'foogallery' ) ),
+						'type'     => 'select',
+						'default'  => 'fg-ribbon-3',
+						'choices'  => FooGallery_Pro_Ribbons::get_ribbon_choices(),
+						'row_data' => array(
+							'data-foogallery-change-selector'          => 'select',
+							'data-foogallery-preview'                  => 'shortcode',
+							'data-foogallery-value-selector'           => 'select :selected',
+						),
+					);
+	
+					$new_fields[] = array(
+						'id'       => 'ecommerce_sale_ribbon_text',
+						'title'    => __( 'Sale Ribbon Text', 'foogallery' ),
+						'desc'     => __( 'The text inside the ribbon to display for products that are on sale. Use "{{%}}" to display the percentage discount.', 'foogallery' ),
+						'section'  => __( 'Ecommerce', 'foogallery' ),
+						'subsection' => array( 'ecommerce-ribbons' => __( 'Ribbons', 'foogallery' ) ),
+						'type'     => 'text',
+						'default'  => __( 'Sale', 'foogallery' ),
+						'row_data' => array(
+							'data-foogallery-hidden'                   => true,
+							'data-foogallery-show-when-field'          => 'ecommerce_sale_ribbon_type',
+							'data-foogallery-show-when-field-operator' => '!==',
+							'data-foogallery-show-when-field-value'    => '',
+							'data-foogallery-change-selector'          => 'input',
+							'data-foogallery-preview'                  => 'shortcode',
+							'data-foogallery-value-selector'           => 'input',
+						),
+					);
+	
+					$new_fields[] = array(
+						'id'       => 'ecommerce_featured_ribbon_type',
+						'title'    => __( 'Featured Ribbon', 'foogallery' ),
+						'desc'     => __( 'The type of ribbon to display for products that are featured.', 'foogallery' ),
+						'section'  => __( 'Ecommerce', 'foogallery' ),
+						'subsection' => array( 'ecommerce-ribbons' => __( 'Ribbons', 'foogallery' ) ),
+						'type'     => 'select',
+						'default'  => '',
+						'choices'  => FooGallery_Pro_Ribbons::get_ribbon_choices(),
+						'row_data' => array(
+							'data-foogallery-change-selector'          => 'select',
+							'data-foogallery-preview'                  => 'shortcode',
+							'data-foogallery-value-selector'           => 'select :selected',
+						),
+					);
+	
+					$new_fields[] = array(
+						'id'       => 'ecommerce_featured_ribbon_text',
+						'title'    => __( 'Featured Ribbon Text', 'foogallery' ),
+						'desc'     => __( 'The text inside the ribbon to display for products that are featured.', 'foogallery' ),
+						'section'  => __( 'Ecommerce', 'foogallery' ),
+						'subsection' => array( 'ecommerce-ribbons' => __( 'Ribbons', 'foogallery' ) ),
+						'type'     => 'text',
+						'default'  => 'icon-star',
+						'row_data' => array(
+							'data-foogallery-hidden'                   => true,
+							'data-foogallery-show-when-field'          => 'ecommerce_featured_ribbon_type',
+							'data-foogallery-show-when-field-operator' => '!==',
+							'data-foogallery-show-when-field-value'    => '',
+							'data-foogallery-change-selector'          => 'input',
+							'data-foogallery-preview'                  => 'shortcode',
+							'data-foogallery-value-selector'           => 'input',
+						),
+					);
+	
+					$new_fields[] = array(
+						'id'       => 'ecommerce_outofstock_ribbon_type',
+						'title'    => __( 'Out Of Stock Ribbon', 'foogallery' ),
+						'desc'     => __( 'The type of ribbon to display for products that are out of stock.', 'foogallery' ),
+						'section'  => __( 'Ecommerce', 'foogallery' ),
+						'subsection' => array( 'ecommerce-ribbons' => __( 'Ribbons', 'foogallery' ) ),
+						'type'     => 'select',
+						'default'  => '',
+						'choices'  => FooGallery_Pro_Ribbons::get_ribbon_choices(),
+						'row_data' => array(
+							'data-foogallery-change-selector'          => 'select',
+							'data-foogallery-preview'                  => 'shortcode',
+							'data-foogallery-value-selector'           => 'select :selected',
+						),
+					);
+	
+					$new_fields[] = array(
+						'id'       => 'ecommerce_outofstock_ribbon_text',
+						'title'    => __( 'Out Of Stock Ribbon Text', 'foogallery' ),
+						'desc'     => __( 'The text inside the ribbon to display for products that are out of stock.', 'foogallery' ),
+						'section'  => __( 'Ecommerce', 'foogallery' ),
+						'subsection' => array( 'ecommerce-ribbons' => __( 'Ribbons', 'foogallery' ) ),
+						'type'     => 'text',
+						'default'  => __( 'Out Of Stock', 'foogallery' ),
+						'row_data' => array(
+							'data-foogallery-hidden'                   => true,
+							'data-foogallery-show-when-field'          => 'ecommerce_outofstock_ribbon_type',
+							'data-foogallery-show-when-field-operator' => '!==',
+							'data-foogallery-show-when-field-value'    => '',
+							'data-foogallery-change-selector'          => 'input',
+							'data-foogallery-preview'                  => 'shortcode',
+							'data-foogallery-value-selector'           => 'input',
+						),
+					);
+	
+					$new_fields[] = array(
+						'id'       => 'ecommerce_backorder_ribbon_type',
+						'title'    => __( 'Backorder Ribbon', 'foogallery' ),
+						'desc'     => __( 'The type of ribbon to display for products that are on backorder.', 'foogallery' ),
+						'section'  => __( 'Ecommerce', 'foogallery' ),
+						'subsection' => array( 'ecommerce-ribbons' => __( 'Ribbons', 'foogallery' ) ),
+						'type'     => 'select',
+						'default'  => '',
+						'choices'  => FooGallery_Pro_Ribbons::get_ribbon_choices(),
+						'row_data' => array(
+							'data-foogallery-change-selector'          => 'select',
+							'data-foogallery-preview'                  => 'shortcode',
+							'data-foogallery-value-selector'           => 'select :selected',
+						),
+					);
+	
+					$new_fields[] = array(
+						'id'       => 'ecommerce_backorder_ribbon_text',
+						'title'    => __( 'Backorder Ribbon Text', 'foogallery' ),
+						'desc'     => __( 'The text inside the ribbon to display for products that are on backorder.', 'foogallery' ),
+						'section'  => __( 'Ecommerce', 'foogallery' ),
+						'subsection' => array( 'ecommerce-ribbons' => __( 'Ribbons', 'foogallery' ) ),
+						'type'     => 'text',
+						'default'  => __( 'On Backorder', 'foogallery' ),
+						'row_data' => array(
+							'data-foogallery-hidden'                   => true,
+							'data-foogallery-show-when-field'          => 'ecommerce_backorder_ribbon_type',
+							'data-foogallery-show-when-field-operator' => '!==',
+							'data-foogallery-show-when-field-value'    => '',
+							'data-foogallery-change-selector'          => 'input',
+							'data-foogallery-preview'                  => 'shortcode',
+							'data-foogallery-value-selector'           => 'input',
+						),
+					);
+	
+					$ribbon_help_html = '<h3> ' . __('Show Icons In Your Ribbons', 'foogallery') . '</h3>' .
+						__( 'You can also show icons within your ribbons, by including the text "icon-star" or similar. Below are a list of icons that you might find useful for your shop:', 'foogallery' ) .
+						'<br /><br />' .
+						'<code>icon-star</code> : <i class="dashicons dashicons-star-filled" style="margin-right:50px;"></i>' .
+						'<code>icon-money</code> : <i class="dashicons dashicons-money-alt" style="margin-right:50px;"></i>' .
+						'<code>icon-bell</code> : <i class="dashicons dashicons-bell" style="margin-right:50px;"></i>' .
+						'<code>icon-warning</code> : <i class="dashicons dashicons-warning" style="margin-right:50px;"></i>' .
+						'<code>icon-awards</code> : <i class="dashicons dashicons-awards" style="margin-right:50px;"></i>' .
+						'<code>icon-clock</code> : <i class="dashicons dashicons-clock" style="margin-right:50px;"></i>' .
+						'<code>icon-paperclip</code> : <i class="dashicons dashicons-paperclip" style="margin-right:50px;"></i>' .
+						'<code>icon-thumbs-up</code> : <i class="dashicons dashicons-thumbs-up" style="margin-right:50px;"></i>' .
+						'<code>icon-flag</code> : <i class="dashicons dashicons-flag" style="margin-right:50px;"></i><br /><br />' .
+						__( 'Please note : any dashicon will work in the ribbons.', 'foogallery' );
+	
+					$new_fields[] = array(
+						'id'      => 'ecommerce_ribbon_help',
+						'desc'    => $ribbon_help_html,
+						'section' => __( 'Ecommerce', 'foogallery' ),
+						'subsection' => array( 'ecommerce-ribbons' => __( 'Ribbons', 'foogallery' ) ),
+						'type'    => 'help',
+					);
+				}
 
-				$new_fields[] = array(
-					'id'       => 'ecommerce_button_view_product_behaviour',
-					'title'    => __( '"View Product" Button Behaviour', 'foogallery' ),
-					'desc'     => __( 'What happens when the "View Product" button is clicked.', 'foogallery' ),
-					'section'  => __( 'Ecommerce', 'foogallery' ),
-					'subsection' => array( 'ecommerce-buttons' => __( 'Buttons', 'foogallery' ) ),
-					'type'     => 'select',
-					'choices'  => array(
-						'fg-woo-view-product' => __( 'Redirect to product page', 'foogallery' ),
-						'' => __( 'Open lightbox', 'foogallery' ),
-					),
-					'default'  => 'fg-woo-view-product',
-					'row_data' => array(
-						'data-foogallery-hidden'                   => true,
-						'data-foogallery-show-when-field'          => 'ecommerce_button_view_product',
-						'data-foogallery-show-when-field-operator' => '!==',
-						'data-foogallery-show-when-field-value'    => '',
-						'data-foogallery-change-selector'          => 'select',
-						'data-foogallery-preview'                  => 'shortcode',
-						'data-foogallery-value-selector'           => 'select :selected',
-					),
-				);
-
-
-				$new_fields[] = array(
-					'id'       => 'ecommerce_button_view_product_text',
-					'title'    => __( '"View Product" Button Text', 'foogallery' ),
-					'desc'     => __( 'The text displayed on the "View Product" button.', 'foogallery' ),
-					'section'  => __( 'Ecommerce', 'foogallery' ),
-					'subsection' => array( 'ecommerce-buttons' => __( 'Buttons', 'foogallery' ) ),
-					'type'     => 'text',
-					'default'  => __( 'View Product', 'foogallery' ),
-					'row_data' => array(
-						'data-foogallery-hidden'                   => true,
-						'data-foogallery-show-when-field'          => 'ecommerce_button_view_product',
-						'data-foogallery-show-when-field-operator' => '!==',
-						'data-foogallery-show-when-field-value'    => '',
-						'data-foogallery-change-selector'          => 'input',
-						'data-foogallery-preview'                  => 'shortcode',
-						'data-foogallery-value-selector'           => 'input',
-					),
-				);
-
-				$new_fields[] = array(
-					'id'       => 'ecommerce_button_add_to_cart',
-					'title'    => __( '"Add To Cart" Button', 'foogallery' ),
-					'desc'     => __( 'Shows an "Add To Cart" button for the product. Will only show for purchasable products.', 'foogallery' ),
-					'section'  => __( 'Ecommerce', 'foogallery' ),
-					'subsection' => array( 'ecommerce-buttons' => __( 'Buttons', 'foogallery' ) ),
-					'type'     => 'radio',
-					'spacer'   => '<span class="spacer"></span>',
-					'choices'  => array(
-						'shown' => __( 'Shown', 'foogallery' ),
-						'' => __( 'Hidden', 'foogallery' ),
-					),
-					'default'  => '',
-					'row_data' => array(
-						'data-foogallery-change-selector' => 'input',
-						'data-foogallery-preview'         => 'shortcode',
-						'data-foogallery-value-selector'  => 'input:checked',
-					),
-				);
-
-				$new_fields[] = array(
-					'id'       => 'ecommerce_button_add_to_cart_behaviour',
-					'title'    => __( '"Add To Cart" Button Behaviour', 'foogallery' ),
-					'desc'     => __( 'What happens when the "Add to Cart" button is clicked.', 'foogallery' ),
-					'section'  => __( 'Ecommerce', 'foogallery' ),
-					'subsection' => array( 'ecommerce-buttons' => __( 'Buttons', 'foogallery' ) ),
-					'type'     => 'select',
-					'choices'  => self::get_button_behaviour_choices(),
-					'default'  => 'fg-woo-add-to-cart-ajax',
-					'row_data' => array(
-						'data-foogallery-hidden'                   => true,
-						'data-foogallery-show-when-field'          => 'ecommerce_button_add_to_cart',
-						'data-foogallery-show-when-field-operator' => '!==',
-						'data-foogallery-show-when-field-value'    => '',
-						'data-foogallery-change-selector'          => 'select',
-						'data-foogallery-preview'                  => 'shortcode',
-						'data-foogallery-value-selector'           => 'select :selected',
-					),
-				);
-
-				$new_fields[] = array(
-					'id'       => 'ecommerce_button_add_to_cart_text',
-					'title'    => __( '"Add To Cart" Button Text', 'foogallery' ),
-					'desc'     => __( 'The text displayed on the "Add To Cart" action button.', 'foogallery' ),
-					'section'  => __( 'Ecommerce', 'foogallery' ),
-					'subsection' => array( 'ecommerce-buttons' => __( 'Buttons', 'foogallery' ) ),
-					'type'     => 'text',
-					'default'  => __( 'Add To Cart', 'foogallery' ),
-					'row_data' => array(
-						'data-foogallery-hidden'                   => true,
-						'data-foogallery-show-when-field'          => 'ecommerce_button_add_to_cart',
-						'data-foogallery-show-when-field-operator' => '!==',
-						'data-foogallery-show-when-field-value'    => '',
-						'data-foogallery-change-selector'          => 'input',
-						'data-foogallery-preview'                  => 'shortcode',
-						'data-foogallery-value-selector'           => 'input',
-					),
-				);
-
-				$new_fields[] = array(
-					'id'       => 'ecommerce_button_variable',
-					'title'    => __( '"Select Options" Button', 'foogallery' ),
-					'desc'     => __( 'Shows a "Select Options" button for the variable products only.', 'foogallery' ),
-					'section'  => __( 'Ecommerce', 'foogallery' ),
-					'subsection' => array( 'ecommerce-buttons' => __( 'Buttons', 'foogallery' ) ),
-					'type'     => 'radio',
-					'spacer'   => '<span class="spacer"></span>',
-					'choices'  => array(
-						'shown' => __( 'Shown', 'foogallery' ),
-						'' => __( 'Hidden', 'foogallery' ),
-					),
-					'default'  => '',
-					'row_data' => array(
-						'data-foogallery-change-selector' => 'input',
-						'data-foogallery-preview'         => 'shortcode',
-						'data-foogallery-value-selector'  => 'input:checked',
-					),
-				);
-
-				$new_fields[] = array(
-					'id'       => 'ecommerce_button_variable_text',
-					'title'    => __( '"Select Options" Button Text', 'foogallery' ),
-					'desc'     => __( 'The text displayed on the "Select Options" button for variable products.', 'foogallery' ),
-					'section'  => __( 'Ecommerce', 'foogallery' ),
-					'subsection' => array( 'ecommerce-buttons' => __( 'Buttons', 'foogallery' ) ),
-					'type'     => 'text',
-					'default'  => __( 'Select Options', 'foogallery' ),
-					'row_data' => array(
-						'data-foogallery-hidden'                   => true,
-						'data-foogallery-show-when-field'          => 'ecommerce_button_variable',
-						'data-foogallery-show-when-field-operator' => '!==',
-						'data-foogallery-show-when-field-value'    => '',
-						'data-foogallery-change-selector'          => 'input',
-						'data-foogallery-preview'                  => 'shortcode',
-						'data-foogallery-value-selector'           => 'input',
-					),
-				);
-
-                $new_fields[] = array(
-					'id'      => 'ecommerce_ribbon_info',
-					'desc'    => __( 'You can show different ribbons for products that are on sale, out of stock, on backorder or featured.', 'foogallery' ),
-					'section' => __( 'Ecommerce', 'foogallery' ),
-					'subsection' => array( 'ecommerce-ribbons' => __( 'Ribbons', 'foogallery' ) ),
-					'type'    => 'help',
-				);
-
-				$new_fields[] = array(
-					'id'       => 'ecommerce_sale_ribbon_type',
-					'title'    => __( 'Sale Ribbon', 'foogallery' ),
-					'desc'     => __( 'The type of ribbon to display for products that are on sale.', 'foogallery' ),
-					'section'  => __( 'Ecommerce', 'foogallery' ),
-					'subsection' => array( 'ecommerce-ribbons' => __( 'Ribbons', 'foogallery' ) ),
-					'type'     => 'select',
-					'default'  => 'fg-ribbon-3',
-					'choices'  => FooGallery_Pro_Ribbons::get_ribbon_choices(),
-					'row_data' => array(
-						'data-foogallery-change-selector'          => 'select',
-						'data-foogallery-preview'                  => 'shortcode',
-						'data-foogallery-value-selector'           => 'select :selected',
-					),
-				);
-
-				$new_fields[] = array(
-					'id'       => 'ecommerce_sale_ribbon_text',
-					'title'    => __( 'Sale Ribbon Text', 'foogallery' ),
-					'desc'     => __( 'The text inside the ribbon to display for products that are on sale. Use "{{%}}" to display the percentage discount.', 'foogallery' ),
-					'section'  => __( 'Ecommerce', 'foogallery' ),
-					'subsection' => array( 'ecommerce-ribbons' => __( 'Ribbons', 'foogallery' ) ),
-					'type'     => 'text',
-					'default'  => __( 'Sale', 'foogallery' ),
-					'row_data' => array(
-						'data-foogallery-hidden'                   => true,
-						'data-foogallery-show-when-field'          => 'ecommerce_sale_ribbon_type',
-						'data-foogallery-show-when-field-operator' => '!==',
-						'data-foogallery-show-when-field-value'    => '',
-						'data-foogallery-change-selector'          => 'input',
-						'data-foogallery-preview'                  => 'shortcode',
-						'data-foogallery-value-selector'           => 'input',
-					),
-				);
-
-                $new_fields[] = array(
-					'id'       => 'ecommerce_featured_ribbon_type',
-					'title'    => __( 'Featured Ribbon', 'foogallery' ),
-					'desc'     => __( 'The type of ribbon to display for products that are featured.', 'foogallery' ),
-					'section'  => __( 'Ecommerce', 'foogallery' ),
-					'subsection' => array( 'ecommerce-ribbons' => __( 'Ribbons', 'foogallery' ) ),
-					'type'     => 'select',
-					'default'  => '',
-					'choices'  => FooGallery_Pro_Ribbons::get_ribbon_choices(),
-					'row_data' => array(
-						'data-foogallery-change-selector'          => 'select',
-						'data-foogallery-preview'                  => 'shortcode',
-						'data-foogallery-value-selector'           => 'select :selected',
-					),
-				);
-
-				$new_fields[] = array(
-					'id'       => 'ecommerce_featured_ribbon_text',
-					'title'    => __( 'Featured Ribbon Text', 'foogallery' ),
-					'desc'     => __( 'The text inside the ribbon to display for products that are featured.', 'foogallery' ),
-					'section'  => __( 'Ecommerce', 'foogallery' ),
-					'subsection' => array( 'ecommerce-ribbons' => __( 'Ribbons', 'foogallery' ) ),
-					'type'     => 'text',
-					'default'  => 'icon-star',
-					'row_data' => array(
-						'data-foogallery-hidden'                   => true,
-						'data-foogallery-show-when-field'          => 'ecommerce_featured_ribbon_type',
-						'data-foogallery-show-when-field-operator' => '!==',
-						'data-foogallery-show-when-field-value'    => '',
-						'data-foogallery-change-selector'          => 'input',
-						'data-foogallery-preview'                  => 'shortcode',
-						'data-foogallery-value-selector'           => 'input',
-					),
-				);
-
-                $new_fields[] = array(
-					'id'       => 'ecommerce_outofstock_ribbon_type',
-					'title'    => __( 'Out Of Stock Ribbon', 'foogallery' ),
-					'desc'     => __( 'The type of ribbon to display for products that are out of stock.', 'foogallery' ),
-					'section'  => __( 'Ecommerce', 'foogallery' ),
-					'subsection' => array( 'ecommerce-ribbons' => __( 'Ribbons', 'foogallery' ) ),
-					'type'     => 'select',
-					'default'  => '',
-					'choices'  => FooGallery_Pro_Ribbons::get_ribbon_choices(),
-					'row_data' => array(
-						'data-foogallery-change-selector'          => 'select',
-						'data-foogallery-preview'                  => 'shortcode',
-						'data-foogallery-value-selector'           => 'select :selected',
-					),
-				);
-
-				$new_fields[] = array(
-					'id'       => 'ecommerce_outofstock_ribbon_text',
-					'title'    => __( 'Out Of Stock Ribbon Text', 'foogallery' ),
-					'desc'     => __( 'The text inside the ribbon to display for products that are out of stock.', 'foogallery' ),
-					'section'  => __( 'Ecommerce', 'foogallery' ),
-					'subsection' => array( 'ecommerce-ribbons' => __( 'Ribbons', 'foogallery' ) ),
-					'type'     => 'text',
-					'default'  => __( 'Out Of Stock', 'foogallery' ),
-					'row_data' => array(
-						'data-foogallery-hidden'                   => true,
-						'data-foogallery-show-when-field'          => 'ecommerce_outofstock_ribbon_type',
-						'data-foogallery-show-when-field-operator' => '!==',
-						'data-foogallery-show-when-field-value'    => '',
-						'data-foogallery-change-selector'          => 'input',
-						'data-foogallery-preview'                  => 'shortcode',
-						'data-foogallery-value-selector'           => 'input',
-					),
-				);
-
-                $new_fields[] = array(
-					'id'       => 'ecommerce_backorder_ribbon_type',
-					'title'    => __( 'Backorder Ribbon', 'foogallery' ),
-					'desc'     => __( 'The type of ribbon to display for products that are on backorder.', 'foogallery' ),
-					'section'  => __( 'Ecommerce', 'foogallery' ),
-					'subsection' => array( 'ecommerce-ribbons' => __( 'Ribbons', 'foogallery' ) ),
-					'type'     => 'select',
-					'default'  => '',
-					'choices'  => FooGallery_Pro_Ribbons::get_ribbon_choices(),
-					'row_data' => array(
-						'data-foogallery-change-selector'          => 'select',
-						'data-foogallery-preview'                  => 'shortcode',
-						'data-foogallery-value-selector'           => 'select :selected',
-					),
-				);
-
-				$new_fields[] = array(
-					'id'       => 'ecommerce_backorder_ribbon_text',
-					'title'    => __( 'Backorder Ribbon Text', 'foogallery' ),
-					'desc'     => __( 'The text inside the ribbon to display for products that are on backorder.', 'foogallery' ),
-					'section'  => __( 'Ecommerce', 'foogallery' ),
-					'subsection' => array( 'ecommerce-ribbons' => __( 'Ribbons', 'foogallery' ) ),
-					'type'     => 'text',
-					'default'  => __( 'On Backorder', 'foogallery' ),
-					'row_data' => array(
-						'data-foogallery-hidden'                   => true,
-						'data-foogallery-show-when-field'          => 'ecommerce_backorder_ribbon_type',
-						'data-foogallery-show-when-field-operator' => '!==',
-						'data-foogallery-show-when-field-value'    => '',
-						'data-foogallery-change-selector'          => 'input',
-						'data-foogallery-preview'                  => 'shortcode',
-						'data-foogallery-value-selector'           => 'input',
-					),
-				);
-
-                $ribbon_help_html = '<h3> ' . __('Show Icons In Your Ribbons', 'foogallery') . '</h3>' .
-                    __( 'You can also show icons within your ribbons, by including the text "icon-star" or similar. Below are a list of icons that you might find useful for your shop:', 'foogallery' ) .
-                    '<br /><br />' .
-                    '<code>icon-star</code> : <i class="dashicons dashicons-star-filled" style="margin-right:50px;"></i>' .
-                    '<code>icon-money</code> : <i class="dashicons dashicons-money-alt" style="margin-right:50px;"></i>' .
-                    '<code>icon-bell</code> : <i class="dashicons dashicons-bell" style="margin-right:50px;"></i>' .
-                    '<code>icon-warning</code> : <i class="dashicons dashicons-warning" style="margin-right:50px;"></i>' .
-                    '<code>icon-awards</code> : <i class="dashicons dashicons-awards" style="margin-right:50px;"></i>' .
-                    '<code>icon-clock</code> : <i class="dashicons dashicons-clock" style="margin-right:50px;"></i>' .
-                    '<code>icon-paperclip</code> : <i class="dashicons dashicons-paperclip" style="margin-right:50px;"></i>' .
-                    '<code>icon-thumbs-up</code> : <i class="dashicons dashicons-thumbs-up" style="margin-right:50px;"></i>' .
-                    '<code>icon-flag</code> : <i class="dashicons dashicons-flag" style="margin-right:50px;"></i><br /><br />' .
-                    __( 'Please note : any dashicon will work in the ribbons.', 'foogallery' );
-
-                $new_fields[] = array(
-					'id'      => 'ecommerce_ribbon_help',
-					'desc'    => $ribbon_help_html,
-					'section' => __( 'Ecommerce', 'foogallery' ),
-					'subsection' => array( 'ecommerce-ribbons' => __( 'Ribbons', 'foogallery' ) ),
-					'type'    => 'help',
-				);
-
-				$new_fields[] = array(
-					'id'      => 'ecommerce_lightbox_info',
-					'desc'    => __( 'You can choose to display product information within the lightbox, if items are linked to a WooCommerce Product. This only works with the PRO lightbox.', 'foogallery' ),
-					'section' => __( 'Ecommerce', 'foogallery' ),
-					'subsection' => array( 'ecommerce-lightbox' => __( 'Lightbox', 'foogallery' ) ),
-					'type'    => 'help',
-				);
-
-				$new_fields[] = array(
-					'id'       => 'ecommerce_lightbox_product_information',
-					'title'    => __( 'Lightbox Product Info', 'foogallery' ),
-					'desc'     => __( 'You can show product information in the PRO lightbox, including product variations, which the visitor can add to cart.', 'foogallery' ),
-					'section'  => __( 'Ecommerce', 'foogallery' ),
-					'subsection' => array( 'ecommerce-lightbox' => __( 'Lightbox', 'foogallery' ) ),
-					'type'     => 'radio',
-					'default'  => 'none',
-					'spacer'   => '<span class="spacer"></span>',
-					'choices'  => array(
-						'left'   => __( 'Left Panel', 'foogallery'),
-						'right'  => __( 'Right Panel', 'foogallery'),
-						'none'   => __( 'Do Not Show', 'foogallery'),
-					),
-					'row_data' => array(
-						'data-foogallery-change-selector'          => 'input',
-						'data-foogallery-preview'                  => 'shortcode',
-						'data-foogallery-value-selector'           => 'input:checked',
-					),
-				);
-
-				$new_fields[] = array(
-					'id'       => 'ecommerce_lightbox_show_add_to_cart_button',
-					'title'    => __( 'Show "Add to Cart" Button', 'foogallery' ),
-					'desc'     => __( 'Within the lightbox, shows the "Add to Cart" button.', 'foogallery' ),
-					'section'  => __( 'Ecommerce', 'foogallery' ),
-					'subsection' => array( 'ecommerce-lightbox' => __( 'Lightbox', 'foogallery' ) ),
-					'type'     => 'radio',
-					'default'  => 'shown',
-					'spacer'   => '<span class="spacer"></span>',
-					'choices'  => array(
-						'shown' => __( 'Shown', 'foogallery'),
-						''    => __( 'Hidden', 'foogallery'),
-					),
-					'row_data' => array(
-						'data-foogallery-hidden'                   => true,
-						'data-foogallery-show-when-field'          => 'ecommerce_lightbox_product_information',
-						'data-foogallery-show-when-field-operator' => '!==',
-						'data-foogallery-show-when-field-value'    => 'none',
-						'data-foogallery-change-selector'          => 'input',
-						'data-foogallery-preview'                  => 'shortcode',
-						'data-foogallery-value-selector'           => 'input:checked',
-					),
-				);
-
-				$new_fields[] = array(
-					'id'       => 'ecommerce_lightbox_show_view_product_button',
-					'title'    => __( 'Show "View Product" Button', 'foogallery' ),
-					'desc'     => __( 'Within the lightbox, shows an extra button that redirects to the product page.', 'foogallery' ),
-					'section'  => __( 'Ecommerce', 'foogallery' ),
-					'subsection' => array( 'ecommerce-lightbox' => __( 'Lightbox', 'foogallery' ) ),
-					'type'     => 'radio',
-					'default'  => '',
-					'spacer'   => '<span class="spacer"></span>',
-					'choices'  => array(
-						'shown' => __( 'Shown', 'foogallery'),
-						''    => __( 'Hidden', 'foogallery'),
-					),
-					'row_data' => array(
-						'data-foogallery-hidden'                   => true,
-						'data-foogallery-show-when-field'          => 'ecommerce_lightbox_product_information',
-						'data-foogallery-show-when-field-operator' => '!==',
-						'data-foogallery-show-when-field-value'    => 'none',
-						'data-foogallery-change-selector'          => 'input',
-						'data-foogallery-preview'                  => 'shortcode',
-						'data-foogallery-value-selector'           => 'input:checked',
-					),
-				);
+				if ( foogallery_feature_enabled( 'foogallery-ecommerce-lightbox' ) ){
+					$new_fields[] = array(
+						'id'      => 'ecommerce_lightbox_info',
+						'desc'    => __( 'You can choose to display product information within the lightbox, if items are linked to a WooCommerce Product. This only works with the PRO lightbox.', 'foogallery' ),
+						'section' => __( 'Ecommerce', 'foogallery' ),
+						'subsection' => array( 'ecommerce-lightbox' => __( 'Lightbox', 'foogallery' ) ),
+						'type'    => 'help',
+					);
+	
+					$new_fields[] = array(
+						'id'       => 'ecommerce_lightbox_product_information',
+						'title'    => __( 'Lightbox Product Info', 'foogallery' ),
+						'desc'     => __( 'You can show product information in the PRO lightbox, including product variations, which the visitor can add to cart.', 'foogallery' ),
+						'section'  => __( 'Ecommerce', 'foogallery' ),
+						'subsection' => array( 'ecommerce-lightbox' => __( 'Lightbox', 'foogallery' ) ),
+						'type'     => 'radio',
+						'default'  => 'none',
+						'spacer'   => '<span class="spacer"></span>',
+						'choices'  => array(
+							'left'   => __( 'Left Panel', 'foogallery'),
+							'right'  => __( 'Right Panel', 'foogallery'),
+							'none'   => __( 'Do Not Show', 'foogallery'),
+						),
+						'row_data' => array(
+							'data-foogallery-change-selector'          => 'input',
+							'data-foogallery-preview'                  => 'shortcode',
+							'data-foogallery-value-selector'           => 'input:checked',
+						),
+					);
+	
+					$new_fields[] = array(
+						'id'       => 'ecommerce_lightbox_show_add_to_cart_button',
+						'title'    => __( 'Show "Add to Cart" Button', 'foogallery' ),
+						'desc'     => __( 'Within the lightbox, shows the "Add to Cart" button.', 'foogallery' ),
+						'section'  => __( 'Ecommerce', 'foogallery' ),
+						'subsection' => array( 'ecommerce-lightbox' => __( 'Lightbox', 'foogallery' ) ),
+						'type'     => 'radio',
+						'default'  => 'shown',
+						'spacer'   => '<span class="spacer"></span>',
+						'choices'  => array(
+							'shown' => __( 'Shown', 'foogallery'),
+							''    => __( 'Hidden', 'foogallery'),
+						),
+						'row_data' => array(
+							'data-foogallery-hidden'                   => true,
+							'data-foogallery-show-when-field'          => 'ecommerce_lightbox_product_information',
+							'data-foogallery-show-when-field-operator' => '!==',
+							'data-foogallery-show-when-field-value'    => 'none',
+							'data-foogallery-change-selector'          => 'input',
+							'data-foogallery-preview'                  => 'shortcode',
+							'data-foogallery-value-selector'           => 'input:checked',
+						),
+					);
+	
+					$new_fields[] = array(
+						'id'       => 'ecommerce_lightbox_show_view_product_button',
+						'title'    => __( 'Show "View Product" Button', 'foogallery' ),
+						'desc'     => __( 'Within the lightbox, shows an extra button that redirects to the product page.', 'foogallery' ),
+						'section'  => __( 'Ecommerce', 'foogallery' ),
+						'subsection' => array( 'ecommerce-lightbox' => __( 'Lightbox', 'foogallery' ) ),
+						'type'     => 'radio',
+						'default'  => '',
+						'spacer'   => '<span class="spacer"></span>',
+						'choices'  => array(
+							'shown' => __( 'Shown', 'foogallery'),
+							''    => __( 'Hidden', 'foogallery'),
+						),
+						'row_data' => array(
+							'data-foogallery-hidden'                   => true,
+							'data-foogallery-show-when-field'          => 'ecommerce_lightbox_product_information',
+							'data-foogallery-show-when-field-operator' => '!==',
+							'data-foogallery-show-when-field-value'    => 'none',
+							'data-foogallery-change-selector'          => 'input',
+							'data-foogallery-preview'                  => 'shortcode',
+							'data-foogallery-value-selector'           => 'input:checked',
+						),
+					);
+				}				
+				
 			} else {
 				$new_fields[] = array(
 					'id'      => 'ecommerce_error',

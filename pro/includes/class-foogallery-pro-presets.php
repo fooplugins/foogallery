@@ -7,16 +7,43 @@ if ( ! class_exists( 'FooGallery_Pro_Hover_Presets' ) ) {
 	class FooGallery_Pro_Hover_Presets {
 
 		function __construct() {
-			add_filter( 'foogallery_gallery_template_common_thumbnail_fields_hover_effect_type_choices', array( $this, 'add_preset_type' ) );
+            add_action( 'plugins_loaded', array( $this, 'load_feature' ) );
 
-			//make sure we can see the presets
-			add_filter( 'foogallery_override_gallery_template_fields', array( $this, 'add_preset_fields' ), 99, 2 );
+            add_filter( 'foogallery_available_extensions', array( $this, 'register_extension' ) );
+		}
 
-			//build up class attributes
-			add_filter( 'foogallery_build_class_attribute', array( $this, 'add_presets_class_attributes' ), 20, 2 );
+		function load_feature() {
+            if ( foogallery_feature_enabled( 'foogallery-hover-presets' ) ) {
+                add_filter( 'foogallery_gallery_template_common_thumbnail_fields_hover_effect_type_choices', array( $this, 'add_preset_type' ) );
 
-            //remove preset choices from simple portfolio
-            add_filter( 'foogallery_override_gallery_template_fields-simple_portfolio', array( $this, 'remove_preset_choices_for_simple_portfolio' ), 10, 2 );
+				//make sure we can see the presets
+				add_filter( 'foogallery_override_gallery_template_fields', array( $this, 'add_preset_fields' ), 99, 2 );
+
+				//build up class attributes
+				add_filter( 'foogallery_build_class_attribute', array( $this, 'add_presets_class_attributes' ), 20, 2 );
+
+				//remove preset choices from simple portfolio
+				add_filter( 'foogallery_override_gallery_template_fields-simple_portfolio', array( $this, 'remove_preset_choices_for_simple_portfolio' ), 10, 2 );
+				}
+        }
+
+		function register_extension( $extensions_list ) {
+            $extensions_list[] = array(
+                'slug' => 'foogallery-hover-presets',
+                'class' => 'FooGallery_Pro_Hover_Presets',
+                'categories' => array( 'Premium' ),
+                'title' => __( 'Pro Hover Presets', 'foogallery' ),
+                'description' => __( 'Add pre-styled hover effects to your galleries.', 'foogallery' ),
+                'external_link_text' => 'see documentation',
+                'external_link_url' => 'https://fooplugins.com/documentation/foogallery/pro-starter/hover-effect-presets/',
+				'dashicon' => 'dashicons-art',
+                'tags' => array( 'Premium', 'Hover' ),
+                'source' => 'bundled',
+                'activated_by_default' => true,
+                'feature' => true
+            );
+
+            return $extensions_list;
         }
 
 		/**

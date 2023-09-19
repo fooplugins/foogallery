@@ -28,7 +28,140 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 
 			//override settings for older versions
 			add_filter( 'foogallery_settings_override', array( $this, 'override_settings_for_older_versions' ), 10, 3 );
+
+			add_filter( 'foogallery_available_extensions', array( $this, 'register_extension' ) );
 		}
+
+		function register_extension( $extensions_list ) {
+            $extensions_list[] = array(
+                'slug' => 'foogallery-hover-effect-color',
+                'class' => 'FooGallery_Common_Fields',
+                'categories' => array( 'Free' ),
+                'title' => __( 'Color Hover Effects', 'foogallery' ),
+                'description' => __( 'Add captivating color effects to your gallery.', 'foogallery' ),
+                'external_link_text' => 'see documentation',
+                'external_link_url' => 'https://fooplugins.com/documentation/foogallery/getting-started-foogallery/foogallery-101/',
+				'dashicon' => 'dashicons-admin-customizer',
+                'tags' => array( 'Free','Hover' ),
+                'source' => 'bundled',
+                'activated_by_default' => true,
+                'feature' => true
+            );
+            $extensions_list[] = array(
+                'slug' => 'foogallery-hover-effect-scale',
+                'class' => 'FooGallery_Common_Fields',
+                'categories' => array( 'Free' ),
+                'title' => __( 'Scale Hover Effects', 'foogallery' ),
+                'description' => __( 'Enhance your gallery with hover scale effects.', 'foogallery' ),
+                'external_link_text' => 'see documentation',
+                'external_link_url' => 'https://fooplugins.com/documentation/foogallery/getting-started-foogallery/foogallery-101/',
+				'dashicon' => 'dashicons-image-flip-vertical',
+                'tags' => array( 'Free','Hover' ),
+                'source' => 'bundled',
+                'activated_by_default' => true,
+                'feature' => true
+            );
+            $extensions_list[] = array(
+                'slug' => 'foogallery-hover-effect-transition',
+                'class' => 'FooGallery_Common_Fields',
+                'categories' => array( 'Free' ),
+                'title' => __( 'Transitions Hover Effects', 'foogallery' ),
+                'description' => __( 'Introduce smooth transition effects to your gallery on hover.', 'foogallery' ),
+                'external_link_text' => 'see documentation',
+                'external_link_url' => 'https://fooplugins.com/documentation/foogallery/getting-started-foogallery/foogallery-101/',
+				'dashicon' => 'dashicons-image-filter',
+                'tags' => array( 'Free','Hover' ),
+                'source' => 'bundled',
+                'activated_by_default' => true,
+                'feature' => true
+            );
+            $extensions_list[] = array(
+                'slug' => 'foogallery-hover-effect-caption-visibility',
+                'class' => 'FooGallery_Common_Fields',
+                'categories' => array( 'Free' ),
+                'title' => __( 'Caption Hover Effects', 'foogallery' ),
+                'description' => __( 'Easily control the visibility of captions with hover effects.', 'foogallery' ),
+                'external_link_text' => 'see documentation',
+                'external_link_url' => 'https://fooplugins.com/documentation/foogallery/appearance-foogallery/hover-effects-settings/',
+				'dashicon' => 'dashicons-editor-contract',
+                'tags' => array( 'Free','Hover' ),
+                'source' => 'bundled',
+                'activated_by_default' => true,
+                'feature' => true
+            );
+            $extensions_list[] = array(
+                'slug' => 'foogallery-border-size',
+                'class' => 'FooGallery_Common_Fields',
+                'categories' => array( 'Free' ),
+                'title' => __( 'Border size', 'foogallery' ),
+                'description' => __( 'Customize border effects.', 'foogallery' ),
+                'external_link_text' => 'see documentation',
+                'external_link_url' => 'https://fooplugins.com/documentation/foogallery/appearance-foogallery/appearance-settings/',
+				'dashicon' => 'dashicons-art',
+                'tags' => array( 'Free','Appearance' ),
+                'source' => 'bundled',
+                'activated_by_default' => true,
+                'feature' => true
+            );
+            $extensions_list[] = array(
+                'slug' => 'foogallery-rounded-corners',
+                'class' => 'FooGallery_Common_Fields',
+                'categories' => array( 'Free' ),
+                'title' => __( 'Rounded corners', 'foogallery' ),
+                'description' => __( 'Apply rounded corner effects.', 'foogallery' ),
+                'external_link_text' => 'see documentation',
+                'external_link_url' => 'https://fooplugins.com/documentation/foogallery/appearance-foogallery/appearance-settings/',
+				'dashicon' => 'dashicons-art',
+                'tags' => array( 'Free','Appearance' ),
+                'source' => 'bundled',
+                'activated_by_default' => true,
+                'feature' => true
+            );
+            $extensions_list[] = array(
+                'slug' => 'foogallery-shadow-shadow',
+                'class' => 'FooGallery_Common_Fields',
+                'categories' => array( 'Free' ),
+                'title' => __( 'Shadow', 'foogallery' ),
+                'description' => __( 'Add drop and inner shadow effects.', 'foogallery' ),
+                'external_link_text' => 'see documentation',
+                'external_link_url' => 'https://fooplugins.com/documentation/foogallery/appearance-foogallery/appearance-settings/',
+				'dashicon' => 'dashicons-art',
+                'tags' => array( 'Free','Appearance' ),
+                'source' => 'bundled',
+                'activated_by_default' => true,
+                'feature' => true
+            );
+            $extensions_list[] = array(
+                'slug' => 'foogallery-loading-icon',
+                'class' => 'FooGallery_Common_Fields',
+                'categories' => array( 'Free' ),
+                'title' => __( 'Loading Icon', 'foogallery' ),
+                'description' => __( 'Configure the loading icon appearance.', 'foogallery' ),
+                'external_link_text' => 'see documentation',
+                'external_link_url' => 'https://fooplugins.com/documentation/foogallery/appearance-foogallery/appearance-settings/',
+				'dashicon' => 'dashicons-image-rotate',
+                'tags' => array( 'Free','Appearance' ),
+                'source' => 'bundled',
+                'activated_by_default' => true,
+                'feature' => true
+            );
+            $extensions_list[] = array(
+                'slug' => 'foogallery-loaded-effect',
+                'class' => 'FooGallery_Common_Fields',
+                'categories' => array( 'Free' ),
+                'title' => __( 'Loaded effect', 'foogallery' ),
+                'description' => __( 'Define effects for the gallery after it is loaded.', 'foogallery' ),
+                'external_link_text' => 'see documentation',
+                'external_link_url' => 'https://fooplugins.com/documentation/foogallery/appearance-foogallery/appearance-settings/',
+				'dashicon' => 'dashicons-art',
+                'tags' => array( 'Free','Appearance' ),
+                'source' => 'bundled',
+                'activated_by_default' => true,
+                'feature' => true
+            );
+
+            return $extensions_list;
+        }
 
         function alter_gallery_template_field( $field, $gallery ) {
             if ( $field ) {
@@ -127,141 +260,152 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 					)
 				);
 
-				$fields[] = array(
-					'id'       => 'border_size',
-					'title'    => __( 'Border Size', 'foogallery' ),
-					'desc'     => __( 'The border size applied to each thumbnail', 'foogallery' ),
-					'section'  => __( 'Appearance', 'foogallery' ),
-					'type'     => 'radio',
-					'spacer'   => '<span class="spacer"></span>',
-					'default'  => 'fg-border-thin',
-					'choices'  => array(
-						''                 => __( 'None', 'foogallery' ),
-						'fg-border-thin'   => __( 'Thin', 'foogallery' ),
-						'fg-border-medium' => __( 'Medium', 'foogallery' ),
-						'fg-border-thick'  => __( 'Thick', 'foogallery' ),
-					),
-					'row_data' => array(
-						'data-foogallery-change-selector' => 'input:radio',
-						'data-foogallery-preview'         => 'shortcode'
-					)
-				);
-
-				$fields[] = array(
-					'id'       => 'rounded_corners',
-					'title'    => __( 'Rounded Corners', 'foogallery' ),
-					'desc'     => __( 'The border radius, or rounded corners applied to each thumbnail', 'foogallery' ),
-					'section'  => __( 'Appearance', 'foogallery' ),
-					'type'     => 'radio',
-					'spacer'   => '<span class="spacer"></span>',
-					'default'  => '',
-					'choices'  => array(
-						''                => __( 'None', 'foogallery' ),
-						'fg-round-small'  => __( 'Small', 'foogallery' ),
-						'fg-round-medium' => __( 'Medium', 'foogallery' ),
-						'fg-round-large'  => __( 'Large', 'foogallery' ),
-						'fg-round-full'   => __( 'Full', 'foogallery' ),
-					),
-					'row_data' => array(
-						'data-foogallery-change-selector' => 'input:radio',
-						'data-foogallery-preview'         => 'shortcode'
-					)
-				);
-
-				$fields[] = array(
-					'id'       => 'drop_shadow',
-					'title'    => __( 'Drop Shadow', 'foogallery' ),
-					'desc'     => __( 'The outer or drop shadow applied to each thumbnail', 'foogallery' ),
-					'section'  => __( 'Appearance', 'foogallery' ),
-					'type'     => 'radio',
-					'spacer'   => '<span class="spacer"></span>',
-					'default'  => 'fg-shadow-outline',
-					'choices'  => array(
-						''                  => __( 'None', 'foogallery' ),
-						'fg-shadow-outline' => __( 'Outline', 'foogallery' ),
-						'fg-shadow-small'   => __( 'Small', 'foogallery' ),
-						'fg-shadow-medium'  => __( 'Medium', 'foogallery' ),
-						'fg-shadow-large'   => __( 'Large', 'foogallery' ),
-					),
-					'row_data' => array(
-						'data-foogallery-change-selector' => 'input:radio',
-						'data-foogallery-preview'         => 'shortcode'
-					)
-				);
-
-				$fields[] = array(
-					'id'       => 'inner_shadow',
-					'title'    => __( 'Inner Shadow', 'foogallery' ),
-					'desc'     => __( 'The inner shadow applied to each thumbnail', 'foogallery' ),
-					'section'  => __( 'Appearance', 'foogallery' ),
-					'type'     => 'radio',
-					'spacer'   => '<span class="spacer"></span>',
-					'default'  => '',
-					'choices'  => array(
-						''                       => __( 'None', 'foogallery' ),
-						'fg-shadow-inset-small'  => __( 'Small', 'foogallery' ),
-						'fg-shadow-inset-medium' => __( 'Medium', 'foogallery' ),
-						'fg-shadow-inset-large'  => __( 'Large', 'foogallery' ),
-					),
-					'row_data' => array(
-						'data-foogallery-change-selector' => 'input:radio',
-						'data-foogallery-preview'         => 'shortcode'
-					)
-				);
-
-				$fields[] = array(
-					'id'       => 'loading_icon',
-					'title'    => __( 'Loading Icon', 'foogallery' ),
-					'desc'     => __( 'An animated loading icon can be shown while the thumbnails are busy loading.', 'foogallery' ),
-					'section'  => __( 'Appearance', 'foogallery' ),
-					'default'  => 'fg-loading-default',
-					'type'     => 'htmlicon',
-					'choices'  => apply_filters(
-						'foogallery_gallery_template_common_thumbnail_fields_loading_icon_choices', array(
-						''                   => array( 'label' => __( 'None', 'foogallery' ), 'html' => '<div class="foogallery-setting-loading_icon"></div>' ),
-						'fg-loading-default' => array( 'label' => __( 'Default', 'foogallery' ), 'html' => '<div class="foogallery-setting-loading_icon foogallery fg-loading-default"><div class="fg-loading"><div class="fg-loader"></div></div></div>' ),
-						'fg-loading-bars'    => array( 'label' => __( 'Bars', 'foogallery' ), 'html' => '<div class="foogallery-setting-loading_icon foogallery fg-loading-bars"><div class="fg-loading"><div class="fg-loader"></div></div></div>' ),
-						'fg-loading-dots'    => array( 'label' => __( 'Dots', 'foogallery' ), 'html' => '<div class="foogallery-setting-loading_icon foogallery fg-loading-dots"><div class="fg-loading"><div class="fg-loader"></div></div></div>' ),
-						'fg-loading-partial' => array( 'label' => __( 'Partial', 'foogallery' ), 'html' => '<div class="foogallery-setting-loading_icon foogallery fg-loading-partial"><div class="fg-loading"><div class="fg-loader"></div></div></div>' ),
-						'fg-loading-pulse'   => array( 'label' => __( 'Pulse', 'foogallery' ), 'html' => '<div class="foogallery-setting-loading_icon foogallery fg-loading-pulse"><div class="fg-loading"><div class="fg-loader"></div></div></div>' ),
-						'fg-loading-trail'   => array( 'label' => __( 'Trail', 'foogallery' ), 'html' => '<div class="foogallery-setting-loading_icon foogallery fg-loading-trail"><div class="fg-loading"><div class="fg-loader"></div></div>' ),
-					)
-					),
-					'row_data' => array(
-						'data-foogallery-change-selector' => 'input:radio',
-                        'data-foogallery-value-selector'  => 'input:checked',
-						'data-foogallery-preview'         => 'shortcode'
-					)
-				);
-
-				$fields[] = array(
-					'id'       => 'loaded_effect',
-					'title'    => __( 'Loaded Effect', 'foogallery' ),
-					'desc'     => __( 'The animation effect used to display the thumbnail, once it has loaded.', 'foogallery' ),
-					'section'  => __( 'Appearance', 'foogallery' ),
-					'default'  => 'fg-loaded-fade-in',
-					'type'     => 'select',
-					'choices'  => apply_filters(
-						'foogallery_gallery_template_common_thumbnail_fields_loaded_effect_choices', array(
-							''                      => __( 'None', 'foogallery' ),
-							'fg-loaded-fade-in'     => __( 'Fade In', 'foogallery' ),
-							'fg-loaded-slide-up'    => __( 'Slide Up', 'foogallery' ),
-							'fg-loaded-slide-down'  => __( 'Slide Down', 'foogallery' ),
-							'fg-loaded-slide-left'  => __( 'Slide Left', 'foogallery' ),
-							'fg-loaded-slide-right' => __( 'Slide Right', 'foogallery' ),
-							'fg-loaded-scale-up'    => __( 'Scale Up', 'foogallery' ),
-							'fg-loaded-swing-down'  => __( 'Swing Down', 'foogallery' ),
-							'fg-loaded-drop'        => __( 'Drop', 'foogallery' ),
-							'fg-loaded-fly'         => __( 'Fly', 'foogallery' ),
-							'fg-loaded-flip'        => __( 'Flip', 'foogallery' ),
+				if ( foogallery_feature_enabled( 'foogallery-border-size' ) ) {
+					$fields[] = array(
+						'id'       => 'border_size',
+						'title'    => __( 'Border Size', 'foogallery' ),
+						'desc'     => __( 'The border size applied to each thumbnail', 'foogallery' ),
+						'section'  => __( 'Appearance', 'foogallery' ),
+						'type'     => 'radio',
+						'spacer'   => '<span class="spacer"></span>',
+						'default'  => 'fg-border-thin',
+						'choices'  => array(
+							''                 => __( 'None', 'foogallery' ),
+							'fg-border-thin'   => __( 'Thin', 'foogallery' ),
+							'fg-border-medium' => __( 'Medium', 'foogallery' ),
+							'fg-border-thick'  => __( 'Thick', 'foogallery' ),
+						),
+						'row_data' => array(
+							'data-foogallery-change-selector' => 'input:radio',
+							'data-foogallery-preview'         => 'shortcode'
 						)
-					),
-					'row_data' => array(
-						'data-foogallery-change-selector' => 'select',
-                        'data-foogallery-value-selector'  => 'select option:selected',
-						'data-foogallery-preview'         => 'shortcode'
-					)
-				);
+					);
+				}				
+
+				if ( foogallery_feature_enabled( 'foogallery-rounded-corners' ) ) {
+					$fields[] = array(
+						'id'       => 'rounded_corners',
+						'title'    => __( 'Rounded Corners', 'foogallery' ),
+						'desc'     => __( 'The border radius, or rounded corners applied to each thumbnail', 'foogallery' ),
+						'section'  => __( 'Appearance', 'foogallery' ),
+						'type'     => 'radio',
+						'spacer'   => '<span class="spacer"></span>',
+						'default'  => '',
+						'choices'  => array(
+							''                => __( 'None', 'foogallery' ),
+							'fg-round-small'  => __( 'Small', 'foogallery' ),
+							'fg-round-medium' => __( 'Medium', 'foogallery' ),
+							'fg-round-large'  => __( 'Large', 'foogallery' ),
+							'fg-round-full'   => __( 'Full', 'foogallery' ),
+						),
+						'row_data' => array(
+							'data-foogallery-change-selector' => 'input:radio',
+							'data-foogallery-preview'         => 'shortcode'
+						)
+					);
+				}				
+
+				if ( foogallery_feature_enabled( 'foogallery-shadow-shadow' ) ) {
+					$fields[] = array(
+						'id'       => 'drop_shadow',
+						'title'    => __( 'Drop Shadow', 'foogallery' ),
+						'desc'     => __( 'The outer or drop shadow applied to each thumbnail', 'foogallery' ),
+						'section'  => __( 'Appearance', 'foogallery' ),
+						'type'     => 'radio',
+						'spacer'   => '<span class="spacer"></span>',
+						'default'  => 'fg-shadow-outline',
+						'choices'  => array(
+							''                  => __( 'None', 'foogallery' ),
+							'fg-shadow-outline' => __( 'Outline', 'foogallery' ),
+							'fg-shadow-small'   => __( 'Small', 'foogallery' ),
+							'fg-shadow-medium'  => __( 'Medium', 'foogallery' ),
+							'fg-shadow-large'   => __( 'Large', 'foogallery' ),
+						),
+						'row_data' => array(
+							'data-foogallery-change-selector' => 'input:radio',
+							'data-foogallery-preview'         => 'shortcode'
+						)
+					);
+	
+					$fields[] = array(
+						'id'       => 'inner_shadow',
+						'title'    => __( 'Inner Shadow', 'foogallery' ),
+						'desc'     => __( 'The inner shadow applied to each thumbnail', 'foogallery' ),
+						'section'  => __( 'Appearance', 'foogallery' ),
+						'type'     => 'radio',
+						'spacer'   => '<span class="spacer"></span>',
+						'default'  => '',
+						'choices'  => array(
+							''                       => __( 'None', 'foogallery' ),
+							'fg-shadow-inset-small'  => __( 'Small', 'foogallery' ),
+							'fg-shadow-inset-medium' => __( 'Medium', 'foogallery' ),
+							'fg-shadow-inset-large'  => __( 'Large', 'foogallery' ),
+						),
+						'row_data' => array(
+							'data-foogallery-change-selector' => 'input:radio',
+							'data-foogallery-preview'         => 'shortcode'
+						)
+					);
+				}
+				
+				if ( foogallery_feature_enabled( 'foogallery-loading-icon' ) ) {
+					$fields[] = array(
+						'id'       => 'loading_icon',
+						'title'    => __( 'Loading Icon', 'foogallery' ),
+						'desc'     => __( 'An animated loading icon can be shown while the thumbnails are busy loading.', 'foogallery' ),
+						'section'  => __( 'Appearance', 'foogallery' ),
+						'default'  => 'fg-loading-default',
+						'type'     => 'htmlicon',
+						'choices'  => apply_filters(
+							'foogallery_gallery_template_common_thumbnail_fields_loading_icon_choices', array(
+							''                   => array( 'label' => __( 'None', 'foogallery' ), 'html' => '<div class="foogallery-setting-loading_icon"></div>' ),
+							'fg-loading-default' => array( 'label' => __( 'Default', 'foogallery' ), 'html' => '<div class="foogallery-setting-loading_icon foogallery fg-loading-default"><div class="fg-loading"><div class="fg-loader"></div></div></div>' ),
+							'fg-loading-bars'    => array( 'label' => __( 'Bars', 'foogallery' ), 'html' => '<div class="foogallery-setting-loading_icon foogallery fg-loading-bars"><div class="fg-loading"><div class="fg-loader"></div></div></div>' ),
+							'fg-loading-dots'    => array( 'label' => __( 'Dots', 'foogallery' ), 'html' => '<div class="foogallery-setting-loading_icon foogallery fg-loading-dots"><div class="fg-loading"><div class="fg-loader"></div></div></div>' ),
+							'fg-loading-partial' => array( 'label' => __( 'Partial', 'foogallery' ), 'html' => '<div class="foogallery-setting-loading_icon foogallery fg-loading-partial"><div class="fg-loading"><div class="fg-loader"></div></div></div>' ),
+							'fg-loading-pulse'   => array( 'label' => __( 'Pulse', 'foogallery' ), 'html' => '<div class="foogallery-setting-loading_icon foogallery fg-loading-pulse"><div class="fg-loading"><div class="fg-loader"></div></div></div>' ),
+							'fg-loading-trail'   => array( 'label' => __( 'Trail', 'foogallery' ), 'html' => '<div class="foogallery-setting-loading_icon foogallery fg-loading-trail"><div class="fg-loading"><div class="fg-loader"></div></div>' ),
+						)
+						),
+						'row_data' => array(
+							'data-foogallery-change-selector' => 'input:radio',
+							'data-foogallery-value-selector'  => 'input:checked',
+							'data-foogallery-preview'         => 'shortcode'
+						)
+					);
+				}
+
+				if ( foogallery_feature_enabled( 'foogallery-loaded-effect' ) ) {
+					$fields[] = array(
+						'id'       => 'loaded_effect',
+						'title'    => __( 'Loaded Effect', 'foogallery' ),
+						'desc'     => __( 'The animation effect used to display the thumbnail, once it has loaded.', 'foogallery' ),
+						'section'  => __( 'Appearance', 'foogallery' ),
+						'default'  => 'fg-loaded-fade-in',
+						'type'     => 'select',
+						'choices'  => apply_filters(
+							'foogallery_gallery_template_common_thumbnail_fields_loaded_effect_choices', array(
+								''                      => __( 'None', 'foogallery' ),
+								'fg-loaded-fade-in'     => __( 'Fade In', 'foogallery' ),
+								'fg-loaded-slide-up'    => __( 'Slide Up', 'foogallery' ),
+								'fg-loaded-slide-down'  => __( 'Slide Down', 'foogallery' ),
+								'fg-loaded-slide-left'  => __( 'Slide Left', 'foogallery' ),
+								'fg-loaded-slide-right' => __( 'Slide Right', 'foogallery' ),
+								'fg-loaded-scale-up'    => __( 'Scale Up', 'foogallery' ),
+								'fg-loaded-swing-down'  => __( 'Swing Down', 'foogallery' ),
+								'fg-loaded-drop'        => __( 'Drop', 'foogallery' ),
+								'fg-loaded-fly'         => __( 'Fly', 'foogallery' ),
+								'fg-loaded-flip'        => __( 'Flip', 'foogallery' ),
+							)
+						),
+						'row_data' => array(
+							'data-foogallery-change-selector' => 'select',
+							'data-foogallery-value-selector'  => 'select option:selected',
+							'data-foogallery-preview'         => 'shortcode'
+						)
+					);
+				}				
+				
 				//endregion
 
 				//region Hover Effects Fields
@@ -317,102 +461,111 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 					)
 				);
 
-				$fields[] = array(
-					'id'       => 'hover_effect_color',
-					'title'    => __( 'Color Effect', 'foogallery' ),
-					'section'  => __( 'Hover Effects', 'foogallery' ),
-					'default'  => '',
-					'spacer'   => '<span class="spacer"></span>',
-					'type'     => 'radio',
-					'choices'  => apply_filters(
-						'foogallery_gallery_template_common_thumbnail_fields_hover_effect_color_choices', array(
-						''                   => __( 'None', 'foogallery' ),
-						'fg-hover-colorize'  => __( 'Colorize', 'foogallery' ),
-						'fg-hover-grayscale' => __( 'Greyscale', 'foogallery' ),
-					)
-					),
-					'desc'     => __( 'Choose an color effect that is applied when you hover over a thumbnail.', 'foogallery' ),
-					'row_data' => array(
-						'data-foogallery-change-selector'       => 'input:radio',
-						'data-foogallery-hidden'                => true,
-						'data-foogallery-show-when-field'       => 'hover_effect_type',
-						'data-foogallery-show-when-field-value' => 'normal',
-						'data-foogallery-preview'               => 'shortcode'
-					)
-				);
+				if ( foogallery_feature_enabled( 'foogallery-hover-effect-color' ) ) {
+					$fields[] = array(
+						'id'       => 'hover_effect_color',
+						'title'    => __( 'Color Effect', 'foogallery' ),
+						'section'  => __( 'Hover Effects', 'foogallery' ),
+						'default'  => '',
+						'spacer'   => '<span class="spacer"></span>',
+						'type'     => 'radio',
+						'choices'  => apply_filters(
+							'foogallery_gallery_template_common_thumbnail_fields_hover_effect_color_choices', array(
+							''                   => __( 'None', 'foogallery' ),
+							'fg-hover-colorize'  => __( 'Colorize', 'foogallery' ),
+							'fg-hover-grayscale' => __( 'Greyscale', 'foogallery' ),
+						)
+						),
+						'desc'     => __( 'Choose an color effect that is applied when you hover over a thumbnail.', 'foogallery' ),
+						'row_data' => array(
+							'data-foogallery-change-selector'       => 'input:radio',
+							'data-foogallery-hidden'                => true,
+							'data-foogallery-show-when-field'       => 'hover_effect_type',
+							'data-foogallery-show-when-field-value' => 'normal',
+							'data-foogallery-preview'               => 'shortcode'
+						)
+					);
+				}
 
-				$fields[] = array(
-					'id'       => 'hover_effect_scale',
-					'title'    => __( 'Scaling Effect', 'foogallery' ),
-					'section'  => __( 'Hover Effects', 'foogallery' ),
-					'default'  => '',
-					'spacer'   => '<span class="spacer"></span>',
-					'type'     => 'radio',
-					'choices'  => apply_filters(
-						'foogallery_gallery_template_common_thumbnail_fields_hover_effect_scale_choices', array(
-						''               => __( 'None', 'foogallery' ),
-						'fg-hover-scale' => __( 'Scaled', 'foogallery' ),
-						'fg-hover-zoomed' => __( 'Zoomed', 'foogallery' ),
-					)
-					),
-					'desc'     => __( 'Apply a slight scaling effect when hovering over a thumbnail.', 'foogallery' ),
-					'row_data' => array(
-						'data-foogallery-change-selector'       => 'input:radio',
-						'data-foogallery-hidden'                => true,
-						'data-foogallery-show-when-field'       => 'hover_effect_type',
-						'data-foogallery-show-when-field-value' => 'normal',
-						'data-foogallery-preview'               => 'shortcode'
-					)
-				);
+				if ( foogallery_feature_enabled( 'foogallery-hover-effect-scale' ) ) {
+					$fields[] = array(
+						'id'       => 'hover_effect_scale',
+						'title'    => __( 'Scaling Effect', 'foogallery' ),
+						'section'  => __( 'Hover Effects', 'foogallery' ),
+						'default'  => '',
+						'spacer'   => '<span class="spacer"></span>',
+						'type'     => 'radio',
+						'choices'  => apply_filters(
+							'foogallery_gallery_template_common_thumbnail_fields_hover_effect_scale_choices', array(
+							''               => __( 'None', 'foogallery' ),
+							'fg-hover-scale' => __( 'Scaled', 'foogallery' ),
+							'fg-hover-zoomed' => __( 'Zoomed', 'foogallery' ),
+						)
+						),
+						'desc'     => __( 'Apply a slight scaling effect when hovering over a thumbnail.', 'foogallery' ),
+						'row_data' => array(
+							'data-foogallery-change-selector'       => 'input:radio',
+							'data-foogallery-hidden'                => true,
+							'data-foogallery-show-when-field'       => 'hover_effect_type',
+							'data-foogallery-show-when-field-value' => 'normal',
+							'data-foogallery-preview'               => 'shortcode'
+						)
+					);
+				}
 
-				$fields[] = array(
-					'id'       => 'hover_effect_caption_visibility',
-					'title'    => __( 'Caption Visibility', 'foogallery' ),
-					'section'  => __( 'Hover Effects', 'foogallery' ),
-					'default'  => 'fg-caption-hover',
-					'spacer'   => '<span class="spacer"></span>',
-					'type'     => 'radio',
-					'choices'  => apply_filters(
-						'foogallery_gallery_template_common_thumbnail_fields_hover_effect_caption_visibility_choices', array(
-						''                  => __( 'None', 'foogallery' ),
-						'fg-caption-hover'  => __( 'On Hover', 'foogallery' ),
-						'fg-caption-always' => __( 'Always Visible', 'foogallery' ),
-					)
-					),
-					'desc'     => __( 'Choose how the captions will be displayed.', 'foogallery' ),
-					'row_data' => array(
-						'data-foogallery-change-selector'       => 'input:radio',
-						'data-foogallery-hidden'                => true,
-						'data-foogallery-show-when-field'       => 'hover_effect_type',
-						'data-foogallery-show-when-field-value' => 'normal',
-						'data-foogallery-preview'               => 'shortcode'
-					)
-				);
+				if ( foogallery_feature_enabled( 'foogallery-hover-effect-caption-visibility' ) ) {
+					$fields[] = array(
+						'id'       => 'hover_effect_caption_visibility',
+						'title'    => __( 'Caption Visibility', 'foogallery' ),
+						'section'  => __( 'Hover Effects', 'foogallery' ),
+						'default'  => 'fg-caption-hover',
+						'spacer'   => '<span class="spacer"></span>',
+						'type'     => 'radio',
+						'choices'  => apply_filters(
+							'foogallery_gallery_template_common_thumbnail_fields_hover_effect_caption_visibility_choices', array(
+							''                  => __( 'None', 'foogallery' ),
+							'fg-caption-hover'  => __( 'On Hover', 'foogallery' ),
+							'fg-caption-always' => __( 'Always Visible', 'foogallery' ),
+						)
+						),
+						'desc'     => __( 'Choose how the captions will be displayed.', 'foogallery' ),
+						'row_data' => array(
+							'data-foogallery-change-selector'       => 'input:radio',
+							'data-foogallery-hidden'                => true,
+							'data-foogallery-show-when-field'       => 'hover_effect_type',
+							'data-foogallery-show-when-field-value' => 'normal',
+							'data-foogallery-preview'               => 'shortcode'
+						)
+					);
+				}
 
-				$fields[] = array(
-					'id'       => 'hover_effect_transition',
-					'title'    => __( 'Transition', 'foogallery' ),
-					'section'  => __( 'Hover Effects', 'foogallery' ),
-					'default'  => 'fg-hover-fade',
-					'type'     => 'select',
-					'choices'  => apply_filters( 'foogallery_gallery_template_common_thumbnail_fields_hover_effect_transition_choices', array(
-						'fg-hover-instant'     => __( 'Instant', 'foogallery' ),
-						'fg-hover-fade'        => __( 'Fade', 'foogallery' ),
-						'fg-hover-slide-up'    => __( 'Slide Up', 'foogallery' ),
-						'fg-hover-slide-down'  => __( 'Slide Down', 'foogallery' ),
-						'fg-hover-slide-left'  => __( 'Slide Left', 'foogallery' ),
-						'fg-hover-slide-right' => __( 'Slide Right', 'foogallery' ),
-						'fg-hover-push'        => __( 'Push', 'foogallery' ) )
-					),
-					'desc'     => __( 'Choose what effect is used to show the caption when you hover over a thumbnail', 'foogallery' ),
-					'row_data' => array(
-						'data-foogallery-change-selector'       => 'select',
-						'data-foogallery-hidden'                => true,
-						'data-foogallery-show-when-field'       => 'hover_effect_type',
-						'data-foogallery-show-when-field-value' => 'normal',
-						'data-foogallery-preview'               => 'shortcode'
-					)
-				);
+				if ( foogallery_feature_enabled( 'foogallery-hover-effect-transition' ) ) {
+					$fields[] = array(
+						'id'       => 'hover_effect_transition',
+						'title'    => __( 'Transition', 'foogallery' ),
+						'section'  => __( 'Hover Effects', 'foogallery' ),
+						'default'  => 'fg-hover-fade',
+						'type'     => 'select',
+						'choices'  => apply_filters( 'foogallery_gallery_template_common_thumbnail_fields_hover_effect_transition_choices', array(
+							'fg-hover-instant'     => __( 'Instant', 'foogallery' ),
+							'fg-hover-fade'        => __( 'Fade', 'foogallery' ),
+							'fg-hover-slide-up'    => __( 'Slide Up', 'foogallery' ),
+							'fg-hover-slide-down'  => __( 'Slide Down', 'foogallery' ),
+							'fg-hover-slide-left'  => __( 'Slide Left', 'foogallery' ),
+							'fg-hover-slide-right' => __( 'Slide Right', 'foogallery' ),
+							'fg-hover-push'        => __( 'Push', 'foogallery' ) )
+						),
+						'desc'     => __( 'Choose what effect is used to show the caption when you hover over a thumbnail', 'foogallery' ),
+						'row_data' => array(
+							'data-foogallery-change-selector'       => 'select',
+							'data-foogallery-hidden'                => true,
+							'data-foogallery-show-when-field'       => 'hover_effect_type',
+							'data-foogallery-show-when-field-value' => 'normal',
+							'data-foogallery-preview'               => 'shortcode'
+						)
+					);
+				}
+				
 
 				$fields[] = array(
 					'id'       => 'hover_effect_icon',
