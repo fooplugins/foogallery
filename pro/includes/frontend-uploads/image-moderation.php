@@ -14,9 +14,46 @@ if (isset($_POST['moderate_image'])) {
     $action = sanitize_text_field($_POST['action']);
 
     if ($action === 'approve') {      
-        // TODO:: approved images to be submitted to the gallery.
+        // Get the gallery ID and file name from the form data
+        $gallery_id = isset($_POST['gallery_id']) ? intval($_POST['gallery_id']) : null;
+        $file_name = isset($_POST['image_id']) ? sanitize_text_field($_POST['image_id']) : null;
 
-    } elseif ($action === 'reject') {
+        if ($gallery_id && $file_name) {
+            // Function to retrieve and merge attachments without specific attachment IDs
+            function merge_attachments_with_uploaded_images($gallery_id) {
+                // Get the existing attachments for the gallery
+                $existing_attachments = get_post_meta($gallery_id, FOOGALLERY_META_ATTACHMENTS, true);
+
+                // Get the uploaded images' file names from metadata
+                $uploaded_images = array();
+                $user_folder = wp_upload_dir()['basedir'] . '/users_uploads/' . $gallery_id . '/';
+                $metadata_file = $user_folder . 'metadata.json';
+
+                if (file_exists($metadata_file)) {
+                    $metadata = json_decode(file_get_contents($metadata_file), true);
+                    if (isset($metadata['items']) && is_array($metadata['items'])) {
+                        foreach ($metadata['items'] as $item) {
+                            if (isset($item['file'])) {
+                                $uploaded_images[] = $item['file'];
+                            }
+                        }
+                    }
+                }
+
+                // Merge the existing attachments with the uploaded images
+                $merged_attachments = array_merge($existing_attachments, $uploaded_images);
+
+                // Update the gallery's attachments with the merged array
+                update_post_meta($gallery_id, FOOGALLERY_META_ATTACHMENTS, $merged_attachments);
+
+                echo 'Images approved and added to the gallery successfully.';
+            }
+
+            // Call the function with the $gallery_id parameter
+            merge_attachments_with_uploaded_images($gallery_id);        
+
+    } 
+} elseif ($action === 'reject') {
         // Get the gallery ID and file name from the form data
         $gallery_id = isset($_POST['gallery_id']) ? intval($_POST['gallery_id']) : null;
         $file_name = isset($_POST['image_id']) ? sanitize_text_field($_POST['image_id']) : null;
@@ -110,3 +147,4 @@ if (is_dir($user_uploads_dir)) {
         </tbody>
     </table>
 </div>
+<?php
