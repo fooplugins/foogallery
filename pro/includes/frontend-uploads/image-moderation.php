@@ -19,40 +19,46 @@ if (isset($_POST['moderate_image'])) {
         $file_name = isset($_POST['image_id']) ? sanitize_text_field($_POST['image_id']) : null;
 
         if ($gallery_id && $file_name) {
-            // Function to retrieve and merge attachments without specific attachment IDs
-            function merge_attachments_with_uploaded_images($gallery_id) {
-                // Get the existing attachments for the gallery
-                $existing_attachments = get_post_meta($gallery_id, FOOGALLERY_META_ATTACHMENTS, true);
+            // Get the gallery ID and file name from the form data
+    $gallery_id = isset($_POST['gallery_id']) ? intval($_POST['gallery_id']) : null;
+    $file_name = isset($_POST['image_id']) ? sanitize_text_field($_POST['image_id']) : null;
 
-                // Get the uploaded images' file names from metadata
-                $uploaded_images = array();
-                $user_folder = wp_upload_dir()['basedir'] . '/users_uploads/' . $gallery_id . '/';
-                $metadata_file = $user_folder . 'metadata.json';
+    if ($gallery_id && $file_name) {
+        // Function to retrieve and merge attachments with the specific approved image
+        function merge_attachments_with_uploaded_images($gallery_id, $approved_image) {
+            // Get the existing attachments for the gallery
+            $existing_attachments = get_post_meta($gallery_id, FOOGALLERY_META_ATTACHMENTS, true);
 
-                if (file_exists($metadata_file)) {
-                    $metadata = json_decode(file_get_contents($metadata_file), true);
-                    if (isset($metadata['items']) && is_array($metadata['items'])) {
-                        foreach ($metadata['items'] as $item) {
-                            if (isset($item['file'])) {
-                                $uploaded_images[] = $item['file'];
-                            }
+            // Get the uploaded image's file name from metadata
+            $uploaded_images = array();
+            $user_folder = wp_upload_dir()['basedir'] . '/users_uploads/' . $gallery_id . '/';
+            $metadata_file = $user_folder . 'metadata.json';
+
+            if (file_exists($metadata_file)) {
+                $metadata = json_decode(file_get_contents($metadata_file), true);
+                if (isset($metadata['items']) && is_array($metadata['items'])) {
+                    foreach ($metadata['items'] as $item) {
+                        if (isset($item['file']) && $item['file'] === $approved_image) {
+                            $uploaded_images[] = $item['file']; // Add only the approved image
                         }
                     }
                 }
-
-                // Merge the existing attachments with the uploaded images
-                $merged_attachments = array_merge($existing_attachments, $uploaded_images);
-
-                // Update the gallery's attachments with the merged array
-                update_post_meta($gallery_id, FOOGALLERY_META_ATTACHMENTS, $merged_attachments);
-
-                echo 'Images approved and added to the gallery successfully.';
             }
 
-            // Call the function with the $gallery_id parameter
-            merge_attachments_with_uploaded_images($gallery_id);        
+            // Merge the existing attachments with the uploaded images
+            $merged_attachments = array_merge($existing_attachments, $uploaded_images);
+
+            // Update the gallery's attachments with the merged array
+            update_post_meta($gallery_id, FOOGALLERY_META_ATTACHMENTS, $merged_attachments);
+
+            echo 'Image approved and added to the gallery successfully.';
+        }
+
+        // Call the function with the $gallery_id and $file_name parameters
+        merge_attachments_with_uploaded_images($gallery_id, $file_name);       
 
     } 
+}
 } elseif ($action === 'reject') {
         // Get the gallery ID and file name from the form data
         $gallery_id = isset($_POST['gallery_id']) ? intval($_POST['gallery_id']) : null;
