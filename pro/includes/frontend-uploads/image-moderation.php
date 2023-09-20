@@ -19,10 +19,7 @@ if (isset($_POST['moderate_image'])) {
         $file_name = isset($_POST['image_id']) ? sanitize_text_field($_POST['image_id']) : null;
 
         if ($gallery_id && $file_name) {
-            // Get the gallery ID and file name from the form data
-    $gallery_id = isset($_POST['gallery_id']) ? intval($_POST['gallery_id']) : null;
-    $file_name = isset($_POST['image_id']) ? sanitize_text_field($_POST['image_id']) : null;
-
+            
     if ($gallery_id && $file_name) {
         // Function to retrieve and merge attachments with the specific approved image
         function merge_attachments_with_uploaded_images($gallery_id, $approved_image) {
