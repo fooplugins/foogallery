@@ -126,10 +126,12 @@ if ( ! class_exists( 'FooGallery_Image_Upload_Form_Shortcode' ) ) {
                     function displayUploadedImages(files) {
                         uploadedImagesContainer.innerHTML = '';
 
-                        for (const file of files) {
+                        for (const [index, file] of files.entries()) {
                             if (file.type.startsWith('image/')) {
                                 const img = document.createElement('img');
+                                const timestamp = Date.now(); // Generate a unique ID using timestamp
                                 img.src = URL.createObjectURL(file);
+                                img.setAttribute('data-attachment-id', timestamp); // Store the unique ID as a data attribute
                                 uploadedImagesContainer.appendChild(img);
                             }
                         }
@@ -177,26 +179,30 @@ if ( ! class_exists( 'FooGallery_Image_Upload_Form_Shortcode' ) ) {
                             // Generate a unique file name for the uploaded image in the user folder
                             $unique_filename = wp_unique_filename($user_folder, $filename);
                             $user_file = $user_folder . $unique_filename;
-                
+                    
+                            // Generate a unique ID (timestamp) for the attachment
+                            $attachment_id = time(); // You can use any method to generate a unique ID
+                    
                             // Move the uploaded file to the user folder
                             if (move_uploaded_file($uploaded_files['tmp_name'][$key], $user_file)) {
                                 // Create an array to store image metadata
                                 $image_metadata = array(
                                     "file" => $unique_filename,
-                                    "gallery_id" => $gallery_id, // Add the gallery ID to metadata
+                                    "attachment_id" => $attachment_id,
+                                    "gallery_id" => $gallery_id,
                                     "caption" => isset($_POST['caption'][$key]) ? sanitize_text_field($_POST['caption'][$key]) : "",
                                     "description" => isset($_POST['description'][$key]) ? sanitize_text_field($_POST['description'][$key]) : "",
                                     "alt" => isset($_POST['alt'][$key]) ? sanitize_text_field($_POST['alt'][$key]) : "",
                                     "custom_url" => isset($_POST['custom_url'][$key]) ? esc_url($_POST['custom_url'][$key]) : "",
                                     "custom_target" => isset($_POST['custom_target'][$key]) ? sanitize_text_field($_POST['custom_target'][$key]) : ""
                                 );
-                                
+                    
                                 $metadata_file = $user_folder . 'metadata.json';
                                 $existing_metadata = file_exists($metadata_file) ? json_decode(file_get_contents($metadata_file), true) : array("items" => array());
-                
+                    
                                 // Add the new image's metadata to the array
                                 $existing_metadata["items"][] = $image_metadata;
-                
+                    
                                 // Encode the metadata as JSON and save it to the metadata file
                                 file_put_contents($metadata_file, json_encode($existing_metadata, JSON_PRETTY_PRINT));
                             } else {
@@ -206,11 +212,7 @@ if ( ! class_exists( 'FooGallery_Image_Upload_Form_Shortcode' ) ) {
                             echo 'File is not an image.';
                         }
                     }
-                
-                    echo '<div class="success-message" style="color: green; text-align: center;">' . __('Image(s) successfully uploaded and awaiting moderation', 'foogallery') . '</div>';
-                } else {
-                    echo 'No files uploaded or an error occurred.';
-                }
+                }                    
             }
         }
 
