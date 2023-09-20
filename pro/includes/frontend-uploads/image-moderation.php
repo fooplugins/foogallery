@@ -13,16 +13,35 @@ if (isset($_POST['moderate_image'])) {
     $image_id = sanitize_text_field($_POST['image_id']);
     $action = sanitize_text_field($_POST['action']);
 
-    // TODO:: Implement  moderation logic here
-    if ($action === 'approve') {
-        // Approve images published to galleries
+    if ($action === 'approve') {      
+        // TODO:: approved images to be submitted to the gallery.
+
     } elseif ($action === 'reject') {
-        // delete images from the server.     
+        // Get the gallery ID and file name from the form data
+        $gallery_id = isset($_POST['gallery_id']) ? intval($_POST['gallery_id']) : null;
+        $file_name = isset($_POST['image_id']) ? sanitize_text_field($_POST['image_id']) : null;
+    
+        if ($gallery_id && $file_name) {
+            // Delete the image file from the server
+            $user_folder = wp_upload_dir()['basedir'] . '/users_uploads/' . $gallery_id . '/';
+            $deleted = unlink($user_folder . $file_name);
+    
+            if ($deleted) {
+                // Remove the metadata entry for the rejected image
+                $metadata_file = $user_folder . 'metadata.json';
+                if (file_exists($metadata_file)) {
+                    $existing_metadata = json_decode(file_get_contents($metadata_file), true);
+                    $existing_metadata['items'] = array_filter($existing_metadata['items'], function ($item) use ($file_name) {
+                        return $item['file'] !== $file_name;
+                    });
+                    file_put_contents($metadata_file, json_encode($existing_metadata, JSON_PRETTY_PRINT));
+                }
+    
+                // Show a success message
+                echo '<div class="success-message" style="color: green; text-align: center;">' . __('Image successfully rejected', 'foogallery') . '</div>';
+            }
+        }
     }
-
-    // Redirect back to the moderation page
-    wp_redirect(admin_url('admin.php?page=foogallery-image-moderation'));
-
 }
 
 // Initialize an array to store gallery IDs
