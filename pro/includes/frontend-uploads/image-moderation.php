@@ -43,7 +43,7 @@ if (isset($_POST['moderate_image'])) {
                         if (isset($metadata['items']) && is_array($metadata['items'])) {
                             foreach ($metadata['items'] as $item) {
                                 if (isset($item['file']) && $item['file'] === $approved_image) {
-                                    $uploaded_images[] = $item; // Add both the approved image and its metadata
+                                    $uploaded_images[] = $item;
                                 }
                             }
                         }
@@ -126,7 +126,7 @@ if (isset($_POST['moderate_image'])) {
 // Initialize an array to store gallery IDs
 $gallery_ids = array();
 
-// Iterate through the users upload folders
+// Iterate through the users' upload folders
 $upload_dir = wp_upload_dir();
 $user_uploads_dir = $upload_dir['basedir'] . '/users_uploads/';
 
@@ -144,12 +144,30 @@ if (is_dir($user_uploads_dir)) {
     }
 }
 
+// Handle filtering by gallery ID
+$filter_gallery_id = isset($_POST['filter_gallery_id']) ? intval($_POST['filter_gallery_id']) : 0;
+
 ?>
 
+
 <!-- HTML for the Moderation Page -->
-<div class="wrap">
+<div class="wrap" id="image-moderation-container">
     <h2>Image Moderation</h2>
-    
+
+    <!-- Gallery ID filter dropdown -->
+    <form method="post" style="margin-bottom: 20px;">
+        <label for="filter_gallery_id">Filter by Gallery ID:</label>
+        <select name="filter_gallery_id" id="filter_gallery_id">
+            <option value="0">All</option>
+            <?php foreach ($images_to_moderate as $gallery_id => $images) : ?>
+                <option value="<?php echo esc_attr($gallery_id); ?>" <?php selected($filter_gallery_id, $gallery_id); ?>>
+                    <?php echo esc_html($gallery_id); ?>
+                </option>
+            <?php endforeach; ?>
+        </select>
+        <input type="submit" name="filter_images" value="Filter" hidden>
+    </form>
+
     <table class="wp-list-table widefat fixed striped">
         <thead>
             <tr>
@@ -161,32 +179,44 @@ if (is_dir($user_uploads_dir)) {
         </thead>
         <tbody>
             <?php foreach ($images_to_moderate as $gallery_id => $images) : ?>
-                <?php foreach ($images as $image) : ?>
-                    <tr>
-                        <td><?php echo esc_html($gallery_id); ?></td>
-                        <td><img src="<?php echo esc_url($image['file']); ?>" alt="<?php echo esc_attr($image['alt']); ?>" /></td>
-                        <td>
-                            <p><strong>Caption:</strong> <?php echo esc_html($image['caption']); ?></p>
-                            <p><strong>Description:</strong> <?php echo esc_html($image['description']); ?></p>
-                            <p><strong>Alt Text:</strong> <?php echo esc_html($image['alt']); ?></p>
-                            <p><strong>Custom URL:</strong> <?php echo esc_url($image['custom_url']); ?></p>
-                            <p><strong>Custom Target:</strong> <?php echo esc_html($image['custom_target']); ?></p>
-                        </td>
-                        <td>
-                            <form method="post">
-                                <input type="hidden" name="gallery_id" value="<?php echo esc_attr($gallery_id); ?>">
-                                <input type="hidden" name="image_id" value="<?php echo esc_attr($image['file']); ?>">
-                                <select name="action">
-                                    <option value="approve">Approve</option>
-                                    <option value="reject">Reject</option>
-                                </select>
-                                <input type="submit" name="moderate_image" value="Submit">
-                            </form>
-                        </td>
-                    </tr>
-                <?php endforeach; ?>
+                <?php if ($filter_gallery_id === 0 || $filter_gallery_id === $gallery_id) : ?>
+                    <?php foreach ($images as $image) : ?>
+                        <tr>
+                            <td><?php echo esc_html($gallery_id); ?></td>
+                            <td><img src="<?php echo esc_url($image['file']); ?>" alt="<?php echo esc_attr($image['alt']); ?>" /></td>
+                            <td>
+                                <p><strong>Caption:</strong> <?php echo esc_html($image['caption']); ?></p>
+                                <p><strong>Description:</strong> <?php echo esc_html($image['description']); ?></p>
+                                <p><strong>Alt Text:</strong> <?php echo esc_html($image['alt']); ?></p>
+                                <p><strong>Custom URL:</strong> <?php echo esc_url($image['custom_url']); ?></p>
+                                <p><strong>Custom Target:</strong> <?php echo esc_html($image['custom_target']); ?></p>
+                            </td>
+                            <td>
+                                <form method="post">
+                                    <input type="hidden" name="gallery_id" value="<?php echo esc_attr($gallery_id); ?>">
+                                    <input type="hidden" name="image_id" value="<?php echo esc_attr($image['file']); ?>">
+                                    <select name="action">
+                                        <option value="approve">Approve</option>
+                                        <option value="reject">Reject</option>
+                                    </select>
+                                    <input type="submit" name="moderate_image" value="Submit">
+                                </form>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                <?php endif; ?>
             <?php endforeach; ?>
         </tbody>
     </table>
 </div>
+
+<script>    
+    const filterDropdown = document.getElementById('filter_gallery_id');
+
+    filterDropdown.addEventListener('change', function () {        
+        const form = filterDropdown.closest('form');
+        form.submit();
+    });
+</script>
+
 <?php
