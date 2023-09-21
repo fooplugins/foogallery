@@ -1200,9 +1200,34 @@ function foogallery_current_gallery_attachments_for_rendering() {
         return $attachments;
     }
 
-    //by default, return all attachments
-    return $current_foogallery->attachments();
+    // Get the existing attachments for the gallery
+    $existing_attachments = $current_foogallery->attachments();
+
+    // Get the gallery ID from the gallery object
+    $gallery_id = $current_foogallery->ID;
+
+    // Get the uploaded images' file names from metadata
+    $uploaded_images = array();
+    $user_folder = wp_upload_dir()['basedir'] . '/users_uploads/' . $gallery_id . '/approved_uploads/';
+    $metadata_file = $user_folder . 'metadata.json';
+
+    if (file_exists($metadata_file)) {
+        $metadata = json_decode(file_get_contents($metadata_file), true);
+        if (isset($metadata['items']) && is_array($metadata['items'])) {
+            foreach ($metadata['items'] as $item) {
+                if (isset($item['file'])) {
+                    $uploaded_images[] = $item['file'];
+                }
+            }
+        }
+    }
+
+    // Merge the existing attachments with the uploaded images
+    $merged_attachments = array_merge($existing_attachments, $uploaded_images);
+
+    return $merged_attachments;
 }
+
 
 /**
  * Return attachment ID from a URL
