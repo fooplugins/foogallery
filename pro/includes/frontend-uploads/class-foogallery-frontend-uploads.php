@@ -168,35 +168,39 @@ if ( ! class_exists( 'FooGallery_Image_Upload_Form_Shortcode' ) ) {
             return $output;
         }
 
-        /**
-         * Handle the image upload
-         */
         function handle_image_upload() {
             global $gallery_id; 
+        
             // Check if the form was submitted
             if (isset($_POST['foogallery_image_upload'])) {
                 // Get the gallery ID from the form data
                 $gallery_id = isset($_POST['gallery_id']) ? intval($_POST['gallery_id']) : null;
-
+        
                 // Check if files were uploaded
                 if (isset($_FILES['foogallery_images'])) {
                     $uploaded_files = $_FILES['foogallery_images'];
-
-                    // user folder to store the uploaded images
+        
+                    // User folder to store the uploaded images
                     $user_folder = wp_upload_dir()['basedir'] . '/users_uploads/' . $gallery_id . '/';
-
+        
                     // Create the user folder if it doesn't exist.
                     if (!file_exists($user_folder)) {
-                        wp_mkdir_p($user_folder);
+                        if (wp_mkdir_p($user_folder)) {
+                            // Set permissions for the user folder to 755 (read/write/execute for owner, read/execute for others)
+                            chmod($user_folder, 0755);
+                        } else {
+                            echo 'Error creating the user folder.';
+                            return; 
+                        }
                     }
-
+        
                     foreach ($uploaded_files['name'] as $key => $filename) {
                         // Check if the file is an image
                         if ($uploaded_files['type'][$key] && strpos($uploaded_files['type'][$key], 'image/') === 0) {
                             // Generate a unique file name for the uploaded image in the user folder
                             $unique_filename = wp_unique_filename($user_folder, $filename);
                             $user_file = $user_folder . $unique_filename;
-                
+        
                             // Move the uploaded file to the user folder
                             if (move_uploaded_file($uploaded_files['tmp_name'][$key], $user_file)) {
                                 // Create an array to store image metadata
@@ -209,23 +213,23 @@ if ( ! class_exists( 'FooGallery_Image_Upload_Form_Shortcode' ) ) {
                                     "custom_url" => isset($_POST['custom_url'][$key]) ? esc_url($_POST['custom_url'][$key]) : "",
                                     "custom_target" => isset($_POST['custom_target'][$key]) ? sanitize_text_field($_POST['custom_target'][$key]) : ""
                                 );
-                                
+        
                                 $metadata_file = $user_folder . 'metadata.json';
                                 $existing_metadata = file_exists($metadata_file) ? json_decode(file_get_contents($metadata_file), true) : array("items" => array());
-                
+        
                                 // Add the new image's metadata to the array
                                 $existing_metadata["items"][] = $image_metadata;
-                
+        
                                 // Encode the metadata as JSON and save it to the metadata file
                                 file_put_contents($metadata_file, json_encode($existing_metadata, JSON_PRETTY_PRINT));
                             } else {
-                                echo 'Error uploading the file(s).';
+                                echo 'Error moving the file(s).';
                             }
                         } else {
                             echo 'File is not an image.';
                         }
                     }
-                
+        
                     echo '<div class="success-message" style="color: green; text-align: center;">' . __('Image(s) successfully uploaded and awaiting moderation', 'foogallery') . '</div>';
                 } else {
                     echo 'No files uploaded or an error occurred.';
