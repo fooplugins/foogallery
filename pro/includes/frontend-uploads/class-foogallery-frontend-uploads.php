@@ -192,7 +192,7 @@ if ( ! class_exists( 'FooGallery_Image_Upload_Form_Shortcode' ) ) {
                             // Set permissions for the user folder to 755 (read/write/execute for owner, read/execute for others)
                             chmod( $user_folder, 0755 );
                         } else {
-                            echo 'Error creating the user folder.';
+                            echo '<div class="error-message" style="color: red; text-align: center;">' . __( 'Error creating the user folder.', 'foogallery' ) . '</div>';
                             return; 
                         }
                     }
@@ -226,16 +226,16 @@ if ( ! class_exists( 'FooGallery_Image_Upload_Form_Shortcode' ) ) {
                                 // Encode the metadata as JSON and save it to the metadata file.
                                 file_put_contents( $metadata_file, json_encode( $existing_metadata, JSON_PRETTY_PRINT ) );
                             } else {
-                                echo 'Error moving the file(s).';
+                                echo '<div class="error-message" style="color: red; text-align: center;">' . __( 'Error moving the file(s).', 'foogallery' ) . '</div>';
                             }
                         } else {
-                            echo 'File is not an image.';
+                            echo '<div class="error-message" style="color: red; text-align: center;">' . __( 'File is not an image.', 'foogallery' ) . '</div>';
                         }
                     }
         
                     echo '<div class="success-message" style="color: green; text-align: center;">' . __( 'Image(s) successfully uploaded and awaiting moderation.', 'foogallery' ) . '</div>';
                 } else {
-                    echo 'No files uploaded or an error occurred.';
+                    echo '<div class="error-message" style="color: red; text-align: center;">' . __( 'No files uploaded or an error occurred.', 'foogallery' ) . '</div>';
                 }
             }
         }
