@@ -8,8 +8,8 @@ if ( ! class_exists( 'FooGallery_Image_Upload_Form_Shortcode' ) ) {
 
         function __construct() {
             add_action( 'wp_enqueue_scripts', array($this,'frontendEnqueueScripts') );
-            add_shortcode('foogallery_image_upload_form', array($this, 'render_image_upload_form'));
-            add_action('init', array($this, 'handle_image_upload'));
+            add_shortcode( 'foogallery_image_upload_form', array( $this, 'render_image_upload_form' ) );
+            add_action( 'init', array( $this, 'handle_image_upload' ) );
         }
     
         /**
@@ -18,7 +18,7 @@ if ( ! class_exists( 'FooGallery_Image_Upload_Form_Shortcode' ) ) {
         public function frontendEnqueueScripts() {
             $directory = plugin_dir_url(__FILE__);
         
-            wp_enqueue_style('frontend-uploads', $directory . 'foogallery-frontend-uploads.css', array(), '1.0');
+            wp_enqueue_style( 'frontend-uploads', $directory . 'foogallery-frontend-uploads.css', array(), '1.0' );
         }    
 
         /**
@@ -26,12 +26,12 @@ if ( ! class_exists( 'FooGallery_Image_Upload_Form_Shortcode' ) ) {
          * @param $atts
          * @return string
          */
-        function render_image_upload_form($atts) {
+        function render_image_upload_form( $atts ) {
             global $gallery_id; 
-            $gallery_id = isset($atts['gallery_id']) ? intval($atts['gallery_id']) : null;
+            $gallery_id = isset( $atts['gallery_id'] ) ? intval( $atts['gallery_id'] ) : null;
             $output = '';
 
-            // Check if the gallery_id attribute is provided
+            // Check if the gallery_id attribute is provided.
             if ( ! $gallery_id) {
                 $output = 'Gallery ID not specified.';
             } else {
@@ -39,7 +39,7 @@ if ( ! class_exists( 'FooGallery_Image_Upload_Form_Shortcode' ) ) {
                 ?>
                 <form method="post" enctype="multipart/form-data">
                 <div style="max-width: 500px; max-height: 200px; border: 1px dashed #999; text-align: center; padding: 20px; margin-top: 10px;">
-                    <input type="hidden" name="gallery_id" value="<?php echo esc_attr($gallery_id); ?>" /> <!-- Add gallery_id as a hidden input -->
+                    <input type="hidden" name="gallery_id" value="<?php echo esc_attr($gallery_id); ?>" />
                     <input type="file" name="foogallery_images[]" id="image-upload" accept="image/*" multiple style="display: none;" />
                     <label for="image-upload" style="cursor: pointer;">
                         <p>Click to <span style="text-decoration: underline;">browse</span> or drag & drop image(s) here</p>
@@ -168,45 +168,48 @@ if ( ! class_exists( 'FooGallery_Image_Upload_Form_Shortcode' ) ) {
             return $output;
         }
 
+        /**
+         * Handle the uploaded images.
+         */
         function handle_image_upload() {
             global $gallery_id; 
         
-            // Check if the form was submitted
-            if (isset($_POST['foogallery_image_upload'])) {
-                // Get the gallery ID from the form data
-                $gallery_id = isset($_POST['gallery_id']) ? intval($_POST['gallery_id']) : null;
+            // Check if the form was submitted.
+            if ( isset( $_POST['foogallery_image_upload'] ) ) {
+                // Get the gallery ID from the form data.
+                $gallery_id = isset( $_POST['gallery_id'] ) ? intval( $_POST['gallery_id'] ) : null;
         
-                // Check if files were uploaded
-                if (isset($_FILES['foogallery_images'])) {
+                // Check if files were uploaded.
+                if ( isset( $_FILES['foogallery_images'] ) ) {
                     $uploaded_files = $_FILES['foogallery_images'];
         
-                    // User folder to store the uploaded images
+                    // User folder to store the uploaded images.
                     $user_folder = wp_upload_dir()['basedir'] . '/users_uploads/' . $gallery_id . '/';
         
                     // Create the user folder if it doesn't exist.
-                    if (!file_exists($user_folder)) {
-                        if (wp_mkdir_p($user_folder)) {
+                    if ( ! file_exists( $user_folder ) ) {
+                        if ( wp_mkdir_p( $user_folder ) ) {
                             // Set permissions for the user folder to 755 (read/write/execute for owner, read/execute for others)
-                            chmod($user_folder, 0755);
+                            chmod( $user_folder, 0755 );
                         } else {
                             echo 'Error creating the user folder.';
                             return; 
                         }
                     }
         
-                    foreach ($uploaded_files['name'] as $key => $filename) {
-                        // Check if the file is an image
-                        if ($uploaded_files['type'][$key] && strpos($uploaded_files['type'][$key], 'image/') === 0) {
-                            // Generate a unique file name for the uploaded image in the user folder
-                            $unique_filename = wp_unique_filename($user_folder, $filename);
+                    foreach ( $uploaded_files['name'] as $key => $filename ) {
+                        // Check if the file is an image.
+                        if ( $uploaded_files['type'][$key] && strpos( $uploaded_files['type'][$key], 'image/' ) === 0 ) {
+                            // Generate a unique file name for the uploaded image in the user folder.
+                            $unique_filename = wp_unique_filename( $user_folder, $filename );
                             $user_file = $user_folder . $unique_filename;
         
-                            // Move the uploaded file to the user folder
-                            if (move_uploaded_file($uploaded_files['tmp_name'][$key], $user_file)) {
-                                // Create an array to store image metadata
+                            // Move the uploaded file to the user folder.
+                            if ( move_uploaded_file( $uploaded_files['tmp_name'][$key], $user_file ) ) {
+                                
                                 $image_metadata = array(
                                     "file" => $unique_filename,
-                                    "gallery_id" => $gallery_id, // Add the gallery ID to metadata
+                                    "gallery_id" => $gallery_id,
                                     "caption" => isset($_POST['caption'][$key]) ? sanitize_text_field($_POST['caption'][$key]) : "",
                                     "description" => isset($_POST['description'][$key]) ? sanitize_text_field($_POST['description'][$key]) : "",
                                     "alt" => isset($_POST['alt'][$key]) ? sanitize_text_field($_POST['alt'][$key]) : "",
@@ -217,11 +220,11 @@ if ( ! class_exists( 'FooGallery_Image_Upload_Form_Shortcode' ) ) {
                                 $metadata_file = $user_folder . 'metadata.json';
                                 $existing_metadata = file_exists($metadata_file) ? json_decode(file_get_contents($metadata_file), true) : array("items" => array());
         
-                                // Add the new image's metadata to the array
+                                // Add the new image's metadata to the array.
                                 $existing_metadata["items"][] = $image_metadata;
         
-                                // Encode the metadata as JSON and save it to the metadata file
-                                file_put_contents($metadata_file, json_encode($existing_metadata, JSON_PRETTY_PRINT));
+                                // Encode the metadata as JSON and save it to the metadata file.
+                                file_put_contents( $metadata_file, json_encode( $existing_metadata, JSON_PRETTY_PRINT ) );
                             } else {
                                 echo 'Error moving the file(s).';
                             }
@@ -230,7 +233,7 @@ if ( ! class_exists( 'FooGallery_Image_Upload_Form_Shortcode' ) ) {
                         }
                     }
         
-                    echo '<div class="success-message" style="color: green; text-align: center;">' . __('Image(s) successfully uploaded and awaiting moderation', 'foogallery') . '</div>';
+                    echo '<div class="success-message" style="color: green; text-align: center;">' . __( 'Image(s) successfully uploaded and awaiting moderation.', 'foogallery' ) . '</div>';
                 } else {
                     echo 'No files uploaded or an error occurred.';
                 }
