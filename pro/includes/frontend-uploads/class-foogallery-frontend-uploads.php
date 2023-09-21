@@ -75,13 +75,30 @@ if ( ! class_exists( 'FooGallery_Image_Upload_Form_Shortcode' ) ) {
                     const popup = document.getElementById('popup');
                     const closePopupButton = document.getElementById('close-popup');
                     const uploadedImagesContainer = document.getElementById('uploaded-images');
-                    const uploadForm = document.querySelector('form');                    
+                    const uploadForm = document.querySelector('form');
 
                     imageUploadInput.addEventListener('change', function () {
                         if (this.files.length > 0) {
                             addMetadataFields(this.files.length);
                             displayPopup();
                             displayUploadedImages(this.files);
+                        }
+                    });
+
+                    
+                    document.addEventListener('dragover', function (e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                    });
+
+                    document.addEventListener('drop', function (e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+
+                        if (e.dataTransfer.files.length > 0) {
+                            addMetadataFields(e.dataTransfer.files.length);
+                            displayPopup();
+                            displayUploadedImages(e.dataTransfer.files);
                         }
                     });
 
@@ -115,7 +132,6 @@ if ( ! class_exists( 'FooGallery_Image_Upload_Form_Shortcode' ) ) {
                         }
                     }
 
-
                     function displayPopup() {
                         popup.style.display = 'flex';
                     }
@@ -140,10 +156,11 @@ if ( ! class_exists( 'FooGallery_Image_Upload_Form_Shortcode' ) ) {
                         e.preventDefault();
                     });
 
-                    setTimeout(function() {
+                    setTimeout(function () {
                         document.querySelector(".success-message").style.display = "none";
                     }, 3000);
                 </script>
+
                 <?php
                 $output .= ob_get_clean();
             }
