@@ -1,7 +1,7 @@
 <?php
 
 // Include shortcode class
-if (!class_exists('FooGallery_Image_Upload_Form_Shortcode')) {
+if ( ! class_exists( 'FooGallery_Image_Upload_Form_Shortcode' ) ) {
     require_once FOOGALLERY_PATH . 'pro/includes/frontend-uploads/class-foogallery-frontend-uploads.php';
 }
 
@@ -76,16 +76,16 @@ if (isset($_POST['moderate_image'])) {
                         file_put_contents($metadata_file, json_encode($metadata, JSON_PRETTY_PRINT));
                     }
         
-                    // Merge the existing attachments with the uploaded images
+                    // Merge the existing attachments with the uploaded images.
                     $merged_attachments = array_merge($existing_attachments, $uploaded_images);
         
-                    // Update the gallery's attachments with the merged array
+                    // Update the gallery's attachments with the merged array.
                     update_post_meta($gallery_id, FOOGALLERY_META_ATTACHMENTS, $merged_attachments);
         
                     echo '<div class="notice notice-success"><p>' . __('Image approved and added to the gallery successfully.', 'foogallery') . 'p></div>';
                 }
         
-                // Call the function with the required parameters
+                // Call the function with the required parameters.
                 merge_attachments_with_uploaded_images($gallery_id, $file_name, $original_folder, $approved_folder, $metadata_file, $new_metadata_file);       
             } 
         }
@@ -377,6 +377,5 @@ $filter_gallery_id = isset($_POST['filter_gallery_id']) ? intval($_POST['filter_
         color: blue;
     }
 </style>
-
 
 <?php
