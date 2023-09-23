@@ -1,14 +1,16 @@
 <?php
-
 // Include the necessary file
 require_once FOOGALLERY_PATH . 'includes/admin/class-gallery-metaboxes.php';
-class FrontEnd_Upload_FooGallery_Admin_Gallery_MetaBoxes extends FooGallery_Admin_Gallery_MetaBoxes {
 
+class FrontEnd_Upload_FooGallery_Admin_Gallery_MetaBoxes extends FooGallery_Admin_Gallery_MetaBoxes {
     private $gallery_id;
 
     public function __construct() {
         parent::__construct();
         $this->gallery_id = isset($_POST['gallery_id']) ? intval($_POST['gallery_id']) : null;
+        
+        // Hook to save metadata checkboxes
+        add_action('save_post', array($this, 'save_metadata_checkboxes'));
     }
 
     public function add_meta_boxes_to_gallery($post) {
@@ -24,15 +26,27 @@ class FrontEnd_Upload_FooGallery_Admin_Gallery_MetaBoxes extends FooGallery_Admi
         );
     }
 
+    public function save_metadata_checkboxes($post_id) {
+                
+        if (get_post_type($post_id) === FOOGALLERY_CPT_GALLERY) {
+            // Update post meta for the metadata checkboxes
+            update_post_meta($post_id, '_display_caption', isset($_POST['display_caption']) ? 'on' : 'off');
+            update_post_meta($post_id, '_display_description', isset($_POST['display_description']) ? 'on' : 'off');
+            update_post_meta($post_id, '_display_alt', isset($_POST['display_alt']) ? 'on' : 'off');
+            update_post_meta($post_id, '_display_custom_url', isset($_POST['display_custom_url']) ? 'on' : 'off');
+            update_post_meta($post_id, '_display_custom_target', isset($_POST['display_custom_target']) ? 'on' : 'off');
+        }
+    }
+
     public function render_frontend_upload_metabox($post) {
         $gallery = $this->get_gallery($post);
         $shortcode = $gallery->shortcode();
-    
+
         // Use preg_match to find the ID within the shortcode
         if (preg_match('/\[foogallery id="(\d+)"\]/', $shortcode, $matches)) {
             $gallery_id = $matches[1];
             ?>
-            <p class="foogallery-shortcode">
+           <p class="foogallery-shortcode">
                 <input type="text" id="Upload_Form_copy_shortcode" size="<?php echo strlen($shortcode) + 2; ?>" value="<?php echo htmlspecialchars('[Upload_Form id="' . $gallery_id . '"]'); ?>" readonly="readonly" />
                 <input type="hidden" id="gallery_id" value="<?php echo esc_attr($gallery_id); ?>" />
             </p>
@@ -102,7 +116,6 @@ class FrontEnd_Upload_FooGallery_Admin_Gallery_MetaBoxes extends FooGallery_Admi
             echo 'No ID found in the shortcode.';
         }
     }
-    
 }
 
 $custom_foogallery_meta_boxes = new FrontEnd_Upload_FooGallery_Admin_Gallery_MetaBoxes();
