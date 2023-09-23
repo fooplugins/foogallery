@@ -35,6 +35,7 @@ class FrontEnd_Upload_FooGallery_Admin_Gallery_MetaBoxes extends FooGallery_Admi
             ?>
 			<p class="foogallery-shortcode">
                 <input type="text" id="Upload_Form_copy_shortcode" size="<?php echo strlen( $shortcode ) + 2; ?>" value="<?php echo htmlspecialchars('[Upload_Form id="' . $gallery_id . '"]'); ?>" readonly="readonly" />
+                <input type="hidden" id="gallery_id" value="<?php echo esc_attr($gallery_id); ?>" />
             </p>
 
 			<p>
@@ -57,6 +58,16 @@ class FrontEnd_Upload_FooGallery_Admin_Gallery_MetaBoxes extends FooGallery_Admi
 						}
 					}, false);
 				});
+                
+                const galleryIdInput = document.getElementById('gallery_id');
+                const shortcodeInput = document.getElementById('Upload_Form_copy_shortcode');
+
+                galleryIdInput.addEventListener('change', function () {
+                    const newGalleryId = galleryIdInput.value;
+                    const newShortcode = `[Upload_Form id="${newGalleryId}"]`;
+                    shortcodeInput.value = newShortcode;
+                });
+
 			</script>
             <?php
         } else {
