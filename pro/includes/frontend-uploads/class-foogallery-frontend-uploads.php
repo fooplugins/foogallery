@@ -2,17 +2,17 @@
 /**
  * FooGallery Image Upload Form Shortcode Class
  */
-if ( ! class_exists( 'FooGallery_Image_Upload_Form_Shortcode' ) ) {
+if ( ! class_exists( 'Upload_Form_Shortcode' ) ) {
 
     
     // Include the necessary file
     require_once FOOGALLERY_PATH . 'pro/includes/frontend-uploads/class-foogallery-frontend-uploads-metabox.php';
 
-    class FooGallery_Image_Upload_Form_Shortcode {
+    class Upload_Form_Shortcode {
 
         function __construct() {
             add_action( 'wp_enqueue_scripts', array($this,'frontendEnqueueScripts') );
-            add_shortcode( 'foogallery_image_upload_form', array( $this, 'render_image_upload_form' ) );
+            add_shortcode( 'Upload_Form', array( $this, 'render_image_upload_form' ) );
             add_action( 'init', array( $this, 'handle_image_upload' ) );
         }
     
@@ -32,7 +32,7 @@ if ( ! class_exists( 'FooGallery_Image_Upload_Form_Shortcode' ) ) {
          */
         function render_image_upload_form( $atts ) {
             global $gallery_id; 
-            $gallery_id = isset( $atts['gallery_id'] ) ? intval( $atts['gallery_id'] ) : null;
+            $gallery_id = isset( $atts['id'] ) ? intval( $atts['id'] ) : null;
             $output = '';
 
             // Check if the gallery_id attribute is provided.
