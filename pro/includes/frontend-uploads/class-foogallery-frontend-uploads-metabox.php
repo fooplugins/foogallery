@@ -27,16 +27,16 @@ class FrontEnd_Upload_FooGallery_Admin_Gallery_MetaBoxes extends FooGallery_Admi
     }
 
     public function save_metadata_checkboxes($post_id) {
-                
         if (get_post_type($post_id) === FOOGALLERY_CPT_GALLERY) {
             // Update post meta for the metadata checkboxes
-            update_post_meta($post_id, '_display_caption', isset($_POST['display_caption']) ? 'on' : 'off');
-            update_post_meta($post_id, '_display_description', isset($_POST['display_description']) ? 'on' : 'off');
-            update_post_meta($post_id, '_display_alt', isset($_POST['display_alt']) ? 'on' : 'off');
-            update_post_meta($post_id, '_display_custom_url', isset($_POST['display_custom_url']) ? 'on' : 'off');
-            update_post_meta($post_id, '_display_custom_target', isset($_POST['display_custom_target']) ? 'on' : 'off');
+            $metafields = array('caption', 'description', 'alt', 'custom_url', 'custom_target');
+            foreach ($metafields as $metafield) {
+                update_option("_display_$metafield", isset($_POST["display_$metafield"]) ? 'on' : 'off');
+            }
         }
     }
+
+    
 
     public function render_frontend_upload_metabox($post) {
         $gallery = $this->get_gallery($post);
@@ -57,30 +57,18 @@ class FrontEnd_Upload_FooGallery_Admin_Gallery_MetaBoxes extends FooGallery_Admi
     
             <div id="metadata-settings">
                 <h4><?php _e('Check to display the metadata fields in the upload form.', 'foogallery'); ?></h4>
-                <label>
-                    <input type="checkbox" id="display_caption" name="display_caption" <?php checked(get_post_meta($post->ID, '_display_caption', true), 'on'); ?> />
-                    <?php _e('Display Caption', 'foogallery'); ?>
-                </label>
-                <br />
-                <label>
-                    <input type="checkbox" id="display_description" name="display_description" <?php checked(get_post_meta($post->ID, '_display_description', true), 'on'); ?> />
-                    <?php _e('Display Description', 'foogallery'); ?>
-                </label>
-                <br />
-                <label>
-                    <input type="checkbox" id="display_alt" name="display_alt" <?php checked(get_post_meta($post->ID, '_display_alt', true), 'on'); ?> />
-                    <?php _e('Display Alt Text', 'foogallery'); ?>
-                </label>
-                <br />
-                <label>
-                    <input type="checkbox" id="display_custom_url" name="display_custom_url" <?php checked(get_post_meta($post->ID, '_display_custom_url', true), 'on'); ?> />
-                    <?php _e('Display Custom URL', 'foogallery'); ?>
-                </label>
-                <br />
-                <label>
-                    <input type="checkbox" id="display_custom_target" name="display_custom_target" <?php checked(get_post_meta($post->ID, '_display_custom_target', true), 'on'); ?> />
-                    <?php _e('Display Custom Target', 'foogallery'); ?>
-                </label>
+                <?php
+                $metafields = array('caption', 'description', 'alt', 'custom_url', 'custom_target');
+                foreach ($metafields as $metafield) {
+                    $option_name = "_display_$metafield";
+                    ?>
+                    <label>
+                        <input type="checkbox" id="display_<?php echo $metafield; ?>" name="display_<?php echo $metafield; ?>"
+                            <?php checked(get_option($option_name, 'off'), 'on'); ?> />
+                        <?php _e("Display $metafield", 'foogallery'); ?>
+                    </label>
+                    <br />
+                <?php } ?>
             </div>
     
             <script>
