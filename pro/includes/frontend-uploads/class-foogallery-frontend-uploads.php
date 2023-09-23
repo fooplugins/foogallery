@@ -4,6 +4,10 @@
  */
 if ( ! class_exists( 'FooGallery_Image_Upload_Form_Shortcode' ) ) {
 
+    
+    // Include the necessary file
+    require_once FOOGALLERY_PATH . 'pro/includes/frontend-uploads/class-foogallery-frontend-uploads-metabox.php';
+
     class FooGallery_Image_Upload_Form_Shortcode {
 
         function __construct() {
