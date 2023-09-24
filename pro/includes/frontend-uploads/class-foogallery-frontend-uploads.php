@@ -44,11 +44,12 @@ if ( ! class_exists( 'Upload_Form_Shortcode' ) ) {
 
                 foreach ($metafields as $metafield) {
                     $option_name = "_display_$metafield";
-                    $display_setting = get_option($option_name, 'off');
+                    $display_setting = get_post_meta($gallery_id, $option_name, true);
                     
                     // Add the display setting as a data attribute
                     $attributes["data-display-$metafield"] = $display_setting;
                 }
+
 
 
                 ob_start();

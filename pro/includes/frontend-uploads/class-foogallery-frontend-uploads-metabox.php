@@ -31,10 +31,11 @@ class FrontEnd_Upload_FooGallery_Admin_Gallery_MetaBoxes extends FooGallery_Admi
             // Update post meta for the metadata checkboxes
             $metafields = array('caption', 'description', 'alt', 'custom_url', 'custom_target');
             foreach ($metafields as $metafield) {
-                update_option("_display_$metafield", isset($_POST["display_$metafield"]) ? 'on' : 'off');
+                $metafield_value = isset($_POST["display_$metafield"]) ? 'on' : 'off';
+                update_post_meta($post_id, "_display_$metafield", $metafield_value);
             }
         }
-    }    
+    }
 
     public function render_frontend_upload_metabox($post) {
         $gallery = $this->get_gallery($post);
@@ -59,10 +60,10 @@ class FrontEnd_Upload_FooGallery_Admin_Gallery_MetaBoxes extends FooGallery_Admi
                 $metafields = array('caption', 'description', 'alt', 'custom_url', 'custom_target');
                 foreach ($metafields as $metafield) {
                     $option_name = "_display_$metafield";
+                    $metafield_value = get_post_meta($gallery_id, $option_name, true);
                     ?>
                     <label>
-                        <input type="checkbox" id="display_<?php echo $metafield; ?>" name="display_<?php echo $metafield; ?>"
-                            <?php checked(get_option($option_name, 'off'), 'on'); ?> />
+                        <input type="checkbox" id="display_<?php echo $metafield; ?>" name="display_<?php echo $metafield; ?>" <?php checked($metafield_value, 'on'); ?> />
                         <?php _e("Display $metafield", 'foogallery'); ?>
                     </label>
                     <br />
