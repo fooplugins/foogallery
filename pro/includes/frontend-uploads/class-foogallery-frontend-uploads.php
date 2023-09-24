@@ -39,6 +39,18 @@ if ( ! class_exists( 'Upload_Form_Shortcode' ) ) {
             if ( ! $gallery_id) {
                 $output = 'Gallery ID not specified.';
             } else {
+                $metafields = array('caption', 'description', 'alt', 'custom_url', 'custom_target');
+                $attributes = array();
+
+                foreach ($metafields as $metafield) {
+                    $option_name = "_display_$metafield";
+                    $display_setting = get_option($option_name, 'off');
+                    
+                    // Add the display setting as a data attribute
+                    $attributes["data-display-$metafield"] = $display_setting;
+                }
+
+
                 ob_start();
                 ?>
                 <form method="post" enctype="multipart/form-data">
@@ -60,9 +72,9 @@ if ( ! class_exists( 'Upload_Form_Shortcode' ) ) {
                                     </div>
                                 </div>
                                 <div class="right-column">
-                                    <div id="metadata-container">
-                                        <!-- Metadata input fields added here dynamically -->
-                                    </div>
+                                <div id="metadata-container" <?php foreach ($attributes as $key => $value) { echo "$key=\"$value\" "; } ?>>
+                                    <!-- Metadata input fields added here dynamically -->
+                                </div>
                                     <div style="margin-top: 10px;">
                                         <input type="submit" name="foogallery_image_upload" value="Upload Images" />
                                     </div>
@@ -116,25 +128,26 @@ if ( ! class_exists( 'Upload_Form_Shortcode' ) ) {
                         for (let i = 0; i < numImages; i++) {
                             const metadataFields = `
                                 <div class="metadata-fields" style="margin-bottom: 10px;">
-                                    <label for="caption_${i}">Caption:</label>
-                                    <input type="text" name="caption[]" id="caption_${i}" />
-
-                                    <label for="description_${i}">Description:</label>
-                                    <textarea name="description[]" id="description_${i}"></textarea>
-
-                                    <label for="alt_${i}">Alt Text:</label>
-                                    <input type="text" name="alt[]" id="alt_${i}" />
-
-                                    <label for="custom_url_${i}">Custom URL:</label>
-                                    <input type="text" name="custom_url[]" id="custom_url_${i}" />
-
-                                    <label for="custom_target_${i}">Custom Target:</label>
-                                    <input type="text" name="custom_target[]" id="custom_target_${i}" />
+                                    ${metadataContainer.getAttribute('data-display-caption') === 'on' ? `<label for="caption_${i}">Caption:</label>
+                                    <input type="text" name="caption[]" id="caption_${i}" />` : ''}
+                                    
+                                    ${metadataContainer.getAttribute('data-display-description') === 'on' ? `<label for="description_${i}">Description:</label>
+                                    <textarea name="description[]" id="description_${i}"></textarea>` : ''}
+                                    
+                                    ${metadataContainer.getAttribute('data-display-alt') === 'on' ? `<label for="alt_${i}">Alt Text:</label>
+                                    <input type="text" name="alt[]" id="alt_${i}" />` : ''}
+                                    
+                                    ${metadataContainer.getAttribute('data-display-custom-url') === 'on' ? `<label for="custom_url_${i}">Custom URL:</label>
+                                    <input type="text" name="custom_url[]" id="custom_url_${i}" />` : ''}
+                                    
+                                    ${metadataContainer.getAttribute('data-display-custom-target') === 'on' ? `<label for="custom_target_${i}">Custom Target:</label>
+                                    <input type="text" name="custom_target[]" id="custom_target_${i}" />` : ''}
                                 </div>
                             `;
                             metadataContainer.innerHTML += metadataFields;
                         }
                     }
+
 
                     function displayPopup() {
                         popup.style.display = 'flex';
