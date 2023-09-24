@@ -1,12 +1,12 @@
 <?php
 
 // Include shortcode class
-if ( ! class_exists( 'FooGallery_Image_Upload_Form_Shortcode' ) ) {
+if ( ! class_exists( 'Upload_Form_Shortcode' ) ) {
     require_once FOOGALLERY_PATH . 'pro/includes/frontend-uploads/class-foogallery-frontend-uploads.php';
 }
 
 // Initialize  class
-$foogallery_image_upload = new FooGallery_Image_Upload_Form_Shortcode();
+$foogallery_image_upload = new Upload_Form_Shortcode();
 
 // Check if the form is submitted for image moderation
 if (isset($_POST['moderate_image'])) {
@@ -82,7 +82,7 @@ if (isset($_POST['moderate_image'])) {
                     // Update the gallery's attachments with the merged array.
                     update_post_meta($gallery_id, FOOGALLERY_META_ATTACHMENTS, $merged_attachments);
         
-                    echo '<div class="notice notice-success"><p>' . __('Image approved and added to the gallery successfully.', 'foogallery') . 'p></div>';
+                    echo '<div class="notice notice-success"><p>' . __('Image approved and added to the gallery successfully.', 'foogallery') . '</p></div>';
                 }
         
                 // Call the function with the required parameters.
