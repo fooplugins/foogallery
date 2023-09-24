@@ -137,10 +137,10 @@ if ( ! class_exists( 'Upload_Form_Shortcode' ) ) {
                                     ${metadataContainer.getAttribute('data-display-alt') === 'on' ? `<label for="alt_${i}">Alt Text:</label>
                                     <input type="text" name="alt[]" id="alt_${i}" />` : ''}
                                     
-                                    ${metadataContainer.getAttribute('data-display-custom-url') === 'on' ? `<label for="custom_url_${i}">Custom URL:</label>
+                                    ${metadataContainer.getAttribute('data-display-custom_url') === 'on' ? `<label for="custom_url_${i}">Custom URL:</label>
                                     <input type="text" name="custom_url[]" id="custom_url_${i}" />` : ''}
                                     
-                                    ${metadataContainer.getAttribute('data-display-custom-target') === 'on' ? `<label for="custom_target_${i}">Custom Target:</label>
+                                    ${metadataContainer.getAttribute('data-display-custom_target') === 'on' ? `<label for="custom_target_${i}">Custom Target:</label>
                                     <input type="text" name="custom_target[]" id="custom_target_${i}" />` : ''}
                                 </div>
                             `;

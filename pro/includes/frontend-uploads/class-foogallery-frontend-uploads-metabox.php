@@ -34,9 +34,7 @@ class FrontEnd_Upload_FooGallery_Admin_Gallery_MetaBoxes extends FooGallery_Admi
                 update_option("_display_$metafield", isset($_POST["display_$metafield"]) ? 'on' : 'off');
             }
         }
-    }
-
-    
+    }    
 
     public function render_frontend_upload_metabox($post) {
         $gallery = $this->get_gallery($post);
