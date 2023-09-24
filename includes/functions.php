@@ -1211,11 +1211,11 @@ function foogallery_current_gallery_attachments_for_rendering() {
     $user_folder = wp_upload_dir()['basedir'] . '/users_uploads/' . $gallery_id . '/approved_uploads/';
     $metadata_file = $user_folder . 'metadata.json';
 
-    if (file_exists($metadata_file)) {
-        $metadata = json_decode(file_get_contents($metadata_file), true);
-        if (isset($metadata['items']) && is_array($metadata['items'])) {
-            foreach ($metadata['items'] as $item) {
-                if (isset($item['file'])) {
+    if ( file_exists( $metadata_file ) ) {
+        $metadata = json_decode( file_get_contents( $metadata_file ), true );
+        if ( isset( $metadata['items'] ) && is_array( $metadata['items'] ) ) {
+            foreach ( $metadata['items'] as $item ) {
+                if ( isset( $item['file'] ) ) {
                     $uploaded_images[] = $item['file'];
                 }
             }
@@ -1223,7 +1223,7 @@ function foogallery_current_gallery_attachments_for_rendering() {
     }
 
     // Merge the existing attachments with the uploaded images
-    $merged_attachments = array_merge($existing_attachments, $uploaded_images);
+    $merged_attachments = array_merge( $existing_attachments, $uploaded_images );
 
     return $merged_attachments;
 }
