@@ -45,8 +45,8 @@ class FrontEnd_Upload_FooGallery_Admin_Gallery_MetaBoxes extends FooGallery_Admi
         if (preg_match('/\[foogallery id="(\d+)"\]/', $shortcode, $matches)) {
             $gallery_id = $matches[1];
             ?>
-           <p class="foogallery-shortcode">
-                <input type="text" id="Upload_Form_copy_shortcode" size="<?php echo strlen($shortcode) + 2; ?>" value="<?php echo htmlspecialchars('[Upload_Form id="' . $gallery_id . '"]'); ?>" readonly="readonly" />
+           <p class="" style="display: flex; justify-content:center; align-items:center;" >
+                <input style="border: 0; padding: 7px 10px;" type="text" id="Upload_Form_copy_shortcode" size="<?php echo strlen($shortcode) + 2; ?>" value="<?php echo htmlspecialchars('[foogallery_upload id="' . $gallery_id . '"]'); ?>" readonly="readonly" />
                 <input type="hidden" id="gallery_id" value="<?php echo esc_attr($gallery_id); ?>" />
             </p>
     

@@ -12,7 +12,7 @@ if ( ! class_exists( 'Upload_Form_Shortcode' ) ) {
 
         function __construct() {
             add_action( 'wp_enqueue_scripts', array($this,'frontendEnqueueScripts') );
-            add_shortcode( 'Upload_Form', array( $this, 'render_image_upload_form' ) );
+            add_shortcode( 'foogallery_upload', array( $this, 'render_image_upload_form' ) );
             add_action( 'init', array( $this, 'handle_image_upload' ) );
         }
     
