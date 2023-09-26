@@ -48,7 +48,7 @@ require_once FOOGALLERY_PATH . 'pro/includes/woocommerce/class-foogallery-pro-wo
 require_once FOOGALLERY_PATH . 'pro/includes/woocommerce/class-foogallery-pro-woocommerce-downloads.php';
 require_once FOOGALLERY_PATH . 'pro/extensions/default-templates/product/class-product-gallery-template.php';
 require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-master-galleries.php';
-require_once FOOGALLERY_PATH . 'pro/includes/frontend-uploads/class-foogallery-frontend-uploads.php';
+require_once FOOGALLERY_PATH . 'pro/includes/frontend-uploads/class-foogallery-upload-shortcode.php';
 
 /**
  * FooGallery PRO Main Class
@@ -92,7 +92,7 @@ if ( ! class_exists( 'FooGallery_Pro' ) ) {
 				new FooGallery_Pro_Advanced_Thumbnails();
 				new FooGallery_Pro_Bulk_Management();
 				new FooGallery_Pro_Exif();
-				new Upload_Form_Shortcode();
+				new Foogallery_Upload_Shortcode();
 			}
 			if ( foogallery_fs()->is_plan_or_trial( 'commerce' ) ) {
 				new FooGallery_Pro_Protection();
@@ -102,7 +102,7 @@ if ( ! class_exists( 'FooGallery_Pro' ) ) {
 				new FooGallery_Pro_Buttons();
 				new FooGallery_Product_Gallery_Template();
 				new FooGallery_Pro_Woocommerce_Master_Product();
-                new FooGallery_Pro_Woocommerce_Downloads();
+				new FooGallery_Pro_Woocommerce_Downloads();
 				new FooGallery_Pro_Whitelabelling();
 				new FooGallery_Pro_Master_Galleries();
 			}
