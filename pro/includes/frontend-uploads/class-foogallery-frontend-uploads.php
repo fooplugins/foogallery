@@ -65,7 +65,7 @@ if ( ! class_exists( 'Upload_Form_Shortcode' ) ) {
                     
                     <div class="popup-overlay" id="popup">
                         <div class="popup-content">
-                            <span class="close-button" id="close-popup">&times;</span>
+                            <span class="close-button" id="close-popup" style="font-size: 40px;">&times;</span>
                             <div class="popup-inner">
                                 <div class="left-column">
                                     <div class="image-grid" id="uploaded-images">
@@ -128,25 +128,41 @@ if ( ! class_exists( 'Upload_Form_Shortcode' ) ) {
 
                         for (let i = 0; i < numImages; i++) {
                             const metadataFields = `
-                                <div class="metadata-fields" style="margin-bottom: 10px;">
-                                    ${metadataContainer.getAttribute('data-display-caption') === 'on' ? `<label for="caption_${i}">Caption:</label>
-                                    <input type="text" name="caption[]" id="caption_${i}" />` : ''}
+                                <div class="metadata-fields" style="margin-bottom: 10px; display: flex; flex-direction: column;">
+                                    ${metadataContainer.getAttribute('data-display-caption') === 'on' ? `
+                                        <div>
+                                            <label for="caption_${i}">Caption:</label>
+                                            <input type="text" name="caption[]" id="caption_${i}" />
+                                        </div>` : ''}
                                     
-                                    ${metadataContainer.getAttribute('data-display-description') === 'on' ? `<label for="description_${i}">Description:</label>
-                                    <textarea name="description[]" id="description_${i}"></textarea>` : ''}
+                                    ${metadataContainer.getAttribute('data-display-description') === 'on' ? `
+                                        <div>
+                                            <label for="description_${i}">Description:</label>
+                                            <textarea name="description[]" id="description_${i}"></textarea>
+                                        </div>` : ''}
                                     
-                                    ${metadataContainer.getAttribute('data-display-alt') === 'on' ? `<label for="alt_${i}">Alt Text:</label>
-                                    <input type="text" name="alt[]" id="alt_${i}" />` : ''}
+                                    ${metadataContainer.getAttribute('data-display-alt') === 'on' ? `
+                                        <div>
+                                            <label for="alt_${i}">Alt Text:</label>
+                                            <input type="text" name="alt[]" id="alt_${i}" />
+                                        </div>` : ''}
                                     
-                                    ${metadataContainer.getAttribute('data-display-custom_url') === 'on' ? `<label for="custom_url_${i}">Custom URL:</label>
-                                    <input type="text" name="custom_url[]" id="custom_url_${i}" />` : ''}
+                                    ${metadataContainer.getAttribute('data-display-custom_url') === 'on' ? `
+                                        <div>
+                                            <label for="custom_url_${i}">Custom URL:</label>
+                                            <input type="text" name="custom_url[]" id="custom_url_${i}" />
+                                        </div>` : ''}
                                     
-                                    ${metadataContainer.getAttribute('data-display-custom_target') === 'on' ? `<label for="custom_target_${i}">Custom Target:</label>
-                                    <input type="text" name="custom_target[]" id="custom_target_${i}" />` : ''}
+                                    ${metadataContainer.getAttribute('data-display-custom_target') === 'on' ? `
+                                        <div>
+                                            <label for="custom_target_${i}">Custom Target:</label>
+                                            <input type="text" name="custom_target[]" id="custom_target_${i}" />
+                                        </div>` : ''}
                                 </div>
                             `;
                             metadataContainer.innerHTML += metadataFields;
                         }
+
                     }
 
 
