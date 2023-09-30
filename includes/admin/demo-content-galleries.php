@@ -18,7 +18,7 @@ return array(
 					'height' => '200',
 				),
 				'default_thumbnail_link'        => 'image',
-				'default_lightbox'              => foogallery_demo_content_determine_best_lightbox(),
+				'default_lightbox'              => 'foogallery',
 				'default_spacing'               => 'fg-gutter-10',
 				'default_alignment'             => 'fg-center',
 				//'default_layout'                => 'fixed',
@@ -92,7 +92,7 @@ return array(
 					'crop'   => '1'
 				),
 				'image-viewer_thumbnail_link'        => 'image',
-				'image-viewer_lightbox'              => foogallery_demo_content_determine_best_lightbox(),
+				'image-viewer_lightbox'              => 'foogallery',
 				'image-viewer_alignment'             => 'fg-center',
 				'image-viewer_looping'               => 'enabled',
 
@@ -162,7 +162,7 @@ return array(
 				'justified_row_height'            => '200',
 				'justified_thumb_height'          => '300',
 				'justified_thumbnail_link'        => 'image',
-				'justified_lightbox'              => foogallery_demo_content_determine_best_lightbox(),
+				'justified_lightbox'              => 'foogallery',
 				'justified_align'                 => 'center',
 				'justified_margins'               => '1',
 
@@ -228,7 +228,7 @@ return array(
 				'masonry_thumbnail_width'       => '250',
 				'masonry_layout'                => 'fixed',
 				'masonry_thumbnail_link'        => 'image',
-				'masonry_lightbox'              => foogallery_demo_content_determine_best_lightbox(),
+				'masonry_lightbox'              => 'foogallery',
 				'masonry_align'                 => 'fg-center',
 				'masonry_gutter_width'          => '10',
 
@@ -296,7 +296,7 @@ return array(
 					'height' => '180',
 				),
 				'simple_portfolio_thumbnail_link'        => 'image',
-				'simple_portfolio_lightbox'              => foogallery_demo_content_determine_best_lightbox(),
+				'simple_portfolio_lightbox'              => 'foogallery',
 				'simple_portfolio_align'                 => 'center',
 				'simple_portfolio_gutter'                => '5',
 
@@ -364,7 +364,7 @@ return array(
 					'height' => '180',
 				),
 				'simple_portfolio_thumbnail_link'        => 'image',
-				'simple_portfolio_lightbox'              => foogallery_demo_content_determine_best_lightbox(),
+				'simple_portfolio_lightbox'              => 'foogallery',
 				'simple_portfolio_align'                 => 'center',
 				'simple_portfolio_gutter'                => '5',
 
@@ -444,7 +444,7 @@ return array(
                     'height' => '200',
                 ),
                 'carousel_thumbnail_link'                => 'image',
-                'carousel_lightbox'                      => foogallery_demo_content_determine_best_lightbox(),
+                'carousel_lightbox'                      => 'foogallery',
 
 
                 //Appearance

@@ -1826,18 +1826,6 @@ function foogallery_admin_url( $url, $utm_campaign, $utm_content = null, $utm_me
 }
 
 /**
- * Determines the best lightbox to use for a demo gallery
- *
- * @return string
- */
-function foogallery_demo_content_determine_best_lightbox() {
-	if ( foogallery_is_pro() ) {
-		return 'foogallery';
-	}
-	return 'foobox';
-}
-
-/**
  * Returns true if on the plugin activation page
  *
  * @return bool
