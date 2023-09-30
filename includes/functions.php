@@ -2049,6 +2049,22 @@ function foogallery_admin_fields_find_index_of_field( $fields, $field_id ) {
 }
 
 /**
+ * Returns true if the field exists in the array
+ *
+ * @param $fields
+ * @param $field_id
+ * @return bool
+ */
+function foogallery_admin_fields_has_field( $fields, $field_id ) {
+    foreach ( $fields as $field ) {
+        if ( isset( $field['id'] ) && $field_id === $field['id'] ) {
+            return true;
+        }
+    }
+    return false;
+}
+
+/**
  * Returns the path of the URL
  *
  * @param $url

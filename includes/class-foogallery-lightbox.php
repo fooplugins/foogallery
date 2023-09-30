@@ -128,6 +128,32 @@ if ( ! class_exists( 'FooGallery_Lightbox' ) ) {
 			$section = $use_lightbox ? __( 'Lightbox', 'foogallery' ) : __( 'Panel', 'foogallery' );
 
             if ( $use_lightbox ) {
+                if ( foogallery_admin_fields_has_field( $fields, 'thumbnail_link' ) &&
+                    foogallery_admin_fields_has_field( $fields, 'lightbox' ) &&
+                    !foogallery_admin_fields_has_field( $fields, 'lightbox_warning' ) ) {
+
+                    $warning_field = array(
+                        array(
+                            'id' => 'lightbox_warning',
+                            'title' => __('Your Lightbox Will Not Work!', 'foogallery'),
+                            'desc' => __('No lightbox will be shown, because under the General tab, you have set the Thumbnail Link to "Not linked".', 'foogallery'),
+                            'section' => __( 'Lightbox', 'foogallery' ),
+                            'subsection' => array('lightbox-general' => __('General', 'foogallery')),
+                            'type' => 'help',
+                            'row_data' => array(
+                                'data-foogallery-hidden' => true,
+                                'data-foogallery-show-when-field' => 'thumbnail_link',
+                                'data-foogallery-show-when-field-operator' => '===',
+                                'data-foogallery-show-when-field-value' => 'none',
+                            ),
+                        )
+                    );
+
+                    $index = foogallery_admin_fields_find_index_of_field( $fields, 'lightbox' );
+
+                    array_splice( $fields, $index, 0, $warning_field );
+                }
+
                 $field[] = array(
                     'id' => 'lightbox_promo',
                     'title' => __('Your Gallery Needs A Lightbox!', 'foogallery'),

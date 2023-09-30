@@ -65,10 +65,6 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
                                     'data-foogallery-change-selector'          => 'select',
                                     'data-foogallery-value-selector'           => 'select',
                                     'data-foogallery-preview'                  => 'shortcode',
-                                    'data-foogallery-hidden'                   => true,
-                                    'data-foogallery-show-when-field-operator' => '!==',
-                                    'data-foogallery-show-when-field'          => 'thumbnail_link',
-                                    'data-foogallery-show-when-field-value'    => 'none',
                                 );
 							}
 							break;
