@@ -319,9 +319,10 @@ Please update in order to for FooGallery to work in WP 5.5+!
 
 == Changelog ==
 
-= 2.3.3 =
+= 2.3.4 =
 * Date Updated : 6 Sep 2023
 * Fix : fixed bug showing incorrect lightbox option in admin
+* Fix : fixed bug with demo galleries not using the default lightbox
 
 = 2.3.2 =
 * Date Updated : 6 Sep 2023
