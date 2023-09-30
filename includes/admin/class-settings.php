@@ -517,6 +517,24 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 				),
 				'tab'   => 'advanced'
 			);
+			
+			$custom_post_types = get_post_types( array( 'public' => true, '_builtin' => false ), 'objects' );
+
+			if ( !empty( $custom_post_types ) ) {
+				$post_type_choices = array();
+				foreach ( $custom_post_types as $post_type ) {
+					$post_type_choices[$post_type->name] = $post_type->label;
+				}
+
+				$settings[] = array(
+					'id'      => 'allowed_custom_post_types',
+					'title'   => __( 'Allowed Custom Post Types', 'foogallery' ),
+					'desc'    => __( 'Select the custom post types where galleries can be attached.', 'foogallery' ),
+					'type'    => 'radio',
+					'choices' => $post_type_choices,
+					'tab'     => 'advanced'
+				);
+			}
 
 			//endregion Advanced Tab
 

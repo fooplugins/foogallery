@@ -994,8 +994,6 @@ function foogallery_uninstall() {
 	}
 	delete_option( FOOGALLERY_OPTION_VERSION );
 	delete_option( FOOGALLERY_OPTION_THUMB_TEST );
-	delete_option( FOOGALLERY_EXTENSIONS_SLUGS_OPTIONS_KEY );
-	delete_option( FOOGALLERY_EXTENSIONS_SLUGS_OPTIONS_KEY );
 	delete_option( FOOGALLERY_EXTENSIONS_ACTIVATED_OPTIONS_KEY );
 	delete_option( FOOGALLERY_EXTENSIONS_ERRORS_OPTIONS_KEY );
 
@@ -1093,12 +1091,34 @@ function foogallery_get_fields_for_template( $template ) {
 		}
     }
 
-	// Finally, remove the fields that were marked for removal.
+	// remove the fields that were marked for removal.
 	foreach ( $indexes_to_remove as $index ) {
 		unset( $fields[$index] );
 	}
 
+    // Finally, sort the fields.
+    uasort( $fields, 'foogallery_sort_template_fields' );
+
     return $fields;
+}
+
+/**
+ * Used to sort gallery template fields
+ *
+ * @param mixed $a
+ * @param mixed $b
+ *
+ * @return int
+ */
+function foogallery_sort_template_fields( $a, $b ) {
+    if ( isset( $a['order'] ) && isset( $b['order'] ) ) {
+        if ( $a['order'] === $b['order'] ) {
+            return 0;
+        }
+        return ( $a['order'] < $b['order'] ) ? -1 : 1;
+    }
+
+    return 0;
 }
 
 /**
@@ -1180,9 +1200,34 @@ function foogallery_current_gallery_attachments_for_rendering() {
         return $attachments;
     }
 
-    //by default, return all attachments
-    return $current_foogallery->attachments();
+    // Get the existing attachments for the gallery
+    $existing_attachments = $current_foogallery->attachments();
+
+    // Get the gallery ID from the gallery object
+    $gallery_id = $current_foogallery->ID;
+
+    // Get the uploaded images' file names from metadata
+    $uploaded_images = array();
+    $user_folder = wp_upload_dir()['basedir'] . '/users_uploads/' . $gallery_id . '/approved_uploads/';
+    $metadata_file = $user_folder . 'metadata.json';
+
+    if (file_exists($metadata_file)) {
+        $metadata = json_decode(file_get_contents($metadata_file), true);
+        if (isset($metadata['items']) && is_array($metadata['items'])) {
+            foreach ($metadata['items'] as $item) {
+                if (isset($item['file'])) {
+                    $uploaded_images[] = $item['file'];
+                }
+            }
+        }
+    }
+
+    // Merge the existing attachments with the uploaded images
+    $merged_attachments = array_merge($existing_attachments, $uploaded_images);
+
+    return $merged_attachments;
 }
+
 
 /**
  * Return attachment ID from a URL
@@ -1441,8 +1486,17 @@ function foogallery_marketing_pro_features() {
  * @return array
  */
 function foogallery_allowed_post_types_for_usage() {
-	return apply_filters( 'foogallery_allowed_post_types_for_attachment', array( 'post', 'page' ) );
+    $allowed_post_types = apply_filters( 'foogallery_allowed_post_types_for_attachment', array( 'post', 'page' ) );
+
+    // Get the selected custom post types from options.
+    $selected_custom_post_types = get_option( 'allowed_custom_post_types', array() );
+
+    // Merge the selected custom post types with the default allowed post types.
+    $allowed_post_types = array_merge( $allowed_post_types, $selected_custom_post_types );
+
+    return $allowed_post_types;
 }
+
 
 /**
  * Returns true if FooGallery is in debug mode
@@ -2104,4 +2158,21 @@ function foogallery_prepare_code( $text ) {
         return apply_filters( 'foogallery_prepare_code', $text );
     }
     return false;
+}
+
+/**
+ * Returns true if the feature is enabled.
+ *
+ * @param $feature
+ * @return bool
+ */
+function foogallery_feature_enabled( $feature ) {
+    global $foogallery_features;
+
+    if ( empty( $foogallery_features ) ) {
+        $api = new FooGallery_Extensions_API();
+        $foogallery_features = $api->get_all_for_view();
+    }
+
+    return array_key_exists( $feature, $foogallery_features ) && $foogallery_features[$feature]['is_active'];
 }
