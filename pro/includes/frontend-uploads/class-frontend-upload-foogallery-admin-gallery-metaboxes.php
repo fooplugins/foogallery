@@ -35,7 +35,7 @@ class FrontEnd_Upload_FooGallery_Admin_Gallery_MetaBoxes extends FooGallery_Admi
 			__( 'Front End Upload', 'foogallery' ),
 			array( $this, 'render_frontend_upload_metabox' ),
 			FOOGALLERY_CPT_GALLERY,
-			'side',
+			'normal',
 			'low'
 		);
 	}
