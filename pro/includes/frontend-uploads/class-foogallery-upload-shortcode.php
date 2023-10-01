@@ -78,31 +78,39 @@ if ( ! class_exists( 'Foogallery_Upload_Shortcode' ) ) {
 							<p><?php esc_html_e( 'Click to browse or drag & drop image(s) here', 'foogallery' ); ?></p>
 						</label>
 					</div>
-                    
-                    <div class="foogallery-upload-popup-overlay" id="popup">
-                        <div class="foogallery-upload-popup-content">
-                            <span class="foogallery-upload-close-button" id="close-popup" style="font-size: 40px;">&times;</span>
-                            <div class="foogallery-upload-popup-inner">
-                                <div class="foogallery-upload-left-column">
-                                    <div class="foogallery-upload-image-grid" id="uploaded-images">
-                                        <!-- Uploaded images displayed here -->
-                                    </div>
-                                </div>
-                                <div class="foogallery-upload-right-column">
-                                <div id="metadata-container" style="padding: 5px 7px;" <?php foreach ($attributes as $key => $value) { echo "$key=\"$value\" "; } ?>>
-                                    <!-- Metadata input fields added here dynamically -->
-                                </div>
-                                    <div style="margin-top: 10px;">
-                                        <input type="submit" class="foogallery-image-upload-button" name="foogallery_image_upload" value="Upload Images" />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>				
+					
+					<div class="foogallery-upload-popup-overlay" id="popup">
+						<div class="foogallery-upload-popup-content">
+							<span class="foogallery-upload-close-button" id="close-popup" style="font-size: 40px; color: white;">&times;</span>
+							<div class="foogallery-upload-popup-inner">
+								<div class="foogallery-upload-left-column">
+									<div class="foogallery-upload-image-grid" id="uploaded-images">
+										<!-- Uploaded images displayed here -->
+									</div>
+								</div>
+								<div class="foogallery-upload-right-column">
+									<div id="metadata-container" style="padding: 5px 7px;" <?php foreach ($attributes as $key => $value) { echo "$key=\"$value\" "; } ?>>
+										<!-- Metadata input fields added here dynamically -->
+									</div>
+									<div style="margin-top: 10px;">
+										<input type="submit" class="foogallery-image-upload-button" name="foogallery_image_upload" value="Upload Images" />
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>				
+				</form>
 
-                </form>
+				<style>
+					.foogallery-upload-left-column {
+						width: 100%;
+						padding-right: 15px;
+					}
 
-				<style>	
+					.foogallery-upload-right-column {
+						width: 100%;
+					}
+
 					.foogallery-upload-image-grid {
 						display: grid;
 						grid-template-columns: repeat(2, 1fr);
@@ -114,7 +122,7 @@ if ( ! class_exists( 'Foogallery_Upload_Shortcode' ) ) {
 						height: 200px;
 						margin: 5px 7px;
 					}
-					
+
 					.foogallery-image-upload-button {
 						background-color: #0073e6;
 						color: #fff;
@@ -177,6 +185,7 @@ if ( ! class_exists( 'Foogallery_Upload_Shortcode' ) ) {
 						for (let i = 0; i < numImages; i++) {
 							const metadataFields = `
 								<div class="metadata-fields" style="margin-bottom: 20px; padding: 10px; border: 1px solid #ccc; border-radius: 5px; background-color: #f9f9f9;">
+									<h4 style="margin: 0;">Image ${i + 1}</h4>
 									${metadataContainer.getAttribute('data-display-caption') === 'on' ? `
 										<div class="metadata-field" style="margin-bottom: 10px;  padding: 10px;">
 											<label for="caption_${i}" style="display: block; font-weight: bold; margin-bottom: 5px;">Caption:</label>
@@ -223,12 +232,25 @@ if ( ! class_exists( 'Foogallery_Upload_Shortcode' ) ) {
 
 					function displayUploadedImages(files) {
 						uploadedImagesContainer.innerHTML = '';
+						let imageCounter = 1;
 
 						for (const file of files) {
 							if (file.type.startsWith('image/')) {
+								const imgContainer = document.createElement('div');
+								imgContainer.className = 'uploaded-image-container';
+
 								const img = document.createElement('img');
 								img.src = URL.createObjectURL(file);
-								uploadedImagesContainer.appendChild(img);
+
+								const imgLabel = document.createElement('div');
+								imgLabel.className = 'image-label';
+								imgLabel.textContent = 'Image ' + imageCounter;
+
+								imgContainer.appendChild(img);
+								imgContainer.appendChild(imgLabel);
+								uploadedImagesContainer.appendChild(imgContainer);
+
+								imageCounter++;
 							}
 						}
 					}

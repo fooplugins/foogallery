@@ -25,23 +25,13 @@
 .foogallery-upload-close-button {
     position: fixed;
     top: 20px;
-    right: 10px;
+    right: 6%;
     cursor: pointer;
-    color: red;
     font-size: 35px;
 }
 
 .foogallery-upload-popup-inner {
     display: flex;
     flex-direction: row;
-    width: 100%;
-}
-
-.foogallery-upload-left-column {
-    width: 100%;
-    padding-right: 15px;
-}
-
-.foogallery-upload-right-column {
     width: 100%;
 }
