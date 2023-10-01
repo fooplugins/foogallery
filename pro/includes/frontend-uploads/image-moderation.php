@@ -82,7 +82,7 @@ if (isset($_POST['moderate_image'])) {
                     // Update the gallery's attachments with the merged array
                     update_post_meta($gallery_id, FOOGALLERY_META_ATTACHMENTS, $merged_attachments);
         
-                    echo '<div class="notice notice-success"><p>' . __('Image approved and added to the gallery successfully.', 'foogallery') . 'p></div>';
+                    echo '<div class="notice notice-success"><p>' . __('Image approved and added to the gallery successfully.', 'foogallery') . '</p></div>';
                 }
         
                 // Call the function with the required parameters
@@ -227,16 +227,9 @@ $filter_gallery_id = isset($_POST['filter_gallery_id']) ? intval($_POST['filter_
                                     <p><strong><?php esc_html_e('Custom Target:', 'foogallery'); ?></strong> <?php echo esc_html($image['custom_target']); ?></p>
                                 </td>
                                 <td>
-                                    <form method="post">
-                                        <input type="hidden" name="gallery_id" value="<?php echo esc_attr($gallery_id); ?>">
-                                        <input type="hidden" name="image_id" value="<?php echo esc_attr($image['file']); ?>">
-                                        <select name="action">
-											<option value="approve"><?php esc_html_e( 'Approve', 'foogallery' ); ?></option>
-                                            <option value="reject"><?php esc_html_e( 'Reject', 'foogallery' ); ?></option>
-                                        </select>
-                                        <input type="submit" name="moderate_image" value="Submit">
-                                    </form>
-                                </td>
+                                    <button class="confirm-approve button button-large button-primary" data-gallery-id="<?php echo esc_attr($gallery_id); ?>" data-image-id="<?php echo esc_attr($image['file']); ?>">Approve Image</button>
+                                    <button class="confirm-reject button button-large" data-gallery-id="<?php echo esc_attr($gallery_id); ?>" data-image-id="<?php echo esc_attr($image['file']); ?>">Reject Image</button>
+                                </td>                                
                             </tr>
                         <?php endforeach; ?>
                     <?php endif; ?>
@@ -274,20 +267,15 @@ $filter_gallery_id = isset($_POST['filter_gallery_id']) ? intval($_POST['filter_
                                         <td><?php echo esc_html($gallery_id); ?></td>
                                         <td><img src="<?php echo esc_url($item['file']); ?>" alt="<?php echo esc_attr($item['alt']); ?>" /></td>
                                         <td>
-											<p><strong><?php esc_html_e('Caption:', 'foogallery'); ?></strong> <?php echo esc_html($image['caption']); ?></p>
-											<p><strong><?php esc_html_e('Description:', 'foogallery'); ?></strong> <?php echo esc_html($image['description']); ?></p>
-											<p><strong><?php esc_html_e('Alt Text:', 'foogallery'); ?></strong><?php echo esc_html($image['alt']); ?></p>
-											<p><strong><?php esc_html_e('Custom URL:', 'foogallery'); ?></strong> <?php echo esc_url($image['custom_url']); ?></p>
-											<p><strong><?php esc_html_e('Custom Target:', 'foogallery'); ?></strong> <?php echo esc_html($image['custom_target']); ?></p>
+											<p><strong><?php esc_html_e('Caption:', 'foogallery'); ?></strong> <?php echo esc_html($item['caption']); ?></p>
+											<p><strong><?php esc_html_e('Description:', 'foogallery'); ?></strong> <?php echo esc_html($item['description']); ?></p>
+											<p><strong><?php esc_html_e('Alt Text:', 'foogallery'); ?></strong><?php echo esc_html($item['alt']); ?></p>
+											<p><strong><?php esc_html_e('Custom URL:', 'foogallery'); ?></strong> <?php echo esc_url($item['custom_url']); ?></p>
+											<p><strong><?php esc_html_e('Custom Target:', 'foogallery'); ?></strong> <?php echo esc_html($item['custom_target']); ?></p>
 										</td>
                                         <td>
-                                            <form method="post">
-                                                <input type="hidden" name="gallery_id" value="<?php echo esc_attr($gallery_id); ?>">
-                                                <input type="hidden" name="image_id" value="<?php echo esc_attr($item['file']); ?>">
-                                                <input type="hidden" name="action" value="delete">
-                                                <input type="submit" name="moderate_image" value="Delete">
-                                            </form>
-                                        </td>
+                                            <button class="confirm-delete button button-large" data-gallery-id="<?php echo esc_attr($gallery_id); ?>" data-image-id="<?php echo esc_attr($item['file']); ?>">Delete Image</button>
+                                        </td>                                        
                                     </tr>
                                 <?php endforeach; ?>
                             <?php endif; ?>
@@ -302,12 +290,12 @@ $filter_gallery_id = isset($_POST['filter_gallery_id']) ? intval($_POST['filter_
     
 </div>
 
-<script>    
+<script>
     const filterDropdown = document.getElementById('filter_gallery_id');
-    const tableRows = document.querySelectorAll('.wp-list-table tbody tr');    
+    const tableRows = document.querySelectorAll('.wp-list-table tbody tr');
     const tabs = document.querySelectorAll('.nav-tabs a');
     const tabContents = document.querySelectorAll('.tab-content');
-    const tabLabels = document.querySelectorAll('.tab-label');  
+    const tabLabels = document.querySelectorAll('.tab-label');
 
     filterDropdown.addEventListener('change', function () {
         const selectedGalleryId = this.value;
@@ -327,13 +315,13 @@ $filter_gallery_id = isset($_POST['filter_gallery_id']) ? intval($_POST['filter_
                 row.style.display = 'none';
             }
         });
-    });      
-    
+    });
+
     function hideAllTabs() {
         tabContents.forEach(content => {
             content.classList.remove('active');
         });
-        
+
         tabLabels.forEach(label => {
             label.classList.remove('active');
         });
@@ -348,16 +336,88 @@ $filter_gallery_id = isset($_POST['filter_gallery_id']) ? intval($_POST['filter_
             const target = this.getAttribute('href').replace('#', '');
             const selectedTab = document.getElementById(target);
             selectedTab.classList.add('active');
-            
+
             this.classList.add('active');
         });
     });
+
+    // Add event listeners for confirmation dialogs
+    const confirmRejectButtons = document.querySelectorAll('.confirm-reject');
+    confirmRejectButtons.forEach(button => {
+        button.addEventListener('click', function (e) {
+            e.preventDefault();
+
+            const galleryId = this.getAttribute('data-gallery-id');
+            const imageId = this.getAttribute('data-image-id');
+
+            if (confirm(`Are you sure you want to reject this image?`)) {
+                const form = document.createElement('form');
+                form.method = 'post';
+                form.innerHTML = `
+                    <input type="hidden" name="gallery_id" value="${galleryId}">
+                    <input type="hidden" name="image_id" value="${imageId}">
+                    <input type="hidden" name="action" value="reject">
+                    <input type="hidden" name="moderate_image" value="confirmed_reject">
+                `;
+                document.body.appendChild(form);
+                form.submit();
+            }
+        });
+    });
+
+    // Add event listeners for confirmation dialogs for "Approve"
+    const confirmApproveButtons = document.querySelectorAll('.confirm-approve');
+    confirmApproveButtons.forEach(button => {
+        button.addEventListener('click', function (e) {
+            e.preventDefault();
+
+            const galleryId = this.getAttribute('data-gallery-id');
+            const imageId = this.getAttribute('data-image-id');
+
+            if (confirm(`Are you sure you want to approve this image?`)) {
+                const form = document.createElement('form');
+                form.method = 'post';
+                form.innerHTML = `
+                    <input type="hidden" name="gallery_id" value="${galleryId}">
+                    <input type="hidden" name="image_id" value="${imageId}">
+                    <input type="hidden" name="action" value="approve">
+                    <input type="hidden" name="moderate_image" value="confirmed_approve">
+                `;
+                document.body.appendChild(form);
+                form.submit();
+            }
+        });
+    });
+
+    const confirmDeleteButtons = document.querySelectorAll('.confirm-delete');
+    confirmDeleteButtons.forEach(button => {
+        button.addEventListener('click', function (e) {
+            e.preventDefault();
+
+            const galleryId = this.getAttribute('data-gallery-id');
+            const imageId = this.getAttribute('data-image-id');
+
+            if (confirm(`Are you sure you want to delete this image?`)) {
+                const form = document.createElement('form');
+                form.method = 'post';
+                form.innerHTML = `
+                    <input type="hidden" name="gallery_id" value="${galleryId}">
+                    <input type="hidden" name="image_id" value="${imageId}">
+                    <input type="hidden" name="action" value="delete">
+                    <input type="hidden" name="moderate_image" value="confirmed_delete">
+                `;
+                document.body.appendChild(form);
+                form.submit();
+            }
+        });
+    });
+
     const initialTab = document.getElementById('pending-tab');
     const initialTabLabel = document.querySelector('.tab-label[href="#pending-tab"]');
     initialTab.classList.add('active');
     initialTabLabel.classList.add('active');
-
 </script>
+
 
 <style>
     .tab-content {
