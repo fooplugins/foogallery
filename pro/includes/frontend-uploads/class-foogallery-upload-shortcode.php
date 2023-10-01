@@ -71,36 +71,68 @@ if ( ! class_exists( 'Foogallery_Upload_Shortcode' ) ) {
 				ob_start();
 				?>
 				<form method="post" enctype="multipart/form-data">
-				<div style="max-width: 500px; max-height: 200px; border: 1px dashed #999; text-align: center; padding: 20px; margin-top: 10px;">
-					<input type="hidden" name="gallery_id" value="<?php echo esc_attr( $gallery_id ); ?>" />
-					<input type="file" name="foogallery_images[]" id="image-upload" accept="image/*" multiple style="display: none;" />
-					<label for="image-upload" style="cursor: pointer;">
-					<p><?php esc_html_e( 'Click to browse or drag & drop image(s) here', 'foogallery' ); ?></p>
-					</label>
-				</div>
-					
-					<div class="popup-overlay" id="popup">
-						<div class="popup-content">
-							<span class="close-button" id="close-popup" style="font-size: 40px;">&times;</span>
-							<div class="popup-inner">
-								<div class="left-column">
-									<div class="image-grid" id="uploaded-images">
-										<!-- Uploaded images displayed here -->
-									</div>
-								</div>
-								<div class="right-column">
-								<div id="metadata-container" <?php foreach ( $attributes as $key => $value ) { echo "$key=\"$value\" "; } ?>>
-									<!-- Metadata input fields added here dynamically -->
-								</div>
-									<div style="margin-top: 10px;">
-										<input type="submit" name="foogallery_image_upload" value="Upload Images" />
-									</div>
-								</div>
-							</div>
-						</div>
+					<div style="max-width: 500px; max-height: 200px; border: 1px dashed #999; text-align: center; padding: 20px; margin-top: 10px;">
+						<input type="hidden" name="gallery_id" value="<?php echo esc_attr($gallery_id); ?>" />
+						<input type="file" name="foogallery_images[]" id="image-upload" accept="image/*" multiple style="display: none;" />
+						<label for="image-upload" style="cursor: pointer;">
+							<p><?php esc_html_e( 'Click to browse or drag & drop image(s) here', 'foogallery' ); ?></p>
+						</label>
 					</div>
+                    
+                    <div class="foogallery-upload-popup-overlay" id="popup">
+                        <div class="foogallery-upload-popup-content">
+                            <span class="foogallery-upload-close-button" id="close-popup" style="font-size: 40px;">&times;</span>
+                            <div class="foogallery-upload-popup-inner">
+                                <div class="foogallery-upload-left-column">
+                                    <div class="foogallery-upload-image-grid" id="uploaded-images">
+                                        <!-- Uploaded images displayed here -->
+                                    </div>
+                                </div>
+                                <div class="foogallery-upload-right-column">
+                                <div id="metadata-container" style="padding: 5px 7px;" <?php foreach ($attributes as $key => $value) { echo "$key=\"$value\" "; } ?>>
+                                    <!-- Metadata input fields added here dynamically -->
+                                </div>
+                                    <div style="margin-top: 10px;">
+                                        <input type="submit" class="foogallery-image-upload-button" name="foogallery_image_upload" value="Upload Images" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>				
 
-				</form>
+                </form>
+
+				<style>	
+					.foogallery-upload-image-grid {
+						display: grid;
+						grid-template-columns: repeat(2, 1fr);
+						grid-gap: 20px;
+					}
+
+					.foogallery-upload-image-grid img {
+						width: 200px;
+						height: 200px;
+						margin: 5px 7px;
+					}
+					
+					.foogallery-image-upload-button {
+						background-color: #0073e6;
+						color: #fff;
+						border: none;
+						padding: 10px 20px;
+						font-size: 16px;
+						cursor: pointer;
+						border-radius: 4px;
+						transition: background-color 0.3s ease;
+						box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+						display: block;
+						margin: 0 auto;
+					}
+
+					.foogallery-image-upload-button:hover {
+						background-color: #0056b3;
+					}
+				</style>
 
 				<script>
 					const imageUploadInput = document.getElementById('image-upload');
@@ -144,41 +176,40 @@ if ( ! class_exists( 'Foogallery_Upload_Shortcode' ) ) {
 
 						for (let i = 0; i < numImages; i++) {
 							const metadataFields = `
-								<div class="metadata-fields" style="margin-bottom: 10px; display: flex; flex-direction: column;">
+								<div class="metadata-fields" style="margin-bottom: 20px; padding: 10px; border: 1px solid #ccc; border-radius: 5px; background-color: #f9f9f9;">
 									${metadataContainer.getAttribute('data-display-caption') === 'on' ? `
-										<div>
-											<label for="caption_${i}">Caption:</label>
-											<input type="text" name="caption[]" id="caption_${i}" />
+										<div class="metadata-field" style="margin-bottom: 10px;  padding: 10px;">
+											<label for="caption_${i}" style="display: block; font-weight: bold; margin-bottom: 5px;">Caption:</label>
+											<input type="text" class="metadata-input" style="width: 100%; height: 30px; padding: 5px; border: 1px solid #ccc; border-radius: 3px;" name="caption[]" id="caption_${i}" />
 										</div>` : ''}
 									
 									${metadataContainer.getAttribute('data-display-description') === 'on' ? `
-										<div>
-											<label for="description_${i}">Description:</label>
-											<textarea name="description[]" id="description_${i}"></textarea>
+										<div class="metadata-field" style="margin-bottom: 10px; padding: 10px;">
+											<label for="description_${i}" style="display: block; font-weight: bold; margin-bottom: 5px;">Description:</label>
+											<textarea class="metadata-textarea" style="width: 100%; height: 80px;  padding: 5px; border: 1px solid #ccc; resize: vertical; border-radius: 3px; name="description[]" id="description_${i}"></textarea>
 										</div>` : ''}
 									
 									${metadataContainer.getAttribute('data-display-alt') === 'on' ? `
-										<div>
-											<label for="alt_${i}">Alt Text:</label>
-											<input type="text" name="alt[]" id="alt_${i}" />
+										<div class="metadata-field" style="margin-bottom: 10px; padding: 10px;">
+											<label for="alt_${i}" style="display: block; font-weight: bold; margin-bottom: 5px;">Alt Text:</label>
+											<input type="text" class="metadata-input" style="width: 100%; height: 30px; padding: 5px; border: 1px solid #ccc; border-radius: 3px; name="alt[]" id="alt_${i}" />
 										</div>` : ''}
 									
 									${metadataContainer.getAttribute('data-display-custom_url') === 'on' ? `
-										<div>
-											<label for="custom_url_${i}">Custom URL:</label>
-											<input type="text" name="custom_url[]" id="custom_url_${i}" />
+										<div class="metadata-field" style="margin-bottom: 10px; padding: 10px;">
+											<label for="custom_url_${i}" style="display: block; font-weight: bold; margin-bottom: 5px;">Custom URL:</label>
+											<input type="text" class="metadata-input" style="width: 100%; height: 30px; padding: 5px; border: 1px solid #ccc; border-radius: 3px; name="custom_url[]" id="custom_url_${i}" />
 										</div>` : ''}
 									
 									${metadataContainer.getAttribute('data-display-custom_target') === 'on' ? `
-										<div>
-											<label for="custom_target_${i}">Custom Target:</label>
-											<input type="text" name="custom_target[]" id="custom_target_${i}" />
+										<div class="metadata-field" style="margin-bottom: 10px; padding: 10px;">
+											<label for="custom_target_${i}" style="display: block; font-weight: bold; margin-bottom: 5px;">Custom Target:</label>
+											<input type="text" class="metadata-input" style="width: 100%; height: 30px; padding: 5px; border: 1px solid #ccc; border-radius: 3px; name="custom_target[]" id="custom_target_${i}" />
 										</div>` : ''}
 								</div>
 							`;
 							metadataContainer.innerHTML += metadataFields;
 						}
-
 					}
 
 

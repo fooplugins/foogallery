@@ -1,5 +1,5 @@
 /* Styles for the pop-up */
-.popup-overlay {
+.foogallery-upload-popup-overlay {
     display: none;
     position: fixed;
     top: 0;
@@ -12,9 +12,9 @@
     align-items: center;
 }
 
-.popup-content {
+.foogallery-upload-popup-content {
     background-color: #fff;
-    max-width: 80%;
+    width: 80%;
     max-height: 80%;
     overflow: auto;
     padding: 5px 20px;
@@ -22,12 +22,7 @@
     position: relative;
 }
 
-.popup-inner {
-    display: flex;
-    flex-direction: row;
-}
-
-.close-button {
+.foogallery-upload-close-button {
     position: fixed;
     top: 20px;
     right: 10px;
@@ -36,25 +31,17 @@
     font-size: 35px;
 }
 
-.left-column {
-    flex: 0 0 60%;
-    padding-right: 20px;
-}
-
-.right-column {
-    flex: 0 0 40%;
-}
-.image-grid {
+.foogallery-upload-popup-inner {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: space-evenly;
-    justify-content: flex-start;
-    align-items: flex-start;
-    margin-top: 10px;
+    flex-direction: row;
+    width: 100%;
 }
 
-.image-grid img {
-    width: 200px;
-    height: 200px;
-    margin: 5px 7px;
+.foogallery-upload-left-column {
+    width: 100%;
+    padding-right: 15px;
+}
+
+.foogallery-upload-right-column {
+    width: 100%;
 }
