@@ -190,21 +190,20 @@ $filter_gallery_id = isset( $_POST['filter_gallery_id'] ) ? intval( $_POST['filt
 
 <!-- HTML for the Moderation Page -->
 <div class="wrap" id="image-moderation-container">
-	<h2>Image Moderation</h2>
+	<h2><?php esc_html_e( 'Image Moderation', 'foogallery' ); ?></h2>
 
 	<section style="display: flex; justify-content:space-between; align-items:center;">
 
 		<ul class="nav-tabs" style="display: flex;">
-			<li><a href="#pending-tab" class="tab-label" style="margin-right: 5px; text-decoration: none;">Pending |</a></li>
-			<li><a href="#approved-tab" class="tab-label" style="text-decoration: none;">Approved</a></li>
+			<li><a href="#pending-tab" class="tab-label" style="margin-right: 5px; text-decoration: none;"><?php esc_html_e( 'Pending', 'foogallery' ); ?> |</a></li>
+			<li><a href="#approved-tab" class="tab-label" style="text-decoration: none;"><?php esc_html_e( 'Approved', 'foogallery' ); ?></a></li>
 		</ul>
-
 
 		<!-- Gallery ID filter dropdown -->
 		<form method="post" style="margin-bottom: 20px;">
-			<label for="filter_gallery_id">Filter by Gallery ID:</label>
+			<label for="filter_gallery_id"><?php esc_html_e( 'Filter by Gallery ID:', 'foogallery' ); ?></label>
 			<select name="filter_gallery_id" id="filter_gallery_id">
-				<option value="0">All</option>
+				<option value="0"><?php esc_html_e( 'All', 'foogallery' ); ?></option>
 				<?php foreach ( $images_to_moderate as $gallery_id => $images ) : ?>
 					<option value="<?php echo esc_attr( $gallery_id ); ?>" <?php selected( $filter_gallery_id, $gallery_id ); ?>>
 						<?php echo esc_html( $gallery_id ); ?>
@@ -219,10 +218,10 @@ $filter_gallery_id = isset( $_POST['filter_gallery_id'] ) ? intval( $_POST['filt
 		<table class="wp-list-table widefat fixed striped">
 			<thead>
 				<tr>
-					<th>Gallery ID</th>
-					<th>Image</th>
-					<th>Metadata</th>
-					<th>Action</th>
+				<th><?php esc_html_e( 'Gallery ID', 'foogallery' ); ?></th>
+				<th><?php esc_html_e( 'Image', 'foogallery' ); ?></th>
+				<th><?php esc_html_e( 'Metadata', 'foogallery' ); ?></th>
+				<th><?php esc_html_e( 'Action', 'foogallery' ); ?></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -237,19 +236,19 @@ $filter_gallery_id = isset( $_POST['filter_gallery_id'] ) ? intval( $_POST['filt
 								<td><?php echo esc_html( $gallery_id ); ?></td>
 								<td><img src="<?php echo esc_url( $image['file'] ); ?>" alt="<?php echo esc_attr( $image['alt'] ); ?>" /></td>
 								<td>
-									<p><strong>Caption:</strong> <?php echo esc_html( $image['caption'] ); ?></p>
-									<p><strong>Description:</strong> <?php echo esc_html( $image['description'] ); ?></p>
-									<p><strong>Alt Text:</strong> <?php echo esc_html( $image['alt'] ); ?></p>
-									<p><strong>Custom URL:</strong> <?php echo esc_url( $image['custom_url'] ); ?></p>
-									<p><strong>Custom Target:</strong> <?php echo esc_html( $image['custom_target'] ); ?></p>
+									<p><strong><?php esc_html_e( 'Caption:', 'foogallery' ); ?></strong> <?php echo esc_html( $item['caption'] ); ?></p>
+									<p><strong><?php esc_html_e( 'Description:', 'foogallery' ); ?></strong> <?php echo esc_html( $item['description'] ); ?></p>
+									<p><strong><?php esc_html_e( 'Alt Text:', 'foogallery' ); ?></strong> <?php echo esc_html( $item['alt'] ); ?></p>
+									<p><strong><?php esc_html_e( 'Custom URL:', 'foogallery' ); ?></strong> <?php echo esc_url( $item['custom_url'] ); ?></p>
+									<p><strong><?php esc_html_e( 'Custom Target:', 'foogallery' ); ?></strong> <?php echo esc_html( $item['custom_target'] ); ?></p>
 								</td>
 								<td>
 									<form method="post">
 										<input type="hidden" name="gallery_id" value="<?php echo esc_attr( $gallery_id ); ?>">
 										<input type="hidden" name="image_id" value="<?php echo esc_attr( $image['file'] ); ?>">
 										<select name="action">
-											<option value="approve">Approve</option>
-											<option value="reject">Reject</option>
+											<option value="approve"><?php esc_html_e( 'Approve', 'foogallery' ); ?></option>
+											<option value="reject"><?php esc_html_e( 'Reject', 'foogallery' ); ?></option>
 										</select>
 										<input type="submit" name="moderate_image" value="Submit">
 									</form>
@@ -271,10 +270,10 @@ $filter_gallery_id = isset( $_POST['filter_gallery_id'] ) ? intval( $_POST['filt
 		<table class="wp-list-table widefat fixed striped">
 			<thead>
 				<tr>
-					<th>Gallery ID</th>
-					<th>Approved Image</th>
-					<th>Metadata</th>
-					<th>Action</th>
+					<th><?php esc_html_e( 'Gallery ID', 'foogallery' ); ?></th>
+					<th><?php esc_html_e( 'Image', 'foogallery' ); ?></th>
+					<th><?php esc_html_e( 'Metadata', 'foogallery' ); ?></th>
+					<th><?php esc_html_e( 'Action', 'foogallery' ); ?></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -298,12 +297,11 @@ $filter_gallery_id = isset( $_POST['filter_gallery_id'] ) ? intval( $_POST['filt
 										<td><?php echo esc_html( $gallery_id ); ?></td>
 										<td><img src="<?php echo esc_url( $item['file'] ); ?>" alt="<?php echo esc_attr( $item['alt'] ); ?>" /></td>
 										<td>
-											<!-- Display image metadata -->
-											<p><strong>Caption:</strong> <?php echo esc_html( $item['caption'] ); ?></p>
-											<p><strong>Description:</strong> <?php echo esc_html( $item['description'] ); ?></p>
-											<p><strong>Alt Text:</strong> <?php echo esc_html( $item['alt'] ); ?></p>
-											<p><strong>Custom URL:</strong> <?php echo esc_url( $item['custom_url'] ); ?></p>
-											<p><strong>Custom Target:</strong> <?php echo esc_html( $item['custom_target'] ); ?></p>
+											<p><strong><?php esc_html_e( 'Caption:', 'foogallery' ); ?></strong> <?php echo esc_html( $item['caption'] ); ?></p>
+											<p><strong><?php esc_html_e( 'Description:', 'foogallery' ); ?></strong> <?php echo esc_html( $item['description'] ); ?></p>
+											<p><strong><?php esc_html_e( 'Alt Text:', 'foogallery' ); ?></strong> <?php echo esc_html( $item['alt'] ); ?></p>
+											<p><strong><?php esc_html_e( 'Custom URL:', 'foogallery' ); ?></strong> <?php echo esc_url( $item['custom_url'] ); ?></p>
+											<p><strong><?php esc_html_e( 'Custom Target:', 'foogallery' ); ?></strong> <?php echo esc_html( $item['custom_target'] ); ?></p>
 										</td>
 										<td>
 											<form method="post">

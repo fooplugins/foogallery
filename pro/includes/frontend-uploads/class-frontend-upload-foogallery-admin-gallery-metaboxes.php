@@ -124,7 +124,7 @@ class FrontEnd_Upload_FooGallery_Admin_Gallery_MetaBoxes extends FooGallery_Admi
 			<?php
 		} else {
 			// No ID found.
-			echo esc_html( 'No ID found in the shortcode.' );
+			echo esc_html__( 'No ID found in the shortcode.', 'foogallery' );
 		}
 	}
 }

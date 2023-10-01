@@ -54,7 +54,7 @@ if ( ! class_exists( 'Foogallery_Upload_Shortcode' ) ) {
 
 			// Check if the gallery_id attribute is provided.
 			if ( ! $gallery_id ) {
-				$output = 'Gallery ID not specified.';
+				$output = __( 'Gallery ID not specified.', 'foogallery' );
 			} else {
 				$metafields = array( 'caption', 'description', 'alt', 'custom_url', 'custom_target' );
 				$attributes = array();
@@ -75,7 +75,7 @@ if ( ! class_exists( 'Foogallery_Upload_Shortcode' ) ) {
 					<input type="hidden" name="gallery_id" value="<?php echo esc_attr( $gallery_id ); ?>" />
 					<input type="file" name="foogallery_images[]" id="image-upload" accept="image/*" multiple style="display: none;" />
 					<label for="image-upload" style="cursor: pointer;">
-						<p>Click to <span style="text-decoration: underline;">browse</span> or drag & drop image(s) here</p>
+					<p><?php esc_html_e( 'Click to browse or drag & drop image(s) here', 'foogallery' ); ?></p>
 					</label>
 				</div>
 					
