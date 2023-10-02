@@ -36,10 +36,13 @@ if ( ! class_exists( 'Foogallery_Upload_Shortcode' ) ) {
 		 * Function to enqueue scripts and styles.
 		 */
 		public function frontend_enqueue_scripts() {
-			$directory = plugin_dir_url( __FILE__ );
-
-			wp_enqueue_style( 'frontend-uploads', $directory . 'foogallery-frontend-uploads.css', array(), '1.0' );
+			// Check if the page contains the [foogallery_upload] shortcode.
+			if ( has_shortcode( get_post()->post_content, 'foogallery_upload' ) ) {
+				$directory = plugin_dir_url( __FILE__ );
+				wp_enqueue_style( 'frontend-uploads', $directory . 'foogallery-frontend-uploads.css', array(), '1.0' );
+			}
 		}
+
 
 		/**
 		 * Render the image upload form shortcode.
@@ -62,7 +65,7 @@ if ( ! class_exists( 'Foogallery_Upload_Shortcode' ) ) {
 				foreach ( $metafields as $metafield ) {
 					$option_name = "_display_$metafield";
 					$display_setting = get_post_meta( $gallery_id, $option_name, true );
-										// Add the display setting as a data attribute.
+					// Add the display setting as a data attribute.
 					$attributes["data-display-$metafield"] = $display_setting;
 				}
 
