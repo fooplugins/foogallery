@@ -1,4 +1,21 @@
 <?php
+
+// Include the necessary file for admin gallery metaboxes.
+require_once FOOGALLERY_PATH . 'includes/admin/class-gallery-metaboxes.php';
+
+if ( ! class_exists( 'FrontEnd_Upload_FooGallery_Admin_Gallery_MetaBoxes' ) ) {
+    require_once FOOGALLERY_PATH . 'pro/includes/frontend-uploads/class-frontend-upload-foogallery-admin-gallery-metaboxes.php';
+}
+
+// Initialize the classes.
+if ( class_exists('FooGallery_Admin_Gallery_MetaBoxes') ) {
+    new FrontEnd_Upload_FooGallery_Admin_Gallery_MetaBoxes();
+}
+
+if ( class_exists( 'Foogallery_Upload_Shortcode' ) ) {
+    new Foogallery_Upload_Shortcode();
+}
+
 /**
  * @package foogallery
  *

@@ -1,6 +1,4 @@
 <?php
-// Include the necessary file.
-require_once FOOGALLERY_PATH . 'includes/admin/class-gallery-metaboxes.php';
 
 /**
  * Class FrontEnd_Upload_FooGallery_Admin_Gallery_MetaBoxes

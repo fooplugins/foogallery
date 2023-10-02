@@ -1,13 +1,5 @@
 <?php
 
-// Include shortcode class
-if (!class_exists('FooGallery_Image_Upload_Form_Shortcode')) {
-    require_once FOOGALLERY_PATH . 'pro/includes/frontend-uploads/class-foogallery-upload-shortcode.php';
-}
-
-// Initialize  class
-$foogallery_image_upload = new Foogallery_Upload_Shortcode();
-
 // Check if the form is submitted for image moderation
 if (isset($_POST['moderate_image'])) {
     $image_id = sanitize_text_field($_POST['image_id']);
