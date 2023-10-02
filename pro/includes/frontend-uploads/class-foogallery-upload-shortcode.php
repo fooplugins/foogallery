@@ -16,6 +16,26 @@ if ( class_exists( 'Foogallery_Upload_Shortcode' ) ) {
     new Foogallery_Upload_Shortcode();
 }
 
+// Add a sub-menu to the FooGallery menu
+function add_image_moderation_submenu() {
+    $parent_slug = foogallery_admin_menu_parent_slug();
+    
+    add_submenu_page(
+        $parent_slug,
+        'Image Moderation',
+        'Image Moderation',
+        'manage_options',
+        'image-moderation',
+        'render_image_moderation_page'
+    );
+}
+add_action('admin_menu', 'add_image_moderation_submenu');
+
+// Callback function to render the page content
+function render_image_moderation_page() {
+    require_once FOOGALLERY_PATH . 'pro/includes/frontend-uploads/image-moderation.php';
+}
+
 /**
  * @package foogallery
  *
