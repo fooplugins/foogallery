@@ -17,7 +17,7 @@ if (isset($_POST['moderate_image'])) {
             $new_metadata_file = $approved_folder . 'metadata.json';
             
             // Function to retrieve and merge attachments with the specific approved image
-            function merge_attachments_with_uploaded_images($gallery_id, $approved_image, $original_folder, $approved_folder, $metadata_file, $new_metadata_file) {
+            function merge_attachment_with_uploaded_images($gallery_id, $approved_image, $original_folder, $approved_folder, $metadata_file, $new_metadata_file) {
                 // Get the existing attachments for the gallery
                 $existing_attachments = get_post_meta($gallery_id, FOOGALLERY_META_ATTACHMENTS, true);
                 
@@ -78,7 +78,7 @@ if (isset($_POST['moderate_image'])) {
             }
             
             // Call the function with the required parameters
-            merge_attachments_with_uploaded_images($gallery_id, $file_name, $original_folder, $approved_folder, $metadata_file, $new_metadata_file);
+            merge_attachment_with_uploaded_images($gallery_id, $file_name, $original_folder, $approved_folder, $metadata_file, $new_metadata_file);
         }
     } elseif ($action === 'reject') {
         // Get the gallery ID and file name from the form data
