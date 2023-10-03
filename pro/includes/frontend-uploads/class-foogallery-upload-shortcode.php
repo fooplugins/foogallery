@@ -1,5 +1,11 @@
 <?php
 
+ global $wp_filesystem;
+ if (empty($wp_filesystem)) {
+	 require_once ABSPATH . '/wp-admin/includes/file.php';
+	 WP_Filesystem();
+ }
+ 
 // Include the necessary file for admin gallery metaboxes.
 require_once FOOGALLERY_PATH . 'includes/admin/class-gallery-metaboxes.php';
 
@@ -360,9 +366,10 @@ if ( ! class_exists( 'Foogallery_Upload_Shortcode' ) ) {
 									"custom_target" => isset($_POST['custom_target'][$key]) ? sanitize_text_field($_POST['custom_target'][$key]) : ""
 								);
 
+								global $wp_filesystem;
 								$metadata_file = $user_folder . 'metadata.json';
-								$existing_metadata = file_exists($metadata_file) ? json_decode(file_get_contents($metadata_file), true) : array("items" => array());
-
+								$existing_metadata = file_exists($metadata_file) ? @json_decode( $wp_filesystem->get_contents( $metadata_file ), true ) : array("items" => array());
+								
 								// Add the new image's metadata to the array.
 								$existing_metadata["items"][] = $image_metadata;
 
