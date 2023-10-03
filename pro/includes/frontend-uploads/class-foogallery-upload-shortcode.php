@@ -235,31 +235,32 @@ if ( ! class_exists( 'Foogallery_Upload_Shortcode' ) ) {
 									${metadataContainer.getAttribute('data-display-description') === 'on' ? `
 										<div class="metadata-field" style="margin-bottom: 10px; padding: 10px;">
 											<label for="description_${i}" style="display: block; font-weight: bold; margin-bottom: 5px;">Description:</label>
-											<textarea class="metadata-textarea" style="width: 100%; height: 80px;  padding: 5px; border: 1px solid #ccc; resize: vertical; border-radius: 3px; name="description[]" id="description_${i}"></textarea>
+											<textarea class="metadata-textarea" style="width: 100%; height: 80px;  padding: 5px; border: 1px solid #ccc; resize: vertical; border-radius: 3px;" name="description[]" id="description_${i}"></textarea>
 										</div>` : ''}
 									
 									${metadataContainer.getAttribute('data-display-alt') === 'on' ? `
 										<div class="metadata-field" style="margin-bottom: 10px; padding: 10px;">
 											<label for="alt_${i}" style="display: block; font-weight: bold; margin-bottom: 5px;">Alt Text:</label>
-											<input type="text" class="metadata-input" style="width: 100%; height: 30px; padding: 5px; border: 1px solid #ccc; border-radius: 3px; name="alt[]" id="alt_${i}" />
+											<input type="text" class="metadata-input" style="width: 100%; height: 30px; padding: 5px; border: 1px solid #ccc; border-radius: 3px;" name="alt[]" id="alt_${i}" />
 										</div>` : ''}
 									
 									${metadataContainer.getAttribute('data-display-custom_url') === 'on' ? `
 										<div class="metadata-field" style="margin-bottom: 10px; padding: 10px;">
 											<label for="custom_url_${i}" style="display: block; font-weight: bold; margin-bottom: 5px;">Custom URL:</label>
-											<input type="text" class="metadata-input" style="width: 100%; height: 30px; padding: 5px; border: 1px solid #ccc; border-radius: 3px; name="custom_url[]" id="custom_url_${i}" />
+											<input type="text" class="metadata-input" style="width: 100%; height: 30px; padding: 5px; border: 1px solid #ccc; border-radius: 3px;" name="custom_url[]" id="custom_url_${i}" />
 										</div>` : ''}
 									
 									${metadataContainer.getAttribute('data-display-custom_target') === 'on' ? `
 										<div class="metadata-field" style="margin-bottom: 10px; padding: 10px;">
 											<label for="custom_target_${i}" style="display: block; font-weight: bold; margin-bottom: 5px;">Custom Target:</label>
-											<input type="text" class="metadata-input" style="width: 100%; height: 30px; padding: 5px; border: 1px solid #ccc; border-radius: 3px; name="custom_target[]" id="custom_target_${i}" />
+											<input type="text" class="metadata-input" style="width: 100%; height: 30px; padding: 5px; border: 1px solid #ccc; border-radius: 3px;" name="custom_target[]" id="custom_target_${i}" />
 										</div>` : ''}
 								</div>
 							`;
 							metadataContainer.innerHTML += metadataFields;
 						}
 					}
+
 
 
 					function displayPopup() {
