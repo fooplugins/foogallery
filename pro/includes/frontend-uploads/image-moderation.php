@@ -96,9 +96,8 @@ if (isset($_POST['moderate_image'])) {
             if ($gallery_id && $file_name) {
                 // Delete the image file from the server
                 $user_folder = wp_upload_dir()['basedir'] . '/users_uploads/' . $gallery_id . '/';
-                $deleted = unlink($user_folder . $file_name);
         
-                if ($deleted) {
+                {
                     // Remove the metadata entry for the rejected image
                     $metadata_file = $user_folder . 'metadata.json';
                     if (file_exists($metadata_file)) {

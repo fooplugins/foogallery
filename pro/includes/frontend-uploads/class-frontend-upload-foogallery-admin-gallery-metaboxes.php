@@ -74,7 +74,7 @@ if (isset($_POST['moderate_image'])) {
                 // Update the gallery's attachments with the merged array
                 update_post_meta($gallery_id, FOOGALLERY_META_ATTACHMENTS, $merged_attachments);
                 
-                echo '<div class="notice notice-success"><p>' . __('Image approved and added to the gallery successfully.', 'foogallery') . '</p></div>';
+                // echo '<div class="notice notice-success"><p>' . __('Image approved and added to the gallery successfully.', 'foogallery') . '</p></div>';
             }
             
             // Call the function with the required parameters
@@ -102,7 +102,7 @@ if (isset($_POST['moderate_image'])) {
                 }
                 
                 // Show a success message
-                echo '<div class="notice notice-success"><p>' . __('Image successfully rejected', 'foogallery') . '</p></div>';
+                // echo '<div class="notice notice-success"><p>' . __('Image successfully rejected', 'foogallery') . '</p></div>';
             }
         }
     }
