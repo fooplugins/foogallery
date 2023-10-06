@@ -28,8 +28,8 @@ function add_image_moderation_submenu() {
     
     add_submenu_page(
         $parent_slug,
-        'Image Moderation',
-        'Image Moderation',
+        'Moderation',
+        'Moderation',
         'manage_options',
         'image-moderation',
         'render_image_moderation_page'
