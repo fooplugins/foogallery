@@ -29,9 +29,3 @@
     cursor: pointer;
     font-size: 35px;
 }
-
-.foogallery-upload-popup-inner {
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-}

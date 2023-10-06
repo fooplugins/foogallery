@@ -133,14 +133,14 @@ if ( ! class_exists( 'Foogallery_Upload_Shortcode' ) ) {
 									<div class="foogallery-upload-image-grid" id="uploaded-images">
 										<!-- Uploaded images displayed here -->
 									</div>
+									<div style="margin-top: 10px;">
+										<input type="submit" class="foogallery-image-upload-button" name="foogallery_image_upload" value="Upload Images" />
+									</div>
 								</div>
 								<div class="foogallery-upload-right-column">
 									<div id="metadata-container" style="padding: 5px 7px;" <?php foreach ($attributes as $key => $value) { echo "$key=\"$value\" "; } ?>>
 										<!-- Metadata input fields added here dynamically -->
-									</div>
-									<div style="margin-top: 10px;">
-										<input type="submit" class="foogallery-image-upload-button" name="foogallery_image_upload" value="Upload Images" />
-									</div>
+									</div>									
 								</div>
 							</div>
 						</div>
@@ -148,25 +148,23 @@ if ( ! class_exists( 'Foogallery_Upload_Shortcode' ) ) {
 				</form>
 
 				<style>
+					.foogallery-upload-popup-inner {
+						display: flex;
+						flex-direction: column;
+						width: 100%;
+					}
 					.foogallery-upload-left-column {
 						width: 100%;
-						padding-right: 15px;
 					}
 
 					.foogallery-upload-right-column {
+						display: none;
 						width: 100%;
 					}
 
 					.foogallery-upload-image-grid {
-						display: grid;
-						grid-template-columns: repeat(2, 1fr);
-						grid-gap: 20px;
-					}
-
-					.foogallery-upload-image-grid img {
-						width: 200px;
-						height: 200px;
-						margin: 5px 7px;
+						display: flex;						
+						flex-direction: column;
 					}
 
 					.foogallery-image-upload-button {
@@ -235,39 +233,37 @@ if ( ! class_exists( 'Foogallery_Upload_Shortcode' ) ) {
 									${metadataContainer.getAttribute('data-display-caption') === 'on' ? `
 										<div class="metadata-field" style="margin-bottom: 10px;  padding: 10px;">
 											<label for="caption_${i}" style="display: block; font-weight: bold; margin-bottom: 5px;">Caption:</label>
-											<input type="text" class="metadata-input" style="width: 100%; height: 30px; padding: 5px; border: 1px solid #ccc; border-radius: 3px;" name="caption[]" id="caption_${i}" />
+											<input type="text" class="metadata-input" style="width: 100%; height: 20px; padding: 5px; border: 1px solid #ccc; border-radius: 2px;" name="caption[]" id="caption_${i}" />
 										</div>` : ''}
 									
 									${metadataContainer.getAttribute('data-display-description') === 'on' ? `
-										<div class="metadata-field" style="margin-bottom: 10px; padding: 10px;">
+										<div class="metadata-field" style="margin-bottom: 7px; padding: 10px;">
 											<label for="description_${i}" style="display: block; font-weight: bold; margin-bottom: 5px;">Description:</label>
 											<textarea class="metadata-textarea" style="width: 100%; height: 80px;  padding: 5px; border: 1px solid #ccc; resize: vertical; border-radius: 3px;" name="description[]" id="description_${i}"></textarea>
 										</div>` : ''}
 									
 									${metadataContainer.getAttribute('data-display-alt') === 'on' ? `
-										<div class="metadata-field" style="margin-bottom: 10px; padding: 10px;">
+										<div class="metadata-field" style="margin-bottom: 7px; padding: 10px;">
 											<label for="alt_${i}" style="display: block; font-weight: bold; margin-bottom: 5px;">Alt Text:</label>
-											<input type="text" class="metadata-input" style="width: 100%; height: 30px; padding: 5px; border: 1px solid #ccc; border-radius: 3px;" name="alt[]" id="alt_${i}" />
+											<input type="text" class="metadata-input" style="width: 100%; height: 20px; padding: 5px; border: 1px solid #ccc; border-radius: 2px;" name="alt[]" id="alt_${i}" />
 										</div>` : ''}
 									
 									${metadataContainer.getAttribute('data-display-custom_url') === 'on' ? `
-										<div class="metadata-field" style="margin-bottom: 10px; padding: 10px;">
+										<div class="metadata-field" style="margin-bottom: 7px; padding: 10px;">
 											<label for="custom_url_${i}" style="display: block; font-weight: bold; margin-bottom: 5px;">Custom URL:</label>
-											<input type="text" class="metadata-input" style="width: 100%; height: 30px; padding: 5px; border: 1px solid #ccc; border-radius: 3px;" name="custom_url[]" id="custom_url_${i}" />
+											<input type="text" class="metadata-input" style="width: 100%; height: 20px; padding: 5px; border: 1px solid #ccc; border-radius: 2px;" name="custom_url[]" id="custom_url_${i}" />
 										</div>` : ''}
 									
 									${metadataContainer.getAttribute('data-display-custom_target') === 'on' ? `
-										<div class="metadata-field" style="margin-bottom: 10px; padding: 10px;">
+										<div class="metadata-field" style="margin-bottom: 7px; padding: 10px;">
 											<label for="custom_target_${i}" style="display: block; font-weight: bold; margin-bottom: 5px;">Custom Target:</label>
-											<input type="text" class="metadata-input" style="width: 100%; height: 30px; padding: 5px; border: 1px solid #ccc; border-radius: 3px;" name="custom_target[]" id="custom_target_${i}" />
+											<input type="text" class="metadata-input" style="width: 100%; height: 20px; padding: 5px; border: 1px solid #ccc; border-radius: 2px;" name="custom_target[]" id="custom_target_${i}" />
 										</div>` : ''}
 								</div>
 							`;
 							metadataContainer.innerHTML += metadataFields;
 						}
 					}
-
-
 
 					function displayPopup() {
 						popup.style.display = 'flex';
@@ -279,25 +275,49 @@ if ( ! class_exists( 'Foogallery_Upload_Shortcode' ) ) {
 
 					function displayUploadedImages(files) {
 						uploadedImagesContainer.innerHTML = '';
-						let imageCounter = 1;
 
-						for (const file of files) {
+						for (let i = 0; i < files.length; i++) {
+							const file = files[i];
 							if (file.type.startsWith('image/')) {
-								const imgContainer = document.createElement('div');
-								imgContainer.className = 'uploaded-image-container';
-
-								const img = document.createElement('img');
-								img.src = URL.createObjectURL(file);
-
-								const imgLabel = document.createElement('div');
-								imgLabel.className = 'image-label';
-								imgLabel.textContent = 'Image ' + imageCounter;
-
-								imgContainer.appendChild(img);
-								imgContainer.appendChild(imgLabel);
-								uploadedImagesContainer.appendChild(imgContainer);
-
-								imageCounter++;
+							const metadataFields = `
+								<div class="image-metadata" style="display: flex; flex-direction: row; align-items: center; margin-bottom: 20px; padding: 10px; border: 1px solid #ccc; border-radius: 5px; background-color: #f9f9f9;">
+									<div class="image-preview" style="margin-right: 20px; width: 100%;">
+										<img style="width: 100%; height: 100%; object-fit: cover;" src="${URL.createObjectURL(file)}"  alt="Image Preview" />
+									</div>
+									<div class="metadata-fields" style="width: 100%;">
+										${metadataContainer.getAttribute('data-display-caption') === 'on' ? `
+											<div class="metadata-field" style="margin-bottom: 7px; padding: 10px;">
+												<label for="caption_${i}" style="display: block; font-weight: bold; margin-bottom: 5px;">Caption:</label>
+												<input type="text" class="metadata-input" style="width: 100%; height: 20px; padding: 5px; border: 1px solid #ccc; border-radius: 2px;" name="caption[]" id="caption_${i}" />
+											</div>` : ''}
+										
+										${metadataContainer.getAttribute('data-display-description') === 'on' ? `
+											<div class="metadata-field" style="margin-bottom: 7px; padding: 10px;">
+												<label for="description_${i}" style="display: block; font-weight: bold; margin-bottom: 5px;">Description:</label>
+												<textarea class="metadata-textarea" style="width: 100%; height: 40px;  padding: 5px; border: 1px solid #ccc; resize: vertical; border-radius: 3px;" name="description[]" id="description_${i}"></textarea>
+											</div>` : ''}
+										
+										${metadataContainer.getAttribute('data-display-alt') === 'on' ? `
+											<div class="metadata-field" style="margin-bottom: 7px; padding: 10px;">
+												<label for="alt_${i}" style="display: block; font-weight: bold; margin-bottom: 5px;">Alt Text:</label>
+												<input type="text" class="metadata-input" style="width: 100%; height: 20px; padding: 5px; border: 1px solid #ccc; border-radius: 2px;" name="alt[]" id="alt_${i}" />
+											</div>` : ''}
+										
+										${metadataContainer.getAttribute('data-display-custom_url') === 'on' ? `
+											<div class="metadata-field" style="margin-bottom: 7px; padding: 10px;">
+												<label for="custom_url_${i}" style="display: block; font-weight: bold; margin-bottom: 5px;">Custom URL:</label>
+												<input type="text" class="metadata-input" style="width: 100%; height: 20px; padding: 5px; border: 1px solid #ccc; border-radius: 2px;" name="custom_url[]" id="custom_url_${i}" />
+											</div>` : ''}
+										
+										${metadataContainer.getAttribute('data-display-custom_target') === 'on' ? `
+											<div class="metadata-field" style="margin-bottom: 7px; padding: 10px;">
+												<label for="custom_target_${i}" style="display: block; font-weight: bold; margin-bottom: 5px;">Custom Target:</label>
+												<input type="text" class="metadata-input" style="width: 100%; height: 20px; padding: 5px; border: 1px solid #ccc; border-radius: 2px;" name="custom_target[]" id="custom_target_${i}" />
+											</div>` : ''}
+									</div>
+								</div>
+							`;
+							uploadedImagesContainer.innerHTML += metadataFields;
 							}
 						}
 					}
