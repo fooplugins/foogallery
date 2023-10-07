@@ -18,8 +18,8 @@ if ( class_exists('FooGallery_Admin_Gallery_MetaBoxes') ) {
     new FrontEnd_Upload_FooGallery_Admin_Gallery_MetaBoxes();
 }
 
-if ( class_exists( 'Foogallery_Upload_Shortcode' ) ) {
-    new Foogallery_Upload_Shortcode();
+if ( class_exists( 'Foogallery_FrontEnd_Upload_Shortcode' ) ) {
+    new Foogallery_FrontEnd_Upload_Shortcode();
 }
 
 // Add a sub-menu to the FooGallery menu
@@ -51,18 +51,18 @@ function render_image_moderation_page() {
  * and the processing of uploaded images.
  */
 
-if ( ! class_exists( 'Foogallery_Upload_Shortcode' ) ) {
+if ( ! class_exists( 'Foogallery_FrontEnd_Upload_Shortcode' ) ) {
 
 	// Include the necessary file.
 	require_once FOOGALLERY_PATH . 'pro/includes/frontend-uploads/class-frontend-upload-foogallery-admin-gallery-metaboxes.php';
 
 	/**
-	 * Class Foogallery_Upload_Shortcode
+	 * Class Foogallery_FrontEnd_Upload_Shortcode
 	 *
 	 * This class handles the rendering of the Foogallery Upload form shortcode and
 	 * the processing of uploaded images.
 	 */
-	class Foogallery_Upload_Shortcode {
+	class Foogallery_FrontEnd_Upload_Shortcode {
 
 		/**
 		 * Constructor for the FooGallery_Image_Upload class.

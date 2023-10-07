@@ -92,7 +92,7 @@ if ( ! class_exists( 'FooGallery_Pro' ) ) {
 				new FooGallery_Pro_Advanced_Thumbnails();
 				new FooGallery_Pro_Bulk_Management();
 				new FooGallery_Pro_Exif();
-				new Foogallery_Upload_Shortcode();
+				new Foogallery_FrontEnd_Upload_Shortcode();
 			}
 			if ( foogallery_fs()->is_plan_or_trial( 'commerce' ) ) {
 				new FooGallery_Pro_Protection();
