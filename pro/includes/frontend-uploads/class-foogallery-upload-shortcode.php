@@ -329,6 +329,9 @@ if ( ! class_exists( 'Foogallery_FrontEnd_Upload_Shortcode' ) ) {
 					setTimeout(function () {
 						document.querySelector(".success-message").style.display = "none";
 					}, 3000);
+					setTimeout(function () {
+						document.querySelector(".error-message").style.display = "none";
+					}, 3000);
 				</script>
 
 				<?php
@@ -366,9 +369,29 @@ if ( ! class_exists( 'Foogallery_FrontEnd_Upload_Shortcode' ) ) {
 						}
 					}
 
+					// Retrieve the maximum images allowed and maximum image size settings
+					$max_images_allowed = get_post_meta($gallery_id, '_max_images_allowed', true);
+					$max_image_size = get_post_meta($gallery_id, '_max_image_size', true); // in KB
+		
+					$uploaded_image_count = count($uploaded_files['name']);
+
+					// Check if the number of uploaded images exceeds the maximum allowed
+					if ($uploaded_image_count > $max_images_allowed) {
+						echo '<div class="error-message" style="color: red; text-align: center;">' . __('Exceeded maximum images allowed.', 'foogallery') . '</div>';
+						return;
+					}
+
 					foreach ( $uploaded_files['name'] as $key => $filename ) {
 						// Check if the file is an image.
 						if ( $uploaded_files['type'][$key] && strpos( $uploaded_files['type'][$key], 'image/' ) === 0 ) {
+							$image_size_in_kb = round($uploaded_files['size'][$key] / 1024);
+		
+							// Check if the image size exceeds the maximum allowed size
+							if ($image_size_in_kb > $max_image_size) {
+								echo '<div class="error-message" style="color: red; text-align: center;">' . __('Image size exceeds maximum allowed size.', 'foogallery') . '</div>';
+								continue; // Skip this image
+							}
+
 							// Generate a unique file name for the uploaded image in the user folder.
 							$unique_filename = wp_unique_filename( $user_folder, $filename );
 							$user_file = $user_folder . $unique_filename;

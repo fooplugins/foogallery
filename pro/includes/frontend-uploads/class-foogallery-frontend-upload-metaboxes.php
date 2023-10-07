@@ -166,8 +166,9 @@ class FooGallery_FrontEnd_Upload_MetaBoxes extends FooGallery_Admin_Gallery_Meta
         parent::__construct();
         $this->gallery_id = isset($_POST['gallery_id']) ? intval($_POST['gallery_id']) : null;
 
-        // Hook to save metadata checkboxes.
+        // Hook to save metadata checkboxes and settings.
         add_action('save_post', array($this, 'save_metadata_checkboxes'));
+        add_action('save_post', array($this, 'save_frontend_upload_metabox_settings'));
     }
 
     /**
@@ -204,6 +205,20 @@ class FooGallery_FrontEnd_Upload_MetaBoxes extends FooGallery_Admin_Gallery_Meta
         }
     }
 
+    function save_frontend_upload_metabox_settings($post_id) {        
+        if (get_post_type($post_id) === FOOGALLERY_CPT_GALLERY) {
+            // Save the maximum images allowed setting.
+            if (isset($_POST['max_images_allowed'])) {
+                update_post_meta($post_id, '_max_images_allowed', sanitize_text_field($_POST['max_images_allowed']));
+            }
+    
+            // Save the maximum image size setting.
+            if (isset($_POST['max_image_size'])) {
+                update_post_meta($post_id, '_max_image_size', intval($_POST['max_image_size']));
+            }
+        }
+    }
+
     /**
      * Render the frontend upload metabox.
      *
@@ -227,6 +242,20 @@ class FooGallery_FrontEnd_Upload_MetaBoxes extends FooGallery_Admin_Gallery_Meta
             </p>
 
             <div id="metadata-settings">
+                <?php
+                // Retrieve existing values from the database
+                $max_images_allowed = get_post_meta($post->ID, '_max_images_allowed', true);
+                $max_image_size = get_post_meta($post->ID, '_max_image_size', true);
+
+                // Output the HTML for the fields
+                ?>
+                <h3><?php esc_html_e('Upload Form Settings.', 'foogallery'); ?></h3>
+                <label for="max_images_allowed" class="foogallery-upload-settings-input-label">Maximum Images Allowed:</label>
+                <input type="number" id="max_images_allowed" name="max_images_allowed" value="<?php echo esc_attr($max_images_allowed); ?>" class="foogallery-upload-settings-input-field" />
+
+                <label for="max_image_size" class="foogallery-upload-settings-input-label">Maximum Image Size (in KB):</label>
+                <input type="number" id="max_image_size" name="max_image_size" step="100" value="<?php echo esc_attr($max_image_size); ?>" class="foogallery-upload-settings-input-field" />
+
                 <h4><?php esc_html_e('Check to display the metadata fields in the upload form.', 'foogallery'); ?></h4>
                 <?php
                 $metafields = array('caption', 'description', 'alt', 'custom_url', 'custom_target');
@@ -239,7 +268,8 @@ class FooGallery_FrontEnd_Upload_MetaBoxes extends FooGallery_Admin_Gallery_Meta
                         <?php esc_html_e("Display $metafield", 'foogallery'); ?>
                     </label>
                     <br />
-                <?php } ?>
+                <?php }?>
+ 
             </div>
 
             <div id="image-moderation">
@@ -272,6 +302,28 @@ class FooGallery_FrontEnd_Upload_MetaBoxes extends FooGallery_Admin_Gallery_Meta
                     </tbody>
                 </table>
             </div>
+
+            <style>
+                .foogallery-upload-settings-input-label {
+                    display: block;
+                    font-weight: bold;
+                    margin-bottom: 5px;
+                }
+                .foogallery-upload-settings-input-field {
+                    width: 50%;
+                    padding: 10px;
+                    margin-bottom: 15px;
+                    border: 1px solid #ccc;
+                    border-radius: 5px;
+                    font-size: 16px;
+                }
+                .foogallery-upload-settings-input-field:focus {
+                    outline: none;
+                    border-color: #007BFF;
+                    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+                }
+
+            </style>
 
             <script>
                 // Add event listeners for image moderation actions
