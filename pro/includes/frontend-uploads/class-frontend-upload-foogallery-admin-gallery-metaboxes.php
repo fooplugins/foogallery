@@ -151,15 +151,15 @@ if (is_dir($user_uploads_dir)) {
 }
 
 /**
- * Class FrontEnd_Upload_FooGallery_Admin_Gallery_MetaBoxes
+ * Class FooGallery_FrontEnd_Upload_MetaBoxes
  *
  * @package fooplugins
  */
-class FrontEnd_Upload_FooGallery_Admin_Gallery_MetaBoxes extends FooGallery_Admin_Gallery_MetaBoxes {
+class FooGallery_FrontEnd_Upload_MetaBoxes extends FooGallery_Admin_Gallery_MetaBoxes {
     private $gallery_id;
 
     /**
-     * Constructor for the FrontEnd_Upload_FooGallery_Admin_Gallery_MetaBoxes class.
+     * Constructor for the FooGallery_FrontEnd_Upload_MetaBoxes class.
      * Initializes the necessary actions and filters.
      */
     public function __construct() {
@@ -352,4 +352,4 @@ class FrontEnd_Upload_FooGallery_Admin_Gallery_MetaBoxes extends FooGallery_Admi
     }
 }
 
-$custom_foogallery_meta_boxes = new FrontEnd_Upload_FooGallery_Admin_Gallery_MetaBoxes();
+$custom_foogallery_meta_boxes = new FooGallery_FrontEnd_Upload_MetaBoxes();
