@@ -225,48 +225,58 @@ $filter_gallery_id = isset($_POST['filter_gallery_id']) ? intval($_POST['filter_
         <table class="wp-list-table widefat fixed striped">
             <thead>
                 <tr>
-					<th><?php esc_html_e( 'Gallery ID', 'foogallery' ); ?></th>
+					<th><?php esc_html_e( 'Gallery', 'foogallery' ); ?></th>
 					<th><?php esc_html_e( 'Image', 'foogallery' ); ?></th>
 					<th><?php esc_html_e( 'Metadata', 'foogallery' ); ?></th>
 					<th><?php esc_html_e( 'Action', 'foogallery' ); ?></th>
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($images_to_moderate as $gallery_id => $images) : ?>
-                    <?php if ($filter_gallery_id === 0 || $filter_gallery_id === $gallery_id) : ?>
-                        <?php foreach ($images as $image) : ?>
-                            <tr>
-                                <td><?php echo esc_html($gallery_id); ?></td>
-                                <td>
-                                        <?php
-                                        // Retrieve the image URL from the JSON data
-                                        $image_filename = isset($image['file']) ? sanitize_file_name($image['file']) : '';
-                                        $base_url = site_url();
+            <?php foreach ($images_to_moderate as $gallery_id => $images) : ?>
+                <?php if ($filter_gallery_id === 0 || $filter_gallery_id === $gallery_id) : ?>
+                    <?php foreach ($images as $image) : ?>
+                        <tr>
+                            <td><?php
+                                // Get the gallery post object
+                                $gallery_post = get_post($gallery_id);
+                                if ($gallery_post) {
+                                    // Display the gallery title
+                                    echo esc_html($gallery_post->post_title);
+                                } else {
+                                    // Display a fallback value if the gallery post is not found
+                                    echo esc_html($gallery_id);
+                                }
+                                ?></td>
+                            <td>
+                                <?php
+                                // Retrieve the image URL from the JSON data
+                                $image_filename = isset($image['file']) ? sanitize_file_name($image['file']) : '';
+                                $base_url = site_url();
 
-                                        // Construct the complete image URL
-                                        $image_url = $base_url . '/wp-content/uploads/users_uploads/' . $gallery_id . '/' . $image_filename;
+                                // Construct the complete image URL
+                                $image_url = $base_url . '/wp-content/uploads/users_uploads/' . $gallery_id . '/' . $image_filename;
 
-                                        // Display the image if the URL is not empty
-                                        if ( !empty($image_url)) {
-                                            echo '<img style="width: 150px; height: 150px;" src="' . esc_url($image_url) . '" alt="' . esc_attr($image['alt']) . '" />';
-                                        }
-                                        ?>
-                                </td>
-                                <td>
-                                    <p><strong><?php esc_html_e('Caption:', 'foogallery'); ?></strong> <?php echo esc_html($image['caption']); ?></p>
-                                    <p><strong><?php esc_html_e('Description:', 'foogallery'); ?></strong> <?php echo esc_html($image['description']); ?></p>
-                                    <p><strong><?php esc_html_e('Alt Text:', 'foogallery'); ?></strong><?php echo esc_html($image['alt']); ?></p>
-                                    <p><strong><?php esc_html_e('Custom URL:', 'foogallery'); ?></strong> <?php echo esc_url($image['custom_url']); ?></p>
-                                    <p><strong><?php esc_html_e('Custom Target:', 'foogallery'); ?></strong> <?php echo esc_html($image['custom_target']); ?></p>
-                                </td>
-                                <td>
-                                    <button class="confirm-approve button button-large button-primary" data-gallery-id="<?php echo esc_attr($gallery_id); ?>" data-image-id="<?php echo esc_attr($image['file']); ?>">Approve Image</button>
-                                    <button class="confirm-reject button button-large" data-gallery-id="<?php echo esc_attr($gallery_id); ?>" data-image-id="<?php echo esc_attr($image['file']); ?>">Reject Image</button>
-                                </td>                                
-                            </tr>
-                        <?php endforeach; ?>
-                    <?php endif; ?>
-                <?php endforeach; ?>
+                                // Display the image if the URL is not empty
+                                if (!empty($image_url)) {
+                                    echo '<img style="width: 150px; height: 150px;" src="' . esc_url($image_url) . '" alt="' . esc_attr($image['alt']) . '" />';
+                                }
+                                ?>
+                            </td>
+                            <td>
+                                <p><strong><?php esc_html_e('Caption:', 'foogallery'); ?></strong> <?php echo esc_html($image['caption']); ?></p>
+                                <p><strong><?php esc_html_e('Description:', 'foogallery'); ?></strong> <?php echo esc_html($image['description']); ?></p>
+                                <p><strong><?php esc_html_e('Alt Text:', 'foogallery'); ?></strong><?php echo esc_html($image['alt']); ?></p>
+                                <p><strong><?php esc_html_e('Custom URL:', 'foogallery'); ?></strong> <?php echo esc_url($image['custom_url']); ?></p>
+                                <p><strong><?php esc_html_e('Custom Target:', 'foogallery'); ?></strong> <?php echo esc_html($image['custom_target']); ?></p>
+                            </td>
+                            <td>
+                                <button class="confirm-approve button button-large button-primary" data-gallery-id="<?php echo esc_attr($gallery_id); ?>" data-image-id="<?php echo esc_attr($image['file']); ?>">Approve Image</button>
+                                <button class="confirm-reject button button-large" data-gallery-id="<?php echo esc_attr($gallery_id); ?>" data-image-id="<?php echo esc_attr($image['file']); ?>">Reject Image</button>
+                            </td>                                
+                        </tr>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            <?php endforeach; ?>
             </tbody>
         </table>
     </div>
@@ -275,7 +285,7 @@ $filter_gallery_id = isset($_POST['filter_gallery_id']) ? intval($_POST['filter_
     <table class="wp-list-table widefat fixed striped">
         <thead>
             <tr>
-                <th><?php esc_html_e( 'Gallery ID', 'foogallery' ); ?></th>
+                <th><?php esc_html_e( 'Gallery', 'foogallery' ); ?></th>
                 <th><?php esc_html_e( 'Image', 'foogallery' ); ?></th>
                 <th><?php esc_html_e( 'Metadata', 'foogallery' ); ?></th>
                 <th><?php esc_html_e( 'Action', 'foogallery' ); ?></th>
@@ -297,36 +307,42 @@ $filter_gallery_id = isset($_POST['filter_gallery_id']) ? intval($_POST['filter_
                         // Check if the JSON data is correctly decoded
                         if (isset($metadata['items']) && is_array($metadata['items'])) :
                         ?>
-                            <?php foreach ($metadata['items'] as $item) : ?>
-                                <tr>
-                                    <td><?php echo esc_html($gallery_id); ?></td>
-                                    <td>
-                                        <?php
-                                        // Retrieve the image URL from the JSON data
-                                        $image_filename = isset($item['file']) ? sanitize_file_name($item['file']) : '';
-                                        $base_url = site_url();
+                        <?php foreach ($metadata['items'] as $item) : ?>
+                            <tr>
+                                <td>
+                                    <?php
+                                    // Retrieve the gallery title based on the gallery ID
+                                    $gallery_title = get_the_title($gallery_id);
+                                    echo esc_html($gallery_title);
+                                    ?>
+                                </td>
+                                <td>
+                                    <?php
+                                    // Retrieve the image URL from the JSON data
+                                    $image_filename = isset($item['file']) ? sanitize_file_name($item['file']) : '';
+                                    $base_url = site_url();
 
-                                        // Construct the complete image URL
-                                        $image_url = $base_url . '/wp-content/uploads/users_uploads/' . $gallery_id . '/approved_uploads/' . $image_filename;
+                                    // Construct the complete image URL
+                                    $image_url = $base_url . '/wp-content/uploads/users_uploads/' . $gallery_id . '/approved_uploads/' . $image_filename;
 
-                                        // Display the image if the URL is not empty
-                                        if ( !empty($image_url)) {
-                                            echo '<img style="width: 150px; height: 150px;" src="' . esc_url($image_url) . '" alt="' . esc_attr($item['alt']) . '" />';
-                                        }
-                                        ?>
-                                    </td>
-                                    <td>
-                                        <p><strong><?php esc_html_e('Caption:', 'foogallery'); ?></strong> <?php echo esc_html($item['caption']); ?></p>
-                                        <p><strong><?php esc_html_e('Description:', 'foogallery'); ?></strong> <?php echo esc_html($item['description']); ?></p>
-                                        <p><strong><?php esc_html_e('Alt Text:', 'foogallery'); ?></strong><?php echo esc_html($item['alt']); ?></p>
-                                        <p><strong><?php esc_html_e('Custom URL:', 'foogallery'); ?></strong> <?php echo esc_url($item['custom_url']); ?></p>
-                                        <p><strong><?php esc_html_e('Custom Target:', 'foogallery'); ?></strong> <?php echo esc_html($item['custom_target']); ?></p>
-                                    </td>
-                                    <td>
-                                        <button class="confirm-delete button button-large" data-gallery-id="<?php echo esc_attr($gallery_id); ?>" data-image-id="<?php echo esc_attr($item['file']); ?>">Delete Image</button>
-                                    </td>
-                                </tr>
-                            <?php endforeach; ?>
+                                    // Display the image if the URL is not empty
+                                    if (!empty($image_url)) {
+                                        echo '<img style="width: 150px; height: 150px;" src="' . esc_url($image_url) . '" alt="' . esc_attr($item['alt']) . '" />';
+                                    }
+                                    ?>
+                                </td>
+                                <td>
+                                    <p><strong><?php esc_html_e('Caption:', 'foogallery'); ?></strong> <?php echo esc_html($item['caption']); ?></p>
+                                    <p><strong><?php esc_html_e('Description:', 'foogallery'); ?></strong> <?php echo esc_html($item['description']); ?></p>
+                                    <p><strong><?php esc_html_e('Alt Text:', 'foogallery'); ?></strong><?php echo esc_html($item['alt']); ?></p>
+                                    <p><strong><?php esc_html_e('Custom URL:', 'foogallery'); ?></strong> <?php echo esc_url($item['custom_url']); ?></p>
+                                    <p><strong><?php esc_html_e('Custom Target:', 'foogallery'); ?></strong> <?php echo esc_html($item['custom_target']); ?></p>
+                                </td>
+                                <td>
+                                    <button class="confirm-delete button button-large" data-gallery-id="<?php echo esc_attr($gallery_id); ?>" data-image-id="<?php echo esc_attr($item['file']); ?>">Delete Image</button>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
                         <?php endif; ?>
                     <?php endif; ?>
                 <?php endif; ?>
