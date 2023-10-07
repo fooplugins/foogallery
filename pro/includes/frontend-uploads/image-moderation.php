@@ -206,18 +206,20 @@ $filter_gallery_id = isset($_POST['filter_gallery_id']) ? intval($_POST['filter_
 		</ul>
 
 
-        <!-- Gallery ID filter dropdown -->
+        <!-- Gallery Title filter dropdown -->
         <form method="post" style="margin-bottom: 20px;">
-            <label for="filter_gallery_id">Filter by Gallery ID:</label>
-            <select name="filter_gallery_id" id="filter_gallery_id">
-				<option value="0"><?php esc_html_e( 'All', 'foogallery' ); ?></option>
-                <?php foreach ($images_to_moderate as $gallery_id => $images) : ?>
-                    <option value="<?php echo esc_attr($gallery_id); ?>" <?php selected($filter_gallery_id, $gallery_id); ?>>
-                        <?php echo esc_html($gallery_id); ?>
-                    </option>
-                <?php endforeach; ?>
+            <label for="filter_gallery_title">Filter by Gallery Title:</label>
+            <select name="filter_gallery_title" id="filter_gallery_title">
+                <option value=""><?php esc_html_e('All', 'foogallery'); ?></option>
+                <?php
+                // Populate the dropdown with available gallery titles
+                foreach ($images_to_moderate as $gallery_id => $images) {
+                    $gallery_title = get_the_title($gallery_id);
+                    echo '<option value="' . esc_attr($gallery_title) . '">' . esc_html($gallery_title) . '</option>';
+                }
+                ?>
             </select>
-            <input type="submit" name="filter_images" value="Filter" hidden>
+            <input type="submit" name="filter_images_by_title" value="Filter" hidden>
         </form>
     </section>
 
@@ -354,31 +356,32 @@ $filter_gallery_id = isset($_POST['filter_gallery_id']) ? intval($_POST['filter_
 </div>
 
 <script>
-    const filterDropdown = document.getElementById('filter_gallery_id');
+    const filterDropdown = document.getElementById('filter_gallery_title');
     const tableRows = document.querySelectorAll('.wp-list-table tbody tr');
     const tabs = document.querySelectorAll('.nav-tabs a');
     const tabContents = document.querySelectorAll('.tab-content');
     const tabLabels = document.querySelectorAll('.tab-label');
 
     filterDropdown.addEventListener('change', function () {
-        const selectedGalleryId = this.value;
+        const selectedGalleryTitle = this.value.toLowerCase().trim();
 
         tableRows.forEach(row => {
-            const galleryIdCell = row.querySelector('td:first-child');
+            const galleryTitleCell = row.querySelector('td:first-child');
 
-            if (!galleryIdCell) {
+            if (!galleryTitleCell) {
                 return;
             }
 
-            const rowGalleryId = galleryIdCell.textContent.trim();
+            const rowGalleryTitle = galleryTitleCell.textContent.trim().toLowerCase();
 
-            if (selectedGalleryId === '0' || selectedGalleryId === rowGalleryId) {
+            if (selectedGalleryTitle === '' || rowGalleryTitle.includes(selectedGalleryTitle)) {
                 row.style.display = '';
             } else {
                 row.style.display = 'none';
             }
         });
     });
+
 
     function hideAllTabs() {
         tabContents.forEach(content => {
