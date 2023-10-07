@@ -381,6 +381,7 @@ if ( ! class_exists( 'Foogallery_FrontEnd_Upload_Shortcode' ) ) {
 						return;
 					}
 
+					$exceeded_size_images = array();
 					foreach ( $uploaded_files['name'] as $key => $filename ) {
 						// Check if the file is an image.
 						if ( $uploaded_files['type'][$key] && strpos( $uploaded_files['type'][$key], 'image/' ) === 0 ) {
@@ -388,8 +389,8 @@ if ( ! class_exists( 'Foogallery_FrontEnd_Upload_Shortcode' ) ) {
 		
 							// Check if the image size exceeds the maximum allowed size
 							if ($image_size_in_kb > $max_image_size) {
-								echo '<div class="error-message" style="color: red; text-align: center;">' . __('Image size exceeds maximum allowed size.', 'foogallery') . '</div>';
-								continue; // Skip this image
+								$exceeded_size_images[] = $filename;								
+								continue;
 							}
 
 							// Generate a unique file name for the uploaded image in the user folder.
@@ -425,8 +426,22 @@ if ( ! class_exists( 'Foogallery_FrontEnd_Upload_Shortcode' ) ) {
 							echo '<div class="error-message" style="color: red; text-align: center;">' . __( 'File is not an image.', 'foogallery' ) . '</div>';
 						}
 					}
+					// Count the number of images exceeding the maximum size
+					$exceeded_size_count = count($exceeded_size_images);
 
-					echo '<div class="success-message" style="color: green; text-align: center;">' . __( 'Image(s) successfully uploaded and awaiting moderation.', 'foogallery' ) . '</div>';
+					// Check if any images exceeded the maximum size
+					if ($exceeded_size_count > 0) {
+						if ($exceeded_size_count > 1) {
+							echo '<div class="error-message" style="color: red; text-align: center;">' . $exceeded_size_count . ' ' . __('images exceeded the maximum allowed size of '. $max_image_size .' KB and were not uploaded.', 'foogallery') . '</div>';
+						} elseif ($exceeded_size_count === 1) {
+							echo '<div class="error-message" style="color: red; text-align: center;">' . $exceeded_size_count . ' ' . __('image exceeded the maximum allowed size of '. $max_image_size .' KB and was not uploaded.', 'foogallery') . '</div>';
+						}
+					}
+
+					// Display success message only if at least one image meets the requirement
+					if ($uploaded_image_count > $exceeded_size_count) {
+						echo '<div class="success-message" style="color: green; text-align: center;">' . __('Image(s) successfully uploaded and awaiting moderation.', 'foogallery') . '</div>';
+					}
 				} else {
 					echo '<div class="error-message" style="color: red; text-align: center;">' . __( 'No files uploaded or an error occurred.', 'foogallery' ) . '</div>';
 				}
