@@ -10,7 +10,7 @@
 require_once FOOGALLERY_PATH . 'includes/admin/class-gallery-metaboxes.php';
 
 if ( ! class_exists( 'FooGallery_FrontEnd_Upload_MetaBoxes' ) ) {
-    require_once FOOGALLERY_PATH . 'pro/includes/frontend-uploads/class-frontend-upload-foogallery-admin-gallery-metaboxes.php';
+    require_once FOOGALLERY_PATH . 'pro/includes/frontend-uploads/class-foogallery-frontend-upload-metaboxes.php';
 }
 
 // Initialize the classes.
@@ -54,7 +54,7 @@ function render_image_moderation_page() {
 if ( ! class_exists( 'Foogallery_FrontEnd_Upload_Shortcode' ) ) {
 
 	// Include the necessary file.
-	require_once FOOGALLERY_PATH . 'pro/includes/frontend-uploads/class-frontend-upload-foogallery-admin-gallery-metaboxes.php';
+	require_once FOOGALLERY_PATH . 'pro/includes/frontend-uploads/class-foogallery-frontend-upload-metaboxes.php';
 
 	/**
 	 * Class Foogallery_FrontEnd_Upload_Shortcode
