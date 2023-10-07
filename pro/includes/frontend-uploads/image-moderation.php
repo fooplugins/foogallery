@@ -238,17 +238,26 @@ $filter_gallery_id = isset($_POST['filter_gallery_id']) ? intval($_POST['filter_
                 <?php if ($filter_gallery_id === 0 || $filter_gallery_id === $gallery_id) : ?>
                     <?php foreach ($images as $image) : ?>
                         <tr>
-                            <td><?php
-                                // Get the gallery post object
-                                $gallery_post = get_post($gallery_id);
-                                if ($gallery_post) {
-                                    // Display the gallery title
-                                    echo esc_html($gallery_post->post_title);
+                        <td>
+                            <?php
+                            // Get the gallery post object
+                            $gallery_post = get_post($gallery_id);
+                            if ($gallery_post) {
+                                // Generate the URL for the gallery edit page
+                                $gallery_edit_url = get_edit_post_link($gallery_id);
+
+                                if ($gallery_edit_url) {
+                                    echo '<a href="' . esc_url($gallery_edit_url) . '">' . esc_html($gallery_post->post_title) . '</a>';
                                 } else {
-                                    // Display a fallback value if the gallery post is not found
-                                    echo esc_html($gallery_id);
+                                    echo esc_html($gallery_post->post_title);
                                 }
-                                ?></td>
+                            } else {
+                                // Display a fallback value if the gallery post is not found
+                                echo esc_html($gallery_id);
+                            }
+                            ?>
+                        </td>
+
                             <td>
                                 <?php
                                 // Retrieve the image URL from the JSON data
@@ -311,13 +320,20 @@ $filter_gallery_id = isset($_POST['filter_gallery_id']) ? intval($_POST['filter_
                         ?>
                         <?php foreach ($metadata['items'] as $item) : ?>
                             <tr>
-                                <td>
-                                    <?php
-                                    // Retrieve the gallery title based on the gallery ID
-                                    $gallery_title = get_the_title($gallery_id);
+                            <td>
+                                <?php
+                                // Retrieve the gallery title based on the gallery ID
+                                $gallery_title = get_the_title($gallery_id);
+                                $gallery_edit_url = get_edit_post_link($gallery_id);
+
+                                if ($gallery_edit_url) {
+                                    echo '<a href="' . esc_url($gallery_edit_url) . '">' . esc_html($gallery_title) . '</a>';
+                                } else {
                                     echo esc_html($gallery_title);
-                                    ?>
-                                </td>
+                                }
+                                ?>
+                            </td>
+
                                 <td>
                                     <?php
                                     // Retrieve the image URL from the JSON data
