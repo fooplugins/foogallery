@@ -1216,7 +1216,19 @@ function foogallery_current_gallery_attachments_for_rendering() {
         if (isset($metadata['items']) && is_array($metadata['items'])) {
             foreach ($metadata['items'] as $item) {
                 if (isset($item['file'])) {
-                    $uploaded_images[] = $item['file'];
+                    $base_url = site_url();
+                    $image_filename = sanitize_file_name($item['file']);
+                    $image_url = $base_url . '/wp-content/uploads/users_uploads/' . $gallery_id . '/approved_uploads/' . $image_filename;
+
+                    if (!empty($image_url)) {
+                        $attachment = new FooGalleryAttachment();
+                        $attachment->ID = 0;
+                        $attachment->url = $image_url;
+                        $attachment->type = 'image';
+                        $attachment->has_metadata = false;
+                        $attachment->sort = PHP_INT_MAX;
+                        $uploaded_images[] = $attachment;
+                    }
                 }
             }
         }
@@ -1227,6 +1239,7 @@ function foogallery_current_gallery_attachments_for_rendering() {
 
     return $merged_attachments;
 }
+
 
 
 /**
