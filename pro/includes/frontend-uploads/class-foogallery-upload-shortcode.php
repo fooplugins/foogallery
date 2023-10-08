@@ -1,46 +1,6 @@
 <?php
 
- global $wp_filesystem;
- if (empty($wp_filesystem)) {
-	 require_once ABSPATH . '/wp-admin/includes/file.php';
-	 WP_Filesystem();
- }
- 
-// Include the necessary file for admin gallery metaboxes.
-require_once FOOGALLERY_PATH . 'includes/admin/class-gallery-metaboxes.php';
-
-if ( ! class_exists( 'FooGallery_FrontEnd_Upload_MetaBoxes' ) ) {
-    require_once FOOGALLERY_PATH . 'pro/includes/frontend-uploads/class-foogallery-frontend-upload-metaboxes.php';
-}
-
-// Initialize the classes.
-if ( class_exists('FooGallery_Admin_Gallery_MetaBoxes') ) {
-    new FooGallery_FrontEnd_Upload_MetaBoxes();
-}
-
-if ( class_exists( 'Foogallery_FrontEnd_Upload_Shortcode' ) ) {
-    new Foogallery_FrontEnd_Upload_Shortcode();
-}
-
-// Add a sub-menu to the FooGallery menu
-function add_image_moderation_submenu() {
-    $parent_slug = foogallery_admin_menu_parent_slug();
-    
-    add_submenu_page(
-        $parent_slug,
-        'Moderation',
-        'Moderation',
-        'manage_options',
-        'image-moderation',
-        'render_image_moderation_page'
-    );
-}
-add_action('admin_menu', 'add_image_moderation_submenu');
-
-// Callback function to render the page content
-function render_image_moderation_page() {
-    require_once FOOGALLERY_PATH . 'pro/includes/frontend-uploads/image-moderation.php';
-}
+require_once FOOGALLERY_PATH . 'pro/includes/frontend-uploads/class-foogallery-frontend-upload.php';
 
 /**
  * @package foogallery
@@ -52,9 +12,6 @@ function render_image_moderation_page() {
  */
 
 if ( ! class_exists( 'Foogallery_FrontEnd_Upload_Shortcode' ) ) {
-
-	// Include the necessary file.
-	require_once FOOGALLERY_PATH . 'pro/includes/frontend-uploads/class-foogallery-frontend-upload-metaboxes.php';
 
 	/**
 	 * Class Foogallery_FrontEnd_Upload_Shortcode
