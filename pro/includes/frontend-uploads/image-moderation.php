@@ -230,33 +230,53 @@ $filter_gallery_id = isset($_POST['filter_gallery_id']) ? intval($_POST['filter_
 					<th><?php esc_html_e( 'Gallery', 'foogallery' ); ?></th>
 					<th><?php esc_html_e( 'Image', 'foogallery' ); ?></th>
 					<th><?php esc_html_e( 'Metadata', 'foogallery' ); ?></th>
+                    <th><?php esc_html_e( 'User', 'foogallery' ); ?></th>
 					<th><?php esc_html_e( 'Action', 'foogallery' ); ?></th>
                 </tr>
             </thead>
             <tbody>
-            <?php foreach ($images_to_moderate as $gallery_id => $images) : ?>
+            <?php 
+            // Initialize an array to store user IDs for each image
+            $image_uploaders = array();
+            foreach ($images_to_moderate as $gallery_id => $images) : ?>
                 <?php if ($filter_gallery_id === 0 || $filter_gallery_id === $gallery_id) : ?>
-                    <?php foreach ($images as $image) : ?>
-                        <tr>
-                        <td>
-                            <?php
-                            // Get the gallery post object
-                            $gallery_post = get_post($gallery_id);
-                            if ($gallery_post) {
-                                // Generate the URL for the gallery edit page
-                                $gallery_edit_url = get_edit_post_link($gallery_id);
+                    <?php foreach ($images as $image) : 
+                        // Get the gallery ID and image file name
+                        $gallery_id = intval($gallery_id);
+                        $file_name = sanitize_text_field($image['file']);
+                        
+                        // Check if the 'uploaded_by' field is set in the image's metadata
+                        if (isset($image['uploaded_by'])) {
+                            $uploader_id = intval($image['uploaded_by']);
+                            
+                            // Store the uploader's ID in the array
+                            $image_uploaders["$gallery_id-$file_name"] = $uploader_id;
+                        } else {
+                            // Handle cases where 'uploaded_by' field is not set
+                            $image_uploaders["$gallery_id-$file_name"] = ''; // or any other handling you prefer
+                        }
 
-                                if ($gallery_edit_url) {
-                                    echo '<a href="' . esc_url($gallery_edit_url) . '">' . esc_html($gallery_post->post_title) . '</a>';
+                        ?>
+                        <tr>
+                            <td>
+                                <?php
+                                // Get the gallery post object
+                                $gallery_post = get_post($gallery_id);
+                                if ($gallery_post) {
+                                    // Generate the URL for the gallery edit page
+                                    $gallery_edit_url = get_edit_post_link($gallery_id);
+
+                                    if ($gallery_edit_url) {
+                                        echo '<a href="' . esc_url($gallery_edit_url) . '">' . esc_html($gallery_post->post_title) . '</a>';
+                                    } else {
+                                        echo esc_html($gallery_post->post_title);
+                                    }
                                 } else {
-                                    echo esc_html($gallery_post->post_title);
+                                    // Display a fallback value if the gallery post is not found
+                                    echo esc_html($gallery_id);
                                 }
-                            } else {
-                                // Display a fallback value if the gallery post is not found
-                                echo esc_html($gallery_id);
-                            }
-                            ?>
-                        </td>
+                                ?>
+                            </td>
 
                             <td>
                                 <?php
@@ -273,6 +293,7 @@ $filter_gallery_id = isset($_POST['filter_gallery_id']) ? intval($_POST['filter_
                                 }
                                 ?>
                             </td>
+
                             <td>
                                 <p><strong><?php esc_html_e('Caption:', 'foogallery'); ?></strong> <?php echo esc_html($image['caption']); ?></p>
                                 <p><strong><?php esc_html_e('Description:', 'foogallery'); ?></strong> <?php echo esc_html($image['description']); ?></p>
@@ -280,10 +301,38 @@ $filter_gallery_id = isset($_POST['filter_gallery_id']) ? intval($_POST['filter_
                                 <p><strong><?php esc_html_e('Custom URL:', 'foogallery'); ?></strong> <?php echo esc_url($image['custom_url']); ?></p>
                                 <p><strong><?php esc_html_e('Custom Target:', 'foogallery'); ?></strong> <?php echo esc_html($image['custom_target']); ?></p>
                             </td>
+
                             <td>
-                                <button class="confirm-approve button button-large button-primary" data-gallery-id="<?php echo esc_attr($gallery_id); ?>" data-image-id="<?php echo esc_attr($image['file']); ?>">Approve Image</button>
-                                <button class="confirm-reject button button-large" data-gallery-id="<?php echo esc_attr($gallery_id); ?>" data-image-id="<?php echo esc_attr($image['file']); ?>">Reject Image</button>
-                            </td>                                
+                                <?php
+                                // Get the gallery ID and image file name
+                                $gallery_id = intval($gallery_id);
+                                $file_name = sanitize_text_field($image['file']);
+                                
+                                // Create a unique identifier for this image (gallery_id-file_name)
+                                $image_identifier = "$gallery_id-$file_name";
+                                
+                                // Get the user ID who uploaded this image from the array
+                                $uploader_id = isset($image_uploaders[$image_identifier]) ? $image_uploaders[$image_identifier] : '';
+
+                                // Display the uploader's username or other information
+                                if (!empty($uploader_id)) {
+                                    $uploader_info = get_userdata($uploader_id);
+                                    if ($uploader_info) {
+                                        echo esc_html($uploader_info->display_name);
+                                    } else {
+                                        echo esc_html__('Unknown User', 'foogallery');
+                                    }
+                                } else {
+                                    echo esc_html__('N/A', 'foogallery');
+                                }
+                                ?>
+                            </td>
+
+                            <td>
+                                <button class="confirm-approve button button-small button-primary" data-gallery-id="<?php echo esc_attr($gallery_id); ?>" data-image-id="<?php echo esc_attr($image['file']); ?>">Approve Image</button>
+                                <button class="confirm-reject button button-small" data-gallery-id="<?php echo esc_attr($gallery_id); ?>" data-image-id="<?php echo esc_attr($image['file']); ?>">Reject Image</button>
+                            </td>
+
                         </tr>
                     <?php endforeach; ?>
                 <?php endif; ?>
@@ -299,6 +348,7 @@ $filter_gallery_id = isset($_POST['filter_gallery_id']) ? intval($_POST['filter_
                 <th><?php esc_html_e( 'Gallery', 'foogallery' ); ?></th>
                 <th><?php esc_html_e( 'Image', 'foogallery' ); ?></th>
                 <th><?php esc_html_e( 'Metadata', 'foogallery' ); ?></th>
+                <th><?php esc_html_e( 'User', 'foogallery' ); ?></th>
                 <th><?php esc_html_e( 'Action', 'foogallery' ); ?></th>
             </tr>
         </thead>
@@ -320,19 +370,19 @@ $filter_gallery_id = isset($_POST['filter_gallery_id']) ? intval($_POST['filter_
                         ?>
                         <?php foreach ($metadata['items'] as $item) : ?>
                             <tr>
-                            <td>
-                                <?php
-                                // Retrieve the gallery title based on the gallery ID
-                                $gallery_title = get_the_title($gallery_id);
-                                $gallery_edit_url = get_edit_post_link($gallery_id);
+                                <td>
+                                    <?php
+                                    // Retrieve the gallery title based on the gallery ID
+                                    $gallery_title = get_the_title($gallery_id);
+                                    $gallery_edit_url = get_edit_post_link($gallery_id);
 
-                                if ($gallery_edit_url) {
-                                    echo '<a href="' . esc_url($gallery_edit_url) . '">' . esc_html($gallery_title) . '</a>';
-                                } else {
-                                    echo esc_html($gallery_title);
-                                }
-                                ?>
-                            </td>
+                                    if ($gallery_edit_url) {
+                                        echo '<a href="' . esc_url($gallery_edit_url) . '">' . esc_html($gallery_title) . '</a>';
+                                    } else {
+                                        echo esc_html($gallery_title);
+                                    }
+                                    ?>
+                                </td>
 
                                 <td>
                                     <?php
@@ -349,6 +399,7 @@ $filter_gallery_id = isset($_POST['filter_gallery_id']) ? intval($_POST['filter_
                                     }
                                     ?>
                                 </td>
+
                                 <td>
                                     <p><strong><?php esc_html_e('Caption:', 'foogallery'); ?></strong> <?php echo esc_html($item['caption']); ?></p>
                                     <p><strong><?php esc_html_e('Description:', 'foogallery'); ?></strong> <?php echo esc_html($item['description']); ?></p>
@@ -356,8 +407,35 @@ $filter_gallery_id = isset($_POST['filter_gallery_id']) ? intval($_POST['filter_
                                     <p><strong><?php esc_html_e('Custom URL:', 'foogallery'); ?></strong> <?php echo esc_url($item['custom_url']); ?></p>
                                     <p><strong><?php esc_html_e('Custom Target:', 'foogallery'); ?></strong> <?php echo esc_html($item['custom_target']); ?></p>
                                 </td>
+
                                 <td>
-                                    <button class="confirm-delete button button-large" data-gallery-id="<?php echo esc_attr($gallery_id); ?>" data-image-id="<?php echo esc_attr($item['file']); ?>">Delete Image</button>
+                                    <?php
+                                    // Get the gallery ID and image file name
+                                    $gallery_id = intval($gallery_id);
+                                    $file_name = sanitize_text_field($image['file']);
+                                    
+                                    // Create a unique identifier for this image (gallery_id-file_name)
+                                    $image_identifier = "$gallery_id-$file_name";
+                                    
+                                    // Get the user ID who uploaded this image from the array
+                                    $uploader_id = isset($image_uploaders[$image_identifier]) ? $image_uploaders[$image_identifier] : '';
+
+                                    // Display the uploader's username or other information
+                                    if (!empty($uploader_id)) {
+                                        $uploader_info = get_userdata($uploader_id);
+                                        if ($uploader_info) {
+                                            echo esc_html($uploader_info->display_name);
+                                        } else {
+                                            echo esc_html__('Unknown User', 'foogallery');
+                                        }
+                                    } else {
+                                        echo esc_html__('N/A', 'foogallery');
+                                    }
+                                    ?>
+                                </td>
+
+                                <td>
+                                    <button class="confirm-delete button button-small" data-gallery-id="<?php echo esc_attr($gallery_id); ?>" data-image-id="<?php echo esc_attr($item['file']); ?>">Delete Image</button>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
