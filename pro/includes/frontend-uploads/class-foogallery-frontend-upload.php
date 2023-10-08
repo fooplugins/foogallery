@@ -8,7 +8,6 @@ if (empty($wp_filesystem)) {
     require_once ABSPATH . '/wp-admin/includes/file.php';
     WP_Filesystem();
 }
-require_once ABSPATH . '/wp-admin/includes/file.php';
 require_once FOOGALLERY_PATH . 'includes/admin/class-gallery-metaboxes.php';
 require_once FOOGALLERY_PATH . 'pro/includes/frontend-uploads/class-foogallery-frontend-upload-metaboxes.php';
 require_once FOOGALLERY_PATH . 'pro/includes/frontend-uploads/class-foogallery-upload-shortcode.php';
