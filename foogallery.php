@@ -181,6 +181,8 @@ if ( function_exists( 'foogallery_fs' ) ) {
 				// init the default media library datasource.
 				new FooGallery_Datasource_MediaLibrary();
 
+                new FooGallery_Attachment_Type();
+
 				$pro_code_included = false;
 
 				if ( foogallery_fs()->is__premium_only() ) {
