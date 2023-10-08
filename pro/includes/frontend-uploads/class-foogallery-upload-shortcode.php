@@ -47,7 +47,6 @@ if ( ! class_exists( 'Foogallery_FrontEnd_Upload_Shortcode' ) ) {
 		 */
 		function enqueue_php_file() {
 			wp_enqueue_script(
-				'your-script-handle', // Unique handle for your script
 				FOOGALLERY_PATH . 'pro/includes/frontend-uploads/class-foogallery-frontend-upload.php',
 				array(),
 			);
