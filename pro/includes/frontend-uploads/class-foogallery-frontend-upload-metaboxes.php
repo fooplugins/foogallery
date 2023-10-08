@@ -74,7 +74,7 @@ if (isset($_POST['moderate_image'])) {
                 // Update the gallery's attachments with the merged array
                 update_post_meta($gallery_id, FOOGALLERY_META_ATTACHMENTS, $merged_attachments);
                 
-                // echo '<div class="notice notice-success"><p>' . __('Image approved and added to the gallery successfully.', 'foogallery') . '</p></div>';
+                echo '<div class="notice notice-success"><p>' . __('Image approved and added to the gallery successfully.', 'foogallery') . '</p></div>';
             }
             
             // Call the function with the required parameters
@@ -102,10 +102,43 @@ if (isset($_POST['moderate_image'])) {
                 }
                 
                 // Show a success message
-                // echo '<div class="notice notice-success"><p>' . __('Image successfully rejected', 'foogallery') . '</p></div>';
+                echo '<div class="notice notice-success"><p>' . __('Image successfully rejected', 'foogallery') . '</p></div>';
             }
         }
-    }
+    }    
+}
+if (isset($_POST['moderate_image'])) {
+    $image_id = sanitize_text_field($_POST['image_id']);
+    $action = sanitize_text_field($_POST['action']);
+    
+
+    global $wp_filesystem;
+    $image_id = sanitize_text_field($_POST['image_id']);
+    $gallery_id = isset($_POST['gallery_id']) ? intval($_POST['gallery_id']) : null;
+    
+    if (isset($_POST['moderate_image']) && $_POST['action'] === 'delete') {
+        // Define the approved folder path
+        $approved_folder = wp_upload_dir()['basedir'] . '/users_uploads/' . $gallery_id . '/approved_uploads/';
+        
+        // Delete the image file from the approved folder
+        $deleted = unlink($approved_folder . $image_id);
+
+        if ($deleted) {
+            // Remove the metadata entry for the deleted image
+            $metadata_file = $approved_folder . 'metadata.json';
+            if (file_exists($metadata_file)) {
+                $existing_metadata = @json_decode( $wp_filesystem->get_contents( $metadata_file ), true );
+                $existing_metadata['items'] = array_filter($existing_metadata['items'], function ($item) use ($image_id) {
+                    return $item['file'] !== $image_id;
+                });
+                file_put_contents($metadata_file, json_encode($existing_metadata, JSON_PRETTY_PRINT));
+            }
+
+            // Show a success message
+            echo '<div class="notice notice-success"><p>' . __('Image successfully deleted', 'foogallery') . '</p></div>';
+        }
+
+    }    
 }
 
 // Initialize an array to store gallery IDs and metadata
