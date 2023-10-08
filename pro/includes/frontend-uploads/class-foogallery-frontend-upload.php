@@ -27,7 +27,6 @@ if ( ! class_exists( 'Foogallery_FrontEnd_Upload' ) ) {
 		 * Foogallery_FrontEnd_Upload constructor.
 		 */
 		public function __construct() {
-			new FooGallery_FrontEnd_Upload_MetaBoxes();
 			new Foogallery_FrontEnd_Upload_Shortcode();
             add_action( 'admin_menu', array( $this, 'add_image_moderation_submenu' ) );            
 		}        

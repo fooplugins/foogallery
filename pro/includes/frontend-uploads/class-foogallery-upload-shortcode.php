@@ -379,7 +379,7 @@ if ( ! class_exists( 'Foogallery_FrontEnd_Upload_Shortcode' ) ) {
 									"alt" => isset($_POST['alt'][$key]) ? sanitize_text_field($_POST['alt'][$key]) : "",
 									"custom_url" => isset($_POST['custom_url'][$key]) ? esc_url($_POST['custom_url'][$key]) : "",
 									"custom_target" => isset($_POST['custom_target'][$key]) ? sanitize_text_field($_POST['custom_target'][$key]) : "",
-									"uploaded_by" => get_current_user_id(), // Capture the user's ID who uploaded the image
+									"uploaded_by" => get_current_user_id(),
 								);
 
 								global $wp_filesystem;
