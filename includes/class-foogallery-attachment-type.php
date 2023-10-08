@@ -1,7 +1,7 @@
 <?php
-if ( ! class_exists( 'FooGallery_Pro_Attachment_Type' ) ) {
+if ( ! class_exists('FooGallery_Attachment_Type') ) {
 
-	class FooGallery_Pro_Attachment_Type {
+	class FooGallery_Attachment_Type {
 
 		function __construct() {
 			//determine the type of the attachment
