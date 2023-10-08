@@ -1,7 +1,5 @@
 <?php
 
-require_once FOOGALLERY_PATH . 'pro/includes/frontend-uploads/class-foogallery-frontend-upload.php';
-
 /**
  * @package foogallery
  *
@@ -27,6 +25,7 @@ if ( ! class_exists( 'Foogallery_FrontEnd_Upload_Shortcode' ) ) {
 		 * Initializes the necessary actions and filters.
 		 */
 		public function __construct() {
+			add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_php_file' ) );
 			add_action( 'wp_enqueue_scripts', array( $this, 'frontend_enqueue_scripts' ) );
 			add_shortcode( 'foogallery_upload', array( $this, 'render_image_upload_form' ) );
 			add_action( 'init', array( $this, 'handle_image_upload' ) );
@@ -43,6 +42,16 @@ if ( ! class_exists( 'Foogallery_FrontEnd_Upload_Shortcode' ) ) {
 			}
 		}
 
+		/**
+		 * Function to enqueue a PHP file.
+		 */
+		function enqueue_php_file() {
+			wp_enqueue_script(
+				'your-script-handle', // Unique handle for your script
+				FOOGALLERY_PATH . 'pro/includes/frontend-uploads/class-foogallery-frontend-upload.php',
+				array(),
+			);
+		}
 
 		/**
 		 * Render the image upload form shortcode.
