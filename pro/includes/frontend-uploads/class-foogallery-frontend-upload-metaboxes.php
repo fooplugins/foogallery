@@ -1,10 +1,102 @@
 <?php
-// Check if the form is submitted for image moderation
-if (isset($_POST['moderate_image'])) {
-    $image_id = sanitize_text_field($_POST['image_id']);
-    $action = sanitize_text_field($_POST['action']);
+
+/**
+ * Class FooGallery_FrontEnd_Upload_MetaBoxes
+ *
+ * @package fooplugins
+ */
+class FooGallery_FrontEnd_Upload_MetaBoxes extends FooGallery_Admin_Gallery_MetaBoxes {
+    private $gallery_id;
+
+    /**
+     * Constructor for the FooGallery_FrontEnd_Upload_MetaBoxes class.
+     * Initializes the necessary actions and filters.
+     */
+    public function __construct() {
+        parent::__construct();
+        $this->gallery_id = isset($_POST['gallery_id']) ? intval($_POST['gallery_id']) : null;
+
+        // Hook to save metadata checkboxes and settings.
+        add_action('save_post', array($this, 'save_metadata_checkboxes'));
+        add_action('save_post', array($this, 'save_frontend_upload_metabox_settings'));
+
+        // Call the method to handle image moderation actions
+        $this->handleImageModerationActions();
+    }
+
+    /**
+     * Add meta boxes to the gallery post type.
+     *
+     * @param WP_Post $post The current post object.
+     */
+    public function add_meta_boxes_to_gallery($post) {
+        parent::add_meta_boxes_to_gallery($post);
+
+        add_meta_box(
+            'custom_metabox_id',
+            __('Front End Upload', 'foogallery'),
+            array($this, 'render_frontend_upload_metabox'),
+            FOOGALLERY_CPT_GALLERY,
+            'normal',
+            'low'
+        );
+    }
+
+    /**
+     * Save metadata checkboxes when the gallery post is saved.
+     *
+     * @param int $post_id The ID of the saved post.
+     */
+    public function save_metadata_checkboxes($post_id) {
+        if (get_post_type($post_id) === FOOGALLERY_CPT_GALLERY) {
+            // Update post meta for the metadata checkboxes.
+            $metafields = array('caption', 'description', 'alt', 'custom_url', 'custom_target');
+            foreach ($metafields as $metafield) {
+                $metafield_value = isset($_POST["display_$metafield"]) ? 'on' : 'off';
+                update_post_meta($post_id, "_display_$metafield", $metafield_value);
+            }
+        }
+    }
+
+    function save_frontend_upload_metabox_settings($post_id) {        
+        if (get_post_type($post_id) === FOOGALLERY_CPT_GALLERY) {
+            // Save the maximum images allowed setting.
+            if (isset($_POST['max_images_allowed'])) {
+                update_post_meta($post_id, '_max_images_allowed', sanitize_text_field($_POST['max_images_allowed']));
+            }
     
-    if ($action === 'approve') {
+            if (isset($_POST['logged_in_users_only'])) {
+                update_post_meta($post_id, '_logged_in_users_only', 'on');
+            } else {
+                delete_post_meta($post_id, '_logged_in_users_only');
+            }
+        }
+    }
+
+    /**
+     * Handle image moderation actions.
+     */
+    private function handleImageModerationActions() {
+        if (isset($_POST['moderate_image'])) {
+            $image_id = sanitize_text_field($_POST['image_id']);
+            $action = sanitize_text_field($_POST['action']);
+
+            if ($action === 'approve') {
+                $this->handleApproveAction($image_id);
+            } elseif ($action === 'reject') {
+                $this->handleRejectAction($image_id);
+            } elseif ($action === 'delete') {
+                $this->handleDeleteAction($image_id);
+            }
+        }
+    }
+
+    /**
+     * Handle "Approve" Action
+     *
+     * @param string $image_id
+     */
+    private function handleApproveAction($image_id) {
         // Get the gallery ID and file name from the form data
         $gallery_id = isset($_POST['gallery_id']) ? intval($_POST['gallery_id']) : null;
         $file_name = isset($_POST['image_id']) ? sanitize_text_field($_POST['image_id']) : null;
@@ -80,7 +172,15 @@ if (isset($_POST['moderate_image'])) {
             // Call the function with the required parameters
             merge_attachment_with_uploaded_images($gallery_id, $file_name, $original_folder, $approved_folder, $metadata_file, $new_metadata_file);
         }
-    } elseif ($action === 'reject') {
+    }
+
+    /**
+     * Handle "Reject" Action
+     *
+     * @param string $image_id
+     */
+    private function handleRejectAction($image_id) {
+        global $wp_filesystem;
         // Get the gallery ID and file name from the form data
         $gallery_id = isset($_POST['gallery_id']) ? intval($_POST['gallery_id']) : null;
         $file_name = isset($_POST['image_id']) ? sanitize_text_field($_POST['image_id']) : null;
@@ -105,18 +205,17 @@ if (isset($_POST['moderate_image'])) {
                 echo '<div class="notice notice-success"><p>' . __('Image successfully rejected', 'foogallery') . '</p></div>';
             }
         }
-    }    
-}
-if (isset($_POST['moderate_image'])) {
-    $image_id = sanitize_text_field($_POST['image_id']);
-    $action = sanitize_text_field($_POST['action']);
-    
+    }
 
-    global $wp_filesystem;
-    $image_id = sanitize_text_field($_POST['image_id']);
-    $gallery_id = isset($_POST['gallery_id']) ? intval($_POST['gallery_id']) : null;
-    
-    if (isset($_POST['moderate_image']) && $_POST['action'] === 'delete') {
+    /**
+     * Handle "Delete" Action
+     *
+     * @param string $image_id
+     */
+    private function handleDeleteAction($image_id) {        
+        global $wp_filesystem;
+        $image_id = sanitize_text_field($_POST['image_id']);
+        $gallery_id = isset($_POST['gallery_id']) ? intval($_POST['gallery_id']) : null;
         // Define the approved folder path
         $approved_folder = wp_upload_dir()['basedir'] . '/users_uploads/' . $gallery_id . '/approved_uploads/';
         
@@ -136,120 +235,6 @@ if (isset($_POST['moderate_image'])) {
 
             // Show a success message
             echo '<div class="notice notice-success"><p>' . __('Image successfully deleted', 'foogallery') . '</p></div>';
-        }
-
-    }    
-}
-
-// Initialize an array to store gallery IDs and metadata
-$images_to_moderate = array();
-
-// Get the base directory for uploads
-$upload_dir = wp_upload_dir();
-$user_uploads_dir = $upload_dir['basedir'] . '/users_uploads/';
-
-// Check if the user uploads directory exists
-if (is_dir($user_uploads_dir)) {
-    // Get a list of directories inside the user uploads directory
-    $directories = glob($user_uploads_dir . '*', GLOB_ONLYDIR);
-    
-    foreach ($directories as $directory) {
-        // Extract the gallery ID from the directory name
-        $gallery_id = intval(basename($directory));
-        $metadata_file = $directory . '/metadata.json';
-        
-        // Check if the metadata file exists
-        if (file_exists($metadata_file)) {
-            global $wp_filesystem;
-            
-            // Read and decode the JSON metadata file
-            $metadata_contents = $wp_filesystem->get_contents($metadata_file);
-            
-            if ($metadata_contents !== false) {
-                $metadata = json_decode($metadata_contents, true);
-                
-                if ($metadata !== null && isset($metadata['items'])) {
-                    // Store the metadata in the images_to_moderate array
-                    $images_to_moderate[$gallery_id] = $metadata['items'];
-                } else {
-                    // Handle JSON decoding failure or missing 'items' key
-                    echo '<div class="notice notice-error"><p>Invalid or missing metadata in file: ' . esc_html($metadata_file) . '</p></div>';
-                }
-            } else {
-                // Handle file read failure
-                echo '<div class="notice notice-error"><p>Failed to read metadata file: ' . esc_html($metadata_file) . '</p></div>';
-            }
-        }
-    }
-}
-
-/**
- * Class FooGallery_FrontEnd_Upload_MetaBoxes
- *
- * @package fooplugins
- */
-class FooGallery_FrontEnd_Upload_MetaBoxes extends FooGallery_Admin_Gallery_MetaBoxes {
-    private $gallery_id;
-
-    /**
-     * Constructor for the FooGallery_FrontEnd_Upload_MetaBoxes class.
-     * Initializes the necessary actions and filters.
-     */
-    public function __construct() {
-        parent::__construct();
-        $this->gallery_id = isset($_POST['gallery_id']) ? intval($_POST['gallery_id']) : null;
-
-        // Hook to save metadata checkboxes and settings.
-        add_action('save_post', array($this, 'save_metadata_checkboxes'));
-        add_action('save_post', array($this, 'save_frontend_upload_metabox_settings'));
-    }
-
-    /**
-     * Add meta boxes to the gallery post type.
-     *
-     * @param WP_Post $post The current post object.
-     */
-    public function add_meta_boxes_to_gallery($post) {
-        parent::add_meta_boxes_to_gallery($post);
-
-        add_meta_box(
-            'custom_metabox_id',
-            __('Front End Upload', 'foogallery'),
-            array($this, 'render_frontend_upload_metabox'),
-            FOOGALLERY_CPT_GALLERY,
-            'normal',
-            'low'
-        );
-    }
-
-    /**
-     * Save metadata checkboxes when the gallery post is saved.
-     *
-     * @param int $post_id The ID of the saved post.
-     */
-    public function save_metadata_checkboxes($post_id) {
-        if (get_post_type($post_id) === FOOGALLERY_CPT_GALLERY) {
-            // Update post meta for the metadata checkboxes.
-            $metafields = array('caption', 'description', 'alt', 'custom_url', 'custom_target');
-            foreach ($metafields as $metafield) {
-                $metafield_value = isset($_POST["display_$metafield"]) ? 'on' : 'off';
-                update_post_meta($post_id, "_display_$metafield", $metafield_value);
-            }
-        }
-    }
-
-    function save_frontend_upload_metabox_settings($post_id) {        
-        if (get_post_type($post_id) === FOOGALLERY_CPT_GALLERY) {
-            // Save the maximum images allowed setting.
-            if (isset($_POST['max_images_allowed'])) {
-                update_post_meta($post_id, '_max_images_allowed', sanitize_text_field($_POST['max_images_allowed']));
-            }
-    
-            if (isset($_POST['logged_in_users_only'])) {
-                update_post_meta($post_id, '_logged_in_users_only', 'on');
-            } else {
-                delete_post_meta($post_id, '_logged_in_users_only');
-            }
         }
     }
 
