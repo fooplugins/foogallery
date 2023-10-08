@@ -327,11 +327,19 @@ if ( ! class_exists( 'Foogallery_FrontEnd_Upload_Shortcode' ) ) {
 					});
 
 					setTimeout(function () {
-						document.querySelector(".success-message").style.display = "none";
+						const successMessage = document.querySelector(".success-message");
+						if (successMessage) {
+							successMessage.style.display = "none";
+						}
 					}, 3000);
+
 					setTimeout(function () {
-						document.querySelector(".error-message").style.display = "none";
+						const errorMessage = document.querySelector(".error-message");
+						if (errorMessage) {
+							errorMessage.style.display = "none";
+						}
 					}, 3000);
+
 				</script>
 
 				<?php
@@ -367,6 +375,15 @@ if ( ! class_exists( 'Foogallery_FrontEnd_Upload_Shortcode' ) ) {
 							echo '<div class="error-message" style="color: red; text-align: center;">' . __( 'Error creating the user folder.', 'foogallery' ) . '</div>';
 							return;
 						}
+					}
+
+					// Check if the "Only logged in users can upload" checkbox is checked.
+					$only_logged_in_users_can_upload = get_post_meta( $gallery_id, '_only_logged_in_users_can_upload', true );
+
+					// Check if the user is logged in (if required).
+					if ( $only_logged_in_users_can_upload && ! is_user_logged_in() ) {
+						echo '<div class="error-message" style="color: red; text-align: center;">' . __( 'Only logged-in users can upload images.', 'foogallery' ) . '</div>';
+						return;
 					}
 
 					// Retrieve the maximum images allowed and maximum image size settings

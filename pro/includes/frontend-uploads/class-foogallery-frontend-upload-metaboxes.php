@@ -212,9 +212,10 @@ class FooGallery_FrontEnd_Upload_MetaBoxes extends FooGallery_Admin_Gallery_Meta
                 update_post_meta($post_id, '_max_images_allowed', sanitize_text_field($_POST['max_images_allowed']));
             }
     
-            // Save the maximum image size setting.
-            if (isset($_POST['max_image_size'])) {
-                update_post_meta($post_id, '_max_image_size', intval($_POST['max_image_size']));
+            if (isset($_POST['logged_in_users_only'])) {
+                update_post_meta($post_id, '_logged_in_users_only', 'on');
+            } else {
+                delete_post_meta($post_id, '_logged_in_users_only');
             }
         }
     }
@@ -255,6 +256,15 @@ class FooGallery_FrontEnd_Upload_MetaBoxes extends FooGallery_Admin_Gallery_Meta
 
                 <label for="max_image_size" class="foogallery-upload-settings-input-label">Maximum Image Size (in KB):</label>
                 <input type="number" id="max_image_size" name="max_image_size" step="100" value="<?php echo esc_attr($max_image_size); ?>" class="foogallery-upload-settings-input-field" />
+                <?php
+                $logged_in_users_only = get_post_meta($post->ID, '_logged_in_users_only', true);
+                ?>
+                <p>
+                    <label for="logged-in-users-only">
+                        <input type="checkbox" id="logged-in-users-only" name="logged_in_users_only" <?php checked($logged_in_users_only, 'on'); ?> />
+                        <?php esc_html_e('Only logged-in users can upload', 'foogallery'); ?>
+                    </label>
+                </p>   
 
                 <h4><?php esc_html_e('Check to display the metadata fields in the upload form.', 'foogallery'); ?></h4>
                 <?php
