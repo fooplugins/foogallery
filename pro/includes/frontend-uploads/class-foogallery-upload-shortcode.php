@@ -1,47 +1,5 @@
 <?php
 
- global $wp_filesystem;
- if (empty($wp_filesystem)) {
-	 require_once ABSPATH . '/wp-admin/includes/file.php';
-	 WP_Filesystem();
- }
- 
-// Include the necessary file for admin gallery metaboxes.
-require_once FOOGALLERY_PATH . 'includes/admin/class-gallery-metaboxes.php';
-
-if ( ! class_exists( 'FrontEnd_Upload_FooGallery_Admin_Gallery_MetaBoxes' ) ) {
-    require_once FOOGALLERY_PATH . 'pro/includes/frontend-uploads/class-frontend-upload-foogallery-admin-gallery-metaboxes.php';
-}
-
-// Initialize the classes.
-if ( class_exists('FooGallery_Admin_Gallery_MetaBoxes') ) {
-    new FrontEnd_Upload_FooGallery_Admin_Gallery_MetaBoxes();
-}
-
-if ( class_exists( 'Foogallery_Upload_Shortcode' ) ) {
-    new Foogallery_Upload_Shortcode();
-}
-
-// Add a sub-menu to the FooGallery menu
-function add_image_moderation_submenu() {
-    $parent_slug = foogallery_admin_menu_parent_slug();
-    
-    add_submenu_page(
-        $parent_slug,
-        'Moderation',
-        'Moderation',
-        'manage_options',
-        'image-moderation',
-        'render_image_moderation_page'
-    );
-}
-add_action('admin_menu', 'add_image_moderation_submenu');
-
-// Callback function to render the page content
-function render_image_moderation_page() {
-    require_once FOOGALLERY_PATH . 'pro/includes/frontend-uploads/image-moderation.php';
-}
-
 /**
  * @package foogallery
  *
@@ -51,18 +9,15 @@ function render_image_moderation_page() {
  * and the processing of uploaded images.
  */
 
-if ( ! class_exists( 'Foogallery_Upload_Shortcode' ) ) {
-
-	// Include the necessary file.
-	require_once FOOGALLERY_PATH . 'pro/includes/frontend-uploads/class-frontend-upload-foogallery-admin-gallery-metaboxes.php';
+if ( ! class_exists( 'Foogallery_FrontEnd_Upload_Shortcode' ) ) {
 
 	/**
-	 * Class Foogallery_Upload_Shortcode
+	 * Class Foogallery_FrontEnd_Upload_Shortcode
 	 *
 	 * This class handles the rendering of the Foogallery Upload form shortcode and
 	 * the processing of uploaded images.
 	 */
-	class Foogallery_Upload_Shortcode {
+	class Foogallery_FrontEnd_Upload_Shortcode {
 
 		/**
 		 * Constructor for the FooGallery_Image_Upload class.
@@ -85,7 +40,6 @@ if ( ! class_exists( 'Foogallery_Upload_Shortcode' ) ) {
 				wp_enqueue_style( 'frontend-uploads', $directory . 'foogallery-frontend-uploads.css', array(), '1.0' );
 			}
 		}
-
 
 		/**
 		 * Render the image upload form shortcode.
@@ -327,8 +281,19 @@ if ( ! class_exists( 'Foogallery_Upload_Shortcode' ) ) {
 					});
 
 					setTimeout(function () {
-						document.querySelector(".success-message").style.display = "none";
+						const successMessage = document.querySelector(".success-message");
+						if (successMessage) {
+							successMessage.style.display = "none";
+						}
 					}, 3000);
+
+					setTimeout(function () {
+						const errorMessage = document.querySelector(".error-message");
+						if (errorMessage) {
+							errorMessage.style.display = "none";
+						}
+					}, 3000);
+
 				</script>
 
 				<?php
@@ -366,9 +331,39 @@ if ( ! class_exists( 'Foogallery_Upload_Shortcode' ) ) {
 						}
 					}
 
+					// Check if the "Only logged in users can upload" checkbox is checked.
+					$only_logged_in_users_can_upload = get_post_meta( $gallery_id, '_only_logged_in_users_can_upload', true );
+
+					// Check if the user is logged in (if required).
+					if ( $only_logged_in_users_can_upload && ! is_user_logged_in() ) {
+						echo '<div class="error-message" style="color: red; text-align: center;">' . __( 'Only logged-in users can upload images.', 'foogallery' ) . '</div>';
+						return;
+					}
+
+					// Retrieve the maximum images allowed and maximum image size settings
+					$max_images_allowed = get_post_meta($gallery_id, '_max_images_allowed', true);
+					$max_image_size = get_post_meta($gallery_id, '_max_image_size', true); // in KB
+		
+					$uploaded_image_count = count($uploaded_files['name']);
+
+					// Check if the number of uploaded images exceeds the maximum allowed
+					if ($uploaded_image_count > $max_images_allowed) {
+						echo '<div class="error-message" style="color: red; text-align: center;">' . __('Exceeded maximum images allowed.', 'foogallery') . '</div>';
+						return;
+					}
+
+					$exceeded_size_images = array();
 					foreach ( $uploaded_files['name'] as $key => $filename ) {
 						// Check if the file is an image.
 						if ( $uploaded_files['type'][$key] && strpos( $uploaded_files['type'][$key], 'image/' ) === 0 ) {
+							$image_size_in_kb = round($uploaded_files['size'][$key] / 1024);
+		
+							// Check if the image size exceeds the maximum allowed size
+							if ($image_size_in_kb > $max_image_size) {
+								$exceeded_size_images[] = $filename;								
+								continue;
+							}
+
 							// Generate a unique file name for the uploaded image in the user folder.
 							$unique_filename = wp_unique_filename( $user_folder, $filename );
 							$user_file = $user_folder . $unique_filename;
@@ -383,7 +378,8 @@ if ( ! class_exists( 'Foogallery_Upload_Shortcode' ) ) {
 									"description" => isset($_POST['description'][$key]) ? sanitize_text_field($_POST['description'][$key]) : "",
 									"alt" => isset($_POST['alt'][$key]) ? sanitize_text_field($_POST['alt'][$key]) : "",
 									"custom_url" => isset($_POST['custom_url'][$key]) ? esc_url($_POST['custom_url'][$key]) : "",
-									"custom_target" => isset($_POST['custom_target'][$key]) ? sanitize_text_field($_POST['custom_target'][$key]) : ""
+									"custom_target" => isset($_POST['custom_target'][$key]) ? sanitize_text_field($_POST['custom_target'][$key]) : "",
+									"uploaded_by" => get_current_user_id(),
 								);
 
 								global $wp_filesystem;
@@ -402,8 +398,22 @@ if ( ! class_exists( 'Foogallery_Upload_Shortcode' ) ) {
 							echo '<div class="error-message" style="color: red; text-align: center;">' . __( 'File is not an image.', 'foogallery' ) . '</div>';
 						}
 					}
+					// Count the number of images exceeding the maximum size
+					$exceeded_size_count = count($exceeded_size_images);
 
-					echo '<div class="success-message" style="color: green; text-align: center;">' . __( 'Image(s) successfully uploaded and awaiting moderation.', 'foogallery' ) . '</div>';
+					// Check if any images exceeded the maximum size
+					if ($exceeded_size_count > 0) {
+						if ($exceeded_size_count > 1) {
+							echo '<div class="error-message" style="color: red; text-align: center;">' . $exceeded_size_count . ' ' . __('images exceeded the maximum allowed size of '. $max_image_size .' KB and were not uploaded.', 'foogallery') . '</div>';
+						} elseif ($exceeded_size_count === 1) {
+							echo '<div class="error-message" style="color: red; text-align: center;">' . $exceeded_size_count . ' ' . __('image exceeded the maximum allowed size of '. $max_image_size .' KB and was not uploaded.', 'foogallery') . '</div>';
+						}
+					}
+
+					// Display success message only if at least one image meets the requirement
+					if ($uploaded_image_count > $exceeded_size_count) {
+						echo '<div class="success-message" style="color: green; text-align: center;">' . __('Image(s) successfully uploaded and awaiting moderation.', 'foogallery') . '</div>';
+					}
 				} else {
 					echo '<div class="error-message" style="color: red; text-align: center;">' . __( 'No files uploaded or an error occurred.', 'foogallery' ) . '</div>';
 				}
