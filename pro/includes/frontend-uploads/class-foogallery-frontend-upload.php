@@ -47,7 +47,7 @@ if ( ! class_exists( 'Foogallery_FrontEnd_Upload' ) ) {
 
         // Callback function to render the page content
         public function render_image_moderation_page() {
-            require_once FOOGALLERY_PATH . 'pro/includes/frontend-uploads/image-moderation.php';
+            require_once FOOGALLERY_PATH . 'pro/includes/frontend-uploads/view-image-moderation.php';
         }
 	}
 }
