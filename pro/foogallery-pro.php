@@ -49,6 +49,9 @@ require_once FOOGALLERY_PATH . 'pro/includes/woocommerce/class-foogallery-pro-wo
 require_once FOOGALLERY_PATH . 'pro/extensions/default-templates/product/class-product-gallery-template.php';
 require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-master-galleries.php';
 require_once FOOGALLERY_PATH . 'pro/includes/frontend-uploads/class-foogallery-frontend-upload.php';
+require_once FOOGALLERY_PATH . 'includes/admin/class-gallery-metaboxes.php';
+require_once FOOGALLERY_PATH . 'pro/includes/frontend-uploads/class-foogallery-frontend-upload-metaboxes.php';
+require_once FOOGALLERY_PATH . 'pro/includes/frontend-uploads/class-foogallery-upload-shortcode.php';
 
 /**
  * FooGallery PRO Main Class
@@ -92,7 +95,9 @@ if ( ! class_exists( 'FooGallery_Pro' ) ) {
 				new FooGallery_Pro_Advanced_Thumbnails();
 				new FooGallery_Pro_Bulk_Management();
 				new FooGallery_Pro_Exif();
-				new Foogallery_FrontEnd_Upload();
+				new Foogallery_FrontEnd_Upload();				
+				new Foogallery_FrontEnd_Upload_Shortcode();
+				new FooGallery_FrontEnd_Upload_MetaBoxes;
 			}
 			if ( foogallery_fs()->is_plan_or_trial( 'commerce' ) ) {
 				new FooGallery_Pro_Protection();

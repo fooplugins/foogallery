@@ -8,10 +8,6 @@ if (empty($wp_filesystem)) {
     require_once ABSPATH . '/wp-admin/includes/file.php';
     WP_Filesystem();
 }
-require_once FOOGALLERY_PATH . 'includes/admin/class-gallery-metaboxes.php';
-require_once FOOGALLERY_PATH . 'pro/includes/frontend-uploads/class-foogallery-frontend-upload-metaboxes.php';
-require_once FOOGALLERY_PATH . 'pro/includes/frontend-uploads/class-foogallery-upload-shortcode.php';
-
 
 /**
  * Foogallery FrontEnd Upload Class
@@ -27,7 +23,6 @@ if ( ! class_exists( 'Foogallery_FrontEnd_Upload' ) ) {
 		 * Foogallery_FrontEnd_Upload constructor.
 		 */
 		public function __construct() {
-			new Foogallery_FrontEnd_Upload_Shortcode();
             add_action( 'admin_menu', array( $this, 'add_image_moderation_submenu' ) );            
 		}        
 
