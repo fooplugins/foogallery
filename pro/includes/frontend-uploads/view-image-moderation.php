@@ -673,4 +673,3 @@ if ( ! class_exists( 'Foogallery_FrontEnd_Image_Moderation' ) ) {
 
 // Instantiate the class
 $imageModeration = new Foogallery_FrontEnd_Image_Moderation();
-
