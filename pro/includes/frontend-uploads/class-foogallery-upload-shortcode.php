@@ -52,10 +52,14 @@ if ( ! class_exists( 'Foogallery_FrontEnd_Upload_Shortcode' ) ) {
 			$gallery_id = isset( $atts['id'] ) ? intval( $atts['id'] ) : null;
 			$output = '';
 
+			// Create a nonce field.
+			$upload_image_nonce = wp_create_nonce( 'upload_image_action' );
+
 			// Check if the gallery_id attribute is provided.
 			if ( ! $gallery_id ) {
 				$output = __( 'Gallery ID not specified.', 'foogallery' );
 			} else {
+
 				$metafields = array( 'caption', 'description', 'alt', 'custom_url', 'custom_target' );
 				$attributes = array();
 
@@ -72,6 +76,8 @@ if ( ! class_exists( 'Foogallery_FrontEnd_Upload_Shortcode' ) ) {
 				?>
 				<form method="post" enctype="multipart/form-data">
 					<div style="max-width: 500px; max-height: 200px; border: 1px dashed #999; text-align: center; padding: 20px; margin-top: 10px;">
+						<!-- Add the nonce field to the form -->
+						<input type="hidden" name="upload_image_nonce" value="<?php echo esc_attr( $upload_image_nonce ); ?>" />
 						<input type="hidden" name="gallery_id" value="<?php echo esc_attr($gallery_id); ?>" />
 						<input type="file" name="foogallery_images[]" id="image-upload" accept="image/*" multiple style="display: none;" />
 						<label for="image-upload" style="cursor: pointer;">
@@ -309,8 +315,8 @@ if ( ! class_exists( 'Foogallery_FrontEnd_Upload_Shortcode' ) ) {
 		public function handle_image_upload() {
 			global $gallery_id;
 
-			// Check if the form was submitted.
-			if ( isset( $_POST['foogallery_image_upload'] ) ) {
+			// verify nonce and Check if the form was submitted.
+			if ( isset( $_POST['foogallery_image_upload'] ) && wp_verify_nonce( $_POST['upload_image_nonce'], 'upload_image_action' ) ) {				
 				// Get the gallery ID from the form data.
 				$gallery_id = isset( $_POST['gallery_id'] ) ? intval( $_POST['gallery_id'] ) : null;
 
