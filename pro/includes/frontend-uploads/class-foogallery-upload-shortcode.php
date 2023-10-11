@@ -241,8 +241,8 @@ if ( ! class_exists( 'Foogallery_FrontEnd_Upload_Shortcode' ) ) {
 							if (file.type.startsWith('image/')) {
 							const metadataFields = `
 								<div class="image-metadata" style="display: flex; flex-direction: row; align-items: center; margin-bottom: 20px; padding: 10px; border: 1px solid #ccc; border-radius: 5px; background-color: #f9f9f9;">
-									<div class="image-preview" style="margin-right: 20px; width: 100%;">
-										<img style="width: 100%; height: 100%; object-fit: cover;" src="${URL.createObjectURL(file)}"  alt="Image Preview" />
+									<div class="image-preview" style="margin-right: 20px; width: 100%; display: flex;justify-content: center;">
+										<img style="width: 100px; height: 100px; object-fit: cover;" src="${URL.createObjectURL(file)}"  alt="Image Preview" />
 									</div>
 									<div class="metadata-fields" style="width: 100%;">
 										${metadataContainer.getAttribute('data-display-caption') === 'on' ? `
