@@ -385,6 +385,23 @@ if ( ! class_exists( 'FooGallery_FrontEnd_Upload_MetaBoxes' ) ) {
                         });
                     });
 
+                    jQuery(function($) {
+                        var shortcodeInput = document.querySelector('#Upload_Form_copy_shortcode');
+                        shortcodeInput.addEventListener('click', function () {
+                            try {
+                                // select the contents
+                                shortcodeInput.select();
+                                //copy the selection
+                                document.execCommand('copy');
+                                //show the copied message
+                                $('.foogallery-shortcode-message').remove();
+                                $(shortcodeInput).after('<p class="foogallery-shortcode-message"><?php _e( 'Shortcode copied to clipboard :)','foogallery' ); ?></p>');
+                            } catch(err) {
+                                console.log('Oops, unable to copy!');
+                            }
+                        }, false);
+                    });
+
                     // Function to submit the moderation form
                     function submitModerationForm(action, imageId) {
                         const galleryId = document.getElementById('gallery_id').value;
