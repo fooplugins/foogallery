@@ -96,7 +96,7 @@ if ( ! class_exists( 'Foogallery_FrontEnd_Image_Moderation' ) ) {
 
                     <!-- Gallery Title filter dropdown -->
                     <form method="post" style="margin-bottom: 20px;">
-                        <label for="filter_gallery_title">Filter by Gallery Title:</label>
+                        <label for="filter_gallery_title"><?php esc_html_e( 'Filter by Gallery Title:', 'foogallery' ); ?></label>
                         <select name="filter_gallery_title" id="filter_gallery_title">
                             <option value=""><?php esc_html_e('All', 'foogallery'); ?></option>
                             <?php
@@ -217,8 +217,8 @@ if ( ! class_exists( 'Foogallery_FrontEnd_Image_Moderation' ) ) {
                                         </td>
 
                                         <td>
-                                            <button class="confirm-approve button button-small button-primary" data-gallery-id="<?php echo esc_attr($gallery_id); ?>" data-image-id="<?php echo esc_attr($image['file']); ?>">Approve Image</button>
-                                            <button class="confirm-reject button button-small" data-gallery-id="<?php echo esc_attr($gallery_id); ?>" data-image-id="<?php echo esc_attr($image['file']); ?>">Reject Image</button>
+                                            <button class="confirm-approve button button-small button-primary" data-gallery-id="<?php echo esc_attr($gallery_id); ?>" data-image-id="<?php echo esc_attr($image['file']); ?>"> <?php esc_html_e( 'Approve Image', 'foogallery' ); ?></button>
+                                            <button class="confirm-reject button button-small" data-gallery-id="<?php echo esc_attr($gallery_id); ?>" data-image-id="<?php echo esc_attr($image['file']); ?>"><?php esc_html_e( 'Reject Image', 'foogallery' ); ?></button>
                                         </td>
 
                                     </tr>
@@ -323,7 +323,7 @@ if ( ! class_exists( 'Foogallery_FrontEnd_Image_Moderation' ) ) {
                                                 </td>
 
                                                 <td>
-                                                    <button class="confirm-delete button button-small" data-gallery-id="<?php echo esc_attr($gallery_id); ?>" data-image-id="<?php echo esc_attr($item['file']); ?>">Delete Image</button>
+                                                    <button class="confirm-delete button button-small" data-gallery-id="<?php echo esc_attr($gallery_id); ?>" data-image-id="<?php echo esc_attr($item['file']); ?>"><?php esc_html_e( 'Delete Image', 'foogallery' );?></button>
                                                 </td>
                                             </tr>
                                         <?php endforeach; ?>

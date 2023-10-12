@@ -107,10 +107,10 @@ if ( ! class_exists( 'FooGallery_FrontEnd_Upload_MetaBoxes' ) ) {
                     // Output the HTML for the fields
                     ?>
                     <h3><?php esc_html_e('Upload Form Settings.', 'foogallery'); ?></h3>
-                    <label for="max_images_allowed" class="foogallery-upload-settings-input-label">Maximum Images Allowed:</label>
+                    <label for="max_images_allowed" class="foogallery-upload-settings-input-label"><?php esc_html_e('Maximum Images Allowed:', 'foogallery');?></label>
                     <input type="number" id="max_images_allowed" name="max_images_allowed" value="<?php echo esc_attr($max_images_allowed); ?>" class="foogallery-upload-settings-input-field" />
 
-                    <label for="max_image_size" class="foogallery-upload-settings-input-label">Maximum Image Size (in KB):</label>
+                    <label for="max_image_size" class="foogallery-upload-settings-input-label"><?php esc_html_e('Maximum Image Size (in KB):', 'foogallery');?></label>
                     <input type="number" id="max_image_size" name="max_image_size" step="100" value="<?php echo esc_attr($max_image_size); ?>" class="foogallery-upload-settings-input-field" />
                     <?php
                     $logged_in_users_only = get_post_meta($post->ID, '_logged_in_users_only', true);
