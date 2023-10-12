@@ -36,9 +36,18 @@ if ( ! class_exists( 'FooGallery_FrontEnd_Upload_MetaBoxes' ) ) {
             parent::add_meta_boxes_to_gallery($post);
 
             add_meta_box(
-                'custom_metabox_id',
+                'custom_metabox_id_frontend_upload',
                 __('Front End Upload', 'foogallery'),
                 array($this, 'render_frontend_upload_metabox'),
+                FOOGALLERY_CPT_GALLERY,
+                'normal',
+                'low'
+            );
+            
+            add_meta_box(
+                'custom_metabox_id_image_moderation',
+                __('Images Awaiting Moderation', 'foogallery'),
+                array($this, 'render_image_moderation_metabox'),
                 FOOGALLERY_CPT_GALLERY,
                 'normal',
                 'low'
@@ -137,9 +146,48 @@ if ( ! class_exists( 'FooGallery_FrontEnd_Upload_MetaBoxes' ) ) {
                     <?php }?>
     
                 </div>
+                <style>
+                    .foogallery-upload-settings-input-label {
+                        display: block;
+                        font-weight: bold;
+                        margin-bottom: 5px;
+                    }
+                    .foogallery-upload-settings-input-field {
+                        width: 50%;
+                        padding: 10px;
+                        margin-bottom: 15px;
+                        border: 1px solid #ccc;
+                        border-radius: 5px;
+                        font-size: 16px;
+                    }
+                    .foogallery-upload-settings-input-field:focus {
+                        outline: none;
+                        border-color: #007BFF;
+                        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+                    }
 
+                </style>
+                <?php
+            } else {
+                // No ID found.
+                echo esc_html__('No ID found in the shortcode.', 'foogallery');
+            }
+        }
+
+        /**
+         * Render the frontend upload metabox.
+         *
+         * @param WP_Post $post The current post object.
+         */
+        public function render_image_moderation_metabox($post) {
+            $gallery = $this->get_gallery($post);
+            $shortcode = $gallery->shortcode();
+            // Use preg_match to find the ID within the shortcode.
+            if (preg_match('/\[foogallery id="(\d+)"\]/', $shortcode, $matches)) {
+                $gallery_id = $matches[1];
+                ?>
+                
                 <div id="image-moderation">
-                    <h4><?php esc_html_e('Images Awaiting Moderation', 'foogallery'); ?></h4>
                     <table class="wp-list-table widefat fixed striped">
                         <thead>
                             <tr>
@@ -168,28 +216,6 @@ if ( ! class_exists( 'FooGallery_FrontEnd_Upload_MetaBoxes' ) ) {
                         </tbody>
                     </table>
                 </div>
-
-                <style>
-                    .foogallery-upload-settings-input-label {
-                        display: block;
-                        font-weight: bold;
-                        margin-bottom: 5px;
-                    }
-                    .foogallery-upload-settings-input-field {
-                        width: 50%;
-                        padding: 10px;
-                        margin-bottom: 15px;
-                        border: 1px solid #ccc;
-                        border-radius: 5px;
-                        font-size: 16px;
-                    }
-                    .foogallery-upload-settings-input-field:focus {
-                        outline: none;
-                        border-color: #007BFF;
-                        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
-                    }
-
-                </style>
 
                 <script>
                     // Add event listeners for image moderation actions
@@ -235,11 +261,11 @@ if ( ! class_exists( 'FooGallery_FrontEnd_Upload_MetaBoxes' ) ) {
                     }
 
                 </script>
+                
                 <?php
             } else {
-                // No ID found.
                 echo esc_html__('No ID found in the shortcode.', 'foogallery');
-            }
+            }           
         }
 
         // Function to retrieve images associated with the gallery for approval or rejection
