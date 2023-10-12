@@ -365,7 +365,7 @@ if ( ! class_exists( 'Foogallery_FrontEnd_Upload_Shortcode' ) ) {
 							$image_size_in_mb = round($uploaded_files['size'][$key] / (1024 * 1024), 2); // Convert to MB
 
 							// Check if the image size exceeds the maximum allowed size in MB
-							if ( $image_size_in_mb > $max_image_size ) {
+							if ( $max_image_size > 0 && $image_size_in_mb > $max_image_size ) {
 								$exceeded_size_images[] = $filename;
 								continue;
 							}
