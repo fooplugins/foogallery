@@ -24,9 +24,26 @@ if ( ! class_exists( 'Foogallery_FrontEnd_Upload_Moderation' ) ) {
          * Initializes the class and registers necessary actions.
          */
         public function __construct() {
+            $this->get_wp_filesystem();
             if ( is_admin() ) {
-                add_action( 'init', array( $this, 'init' ) );
-            }         
+                add_action( 'init', array( $this, 'init' ) );                
+            }                   
+        }
+
+        /**
+         * Retrieves the WordPress Filesystem API for file operations and ensures its availability.
+         *
+         * This function checks if the global WordPress `$wp_filesystem` variable is available. If not, it includes
+         * the necessary file management functions and initializes the WordPress Filesystem API to make it accessible.
+         *
+         * @return WP_Filesystem_Base|null The WordPress Filesystem object on success, or null on failure.
+         */
+        private function get_wp_filesystem() {
+            global $wp_filesystem;
+            if ( empty( $wp_filesystem ) ) {
+                require_once ABSPATH . '/wp-admin/includes/file.php';
+                WP_Filesystem();
+            }
         }
 
         /**
