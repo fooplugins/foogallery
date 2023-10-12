@@ -349,11 +349,11 @@ if ( ! class_exists( 'Foogallery_FrontEnd_Upload_Shortcode' ) ) {
 					// Retrieve the maximum images allowed and maximum image size settings
 					$max_images_allowed = get_post_meta($gallery_id, '_max_images_allowed', true);
 					$max_image_size = get_post_meta($gallery_id, '_max_image_size', true); // in KB
-		
+
 					$uploaded_image_count = count($uploaded_files['name']);
 
-					// Check if the number of uploaded images exceeds the maximum allowed
-					if ($uploaded_image_count > $max_images_allowed) {
+					// Check if the number of uploaded images exceeds the maximum allowed if it's a positive number
+					if ($max_images_allowed > 0 && $uploaded_image_count > $max_images_allowed) {
 						echo '<div class="error-message" style="color: red; text-align: center;">' . __('Exceeded maximum images allowed.', 'foogallery') . '</div>';
 						return;
 					}
