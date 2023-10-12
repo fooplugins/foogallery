@@ -192,6 +192,7 @@ if ( ! class_exists( 'FooGallery_FrontEnd_Upload_MetaBoxes' ) ) {
                         <thead>
                             <tr>
                                 <th><?php esc_html_e('Image', 'foogallery'); ?></th>
+                                <th><?php esc_html_e('Metadata', 'foogallery'); ?></th>
                                 <th><?php esc_html_e('Action', 'foogallery'); ?></th>
                             </tr>
                         </thead>
@@ -204,6 +205,14 @@ if ( ! class_exists( 'FooGallery_FrontEnd_Upload_MetaBoxes' ) ) {
                                 <tr>
                                     <td>
                                         <img style="width: 100px; height: 100px;" src="<?php echo esc_url($image['url']); ?>" alt="<?php echo esc_attr($image['alt']); ?>" />
+                                    </td>
+                                    <td>
+                                        <!-- Display metadata here -->
+                                        <p><strong><?php esc_html_e('Caption:', 'foogallery'); ?></strong> <?php echo esc_html($image['caption']); ?></p>
+                                        <p><strong><?php esc_html_e('Description:', 'foogallery'); ?></strong> <?php echo esc_html($image['description']); ?></p>
+                                        <p><strong><?php esc_html_e('Alt Text:', 'foogallery'); ?></strong> <?php echo esc_html($image['alt']); ?></p>
+                                        <p><strong><?php esc_html_e('Custom URL:', 'foogallery'); ?></strong> <?php echo esc_url($image['custom_url']); ?></p>
+                                        <p><strong><?php esc_html_e('Custom Target:', 'foogallery'); ?></strong> <?php echo esc_html($image['custom_target']); ?></p>
                                     </td>
                                     <td>
                                         <button class="approve-image button button-primary" data-image-id="<?php echo esc_attr($image['id']); ?>"><?php esc_html_e('Approve', 'foogallery'); ?></button>
@@ -286,7 +295,12 @@ if ( ! class_exists( 'FooGallery_FrontEnd_Upload_MetaBoxes' ) ) {
                             'id' => sanitize_text_field($item['file']),
                             'alt' => sanitize_text_field($item['alt']),
                             'url' => site_url("/wp-content/uploads/users_uploads/$gallery_id/{$item['file']}"),
+                            'caption' => sanitize_text_field($item['caption']),
+                            'description' => sanitize_text_field($item['description']),
+                            'custom_url' => esc_url($item['custom_url']),
+                            'custom_target' => sanitize_text_field($item['custom_target']),
                         );
+
                         $images[] = $image;
                     }
                 }
@@ -294,6 +308,7 @@ if ( ! class_exists( 'FooGallery_FrontEnd_Upload_MetaBoxes' ) ) {
 
             return $images;
         }
+
     }
 
 }
