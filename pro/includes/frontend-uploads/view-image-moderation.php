@@ -24,7 +24,9 @@ if ( ! class_exists( 'Foogallery_FrontEnd_Image_Moderation' ) ) {
          * Initializes the class and registers necessary actions.
          */
         public function __construct() {
-            $this->render_moderation_page();
+            if ( is_admin() ) {
+                $this->render_moderation_page();
+            }            
         }
         
         /**

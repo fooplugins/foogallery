@@ -24,7 +24,9 @@ if ( ! class_exists( 'Foogallery_FrontEnd_Upload_Moderation' ) ) {
          * Initializes the class and registers necessary actions.
          */
         public function __construct() {
-            add_action('init', array($this, 'init'));            
+            if ( is_admin() ) {
+                add_action( 'init', array( $this, 'init' ) );
+            }         
         }
 
         /**
