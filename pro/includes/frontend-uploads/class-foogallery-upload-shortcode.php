@@ -348,7 +348,7 @@ if ( ! class_exists( 'Foogallery_FrontEnd_Upload_Shortcode' ) ) {
 
 					// Retrieve the maximum images allowed and maximum image size settings
 					$max_images_allowed = get_post_meta($gallery_id, '_max_images_allowed', true);
-					$max_image_size = get_post_meta($gallery_id, '_max_image_size', true); // in KB
+					$max_image_size = get_post_meta($gallery_id, '_max_image_size', true);
 
 					$uploaded_image_count = count($uploaded_files['name']);
 
@@ -362,11 +362,11 @@ if ( ! class_exists( 'Foogallery_FrontEnd_Upload_Shortcode' ) ) {
 					foreach ( $uploaded_files['name'] as $key => $filename ) {
 						// Check if the file is an image.
 						if ( $uploaded_files['type'][$key] && strpos( $uploaded_files['type'][$key], 'image/' ) === 0 ) {
-							$image_size_in_kb = round($uploaded_files['size'][$key] / 1024);
-		
-							// Check if the image size exceeds the maximum allowed size
-							if ($image_size_in_kb > $max_image_size) {
-								$exceeded_size_images[] = $filename;								
+							$image_size_in_mb = round($uploaded_files['size'][$key] / (1024 * 1024), 2); // Convert to MB
+
+							// Check if the image size exceeds the maximum allowed size in MB
+							if ( $image_size_in_mb > $max_image_size ) {
+								$exceeded_size_images[] = $filename;
 								continue;
 							}
 
@@ -410,9 +410,9 @@ if ( ! class_exists( 'Foogallery_FrontEnd_Upload_Shortcode' ) ) {
 					// Check if any images exceeded the maximum size
 					if ($exceeded_size_count > 0) {
 						if ($exceeded_size_count > 1) {
-							echo '<div class="error-message" style="color: red; text-align: center;">' . $exceeded_size_count . ' ' . __('images exceeded the maximum allowed size of '. $max_image_size .' KB and were not uploaded.', 'foogallery') . '</div>';
+							echo '<div class="error-message" style="color: red; text-align: center;">' . $exceeded_size_count . ' ' . __('images exceeded the maximum allowed size of '. $max_image_size .' MB and were not uploaded.', 'foogallery') . '</div>';
 						} elseif ($exceeded_size_count === 1) {
-							echo '<div class="error-message" style="color: red; text-align: center;">' . $exceeded_size_count . ' ' . __('image exceeded the maximum allowed size of '. $max_image_size .' KB and was not uploaded.', 'foogallery') . '</div>';
+							echo '<div class="error-message" style="color: red; text-align: center;">' . $exceeded_size_count . ' ' . __('image exceeded the maximum allowed size of '. $max_image_size .' MB and was not uploaded.', 'foogallery') . '</div>';
 						}
 					}
 

@@ -76,6 +76,11 @@ if ( ! class_exists( 'FooGallery_FrontEnd_Upload_MetaBoxes' ) ) {
                 if (isset($_POST['max_images_allowed'])) {
                     update_post_meta($post_id, '_max_images_allowed', sanitize_text_field($_POST['max_images_allowed']));
                 }
+
+                // Save the maximum image size setting.
+                if (isset($_POST['max_image_size'])) {
+                    update_post_meta($post_id, '_max_image_size', sanitize_text_field($_POST['max_image_size']));
+                }
         
                 if (isset($_POST['logged_in_users_only'])) {
                     update_post_meta($post_id, '_logged_in_users_only', 'on');
@@ -119,8 +124,9 @@ if ( ! class_exists( 'FooGallery_FrontEnd_Upload_MetaBoxes' ) ) {
                     <label for="max_images_allowed" class="foogallery-upload-settings-input-label"><?php esc_html_e('Maximum Images Allowed:', 'foogallery');?></label>
                     <input type="number" id="max_images_allowed" name="max_images_allowed" value="<?php echo esc_attr($max_images_allowed); ?>" class="foogallery-upload-settings-input-field" />
 
-                    <label for="max_image_size" class="foogallery-upload-settings-input-label"><?php esc_html_e('Maximum Image Size (in KB):', 'foogallery');?></label>
-                    <input type="number" id="max_image_size" name="max_image_size" step="100" value="<?php echo esc_attr($max_image_size); ?>" class="foogallery-upload-settings-input-field" />
+                    <label for="max_image_size" class="foogallery-upload-settings-input-label"><?php esc_html_e('Maximum Image Size (in MB):', 'foogallery');?></label>
+                    <input type="number" id="max_image_size" name="max_image_size" value="<?php echo esc_attr($max_image_size); ?>" class="foogallery-upload-settings-input-field" />
+
                     <?php
                     $logged_in_users_only = get_post_meta($post->ID, '_logged_in_users_only', true);
                     ?>
