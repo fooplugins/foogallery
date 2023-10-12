@@ -24,7 +24,7 @@ if ( ! class_exists( 'Foogallery_FrontEnd_Image_Moderation' ) ) {
          * Initializes the class and registers necessary actions.
          */
         public function __construct() {
-            $this->renderModerationPage();
+            $this->render_moderation_page();
         }
         
         /**
@@ -33,7 +33,7 @@ if ( ! class_exists( 'Foogallery_FrontEnd_Image_Moderation' ) ) {
          * This method is responsible for rendering the moderation page where images can be moderated.
          * It should output the HTML and user interface for image moderation.
          */
-        public function renderModerationPage() {
+        public function render_moderation_page() {
             // Initialize an array to store gallery IDs and metadata
             $images_to_moderate = array();
 

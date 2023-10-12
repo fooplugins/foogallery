@@ -39,14 +39,14 @@ if ( ! class_exists( 'Foogallery_FrontEnd_Upload_Moderation' ) ) {
                 $action = sanitize_text_field($_POST['action']);
 
                 if ($action === 'approve') {
-                    $this->handleApproveAction();
+                    $this->handle_approve_action();
                 } elseif ($action === 'reject') {
-                    $this->handleRejectAction();
+                    $this->handle_reject_action();
                 }
             }
 
             if (isset($_POST['moderate_image']) && $_POST['action'] === 'delete') {
-                $this->handleDeleteAction();
+                $this->handle_delete_action();
             }        
 
         }
@@ -59,7 +59,7 @@ if ( ! class_exists( 'Foogallery_FrontEnd_Upload_Moderation' ) ) {
          *
          * @private
          */
-        private function handleApproveAction() {
+        private function handle_approve_action() {
             // Get the gallery ID and file name from the form data
             $gallery_id = isset($_POST['gallery_id']) ? intval($_POST['gallery_id']) : null;
             $file_name = isset($_POST['image_id']) ? sanitize_text_field($_POST['image_id']) : null;
@@ -145,7 +145,7 @@ if ( ! class_exists( 'Foogallery_FrontEnd_Upload_Moderation' ) ) {
          *
          * @private
          */
-        private function handleRejectAction() {
+        private function handle_reject_action() {
             global $wp_filesystem;
             // Get the gallery ID and file name from the form data
             $gallery_id = isset($_POST['gallery_id']) ? intval($_POST['gallery_id']) : null;
@@ -180,7 +180,7 @@ if ( ! class_exists( 'Foogallery_FrontEnd_Upload_Moderation' ) ) {
          *
          * @private
          */
-        private function handleDeleteAction() {
+        private function handle_delete_action() {
             global $wp_filesystem;
             $image_id = sanitize_text_field($_POST['image_id']);
             $gallery_id = isset($_POST['gallery_id']) ? intval($_POST['gallery_id']) : null;

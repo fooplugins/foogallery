@@ -150,7 +150,7 @@ if ( ! class_exists( 'FooGallery_FrontEnd_Upload_MetaBoxes' ) ) {
                         <tbody>
                             <?php
                             // Retrieve images associated with the gallery for approval or rejection.
-                            $images_to_moderate = $this->getImagesToModerate($gallery_id);
+                            $images_to_moderate = $this->get_images_to_moderate($gallery_id);
                             foreach ($images_to_moderate as $image) {
                                 ?>
                                 <tr>
@@ -243,7 +243,7 @@ if ( ! class_exists( 'FooGallery_FrontEnd_Upload_MetaBoxes' ) ) {
         }
 
         // Function to retrieve images associated with the gallery for approval or rejection
-        private function getImagesToModerate($gallery_id) {
+        private function get_images_to_moderate($gallery_id) {
             $images = array();
 
             // Get the metadata for the gallery
