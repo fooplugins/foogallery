@@ -240,37 +240,37 @@ if ( ! class_exists( 'Foogallery_FrontEnd_Upload_Shortcode' ) ) {
 							const file = files[i];
 							if (file.type.startsWith('image/')) {
 							const metadataFields = `
-								<div class="image-metadata" style="display: flex; flex-direction: row; align-items: center; margin-bottom: 20px; padding: 10px; border: 1px solid #ccc; border-radius: 5px; background-color: #f9f9f9;">
-									<div class="image-preview" style="margin-right: 20px; width: 100%;">
-										<img style="width: 100%; height: 100%; object-fit: cover;" src="${URL.createObjectURL(file)}"  alt="Image Preview" />
+								<div class="image-metadata" style="display: flex; flex-direction: row; align-items: center; margin-bottom: 10px; padding: 5px; border: 1px solid #ccc; border-radius: 5px; background-color: #f9f9f9;">
+									<div class="image-preview" style="display: flex; align-items: center; justify-content: center; margin-right: 10px; width: 100%;">
+										<img style="width: 100px; height: 100px; object-fit: cover;" src="${URL.createObjectURL(file)}"  alt="Image Preview" />
 									</div>
 									<div class="metadata-fields" style="width: 100%;">
 										${metadataContainer.getAttribute('data-display-caption') === 'on' ? `
-											<div class="metadata-field" style="margin-bottom: 7px; padding: 10px;">
+											<div class="metadata-field" style="margin-bottom: 4px; padding: 5px;">
 												<label for="caption_${i}" style="display: block; font-weight: bold; margin-bottom: 5px;">Caption:</label>
 												<input type="text" class="metadata-input" style="width: 100%; height: 20px; padding: 5px; border: 1px solid #ccc; border-radius: 2px;" name="caption[]" id="caption_${i}" />
 											</div>` : ''}
 										
 										${metadataContainer.getAttribute('data-display-description') === 'on' ? `
-											<div class="metadata-field" style="margin-bottom: 7px; padding: 10px;">
+											<div class="metadata-field" style="margin-bottom: 4px; padding: 5px;">
 												<label for="description_${i}" style="display: block; font-weight: bold; margin-bottom: 5px;">Description:</label>
 												<textarea class="metadata-textarea" style="width: 100%; height: 40px;  padding: 5px; border: 1px solid #ccc; resize: vertical; border-radius: 3px;" name="description[]" id="description_${i}"></textarea>
 											</div>` : ''}
 										
 										${metadataContainer.getAttribute('data-display-alt') === 'on' ? `
-											<div class="metadata-field" style="margin-bottom: 7px; padding: 10px;">
+											<div class="metadata-field" style="margin-bottom: 4px; padding: 5px;">
 												<label for="alt_${i}" style="display: block; font-weight: bold; margin-bottom: 5px;">Alt Text:</label>
 												<input type="text" class="metadata-input" style="width: 100%; height: 20px; padding: 5px; border: 1px solid #ccc; border-radius: 2px;" name="alt[]" id="alt_${i}" />
 											</div>` : ''}
 										
 										${metadataContainer.getAttribute('data-display-custom_url') === 'on' ? `
-											<div class="metadata-field" style="margin-bottom: 7px; padding: 10px;">
+											<div class="metadata-field" style="margin-bottom: 4px; padding: 5px;">
 												<label for="custom_url_${i}" style="display: block; font-weight: bold; margin-bottom: 5px;">Custom URL:</label>
 												<input type="text" class="metadata-input" style="width: 100%; height: 20px; padding: 5px; border: 1px solid #ccc; border-radius: 2px;" name="custom_url[]" id="custom_url_${i}" />
 											</div>` : ''}
 										
 										${metadataContainer.getAttribute('data-display-custom_target') === 'on' ? `
-											<div class="metadata-field" style="margin-bottom: 7px; padding: 10px;">
+											<div class="metadata-field" style="margin-bottom: 4px; padding: 5px;">
 												<label for="custom_target_${i}" style="display: block; font-weight: bold; margin-bottom: 5px;">Custom Target:</label>
 												<input type="text" class="metadata-input" style="width: 100%; height: 20px; padding: 5px; border: 1px solid #ccc; border-radius: 2px;" name="custom_target[]" id="custom_target_${i}" />
 											</div>` : ''}
