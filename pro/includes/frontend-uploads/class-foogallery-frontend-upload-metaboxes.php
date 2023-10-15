@@ -181,7 +181,7 @@ if ( ! class_exists( 'FooGallery_FrontEnd_Upload_MetaBoxes' ) ) {
         }
 
         /**
-         * Render the frontend upload metabox.
+         * Render the Image Moderation metabox.
          *
          * @param WP_Post $post The current post object.
          */
