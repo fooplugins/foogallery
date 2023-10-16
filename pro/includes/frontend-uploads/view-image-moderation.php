@@ -44,35 +44,35 @@ if ( ! class_exists( 'Foogallery_FrontEnd_Image_Moderation' ) ) {
             $user_uploads_dir = $upload_dir['basedir'] . '/users_uploads/';
 
             // Check if the user uploads directory exists
-            if (is_dir($user_uploads_dir)) {
+            if ( is_dir( $user_uploads_dir ) ) {
                 // Get a list of directories inside the user uploads directory
-                $directories = glob($user_uploads_dir . '*', GLOB_ONLYDIR);
+                $directories = glob( $user_uploads_dir . '*', GLOB_ONLYDIR );
                 
-                foreach ($directories as $directory) {
+                foreach ( $directories as $directory ) {
                     // Extract the gallery ID from the directory name
-                    $gallery_id = intval(basename($directory));
+                    $gallery_id = intval( basename( $directory ) );
                     $metadata_file = $directory . '/metadata.json';
 
                     // Check if the metadata file exists
-                    if (file_exists($metadata_file)) {
+                    if (file_exists( $metadata_file ) ) {
                         global $wp_filesystem;
                         
                         // Read and decode the JSON metadata file
-                        $metadata_contents = $wp_filesystem->get_contents($metadata_file);
+                        $metadata_contents = $wp_filesystem->get_contents( $metadata_file );
                         
-                        if ($metadata_contents !== false) {
-                            $metadata = json_decode($metadata_contents, true);
+                        if ( $metadata_contents !== false ) {
+                            $metadata = json_decode( $metadata_contents, true );
                             
-                            if ($metadata !== null && isset($metadata['items'])) {
+                            if ($metadata !== null && isset( $metadata['items'] ) ) {
                                 // Store the metadata in the images_to_moderate array
                                 $images_to_moderate[$gallery_id] = $metadata['items'];
                             } else {
                                 // Handle JSON decoding failure or missing 'items' key
-                                echo '<div class="notice notice-error"><p>Invalid or missing metadata in file: ' . esc_html($metadata_file) . '</p></div>';
+                                echo '<div class="notice notice-error"><p>Invalid or missing metadata in file: ' . esc_html( $metadata_file ) . '</p></div>';
                             }
                         } else {
                             // Handle file read failure
-                            echo '<div class="notice notice-error"><p>Failed to read metadata file: ' . esc_html($metadata_file) . '</p></div>';
+                            echo '<div class="notice notice-error"><p>Failed to read metadata file: ' . esc_html( $metadata_file ) . '</p></div>';
                         }
                     }
                 }
@@ -80,7 +80,7 @@ if ( ! class_exists( 'Foogallery_FrontEnd_Image_Moderation' ) ) {
 
 
             // Handle filtering by gallery ID
-            $filter_gallery_id = isset($_POST['filter_gallery_id']) ? intval($_POST['filter_gallery_id']) : 0;
+            $filter_gallery_id = isset( $_POST['filter_gallery_id'] ) ? intval( $_POST['filter_gallery_id'] ) : 0;
             ?>
             
             <div class="wrap" id="image-moderation-container">
@@ -101,9 +101,9 @@ if ( ! class_exists( 'Foogallery_FrontEnd_Image_Moderation' ) ) {
                             <option value=""><?php esc_html_e('All', 'foogallery'); ?></option>
                             <?php
                             // Populate the dropdown with available gallery titles
-                            foreach ($images_to_moderate as $gallery_id => $images) {
-                                $gallery_title = get_the_title($gallery_id);
-                                echo '<option value="' . esc_attr($gallery_title) . '">' . esc_html($gallery_title) . '</option>';
+                            foreach ( $images_to_moderate as $gallery_id => $images ) {
+                                $gallery_title = get_the_title( $gallery_id );
+                                echo '<option value="' . esc_attr( $gallery_title ) . '">' . esc_html( $gallery_title ) . '</option>';
                             }
                             ?>
                         </select>
@@ -126,16 +126,16 @@ if ( ! class_exists( 'Foogallery_FrontEnd_Image_Moderation' ) ) {
                         <?php 
                         // Initialize an array to store user IDs for each image
                         $image_uploaders = array();
-                        foreach ($images_to_moderate as $gallery_id => $images) : ?>
-                            <?php if ($filter_gallery_id === 0 || $filter_gallery_id === $gallery_id) : ?>
-                                <?php foreach ($images as $image) : 
+                        foreach ( $images_to_moderate as $gallery_id => $images ) : ?>
+                            <?php if ( $filter_gallery_id === 0 || $filter_gallery_id === $gallery_id ) : ?>
+                                <?php foreach ( $images as $image ) : 
                                     // Get the gallery ID and image file name
-                                    $gallery_id = intval($gallery_id);
-                                    $file_name = sanitize_text_field($image['file']);
+                                    $gallery_id = intval( $gallery_id );
+                                    $file_name = sanitize_text_field( $image['file'] );
                                     
                                     // Check if the 'uploaded_by' field is set in the image's metadata
-                                    if (isset($image['uploaded_by'])) {
-                                        $uploader_id = intval($image['uploaded_by']);
+                                    if ( isset( $image['uploaded_by'] ) ) {
+                                        $uploader_id = intval( $image['uploaded_by'] );
                                         
                                         // Store the uploader's ID in the array
                                         $image_uploaders["$gallery_id-$file_name"] = $uploader_id;
@@ -150,18 +150,18 @@ if ( ! class_exists( 'Foogallery_FrontEnd_Image_Moderation' ) ) {
                                             <?php
                                             // Get the gallery post object
                                             $gallery_post = get_post($gallery_id);
-                                            if ($gallery_post) {
+                                            if ( $gallery_post ) {
                                                 // Generate the URL for the gallery edit page
-                                                $gallery_edit_url = get_edit_post_link($gallery_id);
+                                                $gallery_edit_url = get_edit_post_link( $gallery_id );
 
                                                 if ($gallery_edit_url) {
-                                                    echo '<a href="' . esc_url($gallery_edit_url) . '">' . esc_html($gallery_post->post_title) . '</a>';
+                                                    echo '<a href="' . esc_url( $gallery_edit_url ) . '">' . esc_html( $gallery_post->post_title ) . '</a>';
                                                 } else {
-                                                    echo esc_html($gallery_post->post_title);
+                                                    echo esc_html( $gallery_post->post_title );
                                                 }
                                             } else {
                                                 // Display a fallback value if the gallery post is not found
-                                                echo esc_html($gallery_id);
+                                                echo esc_html( $gallery_id );
                                             }
                                             ?>
                                         </td>
@@ -169,7 +169,7 @@ if ( ! class_exists( 'Foogallery_FrontEnd_Image_Moderation' ) ) {
                                         <td>
                                             <?php
                                             // Retrieve the image URL from the JSON data
-                                            $image_filename = isset($image['file']) ? sanitize_file_name($image['file']) : '';
+                                            $image_filename = isset( $image['file'] ) ? sanitize_file_name( $image['file'] ) : '';
                                             $base_url = site_url();
 
                                             // Construct the complete image URL
