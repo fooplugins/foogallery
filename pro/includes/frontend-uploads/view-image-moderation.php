@@ -217,8 +217,10 @@ if ( ! class_exists( 'Foogallery_FrontEnd_Image_Moderation' ) ) {
                                         </td>
 
                                         <td>
-                                            <button class="confirm-approve button button-small button-primary" data-gallery-id="<?php echo esc_attr($gallery_id); ?>" data-image-id="<?php echo esc_attr($image['file']); ?>"> <?php esc_html_e( 'Approve Image', 'foogallery' ); ?></button>
-                                            <button class="confirm-reject button button-small" data-gallery-id="<?php echo esc_attr($gallery_id); ?>" data-image-id="<?php echo esc_attr($image['file']); ?>"><?php esc_html_e( 'Reject Image', 'foogallery' ); ?></button>
+                                            <button class="confirm-approve button button-small button-primary" data-gallery-id="<?php echo esc_attr($gallery_id); ?>" data-image-id="<?php echo esc_attr($image['file']); ?>" name="approve_image_nonce" data-nonce="<?php echo wp_create_nonce('approve_image_nonce'); ?>"> <?php esc_html_e( 'Approve Image', 'foogallery' ); ?></button>
+                                            <button class="confirm-reject button button-small" data-gallery-id="<?php echo esc_attr($gallery_id); ?>" data-image-id="<?php echo esc_attr($image['file']); ?>" name="reject_image_nonce" data-nonce="<?php echo wp_create_nonce('reject_image_nonce'); ?>">
+                                                <?php esc_html_e('Reject Image', 'foogallery'); ?>
+                                            </button>
                                         </td>
 
                                     </tr>
@@ -323,7 +325,7 @@ if ( ! class_exists( 'Foogallery_FrontEnd_Image_Moderation' ) ) {
                                                 </td>
 
                                                 <td>
-                                                    <button class="confirm-delete button button-small" data-gallery-id="<?php echo esc_attr($gallery_id); ?>" data-image-id="<?php echo esc_attr($item['file']); ?>"><?php esc_html_e( 'Delete Image', 'foogallery' );?></button>
+                                                    <button class="confirm-delete button button-small" data-gallery-id="<?php echo esc_attr($gallery_id); ?>" data-image-id="<?php echo esc_attr($item['file']); ?>" name="delete_image_nonce" data-nonce="<?php echo wp_create_nonce('delete_image_nonce'); ?>"><?php esc_html_e( 'Delete Image', 'foogallery' );?></button>
                                                 </td>
                                             </tr>
                                         <?php endforeach; ?>
@@ -397,7 +399,7 @@ if ( ! class_exists( 'Foogallery_FrontEnd_Image_Moderation' ) ) {
 
                         const galleryId = this.getAttribute('data-gallery-id');
                         const imageId = this.getAttribute('data-image-id');
-
+                        const nonce = this.getAttribute('data-nonce');
                         if (confirm(`Are you sure you want to reject this image?`)) {
                             const form = document.createElement('form');
                             form.method = 'post';
@@ -406,12 +408,14 @@ if ( ! class_exists( 'Foogallery_FrontEnd_Image_Moderation' ) ) {
                                 <input type="hidden" name="image_id" value="${imageId}">
                                 <input type="hidden" name="action" value="reject">
                                 <input type="hidden" name="moderate_image" value="confirmed_reject">
+                                <input type="hidden" name="reject_image_nonce" value="${nonce}">
                             `;
                             document.body.appendChild(form);
                             form.submit();
                         }
                     });
                 });
+
 
                 // Add event listeners for confirmation dialogs for "Approve"
                 const confirmApproveButtons = document.querySelectorAll('.confirm-approve');
@@ -421,6 +425,7 @@ if ( ! class_exists( 'Foogallery_FrontEnd_Image_Moderation' ) ) {
 
                         const galleryId = this.getAttribute('data-gallery-id');
                         const imageId = this.getAttribute('data-image-id');
+                        const nonce = this.getAttribute('data-nonce');
 
                         if (confirm(`Are you sure you want to approve this image?`)) {
                             const form = document.createElement('form');
@@ -430,6 +435,7 @@ if ( ! class_exists( 'Foogallery_FrontEnd_Image_Moderation' ) ) {
                                 <input type="hidden" name="image_id" value="${imageId}">
                                 <input type="hidden" name="action" value="approve">
                                 <input type="hidden" name="moderate_image" value="confirmed_approve">
+                                <input type="hidden" name="approve_image_nonce" value="${nonce}">
                             `;
                             document.body.appendChild(form);
                             form.submit();
@@ -444,6 +450,7 @@ if ( ! class_exists( 'Foogallery_FrontEnd_Image_Moderation' ) ) {
 
                         const galleryId = this.getAttribute('data-gallery-id');
                         const imageId = this.getAttribute('data-image-id');
+                        const nonce = this.getAttribute('data-nonce');
 
                         if (confirm(`Are you sure you want to delete this image?`)) {
                             const form = document.createElement('form');
@@ -453,6 +460,7 @@ if ( ! class_exists( 'Foogallery_FrontEnd_Image_Moderation' ) ) {
                                 <input type="hidden" name="image_id" value="${imageId}">
                                 <input type="hidden" name="action" value="delete">
                                 <input type="hidden" name="moderate_image" value="confirmed_delete">
+                                <input type="hidden" name="delete_image_nonce" value="${nonce}">
                             `;
                             document.body.appendChild(form);
                             form.submit();

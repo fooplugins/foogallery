@@ -222,7 +222,9 @@ if ( ! class_exists( 'FooGallery_FrontEnd_Upload_MetaBoxes' ) ) {
                                     </td>
                                     <td>
                                         <button class="approve-image button button-primary" data-image-id="<?php echo esc_attr($image['id']); ?>"><?php esc_html_e('Approve', 'foogallery'); ?></button>
-                                        <button class="reject-image button" data-image-id="<?php echo esc_attr($image['id']); ?>"><?php esc_html_e('Reject', 'foogallery'); ?></button>
+                                        <button class="confirm-reject button button-small" data-gallery-id="<?php echo esc_attr($gallery_id); ?>" data-image-id="<?php echo esc_attr($image['file']); ?>" name="reject_image_nonce" data-nonce="<?php echo wp_create_nonce('reject_image_nonce'); ?>">
+    <?php esc_html_e('Reject Image', 'foogallery'); ?>
+</button>
                                     </td>
                                 </tr>
                                 <?php
