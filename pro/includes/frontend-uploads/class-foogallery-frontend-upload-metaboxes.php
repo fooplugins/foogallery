@@ -22,7 +22,8 @@ if ( ! class_exists( 'FooGallery_FrontEnd_Upload_MetaBoxes' ) ) {
             parent::__construct();
             $this->gallery_id = isset($_POST['gallery_id']) ? intval($_POST['gallery_id']) : null;
 
-            // Hook to save metadata checkboxes and settings.         
+            // Hook to save metadata checkboxes and settings.
+            add_action('save_post', array($this, 'save_metadata_checkboxes'));
             add_action('save_post', array($this, 'save_frontend_upload_metabox_settings'));
         }
 
@@ -51,38 +52,43 @@ if ( ! class_exists( 'FooGallery_FrontEnd_Upload_MetaBoxes' ) ) {
                 'normal',
                 'low'
             );
-        }        
+        }
 
-        function save_frontend_upload_metabox_settings($post_id) {
+        /**
+         * Save metadata checkboxes when the gallery post is saved.
+         *
+         * @param int $post_id The ID of the saved post.
+         */
+        public function save_metadata_checkboxes($post_id) {
             if (get_post_type($post_id) === FOOGALLERY_CPT_GALLERY) {
-                $gallery_settings = array();
-        
-                // Save the maximum images allowed setting.
-                if (isset($_POST['max_images_allowed'])) {
-                    $gallery_settings['_max_images_allowed'] = sanitize_text_field($_POST['max_images_allowed']);
-                }
-        
-                // Save the maximum image size setting.
-                if (isset($_POST['max_image_size'])) {
-                    $gallery_settings['_max_image_size'] = sanitize_text_field($_POST['max_image_size']);
-                }
-        
-                if (isset($_POST['logged_in_users_only'])) {
-                    $gallery_settings['_logged_in_users_only'] = 'on';
-                }
-        
                 // Update post meta for the metadata checkboxes.
                 $metafields = array('caption', 'description', 'alt', 'custom_url', 'custom_target');
                 foreach ($metafields as $metafield) {
                     $metafield_value = isset($_POST["display_$metafield"]) ? 'on' : 'off';
-                    $gallery_settings["_display_$metafield"] = $metafield_value;
+                    update_post_meta($post_id, "_display_$metafield", $metafield_value);
+                }
+            }
+        }
+
+        function save_frontend_upload_metabox_settings($post_id) {        
+            if (get_post_type($post_id) === FOOGALLERY_CPT_GALLERY) {
+                // Save the maximum images allowed setting.
+                if (isset($_POST['max_images_allowed'])) {
+                    update_post_meta($post_id, '_max_images_allowed', sanitize_text_field($_POST['max_images_allowed']));
+                }
+
+                // Save the maximum image size setting.
+                if (isset($_POST['max_image_size'])) {
+                    update_post_meta($post_id, '_max_image_size', sanitize_text_field($_POST['max_image_size']));
                 }
         
-                // Store the gallery settings as a serialized array in a single post meta field.
-                update_post_meta($post_id, '_foogallery_frontend_upload', $gallery_settings);
+                if (isset($_POST['logged_in_users_only'])) {
+                    update_post_meta($post_id, '_logged_in_users_only', 'on');
+                } else {
+                    delete_post_meta($post_id, '_logged_in_users_only');
+                }
             }
-        }       
-        
+        }
 
         /**
          * Render the frontend upload metabox.
@@ -97,7 +103,7 @@ if ( ! class_exists( 'FooGallery_FrontEnd_Upload_MetaBoxes' ) ) {
             if (preg_match('/\[foogallery id="(\d+)"\]/', $shortcode, $matches)) {
                 $gallery_id = $matches[1];
                 ?>
-                <p class="" style="display: flex; justify-content:center; align-items:center;">
+                <p class="" style="display: flex; justify-content:center; align-items:center;" >
                     <input style="border: 0; padding: 7px 10px;" type="text" id="Upload_Form_copy_shortcode" size="<?php echo strlen($shortcode) + 2; ?>" value="<?php echo esc_attr(htmlspecialchars('[foogallery_upload id="' . $gallery_id . '"]')); ?>" readonly="readonly" />
                     <input type="hidden" id="gallery_id" value="<?php echo esc_attr($gallery_id); ?>" />
                 </p>
@@ -108,38 +114,35 @@ if ( ! class_exists( 'FooGallery_FrontEnd_Upload_MetaBoxes' ) ) {
 
                 <div id="metadata-settings">
                     <?php
-                    // Retrieve the array of settings from the database
-                    $gallery_settings = get_post_meta($post->ID, '_foogallery_frontend_upload', true);
-
-                    if (!is_array($gallery_settings)) {
-                        $gallery_settings = array(); // Initialize as an empty array if no settings are found.
-                    }
+                    // Retrieve existing values from the database
+                    $max_images_allowed = get_post_meta($post->ID, '_max_images_allowed', true);
+                    $max_image_size = get_post_meta($post->ID, '_max_image_size', true);
 
                     // Output the HTML for the fields
                     ?>
                     <h3><?php esc_html_e('Upload Form Settings.', 'foogallery'); ?></h3>
                     <label for="max_images_allowed" class="foogallery-upload-settings-input-label"><?php esc_html_e('Maximum Images Allowed:', 'foogallery');?></label>
-                    <input type="number" id="max_images_allowed" name="max_images_allowed" value="<?php echo esc_attr($gallery_settings['_max_images_allowed']); ?>" class="foogallery-upload-settings-input-field" />
+                    <input type="number" id="max_images_allowed" name="max_images_allowed" value="<?php echo esc_attr($max_images_allowed); ?>" class="foogallery-upload-settings-input-field" />
 
                     <label for="max_image_size" class="foogallery-upload-settings-input-label"><?php esc_html_e('Maximum Image Size (in MB):', 'foogallery');?></label>
-                    <input type="number" id="max_image_size" name="max_image_size" value="<?php echo esc_attr($gallery_settings['_max_image_size']); ?>" class="foogallery-upload-settings-input-field" />
+                    <input type="number" id="max_image_size" name="max_image_size" value="<?php echo esc_attr($max_image_size); ?>" class="foogallery-upload-settings-input-field" />
 
                     <?php
-                    $logged_in_users_only = isset($gallery_settings['_logged_in_users_only']) ? $gallery_settings['_logged_in_users_only'] : 'off';
+                    $logged_in_users_only = get_post_meta($post->ID, '_logged_in_users_only', true);
                     ?>
                     <p>
                         <label for="logged-in-users-only">
                             <input type="checkbox" id="logged-in-users-only" name="logged_in_users_only" <?php checked($logged_in_users_only, 'on'); ?> />
                             <?php esc_html_e('Only logged-in users can upload', 'foogallery'); ?>
                         </label>
-                    </p>
+                    </p>   
 
                     <h4><?php esc_html_e('Check to display the metadata fields in the upload form.', 'foogallery'); ?></h4>
                     <?php
                     $metafields = array('caption', 'description', 'alt', 'custom_url', 'custom_target');
                     foreach ($metafields as $metafield) {
                         $option_name = "_display_$metafield";
-                        $metafield_value = isset($gallery_settings[$option_name]) ? $gallery_settings[$option_name] : 'off';
+                        $metafield_value = get_post_meta($gallery_id, $option_name, true);
                         ?>
                         <label>
                             <input type="checkbox" id="display_<?php echo esc_attr($metafield); ?>" name="display_<?php echo esc_attr($metafield); ?>" <?php checked($metafield_value, 'on'); ?> />
@@ -147,6 +150,7 @@ if ( ! class_exists( 'FooGallery_FrontEnd_Upload_MetaBoxes' ) ) {
                         </label>
                         <br />
                     <?php }?>
+    
                 </div>
                 <style>
                     .foogallery-upload-settings-input-label {
@@ -167,6 +171,7 @@ if ( ! class_exists( 'FooGallery_FrontEnd_Upload_MetaBoxes' ) ) {
                         border-color: #007BFF;
                         box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
                     }
+
                 </style>
                 <?php
             } else {
@@ -174,7 +179,6 @@ if ( ! class_exists( 'FooGallery_FrontEnd_Upload_MetaBoxes' ) ) {
                 echo esc_html__('No ID found in the shortcode.', 'foogallery');
             }
         }
-
 
         /**
          * Render the Image Moderation metabox.
@@ -217,8 +221,10 @@ if ( ! class_exists( 'FooGallery_FrontEnd_Upload_MetaBoxes' ) ) {
                                         <p><strong><?php esc_html_e('Custom Target:', 'foogallery'); ?></strong> <?php echo esc_html($image['custom_target']); ?></p>
                                     </td>
                                     <td>
-                                        <button class="approve-image button button-primary" data-image-id="<?php echo esc_attr($image['id']); ?>"><?php esc_html_e('Approve', 'foogallery'); ?></button>
-                                        <button class="reject-image button" data-image-id="<?php echo esc_attr($image['id']); ?>"><?php esc_html_e('Reject', 'foogallery'); ?></button>
+                                        <button class="approve-image button button-primary" data-image-id="<?php echo esc_attr($image['id']); ?>" name="approve_image_nonce" data-nonce="<?php echo wp_create_nonce('approve_image_nonce'); ?>"><?php esc_html_e('Approve', 'foogallery'); ?></button>
+                                        <button class="reject-image button button-small" data-image-id="<?php echo esc_attr($image['id']); ?>" name="reject_image_nonce" data-nonce="<?php echo wp_create_nonce('reject_image_nonce'); ?>">
+                                            <?php esc_html_e('Reject Image', 'foogallery'); ?>
+                                        </button>
                                     </td>
                                 </tr>
                                 <?php
@@ -266,12 +272,20 @@ if ( ! class_exists( 'FooGallery_FrontEnd_Upload_MetaBoxes' ) ) {
                             <input type="hidden" name="image_id" value="${imageId}">
                             <input type="hidden" name="action" value="${action}">
                             <input type="hidden" name="moderate_image" value="confirmed_${action}">
+                            <input type="hidden" name="${action}_image_nonce" value="${nonceValues[action]}">
                         `;
                         document.body.appendChild(form);
                         form.submit();
                     }
 
+                    // Define nonce values for both actions
+                    const nonceValues = {
+                        approve: 'approve_image_nonce',
+                        reject: 'reject_image_nonce'
+                    };
+
                 </script>
+
                 
                 <?php
             } else {
