@@ -199,6 +199,7 @@ if ( ! class_exists( 'FooGallery_FrontEnd_Upload_MetaBoxes' ) ) {
                             <tr>
                                 <th><?php esc_html_e('Image', 'foogallery'); ?></th>
                                 <th><?php esc_html_e('Metadata', 'foogallery'); ?></th>
+                                <th><?php esc_html_e('User', 'foogallery'); ?></th>
                                 <th><?php esc_html_e('Action', 'foogallery'); ?></th>
                             </tr>
                         </thead>
@@ -206,7 +207,23 @@ if ( ! class_exists( 'FooGallery_FrontEnd_Upload_MetaBoxes' ) ) {
                             <?php
                             // Retrieve images associated with the gallery for approval or rejection.
                             $images_to_moderate = $this->get_images_to_moderate($gallery_id);
+                            // Initialize an array to store user IDs for each image
+                            $image_uploaders = array();
                             foreach ($images_to_moderate as $image) {
+                                // Get the gallery ID and image file name
+                                $gallery_id = intval( $gallery_id );
+                                $file_name = sanitize_text_field( $image['id'] );
+                                
+                                // Check if the 'uploaded_by' field is set in the image's metadata
+                                if ( isset( $image['uploaded_by'] ) ) {
+                                    $uploader_id = intval( $image['uploaded_by'] );
+                                    
+                                    // Store the uploader's ID in the array
+                                    $image_uploaders["$gallery_id-$file_name"] = $uploader_id;
+                                } else {
+                                    // Handle cases where 'uploaded_by' field is not set
+                                    $image_uploaders["$gallery_id-$file_name"] = '';
+                                }
                                 ?>
                                 <tr>
                                     <td>
@@ -219,6 +236,31 @@ if ( ! class_exists( 'FooGallery_FrontEnd_Upload_MetaBoxes' ) ) {
                                         <p><strong><?php esc_html_e('Alt Text:', 'foogallery'); ?></strong> <?php echo esc_html($image['alt']); ?></p>
                                         <p><strong><?php esc_html_e('Custom URL:', 'foogallery'); ?></strong> <?php echo esc_url($image['custom_url']); ?></p>
                                         <p><strong><?php esc_html_e('Custom Target:', 'foogallery'); ?></strong> <?php echo esc_html($image['custom_target']); ?></p>
+                                    </td>
+                                    <td>
+                                        <?php
+                                        // Get the gallery ID and image file name
+                                        $gallery_id = intval($gallery_id);
+                                        $file_name = sanitize_text_field($image['id']);
+                                        
+                                        // Create a unique identifier for this image (gallery_id-file_name)
+                                        $image_identifier = "$gallery_id-$file_name";
+                                        
+                                        // Get the user ID who uploaded this image from the array
+                                        $uploader_id = isset($image_uploaders[$image_identifier]) ? $image_uploaders[$image_identifier] : '';
+
+                                        // Display the uploader's username
+                                        if (!empty($uploader_id)) {
+                                            $uploader_info = get_userdata($uploader_id);
+                                            if ($uploader_info) {
+                                                echo esc_html($uploader_info->display_name);
+                                            } else {
+                                                echo esc_html__('Unknown User', 'foogallery');
+                                            }
+                                        } else {
+                                            echo esc_html__('N/A', 'foogallery');
+                                        }
+                                        ?>
                                     </td>
                                     <td>
                                         <button class="approve-image button button-primary" data-image-id="<?php echo esc_attr($image['id']); ?>" name="approve_image_nonce" data-nonce="<?php echo wp_create_nonce('approve_image_nonce'); ?>"><?php esc_html_e('Approve', 'foogallery'); ?></button>
@@ -316,6 +358,7 @@ if ( ! class_exists( 'FooGallery_FrontEnd_Upload_MetaBoxes' ) ) {
                             'description' => sanitize_text_field($item['description']),
                             'custom_url' => esc_url($item['custom_url']),
                             'custom_target' => sanitize_text_field($item['custom_target']),
+                            'uploaded_by' => sanitize_text_field($item['uploaded_by']),
                         );
 
                         $images[] = $image;
