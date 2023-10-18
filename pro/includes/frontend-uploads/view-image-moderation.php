@@ -51,7 +51,11 @@ if ( ! class_exists( 'Foogallery_FrontEnd_Image_Moderation' ) ) {
                 foreach ( $directories as $directory ) {
                     // Extract the gallery ID from the directory name
                     $gallery_id = intval( basename( $directory ) );
-                    $metadata_file = $directory . '/metadata.json';
+
+                    // Retrieve the random subfolder name from the postmeta array
+                    $random_folder_name = get_post_meta($gallery_id, '_foogallery_frontend_upload', true);
+
+                    $metadata_file = $directory . '/' . $random_folder_name . '/metadata.json';
 
                     // Check if the metadata file exists
                     if (file_exists( $metadata_file ) ) {
@@ -171,9 +175,11 @@ if ( ! class_exists( 'Foogallery_FrontEnd_Image_Moderation' ) ) {
                                             // Retrieve the image URL from the JSON data
                                             $image_filename = isset( $image['file'] ) ? sanitize_file_name( $image['file'] ) : '';
                                             $base_url = site_url();
+                                            // Retrieve the random subfolder name from the postmeta array
+                                            $random_folder_name = get_post_meta($gallery_id, '_foogallery_frontend_upload', true);
 
                                             // Construct the complete image URL
-                                            $image_url = $base_url . '/wp-content/uploads/users_uploads/' . $gallery_id . '/' . $image_filename;
+                                            $image_url = $base_url . '/wp-content/uploads/users_uploads/' . $gallery_id . '/' . $random_folder_name  . '/'  . $image_filename;
 
                                             // Display the image if the URL is not empty
                                             if (!empty($image_url)) {
@@ -298,6 +304,7 @@ if ( ! class_exists( 'Foogallery_FrontEnd_Image_Moderation' ) ) {
                                                     <p><strong><?php esc_html_e('Custom Target:', 'foogallery'); ?></strong> <?php echo esc_html($item['custom_target']); ?></p>
                                                 </td>
 
+                                                <!-- FIX -->
                                                 <td>
                                                     <?php
                                                     // Get the gallery ID and image file name

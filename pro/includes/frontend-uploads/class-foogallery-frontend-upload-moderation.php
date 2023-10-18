@@ -86,8 +86,11 @@ if ( ! class_exists( 'Foogallery_FrontEnd_Upload_Moderation' ) ) {
                 $file_name = isset($_POST['image_id']) ? sanitize_text_field($_POST['image_id']) : null;
                     
                 if ($gallery_id && $file_name) {
-                    // Define the paths
-                    $original_folder = wp_upload_dir()['basedir'] . '/users_uploads/' . $gallery_id . '/';
+                    // Define the paths                    
+                    $random_folder_name = get_post_meta($gallery_id, '_foogallery_frontend_upload', true);
+
+                    $original_folder = wp_upload_dir()['basedir'] . '/users_uploads/' . $gallery_id . '/' . $random_folder_name . '/';
+
                     $approved_folder = wp_upload_dir()['basedir'] . '/users_uploads/' . $gallery_id . '/approved_uploads/';
                     $metadata_file = $original_folder . 'metadata.json';
                     $new_metadata_file = $approved_folder . 'metadata.json';
@@ -183,7 +186,8 @@ if ( ! class_exists( 'Foogallery_FrontEnd_Upload_Moderation' ) ) {
 
                 if ($gallery_id && $file_name) {
                     // Delete the image file from the server
-                    $user_folder = wp_upload_dir()['basedir'] . '/users_uploads/' . $gallery_id . '/';
+                    $random_folder_name = get_post_meta($gallery_id, '_foogallery_frontend_upload', true);                    
+                    $user_folder = wp_upload_dir()['basedir'] . '/users_uploads/' . $gallery_id . '/' . $random_folder_name . '/';
 
                     // Remove the metadata entry for the rejected image
                     $metadata_file = $user_folder . 'metadata.json';
