@@ -343,23 +343,28 @@ if ( ! class_exists( 'FooGallery_FrontEnd_Upload_MetaBoxes' ) ) {
                 global $wp_filesystem;
                 $metadata = @json_decode($wp_filesystem->get_contents($metadata_file), true);
 
-                if (isset($metadata['items']) && is_array($metadata['items'])) {
-                    foreach ($metadata['items'] as $item) {
-                        // Add images to the array for moderation
-                        $image = array(
-                            'id' => sanitize_text_field($item['file']),
-                            'alt' => sanitize_text_field($item['alt']),
-                            'url' => site_url("/wp-content/uploads/users_uploads/$gallery_id/$random_folder_name/{$item['file']}"),
-                            'caption' => sanitize_text_field($item['caption']),
-                            'description' => sanitize_text_field($item['description']),
-                            'custom_url' => esc_url($item['custom_url']),
-                            'custom_target' => sanitize_text_field($item['custom_target']),
-                            'uploaded_by' => sanitize_text_field($item['uploaded_by']),
-                        );
-
-                        $images[] = $image;
+                if ( $metadata !== false ) {
+                    if (isset($metadata['items']) && is_array($metadata['items'])) {
+                        foreach ($metadata['items'] as $item) {
+                            // Add images to the array for moderation
+                            $image = array(
+                                'id' => sanitize_text_field($item['file']),
+                                'alt' => sanitize_text_field($item['alt']),
+                                'url' => site_url("/wp-content/uploads/users_uploads/$gallery_id/$random_folder_name/{$item['file']}"),
+                                'caption' => sanitize_text_field($item['caption']),
+                                'description' => sanitize_text_field($item['description']),
+                                'custom_url' => esc_url($item['custom_url']),
+                                'custom_target' => sanitize_text_field($item['custom_target']),
+                                'uploaded_by' => sanitize_text_field($item['uploaded_by']),
+                            );
+    
+                            $images[] = $image;
+                        }
                     }
-                }
+                } else {
+                    // Handle file read failure
+                    echo '<div class="notice notice-error"><p>Failed to read metadata file: ' . esc_html( $metadata_file ) . '</p></div>';
+                }                
             }
 
             return $images;
