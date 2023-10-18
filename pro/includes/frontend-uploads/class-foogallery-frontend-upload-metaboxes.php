@@ -22,8 +22,7 @@ if ( ! class_exists( 'FooGallery_FrontEnd_Upload_MetaBoxes' ) ) {
             parent::__construct();
             $this->gallery_id = isset($_POST['gallery_id']) ? intval($_POST['gallery_id']) : null;
 
-            // Hook to save metadata checkboxes and settings.
-            add_action('save_post', array($this, 'save_metadata_checkboxes'));
+            // Hook to save upload form settings.
             add_action('save_post', array($this, 'save_frontend_upload_metabox_settings'));
         }
 
@@ -55,11 +54,12 @@ if ( ! class_exists( 'FooGallery_FrontEnd_Upload_MetaBoxes' ) ) {
         }
 
         /**
-         * Save metadata checkboxes when the gallery post is saved.
+         * Save upload form settings when the gallery post is saved.
          *
          * @param int $post_id The ID of the saved post.
          */
-        public function save_metadata_checkboxes($post_id) {
+
+        function save_frontend_upload_metabox_settings($post_id) {        
             if (get_post_type($post_id) === FOOGALLERY_CPT_GALLERY) {
                 // Update post meta for the metadata checkboxes.
                 $metafields = array('caption', 'description', 'alt', 'custom_url', 'custom_target');
@@ -67,11 +67,7 @@ if ( ! class_exists( 'FooGallery_FrontEnd_Upload_MetaBoxes' ) ) {
                     $metafield_value = isset($_POST["display_$metafield"]) ? 'on' : 'off';
                     update_post_meta($post_id, "_display_$metafield", $metafield_value);
                 }
-            }
-        }
 
-        function save_frontend_upload_metabox_settings($post_id) {        
-            if (get_post_type($post_id) === FOOGALLERY_CPT_GALLERY) {
                 // Save the maximum images allowed setting.
                 if (isset($_POST['max_images_allowed'])) {
                     update_post_meta($post_id, '_max_images_allowed', sanitize_text_field($_POST['max_images_allowed']));
