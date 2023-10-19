@@ -87,7 +87,7 @@ if ( ! class_exists( 'FooGallery_FrontEnd_Upload_MetaBoxes' ) ) {
         }
 
         /**
-         * Render the frontend upload metabox.
+         * Render the frontend upload metabox with updated styling and tooltips.
          *
          * @param WP_Post $post The current post object.
          */
@@ -99,16 +99,15 @@ if ( ! class_exists( 'FooGallery_FrontEnd_Upload_MetaBoxes' ) ) {
             if (preg_match('/\[foogallery id="(\d+)"\]/', $shortcode, $matches)) {
                 $gallery_id = $matches[1];
                 ?>
-                <p class="" style="display: flex; justify-content:center; align-items:center;" >
-                    <input style="border: 0; padding: 7px 10px;" type="text" id="Upload_Form_copy_shortcode" size="<?php echo strlen($shortcode) + 2; ?>" value="<?php echo esc_attr(htmlspecialchars('[foogallery_upload id="' . $gallery_id . '"]')); ?>" readonly="readonly" />
-                    <input type="hidden" id="gallery_id" value="<?php echo esc_attr($gallery_id); ?>" />
+                <p style="text-align: center;">
+                    <input style="border: 1px solid #ccc; padding: 10px; font-size: 14px; width: 100%;" type="text" id="Upload_Form_copy_shortcode" size="<?php echo strlen($shortcode) + 2; ?>" value="<?php echo esc_attr(htmlspecialchars('[foogallery_upload id="' . $gallery_id . '"]')); ?>" readonly="readonly" />
                 </p>
 
                 <p>
                     <?php esc_html_e('Paste the above shortcode into a post or page to show the Image Upload Form.', 'foogallery'); ?>
                 </p>
 
-                <div id="metadata-settings">
+                <div id="metadata-settings" style="border: 1px solid #ccc; border-radius: 5px;">
                     <?php
                     // Retrieve existing values from the database
                     $max_images_allowed = get_post_meta($post->ID, '_max_images_allowed', true);
@@ -116,59 +115,117 @@ if ( ! class_exists( 'FooGallery_FrontEnd_Upload_MetaBoxes' ) ) {
 
                     // Output the HTML for the fields
                     ?>
-                    <h3><?php esc_html_e('Upload Form Settings.', 'foogallery'); ?></h3>
-                    <label for="max_images_allowed" class="foogallery-upload-settings-input-label"><?php esc_html_e('Maximum Images Allowed:', 'foogallery');?></label>
-                    <input type="number" id="max_images_allowed" name="max_images_allowed" value="<?php echo esc_attr($max_images_allowed); ?>" class="foogallery-upload-settings-input-field" />
+                    <div class="foogallery-frontend-upload-inner">
+                        <div class="foogallery-frontend-upload-inner-section">
+                            <label for="max_images_allowed" style="display: flex; align-items: center;">                            
+                                <?php esc_html_e('Maximum Images Allowed', 'foogallery');?>
+                            </label>
+                            <span class="foogallery-frontend-upload-help" title="Enter the maximum number of images allowed for upload">?</span>                            
+                        </div>
+                        <div style="width: 50%;">
+                            <input type="number" id="max_images_allowed" name="max_images_allowed" value="<?php echo esc_attr($max_images_allowed); ?>" style=" padding: 5px; font-size: 14px;" />
+                        </div>                       
+                        
+                    </div>
 
-                    <label for="max_image_size" class="foogallery-upload-settings-input-label"><?php esc_html_e('Maximum Image Size (in MB):', 'foogallery');?></label>
-                    <input type="number" id="max_image_size" name="max_image_size" value="<?php echo esc_attr($max_image_size); ?>" class="foogallery-upload-settings-input-field" />
+                    <div class="foogallery-frontend-upload-inner">
+                        <div class="foogallery-frontend-upload-inner-section">
+                            <label for="max_image_size" style="display: flex; align-items: center;">                                
+                                <?php esc_html_e('Maximum Image Size (mb)', 'foogallery');?>
+                            </label>
+                            <span class="foogallery-frontend-upload-help" title="Set the maximum image size (in MB) for uploaded images">?</span>
+                        </div> 
+                        <div style="width: 50%;">
+                            <input type="number" id="max_image_size" name="max_image_size" value="<?php echo esc_attr($max_image_size); ?>" style="padding: 5px; font-size: 14px;" />
+                        </div>                  
+                        
+                    </div>
 
                     <?php
                     $logged_in_users_only = get_post_meta($post->ID, '_logged_in_users_only', true);
                     ?>
-                    <p>
-                        <label for="logged-in-users-only">
+                    <div class="foogallery-frontend-upload-inner">                        
+                        <div class="foogallery-frontend-upload-inner-section">
+                            <label for="logged-in-users-only" style="display: flex; align-items: center;">                            
+                                <?php esc_html_e('Only logged-in users can upload', 'foogallery'); ?>
+                            </label>
+                            <span class="foogallery-frontend-upload-help" title="Check this box to restrict uploads to logged-in users only">?</span>
+                        </div>
+                        <div style="width: 50%;">
                             <input type="checkbox" id="logged-in-users-only" name="logged_in_users_only" <?php checked($logged_in_users_only, 'on'); ?> />
-                            <?php esc_html_e('Only logged-in users can upload', 'foogallery'); ?>
-                        </label>
-                    </p>   
-
-                    <h4><?php esc_html_e('Check to display the metadata fields in the upload form.', 'foogallery'); ?></h4>
+                        </div>                        
+                    </div>
+                   
                     <?php
                     $metafields = array('caption', 'description', 'alt', 'custom_url', 'custom_target');
                     foreach ($metafields as $metafield) {
                         $option_name = "_display_$metafield";
                         $metafield_value = get_post_meta($gallery_id, $option_name, true);
                         ?>
-                        <label>
-                            <input type="checkbox" id="display_<?php echo esc_attr($metafield); ?>" name="display_<?php echo esc_attr($metafield); ?>" <?php checked($metafield_value, 'on'); ?> />
-                            <?php esc_html_e("Display $metafield", 'foogallery'); ?>
-                        </label>
-                        <br />
+                        <div class="foogallery-frontend-upload-inner">
+                            <div class="foogallery-frontend-upload-inner-section">
+                                <label for="display_<?php echo esc_attr($metafield); ?>" style="display: flex; align-items: center;">
+                                    <?php esc_html_e("Display $metafield", 'foogallery'); ?>
+                                </label>
+                                <span class="foogallery-frontend-upload-help" title="Check to display the <?php echo esc_attr($metafield); ?> field in the upload form">?</span>
+                            </div>
+                            <div style="width: 50%;">
+                                <input type="checkbox" id="display_<?php echo esc_attr($metafield); ?>" name="display_<?php echo esc_attr($metafield); ?>" <?php checked($metafield_value, 'on'); ?> />
+                            </div>                            
+                        </div>
                     <?php }?>
-    
+
                 </div>
                 <style>
+                    .foogallery-frontend-upload-inner{
+                        margin-bottom: 15px; 
+                        display: flex; 
+                        align-items: center;
+                        width: 100%;
+                        padding: 5px 3px;
+                    }
+                    .foogallery-frontend-upload-inner-section{                        
+                        display: flex; 
+                        align-items: center;
+                        width: 50%;
+                    }
                     .foogallery-upload-settings-input-label {
                         display: block;
                         font-weight: bold;
                         margin-bottom: 5px;
                     }
-                    .foogallery-upload-settings-input-field {
-                        width: 50%;
-                        padding: 10px;
-                        margin-bottom: 15px;
-                        border: 1px solid #ccc;
-                        border-radius: 5px;
-                        font-size: 16px;
+                    .foogallery-frontend-upload-help {
+                        font-weight: bold;
+                        margin-left: 7px; 
+                        width: 15px; 
+                        height: 15px; 
+                        color: white; 
+                        border-radius: 50%; 
+                        background-color: black; 
+                        cursor: pointer; 
+                        display: flex; 
+                        justify-content: center; 
+                        align-items: center;
                     }
-                    .foogallery-upload-settings-input-field:focus {
-                        outline: none;
-                        border-color: #007BFF;
-                        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
-                    }
-
                 </style>
+                <script>
+                    jQuery(function($) {
+                        var shortcodeInput = document.querySelector('#Upload_Form_copy_shortcode');
+                        shortcodeInput.addEventListener('click', function () {
+                            try {
+                                // select the contents
+                                shortcodeInput.select();
+                                //copy the selection
+                                document.execCommand('copy');
+                                //show the copied message
+                                $('.foogallery-shortcode-message').remove();
+                                $(shortcodeInput).after('<p class="foogallery-shortcode-message">Shortcode copied to clipboard :)</p>');
+                            } catch(err) {
+                                console.log('Oops, unable to copy!');
+                            }
+                        }, false);
+                    });			
+                </script>
                 <?php
             } else {
                 // No ID found.
