@@ -108,12 +108,35 @@ if ( ! class_exists( 'Foogallery_FrontEnd_Upload_Shortcode' ) ) {
 				</form>
 
 				<style>
+					.foogallery-image-upload-button {
+						background-color: #0073e6;
+						border: none;
+						border-radius: 4px;
+						box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+						color: #fff;
+						cursor: pointer;
+						display: block;
+						font-size: 16px;
+						margin: 0 auto;
+						padding: 10px 20px;
+						transition: background-color 0.3s ease;
+					}
+
+					.foogallery-image-upload-button:hover {
+						background-color: #0056b3;
+					}
+
+					.foogallery-upload-image-grid {
+						display: flex;
+						flex-direction: column;
+					}
+					.foogallery-upload-left-column {
+						width: 100%;
+					}
+
 					.foogallery-upload-popup-inner {
 						display: flex;
 						flex-direction: column;
-						width: 100%;
-					}
-					.foogallery-upload-left-column {
 						width: 100%;
 					}
 
@@ -121,31 +144,8 @@ if ( ! class_exists( 'Foogallery_FrontEnd_Upload_Shortcode' ) ) {
 						display: none;
 						width: 100%;
 					}
-
-					.foogallery-upload-image-grid {
-						display: flex;						
-						flex-direction: column;
-					}
-
-					.foogallery-image-upload-button {
-						background-color: #0073e6;
-						color: #fff;
-						border: none;
-						padding: 10px 20px;
-						font-size: 16px;
-						cursor: pointer;
-						border-radius: 4px;
-						transition: background-color 0.3s ease;
-						box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-						display: block;
-						margin: 0 auto;
-					}
-
-					.foogallery-image-upload-button:hover {
-						background-color: #0056b3;
-					}
 				</style>
-
+				
 				<script>
 					const imageUploadInput = document.getElementById('image-upload');
 					const metadataContainer = document.getElementById('metadata-container');

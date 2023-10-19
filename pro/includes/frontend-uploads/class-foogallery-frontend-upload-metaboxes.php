@@ -177,16 +177,16 @@ if ( ! class_exists( 'FooGallery_FrontEnd_Upload_MetaBoxes' ) ) {
 
                 </div>
                 <style>
-                    .foogallery-frontend-upload-inner{
-                        margin-bottom: 15px; 
-                        display: flex; 
+                    .foogallery-frontend-upload-inner {
                         align-items: center;
-                        width: 100%;
+                        display: flex;
+                        margin-bottom: 15px;
                         padding: 5px 3px;
+                        width: 100%;
                     }
-                    .foogallery-frontend-upload-inner-section{                        
-                        display: flex; 
+                    .foogallery-frontend-upload-inner-section {
                         align-items: center;
+                        display: flex;
                         width: 50%;
                     }
                     .foogallery-upload-settings-input-label {
@@ -195,18 +195,19 @@ if ( ! class_exists( 'FooGallery_FrontEnd_Upload_MetaBoxes' ) ) {
                         margin-bottom: 5px;
                     }
                     .foogallery-frontend-upload-help {
-                        font-weight: bold;
-                        margin-left: 7px; 
-                        width: 15px; 
-                        height: 15px; 
-                        color: white; 
-                        border-radius: 50%; 
-                        background-color: black; 
-                        cursor: pointer; 
-                        display: flex; 
-                        justify-content: center; 
                         align-items: center;
+                        background-color: black;
+                        border-radius: 50%;
+                        color: white;
+                        cursor: pointer;
+                        display: flex;
+                        font-weight: bold;
+                        height: 15px;
+                        justify-content: center;
+                        margin-left: 7px;
+                        width: 15px;
                     }
+
                 </style>
                 <script>
                     jQuery(function($) {
