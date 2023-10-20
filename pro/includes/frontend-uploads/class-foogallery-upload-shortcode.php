@@ -358,29 +358,44 @@ if ( ! class_exists( 'Foogallery_FrontEnd_Upload_Shortcode' ) ) {
 						return;
 					}
 
-					// Create a random 10-character folder name.
-					$random_folder_name = substr(str_shuffle(str_repeat("abcdefghijklmnopqrstuvwxyz0123456789", 10)), 0, 10);
+					function generateRandomString( $length = 10 ) {
+						$characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+						$randomString = '';
+						for ( $i = 0; $i < $length; $i++ ) {
+							$randomString .= $characters[rand( 0, strlen( $characters ) - 1 )];
+						}
+						return $randomString;
+					}
+					
+					$random_folder_name = get_post_meta( $gallery_id, '_foogallery_frontend_upload', true );
+
+					// If it's not generated, create and save a new random folder name
+					if ( empty( $random_folder_name ) ) {
+						$random_folder_name = generateRandomString();
+						update_post_meta( $gallery_id, '_foogallery_frontend_upload', $random_folder_name );
+					}
+					
 
 					// Create a subfolder for the random folder name.
 					$user_folder .= $random_folder_name . '/';
 
-					if (!file_exists($user_folder)) {
-						if (wp_mkdir_p($user_folder)) {
-							chmod($user_folder, 0755);
+					if (!file_exists( $user_folder ) ) {
+						if ( wp_mkdir_p( $user_folder ) ) {
+							chmod( $user_folder, 0755 );
 						} else {
-							echo '<div class="error-message" style="color: red; text-align: center;">' . __('Error creating the random subfolder.', 'foogallery') . '</div>';
+							echo '<div class="error-message" style="color: red; text-align: center;">' . __( 'Error creating the random subfolder.', 'foogallery' ) . '</div>';
 							return;
 						}
 					}
 
 					// Store the random folder name in the postmeta array.
-					update_post_meta($gallery_id, '_foogallery_frontend_upload', $random_folder_name);
+					update_post_meta( $gallery_id, '_foogallery_frontend_upload', $random_folder_name );
 
 					$exceeded_size_images = array();
-					foreach ($uploaded_files['name'] as $key => $filename) {
+					foreach ( $uploaded_files['name'] as $key => $filename ) {
 						// Check if the file is an image.
-						if ($uploaded_files['type'][$key] && strpos($uploaded_files['type'][$key], 'image/') === 0) {
-							$image_size_in_mb = round($uploaded_files['size'][$key] / (1024 * 1024), 2); // Convert to MB
+						if ( $uploaded_files['type'][$key] && strpos( $uploaded_files['type'][$key], 'image/' ) === 0 ) {
+							$image_size_in_mb = round( $uploaded_files['size'][$key] / (1024 * 1024), 2 ); // Convert to MB
 
 							// Check if the image size exceeds the maximum allowed size in MB.
 							if ($max_image_size > 0 && $image_size_in_mb > $max_image_size) {
