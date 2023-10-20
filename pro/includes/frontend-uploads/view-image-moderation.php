@@ -303,8 +303,7 @@ if ( ! class_exists( 'Foogallery_FrontEnd_Image_Moderation' ) ) {
                                                     <p><strong><?php esc_html_e('Custom URL:', 'foogallery'); ?></strong> <?php echo esc_url($item['custom_url']); ?></p>
                                                     <p><strong><?php esc_html_e('Custom Target:', 'foogallery'); ?></strong> <?php echo esc_html($item['custom_target']); ?></p>
                                                 </td>
-
-                                                <!-- FIX -->
+                                                
                                                 <td>
                                                     <?php
                                                     // Get the gallery ID and image file name

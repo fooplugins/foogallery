@@ -1221,14 +1221,23 @@ function foogallery_current_gallery_attachments_for_rendering() {
                     $image_url = $base_url . '/wp-content/uploads/users_uploads/' . $gallery_id . '/approved_uploads/' . $image_filename;
 
                     if (!empty($image_url)) {
-                        $attachment = new FooGalleryAttachment();
-                        $attachment->ID = 0;
-                        $attachment->url = $image_url;
-                        $attachment->type = 'image';
-                        $attachment->has_metadata = false;
-                        $attachment->sort = PHP_INT_MAX;
-                        $uploaded_images[] = $attachment;
-                    }
+						// Create a new attachment object
+						$attachment = new FooGalleryAttachment();
+						$attachment->ID = 0;
+						$attachment->url = $image_url;
+						$attachment->type = 'image';
+						$attachment->has_metadata = true;
+						$attachment->sort = PHP_INT_MAX;	
+						
+						$attachment->caption = isset($item['caption']) ? $item['caption'] : '';
+						$attachment->description = isset($item['description']) ? $item['description'] : '';
+						$attachment->alt = isset($item['alt']) ? $item['alt'] : '';
+						$attachment->custom_url = isset($item['custom_url']) ? $item['custom_url'] : '';
+						$attachment->custom_url = isset($item['custom_target']) ? $item['custom_target'] : '';
+	
+						// Add the attachment to the list
+						$uploaded_images[] = $attachment;
+					}
                 }
             }
         }
