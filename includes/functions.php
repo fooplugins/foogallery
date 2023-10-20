@@ -1211,40 +1211,41 @@ function foogallery_current_gallery_attachments_for_rendering() {
     $user_folder = wp_upload_dir()['basedir'] . '/users_uploads/' . $gallery_id . '/approved_uploads/';
     $metadata_file = $user_folder . 'metadata.json';
 
-    if (file_exists($metadata_file)) {
-        $metadata = json_decode(file_get_contents($metadata_file), true);
-        if (isset($metadata['items']) && is_array($metadata['items'])) {
-            foreach ($metadata['items'] as $item) {
-                if (isset($item['file'])) {
-                    $base_url = site_url();
-                    $image_filename = sanitize_file_name($item['file']);
-                    $image_url = $base_url . '/wp-content/uploads/users_uploads/' . $gallery_id . '/approved_uploads/' . $image_filename;
-
-                    if (!empty($image_url)) {
-						// Create a new attachment object
+    if ( file_exists( $metadata_file ) ) {
+		$metadata = json_decode( file_get_contents( $metadata_file ), true );
+		if ( isset( $metadata['items'] ) && is_array( $metadata['items'] ) ) {
+			$uploaded_images = array();
+			foreach ($metadata['items'] as $item) {
+				if ( isset( $item['file'] ) ) {
+					$base_url = site_url();
+					$image_filename = sanitize_file_name( $item['file'] );
+					$image_url = $base_url . '/wp-content/uploads/users_uploads/' . $gallery_id . '/approved_uploads/' . $image_filename;
+	
+					if ( !empty( $image_url ) ) {
 						$attachment = new FooGalleryAttachment();
 						$attachment->ID = 0;
 						$attachment->url = $image_url;
 						$attachment->type = 'image';
 						$attachment->has_metadata = true;
-						$attachment->sort = PHP_INT_MAX;	
-						
-						$attachment->caption = isset($item['caption']) ? $item['caption'] : '';
-						$attachment->description = isset($item['description']) ? $item['description'] : '';
-						$attachment->alt = isset($item['alt']) ? $item['alt'] : '';
-						$attachment->custom_url = isset($item['custom_url']) ? $item['custom_url'] : '';
-						$attachment->custom_url = isset($item['custom_target']) ? $item['custom_target'] : '';
+						$attachment->sort = PHP_INT_MAX;
+	
+						// Set properties based on JSON data
+						$attachment->caption = isset( $item['caption'] ) ? $item['caption'] : '';
+						$attachment->description = isset( $item['description'] ) ? $item['description'] : '';
+						$attachment->alt = isset( $item['alt'] ) ? $item['alt'] : '';
+						$attachment->custom_url = isset( $item['custom_url'] ) ? $item['custom_url'] : '';
+						$attachment->custom_target = isset( $item['custom_target'] ) ? $item['custom_target'] : '';
 	
 						// Add the attachment to the list
 						$uploaded_images[] = $attachment;
 					}
-                }
-            }
-        }
-    }
-
+				}
+			}
+		}
+	}
+	
     // Merge the existing attachments with the uploaded images
-    $merged_attachments = array_merge($existing_attachments, $uploaded_images);
+    $merged_attachments = array_merge( $existing_attachments, $uploaded_images );
 
     return $merged_attachments;
 }

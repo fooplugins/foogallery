@@ -330,7 +330,12 @@ class FooGallery extends stdClass {
 	 */
 	public function attachment_id_csv() {
 		if ( is_array( $this->attachment_ids ) ) {
-			return implode( ',', $this->attachment_ids );
+			// Filter the array to ensure all values are strings or numbers.
+			$filtered_ids = array_filter( $this->attachment_ids, function( $id ) {
+				return is_string( $id ) || is_numeric( $id );
+			});
+
+			return implode( ',', $filtered_ids );
 		}
 
 		return '';
