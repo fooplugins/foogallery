@@ -1208,7 +1208,7 @@ function foogallery_current_gallery_attachments_for_rendering() {
 
     // Get the uploaded images' file names from metadata
     $uploaded_images = array();
-    $user_folder = wp_upload_dir()['basedir'] . '/users_uploads/' . $gallery_id . '/approved_uploads/';
+    $user_folder = wp_upload_dir()['basedir'] . '/approved_folder/' . $gallery_id . '/';
     $metadata_file = $user_folder . 'metadata.json';
 
     if ( file_exists( $metadata_file ) ) {
@@ -1219,7 +1219,7 @@ function foogallery_current_gallery_attachments_for_rendering() {
 				if ( isset( $item['file'] ) ) {
 					$base_url = site_url();
 					$image_filename = sanitize_file_name( $item['file'] );
-					$image_url = $base_url . '/wp-content/uploads/users_uploads/' . $gallery_id . '/approved_uploads/' . $image_filename;
+					$image_url = $base_url . '/wp-content/uploads/approved_folder/' . $gallery_id . '/' . $image_filename;
 	
 					if ( !empty( $image_url ) ) {
 						$attachment = new FooGalleryAttachment();

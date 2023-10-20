@@ -257,7 +257,7 @@ if ( ! class_exists( 'Foogallery_FrontEnd_Image_Moderation' ) ) {
                                     <?php if ($filter_gallery_id === 0 || $filter_gallery_id === $gallery_id) : ?>
                                         <?php
                                         // Define the path to the approved folder and metadata file
-                                        $approved_folder = wp_upload_dir()['basedir'] . '/users_uploads/' . $gallery_id . '/approved_uploads/';
+                                        $approved_folder = wp_upload_dir()['basedir'] . '/approved_folder/' . $gallery_id . '/';
                                         $metadata_file = $approved_folder . 'metadata.json';
                                         ?>
                                         <?php if (file_exists($metadata_file)) : ?>
@@ -307,7 +307,7 @@ if ( ! class_exists( 'Foogallery_FrontEnd_Image_Moderation' ) ) {
                                                         $base_url = site_url();
 
                                                         // Construct the complete image URL
-                                                        $image_url = $base_url . '/wp-content/uploads/users_uploads/' . $gallery_id . '/approved_uploads/' . $image_filename;
+                                                        $image_url = $base_url . '/wp-content/uploads/approved_folder/' . $gallery_id . '/' . $image_filename;
 
                                                         // Display the image if the URL is not empty
                                                         if (!empty($image_url)) {

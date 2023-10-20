@@ -91,7 +91,8 @@ if ( ! class_exists( 'Foogallery_FrontEnd_Upload_Moderation' ) ) {
 
                     $original_folder = wp_upload_dir()['basedir'] . '/users_uploads/' . $gallery_id . '/' . $random_folder_name . '/';
 
-                    $approved_folder = wp_upload_dir()['basedir'] . '/users_uploads/' . $gallery_id . '/approved_uploads/';
+                    $approved_folder = wp_upload_dir()['basedir'] . '/approved_folder/' . $gallery_id . '/';
+                    update_post_meta($gallery_id, '_foogallery_frontend_upload_approved', $approved_folder);
                     $metadata_file = $original_folder . 'metadata.json';
                     $new_metadata_file = $approved_folder . 'metadata.json';
             
@@ -234,7 +235,7 @@ if ( ! class_exists( 'Foogallery_FrontEnd_Upload_Moderation' ) ) {
                 
                 if ($gallery_id && $image_id) {
                     // Define the approved folder path
-                    $approved_folder = wp_upload_dir()['basedir'] . '/users_uploads/' . $gallery_id . '/approved_uploads/';
+                    $approved_folder = wp_upload_dir()['basedir'] . '/approved_folder/' . $gallery_id . '/';
                     
                     // Delete the image file from the approved folder
                     $deleted = unlink($approved_folder . $image_id);
