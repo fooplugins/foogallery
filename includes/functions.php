@@ -1200,13 +1200,13 @@ function foogallery_current_gallery_attachments_for_rendering() {
         return $attachments;
     }
 
-    // Get the existing attachments for the gallery
+    // Get the existing attachments for the gallery.
     $existing_attachments = $current_foogallery->attachments();
 
-    // Get the gallery ID from the gallery object
+    // Get the gallery ID from the gallery object.
     $gallery_id = $current_foogallery->ID;
 
-    // Get the uploaded images' file names from metadata
+    // Get the uploaded images' file names from metadata.
     $uploaded_images = array();
     $user_folder = wp_upload_dir()['basedir'] . '/approved_folder/' . $gallery_id . '/';
     $metadata_file = $user_folder . 'metadata.json';
@@ -1229,14 +1229,14 @@ function foogallery_current_gallery_attachments_for_rendering() {
 						$attachment->has_metadata = true;
 						$attachment->sort = PHP_INT_MAX;
 	
-						// Set properties based on JSON data
+						// Set properties based on JSON data.
 						$attachment->caption = isset( $item['caption'] ) ? $item['caption'] : '';
 						$attachment->description = isset( $item['description'] ) ? $item['description'] : '';
 						$attachment->alt = isset( $item['alt'] ) ? $item['alt'] : '';
 						$attachment->custom_url = isset( $item['custom_url'] ) ? $item['custom_url'] : '';
 						$attachment->custom_target = isset( $item['custom_target'] ) ? $item['custom_target'] : '';
 	
-						// Add the attachment to the list
+						// Add the attachment to the list.
 						$uploaded_images[] = $attachment;
 					}
 				}
