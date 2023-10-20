@@ -95,7 +95,16 @@ if ( ! class_exists( 'Foogallery_FrontEnd_Upload_Moderation' ) ) {
                     $metadata_file = $original_folder . 'metadata.json';
                     $new_metadata_file = $approved_folder . 'metadata.json';
             
-                    // Function to retrieve and merge attachments with the specific approved image
+                     /**
+                     * Function to merge attachments with the specific approved image and move it to the approved folder.
+                     *
+                     * @param int $gallery_id          The ID of the gallery.
+                     * @param string $approved_image   The file name of the approved image.
+                     * @param string $original_folder  The path to the original folder.
+                     * @param string $approved_folder  The path to the approved folder.
+                     * @param string $metadata_file    The path to the original metadata file.
+                     * @param string $new_metadata_file The path to the new metadata file.
+                     */
                     function merge_attachments_with_uploaded_images($gallery_id, $approved_image, $original_folder, $approved_folder, $metadata_file, $new_metadata_file) {
                         // Get the existing attachments for the gallery
                         $existing_attachments = get_post_meta($gallery_id, FOOGALLERY_META_ATTACHMENTS, true);
