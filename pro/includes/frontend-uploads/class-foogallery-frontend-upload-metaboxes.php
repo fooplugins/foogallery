@@ -317,8 +317,8 @@ if ( ! class_exists( 'FooGallery_FrontEnd_Upload_MetaBoxes' ) ) {
                                         ?>
                                     </td>
                                     <td>
-                                        <button class="approve-image button button-primary" data-image-id="<?php echo esc_attr($image['id']); ?>" name="approve_image_nonce" data-nonce="<?php echo wp_create_nonce('approve_image_nonce'); ?>"><?php esc_html_e('Approve', 'foogallery'); ?></button>
-                                        <button class="reject-image button button-small" data-image-id="<?php echo esc_attr($image['id']); ?>" name="reject_image_nonce" data-nonce="<?php echo wp_create_nonce('reject_image_nonce'); ?>">
+                                        <button class="approve-image button button-primary" data-gallery-id="<?php echo esc_attr($gallery_id); ?>" data-image-id="<?php echo esc_attr($image['id']); ?>" name="approve_image_nonce" data-nonce="<?php echo wp_create_nonce('approve_image_nonce'); ?>"><?php esc_html_e('Approve', 'foogallery'); ?></button>
+                                        <button class="reject-image button button-small" data-gallery-id="<?php echo esc_attr($gallery_id); ?>" data-image-id="<?php echo esc_attr($image['id']); ?>" name="reject_image_nonce" data-nonce="<?php echo wp_create_nonce('reject_image_nonce'); ?>">
                                             <?php esc_html_e('Reject Image', 'foogallery'); ?>
                                         </button>
                                     </td>
@@ -330,55 +330,58 @@ if ( ! class_exists( 'FooGallery_FrontEnd_Upload_MetaBoxes' ) ) {
                     </table>
                 </div>
 
-                <script>
-                    // Add event listeners for image moderation actions
-                    const approveImageButtons = document.querySelectorAll('.approve-image');
-                    approveImageButtons.forEach(button => {
+                <script>                              
+
+                    // Add event listeners for confirmation dialogs for "Approve"
+                    const confirmApproveButtons = document.querySelectorAll('.approve-image');
+                    confirmApproveButtons.forEach(button => {
                         button.addEventListener('click', function (e) {
                             e.preventDefault();
+
+                            const galleryId = this.getAttribute('data-gallery-id');
                             const imageId = this.getAttribute('data-image-id');
+                            const nonce = this.getAttribute('data-nonce');
+
                             if (confirm(`Are you sure you want to approve this image?`)) {
-                                // Submit the approval form
-                                submitModerationForm('approve', imageId);
+                                const form = document.createElement('form');
+                                form.method = 'post';
+                                form.innerHTML = `
+                                    <input type="hidden" name="gallery_id" value="${galleryId}">
+                                    <input type="hidden" name="image_id" value="${imageId}">
+                                    <input type="hidden" name="action" value="approve">
+                                    <input type="hidden" name="moderate_image" value="approve-image">
+                                    <input type="hidden" name="approve_image_nonce" value="${nonce}">
+                                `;
+                                document.body.appendChild(form);
+                                form.submit();
                             }
                         });
                     });
 
-                    const rejectImageButtons = document.querySelectorAll('.reject-image');
-                    rejectImageButtons.forEach(button => {
+                    // Add event listeners for confirmation dialogs
+                    const confirmRejectButtons = document.querySelectorAll('.reject-image');
+                    confirmRejectButtons.forEach(button => {
                         button.addEventListener('click', function (e) {
                             e.preventDefault();
+
+                            const galleryId = this.getAttribute('data-gallery-id');
                             const imageId = this.getAttribute('data-image-id');
+                            const nonce = this.getAttribute('data-nonce');
                             if (confirm(`Are you sure you want to reject this image?`)) {
-                                // Submit the rejection form
-                                submitModerationForm('reject', imageId);
+                                const form = document.createElement('form');
+                                form.method = 'post';
+                                form.innerHTML = `
+                                    <input type="hidden" name="gallery_id" value="${galleryId}">
+                                    <input type="hidden" name="image_id" value="${imageId}">
+                                    <input type="hidden" name="action" value="reject">
+                                    <input type="hidden" name="moderate_image" value=".reject-image">
+                                    <input type="hidden" name="reject_image_nonce" value="${nonce}">
+                                `;
+                                document.body.appendChild(form);
+                                form.submit();
                             }
                         });
                     });
-
-                    // Function to submit the moderation form
-                    function submitModerationForm(action, imageId) {
-                        const galleryId = document.getElementById('gallery_id').value;
-                        const currentPageUrl = window.location.href;
-                        const form = document.createElement('form');
-                        form.method = 'post';
-                        form.action = currentPageUrl;
-                        form.innerHTML = `
-                            <input type="hidden" name="gallery_id" value="${galleryId}">
-                            <input type="hidden" name="image_id" value="${imageId}">
-                            <input type="hidden" name="action" value="${action}">
-                            <input type="hidden" name="moderate_image" value="confirmed_${action}">
-                            <input type="hidden" name="${action}_image_nonce" value="${nonceValues[action]}">
-                        `;
-                        document.body.appendChild(form);
-                        form.submit();
-                    }
-
-                    // Define nonce values for both actions
-                    const nonceValues = {
-                        approve: 'approve_image_nonce',
-                        reject: 'reject_image_nonce'
-                    };
 
                 </script>
 
