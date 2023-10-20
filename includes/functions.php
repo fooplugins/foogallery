@@ -1192,50 +1192,50 @@ if ( !function_exists('wp_get_raw_referer') ) {
  * @return array
  */
 function foogallery_current_gallery_attachments_for_rendering() {
-    global $current_foogallery;
+	global $current_foogallery;
 
-    $attachments = apply_filters( 'foogallery_gallery_attachments_override_for_rendering', false, $current_foogallery );
+	$attachments = apply_filters( 'foogallery_gallery_attachments_override_for_rendering', false, $current_foogallery );
 
-    if ( $attachments !== false) {
-        return $attachments;
-    }
+	if ( false !== $attachments ) {
+		return $attachments;
+	}
 
-    // Get the existing attachments for the gallery.
-    $existing_attachments = $current_foogallery->attachments();
+	// Get the existing attachments for the gallery.
+	$existing_attachments = $current_foogallery->attachments();
 
-    // Get the gallery ID from the gallery object.
-    $gallery_id = $current_foogallery->ID;
+	// Get the gallery ID from the gallery object.
+	$gallery_id = $current_foogallery->ID;
 
-    // Get the uploaded images' file names from metadata.
-    $uploaded_images = array();
-    $user_folder = wp_upload_dir()['basedir'] . '/approved_folder/' . $gallery_id . '/';
-    $metadata_file = $user_folder . 'metadata.json';
+	// Get the uploaded images' file names from metadata.
+	$uploaded_images = array();
+	$user_folder = wp_upload_dir()['basedir'] . '/approved_folder/' . $gallery_id . '/';
+	$metadata_file = $user_folder . 'metadata.json';
 
-    if ( file_exists( $metadata_file ) ) {
+	if ( file_exists( $metadata_file ) ) {
 		$metadata = json_decode( file_get_contents( $metadata_file ), true );
 		if ( isset( $metadata['items'] ) && is_array( $metadata['items'] ) ) {
 			$uploaded_images = array();
-			foreach ($metadata['items'] as $item) {
+			foreach ( $metadata['items'] as $item ) {
 				if ( isset( $item['file'] ) ) {
 					$base_url = site_url();
 					$image_filename = sanitize_file_name( $item['file'] );
 					$image_url = $base_url . '/wp-content/uploads/approved_folder/' . $gallery_id . '/' . $image_filename;
-	
-					if ( !empty( $image_url ) ) {
-						$attachment = new FooGalleryAttachment();
-						$attachment->ID = 0;
-						$attachment->url = $image_url;
-						$attachment->type = 'image';
+
+					if ( ! empty( $image_url ) ) {
+						$attachment               = new FooGalleryAttachment();
+						$attachment->ID           = 0;
+						$attachment->url          = $image_url;
+						$attachment->type         = 'image';
 						$attachment->has_metadata = true;
-						$attachment->sort = PHP_INT_MAX;
-	
+						$attachment->sort         = PHP_INT_MAX;
+
 						// Set properties based on JSON data.
-						$attachment->caption = isset( $item['caption'] ) ? $item['caption'] : '';
-						$attachment->description = isset( $item['description'] ) ? $item['description'] : '';
-						$attachment->alt = isset( $item['alt'] ) ? $item['alt'] : '';
-						$attachment->custom_url = isset( $item['custom_url'] ) ? $item['custom_url'] : '';
+						$attachment->caption       = isset( $item['caption'] ) ? $item['caption'] : '';
+						$attachment->description   = isset( $item['description'] ) ? $item['description'] : '';
+						$attachment->alt           = isset( $item['alt'] ) ? $item['alt'] : '';
+						$attachment->custom_url    = isset( $item['custom_url'] ) ? $item['custom_url'] : '';
 						$attachment->custom_target = isset( $item['custom_target'] ) ? $item['custom_target'] : '';
-	
+
 						// Add the attachment to the list.
 						$uploaded_images[] = $attachment;
 					}
@@ -1243,11 +1243,11 @@ function foogallery_current_gallery_attachments_for_rendering() {
 			}
 		}
 	}
-	
-    // Merge the existing attachments with the uploaded images
-    $merged_attachments = array_merge( $existing_attachments, $uploaded_images );
 
-    return $merged_attachments;
+	// Merge the existing attachments with the uploaded images.
+	$merged_attachments = array_merge( $existing_attachments, $uploaded_images );
+
+	return $merged_attachments;
 }
 
 

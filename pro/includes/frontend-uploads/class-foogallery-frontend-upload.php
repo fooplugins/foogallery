@@ -2,7 +2,10 @@
 
 /**
  * Foogallery FrontEnd Upload Class
+ *
+ *  @package foogallery
  */
+
 if ( ! class_exists( 'Foogallery_FrontEnd_Upload' ) ) {
 
 	/**

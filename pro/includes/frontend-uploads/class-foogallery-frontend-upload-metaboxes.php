@@ -4,6 +4,7 @@
  *
  * @package foogallery
  */
+
 if ( ! class_exists( 'FooGallery_FrontEnd_Upload_MetaBoxes' ) ) {
 	/**
 	 * Class FooGallery_FrontEnd_Upload_MetaBoxes
