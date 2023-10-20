@@ -249,95 +249,115 @@ if ( ! class_exists( 'Foogallery_FrontEnd_Image_Moderation' ) ) {
                             </tr>
                         </thead>
                         <tbody>
-                            <?php foreach ($images_to_moderate as $gallery_id => $images) : ?>
-                                <?php if ($filter_gallery_id === 0 || $filter_gallery_id === $gallery_id) : ?>
-                                    <?php
-                                    // Define the path to the approved folder and metadata file
-                                    $approved_folder = wp_upload_dir()['basedir'] . '/users_uploads/' . $gallery_id . '/approved_uploads/';
-                                    $metadata_file = $approved_folder . 'metadata.json';
-                                    ?>
-                                    <?php if (file_exists($metadata_file)) : ?>
+                            
+                            <?php
+                                // Initialize an array to store user IDs for each image
+                                $image_uploaders = array();
+                                foreach ($images_to_moderate as $gallery_id => $images) : ?>
+                                    <?php if ($filter_gallery_id === 0 || $filter_gallery_id === $gallery_id) : ?>
                                         <?php
-                                        // Read metadata from the JSON file
-                                        $metadata = @json_decode( $wp_filesystem->get_contents( $metadata_file ), true );
-
-                                        // Check if the JSON data is correctly decoded
-                                        if (isset($metadata['items']) && is_array($metadata['items'])) :
+                                        // Define the path to the approved folder and metadata file
+                                        $approved_folder = wp_upload_dir()['basedir'] . '/users_uploads/' . $gallery_id . '/approved_uploads/';
+                                        $metadata_file = $approved_folder . 'metadata.json';
                                         ?>
-                                        <?php foreach ($metadata['items'] as $item) : ?>
-                                            <tr>
-                                                <td>
-                                                    <?php
-                                                    // Retrieve the gallery title based on the gallery ID
-                                                    $gallery_title = get_the_title($gallery_id);
-                                                    $gallery_edit_url = get_edit_post_link($gallery_id);
+                                        <?php if (file_exists($metadata_file)) : ?>
+                                            <?php
+                                            // Read metadata from the JSON file
+                                            $metadata = @json_decode( $wp_filesystem->get_contents( $metadata_file ), true );
 
-                                                    if ($gallery_edit_url) {
-                                                        echo '<a href="' . esc_url($gallery_edit_url) . '">' . esc_html($gallery_title) . '</a>';
-                                                    } else {
-                                                        echo esc_html($gallery_title);
-                                                    }
-                                                    ?>
-                                                </td>
+                                            // Check if the JSON data is correctly decoded
+                                            if (isset($metadata['items']) && is_array($metadata['items'])) :
+                                            ?>
+                                            <?php foreach ($metadata['items'] as $item) :
+                                                // Get the gallery ID and image file name
+                                                $gallery_id = intval( $gallery_id );
+                                                $file_name = sanitize_text_field( $item['file'] );
 
-                                                <td>
-                                                    <?php
-                                                    // Retrieve the image URL from the JSON data
-                                                    $image_filename = isset($item['file']) ? sanitize_file_name($item['file']) : '';
-                                                    $base_url = site_url();
+                                                // Check if the 'uploaded_by' field is set in the image's metadata
+                                                if ( isset( $item['uploaded_by'] ) ) {
+                                                    $uploader_id = intval( $item['uploaded_by'] );
 
-                                                    // Construct the complete image URL
-                                                    $image_url = $base_url . '/wp-content/uploads/users_uploads/' . $gallery_id . '/approved_uploads/' . $image_filename;
-
-                                                    // Display the image if the URL is not empty
-                                                    if (!empty($image_url)) {
-                                                        echo '<img style="width: 150px; height: 150px;" src="' . esc_url($image_url) . '" alt="' . esc_attr($item['alt']) . '" />';
-                                                    }
-                                                    ?>
-                                                </td>
-
-                                                <td>
-                                                    <p><strong><?php esc_html_e('Caption:', 'foogallery'); ?></strong> <?php echo esc_html($item['caption']); ?></p>
-                                                    <p><strong><?php esc_html_e('Description:', 'foogallery'); ?></strong> <?php echo esc_html($item['description']); ?></p>
-                                                    <p><strong><?php esc_html_e('Alt Text:', 'foogallery'); ?></strong><?php echo esc_html($item['alt']); ?></p>
-                                                    <p><strong><?php esc_html_e('Custom URL:', 'foogallery'); ?></strong> <?php echo esc_url($item['custom_url']); ?></p>
-                                                    <p><strong><?php esc_html_e('Custom Target:', 'foogallery'); ?></strong> <?php echo esc_html($item['custom_target']); ?></p>
-                                                </td>
+                                                    // Store the uploader's ID in the array
+                                                    $image_uploaders["$gallery_id-$file_name"] = $uploader_id;
+                                                } else {
+                                                    // Handle cases where 'uploaded_by' field is not set
+                                                    $image_uploaders["$gallery_id-$file_name"] = '';
+                                                }
+                                                ?>
                                                 
-                                                <td>
-                                                    <?php
-                                                    // Get the gallery ID and image file name
-                                                    $gallery_id = intval($gallery_id);
-                                                    $file_name = sanitize_text_field($image['file']);
-                                                    
-                                                    // Create a unique identifier for this image (gallery_id-file_name)
-                                                    $image_identifier = "$gallery_id-$file_name";
-                                                    
-                                                    // Get the user ID who uploaded this image from the array
-                                                    $uploader_id = isset($image_uploaders[$image_identifier]) ? $image_uploaders[$image_identifier] : '';
+                                                <tr>
+                                                    <td>
+                                                        <?php
+                                                        // Retrieve the gallery title based on the gallery ID
+                                                        $gallery_title = get_the_title($gallery_id);
+                                                        $gallery_edit_url = get_edit_post_link($gallery_id);
 
-                                                    // Display the uploader's username or other information
-                                                    if (!empty($uploader_id)) {
-                                                        $uploader_info = get_userdata($uploader_id);
-                                                        if ($uploader_info) {
-                                                            echo esc_html($uploader_info->display_name);
+                                                        if ($gallery_edit_url) {
+                                                            echo '<a href="' . esc_url($gallery_edit_url) . '">' . esc_html($gallery_title) . '</a>';
                                                         } else {
-                                                            echo esc_html__('Unknown User', 'foogallery');
+                                                            echo esc_html($gallery_title);
                                                         }
-                                                    } else {
-                                                        echo esc_html__('N/A', 'foogallery');
-                                                    }
-                                                    ?>
-                                                </td>
+                                                        ?>
+                                                    </td>
 
-                                                <td>
-                                                    <button class="confirm-delete button button-small" data-gallery-id="<?php echo esc_attr($gallery_id); ?>" data-image-id="<?php echo esc_attr($item['file']); ?>" name="delete_image_nonce" data-nonce="<?php echo wp_create_nonce('delete_image_nonce'); ?>"><?php esc_html_e( 'Delete Image', 'foogallery' );?></button>
-                                                </td>
-                                            </tr>
-                                        <?php endforeach; ?>
+                                                    <td>
+                                                        <?php
+                                                        // Retrieve the image URL from the JSON data
+                                                        $image_filename = isset($item['file']) ? sanitize_file_name($item['file']) : '';
+                                                        $base_url = site_url();
+
+                                                        // Construct the complete image URL
+                                                        $image_url = $base_url . '/wp-content/uploads/users_uploads/' . $gallery_id . '/approved_uploads/' . $image_filename;
+
+                                                        // Display the image if the URL is not empty
+                                                        if (!empty($image_url)) {
+                                                            echo '<img style="width: 150px; height: 150px;" src="' . esc_url($image_url) . '" alt="' . esc_attr($item['alt']) . '" />';
+                                                        }
+                                                        ?>
+                                                    </td>
+
+                                                    <td>
+                                                        <p><strong><?php esc_html_e('Caption:', 'foogallery'); ?></strong> <?php echo esc_html($item['caption']); ?></p>
+                                                        <p><strong><?php esc_html_e('Description:', 'foogallery'); ?></strong> <?php echo esc_html($item['description']); ?></p>
+                                                        <p><strong><?php esc_html_e('Alt Text:', 'foogallery'); ?></strong><?php echo esc_html($item['alt']); ?></p>
+                                                        <p><strong><?php esc_html_e('Custom URL:', 'foogallery'); ?></strong> <?php echo esc_url($item['custom_url']); ?></p>
+                                                        <p><strong><?php esc_html_e('Custom Target:', 'foogallery'); ?></strong> <?php echo esc_html($item['custom_target']); ?></p>
+                                                    </td>
+                                                    
+                                                    <td>
+                                                        <?php
+                                                        // Get the gallery ID and image file name
+                                                        $gallery_id = intval($gallery_id);
+                                                        $file_name = sanitize_text_field($item['file']);
+                                                        
+                                                        // Create a unique identifier for this image (gallery_id-file_name)
+                                                        $image_identifier = "$gallery_id-$file_name";
+                                                        
+                                                        // Get the user ID who uploaded this image from the array
+                                                        $uploader_id = isset($image_uploaders[$image_identifier]) ? $image_uploaders[$image_identifier] : '';
+
+                                                        // Display the uploader's username or other information
+                                                        if (!empty($uploader_id)) {
+                                                            $uploader_info = get_userdata($uploader_id);
+                                                            if ($uploader_info) {
+                                                                echo esc_html($uploader_info->display_name);
+                                                            } else {
+                                                                echo esc_html__('Unknown User', 'foogallery');
+                                                            }
+                                                        } else {
+                                                            echo esc_html__('N/A', 'foogallery');
+                                                        }
+                                                        ?>
+                                                    </td>
+
+                                                    <td>
+                                                        <button class="confirm-delete button button-small" data-gallery-id="<?php echo esc_attr($gallery_id); ?>" data-image-id="<?php echo esc_attr($item['file']); ?>" name="delete_image_nonce" data-nonce="<?php echo wp_create_nonce('delete_image_nonce'); ?>"><?php esc_html_e( 'Delete Image', 'foogallery' );?></button>
+                                                    </td>
+                                                </tr>
+                                            <?php endforeach; ?>
+                                            <?php endif; ?>
                                         <?php endif; ?>
                                     <?php endif; ?>
-                                <?php endif; ?>
                             <?php endforeach; ?>
                         </tbody>
                     </table>
