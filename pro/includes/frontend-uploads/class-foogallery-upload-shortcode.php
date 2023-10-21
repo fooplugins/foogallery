@@ -450,7 +450,9 @@ if ( ! class_exists( 'Foogallery_FrontEnd_Upload_Shortcode' ) ) {
 
 					// Display success message only if at least one image meets the requirement.
 					if ($uploaded_image_count > $exceeded_size_count) {
-						echo '<div class="success-message" style="color: green; text-align: center;">' . __('Image(s) successfully uploaded and awaiting moderation.', 'foogallery') . '</div>';
+						$frontend_upload_success_message = foogallery_get_setting( 'frontend_upload_success_message', 'Image(s) successfully uploaded and awaiting moderation.' );
+						echo '<div class="success-message" style="color: green; text-align: center;">' . esc_html( $frontend_upload_success_message ) . '</div>';
+
 					}
 				} else {
 					echo '<div class="error-message" style="color: red; text-align: center;">' . __('No files uploaded or an error occurred.', 'foogallery') . '</div>';

@@ -432,6 +432,15 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 				'default' => __( 'Click to browse or drag & drop image(s) here', 'foogallery' ),
 				'section' => __( 'Front End Upload', 'foogallery' ),
 				'tab'     => 'language'
+			);
+			
+			$settings[] = array(
+				'id'      => 'frontend_upload_success_message',
+				'title'   => __( 'Front End Upload Success Message', 'foogallery' ),
+				'type'    => 'text',
+				'default' => __( 'Image(s) successfully uploaded and awaiting moderation.', 'foogallery' ),
+				'section' => __( 'Front End Upload', 'foogallery' ),
+				'tab'     => 'language'
 			);			
 			
 			//endregion Language Tab
