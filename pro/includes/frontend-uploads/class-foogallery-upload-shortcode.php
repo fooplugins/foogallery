@@ -410,14 +410,14 @@ if ( ! class_exists( 'Foogallery_FrontEnd_Upload_Shortcode' ) ) {
 							// Move the uploaded file to the user folder.
 							if ( move_uploaded_file( $uploaded_files['tmp_name'][ $key ], $user_file)) {
 								$image_metadata = array(
-									"file" => $unique_filename,
-									"gallery_id" => $gallery_id,
-									"caption" => isset( $_POST['caption'][ $key ] ) ? sanitize_text_field( $_POST['caption'][ $key ] ) : "",
-									"description" => isset( $_POST['description'][ $key ] ) ? sanitize_text_field( $_POST['description'][ $key ] ) : "",
-									"alt" => isset( $_POST['alt'][ $key ] ) ? sanitize_text_field( $_POST['alt'][ $key ] ) : "",
-									"custom_url" => isset( $_POST['custom_url'][ $key ] ) ? esc_url( $_POST['custom_url'][ $key ] ) : "",
-									"custom_target" => isset( $_POST['custom_target'][ $key ] ) ? sanitize_text_field( $_POST['custom_target'][ $key ] ) : "",
-									"uploaded_by" => get_current_user_id(),
+									'file'          => $unique_filename,
+									'gallery_id'    => $gallery_id,
+									'caption'       => isset( $_POST['caption'][ $key ] ) ? sanitize_text_field( $_POST['caption'][ $key ] ) : '',
+									'description'   => isset( $_POST['description'][ $key ] ) ? sanitize_text_field( $_POST['description'][ $key ] ) : '',
+									'alt'           => isset( $_POST['alt'][ $key ] ) ? sanitize_text_field( $_POST['alt'][ $key ] ) : '',
+									'custom_url'    => isset( $_POST['custom_url'][ $key ] ) ? esc_url( $_POST['custom_url'][ $key ] ) : '',
+									'custom_target' => isset( $_POST['custom_target'][ $key ] ) ? sanitize_text_field( $_POST['custom_target'][ $key ] ) : '',
+									'uploaded_by'   => get_current_user_id(),
 								);
 
 								global $wp_filesystem;
