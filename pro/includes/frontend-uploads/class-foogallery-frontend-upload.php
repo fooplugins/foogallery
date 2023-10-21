@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Foogallery FrontEnd Upload Class
  *

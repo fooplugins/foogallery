@@ -68,16 +68,17 @@ if ( ! class_exists( 'Foogallery_FrontEnd_Image_Moderation' ) ) {
 						if ( false !== $metadata_contents ) {
 							$metadata = json_decode( $metadata_contents, true );
 
-							if ( isset( $metadata['items'] ) && $metadata !== null ) {
+							if ( isset( $metadata['items'] ) && null !== $metadata ) {
 								// Store the metadata in the images_to_moderate array.
 								$images_to_moderate[ $gallery_id ] = $metadata['items'];
 							} else {
 								// Handle JSON decoding failure or missing 'items' key.
-								echo '<div class="notice notice-error"><p>Invalid or missing metadata in file: ' . esc_html( $metadata_file ) . '</p></div>';
+								echo '<div class="notice notice-error"><p>' . esc_html( __( 'Invalid or missing metadata in file:', 'foogallery' ) ) . ' ' . esc_html( $metadata_file ) . '</p></div>';
 							}
 						} else {
 							// Handle file read failure.
-							echo '<div class="notice notice-error"><p>Failed to read metadata file: ' . esc_html( $metadata_file ) . '</p></div>';
+							echo '<div class="notice notice-error"><p>' . esc_html( __( 'Failed to read metadata file:', 'foogallery' ) ) . ' ' . esc_html( $metadata_file ) . '</p></div>';
+
 						}
 					}
 				}
@@ -179,7 +180,7 @@ if ( ! class_exists( 'Foogallery_FrontEnd_Image_Moderation' ) ) {
 											$random_folder_name = get_post_meta( $gallery_id, '_foogallery_frontend_upload', true );
 
 											// Construct the complete image URL.
-											$image_url = $base_url . '/wp-content/uploads/users_uploads/' . $gallery_id . '/' . $random_folder_name  . '/'  . $image_filename;
+											$image_url = $base_url . '/wp-content/uploads/users_uploads/' . $gallery_id . '/' . $random_folder_name . '/' . $image_filename;
 
 											// Display the image if the URL is not empty.
 											if ( ! empty( $image_url ) ) {
@@ -200,7 +201,7 @@ if ( ! class_exists( 'Foogallery_FrontEnd_Image_Moderation' ) ) {
 											<?php
 											// Get the gallery ID and image file name.
 											$gallery_id = intval( $gallery_id );
-											$file_name = sanitize_text_field( $image['file'] );
+											$file_name  = sanitize_text_field( $image['file'] );
 
 											// Create a unique identifier for this image (gallery_id-file_name).
 											$image_identifier = "$gallery_id-$file_name";
@@ -268,14 +269,22 @@ if ( ! class_exists( 'Foogallery_FrontEnd_Image_Moderation' ) ) {
 											?>
 											<?php
 											// Read metadata from the JSON file.
-											$metadata = @json_decode( $wp_filesystem->get_contents( $metadata_file ), true );
+											$metadata = $wp_filesystem->get_contents( $metadata_file );
+
+											if ( false === $metadata ) {
+												echo '<div class="notice notice-error"><p>' . esc_html( __( 'Failed to read metadata from ', 'foogallery' ) ) . ' ' . esc_html( $metadata_file ) . '</p></div>';
+
+											} else {
+												// Proceed and decode the JSON if reading was successful.
+												$metadata = json_decode( $metadata, true );
+											}
 
 											// Check if the JSON data is correctly decoded.
 											if ( isset( $metadata['items'] ) && is_array( $metadata['items'] ) ) :
 												foreach ( $metadata['items'] as $item ) :
 													// Get the gallery ID and image file name.
 													$gallery_id = intval( $gallery_id );
-													$file_name = sanitize_text_field( $item['file'] );
+													$file_name  = sanitize_text_field( $item['file'] );
 
 													// Check if the 'uploaded_by' field is set in the image's metadata.
 													if ( isset( $item['uploaded_by'] ) ) {
@@ -308,7 +317,7 @@ if ( ! class_exists( 'Foogallery_FrontEnd_Image_Moderation' ) ) {
 														<?php
 														// Retrieve the image URL from the JSON data.
 														$image_filename = isset( $item['file'] ) ? sanitize_file_name( $item['file'] ) : '';
-														$base_url = site_url();
+														$base_url       = site_url();
 
 														// Construct the complete image URL.
 														$image_url = $base_url . '/wp-content/uploads/approved_folder/' . $gallery_id . '/' . $image_filename;
