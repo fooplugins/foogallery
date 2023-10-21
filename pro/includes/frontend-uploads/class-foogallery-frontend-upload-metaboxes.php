@@ -69,7 +69,7 @@ if ( ! class_exists( 'FooGallery_FrontEnd_Upload_MetaBoxes' ) ) {
 				// Update post meta for the metadata checkboxes.
 				$metafields = array( 'caption', 'description', 'alt', 'custom_url', 'custom_target' );
 				foreach ( $metafields as $metafield ) {
-					$metafield_value = isset( $_POST["display_$metafield"] ) ? 'on' : 'off';
+					$metafield_value = isset( $_POST["display_$metafield"] ) ? sanitize_text_field( $_POST["display_$metafield"] ) : 'no';
 					update_post_meta( $post_id, "_display_$metafield", $metafield_value );
 				}
 
@@ -109,7 +109,7 @@ if ( ! class_exists( 'FooGallery_FrontEnd_Upload_MetaBoxes' ) ) {
 					<?php
 					// Retrieve existing values from the database.
 					$max_images_allowed = get_post_meta( $post->ID, '_max_images_allowed', true );
-					$max_image_size = get_post_meta( $post->ID, '_max_image_size', true );
+					$max_image_size     = get_post_meta( $post->ID, '_max_image_size', true );
 
 					// Output the HTML for the fields.
 					?>
@@ -168,6 +168,7 @@ if ( ! class_exists( 'FooGallery_FrontEnd_Upload_MetaBoxes' ) ) {
 
 					<?php
 					$metafields = array( 'caption', 'description', 'alt', 'custom_url', 'custom_target' );
+
 					foreach ( $metafields as $metafield ) {
 						$option_name     = "_display_$metafield";
 						$metafield_value = get_post_meta( $gallery_id, $option_name, true );
@@ -179,11 +180,19 @@ if ( ! class_exists( 'FooGallery_FrontEnd_Upload_MetaBoxes' ) ) {
 								</label>
 								<span class="foogallery-frontend-upload-help" title="<?php echo esc_attr( sprintf( __( 'Check to display the %s field in the upload form', 'foogallery' ), $metafield ) ); ?>">?</span>
 							</div>
-							<div style="width: 50%;">
-								<input type="checkbox" id="display_<?php echo esc_attr( $metafield ); ?>" name="display_<?php echo esc_attr( $metafield ); ?>" <?php checked( $metafield_value, 'on' ); ?> />
+							<div style="width: 190px; display:flex; justify-content: space-between;">
+								<div style="">
+									<input type="radio" id="display_<?php echo esc_attr( $metafield ); ?>" name="display_<?php echo esc_attr( $metafield ); ?>" value="yes" <?php checked( $metafield_value, 'yes' ); ?> /> Yes
+								</div>
+								<div style="">
+									<input type="radio" id="display_<?php echo esc_attr( $metafield ); ?>" name="display_<?php echo esc_attr( $metafield ); ?>" value="no" <?php checked( $metafield_value, 'no' ); ?> /> No
+								</div>						
+								
 							</div>                            
 						</div>
-					<?php } ?>
+						<?php
+					}
+					?>
 
 				</div>
 				<style>
