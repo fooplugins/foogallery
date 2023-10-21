@@ -424,6 +424,16 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 				'section' => __( 'Admin', 'foogallery' ),
 				'tab'     => 'language'
 			);
+
+			$settings[] = array(
+				'id'      => 'frontend_upload_image_text',
+				'title'   => __( 'Front End Upload Form Text', 'foogallery' ),
+				'type'    => 'text',
+				'default' => __( 'Click to browse or drag & drop image(s) here', 'foogallery' ),
+				'section' => __( 'Front End Upload', 'foogallery' ),
+				'tab'     => 'language'
+			);			
+			
 			//endregion Language Tab
 
 			//region Advanced Tab

@@ -61,18 +61,16 @@ if ( ! class_exists( 'Foogallery_FrontEnd_Upload_Shortcode' ) ) {
 			} else {
 
 				$metafields = array( 'caption', 'description', 'alt', 'custom_url', 'custom_target' );
-$attributes = array();
+				$attributes = array();
 
-foreach ( $metafields as $metafield ) {
-    $option_name = "_display_$metafield";
-    $display_setting = get_post_meta( $gallery_id, $option_name, true );
+				foreach ( $metafields as $metafield ) {
+					$option_name = "_display_$metafield";
+					$display_setting = get_post_meta( $gallery_id, $option_name, true );
 
-    // Add the display setting as a data attribute.
-    $attributes["data-display-$metafield"] = $display_setting;
-}
-
-
-
+					// Add the display setting as a data attribute.
+					$attributes["data-display-$metafield"] = $display_setting;
+				}
+				$frontend_upload_image_text = foogallery_get_setting( 'frontend_upload_image_text', 'Click to browse or drag & drop image(s) here' );
 
 				ob_start();
 				?>
@@ -83,7 +81,7 @@ foreach ( $metafields as $metafield ) {
 						<input type="hidden" name="gallery_id" value="<?php echo esc_attr($gallery_id); ?>" />
 						<input type="file" name="foogallery_images[]" id="image-upload" accept="image/*" multiple style="display: none;" />
 						<label for="image-upload" style="cursor: pointer;">
-							<p><?php esc_html_e( 'Click to browse or drag & drop image(s) here', 'foogallery' ); ?></p>
+							<p><?php esc_html_e( $frontend_upload_image_text, 'foogallery' ); ?></p>
 						</label>
 					</div>
 					
