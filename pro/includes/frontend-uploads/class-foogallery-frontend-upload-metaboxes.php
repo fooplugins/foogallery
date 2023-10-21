@@ -162,14 +162,14 @@ if ( ! class_exists( 'FooGallery_FrontEnd_Upload_MetaBoxes' ) ) {
 							<span class="foogallery-frontend-upload-help" title="<?php esc_attr_e( 'Restrict front end Image uploads to logged-in users only', 'foogallery' ); ?>">?</span>
 						</div>
 						<div style="width: 190px; display:flex; justify-content: space-between;">
-							<div>
+							<div style="width: 50%;">
 								<input type="radio" id="logged-in-users-yes" name="logged_in_users_only" value="yes" <?php checked( $logged_in_users_only, 'yes' ); ?> />
-								<label for="logged-in-users-yes"><?php esc_html_e( 'Yes', 'foogallery' ); ?></label>
+								<label for="logged-in-users-yes"><?php esc_html_e( 'Enabled', 'foogallery' ); ?></label>
 							</div>
 
-							<div>
+							<div style="width: 50%;">
 								<input type="radio" id="logged-in-users-no" name="logged_in_users_only" value="no" <?php checked( $logged_in_users_only, 'no' ); ?> />
-								<label for="logged-in-users-no"><?php esc_html_e( 'No', 'foogallery' ); ?></label>
+								<label for="logged-in-users-no"><?php esc_html_e( 'Disabled', 'foogallery' ); ?></label>
 							</div>
 						</div>
 					</div>					
@@ -189,10 +189,10 @@ if ( ! class_exists( 'FooGallery_FrontEnd_Upload_MetaBoxes' ) ) {
 								<span class="foogallery-frontend-upload-help" title="<?php echo esc_attr( sprintf( __( 'Display the %s field in the front end upload form', 'foogallery' ), $metafield ) ); ?>">?</span>
 							</div>
 							<div style="width: 190px; display:flex; justify-content: space-between;">
-								<div>
+								<div style="width: 50%;">
 									<input type="radio" id="display_<?php echo esc_attr( $metafield ); ?>" name="display_<?php echo esc_attr( $metafield ); ?>" value="yes" <?php checked( $metafield_value, 'yes' ); ?> /> Yes
 								</div>
-								<div>
+								<div style="width: 50%;">
 									<input type="radio" id="display_<?php echo esc_attr( $metafield ); ?>" name="display_<?php echo esc_attr( $metafield ); ?>" value="no" <?php checked( $metafield_value, 'no' ); ?> /> No
 								</div>						
 
@@ -209,7 +209,7 @@ if ( ! class_exists( 'FooGallery_FrontEnd_Upload_MetaBoxes' ) ) {
 						display: flex;
 						margin-bottom: 15px;
 						padding: 5px 3px;
-						width: 100%;
+						width: 100%;						
 					}
 					.foogallery-frontend-upload-inner-section {
 						align-items: center;
