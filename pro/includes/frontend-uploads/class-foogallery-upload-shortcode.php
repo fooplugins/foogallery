@@ -64,7 +64,7 @@ if ( ! class_exists( 'Foogallery_FrontEnd_Upload_Shortcode' ) ) {
 				$attributes = array();
 
 				foreach ( $metafields as $metafield ) {
-					$option_name = "_display_$metafield";
+					$option_name     = "_display_$metafield";
 					$display_setting = get_post_meta( $gallery_id, $option_name, true );
 
 					// Add the display setting as a data attribute.
@@ -78,13 +78,13 @@ if ( ! class_exists( 'Foogallery_FrontEnd_Upload_Shortcode' ) ) {
 					<div style="max-width: 500px; max-height: 200px; border: 1px dashed #999; text-align: center; padding: 20px; margin-top: 10px;">
 						<!-- Add the nonce field to the form -->
 						<input type="hidden" name="upload_image_nonce" value="<?php echo esc_attr( $upload_image_nonce ); ?>" />
-						<input type="hidden" name="gallery_id" value="<?php echo esc_attr($gallery_id); ?>" />
+						<input type="hidden" name="gallery_id" value="<?php echo esc_attr( $gallery_id ); ?>" />
 						<input type="file" name="foogallery_images[]" id="image-upload" accept="image/*" multiple style="display: none;" />
 						<label for="image-upload" style="cursor: pointer;">
 							<p><?php esc_html_e( $frontend_upload_image_text, 'foogallery' ); ?></p>
 						</label>
 					</div>
-					
+
 					<div class="foogallery-upload-popup-overlay" id="popup">
 						<div class="foogallery-upload-popup-content">
 							<span class="foogallery-upload-close-button" id="close-popup" style="font-size: 40px; color: white;">&times;</span>
@@ -145,7 +145,7 @@ if ( ! class_exists( 'Foogallery_FrontEnd_Upload_Shortcode' ) ) {
 						width: 100%;
 					}
 				</style>
-				
+
 				<script>
 					const imageUploadInput = document.getElementById('image-upload');
 					const metadataContainer = document.getElementById('metadata-container');
@@ -162,7 +162,7 @@ if ( ! class_exists( 'Foogallery_FrontEnd_Upload_Shortcode' ) ) {
 						}
 					});
 
-					
+
 					document.addEventListener('dragover', function (e) {
 						e.preventDefault();
 						e.stopPropagation();
@@ -195,25 +195,25 @@ if ( ! class_exists( 'Foogallery_FrontEnd_Upload_Shortcode' ) ) {
 											<label for="caption_${i}" style="display: block; font-weight: bold; margin-bottom: 5px;">Caption:</label>
 											<input type="text" class="metadata-input" style="width: 100%; height: 20px; padding: 5px; border: 1px solid #ccc; border-radius: 2px;" name="caption[]" id="caption_${i}" />
 										</div>` : ''}
-									
+
 									${metadataContainer.getAttribute('data-display-description') === 'on' ? `
 										<div class="metadata-field" style="margin-bottom: 7px; padding: 10px;">
 											<label for="description_${i}" style="display: block; font-weight: bold; margin-bottom: 5px;">Description:</label>
 											<textarea class="metadata-textarea" style="width: 100%; height: 80px;  padding: 5px; border: 1px solid #ccc; resize: vertical; border-radius: 3px;" name="description[]" id="description_${i}"></textarea>
 										</div>` : ''}
-									
+
 									${metadataContainer.getAttribute('data-display-alt') === 'on' ? `
 										<div class="metadata-field" style="margin-bottom: 7px; padding: 10px;">
 											<label for="alt_${i}" style="display: block; font-weight: bold; margin-bottom: 5px;">Alt Text:</label>
 											<input type="text" class="metadata-input" style="width: 100%; height: 20px; padding: 5px; border: 1px solid #ccc; border-radius: 2px;" name="alt[]" id="alt_${i}" />
 										</div>` : ''}
-									
+
 									${metadataContainer.getAttribute('data-display-custom_url') === 'on' ? `
 										<div class="metadata-field" style="margin-bottom: 7px; padding: 10px;">
 											<label for="custom_url_${i}" style="display: block; font-weight: bold; margin-bottom: 5px;">Custom URL:</label>
 											<input type="text" class="metadata-input" style="width: 100%; height: 20px; padding: 5px; border: 1px solid #ccc; border-radius: 2px;" name="custom_url[]" id="custom_url_${i}" />
 										</div>` : ''}
-									
+
 									${metadataContainer.getAttribute('data-display-custom_target') === 'on' ? `
 										<div class="metadata-field" style="margin-bottom: 7px; padding: 10px;">
 											<label for="custom_target_${i}" style="display: block; font-weight: bold; margin-bottom: 5px;">Custom Target:</label>
@@ -316,45 +316,45 @@ if ( ! class_exists( 'Foogallery_FrontEnd_Upload_Shortcode' ) ) {
 			global $gallery_id;
 
 			// Verify nonce and check if the form was submitted.
-			if (isset($_POST['foogallery_image_upload']) && wp_verify_nonce($_POST['upload_image_nonce'], 'upload_image_action')) {
+			if ( isset( $_POST['foogallery_image_upload'] ) && wp_verify_nonce( $_POST['upload_image_nonce'], 'upload_image_action' ) ) {
 				// Get the gallery ID from the form data.
-				$gallery_id = isset($_POST['gallery_id']) ? intval($_POST['gallery_id']) : null;
+				$gallery_id = isset( $_POST['gallery_id'] ) ? intval( $_POST['gallery_id'] ) : null;
 
 				// Check if files were uploaded.
-				if (isset($_FILES['foogallery_images'])) {
+				if ( isset( $_FILES['foogallery_images'] ) ) {
 					$uploaded_files = $_FILES['foogallery_images'];
 
 					// User folder to store the uploaded images.
 					$user_folder = wp_upload_dir()['basedir'] . '/users_uploads/' . $gallery_id . '/';
 
 					// Create the user folder if it doesn't exist.
-					if (!file_exists($user_folder)) {
-						if (wp_mkdir_p($user_folder)) {
-							chmod($user_folder, 0755);
+					if ( ! file_exists( $user_folder )) {
+						if ( wp_mkdir_p( $user_folder ) ) {
+							chmod( $user_folder, 0755 );
 						} else {
-							echo '<div class="error-message" style="color: red; text-align: center;">' . __('Error creating the user folder.', 'foogallery') . '</div>';
+							echo '<div class="error-message" style="color: red; text-align: center;">' . __( 'Error creating the user folder.', 'foogallery' ) . '</div>';
 							return;
 						}
 					}
 
 					// Check if the "Only logged in users can upload" checkbox is checked.
-					$only_logged_in_users_can_upload = get_post_meta($gallery_id, '_only_logged_in_users_can_upload', true);
+					$only_logged_in_users_can_upload = get_post_meta( $gallery_id, '_only_logged_in_users_can_upload', true );
 
 					// Check if the user is logged in (if required).
-					if ($only_logged_in_users_can_upload === 'yes' && !is_user_logged_in()) {
-						echo '<div class="error-message" style="color: red; text-align: center;">' . __('Only logged-in users can upload images.', 'foogallery') . '</div>';
+					if ( $only_logged_in_users_can_upload === 'yes' && !is_user_logged_in() ) {
+						echo '<div class="error-message" style="color: red; text-align: center;">' . __( 'Only logged-in users can upload images.', 'foogallery' ) . '</div>';
 						return;
 					}
 
 					// Retrieve the maximum images allowed and maximum image size settings.
-					$max_images_allowed = get_post_meta($gallery_id, '_max_images_allowed', true);
-					$max_image_size = get_post_meta($gallery_id, '_max_image_size', true);
+					$max_images_allowed = get_post_meta( $gallery_id, '_max_images_allowed', true );
+					$max_image_size = get_post_meta( $gallery_id, '_max_image_size', true );
 
-					$uploaded_image_count = count($uploaded_files['name']);
+					$uploaded_image_count = count( $uploaded_files['name'] );
 
 					// Check if the number of uploaded images exceeds the maximum allowed if it's a positive number.
-					if ($max_images_allowed > 0 && $uploaded_image_count > $max_images_allowed) {
-						echo '<div class="error-message" style="color: red; text-align: center;">' . __('Exceeded maximum images allowed.', 'foogallery') . '</div>';
+					if ( $max_images_allowed > 0 && $uploaded_image_count > $max_images_allowed ) {
+						echo '<div class="error-message" style="color: red; text-align: center;">' . __( 'Exceeded maximum images allowed.', 'foogallery' ) . '</div>';
 						return;
 					}
 
@@ -379,7 +379,7 @@ if ( ! class_exists( 'Foogallery_FrontEnd_Upload_Shortcode' ) ) {
 					// Create a subfolder for the random folder name.
 					$user_folder .= $random_folder_name . '/';
 
-					if (!file_exists( $user_folder ) ) {
+					if ( ! file_exists( $user_folder ) ) {
 						if ( wp_mkdir_p( $user_folder ) ) {
 							chmod( $user_folder, 0755 );
 						} else {
@@ -394,68 +394,67 @@ if ( ! class_exists( 'Foogallery_FrontEnd_Upload_Shortcode' ) ) {
 					$exceeded_size_images = array();
 					foreach ( $uploaded_files['name'] as $key => $filename ) {
 						// Check if the file is an image.
-						if ( $uploaded_files['type'][$key] && strpos( $uploaded_files['type'][$key], 'image/' ) === 0 ) {
-							$image_size_in_mb = round( $uploaded_files['size'][$key] / (1024 * 1024), 2 ); // Convert to MB
+						if ( $uploaded_files['type'][ $key ] && strpos( $uploaded_files['type'][ $key ], 'image/' ) === 0 ) {
+							$image_size_in_mb = round( $uploaded_files['size'][ $key ] / ( 1024 * 1024), 2 ); // Convert to MB.
 
 							// Check if the image size exceeds the maximum allowed size in MB.
-							if ($max_image_size > 0 && $image_size_in_mb > $max_image_size) {
+							if ( $max_image_size > 0 && $image_size_in_mb > $max_image_size ) {
 								$exceeded_size_images[] = $filename;
 								continue;
 							}
 
 							// Generate a unique file name for the uploaded image in the user folder.
-							$unique_filename = wp_unique_filename($user_folder, $filename);
+							$unique_filename = wp_unique_filename( $user_folder, $filename );
 							$user_file = $user_folder . $unique_filename;
 
 							// Move the uploaded file to the user folder.
-							if (move_uploaded_file($uploaded_files['tmp_name'][$key], $user_file)) {
+							if ( move_uploaded_file( $uploaded_files['tmp_name'][ $key ], $user_file)) {
 								$image_metadata = array(
 									"file" => $unique_filename,
 									"gallery_id" => $gallery_id,
-									"caption" => isset($_POST['caption'][$key]) ? sanitize_text_field($_POST['caption'][$key]) : "",
-									"description" => isset($_POST['description'][$key]) ? sanitize_text_field($_POST['description'][$key]) : "",
-									"alt" => isset($_POST['alt'][$key]) ? sanitize_text_field($_POST['alt'][$key]) : "",
-									"custom_url" => isset($_POST['custom_url'][$key]) ? esc_url($_POST['custom_url'][$key]) : "",
-									"custom_target" => isset($_POST['custom_target'][$key]) ? sanitize_text_field($_POST['custom_target'][$key]) : "",
+									"caption" => isset( $_POST['caption'][ $key ] ) ? sanitize_text_field( $_POST['caption'][ $key ] ) : "",
+									"description" => isset( $_POST['description'][ $key ] ) ? sanitize_text_field( $_POST['description'][ $key ] ) : "",
+									"alt" => isset( $_POST['alt'][ $key ] ) ? sanitize_text_field( $_POST['alt'][ $key ] ) : "",
+									"custom_url" => isset( $_POST['custom_url'][ $key ] ) ? esc_url( $_POST['custom_url'][ $key ] ) : "",
+									"custom_target" => isset( $_POST['custom_target'][ $key ] ) ? sanitize_text_field( $_POST['custom_target'][ $key ] ) : "",
 									"uploaded_by" => get_current_user_id(),
 								);
 
 								global $wp_filesystem;
 								$metadata_file = $user_folder . 'metadata.json';
-								$existing_metadata = file_exists($metadata_file) ? @json_decode($wp_filesystem->get_contents($metadata_file), true) : array("items" => array());
+								$existing_metadata = file_exists( $metadata_file ) ? @json_decode( $wp_filesystem->get_contents( $metadata_file ), true ) : array( "items" => array() );
 
 								// Add the new image's metadata to the array.
 								$existing_metadata["items"][] = $image_metadata;
 
 								// Encode the metadata as JSON and save it to the metadata file.
-								file_put_contents($metadata_file, json_encode($existing_metadata, JSON_PRETTY_PRINT));
+								file_put_contents( $metadata_file, json_encode( $existing_metadata, JSON_PRETTY_PRINT ) );
 							} else {
-								echo '<div class="error-message" style="color: red; text-align: center;">' . __('Error moving the file(s).', 'foogallery') . '</div>';
+								echo '<div class="error-message" style="color: red; text-align: center;">' . esc_html( __( 'Error moving the file(s).', 'foogallery' ) ) . '</div>';
 							}
 						} else {
-							echo '<div class="error-message" style="color: red; text-align: center;">' . __('File is not an image.', 'foogallery') . '</div>';
+							echo '<div class="error-message" style="color: red; text-align: center;">' . esc_html( __( 'File is not an image.', 'foogallery' ) ) . '</div>';
 						}
 					}
 					// Count the number of images exceeding the maximum size.
 					$exceeded_size_count = count($exceeded_size_images);
 
 					// Check if any images exceeded the maximum size.
-					if ($exceeded_size_count > 0) {
-						if ($exceeded_size_count > 1) {
-							echo '<div class="error-message" style="color: red; text-align: center;">' . $exceeded_size_count . ' ' . __('images exceeded the maximum allowed size of ' . $max_image_size . ' MB and were not uploaded.', 'foogallery') . '</div>';
-						} elseif ($exceeded_size_count === 1) {
-							echo '<div class="error-message" style="color: red; text-align: center;">' . $exceeded_size_count . ' ' . __('image exceeded the maximum allowed size of ' . $max_image_size . ' MB and was not uploaded.', 'foogallery') . '</div>';
+					if ( $exceeded_size_count > 0 ) {
+						if ( $exceeded_size_count > 1 ) {
+							echo '<div class="error-message" style="color: red; text-align: center;">' . $exceeded_size_count . ' ' . __( 'images exceeded the maximum allowed size of ' . $max_image_size . ' MB and were not uploaded.', 'foogallery') . '</div>';
+						} elseif ( $exceeded_size_count === 1 ) {
+							echo '<div class="error-message" style="color: red; text-align: center;">' . $exceeded_size_count . ' ' . __( 'image exceeded the maximum allowed size of ' . $max_image_size . ' MB and was not uploaded.', 'foogallery') . '</div>';
 						}
 					}
 
 					// Display success message only if at least one image meets the requirement.
-					if ($uploaded_image_count > $exceeded_size_count) {
-						$frontend_upload_success_message = foogallery_get_setting( 'frontend_upload_success_message', 'Image(s) successfully uploaded and awaiting moderation.' );
-						echo '<div class="success-message" style="color: green; text-align: center;">' . esc_html( $frontend_upload_success_message ) . '</div>';
-
+					if ( $uploaded_image_count > $exceeded_size_count ) {
+						$frontend_upload_success_message = foogallery_get_setting( 'frontend_upload_success_message', __( 'Image(s) successfully uploaded and awaiting moderation.', 'foogallery' ) );
+						echo '<div class="success-message" style="color: green; text-align: center;">' . esc_html( __( $frontend_upload_success_message, 'foogallery' ) ) . '</div>';
 					}
 				} else {
-					echo '<div class="error-message" style="color: red; text-align: center;">' . __('No files uploaded or an error occurred.', 'foogallery') . '</div>';
+					echo '<div class="error-message" style="color: red; text-align: center;">' . esc_html( __( 'No files uploaded or an error occurred.', 'foogallery' ) ) . '</div>';
 				}
 			}
 		}
