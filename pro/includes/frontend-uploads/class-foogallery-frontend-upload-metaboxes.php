@@ -83,10 +83,10 @@ if ( ! class_exists( 'FooGallery_FrontEnd_Upload_MetaBoxes' ) ) {
 					update_post_meta( $post_id, '_max_image_size', sanitize_text_field( $_POST['max_image_size'] ) );
 				}
 
-				if ( isset( $_POST['logged_in_users_only'] ) ) {
-					update_post_meta( $post_id, '_logged_in_users_only', 'on' );
+				if ( isset( $_POST['logged_in_users_only'] ) && $_POST['logged_in_users_only'] === 'yes' ) {
+					update_post_meta( $post_id, '_logged_in_users_only', 'yes' );
 				} else {
-					delete_post_meta( $post_id, '_logged_in_users_only' );
+					update_post_meta( $post_id, '_logged_in_users_only', 'no' );
 				}
 			}
 		}
@@ -154,17 +154,25 @@ if ( ! class_exists( 'FooGallery_FrontEnd_Upload_MetaBoxes' ) ) {
 					<?php
 					$logged_in_users_only = get_post_meta( $post->ID, '_logged_in_users_only', true );
 					?>
-					<div class="foogallery-frontend-upload-inner">                        
+					<div class="foogallery-frontend-upload-inner">
 						<div class="foogallery-frontend-upload-inner-section">
-							<label for="logged-in-users-only" style="display: flex; align-items: center;">                            
+							<label for="logged-in-users-yes" style="display: flex; align-items: center;">
 								<?php esc_html_e( 'Only logged-in users can upload', 'foogallery' ); ?>
 							</label>
-							<span class="foogallery-frontend-upload-help" title="<?php esc_attr_e( 'Check this box to restrict uploads to logged-in users only', 'foogallery' ); ?>">?</span>
+							<span class="foogallery-frontend-upload-help" title="<?php esc_attr_e( 'Restrict front end Image uploads to logged-in users only', 'foogallery' ); ?>">?</span>
 						</div>
-						<div style="width: 50%;">
-							<input type="checkbox" id="logged-in-users-only" name="logged_in_users_only" <?php checked( $logged_in_users_only, 'on' ); ?> />
-						</div>                        
-					</div>
+						<div style="width: 190px; display:flex; justify-content: space-between;">
+							<div>
+								<input type="radio" id="logged-in-users-yes" name="logged_in_users_only" value="yes" <?php checked( $logged_in_users_only, 'yes' ); ?> />
+								<label for="logged-in-users-yes"><?php esc_html_e( 'Yes', 'foogallery' ); ?></label>
+							</div>
+
+							<div>
+								<input type="radio" id="logged-in-users-no" name="logged_in_users_only" value="no" <?php checked( $logged_in_users_only, 'no' ); ?> />
+								<label for="logged-in-users-no"><?php esc_html_e( 'No', 'foogallery' ); ?></label>
+							</div>
+						</div>
+					</div>					
 
 					<?php
 					$metafields = array( 'caption', 'description', 'alt', 'custom_url', 'custom_target' );
@@ -178,16 +186,16 @@ if ( ! class_exists( 'FooGallery_FrontEnd_Upload_MetaBoxes' ) ) {
 								<label for="display_<?php echo esc_attr( $metafield ); ?>" style="display: flex; align-items: center;">
 									<?php echo esc_html( 'Display ' . $metafield ); ?>
 								</label>
-								<span class="foogallery-frontend-upload-help" title="<?php echo esc_attr( sprintf( __( 'Check to display the %s field in the upload form', 'foogallery' ), $metafield ) ); ?>">?</span>
+								<span class="foogallery-frontend-upload-help" title="<?php echo esc_attr( sprintf( __( 'Display the %s field in the front end upload form', 'foogallery' ), $metafield ) ); ?>">?</span>
 							</div>
 							<div style="width: 190px; display:flex; justify-content: space-between;">
-								<div style="">
+								<div>
 									<input type="radio" id="display_<?php echo esc_attr( $metafield ); ?>" name="display_<?php echo esc_attr( $metafield ); ?>" value="yes" <?php checked( $metafield_value, 'yes' ); ?> /> Yes
 								</div>
-								<div style="">
+								<div>
 									<input type="radio" id="display_<?php echo esc_attr( $metafield ); ?>" name="display_<?php echo esc_attr( $metafield ); ?>" value="no" <?php checked( $metafield_value, 'no' ); ?> /> No
 								</div>						
-								
+
 							</div>                            
 						</div>
 						<?php

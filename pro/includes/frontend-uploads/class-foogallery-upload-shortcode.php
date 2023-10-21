@@ -343,7 +343,7 @@ foreach ( $metafields as $metafield ) {
 					$only_logged_in_users_can_upload = get_post_meta($gallery_id, '_only_logged_in_users_can_upload', true);
 
 					// Check if the user is logged in (if required).
-					if ($only_logged_in_users_can_upload && !is_user_logged_in()) {
+					if ($only_logged_in_users_can_upload === 'yes' && !is_user_logged_in()) {
 						echo '<div class="error-message" style="color: red; text-align: center;">' . __('Only logged-in users can upload images.', 'foogallery') . '</div>';
 						return;
 					}
