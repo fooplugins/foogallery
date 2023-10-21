@@ -358,23 +358,32 @@ if ( ! class_exists( 'Foogallery_FrontEnd_Upload_Shortcode' ) ) {
 						return;
 					}
 
+					/**
+					 * Generates a random string of alphanumeric characters.
+					 *
+					 * This function creates a random string consisting of alphanumeric characters (both uppercase and
+					 * lowercase) and digits. The length of the generated string is determined by the $length parameter.
+					 *
+					 * @param int $length The length of the random string to generate. Default is 10.
+					 *
+					 * @return string A randomly generated string.
+					 */
 					function generateRandomString( $length = 10 ) {
 						$characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-						$randomString = '';
+						$random_string = '';
 						for ( $i = 0; $i < $length; $i++ ) {
-							$randomString .= $characters[rand( 0, strlen( $characters ) - 1 )];
+							$random_string .= $characters[ wp_rand( 0, strlen( $characters ) - 1 ) ];
 						}
-						return $randomString;
+						return $random_string;
 					}
-					
+
 					$random_folder_name = get_post_meta( $gallery_id, '_foogallery_frontend_upload', true );
 
-					// If it's not generated, create and save a new random folder name
+					// If it's not generated, create and save a new random folder name.
 					if ( empty( $random_folder_name ) ) {
 						$random_folder_name = generateRandomString();
 						update_post_meta( $gallery_id, '_foogallery_frontend_upload', $random_folder_name );
 					}
-					
 
 					// Create a subfolder for the random folder name.
 					$user_folder .= $random_folder_name . '/';
@@ -383,7 +392,7 @@ if ( ! class_exists( 'Foogallery_FrontEnd_Upload_Shortcode' ) ) {
 						if ( wp_mkdir_p( $user_folder ) ) {
 							chmod( $user_folder, 0755 );
 						} else {
-							echo '<div class="error-message" style="color: red; text-align: center;">' . __( 'Error creating the random subfolder.', 'foogallery' ) . '</div>';
+							echo '<div class="error-message" style="color: red; text-align: center;">' . esc_html__( 'Error creating the random subfolder.', 'foogallery' ) . '</div>';
 							return;
 						}
 					}
@@ -395,7 +404,7 @@ if ( ! class_exists( 'Foogallery_FrontEnd_Upload_Shortcode' ) ) {
 					foreach ( $uploaded_files['name'] as $key => $filename ) {
 						// Check if the file is an image.
 						if ( $uploaded_files['type'][ $key ] && strpos( $uploaded_files['type'][ $key ], 'image/' ) === 0 ) {
-							$image_size_in_mb = round( $uploaded_files['size'][ $key ] / ( 1024 * 1024), 2 ); // Convert to MB.
+							$image_size_in_mb = round( $uploaded_files['size'][ $key ] / ( 1024 * 1024 ), 2 ); // Convert to MB.
 
 							// Check if the image size exceeds the maximum allowed size in MB.
 							if ( $max_image_size > 0 && $image_size_in_mb > $max_image_size ) {
@@ -408,7 +417,7 @@ if ( ! class_exists( 'Foogallery_FrontEnd_Upload_Shortcode' ) ) {
 							$user_file = $user_folder . $unique_filename;
 
 							// Move the uploaded file to the user folder.
-							if ( move_uploaded_file( $uploaded_files['tmp_name'][ $key ], $user_file)) {
+							if ( move_uploaded_file( $uploaded_files['tmp_name'][ $key ], $user_file ) ) {
 								$image_metadata = array(
 									'file'          => $unique_filename,
 									'gallery_id'    => $gallery_id,
@@ -425,7 +434,7 @@ if ( ! class_exists( 'Foogallery_FrontEnd_Upload_Shortcode' ) ) {
 								$existing_metadata = file_exists( $metadata_file ) ? @json_decode( $wp_filesystem->get_contents( $metadata_file ), true ) : array( "items" => array() );
 
 								// Add the new image's metadata to the array.
-								$existing_metadata["items"][] = $image_metadata;
+								$existing_metadata['items'][] = $image_metadata;
 
 								// Encode the metadata as JSON and save it to the metadata file.
 								file_put_contents( $metadata_file, json_encode( $existing_metadata, JSON_PRETTY_PRINT ) );
@@ -437,14 +446,14 @@ if ( ! class_exists( 'Foogallery_FrontEnd_Upload_Shortcode' ) ) {
 						}
 					}
 					// Count the number of images exceeding the maximum size.
-					$exceeded_size_count = count($exceeded_size_images);
+					$exceeded_size_count = count( $exceeded_size_images );
 
 					// Check if any images exceeded the maximum size.
 					if ( $exceeded_size_count > 0 ) {
 						if ( $exceeded_size_count > 1 ) {
-							echo '<div class="error-message" style="color: red; text-align: center;">' . $exceeded_size_count . ' ' . __( 'images exceeded the maximum allowed size of ' . $max_image_size . ' MB and were not uploaded.', 'foogallery') . '</div>';
+							echo '<div class="error-message" style="color: red; text-align: center;">' . esc_html( $exceeded_size_count ) . ' ' . __( 'images exceeded the maximum allowed size of ' . $max_image_size . ' MB and were not uploaded.', 'foogallery' ) . '</div>';
 						} elseif ( $exceeded_size_count === 1 ) {
-							echo '<div class="error-message" style="color: red; text-align: center;">' . $exceeded_size_count . ' ' . __( 'image exceeded the maximum allowed size of ' . $max_image_size . ' MB and was not uploaded.', 'foogallery') . '</div>';
+							echo '<div class="error-message" style="color: red; text-align: center;">' . esc_html( $exceeded_size_count ) . ' ' . __( 'image exceeded the maximum allowed size of ' . $max_image_size . ' MB and was not uploaded.', 'foogallery' ) . '</div>';
 						}
 					}
 
