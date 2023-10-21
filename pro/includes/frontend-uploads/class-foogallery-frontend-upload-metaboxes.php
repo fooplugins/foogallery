@@ -67,27 +67,36 @@ if ( ! class_exists( 'FooGallery_FrontEnd_Upload_MetaBoxes' ) ) {
 		public function save_frontend_upload_metabox_settings( $post_id ) {
 			if ( get_post_type( $post_id ) === FOOGALLERY_CPT_GALLERY ) {
 				// Update post meta for the metadata checkboxes.
+				$upload_settings = array();
 				$metafields = array( 'caption', 'description', 'alt', 'custom_url', 'custom_target' );
 				foreach ( $metafields as $metafield ) {
 					$metafield_value = isset( $_POST["display_$metafield"] ) ? sanitize_text_field( $_POST["display_$metafield"] ) : 'no';
 					update_post_meta( $post_id, "_display_$metafield", $metafield_value );
+					$upload_settings["_display_$metafield"] = $metafield_value;
 				}
 
 				// Save the maximum images allowed setting.
 				if (isset( $_POST['max_images_allowed'] ) ) {
 					update_post_meta( $post_id, '_max_images_allowed', sanitize_text_field( $_POST['max_images_allowed'] ) );
+					$upload_settings['_max_images_allowed'] = sanitize_text_field( $_POST['max_images_allowed'] );
 				}
 
 				// Save the maximum image size setting.
 				if ( isset( $_POST['max_image_size'] ) ) {
 					update_post_meta( $post_id, '_max_image_size', sanitize_text_field( $_POST['max_image_size'] ) );
+					$upload_settings['_max_image_size'] = sanitize_text_field( $_POST['max_image_size'] );
 				}
 
 				if ( isset( $_POST['logged_in_users_only'] ) && $_POST['logged_in_users_only'] === 'yes' ) {
 					update_post_meta( $post_id, '_logged_in_users_only', 'yes' );
+					$upload_settings['_logged_in_users_only'] = 'yes';
 				} else {
 					update_post_meta( $post_id, '_logged_in_users_only', 'no' );
+					$upload_settings['_logged_in_users_only'] = 'no';
 				}
+
+				// Serialize and save the upload settings as an array.
+				update_post_meta( $post_id, '_foogallery_frontend_upload', serialize( $upload_settings ) );
 			}
 		}
 
