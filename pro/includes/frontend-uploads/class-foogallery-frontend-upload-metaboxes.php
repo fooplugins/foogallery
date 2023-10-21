@@ -104,15 +104,8 @@ if ( ! class_exists( 'FooGallery_FrontEnd_Upload_MetaBoxes' ) ) {
 			if ( preg_match( '/\[foogallery id="(\d+)"\]/', $shortcode, $matches ) ) {
 				$gallery_id = $matches[1];
 				?>
-				<p style="text-align: center;">
-					<input style="border: 1px solid #ccc; padding: 10px; font-size: 14px; width: 100%;" type="text" id="Upload_Form_copy_shortcode" size="<?php echo esc_attr( strlen( $shortcode ) + 2 ); ?>" value="<?php echo esc_attr( htmlspecialchars( '[foogallery_upload id="' . $gallery_id . '"]' ) ); ?>" readonly="readonly" />
-				</p>
 
-				<p>
-					<?php esc_html_e( 'Paste the above shortcode into a post or page to show the Image Upload Form.', 'foogallery' ); ?>
-				</p>
-
-				<div id="metadata-settings" style="border: 1px solid #ccc; border-radius: 5px;">
+				<div id="metadata-settings">
 					<?php
 					// Retrieve existing values from the database.
 					$max_images_allowed = get_post_meta( $post->ID, '_max_images_allowed', true );
@@ -122,13 +115,25 @@ if ( ! class_exists( 'FooGallery_FrontEnd_Upload_MetaBoxes' ) ) {
 					?>
 					<div class="foogallery-frontend-upload-inner">
 						<div class="foogallery-frontend-upload-inner-section">
+							<label for="copy_upload_form_shortcode" style="display: flex; align-items: center;">                            
+								<?php esc_html_e( 'Copy shortcode', 'foogallery' ); ?>
+							</label>
+							<span class="foogallery-frontend-upload-help" title="<?php esc_attr_e( 'Paste the above shortcode into a post or page to show the Image Upload Form.', 'foogallery' ); ?>">?</span>                                                  
+						</div>
+						<div style="width: 50%;">
+							<input style="border: 1px solid #ccc; padding: 7px; width: 190px;" type="text" id="Upload_Form_copy_shortcode" size="<?php echo esc_attr( strlen( $shortcode ) + 2 ); ?>" value="<?php echo esc_attr( htmlspecialchars( '[foogallery_upload id="' . $gallery_id . '"]' ) ); ?>" readonly="readonly" />
+						</div>                 
+
+					</div>
+					<div class="foogallery-frontend-upload-inner">
+						<div class="foogallery-frontend-upload-inner-section">
 							<label for="max_images_allowed" style="display: flex; align-items: center;">                            
 								<?php esc_html_e( 'Maximum Images Allowed', 'foogallery' ); ?>
 							</label>
 							<span class="foogallery-frontend-upload-help" title="<?php esc_attr_e( 'Enter the maximum number of images allowed for upload', 'foogallery' ); ?>">?</span>                                                      
 						</div>
 						<div style="width: 50%;">
-							<input type="number" id="max_images_allowed" name="max_images_allowed" value="<?php echo esc_attr( $max_images_allowed ); ?>" style=" padding: 5px; font-size: 14px;" />
+							<input style=" width: 190px;" type="number" id="max_images_allowed" name="max_images_allowed" value="<?php echo esc_attr( $max_images_allowed ); ?>" style=" padding: 5px; font-size: 14px;" />
 						</div>                 
 
 					</div>
@@ -141,7 +146,7 @@ if ( ! class_exists( 'FooGallery_FrontEnd_Upload_MetaBoxes' ) ) {
 							<span class="foogallery-frontend-upload-help" title="<?php esc_attr_e( 'Set the maximum image size (in MB) for uploaded images', 'foogallery' ); ?>">?</span>
 						</div> 
 						<div style="width: 50%;">
-							<input type="number" id="max_image_size" name="max_image_size" value="<?php echo esc_attr( $max_image_size ); ?>" style="padding: 5px; font-size: 14px;" />
+							<input style=" width: 190px;" type="number" id="max_image_size" name="max_image_size" value="<?php echo esc_attr( $max_image_size ); ?>" style="padding: 5px; font-size: 14px;" />
 						</div>                  
 
 					</div>
