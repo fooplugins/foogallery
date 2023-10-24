@@ -56,7 +56,7 @@ if ( ! class_exists( 'Foogallery_FrontEnd_Image_Moderation' ) ) {
 					// Retrieve the random subfolder name from the postmeta array.
 					$random_folder_name = get_post_meta( $gallery_id, '_foogallery_frontend_upload', true );
 
-					$metadata_file = $directory . '/' . $random_folder_name . '/metadata.json';
+					$metadata_file = $directory . '/metadata.json';
 
 					// Check if the metadata file exists.
 					if ( file_exists( $metadata_file ) ) {
@@ -180,7 +180,7 @@ if ( ! class_exists( 'Foogallery_FrontEnd_Image_Moderation' ) ) {
 											$random_folder_name = get_post_meta( $gallery_id, '_foogallery_frontend_upload', true );
 
 											// Construct the complete image URL.
-											$image_url = $base_url . '/wp-content/uploads/users_uploads/' . $gallery_id . '/' . $random_folder_name . '/' . $image_filename;
+											$image_url = $base_url . '/wp-content/uploads/users_uploads/' . $gallery_id . '/' . $image_filename;
 
 											// Display the image if the URL is not empty.
 											if ( ! empty( $image_url ) ) {
