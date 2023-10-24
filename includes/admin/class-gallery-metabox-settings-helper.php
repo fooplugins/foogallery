@@ -221,15 +221,18 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings_Helper' ) ) {
 					continue; //skip promo if the 'hide promos' setting is turned on
 				}
 
-				$section_name = isset($field['section']) ? $field['section'] : __( 'General', 'foogallery' );
+				$section_name = isset( $field['section'] ) ? $field['section'] : __( 'General', 'foogallery' );
 
 				$section_slug = apply_filters( 'foogallery_gallery_settings_metabox_section_slug', $section_name );
+
+				$section_order = isset( $field['section_order'] ) ? intval( $field['section_order'] ) : $this->determine_section_order( $section_slug );
 
 				if ( !isset( $sections[ $section_slug ] ) ) {
 					$sections[ $section_slug ] = array (
 						'name' => $section_name,
 						'icon_class' => apply_filters( 'foogallery_gallery_settings_metabox_section_icon', $section_slug ),
-						'fields' => array()
+						'fields' => array(),
+						'order' => $section_order
 					);
 				}
 
@@ -250,7 +253,47 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings_Helper' ) ) {
 				}
 			}
 
+			uasort( $sections, array( $this, 'sort_template_sections' ) );
+
 			return $sections;
+		}
+
+		/**
+		 * Used to sort sections
+		 *
+		 * @param mixed $a
+		 * @param mixed $b
+		 *
+		 * @return int
+		 */
+		function sort_template_sections( $a, $b ) {
+			if ( isset( $a['order'] ) && isset( $b['order'] ) ) {
+				if ( $a['order'] === $b['order'] ) {
+					return 0;
+				}
+				return ( $a['order'] < $b['order'] ) ? -1 : 1;
+			}
+
+			return 0;
+		}
+
+		private function determine_section_order( $section_slug ) {
+			switch ( $section_slug ) {
+				case 'general':
+					return 0;
+				case 'lightbox':
+					return 1;
+				case 'appearance':
+					return 2;
+				case 'hover effects':
+					return 3;
+				case 'captions':
+					return 4;
+				case 'advanced':
+					return 9999;
+			}
+
+			return 99;
 		}
 
 		public function render_hidden_gallery_template_selector() {

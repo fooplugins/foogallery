@@ -7,14 +7,41 @@ if ( ! class_exists( 'FooGallery_Pro_Bulk_Copy' ) ) {
     class FooGallery_Pro_Bulk_Copy {
 
         function __construct() {
-            //add the bulk copy metabox
-            add_action( 'add_meta_boxes_' . FOOGALLERY_CPT_GALLERY, array( $this, 'add_bulk_copy_meta_box_to_gallery' ) );
+            add_action( 'plugins_loaded', array( $this, 'load_feature' ) );
 
-            // Ajax call for starting the bulk copy
-            add_action( 'wp_ajax_foogallery_bulk_copy_start', array( $this, 'ajax_bulk_copy_start' ) );
+            add_filter( 'foogallery_available_extensions', array( $this, 'register_extension' ) );
+        }
 
-            // Ajax call for running the bulk copy
-            add_action( 'wp_ajax_foogallery_bulk_copy_run', array( $this, 'ajax_bulk_copy_run' ) );
+        function load_feature(){
+            if ( foogallery_feature_enabled( 'foogallery-bulk-copy' ) ){
+                //add the bulk copy metabox
+                add_action( 'add_meta_boxes_' . FOOGALLERY_CPT_GALLERY, array( $this, 'add_bulk_copy_meta_box_to_gallery' ) );
+
+                // Ajax call for starting the bulk copy
+                add_action( 'wp_ajax_foogallery_bulk_copy_start', array( $this, 'ajax_bulk_copy_start' ) );
+
+                // Ajax call for running the bulk copy
+                add_action( 'wp_ajax_foogallery_bulk_copy_run', array( $this, 'ajax_bulk_copy_run' ) );
+            }
+        }
+
+        function register_extension( $extensions_list ) {
+            $extensions_list[] = array(
+                'slug' => 'foogallery-bulk-copy',
+                'class' => 'FooGallery_Pro_Bulk_Copy',
+                'categories' => array( 'Premium' ),
+                'title' => __( 'Bulk copy', 'foogallery' ),
+                'description' => __( 'Allows you to bulk copy the settings from your gallery to other galleries in a few easy steps.', 'foogallery' ),
+                'external_link_text' => 'visit external site',
+                'external_link_url' => 'https://fooplugins.com/bulk-copy-foogallery-pro/',
+                'dashicon'          => 'dashicons-admin-page',
+                'tags' => array( 'Premium' ),
+                'source' => 'bundled',
+                'activated_by_default' => true,
+                'feature' => true
+            );
+
+            return $extensions_list;
         }
 
         public function ajax_bulk_copy_run() {
