@@ -120,8 +120,8 @@ if ( ! class_exists( 'Foogallery_FrontEnd_Image_Moderation' ) ) {
 					<table class="wp-list-table widefat fixed striped">
 						<thead>
 							<tr>
-								<th><?php esc_html_e( 'Gallery', 'foogallery' ); ?></th>
-								<th><?php esc_html_e( 'Image', 'foogallery' ); ?></th>
+								<th style="width: 100px;"><?php esc_html_e( 'Image', 'foogallery' ); ?></th>
+								<th><?php esc_html_e( 'Gallery', 'foogallery' ); ?></th>								
 								<th><?php esc_html_e( 'Metadata', 'foogallery' ); ?></th>
 								<th><?php esc_html_e( 'User', 'foogallery' ); ?></th>
 							</tr>
@@ -151,6 +151,24 @@ if ( ! class_exists( 'Foogallery_FrontEnd_Image_Moderation' ) ) {
 										<tr class="image-row">
 											<td>
 												<?php
+												// Retrieve the image URL from the JSON data.
+												$image_filename = isset( $image['file'] ) ? sanitize_file_name( $image['file'] ) : '';
+												$base_url       = site_url();
+												// Retrieve the random subfolder name from the postmeta array.
+												$random_folder_name = get_post_meta( $gallery_id, '_foogallery_frontend_upload', true );
+
+												// Construct the complete image URL.
+												$image_url = $base_url . '/wp-content/uploads/users_uploads/' . $gallery_id . '/' . $image_filename;
+
+												// Display the image if the URL is not empty.
+												if ( ! empty( $image_url ) ) {
+													echo '<img style="width: 100px; height: 100px;" src="' . esc_url( $image_url ) . '" alt="' . esc_attr( $image['alt'] ) . '" />';
+												}
+												?>
+											</td>
+
+											<td>
+												<?php
 												// Get the gallery post object.
 												$gallery_post = get_post( $gallery_id );
 												if ( $gallery_post ) {
@@ -177,32 +195,14 @@ if ( ! class_exists( 'Foogallery_FrontEnd_Image_Moderation' ) ) {
 													</span>
 												</div>
 
-											</td>
-
-											<td>
-												<?php
-												// Retrieve the image URL from the JSON data.
-												$image_filename = isset( $image['file'] ) ? sanitize_file_name( $image['file'] ) : '';
-												$base_url       = site_url();
-												// Retrieve the random subfolder name from the postmeta array.
-												$random_folder_name = get_post_meta( $gallery_id, '_foogallery_frontend_upload', true );
-
-												// Construct the complete image URL.
-												$image_url = $base_url . '/wp-content/uploads/users_uploads/' . $gallery_id . '/' . $image_filename;
-
-												// Display the image if the URL is not empty.
-												if ( ! empty( $image_url ) ) {
-													echo '<img style="width: 150px; height: 150px;" src="' . esc_url( $image_url ) . '" alt="' . esc_attr( $image['alt'] ) . '" />';
-												}
-												?>
-											</td>
+											</td>											
 
 											<td>
 												<p><strong><?php esc_html_e( 'Caption:', 'foogallery' ); ?></strong> <?php echo esc_html( $image['caption'] ); ?></p>
 												<p><strong><?php esc_html_e( 'Description:', 'foogallery' ); ?></strong> <?php echo esc_html( $image['description'] ); ?></p>
-												<p><strong><?php esc_html_e( 'Alt Text:', 'foogallery' ); ?></strong><?php echo esc_html( $image['alt'] ); ?></p>
-												<p><strong><?php esc_html_e( 'Custom URL:', 'foogallery' ); ?></strong> <?php echo esc_url( $image['custom_url'] ); ?></p>
-												<p><strong><?php esc_html_e( 'Custom Target:', 'foogallery' ); ?></strong> <?php echo esc_html( $image['custom_target'] ); ?></p>
+												<p><strong><?php esc_html_e( 'Alt Text: ', 'foogallery' ); ?></strong><?php echo esc_html( $image['alt'] ); ?></p>
+												<p><strong><?php esc_html_e( 'Custom URL: ', 'foogallery' ); ?></strong> <?php echo esc_url( $image['custom_url'] ); ?></p>
+												<p><strong><?php esc_html_e( 'Custom Target: ', 'foogallery' ); ?></strong> <?php echo esc_html( $image['custom_target'] ); ?></p>
 											</td>
 
 											<td>
@@ -242,25 +242,14 @@ if ( ! class_exists( 'Foogallery_FrontEnd_Image_Moderation' ) ) {
 					</table>
 				</div>
 
-				<style>
-					.image-actions {
-						display: none;
-					}
-
-					tr:hover .image-actions {
-						display: flex;
-					}
-				</style>
-
 				<div id="approved-tab" class="tab-content">
 					<table class="wp-list-table widefat fixed striped">
 						<thead>
 							<tr>
-								<th><?php esc_html_e( 'Gallery', 'foogallery' ); ?></th>
-								<th><?php esc_html_e( 'Image', 'foogallery' ); ?></th>
+								<th style="width: 100px;"><?php esc_html_e( 'Image', 'foogallery' ); ?></th>
+								<th><?php esc_html_e( 'Gallery', 'foogallery' ); ?></th>								
 								<th><?php esc_html_e( 'Metadata', 'foogallery' ); ?></th>
 								<th><?php esc_html_e( 'User', 'foogallery' ); ?></th>
-								<th><?php esc_html_e( 'Action', 'foogallery' ); ?></th>
 							</tr>
 						</thead>
 						<tbody>
@@ -313,6 +302,21 @@ if ( ! class_exists( 'Foogallery_FrontEnd_Image_Moderation' ) ) {
 												<tr>
 													<td>
 														<?php
+														// Retrieve the image URL from the JSON data.
+														$image_filename = isset( $item['file'] ) ? sanitize_file_name( $item['file'] ) : '';
+														$base_url       = site_url();
+
+														// Construct the complete image URL.
+														$image_url = $base_url . '/wp-content/uploads/approved_folder/' . $gallery_id . '/' . $image_filename;
+
+														// Display the image if the URL is not empty.
+														if ( ! empty( $image_url ) ) {
+															echo '<img style="width: 100px; height: 100px;" src="' . esc_url( $image_url ) . '" alt="' . esc_attr( $item['alt'] ) . '" />';
+														}
+														?>
+													</td>
+													<td>
+														<?php
 														// Retrieve the gallery title based on the gallery ID.
 														$gallery_title    = get_the_title( $gallery_id );
 														$gallery_edit_url = get_edit_post_link( $gallery_id );
@@ -323,23 +327,12 @@ if ( ! class_exists( 'Foogallery_FrontEnd_Image_Moderation' ) ) {
 															echo esc_html( $gallery_title );
 														}
 														?>
-													</td>
-
-													<td>
-														<?php
-														// Retrieve the image URL from the JSON data.
-														$image_filename = isset( $item['file'] ) ? sanitize_file_name( $item['file'] ) : '';
-														$base_url       = site_url();
-
-														// Construct the complete image URL.
-														$image_url = $base_url . '/wp-content/uploads/approved_folder/' . $gallery_id . '/' . $image_filename;
-
-														// Display the image if the URL is not empty.
-														if ( ! empty( $image_url ) ) {
-															echo '<img style="width: 150px; height: 150px;" src="' . esc_url( $image_url ) . '" alt="' . esc_attr( $item['alt'] ) . '" />';
-														}
-														?>
-													</td>
+														<div class="image-actions">
+															<span style="display: inline-block; text-decoration: none; color: #a00; cursor: pointer; font-size: 12px;">
+																<div class="confirm-delete" data-gallery-id="<?php echo esc_attr( $gallery_id ); ?>" data-image-id="<?php echo esc_attr( $item['file'] ); ?>" name="delete_image_nonce" data-nonce="<?php echo esc_attr( wp_create_nonce( 'delete_image_nonce' ) ); ?>"><?php esc_html_e( 'Delete Image', 'foogallery' ); ?></div>
+															</span>
+														</div>
+													</td>													
 
 													<td>
 														<p><strong><?php esc_html_e( 'Caption:', 'foogallery' ); ?></strong> <?php echo esc_html( $item['caption'] ); ?></p>
@@ -375,9 +368,6 @@ if ( ! class_exists( 'Foogallery_FrontEnd_Image_Moderation' ) ) {
 														?>
 													</td>
 
-													<td>
-														<button class="confirm-delete button button-small" data-gallery-id="<?php echo esc_attr( $gallery_id ); ?>" data-image-id="<?php echo esc_attr( $item['file'] ); ?>" name="delete_image_nonce" data-nonce="<?php echo esc_attr( wp_create_nonce( 'delete_image_nonce' ) ); ?>"><?php esc_html_e( 'Delete Image', 'foogallery' ); ?></button>
-													</td>
 												</tr>
 											<?php endforeach; ?>
 											<?php endif; ?>
@@ -527,6 +517,13 @@ if ( ! class_exists( 'Foogallery_FrontEnd_Image_Moderation' ) ) {
 
 
 			<style>
+				.image-actions {
+						display: none;
+					}
+
+				tr:hover .image-actions {
+					display: flex;
+				}
 				.tab-content {
 					display: none;
 				}
