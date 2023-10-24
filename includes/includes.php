@@ -16,7 +16,7 @@ require_once FOOGALLERY_PATH . 'includes/class-retina.php';
 require_once FOOGALLERY_PATH . 'includes/class-foogallery-widget.php';
 require_once FOOGALLERY_PATH . 'gutenberg/class-foogallery-gutenberg.php';
 require_once FOOGALLERY_PATH . 'includes/class-foogallery-debug.php';
-
+require_once FOOGALLERY_PATH . 'includes/class-foogallery-attachment-type.php';
 
 // Include built-in thumbnail generation files.
 require_once FOOGALLERY_PATH . 'includes/thumbs/includes.php';

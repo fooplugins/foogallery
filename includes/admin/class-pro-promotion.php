@@ -75,9 +75,6 @@ if ( ! class_exists( 'FooGallery_Pro_Promotion' ) ) {
 					add_filter( 'foogallery_override_gallery_template_fields-grid_promo', array( $this, 'remove_all_fields_from_promo_gallery_template' ), 999, 2 );
 					add_filter( 'foogallery_override_gallery_template_fields-slider_promo', array( $this, 'remove_all_fields_from_promo_gallery_template' ), 999, 2 );
 
-					//lightbox
-					add_filter( 'foogallery_gallery_template_field_lightboxes', array($this, 'add_lightbox'), 10, 2 );
-
 					//presets
 					add_filter( 'foogallery_gallery_template_common_thumbnail_fields_hover_effect_type_choices', array( $this, 'add_preset_type' ) );
 					add_filter( 'foogallery_override_gallery_template_fields', array( $this, 'add_preset_promo_fields' ), 99, 2 );
@@ -651,17 +648,6 @@ if ( ! class_exists( 'FooGallery_Pro_Promotion' ) ) {
 			return $section_slug;
 		}
 
-		/**
-		 * Add the PRO lightbox
-		 * @param $lightboxes
-		 *
-		 * @return mixed
-		 */
-		function add_lightbox($lightboxes) {
-			$lightboxes['foogallery'] = __( 'FooGallery Lightbox (Not installed!)', 'foogallery' );
-			return $lightboxes;
-		}
-		
 		/**
 		 * Add fields to the gallery template
 		 *

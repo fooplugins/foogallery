@@ -1858,18 +1858,6 @@ function foogallery_admin_url( $url, $utm_campaign, $utm_content = null, $utm_me
 }
 
 /**
- * Determines the best lightbox to use for a demo gallery
- *
- * @return string
- */
-function foogallery_demo_content_determine_best_lightbox() {
-	if ( foogallery_is_pro() ) {
-		return 'foogallery';
-	}
-	return 'foobox';
-}
-
-/**
  * Returns true if on the plugin activation page
  *
  * @return bool
@@ -2090,6 +2078,22 @@ function foogallery_admin_fields_find_index_of_field( $fields, $field_id ) {
 		$index++;
 	}
 	return $index;
+}
+
+/**
+ * Returns true if the field exists in the array
+ *
+ * @param $fields
+ * @param $field_id
+ * @return bool
+ */
+function foogallery_admin_fields_has_field( $fields, $field_id ) {
+    foreach ( $fields as $field ) {
+        if ( isset( $field['id'] ) && $field_id === $field['id'] ) {
+            return true;
+        }
+    }
+    return false;
 }
 
 /**
