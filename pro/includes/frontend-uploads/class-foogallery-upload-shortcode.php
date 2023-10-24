@@ -325,33 +325,19 @@ if ( ! class_exists( 'Foogallery_FrontEnd_Upload_Shortcode' ) ) {
 
 					// Check if files were uploaded.
 					if ( isset( $_FILES['foogallery_images'] ) ) {
-						$uploaded_files = $_FILES['foogallery_images'];						
+						$uploaded_files = $_FILES['foogallery_images'];
 
-						// Check if the random folder name is already stored in the postmeta.
-						$random_folder_name = get_post_meta( $gallery_id, '_foogallery_frontend_upload', true );
+						// User folder to store the uploaded images.
+						$user_folder = wp_upload_dir()['basedir'] . '/users_uploads/' . $gallery_id . '/';
 
-						if ( empty( $random_folder_name ) ) {
-							// Generate a unique folder name based on the timestamp and gallery ID.
-							$random_folder_name = 'gallery_' . $gallery_id . '_' . time();
-
-							// Define the user folder path.
-							$user_folder = wp_upload_dir()['basedir'] . '/users_uploads/' . $gallery_id . '/' . $random_folder_name . '/';
-
-							// Check if the user folder already exists, and create it if not.
-							if ( !file_exists( $user_folder ) ) {
-								if (wp_mkdir_p( $user_folder ) ) {
-									chmod( $user_folder, 0755 );
-								} else {
-									echo '<div class="error-message" style="color: red; text-align: center;">' . esc_html__( 'Error creating the user folder.', 'foogallery' ) . '</div>';
-									return;
-								}
+						// Create the user folder if it doesn't exist.
+						if ( ! file_exists( $user_folder ) ) {
+							if ( wp_mkdir_p( $user_folder ) ) {
+								chmod( $user_folder, 0755 );
+							} else {
+								echo '<div class="error-message" style="color: red; text-align: center;">' . __( 'Error creating the user folder.', 'foogallery' ) . '</div>';
+								return;
 							}
-
-							// Store the folder name in the postmeta array (only for the first upload).
-							update_post_meta( $gallery_id, '_foogallery_frontend_upload', $random_folder_name );
-						} else {
-							// Use the existing random folder for subsequent uploads.
-							$user_folder = wp_upload_dir()['basedir'] . '/users_uploads/' . $gallery_id . '/' . $random_folder_name . '/';
 						}
 
 						// Check if the "Only logged in users can upload" checkbox is checked.
@@ -373,7 +359,7 @@ if ( ! class_exists( 'Foogallery_FrontEnd_Upload_Shortcode' ) ) {
 						if ( $max_images_allowed > 0 && $uploaded_image_count > $max_images_allowed ) {
 							echo '<div class="error-message" style="color: red; text-align: center;">' . esc_html__( 'Exceeded maximum images allowed.', 'foogallery' ) . '</div>';
 							return;
-						}						
+						}
 
 						$exceeded_size_images = array();
 						foreach ( $uploaded_files['name'] as $key => $filename ) {

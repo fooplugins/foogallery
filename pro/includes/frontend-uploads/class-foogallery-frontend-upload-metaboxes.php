@@ -439,9 +439,9 @@ if ( ! class_exists( 'FooGallery_FrontEnd_Upload_MetaBoxes' ) ) {
 		private function get_images_to_moderate( $gallery_id ) {
 			$images = array();
 
-			// Retrieve the folder name from postmeta.
+			// Get the random subfolder name from the postmeta array.
 			$random_folder_name = get_post_meta( $gallery_id, '_foogallery_frontend_upload', true );
-			$metadata_file      = wp_upload_dir()['basedir'] . '/users_uploads/' . $gallery_id . '/' . $random_folder_name . '/metadata.json';
+			$metadata_file      = wp_upload_dir()['basedir'] . '/users_uploads/' . $gallery_id . '/metadata.json';
 
 			if ( file_exists( $metadata_file ) ) {
 				global $wp_filesystem;
@@ -454,7 +454,7 @@ if ( ! class_exists( 'FooGallery_FrontEnd_Upload_MetaBoxes' ) ) {
 							$image = array(
 								'id'            => sanitize_text_field( $item['file'] ),
 								'alt'           => sanitize_text_field( $item['alt'] ),
-								'url'           => site_url( "/wp-content/uploads/users_uploads/$gallery_id/$random_folder_name/{$item['file']}" ),
+								'url'           => site_url( "/wp-content/uploads/users_uploads/$gallery_id/{$item['file']}" ),
 								'caption'       => sanitize_text_field( $item['caption'] ),
 								'description'   => sanitize_text_field( $item['description'] ),
 								'custom_url'    => esc_url( $item['custom_url'] ),
