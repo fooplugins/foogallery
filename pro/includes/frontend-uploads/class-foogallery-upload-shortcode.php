@@ -74,17 +74,17 @@ if ( ! class_exists( 'Foogallery_FrontEnd_Upload_Shortcode' ) ) {
 
 				ob_start();
 				?>
-				<form method="post" enctype="multipart/form-data">
-					<div style="max-width: 500px; max-height: 200px; border: 1px dashed #999; text-align: center; padding: 20px; margin-top: 10px;">
+				<form method="post" enctype="multipart/form-data" style="display: flex; flex-drection: column; justify-content: center; align-items: center;">
+					<div style=" max-height: 200px; border: 2px dashed #999; text-align: center; padding: 20px; margin-top: 10px;">
 						<!-- Add the nonce field to the form -->
 						<input type="hidden" name="upload_image_nonce" value="<?php echo esc_attr( $upload_image_nonce ); ?>" />
 						<input type="hidden" name="gallery_id" value="<?php echo esc_attr( $gallery_id ); ?>" />
 						<input type="file" name="foogallery_images[]" id="image-upload" accept="image/*" multiple style="display: none;" />
-						<label for="image-upload" style="cursor: pointer;">
+						<label for="image-upload" style="cursor: pointer; font-weight: bold; text-transform: uppercase;">
 							<p><?php esc_html_e( $frontend_upload_image_text, 'foogallery' ); ?></p>
 						</label>
 					</div>
-
+					
 					<div class="foogallery-upload-popup-overlay" id="popup">
 						<div class="foogallery-upload-popup-content">
 							<span class="foogallery-upload-close-button" id="close-popup" style="font-size: 40px; color: white;">&times;</span>
