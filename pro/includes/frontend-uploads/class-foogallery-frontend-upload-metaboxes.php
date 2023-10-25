@@ -368,7 +368,7 @@ if ( ! class_exists( 'FooGallery_FrontEnd_Upload_MetaBoxes' ) ) {
 					<?php
 					// Check if no images were found and display a message.
 					if ( ! $images_found ) {
-						echo '<tr><td colspan="4" style="text-align: center;">' . esc_html__( 'There is no approved image', 'foogallery' ) . '</td></tr>';
+						echo '<tr><td colspan="4" style="text-align: center;">' . esc_html__( 'There are no images awaiting moderation', 'foogallery' ) . '</td></tr>';
 					}
 					?>
 				</table>
