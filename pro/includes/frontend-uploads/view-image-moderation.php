@@ -117,167 +117,136 @@ if ( ! class_exists( 'Foogallery_FrontEnd_Image_Moderation' ) ) {
 				</section>
 
 				<div id="pending-tab" class="tab-content">
-					<?php
-					$hasImagesToModerate = false;
+					<table class="wp-list-table widefat fixed striped">
+						<thead>
+							<tr>
+								<th style="width: 100px;"><?php esc_html_e( 'Image', 'foogallery' ); ?></th>
+								<th><?php esc_html_e( 'Gallery', 'foogallery' ); ?></th>								
+								<th><?php esc_html_e( 'Metadata', 'foogallery' ); ?></th>
+								<th><?php esc_html_e( 'User', 'foogallery' ); ?></th>
+							</tr>
+						</thead>
+						<tbody>
+							<?php
+							// Initialize an array to store user IDs for each image.
+							$image_uploaders = array();
+							$images_found = false;
+							foreach ( $images_to_moderate as $gallery_id => $images ) :
+								if ( $filter_gallery_id === $gallery_id || 0 === $filter_gallery_id ) :
+									foreach ( $images as $image ) :
+										// Get the gallery ID and image file name.
+										$images_found = true;
+										$gallery_id = intval( $gallery_id );										
+										$file_name  = sanitize_text_field( $image['file'] );
 
-					foreach ( $images_to_moderate as $gallery_id => $images ) :
-						if ( $filter_gallery_id === $gallery_id || 0 === $filter_gallery_id ) {
-							foreach ( $images as $image ) {
-								// Check if there are any images to moderate.
-								$hasImagesToModerate = true;
-								break;
-							}
+										// Check if the 'uploaded_by' field is set in the image's metadata.
+										if ( isset( $image['uploaded_by'] ) ) {
+											$uploader_id = intval( $image['uploaded_by'] );
+
+											// Store the uploader's ID in the array.
+											$image_uploaders[ "$gallery_id-$file_name" ] = $uploader_id;
+										} else {
+											// Handle cases where 'uploaded_by' field is not set.
+											$image_uploaders[ "$gallery_id-$file_name" ] = '';
+										}
+										?>
+										<tr class="image-row">
+											<td>
+												<?php
+												// Retrieve the image URL from the JSON data.
+												$image_filename = isset( $image['file'] ) ? sanitize_file_name( $image['file'] ) : '';
+												$base_url       = site_url();
+												// Retrieve the random subfolder name from the postmeta array.
+												$random_folder_name = get_post_meta( $gallery_id, '_foogallery_frontend_upload', true );
+
+												// Construct the complete image URL.
+												$image_url = $base_url . '/wp-content/uploads/users_uploads/' . $gallery_id . '/' . $image_filename;
+
+												// Display the image if the URL is not empty.
+												if ( ! empty( $image_url ) ) {
+													echo '<img style="width: 100px; height: 100px;" src="' . esc_url( $image_url ) . '" alt="' . esc_attr( $image['alt'] ) . '" />';
+												}
+												?>
+											</td>
+
+											<td>
+												<?php
+												// Get the gallery post object.
+												$gallery_post = get_post( $gallery_id );
+												if ( $gallery_post ) {
+													// Generate the URL for the gallery edit page.
+													$gallery_edit_url = get_edit_post_link( $gallery_id );
+
+													if ( $gallery_edit_url ) {
+														echo '<a href="' . esc_url( $gallery_edit_url ) . '">' . esc_html( $gallery_post->post_title ) . '</a>';
+													} else {
+														echo esc_html( $gallery_post->post_title );
+													}
+												} else {
+													// Display a fallback value if the gallery post is not found.
+													echo esc_html( $gallery_id );
+												}
+												?>
+												<div class="image-actions">
+													<span style="display: inline-block; text-decoration: none; color: #0073aa; cursor: pointer; font-size: 12px; margin-right: 6px;">
+														<div class="confirm-approve" data-gallery-id="<?php echo esc_attr( $gallery_id ); ?>" data-image-id="<?php echo esc_attr( $image['file'] ); ?>" name="approve_image_nonce" data-nonce="<?php echo esc_attr( wp_create_nonce( 'approve_image_nonce' ) ); ?>"><?php esc_html_e( 'Approve', 'foogallery' ); ?></div>
+													</span>
+													|
+													<span style="display: inline-block; text-decoration: none; color: #a00; cursor: pointer; font-size: 12px; margin-left: 6px;">
+														<div class="confirm-reject" data-gallery-id="<?php echo esc_attr( $gallery_id ); ?>" data-image-id="<?php echo esc_attr( $image['file'] ); ?>" name="reject_image_nonce" data-nonce="<?php echo esc_attr( wp_create_nonce( 'reject_image_nonce' ) ); ?>"><?php esc_html_e( 'Reject', 'foogallery' ); ?></div>
+													</span>
+												</div>
+
+											</td>											
+
+											<td>
+												<p><strong><?php esc_html_e( 'Caption:', 'foogallery' ); ?></strong> <?php echo esc_html( $image['caption'] ); ?></p>
+												<p><strong><?php esc_html_e( 'Description:', 'foogallery' ); ?></strong> <?php echo esc_html( $image['description'] ); ?></p>
+												<p><strong><?php esc_html_e( 'Alt Text: ', 'foogallery' ); ?></strong><?php echo esc_html( $image['alt'] ); ?></p>
+												<p><strong><?php esc_html_e( 'Custom URL: ', 'foogallery' ); ?></strong> <?php echo esc_url( $image['custom_url'] ); ?></p>
+												<p><strong><?php esc_html_e( 'Custom Target: ', 'foogallery' ); ?></strong> <?php echo esc_html( $image['custom_target'] ); ?></p>
+											</td>
+
+											<td>
+												<?php
+												// Get the gallery ID and image file name.
+												$gallery_id = intval( $gallery_id );
+												$file_name  = sanitize_text_field( $image['file'] );
+
+												// Create a unique identifier for this image (gallery_id-file_name).
+												$image_identifier = "$gallery_id-$file_name";
+
+												// Get the user ID who uploaded this image from the array.
+												$uploader_id = isset( $image_uploaders[ $image_identifier ] ) ? $image_uploaders[ $image_identifier ] : '';
+
+												// Display the uploader's username.
+												if ( ! empty( $uploader_id ) ) {
+													$uploader_info = get_userdata( $uploader_id );
+													if ( $uploader_info ) {
+														echo esc_html( $uploader_info->display_name );
+													} else {
+														echo esc_html__( 'Unknown User', 'foogallery' );
+													}
+												} else {
+													echo esc_html__( 'N/A', 'foogallery' );
+												}
+												?>
+											</td>
+
+										</tr>
+										<?php
+									endforeach;
+								endif;
+							endforeach;
+							?>
+						</tbody>
+						<?php
+						// Check if no images were found and display a message.
+						if ( ! $images_found ) {
+							echo '<tr><td colspan="4" style="text-align: center;">' . esc_html__( 'There are no images awaiting moderation', 'foogallery' ) . '</td></tr>';
 						}
-					endforeach;
-					?>
-
-					<?php if ( $hasImagesToModerate ) : ?>
-						<table class="wp-list-table widefat fixed striped">
-							<thead>
-								<tr>
-									<th style="width: 100px;"><?php esc_html_e( 'Image', 'foogallery' ); ?></th>
-									<th><?php esc_html_e( 'Gallery', 'foogallery' ); ?></th>								
-									<th><?php esc_html_e( 'Metadata', 'foogallery' ); ?></th>
-									<th><?php esc_html_e( 'User', 'foogallery' ); ?></th>
-								</tr>
-							</thead>
-							<tbody>
-								<?php
-								// Initialize an array to store user IDs for each image.
-								$image_uploaders = array();
-								foreach ( $images_to_moderate as $gallery_id => $images ) :
-									if ( $filter_gallery_id === $gallery_id || 0 === $filter_gallery_id ) :
-										foreach ( $images as $image ) :
-											// Get the gallery ID and image file name.
-											$gallery_id = intval( $gallery_id );
-											$file_name  = sanitize_text_field( $image['file'] );
-
-											// Check if the 'uploaded_by' field is set in the image's metadata.
-											if ( isset( $image['uploaded_by'] ) ) {
-												$uploader_id = intval( $image['uploaded_by'] );
-
-												// Store the uploader's ID in the array.
-												$image_uploaders[ "$gallery_id-$file_name" ] = $uploader_id;
-											} else {
-												// Handle cases where 'uploaded_by' field is not set.
-												$image_uploaders[ "$gallery_id-$file_name" ] = '';
-											}
-											?>
-											<tr class="image-row">
-												<td>
-													<?php
-													// Retrieve the image URL from the JSON data.
-													$image_filename = isset( $image['file'] ) ? sanitize_file_name( $image['file'] ) : '';
-													$base_url       = site_url();
-													// Retrieve the random subfolder name from the postmeta array.
-													$random_folder_name = get_post_meta( $gallery_id, '_foogallery_frontend_upload', true );
-
-													// Construct the complete image URL.
-													$image_url = $base_url . '/wp-content/uploads/users_uploads/' . $gallery_id . '/' . $image_filename;
-
-													// Display the image if the URL is not empty.
-													if ( ! empty( $image_url ) ) {
-														echo '<img style="width: 100px; height: 100px;" src="' . esc_url( $image_url ) . '" alt="' . esc_attr( $image['alt'] ) . '" />';
-													}
-													?>
-												</td>
-
-												<td>
-													<?php
-													// Get the gallery post object.
-													$gallery_post = get_post( $gallery_id );
-													if ( $gallery_post ) {
-														// Generate the URL for the gallery edit page.
-														$gallery_edit_url = get_edit_post_link( $gallery_id );
-
-														if ( $gallery_edit_url ) {
-															echo '<a href="' . esc_url( $gallery_edit_url ) . '">' . esc_html( $gallery_post->post_title ) . '</a>';
-														} else {
-															echo esc_html( $gallery_post->post_title );
-														}
-													} else {
-														// Display a fallback value if the gallery post is not found.
-														echo esc_html( $gallery_id );
-													}
-													?>
-													<div class="image-actions">
-														<span style="display: inline-block; text-decoration: none; color: #0073aa; cursor: pointer; font-size: 12px; margin-right: 6px;">
-															<div class="confirm-approve" data-gallery-id="<?php echo esc_attr( $gallery_id ); ?>" data-image-id="<?php echo esc_attr( $image['file'] ); ?>" name="approve_image_nonce" data-nonce="<?php echo esc_attr( wp_create_nonce( 'approve_image_nonce' ) ); ?>"><?php esc_html_e( 'Approve', 'foogallery' ); ?></div>
-														</span>
-														|
-														<span style="display: inline-block; text-decoration: none; color: #a00; cursor: pointer; font-size: 12px; margin-left: 6px;">
-															<div class="confirm-reject" data-gallery-id="<?php echo esc_attr( $gallery_id ); ?>" data-image-id="<?php echo esc_attr( $image['file'] ); ?>" name="reject_image_nonce" data-nonce="<?php echo esc_attr( wp_create_nonce( 'reject_image_nonce' ) ); ?>"><?php esc_html_e( 'Reject', 'foogallery' ); ?></div>
-														</span>
-													</div>
-
-												</td>											
-
-												<td>
-													<p><strong><?php esc_html_e( 'Caption:', 'foogallery' ); ?></strong> <?php echo esc_html( $image['caption'] ); ?></p>
-													<p><strong><?php esc_html_e( 'Description:', 'foogallery' ); ?></strong> <?php echo esc_html( $image['description'] ); ?></p>
-													<p><strong><?php esc_html_e( 'Alt Text: ', 'foogallery' ); ?></strong><?php echo esc_html( $image['alt'] ); ?></p>
-													<p><strong><?php esc_html_e( 'Custom URL: ', 'foogallery' ); ?></strong> <?php echo esc_url( $image['custom_url'] ); ?></p>
-													<p><strong><?php esc_html_e( 'Custom Target: ', 'foogallery' ); ?></strong> <?php echo esc_html( $image['custom_target'] ); ?></p>
-												</td>
-
-												<td>
-													<?php
-													// Get the gallery ID and image file name.
-													$gallery_id = intval( $gallery_id );
-													$file_name  = sanitize_text_field( $image['file'] );
-
-													// Create a unique identifier for this image (gallery_id-file_name).
-													$image_identifier = "$gallery_id-$file_name";
-
-													// Get the user ID who uploaded this image from the array.
-													$uploader_id = isset( $image_uploaders[ $image_identifier ] ) ? $image_uploaders[ $image_identifier ] : '';
-
-													// Display the uploader's username.
-													if ( ! empty( $uploader_id ) ) {
-														$uploader_info = get_userdata( $uploader_id );
-														if ( $uploader_info ) {
-															echo esc_html( $uploader_info->display_name );
-														} else {
-															echo esc_html__( 'Unknown User', 'foogallery' );
-														}
-													} else {
-														echo esc_html__( 'N/A', 'foogallery' );
-													}
-													?>
-													<!--  -->
-												</td>
-
-											</tr>
-											<?php
-										endforeach;
-									endif;
-								endforeach;
-								?>
-							</tbody>
-						</table>
-					<?php else : ?>
-						<table class="wp-list-table widefat fixed striped">
-							<thead>
-								<tr>
-									<th>Image</th>
-									<th>Gallery</th>
-									<th>Metadata</th>
-									<th>User</th>								
-								</tr>
-							</thead>
-							<tbody>
-								
-								<tr>
-									<th></th>
-									<th style="text-align: center;"><p><?php esc_html_e( 'There are no images awaiting moderation', 'foogallery' ); ?></p></th>								
-									<th></th>
-									<th></th>
-								</tr>
-
-							</tbody>
-						</table>
-						
-					<?php endif; ?>
+						?>
+					</table>
 				</div>
 
 
@@ -294,49 +263,52 @@ if ( ! class_exists( 'Foogallery_FrontEnd_Image_Moderation' ) ) {
 						<tbody>
 
 							<?php
-								// Initialize an array to store user IDs for each image.
-								$image_uploaders = array();
+							// Initialize an array to store user IDs for each image.
+							$image_uploaders = array();
+							$images_found = false;
+
 							foreach ( $images_to_moderate as $gallery_id => $images ) :
 								?>
-									<?php if ( $filter_gallery_id === $gallery_id || 0 === $filter_gallery_id ) : ?>
-										<?php
-										// Define the path to the approved folder and metadata file.
-										$approved_folder = wp_upload_dir()['basedir'] . '/approved_folder/' . $gallery_id . '/';
-										$metadata_file   = $approved_folder . 'metadata.json';
+								<?php if ( $filter_gallery_id === $gallery_id || 0 === $filter_gallery_id ) : ?>
+									<?php
+									// Define the path to the approved folder and metadata file.
+									$approved_folder = wp_upload_dir()['basedir'] . '/approved_folder/' . $gallery_id . '/';
+									$metadata_file   = $approved_folder . 'metadata.json';
+									?>
+									<?php
+									if ( file_exists( $metadata_file ) ) :
 										?>
 										<?php
-										if ( file_exists( $metadata_file ) ) :
-											?>
-											<?php
-											// Read metadata from the JSON file.
-											$metadata = $wp_filesystem->get_contents( $metadata_file );
+										// Read metadata from the JSON file.
+										$metadata = $wp_filesystem->get_contents( $metadata_file );
 
-											if ( false === $metadata ) {
-												echo '<div class="notice notice-error"><p>' . esc_html( __( 'Failed to read metadata from ', 'foogallery' ) ) . ' ' . esc_html( $metadata_file ) . '</p></div>';
+										if ( false === $metadata ) {
+											echo '<div class="notice notice-error"><p>' . esc_html( __( 'Failed to read metadata from ', 'foogallery' ) ) . ' ' . esc_html( $metadata_file ) . '</p></div>';
 
-											} else {
-												// Proceed and decode the JSON if reading was successful.
-												$metadata = json_decode( $metadata, true );
-											}
+										} else {
+											// Proceed and decode the JSON if reading was successful.
+											$metadata = json_decode( $metadata, true );
+										}
 
-											// Check if the JSON data is correctly decoded.
-											if ( isset( $metadata['items'] ) && is_array( $metadata['items'] ) ) :
-												foreach ( $metadata['items'] as $item ) :
-													// Get the gallery ID and image file name.
-													$gallery_id = intval( $gallery_id );
-													$file_name  = sanitize_text_field( $item['file'] );
+										// Check if the JSON data is correctly decoded.
+										if ( isset( $metadata['items'] ) && is_array( $metadata['items'] ) ) :
+											foreach ( $metadata['items'] as $item ) :
+												$images_found = true;
+												// Get the gallery ID and image file name.
+												$gallery_id = intval( $gallery_id );
+												$file_name  = sanitize_text_field( $item['file'] );
 
-													// Check if the 'uploaded_by' field is set in the image's metadata.
-													if ( isset( $item['uploaded_by'] ) ) {
-														$uploader_id = intval( $item['uploaded_by'] );
+												// Check if the 'uploaded_by' field is set in the image's metadata.
+												if ( isset( $item['uploaded_by'] ) ) {
+													$uploader_id = intval( $item['uploaded_by' ]);
 
-														// Store the uploader's ID in the array.
-														$image_uploaders[ "$gallery_id-$file_name" ] = $uploader_id;
-													} else {
-														// Handle cases where 'uploaded_by' field is not set.
-														$image_uploaders[ "$gallery_id-$file_name" ] = '';
-													}
-													?>
+													// Store the uploader's ID in the array.
+													$image_uploaders[ "$gallery_id-$file_name" ] = $uploader_id;
+												} else {
+													// Handle cases where 'uploaded_by' field is not set.
+													$image_uploaders[ "$gallery_id-$file_name" ] = '';
+												}
+												?>
 
 												<tr>
 													<td>
@@ -409,10 +381,16 @@ if ( ! class_exists( 'Foogallery_FrontEnd_Image_Moderation' ) ) {
 
 												</tr>
 											<?php endforeach; ?>
-											<?php endif; ?>
 										<?php endif; ?>
 									<?php endif; ?>
+								<?php endif; ?>
 							<?php endforeach; ?>
+							<?php
+							// Check if no images were found and display a message.
+							if ( ! $images_found ) {
+								echo '<tr><td colspan="4" style="text-align: center;">' . esc_html__( 'There is no approved image', 'foogallery' ) . '</td></tr>';
+							}
+							?>
 						</tbody>
 					</table>
 				</div>
