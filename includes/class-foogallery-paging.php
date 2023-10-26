@@ -7,33 +7,32 @@ if ( ! class_exists( 'FooGallery_Paging' ) ) {
 	class FooGallery_Paging {
 
 		function __construct() {
-            add_action( 'plugins_loaded', array( $this, 'load_feature' ) );
+            add_action( 'plugins_loaded', array( $this, 'load_feature' ) );			
+
+			add_action( 'foogallery_located_template', array( $this, 'determine_paging' ), 10, 1 );
+
+			//add the paging options to the gallery container
+			add_filter( 'foogallery_build_container_data_options', array( $this, 'add_paging_data_options' ), 20, 3 );
+
+			//limit the number of attachments returned when rendering a gallery if paging is enabled
+			add_filter( 'foogallery_gallery_attachments_override_for_rendering', array( $this, 'attachments_override' ), 10, 3 );
+
+			//output pagination placeholders
+			add_action( 'foogallery_loaded_template_before', array( $this, 'output_pagination_placeholders_before' ), 20, 1 );
+			add_action( 'foogallery_loaded_template_after', array( $this, 'output_pagination_placeholders_after' ), 10, 1 );
+
+			//output a script block with the rest of the attachments as json
+			add_action( 'foogallery_loaded_template_after', array( $this, 'output_paging_script_block' ), 90, 1 );
+
+			add_filter( 'foogallery_attachment_html_item_classes', array( $this, 'hide_item_for_html_output' ), 10, 3 );
 		}
 
         function load_feature() {
             if (foogallery_feature_enabled('foogallery-paging')) {
-
-                if ( is_admin() ) {
-                    //add extra fields to the templates that support paging
-                    add_filter( 'foogallery_override_gallery_template_fields', array( $this, 'add_paging_fields' ), 10, 2 );
-                }
-
-                add_action( 'foogallery_located_template', array( $this, 'determine_paging' ), 10, 1 );
-
-                //add the paging options to the gallery container
-                add_filter( 'foogallery_build_container_data_options', array( $this, 'add_paging_data_options' ), 20, 3 );
-
-                //limit the number of attachments returned when rendering a gallery if paging is enabled
-                add_filter( 'foogallery_gallery_attachments_override_for_rendering', array( $this, 'attachments_override' ), 10, 3 );
-
-                //output pagination placeholders
-                add_action( 'foogallery_loaded_template_before', array( $this, 'output_pagination_placeholders_before' ), 20, 1 );
-                add_action( 'foogallery_loaded_template_after', array( $this, 'output_pagination_placeholders_after' ), 10, 1 );
-
-                //output a script block with the rest of the attachments as json
-                add_action( 'foogallery_loaded_template_after', array( $this, 'output_paging_script_block' ), 90, 1 );
-
-                add_filter( 'foogallery_attachment_html_item_classes', array( $this, 'hide_item_for_html_output' ), 10, 3 );
+				if ( is_admin() ) {
+					//add extra fields to the templates that support paging
+					add_filter( 'foogallery_override_gallery_template_fields', array( $this, 'add_paging_fields' ), 10, 2 );
+				}                
             }
         }
 
