@@ -29,7 +29,7 @@ if ( ! class_exists('FooGallery_Pro_Whitelabelling') ) {
 				'title' => __( 'White Labeling', 'foogallery' ),
 				'description' => __( 'Rebrand FooGallery to whatever you like for your clients. Ideal for freelancers and agencies.', 'foogallery' ),
 				'external_link_text' => 'visit external site',
-                'external_link_url' => 'https://fooplugins.com/foogallery-wordpress-gallery-plugin',
+                'external_link_url' => 'https://fooplugins.com/documentation/foogallery/pro-commerce/white-labeling/',
 				'dashicon'          => 'dashicons-tag',
 				'tags' => array( 'Premium' ),
 				'source' => 'bundled'
