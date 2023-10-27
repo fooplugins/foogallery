@@ -37,7 +37,7 @@ if ( ! class_exists( 'FooGallery_Pro_Paging' ) ) {
                 'categories' => array( 'Premium' ),
                 'title' => __( 'Pagination', 'foogallery' ),
                 'description' => __( 'Adds pagination features to your galleries.', 'foogallery' ),
-                'external_link_text' => 'visit external site',
+                'external_link_text' => 'see documentation',
                 'external_link_url' => 'https://fooplugins.com/foogallery-wordpress-gallery-plugin/pagination/',
 				'dashicon'          => 'dashicons-arrow-right-alt',
                 'tags' => array( 'Premium' ),

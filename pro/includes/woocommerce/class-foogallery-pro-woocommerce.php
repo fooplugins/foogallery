@@ -97,7 +97,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
                 'categories' => array( 'Premium' ),
                 'title' => __( 'Ecommerce', 'foogallery' ),
                 'description' => __( 'Extend the functionality of your gallery with seamless ecommerce integration.', 'foogallery' ),
-                'external_link_text' => 'visit external site',
+                'external_link_text' => 'see documentation',
                 'external_link_url' => 'https://fooplugins.com/foogallery-wordpress-gallery-plugin/woocommerce-integration/',
 				'dashicon'          => 'dashicons-cart',
                 'tags' => array( 'Premium' ),

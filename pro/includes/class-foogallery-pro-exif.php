@@ -69,7 +69,7 @@ if ( ! class_exists( 'FooGallery_Pro_Exif' ) ) {
                 'categories' => array( 'Premium' ),
                 'title' => __( 'Exif', 'foogallery' ),
                 'description' => __( 'Enables compatibility with Exchangeable Image File Format (Exif) for your gallery', 'foogallery' ),
-                'external_link_text' => 'visit external site',
+                'external_link_text' => 'see documentation',
                 'external_link_url' => 'https://fooplugins.com/foogallery-wordpress-gallery-plugin/exif-data/',
                 'dashicon'          => 'dashicons-camera',
                 'tags' => array( 'Premium' ),

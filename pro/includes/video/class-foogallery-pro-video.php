@@ -89,7 +89,7 @@ if ( ! class_exists( 'FooGallery_Pro_Video' ) ) {
                 'categories' => array( 'Premium' ),
                 'title' => __( 'Video', 'foogallery' ),
                 'description' => __( 'Add video support into your galleries.', 'foogallery' ),
-                'external_link_text' => 'visit external site',
+                'external_link_text' => 'see documentation',
                 'external_link_url' => 'https://fooplugins.com/foogallery-wordpress-gallery-plugin/video-gallery/',
                 'dashicon'          => 'dashicons-video-alt3',
                 'tags' => array( 'Premium' ),

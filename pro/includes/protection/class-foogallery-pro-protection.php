@@ -80,7 +80,7 @@ if ( ! class_exists( 'FooGallery_Pro_Protection' ) ) {
                 'categories' => array( 'Premium' ),
                 'title' => __( 'Protection', 'foogallery' ),
                 'description' => __( 'Protect your gallery images with an added layer of security.', 'foogallery' ),
-                'external_link_text' => 'visit external site',
+                'external_link_text' => 'see documentation',
                 'external_link_url' => 'https://fooplugins.com/wordpress-gallery-protection/',
 				'dashicon'          => 'dashicons-lock',
                 'tags' => array( 'Premium' ),
