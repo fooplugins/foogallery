@@ -67,12 +67,12 @@ if ( ! class_exists( 'FooGallery_Extensions_API' ) ) {
 				'source' => 'bundled'
 			);
 
-			//FooBox premium
+			//FooBox premium.
 			$this->extensions[] = array(
 				'slug' => 'foobox',
 				'class' => 'FooGallery_FooBox_Extension',
 				'categories' => array( 'Featured', 'Premium' ),
-				'file' => 'foobox-free.php',
+				'file' => 'foobox.php',
 				'title' => 'FooBox PRO',
 				'description' => 'The best lightbox for WordPress just got even better!',
 				'price' => '$27',
