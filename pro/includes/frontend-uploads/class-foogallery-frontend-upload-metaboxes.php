@@ -127,7 +127,7 @@ if ( ! class_exists( 'FooGallery_FrontEnd_Upload_MetaBoxes' ) ) {
 							<label for="copy_upload_form_shortcode" style="display: flex; align-items: center;">                            
 								<?php esc_html_e( 'Copy shortcode', 'foogallery' ); ?>
 							</label>
-							<span class="foogallery-frontend-upload-help" title="<?php esc_attr_e( 'Paste the above shortcode into a post or page to show the Image Upload Form.', 'foogallery' ); ?>">?</span>                                                  
+							<span data-balloon-length="large" data-balloon-pos="right" data-balloon="<?php esc_attr_e( 'Paste the above shortcode into a post or page to show the Image Upload Form.', 'foogallery' ); ?>"><i class="dashicons dashicons-editor-help"></i></span>						
 						</div>
 						<div style="width: 50%;">
 							<input style="border: 1px solid #ccc; padding: 7px; min-width: 190px;" type="text" id="Upload_Form_copy_shortcode" size="<?php echo esc_attr( strlen( $shortcode ) + 2 ); ?>" value="<?php echo esc_attr( htmlspecialchars( '[foogallery_upload id="' . $gallery_id . '"]' ) ); ?>" readonly="readonly" />
@@ -139,7 +139,7 @@ if ( ! class_exists( 'FooGallery_FrontEnd_Upload_MetaBoxes' ) ) {
 							<label for="max_images_allowed" style="display: flex; align-items: center;">                            
 								<?php esc_html_e( 'Maximum Images Allowed', 'foogallery' ); ?>
 							</label>
-							<span class="foogallery-frontend-upload-help" title="<?php esc_attr_e( 'Enter the maximum number of images allowed for upload', 'foogallery' ); ?>">?</span>                                                      
+							<span data-balloon-length="large" data-balloon-pos="right" data-balloon="<?php esc_attr_e( 'Enter the maximum number of images allowed for upload.', 'foogallery' ); ?>"><i class="dashicons dashicons-editor-help"></i></span>							                                                    
 						</div>
 						<div style="width: 50%;">
 							<input style=" width: 190px;" type="number" id="max_images_allowed" name="max_images_allowed" value="<?php echo esc_attr( $max_images_allowed ); ?>" style=" padding: 5px; font-size: 14px;" />
@@ -152,7 +152,7 @@ if ( ! class_exists( 'FooGallery_FrontEnd_Upload_MetaBoxes' ) ) {
 							<label for="max_image_size" style="display: flex; align-items: center;">                                
 								<?php esc_html_e( 'Maximum Image Size (mb)', 'foogallery' ); ?>
 							</label>
-							<span class="foogallery-frontend-upload-help" title="<?php esc_attr_e( 'Set the maximum image size (in MB) for uploaded images', 'foogallery' ); ?>">?</span>
+							<span data-balloon-length="large" data-balloon-pos="right" data-balloon="<?php esc_attr_e( 'Set the maximum image size (in MB) for uploaded images.', 'foogallery' ); ?>"><i class="dashicons dashicons-editor-help"></i></span>							
 						</div> 
 						<div style="width: 50%;">
 							<input style=" width: 190px;" type="number" id="max_image_size" name="max_image_size" value="<?php echo esc_attr( $max_image_size ); ?>" style="padding: 5px; font-size: 14px;" />
@@ -168,7 +168,7 @@ if ( ! class_exists( 'FooGallery_FrontEnd_Upload_MetaBoxes' ) ) {
 							<label for="logged-in-users-yes" style="display: flex; align-items: center;">
 								<?php esc_html_e( 'Only logged-in users can upload', 'foogallery' ); ?>
 							</label>
-							<span class="foogallery-frontend-upload-help" title="<?php esc_attr_e( 'Restrict front end Image uploads to logged-in users only', 'foogallery' ); ?>">?</span>
+							<span data-balloon-length="large" data-balloon-pos="right" data-balloon="<?php esc_attr_e( 'Restrict front end Image uploads to logged-in users only.', 'foogallery' ); ?>"><i class="dashicons dashicons-editor-help"></i></span>							
 						</div>
 						<div style="width: 190px; display:flex; justify-content: space-between;">
 							<div style="width: 50%;">
@@ -195,7 +195,7 @@ if ( ! class_exists( 'FooGallery_FrontEnd_Upload_MetaBoxes' ) ) {
 								<label for="display_<?php echo esc_attr( $metafield ); ?>" style="display: flex; align-items: center;">
 									<?php echo esc_html( 'Display ' . $metafield ); ?>
 								</label>
-								<span class="foogallery-frontend-upload-help" title="<?php echo esc_attr( sprintf( __( 'Display the %s field in the front end upload form', 'foogallery' ), $metafield ) ); ?>">?</span>
+								<span data-balloon-length="large" data-balloon-pos="right" data-balloon="<?php echo esc_attr( sprintf( __( 'Display the %s field in the front end upload form', 'foogallery' ), $metafield ) ); ?>"><i class="dashicons dashicons-editor-help"></i></span>								
 							</div>
 							<div style="width: 190px; display:flex; justify-content: space-between;">
 								<div style="width: 50%;">
