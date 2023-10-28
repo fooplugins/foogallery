@@ -332,11 +332,14 @@ public function column_default( $item, $column_name ) {
             $has_errors  = isset( $item['has_errors'] ) && true === $item['has_errors'];
             $actions     = '';
 
-            if ( ! $downloaded ) {
+            if ($item['slug'] === 'foobox') {
+                // Special case for 'FooBox premium'
+                $actions = '<a href="' . esc_url( $item['download_button']['href'] ) . '" target="' . $item['download_button']['target'] . '">' . $item['download_button']['text'] . '</a>';
+            } elseif (! $downloaded) {
                 $base_url     = add_query_arg( array( 'extension' => $item['slug'], '_wpnonce' => wp_create_nonce( 'foogallery_extension_action' ) ) );
                 $download_url = add_query_arg( 'action', 'download', $base_url );
                 $actions     .= '<a href="' . esc_url( $download_url ) . '">Download</a>';
-            } elseif ( $is_active ) {
+            } elseif ($is_active) {
                 $base_url         = add_query_arg( array( 'extension' => $item['slug'], '_wpnonce' => wp_create_nonce( 'foogallery_extension_action' ) ) );
                 $deactivate_url   = add_query_arg( 'action', 'deactivate', $base_url );
                 $actions         .= '<a href="' . esc_url( $deactivate_url ) . '">Deactivate</a>';

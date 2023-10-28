@@ -32,7 +32,7 @@ if ( ! class_exists( 'FooGallery_Pro_Bulk_Copy' ) ) {
                 'categories' => array( 'Premium' ),
                 'title' => __( 'Bulk copy', 'foogallery' ),
                 'description' => __( 'Allows you to bulk copy the settings from your gallery to other galleries in a few easy steps.', 'foogallery' ),
-                'external_link_text' => 'visit external site',
+                'external_link_text' => 'see documentation',
                 'external_link_url' => 'https://fooplugins.com/bulk-copy-foogallery-pro/',
                 'dashicon'          => 'dashicons-admin-page',
                 'tags' => array( 'Premium' ),
