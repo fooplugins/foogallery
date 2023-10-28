@@ -10161,6 +10161,9 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
                 toggle: true
             });
         },
+        isEnabled: function(){
+            return this._super() && _.fullscreen.supported;
+        },
         click: function(){
             var self = this, pnl = self.panel.el;
             _.fullscreen.toggle(pnl).then(function(){
@@ -12637,7 +12640,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
             self.piles.forEach(function(pile){
                 var left = rowWidth;
                 rowWidth += info.blockWidth;
-                if (rowWidth > info.maxWidth){
+                if (rowWidth > info.maxWidth && left > 0){
                     left = 0;
                     rowWidth = info.blockWidth;
                     rowCount++;
