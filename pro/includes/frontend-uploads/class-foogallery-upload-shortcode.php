@@ -241,39 +241,39 @@ if ( ! class_exists( 'Foogallery_FrontEnd_Upload_Shortcode' ) ) {
 							if (file.type.startsWith('image/')) {
 							const metadataFields = `
 								<div class="image-metadata" style="display: flex; flex-direction: row; margin-bottom: 10px; padding: 5px; border: 1px solid #ccc; border-radius: 5px; background-color: #f9f9f9;">
-									<div class="image-preview" style="width: 70%;">
+									<div class="image-preview" style="width: 50%;">
 										<img style="width: 100px; height: 100px; object-fit: cover;" src="${URL.createObjectURL(file)}" alt="Image Preview" />
 									</div>
 
-									<div class="metadata-fields" style="background-color: #f5f5f5; width: 30%; display: flex; flex-direction: column; align-items: flex-end; padding: 3px;">
+									<div class="metadata-fields" style="background-color: #f5f5f5; width: 50%; display: flex; flex-direction: column; padding: 3px;">
 										${metadataContainer.getAttribute('data-display-alt') === 'yes' ? `
 										<div class="metadata-field" style="margin-bottom: 8px; display: flex; ">
-											<label for="alt_${i}" style="display: block; font-size: 12px; margin-right: 43px;">Alt Text</label>											
-											<textarea class="metadata-textarea" style="padding: 5px; border: 1px solid #ccc; resize: vertical; border-radius: 3px;" name="alt[]" id="alt_${i}"></textarea>																						
+											<label for="alt_${i}" style="display: block; width:20%; font-size: 12px; margin-right: 41px;">Alt Text</label>											
+											<input type="text" class="metadata-textarea" style="padding: 5px; width:80%; border: 1px solid #ccc; border-radius: 3px;" name="alt[]" id="alt_${i}"/>																						
 										</div>` : ''}
 
 										${metadataContainer.getAttribute('data-display-caption') === 'yes' ? `
 										<div class="metadata-field" style="margin-bottom: 8px; display: flex; ">
-											<label for="caption_${i}" style="display: block; font-size: 12px; margin-right: 41px;">Caption</label>
-											<textarea class="metadata-textarea" style="padding: 5px; border: 1px solid #ccc; resize: vertical; border-radius: 3px;" name="caption[]" id="caption_${i}"></textarea>
+											<label for="caption_${i}" style="display: block; width:20%; font-size: 12px; margin-right: 41px;">Caption</label>
+											<textarea class="metadata-textarea" style="padding: 5px; width:80%; border: 1px solid #ccc; resize: vertical; border-radius: 3px;" name="caption[]" id="caption_${i}"></textarea>
 										</div>` : ''}
 
 										${metadataContainer.getAttribute('data-display-description') === 'yes' ?  `
 										<div class="metadata-field" style="margin-bottom: 8px; display: flex; ">
-											<label for="description_${i}" style="display: block; font-size: 12px; margin-right: 22px;">Description</label>
-											<textarea class="metadata-textarea" style="padding: 5px; border: 1px solid #ccc; resize: vertical; border-radius: 3px;" name="description[]" id="description_${i}"></textarea>
+											<label for="description_${i}" style="display: block; width:20%; font-size: 12px; margin-right: 41px;">Description</label>
+											<textarea class="metadata-textarea" style="padding: 5px; width:80%; border: 1px solid #ccc; resize: vertical; border-radius: 3px;" name="description[]" id="description_${i}"></textarea>
 										</div>` : ''}										
 
 										${metadataContainer.getAttribute('data-display-custom_url') === 'yes' ? `
 										<div class="metadata-field" style="margin-bottom: 8px; display: flex; ">
-											<label for="custom_url_${i}" style="display: block; font-size: 12px; margin-right: 17px;">Custom URL</label>
-											<textarea class="metadata-textarea" style="padding: 5px; border: 1px solid #ccc; resize: vertical; border-radius: 3px;" name="custom_url[]" id="custom_url_${i}"></textarea>
+											<label for="custom_url_${i}" style="display: block; width:20%; font-size: 12px; margin-right: 39px;">Custom URL</label>
+											<input type="text" class="metadata-textarea" style="padding: 5px; width:80%; border: 1px solid #ccc; border-radius: 3px;" name="custom_url[]" id="custom_url_${i}"/>
 										</div>` : ''}
 
 										${metadataContainer.getAttribute('data-display-custom_target') === 'yes' ? `
 										<div class="metadata-field" style="margin-bottom: 8px; display: flex; ">
-											<label for="custom_target_${i}" style="display: block; font-size: 12px; margin-right: 6px;">Custom Target</label>
-											<textarea class="metadata-textarea" style="padding: 5px; border: 1px solid #ccc; resize: vertical; border-radius: 3px;" name="custom_target[]" id="custom_target_${i}"></textarea>
+											<label for="custom_target_${i}" style="display: block; width:20%; font-size: 12px; margin-right: 39px;">Custom Target</label>
+											<input type="text" class="metadata-textarea" style="padding: 5px; width:80%; border: 1px solid #ccc; border-radius: 3px;" name="custom_target[]" id="custom_target_${i}"/>
 										</div>` : ''}
 									</div>
 								</div>
