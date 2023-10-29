@@ -192,12 +192,21 @@ function foogallery_admin_settings_url() {
 }
 
 /**
- * Returns the FooGallery extensions page Url within the admin
+ * DEPRECATED!
  *
  * @return string The Url to the FooGallery extensions page in admin
  */
 function foogallery_admin_extensions_url() {
-	return admin_url( add_query_arg( array( 'page' => FOOGALLERY_ADMIN_MENU_EXTENSIONS_SLUG ), foogallery_admin_menu_parent_slug() ) );
+	return foogallery_admin_extensions_url();
+}
+
+/**
+ * Returns the FooGallery features page Url within the admin
+ *
+ * @return string The Url to the FooGallery extensions page in admin
+ */
+function foogallery_admin_features_url() {
+    return admin_url( add_query_arg( array( 'page' => FOOGALLERY_ADMIN_MENU_FEATURES_SLUG ), foogallery_admin_menu_parent_slug() ) );
 }
 
 /**
