@@ -196,7 +196,7 @@ if ( function_exists( 'foogallery_fs' ) ) {
 				}
 
 				if ( ! $pro_code_included ) {
-					add_filter( 'foogallery_extensions_for_view', array( $this, 'add_foogallery_pro_extension' ) );
+					add_filter( 'foogallery_extensions_for_view', array( $this, 'add_foogallery_pro_features' ) );
 				}
 
 				// init Gutenberg!
@@ -209,29 +209,117 @@ if ( function_exists( 'foogallery_fs' ) ) {
 				new FooGallery_il8n();
 			}
 
-			function add_foogallery_pro_extension( $extensions ) {
+			function add_foogallery_pro_features( $extensions ) {
 
-				$extension = array(
-					'slug'            => 'foogallery-pro',
-					'class'           => 'FooGallery_Pro',
-					'categories'      => array( 'Featured', 'Premium' ),
-					'title'           => 'FooGallery Pro',
-					'description'     => 'The best gallery plugin for WordPress just got even better!',
-					'price'           => '$49',
-					'external_link_text' => 'visit external site',
-					'external_link_url' => 'https://fooplugins.com/foogallery-wordpress-gallery-plugin',
-					'dashicon'          => 'dashicons-star-filled',
-					'tags'            => array( 'Premium' ),
-					'source'          => 'fooplugins',
-					'download_button' => array(
-						'text'    => 'Start FREE Trial',
-						'target'  => '_self',
-						'href'    => foogallery_fs()->checkout_url( WP_FS__PERIOD_ANNUALLY, true ),
-						'confirm' => false,
-					),
-				);
+                $pro_features = foogallery_pro_features();
 
-				array_unshift( $extensions, $extension );
+                $extensions[] = array(
+                    'slug' => 'foogallery-bulk-copy',
+                    'categories' => array( 'Premium' ),
+                    'title' => __( 'Bulk Copy', 'foogallery' ),
+                    'description' => $pro_features['bulk_copy']['desc'],
+                    'external_link_text' => __( 'Read documentation', 'foogallery' ),
+                    'external_link_url' => $pro_features['bulk_copy']['link'],
+                    'dashicon'          => 'dashicons-admin-page',
+                    'tags' => array( 'Premium' ),
+                    'source' => 'upgrade'
+                );
+
+                $extensions[] = array(
+                    'slug' => 'foogallery-whitelabeling',
+                    'categories' => array( 'Premium' ),
+                    'title' => __( 'White Labeling', 'foogallery' ),
+                    'description' => $pro_features['whitelabeling']['desc'],
+                    'external_link_text' => __( 'Read documentation', 'foogallery' ),
+                    'external_link_url' => $pro_features['whitelabeling']['link'],
+                    'dashicon'          => 'dashicons-tag',
+                    'tags' => array( 'Premium' ),
+                    'source' => 'upgrade'
+                );
+
+                $extensions[] = array(
+                    'slug' => 'foogallery-exif',
+                    'categories' => array( 'Premium' ),
+                    'title' => __( 'EXIF', 'foogallery' ),
+                    'description' => $pro_features['exif']['desc'],
+                    'external_link_text' => __( 'Read documentation', 'foogallery' ),
+                    'external_link_url' => $pro_features['exif']['link'],
+                    'dashicon'          => 'dashicons-camera',
+                    'tags' => array( 'Premium' ),
+                    'source' => 'upgrade'
+                );
+
+                $extensions[] = array(
+                    'slug' => 'foogallery-filtering',
+                    'categories' => array( 'Premium' ),
+                    'title' => __( 'Filtering', 'foogallery' ),
+                    'description' => $pro_features['filtering']['desc'],
+                    'external_link_text' => __( 'Read documentation', 'foogallery' ),
+                    'external_link_url' => $pro_features['filtering']['link'],
+                    'dashicon'          => 'dashicons-filter',
+                    'tags' => array( 'Premium' ),
+                    'source' => 'upgrade'
+                );
+
+                $extensions[] = array(
+                    'slug' => 'foogallery-master-galleries',
+                    'categories' => array( 'Premium' ),
+                    'title' => __( 'Master Gallery', 'foogallery' ),
+                    'description' => $pro_features['master_galleries']['desc'],
+                    'external_link_text' => __( 'Read documentation', 'foogallery' ),
+                    'external_link_url' => $pro_features['master_galleries']['link'],
+                    'dashicon'          => 'dashicons-networking',
+                    'tags' => array( 'Premium' ),
+                    'source' => 'upgrade'
+                );
+
+                $extensions[] = array(
+                    'slug' => 'foogallery-paging',
+                    'categories' => array( 'Premium' ),
+                    'title' => __( 'Pagination', 'foogallery' ),
+                    'description' => $pro_features['pagination']['desc'],
+                    'external_link_text' => __( 'Read documentation', 'foogallery' ),
+                    'external_link_url' => $pro_features['pagination']['link'],
+                    'dashicon'          => 'dashicons-arrow-right-alt',
+                    'tags' => array( 'Premium' ),
+                    'source' => 'upgrade'
+                );
+
+                $extensions[] = array(
+                    'slug' => 'foogallery-protection',
+                    'categories' => array( 'Premium' ),
+                    'title' => __( 'Protection', 'foogallery' ),
+                    'description' => $pro_features['protection']['desc'],
+                    'external_link_text' => __( 'Read documentation', 'foogallery' ),
+                    'external_link_url' => $pro_features['protection']['link'],
+                    'dashicon'          => 'dashicons-lock',
+                    'tags' => array( 'Premium' ),
+                    'source' => 'upgrade'
+                );
+
+                $extensions[] = array(
+                    'slug' => 'foogallery-video',
+                    'categories' => array( 'Premium' ),
+                    'title' => __( 'Video', 'foogallery' ),
+                    'description' => $pro_features['video']['desc'],
+                    'external_link_text' => __( 'Read documentation', 'foogallery' ),
+                    'external_link_url' => $pro_features['video']['link'],
+                    'dashicon'          => 'dashicons-video-alt3',
+                    'tags' => array( 'Premium' ),
+                    'source' => 'upgrade'
+                );
+
+                $extensions[] = array(
+                    'slug' => 'foogallery-woocommerce',
+                    'categories' => array( 'Premium' ),
+                    'title' => __( 'Ecommerce', 'foogallery' ),
+                    'description' => $pro_features['ecommerce']['desc'],
+                    'external_link_text' => __( 'Read documentation', 'foogallery' ),
+                    'external_link_url' => $pro_features['ecommerce']['link'],
+                    'dashicon'          => 'dashicons-cart',
+                    'tags' => array( 'Premium' ),
+                    'source' => 'upgrade'
+                );
 
 				return $extensions;
 			}
