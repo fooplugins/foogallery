@@ -130,7 +130,7 @@ if ( ! class_exists( 'FooGallery_FrontEnd_Upload_MetaBoxes' ) ) {
 							<span data-balloon-length="large" data-balloon-pos="right" data-balloon="<?php esc_attr_e( 'Paste the above shortcode into a post or page to show the Image Upload Form.', 'foogallery' ); ?>"><i class="dashicons dashicons-editor-help"></i></span>						
 						</div>
 						<div style="width: 50%;">
-							<input style="border: 1px solid #ccc; padding: 7px; min-width: 190px;" type="text" id="Upload_Form_copy_shortcode" size="<?php echo esc_attr( strlen( $shortcode ) + 2 ); ?>" value="<?php echo esc_attr( htmlspecialchars( '[foogallery_upload id="' . $gallery_id . '"]' ) ); ?>" readonly="readonly" />
+							<input style="width: 250px; text-align:center;  border: 1px solid #ccc; padding: 7px; font-size: 14px;" type="text" id="Upload_Form_copy_shortcode" size="<?php echo esc_attr( strlen( $shortcode ) + 2 ); ?>" value="<?php echo esc_attr( htmlspecialchars( '[foogallery_upload id="' . $gallery_id . '"]' ) ); ?>" readonly="readonly" />
 						</div>                 
 
 					</div>
@@ -142,7 +142,7 @@ if ( ! class_exists( 'FooGallery_FrontEnd_Upload_MetaBoxes' ) ) {
 							<span data-balloon-length="large" data-balloon-pos="right" data-balloon="<?php esc_attr_e( 'Enter the maximum number of images allowed for upload.', 'foogallery' ); ?>"><i class="dashicons dashicons-editor-help"></i></span>							                                                    
 						</div>
 						<div style="width: 50%;">
-							<input style=" width: 190px;" type="number" id="max_images_allowed" name="max_images_allowed" value="<?php echo esc_attr( $max_images_allowed ); ?>" style=" padding: 5px; font-size: 14px;" />
+							<input style="width: 250px; border: 1px solid #ccc; padding: 7px; font-size: 14px;" type="number" id="max_images_allowed" name="max_images_allowed" value="<?php echo esc_attr( $max_images_allowed ); ?>" style=" padding: 5px; font-size: 14px;" />
 						</div>                 
 
 					</div>
@@ -155,7 +155,7 @@ if ( ! class_exists( 'FooGallery_FrontEnd_Upload_MetaBoxes' ) ) {
 							<span data-balloon-length="large" data-balloon-pos="right" data-balloon="<?php esc_attr_e( 'Set the maximum image size (in MB) for uploaded images.', 'foogallery' ); ?>"><i class="dashicons dashicons-editor-help"></i></span>							
 						</div> 
 						<div style="width: 50%;">
-							<input style=" width: 190px;" type="number" id="max_image_size" name="max_image_size" value="<?php echo esc_attr( $max_image_size ); ?>" style="padding: 5px; font-size: 14px;" />
+							<input style="width: 250px;  border: 1px solid #ccc; padding: 7px; font-size: 14px;" type="number" id="max_image_size" name="max_image_size" value="<?php echo esc_attr( $max_image_size ); ?>" style="padding: 5px; font-size: 14px;" />
 						</div>                  
 
 					</div>
