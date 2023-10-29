@@ -290,7 +290,6 @@ if ( ! class_exists( 'FooGallery_FrontEnd_Upload_MetaBoxes' ) ) {
 							<th><?php esc_html_e( 'Image', 'foogallery' ); ?></th>
 							<th><?php esc_html_e( 'Metadata', 'foogallery' ); ?></th>
 							<th><?php esc_html_e( 'User', 'foogallery' ); ?></th>
-							<th><?php esc_html_e( 'Action', 'foogallery' ); ?></th>
 						</tr>
 					</thead>
 					<tbody>
@@ -319,7 +318,18 @@ if ( ! class_exists( 'FooGallery_FrontEnd_Upload_MetaBoxes' ) ) {
 							?>
 							<tr>
 								<td>
-									<img style="width: 100px; height: 100px;" src="<?php echo esc_url( $image['url'] ); ?>" alt="<?php echo esc_attr( $image['alt'] ); ?>" />
+									<div style="display: flex;">
+										<img style="width: 100px; height: 100px;" src="<?php echo esc_url( $image['url'] ); ?>" alt="<?php echo esc_attr( $image['alt'] ); ?>" />
+										<div class="image-actions" style="margin-left: 10px; justify-content:center;">
+											<span style="display: inline-block; text-decoration: none; color: #0073aa; cursor: pointer; font-size: 12px; margin-right: 6px;">
+												<div class="approve-image" data-gallery-id="<?php echo esc_attr( $gallery_id ); ?>" data-image-id="<?php echo esc_attr( $image['id'] ); ?>" name="approve_image_nonce" data-nonce="<?php echo esc_attr( wp_create_nonce( 'approve_image_nonce' ) ); ?>"><?php esc_html_e( ' Approve', 'foogallery' ); ?></div>
+											</span>
+											|
+											<span style="display: inline-block; text-decoration: none; color: #a00; cursor: pointer; font-size: 12px; margin-left: 6px;">
+												<div class="reject-image" ta-gallery-id="<?php echo esc_attr( $gallery_id ); ?>" data-image-id="<?php echo esc_attr( $image['id'] ); ?>" name="reject_image_nonce" data-nonce="<?php echo esc_attr( wp_create_nonce( 'reject_image_nonce' ) ); ?>"><?php esc_html_e( 'Reject', 'foogallery' ); ?></div>
+											</span>
+										</div>
+									</div>									
 								</td>
 								<td>
 									<!-- Display metadata here -->
@@ -353,13 +363,7 @@ if ( ! class_exists( 'FooGallery_FrontEnd_Upload_MetaBoxes' ) ) {
 										echo esc_html__( 'N/A', 'foogallery' );
 									}
 									?>
-								</td>
-								<td>
-									<button class="approve-image button button-primary" data-gallery-id="<?php echo esc_attr( $gallery_id ); ?>" data-image-id="<?php echo esc_attr( $image['id'] ); ?>" name="approve_image_nonce" data-nonce="<?php echo esc_attr( wp_create_nonce( 'approve_image_nonce' ) ); ?>"><?php esc_html_e( ' Approve', 'foogallery' ); ?></button>
-									<button class="reject-image button button-small" data-gallery-id="<?php echo esc_attr( $gallery_id ); ?>" data-image-id="<?php echo esc_attr( $image['id'] ); ?>" name="reject_image_nonce" data-nonce="<?php echo esc_attr( wp_create_nonce( 'reject_image_nonce' ) ); ?>">
-										<?php esc_html_e( 'Reject Image', 'foogallery' ); ?>
-									</button>
-								</td>
+								</td>								
 							</tr>
 							<?php
 						}
@@ -373,6 +377,15 @@ if ( ! class_exists( 'FooGallery_FrontEnd_Upload_MetaBoxes' ) ) {
 					?>
 				</table>
 				</div>
+				<style>
+					.image-actions {
+						display: none;
+					}
+
+					tr:hover .image-actions {
+						display: flex;
+					}
+				</style>
 
 				<script>                              
 
