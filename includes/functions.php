@@ -2163,3 +2163,16 @@ function foogallery_feature_enabled( $feature ) {
 
     return array_key_exists( $feature, $foogallery_features ) && $foogallery_features[$feature]['is_active'];
 }
+
+/**
+ * Returns an array of the pro features available in FooGallery.
+ *
+ * @return array
+ */
+function foogallery_pro_features() {
+    global $foogallery_pro_features;
+    if ( !isset( $foogallery_pro_features ) ) {
+        $foogallery_pro_features = include(FOOGALLERY_PATH . 'includes/admin/pro-features.php');
+    }
+    return $foogallery_pro_features;
+}
