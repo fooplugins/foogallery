@@ -82,15 +82,6 @@ $inactive_count = count( array_filter( $extensions, function ( $extension ) {
 } ) );
 
 /**
- * Count of extensions with 'lightbox' tag.
- *
- * @var int $lightbox_count The count of extensions with 'lightbox' tag.
- */
-$lightbox_count = count( array_filter( $extensions, function ( $extension ) {
-	return in_array( 'lightbox', $extension['tags'] );
-} ) );
-
-/**
  * Count of extensions with 'Premium' category.
  *
  * @var int $premium_count The count of extensions with 'Premium' category.
@@ -119,9 +110,11 @@ $premium_count = count( array_filter( $extensions, function ( $extension ) {
     	font-size: 24px;
 		vertical-align: middle;
 	}
-
+	.tablenav.top {
+		display:none;
+	}
 </style>
-<div class="wrap foogallery-extensions">
+<div class="wrap foogallery-features">
 	<h2>
 		<?php printf( __( '%s Features', 'foogallery' ), foogallery_plugin_name() ); ?>
 		<span class="spinner"></span>
@@ -143,14 +136,13 @@ $premium_count = count( array_filter( $extensions, function ( $extension ) {
 			'all' => __( 'All', 'foogallery' ),
 			'active' => __( 'Active', 'foogallery' ),
 			'inactive' => __( 'Inactive', 'foogallery' ),
-			'lightbox' => __( 'Lightbox', 'foogallery' ),
 			'premium' => __( 'Premium', 'foogallery' ),
 		);
 
 		foreach ( $status_tabs as $status_key => $status_label ) {
 			$is_current = $status_filter === $status_key ? 'current' : '';
 			$text_color = $is_current ? 'color: black;' : 'color: blue;';
-			$status_url = admin_url( "edit.php?post_type=foogallery&page=foogallery-extensions&status={$status_key}" );
+			$status_url = add_query_arg( array( 'status' => $status_key ), foogallery_admin_features_url() );
 
 			echo "<a href='{$status_url}' class='foogallery-status-tab {$is_current}' style='text-decoration: none; {$text_color}'>{$status_label} (";
 			if ( $status_key === 'all' ) {
@@ -159,8 +151,6 @@ $premium_count = count( array_filter( $extensions, function ( $extension ) {
 				echo $active_count;
 			} elseif ( $status_key === 'inactive' ) {
 				echo $inactive_count;
-			} elseif ( $status_key === 'lightbox' ) {
-				echo $lightbox_count;
 			} elseif ( $status_key === 'premium' ) {
 				echo $premium_count;
 			}
@@ -174,7 +164,7 @@ $premium_count = count( array_filter( $extensions, function ( $extension ) {
 
 	<form method="get">
 		<input type="hidden" name="post_type" value="foogallery" />
-		<input type="hidden" name="page" value="foogallery-extensions" />
+		<input type="hidden" name="page" value="foogallery-features" />
 		<div style="display:flex; justify-content:space-evenly; align-items:center;">
 
 			<p>
@@ -220,8 +210,6 @@ if ( $status_filter !== 'all' ) {
 	$extensions = array_filter( $extensions, function ( $extension ) use ( $status_filter ) {
 		if ( $status_filter === 'premium' ) {
 			return in_array( 'Premium', $extension['categories'] );
-		} elseif ( $status_filter === 'lightbox' ) {
-			return in_array( 'lightbox', $extension['tags'] );
 		} elseif ( $status_filter === 'active' ) {
 			return isset( $extension['is_active'] ) && $extension['is_active'];
 		} elseif ( $status_filter === 'inactive' ) {
@@ -245,11 +233,11 @@ $sortable_columns = array(
 );
 
 /**
- * Class Extensions_List_Table
+ * Class FooGallery_Features_List_Table
  *
- * Custom table class to display extensions in the WordPress admin.
+ * Custom table class to display FooGallery features in the WordPress admin.
  */
-class Extensions_List_Table extends WP_List_Table {
+class FooGallery_Features_List_Table extends WP_List_Table {
 
 	/**
 	 * @var array $extensions An array of extensions data.
@@ -257,7 +245,7 @@ class Extensions_List_Table extends WP_List_Table {
 	private $extensions;
 
 	/**
-	 * Extensions_List_Table constructor.
+	 * FooGallery_Features_List_Table constructor.
 	 *
 	 * @param array $extensions An array of extensions data.
 	 */
@@ -378,7 +366,7 @@ public function column_default( $item, $column_name ) {
 	}
 }
 
-$extensions_table = new Extensions_List_Table( $extensions );
+$extensions_table = new FooGallery_Features_List_Table( $extensions );
 $extensions_table->prepare_items();
 $extensions_table->display();
 ?>

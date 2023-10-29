@@ -15,7 +15,6 @@ if ( ! class_exists( 'FooGallery_Admin_Extensions' ) ) {
 
 		function init() {
 			add_action( 'admin_init', array( $this, 'handle_extension_action' ) );
-			//add_action( 'admin_init', array( $this, 'redirect_on_activation' ) );
 		}
 
 		function handle_extensions_deactivation( $plugin, $network_deactivating ) {
@@ -103,24 +102,6 @@ if ( ! class_exists( 'FooGallery_Admin_Extensions' ) ) {
 
 				wp_redirect( $redirect_url );
 			}
-		}
-
-		function redirect_on_activation() {
-			// Bail if no activation redirect
-			if ( ! get_transient( FOOGALLERY_ACTIVATION_REDIRECT_TRANSIENT_KEY ) ) {
-				return;
-			}
-
-			// Delete the redirect transient
-			delete_transient( FOOGALLERY_ACTIVATION_REDIRECT_TRANSIENT_KEY );
-
-			// Bail if activating from network, or bulk
-			if ( is_network_admin() || isset($_GET['activate-multi']) ) {
-				return;
-			}
-
-			wp_safe_redirect( foogallery_admin_help_url() );
-			exit;
 		}
 	}
 }

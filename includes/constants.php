@@ -35,7 +35,7 @@ define( 'FOOGALLERY_OPTION_DEMO_CONTENT_GALLERIES', 'foogallery_demo_content_gal
 
 define( 'FOOGALLERY_ADMIN_MENU_HELP_SLUG', 'foogallery-help' );
 define( 'FOOGALLERY_ADMIN_MENU_SETTINGS_SLUG', 'foogallery-settings' );
-define( 'FOOGALLERY_ADMIN_MENU_EXTENSIONS_SLUG', 'foogallery-extensions' );
+define( 'FOOGALLERY_ADMIN_MENU_FEATURES_SLUG', 'foogallery-features' );
 define( 'FOOGALLERY_ADMIN_MENU_SYSTEMINFO_SLUG', 'foogallery-systeminfo' );
 define( 'FOOGALLERY_ADMIN_MENU_PRICING_SLUG', 'foogallery-pricing' );
 
