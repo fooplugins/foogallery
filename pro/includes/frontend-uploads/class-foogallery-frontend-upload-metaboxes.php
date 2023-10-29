@@ -156,7 +156,7 @@ if ( ! class_exists( 'FooGallery_FrontEnd_Upload_MetaBoxes' ) ) {
 						</div> 
 						<div style="width: 50%;">
 							<input style="width: 250px;  border: 1px solid #ccc; padding: 7px; font-size: 14px;" type="number" id="max_image_size" name="max_image_size" value="<?php echo esc_attr( $max_image_size ); ?>" style="padding: 5px; font-size: 14px;" />
-						</div>                  
+						</div>               
 
 					</div>
 
@@ -170,7 +170,7 @@ if ( ! class_exists( 'FooGallery_FrontEnd_Upload_MetaBoxes' ) ) {
 							</label>
 							<span data-balloon-length="large" data-balloon-pos="right" data-balloon="<?php esc_attr_e( 'Restrict front end Image uploads to logged-in users only.', 'foogallery' ); ?>"><i class="dashicons dashicons-editor-help"></i></span>							
 						</div>
-						<div style="width: 190px; display:flex; justify-content: space-between;">
+						<div style="display: flex; justify-content: space-between; align-items: center; width: 50%;">
 							<div style="width: 50%;">
 								<input type="radio" id="logged-in-users-yes" name="logged_in_users_only" value="yes" <?php checked( $logged_in_users_only, 'yes' ); ?> />
 								<label for="logged-in-users-yes"><?php esc_html_e( 'Enabled', 'foogallery' ); ?></label>
@@ -197,7 +197,7 @@ if ( ! class_exists( 'FooGallery_FrontEnd_Upload_MetaBoxes' ) ) {
 								</label>
 								<span data-balloon-length="large" data-balloon-pos="right" data-balloon="<?php echo esc_attr( sprintf( __( 'Display the %s field in the front end upload form', 'foogallery' ), $metafield ) ); ?>"><i class="dashicons dashicons-editor-help"></i></span>								
 							</div>
-							<div style="width: 190px; display:flex; justify-content: space-between;">
+							<div style="display: flex; justify-content: space-between; align-items: center; width: 50%;">
 								<div style="width: 50%;">
 									<input type="radio" id="display_<?php echo esc_attr( $metafield ); ?>" name="display_<?php echo esc_attr( $metafield ); ?>" value="yes" <?php checked( $metafield_value, 'yes' ); ?> /> Yes
 								</div>
