@@ -58,55 +58,12 @@ if ( ! class_exists( 'FooGallery_Extensions_API' ) ) {
 				'class' => 'FooGallery_Albums_Extension',
 				'title' => 'Albums',
 				'categories' =>	array( 'Featured', 'Free' ),
-				'description' => 'Group your galleries into albums. Boom!',
-				'html' => 'Group your galleries into albums. Boom!',
-				'external_link_text' => 'See documentation',
+				'description' => __( 'Group your galleries into albums. Albums comes with 2 unique album templates to showcase your galleries.', 'foogallery' ),
+				'external_link_text' => __( 'Read documentation', 'foogallery' ),
                 'external_link_url' => 'https://fooplugins.com/documentation/foogallery/getting-started-foogallery/adding-albums/',
 				'dashicon'          => 'dashicons-book-alt',
 				'tags' => array( 'functionality', 'free', ),
 				'source' => 'bundled'
-			);
-
-			//FooBox premium.
-			$this->extensions[] = array(
-				'slug' => 'foobox',
-				'class' => 'FooGallery_FooBox_Extension',
-				'categories' => array( 'Featured', 'Premium' ),
-				'file' => 'foobox.php',
-				'title' => 'FooBox PRO',
-				'description' => 'The best lightbox for WordPress just got even better!',
-				'price' => '$27',
-				'external_link_text' => 'See documentation',
-                'external_link_url' => 'https://fooplugins.com/documentation/foobox/pro-features/',
-				'dashicon'          => 'dashicons-lightbulb',
-				'tags' => array( 'Premium', 'lightbox', ),
-				'source' => 'fooplugins',
-				'download_button' =>
-					array(
-						'text' => 'Buy - $29',
-						'target' => '_blank',
-						'href' => 'https://fooplugins.com/foobox',
-						'confirm' => false,
-					),
-				'activated_by_default' => true,
-				'remove_if_active' => array('foobox-image-lightbox')
-			);
-
-			//FooBox lightbox
-			$this->extensions[] = array (
-				'slug' => 'foobox-image-lightbox',
-				'class' => 'FooGallery_FooBox_Free_Extension',
-				'categories' => array( 'Featured', 'Free', ),
-				'file' => 'foobox-free.php',
-				'title' => 'FooBox FREE',
-				'description' => 'The best lightbox for WordPress. Free',
-				'external_link_text' => 'visit external site',
-                'external_link_url' => 'https://fooplugins.com/foobox/',
-				'dashicon'          => 'dashicons-lightbulb',
-				'tags' => array( 'lightbox', 'free', ),
-				'source' => 'repo',
-				'activated_by_default' => true,
-				'minimum_version' => '1.0.2.1',
 			);
 
 			// The FooGallery Migrate feature.
@@ -116,15 +73,14 @@ if ( ! class_exists( 'FooGallery_Extensions_API' ) ) {
 				'categories' => array( 'Free' ),
 				'title' => 'FooGallery Migrate',
                 'file' => 'migrate.php',
-				'description' => 'Migrate to FooGallery from other gallery plugins',
-				'external_link_text' => 'visit  external site',
+				'description' => __( 'Migrate to FooGallery from other gallery plugins', 'foogallery' ),
+				'external_link_text' => __( 'Read about FooGallery Migrate', 'foogallery' ),
                 'external_link_url' => 'https://fooplugins.com/foogallery-migrate-for-wordpress-galleries/',
 				'dashicon'          => 'dashicons-migrate',
 				'tags' => array( 'tools', 'free', ),
 				'source' => 'repo',
 				'download_link' => 'https://downloads.wordpress.org/plugin/foogallery-migrate.latest-stable.zip',
 			);
-
 		}
 
 		/**

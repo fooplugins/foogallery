@@ -83,14 +83,16 @@ if ( ! class_exists( 'FooGallery_Pro_Video' ) ) {
 		}
 
 		function register_extension( $extensions_list ) {
+			$pro_features = foogallery_pro_features();
+
             $extensions_list[] = array(
                 'slug' => 'foogallery-video',
                 'class' => 'FooGallery_Pro_Video',
                 'categories' => array( 'Premium' ),
                 'title' => __( 'Video', 'foogallery' ),
-                'description' => __( 'Add video support into your galleries.', 'foogallery' ),
-                'external_link_text' => 'see documentation',
-                'external_link_url' => 'https://fooplugins.com/foogallery-wordpress-gallery-plugin/video-gallery/',
+                'description' => $pro_features['video']['desc'],
+                'external_link_text' => __( 'Read documentation', 'foogallery' ),
+                'external_link_url' => $pro_features['video']['link'],
                 'dashicon'          => 'dashicons-video-alt3',
                 'tags' => array( 'Premium' ),
                 'source' => 'bundled',

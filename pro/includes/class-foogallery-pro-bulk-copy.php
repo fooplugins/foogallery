@@ -26,14 +26,16 @@ if ( ! class_exists( 'FooGallery_Pro_Bulk_Copy' ) ) {
         }
 
         function register_extension( $extensions_list ) {
+            $pro_features = foogallery_pro_features();
+
             $extensions_list[] = array(
                 'slug' => 'foogallery-bulk-copy',
                 'class' => 'FooGallery_Pro_Bulk_Copy',
                 'categories' => array( 'Premium' ),
-                'title' => __( 'Bulk copy', 'foogallery' ),
-                'description' => __( 'Allows you to bulk copy the settings from your gallery to other galleries in a few easy steps.', 'foogallery' ),
-                'external_link_text' => 'see documentation',
-                'external_link_url' => 'https://fooplugins.com/bulk-copy-foogallery-pro/',
+                'title' => __( 'Bulk Copy', 'foogallery' ),
+                'description' => $pro_features['bulk_copy']['desc'],
+                'external_link_text' => __( 'Read documentation', 'foogallery' ),
+                'external_link_url' => $pro_features['bulk_copy']['link'],
                 'dashicon'          => 'dashicons-admin-page',
                 'tags' => array( 'Premium' ),
                 'source' => 'bundled',

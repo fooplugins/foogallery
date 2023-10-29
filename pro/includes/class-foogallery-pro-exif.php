@@ -15,27 +15,27 @@ if ( ! class_exists( 'FooGallery_Pro_Exif' ) ) {
 
             add_filter( 'foogallery_available_extensions', array( $this, 'register_extension' ) );
 
-                //Add EXIF data attributes
-				add_filter( 'foogallery_attachment_html_link_attributes', array( $this, 'add_exif_data_attributes' ), 10, 3 );
-            
-				//Add lightbox EXIF options
-				add_filter( 'foogallery_lightbox_data_attributes', array( $this, 'add_lightbox_data_attributes' ), 20 );
-	
-				//Add container class
-				add_filter( 'foogallery_build_class_attribute', array( $this, 'add_container_class' ), 10,  2 );
-	
-				//add localised text
-				add_filter( 'foogallery_il8n', array( $this, 'add_il8n' ) );
-	
-				//add class to fg-item
-				add_filter( 'foogallery_attachment_html_item_classes', array( $this, 'add_class_to_item' ), 10, 3 );
-			
-				//add exif to the json output
-				add_filter( 'foogallery_build_attachment_json', array( $this, 'add_exif_to_json' ), 10, 6 );
+			//Add EXIF data attributes
+			add_filter( 'foogallery_attachment_html_link_attributes', array( $this, 'add_exif_data_attributes' ), 10, 3 );
 
-                if ( is_admin() ) {                    
-                    add_action( 'foogallery_attachment_save_data', array( $this, 'attachment_modal_save_data' ), 50, 2 );
-                }
+			//Add lightbox EXIF options
+			add_filter( 'foogallery_lightbox_data_attributes', array( $this, 'add_lightbox_data_attributes' ), 20 );
+
+			//Add container class
+			add_filter( 'foogallery_build_class_attribute', array( $this, 'add_container_class' ), 10,  2 );
+
+			//add localised text
+			add_filter( 'foogallery_il8n', array( $this, 'add_il8n' ) );
+
+			//add class to fg-item
+			add_filter( 'foogallery_attachment_html_item_classes', array( $this, 'add_class_to_item' ), 10, 3 );
+
+			//add exif to the json output
+			add_filter( 'foogallery_build_attachment_json', array( $this, 'add_exif_to_json' ), 10, 6 );
+
+			if ( is_admin() ) {
+				add_action( 'foogallery_attachment_save_data', array( $this, 'attachment_modal_save_data' ), 50, 2 );
+			}
 		}
 
         function load_feature(){
@@ -63,14 +63,16 @@ if ( ! class_exists( 'FooGallery_Pro_Exif' ) ) {
         }
 
 		function register_extension( $extensions_list ) {
+			$pro_features = foogallery_pro_features();
+
             $extensions_list[] = array(
                 'slug' => 'foogallery-exif',
                 'class' => 'FooGallery_Pro_Exif',
                 'categories' => array( 'Premium' ),
-                'title' => __( 'Exif', 'foogallery' ),
-                'description' => __( 'Enables compatibility with Exchangeable Image File Format (Exif) for your gallery', 'foogallery' ),
-                'external_link_text' => 'see documentation',
-                'external_link_url' => 'https://fooplugins.com/foogallery-wordpress-gallery-plugin/exif-data/',
+                'title' => __( 'EXIF', 'foogallery' ),
+                'description' => $pro_features['exif']['desc'],
+                'external_link_text' => __( 'Read documentation', 'foogallery' ),
+                'external_link_url' => $pro_features['exif']['link'],
                 'dashicon'          => 'dashicons-camera',
                 'tags' => array( 'Premium' ),
                 'source' => 'bundled',

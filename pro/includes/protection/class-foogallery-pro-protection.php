@@ -74,14 +74,16 @@ if ( ! class_exists( 'FooGallery_Pro_Protection' ) ) {
         }
 
 		function register_extension( $extensions_list ) {
+			$pro_features = foogallery_pro_features();
+
             $extensions_list[] = array(
                 'slug' => 'foogallery-protection',
                 'class' => 'FooGallery_Pro_Protection',
                 'categories' => array( 'Premium' ),
                 'title' => __( 'Protection', 'foogallery' ),
-                'description' => __( 'Protect your gallery images with an added layer of security.', 'foogallery' ),
-                'external_link_text' => 'see documentation',
-                'external_link_url' => 'https://fooplugins.com/wordpress-gallery-protection/',
+                'description' => $pro_features['protection']['desc'],
+                'external_link_text' => __( 'Read documentation', 'foogallery' ),
+                'external_link_url' => $pro_features['protection']['link'],
 				'dashicon'          => 'dashicons-lock',
                 'tags' => array( 'Premium' ),
                 'source' => 'bundled',

@@ -55,50 +55,50 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 		function load_feature() {
             if ( foogallery_feature_enabled( 'foogallery-woocommerce' ) ) {
                 if ( is_admin() ) {
-				// Add extra fields to the templates.
-				add_filter( 'foogallery_override_gallery_template_fields', array( $this, 'add_ecommerce_fields' ), 30, 2 );
+					// Add extra fields to the templates.
+					add_filter( 'foogallery_override_gallery_template_fields', array( $this, 'add_ecommerce_fields' ), 30, 2 );
 
-				// Set the settings icon for commerce.
-				add_filter( 'foogallery_gallery_settings_metabox_section_icon', array( $this, 'add_section_icons' ) );
+					// Set the settings icon for commerce.
+					add_filter( 'foogallery_gallery_settings_metabox_section_icon', array( $this, 'add_section_icons' ) );
 
-				// Add a cart icon to the hover icons.
-				add_filter( 'foogallery_gallery_template_common_thumbnail_fields_hover_effect_icon_choices', array( $this, 'add_cart_hover_icon' ) );
+					// Add a cart icon to the hover icons.
+					add_filter( 'foogallery_gallery_template_common_thumbnail_fields_hover_effect_icon_choices', array( $this, 'add_cart_hover_icon' ) );
 
-				// Add attachment custom fields.
-				add_filter( 'foogallery_attachment_custom_fields', array( $this, 'attachment_custom_fields' ), 50 );
+					// Add attachment custom fields.
+					add_filter( 'foogallery_attachment_custom_fields', array( $this, 'attachment_custom_fields' ), 50 );
 
-				// Add some settings for woocommerce.
-				add_filter( 'foogallery_admin_settings_override', array( $this, 'add_ecommerce_settings' ) );
+					// Add some settings for woocommerce.
+					add_filter( 'foogallery_admin_settings_override', array( $this, 'add_ecommerce_settings' ) );
 
-				// Add some help for custom captions.
-				add_filter( 'foogallery_build_custom_captions_help-default', array( $this, 'add_product_custom_caption_help' ) );
+					// Add some help for custom captions.
+					add_filter( 'foogallery_build_custom_captions_help-default', array( $this, 'add_product_custom_caption_help' ) );
 
-				// Add a new tab to the product to override button or ribbon.
-				add_filter( 'woocommerce_product_data_tabs', array( $this, 'add_product_settings_tabs' ) );
+					// Add a new tab to the product to override button or ribbon.
+					add_filter( 'woocommerce_product_data_tabs', array( $this, 'add_product_settings_tabs' ) );
 
-				// Add some fields to the new FooGallery product setting panel.
-				add_action( 'woocommerce_product_data_panels', array( $this, 'add_fields_to_product_panel' ) );
+					// Add some fields to the new FooGallery product setting panel.
+					add_action( 'woocommerce_product_data_panels', array( $this, 'add_fields_to_product_panel' ) );
 
-                // Attachment modal actions:
-                add_action( 'foogallery_attachment_modal_tabs_view', array( $this, 'attachment_modal_display_tab' ), 60 );
-                add_action( 'foogallery_attachment_modal_tab_content', array( $this, 'attachment_modal_display_tab_content' ), 60, 1 );
-                add_action( 'foogallery_attachment_save_data', array( $this, 'attachment_modal_save_data' ), 60, 2 );
-                add_filter( 'foogallery_attachment_modal_data', array( $this, 'attachment_modal_data' ), 70, 4 );
-			}
-
-			
+					// Attachment modal actions:
+					add_action( 'foogallery_attachment_modal_tabs_view', array( $this, 'attachment_modal_display_tab' ), 60 );
+					add_action( 'foogallery_attachment_modal_tab_content', array( $this, 'attachment_modal_display_tab_content' ), 60, 1 );
+					add_action( 'foogallery_attachment_save_data', array( $this, 'attachment_modal_save_data' ), 60, 2 );
+					add_filter( 'foogallery_attachment_modal_data', array( $this, 'attachment_modal_data' ), 70, 4 );
+				}
             }
         }
 
 		function register_extension( $extensions_list ) {
+			$pro_features = foogallery_pro_features();
+
             $extensions_list[] = array(
                 'slug' => 'foogallery-woocommerce',
                 'class' => 'FooGallery_Pro_Woocommerce',
                 'categories' => array( 'Premium' ),
                 'title' => __( 'Ecommerce', 'foogallery' ),
-                'description' => __( 'Extend the functionality of your gallery with seamless ecommerce integration.', 'foogallery' ),
-                'external_link_text' => 'see documentation',
-                'external_link_url' => 'https://fooplugins.com/foogallery-wordpress-gallery-plugin/woocommerce-integration/',
+                'description' => $pro_features['ecommerce']['desc'],
+                'external_link_text' => __( 'Read documentation', 'foogallery' ),
+                'external_link_url' => $pro_features['ecommerce']['link'],
 				'dashicon'          => 'dashicons-cart',
                 'tags' => array( 'Premium' ),
                 'source' => 'bundled',

@@ -42,14 +42,16 @@ if ( ! class_exists( 'FooGallery_Pro_Master_Galleries' ) ) {
         }
 
 		function register_extension( $extensions_list ) {
+			$pro_features = foogallery_pro_features();
+
             $extensions_list[] = array(
                 'slug' => 'foogallery-master-galleries',
                 'class' => 'FooGallery_Pro_Master_Galleries',
                 'categories' => array( 'Premium' ),
                 'title' => __( 'Master Gallery', 'foogallery' ),
-                'description' => __( 'Allows you to setup galleries that other galleries inherit all settings from.', 'foogallery' ),
-                'external_link_text' => 'see documentation',
-                'external_link_url' => 'https://fooplugins.com/documentation/foogallery/pro-commerce/use-master-gallery/',
+                'description' => $pro_features['master_galleries']['desc'],
+                'external_link_text' => __( 'Read documentation', 'foogallery' ),
+                'external_link_url' => $pro_features['master_galleries']['link'],
 				'dashicon'          => 'dashicons-networking',
                 'tags' => array( 'Premium' ),
                 'source' => 'bundled',

@@ -31,14 +31,16 @@ if ( ! class_exists( 'FooGallery_Pro_Paging' ) ) {
         }
 
         function register_extension( $extensions_list ) {
+            $pro_features = foogallery_pro_features();
+
             $extensions_list[] = array(
                 'slug' => 'foogallery-paging',
                 'class' => 'FooGallery_Pro_Paging',
                 'categories' => array( 'Premium' ),
                 'title' => __( 'Pagination', 'foogallery' ),
-                'description' => __( 'Adds pagination features to your galleries.', 'foogallery' ),
-                'external_link_text' => 'see documentation',
-                'external_link_url' => 'https://fooplugins.com/foogallery-wordpress-gallery-plugin/pagination/',
+                'description' => $pro_features['pagination']['desc'],
+                'external_link_text' => __( 'Read documentation', 'foogallery' ),
+                'external_link_url' => $pro_features['pagination']['link'],
 				'dashicon'          => 'dashicons-arrow-right-alt',
                 'tags' => array( 'Premium' ),
                 'source' => 'bundled',

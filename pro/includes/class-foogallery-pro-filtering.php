@@ -61,14 +61,16 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
         }
 
 		function register_extension( $extensions_list ) {
+			$pro_features = foogallery_pro_features();
+
             $extensions_list[] = array(
                 'slug' => 'foogallery-filtering',
                 'class' => 'FooGallery_Pro_Filtering',
                 'categories' => array( 'Premium' ),
                 'title' => __( 'Filtering', 'foogallery' ),
-                'description' => __( 'Enhance your gallery experience with advanced filtering capabilities', 'foogallery' ),
-                'external_link_text' => 'see documentation',
-                'external_link_url' => 'https://fooplugins.com/foogallery-wordpress-gallery-plugin/filtering/',
+                'description' => $pro_features['filtering']['desc'],
+                'external_link_text' => __( 'Read documentation', 'foogallery' ),
+                'external_link_url' => $pro_features['filtering']['link'],
 				'dashicon'          => 'dashicons-filter',
                 'tags' => array( 'Premium' ),
                 'source' => 'bundled',
