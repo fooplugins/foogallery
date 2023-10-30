@@ -276,34 +276,75 @@ if ( ! class_exists( 'FooGallery_FrontEnd_Upload_MetaBoxes' ) ) {
 		 * @param WP_Post $post The current post object.
 		 */
 		public function render_image_moderation_metabox( $post ) {
-			$gallery   = $this->get_gallery( $post );
-			$shortcode = $gallery->shortcode();
-			// Use preg_match to find the ID within the shortcode.
-			if ( preg_match( '/\[foogallery id="(\d+)"\]/', $shortcode, $matches ) ) {
-				$gallery_id = $matches[1];
-				?>			
+			// Initialize an array to store gallery IDs and metadata.
+			$images_to_moderate = array();
 
-				<div id="image-moderation">
-				<table class="wp-list-table widefat fixed striped">
-					<thead>
-						<tr>
-							<th><?php esc_html_e( 'Image', 'foogallery' ); ?></th>
-							<th><?php esc_html_e( 'Metadata', 'foogallery' ); ?></th>
-							<th><?php esc_html_e( 'User', 'foogallery' ); ?></th>
-						</tr>
-					</thead>
-					<tbody>
-						<?php
-						// Retrieve images associated with the gallery for approval or rejection.
-						$images_to_moderate = $this->get_images_to_moderate( $gallery_id );
-						// Initialize an array to store user IDs for each image.
-						$image_uploaders = array();
-						$images_found = false;
-						foreach ( $images_to_moderate as $image ) {
+			// Get the base directory for uploads.
+			$upload_dir       = wp_upload_dir();
+			$user_uploads_dir = $upload_dir['basedir'] . '/users_uploads/';
+
+			// Check if the user uploads directory exists.
+			if ( is_dir( $user_uploads_dir ) ) {
+				// Get a list of directories inside the user uploads directory.
+				$directories = glob( $user_uploads_dir . '*', GLOB_ONLYDIR );
+
+				foreach ( $directories as $directory ) {
+					// Extract the gallery ID from the directory name.
+					$gallery_id = intval( basename( $directory ) );
+
+					// Retrieve the random subfolder name from the postmeta array.
+					$random_folder_name = get_post_meta( $gallery_id, '_foogallery_frontend_upload', true );
+
+					$metadata_file = $directory . '/metadata.json';
+
+					// Check if the metadata file exists.
+					if ( file_exists( $metadata_file ) ) {
+						global $wp_filesystem;
+
+						// Read and decode the JSON metadata file.
+						$metadata_contents = $wp_filesystem->get_contents( $metadata_file );
+
+						if ( false !== $metadata_contents ) {
+							$metadata = json_decode( $metadata_contents, true );
+
+							if ( isset( $metadata['items'] ) && null !== $metadata ) {
+								// Store the metadata in the images_to_moderate array.
+								$images_to_moderate[ $gallery_id ] = $metadata['items'];
+							} else {
+								// Handle JSON decoding failure or missing 'items' key.
+								echo '<div class="notice notice-error"><p>' . esc_html( __( 'Invalid or missing metadata in file:', 'foogallery' ) ) . ' ' . esc_html( $metadata_file ) . '</p></div>';
+							}
+						} else {
+							// Handle file read failure.
+							echo '<div class="notice notice-error"><p>' . esc_html( __( 'Failed to read metadata file:', 'foogallery' ) ) . ' ' . esc_html( $metadata_file ) . '</p></div>';
+
+						}
+					}
+				}
+			}
+
+			?>
+
+			<table class="wp-list-table widefat fixed striped">
+				<thead>
+					<tr>
+						<th style="width: 100px;"><?php esc_html_e( 'Image', 'foogallery' ); ?></th>							
+						<th><?php esc_html_e( 'Metadata', 'foogallery' ); ?></th>
+						<th><?php esc_html_e( 'User', 'foogallery' ); ?></th>
+					</tr>
+				</thead>
+				<tbody>
+					<?php
+					// Initialize an array to store user IDs for each image.
+					$image_uploaders = array();
+					$images_found = false;
+					foreach ( $images_to_moderate as $gallery_id => $images ) :
+						
+						foreach ( $images as $image ) :
 							// Get the gallery ID and image file name.
 							$images_found = true;
-							$gallery_id = intval( $gallery_id );
-							$file_name  = sanitize_text_field( $image['id'] );
+							$gallery_id = intval( $gallery_id );										
+							$file_name  = sanitize_text_field( $image['file'] );
 
 							// Check if the 'uploaded_by' field is set in the image's metadata.
 							if ( isset( $image['uploaded_by'] ) ) {
@@ -316,34 +357,38 @@ if ( ! class_exists( 'FooGallery_FrontEnd_Upload_MetaBoxes' ) ) {
 								$image_uploaders[ "$gallery_id-$file_name" ] = '';
 							}
 							?>
-							<tr>
+							<tr class="image-row">
 								<td>
-									<div style="display: flex;">
-										<img style="width: 100px; height: 100px;" src="<?php echo esc_url( $image['url'] ); ?>" alt="<?php echo esc_attr( $image['alt'] ); ?>" />
-										<div class="image-actions" style="margin-left: 10px; justify-content:center;">
-											<span style="display: inline-block; text-decoration: none; color: #0073aa; cursor: pointer; font-size: 12px; margin-right: 6px;">
-												<div class="approve-image" data-gallery-id="<?php echo esc_attr( $gallery_id ); ?>" data-image-id="<?php echo esc_attr( $image['id'] ); ?>" name="approve_image_nonce" data-nonce="<?php echo esc_attr( wp_create_nonce( 'approve_image_nonce' ) ); ?>"><?php esc_html_e( ' Approve', 'foogallery' ); ?></div>
-											</span>
-											|
-											<span style="display: inline-block; text-decoration: none; color: #a00; cursor: pointer; font-size: 12px; margin-left: 6px;">
-												<div class="reject-image" ta-gallery-id="<?php echo esc_attr( $gallery_id ); ?>" data-image-id="<?php echo esc_attr( $image['id'] ); ?>" name="reject_image_nonce" data-nonce="<?php echo esc_attr( wp_create_nonce( 'reject_image_nonce' ) ); ?>"><?php esc_html_e( 'Reject', 'foogallery' ); ?></div>
-											</span>
-										</div>
-									</div>									
-								</td>
+									<?php
+									// Retrieve the image URL from the JSON data.
+									$image_filename = isset( $image['file'] ) ? sanitize_file_name( $image['file'] ) : '';
+									$base_url       = site_url();
+									// Retrieve the random subfolder name from the postmeta array.
+									$random_folder_name = get_post_meta( $gallery_id, '_foogallery_frontend_upload', true );
+
+									// Construct the complete image URL.
+									$image_url = $base_url . '/wp-content/uploads/users_uploads/' . $gallery_id . '/' . $image_filename;
+
+									// Display the image if the URL is not empty.
+									if ( ! empty( $image_url ) ) {
+										echo '<img style="width: 100px; height: 100px;" src="' . esc_url( $image_url ) . '" alt="' . esc_attr( $image['alt'] ) . '" />';
+									}
+									?>
+								</td>									
+
 								<td>
-									<!-- Display metadata here -->
 									<p><strong><?php esc_html_e( 'Caption:', 'foogallery' ); ?></strong> <?php echo esc_html( $image['caption'] ); ?></p>
 									<p><strong><?php esc_html_e( 'Description:', 'foogallery' ); ?></strong> <?php echo esc_html( $image['description'] ); ?></p>
-									<p><strong><?php esc_html_e( 'Alt Text:', 'foogallery' ); ?></strong> <?php echo esc_html( $image['alt'] ); ?></p>
-									<p><strong><?php esc_html_e( 'Custom URL:', 'foogallery' ); ?></strong> <?php echo esc_url( $image['custom_url'] ); ?></p>
-									<p><strong><?php esc_html_e( 'Custom Target:', 'foogallery' ); ?></strong> <?php echo esc_html( $image['custom_target'] ); ?></p>
+									<p><strong><?php esc_html_e( 'Alt Text: ', 'foogallery' ); ?></strong><?php echo esc_html( $image['alt'] ); ?></p>
+									<p><strong><?php esc_html_e( 'Custom URL: ', 'foogallery' ); ?></strong> <?php echo esc_url( $image['custom_url'] ); ?></p>
+									<p><strong><?php esc_html_e( 'Custom Target: ', 'foogallery' ); ?></strong> <?php echo esc_html( $image['custom_target'] ); ?></p>
 								</td>
+
 								<td>
 									<?php
 									// Get the gallery ID and image file name.
 									$gallery_id = intval( $gallery_id );
-									$file_name  = sanitize_text_field( $image['id'] );
+									$file_name  = sanitize_text_field( $image['file'] );
 
 									// Create a unique identifier for this image (gallery_id-file_name).
 									$image_identifier = "$gallery_id-$file_name";
@@ -363,137 +408,98 @@ if ( ! class_exists( 'FooGallery_FrontEnd_Upload_MetaBoxes' ) ) {
 										echo esc_html__( 'N/A', 'foogallery' );
 									}
 									?>
-								</td>								
+									<div class="image-actions">
+										<span style="display: inline-block; text-decoration: none; color: #0073aa; cursor: pointer; font-size: 12px; margin-right: 6px;">
+											<div class="confirm-approve" data-gallery-id="<?php echo esc_attr( $gallery_id ); ?>" data-image-id="<?php echo esc_attr( $image['file'] ); ?>" name="approve_image_nonce" data-nonce="<?php echo esc_attr( wp_create_nonce( 'approve_image_nonce' ) ); ?>"><?php esc_html_e( 'Approve', 'foogallery' ); ?></div>
+										</span>
+										|
+										<span style="display: inline-block; text-decoration: none; color: #a00; cursor: pointer; font-size: 12px; margin-left: 6px;">
+											<div class="confirm-reject" data-gallery-id="<?php echo esc_attr( $gallery_id ); ?>" data-image-id="<?php echo esc_attr( $image['file'] ); ?>" name="reject_image_nonce" data-nonce="<?php echo esc_attr( wp_create_nonce( 'reject_image_nonce' ) ); ?>"><?php esc_html_e( 'Reject', 'foogallery' ); ?></div>
+										</span>
+									</div>
+								</td>
+
 							</tr>
 							<?php
-						}
-						?>
-					</tbody>
-					<?php
-					// Check if no images were found and display a message.
-					if ( ! $images_found ) {
-						echo '<tr><td colspan="4" style="text-align: center;">' . esc_html__( 'There are no images awaiting moderation', 'foogallery' ) . '</td></tr>';
-					}
+						endforeach;
+						
+					endforeach;
 					?>
-				</table>
-				</div>
-				<style>
-					.image-actions {
-						display: none;
-					}
-
-					tr:hover .image-actions {
-						display: flex;
-					}
-				</style>
-
-				<script>                              
-
-					// Add event listeners for confirmation dialogs for "Approve"
-					const confirmApproveButtons = document.querySelectorAll('.approve-image');
-					confirmApproveButtons.forEach(button => {
-						button.addEventListener('click', function (e) {
-							e.preventDefault();
-
-							const galleryId = this.getAttribute('data-gallery-id');
-							const imageId = this.getAttribute('data-image-id');
-							const nonce = this.getAttribute('data-nonce');
-
-							if (confirm(`Are you sure you want to approve this image?`)) {
-								const form = document.createElement('form');
-								form.method = 'post';
-								form.innerHTML = `
-									<input type="hidden" name="gallery_id" value="${galleryId}">
-									<input type="hidden" name="image_id" value="${imageId}">
-									<input type="hidden" name="action" value="approve">
-									<input type="hidden" name="moderate_image" value="approve-image">
-									<input type="hidden" name="approve_image_nonce" value="${nonce}">
-								`;
-								document.body.appendChild(form);
-								form.submit();
-							}
-						});
-					});
-
-					// Add event listeners for confirmation dialogs
-					const confirmRejectButtons = document.querySelectorAll('.reject-image');
-					confirmRejectButtons.forEach(button => {
-						button.addEventListener('click', function (e) {
-							e.preventDefault();
-
-							const galleryId = this.getAttribute('data-gallery-id');
-							const imageId = this.getAttribute('data-image-id');
-							const nonce = this.getAttribute('data-nonce');
-							if (confirm(`Are you sure you want to reject this image?`)) {
-								const form = document.createElement('form');
-								form.method = 'post';
-								form.innerHTML = `
-									<input type="hidden" name="gallery_id" value="${galleryId}">
-									<input type="hidden" name="image_id" value="${imageId}">
-									<input type="hidden" name="action" value="reject">
-									<input type="hidden" name="moderate_image" value=".reject-image">
-									<input type="hidden" name="reject_image_nonce" value="${nonce}">
-								`;
-								document.body.appendChild(form);
-								form.submit();
-							}
-						});
-					});
-
-				</script>
-
+				</tbody>
 				<?php
-			} else {
-				echo '<div class="notice notice-error"><p>' . esc_html__( 'No ID found in the shortcode.', 'foogallery' ) . '</p></div>';
-			}
-		}
-
-		/**
-		 * Retrieve images associated with the gallery for approval or rejection.
-		 *
-		 * This function fetches images associated with a specific gallery for the purpose of approval or rejection.
-		 *
-		 * @param int $gallery_id The ID of the gallery from which images are retrieved.
-		 *
-		 * @return array An array containing image information for moderation.
-		 */
-		private function get_images_to_moderate( $gallery_id ) {
-			$images = array();
-
-			// Get the random subfolder name from the postmeta array.
-			$random_folder_name = get_post_meta( $gallery_id, '_foogallery_frontend_upload', true );
-			$metadata_file      = wp_upload_dir()['basedir'] . '/users_uploads/' . $gallery_id . '/metadata.json';
-
-			if ( file_exists( $metadata_file ) ) {
-				global $wp_filesystem;
-				$metadata = @json_decode( $wp_filesystem->get_contents( $metadata_file ), true );
-
-				if ( false !== $metadata ) {
-					if ( isset( $metadata['items'] ) && is_array( $metadata['items'] ) ) {
-						foreach ( $metadata['items'] as $item ) {
-							// Add images to the array for moderation.
-							$image = array(
-								'id'            => sanitize_text_field( $item['file'] ),
-								'alt'           => sanitize_text_field( $item['alt'] ),
-								'url'           => site_url( "/wp-content/uploads/users_uploads/$gallery_id/{$item['file']}" ),
-								'caption'       => sanitize_text_field( $item['caption'] ),
-								'description'   => sanitize_text_field( $item['description'] ),
-								'custom_url'    => esc_url( $item['custom_url'] ),
-								'custom_target' => sanitize_text_field( $item['custom_target'] ),
-								'uploaded_by'   => sanitize_text_field( $item['uploaded_by'] ),
-							);
-
-							$images[] = $image;
-						}
-					}
-				} else {
-					// Handle file read failure.
-					echo '<div class="notice notice-error"><p>' . esc_html__( 'Failed to read metadata file:', 'foogallery' ) . ' ' . esc_html( $metadata_file ) . '</p></div>';
-
+				// Check if no images were found and display a message.
+				if ( ! $images_found ) {
+					echo '<tr><td colspan="4" style="text-align: center;">' . esc_html__( 'There are no images awaiting moderation', 'foogallery' ) . '</td></tr>';
 				}
-			}
+				?>
+			</table>
 
-			return $images;
+			<script>
+				
+				// Add event listeners for confirmation dialogs
+				const confirmRejectButtons = document.querySelectorAll('.confirm-reject');
+				confirmRejectButtons.forEach(button => {
+					button.addEventListener('click', function (e) {
+						e.preventDefault();
+
+						const galleryId = this.getAttribute('data-gallery-id');
+						const imageId = this.getAttribute('data-image-id');
+						const nonce = this.getAttribute('data-nonce');
+						if (confirm(`Are you sure you want to reject this image?`)) {
+							const form = document.createElement('form');
+							form.method = 'post';
+							form.innerHTML = `
+								<input type="hidden" name="gallery_id" value="${galleryId}">
+								<input type="hidden" name="image_id" value="${imageId}">
+								<input type="hidden" name="action" value="reject">
+								<input type="hidden" name="moderate_image" value="confirmed_reject">
+								<input type="hidden" name="reject_image_nonce" value="${nonce}">
+							`;
+							document.body.appendChild(form);
+							form.submit();
+						}
+					});
+				});
+
+
+				// Add event listeners for confirmation dialogs for "Approve"
+				const confirmApproveButtons = document.querySelectorAll('.confirm-approve');
+				confirmApproveButtons.forEach(button => {
+					button.addEventListener('click', function (e) {
+						e.preventDefault();
+
+						const galleryId = this.getAttribute('data-gallery-id');
+						const imageId = this.getAttribute('data-image-id');
+						const nonce = this.getAttribute('data-nonce');
+
+						if (confirm(`Are you sure you want to approve this image?`)) {
+							const form = document.createElement('form');
+							form.method = 'post';
+							form.innerHTML = `
+								<input type="hidden" name="gallery_id" value="${galleryId}">
+								<input type="hidden" name="image_id" value="${imageId}">
+								<input type="hidden" name="action" value="approve">
+								<input type="hidden" name="moderate_image" value="confirmed_approve">
+								<input type="hidden" name="approve_image_nonce" value="${nonce}">
+							`;
+							document.body.appendChild(form);
+							form.submit();
+						}
+					});
+				});			
+
+			</script>
+
+			<style>
+				.image-actions {
+					display: none;
+				}
+
+				tr:hover .image-actions {
+					display: flex;
+				}				
+			</style>
+			<?php
 		}
 
 	}
