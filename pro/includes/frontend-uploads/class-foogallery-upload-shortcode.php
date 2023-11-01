@@ -74,17 +74,17 @@ if ( ! class_exists( 'Foogallery_FrontEnd_Upload_Shortcode' ) ) {
 
 				ob_start();
 				?>
-				<form method="post" enctype="multipart/form-data">
-					<div style="max-width: 500px; max-height: 200px; border: 1px dashed #999; text-align: center; padding: 20px; margin-top: 10px;">
+				<form method="post" enctype="multipart/form-data" style="display: flex; flex-drection: column; justify-content: center; align-items: center;">
+					<div style=" max-height: 200px; border: 2px dashed #999; text-align: center; padding: 20px; margin-top: 10px;">
 						<!-- Add the nonce field to the form -->
 						<input type="hidden" name="upload_image_nonce" value="<?php echo esc_attr( $upload_image_nonce ); ?>" />
 						<input type="hidden" name="gallery_id" value="<?php echo esc_attr( $gallery_id ); ?>" />
 						<input type="file" name="foogallery_images[]" id="image-upload" accept="image/*" multiple style="display: none;" />
-						<label for="image-upload" style="cursor: pointer;">
+						<label for="image-upload" style="cursor: pointer; text-transform: uppercase;">
 							<p><?php esc_html_e( $frontend_upload_image_text, 'foogallery' ); ?></p>
 						</label>
 					</div>
-
+					
 					<div class="foogallery-upload-popup-overlay" id="popup">
 						<div class="foogallery-upload-popup-content">
 							<span class="foogallery-upload-close-button" id="close-popup" style="font-size: 40px; color: white;">&times;</span>
@@ -93,8 +93,8 @@ if ( ! class_exists( 'Foogallery_FrontEnd_Upload_Shortcode' ) ) {
 									<div class="foogallery-upload-image-grid" id="uploaded-images">
 										<!-- Uploaded images displayed here -->
 									</div>
-									<div style="margin-top: 10px;">
-										<input type="submit" class="foogallery-image-upload-button" name="foogallery_image_upload" value="Upload Images" />
+									<div style="margin-top: 10px; float: right;">
+										<input type="submit" class="foogallery-image-upload-button" name="foogallery_image_upload" value="Upload" />
 									</div>
 								</div>
 								<div class="foogallery-upload-right-column">
@@ -109,16 +109,16 @@ if ( ! class_exists( 'Foogallery_FrontEnd_Upload_Shortcode' ) ) {
 
 				<style>
 					.foogallery-image-upload-button {
-						background-color: #0073e6;
-						border: none;
+						background-color: #0073e6; 
+						border: 1px solid #0069d6;
 						border-radius: 4px;
 						box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 						color: #fff;
 						cursor: pointer;
-						display: block;
-						font-size: 16px;
-						margin: 0 auto;
-						padding: 10px 20px;
+						display: inline-block;
+						font-size: 14px;
+						padding: 7px 14px;
+						text-align: center;
 						transition: background-color 0.3s ease;
 					}
 
@@ -192,32 +192,32 @@ if ( ! class_exists( 'Foogallery_FrontEnd_Upload_Shortcode' ) ) {
 									<h4 style="margin: 0;">Image ${i + 1}</h4>
 									${metadataContainer.getAttribute('data-display-caption') === 'on' ? `
 										<div class="metadata-field" style="margin-bottom: 10px;  padding: 10px;">
-											<label for="caption_${i}" style="display: block; font-weight: bold; margin-bottom: 5px;">Caption:</label>
-											<input type="text" class="metadata-input" style="width: 100%; height: 20px; padding: 5px; border: 1px solid #ccc; border-radius: 2px;" name="caption[]" id="caption_${i}" />
+											<label for="caption_${i}" style="display: block; font-size: 12px;">Caption:</label>
+											<textarea class="metadata-textarea" style="padding: 5px; border: 1px solid #ccc; resize: vertical; border-radius: 3px;" name="caption[]" id="caption_${i}"></textarea>
 										</div>` : ''}
 
 									${metadataContainer.getAttribute('data-display-description') === 'on' ? `
 										<div class="metadata-field" style="margin-bottom: 7px; padding: 10px;">
-											<label for="description_${i}" style="display: block; font-weight: bold; margin-bottom: 5px;">Description:</label>
+											<label for="description_${i}" style="display: block; font-size: 12px;">Description:</label>
 											<textarea class="metadata-textarea" style="width: 100%; height: 80px;  padding: 5px; border: 1px solid #ccc; resize: vertical; border-radius: 3px;" name="description[]" id="description_${i}"></textarea>
 										</div>` : ''}
 
 									${metadataContainer.getAttribute('data-display-alt') === 'on' ? `
 										<div class="metadata-field" style="margin-bottom: 7px; padding: 10px;">
-											<label for="alt_${i}" style="display: block; font-weight: bold; margin-bottom: 5px;">Alt Text:</label>
-											<input type="text" class="metadata-input" style="width: 100%; height: 20px; padding: 5px; border: 1px solid #ccc; border-radius: 2px;" name="alt[]" id="alt_${i}" />
+											<label for="alt_${i}" style="display: block; font-size: 12px;">Alt Text:</label>
+											<textarea class="metadata-textarea" style="padding: 5px; border: 1px solid #ccc; resize: vertical; border-radius: 3px;" name="alt[]" id="alt_${i}"></textarea>
 										</div>` : ''}
 
 									${metadataContainer.getAttribute('data-display-custom_url') === 'on' ? `
 										<div class="metadata-field" style="margin-bottom: 7px; padding: 10px;">
-											<label for="custom_url_${i}" style="display: block; font-weight: bold; margin-bottom: 5px;">Custom URL:</label>
-											<input type="text" class="metadata-input" style="width: 100%; height: 20px; padding: 5px; border: 1px solid #ccc; border-radius: 2px;" name="custom_url[]" id="custom_url_${i}" />
+											<label for="custom_url_${i}" style="display: block; font-size: 12px;">Custom URL:</label>
+											<textarea class="metadata-textarea" style="padding: 5px; border: 1px solid #ccc; resize: vertical; border-radius: 3px;" name="custom_url[]" id="custom_url_${i}"></textarea>
 										</div>` : ''}
 
 									${metadataContainer.getAttribute('data-display-custom_target') === 'on' ? `
 										<div class="metadata-field" style="margin-bottom: 7px; padding: 10px;">
-											<label for="custom_target_${i}" style="display: block; font-weight: bold; margin-bottom: 5px;">Custom Target:</label>
-											<input type="text" class="metadata-input" style="width: 100%; height: 20px; padding: 5px; border: 1px solid #ccc; border-radius: 2px;" name="custom_target[]" id="custom_target_${i}" />
+											<label for="custom_target_${i}" style="display: block; font-size: 12px;">Custom Target:</label>
+											<textarea class="metadata-textarea" style="padding: 5px; border: 1px solid #ccc; resize: vertical; border-radius: 3px;" name="custom_target[]" id="custom_target_${i}"></textarea>
 										</div>` : ''}
 								</div>
 							`;
@@ -240,39 +240,40 @@ if ( ! class_exists( 'Foogallery_FrontEnd_Upload_Shortcode' ) ) {
 							const file = files[i];
 							if (file.type.startsWith('image/')) {
 							const metadataFields = `
-								<div class="image-metadata" style="display: flex; flex-direction: row; align-items: center; margin-bottom: 10px; padding: 5px; border: 1px solid #ccc; border-radius: 5px; background-color: #f9f9f9;">
-									<div class="image-preview" style="display: flex; align-items: center; justify-content: center; margin-right: 10px; width: 100%;">
-										<img style="width: 100px; height: 100px; object-fit: cover;" src="${URL.createObjectURL(file)}"  alt="Image Preview" />
+								<div class="image-metadata" style="display: flex; flex-direction: row; margin-bottom: 10px; padding: 5px; border: 1px solid #ccc; border-radius: 5px; background-color: #f9f9f9;">
+									<div class="image-preview" style="width: 50%;">
+										<img style="width: 100px; height: 100px; object-fit: cover;" src="${URL.createObjectURL(file)}" alt="Image Preview" />
 									</div>
-									<div class="metadata-fields" style="width: 100%;">
+
+									<div class="metadata-fields" style="background-color: #f5f5f5; width: 50%; display: flex; flex-direction: column; padding: 3px;">
+										${metadataContainer.getAttribute('data-display-alt') === 'yes' ? `
+										<div class="metadata-field" style="margin-bottom: 8px; display: flex; ">
+											<label for="alt_${i}" style="display: block; width:20%; font-size: 12px; margin-right: 41px;">Alt Text</label>											
+											<input type="text" class="metadata-textarea" style="padding: 5px; width:80%; border: 1px solid #ccc; border-radius: 3px;" name="alt[]" id="alt_${i}"/>																						
+										</div>` : ''}
+
 										${metadataContainer.getAttribute('data-display-caption') === 'yes' ? `
-										<div class="metadata-field" style="margin-bottom: 4px; padding: 5px;">
-											<label for="caption_${i}" style="display: block; font-weight: bold; margin-bottom: 5px;">Caption:</label>
-											<input type="text" class="metadata-input" style="width: 100%; height: 20px; padding: 5px; border: 1px solid #ccc; border-radius: 2px;" name="caption[]" id="caption_${i}" />
+										<div class="metadata-field" style="margin-bottom: 8px; display: flex; ">
+											<label for="caption_${i}" style="display: block; width:20%; font-size: 12px; margin-right: 41px;">Caption</label>
+											<textarea class="metadata-textarea" style="padding: 5px; width:80%; border: 1px solid #ccc; resize: vertical; border-radius: 3px;" name="caption[]" id="caption_${i}"></textarea>
 										</div>` : ''}
 
 										${metadataContainer.getAttribute('data-display-description') === 'yes' ?  `
-										<div class="metadata-field" style="margin-bottom: 4px; padding: 5px;">
-											<label for="description_${i}" style="display: block; font-weight: bold; margin-bottom: 5px;">Description:</label>
-											<textarea class="metadata-textarea" style="width: 100%; height: 40px;  padding: 5px; border: 1px solid #ccc; resize: vertical; border-radius: 3px;" name="description[]" id="description_${i}"></textarea>
-										</div>` : ''}
-
-										${metadataContainer.getAttribute('data-display-alt') === 'yes' ? `
-										<div class="metadata-field" style="margin-bottom: 4px; padding: 5px;">
-											<label for="alt_${i}" style="display: block; font-weight: bold; margin-bottom: 5px;">Alt Text:</label>
-											<input type="text" class="metadata-input" style="width: 100%; height: 20px; padding: 5px; border: 1px solid #ccc; border-radius: 2px;" name="alt[]" id="alt_${i}" />
-										</div>` : ''}
+										<div class="metadata-field" style="margin-bottom: 8px; display: flex; ">
+											<label for="description_${i}" style="display: block; width:20%; font-size: 12px; margin-right: 41px;">Description</label>
+											<textarea class="metadata-textarea" style="padding: 5px; width:80%; border: 1px solid #ccc; resize: vertical; border-radius: 3px;" name="description[]" id="description_${i}"></textarea>
+										</div>` : ''}										
 
 										${metadataContainer.getAttribute('data-display-custom_url') === 'yes' ? `
-										<div class="metadata-field" style="margin-bottom: 4px; padding: 5px;">
-											<label for="custom_url_${i}" style="display: block; font-weight: bold; margin-bottom: 5px;">Custom URL:</label>
-											<input type="text" class="metadata-input" style="width: 100%; height: 20px; padding: 5px; border: 1px solid #ccc; border-radius: 2px;" name="custom_url[]" id="custom_url_${i}" />
+										<div class="metadata-field" style="margin-bottom: 8px; display: flex; ">
+											<label for="custom_url_${i}" style="display: block; width:20%; font-size: 12px; margin-right: 39px;">Custom URL</label>
+											<input type="text" class="metadata-textarea" style="padding: 5px; width:80%; border: 1px solid #ccc; border-radius: 3px;" name="custom_url[]" id="custom_url_${i}"/>
 										</div>` : ''}
 
 										${metadataContainer.getAttribute('data-display-custom_target') === 'yes' ? `
-										<div class="metadata-field" style="margin-bottom: 4px; padding: 5px;">
-											<label for="custom_target_${i}" style="display: block; font-weight: bold; margin-bottom: 5px;">Custom Target:</label>
-											<input type="text" class="metadata-input" style="width: 100%; height: 20px; padding: 5px; border: 1px solid #ccc; border-radius: 2px;" name="custom_target[]" id="custom_target_${i}" />
+										<div class="metadata-field" style="margin-bottom: 8px; display: flex; ">
+											<label for="custom_target_${i}" style="display: block; width:20%; font-size: 12px; margin-right: 39px;">Custom Target</label>
+											<input type="text" class="metadata-textarea" style="padding: 5px; width:80%; border: 1px solid #ccc; border-radius: 3px;" name="custom_target[]" id="custom_target_${i}"/>
 										</div>` : ''}
 									</div>
 								</div>
@@ -325,33 +326,19 @@ if ( ! class_exists( 'Foogallery_FrontEnd_Upload_Shortcode' ) ) {
 
 					// Check if files were uploaded.
 					if ( isset( $_FILES['foogallery_images'] ) ) {
-						$uploaded_files = $_FILES['foogallery_images'];						
+						$uploaded_files = $_FILES['foogallery_images'];
 
-						// Check if the random folder name is already stored in the postmeta.
-						$random_folder_name = get_post_meta( $gallery_id, '_foogallery_frontend_upload', true );
+						// User folder to store the uploaded images.
+						$user_folder = wp_upload_dir()['basedir'] . '/users_uploads/' . $gallery_id . '/';
 
-						if ( empty( $random_folder_name ) ) {
-							// Generate a unique folder name based on the timestamp and gallery ID.
-							$random_folder_name = 'gallery_' . $gallery_id . '_' . time();
-
-							// Define the user folder path.
-							$user_folder = wp_upload_dir()['basedir'] . '/users_uploads/' . $gallery_id . '/' . $random_folder_name . '/';
-
-							// Check if the user folder already exists, and create it if not.
-							if ( !file_exists( $user_folder ) ) {
-								if (wp_mkdir_p( $user_folder ) ) {
-									chmod( $user_folder, 0755 );
-								} else {
-									echo '<div class="error-message" style="color: red; text-align: center;">' . esc_html__( 'Error creating the user folder.', 'foogallery' ) . '</div>';
-									return;
-								}
+						// Create the user folder if it doesn't exist.
+						if ( ! file_exists( $user_folder ) ) {
+							if ( wp_mkdir_p( $user_folder ) ) {
+								chmod( $user_folder, 0755 );
+							} else {
+								echo '<div class="error-message" style="color: red; text-align: center;">' . __( 'Error creating the user folder.', 'foogallery' ) . '</div>';
+								return;
 							}
-
-							// Store the folder name in the postmeta array (only for the first upload).
-							update_post_meta( $gallery_id, '_foogallery_frontend_upload', $random_folder_name );
-						} else {
-							// Use the existing random folder for subsequent uploads.
-							$user_folder = wp_upload_dir()['basedir'] . '/users_uploads/' . $gallery_id . '/' . $random_folder_name . '/';
 						}
 
 						// Check if the "Only logged in users can upload" checkbox is checked.
@@ -373,7 +360,7 @@ if ( ! class_exists( 'Foogallery_FrontEnd_Upload_Shortcode' ) ) {
 						if ( $max_images_allowed > 0 && $uploaded_image_count > $max_images_allowed ) {
 							echo '<div class="error-message" style="color: red; text-align: center;">' . esc_html__( 'Exceeded maximum images allowed.', 'foogallery' ) . '</div>';
 							return;
-						}						
+						}
 
 						$exceeded_size_images = array();
 						foreach ( $uploaded_files['name'] as $key => $filename ) {
