@@ -71,7 +71,7 @@ if ( ! class_exists( 'Foogallery_FrontEnd_Upload_Moderation' ) ) {
 		/**
 		 * Handle the "Approve" action for an image.
 		 *
-		 * This method is responsible for processing the "Approve" action for an image.
+		 * This method is responsible for processing the "Approve" action for a specific image.
 		 * It moves the image to the approved folder and updates the metadata accordingly.
 		 *
 		 * @private
@@ -81,93 +81,79 @@ if ( ! class_exists( 'Foogallery_FrontEnd_Upload_Moderation' ) ) {
 			if ( isset( $_POST['approve_image_nonce'] ) && wp_verify_nonce( $_POST['approve_image_nonce'], 'approve_image_nonce' ) ) {
 				// Get the gallery ID from the form data.
 				$gallery_id = isset( $_POST['gallery_id'] ) ? intval( $_POST['gallery_id'] ) : null;
+				$file_name = isset( $_POST['image_id'] ) ? sanitize_text_field( $_POST['image_id'] ) : null;
 
-				if ( $gallery_id ) {
+				if ( $gallery_id && $file_name ) {
 					// Define the paths.
 					$original_folder = wp_upload_dir()['basedir'] . '/users_uploads/' . $gallery_id . '/';
 
 					// Read the metadata from the metadata.json file.
 					$metadata_file = $original_folder . 'metadata.json';
-					
+
 					if ( file_exists( $metadata_file ) ) {
 						$metadata_content = file_get_contents( $metadata_file );
 						$metadata = json_decode( $metadata_content, true );
 
 						if ( $metadata ) {
-							// Get the file name (identifier) from the JSON data.
-							$file_name = isset( $_POST['image_id'] ) ? sanitize_text_field( $_POST['image_id'] ) : null;
+							// Search for the specific image in the JSON data.
+							foreach ( $metadata['items'] as $key => $item ) {
+								if (isset( $item['file'] ) && $item['file'] === $file_name ) {
+									// Process the specific image for approval.
+									$image_filename = sanitize_file_name( $item['file'] );
+									$base_url = site_url();
+									$image_url = $base_url . '/wp-content/uploads/users_uploads/' . $gallery_id . '/' . $image_filename;
+									$attachment_data = array(
+										'url' => $image_url,
+										'title' => $item['caption'],
+										'caption' => $item['caption'],
+										'alt' => $item['alt'],
+										'description' => $item['description'],
+										'custom_url' => $item['custom_url'],
+										'custom_target' => $item['custom_target'],
+									);
 
-							if ( $file_name ) {
-								// Search for the specific image in the JSON data.
-								foreach ( $metadata['items'] as $item ) {
-									if ( isset( $item['file'] ) && $item['file'] ) {
-										$image_filename  = isset( $item['file'] ) ? sanitize_file_name( $item['file'] ) : '';
-										$base_url        = site_url();
-										$image_url       = $base_url . '/wp-content/uploads/users_uploads/' . $gallery_id . '/' . $image_filename;
-										$attachment_data = array(
-											'url'           => $image_url,
-											'title'         => $item['caption'],
-											'caption'       => $item['caption'],
-											'alt'           => $item['alt'],
-											'description'   => $item['description'],
-											'custom_url'    => $item['custom_url'],
-											'custom_target' => $item['custom_target'],
-										);
-										
-										$attachment_id = foogallery_import_attachment( $attachment_data );
-										
-										if ( $attachment_id ) {
-											// Add the attachment to the gallery.
-											$existing_attachments = get_post_meta( $gallery_id, FOOGALLERY_META_ATTACHMENTS, true );
-											$existing_attachments[] = $attachment_id;
-											update_post_meta( $gallery_id, FOOGALLERY_META_ATTACHMENTS, $existing_attachments );
+									$attachment_id = foogallery_import_attachment( $attachment_data );
 
-											// Delete the image from the original folder.
-											if ( isset( $item['file'] ) && $item['file'] ) {
-												$image_filename = sanitize_file_name( $item['file'] );
-												$original_image_path = $original_folder . $image_filename;
-												
-												if ( file_exists( $original_image_path ) ) {
-													unlink( $original_image_path );
-												}
-											}
+									if ( $attachment_id ) {
+										// Add the attachment to the gallery.
+										$existing_attachments = get_post_meta( $gallery_id, FOOGALLERY_META_ATTACHMENTS, true );
+										$existing_attachments[] = $attachment_id;
+										update_post_meta( $gallery_id, FOOGALLERY_META_ATTACHMENTS, $existing_attachments );
 
-											// Remove the entry from the metadata.json file.
-											$new_metadata = ['items' => []];
-											foreach ( $metadata['items'] as $existing_item ) {
-												if ( isset( $existing_item['file'] ) && $existing_item['file'] !== $item['file'] ) {
-													$new_metadata['items'][] = $existing_item;
-												}
-											}
+										// Delete the image from the original folder.
+										$original_image_path = $original_folder . $image_filename;
 
-											// Update the metadata.json file.
-											$metadata_json = json_encode( $new_metadata );
-											file_put_contents( $metadata_file, $metadata_json );
-
-											// Display a success message.
-											echo '<div class="notice notice-success"><p>' . __( 'Image approved and added to the gallery successfully.', 'foogallery' ) . '</p></div>';
-										} else {
-											// Display an error message.
-											echo '<div class="notice notice-error"><p>' . __( 'Error importing image. Please try again.', 'foogallery' ) . '</p></div>';
+										if (file_exists( $original_image_path ) ) {
+											unlink( $original_image_path );
 										}
+
+										// Remove the entry from the metadata.json file.
+										unset( $metadata['items'][$key] );
+
+										// Update the metadata.json file.
+										$metadata_json = json_encode( $metadata );
+										file_put_contents( $metadata_file, $metadata_json );
+
+										// Display a success message.
+										echo '<div class="notice notice-success"><p>' . __( 'Image approved and added to the gallery successfully.', 'foogallery' ) . '</p></div>';
+									} else {
+										// Display an error message.
+										echo '<div class="notice notice-error"><p>' . __( 'Error importing image. Please try again.', 'foogallery' ) . '</p></div>';
 									}
+
+									// Exit the loop after processing the specific image.
+									break;
 								}
-							} else {
-								// Display an error message if the file name is not provided in the form data.
-								echo '<div class="notice notice-error"><p>' . __( 'Invalid request. Please try again.', 'foogallery' ) . '</p></div>';
 							}
 						}
-					} else {
-						// Display an error message if the metadata.json file doesn't exist.
-						echo '<div class="notice notice-error"><p>' . __( 'Metadata file not found. Please try again.', 'foogallery' ) . '</p></div>';
 					}
 				} else {
-					// Display an error message if the gallery ID is not provided in the form data.
-					echo '<div class="notice notice-error"><p>' . __( 'Invalid request. Please try again.', 'foogallery' ) . '</p></div>';
+					// Display an error message if the gallery ID or file name is not provided in the form data.
+					echo '<div class="notice notice-error"><p>' . __('Invalid request. Please try again.', 'foogallery') . '</p></div>';
 				}
 			} else {
 				// Display an error message if the nonce verification fails.
-				echo '<div class="notice notice-error"><p>' . __( 'Security check failed. Please try again.', 'foogallery' ) . '</p></div>';
+				echo '<div class="notice notice-error"><p>' . __('Security check failed. Please try again.', 'foogallery') . '</p></div>';
 			}
 		}
 
@@ -190,14 +176,13 @@ if ( ! class_exists( 'Foogallery_FrontEnd_Upload_Moderation' ) ) {
 				$file_name = isset( $_POST['image_id'] ) ? sanitize_text_field( $_POST['image_id'] ) : null;
 
 				if ( $gallery_id && $file_name ) {
-					// Delete the image file from the server.
-					$random_folder_name = get_post_meta( $gallery_id, '_foogallery_frontend_upload', true );                    
+					// Delete the image file from the server.                    
 					$user_folder = wp_upload_dir()['basedir'] . '/users_uploads/' . $gallery_id . '/';
 
 					// Remove the metadata entry for the rejected image.
 					$metadata_file = $user_folder . 'metadata.json';
 					if ( file_exists( $metadata_file ) ) {
-						$existing_metadata = @json_decode( $wp_filesystem->get_contents( $metadata_file ), true);
+						$existing_metadata = @json_decode( $wp_filesystem->get_contents( $metadata_file ), true );
 						$existing_metadata['items'] = array_filter( $existing_metadata['items'], function ( $item ) use ( $file_name ) {
 							return $item['file'] !== $file_name;
 						});

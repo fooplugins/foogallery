@@ -99,9 +99,10 @@ if ( ! class_exists( 'Foogallery_FrontEnd_Image_Moderation' ) ) {
 
 			<div class="wrap" id="image-moderation-container">
 				
-
-				<section style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 20px;">
-					<h2><?php esc_html_e( 'Image Moderation', 'foogallery' ); ?></h2>
+				<h2><?php esc_html_e( 'Image Moderation', 'foogallery' ); ?></h2>
+				
+				<section style="float: right; margin-bottom: 10px;">
+					
 					<!-- Gallery Title filter dropdown -->
 					<form method="post" style="">
 					<label for="filter_gallery_title"><?php esc_html_e( 'Filter by Gallery Title:', 'foogallery' ); ?></label>
