@@ -291,10 +291,6 @@ if ( ! class_exists( 'FooGallery_FrontEnd_Upload_MetaBoxes' ) ) {
 				foreach ( $directories as $directory ) {
 					// Extract the gallery ID from the directory name.
 					$gallery_id = intval( basename( $directory ) );
-
-					// Retrieve the random subfolder name from the postmeta array.
-					$random_folder_name = get_post_meta( $gallery_id, '_foogallery_frontend_upload', true );
-
 					$metadata_file = $directory . '/metadata.json';
 
 					// Check if the metadata file exists.
@@ -363,8 +359,6 @@ if ( ! class_exists( 'FooGallery_FrontEnd_Upload_MetaBoxes' ) ) {
 									// Retrieve the image URL from the JSON data.
 									$image_filename = isset( $image['file'] ) ? sanitize_file_name( $image['file'] ) : '';
 									$base_url       = site_url();
-									// Retrieve the random subfolder name from the postmeta array.
-									$random_folder_name = get_post_meta( $gallery_id, '_foogallery_frontend_upload', true );
 
 									// Construct the complete image URL.
 									$image_url = $base_url . '/wp-content/uploads/users_uploads/' . $gallery_id . '/' . $image_filename;
