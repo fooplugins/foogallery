@@ -105,6 +105,9 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Lightroom' ) ) {
 					$helper = new FooGallery_Datasource_MediaLibrary_Query_Helper();
 
 					global $wplr;
+					if ( !isset( $wplr ) ) {
+						return $attachments;
+					}
 					$media = $wplr->get_media_from_collection( $collectionId );
 
 					if ( is_array( $media ) && count( $media ) > 0 ) {

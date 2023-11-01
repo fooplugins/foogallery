@@ -98,7 +98,7 @@ if ( ! class_exists( 'FooGallery_Pro' ) ) {
 				new FooGallery_Pro_Buttons();
 				new FooGallery_Product_Gallery_Template();
 				new FooGallery_Pro_Woocommerce_Master_Product();
-                new FooGallery_Pro_Woocommerce_Downloads();
+				new FooGallery_Pro_Woocommerce_Downloads();
 				new FooGallery_Pro_Whitelabelling();
 				new FooGallery_Pro_Master_Galleries();
 			}

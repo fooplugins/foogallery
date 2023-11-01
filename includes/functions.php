@@ -1209,9 +1209,11 @@ function foogallery_current_gallery_attachments_for_rendering() {
         return $attachments;
     }
 
-    //by default, return all attachments
+    // by default, return all attachments.
     return $current_foogallery->attachments();
 }
+
+
 
 /**
  * Return attachment ID from a URL

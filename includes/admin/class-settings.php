@@ -424,6 +424,7 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 				'section' => __( 'Admin', 'foogallery' ),
 				'tab'     => 'language'
 			);
+			
 			//endregion Language Tab
 
 			//region Advanced Tab
