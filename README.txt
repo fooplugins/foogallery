@@ -319,9 +319,10 @@ Please update in order for FooGallery to work in WP 5.5+!
 
 == Changelog ==
 
-= 2.4.1 =
-* Date Updated : 29 Oct 2023
+= 2.4.2 =
+* Date Updated : 1 Nov 2023
 * New : Overhauled features listing, and added a bunch of features to the list, which can be activated/deactivated like plugins.
+* New : Add-ons menu which allows you to see add-ons.
 
 = 2.3.4 =
 * Date Updated : 6 Sep 2023
