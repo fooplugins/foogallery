@@ -8,20 +8,31 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings_Helper' ) ) {
 
 	class FooGallery_Admin_Gallery_MetaBox_Settings_Helper {
 
-		/**
-		 * @var FooGallery
-		 */
-		private $gallery;
+		
+        /**
+         * @var FooGallery
+         */
+        private $gallery;
 
-		/**
-		 * @var bool
-		 */
-		private $hide_help;
+        /**
+         * @var bool
+         */
+        private $hide_help;
 
-		/**
-		 * @var array
-		 */
-		public $gallery_templates;
+        /**
+         * @var bool
+         */
+        private $hide_promo;
+
+        /**
+         * @var array
+         */
+        public $gallery_templates;
+
+        /**
+         * @var string
+         */
+        private $current_gallery_template;
 
 		/**
 		 * FooGallery_Admin_Gallery_MetaBox_Settings_Helper constructor.
