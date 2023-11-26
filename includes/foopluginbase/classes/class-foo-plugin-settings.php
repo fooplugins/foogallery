@@ -210,14 +210,15 @@ if ( !class_exists( 'Foo_Plugin_Settings_v2_2' ) ) {
 			$options = get_option($this->plugin_slug);
 
 			if ( function_exists( 'is_multisite' ) && is_multisite() ) {
-
-				//if we are in the network settings then use site options directly.
-				if (is_network_admin()) {
-					$options = get_site_option($this->plugin_slug);
+				// If we are in the network settings, use site options directly.
+				if ( is_network_admin() ) {
+					$options = get_site_option( $this->plugin_slug );
 				} else {
-					$site_options = get_site_option($this->plugin_slug);
-					$options = wp_parse_args($options, $site_options);
+					$site_options = get_site_option( $this->plugin_slug );
+					$options      = is_array( $options ) ? wp_parse_args( $options, $site_options ) : (array) $site_options;
 				}
+			} else {
+				$options = is_array( $options ) ? $options : array();
 			}
 
             if ( $options === '' ) {
