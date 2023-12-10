@@ -2178,3 +2178,29 @@ function foogallery_pro_features() {
     }
     return $foogallery_pro_features;
 }
+
+/**
+ * Retrieves the target options for FooGallery attachments.
+ *
+ * The function retrieves an array of target options that can be used for customizing
+ * the behavior of attachment links within the FooGallery plugin.
+ *
+ * @return array An associative array of target options with keys like '_blank', '_self', etc.
+ *
+ * @since 1.0.0
+ */
+function foogallery_get_target_options() {
+    /**
+     * Filter the target options for FooGallery attachments.
+     *
+     * @param array $target_options An associative array of target options.
+     */
+    $target_options = apply_filters( 'foogallery_attachment_field_custom_target_options', array(
+        'default' => __( 'Default', 'foogallery' ),
+        '_blank'  => __( 'New tab (_blank)', 'foogallery' ),
+        '_self'   => __( 'Same tab (_self)', 'foogallery' ),
+        'foobox'  => __( 'FooBox', 'foogallery' ),
+    ));
+
+    return $target_options;
+}
