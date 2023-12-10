@@ -15,12 +15,7 @@ if (!class_exists('FooGallery_Attachment_Fields')) {
 
 	    public function get_custom_fields( $post = null ) {
 
-		    $target_options = apply_filters( 'foogallery_attachment_field_custom_target_options',  array(
-			    'default' => __( 'Default', 'foogallery' ),
-			    '_blank' => __( 'New tab (_blank)', 'foogallery' ),
-			    '_self' => __( 'Same tab (_self)', 'foogallery' ),
-			    'foobox' => __( 'FooBox', 'foogallery' )
-		    ) );
+		    $target_options = foogallery_get_target_options();
 
 		    $fields = array(
 			    'foogallery_custom_url' => array(
