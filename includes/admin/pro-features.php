@@ -183,7 +183,7 @@ return array(
     ),
     'gallery_blueprints' => array(
         'title' => __( 'Gallery Blueprints','foogallery' ),
-        'desc' => __( 'Tired of copying settings from one gallery to the next? You will love our Gallery Blueprint feature! Setup a Gallery Blueprint, that multiple other galleries can inherit those same settings and look and feel from.', 'foogallery' ),
+        'desc' => __( 'Tired of copying settings from one gallery to the next? You will love our Gallery Blueprint feature! Setup a blueprint so that multiple galleries can adopt the same settings and appearance.', 'foogallery' ),
         'link' => 'https://fooplugins.com/documentation/foogallery/pro-commerce/use-master-gallery/',
         'utm_content' => 'cta_gallery_blueprints',
         'link_text' => __( 'Learn More','foogallery' ),
