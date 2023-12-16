@@ -147,8 +147,8 @@ There are 3 PRO plans available, that will work with any budget:
 *   Buttons and Ribbons
     *   Add custom buttons to your images
     *   Add custom ribbons to your images to attract attention
-*	Master Galleries
-    *   Set a gallery as a master and then all galleries who use that master will inherit all settings from the master - [docs](https://fooplugins.com/documentation/foogallery/pro-commerce/use-master-gallery/)
+*	Gallery Blueprints
+    *   Set a gallery as a blueprint and then all galleries who use that blueprint will inherit all settings from the blueprint - [docs](https://fooplugins.com/documentation/foogallery/pro-commerce/use-master-gallery/)
 *   White Labeling
     *   Rebrand FooGallery to whatever you like for your clients. Ideal for freelancers and agencies. [docs](https://fooplugins.com/documentation/foogallery/pro-commerce/white-labeling/)
 

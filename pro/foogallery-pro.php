@@ -46,7 +46,7 @@ require_once FOOGALLERY_PATH . 'pro/includes/woocommerce/class-foogallery-pro-wo
 require_once FOOGALLERY_PATH . 'pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php';
 require_once FOOGALLERY_PATH . 'pro/includes/woocommerce/class-foogallery-pro-woocommerce-downloads.php';
 require_once FOOGALLERY_PATH . 'pro/extensions/default-templates/product/class-product-gallery-template.php';
-require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-master-galleries.php';
+require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-gallery-blueprints.php';
 
 /**
  * FooGallery PRO Main Class
@@ -100,7 +100,7 @@ if ( ! class_exists( 'FooGallery_Pro' ) ) {
 				new FooGallery_Pro_Woocommerce_Master_Product();
 				new FooGallery_Pro_Woocommerce_Downloads();
 				new FooGallery_Pro_Whitelabelling();
-				new FooGallery_Pro_Master_Galleries();
+				new FooGallery_Pro_Gallery_Blueprints();
 			}
 		}
 	}
