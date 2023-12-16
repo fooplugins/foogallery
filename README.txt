@@ -319,6 +319,10 @@ Please update in order for FooGallery to work in WP 5.5+!
 
 == Changelog ==
 
+= 2.4.3 =
+* Date Updated : 16 Dec 2023
+* Update : Freemius SDK update 2.6.1
+
 = 2.4.2 =
 * Date Updated : 1 Nov 2023
 * New : Overhauled features listing, and added a bunch of features to the list, which can be activated/deactivated like plugins.

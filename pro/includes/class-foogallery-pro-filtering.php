@@ -10,53 +10,51 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
             add_action( 'plugins_loaded', array( $this, 'load_feature' ) );
 
             add_filter( 'foogallery_available_extensions', array( $this, 'register_extension' ) );
-			if ( is_admin() ) {
-							
-
-				//add a global setting to change the All filter
-				add_filter( 'foogallery_admin_settings_override', array( $this, 'add_language_settings' ), 30 );
-
-				//output the multi-level filtering custom field
-				add_action( 'foogallery_render_gallery_template_field_custom', array( $this, 'render_multi_field' ), 10, 3 );
-
-				//enqueue assets needed for the multi-level modal
-				add_action( 'foogallery_admin_enqueue_scripts', array( $this, 'enqueue_scripts_and_styles' ) );
-
-				//output the modal
-				add_action( 'admin_footer', array( $this, 'render_multi_level_modal' ) );
-
-				//ajax handler to render the modal content
-				add_action( 'wp_ajax_foogallery_multi_filtering_content', array( $this, 'ajax_load_modal_content' ) );
-			}
-			//adds the filtering property to a FooGallery
-			add_action( 'foogallery_located_template', array( $this, 'determine_filtering' ), 10, 2 );
-	
-			//add the filtering attributes to the gallery container
-			add_filter( 'foogallery_build_container_data_options', array( $this, 'add_filtering_data_options' ), 10, 3 );
-
-			//add attributes to the thumbnail anchors
-			add_filter( 'foogallery_attachment_html_link_attributes', array( $this, 'add_tag_attribute' ), 10, 3 );
-
-			//add tags to the json output
-			add_filter( 'foogallery_build_attachment_json', array( $this, 'add_json_tags' ), 10, 6 );
-
-			//add localised text
-			add_filter( 'foogallery_il8n', array( $this, 'add_il8n' ) );
-
-			//output pagination placeholders
-			add_action( 'foogallery_loaded_template_before', array( $this, 'output_filtering_placeholders_before' ), 10, 1 );
-			add_action( 'foogallery_loaded_template_after', array( $this, 'output_filtering_placeholders_after' ), 20, 1 );
 		}
 
 		function load_feature() {
             if ( foogallery_feature_enabled( 'foogallery-filtering' ) ) {
                 if ( is_admin() ) {
+					//add extra fields to the templates that support filtering
+					add_filter( 'foogallery_override_gallery_template_fields', array( $this, 'add_filtering_fields' ), 10, 2 );
+	
 					//set the settings icon for filtering
 					add_filter( 'foogallery_gallery_settings_metabox_section_icon', array( $this, 'add_section_icons' ) );
+	
+					//add a global setting to change the All filter
+					add_filter( 'foogallery_admin_settings_override', array( $this, 'add_language_settings' ), 30 );
+	
+					//output the multi-level filtering custom field
+					add_action( 'foogallery_render_gallery_template_field_custom', array( $this, 'render_multi_field' ), 10, 3 );
+	
+					//enqueue assets needed for the multi-level modal
+					add_action( 'foogallery_admin_enqueue_scripts', array( $this, 'enqueue_scripts_and_styles' ) );
+	
+					//output the modal
+					add_action( 'admin_footer', array( $this, 'render_multi_level_modal' ) );
+	
+					//ajax handler to render the modal content
+					add_action( 'wp_ajax_foogallery_multi_filtering_content', array( $this, 'ajax_load_modal_content' ) );
 				}
 	
-				//add extra fields to the templates that support filtering
-				add_filter( 'foogallery_override_gallery_template_fields', array( $this, 'add_filtering_fields' ), 10, 2 );	
+				//adds the filtering property to a FooGallery
+				add_action( 'foogallery_located_template', array( $this, 'determine_filtering' ), 10, 2 );
+	
+				//add the filtering attributes to the gallery container
+				add_filter( 'foogallery_build_container_data_options', array( $this, 'add_filtering_data_options' ), 10, 3 );
+	
+				//add attributes to the thumbnail anchors
+				add_filter( 'foogallery_attachment_html_link_attributes', array( $this, 'add_tag_attribute' ), 10, 3 );
+	
+				//add tags to the json output
+				add_filter( 'foogallery_build_attachment_json', array( $this, 'add_json_tags' ), 10, 6 );
+	
+				//add localised text
+				add_filter( 'foogallery_il8n', array( $this, 'add_il8n' ) );
+	
+				//output pagination placeholders
+				add_action( 'foogallery_loaded_template_before', array( $this, 'output_filtering_placeholders_before' ), 10, 1 );
+				add_action( 'foogallery_loaded_template_after', array( $this, 'output_filtering_placeholders_after' ), 20, 1 );
             }
         }
 

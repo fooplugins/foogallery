@@ -22,34 +22,6 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
             add_action( 'plugins_loaded', array( $this, 'load_feature' ) );
 
             add_filter( 'foogallery_available_extensions', array( $this, 'register_extension' ) );
-
-			// Determine ribbon/button data from product.
-			add_filter( 'foogallery_datasource_woocommerce_build_attachment', array( $this, 'determine_data_for_product' ), 10, 2 );
-
-			// Enqueue WooCommerce scripts if applicable.
-			add_action( 'foogallery_located_template', array( $this, 'enqueue_wc_scripts') );
-
-			// Append product attributes onto the anchor in the galleries.
-			add_filter( 'foogallery_attachment_html_link_attributes', array( $this, 'add_product_attributes' ), 10, 3 );
-
-			// Load product data after attachment has loaded.
-			add_action( 'foogallery_attachment_instance_after_load', array( $this, 'load_product_data' ), 10, 2 );
-
-			// Append a nonce that will be used in variation ajax calls.
-			add_filter( 'foogallery_lightbox_data_attributes', array( $this, 'add_to_lightbox_options' ) );
-
-			// Build up a product info for a product.
-			add_filter( 'wp_ajax_foogallery_product_variations', array( $this, 'ajax_build_product_info' ) );
-			add_filter( 'wp_ajax_nopriv_foogallery_product_variations', array( $this, 'ajax_build_product_info' ) );
-
-			//add localised text
-			add_filter( 'foogallery_il8n', array( $this, 'add_il8n' ) );
-
-			// Build up captions based on product data.
-			add_filter( 'foogallery_build_custom_caption_placeholder_replacement', array( $this, 'build_product_captions' ), 10, 3 );
-
-			// Add button data to the json output
-			add_filter( 'foogallery_build_attachment_json', array( $this, 'add_button_to_json' ), 40, 6 );
 		}
 
 		function load_feature() {
@@ -85,6 +57,34 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 					add_action( 'foogallery_attachment_save_data', array( $this, 'attachment_modal_save_data' ), 60, 2 );
 					add_filter( 'foogallery_attachment_modal_data', array( $this, 'attachment_modal_data' ), 70, 4 );
 				}
+
+                // Determine ribbon/button data from product.
+                add_filter( 'foogallery_datasource_woocommerce_build_attachment', array( $this, 'determine_data_for_product' ), 10, 2 );
+
+                // Enqueue WooCommerce scripts if applicable.
+                add_action( 'foogallery_located_template', array( $this, 'enqueue_wc_scripts') );
+
+                // Append product attributes onto the anchor in the galleries.
+                add_filter( 'foogallery_attachment_html_link_attributes', array( $this, 'add_product_attributes' ), 10, 3 );
+
+                // Load product data after attachment has loaded.
+                add_action( 'foogallery_attachment_instance_after_load', array( $this, 'load_product_data' ), 10, 2 );
+
+                // Append a nonce that will be used in variation ajax calls.
+                add_filter( 'foogallery_lightbox_data_attributes', array( $this, 'add_to_lightbox_options' ) );
+
+                // Build up a product info for a product.
+                add_filter( 'wp_ajax_foogallery_product_variations', array( $this, 'ajax_build_product_info' ) );
+                add_filter( 'wp_ajax_nopriv_foogallery_product_variations', array( $this, 'ajax_build_product_info' ) );
+
+                //add localised text
+                add_filter( 'foogallery_il8n', array( $this, 'add_il8n' ) );
+
+                // Build up captions based on product data.
+                add_filter( 'foogallery_build_custom_caption_placeholder_replacement', array( $this, 'build_product_captions' ), 10, 3 );
+
+                // Add button data to the json output
+                add_filter( 'foogallery_build_attachment_json', array( $this, 'add_button_to_json' ), 40, 6 );
             }
         }
 
@@ -1332,11 +1332,11 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 		/**
 		 * Add Ribbon specific custom fields.
 		 *
-		 * @uses "foogallery_attachment_custom_fields" filter
-		 *
 		 * @param array $fields
 		 *
 		 * @return array
+		 *@uses "foogallery_attachment_custom_fields" filter
+		 *
 		 */
 		public function attachment_custom_fields( $fields ) {
 			$fields['foogallery_product']  = array(
