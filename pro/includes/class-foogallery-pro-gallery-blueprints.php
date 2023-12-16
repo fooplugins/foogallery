@@ -12,32 +12,31 @@ if ( ! class_exists( 'FooGallery_Pro_Gallery_Blueprints' ) ) {
             add_action( 'plugins_loaded', array( $this, 'load_feature' ) );
 
             add_filter( 'foogallery_available_extensions', array( $this, 'register_extension' ) );
-
-
-			// Ajax handler for toggling the Gallery Blueprint.
-			add_action( 'wp_ajax_foogallery_gallery_blueprint_toggle', array( $this, 'ajax_blueprint_toggle' ) );
-
-			// Ajax handler for setting the Gallery Blueprint.
-			add_action( 'wp_ajax_foogallery_gallery_blueprint_set', array( $this, 'ajax_blueprint_set' ) );
-
-			// Override the settings metabox.
-			add_filter( 'foogallery_should_render_gallery_settings_metabox', array( $this, 'override_settings_metabox'), 10, 2 );
-			add_action( 'foogallery_after_render_gallery_settings_metabox', array( $this, 'show_gallery_blueprint_info_in_settings_metabox' ), 10, 1 );
-
-			// Hide other metaboxes when a Gallery Blueprint is being used.
-			add_action( 'add_meta_boxes_' . FOOGALLERY_CPT_GALLERY, array( $this, 'hide_metaboxes' ), 99 );
-
-			// Admin notice for Gallery Blueprint
-			add_action( 'admin_notices', array( $this, 'display_gallery_blueprint_notice' ) );
-
-			// Override where the settings for a gallery are loaded from. In this case, from the Gallery Blueprint.
-			add_filter( 'foogallery_load_gallery_settings_id', array( $this, 'load_settings_from_gallery_blueprint' ) );
 		}
 
 		function load_feature() {
             if ( foogallery_feature_enabled( 'foogallery-gallery-blueprints' ) ) {                
 				// Add the Gallery Blueprint metabox.
 				add_action( 'add_meta_boxes_' . FOOGALLERY_CPT_GALLERY, array( $this, 'add_gallery_blueprint_meta_box_to_gallery' ) );
+
+				// Ajax handler for toggling the Gallery Blueprint.
+				add_action( 'wp_ajax_foogallery_gallery_blueprint_toggle', array( $this, 'ajax_blueprint_toggle' ) );
+
+				// Ajax handler for setting the Gallery Blueprint.
+				add_action( 'wp_ajax_foogallery_gallery_blueprint_set', array( $this, 'ajax_blueprint_set' ) );
+
+				// Override the settings metabox.
+				add_filter( 'foogallery_should_render_gallery_settings_metabox', array( $this, 'override_settings_metabox'), 10, 2 );
+				add_action( 'foogallery_after_render_gallery_settings_metabox', array( $this, 'show_gallery_blueprint_info_in_settings_metabox' ), 10, 1 );
+
+				// Hide other metaboxes when a Gallery Blueprint is being used.
+				add_action( 'add_meta_boxes_' . FOOGALLERY_CPT_GALLERY, array( $this, 'hide_metaboxes' ), 99 );
+
+				// Admin notice for Gallery Blueprint
+				add_action( 'admin_notices', array( $this, 'display_gallery_blueprint_notice' ) );
+
+				// Override where the settings for a gallery are loaded from. In this case, from the Gallery Blueprint.
+				add_filter( 'foogallery_load_gallery_settings_id', array( $this, 'load_settings_from_gallery_blueprint' ) );
             }
         }
 
@@ -48,7 +47,7 @@ if ( ! class_exists( 'FooGallery_Pro_Gallery_Blueprints' ) ) {
                 'slug' => 'foogallery-gallery-blueprints',
                 'class' => 'FooGallery_Pro_Gallery_Blueprints',
                 'categories' => array( 'Premium' ),
-                'title' => __( 'Gallery Blueprint', 'foogallery' ),
+                'title' => __( 'Gallery Blueprints', 'foogallery' ),
                 'description' => $pro_features['gallery_blueprints']['desc'],
                 'external_link_text' => __( 'Read documentation', 'foogallery' ),
                 'external_link_url' => $pro_features['gallery_blueprints']['link'],
@@ -369,7 +368,7 @@ if ( ! class_exists( 'FooGallery_Pro_Gallery_Blueprints' ) ) {
                 });
             </script>
             <div>
-                <p class="foogallery-help"><?php _e('Gallery Blueprints allow you to setup galleries that other galleries inherit all settings from. When you change the settings on a Gallery Blueprint, all galleries that use that Gallery Blueprint will be updated. Think of a Gallery Blueprint as a "template". Any gallery using a blueprint will not be able to set its own settings, as everything is inherited from the blueprint. This allows you to update settings once, and affect multiple galleries.', 'foogallery'); ?></p>
+                <p class="foogallery-help"><?php _e('Gallery Blueprints allow you to setup a blueprint for multiple galleries, so that when you update the single blueprint, all the galleries change at the same time. Think of a blueprint as a "template". Any gallery using a blueprint will not be able to set its own settings, as everything is inherited from the blueprint. This allows you to update settings once, and affect multiple galleries.', 'foogallery'); ?></p>
             </div>
             <br/>
             <div id="foogallery_gallery_blueprint_container">
