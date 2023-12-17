@@ -531,7 +531,7 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 					'id'      => 'allowed_custom_post_types',
 					'title'   => __( 'Allowed Custom Post Types', 'foogallery' ),
 					'desc'    => __( 'Select the custom post types where galleries can be attached.', 'foogallery' ),
-					'type'    => 'radio',
+					'type'    => 'checkboxlist',
 					'choices' => $post_type_choices,
 					'tab'     => 'advanced'
 				);
