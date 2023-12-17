@@ -43,7 +43,7 @@ if ( ! class_exists('FooGallery_Attachment_Type') ) {
 			// check if we have overridden the type for the attachment
 			$override_type = get_post_meta( $foogallery_attachment->ID, '_foogallery_override_type', true );
 			if ( ! empty( $override_type ) ) {
-				$foogallery_attachment->type = $override_type;
+				$foogallery_attachment->type = sanitize_title( $override_type );
 			}
 		}
 
