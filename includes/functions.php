@@ -1477,7 +1477,7 @@ function foogallery_allowed_post_types_for_usage() {
     // Use foogallery_get_setting to retrieve the selected custom post types.
     $selected_custom_post_types = foogallery_get_setting( 'allowed_custom_post_types', array() );
 
-    if ( !is_array( $selected_custom_post_types ) ) {
+    if ( ! is_array( $selected_custom_post_types ) ) {
         $selected_custom_post_types = array();
     }
 
