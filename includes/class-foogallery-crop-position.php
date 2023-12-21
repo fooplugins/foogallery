@@ -137,7 +137,8 @@ if ( ! class_exists( 'FooGallery_Crop_Position' ) ) {
 				return $fields;
 			}
 
-			if ( ! wp_attachment_is_image( $post->ID ) ) {
+			// Ensure $post is not null before proceeding
+			if ( ! is_a( $post, 'WP_Post' ) || ! wp_attachment_is_image( $post->ID ) ) {
 				return $fields;
 			}
 

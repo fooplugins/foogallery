@@ -10,7 +10,6 @@ require_once FOOGALLERY_PATH . 'pro/extensions/default-templates/class-foogaller
 require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-bulk-copy.php';
 require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-gallery-override.php';
 require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-filtering.php';
-require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-attachment-type.php';
 require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-attachment-taxonomies.php';
 require_once FOOGALLERY_PATH . 'pro/includes/video/class-foogallery-pro-video.php';
 require_once FOOGALLERY_PATH . 'pro/includes/video/class-foogallery-pro-video-legacy.php';
@@ -26,7 +25,6 @@ require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-wplr-support.p
 require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-instagram-helper.php';
 require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-datasource-realmedialibrary.php';
 require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-datasource-post-query.php';
-require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-lightbox.php';
 require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-advanced-captions.php';
 require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-advanced-thumbnails.php';
 require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-bulk-management.php';
@@ -48,7 +46,7 @@ require_once FOOGALLERY_PATH . 'pro/includes/woocommerce/class-foogallery-pro-wo
 require_once FOOGALLERY_PATH . 'pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php';
 require_once FOOGALLERY_PATH . 'pro/includes/woocommerce/class-foogallery-pro-woocommerce-downloads.php';
 require_once FOOGALLERY_PATH . 'pro/extensions/default-templates/product/class-product-gallery-template.php';
-require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-master-galleries.php';
+require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-gallery-blueprints.php';
 
 /**
  * FooGallery PRO Main Class
@@ -68,7 +66,6 @@ if ( ! class_exists( 'FooGallery_Pro' ) ) {
 		 */
 		public function __construct() {
 			new FooGallery_Pro_Hover_Presets();
-			new FooGallery_Pro_Lightbox();
 			new FooGallery_Pro_Default_Templates();
 			new FooGallery_Pro_Instagram_Filters();
 
@@ -77,7 +74,6 @@ if ( ! class_exists( 'FooGallery_Pro' ) ) {
 				new FooGallery_Pro_Paging();
 				new FooGallery_Pro_Bulk_Copy();
 				new FooGallery_Pro_Gallery_Shortcode_Override();
-				new FooGallery_Pro_Attachment_Type();
 				new FooGallery_Pro_Attachment_Taxonomies();
 				new FooGallery_Pro_Filtering();
 				new FooGallery_Pro_Video();
@@ -102,9 +98,9 @@ if ( ! class_exists( 'FooGallery_Pro' ) ) {
 				new FooGallery_Pro_Buttons();
 				new FooGallery_Product_Gallery_Template();
 				new FooGallery_Pro_Woocommerce_Master_Product();
-                new FooGallery_Pro_Woocommerce_Downloads();
+				new FooGallery_Pro_Woocommerce_Downloads();
 				new FooGallery_Pro_Whitelabelling();
-				new FooGallery_Pro_Master_Galleries();
+				new FooGallery_Pro_Gallery_Blueprints();
 			}
 		}
 	}

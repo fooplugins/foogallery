@@ -5,7 +5,7 @@
 global $current_foogallery;
 global $current_foogallery_arguments;
 
-$lightbox = foogallery_gallery_template_setting( 'lightbox', 'unknown' );
+$lightbox = foogallery_gallery_template_setting_lightbox();
 if ( 'none' == foogallery_gallery_template_setting( 'caption_title_source' ) && 'none' == foogallery_gallery_template_setting( 'caption_desc_source' ) ) {
 	$current_foogallery_arguments['caption_preset'] = 'none';
 }

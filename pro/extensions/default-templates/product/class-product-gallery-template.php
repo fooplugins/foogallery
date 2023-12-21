@@ -89,7 +89,6 @@ if ( !class_exists( 'FooGallery_Product_Gallery_Template' ) ) {
                 'fields'	  => array(
 	                array(
 		                'id'	  => 'help',
-		                'title'	  => __( 'Tip', 'foogallery' ),
 		                'section' => __( 'General', 'foogallery' ),
 		                'type'	  => 'html',
 		                'help'	  => true,
@@ -121,9 +120,6 @@ if ( !class_exists( 'FooGallery_Product_Gallery_Template' ) ) {
                     ),
                     array(
                         'id'      => 'lightbox',
-                        'title'   => __( 'Lightbox', 'foogallery' ),
-                        'desc'    => __( 'Choose which lightbox you want to display images with. The lightbox will only work if you set the thumbnail link to "Full Size Image".', 'foogallery' ),
-                        'section' => __( 'General', 'foogallery' ),
                         'type'    => 'lightbox',
                     ),
                     array(

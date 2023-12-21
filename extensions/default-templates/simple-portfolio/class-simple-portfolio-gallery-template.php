@@ -68,7 +68,6 @@ if ( !class_exists( 'FooGallery_Simple_Portfolio_Gallery_Template' ) ) {
                 'fields'	  => array(
                     array(
                         'id'	  => 'help',
-                        'title'	  => __( 'Tip', 'foogallery' ),
                         'section' => __( 'General', 'foogallery' ),
                         'type'	  => 'html',
                         'help'	  => true,
@@ -99,11 +98,7 @@ if ( !class_exists( 'FooGallery_Simple_Portfolio_Gallery_Template' ) ) {
                     ),
                     array(
                         'id'      => 'lightbox',
-                        'title'   => __( 'Lightbox', 'foogallery' ),
-                        'desc'    => __( 'Choose which lightbox you want to display images with. The lightbox will only work if you set the thumbnail link to "Full Size Image".', 'foogallery' ),
-                        'section' => __( 'General', 'foogallery' ),
                         'type'    => 'lightbox',
-                        'default' => 'none',
                     ),
                     array(
                         'id'      => 'gutter',
@@ -181,7 +176,9 @@ if ( !class_exists( 'FooGallery_Simple_Portfolio_Gallery_Template' ) ) {
 			//update specific fields
 			foreach ($fields as &$field) {
 
-				if ( $index_of_captions_field === 0 && __( 'Captions', 'foogallery' ) === $field['section'] ) {
+				$field_section = array_key_exists( 'section', $field ) ? $field['section'] : '';
+
+				if ( $index_of_captions_field === 0 && __( 'Captions', 'foogallery' ) === $field_section ) {
 					$index_of_captions_field = $index;
 				}
 

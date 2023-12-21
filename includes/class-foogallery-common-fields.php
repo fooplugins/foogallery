@@ -47,19 +47,25 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 							}
 							break;
 						case 'lightbox':
-							$field['lightbox'] = true;
-							$field['type']     = 'select';
-							$field['choices']  = foogallery_gallery_template_field_lightbox_choices();
+                            $field['lightbox'] = true;
+                            $field['title'] = __( 'Lightbox', 'foogallery' );
+                            $field['type'] = 'select';
+                            $field['choices'] = foogallery_gallery_template_field_lightbox_choices();
+                            if ( !array_key_exists( 'desc', $field ) ) {
+                                $field['desc'] = __( 'Choose which lightbox you want to use. The lightbox will generally only work if you set the thumbnail link to "Full Size Image".', 'foogallery' );
+                            }
+                            if ( !array_key_exists( 'section', $field ) ) {
+                                $field['section'] = __( 'Lightbox', 'foogallery' );
+                            }
+                            $field['subsection'] = array( 'lightbox-general' => __( 'General', 'foogallery' ) );
+                            $field['default'] = 'foogallery';
+
 							if ( !isset( $field['row_data'] ) ) {
 								$field['row_data'] = array(
-									'data-foogallery-change-selector'          => 'select',
-									'data-foogallery-value-selector'           => 'select',
-									'data-foogallery-preview'                  => 'shortcode',
-									'data-foogallery-hidden'                   => true,
-									'data-foogallery-show-when-field-operator' => '!==',
-									'data-foogallery-show-when-field'          => 'thumbnail_link',
-									'data-foogallery-show-when-field-value'    => 'none',
-								);
+                                    'data-foogallery-change-selector'          => 'select',
+                                    'data-foogallery-value-selector'           => 'select',
+                                    'data-foogallery-preview'                  => 'shortcode',
+                                );
 							}
 							break;
 					}
@@ -87,7 +93,6 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 				//region Appearance Fields
 				$fields[] = array(
 					'id'      => 'theme_custom_help',
-					'title'   => __( 'Theme Help', 'foogallery' ),
 					'desc'    => __( 'If you choose to use the Custom theme, then you will need to provide your own Custom CSS in order to style the gallery to suit your needs.', 'foogallery' ),
 					'section' => __( 'Appearance', 'foogallery' ),
 					'type'    => 'help',
@@ -435,7 +440,6 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 				//region Caption Fields
 				$fields[] = array(
 					'id'      => 'captions_help',
-					'title'   => __( 'Captions Help', 'foogallery' ),
 					'desc'    => __( 'You can change when captions are shown using the "Hover Effects -> Caption Visibility" setting.', 'foogallery' ),
 					'section' => __( 'Captions', 'foogallery' ),
 					'type'    => 'help'

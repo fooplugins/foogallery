@@ -4,7 +4,7 @@
  */
 global $current_foogallery;
 
-$lightbox        = foogallery_gallery_template_setting( 'lightbox', 'unknown' );
+$lightbox        = foogallery_gallery_template_setting_lightbox();
 $position        = foogallery_gallery_template_setting( 'position', 'fg-center' );
 $link_custom_url = foogallery_gallery_template_setting( 'link_custom_url' );
 

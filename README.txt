@@ -2,9 +2,9 @@
 Contributors: bradvin, steveush, fooplugins
 Donate link: https://fooplugins.com
 Tags: gallery, image gallery, photo gallery, responsive gallery, wordpress gallery plugin, best gallery plugin, albums, media gallery, video gallery, lightbox
-Requires at least: 5.2
-Tested up to: 6.2
-Stable tag: 2.2.44
+Requires at least: 5.3
+Tested up to: 6.4
+Stable tag: 2.4.6
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -50,6 +50,10 @@ The following free features make FooGallery the **best gallery plugin** on the m
 	*	Justified Gallery - [demo](https://fooplugins.com/foogallery-wordpress-gallery-plugin/justified-gallery/)
 	*	Single Thumbnail Gallery - [demo](https://fooplugins.com/foogallery-wordpress-gallery-plugin/single-thumbnail-gallery/)
 	*	Carousel Gallery - [demo](https://fooplugins.com/foogallery-wordpress-gallery-plugin/wordpress-carousel/)
+*   Lightbox built-in!
+    *   Adjust lightbox colors, transitions and more!
+    *   Includes thumb strip, fullscreen mode and auto progress control
+    *   Override captions shown in lightbox
 *   Easy to customize!
     *   Adjust thumbnail size, spacing & alignment
     *   Adjust border size, rounded corners, drop shadows, inner shadows
@@ -80,7 +84,7 @@ The following free features make FooGallery the **best gallery plugin** on the m
 *	Custom CSS for both galleries and albums
 *	Copy to clipboard shortcodes
 *	One-click gallery page creation
-*	NextGen importer tool (albums and galleries and shortcodes)
+*	FooGallery Migrator - easily migrate from your existing gallery solution
 *	Multisite Support
 
 = PRO Gallery Features =
@@ -95,7 +99,6 @@ There are 3 PRO plans available, that will work with any budget:
     *   Polaroid gallery template - [demo](https://fooplugins.com/foogallery-wordpress-gallery-plugin/polaroid-gallery/)
     *   Grid gallery template - [demo](https://fooplugins.com/foogallery-wordpress-gallery-plugin/grid-gallery/)
     *	Slider gallery template - [demo](https://fooplugins.com/foogallery-wordpress-gallery-plugin/slider-gallery/)
-*   PRO image and media lightbox built in! [demo](https://fooplugins.com/foogallery-wordpress-gallery-plugin/pro-lightbox/)
 *   11 beautiful hover effect presets - [demo](https://fooplugins.com/foogallery-wordpress-gallery-plugin/hover-presets/)
 *   12 CSS thumbnail filters (Instagram) - [demo](https://fooplugins.com/foogallery-wordpress-gallery-plugin/filter-effects/)
 
@@ -144,8 +147,8 @@ There are 3 PRO plans available, that will work with any budget:
 *   Buttons and Ribbons
     *   Add custom buttons to your images
     *   Add custom ribbons to your images to attract attention
-*	Master Galleries
-    *   Set a gallery as a master and then all galleries who use that master will inherit all settings from the master - [docs](https://fooplugins.com/documentation/foogallery/pro-commerce/use-master-gallery/)
+*	Gallery Blueprints
+    *   Set a gallery as a blueprint and then all galleries who use that blueprint will inherit all settings from the blueprint - [docs](https://fooplugins.com/documentation/foogallery/pro-commerce/use-master-gallery/)
 *   White Labeling
     *   Rebrand FooGallery to whatever you like for your clients. Ideal for freelancers and agencies. [docs](https://fooplugins.com/documentation/foogallery/pro-commerce/white-labeling/)
 
@@ -270,8 +273,7 @@ You can choose to create a gallery based off your existing WooCommerce products,
 
 = Do I need to install a separate plugin to show a lightbox? =
 
-For the Free version of FooGallery - Yes, you will need to install FooBox Image Lightbox.
-For the PRO version of FooGallery - No, we have built in a uniquely beautiful lightbox!
+No, we have built in a uniquely beautiful lightbox!
 
 = How do I import galleries from another install? =
 
@@ -313,9 +315,35 @@ We did the research and comparison. See our findings : [What is the Best WordPre
 
 == Upgrade Notice ==
 
-Please update in order to for FooGallery to work in WP 5.5+!
+Please update in order for FooGallery to work in WP 5.5+!
 
 == Changelog ==
+
+= 2.4.6 =
+* Date Updated : 17 Dec 2023
+* Update : Freemius SDK update 2.6.1
+* Fix : fixed PHP 8.1 warnings
+* New : Overhauled features listing, and added a bunch of features to the list, which can be activated/deactivated like plugins.
+* Fix : added sanitization to advanced gallery settings.
+[//]: # fs_premium_only_begin
+* Update : Renamed Master Galleries to Gallery Blueprints.
+[//]: # fs_premium_only_end
+
+= 2.3.4 =
+* Date Updated : 6 Sep 2023
+* Fix : fixed bug with demo galleries not using the default lightbox
+
+= 2.3.3 =
+* Date Updated : 6 Sep 2023
+* Fix : fixed bug showing incorrect lightbox option in admin
+
+= 2.3.2 =
+* Date Updated : 6 Sep 2023
+* New : Lightbox is now included in FREE!
+* New : Added settings to control which role can manage galleries and albums
+* Fix : Added nonce checks and extra sanitisation to extensions page.
+* Update : FooGallery client side 2.1.0
+* Update : Updated to Freemius SDK 2.5.12
 
 = 2.2.44 =
 * Date Updated : 1 July 2023

@@ -5,7 +5,7 @@
 global $current_foogallery;
 global $current_foogallery_arguments;
 
-$lightbox = foogallery_gallery_template_setting( 'lightbox', 'unknown' );
+$lightbox = foogallery_gallery_template_setting_lightbox();
 $alignment = foogallery_gallery_template_setting( 'alignment', 'fg-center' );
 $layout = foogallery_gallery_template_setting( 'layout', 'fixed' );
 $gutter_percent = '';

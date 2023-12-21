@@ -18,7 +18,7 @@ $text_next_default = foogallery_get_setting( 'language_imageviewer_next_text', _
 $text_next = foogallery_gallery_template_setting( 'text-next', $text_next_default );
 
 //get which lightbox we want to use
-$lightbox = foogallery_gallery_template_setting( 'lightbox', 'unknown' );
+$lightbox = foogallery_gallery_template_setting_lightbox();
 $alignment = foogallery_gallery_template_setting( 'alignment', 'fg-center' );
 $link = foogallery_gallery_template_setting( 'thumbnail_link', 'image' );
 $foogallery_imageviewer_classes = foogallery_build_class_attribute_safe( $current_foogallery, 'foogallery-link-' . $link, 'foogallery-lightbox-' . $lightbox, $alignment );

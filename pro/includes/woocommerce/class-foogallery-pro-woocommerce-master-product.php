@@ -8,7 +8,7 @@
 
 if ( ! class_exists( 'FooGallery_Pro_Woocommerce_Master_Product' ) ) {
 	/**
-	 * Class FooGallery_Pro_Woocommerce_Master_Product
+	 * Class FooGallery_Pro_Woocommerce_Master_Product.
 	 */
 	class FooGallery_Pro_Woocommerce_Master_Product extends FooGallery_Pro_Woocommerce_Base {
 
@@ -18,8 +18,12 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce_Master_Product' ) ) {
 		 * Sets up all the appropriate hooks and actions
 		 */
 		public function __construct() {
+			add_action( 'plugins_loaded', array( $this, 'load_feature' ) );		
+		}
 
-			// Load product data after attachment has loaded.
+		function load_feature() {
+            if ( foogallery_feature_enabled( 'foogallery-woocommerce' ) ) {
+                // Load product data after attachment has loaded.
 			add_action( 'foogallery_attachment_instance_after_load', array( $this, 'load_master_product_data' ), 20, 2 );
 
 			// Add custom data to the cart when added.
@@ -84,8 +88,11 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce_Master_Product' ) ) {
                 // Allow for search in master product modal.
                 add_filter( 'woocommerce_product_data_store_cpt_get_products_query', array( $this, 'support_product_search' ), 10, 2 );
 			}
-		}
 
+                
+
+            }
+        }
 		/**
 		 * Adjust the product permalink to include params for the gallery and attachment
 		 *
@@ -271,7 +278,6 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce_Master_Product' ) ) {
 
 				$new_fields[] = array(
 					'id'      => 'ecommerce_transfer_mode_info',
-					'title'   => __( 'Transfer Mode Info', 'foogallery' ),
 					'desc'    => __( 'You can choose to transfer info from the attachment to the linked product when it is added to the cart and ordered. This works best when you want to use a master product for all items in your gallery.', 'foogallery' ),
 					'section' => __( 'Ecommerce', 'foogallery' ),
 					'subsection' => array( 'ecommerce-master-product' => __( 'Advanced', 'foogallery' ) ),
@@ -300,7 +306,6 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce_Master_Product' ) ) {
 
 				$new_fields[] = array(
 					'id'      => 'ecommerce_master_product_info',
-					'title'   => __( 'Master Product Info', 'foogallery' ),
 					'desc'    => __( 'You can set a master product for the whole gallery, which will link that product to every item. You can still manually link items to individual products. All items that are not linked to a product will be linked to the master product.', 'foogallery' ),
 					'section' => __( 'Ecommerce', 'foogallery' ),
 					'subsection' => array( 'ecommerce-master-product' => __( 'Advanced', 'foogallery' ) ),

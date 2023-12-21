@@ -36,7 +36,28 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 			add_filter( 'postbox_classes_foogallery_foogallery_settings' , array( $this, 'ensure_metabox_not_closed' ) );
 
 			add_action( 'admin_notices', array( $this, 'show_warning_for_force_use_original_thumbs' ) );
+
+			add_filter( 'foogallery_available_extensions', array( $this, 'register_extension' ) );
 		}
+
+		function register_extension( $extensions_list ) {
+            $extensions_list[] = array(
+				'slug' => 'foogallery-custom-css',
+				'class' => 'FooGallery_Admin_Gallery_MetaBoxes',
+				'categories' => array('free'),
+				'title' => __('Custom CSS', 'foogallery'),
+				'description' => __('Allows you to add custom CSS to your galleries. A Custom CSS metabox will show under your gallery settings, when editing a gallery.', 'foogallery'),
+				'external_link_text' => __( 'Read documentation', 'foogallery' ),
+                'external_link_url' => 'https://fooplugins.com/documentation/foogallery/developers/customize-gallery-custom-css/',
+				'dashicon'          => 'dashicons-editor-code',
+				'tags' => array('free'),
+				'source' => 'bundled',
+				'activated_by_default' => true,
+				'feature' => true
+			);
+
+            return $extensions_list;
+        }
 
 
 		function show_warning_for_force_use_original_thumbs() {
@@ -87,14 +108,17 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 				);
 			}
 
-			add_meta_box(
-				'foogallery_customcss',
-				__( 'Custom CSS', 'foogallery' ),
-				array( $this, 'render_customcss_metabox' ),
-				FOOGALLERY_CPT_GALLERY,
-				'normal',
-				'low'
-			);
+			if ( foogallery_feature_enabled( 'foogallery-custom-css' ) ){
+				add_meta_box(
+					'foogallery_customcss',
+					__( 'Custom CSS', 'foogallery' ),
+					array( $this, 'render_customcss_metabox' ),
+					FOOGALLERY_CPT_GALLERY,
+					'normal',
+					'low'
+				);
+			}
+			
 
 			add_meta_box(
 				'foogallery_retina',

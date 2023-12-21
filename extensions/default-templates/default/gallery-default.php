@@ -4,7 +4,7 @@
  */
 global $current_foogallery;
 
-$lightbox = foogallery_gallery_template_setting( 'lightbox', 'unknown' );
+$lightbox = foogallery_gallery_template_setting_lightbox();
 $spacing = foogallery_gallery_template_setting( 'spacing', 'spacing-width-10' );
 $mobile_columns = foogallery_gallery_template_setting( 'mobile_columns', '' );
 $alignment = foogallery_gallery_template_setting( 'alignment', 'fg-center' );

@@ -114,7 +114,7 @@ if ( ! class_exists('FooGallery_Pro_Whitelabelling_Extension') ) {
 
 			if ( 'on' == foogallery_get_setting( 'whitelabelling_hide_extensions' ) ||
 				'on' == foogallery_get_setting( 'whitelabelling_hide_extensions_menu' ) ) {
-				remove_submenu_page( foogallery_admin_menu_parent_slug(), 'foogallery-extensions' );
+				remove_submenu_page( foogallery_admin_menu_parent_slug(), 'foogallery-features' );
 			}
 
 			if ( 'on' == foogallery_get_setting( 'whitelabelling_hide_help_menu' ) ) {

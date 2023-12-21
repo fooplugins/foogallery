@@ -7,20 +7,49 @@ if ( ! class_exists( 'FooGallery_Pro_Paging' ) ) {
 	class FooGallery_Pro_Paging {
 
 		function __construct() {
-			add_filter( 'foogallery_gallery_template_paging_type_choices', array( $this, 'add_pro_paging_choices' ) );
+            add_action( 'plugins_loaded', array( $this, 'load_feature' ) );
 
-			add_filter( 'foogallery_pagination_types_require_placeholders', array( $this, 'add_pro_pagination_types_require_placeholders' ) );
-
-			add_filter( 'foogallery_pagination_format_type_for_placeholder', array( $this, 'format_pro_types_for_placeholders' ) );
-
-			if ( is_admin() ) {
-				//add a global setting to change the Load More button text
-				add_filter( 'foogallery_admin_settings_override', array( $this, 'add_language_settings' ), 40 );
-			}
-
-			//add localised text
-			add_filter( 'foogallery_il8n', array( $this, 'add_il8n' ) );
+            add_filter( 'foogallery_available_extensions', array( $this, 'register_extension' ) );
 		}
+
+        function load_feature() {
+            if ( foogallery_feature_enabled( 'foogallery-paging' ) ) {
+                add_filter('foogallery_gallery_template_paging_type_choices', array($this, 'add_pro_paging_choices'));
+
+                add_filter('foogallery_pagination_types_require_placeholders', array($this, 'add_pro_pagination_types_require_placeholders'));
+
+                add_filter('foogallery_pagination_format_type_for_placeholder', array($this, 'format_pro_types_for_placeholders'));
+
+                if (is_admin()) {
+                    //add a global setting to change the Load More button text
+                    add_filter('foogallery_admin_settings_override', array($this, 'add_language_settings'), 40);
+                }
+
+                //add localised text
+                add_filter('foogallery_il8n', array($this, 'add_il8n'));
+            }
+        }
+
+        function register_extension( $extensions_list ) {
+            $pro_features = foogallery_pro_features();
+
+            $extensions_list[] = array(
+                'slug' => 'foogallery-paging',
+                'class' => 'FooGallery_Pro_Paging',
+                'categories' => array( 'Premium' ),
+                'title' => __( 'Pagination', 'foogallery' ),
+                'description' => $pro_features['pagination']['desc'],
+                'external_link_text' => __( 'Read documentation', 'foogallery' ),
+                'external_link_url' => $pro_features['pagination']['link'],
+				'dashicon'          => 'dashicons-arrow-right-alt',
+                'tags' => array( 'Premium' ),
+                'source' => 'bundled',
+                'activated_by_default' => true,
+                'feature' => true
+            );
+
+            return $extensions_list;
+        }
 
 		/**
 		 * Add localisation settings

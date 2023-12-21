@@ -113,7 +113,7 @@ if ( !class_exists( 'FooGallery_FooBox_Compatibility' ) ) {
 
 			} else {
 				//we will get here if FooGallery FREE is running
-				$lightbox = foogallery_gallery_template_setting( 'lightbox', '' );
+				$lightbox = foogallery_gallery_template_setting_lightbox();
 
 				//we only want to make changes if the lightbox is set to foobox
 				if ( 'foobox' === $lightbox ) {

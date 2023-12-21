@@ -16,7 +16,7 @@ require_once FOOGALLERY_PATH . 'includes/class-retina.php';
 require_once FOOGALLERY_PATH . 'includes/class-foogallery-widget.php';
 require_once FOOGALLERY_PATH . 'gutenberg/class-foogallery-gutenberg.php';
 require_once FOOGALLERY_PATH . 'includes/class-foogallery-debug.php';
-
+require_once FOOGALLERY_PATH . 'includes/class-foogallery-attachment-type.php';
 
 // Include built-in thumbnail generation files.
 require_once FOOGALLERY_PATH . 'includes/thumbs/includes.php';
@@ -25,7 +25,6 @@ require_once FOOGALLERY_PATH . 'includes/thumbs/includes.php';
 require_once FOOGALLERY_PATH . 'extensions/albums/class-albums-extension.php';
 require_once FOOGALLERY_PATH . 'extensions/default-templates/class-default-templates-extension.php'; // Legacy!
 require_once FOOGALLERY_PATH . 'extensions/default-templates/class-default-templates.php';
-require_once FOOGALLERY_PATH . 'extensions/nextgen-importer/class-nextgen-gallery-importer-extension.php';
 require_once FOOGALLERY_PATH . 'extensions/demo-content-generator/class-demo-content-generator.php';
 require_once FOOGALLERY_PATH . 'extensions/import-export/class-foogallery-import-export-extension.php';
 
@@ -86,3 +85,5 @@ if ( is_admin() ) {
 require_once FOOGALLERY_PATH . 'includes/public/class-shortcodes.php';
 require_once FOOGALLERY_PATH . 'includes/class-gallery-advanced-settings.php';
 require_once FOOGALLERY_PATH . 'includes/class-il8n.php';
+
+require_once FOOGALLERY_PATH . 'includes/class-foogallery-lightbox.php';

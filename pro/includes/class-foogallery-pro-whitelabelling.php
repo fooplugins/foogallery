@@ -22,16 +22,18 @@ if ( ! class_exists('FooGallery_Pro_Whitelabelling') ) {
 		 * @return array
 		 */
 		function register_extension( $extensions_list ) {
+            $pro_features = foogallery_pro_features();
+
 			$extensions_list[] = array(
 				'slug' => 'foogallery-whitelabelling',
 				'class' => 'FooGallery_Pro_Whitelabelling_Extension',
 				'categories' => array( 'Premium' ),
 				'title' => __( 'White Labeling', 'foogallery' ),
-				'description' => __( 'Rebrand FooGallery to whatever you like for your clients. Ideal for freelancers and agencies.', 'foogallery' ),
-				'author' => 'FooPlugins',
-				'author_url' => 'https://fooplugins.com',
-				'thumbnail' => 'https://foogallery.s3.amazonaws.com/extensions/white_labelling.png',
-				'tags' => array( 'premium' ),
+				'description' => $pro_features['whitelabeling']['desc'],
+				'external_link_text' => __( 'Read documentation', 'foogallery' ),
+                'external_link_url' => $pro_features['whitelabeling']['link'],
+				'dashicon'          => 'dashicons-tag',
+				'tags' => array( 'Premium' ),
 				'source' => 'bundled'
 			);
 

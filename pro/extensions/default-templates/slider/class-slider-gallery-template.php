@@ -34,7 +34,7 @@ if ( !class_exists( 'FooGallery_Slider_Gallery_Template' ) ) {
 			//set the settings icon for lightbox
 			add_filter( 'foogallery_gallery_settings_metabox_section_icon', array( $this, 'add_section_icons' ) );
 
-			add_filter( 'foogallery_gallery_template_setting-lightbox_caption_override', array( $this, 'override_lightbox_caption_override' ) );
+			//add_filter( 'foogallery_gallery_template_setting-lightbox_caption_override', array( $this, 'override_lightbox_caption_override' ) );
 		}
 
 		function override_lightbox_caption_override( $value ) {
@@ -108,7 +108,6 @@ if ( !class_exists( 'FooGallery_Slider_Gallery_Template' ) ) {
 					),
 					array(
 						'id'      => 'slider_help',
-						'title'   => __('Help', 'foogallery'),
 						'desc'    => __( 'You can change the layout of the slider by changing the position of the thumbnails.', 'foogallery' ),
 						'section' => __( 'Slider', 'foogallery' ),
 						'subsection' => array( 'lightbox-general' => __( 'General', 'foogallery' ) ),
@@ -156,7 +155,7 @@ if ( !class_exists( 'FooGallery_Slider_Gallery_Template' ) ) {
 			$fields_to_remove[] = 'video_size';
 			$fields_to_remove[] = 'lightbox_theme';
 			$fields_to_remove[] = 'lightbox_no_scrollbars';
-			$fields_to_remove[] = 'lightbox_caption_override';
+			//$fields_to_remove[] = 'lightbox_caption_override';
 			$fields_to_remove[] = 'captions_help';
 			$fields_to_remove[] = 'caption_title_source';
 			$fields_to_remove[] = 'caption_desc_source';
@@ -210,30 +209,35 @@ if ( !class_exists( 'FooGallery_Slider_Gallery_Template' ) ) {
 					$field['title'] = __( 'Thumbnail Captions', 'foogallery' );
 					$field['default'] = 'yes';
 				} else if ( 'lightbox_hover_buttons' === $field['id'] ) {
-					$field['default'] = 'yes';
+                    $field['default'] = 'yes';
+                } else if ( 'lightbox_caption_override' === $field['id'] ) {
+                    unset( $field['desc'] );
+                    unset( $field['choices'][''] );
+                    $field['choices']['override'] = __( 'Default', 'foogallery' );
+                    $field['default'] = 'override';
 				} else if ( 'lightbox_caption_override_title' === $field['id'] ) {
 					$field['title'] = __( 'Caption Title', 'foogallery' );
 					unset( $field['desc'] );
 					$field['default'] = 'caption';
 
 					$field['choices'] = $captions_choices;
-					$field['row_data'] = array(
-						'data-foogallery-show-when-field-value'    => 'override',
-						'data-foogallery-change-selector'          => 'input:radio',
-						'data-foogallery-preview'                  => 'shortcode',
-						'data-foogallery-value-selector'           => 'input:checked',
-					);
+//					$field['row_data'] = array(
+//						'data-foogallery-show-when-field-value'    => 'override',
+//						'data-foogallery-change-selector'          => 'input:radio',
+//						'data-foogallery-preview'                  => 'shortcode',
+//						'data-foogallery-value-selector'           => 'input:checked',
+//					);
 				} else if ( 'lightbox_caption_override_desc' === $field['id'] ) {
 					$field['title'] = __( 'Caption Description', 'foogallery' );
 					unset( $field['desc'] );
 					$field['default'] = 'desc';
 					$field['choices'] = $captions_choices;
-					$field['row_data'] = array(
-						'data-foogallery-show-when-field-value'    => 'override',
-						'data-foogallery-change-selector'          => 'input:radio',
-						'data-foogallery-preview'                  => 'shortcode',
-						'data-foogallery-value-selector'           => 'input:checked',
-					);
+//					$field['row_data'] = array(
+//						'data-foogallery-show-when-field-value'    => 'override',
+//						'data-foogallery-change-selector'          => 'input:radio',
+//						'data-foogallery-preview'                  => 'shortcode',
+//						'data-foogallery-value-selector'           => 'input:checked',
+//					);
 				}
 
 

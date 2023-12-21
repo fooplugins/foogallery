@@ -4,7 +4,7 @@
  */
 global $current_foogallery;
 
-$lightbox = foogallery_gallery_template_setting( 'lightbox', 'unknown' );
+$lightbox = foogallery_gallery_template_setting_lightbox();
 $inverted = foogallery_gallery_template_setting( 'inverted', '' );
 $show_nav_arrows = foogallery_gallery_template_setting( 'show_nav_arrows', '' );
 $show_pagination = foogallery_gallery_template_setting( 'show_pagination', '' );

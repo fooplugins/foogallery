@@ -18,67 +18,96 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 		 *
 		 * Sets up all the appropriate hooks and actions
 		 */
-		public function __construct() {
-			if ( is_admin() ) {
-				// Add extra fields to the templates.
-				add_filter( 'foogallery_override_gallery_template_fields', array( $this, 'add_ecommerce_fields' ), 30, 2 );
+		function __construct() {
+            add_action( 'plugins_loaded', array( $this, 'load_feature' ) );
 
-				// Set the settings icon for commerce.
-				add_filter( 'foogallery_gallery_settings_metabox_section_icon', array( $this, 'add_section_icons' ) );
-
-				// Add a cart icon to the hover icons.
-				add_filter( 'foogallery_gallery_template_common_thumbnail_fields_hover_effect_icon_choices', array( $this, 'add_cart_hover_icon' ) );
-
-				// Add attachment custom fields.
-				add_filter( 'foogallery_attachment_custom_fields', array( $this, 'attachment_custom_fields' ), 50 );
-
-				// Add some settings for woocommerce.
-				add_filter( 'foogallery_admin_settings_override', array( $this, 'add_ecommerce_settings' ) );
-
-				// Add some help for custom captions.
-				add_filter( 'foogallery_build_custom_captions_help-default', array( $this, 'add_product_custom_caption_help' ) );
-
-				// Add a new tab to the product to override button or ribbon.
-				add_filter( 'woocommerce_product_data_tabs', array( $this, 'add_product_settings_tabs' ) );
-
-				// Add some fields to the new FooGallery product setting panel.
-				add_action( 'woocommerce_product_data_panels', array( $this, 'add_fields_to_product_panel' ) );
-
-                // Attachment modal actions:
-                add_action( 'foogallery_attachment_modal_tabs_view', array( $this, 'attachment_modal_display_tab' ), 60 );
-                add_action( 'foogallery_attachment_modal_tab_content', array( $this, 'attachment_modal_display_tab_content' ), 60, 1 );
-                add_action( 'foogallery_attachment_save_data', array( $this, 'attachment_modal_save_data' ), 60, 2 );
-                add_filter( 'foogallery_attachment_modal_data', array( $this, 'attachment_modal_data' ), 70, 4 );
-			}
-
-			// Determine ribbon/button data from product.
-			add_filter( 'foogallery_datasource_woocommerce_build_attachment', array( $this, 'determine_data_for_product' ), 10, 2 );
-
-			// Enqueue WooCommerce scripts if applicable.
-			add_action( 'foogallery_located_template', array( $this, 'enqueue_wc_scripts') );
-
-			// Append product attributes onto the anchor in the galleries.
-			add_filter( 'foogallery_attachment_html_link_attributes', array( $this, 'add_product_attributes' ), 10, 3 );
-
-			// Load product data after attachment has loaded.
-			add_action( 'foogallery_attachment_instance_after_load', array( $this, 'load_product_data' ), 10, 2 );
-
-			// Append a nonce that will be used in variation ajax calls.
-			add_filter( 'foogallery_lightbox_data_attributes', array( $this, 'add_to_lightbox_options' ) );
-
-			// Build up a product info for a product.
-			add_filter( 'wp_ajax_foogallery_product_variations', array( $this, 'ajax_build_product_info' ) );
-			add_filter( 'wp_ajax_nopriv_foogallery_product_variations', array( $this, 'ajax_build_product_info' ) );
-
-			//add localised text
-			add_filter( 'foogallery_il8n', array( $this, 'add_il8n' ) );
-
-			// Build up captions based on product data.
-			add_filter( 'foogallery_build_custom_caption_placeholder_replacement', array( $this, 'build_product_captions' ), 10, 3 );
-
-			// Add button data to the json output
-			add_filter( 'foogallery_build_attachment_json', array( $this, 'add_button_to_json' ), 40, 6 );
+            add_filter( 'foogallery_available_extensions', array( $this, 'register_extension' ) );
 		}
+
+		function load_feature() {
+            if ( foogallery_feature_enabled( 'foogallery-woocommerce' ) ) {
+                if ( is_admin() ) {
+					// Add extra fields to the templates.
+					add_filter( 'foogallery_override_gallery_template_fields', array( $this, 'add_ecommerce_fields' ), 30, 2 );
+
+					// Set the settings icon for commerce.
+					add_filter( 'foogallery_gallery_settings_metabox_section_icon', array( $this, 'add_section_icons' ) );
+
+					// Add a cart icon to the hover icons.
+					add_filter( 'foogallery_gallery_template_common_thumbnail_fields_hover_effect_icon_choices', array( $this, 'add_cart_hover_icon' ) );
+
+					// Add attachment custom fields.
+					add_filter( 'foogallery_attachment_custom_fields', array( $this, 'attachment_custom_fields' ), 50 );
+
+					// Add some settings for woocommerce.
+					add_filter( 'foogallery_admin_settings_override', array( $this, 'add_ecommerce_settings' ) );
+
+					// Add some help for custom captions.
+					add_filter( 'foogallery_build_custom_captions_help-default', array( $this, 'add_product_custom_caption_help' ) );
+
+					// Add a new tab to the product to override button or ribbon.
+					add_filter( 'woocommerce_product_data_tabs', array( $this, 'add_product_settings_tabs' ) );
+
+					// Add some fields to the new FooGallery product setting panel.
+					add_action( 'woocommerce_product_data_panels', array( $this, 'add_fields_to_product_panel' ) );
+
+					// Attachment modal actions:
+					add_action( 'foogallery_attachment_modal_tabs_view', array( $this, 'attachment_modal_display_tab' ), 60 );
+					add_action( 'foogallery_attachment_modal_tab_content', array( $this, 'attachment_modal_display_tab_content' ), 60, 1 );
+					add_action( 'foogallery_attachment_save_data', array( $this, 'attachment_modal_save_data' ), 60, 2 );
+					add_filter( 'foogallery_attachment_modal_data', array( $this, 'attachment_modal_data' ), 70, 4 );
+				}
+
+                // Determine ribbon/button data from product.
+                add_filter( 'foogallery_datasource_woocommerce_build_attachment', array( $this, 'determine_data_for_product' ), 10, 2 );
+
+                // Enqueue WooCommerce scripts if applicable.
+                add_action( 'foogallery_located_template', array( $this, 'enqueue_wc_scripts') );
+
+                // Append product attributes onto the anchor in the galleries.
+                add_filter( 'foogallery_attachment_html_link_attributes', array( $this, 'add_product_attributes' ), 10, 3 );
+
+                // Load product data after attachment has loaded.
+                add_action( 'foogallery_attachment_instance_after_load', array( $this, 'load_product_data' ), 10, 2 );
+
+                // Append a nonce that will be used in variation ajax calls.
+                add_filter( 'foogallery_lightbox_data_attributes', array( $this, 'add_to_lightbox_options' ) );
+
+                // Build up a product info for a product.
+                add_filter( 'wp_ajax_foogallery_product_variations', array( $this, 'ajax_build_product_info' ) );
+                add_filter( 'wp_ajax_nopriv_foogallery_product_variations', array( $this, 'ajax_build_product_info' ) );
+
+                //add localised text
+                add_filter( 'foogallery_il8n', array( $this, 'add_il8n' ) );
+
+                // Build up captions based on product data.
+                add_filter( 'foogallery_build_custom_caption_placeholder_replacement', array( $this, 'build_product_captions' ), 10, 3 );
+
+                // Add button data to the json output
+                add_filter( 'foogallery_build_attachment_json', array( $this, 'add_button_to_json' ), 40, 6 );
+            }
+        }
+
+		function register_extension( $extensions_list ) {
+			$pro_features = foogallery_pro_features();
+
+            $extensions_list[] = array(
+                'slug' => 'foogallery-woocommerce',
+                'class' => 'FooGallery_Pro_Woocommerce',
+                'categories' => array( 'Premium' ),
+                'title' => __( 'Ecommerce', 'foogallery' ),
+                'description' => $pro_features['ecommerce']['desc'],
+                'external_link_text' => __( 'Read documentation', 'foogallery' ),
+                'external_link_url' => $pro_features['ecommerce']['link'],
+				'dashicon'          => 'dashicons-cart',
+                'tags' => array( 'Premium' ),
+                'source' => 'bundled',
+                'activated_by_default' => true,
+                'feature' => true
+            );
+
+            return $extensions_list;
+        }
 
 		/**
 		 * Adds a new tab to the products data settings.
@@ -433,7 +462,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 			}
 
 			$product_id = get_post_meta( $post->ID, '_foogallery_product', true );
-			if ( !empty( $product_id ) ) {
+			if ( !empty( $product_id ) && function_exists( 'wc_get_product' ) ) {
 				$foogallery_attachment->product = wc_get_product( $product_id );
 
 				self::determine_extra_data_for_product( $foogallery_attachment, $foogallery_attachment->product );
@@ -711,7 +740,6 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 
 				$new_fields[] = array(
 					'id'      => 'ecommerce_info',
-					'title'   => __( 'Ecommerce Info', 'foogallery' ),
 					'desc'    => __( 'Buttons will only show if you are using the WooCommerce Product datasource, or if individual attachments are linked to WooCommerce products.', 'foogallery' ),
 					'section' => __( 'Ecommerce', 'foogallery' ),
 					'subsection' => array( 'ecommerce-buttons' => __( 'Buttons', 'foogallery' ) ),
@@ -882,7 +910,6 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 
                 $new_fields[] = array(
 					'id'      => 'ecommerce_ribbon_info',
-					'title'   => __( 'Ecommerce Ribbon Info', 'foogallery' ),
 					'desc'    => __( 'You can show different ribbons for products that are on sale, out of stock, on backorder or featured.', 'foogallery' ),
 					'section' => __( 'Ecommerce', 'foogallery' ),
 					'subsection' => array( 'ecommerce-ribbons' => __( 'Ribbons', 'foogallery' ) ),
@@ -1045,7 +1072,6 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 
                 $new_fields[] = array(
 					'id'      => 'ecommerce_ribbon_help',
-					'title'   => __( 'Ecommerce Ribbon Info', 'foogallery' ),
 					'desc'    => $ribbon_help_html,
 					'section' => __( 'Ecommerce', 'foogallery' ),
 					'subsection' => array( 'ecommerce-ribbons' => __( 'Ribbons', 'foogallery' ) ),
@@ -1054,7 +1080,6 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 
 				$new_fields[] = array(
 					'id'      => 'ecommerce_lightbox_info',
-					'title'   => __( 'Ecommerce Lightbox Info', 'foogallery' ),
 					'desc'    => __( 'You can choose to display product information within the lightbox, if items are linked to a WooCommerce Product. This only works with the PRO lightbox.', 'foogallery' ),
 					'section' => __( 'Ecommerce', 'foogallery' ),
 					'subsection' => array( 'ecommerce-lightbox' => __( 'Lightbox', 'foogallery' ) ),
@@ -1132,7 +1157,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 			} else {
 				$new_fields[] = array(
 					'id'      => 'ecommerce_error',
-					'title'   => __( 'Ecommerce Error', 'foogallery' ),
+					'title'   => __( 'WooCommerce Error!', 'foogallery' ),
 					'desc'    => __( 'WooCommerce is not installed! Ecommerce features are only available when WooCommerce is activated.', 'foogallery' ),
 					'section' => __( 'Ecommerce', 'foogallery' ),
 					'type'    => 'help',
@@ -1307,11 +1332,11 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 		/**
 		 * Add Ribbon specific custom fields.
 		 *
-		 * @uses "foogallery_attachment_custom_fields" filter
-		 *
 		 * @param array $fields
 		 *
 		 * @return array
+		 *@uses "foogallery_attachment_custom_fields" filter
+		 *
 		 */
 		public function attachment_custom_fields( $fields ) {
 			$fields['foogallery_product']  = array(

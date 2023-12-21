@@ -8,20 +8,31 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings_Helper' ) ) {
 
 	class FooGallery_Admin_Gallery_MetaBox_Settings_Helper {
 
-		/**
-		 * @var FooGallery
-		 */
-		private $gallery;
+		
+        /**
+         * @var FooGallery
+         */
+        private $gallery;
 
-		/**
-		 * @var bool
-		 */
-		private $hide_help;
+        /**
+         * @var bool
+         */
+        private $hide_help;
 
-		/**
-		 * @var array
-		 */
-		public $gallery_templates;
+        /**
+         * @var bool
+         */
+        private $hide_promo;
+
+        /**
+         * @var array
+         */
+        public $gallery_templates;
+
+        /**
+         * @var string
+         */
+        private $current_gallery_template;
 
 		/**
 		 * FooGallery_Admin_Gallery_MetaBox_Settings_Helper constructor.
@@ -35,11 +46,19 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings_Helper' ) ) {
 			$this->gallery_templates = foogallery_gallery_templates();
 
 			$this->current_gallery_template = foogallery_default_gallery_template();
-			if ( ! empty($this->gallery->gallery_template) ) {
+			if ( ! empty( $this->gallery->gallery_template ) ) {
 				$this->current_gallery_template = $this->gallery->gallery_template;
 			}
 		}
 
+		/**
+		 * Render gallery template settings tabs.
+		 *
+		 * @param array $template The gallery template configuration.
+		 * @param array $sections The sections within the template.
+		 *
+		 * @return void
+		 */
 		private function render_gallery_template_settings_tabs( $template, $sections ) {
 			$tab_active = 'foogallery-tab-active';
 			foreach ( $sections as $section_slug => $section ) {
@@ -75,6 +94,15 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings_Helper' ) ) {
 			}
 		}
 
+		/**
+		 * Render gallery template settings tab contents.
+		 *
+		 * @param array  $template     The gallery template configuration.
+		 * @param array  $sections     The sections within the template.
+		 * @param string $tab_active   The active tab class.
+		 *
+		 * @return void
+		 */
 		private function render_gallery_template_settings_tab_contents( $template, $sections, $tab_active = 'foogallery-tab-active' ) {
 			foreach ( $sections as $section_slug => $section ) {
 				$subsection_active = '';
@@ -104,6 +132,14 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings_Helper' ) ) {
 			}
 		}
 
+		/**
+		 * Render gallery template settings tab contents fields.
+		 *
+		 * @param array $template The gallery template configuration.
+		 * @param array $section  The section within the template.
+		 *
+		 * @return void
+		 */
 		private function render_gallery_template_settings_tab_contents_fields( $template, $section ) {
 			?>
 			<table class="foogallery-metabox-settings">
@@ -131,6 +167,9 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings_Helper' ) ) {
 						<?php if ( 'help' === $field_type ) { ?>
 							<td colspan="2">
 								<div class="foogallery-help">
+									<?php if ( array_key_exists( 'title', $field ) ) { ?>
+									<?php echo '<strong>' . $field['title'] . '</strong><br /><br />'; ?>
+									<?php } ?>
 									<?php echo $field['desc']; ?>
 								</div>
 							</td>
@@ -174,6 +213,13 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings_Helper' ) ) {
 			<?php
 		}
 
+		/**
+		 * Render the settings for a specific gallery template.
+		 *
+		 * @param array $template The gallery template configuration.
+		 *
+		 * @return void
+		 */
 		private function render_gallery_template_settings( $template ) {
 			$sections = $this->build_model_for_template( $template );
 			?>
@@ -188,9 +234,14 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings_Helper' ) ) {
 			<?php
 		}
 
+		/**
+		 * Public method to render gallery settings for all templates.
+		 *
+		 * @return void
+		 */
 		public function render_gallery_settings() {
 			foreach ( $this->gallery_templates as $template ) {
-				$field_visibility = ($this->current_gallery_template !== $template['slug']) ? 'style="display:none"' : '';
+				$field_visibility = ( $this->current_gallery_template !== $template['slug'] ) ? 'style="display:none"' : '';
 				?><div
 				class="foogallery-settings-container foogallery-settings-container-<?php echo $template['slug']; ?>"
 				<?php echo $field_visibility; ?>>
@@ -202,7 +253,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings_Helper' ) ) {
 		/**
 		 * build up and return a model that we can use to render the gallery settings
 		 */
-		private function build_model_for_template($template) {
+		private function build_model_for_template( $template ) {
 
 		    $fields = foogallery_get_fields_for_template( $template );
 
@@ -210,23 +261,26 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings_Helper' ) ) {
 			$sections = array();
 			foreach ( $fields as $field ) {
 
-				if (isset($field['type']) && 'help' == $field['type'] && $this->hide_help) {
+				if ( isset($field['type']) && 'help' == $field['type'] && $this->hide_help ) {
 					continue; //skip help if the 'hide help' setting is turned on
 				}
 
-				if (isset($field['type']) && 'promo' == $field['type'] && $this->hide_promo) {
+				if ( isset($field['type']) && 'promo' == $field['type'] && $this->hide_promo ) {
 					continue; //skip promo if the 'hide promos' setting is turned on
 				}
 
-				$section_name = isset($field['section']) ? $field['section'] : __( 'General', 'foogallery' );
+				$section_name = isset( $field['section'] ) ? $field['section'] : __( 'General', 'foogallery' );
 
 				$section_slug = apply_filters( 'foogallery_gallery_settings_metabox_section_slug', $section_name );
+
+				$section_order = isset( $field['section_order'] ) ? intval( $field['section_order'] ) : $this->determine_section_order( $section_slug );
 
 				if ( !isset( $sections[ $section_slug ] ) ) {
 					$sections[ $section_slug ] = array (
 						'name' => $section_name,
 						'icon_class' => apply_filters( 'foogallery_gallery_settings_metabox_section_icon', $section_slug ),
-						'fields' => array()
+						'fields' => array(),
+						'order' => $section_order
 					);
 				}
 
@@ -247,16 +301,68 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings_Helper' ) ) {
 				}
 			}
 
+			uasort( $sections, array( $this, 'sort_template_sections' ) );
+
 			return $sections;
 		}
 
+		/**
+		 * Used to sort sections
+		 *
+		 * @param mixed $a
+		 * @param mixed $b
+		 *
+		 * @return int
+		 */
+		function sort_template_sections( $a, $b ) {
+			if ( isset( $a['order'] ) && isset( $b['order'] ) ) {
+				if ( $a['order'] === $b['order'] ) {
+					return 0;
+				}
+				return ( $a['order'] < $b['order'] ) ? -1 : 1;
+			}
+
+			return 0;
+		}
+
+		/**
+		 * Determine the order of a gallery template section.
+		 *
+		 * @param string $section_slug The slug of the gallery template section.
+		 *
+		 * @return int The order of the gallery template section.
+		 */
+		private function determine_section_order( $section_slug ) {
+			switch ( $section_slug ) {
+				case 'general':
+					return 0;
+				case 'lightbox':
+					return 1;
+				case 'appearance':
+					return 2;
+				case 'hover effects':
+					return 3;
+				case 'captions':
+					return 4;
+				case 'advanced':
+					return 9999;
+			}
+
+			return 99;
+		}
+
+		/**
+		 * Render the hidden gallery template selector.
+		 *
+		 * @return void
+		 */
 		public function render_hidden_gallery_template_selector() {
 			?>
 			<span class="hidden foogallery-template-selector"> &mdash;
 				<select id="FooGallerySettings_GalleryTemplate" name="<?php echo FOOGALLERY_META_TEMPLATE; ?>">
                     <?php
 					foreach ( $this->gallery_templates as $template ) {
-						$selected = ($this->current_gallery_template === $template['slug']) ? 'selected' : '';
+						$selected = ( $this->current_gallery_template === $template['slug'] ) ? 'selected' : '';
 
 						$preview_css = '';
 						if ( isset( $template['preview_css'] ) ) {

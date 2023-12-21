@@ -138,7 +138,7 @@ if ( ! class_exists( 'FooGallery_Advanced_Gallery_Settings' ) ) {
 			global $current_foogallery;
 
 			if ( $current_foogallery === $gallery ) {
-				$custom_attributes = foogallery_gallery_template_setting( 'custom_attributes', '' );
+				$custom_attributes = foogallery_sanitize_html( foogallery_gallery_template_setting( 'custom_attributes', '' ) );
 
 				if ( !empty( $custom_attributes ) ) {
 					$html .= ' ' . $custom_attributes;
@@ -161,7 +161,7 @@ if ( ! class_exists( 'FooGallery_Advanced_Gallery_Settings' ) ) {
 			global $current_foogallery;
 
 			if ( $current_foogallery === $gallery ) {
-				$custom_class = foogallery_gallery_template_setting( 'custom_class', '' );
+                $custom_class = sanitize_title( foogallery_gallery_template_setting( 'custom_class', '' ) );
 
 				if ( !empty( $custom_class ) ) {
 					$classes[] = $custom_class;

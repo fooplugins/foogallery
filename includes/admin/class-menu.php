@@ -61,7 +61,7 @@ if ( ! class_exists( 'FooGallery_Admin_Menu' ) ) {
 			$capability = apply_filters( 'foogallery_admin_menu_capability', 'manage_options' );
 
 			add_submenu_page( $parent_slug, $menu_labels[0]['page_title'], $menu_labels[0]['menu_title'], $capability, 'foogallery-settings', array( $this, 'foogallery_settings' ) );
-			add_submenu_page( $parent_slug, $menu_labels[1]['page_title'], $menu_labels[1]['menu_title'], $capability, 'foogallery-extensions', array( $this, 'foogallery_extensions' ) );
+			add_submenu_page( $parent_slug, $menu_labels[1]['page_title'], $menu_labels[1]['menu_title'], $capability, 'foogallery-features', array( $this, 'foogallery_features' ) );
 			add_submenu_page( $parent_slug, $menu_labels[2]['page_title'], $menu_labels[2]['menu_title'], $capability, 'foogallery-help', array( $this, 'foogallery_help' ) );
 
 			if ( current_user_can( 'activate_plugins' ) ) {
@@ -103,8 +103,8 @@ if ( ! class_exists( 'FooGallery_Admin_Menu' ) ) {
 			$instance->admin_settings_render_page();
 		}
 
-		function foogallery_extensions() {
-			require_once FOOGALLERY_PATH . 'includes/admin/view-extensions.php';
+		function foogallery_features() {
+			require_once FOOGALLERY_PATH . 'includes/admin/view-features.php';
 		}
 
 		function foogallery_help() {

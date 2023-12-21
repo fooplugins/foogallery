@@ -21,46 +21,75 @@ if ( ! class_exists( 'FooGallery_Pro_Protection' ) ) {
 		 *
 		 * Sets up all the appropriate hooks and actions
 		 */
-		public function __construct() {
-			// Swap out HREF attributes for the watermarked images if available.
-			add_filter( 'foogallery_attachment_html_link_attributes', array( $this, 'change_link_attributes' ), 10, 3 );
+		function __construct() {
+            add_action( 'plugins_loaded', array( $this, 'load_feature' ) );
 
-			// Add data options for protection.
-			add_filter( 'foogallery_build_container_data_options', array( $this, 'add_protection_data_options' ) );
-
-			if ( is_admin() ) {
-				// Add extra fields to the templates.
-				add_filter( 'foogallery_override_gallery_template_fields', array( $this, 'add_protection_fields' ), 20, 2 );
-
-				// Render a custom field for a gallery template.
-				add_filter( 'foogallery_render_gallery_template_field_custom', array( $this, 'render_custom_field' ), 10, 3 );
-
-				// Set the settings icon for protection.
-				add_filter( 'foogallery_gallery_settings_metabox_section_icon', array( $this, 'add_section_icons' ) );
-
-				// Append some custom script after the gallery settings metabox.
-				add_action( 'foogallery_after_render_gallery_settings_metabox', array( $this, 'append_script_for_watermarking' ), 10, 1 );
-
-				// Callback for the generate watermark ajax call.
-				add_action( 'wp_ajax_foogallery_protection_generate', array( $this, 'ajax_generate_watermarks' ) );
-
-				// Add some settings for watermarking.
-				add_filter( 'foogallery_admin_settings_override', array( $this, 'add_watermark_settings' ) );
-
-				// Add a watermark test menu and page.
-				add_action( 'foogallery_admin_menu_after', array( $this, 'add_watermark_test_menu' ) );
-
-				// Render some custom settings types.
-				add_action( 'foogallery_admin_settings_custom_type_render_setting', array( $this, 'render_custom_setting_types' ) );
-
-                // Actions for the attachment modal.
-                add_filter( 'foogallery_attachment_modal_data', array( $this, 'attachment_modal_data_watermark' ), 40, 4 );
-                add_action( 'foogallery_attachment_modal_tabs_view', array( $this, 'attachment_modal_display_tab_watermark' ), 40 );
-                add_action( 'foogallery_attachment_modal_tab_content', array( $this, 'attachment_modal_display_tab_content_watermark' ), 40, 1 );
-                add_action( 'foogallery_attachment_modal_after_tab_container', array( $this, 'attachment_modal_extra_content_for_watermark' ), 40, 1 );
-                add_action( 'wp_ajax_foogallery_attachment_modal_watermark_generate', array( $this, 'attachment_modal_ajax_generate_watermark' ) );
-			}
+            add_filter( 'foogallery_available_extensions', array( $this, 'register_extension' ) );
 		}
+
+		function load_feature() {
+            if ( foogallery_feature_enabled( 'foogallery-protection' ) ) {
+                // Swap out HREF attributes for the watermarked images if available.
+				add_filter( 'foogallery_attachment_html_link_attributes', array( $this, 'change_link_attributes' ), 10, 3 );
+
+				// Add data options for protection.
+				add_filter( 'foogallery_build_container_data_options', array( $this, 'add_protection_data_options' ) );
+
+				if ( is_admin() ) {
+					// Add extra fields to the templates.
+					add_filter( 'foogallery_override_gallery_template_fields', array( $this, 'add_protection_fields' ), 20, 2 );
+
+					// Render a custom field for a gallery template.
+					add_filter( 'foogallery_render_gallery_template_field_custom', array( $this, 'render_custom_field' ), 10, 3 );
+
+					// Set the settings icon for protection.
+					add_filter( 'foogallery_gallery_settings_metabox_section_icon', array( $this, 'add_section_icons' ) );
+
+					// Append some custom script after the gallery settings metabox.
+					add_action( 'foogallery_after_render_gallery_settings_metabox', array( $this, 'append_script_for_watermarking' ), 10, 1 );
+
+					// Callback for the generate watermark ajax call.
+					add_action( 'wp_ajax_foogallery_protection_generate', array( $this, 'ajax_generate_watermarks' ) );
+
+					// Add some settings for watermarking.
+					add_filter( 'foogallery_admin_settings_override', array( $this, 'add_watermark_settings' ) );
+
+					// Add a watermark test menu and page.
+					add_action( 'foogallery_admin_menu_after', array( $this, 'add_watermark_test_menu' ) );
+
+					// Render some custom settings types.
+					add_action( 'foogallery_admin_settings_custom_type_render_setting', array( $this, 'render_custom_setting_types' ) );
+
+					// Actions for the attachment modal.
+					add_filter( 'foogallery_attachment_modal_data', array( $this, 'attachment_modal_data_watermark' ), 40, 4 );
+					add_action( 'foogallery_attachment_modal_tabs_view', array( $this, 'attachment_modal_display_tab_watermark' ), 40 );
+					add_action( 'foogallery_attachment_modal_tab_content', array( $this, 'attachment_modal_display_tab_content_watermark' ), 40, 1 );
+					add_action( 'foogallery_attachment_modal_after_tab_container', array( $this, 'attachment_modal_extra_content_for_watermark' ), 40, 1 );
+					add_action( 'wp_ajax_foogallery_attachment_modal_watermark_generate', array( $this, 'attachment_modal_ajax_generate_watermark' ) );
+				}
+            }
+        }
+
+		function register_extension( $extensions_list ) {
+			$pro_features = foogallery_pro_features();
+
+            $extensions_list[] = array(
+                'slug' => 'foogallery-protection',
+                'class' => 'FooGallery_Pro_Protection',
+                'categories' => array( 'Premium' ),
+                'title' => __( 'Protection', 'foogallery' ),
+                'description' => $pro_features['protection']['desc'],
+                'external_link_text' => __( 'Read documentation', 'foogallery' ),
+                'external_link_url' => $pro_features['protection']['link'],
+				'dashicon'          => 'dashicons-lock',
+                'tags' => array( 'Premium' ),
+                'source' => 'bundled',
+                'activated_by_default' => true,
+                'feature' => true
+            );
+
+            return $extensions_list;
+        }
 
 		/**
 		 * Add the required protection data options
@@ -525,7 +554,6 @@ if ( ! class_exists( 'FooGallery_Pro_Protection' ) ) {
 
 			$new_fields[] = array(
 				'id'      => 'protection_help',
-				'title'   => __( 'Protection Help', 'foogallery' ),
 				'desc'    => __( 'Image protection is only enabled on your full size images. Protecting thumbnails is not necessary!', 'foogallery' ),
 				'section' => __( 'Protection', 'foogallery' ),
 				'type'    => 'help',
