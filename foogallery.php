@@ -2,7 +2,7 @@
 /*
 Plugin Name: FooGallery
 Description: FooGallery is the most intuitive and extensible gallery management tool ever created for WordPress
-Version:     2.4.2
+Version:     2.4.6
 Author:      FooPlugins
 Plugin URI:  https://fooplugins.com/foogallery-wordpress-gallery-plugin/
 Author URI:  https://fooplugins.com
@@ -28,7 +28,7 @@ if ( function_exists( 'foogallery_fs' ) ) {
 		define( 'FOOGALLERY_PATH', plugin_dir_path( __FILE__ ) );
 		define( 'FOOGALLERY_URL', plugin_dir_url( __FILE__ ) );
 		define( 'FOOGALLERY_FILE', __FILE__ );
-		define( 'FOOGALLERY_VERSION', '2.4.2' );
+		define( 'FOOGALLERY_VERSION', '2.4.6' );
 		define( 'FOOGALLERY_SETTINGS_VERSION', '2' );
 
 		require_once FOOGALLERY_PATH . 'includes/constants.php';
@@ -50,7 +50,7 @@ if ( function_exists( 'foogallery_fs' ) ) {
 						'is_premium'     => true,
 						'has_paid_plans' => true,
                         'has_addons'     => true,
-                            'trial'          => array(
+                        'trial'          => array(
 							'days'               => 7,
 							'is_require_payment' => false,
 						),
@@ -263,12 +263,12 @@ if ( function_exists( 'foogallery_fs' ) ) {
                 );
 
                 $extensions[] = array(
-                    'slug' => 'foogallery-master-galleries',
+                    'slug' => 'foogallery-gallery-blueprints',
                     'categories' => array( 'Premium' ),
-                    'title' => __( 'Master Gallery', 'foogallery' ),
-                    'description' => $pro_features['master_galleries']['desc'],
+                    'title' => __( 'Gallery Blueprints', 'foogallery' ),
+                    'description' => $pro_features['gallery_blueprints']['desc'],
                     'external_link_text' => __( 'Read documentation', 'foogallery' ),
-                    'external_link_url' => $pro_features['master_galleries']['link'],
+                    'external_link_url' => $pro_features['gallery_blueprints']['link'],
                     'dashicon'          => 'dashicons-networking',
                     'tags' => array( 'Premium' ),
                     'source' => 'upgrade'

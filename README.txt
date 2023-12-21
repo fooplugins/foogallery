@@ -2,9 +2,9 @@
 Contributors: bradvin, steveush, fooplugins
 Donate link: https://fooplugins.com
 Tags: gallery, image gallery, photo gallery, responsive gallery, wordpress gallery plugin, best gallery plugin, albums, media gallery, video gallery, lightbox
-Requires at least: 5.2
+Requires at least: 5.3
 Tested up to: 6.4
-Stable tag: 2.4.0
+Stable tag: 2.4.6
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -319,19 +319,23 @@ Please update in order for FooGallery to work in WP 5.5+!
 
 == Changelog ==
 
-= 2.4.3 =
-* Date Updated : 16 Dec 2023
+= 2.4.6 =
+* Date Updated : 17 Dec 2023
 * Update : Freemius SDK update 2.6.1
-
-= 2.4.2 =
-* Date Updated : 1 Nov 2023
+* Fix : fixed PHP 8.1 warnings
 * New : Overhauled features listing, and added a bunch of features to the list, which can be activated/deactivated like plugins.
-* New : Add-ons menu which allows you to see add-ons.
+* Fix : added sanitization to advanced gallery settings.
+[//]: # fs_premium_only_begin
+* Update : Renamed Master Galleries to Gallery Blueprints.
+[//]: # fs_premium_only_end
 
 = 2.3.4 =
 * Date Updated : 6 Sep 2023
-* Fix : fixed bug showing incorrect lightbox option in admin
 * Fix : fixed bug with demo galleries not using the default lightbox
+
+= 2.3.3 =
+* Date Updated : 6 Sep 2023
+* Fix : fixed bug showing incorrect lightbox option in admin
 
 = 2.3.2 =
 * Date Updated : 6 Sep 2023
