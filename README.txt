@@ -319,6 +319,10 @@ Please update in order for FooGallery to work in WP 5.5+!
 
 == Changelog ==
 
+= 2.4.7 =
+* Date Updated : 21 Dec 2023
+* Fix : fixed paging not showing anymore!
+
 = 2.4.6 =
 * Date Updated : 17 Dec 2023
 * Update : Freemius SDK update 2.6.1
