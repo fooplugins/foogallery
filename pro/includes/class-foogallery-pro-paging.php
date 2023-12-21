@@ -20,7 +20,7 @@ if ( ! class_exists( 'FooGallery_Pro_Paging' ) ) {
 
                 add_filter('foogallery_pagination_format_type_for_placeholder', array($this, 'format_pro_types_for_placeholders'));
 
-                if (is_admin()) {
+                if ( is_admin() ) {
                     //add a global setting to change the Load More button text
                     add_filter('foogallery_admin_settings_override', array($this, 'add_language_settings'), 40);
                 }
