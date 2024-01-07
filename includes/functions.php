@@ -2204,3 +2204,22 @@ function foogallery_get_target_options() {
 
     return $target_options;
 }
+
+/**
+ * If the user can, then create some FooGallery demo content!
+ *
+ * @return false|int[]
+ */
+function foogallery_create_demo_content() {
+
+    if ( is_admin() && is_user_logged_in() && current_user_can( 'manage_options' ) ) {
+        $importer = new FooGallery_Admin_Demo_Content();
+        $results = $importer->import_demo_content();
+
+        foogallery_set_setting('demo_content', 'on');
+
+        return $results;
+    }
+
+    return false;
+}

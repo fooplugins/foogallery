@@ -118,12 +118,13 @@ if ( ! class_exists( 'FooGallery_Admin_Menu' ) ) {
 		function create_demo_galleries() {
 			if ( check_admin_referer( 'foogallery_admin_import_demos' ) ) {
 
-				$importer = new FooGallery_Admin_Demo_Content();
-				$results = $importer->import_demo_content();
+				$results = foogallery_create_demo_content();
 
-				foogallery_set_setting( 'demo_content', 'on' );
-
-				echo sprintf( __( '%d sample images imported, and %d demo galleries created!', 'foogallery' ), $results['attachments'], $results['galleries'] );
+				if ( $results === false ) {
+					echo __('There was a problem creating the demo galleries!', 'foogallery');
+				} else {
+					echo sprintf(__('%d sample images imported, and %d demo galleries created!', 'foogallery'), $results['attachments'], $results['galleries']);
+				}
 			}
 			die();
 		}
