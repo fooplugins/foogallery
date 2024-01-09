@@ -42,26 +42,28 @@ if ( function_exists( 'foogallery_fs' ) ) {
 				require_once dirname( __FILE__ ) . '/freemius/start.php';
 
 				$foogallery_fs = fs_dynamic_init(
-					array(
-						'id'             => '843',
-						'slug'           => 'foogallery',
-						'type'           => 'plugin',
-						'public_key'     => 'pk_d87616455a835af1d0658699d0192',
-						'is_premium'     => true,
-						'has_paid_plans' => true,
-                        'has_addons'     => true,
-                        'trial'          => array(
-							'days'               => 7,
-							'is_require_payment' => false,
-						),
-						'menu'           => array(
-							'slug'       => 'edit.php?post_type=' . FOOGALLERY_CPT_GALLERY,
-							'first-path' => 'edit.php?post_type=' . FOOGALLERY_CPT_GALLERY . '&page=' . FOOGALLERY_ADMIN_MENU_HELP_SLUG,
-							'account'    => true,
-							'contact'    => false,
-							'support'    => false,
-						),
-					)
+                    apply_filters( 'foogallery_fs_args',
+                        array(
+                            'id'             => '843',
+                            'slug'           => 'foogallery',
+                            'type'           => 'plugin',
+                            'public_key'     => 'pk_d87616455a835af1d0658699d0192',
+                            'is_premium'     => true,
+                            'has_paid_plans' => true,
+                            'has_addons'     => true,
+                            'trial'          => array(
+                                'days'               => 7,
+                                'is_require_payment' => false,
+                            ),
+                            'menu'           => array(
+                                'slug'       => 'edit.php?post_type=' . FOOGALLERY_CPT_GALLERY,
+                                'first-path' => 'edit.php?post_type=' . FOOGALLERY_CPT_GALLERY . '&page=' . FOOGALLERY_ADMIN_MENU_HELP_SLUG,
+                                'account'    => true,
+                                'contact'    => false,
+                                'support'    => false,
+                            )
+                        )
+                    )
 				);
 			}
 
