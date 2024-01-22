@@ -1552,21 +1552,48 @@ function foogallery_sanitize_html( $text ) {
 
 
 /**
- * Filter out JavaScript-related attributes
+ * Filter out JavaScript-related keywords from an input string
  *
- * @param string $attributes
+ * @param string $input
  * @return string
  */
-function filter_javascript_attributes( $attributes ) {
+function foogallery_sanitize_javascript( $input ) {
     // list of JavaScript-related attributes to filter out
-    $javascript_attributes = array( 'onmouseover','onmouseout', 'onclick', 'onload','onchange', 'javascript:' );
+    $javascript_attributes = array(
+        'innerHTML',
+        'document\.write',
+        'eval',
+        'Function\(',
+        'setTimeout',
+        'setInterval',
+        'new Function\(',
+        'onmouseover',
+        'onmouseout',
+        'onclick',
+        'onload',
+        'onchange',
+        '<script>',
+        'encodeURIComponent',
+        'decodeURIComponent',
+        'JSON\.parse',
+        'outerHTML',
+        'innerHTML',
+        'XMLHttpRequest',
+        'createElement',
+        'appendChild',
+        'RegExp',
+        'String\.fromCharCode',
+        'encodeURI',
+        'decodeURI',
+        'javascript:'
+    );
 
-    // Remove JavaScript-related attributes
-    foreach ( $javascript_attributes as $attribute ) {
-        $attributes = preg_replace( '/\b' . preg_quote( $attribute, '/' ) . '\b/', '', $attributes );
-    }
+    $pattern = '/' . implode( '|', $javascript_attributes ) . '/i';
 
-    return $attributes;
+    // Use regex to replace potentially dangerous strings with an empty string
+    $input = preg_replace( $pattern, '', $input );
+
+    return $input;
 }
 
 
