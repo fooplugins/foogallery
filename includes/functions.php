@@ -1550,6 +1550,26 @@ function foogallery_sanitize_html( $text ) {
 	return $safe_text;
 }
 
+
+/**
+ * Filter out JavaScript-related attributes
+ *
+ * @param string $attributes
+ * @return string
+ */
+function filter_javascript_attributes( $attributes ) {
+    // list of JavaScript-related attributes to filter out
+    $javascript_attributes = array( 'onmouseover','onmouseout', 'onclick', 'onload','onchange', 'javascript:' );
+
+    // Remove JavaScript-related attributes
+    foreach ( $javascript_attributes as $attribute ) {
+        $attributes = preg_replace( '/\b' . preg_quote( $attribute, '/' ) . '\b/', '', $attributes );
+    }
+
+    return $attributes;
+}
+
+
 /**
  * Returns true if PRO is in use
  * @return bool
