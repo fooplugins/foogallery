@@ -138,14 +138,16 @@ if ( ! class_exists( 'FooGallery_Advanced_Gallery_Settings' ) ) {
 			global $current_foogallery;
 
 			if ( $current_foogallery === $gallery ) {
-				// Get the 'custom_attributes' value from the gallery settings
-				$custom_attributes_raw = foogallery_gallery_template_setting( 'custom_attributes', '' );
+				$custom_attributes = foogallery_gallery_template_setting( 'custom_attributes', '' );
 
-				// Sanitize and validate the 'custom_attributes' using WP functions
-				$custom_attributes = esc_attr( wp_kses_post( $custom_attributes_raw ) );
+				// Sanitize the custom attributes
+				$custom_attributes = foogallery_sanitize_html( $custom_attributes );
+
+				// Filter out specific JavaScript-related attributes
+				$custom_attributes = filter_javascript_attributes( $custom_attributes );
 
 				if ( ! empty( $custom_attributes ) ) {
-					// Add the sanitized 'custom_attributes' to the gallery container
+					// Append the sanitized and filtered custom attributes to the gallery container
 					$html .= ' ' . $custom_attributes;
 				}
 			}
