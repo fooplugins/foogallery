@@ -4,7 +4,7 @@ Donate link: https://fooplugins.com
 Tags: gallery, image gallery, photo gallery, responsive gallery, wordpress gallery plugin, best gallery plugin, albums, media gallery, video gallery, lightbox
 Requires at least: 5.3
 Tested up to: 6.4
-Stable tag: 2.4.6
+Stable tag: 2.4.9
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -15,6 +15,8 @@ The best WordPress gallery plugin. Create stunning galleries in minutes, with ad
 = WordPress Gallery Plugin =
 
 Make galleries in WordPress great again with FooGallery! Add a stunning gallery to your website in under 1 minute using our beautiful pre-built templates, or if you want more control, then take advantage of all our advanced settings to customsize your galleries to look exactly the way you want.
+
+[Launch Your Own FooGallery Demo](https://app.instawp.io/launch?t=foogallery-free&d=v2)
 
 FooGallery is an easy-to-use image gallery plugin, with stunning pre-built gallery layouts and a focus on performance and SEO.
 It is also responsive, retina-ready and supports lazy loading for lightning fast photo galleries.
@@ -318,6 +320,11 @@ We did the research and comparison. See our findings : [What is the Best WordPre
 Please update in order for FooGallery to work in WP 5.5+!
 
 == Changelog ==
+
+= 2.4.9 =
+* Date Updated : 27 Jan 2024
+* Fix : enhanced sanitization for advanced gallery settings.
+* Update : Freemius SDK update 2.6.2
 
 = 2.4.7 =
 * Date Updated : 21 Dec 2023
