@@ -1550,6 +1550,53 @@ function foogallery_sanitize_html( $text ) {
 	return $safe_text;
 }
 
+
+/**
+ * Filter out JavaScript-related keywords from an input string
+ *
+ * @param string $input
+ * @return string
+ */
+function foogallery_sanitize_javascript( $input ) {
+    // list of JavaScript-related attributes to filter out
+    $javascript_attributes = array(
+        'innerHTML',
+        'document\.write',
+        'eval',
+        'Function\(',
+        'setTimeout',
+        'setInterval',
+        'new Function\(',
+        'onmouseover',
+        'onmouseout',
+        'onclick',
+        'onload',
+        'onchange',
+        '<script>',
+        'encodeURIComponent',
+        'decodeURIComponent',
+        'JSON\.parse',
+        'outerHTML',
+        'innerHTML',
+        'XMLHttpRequest',
+        'createElement',
+        'appendChild',
+        'RegExp',
+        'String\.fromCharCode',
+        'encodeURI',
+        'decodeURI',
+        'javascript:'
+    );
+
+    $pattern = '/' . implode( '|', $javascript_attributes ) . '/i';
+
+    // Use regex to replace potentially dangerous strings with an empty string
+    $input = preg_replace( $pattern, '', $input );
+
+    return $input;
+}
+
+
 /**
  * Returns true if PRO is in use
  * @return bool
@@ -2203,4 +2250,36 @@ function foogallery_get_target_options() {
     ));
 
     return $target_options;
+}
+
+/**
+ * If the user can, then create some FooGallery demo content!
+ *
+ * @return false|int[]
+ */
+function foogallery_create_demo_content() {
+
+    if ( is_admin() && is_user_logged_in() && current_user_can( 'manage_options' ) ) {
+        $importer = new FooGallery_Admin_Demo_Content();
+        $results = $importer->import_demo_content();
+
+        foogallery_set_setting('demo_content', 'on');
+
+        return $results;
+    }
+
+    return false;
+}
+
+/**
+ * Returns if Freemius is in anonymous mode.
+ *
+ * @return false
+ */
+function foogallery_freemius_is_anonymous() {
+    if ( defined( 'FOOPLUGINS_FREEMIUS_ANONYMOUS' ) ) {
+        return FOOPLUGINS_FREEMIUS_ANONYMOUS;
+    }
+
+    return false;
 }

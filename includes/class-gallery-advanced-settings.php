@@ -138,11 +138,21 @@ if ( ! class_exists( 'FooGallery_Advanced_Gallery_Settings' ) ) {
 			global $current_foogallery;
 
 			if ( $current_foogallery === $gallery ) {
-				$custom_attributes = foogallery_sanitize_html( foogallery_gallery_template_setting( 'custom_attributes', '' ) );
+				$custom_attributes = foogallery_gallery_template_setting( 'custom_attributes', '' );
 
-				if ( !empty( $custom_attributes ) ) {
-					$html .= ' ' . $custom_attributes;
-				}
+                // The stripping process is not quick, so only do this when necessary.
+                if ( ! empty( $custom_attributes ) ) {
+                    // Sanitize the custom attributes
+                    $custom_attributes = foogallery_sanitize_html($custom_attributes);
+
+                    // Filter out specific JavaScript-related attributes
+                    $custom_attributes = foogallery_sanitize_javascript($custom_attributes);
+
+                    if ( !empty( $custom_attributes ) ) {
+                        // Append the sanitized and filtered custom attributes to the gallery container
+                        $html .= ' ' . $custom_attributes;
+                    }
+                }
 			}
 
 			return $html;
