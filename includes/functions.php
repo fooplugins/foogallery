@@ -2270,3 +2270,16 @@ function foogallery_create_demo_content() {
 
     return false;
 }
+
+/**
+ * Returns if Freemius is in anonymous mode.
+ *
+ * @return false
+ */
+function foogallery_freemius_is_anonymous() {
+    if ( defined( 'FOOPLUGINS_FREEMIUS_ANONYMOUS' ) ) {
+        return FOOPLUGINS_FREEMIUS_ANONYMOUS;
+    }
+
+    return false;
+}
