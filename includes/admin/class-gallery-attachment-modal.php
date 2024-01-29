@@ -21,12 +21,12 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
 			add_action( 'foogallery_attachment_modal_tabs_view', array( $this, 'display_tab_main' ), 10 );
 			add_action( 'foogallery_attachment_modal_tabs_view', array( $this, 'display_tab_taxonomies' ), 20 );
 			add_action( 'foogallery_attachment_modal_tabs_view', array( $this, 'display_tab_thumbnails' ), 30 );
-            add_action( 'foogallery_attachment_modal_tabs_view', array( $this, 'display_tab_more' ), 200 );
+            add_action( 'foogallery_attachment_modal_tabs_view', array( $this, 'display_tab_advanced' ), 200 );
 
             add_action( 'foogallery_attachment_modal_tab_content', array( $this, 'display_tab_content_main' ), 10, 1 );
             add_action( 'foogallery_attachment_modal_tab_content', array( $this, 'display_tab_content_taxonomies' ), 20, 1 );
             add_action( 'foogallery_attachment_modal_tab_content', array( $this, 'display_tab_content_thumbnails' ), 30, 1 );
-            add_action( 'foogallery_attachment_modal_tab_content', array( $this, 'display_tab_content_more' ), 60, 1 );
+            add_action( 'foogallery_attachment_modal_tab_content', array( $this, 'display_tab_content_advanced' ), 60, 1 );
 
             add_action( 'foogallery_attachment_modal_before_thumbnail', array( $this, 'display_attachment_info' ), 10, 1 );
 
@@ -585,12 +585,12 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
         }
 
 		/**
-		 * Image modal more tab title
+		 * Image modal advanced tab title
 		 */
-		public function display_tab_more() { ?>
-			<div class="foogallery-img-modal-tab-wrapper" data-tab_id="foogallery-panel-more">
-				<input type="radio" name="tabset" id="foogallery-tab-more" aria-controls="foogallery-panel-more">
-				<label for="foogallery-tab-more"><?php _e('More', 'foogallery'); ?></label>
+		public function display_tab_advanced() { ?>
+			<div class="foogallery-img-modal-tab-wrapper" data-tab_id="foogallery-panel-advanced">
+				<input type="radio" name="tabset" id="foogallery-tab-advanced" aria-controls="foogallery-panel-advanced">
+				<label for="foogallery-tab-advanced"><?php _e('Advanced', 'foogallery'); ?></label>
 			</div>
 		<?php }
 
@@ -777,12 +777,12 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
 		}
 
 		/**
-		 * Image modal more tab content
+		 * Image modal advanced tab content
 		 */
-		public function display_tab_content_more( $modal_data ) {
+		public function display_tab_content_advanced( $modal_data ) {
 			if ( is_array( $modal_data ) && !empty ( $modal_data ) ) {
 				if ( $modal_data['img_id'] > 0 ) { ?>
-					<section id="foogallery-panel-more" class="tab-panel">
+					<section id="foogallery-panel-advanced" class="tab-panel">
 						<div class="settings">	
 							<span class="setting" data-setting="data-width">
 								<label for="attachment-details-two-column-data-width" class="name"><?php _e('Override Width', 'foogallery'); ?></label>
