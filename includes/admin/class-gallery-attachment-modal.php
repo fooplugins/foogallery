@@ -708,6 +708,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
                                         <a href="javascript:void(0);" class="button button-small active foogallery_attachment_taxonomy_add" data-action="add">+</a>
                                         <input type="text" class="foogallery_attachment_taxonomy_add" style="display: none" />
                                         <a href="javascript:void(0);" class="button button-small active foogallery_attachment_taxonomy_add" style="display: none" data-action="save"><?php echo __( 'Save','foogallery' ); ?></a>
+                                        <a href="javascript:void(0);" class="button button-small active foogallery_attachment_taxonomy_add" style="display: none" data-action="cancel"><?php echo __( 'Cancel','foogallery' ); ?></a>
                                     </li>
                                 </ul>
                                 <div>
@@ -786,19 +787,34 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
 							<span class="setting" data-setting="data-width">
 								<label for="attachment-details-two-column-data-width" class="name"><?php _e('Override Width', 'foogallery'); ?></label>
 								<input type="text" name="foogallery[data-width]" id="attachment-details-two-column-data-width" value="<?php echo $modal_data['data_width']; ?>">
-							</span>		
+							</span>	
+							<p class="description">
+								<?php _e( 'Specify a custom width to override the default width.', 'foogallery' ); ?>
+							</p>
+
 							<span class="setting" data-setting="data-height">
 								<label for="attachment-details-two-column-data-height" class="name"><?php _e('Override Height', 'foogallery'); ?></label>
 								<input type="text" name="foogallery[data-height]" id="attachment-details-two-column-data-height" value="<?php echo $modal_data['data_height']; ?>">
-							</span>	
+							</span>
+							<p class="description">
+								<?php _e( 'Specify a custom height to override the default height.', 'foogallery' ); ?>
+							</p>
+
 							<span class="setting" data-setting="panning">
 								<label for="attachment-details-two-column-panning" class="name"><?php _e('Panning', 'foogallery'); ?></label>
 								<input type="text" name="foogallery[panning]" id="attachment-details-two-column-panning" value="<?php echo $modal_data['panning']; ?>">
 							</span>	
+							<p class="description">
+								<?php _e( 'Adjust to control the horizontal or vertical movement within the content.', 'foogallery' ); ?>
+							</p>
+
 							<span class="setting" data-setting="override-type">
 								<label for="attachment-details-two-column-override-type" class="name"><?php _e('Override Type', 'foogallery'); ?></label>
 								<input type="text" name="foogallery[override_type]" id="attachment-details-two-column-override-type" value="<?php echo $modal_data['override_type']; ?>">
 							</span>	
+							<p class="description">
+								<?php _e( 'Specify to control how certain display properties are customized.', 'foogallery' ); ?>
+							</p>
 						</div>
 					</section>
 					<?php
