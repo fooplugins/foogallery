@@ -10700,7 +10700,9 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
             return this.load( item );
         },
         close: function(immediate){
-            var self = this, e = self.trigger("close", [self.currentItem]);
+            var self = this;
+            if ( self.isClosing ) return $.Deferred().reject();
+            var e = self.trigger("close", [self.currentItem]);
             if (e.isDefaultPrevented()) return _fn.reject("default prevented");
             return self.doClose(immediate).then(function(){
                 self.trigger("closed");
@@ -10709,6 +10711,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
         doClose: function(immediate, detach){
             detach = _is.boolean(detach) ? detach : true;
             var self = this;
+            self.isClosing = true;
             return $.Deferred(function(def){
                 self.content.close(immediate).then(function(){
                     var wait = [];
@@ -10720,6 +10723,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
                     $.when.apply($, wait).then(def.resolve).fail(def.reject);
                 });
             }).always(function(){
+                self.isClosing = false;
                 self.currentItem = null;
                 self.buttons.close();
                 if (detach) self.detach();
@@ -15932,16 +15936,25 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
                 return new _.StackAlbum.Pile(self, el, { index: i });
             }).get();
             self.ignoreResize = false;
-            self.robserver = new ResizeObserver(function () {
-                if (!self.ignoreResize && self.$el.is(":visible")) self.layout(true);
+            self.info = self.getLayoutInfo();
+            self.robserver = new ResizeObserver(function (e) {
+                if (!self.ignoreResize && self.$el.is(":visible")){
+                    const width = self.$el.width();
+                    if ( self.info.maxWidth !== width ) {
+                        self.info = self.getLayoutInfo();
+                        self.layout(true);
+                    }
+                }
             });
         },
         init: function(){
             var self = this;
+            self.info = self.getLayoutInfo();
             self.piles.forEach(function(pile){
                 pile.init();
             });
             self.$back.on('click.foogallery', {self: self}, self.onBackClick);
+            self.layout(true);
             self.robserver.observe(self.el);
         },
         destroy: function(){
@@ -15952,21 +15965,52 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
                 pile.destroy();
             });
         },
+        // getLayoutInfo: function(){
+        //     var self = this,
+        //         space = self.opt.gutter + (self.opt.border*2);
+        //     return {
+        //         maxWidth: self.$el.width(),
+        //         space: space,
+        //         halfSpace: space/2,
+        //         itemWidth: self.opt.itemWidth,
+        //         itemHeight: self.opt.itemHeight,
+        //         itemOuterWidth: self.opt.itemWidth + (self.opt.border*2),
+        //         itemOuterHeight: self.opt.itemHeight + (self.opt.border*2),
+        //         blockWidth: self.opt.itemWidth + space,
+        //         blockHeight: self.opt.itemHeight + space,
+        //         border: self.opt.border,
+        //         doubleBorder: self.opt.border*2,
+        //         gutter: self.opt.gutter,
+        //         halfGutter: self.opt.gutter/2
+        //     };
+        // },
         getLayoutInfo: function(){
-            var self = this,
-                space = self.opt.gutter + (self.opt.border*2);
+            const self = this,
+                maxWidth = self.$el.width(),
+                doubleBorder = self.opt.border * 2,
+                space = self.opt.gutter + doubleBorder,
+                maxWidthInner = maxWidth - space;
+
+            let ratio = 1;
+            if ( self.opt.itemWidth > maxWidthInner ) {
+                ratio = maxWidthInner / self.opt.itemWidth;
+            }
+
+            const itemWidth = self.opt.itemWidth * ratio,
+                itemHeight = self.opt.itemHeight * ratio;
+
             return {
-                maxWidth: self.$el.width(),
+                maxWidth: maxWidth,
                 space: space,
                 halfSpace: space/2,
-                itemWidth: self.opt.itemWidth,
-                itemHeight: self.opt.itemHeight,
-                itemOuterWidth: self.opt.itemWidth + (self.opt.border*2),
-                itemOuterHeight: self.opt.itemHeight + (self.opt.border*2),
-                blockWidth: self.opt.itemWidth + space,
-                blockHeight: self.opt.itemHeight + space,
+                itemWidth: itemWidth,
+                itemHeight: itemHeight,
+                itemOuterWidth: itemWidth + doubleBorder,
+                itemOuterHeight: itemHeight + doubleBorder,
+                blockWidth: itemWidth + space,
+                blockHeight: itemHeight + space,
                 border: self.opt.border,
-                doubleBorder: self.opt.border*2,
+                doubleBorder: doubleBorder,
                 gutter: self.opt.gutter,
                 halfGutter: self.opt.gutter/2
             };
@@ -15986,33 +16030,35 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
                 self.$piles.css({width: size.width + 'px', height: size.height + 'px'});
             }
             if (immediate){
-                self.$el.removeClass('fg-disable-transitions');
+                setTimeout(function(){
+                    self.$el.removeClass('fg-disable-transitions');
+                }, 0);
             }
         },
         layoutPiles: function(callback){
             var self = this,
-                info = self.getLayoutInfo(),
                 rowWidth = 0, rowCount = 1, width = 0;
 
             callback = _is.fn(callback) ? callback : function(){};
 
             self.piles.forEach(function(pile){
                 var left = rowWidth;
-                rowWidth += info.blockWidth;
-                if (rowWidth > info.maxWidth && left > 0){
+                rowWidth += self.info.blockWidth;
+                if (rowWidth > self.info.maxWidth && left > 0){
                     left = 0;
-                    rowWidth = info.blockWidth;
+                    rowWidth = self.info.blockWidth;
                     rowCount++;
                 }
-                var top = info.blockHeight * (rowCount - 1);
-                callback(pile, top, left, info.blockWidth, info.blockHeight);
-                pile.setPosition(top, left, info.blockWidth, info.blockHeight);
+                var top = self.info.blockHeight * (rowCount - 1);
+                callback(pile, self.info);
+                pile.layoutCollapsed();
+                pile.setPosition(top, left, self.info.blockWidth, self.info.blockHeight);
                 // keep track of the max calculated width
                 if (rowWidth > width) width = rowWidth;
             });
             return {
                 width: width,
-                height: info.blockHeight * rowCount
+                height: self.info.blockHeight * rowCount
             };
         },
         setActive: function(pile){
@@ -16087,12 +16133,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
             self.items = self.$el.find('.fg-pile-item').map(function(i, el){
                 return new _.StackAlbum.Item(self, el, { index: i });
             }).get();
-            self.$cover = $('<div/>', {'class': 'fg-pile-cover'}).append(
-                $('<div/>', {'class': 'fg-pile-cover-content'}).append(
-                    $('<span/>', {'class': 'fg-pile-cover-title', text: self.opt.title}),
-                    $('<span/>', {'class': 'fg-pile-cover-count', text: self.items.length})
-                )
-            );
+            self.$cover = self.$el.find('.fg-pile-cover').first();
             self.top = 0;
             self.left = 0;
             self.isExpanded = false;
@@ -16103,13 +16144,20 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
                 availableAngles = self.getAngles(opt.angleStep),
                 currentAngle = opt.randomAngle ? self.randomAngle(availableAngles) : opt.angleStep;
 
+            if ( self.$cover.length === 0 && self.items.length > 0 ) {
+                self.$cover = $('<div/>', {'class': 'fg-pile-cover'}).append(
+                    $('<div/>', {'class': 'fg-pile-cover-content'}).append(
+                        $('<span/>', {'class': 'fg-pile-cover-title', text: self.opt.title}),
+                        $('<span/>', {'class': 'fg-pile-cover-count', text: self.items.length})
+                    )
+                );
+                self.items[0].$el.addClass('fg-has-cover').append(self.$cover);
+            }
             self.$cover.on('click.foogallery', {self: self}, self.onCoverClick);
             self.items.forEach(function(item, i){
                 item.init();
                 if (i > 3) return; // we only care about the first 4 items after init
-
                 if (i === 0){
-                    item.$el.addClass('fg-has-cover').append(self.$cover);
                     item.load();
                 } else {
                     if (i % 2 === 0){
@@ -16157,9 +16205,14 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
             }
         },
         layout: function(){
-            var self = this,
-                info = self.album.getLayoutInfo(),
-                rowWidth = 0, rowCount = 1,
+            const self = this,
+                info = self.album.info;
+
+            if ( !self.isExpanded ) {
+                return self.layoutCollapsed();
+            }
+
+            let rowWidth = 0, rowCount = 1,
                 isNew = false, width = 0;
 
             self.items.forEach(function(item){
@@ -16168,6 +16221,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
                     rowWidth = info.halfGutter;
                     rowCount++;
                     isNew = true;
+                    console.log("A");
                 }
                 var left = rowWidth;
                 rowWidth += info.itemOuterWidth + info.halfGutter;
@@ -16175,6 +16229,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
                     left = info.halfGutter;
                     rowWidth = info.blockWidth;
                     rowCount++;
+                    console.log("B");
                 }
                 var top = (info.blockHeight * (rowCount - 1)) + info.halfGutter;
                 isNew = false;
@@ -16189,27 +16244,32 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
             };
         },
 
-        expand: function(){
-            var self = this, size;
-            self.$el.removeClass('fg-collapsed').addClass('fg-expanded');
-            size = self.layout();
-            self.setPosition(0, 0, size.width, size.height);
-            self.isExpanded = true;
-            return size;
-        },
-        collapse: function(){
-            var self = this,
-                info = self.album.getLayoutInfo();
-            self.$el.removeClass('fg-expanded').addClass('fg-collapsed');
+        layoutCollapsed: function(){
+            const self = this,
+                info = self.album.info;
             self.items.forEach(function(item){
                 item.setPosition(info.halfGutter, info.halfGutter, info.itemOuterWidth, info.itemOuterHeight);
             });
-            var size = {
+            return {
                 width: info.blockWidth,
                 height: info.blockHeight
             };
+        },
+
+        expand: function(){
+            var self = this, size;
+            self.$el.removeClass('fg-collapsed').addClass('fg-expanded');
+            self.isExpanded = true;
+            size = self.layout();
             self.setPosition(0, 0, size.width, size.height);
+            return size;
+        },
+        collapse: function(){
+            var self = this, size;
+            self.$el.removeClass('fg-expanded').addClass('fg-collapsed');
             self.isExpanded = false;
+            size = self.layout();
+            self.setPosition(0, 0, size.width, size.height);
             return size;
         },
         show: function(){
@@ -16249,6 +16309,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
     _.StackAlbum.Item = _utils.Class.extend({
         construct: function(pile, element, options){
             var self = this;
+            self.pile = pile;
             self.$el = _is.jq(element) ? element : $(element);
             self.opt = _obj.extend({}, _.StackAlbum.Item.defaults, options, self.$el.data());
             self.$thumb = self.$el.find('.fg-pile-item-thumb');
@@ -16258,10 +16319,13 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
             self._loading = null;
         },
         init: function(){
-
+            const self = this,
+                info = self.pile.album.info;
+            self.$el.css({width: info.itemOuterWidth + 'px', height: info.itemOuterHeight + 'px'});
         },
         destroy: function(){
-
+            const self = this;
+            self.$el.css({top: '', left: '', width: '', height: '', transform: ''});
         },
         setAngle: function(angle){
             var self = this;

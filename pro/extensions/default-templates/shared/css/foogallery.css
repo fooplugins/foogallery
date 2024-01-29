@@ -8547,6 +8547,7 @@ button.fg-carousel-next:hover {
 .fg-piles {
     display: inline-block;
     position: relative;
+    max-width: 100%;
     transition-property: width, height;
     transition-duration: .3s;
     transition-timing-function: ease-in-out;
@@ -8562,6 +8563,7 @@ button.fg-carousel-next:hover {
     margin: 0;
     visibility: visible;
     opacity: 1;
+    max-width: 100%;
     transition-property: opacity, visibility, top, left, width, height;
     transition-duration: .3s;
     transition-timing-function: ease-in-out;
@@ -8573,7 +8575,9 @@ button.fg-carousel-next:hover {
 }
 
 .fg-pile-item {
-    display: block;
+    display: flex;
+    flex-direction: column;
+    max-width: 100%;
     position: absolute;
     top: 25px;
     left: 25px;
@@ -8618,11 +8622,17 @@ button.fg-carousel-next:hover {
 }
 
 .fg-pile-item-thumb {
-    display: block;
+    display: flex;
+    flex-direction: column;
+    max-width: 100%;
+    max-height: 100%;
 }
 
 .fg-pile-item-image {
     display: block;
+    max-width: 100%;
+    object-fit: cover;
+    width: auto;
 }
 
 .fg-pile-item-caption {
@@ -8643,6 +8653,7 @@ button.fg-carousel-next:hover {
     text-align: center;
     visibility: hidden;
     opacity: 0;
+    max-width: 100%;
     transition-property: opacity, visibility;
     transition-duration: .3s;
     transition-timing-function: ease-in-out;
