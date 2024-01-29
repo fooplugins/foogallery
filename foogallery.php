@@ -444,17 +444,23 @@ if ( function_exists( 'foogallery_fs' ) ) {
 			private static function single_activate( $multisite = true ) {
 				if ( false === get_option( FOOGALLERY_EXTENSIONS_AUTO_ACTIVATED_OPTIONS_KEY, false ) ) {
 					$api = new FooGallery_Extensions_API();
-
+			
 					$api->auto_activate_extensions();
-
+			
 					update_option( FOOGALLERY_EXTENSIONS_AUTO_ACTIVATED_OPTIONS_KEY, true );
 				}
+
 				if ( false === $multisite ) {
-					//Make sure we redirect to the welcome page
+					// Make sure we redirect to the welcome page
 					set_transient( FOOGALLERY_ACTIVATION_REDIRECT_TRANSIENT_KEY, true, 30 );
 				}
-
-				//force a version check on activation to make sure housekeeping is performed
+			
+				// Set the 'advanced_attachment_modal' setting to 'on'
+				if ( ! foogallery_get_setting( 'advanced_attachment_modal' ) ) {
+					foogallery_set_setting( 'advanced_attachment_modal', 'on' );
+				}
+			
+				// Force a version check on activation to make sure housekeeping is performed
 				foogallery_perform_version_check();
 			}
 
