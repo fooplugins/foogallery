@@ -851,7 +851,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
 								<input type="text" name="foogallery[panning]" id="attachment-details-two-column-panning" value="<?php echo $modal_data['panning']; ?>">
 							</span>	
 							<p class="description">
-								<?php _e( 'Adjust to control the horizontal or vertical movement within the content.', 'foogallery' ); ?>
+								<?php _e( 'Adjust to define how users navigate and scroll within enlarged images.', 'foogallery' ); ?>
 							</p>
 
 							<span class="setting" data-setting="override-type">
@@ -859,8 +859,9 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
 								<input type="text" name="foogallery[override_type]" id="attachment-details-two-column-override-type" value="<?php echo $modal_data['override_type']; ?>">
 							</span>	
 							<p class="description">
-								<?php _e( 'Specify to control how certain display properties are customized.', 'foogallery' ); ?>
+								<?php _e( 'Override the type of the attachment used by lightbox.', 'foogallery' ); ?>
 							</p>
+							
 						</div>
 					</section>
 					<?php
