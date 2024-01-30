@@ -710,6 +710,11 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
                                         <a href="javascript:void(0);" class="button button-small active foogallery_attachment_taxonomy_add" style="display: none" data-action="save"><?php echo __( 'Save','foogallery' ); ?></a>
                                         <a href="javascript:void(0);" class="button button-small active foogallery_attachment_taxonomy_add" style="display: none" data-action="cancel"><?php echo __( 'Cancel','foogallery' ); ?></a>
                                     </li>
+
+									<li class="taxonomy_remove">
+										<a href="javascript:void(0);" class="button button-small active foogallery_attachment_taxonomy_remove" data-action="remove">-</a>
+									</li>
+									
                                 </ul>
                                 <div>
                                     <a target="_blank" href="<?php echo admin_url( 'edit-tags.php?taxonomy=' . $tax_name ); ?>"?><?php printf( __('Manage %s', 'foogallery' ), $taxonomy->labels->name ); ?></a>

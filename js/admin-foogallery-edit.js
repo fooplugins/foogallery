@@ -808,7 +808,7 @@ FooGallery.autoEnabled = false;
 				if ( action === 'add' ) {
 					$ul.find('.foogallery_attachment_taxonomy_add').toggle();
 					$ul.find('.taxonomy_add input').focus();
-				} else {
+				} else if ( action === 'save' || action === 'cancel' ){
 					var term_to_add = $ul.find('input.foogallery_attachment_taxonomy_add').val();
 					if ( term_to_add && term_to_add.length > 0 && action === 'save' ) {
 						var nonce = $('#foogallery-panel-taxonomies').data('nonce');
@@ -830,11 +830,15 @@ FooGallery.autoEnabled = false;
 								$ul.find('input.foogallery_attachment_taxonomy_add').val('');
 								$ul.find('.foogallery_attachment_taxonomy_add').toggle();
 							}
-						});
+						});						
 					} else {
 						$ul.find('input.foogallery_attachment_taxonomy_add').val('');
 						$ul.find('.foogallery_attachment_taxonomy_add').toggle();
 					}
+				} else if ( action === 'remove' ) {
+					// Deselect all taxonomies
+					$ul.find('a.button.button-small').removeClass('button-primary');
+					$('#foogallery_attachment_taxonomy_' + $ul.data('taxonomy') + '_selected').val('');
 				}
 			}
 		});
