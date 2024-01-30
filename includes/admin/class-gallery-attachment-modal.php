@@ -705,16 +705,16 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
                                     }
                                     ?>
                                     <li class="taxonomy_add">
-                                        <a href="javascript:void(0);" class="button button-small active foogallery_attachment_taxonomy_add" data-action="add">+</a>
+                                        <a href="javascript:void(0);" class="button button-small active foogallery_attachment_taxonomy_add" data-action="add" title="Add new">+</a>
                                         <input type="text" class="foogallery_attachment_taxonomy_add" style="display: none" />
                                         <a href="javascript:void(0);" class="button button-small active foogallery_attachment_taxonomy_add" style="display: none" data-action="save"><?php echo __( 'Save','foogallery' ); ?></a>
                                         <a href="javascript:void(0);" class="button button-small active foogallery_attachment_taxonomy_add" style="display: none" data-action="cancel"><?php echo __( 'Cancel','foogallery' ); ?></a>
                                     </li>
 
 									<li class="taxonomy_remove">
-										<a href="javascript:void(0);" class="button button-small active foogallery_attachment_taxonomy_remove" data-action="remove">-</a>
+										<a href="javascript:void(0);" class="button button-small active foogallery_attachment_taxonomy_remove" data-action="remove" title="Deselect all" >-</a>
 									</li>
-									
+
                                 </ul>
                                 <div>
                                     <a target="_blank" href="<?php echo admin_url( 'edit-tags.php?taxonomy=' . $tax_name ); ?>"?><?php printf( __('Manage %s', 'foogallery' ), $taxonomy->labels->name ); ?></a>
