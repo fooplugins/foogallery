@@ -844,7 +844,7 @@ button[data-balloon]{overflow:visible}[data-balloon]{position:relative}[data-bal
 	font-size: 11px;
 	margin-top: 0;
 }
-#foogallery-panel-taxonomies .taxonomy_add a {
+#foogallery-panel-taxonomies .taxonomy_add a, #foogallery-panel-taxonomies .taxonomy_remove a {
 	box-shadow: none;
 }
 #foogallery-panel-thumbnails label {
@@ -880,10 +880,8 @@ button[data-balloon]{overflow:visible}[data-balloon]{position:relative}[data-bal
 #foogallery-image-edit-modal .foogallery-attachments-list-bar {
     margin-top: 20px;
 }
-#foogallery-image-edit-modal .foogallery-attachments-list-bar.clear-thumbnail {
-    margin-top: 0;
-}
-#foogallery-image-edit-modal .foogallery-attachments-list-bar.clear-thumbnail .button, #foogallery-img-modal-alternate-image-delete {
+
+#foogallery_clear_img_thumb_cache, #foogallery-img-modal-alternate-image-delete {
 	background: #d63638;
     border-color: #d63638;
 }

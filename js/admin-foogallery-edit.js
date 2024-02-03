@@ -865,7 +865,7 @@ FooGallery.autoEnabled = false;
 
 			$('#foogallery_clear_img_thumb_cache_spinner').addClass('is-active');
 			var data = 'action=foogallery_clear_attachment_thumb_cache' +
-				'&img_id=' + $('.foogallery-image-edit-main').data('img_id') +
+				'&attachment_id=' + $('.foogallery-image-edit-main').data('img_id') +
 				'&foogallery_clear_attachment_thumb_cache_nonce=' + $('#foogallery_clear_attachment_thumb_cache_nonce').val() +
 				'&_wp_http_referer=' + encodeURIComponent($('input[name="_wp_http_referer"]').val());
 
@@ -874,7 +874,8 @@ FooGallery.autoEnabled = false;
 				url: ajaxurl,
 				data: data,
 				success: function(data) {
-					$('#foogallery_clear_thumb_cache_spinner').removeClass('is-active');
+					alert(data);
+					$('#foogallery_clear_img_thumb_cache_spinner').removeClass('is-active');
 				}
 			});
 		});

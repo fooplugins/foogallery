@@ -221,8 +221,6 @@ if ( ! class_exists( 'FooGallery_Pro_Protection' ) ) {
 
 						jQuery('.foogallery_protection_generate_spinner').addClass('is-active');
 
-						//alert( FOOGALLERY.attachments );
-
 						var nonce = jQuery('#foogallery_nonce_protection_generate').val(),
 							data = 'action=foogallery_protection_generate' +
 						           '&foogallery=<?php echo $gallery->ID; ?>' +
@@ -991,7 +989,7 @@ if ( ! class_exists( 'FooGallery_Pro_Protection' ) ) {
                         <?php } ?>
                         <div class="foogallery_metabox_field-watermark_status settings">
 							<span class="setting" data-setting="watermark-generate-button">
-								<label for="attachments-watermark-generate-btn" class="name"><?php _e('Generate Watermark', 'foogallery'); ?></label>
+								<label class="name"><?php _e('Generate Watermark', 'foogallery'); ?></label>
                                 <div>
                                     <button id="attachments-watermark-generate-btn" type="button" style="width: 100px"
                                             class="button button-primary button-large attachment_modal_watermark_generate"

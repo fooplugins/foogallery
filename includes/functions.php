@@ -146,6 +146,7 @@ function foogallery_get_default( $key, $default = false ) {
 		'thumb_jpeg_quality'         => '90',
 		'gallery_sorting'            => '',
 		'datasource'                 => 'media_library',
+        'advanced_attachment_modal'  => 'on'
 	);
 
 	// A handy filter to override the defaults.
