@@ -240,11 +240,11 @@
                         true
                     );
 
-                    if ( ! is_null( $license->expiration ) ) {
+                    if ( is_null( $license->expiration ) === false ) {
                         $human_readable_license_expiration = human_time_diff( time(), strtotime( $license->expiration ) );
                     } else {
                         $human_readable_license_expiration = '';
-                    }
+                    }                    
 
                     $downgrade_confirmation_message    = sprintf(
                         $downgrade_x_confirm_text,
