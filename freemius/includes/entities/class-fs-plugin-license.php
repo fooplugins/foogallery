@@ -289,8 +289,13 @@
          * @return bool
          */
         function is_first_payment_pending() {
-            return ( WP_FS__TIME_24_HOURS_IN_SEC >= strtotime( $this->expiration ) - strtotime( $this->created ) );
+            if ( ! is_null( $this->expiration ) && !is_null( $this->created ) ) {
+                return ( WP_FS__TIME_24_HOURS_IN_SEC >= strtotime( $this->expiration ) - strtotime( $this->created ) );
+            } else {
+                return false;
+            }
         }
+        
 
         /**
          * @return int
