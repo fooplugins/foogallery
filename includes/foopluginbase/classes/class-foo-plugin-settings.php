@@ -381,7 +381,7 @@ if ( !class_exists( 'Foo_Plugin_Settings_v2_2' ) ) {
 					break;
 
 				case 'text':
-					echo '<input class="regular-text ' . $class . '" type="text" id="' . $id . '" name="' . $this->plugin_slug . '[' . $id . ']" placeholder="' . $placeholder . '" value="' . esc_attr( $options[$id] ) . '" />';
+					echo '<input class="regular-text ' . esc_attr( $class ) . '" type="text" id="' . esc_attr( $id ) . '" name="' . esc_attr( $this->plugin_slug ) . '[' . esc_attr( $id ) . ']" placeholder="' . esc_attr( $placeholder ) . '" value="' . esc_attr( foogallery_sanitize_javascript( $options[$id], array() ) ) . '" />';
 
 					break;
 

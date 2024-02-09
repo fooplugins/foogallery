@@ -69,12 +69,13 @@ if ( ! class_exists('FooGallery_Pro_Whitelabelling_Extension') ) {
         }
 
 		function plugin_name( $default ) {
-			return foogallery_get_setting( 'whitelabelling_name', $default );
+			return esc_html( foogallery_get_setting( 'whitelabelling_name', $default ) );
 		}
 
 		function shortcode_tag( $shortcode_tag ) {
-			return foogallery_get_setting( 'whitelabelling_shortcode', $shortcode_tag );
-		}
+			$whitelabel_shortcode = foogallery_get_setting( 'whitelabelling_shortcode', $shortcode_tag );
+			return wp_kses( $whitelabel_shortcode, array() );
+		}			
 
 		function change_menu_parent_slug( $default ) {
 			if ( 'on' == foogallery_get_setting( 'whitelabelling_move_menu_under_media' ) ) {
@@ -135,9 +136,9 @@ if ( ! class_exists('FooGallery_Pro_Whitelabelling_Extension') ) {
 		}
 
 		function override_menu_labels( $menu_labels ) {
-			$settings_label = foogallery_get_setting( 'whitelabelling_label_settings_menu' );
-			$extensions_label = foogallery_get_setting( 'whitelabelling_label_extensions_menu' );
-			$help_label = foogallery_get_setting( 'whitelabelling_label_help_menu' );
+			$settings_label = esc_html( foogallery_get_setting( 'whitelabelling_label_settings_menu' ) );
+			$extensions_label = esc_html( foogallery_get_setting( 'whitelabelling_label_extensions_menu' ) );
+			$help_label = esc_html( foogallery_get_setting( 'whitelabelling_label_help_menu' ) );
 
 			if ( ! empty( $settings_label ) ) {
 				$menu_labels[0]['menu_title'] = $settings_label;

@@ -126,7 +126,7 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 		 */
 		function add_il8n( $il8n ) {
 
-			$filtering_all_entry = foogallery_get_language_array_value( 'language_filtering_all', __( 'All', 'foogallery' ) );
+			$filtering_all_entry = esc_html( foogallery_get_language_array_value( 'language_filtering_all', __( 'All', 'foogallery' ) ) );
 			if ( $filtering_all_entry !== false ) {
 				$il8n = array_merge_recursive( $il8n, array(
 					'filtering' => array(
@@ -137,7 +137,7 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 				) );
 			}
 
-			$filtering_search_entry = foogallery_get_language_array_value( 'language_filtering_search', __( 'Search gallery...', 'foogallery' ) );
+			$filtering_search_entry = esc_html( foogallery_get_language_array_value( 'language_filtering_search', __( 'Search gallery...', 'foogallery' ) ) );
 			if ( $filtering_search_entry !== false ) {
 				$il8n = array_merge_recursive( $il8n, array(
 					'filtering' => array(
@@ -148,7 +148,7 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 				) );
 			}
 
-			$filtering_search_submit_entry = foogallery_get_language_array_value( 'language_filtering_search_submit', __( 'Submit search', 'foogallery' ) );
+			$filtering_search_submit_entry = esc_html( foogallery_get_language_array_value( 'language_filtering_search_submit', __( 'Submit search', 'foogallery' ) ) );
 			if ( $filtering_search_submit_entry !== false ) {
 				$il8n = array_merge_recursive( $il8n, array(
 					'filtering' => array(
@@ -159,7 +159,7 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 				) );
 			}
 
-			$filtering_search_clear_entry = foogallery_get_language_array_value( 'language_filtering_search_clear', __( 'Clear search', 'foogallery' ) );
+			$filtering_search_clear_entry = esc_html( foogallery_get_language_array_value( 'language_filtering_search_clear', __( 'Clear search', 'foogallery' ) ) );
 			if ( $filtering_search_clear_entry !== false ) {
 				$il8n = array_merge_recursive( $il8n, array(
 					'filtering' => array(

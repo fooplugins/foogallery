@@ -545,7 +545,7 @@ if ( ! class_exists( 'FooGallery_Pro_Exif' ) ) {
 
             //Filter default EXIF label with global settings EXIF label.
             foreach ( $label_keys as $label_key => $field_name ) {
-                $text = foogallery_get_setting( $field_name, '' );
+                $text = esc_html( foogallery_get_setting( $field_name, '' ) );
 
                 if ( ! empty( $text ) ) {
                     $labels[$label_key] = $text;

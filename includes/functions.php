@@ -1553,7 +1553,7 @@ function foogallery_sanitize_html( $text ) {
 
 
 /**
- * Filter out JavaScript-related keywords from an input string
+ * Filter out JavaScript-related keywords and inline scripts from an input string
  *
  * @param string $input
  * @return string
@@ -1574,6 +1574,7 @@ function foogallery_sanitize_javascript( $input ) {
         'onload',
         'onchange',
         '<script>',
+        '<\/script>',
         'encodeURIComponent',
         'decodeURIComponent',
         'JSON\.parse',
