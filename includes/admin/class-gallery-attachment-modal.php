@@ -876,6 +876,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
 								<?php _e( 'Specify a custom height to override the default height.', 'foogallery' ); ?>
 							</p>
 
+							<!--To enable panning add data-overflow="true" data-proportion="false" to an item -->
 							<span class="setting has-description" data-setting="panning">
 								<label for="attachment-details-two-column-panning" class="name"><?php _e('Panning', 'foogallery'); ?></label>
 								<input type="text" name="foogallery[panning]" id="attachment-details-two-column-panning" value="<?php echo $modal_data['panning']; ?>">

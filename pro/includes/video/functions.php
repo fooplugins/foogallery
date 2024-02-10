@@ -87,13 +87,13 @@ function foogallery_is_attachment_video( $foogallery_attachment ) {
  */
 function foogallery_gallery_image_count_text( $total_count, $image_count, $video_count ) {
 	//get image count text strings
-	$images_single_text = foogallery_get_setting( 'language_images_count_single_text', __( '1 image', 'foogallery' ) );
-	$images_plural_text = foogallery_get_setting( 'language_images_count_plural_text', __( '%s images', 'foogallery' ) );
+	$images_single_text = esc_html( foogallery_get_setting( 'language_images_count_single_text', __( '1 image', 'foogallery' ) ) );
+	$images_plural_text = esc_html( foogallery_get_setting( 'language_images_count_plural_text', __( '%s images', 'foogallery' ) ) );
 
 	//get video count text strings
-	$videos_none_text   = foogallery_get_setting( 'language_video_count_none_text',   __( 'No images or videos', 'foogallery' ) );
-	$videos_single_text = foogallery_get_setting( 'language_video_count_single_text', __( '1 video', 'foogallery' ) );
-	$videos_plural_text = foogallery_get_setting( 'language_video_count_plural_text', __( '%s videos', 'foogallery' ) );
+	$videos_none_text   = esc_html( foogallery_get_setting( 'language_video_count_none_text',   __( 'No images or videos', 'foogallery' ) ) );
+	$videos_single_text = esc_html( foogallery_get_setting( 'language_video_count_single_text', __( '1 video', 'foogallery' ) ) );
+	$videos_plural_text = esc_html( foogallery_get_setting( 'language_video_count_plural_text', __( '%s videos', 'foogallery' ) ) );
 
 	if ( 0 == $total_count ) {
 		return $videos_none_text;
