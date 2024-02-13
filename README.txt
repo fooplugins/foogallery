@@ -321,8 +321,8 @@ Please update in order for FooGallery to work in WP 5.5+!
 
 == Changelog ==
 
-= 2.4.10 =
-* Date Updated : 10 Feb 2024
+= 2.4.11 =
+* Date Updated : 12 Feb 2024
 * New : Advanced attachment modal is enabled by default now.
 * Fix : small bug fixes in the advanced attachment modal.
 * Fix : enhanced sanitization for language settings.
