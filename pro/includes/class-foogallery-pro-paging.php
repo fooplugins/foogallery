@@ -60,122 +60,122 @@ if ( ! class_exists( 'FooGallery_Pro_Paging' ) ) {
 		 */
 		function add_il8n( $il8n ) {
 
-			$paging_dots_current_entry = esc_html( foogallery_get_language_array_value( 'language_paging_current', __( 'Current page', 'foogallery' ) ) ) ;
+			$paging_dots_current_entry = foogallery_get_language_array_value( 'language_paging_current', __( 'Current page', 'foogallery' ) );
 			if ( $paging_dots_current_entry !== false ) {
 				$il8n = array_merge_recursive( $il8n, array(
 					'paging' => array(
 						'dots' => array(
-							'current' => $paging_dots_current_entry
+							'current' => esc_html( $paging_dots_current_entry )
 						),
 						'pagination' => array(
 							'labels' => array(
-								'current' => $paging_dots_current_entry
+								'current' => esc_html( $paging_dots_current_entry )
 							)
 						)
 					)
 				) );
 			}
 
-			$paging_dots_page_entry = esc_html( foogallery_get_language_array_value( 'language_paging_page', __( 'Page {PAGE}', 'foogallery' ) ) );
+			$paging_dots_page_entry = foogallery_get_language_array_value( 'language_paging_page', __( 'Page {PAGE}', 'foogallery' ) );
 			if ( $paging_dots_page_entry !== false ) {
 				$il8n = array_merge_recursive( $il8n, array(
 					'paging' => array(
 						'dots' => array(
-							'page' => $paging_dots_page_entry
+							'page' => esc_html( $paging_dots_page_entry )
 						),
 						'pagination' => array(
 							'labels' => array(
-								'page' => $paging_dots_page_entry
+								'page' => esc_html( $paging_dots_page_entry )
 							)
 						)
 					)
 				) );
 			}
 
-			$paging_first_entry = esc_html( foogallery_get_language_array_value( 'language_paging_first_text', __( 'First page', 'foogallery' ) ) );
+			$paging_first_entry = foogallery_get_language_array_value( 'language_paging_first_text', __( 'First page', 'foogallery' ) );
 			if ( $paging_first_entry !== false ) {
 				$il8n = array_merge_recursive( $il8n, array(
 					'paging' => array(
 						'pagination' => array(
 							'labels' => array(
-								'first' => $paging_first_entry
+								'first' => esc_html( $paging_first_entry )
 							)
 						)
 					)
 				) );
 			}
 
-			$paging_prev_entry = esc_html( foogallery_get_language_array_value( 'language_paging_prev_text', __( 'Previous page', 'foogallery' ) ) );
+			$paging_prev_entry = foogallery_get_language_array_value( 'language_paging_prev_text', __( 'Previous page', 'foogallery' ) );
 			if ( $paging_prev_entry !== false ) {
 				$il8n = array_merge_recursive( $il8n, array(
 					'paging' => array(
 						'pagination' => array(
 							'labels' => array(
-								'prev' => $paging_prev_entry
+								'prev' => esc_html( $paging_prev_entry )
 							)
 						)
 					)
 				) );
 			}
 
-			$paging_next_entry = esc_html( foogallery_get_language_array_value( 'language_paging_next_text', __( 'Next page', 'foogallery' ) ) );
+			$paging_next_entry = foogallery_get_language_array_value( 'language_paging_next_text', __( 'Next page', 'foogallery' ) );
 			if ( $paging_next_entry !== false ) {
 				$il8n = array_merge_recursive( $il8n, array(
 					'paging' => array(
 						'pagination' => array(
 							'labels' => array(
-								'next' => $paging_next_entry
+								'next' => esc_html( $paging_next_entry )
 							)
 						)
 					)
 				) );
 			}
 
-			$paging_last_entry = esc_html( foogallery_get_language_array_value( 'language_paging_last_text', __( 'Last page', 'foogallery' ) ) );
+			$paging_last_entry = foogallery_get_language_array_value( 'language_paging_last_text', __( 'Last page', 'foogallery' ) );
 			if ( $paging_last_entry !== false ) {
 				$il8n = array_merge_recursive( $il8n, array(
 					'paging' => array(
 						'pagination' => array(
 							'labels' => array(
-								'last' => $paging_last_entry
+								'last' => esc_html( $paging_last_entry )
 							)
 						)
 					)
 				) );
 			}
 
-			$paging_prev_more_entry = esc_html( foogallery_get_language_array_value( 'language_paging_prev_more_text', __( 'Show previous {LIMIT} pages', 'foogallery' ) ) );
+			$paging_prev_more_entry = foogallery_get_language_array_value( 'language_paging_prev_more_text', __( 'Show previous {LIMIT} pages', 'foogallery' ) );
 			if ( $paging_prev_more_entry !== false ) {
 				$il8n = array_merge_recursive( $il8n, array(
 					'paging' => array(
 						'pagination' => array(
 							'labels' => array(
-								'prevMore' => $paging_prev_more_entry
+								'prevMore' => esc_html( $paging_prev_more_entry )
 							)
 						)
 					)
 				) );
 			}
 
-			$paging_next_more_entry = esc_html( foogallery_get_language_array_value( 'language_paging_next_more_text', __( 'Show next {LIMIT} pages', 'foogallery' ) ) );
+			$paging_next_more_entry = foogallery_get_language_array_value( 'language_paging_next_more_text', __( 'Show next {LIMIT} pages', 'foogallery' ) );
 			if ( $paging_next_more_entry !== false ) {
 				$il8n = array_merge_recursive( $il8n, array(
 					'paging' => array(
 						'pagination' => array(
 							'labels' => array(
-								'nextMore' => $paging_next_more_entry
+								'nextMore' => esc_html( $paging_next_more_entry )
 							)
 						)
 					)
 				) );
 			}
 
-			$paging_loadmore_entry = esc_html( foogallery_get_language_array_value( 'language_paging_loadmore_text', __( 'Load More', 'foogallery' ) ) );
+			$paging_loadmore_entry = foogallery_get_language_array_value( 'language_paging_loadmore_text', __( 'Load More', 'foogallery' ) );
 			if ( $paging_loadmore_entry !== false ) {
 				$il8n = array_merge_recursive( $il8n, array(
 					'paging' => array(
 						'loadMore' => array(
-							'button' => $paging_loadmore_entry
+							'button' => esc_html( $paging_loadmore_entry )
 						)
 					)
 				) );

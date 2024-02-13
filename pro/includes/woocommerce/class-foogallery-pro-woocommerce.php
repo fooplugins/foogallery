@@ -1251,7 +1251,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 							'panel' => array(
 								'media' => array(
 									'product' => array(
-										'addToCart' => $add_to_cart_text
+										'addToCart' => esc_html( $add_to_cart_text )
 									)
 								)
 							)
@@ -1268,7 +1268,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 							'panel' => array(
 								'media' => array(
 									'product' => array(
-										'viewProduct' => $view_product_text
+										'viewProduct' => esc_html( $view_product_text )
 									)
 								)
 							)
@@ -1285,7 +1285,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 							'panel' => array(
 								'media' => array(
 									'product' => array(
-										'success' => $success_message_text
+										'success' => esc_html( $success_message_text )
 									)
 								)
 							)
@@ -1302,7 +1302,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 							'panel' => array(
 								'media' => array(
 									'product' => array(
-										'error' => $error_message_text
+										'error' => esc_html( $error_message_text )
 									)
 								)
 							)
