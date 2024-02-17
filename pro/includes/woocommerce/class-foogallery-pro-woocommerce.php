@@ -1277,7 +1277,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 				) );
 			}
 
-			$success_message_text = foogallery_sanitize_html( foogallery_get_language_array_value( 'ecommerce_lightbox_success_text', __( 'Successfully added to cart.', 'foogallery' ) ) );
+			$success_message_text = foogallery_get_language_array_value( 'ecommerce_lightbox_success_text', __( 'Successfully added to cart.', 'foogallery' ) );
 			if ( $success_message_text !== false ) {
 				$il8n = array_merge_recursive( $il8n, array(
 					'template' => array(
@@ -1285,7 +1285,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 							'panel' => array(
 								'media' => array(
 									'product' => array(
-										'success' => esc_html( $success_message_text )
+										'success' => esc_html( foogallery_sanitize_html( $success_message_text ) )
 									)
 								)
 							)
@@ -1294,7 +1294,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 				) );
 			}
 
-			$error_message_text = foogallery_sanitize_html( foogallery_get_language_array_value( 'ecommerce_lightbox_error_text', __( 'Something went wrong adding to cart!', 'foogallery' ) ) );
+			$error_message_text = foogallery_get_language_array_value( 'ecommerce_lightbox_error_text', __( 'Something went wrong adding to cart!', 'foogallery' ) );
 			if ( $error_message_text !== false ) {
 				$il8n = array_merge_recursive( $il8n, array(
 					'template' => array(
@@ -1302,7 +1302,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 							'panel' => array(
 								'media' => array(
 									'product' => array(
-										'error' => esc_html( $error_message_text )
+										'error' => esc_html( foogallery_sanitize_html( $error_message_text ) )
 									)
 								)
 							)
