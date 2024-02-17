@@ -321,12 +321,12 @@ Please update in order for FooGallery to work in WP 5.5+!
 
 == Changelog ==
 
-= 2.4.12 =
-* Date Updated : 13 Feb 2024
+= 2.4.13 =
+* Date Updated : 17 Feb 2024
 * New : Advanced attachment modal is enabled by default now.
 * Fix : small bug fixes in the advanced attachment modal.
 * Fix : enhanced sanitization for language settings.
-* Fix : Stack album layout in certain scenarios.
+* Fix : Stack album layout issues in certain scenarios.
 * Fix : Lightbox double-click close button bug.
 * Update : FooGallery client side 2.1.2
 
