@@ -558,7 +558,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 			if ( '' !== $sale_ribbon_type ) {
 				if ( $product->is_on_sale() ) {
 					$attachment->ribbon_type = $sale_ribbon_type;
-					$attachment->ribbon_text = foogallery_gallery_template_setting( 'ecommerce_sale_ribbon_text', __( 'Sale', 'foogallery' ) );
+					$attachment->ribbon_text = esc_html( foogallery_gallery_template_setting( 'ecommerce_sale_ribbon_text', __( 'Sale', 'foogallery' ) ) );
 					if ( strpos( $attachment->ribbon_text, '{{%}}' ) > 0 ) {
 						$attachment->ribbon_text = str_replace( '{{%}}', self::calculate_percentage_discount( $product ), $attachment->ribbon_text );
 					}
@@ -570,7 +570,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 			if ( '' !== $featured_ribbon_type ) {
 				if ( $product->is_featured() ) {
 					$attachment->ribbon_type = $featured_ribbon_type;
-					$attachment->ribbon_text = foogallery_gallery_template_setting( 'ecommerce_featured_ribbon_text', __( 'Featured!', 'foogallery' ) );
+					$attachment->ribbon_text = esc_html( foogallery_gallery_template_setting( 'ecommerce_featured_ribbon_text', __( 'Featured!', 'foogallery' ) ) );
 				}
 			}
 
@@ -579,7 +579,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 			if ( '' !== $out_of_stock_ribbon_type ) {
 				if ( !$product->is_in_stock() ) {
 					$attachment->ribbon_type = $out_of_stock_ribbon_type;
-					$attachment->ribbon_text = foogallery_gallery_template_setting( 'ecommerce_outofstock_ribbon_text', __( 'Out Of Stock', 'foogallery' ) );
+					$attachment->ribbon_text = esc_html( foogallery_gallery_template_setting( 'ecommerce_outofstock_ribbon_text', __( 'Out Of Stock', 'foogallery' ) ) );
 				}
 			}
 
@@ -588,7 +588,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 			if ( '' !== $out_of_stock_ribbon_type ) {
 				if ( $product->is_on_backorder() ) {
 					$attachment->ribbon_type = $backorder_ribbon_type;
-					$attachment->ribbon_text = foogallery_gallery_template_setting( 'ecommerce_backorder_ribbon_text', __( 'On Backorder', 'foogallery' ) );
+					$attachment->ribbon_text = esc_html( foogallery_gallery_template_setting( 'ecommerce_backorder_ribbon_text', __( 'On Backorder', 'foogallery' ) ) );
 				}
 			}
 
@@ -602,7 +602,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
                         if ( ! empty( $button_add_to_cart_url ) ) {
                             $attachment->buttons[] = array(
                                 'class' => $button_add_to_cart_behaviour,
-                                'text'  => foogallery_gallery_template_setting( 'ecommerce_button_add_to_cart_text', __( 'Add To Cart', 'foogallery' ) ),
+                                'text'  => esc_html( foogallery_gallery_template_setting( 'ecommerce_button_add_to_cart_text', __( 'Add To Cart', 'foogallery' ) ) ),
                                 'url'   => $button_add_to_cart_url,
                             );
                         }
@@ -613,7 +613,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 				if ( '' !== $button_variable ) {
 					$attachment->buttons[] = array(
 						'class' => 'fg-woo-select-variation',
-						'text'  => foogallery_gallery_template_setting( 'ecommerce_button_variable_text', __( 'Select Options', 'foogallery' ) ),
+						'text'  => esc_html( foogallery_gallery_template_setting( 'ecommerce_button_variable_text', __( 'Select Options', 'foogallery' ) ) ),
 					);
 				}
 			}
@@ -624,7 +624,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 				$button_view_product_behaviour = foogallery_gallery_template_setting( 'ecommerce_button_view_product_behaviour', 'fg-woo-view-product' );
 				$button = array(
 					'class' => $button_view_product_behaviour,
-					'text'  => foogallery_gallery_template_setting( 'ecommerce_button_view_product_text', __( 'View Product', 'foogallery' ) ),
+					'text'  => esc_html( foogallery_gallery_template_setting( 'ecommerce_button_view_product_text', __( 'View Product', 'foogallery' ) ) ),
 				);
 				if ( '' !== $button_view_product_behaviour ) {
 					$button['url'] = self::build_product_permalink( $product, $attachment->ID );
@@ -1251,7 +1251,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 							'panel' => array(
 								'media' => array(
 									'product' => array(
-										'addToCart' => $add_to_cart_text
+										'addToCart' => esc_html( $add_to_cart_text )
 									)
 								)
 							)
@@ -1268,7 +1268,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 							'panel' => array(
 								'media' => array(
 									'product' => array(
-										'viewProduct' => $view_product_text
+										'viewProduct' => esc_html( $view_product_text )
 									)
 								)
 							)
@@ -1285,7 +1285,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 							'panel' => array(
 								'media' => array(
 									'product' => array(
-										'success' => $success_message_text
+										'success' => esc_html( foogallery_sanitize_html( $success_message_text ) )
 									)
 								)
 							)
@@ -1302,7 +1302,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 							'panel' => array(
 								'media' => array(
 									'product' => array(
-										'error' => $error_message_text
+										'error' => esc_html( foogallery_sanitize_html( $error_message_text ) )
 									)
 								)
 							)

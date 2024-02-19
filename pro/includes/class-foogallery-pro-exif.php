@@ -132,7 +132,7 @@ if ( ! class_exists( 'FooGallery_Pro_Exif' ) ) {
 					    'core' => array(
 					    	'item' => array(
 					    		'exif' => array(
-						            'aperture' => $aperture_entry
+						            'aperture' => esc_html( $aperture_entry )
 							    )
 						    )
 					    )
@@ -147,7 +147,7 @@ if ( ! class_exists( 'FooGallery_Pro_Exif' ) ) {
 					    'core' => array(
 						    'item' => array(
 							    'exif' => array(
-								    'camera' => $camera_entry
+								    'camera' => esc_html( $camera_entry )
 							    )
 						    )
 					    )
@@ -162,7 +162,7 @@ if ( ! class_exists( 'FooGallery_Pro_Exif' ) ) {
 					    'core' => array(
 						    'item' => array(
 							    'exif' => array(
-								    'created_timestamp' => $date_entry
+								    'created_timestamp' => esc_html( $date_entry )
 							    )
 						    )
 					    )
@@ -177,7 +177,7 @@ if ( ! class_exists( 'FooGallery_Pro_Exif' ) ) {
 					    'core' => array(
 						    'item' => array(
 							    'exif' => array(
-								    'shutter_speed' => $exposure_entry
+								    'shutter_speed' => esc_html( $exposure_entry )
 							    )
 						    )
 					    )
@@ -192,7 +192,7 @@ if ( ! class_exists( 'FooGallery_Pro_Exif' ) ) {
 					    'core' => array(
 						    'item' => array(
 							    'exif' => array(
-								    'focal_length' => $focal_entry
+								    'focal_length' => esc_html( $focal_entry )
 							    )
 						    )
 					    )
@@ -207,7 +207,7 @@ if ( ! class_exists( 'FooGallery_Pro_Exif' ) ) {
 					    'core' => array(
 						    'item' => array(
 							    'exif' => array(
-								    'iso' => $iso_entry
+								    'iso' => esc_html( $iso_entry )
 							    )
 						    )
 					    )
@@ -222,7 +222,7 @@ if ( ! class_exists( 'FooGallery_Pro_Exif' ) ) {
 					    'core' => array(
 						    'item' => array(
 							    'exif' => array(
-								    'orientation' => $orientation_entry
+								    'orientation' => esc_html( $orientation_entry )
 							    )
 						    )
 					    )
@@ -545,7 +545,7 @@ if ( ! class_exists( 'FooGallery_Pro_Exif' ) ) {
 
             //Filter default EXIF label with global settings EXIF label.
             foreach ( $label_keys as $label_key => $field_name ) {
-                $text = foogallery_get_setting( $field_name, '' );
+                $text = esc_html( foogallery_get_setting( $field_name, '' ) );
 
                 if ( ! empty( $text ) ) {
                     $labels[$label_key] = $text;

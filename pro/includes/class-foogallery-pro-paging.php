@@ -65,11 +65,11 @@ if ( ! class_exists( 'FooGallery_Pro_Paging' ) ) {
 				$il8n = array_merge_recursive( $il8n, array(
 					'paging' => array(
 						'dots' => array(
-							'current' => $paging_dots_current_entry
+							'current' => esc_html( $paging_dots_current_entry )
 						),
 						'pagination' => array(
 							'labels' => array(
-								'current' => $paging_dots_current_entry
+								'current' => esc_html( $paging_dots_current_entry )
 							)
 						)
 					)
@@ -81,11 +81,11 @@ if ( ! class_exists( 'FooGallery_Pro_Paging' ) ) {
 				$il8n = array_merge_recursive( $il8n, array(
 					'paging' => array(
 						'dots' => array(
-							'page' => $paging_dots_page_entry
+							'page' => esc_html( $paging_dots_page_entry )
 						),
 						'pagination' => array(
 							'labels' => array(
-								'page' => $paging_dots_page_entry
+								'page' => esc_html( $paging_dots_page_entry )
 							)
 						)
 					)
@@ -98,7 +98,7 @@ if ( ! class_exists( 'FooGallery_Pro_Paging' ) ) {
 					'paging' => array(
 						'pagination' => array(
 							'labels' => array(
-								'first' => $paging_first_entry
+								'first' => esc_html( $paging_first_entry )
 							)
 						)
 					)
@@ -111,7 +111,7 @@ if ( ! class_exists( 'FooGallery_Pro_Paging' ) ) {
 					'paging' => array(
 						'pagination' => array(
 							'labels' => array(
-								'prev' => $paging_prev_entry
+								'prev' => esc_html( $paging_prev_entry )
 							)
 						)
 					)
@@ -124,7 +124,7 @@ if ( ! class_exists( 'FooGallery_Pro_Paging' ) ) {
 					'paging' => array(
 						'pagination' => array(
 							'labels' => array(
-								'next' => $paging_next_entry
+								'next' => esc_html( $paging_next_entry )
 							)
 						)
 					)
@@ -137,7 +137,7 @@ if ( ! class_exists( 'FooGallery_Pro_Paging' ) ) {
 					'paging' => array(
 						'pagination' => array(
 							'labels' => array(
-								'last' => $paging_last_entry
+								'last' => esc_html( $paging_last_entry )
 							)
 						)
 					)
@@ -150,7 +150,7 @@ if ( ! class_exists( 'FooGallery_Pro_Paging' ) ) {
 					'paging' => array(
 						'pagination' => array(
 							'labels' => array(
-								'prevMore' => $paging_prev_more_entry
+								'prevMore' => esc_html( $paging_prev_more_entry )
 							)
 						)
 					)
@@ -163,7 +163,7 @@ if ( ! class_exists( 'FooGallery_Pro_Paging' ) ) {
 					'paging' => array(
 						'pagination' => array(
 							'labels' => array(
-								'nextMore' => $paging_next_more_entry
+								'nextMore' => esc_html( $paging_next_more_entry )
 							)
 						)
 					)
@@ -175,7 +175,7 @@ if ( ! class_exists( 'FooGallery_Pro_Paging' ) ) {
 				$il8n = array_merge_recursive( $il8n, array(
 					'paging' => array(
 						'loadMore' => array(
-							'button' => $paging_loadmore_entry
+							'button' => esc_html( $paging_loadmore_entry )
 						)
 					)
 				) );

@@ -520,12 +520,12 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 
 				if ( $engine->has_local_cache() ) {
 
-					$attachment_id = $_POST['attachment_id'];
-					$attachment = get_post( $attachment_id );
+					$attachment_id = intval( $_POST['attachment_id'] );
+					$url = wp_get_attachment_image_url( $attachment_id, 'full' );
 
 					ob_start();
 
-					$engine->clear_local_cache_for_file( $attachment->url );
+					$engine->clear_local_cache_for_file( $url );
 
 					ob_end_clean();
 

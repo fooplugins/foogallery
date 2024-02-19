@@ -32,7 +32,7 @@ if ( ! class_exists( 'FooGallery_il8n' ) ) {
 				$il8n = array_merge_recursive( $il8n, array(
 					'template' => array(
 						"image-viewer" => array(
-							'prev' => $imageviewer_prev_entry
+							'prev' => esc_html( $imageviewer_prev_entry )
 						)
 					)
 				) );
@@ -43,7 +43,7 @@ if ( ! class_exists( 'FooGallery_il8n' ) ) {
 				$il8n = array_merge_recursive( $il8n, array(
 					'template' => array(
 						"image-viewer" => array(
-							'next' => $imageviewer_next_entry
+							'next' => esc_html( $imageviewer_next_entry )
 						)
 					)
 				) );
@@ -54,7 +54,7 @@ if ( ! class_exists( 'FooGallery_il8n' ) ) {
 				$il8n = array_merge_recursive( $il8n, array(
 					'template' => array(
 						"image-viewer" => array(
-							'of' => $imageviewer_of_entry
+							'of' => esc_html( $imageviewer_of_entry )
 						)
 					)
 				) );

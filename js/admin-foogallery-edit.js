@@ -808,9 +808,9 @@ FooGallery.autoEnabled = false;
 				if ( action === 'add' ) {
 					$ul.find('.foogallery_attachment_taxonomy_add').toggle();
 					$ul.find('.taxonomy_add input').focus();
-				} else {
+				} else if ( action === 'save' || action === 'cancel' ){
 					var term_to_add = $ul.find('input.foogallery_attachment_taxonomy_add').val();
-					if ( term_to_add && term_to_add.length > 0 ) {
+					if ( term_to_add && term_to_add.length > 0 && action === 'save' ) {
 						var nonce = $('#foogallery-panel-taxonomies').data('nonce');
 						$.ajax({
 							type: "POST",
@@ -830,10 +830,15 @@ FooGallery.autoEnabled = false;
 								$ul.find('input.foogallery_attachment_taxonomy_add').val('');
 								$ul.find('.foogallery_attachment_taxonomy_add').toggle();
 							}
-						});
+						});						
 					} else {
+						$ul.find('input.foogallery_attachment_taxonomy_add').val('');
 						$ul.find('.foogallery_attachment_taxonomy_add').toggle();
 					}
+				} else if ( action === 'remove' ) {
+					// Deselect all taxonomies
+					$ul.find('a.button.button-small').removeClass('button-primary');
+					$('#foogallery_attachment_taxonomy_' + $ul.data('taxonomy') + '_selected').val('');
 				}
 			}
 		});
@@ -860,7 +865,7 @@ FooGallery.autoEnabled = false;
 
 			$('#foogallery_clear_img_thumb_cache_spinner').addClass('is-active');
 			var data = 'action=foogallery_clear_attachment_thumb_cache' +
-				'&img_id=' + $('.foogallery-image-edit-main').data('img_id') +
+				'&attachment_id=' + $('.foogallery-image-edit-main').data('img_id') +
 				'&foogallery_clear_attachment_thumb_cache_nonce=' + $('#foogallery_clear_attachment_thumb_cache_nonce').val() +
 				'&_wp_http_referer=' + encodeURIComponent($('input[name="_wp_http_referer"]').val());
 
@@ -869,7 +874,8 @@ FooGallery.autoEnabled = false;
 				url: ajaxurl,
 				data: data,
 				success: function(data) {
-					$('#foogallery_clear_thumb_cache_spinner').removeClass('is-active');
+					alert(data);
+					$('#foogallery_clear_img_thumb_cache_spinner').removeClass('is-active');
 				}
 			});
 		});

@@ -131,7 +131,7 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 				$il8n = array_merge_recursive( $il8n, array(
 					'filtering' => array(
 						'tags' => array(
-							'all' => $filtering_all_entry
+							'all' => esc_html( $filtering_all_entry )
 						)
 					)
 				) );
@@ -142,7 +142,7 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 				$il8n = array_merge_recursive( $il8n, array(
 					'filtering' => array(
 						'tags' => array(
-							'searchPlaceholder' => $filtering_search_entry
+							'searchPlaceholder' => esc_html( $filtering_search_entry )
 						)
 					)
 				) );
@@ -153,7 +153,7 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 				$il8n = array_merge_recursive( $il8n, array(
 					'filtering' => array(
 						'tags' => array(
-							'searchSubmit' => $filtering_search_submit_entry
+							'searchSubmit' => esc_html( $filtering_search_submit_entry )
 						)
 					)
 				) );
@@ -164,23 +164,11 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 				$il8n = array_merge_recursive( $il8n, array(
 					'filtering' => array(
 						'tags' => array(
-							'searchClear' => $filtering_search_clear_entry
+							'searchClear' => esc_html( $filtering_search_clear_entry )
 						)
 					)
 				) );
 			}
-
-// Not implemented in JS yet
-//			$filtering_no_items_entry = foogallery_get_language_array_value( 'language_filtering_no_items', __( 'No items found.', 'foogallery' ) );
-//			if ( $filtering_no_items_entry !== false ) {
-//				$il8n = array_merge_recursive( $il8n, array(
-//					'filtering' => array(
-//						'tags' => array(
-//							'none' => $filtering_no_items_entry
-//						)
-//					)
-//				) );
-//			}
 
 			return $il8n;
 		}

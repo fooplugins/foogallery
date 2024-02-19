@@ -8,10 +8,10 @@ global $current_foogallery;
 //the current shortcode args
 global $current_foogallery_arguments;
 
-$text_prev_default = foogallery_get_setting( 'language_imageviewer_prev_text', __('Prev', 'foogallery') );
-$text_prev = foogallery_gallery_template_setting( 'text-prev', $text_prev_default );
+$text_prev_default = foogallery_get_setting( 'language_imageviewer_prev_text',  __( 'Prev', 'foogallery' ) );
+$text_prev = foogallery_gallery_template_setting( 'text-prev', $text_prev_default ) ;
 
-$text_of_default = foogallery_get_setting( 'language_imageviewer_of_text', __('of', 'foogallery') );
+$text_of_default = foogallery_get_setting( 'language_imageviewer_of_text', __( 'of', 'foogallery' ) );
 $text_of = foogallery_gallery_template_setting( 'text-of', $text_of_default );
 
 $text_next_default = foogallery_get_setting( 'language_imageviewer_next_text', __('Next', 'foogallery') );
@@ -31,9 +31,9 @@ $foogallery_imageviewer_attributes = foogallery_build_container_attributes_safe(
 			} ?>
 		</div>
 		<div class="fiv-ctrls">
-			<div class="fiv-prev"><span><?php echo $text_prev; ?></span></div>
-			<label class="fiv-count"><span class="fiv-count-current">1</span><?php echo $text_of; ?><span class="fiv-count-total"><?php echo $current_foogallery->attachment_count(); ?></span></label>
-			<div class="fiv-next"><span><?php echo $text_next; ?></span></div>
+			<div class="fiv-prev"><span><?php echo esc_html( $text_prev ); ?></span></div>
+			<label class="fiv-count"><span class="fiv-count-current">1</span><?php echo esc_html( $text_of ); ?><span class="fiv-count-total"><?php echo esc_html( $current_foogallery->attachment_count() ); ?></span></label>
+			<div class="fiv-next"><span><?php echo esc_html( $text_next ); ?></span></div>
 		</div>
 	</div>
 </div>

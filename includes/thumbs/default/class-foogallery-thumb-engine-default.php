@@ -167,6 +167,10 @@ Error : ';
 		 * @param $file
 		 */
 		public function clear_local_cache_for_file( $file ) {
+            if ( empty( $file ) ) {
+                return;
+            }
+
 			$thumb = new FooGallery_Thumb_Generator( $file );
 			$directory = $thumb->get_cache_file_directory();
 
