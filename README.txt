@@ -160,7 +160,7 @@ There are 3 PRO plans available, that will work with any budget:
 
 Take FooGallery for a test drive! Spin up your very own WP instance with FooGallery pre-installed:
 
-[Start FooGallery Test Drive!](https://tastewp.com/new/?pre-installed-plugin-slug=foogallery)
+[Start FooGallery Test Drive!](https://app.instawp.io/launch?t=foogallery-free&d=v2)
 
 **Documentation**
 
