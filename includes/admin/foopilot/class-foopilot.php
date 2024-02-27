@@ -19,6 +19,8 @@
             add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts_and_styles' ) );
 
             add_filter( 'foogallery_admin_settings_override', array( $this, 'add_foopilot_settings' ), 50 );
+            add_action('wp_ajax_generate_foopilot_api_key', array($this, 'generate_random_api_key'));
+
         }
 
         /**
@@ -192,12 +194,38 @@
                         <p><?php _e( 'Unlock the power of FooPilot! Sign up for free and get 20 credits to explore our service.', 'foogallery' ); ?></p>
                         <form class="foogallery-foopilot-signup-form-inner-content">
                             <div style="margin-bottom: 20px;">
-                                <input type="email" name="email" placeholder="<?php _e('Enter your email', 'foogallery'); ?>" value="<?php echo esc_attr(wp_get_current_user()->user_email); ?>" style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; width: 250px;">
+                              <input type="email" id="foopilot-email" name="email" placeholder="<?php _e('Enter your email', 'foogallery'); ?>" value="<?php echo esc_attr(wp_get_current_user()->user_email); ?>" style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; width: 250px;">
                             </div>
-                            <button class="button button-primary button-large" type="submit" style="padding: 10px 20px; background-color: #0073e6; color: #fff; border: none; border-radius: 5px; cursor: pointer;"><?php _e('Sign Up for free', 'foogallery'); ?></button>
+                            <button class="foogallery-foopilot-signup-form-inner-content-button button button-primary button-large" type="submit" style="padding: 10px 20px; background-color: #0073e6; color: #fff; border: none; border-radius: 5px; cursor: pointer;"><?php _e('Sign Up for free', 'foogallery'); ?></button>
                         </form>
                     </div>                    
                 </div>
+                <script>
+                    jQuery(document).ready(function($) {
+                        // Listen for click event on foopilot buttons
+                        $('.foogallery-foopilot-signup-form-inner-content-button').on('click', function(event) {
+                            event.preventDefault();
+                            var email = $('#foopilot-email').val();
+                            // Make Ajax call
+                            $.ajax({
+                                url: ajaxurl,
+                                type: 'POST',
+                                data: {
+                                    action: 'generate_foopilot_api_key',
+                                    email: email 
+                                },
+                                success: function(response) {
+                                    //TODO: Refresh the modal
+                                    alert('thanks for signing up')
+                                },
+                                error: function(xhr, status, error) {
+                                    console.error(xhr.responseText); // Log any errors
+                                }
+                            });
+                        });
+                    });
+                </script>
+
                 <?php
                 return ob_get_clean();
             }
@@ -253,15 +281,10 @@
          */
         public function generate_random_api_key() {
             $random_api_key = bin2hex(random_bytes(32)); // Generate a random API key (64 characters in hexadecimal)
-        
-            // Set the generated API key as the value for the 'foopilot_api_key' setting
-            foogallery_set_setting('foopilot_api_key', $random_api_key);
-        
-            // For demonstration purposes, let's return the generated API key
-            echo $random_api_key;
-            wp_die(); // This is required to terminate immediately and return a proper response
-        }
-        
+            foogallery_set_setting('foopilot_api_key', $random_api_key); // Save API key to foogallery setting
+            echo $random_api_key; // Return the generated API key (optional)
+            wp_die(); // Terminate immediately
+        }        
 
         /**
          * Add FooPilot settings to the provided settings array.
