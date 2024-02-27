@@ -189,11 +189,12 @@
                 ?>
                 <div class="foogallery-foopilot-signup-form">
                     <div class="foogallery-foopilot-signup-form-inner">
-                        <h2><?php _e( 'Sign Up for FooPilot', 'foogallery' ); ?></h2>
-                        <p><?php _e( 'To use FooPilot, please sign up for free and get 20 free credits to test out this service.', 'foogallery' ); ?></p>
+                        <p><?php _e( 'Unlock the power of FooPilot! Sign up for free and get 20 credits to explore our service.', 'foogallery' ); ?></p>
                         <form class="foogallery-foopilot-signup-form-inner-content">
-                            <input type="email" style="margin-bottom: 20px;" name="email" placeholder="<?php _e( 'Enter your email', 'foogallery' ); ?>" value="<?php echo esc_attr( wp_get_current_user()->user_email ); ?>">
-                            <button class="button button-primary button-large" type="submit"><?php _e( 'Sign Up for free', 'foogallery' ); ?></button>
+                            <div style="margin-bottom: 20px;">
+                                <input type="email" name="email" placeholder="<?php _e('Enter your email', 'foogallery'); ?>" value="<?php echo esc_attr(wp_get_current_user()->user_email); ?>" style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; width: 250px;">
+                            </div>
+                            <button class="button button-primary button-large" type="submit" style="padding: 10px 20px; background-color: #0073e6; color: #fff; border: none; border-radius: 5px; cursor: pointer;"><?php _e('Sign Up for free', 'foogallery'); ?></button>
                         </form>
                     </div>                    
                 </div>
