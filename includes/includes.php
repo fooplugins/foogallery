@@ -66,7 +66,9 @@ if ( is_admin() ) {
 	require_once FOOGALLERY_PATH . 'includes/admin/class-gallery-datasources.php';
 	require_once FOOGALLERY_PATH . 'includes/admin/class-pro-promotion.php';
 	require_once FOOGALLERY_PATH . 'includes/admin/class-demo-content.php';
-	
+	// foopilot
+	require_once FOOGALLERY_PATH . 'includes/admin/foopilot/class-foopilot.php';
+
 	// Admin gallery modal new
 	require_once FOOGALLERY_PATH . 'includes/admin/class-gallery-attachment-modal.php';
 

@@ -200,6 +200,9 @@ if ( function_exists( 'foogallery_fs' ) ) {
 
 				// init Gutenberg!
 				new FooGallery_Gutenberg();
+				
+				// Initialize the FooPilot class
+                new FooGallery_Admin_FooPilot();
 
 				// init advanced settings.
 				new FooGallery_Advanced_Gallery_Settings();
