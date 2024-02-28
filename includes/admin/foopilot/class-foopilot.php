@@ -47,24 +47,7 @@
 		 * 
 		 */
 		public function foogallery_attachment_save_data_foopilot($img_id, $data ) {
-
-			if ( is_array( $data ) && !empty( $data ) ) {
-				if ( array_key_exists( 'data-width', $data ) ) {
-					update_post_meta( $img_id, '_data-width', $data['data-width'] );
-				}
-
-				if ( array_key_exists( 'data-height', $data ) ) {
-					update_post_meta( $img_id, '_data-height', $data['data-height'] );
-				}
-
-				if ( array_key_exists( 'panning', $data ) ) {
-					update_post_meta( $img_id, '_foobox_panning', $data['panning'] );
-				}
-
-				if ( array_key_exists( 'override_type', $data ) ) {
-					update_post_meta( $img_id, '_foogallery_override_type', $data['override_type'] );
-				}
-			}
+			
 		}
 
         /**
@@ -72,10 +55,7 @@
 		 */
 		public function foogallery_attachment_modal_data_foopilot( $modal_data, $data, $attachment_id, $gallery_id ) {
             if ( $attachment_id > 0 ) {
-                $modal_data['data_width'] =    get_post_meta( $attachment_id, '_data-width', true );
-                $modal_data['data_height'] =   get_post_meta( $attachment_id, '_data-height', true );
-                $modal_data['panning'] =       get_post_meta( $attachment_id, '_foobox_panning', true );
-                $modal_data['override_type'] = get_post_meta( $attachment_id, '_foogallery_override_type', true );
+                
             }
 			return $modal_data;
 		}
