@@ -111,9 +111,24 @@
                             $( '.foogallery-foopilot').on( 'click', function(event) {
                                 // Prevent the default action of the button click
                                 event.preventDefault();
+                                var task = $(this).data('task');
+                                // Get the URL of the task file
+                                var FOOGALLERY_URL = '<?php echo FOOGALLERY_URL; ?>';
+
+                                var taskFileUrl = FOOGALLERY_URL + 'includes/admin/foopilot/tasks/' + 'foopilot-generate-' + task + '.php';
                                 
-                                // Show the foopilot modal
-                                $( '#foopilot-modal').show();
+                                // Load the task file content and display it in the modal
+                                $.get(taskFileUrl, function(response) {
+                                    // Display the selected task content in the modal
+                                    $('.foopilot-task-html').html(response);
+                                    // Show the foopilot modal
+                                    $('#foopilot-modal').show();
+                                }).fail(function() {
+                                    // Display an error message if the task file cannot be loaded
+                                    $('.foopilot-task-html').html('Task file: ' + task + ' not found.');
+                                    // Show the foopilot modal
+                                    $('#foopilot-modal').show();
+                                });
                             });
                         });
                     </script>                    
@@ -171,10 +186,8 @@
         public function display_foopilot_selected_task_html() {
             ob_start();
             ?>
-            <div class="foopilot-task-html" style="display: flex; justify-content: center; align-items:center;">
-                <div>
-                    <!-- include here the selected task file -->
-                </div>
+            <div class="foopilot-task-html" style="display: flex; justify-content: center; align-items:center; text-align:center; color:red;">
+                
             </div>
             <?php
             return ob_get_clean();
