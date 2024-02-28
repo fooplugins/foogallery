@@ -142,7 +142,7 @@
 
                 <span class="setting has-description" data-setting="foopilot-image-alt-text" style="margin-bottom: 8px;">
                     <label for="foogallery-foopilot" class="name"><?php _e( 'Generate ALT Text', 'foogallery'); ?></label>
-                    <button class="foogallery-foopilot button button-primary button-large" style="width: 150px" data-task="categories"><?php _e( 'Generate ALT Text', 'foogallery'); ?></button>
+                    <button class="foogallery-foopilot button button-primary button-large" style="width: 150px" data-task="alt-text"><?php _e( 'Generate ALT Text', 'foogallery'); ?></button>
                 </span>
 
                 <span class="setting has-description" data-setting="foopilot-image-caption" style="margin-bottom: 8px;">
@@ -174,7 +174,6 @@
             <div class="foopilot-task-html" style="display: flex; justify-content: center; align-items:center;">
                 <div>
                     <!-- include here the selected task file -->
-                    <h1>TODO:show the selected task html </h1>
                 </div>
             </div>
             <?php
@@ -221,7 +220,7 @@
                                     },
                                     success: function(response) {
                                         // Reload the modal content dynamically
-                                        $('#fg-foopilot-modal').html(response);
+                                        $('#foopilot-modal').html(response);
                                     },
                                     error: function(xhr, status, error) {
                                         console.error(xhr.responseText); // Log any errors
@@ -315,11 +314,25 @@
          * Generate Foopilot api keys
          */
         public function generate_random_api_key() {
-            $random_api_key = bin2hex( random_bytes(32) ); // Generate a random API key (64 characters in hexadecimal)
-            foogallery_set_setting( 'foopilot_api_key', $random_api_key ); // Save API key to foogallery setting
-            $this->add_foopilot_credit_points(20); // credit the register user +20 points
+            // Retrieve the current points balance
+            $current_points = $this->get_foopilot_credit_points();
+
+            // If the current points balance is greater than 0, reset it to 0
+            if ( $current_points > 0 ) {
+                update_option( 'foopilot_credit_points', 0 );
+            }
+
+            // Credit the register user +20 points
+            $this->add_foopilot_credit_points(20);
+
+            // Generate a random API key (64 characters in hexadecimal)
+            $random_api_key = bin2hex( random_bytes(32) );
+
+            // Save API key to foogallery setting
+            foogallery_set_setting( 'foopilot_api_key', $random_api_key );
+
             wp_die(); // Terminate immediately
-        }        
+        }            
 
         /**
          * Add FooPilot settings to the provided settings array.
