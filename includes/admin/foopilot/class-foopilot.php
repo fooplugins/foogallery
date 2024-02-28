@@ -20,6 +20,7 @@
 
             add_filter( 'foogallery_admin_settings_override', array( $this, 'add_foopilot_settings' ), 50 );
             add_action( 'wp_ajax_generate_foopilot_api_key', array( $this, 'generate_random_api_key' ) );
+            add_action( 'wp_ajax_deduct_foopilot_points', array( $this, 'deduct_foopilot_points' ) );
 
             // Initialize credit points
             add_action( 'init', array( $this, 'initialize_foopilot_credit_points' ) );
@@ -108,21 +109,45 @@
                     <script>
                         jQuery(document).ready(function($) {
                             // Listen for click event on foopilot buttons
-                            $( '.foogallery-foopilot').on( 'click', function(event) {
+                            $('.foogallery-foopilot').on('click', function(event) {
                                 // Prevent the default action of the button click
                                 event.preventDefault();
                                 var task = $(this).data('task');
                                 // Get the URL of the task file
                                 var FOOGALLERY_URL = '<?php echo FOOGALLERY_URL; ?>';
-
                                 var taskFileUrl = FOOGALLERY_URL + 'includes/admin/foopilot/tasks/' + 'foopilot-generate-' + task + '.php';
-                                
+
                                 // Load the task file content and display it in the modal
                                 $.get(taskFileUrl, function(response) {
                                     // Display the selected task content in the modal
                                     $('.foopilot-task-html').html(response);
                                     // Show the foopilot modal
                                     $('#foopilot-modal').show();
+
+                                    // Check if the user has enough points to perform the task
+                                    var currentPoints = parseInt($('#foogallery-credit-points').text());
+                                    var pointsToDeduct = 1; // Adjust this as needed
+                                    if (currentPoints >= pointsToDeduct) {
+                                        // Deduct points after task completion
+                                        $.ajax({
+                                            url: ajaxurl,
+                                            type: 'POST',
+                                            data: {
+                                                action: 'deduct_foopilot_points',
+                                                points: pointsToDeduct
+                                            },
+                                            success: function(response) {
+                                                // Reload the modal content dynamically
+                                                $("#foopilot-modal").load(" #foopilot-modal");
+                                            },
+                                            error: function(xhr, status, error) {
+                                                console.error(xhr.responseText); // Log any errors
+                                            }
+                                        });
+                                    } else {
+                                        // Display a message indicating insufficient points
+                                        $('.foopilot-task-html').html('Insufficient points to perform this task.');
+                                    }
                                 }).fail(function() {
                                     // Display an error message if the task file cannot be loaded
                                     $('.foopilot-task-html').html('Task file: ' + task + ' not found.');
@@ -131,11 +156,31 @@
                                 });
                             });
                         });
-                    </script>                    
+                    </script>                                    
 					<?php
 				}
 			}
 		}
+
+        /**
+         * Deduct points after completing a task and return updated modal content.
+         */
+        public function deduct_foopilot_points() {
+            if ( isset($_POST['points']) ) {
+                $pointsToDeduct = intval( $_POST['points'] );
+                // Check if user has sufficient points
+                $currentPoints = $this->get_foopilot_credit_points();
+                if ( $currentPoints >= $pointsToDeduct && $pointsToDeduct > 0 ) {
+                    // Deduct points only if the user has sufficient points
+                    $updatedPoints = max(0, $currentPoints - $pointsToDeduct);
+                    update_option( 'foopilot_credit_points', $updatedPoints );
+                } else {
+                    // Handle case where user doesn't have enough points
+                    wp_send_json_error( 'Insufficient points' );
+                }
+            }
+            wp_die();
+        }  
 
         /**
          * Generate foopilot settings HTML.
@@ -186,7 +231,7 @@
         public function display_foopilot_selected_task_html() {
             ob_start();
             ?>
-            <div class="foopilot-task-html" style="display: flex; justify-content: center; align-items:center; text-align:center; color:red;">
+            <div class="foopilot-task-html" style="display: flex; justify-content: center; align-items:center; text-align:center; color: black;">
                 
             </div>
             <?php
