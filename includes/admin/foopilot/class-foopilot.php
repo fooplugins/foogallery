@@ -316,8 +316,28 @@
                             </div>
                         </div>
                     </div>
-                </div> 
+                </div>
             </div>
+            <script>
+                jQuery(document).ready(function($) {
+                    // Function to close the modal
+                    function closeFoopilotModal() {
+                        $('#foopilot-modal').hide();
+                    }
+
+                    // Listen for click event on Cancel button
+                    $('.foogallery-foopilot-modal-cancel').on('click', function(event) {
+                        event.preventDefault();
+                        closeFoopilotModal();
+                    });
+
+                    // Listen for click event on close button
+                    $('.media-modal-close').on('click', function(event) {
+                        event.preventDefault();
+                        closeFoopilotModal();
+                    });
+                });
+            </script>
             <?php
             return ob_get_clean();
         }
