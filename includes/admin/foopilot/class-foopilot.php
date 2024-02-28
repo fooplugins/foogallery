@@ -117,7 +117,8 @@
                                                 points: pointsToDeduct
                                             },
                                             success: function(response) {
-                                                // Reload the modal content dynamically
+                                                // Update the points content with the response data
+                                                $('#foogallery-credit-points').html(response.data);                                             
                                             },
                                             error: function(xhr, status, error) {
                                                 console.error(xhr.responseText); // Log any errors
@@ -153,6 +154,7 @@
                     // Deduct points only if the user has sufficient points
                     $updatedPoints = max(0, $currentPoints - $pointsToDeduct);
                     update_option( 'foopilot_credit_points', $updatedPoints );
+                    wp_send_json_success( $updatedPoints );
                 } else {
                     // Handle case where user doesn't have enough points
                     wp_send_json_error( 'Insufficient points' );
@@ -379,7 +381,7 @@
                 update_option( 'foopilot_credit_points', 0 );
             }
 
-            // Credit the register user +20 points
+            // Credit the registered user +20 points
             $this->add_foopilot_credit_points(20);
 
             // Generate a random API key (64 characters in hexadecimal)
@@ -388,8 +390,14 @@
             // Save API key to foogallery setting
             foogallery_set_setting( 'foopilot_api_key', $random_api_key );
 
-            wp_die(); // Terminate immediately
-        }            
+            // Check if the API key was saved successfully
+            $saved_api_key = foogallery_get_setting( 'foopilot_api_key' );
+            if ( $saved_api_key === $random_api_key ) {
+                wp_send_json_success( 'API key generated successfully.' );
+            } else {
+                wp_send_json_error( 'Failed to save API key.' );
+            }
+        }        
 
         /**
          * Add FooPilot settings to the provided settings array.
