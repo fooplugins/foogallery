@@ -106,7 +106,7 @@
 
                                     // Check if the user has enough points to perform the task
                                     var currentPoints = parseInt($('#foogallery-credit-points').text());
-                                    var pointsToDeduct = 1; // Adjust this as needed
+                                    var pointsToDeduct = 1; // will be determined by FOOPILOT API
                                     if (currentPoints >= pointsToDeduct) {
                                         // Deduct points after task completion
                                         $.ajax({
@@ -118,7 +118,6 @@
                                             },
                                             success: function(response) {
                                                 // Reload the modal content dynamically
-                                                $("#foopilot-modal").load(" #foopilot-modal");
                                             },
                                             error: function(xhr, status, error) {
                                                 console.error(xhr.responseText); // Log any errors
@@ -160,7 +159,7 @@
                 }
             }
             wp_die();
-        }  
+        }      
 
         /**
          * Generate foopilot settings HTML.
