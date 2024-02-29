@@ -21,10 +21,37 @@
             add_filter( 'foogallery_admin_settings_override', array( $this, 'add_foopilot_settings' ), 50 );
             add_action( 'wp_ajax_generate_foopilot_api_key', array( $this, 'generate_random_api_key' ) );
             add_action( 'wp_ajax_deduct_foopilot_points', array( $this, 'deduct_foopilot_points' ) );
+            add_action( 'init', array( $this, 'add_nonce' ) );
 
             // Initialize credit points
             add_action( 'init', array( $this, 'initialize_foopilot_credit_points' ) );
 
+        }
+
+        /**
+         * Add nonce for FooPilot actions.
+         */
+        public function add_nonce() {
+            // Add nonce for generating API key
+            add_action( 'wp_ajax_generate_foopilot_api_key', array( $this, 'generate_random_api_key' ) );
+            // Add nonce for deducting points
+            add_action( 'wp_ajax_deduct_foopilot_points', array( $this, 'deduct_foopilot_points' ) );
+            // Add nonce for saving attachment data
+            add_action( 'wp_ajax_save_attachment_data', array( $this, 'save_attachment_data' ) );
+        }
+
+        /**
+         * Generate the nonce.
+         */
+        public function generate_nonce() {
+            return wp_create_nonce( 'foopilot_nonce' );
+        }
+
+        /**
+         * Verify the nonce.
+         */
+        public function verify_nonce( $nonce ) {
+            return wp_verify_nonce( $nonce, 'foopilot_nonce' );
         }
 
         /**
@@ -47,7 +74,12 @@
 		 * 
 		 */
 		public function foogallery_attachment_save_data_foopilot($img_id, $data ) {
-			
+			 // Verify nonce before saving data
+            if ( isset( $_POST['foopilot_nonce'] ) && $this->verify_nonce( $_POST['foopilot_nonce'] ) ) {
+                // Save data
+            } else {
+                wp_die( 'Unauthorized request!' );
+            }
 		}
 
         /**
@@ -107,6 +139,8 @@
                                     // Check if the user has enough points to perform the task
                                     var currentPoints = parseInt($('#foogallery-credit-points').text());
                                     var pointsToDeduct = 1; // will be determined by FOOPILOT API
+                                    // Retrieve nonce
+                                    var nonce = '<?php echo wp_create_nonce( "foopilot_nonce" ); ?>';
                                     if (currentPoints >= pointsToDeduct) {
                                         // Deduct points after task completion
                                         $.ajax({
@@ -114,7 +148,8 @@
                                             type: 'POST',
                                             data: {
                                                 action: 'deduct_foopilot_points',
-                                                points: pointsToDeduct
+                                                points: pointsToDeduct,
+                                                foopilot_nonce: nonce
                                             },
                                             success: function(response) {
                                                 // Update the points content with the response data
@@ -146,79 +181,29 @@
          * Deduct points after completing a task and return updated modal content.
          */
         public function deduct_foopilot_points() {
-            if ( isset($_POST['points']) ) {
-                $pointsToDeduct = intval( $_POST['points'] );
-                // Check if user has sufficient points
-                $currentPoints = $this->get_foopilot_credit_points();
-                if ( $currentPoints >= $pointsToDeduct && $pointsToDeduct > 0 ) {
-                    // Deduct points only if the user has sufficient points
-                    $updatedPoints = max(0, $currentPoints - $pointsToDeduct);
-                    update_option( 'foopilot_credit_points', $updatedPoints );
-                    wp_send_json_success( $updatedPoints );
-                } else {
-                    // Handle case where user doesn't have enough points
-                    wp_send_json_error( 'Insufficient points' );
+            // Verify nonce before deducting points
+            if ( isset( $_POST['foopilot_nonce'] ) && $this->verify_nonce( $_POST['foopilot_nonce'] ) ) {
+                // Deduct points
+                if ( isset($_POST['points']) ) {
+                    $pointsToDeduct = intval( $_POST['points'] );
+                    // Check if user has sufficient points
+                    $currentPoints = $this->get_foopilot_credit_points();
+                    if ( $currentPoints >= $pointsToDeduct && $pointsToDeduct > 0 ) {
+                        // Deduct points only if the user has sufficient points
+                        $updatedPoints = max(0, $currentPoints - $pointsToDeduct);
+                        update_option( 'foopilot_credit_points', $updatedPoints );
+                        wp_send_json_success( $updatedPoints );
+                    } else {
+                        // Handle case where user doesn't have enough points
+                        wp_send_json_error( 'Insufficient points' );
+                    }
                 }
+            } else {
+                wp_die( 'Unauthorized request!' );
             }
+           
             wp_die();
-        }      
-
-        /**
-         * Generate foopilot settings HTML.
-         */
-        public function display_foopilot_settings_html() {
-            ob_start();
-            ?>
-            <div class="settings">
-
-                <span class="setting has-description" data-setting="foopilot-image-title" style="margin-bottom: 8px;">
-                    <label for="foogallery-foopilot" class="name"><?php _e( 'Generate Title', 'foogallery'); ?></label>
-                    <button class="foogallery-foopilot button button-primary button-large" style="width: 150px" data-task="title"><?php _e( 'Generate Title', 'foogallery'); ?></button>
-                </span>
-
-                <span class="setting has-description" data-setting="foopilot-image-tags" style="margin-bottom: 8px;">
-                    <label for="foogallery-foopilot" class="name"><?php _e( 'Generate Tags', 'foogallery'); ?></label>
-                    <button class="foogallery-foopilot button button-primary button-large" style="width: 150px" data-task="tags"><?php _e( 'Generate Tags', 'foogallery'); ?></button>
-                </span>
-
-                <span class="setting has-description" data-setting="foopilot-image-alt-text" style="margin-bottom: 8px;">
-                    <label for="foogallery-foopilot" class="name"><?php _e( 'Generate ALT Text', 'foogallery'); ?></label>
-                    <button class="foogallery-foopilot button button-primary button-large" style="width: 150px" data-task="alt-text"><?php _e( 'Generate ALT Text', 'foogallery'); ?></button>
-                </span>
-
-                <span class="setting has-description" data-setting="foopilot-image-caption" style="margin-bottom: 8px;">
-                    <label for="foogallery-foopilot" class="name"><?php _e( 'Generate Caption', 'foogallery'); ?></label>
-                    <button class="foogallery-foopilot button button-primary button-large" style="width: 150px" data-task="caption"><?php _e( 'Generate Caption', 'foogallery'); ?></button>
-                </span>                          
-
-                <span class="setting has-description" data-setting="foopilot-image-categories" style="margin-bottom: 8px;">
-                    <label for="foogallery-foopilot" class="name"><?php _e( 'Generate Categories', 'foogallery'); ?></label>
-                    <button class="foogallery-foopilot button button-primary button-large" style="width: 150px" data-task="categories"><?php _e( 'Generate Categories', 'foogallery'); ?></button>
-                </span>
-
-                <span class="setting has-description" data-setting="foopilot-image-description" style="margin-bottom: 8px;">
-                    <label for="foogallery-foopilot" class="name"><?php _e( 'Generate Description', 'foogallery'); ?></label>
-                    <button class="foogallery-foopilot button button-primary button-large" style="width: 150px" data-task="description"><?php _e( 'Generate Description', 'foogallery'); ?></button>
-                </span>
-
-            </div>
-            <?php
-            return ob_get_clean();
         }
-
-        /**
-         * Generate foopilot selected task HTML.
-         */
-        public function display_foopilot_selected_task_html() {
-            ob_start();
-            ?>
-            <div class="foopilot-task-html" style="display: flex; justify-content: center; align-items:center; text-align:center; color: black;">
-                
-            </div>
-            <?php
-            return ob_get_clean();
-        }
-
         /**
          * Generate foopilot modal HTML.
          */
@@ -249,17 +234,19 @@
                             $( '.foogallery-foopilot-signup-form-inner-content-button').on( 'click', function(event) {
                                 event.preventDefault();
                                 var email = $( '#foopilot-email').val();
+                                var nonce = '<?php echo wp_create_nonce( "foopilot_nonce" ); ?>';
                                 // Make Ajax call
                                 $.ajax({
                                     url: ajaxurl,
                                     type: 'POST',
                                     data: {
                                         action: 'generate_foopilot_api_key',
-                                        email: email 
+                                        email: email,
+                                        foopilot_nonce: nonce
                                     },
-                                    success: function(response) {
+                                    success: function() {
                                         // Reload the modal content dynamically
-                                        $('#foopilot-modal').html(response);
+                                        $("#foopilot-modal").load(" #foopilot-modal");
                                     },
                                     error: function(xhr, status, error) {
                                         console.error(xhr.responseText); // Log any errors
@@ -341,7 +328,98 @@
             </script>
             <?php
             return ob_get_clean();
+        }   
+
+        /**
+         * Generate foopilot settings HTML.
+         */
+        public function display_foopilot_settings_html() {
+            ob_start();
+            ?>
+            <div class="settings">
+
+                <span class="setting has-description" data-setting="foopilot-image-title" style="margin-bottom: 8px;">
+                    <label for="foogallery-foopilot" class="name"><?php _e( 'Generate Title', 'foogallery'); ?></label>
+                    <button class="foogallery-foopilot button button-primary button-large" style="width: 150px" data-task="title"><?php _e( 'Generate Title', 'foogallery'); ?></button>
+                </span>
+
+                <span class="setting has-description" data-setting="foopilot-image-tags" style="margin-bottom: 8px;">
+                    <label for="foogallery-foopilot" class="name"><?php _e( 'Generate Tags', 'foogallery'); ?></label>
+                    <button class="foogallery-foopilot button button-primary button-large" style="width: 150px" data-task="tags"><?php _e( 'Generate Tags', 'foogallery'); ?></button>
+                </span>
+
+                <span class="setting has-description" data-setting="foopilot-image-alt-text" style="margin-bottom: 8px;">
+                    <label for="foogallery-foopilot" class="name"><?php _e( 'Generate ALT Text', 'foogallery'); ?></label>
+                    <button class="foogallery-foopilot button button-primary button-large" style="width: 150px" data-task="alt-text"><?php _e( 'Generate ALT Text', 'foogallery'); ?></button>
+                </span>
+
+                <span class="setting has-description" data-setting="foopilot-image-caption" style="margin-bottom: 8px;">
+                    <label for="foogallery-foopilot" class="name"><?php _e( 'Generate Caption', 'foogallery'); ?></label>
+                    <button class="foogallery-foopilot button button-primary button-large" style="width: 150px" data-task="caption"><?php _e( 'Generate Caption', 'foogallery'); ?></button>
+                </span>                          
+
+                <span class="setting has-description" data-setting="foopilot-image-categories" style="margin-bottom: 8px;">
+                    <label for="foogallery-foopilot" class="name"><?php _e( 'Generate Categories', 'foogallery'); ?></label>
+                    <button class="foogallery-foopilot button button-primary button-large" style="width: 150px" data-task="categories"><?php _e( 'Generate Categories', 'foogallery'); ?></button>
+                </span>
+
+                <span class="setting has-description" data-setting="foopilot-image-description" style="margin-bottom: 8px;">
+                    <label for="foogallery-foopilot" class="name"><?php _e( 'Generate Description', 'foogallery'); ?></label>
+                    <button class="foogallery-foopilot button button-primary button-large" style="width: 150px" data-task="description"><?php _e( 'Generate Description', 'foogallery'); ?></button>
+                </span>
+
+            </div>
+            <?php
+            return ob_get_clean();
         }
+
+        /**
+         * Generate foopilot selected task HTML.
+         */
+        public function display_foopilot_selected_task_html() {
+            ob_start();             
+            ?>
+            <div class="foopilot-task-html" style="display: flex; justify-content: center; align-items:center; text-align:center; color: black;">
+                
+            </div>
+            <?php
+            return ob_get_clean();
+        }        
+
+        /**
+         * Generate Foopilot api keys
+         */
+        public function generate_random_api_key() {
+            // Verify nonce before generating API key
+            if ( isset( $_POST['foopilot_nonce'] ) && $this->verify_nonce( $_POST['foopilot_nonce'] ) ) {
+                $current_points = $this->get_foopilot_credit_points();
+
+                // If the current points balance is greater than 0, reset it to 0
+                if ( $current_points > 0 ) {
+                    update_option( 'foopilot_credit_points', 0 );
+                }
+
+                // Credit the registered user +20 points
+                $this->add_foopilot_credit_points(20);
+
+                // Generate a random API key (64 characters in hexadecimal)
+                $random_api_key = bin2hex( random_bytes(32) );
+
+                // Save API key to foogallery setting
+                foogallery_set_setting( 'foopilot_api_key', $random_api_key );
+
+                // Check if the API key was saved successfully
+                $saved_api_key = foogallery_get_setting( 'foopilot_api_key' );
+                if ( $saved_api_key === $random_api_key ) {
+                    wp_send_json_success( 'API key generated successfully.' );
+                } else {
+                    wp_send_json_error( 'Failed to save API key.' );
+                }
+            } else {
+                wp_die( 'Unauthorized request!' );
+            }
+            
+        } 
 
         /**
          * Function to initialize credit points
@@ -367,37 +445,7 @@
             $current_points = $this->get_foopilot_credit_points();
             $updated_points = $current_points + $points;
             update_option( 'foopilot_credit_points', $updated_points );
-        }
-
-        /**
-         * Generate Foopilot api keys
-         */
-        public function generate_random_api_key() {
-            // Retrieve the current points balance
-            $current_points = $this->get_foopilot_credit_points();
-
-            // If the current points balance is greater than 0, reset it to 0
-            if ( $current_points > 0 ) {
-                update_option( 'foopilot_credit_points', 0 );
-            }
-
-            // Credit the registered user +20 points
-            $this->add_foopilot_credit_points(20);
-
-            // Generate a random API key (64 characters in hexadecimal)
-            $random_api_key = bin2hex( random_bytes(32) );
-
-            // Save API key to foogallery setting
-            foogallery_set_setting( 'foopilot_api_key', $random_api_key );
-
-            // Check if the API key was saved successfully
-            $saved_api_key = foogallery_get_setting( 'foopilot_api_key' );
-            if ( $saved_api_key === $random_api_key ) {
-                wp_send_json_success( 'API key generated successfully.' );
-            } else {
-                wp_send_json_error( 'Failed to save API key.' );
-            }
-        }        
+        }               
 
         /**
          * Add FooPilot settings to the provided settings array.
