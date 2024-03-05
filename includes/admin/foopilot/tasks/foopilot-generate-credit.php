@@ -1,0 +1,3 @@
+<div>
+    <h1>TODO; IMPLEMENT PURCHASE CREDIT POINTS HERE</h1>
+</div>

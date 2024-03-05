@@ -156,34 +156,36 @@ if ( ! class_exists( 'FooGallery_Admin_FooPilot' ) ) {
 										$('.foopilot-task-html' ).html(response);
 										// Show the foopilot modal
 										$('#foopilot-modal' ).show();
-
-										// Check if the user has enough points to perform the task
-										var currentPoints = parseInt($('#foogallery-credit-points' ).text());
-										var pointsToDeduct = 1; // will be determined by FOOPILOT API
-										// Retrieve nonce
-										var nonce = '<?php echo wp_create_nonce( "foopilot_nonce" ); ?>';
-										if (currentPoints >= pointsToDeduct) {
-											// Deduct points after task completion
-											$.ajax({
-												url: ajaxurl,
-												type: 'POST',
-												data: {
-													action: 'deduct_foopilot_points',
-													points: pointsToDeduct,
-													foopilot_nonce: nonce
-												},
-												success: function(response) {
-													// Update the points content with the response data
-													$('#foogallery-credit-points' ).html(response.data);                                             
-												},
-												error: function(xhr, status, error) {
-													console.error(xhr.responseText); // Log any errors
-												}
-											});
-										} else {
-											// Display a message indicating insufficient points
-											$('.foopilot-task-html' ).html('Insufficient points to perform this task.' );
-										}
+										// Check if the clicked button is the "Buy Credits" button
+										if (task !== 'credit') {
+											// Check if the user has enough points to perform the task
+											var currentPoints = parseInt($('#foogallery-credit-points' ).text());
+											var pointsToDeduct = 1; // will be determined by FOOPILOT API
+											// Retrieve nonce
+											var nonce = '<?php echo wp_create_nonce( "foopilot_nonce" ); ?>';
+											if (currentPoints >= pointsToDeduct) {
+												// Deduct points after task completion
+												$.ajax({
+													url: ajaxurl,
+													type: 'POST',
+													data: {
+														action: 'deduct_foopilot_points',
+														points: pointsToDeduct,
+														foopilot_nonce: nonce
+													},
+													success: function(response) {
+														// Update the points content with the response data
+														$('#foogallery-credit-points' ).html(response.data);                                             
+													},
+													error: function(xhr, status, error) {
+														console.error(xhr.responseText); // Log any errors
+													}
+												});
+											} else {
+												// Display a message indicating insufficient points
+												$('.foopilot-task-html' ).html('Insufficient points to perform this task.' );
+											}
+										}										
 									}).fail(function() {
 										// Display an error message if the task file cannot be loaded
 										$('.foopilot-task-html' ).html('Task file: ' + task + ' not found.' );
@@ -313,7 +315,7 @@ if ( ! class_exists( 'FooGallery_Admin_FooPilot' ) ) {
 									<?php
 									// Show "Buy" button if credit points are less than 10.
 									if ( $credit_points < 10 ) {
-										echo '<button class="buy-credits button button-primary button-small" style="margin-left: 10px;">' . esc_html__( 'Buy credits', 'foogallery' ) . '</button>';
+										echo '<button class="buy-credits button button-primary button-small" data-task="credit" style="margin-left: 10px;">' . esc_html__( 'Buy credits', 'foogallery' ) . '</button>';
 									}
 									?>
 								</h3>                                         
@@ -387,6 +389,11 @@ if ( ! class_exists( 'FooGallery_Admin_FooPilot' ) ) {
 					<span class="setting has-description" data-setting="foopilot-image-caption" style="margin-bottom: 8px;">
 						<label for="foogallery-foopilot" class="name"><?php esc_html_e( 'Generate Caption', 'foogallery' ); ?></label>
 						<button class="foogallery-foopilot button button-primary button-large" style="width: 150px" data-task="caption"><?php esc_html_e( 'Generate Caption', 'foogallery' ); ?></button>
+					</span>
+
+					<span class="setting has-description" data-setting="foopilot-buy-credits" style="margin-bottom: 8px;">
+						<label for="foogallery-foopilot" class="name"><?php esc_html_e( 'Buy Credits', 'foogallery' ); ?></label>
+						<button class="foogallery-foopilot button button-primary button-large" style="width: 150px" data-task="credit"><?php esc_html_e( 'Buy Credits', 'foogallery' ); ?></button>
 					</span>
 
 				</div>
