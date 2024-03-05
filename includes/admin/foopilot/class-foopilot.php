@@ -294,10 +294,15 @@ if ( ! class_exists( 'FooGallery_Admin_FooPilot' ) ) {
 					<div class="media-modal-content">
 						<div class="media-frame wp-core-ui">
 							<div class="foogallery-foopilot-modal-title">
+								<h2>
+									<?php
+										esc_html_e( 'FooPilot AI Image Tools', 'foogallery' );
+									?>
+								</h2>
 								<h3>
 									<?php
 										$credit_points = $this->get_foopilot_credit_points();
-										esc_html_e( 'FooPilot Credit Points:', 'foogallery' );
+										esc_html_e( 'Credit Points:', 'foogallery' );
 									?>
 									<span id="foogallery-credit-points">
 										<?php

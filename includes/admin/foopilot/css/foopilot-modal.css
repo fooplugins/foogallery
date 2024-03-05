@@ -24,6 +24,9 @@
 }
 
 .foogallery-foopilot-modal-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     position: absolute;
     top: 0;
     left: 0;
@@ -31,6 +34,7 @@
     height: 50px;
     z-index: 200;
     padding-left: 16px;
+    padding-right: 88px;
     border-bottom: 1px solid #ddd;
 }
 .foogallery-foopilot-modal-sidebar {
