@@ -234,6 +234,7 @@ if ( ! class_exists( 'FooGallery_Admin_FooPilot' ) ) {
 		public function display_foopilot_modal_html() {
 			// Check if the FooPilot API key is present.
 			$foopilot_api_key = foogallery_get_setting( 'foopilot_api_key' );
+			$credit_points    = $this->get_foopilot_credit_points();
 			?>
 			<div class="media-modal wp-core-ui" id="fg-foopilot-modal">
 				<?php
@@ -309,6 +310,12 @@ if ( ! class_exists( 'FooGallery_Admin_FooPilot' ) ) {
 											echo esc_html( $credit_points );
 										?>
 									</span>
+									<?php
+									// Show "Buy" button if credit points are less than 10.
+									if ( $credit_points < 10 ) {
+										echo '<button class="buy-credits button button-primary button-small" style="margin-left: 10px;">' . esc_html__( 'Buy credits', 'foogallery' ) . '</button>';
+									}
+									?>
 								</h3>                                         
 							</div>
 							<div class="foogallery-foopilot-modal-sidebar">
