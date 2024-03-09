@@ -6,6 +6,7 @@
  */
 
 if ( ! class_exists( 'FooGallery_Admin_FooPilot' ) ) {
+	
 	/**
 	 * FooGallery Admin FooPilot class
 	 */
@@ -138,63 +139,7 @@ if ( ! class_exists( 'FooGallery_Admin_FooPilot' ) ) {
 								<?php echo $this->display_foopilot_modal_html(); ?>
 							</div>
 						</section>
-						
-						<script>
-							jQuery(document).ready(function($) {
-								// Listen for click event on foopilot buttons
-								$('.foogallery-foopilot' ).on('click', function(event) {
-									// Prevent the default action of the button click
-									event.preventDefault();
-									var task = $(this).data('task' );
-									// Get the URL of the task file
-									var FOOGALLERY_URL = '<?php echo FOOGALLERY_URL; ?>';
-									var taskFileUrl = FOOGALLERY_URL + 'includes/admin/foopilot/tasks/' + 'foopilot-generate-' + task + '.php';
-
-									// Load the task file content and display it in the modal
-									$.get(taskFileUrl, function(response) {
-										// Display the selected task content in the modal
-										$('.foopilot-task-html' ).html(response);
-										// Show the foopilot modal
-										$('#foopilot-modal' ).show();
-										// Check if the clicked button is the "Buy Credits" button
-										if (task !== 'credit') {
-											// Check if the user has enough points to perform the task
-											var currentPoints = parseInt($('#foogallery-credit-points' ).text());
-											var pointsToDeduct = 1; // will be determined by FOOPILOT API
-											// Retrieve nonce
-											var nonce = '<?php echo wp_create_nonce( "foopilot_nonce" ); ?>';
-											if (currentPoints >= pointsToDeduct) {
-												// Deduct points after task completion
-												$.ajax({
-													url: ajaxurl,
-													type: 'POST',
-													data: {
-														action: 'deduct_foopilot_points',
-														points: pointsToDeduct,
-														foopilot_nonce: nonce
-													},
-													success: function(response) {
-														// Update the points content with the response data
-														$('#foogallery-credit-points' ).html(response.data);                                             
-													},
-													error: function(xhr, status, error) {
-														console.error(xhr.responseText); // Log any errors
-													}
-												});
-											} else {
-												// Display a message indicating insufficient points
-												$('.foopilot-task-html' ).html('Insufficient points to perform this task.' );
-											}
-										}										
-									}).fail(function() {
-										// Display an error message if the task file cannot be loaded
-										$('.foopilot-task-html' ).html('Task file: ' + task + ' not found.' );
-										// Show the foopilot modal
-										$('#foopilot-modal' ).show();
-									});
-								});
-							});
-						</script>                                   
+						                                 
 					<?php
 				}
 			}
@@ -239,77 +184,24 @@ if ( ! class_exists( 'FooGallery_Admin_FooPilot' ) ) {
 			$credit_points    = $this->get_foopilot_credit_points();
 			?>
 			<div class="media-modal wp-core-ui" id="fg-foopilot-modal">
-				<?php
-				// If the API key is not present, display the sign-up form.
-				if ( empty( $foopilot_api_key ) ) {
-					ob_start();
-					?>
-					<div class="foogallery-foopilot-signup-form">
-						<div class="foogallery-foopilot-signup-form-inner">
-							<p><?php esc_html_e( 'Unlock the power of FooPilot! Sign up for free and get 20 credits to explore our service.', 'foogallery' ); ?></p>
-							<form class="foogallery-foopilot-signup-form-inner-content">
-								<div style="margin-bottom: 20px;">
-								<input type="email" id="foopilot-email" name="email" placeholder="<?php echo esc_attr( __( 'Enter your email', 'foogallery' ) ); ?>" value="<?php echo esc_attr( foogallery_sanitize_javascript( wp_get_current_user()->user_email ) ); ?>" style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; width: 250px;">
-								</div>
-								<button class="foogallery-foopilot-signup-form-inner-content-button button button-primary button-large" type="submit" style="padding: 10px 20px; background-color: #0073e6; color: #fff; border: none; border-radius: 5px; cursor: pointer;"><?php esc_html_e( 'Sign Up for free', 'foogallery' ); ?></button>
-							</form>
-						</div>                    
-					</div>
-					<script>
-						jQuery(document).ready(function($) {
-							// Listen for click event on foopilot buttons
-							$( '.foogallery-foopilot-signup-form-inner-content-button' ).on( 'click', function(event) {
-								event.preventDefault();
-								var email = $( '#foopilot-email' ).val();
-								var nonce = '<?php echo wp_create_nonce( "foopilot_nonce" ); ?>';
-								// Make Ajax call
-								$.ajax({
-									url: ajaxurl,
-									type: 'POST',
-									data: {
-										action: 'generate_foopilot_api_key',
-										email: email,
-										foopilot_nonce: nonce
-									},
-									success: function() {
-										// Reload the modal content dynamically.
-										$("#foopilot-modal").load(" #foopilot-modal");
-									},
-									error: function(xhr, status, error) {
-										console.error(xhr.responseText); // Log errors
-									}
-								});
-							});
-						});
-					</script>
-
-					<?php
-					return ob_get_clean();
-				}
-
-				// If the API key is present, display the regular modal content.
-				ob_start();
-				?>
 				<div>
 					<button type="button" class="media-modal-close">
 						<span class="media-modal-icon"><span class="screen-reader-text">Close media panel</span></span>
 					</button>
 					<div class="media-modal-content">
 						<div class="media-frame wp-core-ui">
+
 							<div class="foogallery-foopilot-modal-title">
 								<h2>
-									<?php
-										esc_html_e( 'FooPilot AI Image Tools', 'foogallery' );
-									?>
+									<?php esc_html_e( 'FooPilot AI Image Tools', 'foogallery' ); ?>
 								</h2>
 								<h3>
 									<?php
-										$credit_points = $this->get_foopilot_credit_points();
-										esc_html_e( 'Credit Points:', 'foogallery' );
+									esc_html_e( 'Credit Points:', 'foogallery' );
 									?>
 									<span id="foogallery-credit-points">
 										<?php
-											echo esc_html( $credit_points );
+										echo esc_html( $credit_points );
 										?>
 									</span>
 									<?php
@@ -318,18 +210,18 @@ if ( ! class_exists( 'FooGallery_Admin_FooPilot' ) ) {
 										echo '<button class="buy-credits button button-primary button-small" data-task="credit" style="margin-left: 10px;">' . esc_html__( 'Buy credits', 'foogallery' ) . '</button>';
 									}
 									?>
-								</h3>                                         
+								</h3>
 							</div>
-							<div class="foogallery-foopilot-modal-sidebar">
-								<div class="foogallery-foopilot-modal-sidebar-menu">
-									<?php echo $this->display_foopilot_settings_html(); ?>
-								</div>
-							</div>
-							<div class="foogallery-foopilot-modal-container">
-								<div class="foogallery-foopilot-modal-container-inner">
-								<?php echo $this->display_foopilot_selected_task_html(); ?>
-								</div>
-							</div>
+							<section>
+								<?php
+								// If the API key is not present, display the sign-up form.
+								if ( empty( $foopilot_api_key ) ) {
+									echo $this->display_foopilot_signup_form_html();
+								} else {
+									echo $this->display_foopilot_content_html();
+								}
+								?>
+							</section>
 							<div class="foogallery-foopilot-modal-toolbar">
 								<div class="foogallery-foopilot-modal-toolbar-inner">
 									<div class="media-toolbar-secondary">
@@ -350,25 +242,91 @@ if ( ! class_exists( 'FooGallery_Admin_FooPilot' ) ) {
 				</div>
 			</div>
 			<script>
-				jQuery(document).ready(function($) {
+				jQuery(document).ready(function ( $) {
 					// Function to close the modal
 					function closeFoopilotModal() {
-						$('#foopilot-modal' ).hide();
+						$( '#fg-foopilot-modal' ).hide();
 					}
 
 					// Listen for click event on Cancel button
-					$('.foogallery-foopilot-modal-cancel' ).on('click', function(event) {
+					$( '.foogallery-foopilot-modal-cancel' ).on( 'click', function (event) {
 						event.preventDefault();
 						closeFoopilotModal();
 					});
 
 					// Listen for click event on close button
-					$('.media-modal-close' ).on('click', function(event) {
+					$( '.media-modal-close' ).on( 'click', function (event) {
 						event.preventDefault();
 						closeFoopilotModal();
 					});
 				});
 			</script>
+			<?php
+		}
+
+		/**
+		 * Display FooPilot sign-up form HTML.
+		 */
+		public function display_foopilot_signup_form_html() {
+			ob_start();
+			?>
+			<div class="foogallery-foopilot-signup-form">
+				<div class="foogallery-foopilot-signup-form-inner">
+					<p><?php esc_html_e( 'Unlock the power of FooPilot! Sign up for free and get 20 credits to explore our service.', 'foogallery' ); ?></p>
+					<form class="foogallery-foopilot-signup-form-inner-content">
+						<div style="margin-bottom: 20px;">
+							<input type="email" id="foopilot-email" name="email" placeholder="<?php echo esc_attr(__( 'Enter your email', 'foogallery' ) ); ?>" value="<?php echo esc_attr(foogallery_sanitize_javascript(wp_get_current_user()->user_email) ); ?>" style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; width: 250px;">
+						</div>
+						<button class="foogallery-foopilot-signup-form-inner-content-button button button-primary button-large" type="submit" style="padding: 10px 20px; background-color: #0073e6; color: #fff; border: none; border-radius: 5px; cursor: pointer;"><?php esc_html_e( 'Sign Up for free', 'foogallery' ); ?></button>
+					</form>
+				</div>
+			</div>
+			<script>
+				jQuery(document).ready(function ( $) {
+					// Listen for click event on foopilot buttons
+					$( '.foogallery-foopilot-signup-form-inner-content-button' ).on( 'click', function (event) {
+						event.preventDefault();
+						var email = $( '#foopilot-email' ).val();
+						var nonce = '<?php echo wp_create_nonce("foopilot_nonce"); ?>';
+						// Make Ajax call
+						$.ajax({
+							url: ajaxurl,
+							type: 'POST',
+							data: {
+								action: 'generate_foopilot_api_key',
+								email: email,
+								foopilot_nonce: nonce
+							},
+							success: function () {
+								// Reload the modal content dynamically.
+								$("#fg-foopilot-modal").load(" #fg-foopilot-modal");
+							},
+							error: function (xhr, status, error) {
+								console.error(xhr.responseText); // Log errors
+							}
+						});
+					});
+				});
+			</script>
+
+			<?php
+			return ob_get_clean();
+		}
+
+		/**
+		 * Display FooPilot content HTML.
+		 */
+		public function display_foopilot_content_html() {
+			ob_start();
+			?>
+			<div class="foogallery-foopilot-modal-sidebar">
+				<?php echo $this->display_foopilot_settings_html(); ?>
+			</div>
+			<div class="foogallery-foopilot-modal-container">
+				<div class="foogallery-foopilot-modal-container-inner">
+					<?php echo $this->display_foopilot_selected_task_html(); ?>
+				</div>
+			</div>
 			<?php
 			return ob_get_clean();
 		}
@@ -379,23 +337,10 @@ if ( ! class_exists( 'FooGallery_Admin_FooPilot' ) ) {
 		public function display_foopilot_settings_html() {
 			ob_start();
 			?>
-				<div class="settings">
-
-					<span class="setting has-description" data-setting="foopilot-image-tags" style="margin-bottom: 8px;">
-						<label for="foogallery-foopilot" class="name"><?php esc_html_e( 'Generate Tags', 'foogallery' ); ?></label>
-						<button class="foogallery-foopilot button button-primary button-large" style="width: 150px" data-task="tags"><?php esc_html_e( 'Generate Tags', 'foogallery' ); ?></button>
-					</span>
-
-					<span class="setting has-description" data-setting="foopilot-image-caption" style="margin-bottom: 8px;">
-						<label for="foogallery-foopilot" class="name"><?php esc_html_e( 'Generate Caption', 'foogallery' ); ?></label>
-						<button class="foogallery-foopilot button button-primary button-large" style="width: 150px" data-task="caption"><?php esc_html_e( 'Generate Caption', 'foogallery' ); ?></button>
-					</span>
-
-					<span class="setting has-description" data-setting="foopilot-buy-credits" style="margin-bottom: 8px;">
-						<label for="foogallery-foopilot" class="name"><?php esc_html_e( 'Buy Credits', 'foogallery' ); ?></label>
-						<button class="foogallery-foopilot button button-primary button-large" style="width: 150px" data-task="credit"><?php esc_html_e( 'Buy Credits', 'foogallery' ); ?></button>
-					</span>
-
+				<div class="foogallery-foopilot-modal-sidebar-menu">
+					<a href="#" class="media-menu-item foogallery-foopilot" data-task="tags"><?php esc_html_e( 'Generate Tags', 'foogallery' ); ?></a>
+					<a href="#" class="media-menu-item foogallery-foopilot" data-task="caption"><?php esc_html_e( 'Generate Caption', 'foogallery' ); ?></a>
+					<a href="#" class="media-menu-item foogallery-foopilot" data-task="credit"><?php esc_html_e( 'Buy Credits', 'foogallery' ); ?></a>
 				</div>
 			<?php
 			return ob_get_clean();
