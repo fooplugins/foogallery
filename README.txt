@@ -4,7 +4,7 @@ Donate link: https://fooplugins.com
 Tags: gallery, image gallery, photo gallery, responsive gallery, wordpress gallery plugin, best gallery plugin, albums, media gallery, video gallery, lightbox
 Requires at least: 5.3
 Tested up to: 6.4
-Stable tag: 2.4.9
+Stable tag: 2.4.14
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -320,6 +320,11 @@ We did the research and comparison. See our findings : [What is the Best WordPre
 Please update in order for FooGallery to work in WP 5.5+!
 
 == Changelog ==
+
+= 2.4.14 =
+* Date Updated : 21 Feb 2024
+* Fix : fix for albums showing html in "back to album" text.
+* NOTE : You only need to update if you use albums!!
 
 = 2.4.13 =
 * Date Updated : 17 Feb 2024
