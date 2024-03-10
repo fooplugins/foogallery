@@ -203,11 +203,11 @@ if ( ! class_exists( 'FooGallery_Admin_FooPilot' ) ) {
 			ob_start();
 			?>
 			<div class="foogallery-foopilot-modal-sidebar">
-				<?php echo $this->display_foopilot_settings_html(); ?>
+				<?php echo esc_html( $this->display_foopilot_settings_html() ); ?>
 			</div>
 			<div class="foogallery-foopilot-modal-container">
 				<div class="foogallery-foopilot-modal-container-inner">
-					<?php echo $this->display_foopilot_selected_task_html(); ?>
+					<?php echo esc_html( $this->display_foopilot_selected_task_html() ); ?>
 				</div>
 			</div>
 			<?php
