@@ -32,6 +32,7 @@ if ( ! class_exists( 'FooGallery_Admin' ) ) {
 			new FooGallery_Admin_Notices();
 			new FooGallery_Admin_Gallery_Attachment_Modal();
 			$foogallery_admin_datasource_instance = new FooGallery_Admin_Gallery_Datasources();
+			new FooGallery_Admin_FooPilot();
 
 			// include PRO promotion.
 			new FooGallery_Pro_Promotion();

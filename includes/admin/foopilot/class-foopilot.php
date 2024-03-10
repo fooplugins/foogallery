@@ -6,7 +6,7 @@
  */
 
 if ( ! class_exists( 'FooGallery_Admin_FooPilot' ) ) {
-	
+
 	/**
 	 * FooGallery Admin FooPilot class
 	 */
@@ -16,13 +16,6 @@ if ( ! class_exists( 'FooGallery_Admin_FooPilot' ) ) {
 		 * Primary class constructor.
 		 */
 		public function __construct() {
-			add_action( 'foogallery_attachment_modal_tabs_view', array( $this, 'display_tab_foopilot' ), 70 );
-			add_action( 'foogallery_attachment_modal_tab_content', array( $this, 'display_tab_content_foopilot' ), 70, 1 );
-			add_filter( 'foogallery_attachment_modal_data', array( $this, 'foogallery_attachment_modal_data_foopilot' ), 70, 4 );
-			add_action( 'foogallery_attachment_save_data', array( $this, 'foogallery_attachment_save_data_foopilot' ), 70, 2 );
-			// Enqueue CSS and JavaScript.
-			add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts_and_styles' ) );
-
 			add_filter( 'foogallery_admin_settings_override', array( $this, 'add_foopilot_settings' ), 50 );
 			add_action( 'wp_ajax_generate_foopilot_api_key', array( $this, 'generate_random_api_key' ) );
 			add_action( 'wp_ajax_deduct_foopilot_points', array( $this, 'deduct_foopilot_points' ) );
@@ -30,6 +23,26 @@ if ( ! class_exists( 'FooGallery_Admin_FooPilot' ) ) {
 
 			// Initialize credit points.
 			add_action( 'init', array( $this, 'initialize_foopilot_credit_points' ) );
+			add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts_and_styles' ) );
+			add_action( 'wp_ajax_foopilot_generate_task_content', array( $this, 'foopilot_generate_task_content' ) );
+		}
+
+		/**
+		 * Enqueue scripts and styles.
+		 */
+		public function enqueue_scripts_and_styles() {
+			// check if the gallery edit page is being shown.
+			$screen = get_current_screen();
+			if ( 'foogallery' !== $screen->id ) {
+				return;
+			}
+			// Enqueue CSS.
+			wp_enqueue_style( 'foopilot-modal-css', FOOGALLERY_URL . 'includes/admin/foopilot/css/foopilot-modal.css', array(), FOOGALLERY_VERSION );
+
+			$foogallery = FooGallery_Plugin::get_instance();
+			$foogallery->register_and_enqueue_js( FOOGALLERY_URL . 'includes/admin/foopilot/css/foopilot-modal.js' );
+
+			do_action( 'foogallery_admin_foopilot_enqueue_scripts' );
 		}
 
 		/**
@@ -59,90 +72,6 @@ if ( ! class_exists( 'FooGallery_Admin_FooPilot' ) ) {
 		 */
 		public function verify_nonce( $nonce ) {
 			return wp_verify_nonce( $nonce, 'foopilot_nonce' );
-		}
-
-		/**
-		 * Enqueue CSS and JavaScript files.
-		 */
-		public function enqueue_scripts_and_styles() {
-			// Enqueue CSS.
-			wp_enqueue_style( 'foopilot-modal-css', FOOGALLERY_URL . 'includes/admin/foopilot/css/foopilot-modal.css', array(), FOOGALLERY_VERSION );
-
-			// Enqueue JavaScript.
-			wp_enqueue_script( 'foopilot-modal-js', FOOGALLERY_URL . 'includes/admin/foopilot/js/foopilot-modal.js', array( 'jquery' ), FOOGALLERY_VERSION, true );
-		}
-
-		/**
-		 * Save foopilot tab data content.
-		 *
-		 * @param int   $img_id The attachment ID to update data.
-		 * @param array $data   Array of form post data.
-		 */
-		public function save_foopilot_tab_data( $img_id, $data ) {
-			// Verify the nonce.
-			$foopilot_nonce = isset( $_POST['foopilot_nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['foopilot_nonce'] ) ) : '';
-
-			if ( wp_verify_nonce( $foopilot_nonce, 'foopilot_nonce' ) ) {
-				// Nonce verification successful, proceed with processing form data.
-
-				// process  data.
-
-			} else {
-				wp_die( 'Unauthorized request!' );
-			}
-		}
-
-
-		/**
-		 * Image modal foopilot tab data update.
-		 *
-		 * @param mixed $modal_data    The modal data.
-		 * @param array $data          Array of form post data.
-		 * @param int   $attachment_id The attachment ID.
-		 * @param int   $gallery_id    The gallery ID.
-		 * @return mixed The modified modal data.
-		 */
-		public function foogallery_attachment_modal_data_foopilot( $modal_data, $data, $attachment_id, $gallery_id ) {
-			if ( $attachment_id > 0 ) {
-				// update modal data.
-			}
-			return $modal_data;
-		}
-
-		/**
-		 * Image modal foopilot tab title
-		 */
-		public function display_tab_foopilot() {
-			?>
-				<div class="foogallery-img-modal-tab-wrapper" data-tab_id="foogallery-panel-foopilot">
-					<input type="radio" name="tabset" id="foogallery-tab-foopilot" aria-controls="foogallery-panel-foopilot">
-					<label for="foogallery-tab-foopilot"><?php esc_html_e( 'FooPilot', 'foogallery' ); ?></label>
-				</div>
-			<?php
-		}
-
-		/**
-		 * Image modal foopilot tab content
-		 *
-		 * @param mixed $modal_data    The modal data.
-		 */
-		public function display_tab_content_foopilot( $modal_data ) {
-			if ( is_array( $modal_data ) && ! empty( $modal_data ) ) {
-				if ( $modal_data['img_id'] > 0 ) {
-					?>
-						<section id="foogallery-panel-foopilot" class="tab-panel">
-							<div>
-								<?php echo $this->display_foopilot_settings_html(); ?>
-							</div>
-
-							<div id="foopilot-modal" class="foogallery-foopilots-modal-wrapper" style="display: none;">
-								<?php echo $this->display_foopilot_modal_html(); ?>
-							</div>
-						</section>
-						                                 
-					<?php
-				}
-			}
 		}
 
 		/**
@@ -183,57 +112,59 @@ if ( ! class_exists( 'FooGallery_Admin_FooPilot' ) ) {
 			$foopilot_api_key = foogallery_get_setting( 'foopilot_api_key' );
 			$credit_points    = $this->get_foopilot_credit_points();
 			?>
-			<div class="media-modal wp-core-ui" id="fg-foopilot-modal">
-				<div>
-					<button type="button" class="media-modal-close">
-						<span class="media-modal-icon"><span class="screen-reader-text">Close media panel</span></span>
-					</button>
-					<div class="media-modal-content">
-						<div class="media-frame wp-core-ui">
+			<div id="foopilot-modal" class="foogallery-foopilots-modal-wrapper" style="display: none;">
+				<div class="media-modal wp-core-ui" id="fg-foopilot-modal">
+					<div>
+						<button type="button" class="media-modal-close">
+							<span class="media-modal-icon"><span class="screen-reader-text">Close media panel</span></span>
+						</button>
+						<div class="media-modal-content">
+							<div class="media-frame wp-core-ui">
 
-							<div class="foogallery-foopilot-modal-title">
-								<h2>
-									<?php esc_html_e( 'FooPilot AI Image Tools', 'foogallery' ); ?>
-								</h2>
-								<h3>
-									<?php
-									esc_html_e( 'Credit Points:', 'foogallery' );
-									?>
-									<span id="foogallery-credit-points">
+								<div class="foogallery-foopilot-modal-title">
+									<h2>
+										<?php esc_html_e( 'FooPilot AI Image Tools', 'foogallery' ); ?>
+									</h2>
+									<h3>
 										<?php
-										echo esc_html( $credit_points );
+										esc_html_e( 'Credit Points:', 'foogallery' );
 										?>
-									</span>
+										<span id="foogallery-credit-points">
+											<?php
+											echo esc_html( $credit_points );
+											?>
+										</span>
+										<?php
+										// Show "Buy" button if credit points are less than 10.
+										if ( $credit_points < 10 ) {
+											echo '<button class="buy-credits button button-primary button-small" data-task="credit" style="margin-left: 10px;">' . esc_html__( 'Buy credits', 'foogallery' ) . '</button>';
+										}
+										?>
+									</h3>
+								</div>
+								<section>
 									<?php
-									// Show "Buy" button if credit points are less than 10.
-									if ( $credit_points < 10 ) {
-										echo '<button class="buy-credits button button-primary button-small" data-task="credit" style="margin-left: 10px;">' . esc_html__( 'Buy credits', 'foogallery' ) . '</button>';
+									// If the API key is not present, display the sign-up form.
+									if ( empty( $foopilot_api_key ) ) {
+										echo esc_html( $this->display_foopilot_signup_form_html() );
+									} else {
+										echo esc_html( $this->display_foopilot_content_html() );
 									}
 									?>
-								</h3>
-							</div>
-							<section>
-								<?php
-								// If the API key is not present, display the sign-up form.
-								if ( empty( $foopilot_api_key ) ) {
-									echo $this->display_foopilot_signup_form_html();
-								} else {
-									echo $this->display_foopilot_content_html();
-								}
-								?>
-							</section>
-							<div class="foogallery-foopilot-modal-toolbar">
-								<div class="foogallery-foopilot-modal-toolbar-inner">
-									<div class="media-toolbar-secondary">
-										<a href="#"
-										class="foogallery-foopilot-modal-cancel button"
-										title="<?php esc_attr_e( 'Cancel', 'foogallery' ); ?>"><?php _e( 'Cancel', 'foogallery' ); ?></a>
-									</div>
-									<div class="media-toolbar-primary">
-										<a href="#"
-										class="foogallery-foopilot-modal-insert button"
-										disabled="disabled"
-										title="<?php esc_attr_e( 'OK', 'foogallery' ); ?>"><?php _e( 'OK', 'foogallery' ); ?></a>
+								</section>
+								<div class="foogallery-foopilot-modal-toolbar">
+									<div class="foogallery-foopilot-modal-toolbar-inner">
+										<div class="media-toolbar-secondary">
+											<a href="#"
+											class="foogallery-foopilot-modal-cancel button"
+											title="<?php esc_attr_e( 'Cancel', 'foogallery' ); ?>"><?php _e( 'Cancel', 'foogallery' ); ?></a>
+										</div>
+										<div class="media-toolbar-primary">
+											<a href="#"
+											class="foogallery-foopilot-modal-insert button"
+											disabled="disabled"
+											title="<?php esc_attr_e( 'OK', 'foogallery' ); ?>"><?php _e( 'OK', 'foogallery' ); ?></a>
+										</div>
 									</div>
 								</div>
 							</div>
@@ -241,26 +172,6 @@ if ( ! class_exists( 'FooGallery_Admin_FooPilot' ) ) {
 					</div>
 				</div>
 			</div>
-			<script>
-				jQuery(document).ready(function ( $) {
-					// Function to close the modal
-					function closeFoopilotModal() {
-						$( '#fg-foopilot-modal' ).hide();
-					}
-
-					// Listen for click event on Cancel button
-					$( '.foogallery-foopilot-modal-cancel' ).on( 'click', function (event) {
-						event.preventDefault();
-						closeFoopilotModal();
-					});
-
-					// Listen for click event on close button
-					$( '.media-modal-close' ).on( 'click', function (event) {
-						event.preventDefault();
-						closeFoopilotModal();
-					});
-				});
-			</script>
 			<?php
 		}
 
@@ -281,34 +192,6 @@ if ( ! class_exists( 'FooGallery_Admin_FooPilot' ) ) {
 					</form>
 				</div>
 			</div>
-			<script>
-				jQuery(document).ready(function ( $) {
-					// Listen for click event on foopilot buttons
-					$( '.foogallery-foopilot-signup-form-inner-content-button' ).on( 'click', function (event) {
-						event.preventDefault();
-						var email = $( '#foopilot-email' ).val();
-						var nonce = '<?php echo wp_create_nonce("foopilot_nonce"); ?>';
-						// Make Ajax call
-						$.ajax({
-							url: ajaxurl,
-							type: 'POST',
-							data: {
-								action: 'generate_foopilot_api_key',
-								email: email,
-								foopilot_nonce: nonce
-							},
-							success: function () {
-								// Reload the modal content dynamically.
-								$("#fg-foopilot-modal").load(" #fg-foopilot-modal");
-							},
-							error: function (xhr, status, error) {
-								console.error(xhr.responseText); // Log errors
-							}
-						});
-					});
-				});
-			</script>
-
 			<?php
 			return ob_get_clean();
 		}
@@ -344,6 +227,44 @@ if ( ! class_exists( 'FooGallery_Admin_FooPilot' ) ) {
 				</div>
 			<?php
 			return ob_get_clean();
+		}
+
+		/**
+		 * Callback function to generate task content dynamically.
+		 *
+		 * This function handles AJAX requests to generate task content based on the provided task.
+		 * It verifies the nonce, retrieves the task from the POST data,
+		 * and includes the appropriate PHP file based on the task.
+		 * It then echoes the HTML content returned by the corresponding class-based method.
+		 *
+		 * @return void
+		 */
+		public function foopilot_generate_task_content() {
+			// Verify nonce and user permissions.
+			$foopilot_nonce = isset( $_POST['foopilot_nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['foopilot_nonce'] ) ) : '';
+
+			if ( wp_verify_nonce( $foopilot_nonce, 'foopilot_nonce' ) ) {
+				// Retrieve task from POST data.
+				$task = isset( $_POST['task'] ) ? sanitize_text_field( wp_unslash( $_POST['task'] ) ) : '';
+
+				// Include the appropriate PHP file based on the task.
+				if ( 'tag' === $task ) {
+					require_once FOOGALLERY_PATH . 'includes/admin/foopilot/tasks/class-foopilot-generate-tags.php';
+					echo esc_html( FooGallery_Admin_Foopilot_Generate_Tags::get_foopilot_generate_tags_html() );
+				} elseif ( 'caption' === $task ) {
+					require_once FOOGALLERY_PATH . 'includes/admin/foopilot/tasks/class-foopilot-generate-caption.php';
+					echo esc_html( FooGallery_Admin_Foopilot_Generate_Caption::get_foopilot_generate_caption_html() );
+				} elseif ( 'credit' === $task ) {
+					require_once FOOGALLERY_PATH . 'includes/admin/foopilot/tasks/class-foopilot-generate-credit.php';
+					echo esc_html( FooGallery_Admin_Foopilot_Generate_Credit::get_foopilot_generate_credit_html() );
+				} else {
+					// Handle unknown task.
+					echo esc_html__( 'Task not found', 'fogallery' );
+				}
+				wp_die();
+			} else {
+				wp_die( 'Unauthorized request!' );
+			}
 		}
 
 		/**

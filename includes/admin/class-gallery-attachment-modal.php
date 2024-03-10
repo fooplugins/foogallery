@@ -614,62 +614,6 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
 								<label for="foogallery-foopilot" class="name"><?php esc_html_e( 'Generate Caption', 'foogallery' ); ?></label>
 								<button class="foogallery-foopilot button button-primary button-large" style="width: 150px" data-task="caption"><?php esc_html_e( 'Generate', 'foogallery' ); ?></button>
 							</span>
-							<script>
-						jQuery(document).ready(function($) {
-							// Listen for click event on foopilot buttons
-							$('.foogallery-foopilot' ).on('click', function(event) {
-								// Prevent the default action of the button click
-								event.preventDefault();
-								var task = $(this).data('task' );
-								// Get the URL of the task file
-								var FOOGALLERY_URL = '<?php echo FOOGALLERY_URL; ?>';
-								var taskFileUrl = FOOGALLERY_URL + 'includes/admin/foopilot/tasks/' + 'foopilot-generate-' + task + '.php';
-
-								// Load the task file content and display it in the modal
-								$.get(taskFileUrl, function(response) {
-									// Display the selected task content in the modal
-									$('.foopilot-task-html' ).html(response);
-									// Show the foopilot modal
-									$('#foopilot-modal' ).show();
-									// Check if the clicked button is the "Buy Credits" button
-									if (task !== 'credit') {
-										// Check if the user has enough points to perform the task
-										var currentPoints = parseInt($('#foogallery-credit-points' ).text());
-										var pointsToDeduct = 1; // will be determined by FOOPILOT API
-										// Retrieve nonce
-										var nonce = '<?php echo wp_create_nonce( "foopilot_nonce" ); ?>';
-										if (currentPoints >= pointsToDeduct) {
-											// Deduct points after task completion
-											$.ajax({
-												url: ajaxurl,
-												type: 'POST',
-												data: {
-													action: 'deduct_foopilot_points',
-													points: pointsToDeduct,
-													foopilot_nonce: nonce
-												},
-												success: function(response) {
-													// Update the points content with the response data
-													$('#foogallery-credit-points' ).html(response.data);                                             
-												},
-												error: function(xhr, status, error) {
-													console.error(xhr.responseText); // Log any errors
-												}
-											});
-										} else {
-											// Display a message indicating insufficient points
-											$('.foopilot-task-html' ).html('Insufficient points to perform this task.' );
-										}
-									}										
-								}).fail(function() {
-									// Display an error message if the task file cannot be loaded
-									$('.foopilot-task-html' ).html('Task file: ' + task + ' not found.' );
-									// Show the foopilot modal
-									$('#foopilot-modal' ).show();
-								});
-							});
-						});
-					</script>
 							<span class="setting" data-setting="description">
 								<label for="attachment-details-two-column-description" class="name"><?php _e('Description', 'foogallery'); ?></label>
 								<textarea id="attachment-details-two-column-description" name="foogallery[description]"><?php echo $modal_data['description'];?></textarea>
