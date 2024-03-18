@@ -594,7 +594,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 
 			if ( !is_a( $product, 'WC_Product_Variable' ) ) {
 				// Do we need "Add To Cart" button?
-				if ( $product->is_purchasable() ) {
+				if ( $product->is_purchasable() && $product->is_in_stock() ) {
                     $button_add_to_cart = foogallery_gallery_template_setting( 'ecommerce_button_add_to_cart', '' );
                     if ( '' !== $button_add_to_cart ) {
                         $button_add_to_cart_behaviour = foogallery_gallery_template_setting( 'ecommerce_button_add_to_cart_behaviour', 'fg-woo-add-to-cart-ajax' );
