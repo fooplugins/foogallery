@@ -610,6 +610,10 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
 								<label for="attachment-details-two-column-caption" class="name"><?php _e('Caption', 'foogallery'); ?></label>
 								<textarea id="attachment-details-two-column-caption" name="foogallery[caption]"><?php echo $modal_data['caption'];?></textarea>
 							</span>
+							<span class="setting has-description" data-setting="foopilot-image-caption" style="margin-bottom: 8px;">
+								<label for="foogallery-foopilot" class="name"><?php esc_html_e( 'Generate Caption', 'foogallery' ); ?></label>
+								<button class="foogallery-foopilot button button-primary button-large" style="width: 150px" data-task="caption"><?php esc_html_e( 'Generate', 'foogallery' ); ?></button>
+							</span>
 							<span class="setting" data-setting="description">
 								<label for="attachment-details-two-column-description" class="name"><?php _e('Description', 'foogallery'); ?></label>
 								<textarea id="attachment-details-two-column-description" name="foogallery[description]"><?php echo $modal_data['description'];?></textarea>
@@ -617,7 +621,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
 							<span class="setting" data-setting="alt">
 								<label for="attachment-details-two-column-alt-text" class="name"><?php _e('ALT Text', 'foogallery'); ?></label>
 								<input type="text" id="attachment-details-two-column-alt-text" name="foogallery[alt-text]" value="<?php echo $modal_data['image_alt'];?>" aria-describedby="alt-text-description">
-							</span>
+							</span>							
                             <span class="setting" data-setting="custom_url">
 								<label for="attachments-foogallery-custom-url" class="name"><?php _e('Custom URL', 'foogallery'); ?></label>
 								<input type="text" id="attachments-foogallery-custom-url" name="foogallery[custom-url]" value="<?php echo $modal_data['custom_url'];?>">
@@ -732,7 +736,12 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
 
                     ?>
                         </div>
+						<span class="setting has-description" data-setting="foopilot-image-tags" style="margin-bottom: 8px;">
+							<label for="foogallery-foopilot" class="name"><?php esc_html_e( 'Generate Tags', 'foogallery' ); ?></label>
+							<button class="foogallery-foopilot button button-primary button-large" style="width: 150px" data-task="tags"><?php esc_html_e( 'Generate', 'foogallery' ); ?></button>
+						</span>
                         </section>
+						
                     <?php
 				}
 			}
