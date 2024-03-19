@@ -19,49 +19,28 @@ if ( ! class_exists( 'FooGallery_Admin_FooPilot' ) ) {
 			add_filter( 'foogallery_admin_settings_override', array( $this, 'add_foopilot_settings' ), 50 );
 			add_action( 'wp_ajax_generate_foopilot_api_key', array( $this, 'generate_random_api_key' ) );
 			add_action( 'wp_ajax_deduct_foopilot_points', array( $this, 'deduct_foopilot_points' ) );
-			add_action( 'init', array( $this, 'add_nonce' ) );
 
 			// Initialize credit points.
 			add_action( 'init', array( $this, 'initialize_foopilot_credit_points' ) );
-			add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts_and_styles' ) );
 			add_action( 'wp_ajax_foopilot_generate_task_content', array( $this, 'foopilot_generate_task_content' ) );
+
+			add_action( 'foogallery_admin_enqueue_scripts', array( $this, 'enqueue_scripts_and_styles' ) );
+			add_action( 'admin_footer', array( $this, 'display_foopilot_modal_html' ) );
 		}
 
 		/**
 		 * Enqueue scripts and styles.
 		 */
 		public function enqueue_scripts_and_styles() {
-			// check if the gallery edit page is being shown.
-			$screen = get_current_screen();
-			if ( 'foogallery' !== $screen->id ) {
-				return;
-			}
-			// Enqueue CSS.
-			wp_enqueue_style( 'foopilot-modal-css', FOOGALLERY_URL . 'includes/admin/foopilot/css/foopilot-modal.css', array(), FOOGALLERY_VERSION );
-
-			$foogallery = FooGallery_Plugin::get_instance();
-			$foogallery->register_and_enqueue_js( FOOGALLERY_URL . 'includes/admin/foopilot/css/foopilot-modal.js' );
-
-			do_action( 'foogallery_admin_foopilot_enqueue_scripts' );
-		}
-
-		/**
-		 * Add nonce for FooPilot actions.
-		 */
-		public function add_nonce() {
-			// Add nonce for generating API key.
-			add_action( 'wp_ajax_generate_foopilot_api_key', array( $this, 'generate_random_api_key' ) );
-			// Add nonce for deducting points.
-			add_action( 'wp_ajax_deduct_foopilot_points', array( $this, 'deduct_foopilot_points' ) );
-			// Add nonce for saving attachment data.
-			add_action( 'wp_ajax_save_attachment_data', array( $this, 'save_attachment_data' ) );
+			wp_enqueue_style( 'foogallery.admin.foopilot', FOOGALLERY_URL . 'includes/admin/foopilot/css/foopilot-modal.css', array(), FOOGALLERY_VERSION );
+			wp_enqueue_script( 'foogallery.admin.foopilot', FOOGALLERY_URL . 'includes/admin/foopilot/js/foopilot-modal.js', array( 'jquery' ), FOOGALLERY_VERSION );
 		}
 
 		/**
 		 * Generate the nonce.
 		 */
 		public function generate_nonce() {
-			return wp_create_nonce( 'foopilot_nonce' );
+			return wp_create_nonce( 'foogallery-foopilot' );
 		}
 
 		/**
@@ -71,7 +50,7 @@ if ( ! class_exists( 'FooGallery_Admin_FooPilot' ) ) {
 		 * @return bool Whether the nonce is valid.
 		 */
 		public function verify_nonce( $nonce ) {
-			return wp_verify_nonce( $nonce, 'foopilot_nonce' );
+			return wp_verify_nonce( $nonce, 'foogallery-foopilot' );
 		}
 
 		/**
@@ -112,7 +91,7 @@ if ( ! class_exists( 'FooGallery_Admin_FooPilot' ) ) {
 			$foopilot_api_key = foogallery_get_setting( 'foopilot_api_key' );
 			$credit_points    = $this->get_foopilot_credit_points();
 			?>
-			<div id="foopilot-modal" class="foogallery-foopilots-modal-wrapper" style="display: none;">
+			<div id="foopilot-modal" class="foogallery-foopilots-modal-wrapper" data-nonce="<?php esc_attr( $this->generate_nonce() ); ?>" style="display: none;">
 				<div class="media-modal wp-core-ui" id="fg-foopilot-modal">
 					<div>
 						<button type="button" class="media-modal-close">
@@ -143,14 +122,15 @@ if ( ! class_exists( 'FooGallery_Admin_FooPilot' ) ) {
 									</h3>
 								</div>
 								<section>
-									<?php
-									// If the API key is not present, display the sign-up form.
-									if ( empty( $foopilot_api_key ) ) {
-										echo esc_html( $this->display_foopilot_signup_form_html() );
-									} else {
-										echo esc_html( $this->display_foopilot_content_html() );
-									}
-									?>
+									CONTENT GOES HERE
+<!--									--><?php
+//									// If the API key is not present, display the sign-up form.
+//									if ( empty( $foopilot_api_key ) ) {
+//										echo esc_html( $this->display_foopilot_signup_form_html() );
+//									} else {
+//										echo esc_html( $this->display_foopilot_content_html() );
+//									}
+//									?>
 								</section>
 								<div class="foogallery-foopilot-modal-toolbar">
 									<div class="foogallery-foopilot-modal-toolbar-inner">
@@ -243,24 +223,25 @@ if ( ! class_exists( 'FooGallery_Admin_FooPilot' ) ) {
 			// Verify nonce and user permissions.
 			$foopilot_nonce = isset( $_POST['foopilot_nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['foopilot_nonce'] ) ) : '';
 
-			if ( wp_verify_nonce( $foopilot_nonce, 'foopilot_nonce' ) ) {
+			if ( $this->verify_nonce( $foopilot_nonce ) ) {
 				// Retrieve task from POST data.
 				$task = isset( $_POST['task'] ) ? sanitize_text_field( wp_unslash( $_POST['task'] ) ) : '';
 
-				// Include the appropriate PHP file based on the task.
-				if ( 'tag' === $task ) {
-					require_once FOOGALLERY_PATH . 'includes/admin/foopilot/tasks/class-foopilot-generate-tags.php';
-					echo esc_html( FooGallery_Admin_Foopilot_Generate_Tags::get_foopilot_generate_tags_html() );
-				} elseif ( 'caption' === $task ) {
-					require_once FOOGALLERY_PATH . 'includes/admin/foopilot/tasks/class-foopilot-generate-caption.php';
-					echo esc_html( FooGallery_Admin_Foopilot_Generate_Caption::get_foopilot_generate_caption_html() );
-				} elseif ( 'credit' === $task ) {
-					require_once FOOGALLERY_PATH . 'includes/admin/foopilot/tasks/class-foopilot-generate-credit.php';
-					echo esc_html( FooGallery_Admin_Foopilot_Generate_Credit::get_foopilot_generate_credit_html() );
-				} else {
-					// Handle unknown task.
-					echo esc_html__( 'Task not found', 'fogallery' );
+				if ( empty( $task ) ) {
+					$task = 'credits';
 				}
+
+				if ( !empty( $task ) ) {
+
+					$require = FOOGALLERY_PATH . 'includes/admin/foopilot/tasks/' . $task . '.php';
+
+					if ( file_exists( $require ) ) {
+						require_once( $require );
+					} else {
+						echo esc_html__( 'Unknown FooPilot task!', 'foogallery' );
+					}
+				}
+
 				wp_die();
 			} else {
 				wp_die( 'Unauthorized request!' );
