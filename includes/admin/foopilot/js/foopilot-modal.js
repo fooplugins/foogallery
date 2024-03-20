@@ -50,11 +50,14 @@ jQuery(document).ready(function($) {
         }
     }
 
-    // Function to handle point deduction
+    // Function to handle point deduction.
     function handlePointDeduction() {
         var currentPoints = parseInt($('#foogallery-credit-points').text());
         var pointsToDeduct = 1; // will be determined by FOOPILOT API
-        if (currentPoints >= pointsToDeduct) {
+        var task = $('.foogallery-foopilot').data('task'); // Get the current task
+
+        // Check if the task is not "credits", then deduct points
+        if (task !== 'credits' && currentPoints >= pointsToDeduct) {
             $.ajax({
                 url: ajaxurl,
                 type: 'POST',
@@ -70,7 +73,7 @@ jQuery(document).ready(function($) {
                     console.error(xhr.responseText); // Log any errors
                 }
             });
-        } else {
+        } else if (task !== 'credits') {
             $('.foopilot-task-html').html('Insufficient points to perform this task.');
         }
     }
