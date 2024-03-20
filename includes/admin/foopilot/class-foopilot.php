@@ -122,15 +122,14 @@ if ( ! class_exists( 'FooGallery_Admin_FooPilot' ) ) {
 									</h3>
 								</div>
 								<section>
-									CONTENT GOES HERE
-<!--									--><?php
-//									// If the API key is not present, display the sign-up form.
-//									if ( empty( $foopilot_api_key ) ) {
-//										echo esc_html( $this->display_foopilot_signup_form_html() );
-//									} else {
-//										echo esc_html( $this->display_foopilot_content_html() );
-//									}
-//									?>
+									<?php
+									// If the API key is not present, display the sign-up form.
+									if ( empty( $foopilot_api_key ) ) {
+										echo $this->display_foopilot_signup_form_html();
+									} else {
+										echo $this->display_foopilot_content_html();
+									}
+									?>
 								</section>
 								<div class="foogallery-foopilot-modal-toolbar">
 									<div class="foogallery-foopilot-modal-toolbar-inner">
@@ -183,11 +182,11 @@ if ( ! class_exists( 'FooGallery_Admin_FooPilot' ) ) {
 			ob_start();
 			?>
 			<div class="foogallery-foopilot-modal-sidebar">
-				<?php echo esc_html( $this->display_foopilot_settings_html() ); ?>
+				<?php echo $this->display_foopilot_settings_html(); ?>
 			</div>
 			<div class="foogallery-foopilot-modal-container">
 				<div class="foogallery-foopilot-modal-container-inner">
-					<?php echo esc_html( $this->display_foopilot_selected_task_html() ); ?>
+					<?php echo $this->display_foopilot_selected_task_html(); ?>
 				</div>
 			</div>
 			<?php
@@ -202,8 +201,8 @@ if ( ! class_exists( 'FooGallery_Admin_FooPilot' ) ) {
 			?>
 				<div class="foogallery-foopilot-modal-sidebar-menu">
 					<a href="#" class="media-menu-item foogallery-foopilot" data-task="tags"><?php esc_html_e( 'Generate Tags', 'foogallery' ); ?></a>
-					<a href="#" class="media-menu-item foogallery-foopilot" data-task="caption"><?php esc_html_e( 'Generate Caption', 'foogallery' ); ?></a>
-					<a href="#" class="media-menu-item foogallery-foopilot" data-task="credit"><?php esc_html_e( 'Buy Credits', 'foogallery' ); ?></a>
+					<a href="#" class="media-menu-item foogallery-foopilot" data-task="captions"><?php esc_html_e( 'Generate Caption', 'foogallery' ); ?></a>
+					<a href="#" class="media-menu-item foogallery-foopilot" data-task="credits"><?php esc_html_e( 'Buy Credits', 'foogallery' ); ?></a>
 				</div>
 			<?php
 			return ob_get_clean();
@@ -231,12 +230,12 @@ if ( ! class_exists( 'FooGallery_Admin_FooPilot' ) ) {
 					$task = 'credits';
 				}
 
-				if ( !empty( $task ) ) {
+				if ( ! empty( $task ) ) {
 
 					$require = FOOGALLERY_PATH . 'includes/admin/foopilot/tasks/' . $task . '.php';
 
 					if ( file_exists( $require ) ) {
-						require_once( $require );
+						require_once $require;
 					} else {
 						echo esc_html__( 'Unknown FooPilot task!', 'foogallery' );
 					}
@@ -287,6 +286,7 @@ if ( ! class_exists( 'FooGallery_Admin_FooPilot' ) ) {
 
 				// Check if the API key was saved successfully.
 				$saved_api_key = foogallery_get_setting( 'foopilot_api_key' );
+
 				if ( $saved_api_key === $random_api_key ) {
 					wp_send_json_success( 'API key generated successfully.' );
 				} else {
