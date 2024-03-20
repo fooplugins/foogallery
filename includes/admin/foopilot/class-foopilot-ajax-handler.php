@@ -19,11 +19,11 @@ if ( ! class_exists( 'FooGallery_Admin_FooPilot_Ajax_Handler' ) ) {
 		/**
 		 * Primary class constructor.
 		 */
-		public function __construct() {
+		public function __construct( FooGallery_Admin_FooPilot_Points_Manager $points_manager ) {
 			add_action( 'wp_ajax_generate_foopilot_api_key', array( $this, 'generate_random_api_key' ) );
 			add_action( 'wp_ajax_deduct_foopilot_points', array( $this, 'deduct_foopilot_points' ) );
 			add_action( 'wp_ajax_foopilot_generate_task_content', array( $this, 'foopilot_generate_task_content' ) );
-			$this->points_manager = new FooGallery_Admin_FooPilot_Points_Manager();
+			$this->points_manager = $points_manager;
 		}
 
 		/**

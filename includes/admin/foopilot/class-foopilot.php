@@ -18,8 +18,9 @@ if ( ! class_exists( 'FooGallery_Admin_FooPilot' ) ) {
 		public function __construct() {
 			add_filter( 'foogallery_admin_settings_override', array( $this, 'add_foopilot_settings' ), 50 );
 			add_action( 'foogallery_admin_enqueue_scripts', array( $this, 'enqueue_scripts_and_styles' ) );
-			new FooGallery_Admin_FooPilot_Ajax_Handler();
-			new FooGallery_Admin_FooPilot_Modal();
+			$points_manager = new FooGallery_Admin_FooPilot_Points_Manager();
+			new FooGallery_Admin_FooPilot_Ajax_Handler( $points_manager );
+			new FooGallery_Admin_FooPilot_Modal( $points_manager );
 		}
 
 		/**

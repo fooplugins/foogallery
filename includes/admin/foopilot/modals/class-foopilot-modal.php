@@ -19,9 +19,9 @@ if ( ! class_exists( 'FooGallery_Admin_FooPilot_Modal' ) ) {
 		/**
 		 * Primary class constructor.
 		 */
-		public function __construct() {
+		public function __construct( FooGallery_Admin_FooPilot_Points_Manager $points_manager ) {
+			$this->points_manager = $points_manager;
 			add_action( 'admin_footer', array( $this, 'display_foopilot_modal_html' ) );
-			$this->points_manager = new FooGallery_Admin_FooPilot_Points_Manager();
 		}
 
 		/**
