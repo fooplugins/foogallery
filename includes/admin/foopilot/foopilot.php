@@ -2,6 +2,7 @@
 require_once FOOGALLERY_PATH . 'includes/admin/foopilot/class-foopilot.php';
 require_once FOOGALLERY_PATH . 'includes/admin/foopilot/class-foopilot-ajax-handler.php';
 require_once FOOGALLERY_PATH . 'includes/admin/foopilot/class-foopilot-points-manager.php';
+require_once FOOGALLERY_PATH . 'includes/admin/foopilot/modals/class-foopilot-modal.php';
 
 /**
  * Generate the nonce.
