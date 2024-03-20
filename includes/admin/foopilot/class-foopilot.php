@@ -40,7 +40,7 @@ if ( ! class_exists( 'FooGallery_Admin_FooPilot' ) ) {
 		 * Generate the nonce.
 		 */
 		public function generate_nonce() {
-			return wp_create_nonce( 'foogallery-foopilot' );
+			return wp_create_nonce( 'foopilot_nonce' );
 		}
 
 		/**
@@ -50,36 +50,28 @@ if ( ! class_exists( 'FooGallery_Admin_FooPilot' ) ) {
 		 * @return bool Whether the nonce is valid.
 		 */
 		public function verify_nonce( $nonce ) {
-			return wp_verify_nonce( $nonce, 'foogallery-foopilot' );
+			return wp_verify_nonce( $nonce, 'foopilot_nonce' );
 		}
 
 		/**
 		 * Deduct points after completing a task and return updated modal content.
 		 */
 		public function deduct_foopilot_points() {
-			// Verify the nonce.
-			$foopilot_nonce = isset( $_POST['foopilot_nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['foopilot_nonce'] ) ) : '';
-
-			if ( wp_verify_nonce( $foopilot_nonce, 'foopilot_nonce' ) ) {
-				// Deduct points.
-				if ( isset( $_POST['points'] ) ) {
-					$points_to_deduct = intval( $_POST['points'] );
-					// Check if user has sufficient points.
-					$current_points = $this->get_foopilot_credit_points();
-					if ( $current_points >= $points_to_deduct && $points_to_deduct > 0 ) {
-						// Deduct points only if the user has sufficient points.
-						$updated_points = max( 0, $current_points - $points_to_deduct );
-						update_option( 'foopilot_credit_points', $updated_points );
-						wp_send_json_success( $updated_points );
-					} else {
-						// Handle case where user doesn't have enough points.
-						wp_send_json_error( 'Insufficient points' );
-					}
+			// Deduct points.
+			if ( isset( $_POST['points'] ) ) {
+				$points_to_deduct = intval( $_POST['points'] );
+				// Check if user has sufficient points.
+				$current_points = $this->get_foopilot_credit_points();
+				if ( $current_points >= $points_to_deduct && $points_to_deduct > 0 ) {
+					// Deduct points only if the user has sufficient points.
+					$updated_points = max( 0, $current_points - $points_to_deduct );
+					update_option( 'foopilot_credit_points', $updated_points );
+					wp_send_json_success( $updated_points );
+				} else {
+					// Handle case where user doesn't have enough points.
+					wp_send_json_error( 'Insufficient points' );
 				}
-			} else {
-				wp_die( 'Unauthorized request!' );
 			}
-
 			wp_die();
 		}
 
@@ -116,7 +108,7 @@ if ( ! class_exists( 'FooGallery_Admin_FooPilot' ) ) {
 										<?php
 										// Show "Buy" button if credit points are less than 10.
 										if ( $credit_points < 10 ) {
-											echo '<button class="buy-credits button button-primary button-small" data-task="credit" style="margin-left: 10px;">' . esc_html__( 'Buy credits', 'foogallery' ) . '</button>';
+											echo '<button class="buy-credits button button-primary button-small" data-task="credits" style="margin-left: 10px;">' . esc_html__( 'Buy credits', 'foogallery' ) . '</button>';
 										}
 										?>
 									</h3>
@@ -165,7 +157,7 @@ if ( ! class_exists( 'FooGallery_Admin_FooPilot' ) ) {
 					<p><?php esc_html_e( 'Unlock the power of FooPilot! Sign up for free and get 20 credits to explore our service.', 'foogallery' ); ?></p>
 					<form class="foogallery-foopilot-signup-form-inner-content">
 						<div style="margin-bottom: 20px;">
-							<input type="email" id="foopilot-email" name="email" placeholder="<?php echo esc_attr(__( 'Enter your email', 'foogallery' ) ); ?>" value="<?php echo esc_attr(foogallery_sanitize_javascript(wp_get_current_user()->user_email) ); ?>" style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; width: 250px;">
+							<input type="email" id="foopilot-email" name="email" placeholder="<?php echo esc_attr( __( 'Enter your email', 'foogallery' ) ); ?>" value="<?php echo esc_attr( foogallery_sanitize_javascript( wp_get_current_user()->user_email ) ); ?>" style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; width: 250px;">
 						</div>
 						<button class="foogallery-foopilot-signup-form-inner-content-button button button-primary button-large" type="submit" style="padding: 10px 20px; background-color: #0073e6; color: #fff; border: none; border-radius: 5px; cursor: pointer;"><?php esc_html_e( 'Sign Up for free', 'foogallery' ); ?></button>
 					</form>
@@ -219,32 +211,24 @@ if ( ! class_exists( 'FooGallery_Admin_FooPilot' ) ) {
 		 * @return void
 		 */
 		public function foopilot_generate_task_content() {
-			// Verify nonce and user permissions.
-			$foopilot_nonce = isset( $_POST['foopilot_nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['foopilot_nonce'] ) ) : '';
+			$task = isset( $_POST['task'] ) ? sanitize_text_field( wp_unslash( $_POST['task'] ) ) : '';
 
-			if ( $this->verify_nonce( $foopilot_nonce ) ) {
-				// Retrieve task from POST data.
-				$task = isset( $_POST['task'] ) ? sanitize_text_field( wp_unslash( $_POST['task'] ) ) : '';
-
-				if ( empty( $task ) ) {
-					$task = 'credits';
-				}
-
-				if ( ! empty( $task ) ) {
-
-					$require = FOOGALLERY_PATH . 'includes/admin/foopilot/tasks/' . $task . '.php';
-
-					if ( file_exists( $require ) ) {
-						require_once $require;
-					} else {
-						echo esc_html__( 'Unknown FooPilot task!', 'foogallery' );
-					}
-				}
-
-				wp_die();
-			} else {
-				wp_die( 'Unauthorized request!' );
+			if ( empty( $task ) ) {
+				$task = 'credits';
 			}
+
+			if ( ! empty( $task ) ) {
+
+				$require = FOOGALLERY_PATH . 'includes/admin/foopilot/tasks/' . $task . '.php';
+
+				if ( file_exists( $require ) ) {
+					require_once $require;
+				} else {
+					echo esc_html__( 'Unknown FooPilot task!', 'foogallery' );
+				}
+			}
+
+			wp_die();
 		}
 
 		/**
@@ -264,36 +248,29 @@ if ( ! class_exists( 'FooGallery_Admin_FooPilot' ) ) {
 		 * Generate Foopilot api keys
 		 */
 		public function generate_random_api_key() {
-			// Verify the nonce.
-			$foopilot_nonce = isset( $_POST['foopilot_nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['foopilot_nonce'] ) ) : '';
+			$current_points = $this->get_foopilot_credit_points();
 
-			if ( wp_verify_nonce( $foopilot_nonce, 'foopilot_nonce' ) ) {
-				$current_points = $this->get_foopilot_credit_points();
+			// If the current points balance is greater than 0, reset it to 0.
+			if ( $current_points > 0 ) {
+				update_option( 'foopilot_credit_points', 0 );
+			}
 
-				// If the current points balance is greater than 0, reset it to 0.
-				if ( $current_points > 0 ) {
-					update_option( 'foopilot_credit_points', 0 );
-				}
+			// Credit the registered user +20 points.
+			$this->add_foopilot_credit_points( 20 );
 
-				// Credit the registered user +20 points.
-				$this->add_foopilot_credit_points( 20 );
+			// Generate a random API key (64 characters in hexadecimal).
+			$random_api_key = bin2hex( random_bytes( 32 ) );
 
-				// Generate a random API key (64 characters in hexadecimal).
-				$random_api_key = bin2hex( random_bytes( 32 ) );
+			// Save API key to foogallery setting.
+			foogallery_set_setting( 'foopilot_api_key', $random_api_key );
 
-				// Save API key to foogallery setting.
-				foogallery_set_setting( 'foopilot_api_key', $random_api_key );
+			// Check if the API key was saved successfully.
+			$saved_api_key = foogallery_get_setting( 'foopilot_api_key' );
 
-				// Check if the API key was saved successfully.
-				$saved_api_key = foogallery_get_setting( 'foopilot_api_key' );
-
-				if ( $saved_api_key === $random_api_key ) {
-					wp_send_json_success( 'API key generated successfully.' );
-				} else {
-					wp_send_json_error( 'Failed to save API key.' );
-				}
+			if ( $saved_api_key === $random_api_key ) {
+				wp_send_json_success( 'API key generated successfully.' );
 			} else {
-				wp_die( 'Unauthorized request!' );
+				wp_send_json_error( 'Failed to save API key.' );
 			}
 		}
 

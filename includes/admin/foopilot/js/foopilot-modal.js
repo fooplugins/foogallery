@@ -21,10 +21,11 @@ jQuery(document).ready(function($) {
     function handleFoopilotButtonClick(event) {
         event.preventDefault();
         var task = $(this).data('task');
+        var nonce = $('#foopilot-modal').data('nonce'); 
         var ajaxData = {
             action: 'foopilot_generate_task_content',
             task: task,
-            foopilot_nonce: '<?php echo wp_create_nonce("foopilot_nonce"); ?>'
+            foopilot_nonce: nonce
         };
         // Send AJAX request to generate task content dynamically
         $.ajax({
@@ -44,7 +45,7 @@ jQuery(document).ready(function($) {
     function handleTaskResponse(task, response) {
         $('.foopilot-task-html').html(response);
         $('#foopilot-modal').show();
-        if (task !== 'credit') {
+        if (task !== 'credits') {
             handlePointDeduction();
         }
     }
