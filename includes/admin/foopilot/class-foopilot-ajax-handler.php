@@ -41,7 +41,11 @@ if ( ! class_exists( 'FooGallery_Admin_FooPilot_Ajax_Handler' ) ) {
 			$this->points_manager->add_foopilot_credit_points( 20 );
 
 			// Generate a random API key (64 characters in hexadecimal).
-			$random_api_key = bin2hex( random_bytes( 32 ) );
+			do {
+				$random_api_key = bin2hex( random_bytes( 32 ) );
+				// Check if the generated key already exists.
+				$existing_api_key = foogallery_get_setting( 'foopilot_api_key' );
+			} while ( $existing_api_key === $random_api_key );
 
 			// Save API key to foogallery setting.
 			foogallery_set_setting( 'foopilot_api_key', $random_api_key );
