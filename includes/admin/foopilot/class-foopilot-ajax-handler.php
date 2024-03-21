@@ -67,9 +67,6 @@ if ( ! class_exists( 'FooGallery_Admin_FooPilot_Ajax_Handler' ) ) {
 			if ( ! current_user_can( 'manage_options' ) ) {
 				wp_die();
 			}
-			if ( ! check_ajax_referer( 'foogallery_foopilot_nonce', 'nonce', false ) ) {
-				wp_die();
-			}
 			if ( ! isset( $_POST['points'] ) ) {
 				wp_die();
 			}
