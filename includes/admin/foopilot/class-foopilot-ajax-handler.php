@@ -13,11 +13,15 @@ if ( ! class_exists( 'FooGallery_Admin_FooPilot_Ajax_Handler' ) ) {
 	class FooGallery_Admin_FooPilot_Ajax_Handler {
 		/**
 		 * Property to hold an instance of FooGallery_Admin_FooPilot_Points_Manager.
+		 *
+		 * @var FooGallery_Admin_FooPilot_Points_Manager
 		 */
 		private $points_manager;
 
 		/**
 		 * Primary class constructor.
+		 *
+		 *  @param FooGallery_Admin_FooPilot_Points_Manager $points_manager The points manager instance.
 		 */
 		public function __construct( FooGallery_Admin_FooPilot_Points_Manager $points_manager ) {
 			add_action( 'wp_ajax_generate_foopilot_api_key', array( $this, 'generate_random_api_key' ) );

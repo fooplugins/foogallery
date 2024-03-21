@@ -5,7 +5,9 @@ require_once FOOGALLERY_PATH . 'includes/admin/foopilot/class-foopilot-points-ma
 require_once FOOGALLERY_PATH . 'includes/admin/foopilot/modals/class-foopilot-modal.php';
 
 /**
- * Generate the nonce.
+ * Generate a nonce.
+ *
+ * @return string The generated nonce.
  */
 function foopilot_generate_nonce() {
 	return wp_create_nonce( 'foopilot_nonce' );
