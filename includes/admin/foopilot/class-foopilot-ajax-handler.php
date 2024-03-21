@@ -27,30 +27,30 @@ if ( ! class_exists( 'FooGallery_Admin_FooPilot_Ajax_Handler' ) ) {
 		}
 
 		/**
-		 * Generate Foopilot api keys
+		 * Generate Foopilot api keys and credit points to the registered user.
 		 */
 		public function generate_random_api_key() {
 			$current_points = $this->points_manager->get_foopilot_credit_points();
 
-			// If the current points balance is greater than 0, reset it to 0.
+			// Reset points to 0 if the user has any points.
 			if ( $current_points > 0 ) {
 				update_option( 'foopilot_credit_points', 0 );
 			}
 
-			// Credit the registered user +20 points.
+			// Add 20 points to the user's account.
 			$this->points_manager->add_foopilot_credit_points( 20 );
 
-			// Generate a random API key (64 characters in hexadecimal).
+			// Generate a random API key.
 			do {
 				$random_api_key = bin2hex( random_bytes( 32 ) );
-				// Check if the generated key already exists.
+				// Check if the generated API key already exists.
 				$existing_api_key = foogallery_get_setting( 'foopilot_api_key' );
 			} while ( $existing_api_key === $random_api_key );
 
-			// Save API key to foogallery setting.
+			// Save the generated API key.
 			foogallery_set_setting( 'foopilot_api_key', $random_api_key );
 
-			// Check if the API key was saved successfully.
+			// Check if the API key was saved successfully and return the appropriate response.
 			$saved_api_key = foogallery_get_setting( 'foopilot_api_key' );
 
 			if ( $saved_api_key === $random_api_key ) {
@@ -61,25 +61,23 @@ if ( ! class_exists( 'FooGallery_Admin_FooPilot_Ajax_Handler' ) ) {
 		}
 
 		/**
-		 * Deduct points after completing a task and return updated modal content.
+		 * Deduct points from the user's account.
 		 */
 		public function deduct_foopilot_points() {
-			// Deduct points.
-			if ( isset( $_POST['points'] ) ) {
-				$points_to_deduct = intval( $_POST['points'] );
-				// Check if user has sufficient points.
-				$current_points = $this->points_manager->get_foopilot_credit_points();
-				if ( $current_points >= $points_to_deduct && $points_to_deduct > 0 ) {
-					// Deduct points only if the user has sufficient points.
-					$updated_points = max( 0, $current_points - $points_to_deduct );
-					update_option( 'foopilot_credit_points', $updated_points );
-					wp_send_json_success( $updated_points );
-				} else {
-					// Handle case where user doesn't have enough points.
-					wp_send_json_error( 'Insufficient points' );
-				}
+			if ( ! current_user_can( 'manage_options' ) ) {
+				wp_die();
 			}
-			wp_die();
+			if ( ! check_ajax_referer( 'foogallery_foopilot_nonce', 'nonce', false ) ) {
+				wp_die();
+			}
+			if ( ! isset( $_POST['points'] ) ) {
+				wp_die();
+			}
+			$points = intval( $_POST['points'] );
+			$current_points = $this->points_manager->get_foopilot_credit_points();
+			$updated_points = $current_points - $points;
+			update_option( 'foopilot_credit_points', $updated_points );
+			wp_send_json_success( $updated_points );
 		}
 
 		/**

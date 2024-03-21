@@ -8,12 +8,12 @@
 if ( ! class_exists( 'FooGallery_Admin_FooPilot' ) ) {
 
 	/**
-	 * FooGallery Admin FooPilot class
+	 * FooGallery Admin FooPilot class for handling FooPilot-related functionality.
 	 */
 	class FooGallery_Admin_FooPilot {
 
 		/**
-		 * Primary class constructor.
+		 * Primary class constructor for FooGallery_Admin_FooPilot.
 		 */
 		public function __construct() {
 			add_filter( 'foogallery_admin_settings_override', array( $this, 'add_foopilot_settings' ), 50 );
@@ -24,7 +24,7 @@ if ( ! class_exists( 'FooGallery_Admin_FooPilot' ) ) {
 		}
 
 		/**
-		 * Enqueue scripts and styles.
+		 * Enqueue scripts and styles for the FooPilot modal.
 		 */
 		public function enqueue_scripts_and_styles() {
 			wp_enqueue_style( 'foogallery.admin.foopilot', FOOGALLERY_URL . 'includes/admin/foopilot/css/foopilot-modal.css', array(), FOOGALLERY_VERSION );
