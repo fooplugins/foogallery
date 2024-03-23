@@ -1368,63 +1368,63 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 					<section id="foogallery-panel-commerce" class="tab-panel">
 						<div class="settings">
 							<span class="setting has-description" data-setting="button-text">
-								<label for="attachment-details-two-column-button-text" class="name"><?php _e('Button Text', 'foogallery'); ?></label>
-								<input type="text" name="foogallery[button-text]" id="attachment-details-two-column-button-text" value="<?php echo $modal_data['foogallery_button_text']; ?>">
+								<label for="attachment-details-two-column-button-text" class="name"><?php esc_html_e( 'Button Text', 'foogallery'); ?></label>
+								<input type="text" name="foogallery[button-text]" id="attachment-details-two-column-button-text" value="<?php echo esc_attr( $modal_data['foogallery_button_text'] ); ?>">
 							</span>
 							<p class="description">
-                                <?php _e( 'Show another button for this image by providing the button text. Leave blank to not add another button.', 'foogallery' ); ?>
+                                <?php esc_html_e( 'Show another button for this image by providing the button text. Leave blank to not add another button.', 'foogallery' ); ?>
                             </p>
 							<span class="setting has-description" data-setting="button-url">
-								<label for="attachment-details-two-column-button-url" class="name"><?php _e('Button URL', 'foogallery'); ?></label>
-								<input type="text" name="foogallery[button-url]" id="attachment-details-two-column-button-url" value="<?php echo $modal_data['foogallery_button_url']; ?>">
+								<label for="attachment-details-two-column-button-url" class="name"><?php esc_html_e('Button URL', 'foogallery'); ?></label>
+								<input type="text" name="foogallery[button-url]" id="attachment-details-two-column-button-url" value="<?php echo esc_attr( $modal_data['foogallery_button_url'] ); ?>">
 							</span>
 							<p class="description">
-                                <?php _e( 'The URL that will open when the button is clicked, if another button is added above.', 'foogallery' ); ?>
+                                <?php esc_html_e( 'The URL that will open when the button is clicked, if another button is added above.', 'foogallery' ); ?>
                             </p>
 							<span class="setting has-description" data-setting="ribbon">
-								<label for="attachment-details-two-column-ribbon" class="name"><?php _e('Ribbon', 'foogallery'); ?></label>
+								<label for="attachment-details-two-column-ribbon" class="name"><?php esc_html_e('Ribbon', 'foogallery'); ?></label>
 								<select id="attachment-details-two-column-ribbon" name="foogallery[ribbon]">
 									<?php foreach ( FooGallery_Pro_Ribbons::get_ribbon_choices() as $ribbon => $label ) { ?>
-									<option value="<?php echo $ribbon; ?>" <?php selected( $modal_data['foogallery_ribbon'], $ribbon, true ); ?>><?php echo $label; ?></option>
+									<option value="<?php echo esc_attr( $ribbon ); ?>" <?php selected( $modal_data['foogallery_ribbon'], $ribbon, true ); ?>><?php echo esc_html( $label ); ?></option>
 									<?php } ?>
 								</select>
 							</span>
 							<p class="description">
-                                <?php _e( 'Force a specific ribbon to always show for this image.', 'foogallery' ); ?>
+                                <?php esc_html_e( 'Force a specific ribbon to always show for this image.', 'foogallery' ); ?>
                             </p>
 							<span class="setting has-description" data-setting="ribbon-text">
 								<label for="attachment-details-two-column-ribbon-text" class="name"><?php _e('Ribbon Text', 'foogallery'); ?></label>
-								<input type="text" name="foogallery[ribbon-text]" id="attachment-details-two-column-ribbon-text" value="<?php echo $modal_data['foogallery_ribbon_text']; ?>">
+								<input type="text" name="foogallery[ribbon-text]" id="attachment-details-two-column-ribbon-text" value="<?php echo esc_attr( $modal_data['foogallery_ribbon_text'] ); ?>">
 							</span>
 							<p class="description">
-                                <?php _e( 'The ribbon text that will show, if a ribbon is selected above.', 'foogallery' ); ?>
+                                <?php esc_html_e( 'The ribbon text that will show, if a ribbon is selected above.', 'foogallery' ); ?>
                             </p>
 							<span class="setting has-description" data-setting="product-id">
 								<label for="attachment-details-two-column-product-id" class="name"><?php _e('Product ID', 'foogallery'); ?></label>
-								<input type="text" name="foogallery[product-id]" id="attachment-details-two-column-product-id" value="<?php echo $modal_data['foogallery_product']; ?>">
+								<input type="text" name="foogallery[product-id]" id="attachment-details-two-column-product-id" value="<?php echo esc_attr( $modal_data['foogallery_product'] ); ?>">
 							</span>
 							<p class="description">
-                                <?php _e( 'Link this image to a WooCommerce product. This will override the master product (if used).', 'foogallery' ); ?>
+                                <?php esc_html_e( 'Link this image to a WooCommerce product. This will override the master product (if used).', 'foogallery' ); ?>
                             </p>
                             <span class="setting has-description" data-setting="download_file">
-								<label for="attachment-details-download-file" class="name"><?php _e('Download File', 'foogallery'); ?></label>
+								<label for="attachment-details-download-file" class="name"><?php esc_html_e('Download File', 'foogallery'); ?></label>
 								<div class="setting-with-buttons">
-                                    <input type="text" name="foogallery[download-file]" id="attachment-details-download-file" value="<?php echo $modal_data['foogallery_download_file']; ?>">
+                                    <input type="text" name="foogallery[download-file]" id="attachment-details-download-file" value="<?php echo esc_attr( $modal_data['foogallery_download_file'] ); ?>">
                                     <div>
                                         <button type="button" class="button button-primary button-small foogallery-media-selector-choose"
                                             data-input="#attachment-details-download-file"
-                                            data-modal-title="<?php _e( 'Select Download File', 'foogallery' ); ?>"
-                                            data-modal-button="<?php _e( 'Select File', 'foogallery' ); ?>"
-                                            data-modal-multiple="no"><?php _e( 'Choose', 'foogallery' ); ?>
+                                            data-modal-title="<?php esc_attr_e( 'Select Download File', 'foogallery' ); ?>"
+                                            data-modal-button="<?php esc_attr_e( 'Select File', 'foogallery' ); ?>"
+                                            data-modal-multiple="no"><?php esc_attr_e( 'Choose', 'foogallery' ); ?>
                                         </button>
                                         <button type="button" class="button button-secondary button-small foogallery-media-selector-clear"
-                                            data-input="#attachment-details-download-file"><?php _e( 'Clear', 'foogallery' ); ?>
+                                            data-input="#attachment-details-download-file"><?php esc_html_e( 'Clear', 'foogallery' ); ?>
                                         </button>
                                     </div>
                                 </div>
 							</span>
 							<p class="description">
-                                <?php _e( 'You can override the default file that is used for downloads. This file will typically be a larger version of the original.', 'foogallery' ); ?>
+                                <?php esc_html_e( 'You can override the default file that is used for downloads. This file will typically be a larger version of the original.', 'foogallery' ); ?>
                             </p>
 						</div>
 					</section>
