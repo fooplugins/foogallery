@@ -1570,6 +1570,7 @@ function foogallery_sanitize_javascript( $input ) {
         'new Function\(',
         'onmouseover',
         'onmouseout',
+        'onpointerenter',
         'onclick',
         'onload',
         'onchange',

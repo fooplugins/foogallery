@@ -14,7 +14,7 @@ if ( ! class_exists( 'FooGallery_Advanced_Gallery_Settings' ) ) {
 			add_filter( 'foogallery_build_container_data_options', array( $this, 'add_data_options' ), 30, 3 );
 
 			//add custom attributes
-			add_filter( 'foogallery_build_container_attributes_html', array( $this, 'add_container_attributes' ), 10, 3 );
+			add_filter( 'foogallery_build_container_attributes', array( $this, 'add_container_attributes' ), 10, 3 );
 
 			//add custom class to container
 			add_filter( 'foogallery_build_class_attribute', array( $this, 'add_custom_class' ), 10, 2 );
@@ -62,6 +62,18 @@ if ( ! class_exists( 'FooGallery_Advanced_Gallery_Settings' ) ) {
 				'default'  => '',
 			);
 
+            $custom_attribute_desc = __( 'Even though the Custom Attributes setting is useful in some scenarios, due to numerous security concerns, we have decided to disable it. It will be completely removed in a future update. We are keeping it for now, to make it easier to migrate to the newer and safer Custom Attribute Key and Value settings below.', 'foogallery' );
+            $custom_attribute_desc_link = '<a href="https://fooplugins.com/support" target="_blank">' . __( 'contact us', 'foogallery' ) . '</a>';
+            $custom_attribute_desc .= '</br>' . sprintf( __( 'Please %s for any questions or help.', 'foogallery' ), $custom_attribute_desc_link );
+
+            $fields[] = array(
+                'id'      => 'custom_attributes_help',
+                'title'   => __( 'Custom Attributes Setting No Longer Works!', 'foogallery' ),
+                'desc'    => $custom_attribute_desc,
+                'section'  => __( 'Advanced', 'foogallery' ),
+                'type'    => 'help'
+            );
+
 			$fields[] = array(
 				'id'       => 'custom_attributes',
 				'title'    => __( 'Custom Attributes', 'foogallery' ),
@@ -70,6 +82,24 @@ if ( ! class_exists( 'FooGallery_Advanced_Gallery_Settings' ) ) {
 				'type'     => 'textarea',
 				'default'  => '',
 			);
+
+            $fields[] = array(
+                'id'       => 'custom_attribute_key',
+                'title'    => __( 'Custom Attribute Key', 'foogallery' ),
+                'desc'     => __( 'Used in combination with "Custom Attribute Value" to add a custom attribute to the gallery container. To be used by developers only!', 'foogallery' ),
+                'section'  => __( 'Advanced', 'foogallery' ),
+                'type'     => 'text',
+                'default'  => '',
+            );
+
+            $fields[] = array(
+                'id'       => 'custom_attribute_value',
+                'title'    => __( 'Custom Attribute Value', 'foogallery' ),
+                'desc'     => __( 'Used in combination with "Custom Attribute Key" to add a custom attribute to the gallery container. To be used by developers only!', 'foogallery' ),
+                'section'  => __( 'Advanced', 'foogallery' ),
+                'type'     => 'text',
+                'default'  => '',
+            );
 
 			$fields[] = array(
 				'id'       => 'custom_class',
@@ -126,36 +156,33 @@ if ( ! class_exists( 'FooGallery_Advanced_Gallery_Settings' ) ) {
 		}
 
 		/**
-		 * Adds any custom attributes added to the gallery container attributes html
+		 * Adds a custom attribute to the gallery container attributes
 		 *
-		 * @param $html
 		 * @param $attributes
 		 * @param $gallery
 		 *
 		 * @return mixed
 		 */
-		function add_container_attributes( $html, $attributes, $gallery ) {
+		function add_container_attributes( $attributes, $gallery ) {
 			global $current_foogallery;
 
 			if ( $current_foogallery === $gallery ) {
-				$custom_attributes = foogallery_gallery_template_setting( 'custom_attributes', '' );
+                $custom_attribute_key = sanitize_title( foogallery_gallery_template_setting( 'custom_attribute_key', '' ) );
+                $custom_attribute_value = sanitize_html_class( foogallery_gallery_template_setting( 'custom_attribute_value', '' ) );
 
-                // The stripping process is not quick, so only do this when necessary.
-                if ( ! empty( $custom_attributes ) ) {
-                    // Sanitize the custom attributes
-                    $custom_attributes = foogallery_sanitize_html($custom_attributes);
+                if ( !empty( $custom_attribute_key ) && !empty( $custom_attribute_value ) ) {
 
-                    // Filter out specific JavaScript-related attributes
-                    $custom_attributes = foogallery_sanitize_javascript($custom_attributes);
+                    //do further cleaning!
+                    $custom_attribute_key = foogallery_sanitize_javascript( $custom_attribute_key );
+                    $custom_attribute_value = foogallery_sanitize_javascript( $custom_attribute_value );
 
-                    if ( !empty( $custom_attributes ) ) {
-                        // Append the sanitized and filtered custom attributes to the gallery container
-                        $html .= ' ' . $custom_attributes;
+                    if ( !empty( $custom_attribute_key ) && !empty( $custom_attribute_value ) ) {
+                        $attributes[$custom_attribute_key] = $custom_attribute_value;
                     }
                 }
-			}
+            }
 
-			return $html;
+			return $attributes;
 		}
 
 
