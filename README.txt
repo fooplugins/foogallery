@@ -321,6 +321,12 @@ Please update in order for FooGallery to work in WP 5.5+!
 
 == Changelog ==
 
+= 2.4.15 =
+* Date Updated : 23 March 2024
+* Fix : disabled the Custom Attributes setting under advanced gallery settings as it was unsafe.
+* Fix : ensured all output is escaped within Advanced Attachment Modal.
+* New : added 2 new settings under advanced gallery settings - "Custom Attribute Key" and "Custom Attribute Value" which is a safer alternative to the original "Custom Attributes" setting.
+
 = 2.4.14 =
 * Date Updated : 21 Feb 2024
 * Fix : fix for albums showing html in "back to album" text.
