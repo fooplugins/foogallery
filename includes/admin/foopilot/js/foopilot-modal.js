@@ -21,10 +21,11 @@ jQuery(document).ready(function($) {
     function handleFoopilotButtonClick(event) {
         event.preventDefault();
         var task = $(this).data('task');
+        var nonce = $('#foopilot-modal').data('nonce'); 
         var ajaxData = {
             action: 'foopilot_generate_task_content',
             task: task,
-            foopilot_nonce: '<?php echo wp_create_nonce("foopilot_nonce"); ?>'
+            foopilot_nonce: nonce
         };
         // Send AJAX request to generate task content dynamically
         $.ajax({
@@ -44,16 +45,19 @@ jQuery(document).ready(function($) {
     function handleTaskResponse(task, response) {
         $('.foopilot-task-html').html(response);
         $('#foopilot-modal').show();
-        if (task !== 'credit') {
+        if (task !== 'credits') {
             handlePointDeduction();
         }
     }
 
-    // Function to handle point deduction
+    // Function to handle point deduction.
     function handlePointDeduction() {
         var currentPoints = parseInt($('#foogallery-credit-points').text());
         var pointsToDeduct = 1; // will be determined by FOOPILOT API
-        if (currentPoints >= pointsToDeduct) {
+        var task = $('.foogallery-foopilot').data('task'); // Get the current task
+
+        // Check if the task is not "credits", then deduct points
+        if (task !== 'credits' && currentPoints >= pointsToDeduct) {
             $.ajax({
                 url: ajaxurl,
                 type: 'POST',
@@ -69,7 +73,7 @@ jQuery(document).ready(function($) {
                     console.error(xhr.responseText); // Log any errors
                 }
             });
-        } else {
+        } else if (task !== 'credits') {
             $('.foopilot-task-html').html('Insufficient points to perform this task.');
         }
     }
