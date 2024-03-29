@@ -223,7 +223,7 @@ if ( ! class_exists( 'FooGallery_Pro_Protection' ) ) {
 
 						var nonce = jQuery('#foogallery_nonce_protection_generate').val(),
 							data = 'action=foogallery_protection_generate' +
-						           '&foogallery=<?php echo $gallery->ID; ?>' +
+						           '&foogallery=<?php echo esc_attr( $gallery->ID ); ?>' +
 								   '&attachments=' + FOOGALLERY.attachments +
 						           '&_wpnonce=' + nonce +
 						           '&_wp_http_referer=' + encodeURIComponent( jQuery('input[name="_wp_http_referer"]').val() );
@@ -292,12 +292,7 @@ if ( ! class_exists( 'FooGallery_Pro_Protection' ) ) {
 		 */
 		public function render_custom_field( $field, $gallery, $template ) {
 			if ( isset( $field ) && is_array( $field ) && isset( $field['type'] ) && 'watermark_status' === $field['type'] ) {
-				$setting_key = $template['slug'] . '_protection_watermarking';
-				//if ( is_array( $gallery->settings ) && array_key_exists( $setting_key, $gallery->settings ) && 'yes' === $gallery->settings[ $setting_key ] ) {
 				$this->render_watermark_status_field( $gallery );
-				//} else {
-				//	echo esc_html( __( 'You have to save the gallery after enabling watermarking to see the status!', 'foogallery' ) );
-				//}
 			}
 		}
 
@@ -981,8 +976,8 @@ if ( ! class_exists( 'FooGallery_Pro_Protection' ) ) {
                             <div id="foogallery-panel-watermark-preview" class="settings <?php echo isset( $modal_data['attachment_watermark']['url'] ) ? 'watermark-preview-show' : ''; ?>">
 							<span class="setting" data-setting="watermark-image-preview">
 								<label for="attachments-watermark-image-preview" class="name"><?php _e('Watermark Image Preview', 'foogallery'); ?></label>
-								<a id="attachments-watermark-image-preview" href="<?php echo $modal_data['attachment_watermark']['url']; ?>" target="_blank">
-									<img width="150" src="<?php echo $modal_data['attachment_watermark']['url']; ?>" alt="watermark">
+								<a id="attachments-watermark-image-preview" href="<?php echo esc_url( $modal_data['attachment_watermark']['url'] ); ?>" target="_blank">
+									<img width="150" src="<?php echo esc_url( $modal_data['attachment_watermark']['url'] ); ?>" alt="watermark">
 								</a>
 							</span>
                             </div>
@@ -993,8 +988,8 @@ if ( ! class_exists( 'FooGallery_Pro_Protection' ) ) {
                                 <div>
                                     <button id="attachments-watermark-generate-btn" type="button" style="width: 100px"
                                             class="button button-primary button-large attachment_modal_watermark_generate"
-                                            data-attach_id="<?php echo $modal_data['img_id']; ?>"
-                                            data-nonce="<?php echo wp_create_nonce('foogallery_attachment_modal_watermark_generate'); ?>">
+                                            data-attach_id="<?php echo esc_attr( $modal_data['img_id'] ); ?>"
+                                            data-nonce="<?php echo esc_attr( wp_create_nonce('foogallery_attachment_modal_watermark_generate') ); ?>">
                                     <?php echo esc_html( __( 'Generate', 'foogallery' ) ); ?>
                                     </button>
                                     <span style="position: absolute" class="spinner foogallery_protection_generate_spinner"></span>

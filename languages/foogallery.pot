@@ -8,7 +8,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language-Team: FooPlugins <info@fooplugins.com> (https://fooplugins.com)\n"
 "Last-Translator: FooPlugins <info@fooplugins.com> (https://fooplugins.com)\n"
-"POT-Creation-Date: 2024-02-21 20:16+0000\n"
+"POT-Creation-Date: 2024-03-23 11:36+0000\n"
 "Report-Msgid-Bugs-To: https://github.com/fooplugins/foogallery/issues\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-KeywordsList: __;_e;_ex:1,2c;_n:1,2;_n_noop:1,2;_nx:1,2,4c;_nx_noop:1,2,3c;_x:1,2c;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c\n"
@@ -101,15 +101,15 @@ msgstr ""
 msgid "Invalid Gallery!"
 msgstr ""
 
-#: extensions/albums/admin/class-metaboxes.php:534, extensions/albums/functions.php:82, extensions/default-templates/default/class-default-gallery-template.php:117, includes/admin/class-pro-promotion.php:194, includes/admin/view-help-demos.php:44, includes/class-foogallery-common-fields.php:218, includes/class-foogallery-common-fields.php:501, includes/class-foogallery-lightbox.php:436, includes/class-foogallery-lightbox.php:462, includes/class-foogallery-lightbox.php:586, includes/class-foogallery-lightbox.php:805, includes/functions.php:557, includes/functions.php:1818, includes/functions.php:2248, pro/extensions/default-templates/slider/class-slider-gallery-template.php:216, pro/includes/class-foogallery-pro-advanced-thumbnails.php:57, pro/includes/class-foogallery-pro-datasource-folders.php:439, pro/includes/video/class-foogallery-pro-video.php:525
+#: extensions/albums/admin/class-metaboxes.php:534, extensions/albums/functions.php:82, extensions/default-templates/default/class-default-gallery-template.php:117, includes/admin/class-pro-promotion.php:194, includes/admin/view-help-demos.php:44, includes/class-foogallery-common-fields.php:218, includes/class-foogallery-common-fields.php:501, includes/class-foogallery-lightbox.php:436, includes/class-foogallery-lightbox.php:462, includes/class-foogallery-lightbox.php:586, includes/class-foogallery-lightbox.php:805, includes/functions.php:557, includes/functions.php:1819, includes/functions.php:2249, pro/extensions/default-templates/slider/class-slider-gallery-template.php:216, pro/includes/class-foogallery-pro-advanced-thumbnails.php:57, pro/includes/class-foogallery-pro-datasource-folders.php:439, pro/includes/video/class-foogallery-pro-video.php:525
 msgid "Default"
 msgstr ""
 
-#: extensions/albums/admin/class-metaboxes.php:535, includes/functions.php:2249, pro/includes/video/class-foogallery-pro-video.php:526
+#: extensions/albums/admin/class-metaboxes.php:535, includes/functions.php:2250, pro/includes/video/class-foogallery-pro-video.php:526
 msgid "New tab (_blank)"
 msgstr ""
 
-#: extensions/albums/admin/class-metaboxes.php:536, includes/functions.php:2250, pro/includes/video/class-foogallery-pro-video.php:527
+#: extensions/albums/admin/class-metaboxes.php:536, includes/functions.php:2251, pro/includes/video/class-foogallery-pro-video.php:527
 msgid "Same tab (_self)"
 msgstr ""
 
@@ -751,7 +751,7 @@ msgstr ""
 msgid "When navigating through the images, do you want to loop image back to the first after you navigate past the last image?"
 msgstr ""
 
-#: extensions/default-templates/image-viewer/class-image-viewer-gallery-template.php:172, extensions/default-templates/masonry/class-masonry-gallery-template.php:166, includes/class-foogallery-lightbox.php:536, includes/class-gallery-advanced-settings.php:93, includes/compatibility/class-foobox-compatibility.php:348, pro/includes/class-foogallery-pro-advanced-gallery-settings.php:36, pro/includes/class-foogallery-pro-exif.php:413, pro/includes/class-foogallery-pro-filtering.php:333, pro/includes/class-foogallery-pro-filtering.php:662, pro/includes/protection/class-foogallery-pro-protection.php:570
+#: extensions/default-templates/image-viewer/class-image-viewer-gallery-template.php:172, extensions/default-templates/masonry/class-masonry-gallery-template.php:166, includes/class-foogallery-lightbox.php:536, includes/class-gallery-advanced-settings.php:123, includes/compatibility/class-foobox-compatibility.php:348, pro/includes/class-foogallery-pro-advanced-gallery-settings.php:36, pro/includes/class-foogallery-pro-exif.php:413, pro/includes/class-foogallery-pro-filtering.php:333, pro/includes/class-foogallery-pro-filtering.php:662, pro/includes/protection/class-foogallery-pro-protection.php:565
 msgid "Disabled"
 msgstr ""
 
@@ -927,7 +927,7 @@ msgstr ""
 msgid "Transparent"
 msgstr ""
 
-#: extensions/default-templates/masonry/class-masonry-gallery-template.php:372, extensions/default-templates/simple-portfolio/class-simple-portfolio-gallery-template.php:208, includes/admin/class-pro-promotion.php:196, includes/class-foogallery-common-fields.php:117, includes/class-foogallery-lightbox.php:188, includes/class-foogallery-lightbox.php:637, includes/class-foogallery-paging.php:229, pro/includes/class-foogallery-pro-filtering.php:237, pro/includes/protection/class-foogallery-pro-protection.php:713
+#: extensions/default-templates/masonry/class-masonry-gallery-template.php:372, extensions/default-templates/simple-portfolio/class-simple-portfolio-gallery-template.php:208, includes/admin/class-pro-promotion.php:196, includes/class-foogallery-common-fields.php:117, includes/class-foogallery-lightbox.php:188, includes/class-foogallery-lightbox.php:637, includes/class-foogallery-paging.php:229, pro/includes/class-foogallery-pro-filtering.php:237, pro/includes/protection/class-foogallery-pro-protection.php:708
 msgid "Custom"
 msgstr ""
 
@@ -1247,7 +1247,7 @@ msgstr ""
 msgid "Pagination"
 msgstr ""
 
-#: foogallery.php:290, includes/admin/class-pro-promotion.php:887, pro/includes/protection/class-foogallery-pro-protection.php:80, pro/includes/protection/class-foogallery-pro-protection.php:556, pro/includes/protection/class-foogallery-pro-protection.php:564, pro/includes/protection/class-foogallery-pro-protection.php:583, pro/includes/protection/class-foogallery-pro-protection.php:602, pro/includes/protection/class-foogallery-pro-protection.php:631
+#: foogallery.php:290, includes/admin/class-pro-promotion.php:887, pro/includes/protection/class-foogallery-pro-protection.php:80, pro/includes/protection/class-foogallery-pro-protection.php:551, pro/includes/protection/class-foogallery-pro-protection.php:559, pro/includes/protection/class-foogallery-pro-protection.php:578, pro/includes/protection/class-foogallery-pro-protection.php:597, pro/includes/protection/class-foogallery-pro-protection.php:626
 msgid "Protection"
 msgstr ""
 
@@ -1371,7 +1371,7 @@ msgstr ""
 msgid "Thumbnails"
 msgstr ""
 
-#: includes/admin/class-gallery-attachment-modal.php:593, includes/admin/class-pro-promotion.php:865, includes/admin/class-pro-promotion.php:903, includes/admin/class-settings.php:431, includes/class-foogallery-lazyload.php:217, includes/class-gallery-advanced-settings.php:60, includes/class-gallery-advanced-settings.php:69, includes/class-gallery-advanced-settings.php:78, includes/class-gallery-advanced-settings.php:87, pro/includes/class-foogallery-pro-advanced-gallery-settings.php:31, pro/includes/class-foogallery-pro-advanced-gallery-settings.php:50, pro/includes/class-foogallery-pro-advanced-thumbnails.php:52, pro/includes/class-foogallery-pro-advanced-thumbnails.php:71, pro/includes/class-foogallery-pro-advanced-thumbnails.php:85, pro/includes/class-foogallery-pro-exif.php:495, pro/includes/class-foogallery-pro-filtering.php:214, pro/includes/class-foogallery-pro-filtering.php:702, pro/includes/protection/class-foogallery-pro-protection.php:616, pro/includes/video/class-foogallery-pro-video.php:298, pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:283, pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:292, pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:311, pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:326, pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:345, pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:368, pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:390, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:1168
+#: includes/admin/class-gallery-attachment-modal.php:593, includes/admin/class-pro-promotion.php:865, includes/admin/class-pro-promotion.php:903, includes/admin/class-settings.php:431, includes/class-foogallery-lazyload.php:217, includes/class-gallery-advanced-settings.php:60, includes/class-gallery-advanced-settings.php:73, includes/class-gallery-advanced-settings.php:81, includes/class-gallery-advanced-settings.php:90, includes/class-gallery-advanced-settings.php:99, includes/class-gallery-advanced-settings.php:108, includes/class-gallery-advanced-settings.php:117, pro/includes/class-foogallery-pro-advanced-gallery-settings.php:31, pro/includes/class-foogallery-pro-advanced-gallery-settings.php:50, pro/includes/class-foogallery-pro-advanced-thumbnails.php:52, pro/includes/class-foogallery-pro-advanced-thumbnails.php:71, pro/includes/class-foogallery-pro-advanced-thumbnails.php:85, pro/includes/class-foogallery-pro-exif.php:495, pro/includes/class-foogallery-pro-filtering.php:214, pro/includes/class-foogallery-pro-filtering.php:702, pro/includes/protection/class-foogallery-pro-protection.php:611, pro/includes/video/class-foogallery-pro-video.php:298, pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:283, pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:292, pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:311, pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:326, pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:345, pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:368, pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:390, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:1168
 msgid "Advanced"
 msgstr ""
 
@@ -3929,7 +3929,7 @@ msgstr ""
 msgid "Captions Enabled"
 msgstr ""
 
-#: includes/class-foogallery-lightbox.php:534, includes/class-gallery-advanced-settings.php:92, includes/compatibility/class-foobox-compatibility.php:349, pro/includes/class-foogallery-pro-advanced-gallery-settings.php:37, pro/includes/class-foogallery-pro-exif.php:412, pro/includes/class-foogallery-pro-filtering.php:334, pro/includes/class-foogallery-pro-filtering.php:663, pro/includes/protection/class-foogallery-pro-protection.php:569
+#: includes/class-foogallery-lightbox.php:534, includes/class-gallery-advanced-settings.php:122, includes/compatibility/class-foobox-compatibility.php:349, pro/includes/class-foogallery-pro-advanced-gallery-settings.php:37, pro/includes/class-foogallery-pro-exif.php:412, pro/includes/class-foogallery-pro-filtering.php:334, pro/includes/class-foogallery-pro-filtering.php:663, pro/includes/protection/class-foogallery-pro-protection.php:564
 msgid "Enabled"
 msgstr ""
 
@@ -4245,27 +4245,59 @@ msgstr ""
 msgid "Add any custom settings to the gallery which will be merged with existing settings. To be used by developers only!"
 msgstr ""
 
+#: includes/class-gallery-advanced-settings.php:65
+msgid "Even though the Custom Attributes setting is useful in some scenarios, due to numerous security concerns, we have decided to disable it. It will be completely removed in a future update. We are keeping it for now, to make it easier to migrate to the newer and safer Custom Attribute Key and Value settings below."
+msgstr ""
+
+#: includes/class-gallery-advanced-settings.php:66
+msgid "contact us"
+msgstr ""
+
 #: includes/class-gallery-advanced-settings.php:67
+msgid "Please %s for any questions or help."
+msgstr ""
+
+#: includes/class-gallery-advanced-settings.php:71
+msgid "Custom Attributes Setting No Longer Works!"
+msgstr ""
+
+#: includes/class-gallery-advanced-settings.php:79
 msgid "Custom Attributes"
 msgstr ""
 
-#: includes/class-gallery-advanced-settings.php:68
+#: includes/class-gallery-advanced-settings.php:80
 msgid "Add any custom attributes to the gallery container. To be used by developers only!"
 msgstr ""
 
-#: includes/class-gallery-advanced-settings.php:76
+#: includes/class-gallery-advanced-settings.php:88
+msgid "Custom Attribute Key"
+msgstr ""
+
+#: includes/class-gallery-advanced-settings.php:89
+msgid "Used in combination with \"Custom Attribute Value\" to add a custom attribute to the gallery container. To be used by developers only!"
+msgstr ""
+
+#: includes/class-gallery-advanced-settings.php:97
+msgid "Custom Attribute Value"
+msgstr ""
+
+#: includes/class-gallery-advanced-settings.php:98
+msgid "Used in combination with \"Custom Attribute Key\" to add a custom attribute to the gallery container. To be used by developers only!"
+msgstr ""
+
+#: includes/class-gallery-advanced-settings.php:106
 msgid "Custom Gallery Class"
 msgstr ""
 
-#: includes/class-gallery-advanced-settings.php:77
+#: includes/class-gallery-advanced-settings.php:107
 msgid "Add a custom class to the gallery container."
 msgstr ""
 
-#: includes/class-gallery-advanced-settings.php:85
+#: includes/class-gallery-advanced-settings.php:115
 msgid "Image Title Attribute"
 msgstr ""
 
-#: includes/class-gallery-advanced-settings.php:86
+#: includes/class-gallery-advanced-settings.php:116
 msgid "You can choose to include a title attribute on the thumbnail image or not."
 msgstr ""
 
@@ -4399,7 +4431,7 @@ msgstr ""
 msgid "Smart (try to show both caption titles and descriptions if available)"
 msgstr ""
 
-#: includes/compatibility/class-foobox-compatibility.php:328, includes/functions.php:2251, pro/includes/video/class-foogallery-pro-video.php:528
+#: includes/compatibility/class-foobox-compatibility.php:328, includes/functions.php:2252, pro/includes/video/class-foogallery-pro-video.php:528
 msgid "FooBox"
 msgstr ""
 
@@ -4823,27 +4855,27 @@ msgstr ""
 msgid "Bulk copy your gallery settings to other galleries in a flash."
 msgstr ""
 
-#: includes/functions.php:1814
+#: includes/functions.php:1815
 msgid "ShortPixel Adaptive Images"
 msgstr ""
 
-#: includes/functions.php:1819
+#: includes/functions.php:1820
 msgid "The default engine used to generate locally cached thumbnails."
 msgstr ""
 
-#: includes/functions.php:1823
+#: includes/functions.php:1824
 msgid "ShortPixel"
 msgstr ""
 
-#: includes/functions.php:1824
+#: includes/functions.php:1825
 msgid "Uses %s to generate all your gallery thumbnails. They will be optimized and offloaded to the ShortPixel global CDN!"
 msgstr ""
 
-#: includes/functions.php:1831
+#: includes/functions.php:1832
 msgid "Dummy"
 msgstr ""
 
-#: includes/functions.php:1832
+#: includes/functions.php:1833
 msgid "A dummy thumbnail engine that can be used for testing. (uses dummyimage.com)"
 msgstr ""
 
@@ -6209,7 +6241,7 @@ msgstr ""
 msgid "The selection mode to use when filtering."
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-filtering.php:371, pro/includes/protection/class-foogallery-pro-protection.php:689
+#: pro/includes/class-foogallery-pro-filtering.php:371, pro/includes/protection/class-foogallery-pro-protection.php:684
 msgid "Single"
 msgstr ""
 
@@ -6873,7 +6905,7 @@ msgstr ""
 msgid "Select a thumbnail for the video"
 msgstr ""
 
-#: pro/includes/foogallery-media-views-templates.php:226, pro/includes/foogallery-media-views-templates.php:447, pro/includes/protection/class-foogallery-pro-protection.php:811
+#: pro/includes/foogallery-media-views-templates.php:226, pro/includes/foogallery-media-views-templates.php:447, pro/includes/protection/class-foogallery-pro-protection.php:806
 msgid "Select Image"
 msgstr ""
 
@@ -7113,255 +7145,255 @@ msgstr ""
 msgid "There was an error! Please try again."
 msgstr ""
 
-#: pro/includes/protection/class-foogallery-pro-protection.php:340
+#: pro/includes/protection/class-foogallery-pro-protection.php:335
 msgid "Something went wrong!"
 msgstr ""
 
-#: pro/includes/protection/class-foogallery-pro-protection.php:318
+#: pro/includes/protection/class-foogallery-pro-protection.php:313
 msgid "%1$d / %2$d watermarked images have been generated."
 msgstr ""
 
-#: pro/includes/protection/class-foogallery-pro-protection.php:316
+#: pro/includes/protection/class-foogallery-pro-protection.php:311
 msgid "No images found. Add images to the gallery first."
 msgstr ""
 
-#: pro/includes/protection/class-foogallery-pro-protection.php:321
+#: pro/includes/protection/class-foogallery-pro-protection.php:316
 msgid "%d are outdated and need to be re-generated!"
 msgstr ""
 
-#: pro/includes/protection/class-foogallery-pro-protection.php:325
+#: pro/includes/protection/class-foogallery-pro-protection.php:320
 msgid "%d had errors and could not be generated!"
 msgstr ""
 
-#: pro/includes/protection/class-foogallery-pro-protection.php:333
+#: pro/includes/protection/class-foogallery-pro-protection.php:328
 msgid "Continue Generating"
 msgstr ""
 
-#: pro/includes/protection/class-foogallery-pro-protection.php:331
+#: pro/includes/protection/class-foogallery-pro-protection.php:326
 msgid "Generate Watermarked Images"
 msgstr ""
 
-#: pro/includes/protection/class-foogallery-pro-protection.php:555
+#: pro/includes/protection/class-foogallery-pro-protection.php:550
 msgid "Image protection is only enabled on your full size images. Protecting thumbnails is not necessary!"
 msgstr ""
 
-#: pro/includes/protection/class-foogallery-pro-protection.php:562
+#: pro/includes/protection/class-foogallery-pro-protection.php:557
 msgid "Right Click Protection"
 msgstr ""
 
-#: pro/includes/protection/class-foogallery-pro-protection.php:563
+#: pro/includes/protection/class-foogallery-pro-protection.php:558
 msgid "Disable right-click on full size images."
 msgstr ""
 
-#: pro/includes/protection/class-foogallery-pro-protection.php:581
+#: pro/includes/protection/class-foogallery-pro-protection.php:576
 msgid "Watermark Images"
 msgstr ""
 
-#: pro/includes/protection/class-foogallery-pro-protection.php:582
+#: pro/includes/protection/class-foogallery-pro-protection.php:577
 msgid "Your full size images will be watermarked according to the global watermark settings."
 msgstr ""
 
-#: pro/includes/protection/class-foogallery-pro-protection.php:588
+#: pro/includes/protection/class-foogallery-pro-protection.php:583
 msgid "Use Watermarked Images"
 msgstr ""
 
-#: pro/includes/protection/class-foogallery-pro-protection.php:589
+#: pro/includes/protection/class-foogallery-pro-protection.php:584
 msgid "Use Original Images"
 msgstr ""
 
-#: pro/includes/protection/class-foogallery-pro-protection.php:600
+#: pro/includes/protection/class-foogallery-pro-protection.php:595
 msgid "Protection Status"
 msgstr ""
 
-#: pro/includes/protection/class-foogallery-pro-protection.php:601
+#: pro/includes/protection/class-foogallery-pro-protection.php:596
 msgid "The status of watermark protection for the current gallery."
 msgstr ""
 
-#: pro/includes/protection/class-foogallery-pro-protection.php:633
+#: pro/includes/protection/class-foogallery-pro-protection.php:628
 msgid "Open watermark preview test page"
 msgstr ""
 
-#: pro/includes/protection/class-foogallery-pro-protection.php:637
+#: pro/includes/protection/class-foogallery-pro-protection.php:632
 msgid "Watermark Preview"
 msgstr ""
 
-#: pro/includes/protection/class-foogallery-pro-protection.php:645
+#: pro/includes/protection/class-foogallery-pro-protection.php:640
 msgid "Watermarked Image JPEG Quality %"
 msgstr ""
 
-#: pro/includes/protection/class-foogallery-pro-protection.php:646
+#: pro/includes/protection/class-foogallery-pro-protection.php:641
 msgid "The image quality to be used when generating full-sized watermarked images for JPEG images. This is different to the Thumbnail JPEG Quality."
 msgstr ""
 
-#: pro/includes/protection/class-foogallery-pro-protection.php:655
+#: pro/includes/protection/class-foogallery-pro-protection.php:650
 msgid "Watermark Image"
 msgstr ""
 
-#: pro/includes/protection/class-foogallery-pro-protection.php:663
+#: pro/includes/protection/class-foogallery-pro-protection.php:658
 msgid "Watermark Transparency %"
 msgstr ""
 
-#: pro/includes/protection/class-foogallery-pro-protection.php:664
+#: pro/includes/protection/class-foogallery-pro-protection.php:659
 msgid "The % transparency applied to the watermark image."
 msgstr ""
 
-#: pro/includes/protection/class-foogallery-pro-protection.php:673
+#: pro/includes/protection/class-foogallery-pro-protection.php:668
 msgid "Margins (pixels)"
 msgstr ""
 
-#: pro/includes/protection/class-foogallery-pro-protection.php:674
+#: pro/includes/protection/class-foogallery-pro-protection.php:669
 msgid "The margin, in pixels, applied to the watermark image."
 msgstr ""
 
-#: pro/includes/protection/class-foogallery-pro-protection.php:683
+#: pro/includes/protection/class-foogallery-pro-protection.php:678
 msgid "Watermark Mode"
 msgstr ""
 
-#: pro/includes/protection/class-foogallery-pro-protection.php:688
+#: pro/includes/protection/class-foogallery-pro-protection.php:683
 msgid "Repeat"
 msgstr ""
 
-#: pro/includes/protection/class-foogallery-pro-protection.php:688
+#: pro/includes/protection/class-foogallery-pro-protection.php:683
 msgid "The watermark image is repeated across the whole image."
 msgstr ""
 
-#: pro/includes/protection/class-foogallery-pro-protection.php:689
+#: pro/includes/protection/class-foogallery-pro-protection.php:684
 msgid "The watermark image is placed once on the image."
 msgstr ""
 
-#: pro/includes/protection/class-foogallery-pro-protection.php:696
+#: pro/includes/protection/class-foogallery-pro-protection.php:691
 msgid "Watermark Position"
 msgstr ""
 
-#: pro/includes/protection/class-foogallery-pro-protection.php:697
+#: pro/includes/protection/class-foogallery-pro-protection.php:692
 msgid "The position to place the watermark image, when in Single Mode."
 msgstr ""
 
-#: pro/includes/protection/class-foogallery-pro-protection.php:706
+#: pro/includes/protection/class-foogallery-pro-protection.php:701
 msgid "Watermark Image Size"
 msgstr ""
 
-#: pro/includes/protection/class-foogallery-pro-protection.php:711
+#: pro/includes/protection/class-foogallery-pro-protection.php:706
 msgid "Original"
 msgstr ""
 
-#: pro/includes/protection/class-foogallery-pro-protection.php:711
+#: pro/includes/protection/class-foogallery-pro-protection.php:706
 msgid "The original size watermark image is used."
 msgstr ""
 
-#: pro/includes/protection/class-foogallery-pro-protection.php:712
+#: pro/includes/protection/class-foogallery-pro-protection.php:707
 msgid "Scale"
 msgstr ""
 
-#: pro/includes/protection/class-foogallery-pro-protection.php:712
+#: pro/includes/protection/class-foogallery-pro-protection.php:707
 msgid "Scale the watermark image down."
 msgstr ""
 
-#: pro/includes/protection/class-foogallery-pro-protection.php:713
+#: pro/includes/protection/class-foogallery-pro-protection.php:708
 msgid "Choose a custom size for the watermark image."
 msgstr ""
 
-#: pro/includes/protection/class-foogallery-pro-protection.php:720
+#: pro/includes/protection/class-foogallery-pro-protection.php:715
 msgid "Size Scale %"
 msgstr ""
 
-#: pro/includes/protection/class-foogallery-pro-protection.php:729
+#: pro/includes/protection/class-foogallery-pro-protection.php:724
 msgid "Custom Size Width (pixels)"
 msgstr ""
 
-#: pro/includes/protection/class-foogallery-pro-protection.php:738
+#: pro/includes/protection/class-foogallery-pro-protection.php:733
 msgid "Custom Size Height (pixels)"
 msgstr ""
 
-#: pro/includes/protection/class-foogallery-pro-protection.php:747
+#: pro/includes/protection/class-foogallery-pro-protection.php:742
 msgid "Offset Unit"
 msgstr ""
 
-#: pro/includes/protection/class-foogallery-pro-protection.php:750
+#: pro/includes/protection/class-foogallery-pro-protection.php:745
 msgid "The unit of measurement to offset the watermark image, when in Single Mode."
 msgstr ""
 
-#: pro/includes/protection/class-foogallery-pro-protection.php:753
+#: pro/includes/protection/class-foogallery-pro-protection.php:748
 msgid "Pixels"
 msgstr ""
 
-#: pro/includes/protection/class-foogallery-pro-protection.php:753
+#: pro/includes/protection/class-foogallery-pro-protection.php:748
 msgid "The watermark image will be offset in pixels."
 msgstr ""
 
-#: pro/includes/protection/class-foogallery-pro-protection.php:754
+#: pro/includes/protection/class-foogallery-pro-protection.php:749
 msgid "Percentage"
 msgstr ""
 
-#: pro/includes/protection/class-foogallery-pro-protection.php:754
+#: pro/includes/protection/class-foogallery-pro-protection.php:749
 msgid "The watermark image will be offset by % of the original image."
 msgstr ""
 
-#: pro/includes/protection/class-foogallery-pro-protection.php:761
+#: pro/includes/protection/class-foogallery-pro-protection.php:756
 msgid "Offset X"
 msgstr ""
 
-#: pro/includes/protection/class-foogallery-pro-protection.php:762
+#: pro/includes/protection/class-foogallery-pro-protection.php:757
 msgid "The horizontal offset (based on the offset unit), when in Single Mode."
 msgstr ""
 
-#: pro/includes/protection/class-foogallery-pro-protection.php:771
+#: pro/includes/protection/class-foogallery-pro-protection.php:766
 msgid "Offset Y"
 msgstr ""
 
-#: pro/includes/protection/class-foogallery-pro-protection.php:772
+#: pro/includes/protection/class-foogallery-pro-protection.php:767
 msgid "The vertical offset (based on the offset unit), when in Single Mode."
 msgstr ""
 
-#: pro/includes/protection/class-foogallery-pro-protection.php:812
+#: pro/includes/protection/class-foogallery-pro-protection.php:807
 msgid "The URL of the image you want to use as a watermark. Or use one of our predefined watermarks:"
 msgstr ""
 
-#: pro/includes/protection/class-foogallery-pro-protection.php:887
+#: pro/includes/protection/class-foogallery-pro-protection.php:882
 msgid "Watermark Tests"
 msgstr ""
 
-#: pro/includes/protection/class-foogallery-pro-protection.php:902
+#: pro/includes/protection/class-foogallery-pro-protection.php:897
 msgid "Watermark Test Page"
 msgstr ""
 
-#: pro/includes/protection/class-foogallery-pro-protection.php:921
+#: pro/includes/protection/class-foogallery-pro-protection.php:916
 msgid "Watermarked Image"
 msgstr ""
 
-#: pro/includes/protection/class-foogallery-pro-protection.php:931
+#: pro/includes/protection/class-foogallery-pro-protection.php:926
 msgid "Original Image"
 msgstr ""
 
-#: pro/includes/protection/class-foogallery-pro-protection.php:942
+#: pro/includes/protection/class-foogallery-pro-protection.php:937
 msgid "Watermark"
 msgstr ""
 
-#: pro/includes/protection/class-foogallery-pro-protection.php:953
+#: pro/includes/protection/class-foogallery-pro-protection.php:948
 msgid "No watermark has been generated! Please generate a watermark."
 msgstr ""
 
-#: pro/includes/protection/class-foogallery-pro-protection.php:959
+#: pro/includes/protection/class-foogallery-pro-protection.php:954
 msgid "An up to date watermark has been generated."
 msgstr ""
 
-#: pro/includes/protection/class-foogallery-pro-protection.php:969
+#: pro/includes/protection/class-foogallery-pro-protection.php:964
 msgid "An outdated watermark has been generated. Generate a new watermark to use the latest watermark settings."
 msgstr ""
 
-#: pro/includes/protection/class-foogallery-pro-protection.php:976
+#: pro/includes/protection/class-foogallery-pro-protection.php:971
 msgid "Watermark Status"
 msgstr ""
 
-#: pro/includes/protection/class-foogallery-pro-protection.php:983
+#: pro/includes/protection/class-foogallery-pro-protection.php:978
 msgid "Watermark Image Preview"
 msgstr ""
 
-#: pro/includes/protection/class-foogallery-pro-protection.php:992
+#: pro/includes/protection/class-foogallery-pro-protection.php:987
 msgid "Generate Watermark"
 msgstr ""
 
-#: pro/includes/protection/class-foogallery-pro-protection.php:998
+#: pro/includes/protection/class-foogallery-pro-protection.php:993
 msgid "Generate"
 msgstr ""
 

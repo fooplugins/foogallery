@@ -58,7 +58,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
 
 			ob_start() ?>
 
-			<div class="foogallery-image-edit-main" data-img_id="<?php echo $modal_data['img_id']; ?>" data-gallery_id="<?php echo $modal_data['gallery_id']; ?>">
+			<div class="foogallery-image-edit-main" data-img_id="<?php echo esc_attr( $modal_data['img_id'] ); ?>" data-gallery_id="<?php echo esc_attr( $modal_data['gallery_id'] ); ?>">
 				<?php do_action( 'foogallery_attachment_modal_before_tab_container', $modal_data ); ?>
                 <div class="foogallery-image-edit-view">
                     <?php
@@ -66,12 +66,12 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
                     do_action( 'foogallery_attachment_modal_before_thumbnail', $modal_data );
 
                     if ( $modal_data['image_attributes'] ) { ?>
-                        <img src="<?php echo $modal_data['image_attributes'][0]; ?>" width="<?php echo $modal_data['image_attributes'][1]; ?>" height="<?php echo $modal_data['image_attributes'][2]; ?>" />
+                        <img src="<?php echo esc_url( $modal_data['image_attributes'][0] ); ?>" width="<?php echo esc_attr( $modal_data['image_attributes'][1] ); ?>" height="<?php echo esc_attr( $modal_data['image_attributes'][2] ); ?>" />
                     <?php } ?>
                 </div>
                 <div class="foogallery-image-edit-button">
-                    <a target="_blank" href="<?php echo get_admin_url().'upload.php?item='.$modal_data['img_id'];?>&mode=edit" class="button"><?php _e('Edit Image', 'foogallery'); ?></a>
-                    <a target="_blank" href="<?php echo $modal_data['img_path'];?>" class="button"><?php _e('Open Full Size Image', 'foogallery'); ?></a>
+                    <a target="_blank" href="<?php echo esc_url( get_admin_url().'post.php?post='.$modal_data['img_id'].'&action=edit' );?>" class="button"><?php _e('Edit Image', 'foogallery'); ?></a>
+                    <a target="_blank" href="<?php echo esc_url( $modal_data['img_path'] );?>" class="button"><?php _e('Open Full Size Image', 'foogallery'); ?></a>
                 </div>
 			</div>
 
@@ -85,8 +85,8 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
 				<div class="tab-panels">
 					<form id="foogallery_attachment_modal_save_form" method="post" enctype="multipart/form-data">
 						<input type="hidden" name="action" value="foogallery_attachment_modal_save">
-						<input type="hidden" name="nonce" value="<?php echo $modal_data['nonce']; ?>">
-						<input type="hidden" name="img_id" value="<?php echo $modal_data['img_id']; ?>">
+						<input type="hidden" name="nonce" value="<?php echo esc_attr( $modal_data['nonce'] ); ?>">
+						<input type="hidden" name="img_id" value="<?php echo esc_attr( $modal_data['img_id'] ); ?>">
 						<?php do_action( 'foogallery_attachment_modal_tab_content', $modal_data ); ?>
 					</form>
 				</div>
@@ -134,9 +134,9 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
 
 			?>
 			<div id="foogallery-image-edit-modal" style="display: none;"
-                 data-nonce="<?php echo wp_create_nonce( 'foogallery_attachment_modal_open' ); ?>"
-                 data-gallery_id="<?php echo $post->ID; ?>"
-                 data-modal_style="<?php echo $modal_style; ?>">
+                 data-nonce="<?php echo esc_attr( wp_create_nonce( 'foogallery_attachment_modal_open' ) ); ?>"
+                 data-gallery_id="<?php echo esc_attr( $post->ID ); ?>"
+                 data-modal_style="<?php echo esc_attr( $modal_style ); ?>">
 				<div class="media-modal wp-core-ui">
 					<div class="media-modal-content">
 						<div class="edit-attachment-frame mode-select hide-menu hide-router">
@@ -600,27 +600,27 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
 		public function display_tab_content_main( $modal_data ) {
 			if ( is_array( $modal_data ) && !empty ( $modal_data ) ) {
 				if ( $modal_data['img_id'] > 0 ) { ?>
-					<section id="foogallery-panel-main" class="tab-panel active" data-nonce="<?php echo $modal_data['nonce'];?>">
+					<section id="foogallery-panel-main" class="tab-panel active" data-nonce="<?php echo esc_attr( $modal_data['nonce'] );?>">
 						<div class="settings">
 							<span class="setting" data-setting="title">
 								<label for="attachment-details-two-column-title" class="name"><?php _e('Title', 'foogallery'); ?></label>
-								<input type="text" id="attachment-details-two-column-title" name="foogallery[title]" value="<?php echo $modal_data['img_title'];?>">
+								<input type="text" id="attachment-details-two-column-title" name="foogallery[title]" value="<?php echo esc_attr( $modal_data['img_title'] );?>">
 							</span>								
 							<span class="setting" data-setting="caption">
 								<label for="attachment-details-two-column-caption" class="name"><?php _e('Caption', 'foogallery'); ?></label>
-								<textarea id="attachment-details-two-column-caption" name="foogallery[caption]"><?php echo $modal_data['caption'];?></textarea>
+								<textarea id="attachment-details-two-column-caption" name="foogallery[caption]"><?php echo esc_attr( $modal_data['caption'] );?></textarea>
 							</span>
 							<span class="setting" data-setting="description">
 								<label for="attachment-details-two-column-description" class="name"><?php _e('Description', 'foogallery'); ?></label>
-								<textarea id="attachment-details-two-column-description" name="foogallery[description]"><?php echo $modal_data['description'];?></textarea>
+								<textarea id="attachment-details-two-column-description" name="foogallery[description]"><?php echo esc_html( $modal_data['description'] );?></textarea>
 							</span>
 							<span class="setting" data-setting="alt">
 								<label for="attachment-details-two-column-alt-text" class="name"><?php _e('ALT Text', 'foogallery'); ?></label>
-								<input type="text" id="attachment-details-two-column-alt-text" name="foogallery[alt-text]" value="<?php echo $modal_data['image_alt'];?>" aria-describedby="alt-text-description">
+								<input type="text" id="attachment-details-two-column-alt-text" name="foogallery[alt-text]" value="<?php echo esc_attr( $modal_data['image_alt'] );?>" aria-describedby="alt-text-description">
 							</span>
                             <span class="setting" data-setting="custom_url">
 								<label for="attachments-foogallery-custom-url" class="name"><?php _e('Custom URL', 'foogallery'); ?></label>
-								<input type="text" id="attachments-foogallery-custom-url" name="foogallery[custom-url]" value="<?php echo $modal_data['custom_url'];?>">
+								<input type="text" id="attachments-foogallery-custom-url" name="foogallery[custom-url]" value="<?php echo esc_attr( $modal_data['custom_url'] );?>">
 							</span>
 							<span class="setting" data-setting="custom_target">
 								<label for="attachments-foogallery-custom-target" class="name"><?php _e('Custom Target', 'foogallery'); ?></label>
@@ -629,14 +629,14 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
 									$target_options = foogallery_get_target_options();
 									foreach ( $target_options as $value => $label ) {
 										$selected = selected( $value, $modal_data['custom_target'], false );
-										echo "<option value='{$value}' {$selected}>{$label}</option>";
+										echo '<option value=' . esc_attr( $value ) . ' ' . $selected . '>' . esc_html( $label ) . '</option>';
 									}
 									?>
 								</select>
 							</span>
 							<span class="setting has-description" data-setting="custom_class">
 								<label for="attachments-foogallery-custom-class" class="name"><?php _e('Custom Class', 'foogallery'); ?></label>
-								<input type="text" id="attachments-foogallery-custom-class" name="foogallery[custom-class]" value="<?php echo $modal_data['custom_class'];?>">
+								<input type="text" id="attachments-foogallery-custom-class" name="foogallery[custom-class]" value="<?php echo esc_attr( $modal_data['custom_class'] );?>">
 							</span>
                             <p class="description">
                                 <?php _e( 'The custom class will be applied to the anchor tag of the image, which you can target with custom CSS.', 'foogallery' ); ?>
@@ -644,7 +644,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
 							<span class="setting" data-setting="file_url">
 								<label for="attachments-foogallery-file-url" class="name"><?php _e('File URL', 'foogallery'); ?></label>
                                 <div class="setting-with-buttons">
-                                    <input type="text" id="attachments-foogallery-file-url" value="<?php echo $modal_data['file_url'];?>" readonly />
+                                    <input type="text" id="attachments-foogallery-file-url" value="<?php echo esc_url( $modal_data['file_url'] );?>" readonly />
                                     <div>
                                         <button type="button" class="button button-small copy-attachment-file-url" data-clipboard-target="#attachments-foogallery-file-url"><?php _e('Copy to clipboard', 'foogallery'); ?></button>
                                     </div>
@@ -670,7 +670,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
                     $taxonomies = get_object_taxonomies( 'attachment', 'objects' );
 
                     ?>
-                        <section id="foogallery-panel-taxonomies" class="tab-panel" data-nonce="<?php echo wp_create_nonce('foogallery_attachment_modal_taxonomies'); ?>">
+                        <section id="foogallery-panel-taxonomies" class="tab-panel" data-nonce="<?php echo esc_attr( wp_create_nonce('foogallery_attachment_modal_taxonomies') ); ?>">
 						<div class="settings">
                     <?php
 
@@ -694,24 +694,24 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
                         ?>
 
                         <span class="setting">
-                            <label for="foogallery_attachment_taxonomy_<?php echo $tax_name; ?>" class="name"><?php echo $modal_data['taxonomies'][$tax_name]['label']; ?></label>
+                            <label for="foogallery_attachment_taxonomy_<?php echo esc_attr( $tax_name ); ?>" class="name"><?php echo esc_html( $modal_data['taxonomies'][$tax_name]['label'] ); ?></label>
                             <div>
-                                <ul data-taxonomy="<?php echo $tax_name; ?>">
+                                <ul data-taxonomy="<?php echo esc_attr( $tax_name ); ?>">
                                     <?php
                                     foreach ($terms as $term) {
                                         $term_selected = in_array( $term->term_id, $selected_terms );
                                         ?>
                                         <li>
                                         <a href="javascript:void(0);" class="button button-small<?php echo $term_selected ? ' button-primary' : ''; ?>"
-                                           data-term-id="<?php echo $term->term_id; ?>"><?php echo $term->name; ?></a>
+                                           data-term-id="<?php echo esc_attr( $term->term_id ); ?>"><?php echo esc_html( $term->name ); ?></a>
                                         </li><?php
                                     }
                                     ?>
                                     <li class="taxonomy_add">
                                         <a href="javascript:void(0);" class="button button-small active foogallery_attachment_taxonomy_add" data-action="add" title="Add new">+</a>
                                         <input type="text" class="foogallery_attachment_taxonomy_add" style="display: none" />
-                                        <a href="javascript:void(0);" class="button button-small active foogallery_attachment_taxonomy_add" style="display: none" data-action="save"><?php echo __( 'Save','foogallery' ); ?></a>
-                                        <a href="javascript:void(0);" class="button button-small active foogallery_attachment_taxonomy_add" style="display: none" data-action="cancel"><?php echo __( 'Cancel','foogallery' ); ?></a>
+                                        <a href="javascript:void(0);" class="button button-small active foogallery_attachment_taxonomy_add" style="display: none" data-action="save"><?php echo esc_html( __( 'Save','foogallery' ) ); ?></a>
+                                        <a href="javascript:void(0);" class="button button-small active foogallery_attachment_taxonomy_add" style="display: none" data-action="cancel"><?php echo esc_html( __( 'Cancel','foogallery' ) ); ?></a>
                                     </li>
 
 									<li class="taxonomy_remove">
@@ -720,10 +720,10 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
 
                                 </ul>
                                 <div>
-                                    <a target="_blank" href="<?php echo admin_url( 'edit-tags.php?taxonomy=' . $tax_name ); ?>"?><?php printf( __('Manage %s', 'foogallery' ), $taxonomy->labels->name ); ?></a>
+                                    <a target="_blank" href="<?php echo esc_url( admin_url( 'edit-tags.php?taxonomy=' . $tax_name ) ); ?>"?><?php printf( __('Manage %s', 'foogallery' ), $taxonomy->labels->name ); ?></a>
                                 </div>
                             </div>
-                            <input type="hidden" id="foogallery_attachment_taxonomy_<?php echo $tax_name; ?>_selected" name="foogallery[taxonomies][<?php echo $tax_name; ?>]" value="<?php echo implode( ',', $selected_terms ); ?>">
+                            <input type="hidden" id="foogallery_attachment_taxonomy_<?php echo esc_attr( $tax_name ); ?>_selected" name="foogallery[taxonomies][<?php echo esc_attr( $tax_name ); ?>]" value="<?php echo esc_attr( implode( ',', $selected_terms ) ); ?>">
 
                         </span>
 
@@ -862,7 +862,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
 						<div class="settings">	
 							<span class="setting has-description" data-setting="data-width">
 								<label for="attachment-details-two-column-data-width" class="name"><?php _e('Override Width', 'foogallery'); ?></label>
-								<input type="text" name="foogallery[data-width]" id="attachment-details-two-column-data-width" value="<?php echo $modal_data['data_width']; ?>">
+								<input type="text" name="foogallery[data-width]" id="attachment-details-two-column-data-width" value="<?php echo esc_attr( $modal_data['data_width'] ); ?>">
 							</span>	
 							<p class="description">
 								<?php _e( 'Specify a custom width to override the default width.', 'foogallery' ); ?>
@@ -870,7 +870,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
 
 							<span class="setting has-description" data-setting="data-height">
 								<label for="attachment-details-two-column-data-height" class="name"><?php _e('Override Height', 'foogallery'); ?></label>
-								<input type="text" name="foogallery[data-height]" id="attachment-details-two-column-data-height" value="<?php echo $modal_data['data_height']; ?>">
+								<input type="text" name="foogallery[data-height]" id="attachment-details-two-column-data-height" value="<?php echo esc_attr( $modal_data['data_height'] ); ?>">
 							</span>
 							<p class="description">
 								<?php _e( 'Specify a custom height to override the default height.', 'foogallery' ); ?>
@@ -879,14 +879,14 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
 							<!--To enable panning add data-overflow="true" data-proportion="false" to an item -->
 							<span class="setting has-description" data-setting="panning">
 								<label for="attachment-details-two-column-panning" class="name"><?php _e('Panning', 'foogallery'); ?></label>
-								<input type="text" name="foogallery[panning]" id="attachment-details-two-column-panning" value="<?php echo $modal_data['panning']; ?>">
+								<input type="text" name="foogallery[panning]" id="attachment-details-two-column-panning" value="<?php echo esc_attr( $modal_data['panning'] ); ?>">
 							</span>	
 							<p class="description">
 								<?php _e( 'When using FooBox lightbox, enable panning to allow users to click and drag to navigate overflowing content.', 'foogallery' ); ?>
 							</p>
 							<span class="setting has-description" data-setting="override-type">
 								<label for="attachment-details-two-column-override-type" class="name"><?php _e('Override Type', 'foogallery'); ?></label>
-								<input type="text" name="foogallery[override_type]" id="attachment-details-two-column-override-type" value="<?php echo $modal_data['override_type']; ?>">
+								<input type="text" name="foogallery[override_type]" id="attachment-details-two-column-override-type" value="<?php echo esc_attr( $modal_data['override_type'] ); ?>">
 							</span>	
 							<p class="description">
 								<?php _e( 'Override the type of the attachment used by the lightbox.', 'foogallery' ); ?>
@@ -909,27 +909,27 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
 						<div class="foogallery-panel-info-inner">
 							<div class="foogallery-modal-info-fields">
 								<label for="attachment-details-two-column-uploaded-on" class="name"><?php _e('Uploaded On: ', 'foogallery'); ?></label>
-								<span><?php echo $modal_data['post_date']; ?></span>
+								<span><?php echo esc_html( $modal_data['post_date'] ); ?></span>
 							</div>
 							<div class="foogallery-modal-info-fields">
 								<label for="attachment-details-two-column-uploaded-by" class="name"><?php _e('Uploaded By: ', 'foogallery'); ?></label>
-								<span><?php echo $modal_data['author_name']; ?></span>
+								<span><?php echo esc_html( $modal_data['author_name'] ); ?></span>
 							</div>
 							<div class="foogallery-modal-info-fields">
 								<label for="attachment-details-two-column-file-name" class="name"><?php _e('File Name: ', 'foogallery'); ?></label>
-								<span id="attachment-details-two-column-copy-file-name"><?php echo $modal_data['file_name']; ?></span>
+								<span id="attachment-details-two-column-copy-file-name"><?php echo esc_html( $modal_data['file_name'] ); ?></span>
 							</div>
 							<div class="foogallery-modal-info-fields">
 								<label for="attachment-details-two-column-file-type" class="name"><?php _e('File Type: ', 'foogallery'); ?></label>
-								<span><?php echo $modal_data['file_type']; ?></span>
+								<span><?php echo esc_html( $modal_data['file_type'] ); ?></span>
 							</div>
 							<div class="foogallery-modal-info-fields">
 								<label for="attachment-details-two-column-file-size" class="name"><?php _e('File Size: ', 'foogallery'); ?></label>
-								<span><?php echo $modal_data['file_size']; ?></span>
+								<span><?php echo esc_html( $modal_data['file_size'] ); ?></span>
 							</div>
 							<div class="foogallery-modal-info-fields">
 								<label for="attachment-details-two-column-dimensions" class="name"><?php _e('Dimensions: ', 'foogallery'); ?></label>
-								<span><?php echo $modal_data['media_dims']; ?></span>
+								<span><?php echo esc_html( $modal_data['media_dims'] ); ?></span>
 							</div>
 						</div>
 					</section>
