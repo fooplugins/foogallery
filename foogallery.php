@@ -176,7 +176,7 @@ if ( function_exists( 'foogallery_fs' ) ) {
 				new FooGallery_Widget_Init();
 
 				// include the default templates no matter what!
-				new FooGallery_Default_Templates();
+				new FooPlugins\FooGallery\Extensions\DefaultTemplates\FooGallery_Default_Templates();
 
 				// init the default media library datasource.
 				new FooGallery_Datasource_MediaLibrary();

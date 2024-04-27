@@ -1,4 +1,5 @@
 <?php
+namespace FooPlugins\FooGallery\Extensions\DefaultTemplates;
 
 if ( !class_exists( 'FooGallery_Image_Viewer_Gallery_Template' ) ) {
 
