@@ -1,4 +1,7 @@
 <?php
+namespace FooPlugins\FooGallery\Pro;
+
+use FooGallery;
 /**
  * FooGallery Pro gallery blueprints Class
  */

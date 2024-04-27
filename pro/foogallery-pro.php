@@ -98,7 +98,7 @@ if ( ! class_exists( 'FooGallery_Pro' ) ) {
 				new FooGallery_Pro_Woocommerce_Downloads();
 				new FooPlugins\FooGallery\Pro\FooGallery_Pro_Whitelabelling();
 				new FooPlugins\FooGallery\Pro\Extensions\Whitelabelling\FooGallery_Pro_Whitelabelling_Extension();
-				new FooGallery_Pro_Gallery_Blueprints();
+				new FooPlugins\FooGallery\Pro\FooGallery_Pro_Gallery_Blueprints();
 			}
 		}
 	}
