@@ -33,6 +33,7 @@ if ( function_exists( 'foogallery_fs' ) ) {
 
 		require_once FOOGALLERY_PATH . 'includes/constants.php';
         require_once FOOGALLERY_PATH . 'includes/functions.php';
+        require_once FOOGALLERY_PATH . 'vendor/autoload.php';
 
 		// Create a helper function for easy SDK access.
 		function foogallery_fs() {

@@ -1,4 +1,6 @@
 <?php
+namespace Fooplugins\FooGallery\Extensions\DemoContentGenerator;
+
 /**
  * Lorem Ipsum Generator
  *

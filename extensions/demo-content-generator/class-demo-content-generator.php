@@ -1,4 +1,6 @@
 <?php
+namespace Fooplugins\FooGallery\Extensions\DemoContentGenerator;
+
 /**
  * Created by Brad Vincent.
  * Date: 04/03/2018

@@ -11,12 +11,12 @@ if ( isset( $_POST['foogallery_demo_content_generate'] ) ) {
 
 		if ( 'search' === $action ) {
 			if ( ! empty( $query ) && $count > 0 ) {
-				$results = FooGallery_Demo_Content_Generator::search( $query, $count );
+				$results = Fooplugins\FooGallery\Extensions\DemoContentGenerator\FooGallery_Demo_Content_Generator::search( $query, $count );
 			} else {
 				$message = __( 'Please provide keywords and how many images you want to search for!', 'foogallery' );
 			}
 		} else {
-			$gallery_id = FooGallery_Demo_Content_Generator::generate( $query, $count );
+			$gallery_id = Fooplugins\FooGallery\Extensions\DemoContentGenerator\FooGallery_Demo_Content_Generator::generate( $query, $count );
 			$gallery_link = sprintf( '<a href="%s" target="_blank">%s</a>', get_edit_post_link( $gallery_id ), __( 'View the gallery', 'foogallery' ) );
 			$message = sprintf( __( 'The images have been imported into your media library and a gallery has been generated. %s', 'foogallery' ), $gallery_link );
 		}
