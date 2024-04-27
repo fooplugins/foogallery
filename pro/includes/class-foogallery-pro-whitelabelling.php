@@ -1,4 +1,6 @@
 <?php
+namespace FooPlugins\FooGallery\Pro;
+
 /**
  * FooGallery WhiteLabelling Class that registers the extension.
  */

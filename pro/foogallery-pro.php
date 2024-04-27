@@ -35,8 +35,7 @@ require_once FOOGALLERY_PATH . 'pro/includes/protection/class-foogallery-image-e
 require_once FOOGALLERY_PATH . 'pro/includes/protection/class-foogallery-image-editor-helper-gd.php';
 require_once FOOGALLERY_PATH . 'pro/includes/protection/class-foogallery-image-editor-helper-imagick.php';
 
-require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-whitelabelling.php';
-require_once FOOGALLERY_PATH . 'pro/extensions/whitelabelling/foogallery-whitelabelling-extension.php';
+
 require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-ribbons.php';
 require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-buttons.php';
 require_once FOOGALLERY_PATH . 'pro/includes/woocommerce/class-foogallery-pro-woocommerce.php';
@@ -97,7 +96,8 @@ if ( ! class_exists( 'FooGallery_Pro' ) ) {
 				new FooPlugins\FooGallery\Pro\Extensions\DefaultTemplates\FooGallery_Product_Gallery_Template();
 				new FooGallery_Pro_Woocommerce_Master_Product();
 				new FooGallery_Pro_Woocommerce_Downloads();
-				new FooGallery_Pro_Whitelabelling();
+				new FooPlugins\FooGallery\Pro\FooGallery_Pro_Whitelabelling();
+				new FooPlugins\FooGallery\Pro\Extensions\Whitelabelling\FooGallery_Pro_Whitelabelling_Extension();
 				new FooGallery_Pro_Gallery_Blueprints();
 			}
 		}
