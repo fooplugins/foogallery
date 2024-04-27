@@ -6,7 +6,6 @@
 require_once FOOGALLERY_PATH . 'pro/functions.php';
 require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-presets.php';
 require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-paging.php';
-require_once FOOGALLERY_PATH . 'pro/extensions/default-templates/class-foogallery-pro-default-templates.php';
 require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-bulk-copy.php';
 require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-gallery-override.php';
 require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-filtering.php';
@@ -45,7 +44,6 @@ require_once FOOGALLERY_PATH . 'pro/includes/woocommerce/class-foogallery-pro-da
 require_once FOOGALLERY_PATH . 'pro/includes/woocommerce/class-foogallery-pro-woocommerce-base.php';
 require_once FOOGALLERY_PATH . 'pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php';
 require_once FOOGALLERY_PATH . 'pro/includes/woocommerce/class-foogallery-pro-woocommerce-downloads.php';
-require_once FOOGALLERY_PATH . 'pro/extensions/default-templates/product/class-product-gallery-template.php';
 require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-gallery-blueprints.php';
 
 /**
@@ -66,7 +64,7 @@ if ( ! class_exists( 'FooGallery_Pro' ) ) {
 		 */
 		public function __construct() {
 			new FooGallery_Pro_Hover_Presets();
-			new FooGallery_Pro_Default_Templates();
+			new FooPlugins\FooGallery\Pro\Extensions\DefaultTemplates\FooGallery_Pro_Default_Templates();
 			new FooGallery_Pro_Instagram_Filters();
 
 			if ( foogallery_fs()->is_plan_or_trial( 'pro' ) ) {
@@ -96,7 +94,7 @@ if ( ! class_exists( 'FooGallery_Pro' ) ) {
 				new FooGallery_Pro_Datasource_Products();
 				new FooGallery_Pro_Ribbons();
 				new FooGallery_Pro_Buttons();
-				new FooGallery_Product_Gallery_Template();
+				new FooPlugins\FooGallery\Pro\Extensions\DefaultTemplates\FooGallery_Product_Gallery_Template();
 				new FooGallery_Pro_Woocommerce_Master_Product();
 				new FooGallery_Pro_Woocommerce_Downloads();
 				new FooGallery_Pro_Whitelabelling();

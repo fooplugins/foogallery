@@ -1,4 +1,5 @@
 <?php
+namespace FooPlugins\FooGallery\Pro\Extensions\DefaultTemplates;
 
 if ( !class_exists( 'FooGallery_Polaroid_Gallery_Template' ) ) {
 

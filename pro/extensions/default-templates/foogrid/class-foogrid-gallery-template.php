@@ -1,4 +1,6 @@
 <?php
+namespace FooPlugins\FooGallery\Pro\Extensions\DefaultTemplates;
+
 /**
  * FooGallery FooGrid Pro Extension
  *
