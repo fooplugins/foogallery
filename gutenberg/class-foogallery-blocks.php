@@ -1,4 +1,8 @@
 <?php
+namespace FooPlugins\FooGallery\Gutenberg;
+
+use FooGallery_Template_Loader;
+
 /**
  * FooGallery Blocks Initializer
  *

@@ -1,12 +1,12 @@
 <?php
+namespace FooPlugins\FooGallery\Gutenberg;
+
+use WP_Block_Parser;
+
 /**
  * FooGallery Gutenberg Functionality
  * Date: 28/10/2018
  */
-
-require_once FOOGALLERY_PATH . 'gutenberg/class-foogallery-blocks.php';
-require_once FOOGALLERY_PATH . 'gutenberg/class-foogallery-rest-routes.php';
-
 if ( ! class_exists( 'FooGallery_Gutenberg' ) ) {
 
 	/**
