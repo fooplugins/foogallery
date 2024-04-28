@@ -1,8 +1,6 @@
 <?php
 namespace FooPlugins\FooGallery\Pro;
 
-use FooGallery_Template_Loader;
-
 /**
  * FooGallery Pro Gallery Shortcode Override Class
  */
@@ -46,7 +44,7 @@ if ( ! class_exists( 'FooGallery_Pro_Gallery_Shortcode_Override' ) ) {
                 $attr['attachment_ids'] = $attr['ids'];
 
 				//create new instance of template engine
-				$engine = new FooGallery_Template_Loader();
+				$engine = new \FooPlugins\FooGallery\Public\FooGallery_Template_Loader();
 
 				ob_start();
 

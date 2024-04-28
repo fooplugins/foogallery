@@ -48,7 +48,7 @@ if ( ! class_exists( 'FooGallery_Pro_Gallery_Blueprints' ) ) {
 
             $extensions_list[] = array(
                 'slug' => 'foogallery-gallery-blueprints',
-                'class' => 'FooGallery_Pro_Gallery_Blueprints',
+                'class' => 'FooPlugins\FooGallery\Pro\FooGallery_Pro_Gallery_Blueprints',
                 'categories' => array( 'Premium' ),
                 'title' => __( 'Gallery Blueprints', 'foogallery' ),
                 'description' => $pro_features['gallery_blueprints']['desc'],
