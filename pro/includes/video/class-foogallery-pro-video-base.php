@@ -1,4 +1,6 @@
 <?php
+namespace FooPlugins\FooGallery\Pro\Video;
+
 /**
  * Base class for video imports and queries
  * Date: 17/04/2018

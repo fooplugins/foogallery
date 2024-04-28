@@ -1,4 +1,5 @@
 <?php
+namespace FooPlugins\FooGallery\Pro\Video;
 
 /**
  * Created by PhpStorm.
@@ -7,13 +8,7 @@
  * Time: 10:09 PM
  */
 
-if ( !class_exists("FooGallery_Pro_Video_Query") ){
-
-	require_once dirname(__FILE__) . '/class-foogallery-pro-video-base.php';
-	require_once dirname(__FILE__) . '/class-foogallery-pro-video-self-hosted.php';
-	require_once dirname(__FILE__) . '/class-foogallery-pro-video-oembed.php';
-	require_once dirname(__FILE__) . '/class-foogallery-pro-video-youtube.php';
-	require_once dirname(__FILE__) . '/class-foogallery-pro-video-vimeo.php';
+if ( ! class_exists("FooGallery_Pro_Video_Query") ){
 
 	class FooGallery_Pro_Video_Query extends FooGallery_Pro_Video_Base {
 
@@ -25,9 +20,9 @@ if ( !class_exists("FooGallery_Pro_Video_Query") ){
 		function __construct() {
 
 			$this->self_hosted = new FooGallery_Pro_Video_Self_Hosted();
-			$this->oembed = new FooGallery_Pro_Video_oEmbed();
-			$this->youtube = new FooGallery_Pro_Video_YouTube();
-			$this->vimeo = new FooGallery_Pro_Video_Vimeo();
+			$this->oembed      = new FooGallery_Pro_Video_oEmbed();
+			$this->youtube     = new FooGallery_Pro_Video_YouTube();
+			$this->vimeo       = new FooGallery_Pro_Video_Vimeo();
 
 			add_action('wp_ajax_fgi_query', array($this, 'ajax'));
 

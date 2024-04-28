@@ -1,4 +1,8 @@
 <?php
+namespace FooPlugins\FooGallery\Pro\Video;
+
+use FooGallery;
+
 /**
  * All Legacy FooVideo Code lives in this class
   */
@@ -59,7 +63,7 @@ if ( ! class_exists( 'FooGallery_Pro_Video_Legacy' ) ) {
 				add_filter( 'foogallery_foovideo_pricing_menu_text', array( $this, 'override_pricing_menu_text' ) );
 			}
 
-			if ( !is_admin() && class_exists( 'Foo_Video' ) ) {
+			if ( ! is_admin() && class_exists( 'Foo_Video' ) ) {
 				add_filter( 'foogallery_build_class_attribute', array( $this, 'foogallery_build_class_attribute' ), 20 );
 			}
 		}
@@ -71,7 +75,7 @@ if ( ! class_exists( 'FooGallery_Pro_Video_Legacy' ) ) {
 		 */
 		function migration_required() {
 			//first try to get the saved option
- 			$migration_required = get_option( FOOGALLERY_FOOVIDEO_MIGRATION_REQUIRED, 0 );
+			$migration_required = get_option( FOOGALLERY_FOOVIDEO_MIGRATION_REQUIRED, 0 );
 
 			//we require migration - get out early
 			if ( "1" === $migration_required ) {
@@ -101,7 +105,7 @@ if ( ! class_exists( 'FooGallery_Pro_Video_Legacy' ) ) {
 		 * @return FooGallery
 		 */
 		function migrate_settings( $foogallery ) {
-			$helper = new FooGallery_Pro_Video_Migration_Helper();
+			$helper     = new FooGallery_Pro_Video_Migration_Helper();
 			$foogallery = $helper->migrate_gallery( $foogallery, false );
 			return $foogallery;
 		}

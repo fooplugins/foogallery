@@ -1,4 +1,8 @@
 <?php
+namespace FooPlugins\FooGallery\Pro\Video;
+
+use FooGallery;
+
 /**
  * FooVideo Migration Helpers Class
  */

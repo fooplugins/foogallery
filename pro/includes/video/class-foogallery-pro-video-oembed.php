@@ -1,4 +1,5 @@
 <?php
+namespace FooPlugins\FooGallery\Pro\Video;
 
 /**
  * Created by PhpStorm.
@@ -8,8 +9,6 @@
  */
 
 if ( ! class_exists( "FooGallery_Pro_Video_oEmbed" ) ) {
-
-	require_once dirname( __FILE__ ) . '/class-foogallery-pro-video-base.php';
 
 	class FooGallery_Pro_Video_oEmbed extends FooGallery_Pro_Video_Base {
 

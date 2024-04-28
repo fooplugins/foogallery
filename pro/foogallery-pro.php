@@ -4,9 +4,6 @@
  * FooGallery PRO includes
  */
 require_once FOOGALLERY_PATH . 'pro/functions.php';
-require_once FOOGALLERY_PATH . 'pro/includes/video/class-foogallery-pro-video.php';
-require_once FOOGALLERY_PATH . 'pro/includes/video/class-foogallery-pro-video-legacy.php';
-require_once FOOGALLERY_PATH . 'pro/includes/video/class-foogallery-pro-video-migration-helper.php';
 
 /**
  * FooGallery PRO Main Class
@@ -36,8 +33,8 @@ if ( ! class_exists( 'FooGallery_Pro' ) ) {
 				new FooPlugins\FooGallery\Pro\FooGallery_Pro_Gallery_Shortcode_Override();
 				new FooPlugins\FooGallery\Pro\FooGallery_Pro_Attachment_Taxonomies();
 				new FooPlugins\FooGallery\Pro\FooGallery_Pro_Filtering();
-				new FooGallery_Pro_Video();
-				new FooGallery_Pro_Video_Legacy();
+				new FooPlugins\FooGallery\Pro\Video\FooGallery_Pro_Video();
+				new FooPlugins\FooGallery\Pro\Video\FooGallery_Pro_Video_Legacy();
 				new FooPlugins\FooGallery\Pro\FooGallery_Pro_Datasource_MediaCategories();
 				new FooPlugins\FooGallery\Pro\FooGallery_Pro_Datasource_MediaTags();
 				new FooPlugins\FooGallery\Pro\FooGallery_Pro_Datasource_Folders();
