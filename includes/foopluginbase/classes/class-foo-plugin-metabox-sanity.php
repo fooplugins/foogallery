@@ -1,4 +1,6 @@
 <?php
+namespace FooPlugins\FooGallery\FooPluginBase;
+
 /**
  * Foo Metabox Sanity allows plugin authors to whitelist metaboxes for your custom post types
  * Original code and idea by Thomas Griffin - https://github.com/thomasgriffin/metabox-sanity

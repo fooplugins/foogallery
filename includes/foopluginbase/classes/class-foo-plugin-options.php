@@ -1,4 +1,6 @@
 <?php
+namespace FooPlugins\FooGallery\FooPluginBase;
+
 /*
  * Foo_Plugin_Options class
  *

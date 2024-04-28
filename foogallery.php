@@ -11,7 +11,7 @@ License:     GPL-2.0+
 Domain Path: /languages
 
 @fs_premium_only /pro/
- */
+*/
 
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
@@ -32,8 +32,8 @@ if ( function_exists( 'foogallery_fs' ) ) {
 		define( 'FOOGALLERY_SETTINGS_VERSION', '2' );
 
 		require_once FOOGALLERY_PATH . 'includes/constants.php';
-        require_once FOOGALLERY_PATH . 'includes/functions.php';
-        require_once FOOGALLERY_PATH . 'vendor/autoload.php';
+		require_once FOOGALLERY_PATH . 'includes/functions.php';
+		require_once FOOGALLERY_PATH . 'vendor/autoload.php';
 
 		// Create a helper function for easy SDK access.
 		function foogallery_fs() {
@@ -44,26 +44,26 @@ if ( function_exists( 'foogallery_fs' ) ) {
 				require_once dirname( __FILE__ ) . '/freemius/start.php';
 
 				$foogallery_fs = fs_dynamic_init( array(
-                    'id'             => '843',
-                    'slug'           => 'foogallery',
-                    'type'           => 'plugin',
-                    'public_key'     => 'pk_d87616455a835af1d0658699d0192',
-                    'anonymous_mode' => foogallery_freemius_is_anonymous(),
-                    'is_premium'     => true,
-                    'has_paid_plans' => true,
-                    'has_addons'     => true,
-                    'trial'          => array(
-                        'days'               => 7,
-                        'is_require_payment' => false,
-                    ),
-                    'menu'           => array(
-                        'slug'       => 'edit.php?post_type=' . FOOGALLERY_CPT_GALLERY,
-                        'first-path' => 'edit.php?post_type=' . FOOGALLERY_CPT_GALLERY . '&page=' . FOOGALLERY_ADMIN_MENU_HELP_SLUG,
-                        'account'    => true,
-                        'contact'    => false,
-                        'support'    => false,
-                    )
-                ) );
+					'id'             => '843',
+					'slug'           => 'foogallery',
+					'type'           => 'plugin',
+					'public_key'     => 'pk_d87616455a835af1d0658699d0192',
+					'anonymous_mode' => foogallery_freemius_is_anonymous(),
+					'is_premium'     => true,
+					'has_paid_plans' => true,
+					'has_addons'     => true,
+					'trial'          => array(
+						'days'               => 7,
+						'is_require_payment' => false,
+					),
+					'menu'           => array(
+						'slug'       => 'edit.php?post_type=' . FOOGALLERY_CPT_GALLERY,
+						'first-path' => 'edit.php?post_type=' . FOOGALLERY_CPT_GALLERY . '&page=' . FOOGALLERY_ADMIN_MENU_HELP_SLUG,
+						'account'    => true,
+						'contact'    => false,
+						'support'    => false,
+					)
+				) );
 			}
 
 			return $foogallery_fs;
@@ -87,7 +87,7 @@ if ( function_exists( 'foogallery_fs' ) ) {
 		 * @link      https://github.com/fooplugins/foogallery
 		 * @copyright 2013 FooPlugins LLC
 		 */
-		class FooGallery_Plugin extends Foo_Plugin_Base_v2_4 {
+		class FooGallery_Plugin extends \FooPlugins\FooGallery\FooPluginBase\Foo_Plugin_Base_v2_4 {
 
 			private static $instance;
 
@@ -324,9 +324,9 @@ if ( function_exists( 'foogallery_fs' ) ) {
 			}
 
 			function add_freemius_activation_menu() {
-                if ( foogallery_freemius_is_anonymous() ) {
-                    return;
-                }
+				if ( foogallery_freemius_is_anonymous() ) {
+					return;
+				}
 
 				global $foogallery_fs;
 
@@ -364,7 +364,7 @@ if ( function_exists( 'foogallery_fs' ) ) {
 				switch_to_blog( $blog_id );
 
 				if ( false === get_option( FOOGALLERY_EXTENSIONS_AUTO_ACTIVATED_OPTIONS_KEY, false ) ) {
-					$api = new FooGallery_Extensions_API();
+					$api = new \FooPlugins\FooGallery\Extensions\FooGallery_Extensions_API();
 
 					$api->auto_activate_extensions();
 
@@ -400,7 +400,6 @@ if ( function_exists( 'foogallery_fs' ) ) {
 
 							restore_current_blog();
 						}
-
 					} else {
 						self::single_activate();
 					}
@@ -417,7 +416,7 @@ if ( function_exists( 'foogallery_fs' ) ) {
 			 */
 			private static function single_activate( $multisite = true ) {
 				if ( false === get_option( FOOGALLERY_EXTENSIONS_AUTO_ACTIVATED_OPTIONS_KEY, false ) ) {
-					$api = new FooGallery_Extensions_API();
+					$api = new \FooPlugins\FooGallery\Extensions\FooGallery_Extensions_API();
 
 					$api->auto_activate_extensions();
 

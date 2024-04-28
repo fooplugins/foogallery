@@ -1,4 +1,6 @@
 <?php
+namespace FooPlugins\FooGallery\FooPluginBase;
+
 /*
  * Foo Plugin TextDomain Class
  *

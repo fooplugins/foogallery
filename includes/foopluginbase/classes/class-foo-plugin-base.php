@@ -1,5 +1,5 @@
 <?php
-// use Foo_Plugin_TextDomain_v1_0;
+namespace FooPlugins\FooGallery\FooPluginBase;
 
 /**
  * Foo_Plugin_Base

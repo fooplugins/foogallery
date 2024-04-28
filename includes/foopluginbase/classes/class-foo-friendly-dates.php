@@ -1,4 +1,6 @@
 <?php
+namespace FooPlugins\FooGallery\FooPluginBase;
+
 /*
 
 Translatable Friendly Dates for WordPress

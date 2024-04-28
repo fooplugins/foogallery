@@ -1,4 +1,6 @@
 <?php
+namespace FooPlugins\FooGallery\FooPluginBase;
+
 /**
  * File Locator for Plugins.
  * Based on ideas found in Gamajo-Template-Loader by Gary Jones http://github.com/GaryJones/Gamajo-Template-Loader
