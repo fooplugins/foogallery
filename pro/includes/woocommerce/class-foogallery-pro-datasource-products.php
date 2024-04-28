@@ -1,4 +1,8 @@
 <?php
+namespace FooPlugins\FooGallery\Pro\Woocommerce;
+
+use FooGalleryAttachment;
+
 /**
  * The Gallery Datasource which pulls product thumbnails from WooCommerce.
  */
@@ -24,14 +28,14 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Products' ) ) {
 			add_filter( 'woocommerce_product_data_store_cpt_get_products_query', array( $this, 'handle_price_range_query_var' ), 10, 2 );
 		}
 
-        /**
-         * Get terms from the product to show instead of attachment terms.
-         *
-         * @param $terms
-         * @param $taxonomy
-         * @param $attachment
-         * @return array|mixed|WP_Error
-         */
+		/**
+		 * Get terms from the product to show instead of attachment terms.
+		 *
+		 * @param $terms
+		 * @param $taxonomy
+		 * @param $attachment
+		 * @return array|mixed|WP_Error
+		 */
 		public function get_terms_from_product( $terms, $taxonomy, $attachment ) {
 			if ( isset( $attachment->product_datasource_used ) ) {
 
@@ -214,7 +218,7 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Products' ) ) {
 						'key'     => '_thumbnail_id',
 						'compare' => 'EXISTS'
 					)
-                )
+				)
 			);
 
 			if ($max_price_range > 0) {
@@ -277,10 +281,10 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Products' ) ) {
 
 			foreach ( $products as $product ) {
 
-                // Do not show products that are not visible.
-                if ( !$product->is_visible() ) {
-                    continue;
-                }
+				// Do not show products that are not visible.
+				if ( !$product->is_visible() ) {
+					continue;
+				}
 
 				$attachment = new FooGalleryAttachment();
 				$attachment->product = $product; // Store the product object.
@@ -288,9 +292,9 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Products' ) ) {
 
 				$post_thumbnail_id = get_post_thumbnail_id( $product->get_id() );
 
-                if ( 0 === $post_thumbnail_id ) {
-                    continue;
-                }
+				if ( 0 === $post_thumbnail_id ) {
+					continue;
+				}
 
 				$attachment->load_attachment_image_data( $post_thumbnail_id );
 
@@ -398,157 +402,157 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Products' ) ) {
 				$datasource_value['max_price_range'] = '';
 			}
 			?>
-            <p>
+			<p>
 				<?php _e('Choose the settings for your gallery below. The gallery will be dynamically populated using the post query settings below.', 'foogallery' ); ?>
-            </p>
-            <form action="" method="post" name="woocommerce_gallery_form" class="foogallery-datasource-woocommerce-form">
-                <table class="form-table">
-                    <tbody>
-                    <tr>
-	                    <th scope="row"><?php _e( 'Product Categories', 'foogallery' ); ?></th>
-	                    <td>
-		                    <ul class="foogallery_woocommerce_categories">
-			                    <?php
-			                    foreach ($categories as $category) {
-				                    $selected = in_array($category->term_id, $selected_categories);
-				                    ?>
-				                    <li>
-					                    <a href="#" class="button button-small<?php echo $selected ? ' button-primary' : ''; ?>"
-					                       data-term-id="<?php echo $category->term_id; ?>"><?php echo $category->name; ?></a>
-				                    </li><?php
-			                    }
-			                    ?>
-		                    </ul>
-	                    </td>
-                    </tr>
+			</p>
+			<form action="" method="post" name="woocommerce_gallery_form" class="foogallery-datasource-woocommerce-form">
+				<table class="form-table">
+					<tbody>
 					<tr>
-	                    <th scope="row"><?php _e( 'Price Range', 'foogallery' ); ?></th>
-	                    <td>
+						<th scope="row"><?php _e( 'Product Categories', 'foogallery' ); ?></th>
+						<td>
+							<ul class="foogallery_woocommerce_categories">
+								<?php
+								foreach ($categories as $category) {
+									$selected = in_array($category->term_id, $selected_categories);
+									?>
+									<li>
+										<a href="#" class="button button-small<?php echo $selected ? ' button-primary' : ''; ?>"
+										data-term-id="<?php echo $category->term_id; ?>"><?php echo $category->name; ?></a>
+									</li><?php
+								}
+								?>
+							</ul>
+						</td>
+					</tr>
+					<tr>
+						<th scope="row"><?php _e( 'Price Range', 'foogallery' ); ?></th>
+						<td>
 							<input
-                                    type="number"
+									type="number"
 									placeholder="Minimum Price"
 									min="0"
-                                    class="foogallery_woocommerce_input"
-                                    name="min_price_range"
-                                    id="foogallery_woocommerce_min_price_range"
-                                    value="<?php echo isset( $datasource_value['min_price_range'] ) ? $datasource_value['min_price_range'] : '' ?>"
-                            />
+									class="foogallery_woocommerce_input"
+									name="min_price_range"
+									id="foogallery_woocommerce_min_price_range"
+									value="<?php echo isset( $datasource_value['min_price_range'] ) ? $datasource_value['min_price_range'] : '' ?>"
+							/>
 							<input
-                                    type="number"
+									type="number"
 									placeholder="Maximum Price"
 									min="0"
-                                    class="foogallery_woocommerce_input"
-                                    name="max_price_range"
-                                    id="foogallery_woocommerce_max_price_range"
-                                    value="<?php echo isset( $datasource_value['max_price_range'] ) ? $datasource_value['max_price_range'] : '' ?>"
-                            />
-	                    </td>
-                    </tr>
-                    <tr>
-	                    <th scope="row"><?php _e( 'Sort By', 'foogallery' ); ?></th>
-	                    <td>
-		                    <fieldset>
-			                    <?php foreach ( $sort_choices as $sort_choice => $sort_choice_label ) { ?>
-				                    <label style="padding-right: 10px">
-					                    <input
-						                    type="radio"
-						                    name="sort"
-						                    value="<?php echo $sort_choice; ?>"
-						                    class="foogallery_woocommerce_sort foogallery_woocommerce_input"
-						                    <?php echo ( isset( $datasource_value['sort'] ) && $datasource_value['sort'] === $sort_choice ) ? 'checked="checked"' : '' ?>
-					                    />
-					                    <span><?php echo $sort_choice_label; ?></span>
-				                    </label>
-			                    <?php } ?>
-		                    </fieldset>
-	                    </td>
-                    </tr>
-                    <tr>
-	                    <th scope="row"><?php _e( 'Stock Status', 'foogallery' ); ?></th>
-	                    <td>
-		                    <fieldset>
-			                    <?php foreach ( $stock_choices as $stock_choice => $stock_choice_label ) { ?>
-				                    <label style="padding-right: 10px">
-					                    <input
-						                    type="radio"
-						                    name="stock"
-						                    value="<?php echo $stock_choice; ?>"
-						                    class="foogallery_woocommerce_stock foogallery_woocommerce_input"
-						                    <?php echo ( isset( $datasource_value['stock'] ) && $datasource_value['stock'] === $stock_choice ) ? 'checked="checked"' : '' ?>
-					                    />
-					                    <span><?php echo $stock_choice_label; ?></span>
-				                    </label>
-			                    <?php } ?>
-		                    </fieldset>
-	                    </td>
-                    </tr>
-                    <tr>
-                        <th scope="row"><?php _e( 'Number of Products', 'foogallery' ); ?></th>
-                        <td>
-                            <input
-                                    type="number"
-                                    class="regular-text foogallery_woocommerce_input"
-                                    name="no_of_post"
-                                    id="foogallery_woocommerce_no_of_post"
-                                    value="<?php echo isset( $datasource_value['no_of_post'] ) ? $datasource_value['no_of_post'] : '' ?>"
-                            />
-                            <p class="description"><?php _e( 'Number of products you want to include in the gallery.', 'foogallery' ) ?></p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row"><?php _e( 'Exclude', 'foogallery' ); ?></th>
-                        <td>
-                            <input
-                                    type="text"
-                                    class="regular-text foogallery_woocommerce_input"
-                                    name="exclude"
-                                    id="foogallery_woocommerce_exclude"
-                                    value="<?php echo isset( $datasource_value['exclude'] ) ? $datasource_value['exclude'] : '' ?>"
-                            />
-                            <p class="description"><?php _e( 'A comma separated list of product id\'s that you want to exclude from the gallery.', 'foogallery' ) ?></p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row"><?php _e( 'Caption Title Source', 'foogallery' ); ?></th>
-                        <td>
-                            <fieldset>
-	                            <?php foreach ( $caption_sources as $caption_source_key => $caption_source_label ) { ?>
-		                            <label style="padding-right: 10px">
-			                            <input
-				                            type="radio"
-				                            name="caption_title_source"
-				                            value="<?php echo $caption_source_key; ?>"
-				                            class="foogallery_woocommerce_caption_title_source foogallery_woocommerce_input"
-				                            <?php echo ( isset( $datasource_value['caption_title_source'] ) && $datasource_value['caption_title_source'] === $caption_source_key ) ? 'checked="checked"' : '' ?>
-			                            />
-			                            <span><?php echo $caption_source_label; ?></span>
-		                            </label>
+									class="foogallery_woocommerce_input"
+									name="max_price_range"
+									id="foogallery_woocommerce_max_price_range"
+									value="<?php echo isset( $datasource_value['max_price_range'] ) ? $datasource_value['max_price_range'] : '' ?>"
+							/>
+						</td>
+					</tr>
+					<tr>
+						<th scope="row"><?php _e( 'Sort By', 'foogallery' ); ?></th>
+						<td>
+							<fieldset>
+								<?php foreach ( $sort_choices as $sort_choice => $sort_choice_label ) { ?>
+									<label style="padding-right: 10px">
+										<input
+											type="radio"
+											name="sort"
+											value="<?php echo $sort_choice; ?>"
+											class="foogallery_woocommerce_sort foogallery_woocommerce_input"
+											<?php echo ( isset( $datasource_value['sort'] ) && $datasource_value['sort'] === $sort_choice ) ? 'checked="checked"' : '' ?>
+										/>
+										<span><?php echo $sort_choice_label; ?></span>
+									</label>
 								<?php } ?>
-                            </fieldset>
-                        </td>
-                    </tr>
-                    <tr>
-	                    <th scope="row"><?php _e( 'Caption Description Source', 'foogallery' ); ?></th>
-	                    <td>
-		                    <fieldset>
-			                    <?php foreach ( $caption_sources as $caption_source_key => $caption_source_label ) { ?>
-				                    <label style="padding-right: 10px">
-					                    <input
-						                    type="radio"
-						                    name="caption_desc_source"
-						                    value="<?php echo $caption_source_key; ?>"
-						                    class="foogallery_woocommerce_caption_desc_source foogallery_woocommerce_input"
-						                    <?php echo ( isset( $datasource_value['caption_desc_source'] ) && $datasource_value['caption_desc_source'] === $caption_source_key ) ? 'checked="checked"' : '' ?>
-					                    />
-					                    <span><?php echo $caption_source_label; ?></span>
-				                    </label>
-			                    <?php } ?>
-		                    </fieldset>
-	                    </td>
-                    </tr>
-                    </tbody>
-                </table>
-            </form>
+							</fieldset>
+						</td>
+					</tr>
+					<tr>
+						<th scope="row"><?php _e( 'Stock Status', 'foogallery' ); ?></th>
+						<td>
+							<fieldset>
+								<?php foreach ( $stock_choices as $stock_choice => $stock_choice_label ) { ?>
+									<label style="padding-right: 10px">
+										<input
+											type="radio"
+											name="stock"
+											value="<?php echo $stock_choice; ?>"
+											class="foogallery_woocommerce_stock foogallery_woocommerce_input"
+											<?php echo ( isset( $datasource_value['stock'] ) && $datasource_value['stock'] === $stock_choice ) ? 'checked="checked"' : '' ?>
+										/>
+										<span><?php echo $stock_choice_label; ?></span>
+									</label>
+								<?php } ?>
+							</fieldset>
+						</td>
+					</tr>
+					<tr>
+						<th scope="row"><?php _e( 'Number of Products', 'foogallery' ); ?></th>
+						<td>
+							<input
+									type="number"
+									class="regular-text foogallery_woocommerce_input"
+									name="no_of_post"
+									id="foogallery_woocommerce_no_of_post"
+									value="<?php echo isset( $datasource_value['no_of_post'] ) ? $datasource_value['no_of_post'] : '' ?>"
+							/>
+							<p class="description"><?php _e( 'Number of products you want to include in the gallery.', 'foogallery' ) ?></p>
+						</td>
+					</tr>
+					<tr>
+						<th scope="row"><?php _e( 'Exclude', 'foogallery' ); ?></th>
+						<td>
+							<input
+									type="text"
+									class="regular-text foogallery_woocommerce_input"
+									name="exclude"
+									id="foogallery_woocommerce_exclude"
+									value="<?php echo isset( $datasource_value['exclude'] ) ? $datasource_value['exclude'] : '' ?>"
+							/>
+							<p class="description"><?php _e( 'A comma separated list of product id\'s that you want to exclude from the gallery.', 'foogallery' ) ?></p>
+						</td>
+					</tr>
+					<tr>
+						<th scope="row"><?php _e( 'Caption Title Source', 'foogallery' ); ?></th>
+						<td>
+							<fieldset>
+								<?php foreach ( $caption_sources as $caption_source_key => $caption_source_label ) { ?>
+									<label style="padding-right: 10px">
+										<input
+											type="radio"
+											name="caption_title_source"
+											value="<?php echo $caption_source_key; ?>"
+											class="foogallery_woocommerce_caption_title_source foogallery_woocommerce_input"
+											<?php echo ( isset( $datasource_value['caption_title_source'] ) && $datasource_value['caption_title_source'] === $caption_source_key ) ? 'checked="checked"' : '' ?>
+										/>
+										<span><?php echo $caption_source_label; ?></span>
+									</label>
+								<?php } ?>
+							</fieldset>
+						</td>
+					</tr>
+					<tr>
+						<th scope="row"><?php _e( 'Caption Description Source', 'foogallery' ); ?></th>
+						<td>
+							<fieldset>
+								<?php foreach ( $caption_sources as $caption_source_key => $caption_source_label ) { ?>
+									<label style="padding-right: 10px">
+										<input
+											type="radio"
+											name="caption_desc_source"
+											value="<?php echo $caption_source_key; ?>"
+											class="foogallery_woocommerce_caption_desc_source foogallery_woocommerce_input"
+											<?php echo ( isset( $datasource_value['caption_desc_source'] ) && $datasource_value['caption_desc_source'] === $caption_source_key ) ? 'checked="checked"' : '' ?>
+										/>
+										<span><?php echo $caption_source_label; ?></span>
+									</label>
+								<?php } ?>
+							</fieldset>
+						</td>
+					</tr>
+					</tbody>
+				</table>
+			</form>
 			<script type="text/javascript">
 				foogallery_woocommerce_set_selected_categories();
 			</script>
@@ -602,33 +606,33 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Products' ) ) {
 			}
 
 			?>
-            <div <?php echo $show_container ? '' : 'style="display:none" '; ?>class="foogallery-datasource-item foogallery-datasource-woocommerce">
-                <h3>
+			<div <?php echo $show_container ? '' : 'style="display:none" '; ?>class="foogallery-datasource-item foogallery-datasource-woocommerce">
+				<h3>
 					<?php _e( 'Datasource : WooCommerce Products', 'foogallery' ); ?>
-                </h3>
-                <p>
+				</h3>
+				<p>
 					<?php _e( 'This gallery will be dynamically populated with products, based on the following criteria:', 'foogallery' ); ?>
-                </p>
-                <div class="foogallery-items-html">
-	                <?php echo __('Categories : ', 'foogallery'); ?><span id="foogallery-datasource-woocommerce-categories"><?php echo $categories_html; ?></span><br />
-					        <?php echo __('Price Range : ', 'foogallery'); ?><span id="foogallery-datasource-woocommerce-price-range"><?php echo $min_price_range; ?> - <?php echo $max_price_range; ?></span><br />
-	                <?php echo __('Sort by : ', 'foogallery'); ?><span id="foogallery-datasource-woocommerce-sort"><?php echo $sort; ?></span><br />
-	                <?php echo __('Stock Status : ', 'foogallery'); ?><span id="foogallery-datasource-woocommerce-stock"><?php echo $stock; ?></span><br />
-	                <?php echo __('No. of Products : ', 'foogallery'); ?><span id="foogallery-datasource-woocommerce-no_of_post"><?php echo $no_of_post; ?></span><br />
-	                <?php if ( !empty( $exclude ) ) { ?>
-	                <?php echo __('Excludes : ', 'foogallery'); ?><span id="foogallery-datasource-woocommerce-exclude"><?php echo $exclude; ?></span><br />
+				</p>
+				<div class="foogallery-items-html">
+					<?php echo __('Categories : ', 'foogallery'); ?><span id="foogallery-datasource-woocommerce-categories"><?php echo $categories_html; ?></span><br />
+							<?php echo __('Price Range : ', 'foogallery'); ?><span id="foogallery-datasource-woocommerce-price-range"><?php echo $min_price_range; ?> - <?php echo $max_price_range; ?></span><br />
+					<?php echo __('Sort by : ', 'foogallery'); ?><span id="foogallery-datasource-woocommerce-sort"><?php echo $sort; ?></span><br />
+					<?php echo __('Stock Status : ', 'foogallery'); ?><span id="foogallery-datasource-woocommerce-stock"><?php echo $stock; ?></span><br />
+					<?php echo __('No. of Products : ', 'foogallery'); ?><span id="foogallery-datasource-woocommerce-no_of_post"><?php echo $no_of_post; ?></span><br />
+					<?php if ( !empty( $exclude ) ) { ?>
+					<?php echo __('Excludes : ', 'foogallery'); ?><span id="foogallery-datasource-woocommerce-exclude"><?php echo $exclude; ?></span><br />
 					<?php } ?>
-	                <?php echo __('Caption Title Source : ', 'foogallery'); ?><span id="foogallery-datasource-woocommerce-caption_title_source"><?php echo $caption_title_source; ?></span><br />
-	                <?php echo __('Caption Desc Source : ', 'foogallery'); ?><span id="foogallery-datasource-woocommerce-caption_desc_source"><?php echo $caption_desc_source; ?></span><br />
-                </div>
-                <br/>
-                <button type="button" class="button edit">
+					<?php echo __('Caption Title Source : ', 'foogallery'); ?><span id="foogallery-datasource-woocommerce-caption_title_source"><?php echo $caption_title_source; ?></span><br />
+					<?php echo __('Caption Desc Source : ', 'foogallery'); ?><span id="foogallery-datasource-woocommerce-caption_desc_source"><?php echo $caption_desc_source; ?></span><br />
+				</div>
+				<br/>
+				<button type="button" class="button edit">
 					<?php _e( 'Change', 'foogallery' ); ?>
-                </button>
-                <button type="button" class="button remove">
+				</button>
+				<button type="button" class="button remove">
 					<?php _e( 'Remove', 'foogallery' ); ?>
-                </button>
-            </div>
+				</button>
+			</div>
 			<?php
 		}
 

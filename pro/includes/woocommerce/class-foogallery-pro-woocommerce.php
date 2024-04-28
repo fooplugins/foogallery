@@ -1,4 +1,10 @@
 <?php
+namespace FooPlugins\FooGallery\Pro\Woocommerce;
+
+use WC_Product_Variation;
+use FooGallery;
+use FooPlugins\FooGallery\Pro\FooGallery_Pro_Ribbons;
+
 /**
  * FooGallery class for WooCommerce Integration
  *
@@ -549,7 +555,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 		 * @return mixed
 		 */
 		static function determine_extra_data_for_product( &$attachment, $product ) {
-			if ( !self::is_product( $product ) ) {
+			if ( ! self::is_product( $product ) ) {
 				return $attachment;
 			}
 
@@ -924,7 +930,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 					'subsection' => array( 'ecommerce-ribbons' => __( 'Ribbons', 'foogallery' ) ),
 					'type'     => 'select',
 					'default'  => 'fg-ribbon-3',
-					'choices'  => FooPlugins\FooGallery\Pro\FooGallery_Pro_Ribbons::get_ribbon_choices(),
+					'choices'  => FooGallery_Pro_Ribbons::get_ribbon_choices(),
 					'row_data' => array(
 						'data-foogallery-change-selector'          => 'select',
 						'data-foogallery-preview'                  => 'shortcode',
@@ -959,7 +965,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 					'subsection' => array( 'ecommerce-ribbons' => __( 'Ribbons', 'foogallery' ) ),
 					'type'     => 'select',
 					'default'  => '',
-					'choices'  => FooPlugins\FooGallery\Pro\FooGallery_Pro_Ribbons::get_ribbon_choices(),
+					'choices'  => FooGallery_Pro_Ribbons::get_ribbon_choices(),
 					'row_data' => array(
 						'data-foogallery-change-selector'          => 'select',
 						'data-foogallery-preview'                  => 'shortcode',
@@ -994,7 +1000,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 					'subsection' => array( 'ecommerce-ribbons' => __( 'Ribbons', 'foogallery' ) ),
 					'type'     => 'select',
 					'default'  => '',
-					'choices'  => FooPlugins\FooGallery\Pro\FooGallery_Pro_Ribbons::get_ribbon_choices(),
+					'choices'  => FooGallery_Pro_Ribbons::get_ribbon_choices(),
 					'row_data' => array(
 						'data-foogallery-change-selector'          => 'select',
 						'data-foogallery-preview'                  => 'shortcode',
@@ -1029,7 +1035,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 					'subsection' => array( 'ecommerce-ribbons' => __( 'Ribbons', 'foogallery' ) ),
 					'type'     => 'select',
 					'default'  => '',
-					'choices'  => FooPlugins\FooGallery\Pro\FooGallery_Pro_Ribbons::get_ribbon_choices(),
+					'choices'  => FooGallery_Pro_Ribbons::get_ribbon_choices(),
 					'row_data' => array(
 						'data-foogallery-change-selector'          => 'select',
 						'data-foogallery-preview'                  => 'shortcode',
@@ -1384,7 +1390,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 							<span class="setting has-description" data-setting="ribbon">
 								<label for="attachment-details-two-column-ribbon" class="name"><?php _e('Ribbon', 'foogallery'); ?></label>
 								<select id="attachment-details-two-column-ribbon" name="foogallery[ribbon]">
-									<?php foreach ( FooPlugins\FooGallery\Pro\FooGallery_Pro_Ribbons::get_ribbon_choices() as $ribbon => $label ) { ?>
+									<?php foreach ( FooGallery_Pro_Ribbons::get_ribbon_choices() as $ribbon => $label ) { ?>
 									<option value="<?php echo $ribbon; ?>" <?php selected( $modal_data['foogallery_ribbon'], $ribbon, true ); ?>><?php echo $label; ?></option>
 									<?php } ?>
 								</select>

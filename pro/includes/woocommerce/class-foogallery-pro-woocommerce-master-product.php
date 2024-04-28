@@ -1,4 +1,11 @@
 <?php
+namespace FooPlugins\FooGallery\Pro\Woocommerce;
+
+use FooGallery;
+use WC_Product_Variation;
+use WC_Product_Attribute;
+use WC_Product_Variable;
+
 /**
  * FooGallery class for WooCommerce Data Transfer Feature
  * Where data from the attachment is transferred to the cart and order items.
@@ -88,8 +95,6 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce_Master_Product' ) ) {
                 // Allow for search in master product modal.
                 add_filter( 'woocommerce_product_data_store_cpt_get_products_query', array( $this, 'support_product_search' ), 10, 2 );
 			}
-
-                
 
             }
         }

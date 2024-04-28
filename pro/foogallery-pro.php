@@ -30,13 +30,6 @@ require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-bulk-managemen
 require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-exif.php';
 
 
-require_once FOOGALLERY_PATH . 'pro/includes/woocommerce/class-foogallery-pro-woocommerce.php';
-require_once FOOGALLERY_PATH . 'pro/includes/woocommerce/class-foogallery-pro-datasource-products.php';
-require_once FOOGALLERY_PATH . 'pro/includes/woocommerce/class-foogallery-pro-woocommerce-base.php';
-require_once FOOGALLERY_PATH . 'pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php';
-require_once FOOGALLERY_PATH . 'pro/includes/woocommerce/class-foogallery-pro-woocommerce-downloads.php';
-require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-gallery-blueprints.php';
-
 /**
  * FooGallery PRO Main Class
  */
@@ -81,13 +74,13 @@ if ( ! class_exists( 'FooGallery_Pro' ) ) {
 			}
 			if ( foogallery_fs()->is_plan_or_trial( 'commerce' ) ) {
 				new FooPlugins\FooGallery\Pro\Protection\FooGallery_Pro_Protection();
-				new FooGallery_Pro_Woocommerce();
-				new FooGallery_Pro_Datasource_Products();
+				new FooPlugins\FooGallery\Pro\Woocommerce\FooGallery_Pro_Woocommerce();
+				new FooPlugins\FooGallery\Pro\Woocommerce\FooGallery_Pro_Datasource_Products();
 				new FooPlugins\FooGallery\Pro\FooGallery_Pro_Ribbons();
 				new FooPlugins\FooGallery\Pro\FooGallery_Pro_Buttons();
 				new FooPlugins\FooGallery\Pro\Extensions\DefaultTemplates\FooGallery_Product_Gallery_Template();
-				new FooGallery_Pro_Woocommerce_Master_Product();
-				new FooGallery_Pro_Woocommerce_Downloads();
+				new FooPlugins\FooGallery\Pro\Woocommerce\FooGallery_Pro_Woocommerce_Master_Product();
+				new FooPlugins\FooGallery\Pro\Woocommerce\FooGallery_Pro_Woocommerce_Downloads();
 				new FooPlugins\FooGallery\Pro\FooGallery_Pro_Whitelabelling();
 				new FooPlugins\FooGallery\Pro\Extensions\Whitelabelling\FooGallery_Pro_Whitelabelling_Extension();
 				new FooPlugins\FooGallery\Pro\FooGallery_Pro_Gallery_Blueprints();
