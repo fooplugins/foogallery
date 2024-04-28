@@ -29,9 +29,6 @@ if ( ! class_exists( 'FooGallery_Thumb_Manager' ) ) {
 		 */
 		function override_image_editors( $editors ) {
 
-			require_once( FOOGALLERY_PATH . '/includes/thumbs/class-foogallery-thumb-image-editor-gd.php' );
-			require_once( FOOGALLERY_PATH . '/includes/thumbs/class-foogallery-thumb-image-editor-imagick.php' );
-
 			$image_editors = array();
 
 			//replace the default image editors with the FooGallery Thumb image editors

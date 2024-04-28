@@ -544,7 +544,7 @@ function foogallery_build_container_data_options( $gallery, $attributes ) {
  */
 function foogallery_render_gallery( $gallery_id, $args = array()) {
 	//create new instance of template engine
-	$engine = new FooGallery_Template_Loader();
+	$engine = new \FooPlugins\FooGallery\Public\FooGallery_Template_Loader();
 
 	$shortcode_args = wp_parse_args( $args, array(
 		'id' => $gallery_id
@@ -667,7 +667,7 @@ function foogallery_clear_all_css_load_optimizations() {
  * Performs a check to see if the plugin has been updated, and perform any housekeeping if necessary
  */
 function foogallery_perform_version_check() {
-	$checker = new FooPlugins\FooGallery\FooGallery_Version_Check();
+	$checker = new \FooPlugins\FooGallery\FooGallery_Version_Check();
 	$checker->perform_check();
 }
 
@@ -2273,7 +2273,7 @@ function foogallery_get_target_options() {
 function foogallery_create_demo_content() {
 
     if ( is_admin() && is_user_logged_in() && current_user_can( 'manage_options' ) ) {
-        $importer = new FooGallery_Admin_Demo_Content();
+        $importer = new FooPlugins\FooGallery\Admin\FooGallery_Admin_Demo_Content();
         $results = $importer->import_demo_content();
 
         foogallery_set_setting('demo_content', 'on');

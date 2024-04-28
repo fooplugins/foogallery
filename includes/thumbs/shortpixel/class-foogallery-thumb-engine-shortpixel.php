@@ -157,7 +157,7 @@ if ( ! class_exists( 'FooGallery_Thumb_Engine_Shortpixel' ) ) {
 
 			if ( $this->is_spai_active() ) {
 				//get settings from SPAI settings object
-				$options = ShortPixel\AI\Options::_();
+				$options = \ShortPixel\AI\Options::_();
 				$foogallery_shortpixel_settings = array(
 					'url' => $options->settings->behaviour->api_url,
 					'level' => $options->settings->compression->level,

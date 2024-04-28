@@ -1,8 +1,8 @@
 <?php
 namespace FooPlugins\FooGallery\Public;
 
-use Foo_Plugin_File_Locator_v1;
 use FooPlugins\FooGallery\FooGallery;
+use FooPlugins\FooGallery\FooPluginBase\Foo_Plugin_File_Locator_v1;
 
 /**
  * Template loader for FooGallery
