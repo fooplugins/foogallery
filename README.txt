@@ -4,7 +4,7 @@ Donate link: https://fooplugins.com
 Tags: gallery, image gallery, photo gallery, responsive gallery, wordpress gallery plugin, best gallery plugin, albums, media gallery, video gallery, lightbox
 Requires at least: 5.3
 Tested up to: 6.4
-Stable tag: 2.4.9
+Stable tag: 3.0.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -320,6 +320,11 @@ We did the research and comparison. See our findings : [What is the Best WordPre
 Please update in order for FooGallery to work in WP 5.5+!
 
 == Changelog ==
+
+= 3.0.0 =
+* Date Updated: 28th April 2024
+* Update : Implemented namespaces throughout FooGallery.
+* Update : Transitioned to using Composer's autoloader mechanism.
 
 = 2.4.13 =
 * Date Updated : 17 Feb 2024
