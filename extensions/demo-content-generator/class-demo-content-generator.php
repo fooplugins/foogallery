@@ -28,8 +28,6 @@ if ( ! class_exists( 'FooGallery_Demo_Content_Generator' ) ) {
 		}
 
 		static function search( $query, $count = 20 ) {
-			require_once 'includes/class-pixabay.php';
-			require_once 'includes/class-lorem-ipsum.php';
 
 			$client = new FooGallery_PixabayClient();
 			$key = apply_filters( 'foogallery_pixabay_key', '1843003-12be68cf2726df47797f19cd7' );

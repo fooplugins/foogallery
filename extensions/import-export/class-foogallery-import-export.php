@@ -95,7 +95,7 @@ if ( ! class_exists( 'FooGallery_Import_Export' ) ) {
 										} else {
 											$this->log_message( __( 'already exists so skipping.', 'foogallery' ) );
 										}
-										if ( !is_wp_error( $imported_attachment_id ) && intval( $imported_attachment_id ) > 0 ) {
+										if ( ! is_wp_error( $imported_attachment_id ) && intval( $imported_attachment_id ) > 0 ) {
 											$new_attachments[ $attachment_id ] = $imported_attachment_id;
 										}
 									}

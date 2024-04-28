@@ -5,9 +5,7 @@ namespace FooPlugins\FooGallery\Extensions\ImportExport;
  * FooGallery Import Export Class that registers the extension.
  */
 
-if ( ! class_exists('FooGallery_Import_Export_Extension') ) {
-
-	require_once 'class-foogallery-import-export.php';
+if ( ! class_exists( 'FooGallery_Import_Export_Extension' ) ) {
 
 	class FooGallery_Import_Export_Extension {
 
