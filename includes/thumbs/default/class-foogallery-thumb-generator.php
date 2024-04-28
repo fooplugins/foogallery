@@ -139,7 +139,7 @@ if ( ! class_exists( 'FooGallery_Thumb_Generator' ) ) {
 		public function set_file_path( $image_url ) {
 			$file_path = self::get_file_path( $image_url );
 			if ( false === $file_path ) {
-				$this->error = new WP_Error( 'file-not-found' );
+				$this->error = new \WP_Error( 'file-not-found' );
 			} else {
 				$this->file_path = $file_path;
 			}
