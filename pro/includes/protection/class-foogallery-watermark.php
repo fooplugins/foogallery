@@ -1,4 +1,6 @@
 <?php
+namespace FooPlugins\FooGallery\Pro\Protection;
+
 /**
  * Class for applying watermarks to images
  *

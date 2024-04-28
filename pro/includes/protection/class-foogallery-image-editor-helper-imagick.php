@@ -1,4 +1,7 @@
 <?php
+namespace FooPlugins\FooGallery\Pro\Protection;
+
+use Imagick;
 
 /**
  * class for the Imagick image editor helper

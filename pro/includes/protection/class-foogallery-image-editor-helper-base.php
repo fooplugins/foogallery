@@ -1,4 +1,6 @@
 <?php
+namespace FooPlugins\FooGallery\Pro\Protection;
+
 /**
  * Base class for the image editor helper
  */
