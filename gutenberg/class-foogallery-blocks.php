@@ -44,20 +44,20 @@ if ( ! class_exists( 'FooGallery_Blocks' ) ) {
 			foogallery_enqueue_core_gallery_template_script();
 			foogallery_enqueue_core_gallery_template_style();
 
-            $path = FOOGALLERY_PATH . 'gutenberg/assets/blocks';
-            $url = FOOGALLERY_URL . 'gutenberg/assets/blocks';
-            $asset = require_once( $path . '.asset.php' );
+			$path = FOOGALLERY_PATH . 'gutenberg/assets/blocks';
+			$url = FOOGALLERY_URL . 'gutenberg/assets/blocks';
+			$asset = require_once( $path . '.asset.php' );
 
-            if ( is_array( $asset[ 'dependencies' ] ) ){
-                $asset[ 'dependencies' ][] = 'foogallery-core';
-            }
+			if ( is_array( $asset[ 'dependencies' ] ) ){
+				$asset[ 'dependencies' ][] = 'foogallery-core';
+			}
 
 			// Scripts.
 			wp_enqueue_script(
 				'foogallery-block-js', // Handle.
-                $url . '.js', // Block.build.js: We register the block here. Built with Webpack.
-                $asset[ 'dependencies' ], // Dependencies, defined above.
-                $asset[ 'version' ],
+				$url . '.js', // Block.build.js: We register the block here. Built with Webpack.
+				$asset[ 'dependencies' ], // Dependencies, defined above.
+				$asset[ 'version' ],
 				true // Enqueue the script in the footer.
 			);
 
@@ -66,7 +66,7 @@ if ( ! class_exists( 'FooGallery_Blocks' ) ) {
 				'foogallery-block-editor-css', // Handle.
 				$url . '.css', // Block editor CSS.
 				array( 'dashicons', 'wp-components', 'wp-edit-blocks', 'foogallery-core' ), // Dependency to include the CSS after it.
-                $asset[ 'version' ]
+				$asset[ 'version' ]
 			);
 
 			$local_data = false;
@@ -84,10 +84,10 @@ if ( ! class_exists( 'FooGallery_Blocks' ) ) {
 			$inline_script = 'window.FOOGALLERY_BLOCK = ' . json_encode( $block_js_data ) . ';';
 			if ( false !== $local_data ) {
 				/*
-				 * Pass already loaded translations to our JavaScript.
-				 *
-				 * This happens _before_ our JavaScript runs, afterwards it's too late.
-				 */
+				* Pass already loaded translations to our JavaScript.
+				*
+				* This happens _before_ our JavaScript runs, afterwards it's too late.
+				*/
 				$inline_script .= PHP_EOL . 'wp.i18n.setLocaleData( ' . json_encode( $local_data ) . ', "foogallery" );';
 			}
 
@@ -149,8 +149,8 @@ if ( ! class_exists( 'FooGallery_Blocks' ) ) {
 		 * @return false|string|null
 		 */
 		function render_block( $attributes ) {
-			//create new instance of template engine
-			$engine = new FooGallery_Template_Loader();
+			// Create new instance of template engine.
+			$engine = new \FooPlugins\FooGallery\Public\FooGallery_Template_Loader();
 
 			ob_start();
 

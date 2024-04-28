@@ -27,7 +27,7 @@ if ( ! class_exists( 'FooGallery_Rest_Routes' ) ) {
 		 * @access public
 		 */
 		public function register_routes() {
-			if ( !apply_filters( 'foogallery_gutenberg_enabled', true ) ) {
+			if ( ! apply_filters( 'foogallery_gutenberg_enabled', true ) ) {
 				return;
 			}
 
@@ -35,9 +35,9 @@ if ( ! class_exists( 'FooGallery_Rest_Routes' ) ) {
 				'foogallery/v1',
 				'galleries',
 				array(
-					'methods'  			  => WP_REST_Server::READABLE,
-					'callback' 			  => array( $this, 'get_galleries' ),
-					'permission_callback' => array( $this, 'get_galleries_permissions_check' )
+					'methods'             => WP_REST_Server::READABLE,
+					'callback'            => array( $this, 'get_galleries' ),
+					'permission_callback' => array( $this, 'get_galleries_permissions_check' ),
 				)
 			);
 		}
