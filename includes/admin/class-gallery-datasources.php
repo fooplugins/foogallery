@@ -1,4 +1,6 @@
 <?php
+namespace FooPlugins\FooGallery\Admin;
+
 /**
  * Class to handle all interactions for Gallery datasources
  */

@@ -1,4 +1,6 @@
 <?php
+namespace FooPlugins\FooGallery\Admin;
+
 use FooPlugins\FooGallery\Thumbs\FooGallery_Thumb_Generator;
 
 /*

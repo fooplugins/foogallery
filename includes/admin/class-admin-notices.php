@@ -1,4 +1,6 @@
 <?php
+namespace FooPlugins\FooGallery\Admin;
+
 /*
  * FooGallery Admin Notices class
  */
@@ -189,7 +191,7 @@ if ( ! class_exists( 'FooGallery_Admin_Notices' ) ) {
 			if ( FOOGALLERY_CPT_GALLERY === foo_current_screen_post_type() ) {
 
 				if ( $this->should_run_tests() ) {
-					$thumbs = new FooGallery_Thumbnails();
+					$thumbs = new \FooPlugins\FooGallery\FooGallery_Thumbnails();
 					$thumbs->run_thumbnail_generation_tests();
 				}
 

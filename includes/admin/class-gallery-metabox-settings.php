@@ -1,4 +1,6 @@
 <?php
+namespace FooPlugins\FooGallery\Admin;
+
 /**
  * Class to handle adding the Settings metabox to a gallery
  */

@@ -1,4 +1,6 @@
 <?php
+namespace FooPlugins\FooGallery\Admin;
+
 /**
  * Class to handle adding the Items metabox to a gallery
  */

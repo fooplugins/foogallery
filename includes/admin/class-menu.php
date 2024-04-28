@@ -1,4 +1,6 @@
 <?php
+namespace FooPlugins\FooGallery\Admin;
+
 /*
  * FooGallery Admin Menu class
  */
@@ -99,7 +101,7 @@ if ( ! class_exists( 'FooGallery_Admin_Menu' ) ) {
 				</div>
 			<?php }
 
-			$instance = FooGallery_Plugin::get_instance();
+			$instance = \FooGallery_Plugin::get_instance();
 			$instance->admin_settings_render_page();
 		}
 

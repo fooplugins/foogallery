@@ -1,4 +1,6 @@
 <?php
+namespace FooPlugins\FooGallery\Admin;
+
 /*
  * FooGallery Pro Feature Promotion class
  */

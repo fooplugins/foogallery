@@ -1,4 +1,6 @@
 <?php
+namespace FooPlugins\FooGallery\Admin;
+
 /*
  * FooGallery Admin Demo Content class
  */

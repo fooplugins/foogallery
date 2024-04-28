@@ -1,4 +1,6 @@
 <?php
+namespace FooPlugins\FooGallery\Admin;
+
 /**
  * Created by bradvin
  * Date: 28/04/2017

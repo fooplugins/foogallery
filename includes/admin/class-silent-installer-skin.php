@@ -1,10 +1,7 @@
 <?php
+namespace FooPlugins\FooGallery\Admin;
 
-if ( ! class_exists( 'WP_Upgrader_Skin' ) ) {
-	require_once ABSPATH . 'wp-admin/includes/class-wp-upgrader-skins.php';
-}
-
-class FooGallery_Silent_Installer_Skin extends WP_Upgrader_Skin {
+class FooGallery_Silent_Installer_Skin extends \WP_Upgrader_Skin {
 	public $feedback = false;
 
 	public function header() { }

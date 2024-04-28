@@ -1,4 +1,6 @@
 <?php
+namespace FooPlugins\FooGallery\Admin;
+
 /*
  * FooGallery Admin class
  */
@@ -61,7 +63,7 @@ if ( ! class_exists( 'FooGallery_Admin' ) ) {
 			foogallery_enqueue_core_gallery_template_script();
 			foogallery_enqueue_core_gallery_template_style();
 
-            $foogallery = FooGallery_Plugin::get_instance();
+            $foogallery = \FooGallery_Plugin::get_instance();
             $foogallery->register_and_enqueue_js( 'admin-foogallery-edit.js' );
 
 			do_action('foogallery_admin_enqueue_scripts' );
@@ -69,13 +71,13 @@ if ( ! class_exists( 'FooGallery_Admin' ) ) {
 
 		function admin_print_styles() {
 			$page       = safe_get_from_request( 'page' );
-			$foogallery = FooGallery_Plugin::get_instance();
+			$foogallery = \FooGallery_Plugin::get_instance();
 			$foogallery->register_and_enqueue_css( 'admin-page-' . $page . '.css' );
 		}
 
 		function admin_print_scripts() {
 			$page       = safe_get_from_request( 'page' );
-			$foogallery = FooGallery_Plugin::get_instance();
+			$foogallery = \FooGallery_Plugin::get_instance();
 			$foogallery->register_and_enqueue_js( 'admin-page-' . $page . '.js' );
 		}
 
@@ -119,7 +121,7 @@ if ( ! class_exists( 'FooGallery_Admin' ) ) {
 			if ( 'on' === foogallery_get_setting( 'force_hide_trial', false ) ) {
 				$freemius_sdk = foogallery_fs();
 				$plugin_id    = $freemius_sdk->get_slug();
-				$admin_notice_manager = FS_Admin_Notice_Manager::instance( $plugin_id );
+				$admin_notice_manager = \FS_Admin_Notice_Manager::instance( $plugin_id );
 				$admin_notice_manager->remove_sticky( 'trial_promotion' );
 			}
 		}

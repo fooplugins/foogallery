@@ -1,4 +1,7 @@
 <?php
+namespace FooPlugins\FooGallery\Admin;
+
+use FooPlugins\FooGallery\FooGallery;
 
 /*
  * FooGallery Admin Gallery MetaBoxes class
@@ -48,7 +51,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Editor' ) ) {
 			$url = FOOGALLERY_URL . 'css/admin-foogallery-gallery-piles.css';
 			wp_enqueue_style( 'admin-foogallery-gallery-piles', $url, array(), FOOGALLERY_VERSION );
 
-			$foogallery = FooGallery_Plugin::get_instance();
+			$foogallery = \FooGallery_Plugin::get_instance();
 			$foogallery->register_and_enqueue_js( 'admin-foogallery-editor.js' );
 
 			?>
