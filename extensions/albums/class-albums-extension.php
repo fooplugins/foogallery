@@ -1,4 +1,6 @@
 <?php
+namespace FooPlugins\FooGallery\Extensions\Albums;
+
 if ( ! class_exists( 'FooGallery_Albums_Extension' ) ) {
 
 	define( 'FOOGALLERY_ALBUM_PATH', plugin_dir_path( __FILE__ ) );
@@ -105,17 +107,6 @@ if ( ! class_exists( 'FooGallery_Albums_Extension' ) ) {
 
 		function includes() {
 			require_once FOOGALLERY_ALBUM_PATH . 'functions.php';
-			require_once FOOGALLERY_ALBUM_PATH . 'class-posttypes.php';
-			require_once FOOGALLERY_ALBUM_PATH . 'class-foogallery-album.php';
-			require_once FOOGALLERY_ALBUM_PATH . 'public/class-rewrite-rules.php';
-			require_once FOOGALLERY_ALBUM_PATH . 'public/class-shortcodes.php';
-			require_once FOOGALLERY_ALBUM_PATH . 'public/class-foogallery-album-template-loader.php';
-
-			if ( is_admin() ) {
-				// only admin.
-				require_once FOOGALLERY_ALBUM_PATH . 'admin/class-metaboxes.php';
-				require_once FOOGALLERY_ALBUM_PATH . 'admin/class-columns.php';
-			}
 		}
 
 		function apply_album_defaults( $defaults ) {

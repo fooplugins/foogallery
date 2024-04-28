@@ -1,4 +1,5 @@
 <?php
+namespace FooPlugins\FooGallery\Extensions\Albums;
 
 /**
  * FooGallery Album Custom Post Types

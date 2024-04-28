@@ -1,4 +1,7 @@
 <?php
+namespace FooPlugins\FooGallery\Extensions\Albums;
+
+use stdClass;
 
 /**
  * Class FooGalleryAlbum

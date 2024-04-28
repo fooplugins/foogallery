@@ -60,7 +60,7 @@ if ( ! class_exists( 'FooGallery_Extensions_API' ) ) {
 
 			$this->extensions[] =	array(
 				'slug' => 'albums',
-				'class' => 'FooGallery_Albums_Extension',
+				'class' => 'FooPlugins\FooGallery\Extensions\Albums\FooGallery_Albums_Extension',
 				'title' => 'Albums',
 				'categories' =>	array( 'Featured', 'Free' ),
 				'description' => __( 'Group your galleries into albums. Albums comes with 2 unique album templates to showcase your galleries.', 'foogallery' ),

@@ -1,4 +1,7 @@
 <?php
+namespace FooPlugins\FooGallery\Extensions\Albums;
+
+use Foo_Plugin_File_Locator_v1;
 
 /**
  * Template loader for FooGallery Albums

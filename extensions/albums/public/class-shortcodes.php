@@ -1,4 +1,6 @@
 <?php
+namespace FooPlugins\FooGallery\Extensions\Albums;
+
 /*
  * FooGallery Album Shortcode
  */
