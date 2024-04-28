@@ -1,4 +1,6 @@
 <?php
+use FooPlugins\FooGallery\Thumbs\FooGallery_Thumb_Generator;
+
 /*
  * FooGallery Admin Gallery Attachment Modal class
  */

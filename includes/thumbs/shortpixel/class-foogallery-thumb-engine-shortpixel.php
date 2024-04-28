@@ -1,4 +1,5 @@
 <?php
+namespace FooPlugins\FooGallery\Thumbs;
 
 /**
  * Class for the shortpixel adaptive image thumbnails.

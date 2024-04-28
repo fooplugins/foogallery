@@ -1,5 +1,7 @@
 <?php
 use FooPlugins\FooGallery\Extensions\FooGallery_Extensions_API;
+use FooPlugins\FooGallery\Thumbs\FooGallery_Thumb_Engine_Default;
+use FooPlugins\FooGallery\Thumbs\FooGallery_Thumb_Generator;
 
 /**
  * FooGallery global functions
@@ -1844,21 +1846,28 @@ function foogallery_thumb_available_engines() {
  * @return FooGallery_Thumb_Engine
  */
 function foogallery_thumb_active_engine() {
-    global  $foogallery_thumb_engine ;
-    //if we already have an engine, return it early
-    if ( isset( $foogallery_thumb_engine ) && is_a( $foogallery_thumb_engine, 'FooGallery_Thumb_Engine' ) ) {
+    global $foogallery_thumb_engine;
+
+    // if we already have an engine, return it early
+    if (isset($foogallery_thumb_engine) && is_a($foogallery_thumb_engine, 'FooPlugins\\FooGallery\\Thumbs\\FooGallery_Thumb_Engine')) {
         return $foogallery_thumb_engine;
     }
-    $engine = foogallery_get_setting( 'thumb_engine', 'default' );
+
+    $engine = foogallery_get_setting('thumb_engine', 'default');
     $engines = foogallery_thumb_available_engines();
-    
-    if ( array_key_exists( $engine, $engines ) ) {
+
+    if (array_key_exists($engine, $engines)) {
         $active_engine = $engines[$engine];
-        $foogallery_thumb_engine = new $active_engine['class']();
+        $className = 'FooPlugins\\FooGallery\\Thumbs\\' . $active_engine['class'];
+        if (class_exists($className)) {
+            $foogallery_thumb_engine = new $className();
+        } else {
+            $foogallery_thumb_engine = new FooGallery_Thumb_Engine_Default();
+        }
     } else {
         $foogallery_thumb_engine = new FooGallery_Thumb_Engine_Default();
     }
-    
+
     return $foogallery_thumb_engine;
 }
 

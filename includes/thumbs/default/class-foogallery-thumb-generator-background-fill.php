@@ -1,4 +1,6 @@
 <?php
+namespace FooPlugins\FooGallery\Thumbs;
+
 /**
  * Adds background fill functionality to the default FooGallery thumb generator
  */

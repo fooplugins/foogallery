@@ -1,9 +1,11 @@
 <?php
+namespace FooPlugins\FooGallery\Thumbs;
+
 /**
  * FooGallery class that extends WP_Image_Editor_GD
  */
 if ( ! class_exists( 'FooGallery_Thumb_Image_Editor_GD' ) ) {
-	class FooGallery_Thumb_Image_Editor_GD extends WP_Image_Editor_GD {
+	class FooGallery_Thumb_Image_Editor_GD extends \WP_Image_Editor_GD {
 
 		public function get_image() {
 			return $this->image;

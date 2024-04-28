@@ -1,4 +1,6 @@
 <?php
+namespace FooPlugins\FooGallery\Thumbs;
+
 /**
  * Base class for the thumbnail engine
  */

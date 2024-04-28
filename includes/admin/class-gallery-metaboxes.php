@@ -1,4 +1,5 @@
 <?php
+use FooPlugins\FooGallery\FooGallery;
 
 /*
  * FooGallery Admin Gallery MetaBoxes class

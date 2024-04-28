@@ -1,4 +1,6 @@
 <?php
+namespace FooPlugins\FooGallery\Thumbs;
+
 /**
  * Class that performs all thumbnail generation within FooGallery
  */
