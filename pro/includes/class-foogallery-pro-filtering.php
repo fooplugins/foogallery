@@ -1,4 +1,8 @@
 <?php
+namespace FooPlugins\FooGallery\Pro;
+
+use FooGallery;
+
 /**
  * FooGallery Pro Filtering Class
  */

@@ -1,4 +1,6 @@
 <?php
+namespace FooPlugins\FooGallery\Pro;
+
 /**
  * Class for adding advanced settings to all gallery templates
  * Date: 11/09/2018

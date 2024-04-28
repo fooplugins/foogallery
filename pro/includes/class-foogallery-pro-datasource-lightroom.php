@@ -1,4 +1,8 @@
 <?php
+namespace FooPlugins\FooGallery\Pro;
+
+use FooGallery_Datasource_MediaLibrary_Query_Helper;
+
 /**
  * The Gallery Datasource which pulls images using WP/LR Sync
  */

@@ -1,4 +1,6 @@
 <?php
+namespace FooPlugins\FooGallery\Pro;
+
 /**
  * FooGallery Pro Bulk Copy Class
  */

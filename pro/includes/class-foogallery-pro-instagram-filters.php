@@ -1,4 +1,6 @@
 <?php
+namespace FooPlugins\FooGallery\Pro;
+
 /**
  * FooGallery Pro Instagram Filters Class
  */

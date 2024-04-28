@@ -1,4 +1,6 @@
 <?php
+namespace FooPlugins\FooGallery\Pro;
+
 /**
  * Class for Exchangeable image file format (EXIF) 
  */

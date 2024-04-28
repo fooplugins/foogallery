@@ -1,4 +1,6 @@
 <?php
+namespace FooPlugins\FooGallery\Pro;
+
 /**
  * Class for adding advanced thumb settings to all gallery templates
  * Date: 22/02/2020

@@ -1,4 +1,8 @@
 <?php
+namespace FooPlugins\FooGallery\Pro;
+
+use FooGallery_Template_Loader;
+
 /**
  * FooGallery Pro Gallery Shortcode Override Class
  */

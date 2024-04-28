@@ -1,4 +1,6 @@
 <?php
+namespace FooPlugins\FooGallery\Pro;
+
 /**
  * The Gallery Datasource which pulls attachments for a specific Media Category Taxonomy
  */
