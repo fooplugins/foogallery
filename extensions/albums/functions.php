@@ -353,9 +353,9 @@ function foogallery_album_template_setting( $key, $default = '' ) {
  * uninstall all albums and setting for albums
  */
 function foogallery_album_uninstall() {
-	if ( !current_user_can( 'install_plugins' ) ) exit;
+	if ( ! current_user_can( 'install_plugins' ) ) exit;
 
-	//delete all albums posts
+	// Delete all albums posts.
 	global $wpdb;
 	$query = "SELECT p.ID FROM {$wpdb->posts} AS p WHERE p.post_type IN (%s)";
 	$gallery_post_ids = $wpdb->get_col( $wpdb->prepare( $query, FOOGALLERY_CPT_ALBUM ) );
@@ -377,10 +377,10 @@ function foogallery_album_uninstall() {
  * @param       $album_id int The id of the foogallery album you want to render
  * @param array $args
  */
-if (! function_exists( 'foogallery_render_album') ) {
+if ( ! function_exists( 'foogallery_render_album' ) ) {
 	function foogallery_render_album( $album_id, $args = array() ) {
 		//create new instance of template engine
-		$engine = new FooGallery_Album_Template_Loader();
+		$engine = new FooPlugins\FooGallery\Extensions\Albums\FooGallery_Album_Template_Loader();
 
 		$shortcode_args = wp_parse_args( $args, array(
 			'id' => $album_id
