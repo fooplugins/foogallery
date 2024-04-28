@@ -1,4 +1,6 @@
 <?php
+namespace FooPlugins\FooGallery;
+
 /*
  * FooGallery Custom Post Types and Custom Taxonomy Registration class
  */

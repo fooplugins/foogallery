@@ -1,4 +1,6 @@
 <?php
+namespace FooPlugins\FooGallery;
+
 	/**
 	 * FooGallery Lightbox class
 	 *
@@ -95,7 +97,7 @@ if ( ! class_exists( 'FooGallery_Lightbox' ) ) {
 
 					$template = foogallery_gallery_template_setting( 'lightbox_caption_custom_template', '' );
 					if ( ! empty( $template ) ) {
-						$attr['data-lightbox-description'] = foogallery_sanitize_html( FooGallery_Pro_Advanced_Captions::build_custom_caption( $template, $foogallery_attachment ) );
+						$attr['data-lightbox-description'] = foogallery_sanitize_html( \FooPlugins\FooGallery\Pro\FooGallery_Pro_Advanced_Captions::build_custom_caption( $template, $foogallery_attachment ) );
 					}
 				} else if ( '' === $source ) {
 					// if same as thumbnails, then check if custom captions was set.

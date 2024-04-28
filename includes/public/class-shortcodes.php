@@ -1,4 +1,6 @@
 <?php
+// use FooGallery_Template_Loader;
+
 /*
  * FooGallery Shortcodes
  */

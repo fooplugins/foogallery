@@ -1,4 +1,6 @@
 <?php
+namespace FooPlugins\FooGallery;
+
 /**
  * FooGallery Extensions Compatibility Class
  * Date: 20 Sep 2017

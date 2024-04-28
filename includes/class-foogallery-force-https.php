@@ -1,4 +1,6 @@
 <?php
+namespace FooPlugins\FooGallery;
+
 /**
  * Class used to force HTTPS for all FooGallery assets
  * @since 1.6.18

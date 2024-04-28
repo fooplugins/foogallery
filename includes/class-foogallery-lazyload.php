@@ -1,4 +1,6 @@
 <?php
+namespace FooPlugins\FooGallery;
+
 /**
  * Class used to handle lazy loading for gallery templates
  * Date: 20/03/2017

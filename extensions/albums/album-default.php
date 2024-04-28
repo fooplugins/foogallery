@@ -10,7 +10,7 @@ $alignment = foogallery_album_template_setting( 'alignment', 'alignment-left' );
 $foogallery = false;
 
 if ( !empty( $gallery ) ) {
-	$foogallery = FooGallery::get_by_slug( $gallery );
+	$foogallery = \FooPlugins\FooGallery\FooGallery::get_by_slug( $gallery );
 
 	//check to see if the gallery belongs to the album
 	if ( $foogallery !== false && !$current_foogallery_album->includes_gallery( $foogallery->ID ) ) {

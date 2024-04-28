@@ -1,9 +1,9 @@
 <?php
 namespace FooPlugins\FooGallery\Pro\Protection;
 
-use FooGallery_Thumbnails;
-use FooGalleryAttachment;
-use FooGallery;
+use FooPlugins\FooGallery\FooGallery_Thumbnails;
+use FooPlugins\FooGallery\FooGalleryAttachment;
+use FooPlugins\FooGallery\FooGallery;
 use FooGallery_Thumb_Generator;
 
 /**

@@ -1,4 +1,6 @@
 <?php
+use FooPlugins\FooGallery\FooGallery;
+
 /*
  * FooGallery Admin Columns class
  */

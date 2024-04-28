@@ -18,7 +18,7 @@ function foogallery_generate_export_json( $foogallery_ids ) {
 
 	foreach ( $foogallery_ids as $foogallery_id ) {
 
-		$current_foogallery = FooGallery::get_by_id( $foogallery_id );
+		$current_foogallery = \FooPlugins\FooGallery\FooGallery::get_by_id( $foogallery_id );
 		do_action( 'foogallery_located_template', $current_foogallery );
 
 		$source_settings   = get_post_meta( $foogallery_id, FOOGALLERY_META_SETTINGS, true );

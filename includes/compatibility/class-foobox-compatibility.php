@@ -103,7 +103,7 @@ if ( !class_exists( 'FooGallery_FooBox_Compatibility' ) ) {
 					$template = foogallery_gallery_template_setting( 'lightbox_caption_custom_template', '' );
 					if ( ! empty( $template ) ) {
 						$attr['data-caption-title'] = ' ';
-						$attr['data-caption-desc']  = foogallery_sanitize_html( FooGallery_Pro_Advanced_Captions::build_custom_caption( $template, $foogallery_attachment ) );
+						$attr['data-caption-desc']  = foogallery_sanitize_html( \FooPlugins\FooGallery\Pro\FooGallery_Pro_Advanced_Captions::build_custom_caption( $template, $foogallery_attachment ) );
 					}
 				} else if ( '' === $lightbox_caption_source ) {
 					//same as thumbnail

@@ -1,7 +1,7 @@
 <?php
 namespace FooPlugins\FooGallery\Pro\Video;
 
-use FooGallery;
+use FooPlugins\FooGallery\FooGallery;
 
 /**
  * All Legacy FooVideo Code lives in this class

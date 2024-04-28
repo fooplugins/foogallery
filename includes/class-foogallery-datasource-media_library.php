@@ -1,4 +1,6 @@
 <?php
+namespace FooPlugins\FooGallery;
+
 /**
  * The default Gallery Datasource which pulls attachments from the WP media library
  */

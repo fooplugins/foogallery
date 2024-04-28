@@ -1,4 +1,6 @@
 <?php
+namespace FooPlugins\FooGallery;
+
 /*
  * FooGallery Attachment Override Thumbnail
  */

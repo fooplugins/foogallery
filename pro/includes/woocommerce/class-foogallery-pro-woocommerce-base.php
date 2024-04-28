@@ -1,7 +1,7 @@
 <?php
 namespace FooPlugins\FooGallery\Pro\Woocommerce;
 
-use FooGallery;
+use FooPlugins\FooGallery\FooGallery;
 
 /**
  * Base class for common WooCommerce functions

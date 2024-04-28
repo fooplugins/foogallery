@@ -1,8 +1,8 @@
 <?php
 namespace FooPlugins\FooGallery\Pro;
 
-use FooGallery_Datasource_MediaLibrary_Query_Helper;
-use FooGalleryAttachment;
+use FooPlugins\FooGallery\FooGallery_Datasource_MediaLibrary_Query_Helper;
+use FooPlugins\FooGallery\FooGalleryAttachment;
 
 /**
  * The Gallery Datasource which pulls attachments from a folder within Real Media Library

@@ -1,4 +1,6 @@
 <?php
+namespace FooPlugins\FooGallery;
+
 /**
  * Animated GIF support in FooGallery
  * Date: 19/02/2017

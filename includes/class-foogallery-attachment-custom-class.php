@@ -1,4 +1,6 @@
 <?php
+namespace FooPlugins\FooGallery;
+
 /**
  * Class used to add custom classes to gallery links
  * Date: 04/06/2017

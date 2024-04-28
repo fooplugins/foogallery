@@ -348,7 +348,7 @@ function foogallery_get_all_galleries( $excludes = false, $extra_args = false ) 
 	$galleries = array();
 
 	foreach ( $gallery_posts as $post ) {
-		$galleries[] = FooGallery::get( $post );
+		$galleries[] = FooPlugins\FooGallery\FooGallery::get( $post );
 	}
 
 	return $galleries;
@@ -663,7 +663,7 @@ function foogallery_clear_all_css_load_optimizations() {
  * Performs a check to see if the plugin has been updated, and perform any housekeeping if necessary
  */
 function foogallery_perform_version_check() {
-	$checker = new FooGallery_Version_Check();
+	$checker = new FooPlugins\FooGallery\FooGallery_Version_Check();
 	$checker->perform_check();
 }
 
@@ -822,7 +822,7 @@ function foogallery_get_caption_desc_for_attachment($attachment_post, $source = 
  * Runs thumbnail tests and outputs results in a table format
  */
 function foogallery_output_thumbnail_generation_results() {
-	$thumbs = new FooGallery_Thumbnails();
+	$thumbs = new FooPlugins\FooGallery\FooGallery_Thumbnails();
 	try {
 		$results = $thumbs->run_thumbnail_generation_tests();
         if ( $results['success'] ) {
@@ -1508,7 +1508,7 @@ function foogallery_admin_get_current_gallery( $post_gallery ) {
 
 	if ( is_admin() && isset( $post ) ) {
 		if ( !isset( $current_foogallery_admin ) || $post_gallery->ID !== $post->ID ) {
-			$current_foogallery_admin = FooGallery::get( $post_gallery );
+			$current_foogallery_admin = FooPlugins\FooGallery\FooGallery::get( $post_gallery );
 		}
 
 		return $current_foogallery_admin;

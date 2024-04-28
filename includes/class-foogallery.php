@@ -1,4 +1,7 @@
 <?php
+namespace FooPlugins\FooGallery;
+
+use stdClass;
 
 /**
  * Class FooGallery

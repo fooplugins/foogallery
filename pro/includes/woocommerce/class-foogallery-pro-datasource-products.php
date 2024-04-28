@@ -1,7 +1,7 @@
 <?php
 namespace FooPlugins\FooGallery\Pro\Woocommerce;
 
-use FooGalleryAttachment;
+use FooPlugins\FooGallery\FooGalleryAttachment;
 
 /**
  * The Gallery Datasource which pulls product thumbnails from WooCommerce.

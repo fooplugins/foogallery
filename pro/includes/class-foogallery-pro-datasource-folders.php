@@ -1,7 +1,7 @@
 <?php
 namespace FooPlugins\FooGallery\Pro;
 
-use FooGalleryAttachment;
+use FooPlugins\FooGallery\FooGalleryAttachment;
 
 /**
  * The Gallery Datasource which pulls images from a specific folder on the server

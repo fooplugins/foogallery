@@ -1,4 +1,6 @@
 <?php
+namespace FooPlugins\FooGallery;
+
 /**
  * Class to calculate thumb dimensions for a gallery. The default gallery templates
  *  require width and height attributes on the thumb img tags. In some cases these need to be

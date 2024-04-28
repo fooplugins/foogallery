@@ -1,4 +1,6 @@
 <?php
+use FooPlugins\FooGallery\FooGallery;
+
 /**
  * Adds support for Rank Math SEO Sitemaps
  *

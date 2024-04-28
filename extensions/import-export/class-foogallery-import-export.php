@@ -64,7 +64,7 @@ if ( ! class_exists( 'FooGallery_Import_Export' ) ) {
 								$this->log_message( sprintf( __( 'Import started for gallery ID : %1$s; Name : "%2$s"; Template : %3$s.', 'foogallery' ), $gallery_id, $name, $template ) );
 
 								// Check if we have already imported the gallery.
-								$search_gallery = FooGallery::get_by_id( $gallery_id );
+								$search_gallery = \FooPlugins\FooGallery\FooGallery::get_by_id( $gallery_id );
 								// A match is made if the ID, name and template are the same, and also it's published!
 								if ( $search_gallery->ID === intval( $gallery_id ) && $search_gallery->gallery_template === $template && $search_gallery->name === $name && 'publish' === $search_gallery->post_status ) {
 									$this->log_message( __( 'Gallery already exists so skipping.', 'foogallery' ) );

@@ -160,7 +160,7 @@ if ( ! class_exists( 'FooGallery_Thumb_Generator' ) ) {
 					'width'                   => 0,
 					'height'                  => 0,
 					'crop'                    => false,
-					'crop_from_position'      => foogallery_get_setting( 'default_crop_position', FooGallery_Crop_Position::CROP_POSITION_DEFAULT ),
+					'crop_from_position'      => foogallery_get_setting( 'default_crop_position', FooPlugins\FooGallery\FooGallery_Crop_Position::CROP_POSITION_DEFAULT ),
 					'resize'                  => true,
 					'watermark_options'       => array(),
 					'cache'                   => true,

@@ -1,4 +1,8 @@
 <?php
+namespace FooPlugins\FooGallery;
+
+use WP_Query;
+
 /*
  * FooGallery Thumbnail Resizing class
  */

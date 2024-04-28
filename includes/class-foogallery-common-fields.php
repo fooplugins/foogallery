@@ -1,4 +1,6 @@
 <?php
+namespace FooPlugins\FooGallery;
+
 /**
  * Adds all functionality related to the common gallery fields that are used in the default gallery templates
  * Date: 12/09/2017

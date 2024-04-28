@@ -1,6 +1,8 @@
 <?php
 namespace Fooplugins\FooGallery\Extensions\DemoContentGenerator;
 
+use WP_Query;
+
 /**
  * Created by Brad Vincent.
  * Date: 04/03/2018

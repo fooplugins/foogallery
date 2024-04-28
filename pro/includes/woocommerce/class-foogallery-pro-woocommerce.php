@@ -2,7 +2,7 @@
 namespace FooPlugins\FooGallery\Pro\Woocommerce;
 
 use WC_Product_Variation;
-use FooGallery;
+use FooPlugins\FooGallery\FooGallery;
 use FooPlugins\FooGallery\Pro\FooGallery_Pro_Ribbons;
 
 /**

@@ -1,4 +1,6 @@
 <?php
+namespace FooPlugins\FooGallery;
+
 /**
  * Class to provide a way to override the default attachment crop position. Handy if you want to override the default of center,center
  * Date: 19/02/2018

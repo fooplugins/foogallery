@@ -1,4 +1,6 @@
 <?php
+namespace FooPlugins\FooGallery;
+
 /**
  * Foogallery class for enqueuing the FooGallery_il8n variable into the page
  */

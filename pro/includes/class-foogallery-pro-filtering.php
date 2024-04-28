@@ -1,7 +1,7 @@
 <?php
 namespace FooPlugins\FooGallery\Pro;
 
-use FooGallery;
+use FooPlugins\FooGallery\FooGallery;
 
 /**
  * FooGallery Pro Filtering Class

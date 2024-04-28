@@ -1,4 +1,6 @@
 <?php
+// use Foo_Plugin_File_Locator_v1;
+use FooPlugins\FooGallery\FooGallery;
 
 /**
  * Template loader for FooGallery
@@ -269,7 +271,7 @@ class FooGallery_Template_Loader {
 		if ( intval( $gallery ) > 0 ) {
 			//we have an id, so load
 			return FooGallery::get_by_id( intval( $gallery ) );
-		} else if ( !empty( $gallery ) ) {
+		} else if ( ! empty( $gallery ) ) {
 			//we are dealing with a slug
 			return FooGallery::get_by_slug( $gallery );
 		}

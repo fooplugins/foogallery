@@ -41,7 +41,7 @@ function foogallery_set_gallery_video_count( $post_id ) {
  */
 function foogallery_calculate_gallery_video_count( $post_id ) {
 	$video_count = 0;
-	$gallery = FooGallery::get_by_id( $post_id );
+	$gallery = FooPlugins\FooGallery\FooGallery::get_by_id( $post_id );
 
 	//only try to get the video count if the gallery is not dynamic
 	if ( !$gallery->is_dynamic() ) {
