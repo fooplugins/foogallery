@@ -32,7 +32,7 @@ if ( ! class_exists( 'FooGallery_FooVideo_Compatibility' ) ) {
 		 */
 		function show_discount_message() {
 			//first try to get the saved option
-			$show_message = get_option( FooGallery_FooVideo_Compatibility::option_discount_key, 0 );
+			$show_message = get_option( self::option_discount_key, 0 );
 
 			if ( '3' === $show_message ) {
 				return false;
@@ -47,7 +47,7 @@ if ( ! class_exists( 'FooGallery_FooVideo_Compatibility' ) ) {
 				//the legacy plugin is installed, so set the option for future use
 				$show_message = true;
 
-				update_option( FooGallery_FooVideo_Compatibility::option_discount_key, '1' );
+				update_option( self::option_discount_key, '1' );
 			}
 
 			//we have no option saved and no legacy plugin, so no discount available
@@ -62,7 +62,7 @@ if ( ! class_exists( 'FooGallery_FooVideo_Compatibility' ) ) {
 		 * Display a message if the FooVideo extension is also installed
 		 */
 		function display_discount_notice() {
-			$show_message = get_option( FooGallery_FooVideo_Compatibility::option_discount_key, 0 );
+			$show_message = get_option( self::option_discount_key, 0 );
 			if ( '1' === $show_message ) {
 
 				$notice_title   = apply_filters( 'foogallery_foovideo_discount_offer_notice_title', __( 'FooGallery PRO Discount Available!', 'foogallery' ) );
@@ -102,7 +102,7 @@ if ( ! class_exists( 'FooGallery_FooVideo_Compatibility' ) ) {
 		 */
 		function admin_notice_dismiss() {
 			if ( check_admin_referer( 'foogallery_video_discount_dismiss' ) ) {
-				update_option( FooGallery_FooVideo_Compatibility::option_discount_key, '2' );
+				update_option( self::option_discount_key, '2' );
 			}
 		}
 
@@ -170,7 +170,7 @@ if ( ! class_exists( 'FooGallery_FooVideo_Compatibility' ) ) {
 									echo '<br />' . sprintf( __( 'For a more detailed guide on the process, %s.', 'foogallery' ), $doc_link );
 
 									//redeemed the code - no need to show the admin notice anymore
-									update_option( FooGallery_FooVideo_Compatibility::option_discount_key, '2' );
+									update_option( self::option_discount_key, '2' );
 								} else {
 									echo '<h3>' . __( 'Invalid License!', 'foogallery' ) . '</h3>';
 									echo '<h4>' .$coupon['code'] . '</h4>';
@@ -201,7 +201,7 @@ if ( ! class_exists( 'FooGallery_FooVideo_Compatibility' ) ) {
 
 		function ajax_foogallery_video_discount_offer_hide() {
 			if ( check_admin_referer( 'foogallery_video_discount_offer_hide' ) ) {
-				update_option( FooGallery_FooVideo_Compatibility::option_discount_key, '3' );
+				update_option( self::option_discount_key, '3' );
 			}
 			die();
 		}
