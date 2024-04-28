@@ -1,4 +1,6 @@
 <?php
+namespace FooPlugins\FooGallery\Compatibility;
+
 /**
  * ElasticPress Compatibility Class
  * Date: 14/10/2018

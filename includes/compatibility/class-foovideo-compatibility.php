@@ -1,4 +1,6 @@
 <?php
+namespace FooPlugins\FooGallery\Compatibility;
+
 /**
  * Offers FooVideo users a discount on FooGallery PRO
  */

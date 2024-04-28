@@ -130,13 +130,13 @@ if ( function_exists( 'foogallery_fs' ) ) {
 					foogallery_fs()->add_filter( 'plugin_icon', array( $this, 'freemius_plugin_icon' ), 10, 1 );
 					add_action( 'foogallery_admin_menu_before', array( $this, 'add_freemius_activation_menu' ) );
 				} else {
-					new FooGallery_Public();
+					new FooPlugins\FooGallery\Public\FooGallery_Public();
 				}
 
 				// initialize the thumbnail manager.
 				new FooGallery_Thumb_Manager();
 
-				new FooGallery_Shortcodes();
+				new FooPlugins\FooGallery\Public\FooGallery_Shortcodes();
 
 				new FooPlugins\FooGallery\FooGallery_Thumbnails();
 
@@ -160,7 +160,7 @@ if ( function_exists( 'foogallery_fs' ) ) {
 
 				new FooPlugins\FooGallery\FooGallery_Attachment_Custom_Class();
 
-				new FooGallery_Compatibility();
+				new FooPlugins\FooGallery\Compatibility\FooGallery_Compatibility();
 
 				new FooPlugins\FooGallery\FooGallery_Extensions_Compatibility();
 
@@ -187,9 +187,8 @@ if ( function_exists( 'foogallery_fs' ) ) {
 
 				if ( foogallery_fs()->is__premium_only() ) {
 					if ( foogallery_fs()->can_use_premium_code() ) {
-						require_once FOOGALLERY_PATH . 'pro/foogallery-pro.php';
 
-						new FooPlugins\FooGallery\Pro\FooGallery_Pro();
+						new \FooPlugins\FooGallery\Pro\FooGallery_Pro();
 
 						$pro_code_included = true;
 					}

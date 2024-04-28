@@ -1,5 +1,7 @@
 <?php
-// use Foo_Plugin_File_Locator_v1;
+namespace FooPlugins\FooGallery\Public;
+
+use Foo_Plugin_File_Locator_v1;
 use FooPlugins\FooGallery\FooGallery;
 
 /**

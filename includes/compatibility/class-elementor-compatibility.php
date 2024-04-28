@@ -1,4 +1,6 @@
 <?php
+namespace FooPlugins\FooGallery\Compatibility;
+
 /**
  * Elementor Compatibility Class
  * Date: 23/09/2019

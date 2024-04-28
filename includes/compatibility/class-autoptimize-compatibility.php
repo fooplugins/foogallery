@@ -1,4 +1,6 @@
 <?php
+namespace FooPlugins\FooGallery\Compatibility;
+
 /**
  * Class to help users who also use Autoptomize plugin
  * Date: 2017/11/12

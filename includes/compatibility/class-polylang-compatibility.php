@@ -1,4 +1,6 @@
 <?php
+namespace FooPlugins\FooGallery\Compatibility;
+
 /**
  * Polylang Compatibility Class
  * Credit : @Chrystl from wordpress.org - https://wordpress.org/support/topic/polylang-conflict-with-foo-gallery

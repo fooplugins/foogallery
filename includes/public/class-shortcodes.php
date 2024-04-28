@@ -1,5 +1,5 @@
 <?php
-// use FooGallery_Template_Loader;
+namespace FooPlugins\FooGallery\Public;
 
 /*
  * FooGallery Shortcodes

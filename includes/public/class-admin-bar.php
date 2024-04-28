@@ -1,11 +1,13 @@
 <?php
+namespace FooPlugins\FooGallery\Public;
+
 /**
  * FooGallery_AdminBar Class
  * allows for really easy gallery editing from the front-end (when logged in)
  * Date: 30/08/2015
  */
 
-if ( !class_exists( 'FooGallery_AdminBar' ) ) {
+if ( ! class_exists( 'FooGallery_AdminBar' ) ) {
 
 	class FooGallery_AdminBar {
 

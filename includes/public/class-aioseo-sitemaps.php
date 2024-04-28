@@ -1,4 +1,6 @@
 <?php
+namespace FooPlugins\FooGallery\Public;
+
 use FooPlugins\FooGallery\FooGallery;
 
 /**

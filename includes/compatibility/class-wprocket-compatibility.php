@@ -1,4 +1,6 @@
 <?php
+namespace FooPlugins\FooGallery\Compatibility;
+
 /**
  * Adds support for WPRocket in FooGallery
  * Created by brad.

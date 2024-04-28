@@ -1,4 +1,6 @@
 <?php
+namespace FooPlugins\FooGallery\Public;
+
 /*
  * FooGallery Public class
  */
