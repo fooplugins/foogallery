@@ -8,23 +8,23 @@ namespace FooPlugins\FooGallery\Admin;
 
 if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Items' ) ) {
 
-    class FooGallery_Admin_Gallery_MetaBox_Items {
+	class FooGallery_Admin_Gallery_MetaBox_Items {
 
-        /**
-         * FooGallery_Admin_Gallery_MetaBox_Items constructor.
-         */
-        function __construct() {
+		/**
+		 * FooGallery_Admin_Gallery_MetaBox_Items constructor.
+		 */
+		function __construct() {
 			add_action( 'add_meta_boxes_' . FOOGALLERY_CPT_GALLERY, array( $this, 'add_items_metabox' ), 7 );
 
-            //enqueue assets for the items metabox
-            add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_assets' ) );
+			//enqueue assets for the items metabox
+			add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_assets' ) );
 
 			// Ajax call for generating a gallery preview
 			add_action( 'wp_ajax_foogallery_preview', array( $this, 'ajax_gallery_preview' ) );
 
 			//handle previews that have no attachments
 			add_action( 'foogallery_template_no_attachments', array( $this, 'preview_no_attachments' ) );
-        }
+		}
 
 		public function add_items_metabox( $post ) {
 			add_meta_box(
@@ -122,8 +122,8 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Items' ) ) {
 					$args = apply_filters( 'foogallery_preview_arguments-' . $template, $args, $_POST );
 
 					if ( foogallery_is_debug() ) {
-                        echo '<pre style="display: none">' . __('Preview Debug Arguments:', 'foogallery') . '<br>' . print_r( $args, true ) . '</pre>';
-                    }
+						echo '<pre style="display: none">' . __('Preview Debug Arguments:', 'foogallery') . '<br>' . print_r( $args, true ) . '</pre>';
+					}
 
 					foogallery_render_gallery( $foogallery_id, $args );
 
@@ -140,35 +140,35 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Items' ) ) {
 			die();
 		}
 
-	    /**
-         * Extract all the preview arguments from the post data
-         *
-	     * @param $args
-	     * @param $post_data
-	     * @param $template
-	     *
-	     * @return mixed
-	     */
+		/**
+		 * Extract all the preview arguments from the post data
+		 *
+		 * @param $args
+		 * @param $post_data
+		 * @param $template
+		 *
+		 * @return mixed
+		 */
 		private function extract_preview_arguments( $args, $post_data, $template ) {
-		    if ( array_key_exists( FOOGALLERY_META_SETTINGS, $post_data ) ) {
-			    $settings = $post_data[FOOGALLERY_META_SETTINGS];
-			    foreach ( $settings as $key => $value ) {
-			        if ( strpos( $key, $template . '_' ) === 0 ) {
-				        $args[ $this->str_replace_first( $template . '_', '', $key ) ] = $value;
-			        }
-			    }
-		    }
+			if ( array_key_exists( FOOGALLERY_META_SETTINGS, $post_data ) ) {
+				$settings = $post_data[FOOGALLERY_META_SETTINGS];
+				foreach ( $settings as $key => $value ) {
+					if ( strpos( $key, $template . '_' ) === 0 ) {
+						$args[ $this->str_replace_first( $template . '_', '', $key ) ] = $value;
+					}
+				}
+			}
 
-            return $args;
+			return $args;
 		}
 
-	    function str_replace_first($search, $replace, $subject) {
-		    $pos = strpos($subject, $search);
-		    if ($pos !== false) {
-			    return substr_replace($subject, $replace, $pos, strlen($search));
-		    }
-		    return $subject;
-	    }
+		function str_replace_first($search, $replace, $subject) {
+			$pos = strpos($subject, $search);
+			if ($pos !== false) {
+				return substr_replace($subject, $replace, $pos, strlen($search));
+			}
+			return $subject;
+		}
 
 		/**
 		 * Handle gallery previews where there are no attachments
@@ -200,5 +200,5 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Items' ) ) {
 				wp_enqueue_script( 'jquery-ui-sortable');
 			}
 		}
-    }
+	}
 }

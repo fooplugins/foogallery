@@ -5,20 +5,20 @@ function foogallery_admin_help_demo_item( $seed, $width, $height, $title, $desc,
 ?><div class="fg-item fg-type-image fg-idle">
 	<figure class="fg-item-inner">
 		<a class="fg-thumb"
-		   href="<?php echo $href; ?>"
-		   data-type="image"
-		   data-title="<?php echo $title; ?>"
-		   data-description="<?php echo $desc; ?>">
-            <span class="fg-image-wrap">
-                <img class="fg-image"
-                     src="<?php echo $placeholder; ?>"
-                     data-src-fg="https://picsum.photos/seed/<?php echo $seed; ?>/<?php echo $width; ?>/<?php echo $height; ?>"
-                     data-srcset-fg="https://picsum.photos/seed/<?php echo $seed; ?>/<?php echo ($width * 2); ?>/<?php echo ($height * 2); ?> 2x"
-                     width="<?php echo $width; ?>"
-                     height="<?php echo $height; ?>"
-                     title="<?php echo $title; ?>"
-                     alt="<?php echo $desc; ?>">
-            </span>
+		href="<?php echo $href; ?>"
+		data-type="image"
+		data-title="<?php echo $title; ?>"
+		data-description="<?php echo $desc; ?>">
+			<span class="fg-image-wrap">
+				<img class="fg-image"
+					src="<?php echo $placeholder; ?>"
+					data-src-fg="https://picsum.photos/seed/<?php echo $seed; ?>/<?php echo $width; ?>/<?php echo $height; ?>"
+					data-srcset-fg="https://picsum.photos/seed/<?php echo $seed; ?>/<?php echo ($width * 2); ?>/<?php echo ($height * 2); ?> 2x"
+					width="<?php echo $width; ?>"
+					height="<?php echo $height; ?>"
+					title="<?php echo $title; ?>"
+					alt="<?php echo $desc; ?>">
+			</span>
 			<span class="fg-image-overlay"></span>
 		</a>
 		<figcaption class="fg-caption">
@@ -57,7 +57,7 @@ function foogallery_admin_help_demo_item( $seed, $width, $height, $title, $desc,
 		</header>
 
 		<div id="foogallery-gallery-0" class="foogallery fg-default fg-center fg-hover-zoomed fg-gutter-10 fg-m-col2 fg-loading-default fg-loaded-fade-in fg-light fg-border-thin fg-shadow-outline fg-shadow-inset-small fg-caption-hover fg-hover-fade fg-hover-zoom"
-		     data-foogallery="{&quot;lazy&quot;:true}">
+			data-foogallery="{&quot;lazy&quot;:true}">
 
 			<?php foogallery_admin_help_demo_item( '001', 150, 150, 'Lorem Ipsum'        , 'Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae', '#default_demo' ); ?>
 			<?php foogallery_admin_help_demo_item( '016', 150, 150, 'Dolor Sit Amet'     , 'Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula.', '#default_demo' ); ?>
@@ -77,14 +77,14 @@ function foogallery_admin_help_demo_item( $seed, $width, $height, $title, $desc,
 			<p><?php _e( 'A masonry-style gallery template, which keeps all images at a constant width while packing them in to best fill the space. This demo has a thin white border and captions are below the image. Images also have hover effects.', 'foogallery' );?></p>
 		</header>
 		<style>
-	        #foogallery-gallery-1.fg-masonry .fg-item {
-	            width: 200px;
-	            margin-right: 10px;
-	            margin-bottom: 10px;
-	        }
+			#foogallery-gallery-1.fg-masonry .fg-item {
+				width: 200px;
+				margin-right: 10px;
+				margin-bottom: 10px;
+			}
 		</style>
 		<div id="foogallery-gallery-1" class="foogallery fg-center fg-masonry fg-light fg-border-thin fg-shadow-small fg-loading-default fg-loaded-fade-in fg-hover-eye fg-captions-bottom fg-hover-fade fg-hover-plus fg-ready fg-fixed"
-		     data-foogallery="{&quot;item&quot;:{&quot;showCaptionTitle&quot;:true,&quot;showCaptionDescription&quot;:true},&quot;lazy&quot;:true,&quot;template&quot;:{&quot;columnWidth&quot;:200,&quot;gutter&quot;:10}}">
+			data-foogallery="{&quot;item&quot;:{&quot;showCaptionTitle&quot;:true,&quot;showCaptionDescription&quot;:true},&quot;lazy&quot;:true,&quot;template&quot;:{&quot;columnWidth&quot;:200,&quot;gutter&quot;:10}}">
 			<div class="fg-column-width"></div>
 			<div class="fg-gutter-width"></div>
 
@@ -106,7 +106,7 @@ function foogallery_admin_help_demo_item( $seed, $width, $height, $title, $desc,
 			<p><?php _e( 'Our image viewer gallery template, which showcases a single image at a time. In this demo, captions are always shown, and a white hover effect is also enabled.', 'foogallery' );?></p>
 		</header>
 		<div id="foogallery-gallery-2" class="foogallery foogallery-link-image fg-center fg-image-viewer fg-light fg-border-thin fg-shadow-outline fg-loading-default fg-loaded-fade-in fg-caption-always fg-hover-fade fg-hover-zoom fg-ready fg-light-overlays fg-round-small"
-		     data-foogallery="{&quot;item&quot;:{&quot;showCaptionTitle&quot;:true,&quot;showCaptionDescription&quot;:true},&quot;lazy&quot;:true,&quot;template&quot;:{&quot;loop&quot;:true}}">
+			data-foogallery="{&quot;item&quot;:{&quot;showCaptionTitle&quot;:true,&quot;showCaptionDescription&quot;:true},&quot;lazy&quot;:true,&quot;template&quot;:{&quot;loop&quot;:true}}">
 			<div class="fiv-inner">
 				<div class="fiv-inner-container">
 					<?php foogallery_admin_help_demo_item( '21',  500, 400, 'Lorem Ipsum'        , 'Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae', '#iv_demo' ); ?>
@@ -130,16 +130,16 @@ function foogallery_admin_help_demo_item( $seed, $width, $height, $title, $desc,
 			<p><?php _e( 'A justified gallery template, where the images have a similar height. This demo has no image borders, the captions are always visible and overlaid on top of the images. There is also a simple hover effect.', 'foogallery' );?></p>
 		</header>
 		<style>
-	        #foogallery-gallery-3.fg-justified .fg-item {
-	            margin-right: 1px;
-	            margin-bottom: 1px;
-	        }
-	        #foogallery-gallery-3.fg-justified .fg-image {
-	            height: 200px;
-	        }
+			#foogallery-gallery-3.fg-justified .fg-item {
+				margin-right: 1px;
+				margin-bottom: 1px;
+			}
+			#foogallery-gallery-3.fg-justified .fg-image {
+				height: 200px;
+			}
 		</style>
 		<div id="foogallery-gallery-3" class="foogallery foogallery-container foogallery-justified foogallery-lightbox-foogallery fg-justified fg-dark fg-loading-default fg-loaded-fade-in fg-caption-always fg-hover-fade fg-hover-zoom2 fg-ready"
-		     data-foogallery="{&quot;item&quot;:{&quot;showCaptionTitle&quot;:true,&quot;showCaptionDescription&quot;:false},&quot;lazy&quot;:true,&quot;template&quot;:{&quot;rowHeight&quot;:200,&quot;maxRowHeight&quot;:250,&quot;margins&quot;:1,&quot;align&quot;:&quot;center&quot;}}">
+			data-foogallery="{&quot;item&quot;:{&quot;showCaptionTitle&quot;:true,&quot;showCaptionDescription&quot;:false},&quot;lazy&quot;:true,&quot;template&quot;:{&quot;rowHeight&quot;:200,&quot;maxRowHeight&quot;:250,&quot;margins&quot;:1,&quot;align&quot;:&quot;center&quot;}}">
 			<div class="fg-column-width"></div>
 			<div class="fg-gutter-width"></div>
 
@@ -161,16 +161,16 @@ function foogallery_admin_help_demo_item( $seed, $width, $height, $title, $desc,
 			<p><?php _e( 'A portfolio gallery template that keeps all items in a row at the same height. Captions are visible below the images and centered.', 'foogallery' );?></p>
 		</header>
 		<style>
-	        #foogallery-gallery-4.fg-simple_portfolio {
-	            justify-content: center;
-	        }
-	        #foogallery-gallery-4.fg-simple_portfolio .fg-item {
-	            flex-basis: 250px;
-	            margin: 5px;
-	        }
+			#foogallery-gallery-4.fg-simple_portfolio {
+				justify-content: center;
+			}
+			#foogallery-gallery-4.fg-simple_portfolio .fg-item {
+				flex-basis: 250px;
+				margin: 5px;
+			}
 		</style>
 		<div id="foogallery-gallery-4" class="foogallery foogallery-container foogallery-simple_portfolio foogallery-lightbox-foogallery fg-simple_portfolio fg-light fg-border-thin fg-shadow-outline fg-loading-default fg-loaded-fade-in fg-caption-always fg-hover-fade fg-hover-zoom fg-c-c fg-ready fg-caption-always"
-		     data-foogallery="{&quot;item&quot;:{&quot;showCaptionTitle&quot;:true,&quot;showCaptionDescription&quot;:true},&quot;lazy&quot;:true}">
+			data-foogallery="{&quot;item&quot;:{&quot;showCaptionTitle&quot;:true,&quot;showCaptionDescription&quot;:true},&quot;lazy&quot;:true}">
 			<?php foogallery_admin_help_demo_item( '41',  250, 200, 'Lorem Ipsum'        , 'Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae', '#portfolio_demo' ); ?>
 			<?php foogallery_admin_help_demo_item( '42',  250, 200, 'Dolor Sit Amet'     , 'Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula. Donec sollicitudin molestie malesuada.', '#portfolio_demo' ); ?>
 			<?php foogallery_admin_help_demo_item( '44',  250, 200, 'Nulla Quis Lorem'   , 'Quisque velit nisi, pretium ut lacinia in, elementum id enim. Quisque velit nisi, pretium ut lacinia in, elementum id enim.', '#portfolio_demo' ); ?>
@@ -186,7 +186,7 @@ function foogallery_admin_help_demo_item( $seed, $width, $height, $title, $desc,
 			<p><?php _e( 'A responsive carousel gallery allows you to showcase your images in a single row.', 'foogallery' );?></p>
 		</header>
 		<div id="foogallery-gallery-5" class="foogallery foogallery-container foogallery-carousel foogallery-lightbox-foogallery fg-carousel fg-light fg-border-thin fg-shadow-outline fg-loading-default fg-loaded-fade-in fg-hover-fade fg-hover-zoom fg-c-c fg-ready"
-		     data-foogallery="{&quot;item&quot;:{&quot;showCaptionTitle&quot;:true,&quot;showCaptionDescription&quot;:false},&quot;lazy&quot;:true,&quot;template&quot;:{&quot;maxItems&quot;:5,&quot;scale&quot;:0.12,&quot;gutter&quot;:{&quot;min&quot;:-40,&quot;max&quot;:-20,&quot;unit&quot;:&quot;%&quot;},&quot;autoplay&quot;:{&quot;time&quot;:6,&quot;interaction&quot;:&quot;pause&quot;},&quot;centerOnClick&quot;:true}}">
+			data-foogallery="{&quot;item&quot;:{&quot;showCaptionTitle&quot;:true,&quot;showCaptionDescription&quot;:false},&quot;lazy&quot;:true,&quot;template&quot;:{&quot;maxItems&quot;:5,&quot;scale&quot;:0.12,&quot;gutter&quot;:{&quot;min&quot;:-40,&quot;max&quot;:-20,&quot;unit&quot;:&quot;%&quot;},&quot;autoplay&quot;:{&quot;time&quot;:6,&quot;interaction&quot;:&quot;pause&quot;},&quot;centerOnClick&quot;:true}}">
 			<button type="button" class="fg-carousel-prev"></button>
 			<div class="fg-carousel-inner">
 				<div class="fg-carousel-center"></div>

@@ -46,7 +46,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 		function register_extension( $extensions_list ) {
             $extensions_list[] = array(
 				'slug' => 'foogallery-custom-css',
-				'class' => 'FooGallery_Admin_Gallery_MetaBoxes',
+				'class' => 'FooPlugins\FooGallery\Admin\FooGallery_Admin_Gallery_MetaBoxes',
 				'categories' => array('free'),
 				'title' => __('Custom CSS', 'foogallery'),
 				'description' => __('Allows you to add custom CSS to your galleries. A Custom CSS metabox will show under your gallery settings, when editing a gallery.', 'foogallery'),

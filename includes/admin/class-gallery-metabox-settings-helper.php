@@ -10,31 +10,30 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings_Helper' ) ) {
 
 	class FooGallery_Admin_Gallery_MetaBox_Settings_Helper {
 
-		
-        /**
-         * @var FooGallery
-         */
-        private $gallery;
+		/**
+		 * @var FooGallery
+		 */
+		private $gallery;
 
-        /**
-         * @var bool
-         */
-        private $hide_help;
+		/**
+		 * @var bool
+		 */
+		private $hide_help;
 
-        /**
-         * @var bool
-         */
-        private $hide_promo;
+		/**
+		 * @var bool
+		 */
+		private $hide_promo;
 
-        /**
-         * @var array
-         */
-        public $gallery_templates;
+		/**
+		 * @var array
+		 */
+		public $gallery_templates;
 
-        /**
-         * @var string
-         */
-        private $current_gallery_template;
+		/**
+		 * @var string
+		 */
+		private $current_gallery_template;
 
 		/**
 		 * FooGallery_Admin_Gallery_MetaBox_Settings_Helper constructor.
@@ -65,31 +64,31 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings_Helper' ) ) {
 			$tab_active = 'foogallery-tab-active';
 			foreach ( $sections as $section_slug => $section ) {
 				$subsection_active = '';
-			    //if there are no fields then set the slug to the first subsection
+				//if there are no fields then set the slug to the first subsection
 				if ( isset( $section['subsections'] ) && count( $section['fields'] ) === 0 ) {
-				    foreach ( $section['subsections'] as $subsection_slug => $subsection ) {
-					    $section_slug = $subsection_slug;
-					    $subsection_active = 'foogallery-tab-active';
-					    break;
-                    }
+					foreach ( $section['subsections'] as $subsection_slug => $subsection ) {
+						$section_slug = $subsection_slug;
+						$subsection_active = 'foogallery-tab-active';
+						break;
+					}
 				}
-			    ?>
+				?>
 				<div class="foogallery-vertical-tab <?php echo $tab_active; ?>"
-					 data-name="<?php echo $template['slug']; ?>-<?php echo $section_slug; ?>">
+					data-name="<?php echo $template['slug']; ?>-<?php echo $section_slug; ?>">
 					<span class="dashicons <?php echo $section['icon_class']; ?>"></span>
 					<span class="foogallery-tab-text"><?php echo $section['name']; ?></span>
-                    <?php
-                    if ( isset( $section['subsections'] ) ) { ?>
-                        <div class="foogallery-vertical-child-tabs">
-                        <?php foreach ( $section['subsections'] as $subsection_slug => $subsection ) { ?>
-                            <div class="foogallery-vertical-child-tab <?php echo $subsection_active; ?>" data-name="<?php echo esc_attr( $template['slug'] . '-' . $subsection_slug ); ?>">
-                                <span class="foogallery-tab-text"><?php echo esc_html( $subsection['name'] ); ?></span>
-                            </div>
-                        <?php
-	                        $subsection_active = '';
-                            } ?>
-                        </div>
-                    <?php } ?>
+					<?php
+					if ( isset( $section['subsections'] ) ) { ?>
+						<div class="foogallery-vertical-child-tabs">
+						<?php foreach ( $section['subsections'] as $subsection_slug => $subsection ) { ?>
+							<div class="foogallery-vertical-child-tab <?php echo $subsection_active; ?>" data-name="<?php echo esc_attr( $template['slug'] . '-' . $subsection_slug ); ?>">
+								<span class="foogallery-tab-text"><?php echo esc_html( $subsection['name'] ); ?></span>
+							</div>
+						<?php
+							$subsection_active = '';
+							} ?>
+						</div>
+					<?php } ?>
 				</div>
 				<?php
 				$tab_active = '';
@@ -122,14 +121,14 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings_Helper' ) ) {
 
 				?>
 				<div class="foogallery-tab-content <?php echo $tab_active; ?>"
-					 data-name="<?php echo $template['slug']; ?>-<?php echo $section_slug; ?>">
+					data-name="<?php echo $template['slug']; ?>-<?php echo $section_slug; ?>">
 					<?php $this->render_gallery_template_settings_tab_contents_fields( $template, $section ); ?>
 				</div>
 				<?php
-                if ( isset( $section['subsections'] ) ) {
-                    $this->render_gallery_template_settings_tab_contents( $template, $section['subsections'], $subsection_active );
-	                $subsection_active = '';
-                }
+				if ( isset( $section['subsections'] ) ) {
+					$this->render_gallery_template_settings_tab_contents( $template, $section['subsections'], $subsection_active );
+					$subsection_active = '';
+				}
 				$tab_active = '';
 			}
 		}
@@ -153,7 +152,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings_Helper' ) ) {
 					$is_promo = array_key_exists( 'promo', $field );
 					if ( $is_promo ) {
 						$field_class .= ' foogallery_template_field_promo';
-                    }
+					}
 					if ( array_key_exists( 'class', $field ) ) {
 						$field_class .= ' ' . $field['class'];
 					}
@@ -176,15 +175,15 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings_Helper' ) ) {
 								</div>
 							</td>
 						<?php } else if ( 'promo' === $field_type ) { ?>
-                            <td colspan="2">
-                                <div class="foogallery-promo">
-	                                <button class="foogallery-admin-promo-dismiss notice-dismiss"></button>
-	                                <?php echo '<strong>' . $field['title'] . '</strong><br /><br />'; ?>
+							<td colspan="2">
+								<div class="foogallery-promo">
+									<button class="foogallery-admin-promo-dismiss notice-dismiss"></button>
+									<?php echo '<strong>' . $field['title'] . '</strong><br /><br />'; ?>
 									<?php
-                                    echo $field['desc'];
+									echo $field['desc'];
 									if ( array_key_exists( 'cta_text', $field ) ) {
-									    echo '<a class="button-primary" href="' . $field['cta_link'] . '" target="_blank">' . $field['cta_text'] . '</a>';
-                                    }
+										echo '<a class="button-primary" href="' . $field['cta_link'] . '" target="_blank">' . $field['cta_text'] . '</a>';
+									}
 									if ( array_key_exists( 'cta', $field ) ) {
 										foreach ( $field['cta'] as $cta ) {
 											$button_class = isset( $cta['class'] ) ? $cta['class'] : 'button-primary';
@@ -192,15 +191,15 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings_Helper' ) ) {
 										}
 									}
 									?>
-                                </div>
-                            </td>
+								</div>
+							</td>
 						<?php } else { ?>
 							<th>
 								<label for="FooGallerySettings_<?php echo $template['slug'] . '_' . $field['id']; ?>"><?php echo $field['title']; ?></label>
 								<?php if ( $is_promo ) { ?>
-                                    <span data-balloon-length="large" data-balloon-pos="right" data-balloon="<?php echo esc_attr($field['promo']); ?>"><i class="dashicons dashicons-star-filled"></i></span>
+									<span data-balloon-length="large" data-balloon-pos="right" data-balloon="<?php echo esc_attr($field['promo']); ?>"><i class="dashicons dashicons-star-filled"></i></span>
 								<?php } ?>
-                                <?php if ( !empty( $field['desc'] ) ) { ?>
+								<?php if ( !empty( $field['desc'] ) ) { ?>
 									<span data-balloon-length="large" data-balloon-pos="right" data-balloon="<?php echo esc_attr($field['desc']); ?>"><i class="dashicons dashicons-editor-help"></i></span>
 								<?php } ?>
 							</th>
@@ -257,7 +256,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings_Helper' ) ) {
 		 */
 		private function build_model_for_template( $template ) {
 
-		    $fields = foogallery_get_fields_for_template( $template );
+			$fields = foogallery_get_fields_for_template( $template );
 
 			//create a sections array and fill it with fields
 			$sections = array();
@@ -287,16 +286,16 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings_Helper' ) ) {
 				}
 
 				if ( isset( $field['subsection'] ) ) {
-				    $subsection = key( $field['subsection'] );
-				    if ( !isset( $sections[ $section_slug ]['subsections'] ) ) {
-					    $sections[ $section_slug ]['subsections'] = array();
-				    }
-				    if ( !array_key_exists( $subsection, $sections[ $section_slug ]['subsections'] ) ) {
-					    $sections[ $section_slug ]['subsections'][$subsection] = array(
-                            'name' => $field['subsection'][$subsection],
-					        'fields' => array()
-                        );
-				    }
+					$subsection = key( $field['subsection'] );
+					if ( !isset( $sections[ $section_slug ]['subsections'] ) ) {
+						$sections[ $section_slug ]['subsections'] = array();
+					}
+					if ( !array_key_exists( $subsection, $sections[ $section_slug ]['subsections'] ) ) {
+						$sections[ $section_slug ]['subsections'][$subsection] = array(
+							'name' => $field['subsection'][$subsection],
+							'fields' => array()
+						);
+					}
 					$sections[ $section_slug ]['subsections'][$subsection]['fields'][] = $field;
 				} else {
 					$sections[ $section_slug ]['fields'][] = $field;
@@ -362,7 +361,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings_Helper' ) ) {
 			?>
 			<span class="hidden foogallery-template-selector"> &mdash;
 				<select id="FooGallerySettings_GalleryTemplate" name="<?php echo FOOGALLERY_META_TEMPLATE; ?>">
-                    <?php
+					<?php
 					foreach ( $this->gallery_templates as $template ) {
 						$selected = ( $this->current_gallery_template === $template['slug'] ) ? 'selected' : '';
 
@@ -385,8 +384,8 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings_Helper' ) ) {
 						echo "<option {$selected}{$preview_css}{$mandatory_classes} value=\"{$template['slug']}\">{$template['name']}</option>";
 					}
 					?>
-                </select>
-            </span>
+				</select>
+			</span>
 			<?php
 		}
 	}

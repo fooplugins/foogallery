@@ -108,7 +108,7 @@ $premium_count = count( array_filter( $extensions, function ( $extension ) {
 	}
 
 	.dashicons {
-    	font-size: 24px;
+		font-size: 24px;
 		vertical-align: middle;
 	}
 	.tablenav.top {
@@ -314,47 +314,47 @@ class FooGallery_Features_List_Table extends WP_List_Table {
  * @return mixed The rendered column content.
  */
 public function column_default( $item, $column_name ) {
-    switch ( $column_name ) {
-        case 'name':
+	switch ( $column_name ) {
+		case 'name':
 			$upgrade 	 = isset( $item['source'] ) && 'upgrade' === $item['source'];
-            $downloaded  = isset( $item['downloaded'] ) && true === $item['downloaded'];
-            $is_active   = isset( $item['is_active'] ) && true === $item['is_active'];
-            $has_errors  = isset( $item['has_errors'] ) && true === $item['has_errors'];
-            $actions     = '';
+			$downloaded  = isset( $item['downloaded'] ) && true === $item['downloaded'];
+			$is_active   = isset( $item['is_active'] ) && true === $item['is_active'];
+			$has_errors  = isset( $item['has_errors'] ) && true === $item['has_errors'];
+			$actions     = '';
 			if ( array_key_exists( 'actions_disabled', $item ) && $item['actions_disabled'] === true ) {
 				//Do nothing - there should be no actions.
-            } elseif ( $upgrade ) {
+			} elseif ( $upgrade ) {
 				$actions     .= '<a href="' . esc_url( foogallery_fs()->checkout_url( WP_FS__PERIOD_ANNUALLY, true ) ) . '">' . __( 'Start FREE Trial', 'foogallery' ) . '</a>';
 			} elseif ( !$downloaded ) {
-                $base_url     = add_query_arg( array( 'extension' => $item['slug'], '_wpnonce' => wp_create_nonce( 'foogallery_extension_action' ) ) );
-                $download_url = add_query_arg( 'action', 'download', $base_url );
-                $actions     .= '<a href="' . esc_url( $download_url ) . '">' . __( 'Download', 'foogallery' ) . '</a>';
-            } elseif ( $is_active ) {
-                $base_url         = add_query_arg( array( 'extension' => $item['slug'], '_wpnonce' => wp_create_nonce( 'foogallery_extension_action' ) ) );
-                $deactivate_url   = add_query_arg( 'action', 'deactivate', $base_url );
-                $actions         .= '<a href="' . esc_url( $deactivate_url ) . '">' . __( 'Deactivate', 'foogallery' ) . '</a>';
-            } else {
-                $base_url     = add_query_arg( array( 'extension' => $item['slug'], '_wpnonce' => wp_create_nonce( 'foogallery_extension_action' ) ) );
-                $activate_url = add_query_arg( 'action', 'activate', $base_url );
-                $actions     .= '<a href="' . esc_url( $activate_url ) . '">' . __( 'Activate', 'foogallery' ) . '</a>';
-            }
+				$base_url     = add_query_arg( array( 'extension' => $item['slug'], '_wpnonce' => wp_create_nonce( 'foogallery_extension_action' ) ) );
+				$download_url = add_query_arg( 'action', 'download', $base_url );
+				$actions     .= '<a href="' . esc_url( $download_url ) . '">' . __( 'Download', 'foogallery' ) . '</a>';
+			} elseif ( $is_active ) {
+				$base_url         = add_query_arg( array( 'extension' => $item['slug'], '_wpnonce' => wp_create_nonce( 'foogallery_extension_action' ) ) );
+				$deactivate_url   = add_query_arg( 'action', 'deactivate', $base_url );
+				$actions         .= '<a href="' . esc_url( $deactivate_url ) . '">' . __( 'Deactivate', 'foogallery' ) . '</a>';
+			} else {
+				$base_url     = add_query_arg( array( 'extension' => $item['slug'], '_wpnonce' => wp_create_nonce( 'foogallery_extension_action' ) ) );
+				$activate_url = add_query_arg( 'action', 'activate', $base_url );
+				$actions     .= '<a href="' . esc_url( $activate_url ) . '">' . __( 'Activate', 'foogallery' ) . '</a>';
+			}
 
-            // Include the icon
-            $icon = '<span class="dashicons ' . $item['dashicon'] . '" style="margin-right: 10px;"></span>';
+			// Include the icon
+			$icon = '<span class="dashicons ' . $item['dashicon'] . '" style="margin-right: 10px;"></span>';
 
-            return $icon . ' <strong>' . $item['title'] . '</strong><br>' . ' <div style="margin-left: 35px;">' . $actions .'</div>';
+			return $icon . ' <strong>' . $item['title'] . '</strong><br>' . ' <div style="margin-left: 35px;">' . $actions .'</div>';
 
-        case 'description':
+		case 'description':
 			$external_link = '';
 			if ( array_key_exists( 'external_link_url', $item ) && array_key_exists( 'external_link_text', $item ) ) {
 				$external_link = '<br><a href="' . esc_url( $item['external_link_url'] ) . '" target="_blank">' . esc_html( $item['external_link_text'] ) . '</a>';
 			}
 
-            return $item['description'] . $external_link;
+			return $item['description'] . $external_link;
 
-        default:
-            return isset( $item[ $column_name ] ) ? $item[ $column_name ] : '';
-    }
+		default:
+			return isset( $item[ $column_name ] ) ? $item[ $column_name ] : '';
+	}
 }
 
 

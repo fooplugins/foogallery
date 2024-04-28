@@ -4,8 +4,8 @@ namespace FooPlugins\FooGallery\Admin;
 use FooPlugins\FooGallery\Thumbs\FooGallery_Thumb_Generator;
 
 /*
- * FooGallery Admin Gallery Attachment Modal class
- */
+* FooGallery Admin Gallery Attachment Modal class
+*/
 
 if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
 
@@ -15,24 +15,24 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
 		 * Primary class constructor.
 		 */
 		public function __construct() {
-            add_action( 'admin_footer', array( $this, 'foogallery_image_editor_modal' ) );
+			add_action( 'admin_footer', array( $this, 'foogallery_image_editor_modal' ) );
 
 			add_action( 'wp_ajax_foogallery_attachment_modal_open', array( $this, 'ajax_open_modal' ) );
 			add_action( 'wp_ajax_foogallery_attachment_modal_save', array( $this, 'ajax_save_modal' ) );
 
-            add_action( 'wp_ajax_foogallery_attachment_modal_taxonomy_add', array( $this, 'ajax_add_taxonomy' ) );
+			add_action( 'wp_ajax_foogallery_attachment_modal_taxonomy_add', array( $this, 'ajax_add_taxonomy' ) );
 
 			add_action( 'foogallery_attachment_modal_tabs_view', array( $this, 'display_tab_main' ), 10 );
 			add_action( 'foogallery_attachment_modal_tabs_view', array( $this, 'display_tab_taxonomies' ), 20 );
 			add_action( 'foogallery_attachment_modal_tabs_view', array( $this, 'display_tab_thumbnails' ), 30 );
-            add_action( 'foogallery_attachment_modal_tabs_view', array( $this, 'display_tab_advanced' ), 200 );
+			add_action( 'foogallery_attachment_modal_tabs_view', array( $this, 'display_tab_advanced' ), 200 );
 
-            add_action( 'foogallery_attachment_modal_tab_content', array( $this, 'display_tab_content_main' ), 10, 1 );
-            add_action( 'foogallery_attachment_modal_tab_content', array( $this, 'display_tab_content_taxonomies' ), 20, 1 );
-            add_action( 'foogallery_attachment_modal_tab_content', array( $this, 'display_tab_content_thumbnails' ), 30, 1 );
-            add_action( 'foogallery_attachment_modal_tab_content', array( $this, 'display_tab_content_advanced' ), 60, 1 );
+			add_action( 'foogallery_attachment_modal_tab_content', array( $this, 'display_tab_content_main' ), 10, 1 );
+			add_action( 'foogallery_attachment_modal_tab_content', array( $this, 'display_tab_content_taxonomies' ), 20, 1 );
+			add_action( 'foogallery_attachment_modal_tab_content', array( $this, 'display_tab_content_thumbnails' ), 30, 1 );
+			add_action( 'foogallery_attachment_modal_tab_content', array( $this, 'display_tab_content_advanced' ), 60, 1 );
 
-            add_action( 'foogallery_attachment_modal_before_thumbnail', array( $this, 'display_attachment_info' ), 10, 1 );
+			add_action( 'foogallery_attachment_modal_before_thumbnail', array( $this, 'display_attachment_info' ), 10, 1 );
 
 			add_filter( 'foogallery_attachment_modal_data', array( $this, 'foogallery_attachment_modal_data_main' ), 10, 4 );
 			add_filter( 'foogallery_attachment_modal_data', array( $this, 'foogallery_attachment_modal_data_taxonomies' ), 20, 4 );
@@ -64,19 +64,19 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
 
 			<div class="foogallery-image-edit-main" data-img_id="<?php echo $modal_data['img_id']; ?>" data-gallery_id="<?php echo $modal_data['gallery_id']; ?>">
 				<?php do_action( 'foogallery_attachment_modal_before_tab_container', $modal_data ); ?>
-                <div class="foogallery-image-edit-view">
-                    <?php
+				<div class="foogallery-image-edit-view">
+					<?php
 
-                    do_action( 'foogallery_attachment_modal_before_thumbnail', $modal_data );
+					do_action( 'foogallery_attachment_modal_before_thumbnail', $modal_data );
 
-                    if ( $modal_data['image_attributes'] ) { ?>
-                        <img src="<?php echo $modal_data['image_attributes'][0]; ?>" width="<?php echo $modal_data['image_attributes'][1]; ?>" height="<?php echo $modal_data['image_attributes'][2]; ?>" />
-                    <?php } ?>
-                </div>
-                <div class="foogallery-image-edit-button">
-                    <a target="_blank" href="<?php echo get_admin_url().'upload.php?item='.$modal_data['img_id'];?>&mode=edit" class="button"><?php _e('Edit Image', 'foogallery'); ?></a>
-                    <a target="_blank" href="<?php echo $modal_data['img_path'];?>" class="button"><?php _e('Open Full Size Image', 'foogallery'); ?></a>
-                </div>
+					if ( $modal_data['image_attributes'] ) { ?>
+						<img src="<?php echo $modal_data['image_attributes'][0]; ?>" width="<?php echo $modal_data['image_attributes'][1]; ?>" height="<?php echo $modal_data['image_attributes'][2]; ?>" />
+					<?php } ?>
+				</div>
+				<div class="foogallery-image-edit-button">
+					<a target="_blank" href="<?php echo get_admin_url().'upload.php?item='.$modal_data['img_id'];?>&mode=edit" class="button"><?php _e('Edit Image', 'foogallery'); ?></a>
+					<a target="_blank" href="<?php echo $modal_data['img_path'];?>" class="button"><?php _e('Open Full Size Image', 'foogallery'); ?></a>
+				</div>
 			</div>
 
 			<div class="foogallery-image-edit-meta">
@@ -98,49 +98,49 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
 				<?php do_action( 'foogallery_attachment_modal_after_tabs', $modal_data ); ?>
 				
 			</div>
-            <?php
+			<?php
 
-            do_action( 'foogallery_attachment_modal_after_tab_container', $modal_data );
+			do_action( 'foogallery_attachment_modal_after_tab_container', $modal_data );
 				
 			wp_send_json( array(
-                'html' => ob_get_clean(),
-                'prev_slide' => $modal_data['prev_slide'],
-                'next_slide' => $modal_data['next_slide'],
-                'next_img_id' => $modal_data['next_img_id'],
-                'prev_img_id' => $modal_data['prev_img_id'],
-                'override_thumbnail' => $modal_data['foogallery_override_thumbnail'],
-                'current_tab' => $modal_data['current_tab']
-            ) );
+				'html' => ob_get_clean(),
+				'prev_slide' => $modal_data['prev_slide'],
+				'next_slide' => $modal_data['next_slide'],
+				'next_img_id' => $modal_data['next_img_id'],
+				'prev_img_id' => $modal_data['prev_img_id'],
+				'override_thumbnail' => $modal_data['foogallery_override_thumbnail'],
+				'current_tab' => $modal_data['current_tab']
+			) );
 		}
 
 		/**
 		 * 	Admin modal wrapper for gallery image edit 
 		 */ 
 		public function foogallery_image_editor_modal() {
-            global $post;
+			global $post;
 
-            // Check if the gallery edit page is being shown.
-            $screen = get_current_screen();
-            if ( 'foogallery' !== $screen->id ) {
-                return;
-            }
+			// Check if the gallery edit page is being shown.
+			$screen = get_current_screen();
+			if ( 'foogallery' !== $screen->id ) {
+				return;
+			}
 
-            if ( !is_a( $post, 'WP_Post' ) ) {
-                return;
-            }
+			if ( !is_a( $post, 'WP_Post' ) ) {
+				return;
+			}
 
 			$modal_style = foogallery_get_setting( 'advanced_attachment_modal' );
 
-            // Only show the attachment modal if the setting is turned on.
-            if ( 'on' !== $modal_style ) {
-                return;
-            }
+			// Only show the attachment modal if the setting is turned on.
+			if ( 'on' !== $modal_style ) {
+				return;
+			}
 
 			?>
 			<div id="foogallery-image-edit-modal" style="display: none;"
-                 data-nonce="<?php echo wp_create_nonce( 'foogallery_attachment_modal_open' ); ?>"
-                 data-gallery_id="<?php echo $post->ID; ?>"
-                 data-modal_style="<?php echo $modal_style; ?>">
+				data-nonce="<?php echo wp_create_nonce( 'foogallery_attachment_modal_open' ); ?>"
+				data-gallery_id="<?php echo $post->ID; ?>"
+				data-modal_style="<?php echo $modal_style; ?>">
 				<div class="media-modal wp-core-ui">
 					<div class="media-modal-content">
 						<div class="edit-attachment-frame mode-select hide-menu hide-router">
@@ -151,12 +151,12 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
 								<button type="button" class="media-modal-close"><span class="media-modal-icon"><span class="screen-reader-text"><?php _e('Close dialog', 'foogallery'); ?></span></span></button>
 							</div>
 							<div class="media-frame-title">
-                                <h1><?php _e('Edit Attachment Details', 'foogallery'); ?></h1>
-                                <div class="attachment-modal-autosave">
-                                    <input id="attachment-modal-autosave" type="checkbox" />
-                                    <label for="attachment-modal-autosave"><?php _e( 'Autosave', 'foogallery' ); ?></label>
-                                </div>
-                            </div>
+								<h1><?php _e('Edit Attachment Details', 'foogallery'); ?></h1>
+								<div class="attachment-modal-autosave">
+									<input id="attachment-modal-autosave" type="checkbox" />
+									<label for="attachment-modal-autosave"><?php _e( 'Autosave', 'foogallery' ); ?></label>
+								</div>
+							</div>
 							<div class="media-frame-content">
 								<div class="attachment-details save-ready">
 								</div>
@@ -192,43 +192,43 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
 			wp_die();
 		}
 
-        /**
-         * Save new taxonomy
-         */
-        public function ajax_add_taxonomy() {
-            // Check for nonce security
-            if ( ! wp_verify_nonce( $_POST['nonce'], 'foogallery_attachment_modal_taxonomies' ) ) {
-                die ( 'Busted!');
-            }
+		/**
+		 * Save new taxonomy
+		 */
+		public function ajax_add_taxonomy() {
+			// Check for nonce security
+			if ( ! wp_verify_nonce( $_POST['nonce'], 'foogallery_attachment_modal_taxonomies' ) ) {
+				die ( 'Busted!');
+			}
 
-            $img_id = intval( sanitize_text_field( $_POST['img_id'] ) );
-            $taxonomy = sanitize_text_field( $_POST['taxonomy'] );
-            $term = sanitize_text_field( $_POST['term'] );
+			$img_id = intval( sanitize_text_field( $_POST['img_id'] ) );
+			$taxonomy = sanitize_text_field( $_POST['taxonomy'] );
+			$term = sanitize_text_field( $_POST['term'] );
 
-            if ( $img_id > 0 && strlen( $taxonomy ) > 0 && strlen( $term ) > 0 ) {
-                $new_term = wp_insert_term( $term, $taxonomy );
-                if ( is_wp_error( $new_term ) ) {
-                    wp_send_json_error( array(
-                        'message' => __( 'Could not add new taxonomy term!', 'foogallery' )
-                    ));
-                } else {
-                    $new_term_obj = null;
+			if ( $img_id > 0 && strlen( $taxonomy ) > 0 && strlen( $term ) > 0 ) {
+				$new_term = wp_insert_term( $term, $taxonomy );
+				if ( is_wp_error( $new_term ) ) {
+					wp_send_json_error( array(
+						'message' => __( 'Could not add new taxonomy term!', 'foogallery' )
+					));
+				} else {
+					$new_term_obj = null;
 
-                    if ( isset( $new_term['term_id'] ) ) {
-                        $new_term_obj = get_term( $new_term['term_id'] );
+					if ( isset( $new_term['term_id'] ) ) {
+						$new_term_obj = get_term( $new_term['term_id'] );
 
-                        wp_send_json_success( array(
-                            'id' => $new_term_obj->term_id,
-                            'name' => $new_term_obj->name
-                        ));
-                    }
-                }
-            } else {
-                wp_send_json_error( array(
-                    'message' => __( 'Invalid data!', 'foogallery' )
-                ));
-            }
-        }
+						wp_send_json_success( array(
+							'id' => $new_term_obj->term_id,
+							'name' => $new_term_obj->name
+						));
+					}
+				}
+			} else {
+				wp_send_json_error( array(
+					'message' => __( 'Invalid data!', 'foogallery' )
+				));
+			}
+		}
 
 		/**
 		 * Save main tab data content
@@ -238,7 +238,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
 		 * @param $data array of form post data
 		 * 
 		 */
-		 public function foogallery_attachment_save_data_main( $img_id, $data ) {
+		public function foogallery_attachment_save_data_main( $img_id, $data ) {
 
 			if ( is_array( $data ) && !empty( $data ) ) {
 
@@ -295,19 +295,19 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
 
 			if ( is_array( $data ) && !empty( $data ) ) {
 
-                if ( !$this->attachments_have_taxonomies() ) {
-                    return;
-                }
+				if ( !$this->attachments_have_taxonomies() ) {
+					return;
+				}
 
-                if ( array_key_exists( 'taxonomies', $data ) ) {
-                    foreach ( $data['taxonomies'] as $taxonomy => $taxonomy_value ) {
-                        $terms = explode( ',', $taxonomy_value );
-                        if ( is_array( $terms ) ) {
-                            $terms = array_map( 'intval', $terms );
-                            wp_set_object_terms( $img_id, $terms, $taxonomy, false );
-                        }
-                    }
-                }
+				if ( array_key_exists( 'taxonomies', $data ) ) {
+					foreach ( $data['taxonomies'] as $taxonomy => $taxonomy_value ) {
+						$terms = explode( ',', $taxonomy_value );
+						if ( is_array( $terms ) ) {
+							$terms = array_map( 'intval', $terms );
+							wp_set_object_terms( $img_id, $terms, $taxonomy, false );
+						}
+					}
+				}
 			}
 		}
 
@@ -370,66 +370,66 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
 		 */
 		private function build_modal_data( $data = array() ) {
 
-            $modal_data = array(
-                'img_id' => 0,
-                'gallery_id' => 0,
-            );
+			$modal_data = array(
+				'img_id' => 0,
+				'gallery_id' => 0,
+			);
 
-            if ( is_array ( $data ) && isset( $data['img_id'] ) && isset( $data['gallery_id'] ) ) {
-                $modal_data['img_id'] = $attachment_id = intval( sanitize_text_field( $data['img_id'] ) );
-                $modal_data['gallery_id'] = $gallery_id = intval( sanitize_text_field( $data['gallery_id'] ) );
-                $modal_data['current_tab'] = isset( $data['current_tab'] ) ? sanitize_text_field( $data['current_tab'] ) : '';
-                $modal_data['nonce'] = wp_create_nonce( 'foogallery-modal-nonce' );
-                $modal_data = apply_filters( 'foogallery_attachment_modal_data', $modal_data, $data, $attachment_id, $gallery_id );
-            }
+			if ( is_array ( $data ) && isset( $data['img_id'] ) && isset( $data['gallery_id'] ) ) {
+				$modal_data['img_id'] = $attachment_id = intval( sanitize_text_field( $data['img_id'] ) );
+				$modal_data['gallery_id'] = $gallery_id = intval( sanitize_text_field( $data['gallery_id'] ) );
+				$modal_data['current_tab'] = isset( $data['current_tab'] ) ? sanitize_text_field( $data['current_tab'] ) : '';
+				$modal_data['nonce'] = wp_create_nonce( 'foogallery-modal-nonce' );
+				$modal_data = apply_filters( 'foogallery_attachment_modal_data', $modal_data, $data, $attachment_id, $gallery_id );
+			}
 
-            return $modal_data;
+			return $modal_data;
 		}
 
 		/**
 		 * Image modal main tab data update
 		 */
 		public function foogallery_attachment_modal_data_main( $modal_data, $data, $attachment_id, $gallery_id ) {
-            if ( $attachment_id > 0 ) {
-                $attachment_post = get_post( $attachment_id );
+			if ( $attachment_id > 0 ) {
+				$attachment_post = get_post( $attachment_id );
 
-                if ( is_a( $attachment_post, 'WP_Post' ) ) {
-                    $modal_data['file_url'] = wp_get_attachment_url( $attachment_id );
-                    $modal_data['file_name'] = basename( $modal_data['file_url'] );
-                    $modal_data['file_type'] = apply_filters( 'foogallery_attachment_modal_info_file_type', $attachment_post->post_mime_type );
-                    $modal_data['author_id'] = intval( $attachment_post->post_author );
-                    $modal_data['author_name'] = get_the_author_meta( 'display_name', $modal_data['author_id'] );
-                    $modal_data['post_date'] = date('F d, Y', strtotime( $attachment_post->post_date ) );
-                    $modal_data['img_title'] = $attachment_post->post_title;
-                    $modal_data['caption'] = $attachment_post->post_excerpt;
-                    $modal_data['description'] = $attachment_post->post_content;
-                    $modal_data['image_alt'] = get_post_meta( $attachment_id, '_wp_attachment_image_alt', true );
-                    $modal_data['meta'] = wp_get_attachment_metadata( $attachment_id );
+				if ( is_a( $attachment_post, 'WP_Post' ) ) {
+					$modal_data['file_url'] = wp_get_attachment_url( $attachment_id );
+					$modal_data['file_name'] = basename( $modal_data['file_url'] );
+					$modal_data['file_type'] = apply_filters( 'foogallery_attachment_modal_info_file_type', $attachment_post->post_mime_type );
+					$modal_data['author_id'] = intval( $attachment_post->post_author );
+					$modal_data['author_name'] = get_the_author_meta( 'display_name', $modal_data['author_id'] );
+					$modal_data['post_date'] = date('F d, Y', strtotime( $attachment_post->post_date ) );
+					$modal_data['img_title'] = $attachment_post->post_title;
+					$modal_data['caption'] = $attachment_post->post_excerpt;
+					$modal_data['description'] = $attachment_post->post_content;
+					$modal_data['image_alt'] = get_post_meta( $attachment_id, '_wp_attachment_image_alt', true );
+					$modal_data['meta'] = wp_get_attachment_metadata( $attachment_id );
 
-                    // Get attachment file size.
-                    $file_size = false;
-                    if ( isset( $modal_data['meta']['filesize'] ) ) {
-                        $file_size = $modal_data['meta']['filesize'];
-                    } elseif ( file_exists( $modal_data['file_url'] ) ) {
-                        $file_size = wp_filesize( $modal_data['file_url'] );
-                    }
-                    if ( ! empty( $file_size ) ) {
-                        $modal_data['file_size'] = size_format( $file_size );
-                    }
+					// Get attachment file size.
+					$file_size = false;
+					if ( isset( $modal_data['meta']['filesize'] ) ) {
+						$file_size = $modal_data['meta']['filesize'];
+					} elseif ( file_exists( $modal_data['file_url'] ) ) {
+						$file_size = wp_filesize( $modal_data['file_url'] );
+					}
+					if ( ! empty( $file_size ) ) {
+						$modal_data['file_size'] = size_format( $file_size );
+					}
 
-                    // Get attachment dimensions.
-                    $media_dims = '';
-                    if ( isset( $modal_data['meta']['width'], $modal_data['meta']['height'] ) ) {
-                        $media_dims = "{$modal_data['meta']['width']}&nbsp;&times;&nbsp;{$modal_data['meta']['height']}";
-                    }
-                    /** This filter is documented in wp-admin/includes/media.php */
-                    $modal_data['media_dims'] = apply_filters( 'media_meta', $media_dims, $attachment_post );
+					// Get attachment dimensions.
+					$media_dims = '';
+					if ( isset( $modal_data['meta']['width'], $modal_data['meta']['height'] ) ) {
+						$media_dims = "{$modal_data['meta']['width']}&nbsp;&times;&nbsp;{$modal_data['meta']['height']}";
+					}
+					/** This filter is documented in wp-admin/includes/media.php */
+					$modal_data['media_dims'] = apply_filters( 'media_meta', $media_dims, $attachment_post );
 
-                    $modal_data['custom_url'] = get_post_meta( $attachment_id, '_foogallery_custom_url', true );
-                    $modal_data['custom_target'] = get_post_meta( $attachment_id, '_foogallery_custom_target', true );
-                    $modal_data['custom_class'] = get_post_meta( $attachment_id, '_foogallery_custom_class', true );
-                }
-            }
+					$modal_data['custom_url'] = get_post_meta( $attachment_id, '_foogallery_custom_url', true );
+					$modal_data['custom_target'] = get_post_meta( $attachment_id, '_foogallery_custom_target', true );
+					$modal_data['custom_class'] = get_post_meta( $attachment_id, '_foogallery_custom_class', true );
+				}
+			}
 
 			return $modal_data;
 		}
@@ -438,23 +438,23 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
 		 * Image modal taxonomies & tags tab data update
 		 */
 		public function foogallery_attachment_modal_data_taxonomies( $modal_data, $data, $attachment_id, $gallery_id ) {
-            if ( $attachment_id > 0 ) {
+			if ( $attachment_id > 0 ) {
 
-                if ( !$this->attachments_have_taxonomies() ) {
-                    return $modal_data;
-                }
+				if ( !$this->attachments_have_taxonomies() ) {
+					return $modal_data;
+				}
 
-                $modal_data['taxonomies'] = array();
+				$modal_data['taxonomies'] = array();
 
-                $taxonomies = get_object_taxonomies( 'attachment', 'objects' );
+				$taxonomies = get_object_taxonomies( 'attachment', 'objects' );
 
-                foreach ( $taxonomies as $tax_name => $taxonomy ) {
-                    $modal_data['taxonomies'][$tax_name] = array(
-                        'label' => $taxonomy->label,
-                        'terms' => get_the_terms( $attachment_id, $tax_name )
-                    );
-                }
-            }
+				foreach ( $taxonomies as $tax_name => $taxonomy ) {
+					$modal_data['taxonomies'][$tax_name] = array(
+						'label' => $taxonomy->label,
+						'terms' => get_the_terms( $attachment_id, $tax_name )
+					);
+				}
+			}
 
 			return $modal_data;
 		}
@@ -463,23 +463,23 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
 		 * Image modal thumbnails tab data update
 		 */
 		public function foogallery_attachment_modal_data_thumbnails( $modal_data, $data, $attachment_id, $gallery_id ) {
-            if ( $attachment_id > 0 ) {
+			if ( $attachment_id > 0 ) {
 
-                $modal_data['foogallery_crop_pos'] = get_post_meta( $attachment_id, 'foogallery_crop_pos', true );
+				$modal_data['foogallery_crop_pos'] = get_post_meta( $attachment_id, 'foogallery_crop_pos', true );
 
-                $foogallery_override_thumbnail = get_post_meta( $attachment_id, '_foogallery_override_thumbnail', true );
+				$foogallery_override_thumbnail = get_post_meta( $attachment_id, '_foogallery_override_thumbnail', true );
 
-                if ( isset( $foogallery_override_thumbnail ) ) {
+				if ( isset( $foogallery_override_thumbnail ) ) {
 
-                    $modal_data['foogallery_override_thumbnail'] = $foogallery_override_thumbnail;
-                    $modal_data['override_class'] = 'is-override-thumbnail';
-                    $alternate_thumb_img = wp_get_attachment_image_src( $foogallery_override_thumbnail );
+					$modal_data['foogallery_override_thumbnail'] = $foogallery_override_thumbnail;
+					$modal_data['override_class'] = 'is-override-thumbnail';
+					$alternate_thumb_img = wp_get_attachment_image_src( $foogallery_override_thumbnail );
 
-                    if ( is_array( $alternate_thumb_img ) && !empty( $alternate_thumb_img ) ) {
-                        $modal_data['alternate_img_src'] = $alternate_thumb_img[0];
-                    }
-                }
-            }
+					if ( is_array( $alternate_thumb_img ) && !empty( $alternate_thumb_img ) ) {
+						$modal_data['alternate_img_src'] = $alternate_thumb_img[0];
+					}
+				}
+			}
 
 			return $modal_data;
 		}
@@ -488,12 +488,12 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
 		 * Image modal advanced tab data update
 		 */
 		public function foogallery_attachment_modal_data_advanced( $modal_data, $data, $attachment_id, $gallery_id ) {
-            if ( $attachment_id > 0 ) {
-                $modal_data['data_width'] =    get_post_meta( $attachment_id, '_data-width', true );
-                $modal_data['data_height'] =   get_post_meta( $attachment_id, '_data-height', true );
-                $modal_data['panning'] =       get_post_meta( $attachment_id, '_foobox_panning', true );
-                $modal_data['override_type'] = get_post_meta( $attachment_id, '_foogallery_override_type', true );
-            }
+			if ( $attachment_id > 0 ) {
+				$modal_data['data_width'] =    get_post_meta( $attachment_id, '_data-width', true );
+				$modal_data['data_height'] =   get_post_meta( $attachment_id, '_data-height', true );
+				$modal_data['panning'] =       get_post_meta( $attachment_id, '_foobox_panning', true );
+				$modal_data['override_type'] = get_post_meta( $attachment_id, '_foogallery_override_type', true );
+			}
 			return $modal_data;
 		}
 
@@ -502,43 +502,43 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
 		 */
 		public function foogallery_attachment_modal_data_info( $modal_data, $data, $attachment_id, $gallery_id ) {
 
-            if ( $attachment_id > 0 ) {
-                $modal_data['image_attributes'] = wp_get_attachment_image_src( $attachment_id, 'medium' );
-                $full_img_path = wp_get_attachment_image_src( $attachment_id, 'full' );
-                $modal_data['img_path'] = $full_img_path[0];
+			if ( $attachment_id > 0 ) {
+				$modal_data['image_attributes'] = wp_get_attachment_image_src( $attachment_id, 'medium' );
+				$full_img_path = wp_get_attachment_image_src( $attachment_id, 'full' );
+				$modal_data['img_path'] = $full_img_path[0];
 
-                $gallery_attachments = get_post_meta( $gallery_id, FOOGALLERY_META_ATTACHMENTS, true);
+				$gallery_attachments = get_post_meta( $gallery_id, FOOGALLERY_META_ATTACHMENTS, true);
 
-                if ( is_array( $gallery_attachments ) && !empty ( $gallery_attachments ) ) {
-                    $modal_data['gallery_attachments'] = $gallery_attachments;
+				if ( is_array( $gallery_attachments ) && !empty ( $gallery_attachments ) ) {
+					$modal_data['gallery_attachments'] = $gallery_attachments;
 
-                    $current_slide_id = 0;
-                    $prev_slide_enabled = false;
-                    $next_slide_enabled = false;
-                    $prev_slide_id = 0;
-                    $next_slide_id = 0;
-                    foreach ( $gallery_attachments as $gallery_attachment_id ) {
-                        if ( $attachment_id === intval( $gallery_attachment_id ) ) {
-                            $prev_slide_enabled = $prev_slide_id > 0;
-                            $current_slide_id = $attachment_id;
-                        } else if ( $next_slide_id > 0 ) {
-                            break;
-                        } else if ( $current_slide_id > 0 ) {
-                            $next_slide_id = intval($gallery_attachment_id);
-                            $next_slide_enabled = true;
-                        } else {
-                            $prev_slide_id = intval( $gallery_attachment_id );
-                        }
-                    }
+					$current_slide_id = 0;
+					$prev_slide_enabled = false;
+					$next_slide_enabled = false;
+					$prev_slide_id = 0;
+					$next_slide_id = 0;
+					foreach ( $gallery_attachments as $gallery_attachment_id ) {
+						if ( $attachment_id === intval( $gallery_attachment_id ) ) {
+							$prev_slide_enabled = $prev_slide_id > 0;
+							$current_slide_id = $attachment_id;
+						} else if ( $next_slide_id > 0 ) {
+							break;
+						} else if ( $current_slide_id > 0 ) {
+							$next_slide_id = intval($gallery_attachment_id);
+							$next_slide_enabled = true;
+						} else {
+							$prev_slide_id = intval( $gallery_attachment_id );
+						}
+					}
 
-                    if ( $current_slide_id >= 0 ) {
-                        $modal_data['prev_slide'] = $prev_slide_enabled;
-                        $modal_data['next_slide'] = $next_slide_enabled;
-                        $modal_data['prev_img_id'] = $prev_slide_id;
-                        $modal_data['next_img_id'] = $next_slide_id;
-                    }
-                }
-            }
+					if ( $current_slide_id >= 0 ) {
+						$modal_data['prev_slide'] = $prev_slide_enabled;
+						$modal_data['next_slide'] = $next_slide_enabled;
+						$modal_data['prev_img_id'] = $prev_slide_id;
+						$modal_data['next_img_id'] = $next_slide_id;
+					}
+				}
+			}
 
 			return $modal_data;
 		}
@@ -557,11 +557,11 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
 		 * Image modal taxonomies & tags title
 		 */
 		public function display_tab_taxonomies() {
-            if ( !$this->attachments_have_taxonomies() ) {
-                return;
-            }
+			if ( !$this->attachments_have_taxonomies() ) {
+				return;
+			}
 
-        ?>
+		?>
 			<div class="foogallery-img-modal-tab-wrapper" data-tab_id="foogallery-panel-taxonomies">
 				<input type="radio" name="tabset" id="foogallery-tab-taxonomies" aria-controls="foogallery-panel-taxonomies">
 				<label for="foogallery-tab-taxonomies"><?php _e('Taxonomies', 'foogallery'); ?></label>
@@ -578,15 +578,15 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
 			</div>
 		<?php }
 
-        /**
-         * Returns true if attachments have any taxonomies registered.
-         *
-         * @return bool
-         */
-        function attachments_have_taxonomies() {
-            $taxonomies = get_object_taxonomies( 'attachment' );
-            return count( $taxonomies ) > 0;
-        }
+		/**
+		 * Returns true if attachments have any taxonomies registered.
+		 *
+		 * @return bool
+		 */
+		function attachments_have_taxonomies() {
+			$taxonomies = get_object_taxonomies( 'attachment' );
+			return count( $taxonomies ) > 0;
+		}
 
 		/**
 		 * Image modal advanced tab title
@@ -622,7 +622,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
 								<label for="attachment-details-two-column-alt-text" class="name"><?php _e('ALT Text', 'foogallery'); ?></label>
 								<input type="text" id="attachment-details-two-column-alt-text" name="foogallery[alt-text]" value="<?php echo $modal_data['image_alt'];?>" aria-describedby="alt-text-description">
 							</span>
-                            <span class="setting" data-setting="custom_url">
+							<span class="setting" data-setting="custom_url">
 								<label for="attachments-foogallery-custom-url" class="name"><?php _e('Custom URL', 'foogallery'); ?></label>
 								<input type="text" id="attachments-foogallery-custom-url" name="foogallery[custom-url]" value="<?php echo $modal_data['custom_url'];?>">
 							</span>
@@ -642,17 +642,17 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
 								<label for="attachments-foogallery-custom-class" class="name"><?php _e('Custom Class', 'foogallery'); ?></label>
 								<input type="text" id="attachments-foogallery-custom-class" name="foogallery[custom-class]" value="<?php echo $modal_data['custom_class'];?>">
 							</span>
-                            <p class="description">
-                                <?php _e( 'The custom class will be applied to the anchor tag of the image, which you can target with custom CSS.', 'foogallery' ); ?>
-                            </p>
+							<p class="description">
+								<?php _e( 'The custom class will be applied to the anchor tag of the image, which you can target with custom CSS.', 'foogallery' ); ?>
+							</p>
 							<span class="setting" data-setting="file_url">
 								<label for="attachments-foogallery-file-url" class="name"><?php _e('File URL', 'foogallery'); ?></label>
-                                <div class="setting-with-buttons">
-                                    <input type="text" id="attachments-foogallery-file-url" value="<?php echo $modal_data['file_url'];?>" readonly />
-                                    <div>
-                                        <button type="button" class="button button-small copy-attachment-file-url" data-clipboard-target="#attachments-foogallery-file-url"><?php _e('Copy to clipboard', 'foogallery'); ?></button>
-                                    </div>
-                                </div>
+								<div class="setting-with-buttons">
+									<input type="text" id="attachments-foogallery-file-url" value="<?php echo $modal_data['file_url'];?>" readonly />
+									<div>
+										<button type="button" class="button button-small copy-attachment-file-url" data-clipboard-target="#attachments-foogallery-file-url"><?php _e('Copy to clipboard', 'foogallery'); ?></button>
+									</div>
+								</div>
 							</span>
 						</div>
 					</section>
@@ -665,79 +665,79 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
 		 * Image modal taxonomies & tags tab content
 		 */
 		public function display_tab_content_taxonomies( $modal_data ) {
-            if ( !$this->attachments_have_taxonomies() ) {
-                return;
-            }
+			if ( !$this->attachments_have_taxonomies() ) {
+				return;
+			}
 
-            if ( is_array( $modal_data ) && array_key_exists( 'taxonomies', $modal_data ) ) {
-                if ( $modal_data['img_id'] > 0 ) {
-                    $taxonomies = get_object_taxonomies( 'attachment', 'objects' );
+			if ( is_array( $modal_data ) && array_key_exists( 'taxonomies', $modal_data ) ) {
+				if ( $modal_data['img_id'] > 0 ) {
+					$taxonomies = get_object_taxonomies( 'attachment', 'objects' );
 
-                    ?>
-                        <section id="foogallery-panel-taxonomies" class="tab-panel" data-nonce="<?php echo wp_create_nonce('foogallery_attachment_modal_taxonomies'); ?>">
+					?>
+						<section id="foogallery-panel-taxonomies" class="tab-panel" data-nonce="<?php echo wp_create_nonce('foogallery_attachment_modal_taxonomies'); ?>">
 						<div class="settings">
-                    <?php
+					<?php
 
-                    foreach ( $taxonomies as $tax_name => $taxonomy ) {
-                        $terms = get_terms( array(
-                            'taxonomy' => $tax_name,
-                            'hide_empty' => false,
-                        ) );
+					foreach ( $taxonomies as $tax_name => $taxonomy ) {
+						$terms = get_terms( array(
+							'taxonomy' => $tax_name,
+							'hide_empty' => false,
+						) );
 
-                        $selected_terms = array();
+						$selected_terms = array();
 
-                        if ( array_key_exists( $tax_name, $modal_data['taxonomies'] ) ) {
+						if ( array_key_exists( $tax_name, $modal_data['taxonomies'] ) ) {
 							$selected_tax_terms = $modal_data['taxonomies'][$tax_name]['terms'];
 							if ( is_array( $selected_tax_terms ) ) {
 								foreach ($selected_tax_terms as $term) {
 									$selected_terms[] = $term->term_id;
 								}
 							}
-                        }
+						}
 
-                        ?>
+						?>
 
-                        <span class="setting">
-                            <label for="foogallery_attachment_taxonomy_<?php echo $tax_name; ?>" class="name"><?php echo $modal_data['taxonomies'][$tax_name]['label']; ?></label>
-                            <div>
-                                <ul data-taxonomy="<?php echo $tax_name; ?>">
-                                    <?php
-                                    foreach ($terms as $term) {
-                                        $term_selected = in_array( $term->term_id, $selected_terms );
-                                        ?>
-                                        <li>
-                                        <a href="javascript:void(0);" class="button button-small<?php echo $term_selected ? ' button-primary' : ''; ?>"
-                                           data-term-id="<?php echo $term->term_id; ?>"><?php echo $term->name; ?></a>
-                                        </li><?php
-                                    }
-                                    ?>
-                                    <li class="taxonomy_add">
-                                        <a href="javascript:void(0);" class="button button-small active foogallery_attachment_taxonomy_add" data-action="add" title="Add new">+</a>
-                                        <input type="text" class="foogallery_attachment_taxonomy_add" style="display: none" />
-                                        <a href="javascript:void(0);" class="button button-small active foogallery_attachment_taxonomy_add" style="display: none" data-action="save"><?php echo __( 'Save','foogallery' ); ?></a>
-                                        <a href="javascript:void(0);" class="button button-small active foogallery_attachment_taxonomy_add" style="display: none" data-action="cancel"><?php echo __( 'Cancel','foogallery' ); ?></a>
-                                    </li>
+						<span class="setting">
+							<label for="foogallery_attachment_taxonomy_<?php echo $tax_name; ?>" class="name"><?php echo $modal_data['taxonomies'][$tax_name]['label']; ?></label>
+							<div>
+								<ul data-taxonomy="<?php echo $tax_name; ?>">
+									<?php
+									foreach ($terms as $term) {
+										$term_selected = in_array( $term->term_id, $selected_terms );
+										?>
+										<li>
+										<a href="javascript:void(0);" class="button button-small<?php echo $term_selected ? ' button-primary' : ''; ?>"
+										data-term-id="<?php echo $term->term_id; ?>"><?php echo $term->name; ?></a>
+										</li><?php
+									}
+									?>
+									<li class="taxonomy_add">
+										<a href="javascript:void(0);" class="button button-small active foogallery_attachment_taxonomy_add" data-action="add" title="Add new">+</a>
+										<input type="text" class="foogallery_attachment_taxonomy_add" style="display: none" />
+										<a href="javascript:void(0);" class="button button-small active foogallery_attachment_taxonomy_add" style="display: none" data-action="save"><?php echo __( 'Save','foogallery' ); ?></a>
+										<a href="javascript:void(0);" class="button button-small active foogallery_attachment_taxonomy_add" style="display: none" data-action="cancel"><?php echo __( 'Cancel','foogallery' ); ?></a>
+									</li>
 
 									<li class="taxonomy_remove">
 										<a href="javascript:void(0);" class="button button-small active foogallery_attachment_taxonomy_remove" data-action="remove" title="Deselect all" >&ndash;</a>
 									</li>
 
-                                </ul>
-                                <div>
-                                    <a target="_blank" href="<?php echo admin_url( 'edit-tags.php?taxonomy=' . $tax_name ); ?>"?><?php printf( __('Manage %s', 'foogallery' ), $taxonomy->labels->name ); ?></a>
-                                </div>
-                            </div>
-                            <input type="hidden" id="foogallery_attachment_taxonomy_<?php echo $tax_name; ?>_selected" name="foogallery[taxonomies][<?php echo $tax_name; ?>]" value="<?php echo implode( ',', $selected_terms ); ?>">
+								</ul>
+								<div>
+									<a target="_blank" href="<?php echo admin_url( 'edit-tags.php?taxonomy=' . $tax_name ); ?>"?><?php printf( __('Manage %s', 'foogallery' ), $taxonomy->labels->name ); ?></a>
+								</div>
+							</div>
+							<input type="hidden" id="foogallery_attachment_taxonomy_<?php echo $tax_name; ?>_selected" name="foogallery[taxonomies][<?php echo $tax_name; ?>]" value="<?php echo implode( ',', $selected_terms ); ?>">
 
-                        </span>
+						</span>
 
-                        <?php
-                    }
+						<?php
+					}
 
-                    ?>
-                        </div>
-                        </section>
-                    <?php
+					?>
+						</div>
+						</section>
+					<?php
 				}
 			}
 		}
@@ -749,7 +749,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
 			if ( is_array( $modal_data ) && !empty ( $modal_data ) ) {
 				if ( $modal_data['img_id'] > 0 ) {
 
-                    $crop_pos = !empty( $modal_data['foogallery_crop_pos'] ) ? $modal_data['foogallery_crop_pos'] : 'center,center';
+					$crop_pos = !empty( $modal_data['foogallery_crop_pos'] ) ? $modal_data['foogallery_crop_pos'] : 'center,center';
 
 					$thumbnail_info = $this->find_thumbnail_info( $modal_data['img_id'], $modal_data['img_path'] );
 
@@ -789,8 +789,8 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
 								</div>
 							</span>
 						<?php }
-                        do_action( 'foogallery_attachment_modal_tab_content_thumbnails', $modal_data );
-                        ?></div>
+						do_action( 'foogallery_attachment_modal_tab_content_thumbnails', $modal_data );
+						?></div>
 					</section>
 					<?php
 				}
@@ -834,11 +834,11 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
 		}
 		
 		/**
-		 * Count FooGallery thumbnails in a given directory
-		 *
-		 * @param string $folder The directory to scan
-		 * @return int The number of thumbnails
-		 */
+			* Count FooGallery thumbnails in a given directory
+			*
+			* @param string $folder The directory to scan
+			* @return int The number of thumbnails
+			*/
 		private function count_foogallery_thumbnails( $folder ) {
 			$wp_filesystem = foogallery_wp_filesystem();
 
@@ -857,8 +857,8 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
 
 
 		/**
-		 * Image modal advanced tab content
-		 */
+			* Image modal advanced tab content
+			*/
 		public function display_tab_content_advanced( $modal_data ) {
 			if ( is_array( $modal_data ) && !empty ( $modal_data ) ) {
 				if ( $modal_data['img_id'] > 0 ) { ?>
@@ -904,8 +904,8 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
 		}
 
 		/**
-		 * Image modal info section
-		 */
+			* Image modal info section
+			*/
 		public function display_attachment_info( $modal_data ) {
 			if ( is_array( $modal_data ) && !empty ( $modal_data ) ) {
 				if ( $modal_data['img_id'] > 0 ) { ?>
@@ -943,20 +943,20 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
 		}
 
 		/**
-		 * Renders the save button and footer for the FooGallery image modal.
-		 *
-		 * This function outputs the HTML for the save button and associated footer
-		 * within the FooGallery image modal. It provides a button for saving attachment details.
-		 */
+			* Renders the save button and footer for the FooGallery image modal.
+			*
+			* This function outputs the HTML for the save button and associated footer
+			* within the FooGallery image modal. It provides a button for saving attachment details.
+			*/
 		public function foogallery_img_modal_save_btn() {
 			?>
-            <div class="foogallery-image-edit-footer">
-                <button id="attachments-data-save-btn" type="submit"
-                        class="button button-primary button-large"><?php _e( 'Save Attachment Details', 'foogallery' ); ?>
-                </button>
-                <span class="spinner"></span>
-            </div>
-            <?php
+			<div class="foogallery-image-edit-footer">
+				<button id="attachments-data-save-btn" type="submit"
+						class="button button-primary button-large"><?php _e( 'Save Attachment Details', 'foogallery' ); ?>
+				</button>
+				<span class="spinner"></span>
+			</div>
+			<?php
 		}
 	}
 }

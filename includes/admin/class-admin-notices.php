@@ -2,8 +2,8 @@
 namespace FooPlugins\FooGallery\Admin;
 
 /*
- * FooGallery Admin Notices class
- */
+* FooGallery Admin Notices class
+*/
 
 if ( ! class_exists( 'FooGallery_Admin_Notices' ) ) {
 
@@ -164,13 +164,13 @@ if ( ! class_exists( 'FooGallery_Admin_Notices' ) ) {
 					})( jQuery );
 				</script>
 				<style>
-                    .foogallery-rating-notice {
-                        border-left-color: #ff69b4;
-                    }
+					.foogallery-rating-notice {
+						border-left-color: #ff69b4;
+					}
 
-                    .foogallery-rating-notice .dashicons-heart {
-                        color: #ff69b4;
-                    }
+					.foogallery-rating-notice .dashicons-heart {
+						color: #ff69b4;
+					}
 				</style>
 				<div class="foogallery-rating-notice notice notice-success is-dismissible">
 					<p>
@@ -205,7 +205,7 @@ if ( ! class_exists( 'FooGallery_Admin_Notices' ) ) {
 							<?php _e( 'If thumbnails cannot be generated, then full-sized, uncropped images will be used instead. This will result in slow page load times, and thumbnails that do not look correct.', 'foogallery' ); ?>
 							<br/>
 							<a target="_blank"
-							   href="https://fooplugins.com/documentation/foogallery/troubleshooting-foogallery/thumbnail-generation-alert-help/"><?php _e( 'View Troubleshooting Documentation', 'foogallery' ); ?></a>
+							href="https://fooplugins.com/documentation/foogallery/troubleshooting-foogallery/thumbnail-generation-alert-help/"><?php _e( 'View Troubleshooting Documentation', 'foogallery' ); ?></a>
 							<br/>
 						</p>
 					</div>
@@ -238,13 +238,13 @@ if ( ! class_exists( 'FooGallery_Admin_Notices' ) ) {
 					})( jQuery );
 				</script>
 				<style>
-                    .foogallery-foobar-notice {
-                        border-left-color: #ff4800;
-                    }
+					.foogallery-foobar-notice {
+						border-left-color: #ff4800;
+					}
 
-                    .foogallery-foobar-notice .dashicons-megaphone {
-                        color: #ff4800;
-                    }
+					.foogallery-foobar-notice .dashicons-megaphone {
+						color: #ff4800;
+					}
 				</style>
 				<div class="foogallery-foobar-notice notice notice-success is-dismissible">
 					<p>
@@ -258,9 +258,9 @@ if ( ! class_exists( 'FooGallery_Admin_Notices' ) ) {
 						<br/>
 						<br/>
 						<a class="button button-primary button-large" target="_blank"
-						   href="<?php echo $install_foobar; ?>">Install FooBar</a>
+						href="<?php echo $install_foobar; ?>">Install FooBar</a>
 						<a class="button" target="_blank"
-						   href="https://wordpress.org/plugins/foobar-notifications-lite/">View Details</a>
+						href="https://wordpress.org/plugins/foobar-notifications-lite/">View Details</a>
 					</p>
 				</div>
 				<?php

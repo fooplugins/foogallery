@@ -2,8 +2,8 @@
 namespace FooPlugins\FooGallery\Admin;
 
 /*
- * FooGallery Admin class
- */
+* FooGallery Admin class
+*/
 
 if ( ! class_exists( 'FooGallery_Admin' ) ) {
 
@@ -63,8 +63,8 @@ if ( ! class_exists( 'FooGallery_Admin' ) ) {
 			foogallery_enqueue_core_gallery_template_script();
 			foogallery_enqueue_core_gallery_template_style();
 
-            $foogallery = \FooGallery_Plugin::get_instance();
-            $foogallery->register_and_enqueue_js( 'admin-foogallery-edit.js' );
+			$foogallery = \FooGallery_Plugin::get_instance();
+			$foogallery->register_and_enqueue_js( 'admin-foogallery-edit.js' );
 
 			do_action('foogallery_admin_enqueue_scripts' );
 		}
@@ -87,9 +87,9 @@ if ( ! class_exists( 'FooGallery_Admin' ) ) {
 		 * @return string[]
 		 */
 		function plugin_listing_links( $links ) {
-            if ( !is_array( $links ) ) {
-	            $links = array();
-            }
+			if ( !is_array( $links ) ) {
+				$links = array();
+			}
 
 			// Add a 'Settings' link to the plugin listing
 			$links[] = '<a href="' . esc_url( foogallery_admin_settings_url() ) . '"><b>' . __( 'Settings', 'foogallery' ) . '</b></a>';
