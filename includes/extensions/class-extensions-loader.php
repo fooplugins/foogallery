@@ -19,7 +19,7 @@ if ( ! class_exists( 'FooGallery_Extensions_Loader' ) ) {
 			if ( 'deactivate' === $action || 'heartbeat' === $action ) { return; }
 
 			if ( ! function_exists( 'get_current_screen' ) ) {
-				require_once(ABSPATH . 'wp-admin/includes/screen.php');
+				require_once ABSPATH . 'wp-admin/includes/screen.php';
 			}
 
 			$api               = new FooGallery_Extensions_API();
@@ -28,7 +28,7 @@ if ( ! class_exists( 'FooGallery_Extensions_Loader' ) ) {
 				try {
 					$this->load_extension( $slug, $class );
 				}
-				catch (Exception $e) {
+				catch ( Exception $e ) {
 					$error = $e;
 					$something = $error;
 				}

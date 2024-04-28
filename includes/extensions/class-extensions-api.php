@@ -2,8 +2,7 @@
 namespace FooPlugins\FooGallery\Extensions;
 
 use Plugin_Upgrader;
-use FooGallery_Silent_Installer_Skin;
-
+use FooPlugins\FooGallery\Admin\FooGallery_Silent_Installer_Skin;
 /**
  * @TODO
  */
@@ -14,7 +13,7 @@ if ( ! class_exists( 'FooGallery_Extensions_API' ) ) {
 	define( 'FOOGALLERY_EXTENSIONS_ACTIVATED_OPTIONS_KEY', 'foogallery_extensions_activated' );
 	define( 'FOOGALLERY_EXTENSIONS_ERRORS_OPTIONS_KEY', 'foogallery_extensions_errors' );
 	define( 'FOOGALLERY_EXTENSIONS_AUTO_ACTIVATED_OPTIONS_KEY', 'foogallery_extensions_auto_activated' );
-    define( 'FOOGALLERY_EXTENSIONS_OVERRIDES_OPTIONS_KEY', 'foogallery_extensions_overrides' );
+	define( 'FOOGALLERY_EXTENSIONS_OVERRIDES_OPTIONS_KEY', 'foogallery_extensions_overrides' );
 
 	/**
 	 * FooGallery Extensions Manager Class
@@ -65,7 +64,7 @@ if ( ! class_exists( 'FooGallery_Extensions_API' ) ) {
 				'categories' =>	array( 'Featured', 'Free' ),
 				'description' => __( 'Group your galleries into albums. Albums comes with 2 unique album templates to showcase your galleries.', 'foogallery' ),
 				'external_link_text' => __( 'Read documentation', 'foogallery' ),
-                'external_link_url' => 'https://fooplugins.com/documentation/foogallery/getting-started-foogallery/adding-albums/',
+				'external_link_url' => 'https://fooplugins.com/documentation/foogallery/getting-started-foogallery/adding-albums/',
 				'dashicon'          => 'dashicons-book-alt',
 				'tags' => array( 'functionality', 'free', ),
 				'source' => 'bundled'
@@ -77,10 +76,10 @@ if ( ! class_exists( 'FooGallery_Extensions_API' ) ) {
 				'class' => 'FooGallery_Migrate_Dummy',
 				'categories' => array( 'Free' ),
 				'title' => 'FooGallery Migrate',
-                'file' => 'migrate.php',
+				'file' => 'migrate.php',
 				'description' => __( 'Migrate to FooGallery from other gallery plugins', 'foogallery' ),
 				'external_link_text' => __( 'Read about FooGallery Migrate', 'foogallery' ),
-                'external_link_url' => 'https://fooplugins.com/foogallery-migrate-for-wordpress-galleries/',
+				'external_link_url' => 'https://fooplugins.com/foogallery-migrate-for-wordpress-galleries/',
 				'dashicon'          => 'dashicons-migrate',
 				'tags' => array( 'tools', 'free', ),
 				'source' => 'repo',
@@ -135,7 +134,7 @@ if ( ! class_exists( 'FooGallery_Extensions_API' ) ) {
 				$extension['is_active'] = $active;
 				$extension['has_errors'] = $this->has_errors( $extension['slug'] );
 
-                $extensions[ $extension['slug'] ] = $extension;
+				$extensions[ $extension['slug'] ] = $extension;
 			}
 
 			$extensions = apply_filters( 'foogallery_extensions_for_view', $extensions );
@@ -193,37 +192,37 @@ if ( ! class_exists( 'FooGallery_Extensions_API' ) ) {
 		 */
 		public function is_active( $slug ) {
 			$overrides = $this->get_overrides();
-            if ( array_key_exists( $slug, $overrides ) ) {
-                return $overrides[$slug] === 'active';
-            }
+			if ( array_key_exists( $slug, $overrides ) ) {
+				return $overrides[$slug] === 'active';
+			}
 
-            $active_extensions = $this->get_active_extensions();
+			$active_extensions = $this->get_active_extensions();
 			if ( array_key_exists( $slug, $active_extensions ) ) {
 				//it has been previously activated through the extensions page
 				return true;
 			}
 
-            $extension = $this->get_extension( $slug );
+			$extension = $this->get_extension( $slug );
 
-            //if we have an 'plugin_active_class' attribute and that class exists, it means our plugin must be active
-            if ( isset( $extension['plugin_active_class'] ) ) {
-                if ( class_exists( $extension['plugin_active_class'] ) ) {
-                    return true;
-                }
-            }
+			//if we have an 'plugin_active_class' attribute and that class exists, it means our plugin must be active
+			if ( isset( $extension['plugin_active_class'] ) ) {
+				if ( class_exists( $extension['plugin_active_class'] ) ) {
+					return true;
+				}
+			}
 
-            //if we have an 'activated_by_default' attribute and it is true, it means the extension is active
-            if ( isset( $extension['activated_by_default'] ) && $extension['activated_by_default'] ) {
-                return true;
-            }
+			//if we have an 'activated_by_default' attribute and it is true, it means the extension is active
+			if ( isset( $extension['activated_by_default'] ) && $extension['activated_by_default'] ) {
+				return true;
+			}
 
-            //if we cannot find the extension class in memory, then check to see if the extension plugin is activated
-            if ( isset( $extension['perform_plugin_active_check'] ) && true === $extension['perform_plugin_active_check'] &&
-                isset( $extension['file'] ) ) {
-                $plugin = $this->find_active_wordpress_plugin( $extension );
+			//if we cannot find the extension class in memory, then check to see if the extension plugin is activated
+			if ( isset( $extension['perform_plugin_active_check'] ) && true === $extension['perform_plugin_active_check'] &&
+				isset( $extension['file'] ) ) {
+				$plugin = $this->find_active_wordpress_plugin( $extension );
 
-                return $plugin !== false;
-            }
+				return $plugin !== false;
+			}
 
 			return false;
 		}
@@ -328,7 +327,7 @@ if ( ! class_exists( 'FooGallery_Extensions_API' ) ) {
 					}
 				}
 
-                $this->set_override( $slug, 'deactivated' );
+				$this->set_override( $slug, 'deactivated' );
 
 				if ( $error_loading ) {
 					$this->add_to_error_extensions( $slug );
@@ -348,11 +347,11 @@ if ( ! class_exists( 'FooGallery_Extensions_API' ) ) {
 			);
 		}
 
-        private function set_override( $slug, $status ) {
-            $overrides = $this->get_overrides();
-            $overrides[$slug] = $status;
-            update_option( FOOGALLERY_EXTENSIONS_OVERRIDES_OPTIONS_KEY, $overrides );
-        }
+		private function set_override( $slug, $status ) {
+			$overrides = $this->get_overrides();
+			$overrides[$slug] = $status;
+			update_option( FOOGALLERY_EXTENSIONS_OVERRIDES_OPTIONS_KEY, $overrides );
+		}
 
 		/**
 		 * @TODO
@@ -404,7 +403,7 @@ if ( ! class_exists( 'FooGallery_Extensions_API' ) ) {
 				//then add the extension to our saved option so that it can be loaded on startup
 				$this->add_to_activated_extensions( $extension );
 
-                $this->set_override( $slug, 'active' );
+				$this->set_override( $slug, 'active' );
 
 				//we are done, allow for extensions to do something after an extension is activated
 				do_action( 'foogallery_extension_activated-' . $slug );
@@ -472,8 +471,6 @@ if ( ! class_exists( 'FooGallery_Extensions_API' ) ) {
 
 				//we need some files!
 				require_once ABSPATH . 'wp-admin/includes/plugin-install.php'; // plugins_api calls
-				require_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php'; // Plugin_Upgrader class
-				require_once FOOGALLERY_PATH . 'includes/admin/class-silent-installer-skin.php'; //our silent installer skin
 
 				$download_link = isset( $extension['download_link'] ) ? $extension['download_link'] : false;
 
@@ -546,13 +543,13 @@ if ( ! class_exists( 'FooGallery_Extensions_API' ) ) {
 			return get_option( FOOGALLERY_EXTENSIONS_ACTIVATED_OPTIONS_KEY, array() );
 		}
 
-        /**
-         * Returns the extension overrides.
-         * @return mixed|void
-         */
-        public function get_overrides() {
-            return get_option( FOOGALLERY_EXTENSIONS_OVERRIDES_OPTIONS_KEY, array() );
-        }
+		/**
+		 * Returns the extension overrides.
+		 * @return mixed|void
+		 */
+		public function get_overrides() {
+			return get_option( FOOGALLERY_EXTENSIONS_OVERRIDES_OPTIONS_KEY, array() );
+		}
 
 		/**
 		 * @TODO
