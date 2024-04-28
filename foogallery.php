@@ -122,7 +122,7 @@ if ( function_exists( 'foogallery_fs' ) ) {
 				new FooPlugins\FooGallery\Extensions\FooGallery_Extensions_Loader();
 
 				// Load any bundled extension initializers.
-				new FooGallery_Import_Export_Extension();
+				new FooPlugins\FooGallery\Extensions\ImportExport\FooGallery_Import_Export_Extension();
 
 				if ( is_admin() ) {
 					new FooGallery_Admin();
