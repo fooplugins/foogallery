@@ -1,6 +1,8 @@
 <?php
 namespace FooPlugins\FooGallery\FooPluginBase;
 
+use Exception;
+
 /**
  * Foo_Plugin_Base
  * A base class for WordPress plugins. Get up and running quickly with this opinionated, convention based, plugin framework
@@ -15,7 +17,7 @@ namespace FooPlugins\FooGallery\FooPluginBase;
  * License: GPL2
  */
 
-if ( !class_exists( 'Foo_Plugin_Base_v2_4' ) ) {
+if ( ! class_exists( 'Foo_Plugin_Base_v2_4' ) ) {
 
 	abstract class Foo_Plugin_Base_v2_4 {
 
@@ -109,8 +111,8 @@ if ( !class_exists( 'Foo_Plugin_Base_v2_4' ) ) {
 			//instantiate our option class
 			$this->_options = new Foo_Plugin_Options_v2_1( $this->plugin_slug );
 
-			//check we are using php 5
-			foo_check_php_version( $this->plugin_title, '5.0.0' );
+			//check we are using php 5.6
+			foo_check_php_version( $this->plugin_title, '5.6.0' );
 
 			// Load plugin text domain
 			add_action( 'init', array( $this, 'load_plugin_textdomain' ) );

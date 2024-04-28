@@ -2,14 +2,14 @@
 namespace FooPlugins\FooGallery\FooPluginBase;
 
 /*
- * Foo Plugin Settings
- *
- * A helpful class to handle settings for a plugin
- *
- * Version: 2.1
- * Author: Brad Vincent
- * Author URI: http://fooplugins.com
- * License: GPL2
+* Foo Plugin Settings
+*
+* A helpful class to handle settings for a plugin
+*
+* Version: 2.1
+* Author: Brad Vincent
+* Author URI: http://fooplugins.com
+* License: GPL2
 */
 
 if ( !class_exists( 'Foo_Plugin_Settings_v2_2' ) ) {
@@ -23,50 +23,50 @@ if ( !class_exists( 'Foo_Plugin_Settings_v2_2' ) ) {
 		protected $_admin_errors = false; //store of admin errors
 
 		/**
-         * Constructor for the Foo_Plugin_Settings_v2_2 class
-         *
-         * @param string $plugin_slug The slug of the plugin.
-         */
-        public function __construct( $plugin_slug ) {
-            $this->plugin_slug = $plugin_slug;
+		 * Constructor for the Foo_Plugin_Settings_v2_2 class
+		 *
+		 * @param string $plugin_slug The slug of the plugin.
+		 */
+		public function __construct( $plugin_slug ) {
+			$this->plugin_slug = $plugin_slug;
 
-            $this->register_settings();
-        }
-
-		/**
-         * Get the tabs of the plugin settings
-         *
-         * @return array
-         */
-        public function get_tabs() {
-            return $this->_settings_tabs;
-        }
+			$this->register_settings();
+		}
 
 		/**
-         * Check if there is any setting of a certain type
-         *
-         * @param string $type The type of setting to check.
-         * @return bool
-         */
-        public function has_setting_of_type( $type ) {
-            foreach ( $this->_settings as $setting ) {
-                if ( $setting['type'] == $type ) {
-                    return true;
-                }
-            }
-
-            return false;
-        }
+		 * Get the tabs of the plugin settings
+		 *
+		 * @return array
+		 */
+		public function get_tabs() {
+			return $this->_settings_tabs;
+		}
 
 		/**
-         * Check if a tab with a specific ID exists
-         *
-         * @param string $tab_id The ID of the tab to check.
-         * @return bool
-         */
-        public function has_tab( $tab_id ) {
-            return array_key_exists( $tab_id, $this->_settings_tabs );
-        }
+		 * Check if there is any setting of a certain type
+		 *
+		 * @param string $type The type of setting to check.
+		 * @return bool
+		 */
+		public function has_setting_of_type( $type ) {
+			foreach ( $this->_settings as $setting ) {
+				if ( $setting['type'] == $type ) {
+					return true;
+				}
+			}
+
+			return false;
+		}
+
+		/**
+		 * Check if a tab with a specific ID exists
+		 *
+		 * @param string $tab_id The ID of the tab to check.
+		 * @return bool
+		 */
+		public function has_tab( $tab_id ) {
+			return array_key_exists( $tab_id, $this->_settings_tabs );
+		}
 
 		/**
 		 * Add a setting tab
@@ -293,9 +293,9 @@ if ( !class_exists( 'Foo_Plugin_Settings_v2_2' ) ) {
 				$options = is_array( $options ) ? $options : array();
 			}
 
-            if ( $options === '' ) {
-                $options = array();
-            }
+			if ( $options === '' ) {
+				$options = array();
+			}
 
 			$has_options = $options !== false;
 
