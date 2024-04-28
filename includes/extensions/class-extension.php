@@ -1,4 +1,8 @@
 <?php
+namespace FooPlugins\FooGallery\Extensions;
+
+use stdClass;
+
 /**
  * FooGallery Extension Class that holds all information about an extension
  *

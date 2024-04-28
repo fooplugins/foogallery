@@ -1,4 +1,5 @@
 <?php
+use FooPlugins\FooGallery\Extensions\FooGallery_Extensions_API;
 
 /**
  * Get the FooGallery plugin instance.

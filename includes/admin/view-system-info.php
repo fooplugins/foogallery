@@ -1,4 +1,6 @@
 <?php
+use FooPlugins\FooGallery\Extensions\FooGallery_Extensions_API;
+
 global $wp_version;
 /**
  * Get which version of GD is installed, if any.

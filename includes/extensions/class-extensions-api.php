@@ -1,4 +1,9 @@
 <?php
+namespace FooPlugins\FooGallery\Extensions;
+
+use Plugin_Upgrader;
+use FooGallery_Silent_Installer_Skin;
+
 /**
  * @TODO
  */

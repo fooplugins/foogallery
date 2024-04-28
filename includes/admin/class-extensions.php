@@ -1,4 +1,6 @@
 <?php
+use FooPlugins\FooGallery\Extensions\FooGallery_Extensions_API;
+
 /*
  * FooGallery Admin Extension class
  */

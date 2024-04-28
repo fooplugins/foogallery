@@ -119,7 +119,7 @@ if ( function_exists( 'foogallery_fs' ) ) {
 				new FooPlugins\FooGallery\FooGallery_PostTypes();
 
 				// load any extensions.
-				new FooGallery_Extensions_Loader();
+				new FooPlugins\FooGallery\Extensions\FooGallery_Extensions_Loader();
 
 				// Load any bundled extension initializers.
 				new FooGallery_Import_Export_Extension();
