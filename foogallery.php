@@ -104,9 +104,6 @@ if ( function_exists( 'foogallery_fs' ) ) {
 			 */
 			private function __construct() {
 
-				// include everything we need!
-				require_once FOOGALLERY_PATH . 'includes/includes.php';
-
 				register_activation_hook( __FILE__, array( 'FooGallery_Plugin', 'activate' ) );
 
 				// init FooPluginBase.
