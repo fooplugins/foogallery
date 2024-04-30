@@ -35,10 +35,10 @@ if ( ! class_exists( 'FooGallery_Thumb_Manager' ) ) {
 			foreach ( $editors as $editor ) {
 				switch ( $editor ) {
 					case 'WP_Image_Editor_Imagick':
-						$image_editors[] = 'FooGallery_Thumb_Image_Editor_Imagick';
+						$image_editors[] = 'FooPlugins\FooGallery\Thumbs\FooGallery_Thumb_Image_Editor_Imagick';
 						break;
 					case 'WP_Image_Editor_GD':
-						$image_editors[] = 'FooGallery_Thumb_Image_Editor_GD';
+						$image_editors[] = 'FooPlugins\FooGallery\Thumbs\FooGallery_Thumb_Image_Editor_GD';
 						break;
 					default:
 						$image_editors[] = $editor;
@@ -47,7 +47,7 @@ if ( ! class_exists( 'FooGallery_Thumb_Manager' ) ) {
 
 			//Make sure the order is correct
 			if ( foogallery_get_setting( 'force_gd_library', false ) ) {
-				array_splice( $image_editors, 0, 0, array('FooGallery_Thumb_Image_Editor_GD') );
+				array_splice( $image_editors, 0, 0, array( 'FooPlugins\FooGallery\Thumbs\FooGallery_Thumb_Image_Editor_GD' ) );
 			}
 
 			//make sure we have a unique list of editors
