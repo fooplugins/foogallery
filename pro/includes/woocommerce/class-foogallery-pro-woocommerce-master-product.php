@@ -93,30 +93,34 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce_Master_Product' ) ) {
 
             }
         }
+
 		/**
-		 * Adjust the product permalink to include params for the gallery and attachment
+		 * Adjust the product permalink to include params for the gallery and attachment.
 		 *
-		 * @param $permalink
-		 * @param $product
-		 * @param $attachment_id
-		 * @param $gallery
+		 * @param string $permalink      The original product permalink.
+		 * @param object $product        The product object.
+		 * @param int    $attachment_id  The ID of the attachment.
+		 * @param object $gallery        The gallery object.
 		 *
-		 * @return string
+		 * @return string                The modified permalink with gallery and attachment parameters.
 		 */
-		public function adjust_product_permalink( $permalink, $product, $attachment_id, $gallery) {
-			if ( !isset( $product ) || !isset( $gallery ) ) {
+		public function adjust_product_permalink( $permalink, $product, $attachment_id, $gallery ) {
+			if ( ! isset( $product ) || ! isset( $gallery ) ) {
 				return $permalink;
 			}
 
 			$master_product_id = intval( $gallery->get_setting( 'ecommerce_master_product_id', '0' ) );
-			if ( $master_product_id === 0 ) {
+			if ( 0 === $master_product_id ) {
 				return $permalink;
 			}
 
-			return add_query_arg( array(
-				'fg_id' => $gallery->ID,
-				'fga_id' => $attachment_id
-			), $permalink );
+			return add_query_arg(
+				array(
+					'fg_id'  => $gallery->ID,
+					'fga_id' => $attachment_id,
+				),
+				$permalink
+			);
 		}
 
 		/**
@@ -149,10 +153,10 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce_Master_Product' ) ) {
 		public function adjust_attachment_link_data_attributes( $attr, $args, $foogallery_attachment ) {
 			$product_id = $this->get_master_product_id_from_current_gallery();
 			if ( $product_id > 0 ) {
-				// The data-attachment-id attribute does not work with master products, so we need to make sure it is data-id
+				// The data-attachment-id attribute does not work with master products, so we need to make sure it is data-id.
 				if ( array_key_exists( 'data-attachment-id', $attr ) ) {
-					unset( $attr[ 'data-attachment-id' ] );
-					$attr[ 'data-id' ] = $foogallery_attachment->ID;
+					unset( $attr['data-attachment-id'] );
+					$attr['data-id'] = $foogallery_attachment->ID;
 				}
 			}
 
