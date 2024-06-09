@@ -415,11 +415,11 @@ if ( ! class_exists( 'FooGallery_Admin_Album_MetaBoxes' ) ) {
 								$input_id = 'foogallery-gallery-detail-fields-' . $field;
 								switch ( $values['input'] ) {
 									case 'text':
-										$values['html'] = '<input type="text" id="' . $input_id . '" name="' . $field . '" value="' . $value . '" />';
+										$values['html'] = '<input type="text" id="' . $input_id . '" name="' . $field . '" value="' . esc_attr( foogallery_sanitize_javascript( $value ) ) . '" />';
 										break;
 
 									case 'textarea':
-										$values['html'] = '<textarea id="' . $input_id . '" name="' . $field . '">' . $value . '</textarea>';
+										$values['html'] = '<textarea id="' . $input_id . '" name="' . $field . '">' . esc_attr( foogallery_sanitize_javascript( $value ) ) . '</textarea>';
 										break;
 
 									case 'select':
