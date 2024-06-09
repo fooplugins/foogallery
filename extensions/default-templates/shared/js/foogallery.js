@@ -7559,21 +7559,20 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 		 * @private
 		 */
 		_setAttributes: function(element, attributes){
-			Object.keys(attributes).forEach(function(key){
-				if (!_is.empty(attributes[key])){
-					if (key === 'class') {
-						var classes = _is.array( attributes[key] )
-							? attributes[key]
-							: ( _is.string( attributes[key] ) ? attributes[key].split( ' ' ) : [] );
+			Object.entries( attributes ).forEach( ( [ key, value ] ) => {
+				if ( !_is.empty( value ) ) {
+					if ( key === "class" ) {
+						const classes = ( _is.array( value ) ? value : [ value ] )
+							.flatMap( className => _is.string( className ) ? className.split( " " ) : [] )
+							.map( p => p.trim() )
+							.filter( Boolean );
 
-						classes.forEach( function( className ){
-							if ( !_is.empty( className ) ) element.classList.add( className );
-						} );
+						element.classList.add( ...classes );
 					} else {
-						element.setAttribute(key, _is.string(attributes[key]) ? attributes[key] : JSON.stringify(attributes[key]));
+						element.setAttribute( key, _is.string( value ) ? value : JSON.stringify( value ) );
 					}
 				}
-			});
+			} );
 		},
 		/**
 		 * @summary Performs some checks for ShortPixel integration and WebP support.
