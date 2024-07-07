@@ -7559,21 +7559,20 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 		 * @private
 		 */
 		_setAttributes: function(element, attributes){
-			Object.keys(attributes).forEach(function(key){
-				if (!_is.empty(attributes[key])){
-					if (key === 'class') {
-						var classes = _is.array( attributes[key] )
-							? attributes[key]
-							: ( _is.string( attributes[key] ) ? attributes[key].split( ' ' ) : [] );
+			Object.entries( attributes ).forEach( ( [ key, value ] ) => {
+				if ( !_is.empty( value ) ) {
+					if ( key === "class" ) {
+						const classes = ( _is.array( value ) ? value : [ value ] )
+							.flatMap( className => _is.string( className ) ? className.split( " " ) : [] )
+							.map( p => p.trim() )
+							.filter( Boolean );
 
-						classes.forEach( function( className ){
-							if ( !_is.empty( className ) ) element.classList.add( className );
-						} );
+						element.classList.add( ...classes );
 					} else {
-						element.setAttribute(key, _is.string(attributes[key]) ? attributes[key] : JSON.stringify(attributes[key]));
+						element.setAttribute( key, _is.string( value ) ? value : JSON.stringify( value ) );
 					}
 				}
-			});
+			} );
 		},
 		/**
 		 * @summary Performs some checks for ShortPixel integration and WebP support.
@@ -9065,7 +9064,14 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 );
 (function($, _, _utils, _is){
 
-	_.Tags = _.Filtering.extend({});
+	_.Tags = _.Filtering.extend({
+		construct: function( template ) {
+			this._super( template );
+			if ( ( this.hideTopTags = this.opt.search && this.position === "bottom" ) ) {
+				this.position = "both";
+			}
+		}
+	});
 
 	_.TagsControl = _.FilteringControl.extend({
 		construct: function(template, parent, position){
@@ -9091,7 +9097,8 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 						self.$container.addClass("fg-search-" + self.filter.opt.searchPosition);
 					}
 				}
-				if (self.filter.tags.length > 0){
+				var renderTags = self.position === "bottom" || (self.position === "top" && !self.filter.hideTopTags )
+				if (renderTags && self.filter.tags.length > 0){
 					for (var i = 0, l = self.filter.tags.length; i < l; i++) {
 						self.lists.push(self.createList(self.filter.tags[i]).appendTo(self.$container));
 					}

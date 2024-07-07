@@ -1,20 +1,20 @@
-=== Best WordPress Gallery Plugin – FooGallery ===
+=== FooGallery – Responsive Photo Gallery, Image Viewer, Justified, Masonry & Carousel ===
 Contributors: bradvin, steveush, fooplugins
 Donate link: https://fooplugins.com
 Tags: gallery, image gallery, photo gallery, responsive gallery, wordpress gallery plugin, best gallery plugin, albums, media gallery, video gallery, lightbox
 Requires at least: 5.3
 Tested up to: 6.5
-Stable tag: 2.4.15
+Stable tag: 2.4.16
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-The best WordPress gallery plugin. Create stunning galleries in minutes, with advanced settings for complete customization and control.
+Create stunning, SEO optimized galleries using beautiful pre-built templates or advanced settings for complete customization and control.
 
 == Description ==
 
 = WordPress Gallery Plugin =
 
-Make galleries in WordPress great again with FooGallery! Add a stunning gallery to your website in under 1 minute using our beautiful pre-built templates, or if you want more control, then take advantage of all our advanced settings to customsize your galleries to look exactly the way you want.
+FooGallery is a powerful and easy-to-use WordPress gallery plugin that lets you create stunning photo galleries, image viewers, Justified & Masonry grids, Carousels and image portfolios. With advanced customization options and beautiful pre-built templates, FooGallery is perfect for creating responsive image galleries with lightbox effects for any website.
 
 [Launch Your Own FooGallery Demo](https://app.instawp.io/launch?t=foogallery-free&d=v2)
 
@@ -28,17 +28,6 @@ FooGallery was built to be highly configurable and extendable for developers or 
 That is why we think FooGallery is the best WordPress gallery plugin. After using it, we hope you will agree.
 
 [Visit the FooGallery Homepage](https://fooplugins.com/foogallery-wordpress-gallery-plugin/)
-
-= Performance Updates for Google's Core Web Vitals =
-
-A faster gallery now means a more favourable ranking in Google!
-FooGallery has been specifically optimized to score better for Google's Core Web Vitals update in 2021.
-We have focused on the speed of our javascript code, and also improved the visual stability of all gallery layouts.
-This has led to dramatically better scores for the 3 key lighthouse factors including:
-
-*   Largest Contentful Paint - galleries load and appear quicker for your visitors
-*   First Input Delay - you can interact with the gallery sooner
-*   Cumulative Layout Shift - gallery images shift around a lot less than before!
 
 = WordPress Gallery Plugin Features =
 
@@ -253,6 +242,17 @@ First thing to do is restore your site to it's previous working state.
     * What error was shown when your site was broken?
     * What plugins and theme are you using?
 
+= Do you care for Google's Core Web Vitals? =
+
+A faster gallery now means a more favourable ranking in Google!
+FooGallery has been specifically optimized to score better for Google's Core Web Vitals update in 2021.
+We have focused on the speed of our javascript code, and also improved the visual stability of all gallery layouts.
+This has led to dramatically better scores for the 3 key lighthouse factors including:
+
+*   Largest Contentful Paint - galleries load and appear quicker for your visitors
+*   First Input Delay - you can interact with the gallery sooner
+*   Cumulative Layout Shift - gallery images shift around a lot less than before!
+
 = I purchased a PRO license, but the Free version is still running. =
 
 Make sure you are running the PRO version. You can check this by visiting the FooGallery -> Account page within the WordPress admin.
@@ -320,6 +320,11 @@ We did the research and comparison. See our findings : [What is the Best WordPre
 Please update in order for FooGallery to work in WP 5.5+!
 
 == Changelog ==
+
+= 2.4.16 =
+* Date Updated : 9 June 2024
+* Fix : enhanced sanitization for album settings in admin.
+* Update : FooGallery client side 2.1.3
 
 = 2.4.15 =
 * Date Updated : 23 March 2024
