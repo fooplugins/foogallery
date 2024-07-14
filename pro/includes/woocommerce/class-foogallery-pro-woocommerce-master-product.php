@@ -24,73 +24,70 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce_Master_Product' ) ) {
 		function load_feature() {
             if ( foogallery_feature_enabled( 'foogallery-woocommerce' ) ) {
                 // Load product data after attachment has loaded.
-			add_action( 'foogallery_attachment_instance_after_load', array( $this, 'load_master_product_data' ), 20, 2 );
+				add_action( 'foogallery_attachment_instance_after_load', array( $this, 'load_master_product_data' ), 20, 2 );
 
-			// Add custom data to the cart when added.
-			add_filter( 'woocommerce_add_cart_item_data', array( $this, 'add_cart_item_data' ), 30, 2 );
+				// Add custom data to the cart when added.
+				add_filter( 'woocommerce_add_cart_item_data', array( $this, 'add_cart_item_data' ), 30, 2 );
 
-			// Display the variable attributes in the cart.
-			add_filter( 'woocommerce_get_item_data', array( $this, 'display_variable_item_data' ), 10, 2 );
+				// Display the variable attributes in the cart.
+				add_filter( 'woocommerce_get_item_data', array( $this, 'display_variable_item_data' ), 10, 2 );
 
-			// Override the cart thumbnail image.
-			add_filter( 'woocommerce_cart_item_thumbnail', array( $this, 'adjust_cart_thumbnail' ), 10, 3 );
+				// Override the cart thumbnail image.
+				add_filter( 'woocommerce_cart_item_thumbnail', array( $this, 'adjust_cart_thumbnail' ), 10, 3 );
 
-			// Override the cart permalink.
-			add_filter( 'woocommerce_cart_item_permalink', array( $this, 'adjust_cart_permalink' ), 10, 3 );
+				// Override the cart permalink.
+				add_filter( 'woocommerce_cart_item_permalink', array( $this, 'adjust_cart_permalink' ), 10, 3 );
 
-			// Override the cart name.
-			add_filter( 'woocommerce_cart_item_name', array( $this, 'adjust_cart_name' ), 10, 3 );
+				// Override the cart name.
+				add_filter( 'woocommerce_cart_item_name', array( $this, 'adjust_cart_name' ), 10, 3 );
 
-			// Add order line item data.
-			add_action( 'woocommerce_checkout_create_order_line_item', array( $this, 'adjust_order_item' ), 20, 4 );
+				// Add order line item data.
+				add_action( 'woocommerce_checkout_create_order_line_item', array( $this, 'adjust_order_item' ), 20, 4 );
 
-			// Override the order item permalink.
-			add_filter( 'woocommerce_order_item_permalink', array( $this, 'adjust_order_item_permalink' ), 10, 3 );
+				// Override the order item permalink.
+				add_filter( 'woocommerce_order_item_permalink', array( $this, 'adjust_order_item_permalink' ), 10, 3 );
 
-			// Ensure we use the correct data attributes when rendering the gallery
-			add_filter( 'foogallery_attachment_html_link_attributes', array( $this, 'adjust_attachment_link_data_attributes' ), 10, 3 );
+				// Ensure we use the correct data attributes when rendering the gallery
+				add_filter( 'foogallery_attachment_html_link_attributes', array( $this, 'adjust_attachment_link_data_attributes' ), 10, 3 );
 
-			// Override the product info response.
-			add_filter( 'foogallery_ecommerce_build_product_info_response', array( $this, 'adjust_product_info_response' ), 10, 4 );
+				// Override the product info response.
+				add_filter( 'foogallery_ecommerce_build_product_info_response', array( $this, 'adjust_product_info_response' ), 10, 4 );
 
-			// Adjust product permalinks to pass query params
-			add_filter( 'foogallery_ecommerce_build_product_permalink', array( $this, 'adjust_product_permalink' ), 10, 4 );
+				// Adjust product permalinks to pass query params
+				add_filter( 'foogallery_ecommerce_build_product_permalink', array( $this, 'adjust_product_permalink' ), 10, 4 );
 
-			if ( is_admin() ) {
-				// Add extra fields to the templates.
-				add_filter( 'foogallery_override_gallery_template_fields', array( $this, 'add_more_ecommerce_fields' ), 40, 2 );
+				if ( is_admin() ) {
+					// Add extra fields to the templates.
+					add_filter( 'foogallery_override_gallery_template_fields', array( $this, 'add_more_ecommerce_fields' ), 40, 2 );
 
-                //output the master product custom field
-                add_action( 'foogallery_render_gallery_template_field_custom', array( $this, 'render_master_product_custom_field' ), 10, 3 );
+					//output the master product custom field
+					add_action( 'foogallery_render_gallery_template_field_custom', array( $this, 'render_master_product_custom_field' ), 10, 3 );
 
-                //enqueue assets needed for the product selector modal
-                add_action( 'foogallery_admin_enqueue_scripts', array( $this, 'enqueue_scripts_and_styles' ) );
+					//enqueue assets needed for the product selector modal
+					add_action( 'foogallery_admin_enqueue_scripts', array( $this, 'enqueue_scripts_and_styles' ) );
 
-                //output the modal
-                add_action( 'admin_footer', array( $this, 'render_master_product_modal' ) );
+					//output the modal
+					add_action( 'admin_footer', array( $this, 'render_master_product_modal' ) );
 
-                //ajax handler to render the modal content
-                add_action( 'wp_ajax_foogallery_master_product_content', array( $this, 'ajax_load_modal_content' ) );
+					//ajax handler to render the modal content
+					add_action( 'wp_ajax_foogallery_master_product_content', array( $this, 'ajax_load_modal_content' ) );
 
-                //ajax handler to render the product details
-                add_action( 'wp_ajax_foogallery_master_product_details', array( $this, 'ajax_render_master_product_details' ) );
+					//ajax handler to render the product details
+					add_action( 'wp_ajax_foogallery_master_product_details', array( $this, 'ajax_render_master_product_details' ) );
 
-                //ajax handler to generate a master product
-                add_action( 'wp_ajax_foogallery_master_product_generate', array( $this, 'ajax_generate_master_product' ) );
+					//ajax handler to generate a master product
+					add_action( 'wp_ajax_foogallery_master_product_generate', array( $this, 'ajax_generate_master_product' ) );
 
-				// Override the order item thumbnail in admin.
-				add_filter( 'woocommerce_admin_order_item_thumbnail',  array( $this, 'adjust_order_item_thumbnail' ), 10, 3 );
+					// Override the order item thumbnail in admin.
+					add_filter( 'woocommerce_admin_order_item_thumbnail',  array( $this, 'adjust_order_item_thumbnail' ), 10, 3 );
 
-				// Override order meta keys and values.
-				add_filter( 'woocommerce_order_item_display_meta_key', array( $this, 'adjust_order_item_display_meta_key' ), 10, 3 );
-				add_filter( 'woocommerce_order_item_display_meta_value', array( $this, 'adjust_order_item_display_meta_value' ), 10, 3 );
+					// Override order meta keys and values.
+					add_filter( 'woocommerce_order_item_display_meta_key', array( $this, 'adjust_order_item_display_meta_key' ), 10, 3 );
+					add_filter( 'woocommerce_order_item_display_meta_value', array( $this, 'adjust_order_item_display_meta_value' ), 10, 3 );
 
-                // Allow for search in master product modal.
-                add_filter( 'woocommerce_product_data_store_cpt_get_products_query', array( $this, 'support_product_search' ), 10, 2 );
-			}
-
-                
-
+					// Allow for search in master product modal.
+					add_filter( 'woocommerce_product_data_store_cpt_get_products_query', array( $this, 'support_product_search' ), 10, 2 );
+				}
             }
         }
 		/**
