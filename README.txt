@@ -313,6 +313,10 @@ Please update in order for FooGallery to work in WP 5.5+!
 
 == Changelog ==
 
+= 2.4.17 =
+* Date Updated : 7 July 2024
+* Update : Freemius SDK update 2.7.3
+
 = 2.4.16 =
 * Date Updated : 9 June 2024
 * Fix : enhanced sanitization for album settings in admin.
