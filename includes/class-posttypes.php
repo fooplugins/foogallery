@@ -11,6 +11,9 @@ if ( ! class_exists( 'FooGallery_PostTypes' ) ) {
             //register the post types
             add_action( 'init', array( $this, 'register' ) );
 
+            //register the custom capabilities.
+            add_action( 'admin_init', array( $this, 'add_capabilities' ) );
+
             //update post type messages
             add_filter( 'post_updated_messages', array( $this, 'update_messages' ) );
 
@@ -25,7 +28,6 @@ if ( ! class_exists( 'FooGallery_PostTypes' ) ) {
          * It now includes custom capabilities and adds filters for custom capability mapping and menu visibility control.
          */
         function register() {
-            $gallery_creator_role = foogallery_get_setting( 'gallery_creator_role', 'administrator' );
 
             $args = array(
                 'labels'       => array(
@@ -51,26 +53,52 @@ if ( ! class_exists( 'FooGallery_PostTypes' ) ) {
                 'supports'     => array( 'title', 'thumbnail' ),
                 'capabilities' => array(
                     // Custom capabilities for fine-grained control
+
+                    // Meta capabilities.
                     'edit_post'          => 'edit_foogallery',
                     'read_post'          => 'read_foogallery',
                     'delete_post'        => 'delete_foogallery',
+                    // Primitive capabilities used outside of map_meta_cap():
                     'edit_posts'         => 'edit_foogalleries',
                     'edit_others_posts'  => 'edit_others_foogalleries',
+                    'delete_posts'       => 'delete_foogalleries',
                     'publish_posts'      => 'publish_foogalleries',
-                    'read_private_posts' => 'read_private_foogalleries',
-                    'create_posts'       => 'create_foogalleries',
+                    'read_private_posts' => 'read_private_foogalleries'
                 ),
                 'map_meta_cap' => true, // Allows for fine-grained control over capability mapping
             );
 
             $args = apply_filters( 'foogallery_gallery_posttype_register_args', $args );
             register_post_type( FOOGALLERY_CPT_GALLERY, $args );
+        }
 
-            // Add custom capability check
-            add_filter( 'map_meta_cap', array( $this, 'map_gallery_meta_cap' ), 10, 4 );
+        /**
+         * Adds capabilities to the allowed roles, based on the gallery creator role that is set.
+         *
+         * @return void
+         */
+        function add_capabilities() {
+            $gallery_creator_role = foogallery_setting_gallery_creator_role();
 
-            // Add a function to control menu visibility
-            add_action( 'admin_menu', array( $this, 'control_menu_visibility' ), 999 );
+            // Get the roles
+            $roles = foogallery_get_roles_and_higher( $gallery_creator_role );
+
+            foreach ( $roles as $the_role ) {
+                $role = get_role( $the_role );
+
+                if ( ! is_null( $role ) ) {
+                    // Meta capabilities:
+                    $role->add_cap('edit_foogallery');
+                    $role->add_cap('read_foogallery');
+                    $role->add_cap('delete_foogallery');
+                    // Primitive capabilities:
+                    $role->add_cap('edit_foogalleries');
+                    $role->add_cap('edit_others_foogalleries');
+                    $role->add_cap('delete_foogalleries');
+                    $role->add_cap('publish_foogalleries');
+                    $role->add_cap('read_private_foogalleries');
+                }
+            }
         }
 
         /**
@@ -125,100 +153,6 @@ if ( ! class_exists( 'FooGallery_PostTypes' ) ) {
             );
 
             return $bulk_messages;
-        }
-
-        /**
-         * Custom capability mapping for FooGallery
-         *
-         * This function implements custom logic for FooGallery capabilities.
-         * It ensures that only users with roles equal to or higher than the gallery creator role
-         * have access to FooGallery functionalities, implementing proper role inheritance.
-         *
-         * @param array  $caps    The user's actual capabilities.
-         * @param string $cap     The capability being checked.
-         * @param int    $user_id The user ID.
-         * @param array  $args    Additional arguments passed to the capability check.
-         * @return array The user's altered capabilities.
-         */
-        public function map_gallery_meta_cap( $caps, $cap, $user_id, $args ) {
-            $foogallery_caps = array(
-                'edit_foogallery',
-                'read_foogallery',
-                'delete_foogallery',
-                'edit_foogalleries',
-                'edit_others_foogalleries',
-                'publish_foogalleries',
-                'read_private_foogalleries',
-                'create_foogalleries'
-            );
-
-            // Only handle FooGallery-specific capabilities
-            if (!in_array($cap, $foogallery_caps)) {
-                return $caps;
-            }
-
-            $gallery_creator_role = foogallery_get_setting( 'gallery_creator_role', 'administrator' );
-
-            // Define the hierarchy of roles
-            $role_hierarchy = array(
-                'administrator' => 4,
-                'editor'        => 3,
-                'author'        => 2,
-                'contributor'   => 1,
-                'subscriber'    => 0,
-            );
-
-            $user = get_userdata( $user_id );
-            if ( $user === false ) {
-                return $caps;
-            }
-
-            $user_roles = $user->roles;
-            $user_highest_role = 0;
-            foreach ( $user_roles as $role ) {
-                if ( isset( $role_hierarchy[$role] ) && $role_hierarchy[$role] > $user_highest_role ) {
-                    $user_highest_role = $role_hierarchy[$role];
-                }
-            }
-
-            // Allow if user's role is equal to or higher than gallery_creator_role
-            if ( isset($role_hierarchy[$gallery_creator_role]) && $user_highest_role >= $role_hierarchy[$gallery_creator_role] ) {
-                return array('exist');
-            }
-
-            // If we reach here, the user doesn't have permission for this FooGallery capability
-            return array('do_not_allow');
-        }
-
-        /**
-         * Controls the visibility of the FooGallery menu item in the admin panel
-         *
-         * This function removes the FooGallery menu item for users who don't have
-         * the appropriate role to access FooGallery functionalities.
-         */
-        public function control_menu_visibility() {
-            $gallery_creator_role = foogallery_get_setting( 'gallery_creator_role', 'administrator' );
-            $current_user = wp_get_current_user();
-            $user_roles = $current_user->roles;
-
-            $role_hierarchy = array(
-                'administrator' => 4,
-                'editor'        => 3,
-                'author'        => 2,
-                'contributor'   => 1,
-                'subscriber'    => 0,
-            );
-
-            $user_highest_role = 0;
-            foreach ( $user_roles as $role ) {
-                if ( isset( $role_hierarchy[$role] ) && $role_hierarchy[$role] > $user_highest_role ) {
-                    $user_highest_role = $role_hierarchy[$role];
-                }
-            }
-
-            if ( !isset($role_hierarchy[$gallery_creator_role]) || $user_highest_role < $role_hierarchy[$gallery_creator_role] ) {
-                remove_menu_page( 'edit.php?post_type=' . FOOGALLERY_CPT_GALLERY );
-            }
         }
     }
 }

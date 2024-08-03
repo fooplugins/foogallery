@@ -2287,3 +2287,50 @@ function foogallery_freemius_is_anonymous() {
 
     return false;
 }
+
+/**
+ * Returns the gallery creator role that has been saved in settings.
+ *
+ * @return string
+ */
+function foogallery_setting_gallery_creator_role() {
+    $gallery_creator_role = foogallery_get_setting( 'gallery_creator_role', 'administrator' );
+    if ( empty( $gallery_creator_role ) ) {
+        $gallery_creator_role = 'administrator';
+    }
+    return $gallery_creator_role;
+}
+
+/**
+ * Returns the role and all roles with higher privileges.
+ *
+ * @param $role
+ * @return array|string[]
+ */
+function foogallery_get_roles_and_higher( $role ) {
+    // Define roles in hierarchical order
+    $roles_hierarchy = array(
+        'subscriber',
+        'contributor',
+        'author',
+        'editor',
+        'administrator',
+        'super_admin' // Note: 'super_admin' is used in Multisite networks only
+    );
+
+    // Check if the input role is valid
+    if ( !in_array( $role, $roles_hierarchy ) ) {
+        return array(); // Return an empty array if the role is not valid
+    }
+
+    // Find the index of the input role
+    $role_index = array_search( $role, $roles_hierarchy );
+
+    // If the input role is not found, return the input role.
+    if ( $role_index === false) {
+        return $role;
+    }
+
+    // Get the roles with the same or higher privileges
+    return array_slice( $roles_hierarchy, $role_index );
+}
