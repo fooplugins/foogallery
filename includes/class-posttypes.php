@@ -64,8 +64,7 @@ if ( ! class_exists( 'FooGallery_PostTypes' ) ) {
                     'delete_posts'       => 'delete_foogalleries',
                     'publish_posts'      => 'publish_foogalleries',
                     'read_private_posts' => 'read_private_foogalleries'
-                ),
-                'map_meta_cap' => true, // Allows for fine-grained control over capability mapping
+                )
             );
 
             $args = apply_filters( 'foogallery_gallery_posttype_register_args', $args );
