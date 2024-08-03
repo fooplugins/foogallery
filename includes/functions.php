@@ -1574,6 +1574,7 @@ function foogallery_sanitize_javascript( $input ) {
         'onclick',
         'onload',
         'onchange',
+        'onerror',
         '<script>',
         '<\/script>',
         'encodeURIComponent',
