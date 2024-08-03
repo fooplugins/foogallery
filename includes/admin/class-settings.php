@@ -163,7 +163,7 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 
 			$roles        = get_editable_roles();
 			$role_choices = array(
-				'' => __( 'No Default', 'foogallery' )
+				'' => __( 'Default', 'foogallery' )
 			);
 
 			foreach ( $roles as $role_slug => $role_data ) {
@@ -173,7 +173,7 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 			$settings[] = array(
 				'id'      => 'gallery_creator_role',
 				'title'   => __( 'Gallery Creator Role', 'foogallery' ),
-				'desc'    => __( 'Select the user role allowed to create galleries', 'foogallery' ),
+				'desc'    => __( 'Select the user role allowed to manage galleries. All roles with higher privileges will also be able to manage galleries.', 'foogallery' ),
 				'type'    => 'select',
 				'choices' => $role_choices,
 				'tab'     => 'general',
