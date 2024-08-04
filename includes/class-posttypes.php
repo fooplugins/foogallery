@@ -7,6 +7,18 @@ if ( ! class_exists( 'FooGallery_PostTypes' ) ) {
 
     class FooGallery_PostTypes {
 
+        const GALLERY_CAPABILITIES = array(
+            'edit_post'          => 'edit_foogallery',
+            'read_post'          => 'read_foogallery',
+            'delete_post'        => 'delete_foogallery',
+            'edit_posts'         => 'edit_foogalleries',
+            'edit_others_posts'  => 'edit_others_foogalleries',
+            'delete_posts'       => 'delete_foogalleries',
+            'publish_posts'      => 'publish_foogalleries',
+            'read_private_posts' => 'read_private_foogalleries',
+            'create_posts'       => 'create_foogalleries'
+        );
+
         function __construct() {
             //register the post types
             add_action( 'init', array( $this, 'register' ) );
@@ -19,6 +31,9 @@ if ( ! class_exists( 'FooGallery_PostTypes' ) ) {
 
             //update post bulk messages
             add_filter( 'bulk_post_updated_messages', array( $this, 'update_bulk_messages' ), 10, 2 );
+
+            //clear capabilities after option update.
+            add_action( 'update_option_foogallery', array( $this, 'clear_capabilities' ), 10, 3 );
         }
 
         /**
@@ -51,20 +66,7 @@ if ( ! class_exists( 'FooGallery_PostTypes' ) ) {
                 'show_in_menu' => true,
                 'menu_icon'    => 'dashicons-format-gallery',
                 'supports'     => array( 'title', 'thumbnail' ),
-                'capabilities' => array(
-                    // Custom capabilities for fine-grained control
-
-                    // Meta capabilities.
-                    'edit_post'          => 'edit_foogallery',
-                    'read_post'          => 'read_foogallery',
-                    'delete_post'        => 'delete_foogallery',
-                    // Primitive capabilities used outside of map_meta_cap():
-                    'edit_posts'         => 'edit_foogalleries',
-                    'edit_others_posts'  => 'edit_others_foogalleries',
-                    'delete_posts'       => 'delete_foogalleries',
-                    'publish_posts'      => 'publish_foogalleries',
-                    'read_private_posts' => 'read_private_foogalleries'
-                )
+                'capabilities' => FooGallery_PostTypes::GALLERY_CAPABILITIES
             );
 
             $args = apply_filters( 'foogallery_gallery_posttype_register_args', $args );
@@ -76,27 +78,61 @@ if ( ! class_exists( 'FooGallery_PostTypes' ) ) {
          *
          * @return void
          */
-        function add_capabilities() {
+        function add_capabilities( $force = false ) {
             $gallery_creator_role = foogallery_setting_gallery_creator_role();
 
-            // Get the roles
-            $roles = foogallery_get_roles_and_higher( $gallery_creator_role );
+            if ( $force || $gallery_creator_role !== foogallery_get_setting( 'gallery_capabilities_set' ) ) {
 
-            foreach ( $roles as $the_role ) {
-                $role = get_role( $the_role );
+                foogallery_set_setting( 'gallery_capabilities_set', $gallery_creator_role );
 
-                if ( ! is_null( $role ) ) {
-                    // Meta capabilities:
-                    $role->add_cap('edit_foogallery');
-                    $role->add_cap('read_foogallery');
-                    $role->add_cap('delete_foogallery');
-                    // Primitive capabilities:
-                    $role->add_cap('edit_foogalleries');
-                    $role->add_cap('edit_others_foogalleries');
-                    $role->add_cap('delete_foogalleries');
-                    $role->add_cap('publish_foogalleries');
-                    $role->add_cap('read_private_foogalleries');
+                // Get the roles
+                $roles = foogallery_get_roles_and_higher( $gallery_creator_role );
+
+                foreach ( $roles as $the_role ) {
+                    $role = get_role( $the_role );
+
+                    if ( !is_null( $role ) ) {
+
+                        foreach ( FooGallery_PostTypes::GALLERY_CAPABILITIES as $cap_key => $cap ) {
+                            $role->add_cap( $cap );
+                        }
+                    }
                 }
+            }
+        }
+
+        /**
+         * Clears the capabilities based on the new value, old value, and option.
+         *
+         * @param mixed $old_value The old value.
+         * @param mixed $value The new value.
+         * @param string $option The option.
+         */
+        function clear_capabilities( $old_value, $value, $option ) {
+
+            if ( $old_value === $value ) {
+                return;
+            }
+
+            $gallery_creator_role = foogallery_setting_gallery_creator_role();
+
+            if ( $gallery_creator_role !== foogallery_get_setting( 'gallery_capabilities_set' ) ) {
+
+                // Get all roles
+                $roles = wp_roles()->get_names();
+
+                // Loop through each role and remove the capabilities
+                foreach ( $roles as $role => $name ) {
+                    $role_obj = get_role($role);
+                    if (!is_null($role_obj)) {
+                        foreach ( FooGallery_PostTypes::GALLERY_CAPABILITIES as $cap_key => $cap ) {
+                            $role_obj->remove_cap($cap);
+                        }
+                    }
+                }
+
+                do_action('foogallery_gallery_posttype_clear_capabilities');
+                $this->add_capabilities( true );
             }
         }
 
