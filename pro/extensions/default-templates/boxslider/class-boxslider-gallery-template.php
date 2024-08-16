@@ -2,6 +2,8 @@
 
 if ( ! class_exists( 'FooGallery_Boxslider_Gallery_Template' ) ) {
 
+	define('FOOGALLERY_BOXSLIDER_GALLERY_TEMPLATE_URL', plugin_dir_url( __FILE__ ));
+
 	/**
 	 * Class FooGallery_Boxslider_Gallery_Template
 	 * Handles the Boxslider gallery template for FooGallery.
@@ -24,6 +26,9 @@ if ( ! class_exists( 'FooGallery_Boxslider_Gallery_Template' ) ) {
 
 			//build up the arguments needed for rendering this template
 			add_filter( 'foogallery_gallery_template_arguments-boxslider', array( $this, 'build_gallery_template_arguments' ) );
+
+			//override specific settings when saving the gallery
+			add_filter( 'foogallery_save_gallery_settings-boxslider', array( $this, 'override_settings'), 10, 3 );
 
 			// add the data options needed for boxslider
 			add_filter( 'foogallery_build_container_data_options-boxslider', array( $this, 'add_data_options' ), 10, 3 );
@@ -54,10 +59,10 @@ if ( ! class_exists( 'FooGallery_Boxslider_Gallery_Template' ) ) {
 		public function add_template( $gallery_templates ) {
 			$gallery_templates[] = array(
 				'slug' => self::TEMPLATE_ID,
-				'name' => __( 'Boxslider', 'foogallery' ),
+				'name' => __( 'Boxslider Pro', 'foogallery' ),
 				'preview_support' => true,
 				'common_fields_support' => true,
-				'lazyload_support' => true,
+				'filtering_support' => true,
 				'enqueue_core' => true,
 				'fields' => array(
 					array(
@@ -113,7 +118,7 @@ if ( ! class_exists( 'FooGallery_Boxslider_Gallery_Template' ) ) {
 					array(
 						'id' => 'timing-function',
 						'title' => __( 'Timing function', 'foogallery' ),
-						'desc' => __( 'The CSS transition timing function to use when fading slide opacity', 'foogallery' ),
+						'desc' => __( 'The CSS transition timing function to use when fading slide opacity.', 'foogallery' ),
 						'type' => 'select',
 						'default' => 'ease-in',
 						'choices' => array(
@@ -234,7 +239,7 @@ if ( ! class_exists( 'FooGallery_Boxslider_Gallery_Template' ) ) {
 					array(
 						'id' => 'speed',
 						'title' => __( 'Speed of Transition', 'foogallery' ),
-						'desc' => __( 'Specifies the time interval in milliseconds within which the slide animation will complete.', 'foogallery' ),
+						'desc' => __( 'The time interval in milliseconds within which the slide animation will complete', 'foogallery' ),
 						'type' => 'number',
 						'default' => 800,
 						'row_data' => array(
@@ -248,7 +253,7 @@ if ( ! class_exists( 'FooGallery_Boxslider_Gallery_Template' ) ) {
 						'title' => __( 'swipe', 'foogallery' ),
 						'desc' => __( 'Enable swiping the box to navigate to the next or previous slide.', 'foogallery' ),
 						'type' => 'radio',
-						'default' => 'false',
+						'default' => 'true',
 						'choices' => array(
 							'true' => __( 'True', 'foogallery' ),
 							'false' => __( 'false', 'foogallery' ),
@@ -262,7 +267,7 @@ if ( ! class_exists( 'FooGallery_Boxslider_Gallery_Template' ) ) {
 					array(
 						'id' => 'autoScroll',
 						'title' => __( 'Auto-Scrolling', 'foogallery' ),
-						'desc' => __( 'Enables or disables automatic transitioning through the slides.', 'foogallery' ),
+						'desc' => __( 'Set true to automatically transition through the slides.', 'foogallery' ),
 						'type' => 'radio',
 						'default' => 'true',
 						'choices' => array(
@@ -287,15 +292,15 @@ if ( ! class_exists( 'FooGallery_Boxslider_Gallery_Template' ) ) {
 							'data-foogallery-show-when-field'          => 'autoScroll',
 							'data-foogallery-show-when-field-operator' => '===',
 							'data-foogallery-show-when-field-value'    => 'true',
-							'data-foogallery-change-selector' => 'input',
-							'data-foogallery-value-selector' => 'input',
+							'data-foogallery-change-selector' => 'select',
+							'data-foogallery-value-selector' => 'option:selected',
 							'data-foogallery-preview' => 'shortcode',
 						),
 					),
 					array(
 						'id' => 'pauseOnHover',
 						'title' => __( 'Pause On Hover', 'foogallery' ),
-						'desc' => __( 'Pause an auto-scrolling slider when the users mouse hovers over it.', 'foogallery' ),
+						'desc' => __( 'Pause an auto-scrolling slider when the users mouse hovers over it. For use with autoScroll or a slider in play mode.', 'foogallery' ),
 						'type' => 'radio',
 						'default' => 'false',
 						'choices' => array(
@@ -307,9 +312,9 @@ if ( ! class_exists( 'FooGallery_Boxslider_Gallery_Template' ) ) {
 							'data-foogallery-show-when-field'          => 'autoScroll',
 							'data-foogallery-show-when-field-operator' => '===',
 							'data-foogallery-show-when-field-value'    => 'true',
-							'data-foogallery-change-selector' => 'input',
-							'data-foogallery-value-selector' => 'input:checked',
-							'data-foogallery-preview' => 'shortcode'
+							'data-foogallery-change-selector' => 'select',
+							'data-foogallery-value-selector' => 'option:selected',
+							'data-foogallery-preview' => 'shortcode',
 						)
 					),
 					array(
@@ -321,6 +326,19 @@ if ( ! class_exists( 'FooGallery_Boxslider_Gallery_Template' ) ) {
 				),
 			);
 			return $gallery_templates;
+		}
+
+		/**
+		 * Override specific settings so that the gallery template will always work
+		 *
+		 * @param $settings
+		 * @param $post_id
+		 * @param $form_data
+		 *
+		 * @return mixed
+		 */
+		function override_settings($settings, $post_id, $form_data) {
+			return $settings;
 		}
 
 		/**
@@ -370,7 +388,7 @@ if ( ! class_exists( 'FooGallery_Boxslider_Gallery_Template' ) ) {
 			$direction = foogallery_gallery_template_setting( 'direction', 'horizontal' );
 			$cover = foogallery_gallery_template_setting( 'cover', 'false' );
 			$swipe = foogallery_gallery_template_setting( 'swipe', 'false' );
-			$auto_scroll = foogallery_gallery_template_setting( 'autoScroll', 'true' );
+			$autoScroll = foogallery_gallery_template_setting( 'autoScroll', 'true' );
 			$pause_on_hover = foogallery_gallery_template_setting( 'pauseOnHover', 'false' );
 
 			$options['template']['effect'] = $effect;
@@ -383,7 +401,7 @@ if ( ! class_exists( 'FooGallery_Boxslider_Gallery_Template' ) ) {
 			$options['template']['direction'] = $direction;
 			$options['template']['cover'] = $cover;
 			$options['template']['swipe'] = $swipe;
-			$options['template']['autoScroll'] = $auto_scroll;
+			$options['template']['autoScroll'] = $autoScroll;
 			$options['template']['pauseOnHover'] = $pause_on_hover;
 
 			return $options;
