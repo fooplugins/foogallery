@@ -63,6 +63,8 @@ if ( ! class_exists( 'FooGallery_Boxslider_Gallery_Template' ) ) {
 				'preview_support' => true,
 				'common_fields_support' => true,
 				'filtering_support' => true,
+				'embed_support' => true,
+				'panel_support' => true,
 				'enqueue_core' => true,
 				'fields' => array(
 					array(
@@ -72,8 +74,8 @@ if ( ! class_exists( 'FooGallery_Boxslider_Gallery_Template' ) ) {
 						'section' => __( 'General', 'foogallery' ),
 						'type' => 'thumb_size_no_crop',
 						'default' => array(
-							'width' => 200,
-							'height' => 200,
+							'width' => 500,
+							'height' => 300,
 							'crop' => true,
 						),
 						'row_data' => array(
