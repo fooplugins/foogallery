@@ -220,7 +220,7 @@ if ( ! class_exists( 'FooGallery_Boxslider_Gallery_Template' ) ) {
 						'title' => __( 'Cover', 'foogallery' ),
 						'desc' => __( 'If true sets the slide effect to cover over the previous slide.', 'foogallery' ),
 						'type' => 'select',
-						'default' => 'false',
+						'default' => 'true',
 						'choices' => array(
 							'false' => __( 'False', 'foogallery' ),
 							'true' => __( 'True', 'foogallery' ),
@@ -388,7 +388,7 @@ if ( ! class_exists( 'FooGallery_Boxslider_Gallery_Template' ) ) {
 			$speed = foogallery_gallery_template_setting( 'speed', 800 );
 			$timeout = foogallery_gallery_template_setting( 'timeout', 5000 );
 			$direction = foogallery_gallery_template_setting( 'direction', 'horizontal' );
-			$cover = foogallery_gallery_template_setting( 'cover', 'false' );
+			$cover = foogallery_gallery_template_setting( 'cover', 'true' );
 			$swipe = foogallery_gallery_template_setting( 'swipe', 'false' );
 			$autoScroll = foogallery_gallery_template_setting( 'autoScroll', 'true' );
 			$pause_on_hover = foogallery_gallery_template_setting( 'pauseOnHover', 'false' );
