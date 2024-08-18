@@ -282,6 +282,22 @@ if ( ! class_exists( 'FooGallery_Boxslider_Gallery_Template' ) ) {
 							'data-foogallery-preview' => 'shortcode',
 						),
 					),
+					array(
+						'id' => 'show_controls',
+						'title' => __( 'Show Controls', 'foogallery' ),
+						'desc' => __( 'Display navigation controls (previous, next) and playback controls (play, pause) for the slider.', 'foogallery' ),
+						'type' => 'radio',
+						'default' => 'true',
+						'choices' => array(
+							'true' => __( 'Show', 'foogallery' ),
+							'false' => __( 'Hide', 'foogallery' ),
+						),
+						'row_data' => array(
+							'data-foogallery-change-selector' => 'input',
+							'data-foogallery-value-selector' => 'input:checked',
+							'data-foogallery-preview' => 'shortcode',
+						),
+					),
 					// Shown when autoscroll is set to true.
 					array(
 						'id' => 'timeout',
@@ -392,6 +408,7 @@ if ( ! class_exists( 'FooGallery_Boxslider_Gallery_Template' ) ) {
 			$swipe = foogallery_gallery_template_setting( 'swipe', 'false' );
 			$autoScroll = foogallery_gallery_template_setting( 'autoScroll', 'true' );
 			$pause_on_hover = foogallery_gallery_template_setting( 'pauseOnHover', 'false' );
+			$show_controls = foogallery_gallery_template_setting( 'show_controls', 'true' );
 
 			$options['template']['effect'] = $effect;
 			$options['template']['timing-function'] = $timing_function;
@@ -405,6 +422,7 @@ if ( ! class_exists( 'FooGallery_Boxslider_Gallery_Template' ) ) {
 			$options['template']['swipe'] = $swipe;
 			$options['template']['autoScroll'] = $autoScroll;
 			$options['template']['pauseOnHover'] = $pause_on_hover;
+			$options['template']['show_controls'] = $show_controls;
 
 			return $options;
 		}

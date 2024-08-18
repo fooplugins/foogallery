@@ -17,6 +17,13 @@ $cover = foogallery_gallery_template_setting('cover', 'true') === 'true';
 $swipe = foogallery_gallery_template_setting('swipe', 'true') === 'true';
 $autoScroll = foogallery_gallery_template_setting('autoScroll', 'true') === 'true';
 $pause_on_hover = foogallery_gallery_template_setting('pauseOnHover', 'false') === 'true';
+$show_controls = foogallery_gallery_template_setting('show_controls', 'true') === 'true';
+
+// Get language settings
+$prev_text = esc_html(foogallery_get_setting('language_boxslider_prev_text', __('Prev', 'foogallery')));
+$next_text = esc_html(foogallery_get_setting('language_boxslider_next_text', __('Next', 'foogallery')));
+$play_text = esc_html(foogallery_get_setting('language_boxslider_play_text', __('Play', 'foogallery')));
+$pause_text = esc_html(foogallery_get_setting('language_boxslider_pause_text', __('Pause', 'foogallery')));
 ?>
 
 <div <?php echo $foogallery_default_attributes; ?> style="width: 100%; max-width: 800px; height: 400px; overflow: hidden; margin: 0 auto;">
@@ -27,6 +34,14 @@ $pause_on_hover = foogallery_gallery_template_setting('pauseOnHover', 'false') =
             </div>
         <?php endforeach; ?>
     </div>
+    <?php if ($show_controls) : ?>
+    <div class="boxslider-controls">
+        <button class="boxslider-prev"><?php echo esc_html($prev_text); ?></button>
+        <button class="boxslider-next"><?php echo esc_html($next_text); ?></button>
+        <button class="boxslider-play"><?php echo esc_html($play_text); ?></button>
+        <button class="boxslider-pause"><?php echo esc_html($pause_text); ?></button>
+    </div>
+    <?php endif; ?>
 </div>
 
 <script type="module">
@@ -78,6 +93,50 @@ $pause_on_hover = foogallery_gallery_template_setting('pauseOnHover', 'false') =
             document.getElementById('boxslider-<?php echo $current_foogallery->ID; ?>'),
             sliderEffect
         );
+
+        <?php if ($show_controls) : ?>
+        // Add event listeners for control buttons
+        document.querySelector('.boxslider-prev').addEventListener('click', () => slider.prev());
+        document.querySelector('.boxslider-next').addEventListener('click', () => slider.next());
+        document.querySelector('.boxslider-play').addEventListener('click', () => slider.play());
+        document.querySelector('.boxslider-pause').addEventListener('click', () => slider.pause());
+
+        // Update play/pause button text based on slider state
+        slider.addEventListener('play', () => {
+            document.querySelector('.boxslider-play').style.display = 'none';
+            document.querySelector('.boxslider-pause').style.display = 'inline-block';
+        });
+        slider.addEventListener('pause', () => {
+            document.querySelector('.boxslider-play').style.display = 'inline-block';
+            document.querySelector('.boxslider-pause').style.display = 'none';
+        });
+
+        // Initialize play/pause button state
+        if (<?php echo $autoScroll ? 'true' : 'false'; ?>) {
+            document.querySelector('.boxslider-play').style.display = 'none';
+        } else {
+            document.querySelector('.boxslider-pause').style.display = 'none';
+        }
+        <?php endif; ?>
+
+        // Add event listeners for before and after transitions
+        slider.addEventListener('before', (data) => {
+            console.log('Transition starting', data);
+        });
+        slider.addEventListener('after', (data) => {
+            console.log('Transition complete', data);
+        });
+
+        // Destroy slider when the container is removed from the DOM
+        const observer = new MutationObserver((mutations) => {
+            mutations.forEach((mutation) => {
+                if (mutation.type === 'childList' && !document.body.contains(slider.container)) {
+                    slider.destroy();
+                    observer.disconnect();
+                }
+            });
+        });
+        observer.observe(document.body, { childList: true, subtree: true });
     });
 </script>
 
@@ -102,5 +161,20 @@ $pause_on_hover = foogallery_gallery_template_setting('pauseOnHover', 'false') =
         max-width: 100%;
         max-height: 100%;
         object-fit: contain;
+    }
+    .boxslider-controls {
+        position: absolute;
+        bottom: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 10;
+    }
+    .boxslider-controls button {
+        margin: 0 5px;
+        padding: 5px 10px;
+        background-color: rgba(0,0,0,0.5);
+        color: white;
+        border: none;
+        cursor: pointer;
     }
 </style>
