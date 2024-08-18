@@ -26,7 +26,7 @@ $play_text = esc_html(foogallery_get_setting('language_boxslider_play_text', __(
 $pause_text = esc_html(foogallery_get_setting('language_boxslider_pause_text', __('Pause', 'foogallery')));
 ?>
 
-<div <?php echo $foogallery_default_attributes; ?> style="width: 100%; max-width: 800px; height: 400px; overflow: hidden; margin: 0 auto;">
+<div <?php echo $foogallery_default_attributes; ?> style="width: 100%; max-width: 800px; height: 400px; overflow: hidden; margin: 0 auto;" class="fg-bx">
     <div id="boxslider-<?php echo $current_foogallery->ID; ?>" class="boxslider">
         <?php foreach (foogallery_current_gallery_attachments_for_rendering() as $attachment) : ?>
             <div class="slide">
@@ -170,11 +170,208 @@ $pause_text = esc_html(foogallery_get_setting('language_boxslider_pause_text', _
         z-index: 10;
     }
     .boxslider-controls button {
-        margin: 0 5px;
+        margin: 0px 5px;
         padding: 5px 10px;
         background-color: rgba(0,0,0,0.5);
         color: white;
         border: none;
         cursor: pointer;
     }
+
+    
+/* Drop Shadows */
+.foogallery.fg-bx.fg-light.fg-shadow-outline,
+.foogallery.fg-bx.fg-dark.fg-shadow-outline,
+.foogallery.fg-bx.fg-light.fg-shadow-small,
+.foogallery.fg-bx.fg-dark.fg-shadow-small,
+.foogallery.fg-bx.fg-light.fg-shadow-medium,
+.foogallery.fg-bx.fg-dark.fg-shadow-medium,
+.foogallery.fg-bx.fg-light.fg-shadow-large,
+.foogallery.fg-bx.fg-dark.fg-shadow-large {
+    box-shadow: none;
+}
+
+.foogallery.fg-bx.fg-light.fg-shadow-outline .fg-template-boxslider {
+    box-shadow: 0 0 0 1px #ddd;
+}
+.foogallery.fg-bx.fg-dark.fg-shadow-outline .fg-template-boxslider {
+    box-shadow: 0 0 0 1px #222;
+}
+.foogallery.fg-bx.fg-light.fg-shadow-small .fg-template-boxslider,
+.foogallery.fg-bx.fg-dark.fg-shadow-small .fg-template-boxslider {
+    box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.5);
+}
+.foogallery.fg-bx.fg-light.fg-shadow-medium .fg-template-boxslider,
+.foogallery.fg-bx.fg-dark.fg-shadow-medium .fg-template-boxslider {
+    box-shadow: 0 1px 10px 0 rgba(0, 0, 0, 0.5);
+}
+.foogallery.fg-bx.fg-light.fg-shadow-large .fg-template-boxslider,
+.foogallery.fg-bx.fg-dark.fg-shadow-large .fg-template-boxslider {
+    box-shadow: 0 1px 16px 0 rgba(0, 0, 0, 0.5);
+}
+
+/* Rounded corners */
+.foogallery.fg-bx.fg-round-small,
+.foogallery.fg-bx.fg-round-small .fg-template-boxslider {
+    border-radius: 5px;
+}
+.foogallery.fg-bx.fg-round-small,
+.foogallery.fg-bx.fg-round-small {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+.foogallery.fg-bx.fg-round-small .boxslider-controls  button {
+    border-radius: 3px;
+}
+
+.foogallery.fg-bx.fg-border-thin.fg-round-small,
+.foogallery.fg-bx.fg-border-thin.fg-round-small,
+.foogallery.fg-bx.fg-border-thin.fg-round-small .boxslider-controls  button,
+.foogallery.fg-bx.fg-border-medium.fg-round-small,
+.foogallery.fg-bx.fg-border-medium.fg-round-small,
+.foogallery.fg-bx.fg-border-medium.fg-round-small .boxslider-controls  button,
+.foogallery.fg-bx.fg-border-thick.fg-round-small,
+.foogallery.fg-bx.fg-border-thick.fg-round-small,
+.foogallery.fg-bx.fg-border-thick.fg-round-small .boxslider-controls  button {
+    border-radius: 3px;
+}
+
+.foogallery.fg-bx.fg-round-medium,
+.foogallery.fg-bx.fg-round-medium,
+.foogallery.fg-bx.fg-round-medium .fg-template-boxslider {
+    border-radius: 10px;
+}
+.foogallery.fg-bx.fg-round-medium,
+.foogallery.fg-bx.fg-round-medium {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+.foogallery.fg-bx.fg-round-medium .boxslider-controls  button {
+    border-radius: 5px;
+}
+.foogallery.fg-bx.fg-border-thin.fg-round-medium,
+.foogallery.fg-bx.fg-border-thin.fg-round-medium,
+.foogallery.fg-bx.fg-border-thin.fg-round-medium .boxslider-controls  button{
+    border-radius: 5px;
+}
+.foogallery.fg-bx.fg-border-medium.fg-round-medium,
+.foogallery.fg-bx.fg-border-medium.fg-round-medium,
+.foogallery.fg-bx.fg-border-medium.fg-round-medium .boxslider-controls  button,
+.foogallery.fg-bx.fg-border-thick.fg-round-medium,
+.foogallery.fg-bx.fg-border-thick.fg-round-medium,
+.foogallery.fg-bx.fg-border-thick.fg-round-medium .boxslider-controls  button {
+    border-radius: 3px;
+}
+
+.foogallery.fg-bx.fg-round-large,
+.foogallery.fg-bx.fg-round-large,
+.foogallery.fg-bx.fg-round-large .fg-template-boxslider {
+    border-radius: 15px;
+}
+.foogallery.fg-bx.fg-round-large,
+.foogallery.fg-bx.fg-round-large {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+.foogallery.fg-bx.fg-round-large .boxslider-controls  button {
+    border-radius: 11px;
+}
+.foogallery.fg-bx.fg-border-thin.fg-round-large,
+.foogallery.fg-bx.fg-border-thin.fg-round-large,
+.foogallery.fg-bx.fg-border-thin.fg-round-large .boxslider-controls  button {
+    border-radius: 11px;
+}
+
+.foogallery.fg-bx.fg-border-medium.fg-round-large,
+.foogallery.fg-bx.fg-border-medium.fg-round-large,
+.foogallery.fg-bx.fg-border-medium.fg-round-large .boxslider-controls  button {
+    border-radius: 5px;
+}
+
+.foogallery.fg-bx.fg-border-thick.fg-round-large,
+.foogallery.fg-bx.fg-border-thick.fg-round-large,
+.foogallery.fg-bx.fg-border-thick.fg-round-large .boxslider-controls  button {
+    border-radius: 3px;
+}
+
+.foogallery.fg-bx.fg-round-full .fg-template-boxslider,
+.foogallery.fg-bx.fg-round-full .boxslider-controls  button {
+    border-radius: 50%;
+}
+
+/* Border Size */
+.foogallery.fg-bx .boxslider-controls  button,
+.foogallery.fg-bx.fg-border-thin #boxslider-<?php echo $current_foogallery->ID; ?> {
+    border-width: 2px;
+}
+.foogallery.fg-bx.fg-border-medium .boxslider-controls  button,
+.foogallery.fg-bx.fg-border-medium #boxslider-<?php echo $current_foogallery->ID; ?> {
+    border-width: 10px;
+}
+.foogallery.fg-bx.fg-border-thick .boxslider-controls  button,
+.foogallery.fg-bx.fg-border-thick #boxslider-<?php echo $current_foogallery->ID; ?> {
+    border-width: 16px;
+}
+.foogallery.fg-bx .boxslider-controls  button,
+.foogallery.fg-bx.fg-border-thin .boxslider-controls  button,
+.foogallery.fg-bx.fg-border-medium .boxslider-controls  button,
+.foogallery.fg-bx.fg-border-thick .boxslider-controls  button {
+    border-top-width: 1px;
+}
+
+/* Captions */ 
+
+.fg-bx.fg-caption-always .fg-caption {
+    padding: 0;
+    border: none;
+}
+.fg-bx.fg-caption-always .fg-caption-title {
+    padding: 10px 10px 10px 10px;
+}
+.fg-bx.fg-caption-always .fg-caption-desc {
+    padding: 10px 10px 10px 10px;
+}
+.fg-bx.fg-caption-always .fg-caption-title+.fg-caption-desc {
+    padding: 0 10px 10px 10px;
+}
+
+/* light theme(default) */
+.fg-light .fg-template-boxslider {
+    background-color: #fff;
+    color: #333;
+    border: 1px solid #333;
+}
+.fg-light .boxslider-controls  button {
+    background-color: transparent;
+    border: solid #333;
+    height: 30px;
+    color: #333;
+    cursor: pointer;
+    margin: 2px;
+    transition: all 0.3s ease;
+}
+.fg-light .boxslider-controls  button:hover {
+    background-color: #333;
+    color: #fff;
+}
+
+/* dark theme */
+.fg-dark .fg-template-boxslider {
+    background-color: #333;
+    color: #FFF;
+    border: solid #FFF;
+}
+.fg-dark .boxslider-controls  button {
+    background-color: #333;
+    border: solid #fff;
+    height: 30px;
+    min-width: 60px;
+    cursor: pointer;
+    margin: 2px;
+    transition: all 0.3s ease;
+    box-shadow: inset 0 0 0 1px #222;
+}
+.fg-dark .boxslider-controls  button:hover {
+    background-color: #444;
+}
 </style>
