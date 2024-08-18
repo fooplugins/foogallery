@@ -46,101 +46,147 @@ $pause_text = esc_html(foogallery_get_setting('language_boxslider_pause_text', _
 </div>
 
 <script type="module">
-    import { BoxSlider, FadeSlider, TileSlider, CubeSlider, CarouselSlider } from 'https://cdn.jsdelivr.net/npm/@boxslider/slider/+esm';
-   
-    document.addEventListener('DOMContentLoaded', function() {
-        let sliderEffect;
-        const selectedEffect = '<?php echo $effect; ?>';
-       
-        const commonOptions = {
-            speed: <?php echo $speed; ?>,
-            swipe: <?php echo $swipe ? 'true' : 'false'; ?>,
-            autoScroll: <?php echo $autoScroll ? 'true' : 'false'; ?>,
-            timeout: <?php echo $timeout; ?>,
-            pauseOnHover: <?php echo $pause_on_hover ? 'true' : 'false'; ?>
-        };
-       
-        switch (selectedEffect) {
-            case 'tile':
-                sliderEffect = new TileSlider({
-                    ...commonOptions,
-                    effect: '<?php echo $tile_effect; ?>',
-                    rows: <?php echo $rows; ?>,
-                    rowOffset: <?php echo $row_offset; ?>
-                });
-                break;
-            case 'cube':
-                sliderEffect = new CubeSlider({
-                    ...commonOptions,
-                    direction: '<?php echo $direction; ?>'
-                });
-                break;
-            case 'carousel':
-                sliderEffect = new CarouselSlider({
-                    ...commonOptions,
-                    cover: <?php echo $cover ? 'true' : 'false'; ?>
-                });
-                break;
-            case 'fade':
-            default:
-                sliderEffect = new FadeSlider({
-                    ...commonOptions,
-                    timingFunction: '<?php echo $timing_function; ?>'
-                });
-                break;
+import { BoxSlider, FadeSlider, TileSlider, CubeSlider, CarouselSlider } from 'https://cdn.jsdelivr.net/npm/@boxslider/slider/+esm';
+
+class SliderManager {
+    constructor(containerId, options) {
+        this.containerId = containerId;
+        this.options = options;
+        this.slider = null;
+        this.observer = null;
+    }
+
+    init() {
+        this.createSlider();
+        if (this.options.showControls) {
+            this.setupControlListeners();
         }
-       
-        const slider = new BoxSlider(
-            document.getElementById('boxslider-<?php echo $current_foogallery->ID; ?>'),
+        this.setupTransitionListeners();
+        this.observeContainerRemoval();
+    }
+
+    createSlider() {
+        const sliderEffect = this.createSliderEffect();
+        this.slider = new BoxSlider(
+            document.getElementById(this.containerId),
             sliderEffect
         );
+    }
 
-        <?php if ($show_controls) : ?>
-        // Add event listeners for control buttons
-        document.querySelector('.boxslider-prev').addEventListener('click', () => slider.prev());
-        document.querySelector('.boxslider-next').addEventListener('click', () => slider.next());
-        document.querySelector('.boxslider-play').addEventListener('click', () => slider.play());
-        document.querySelector('.boxslider-pause').addEventListener('click', () => slider.pause());
+    createSliderEffect() {
+        const commonOptions = {
+            speed: this.options.speed,
+            swipe: this.options.swipe,
+            autoScroll: this.options.autoScroll,
+            timeout: this.options.timeout,
+            pauseOnHover: this.options.pauseOnHover
+        };
 
-        // Update play/pause button text based on slider state
-        slider.addEventListener('play', () => {
-            document.querySelector('.boxslider-play').style.display = 'none';
-            document.querySelector('.boxslider-pause').style.display = 'inline-block';
-        });
-        slider.addEventListener('pause', () => {
-            document.querySelector('.boxslider-play').style.display = 'inline-block';
-            document.querySelector('.boxslider-pause').style.display = 'none';
-        });
-
-        // Initialize play/pause button state
-        if (<?php echo $autoScroll ? 'true' : 'false'; ?>) {
-            document.querySelector('.boxslider-play').style.display = 'none';
-        } else {
-            document.querySelector('.boxslider-pause').style.display = 'none';
+        switch (this.options.effect) {
+            case 'tile':
+                return new TileSlider({
+                    ...commonOptions,
+                    effect: this.options.tileEffect,
+                    rows: this.options.rows,
+                    rowOffset: this.options.rowOffset
+                });
+            case 'cube':
+                return new CubeSlider({
+                    ...commonOptions,
+                    direction: this.options.direction
+                });
+            case 'carousel':
+                return new CarouselSlider({
+                    ...commonOptions,
+                    cover: this.options.cover
+                });
+            case 'fade':
+            default:
+                return new FadeSlider({
+                    ...commonOptions,
+                    timingFunction: this.options.timingFunction
+                });
         }
-        <?php endif; ?>
+    }
 
-        // Add event listeners for before and after transitions
-        slider.addEventListener('before', (data) => {
-            console.log('Transition starting', data);
-        });
-        slider.addEventListener('after', (data) => {
-            console.log('Transition complete', data);
-        });
+    setupControlListeners() {
+        this.addControlListener('.boxslider-prev', () => this.slider.prev());
+        this.addControlListener('.boxslider-next', () => this.slider.next());
+        this.addControlListener('.boxslider-play', () => this.slider.play());
+        this.addControlListener('.boxslider-pause', () => this.slider.pause());
+        this.updatePlayPauseButtonState();
+    }
 
-        // Destroy slider when the container is removed from the DOM
-        const observer = new MutationObserver((mutations) => {
+    addControlListener(selector, callback) {
+        const element = document.querySelector(selector);
+        if (element) {
+            element.addEventListener('click', callback);
+        }
+    }
+
+    updatePlayPauseButtonState() {
+        const playButton = document.querySelector('.boxslider-play');
+        const pauseButton = document.querySelector('.boxslider-pause');
+
+        this.slider.addEventListener('play', () => this.togglePlayPauseButtons(playButton, pauseButton, true));
+        this.slider.addEventListener('pause', () => this.togglePlayPauseButtons(playButton, pauseButton, false));
+
+        this.togglePlayPauseButtons(playButton, pauseButton, this.options.autoScroll);
+    }
+
+    togglePlayPauseButtons(playButton, pauseButton, isPlaying) {
+        if (playButton) playButton.style.display = isPlaying ? 'none' : 'inline-block';
+        if (pauseButton) pauseButton.style.display = isPlaying ? 'inline-block' : 'none';
+    }
+
+    setupTransitionListeners() {
+        this.slider.addEventListener('before', (data) => console.log('Transition starting', data));
+        this.slider.addEventListener('after', (data) => console.log('Transition complete', data));
+    }
+
+    observeContainerRemoval() {
+        this.observer = new MutationObserver((mutations) => {
             mutations.forEach((mutation) => {
-                if (mutation.type === 'childList' && !document.body.contains(slider.container)) {
-                    slider.destroy();
-                    observer.disconnect();
+                if (mutation.type === 'childList' && !document.body.contains(this.slider.container)) {
+                    this.destroy();
                 }
             });
         });
-        observer.observe(document.body, { childList: true, subtree: true });
-    });
-</script>
+        this.observer.observe(document.body, { childList: true, subtree: true });
+    }
 
+    destroy() {
+        if (this.slider) {
+            this.slider.destroy();
+        }
+        if (this.observer) {
+            this.observer.disconnect();
+        }
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    const options = {
+        containerId: 'boxslider-<?php echo $current_foogallery->ID; ?>',
+        effect: '<?php echo $effect; ?>',
+        speed: <?php echo $speed; ?>,
+        swipe: <?php echo $swipe ? 'true' : 'false'; ?>,
+        autoScroll: <?php echo $autoScroll ? 'true' : 'false'; ?>,
+        timeout: <?php echo $timeout; ?>,
+        pauseOnHover: <?php echo $pause_on_hover ? 'true' : 'false'; ?>,
+        showControls: <?php echo $show_controls ? 'true' : 'false'; ?>,
+        timingFunction: '<?php echo $timing_function; ?>',
+        tileEffect: '<?php echo $tile_effect; ?>',
+        rows: <?php echo $rows; ?>,
+        rowOffset: <?php echo $row_offset; ?>,
+        direction: '<?php echo $direction; ?>',
+        cover: <?php echo $cover ? 'true' : 'false'; ?>
+    };
+
+    const sliderManager = new SliderManager('boxslider-<?php echo $current_foogallery->ID; ?>', options);
+    sliderManager.init();
+});
+</script>
 <style>
     #boxslider-<?php echo $current_foogallery->ID; ?> {
         width: 100%;
