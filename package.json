@@ -37,6 +37,6 @@
     "source-map-loader": "^4.0.1"
   },
   "dependencies": {
-    "@boxslider/slider": "^2.8.0"
+    "@boxslider/slider": "^2.8.1"
   }
 }
