@@ -313,6 +313,13 @@ Please update in order for FooGallery to work in WP 5.5+!
 
 == Changelog ==
 
+= 2.4.18 =
+* Date Updated : 4 Aug 2024
+* Update : Gallery and album creator roles now inherit privileges.
+[//]: # fs_premium_only_begin
+* Fix : Fix bug with video count throwing fatal error when a gallery has been deleted.
+[//]: # fs_premium_only_end
+
 = 2.4.17 =
 * Date Updated : 7 July 2024
 * Update : Freemius SDK update 2.7.3
