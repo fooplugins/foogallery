@@ -312,6 +312,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 				if ( '' !== $gallery->get_setting( 'ecommerce_lightbox_show_view_product_button', '' ) ) {
 					$response['product_url'] = self::build_product_permalink( $product, $attachment_id );
 				}
+				$response['price'] = $product->get_price_html();
 
 				$response['body'] = $html;
 
