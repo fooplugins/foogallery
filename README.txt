@@ -313,6 +313,13 @@ Please update in order for FooGallery to work in WP 5.5+!
 
 == Changelog ==
 
+= 2.4.19 =
+* Date Updated : 20 Aug 2024
+[//]: # fs_premium_only_begin
+* New : [Commerce Plan] Added new setting to show price in the product info within lightbox.
+* Fix : [Commerce Plan] Fix caching bug with product datasource (settings were being "reset").
+[//]: # fs_premium_only_end
+
 = 2.4.18 =
 * Date Updated : 4 Aug 2024
 * Update : Gallery and album creator roles now inherit privileges.
