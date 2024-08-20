@@ -306,13 +306,16 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 					$response['purchasable'] = false;
 				}
 				// Only if its purchasable and a variable product, then build up the variation html.
-				if ( $response['purchasable'] && is_a( $product, 'WC_Product_Variable' ) ) {
-					$html .= $this->build_product_variation_table( $product );
+				if ( $response['purchasable'] ) {
+					if ( is_a( $product, 'WC_Product_Variable' ) ) {
+						$html .= $this->build_product_variation_table( $product );
+					} else if ( '' !== $gallery->get_setting( 'ecommerce_lightbox_show_price', '' ) ) {
+						$html .= '<h3>' . $product->get_price_html() . '</h3>';
+					}
 				}
 				if ( '' !== $gallery->get_setting( 'ecommerce_lightbox_show_view_product_button', '' ) ) {
 					$response['product_url'] = self::build_product_permalink( $product, $attachment_id );
 				}
-				$response['price'] = $product->get_price_html();
 
 				$response['body'] = $html;
 
@@ -1136,6 +1139,30 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 					'id'       => 'ecommerce_lightbox_show_view_product_button',
 					'title'    => __( 'Show "View Product" Button', 'foogallery' ),
 					'desc'     => __( 'Within the lightbox, shows an extra button that redirects to the product page.', 'foogallery' ),
+					'section'  => __( 'Ecommerce', 'foogallery' ),
+					'subsection' => array( 'ecommerce-lightbox' => __( 'Lightbox', 'foogallery' ) ),
+					'type'     => 'radio',
+					'default'  => '',
+					'spacer'   => '<span class="spacer"></span>',
+					'choices'  => array(
+						'shown' => __( 'Shown', 'foogallery'),
+						''    => __( 'Hidden', 'foogallery'),
+					),
+					'row_data' => array(
+						'data-foogallery-hidden'                   => true,
+						'data-foogallery-show-when-field'          => 'ecommerce_lightbox_product_information',
+						'data-foogallery-show-when-field-operator' => '!==',
+						'data-foogallery-show-when-field-value'    => 'none',
+						'data-foogallery-change-selector'          => 'input',
+						'data-foogallery-preview'                  => 'shortcode',
+						'data-foogallery-value-selector'           => 'input:checked',
+					),
+				);
+
+				$new_fields[] = array(
+					'id'       => 'ecommerce_lightbox_show_price',
+					'title'    => __( 'Show Price', 'foogallery' ),
+					'desc'     => __( 'Within the lightbox, show the product price.', 'foogallery' ),
 					'section'  => __( 'Ecommerce', 'foogallery' ),
 					'subsection' => array( 'ecommerce-lightbox' => __( 'Lightbox', 'foogallery' ) ),
 					'type'     => 'radio',
