@@ -59,29 +59,26 @@ if ( ! class_exists( 'FooGallery_Boxslider_Gallery_Template' ) ) {
 		/**
 		 * Enqueues the JavaScript files for the BoxSlider in FooGallery.
 		 *
-		 * This function loads the prebuilt BoxSlider JavaScript file as well as
-		 * the custom initialization script for the slider on the front end of the website.
+		 * Load custom initialization script for the slider.
 		 *
 		 * @return void
 		 */
 		function enqueue_custom_slider_scripts() {
-			// Enqueue the prebuilt BoxSlider JS file
 			wp_enqueue_script(
-				'boxslider-prebuilt', 
-				FOOGALLERY_PRO_DEFAULT_TEMPLATES_URL . 'boxslider/js/boxslider.min.js', 
+				'custom-slider-init', 
+				FOOGALLERY_PRO_DEFAULT_TEMPLATES_URL . 'boxslider/js/boxslider.js', 
 				array(), 
 				FOOGALLERY_VERSION, 
 				true
 			);
-		
-			// Enqueue your custom slider script
-			wp_enqueue_script(
-				'custom-slider-init', 
-				FOOGALLERY_PRO_DEFAULT_TEMPLATES_URL . 'boxslider/js/boxslider.js', 
-				array('boxslider-prebuilt'),
-				FOOGALLERY_VERSION, 
-				true
-			);
+			
+			// Ensure the script is loaded as a module
+			add_filter('script_loader_tag', function($tag, $handle) {
+				if ('custom-slider-init' === $handle) {
+					return str_replace('<script ', '<script type="module" ', $tag);
+				}
+				return $tag;
+			}, 10, 2);
 		}
 
 		/**
@@ -93,7 +90,6 @@ if ( ! class_exists( 'FooGallery_Boxslider_Gallery_Template' ) ) {
 		 * @return void
 		 */
 		function enqueue_custom_slider_styles() {
-			// Enqueue the custom CSS file for the slider
 			wp_enqueue_style(
 				'custom-slider-styles',
 				FOOGALLERY_PRO_DEFAULT_TEMPLATES_URL . 'boxslider/css/boxslider.css',

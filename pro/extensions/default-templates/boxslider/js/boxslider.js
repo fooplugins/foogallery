@@ -1,3 +1,4 @@
+import { BoxSlider, FadeSlider, TileSlider, CubeSlider, CarouselSlider } from './boxslider.min.js';
 class SliderManager {
     constructor(containerId, options) {
         this.containerId = containerId;
@@ -121,9 +122,9 @@ class SliderManager {
             this.observer.disconnect();
         }
     }
-}
+    }
 
-document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function() {
     const sliderElement = document.querySelector('.fg-boxslider');
     const galleryData = JSON.parse(sliderElement.getAttribute('data-foogallery'));
 
