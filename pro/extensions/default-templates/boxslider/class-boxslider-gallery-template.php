@@ -37,6 +37,12 @@ if ( ! class_exists( 'FooGallery_Boxslider_Gallery_Template' ) ) {
 
 			// Build up the thumb dimensions from some arguments.
 			add_filter( 'foogallery_calculate_thumbnail_dimensions-boxslider', array( $this, 'build_thumbnail_dimensions_from_arguments' ), 10, 2 );
+
+			// Hook to enqueue the custom JavaScript files for the slider on the front end
+			add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_custom_slider_scripts' ) );
+
+			// Hook to enqueue the custom CSS styles for the slider on the front end
+			add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_custom_slider_styles' ) );
 		}
 
 		/**
@@ -48,6 +54,52 @@ if ( ! class_exists( 'FooGallery_Boxslider_Gallery_Template' ) ) {
 		public function register_myself( $extensions ) {
 			$extensions[] = __FILE__;
 			return $extensions;
+		}
+
+		/**
+		 * Enqueues the JavaScript files for the BoxSlider in FooGallery.
+		 *
+		 * This function loads the prebuilt BoxSlider JavaScript file as well as
+		 * the custom initialization script for the slider on the front end of the website.
+		 *
+		 * @return void
+		 */
+		function enqueue_custom_slider_scripts() {
+			// Enqueue the prebuilt BoxSlider JS file
+			wp_enqueue_script(
+				'boxslider-prebuilt', 
+				FOOGALLERY_PRO_DEFAULT_TEMPLATES_URL . 'boxslider/js/boxslider.min.js', 
+				array(), 
+				FOOGALLERY_VERSION, 
+				true
+			);
+		
+			// Enqueue your custom slider script
+			wp_enqueue_script(
+				'custom-slider-init', 
+				FOOGALLERY_PRO_DEFAULT_TEMPLATES_URL . 'boxslider/js/boxslider.js', 
+				array('boxslider-prebuilt'),
+				FOOGALLERY_VERSION, 
+				true
+			);
+		}
+
+		/**
+		 * Enqueues the custom CSS file for the BoxSlider in FooGallery.
+		 *
+		 * This function ensures that the custom CSS file required for the BoxSlider
+		 * template in FooGallery is loaded on the front end of the website.
+		 *
+		 * @return void
+		 */
+		function enqueue_custom_slider_styles() {
+			// Enqueue the custom CSS file for the slider
+			wp_enqueue_style(
+				'custom-slider-styles',
+				FOOGALLERY_PRO_DEFAULT_TEMPLATES_URL . 'boxslider/css/boxslider.css',
+				array(),
+				FOOGALLERY_VERSION
+			);
 		}
 
 		/**
