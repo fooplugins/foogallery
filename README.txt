@@ -313,6 +313,10 @@ Please update in order for FooGallery to work in WP 5.5+!
 
 == Changelog ==
 
+= 2.4.20 =
+* Date Updated : 20 Aug 2024
+* Update : Freemius SDK update 2.7.4
+
 = 2.4.19 =
 * Date Updated : 20 Aug 2024
 [//]: # fs_premium_only_begin
