@@ -85,6 +85,8 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 
                 // Add button data to the json output
                 add_filter( 'foogallery_build_attachment_json', array( $this, 'add_button_to_json' ), 40, 6 );
+
+				add_filter( 'foogallery_html_cache_disabled', array( $this, 'disable_html_cache' ), 10, 3 );
             }
         }
 
@@ -1508,6 +1510,25 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
                 $modal_data['foogallery_download_file'] = get_post_meta( $attachment_id, '_foogallery_download_file', true );
             }
 			return $modal_data;
+		}
+
+				/**
+		 * Override if the gallery html cache is disabled
+		 *
+		 * @param $disabled bool
+		 * @param $gallery FooGallery
+		 * @return bool
+		 */
+		function disable_html_cache( $disabled, $gallery ) {
+
+			//check if the gallery is a product gallery.
+			$ecommerce_lightbox_product_information = foogallery_gallery_template_setting( 'ecommerce_lightbox_product_information', 'none' );
+
+			if ( 'none' !== $ecommerce_lightbox_product_information ) {
+				$disabled = true;
+			}
+
+			return $disabled;
 		}
 
 	}
