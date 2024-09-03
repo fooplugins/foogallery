@@ -128,11 +128,12 @@ if ( ! class_exists( 'FooGallery_Pro_Protection' ) ) {
 							if ( !empty( $attachments ) ) {
 								$attachments = explode(',', $attachments );
 							} else {
-								$attachments = array();
+								$attachments = $gallery->item_attachment_ids();
 							}
 						} else {
 							$attachments = $gallery->item_attachment_ids();
 						}
+
 						$images  = count( $attachments);
 
 						$progress = array(
@@ -418,6 +419,7 @@ if ( ! class_exists( 'FooGallery_Pro_Protection' ) ) {
 						$foogallery_watermark_data[ $attachment->ID ] = $attachment_watermark;
 					} else {
 						// TODO : we are not dealing with a media library attachment! Figure this out later!
+						$error_count++;
 					}
 				}
 				$foogallery_watermark_data['summary'] = array(
@@ -904,6 +906,10 @@ if ( ! class_exists( 'FooGallery_Pro_Protection' ) ) {
 			$editor = wp_get_image_editor( $file_path, array( 'methods' => array( 'get_image' ) ) );
 
 			if ( is_wp_error( $editor ) ) {
+				echo '<h3>' . esc_html( __( 'Error', 'foogallery' ) ) . '</h3>';
+				echo esc_html( __('Test Image URL', 'foogallery') ) . ': ' . $test_image_url . '<br />';
+				echo esc_html( __('Test Image Path', 'foogallery') ) . ': ' . $file_path . '<br />';
+				echo '<br /><br />';
 				var_dump( $editor );
 				return;
 			}
