@@ -316,6 +316,10 @@ Please update in order for FooGallery to work in WP 5.5+!
 = 2.4.20 =
 * Date Updated : 20 Aug 2024
 * Update : Freemius SDK update 2.7.4
+[//]: # fs_premium_only_begin
+* fix : [Commerce Plan] force cache to be disabled if product info is shown in lightbox.
+* fix : [Commerce Plan] fixed watermark generation with galleries using a product datasource.
+[//]: # fs_premium_only_end
 
 = 2.4.19 =
 * Date Updated : 20 Aug 2024
