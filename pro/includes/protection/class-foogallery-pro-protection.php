@@ -902,14 +902,14 @@ if ( ! class_exists( 'FooGallery_Pro_Protection' ) ) {
 
 			$file_path = foogallery_local_url_to_path( $test_image_url );
 
+			echo esc_html( __('Test Image URL', 'foogallery') ) . ': ' . $test_image_url . '<br />';
+			echo esc_html( __('Test Image Path', 'foogallery') ) . ': ' . $file_path . '<br />';
+
 			// Create the image.
 			$editor = wp_get_image_editor( $file_path, array( 'methods' => array( 'get_image' ) ) );
 
 			if ( is_wp_error( $editor ) ) {
 				echo '<h3>' . esc_html( __( 'Error', 'foogallery' ) ) . '</h3>';
-				echo esc_html( __('Test Image URL', 'foogallery') ) . ': ' . $test_image_url . '<br />';
-				echo esc_html( __('Test Image Path', 'foogallery') ) . ': ' . $file_path . '<br />';
-				echo '<br /><br />';
 				var_dump( $editor );
 				return;
 			}
@@ -919,7 +919,7 @@ if ( ! class_exists( 'FooGallery_Pro_Protection' ) ) {
 			$watermark = new FooGallery_Watermark( $editor );
 			$watermark->apply_watermark_image( foogallery_local_url_to_path( $watermark_options['image'] ), $watermark_options );
 
-			echo '<h2>' . esc_html( __( 'Watermarked Image', 'foogallery' ) ) . '</h2>';
+			echo '<h3>' . esc_html( __( 'Watermarked Image', 'foogallery' ) ) . '</h3>';
 
 			$image = $editor->get_image();
 
@@ -929,7 +929,7 @@ if ( ! class_exists( 'FooGallery_Pro_Protection' ) ) {
 
 			echo '<img src="data:image/png;base64,' . $image_base64 . '" />';
 
-			echo '<h2>' . esc_html( __( 'Original Image', 'foogallery' ) ) . '</h2>';
+			echo '<h3>' . esc_html( __( 'Original Image', 'foogallery' ) ) . '</h3>';
 
 			echo '<img src="' . esc_url( $test_image_url ) . '" />';
 		}
