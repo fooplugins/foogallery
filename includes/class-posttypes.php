@@ -79,11 +79,16 @@ if ( ! class_exists( 'FooGallery_PostTypes' ) ) {
          * @return void
          */
         function add_capabilities( $force = false ) {
+            global $foogallery_adding_capabilities;
+
             $gallery_creator_role = foogallery_setting_gallery_creator_role();
+            $previous_capabilities = get_option('foogallery_capabilities_set' );
 
-            if ( $force || $gallery_creator_role !== foogallery_get_setting( 'gallery_capabilities_set' ) ) {
+            if ( $force || $gallery_creator_role !== $previous_capabilities ) {
 
-                foogallery_set_setting( 'gallery_capabilities_set', $gallery_creator_role );
+                $foogallery_adding_capabilities = true;
+                update_option( 'foogallery_capabilities_set', $gallery_creator_role );
+                $foogallery_adding_capabilities = false;
 
                 // Get the roles
                 $roles = foogallery_get_roles_and_higher( $gallery_creator_role );
@@ -109,14 +114,20 @@ if ( ! class_exists( 'FooGallery_PostTypes' ) ) {
          * @param string $option The option.
          */
         function clear_capabilities( $old_value, $value, $option ) {
+            global $foogallery_adding_capabilities;
+            // Get out early, if we are busy updating capabilities.
+            if ( $foogallery_adding_capabilities ) {
+                return;
+            }
 
             if ( $old_value === $value ) {
                 return;
             }
 
             $gallery_creator_role = foogallery_setting_gallery_creator_role();
+            $previous_capabilities = get_option('foogallery_capabilities_set' );
 
-            if ( $gallery_creator_role !== foogallery_get_setting( 'gallery_capabilities_set' ) ) {
+            if ( $gallery_creator_role !== $previous_capabilities ) {
 
                 // Get all roles
                 $roles = wp_roles()->get_names();
