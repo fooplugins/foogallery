@@ -2179,7 +2179,7 @@ function foogallery_local_url_to_path( $url ) {
 function foogallery_sanitize_code( $text ) {
     if ( !empty( $text ) ){
         $text = wp_check_invalid_utf8( $text, true );
-        $text = htmlentities( $text );
+        $text = htmlentities( $text, ENT_NOQUOTES, 'UTF-8', false );
         return apply_filters( 'foogallery_sanitize_code', $text );
     }
     return false;

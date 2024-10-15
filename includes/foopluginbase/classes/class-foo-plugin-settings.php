@@ -371,7 +371,7 @@ if ( !class_exists( 'Foo_Plugin_Settings_v2_2' ) ) {
 					break;
 
 				case 'textarea':
-					echo '<textarea' . $field_class . ' id="' . $id . '" name="' . $this->plugin_slug . '[' . $id . ']" placeholder="' . $placeholder . '">' . esc_attr( $options[$id] ) . '</textarea>';
+					echo '<textarea' . $field_class . ' id="' . $id . '" name="' . $this->plugin_slug . '[' . $id . ']" placeholder="' . $placeholder . '">' . esc_textarea( $options[$id] ) . '</textarea>';
 
 					break;
 
