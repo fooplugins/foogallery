@@ -84,6 +84,8 @@ if ( ! class_exists( 'FooGallery_Albums_PostTypes' ) ) {
          * @return void
          */
         function add_capabilities( $force = false ) {
+            global $foogallery_adding_capabilities;
+
             $album_creator_role   = foogallery_get_setting( 'album_creator_role', 'inherit' );
             if ( 'inherit' === $album_creator_role ) {
                 $album_creator_role = foogallery_setting_gallery_creator_role();
@@ -91,7 +93,9 @@ if ( ! class_exists( 'FooGallery_Albums_PostTypes' ) ) {
 
             if ( $force || $album_creator_role !== foogallery_get_setting( 'album_capabilities_set' ) ) {
 
-                foogallery_set_setting( 'album_capabilities_set', $album_creator_role );
+                $foogallery_albums_adding_capabilities = true;
+                update_option( 'foogallery_albums_capabilities_set', $album_creator_role );
+                $foogallery_albums_adding_capabilities = false;
 
                 // Get the roles
                 $roles = foogallery_get_roles_and_higher( $album_creator_role );
@@ -117,6 +121,12 @@ if ( ! class_exists( 'FooGallery_Albums_PostTypes' ) ) {
          * @param string $option The option.
          */
         function clear_capabilities( $old_value, $value, $option ) {
+            global $foogallery_albums_adding_capabilities;
+            // Get out early, if we are busy updating album capabilities.
+            if ( $foogallery_albums_adding_capabilities ) {
+                return;
+            }
+
             if ( $old_value === $value ) {
                 return;
             }
@@ -126,7 +136,9 @@ if ( ! class_exists( 'FooGallery_Albums_PostTypes' ) ) {
                 $album_creator_role = foogallery_setting_gallery_creator_role();
             }
 
-            if ( $album_creator_role !== foogallery_get_setting( 'album_capabilities_set' ) ) {
+            $previous_capabilities = get_option('foogallery_albums_capabilities_set' );
+
+            if ( $album_creator_role !== $previous_capabilities ) {
                 // Get all roles
                 $roles = wp_roles()->get_names();
 
