@@ -1,4 +1,6 @@
 <?php
+namespace FooPlugins\FooGallery\Extensions\DemoContentGenerator;
+
 /**
  * pixabay-php-api
  * PixabayClient API

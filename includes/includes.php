@@ -21,9 +21,8 @@ require_once FOOGALLERY_PATH . 'includes/thumbs/includes.php';
 
 // Include bundled extensions.
 new FooPlugins\FooGallery\Extensions\Album\FooGallery_Albums_Extension();
-// new FooPlugins\FooGallery\Extensions\DefaultTemplates\FooGallery_Default_Templates;
 new FooPlugins\FooGallery\Extensions\DefaultTemplates\FooGallery_Default_Templates_Extension; // Legacy!
-require_once FOOGALLERY_PATH . 'extensions/demo-content-generator/class-demo-content-generator.php';
+new FooPlugins\FooGallery\Extensions\DemoContentGenerator\FooGallery_Demo_Content_Generator();
 require_once FOOGALLERY_PATH . 'extensions/import-export/class-foogallery-import-export-extension.php';
 
 // load Template Loader files.
