@@ -1,4 +1,6 @@
 <?php
+namespace FooPlugins\FooGallery\Pro\Extensions\DefaultTemplates;
+
 /**
  * FooGallery Pro Default Templates Class
  */
@@ -17,9 +19,9 @@ if ( ! class_exists( 'FooGallery_Pro_Default_Templates' ) ) {
 	class FooGallery_Pro_Default_Templates {
 
 		function __construct() {
-			new FooGallery_Polaroid_Gallery_Template();
-			new FooGallery_FooGrid_Gallery_Template();
-			new FooGallery_Slider_Gallery_Template();
+			new \FooGallery_Polaroid_Gallery_Template();
+			new \FooGallery_FooGrid_Gallery_Template();
+			new \FooGallery_Slider_Gallery_Template();
 
 			add_filter( 'foogallery_core_gallery_style', array( $this, 'pro_core_gallery_style' ) );
 			add_filter( 'foogallery_core_gallery_script', array( $this, 'pro_core_gallery_script' ) );

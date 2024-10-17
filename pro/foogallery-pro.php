@@ -66,7 +66,7 @@ if ( ! class_exists( 'FooGallery_Pro' ) ) {
 		 */
 		public function __construct() {
 			new FooGallery_Pro_Hover_Presets();
-			new FooGallery_Pro_Default_Templates();
+			new FooPlugins\FooGallery\Pro\Extensions\DefaultTemplates\FooGallery_Pro_Default_Templates();
 			new FooGallery_Pro_Instagram_Filters();
 
 			if ( foogallery_fs()->is_plan_or_trial( 'pro' ) ) {
