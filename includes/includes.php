@@ -12,7 +12,6 @@ require_once FOOGALLERY_PATH . 'includes/extensions/class-extensions-loader.php'
 require_once FOOGALLERY_PATH . 'includes/class-attachment-filters.php';
 require_once FOOGALLERY_PATH . 'includes/class-retina.php';
 require_once FOOGALLERY_PATH . 'includes/class-foogallery-widget.php';
-require_once FOOGALLERY_PATH . 'gutenberg/class-foogallery-gutenberg.php';
 require_once FOOGALLERY_PATH . 'includes/class-foogallery-debug.php';
 require_once FOOGALLERY_PATH . 'includes/class-foogallery-attachment-type.php';
 

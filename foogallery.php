@@ -208,7 +208,7 @@ if ( function_exists( 'foogallery_fs' ) ) {
 				}
 
 				// init Gutenberg!
-				new FooGallery_Gutenberg();
+				new FooPlugins\FooGallery\Extensions\Gutenberg\FooGallery_Gutenberg();
 
 				// init advanced settings.
 				new FooGallery_Advanced_Gallery_Settings();
