@@ -1,4 +1,11 @@
 <?php
+namespace FooPlugins\FooGallery\Pro\Protection;
+
+use FooGallery_Thumbnails;
+use FooGallery_Thumb_Generator;
+use FooGalleryAttachment;
+use FooGallery;
+
 /**
  * FooGallery class for Image Protection
  *
@@ -75,7 +82,7 @@ if ( ! class_exists( 'FooGallery_Pro_Protection' ) ) {
 
             $extensions_list[] = array(
                 'slug' => 'foogallery-protection',
-                'class' => 'FooGallery_Pro_Protection',
+                'class' => 'FooPlugins\FooGallery\Pro\Protection\FooGallery_Pro_Protection',
                 'categories' => array( 'Premium' ),
                 'title' => __( 'Protection', 'foogallery' ),
                 'description' => $pro_features['protection']['desc'],

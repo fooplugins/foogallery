@@ -27,12 +27,6 @@ require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-advanced-thumb
 require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-bulk-management.php';
 require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-exif.php';
 
-require_once FOOGALLERY_PATH . 'pro/includes/protection/class-foogallery-pro-protection.php';
-require_once FOOGALLERY_PATH . 'pro/includes/protection/class-foogallery-watermark.php';
-require_once FOOGALLERY_PATH . 'pro/includes/protection/class-foogallery-image-editor-helper-base.php';
-require_once FOOGALLERY_PATH . 'pro/includes/protection/class-foogallery-image-editor-helper-gd.php';
-require_once FOOGALLERY_PATH . 'pro/includes/protection/class-foogallery-image-editor-helper-imagick.php';
-
 require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-ribbons.php';
 require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-buttons.php';
 require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-gallery-blueprints.php';
@@ -81,7 +75,7 @@ if ( ! class_exists( 'FooGallery_Pro' ) ) {
 				new FooGallery_Pro_Exif();
 			}
 			if ( foogallery_fs()->is_plan_or_trial( 'commerce' ) ) {
-				new FooGallery_Pro_Protection();
+				new FooPlugins\FooGallery\Pro\Protection\FooGallery_Pro_Protection();
 				new FooPlugins\FooGallery\Pro\WooCommerce\FooGallery_Pro_Woocommerce();
 				new FooGallery_Pro_Ribbons();
 				new FooGallery_Pro_Buttons();
