@@ -1,5 +1,7 @@
 <?php
 
+namespace FooPlugins\FooGallery\Extensions\DefaultTemplates\Thumbnail;
+
 if ( !class_exists( 'FooGallery_Thumbnail_Gallery_Template' ) ) {
 
 	define('FOOGALLERY_THUMBNAIL_GALLERY_TEMPLATE_URL', plugin_dir_url( __FILE__ ));

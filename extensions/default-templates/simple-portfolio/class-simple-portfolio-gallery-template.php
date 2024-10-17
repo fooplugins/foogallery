@@ -1,5 +1,7 @@
 <?php
 
+namespace FooPlugins\FooGallery\Extensions\DefaultTemplates\Portfolio;
+
 if ( !class_exists( 'FooGallery_Simple_Portfolio_Gallery_Template' ) ) {
 
 	define('FOOGALLERY_SIMPLE_PORTFOLIO_GALLERY_TEMPLATE_URL', plugin_dir_url( __FILE__ ));

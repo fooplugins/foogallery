@@ -1,4 +1,5 @@
 <?php
+namespace FooPlugins\FooGallery\Extensions\DefaultTemplates\Carousel;
 
 if ( ! class_exists( 'FooGallery_Carousel_Gallery_Template' ) ) {
 
