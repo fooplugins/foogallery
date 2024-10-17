@@ -27,12 +27,21 @@ if ( function_exists( 'foogallery_fs' ) ) {
 		define( 'FOOGALLERY_SLUG', 'foogallery' );
 		define( 'FOOGALLERY_PATH', plugin_dir_path( __FILE__ ) );
 		define( 'FOOGALLERY_URL', plugin_dir_url( __FILE__ ) );
+		define( 'FOOGALLERY_NAMESPACE', 'FooPlugins\\FooGallery' );
 		define( 'FOOGALLERY_FILE', __FILE__ );
 		define( 'FOOGALLERY_VERSION', '2.4.20' );
 		define( 'FOOGALLERY_SETTINGS_VERSION', '2' );
 
+		// Load Composer autoloader.
+		if ( file_exists( FOOGALLERY_PATH . 'vendor/autoload.php' ) ) {
+			require_once FOOGALLERY_PATH . 'vendor/autoload.php';
+		}
+
 		require_once FOOGALLERY_PATH . 'includes/constants.php';
         require_once FOOGALLERY_PATH . 'includes/functions.php';
+
+		// Register autoloader.
+		spl_autoload_register( 'foogallery_autoloader' );
 
 		// Create a helper function for easy SDK access.
 		function foogallery_fs() {

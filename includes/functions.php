@@ -9,6 +9,74 @@
  * @copyright 2014 FooPlugins LLC
  */
 
+ /**
+ * Custom Autoloader for FooGallery to map namespaces to directories.
+ *
+ * @param string $class The fully-qualified class name.
+ */
+function foogallery_autoloader( $class ) {
+    /* Only autoload classes from the FooGallery namespace */
+    if ( false === strpos( $class, FOOGALLERY_NAMESPACE ) ) {
+        return;
+    }
+
+    // Define the namespace mappings based on the psr-4 autoload in composer.json.
+    $namespace_map = [
+        'FooPlugins\\FooGallery\\' => FOOGALLERY_PATH . 'includes/',
+        'FooPlugins\\FooGallery\\Pro\\' => FOOGALLERY_PATH . 'Pro/',
+        'FooPlugins\\FooGallery\\Extensions\\' => FOOGALLERY_PATH . 'Extensions/',
+        'FooPlugins\\FooGallery\\Gutenberg\\' => FOOGALLERY_PATH . 'gutenberg/',
+    ];
+
+    // Iterate through the namespace map and find the matching base directory.
+    foreach ( $namespace_map as $namespace_prefix => $base_dir ) {
+        // Check if the class starts with the namespace prefix.
+        if ( strpos( $class, $namespace_prefix ) === 0 ) {
+            // Remove the namespace prefix from the class name.
+            $relative_class = str_replace( $namespace_prefix, '', $class );
+
+            // Convert namespace separators into directory structure.
+            $class_path = explode( '\\', $relative_class );
+            $class_file = array_pop( $class_path );  // Get the class name.
+            $class_path = strtolower( implode( '/', $class_path ) );  // Convert subdirectories to lowercase.
+
+            // Convert CamelCase class name to file name format (snake_case).
+            $class_file = foogallery_uncamelize( $class_file );
+            $class_file = str_replace( '_', '-', $class_file );
+            $class_file = str_replace( '--', '-', $class_file );
+
+            // Generate the full file path.
+            $file = $base_dir . ( ! empty( $class_path ) ? $class_path . '/' : '' ) . 'class-' . $class_file . '.php';
+
+            // If the file exists, include it.
+            if ( file_exists( $file ) ) {
+                require_once $file;
+            }
+        }
+    }
+}
+
+/**
+ * Convert a CamelCase string to snake_case (or similar format for file names).
+ *
+ * @param string $str The string to convert.
+ *
+ * @return string The converted string.
+ */
+function foogallery_uncamelize( $str ) {
+    $str    = lcfirst( $str );
+    $lc     = strtolower( $str );
+    $result = '';
+    $length = strlen( $str );
+
+    // Add underscores before capital letters.
+    for ( $i = 0; $i < $length; $i++ ) {
+        $result .= ( $str[ $i ] === $lc[ $i ] ? '' : '_' ) . $lc[ $i ];
+    }
+
+    return $result;
+}
+
 /**
  * Returns the name of the plugin. (Allows the name to be overridden from extensions or functions.php)
  * @return string

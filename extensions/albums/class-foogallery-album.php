@@ -1,11 +1,12 @@
 <?php
+namespace FooPlugins\FooGallery\Extensions\Album;
 
 /**
  * Class FooGalleryAlbum
  *
  * An easy to use wrapper class for a FooGallery Album post
  */
-class FooGalleryAlbum extends stdClass {
+class FooGalleryAlbum extends \stdClass {
 
 	/**
 	 * private constructor

@@ -20,7 +20,7 @@ require_once FOOGALLERY_PATH . 'includes/class-foogallery-attachment-type.php';
 require_once FOOGALLERY_PATH . 'includes/thumbs/includes.php';
 
 // Include bundled extensions.
-require_once FOOGALLERY_PATH . 'extensions/albums/class-albums-extension.php';
+new FooPlugins\FooGallery\Extensions\Album\FooGallery_Albums_Extension();
 require_once FOOGALLERY_PATH . 'extensions/default-templates/class-default-templates-extension.php'; // Legacy!
 require_once FOOGALLERY_PATH . 'extensions/default-templates/class-default-templates.php';
 require_once FOOGALLERY_PATH . 'extensions/demo-content-generator/class-demo-content-generator.php';

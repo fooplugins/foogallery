@@ -9,8 +9,35 @@
       "email": "brad@fooplugins.com"
     }
   ],
-  "require-dev": {
+  "autoload": {
+      "psr-4": {
+        "FooPlugins\\FooGallery\\": "includes",
+        "FooPlugins\\FooGallery\\Pro\\": "Pro",
+        "FooPlugins\\FooGallery\\Extensions\\": "Extensions",
+        "FooPlugins\\FooGallery\\Gutenberg\\": "gutenberg"
+      },
+      "classmap": [
+        "includes",
+        "Pro",
+        "Extensions",
+        "gutenberg"
+      ]
+    },
+    "extra": {
+        "installer-paths": {
+            "wp-content/plugins/{$name}/": ["type:wordpress-plugin"]
+        }
+    },
+    "require-dev": {
     "squizlabs/php_codesniffer": "3.*",
     "wp-coding-standards/wpcs": "2.*"
-  }
+    },
+    "config": {
+    "allow-plugins": {
+        "composer/installers": true
+    }
+    },
+    "require": {
+        "composer/installers": "^1.12"
+    }
 }

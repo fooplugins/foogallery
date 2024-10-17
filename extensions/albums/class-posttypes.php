@@ -1,4 +1,5 @@
 <?php
+namespace FooPlugins\FooGallery\Extensions\Album;
 
 /**
  * FooGallery Album Custom Post Types
@@ -71,7 +72,7 @@ if ( ! class_exists( 'FooGallery_Albums_PostTypes' ) ) {
 				'show_ui'      => true,
 				'supports'     => array( 'title' ),
                 'show_in_menu' => foogallery_admin_menu_parent_slug(),
-                'capabilities' => FooGallery_Albums_PostTypes::ALBUM_CAPABILITIES
+                'capabilities' => self::ALBUM_CAPABILITIES,
 			);
 
 			$args = apply_filters( 'foogallery_album_posttype_register_args', $args );
@@ -101,7 +102,7 @@ if ( ! class_exists( 'FooGallery_Albums_PostTypes' ) ) {
 
                     if ( !is_null( $role ) ) {
 
-                        foreach ( FooGallery_Albums_PostTypes::ALBUM_CAPABILITIES as $cap_key => $cap ) {
+                        foreach ( self::ALBUM_CAPABILITIES as $cap_key => $cap ) {
                             $role->add_cap( $cap );
                         }
                     }
@@ -134,7 +135,7 @@ if ( ! class_exists( 'FooGallery_Albums_PostTypes' ) ) {
                 foreach ($roles as $role => $name) {
                     $role_obj = get_role($role);
                     if (!is_null($role_obj)) {
-                        foreach ( FooGallery_Albums_PostTypes::ALBUM_CAPABILITIES as $cap_key => $cap ) {
+                        foreach ( self::ALBUM_CAPABILITIES as $cap_key => $cap ) {
                             $role_obj->remove_cap($cap);
                         }
                     }
