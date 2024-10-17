@@ -3,6 +3,8 @@
  * FooGallery WhiteLabelling Extension
  */
 
+namespace FooPlugins\FooGallery\Pro\Extensions\Whitelabelling;
+
 if ( ! class_exists('FooGallery_Pro_Whitelabelling_Extension' ) ) {
 
 	class FooGallery_Pro_Whitelabelling_Extension {

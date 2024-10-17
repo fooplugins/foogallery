@@ -36,7 +36,6 @@ require_once FOOGALLERY_PATH . 'pro/includes/protection/class-foogallery-image-e
 require_once FOOGALLERY_PATH . 'pro/includes/protection/class-foogallery-image-editor-helper-gd.php';
 require_once FOOGALLERY_PATH . 'pro/includes/protection/class-foogallery-image-editor-helper-imagick.php';
 
-require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-whitelabelling.php';
 require_once FOOGALLERY_PATH . 'pro/extensions/whitelabelling/foogallery-whitelabelling-extension.php';
 require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-ribbons.php';
 require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-buttons.php';
@@ -67,6 +66,7 @@ if ( ! class_exists( 'FooGallery_Pro' ) ) {
 			new FooGallery_Pro_Hover_Presets();
 			new FooPlugins\FooGallery\Pro\Extensions\DefaultTemplates\FooGallery_Pro_Default_Templates();
 			new FooGallery_Pro_Instagram_Filters();
+			new FooPlugins\FooGallery\Pro\Extensions\Whitelabelling\FooGallery_Pro_Whitelabelling_Extension();
 
 			if ( foogallery_fs()->is_plan_or_trial( 'pro' ) ) {
 				new FooGallery_Pro_Advanced_Gallery_Settings();
@@ -98,7 +98,7 @@ if ( ! class_exists( 'FooGallery_Pro' ) ) {
 				new FooPlugins\FooGallery\Pro\Extensions\DefaultTemplates\Product\FooGallery_Product_Gallery_Template();
 				new FooGallery_Pro_Woocommerce_Master_Product();
 				new FooGallery_Pro_Woocommerce_Downloads();
-				new FooGallery_Pro_Whitelabelling();
+				new FooPlugins\FooGallery\Pro\FooGallery_Pro_Whitelabelling();
 				new FooGallery_Pro_Gallery_Blueprints();
 			}
 		}
