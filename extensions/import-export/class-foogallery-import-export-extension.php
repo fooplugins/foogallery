@@ -1,11 +1,11 @@
 <?php
+namespace FooPlugins\FooGallery\Extensions\ImportExport;
+
 /**
  * FooGallery Import Export Class that registers the extension.
  */
 
 if ( ! class_exists('FooGallery_Import_Export_Extension') ) {
-
-    require_once 'class-foogallery-import-export.php';
 
     class FooGallery_Import_Export_Extension {
 
@@ -13,6 +13,7 @@ if ( ! class_exists('FooGallery_Import_Export_Extension') ) {
          * FooGallery_Import_Export_Extension constructor.
          */
         function __construct() {
+            new  FooGallery_Import_Export();
             add_filter( 'foogallery_available_extensions', array( $this, 'register_extension' ) );
         }
 

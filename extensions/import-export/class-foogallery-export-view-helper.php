@@ -1,4 +1,5 @@
 <?php
+namespace FooPlugins\FooGallery\Extensions\ImportExport;
 
 if ( ! class_exists( 'FooGallery_Export_View_Helper' ) ) {
 

@@ -22,7 +22,6 @@ require_once FOOGALLERY_PATH . 'includes/thumbs/includes.php';
 new FooPlugins\FooGallery\Extensions\Album\FooGallery_Albums_Extension();
 new FooPlugins\FooGallery\Extensions\DefaultTemplates\FooGallery_Default_Templates_Extension; // Legacy!
 new FooPlugins\FooGallery\Extensions\DemoContentGenerator\FooGallery_Demo_Content_Generator();
-require_once FOOGALLERY_PATH . 'extensions/import-export/class-foogallery-import-export-extension.php';
 
 // load Template Loader files.
 require_once FOOGALLERY_PATH . 'includes/public/class-foogallery-template-loader.php';

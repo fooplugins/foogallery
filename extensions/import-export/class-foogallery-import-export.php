@@ -1,4 +1,8 @@
 <?php
+namespace FooPlugins\FooGallery\Extensions\ImportExport;
+
+use FooGallery;
+
 /**
  * FooGallery - Import Export Class
  */
@@ -187,8 +191,8 @@ if ( ! class_exists( 'FooGallery_Import_Export' ) ) {
 		 * Renders Import / Export page
 		 */
 		public function render_import_export_page() {
-			require_once 'class-foogallery-export-view-helper.php';
-			require_once 'class-foogallery-import-view-helper.php';
+			new FooGallery_Export_View_Helper();
+			new FooGallery_Import_View_Helper();
 			require_once 'view-import-export.php';
 		}
 
