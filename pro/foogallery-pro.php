@@ -36,14 +36,8 @@ require_once FOOGALLERY_PATH . 'pro/includes/protection/class-foogallery-image-e
 require_once FOOGALLERY_PATH . 'pro/includes/protection/class-foogallery-image-editor-helper-gd.php';
 require_once FOOGALLERY_PATH . 'pro/includes/protection/class-foogallery-image-editor-helper-imagick.php';
 
-require_once FOOGALLERY_PATH . 'pro/extensions/whitelabelling/foogallery-whitelabelling-extension.php';
 require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-ribbons.php';
 require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-buttons.php';
-require_once FOOGALLERY_PATH . 'pro/includes/woocommerce/class-foogallery-pro-woocommerce.php';
-require_once FOOGALLERY_PATH . 'pro/includes/woocommerce/class-foogallery-pro-datasource-products.php';
-require_once FOOGALLERY_PATH . 'pro/includes/woocommerce/class-foogallery-pro-woocommerce-base.php';
-require_once FOOGALLERY_PATH . 'pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php';
-require_once FOOGALLERY_PATH . 'pro/includes/woocommerce/class-foogallery-pro-woocommerce-downloads.php';
 require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-gallery-blueprints.php';
 
 /**
@@ -91,13 +85,13 @@ if ( ! class_exists( 'FooGallery_Pro' ) ) {
 			}
 			if ( foogallery_fs()->is_plan_or_trial( 'commerce' ) ) {
 				new FooGallery_Pro_Protection();
-				new FooGallery_Pro_Woocommerce();
-				new FooGallery_Pro_Datasource_Products();
+				new FooPlugins\FooGallery\Pro\WooCommerce\FooGallery_Pro_Woocommerce();
 				new FooGallery_Pro_Ribbons();
 				new FooGallery_Pro_Buttons();
 				new FooPlugins\FooGallery\Pro\Extensions\DefaultTemplates\Product\FooGallery_Product_Gallery_Template();
-				new FooGallery_Pro_Woocommerce_Master_Product();
-				new FooGallery_Pro_Woocommerce_Downloads();
+				new FooPlugins\FooGallery\Pro\WooCommerce\FooGallery_Pro_Woocommerce_Master_Product();
+				new FooPlugins\FooGallery\Pro\WooCommerce\FooGallery_Pro_Woocommerce_Downloads();
+				new FooPlugins\FooGallery\Pro\WooCommerce\FooGallery_Pro_Datasource_Products;
 				new FooPlugins\FooGallery\Pro\FooGallery_Pro_Whitelabelling();
 				new FooGallery_Pro_Gallery_Blueprints();
 			}

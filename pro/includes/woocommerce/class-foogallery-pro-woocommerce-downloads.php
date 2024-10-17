@@ -5,6 +5,10 @@
  *
  * @package foogallery
  */
+namespace FooPlugins\FooGallery\Pro\WooCommerce;
+
+use WC_Order;
+use WC_Product_Download;
 
 if ( ! class_exists( 'FooGallery_Pro_Woocommerce_Downloads' ) ) {
 	/**

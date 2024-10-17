@@ -4,6 +4,8 @@
  *
  * @package foogallery
  */
+namespace FooPlugins\FooGallery\Pro\WooCommerce;
+use  FooGallery;
 
 if ( ! class_exists( 'FooGallery_Pro_Woocommerce_Base' ) ) {
 

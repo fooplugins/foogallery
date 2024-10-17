@@ -5,6 +5,13 @@
  *
  * @package foogallery
  */
+namespace FooPlugins\FooGallery\Pro\WooCommerce;
+
+use FooGallery;
+use WC_Product_Attribute;
+use WC_Product_Variation;
+use WC_Product_Variable;
+use FooPlugins\FooGallery\Pro\WooCommerce\FooGallery_Pro_Woocommerce;
 
 if ( ! class_exists( 'FooGallery_Pro_Woocommerce_Master_Product' ) ) {
 	/**
