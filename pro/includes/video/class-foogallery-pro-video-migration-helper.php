@@ -2,6 +2,10 @@
 /**
  * FooVideo Migration Helpers Class
  */
+namespace FooPlugins\FooGallery\Pro\Video;
+
+use FooGallery;
+
 if ( ! class_exists( 'FooGallery_Pro_Video_Migration_Helper' ) ) {
 
 	class FooGallery_Pro_Video_Migration_Helper {

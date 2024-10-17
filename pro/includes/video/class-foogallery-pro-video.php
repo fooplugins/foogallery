@@ -1,4 +1,6 @@
 <?php
+namespace FooPlugins\FooGallery\Pro\Video;
+
 /**
  * Adds video support within FooGallery
  */
@@ -9,8 +11,6 @@ if ( ! class_exists( 'FooGallery_Pro_Video' ) ) {
 	define( 'FOOGALLERY_VIDEO_POST_META_VIDEO_COUNT', '_foogallery_video_count' );
 
 	require_once plugin_dir_path( __FILE__ ) . 'functions.php';
-	require_once plugin_dir_path( __FILE__ ) . 'class-foogallery-pro-video-query.php';
-	require_once plugin_dir_path( __FILE__ ) . 'class-foogallery-pro-video-import.php';
 
 	class FooGallery_Pro_Video {
 		/**
@@ -91,7 +91,7 @@ if ( ! class_exists( 'FooGallery_Pro_Video' ) ) {
 
             $extensions_list[] = array(
                 'slug' => 'foogallery-video',
-                'class' => 'FooGallery_Pro_Video',
+                'class' => 'FooPlugins\FooGallery\Pro\Video\FooGallery_Pro_Video',
                 'categories' => array( 'Premium' ),
                 'title' => __( 'Video', 'foogallery' ),
                 'description' => $pro_features['video']['desc'],

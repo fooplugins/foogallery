@@ -6,14 +6,9 @@
  * Date: 4/17/2018
  * Time: 10:09 PM
  */
+namespace FooPlugins\FooGallery\Pro\Video;
 
 if ( !class_exists("FooGallery_Pro_Video_Query") ){
-
-	require_once dirname(__FILE__) . '/class-foogallery-pro-video-base.php';
-	require_once dirname(__FILE__) . '/class-foogallery-pro-video-self-hosted.php';
-	require_once dirname(__FILE__) . '/class-foogallery-pro-video-oembed.php';
-	require_once dirname(__FILE__) . '/class-foogallery-pro-video-youtube.php';
-	require_once dirname(__FILE__) . '/class-foogallery-pro-video-vimeo.php';
 
 	class FooGallery_Pro_Video_Query extends FooGallery_Pro_Video_Base {
 
