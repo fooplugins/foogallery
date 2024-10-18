@@ -29,7 +29,6 @@ require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-exif.php';
 
 require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-ribbons.php';
 require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-buttons.php';
-require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-gallery-blueprints.php';
 
 /**
  * FooGallery PRO Main Class
@@ -84,7 +83,7 @@ if ( ! class_exists( 'FooGallery_Pro' ) ) {
 				new FooPlugins\FooGallery\Pro\WooCommerce\FooGallery_Pro_Woocommerce_Downloads();
 				new FooPlugins\FooGallery\Pro\WooCommerce\FooGallery_Pro_Datasource_Products();
 				new FooPlugins\FooGallery\Pro\FooGallery_Pro_Whitelabelling();
-				new FooGallery_Pro_Gallery_Blueprints();
+				new FooPlugins\FooGallery\Pro\FooGallery_Pro_Gallery_Blueprints();
 			}
 		}
 	}
