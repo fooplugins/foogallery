@@ -6,7 +6,7 @@
  */
 namespace FooPlugins\FooGallery\Pro\WooCommerce;
 
-use FooGallery_Pro_Ribbons;
+use FooPlugins\FooGallery\Pro\FooGallery_Pro_Ribbons;
 use WC_Product_Variation;
 use FooGallery;
 

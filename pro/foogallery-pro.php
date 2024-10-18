@@ -27,8 +27,6 @@ require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-advanced-thumb
 require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-bulk-management.php';
 require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-exif.php';
 
-require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-ribbons.php';
-require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-buttons.php';
 
 /**
  * FooGallery PRO Main Class
@@ -76,8 +74,8 @@ if ( ! class_exists( 'FooGallery_Pro' ) ) {
 			if ( foogallery_fs()->is_plan_or_trial( 'commerce' ) ) {
 				new FooPlugins\FooGallery\Pro\Protection\FooGallery_Pro_Protection();
 				new FooPlugins\FooGallery\Pro\WooCommerce\FooGallery_Pro_Woocommerce();
-				new FooGallery_Pro_Ribbons();
-				new FooGallery_Pro_Buttons();
+				new FooPlugins\FooGallery\Pro\FooGallery_Pro_Ribbons();
+				new FooPlugins\FooGallery\Pro\FooGallery_Pro_Buttons();
 				new FooPlugins\FooGallery\Pro\Extensions\DefaultTemplates\Product\FooGallery_Product_Gallery_Template();
 				new FooPlugins\FooGallery\Pro\WooCommerce\FooGallery_Pro_Woocommerce_Master_Product();
 				new FooPlugins\FooGallery\Pro\WooCommerce\FooGallery_Pro_Woocommerce_Downloads();

@@ -1,4 +1,7 @@
 <?php
+
+namespace FooPlugins\FooGallery\Pro;
+
 /**
  * FooGallery Pro Ribbons Class
  */
