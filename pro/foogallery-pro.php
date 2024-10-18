@@ -82,7 +82,7 @@ if ( ! class_exists( 'FooGallery_Pro' ) ) {
 				new FooPlugins\FooGallery\Pro\Extensions\DefaultTemplates\Product\FooGallery_Product_Gallery_Template();
 				new FooPlugins\FooGallery\Pro\WooCommerce\FooGallery_Pro_Woocommerce_Master_Product();
 				new FooPlugins\FooGallery\Pro\WooCommerce\FooGallery_Pro_Woocommerce_Downloads();
-				new FooPlugins\FooGallery\Pro\WooCommerce\FooGallery_Pro_Datasource_Products;
+				new FooPlugins\FooGallery\Pro\WooCommerce\FooGallery_Pro_Datasource_Products();
 				new FooPlugins\FooGallery\Pro\FooGallery_Pro_Whitelabelling();
 				new FooGallery_Pro_Gallery_Blueprints();
 			}
