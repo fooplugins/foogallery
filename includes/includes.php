@@ -2,10 +2,8 @@
 
 // Common includes.
 require_once FOOGALLERY_PATH . 'includes/render-functions.php';
-require_once FOOGALLERY_PATH . 'includes/class-posttypes.php';
 require_once FOOGALLERY_PATH . 'includes/class-foogallery.php';
 require_once FOOGALLERY_PATH . 'includes/class-foogallery-attachment.php';
-require_once FOOGALLERY_PATH . 'includes/class-thumbnails.php';
 require_once FOOGALLERY_PATH . 'includes/extensions/class-extension.php';
 require_once FOOGALLERY_PATH . 'includes/extensions/class-extensions-api.php';
 require_once FOOGALLERY_PATH . 'includes/extensions/class-extensions-loader.php';
@@ -29,7 +27,6 @@ require_once FOOGALLERY_PATH . 'includes/public/class-foogallery-template-loader
 require_once FOOGALLERY_PATH . 'includes/class-version-check.php';
 require_once FOOGALLERY_PATH . 'includes/class-foogallery-animated-gif-support.php';
 require_once FOOGALLERY_PATH . 'includes/class-foogallery-cache.php';
-require_once FOOGALLERY_PATH . 'includes/class-thumbnail-dimensions.php';
 require_once FOOGALLERY_PATH . 'includes/class-foogallery-common-fields.php';
 require_once FOOGALLERY_PATH . 'includes/class-foogallery-lazyload.php';
 require_once FOOGALLERY_PATH . 'includes/class-foogallery-paging.php';
@@ -75,7 +72,5 @@ if ( is_admin() ) {
 }
 
 require_once FOOGALLERY_PATH . 'includes/public/class-shortcodes.php';
-require_once FOOGALLERY_PATH . 'includes/class-gallery-advanced-settings.php';
-require_once FOOGALLERY_PATH . 'includes/class-il8n.php';
 
 require_once FOOGALLERY_PATH . 'includes/class-foogallery-lightbox.php';

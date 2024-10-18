@@ -6,7 +6,7 @@
  *
  * Date: 21/03/2017
  */
-
+namespace FooPlugins\FooGallery;
 
 if ( ! class_exists( 'FooGallery_Thumbnail_Dimensions' ) ) {
 

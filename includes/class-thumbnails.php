@@ -2,6 +2,9 @@
 /*
  * FooGallery Thumbnail Resizing class
  */
+namespace FooPlugins\FooGallery;
+
+use WP_Query;
 
 if ( !class_exists( 'FooGallery_Thumbnails' ) ) {
 

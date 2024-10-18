@@ -124,7 +124,7 @@ if ( function_exists( 'foogallery_fs' ) ) {
 				$this->load_plugin_textdomain();
 
 				// setup gallery post type.
-				new FooGallery_PostTypes();
+				new FooPlugins\FooGallery\FooGallery_PostTypes();
 
 				// load any extensions.
 				new FooGallery_Extensions_Loader();
@@ -146,7 +146,7 @@ if ( function_exists( 'foogallery_fs' ) ) {
 
 				new FooGallery_Shortcodes();
 
-				new FooGallery_Thumbnails();
+				new FooPlugins\FooGallery\FooGallery_Thumbnails();
 
 				new FooGallery_Attachment_Filters();
 
@@ -164,7 +164,7 @@ if ( function_exists( 'foogallery_fs' ) ) {
 
 				new FooGallery_Paging();
 
-				new FooGallery_Thumbnail_Dimensions();
+				new FooPlugins\FooGallery\FooGallery_Thumbnail_Dimensions();
 
 				new FooGallery_Attachment_Custom_Class();
 
@@ -210,10 +210,10 @@ if ( function_exists( 'foogallery_fs' ) ) {
 				new FooPlugins\FooGallery\Extensions\Gutenberg\FooGallery_Gutenberg();
 
 				// init advanced settings.
-				new FooGallery_Advanced_Gallery_Settings();
+				new FooPlugins\FooGallery\FooGallery_Advanced_Gallery_Settings();
 
 				// init localization for FooGallery.
-				new FooGallery_il8n();
+				new FooPlugins\FooGallery\FooGallery_il8n();
 			}
 
 			function add_foogallery_pro_features( $extensions ) {

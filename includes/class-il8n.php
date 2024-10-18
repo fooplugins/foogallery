@@ -2,6 +2,7 @@
 /**
  * Foogallery class for enqueuing the FooGallery_il8n variable into the page
  */
+namespace FooPlugins\FooGallery;
 
 if ( ! class_exists( 'FooGallery_il8n' ) ) {
 	class FooGallery_il8n {
