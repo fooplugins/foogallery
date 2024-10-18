@@ -2,6 +2,11 @@
 /**
  * The Gallery Datasource which pulls attachments from a folder within Real Media Library
  */
+namespace FooPlugins\FooGallery\Pro;
+
+use FooGalleryAttachment;
+use FooGallery_Datasource_MediaLibrary_Query_Helper;
+
 if ( ! class_exists( 'FooGallery_Pro_Datasource_RealMediaLibrary' ) ) {
 
 	class FooGallery_Pro_Datasource_RealMediaLibrary {

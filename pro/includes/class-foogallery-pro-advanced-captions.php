@@ -3,6 +3,10 @@
  * Class for adding advanced caption settings to all gallery templates
  * Date: 10/02/2020
  */
+namespace FooPlugins\FooGallery\Pro;
+
+use WP_Query;
+
 if ( ! class_exists( 'FooGallery_Pro_Advanced_Captions' ) ) {
 
 	define( 'FOOGALLERY_ADVANCED_CAPTIONS_FIELDS_TRANSIENT_KEY', 'foogallery_advanced_captions_fields' );

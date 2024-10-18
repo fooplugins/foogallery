@@ -2,6 +2,10 @@
 /**
  * FooGallery Pro Bulk Management Class
  */
+namespace FooPlugins\FooGallery\Pro;
+
+use FooGallery;
+
 if ( ! class_exists( 'FooGallery_Pro_Bulk_Management' ) ) {
 
 	class FooGallery_Pro_Bulk_Management {

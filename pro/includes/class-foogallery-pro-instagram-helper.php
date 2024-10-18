@@ -2,6 +2,8 @@
 /**
  * FooGallery Pro helper class to get Instagram data
  */
+namespace FooPlugins\FooGallery\Pro;
+
 if ( ! class_exists( 'FooGallery_Pro_Instagram_Helper' ) ) {
 
 	class FooGallery_Pro_Instagram_Helper {

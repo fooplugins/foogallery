@@ -2,6 +2,11 @@
 /**
  * The Gallery Datasource which pulls images from a specific folder on the server
  */
+namespace FooPlugins\FooGallery\Pro;
+
+use FooGalleryAttachment;
+use FooGallery;
+
 if ( ! class_exists( 'FooGallery_Pro_Datasource_Folders' ) ) {
 
 	class FooGallery_Pro_Datasource_Folders {

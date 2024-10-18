@@ -2,6 +2,8 @@
 /**
  * The Gallery Datasource which pulls attachments for a specific Media Category Taxonomy
  */
+namespace FooPlugins\FooGallery\Pro;
+
 if ( ! class_exists( 'FooGallery_Pro_Datasource_MediaCategories' ) ) {
 
 	class FooGallery_Pro_Datasource_MediaCategories extends FooGallery_Pro_Datasource_Taxonomy_Base {

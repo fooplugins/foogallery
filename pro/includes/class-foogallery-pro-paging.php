@@ -2,6 +2,8 @@
 /**
  * FooGallery Pro Paging Class
  */
+namespace FooPlugins\FooGallery\Pro;
+
 if ( ! class_exists( 'FooGallery_Pro_Paging' ) ) {
 
 	class FooGallery_Pro_Paging {
@@ -35,7 +37,7 @@ if ( ! class_exists( 'FooGallery_Pro_Paging' ) ) {
 
             $extensions_list[] = array(
                 'slug' => 'foogallery-paging',
-                'class' => 'FooGallery_Pro_Paging',
+                'class' => 'FooPlugins\FooGallery\Pro\FooGallery_Pro_Paging',
                 'categories' => array( 'Premium' ),
                 'title' => __( 'Pagination', 'foogallery' ),
                 'description' => $pro_features['pagination']['desc'],

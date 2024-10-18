@@ -2,6 +2,10 @@
 /**
  * FooGallery Pro Gallery Shortcode Override Class
  */
+namespace FooPlugins\FooGallery\Pro;
+
+use FooGallery_Template_Loader;
+
 if ( ! class_exists( 'FooGallery_Pro_Gallery_Shortcode_Override' ) ) {
 
     class FooGallery_Pro_Gallery_Shortcode_Override {

@@ -2,6 +2,8 @@
 /**
  * FooGallery Pro Hover Presets Class
  */
+namespace FooPlugins\FooGallery\Pro;
+
 if ( ! class_exists( 'FooGallery_Pro_Hover_Presets' ) ) {
 
 	class FooGallery_Pro_Hover_Presets {

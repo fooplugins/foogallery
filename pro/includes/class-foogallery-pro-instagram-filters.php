@@ -2,6 +2,8 @@
 /**
  * FooGallery Pro Instagram Filters Class
  */
+namespace FooPlugins\FooGallery\Pro;
+
 if ( ! class_exists( 'FooGallery_Pro_Instagram_Filters' ) ) {
 
 	class FooGallery_Pro_Instagram_Filters {

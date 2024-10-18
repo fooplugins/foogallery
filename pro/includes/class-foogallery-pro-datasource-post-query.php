@@ -2,6 +2,10 @@
 /**
  * The Gallery Datasource which pulls Post thumbnail of all the post.
  */
+namespace FooPlugins\FooGallery\Pro;
+
+use FooGalleryAttachment;
+
 if ( ! class_exists( 'FooGallery_Pro_Datasource_Post_Query' ) ) {
 
 	class FooGallery_Pro_Datasource_Post_Query {

@@ -2,6 +2,10 @@
 /**
  * The Gallery Datasource which pulls images using WP/LR Sync
  */
+namespace FooPlugins\FooGallery\Pro;
+
+use FooGallery_Datasource_MediaLibrary_Query_Helper;
+
 if ( ! class_exists( 'FooGallery_Pro_Datasource_Lightroom' ) ) {
 
     class FooGallery_Pro_Datasource_Lightroom {

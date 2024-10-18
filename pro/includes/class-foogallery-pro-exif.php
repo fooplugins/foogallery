@@ -2,6 +2,8 @@
 /**
  * Class for Exchangeable image file format (EXIF) 
  */
+namespace FooPlugins\FooGallery\Pro;
+
 if ( ! class_exists( 'FooGallery_Pro_Exif' ) ) {
 
     class FooGallery_Pro_Exif {
@@ -61,7 +63,7 @@ if ( ! class_exists( 'FooGallery_Pro_Exif' ) ) {
 
             $extensions_list[] = array(
                 'slug' => 'foogallery-exif',
-                'class' => 'FooGallery_Pro_Exif',
+                'class' => 'FooPlugins\FooGallery\Pro\FooGallery_Pro_Exif',
                 'categories' => array( 'Premium' ),
                 'title' => __( 'EXIF', 'foogallery' ),
                 'description' => $pro_features['exif']['desc'],

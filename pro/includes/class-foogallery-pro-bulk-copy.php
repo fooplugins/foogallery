@@ -2,6 +2,8 @@
 /**
  * FooGallery Pro Bulk Copy Class
  */
+namespace FooPlugins\FooGallery\Pro;
+
 if ( ! class_exists( 'FooGallery_Pro_Bulk_Copy' ) ) {
 
     class FooGallery_Pro_Bulk_Copy {
@@ -30,7 +32,7 @@ if ( ! class_exists( 'FooGallery_Pro_Bulk_Copy' ) ) {
 
             $extensions_list[] = array(
                 'slug' => 'foogallery-bulk-copy',
-                'class' => 'FooGallery_Pro_Bulk_Copy',
+                'class' => 'FooPlugins\FooGallery\Pro\FooGallery_Pro_Bulk_Copy',
                 'categories' => array( 'Premium' ),
                 'title' => __( 'Bulk Copy', 'foogallery' ),
                 'description' => $pro_features['bulk_copy']['desc'],

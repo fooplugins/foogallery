@@ -2,6 +2,10 @@
 /**
  * FooGallery Pro support for WP/LR Sync
  */
+namespace FooPlugins\FooGallery\Pro;
+
+use FooGallery;
+
 if ( ! class_exists( 'FooGallery_Pro_WPLR_Support' ) ) {
 
 	class FooGallery_Pro_WPLR_Support {

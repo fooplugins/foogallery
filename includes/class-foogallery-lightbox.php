@@ -4,6 +4,7 @@
 	 *
 	 * @package FooGallery
 	 */
+use FooPlugins\FooGallery\Pro\FooGallery_Pro_Advanced_Captions;
 
 if ( ! class_exists( 'FooGallery_Lightbox' ) ) {
 

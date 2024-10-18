@@ -195,9 +195,8 @@ if ( function_exists( 'foogallery_fs' ) ) {
 
 				if ( foogallery_fs()->is__premium_only() ) {
 					if ( foogallery_fs()->can_use_premium_code() ) {
-						require_once FOOGALLERY_PATH . 'pro/foogallery-pro.php';
 
-						new FooGallery_Pro();
+						new FooPlugins\FooGallery\Pro\FooGallery_Pro();
 
 						$pro_code_included = true;
 					}
