@@ -26,9 +26,6 @@ new FooPlugins\FooGallery\Extensions\DemoContentGenerator\FooGallery_Demo_Conten
 // load Template Loader files.
 require_once FOOGALLERY_PATH . 'includes/public/class-foogallery-template-loader.php';
 
-// Load all Compatibility files.
-require_once FOOGALLERY_PATH . 'includes/compatibility/class-foogallery-compatibility.php';
-
 require_once FOOGALLERY_PATH . 'includes/class-version-check.php';
 require_once FOOGALLERY_PATH . 'includes/class-foogallery-animated-gif-support.php';
 require_once FOOGALLERY_PATH . 'includes/class-foogallery-cache.php';

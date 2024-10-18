@@ -3,6 +3,8 @@
  * ElasticPress Compatibility Class
  * Date: 14/10/2018
  */
+namespace FooPlugins\FooGallery\Compatibility;
+
 if ( ! class_exists( 'FooGallery_ElasticPress_Compatibility' ) ) {
 
 	class FooGallery_ElasticPress_Compatibility {

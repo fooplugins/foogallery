@@ -168,7 +168,7 @@ if ( function_exists( 'foogallery_fs' ) ) {
 
 				new FooGallery_Attachment_Custom_Class();
 
-				new FooGallery_Compatibility();
+				new FooPlugins\FooGallery\Compatibility\FooGallery_Compatibility();
 
 				new FooGallery_Extensions_Compatibility();
 

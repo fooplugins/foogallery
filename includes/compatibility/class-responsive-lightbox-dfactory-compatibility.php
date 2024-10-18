@@ -6,6 +6,8 @@
  *
  * @since 1.2.21
  */
+namespace FooPlugins\FooGallery\Compatibility;
+
 if ( ! class_exists( 'FooGallery_Responsive_Lightbox_dFactory_Compatibility' ) ) {
 
 	class FooGallery_Responsive_Lightbox_dFactory_Compatibility {
