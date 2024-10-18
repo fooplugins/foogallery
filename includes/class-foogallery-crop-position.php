@@ -5,6 +5,8 @@
  *
  * @since 1.4.18
  */
+namespace FooPlugins\FooGallery;
+
 if ( ! class_exists( 'FooGallery_Crop_Position' ) ) {
 
 	class FooGallery_Crop_Position {

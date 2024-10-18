@@ -3,6 +3,8 @@
  * Animated GIF support in FooGallery
  * Date: 19/02/2017
  */
+namespace FooPlugins\FooGallery;
+
 if ( ! class_exists( 'class-foogallery-animated-gif-support.php' ) ) {
 
 	class FooGallery_Animated_Gif_Support {

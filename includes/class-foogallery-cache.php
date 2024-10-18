@@ -3,6 +3,8 @@
  * Class used to cache gallery HTML output to save requests to the database
  * Date: 20/03/2017
  */
+namespace FooPlugins\FooGallery;
+
 if ( ! class_exists( 'FooGallery_Cache' ) ) {
 
 	class FooGallery_Cache {

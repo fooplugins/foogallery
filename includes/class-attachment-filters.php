@@ -1,4 +1,6 @@
 <?php
+namespace FooPlugins\FooGallery;
+
 /**
  * Create some template specific filters for overriding html attributes when rendering galleries
  *

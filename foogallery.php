@@ -148,31 +148,31 @@ if ( function_exists( 'foogallery_fs' ) ) {
 
 				new FooPlugins\FooGallery\FooGallery_Thumbnails();
 
-				new FooGallery_Attachment_Filters();
+				new FooPlugins\FooGallery\FooGallery_Attachment_Filters();
 
-				new FooGallery_Retina();
+				new FooPlugins\FooGallery\FooGallery_Retina();
 
-				new FooGallery_Animated_Gif_Support();
+				new FooPlugins\FooGallery\FooGallery_Animated_Gif_Support();
 
-				new FooGallery_Cache();
+				new FooPlugins\FooGallery\FooGallery_Cache();
 
                 new FooGallery_Lightbox();
 
 				new FooGallery_Common_Fields();
 
-				new FooGallery_LazyLoad();
+				new FooPlugins\FooGallery\FooGallery_LazyLoad();
 
-				new FooGallery_Paging();
+				new FooPlugins\FooGallery\FooGallery_Paging();
 
 				new FooPlugins\FooGallery\FooGallery_Thumbnail_Dimensions();
 
-				new FooGallery_Attachment_Custom_Class();
+				new FooPlugins\FooGallery\FooGallery_Attachment_Custom_Class();
 
 				new FooPlugins\FooGallery\Compatibility\FooGallery_Compatibility();
 
-				new FooGallery_Extensions_Compatibility();
+				new FooPlugins\FooGallery\FooGallery_Extensions_Compatibility();
 
-				new FooGallery_Crop_Position();
+				new FooPlugins\FooGallery\FooGallery_Crop_Position();
 
 				new FooGallery_ForceHttps();
 

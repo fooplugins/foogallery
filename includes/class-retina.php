@@ -2,6 +2,7 @@
 /*
  * FooGallery Retina Support class
  */
+namespace FooPlugins\FooGallery;
 
 if ( !class_exists( 'FooGallery_Retina' ) ) {
 

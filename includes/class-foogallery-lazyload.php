@@ -3,6 +3,8 @@
  * Class used to handle lazy loading for gallery templates
  * Date: 20/03/2017
  */
+namespace FooPlugins\FooGallery;
+
 if ( ! class_exists( 'FooGallery_LazyLoad' ) ) {
 
 	/**
@@ -58,7 +60,7 @@ if ( ! class_exists( 'FooGallery_LazyLoad' ) ) {
 		/**
 		 * Force lazy loading for all galleries in the stack album
 		 *
-		 * @param FooGalleryAlbum $current_foogallery_album The current album that is being rendered.
+		 * @param \FooPlugins\FooGallery\Extensions\Album\FooGalleryAlbum $current_foogallery_album The current album that is being rendered.
 		 */
 		public function force_lazyloading_for_galleries( $current_foogallery_album ) {
 			foreach ( $current_foogallery_album->galleries() as $gallery ) {
@@ -112,7 +114,7 @@ if ( ! class_exists( 'FooGallery_LazyLoad' ) ) {
 		 *
 		 * @param array                $attr
 		 * @param array                $args
-		 * @param FooGalleryAttachment $attachment
+		 * @param \FooGalleryAttachment $attachment
 		 *
 		 * @return mixed
 		 */
