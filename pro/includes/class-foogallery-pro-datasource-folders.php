@@ -31,7 +31,7 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Folders' ) ) {
                 'id'    => 'root_folder',
                 'type'  => 'radio',
                 'title' => __( 'Server Folder Root', 'foogallery' ),
-                'desc'  => __( 'Some server configurations require a different root folder to be used when scanning the server.', 'foogallery' ),
+                'desc'  => __( 'Some server configurations require a different root folder to be used when scanning the server. This is used when using the Server Folder datasource.', 'foogallery' ),
                 'choices' => array(
                     '' => __( 'ABSPATH (Default)', 'foogallery' ),
                     'DOCUMENT_ROOT' => __( '$_SERVER["DOCUMENT_ROOT"]', 'foogallery' ),
