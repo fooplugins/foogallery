@@ -4,7 +4,7 @@ Donate link: https://fooplugins.com
 Tags: gallery, image gallery, photo gallery, responsive gallery, wordpress gallery plugin, albums, media gallery, video gallery, lightbox
 Requires at least: 5.3
 Tested up to: 6.6
-Stable tag: 2.4.16
+Stable tag: 2.4.24
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -312,6 +312,11 @@ Goto FooGallery Settings -> Advanced Tab and check "Disable PRO Promotions" and 
 Please update in order for FooGallery to work in WP 5.5+!
 
 == Changelog ==
+
+= 2.4.25 =
+* Date Updated : 19 Oct 2024
+* Fix : Fixed bug with gallery and album capabilities being incorrectly set.
+* Fix : Fixed bug with custom JS and CSS not being double escaped.
 
 = 2.4.22 =
 * Date Updated : 21 Sep 2024
