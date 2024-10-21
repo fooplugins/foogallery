@@ -9,6 +9,7 @@
  * Author URI: http://fooplugins.com
  * License: GPL2
 */
+namespace FooPlugins\FooGallery\Base;
 
 if ( !class_exists( 'Foo_Plugin_Settings_v2_2' ) ) {
 	class Foo_Plugin_Settings_v2_2 {

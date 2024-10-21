@@ -3,10 +3,11 @@
  * Created by brad.
  * Date: 2014-05-23
  */
+namespace FooPlugins\FooGallery\Tests;
 
-require_once dirname(dirname(__FILE__)).'\classes\class-foo-friendly-dates.php';
+use Fooplugins\FooGallery\Base\Foo_Friendly_Dates_v1;
 
-class Foo_Friendly_Dates_v1Test extends PHPUnit_Framework_TestCase {
+class Foo_Friendly_Dates_v1Test extends \PHPUnit_Framework_TestCase {
 
 	/**
 	 * @var Foo_Friendly_Dates_v1

@@ -12,6 +12,8 @@ Example :
  echo $instance->friendly_date( 1403533149 );
 
 */
+namespace FooPlugins\FooGallery\Base;
+
 if ( !class_exists( 'Foo_Friendly_Dates_v1' ) ) {
 
 	if ( !function_exists( '__' ) ) {

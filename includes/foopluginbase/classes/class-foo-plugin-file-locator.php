@@ -10,6 +10,7 @@
  * @license   GPL-2.0+
  * @version   1.0.0
  */
+namespace FooPlugins\FooGallery\Base;
 
 if ( !class_exists( 'Foo_Plugin_File_Locator_v1' ) ) {
 

@@ -95,7 +95,7 @@ if ( function_exists( 'foogallery_fs' ) ) {
 		 * @link      https://github.com/fooplugins/foogallery
 		 * @copyright 2013 FooPlugins LLC
 		 */
-		class FooGallery_Plugin extends Foo_Plugin_Base_v2_4 {
+		class FooGallery_Plugin extends \FooPlugins\FooGallery\Base\Foo_Plugin_Base_v2_4 {
 
 			private static $instance;
 

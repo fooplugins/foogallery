@@ -27,6 +27,7 @@
     along with this program; if not, write to the Free Software
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
+namespace FooPlugins\FooGallery\Base;
 
 if ( !class_exists( 'Foo_Plugin_Metabox_Sanity_v1' ) ) {
 	/**
