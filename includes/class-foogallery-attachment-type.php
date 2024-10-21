@@ -1,4 +1,6 @@
 <?php
+namespace FooPlugins\FooGallery;
+
 if ( ! class_exists('FooGallery_Attachment_Type') ) {
 
 	class FooGallery_Attachment_Type {

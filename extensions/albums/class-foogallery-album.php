@@ -1,11 +1,12 @@
 <?php
+namespace FooPlugins\FooGallery\Extensions\Album;
 
 /**
  * Class FooGalleryAlbum
  *
  * An easy to use wrapper class for a FooGallery Album post
  */
-class FooGalleryAlbum extends stdClass {
+class FooGalleryAlbum extends \stdClass {
 
 	/**
 	 * private constructor
@@ -184,7 +185,7 @@ class FooGalleryAlbum extends stdClass {
 
 				$galleries = get_posts( $gallery_query_args );
 
-				$this->_galleries = array_map( array( 'FooGallery', 'get' ), $galleries );
+				$this->_galleries = array_map( array( 'FooPlugins\FooGallery\FooGallery', 'get' ), $galleries );
 			}
 		}
 

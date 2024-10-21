@@ -4,6 +4,10 @@
  *
  * An easy to use wrapper class for a FooGallery Attachment
  */
+namespace FooPlugins\FooGallery;
+
+use stdClass;
+
 if ( ! class_exists( 'FooGalleryAttachment' ) ) {
 
 	class FooGalleryAttachment extends stdClass {

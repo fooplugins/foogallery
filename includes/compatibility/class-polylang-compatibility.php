@@ -4,6 +4,8 @@
  * Credit : @Chrystl from wordpress.org - https://wordpress.org/support/topic/polylang-conflict-with-foo-gallery
  * Date: 30/08/2015
  */
+namespace FooPlugins\FooGallery\Compatibility;
+
 if ( ! class_exists( 'FooGallery_Polylang_Compatibility' ) ) {
 
 	class FooGallery_Polylang_Compatibility {

@@ -2,6 +2,8 @@
 /**
  * All Legacy FooVideo Code lives in this class
   */
+namespace FooPlugins\FooGallery\Pro\Video;
+
 if ( ! class_exists( 'FooGallery_Pro_Video_Legacy' ) ) {
 
 	define( 'FOOGALLERY_FOOVIDEO_MIGRATION_REQUIRED', 'foogallery-foovideo-migration-required' );

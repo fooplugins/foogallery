@@ -2,6 +2,8 @@
 /**
  * The Gallery Datasource which pulls attachments for a specific Media Tag Taxonomy
  */
+namespace FooPlugins\FooGallery\Pro;
+
 if ( ! class_exists( 'FooGallery_Pro_Datasource_MediaTags' ) ) {
 
     class FooGallery_Pro_Datasource_MediaTags extends FooGallery_Pro_Datasource_Taxonomy_Base {

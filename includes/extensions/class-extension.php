@@ -4,6 +4,10 @@
  *
  * Date: 19/03/2017
  */
+namespace FooPlugins\FooGallery\Extensions;
+
+use stdClass;
+
 if ( ! class_exists( 'FooGallery_Extension' ) ) {
 
 	class FooGallery_Extension extends stdClass {

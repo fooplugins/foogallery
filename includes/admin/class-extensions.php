@@ -2,6 +2,9 @@
 /*
  * FooGallery Admin Extension class
  */
+namespace FooPlugins\FooGallery\Admin;
+
+use FooPlugins\FooGallery\Extensions\FooGallery_Extensions_API;
 
 if ( ! class_exists( 'FooGallery_Admin_Extensions' ) ) {
 

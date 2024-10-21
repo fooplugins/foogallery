@@ -3,6 +3,8 @@
  * FooGallery PRO global functions
  */
 
+use FooGallery_Plugin;
+
 /**
  * Enqueue the FooGallery Media Views stylesheet
  */

@@ -3,6 +3,8 @@
  * Base class for video imports and queries
  * Date: 17/04/2018
  */
+namespace FooPlugins\FooGallery\Pro\Video;
+
 if ( ! class_exists( 'FooGallery_Pro_Video_Base' ) ) {
 
 	class FooGallery_Pro_Video_Base {

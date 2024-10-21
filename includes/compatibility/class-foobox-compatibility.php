@@ -2,6 +2,9 @@
 /**
  * Adds in better support for FooBox Free and PRO
  */
+namespace FooPlugins\FooGallery\Compatibility;
+
+use FooPlugins\FooGallery\Pro\FooGallery_Pro_Advanced_Captions;
 
 if ( !class_exists( 'FooGallery_FooBox_Compatibility' ) ) {
 

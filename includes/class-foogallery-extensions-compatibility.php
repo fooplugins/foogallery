@@ -7,6 +7,8 @@
  * These are "hacks" that will make the upgrade process easier, and not have the requirement to upgrade the individual extensions.
  *
  */
+namespace FooPlugins\FooGallery;
+
 if ( ! class_exists( 'FooGallery_Extensions_Compatibility' ) ) {
 
     class FooGallery_Extensions_Compatibility {

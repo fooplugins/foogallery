@@ -3,6 +3,8 @@
  * Class for adding advanced thumb settings to all gallery templates
  * Date: 22/02/2020
  */
+namespace FooPlugins\FooGallery\Pro;
+
 if ( ! class_exists( 'FooGallery_Pro_Advanced_Thumbnails' ) ) {
 
     class FooGallery_Pro_Advanced_Thumbnails {

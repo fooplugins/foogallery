@@ -3,6 +3,10 @@
 /**
  * class for the Imagick image editor helper
  */
+namespace FooPlugins\FooGallery\Pro\Protection;
+
+use Imagick;
+
 if ( ! class_exists( 'FooGallery_Image_Editor_Helper_Imagick' ) ) {
 
 	class FooGallery_Image_Editor_Helper_Imagick extends FooGallery_Image_Editor_Helper_Base {

@@ -6,8 +6,8 @@
  */
 
 $galleries     = foogallery_get_all_galleries();
-$export_helper = new FooGallery_Export_View_Helper();
-$import_helper = new FooGallery_Import_View_Helper();
+$export_helper = new FooPlugins\FooGallery\Extensions\ImportExport\FooGallery_Export_View_Helper();
+$import_helper = new FooPlugins\FooGallery\Extensions\ImportExport\FooGallery_Import_View_Helper();
 ?>
 <style>
 	.foo-nav-tabs a:focus {

@@ -2,6 +2,8 @@
 /**
  * Class used to handle paging for gallery templates
  */
+namespace FooPlugins\FooGallery;
+
 if ( ! class_exists( 'FooGallery_Paging' ) ) {
 
 	class FooGallery_Paging {

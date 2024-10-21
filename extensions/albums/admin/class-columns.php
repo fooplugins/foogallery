@@ -1,4 +1,8 @@
 <?php
+namespace FooPlugins\FooGallery\Extensions\Album\Admin;
+
+use FooPlugins\FooGallery\Extensions\Album\FooGalleryAlbum;
+
 /*
  * FooGallery Admin Columns class
  */

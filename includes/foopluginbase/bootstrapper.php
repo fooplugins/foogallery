@@ -9,21 +9,6 @@
  * License: GPL2
 */
 
-//include the framework
-require_once 'classes/class-foo-plugin-base.php';
-
-//include other classes we need
-require_once 'classes/class-foo-plugin-options.php';
-require_once 'classes/class-foo-plugin-textdomain.php';
-require_once 'classes/class-foo-friendly-dates.php';
-require_once 'classes/class-foo-plugin-file-locator.php';
-
-//include classes we need in the admin
-if ( is_admin() ) {
-	require_once 'classes/class-foo-plugin-settings.php';
-	require_once 'classes/class-foo-plugin-metabox-sanity.php';
-}
-
 //include all functions we need
 require_once 'functions/arrays.php';
 require_once 'functions/general.php';

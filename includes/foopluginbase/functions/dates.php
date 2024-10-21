@@ -18,7 +18,7 @@ if ( !function_exists( 'foo_friendly_date' ) ) {
 	 * @return string		A friendly date
 	 */
 	function foo_friendly_date( $timestamp ) {
-		$instance = new Foo_Friendly_Dates_v1();
+		$instance = new FooPlugins\FooGallery\Base\Foo_Friendly_Dates_v1();
 		return $instance->friendly_date( $timestamp );
 	}
 }

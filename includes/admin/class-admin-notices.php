@@ -2,6 +2,9 @@
 /*
  * FooGallery Admin Notices class
  */
+namespace FooPlugins\FooGallery\Admin;
+
+use FooPlugins\FooGallery\FooGallery_Thumbnails;
 
 if ( ! class_exists( 'FooGallery_Admin_Notices' ) ) {
 

@@ -1,4 +1,14 @@
 <?php
+namespace FooPlugins\FooGallery\Extensions\DefaultTemplates;
+
+use FooPlugins\FooGallery\Extensions\DefaultTemplates\Thumbnail\FooGallery_Thumbnail_Gallery_Template;
+use FooPlugins\FooGallery\Extensions\DefaultTemplates\Portfolio\FooGallery_Simple_Portfolio_Gallery_Template;
+use FooPlugins\FooGallery\Extensions\DefaultTemplates\Masonry\FooGallery_Masonry_Gallery_Template;
+use FooPlugins\FooGallery\Extensions\DefaultTemplates\Justified\FooGallery_Justified_Gallery_Template;
+use FooPlugins\FooGallery\Extensions\DefaultTemplates\ImageViewer\FooGallery_Image_Viewer_Gallery_Template;
+use FooPlugins\FooGallery\Extensions\DefaultTemplates\Default\FooGallery_Default_Gallery_Template;
+use FooPlugins\FooGallery\Extensions\DefaultTemplates\Carousel\FooGallery_Carousel_Gallery_Template;
+
 /**
  * Class to include and init default templates.
  * The templates are no longer an extension and are built in and included by default
@@ -13,13 +23,6 @@ if ( ! class_exists( 'FooGallery_Default_Templates' ) ) {
     define( 'FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_SHARED_PATH', FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_PATH . 'shared/' );
 
     require_once FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_PATH . 'functions.php';
-    require_once FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_PATH . 'default/class-default-gallery-template.php';
-    require_once FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_PATH . 'image-viewer/class-image-viewer-gallery-template.php';
-    require_once FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_PATH . 'justified/class-justified-gallery-template.php';
-    require_once FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_PATH . 'masonry/class-masonry-gallery-template.php';
-    require_once FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_PATH . 'simple-portfolio/class-simple-portfolio-gallery-template.php';
-    require_once FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_PATH . 'thumbnail/class-thumbnail-gallery-template.php';
-	require_once FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_PATH . 'carousel/class-carousel-gallery-template.php';
 
     class FooGallery_Default_Templates {
 

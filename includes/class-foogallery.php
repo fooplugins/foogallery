@@ -1,10 +1,14 @@
 <?php
-
 /**
  * Class FooGallery
  *
  * An easy to use wrapper class for a FooGallery gallery post
  */
+namespace FooPlugins\FooGallery;
+
+use FooPlugins\FooGallery\FooGalleryAttachment;
+use stdClass;
+
 class FooGallery extends stdClass {
 
 	/**

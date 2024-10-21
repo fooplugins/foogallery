@@ -9,6 +9,74 @@
  * @copyright 2014 FooPlugins LLC
  */
 
+ /**
+ * Custom Autoloader for FooGallery to map namespaces to directories.
+ *
+ * @param string $class The fully-qualified class name.
+ */
+function foogallery_autoloader( $class ) {
+    /* Only autoload classes from the FooGallery namespace */
+    if ( false === strpos( $class, FOOGALLERY_NAMESPACE ) ) {
+        return;
+    }
+
+    // Define the namespace mappings based on the psr-4 autoload in composer.json.
+    $namespace_map = [
+        'FooPlugins\\FooGallery\\' => FOOGALLERY_PATH . 'includes/',
+        'FooPlugins\\FooGallery\\Pro\\' => FOOGALLERY_PATH . 'Pro/',
+        'FooPlugins\\FooGallery\\Extensions\\' => FOOGALLERY_PATH . 'Extensions/',
+        'FooPlugins\\FooGallery\\Gutenberg\\' => FOOGALLERY_PATH . 'gutenberg/',
+    ];
+
+    // Iterate through the namespace map and find the matching base directory.
+    foreach ( $namespace_map as $namespace_prefix => $base_dir ) {
+        // Check if the class starts with the namespace prefix.
+        if ( strpos( $class, $namespace_prefix ) === 0 ) {
+            // Remove the namespace prefix from the class name.
+            $relative_class = str_replace( $namespace_prefix, '', $class );
+
+            // Convert namespace separators into directory structure.
+            $class_path = explode( '\\', $relative_class );
+            $class_file = array_pop( $class_path );  // Get the class name.
+            $class_path = strtolower( implode( '/', $class_path ) );  // Convert subdirectories to lowercase.
+
+            // Convert CamelCase class name to file name format (snake_case).
+            $class_file = foogallery_uncamelize( $class_file );
+            $class_file = str_replace( '_', '-', $class_file );
+            $class_file = str_replace( '--', '-', $class_file );
+
+            // Generate the full file path.
+            $file = $base_dir . ( ! empty( $class_path ) ? $class_path . '/' : '' ) . 'class-' . $class_file . '.php';
+
+            // If the file exists, include it.
+            if ( file_exists( $file ) ) {
+                require_once $file;
+            }
+        }
+    }
+}
+
+/**
+ * Convert a CamelCase string to snake_case (or similar format for file names).
+ *
+ * @param string $str The string to convert.
+ *
+ * @return string The converted string.
+ */
+function foogallery_uncamelize( $str ) {
+    $str    = lcfirst( $str );
+    $lc     = strtolower( $str );
+    $result = '';
+    $length = strlen( $str );
+
+    // Add underscores before capital letters.
+    for ( $i = 0; $i < $length; $i++ ) {
+        $result .= ( $str[ $i ] === $lc[ $i ] ? '' : '_' ) . $lc[ $i ];
+    }
+
+    return $result;
+}
+
 /**
  * Returns the name of the plugin. (Allows the name to be overridden from extensions or functions.php)
  * @return string
@@ -45,10 +113,10 @@ function foogallery_get_gallery_template( $slug ) {
 /**
  * Return the FooGallery extension API class
  *
- * @return FooGallery_Extensions_API
+ * @return FooPlugins\FooGallery\Extensions\FooGallery_Extensions_API
  */
 function foogallery_extensions_api() {
-	return new FooGallery_Extensions_API();
+	return new FooPlugins\FooGallery\Extensions\FooGallery_Extensions_API();
 }
 
 /**
@@ -348,7 +416,7 @@ function foogallery_get_all_galleries( $excludes = false, $extra_args = false ) 
 	$galleries = array();
 
 	foreach ( $gallery_posts as $post ) {
-		$galleries[] = FooGallery::get( $post );
+		$galleries[] = FooPlugins\FooGallery\FooGallery::get( $post );
 	}
 
 	return $galleries;
@@ -540,7 +608,7 @@ function foogallery_build_container_data_options( $gallery, $attributes ) {
  */
 function foogallery_render_gallery( $gallery_id, $args = array()) {
 	//create new instance of template engine
-	$engine = new FooGallery_Template_Loader();
+	$engine = new FooPlugins\FooGallery\Public\FooGallery_Template_Loader();
 
 	$shortcode_args = wp_parse_args( $args, array(
 		'id' => $gallery_id
@@ -663,7 +731,7 @@ function foogallery_clear_all_css_load_optimizations() {
  * Performs a check to see if the plugin has been updated, and perform any housekeeping if necessary
  */
 function foogallery_perform_version_check() {
-	$checker = new FooGallery_Version_Check();
+	$checker = new FooPlugins\FooGallery\FooGallery_Version_Check();
 	$checker->perform_check();
 }
 
@@ -822,7 +890,7 @@ function foogallery_get_caption_desc_for_attachment($attachment_post, $source = 
  * Runs thumbnail tests and outputs results in a table format
  */
 function foogallery_output_thumbnail_generation_results() {
-	$thumbs = new FooGallery_Thumbnails();
+	$thumbs = new FooPlugins\FooGallery\FooGallery_Thumbnails();
 	try {
 		$results = $thumbs->run_thumbnail_generation_tests();
         if ( $results['success'] ) {
@@ -1508,7 +1576,7 @@ function foogallery_admin_get_current_gallery( $post_gallery ) {
 
 	if ( is_admin() && isset( $post ) ) {
 		if ( !isset( $current_foogallery_admin ) || $post_gallery->ID !== $post->ID ) {
-			$current_foogallery_admin = FooGallery::get( $post_gallery );
+			$current_foogallery_admin = FooPlugins\FooGallery\FooGallery::get( $post_gallery );
 		}
 
 		return $current_foogallery_admin;
@@ -1819,12 +1887,12 @@ function foogallery_thumb_available_engines() {
         'default' => array(
 	        'label'       => __( 'Default', 'foogallery' ),
 	        'description' => __( 'The default engine used to generate locally cached thumbnails.', 'foogallery' ),
-	        'class'       => 'FooGallery_Thumb_Engine_Default',
+	        'class'       => 'FooPlugins\FooGallery\Thumbs\Default\FooGallery_Thumb_Engine_Default',
         ),
         'shortpixel' => array(
 	        'label'       => __( 'ShortPixel', 'foogallery' ),
 	        'description' => sprintf( __( 'Uses %s to generate all your gallery thumbnails. They will be optimized and offloaded to the ShortPixel global CDN!', 'foogallery' ), $shortpixel_link ),
-	        'class'       => 'FooGallery_Thumb_Engine_Shortpixel',
+	        'class'       => 'FooPlugins\FooGallery\Thumbs\ShortPixel\FooGallery_Thumb_Engine_Shortpixel',
         )
     );
 
@@ -1832,7 +1900,7 @@ function foogallery_thumb_available_engines() {
         $engines['dummy'] = array(
             'label'       => __( 'Dummy', 'foogallery' ),
             'description' => __( 'A dummy thumbnail engine that can be used for testing. (uses dummyimage.com)', 'foogallery' ),
-            'class'       => 'FooGallery_Thumb_Engine_Dummy',
+            'class'       => 'FooPlugins\FooGallery\Thumbs\Dummy\FooGallery_Thumb_Engine_Dummy',
         );
     }
     return apply_filters( 'foogallery_thumb_available_engines', $engines );
@@ -1846,7 +1914,7 @@ function foogallery_thumb_available_engines() {
 function foogallery_thumb_active_engine() {
     global  $foogallery_thumb_engine ;
     //if we already have an engine, return it early
-    if ( isset( $foogallery_thumb_engine ) && is_a( $foogallery_thumb_engine, 'FooGallery_Thumb_Engine' ) ) {
+    if ( isset( $foogallery_thumb_engine ) && is_a( $foogallery_thumb_engine, 'FooPlugins\\FooGallery\\Thumbs\\FooGallery_Thumb_Engine' ) ) {
         return $foogallery_thumb_engine;
     }
     $engine = foogallery_get_setting( 'thumb_engine', 'default' );
@@ -1856,7 +1924,7 @@ function foogallery_thumb_active_engine() {
         $active_engine = $engines[$engine];
         $foogallery_thumb_engine = new $active_engine['class']();
     } else {
-        $foogallery_thumb_engine = new FooGallery_Thumb_Engine_Default();
+        $foogallery_thumb_engine = new FooPlugins\FooGallery\Thumbs\Default\FooGallery_Thumb_Engine_Default();
     }
     
     return $foogallery_thumb_engine;
@@ -2166,7 +2234,7 @@ function foogallery_admin_fields_has_field( $fields, $field_id ) {
  * @return false|string
  */
 function foogallery_local_url_to_path( $url ) {
-	return FooGallery_Thumb_Generator::get_file_path( $url );
+	return FooPlugins\FooGallery\Thumbs\Default\FooGallery_Thumb_Generator::get_file_path( $url );
 }
 
 /**
@@ -2210,7 +2278,7 @@ function foogallery_feature_enabled( $feature ) {
     global $foogallery_features;
 
     if ( empty( $foogallery_features ) ) {
-        $api = new FooGallery_Extensions_API();
+        $api = new FooPlugins\FooGallery\Extensions\FooGallery_Extensions_API();
         $foogallery_features = $api->get_all_for_view();
     }
 
@@ -2264,7 +2332,7 @@ function foogallery_get_target_options() {
 function foogallery_create_demo_content() {
 
     if ( is_admin() && is_user_logged_in() && current_user_can( 'manage_options' ) ) {
-        $importer = new FooGallery_Admin_Demo_Content();
+        $importer = new FooPlugins\FooGallery\Admin\FooGallery_Admin_Demo_Content();
         $results = $importer->import_demo_content();
 
         foogallery_set_setting('demo_content', 'on');

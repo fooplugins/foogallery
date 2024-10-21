@@ -1,4 +1,6 @@
 <?php
+namespace FooPlugins\FooGallery\Pro;
+
 if ( ! class_exists( 'FooGallery_Pro_Attachment_Taxonomies' ) ) {
 
     class FooGallery_Pro_Attachment_Taxonomies {

@@ -2,7 +2,7 @@
 /*
 Plugin Name: FooGallery
 Description: FooGallery is the most intuitive and extensible gallery management tool ever created for WordPress
-Version:     2.4.20
+Version:     3.0.0
 Author:      FooPlugins
 Plugin URI:  https://fooplugins.com/foogallery-wordpress-gallery-plugin/
 Author URI:  https://fooplugins.com
@@ -27,12 +27,21 @@ if ( function_exists( 'foogallery_fs' ) ) {
 		define( 'FOOGALLERY_SLUG', 'foogallery' );
 		define( 'FOOGALLERY_PATH', plugin_dir_path( __FILE__ ) );
 		define( 'FOOGALLERY_URL', plugin_dir_url( __FILE__ ) );
+		define( 'FOOGALLERY_NAMESPACE', 'FooPlugins\\FooGallery' );
 		define( 'FOOGALLERY_FILE', __FILE__ );
-		define( 'FOOGALLERY_VERSION', '2.4.20' );
+		define( 'FOOGALLERY_VERSION', '3.0.0' );
 		define( 'FOOGALLERY_SETTINGS_VERSION', '2' );
+
+		// Load Composer autoloader.
+		if ( file_exists( FOOGALLERY_PATH . 'vendor/autoload.php' ) ) {
+			require_once FOOGALLERY_PATH . 'vendor/autoload.php';
+		}
 
 		require_once FOOGALLERY_PATH . 'includes/constants.php';
         require_once FOOGALLERY_PATH . 'includes/functions.php';
+
+		// Register autoloader.
+		spl_autoload_register( 'foogallery_autoloader' );
 
 		// Create a helper function for easy SDK access.
 		function foogallery_fs() {
@@ -86,7 +95,7 @@ if ( function_exists( 'foogallery_fs' ) ) {
 		 * @link      https://github.com/fooplugins/foogallery
 		 * @copyright 2013 FooPlugins LLC
 		 */
-		class FooGallery_Plugin extends Foo_Plugin_Base_v2_4 {
+		class FooGallery_Plugin extends \FooPlugins\FooGallery\Base\Foo_Plugin_Base_v2_4 {
 
 			private static $instance;
 
@@ -115,80 +124,79 @@ if ( function_exists( 'foogallery_fs' ) ) {
 				$this->load_plugin_textdomain();
 
 				// setup gallery post type.
-				new FooGallery_PostTypes();
+				new FooPlugins\FooGallery\FooGallery_PostTypes();
 
 				// load any extensions.
-				new FooGallery_Extensions_Loader();
+				new FooPlugins\FooGallery\Extensions\FooGallery_Extensions_Loader();
 
                 // Load any bundled extension initializers.
-                new FooGallery_Import_Export_Extension();
+                new FooPlugins\FooGallery\Extensions\ImportExport\FooGallery_Import_Export_Extension();
 
 				if ( is_admin() ) {
-					new FooGallery_Admin();
+					new FooPlugins\FooGallery\Admin\FooGallery_Admin();
 					add_action( 'wpmu_new_blog', array( $this, 'set_default_extensions_for_multisite_network_activated' ) );
 					foogallery_fs()->add_filter( 'plugin_icon', array( $this, 'freemius_plugin_icon' ), 10, 1 );
 					add_action( 'foogallery_admin_menu_before', array( $this, 'add_freemius_activation_menu' ) );
 				} else {
-					new FooGallery_Public();
+					new FooPlugins\FooGallery\Public\FooGallery_Public();
 				}
 
 				// initialize the thumbnail manager.
-				new FooGallery_Thumb_Manager();
+				new FooPlugins\FooGallery\Thumbs\FooGallery_Thumb_Manager();
 
-				new FooGallery_Shortcodes();
+				new FooPlugins\FooGallery\Public\FooGallery_Shortcodes();
 
-				new FooGallery_Thumbnails();
+				new FooPlugins\FooGallery\FooGallery_Thumbnails();
 
-				new FooGallery_Attachment_Filters();
+				new FooPlugins\FooGallery\FooGallery_Attachment_Filters();
 
-				new FooGallery_Retina();
+				new FooPlugins\FooGallery\FooGallery_Retina();
 
-				new FooGallery_Animated_Gif_Support();
+				new FooPlugins\FooGallery\FooGallery_Animated_Gif_Support();
 
-				new FooGallery_Cache();
+				new FooPlugins\FooGallery\FooGallery_Cache();
 
-                new FooGallery_Lightbox();
+                new FooPlugins\FooGallery\FooGallery_Lightbox();
 
-				new FooGallery_Common_Fields();
+				new FooPlugins\FooGallery\FooGallery_Common_Fields();
 
-				new FooGallery_LazyLoad();
+				new FooPlugins\FooGallery\FooGallery_LazyLoad();
 
-				new FooGallery_Paging();
+				new FooPlugins\FooGallery\FooGallery_Paging();
 
-				new FooGallery_Thumbnail_Dimensions();
+				new FooPlugins\FooGallery\FooGallery_Thumbnail_Dimensions();
 
-				new FooGallery_Attachment_Custom_Class();
+				new FooPlugins\FooGallery\FooGallery_Attachment_Custom_Class();
 
-				new FooGallery_Compatibility();
+				new FooPlugins\FooGallery\Compatibility\FooGallery_Compatibility();
 
-				new FooGallery_Extensions_Compatibility();
+				new FooPlugins\FooGallery\FooGallery_Extensions_Compatibility();
 
-				new FooGallery_Crop_Position();
+				new FooPlugins\FooGallery\FooGallery_Crop_Position();
 
-				new FooGallery_ForceHttps();
+				new FooPlugins\FooGallery\FooGallery_ForceHttps();
 
-				new FooGallery_Debug();
+				new FooPlugins\FooGallery\FooGallery_Debug();
 
-				$checker = new FooGallery_Version_Check();
+				$checker = new FooPlugins\FooGallery\FooGallery_Version_Check();
 				$checker->wire_up_checker();
 
-				new FooGallery_Widget_Init();
+				new FooPlugins\FooGallery\FooGallery_Widget_Init();
 
 				// include the default templates no matter what!
-				new FooGallery_Default_Templates();
+				new FooPlugins\FooGallery\Extensions\DefaultTemplates\FooGallery_Default_Templates();
 
 				// init the default media library datasource.
-				new FooGallery_Datasource_MediaLibrary();
+				new FooPlugins\FooGallery\FooGallery_Datasource_MediaLibrary();
 
-                new FooGallery_Attachment_Type();
+                new FooPlugins\FooGallery\FooGallery_Attachment_Type();
 
 				$pro_code_included = false;
 
 				if ( foogallery_fs()->is__premium_only() ) {
 					if ( foogallery_fs()->can_use_premium_code() ) {
-						require_once FOOGALLERY_PATH . 'pro/foogallery-pro.php';
 
-						new FooGallery_Pro();
+						new FooPlugins\FooGallery\Pro\FooGallery_Pro();
 
 						$pro_code_included = true;
 					}
@@ -199,13 +207,18 @@ if ( function_exists( 'foogallery_fs' ) ) {
 				}
 
 				// init Gutenberg!
-				new FooGallery_Gutenberg();
+				new FooPlugins\FooGallery\Extensions\Gutenberg\FooGallery_Gutenberg();
 
 				// init advanced settings.
-				new FooGallery_Advanced_Gallery_Settings();
+				new FooPlugins\FooGallery\FooGallery_Advanced_Gallery_Settings();
+
+				// Include bundled extensions.
+				new FooPlugins\FooGallery\Extensions\Album\FooGallery_Albums_Extension();
+				new FooPlugins\FooGallery\Extensions\DefaultTemplates\FooGallery_Default_Templates_Extension(); // Legacy!
+				new FooPlugins\FooGallery\Extensions\DemoContentGenerator\FooGallery_Demo_Content_Generator();
 
 				// init localization for FooGallery.
-				new FooGallery_il8n();
+				new FooPlugins\FooGallery\FooGallery_il8n();
 			}
 
 			function add_foogallery_pro_features( $extensions ) {
@@ -364,7 +377,7 @@ if ( function_exists( 'foogallery_fs' ) ) {
 				switch_to_blog( $blog_id );
 
 				if ( false === get_option( FOOGALLERY_EXTENSIONS_AUTO_ACTIVATED_OPTIONS_KEY, false ) ) {
-					$api = new FooGallery_Extensions_API();
+					$api = new FooPlugins\FooGallery\Extensions\FooGallery_Extensions_API();
 
 					$api->auto_activate_extensions();
 
@@ -417,7 +430,7 @@ if ( function_exists( 'foogallery_fs' ) ) {
 			 */
 			private static function single_activate( $multisite = true ) {
 				if ( false === get_option( FOOGALLERY_EXTENSIONS_AUTO_ACTIVATED_OPTIONS_KEY, false ) ) {
-					$api = new FooGallery_Extensions_API();
+					$api = new FooPlugins\FooGallery\Extensions\FooGallery_Extensions_API();
 			
 					$api->auto_activate_extensions();
 			

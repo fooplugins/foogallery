@@ -1,4 +1,9 @@
 <?php
+namespace FooPlugins\FooGallery\Extensions\Album\Admin;
+
+use FooPlugins\FooGallery\Extensions\Album\FooGalleryAlbum;
+
+use FooPlugins\FooGallery\FooGallery;
 
 /*
  * FooGallery Admin Album MetaBoxes class

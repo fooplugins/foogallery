@@ -4,6 +4,8 @@
  *
  * Add custom fields to media attachments
  */
+namespace FooPlugins\FooGallery\Admin;
+
 if (!class_exists('FooGallery_Attachment_Fields')) {
 
     class FooGallery_Attachment_Fields {

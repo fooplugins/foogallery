@@ -1,11 +1,11 @@
 <?php
+namespace FooPlugins\FooGallery\Extensions\ImportExport;
+
 /**
  * FooGallery Import Export Class that registers the extension.
  */
 
 if ( ! class_exists('FooGallery_Import_Export_Extension') ) {
-
-    require_once 'class-foogallery-import-export.php';
 
     class FooGallery_Import_Export_Extension {
 
@@ -13,6 +13,7 @@ if ( ! class_exists('FooGallery_Import_Export_Extension') ) {
          * FooGallery_Import_Export_Extension constructor.
          */
         function __construct() {
+            new  FooGallery_Import_Export();
             add_filter( 'foogallery_available_extensions', array( $this, 'register_extension' ) );
         }
 
@@ -26,7 +27,7 @@ if ( ! class_exists('FooGallery_Import_Export_Extension') ) {
         function register_extension( $extensions_list ) {
             $extensions_list[] = array(
                 'slug' => 'foogallery-import-export',
-                'class' => 'FooGallery_Import_Export',
+                'class' => 'FooPlugins\FooGallery\Extensions\ImportExport\FooGallery_Import_Export',
                 'categories' => array( 'Utilities' ),
                 'title' => __( 'Import Export', 'foogallery' ),
                 'description' => __( 'Export your galleries, and then import them into another WordPress install.', 'foogallery' ),

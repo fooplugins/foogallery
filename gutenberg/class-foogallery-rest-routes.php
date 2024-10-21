@@ -1,4 +1,9 @@
 <?php
+namespace FooPlugins\FooGallery\Extensions\Gutenberg;
+
+use WP_REST_Server;
+use WP_Error;
+
 /**
  * class for Rest API Routes within FooGallery
  *

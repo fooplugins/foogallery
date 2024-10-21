@@ -2,6 +2,9 @@
 /*
  * FooGallery Admin Menu class
  */
+namespace FooPlugins\FooGallery\Admin;
+
+use FooGallery_Plugin;
 
 if ( ! class_exists( 'FooGallery_Admin_Menu' ) ) {
 

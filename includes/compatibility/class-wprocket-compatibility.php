@@ -6,6 +6,8 @@
  *
  * @since 1.3.3
  */
+namespace FooPlugins\FooGallery\Compatibility;
+
 if ( ! class_exists( 'FooGallery_WPRocket_Compatibility' ) ) {
 
 	class FooGallery_WPRocket_Compatibility {

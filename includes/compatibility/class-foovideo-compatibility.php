@@ -2,6 +2,8 @@
 /**
  * Offers FooVideo users a discount on FooGallery PRO
  */
+namespace FooPlugins\FooGallery\Compatibility;
+
 if ( ! class_exists( 'FooGallery_FooVideo_Compatibility' ) ) {
 
 	class FooGallery_FooVideo_Compatibility {

@@ -6,10 +6,9 @@
  * Date: 4/17/2018
  * Time: 10:09 PM
  */
+namespace FooPlugins\FooGallery\Pro\Video;
 
 if ( ! class_exists( "FooGallery_Pro_Video_Import" ) ) {
-
-	require_once dirname( __FILE__ ) . '/class-foogallery-pro-video-base.php';
 
 	class FooGallery_Pro_Video_Import extends FooGallery_Pro_Video_Base {
 

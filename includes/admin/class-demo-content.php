@@ -2,6 +2,7 @@
 /*
  * FooGallery Admin Demo Content class
  */
+namespace FooPlugins\FooGallery\Admin;
 
 if ( ! class_exists( 'FooGallery_Admin_Demo_Content' ) ) {
 

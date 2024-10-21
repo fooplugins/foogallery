@@ -2,7 +2,7 @@
 /**
  * Class to handle adding the Items metabox to a gallery
  */
-
+namespace FooPlugins\FooGallery\Admin;
 
 if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Items' ) ) {
 

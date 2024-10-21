@@ -2,6 +2,11 @@
 /**
  * The Gallery Datasource which pulls attachments for a specific Taxonomy
  */
+namespace FooPlugins\FooGallery\Pro;
+
+use FooPlugins\FooGallery\FooGallery_Datasource_MediaLibrary_Query_Helper;
+use FooPlugins\FooGallery\FooGalleryAttachment;
+
 if ( ! class_exists( 'FooGallery_Pro_Datasource_Taxonomy_Base' ) ) {
 
     abstract class FooGallery_Pro_Datasource_Taxonomy_Base {

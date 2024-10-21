@@ -1,4 +1,5 @@
 <?php
+namespace FooPlugins\FooGallery\Pro\Video;
 
 /**
  * Created by PhpStorm.

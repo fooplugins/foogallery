@@ -1,4 +1,6 @@
 <?php
+namespace FooPlugins\FooGallery\Extensions\DemoContentGenerator;
+
 /**
  * Created by Brad Vincent.
  * Date: 04/03/2018
@@ -24,8 +26,6 @@ if ( ! class_exists( 'FooGallery_Demo_Content_Generator' ) ) {
 		}
 
 		static function search( $query, $count = 20 ) {
-			require_once 'includes/class-pixabay.php';
-			require_once 'includes/class-lorem-ipsum.php';
 
 			$client = new FooGallery_PixabayClient();
 			$key = apply_filters( 'foogallery_pixabay_key', '1843003-12be68cf2726df47797f19cd7' );
@@ -128,7 +128,7 @@ if ( ! class_exists( 'FooGallery_Demo_Content_Generator' ) ) {
 					'name'           => $title
 				);
 
-				$attachment_check = new WP_Query( $attachment_args );
+				$attachment_check = new \WP_Query( $attachment_args );
 
 				if ( !$attachment_check->have_posts() ) {
 					$attachments[] = self::create_attachment( $src, $title, $caption_title, $caption_desc, $tags );

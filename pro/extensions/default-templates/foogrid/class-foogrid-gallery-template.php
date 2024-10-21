@@ -20,6 +20,8 @@
  * License URI: https://www.gnu.org/licenses/gpl-2.0.txt
  */
 
+namespace FooPlugins\FooGallery\Pro\Extensions\DefaultTemplates\FooGrid;
+
 if ( !class_exists( 'FooGallery_FooGrid_Gallery_Template' ) ) {
 
 	define('FOOGALLERY_FOOGRID_GALLERY_TEMPLATE_URL', plugin_dir_url( __FILE__ ));

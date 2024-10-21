@@ -3,6 +3,7 @@
  * Class to help users who also use Autoptomize plugin
  * Date: 2017/11/12
  */
+namespace FooPlugins\FooGallery\Compatibility;
 
 if ( !class_exists( 'FooGallery_Autoptimize_Compatibility' ) ) {
 
@@ -24,7 +25,7 @@ if ( !class_exists( 'FooGallery_Autoptimize_Compatibility' ) ) {
          */
         function set_to_show_admin_notice() {
             if ( class_exists( 'autoptimizeCache' ) ) {
-                set_transient(FooGallery_Autoptimize_Compatibility::transient_key, true, 3 * 24 * 60 * 60);
+                set_transient(self::transient_key, true, 3 * 24 * 60 * 60);
             }
         }
 
@@ -33,7 +34,7 @@ if ( !class_exists( 'FooGallery_Autoptimize_Compatibility' ) ) {
          */
         function admin_notice() {
             if ( !class_exists( 'autoptimizeCache' ) ) return;
-            $show_notice = get_transient( FooGallery_Autoptimize_Compatibility::transient_key );
+            $show_notice = get_transient( self::transient_key );
             if ( false === $show_notice ) return;
             ?>
             <script type="text/javascript">
@@ -67,7 +68,7 @@ if ( !class_exists( 'FooGallery_Autoptimize_Compatibility' ) ) {
          */
         function admin_notice_dismiss() {
             if ( check_admin_referer( 'foogallery_autoptimize_dismiss' ) ) {
-                delete_transient( FooGallery_Autoptimize_Compatibility::transient_key );
+                delete_transient( self::transient_key );
             }
         }
     }

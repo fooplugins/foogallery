@@ -2,6 +2,7 @@
 /**
  * Useful functions for FooGallery PRO Videos
  */
+use FooPlugins\FooGallery\FooGallery;
 
 /**
  * Returns the number of videos for a specific gallery

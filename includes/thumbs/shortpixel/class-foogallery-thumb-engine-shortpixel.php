@@ -5,6 +5,9 @@
  *
  * https://help.shortpixel.com/article/201-shortpixel-adaptive-images-api-parameters
  */
+namespace FooPlugins\FooGallery\Thumbs\ShortPixel;
+use FooPlugins\FooGallery\Thumbs\FooGallery_Thumb_Engine;
+
 if ( ! class_exists( 'FooGallery_Thumb_Engine_Shortpixel' ) ) {
 
 	class FooGallery_Thumb_Engine_Shortpixel extends FooGallery_Thumb_Engine {

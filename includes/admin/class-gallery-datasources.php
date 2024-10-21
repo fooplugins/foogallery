@@ -2,6 +2,7 @@
 /**
  * Class to handle all interactions for Gallery datasources
  */
+namespace FooPlugins\FooGallery\Admin;
 
 if ( ! class_exists( 'FooGallery_Admin_Gallery_Datasources' ) ) {
 

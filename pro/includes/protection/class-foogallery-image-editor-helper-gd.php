@@ -1,4 +1,5 @@
 <?php
+namespace FooPlugins\FooGallery\Pro\Protection;
 
 /**
  * class for the GD image editor helper

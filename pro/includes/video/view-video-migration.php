@@ -1,5 +1,5 @@
 <?php
-$helper = new FooGallery_Pro_Video_Migration_Helper();
+$helper = new FooPlugins\FooGallery\Pro\Video\FooGallery_Pro_Video_Migration_Helper();
 ?>
 <style>
 	div.about-wrap h2 {

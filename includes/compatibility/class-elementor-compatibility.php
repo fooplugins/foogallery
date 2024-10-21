@@ -3,6 +3,10 @@
  * Elementor Compatibility Class
  * Date: 23/09/2019
  */
+namespace FooPlugins\FooGallery\Compatibility;
+
+use FooPlugins\FooGallery\Compatibility\Elementor\Elementor_FooGallery_Widget;
+
 if ( ! class_exists( 'FooGallery_Elementor_Compatibility' ) ) {
 
     class FooGallery_Elementor_Compatibility {

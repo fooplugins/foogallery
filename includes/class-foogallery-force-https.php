@@ -3,6 +3,8 @@
  * Class used to force HTTPS for all FooGallery assets
  * @since 1.6.18
  */
+namespace FooPlugins\FooGallery;
+
 if ( ! class_exists( 'FooGallery_ForceHttps' ) ) {
 
 	class FooGallery_ForceHttps {

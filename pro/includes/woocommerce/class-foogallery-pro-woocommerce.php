@@ -4,6 +4,11 @@
  *
  * @package foogallery
  */
+namespace FooPlugins\FooGallery\Pro\WooCommerce;
+
+use FooPlugins\FooGallery\Pro\FooGallery_Pro_Ribbons;
+use WC_Product_Variation;
+use FooPlugins\FooGallery\FooGallery;
 
 if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 
@@ -95,7 +100,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 
             $extensions_list[] = array(
                 'slug' => 'foogallery-woocommerce',
-                'class' => 'FooGallery_Pro_Woocommerce',
+                'class' => 'FooPlugins\FooGallery\Pro\WooCommerce\FooGallery_Pro_Woocommerce',
                 'categories' => array( 'Premium' ),
                 'title' => __( 'Ecommerce', 'foogallery' ),
                 'description' => $pro_features['ecommerce']['desc'],

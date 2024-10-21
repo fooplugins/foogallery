@@ -3,6 +3,8 @@
  * Class used to add custom classes to gallery links
  * Date: 04/06/2017
  */
+namespace FooPlugins\FooGallery;
+
 if ( ! class_exists( 'FooGallery_Attachment_Custom_Class' ) ) {
 
 	class FooGallery_Attachment_Custom_Class {

@@ -12,6 +12,9 @@
  * Author URI: https://fooplugins.com
  * License: GPL2
  */
+namespace FooPlugins\FooGallery\Base;
+
+use Exception;
 
 if ( !class_exists( 'Foo_Plugin_Base_v2_4' ) ) {
 

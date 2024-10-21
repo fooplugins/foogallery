@@ -6,6 +6,9 @@
  *
  * Date: 03/05/2021
  */
+namespace FooPlugins\FooGallery;
+
+use FooPlugins\FooGallery\FooGallery;
 
 if ( ! class_exists( 'FooGallery_Debug' ) ) {
 

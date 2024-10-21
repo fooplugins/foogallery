@@ -2,6 +2,8 @@
 /**
  * FooGallery_CSS_Load_Optimizer class which enqueues CSS in the head
  */
+namespace FooPlugins\FooGallery\Public;
+
 if (!class_exists('class-css-load-optimizer.php')) {
 
     class FooGallery_CSS_Load_Optimizer {

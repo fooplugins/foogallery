@@ -3,7 +3,11 @@
  * Widget to insert a FooGallery
  */
 
-if ( ! class_exists( 'FooGallery_Widget_Init' ) ) {
+namespace FooPlugins\FooGallery;
+
+use WP_Widget;
+
+if ( ! class_exists( 'FooPlugins\FooGallery\FooGallery_Widget_Init' ) ) {
     class FooGallery_Widget_Init
     {
         public function __construct()
@@ -13,12 +17,12 @@ if ( ! class_exists( 'FooGallery_Widget_Init' ) ) {
 
         public function register_widget()
         {
-            register_widget('FooGallery_Widget');
+            register_widget(FooGallery_Widget::class);
         }
     }
 }
 
-if ( ! class_exists( 'FooGallery_Widget' ) ) {
+if ( ! class_exists( 'FooPlugins\FooGallery\FooGallery_Widget' ) ) {
     class FooGallery_Widget extends WP_Widget
     {
 
@@ -49,10 +53,10 @@ if ( ! class_exists( 'FooGallery_Widget' ) ) {
             if (!empty($instance['title'])) {
                 echo $args['before_title'] . apply_filters('widget_title', $instance['title']) . $args['after_title'];
             }
-            //output the gallery here
-            $foogallery_id = isset( $instance['foogallery_id'] ) ? intval( $instance['foogallery_id'] ) : 0;
-            if ( $foogallery_id > 0 ) {
-                foogallery_render_gallery( $foogallery_id );
+            // output the gallery here
+            $foogallery_id = isset($instance['foogallery_id']) ? intval($instance['foogallery_id']) : 0;
+            if ($foogallery_id > 0) {
+                foogallery_render_gallery($foogallery_id);
             }
 
             echo $args['after_widget'];
@@ -69,7 +73,7 @@ if ( ! class_exists( 'FooGallery_Widget' ) ) {
         {
             // outputs the options form on admin
             $title = !empty($instance['title']) ? $instance['title'] : __('New title', 'foogallery');
-            $foogallery_id = !empty($instance['foogallery_id'])  ? intval($instance['foogallery_id']) : 0;
+            $foogallery_id = !empty($instance['foogallery_id']) ? intval($instance['foogallery_id']) : 0;
             $galleries = foogallery_get_all_galleries();
             ?>
             <p>
@@ -81,10 +85,10 @@ if ( ! class_exists( 'FooGallery_Widget' ) ) {
             <p>
                 <label for="<?php echo $this->get_field_id('foogallery_id'); ?>"><?php _e('Select Gallery:', 'foogallery'); ?></label>
                 <select class="widefat" id="<?php echo $this->get_field_id('foogallery_id'); ?>"
-                       name="<?php echo $this->get_field_name('foogallery_id'); ?>"
-                       value="<?php echo esc_attr($title); ?>">
-                    <?php foreach ( $galleries as $gallery ) {?>
-                        <option <?php echo $gallery->ID == $foogallery_id ? 'selected="selected"' : ''; ?> value="<?php echo $gallery->ID; ?>"><?php echo $gallery->name . ' [' . $gallery->ID . ']'; ?></option>
+                        name="<?php echo $this->get_field_name('foogallery_id'); ?>">
+                    <?php foreach ($galleries as $gallery) { ?>
+                        <option <?php echo $gallery->ID == $foogallery_id ? 'selected="selected"' : ''; ?>
+                                value="<?php echo $gallery->ID; ?>"><?php echo $gallery->name . ' [' . $gallery->ID . ']'; ?></option>
                     <?php } ?>
                 </select>
             </p>
@@ -102,6 +106,7 @@ if ( ! class_exists( 'FooGallery_Widget' ) ) {
         public function update($new_instance, $old_instance)
         {
             // processes widget options to be saved
+            $updated_instance = [];
             foreach ($new_instance as $key => $value) {
                 $updated_instance[$key] = sanitize_text_field($value);
             }

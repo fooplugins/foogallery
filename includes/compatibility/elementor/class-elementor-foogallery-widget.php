@@ -1,4 +1,6 @@
 <?php
+namespace FooPlugins\FooGallery\Compatibility\Elementor;
+
 /**
  * Elementor oEmbed Widget.
  *

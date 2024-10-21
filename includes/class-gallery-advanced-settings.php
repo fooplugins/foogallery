@@ -2,6 +2,8 @@
 /**
  * Class for adding advanced settings to all gallery templates
  */
+namespace FooPlugins\FooGallery;
+
 if ( ! class_exists( 'FooGallery_Advanced_Gallery_Settings' ) ) {
 
 	class FooGallery_Advanced_Gallery_Settings {

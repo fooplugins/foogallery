@@ -2,6 +2,8 @@
 /**
  * Base class for the thumbnail engine
  */
+namespace FooPlugins\FooGallery\Thumbs;
+
 if ( ! class_exists( 'FooGallery_Thumb_Engine' ) ) {
 
 	abstract class FooGallery_Thumb_Engine {

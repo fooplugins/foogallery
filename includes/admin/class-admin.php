@@ -2,6 +2,10 @@
 /*
  * FooGallery Admin class
  */
+namespace FooPlugins\FooGallery\Admin;
+
+use FS_Admin_Notice_Manager;
+use FooGallery_Plugin;
 
 if ( ! class_exists( 'FooGallery_Admin' ) ) {
 

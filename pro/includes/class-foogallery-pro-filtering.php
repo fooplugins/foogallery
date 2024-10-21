@@ -2,6 +2,9 @@
 /**
  * FooGallery Pro Filtering Class
  */
+namespace FooPlugins\FooGallery\Pro;
+
+use FooPlugins\FooGallery\FooGallery;
 if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 
 	class FooGallery_Pro_Filtering {
@@ -63,7 +66,7 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 
             $extensions_list[] = array(
                 'slug' => 'foogallery-filtering',
-                'class' => 'FooGallery_Pro_Filtering',
+                'class' => 'FooPlugins\FooGallery\Pro\FooGallery_Pro_Filtering',
                 'categories' => array( 'Premium' ),
                 'title' => __( 'Filtering', 'foogallery' ),
                 'description' => $pro_features['filtering']['desc'],

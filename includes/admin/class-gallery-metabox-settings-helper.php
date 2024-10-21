@@ -4,6 +4,8 @@
  * Date: 28/04/2017
  *
  */
+namespace FooPlugins\FooGallery\Admin;
+
 if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings_Helper' ) ) {
 
 	class FooGallery_Admin_Gallery_MetaBox_Settings_Helper {

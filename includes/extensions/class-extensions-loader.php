@@ -1,4 +1,7 @@
 <?php
+namespace FooPlugins\FooGallery\Extensions;
+
+use Exception;
 
 if ( ! class_exists( 'FooGallery_Extensions_Loader' ) ) {
 	class FooGallery_Extensions_Loader {

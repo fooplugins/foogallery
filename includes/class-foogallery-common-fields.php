@@ -3,6 +3,8 @@
  * Adds all functionality related to the common gallery fields that are used in the default gallery templates
  * Date: 12/09/2017
  */
+namespace FooPlugins\FooGallery;
+
 if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 
 	class FooGallery_Common_Fields {

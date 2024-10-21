@@ -2,6 +2,9 @@
 /*
  * FooGallery Admin Columns class
  */
+namespace FooPlugins\FooGallery\Admin;
+
+use FooPlugins\FooGallery\FooGallery;
 
 if ( ! class_exists( 'FooGallery_Admin_Columns' ) ) {
 

@@ -3,6 +3,8 @@
  * Created by brad.
  * Date: 15/11/2015
  */
+namespace FooPlugins\FooGallery;
+
 if ( ! class_exists( 'FooGallery_Version_Check' ) ) {
 
 	class FooGallery_Version_Check {

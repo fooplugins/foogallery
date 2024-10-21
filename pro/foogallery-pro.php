@@ -3,50 +3,9 @@
 /**
  * FooGallery PRO includes
  */
+namespace FooPlugins\FooGallery\Pro;
+
 require_once FOOGALLERY_PATH . 'pro/functions.php';
-require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-presets.php';
-require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-paging.php';
-require_once FOOGALLERY_PATH . 'pro/extensions/default-templates/class-foogallery-pro-default-templates.php';
-require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-bulk-copy.php';
-require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-gallery-override.php';
-require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-filtering.php';
-require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-attachment-taxonomies.php';
-require_once FOOGALLERY_PATH . 'pro/includes/video/class-foogallery-pro-video.php';
-require_once FOOGALLERY_PATH . 'pro/includes/video/class-foogallery-pro-video-legacy.php';
-require_once FOOGALLERY_PATH . 'pro/includes/video/class-foogallery-pro-video-migration-helper.php';
-require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-advanced-gallery-settings.php';
-require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-instagram-filters.php';
-require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-datasource-taxonomy-base.php';
-require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-datasource-mediatags.php';
-require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-datasource-mediacategories.php';
-require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-datasource-folders.php';
-require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-datasource-lightroom.php';
-require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-wplr-support.php';
-require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-instagram-helper.php';
-require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-datasource-realmedialibrary.php';
-require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-datasource-post-query.php';
-require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-advanced-captions.php';
-require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-advanced-thumbnails.php';
-require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-bulk-management.php';
-require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-exif.php';
-
-require_once FOOGALLERY_PATH . 'pro/includes/protection/class-foogallery-pro-protection.php';
-require_once FOOGALLERY_PATH . 'pro/includes/protection/class-foogallery-watermark.php';
-require_once FOOGALLERY_PATH . 'pro/includes/protection/class-foogallery-image-editor-helper-base.php';
-require_once FOOGALLERY_PATH . 'pro/includes/protection/class-foogallery-image-editor-helper-gd.php';
-require_once FOOGALLERY_PATH . 'pro/includes/protection/class-foogallery-image-editor-helper-imagick.php';
-
-require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-whitelabelling.php';
-require_once FOOGALLERY_PATH . 'pro/extensions/whitelabelling/foogallery-whitelabelling-extension.php';
-require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-ribbons.php';
-require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-buttons.php';
-require_once FOOGALLERY_PATH . 'pro/includes/woocommerce/class-foogallery-pro-woocommerce.php';
-require_once FOOGALLERY_PATH . 'pro/includes/woocommerce/class-foogallery-pro-datasource-products.php';
-require_once FOOGALLERY_PATH . 'pro/includes/woocommerce/class-foogallery-pro-woocommerce-base.php';
-require_once FOOGALLERY_PATH . 'pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php';
-require_once FOOGALLERY_PATH . 'pro/includes/woocommerce/class-foogallery-pro-woocommerce-downloads.php';
-require_once FOOGALLERY_PATH . 'pro/extensions/default-templates/product/class-product-gallery-template.php';
-require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-gallery-blueprints.php';
 
 /**
  * FooGallery PRO Main Class
@@ -66,8 +25,9 @@ if ( ! class_exists( 'FooGallery_Pro' ) ) {
 		 */
 		public function __construct() {
 			new FooGallery_Pro_Hover_Presets();
-			new FooGallery_Pro_Default_Templates();
+			new Extensions\DefaultTemplates\FooGallery_Pro_Default_Templates();
 			new FooGallery_Pro_Instagram_Filters();
+			new Extensions\Whitelabelling\FooGallery_Pro_Whitelabelling_Extension();
 
 			if ( foogallery_fs()->is_plan_or_trial( 'pro' ) ) {
 				new FooGallery_Pro_Advanced_Gallery_Settings();
@@ -76,8 +36,8 @@ if ( ! class_exists( 'FooGallery_Pro' ) ) {
 				new FooGallery_Pro_Gallery_Shortcode_Override();
 				new FooGallery_Pro_Attachment_Taxonomies();
 				new FooGallery_Pro_Filtering();
-				new FooGallery_Pro_Video();
-				new FooGallery_Pro_Video_Legacy();
+				new Video\FooGallery_Pro_Video();
+				new Video\FooGallery_Pro_Video_Legacy();
 				new FooGallery_Pro_Datasource_MediaCategories();
 				new FooGallery_Pro_Datasource_MediaTags();
 				new FooGallery_Pro_Datasource_Folders();
@@ -91,14 +51,14 @@ if ( ! class_exists( 'FooGallery_Pro' ) ) {
 				new FooGallery_Pro_Exif();
 			}
 			if ( foogallery_fs()->is_plan_or_trial( 'commerce' ) ) {
-				new FooGallery_Pro_Protection();
-				new FooGallery_Pro_Woocommerce();
-				new FooGallery_Pro_Datasource_Products();
+				new Protection\FooGallery_Pro_Protection();
+				new WooCommerce\FooGallery_Pro_Woocommerce();
 				new FooGallery_Pro_Ribbons();
 				new FooGallery_Pro_Buttons();
-				new FooGallery_Product_Gallery_Template();
-				new FooGallery_Pro_Woocommerce_Master_Product();
-				new FooGallery_Pro_Woocommerce_Downloads();
+				new Extensions\DefaultTemplates\Product\FooGallery_Product_Gallery_Template();
+				new WooCommerce\FooGallery_Pro_Woocommerce_Master_Product();
+				new WooCommerce\FooGallery_Pro_Woocommerce_Downloads();
+				new WooCommerce\FooGallery_Pro_Datasource_Products();
 				new FooGallery_Pro_Whitelabelling();
 				new FooGallery_Pro_Gallery_Blueprints();
 			}

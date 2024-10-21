@@ -2,6 +2,8 @@
 /**
  * Base class for the image editor helper
  */
+namespace FooPlugins\FooGallery\Pro\Protection;
+
 
 if ( ! class_exists( 'FooGallery_Image_Editor_Helper_Base' ) ) {
 

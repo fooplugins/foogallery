@@ -1,4 +1,6 @@
 <?php
+namespace FooPlugins\FooGallery;
+
 /*
  * FooGallery Custom Post Types and Custom Taxonomy Registration class
  */
@@ -66,7 +68,7 @@ if ( ! class_exists( 'FooGallery_PostTypes' ) ) {
                 'show_in_menu' => true,
                 'menu_icon'    => 'dashicons-format-gallery',
                 'supports'     => array( 'title', 'thumbnail' ),
-                'capabilities' => FooGallery_PostTypes::GALLERY_CAPABILITIES
+                'capabilities' => self::GALLERY_CAPABILITIES,
             );
 
             $args = apply_filters( 'foogallery_gallery_posttype_register_args', $args );
@@ -93,7 +95,7 @@ if ( ! class_exists( 'FooGallery_PostTypes' ) ) {
 
                     if ( !is_null( $role ) ) {
 
-                        foreach ( FooGallery_PostTypes::GALLERY_CAPABILITIES as $cap_key => $cap ) {
+                        foreach ( self::GALLERY_CAPABILITIES as $cap_key => $cap ) {
                             $role->add_cap( $cap );
                         }
                     }
@@ -125,7 +127,7 @@ if ( ! class_exists( 'FooGallery_PostTypes' ) ) {
                 foreach ( $roles as $role => $name ) {
                     $role_obj = get_role($role);
                     if (!is_null($role_obj)) {
-                        foreach ( FooGallery_PostTypes::GALLERY_CAPABILITIES as $cap_key => $cap ) {
+                        foreach ( self::GALLERY_CAPABILITIES as $cap_key => $cap ) {
                             $role_obj->remove_cap($cap);
                         }
                     }

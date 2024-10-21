@@ -2,6 +2,8 @@
 /**
  * Adds background fill functionality to the default FooGallery thumb generator
  */
+namespace FooPlugins\FooGallery\Thumbs\Default;
+
 if ( ! class_exists( 'FooGallery_Thumb_Generator_Background_Fill' ) ) {
 	class FooGallery_Thumb_Generator_Background_Fill {
 

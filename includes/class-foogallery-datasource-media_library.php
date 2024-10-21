@@ -2,6 +2,8 @@
 /**
  * The default Gallery Datasource which pulls attachments from the WP media library
  */
+namespace FooPlugins\FooGallery;
+
 if ( ! class_exists( 'FooGallery_Datasource_MediaLibrary' ) ) {
 
 	class FooGallery_Datasource_MediaLibrary {

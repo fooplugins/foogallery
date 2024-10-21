@@ -6,6 +6,7 @@
  *
  * @package foogallery
  */
+namespace FooPlugins\FooGallery\Compatibility;
 
 if ( ! class_exists( 'FooGallery_WPOptimize_Compatibility' ) ) {
 

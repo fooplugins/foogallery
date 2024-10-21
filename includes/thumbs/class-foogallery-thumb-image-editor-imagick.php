@@ -2,8 +2,10 @@
 /**
  * FooGallery class that extends WP_Image_Editor_Imagick
  */
+namespace FooPlugins\FooGallery\Thumbs;
+
 if ( ! class_exists( 'FooGallery_Thumb_Image_Editor_Imagick' ) ) {
-	class FooGallery_Thumb_Image_Editor_Imagick extends WP_Image_Editor_Imagick {
+	class FooGallery_Thumb_Image_Editor_Imagick extends \WP_Image_Editor_Imagick {
 
 		public function get_image() {
 			return $this->image;

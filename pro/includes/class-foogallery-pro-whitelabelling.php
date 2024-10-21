@@ -1,4 +1,6 @@
 <?php
+namespace FooPlugins\FooGallery\Pro;
+
 /**
  * FooGallery WhiteLabelling Class that registers the extension.
  */
@@ -26,7 +28,7 @@ if ( ! class_exists('FooGallery_Pro_Whitelabelling') ) {
 
 			$extensions_list[] = array(
 				'slug' => 'foogallery-whitelabelling',
-				'class' => 'FooGallery_Pro_Whitelabelling_Extension',
+				'class' => 'FooPlugins\FooGallery\Pro\Extensions\Whitelabelling\FooGallery_Pro_Whitelabelling_Extension',
 				'categories' => array( 'Premium' ),
 				'title' => __( 'White Labeling', 'foogallery' ),
 				'description' => $pro_features['whitelabeling']['desc'],
