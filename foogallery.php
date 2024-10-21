@@ -127,7 +127,7 @@ if ( function_exists( 'foogallery_fs' ) ) {
 				new FooPlugins\FooGallery\FooGallery_PostTypes();
 
 				// load any extensions.
-				new FooGallery_Extensions_Loader();
+				new FooPlugins\FooGallery\Extensions\FooGallery_Extensions_Loader();
 
                 // Load any bundled extension initializers.
                 new FooPlugins\FooGallery\Extensions\ImportExport\FooGallery_Import_Export_Extension();
@@ -372,7 +372,7 @@ if ( function_exists( 'foogallery_fs' ) ) {
 				switch_to_blog( $blog_id );
 
 				if ( false === get_option( FOOGALLERY_EXTENSIONS_AUTO_ACTIVATED_OPTIONS_KEY, false ) ) {
-					$api = new FooGallery_Extensions_API();
+					$api = new FooPlugins\FooGallery\Extensions\FooGallery_Extensions_API();
 
 					$api->auto_activate_extensions();
 
@@ -425,7 +425,7 @@ if ( function_exists( 'foogallery_fs' ) ) {
 			 */
 			private static function single_activate( $multisite = true ) {
 				if ( false === get_option( FOOGALLERY_EXTENSIONS_AUTO_ACTIVATED_OPTIONS_KEY, false ) ) {
-					$api = new FooGallery_Extensions_API();
+					$api = new FooPlugins\FooGallery\Extensions\FooGallery_Extensions_API();
 			
 					$api->auto_activate_extensions();
 			

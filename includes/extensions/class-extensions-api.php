@@ -2,6 +2,10 @@
 /**
  * @TODO
  */
+namespace FooPlugins\FooGallery\Extensions;
+
+use Plugin_Upgrader;
+use FooPlugins\FooGallery\Admin\FooGallery_Silent_Installer_Skin;
 
 if ( ! class_exists( 'FooGallery_Extensions_API' ) ) {
 
@@ -467,9 +471,6 @@ if ( ! class_exists( 'FooGallery_Extensions_API' ) ) {
 
 				//we need some files!
 				require_once ABSPATH . 'wp-admin/includes/plugin-install.php'; // plugins_api calls
-				require_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php'; // Plugin_Upgrader class
-				require_once FOOGALLERY_PATH . 'includes/admin/class-silent-installer-skin.php'; //our silent installer skin
-
 				$download_link = isset( $extension['download_link'] ) ? $extension['download_link'] : false;
 
 				if ( 'repo' === $extension['source'] ) {

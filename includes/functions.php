@@ -113,10 +113,10 @@ function foogallery_get_gallery_template( $slug ) {
 /**
  * Return the FooGallery extension API class
  *
- * @return FooGallery_Extensions_API
+ * @return FooPlugins\FooGallery\Extensions\FooGallery_Extensions_API
  */
 function foogallery_extensions_api() {
-	return new FooGallery_Extensions_API();
+	return new FooPlugins\FooGallery\Extensions\FooGallery_Extensions_API();
 }
 
 /**
@@ -2278,7 +2278,7 @@ function foogallery_feature_enabled( $feature ) {
     global $foogallery_features;
 
     if ( empty( $foogallery_features ) ) {
-        $api = new FooGallery_Extensions_API();
+        $api = new FooPlugins\FooGallery\Extensions\FooGallery_Extensions_API();
         $foogallery_features = $api->get_all_for_view();
     }
 
