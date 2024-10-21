@@ -6,7 +6,7 @@
  */
 namespace FooPlugins\FooGallery\Public;
 
-use FooGallery;
+use FooPlugins\FooGallery\FooGallery;
 
 if ( ! class_exists( 'FooGallery_All_In_One_Seo_Sitemap_Support' ) ) {
 

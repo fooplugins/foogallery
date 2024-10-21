@@ -5,7 +5,7 @@
  */
 namespace FooPlugins\FooGallery\Admin;
 
-use FooGallery;
+use FooPlugins\FooGallery\FooGallery;
 use FooGallery_Plugin;
 
 if ( ! class_exists( 'FooGallery_Admin_Gallery_Editor' ) ) {

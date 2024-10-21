@@ -7,7 +7,7 @@
  */
 namespace FooPlugins\FooGallery\Public;
 
-use FooGallery;
+use FooPlugins\FooGallery\FooGallery;
 
 if ( ! class_exists( 'FooGallery_RankMath_Seo_Sitemap_Support' ) ) {
 

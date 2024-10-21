@@ -1,7 +1,7 @@
 <?php
 namespace FooPlugins\FooGallery\Extensions\ImportExport;
 
-use FooGallery;
+use FooPlugins\FooGallery\FooGallery;
 
 /**
  * FooGallery - Import Export Class

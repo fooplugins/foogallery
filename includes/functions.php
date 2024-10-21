@@ -416,7 +416,7 @@ function foogallery_get_all_galleries( $excludes = false, $extra_args = false ) 
 	$galleries = array();
 
 	foreach ( $gallery_posts as $post ) {
-		$galleries[] = FooGallery::get( $post );
+		$galleries[] = FooPlugins\FooGallery\FooGallery::get( $post );
 	}
 
 	return $galleries;
@@ -1576,7 +1576,7 @@ function foogallery_admin_get_current_gallery( $post_gallery ) {
 
 	if ( is_admin() && isset( $post ) ) {
 		if ( !isset( $current_foogallery_admin ) || $post_gallery->ID !== $post->ID ) {
-			$current_foogallery_admin = FooGallery::get( $post_gallery );
+			$current_foogallery_admin = FooPlugins\FooGallery\FooGallery::get( $post_gallery );
 		}
 
 		return $current_foogallery_admin;

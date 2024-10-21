@@ -8,7 +8,7 @@
  */
 namespace FooPlugins\FooGallery\Public;
 
-use FooGallery;
+use FooPlugins\FooGallery\FooGallery;
 
 if ( ! class_exists( 'FooGallery_Yoast_Seo_Sitemap_Support' ) ) {
 

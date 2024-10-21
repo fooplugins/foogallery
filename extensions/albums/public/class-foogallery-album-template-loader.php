@@ -2,6 +2,7 @@
 namespace FooPlugins\FooGallery\Extensions\Album\Public;
 
 use FooPlugins\FooGallery\Extensions\Album\FooGalleryAlbum;
+use FooPlugins\FooGallery\Base\Foo_Plugin_File_Locator_v1;
 
 /**
  * Template loader for FooGallery Albums
@@ -59,7 +60,7 @@ class FooGallery_Album_Template_Loader {
 
 			//create locator instance
 			$instance_name = FOOGALLERY_SLUG . '_album_templates';
-			$loader = new \Foo_Plugin_File_Locator_v1( $instance_name, FOOGALLERY_FILE, 'templates', FOOGALLERY_SLUG );
+			$loader = new Foo_Plugin_File_Locator_v1( $instance_name, FOOGALLERY_FILE, 'templates', FOOGALLERY_SLUG );
 
 			//allow extensions to very easily add pickup locations for their files
 			$this->add_extension_pickup_locations( $loader, apply_filters( $instance_name . '_files', array() ) );

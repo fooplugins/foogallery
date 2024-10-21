@@ -3,6 +3,8 @@ namespace FooPlugins\FooGallery\Extensions\Album\Admin;
 
 use FooPlugins\FooGallery\Extensions\Album\FooGalleryAlbum;
 
+use FooPlugins\FooGallery\FooGallery;
+
 /*
  * FooGallery Admin Album MetaBoxes class
  */
@@ -405,7 +407,7 @@ if ( ! class_exists( 'FooGallery_Admin_Album_MetaBoxes' ) ) {
 		public function ajax_get_gallery_details() {
 			if ( check_admin_referer( 'foogallery_album_gallery_details' ) ) {
 				$foogallery_id = $_POST['foogallery_id'];
-				$gallery = \FooGallery::get_by_id( $foogallery_id );
+				$gallery = FooGallery::get_by_id( $foogallery_id );
 
 				if ( false !== $gallery ) {
 					$fields = $this->get_gallery_detail_fields( $gallery ); ?>
@@ -506,7 +508,7 @@ if ( ! class_exists( 'FooGallery_Admin_Album_MetaBoxes' ) ) {
 		public function ajax_save_gallery_details() {
 			if ( check_admin_referer( 'foogallery_album_gallery_details' ) ) {
 				$foogallery_id = $_POST['foogallery_id'];
-				$gallery       = \FooGallery::get_by_id( $foogallery_id );
+				$gallery       = FooGallery::get_by_id( $foogallery_id );
 				if ( false !== $gallery ) {
 					$fields = $this->get_gallery_detail_fields( $gallery );
 

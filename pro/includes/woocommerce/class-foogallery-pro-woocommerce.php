@@ -8,7 +8,7 @@ namespace FooPlugins\FooGallery\Pro\WooCommerce;
 
 use FooPlugins\FooGallery\Pro\FooGallery_Pro_Ribbons;
 use WC_Product_Variation;
-use FooGallery;
+use FooPlugins\FooGallery\FooGallery;
 
 if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 

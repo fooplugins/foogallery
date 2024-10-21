@@ -185,7 +185,7 @@ class FooGalleryAlbum extends \stdClass {
 
 				$galleries = get_posts( $gallery_query_args );
 
-				$this->_galleries = array_map( array( 'FooGallery', 'get' ), $galleries );
+				$this->_galleries = array_map( array( 'FooPlugins\FooGallery\FooGallery', 'get' ), $galleries );
 			}
 		}
 

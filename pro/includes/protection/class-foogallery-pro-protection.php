@@ -2,9 +2,9 @@
 namespace FooPlugins\FooGallery\Pro\Protection;
 
 use FooPlugins\FooGallery\FooGallery_Thumbnails;
-use FooGallery_Thumb_Generator;
+use FooPlugins\FooGallery\Thumbs\FooGallery_Thumb_Generator;
 use FooPlugins\FooGallery\FooGalleryAttachment;
-use FooGallery;
+use FooPlugins\FooGallery\FooGallery;
 
 /**
  * FooGallery class for Image Protection

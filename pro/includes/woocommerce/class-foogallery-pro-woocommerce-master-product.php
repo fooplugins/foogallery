@@ -7,7 +7,7 @@
  */
 namespace FooPlugins\FooGallery\Pro\WooCommerce;
 
-use FooGallery;
+use FooPlugins\FooGallery\FooGallery;
 use WC_Product_Attribute;
 use WC_Product_Variation;
 use WC_Product_Variable;

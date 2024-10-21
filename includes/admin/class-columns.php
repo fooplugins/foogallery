@@ -4,7 +4,7 @@
  */
 namespace FooPlugins\FooGallery\Admin;
 
-use FooGallery;
+use FooPlugins\FooGallery\FooGallery;
 
 if ( ! class_exists( 'FooGallery_Admin_Columns' ) ) {
 

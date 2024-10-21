@@ -8,6 +8,8 @@
  */
 namespace FooPlugins\FooGallery;
 
+use FooPlugins\FooGallery\FooGallery;
+
 if ( ! class_exists( 'FooGallery_Debug' ) ) {
 
 	/**

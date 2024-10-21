@@ -4,7 +4,7 @@
  */
 namespace FooPlugins\FooGallery\Pro;
 
-use FooGallery;
+use FooPlugins\FooGallery\FooGallery;
 
 if ( ! class_exists( 'FooGallery_Pro_Bulk_Management' ) ) {
 

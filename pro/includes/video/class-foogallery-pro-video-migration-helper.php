@@ -4,7 +4,7 @@
  */
 namespace FooPlugins\FooGallery\Pro\Video;
 
-use FooGallery;
+use FooPlugins\FooGallery\FooGallery;
 
 if ( ! class_exists( 'FooGallery_Pro_Video_Migration_Helper' ) ) {
 

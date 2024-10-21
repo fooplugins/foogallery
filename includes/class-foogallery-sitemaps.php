@@ -1,5 +1,6 @@
 <?php
 namespace FooPlugins\FooGallery;
+use FooPlugins\FooGallery\FooGallery;
 
 /**
  * Class for managing sitemaps within FooGallery
@@ -45,7 +46,7 @@ if ( ! class_exists( 'FooGallery_Sitemaps' ) ) {
 }
 
 if ( ! class_exists( 'FooGallery_Sitemaps_Provider' ) ) {
-	class FooGallery_Sitemaps_Provider extends WP_Sitemaps_Provider {
+	class FooGallery_Sitemaps_Provider extends \WP_Sitemaps_Provider {
 
 		/**
 		 * WP_Sitemaps_My_Plugin constructor.

@@ -4,6 +4,7 @@
  */
 namespace FooPlugins\FooGallery\Pro;
 
+use FooPlugins\FooGallery\FooGallery;
 if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 
 	class FooGallery_Pro_Filtering {
