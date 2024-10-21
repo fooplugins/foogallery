@@ -34,7 +34,6 @@ if ( ! class_exists( 'FooGallery_Admin' ) ) {
 			new FooGallery_Admin_Extensions();
 			new FooGallery_Attachment_Fields();
 			new FooGallery_Admin_Notices();
-			new FooGallery_Admin_Demo_Content();
 			new FooGallery_Admin_Gallery_Attachment_Modal();
 			$foogallery_admin_datasource_instance = new FooGallery_Admin_Gallery_Datasources();
 

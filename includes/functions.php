@@ -2234,7 +2234,7 @@ function foogallery_admin_fields_has_field( $fields, $field_id ) {
  * @return false|string
  */
 function foogallery_local_url_to_path( $url ) {
-	return FooGallery_Thumb_Generator::get_file_path( $url );
+	return FooPlugins\FooGallery\Thumbs\Default\FooGallery_Thumb_Generator::get_file_path( $url );
 }
 
 /**
@@ -2332,7 +2332,7 @@ function foogallery_get_target_options() {
 function foogallery_create_demo_content() {
 
     if ( is_admin() && is_user_logged_in() && current_user_can( 'manage_options' ) ) {
-        $importer = new FooGallery_Admin_Demo_Content();
+        $importer = new FooPlugins\FooGallery\Admin\FooGallery_Admin_Demo_Content();
         $results = $importer->import_demo_content();
 
         foogallery_set_setting('demo_content', 'on');

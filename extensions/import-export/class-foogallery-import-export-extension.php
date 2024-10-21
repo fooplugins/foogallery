@@ -27,7 +27,7 @@ if ( ! class_exists('FooGallery_Import_Export_Extension') ) {
         function register_extension( $extensions_list ) {
             $extensions_list[] = array(
                 'slug' => 'foogallery-import-export',
-                'class' => 'FooGallery_Import_Export',
+                'class' => 'FooPlugins\FooGallery\Extensions\ImportExport\FooGallery_Import_Export',
                 'categories' => array( 'Utilities' ),
                 'title' => __( 'Import Export', 'foogallery' ),
                 'description' => __( 'Export your galleries, and then import them into another WordPress install.', 'foogallery' ),

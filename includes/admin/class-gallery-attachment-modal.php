@@ -4,7 +4,7 @@
  */
 namespace FooPlugins\FooGallery\Admin;
 
-use FooGallery_Thumb_Generator;
+use FooPlugins\FooGallery\Thumbs\FooGallery_Thumb_Generator;
 
 if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
 

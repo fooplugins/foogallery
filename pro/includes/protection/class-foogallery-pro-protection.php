@@ -2,7 +2,7 @@
 namespace FooPlugins\FooGallery\Pro\Protection;
 
 use FooPlugins\FooGallery\FooGallery_Thumbnails;
-use FooPlugins\FooGallery\Thumbs\FooGallery_Thumb_Generator;
+use FooPlugins\FooGallery\Thumbs\Default\FooGallery_Thumb_Generator;
 use FooPlugins\FooGallery\FooGalleryAttachment;
 use FooPlugins\FooGallery\FooGallery;
 

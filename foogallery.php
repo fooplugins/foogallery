@@ -212,6 +212,11 @@ if ( function_exists( 'foogallery_fs' ) ) {
 				// init advanced settings.
 				new FooPlugins\FooGallery\FooGallery_Advanced_Gallery_Settings();
 
+				// Include bundled extensions.
+				new FooPlugins\FooGallery\Extensions\Album\FooGallery_Albums_Extension();
+				new FooPlugins\FooGallery\Extensions\DefaultTemplates\FooGallery_Default_Templates_Extension(); // Legacy!
+				new FooPlugins\FooGallery\Extensions\DemoContentGenerator\FooGallery_Demo_Content_Generator();
+
 				// init localization for FooGallery.
 				new FooPlugins\FooGallery\FooGallery_il8n();
 			}
