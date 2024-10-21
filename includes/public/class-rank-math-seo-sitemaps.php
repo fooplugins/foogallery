@@ -5,6 +5,10 @@
  * Created by Rank Math.
  * Date: 27/09/2019
  */
+namespace FooPlugins\FooGallery\Public;
+
+use FooGallery;
+
 if ( ! class_exists( 'FooGallery_RankMath_Seo_Sitemap_Support' ) ) {
 
 	class FooGallery_RankMath_Seo_Sitemap_Support {

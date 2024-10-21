@@ -2,6 +2,7 @@
 /*
  * FooGallery Public class
  */
+namespace FooPlugins\FooGallery\Public;
 
 if ( ! class_exists( 'FooGallery_Public' ) ) {
 

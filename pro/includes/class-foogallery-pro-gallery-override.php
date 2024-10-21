@@ -4,7 +4,7 @@
  */
 namespace FooPlugins\FooGallery\Pro;
 
-use FooGallery_Template_Loader;
+use FooPlugins\FooGallery\Public\FooGallery_Template_Loader;
 
 if ( ! class_exists( 'FooGallery_Pro_Gallery_Shortcode_Override' ) ) {
 

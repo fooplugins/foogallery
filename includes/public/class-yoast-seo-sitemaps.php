@@ -6,6 +6,10 @@
  * Created by brad.
  * Date: 21/12/2015
  */
+namespace FooPlugins\FooGallery\Public;
+
+use FooGallery;
+
 if ( ! class_exists( 'FooGallery_Yoast_Seo_Sitemap_Support' ) ) {
 
 	class FooGallery_Yoast_Seo_Sitemap_Support {

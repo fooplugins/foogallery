@@ -4,6 +4,10 @@
  *
  * Date: 02/08/2020
  */
+namespace FooPlugins\FooGallery\Public;
+
+use FooGallery;
+
 if ( ! class_exists( 'FooGallery_All_In_One_Seo_Sitemap_Support' ) ) {
 
 	class FooGallery_All_In_One_Seo_Sitemap_Support {

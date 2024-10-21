@@ -6,6 +6,11 @@
  * @package FooGallery
  * @author  Brad vincent
  */
+namespace FooPlugins\FooGallery\Public;
+
+use FooGallery;
+use Foo_Plugin_File_Locator_v1;
+
 class FooGallery_Template_Loader {
 
 	/**

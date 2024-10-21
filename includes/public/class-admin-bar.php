@@ -4,6 +4,7 @@
  * allows for really easy gallery editing from the front-end (when logged in)
  * Date: 30/08/2015
  */
+namespace FooPlugins\FooGallery\Public;
 
 if ( !class_exists( 'FooGallery_AdminBar' ) ) {
 

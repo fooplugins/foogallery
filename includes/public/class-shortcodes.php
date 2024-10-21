@@ -2,6 +2,7 @@
 /*
  * FooGallery Shortcodes
  */
+namespace FooPlugins\FooGallery\Public;
 
 if ( ! class_exists( 'FooGallery_Shortcodes' ) ) {
 

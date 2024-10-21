@@ -138,13 +138,13 @@ if ( function_exists( 'foogallery_fs' ) ) {
 					foogallery_fs()->add_filter( 'plugin_icon', array( $this, 'freemius_plugin_icon' ), 10, 1 );
 					add_action( 'foogallery_admin_menu_before', array( $this, 'add_freemius_activation_menu' ) );
 				} else {
-					new FooGallery_Public();
+					new FooPlugins\FooGallery\Public\FooGallery_Public();
 				}
 
 				// initialize the thumbnail manager.
 				new FooGallery_Thumb_Manager();
 
-				new FooGallery_Shortcodes();
+				new FooPlugins\FooGallery\Public\FooGallery_Shortcodes();
 
 				new FooPlugins\FooGallery\FooGallery_Thumbnails();
 

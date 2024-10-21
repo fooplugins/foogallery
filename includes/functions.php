@@ -608,7 +608,7 @@ function foogallery_build_container_data_options( $gallery, $attributes ) {
  */
 function foogallery_render_gallery( $gallery_id, $args = array()) {
 	//create new instance of template engine
-	$engine = new FooGallery_Template_Loader();
+	$engine = new FooPlugins\FooGallery\Public\FooGallery_Template_Loader();
 
 	$shortcode_args = wp_parse_args( $args, array(
 		'id' => $gallery_id
