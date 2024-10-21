@@ -1887,12 +1887,12 @@ function foogallery_thumb_available_engines() {
         'default' => array(
 	        'label'       => __( 'Default', 'foogallery' ),
 	        'description' => __( 'The default engine used to generate locally cached thumbnails.', 'foogallery' ),
-	        'class'       => 'FooGallery_Thumb_Engine_Default',
+	        'class'       => 'FooPlugins\FooGallery\Thumbs\Default\FooGallery_Thumb_Engine_Default',
         ),
         'shortpixel' => array(
 	        'label'       => __( 'ShortPixel', 'foogallery' ),
 	        'description' => sprintf( __( 'Uses %s to generate all your gallery thumbnails. They will be optimized and offloaded to the ShortPixel global CDN!', 'foogallery' ), $shortpixel_link ),
-	        'class'       => 'FooGallery_Thumb_Engine_Shortpixel',
+	        'class'       => 'FooPlugins\FooGallery\Thumbs\ShortPixel\FooGallery_Thumb_Engine_Shortpixel',
         )
     );
 
@@ -1900,7 +1900,7 @@ function foogallery_thumb_available_engines() {
         $engines['dummy'] = array(
             'label'       => __( 'Dummy', 'foogallery' ),
             'description' => __( 'A dummy thumbnail engine that can be used for testing. (uses dummyimage.com)', 'foogallery' ),
-            'class'       => 'FooGallery_Thumb_Engine_Dummy',
+            'class'       => 'FooPlugins\FooGallery\Thumbs\Dummy\FooGallery_Thumb_Engine_Dummy',
         );
     }
     return apply_filters( 'foogallery_thumb_available_engines', $engines );
@@ -1914,7 +1914,7 @@ function foogallery_thumb_available_engines() {
 function foogallery_thumb_active_engine() {
     global  $foogallery_thumb_engine ;
     //if we already have an engine, return it early
-    if ( isset( $foogallery_thumb_engine ) && is_a( $foogallery_thumb_engine, 'FooGallery_Thumb_Engine' ) ) {
+    if ( isset( $foogallery_thumb_engine ) && is_a( $foogallery_thumb_engine, 'FooPlugins\\FooGallery\\Thumbs\\FooGallery_Thumb_Engine' ) ) {
         return $foogallery_thumb_engine;
     }
     $engine = foogallery_get_setting( 'thumb_engine', 'default' );
@@ -1924,7 +1924,7 @@ function foogallery_thumb_active_engine() {
         $active_engine = $engines[$engine];
         $foogallery_thumb_engine = new $active_engine['class']();
     } else {
-        $foogallery_thumb_engine = new FooGallery_Thumb_Engine_Default();
+        $foogallery_thumb_engine = new FooPlugins\FooGallery\Thumbs\Default\FooGallery_Thumb_Engine_Default();
     }
     
     return $foogallery_thumb_engine;

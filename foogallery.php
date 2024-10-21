@@ -142,7 +142,7 @@ if ( function_exists( 'foogallery_fs' ) ) {
 				}
 
 				// initialize the thumbnail manager.
-				new FooGallery_Thumb_Manager();
+				new FooPlugins\FooGallery\Thumbs\FooGallery_Thumb_Manager();
 
 				new FooPlugins\FooGallery\Public\FooGallery_Shortcodes();
 

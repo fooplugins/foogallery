@@ -2,7 +2,10 @@
 /**
  * Class that performs all thumbnail generation within FooGallery
  */
+namespace FooPlugins\FooGallery\Thumbs\Default;
+
 use FooPlugins\FooGallery\FooGallery_Crop_Position;
+use WP_Error;
 
 if ( ! class_exists( 'FooGallery_Thumb_Generator' ) ) {
 	class FooGallery_Thumb_Generator {

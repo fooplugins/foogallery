@@ -3,6 +3,10 @@
 /**
  * Class for the dummy thumbnail engine in FooGallery
  */
+namespace FooPlugins\FooGallery\Thumbs\Dummy;
+
+use FooPlugins\FooGallery\Thumbs\FooGallery_Thumb_Engine;
+
 if ( ! class_exists( 'FooGallery_Thumb_Engine_Dummy' ) ) {
 
 	class FooGallery_Thumb_Engine_Dummy extends FooGallery_Thumb_Engine {

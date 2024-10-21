@@ -3,9 +3,11 @@
 /**
  * Class for the default thumbnail engine in FooGallery
  */
+namespace FooPlugins\FooGallery\Thumbs\Default;
 
  use FooPlugins\FooGallery\FooGallery_Thumbnails;
- 
+ use FooPlugins\FooGallery\Thumbs\FooGallery_Thumb_Engine;
+
 if ( ! class_exists( 'FooGallery_Thumb_Engine_Default' ) ) {
 
 	class FooGallery_Thumb_Engine_Default extends FooGallery_Thumb_Engine {
