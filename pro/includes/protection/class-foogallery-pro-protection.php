@@ -3,7 +3,7 @@ namespace FooPlugins\FooGallery\Pro\Protection;
 
 use FooPlugins\FooGallery\FooGallery_Thumbnails;
 use FooGallery_Thumb_Generator;
-use FooGalleryAttachment;
+use FooPlugins\FooGallery\FooGalleryAttachment;
 use FooGallery;
 
 /**

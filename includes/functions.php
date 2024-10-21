@@ -731,7 +731,7 @@ function foogallery_clear_all_css_load_optimizations() {
  * Performs a check to see if the plugin has been updated, and perform any housekeeping if necessary
  */
 function foogallery_perform_version_check() {
-	$checker = new FooGallery_Version_Check();
+	$checker = new FooPlugins\FooGallery\FooGallery_Version_Check();
 	$checker->perform_check();
 }
 

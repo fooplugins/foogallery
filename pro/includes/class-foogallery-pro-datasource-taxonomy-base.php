@@ -4,8 +4,8 @@
  */
 namespace FooPlugins\FooGallery\Pro;
 
-use FooGallery_Datasource_MediaLibrary_Query_Helper;
-use FooGalleryAttachment;
+use FooPlugins\FooGallery\FooGallery_Datasource_MediaLibrary_Query_Helper;
+use FooPlugins\FooGallery\FooGalleryAttachment;
 
 if ( ! class_exists( 'FooGallery_Pro_Datasource_Taxonomy_Base' ) ) {
 

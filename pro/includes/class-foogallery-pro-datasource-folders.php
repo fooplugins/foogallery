@@ -4,7 +4,7 @@
  */
 namespace FooPlugins\FooGallery\Pro;
 
-use FooGalleryAttachment;
+use FooPlugins\FooGallery\FooGalleryAttachment;
 use FooGallery;
 
 if ( ! class_exists( 'FooGallery_Pro_Datasource_Folders' ) ) {

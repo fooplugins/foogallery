@@ -4,7 +4,7 @@
  */
 namespace FooPlugins\FooGallery\Pro;
 
-use FooGalleryAttachment;
+use FooPlugins\FooGallery\FooGalleryAttachment;
 
 if ( ! class_exists( 'FooGallery_Pro_Datasource_Post_Query' ) ) {
 

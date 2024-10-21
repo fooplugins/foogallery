@@ -4,7 +4,7 @@
  */
 namespace FooPlugins\FooGallery\Pro;
 
-use FooGallery_Datasource_MediaLibrary_Query_Helper;
+use FooPlugins\FooGallery\FooGallery_Datasource_MediaLibrary_Query_Helper;
 
 if ( ! class_exists( 'FooGallery_Pro_Datasource_Lightroom' ) ) {
 

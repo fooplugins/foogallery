@@ -156,9 +156,9 @@ if ( function_exists( 'foogallery_fs' ) ) {
 
 				new FooPlugins\FooGallery\FooGallery_Cache();
 
-                new FooGallery_Lightbox();
+                new FooPlugins\FooGallery\FooGallery_Lightbox();
 
-				new FooGallery_Common_Fields();
+				new FooPlugins\FooGallery\FooGallery_Common_Fields();
 
 				new FooPlugins\FooGallery\FooGallery_LazyLoad();
 
@@ -174,11 +174,11 @@ if ( function_exists( 'foogallery_fs' ) ) {
 
 				new FooPlugins\FooGallery\FooGallery_Crop_Position();
 
-				new FooGallery_ForceHttps();
+				new FooPlugins\FooGallery\FooGallery_ForceHttps();
 
-				new FooGallery_Debug();
+				new FooPlugins\FooGallery\FooGallery_Debug();
 
-				$checker = new FooGallery_Version_Check();
+				$checker = new FooPlugins\FooGallery\FooGallery_Version_Check();
 				$checker->wire_up_checker();
 
 				new FooGallery_Widget_Init();
@@ -187,9 +187,9 @@ if ( function_exists( 'foogallery_fs' ) ) {
 				new FooPlugins\FooGallery\Extensions\DefaultTemplates\FooGallery_Default_Templates();
 
 				// init the default media library datasource.
-				new FooGallery_Datasource_MediaLibrary();
+				new FooPlugins\FooGallery\FooGallery_Datasource_MediaLibrary();
 
-                new FooGallery_Attachment_Type();
+                new FooPlugins\FooGallery\FooGallery_Attachment_Type();
 
 				$pro_code_included = false;
 

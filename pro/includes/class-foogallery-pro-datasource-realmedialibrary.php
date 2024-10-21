@@ -4,8 +4,8 @@
  */
 namespace FooPlugins\FooGallery\Pro;
 
-use FooGalleryAttachment;
-use FooGallery_Datasource_MediaLibrary_Query_Helper;
+use FooPlugins\FooGallery\FooGalleryAttachment;
+use FooPlugins\FooGallery\FooGallery_Datasource_MediaLibrary_Query_Helper;
 
 if ( ! class_exists( 'FooGallery_Pro_Datasource_RealMediaLibrary' ) ) {
 

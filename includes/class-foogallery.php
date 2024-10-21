@@ -1,5 +1,7 @@
 <?php
 
+use FooPlugins\FooGallery\FooGalleryAttachment;
+
 /**
  * Class FooGallery
  *

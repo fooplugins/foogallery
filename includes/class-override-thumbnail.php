@@ -2,6 +2,7 @@
 /*
  * FooGallery Attachment Override Thumbnail
  */
+namespace FooPlugins\FooGallery;
 
 if ( ! class_exists( 'FooGallery_Override_Thumbnail' ) ) {
 

@@ -3,13 +3,10 @@
 // Common includes.
 require_once FOOGALLERY_PATH . 'includes/render-functions.php';
 require_once FOOGALLERY_PATH . 'includes/class-foogallery.php';
-require_once FOOGALLERY_PATH . 'includes/class-foogallery-attachment.php';
 require_once FOOGALLERY_PATH . 'includes/extensions/class-extension.php';
 require_once FOOGALLERY_PATH . 'includes/extensions/class-extensions-api.php';
 require_once FOOGALLERY_PATH . 'includes/extensions/class-extensions-loader.php';
 require_once FOOGALLERY_PATH . 'includes/class-foogallery-widget.php';
-require_once FOOGALLERY_PATH . 'includes/class-foogallery-debug.php';
-require_once FOOGALLERY_PATH . 'includes/class-foogallery-attachment-type.php';
 
 // Include built-in thumbnail generation files.
 require_once FOOGALLERY_PATH . 'includes/thumbs/includes.php';
@@ -21,14 +18,6 @@ new FooPlugins\FooGallery\Extensions\DemoContentGenerator\FooGallery_Demo_Conten
 
 // load Template Loader files.
 require_once FOOGALLERY_PATH . 'includes/public/class-foogallery-template-loader.php';
-
-require_once FOOGALLERY_PATH . 'includes/class-version-check.php';
-require_once FOOGALLERY_PATH . 'includes/class-foogallery-common-fields.php';
-require_once FOOGALLERY_PATH . 'includes/class-foogallery-paging.php';
-require_once FOOGALLERY_PATH . 'includes/class-foogallery-force-https.php';
-
-// Datasource includes.
-require_once FOOGALLERY_PATH . 'includes/class-foogallery-datasource-media_library.php';
 
 if ( is_admin() ) {
 
@@ -64,5 +53,3 @@ if ( is_admin() ) {
 }
 
 require_once FOOGALLERY_PATH . 'includes/public/class-shortcodes.php';
-
-require_once FOOGALLERY_PATH . 'includes/class-foogallery-lightbox.php';
