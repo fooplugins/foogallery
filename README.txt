@@ -313,6 +313,12 @@ Please update in order for FooGallery to work in WP 5.5+!
 
 == Changelog ==
 
+= 3.0.0 =
+* Date Updated : 21 Oct 2024
+* **Namespace Support**: Refactored the entire plugin to use PHP namespaces.
+* **AutoLoading**: Introduced PSR-4 autoloading via Composer.
+* **Breaking Changes**: Removed direct file includes; ensure that any custom code utilizing FooGallery classes is updated to reflect new namespaces.
+
 = 2.4.20 =
 * Date Updated : 20 Aug 2024
 * Update : Freemius SDK update 2.7.4
