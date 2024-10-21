@@ -1,6 +1,7 @@
 <?php
 
 use FooPlugins\FooGallery\FooGalleryAttachment;
+use stdClass;
 
 /**
  * Class FooGallery

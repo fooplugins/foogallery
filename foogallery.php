@@ -181,7 +181,7 @@ if ( function_exists( 'foogallery_fs' ) ) {
 				$checker = new FooPlugins\FooGallery\FooGallery_Version_Check();
 				$checker->wire_up_checker();
 
-				new FooGallery_Widget_Init();
+				new FooPlugins\FooGallery\FooGallery_Widget_Init();
 
 				// include the default templates no matter what!
 				new FooPlugins\FooGallery\Extensions\DefaultTemplates\FooGallery_Default_Templates();

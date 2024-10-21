@@ -3,7 +3,6 @@
 // Common includes.
 require_once FOOGALLERY_PATH . 'includes/render-functions.php';
 require_once FOOGALLERY_PATH . 'includes/class-foogallery.php';
-require_once FOOGALLERY_PATH . 'includes/class-foogallery-widget.php';
 
 // Include bundled extensions.
 new FooPlugins\FooGallery\Extensions\Album\FooGallery_Albums_Extension();
