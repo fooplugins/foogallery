@@ -2,7 +2,7 @@
 /**
  * Class to handle adding the Settings metabox to a gallery
  */
-
+namespace FooPlugins\FooGallery\Admin;
 
 if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings' ) ) {
 

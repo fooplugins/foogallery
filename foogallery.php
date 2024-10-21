@@ -133,7 +133,7 @@ if ( function_exists( 'foogallery_fs' ) ) {
                 new FooPlugins\FooGallery\Extensions\ImportExport\FooGallery_Import_Export_Extension();
 
 				if ( is_admin() ) {
-					new FooGallery_Admin();
+					new FooPlugins\FooGallery\Admin\FooGallery_Admin();
 					add_action( 'wpmu_new_blog', array( $this, 'set_default_extensions_for_multisite_network_activated' ) );
 					foogallery_fs()->add_filter( 'plugin_icon', array( $this, 'freemius_plugin_icon' ), 10, 1 );
 					add_action( 'foogallery_admin_menu_before', array( $this, 'add_freemius_activation_menu' ) );

@@ -2,6 +2,7 @@
 /*
  * FooGallery Pro Feature Promotion class
  */
+namespace FooPlugins\FooGallery\Admin;
 
 if ( ! class_exists( 'FooGallery_Pro_Promotion' ) ) {
 	class FooGallery_Pro_Promotion {

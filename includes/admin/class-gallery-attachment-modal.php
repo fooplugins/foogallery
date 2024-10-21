@@ -2,6 +2,9 @@
 /*
  * FooGallery Admin Gallery Attachment Modal class
  */
+namespace FooPlugins\FooGallery\Admin;
+
+use FooGallery_Thumb_Generator;
 
 if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
 

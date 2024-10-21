@@ -3,6 +3,10 @@
 /*
  * FooGallery Admin Gallery MetaBoxes class
  */
+namespace FooPlugins\FooGallery\Admin;
+
+use FooGallery;
+use FooGallery_Plugin;
 
 if ( ! class_exists( 'FooGallery_Admin_Gallery_Editor' ) ) {
 

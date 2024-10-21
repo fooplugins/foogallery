@@ -1,4 +1,5 @@
 <?php
+namespace FooPlugins\FooGallery\Admin;
 
 if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 
