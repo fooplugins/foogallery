@@ -2,6 +2,8 @@
 /**
  * Class that performs all thumbnail generation within FooGallery
  */
+use FooPlugins\FooGallery\FooGallery_Crop_Position;
+
 if ( ! class_exists( 'FooGallery_Thumb_Generator' ) ) {
 	class FooGallery_Thumb_Generator {
 

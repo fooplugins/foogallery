@@ -890,7 +890,7 @@ function foogallery_get_caption_desc_for_attachment($attachment_post, $source = 
  * Runs thumbnail tests and outputs results in a table format
  */
 function foogallery_output_thumbnail_generation_results() {
-	$thumbs = new FooGallery_Thumbnails();
+	$thumbs = new FooPlugins\FooGallery\FooGallery_Thumbnails();
 	try {
 		$results = $thumbs->run_thumbnail_generation_tests();
         if ( $results['success'] ) {

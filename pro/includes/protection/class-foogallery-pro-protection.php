@@ -1,7 +1,7 @@
 <?php
 namespace FooPlugins\FooGallery\Pro\Protection;
 
-use FooGallery_Thumbnails;
+use FooPlugins\FooGallery\FooGallery_Thumbnails;
 use FooGallery_Thumb_Generator;
 use FooGalleryAttachment;
 use FooGallery;

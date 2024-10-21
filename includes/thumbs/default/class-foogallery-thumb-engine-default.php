@@ -3,6 +3,9 @@
 /**
  * Class for the default thumbnail engine in FooGallery
  */
+
+ use FooPlugins\FooGallery\FooGallery_Thumbnails;
+ 
 if ( ! class_exists( 'FooGallery_Thumb_Engine_Default' ) ) {
 
 	class FooGallery_Thumb_Engine_Default extends FooGallery_Thumb_Engine {
