@@ -39,6 +39,9 @@ if ( ! class_exists( 'FooGallery_Lightbox' ) ) {
 
 			// cater for different captions sources.
 			add_filter( 'foogallery_attachment_html_link_attributes', array( $this, 'add_caption_attributes' ), 10, 3 );
+
+			// Add the deep link check script to the footer.
+			add_action( 'wp_footer', array( $this, 'foogallery_check_for_deep_link' ), 30 );
 		}
 
 		/**
@@ -1226,6 +1229,65 @@ if ( ! class_exists( 'FooGallery_Lightbox' ) ) {
 			}
 
 			return $field;
+		}
+
+		/**
+		 * Check for a deep link and open the corresponding image in the lightbox if found.
+		 */
+		public function foogallery_check_for_deep_link() {
+			$enable_deep_linking = foogallery_gallery_template_setting( 'state', 'no' );
+			if ( $enable_deep_linking ) {
+				$state_mask = foogallery_gallery_template_setting( 'state_mask', 'foogallery-{id}' );
+				?>
+				<script type="text/javascript">
+					jQuery(document).ready(function($) {
+						var stateMask = <?php echo json_encode($state_mask); ?>;
+
+						function foogallery_open_image_in_lightbox(galleryID, imageID) {
+							var $gallery = $('#foogallery-gallery-' + galleryID);
+							var $imageLink = $gallery.find('a[data-id="' + imageID + '"]');
+							if ($imageLink.length) {
+								$imageLink.trigger('click');
+							} else {
+								console.log('Image link not found.');
+							}
+						}
+
+						function foogallery_parse_hash_fragment() {
+							var hash = window.location.hash;
+							console.log('Parsing hash fragment:', hash);
+							if (hash) {
+								var mask = stateMask.replace('{id}', '');
+								if (hash.startsWith('#' + mask)) {
+									var parts = hash.split('/');
+									if (parts.length === 2) {
+										var galleryID = parts[0].replace('#' + mask, '');
+										var imageID = parts[1].replace('i:', '');
+										console.log('Gallery ID:', galleryID, 'Image ID:', imageID);
+										foogallery_open_image_in_lightbox(galleryID, imageID);
+									} else {
+										console.log('Hash fragment format is incorrect.');
+									}
+								} else {
+									console.log('No valid hash fragment found.');
+								}
+							} else {
+								console.log('No hash fragment found.');
+							}
+						}
+
+						foogallery_parse_hash_fragment();
+
+						$(document).on('click', '.foogallery-item a', function(e) {
+							var imageID = $(this).data('id');
+							var galleryID = $(this).closest('.foogallery').attr('id').replace('foogallery-gallery-', '');
+							var currentURL = window.location.href.split('#')[0];
+							window.history.replaceState(null, null, currentURL + '#' + stateMask.replace('{id}', galleryID) + '/i:' + imageID);
+						});
+					});
+				</script>
+				<?php
+			}
 		}
 	}
 }
