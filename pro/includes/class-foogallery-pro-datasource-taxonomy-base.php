@@ -342,24 +342,43 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Taxonomy_Base' ) ) {
 			<div class="foogallery-datasource-taxonomy foogallery-datasource-taxonomy-<?php echo $this->taxonomy; ?>" data-media-title="<?php _e('Media Library', 'foogallery'); ?>" data-media-button="<?php _e('Close', 'foogallery'); ?>" <?php echo $show_container ? '' : 'style="display:none" '; ?>>
 				<h3><?php echo sprintf( __('Datasource : %s', 'foogallery'), $datasource['name'] ); ?></h3>
 				<p><?php echo sprintf( __('This gallery will be dynamically populated with all attachments assigned to the following %s:', 'foogallery'), $datasource['name'] ); ?></p>
+				
 				<div class="foogallery-items-html"><?php echo $html; ?></div>
+
+				<!-- Display the selection mode -->
+				<?php
+					// Retrieve saved selection mode, defaulting to 'OR' if not set
+					$saved_selection_mode = get_post_meta($gallery->ID, '_foogallery_selection_mode', true);
+					$saved_selection_mode = $saved_selection_mode ? $saved_selection_mode : 'OR';  // Default to OR if none is saved
+				?>
+				
+				<p>
+					<strong><?php _e('Selection Mode:', 'foogallery'); ?></strong> 
+					<?php echo esc_html($saved_selection_mode === 'AND' ? __('AND (Intersect)', 'foogallery') : __('OR (Union)', 'foogallery')); ?>
+				</p>
+
 				<button type="button" class="button edit" data-datasource="<?php echo $this->datasource_name; ?>">
 					<?php echo sprintf( __( 'Change %s', 'foogallery' ), $datasource['name'] ); ?>
 				</button>
+				
 				<button type="button" class="button remove">
 					<?php echo sprintf( __( 'Remove All %s', 'foogallery' ), $datasource['name'] ); ?>
 				</button>
+				
 				<?php if ( $show_media_button ) { ?>
 				<button type="button" class="button media">
 					<?php _e( 'Open Media Library', 'foogallery' ); ?>
 				</button>
 				<?php } ?>
+				
 				<button type="button" class="button bulk_media_management">
 					<?php _e( 'Bulk Taxonomy Manager', 'foogallery' ); ?>
 				</button>
+				
 				<button type="button" class="button help">
 					<?php _e( 'Show Help', 'foogallery' ); ?>
 				</button>
+
 				<div style="display: none" class="foogallery-datasource-taxonomy-help">
 					<h4><?php echo sprintf( __('%s Datasource Help', 'foogallery'), $datasource['name'] ); ?></h4>
 					<p><?php echo sprintf( __('You can change which %s are assigned to this gallery by clicking "Change %s".', 'foogalley' ), $datasource['name'], $datasource['name'] ); ?></p>
@@ -370,7 +389,8 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Taxonomy_Base' ) ) {
 					<p><?php echo sprintf( __('When an attachment is assigned to one of the %s, it will automatically be shown in the gallery.', 'foogalley' ), $datasource['name'] ); ?></p>
 					<p><?php echo __('Click on the "Gallery Preview" to see which attachments will be loaded into the gallery.', 'foogallery'); ?></p>
 				</div>
-			</div><?php
+			</div>
+			<?php
 		}
     }
 }
