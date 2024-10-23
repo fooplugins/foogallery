@@ -70,34 +70,42 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Datasources' ) ) {
 		 * @param $_post
 		 */
         public function save_gallery_datasource( $post_id, $_post ) {
-            //action pre-save
+            // Action pre-save
             do_action( 'foogallery_before_save_gallery_datasource', $post_id );
-
-            //set some defaults
+        
+            // Set some defaults
             $datasource = '';
             $datasource_value = array();
-
+        
+            // Save the selection mode
+            if ( isset( $_POST['foogallery_selection_mode'] ) ) {
+                $selection_mode = sanitize_text_field( $_POST['foogallery_selection_mode'] );
+                update_post_meta( $post_id, '_foogallery_selection_mode', $selection_mode );
+            } else {
+                update_post_meta( $post_id, '_foogallery_selection_mode', 'OR' ); // Default to OR
+            }
+        
+            // Continue saving other datasource data
             if ( isset( $_POST[FOOGALLERY_META_DATASOURCE] ) ) {
-				$datasource = $_POST[FOOGALLERY_META_DATASOURCE];
-				update_post_meta( $post_id, FOOGALLERY_META_DATASOURCE, $datasource );
-
+                $datasource = sanitize_text_field( $_POST[FOOGALLERY_META_DATASOURCE] );
+                update_post_meta( $post_id, FOOGALLERY_META_DATASOURCE, $datasource );
+        
                 if ( isset( $_POST[FOOGALLERY_META_DATASOURCE_VALUE] ) ) {
                     $datasource_value = $this->get_json_datasource_value( $_POST[FOOGALLERY_META_DATASOURCE_VALUE] );
-
+        
                     if ( !empty( $datasource_value ) ) {
                         update_post_meta( $post_id, FOOGALLERY_META_DATASOURCE_VALUE, $datasource_value );
                     } else {
                         delete_post_meta( $post_id, FOOGALLERY_META_DATASOURCE_VALUE );
                     }
                 }
-
-			} else {
+            } else {
                 delete_post_meta( $post_id, FOOGALLERY_META_DATASOURCE );
             }
-
-            //action for post-save
+        
+            // Action post-save
             do_action( 'foogallery_after_save_gallery_datasource', $post_id, $datasource, $datasource_value );
-        }
+        }        
 
         /**
          * Safely returns an array from the json string

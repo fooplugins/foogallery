@@ -280,6 +280,7 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Taxonomy_Base' ) ) {
 					</label>
 					<label style="margin-left: 10px;">
 						<input type="radio" name="selection_mode" value="AND"> <?php esc_html_e( 'AND (Intersect)', 'foogallery' ); ?>
+						<input type="hidden" id="foogallery_selection_mode" name="foogallery_selection_mode" value="OR">
 					</label>
 				</div>
 				<!-- End Selection Mode Section -->
