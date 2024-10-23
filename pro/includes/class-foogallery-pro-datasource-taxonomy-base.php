@@ -236,45 +236,64 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Taxonomy_Base' ) ) {
 		 * Output the datasource modal content
 		 * @param $foogallery_id
 		 */
-		function render_datasource_modal_content( $foogallery_id, $datasource_value ) {
+		public function render_datasource_modal_content( $foogallery_id, $datasource_value ) {
 
-            $selected_terms = array();
-            if ( is_array( $datasource_value ) && array_key_exists( 'value', $datasource_value ) ) {
-                $selected_terms = $datasource_value['value'];
-            }
+			$selected_terms = array();
+			if ( is_array( $datasource_value ) && array_key_exists( 'value', $datasource_value ) ) {
+				$selected_terms = $datasource_value['value'];
+			}
+		
+			$datasources = foogallery_gallery_datasources();
+			$datasource = $datasources[ $this->datasource_name ];
+			$terms = get_terms( $this->taxonomy, array( 'hide_empty' => false ) );
+			$term_count = count( $terms );
+		
+			if ( $term_count > 0 ) {
 
-            $datasources = foogallery_gallery_datasources();
-			$datasource = $datasources[$this->datasource_name];
-            $terms = get_terms( $this->taxonomy, array('hide_empty' => false) );
-            $term_count = count( $terms );
-
-            if ( $term_count > 0 ) {
-
-                ?>
-                <p><?php printf(__('Select %s from the list below. The gallery will then dynamically load all attachments that are assigned to the selected items.', 'foogallery'), $datasource['name']); ?></p>
-                <ul data-taxonomy="<?php echo $this->taxonomy; ?>">
-                    <?php
-
-                    foreach ($terms as $term) {
-                        $selected = in_array($term->term_id, $selected_terms);
-                        ?>
-                        <li class="datasource-taxonomy <?php echo $this->datasource_name; ?>">
-                        <a href="#" class="button button-small<?php echo $selected ? ' button-primary' : ''; ?>"
-                           data-term-id="<?php echo $term->term_id; ?>"><?php echo $term->name; ?></a>
-                        </li><?php
-                    }
-
-                    ?>
-                </ul>
-                <?php
-
-            } else {
-                echo '<p>' . sprintf( __( 'We found no %s for you to choose. You will need to create a few first, by clicking the link below. Once you have created them, you can click the reload button above.', 'foogallery' ), $datasource['name']) . '</p>';
-            }
-
-            $taxonomy_url = admin_url( 'edit-tags.php?taxonomy=' . $this->taxonomy );
-            echo '<div style="clear: both"></div><p><a target="_blank" href="' . $taxonomy_url . '">' . sprintf( __('Manage your %s', 'foogallery'), $datasource['name'] ) . '</a></p>';
+				?>
+				<p><?php printf( esc_html__( 'Select %s from the list below. The gallery will then dynamically load all attachments that are assigned to the selected items.', 'foogallery' ), esc_html( $datasource['name'] ) ); ?></p>
+				<ul data-taxonomy="<?php echo esc_attr( $this->taxonomy ); ?>" style="overflow: auto; clear: both;">
+					<?php
+		
+					foreach ( $terms as $term ) {
+						$selected = in_array( $term->term_id, $selected_terms );
+						?>
+						<li class="datasource-taxonomy <?php echo esc_attr( $this->datasource_name ); ?>" style="display: inline-block; margin-right: 5px;">
+						<a href="#" class="button button-small<?php echo $selected ? ' button-primary' : ''; ?>"
+						   data-term-id="<?php echo esc_attr( $term->term_id ); ?>"><?php echo esc_html( $term->name ); ?></a>
+						</li>
+						<?php
+					}
+		
+					?>
+				</ul>
+		
+				<div style="clear: both;"></div> <!-- Clearfix to ensure the next section starts on a new line -->
+		
+				<!-- Selection Mode Section -->
+				<div class="foogallery-selection-mode" style="margin-top: 20px;">
+					<p><?php esc_html_e( 'Selection mode changes which images are included in the gallery based off either a union (OR) or an intersect (AND) mode. If you choose AND, then only the images that have ALL the terms will be included in the gallery.', 'foogallery' ); ?></p>
+					
+					<h4><?php esc_html_e( 'Select Selection Mode:', 'foogallery' ); ?></h4>
+					<label>
+						<input type="radio" name="selection_mode" value="OR" checked> <?php esc_html_e( 'OR (Union)', 'foogallery' ); ?>
+					</label>
+					<label style="margin-left: 10px;">
+						<input type="radio" name="selection_mode" value="AND"> <?php esc_html_e( 'AND (Intersect)', 'foogallery' ); ?>
+					</label>
+				</div>
+				<!-- End Selection Mode Section -->
+		
+				<?php
+		
+			} else {
+				echo '<p>' . sprintf( esc_html__( 'We found no %s for you to choose. You will need to create a few first, by clicking the link below. Once you have created them, you can click the reload button above.', 'foogallery' ), esc_html( $datasource['name'] ) ) . '</p>';
+			}
+		
+			$taxonomy_url = admin_url( 'edit-tags.php?taxonomy=' . $this->taxonomy );
+			echo '<div style="clear: both;"></div><p><a target="_blank" href="' . esc_url( $taxonomy_url ) . '">' . sprintf( esc_html__( 'Manage your %s', 'foogallery' ), esc_html( $datasource['name'] ) ) . '</a></p>';
 		}
+				
 
 		/**
 		 * Output the html required by the datasource in order to add item(s)
