@@ -10,18 +10,18 @@ jQuery(function ($) {
         $('.foogallery-datasources-modal-wrapper').hide();
     });
 
-    // Capture the selection mode when the radio buttons change
+    // Handle selection mode changes and update the hidden input
     $('input[name="selection_mode"]').on('change', function () {
         var selectionMode = $('input[name="selection_mode"]:checked').val();
-        $('#foogallery_selection_mode').val(selectionMode);  // Update hidden input with the selected mode
+        $('#foogallery_selection_mode').val(selectionMode);
     });
 
     // Capture the selected datasource and the selection mode when the "OK" button is clicked
     $('.foogallery-datasource-modal-insert').on('click', function(e) {
         var activeDatasource = $('.foogallery-datasource-modal-selector.active').data('datasource');
-        var selectionMode = $('input[name="selection_mode"]:checked').val();  // Get the selected mode
+        var selectionMode = $('input[name="selection_mode"]:checked').val();
 
-        // Set the datasource and selection mode in the hidden fields
+        // Set the datasource and selection mode in hidden fields
         $('#foogallery_datasource').val(activeDatasource);
         $('#foogallery_selection_mode').val(selectionMode);
 

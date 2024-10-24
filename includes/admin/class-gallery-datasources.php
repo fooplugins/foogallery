@@ -77,14 +77,14 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Datasources' ) ) {
             $datasource = '';
             $datasource_value = array();
         
-            // Save the selection mode
+            // Save the selection mode in post meta
             if ( isset( $_POST['foogallery_selection_mode'] ) ) {
                 $selection_mode = sanitize_text_field( $_POST['foogallery_selection_mode'] );
                 update_post_meta( $post_id, '_foogallery_selection_mode', $selection_mode );
             } else {
                 update_post_meta( $post_id, '_foogallery_selection_mode', 'OR' ); // Default to OR
             }
-        
+
             // Continue saving other datasource data
             if ( isset( $_POST[FOOGALLERY_META_DATASOURCE] ) ) {
                 $datasource = sanitize_text_field( $_POST[FOOGALLERY_META_DATASOURCE] );
@@ -148,9 +148,15 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Datasources' ) ) {
                 $datasource_value = get_post_meta( $gallery->ID, FOOGALLERY_META_DATASOURCE_VALUE, true );
                 if ( is_array( $datasource_value ) ) {
                     $datasource_value = json_encode( $datasource_value );
-                } ?>
+                }
+                $selection_mode = get_post_meta( $gallery->ID, '_foogallery_selection_mode', true );
+                if (!$selection_mode) {
+                    $selection_mode = 'OR';  // Default to OR if not set
+                }
+                ?>
             <input type="hidden" data-foogallery-preview="include" name="<?php echo FOOGALLERY_META_DATASOURCE; ?>" value="<?php echo $gallery->datasource_name; ?>" id="<?php echo FOOGALLERY_META_DATASOURCE; ?>" />
             <input type="hidden" data-foogallery-preview="include" value="<?php echo esc_attr( $datasource_value ); ?>" name="<?php echo FOOGALLERY_META_DATASOURCE_VALUE; ?>" id="<?php echo FOOGALLERY_META_DATASOURCE_VALUE; ?>" />
+            <input type="hidden" data-foogallery-preview="include" value="<?php echo esc_attr( $selection_mode ); ?>" name="foogallery_selection_mode" id="foogallery_selection_mode" />
             <?php }
         }
 
