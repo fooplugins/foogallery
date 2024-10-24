@@ -157,63 +157,76 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Taxonomy_Base' ) ) {
 		 * @return array(FooGalleryAttachment)
 		 */
 		public function get_gallery_attachments( $attachments, $foogallery ) {
-            global $foogallery_gallery_preview;
-
+			global $foogallery_gallery_preview;
+		
 			if ( ! empty( $foogallery->datasource_value ) ) {
-                $datasource_value = $foogallery->datasource_value;
-                $taxonomy = $datasource_value['taxonomy'];
+				$datasource_value = $foogallery->datasource_value;
+				$taxonomy = $datasource_value['taxonomy'];
+		
+				$cache_post_meta_key = FOOGALLERY_META_DATASOURCE_CACHED_ATTACHMENTS . '_' . $taxonomy;
+				$enhanced_cache = false;
+		
+				if ( array_key_exists( 'enhanced_cache', $datasource_value ) ) {
+					$enhanced_cache = true;
+					$cache_post_meta_key .= '_values(' . implode( '|', $datasource_value['value'] ) . ')';
+				}
+		
+				// Instantiate the helper class for querying attachments
+				$helper = new FooGallery_Datasource_MediaLibrary_Query_Helper();
+		
+				// Never get the cached attachments if we are doing a preview
+				if ( $foogallery_gallery_preview ) {
+					$cached_attachments = false;
+				} else {
+					// Check if there is a cached list of attachments
+					$cached_attachments = get_post_meta( $foogallery->ID, $cache_post_meta_key, true );
+				}
+		
+				// Retrieve the selection mode from the gallery metadata
+				$selection_mode = get_post_meta($foogallery->ID, '_foogallery_selection_mode', true);
+				if (!$selection_mode) {
+					$selection_mode = 'OR';  // Default to 'OR' if no mode is set
+				}
+				$operator = ($selection_mode === 'AND') ? 'AND' : 'IN';  // Set operator for the tax_query
 
-                $cache_post_meta_key = FOOGALLERY_META_DATASOURCE_CACHED_ATTACHMENTS . '_' . $taxonomy;
-
-                $enhanced_cache = false;
-
-                if ( array_key_exists( 'enhanced_cache', $datasource_value ) ) {
-	                $enhanced_cache = true;
-	                $cache_post_meta_key .= '_values(' . implode( '|', $datasource_value['value'] ) . ')';
-                }
-
-                $helper = new FooGallery_Datasource_MediaLibrary_Query_Helper();
-
-                //never get the cached attachments if we doing a preview
-                if ( $foogallery_gallery_preview ) {
-                    $cached_attachments = false;
-                } else {
-                    //check if there is a cached list of attachments
-                    $cached_attachments = get_post_meta($foogallery->ID, $cache_post_meta_key, true);
-                }
 
 				if ( empty( $cached_attachments ) ) {
-					$terms            = $datasource_value['value'];
-					$field			  = array_key_exists( 'field', $datasource_value ) ? $datasource_value['field'] : 'term_id';
-					$attachments      = $helper->query_attachments( $foogallery, array(
+					$terms = $datasource_value['value'];
+					$field = array_key_exists( 'field', $datasource_value ) ? $datasource_value['field'] : 'term_id';
+		
+					// Query attachments with the correct operator based on the selection mode
+					$attachments = $helper->query_attachments( $foogallery, array(
 						'tax_query' => array(
 							array(
 								'taxonomy' => $taxonomy,
 								'field'    => $field,
 								'terms'    => $terms,
+								'operator' => $operator,
 							),
 						)
-					) );
-
+					));
+		
 					$attachment_ids = array();
 					foreach ( $attachments as $attachment ) {
 						$attachment_ids[] = $attachment->ID;
 					}
-					//save a cached list of attachments
+		
+					// Save a cached list of attachments
 					update_post_meta( $foogallery->ID, $cache_post_meta_key, $attachment_ids );
-
+		
 					if ( $enhanced_cache ) {
 						update_post_meta( $foogallery->ID, FOOGALLERY_META_DATASOURCE_CACHED_ATTACHMENTS . '_enhanced', true );
-                    }
+					}
 				} else {
+					// Query attachments based on the cached attachment IDs
 					$attachments = $helper->query_attachments( $foogallery,
 						array( 'post__in' => $cached_attachments )
 					);
 				}
 			}
-
+		
 			return $attachments;
-		}
+		}	
 
 		/**
 		 * Returns the featured FooGalleryAttachment from the datasource
