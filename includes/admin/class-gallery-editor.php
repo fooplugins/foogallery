@@ -299,11 +299,11 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Editor' ) ) {
 
 		function ajax_get_gallery_info() {
 
-			$nonce = safe_get_from_request( 'nonce' );
+			$nonce = sanitize_text_field( safe_get_from_request( 'nonce' ) );
 
 			wp_verify_nonce( $nonce, 'foogallery-timymce-nonce' );
 
-			$id = safe_get_from_request( 'foogallery_id' );
+			$id = intval( safe_get_from_request( 'foogallery_id' ) );
 
 			$gallery = FooGallery::get_by_id( $id );
 

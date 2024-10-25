@@ -222,6 +222,11 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Folders' ) ) {
 				$folder = '/';
 			}
 
+			// Validate folder path to prevent path traversal
+			if ( ! $this->validate_folder_path( $folder ) ) {
+				return $attachments; // Return empty attachments if invalid
+			}
+
 			//ensure we are always looking at a folder down from the root folder
 			$root        = $this->get_root_folder();
 			$actual_path = rtrim( $root, '/' ) . $folder;
@@ -318,6 +323,48 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Folders' ) ) {
 			usort( $attachments, array( $this, 'sort_attachments' ) );
 
 			return $attachments;
+		}
+
+		/**
+		 * Validates the folder path to prevent path traversal attacks.
+		 *
+		 * @param string $folder The folder path to validate.
+		 * @return bool True if the folder path is valid, false otherwise.
+		 */
+		private function validate_folder_path( $folder ) {
+			// Remove any null bytes and decode the path
+			$folder = str_replace( "\0", '', rawurldecode( $folder ) );
+
+			// Block path traversal attempts (../ or ..\)
+			if ( strpos( $folder, '..' ) !== false ) {
+				return false;
+			}
+
+			// Block paths with disallowed characters
+			if ( preg_match( '/[<>:"|?*]/', $folder ) ) {
+				return false;
+			}
+
+			// Block leading or trailing spaces or dots
+			if ( preg_match( '/^[\s.]+|[\s.]+$/', $folder ) ) {
+				return false;
+			}
+
+			// Block multiple consecutive slashes or backslashes
+			if ( preg_match( '#/{2,}|\\\\{2,}#', $folder ) ) {
+				return false;
+			}
+
+			// Ensure the folder is within the allowed root directory
+			$root = $this->get_root_folder();
+			$realpath = realpath( rtrim( $root, '/' ) . '/' . ltrim( $folder, '/' ) );
+
+			// If realpath is not within the root directory, return false
+			if ( $realpath === false || strpos( $realpath, realpath( $root ) ) !== 0 ) {
+				return false;
+			}
+
+			return true;
 		}
 
 		/**
@@ -474,24 +521,24 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Folders' ) ) {
 				$folder   = urldecode( $_POST['folder'] );
 				$metadata = sanitize_text_field( $_POST['metadata'] );
 				$sort = sanitize_text_field( $_POST['sort'] );
-
+				
 				if ( array_key_exists( 'json', $_POST ) ) {
 					$json = $_POST['json'];
-					//save the json for the folder
+					// Save the json for the folder
 					$option_key = $this->build_database_options_key( $folder );
 					update_option( $option_key, $json );
 				}
-
+		
 				if ( array_key_exists( 'clear', $_POST ) ) {
 					$option_key = $this->build_database_options_key( $folder );
 					delete_option( $option_key );
 				}
-
+		
 				$this->render_folder( $folder, $metadata, $sort );
 			}
-
+		
 			die();
-		}
+		}		
 
 		/**
 		 * Renders the metadata that is found for the folder
