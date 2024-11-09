@@ -326,45 +326,25 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Folders' ) ) {
 		}
 
 		/**
-		 * Validates the folder path to prevent path traversal attacks.
+		 * Validates if a folder path is within the WordPress webroot to prevent directory traversal attacks.
 		 *
 		 * @param string $folder The folder path to validate.
-		 * @return bool True if the folder path is valid, false otherwise.
+		 * @return bool True if the folder path is within the WordPress webroot, false otherwise.
 		 */
-		private function validate_folder_path( $folder ) {
-			// Remove any null bytes and decode the path
-			$folder = str_replace( "\0", '', rawurldecode( $folder ) );
+		private function validate_folder_path($folder) {
+			// Decode the path to handle any URL encoding
+			$folder = rawurldecode($folder);
 
-			// Block path traversal attempts (../ or ..\)
-			if ( strpos( $folder, '..' ) !== false ) {
-				return false;
-			}
-
-			// Block paths with disallowed characters
-			if ( preg_match( '/[<>:"|?*]/', $folder ) ) {
-				return false;
-			}
-
-			// Block leading or trailing spaces or dots
-			if ( preg_match( '/^[\s.]+|[\s.]+$/', $folder ) ) {
-				return false;
-			}
-
-			// Block multiple consecutive slashes or backslashes
-			if ( preg_match( '#/{2,}|\\\\{2,}#', $folder ) ) {
-				return false;
-			}
-
-			// Ensure the folder is within the allowed root directory
+			// Construct the full path based on the root directory
 			$root = $this->get_root_folder();
-			$realpath = realpath( rtrim( $root, '/' ) . '/' . ltrim( $folder, '/' ) );
+			$fullPath = rtrim($root, '/') . '/' . ltrim($folder, '/');
 
-			// If realpath is not within the root directory, return false
-			if ( $realpath === false || strpos( $realpath, realpath( $root ) ) !== 0 ) {
-				return false;
-			}
+			// Get the real path of the root and full path to ensure it’s within the WordPress webroot
+			$webroot = realpath(ABSPATH);
+			$realPath = realpath($fullPath);
 
-			return true;
+			// Validate that the resolved real path starts with the webroot path
+			return ($realPath && strpos($realPath, $webroot) === 0);
 		}
 
 		/**

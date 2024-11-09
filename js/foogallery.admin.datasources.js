@@ -86,68 +86,67 @@ jQuery(function ($) {
 	});
 
 	/**
-	 * Enhanced folder path validation to prevent path traversal attempts.
-	 * Implements multiple layers of security checks.
+	 * Validates the folder path to prevent path traversal attacks.
+	 * This function performs several checks to ensure the path is safe.
+	 *
+	 * @param {string} folderPath - The folder path to validate.
+	 * @return {boolean} - Returns true if the path is safe, false otherwise.
 	 */
 	function validateFolderPath(folderPath) {
-		// Guard against null or undefined input
+		// Ensure the input is a non-empty string
 		if (!folderPath || typeof folderPath !== 'string') {
 			console.error('Invalid folder path type provided');
 			return false;
 		}
 
-		// Decode the path first to catch encoded traversal attempts
 		try {
+			// Decode the path to catch encoded traversal attempts
 			const decodedPath = decodeURIComponent(folderPath);
-			
-			// Comprehensive validation rules
+
+			// Define patterns to detect invalid characters and traversal attempts
 			const invalidPatterns = [
-				/\.\./,                    // Directory traversal
-				/\.\.\\|\\\.\./,           // Windows-style traversal
-				/%2e%2e/i,                // URL encoded ..
-				/%252e%252e/i,            // Double URL encoded ..
-				/\.\.%2f/i,               // Mixed encoding
-				/\.\.%5c/i,               // Encoded backslash
-				/\.\.[\/\\]/,             // Both slash types
-				/^\/|^[a-zA-Z]:[\/\\]/,   // Absolute paths
-				/^~|^%7e/i,               // Home directory
-				/[<>:"\\|?*\x00-\x1F]/,   // Invalid filename chars
-				/\/\/+|\\\\+/,            // Multiple slashes
-				/^[\s.]|[\s.]$/           // Leading/trailing dots or spaces
+				/\.\./,                    // Simple directory traversal
+				/%2e%2e|%252e%252e/i,      // Encoded traversal
+				/[<>:"\\|?*\x00-\x1F]/,    // Invalid characters for filenames
+				/\/\/+|\\\\+/,             // Multiple consecutive slashes
+				/^\/|^[a-zA-Z]:[\/\\]/,    // Absolute paths or drive letters (Windows)
+				/^~|^%7e/i                 // Home directory shortcut
 			];
 
-			// Check against all invalid patterns
+			// Test decoded path against all invalid patterns
 			for (const pattern of invalidPatterns) {
 				if (pattern.test(decodedPath)) {
-					console.warn('Security validation failed:', pattern);
+					console.warn('Security validation failed for pattern:', pattern);
 					return false;
 				}
 			}
 
-			// Normalize the path
+			// Normalize and clean up the path
 			const normalizedPath = decodedPath
-				.replace(/\\/g, '/') // Convert backslashes to forward slashes
-				.replace(/\/+/g, '/') // Remove multiple slashes
-				.replace(/^\.|\.$/g, '') // Remove single dots
+				.replace(/\\/g, '/')      // Convert backslashes to forward slashes
+				.replace(/\/+/g, '/')     // Collapse multiple slashes
+				.replace(/^\.\//, '')     // Remove leading single dot paths
 				.trim();
 
-			// Additional security checks
-			if (normalizedPath.length === 0 || 
-				normalizedPath.length > 255 || // Max path length
-				normalizedPath.split('/').some(part => part.length > 255)) { // Max segment length
+			// Additional check to ensure path length and segment restrictions
+			if (
+				normalizedPath.length === 0 ||
+				normalizedPath.length > 255 ||
+				normalizedPath.split('/').some(part => part.length > 255)
+			) {
+				console.warn('Path exceeds allowed length limits');
 				return false;
 			}
 
-			// Whitelist approach: only allow specific characters
-			const safePathPattern = /^[a-zA-Z0-9-_/][a-zA-Z0-9-_/\s.]*$/;
+			// Whitelist approach: allow alphanumeric characters, hyphens, underscores, and slashes
+			const safePathPattern = /^[a-zA-Z0-9-_\/\s.]+$/;
 			if (!safePathPattern.test(normalizedPath)) {
 				console.warn('Path contains invalid characters');
 				return false;
 			}
 
-			// Store the sanitized path for later use
+			// Save the last validated path if needed for debugging or future use
 			window.lastValidatedPath = normalizedPath;
-			
 			return true;
 
 		} catch (e) {
