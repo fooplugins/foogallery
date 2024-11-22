@@ -111,8 +111,8 @@ if ( function_exists( 'foogallery_fs' ) ) {
 				// init FooPluginBase.
 				$this->init( FOOGALLERY_FILE, FOOGALLERY_SLUG, FOOGALLERY_VERSION, 'FooGallery' );
 
-				// load text domain.
-				$this->load_plugin_textdomain();
+                // Move the text domain loading to init hook
+                add_action('init', array($this, 'load_plugin_textdomain'));
 
 				// setup gallery post type.
 				new FooGallery_PostTypes();
