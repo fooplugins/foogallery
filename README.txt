@@ -1,10 +1,10 @@
 === FooGallery – Responsive Photo Gallery, Image Viewer, Justified, Masonry & Carousel ===
 Contributors: bradvin, steveush, fooplugins
 Donate link: https://fooplugins.com
-Tags: gallery, image gallery, photo gallery, responsive gallery, wordpress gallery plugin, albums, media gallery, video gallery, lightbox
+Tags: gallery, image gallery, photo gallery, responsive gallery, wordpress gallery plugin
 Requires at least: 5.3
-Tested up to: 6.6
-Stable tag: 2.4.24
+Tested up to: 6.7
+Stable tag: 2.4.26
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -312,6 +312,16 @@ Goto FooGallery Settings -> Advanced Tab and check "Disable PRO Promotions" and 
 Please update in order for FooGallery to work in WP 5.5+!
 
 == Changelog ==
+
+= 2.4.26 =
+* Date Updated : 23 Nov 2024
+* Update : Freemius SDK update 2.9.0
+* Fix : Fixed bug with early translation PHP warnings in debug mode.
+* Fix : When in trial mode, do not load the promotion gallery templates.
+[//]: # fs_premium_only_begin
+* New : [Expert Plan] Added new selection mode setting to taxonomy datasource to allow for AND or OR selections.
+* Fix : [Expert Plan] Added check for folder datasource, to ensure only files within WP root are included.
+[//]: # fs_premium_only_end
 
 = 2.4.25 =
 * Date Updated : 19 Oct 2024
@@ -691,18 +701,6 @@ Please update in order for FooGallery to work in WP 5.5+!
 * Fix : fixed incompatibility issue with videos that are not positioned correctly with themes that include FitVidJS library
 [//]: # fs_premium_only_end
 
-= 1.10.4 =
-* Date Updated : 2021-02-03
-* Fix : fix for fatal error running pre WP5 : Fatal error: Uncaught ArgumentCountError: Too few arguments to function FooGallery_Thumb_Engine_Default::delete_cache_folder_for_attachment()
-
-= 1.10.3 =
-* Date Updated : 2021-20-02
-* Fix : fixed a fatal PHP error on some installs
-
-= 1.10.1 =
-* Date Updated : 2021-18-02
-* Fix : fixed a fatal PHP error with PHP 5.6
-
 = 1.10.0 =
 * Date Updated : 2021-18-02
 * Update : Removed WPThumb library completely
@@ -712,223 +710,6 @@ Please update in order for FooGallery to work in WP 5.5+!
 * New : Added new "Captions Enabled" setting which allows you to set the caption to be initially hidden
 * Fix : fixed bug where EXIF data was not showing for items on pages 2 or more
 [//]: # fs_premium_only_end
-
-= 1.9.53 =
-* Date Updated : 2021-23-01
-* Update : FooGallery client side 1.4.26
-
-= 1.9.52 =
-* Date Updated : 2021-22-01
-[//]: # fs_premium_only_begin
-* New : added new option ("none") to hide the EXIF thumbnail position
-* Fix : fixed bug where EXIF data was not showing in Slider and Grid gallery templates
-[//]: # fs_premium_only_end
-
-= 1.9.50 =
-* Date Updated : 2021-21-01
-[//]: # fs_premium_only_begin
-* Fix : fixed formatting for certain EXIF attributes
-[//]: # fs_premium_only_end
-* Fix : fixed incorrect settings showing for certain gallery templates
-
-= 1.9.49 =
-* Date Updated : 2021-13-01
-* Fix : Advanced settings for a gallery to properly override settings rather than merge
-[//]: # fs_premium_only_begin
-* Fix : fixed settings in slider template not showing after save
-* Fix : fixed captions not working correctly in slider template
-* Fix : fixed captions not working correctly in grid template
-[//]: # fs_premium_only_end
-
-= 1.9.48 =
-* Date Updated : 2021-11-01
-* New : Added global Custom JS & CSS settings which are included for all galleries
-* New : Added global language settings which apply to all galleries
-* Update : Updated All-in-one SEO support to work with AIOSEO v4
-* Update : FooGallery client side 1.4.25
-* Update : updated WPML compatibility to account for new language settings
-* Fix : image URL's with spaces - always ensure image URL's are escaped
-* Fix : fixed PHP warning on activation
-* Test : tested PHP8 support!
-[//]: # fs_premium_only_begin
-* New : Added EXIF feature whereby you can showcase the image metadata in your galleries
-[//]: # fs_premium_only_end
-
-= 1.9.47 =
-* Date Updated : 2020-16-10
-[//]: # fs_premium_only_begin
-* Fix : fixed bug with YouTube video searches not working
-[//]: # fs_premium_only_end
-
-= 1.9.46 =
-* Date Updated : 2020-15-10
-[//]: # fs_premium_only_begin
-* Fix : fixed bug with attachment tags and categories not being editable in modal
-[//]: # fs_premium_only_end
-
-= 1.9.45 =
-* Date Updated : 2020-15-10
-* Fix : Updated albums to use FooGallery stylesheet enqueue function
-[//]: # fs_premium_only_begin
-* Fix : fixed bug in Multi-level modal where taxonomies were scrambled
-[//]: # fs_premium_only_end
-
-= 1.9.44 =
-* Date Updated : 2020-12-06
-* New : Allow thumb width and height to be overridden with shortcode arguments override_width and override_height
-* Fix : fixed caption bugs where FooBox was not picking up custom/override captions
-* Fix : removed use of deprecated functions in jQuery for WP 5.6
-* Fix : removed localStorage checks, so that browser does not say that cookies are in use
-* Update : FooGallery client side 1.4.24
-* Update : Frontend gallery initialization now uses custom ready event by default, to avoid jQuery errors
-[//]: # fs_premium_only_begin
-* Fix : fixed caption bugs where FooGallery lightbox was not picking up custom captions
-* Fix : fixed server folder datasource admin bugs
-* Fix : fixed bug where attachment list was showing when another datasource was in use
-[//]: # fs_premium_only_end
-
-= 1.9.40 =
-* Date Updated : 2020-11-29
-* Fix : rewrite of All-in-one Stack album fixing many bugs
-* Fix : fixed some styling issues with album edit page and gallery select modal
-* New : Added setting 'Force Hide Trial Notice' to never show the trail upsell message again
-* Update : FooGallery client side 1.4.22
-
-= 1.9.39 =
-* Date Updated : 2020-11-24
-* Fix : Allow gallery thumb order to be overridden when using foogallery_attachment_get_posts_args filter
-
-= 1.9.38 =
-* Date Updated : 2020-11-02
-* Fix : Fixed PHP warning within thumbnail generation code when deleting attachments
-* New : Added function to render an album : foogallery_render_album
-
-= 1.9.37 =
-* Date Updated : 2020-10-29
-* Update : Ensure Gallery Items and Settings metaboxes are always visible when editing a gallery
-
-= 1.9.36 =
-* Date Updated : 2020-10-27
-* Update : Freemius SDK 2.4.1
-
-= 1.9.35 =
-* Date Updated : 2020-10-12
-* Fix : Fix for thumbnail generation not working when upload folder is not HTTPS
-[//]: # fs_premium_only_begin
-* Fix : Fix for YouTube search no longer working
-* Fix : Fix for certain YouTube links not being recognized
-[//]: # fs_premium_only_end
-
-= 1.9.34 =
-* Date Updated : 2020-08-30
-* Fix : Fix for incorrect captions in some scenarios
-* Fix : Compatibility with Owl Carousel Extension and others
-* Update : FooGallery client side 1.4.18
-
-= 1.9.31 =
-* Date Updated : 2020-08-07
-* Fix : IMPORTANT fix for WP 5.5 compatibility when editing galleries (gallery preview button was not showing)
-[//]: # fs_premium_only_begin
-* Fix : Fix for autoplaying Vimeo videos
-[//]: # fs_premium_only_end
-
-= 1.9.30 =
-* Date Updated : 2020-08-03
-* Fix : IMPORTANT fix for WP 5.5 compatibility when editing galleries (gallery template selector was not showing)
-* New : Support for All in One SEO Pack sitemaps
-* Update : improved lightbox messages when no lightboxes are installed
-* Update : Freemius SDK 2.4.0.1
-[//]: # fs_premium_only_begin
-* Fix : Fix for Slider/Grid PRO custom captions
-[//]: # fs_premium_only_end
-
-= 1.9.28 =
-* Date Updated : 2020-07-18
-* Fix : Fix for some installs showing thumbnail generation error
-* Update : better mobile support for admin settings tabs
-* Update : FooGallery client side 1.4.16
-[//]: # fs_premium_only_begin
-* New : Self hosted videos now support .OGV files
-* Fix : Fix for Slider PRO template settings
-* Fix : Fix for some Vimeo videos importing small thumbnails
-[//]: # fs_premium_only_end
-
-= 1.9.26 =
-* Date Updated : 2020-06-29
-* Fix : Fix for All-In-One album hidden items still clickable
-* Fix : Fix for fatal error on some versions of PHP
-* Update : FooGallery client side 1.4.15
-[//]: # fs_premium_only_begin
-* New : Multi-level filtering support added
-* New : Override Lightbox captions to be different from thumbnail captions
-* New : Lightbox captions can use custom caption template
-* Update : Changed lightbox tabs to be on multiple levels
-* Fix : Fix for low resolution thumbnails importing when importing Vimeo videos
-* Fix : Fix for scroll-jump problem in Lightbox
-[//]: # fs_premium_only_end
-
-= 1.9.25 =
-* Date Updated : 2020-06-04
-* Fix : Fixed bug to prevent infinite loop with ResizeObserver in some themes
-* Fix : Fixed possible text-domain issue
-* Update : FooGallery client side 1.4.13
-[//]: # fs_premium_only_begin
-* New : Added support for ACF media fields for use with Advanced Custom Captions
-* New : Added support for PODS media fields for use with Advanced Custom Captions
-[//]: # fs_premium_only_end
-
-= 1.9.24 =
-* Date Updated : 2020-05-04
-* Fix : Fixed bug where thumbs were not loading on mobile in Justified and Portfolio galleries
-* Update : FooGallery client side 1.4.12
-
-= 1.9.23 =
-* Date Updated : 2020-05-02
-* New : Reworked hover effect settings to allow none
-* New : Added new zoomed hover effect
-* New : Added new transparent theme hover effect
-* New : Added new advanced setting to add custom class to the gallery container
-* New : Added global settings for upscaling small images when using larger thumbnail dimensions
-* New : Added Pro feature promotions in gallery settings
-* New : Added setting to force GD Image editor as the default
-* New : Added info for active image editor to Settings -> Images tab
-* New : Improved caption sanitization
-* Fix : Fixed bug with Safari when editing a gallery, not loading thumbs
-* Fix : Fixed gallery previews in certain situations
-* Update : Freemius SDK 2.3.2
-* Update : FooGallery client side 1.4.11
-[//]: # fs_premium_only_begin
-* New : Added new Bulk Taxonomy Management modal when editing a gallery
-* New : Added new setting to Thumbnail gallery to Exclude Featured image (only works with PRO Lightbox)
-* New : Added new setting to show/hide fullscreen button for lightbox
-* New : Added new setting to show/hide maximize button for Slider PRO and Grid PRO templates
-* Fix : Fixed fatal error bug with videos in dynamic galleries
-* Fix : Fixed background fill not working in some cases
-* Fix : Cleared cache for taxonomy datasource when using shortcode attributes
-* Fix : Server folders datasource has fatal error when cache clears in some cases
-* Fix : WP/LR Sync removes deleted galleries from synced collection list
-* Update : renamed "Pagination" paging to "Numbered"
-* Update : WP/LR Sync updates gallery names when syncing collections
-[//]: # fs_premium_only_end
-
-= 1.9.11 =
-* Date Updated : 2020-03-29
-* Fix : Fix for Simple Portfolio template not saving "None" for captions.
-* Fix : Fixed albums when adding incorrect markup target="default"
-* Fix : Updated thumbnail generation test logic to be more resilient, and improved admin message.
-* Fix : Updated RankMath compatibility to work with pre PHP 5.4
-* New : Added filter "foogallery_build_dynamic_gallery" for dynamic gallery creation
-* New : Added WPML config file for better translations. (Also improves Polylang compatibility.)
-[//]: # fs_premium_only_begin
-* New : Added bestFit and smallThumbs settings to lightbox/grid/slider.
-* New : Improved performance when saving terms for attachments.
-* New : Advanced captions help - show available attachment custom fields.
-* Fix : Fixed scrolling focus issues for slider template.
-* Fix : Fixed slider shortcode arguments bug overriding settings.
-* Fix : Sticky video icons not displaying correctly.
-* Fix : Updated lightbox to work with embedded FaceBook and TED videos.
-[//]: # fs_premium_only_end
-* Update : FooGallery client side 1.4.6 (including multiple bug fixes)
 
 = 1.9.8 =
 * Date Updated : 2020-03-08
@@ -945,81 +726,12 @@ Please update in order for FooGallery to work in WP 5.5+!
 * Fix : Previews not updating in some cases.
 * Update : FooGallery client side 1.4.0 (MAJOR UPDATE).
 
-= 1.8.20 =
-* Date Updated : 2019-11-22
-* Fix : Fix for Masonry template layout issue in Firefox
-[//]: # fs_premium_only_begin
-* Fix : Fixed Media Library issues in WP 5.3
-* New : Instagram datasource - now works with Video
-* Fix : Instagram datasource - fixed a bunch of issues and changed how it pulls data from Instagram.
-* Fix : Post Query datasource - fixed a few UI bugs.
-* Fix : fixed video bugs, and better support for videos in dynamic galleries
-* Fix : better support for FooBox sharing with albums
-[//]: # fs_premium_only_end
-* Update : FooGallery client side 1.3.6
-
-= 1.8.18 =
-* Date Updated : 2019-10-23
-* New : Elementor compatibility - gallery previews in Elementor editor work, and added a FooGallery widget to the Elementor editor
-[//]: # fs_premium_only_begin
-* New : Instagram datasource - populate galleries from your Instagram account
-* New : Post Query datasource - populate galleries with the featured images from your posts/pages
-* Fix : Images not being resized for certain datasources
-* Fix : Caching issues when using taxonomy attributes in shortcode e.g. media_tags=cars
-[//]: # fs_premium_only_end
-* Fix : Images in Yoast SEO sitemaps pull correctly for all types of gallery embedding
-* Fix : Lazy-load issues on certain browsers (reverted back to old logic)
-* Fix : Updated WPThumb so that images with querystrings in the URL will work
-* Fix : Minor security issue fixed on the FooGallery settings page (only exploitable by administrators)
-
-= 1.8.14 =
-[//]: # fs_premium_only_begin
-* New : Better messages for Media Tags & Categories datasources
-* New : Ability to reload datasource modal without refreshing
-[//]: # fs_premium_only_end
-* New : Added setting to move "Add Media" button to front of attachment listing (Advanced tab in FooGallery Settings)
-[//]: # fs_premium_only_begin
-* Fix : Real Media Library was not picking up featured images
-* Fix : Albums were not working correctly with galleries that load from other datasources
-[//]: # fs_premium_only_end
-* Fix : Lazy-load issues with Gutenberg Editor
-* Fix : Simple portfolio layout issue with certain themes
-* Update : FooGallery client side 1.3.4
-
-= 1.8.12 =
-* Fix : Previews not working on new galleries
-
-= 1.8.11 =
-* New : Added advanced gallery settings for custom settings and custom attributes
-* Fix : Rewrite of Simple Portfolio to incorrect thumb heights
-* Fix : Lazy-load issues for certain themes
-* Update : FooGallery client side 1.3.3
-
 = 1.8.8 =
 * New : Implemented the Datasource architecture within the plugin
 * Fix : PHP Warnings when previewing galleries
 * Fix : Simple Portfolio thumbnails cut off in certain scenarios
 * Fix : Updated Gutenberg block to work in latest Gutengerg release
 * Update : FooGallery client side 1.2.10
-
-= 1.7.8 =
-* New : Added filter to override content when creating a gallery page 'foogallery_create_gallery_page_content'
-* Fix : Fixed bug for Justified gallery, when last row was set to hidden
-* Update : FooGallery client side 1.2.8
-* Update : Freemius SDK 2.3.0
-
-= 1.7.7 =
-* New : Added slider navigation buttons in Slider PRO template
-* Fix : Fixed gallery usage with custom post types
-* Fix : Captions being cut off in portfolio template
-* Fix : Multiple small bugs and tweaks
-* Update : Updated to handle Chrome's new allow attribute in videos
-* Update : FooGallery client side 1.2.7
-
-= 1.7.6 =
-* Fix : Fixed issues with paging introduced in 1.7.4
-* Fix : Fixed conflicts with other lazy loading plugins
-* Update : FooGallery client side 1.2.3
 
 = 1.7.4 =
 * New : Major performance enhancements for all galleries
@@ -1030,67 +742,11 @@ Please update in order for FooGallery to work in WP 5.5+!
 * Fix : fixed Wistia video import issues
 * Update : FooGallery client side 1.2.2
 
-= 1.6.17 =
-* IMPORTANT : Please update to address a security vulnerability.
-* Fix : Security vulnerability
-* Fix : Images caching in certain browsers, not loading
-* Update : Freemius SDK 2.2.4
-* Update : FooGallery client side 1.1.13
-
-= 1.6.15 =
-* Fix : fixed logo path in admin
-* Update : changed the paging default output to HTML
-
-= 1.6.14 =
-* New : Added free trial tab to landing page
-* New : Added demo tab to landing page
-* New : Added support tab to landing page
-* New : Added help with FooBox lightbox in gallery templates
-* New : New setting to override thumb generation test URL
-* New : New setting to output gallery JSON to script block
-* New : Added rating admin notice after 5 galleries has been created
-* Fix : Fixed issues with video support in All-In-One stack album
-* Fix : Support for galleries loading in FooBox
-* Update : updated plugin generator
-* Update : FooGallery client side 1.1.10
-* Update : Freemius SDK 2.2.3
-
-= 1.6.13 =
-* New : Added setting to render JSON data to script block (fix for some caching plugins)
-* Fix : Compatibility with WPML Media
-
-= 1.6.11 =
-* Fix : Random thumbnails not loading in FireFox
-* Update : FooGallery client side 1.1.8
-
-= 1.6.10 =
-* Fix : Safari bug with lazy loading
-* Fix : Thumbs not loading with paging
-* Fix : duplicate caption title in some scenarios
-* Fix : clicking html in caption was not loading lightbox
-* Update : FooGallery client side 1.1.7
-
-= 1.6.7 =
-* New : added new filter for allowed post types that foogallery can be attached to
-* New : added loop setting for image viewer gallery template
-* New : override sorting in shortcode by providing "sort" attribute
-* Fix : Beaver Builder javascript error while editing a page
-* Fix : album shortcodes not working in some page builders
-* Fix : attach gallery to post when gutenberg block is included
-* Fix : filtering + paging bugs corrected in some scenarios
-* Fix : multiple small bugs and tweaks
-* Fix : Thumbnail generation tries to use first image in media library
-* Update : FooGallery client side 1.1.5
-* Update : Freemius SDK 2.2.2
-
 = 1.6.1 =
 * New : Gutenberg FooGallery block (including live gallery previews!)
 * Fix : foogallery shortcode not rendering in certain cases
 * Fix : disabling lazy loading via settings was being ignored
 * Update : Freemius SDK 2.1.3 (which fixes fatal Multisite bug)
-
-= 1.5.9 =
-* Fix : Theme customizer not loading for some theme/plugin combinations
 
 = 1.5.8 =
 * Major version bump to correspond with FooGallery PRO which includes video support
@@ -1103,111 +759,6 @@ Please update in order for FooGallery to work in WP 5.5+!
 * Fix : better paging + filtering support
 * Fix : better RTL support in media modal
 * Multiple bug fixes and improvements
-
-= 1.4.31 =
-
-* New : GDPR notice in readme
-* New : Update to Freemius SDK 2.0.1
-* Fix : Default captions bug introduced in 1.4.30
-
-= 1.4.30 =
-
-* Fix : Album 404 issues when used on homepage
-* Fix : Dimension attributes missing for upscaling small images
-* Fix : Issue when galleries cannot be added to an album
-* Fix : Lightbox caption mismatch
-* New : Setting for legacy thumb cropping in Simple Portfolio gallery
-* Update : FooGallery client side 1.0.26
-
-= 1.4.29 =
-
-* New : Added an album setting to set the gallery title size (h2,h3,h4,h5,h6)
-* Fix : media modal issues with Elementor
-* Fix : media modal issues with Thrive Architect
-* Fix : caption override fix for single thumbnail galleries
-* Update : media modal improvements
-
-= 1.4.27 =
-
-* Fix : Justified gallery issues in certain browsers / devices
-* Fix : Portfolio gallery issues in certain browsers / devices
-* Fix : Use of correct rel attribute for better lightbox compatibility and W3 validation
-* Fix : Removed local translations that were incomplete and outdated
-* Update : FooGallery client side 1.0.24
-* Update : language files
-
-= 1.4.26 =
-
-* Fix : Filtering introduced an array initialization construct not working for older versions of php
-
-= 1.4.25 =
-
-* New : Retina support for albums!
-* New : Default crop position setting for attachments
-* New : Speed up gallery previews in wp-admin
-* New : Caption support for Responsive Lightbox by dFactory
-* Fix : Extension loading issues on certain installs
-* Fix : Shortcode copy-to-clipboard metabox works again
-* Fix : Bugs fixes for paging, filtering, FooBox and more
-* Fix : Ensure jquery-ui-sortable is loaded on edit page for some installs
-* Fix : All-In-One Stack Album layout bugs
-* Fix : Reworked extensions listing page logic
-* Update : FooGallery client side 1.0.23
-* Update : Freemius SDK 1.2.4
-
-= 1.4.15 =
-
-* Fix : All-In-One stack album fatal error when 2 albums on same page
-
-= 1.4.14 =
-
-* Fix : All-In-One stack album now uses the gallery featured image
-* Added more position options for Single Thumbnail Gallery
-* Added paging output setting
-* Update to latest client side JS 1.0.20
-
-= 1.4.12 =
-
-* New : NextGen importer now includes shortcode replacement
-* New : Masonry gallery supports captions below thumbnails
-* New : Performance improvements for very large galleries (1000+ images)
-* Fix : Bugs fixes for paging, FooBox and more
-* Update to latest client side JS 1.0.18
-
-= 1.4.8 =
-
-* New : added custom ready event setting for overcoming 3rd party jQuery exceptions
-* New : added crop thumbnail option to 'Single Thumbnail' and 'Image Viewer' templates
-* Update to latest client side JS
-
-= 1.4.7 =
-
-* Fix : conflicts with WP Rocket CDN features
-* Fix : conflicts with themes or plugins deferring script loading
-* New : Auto-loading of default templates
-* Update to latest client side JS
-
-= 1.4.6 =
-
-* Fix : conflicts with other scripts or plugins using data-src attributes
-* Fix : script moved back to use jQuery ready event, to avoid some conflicts
-* New : Global setting to disable lazy loading for all galleries
-* New : FooGallery Widget!
-* New : Admin notice for Autoptomize users to delete cache on updates
-* Update to latest client side JS
-
-= 1.4.5 =
-
-* Fix : Lazy loading - scrolling galleries in certain scenarios were not loading thumbs
-* Fix : Galleries that were hidden on page load were not displaying correctly when shown
-* Fix : Default gallery settings were not being applied to new galleries
-* New : shortcode arguments applied to gallery for common fields
-* New : HTML caching is disabled by default now!
-* Updated to latest client side JS and CSS
-
-= 1.4.4 =
-
-* Fix : upgrade was calling underfined function
 
 = 1.4.3 =
 
@@ -1225,24 +776,6 @@ Please update in order for FooGallery to work in WP 5.5+!
 * Updated to Freemius SDK 1.2.2.10
 * Updated to latest client side JS and CSS
 
-= 1.3.28 =
-
-* Complete rewrite of the built-in gallery templates
-* New : lazy loading
-* New : simple pagination
-* New : Live Previews when editing a gallery
-* 260+ updates, changes and bug fixes
-
-= 1.3.8 =
-
-* New : Built in support for FooBox, fixing a lot of issues where FooBox option is not available
-* Fix : More reliable extension active status on extensions listing
-* Fix : More obvious wording for 3rd party plugins when they are not installed
-
-= 1.3.7 =
-
-* Fix : Activation redirect bug showing "Sorry, you are not allowed to access this page."
-
 = 1.3.6 =
 
 * New : Freemius integration!
@@ -1253,149 +786,11 @@ Please update in order for FooGallery to work in WP 5.5+!
 * Fix : Image Viewer hover effect none now works as expected
 * Fix : Disable HTML caching for randomly ordered galleries
 
-= 1.2.20 =
-
-* New : Force Use Original thumb setting on gallery edit page
-* Fix : PHP warning from thumbnail class since 1.2.19
-
-= 1.2.19 =
-
-* New : Gallery output caching! Saves database requests improving load time
-* New : Gallery usage column in admin gallery listing
-* New : Better support for animated gifs
-* New : Hover icons retina support
-* New : Uninstall button on settings
-* New : Save thumb dimensions per attachment. (needed in future versions)
-* Fix : Extensions refactor and many issues resolved
-* Fix : Better retina support for all templates
-* Fix : Colorize / Greyscale CSS filters
-* Fix : Even better wpthumb compatibility
-
-= 1.2.18 =
-
-* Fix : Handle no settings in retina metabox
-
-= 1.2.17 =
-
-* New : Retina support - metabox per gallery and default settings
-* New : Attachment datasources - backend changes for how images are used in a gallery. (This will allow for new external sources in the future)
-* New : Caption color settings in Simple portfolio gallery template
-* New : Updated to latest Justified Gallery
-* Fix : Better wpthumb compatibility
-
-= 1.2.16 =
-
-* Fix : Yoast SEO Sitemaps fatal error with deleted galleries
-* Fix : Updating pages with deleted galleries throws php warnings
-
-= 1.2.15 =
-
-* Fix : Album admin CSS issues in WP 4.6
-* Fix : Masonry layout issues in WP 4.6
-* Fix : Media attachment fields not updating
-* Fix : Better support for IE10
-* New : Thumbnail generation test admin notice and settings
-
-= 1.2.13 =
-
-* Fix : Shortcode replacing content in visual editor
-* Fix : Gallery hover effect of None being ignored
-* New : ImageViewer language settings for 'Prev', 'Next' & 'of'
-* New : Setting to use original thumbnails if available
-
-= 1.2.12 =
-
-* Fix : Simple Portfolio missing captions fix
-
-= 1.2.11 =
-
-* Fix : Simple Portfolio undefined function fix
-
-= 1.2.10 =
-
-* New : support for multiple admin JS and CSS assets for gallery templates
-* New : Added setting to choose Caption Description source
-* New : Crop position can be chosen for attachments
-* New : Albums gallery details modal for setting a gallery URL
-* New : Better shortcode preview in editor
-* New : Editor button now supported if multiple editors exist
-* Fix : Better No-Link support for gallery templates
-* Fix : Compatible with Unyson plugin
-* Fix : Compatible with Advanced Custom Fields
-* Fix : Simple Portfolio fixes and tweaks
-* Fix : ImageViewer fixes and better browser compatibility
-* Fix : Changed assets enqueue version to rather use extension version
-* Fix : Album URL fix for permalinks with no trailing slashes
-
-= 1.2.9 =
-* New : Added Image Viewer gallery template
-* New : Caption support for default template
-* New : Yoast SEO gallery image support!
-* New : Responsive options for Masonry gallery
-* New : change gallery URL slug for albums
-* New : setting to turn off loading animation in default gallery
-* New : French translation
-* Fix : Support for WP 4.4
-* Fix : All templates - moved all jQuery ready events to vanilla JS
-* Fix : Many gallery template tweaks
-* Fix : allow no default to be chosen in settings
-
-= 1.2.8 =
-* Works now with Polylang translation plugin
-* CSS Updates & enhancements to all gallery templates
-* Password protected galleries now work as expected
-* Ability to hide WYSIWYG editor button
-* Updated WPThumb
-* Multiple bug fixes and improvements
-
-= 1.2.7 =
-* Bug fixes for 1.2.6 release
-* Added 2 new settings to Justified Gallery template (maxRowHeight + Caption Source)
-
-= 1.2.6 =
-* CSS load optimizations
-* Updates and tweaks on all built-in gallery templates
-* More robust extension loading
-* More robust upgrades to FooBox PRO
-* Improved copy-to-clipboard
-* Added more hover effects
-* Support for FooVideo
-
-= 1.2.5 =
-* Fix for extensions being empty
-* Added support for Multi-site
-* Added esc_url to all places where url is rendered
-* Updated to latest Justified Gallery v3.5.4
-
-= 1.2.4 =
-* Many album template updates, enhancements and fixes
-* Many gallery template tweaks and fixes
-* Sort order settings for galleries and albums
-* Added new Single Thumbnail Gallery template
-
-= 1.2.1 =
-* Added setting to choose default gallery to copy settings from
-* Fixed bug #45 - gallery fields not showing onload
-* replaced minicolors with spectrum colorpicker
-* Allow gallery fields to have a suffix
-* Added function to render galleries "foogallery_render_gallery( $gallery_id )"
-
 = 1.2.0 =
 * Added albums extension
 * Added custom CSS metaboxes
 * Updated Nextgen importer
 * Fixed many bugs
-
-= 1.1.8.2 =
-* Fixed "edit gallery" CSS with WP 4.0
-
-= 1.1.8.1 =
-* Fixed "insert gallery" CSS with WP 4.0
-
-= 1.1.8 =
-* Added 2 new gallery templates
-* Added 10+ actions and filters for more customization
-* Countless bug fixes and enhancements
 
 = 1.1.7 =
 * first version!
