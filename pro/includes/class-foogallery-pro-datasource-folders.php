@@ -222,6 +222,11 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Folders' ) ) {
 				$folder = '/';
 			}
 
+			// Validate folder path to prevent path traversal
+			if ( ! $this->validate_folder_path( $folder ) ) {
+				return $attachments; // Return empty attachments if invalid
+			}
+
 			//ensure we are always looking at a folder down from the root folder
 			$root        = $this->get_root_folder();
 			$actual_path = rtrim( $root, '/' ) . $folder;
@@ -318,6 +323,28 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Folders' ) ) {
 			usort( $attachments, array( $this, 'sort_attachments' ) );
 
 			return $attachments;
+		}
+
+		/**
+		 * Validates if a folder path is within the WordPress webroot to prevent directory traversal attacks.
+		 *
+		 * @param string $folder The folder path to validate.
+		 * @return bool True if the folder path is within the WordPress webroot, false otherwise.
+		 */
+		private function validate_folder_path($folder) {
+			// Decode the path to handle any URL encoding
+			$folder = rawurldecode($folder);
+
+			// Construct the full path based on the root directory
+			$root = $this->get_root_folder();
+			$fullPath = rtrim($root, '/') . '/' . ltrim($folder, '/');
+
+			// Get the real path of the root and full path to ensure it’s within the WordPress webroot
+			$webroot = realpath(ABSPATH);
+			$realPath = realpath($fullPath);
+
+			// Validate that the resolved real path starts with the webroot path
+			return ($realPath && strpos($realPath, $webroot) === 0);
 		}
 
 		/**
@@ -474,24 +501,24 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Folders' ) ) {
 				$folder   = urldecode( $_POST['folder'] );
 				$metadata = sanitize_text_field( $_POST['metadata'] );
 				$sort = sanitize_text_field( $_POST['sort'] );
-
+				
 				if ( array_key_exists( 'json', $_POST ) ) {
 					$json = $_POST['json'];
-					//save the json for the folder
+					// Save the json for the folder
 					$option_key = $this->build_database_options_key( $folder );
 					update_option( $option_key, $json );
 				}
-
+		
 				if ( array_key_exists( 'clear', $_POST ) ) {
 					$option_key = $this->build_database_options_key( $folder );
 					delete_option( $option_key );
 				}
-
+		
 				$this->render_folder( $folder, $metadata, $sort );
 			}
-
+		
 			die();
-		}
+		}		
 
 		/**
 		 * Renders the metadata that is found for the folder

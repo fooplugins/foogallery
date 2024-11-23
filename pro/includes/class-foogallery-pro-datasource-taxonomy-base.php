@@ -157,63 +157,76 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Taxonomy_Base' ) ) {
 		 * @return array(FooGalleryAttachment)
 		 */
 		public function get_gallery_attachments( $attachments, $foogallery ) {
-            global $foogallery_gallery_preview;
-
+			global $foogallery_gallery_preview;
+		
 			if ( ! empty( $foogallery->datasource_value ) ) {
-                $datasource_value = $foogallery->datasource_value;
-                $taxonomy = $datasource_value['taxonomy'];
+				$datasource_value = $foogallery->datasource_value;
+				$taxonomy = $datasource_value['taxonomy'];
+		
+				$cache_post_meta_key = FOOGALLERY_META_DATASOURCE_CACHED_ATTACHMENTS . '_' . $taxonomy;
+				$enhanced_cache = false;
+		
+				if ( array_key_exists( 'enhanced_cache', $datasource_value ) ) {
+					$enhanced_cache = true;
+					$cache_post_meta_key .= '_values(' . implode( '|', $datasource_value['value'] ) . ')';
+				}
+		
+				// Instantiate the helper class for querying attachments
+				$helper = new FooGallery_Datasource_MediaLibrary_Query_Helper();
+		
+				// Never get the cached attachments if we are doing a preview
+				if ( $foogallery_gallery_preview ) {
+					$cached_attachments = false;
+				} else {
+					// Check if there is a cached list of attachments
+					$cached_attachments = get_post_meta( $foogallery->ID, $cache_post_meta_key, true );
+				}
+		
+				// Retrieve the selection mode from the gallery metadata
+				$selection_mode = isset( $datasource_value['selection_mode'] ) ? $datasource_value['selection_mode'] : '';
+				if ( empty( $selection_mode ) ) {
+					$selection_mode = 'OR';  // Default to 'OR' if no mode is set
+				}
+				$operator = ($selection_mode === 'AND') ? 'AND' : 'IN';  // Set operator for the tax_query
 
-                $cache_post_meta_key = FOOGALLERY_META_DATASOURCE_CACHED_ATTACHMENTS . '_' . $taxonomy;
-
-                $enhanced_cache = false;
-
-                if ( array_key_exists( 'enhanced_cache', $datasource_value ) ) {
-	                $enhanced_cache = true;
-	                $cache_post_meta_key .= '_values(' . implode( '|', $datasource_value['value'] ) . ')';
-                }
-
-                $helper = new FooGallery_Datasource_MediaLibrary_Query_Helper();
-
-                //never get the cached attachments if we doing a preview
-                if ( $foogallery_gallery_preview ) {
-                    $cached_attachments = false;
-                } else {
-                    //check if there is a cached list of attachments
-                    $cached_attachments = get_post_meta($foogallery->ID, $cache_post_meta_key, true);
-                }
 
 				if ( empty( $cached_attachments ) ) {
-					$terms            = $datasource_value['value'];
-					$field			  = array_key_exists( 'field', $datasource_value ) ? $datasource_value['field'] : 'term_id';
-					$attachments      = $helper->query_attachments( $foogallery, array(
+					$terms = $datasource_value['value'];
+					$field = array_key_exists( 'field', $datasource_value ) ? $datasource_value['field'] : 'term_id';
+		
+					// Query attachments with the correct operator based on the selection mode
+					$attachments = $helper->query_attachments( $foogallery, array(
 						'tax_query' => array(
 							array(
 								'taxonomy' => $taxonomy,
 								'field'    => $field,
 								'terms'    => $terms,
+								'operator' => $operator,
 							),
 						)
-					) );
-
+					));
+		
 					$attachment_ids = array();
 					foreach ( $attachments as $attachment ) {
 						$attachment_ids[] = $attachment->ID;
 					}
-					//save a cached list of attachments
+		
+					// Save a cached list of attachments
 					update_post_meta( $foogallery->ID, $cache_post_meta_key, $attachment_ids );
-
+		
 					if ( $enhanced_cache ) {
 						update_post_meta( $foogallery->ID, FOOGALLERY_META_DATASOURCE_CACHED_ATTACHMENTS . '_enhanced', true );
-                    }
+					}
 				} else {
+					// Query attachments based on the cached attachment IDs
 					$attachments = $helper->query_attachments( $foogallery,
 						array( 'post__in' => $cached_attachments )
 					);
 				}
 			}
-
+		
 			return $attachments;
-		}
+		}	
 
 		/**
 		 * Returns the featured FooGalleryAttachment from the datasource
@@ -236,45 +249,71 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Taxonomy_Base' ) ) {
 		 * Output the datasource modal content
 		 * @param $foogallery_id
 		 */
-		function render_datasource_modal_content( $foogallery_id, $datasource_value ) {
+		public function render_datasource_modal_content( $foogallery_id, $datasource_value ) {
 
-            $selected_terms = array();
-            if ( is_array( $datasource_value ) && array_key_exists( 'value', $datasource_value ) ) {
-                $selected_terms = $datasource_value['value'];
-            }
+			$selected_terms = array();
+			if ( is_array( $datasource_value ) && array_key_exists( 'value', $datasource_value ) ) {
+				$selected_terms = $datasource_value['value'];
+			}
+			$selection_mode = '';
+			if ( is_array( $datasource_value ) && array_key_exists( 'selection_mode', $datasource_value ) ) {
+				$selection_mode = $datasource_value['selection_mode'];
+			}
+			if ( $selection_mode === 'OR' ) {
+				$selection_mode = '';
+			}
+		
+			$datasources = foogallery_gallery_datasources();
+			$datasource = $datasources[ $this->datasource_name ];
+			$terms = get_terms( $this->taxonomy, array( 'hide_empty' => false ) );
+			$term_count = count( $terms );
+		
+			if ( $term_count > 0 ) {
 
-            $datasources = foogallery_gallery_datasources();
-			$datasource = $datasources[$this->datasource_name];
-            $terms = get_terms( $this->taxonomy, array('hide_empty' => false) );
-            $term_count = count( $terms );
-
-            if ( $term_count > 0 ) {
-
-                ?>
-                <p><?php printf(__('Select %s from the list below. The gallery will then dynamically load all attachments that are assigned to the selected items.', 'foogallery'), $datasource['name']); ?></p>
-                <ul data-taxonomy="<?php echo $this->taxonomy; ?>">
-                    <?php
-
-                    foreach ($terms as $term) {
-                        $selected = in_array($term->term_id, $selected_terms);
-                        ?>
-                        <li class="datasource-taxonomy <?php echo $this->datasource_name; ?>">
-                        <a href="#" class="button button-small<?php echo $selected ? ' button-primary' : ''; ?>"
-                           data-term-id="<?php echo $term->term_id; ?>"><?php echo $term->name; ?></a>
-                        </li><?php
-                    }
-
-                    ?>
-                </ul>
-                <?php
-
-            } else {
-                echo '<p>' . sprintf( __( 'We found no %s for you to choose. You will need to create a few first, by clicking the link below. Once you have created them, you can click the reload button above.', 'foogallery' ), $datasource['name']) . '</p>';
-            }
-
-            $taxonomy_url = admin_url( 'edit-tags.php?taxonomy=' . $this->taxonomy );
-            echo '<div style="clear: both"></div><p><a target="_blank" href="' . $taxonomy_url . '">' . sprintf( __('Manage your %s', 'foogallery'), $datasource['name'] ) . '</a></p>';
+				?>
+				<p><?php printf( esc_html__( 'Select %s from the list below. The gallery will then dynamically load all attachments that are assigned to the selected items.', 'foogallery' ), esc_html( $datasource['name'] ) ); ?></p>
+				<ul data-datasource="<?php echo esc_attr( $this->datasource_name ); ?>" data-taxonomy="<?php echo esc_attr( $this->taxonomy ); ?>" style="overflow: auto; clear: both;">
+					<?php
+		
+					foreach ( $terms as $term ) {
+						$selected = in_array( $term->term_id, $selected_terms );
+						?>
+						<li class="datasource-taxonomy <?php echo esc_attr( $this->datasource_name ); ?>" style="display: inline-block; margin-right: 5px;">
+						<a href="#" class="button button-small<?php echo $selected ? ' button-primary' : ''; ?>"
+						   data-term-id="<?php echo esc_attr( $term->term_id ); ?>"><?php echo esc_html( $term->name ); ?></a>
+						</li>
+						<?php
+					}
+		
+					?>
+				</ul>
+		
+				<div style="clear: both;"></div> <!-- Clearfix to ensure the next section starts on a new line -->
+		
+				<!-- Selection Mode Section -->
+				<div class="foogallery-taxonomy-selection-mode-<?php echo $this->datasource_name; ?>" style="margin-top: 20px;">
+					<p><?php esc_html_e( 'Selection mode changes which images are included in the gallery based off either a union (OR) or an intersect (AND) mode. If you choose AND, then only the images that have ALL the terms will be included in the gallery.', 'foogallery' ); ?></p>
+					
+					<h4><?php esc_html_e( 'Select Selection Mode:', 'foogallery' ); ?></h4>
+					<label>
+						<input type="radio" name="selection_mode" value="" <?php checked( $selection_mode, '' ); ?>> <?php esc_html_e( 'OR (Union)', 'foogallery' ); ?>
+					</label>
+					<label style="margin-left: 10px;">
+						<input type="radio" name="selection_mode" value="AND" <?php checked( $selection_mode, 'AND' ); ?>> <?php esc_html_e( 'AND (Intersect)', 'foogallery' ); ?>
+					</label>
+				</div>
+				<!-- End Selection Mode Section -->
+		
+				<?php
+		
+			} else {
+				echo '<p>' . sprintf( esc_html__( 'We found no %s for you to choose. You will need to create a few first, by clicking the link below. Once you have created them, you can click the reload button above.', 'foogallery' ), esc_html( $datasource['name'] ) ) . '</p>';
+			}
+		
+			$taxonomy_url = admin_url( 'edit-tags.php?taxonomy=' . $this->taxonomy );
+			echo '<div style="clear: both;"></div><p><a target="_blank" href="' . esc_url( $taxonomy_url ) . '">' . sprintf( esc_html__( 'Manage your %s', 'foogallery' ), esc_html( $datasource['name'] ) ) . '</a></p>';
 		}
+				
 
 		/**
 		 * Output the html required by the datasource in order to add item(s)
@@ -291,6 +330,11 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Taxonomy_Base' ) ) {
 			$html = isset( $gallery->datasource_value['html'] ) ? $gallery->datasource_value['html'] : '';
 			$show_container = isset( $gallery->datasource_name ) && $this->datasource_name === $gallery->datasource_name;
 			$show_media_button = isset( $datasource['show_media_button'] ) && true === $datasource['show_media_button'];
+
+			$selection_mode = isset( $gallery->datasource_value['selection_mode'] ) ? $gallery->datasource_value['selection_mode'] : '';
+			if ( empty( $selection_mode ) ) {
+				$selection_mode = 'OR';
+			}
 			?>
 			<script type="text/javascript">
 				jQuery(function ($) {
@@ -301,13 +345,34 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Taxonomy_Base' ) ) {
 						}
 					});
 
+					$(document).on('change', '.foogallery-taxonomy-selection-mode-<?php echo $this->datasource_name; ?> input[name="selection_mode"]', function() {
+						$('.foogallery-datasource-taxonomy-selection-mode-<?php echo $this->datasource_name; ?>').html( $(this).val() );
+
+						//Make sure we get the correct data.
+						foogallery_datasource_taxonomy_set_data( '<?php echo $this->datasource_name; ?>', '<?php echo $this->taxonomy; ?>' );
+
+						$('.foogallery-datasource-modal-insert').removeAttr( 'disabled' );
+					});
+
 					$(document).on('foogallery-datasource-changed-<?php echo $this->datasource_name; ?>', function() {
 						var $container = $('.foogallery-datasource-taxonomy-<?php echo $this->taxonomy; ?>');
 
+						var value = document.foogallery_datasource_value_temp;
+						var selectionMode = $('.foogallery-taxonomy-selection-mode-<?php echo $this->datasource_name; ?> input[name="selection_mode"]:checked').val();
+						if ( selectionMode === 'AND' ) {
+							value.selection_mode = 'AND';
+						} else {
+							value.selection_mode = 'OR';
+						}
+
+						$container.find( '.foogallery-datasource-taxonomy-selection-mode' ).html( selectionMode );
+
 						//set the datasource value
-						$('#_foogallery_datasource_value').val(JSON.stringify(document.foogallery_datasource_value_temp));
+						$('#_foogallery_datasource_value').val(JSON.stringify(value));
 
 						$container.find('.foogallery-items-html').html(document.foogallery_datasource_value_temp.html);
+
+						$container.find('.foogallery-datasource-taxonomy-selection-mode-<?php echo $this->datasource_name; ?>').html(value.selection_mode)
 
 						$container.show();
 
@@ -322,24 +387,36 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Taxonomy_Base' ) ) {
 			<div class="foogallery-datasource-taxonomy foogallery-datasource-taxonomy-<?php echo $this->taxonomy; ?>" data-media-title="<?php _e('Media Library', 'foogallery'); ?>" data-media-button="<?php _e('Close', 'foogallery'); ?>" <?php echo $show_container ? '' : 'style="display:none" '; ?>>
 				<h3><?php echo sprintf( __('Datasource : %s', 'foogallery'), $datasource['name'] ); ?></h3>
 				<p><?php echo sprintf( __('This gallery will be dynamically populated with all attachments assigned to the following %s:', 'foogallery'), $datasource['name'] ); ?></p>
+				
 				<div class="foogallery-items-html"><?php echo $html; ?></div>
+
+				<p>
+					<?php _e('Selection Mode:', 'foogallery'); ?>
+					<strong class="foogallery-datasource-taxonomy-selection-mode-<?php echo $this->datasource_name; ?>"><?php echo esc_html( $selection_mode ); ?></strong>
+				</p>
+
 				<button type="button" class="button edit" data-datasource="<?php echo $this->datasource_name; ?>">
 					<?php echo sprintf( __( 'Change %s', 'foogallery' ), $datasource['name'] ); ?>
 				</button>
+				
 				<button type="button" class="button remove">
 					<?php echo sprintf( __( 'Remove All %s', 'foogallery' ), $datasource['name'] ); ?>
 				</button>
+				
 				<?php if ( $show_media_button ) { ?>
 				<button type="button" class="button media">
 					<?php _e( 'Open Media Library', 'foogallery' ); ?>
 				</button>
 				<?php } ?>
+				
 				<button type="button" class="button bulk_media_management">
 					<?php _e( 'Bulk Taxonomy Manager', 'foogallery' ); ?>
 				</button>
+				
 				<button type="button" class="button help">
 					<?php _e( 'Show Help', 'foogallery' ); ?>
 				</button>
+
 				<div style="display: none" class="foogallery-datasource-taxonomy-help">
 					<h4><?php echo sprintf( __('%s Datasource Help', 'foogallery'), $datasource['name'] ); ?></h4>
 					<p><?php echo sprintf( __('You can change which %s are assigned to this gallery by clicking "Change %s".', 'foogalley' ), $datasource['name'], $datasource['name'] ); ?></p>
@@ -350,7 +427,8 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Taxonomy_Base' ) ) {
 					<p><?php echo sprintf( __('When an attachment is assigned to one of the %s, it will automatically be shown in the gallery.', 'foogalley' ), $datasource['name'] ); ?></p>
 					<p><?php echo __('Click on the "Gallery Preview" to see which attachments will be loaded into the gallery.', 'foogallery'); ?></p>
 				</div>
-			</div><?php
+			</div>
+			<?php
 		}
     }
 }

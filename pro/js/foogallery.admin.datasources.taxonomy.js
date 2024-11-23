@@ -2,34 +2,12 @@ FooGallery.utils.ready(function ($) {
 	$('.foogallery-datasource-modal-container').on('click', '.datasource-taxonomy a', function (e) {
 		e.preventDefault();
 		$(this).toggleClass('button-primary');
-		var $selected = $(this).parents('ul:first').find('a.button-primary'),
-			$parent_ul = $(this).parents('ul:first'),
-			taxonomy = $parent_ul.data('taxonomy'),
-			taxonomy_values = [],
-			taxonomies = [],
-			html = '';
 
-		//validate if the OK button can be pressed.
-		if ( $selected.length > 0 ) {
-			$('.foogallery-datasource-modal-insert').removeAttr( 'disabled' );
+		var $parent_ul = $(this).parents('ul:first'),
+			datasource = $parent_ul.data('datasource'),
+			taxonomy = $parent_ul.data('taxonomy');
 
-			$selected.each(function() {
-				taxonomy_values.push( $(this).data('termId') );
-				taxonomies.push( $(this).text() );
-				html += '<li>' + $(this).text() + '</li>';
-			});
-
-		} else {
-			$('.foogallery-datasource-modal-insert').attr('disabled','disabled');
-			html = '';
-		}
-
-		//set the selection
-		document.foogallery_datasource_value_temp = {
-			"taxonomy" : taxonomy,
-			"value" : taxonomy_values,
-			"html" : '<ul>' + html + '</ul>'
-		};
+		foogallery_datasource_taxonomy_set_data( datasource, taxonomy );
 	});
 
 	$('.foogallery-datasource-taxonomy').on('click', 'button.remove', function (e) {
@@ -99,3 +77,31 @@ FooGallery.utils.ready(function ($) {
 		$('.foogallery-datasource-taxonomy-help').toggle();
 	});
 });
+
+function foogallery_datasource_taxonomy_set_data( datasource, taxonomy ) {
+	var $container = jQuery('.foogallery-datasource-modal-container-inner.' + datasource),
+		$selected = $container.find('ul:first').find('a.button-primary'),
+		taxonomy_values = [],
+		html = '';
+
+	//validate if the OK button can be pressed.
+	if ( $selected.length > 0 ) {
+		jQuery('.foogallery-datasource-modal-insert').removeAttr( 'disabled' );
+
+		$selected.each(function() {
+			taxonomy_values.push( jQuery(this).data('termId') );
+			html += '<li>' + jQuery(this).text() + '</li>';
+		});
+
+	} else {
+		jQuery('.foogallery-datasource-modal-insert').attr('disabled','disabled');
+		html = '';
+	}
+
+	//set the selection
+	document.foogallery_datasource_value_temp = {
+		"taxonomy" : taxonomy,
+		"value" : taxonomy_values,
+		"html" : '<ul>' + html + '</ul>'
+	};
+}
