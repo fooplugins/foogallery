@@ -7,7 +7,7 @@ if ( ! class_exists( 'FooGallery_Thumb_Manager' ) ) {
 	class FooGallery_Thumb_Manager {
 
 		function __construct() {
-            add_action( 'init', array( $this, 'init_active_engine' ) );
+			add_action( 'plugins_loaded', array( $this, 'init_active_engine' ) );
 		}
 
 		/**
