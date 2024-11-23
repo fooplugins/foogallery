@@ -726,6 +726,16 @@ if ( ! class_exists( 'FooGallery_Pro_Promotion' ) ) {
 		 * @return array
 		 */
 		function add_promo_templates( $gallery_templates ) {
+
+			// Check if the PRO trial is active
+			$fs_instance = foogallery_fs();
+			$is_trial = $fs_instance->is_trial();
+		
+			if ( $is_trial ) {
+				// Do not register promotional templates during the trial
+				return $gallery_templates;
+			}
+
 			$gallery_templates[] = array(
 				'slug'                  => 'polaroid_promo',
 				'name'                  => __( 'Polaroid PRO', 'foogallery' ),
