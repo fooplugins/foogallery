@@ -11,22 +11,17 @@ jQuery(function ($) {
 	$('.foogallery-datasources-modal-wrapper').on('click', '.foogallery-datasource-modal-insert', function(e) {
 		var activeDatasource = $('.foogallery-datasource-modal-selector.active').data('datasource');
 
-		// Validate folder path before insertion using enhanced security
-		if (validateFolderPath(activeDatasource)) {
-			// Set the datasource
-			$('#foogallery_datasource').val(activeDatasource);
+		//set the datasource
+		$('#foogallery_datasource').val( activeDatasource );
 
-			// Raise a general event so that other datasources can clean up
-			$(document).trigger('foogallery-datasource-changed', activeDatasource);
+		//raise a general event so that other datasources can clean up
+		$(document).trigger('foogallery-datasource-changed', activeDatasource);
 
-			// Raise a specific event for the new datasource so that things can be done
-			$(document).trigger('foogallery-datasource-changed-' + activeDatasource);
+		//raise a specific event for the new datasource so that things can be done
+		$(document).trigger('foogallery-datasource-changed-' + activeDatasource);
 
-			// Hide the datasource modal
-			$('.foogallery-datasources-modal-wrapper').hide();
-		} else {
-			alert("Invalid folder path detected. Please ensure the path is valid and does not contain any traversal sequences (e.g., ../).");
-		}
+		//hide the datasource modal
+		$('.foogallery-datasources-modal-wrapper').hide();
 	});
 
 	$('.foogallery-datasources-modal-wrapper').on('click', '.foogallery-datasource-modal-reload', function(e) {
