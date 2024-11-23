@@ -183,8 +183,8 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Taxonomy_Base' ) ) {
 				}
 		
 				// Retrieve the selection mode from the gallery metadata
-				$selection_mode = get_post_meta($foogallery->ID, '_foogallery_selection_mode', true);
-				if (!$selection_mode) {
+				$selection_mode = isset( $datasource_value['selection_mode'] ) ? $datasource_value['selection_mode'] : '';
+				if ( empty( $selection_mode ) ) {
 					$selection_mode = 'OR';  // Default to 'OR' if no mode is set
 				}
 				$operator = ($selection_mode === 'AND') ? 'AND' : 'IN';  // Set operator for the tax_query
@@ -255,6 +255,13 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Taxonomy_Base' ) ) {
 			if ( is_array( $datasource_value ) && array_key_exists( 'value', $datasource_value ) ) {
 				$selected_terms = $datasource_value['value'];
 			}
+			$selection_mode = '';
+			if ( is_array( $datasource_value ) && array_key_exists( 'selection_mode', $datasource_value ) ) {
+				$selection_mode = $datasource_value['selection_mode'];
+			}
+			if ( $selection_mode === 'OR' ) {
+				$selection_mode = '';
+			}
 		
 			$datasources = foogallery_gallery_datasources();
 			$datasource = $datasources[ $this->datasource_name ];
@@ -265,7 +272,7 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Taxonomy_Base' ) ) {
 
 				?>
 				<p><?php printf( esc_html__( 'Select %s from the list below. The gallery will then dynamically load all attachments that are assigned to the selected items.', 'foogallery' ), esc_html( $datasource['name'] ) ); ?></p>
-				<ul data-taxonomy="<?php echo esc_attr( $this->taxonomy ); ?>" style="overflow: auto; clear: both;">
+				<ul data-datasource="<?php echo esc_attr( $this->datasource_name ); ?>" data-taxonomy="<?php echo esc_attr( $this->taxonomy ); ?>" style="overflow: auto; clear: both;">
 					<?php
 		
 					foreach ( $terms as $term ) {
@@ -284,15 +291,15 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Taxonomy_Base' ) ) {
 				<div style="clear: both;"></div> <!-- Clearfix to ensure the next section starts on a new line -->
 		
 				<!-- Selection Mode Section -->
-				<div class="foogallery-selection-mode" style="margin-top: 20px;">
+				<div class="foogallery-taxonomy-selection-mode-<?php echo $this->datasource_name; ?>" style="margin-top: 20px;">
 					<p><?php esc_html_e( 'Selection mode changes which images are included in the gallery based off either a union (OR) or an intersect (AND) mode. If you choose AND, then only the images that have ALL the terms will be included in the gallery.', 'foogallery' ); ?></p>
 					
 					<h4><?php esc_html_e( 'Select Selection Mode:', 'foogallery' ); ?></h4>
 					<label>
-						<input type="radio" name="selection_mode" value="OR" checked> <?php esc_html_e( 'OR (Union)', 'foogallery' ); ?>
+						<input type="radio" name="selection_mode" value="" <?php checked( $selection_mode, '' ); ?>> <?php esc_html_e( 'OR (Union)', 'foogallery' ); ?>
 					</label>
 					<label style="margin-left: 10px;">
-						<input type="radio" name="selection_mode" value="AND"> <?php esc_html_e( 'AND (Intersect)', 'foogallery' ); ?>
+						<input type="radio" name="selection_mode" value="AND" <?php checked( $selection_mode, 'AND' ); ?>> <?php esc_html_e( 'AND (Intersect)', 'foogallery' ); ?>
 					</label>
 				</div>
 				<!-- End Selection Mode Section -->
@@ -323,6 +330,11 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Taxonomy_Base' ) ) {
 			$html = isset( $gallery->datasource_value['html'] ) ? $gallery->datasource_value['html'] : '';
 			$show_container = isset( $gallery->datasource_name ) && $this->datasource_name === $gallery->datasource_name;
 			$show_media_button = isset( $datasource['show_media_button'] ) && true === $datasource['show_media_button'];
+
+			$selection_mode = isset( $gallery->datasource_value['selection_mode'] ) ? $gallery->datasource_value['selection_mode'] : '';
+			if ( empty( $selection_mode ) ) {
+				$selection_mode = 'OR';
+			}
 			?>
 			<script type="text/javascript">
 				jQuery(function ($) {
@@ -333,13 +345,34 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Taxonomy_Base' ) ) {
 						}
 					});
 
+					$(document).on('change', '.foogallery-taxonomy-selection-mode-<?php echo $this->datasource_name; ?> input[name="selection_mode"]', function() {
+						$('.foogallery-datasource-taxonomy-selection-mode-<?php echo $this->datasource_name; ?>').html( $(this).val() );
+
+						//Make sure we get the correct data.
+						foogallery_datasource_taxonomy_set_data( '<?php echo $this->datasource_name; ?>', '<?php echo $this->taxonomy; ?>' );
+
+						$('.foogallery-datasource-modal-insert').removeAttr( 'disabled' );
+					});
+
 					$(document).on('foogallery-datasource-changed-<?php echo $this->datasource_name; ?>', function() {
 						var $container = $('.foogallery-datasource-taxonomy-<?php echo $this->taxonomy; ?>');
 
+						var value = document.foogallery_datasource_value_temp;
+						var selectionMode = $('.foogallery-taxonomy-selection-mode-<?php echo $this->datasource_name; ?> input[name="selection_mode"]:checked').val();
+						if ( selectionMode === 'AND' ) {
+							value.selection_mode = 'AND';
+						} else {
+							value.selection_mode = 'OR';
+						}
+
+						$container.find( '.foogallery-datasource-taxonomy-selection-mode' ).html( selectionMode );
+
 						//set the datasource value
-						$('#_foogallery_datasource_value').val(JSON.stringify(document.foogallery_datasource_value_temp));
+						$('#_foogallery_datasource_value').val(JSON.stringify(value));
 
 						$container.find('.foogallery-items-html').html(document.foogallery_datasource_value_temp.html);
+
+						$container.find('.foogallery-datasource-taxonomy-selection-mode-<?php echo $this->datasource_name; ?>').html(value.selection_mode)
 
 						$container.show();
 
@@ -357,16 +390,9 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Taxonomy_Base' ) ) {
 				
 				<div class="foogallery-items-html"><?php echo $html; ?></div>
 
-				<!-- Display the selection mode -->
-				<?php
-					// Retrieve saved selection mode, defaulting to 'OR' if not set
-					$saved_selection_mode = get_post_meta($gallery->ID, '_foogallery_selection_mode', true);
-					$saved_selection_mode = $saved_selection_mode ? $saved_selection_mode : 'OR';  // Default to OR if none is saved
-				?>
-				
 				<p>
-					<strong><?php _e('Selection Mode:', 'foogallery'); ?></strong> 
-					<?php echo esc_html($saved_selection_mode === 'AND' ? __('AND (Intersect)', 'foogallery') : __('OR (Union)', 'foogallery')); ?>
+					<?php _e('Selection Mode:', 'foogallery'); ?>
+					<strong class="foogallery-datasource-taxonomy-selection-mode-<?php echo $this->datasource_name; ?>"><?php echo esc_html( $selection_mode ); ?></strong>
 				</p>
 
 				<button type="button" class="button edit" data-datasource="<?php echo $this->datasource_name; ?>">
