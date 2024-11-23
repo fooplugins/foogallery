@@ -976,6 +976,15 @@ if ( ! class_exists( 'FooGallery_Pro_Promotion' ) ) {
 		 * @return array
 		 */
 		function add_commerce_promo_templates( $gallery_templates ) {
+			// Check if the PRO trial is active
+			$fs_instance = foogallery_fs();
+			$is_trial = $fs_instance->is_trial();
+		
+			if ( $is_trial ) {
+				// Do not register promotional product gallery template during the trial
+				return $gallery_templates;
+			}
+
 			$gallery_templates[] = array(
 				'slug'                  => 'product_promo',
 				'name'                  => __( 'Product Gallery', 'foogallery' ),
