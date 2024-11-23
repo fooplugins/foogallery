@@ -7,8 +7,21 @@ if ( ! class_exists( 'FooGallery_il8n' ) ) {
 	class FooGallery_il8n {
 
 		function __construct() {
+			// Hook functions for enqueuing and dequeuing scripts
 			add_action( 'foogallery_enqueue_script-core', array( $this, 'enqueue_il8n' ), 10, 1 );
 			add_action( 'foogallery_dequeue_script-core', array( $this, 'dequeue_core' ) );
+
+			// Ensure translations are loaded at the proper time
+			add_action( 'init', array( $this, 'load_translations' ) );
+		}
+
+		/**
+		 * Load translations for FooGallery
+		 *
+		 * @return void
+		 */
+		function load_translations() {
+			load_plugin_textdomain( 'foogallery', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 		}
 
 		/**
