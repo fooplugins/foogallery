@@ -163,7 +163,7 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 
 			$roles        = get_editable_roles();
 			$role_choices = array(
-				'' => __( 'No Default', 'foogallery' )
+				'' => __( 'Default', 'foogallery' )
 			);
 
 			foreach ( $roles as $role_slug => $role_data ) {
@@ -173,7 +173,7 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 			$settings[] = array(
 				'id'      => 'gallery_creator_role',
 				'title'   => __( 'Gallery Creator Role', 'foogallery' ),
-				'desc'    => __( 'Select the user role allowed to create galleries', 'foogallery' ),
+				'desc'    => __( 'Select the user role allowed to manage galleries. All roles with higher privileges will also be able to manage galleries.', 'foogallery' ),
 				'type'    => 'select',
 				'choices' => $role_choices,
 				'tab'     => 'general',
@@ -194,6 +194,7 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 				'title'   => __( 'Enable Advanced Attachment Modal', 'foogallery' ),
 				'desc'    => __( 'If enabled, this will use the advanced attachment modal which allows for faster and easier editing of attachment details, when creating your galleries.', 'foogallery' ),
 				'type'    => 'checkbox',
+				'default' => 'on',
 				'tab'     => 'general',
 				'section' => __( 'Admin', 'foogallery' )
 			);
@@ -709,37 +710,42 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 
 			$custom_assets = array();
 
-			//check if we have saved any custom JS
-			$custom_js = foogallery_prepare_code( foogallery_get_setting( 'custom_js', '' ) );
-			if ( !empty( $custom_js ) ) {
-				$custom_js = '/*
+			if ( is_array( $value ) && array_key_exists( 'custom_js', $value ) ) {
+				$custom_js = foogallery_prepare_code( $value['custom_js'] );
+
+				if ( !empty( $custom_js ) ) {
+					$custom_js = '/*
 * FooGallery Custom Javascript
 * This file is created by adding custom JS on FooGallery Settings page in wp-admin
 * Created : ' . date( 'j M Y, g:i a', time() ) . '
 */
 
 '. $custom_js;
-				//generate script in upload folder
-				$script_url = $this->generate_custom_asset( 'custom.js', $custom_js );
-				if ( $script_url !== false ) {
-					$custom_assets['script'] = $script_url;
+					//generate script in upload folder
+					$script_url = $this->generate_custom_asset( 'custom.js', $custom_js );
+					if ( $script_url !== false ) {
+						$custom_assets['script'] = $script_url;
+					}
 				}
 			}
 
 			//check if we have saved any custom CSS
-			$custom_css = foogallery_prepare_code( foogallery_get_setting( 'custom_css', '' ) );
-			if ( !empty( $custom_css ) ) {
-				$custom_css = '/*
+			if ( is_array( $value ) && array_key_exists( 'custom_css', $value ) ) {
+				$custom_css = foogallery_prepare_code( $value['custom_css'] );
+
+				if ( !empty( $custom_css ) ) {
+					$custom_css = '/*
 * FooGallery Custom CSS
 * This file is created by adding custom CSS on FooGallery Settings page in wp-admin
 * Created : ' . date( 'j M Y, g:i a', time() ) . '
 */
 
 '. $custom_css;
-				//generate stylesheet in upload folder
-				$style_url = $this->generate_custom_asset( 'custom.css', $custom_css );
-				if ( $style_url !== false ) {
-					$custom_assets['style'] = $style_url;
+					//generate stylesheet in upload folder
+					$style_url = $this->generate_custom_asset( 'custom.css', $custom_css );
+					if ( $style_url !== false ) {
+						$custom_assets['style'] = $style_url;
+					}
 				}
 			}
 

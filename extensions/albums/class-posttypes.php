@@ -14,6 +14,18 @@ if ( ! class_exists( 'FooGallery_Albums_PostTypes' ) ) {
 	 */
 	class FooGallery_Albums_PostTypes {
 
+        const ALBUM_CAPABILITIES = array(
+            'edit_post'          => 'edit_foogallery-album',
+            'read_post'          => 'read_foogallery-album',
+            'delete_post'        => 'delete_foogallery-album',
+            'edit_posts'         => 'edit_foogallery-albums',
+            'edit_others_posts'  => 'edit_others_foogallery-albums',
+            'delete_posts'       => 'delete_foogallery-albums',
+            'publish_posts'      => 'publish_foogallery-albums',
+            'read_private_posts' => 'read_private_foogallery-albums',
+            'create_posts'       => 'create_foogallery-albums'
+        );
+
 		/**
 		 * Constructor method.
 		 */
@@ -21,19 +33,23 @@ if ( ! class_exists( 'FooGallery_Albums_PostTypes' ) ) {
 			// register the post types.
 			add_action( 'init', array( $this, 'register_posttype' ) );
 
+            //register the custom capabilities.
+            add_action( 'admin_init', array( $this, 'add_capabilities' ) );
+
 			// update post type messages.
 			add_filter( 'post_updated_messages', array( $this, 'update_messages' ) );
 
 			// update post bulk messages.
 			add_filter( 'bulk_post_updated_messages', array( $this, 'update_bulk_messages' ), 10, 2 );
-		}
+
+            //clear capabilities after option update.
+            add_action( 'update_option_foogallery', array( $this, 'clear_capabilities' ), 20, 3 );
+        }
 
 		/**
 		 * Registers the custom post types.
 		 */
 		public function register_posttype() {
-			$album_creator_role   = foogallery_get_setting( 'album_creator_role', 'inherit' );
-			$gallery_creator_role = foogallery_get_setting( 'gallery_creator_role', '' );
 
 			$args = array(
 				'labels'       => array(
@@ -54,37 +70,94 @@ if ( ! class_exists( 'FooGallery_Albums_PostTypes' ) ) {
 				'rewrite'      => false,
 				'show_ui'      => true,
 				'supports'     => array( 'title' ),
-                'show_in_menu' => foogallery_admin_menu_parent_slug()
+                'show_in_menu' => foogallery_admin_menu_parent_slug(),
+                'capabilities' => FooGallery_Albums_PostTypes::ALBUM_CAPABILITIES
 			);
-
-			if ( 'inherit' !== $album_creator_role && '' !== $album_creator_role ) {
-				$args['capabilities'] = array(
-					'create_posts'         => $album_creator_role,
-					'create_post'          => $album_creator_role,
-					'edit_posts'           => $album_creator_role,
-					'edit_post'            => $album_creator_role,
-					'delete_posts'         => $album_creator_role,
-					'delete_post'          => $album_creator_role,
-					'read_post'            => $album_creator_role,
-				);
-			} elseif ( '' !== $gallery_creator_role ) {
-				$args['capabilities'] = array(
-					'create_posts' => $gallery_creator_role,
-					'create_post'  => $gallery_creator_role,
-					'edit_posts'   => $gallery_creator_role,
-					'edit_post'    => $gallery_creator_role,
-					'delete_post'  => $gallery_creator_role,
-					'delete_posts' => $gallery_creator_role,
-					'read-post'    => $gallery_creator_role,
-				);
-			}
 
 			$args = apply_filters( 'foogallery_album_posttype_register_args', $args );
 			register_post_type( FOOGALLERY_CPT_ALBUM, $args );
 		}
 
+        /**
+         * Adds capabilities to the allowed roles, based on the album creator role that is set.
+         *
+         * @return void
+         */
+        function add_capabilities( $force = false ) {
+            global $foogallery_adding_capabilities;
+
+            $album_creator_role   = foogallery_get_setting( 'album_creator_role', 'inherit' );
+            if ( 'inherit' === $album_creator_role ) {
+                $album_creator_role = foogallery_setting_gallery_creator_role();
+            }
+
+            if ( $force || $album_creator_role !== foogallery_get_setting( 'album_capabilities_set' ) ) {
+
+                $foogallery_albums_adding_capabilities = true;
+                update_option( 'foogallery_albums_capabilities_set', $album_creator_role );
+                $foogallery_albums_adding_capabilities = false;
+
+                // Get the roles
+                $roles = foogallery_get_roles_and_higher( $album_creator_role );
+
+                foreach ( $roles as $the_role ) {
+                    $role = get_role( $the_role );
+
+                    if ( !is_null( $role ) ) {
+
+                        foreach ( FooGallery_Albums_PostTypes::ALBUM_CAPABILITIES as $cap_key => $cap ) {
+                            $role->add_cap( $cap );
+                        }
+                    }
+                }
+            }
+        }
+
+        /**
+         * Clears the capabilities based on the new value, old value, and option.
+         *
+         * @param mixed $old_value The old value.
+         * @param mixed $value The new value.
+         * @param string $option The option.
+         */
+        function clear_capabilities( $old_value, $value, $option ) {
+            global $foogallery_albums_adding_capabilities;
+            // Get out early, if we are busy updating album capabilities.
+            if ( $foogallery_albums_adding_capabilities ) {
+                return;
+            }
+
+            if ( $old_value === $value ) {
+                return;
+            }
+
+            $album_creator_role   = foogallery_get_setting( 'album_creator_role', 'inherit' );
+            if ( 'inherit' === $album_creator_role ) {
+                $album_creator_role = foogallery_setting_gallery_creator_role();
+            }
+
+            $previous_capabilities = get_option('foogallery_albums_capabilities_set' );
+
+            if ( $album_creator_role !== $previous_capabilities ) {
+                // Get all roles
+                $roles = wp_roles()->get_names();
+
+                // Loop through each role and remove the capabilities
+                foreach ($roles as $role => $name) {
+                    $role_obj = get_role($role);
+                    if (!is_null($role_obj)) {
+                        foreach ( FooGallery_Albums_PostTypes::ALBUM_CAPABILITIES as $cap_key => $cap ) {
+                            $role_obj->remove_cap($cap);
+                        }
+                    }
+                }
+
+                $this->add_capabilities( true );
+            }
+        }
+
 		/**
-		 * Customize the update messages for a album
+		 * Customize the update messages for an album
 		 *
 		 * @global object $post     The current post object.
 		 *

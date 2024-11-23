@@ -346,6 +346,11 @@ if ( ! class_exists( 'FooGallery_Thumb_Generator' ) ) {
 		 * Generates the thumbnail based on the args and returns the thumbnail URL
 		 */
 		public function generate() {
+            //if we have any errors to begin with, then the file does not exist, so get out early.
+            if ( $this->errored() ) {
+                return $this->image_url;
+            }
+
 			$must_generate = !$this->get_arg( 'cache' );
 
 			if ( $must_generate || !file_exists( $this->get_cache_file_path() )) {
@@ -386,6 +391,10 @@ if ( ! class_exists( 'FooGallery_Thumb_Generator' ) ) {
 
 			$new_filepath = $this->get_cache_file_path();
 			$file_path = $this->file_path;
+
+            if ( is_null( $file_path ) ) {
+                return;
+            }
 
 			// Up the php memory limit
 			@ini_set( 'memory_limit', apply_filters( 'admin_memory_limit', '256M' ) );

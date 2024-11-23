@@ -85,6 +85,8 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 
                 // Add button data to the json output
                 add_filter( 'foogallery_build_attachment_json', array( $this, 'add_button_to_json' ), 40, 6 );
+
+				add_filter( 'foogallery_html_cache_disabled', array( $this, 'disable_html_cache' ), 10, 3 );
             }
         }
 
@@ -306,8 +308,12 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 					$response['purchasable'] = false;
 				}
 				// Only if its purchasable and a variable product, then build up the variation html.
-				if ( $response['purchasable'] && is_a( $product, 'WC_Product_Variable' ) ) {
-					$html .= $this->build_product_variation_table( $product );
+				if ( $response['purchasable'] ) {
+					if ( is_a( $product, 'WC_Product_Variable' ) ) {
+						$html .= $this->build_product_variation_table( $product );
+					} else if ( '' !== $gallery->get_setting( 'ecommerce_lightbox_show_price', '' ) ) {
+						$html .= '<h3>' . $product->get_price_html() . '</h3>';
+					}
 				}
 				if ( '' !== $gallery->get_setting( 'ecommerce_lightbox_show_view_product_button', '' ) ) {
 					$response['product_url'] = self::build_product_permalink( $product, $attachment_id );
@@ -1154,6 +1160,30 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 						'data-foogallery-value-selector'           => 'input:checked',
 					),
 				);
+
+				$new_fields[] = array(
+					'id'       => 'ecommerce_lightbox_show_price',
+					'title'    => __( 'Show Price', 'foogallery' ),
+					'desc'     => __( 'Within the lightbox, show the product price.', 'foogallery' ),
+					'section'  => __( 'Ecommerce', 'foogallery' ),
+					'subsection' => array( 'ecommerce-lightbox' => __( 'Lightbox', 'foogallery' ) ),
+					'type'     => 'radio',
+					'default'  => '',
+					'spacer'   => '<span class="spacer"></span>',
+					'choices'  => array(
+						'shown' => __( 'Shown', 'foogallery'),
+						''    => __( 'Hidden', 'foogallery'),
+					),
+					'row_data' => array(
+						'data-foogallery-hidden'                   => true,
+						'data-foogallery-show-when-field'          => 'ecommerce_lightbox_product_information',
+						'data-foogallery-show-when-field-operator' => '!==',
+						'data-foogallery-show-when-field-value'    => 'none',
+						'data-foogallery-change-selector'          => 'input',
+						'data-foogallery-preview'                  => 'shortcode',
+						'data-foogallery-value-selector'           => 'input:checked',
+					),
+				);
 			} else {
 				$new_fields[] = array(
 					'id'      => 'ecommerce_error',
@@ -1480,6 +1510,25 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
                 $modal_data['foogallery_download_file'] = get_post_meta( $attachment_id, '_foogallery_download_file', true );
             }
 			return $modal_data;
+		}
+
+				/**
+		 * Override if the gallery html cache is disabled
+		 *
+		 * @param $disabled bool
+		 * @param $gallery FooGallery
+		 * @return bool
+		 */
+		function disable_html_cache( $disabled, $gallery ) {
+
+			//check if the gallery is a product gallery.
+			$ecommerce_lightbox_product_information = foogallery_gallery_template_setting( 'ecommerce_lightbox_product_information', 'none' );
+
+			if ( 'none' !== $ecommerce_lightbox_product_information ) {
+				$disabled = true;
+			}
+
+			return $disabled;
 		}
 
 	}

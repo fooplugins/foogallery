@@ -219,8 +219,10 @@ if ( !class_exists( 'FooGallery_Thumbnails' ) ) {
 			foreach ( $query_images->posts as $image ) {
 				$image_url = wp_get_attachment_url( $image->ID );
 
-				if ( self::image_file_exists( $image_url ) ) {
-					return $image_url;
+				if ( !empty( $image_url ) ) {
+                    if ( self::image_file_exists( $image_url ) || self::image_file_exists( $image_url, true ) ) {
+                        return $image_url;
+                    }
 				}
 			}
 
@@ -231,9 +233,14 @@ if ( !class_exists( 'FooGallery_Thumbnails' ) ) {
 		 * Check if a remote image file exists.
 		 *
 		 * @param  string $url The url to the remote image.
+         * @param  bool   $force_https Whether to force the url to be https.
+         *
 		 * @return bool        Whether the remote image exists.
 		 */
-		static function image_file_exists( $url ) {
+		static function image_file_exists( $url, $force_https = false ) {
+            if ( $force_https ) {
+                $url = str_replace( 'http://', 'https://', $url );
+            }
 			$response = wp_remote_head( $url );
 			return 200 === wp_remote_retrieve_response_code( $response );
 		}

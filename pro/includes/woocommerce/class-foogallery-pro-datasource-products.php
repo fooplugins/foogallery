@@ -140,6 +140,9 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Products' ) ) {
 					$expiry_hours = apply_filters( 'foogallery_datasource_woocommerce_expiry', 24 );
 					$expiry       = $expiry_hours * 60 * 60;
 
+					// Make sure the current gallery is set.
+					$this->ensure_global_gallery_is_set( $foogallery );
+
 					//find all products
 					$attachments = $this->build_attachments( $foogallery );
 
@@ -151,6 +154,22 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Products' ) ) {
 			}
 
 			return $attachments;
+		}
+
+		/**
+		 * Ensures that the global gallery variables are set
+		 *
+		 * @param $foogallery
+		 * @return void
+		 */
+		function ensure_global_gallery_is_set( $foogallery ) {
+			global $current_foogallery;
+			global $current_foogallery_template;
+
+			if ( empty( $current_foogallery ) ) {
+				$current_foogallery = $foogallery;
+				$current_foogallery_template = $foogallery->gallery_template;
+			}
 		}
 
 		/**
