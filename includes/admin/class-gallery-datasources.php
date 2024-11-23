@@ -78,7 +78,8 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Datasources' ) ) {
             $datasource_value = array();
 
             if ( isset( $_POST[FOOGALLERY_META_DATASOURCE] ) ) {
-				$datasource = $_POST[FOOGALLERY_META_DATASOURCE];
+				$datasource = sanitize_file_name( $_POST[FOOGALLERY_META_DATASOURCE] );
+
 				update_post_meta( $post_id, FOOGALLERY_META_DATASOURCE, $datasource );
 
                 if ( isset( $_POST[FOOGALLERY_META_DATASOURCE_VALUE] ) ) {
@@ -119,11 +120,11 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Datasources' ) ) {
          */
         public function ajax_load_datasource_content() {
             $nonce = safe_get_from_request( 'nonce' );
-            $datasource = safe_get_from_request( 'datasource' );
+            $datasource = sanitize_file_name( safe_get_from_request( 'datasource' ) );
             $datasource_value = $this->get_json_datasource_value( safe_get_from_request( 'datasource_value' ) );
             $foogallery_id = intval( safe_get_from_request( 'foogallery_id' ) );
 
-            if ( wp_verify_nonce( $nonce, 'foogallery-datasource-content' ) ) {
+            if ( wp_verify_nonce( $nonce, 'foogallery-datasource-content' ) ) {             
                 do_action( 'foogallery-datasource-modal-content_'. $datasource, $foogallery_id, $datasource_value );
             }
 

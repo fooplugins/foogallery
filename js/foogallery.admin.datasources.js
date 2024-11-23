@@ -11,17 +11,22 @@ jQuery(function ($) {
 	$('.foogallery-datasources-modal-wrapper').on('click', '.foogallery-datasource-modal-insert', function(e) {
 		var activeDatasource = $('.foogallery-datasource-modal-selector.active').data('datasource');
 
-		//set the datasource
-		$('#foogallery_datasource').val( activeDatasource );
+		// Validate folder path before insertion using enhanced security
+		if (validateFolderPath(activeDatasource)) {
+			// Set the datasource
+			$('#foogallery_datasource').val(activeDatasource);
 
-		//raise a general event so that other datasources can clean up
-		$(document).trigger('foogallery-datasource-changed', activeDatasource);
+			// Raise a general event so that other datasources can clean up
+			$(document).trigger('foogallery-datasource-changed', activeDatasource);
 
-		//raise a specific event for the new datasource so that things can be done
-		$(document).trigger('foogallery-datasource-changed-' + activeDatasource);
+			// Raise a specific event for the new datasource so that things can be done
+			$(document).trigger('foogallery-datasource-changed-' + activeDatasource);
 
-		//hide the datasource modal
-		$('.foogallery-datasources-modal-wrapper').hide();
+			// Hide the datasource modal
+			$('.foogallery-datasources-modal-wrapper').hide();
+		} else {
+			alert("Invalid folder path detected. Please ensure the path is valid and does not contain any traversal sequences (e.g., ../).");
+		}
 	});
 
 	$('.foogallery-datasources-modal-wrapper').on('click', '.foogallery-datasource-modal-reload', function(e) {
@@ -33,7 +38,7 @@ jQuery(function ($) {
 
 		$content.addClass('not-loaded');
 
-		//force the refresh
+		// Force the refresh
 		$('.foogallery-datasource-modal-selector.active').click();
 	});
 
@@ -73,10 +78,80 @@ jQuery(function ($) {
 					$wrapper.data('datasource', datasource );
 
 					$content.html(data);
-					//raise a event so that datasource-specific code can run
+					// Raise an event so that datasource-specific code can run
 					$(document).trigger('foogallery-datasource-content-loaded-' + datasource);
 				}
 			});
 		}
 	});
+
+	/**
+	 * Validates the folder path to prevent path traversal attacks.
+	 * This function performs several checks to ensure the path is safe.
+	 *
+	 * @param {string} folderPath - The folder path to validate.
+	 * @return {boolean} - Returns true if the path is safe, false otherwise.
+	 */
+	function validateFolderPath(folderPath) {
+		// Ensure the input is a non-empty string
+		if (!folderPath || typeof folderPath !== 'string') {
+			console.error('Invalid folder path type provided');
+			return false;
+		}
+
+		try {
+			// Decode the path to catch encoded traversal attempts
+			const decodedPath = decodeURIComponent(folderPath);
+
+			// Define patterns to detect invalid characters and traversal attempts
+			const invalidPatterns = [
+				/\.\./,                    // Simple directory traversal
+				/%2e%2e|%252e%252e/i,      // Encoded traversal
+				/[<>:"\\|?*\x00-\x1F]/,    // Invalid characters for filenames
+				/\/\/+|\\\\+/,             // Multiple consecutive slashes
+				/^\/|^[a-zA-Z]:[\/\\]/,    // Absolute paths or drive letters (Windows)
+				/^~|^%7e/i                 // Home directory shortcut
+			];
+
+			// Test decoded path against all invalid patterns
+			for (const pattern of invalidPatterns) {
+				if (pattern.test(decodedPath)) {
+					console.warn('Security validation failed for pattern:', pattern);
+					return false;
+				}
+			}
+
+			// Normalize and clean up the path
+			const normalizedPath = decodedPath
+				.replace(/\\/g, '/')      // Convert backslashes to forward slashes
+				.replace(/\/+/g, '/')     // Collapse multiple slashes
+				.replace(/^\.\//, '')     // Remove leading single dot paths
+				.trim();
+
+			// Additional check to ensure path length and segment restrictions
+			if (
+				normalizedPath.length === 0 ||
+				normalizedPath.length > 255 ||
+				normalizedPath.split('/').some(part => part.length > 255)
+			) {
+				console.warn('Path exceeds allowed length limits');
+				return false;
+			}
+
+			// Whitelist approach: allow alphanumeric characters, hyphens, underscores, and slashes
+			const safePathPattern = /^[a-zA-Z0-9-_\/\s.]+$/;
+			if (!safePathPattern.test(normalizedPath)) {
+				console.warn('Path contains invalid characters');
+				return false;
+			}
+
+			// Save the last validated path if needed for debugging or future use
+			window.lastValidatedPath = normalizedPath;
+			return true;
+
+		} catch (e) {
+			console.error('Path validation error:', e);
+			return false;
+		}
+	}
 });
