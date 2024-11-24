@@ -2318,17 +2318,13 @@ function foogallery_get_roles_and_higher( $role ) {
         'super_admin' // Note: 'super_admin' is used in Multisite networks only
     );
 
-    // Check if the input role is valid
-    if ( !in_array( $role, $roles_hierarchy ) ) {
-        return array(); // Return an empty array if the role is not valid
-    }
-
     // Find the index of the input role
     $role_index = array_search( $role, $roles_hierarchy );
 
     // If the input role is not found, return the input role.
     if ( $role_index === false) {
-        return $role;
+        // Return the input role, and also admin, as we always want admins to be able to create galleries, when custom roles are set.
+        return array( $role, 'administrator', 'super_admin' );
     }
 
     // Get the roles with the same or higher privileges
