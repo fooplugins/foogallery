@@ -53,6 +53,11 @@ if ( ! class_exists( 'FooGallery_Pro_Promotion' ) ) {
 				$is_free = $fs_instance->is_free_plan();
 				$is_trial = $fs_instance->is_trial();
 
+				// If in trial mode, skip showing promotions
+				if ( $is_trial ) {
+					return;
+				}
+
 				$show_starter_promos = true;
 				$show_expert_promos = true;
 				$show_commerce_promos = true;
@@ -727,15 +732,6 @@ if ( ! class_exists( 'FooGallery_Pro_Promotion' ) ) {
 		 */
 		function add_promo_templates( $gallery_templates ) {
 
-			// Check if the PRO trial is active
-			$fs_instance = foogallery_fs();
-			$is_trial = $fs_instance->is_trial();
-		
-			if ( $is_trial ) {
-				// Do not register promotional templates during the trial
-				return $gallery_templates;
-			}
-
 			$gallery_templates[] = array(
 				'slug'                  => 'polaroid_promo',
 				'name'                  => __( 'Polaroid PRO', 'foogallery' ),
@@ -976,15 +972,7 @@ if ( ! class_exists( 'FooGallery_Pro_Promotion' ) ) {
 		 * @return array
 		 */
 		function add_commerce_promo_templates( $gallery_templates ) {
-			// Check if the PRO trial is active
-			$fs_instance = foogallery_fs();
-			$is_trial = $fs_instance->is_trial();
-		
-			if ( $is_trial ) {
-				// Do not register promotional product gallery template during the trial
-				return $gallery_templates;
-			}
-
+			
 			$gallery_templates[] = array(
 				'slug'                  => 'product_promo',
 				'name'                  => __( 'Product Gallery', 'foogallery' ),
