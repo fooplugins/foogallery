@@ -30,9 +30,9 @@ class FooGallery_Album_Template_Loader {
 		$current_foogallery_album = $this->find_album( $args );
 
 		if ( false === $current_foogallery_album ) {
-			_e( 'Could not load the album!', 'foogallery' );
+			esc_html_e( 'Could not load the album!', 'foogallery' );
 			return;
-		}
+		}		
 
 		//find the gallery template we will use to render the gallery
 		$current_foogallery_album_template = $this->get_arg( $args, 'template', $current_foogallery_album->album_template );
@@ -88,7 +88,7 @@ class FooGallery_Album_Template_Loader {
 
 			} else {
 				//we could not find a template!
-				_e( 'No album template found!', 'foogallery' );
+				esc_html_e( 'No album template found!', 'foogallery' );
 			}
 		}
 	}
