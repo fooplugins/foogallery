@@ -39,11 +39,11 @@ $import_helper = new FooGallery_Import_View_Helper();
 	});
 </script>
 
-<h2><?php _e( 'FooGallery Import / Export', 'foogallery' ); ?></h2>
+<h2><?php esc_html_e( 'FooGallery Import / Export', 'foogallery' ); ?></h2>
 
 <h2 class="foo-nav-tabs nav-tab-wrapper">
-	<a href="#import" data-tab="foogallery_import_galleries" class="nav-tab nav-tab-active"><?php _e('Import', 'foogallery'); ?></a>
-	<a href="#export" data-tab="foogallery_export_galleries" class="nav-tab"><?php _e('Export', 'foogallery'); ?></a>
+	<a href="#import" data-tab="foogallery_import_galleries" class="nav-tab nav-tab-active"><?php esc_html_e('Import', 'foogallery'); ?></a>
+	<a href="#export" data-tab="foogallery_export_galleries" class="nav-tab"><?php esc_html_e('Export', 'foogallery'); ?></a>
 
 
 </h2>
@@ -59,7 +59,7 @@ $import_helper = new FooGallery_Import_View_Helper();
 <div class="foo-nav-container" id="foogallery_export_galleries" style="display: none">
 <?php
 if ( ! $galleries ) {
-	_e( 'There are no galleries to export!', 'foogallery' );
+	esc_html_e( 'There are no galleries to export!', 'foogallery' );
 } else { ?>
 	<div class="foogallery-help">
 		<?php echo esc_html( __( 'Choose the galleries you want to export and click Export. You can then copy the output and use that to import on another WordPress install.', 'foogallery' ) ); ?>

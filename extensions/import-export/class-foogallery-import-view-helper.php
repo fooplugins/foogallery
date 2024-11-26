@@ -42,7 +42,7 @@ if ( ! class_exists( 'FooGallery_Import_View_Helper' ) ) {
 								$('.foogallery_import_spinner').removeClass('is-active');
 							},
 							error: function() {
-								alert('<?php _e( 'Something went wrong with the import!', 'foogallery' ); ?>');
+								alert('<?php esc_html_e( 'Something went wrong with the import!', 'foogallery' ); ?>');
 							}
 						});
 					});
