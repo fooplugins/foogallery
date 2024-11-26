@@ -57,11 +57,11 @@ if ( !class_exists( 'FooGallery_Image_Viewer_Gallery_Template' ) ) {
 
 				// @formatter:off
 				?>
-<style type="text/css">
-	<?php echo '#' . $id; ?> .fg-image {
-        width: <?php echo $width; ?>px;
-    }
-</style>
+				<style type="text/css">
+					<?php echo esc_html( '#' . esc_attr( $id ) ); ?> .fg-image {
+						width: <?php echo esc_html( intval( $width ) ); ?>px;
+					}
+				</style>
 				<?php
 				// @formatter:on
 			}

@@ -13,13 +13,13 @@ $foogallery_default_classes = foogallery_build_class_attribute_safe( $current_fo
 $foogallery_default_attributes = foogallery_build_container_attributes_safe( $current_foogallery, array( 'class' => $foogallery_default_classes ) );
 $foogallery_active_class = 'fg-item-active';
 $args = foogallery_gallery_template_arguments();
-?><div <?php echo $foogallery_default_attributes; ?>>
+?><div <?php echo wp_kses_post( $foogallery_default_attributes ); ?>>
 	<button type="button" class="fg-carousel-prev"></button>
 	<div class="fg-carousel-inner">
 		<div class="fg-carousel-center"></div>
 		<?php foreach ( foogallery_current_gallery_attachments_for_rendering() as $attachment ) {
 			$args['class'] = $foogallery_active_class;
-			echo foogallery_attachment_html( $attachment, $args );
+			echo wp_kses_post( foogallery_attachment_html( $attachment, $args ) );
 			$foogallery_active_class = '';
 		} ?>
 	</div>
