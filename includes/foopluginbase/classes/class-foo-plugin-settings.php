@@ -404,7 +404,7 @@ if ( !class_exists( 'Foo_Plugin_Settings_v2_2' ) ) {
 					break;
 				case 'image':
 					echo '<input class="regular-text image-upload-url" type="text" id="' . $id . '" name="' . $this->plugin_slug . '[' . $id . ']" placeholder="' . $placeholder . '" value="' . esc_attr( $options[$id] ) . '" />';
-					echo '<input data-uploader-title="' . __('Select An Image', $this->plugin_slug) . '" data-link="' . $id . '" class="image-upload-button" type="button" name="upload_button" value="' . __( 'Select Image', $this->plugin_slug ) . '" />';
+					echo '<input data-uploader-title="' . esc_html__('Select An Image', $this->plugin_slug) . '" data-link="' . $id . '" class="image-upload-button" type="button" name="upload_button" value="' . esc_html__( 'Select Image', $this->plugin_slug ) . '" />';
 					break;
 
 				default:

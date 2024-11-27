@@ -198,7 +198,7 @@ if ( ! class_exists( 'FooGallery_Cache' ) ) {
 		function render_settings( $args ) {
 			if ('clear_gallery_cache_button' === $args['type'] ) { ?>
 				<div id="foogallery_clear_html_cache_container">
-					<input type="button" data-nonce="<?php echo esc_attr( wp_create_nonce( 'foogallery_clear_html_cache' ) ); ?>" class="button-primary foogallery_clear_html_cache" value="<?php _e( 'Clear Gallery HTML Cache', 'foogallery' ); ?>">
+					<input type="button" data-nonce="<?php echo esc_attr( wp_create_nonce( 'foogallery_clear_html_cache' ) ); ?>" class="button-primary foogallery_clear_html_cache" value="<?php esc_html_e( 'Clear Gallery HTML Cache', 'foogallery' ); ?>">
 					<span id="foogallery_clear_html_cache_spinner" style="position: absolute" class="spinner"></span>
 				</div>
 			<?php }
@@ -212,7 +212,7 @@ if ( ! class_exists( 'FooGallery_Cache' ) ) {
 
 				$this->clear_all_gallery_caches();
 
-				_e('The cache for all galleries has been cleared!', 'foogallery' );
+				esc_html_e('The cache for all galleries has been cleared!', 'foogallery' );
 				die();
 			}
 		}

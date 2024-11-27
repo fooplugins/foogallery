@@ -73,13 +73,13 @@ if ( ! class_exists( 'FooGallery_Widget' ) ) {
             $galleries = foogallery_get_all_galleries();
             ?>
             <p>
-                <label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:'); ?></label>
+                <label for="<?php echo $this->get_field_id('title'); ?>"><?php esc_html_e('Title:'); ?></label>
                 <input class="widefat" id="<?php echo $this->get_field_id('title'); ?>"
                        name="<?php echo $this->get_field_name('title'); ?>" type="text"
                        value="<?php echo esc_attr($title); ?>">
             </p>
             <p>
-                <label for="<?php echo $this->get_field_id('foogallery_id'); ?>"><?php _e('Select Gallery:', 'foogallery'); ?></label>
+                <label for="<?php echo $this->get_field_id('foogallery_id'); ?>"><?php esc_html_e('Select Gallery:', 'foogallery'); ?></label>
                 <select class="widefat" id="<?php echo $this->get_field_id('foogallery_id'); ?>"
                        name="<?php echo $this->get_field_name('foogallery_id'); ?>"
                        value="<?php echo esc_attr($title); ?>">

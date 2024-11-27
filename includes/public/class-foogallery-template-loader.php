@@ -31,7 +31,7 @@ class FooGallery_Template_Loader {
 
 		if ( false === $current_foogallery ) {
 			//we could not find the gallery!
-			_e( 'The gallery was not found!', 'foogallery' );
+			esc_html_e( 'The gallery was not found!', 'foogallery' );
 			return;
 		}
 
@@ -146,7 +146,7 @@ class FooGallery_Template_Loader {
 				do_action( "foogallery_loaded_template-($current_foogallery_template)", $current_foogallery );
 			} else {
 				//we could not find a template!
-				_e( 'No gallery template found!', 'foogallery' );
+				esc_html_e( 'No gallery template found!', 'foogallery' );
 			}
 		}
 
