@@ -48,11 +48,11 @@ if ( ! class_exists( 'FooGallery_Default_Gallery_Template' ) ) {
 
 				// @formatter:off
 				?>
-<style type="text/css">
-	<?php echo '#' . $id; ?> .fg-image {
-        width: <?php echo $width; ?>px;
-    }
-</style>
+					<style type="text/css">
+						<?php echo esc_html( '#' . $id ); ?> .fg-image {
+							width: <?php echo esc_html( $width ); ?>px;
+						}
+					</style>
 				<?php
 				// @formatter:on
 			}

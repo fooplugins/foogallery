@@ -81,11 +81,11 @@ if ( !class_exists( 'FooGallery_Masonry_Gallery_Template' ) ) {
 
 			?>
 			<style>
-                #<?php echo $id; ?>.fg-masonry .fg-item {
-                    width: <?php echo $thumbnail_width; ?>px;
-                    margin-right: <?php echo $gutter_width; ?>px;
-                    margin-bottom: <?php echo $gutter_width; ?>px;
-                }
+				#<?php echo esc_attr( $id ); ?>.fg-masonry .fg-item {
+					width: <?php echo esc_html( intval( $thumbnail_width ) ); ?>px;
+					margin-right: <?php echo esc_html( intval( $gutter_width ) ); ?>px;
+					margin-bottom: <?php echo esc_html( intval( $gutter_width ) ); ?>px;
+				}
 			</style>
 			<?php
 		}

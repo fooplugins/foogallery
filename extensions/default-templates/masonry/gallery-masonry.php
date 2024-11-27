@@ -15,12 +15,12 @@ if ( 'fixed' !== $layout ) {
 $foogallery_masonry_classes = foogallery_build_class_attribute_safe( $current_foogallery, 'foogallery-lightbox-' . $lightbox, $alignment, $gutter_percent );
 $foogallery_masonry_attributes = foogallery_build_container_attributes_safe( $current_foogallery, array( 'class' => $foogallery_masonry_classes) );
 ?>
-<div <?php echo $foogallery_masonry_attributes; ?>>
+<div <?php echo wp_kses_post( $foogallery_masonry_attributes ); ?>>
 	<?php if ( 'fixed' !== $layout ) { ?>
 	<div class="fg-column-width"></div>
 	<div class="fg-gutter-width"></div>
 	<?php } ?>
 	<?php foreach ( foogallery_current_gallery_attachments_for_rendering() as $attachment ) {
-		echo foogallery_attachment_html( $attachment );
+		echo wp_kses_post( foogallery_attachment_html( $attachment ) );
 	} ?>
 </div>

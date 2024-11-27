@@ -40,25 +40,28 @@ if ( ! class_exists( 'FooGallery_Admin_Columns' ) ) {
 
 		public function gallery_custom_column_content( $column ) {
 			global $post;
-
+		
 			switch ( $column ) {
 				case FOOGALLERY_CPT_GALLERY . '_template':
 					$gallery = $this->get_local_gallery( $post );
-					echo $gallery->gallery_template_name();
+					echo esc_html( $gallery->gallery_template_name() );
 					break;
+		
 				case FOOGALLERY_CPT_GALLERY . '_count':
 					$gallery = $this->get_local_gallery( $post );
-					echo $gallery->image_count();
+					echo esc_html( $gallery->image_count() );
 					break;
+		
 				case FOOGALLERY_CPT_GALLERY . '_shortcode':
 					$gallery = $this->get_local_gallery( $post );
 					$shortcode = $gallery->shortcode();
-
-					echo '<input type="text" readonly="readonly" size="' . strlen( $shortcode )  . '" value="' . esc_attr( $shortcode ) . '" class="foogallery-shortcode" />';
-
+		
+					echo '<input type="text" readonly="readonly" size="' . esc_attr( strlen( $shortcode ) ) . '" value="' . esc_attr( $shortcode ) . '" class="foogallery-shortcode" />';
+		
 					$this->include_clipboard_script = true;
-
+		
 					break;
+		
 				case 'icon':
 					$gallery = $this->get_local_gallery( $post );
 					$html_img = foogallery_find_featured_attachment_thumbnail_html( $gallery, array(
@@ -67,24 +70,27 @@ if ( ! class_exists( 'FooGallery_Admin_Columns' ) ) {
 						'force_use_original_thumb' => true
 					) );
 					if ( $html_img ) {
-						echo $html_img;
+						echo wp_kses_post( $html_img );
 					}
 					break;
+		
 				case FOOGALLERY_CPT_GALLERY . '_usage':
 					$gallery = $this->get_local_gallery( $post );
 					$posts = $gallery->find_usages();
 					if ( $posts && count( $posts ) > 0 ) {
 						echo '<ul class="ul-disc">';
 						foreach ( $posts as $post ) {
-							echo edit_post_link( $post->post_title, '<li>', '</li>', $post->ID );
+							echo '<li>' . esc_html( $post->post_title ) . ' ';
+							edit_post_link( esc_html__( 'Edit', 'foogallery' ), '', '', $post->ID );
+							echo '</li>';
 						}
 						echo '</ul>';
 					} else {
-						_e( 'Not used!', 'foogallery' );
+						esc_html_e( 'Not used!', 'foogallery' );
 					}
 					break;
 			}
-		}
+		}		
 
 		public function include_clipboard_script() {
 			if ( $this->include_clipboard_script ) { ?>
@@ -98,7 +104,7 @@ if ( ! class_exists( 'FooGallery_Admin_Columns' ) ) {
 								document.execCommand('copy');
 								//show the copied message
 								$('.foogallery-shortcode-message').remove();
-								$(this).after('<p class="foogallery-shortcode-message"><?php _e( 'Shortcode copied to clipboard :)','foogallery' ); ?></p>');
+								$(this).after('<p class="foogallery-shortcode-message"><?php esc_html_e( 'Shortcode copied to clipboard :)','foogallery' ); ?></p>');
 							} catch(err) {
 								console.log('Oops, unable to copy!');
 							}

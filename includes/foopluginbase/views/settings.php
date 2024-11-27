@@ -88,11 +88,11 @@ $summary = $this->apply_filters( $plugin_slug . '_admin_settings_page_summary', 
                 ?>
 		<p class="submit">
 					<input name="submit" class="button-primary" type="submit"
-						   value="<?php _e( 'Save Changes', $plugin_slug ); ?>"/>
+						   value="<?php esc_html_e( 'Save Changes', $plugin_slug ); ?>"/>
 					<input name="<?php echo $plugin_slug; ?>[reset-defaults]"
-						   onclick="return confirm('<?php _e( 'Are you sure you want to restore all settings back to their default values?', $plugin_slug ); ?>');"
+						   onclick="return confirm('<?php esc_html_e( 'Are you sure you want to restore all settings back to their default values?', $plugin_slug ); ?>');"
 						   class="button-secondary" type="submit"
-						   value="<?php _e( 'Restore Defaults', $plugin_slug ); ?>"/>
+						   value="<?php esc_html_e( 'Restore Defaults', $plugin_slug ); ?>"/>
 			<?php do_action($plugin_slug . '_admin_settings_buttons') ?>
 		</p>
 	</form>

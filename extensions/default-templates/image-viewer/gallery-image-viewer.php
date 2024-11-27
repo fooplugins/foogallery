@@ -23,11 +23,11 @@ $alignment = foogallery_gallery_template_setting( 'alignment', 'fg-center' );
 $link = foogallery_gallery_template_setting( 'thumbnail_link', 'image' );
 $foogallery_imageviewer_classes = foogallery_build_class_attribute_safe( $current_foogallery, 'foogallery-link-' . $link, 'foogallery-lightbox-' . $lightbox, $alignment );
 $foogallery_imageviewer_attributes = foogallery_build_container_attributes_safe( $current_foogallery, array( 'class' => $foogallery_imageviewer_classes ) );
-?><div <?php echo $foogallery_imageviewer_attributes; ?>>
+?><div <?php echo wp_kses_post( $foogallery_imageviewer_attributes ); ?>>
 	<div class="fiv-inner">
 		<div class="fiv-inner-container">
 			<?php foreach ( foogallery_current_gallery_attachments_for_rendering() as $attachment ) {
-				echo foogallery_attachment_html( $attachment );
+				echo wp_kses_post( foogallery_attachment_html( $attachment ) );
 			} ?>
 		</div>
 		<div class="fiv-ctrls">

@@ -22,27 +22,27 @@ if ( ! class_exists( 'FooGallery_Override_Thumbnail' ) ) {
             <div class="foogallery-attachments-list-bar">
                 <div class="settings">
                     <span class="setting override-thumbnail <?php echo $modal_data['override_class']; ?>" data-setting="override-thumbnail">
-                        <label for="attachment-details-two-column-override-thumbnail" class="name"><?php _e('Alternate Thumbnail URL', 'foogallery'); ?></label>
+                        <label for="attachment-details-two-column-override-thumbnail" class="name"><?php esc_html_e('Alternate Thumbnail URL', 'foogallery'); ?></label>
                         <input type="text" id="attachments-foogallery-override-thumbnail" value="<?php echo $modal_data['alternate_img_src']; ?>" readonly>
                         <input type="hidden" name="foogallery[override-thumbnail-id]" id="attachments-foogallery-override-thumbnail-id" value="<?php echo $modal_data['foogallery_override_thumbnail']; ?>">
                     </span>
                     <span class="setting override-thumbnail-preview <?php echo $modal_data['override_class']; ?>" data-setting="override-thumbnail-preview">
-                        <label for="attachment-details-two-column-override-thumbnail-preview" class="name"><?php _e('Alternate Thumbnail Preview', 'foogallery'); ?></label>
+                        <label for="attachment-details-two-column-override-thumbnail-preview" class="name"><?php esc_html_e('Alternate Thumbnail Preview', 'foogallery'); ?></label>
                         <img id="attachment-details-two-column-override-thumbnail-preview" src="<?php echo $modal_data['alternate_img_src']; ?>" alt="Alternate Thumbnail">
                     </span>
                     <span class="setting alternate-image-upload-settings" data-setting="alternate-image-upload">
                         <div class="alternate-image-upload-wrap">
                             <button type="button" class="button button-primary button-large" id="foogallery-img-modal-alternate-image-upload"
-                                    data-uploader-title="<?php _e( 'Override Thumbnail Image', 'foogallery' ); ?>"
-                                    data-uploader-button-text="<?php _e( 'Override Thumbnail Image', 'foogallery' ); ?>"
+                                    data-uploader-title="<?php esc_html_e( 'Override Thumbnail Image', 'foogallery' ); ?>"
+                                    data-uploader-button-text="<?php esc_html_e( 'Override Thumbnail Image', 'foogallery' ); ?>"
                                     data-img-id="<?php echo $modal_data['img_id']; ?>">
-                                <?php _e( 'Override Thumbnail Image', 'foogallery' ); ?>
+                                <?php esc_html_e( 'Override Thumbnail Image', 'foogallery' ); ?>
                             </button>
                             <button type="button" class="button button-primary button-large <?php echo $modal_data['override_class']; ?>" id="foogallery-img-modal-alternate-image-delete"
-                                    data-uploader-title="<?php _e( 'Clear Override Thumbnail', 'foogallery' ); ?>"
-                                    data-uploader-button-text="<?php _e( 'Clear Override Thumbnail', 'foogallery' ); ?>"
+                                    data-uploader-title="<?php esc_html_e( 'Clear Override Thumbnail', 'foogallery' ); ?>"
+                                    data-uploader-button-text="<?php esc_html_e( 'Clear Override Thumbnail', 'foogallery' ); ?>"
                                     data-img-id="<?php echo $modal_data['img_id']; ?>">
-                                <?php _e( 'Clear Override Thumbnail', 'foogallery' ); ?>
+                                <?php esc_html_e( 'Clear Override Thumbnail', 'foogallery' ); ?>
                             </button>
                             <span id="foogallery_clear_alternate_img_spinner" class="spinner"></span>
                         </div>

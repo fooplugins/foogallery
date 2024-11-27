@@ -103,10 +103,10 @@ if ( ! class_exists( 'FooGallery_Datasource_MediaLibrary' ) ) {
 		public function output_add_button( $foogallery ) {
 			?>
 			<button type="button" class="button button-primary button-hero upload_image_button"
-					data-uploader-title="<?php _e( 'Add Media To Gallery', 'foogallery' ); ?>"
-					data-uploader-button-text="<?php _e( 'Add Media', 'foogallery' ); ?>"
+					data-uploader-title="<?php esc_html_e( 'Add Media To Gallery', 'foogallery' ); ?>"
+					data-uploader-button-text="<?php esc_html_e( 'Add Media', 'foogallery' ); ?>"
 					data-post-id="<?php echo $foogallery->ID; ?>">
-				<span class="dashicons dashicons-admin-media"></span><?php _e( 'Add From Media Library', 'foogallery' ); ?>
+				<span class="dashicons dashicons-admin-media"></span><?php esc_html_e( 'Add From Media Library', 'foogallery' ); ?>
 			</button>
 			<?php
 		}
@@ -170,14 +170,14 @@ if ( ! class_exists( 'FooGallery_Datasource_MediaLibrary' ) ) {
                     <?php do_action('foogallery_attachments_list_bar_buttons', $foogallery ); ?>
 
                     <button type="button" class="button button-primary button-large alignright upload_image_button"
-                            data-uploader-title="<?php _e( 'Add Media To Gallery', 'foogallery' ); ?>"
-                            data-uploader-button-text="<?php _e( 'Add Media', 'foogallery' ); ?>"
+                            data-uploader-title="<?php esc_html_e( 'Add Media To Gallery', 'foogallery' ); ?>"
+                            data-uploader-button-text="<?php esc_html_e( 'Add Media', 'foogallery' ); ?>"
                             data-post-id="<?php echo $foogallery->ID; ?>">
-                        <?php _e( 'Add Media', 'foogallery' ); ?>
+                        <?php esc_html_e( 'Add Media', 'foogallery' ); ?>
                     </button>
 
                     <button type="button" class="button button-primary button-large alignright remove_all_media">
-		                <?php _e( 'Remove All Media', 'foogallery' ); ?>
+		                <?php esc_html_e( 'Remove All Media', 'foogallery' ); ?>
                     </button>
 
                 </div>
@@ -188,10 +188,10 @@ if ( ! class_exists( 'FooGallery_Datasource_MediaLibrary' ) ) {
 		private function render_add_media_button( $foogallery_id) {
 		    ?>
             <li class="add-attachment datasource-medialibrary">
-                <a href="#" data-uploader-title="<?php _e( 'Add Media To Gallery', 'foogallery' ); ?>"
-                   data-uploader-button-text="<?php _e( 'Add Media', 'foogallery' ); ?>"
+                <a href="#" data-uploader-title="<?php esc_html_e( 'Add Media To Gallery', 'foogallery' ); ?>"
+                   data-uploader-button-text="<?php esc_html_e( 'Add Media', 'foogallery' ); ?>"
                    data-post-id="<?php echo $foogallery_id; ?>" class="upload_image_button"
-                   title="<?php _e( 'Add From Media Library', 'foogallery' ); ?>">
+                   title="<?php esc_html_e( 'Add From Media Library', 'foogallery' ); ?>">
                     <div class="dashicons dashicons-plus"></div>
                 </a>
             </li>
@@ -221,10 +221,10 @@ if ( ! class_exists( 'FooGallery_Datasource_MediaLibrary' ) ) {
 							<?php echo $img_tag; ?>
 						</div>
 					</div>
-					<a class="info" href="#" title="<?php _e( 'Edit Info', 'foogallery' ); ?>">
+					<a class="info" href="#" title="<?php esc_html_e( 'Edit Info', 'foogallery' ); ?>">
 						<span class="dashicons dashicons-info"></span>
 					</a>
-					<a class="remove" href="#" title="<?php _e( 'Remove from gallery', 'foogallery' ); ?>">
+					<a class="remove" href="#" title="<?php esc_html_e( 'Remove from gallery', 'foogallery' ); ?>">
 						<span class="dashicons dashicons-dismiss"></span>
 					</a>
 				</div>

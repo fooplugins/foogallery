@@ -141,11 +141,19 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Datasources' ) ) {
                 $datasource_value = get_post_meta( $gallery->ID, FOOGALLERY_META_DATASOURCE_VALUE, true );
                 if ( is_array( $datasource_value ) ) {
                     $datasource_value = json_encode( $datasource_value );
-                } ?>
-            <input type="hidden" data-foogallery-preview="include" name="<?php echo FOOGALLERY_META_DATASOURCE; ?>" value="<?php echo $gallery->datasource_name; ?>" id="<?php echo FOOGALLERY_META_DATASOURCE; ?>" />
-            <input type="hidden" data-foogallery-preview="include" value="<?php echo esc_attr( $datasource_value ); ?>" name="<?php echo FOOGALLERY_META_DATASOURCE_VALUE; ?>" id="<?php echo FOOGALLERY_META_DATASOURCE_VALUE; ?>" />
-            <?php }
-        }
+                }
+                ?>
+                <input type="hidden" data-foogallery-preview="include" 
+                       name="<?php echo esc_attr( FOOGALLERY_META_DATASOURCE ); ?>" 
+                       value="<?php echo esc_attr( $gallery->datasource_name ); ?>" 
+                       id="<?php echo esc_attr( FOOGALLERY_META_DATASOURCE ); ?>" />
+                <input type="hidden" data-foogallery-preview="include" 
+                       value="<?php echo esc_attr( $datasource_value ); ?>" 
+                       name="<?php echo esc_attr( FOOGALLERY_META_DATASOURCE_VALUE ); ?>" 
+                       id="<?php echo esc_attr( FOOGALLERY_META_DATASOURCE_VALUE ); ?>" />
+                <?php
+            }
+        }        
 
         /**
          * Add the datasources button to the items metabox
@@ -154,9 +162,9 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Datasources' ) ) {
             $datasources = foogallery_gallery_datasources();
             //we only want to show the datasources button if there are more than 1 datasources
             if ( count( $datasources ) > 1 ) { ?>
-				<p><?php _e('or', 'foogallery');?></p>
+				<p><?php esc_html_e('or', 'foogallery');?></p>
 				<button type="button" class="button button-secondary button-hero gallery_datasources_button">
-					<span class="dashicons dashicons-format-gallery"></span><?php _e( 'Add From Another Source', 'foogallery' ); ?>
+					<span class="dashicons dashicons-format-gallery"></span><?php esc_html_e( 'Add From Another Source', 'foogallery' ); ?>
 				</button>
             <?php }
         }
@@ -165,20 +173,22 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Datasources' ) ) {
          * Renders the datasource modal for use on the gallery edit page
          */
         public function render_datasource_modal() {
-
             global $post;
-
-            //check if the gallery edit page is being shown
+        
+            // Check if the gallery edit page is being shown
             $screen = get_current_screen();
             if ( 'foogallery' !== $screen->id ) {
                 return;
             }
-
+        
             $datasources = foogallery_gallery_datasources();
-
+        
             ?>
-            <?php wp_nonce_field('foogallery_load_galleries', 'foogallery_load_galleries', false); ?>
-            <div class="foogallery-datasources-modal-wrapper" data-foogalleryid="<?php echo $post->ID; ?>" data-nonce="<?php echo wp_create_nonce( 'foogallery-datasource-content' ); ?>" style="display: none;">
+            <?php wp_nonce_field( 'foogallery_load_galleries', 'foogallery_load_galleries', false ); ?>
+            <div class="foogallery-datasources-modal-wrapper" 
+                 data-foogalleryid="<?php echo esc_attr( $post->ID ); ?>" 
+                 data-nonce="<?php echo esc_attr( wp_create_nonce( 'foogallery-datasource-content' ) ); ?>" 
+                 style="display: none;">
                 <div class="media-modal wp-core-ui">
                     <button type="button" class="media-modal-close">
                         <span class="media-modal-icon"><span class="screen-reader-text">Close media panel</span></span>
@@ -187,41 +197,53 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Datasources' ) ) {
                         <div class="media-frame wp-core-ui">
                             <div class="foogallery-datasource-modal-title">
                                 <h1>
-                                    <?php _e('Add To Gallery From Another Source', 'foogallery'); ?>
-                                    <a class="foogallery-datasource-modal-reload button" href="#" style="display: none; margin-top: -4px;"><span style="padding-top: 3px;" class="dashicons dashicons-update"></span> <?php _e('Reload', 'foogallery'); ?></a>
+                                    <?php esc_html_e( 'Add To Gallery From Another Source', 'foogallery' ); ?>
+                                    <a class="foogallery-datasource-modal-reload button" href="#" style="display: none; margin-top: -4px;">
+                                        <span style="padding-top: 3px;" class="dashicons dashicons-update"></span> 
+                                        <?php esc_html_e( 'Reload', 'foogallery' ); ?>
+                                    </a>
                                 </h1>
                             </div>
                             <div class="foogallery-datasource-modal-sidebar">
                                 <div class="foogallery-datasource-modal-sidebar-menu">
-                                    <?php foreach ( $datasources as $key=>$datasource ) {
-                                    if ( $datasource['public'] ) { ?>
-                                    <a href="#" class="media-menu-item foogallery-datasource-modal-selector" data-datasource="<?php echo $key; ?>"><?php echo $datasource['menu']; ?></a>
-                                        <?php } } ?>
+                                    <?php foreach ( $datasources as $key => $datasource ) {
+                                        if ( $datasource['public'] ) { ?>
+                                            <a href="#" class="media-menu-item foogallery-datasource-modal-selector" 
+                                               data-datasource="<?php echo esc_attr( $key ); ?>">
+                                               <?php echo esc_html( $datasource['menu'] ); ?>
+                                            </a>
+                                        <?php } 
+                                    } ?>
                                 </div>
                             </div>
                             <div class="foogallery-datasource-modal-container">
-								<div class="foogallery-datasource-modal-container-inner">
-									<?php do_action( 'foogallery_admin_datasource_modal_content' ); ?>
-								</div>
-                                <?php foreach ( $datasources as $key=>$datasource ) {
+                                <div class="foogallery-datasource-modal-container-inner">
+                                    <?php do_action( 'foogallery_admin_datasource_modal_content' ); ?>
+                                </div>
+                                <?php foreach ( $datasources as $key => $datasource ) {
                                     if ( $datasource['public'] ) { ?>
-                                        <div class="foogallery-datasource-modal-container-inner <?php echo $key; ?> not-loaded">
+                                        <div class="foogallery-datasource-modal-container-inner <?php echo esc_attr( $key ); ?> not-loaded">
                                             <div class="spinner"></div>
                                         </div>
-                                    <?php } } ?>
+                                    <?php } 
+                                } ?>
                             </div>
                             <div class="foogallery-datasource-modal-toolbar">
                                 <div class="foogallery-datasource-modal-toolbar-inner">
                                     <div class="media-toolbar-secondary">
                                         <a href="#"
                                            class="foogallery-datasource-modal-cancel button media-button button-large button-secondary media-button-insert"
-                                           title="<?php esc_attr_e('Cancel', 'foogallery'); ?>"><?php _e('Cancel', 'foogallery'); ?></a>
+                                           title="<?php esc_attr_e( 'Cancel', 'foogallery' ); ?>">
+                                           <?php esc_html_e( 'Cancel', 'foogallery' ); ?>
+                                        </a>
                                     </div>
                                     <div class="media-toolbar-primary">
                                         <a href="#"
                                            class="foogallery-datasource-modal-insert button media-button button-large button-primary media-button-insert"
                                            disabled="disabled"
-                                           title="<?php esc_attr_e('OK', 'foogallery'); ?>"><?php _e('OK', 'foogallery'); ?></a>
+                                           title="<?php esc_attr_e( 'OK', 'foogallery' ); ?>">
+                                           <?php esc_html_e( 'OK', 'foogallery' ); ?>
+                                        </a>
                                     </div>
                                 </div>
                             </div>
@@ -231,11 +253,11 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Datasources' ) ) {
                 <div class="media-modal-backdrop"></div>
             </div>
             <?php
-        }
+        }        
 
         function render_datasource_modal_default_content() {
 			?>
-	        <?php _e('Select a source on the left to get started.', 'foogallery'); ?>
+	        <?php esc_html_e('Select a source on the left to get started.', 'foogallery'); ?>
 	        <div style="height: 200px;background-repeat: no-repeat;background-size: 50%;width: 200px;background-image: url(&quot;data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9JzMwMHB4JyB3aWR0aD0nMzAwcHgnICBmaWxsPSIjMDAwMDAwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB2ZXJzaW9uPSIxLjEiIHg9IjBweCIgeT0iMHB4IiB2aWV3Qm94PSIwIDAgMTAwIDEwMCIgc3R5bGU9ImVuYWJsZS1iYWNrZ3JvdW5kOm5ldyAwIDAgMTAwIDEwMDsiIHhtbDpzcGFjZT0icHJlc2VydmUiPjxzdHlsZSB0eXBlPSJ0ZXh0L2NzcyI+Cgkuc3Qwe2ZpbGw6IzAwMDAwMDt9Cjwvc3R5bGU+PHBhdGggY2xhc3M9InN0MCIgZD0iTTg3LjksMjMuMUM4My4yLDM0LDc1LjYsNDMuNSw2Ni4yLDUwLjZjLTkuNSw3LjItMjEuMSwxMi41LTMzLjEsMTMuNmMtNC45LDAuNC05LjksMC0xNC40LTEuOCAgYzQuNi0wLjksOS4xLTEuOCwxMy43LTIuN2MxLTAuMiwxLjItMS42LDEuMi0yLjRjMC0wLjUtMC4yLTIuNi0xLjItMi40Yy02LjUsMS4zLTEzLjEsMi42LTE5LjYsMy45Yy0wLjEsMC0wLjMsMC4xLTAuNCwwLjIgIGMtMC4yLTAuMi0wLjQtMC40LTAuNi0wLjVjLTEuNy0xLjQtMi40LDMuMi0xLjIsNC4yYzQuOSw0LjIsOS4yLDksMTIuNiwxNC40YzAuNSwwLjgsMS4yLDAuOSwxLjcsMGMwLjUtMC45LDAuNi0yLjUsMC0zLjQgIGMtMS4yLTEuOS0yLjUtMy42LTMuOC01LjRjOS4xLDIuNSwxOS41LDAuMywyOC0zYzExLjQtNC40LDIxLjYtMTEuNywyOS41LTIxYzQuNS01LjMsOC4yLTExLjIsMTEtMTcuNWMwLjQtMSwwLjUtMi40LDAtMy40ICBDODkuMiwyMi4zLDg4LjMsMjIuMiw4Ny45LDIzLjF6Ij48L3BhdGg+PC9zdmc+&quot;);"></div>
 			<?php
         }

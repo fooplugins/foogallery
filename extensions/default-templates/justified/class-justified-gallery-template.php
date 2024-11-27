@@ -50,14 +50,14 @@ if ( ! class_exists( 'FooGallery_Justified_Gallery_Template' ) ) {
 			// @formatter:off
 			?>
 			<style>
-                #<?php echo $id; ?>.fg-justified .fg-item {
-                    margin-right: <?php echo $margins; ?>px;
-                    margin-bottom: <?php echo $margins; ?>px;
-                }
+				#<?php echo esc_attr( $id ); ?>.fg-justified .fg-item {
+					margin-right: <?php echo esc_html( intval( $margins ) ); ?>px;
+					margin-bottom: <?php echo esc_html( intval( $margins ) ); ?>px;
+				}
 
-                #<?php echo $id; ?>.fg-justified .fg-image {
-                    height: <?php echo $row_height; ?>px;
-                }
+				#<?php echo esc_attr( $id ); ?>.fg-justified .fg-image {
+					height: <?php echo esc_html( intval( $row_height ) ); ?>px;
+				}
 			</style>
 			<?php
 			// @formatter:on
