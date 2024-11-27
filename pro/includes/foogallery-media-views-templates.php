@@ -15,7 +15,7 @@
 		<h2>{{data.title}}</h2>
 		<p>{{data.message}}</p>
 		<div class="button-hero-container">
-			<button type="button" class="button button-hero fgi-ok"><?php _e("OK", "foogallery") ?></button>
+			<button type="button" class="button button-hero fgi-ok"><?php esc_html_e("OK", "foogallery") ?></button>
 		</div>
 	</div>
 
@@ -174,11 +174,11 @@
 ?>
 
 	<div class="fgi-splash fgi-getting-started-instructions">
-		<h2><?php _e("Enter a supported URL or a YouTube search term, playlist or video ID in the input above.", "foogallery") ?></h2>
-		<p><?php _e("or", "foogallery") ?></p>
+		<h2><?php esc_html_e("Enter a supported URL or a YouTube search term, playlist or video ID in the input above.", "foogallery") ?></h2>
+		<p><?php esc_html_e("or", "foogallery") ?></p>
 		<button type="button" class="button button-hero fgi-select"
-						data-options='{"type": "video/mp4,video/ogg,video/ogv,video/webm", "title":"<?php _e("Select a video", "foogallery") ?>", "button":"<?php _e("Select Video", "foogallery") ?>"}'>
-			<?php _e("Choose a video from your Media Library", "foogallery") ?>
+						data-options='{"type": "video/mp4,video/ogg,video/ogv,video/webm", "title":"<?php esc_html_e("Select a video", "foogallery") ?>", "button":"<?php esc_html_e("Select Video", "foogallery") ?>"}'>
+			<?php esc_html_e("Choose a video from your Media Library", "foogallery") ?>
 		</button>
 		<p><small><?php printf(__("See the %s for more information.", "foogallery"), $help) ?></small></p>
 	</div>
@@ -187,12 +187,12 @@
 <script type="text/html" id="tmpl-fgi-query">
 
 	<div class="fgi-query-left">
-		<input type="text" class="fgi-query-input" placeholder="<?php _e("Enter a supported URL or a YouTube search term, playlist or video ID", "foogallery") ?>" spellcheck="false"/>
+		<input type="text" class="fgi-query-input" placeholder="<?php esc_html_e("Enter a supported URL or a YouTube search term, playlist or video ID", "foogallery") ?>" spellcheck="false"/>
 		<span class="fgi-query-input-spinner"></span>
 	</div>
 
 	<div class="fgi-query-right">
-		<a href="#toggle-help"><?php _e("Help", "foogallery") ?></a>
+		<a href="#toggle-help"><?php esc_html_e("Help", "foogallery") ?></a>
 	</div>
 
 </script>
@@ -205,45 +205,45 @@
 ?>
 
 	<div class="fgi-self-hosted-notification">
-		<p><?php _e("Enter the details for your video below and then click the Import button.", "foogallery") ?></p>
+		<p><?php esc_html_e("Enter the details for your video below and then click the Import button.", "foogallery") ?></p>
 	</div>
 	<div class="fgi-self-hosted-details">
 		<div class="fgi-form">
 			<input type="hidden" name="id" value="{{data.id}}"/>
 			<input type="hidden" name="provider" value="{{data.mode}}"/>
 			<label class="fgi-row">
-				<span class="fgi-col-label"><?php _e("Thumbnail", "foogallery") ?> *</span>
+				<span class="fgi-col-label"><?php esc_html_e("Thumbnail", "foogallery") ?> *</span>
 				<span class="fgi-col-input">
 					<span class="fgi-browse">
 						<span class="fgi-browse-inner">
 							<span class="fgi-browse-col-input">
 								<input type="text" name="thumbnail" value="{{data.thumbnail}}" spellcheck="false"
-											 data-messages='{"required":"<?php _e("You must supply a thumbnail for the video.", "foogallery") ?>","pattern":"<?php _e("Please enter a .jpg, .jpeg, .png or .gif file.", "foogallery") ?>"}'
+											 data-messages='{"required":"<?php esc_html_e("You must supply a thumbnail for the video.", "foogallery") ?>","pattern":"<?php esc_html_e("Please enter a .jpg, .jpeg, .png or .gif file.", "foogallery") ?>"}'
 											 data-pattern="(?:\/|=)(?<name>[^\/]+?)\.(?<ext>jpg|jpeg|png|gif)(?:$|\?|&|#|,)" data-required="true"/>
 							</span>
 							<span class="fgi-browse-col-button">
 								<button type="button" class="button button-secondary"
-												data-options='{"type": "image/png,image/jpg,image/jpeg,image/gif", "title":"<?php _e("Select a thumbnail for the video", "foogallery") ?>", "button":"<?php _e("Select Image", "foogallery") ?>"}'
-								><?php _e("Select", "foogallery") ?></button>
+												data-options='{"type": "image/png,image/jpg,image/jpeg,image/gif", "title":"<?php esc_html_e("Select a thumbnail for the video", "foogallery") ?>", "button":"<?php esc_html_e("Select Image", "foogallery") ?>"}'
+								><?php esc_html_e("Select", "foogallery") ?></button>
 							</span>
 						</span>
 					</span>
 				</span>
 			</label>
 			<label class="fgi-row">
-				<span class="fgi-col-label"><?php _e("Title", "foogallery") ?></span>
+				<span class="fgi-col-label"><?php esc_html_e("Title", "foogallery") ?></span>
 				<span class="fgi-col-input">
 					<input type="text" name="title" value="{{data.title}}"/>
 				</span>
 			</label>
 			<label class="fgi-row">
-				<span class="fgi-col-label"><?php _e("Description", "foogallery") ?></span>
+				<span class="fgi-col-label"><?php esc_html_e("Description", "foogallery") ?></span>
 				<span class="fgi-col-input">
 					<textarea name="description" rows="5">{{data.description}}</textarea>
 				</span>
 			</label>
 			<label class="fgi-row">
-				<span class="fgi-col-label"><?php _e("URL(s)", "foogallery") ?> *</span>
+				<span class="fgi-col-label"><?php esc_html_e("URL(s)", "foogallery") ?> *</span>
 				<span class="fgi-col-input">
 					<# var first = true; _(data.urls).each(function(url, name){ var type = data.types[name]; #>
 						<span class="fgi-browse">
@@ -254,7 +254,7 @@
 								<span class="fgi-browse-col-input">
 									<# if (first){ first = false; #>
 									<input type="text" name="urls[{{name}}]" value="{{url}}" spellcheck="false" data-type="{{name}}"
-												 data-messages='{"required":"<?php _e("You must supply at least one URL.", "foogallery") ?>","pattern":"<?php printf(__("Please enter a %s file.", "foogallery"), "{{type.text}}") ?>"}'
+												 data-messages='{"required":"<?php esc_html_e("You must supply at least one URL.", "foogallery") ?>","pattern":"<?php printf(__("Please enter a %s file.", "foogallery"), "{{type.text}}") ?>"}'
 												 data-pattern="(?:\/|=)(?<name>[^\/]+?)\.(?<ext>{{type.pattern}})(?:$|\?|&|#|,)" data-required="[name^='urls[']"/>
 									<# } else { #>
 									<input type="text" name="urls[{{name}}]" value="{{url}}" spellcheck="false" data-type="{{name}}"
@@ -264,17 +264,17 @@
 								</span>
 								<span class="fgi-browse-col-button">
 									<button type="button" class="button button-secondary"
-													data-options='{"type": {{type.mime}}, "title":"<?php printf(__("Select a %s video", "foogallery"), "{{type.text}}") ?>", "button":"<?php _e("Select Video", "foogallery") ?>"}'
-									><?php _e("Select", "foogallery") ?></button>
+													data-options='{"type": {{type.mime}}, "title":"<?php printf(__("Select a %s video", "foogallery"), "{{type.text}}") ?>", "button":"<?php esc_html_e("Select Video", "foogallery") ?>"}'
+									><?php esc_html_e("Select", "foogallery") ?></button>
 								</span>
 							</span>
 						</span>
 					<# }) #>
 					<span class="fgi-input-description">
-						<?php _e("We recommend using .mp4 videos for the best cross browser compatibility however the more types you supply the better the compatibility becomes. If you already have the URL you can simply paste it into the appropriate input.", "foogallery") ?>
+						<?php esc_html_e("We recommend using .mp4 videos for the best cross browser compatibility however the more types you supply the better the compatibility becomes. If you already have the URL you can simply paste it into the appropriate input.", "foogallery") ?>
 					</span>
 					<span class="fgi-input-description">
-						<?php _e("As you enter URLs above the below compatibility list will be updated giving you an idea of which browsers will be able to play your video.", "foogallery") ?>
+						<?php esc_html_e("As you enter URLs above the below compatibility list will be updated giving you an idea of which browsers will be able to play your video.", "foogallery") ?>
 					</span>
 					<span class="fgi-video-compatibility"></span>
 					<span class="fgi-input-description">
@@ -311,9 +311,9 @@
 <script type="text/html" id="tmpl-fgi-query-result-notification">
 
 	<# if (data.total === 1){ #>
-		<p><?php _e("Confirm the video is correct and then click the Import button.", "foogallery") ?></p>
+		<p><?php esc_html_e("Confirm the video is correct and then click the Import button.", "foogallery") ?></p>
 	<# } else { #>
-		<p><?php _e("Select the videos to import by clicking the thumbnails and then click the Import button.", "foogallery") ?></p>
+		<p><?php esc_html_e("Select the videos to import by clicking the thumbnails and then click the Import button.", "foogallery") ?></p>
 	<# } #>
 
 </script>
@@ -349,7 +349,7 @@
 		<?php printf(__("Displaying %s of %s results.", "foogallery"), $offset, $total) ?>
 		<# if (data.total !== 1 && data.nextPage !== 0){ #>
 			<span class="fgi-query-result-paged">
-				<span class="fgi-query-result-loading"><?php _e("Loading...", "foogallery") ?></span>
+				<span class="fgi-query-result-loading"><?php esc_html_e("Loading...", "foogallery") ?></span>
 				<span class="fgi-query-result-load-more"><?php printf(__("Would you like to %s?", "foogallery"), $load_more) ?></span>
 				<span class="fgi-query-result-try-again"><?php printf(__("An error occurred loading additional results, %s?", "foogallery"), $try_again) ?></span>
 			</span>
@@ -364,7 +364,7 @@
 ?>
 
 	<# if (data.total === 1){ #>
-		<p><?php _e("Confirm the video is correct and then click the Import button.", "foogallery") ?></p>
+		<p><?php esc_html_e("Confirm the video is correct and then click the Import button.", "foogallery") ?></p>
 	<# } else { #>
 		<p><?php printf(__("Select the videos to import by clicking the thumbnails and then click the Import button, or would you like to %s?", "foogallery"), $import_album) ?></p>
 	<# } #>
@@ -377,7 +377,7 @@
 ?>
 
 	<# if (data.total === 1){ #>
-		<p><?php _e("Confirm the video is correct and then click the Import button.", "foogallery") ?></p>
+		<p><?php esc_html_e("Confirm the video is correct and then click the Import button.", "foogallery") ?></p>
 	<# } else { #>
 		<p><?php printf(__("Select the videos to import by clicking the thumbnails and then click the Import button, or would you like to %s?", "foogallery"), $import_channel) ?></p>
 	<# } #>
@@ -390,7 +390,7 @@
 ?>
 
 	<# if (data.total === 1){ #>
-		<p><?php _e("Confirm the video is correct and then click the Import button.", "foogallery") ?></p>
+		<p><?php esc_html_e("Confirm the video is correct and then click the Import button.", "foogallery") ?></p>
 	<# } else { #>
 		<p><?php printf(__("Select the videos to import by clicking the thumbnails and then click the Import button, or would you like to %s?", "foogallery"), $import_playlist) ?></p>
 	<# } #>
@@ -403,7 +403,7 @@
 ?>
 
 	<# if (data.total === 1){ #>
-		<p><?php _e("Confirm the video is correct and then click the Import button.", "foogallery") ?></p>
+		<p><?php esc_html_e("Confirm the video is correct and then click the Import button.", "foogallery") ?></p>
 	<# } else { #>
 		<p><?php printf(__("Select the videos to import by clicking the thumbnails and then click the Import button, or would you like to %s?", "foogallery"), $import_user) ?></p>
 	<# } #>
@@ -412,53 +412,53 @@
 <script type="text/html" id="tmpl-fgi-oembed">
 
 	<div class="fgi-oembed-notification">
-		<p><?php _e("Enter any missing details for the oEmbed video below and then click the Import button.", "foogallery") ?></p>
+		<p><?php esc_html_e("Enter any missing details for the oEmbed video below and then click the Import button.", "foogallery") ?></p>
 	</div>
 	<div class="fgi-oembed-details">
 		<div class="fgi-form">
 			<input type="hidden" name="id" value="{{data.id}}"/>
 			<label class="fgi-row">
-				<span class="fgi-col-label"><?php _e("URL", "foogallery") ?></span>
+				<span class="fgi-col-label"><?php esc_html_e("URL", "foogallery") ?></span>
 				<span class="fgi-col-input">
 					<input type="text" name="url" value="{{data.url}}" readonly="readonly"/>
 				</span>
 			</label>
 			<label class="fgi-row">
-				<span class="fgi-col-label"><?php _e("Provider", "foogallery") ?></span>
+				<span class="fgi-col-label"><?php esc_html_e("Provider", "foogallery") ?></span>
 				<span class="fgi-col-input">
 					<input type="text" name="provider" value="{{data.provider}}" readonly="readonly"/>
 					<span class="fgi-input-description">
-						<?php _e("The oEmbed standards do not specify that a provider must supply a thumbnail, title or description but to display a video within a gallery it must have an image to use as a thumbnail. The inputs below allow you to edit or supply any missing information and then continue with the import.", "foogallery") ?>
+						<?php esc_html_e("The oEmbed standards do not specify that a provider must supply a thumbnail, title or description but to display a video within a gallery it must have an image to use as a thumbnail. The inputs below allow you to edit or supply any missing information and then continue with the import.", "foogallery") ?>
 					</span>
 				</span>
 			</label>
 			<label class="fgi-row">
-				<span class="fgi-col-label"><?php _e("Thumbnail", "foogallery") ?></span>
+				<span class="fgi-col-label"><?php esc_html_e("Thumbnail", "foogallery") ?></span>
 				<span class="fgi-col-input">
 					<span class="fgi-browse">
 						<span class="fgi-browse-inner">
 							<span class="fgi-browse-col-input">
 								<input type="text" name="thumbnail" value="{{data.thumbnail}}" spellcheck="false"
-											 data-messages='{"required":"<?php _e("You must supply a thumbnail for the video.", "foogallery") ?>","pattern":"<?php _e("Please enter a .jpg, .jpeg, .png or .gif file.", "foogallery") ?>"}'
+											 data-messages='{"required":"<?php esc_html_e("You must supply a thumbnail for the video.", "foogallery") ?>","pattern":"<?php esc_html_e("Please enter a .jpg, .jpeg, .png or .gif file.", "foogallery") ?>"}'
 											 data-pattern="(?:\/|=)(?<name>[^\/]+?)\.(?<ext>jpg|jpeg|png|gif)(?:$|\?|&|#|,)" data-required="true"/>
 							</span>
 							<span class="fgi-browse-col-button">
 								<button type="button" class="button button-secondary"
-												data-options='{"type": "image/png,image/jpg,image/jpeg,image/gif", "title":"<?php _e("Select a thumbnail for the video", "foogallery") ?>", "button":"<?php _e("Select Image", "foogallery") ?>"}'
-								><?php _e("Select", "foogallery") ?></button>
+												data-options='{"type": "image/png,image/jpg,image/jpeg,image/gif", "title":"<?php esc_html_e("Select a thumbnail for the video", "foogallery") ?>", "button":"<?php esc_html_e("Select Image", "foogallery") ?>"}'
+								><?php esc_html_e("Select", "foogallery") ?></button>
 							</span>
 						</span>
 					</span>
 				</span>
 			</label>
 			<label class="fgi-row">
-				<span class="fgi-col-label"><?php _e("Title", "foogallery") ?></span>
+				<span class="fgi-col-label"><?php esc_html_e("Title", "foogallery") ?></span>
 				<span class="fgi-col-input">
 					<input type="text" name="title" value="{{data.title}}"/>
 				</span>
 			</label>
 			<label class="fgi-row">
-				<span class="fgi-col-label"><?php _e("Description", "foogallery") ?></span>
+				<span class="fgi-col-label"><?php esc_html_e("Description", "foogallery") ?></span>
 				<span class="fgi-col-input">
 					<textarea name="description" rows="5">{{data.description}}</textarea>
 				</span>
@@ -474,11 +474,11 @@
 	?>
 
 	<div class="fgi-splash fgi-vimeo-access-token">
-		<h2><?php _e("Vimeo API access token is required.", "foogallery") ?></h2>
-		<p><?php _e("Create a new app on Vimeo to generate an access token.", "foogallery") ?></p>
+		<h2><?php esc_html_e("Vimeo API access token is required.", "foogallery") ?></h2>
+		<p><?php esc_html_e("Create a new app on Vimeo to generate an access token.", "foogallery") ?></p>
 		<div class="button-hero-container">
-			<input type="text" name="access_token" value="{{data.access_token}}" spellcheck="false" placeholder="<?php _e("Your access token", "foogallery") ?>"/>
-			<button type="button" class="button fgi-save" disabled="disabled"><?php _e("Save", "foogallery") ?></button>
+			<input type="text" name="access_token" value="{{data.access_token}}" spellcheck="false" placeholder="<?php esc_html_e("Your access token", "foogallery") ?>"/>
+			<button type="button" class="button fgi-save" disabled="disabled"><?php esc_html_e("Save", "foogallery") ?></button>
 			<p class="fgi-vimeo-error-message"></p>
 		</div>
 		<p><small><?php printf(__("See the %s for more information.", "foogallery"), $help) ?></small></p>
@@ -493,11 +493,11 @@
 	?>
 
 	<div class="fgi-splash fgi-youtube-api-key">
-		<h2><?php _e("YouTube API key is required.", "foogallery") ?></h2>
+		<h2><?php esc_html_e("YouTube API key is required.", "foogallery") ?></h2>
 		<p><?php printf(__("Create a new project in your %s to generate an api key.", "foogallery"), $developers_console) ?></p>
 		<div class="button-hero-container">
-			<input type="text" name="api_key" value="{{data.api_key}}" spellcheck="false" placeholder="<?php _e("Your api key", "foogallery") ?>"/>
-			<button type="button" class="button fgi-save" disabled="disabled"><?php _e("Save", "foogallery") ?></button>
+			<input type="text" name="api_key" value="{{data.api_key}}" spellcheck="false" placeholder="<?php esc_html_e("Your api key", "foogallery") ?>"/>
+			<button type="button" class="button fgi-save" disabled="disabled"><?php esc_html_e("Save", "foogallery") ?></button>
 			<p class="fgi-youtube-error-message"></p>
 		</div>
 		<p><small><?php printf(__("See the %s for more information.", "foogallery"), $help) ?></small></p>
@@ -511,12 +511,12 @@
 	$video = sprintf("{{data.total > 1 ? \"%s\" : \"%s\"}}", $plural, $single);
 ?>
 	<div class="fgi-splash fgi-import-confirm">
-		<h2><?php _e("Confirm multiple video import", "foogallery") ?></h2>
-		<p><?php _e("Please note that depending on the source of the videos this process may take some time. If you like you can click the No button and change your selection.", "foogallery") ?></p>
+		<h2><?php esc_html_e("Confirm multiple video import", "foogallery") ?></h2>
+		<p><?php esc_html_e("Please note that depending on the source of the videos this process may take some time. If you like you can click the No button and change your selection.", "foogallery") ?></p>
 		<p><?php printf(__("Are you sure you want to import %s videos?", "foogallery"), "{{data.total}}") ?></p>
 		<div class="button-hero-container">
-			<button type="button" class="button button-hero fgi-import-back"><?php _e("No - Change Selection", "foogallery") ?></button>
-			<button type="button" class="button button-hero button-primary fgi-import-yes"><?php _e("Yes - Import Videos", "foogallery") ?></button>
+			<button type="button" class="button button-hero fgi-import-back"><?php esc_html_e("No - Change Selection", "foogallery") ?></button>
+			<button type="button" class="button button-hero button-primary fgi-import-yes"><?php esc_html_e("Yes - Import Videos", "foogallery") ?></button>
 		</div>
 	</div>
 
@@ -527,9 +527,9 @@
 			<div class="fgi-import-progress-text"></div>
 		</div>
 		<# if (data.total !== 1){ #>
-			<p><?php _e("Cancelling the import will not remove any videos already imported into your Media Library, it simply stops the process as soon as possible.", "foogallery") ?></p>
+			<p><?php esc_html_e("Cancelling the import will not remove any videos already imported into your Media Library, it simply stops the process as soon as possible.", "foogallery") ?></p>
 			<div class="button-hero-container">
-				<button type="button" class="button button-hero fgi-import-cancel"><?php _e("Cancel", "foogallery") ?></button>
+				<button type="button" class="button button-hero fgi-import-cancel"><?php esc_html_e("Cancel", "foogallery") ?></button>
 			</div>
 		<# } #>
 	</div>
@@ -567,7 +567,7 @@
 				<p><?php printf(__("The imported video has been added to the current %s selection.", "foogallery"), $media_library) ?></p>
 			<# } #>
 		<# } else { #>
-			<h2><?php _e("No videos were imported.", "foogallery") ?></h2>
+			<h2><?php esc_html_e("No videos were imported.", "foogallery") ?></h2>
 		<# } #>
 
 		<# if (data.failed.length){ var failed = data.failed.length; #>
@@ -597,8 +597,8 @@
 		<# } #>
 
 		<div class="button-hero-container">
-			<button type="button" class="button button-hero button-secondary fgi-import-more-videos"><?php _e("Import More Videos", "foogallery") ?></button>
-			<button type="button" class="button button-hero button-primary fgi-import-add-videos"><?php _e("Add Videos to Gallery", "foogallery") ?></button>
+			<button type="button" class="button button-hero button-secondary fgi-import-more-videos"><?php esc_html_e("Import More Videos", "foogallery") ?></button>
+			<button type="button" class="button button-hero button-primary fgi-import-add-videos"><?php esc_html_e("Add Videos to Gallery", "foogallery") ?></button>
 		</div>
 	</div>
 

@@ -511,7 +511,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce_Downloads' ) ) {
         public function add_file_download_fields_to_product() {
             ?>
             <p>
-                <?php _e('You can enable downloads, which will allow the customer to download the images that they purchased. ', 'foogallery '); ?>
+                <?php esc_html_e('You can enable downloads, which will allow the customer to download the images that they purchased. ', 'foogallery '); ?>
             </p>
             <?php
 

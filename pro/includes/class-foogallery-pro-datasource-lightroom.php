@@ -259,8 +259,8 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Lightroom' ) ) {
 				});
 			</script>
 			<?php if ( class_exists( 'Meow_WPLR_Sync_API' ) ) {?>
-				<p><?php _e('Select a lightroom collection from the list below. The gallery will then dynamically load all images that are inside the selected collection.', 'foogallery'); ?></p>
-				<p><?php _e('Selected Collection : ', 'foogallery'); ?><span class="foogallery-datasource-lightroom-selected"><?php echo empty($collection) ? __('nothing yet', 'foogallery') : $collection; ?></span></p>
+				<p><?php esc_html_e('Select a lightroom collection from the list below. The gallery will then dynamically load all images that are inside the selected collection.', 'foogallery'); ?></p>
+				<p><?php esc_html_e('Selected Collection : ', 'foogallery'); ?><span class="foogallery-datasource-lightroom-selected"><?php echo empty($collection) ? __('nothing yet', 'foogallery') : $collection; ?></span></p>
 				<div class="foogallery-datasource-lightroom-list">
 					<?php
 						global $wplr;
@@ -435,15 +435,15 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Lightroom' ) ) {
 			$value = ($show_container && isset( $gallery->datasource_value['collection'] )) ? $gallery->datasource_value['collection'] : '';
 			?>
 			<div <?php echo $show_container ? '' : 'style="display:none" '; ?>class="foogallery-datasource-lightroom">
-				<h3><?php _e('Datasource : Lightroom Collection', 'foogallery'); ?></h3>
-				<p><?php _e('This gallery will be dynamically populated with all images within the following collection in Adobe Lightroom:', 'foogallery'); ?></p>
+				<h3><?php esc_html_e('Datasource : Lightroom Collection', 'foogallery'); ?></h3>
+				<p><?php esc_html_e('This gallery will be dynamically populated with all images within the following collection in Adobe Lightroom:', 'foogallery'); ?></p>
 				<div class="foogallery-items-html"><?php echo $value ?></div>
 				<br />
 				<button type="button" class="button edit">
-					<?php _e( 'Change Collection', 'foogallery' ); ?>
+					<?php esc_html_e( 'Change Collection', 'foogallery' ); ?>
 				</button>
 				<button type="button" class="button remove">
-					<?php _e( 'Remove Collection', 'foogallery' ); ?>
+					<?php esc_html_e( 'Remove Collection', 'foogallery' ); ?>
 				</button>
 			</div><?php
 		}

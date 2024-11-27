@@ -452,25 +452,25 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Folders' ) ) {
 			<script type="text/javascript">
 				document.foogalleryDatasourceFolderNonce = '<?php echo wp_create_nonce( "foogallery_datasource_folder_change" ); ?>';
 			</script>
-			<p><?php _e( 'Select which folder on the server you want to load images from. You also need to choose the source of the image metadata. Image metadata allows you to change the caption title, caption description, alt text and the order of the images. This metadata can be read from a file on the server (metadata.json) or from the WordPress database.', 'foogallery' ); ?></p>
+			<p><?php esc_html_e( 'Select which folder on the server you want to load images from. You also need to choose the source of the image metadata. Image metadata allows you to change the caption title, caption description, alt text and the order of the images. This metadata can be read from a file on the server (metadata.json) or from the WordPress database.', 'foogallery' ); ?></p>
 			<p class="foogallery-datasource-folder-selector">
-				<?php _e( 'Image Metadata : ', 'foogallery' ); ?>
+				<?php esc_html_e( 'Image Metadata : ', 'foogallery' ); ?>
 				<input type="radio" name="foogallery-datasource-folder-metadata" id="foogallery-datasource-folder-metadata-file" value="file" <?php echo $metadata_source === 'file' ? 'checked="checked"' : ''; ?>>
-				<label for="foogallery-datasource-folder-metadata-file"><?php _e( 'Load from file on server', 'foogallery' ); ?></label>
+				<label for="foogallery-datasource-folder-metadata-file"><?php esc_html_e( 'Load from file on server', 'foogallery' ); ?></label>
 				<input type="radio" name="foogallery-datasource-folder-metadata" id="foogallery-datasource-folder-metadata-database" value="database" <?php echo $metadata_source === 'database' ? 'checked="checked"' : ''; ?>>
-				<label for="foogallery-datasource-folder-metadata-database"><?php _e( 'Load from WordPress database', 'foogallery' ); ?></label>
+				<label for="foogallery-datasource-folder-metadata-database"><?php esc_html_e( 'Load from WordPress database', 'foogallery' ); ?></label>
 			</p>
 			<p class="foogallery-datasource-folder-selector">
-				<?php _e( 'Sort Order : ', 'foogallery' ); ?>
+				<?php esc_html_e( 'Sort Order : ', 'foogallery' ); ?>
 				<input type="radio" name="foogallery-datasource-folder-sort" id="foogallery-datasource-folder-sort-default" value="" <?php echo $sort_order === '' ? 'checked="checked"' : ''; ?>>
-				<label for="foogallery-datasource-folder-sort-default"><?php _e( 'Default', 'foogallery' ); ?></label>
+				<label for="foogallery-datasource-folder-sort-default"><?php esc_html_e( 'Default', 'foogallery' ); ?></label>
 				<input type="radio" name="foogallery-datasource-folder-sort" id="foogallery-datasource-folder-sort-filename" value="filename" <?php echo $sort_order === 'filename' ? 'checked="checked"' : ''; ?>>
-				<label for="foogallery-datasource-folder-sort-filename"><?php _e( 'Filename', 'foogallery' ); ?></label>
+				<label for="foogallery-datasource-folder-sort-filename"><?php esc_html_e( 'Filename', 'foogallery' ); ?></label>
 				<input type="radio" name="foogallery-datasource-folder-sort" id="foogallery-datasource-folder-sort-filename-desc" value="filename-desc" <?php echo $sort_order === 'filename-desc' ? 'checked="checked"' : ''; ?>>
-				<label for="foogallery-datasource-folder-sort-filename-desc"><?php _e( 'Filename (Reversed)', 'foogallery' ); ?></label>
+				<label for="foogallery-datasource-folder-sort-filename-desc"><?php esc_html_e( 'Filename (Reversed)', 'foogallery' ); ?></label>
 			</p>
 			<p>
-				<span style="float:left;"><?php _e( 'Selected Folder : ', 'foogallery' ); ?></span>
+				<span style="float:left;"><?php esc_html_e( 'Selected Folder : ', 'foogallery' ); ?></span>
 				<span class="foogallery-datasource-folder-selected"><?php echo empty( $folder ) ? __( 'nothing yet', 'foogallery' ) : $folder; ?></span>
 				<span class="foogallery-datasource-folder-spinner spinner"></span>
 			</p>
@@ -575,42 +575,42 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Folders' ) ) {
 					echo '<p><strong>' . sprintf( __( 'There are %d images with missing metadata!', 'foogallery' ), $image_count - $image_metadata_count ) . '</strong></p>';
 				}
                 ?>
-				<p><?php _e( 'Change the sort order of the images by drag and drop. Click the "i" icon to change the caption and other metadata for each image.', 'foogallery' ); ?></p>
+				<p><?php esc_html_e( 'Change the sort order of the images by drag and drop. Click the "i" icon to change the caption and other metadata for each image.', 'foogallery' ); ?></p>
 				<div class="foogallery-server-image-metadata-form">
                     <form>
-                        <h2><?php _e( 'Edit Image Metadata', 'foogallery' ); ?></h2>
+                        <h2><?php esc_html_e( 'Edit Image Metadata', 'foogallery' ); ?></h2>
 				        <p>
-                            <label><?php _e( 'File', 'foogallery' ); ?></label>
+                            <label><?php esc_html_e( 'File', 'foogallery' ); ?></label>
                             <span id="foogallery-server-image-metadata-form-file">filename.jpg</span>
                         </p>
                         <p>
-                            <label for="foogallery-server-image-metadata-form-caption"><?php _e( 'Caption', 'foogallery' ); ?></label>
+                            <label for="foogallery-server-image-metadata-form-caption"><?php esc_html_e( 'Caption', 'foogallery' ); ?></label>
                             <textarea name="caption" id="foogallery-server-image-metadata-form-caption"></textarea>
                         </p>
                         <p>
-                            <label for="foogallery-server-image-metadata-form-description"><?php _e( 'Description', 'foogallery' ); ?></label>
+                            <label for="foogallery-server-image-metadata-form-description"><?php esc_html_e( 'Description', 'foogallery' ); ?></label>
                             <textarea name="description" id="foogallery-server-image-metadata-form-description"></textarea>
                         </p>
                         <p>
-                            <label for="foogallery-server-image-metadata-form-alt"><?php _e( 'Alt Text', 'foogallery' ); ?></label>
+                            <label for="foogallery-server-image-metadata-form-alt"><?php esc_html_e( 'Alt Text', 'foogallery' ); ?></label>
                             <input type="text" name="alt" id="foogallery-server-image-metadata-form-alt" />
                         </p>
 				        <p>
-                            <label for="foogallery-server-image-metadata-form-custom_url"><?php _e( 'Custom URL', 'foogallery' ); ?></label>
+                            <label for="foogallery-server-image-metadata-form-custom_url"><?php esc_html_e( 'Custom URL', 'foogallery' ); ?></label>
                             <input type="text" name="custom_url" id="foogallery-server-image-metadata-form-custom_url" />
                         </p>
                         <p>
-                            <label for="foogallery-server-image-metadata-form-custom_target"><?php _e( 'Custom Target', 'foogallery' ); ?></label>
+                            <label for="foogallery-server-image-metadata-form-custom_target"><?php esc_html_e( 'Custom Target', 'foogallery' ); ?></label>
                             <input type="text" name="custom_target" id="foogallery-server-image-metadata-form-custom_target" />
                         </p>
                         <p style="text-align: center">
-				            <a href="#" class="foogallery-server-image-metadata-form-button-cancel button button-large"><?php _e( 'Cancel', 'foogallery' ); ?></a>
-                            <a href="#" class="foogallery-server-image-metadata-form-button-save button button-large button-primary"><?php _e( 'Save', 'foogallery' ); ?></a>
-				            <a href="#" class="foogallery-server-image-metadata-form-button-next button button-large button-primary"><?php _e( 'Save &amp; Next', 'foogallery' ); ?></a>
+				            <a href="#" class="foogallery-server-image-metadata-form-button-cancel button button-large"><?php esc_html_e( 'Cancel', 'foogallery' ); ?></a>
+                            <a href="#" class="foogallery-server-image-metadata-form-button-save button button-large button-primary"><?php esc_html_e( 'Save', 'foogallery' ); ?></a>
+				            <a href="#" class="foogallery-server-image-metadata-form-button-next button button-large button-primary"><?php esc_html_e( 'Save &amp; Next', 'foogallery' ); ?></a>
 				        </p>
 				    </form>
                 </div>
-				<a style="display: none;" href="#" class="foogallery-server-image-metadata-save button button-large button-primary"><?php _e( 'Save Metadata', 'foogallery' ); ?></a>
+				<a style="display: none;" href="#" class="foogallery-server-image-metadata-save button button-large button-primary"><?php esc_html_e( 'Save Metadata', 'foogallery' ); ?></a>
                 <?php
 			} else {
 				global $wp_filesystem;
@@ -822,15 +822,15 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Folders' ) ) {
 			$value          = ( $show_container && isset( $gallery->datasource_value['value'] ) ) ? $gallery->datasource_value['value'] : '';
 			?>
 		<div <?php echo $show_container ? '' : 'style="display:none" '; ?>class="foogallery-datasource-folder">
-			<h3><?php _e( 'Datasource : Server Folder', 'foogallery' ); ?></h3>
-			<p><?php _e( 'This gallery will be dynamically populated with all images within the following folder on your server:', 'foogallery' ); ?></p>
+			<h3><?php esc_html_e( 'Datasource : Server Folder', 'foogallery' ); ?></h3>
+			<p><?php esc_html_e( 'This gallery will be dynamically populated with all images within the following folder on your server:', 'foogallery' ); ?></p>
 			<div class="foogallery-items-html"><?php echo $value ?></div>
 			<br />
 			<button type="button" class="button edit">
-				<?php _e( 'Change Folder', 'foogallery' ); ?>
+				<?php esc_html_e( 'Change Folder', 'foogallery' ); ?>
 			</button>
 			<button type="button" class="button remove">
-				<?php _e( 'Remove Folder', 'foogallery' ); ?>
+				<?php esc_html_e( 'Remove Folder', 'foogallery' ); ?>
 			</button>
 			</div><?php
 		}
