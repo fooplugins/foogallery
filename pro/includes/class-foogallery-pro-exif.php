@@ -677,7 +677,7 @@ if ( ! class_exists( 'FooGallery_Pro_Exif' ) ) {
         public function attachment_modal_display_tab() { ?>
             <div class="foogallery-img-modal-tab-wrapper" data-tab_id="foogallery-panel-exif">
                 <input type="radio" name="tabset" id="foogallery-tab-exif" aria-controls="foogallery-panel-exif">
-                <label for="foogallery-tab-exif"><?php _e('EXIF', 'foogallery'); ?></label>
+                <label for="foogallery-tab-exif"><?php esc_html_e('EXIF', 'foogallery'); ?></label>
             </div>
         <?php }
 

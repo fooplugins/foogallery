@@ -334,15 +334,15 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_RealMediaLibrary' ) ) {
 			}
 			?>
 			<div <?php echo $show_container ? '' : 'style="display:none" '; ?>class="foogallery-datasource-rml">
-				<h3><?php _e( 'Datasource : Real Media Library folder', 'foogallery' ); ?></h3>
-				<p><?php _e( 'This gallery will be dynamically populated with all images within the following folder:', 'foogallery' ); ?></p>
+				<h3><?php esc_html_e( 'Datasource : Real Media Library folder', 'foogallery' ); ?></h3>
+				<p><?php esc_html_e( 'This gallery will be dynamically populated with all images within the following folder:', 'foogallery' ); ?></p>
 				<div class="foogallery-items-html"><?php echo $value ?></div>
 				<br />
 				<button type="button" class="button edit">
-					<?php _e( 'Change Folder', 'foogallery' ); ?>
+					<?php esc_html_e( 'Change Folder', 'foogallery' ); ?>
 				</button>
 				<button type="button" class="button remove">
-					<?php _e( 'Remove Folder', 'foogallery' ); ?>
+					<?php esc_html_e( 'Remove Folder', 'foogallery' ); ?>
 				</button>
 			</div><?php
 		}

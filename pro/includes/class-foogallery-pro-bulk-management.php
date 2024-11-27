@@ -22,7 +22,7 @@ if ( ! class_exists( 'FooGallery_Pro_Bulk_Management' ) ) {
 		function add_bulk_button( $foogallery ) {
 ?>
 			<button type="button" class="button button-primary button-large alignright bulk_media_management">
-				<?php _e( 'Bulk Taxonomy Manager', 'foogallery' ); ?>
+				<?php esc_html_e( 'Bulk Taxonomy Manager', 'foogallery' ); ?>
 			</button>
 <?php
 		}
@@ -57,7 +57,7 @@ if ( ! class_exists( 'FooGallery_Pro_Bulk_Management' ) ) {
                     <div class="media-modal-content">
                         <div class="media-frame wp-core-ui">
                             <div class="foogallery-bulk-management-modal-title">
-                                <h1><?php _e('Bulk Taxonomy Manager', 'foogallery'); ?></h1>
+                                <h1><?php esc_html_e('Bulk Taxonomy Manager', 'foogallery'); ?></h1>
                                 <select class="foogallery-bulk-management-select-taxonomy">
                                     <?php
                                     $taxonomy_objects = get_object_taxonomies( 'attachment', 'objects' );
@@ -66,7 +66,7 @@ if ( ! class_exists( 'FooGallery_Pro_Bulk_Management' ) ) {
                                     }
                                     ?>
                                 </select>
-                                <a class="foogallery-bulk-management-modal-reload button" href="#" style="display: none;"><span style="padding-top: 4px;" class="dashicons dashicons-update"></span> <?php _e('Reload', 'foogallery'); ?></a>
+                                <a class="foogallery-bulk-management-modal-reload button" href="#" style="display: none;"><span style="padding-top: 4px;" class="dashicons dashicons-update"></span> <?php esc_html_e('Reload', 'foogallery'); ?></a>
                             </div>
                             <div class="foogallery-bulk-management-modal-container not-loaded">
                                 <div class="spinner is-active"></div>
@@ -76,7 +76,7 @@ if ( ! class_exists( 'FooGallery_Pro_Bulk_Management' ) ) {
                                     <div class="media-toolbar-primary">
                                         <a href="#"
                                            class="foogallery-bulk-management-modal-close button button-large button-secondary"
-                                           title="<?php esc_attr_e('Close', 'foogallery'); ?>"><?php _e('Close', 'foogallery'); ?></a>
+                                           title="<?php esc_attr_e('Close', 'foogallery'); ?>"><?php esc_html_e('Close', 'foogallery'); ?></a>
                                     </div>
                                 </div>
                             </div>

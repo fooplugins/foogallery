@@ -42,7 +42,7 @@ $helper = new FooGallery_Pro_Video_Migration_Helper();
 				},
 				error: function() {
 					//something went wrong! Alert the user and reload the page
-					alert('<?php _e( 'Something went wrong with migration, so the page will now reload.', 'foogallery' ); ?>');
+					alert('<?php esc_html_e( 'Something went wrong with migration, so the page will now reload.', 'foogallery' ); ?>');
 					location.reload();
 				}
 			});
@@ -55,16 +55,16 @@ $helper = new FooGallery_Pro_Video_Migration_Helper();
 	$button_text = $state['button_text'];
 	?>
 
-	<h2><?php _e( 'FooGallery Video Migration Tool', 'foogallery' ); ?></h2>
+	<h2><?php esc_html_e( 'FooGallery Video Migration Tool', 'foogallery' ); ?></h2>
 
 	<div class="foogallery-help">
-		<?php _e('This migration tool will help you migrate all videos and galleries that were created with the legacy FooVideo extension to be compatible with the new video features within FooGallery PRO. Once the migration is complete, you will be able to deactivate and delete the FooVideo extension.', 'foogallery' ); ?>
+		<?php esc_html_e('This migration tool will help you migrate all videos and galleries that were created with the legacy FooVideo extension to be compatible with the new video features within FooGallery PRO. Once the migration is complete, you will be able to deactivate and delete the FooVideo extension.', 'foogallery' ); ?>
 	</div>
 
 	<p class="foogallery_video_migration_message"><?php echo $state['message']; ?></p>
 
 	<?php if ( $state['step'] > 0 ) { ?>
-		<input type="submit" class="button button-secondary foogallery-video-migrate" data-action="foogallery_video_migration_reset" value="<?php _e('Restart Migration', 'foogallery'); ?>">
+		<input type="submit" class="button button-secondary foogallery-video-migrate" data-action="foogallery_video_migration_reset" value="<?php esc_html_e('Restart Migration', 'foogallery'); ?>">
 	<?php } ?>
 
 	<input type="submit" class="button button-primary foogallery-video-migrate" data-action="foogallery_video_migration" value="<?php echo $button_text; ?>">
