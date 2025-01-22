@@ -331,6 +331,7 @@ function foogallery_get_all_galleries( $excludes = false, $extra_args = false ) 
 		'nopaging'      => true,
 	);
 
+
 	if ( is_array( $excludes ) ) {
 		$args['post__not_in'] = $excludes;
 	}
