@@ -4,7 +4,7 @@ Donate link: https://fooplugins.com
 Tags: gallery, image gallery, photo gallery, responsive gallery, wordpress gallery plugin
 Requires at least: 5.3
 Tested up to: 6.7
-Stable tag: 2.4.27
+Stable tag: 2.4.29
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -312,6 +312,11 @@ Goto FooGallery Settings -> Advanced Tab and check "Disable PRO Promotions" and 
 Please update in order for FooGallery to work in WP 5.5+!
 
 == Changelog ==
+
+= 2.4.29 =
+* Date Updated : 25 Jan 2025
+* New : added setting to limit galleries when editing an album.
+* Updated to Freemius SDK 2.11.0
 
 = 2.4.27 =
 * Date Updated : 24 Nov 2024
