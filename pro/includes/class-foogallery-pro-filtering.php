@@ -958,9 +958,9 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 			        if ( isset( $levels ) ) {
 				        $has_levels = true;
 			            echo '<table style="margin-bottom: 10px;" class="filtering-multi-table wp-list-table striped widefat"><thead><tr>';
-			            echo '<th style="width: 10%;">' . __( 'Level #', 'foogallery' ) . '</th>';
-				        echo '<th style="width: 10%;">' . __( 'All Text', 'foogallery' ) . '</th>';
-				        echo '<th>' . __( 'Terms', 'foogallery' ) . '</th></th></thead><tbody>';
+			            echo '<th style="width: 10%;">' . esc_html__( 'Level #', 'foogallery' ) . '</th>';
+				        echo '<th style="width: 10%;">' . esc_html__( 'All Text', 'foogallery' ) . '</th>';
+				        echo '<th>' . esc_html__( 'Terms', 'foogallery' ) . '</th></th></thead><tbody>';
 			            foreach ( $levels as $index => $level ) {
 			                echo '<tr>';
 			                echo '<td><strong>' . ($index + 1) . '</strong></td>';
@@ -973,13 +973,13 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 
 			    if ( !$has_levels ) {
 				    echo '<table style="margin-bottom: 10px; display: none" class="filtering-multi-table wp-list-table striped widefat"><thead><tr>';
-				    echo '<th style="width: 10%;">' . __( 'Level #', 'foogallery' ) . '</th>';
-				    echo '<th style="width: 10%;">' . __( 'All Text', 'foogallery' ) . '</th>';
-				    echo '<th>' . __( 'Terms', 'foogallery' ) . '</th></th></thead><tbody>';
+				    echo '<th style="width: 10%;">' . esc_html__( 'Level #', 'foogallery' ) . '</th>';
+				    echo '<th style="width: 10%;">' . esc_html__( 'All Text', 'foogallery' ) . '</th>';
+				    echo '<th>' . esc_html__( 'Terms', 'foogallery' ) . '</th></th></thead><tbody>';
 				    echo '</tbody></table>';
                 }
 
-				echo '<button class="button button-primary button-small filtering-multi-builder">' . __( 'Select Levels', 'foogallery' ) . '</button>';
+				echo '<button class="button button-primary button-small filtering-multi-builder">' . esc_html__( 'Select Levels', 'foogallery' ) . '</button>';
 				echo '<input class="filtering-multi-input" type="hidden" name=' . esc_attr( FOOGALLERY_META_SETTINGS . '[' . $template['slug'] . '_filtering_multi_override]' ) . ' value="' . esc_html( $field['value'] ) . '" />';
 			}
 		}
@@ -1009,13 +1009,13 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 			<div class="foogallery-multi-filtering-modal-wrapper" data-foogalleryid="<?php echo $post->ID; ?>" data-nonce="<?php echo wp_create_nonce( 'foogallery_multi_filtering_content' ); ?>" style="display: none;">
 				<div class="media-modal wp-core-ui">
 					<button type="button" class="media-modal-close foogallery-multi-filtering-modal-close">
-						<span class="media-modal-icon"><span class="screen-reader-text"><?php _e( 'Close', 'foogallery' ); ?></span>
+						<span class="media-modal-icon"><span class="screen-reader-text"><?php esc_html_e( 'Close', 'foogallery' ); ?></span>
 					</button>
 					<div class="media-modal-content">
 						<div class="media-frame wp-core-ui">
 							<div class="foogallery-multi-filtering-modal-title">
-								<h1><?php _e('Multi-level Filtering Builder', 'foogallery'); ?></h1>
-								<a class="foogallery-multi-filtering-modal-reload button" href="#"><span style="padding-top: 4px;" class="dashicons dashicons-update"></span> <?php _e('Reload', 'foogallery'); ?></a>
+								<h1><?php esc_html_e('Multi-level Filtering Builder', 'foogallery'); ?></h1>
+								<a class="foogallery-multi-filtering-modal-reload button" href="#"><span style="padding-top: 4px;" class="dashicons dashicons-update"></span> <?php esc_html_e('Reload', 'foogallery'); ?></a>
 							</div>
 							<div class="foogallery-multi-filtering-modal-container not-loaded">
 								<div class="spinner is-active"></div>
@@ -1025,10 +1025,10 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 									<div class="media-toolbar-primary">
 										<a href="#"
 										   class="foogallery-multi-filtering-modal-close button button-large button-secondary"
-										   title="<?php esc_attr_e('Close', 'foogallery'); ?>"><?php _e('Close', 'foogallery'); ?></a>
+										   title="<?php esc_attr_e('Close', 'foogallery'); ?>"><?php esc_html_e('Close', 'foogallery'); ?></a>
                                         <a href="#"
                                            class="foogallery-multi-filtering-modal-set button button-large button-primary"
-                                           title="<?php esc_attr_e('Set Levels', 'foogallery'); ?>"><?php _e('Set Levels', 'foogallery'); ?></a>
+                                           title="<?php esc_attr_e('Set Levels', 'foogallery'); ?>"><?php esc_html_e('Set Levels', 'foogallery'); ?></a>
 									</div>
 								</div>
 							</div>
@@ -1060,7 +1060,7 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 				$this->render_content_level( $index + 1, $level, $terms );
 			}
 
-			echo '<a href="#" class="button button-primary foogallery-multi-filtering-add-level">' . __('Add Another Level') . '</a>';
+			echo '<a href="#" class="button button-primary foogallery-multi-filtering-add-level">' . esc_html__('Add Another Level') . '</a>';
 
 			echo '</div>';
 		}
@@ -1076,13 +1076,13 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 		private function render_content_level( $index, $level, $terms, $class='foogallery-multi-filtering-modal-content-level' ) {
 			echo '<div class="' . esc_attr( $class ) . '">';
 
-			echo '<h3>' . __( 'Level', 'foogallery' ) . ' <span class="foogallery-multi-filtering-modal-content-level-count">' . esc_html( $index ) . '</span>';
-			echo '<a href="#" class="foogallery-multi-filtering-modal-content-level-remove" title="' . __('Remove Level', 'foogallery') . '"><span class="dashicons dashicons-no-alt"></span></a>';
+			echo '<h3>' . esc_html__( 'Level', 'foogallery' ) . ' <span class="foogallery-multi-filtering-modal-content-level-count">' . esc_html( $index ) . '</span>';
+			echo '<a href="#" class="foogallery-multi-filtering-modal-content-level-remove" title="' . esc_html__('Remove Level', 'foogallery') . '"><span class="dashicons dashicons-no-alt"></span></a>';
 			echo '</h3>';
 
-			echo '<label>' . sprintf( __( 'Level %s "All" Text : ' , 'foogallery' ), '<span class="foogallery-multi-filtering-modal-content-level-count">' . esc_html( $index ) . '</span>' ) . '</label>';
+			echo '<label>' . sprintf( esc_html__( 'Level %s "All" Text : ' , 'foogallery' ), '<span class="foogallery-multi-filtering-modal-content-level-count">' . esc_html( $index ) . '</span>' ) . '</label>';
 
-			$all_value = array_key_exists( 'all', $level ) ? $level['all'] : __('All', 'foogallery');
+			$all_value = array_key_exists( 'all', $level ) ? $level['all'] : esc_html__('All', 'foogallery');
 
 			echo '<input type="text" value="' . esc_html( $all_value ) . '"/>';
 
@@ -1170,15 +1170,15 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 
 				echo '<div class="foogallery-multi-filtering-modal-sidebar">';
 				echo '<div class="foogallery-multi-filtering-modal-sidebar-inner">';
-				echo '<h2>' . __( 'Multi Level Filtering Help', 'foogallery' ) . '</h2>';
-				echo '<p>' . __( 'To add a new level, click on the "Add Another Level" button on the left.', 'foogallery' ) . '</p>';
-				echo '<p>' . __( 'For each level that you add, you can override the "All" text for that level.', 'foogallery' ) . '</p>';
-				echo '<p>' . __( 'Select the terms for each level by clicking on them. They will change to a selected state. To unselect a term, click on it again.', 'foogallery' ) . '</p>';
-				echo '<p>' . __( 'Once you select a term, it will not be available for the other levels.', 'foogallery' ) . '</p>';
-				echo '<p>' . __( 'You can sort the terms by dragging and dropping them.', 'foogallery' ) . '</p>';
-				echo '<p>' . __( 'To remove a level, click on the small "x" button next to the level title.', 'foogallery' ) . '</p>';
-				echo '<p>' . __( 'If you want to undo any changes, click the "Reload" button at the top.', 'foogallery' ) . '</p>';
-				echo '<p>' . __( 'Once you are happy with your levels, click the "Set Levels" button below.', 'foogallery' ) . '</p>';
+				echo '<h2>' . esc_html__( 'Multi Level Filtering Help', 'foogallery' ) . '</h2>';
+				echo '<p>' . esc_html__( 'To add a new level, click on the "Add Another Level" button on the left.', 'foogallery' ) . '</p>';
+				echo '<p>' . esc_html__( 'For each level that you add, you can override the "All" text for that level.', 'foogallery' ) . '</p>';
+				echo '<p>' . esc_html__( 'Select the terms for each level by clicking on them. They will change to a selected state. To unselect a term, click on it again.', 'foogallery' ) . '</p>';
+				echo '<p>' . esc_html__( 'Once you select a term, it will not be available for the other levels.', 'foogallery' ) . '</p>';
+				echo '<p>' . esc_html__( 'You can sort the terms by dragging and dropping them.', 'foogallery' ) . '</p>';
+				echo '<p>' . esc_html__( 'To remove a level, click on the small "x" button next to the level title.', 'foogallery' ) . '</p>';
+				echo '<p>' . esc_html__( 'If you want to undo any changes, click the "Reload" button at the top.', 'foogallery' ) . '</p>';
+				echo '<p>' . esc_html__( 'Once you are happy with your levels, click the "Set Levels" button below.', 'foogallery' ) . '</p>';
 				echo '</div>';
 				echo '</div>';
 			}

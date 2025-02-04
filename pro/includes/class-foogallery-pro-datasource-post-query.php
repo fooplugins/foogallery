@@ -227,17 +227,17 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Post_Query' ) ) {
 		public function render_datasource_modal_content( $foogallery_id, $datasource_value ) {
 			?>
             <p>
-				<?php _e('Choose the settings for your gallery below. The gallery will be dynamically populated using the post query settings below.', 'foogallery' ); ?>
+				<?php esc_html_e('Choose the settings for your gallery below. The gallery will be dynamically populated using the post query settings below.', 'foogallery' ); ?>
             </p>
             <form action="" method="post" name="post_query_gallery_form">
                 <table class="form-table">
                     <tbody>
                     <tr>
-                        <th scope="row"><?php _e( 'Post types', 'foogallery' ) ?></th>
+                        <th scope="row"><?php esc_html_e( 'Post types', 'foogallery' ) ?></th>
                         <td>
                             <select class="regular-text foogallery_post_query_input" name="post_type"
                                     id="gallery_post_type">
-                                <option value=""><?php _e( 'Select a post type' ) ?></option>
+                                <option value=""><?php esc_html_e( 'Select a post type' ) ?></option>
 								<?php
 								foreach ( get_post_types( array( 'public' => true ) ) as $key => $value ) {
 									$selected = '';
@@ -251,7 +251,7 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Post_Query' ) ) {
                         </td>
                     </tr>
                     <tr>
-                        <th scope="row"><?php _e( 'Number of posts', 'foogallery' ); ?></th>
+                        <th scope="row"><?php esc_html_e( 'Number of posts', 'foogallery' ); ?></th>
                         <td>
                             <input
                                     type="number"
@@ -260,11 +260,11 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Post_Query' ) ) {
                                     id="no_of_post"
                                     value="<?php echo isset( $datasource_value['no_of_post'] ) ? $datasource_value['no_of_post'] : '' ?>"
                             />
-                            <p class="description"><?php _e( 'Number of posts you want to include in the gallery.', 'foogallery' ) ?></p>
+                            <p class="description"><?php esc_html_e( 'Number of posts you want to include in the gallery.', 'foogallery' ) ?></p>
                         </td>
                     </tr>
                     <tr>
-                        <th scope="row"><?php _e( 'Exclude', 'foogallery' ); ?></th>
+                        <th scope="row"><?php esc_html_e( 'Exclude', 'foogallery' ); ?></th>
                         <td>
                             <input
                                     type="text"
@@ -273,11 +273,11 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Post_Query' ) ) {
                                     id="exclude"
                                     value="<?php echo isset( $datasource_value['exclude'] ) ? $datasource_value['exclude'] : '' ?>"
                             />
-                            <p class="description"><?php _e( 'A comma separated list of post id\'s that you want to exclude from the gallery.', 'foogallery' ) ?></p>
+                            <p class="description"><?php esc_html_e( 'A comma separated list of post id\'s that you want to exclude from the gallery.', 'foogallery' ) ?></p>
                         </td>
                     </tr>
                     <tr>
-                        <th scope="row"><?php _e( 'Link To', 'foogallery' ); ?></th>
+                        <th scope="row"><?php esc_html_e( 'Link To', 'foogallery' ); ?></th>
                         <td>
                             <fieldset>
                                 <label>
@@ -288,7 +288,7 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Post_Query' ) ) {
                                             class="link_to foogallery_post_query_input"
 									<?php echo ( isset( $datasource_value['link_to'] ) && $datasource_value['link_to'] === 'post' ) ? 'checked="checked"' : '' ?>
                                     />
-                                    <span><?php _e( 'Post Permalink', 'foogallery' ) ?></span>
+                                    <span><?php esc_html_e( 'Post Permalink', 'foogallery' ) ?></span>
                                 </label>
                                 <br>
                                 <label>
@@ -299,7 +299,7 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Post_Query' ) ) {
                                             class="link_to foogallery_post_query_input"
 									<?php echo ( isset( $datasource_value['link_to'] ) && $datasource_value['link_to'] === 'image' ) ? 'checked="checked"' : '' ?>
                                     />
-                                    <span><?php _e( 'Featured Image', 'foogallery' ) ?></span>
+                                    <span><?php esc_html_e( 'Featured Image', 'foogallery' ) ?></span>
                                 </label>
                             </fieldset>
                         </td>
@@ -326,10 +326,10 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Post_Query' ) ) {
 			?>
             <div <?php echo $show_container ? '' : 'style="display:none" '; ?>class="foogallery-datasource-item foogallery-datasource-post_query">
                 <h3>
-					<?php _e( 'Datasource : Post Query', 'foogallery' ); ?>
+					<?php esc_html_e( 'Datasource : Post Query', 'foogallery' ); ?>
                 </h3>
                 <p>
-					<?php _e( 'This gallery will be dynamically populated with the featured images from the following post query:', 'foogallery' ); ?>
+					<?php esc_html_e( 'This gallery will be dynamically populated with the featured images from the following post query:', 'foogallery' ); ?>
                 </p>
                 <div class="foogallery-items-html">
                     <?php echo __('Post Type : ', 'foogallery'); ?><span id="foogallery-datasource-post-query-gallery_post_type"><?php echo $gallery_post_type; ?></span><br />
@@ -339,10 +339,10 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Post_Query' ) ) {
                 </div>
                 <br/>
                 <button type="button" class="button edit">
-					<?php _e( 'Change', 'foogallery' ); ?>
+					<?php esc_html_e( 'Change', 'foogallery' ); ?>
                 </button>
                 <button type="button" class="button remove">
-					<?php _e( 'Remove', 'foogallery' ); ?>
+					<?php esc_html_e( 'Remove', 'foogallery' ); ?>
                 </button>
             </div>
 			<?php

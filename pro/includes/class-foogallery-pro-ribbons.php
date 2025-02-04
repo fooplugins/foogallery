@@ -110,7 +110,7 @@ if ( ! class_exists( 'FooGallery_Pro_Ribbons' ) ) {
 		public function add_ribbon_fields_to_product() {
 			?>
 			<p>
-				<?php _e('By default, products that are on sale, will show a colorful ribbon to attract the visitors attention. You can override the default ribbon type and text for this product.', 'foogallery '); ?>
+				<?php esc_html_e('By default, products that are on sale, will show a colorful ribbon to attract the visitors attention. You can override the default ribbon type and text for this product.', 'foogallery '); ?>
 			</p>
 			<?php
 

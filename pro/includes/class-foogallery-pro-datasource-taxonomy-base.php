@@ -384,14 +384,14 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Taxonomy_Base' ) ) {
 					});
 				});
 			</script>
-			<div class="foogallery-datasource-taxonomy foogallery-datasource-taxonomy-<?php echo $this->taxonomy; ?>" data-media-title="<?php _e('Media Library', 'foogallery'); ?>" data-media-button="<?php _e('Close', 'foogallery'); ?>" <?php echo $show_container ? '' : 'style="display:none" '; ?>>
+			<div class="foogallery-datasource-taxonomy foogallery-datasource-taxonomy-<?php echo $this->taxonomy; ?>" data-media-title="<?php esc_html_e('Media Library', 'foogallery'); ?>" data-media-button="<?php esc_html_e('Close', 'foogallery'); ?>" <?php echo $show_container ? '' : 'style="display:none" '; ?>>
 				<h3><?php echo sprintf( __('Datasource : %s', 'foogallery'), $datasource['name'] ); ?></h3>
 				<p><?php echo sprintf( __('This gallery will be dynamically populated with all attachments assigned to the following %s:', 'foogallery'), $datasource['name'] ); ?></p>
 				
 				<div class="foogallery-items-html"><?php echo $html; ?></div>
 
 				<p>
-					<?php _e('Selection Mode:', 'foogallery'); ?>
+					<?php esc_html_e('Selection Mode:', 'foogallery'); ?>
 					<strong class="foogallery-datasource-taxonomy-selection-mode-<?php echo $this->datasource_name; ?>"><?php echo esc_html( $selection_mode ); ?></strong>
 				</p>
 
@@ -405,16 +405,16 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Taxonomy_Base' ) ) {
 				
 				<?php if ( $show_media_button ) { ?>
 				<button type="button" class="button media">
-					<?php _e( 'Open Media Library', 'foogallery' ); ?>
+					<?php esc_html_e( 'Open Media Library', 'foogallery' ); ?>
 				</button>
 				<?php } ?>
 				
 				<button type="button" class="button bulk_media_management">
-					<?php _e( 'Bulk Taxonomy Manager', 'foogallery' ); ?>
+					<?php esc_html_e( 'Bulk Taxonomy Manager', 'foogallery' ); ?>
 				</button>
 				
 				<button type="button" class="button help">
-					<?php _e( 'Show Help', 'foogallery' ); ?>
+					<?php esc_html_e( 'Show Help', 'foogallery' ); ?>
 				</button>
 
 				<div style="display: none" class="foogallery-datasource-taxonomy-help">

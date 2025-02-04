@@ -448,10 +448,10 @@ if ( !class_exists( 'FooGallery_FooGrid_Gallery_Template' ) ) {
                 ?>
                 <div class="notice error">
                     <p>
-                        <strong><?php _e('FooGrid Extension Redundant!', 'foogallery'); ?></strong><br/>
-                        <?php _e('You have both FooGallery PRO and the FooGrid extension activated. FooGallery PRO includes the Grid PRO gallery template, which makes the FooGrid extension redundant.', 'foogallery'); ?>
+                        <strong><?php esc_html_e('FooGrid Extension Redundant!', 'foogallery'); ?></strong><br/>
+                        <?php esc_html_e('You have both FooGallery PRO and the FooGrid extension activated. FooGallery PRO includes the Grid PRO gallery template, which makes the FooGrid extension redundant.', 'foogallery'); ?>
                         <br/>
-                        <?php _e('Please edit all galleries that use the FooGrid gallery template and change them to use the Grid PRO gallery template. Once this is done, you can delete the FooGrid extension.', 'foogallery'); ?>
+                        <?php esc_html_e('Please edit all galleries that use the FooGrid gallery template and change them to use the Grid PRO gallery template. Once this is done, you can delete the FooGrid extension.', 'foogallery'); ?>
                         <br/>
                     </p>
                 </div>
