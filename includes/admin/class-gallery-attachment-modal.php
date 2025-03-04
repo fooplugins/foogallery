@@ -182,7 +182,9 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
 			$img_id = intval( sanitize_text_field( $_POST['img_id'] ) );
 
 			if ( $img_id > 0 ) {
-				do_action( 'foogallery_attachment_save_data', $img_id, $foogallery );
+                if ( current_user_can('edit_post', $img_id ) ) {
+                    do_action( 'foogallery_attachment_save_data', $img_id, $foogallery );
+                }
 			}
 			
 			wp_die();
