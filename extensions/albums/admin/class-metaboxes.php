@@ -410,13 +410,13 @@ if ( ! class_exists( 'FooGallery_Admin_Album_MetaBoxes' ) ) {
 
 		public function ajax_get_gallery_details() {
 			if ( check_admin_referer( 'foogallery_album_gallery_details' ) ) {
-				$foogallery_id = $_POST['foogallery_id'];
+				$foogallery_id = intval( $_POST['foogallery_id'] );
 				$gallery = FooGallery::get_by_id( $foogallery_id );
 
 				if ( false !== $gallery ) {
 					$fields = $this->get_gallery_detail_fields( $gallery ); ?>
 					<form name="foogallery_gallery_details">
-					<input type="hidden" name="foogallery_id" id="foogallery_id" value="<?php echo $foogallery_id; ?>" />
+					<input type="hidden" name="foogallery_id" id="foogallery_id" value="<?php echo esc_attr( $foogallery_id ); ?>" />
 					<table class="gallery-detail-fields">
 						<tbody>
 							<?php foreach ( $fields as $field => $values ) {
