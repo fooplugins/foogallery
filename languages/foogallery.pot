@@ -8,7 +8,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language-Team: FooPlugins <info@fooplugins.com> (https://fooplugins.com)\n"
 "Last-Translator: FooPlugins <info@fooplugins.com> (https://fooplugins.com)\n"
-"POT-Creation-Date: 2025-01-27 17:32+0000\n"
+"POT-Creation-Date: 2025-03-04 20:48+0000\n"
 "Report-Msgid-Bugs-To: https://github.com/fooplugins/foogallery/issues\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-KeywordsList: __;_e;_ex:1,2c;_n:1,2;_n_noop:1,2;_nx:1,2,4c;_nx_noop:1,2,3c;_x:1,2c;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c\n"
@@ -129,7 +129,7 @@ msgstr ""
 msgid "Media"
 msgstr ""
 
-#: extensions/albums/admin/class-metaboxes.php:570, extensions/albums/functions.php:83, includes/admin/class-attachment-fields.php:22, includes/admin/class-gallery-attachment-modal.php:622, includes/functions.php:1164, pro/includes/class-foogallery-pro-advanced-captions.php:94, pro/includes/class-foogallery-pro-datasource-folders.php:599
+#: extensions/albums/admin/class-metaboxes.php:570, extensions/albums/functions.php:83, includes/admin/class-attachment-fields.php:22, includes/admin/class-gallery-attachment-modal.php:624, includes/functions.php:1164, pro/includes/class-foogallery-pro-advanced-captions.php:94, pro/includes/class-foogallery-pro-datasource-folders.php:599
 msgid "Custom URL"
 msgstr ""
 
@@ -137,7 +137,7 @@ msgstr ""
 msgid "Point your gallery to a custom URL"
 msgstr ""
 
-#: extensions/albums/admin/class-metaboxes.php:576, includes/admin/class-attachment-fields.php:29, includes/admin/class-gallery-attachment-modal.php:626, pro/includes/class-foogallery-pro-datasource-folders.php:603
+#: extensions/albums/admin/class-metaboxes.php:576, includes/admin/class-attachment-fields.php:29, includes/admin/class-gallery-attachment-modal.php:628, pro/includes/class-foogallery-pro-datasource-folders.php:603
 msgid "Custom Target"
 msgstr ""
 
@@ -145,11 +145,11 @@ msgstr ""
 msgid "Set a custom target for your gallery"
 msgstr ""
 
-#: extensions/albums/album-default.php:68, includes/admin/class-gallery-editor.php:268, includes/class-foogallery.php:419
+#: extensions/albums/album-default.php:73, includes/admin/class-gallery-editor.php:268, includes/class-foogallery.php:419
 msgid "%s #%s"
 msgstr ""
 
-#: extensions/albums/album-default.php:25, extensions/albums/class-albums-extension.php:156
+#: extensions/albums/album-default.php:30, extensions/albums/class-albums-extension.php:156
 msgid "&laquo; back to album"
 msgstr ""
 
@@ -1359,195 +1359,195 @@ msgstr ""
 msgid "Autosave"
 msgstr ""
 
-#: includes/admin/class-gallery-attachment-modal.php:224
+#: includes/admin/class-gallery-attachment-modal.php:226
 msgid "Invalid data!"
 msgstr ""
 
-#: includes/admin/class-gallery-attachment-modal.php:208
+#: includes/admin/class-gallery-attachment-modal.php:210
 msgid "Could not add new taxonomy term!"
 msgstr ""
 
-#: includes/admin/class-gallery-attachment-modal.php:548
+#: includes/admin/class-gallery-attachment-modal.php:550
 msgid "Main"
 msgstr ""
 
-#: includes/admin/class-gallery-attachment-modal.php:563
+#: includes/admin/class-gallery-attachment-modal.php:565
 msgid "Taxonomies"
 msgstr ""
 
-#: includes/admin/class-gallery-attachment-modal.php:573, includes/admin/class-gallery-metaboxes.php:143, includes/class-foogallery-lightbox.php:351, includes/class-foogallery-lightbox.php:365, includes/class-foogallery-lightbox.php:381, includes/class-foogallery-lightbox.php:408, includes/class-foogallery-lightbox.php:431, includes/class-foogallery-lightbox.php:457, includes/class-foogallery-lightbox.php:481, pro/extensions/default-templates/slider/class-slider-gallery-template.php:206
+#: includes/admin/class-gallery-attachment-modal.php:575, includes/admin/class-gallery-metaboxes.php:143, includes/class-foogallery-lightbox.php:351, includes/class-foogallery-lightbox.php:365, includes/class-foogallery-lightbox.php:381, includes/class-foogallery-lightbox.php:408, includes/class-foogallery-lightbox.php:431, includes/class-foogallery-lightbox.php:457, includes/class-foogallery-lightbox.php:481, pro/extensions/default-templates/slider/class-slider-gallery-template.php:206
 msgid "Thumbnails"
 msgstr ""
 
-#: includes/admin/class-gallery-attachment-modal.php:593, includes/admin/class-pro-promotion.php:871, includes/admin/class-pro-promotion.php:909, includes/admin/class-settings.php:432, includes/class-foogallery-lazyload.php:217, includes/class-gallery-advanced-settings.php:60, includes/class-gallery-advanced-settings.php:73, includes/class-gallery-advanced-settings.php:81, includes/class-gallery-advanced-settings.php:90, includes/class-gallery-advanced-settings.php:99, includes/class-gallery-advanced-settings.php:108, includes/class-gallery-advanced-settings.php:117, pro/includes/class-foogallery-pro-advanced-gallery-settings.php:31, pro/includes/class-foogallery-pro-advanced-gallery-settings.php:50, pro/includes/class-foogallery-pro-advanced-thumbnails.php:52, pro/includes/class-foogallery-pro-advanced-thumbnails.php:71, pro/includes/class-foogallery-pro-advanced-thumbnails.php:85, pro/includes/class-foogallery-pro-exif.php:495, pro/includes/class-foogallery-pro-filtering.php:214, pro/includes/class-foogallery-pro-filtering.php:702, pro/includes/protection/class-foogallery-pro-protection.php:613, pro/includes/video/class-foogallery-pro-video.php:298, pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:280, pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:289, pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:308, pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:323, pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:342, pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:365, pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:387, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:1198
+#: includes/admin/class-gallery-attachment-modal.php:595, includes/admin/class-pro-promotion.php:871, includes/admin/class-pro-promotion.php:909, includes/admin/class-settings.php:432, includes/class-foogallery-lazyload.php:217, includes/class-gallery-advanced-settings.php:60, includes/class-gallery-advanced-settings.php:73, includes/class-gallery-advanced-settings.php:81, includes/class-gallery-advanced-settings.php:90, includes/class-gallery-advanced-settings.php:99, includes/class-gallery-advanced-settings.php:108, includes/class-gallery-advanced-settings.php:117, pro/includes/class-foogallery-pro-advanced-gallery-settings.php:31, pro/includes/class-foogallery-pro-advanced-gallery-settings.php:50, pro/includes/class-foogallery-pro-advanced-thumbnails.php:52, pro/includes/class-foogallery-pro-advanced-thumbnails.php:71, pro/includes/class-foogallery-pro-advanced-thumbnails.php:85, pro/includes/class-foogallery-pro-exif.php:495, pro/includes/class-foogallery-pro-filtering.php:214, pro/includes/class-foogallery-pro-filtering.php:702, pro/includes/protection/class-foogallery-pro-protection.php:613, pro/includes/video/class-foogallery-pro-video.php:298, pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:280, pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:289, pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:308, pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:323, pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:342, pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:365, pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:387, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:1198
 msgid "Advanced"
 msgstr ""
 
-#: includes/admin/class-gallery-attachment-modal.php:606, includes/class-foogallery-common-fields.php:452, pro/includes/foogallery-media-views-templates.php:234, pro/includes/foogallery-media-views-templates.php:455, pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:372
+#: includes/admin/class-gallery-attachment-modal.php:608, includes/class-foogallery-common-fields.php:452, pro/includes/foogallery-media-views-templates.php:234, pro/includes/foogallery-media-views-templates.php:455, pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:372
 msgid "Title"
 msgstr ""
 
-#: includes/admin/class-gallery-attachment-modal.php:610, pro/includes/class-foogallery-pro-datasource-folders.php:587
+#: includes/admin/class-gallery-attachment-modal.php:612, pro/includes/class-foogallery-pro-datasource-folders.php:587
 msgid "Caption"
 msgstr ""
 
-#: includes/admin/class-gallery-attachment-modal.php:614, includes/class-foogallery-common-fields.php:473, pro/includes/class-foogallery-pro-datasource-folders.php:591, pro/includes/foogallery-media-views-templates.php:240, pro/includes/foogallery-media-views-templates.php:461
+#: includes/admin/class-gallery-attachment-modal.php:616, includes/class-foogallery-common-fields.php:473, pro/includes/class-foogallery-pro-datasource-folders.php:591, pro/includes/foogallery-media-views-templates.php:240, pro/includes/foogallery-media-views-templates.php:461
 msgid "Description"
 msgstr ""
 
-#: includes/admin/class-gallery-attachment-modal.php:618
+#: includes/admin/class-gallery-attachment-modal.php:620
 msgid "ALT Text"
 msgstr ""
 
-#: includes/admin/class-gallery-attachment-modal.php:638, includes/class-foogallery-attachment-custom-class.php:24
+#: includes/admin/class-gallery-attachment-modal.php:640, includes/class-foogallery-attachment-custom-class.php:24
 msgid "Custom Class"
 msgstr ""
 
-#: includes/admin/class-gallery-attachment-modal.php:642
+#: includes/admin/class-gallery-attachment-modal.php:644
 msgid "The custom class will be applied to the anchor tag of the image, which you can target with custom CSS."
 msgstr ""
 
-#: includes/admin/class-gallery-attachment-modal.php:645
+#: includes/admin/class-gallery-attachment-modal.php:647
 msgid "File URL"
 msgstr ""
 
-#: includes/admin/class-gallery-attachment-modal.php:649
+#: includes/admin/class-gallery-attachment-modal.php:651
 msgid "Copy to clipboard"
 msgstr ""
 
-#: includes/admin/class-gallery-attachment-modal.php:713, pro/includes/class-foogallery-pro-datasource-folders.php:608, pro/includes/foogallery-media-views-templates.php:481, pro/includes/foogallery-media-views-templates.php:500
+#: includes/admin/class-gallery-attachment-modal.php:715, pro/includes/class-foogallery-pro-datasource-folders.php:608, pro/includes/foogallery-media-views-templates.php:481, pro/includes/foogallery-media-views-templates.php:500
 msgid "Save"
 msgstr ""
 
-#: includes/admin/class-gallery-attachment-modal.php:714, includes/admin/class-gallery-datasources.php:218, includes/admin/class-gallery-datasources.php:218, includes/admin/class-gallery-editor.php:226, includes/admin/class-gallery-editor.php:226, pro/includes/class-foogallery-pro-datasource-folders.php:607, pro/includes/foogallery-media-views-templates.php:532
+#: includes/admin/class-gallery-attachment-modal.php:716, includes/admin/class-gallery-datasources.php:218, includes/admin/class-gallery-datasources.php:218, includes/admin/class-gallery-editor.php:226, includes/admin/class-gallery-editor.php:226, pro/includes/class-foogallery-pro-datasource-folders.php:607, pro/includes/foogallery-media-views-templates.php:532
 msgid "Cancel"
 msgstr ""
 
-#: includes/admin/class-gallery-attachment-modal.php:723
+#: includes/admin/class-gallery-attachment-modal.php:725
 msgid "Manage %s"
 msgstr ""
 
-#: includes/admin/class-gallery-attachment-modal.php:758, includes/class-foogallery-crop-position.php:161
+#: includes/admin/class-gallery-attachment-modal.php:760, includes/class-foogallery-crop-position.php:161
 msgid "Crop Position"
 msgstr ""
 
-#: includes/admin/class-gallery-attachment-modal.php:760
+#: includes/admin/class-gallery-attachment-modal.php:762
 msgid "Left, Top"
 msgstr ""
 
-#: includes/admin/class-gallery-attachment-modal.php:761
+#: includes/admin/class-gallery-attachment-modal.php:763
 msgid "Center, Top"
 msgstr ""
 
-#: includes/admin/class-gallery-attachment-modal.php:762
+#: includes/admin/class-gallery-attachment-modal.php:764
 msgid "Right, Top"
 msgstr ""
 
-#: includes/admin/class-gallery-attachment-modal.php:763
+#: includes/admin/class-gallery-attachment-modal.php:765
 msgid "Left, Center"
 msgstr ""
 
-#: includes/admin/class-gallery-attachment-modal.php:764
+#: includes/admin/class-gallery-attachment-modal.php:766
 msgid "Center, Center"
 msgstr ""
 
-#: includes/admin/class-gallery-attachment-modal.php:765
+#: includes/admin/class-gallery-attachment-modal.php:767
 msgid "Right, Center"
 msgstr ""
 
-#: includes/admin/class-gallery-attachment-modal.php:766
+#: includes/admin/class-gallery-attachment-modal.php:768
 msgid "Left, Bottom"
 msgstr ""
 
-#: includes/admin/class-gallery-attachment-modal.php:767
+#: includes/admin/class-gallery-attachment-modal.php:769
 msgid "Center, Bottom"
 msgstr ""
 
-#: includes/admin/class-gallery-attachment-modal.php:768
+#: includes/admin/class-gallery-attachment-modal.php:770
 msgid "Right, Bottom"
 msgstr ""
 
-#: includes/admin/class-gallery-attachment-modal.php:773
+#: includes/admin/class-gallery-attachment-modal.php:775
 msgid "Thumbnail Info"
 msgstr ""
 
-#: includes/admin/class-gallery-attachment-modal.php:779
+#: includes/admin/class-gallery-attachment-modal.php:781
 msgid "Clear FooGallery Thumbnails"
 msgstr ""
 
-#: includes/admin/class-gallery-attachment-modal.php:782, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:1451
+#: includes/admin/class-gallery-attachment-modal.php:784, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:1451
 msgid "Clear"
 msgstr ""
 
-#: includes/admin/class-gallery-attachment-modal.php:802
+#: includes/admin/class-gallery-attachment-modal.php:804
 msgid "Registered thumbnail sizes in WordPress : "
 msgstr ""
 
-#: includes/admin/class-gallery-attachment-modal.php:813
+#: includes/admin/class-gallery-attachment-modal.php:815
 msgid "Thumbnails generated by WordPress : "
 msgstr ""
 
-#: includes/admin/class-gallery-attachment-modal.php:826
+#: includes/admin/class-gallery-attachment-modal.php:828
 msgid "Thumbnails generated by FooGallery : "
 msgstr ""
 
-#: includes/admin/class-gallery-attachment-modal.php:864, pro/includes/video/class-foogallery-pro-video.php:194
+#: includes/admin/class-gallery-attachment-modal.php:866, pro/includes/video/class-foogallery-pro-video.php:194
 msgid "Override Width"
 msgstr ""
 
-#: includes/admin/class-gallery-attachment-modal.php:868
+#: includes/admin/class-gallery-attachment-modal.php:870
 msgid "Specify a custom width to override the default width."
 msgstr ""
 
-#: includes/admin/class-gallery-attachment-modal.php:872, pro/includes/video/class-foogallery-pro-video.php:199
+#: includes/admin/class-gallery-attachment-modal.php:874, pro/includes/video/class-foogallery-pro-video.php:199
 msgid "Override Height"
 msgstr ""
 
-#: includes/admin/class-gallery-attachment-modal.php:876
+#: includes/admin/class-gallery-attachment-modal.php:878
 msgid "Specify a custom height to override the default height."
 msgstr ""
 
-#: includes/admin/class-gallery-attachment-modal.php:881, includes/compatibility/class-foobox-compatibility.php:343
+#: includes/admin/class-gallery-attachment-modal.php:883, includes/compatibility/class-foobox-compatibility.php:343
 msgid "Panning"
 msgstr ""
 
-#: includes/admin/class-gallery-attachment-modal.php:885
+#: includes/admin/class-gallery-attachment-modal.php:887
 msgid "When using FooBox lightbox, enable panning to allow users to click and drag to navigate overflowing content."
 msgstr ""
 
-#: includes/admin/class-gallery-attachment-modal.php:888, includes/class-foogallery-attachment-type.php:72
+#: includes/admin/class-gallery-attachment-modal.php:890, includes/class-foogallery-attachment-type.php:72
 msgid "Override Type"
 msgstr ""
 
-#: includes/admin/class-gallery-attachment-modal.php:892
+#: includes/admin/class-gallery-attachment-modal.php:894
 msgid "Override the type of the attachment used by the lightbox."
 msgstr ""
 
-#: includes/admin/class-gallery-attachment-modal.php:911
+#: includes/admin/class-gallery-attachment-modal.php:913
 msgid "Uploaded On: "
 msgstr ""
 
-#: includes/admin/class-gallery-attachment-modal.php:915
+#: includes/admin/class-gallery-attachment-modal.php:917
 msgid "Uploaded By: "
 msgstr ""
 
-#: includes/admin/class-gallery-attachment-modal.php:919
+#: includes/admin/class-gallery-attachment-modal.php:921
 msgid "File Name: "
 msgstr ""
 
-#: includes/admin/class-gallery-attachment-modal.php:923
+#: includes/admin/class-gallery-attachment-modal.php:925
 msgid "File Type: "
 msgstr ""
 
-#: includes/admin/class-gallery-attachment-modal.php:927
+#: includes/admin/class-gallery-attachment-modal.php:929
 msgid "File Size: "
 msgstr ""
 
-#: includes/admin/class-gallery-attachment-modal.php:931
+#: includes/admin/class-gallery-attachment-modal.php:933
 msgid "Dimensions: "
 msgstr ""
 
-#: includes/admin/class-gallery-attachment-modal.php:951
+#: includes/admin/class-gallery-attachment-modal.php:953
 msgid "Save Attachment Details"
 msgstr ""
 
