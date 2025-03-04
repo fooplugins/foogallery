@@ -1,10 +1,10 @@
 === FooGallery – Responsive Photo Gallery, Image Viewer, Justified, Masonry & Carousel ===
-Contributors: bradvin, steveush, fooplugins
+Contributors: fooplugins, bradvin, steveush
 Donate link: https://fooplugins.com
 Tags: gallery, image gallery, photo gallery, responsive gallery, wordpress gallery plugin
 Requires at least: 5.3
 Tested up to: 6.7
-Stable tag: 2.4.29
+Stable tag: 2.4.30
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -312,6 +312,11 @@ Goto FooGallery Settings -> Advanced Tab and check "Disable PRO Promotions" and 
 Please update in order for FooGallery to work in WP 5.5+!
 
 == Changelog ==
+
+= 2.4.30 =
+* Date Updated : 04 Mar 2025
+* Added checks in attachment modal to ensure the user can edit the attachment.
+* Improved escaping for albums to avoid dodgy inputs, and bad actors.
 
 = 2.4.29 =
 * Date Updated : 25 Jan 2025
