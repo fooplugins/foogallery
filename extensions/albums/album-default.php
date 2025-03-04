@@ -19,11 +19,16 @@ if ( !empty( $gallery ) ) {
 }
 
 if ( false !== $foogallery ) {
-	$album_url = trailingslashit( foogallery_album_remove_gallery_from_link() );
-	$gallery_title_size = foogallery_album_template_setting('gallery_title_size', 'h2');
-	echo '<div id="' . $current_foogallery_album->slug . '" class="foogallery-album-header">';
+	$album_url = esc_url( trailingslashit( foogallery_album_remove_gallery_from_link() ) );
+
+    // Allow only safe heading tags (h1-h6), default to h2 if invalid
+    $allowed_headings = ['h2', 'h3', 'h4', 'h5', 'h6'];
+    $gallery_title_size = foogallery_album_template_setting('gallery_title_size', 'h2');
+    $gallery_title_size = in_array( $gallery_title_size, $allowed_headings ) ? $gallery_title_size : 'h2';
+
+	echo '<div id="' . esc_attr( $current_foogallery_album->slug ) . '" class="foogallery-album-header">';
 	echo '<p><a href="' . esc_url( $album_url ) . '">' . esc_html( foogallery_get_setting( 'language_back_to_album_text', __( '&laquo; back to album', 'foogallery' ) ) ) . '</a></p>';
-	echo '<' . $gallery_title_size . '>' . $foogallery->name . '</'. $gallery_title_size . '>';
+	echo '<' . $gallery_title_size . '>' . esc_html( $foogallery->name ) . '</'. $gallery_title_size . '>';
 	echo apply_filters('foogallery_album_default_gallery_content', '', $foogallery);
 	echo '</div>';
 	echo do_shortcode( foogallery_build_gallery_shortcode( $foogallery->ID ) );
