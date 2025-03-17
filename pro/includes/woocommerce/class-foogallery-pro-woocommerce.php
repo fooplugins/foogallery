@@ -252,20 +252,57 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 		public function ajax_build_product_info() {
 			$request = stripslashes_deep( $_REQUEST );
 
-			if ( wp_verify_nonce( $request['nonce'], $request['nonce_time'] . 'foogallery_product_variations' ) ) {
-
-				$product_id = sanitize_text_field( wp_unslash( $request['product_id'] ) );
-				$gallery_id = foogallery_extract_gallery_id( sanitize_text_field( wp_unslash( $request['gallery_id'] ) ) );
-				$attachment_id = intval( sanitize_text_field( wp_unslash( $_REQUEST['attachment_id'] ) ) );
-
-				$info = $this->build_product_info( $product_id, $gallery_id, $attachment_id );
-
-				wp_send_json( $info );
-			} else {
+			// Check if we have all required parameters
+			if ( ! isset( $request['product_id'] ) || ! isset( $request['gallery_id'] ) || ! isset( $request['attachment_id'] ) ) {
 				wp_send_json( array(
-					'error' => __( 'Invalid NONCE!', 'foogallery' ),
-					'title' => __( 'Oops!', 'foogallery' ),
-					'body' => __( 'Something went wrong! Please try refreshing the page and try again.', 'foogallery' ),
+					'error' => __( 'Missing required parameters!', 'foogallery' ),
+					'title' => __( 'Error', 'foogallery' ),
+					'body' => __( 'Required parameters are missing. Please refresh the page and try again.', 'foogallery' ),
+					'purchasable' => false,
+				) );
+				die();
+			}
+
+			// Verify nonce for both logged-in and logged-out users
+			$nonce_verified = false;
+			if ( isset( $request['nonce'] ) && isset( $request['nonce_time'] ) ) {
+				$nonce = sanitize_text_field( wp_unslash( $request['nonce'] ) );
+				$nonce_time = sanitize_text_field( wp_unslash( $request['nonce_time'] ) );
+				
+				// Check both logged-in and logged-out nonces
+				if ( wp_verify_nonce( $nonce, $nonce_time . 'foogallery_product_variations' ) ) {
+					$nonce_verified = true;
+				}
+			}
+
+			if ( ! $nonce_verified ) {
+				wp_send_json( array(
+					'error' => __( 'Security check failed!', 'foogallery' ),
+					'title' => __( 'Error', 'foogallery' ),
+					'body' => __( 'Please refresh the page and try again.', 'foogallery' ),
+					'purchasable' => false,
+				) );
+				die();
+			}
+
+			// Sanitize inputs
+			$product_id = intval( sanitize_text_field( wp_unslash( $request['product_id'] ) ) );
+			$gallery_id = foogallery_extract_gallery_id( sanitize_text_field( wp_unslash( $request['gallery_id'] ) ) );
+			$attachment_id = intval( sanitize_text_field( wp_unslash( $request['attachment_id'] ) ) );
+		
+			try {
+				$info = $this->build_product_info( $product_id, $gallery_id, $attachment_id );
+				
+				// Add extra data for AJAX cart functionality
+				$info['cart_url'] = wc_get_cart_url();
+				$info['cart_nonce'] = wp_create_nonce('woocommerce-add_to_cart');
+				
+				wp_send_json( $info );
+			} catch ( Exception $e ) {
+				wp_send_json( array(
+					'error' => $e->getMessage(),
+					'title' => __( 'Error', 'foogallery' ),
+					'body' => __( 'An error occurred while processing your request. Please try again.', 'foogallery' ),
 					'purchasable' => false,
 				) );
 			}
@@ -450,7 +487,9 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 				$options['cartTimeout'] = $time;
 				$options['cartNonce']   = wp_create_nonce( $time . 'foogallery_product_variations' );
 				$options['cartAjax']    = admin_url( 'admin-ajax.php' );
-				$options['admin']       = is_admin();
+				$options['admin']       = is_admin();				 
+				$options['wc_fragments_nonce'] = wp_create_nonce('wc_fragment_refresh'); // Woo cart fragment nonce for both logged-in and logged-out users
+				$options['cartUrl'] = wc_get_cart_url();
 			}
 			return $options;
 		}
