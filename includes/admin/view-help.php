@@ -175,7 +175,7 @@ $show_demos = apply_filters( 'foogallery_admin_help_show_demos', true );
                 </header>
                 <ul class="fgah-help-list">
                     <li>
-                        <a href="<? echo esc_url( foogallery_admin_url( 'https://fooplugins.com/documentation/foogallery/', 'help') ); ?>" target="_blank"><?php _e('FooGallery Documentation','foogallery'); ?></a>
+                        <a href="<?php echo esc_url( foogallery_admin_url( 'https://fooplugins.com/documentation/foogallery/', 'help') ); ?>" target="_blank"><?php _e('FooGallery Documentation','foogallery'); ?></a>
                         - <?php _e('Our documentation covers everything you need to know, from install instructions and account management, to troubleshooting common issues and extending the functionality.', 'foogallery'); ?>
                     </li>
 	                <?php if ( $is_free ) { ?>

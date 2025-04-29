@@ -165,6 +165,16 @@ if ( ! class_exists( 'FooGallery_Albums_Extension' ) ) {
 				'tab'   => 'albums',
 			);
 
+            $settings['settings'][] = array(
+                'id'      => 'album_limit_galleries',
+                'title'   => __( 'Limit Galleries In Admin', 'foogallery' ),
+                'desc'  => __( 'Limit the number of galleries shown in the admin when editing an album.', 'foogallery' ),
+                'type'    => 'text',
+                'default' => '',
+                'tab'     => 'albums',
+            );
+
+
 			return $settings;
 		}
 

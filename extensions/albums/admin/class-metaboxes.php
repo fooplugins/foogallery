@@ -142,10 +142,19 @@ if ( ! class_exists( 'FooGallery_Admin_Album_MetaBoxes' ) ) {
             $excluded_galleries = $album->gallery_ids;
 
             //allow more galleries to be excluded
-            $excluded_galleries = apply_filters( 'foogallery_album_exlcuded_galleries', $excluded_galleries, $album );
+            $excluded_galleries = apply_filters( 'foogallery_album_excluded_galleries', $excluded_galleries, $album );
+
+            $args = array();
+
+            $limit = intval( foogallery_get_setting( 'album_limit_galleries', '' ) );
+
+            if ( $limit > 0 ) {
+                $args['nopaging'] = false;
+                $args['posts_per_page'] = $limit;
+            }
 
 			//get all other galleries
-			$galleries = foogallery_get_all_galleries( $excluded_galleries );
+			$galleries = foogallery_get_all_galleries( $excluded_galleries, $args );
 
 			$album_galleries = $album->galleries();
 
@@ -401,13 +410,13 @@ if ( ! class_exists( 'FooGallery_Admin_Album_MetaBoxes' ) ) {
 
 		public function ajax_get_gallery_details() {
 			if ( check_admin_referer( 'foogallery_album_gallery_details' ) ) {
-				$foogallery_id = $_POST['foogallery_id'];
+				$foogallery_id = intval( $_POST['foogallery_id'] );
 				$gallery = FooGallery::get_by_id( $foogallery_id );
 
 				if ( false !== $gallery ) {
 					$fields = $this->get_gallery_detail_fields( $gallery ); ?>
 					<form name="foogallery_gallery_details">
-					<input type="hidden" name="foogallery_id" id="foogallery_id" value="<?php echo $foogallery_id; ?>" />
+					<input type="hidden" name="foogallery_id" id="foogallery_id" value="<?php echo esc_attr( $foogallery_id ); ?>" />
 					<table class="gallery-detail-fields">
 						<tbody>
 							<?php foreach ( $fields as $field => $values ) {
