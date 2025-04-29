@@ -2331,3 +2331,24 @@ function foogallery_get_roles_and_higher( $role ) {
     // Get the roles with the same or higher privileges
     return array_slice( $roles_hierarchy, $role_index );
 }
+
+/**
+ * Returns a translated string if the 'init' action has been executed.
+ *
+ * This function acts as a wrapper for the WordPress translation function `__`.
+ * If the 'init' action has been triggered, it returns the translated string
+ * using the specified domain. Otherwise, it returns the original translation string.
+ *
+ * @param string $translation The text to be translated.
+ * @param string $domain Optional. The text domain. Default 'foogallery'.
+ *
+ * @return string The translated text if 'init' action has been executed,
+ *                otherwise the original text.
+ */
+function foogallery__( $translation, $domain = 'foogallery' ) {
+    if ( did_action( 'init' ) ) {
+        return __( $translation, $domain );
+    }
+
+    return $translation;
+}
