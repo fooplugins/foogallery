@@ -25,6 +25,12 @@ if ( ! class_exists( 'FooGallery_Pro_Gallery_Blueprints' ) ) {
 				// Ajax handler for setting the Gallery Blueprint.
 				add_action( 'wp_ajax_foogallery_gallery_blueprint_set', array( $this, 'ajax_blueprint_set' ) );
 
+				// Ajax handler for getting galleries for bulk assign
+				add_action( 'wp_ajax_foogallery_gallery_blueprint_bulk_assign_get_galleries', array( $this, 'ajax_bulk_assign_get_galleries' ) );
+
+				// Ajax handler for saving bulk assign
+				add_action( 'wp_ajax_foogallery_gallery_blueprint_bulk_assign_save', array( $this, 'ajax_bulk_assign_save' ) );
+
 				// Override the settings metabox.
 				add_filter( 'foogallery_should_render_gallery_settings_metabox', array( $this, 'override_settings_metabox'), 10, 2 );
 				add_action( 'foogallery_after_render_gallery_settings_metabox', array( $this, 'show_gallery_blueprint_info_in_settings_metabox' ), 10, 1 );
@@ -365,6 +371,65 @@ if ( ! class_exists( 'FooGallery_Pro_Gallery_Blueprints' ) ) {
 			                }
 		                });
 	                });
+
+                    // Handle bulk assign button click
+                    $('#foogallery_gallery_blueprint_container').on('click', '#foogallery_gallery_blueprint_bulk_assign', function(e) {
+                        e.preventDefault();
+                        
+                        var $button = $(this);
+                        var $spinner = $('.foogallery_gallery_blueprint_bulk_assign_spinner');
+                        var $container = $('#foogallery_gallery_blueprint_bulk_assign_container');
+                        
+                        $button.hide();
+                        $spinner.addClass('is-active');
+                        
+                        $.ajax({
+                            type: "POST",
+                            url: ajaxurl,
+                            data: {
+                                action: 'foogallery_gallery_blueprint_bulk_assign_get_galleries',
+                                foogallery: <?php echo $post->ID; ?>,
+                                foogallery_gallery_blueprint_bulk_assign_nonce: $('#foogallery_gallery_blueprint_bulk_assign_nonce').val()
+                            },
+                            success: function(data) {
+                                $container.html(data).show();
+                                $spinner.removeClass('is-active');
+                            }
+                        });
+                    });
+
+                    // Handle bulk assign form submission
+                    $('#foogallery_gallery_blueprint_container').on('click', '#foogallery_gallery_blueprint_bulk_assign_save', function(e) {
+                        e.preventDefault();
+                        
+                        var $button = $(this);
+                        var $spinner = $('.foogallery_gallery_blueprint_bulk_assign_spinner');
+                        var $container = $('#foogallery_gallery_blueprint_bulk_assign_container');
+                        var selectedGalleries = [];
+                        
+                        $('input[name="foogallery_gallery_blueprint_bulk_assign[]"]:checked').each(function() {
+                            selectedGalleries.push($(this).val());
+                        });
+                        
+                        $button.prop('disabled', true);
+                        $spinner.addClass('is-active');
+                        
+                        $.ajax({
+                            type: "POST",
+                            url: ajaxurl,
+                            data: {
+                                action: 'foogallery_gallery_blueprint_bulk_assign_save',
+                                foogallery: <?php echo $post->ID; ?>,
+                                galleries: selectedGalleries,
+                                foogallery_gallery_blueprint_bulk_assign_save_nonce: $('#foogallery_gallery_blueprint_bulk_assign_save_nonce').val()
+                            },
+                            success: function(data) {
+                                $container.html(data);
+                                $spinner.removeClass('is-active');
+                                $('#foogallery_gallery_blueprint_bulk_assign').show();
+                            }
+                        });
+                    });
                 });
             </script>
             <div>
@@ -424,6 +489,12 @@ if ( ! class_exists( 'FooGallery_Pro_Gallery_Blueprints' ) ) {
 							echo '<li><a href="' . esc_url( get_edit_post_link( $gallery->ID ) ) . '" target="_blank">' . $gallery->name . '</a></li>';
 						} ?>
 					</ul>
+					<button class="button button-primary" id="foogallery_gallery_blueprint_bulk_assign"><?php _e( 'Bulk Assign', 'foogallery' ); ?></button>
+					<span class="foogallery_gallery_blueprint_bulk_assign_spinner spinner"></span>
+					<?php wp_nonce_field('foogallery_gallery_blueprint_bulk_assign', 'foogallery_gallery_blueprint_bulk_assign_nonce', false); ?>
+					<div id="foogallery_gallery_blueprint_bulk_assign_container" style="display: none;">
+						<!-- Content will be loaded via AJAX -->
+					</div>
 				<?php }
 			} else {
 				$gallery_blueprints = $this->get_all_gallery_blueprints();
@@ -506,5 +577,104 @@ if ( ! class_exists( 'FooGallery_Pro_Gallery_Blueprints' ) ) {
 
 		    die();
 	    }
+
+        /**
+         * AJAX handler for getting galleries for bulk assign
+         */
+        public function ajax_bulk_assign_get_galleries() {
+            if (check_admin_referer('foogallery_gallery_blueprint_bulk_assign', 'foogallery_gallery_blueprint_bulk_assign_nonce')) {
+                $foogallery_id = intval(sanitize_key($_POST['foogallery']));
+                $all_galleries = foogallery_get_all_galleries();
+                $current_blueprint_galleries = $this->get_gallery_blueprint_usage($foogallery_id);
+                $current_blueprint_ids = array();
+                
+                foreach ($current_blueprint_galleries as $gallery) {
+                    $current_blueprint_ids[] = $gallery->ID;
+                }
+                
+                ?>
+                <form id="foogallery_gallery_blueprint_bulk_assign_form">
+                    <table class="wp-list-table widefat fixed striped">
+                        <thead>
+                            <tr>
+                                <th class="check-column">
+                                    <input type="checkbox" id="foogallery_gallery_blueprint_bulk_assign_select_all">
+                                </th>
+                                <th><?php _e('Gallery', 'foogallery'); ?></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($all_galleries as $gallery) {
+                                if ($gallery->ID != $foogallery_id && !in_array($gallery->ID, $current_blueprint_ids)) {
+                                    ?>
+                                    <tr>
+                                        <td>
+                                            <input type="checkbox" name="foogallery_gallery_blueprint_bulk_assign[]" value="<?php echo $gallery->ID; ?>">
+                                        </td>
+                                        <td>
+                                            <a href="<?php echo get_edit_post_link($gallery->ID); ?>" target="_blank"><?php echo $gallery->name; ?></a>
+                                        </td>
+                                    </tr>
+                                    <?php
+                                }
+                            } ?>
+                        </tbody>
+                    </table>
+                    <p>
+                        <button class="button button-primary" id="foogallery_gallery_blueprint_bulk_assign_save"><?php _e('Assign Selected Galleries', 'foogallery'); ?></button>
+                        <button class="button" id="foogallery_gallery_blueprint_bulk_assign_cancel"><?php _e('Cancel', 'foogallery'); ?></button>
+                    </p>
+                    <?php wp_nonce_field('foogallery_gallery_blueprint_bulk_assign_save', 'foogallery_gallery_blueprint_bulk_assign_save_nonce', false); ?>
+                </form>
+                <script>
+                    jQuery(function($) {
+                        $('#foogallery_gallery_blueprint_bulk_assign_select_all').on('change', function() {
+                            $('input[name="foogallery_gallery_blueprint_bulk_assign[]"]').prop('checked', $(this).prop('checked'));
+                        });
+                        
+                        $('#foogallery_gallery_blueprint_bulk_assign_cancel').on('click', function(e) {
+                            e.preventDefault();
+                            $('#foogallery_gallery_blueprint_bulk_assign_container').hide();
+                            $('#foogallery_gallery_blueprint_bulk_assign').show();
+                        });
+                    });
+                </script>
+                <?php
+            }
+            die();
+        }
+
+        /**
+         * AJAX handler for saving bulk assign
+         */
+        public function ajax_bulk_assign_save() {
+            if (check_admin_referer('foogallery_gallery_blueprint_bulk_assign_save', 'foogallery_gallery_blueprint_bulk_assign_save_nonce')) {
+                $foogallery_id = intval(sanitize_key($_POST['foogallery']));
+                $galleries = isset($_POST['galleries']) ? $_POST['galleries'] : array();
+                $count = 0;
+                
+                foreach ($galleries as $gallery_id) {
+                    $gallery_id = intval($gallery_id);
+                    if ($gallery_id > 0) {
+                        $this->set_gallery_blueprint($gallery_id, $foogallery_id);
+                        $count++;
+                    }
+                }
+                
+                $galleries_using_blueprint = $this->get_gallery_blueprint_usage($foogallery_id);
+                ?>
+                <div class="updated">
+                    <p><?php printf(__('Successfully assigned %d galleries to this blueprint.', 'foogallery'), $count); ?></p>
+                </div>
+                <p><?php _e('This Gallery Blueprint is now being used by the following galleries:', 'foogallery'); ?></p>
+                <ul class="ul-disc">
+                    <?php foreach ($galleries_using_blueprint as $gallery) {
+                        echo '<li><a href="' . esc_url(get_edit_post_link($gallery->ID)) . '" target="_blank">' . $gallery->name . '</a></li>';
+                    } ?>
+                </ul>
+                <?php
+            }
+            die();
+        }
     }
 }
