@@ -89,21 +89,21 @@ if ( !class_exists( 'FooGallery_FooBox_Compatibility' ) ) {
 					if ( 'none' === $caption_title_source ) {
 						$attr['data-caption-title'] = ' ';
 					} else if ( '' !== $caption_title_source ) {
-						$attr['data-caption-title'] = foogallery_sanitize_html( foogallery_get_caption_by_source( $foogallery_attachment, $caption_title_source, 'title' ) );
+						$attr['data-caption-title'] = esc_attr( foogallery_sanitize_html( foogallery_get_caption_by_source( $foogallery_attachment, $caption_title_source, 'title' ) ) );
 					}
 
 					$caption_desc_source = foogallery_gallery_template_setting( 'lightbox_caption_override_desc', '' );
 					if ( 'none' === $caption_desc_source ) {
 						$attr['data-caption-desc'] = ' ';
 					} else if ( '' !== $caption_desc_source ) {
-						$attr['data-caption-desc'] = foogallery_sanitize_html( foogallery_get_caption_by_source( $foogallery_attachment, $caption_desc_source, 'description' ) );
+						$attr['data-caption-desc'] = esc_attr( foogallery_sanitize_html( foogallery_get_caption_by_source( $foogallery_attachment, $caption_desc_source, 'description' ) ) );
 					}
 				} else if ( 'custom' === $lightbox_caption_source ) {
 
 					$template = foogallery_gallery_template_setting( 'lightbox_caption_custom_template', '' );
 					if ( ! empty( $template ) ) {
 						$attr['data-caption-title'] = ' ';
-						$attr['data-caption-desc']  = foogallery_sanitize_html( FooGallery_Pro_Advanced_Captions::build_custom_caption( $template, $foogallery_attachment ) );
+						$attr['data-caption-desc']  = esc_attr( foogallery_sanitize_html( FooGallery_Pro_Advanced_Captions::build_custom_caption( $template, $foogallery_attachment ) ) );
 					}
 				} else if ( '' === $lightbox_caption_source ) {
 					//same as thumbnail
@@ -125,14 +125,14 @@ if ( !class_exists( 'FooGallery_FooBox_Compatibility' ) ) {
 						if ( 'none' === $caption_title_source ) {
 							$attr['data-caption-title'] = ' ';
 						} else if ( '' !== $caption_title_source ) {
-							$attr['data-caption-title'] = foogallery_sanitize_html( foogallery_get_caption_by_source( $foogallery_attachment, $caption_title_source, 'title' ) );
+							$attr['data-caption-title'] = esc_attr( foogallery_sanitize_html( foogallery_get_caption_by_source( $foogallery_attachment, $caption_title_source, 'title' ) ) );
 						}
 
 						$caption_desc_source = foogallery_gallery_template_setting( 'foobox_caption_override_desc', '' );
 						if ( 'none' === $caption_desc_source ) {
 							$attr['data-caption-desc'] = ' ';
 						} else if ( '' !== $caption_desc_source ) {
-							$attr['data-caption-desc'] = foogallery_sanitize_html( foogallery_get_caption_by_source( $foogallery_attachment, $caption_desc_source, 'description' ) );
+							$attr['data-caption-desc'] = esc_attr( foogallery_sanitize_html( foogallery_get_caption_by_source( $foogallery_attachment, $caption_desc_source, 'description' ) ) );
 						}
 					} else if ( 'same' === $foobox_caption_source ) {
 						//same as thumbnail, or FooGallery FREE
@@ -144,13 +144,13 @@ if ( !class_exists( 'FooGallery_FooBox_Compatibility' ) ) {
 			//force the same captions as the thumbnail
 			if ( $force_same ) {
 				if ( isset( $foogallery_attachment->caption_title ) ) {
-					$attr['data-caption-title'] = foogallery_sanitize_html( $foogallery_attachment->caption_title );
+					$attr['data-caption-title'] = esc_attr( foogallery_sanitize_html( $foogallery_attachment->caption_title ) );
 				} else {
 					$attr['data-caption-title'] = ' ';
 				}
 
 				if ( isset( $foogallery_attachment->caption_desc ) ) {
-					$attr['data-caption-desc'] = foogallery_sanitize_html( $foogallery_attachment->caption_desc );
+					$attr['data-caption-desc'] = esc_attr( foogallery_sanitize_html( $foogallery_attachment->caption_desc ) );
 				} else {
 					$attr['data-caption-desc'] = ' ';
 				}

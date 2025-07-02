@@ -196,11 +196,11 @@ if ( ! class_exists( 'FooGalleryAttachment' ) ) {
 			}
 
 			if ( ! empty( $this->caption ) ) {
-				$attr['data-caption-title'] = $this->caption;
+				$attr['data-caption-title'] = foogallery_sanitize_html( $this->caption );
 			}
 
 			if ( !empty( $this->description ) ) {
-				$attr['data-caption-desc'] = $this->description;
+				$attr['data-caption-desc'] = foogallery_sanitize_html( $this->description );
 			}
 
 			$attr['data-attachment-id'] = $this->ID;

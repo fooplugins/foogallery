@@ -151,19 +151,19 @@ function foogallery_build_attachment_html_anchor_attributes( $foogallery_attachm
 	}
 
 	if ( ! empty( $foogallery_attachment->caption ) ) {
-		$attr['data-caption-title'] = foogallery_sanitize_html( $foogallery_attachment->caption );
+		$attr['data-caption-title'] = esc_attr( foogallery_sanitize_html( $foogallery_attachment->caption ) );
 	}
 
 	if ( ! empty( $foogallery_attachment->description ) ) {
-		$attr['data-caption-desc'] = foogallery_sanitize_html( $foogallery_attachment->description );
+		$attr['data-caption-desc'] = esc_attr( foogallery_sanitize_html( $foogallery_attachment->description ) );
 	}
 
 	if ( isset( $foogallery_attachment->caption_title ) ) {
-		$attr['data-caption-title'] = foogallery_sanitize_html( $foogallery_attachment->caption_title );
+		$attr['data-caption-title'] = esc_attr( foogallery_sanitize_html( $foogallery_attachment->caption_title ) );
 	}
 
 	if ( isset( $foogallery_attachment->caption_desc ) ) {
-		$attr['data-caption-desc'] = foogallery_sanitize_html( $foogallery_attachment->caption_desc );
+		$attr['data-caption-desc'] = esc_attr( foogallery_sanitize_html( $foogallery_attachment->caption_desc ) );
 	}
 
 	// set the ID attribute for the attachment.

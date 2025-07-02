@@ -78,7 +78,7 @@ if ( ! class_exists( 'FooGallery_Lightbox' ) ) {
 					} else if ( 'none' === $caption_title_source ) {
 						$attr['data-lightbox-title'] = '';
 					} else {
-						$attr['data-lightbox-title'] = foogallery_sanitize_html( foogallery_get_caption_by_source( $foogallery_attachment, $caption_title_source, 'title' ) );
+						$attr['data-lightbox-title'] = esc_attr( foogallery_sanitize_html( foogallery_get_caption_by_source( $foogallery_attachment, $caption_title_source, 'title' ) ) );
 					}
 
 					$caption_desc_source = foogallery_gallery_template_setting( 'lightbox_caption_override_desc', '' );
@@ -89,19 +89,19 @@ if ( ! class_exists( 'FooGallery_Lightbox' ) ) {
 					} else if ( 'none' === $caption_desc_source ) {
 						$attr['data-lightbox-description'] = '';
 					} else {
-						$attr['data-lightbox-description'] = foogallery_sanitize_html( foogallery_get_caption_by_source( $foogallery_attachment, $caption_desc_source, 'description' ) );
+						$attr['data-lightbox-description'] = esc_attr( foogallery_sanitize_html( foogallery_get_caption_by_source( $foogallery_attachment, $caption_desc_source, 'description' ) ) );
 					}
 				} else if ( 'custom' === $source ) {
 
 					$template = foogallery_gallery_template_setting( 'lightbox_caption_custom_template', '' );
 					if ( ! empty( $template ) ) {
-						$attr['data-lightbox-description'] = foogallery_sanitize_html( FooGallery_Pro_Advanced_Captions::build_custom_caption( $template, $foogallery_attachment ) );
+						$attr['data-lightbox-description'] = esc_attr( foogallery_sanitize_html( FooGallery_Pro_Advanced_Captions::build_custom_caption( $template, $foogallery_attachment ) ) );
 					}
 				} else if ( '' === $source ) {
 					// if same as thumbnails, then check if custom captions was set.
 					if ( isset( $foogallery_attachment->custom_captions ) && $foogallery_attachment->custom_captions ) {
 						$attr['data-lightbox-title'] = '';
-						$attr['data-lightbox-description'] = $foogallery_attachment->caption_desc;
+						$attr['data-lightbox-description'] = esc_attr( foogallery_sanitize_html( $foogallery_attachment->caption_desc ) );
 					}
 				}
 			}
