@@ -313,6 +313,11 @@ Please update in order for FooGallery to work in WP 5.5+!
 
 == Changelog ==
 
+= 2.4.32 =
+* Date Updated : 03 Jul 2025
+* Fix : Added support for Elementor Page Transition module to prevent page transition when clicking on a gallery image.
+* Fix : Enhanced sanitization for gallery caption attributes.
+
 = 2.4.31 =
 * Date Updated : 18 May 2025
 * Fix : Fixed bug with early translation PHP warnings in debug mode.
