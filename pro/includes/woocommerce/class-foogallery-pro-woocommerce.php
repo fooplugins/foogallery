@@ -1354,7 +1354,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 							'panel' => array(
 								'media' => array(
 									'product' => array(
-										'success' => esc_html( foogallery_sanitize_html( $success_message_text ) )
+										'success' => esc_html( foogallery_sanitize_full( $success_message_text ) )
 									)
 								)
 							)
@@ -1371,7 +1371,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 							'panel' => array(
 								'media' => array(
 									'product' => array(
-										'error' => esc_html( foogallery_sanitize_html( $error_message_text ) )
+										'error' => esc_html( foogallery_sanitize_full( $error_message_text ) )
 									)
 								)
 							)

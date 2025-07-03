@@ -1540,6 +1540,17 @@ function foogallery_rgb_to_color_array( $rgba ) {
 }
 
 /**
+ * Do full sanitization of a string
+ *
+ * @param string $text
+ *
+ * @return string
+ */
+function foogallery_sanitize_full( $text ) {
+	return foogallery_sanitize_html( foogallery_sanitize_javascript( $text ) );
+}
+
+/**
  * Sanitize HTML to make it safe to output. Used to sanitize potentially harmful HTML used for captions
  *
  * @since 1.9.23
