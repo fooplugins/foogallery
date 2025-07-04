@@ -3,8 +3,8 @@ Contributors: fooplugins, bradvin, steveush
 Donate link: https://fooplugins.com
 Tags: gallery, image gallery, photo gallery, responsive gallery, wordpress gallery plugin
 Requires at least: 5.3
-Tested up to: 6.7
-Stable tag: 2.4.31
+Tested up to: 6.8
+Stable tag: 2.4.32
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
