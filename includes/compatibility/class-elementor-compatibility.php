@@ -11,6 +11,16 @@ if ( ! class_exists( 'FooGallery_Elementor_Compatibility' ) ) {
             add_action( 'plugins_loaded', array( $this, 'init' ) );
 
             add_action( 'elementor/preview/enqueue_scripts', array( $this, 'enqueue_assets' ) );
+
+            // Add attribute to foogallery image links to prevent Elementor from trasitioning to the image.
+            if ( defined( 'ELEMENTOR_VERSION' ) ) {
+                add_filter( 'foogallery_attachment_html_link_attributes', array( $this, 'add_elementor_prevent_transition' ), 10, 3 );
+            }
+        }
+
+        function add_elementor_prevent_transition( $attributes, $args, $foogallery_attachment ) {
+            $attributes['data-e-disable-page-transition'] = 'true';
+            return $attributes;
         }
 
         function init() {
@@ -25,7 +35,7 @@ if ( ! class_exists( 'FooGallery_Elementor_Compatibility' ) ) {
             require_once( FOOGALLERY_PATH . 'includes/compatibility/elementor/class-elementor-foogallery-widget.php' );
 
             // Register widget
-            \Elementor\Plugin::instance()->widgets_manager->register_widget_type( new Elementor_FooGallery_Widget() );
+            \Elementor\Plugin::instance()->widgets_manager->register( new Elementor_FooGallery_Widget() );
 
         }
 

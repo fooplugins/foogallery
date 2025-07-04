@@ -40,14 +40,41 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 			add_filter( 'foogallery_available_extensions', array( $this, 'register_extension' ) );
 		}
 
+		/**
+		 * Sanitize the gallery settings
+		 *
+		 * @param $settings
+		 * @param $gallery_template
+		 *
+		 * @return array
+		 */
+		function sanitize_gallery_settings( $settings, $gallery_template ) {
+			$fields = foogallery_get_fields_for_template( $gallery_template );
+
+			foreach ( $fields as $field ) {
+				$field_id = isset( $field['id'] ) ? $field['id'] : false;
+				$field_type = isset( $field['type'] ) ? $field['type'] : false;
+				if ( $field_id && $field_type ) {
+					if ( $field_type === 'text' || $field_type === 'textarea' ) {
+						$setting_id = $gallery_template . '_' . $field_id;
+						if ( isset( $settings[$setting_id] ) ) {
+							$settings[$setting_id] = foogallery_sanitize_full( $settings[$setting_id] );
+						}
+					}
+				}
+			}
+
+			return $settings;
+		}
+
 		function register_extension( $extensions_list ) {
             $extensions_list[] = array(
 				'slug' => 'foogallery-custom-css',
 				'class' => 'FooGallery_Admin_Gallery_MetaBoxes',
 				'categories' => array('free'),
-				'title' => __('Custom CSS', 'foogallery'),
-				'description' => __('Allows you to add custom CSS to your galleries. A Custom CSS metabox will show under your gallery settings, when editing a gallery.', 'foogallery'),
-				'external_link_text' => __( 'Read documentation', 'foogallery' ),
+				'title' => foogallery__('Custom CSS', 'foogallery'),
+				'description' => foogallery__('Allows you to add custom CSS to your galleries. A Custom CSS metabox will show under your gallery settings, when editing a gallery.', 'foogallery'),
+				'external_link_text' => foogallery__( 'Read documentation', 'foogallery' ),
                 'external_link_url' => 'https://fooplugins.com/documentation/foogallery/developers/customize-gallery-custom-css/',
 				'dashicon'          => 'dashicons-editor-code',
 				'tags' => array('free'),
@@ -189,13 +216,15 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 				$settings = apply_filters( 'foogallery_save_gallery_settings', $settings, $post_id, $_POST );
 				$settings = apply_filters( 'foogallery_save_gallery_settings-'. $gallery_template, $settings, $post_id, $_POST );
 
+				$settings = $this->sanitize_gallery_settings( $settings, $gallery_template );
+
 				update_post_meta( $post_id, FOOGALLERY_META_SETTINGS, $settings );
 
 				if ( isset( $_POST[FOOGALLERY_META_SORT] ) ) {
 					update_post_meta( $post_id, FOOGALLERY_META_SORT, $_POST[FOOGALLERY_META_SORT] );
 				}
 
-				$custom_css = foogallery_sanitize_html( isset( $_POST[FOOGALLERY_META_CUSTOM_CSS] ) ?
+				$custom_css = foogallery_sanitize_full( isset( $_POST[FOOGALLERY_META_CUSTOM_CSS] ) ?
 					$_POST[FOOGALLERY_META_CUSTOM_CSS] : '' );
 
 				if ( empty( $custom_css ) ) {

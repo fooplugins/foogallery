@@ -4,7 +4,7 @@ Donate link: https://fooplugins.com
 Tags: gallery, image gallery, photo gallery, responsive gallery, wordpress gallery plugin
 Requires at least: 5.3
 Tested up to: 6.7
-Stable tag: 2.4.30
+Stable tag: 2.4.31
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -312,6 +312,22 @@ Goto FooGallery Settings -> Advanced Tab and check "Disable PRO Promotions" and 
 Please update in order for FooGallery to work in WP 5.5+!
 
 == Changelog ==
+
+= 2.4.32 =
+* Date Updated : 03 Jul 2025
+* Update : FooGallery client side 2.1.4
+* Fix : Added support for Elementor Page Transition module to prevent page transition when clicking on a gallery image.
+* Fix : Enhanced sanitization for gallery caption attributes.
+* Fix : When gallery settings are saved - all text and textarea settings are sanitized to remove unwanted keywords.
+* Fix : Added HTML parsing to client side, where gallery captions are parsed to strip unwanted attributes.
+
+= 2.4.31 =
+* Date Updated : 18 May 2025
+* Fix : Fixed bug with early translation PHP warnings in debug mode.
+* Update : Freemius SDK update 2.12.0
+[//]: # fs_premium_only_begin
+* New : [Commerce Plan] Added ability to bulk assign galleries to a Blueprint.
+[//]: # fs_premium_only_end
 
 = 2.4.30 =
 * Date Updated : 04 Mar 2025

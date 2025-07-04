@@ -151,19 +151,19 @@ function foogallery_build_attachment_html_anchor_attributes( $foogallery_attachm
 	}
 
 	if ( ! empty( $foogallery_attachment->caption ) ) {
-		$attr['data-caption-title'] = foogallery_sanitize_html( $foogallery_attachment->caption );
+		$attr['data-caption-title'] = foogallery_sanitize_full( $foogallery_attachment->caption );
 	}
 
 	if ( ! empty( $foogallery_attachment->description ) ) {
-		$attr['data-caption-desc'] = foogallery_sanitize_html( $foogallery_attachment->description );
+		$attr['data-caption-desc'] = foogallery_sanitize_full( $foogallery_attachment->description );
 	}
 
 	if ( isset( $foogallery_attachment->caption_title ) ) {
-		$attr['data-caption-title'] = foogallery_sanitize_html( $foogallery_attachment->caption_title );
+		$attr['data-caption-title'] = foogallery_sanitize_full( $foogallery_attachment->caption_title );
 	}
 
 	if ( isset( $foogallery_attachment->caption_desc ) ) {
-		$attr['data-caption-desc'] = foogallery_sanitize_html( $foogallery_attachment->caption_desc );
+		$attr['data-caption-desc'] = foogallery_sanitize_full( $foogallery_attachment->caption_desc );
 	}
 
 	// set the ID attribute for the attachment.
@@ -300,18 +300,18 @@ function foogallery_build_attachment_html_caption( &$foogallery_attachment, $arg
 
 	//extra sanitization for HTML captions
 	if ( isset( $args['override_caption_title'] ) ) {
-		$captions['override_title'] = foogallery_sanitize_html( $args['override_caption_title'] );
+		$captions['override_title'] = foogallery_sanitize_full( $args['override_caption_title'] );
 	}
 	if ( isset( $args['override_caption_desc']) ) {
-		$captions['override_desc'] = foogallery_sanitize_html( $args['override_caption_desc'] );
+		$captions['override_desc'] = foogallery_sanitize_full( $args['override_caption_desc'] );
 	}
 
 	//extra sanitization for HTML captions
 	if ( !empty( $captions['title']) ) {
-		$captions['title'] = foogallery_sanitize_html( $captions['title'] );
+		$captions['title'] = foogallery_sanitize_full( $captions['title'] );
 	}
 	if ( !empty( $captions['desc']) ) {
-		$captions['desc'] = foogallery_sanitize_html( $captions['desc'] );
+		$captions['desc'] = foogallery_sanitize_full( $captions['desc'] );
 	}
 
 	return apply_filters( 'foogallery_build_attachment_html_caption', $captions, $foogallery_attachment, $args );

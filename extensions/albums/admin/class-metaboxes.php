@@ -119,7 +119,7 @@ if ( ! class_exists( 'FooGallery_Admin_Album_MetaBoxes' ) ) {
 					delete_post_meta( $post_id, FOOGALLERY_META_SETTINGS_OLD );
 				}
 
-				$custom_css = foogallery_sanitize_html( isset( $_POST[FOOGALLERY_META_CUSTOM_CSS] ) ?
+				$custom_css = foogallery_sanitize_full( isset( $_POST[FOOGALLERY_META_CUSTOM_CSS] ) ?
 					$_POST[FOOGALLERY_META_CUSTOM_CSS] : '' );
 
 				if ( empty( $custom_css ) ) {
