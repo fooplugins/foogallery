@@ -35,10 +35,87 @@ class FooGallery_Template_Loader {
 			return;
 		}
 
-		//check if the gallery is password protected
+		// check if the gallery is password protected
 		if ( post_password_required( $current_foogallery->_post ) ) {
-			echo get_the_password_form( $current_foogallery->_post );
-			return;
+			// Custom fix: If viewing a gallery within an album context, override the password form action
+			$gallery_slug = function_exists('foogallery_album_gallery_url_slug') ? foogallery_album_gallery_url_slug() : 'gallery';
+			$current_url = '';
+			if ( isset( $_SERVER['REQUEST_URI'] ) ) {
+				$current_url = esc_url_raw( $_SERVER['REQUEST_URI'] );
+			}
+			
+			// If the current URL contains the album gallery slug, we are in album context
+			if ( strpos( $current_url, "/$gallery_slug/" ) !== false || isset( $_GET[$gallery_slug] ) ) {
+				
+				// Handle password submission
+				if ( isset($_POST['post_password']) && !empty($_POST['post_password']) ) {
+					// Check if password is correct
+					if ( !empty($current_foogallery->_post->post_password) && 
+						$_POST['post_password'] === $current_foogallery->_post->post_password ) {
+						
+						// Use WordPress's native password cookie function
+						require_once ABSPATH . 'wp-includes/class-phpass.php';
+						
+						// Set the cookie using WordPress's method
+						$hasher = new PasswordHash( 8, true );
+						$cookie_value = $hasher->HashPassword( $_POST['post_password'] );
+						
+						// Get proper cookie parameters
+						$secure = is_ssl();
+						$domain = defined('COOKIE_DOMAIN') && COOKIE_DOMAIN ? COOKIE_DOMAIN : '';
+						$path = defined('COOKIEPATH') && COOKIEPATH ? COOKIEPATH : '/';
+						
+						// Set the cookie
+						setcookie(
+							'wp-postpass_' . COOKIEHASH, 
+							$cookie_value, 
+							time() + 10 * DAY_IN_SECONDS, 
+							$path,
+							$domain,
+							$secure,
+							true
+						);
+						
+						// Force the global $_COOKIE to be updated for immediate effect
+						$_COOKIE['wp-postpass_' . COOKIEHASH] = $cookie_value;
+						
+						// Clear any output buffers before redirect
+						if ( ob_get_level() ) {
+							ob_end_clean();
+						}
+						
+						// Use WordPress redirect
+						wp_redirect( $current_url );
+						exit;
+					} else {
+						// Password was incorrect - we'll show form again with error
+						$password_error = true;
+					}
+				}
+				
+				// Build a custom password form with the action set to the current URL
+				$label = 'pwbox-' . ( empty( $current_foogallery->_post->ID ) ? rand() : $current_foogallery->_post->ID );
+				$output = '<form action="' . esc_url( $current_url ) . '" method="post" class="post-password-form">';
+				
+				// Show error if password was incorrect
+				if ( isset($password_error) && $password_error ) {
+					$output .= '<p style="color: red;">' . __( 'Incorrect password. Please try again.' ) . '</p>';
+				}
+				
+				$output .= '<p>' . __( 'This gallery is password protected. To view it, please enter your password below:' ) . '</p>';
+				$output .= '<p>';
+				$output .= '<label for="' . $label . '">' . __( 'Password:' ) . ' </label>';
+				$output .= '<input name="post_password" id="' . $label . '" type="password" size="20" maxlength="20" />';
+				$output .= ' <input type="submit" name="Submit" value="' . esc_attr__( 'Submit' ) . '" />';
+				$output .= '</p>';
+				$output .= '</form>';
+				echo $output;
+				return;
+			} else {
+				// Default behavior - use WordPress's standard password form
+				echo get_the_password_form( $current_foogallery->_post );
+				return;
+			}
 		}
 
 		//find the gallery template we will use to render the gallery
