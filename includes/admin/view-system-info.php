@@ -56,6 +56,13 @@ if ( current_user_can( 'activate_plugins' ) ) {
 	$foogallery = FooGallery_Plugin::get_instance();
 	$settings = $foogallery->options()->get_all();
 
+	// Redact sensitive settings
+	foreach ( $settings as $k => $v ) {
+		if ( preg_match( '/api_key|token|secret/i', $k ) ) {
+			$settings[$k] = 'REDACTED';
+		}
+	}
+
 	$stream_wrappers = stream_get_wrappers();
 
 	$debug_info = array(
