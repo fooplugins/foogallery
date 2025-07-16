@@ -313,6 +313,14 @@ Please update in order for FooGallery to work in WP 5.5+!
 
 == Changelog ==
 
+= 2.4.33 =
+* Date Updated : 16 Jul 2025
+* Update : Freemius SDK update 2.12.1
+[//]: # fs_premium_only_begin
+* New : [Commerce Plan] Added support for WooCommerce blocks, when using Master Products.
+* Fix : [Commerce Plan] Cleaned up the Master Product settings, so it's more intuitive.
+[//]: # fs_premium_only_end
+
 = 2.4.32 =
 * Date Updated : 03 Jul 2025
 * Update : FooGallery client side 2.1.4
