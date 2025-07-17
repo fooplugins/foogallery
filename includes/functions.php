@@ -802,6 +802,10 @@ function foogallery_get_caption_desc_for_attachment($attachment_post, $source = 
 		}
 	}
 
+	if ( is_int( $attachment_post ) ) {
+		$attachment_post = get_post( $attachment_post );
+	}
+
 	switch ( $source ) {
 		case 'title':
 			$caption = trim( $attachment_post->post_title );
