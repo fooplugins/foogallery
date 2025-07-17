@@ -12906,6 +12906,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
                     title: "Product Information",
                     addToCart: "Add to Cart",
                     viewProduct: "View Product",
+                    goToCheckout: "Go to Checkout",
                     success: "Successfully added to cart.",
                     error: "Something went wrong adding to cart."
                 }
@@ -13215,7 +13216,8 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
             self.$body = $("<div/>").addClass(self.cls.body).appendTo(self.$inner);
             self.$addToCart = $("<button/>").addClass(self.cls.button).html(self.il8n.addToCart).on("click", {self: self}, self.onAddToCartClick);
             self.$viewProduct = $("<a/>").addClass(self.cls.button).html(self.il8n.viewProduct);
-            self.$footer = $("<div/>").addClass(self.cls.footer).append(self.$addToCart).append(self.$viewProduct).appendTo(self.$inner);
+            self.$goToCheckout = $("<a/>").addClass(self.cls.button).html(self.il8n.goToCheckout);
+            self.$footer = $("<div/>").addClass(self.cls.footer).append(self.$addToCart).append(self.$viewProduct).append(self.$goToCheckout).appendTo(self.$inner);
             return true;
         },
         destroy: function(){
@@ -13325,6 +13327,15 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
                 } else {
                     self.$viewProduct.toggleClass(self.cls.hidden, true);
                 }
+                if (_is.string(response.checkout_url)){
+                    if (self.panel.opt.admin){
+                        self.$goToCheckout.toggleClass(self.cls.disabled, true);
+                    } else {
+                        self.$goToCheckout.prop("href", response.checkout_url);
+                    }
+                } else {
+                    self.$goToCheckout.toggleClass(self.cls.hidden, true);
+                }
                 self.$body.html(response.body).find("tr").on("click", {self: self}, self.onRowClick);
                 if (_is.string(response.title)){
                     self.$header.html(response.title);
@@ -13363,11 +13374,16 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 
             self.$addToCart.addClass(self.cls.disabled).addClass(self.cls.loading);
             self.media.item.addToCart($this, product_id, 1, false).then(function(response){
+                let $msg;
                 if (!response || response.error){
-                    self.$footer.append("<p>" + self.il8n.error + "</p>");
+                    $msg = $("<p>" + self.il8n.error + "</p>");
                 } else {
-                    self.$footer.append("<p>" + self.il8n.success + "</p>");
+                    $msg = $("<p>" + self.il8n.success + "</p>");
                 }
+                self.$footer.append($msg);
+                setTimeout( () => {
+                    $msg.remove();
+                }, 3000 );
             }).always(function(){
                 self.$addToCart.removeClass(self.cls.disabled).removeClass(self.cls.loading);
             });
