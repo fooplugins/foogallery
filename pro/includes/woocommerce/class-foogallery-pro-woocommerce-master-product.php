@@ -69,6 +69,9 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce_Master_Product' ) ) {
 				//Adjust the cart images (For WooCommerce Blocks)
 				add_filter( 'woocommerce_store_api_cart_item_images', array( $this, 'block_adjust_cart_item_images' ), 10, 3 );
 
+				//Add the attachment description to the product info within the lightbox
+				add_filter( 'foogallery_ecommerce_build_product_info_response_description', array( $this, 'adjust_product_info_response_description' ), 10, 4 );
+
 				if ( is_admin() ) {
 					// Add extra fields to the templates.
 					add_filter( 'foogallery_override_gallery_template_fields', array( $this, 'add_more_ecommerce_fields' ), 40, 2 );
@@ -103,6 +106,29 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce_Master_Product' ) ) {
 				}
             }
         }
+
+		/**
+		 * Adjust the product info response description.
+		 *
+		 * @param string $description The description.
+		 * @param WC_Product $product The product.
+		 * @param FooGallery $gallery The gallery.
+		 * @param int $attachment_id The attachment ID.
+		 *
+		 * @return string The description.
+		 */
+		function adjust_product_info_response_description( $description, $product, $gallery, $attachment_id ) {
+
+			$source = $gallery->get_setting( 'ecommerce_transfer_product_description_source', '' );
+			if ( 'description' === $source ) {
+				$attachment = get_post( $attachment_id );
+				$description = $attachment->post_content;
+			} elseif ( 'caption' === $source ) {
+				$description = get_the_excerpt( $attachment_id );
+			}
+
+			return $description;
+		}
 
 		/**
 		 * Adjust the cart item to store relevant info about the attachment.
@@ -476,7 +502,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce_Master_Product' ) ) {
 				$new_fields[] = array(
 					'id'       => 'ecommerce_transfer_product_name_source',
 					'title'    => __( 'Product Name Source', 'foogallery' ),
-					'desc'     => __( 'When the product is added to the cart, the name is updated from which field of the attachment', 'foogallery' ),
+					'desc'     => __( 'Which field of the attachment is used for the product name', 'foogallery' ),
 					'section'  => __( 'Ecommerce', 'foogallery' ),
 					'subsection' => array( 'ecommerce-master-product' => __( 'Master Product', 'foogallery' ) ),
 					'type'     => 'radio',
@@ -497,6 +523,29 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce_Master_Product' ) ) {
 					),
 				);
 
+				$new_fields[] = array(
+					'id'       => 'ecommerce_transfer_product_description_source',
+					'title'    => __( 'Product Desc Source', 'foogallery' ),
+					'desc'     => __( 'Which field of the attachment is used for the product description', 'foogallery' ),
+					'section'  => __( 'Ecommerce', 'foogallery' ),
+					'subsection' => array( 'ecommerce-master-product' => __( 'Master Product', 'foogallery' ) ),
+					'type'     => 'radio',
+					'spacer'   => '<span class="spacer"></span>',
+					'default'  => 'description',
+					'choices'  => array(
+						'description' => __( 'Attachment Description', 'foogallery' ),
+						'caption' => __( 'Attachment Caption', 'foogallery' ),
+						'' => __( 'Use Master Product Description', 'foogallery' ),
+					),
+					'row_data' => array(
+						'data-foogallery-hidden'                   => true,
+						'data-foogallery-show-when-field'          => 'ecommerce_transfer_mode',
+						'data-foogallery-show-when-field-operator' => '!==',
+						'data-foogallery-show-when-field-value'    => '',
+						'data-foogallery-change-selector'          => 'input',
+						'data-foogallery-value-selector'           => 'input:checked',
+					),
+				);
 			}
 
 			// find the index of the master product section.

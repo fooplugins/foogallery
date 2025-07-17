@@ -331,10 +331,10 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 				$response['body'] = __( 'We could not load any product information, as the product was not found!', 'foogallery' );
 				$response['purchasable'] = false;
 			} else {
-				$description = $product->get_description();
+				$description = apply_filters( 'foogallery_ecommerce_build_product_info_response_description', $product->get_description(), $product, $gallery, $attachment_id );
 				if ( $this->is_html( $description ) ) {
 					$description = wp_kses( $description, wp_kses_allowed_html() );
-				} else {
+				} else if ( ! empty( $description ) ) {
 					$description = '<p>' . esc_html( $description ) . '</p>';
 				}
 				$html = $description;
@@ -354,6 +354,9 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 				}
 				if ( '' !== $gallery->get_setting( 'ecommerce_lightbox_show_view_product_button', '' ) ) {
 					$response['product_url'] = self::build_product_permalink( $product, $attachment_id );
+				}
+				if ( '' !== $gallery->get_setting( 'ecommerce_lightbox_show_checkout_button', '' ) ) {
+					$response['checkout_url'] = wc_get_checkout_url();
 				}
 
 				$response['body'] = $html;
@@ -1123,9 +1126,17 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 					'type'    => 'help',
 				);
 
+				$lightbox_help_text = __( 'You can choose to display product information within the lightbox, if items are linked to a WooCommerce Product, or a Master Product is enabled.', 'foogallery' );
+				$lightbox_help_text .= '<br />';
+				$lightbox_help_text .= __( 'Please note : This only works with the FooGallery lightbox.', 'foogallery' );
+				$lightbox_help_text .= ' <br /><br />';
+				$lightbox_help_text .= __( 'You can translate the button text for the below settings.', 'foogallery' );
+				$lightbox_help_text .= ' <a target="_blank" href="' . foogallery_admin_settings_url( 'ecommerce' ) . '#ecommerce">' . __( 'Visit FooGallery Settings > Ecommerce', 'foogallery' ) . '</a>';
+
+
 				$new_fields[] = array(
 					'id'      => 'ecommerce_lightbox_info',
-					'desc'    => __( 'You can choose to display product information within the lightbox, if items are linked to a WooCommerce Product. This only works with the PRO lightbox.', 'foogallery' ),
+					'desc'    => $lightbox_help_text,
 					'section' => __( 'Ecommerce', 'foogallery' ),
 					'subsection' => array( 'ecommerce-lightbox' => __( 'Lightbox', 'foogallery' ) ),
 					'type'    => 'help',
@@ -1134,7 +1145,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 				$new_fields[] = array(
 					'id'       => 'ecommerce_lightbox_product_information',
 					'title'    => __( 'Lightbox Product Info', 'foogallery' ),
-					'desc'     => __( 'You can show product information in the PRO lightbox, including product variations, which the visitor can add to cart.', 'foogallery' ),
+					'desc'     => __( 'You can show product information in the FooGallery lightbox, including product variations, which the visitor can add to their cart.', 'foogallery' ),
 					'section'  => __( 'Ecommerce', 'foogallery' ),
 					'subsection' => array( 'ecommerce-lightbox' => __( 'Lightbox', 'foogallery' ) ),
 					'type'     => 'radio',
@@ -1154,7 +1165,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 
 				$new_fields[] = array(
 					'id'       => 'ecommerce_lightbox_show_add_to_cart_button',
-					'title'    => __( 'Show "Add to Cart" Button', 'foogallery' ),
+					'title'    => __( '"Add to Cart" Button', 'foogallery' ),
 					'desc'     => __( 'Within the lightbox, shows the "Add to Cart" button.', 'foogallery' ),
 					'section'  => __( 'Ecommerce', 'foogallery' ),
 					'subsection' => array( 'ecommerce-lightbox' => __( 'Lightbox', 'foogallery' ) ),
@@ -1162,8 +1173,8 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 					'default'  => 'shown',
 					'spacer'   => '<span class="spacer"></span>',
 					'choices'  => array(
-						'shown' => __( 'Shown', 'foogallery'),
-						''    => __( 'Hidden', 'foogallery'),
+						'shown' => __( 'Show Button', 'foogallery'),
+						''    => __( 'Hide Button', 'foogallery'),
 					),
 					'row_data' => array(
 						'data-foogallery-hidden'                   => true,
@@ -1178,7 +1189,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 
 				$new_fields[] = array(
 					'id'       => 'ecommerce_lightbox_show_view_product_button',
-					'title'    => __( 'Show "View Product" Button', 'foogallery' ),
+					'title'    => __( '"View Product" Button', 'foogallery' ),
 					'desc'     => __( 'Within the lightbox, shows an extra button that redirects to the product page.', 'foogallery' ),
 					'section'  => __( 'Ecommerce', 'foogallery' ),
 					'subsection' => array( 'ecommerce-lightbox' => __( 'Lightbox', 'foogallery' ) ),
@@ -1186,8 +1197,32 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 					'default'  => '',
 					'spacer'   => '<span class="spacer"></span>',
 					'choices'  => array(
-						'shown' => __( 'Shown', 'foogallery'),
-						''    => __( 'Hidden', 'foogallery'),
+						'shown' => __( 'Show Button', 'foogallery'),
+						''    => __( 'Hide Button', 'foogallery'),
+					),
+					'row_data' => array(
+						'data-foogallery-hidden'                   => true,
+						'data-foogallery-show-when-field'          => 'ecommerce_lightbox_product_information',
+						'data-foogallery-show-when-field-operator' => '!==',
+						'data-foogallery-show-when-field-value'    => 'none',
+						'data-foogallery-change-selector'          => 'input',
+						'data-foogallery-preview'                  => 'shortcode',
+						'data-foogallery-value-selector'           => 'input:checked',
+					),
+				);
+
+				$new_fields[] = array(
+					'id'       => 'ecommerce_lightbox_show_checkout_button',
+					'title'    => __( '"Go to Checkout" Button', 'foogallery' ),
+					'desc'     => __( 'Within the lightbox, shows an extra button that redirects to the checkout page.', 'foogallery' ),
+					'section'  => __( 'Ecommerce', 'foogallery' ),
+					'subsection' => array( 'ecommerce-lightbox' => __( 'Lightbox', 'foogallery' ) ),
+					'type'     => 'radio',
+					'default'  => 'shown',
+					'spacer'   => '<span class="spacer"></span>',
+					'choices'  => array(
+						'shown' => __( 'Show Button', 'foogallery'),
+						''    => __( 'Hide Button', 'foogallery'),
 					),
 					'row_data' => array(
 						'data-foogallery-hidden'                   => true,
@@ -1210,8 +1245,8 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 					'default'  => '',
 					'spacer'   => '<span class="spacer"></span>',
 					'choices'  => array(
-						'shown' => __( 'Shown', 'foogallery'),
-						''    => __( 'Hidden', 'foogallery'),
+						'shown' => __( 'Show Price', 'foogallery'),
+						'hidden'    => __( 'Hide Price', 'foogallery'),
 					),
 					'row_data' => array(
 						'data-foogallery-hidden'                   => true,
@@ -1267,6 +1302,16 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 				'desc'    => __( 'The "View Product" button text that is shown within the lightbox.', 'foogallery' ),
 				'type'    => 'text',
 				'default' => __( 'View Product', 'foogallery' ),
+				'section' => __( 'Language', 'foogallery' ),
+				'tab'     => 'ecommerce'
+			);
+
+			$settings['settings'][] = array(
+				'id'      => 'ecommerce_lightbox_checkout_text',
+				'title'   => __( 'Go to Checkout Text', 'foogallery' ),
+				'desc'    => __( 'The "Go to Checkout" button text that is shown within the lightbox.', 'foogallery' ),
+				'type'    => 'text',
+				'default' => __( 'Go to Checkout', 'foogallery' ),
 				'section' => __( 'Language', 'foogallery' ),
 				'tab'     => 'ecommerce'
 			);
@@ -1338,6 +1383,23 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 								'media' => array(
 									'product' => array(
 										'viewProduct' => esc_html( $view_product_text )
+									)
+								)
+							)
+						)
+					)
+				) );
+			}
+
+			$checkout_text = foogallery_get_language_array_value( 'ecommerce_lightbox_checkout_text', __( 'Go to Checkout', 'foogallery' ) );
+			if ( $checkout_text !== false ) {
+				$il8n = array_merge_recursive( $il8n, array(
+					'template' => array(
+						'core' => array(
+							'panel' => array(
+								'media' => array(
+									'product' => array(
+										'goToCheckout' => esc_html( $checkout_text )
 									)
 								)
 							)
