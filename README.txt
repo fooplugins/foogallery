@@ -317,7 +317,10 @@ Please update in order for FooGallery to work in WP 5.5+!
 * Date Updated : 16 Jul 2025
 * Update : Freemius SDK update 2.12.1
 [//]: # fs_premium_only_begin
-* New : [Commerce Plan] Added support for WooCommerce blocks, when using Master Products.
+* New : [Commerce Plan] Added support for WooCommerce blocks, when using Master Products!
+* New : [Commerce Plan] Show a Checkout button in lightbox.
+* New : [Commerce Plan] Show an Out of Stock message in lightbox.
+* New : [Commerce Plan] Can pull the attachment description into the product description, when using Master Products.
 * Fix : [Commerce Plan] Cleaned up the Master Product settings, so it's more intuitive.
 [//]: # fs_premium_only_end
 

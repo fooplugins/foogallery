@@ -348,11 +348,18 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 				if ( $response['purchasable'] ) {
 					if ( is_a( $product, 'WC_Product_Variable' ) ) {
 						$html .= $this->build_product_variation_table( $product );
-					} else if ( '' !== $gallery->get_setting( 'ecommerce_lightbox_show_price', '' ) ) {
+					} else if ( '' !== $gallery->get_setting( 'ecommerce_lightbox_show_price', 'shown' ) ) {
 						$html .= '<h3>' . $product->get_price_html() . '</h3>';
 					}
+				} else {
+					if ( !$product->is_in_stock() && 'shown' === $gallery->get_setting( 'ecommerce_lightbox_show_out_of_stock', 'shown' ) ) {
+						$html .= '<h3>' . $gallery->get_setting( 'ecommerce_lightbox_out_of_stock_message', '' ) . '</h3>';
+					}
+					if ( 'when_non_purchasable' === $gallery->get_setting( 'ecommerce_lightbox_show_view_product_button', 'when_non_purchasable' ) ) {
+						$response['product_url'] = self::build_product_permalink( $product, $attachment_id );
+					}
 				}
-				if ( '' !== $gallery->get_setting( 'ecommerce_lightbox_show_view_product_button', '' ) ) {
+				if ( 'shown' === $gallery->get_setting( 'ecommerce_lightbox_show_view_product_button', 'when_non_purchasable' ) ) {
 					$response['product_url'] = self::build_product_permalink( $product, $attachment_id );
 				}
 				if ( '' !== $gallery->get_setting( 'ecommerce_lightbox_show_checkout_button', '' ) ) {
@@ -658,7 +665,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
                 }
 			} else {
 				$button_variable = foogallery_gallery_template_setting( 'ecommerce_button_variable', '' );
-				if ( '' !== $button_variable ) {
+				if ( $product->is_in_stock() && '' !== $button_variable ) {
 					$attachment->buttons[] = array(
 						'class' => 'fg-woo-select-variation',
 						'text'  => esc_html( foogallery_gallery_template_setting( 'ecommerce_button_variable_text', __( 'Select Options', 'foogallery' ) ) ),
@@ -1194,11 +1201,12 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 					'section'  => __( 'Ecommerce', 'foogallery' ),
 					'subsection' => array( 'ecommerce-lightbox' => __( 'Lightbox', 'foogallery' ) ),
 					'type'     => 'radio',
-					'default'  => '',
+					'default'  => 'when_non_purchasable',
 					'spacer'   => '<span class="spacer"></span>',
 					'choices'  => array(
 						'shown' => __( 'Show Button', 'foogallery'),
 						''    => __( 'Hide Button', 'foogallery'),
+						'when_non_purchasable' => __( 'Show Button Only When Product Is Non-Purchasable', 'foogallery'),
 					),
 					'row_data' => array(
 						'data-foogallery-hidden'                   => true,
@@ -1242,11 +1250,11 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 					'section'  => __( 'Ecommerce', 'foogallery' ),
 					'subsection' => array( 'ecommerce-lightbox' => __( 'Lightbox', 'foogallery' ) ),
 					'type'     => 'radio',
-					'default'  => '',
+					'default'  => 'shown',
 					'spacer'   => '<span class="spacer"></span>',
 					'choices'  => array(
 						'shown' => __( 'Show Price', 'foogallery'),
-						'hidden'    => __( 'Hide Price', 'foogallery'),
+						''    => __( 'Hide Price', 'foogallery'),
 					),
 					'row_data' => array(
 						'data-foogallery-hidden'                   => true,
@@ -1258,6 +1266,50 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 						'data-foogallery-value-selector'           => 'input:checked',
 					),
 				);
+
+				$new_fields[] = array(
+					'id'       => 'ecommerce_lightbox_show_out_of_stock',
+					'title'    => __( 'Show Out of Stock', 'foogallery' ),
+					'desc'     => __( 'Within the lightbox, show an out of stock message, if the product is out of stock.', 'foogallery' ),
+					'section'  => __( 'Ecommerce', 'foogallery' ),
+					'subsection' => array( 'ecommerce-lightbox' => __( 'Lightbox', 'foogallery' ) ),
+					'type'     => 'radio',
+					'default'  => 'shown',
+					'spacer'   => '<span class="spacer"></span>',
+					'choices'  => array(
+						'shown' => __( 'Show Message', 'foogallery'),
+						''    => __( 'Hide Message', 'foogallery'),
+					),
+					'row_data' => array(
+						'data-foogallery-hidden'                   => true,
+						'data-foogallery-show-when-field'          => 'ecommerce_lightbox_product_information',
+						'data-foogallery-show-when-field-operator' => '!==',
+						'data-foogallery-show-when-field-value'    => 'none',
+						'data-foogallery-change-selector'          => 'input',
+						'data-foogallery-preview'                  => 'shortcode',
+						'data-foogallery-value-selector'           => 'input:checked',
+					),
+				);
+
+				$new_fields[] = array(
+					'id'       => 'ecommerce_lightbox_out_of_stock_message',
+					'title'    => __( 'Out of Stock Message', 'foogallery' ),
+					'desc'     => __( 'Within the lightbox, show an out of stock message, if the product is out of stock.', 'foogallery' ),
+					'section'  => __( 'Ecommerce', 'foogallery' ),
+					'subsection' => array( 'ecommerce-lightbox' => __( 'Lightbox', 'foogallery' ) ),
+					'type'     => 'text',
+					'default'  => __( 'Out of Stock', 'foogallery' ),
+					'row_data' => array(
+						'data-foogallery-hidden'                   => true,
+						'data-foogallery-show-when-field'          => 'ecommerce_lightbox_show_out_of_stock',
+						'data-foogallery-show-when-field-operator' => '===',
+						'data-foogallery-show-when-field-value'    => 'shown',
+						'data-foogallery-change-selector'          => 'input',
+						'data-foogallery-preview'                  => 'shortcode',
+						'data-foogallery-value-selector'           => 'input:checked',
+					),
+				);
+
 			} else {
 				$new_fields[] = array(
 					'id'      => 'ecommerce_error',
