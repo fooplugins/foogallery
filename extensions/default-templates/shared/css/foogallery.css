@@ -2842,13 +2842,15 @@ html.fg-panel-no-scroll body {
 }
 
 /* Button & Highlight Colors */
+.fg-panel.fg-dark .fg-panel-button.fg-panel-button-primary,
 .fg-panel.fg-light :is(.fg-panel-button,.fg-panel-thumbs-button,.fg-panel-thumb,.fg-panel-thumb-spacer),
 .fg-panel.fg-light:is(.fg-medium,.fg-panel-no-mobile):not(.fg-panel-info-overlay) .fg-panel-info-inner,
 .fg-panel.fg-light:is(.fg-medium,.fg-panel-no-mobile) .fg-panel-cart-inner {
     background-color: #FFF;
     border-color: #e2e2e2;
 }
-.fg-panel.fg-dark .fg-panel-button[aria-pressed="true"] {
+.fg-panel.fg-dark .fg-panel-button[aria-pressed="true"],
+.fg-panel.fg-light .fg-panel-button.fg-panel-button-primary[aria-pressed="true"] {
     background-color: #FFF;
 }
 .fg-panel.fg-light:is(.fg-medium,.fg-panel-no-mobile):not(.fg-panel-info-overlay) .fg-panel-info-inner,
@@ -2857,17 +2859,24 @@ html.fg-panel-no-scroll body {
     background-color: #f0f0f0;
 }
 .fg-panel.fg-light :is(.fg-panel-button,.fg-panel-area-toggle,.fg-panel-thumbs-button),
-.fg-panel.fg-dark .fg-panel-button[aria-pressed="true"] {
+.fg-panel.fg-dark .fg-panel-button[aria-pressed="true"],
+.fg-panel.fg-light .fg-panel-button.fg-panel-button-primary[aria-pressed="true"] {
     color: #767676;
 }
+.fg-panel.fg-dark .fg-panel-button.fg-panel-button-primary,
+.fg-panel.fg-light .fg-panel-button.fg-panel-button-secondary {
+    color: #222;
+}
 
+.fg-panel.fg-light .fg-panel-button.fg-panel-button-primary,
 .fg-panel.fg-dark :is(.fg-panel-button,.fg-panel-thumbs-button,.fg-panel-thumb,.fg-panel-thumb-spacer),
 .fg-panel.fg-dark:is(.fg-medium,.fg-panel-no-mobile):not(.fg-panel-info-overlay) .fg-panel-info-inner,
 .fg-panel.fg-dark:is(.fg-medium,.fg-panel-no-mobile) .fg-panel-cart-inner {
     background-color: #333;
     border-color: #222;
 }
-.fg-panel.fg-light .fg-panel-button[aria-pressed="true"] {
+.fg-panel.fg-light .fg-panel-button[aria-pressed="true"],
+.fg-panel.fg-dark .fg-panel-button.fg-panel-button-primary[aria-pressed="true"] {
     background-color: #333;
 }
 .fg-panel.fg-dark:is(.fg-medium,.fg-panel-no-mobile):not(.fg-panel-info-overlay) .fg-panel-info-inner,
@@ -2875,8 +2884,10 @@ html.fg-panel-no-scroll body {
 .fg-panel.fg-dark .fg-panel-thumb.fg-selected {
     background-color: #2c2c2c;
 }
+.fg-panel.fg-light .fg-panel-button.fg-panel-button-primary,
 .fg-panel.fg-dark :is(.fg-panel-button,.fg-panel-area-toggle,.fg-panel-thumbs-button),
-.fg-panel.fg-light .fg-panel-button[aria-pressed="true"] {
+.fg-panel.fg-light .fg-panel-button[aria-pressed="true"],
+.fg-panel.fg-dark .fg-panel-button.fg-panel-button-primary[aria-pressed="true"] {
     color: #FFF;
 }
 
@@ -2892,7 +2903,11 @@ html.fg-panel-no-scroll body {
     .fg-panel.fg-light .fg-panel-thumbs-button:hover,
     .fg-panel.fg-light .fg-panel-thumbs-button:focus,
     .fg-panel.fg-light .fg-panel-thumb:hover,
-    .fg-panel.fg-light .fg-panel-thumb:focus {
+    .fg-panel.fg-light .fg-panel-thumb:focus,
+    .fg-panel.fg-dark .fg-panel-button.fg-panel-button-primary:hover,
+    .fg-panel.fg-dark .fg-panel-button.fg-panel-button-primary:focus,
+    .fg-panel.fg-light .fg-panel-button.fg-panel-button-primary[aria-pressed="true"]:hover,
+    .fg-panel.fg-light .fg-panel-button.fg-panel-button-primary[aria-pressed="true"]:focus {
         background-color: #f5f5f5;
     }
     .fg-panel.fg-dark .fg-panel-area-toggle:hover,
@@ -2906,21 +2921,28 @@ html.fg-panel-no-scroll body {
     .fg-panel.fg-dark .fg-panel-thumbs-button:hover,
     .fg-panel.fg-dark .fg-panel-thumbs-button:focus,
     .fg-panel.fg-dark .fg-panel-thumb:hover,
-    .fg-panel.fg-dark .fg-panel-thumb:focus {
+    .fg-panel.fg-dark .fg-panel-thumb:focus,
+    .fg-panel.fg-light .fg-panel-button.fg-panel-button-primary:hover,
+    .fg-panel.fg-light .fg-panel-button.fg-panel-button-primary:focus,
+    .fg-panel.fg-dark .fg-panel-button.fg-panel-button-primary[aria-pressed="true"]:hover,
+    .fg-panel.fg-dark .fg-panel-button.fg-panel-button-primary[aria-pressed="true"]:focus {
         background-color: #303030;
     }
 }
 
 
-.fg-panel.fg-button-light .fg-panel-button,
+.fg-panel.fg-button-light .fg-panel-button:not(.fg-panel-button-secondary,[aria-pressed="true"]),
 .fg-panel.fg-button-light .fg-panel-thumbs-button,
 .fg-panel.fg-button-light .fg-panel-thumb.fg-selected {
     background-color: #fff;
     border-color: #e2e2e2;
     color: #767676;
 }
+.fg-panel.fg-button-light .fg-panel-button:is(.fg-panel-button-primary,.fg-panel-button-secondary) {
+    color: #222;
+}
 
-.fg-panel.fg-button-blue .fg-panel-button,
+.fg-panel.fg-button-blue .fg-panel-button:not(.fg-panel-button-secondary,[aria-pressed="true"]),
 .fg-panel.fg-button-blue .fg-panel-thumbs-button,
 .fg-panel.fg-button-blue .fg-panel-thumb.fg-selected {
     background-color: #3079ed;
@@ -2928,7 +2950,7 @@ html.fg-panel-no-scroll body {
     color: #FFF;
 }
 
-.fg-panel.fg-button-dark .fg-panel-button,
+.fg-panel.fg-button-dark .fg-panel-button:not(.fg-panel-button-secondary,[aria-pressed="true"]),
 .fg-panel.fg-button-dark .fg-panel-thumbs-button,
 .fg-panel.fg-button-dark .fg-panel-thumb.fg-selected {
     background-color: #4e4e4e;
@@ -2936,7 +2958,7 @@ html.fg-panel-no-scroll body {
     color: #FFF;
 }
 
-.fg-panel.fg-button-green .fg-panel-button,
+.fg-panel.fg-button-green .fg-panel-button:not(.fg-panel-button-secondary,[aria-pressed="true"]),
 .fg-panel.fg-button-green .fg-panel-thumbs-button,
 .fg-panel.fg-button-green .fg-panel-thumb.fg-selected {
     background-color: #027339;
@@ -2944,7 +2966,7 @@ html.fg-panel-no-scroll body {
     color: #FFF;
 }
 
-.fg-panel.fg-button-purple .fg-panel-button,
+.fg-panel.fg-button-purple .fg-panel-button:not(.fg-panel-button-secondary,[aria-pressed="true"]),
 .fg-panel.fg-button-purple .fg-panel-thumbs-button,
 .fg-panel.fg-button-purple .fg-panel-thumb.fg-selected {
     background-color: #6816c2;
@@ -2952,7 +2974,7 @@ html.fg-panel-no-scroll body {
     color: #FFF;
 }
 
-.fg-panel.fg-button-orange .fg-panel-button,
+.fg-panel.fg-button-orange .fg-panel-button:not(.fg-panel-button-secondary,[aria-pressed="true"]),
 .fg-panel.fg-button-orange .fg-panel-thumbs-button,
 .fg-panel.fg-button-orange .fg-panel-thumb.fg-selected {
     background-color: #e57731;
@@ -2960,7 +2982,7 @@ html.fg-panel-no-scroll body {
     color: #FFF;
 }
 
-.fg-panel.fg-button-red .fg-panel-button,
+.fg-panel.fg-button-red .fg-panel-button:not(.fg-panel-button-secondary,[aria-pressed="true"]),
 .fg-panel.fg-button-red .fg-panel-thumbs-button,
 .fg-panel.fg-button-red .fg-panel-thumb.fg-selected {
     background-color: #c22b24;
@@ -2969,8 +2991,8 @@ html.fg-panel-no-scroll body {
 }
 
 @media (hover: hover) {
-    .fg-panel.fg-button-light .fg-panel-button:hover,
-    .fg-panel.fg-button-light .fg-panel-button:focus,
+    .fg-panel.fg-button-light .fg-panel-button:not(.fg-panel-button-secondary,[aria-pressed="true"]):hover,
+    .fg-panel.fg-button-light .fg-panel-button:not(.fg-panel-button-secondary,[aria-pressed="true"]):focus,
     .fg-panel.fg-button-light .fg-panel-thumbs-button:hover,
     .fg-panel.fg-button-light .fg-panel-thumbs-button:focus,
     .fg-panel.fg-button-light .fg-panel-thumb:hover,
@@ -2990,8 +3012,8 @@ html.fg-panel-no-scroll body {
         color: #bbb;
     }
 
-    .fg-panel.fg-button-blue .fg-panel-button:hover,
-    .fg-panel.fg-button-blue .fg-panel-button:focus,
+    .fg-panel.fg-button-blue .fg-panel-button:not(.fg-panel-button-secondary,[aria-pressed="true"]):hover,
+    .fg-panel.fg-button-blue .fg-panel-button:not(.fg-panel-button-secondary,[aria-pressed="true"]):focus,
     .fg-panel.fg-button-blue .fg-panel-thumbs-button:hover,
     .fg-panel.fg-button-blue .fg-panel-thumbs-button:focus,
     .fg-panel.fg-button-blue .fg-panel-thumb:hover,
@@ -3011,8 +3033,8 @@ html.fg-panel-no-scroll body {
         color: #FFF;
     }
 
-    .fg-panel.fg-button-dark .fg-panel-button:hover,
-    .fg-panel.fg-button-dark .fg-panel-button:focus,
+    .fg-panel.fg-button-dark .fg-panel-button:not(.fg-panel-button-secondary,[aria-pressed="true"]):hover,
+    .fg-panel.fg-button-dark .fg-panel-button:not(.fg-panel-button-secondary,[aria-pressed="true"]):focus,
     .fg-panel.fg-button-dark .fg-panel-thumbs-button:hover,
     .fg-panel.fg-button-dark .fg-panel-thumbs-button:focus,
     .fg-panel.fg-button-dark .fg-panel-thumb:hover,
@@ -3032,8 +3054,8 @@ html.fg-panel-no-scroll body {
         color: #FFF;
     }
 
-    .fg-panel.fg-button-green .fg-panel-button:hover,
-    .fg-panel.fg-button-green .fg-panel-button:focus,
+    .fg-panel.fg-button-green .fg-panel-button:not(.fg-panel-button-secondary,[aria-pressed="true"]):hover,
+    .fg-panel.fg-button-green .fg-panel-button:not(.fg-panel-button-secondary,[aria-pressed="true"]):focus,
     .fg-panel.fg-button-green .fg-panel-thumbs-button:hover,
     .fg-panel.fg-button-green .fg-panel-thumbs-button:focus,
     .fg-panel.fg-button-green .fg-panel-thumb:hover,
@@ -3053,8 +3075,8 @@ html.fg-panel-no-scroll body {
         color: #FFF;
     }
 
-    .fg-panel.fg-button-purple .fg-panel-button:hover,
-    .fg-panel.fg-button-purple .fg-panel-button:focus,
+    .fg-panel.fg-button-purple .fg-panel-button:not(.fg-panel-button-secondary,[aria-pressed="true"]):hover,
+    .fg-panel.fg-button-purple .fg-panel-button:not(.fg-panel-button-secondary,[aria-pressed="true"]):focus,
     .fg-panel.fg-button-purple .fg-panel-thumbs-button:hover,
     .fg-panel.fg-button-purple .fg-panel-thumbs-button:focus,
     .fg-panel.fg-button-purple .fg-panel-thumb:hover,
@@ -3074,8 +3096,8 @@ html.fg-panel-no-scroll body {
         color: #FFF;
     }
 
-    .fg-panel.fg-button-orange .fg-panel-button:hover,
-    .fg-panel.fg-button-orange .fg-panel-button:focus,
+    .fg-panel.fg-button-orange .fg-panel-button:not(.fg-panel-button-secondary,[aria-pressed="true"]):hover,
+    .fg-panel.fg-button-orange .fg-panel-button:not(.fg-panel-button-secondary,[aria-pressed="true"]):focus,
     .fg-panel.fg-button-orange .fg-panel-thumbs-button:hover,
     .fg-panel.fg-button-orange .fg-panel-thumbs-button:focus,
     .fg-panel.fg-button-orange .fg-panel-thumb:hover,
@@ -3095,8 +3117,8 @@ html.fg-panel-no-scroll body {
         color: #FFF;
     }
 
-    .fg-panel.fg-button-red .fg-panel-button:hover,
-    .fg-panel.fg-button-red .fg-panel-button:focus,
+    .fg-panel.fg-button-red .fg-panel-button:not(.fg-panel-button-secondary,[aria-pressed="true"]):hover,
+    .fg-panel.fg-button-red .fg-panel-button:not(.fg-panel-button-secondary,[aria-pressed="true"]):focus,
     .fg-panel.fg-button-red .fg-panel-thumbs-button:hover,
     .fg-panel.fg-button-red .fg-panel-thumbs-button:focus,
     .fg-panel.fg-button-red .fg-panel-thumb:hover,
