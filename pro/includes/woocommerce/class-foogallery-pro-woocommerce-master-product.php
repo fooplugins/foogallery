@@ -29,6 +29,10 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce_Master_Product' ) ) {
 				// Add custom data to the cart when added.
 				add_filter( 'woocommerce_add_cart_item_data', array( $this, 'add_cart_item_data' ), 30, 2 );
 
+				//Adjust the cart item data
+				add_filter( 'woocommerce_get_cart_item_from_session', array( $this, 'adjust_cart_item' ), 30, 2 );
+				add_filter( 'woocommerce_add_cart_item', array( $this, 'adjust_cart_item' ), 30, 2 );
+
 				// Display the variable attributes in the cart.
 				add_filter( 'woocommerce_get_item_data', array( $this, 'display_variable_item_data' ), 10, 2 );
 
@@ -55,6 +59,18 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce_Master_Product' ) ) {
 
 				// Adjust product permalinks to pass query params
 				add_filter( 'foogallery_ecommerce_build_product_permalink', array( $this, 'adjust_product_permalink' ), 10, 4 );
+
+				//Detect if a WooCommerce block is being rendered
+				add_filter( 'woocommerce_hydration_dispatch_request', array( $this, 'check_for_woocommerce_blocks' ), 10, 4 );
+				add_filter( 'rest_dispatch_request', array( $this, 'check_for_woocommerce_blocks' ), 10, 4 );
+				add_filter( 'woocommerce_hydration_request_after_callbacks', array( $this, 'done_with_woocommerce_blocks' ), 99, 3 );
+				add_filter( 'rest_request_after_callbacks', array( $this, 'done_with_woocommerce_blocks' ), 99, 3 );
+
+				//Adjust the cart images (For WooCommerce Blocks)
+				add_filter( 'woocommerce_store_api_cart_item_images', array( $this, 'block_adjust_cart_item_images' ), 10, 3 );
+
+				//Add the attachment description to the product info within the lightbox
+				add_filter( 'foogallery_ecommerce_build_product_info_response_description', array( $this, 'adjust_product_info_response_description' ), 10, 4 );
 
 				if ( is_admin() ) {
 					// Add extra fields to the templates.
@@ -90,6 +106,147 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce_Master_Product' ) ) {
 				}
             }
         }
+
+		/**
+		 * Adjust the product info response description.
+		 *
+		 * @param string $description The description.
+		 * @param WC_Product $product The product.
+		 * @param FooGallery $gallery The gallery.
+		 * @param int $attachment_id The attachment ID.
+		 *
+		 * @return string The description.
+		 */
+		function adjust_product_info_response_description( $description, $product, $gallery, $attachment_id ) {
+
+			$source = $gallery->get_setting( 'ecommerce_transfer_product_description_source', '' );
+			if ( 'description' === $source ) {
+				$attachment = get_post( $attachment_id );
+				$description = $attachment->post_content;
+			} elseif ( 'caption' === $source ) {
+				$description = get_the_excerpt( $attachment_id );
+			}
+
+			return $description;
+		}
+
+		/**
+		 * Adjust the cart item to store relevant info about the attachment.
+		 */
+		function adjust_cart_item( $cart_item, $cart_item_key = '' ) {
+			// We only touch items coming from a FooGallery master-product setup
+			if ( empty( $cart_item['foogallery_attachment_id'] ) ) {
+				return $cart_item;
+			}
+			
+			$attachment_id = intval( $cart_item['foogallery_attachment_id'] );
+			$foogallery_id = intval( $cart_item['foogallery_id'] );
+			$new_title = $this->get_product_name( null, $foogallery_id, $attachment_id );
+			
+			if ( ! empty( $new_title ) ) {
+				$product_variation = $cart_item['data'];
+				if ( $product_variation instanceof WC_Product_Variation ) {
+					$product_variation->set_name( $new_title );
+					
+					$current_data = $product_variation->get_parent_data();
+					$current_data['title'] = $new_title;
+					$product_variation->set_parent_data( $current_data );
+
+					$product_variation->apply_changes();
+				}
+			}
+			
+			return $cart_item;
+		}
+
+		/**
+		 * Adjust the cart item to store relevant info about the attachment (For WooCommerce Blocks).
+		 */
+		function block_adjust_cart_item ( $cart_item, $cart_item_key = '' ) {
+			// We only touch items coming from a FooGallery master-product setup
+			if ( empty( $cart_item['foogallery_attachment_id'] ) ) {
+				return $cart_item;
+			}
+		
+			$attachment_id = intval( $cart_item['foogallery_attachment_id'] );
+			$foogallery_id = intval( $cart_item['foogallery_id'] );
+			$new_title = $this->get_product_name( null, $foogallery_id, $attachment_id );
+
+			if ( ! empty( $new_title ) ) {
+				// Clone the WC_Product so other cart rows (or catalog) stay intact
+				$product_variation = $cart_item['data'];
+				if ( $product_variation instanceof WC_Product_Variation ) {
+					$current_data = $product_variation->get_parent_data();
+					$current_data['title'] = $new_title;
+					$product_variation->set_parent_data( $current_data );
+				}
+			}
+		
+			return $cart_item;
+		}
+
+		/**
+		 * Replace image for Cart & Checkout blocks
+		 *
+		 * Works in WooCommerce ≥ 9.6 (when the hook was introduced).
+		 */
+		function block_adjust_cart_item_images( $images, $cart_item, $key ) {
+
+			if ( empty( $cart_item['foogallery_attachment_id'] ) ) {
+				return $images;
+			}
+
+			$attachment_id = (int) $cart_item['foogallery_attachment_id'];
+			$src           = wp_get_attachment_image_url( $attachment_id, 'woocommerce_thumbnail' );
+			if ( ! $src ) {
+				return $images; // fallback to default
+			}
+
+			return array(
+				(object) array(
+					'id'        => $attachment_id,
+					'src'       => $src,
+					'thumbnail' => $src,
+					'srcset'    => wp_get_attachment_image_srcset( $attachment_id, 'woocommerce_thumbnail' ),
+					'sizes'     => wp_get_attachment_image_sizes( $attachment_id, 'woocommerce_thumbnail' ),
+					'name'      => get_the_title( $attachment_id ),
+					'alt'       => get_post_meta( $attachment_id, '_wp_attachment_image_alt', true ),
+				),
+			);
+		}
+
+		/**
+		 * Detect if a WooCommerce block is being rendered
+		 */
+		function check_for_woocommerce_blocks( $result, $request, $path, $handler ) {
+			global $foogallery_is_woocommerce_block;
+			$paths_to_check = array( '/wc/store/v1/cart', '/wc/store/v1/checkout' );
+			
+			if ( in_array( $path, $paths_to_check ) ) {
+				$foogallery_is_woocommerce_block = true;
+			}
+
+			return $result;
+		}
+
+		/**
+		 * Set the global to false when we are done with the WooCommerce block
+		 */
+		function done_with_woocommerce_blocks( $response, $handler, $request) {
+			global $foogallery_is_woocommerce_block;
+			$foogallery_is_woocommerce_block = false;
+
+			return $response;
+		}
+
+		function is_rendering_woocommerce_block() {
+			global $foogallery_is_woocommerce_block;
+			if ( isset( $foogallery_is_woocommerce_block ) ) {
+				return $foogallery_is_woocommerce_block;
+			}
+			return false;
+		}
+
 		/**
 		 * Adjust the product permalink to include params for the gallery and attachment
 		 *
@@ -274,25 +431,24 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce_Master_Product' ) ) {
 			if ( FooGallery_Pro_Woocommerce::is_woocommerce_activated() ) {
 
 				$new_fields[] = array(
-					'id'      => 'ecommerce_transfer_mode_info',
-					'desc'    => __( 'You can choose to transfer info from the attachment to the linked product when it is added to the cart and ordered. This works best when you want to use a master product for all items in your gallery.', 'foogallery' ),
+					'id'      => 'ecommerce_master_product_info',
+					'desc'    => __( 'You can set a master product for the whole gallery, which will link that product to every item. You can still manually link items to individual products. All items that are not linked to a product will be linked to the master product.', 'foogallery' ),
 					'section' => __( 'Ecommerce', 'foogallery' ),
-					'subsection' => array( 'ecommerce-master-product' => __( 'Advanced', 'foogallery' ) ),
-					'type'    => 'help',
+					'subsection' => array( 'ecommerce-master-product' => __( 'Master Product', 'foogallery' ) ),
+					'type'    => 'help'
 				);
 
 				$new_fields[] = array(
 					'id'       => 'ecommerce_transfer_mode',
-					'title'    => __( 'Transfer Mode', 'foogallery' ),
-					'desc'     => __( 'When the product is added to the cart or ordered, details from the attachment can be transferred to the cart and order items.', 'foogallery' ),
+					'title'    => __( 'Master Product Mode', 'foogallery' ),
 					'section'  => __( 'Ecommerce', 'foogallery' ),
-					'subsection' => array( 'ecommerce-master-product' => __( 'Advanced', 'foogallery' ) ),
+					'subsection' => array( 'ecommerce-master-product' => __( 'Master Product', 'foogallery' ) ),
 					'type'     => 'radio',
 					'spacer'   => '<span class="spacer"></span>',
 					'default'  => '',
 					'choices'  => array(
-						'' => __( 'Do Nothing', 'foogallery' ),
-						'transfer' => __( 'Transfer Attachment Details', 'foogallery' ),
+						'' => __( 'Disabled', 'foogallery' ),
+						'transfer' => __( 'Enabled', 'foogallery' ),
 					),
 					'row_data' => array(
 						'data-foogallery-change-selector' => 'input',
@@ -302,25 +458,11 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce_Master_Product' ) ) {
 				);
 
 				$new_fields[] = array(
-					'id'      => 'ecommerce_master_product_info',
-					'desc'    => __( 'You can set a master product for the whole gallery, which will link that product to every item. You can still manually link items to individual products. All items that are not linked to a product will be linked to the master product.', 'foogallery' ),
-					'section' => __( 'Ecommerce', 'foogallery' ),
-					'subsection' => array( 'ecommerce-master-product' => __( 'Advanced', 'foogallery' ) ),
-					'type'    => 'help',
-					'row_data' => array(
-						'data-foogallery-hidden'                   => true,
-						'data-foogallery-show-when-field'          => 'ecommerce_transfer_mode',
-						'data-foogallery-show-when-field-operator' => '!==',
-						'data-foogallery-show-when-field-value'    => '',
-					),
-				);
-
-				$new_fields[] = array(
 					'id'       => 'ecommerce_master_product_id',
 					'title'    => __( 'Master Product', 'foogallery' ),
 					'desc'     => __( 'The product that will be used as the master product for every item in the gallery.', 'foogallery' ),
 					'section'  => __( 'Ecommerce', 'foogallery' ),
-					'subsection' => array( 'ecommerce-master-product' => __( 'Advanced', 'foogallery' ) ),
+					'subsection' => array( 'ecommerce-master-product' => __( 'Master Product', 'foogallery' ) ),
 					'type'     => 'ecommerce_master_product',
 					'default'  => '',
 					'row_data' => array(
@@ -339,7 +481,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce_Master_Product' ) ) {
 					'title'    => __( 'Add Variation Attributes', 'foogallery' ),
 					'desc'     => __( 'When a variable product is added to the cart, add the attribute data to the cart and order item.', 'foogallery' ),
 					'section'  => __( 'Ecommerce', 'foogallery' ),
-					'subsection' => array( 'ecommerce-master-product' => __( 'Advanced', 'foogallery' ) ),
+					'subsection' => array( 'ecommerce-master-product' => __( 'Master Product', 'foogallery' ) ),
 					'type'     => 'radio',
 					'spacer'   => '<span class="spacer"></span>',
 					'default'  => 'add',
@@ -360,9 +502,9 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce_Master_Product' ) ) {
 				$new_fields[] = array(
 					'id'       => 'ecommerce_transfer_product_name_source',
 					'title'    => __( 'Product Name Source', 'foogallery' ),
-					'desc'     => __( 'When the product is added to the cart, the name is updated from which field of the attachment', 'foogallery' ),
+					'desc'     => __( 'Which field of the attachment is used for the product name', 'foogallery' ),
 					'section'  => __( 'Ecommerce', 'foogallery' ),
-					'subsection' => array( 'ecommerce-master-product' => __( 'Advanced', 'foogallery' ) ),
+					'subsection' => array( 'ecommerce-master-product' => __( 'Master Product', 'foogallery' ) ),
 					'type'     => 'radio',
 					'spacer'   => '<span class="spacer"></span>',
 					'default'  => 'title',
@@ -381,10 +523,33 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce_Master_Product' ) ) {
 					),
 				);
 
+				$new_fields[] = array(
+					'id'       => 'ecommerce_transfer_product_description_source',
+					'title'    => __( 'Product Desc Source', 'foogallery' ),
+					'desc'     => __( 'Which field of the attachment is used for the product description', 'foogallery' ),
+					'section'  => __( 'Ecommerce', 'foogallery' ),
+					'subsection' => array( 'ecommerce-master-product' => __( 'Master Product', 'foogallery' ) ),
+					'type'     => 'radio',
+					'spacer'   => '<span class="spacer"></span>',
+					'default'  => 'description',
+					'choices'  => array(
+						'description' => __( 'Attachment Description', 'foogallery' ),
+						'caption' => __( 'Attachment Caption', 'foogallery' ),
+						'' => __( 'Use Master Product Description', 'foogallery' ),
+					),
+					'row_data' => array(
+						'data-foogallery-hidden'                   => true,
+						'data-foogallery-show-when-field'          => 'ecommerce_transfer_mode',
+						'data-foogallery-show-when-field-operator' => '!==',
+						'data-foogallery-show-when-field-value'    => '',
+						'data-foogallery-change-selector'          => 'input',
+						'data-foogallery-value-selector'           => 'input:checked',
+					),
+				);
 			}
 
-			// find the index of the advanced section.
-			$index = foogallery_admin_fields_find_index_of_section( $fields, __( 'Advanced', 'foogallery' ) );
+			// find the index of the master product section.
+			$index = foogallery_admin_fields_find_index_of_section( $fields, __( 'Master Product', 'foogallery' ) );
 
 			array_splice( $fields, $index, 0, $new_fields );
 
@@ -613,7 +778,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce_Master_Product' ) ) {
 		 */
 		public function adjust_cart_thumbnail( $image, $cart_item, $cart_item_key ) {
 			if ( is_array( $cart_item ) && array_key_exists( 'foogallery_attachment_id', $cart_item ) ) {
-				return wp_get_attachment_image( $cart_item['foogallery_attachment_id'] );
+				return wp_get_attachment_image( $cart_item['foogallery_attachment_id'], 'woocommerce_thumbnail' );
 			}
 
 			return $image;
@@ -668,6 +833,11 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce_Master_Product' ) ) {
 		 * @return mixed
 		 */
 		function display_variable_item_data( $cart_item_data, $cart_item ) {
+			if ( $this->is_rendering_woocommerce_block() ) {
+				// Do not add attributes if we are rendering a woocommerce block, as they return the correct data.
+				return $cart_item_data;
+			}
+
 			if ( array_key_exists( 'foogallery_id', $cart_item ) &&
 			     array_key_exists( 'foogallery_attachment_id', $cart_item ) &&
 			     array_key_exists( 'foogallery_add_attributes', $cart_item ) ) {

@@ -11478,6 +11478,8 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
                     body: "fg-media-product-body",
                     footer: "fg-media-product-footer",
                     button: "fg-panel-button",
+                    primary: "fg-panel-button-primary",
+                    secondary: "fg-panel-button-secondary",
                     hidden: "fg-hidden",
                     disabled: "fg-disabled",
                     loading: "fg-loading"
@@ -11491,6 +11493,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
                     title: "Product Information",
                     addToCart: "Add to Cart",
                     viewProduct: "View Product",
+                    goToCheckout: "Go to Checkout",
                     success: "Successfully added to cart.",
                     error: "Something went wrong adding to cart."
                 }
