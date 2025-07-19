@@ -349,11 +349,11 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 					if ( is_a( $product, 'WC_Product_Variable' ) ) {
 						$html .= $this->build_product_variation_table( $product );
 					} else if ( '' !== $gallery->get_setting( 'ecommerce_lightbox_show_price', 'shown' ) ) {
-						$html .= '<h3>' . $product->get_price_html() . '</h3>';
+						$html .= '<label>' . $product->get_price_html() . '</label>';
 					}
 				} else {
 					if ( !$product->is_in_stock() && 'shown' === $gallery->get_setting( 'ecommerce_lightbox_show_out_of_stock', 'shown' ) ) {
-						$html .= '<h3>' . $gallery->get_setting( 'ecommerce_lightbox_out_of_stock_message', '' ) . '</h3>';
+						$html .= '<label>' . $gallery->get_setting( 'ecommerce_lightbox_out_of_stock_message', '' ) . '</label>';
 					}
 					if ( 'when_non_purchasable' === $gallery->get_setting( 'ecommerce_lightbox_show_view_product_button', 'when_non_purchasable' ) ) {
 						$response['product_url'] = self::build_product_permalink( $product, $attachment_id );
