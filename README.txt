@@ -4,7 +4,7 @@ Donate link: https://fooplugins.com
 Tags: gallery, image gallery, photo gallery, responsive gallery, wordpress gallery plugin
 Requires at least: 5.3
 Tested up to: 6.8
-Stable tag: 2.4.32
+Stable tag: 2.4.34
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -313,13 +313,15 @@ Please update in order for FooGallery to work in WP 5.5+!
 
 == Changelog ==
 
-= 2.4.33 =
-* Date Updated : 16 Jul 2025
+= 2.4.34 =
+* Date Updated : 18 Jul 2025
 * Update : Freemius SDK update 2.12.1
+* Update : FooGallery client side 2.1.6
 [//]: # fs_premium_only_begin
 * New : [Commerce Plan] Added support for WooCommerce blocks, when using Master Products!
 * New : [Commerce Plan] Show a Checkout button in lightbox.
 * New : [Commerce Plan] Show an Out of Stock message in lightbox.
+* New : [Commerce Plan] Added new option to show a View Product button in lightbox, when the product is non-purchasable.
 * New : [Commerce Plan] Can pull the attachment description into the product description, when using Master Products.
 * Fix : [Commerce Plan] Cleaned up the Master Product settings, so it's more intuitive.
 [//]: # fs_premium_only_end
