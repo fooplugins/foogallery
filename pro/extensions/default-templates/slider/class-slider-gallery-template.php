@@ -12,7 +12,7 @@ if ( !class_exists( 'FooGallery_Slider_Gallery_Template' ) ) {
 			add_filter( 'foogallery_gallery_templates_files', array( $this, 'register_myself' ) );
 
 			//change fields for the template
-			add_filter( 'foogallery_override_gallery_template_fields-slider', array( $this, 'change_common_thumbnail_fields' ), 10, 2 );
+			add_filter( 'foogallery_override_gallery_template_fields-slider', array( $this, 'change_common_thumbnail_fields' ), 60, 2 );
 
 			//add the data options needed for slider
 			add_filter( 'foogallery_build_container_data_options-slider', array( $this, 'add_data_options' ), 20, 3 );
@@ -155,7 +155,6 @@ if ( !class_exists( 'FooGallery_Slider_Gallery_Template' ) ) {
 			$fields_to_remove[] = 'video_size';
 			$fields_to_remove[] = 'lightbox_theme';
 			$fields_to_remove[] = 'lightbox_no_scrollbars';
-			//$fields_to_remove[] = 'lightbox_caption_override';
 			$fields_to_remove[] = 'captions_help';
 			$fields_to_remove[] = 'caption_title_source';
 			$fields_to_remove[] = 'caption_desc_source';
@@ -167,7 +166,8 @@ if ( !class_exists( 'FooGallery_Slider_Gallery_Template' ) ) {
 			$fields_to_remove[] = 'caption_custom_help';
 			$fields_to_remove[] = 'caption_alignment';
 
-			//$fields_to_remove[] = 'lightbox_caption_override';
+			$fields_to_remove[] = 'exif_icon_position';
+			$fields_to_remove[] = 'exif_icon_theme';
 
 			$indexes_to_remove = array();
 
@@ -221,23 +221,11 @@ if ( !class_exists( 'FooGallery_Slider_Gallery_Template' ) ) {
 					$field['default'] = 'caption';
 
 					$field['choices'] = $captions_choices;
-//					$field['row_data'] = array(
-//						'data-foogallery-show-when-field-value'    => 'override',
-//						'data-foogallery-change-selector'          => 'input:radio',
-//						'data-foogallery-preview'                  => 'shortcode',
-//						'data-foogallery-value-selector'           => 'input:checked',
-//					);
 				} else if ( 'lightbox_caption_override_desc' === $field['id'] ) {
 					$field['title'] = __( 'Caption Description', 'foogallery' );
 					unset( $field['desc'] );
 					$field['default'] = 'desc';
 					$field['choices'] = $captions_choices;
-//					$field['row_data'] = array(
-//						'data-foogallery-show-when-field-value'    => 'override',
-//						'data-foogallery-change-selector'          => 'input:radio',
-//						'data-foogallery-preview'                  => 'shortcode',
-//						'data-foogallery-value-selector'           => 'input:checked',
-//					);
 				}
 
 
