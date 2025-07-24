@@ -1,7 +1,6 @@
 # FooGallery Premium Plugin - Complete Hooks Documentation
 
-**Plugin Version**: 2.4.34  
-**Documentation Date**: July 23, 2025  
+**Plugin Version**: upto 2.4.34  
 **Total Hooks Documented**: 200+  
 
 ---
