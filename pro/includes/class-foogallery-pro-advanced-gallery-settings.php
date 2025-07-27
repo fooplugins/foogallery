@@ -80,6 +80,9 @@ if ( ! class_exists( 'FooGallery_Pro_Advanced_Gallery_Settings' ) ) {
 
 				$state_mask = foogallery_gallery_template_setting( 'state_mask', 'foogallery-{id}' );
 				$options['state']['mask'] = $state_mask;
+				
+				// Pass item ID attribute setting to JavaScript for enhanced compatibility
+				$options['state']['itemIdAttribute'] = foogallery_get_setting( 'attachment_id_attribute', 'data-attachment-id' );
 			}
 
 			return $options;

@@ -7527,7 +7527,8 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 			self.isError = self.$el.hasClass(cls.error);
 
 			var data = self.$anchor.data();
-			self.id = data.id || self.id;
+			// Enhanced item ID detection - check both data-id and data-attachment-id
+			self.id = self._getItemId(data) || self.id;
 			self.productId = data.productId || self.productId;
 			self.tags = data.tags || self.tags;
 			self.href = data.href || self.$anchor.attr('href') || self.href;
@@ -8200,6 +8201,37 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 				return "data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20width=%22" + width + "%22%20height=%22" + height + "%22%20viewBox=%220%200%20" + width + "%20" + height + "%22%3E%3C/svg%3E";
 			}
 			return "";
+		},
+		/**
+		 * @summary Enhanced item ID detection that checks both data-id and data-attachment-id attributes.
+		 * @memberof FooGallery.Item#
+		 * @function _getItemId
+		 * @param {object} data - The data object from jQuery's .data() method
+		 * @returns {string|null} The item ID or null if not found
+		 * @private
+		 */
+		_getItemId: function(data) {
+			try {
+				// Check for configured attribute type from template options
+				var config = this.tmpl.opt.state || {};
+				var primaryAttr = config.itemIdAttribute || 'data-attachment-id';
+				
+				// Get the attribute name without 'data-' prefix for jQuery .data() access
+				var primaryKey = primaryAttr.replace('data-', '');
+				var itemId = data[primaryKey];
+				
+				// Fallback to alternative attribute if primary not found
+				if (!itemId) {
+					var fallbackKey = primaryKey === 'id' ? 'attachmentId' : 'id';
+					itemId = data[fallbackKey];
+				}
+				
+				return itemId || null;
+			} catch (e) {
+				console.warn('FooGallery: Error getting item ID', e);
+				// Final fallback to original behavior
+				return data.id || data.attachmentId || null;
+			}
 		},
 		/**
 		 * @summary Gets the type specific CSS class for the item.
