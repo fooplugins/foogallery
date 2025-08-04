@@ -1,0 +1,203 @@
+# FooGallery WordPress Plugin
+
+## Project Overview
+- **Plugin Name**: FooGallery
+- **Version**: 2.4.34
+- **Description**: The most intuitive and extensible gallery management tool for WordPress
+- **Framework**: WordPress Plugin
+- **Backend**: PHP 7.4+
+- **Frontend**: JavaScript, CSS, WordPress Blocks
+- **Database**: WordPress (MySQL/MariaDB)
+- **License**: GPL-2.0+
+- **Monetization**: Freemius SDK for premium features
+
+## Architecture & Structure
+
+### Core Directories
+- `foogallery.php` - Main plugin entry point and bootstrap
+- `includes/` - Core PHP classes and functionality
+  - `admin/` - WordPress admin interface
+  - `public/` - Frontend rendering and display
+  - `extensions/` - Extension management system
+  - `compatibility/` - Third-party plugin compatibility
+  - `thumbs/` - Thumbnail generation and management
+- `js/` - JavaScript files (admin and frontend)
+- `css/` - Stylesheets and responsive designs
+- `templates/` - Gallery display templates
+- `extensions/` - Bundled extensions (albums, default-templates, etc.)
+- `pro/` - Premium features (when available)
+- `freemius/` - Licensing and activation SDK
+- `gutenberg/` - Gutenberg block integration
+- `languages/` - Translation files
+
+### Key Technical Patterns
+- **Singleton Pattern**: Main plugin class uses singleton
+- **Hook System**: WordPress actions/filters throughout
+- **Custom Post Types**: Galleries stored as `foogallery` CPT
+- **Meta Fields**: Gallery settings stored in post meta
+- **Extension API**: Modular architecture for features
+- **Template System**: Flexible gallery rendering
+- **Asset Management**: Conditional loading based on usage
+
+## Important Constants & Meta Keys
+
+### Custom Post Type
+- `FOOGALLERY_CPT_GALLERY` = 'foogallery'
+
+### Meta Keys
+- `FOOGALLERY_META_SETTINGS` = '_foogallery_settings'
+- `FOOGALLERY_META_ATTACHMENTS` = 'foogallery_attachments'
+- `FOOGALLERY_META_TEMPLATE` = 'foogallery_template'
+- `FOOGALLERY_META_DATASOURCE` = 'foogallery_datasource'
+- `FOOGALLERY_META_SORT` = 'foogallery_sort'
+
+### Admin Menus
+- `FOOGALLERY_ADMIN_MENU_PARENT_SLUG` = 'edit.php?post_type=foogallery'
+- Settings: `foogallery-settings`
+- Features: `foogallery-features`
+- Help: `foogallery-help`
+
+## Core Classes & Components
+
+### Main Classes
+- `FooGallery_Plugin` - Main plugin management
+- `FooGallery_PostTypes` - Custom post type registration
+- `FooGallery_Admin` - Admin interface management
+- `FooGallery_Public` - Frontend display logic
+- `FooGallery_Extensions_Loader` - Extension system
+- `FooGallery_Common_Fields` - Shared form fields
+- `FooGallery_Lightbox` - Lightbox integration
+- `FooGallery_Thumbnails` - Image processing
+- `FooGallery_Cache` - Performance caching
+- `FooGallery_Shortcodes` - WordPress shortcode support
+
+### Data Sources
+- `FooGallery_Datasource_MediaLibrary` - WordPress media integration
+- Multiple datasources supported via extensions
+
+### Premium Features (Pro)
+- Bulk Copy operations
+- White labeling
+- EXIF data display
+- Advanced filtering
+- Gallery blueprints
+- Pagination
+- Image protection
+- Video support
+- E-commerce integration
+
+## Development Workflow
+
+### Build Tools
+- **npm**: Package management
+- **Gulp**: Build automation and deployment
+- **WordPress Scripts**: Modern build toolchain
+- **webpack**: Asset bundling for Gutenberg blocks
+
+### Scripts
+- `npm run develop` - Development build
+- `npm run build` - Production build
+- `npm run package` - Package for distribution
+- `gulp freemius-deploy` - Deploy to Freemius
+
+### File Naming Conventions
+- Admin files: `admin-*.js`, `admin-*.css`
+- Public files: `foogallery.*.js`, `foogallery.*.css`  
+- Classes: `class-*.php`
+- Templates: Located in extensions or themes
+
+## Extension System
+
+### Built-in Extensions
+- `albums` - Gallery albums functionality
+- `default-templates` - Core gallery layouts
+- `demo-content-generator` - Sample content creation
+- `import-export` - Backup/restore functionality
+
+### Extension API
+- Extensions register via hooks system
+- Template system for custom layouts
+- Settings API for configuration
+- Asset loading management
+
+## Database Schema
+
+### Custom Post Type: `foogallery`
+- Standard WordPress post fields
+- Meta fields for gallery configuration
+- Attachment relationships via meta
+
+### Custom Taxonomies
+- `foogallery_attachment_tag` - Image tagging
+- `foogallery_attachment_category` - Image categorization
+
+## Performance Considerations
+
+### Caching
+- Built-in gallery cache system
+- Thumbnail cache management
+- Conditional asset loading
+- Lazy loading support
+
+### Image Processing
+- Multiple thumbnail sizes
+- Retina display support
+- WebP format support (where available)
+- CDN compatibility
+
+## Compatibility
+
+### WordPress
+- Minimum WordPress version requirements
+- Gutenberg block editor support
+- Classic editor compatibility
+- Multisite support
+
+### Third-party Plugins
+- Page builders (Elementor, etc.)
+- SEO plugins
+- Caching plugins (WP Rocket, Autoptimize)
+- Lightbox plugins (FooBox, etc.)
+
+## Debugging & Development
+
+### Debug Mode
+- `FOOGALLERY_DEBUG` constant
+- Extensive logging system
+- System info reporting
+
+### Testing
+- Unit tests for core functionality
+- Browser compatibility testing
+- Performance testing
+
+## Common Development Tasks
+
+### Adding New Gallery Templates
+1. Create template class extending base template
+2. Register template via extension system
+3. Add template files (PHP, JS, CSS)
+4. Register assets and dependencies
+
+### Modifying Admin Interface
+- Admin classes in `includes/admin/`
+- Settings API for configuration pages
+- WordPress admin hooks and filters
+
+### Frontend Customization
+- Template overrides in themes
+- CSS customization options
+- JavaScript extension points
+
+## Security Notes
+- Follows WordPress security best practices
+- Nonce verification for admin actions
+- Capability checks for user permissions
+- Input sanitization and validation
+- SQL injection prevention
+
+## Licensing & Distribution
+- Uses Freemius SDK for premium features
+- GPL-2.0+ license for core plugin
+- Premium features require valid license
+- Automatic updates via Freemius
