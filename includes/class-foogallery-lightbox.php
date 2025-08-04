@@ -633,6 +633,30 @@ if ( ! class_exists( 'FooGallery_Lightbox' ) ) {
 			);
 
 			$field[] = array(
+				'id'      => 'lightbox_info_autohide_mobile',
+				'title'   => __( 'Auto-hide on Mobile', 'foogallery' ),
+				'desc'    => __( 'Whether captions should automatically hide on mobile devices. When disabled, captions will remain visible on mobile.', 'foogallery' ),
+				'section' => $section,
+				'subsection' => array( 'lightbox-captions' => __( 'Captions', 'foogallery' ) ),
+				'spacer'  => '<span class="spacer"></span>',
+				'type'    => 'radio',
+				'default' => 'yes',
+				'choices' => array(
+					'yes' => __( 'Auto-hide (default)', 'foogallery' ),
+					'no'  => __( 'Always visible', 'foogallery' ),
+				),
+				'row_data'=> array(
+					'data-foogallery-change-selector'          => 'input:radio',
+					'data-foogallery-preview'                  => 'shortcode',
+					'data-foogallery-value-selector'           => 'input:checked',
+					'data-foogallery-hidden'                   => true,
+					'data-foogallery-show-when-field'          => 'lightbox_info_enabled',
+					'data-foogallery-show-when-field-operator' => '!==',
+					'data-foogallery-show-when-field-value'    => 'disabled',
+				)
+			);
+
+			$field[] = array(
 				'id'      => 'lightbox_caption_override',
 				'title'   => __( 'Caption Source', 'foogallery' ),
 				'desc'    => __( 'The captions can be different to the thumbnail captions.', 'foogallery' ),
@@ -1170,6 +1194,13 @@ if ( ! class_exists( 'FooGallery_Lightbox' ) ) {
 			}
 
 			$options['infoAlign'] = foogallery_gallery_template_setting( 'lightbox_info_alignment', 'default' );
+			
+			// Handle mobile caption auto-hide setting
+			$mobile_autohide = foogallery_gallery_template_setting( 'lightbox_info_autohide_mobile', 'yes' );
+			if ( 'no' === $mobile_autohide ) {
+				$options['infoAutoHide'] = false;
+			}
+			
 			$options['transition'] = foogallery_gallery_template_setting( 'lightbox_transition', 'fade' );
 
 			$auto_progress = foogallery_gallery_template_setting( 'lightbox_auto_progress', 'no' ) === 'yes';
