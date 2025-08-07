@@ -172,7 +172,7 @@ if ( ! class_exists( 'FooGallery_Pro_Protection' ) ) {
 							$progress['message'] = sprintf( __( 'Completed. %d watermarked images generated.', 'foogallery' ), $progress['total'] );
 						}
 
-						if ( $progress['count'] > FOOGALLERY_PROTECTION_MAX_GENERATION_COUNT ) {
+						if ( $progress['count'] > $this->get_max_generation_count() ) {
 							$progress['continue'] = false;
 							$progress['count']    = 0;  // Reset the counter.
 						} else {
@@ -203,6 +203,21 @@ if ( ! class_exists( 'FooGallery_Pro_Protection' ) ) {
 			}
 
 			die();
+		}
+
+		/**
+		 * Get the max generation count.
+		 *
+		 * @return int
+		 */
+		private function get_max_generation_count() {
+			$max_generation_count = intval( foogallery_get_setting( 'watermark_max_generation_count', FOOGALLERY_PROTECTION_MAX_GENERATION_COUNT ) );
+
+			if ( $max_generation_count < 1 ) {
+				$max_generation_count = FOOGALLERY_PROTECTION_MAX_GENERATION_COUNT;
+			}
+
+			return $max_generation_count;
 		}
 
 		/**
@@ -771,6 +786,16 @@ if ( ! class_exists( 'FooGallery_Pro_Protection' ) ) {
 				'default' => '',
 				'tab'     => 'watermarks',
 				'class'   => 'foogallery_settings_short_text foogallery_settings_watermark_mode_field foogallery_settings_watermark_mode_single',
+			);
+
+			$settings['settings'][] = array(
+				'id'      => 'watermark_max_generation_count',
+				'title'   => __( 'Max Generation Count', 'foogallery' ),
+				'desc'    => __( 'The maximum number of watermarks that can be generated at once. Default is 100.', 'foogallery' ),
+				'type'    => 'text',
+				'default' => '',
+				'tab'     => 'watermarks',
+				'class'   => 'foogallery_settings_short_text',
 			);
 
 			// Generate for all images; Generate for all galleries set to used watermarks; Generate Missing/Outdated Watermark Images;
