@@ -313,6 +313,13 @@ Please update in order for FooGallery to work in WP 5.5+!
 
 == Changelog ==
 
+= 2.4.35 =
+* Date Updated : 07 Aug 2025
+* New : Added setting to limit number of galleries returned when choosing a gallery in the block editor.
+[//]: # fs_premium_only_begin
+* New : [Commerce Plan] Added setting to override the max number of watermarks generated (currently set to 100).
+[//]: # fs_premium_only_end
+
 = 2.4.34 =
 * Date Updated : 18 Jul 2025
 * Update : Freemius SDK update 2.12.1
