@@ -11,6 +11,14 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 		private $_gallery;
 
 		public function __construct() {
+			global $foogallery_admin_metaboxes_instantiated;
+
+			if ( $foogallery_admin_metaboxes_instantiated ) {
+				return;
+			}
+
+			$foogallery_admin_metaboxes_instantiated = true;
+
 			//add our foogallery metaboxes
 			add_action( 'add_meta_boxes_' . FOOGALLERY_CPT_GALLERY, array( $this, 'add_meta_boxes_to_gallery' ) );
 
