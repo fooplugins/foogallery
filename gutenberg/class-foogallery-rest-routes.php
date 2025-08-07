@@ -72,7 +72,16 @@ if ( ! class_exists( 'FooGallery_Rest_Routes' ) ) {
 		 */
 		public function get_galleries( $request ) {
 
-			$galleries = foogallery_get_all_galleries();
+			$args = false;
+
+			$limit = intval( foogallery_get_setting( 'limit_gallery_selector_block_editor', 0 ) );
+
+			if ( $limit > 0 ) {
+				$args['posts_per_page'] = $limit;
+				$args['nopaging'] = false;
+			}
+
+			$galleries = foogallery_get_all_galleries( false, $args );
 
 			$result = array();
 

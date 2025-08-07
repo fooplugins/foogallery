@@ -538,6 +538,15 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 				);
 			}
 
+			$settings[] = array(
+				'id'    => 'limit_gallery_selector_block_editor',
+				'type'  => 'text',
+				'title' => __( 'Limit Galleries (Block Editor)', 'foogallery' ),
+				'desc'  => __( 'Limit the number of galleries that are returned in the block editor when choosing a gallery.', 'foogallery' ),
+				'tab'   => 'advanced',
+				'class' => 'foogallery_settings_short_text'
+			);
+
 			//endregion Advanced Tab
 
 			//region Custom JS & CSS
