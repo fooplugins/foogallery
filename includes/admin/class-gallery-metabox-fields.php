@@ -72,15 +72,13 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Fields' ) ) {
 
 				case 'radio':
 					$i = 0;
-					$spacer = isset($spacer) ? $spacer : '<br />';
 					foreach ( $choices as $value => $label ) {
-						echo '<label '.$label_class.' for="FooGallerySettings_' . $id . $i . '">'; 
+						echo '<label '.$label_class.'>';
 						$selected = '';
 						if ( $field['value'] == $value ) {
 							$selected = ' checked="checked"';
 						}
 						echo '<input' . $field_class . $selected . ' type="radio" name="' . FOOGALLERY_META_SETTINGS . '[' . $id . ']"  id="FooGallerySettings_' . $id . $i . '" value="' . $value . '">';
-						//echo '&nbsp;';
 
 						$label_class = '';
 						$label_icon = '';
@@ -101,13 +99,8 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Fields' ) ) {
 							$label = $label['label'];
 						}
 
-						//echo '<label '.$label_class.' for="FooGallerySettings_' . $id . $i . '">' . $label_tooltip . $label . $label_icon . $label_tooltip_end . '</label>';
 						echo $label_tooltip . $label . $label_icon . $label_tooltip_end;
 						echo '</label>';
-						if ( $i < count( $choices ) - 1 ) {
-							echo $spacer;
-						}
-						//echo '</div>';
 						$i++;
 					}
 					break;

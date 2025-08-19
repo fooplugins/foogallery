@@ -405,7 +405,6 @@ if ( ! class_exists( 'FooGallery_Pro_Exif' ) ) {
                 'title'   => __( 'Show EXIF info', 'foogallery' ),
                 'desc'    => __( 'Do you want to show EXIF info in this gallery?', 'foogallery' ),
                 'section' => __( 'EXIF', 'foogallery' ),
-                'spacer'  => '<span class="spacer"></span>',
                 'type'    => 'radio',
                 'default' => 'no',
                 'choices' => apply_filters( 'foogallery_gallery_template_exif_view_choices', array(
@@ -449,7 +448,6 @@ if ( ! class_exists( 'FooGallery_Pro_Exif' ) ) {
                 'title'    => __( 'Thumbnail Icon Theme', 'foogallery' ),
                 'section'  => __( 'EXIF', 'foogallery' ),
                 'default'  => 'fg-exif-dark',
-                'spacer'  => '<span class="spacer"></span>',
                 'type'    => 'radio',
                 'choices'  => apply_filters( 'foogallery_gallery_template_exif_icon_theme_choices', array(
                     'fg-exif-light' => __( 'Light', 'foogallery' ),
@@ -474,6 +472,7 @@ if ( ! class_exists( 'FooGallery_Pro_Exif' ) ) {
                 'section' => __( 'EXIF', 'foogallery' ),
                 'type'    => 'radio',
                 'default' => 'auto',
+                'class'   => 'foogallery-radios-stacked',
                 'choices' => apply_filters( 'foogallery_gallery_template_exif_display_layout_choices', array(
                     'auto'   => __( 'Auto (adjusts to screen size)', 'foogallery' ),
                     'full'  => __( 'Full (Icon + Word + Value)', 'foogallery' ),

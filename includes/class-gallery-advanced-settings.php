@@ -116,7 +116,7 @@ if ( ! class_exists( 'FooGallery_Advanced_Gallery_Settings' ) ) {
 				'desc'    => __( 'You can choose to include a title attribute on the thumbnail image or not.', 'foogallery' ),
 				'section' => __( 'Advanced', 'foogallery' ),
 				'type'     => 'radio',
-				'spacer'   => '<span class="spacer"></span>',
+				'class'    => 'foogallery-radios-6em',
 				'default'  => '',
 				'choices'  => array(
 					'' => __( 'Enabled', 'foogallery' ),

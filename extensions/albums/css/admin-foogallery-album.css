@@ -102,11 +102,6 @@
 	height: 10em;
 }
 
-.foogallery_metabox_field-radio > input, .foogallery_metabox_field-radio > label {
-	margin-bottom: 10px;
-	display: inline-block;
-}
-
 .foogallery_template_field th {
 	width: 180px;
 }
@@ -265,9 +260,4 @@
 
 .foogallery-album-info-modal-backdrop {
 	display: none;
-}
-
-.spacer {
-	display: inline-block;
-	width:30px;
 }

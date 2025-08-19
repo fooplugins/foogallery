@@ -113,6 +113,7 @@ if ( ! class_exists( 'FooGallery_Default_Gallery_Template' ) ) {
 						'section'  => __( 'General', 'foogallery' ),
 						'default'  => '',
 						'type'     => 'radio',
+						'class'    => 'foogallery-radios-stacked',
 						'choices'  => array(
 							''   => __( 'Default', 'foogallery' ),
 							'fg-m-col1'   => __( '1 Column', 'foogallery' ),
@@ -163,7 +164,7 @@ if ( ! class_exists( 'FooGallery_Default_Gallery_Template' ) ) {
 						'section'  => __( 'General', 'foogallery' ),
 						'default'  => 'fg-center',
 						'type'     => 'radio',
-						'spacer'   => '<span class="spacer"></span>',
+						'class'    => 'foogallery-radios-6em',
 						'choices'  => array(
 							'fg-left'   => __( 'Left', 'foogallery' ),
 							'fg-center' => __( 'Center', 'foogallery' ),

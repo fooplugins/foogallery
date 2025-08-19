@@ -116,11 +116,6 @@
 	left: 5px;
 }
 
-.spacer {
-	display: inline-block;
-	width:30px;
-}
-
 .foogallery_template_field td {
 	padding-bottom: 20px;
 }
@@ -472,28 +467,6 @@ tr.foogallery_template_field[data-foogallery-invisible] {
 	padding: 10px;
 }
 
-.foogallery_metabox_field-radio > input,
-.foogallery_metabox_field-radio > label {
-	margin-bottom: 10px;
-	display: inline-block;
-}
-
-.foogallery_metabox_field-radio input[type="checkbox"] {
-	margin: 0 0 10px 0;
-}
-
-.foogallery-width-10percent .foogallery_metabox_field-radio label {
-	width: 10%;
-}
-
-.foogallery-width-20percent .foogallery_metabox_field-radio label {
-	width: 20%;
-}
-
-.foogallery-width-40percent .foogallery_metabox_field-radio label {
-	width: 40%;
-}
-
 .foogallery_metabox_field-select select {
 	min-width: 250px;
 }
@@ -513,6 +486,37 @@ tr.foogallery_template_field[data-foogallery-invisible] {
 }
 
 /** </gallery settings styling overrides> **/
+
+/* <Gallery Settings Radio Fields> */
+
+.foogallery_metabox_field-radio {
+	display: flex;
+	flex-wrap: wrap;
+	flex-direction: row;
+	gap: 10px;
+}
+
+.foogallery_metabox_field-radio label {
+	min-width: 6em;
+}
+
+.foogallery-radios-8em .foogallery_metabox_field-radio label {
+	min-width: 8em;
+}
+
+.foogallery-radios-10em .foogallery_metabox_field-radio label {
+	min-width: 10em;
+}
+
+.foogallery-radios-12em .foogallery_metabox_field-radio label {
+	min-width: 12em;
+}
+
+.foogallery-radios-stacked .foogallery_metabox_field-radio label {
+	width: 100%; /* the label will be 100%, which will stack them */
+}
+
+/* </Gallery Settings Radio Fields> */
 
 .foogallery_metabox_custom_css {
 	width: 100%;

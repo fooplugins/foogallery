@@ -7,28 +7,39 @@ if ( ! class_exists( 'FooGallery_Pro_Hover_Presets' ) ) {
 	class FooGallery_Pro_Hover_Presets {
 
 		function __construct() {
-			add_filter( 'foogallery_gallery_template_common_thumbnail_fields_hover_effect_type_choices', array( $this, 'add_preset_type' ) );
-
 			//make sure we can see the presets
-			add_filter( 'foogallery_override_gallery_template_fields', array( $this, 'add_preset_fields' ), 99, 2 );
+			//add_filter( 'foogallery_override_gallery_template_fields', array( $this, 'add_preset_fields' ), 99, 2 );
+
+			add_filter( 'foogallery_gallery_template_common_thumbnail_fields_hover_effect_preset_choices', array( $this, 'add_preset_choices' ), 10, 1 );
 
 			//build up class attributes
 			add_filter( 'foogallery_build_class_attribute', array( $this, 'add_presets_class_attributes' ), 20, 2 );
 
             //remove preset choices from simple portfolio
-            add_filter( 'foogallery_override_gallery_template_fields-simple_portfolio', array( $this, 'remove_preset_choices_for_simple_portfolio' ), 10, 2 );
+            //add_filter( 'foogallery_override_gallery_template_fields-simple_portfolio', array( $this, 'remove_preset_choices_for_simple_portfolio' ), 10, 2 );
         }
 
 		/**
-		 * Adds the preset type for hover effect type
+		 * Add the preset choices to the hover effect preset field
 		 *
 		 * @param $choices
 		 *
-		 * @return mixed
+		 * @return array
 		 */
-		function add_preset_type( $choices ) {
-			$choices['preset'] = __( 'Preset',   'foogallery' );
-			return $choices;
+		function add_preset_choices( $choices ) {
+			return array_merge( $choices, array(
+				'fg-preset fg-sadie'   => __( 'Sadie',   'foogallery' ),
+				'fg-preset fg-layla'   => __( 'Layla',   'foogallery' ),
+				'fg-preset fg-oscar'   => __( 'Oscar',   'foogallery' ),
+				'fg-preset fg-sarah'   => __( 'Sarah',   'foogallery' ),
+				'fg-preset fg-goliath' => __( 'Goliath', 'foogallery' ),
+				'fg-preset fg-jazz'    => __( 'Jazz',    'foogallery' ),
+				'fg-preset fg-lily'    => __( 'Lily',    'foogallery' ),
+				'fg-preset fg-ming'    => __( 'Ming',    'foogallery' ),
+				'fg-preset fg-selena'  => __( 'Selena',  'foogallery' ),
+				'fg-preset fg-steve'   => __( 'Steve',   'foogallery' ),
+				'fg-preset fg-zoe'     => __( 'Zoe',     'foogallery' ),
+			) );
 		}
 
 		/**
@@ -42,18 +53,6 @@ if ( ! class_exists( 'FooGallery_Pro_Hover_Presets' ) ) {
 		 */
 		function add_preset_fields( $fields, $template ) {
 			$index_of_hover_effect_preset_field = foogallery_admin_fields_find_index_of_field( $fields, 'hover_effect_preset' );
-
-			$new_fields[] = array(
-				'id'      => 'hover_effect_help',
-				'desc'    => __( 'A preset provides a stylish, pre-defined look &amp; feel for the effect when you hover over the thumbnails.', 'foogallery' ),
-				'section' => __( 'Hover Effects', 'foogallery' ),
-				'type'    => 'help',
-				'row_data' => array(
-					'data-foogallery-hidden'                => true,
-					'data-foogallery-show-when-field'       => 'hover_effect_type',
-					'data-foogallery-show-when-field-value' => 'preset',
-				)
-			);
 
 			$new_fields[] = array(
 				'id'       => 'hover_effect_preset',

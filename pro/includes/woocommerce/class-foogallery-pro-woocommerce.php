@@ -808,7 +808,6 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 					'section'  => __( 'Ecommerce', 'foogallery' ),
 					'subsection' => array( 'ecommerce-buttons' => __( 'Buttons', 'foogallery' ) ),
 					'type'     => 'radio',
-					'spacer'   => '<span class="spacer"></span>',
 					'default'  => '',
 					'choices'  => array(
 						'first' => __( 'Shown (first)', 'foogallery' ),
@@ -872,7 +871,6 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 					'section'  => __( 'Ecommerce', 'foogallery' ),
 					'subsection' => array( 'ecommerce-buttons' => __( 'Buttons', 'foogallery' ) ),
 					'type'     => 'radio',
-					'spacer'   => '<span class="spacer"></span>',
 					'choices'  => array(
 						'shown' => __( 'Shown', 'foogallery' ),
 						'' => __( 'Hidden', 'foogallery' ),
@@ -931,7 +929,6 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 					'section'  => __( 'Ecommerce', 'foogallery' ),
 					'subsection' => array( 'ecommerce-buttons' => __( 'Buttons', 'foogallery' ) ),
 					'type'     => 'radio',
-					'spacer'   => '<span class="spacer"></span>',
 					'choices'  => array(
 						'shown' => __( 'Shown', 'foogallery' ),
 						'' => __( 'Hidden', 'foogallery' ),
@@ -1157,7 +1154,6 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 					'subsection' => array( 'ecommerce-lightbox' => __( 'Lightbox', 'foogallery' ) ),
 					'type'     => 'radio',
 					'default'  => 'none',
-					'spacer'   => '<span class="spacer"></span>',
 					'choices'  => array(
 						'left'   => __( 'Left Panel', 'foogallery'),
 						'right'  => __( 'Right Panel', 'foogallery'),
@@ -1178,10 +1174,9 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 					'subsection' => array( 'ecommerce-lightbox' => __( 'Lightbox', 'foogallery' ) ),
 					'type'     => 'radio',
 					'default'  => 'shown',
-					'spacer'   => '<span class="spacer"></span>',
 					'choices'  => array(
-						'shown' => __( 'Show Button', 'foogallery'),
-						''    => __( 'Hide Button', 'foogallery'),
+						'shown' => __( 'Show', 'foogallery'),
+						''    => __( 'Hide', 'foogallery'),
 					),
 					'row_data' => array(
 						'data-foogallery-hidden'                   => true,
@@ -1202,11 +1197,10 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 					'subsection' => array( 'ecommerce-lightbox' => __( 'Lightbox', 'foogallery' ) ),
 					'type'     => 'radio',
 					'default'  => 'when_non_purchasable',
-					'spacer'   => '<span class="spacer"></span>',
 					'choices'  => array(
-						'shown' => __( 'Show Button', 'foogallery'),
-						''    => __( 'Hide Button', 'foogallery'),
-						'when_non_purchasable' => __( 'Show Button Only When Product Is Non-Purchasable', 'foogallery'),
+						'shown' => __( 'Show', 'foogallery'),
+						''    => __( 'Hide', 'foogallery'),
+						'when_non_purchasable' => __( 'Show (Only When Product Is Non-Purchasable)', 'foogallery'),
 					),
 					'row_data' => array(
 						'data-foogallery-hidden'                   => true,
@@ -1227,10 +1221,9 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 					'subsection' => array( 'ecommerce-lightbox' => __( 'Lightbox', 'foogallery' ) ),
 					'type'     => 'radio',
 					'default'  => 'shown',
-					'spacer'   => '<span class="spacer"></span>',
 					'choices'  => array(
-						'shown' => __( 'Show Button', 'foogallery'),
-						''    => __( 'Hide Button', 'foogallery'),
+						'shown' => __( 'Show', 'foogallery'),
+						''    => __( 'Hide', 'foogallery'),
 					),
 					'row_data' => array(
 						'data-foogallery-hidden'                   => true,
@@ -1251,10 +1244,9 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 					'subsection' => array( 'ecommerce-lightbox' => __( 'Lightbox', 'foogallery' ) ),
 					'type'     => 'radio',
 					'default'  => 'shown',
-					'spacer'   => '<span class="spacer"></span>',
 					'choices'  => array(
-						'shown' => __( 'Show Price', 'foogallery'),
-						''    => __( 'Hide Price', 'foogallery'),
+						'shown' => __( 'Show', 'foogallery'),
+						''    => __( 'Hide', 'foogallery'),
 					),
 					'row_data' => array(
 						'data-foogallery-hidden'                   => true,
@@ -1275,10 +1267,9 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 					'subsection' => array( 'ecommerce-lightbox' => __( 'Lightbox', 'foogallery' ) ),
 					'type'     => 'radio',
 					'default'  => 'shown',
-					'spacer'   => '<span class="spacer"></span>',
 					'choices'  => array(
-						'shown' => __( 'Show Message', 'foogallery'),
-						''    => __( 'Hide Message', 'foogallery'),
+						'shown' => __( 'Show', 'foogallery'),
+						''    => __( 'Hide', 'foogallery'),
 					),
 					'row_data' => array(
 						'data-foogallery-hidden'                   => true,

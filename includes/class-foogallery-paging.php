@@ -157,8 +157,8 @@ if ( ! class_exists( 'FooGallery_Paging' ) ) {
 					'desc'    => __( 'Add paging to a large gallery.', 'foogallery' ),
 					'section' => __( 'Paging', 'foogallery' ),
                     'section_order' => 5,
-					'spacer'  => '<span class="spacer"></span>',
 					'type'    => 'radio',
+					'class'   => 'foogallery-radios-6em',
 					'default' => '',
 					'choices' => apply_filters( 'foogallery_gallery_template_paging_type_choices', array(
 						''  => __( 'None', 'foogallery' ),
@@ -196,7 +196,7 @@ if ( ! class_exists( 'FooGallery_Paging' ) ) {
 					'title'   => __( 'Position', 'foogallery' ),
 					'desc'    => __( 'The position of the paging for either dots or pagination.', 'foogallery' ),
 					'section' => __( 'Paging', 'foogallery' ),
-					'spacer'  => '<span class="spacer"></span>',
+					'class'   => 'foogallery-radios-6em',
 					'type'    => 'radio',
 					'default' => 'bottom',
 					'choices' => apply_filters( 'foogallery_gallery_template_paging_position_choices', array(

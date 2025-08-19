@@ -77,7 +77,7 @@ function foogallery_album_templates() {
 				'section' => __( 'URL Settings', 'foogallery' ),
 				'default' => '',
 				'type'    => 'radio',
-				'spacer'  => '<span class="spacer"></span>',
+				'class'   => 'foogallery-radios-6em',
 				'choices' =>  array(
 						'' =>  __('Default', 'foogallery'),
 						'custom_url' => __('Custom URL', 'foogallery')

@@ -122,7 +122,7 @@ if ( !class_exists( 'FooGallery_Simple_Portfolio_Gallery_Template' ) ) {
                         'desc'    => __( 'The horizontal alignment of the thumbnails inside the gallery.', 'foogallery' ),
                         'section' => __( 'General', 'foogallery' ),
                         'type'    => 'radio',
-                        'spacer'  => '<span class="spacer"></span>',
+                        'class'   => 'foogallery-radios-6em',
                         'default' => 'center',
                         'choices' => array(
                             'left' => __( 'Left', 'foogallery' ),
@@ -158,7 +158,7 @@ if ( !class_exists( 'FooGallery_Simple_Portfolio_Gallery_Template' ) ) {
 				'section' => __( 'Captions', 'foogallery' ),
 				'default' => '',
 				'type'    => 'radio',
-				'spacer'  => '<span class="spacer"></span>',
+				'class'   => 'foogallery-radios-6em',
 				'choices' => array(
 					'' => __( 'Below', 'foogallery' ),
 					'fg-captions-top' => __( 'Above', 'foogallery' )

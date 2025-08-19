@@ -37,6 +37,7 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 					switch ( $field['type'] ) {
 						case 'thumb_link':
 							$field['type']    = 'radio';
+							$field['class']   = 'foogallery-radios-stacked';
 							$field['choices'] = foogallery_gallery_template_field_thumb_link_choices();
 							if ( !isset( $field['row_data'] ) ) {
 								$field['row_data'] = array(
@@ -110,7 +111,6 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 					'section'  => __( 'Appearance', 'foogallery' ),
 					'type'     => 'radio',
 					'default'  => 'fg-light',
-					'spacer'   => '<span class="spacer"></span>',
 					'choices'  => array(
 						'fg-light'  => __( 'Light', 'foogallery' ),
 						'fg-dark'   => __( 'Dark', 'foogallery' ),
@@ -129,7 +129,6 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 					'desc'     => __( 'The border size applied to each thumbnail', 'foogallery' ),
 					'section'  => __( 'Appearance', 'foogallery' ),
 					'type'     => 'radio',
-					'spacer'   => '<span class="spacer"></span>',
 					'default'  => 'fg-border-thin',
 					'choices'  => array(
 						''                 => __( 'None', 'foogallery' ),
@@ -149,7 +148,6 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 					'desc'     => __( 'The border radius, or rounded corners applied to each thumbnail', 'foogallery' ),
 					'section'  => __( 'Appearance', 'foogallery' ),
 					'type'     => 'radio',
-					'spacer'   => '<span class="spacer"></span>',
 					'default'  => '',
 					'choices'  => array(
 						''                => __( 'None', 'foogallery' ),
@@ -170,7 +168,6 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 					'desc'     => __( 'The outer or drop shadow applied to each thumbnail', 'foogallery' ),
 					'section'  => __( 'Appearance', 'foogallery' ),
 					'type'     => 'radio',
-					'spacer'   => '<span class="spacer"></span>',
 					'default'  => 'fg-shadow-outline',
 					'choices'  => array(
 						''                  => __( 'None', 'foogallery' ),
@@ -191,7 +188,6 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 					'desc'     => __( 'The inner shadow applied to each thumbnail', 'foogallery' ),
 					'section'  => __( 'Appearance', 'foogallery' ),
 					'type'     => 'radio',
-					'spacer'   => '<span class="spacer"></span>',
 					'default'  => '',
 					'choices'  => array(
 						''                       => __( 'None', 'foogallery' ),
@@ -262,6 +258,18 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 
 				//region Hover Effects Fields
 				$fields[] = array(
+					'id'      => 'hover_effect_help',
+					'desc'    => __( 'A preset provides a stylish, pre-defined look &amp; feel for the effect when you hover over the thumbnails.', 'foogallery' ),
+					'section' => __( 'Hover Effects', 'foogallery' ),
+					'type'    => 'help',
+					'row_data' => array(
+						'data-foogallery-hidden'                => true,
+						'data-foogallery-show-when-field'       => 'hover_effect_type',
+						'data-foogallery-show-when-field-value' => 'preset',
+					)
+				);
+
+				$fields[] = array(
 					'id'       => 'hover_effect_type',
 					'title'    => __( 'Effect Type', 'foogallery' ),
 					'section'  => __( 'Hover Effects', 'foogallery' ),
@@ -271,9 +279,9 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 						'foogallery_gallery_template_common_thumbnail_fields_hover_effect_type_choices', array(
 							'none'   => __( 'None', 'foogallery' ),
 							'normal' => __( 'Normal', 'foogallery' ),
+							'preset' => __( 'Preset', 'foogallery' ),
 						)
 					),
-					'spacer'   => '<span class="spacer"></span>',
 					'desc'     => __( 'What type of hover effect do you want to show for your thumbnails?', 'foogallery' ),
 					'row_data' => array(
 						'data-foogallery-change-selector' => 'input:radio',
@@ -283,12 +291,57 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 				);
 
 				$fields[] = array(
+					'id'       => 'hover_effect_preset',
+					'title'    => __( 'Preset', 'foogallery' ),
+					'section'  => __( 'Hover Effects', 'foogallery' ),
+					'default'  => 'fg-preset fg-sadie',
+					'type'     => 'radio',
+					'choices'  => apply_filters(
+						'foogallery_gallery_template_common_thumbnail_fields_hover_effect_preset_choices', array(
+							'fg-preset fg-brad'    => __( 'Freedom', 'foogallery' ),
+						)
+					),
+					'desc'     => __( 'A preset styling that is used for the hover effect.', 'foogallery' ),
+					'row_data' => array(
+						'data-foogallery-change-selector'       => 'input:radio',
+						'data-foogallery-value-selector'        => 'input:checked',
+						'data-foogallery-preview'               => 'shortcode',
+						'data-foogallery-hidden'                => true,
+						'data-foogallery-show-when-field'       => 'hover_effect_type',
+						'data-foogallery-show-when-field-value' => 'preset',
+					),
+					'class' => 'foogallery-radios-12em',
+				);
+	
+				$fields[] = array(
+					'id'       => 'hover_effect_preset_size',
+					'title'    => __( 'Preset Size', 'foogallery' ),
+					'section'  => __( 'Hover Effects', 'foogallery' ),
+					'default'  => 'fg-preset-small',
+					'type'     => 'radio',
+					'choices'  => apply_filters(
+						'foogallery_gallery_template_common_thumbnail_fields_hover_effect_preset_size_choices', array(
+							'fg-preset-small'  => __( 'Small', 'foogallery' ),
+							'fg-preset-medium' => __( 'Medium', 'foogallery' ),
+							'fg-preset-large'  => __( 'Large', 'foogallery' ),
+						)
+					),
+					'desc'     => __( 'Choose an appropriate size for the preset hover effects, based on the size of your thumbs. Choose small for thumbs 150-200 wide, medium for thumbs 200-400 wide, and large for thumbs over 400 wide.', 'foogallery' ),
+					'row_data' => array(
+						'data-foogallery-change-selector'          => 'input:radio',
+						'data-foogallery-hidden'                   => true,
+						'data-foogallery-show-when-field'          => 'hover_effect_type',
+						'data-foogallery-show-when-field-value'    => 'preset',
+						'data-foogallery-preview'                  => 'shortcode'
+					)
+				);
+
+				$fields[] = array(
 					'id'       => 'caption_invert_color',
 					'title'    => __( 'Theme', 'foogallery' ),
 					'desc'     => __( 'You can choose either a dark or light hover effect.', 'foogallery' ),
 					'section'  => __( 'Hover Effects', 'foogallery' ),
 					'type'     => 'radio',
-					'spacer'   => '<span class="spacer"></span>',
 					'default'  => '',
 					'choices'  => apply_filters( 'foogallery_gallery_template_common_thumbnail_fields_caption_invert_color_choices', array(
 						'' => array(
@@ -318,7 +371,6 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 					'title'    => __( 'Color Effect', 'foogallery' ),
 					'section'  => __( 'Hover Effects', 'foogallery' ),
 					'default'  => '',
-					'spacer'   => '<span class="spacer"></span>',
 					'type'     => 'radio',
 					'choices'  => apply_filters(
 						'foogallery_gallery_template_common_thumbnail_fields_hover_effect_color_choices', array(
@@ -342,7 +394,6 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 					'title'    => __( 'Scaling Effect', 'foogallery' ),
 					'section'  => __( 'Hover Effects', 'foogallery' ),
 					'default'  => '',
-					'spacer'   => '<span class="spacer"></span>',
 					'type'     => 'radio',
 					'choices'  => apply_filters(
 						'foogallery_gallery_template_common_thumbnail_fields_hover_effect_scale_choices', array(
@@ -366,7 +417,6 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 					'title'    => __( 'Caption Visibility', 'foogallery' ),
 					'section'  => __( 'Hover Effects', 'foogallery' ),
 					'default'  => 'fg-caption-hover',
-					'spacer'   => '<span class="spacer"></span>',
 					'type'     => 'radio',
 					'choices'  => apply_filters(
 						'foogallery_gallery_template_common_thumbnail_fields_hover_effect_caption_visibility_choices', array(
@@ -453,6 +503,7 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 					'desc'     => __( 'Decide where caption titles are pulled from. By default, what is saved under general settings will be used, but it can be overridden per gallery', 'foogallery' ),
 					'section'  => __( 'Captions', 'foogallery' ),
 					'type'     => 'radio',
+					'class'    => 'foogallery-radios-stacked',
 					'default'  => '',
 					'choices'  => array(
 						'none'    => __( 'None', 'foogallery' ),
@@ -474,6 +525,7 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 					'desc'     => __( 'Decide where captions descriptions are pulled from. By default, the general settings are used, but it can be overridden per gallery', 'foogallery' ),
 					'section'  => __( 'Captions', 'foogallery' ),
 					'type'     => 'radio',
+					'class'    => 'foogallery-radios-stacked',
 					'default'  => '',
 					'choices'  => array(
 						'none'    => __( 'None', 'foogallery' ),
@@ -495,7 +547,6 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 					'desc'     => __( 'Change the horizontal alignment of the thumbnail captions', 'foogallery' ),
 					'section'  => __( 'Captions', 'foogallery' ),
 					'type'     => 'radio',
-					'spacer'   => '<span class="spacer"></span>',
 					'default'  => '',
 					'choices'  => array(
 						''       => __( 'Default', 'foogallery' ),
@@ -517,7 +568,6 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 					'section' => __( 'Captions', 'foogallery' ),
 					'default' => '',
 					'type'    => 'radio',
-					'spacer'  => '<span class="spacer"></span>',
 					'choices' => array(
 						'' => __( 'No', 'foogallery' ),
 						'yes' => __( 'Yes', 'foogallery' ),
