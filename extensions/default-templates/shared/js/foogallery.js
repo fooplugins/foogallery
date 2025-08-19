@@ -2968,11 +2968,10 @@ FooGallery.utils, FooGallery.utils.is, FooGallery.utils.str);
    * @memberof FooGallery.utils.
    * @class Timer
    * @param {number} [interval=1000] - The internal tick interval of the timer.
-   * @augments FooGallery.utils.EventClass
    */
 
   _.Timer = _.EventClass.extend(
-  /** @lends FooGallery.utils.Timer.prototype */
+  /** @lends FooGallery.utils.Timer */
   {
     /**
      * @ignore
@@ -3259,7 +3258,6 @@ FooGallery.utils, FooGallery.utils.is, FooGallery.utils.str);
       if (self.isRunning) {
         self.isRunning = false;
         self.isPaused = true;
-        self.canResume = self.__remaining > 0;
         self.trigger("pause", self.__eventArgs());
       }
 
@@ -4185,6 +4183,19 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 			self.instances.clear();
 		}
 	} );
+
+    /**
+     * Checks if the supplied URL is cross-origin.
+     * @param {string} url
+     * @returns {boolean} True if the URL is cross-origin, otherwise False.
+     */
+	_.isCrossOrigin = function(url) {
+		const parsed = URL.parse(url);
+		if ( parsed !== null ) {
+			return parsed.origin !== window.location.origin;
+		}
+		return false;
+	};
 
 })(
 	FooGallery.$,
@@ -7527,7 +7538,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 			self.isError = self.$el.hasClass(cls.error);
 
 			var data = self.$anchor.data();
-			self.id = data.id || self.id;
+			self.id = data.id || data.attachmentId || self.id;
 			self.productId = data.productId || self.productId;
 			self.tags = data.tags || self.tags;
 			self.href = data.href || self.$anchor.attr('href') || self.href;
@@ -7575,6 +7586,12 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 				if (desc !== self.description) {
 					self.$caption.find(sel.caption.description).html(desc);
 				}
+			}
+			if (!self.showCaptionTitle) {
+				self.$caption.find(sel.caption.title).remove();
+			}
+			if (!self.showCaptionDescription) {
+				self.$caption.find(sel.caption.description).remove();
 			}
 
 			// if the image has no src url then set the placeholder
@@ -8140,15 +8157,13 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 		loadIMG: function(){
 			var self = this;
 			return new $.Deferred(function(def){
-				var img = self.isPicture ? self.$image.find("img").get(0) : self.$image.get(0);
+				var img = self.getImageElement();
 				if (!img){
 					return def.reject("Unable to find img element.");
 				}
 				var ph_src = img.src, ph_srcset = img.srcset;
 				img.onload = function () {
 					img.onload = img.onerror = null;
-					img.style.removeProperty("width");
-					img.style.removeProperty("height");
 					def.resolve(img);
 				};
 				img.onerror = function () {
@@ -8174,10 +8189,10 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 						}
 					});
 				}
-				var size = img.getBoundingClientRect();
-				img.style.width = size.width;
-				img.style.height = size.height;
 
+				if ( img.crossOrigin === null && _.isCrossOrigin(self.src) ) {
+					img.crossOrigin = 'anonymous';
+				}
 				img.src = self.src;
 				if (!_is.empty(self.srcset)){
 					img.srcset = self.srcset;
@@ -8186,6 +8201,14 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 					img.onload();
 				}
 			}).promise();
+		},
+        /**
+         * @summary Utility method for getting the current items' <img/> element.
+         * @returns {HTMLImageElement|undefined}
+         */
+		getImageElement: function(){
+			var self = this;
+			return self.isPicture ? self.$image.find("img").get(0) : self.$image.get(0);
 		},
 		/**
 		 * @summary Create an empty placeholder image using the supplied dimensions.
@@ -13637,7 +13660,9 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
             const maxOffset = ( self.getSize( self.elem.inner, true ).width / 2 ) + ( itemWidth / 2 );
             const layout = self.calculate( itemWidth, maxOffset );
             self.cache.set( "width", width );
-            self.cache.set( "layout", layout );
+            if ( layout?.side?.length > 0 ) {
+                self.cache.set( "layout", layout );
+            }
             return layout;
         },
         round: function( value, precision ){
@@ -13669,34 +13694,36 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
                 side: []
             };
 
-            let offset = itemWidth, zIndex = result.zIndex - 1;
-            for (let i = 0; i < showPerSide; i++, zIndex--){
-                const z = self.getSequentialZFromScale( i, self.opt.scale, self.opt.perspective );
-                const width = self.scaleToZ( itemWidth, z, self.opt.perspective );
-                const diff = ( itemWidth - width ) / 2;
+            if ( itemWidth > 0 ) {
+                let offset = itemWidth, zIndex = result.zIndex - 1;
+                for (let i = 0; i < showPerSide; i++, zIndex--){
+                    const z = self.getSequentialZFromScale( i, self.opt.scale, self.opt.perspective );
+                    const width = self.scaleToZ( itemWidth, z, self.opt.perspective );
+                    const diff = ( itemWidth - width ) / 2;
 
-                offset -= diff;
+                    offset -= diff;
 
-                const gutterStep = 1;
-                const gutterValue = self.opt.gutter.unit === "%" ? itemWidth * Math.abs( gutter / 100 ) : Math.abs( gutter );
-                const gutterOffset = self.opt.gutter.unit === "%" ? self.scaleToZ( gutterValue, z, self.opt.perspective ) : gutterValue;
-                if (gutter > 0){
-                    offset += gutterOffset;
-                } else {
-                    offset -= gutterOffset;
-                }
-                if ( offset + width + diff > maxOffset ){
-                    if ( gutter - gutterStep < self.opt.gutter.min ){
-                        return self.calculate( itemWidth, maxOffset, self.opt.gutter.max, showPerSide - 1);
+                    const gutterStep = 1;
+                    const gutterValue = self.opt.gutter.unit === "%" ? itemWidth * Math.abs( gutter / 100 ) : Math.abs( gutter );
+                    const gutterOffset = self.opt.gutter.unit === "%" ? self.scaleToZ( gutterValue, z, self.opt.perspective ) : gutterValue;
+                    if (gutter > 0){
+                        offset += gutterOffset;
+                    } else {
+                        offset -= gutterOffset;
                     }
-                    return self.calculate( itemWidth, maxOffset, gutter - gutterStep, showPerSide);
+                    if ( offset + width + diff > maxOffset ){
+                        if ( gutter - gutterStep < self.opt.gutter.min ){
+                            return self.calculate( itemWidth, maxOffset, self.opt.gutter.max, showPerSide - 1);
+                        }
+                        return self.calculate( itemWidth, maxOffset, gutter - gutterStep, showPerSide);
+                    }
+
+                    const x = self.getVectorX( offset, z, self.opt.perspective );
+
+                    offset += width + diff;
+
+                    result.side.push({x: x, z: z, zIndex: zIndex });
                 }
-
-                const x = self.getVectorX( offset, z, self.opt.perspective );
-
-                offset += width + diff;
-
-                result.side.push({x: x, z: z, zIndex: zIndex });
             }
             return result;
         },
