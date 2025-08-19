@@ -156,3 +156,8 @@
     }
 
 }
+
+.foogallery_template_field_template_id-default-ecommerce_ribbon_help .foogallery-help div {
+    width: 25%;
+    display: inline-block;  
+}

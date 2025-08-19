@@ -1111,18 +1111,18 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 					),
 				);
 
-                $ribbon_help_html = '<h3> ' . __('Show Icons In Your Ribbons', 'foogallery') . '</h3>' .
+                $ribbon_help_html = '<h3>' . __('Show Icons In Your Ribbons', 'foogallery') . '</h3>' .
                     __( 'You can also show icons within your ribbons, by including the text "icon-star" or similar. Below are a list of icons that you might find useful for your shop:', 'foogallery' ) .
                     '<br /><br />' .
-                    '<code>icon-star</code> : <i class="dashicons dashicons-star-filled" style="margin-right:50px;"></i>' .
-                    '<code>icon-money</code> : <i class="dashicons dashicons-money-alt" style="margin-right:50px;"></i>' .
-                    '<code>icon-bell</code> : <i class="dashicons dashicons-bell" style="margin-right:50px;"></i>' .
-                    '<code>icon-warning</code> : <i class="dashicons dashicons-warning" style="margin-right:50px;"></i>' .
-                    '<code>icon-awards</code> : <i class="dashicons dashicons-awards" style="margin-right:50px;"></i>' .
-                    '<code>icon-clock</code> : <i class="dashicons dashicons-clock" style="margin-right:50px;"></i>' .
-                    '<code>icon-paperclip</code> : <i class="dashicons dashicons-paperclip" style="margin-right:50px;"></i>' .
-                    '<code>icon-thumbs-up</code> : <i class="dashicons dashicons-thumbs-up" style="margin-right:50px;"></i>' .
-                    '<code>icon-flag</code> : <i class="dashicons dashicons-flag" style="margin-right:50px;"></i><br /><br />' .
+                    '<div><code>icon-star</code> : <i class="dashicons dashicons-star-filled"></i></div>' .
+                    '<div><code>icon-money</code> : <i class="dashicons dashicons-money-alt"></i></div>' .
+                    '<div><code>icon-bell</code> : <i class="dashicons dashicons-bell"></i></div>' .
+                    '<div><code>icon-warning</code> : <i class="dashicons dashicons-warning"></i></div>' .
+                    '<div><code>icon-awards</code> : <i class="dashicons dashicons-awards"></i></div>' .
+                    '<div><code>icon-clock</code> : <i class="dashicons dashicons-clock"></i></div>' .
+					'<div><code>icon-paperclip</code> : <i class="dashicons dashicons-paperclip"></i></div>' .
+                    '<div><code>icon-thumbs-up</code> : <i class="dashicons dashicons-thumbs-up"></i></div>' .
+                    '<div><code>icon-flag</code> : <i class="dashicons dashicons-flag"></i></div><br /><br />' .
                     __( 'Please note : any dashicon will work in the ribbons.', 'foogallery' );
 
                 $new_fields[] = array(

@@ -63,6 +63,7 @@ if ( ! class_exists( 'FooGallery_Pro_Hover_Presets' ) ) {
 				'type'     => 'radio',
 				'choices'  => apply_filters(
 					'foogallery_gallery_template_common_thumbnail_fields_hover_effect_preset_choices', array(
+						'fg-preset fg-brad'    => __( 'Freedom', 'foogallery' ),
 						'fg-preset fg-sadie'   => __( 'Sadie',   'foogallery' ),
 						'fg-preset fg-layla'   => __( 'Layla',   'foogallery' ),
 						'fg-preset fg-oscar'   => __( 'Oscar',   'foogallery' ),
@@ -76,7 +77,7 @@ if ( ! class_exists( 'FooGallery_Pro_Hover_Presets' ) ) {
 						'fg-preset fg-zoe'     => __( 'Zoe',     'foogallery' ),
 					)
 				),
-				//'spacer'   => '<span class="spacer"></span>',
+				'spacer'   => '<span class="spacer"></span>',
 				'desc'     => __( 'A preset styling that is used for the hover effect.', 'foogallery' ),
 				'row_data' => array(
 					'data-foogallery-change-selector'       => 'input:radio',
@@ -85,7 +86,8 @@ if ( ! class_exists( 'FooGallery_Pro_Hover_Presets' ) ) {
 					'data-foogallery-hidden'                => true,
 					'data-foogallery-show-when-field'       => 'hover_effect_type',
 					'data-foogallery-show-when-field-value' => 'preset',
-				)
+				),
+				'class' => 'foogallery-width-20percent'
 			);
 
 			$new_fields[] = array(

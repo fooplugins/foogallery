@@ -478,9 +478,20 @@ tr.foogallery_template_field[data-foogallery-invisible] {
 	display: inline-block;
 }
 
-.foogallery_metabox_field-radio input[type="checkbox"],
-.foogallery_metabox_field-radio input[type="radio"] {
+.foogallery_metabox_field-radio input[type="checkbox"] {
 	margin: 0 0 10px 0;
+}
+
+.foogallery-width-10percent .foogallery_metabox_field-radio label {
+	width: 10%;
+}
+
+.foogallery-width-20percent .foogallery_metabox_field-radio label {
+	width: 20%;
+}
+
+.foogallery-width-40percent .foogallery_metabox_field-radio label {
+	width: 40%;
 }
 
 .foogallery_metabox_field-select select {
