@@ -144,7 +144,6 @@ if ( !class_exists( 'FooGallery_Product_Gallery_Template' ) ) {
                         'desc'    => __( 'The horizontal alignment of the thumbnails inside the gallery.', 'foogallery' ),
                         'section' => __( 'General', 'foogallery' ),
                         'type'    => 'radio',
-                        'spacer'  => '<span class="spacer"></span>',
                         'default' => 'center',
                         'choices' => array(
                             'left' => __( 'Left', 'foogallery' ),

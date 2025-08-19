@@ -251,7 +251,6 @@ if ( ! class_exists( 'FooGallery_Carousel_Gallery_Template' ) ) {
 						'section'  => __( 'General', 'foogallery' ),
 						'default'  => '',
 						'type'     => 'radio',
-						'class'    => 'foogallery-radios-6em',
 						'choices' => array(
 							'' => __( 'Same', 'foogallery' ),
 							'fg-inverted' => __( 'Inverted', 'foogallery' ),
@@ -267,7 +266,6 @@ if ( ! class_exists( 'FooGallery_Carousel_Gallery_Template' ) ) {
                         'section'  => __( 'General', 'foogallery' ),
                         'default'  => '',
                         'type'     => 'radio',
-                        'class'    => 'foogallery-radios-6em',
                         'choices' => array(
                             '' => __( 'Shown', 'foogallery' ),
                             'fg-carousel-hide-nav-arrows' => __( 'Hidden', 'foogallery' ),
@@ -283,7 +281,6 @@ if ( ! class_exists( 'FooGallery_Carousel_Gallery_Template' ) ) {
                         'section'  => __( 'General', 'foogallery' ),
                         'default'  => '',
                         'type'     => 'radio',
-                        'class'    => 'foogallery-radios-6em',
                         'choices' => array(
                             '' => __( 'Shown', 'foogallery' ),
                             'fg-carousel-hide-pagination' => __( 'Hidden', 'foogallery' ),
@@ -299,7 +296,6 @@ if ( ! class_exists( 'FooGallery_Carousel_Gallery_Template' ) ) {
                         'section'  => __( 'General', 'foogallery' ),
                         'default'  => '',
                         'type'     => 'radio',
-                        'class'    => 'foogallery-radios-6em',
                         'choices' => array(
                             '' => __( 'Shown', 'foogallery' ),
                             'fg-carousel-hide-progress-bar' => __( 'Hidden', 'foogallery' ),

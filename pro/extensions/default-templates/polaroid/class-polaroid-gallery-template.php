@@ -140,7 +140,6 @@ if ( !class_exists( 'FooGallery_Polaroid_Gallery_Template' ) ) {
                         'desc'    => __( 'The horizontal alignment of the thumbnails inside the gallery.', 'foogallery' ),
                         'section' => __( 'General', 'foogallery' ),
                         'type'    => 'radio',
-                        'spacer'  => '<span class="spacer"></span>',
                         'default' => 'center',
                         'choices' => array(
                             'left' => __( 'Left', 'foogallery' ),
@@ -160,7 +159,6 @@ if ( !class_exists( 'FooGallery_Polaroid_Gallery_Template' ) ) {
 						'section' => __( 'Captions', 'foogallery' ),
                         'default' => '',
                         'type'    => 'radio',
-                        'spacer'  => '<span class="spacer"></span>',
                         'choices' => array(
                             '' => __( 'Below', 'foogallery' ),
                             'fg-captions-top' => __( 'Above', 'foogallery' )

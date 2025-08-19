@@ -574,7 +574,6 @@ if ( ! class_exists( 'FooGallery_Pro_Protection' ) ) {
 				'title'    => __( 'Right Click Protection', 'foogallery' ),
 				'desc'     => __( 'Disable right-click on full size images.', 'foogallery' ),
 				'section'  => __( 'Protection', 'foogallery' ),
-				'spacer'   => '<span class="spacer"></span>',
 				'type'     => 'radio',
 				'default'  => 'no',
 				'choices'  => array(
@@ -593,7 +592,6 @@ if ( ! class_exists( 'FooGallery_Pro_Protection' ) ) {
 				'title'    => __( 'Watermark Images', 'foogallery' ),
 				'desc'     => __( 'Your full size images will be watermarked according to the global watermark settings.', 'foogallery' ),
 				'section'  => __( 'Protection', 'foogallery' ),
-				'spacer'   => '<span class="spacer"></span>',
 				'default'  => 'no',
 				'type'     => 'radio',
 				'choices'  => array(

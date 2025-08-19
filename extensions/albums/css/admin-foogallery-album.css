@@ -102,6 +102,10 @@
 	height: 10em;
 }
 
+.foogallery_metabox_field-radio > label {
+	margin-right: 10px;
+}
+
 .foogallery_template_field th {
 	width: 180px;
 }

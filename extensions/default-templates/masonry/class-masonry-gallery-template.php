@@ -220,7 +220,6 @@ if ( !class_exists( 'FooGallery_Masonry_Gallery_Template' ) ) {
                         'desc'    => __( 'You can choose to center align your images or leave them at the default (left). Only applicable when using a fixed layout!', 'foogallery' ),
 						'section' => __( 'General', 'foogallery' ),
 						'type'    => 'radio',
-						'spacer'  => '<span class="spacer"></span>',
                         'choices' => array(
                             ''  => __( 'Left', 'foogallery' ),
                             'fg-center'   => __( 'Center', 'foogallery' )

@@ -52,7 +52,6 @@ if ( ! class_exists( 'FooGallery_Pro_Advanced_Thumbnails' ) ) {
                 'section'  => __( 'Advanced', 'foogallery' ),
                 'type'     => 'radio',
                 'default'  => '',
-                'spacer'   => '<span class="spacer"></span>',
                 'choices'  => array(
                     ''  => __( 'Default', 'foogallery' ),
                     'background_fill'   => __( 'Background Fill (No crop)', 'foogallery' ),

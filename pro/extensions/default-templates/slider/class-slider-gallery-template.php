@@ -94,7 +94,6 @@ if ( !class_exists( 'FooGallery_Slider_Gallery_Template' ) ) {
 						'desc' => __('Select the aspect ratio the slider will use, to best suit your content.', 'foogallery'),
 						'default' => 'fg-16-9',
 						'type'    => 'radio',
-						'spacer'  => '<span class="spacer"></span>',
 						'choices' => array(
 							'fg-16-9' => __( '16:9', 'foogallery' ),
 							'fg-16-10' => __( '16:10', 'foogallery' ),

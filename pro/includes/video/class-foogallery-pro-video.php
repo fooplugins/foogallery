@@ -242,7 +242,6 @@ if ( ! class_exists( 'FooGallery_Pro_Video' ) ) {
 				'desc'     => __( 'Always show the video icon for videos in the gallery, and not only when you hover.', 'foogallery' ),
 				'type'     => 'radio',
 				'default'  => '',
-				'spacer'   => '<span class="spacer"></span>',
 				'choices'  => array(
 					'fg-video-sticky' => __( 'Yes', 'foogallery' ),
 					''                => __( 'No', 'foogallery' ),
@@ -287,7 +286,6 @@ if ( ! class_exists( 'FooGallery_Pro_Video' ) ) {
 				'desc'    => __( 'Try to autoplay the video when opened in a lightbox. This will only work with videos hosted on Youtube or Vimeo.', 'foogallery' ),
 				'type'    => 'radio',
 				'default' => 'yes',
-				'spacer'  => '<span class="spacer"></span>',
 				'choices' => array(
 					'yes' => __( 'Yes', 'foogallery' ),
 					'no'  => __( 'No', 'foogallery' ),

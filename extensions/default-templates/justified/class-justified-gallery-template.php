@@ -161,7 +161,6 @@ if ( ! class_exists( 'FooGallery_Justified_Gallery_Template' ) ) {
 						'desc'     => __( 'For rows that cannot be justified, what alignment should be used?', 'foogallery' ),
 						'section'  => __( 'General', 'foogallery' ),
 						'type'     => 'radio',
-						'spacer'   => '<span class="spacer"></span>',
 						'default'  => 'center',
 						'choices'  => array(
 							'left'   => __( 'Left', 'foogallery' ),

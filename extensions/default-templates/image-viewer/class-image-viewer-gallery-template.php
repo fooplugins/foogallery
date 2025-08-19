@@ -149,7 +149,6 @@ if ( !class_exists( 'FooGallery_Image_Viewer_Gallery_Template' ) ) {
                         'desc'    => __( 'The horizontal alignment of the thumbnails inside the gallery', 'foogallery' ),
                         'default' => 'fg-center',
 						'type'    => 'radio',
-						'spacer'  => '<span class="spacer"></span>',
                         'choices' => array(
                             'fg-left' => __( 'Left', 'foogallery' ),
                             'fg-center' => __( 'Center', 'foogallery' ),
@@ -167,7 +166,7 @@ if ( !class_exists( 'FooGallery_Image_Viewer_Gallery_Template' ) ) {
 						'desc'    => __( 'When navigating through the images, do you want to loop image back to the first after you navigate past the last image?', 'foogallery' ),
 						'default' => 'enabled',
 						'type'    => 'radio',
-						'spacer'  => '<span class="spacer"></span>',
+						'class'   => 'foogallery-radios-12em',
 						'choices' => array(
 							'disabled' => __( 'Disabled', 'foogallery' ),
 							'enabled' => __( 'Looping Enabled', 'foogallery' ),

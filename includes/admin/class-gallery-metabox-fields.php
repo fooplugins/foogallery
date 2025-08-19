@@ -73,18 +73,15 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Fields' ) ) {
 				case 'radio':
 					$i = 0;
 					foreach ( $choices as $value => $label ) {
-						echo '<label '.$label_class.'>';
 						$selected = '';
 						if ( $field['value'] == $value ) {
 							$selected = ' checked="checked"';
 						}
-						echo '<input' . $field_class . $selected . ' type="radio" name="' . FOOGALLERY_META_SETTINGS . '[' . $id . ']"  id="FooGallerySettings_' . $id . $i . '" value="' . $value . '">';
-
 						$label_class = '';
 						$label_icon = '';
 						$label_tooltip = '';
 						$label_tooltip_end = '';
-
+						$input_disabled = '';
 						if ( is_array( $label ) ) {
 							if ( array_key_exists( 'class', $label ) ) {
 								$label_class = ' class="' . $label['class'] . '"';
@@ -96,9 +93,13 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Fields' ) ) {
 								$label_tooltip = '<span data-balloon-length="large" data-balloon-pos="right" data-balloon="' . $label['tooltip'] . '">';
 								$label_tooltip_end = '</span>';
 							}
+							if ( array_key_exists( 'disabled', $label ) ) {
+								$input_disabled = ' disabled="disabled"';
+							}
 							$label = $label['label'];
 						}
-
+						echo '<label '.$label_class.'>';
+						echo '<input' . $field_class . $selected . $input_disabled . ' type="radio" name="' . FOOGALLERY_META_SETTINGS . '[' . $id . ']"  id="FooGallerySettings_' . $id . $i . '" value="' . $value . '">';
 						echo $label_tooltip . $label . $label_icon . $label_tooltip_end;
 						echo '</label>';
 						$i++;

@@ -210,7 +210,6 @@ if ( !class_exists( 'FooGallery_FooGrid_Gallery_Template' ) ) {
 						'desc' => __('Select the aspect ratio the panel will use, to best suit your content.', 'foogallery'),
 						'default' => 'fg-16-9',
 						'type'    => 'radio',
-						'class'   => 'foogallery-radios-6em',
 						'choices' => array(
 							'fg-16-9' => __( '16:9', 'foogallery' ),
 							'fg-16-10' => __( '16:10', 'foogallery' ),
@@ -236,7 +235,6 @@ if ( !class_exists( 'FooGallery_FooGrid_Gallery_Template' ) ) {
 						'desc' => __('Transition type to use switching between items, or no transitions at all.', 'foogallery'),
 						'default' => 'fade',
 						'type'    => 'radio',
-						'spacer'  => '<span class="spacer"></span>',
 						'choices' => array(
 							'fade' => __( 'Fade', 'foogallery' ),
 							'horizontal' => __( 'Horizontal', 'foogallery' ),
@@ -256,7 +254,6 @@ if ( !class_exists( 'FooGallery_FooGrid_Gallery_Template' ) ) {
 						'desc' => __('Whether the slider should loop (i.e. the first slide goes to the last, the last slide goes to the first).', 'foogallery'),
 						'default' => 'yes',
 						'type'    => 'radio',
-						'spacer'  => '<span class="spacer"></span>',
 						'choices' => array(
 							'yes' => __( 'Yes', 'foogallery' ),
 							'no' => __( 'No', 'foogallery' )
@@ -296,7 +293,6 @@ if ( !class_exists( 'FooGallery_FooGrid_Gallery_Template' ) ) {
 						'desc' => __('The position of caption in the stage or no captions at all. * The caption will automatically switch to below the item on small screen sizes.', 'foogallery'),
 						'default' => 'bottom',
 						'type'    => 'radio',
-						'spacer'  => '<span class="spacer"></span>',
 						'choices' => array(
 							'bottom' => __( 'Below', 'foogallery' ),
 							'right' => __( 'Right', 'foogallery' ),
@@ -317,7 +313,6 @@ if ( !class_exists( 'FooGallery_FooGrid_Gallery_Template' ) ) {
 						'desc' => __('Whether the page is scrolled to the selected item.', 'foogallery'),
 						'default' => 'no',
 						'type'    => 'radio',
-						'spacer'  => '<span class="spacer"></span>',
 						'choices' => array(
 							'yes' => __( 'Yes', 'foogallery' ),
 							'no' => __( 'No', 'foogallery' )
@@ -335,7 +330,6 @@ if ( !class_exists( 'FooGallery_FooGrid_Gallery_Template' ) ) {
 						'desc' => __('Whether or not to perform a smooth scrolling animation to the selected item.', 'foogallery'),
 						'default' => 'yes',
 						'type'    => 'radio',
-						'spacer'  => '<span class="spacer"></span>',
 						'choices' => array(
 							'yes' => __( 'Yes', 'foogallery' ),
 							'no' => __( 'No', 'foogallery' )

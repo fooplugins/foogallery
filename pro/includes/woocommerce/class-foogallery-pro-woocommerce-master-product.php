@@ -444,7 +444,6 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce_Master_Product' ) ) {
 					'section'  => __( 'Ecommerce', 'foogallery' ),
 					'subsection' => array( 'ecommerce-master-product' => __( 'Master Product', 'foogallery' ) ),
 					'type'     => 'radio',
-					'spacer'   => '<span class="spacer"></span>',
 					'default'  => '',
 					'choices'  => array(
 						'' => __( 'Disabled', 'foogallery' ),
@@ -483,7 +482,6 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce_Master_Product' ) ) {
 					'section'  => __( 'Ecommerce', 'foogallery' ),
 					'subsection' => array( 'ecommerce-master-product' => __( 'Master Product', 'foogallery' ) ),
 					'type'     => 'radio',
-					'spacer'   => '<span class="spacer"></span>',
 					'default'  => 'add',
 					'choices'  => array(
 						'add' => __( 'Add Attribute Data', 'foogallery' ),
@@ -506,7 +504,6 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce_Master_Product' ) ) {
 					'section'  => __( 'Ecommerce', 'foogallery' ),
 					'subsection' => array( 'ecommerce-master-product' => __( 'Master Product', 'foogallery' ) ),
 					'type'     => 'radio',
-					'spacer'   => '<span class="spacer"></span>',
 					'default'  => 'title',
 					'choices'  => array(
 						'title' => __( 'Attachment Title', 'foogallery' ),
@@ -530,7 +527,6 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce_Master_Product' ) ) {
 					'section'  => __( 'Ecommerce', 'foogallery' ),
 					'subsection' => array( 'ecommerce-master-product' => __( 'Master Product', 'foogallery' ) ),
 					'type'     => 'radio',
-					'spacer'   => '<span class="spacer"></span>',
 					'default'  => 'description',
 					'choices'  => array(
 						'description' => __( 'Attachment Description', 'foogallery' ),

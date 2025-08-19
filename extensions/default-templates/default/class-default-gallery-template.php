@@ -164,7 +164,6 @@ if ( ! class_exists( 'FooGallery_Default_Gallery_Template' ) ) {
 						'section'  => __( 'General', 'foogallery' ),
 						'default'  => 'fg-center',
 						'type'     => 'radio',
-						'class'    => 'foogallery-radios-6em',
 						'choices'  => array(
 							'fg-left'   => __( 'Left', 'foogallery' ),
 							'fg-center' => __( 'Center', 'foogallery' ),

@@ -216,7 +216,6 @@ if ( ! class_exists( 'FooGallery_LazyLoad' ) ) {
 					'desc'     => __( 'If you choose to disable lazy loading, then all thumbnails will be loaded at once. This means you will lose the performance improvements that lazy loading gives you.', 'foogallery' ),
 					'section'  => __( 'Advanced', 'foogallery' ),
 					'type'     => 'radio',
-					'class'    => 'foogallery-radios-6em',
 					'default'  => '',
 					'choices'  => array(
 						''         => __( 'Enabled', 'foogallery' ),

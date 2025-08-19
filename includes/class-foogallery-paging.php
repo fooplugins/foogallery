@@ -158,7 +158,6 @@ if ( ! class_exists( 'FooGallery_Paging' ) ) {
 					'section' => __( 'Paging', 'foogallery' ),
                     'section_order' => 5,
 					'type'    => 'radio',
-					'class'   => 'foogallery-radios-6em',
 					'default' => '',
 					'choices' => apply_filters( 'foogallery_gallery_template_paging_type_choices', array(
 						''  => __( 'None', 'foogallery' ),
@@ -196,7 +195,6 @@ if ( ! class_exists( 'FooGallery_Paging' ) ) {
 					'title'   => __( 'Position', 'foogallery' ),
 					'desc'    => __( 'The position of the paging for either dots or pagination.', 'foogallery' ),
 					'section' => __( 'Paging', 'foogallery' ),
-					'class'   => 'foogallery-radios-6em',
 					'type'    => 'radio',
 					'default' => 'bottom',
 					'choices' => apply_filters( 'foogallery_gallery_template_paging_position_choices', array(
@@ -220,7 +218,6 @@ if ( ! class_exists( 'FooGallery_Paging' ) ) {
 					'title'   => __( 'Theme', 'foogallery' ),
 					'desc'    => __( 'The theme used for pagination.', 'foogallery' ),
 					'section' => __( 'Paging', 'foogallery' ),
-					'spacer'  => '<span class="spacer"></span>',
 					'type'    => 'radio',
 					'default' => 'fg-light',
 					'choices' => apply_filters( 'foogallery_gallery_template_paging_theme_choices', array(
@@ -244,7 +241,6 @@ if ( ! class_exists( 'FooGallery_Paging' ) ) {
 					'desc'    => __( 'Whether or not it should scroll to the top of the gallery when paging is changed.', 'foogallery' ),
 					'section' => __( 'Paging', 'foogallery' ),
 					'type'    => 'radio',
-					'spacer'  => '<span class="spacer"></span>',
 					'default' => 'false',
 					'choices' => array(
 						'true'  => __( 'Yes', 'foogallery' ),
@@ -285,7 +281,6 @@ if ( ! class_exists( 'FooGallery_Paging' ) ) {
 					'desc'    => __( 'Whether or not to show the first &amp; last buttons for numbered pagination.', 'foogallery' ),
 					'section' => __( 'Paging', 'foogallery' ),
 					'type'    => 'radio',
-					'spacer'  => '<span class="spacer"></span>',
 					'default' => 'true',
 					'choices' => array(
 						'true'  => __( 'Show', 'foogallery' ),
@@ -306,7 +301,6 @@ if ( ! class_exists( 'FooGallery_Paging' ) ) {
 					'desc'    => __( 'Whether or not to show the previous &amp; next buttons for numbered pagination.', 'foogallery' ),
 					'section' => __( 'Paging', 'foogallery' ),
 					'type'    => 'radio',
-					'spacer'  => '<span class="spacer"></span>',
 					'default' => 'true',
 					'choices' => array(
 						'true'  => __( 'Show', 'foogallery' ),
@@ -327,7 +321,6 @@ if ( ! class_exists( 'FooGallery_Paging' ) ) {
 					'desc'    => __( 'Whether or not to show the previous &amp; next more buttons for numbered pagination.', 'foogallery' ),
 					'section' => __( 'Paging', 'foogallery' ),
 					'type'    => 'radio',
-					'spacer'  => '<span class="spacer"></span>',
 					'default' => 'true',
 					'choices' => array(
 						'true'  => __( 'Show', 'foogallery' ),
@@ -347,7 +340,6 @@ if ( ! class_exists( 'FooGallery_Paging' ) ) {
 					'title'   => __( 'Paging Output', 'foogallery' ),
 					'desc'    => __( 'How the paging items are output. We recommend that very large galleries output as JSON.', 'foogallery' ),
 					'section' => __( 'Paging', 'foogallery' ),
-					'spacer'  => '<span class="spacer"></span>',
 					'type'    => 'radio',
 					'default' => '',
 					'choices' => array(

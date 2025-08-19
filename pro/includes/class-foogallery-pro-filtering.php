@@ -205,7 +205,6 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 					'title'    => __( 'Filtering', 'foogallery' ),
 					'section'  => __( 'Filtering', 'foogallery' ),
 					'subsection' => array( 'filtering-general' => __( 'General', 'foogallery' ) ),
-					'spacer'   => '<span class="spacer"></span>',
 					'type'     => 'radio',
 					'default'  => '',
 					'choices'  => apply_filters('foogallery_gallery_template_filtering_type_choices', array(
@@ -228,7 +227,6 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 					'desc'    => __( 'The theme used for filtering.', 'foogallery' ),
 					'section' => __( 'Filtering', 'foogallery' ),
 					'subsection' => array( 'filtering-general' => __( 'General', 'foogallery' ) ),
-					'spacer'  => '<span class="spacer"></span>',
 					'type'    => 'radio',
 					'default' => 'fg-light',
 					'choices' => apply_filters( 'foogallery_gallery_template_filtering_theme_choices', array(
@@ -258,7 +256,6 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 					'desc'     => __( 'What will be used as the source for your gallery filters. All attachment taxonomies will be listed.', 'foogallery' ),
 					'section'  => __( 'Filtering', 'foogallery' ),
 					'subsection' => array( 'filtering-general' => __( 'General', 'foogallery' ) ),
-					'spacer'   => '<span class="spacer"></span>',
 					'type'     => 'radio',
 					'default'  => FOOGALLERY_ATTACHMENT_TAXONOMY_TAG,
 					'choices'  => apply_filters( 'foogallery_gallery_template_filtering_taxonomy_choices', $taxonomy_choices ),
@@ -278,7 +275,6 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 					'desc'     => __( 'The position of the filters relative to the gallery.', 'foogallery' ),
 					'section'  => __( 'Filtering', 'foogallery' ),
 					'subsection' => array( 'filtering-general' => __( 'General', 'foogallery' ) ),
-					'spacer'   => '<span class="spacer"></span>',
 					'type'     => 'radio',
 					'default'  => 'top',
 					'choices'  => apply_filters( 'foogallery_gallery_template_filtering_position_choices', array(
@@ -302,7 +298,6 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 					'desc'     => __( 'You can choose to hide the default "All" Button.', 'foogallery' ),
 					'section'  => __( 'Filtering', 'foogallery' ),
 					'subsection' => array( 'filtering-general' => __( 'General', 'foogallery' ) ),
-					'spacer'   => '<span class="spacer"></span>',
 					'type'     => 'radio',
 					'default'  => '',
 					'choices'  => array(
@@ -326,7 +321,6 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 					'desc'     => __( 'You can auto select the first filter, if "All" is hidden.', 'foogallery' ),
 					'section'  => __( 'Filtering', 'foogallery' ),
 					'subsection' => array( 'filtering-general' => __( 'General', 'foogallery' ) ),
-					'spacer'   => '<span class="spacer"></span>',
 					'type'     => 'radio',
 					'default'  => '',
 					'choices'  => array(
@@ -363,7 +357,6 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 					'desc'     => __( 'The selection mode to use when filtering.', 'foogallery' ),
 					'section'  => __( 'Filtering', 'foogallery' ),
 					'subsection' => array( 'filtering-general' => __( 'General', 'foogallery' ) ),
-					'spacer'   => '<span class="spacer"></span>',
 					'type'     => 'radio',
 					'default'  => 'single',
 					'choices'  => apply_filters (
@@ -449,7 +442,6 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 					'desc'     => __( 'Whether or not to show the counts within each filter.', 'foogallery' ),
 					'section'  => __( 'Filtering', 'foogallery' ),
 					'subsection' => array( 'filtering-general' => __( 'General', 'foogallery' ) ),
-					'spacer'   => '<span class="spacer"></span>',
 					'type'     => 'radio',
 					'default'  => '',
 					'choices'  => apply_filters(
@@ -474,7 +466,6 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 					'desc'     => __( 'Whether or not to adjust the size of each filter depending on the count.', 'foogallery' ),
 					'section'  => __( 'Filtering', 'foogallery' ),
 					'subsection' => array( 'filtering-general' => __( 'General', 'foogallery' ) ),
-					'spacer'   => '<span class="spacer"></span>',
 					'type'     => 'radio',
 					'default'  => 'no',
 					'choices'  => apply_filters(
@@ -542,7 +533,6 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 					'desc'     => __( 'Whether or not to adjust the opacity of each filter depending on the count.', 'foogallery' ),
 					'section'  => __( 'Filtering', 'foogallery' ),
 					'subsection' => array( 'filtering-general' => __( 'General', 'foogallery' ) ),
-					'spacer'   => '<span class="spacer"></span>',
 					'type'     => 'radio',
 					'default'  => 'no',
 					'choices'  => apply_filters(
@@ -655,7 +645,6 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 					'desc'     => __( 'Include a search input where users can filter the gallery by typing in a search term.', 'foogallery' ),
 					'section'  => __( 'Filtering', 'foogallery' ),
 					'subsection' => array( 'filtering-search' => __( 'Search', 'foogallery' ) ),
-					'spacer'   => '<span class="spacer"></span>',
 					'type'     => 'radio',
 					'default'  => '',
 					'choices'  =>  array(
@@ -675,7 +664,6 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 					'desc'     => __( 'The position of the search input, relative to the other filters.', 'foogallery' ),
 					'section'  => __( 'Filtering', 'foogallery' ),
 					'subsection' => array( 'filtering-search' => __( 'Search', 'foogallery' ) ),
-					'spacer'   => '<span class="spacer"></span>',
 					'type'     => 'select',
 					'default'  => 'above-center',
 					'choices'  =>  array(

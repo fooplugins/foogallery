@@ -31,7 +31,6 @@ if ( ! class_exists( 'FooGallery_Pro_Advanced_Gallery_Settings' ) ) {
 				'section'  => __( 'Advanced', 'foogallery' ),
 				'type'     => 'radio',
 				'default'  => 'yes',
-				'spacer'   => '<span class="spacer"></span>',
 				'choices'  => array(
 					'no'  => __( 'Disabled', 'foogallery' ),
 					'yes'   => __( 'Enabled', 'foogallery' ),
