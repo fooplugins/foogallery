@@ -1,4 +1,4 @@
-=== FooGallery – Responsive Photo Gallery, Image Viewer, Justified, Masonry & Carousel ===
+=== Responsive Photo Gallery Plugin - FooGallery ===
 Contributors: fooplugins, bradvin, steveush
 Donate link: https://fooplugins.com
 Tags: gallery, image gallery, photo gallery, responsive gallery, wordpress gallery plugin
@@ -8,7 +8,7 @@ Stable tag: 2.4.34
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Create stunning, SEO optimized galleries using beautiful pre-built templates or advanced settings for complete customization and control.
+Photo gallery plugin for WordPress — responsive image galleries with lightbox, masonry, justified grid, carousel, albums, slider, and more.
 
 == Description ==
 
@@ -312,6 +312,10 @@ Goto FooGallery Settings -> Advanced Tab and check "Disable PRO Promotions" and 
 Please update in order for FooGallery to work in WP 5.5+!
 
 == Changelog ==
+
+= 2.5.0 =
+* Date Updated : 19 Aug 2025
+* Update : FooGallery client side 2.1.6
 
 = 2.4.35 =
 * Date Updated : 07 Aug 2025
