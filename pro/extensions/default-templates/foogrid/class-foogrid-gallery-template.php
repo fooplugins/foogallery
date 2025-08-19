@@ -64,7 +64,8 @@ if ( !class_exists( 'FooGallery_FooGrid_Gallery_Template' ) ) {
 			add_filter( 'foogallery_build_class_attribute', array( $this, 'append_classes' ), 10, 2 );
 
 			// add a style block for the gallery based on the thumbnail width.
-			add_action( 'foogallery_loaded_template_before', array( $this, 'add_width_style_block' ), 10, 1 );
+			//add_action( 'foogallery_loaded_template_before', array( $this, 'add_width_style_block' ), 10, 1 );
+			// TODO : test this!
         }
 
 		/**
@@ -209,7 +210,7 @@ if ( !class_exists( 'FooGallery_FooGrid_Gallery_Template' ) ) {
 						'desc' => __('Select the aspect ratio the panel will use, to best suit your content.', 'foogallery'),
 						'default' => 'fg-16-9',
 						'type'    => 'radio',
-						'spacer'  => '<span class="spacer"></span>',
+						'class'   => 'foogallery-radios-6em',
 						'choices' => array(
 							'fg-16-9' => __( '16:9', 'foogallery' ),
 							'fg-16-10' => __( '16:10', 'foogallery' ),
