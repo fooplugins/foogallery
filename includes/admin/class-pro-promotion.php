@@ -81,8 +81,8 @@ if ( ! class_exists( 'FooGallery_Pro_Promotion' ) ) {
 					add_filter( 'foogallery_override_gallery_template_fields-slider_promo', array( $this, 'remove_all_fields_from_promo_gallery_template' ), 999, 2 );
 
 					//presets
-					add_filter( 'foogallery_gallery_template_common_thumbnail_fields_hover_effect_type_choices', array( $this, 'add_preset_type' ) );
 					add_filter( 'foogallery_override_gallery_template_fields', array( $this, 'add_preset_promo_fields' ), 99, 2 );
+					add_filter( 'foogallery_gallery_template_common_thumbnail_fields_hover_effect_preset_choices', array( $this, 'add_promo_preset_choices' ), 10, 1 );
 
 					//Instagram filters
 					add_filter( 'foogallery_override_gallery_template_fields', array( $this, 'add_appearance_promo_fields' ), 20, 2 );
@@ -514,21 +514,70 @@ if ( ! class_exists( 'FooGallery_Pro_Promotion' ) ) {
 		}
 
 		/**
-		 * Adds the promo preset type for hover effect type
+		 * Add the preset choices to the hover effect preset field
 		 *
 		 * @param $choices
 		 *
-		 * @return mixed
+		 * @return array
 		 */
-		function add_preset_type( $choices ) {
-			$choices['promo-presets'] = array(
-				'label'   => __( 'Preset',   'foogallery' ),
-                'tooltip' => __('Choose from 11 stylish hover effect presets in PRO Starter.', 'foogallery'),
-                'class'   => 'foogallery-promo-prostarter',
-				'icon'    => 'dashicons-star-filled'
-            );
-
-			return $choices;
+		function add_promo_preset_choices( $choices ) {
+			return array_merge( $choices, array(
+				'fg-promo-sadie'   => array(
+					'label' => __( 'Sadie',   'foogallery' ),
+					'class'   => 'foogallery-promo',
+					'icon'    => 'dashicons-star-filled'
+				),
+				'fg-promo-layla'   => array(
+					'label' => __( 'Layla',   'foogallery' ),
+					'class'   => 'foogallery-promo',
+					'icon'    => 'dashicons-star-filled'
+				),
+				'fg-promo-oscar'   => array(
+					'label' => __( 'Oscar',   'foogallery' ),
+					'class'   => 'foogallery-promo',
+					'icon'    => 'dashicons-star-filled'
+				),
+				'fg-promo-sarah'   => array(
+					'label' => __( 'Sarah',   'foogallery' ),
+					'class'   => 'foogallery-promo',
+					'icon'    => 'dashicons-star-filled'
+				),
+				'fg-promo-goliath' => array(
+					'label' => __( 'Goliath', 'foogallery' ),
+					'class'   => 'foogallery-promo',
+					'icon'    => 'dashicons-star-filled'
+				),
+				'fg-promo-jazz'    => array(
+					'label' => __( 'Jazz',    'foogallery' ),
+					'class'   => 'foogallery-promo',
+					'icon'    => 'dashicons-star-filled'
+				),
+				'fg-promo-lily'    => array(
+					'label' => __( 'Lily',    'foogallery' ),
+					'class'   => 'foogallery-promo',
+					'icon'    => 'dashicons-star-filled'
+				),
+				'fg-promo-ming'    => array(
+					'label' => __( 'Ming',    'foogallery' ),
+					'class'   => 'foogallery-promo',
+					'icon'    => 'dashicons-star-filled'
+				),
+				'fg-promo-selena'  => array(
+					'label' => __( 'Selena',  'foogallery' ),
+					'class'   => 'foogallery-promo',
+					'icon'    => 'dashicons-star-filled'
+				),
+				'fg-promo-steve'   => array(
+					'label' => __( 'Steve',   'foogallery' ),
+					'class'   => 'foogallery-promo',
+					'icon'    => 'dashicons-star-filled'
+				),
+				'fg-promo-zoe'     => array(
+					'label' => __( 'Zoe',     'foogallery' ),
+					'class'   => 'foogallery-promo',
+					'icon'    => 'dashicons-star-filled'
+				),
+			) );
 		}
 
 		/**
@@ -541,9 +590,9 @@ if ( ! class_exists( 'FooGallery_Pro_Promotion' ) ) {
 		 * @return array
 		 */
 		function add_preset_promo_fields( $fields, $template ) {
-			$index_of_hover_effect_preset_field = foogallery_admin_fields_find_index_of_field( $fields, 'hover_effect_preset' );
+			//$index_of_hover_effect_preset_field = foogallery_admin_fields_find_index_of_field( $fields, 'hover_effect_preset' );
 
-			$new_fields[] = array(
+			$fields[] = array(
 				'id'       => 'hover_effect_preset_promo_help',
 				'title'    => __( 'PRO Starter Feature : Hover Effect Presets', 'foogallery' ),
 				'desc'     => __( 'There are 11 stylish hover effect presets to choose from, which takes all the hard work out of making your galleries look professional and elegant.', 'foogallery' ) .
@@ -556,12 +605,13 @@ if ( ! class_exists( 'FooGallery_Pro_Promotion' ) ) {
 				'section'  => __( 'Hover Effects', 'foogallery' ),
 				'row_data' => array(
 					'data-foogallery-hidden'                => true,
-					'data-foogallery-show-when-field'       => 'hover_effect_type',
-					'data-foogallery-show-when-field-value' => 'promo-presets',
+					'data-foogallery-show-when-field'       => 'hover_effect_preset',
+					'data-foogallery-show-when-field-operator' => '!==',
+					'data-foogallery-show-when-field-value' => 'fg-preset fg-brad',
 				)
 			);
 
-			array_splice( $fields, $index_of_hover_effect_preset_field, 0, $new_fields );
+			//array_splice( $fields, $index_of_hover_effect_preset_field, 0, $new_fields );
 
 			return $fields;
 		}

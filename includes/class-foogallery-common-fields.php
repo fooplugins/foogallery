@@ -294,7 +294,7 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 					'id'       => 'hover_effect_preset',
 					'title'    => __( 'Preset', 'foogallery' ),
 					'section'  => __( 'Hover Effects', 'foogallery' ),
-					'default'  => 'fg-preset fg-sadie',
+					'default'  => 'fg-preset fg-brad',
 					'type'     => 'radio',
 					'choices'  => apply_filters(
 						'foogallery_gallery_template_common_thumbnail_fields_hover_effect_preset_choices', array(
@@ -660,6 +660,11 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 				if ( 'on' === foogallery_get_setting( 'enable_custom_ready', 'on' ) ) {
                     $classes[] = 'fg-ready';
                 }
+
+				if ( 'preset' === foogallery_gallery_template_setting( 'hover_effect_type', '' ) ) {
+					$classes[] = foogallery_gallery_template_setting( 'hover_effect_preset', 'fg-preset fg-brad' );
+					$classes[] = foogallery_gallery_template_setting( 'hover_effect_preset_size', 'fg-preset-small' );
+				}
 			}
 
 			return $classes;

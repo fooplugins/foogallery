@@ -34,6 +34,9 @@ if ( !class_exists( 'FooGallery_Simple_Portfolio_Gallery_Template' ) ) {
 
 			//add a style block for the gallery based on the field settings for gutter, align and columnWidth
 			add_action( 'foogallery_loaded_template_before', array( $this, 'add_style_block' ), 10, 1 );
+
+			//remove preset choices from simple portfolio
+            add_filter( 'foogallery_override_gallery_template_fields-simple_portfolio', array( $this, 'remove_preset_choices_for_simple_portfolio' ), 10, 2 );
         }
 
 		/**
@@ -122,7 +125,6 @@ if ( !class_exists( 'FooGallery_Simple_Portfolio_Gallery_Template' ) ) {
                         'desc'    => __( 'The horizontal alignment of the thumbnails inside the gallery.', 'foogallery' ),
                         'section' => __( 'General', 'foogallery' ),
                         'type'    => 'radio',
-                        'class'   => 'foogallery-radios-6em',
                         'default' => 'center',
                         'choices' => array(
                             'left' => __( 'Left', 'foogallery' ),
@@ -158,7 +160,6 @@ if ( !class_exists( 'FooGallery_Simple_Portfolio_Gallery_Template' ) ) {
 				'section' => __( 'Captions', 'foogallery' ),
 				'default' => '',
 				'type'    => 'radio',
-				'class'   => 'foogallery-radios-6em',
 				'choices' => array(
 					'' => __( 'Below', 'foogallery' ),
 					'fg-captions-top' => __( 'Above', 'foogallery' )
@@ -369,5 +370,30 @@ if ( !class_exists( 'FooGallery_Simple_Portfolio_Gallery_Template' ) ) {
 			</style>
 			<?php
 		}
+
+		/**
+         * Remove the preset choices from the simple portfolio template
+         *
+         * @uses "foogallery_override_gallery_template_fields"
+         * @param $fields
+         * @param $template
+         *
+         * @return array
+         */
+        function remove_preset_choices_for_simple_portfolio( $fields, $template ) {
+            foreach ($fields as &$field) {
+                if ( 'hover_effect_type' === $field['id'] ) {
+                    $new_choices = $field['choices'];
+                    foreach ($field['choices'] as $choice => $choice_name) {
+                        if ( 'preset' === $choice ) {
+                            unset( $new_choices[$choice] );
+                        }
+                    }
+                    $field['choices'] = $new_choices;
+                }
+            }
+
+            return $fields;
+        }
 	}
 }
