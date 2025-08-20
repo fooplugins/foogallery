@@ -595,7 +595,7 @@ if ( ! class_exists( 'FooGallery_Pro_Promotion' ) ) {
 			$fields[] = array(
 				'id'       => 'hover_effect_preset_promo_help',
 				'title'    => __( 'PRO Starter Feature : Hover Effect Presets', 'foogallery' ),
-				'desc'     => __( 'There are 11 stylish hover effect presets to choose from, which takes all the hard work out of making your galleries look professional and elegant.', 'foogallery' ) .
+				'desc'     => __( 'There are 11 more stylish hover effect presets to choose from, which takes all the hard work out of making your galleries look professional and elegant.', 'foogallery' ) .
 				              '<br />' . __( 'Some of the effects like "Sarah" add subtle colors on hover, while other effects like "Layla" and "Oscar" add different shapes to the thumbnail.', 'foogallery') .
 				              '<br />' . __(' You really need to see all the different effects in action to appreciate them.', 'foogallery' ) . '<br /><br />' .
 				              $this->build_promo_trial_html( 'hover-presets', __( 'PRO Starter', 'foogallery' )  ) . '<br /><br />',

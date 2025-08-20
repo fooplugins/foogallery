@@ -298,7 +298,7 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 					'type'     => 'radio',
 					'choices'  => apply_filters(
 						'foogallery_gallery_template_common_thumbnail_fields_hover_effect_preset_choices', array(
-							'fg-preset fg-brad'    => __( 'Freedom', 'foogallery' ),
+							'fg-preset fg-brad'    => __( 'Default', 'foogallery' ),
 						)
 					),
 					'desc'     => __( 'A preset styling that is used for the hover effect.', 'foogallery' ),
