@@ -2367,3 +2367,62 @@ function foogallery__( $translation, $domain = 'foogallery' ) {
 
     return $translation;
 }
+
+/**
+ * Formats the caption text for a gallery.
+ *
+ * @param string $text The caption text to format.
+ *
+ * @return string The formatted caption text.
+ */
+function foogallery_format_caption_text( $text ) {
+    global $current_foogallery;
+
+	if ( empty( $current_foogallery ) ) {
+		return $text;
+	}
+
+	//if text contains {{gallery-count}}
+	if ( strpos( $text, '{{gallery-count}}' ) !== false ) {
+		$text = str_replace( '{{gallery-count}}', $current_foogallery->attachment_count(), $text );
+	}
+
+	//if text contains {{gallery-title}}
+	if ( strpos( $text, '{{gallery-title}}' ) !== false ) {
+		$text = str_replace( '{{gallery-title}}', $current_foogallery->name, $text );
+	}
+
+	//if text contains {{gallery-description}}
+	if ( strpos( $text, '{{gallery-description}}' ) !== false ) {
+		$desc = $current_foogallery->_post->post_content;
+		$text = str_replace( '{{gallery-description}}', $desc, $text );
+	}
+
+	//if text contains {{attachment
+	if ( strpos( $text, '{{attachment' ) !== false ) {
+		$featured_attachment = $current_foogallery->featured_attachment();
+		if ( $featured_attachment ) {
+			//if text contains {{attachment-title}}
+			if ( strpos( $text, '{{attachment-title}}' ) !== false ) {
+				$text = str_replace( '{{attachment-title}}', $featured_attachment->title, $text );
+			}
+
+			//if text contains {{attachment-caption}}
+			if ( strpos( $text, '{{attachment-caption}}' ) !== false ) {
+				$text = str_replace( '{{attachment-caption}}', $featured_attachment->caption, $text );
+			}
+
+			//if text contains {{attachment-alt}}
+			if ( strpos( $text, '{{attachment-alt}}' ) !== false ) {
+				$text = str_replace( '{{attachment-alt}}', $featured_attachment->alt, $text );
+			}
+
+			//if text contains {{attachment-description}}
+			if ( strpos( $text, '{{attachment-description}}' ) !== false ) {
+				$text = str_replace( '{{attachment-description}}', $featured_attachment->description, $text );
+			}
+		}
+	}
+
+	return $text;
+}

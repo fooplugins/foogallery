@@ -26,6 +26,8 @@ if ( !class_exists( 'FooGallery_Thumbnail_Gallery_Template' ) ) {
 
 			//build up the arguments needed for rendering this template
 			add_filter( 'foogallery_gallery_template_arguments-thumbnail', array( $this, 'build_gallery_template_arguments' ) );
+
+			add_filter( 'foogallery_override_gallery_template_fields-thumbnail', array( $this, 'add_caption_fields' ), 999, 2 );
         }
 
 		/**
@@ -174,33 +176,60 @@ if ( !class_exists( 'FooGallery_Thumbnail_Gallery_Template' ) ) {
 			                'data-foogallery-preview'                  => 'shortcode',
 			                'data-foogallery-value-selector'           => 'input:checked',
 		                )
-	                ),
-                    array(
-                        'id'      => 'caption_title',
-                        'title'   => __('Override Title', 'foogallery'),
-						'section' => __( 'Captions', 'foogallery' ),
-                        'desc'    => __('Leave blank if you do not want a caption title.', 'foogallery'),
-                        'type'    => 'text',
-						'row_data'=> array(
-							'data-foogallery-change-selector' => 'input',
-							'data-foogallery-preview' => 'shortcode'
-						)
-                    ),
-                    array(
-                        'id'      => 'caption_description',
-                        'title'   => __('Override Description', 'foogallery'),
-						'section' => __( 'Captions', 'foogallery' ),
-                        'desc'    => __('Leave blank if you do not want a caption description.', 'foogallery'),
-                        'type'    => 'textarea',
-						'row_data'=> array(
-							'data-foogallery-change-selector' => 'textarea',
-							'data-foogallery-preview' => 'shortcode'
-						)
-                    )
+	                )
                 )
 			);
 
 			return $gallery_templates;
+		}
+
+		/**
+		 * Add caption fields to the gallery template if supported
+		 *
+		 * @param $fields
+		 * @param $template
+		 *
+		 * @return array
+		 */
+		function add_caption_fields( $fields, $template ) {
+
+			$new_fields[] = array(
+				'id'      => 'caption_override_help',
+				'desc'    => __( 'You can include dynamic placeholders in the override title and description, eg. <code>{{gallery-count}}</code> and <code>{{gallery-title}}</code>.', 'foogallery' ),
+				'section' => __( 'Captions', 'foogallery' ),
+				'type'    => 'help'
+			);
+
+			$new_fields[] = array(
+				'id'      => 'caption_title',
+				'title'   => __('Override Title', 'foogallery'),
+				'section' => __( 'Captions', 'foogallery' ),
+				'desc'    => __('Leave blank if you do not want a caption title.', 'foogallery'),
+				'type'    => 'text',
+				'row_data'=> array(
+					'data-foogallery-change-selector' => 'input',
+					'data-foogallery-preview' => 'shortcode'
+				)
+			);
+			$new_fields[] = array(
+				'id'      => 'caption_description',
+				'title'   => __('Override Description', 'foogallery'),
+				'section' => __( 'Captions', 'foogallery' ),
+				'desc'    => __('Leave blank if you do not want a caption description.', 'foogallery'),
+				'type'    => 'textarea',
+				'row_data'=> array(
+					'data-foogallery-change-selector' => 'textarea',
+					'data-foogallery-preview' => 'shortcode'
+				)
+			);
+
+
+
+			$field_index = foogallery_admin_fields_find_index_of_field( $fields, 'captions_help' );
+
+			array_splice( $fields, $field_index + 1, 0, $new_fields );
+
+			return $fields;
 		}
 
 		/**

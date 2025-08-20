@@ -12,8 +12,8 @@ $featured_attachment = $current_foogallery->featured_attachment();
 $featured_attachment->featured = true;
 
 $args = foogallery_gallery_template_arguments();
-$args['override_caption_title'] = foogallery_gallery_template_setting( 'caption_title', '' );
-$args['override_caption_desc']  = foogallery_gallery_template_setting( 'caption_description', '' );
+$args['override_caption_title'] = foogallery_format_caption_text( foogallery_gallery_template_setting( 'caption_title', '' ) );
+$args['override_caption_desc']  = foogallery_format_caption_text( foogallery_gallery_template_setting( 'caption_description', '' ) );
 
 if ( 'on' === $link_custom_url && '' !== $lightbox && ! empty( $featured_attachment->custom_url ) ) {
 	$featured_attachment->type = 'iframe';
