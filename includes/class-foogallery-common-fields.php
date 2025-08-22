@@ -20,6 +20,8 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 			//add common data options
 			add_filter( 'foogallery_build_container_data_options', array( $this, 'add_caption_data_options' ), 10, 3 );
 
+			add_filter( 'foogallery_build_container_attributes', array( $this, 'add_common_fields_attributes' ), 10, 2 );
+
             //add common fields to the templates that support it
             add_filter( 'foogallery_override_gallery_template_fields', array( $this, 'add_common_fields' ), 10, 2 );
 
@@ -568,9 +570,17 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 					'section' => __( 'Captions', 'foogallery' ),
 					'default' => '',
 					'type'    => 'radio',
+					'class'    => 'foogallery-radios-stacked',
 					'choices' => array(
 						'' => __( 'No', 'foogallery' ),
-						'yes' => __( 'Yes', 'foogallery' ),
+						'yes' => array(
+							'label' => __( 'Yes (by character length)', 'foogallery' ),
+							'tooltip' => __( 'Limit the length of the caption title and description by character length.', 'foogallery' ),
+						),
+						'clamp' => array(
+							'label' => __( 'Yes (by lines)', 'foogallery' ),
+							'tooltip' => __( 'Limit the length of the caption title and description by the number of lines.', 'foogallery' ),
+						)
 					),
 					'row_data'=> array(
 						'data-foogallery-change-selector' => 'input:radio',
@@ -613,6 +623,44 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 						'data-foogallery-hidden'                => true,
 						'data-foogallery-show-when-field'       => 'captions_limit_length',
 						'data-foogallery-show-when-field-value' => 'yes',
+						'data-foogallery-preview'               => 'shortcode'
+					)
+				);
+
+				$fields[] = array(
+					'id'      => 'caption_title_clamp',
+					'title'   => __( 'Max Title Lines', 'foogallery' ),
+					'desc'	  => __( 'A max number of lines of text to display. A value of zero will not apply a limit.', 'foogallery '),
+					'section' => __( 'Captions', 'foogallery' ),
+					'type'    => 'number',
+					'class'   => 'small-text',
+					'default' => 0,
+					'step'    => '1',
+					'min'     => '0',
+					'row_data' => array(
+						'data-foogallery-change-selector'       => 'input',
+						'data-foogallery-hidden'                => true,
+						'data-foogallery-show-when-field'       => 'captions_limit_length',
+						'data-foogallery-show-when-field-value' => 'clamp',
+						'data-foogallery-preview'               => 'shortcode'
+					)
+				);
+
+				$fields[] = array(
+					'id'      => 'caption_desc_clamp',
+					'title'   => __( 'Max Desc Lines', 'foogallery' ),
+					'desc'	  => __( 'A max number of lines of text to display. A value of zero will not apply a limit.', 'foogallery '),
+					'section' => __( 'Captions', 'foogallery' ),
+					'type'    => 'number',
+					'class'   => 'small-text',
+					'default' => 0,
+					'step'    => '1',
+					'min'     => '0',
+					'row_data' => array(
+						'data-foogallery-change-selector'       => 'input',
+						'data-foogallery-hidden'                => true,
+						'data-foogallery-show-when-field'       => 'captions_limit_length',
+						'data-foogallery-show-when-field-value' => 'clamp',
 						'data-foogallery-preview'               => 'shortcode'
 					)
 				);
@@ -700,6 +748,25 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 				}
 			}
 			return $options;
+		}
+
+		function add_common_fields_attributes($attributes, $gallery) {
+			//check the template supports common fields
+			if ( foogallery_current_gallery_check_template_has_supported_feature('common_fields_support' ) ) {
+				$captions_limit_length = foogallery_gallery_template_setting( 'captions_limit_length', '' );
+
+				if ( 'clamp' === $captions_limit_length ) {
+					$caption_title_clamp = intval( foogallery_gallery_template_setting( 'caption_title_clamp', '0' ) );
+					$caption_desc_clamp = intval( foogallery_gallery_template_setting( 'caption_desc_clamp', '0' ) );
+
+					$style = "--fg-title-line-clamp: {$caption_title_clamp};";
+					$style .= "--fg-description-line-clamp: {$caption_desc_clamp};";
+
+					$attributes['style'] = $style;
+				}
+			}
+
+			return $attributes;
 		}
 
 		/**

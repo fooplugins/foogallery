@@ -194,6 +194,7 @@ if ( !class_exists( 'FooGallery_Polaroid_Gallery_Template' ) ) {
                 'hover_effect_caption_visibility',
                 'caption_desc_source',
                 'caption_desc_length',
+				'caption_desc_clamp',
                 'caption_alignment'
             );
 

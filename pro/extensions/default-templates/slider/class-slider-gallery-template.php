@@ -160,6 +160,8 @@ if ( !class_exists( 'FooGallery_Slider_Gallery_Template' ) ) {
 			$fields_to_remove[] = 'captions_limit_length';
 			$fields_to_remove[] = 'caption_title_length';
 			$fields_to_remove[] = 'caption_desc_length';
+			$fields_to_remove[] = 'caption_title_clamp';
+			$fields_to_remove[] = 'caption_desc_clamp';
 			$fields_to_remove[] = 'captions_type';
 			$fields_to_remove[] = 'caption_custom_template';
 			$fields_to_remove[] = 'caption_custom_help';
