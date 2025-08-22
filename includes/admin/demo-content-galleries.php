@@ -6,7 +6,7 @@ return array(
 		'post_title'  => 'Demo : Responsive',
 		'post_status' => 'publish',
 		'post_type'   => FOOGALLERY_CPT_GALLERY,
-		'items'       => array( 'pixabay1', 'pixabay2', 'pixabay3', 'pixabay4', 'pixabay5', 'pixabay6' ),
+		'items'       => array( 'demo1', 'demo2', 'demo3', 'demo4', 'demo5', 'demo6' ),
 		'meta_input'  => array(
 			FOOGALLERY_META_TEMPLATE => 'default',
 			FOOGALLERY_META_SETTINGS => array(
@@ -14,25 +14,25 @@ return array(
 
 				//General
 				'default_thumbnail_dimensions'  => array(
-					'width'  => '200',
-					'height' => '200',
+					'width'  => '270',
+					'height' => '230',
 				),
 				'default_thumbnail_link'        => 'image',
 				'default_lightbox'              => 'foogallery',
 				'default_spacing'               => 'fg-gutter-10',
 				'default_alignment'             => 'fg-center',
-				//'default_layout'                => 'fixed',
 
 
 				//Appearance
-				'default_theme'                 => 'fg-light',               // options : 'fg-light', 'fg-dark', 'fg-custom'
-				'default_border_size'           => 'fg-border-thin',        // options : '', 'fg-border-thin', 'fg-border-medium', 'fg-border-thick'
+				'default_theme'                 => 'fg-dark',               // options : 'fg-light', 'fg-dark', 'fg-custom'
+				'default_spacing'               => 'fg-gutter-10',
+				'default_border_size'           => '',        				// options : '', 'fg-border-thin', 'fg-border-medium', 'fg-border-thick'
 				'default_rounded_corners'       => '',                      // options : '', 'fg-round-small', 'fg-round-medium', 'fg-round-large', 'fg-round-full'
-				'default_drop_shadow'           => 'fg-shadow-outline',     // options : '', 'fg-shadow-outline', 'fg-shadow-small', 'fg-shadow-medium', 'fg-shadow-large'
+				'default_drop_shadow'           => '',                      // options : '', 'fg-shadow-outline', 'fg-shadow-small', 'fg-shadow-medium', 'fg-shadow-large'
 				'default_inner_shadow'          => '',                      // options : '', 'fg-shadow-inset-small', 'fg-shadow-inset-medium', 'fg-shadow-inset-large'
-				'default_loading_icon'          => 'fg-loading-default',    // options : '', 'fg-loading-default', 'fg-loading-bars', 'fg-loading-dots', 'fg-loading-partial', 'fg-loading-pulse', 'fg-loading-trail',
+				'default_loading_icon'          => 'fg-loading-partial',    // options : '', 'fg-loading-default', 'fg-loading-bars', 'fg-loading-dots', 'fg-loading-partial', 'fg-loading-pulse', 'fg-loading-trail',
 
-				'default_loaded_effect'         => 'fg-loaded-fade-in',     // options : 'fg-loaded-fade-in',
+				'default_loaded_effect'         => 'fg-loaded-flip',        // options : 'fg-loaded-fade-in',
 				'default_instagram'             => '',
 
 				//Captions
@@ -44,15 +44,16 @@ return array(
 
 
 				//Hover Effects
-				'default_gutter_width'                    => '10',
-				'default_hover_effect_caption_visibility' => 'fg-caption-hover',  // options : '', 'fg-caption-hover', 'fg-caption-always', 'fg-captions-bottom'
-				'default_hover_effect_color'              => '',                  // options : '', 'fg-hover-colorize', 'fg-hover-grayscale
-				'default_hover_effect_icon'               => 'fg-hover-zoom',     // options : 'fg-hover-zoom', 'fg-hover-zoom2', 'fg-hover-zoom3', 'fg-hover-plus', 'fg-hover-circle-plus', 'fg-hover-eye', 'fg-hover-external'
-				'default_hover_effect_preset'             => 'fg-custom',
-				'default_hover_effect_scale'              => 'fg-hover-zoomed',   // options : '', 'fg-hover-scale', 'fg-hover-zoomed'
-				'default_hover_effect_transition'         => 'fg-hover-fade',     // options : 'fg-hover-instant', 'fg-hover-fade', 'fg-hover-slide-up', 'fg-hover-slide-down', 'fg-hover-slide-left', 'fg-hover-slide-right', 'fg-hover-push'
-				'default_hover_effect_type'               => 'normal',            // options : 'none', 'normal', 'preset'
-				'default_caption_invert_color'            => '',                  // options : '', 'fg-light-overlays', 'fg-transparent-overlays'
+				
+				//'default_hover_effect_caption_visibility' => 'fg-caption-hover',  // options : '', 'fg-caption-hover', 'fg-caption-always', 'fg-captions-bottom'
+				//'default_hover_effect_color'              => '',                  // options : '', 'fg-hover-colorize', 'fg-hover-grayscale
+				//'default_hover_effect_icon'               => 'fg-hover-zoom',     // options : 'fg-hover-zoom', 'fg-hover-zoom2', 'fg-hover-zoom3', 'fg-hover-plus', 'fg-hover-circle-plus', 'fg-hover-eye', 'fg-hover-external'
+				//'default_hover_effect_scale'              => 'fg-hover-zoomed',   // options : '', 'fg-hover-scale', 'fg-hover-zoomed'
+				//'default_hover_effect_transition'         => 'fg-hover-fade',     // options : 'fg-hover-instant', 'fg-hover-fade', 'fg-hover-slide-up', 'fg-hover-slide-down', 'fg-hover-slide-left', 'fg-hover-slide-right', 'fg-hover-push'
+				'default_hover_effect_type'               => 'preset',            // options : 'none', 'normal', 'preset'
+				'default_hover_effect_preset'             => 'fg-preset fg-brad',
+				'default_hover_effect_preset_size'        => 'fg-preset-small',
+				//'default_caption_invert_color'            => '',                  // options : '', 'fg-light-overlays', 'fg-transparent-overlays'
 
 
 				//Filtering
@@ -79,7 +80,7 @@ return array(
 		'post_title'  => 'Demo : Image Viewer',
 		'post_status' => 'publish',
 		'post_type'   => FOOGALLERY_CPT_GALLERY,
-		'items'       => array( 'pixabay3', 'pixabay1', 'pixabay5', 'pixabay10', 'pixabay11', 'pixabay12' ),
+		'items'       => array( 'demo3', 'demo1', 'demo5', 'demo10', 'demo7', 'pixabay12' ),
 		'meta_input'  => array(
 			FOOGALLERY_META_TEMPLATE => 'image-viewer',
 			FOOGALLERY_META_SETTINGS => array(
@@ -152,7 +153,7 @@ return array(
 		'post_title'  => 'Demo : Justified',
 		'post_status' => 'publish',
 		'post_type'   => FOOGALLERY_CPT_GALLERY,
-		'items'       => array( 'pixabay2', 'pixabay1', 'pixabay3', 'pixabay4', 'pixabay5', 'pixabay6', 'pixabay7', 'pixabay8', 'pixabay9', 'pixabay10', 'pixabay11', 'pixabay12' ),
+		'items'       => array( 'demo2', 'demo1', 'demo3', 'demo4', 'demo5', 'demo6', 'demo7', 'demo8', 'demo9', 'demo10' ),
 		'meta_input'  => array(
 			FOOGALLERY_META_TEMPLATE => 'justified',
 			FOOGALLERY_META_SETTINGS => array(
@@ -218,7 +219,7 @@ return array(
 		'post_title'  => 'Demo : Masonry',
 		'post_status' => 'publish',
 		'post_type'   => FOOGALLERY_CPT_GALLERY,
-		'items'       => array( 'pixabay4', 'pixabay2', 'pixabay3', 'pixabay1', 'pixabay5', 'pixabay6', 'pixabay7', 'pixabay8', 'pixabay9', 'pixabay10', 'pixabay11', 'pixabay12' ),
+		'items'       => array( 'demo4', 'demo2', 'demo3', 'demo1', 'demo5', 'demo6', 'demo7', 'demo8', 'demo9', 'demo10' ),
 		'meta_input'  => array(
 			FOOGALLERY_META_TEMPLATE => 'masonry',
 			FOOGALLERY_META_SETTINGS => array(
@@ -284,7 +285,7 @@ return array(
 		'post_title'  => 'Demo : Simple Portfolio',
 		'post_status' => 'publish',
 		'post_type'   => FOOGALLERY_CPT_GALLERY,
-		'items'       => array( 'pixabay5', 'pixabay1', 'pixabay2', 'pixabay3', 'pixabay4', 'pixabay6', 'pixabay7', 'pixabay8', 'pixabay9', 'pixabay10', 'pixabay11', 'pixabay12' ),
+		'items'       => array( 'demo5', 'demo1', 'demo2', 'demo3', 'demo4', 'demo6', 'demo7', 'demo8', 'demo9', 'demo10' ),
 		'meta_input'  => array(
 			FOOGALLERY_META_TEMPLATE => 'simple_portfolio',
 			FOOGALLERY_META_SETTINGS => array(
@@ -352,7 +353,7 @@ return array(
 		'post_title'  => 'Demo : Simple Portfolio (Variation)',
 		'post_status' => 'publish',
 		'post_type'   => FOOGALLERY_CPT_GALLERY,
-		'items'       => array( 'pixabay6', 'pixabay1', 'pixabay2', 'pixabay3', 'pixabay4', 'pixabay5', 'pixabay7', 'pixabay8', 'pixabay9', 'pixabay10', 'pixabay11', 'pixabay12' ),
+		'items'       => array( 'demo6', 'demo1', 'demo2', 'demo3', 'demo4', 'demo5', 'demo7', 'demo8', 'demo9', 'demo10' ),
 		'meta_input'  => array(
 			FOOGALLERY_META_TEMPLATE => 'simple_portfolio',
 			FOOGALLERY_META_SETTINGS => array(
@@ -420,7 +421,7 @@ return array(
         'post_title'  => 'Demo : Carousel',
         'post_status' => 'publish',
         'post_type'   => FOOGALLERY_CPT_GALLERY,
-        'items'       => array( 'pixabay7', 'pixabay1', 'pixabay2', 'pixabay3', 'pixabay4', 'pixabay5', 'pixabay7', 'pixabay8', 'pixabay9', 'pixabay10', 'pixabay11', 'pixabay12' ),
+        'items'       => array( 'demo7', 'demo1', 'demo2', 'demo3', 'demo4', 'demo5', 'demo7', 'demo8', 'demo9', 'demo10' ),
         'meta_input'  => array(
             FOOGALLERY_META_TEMPLATE => 'carousel',
             FOOGALLERY_META_SETTINGS => array(
