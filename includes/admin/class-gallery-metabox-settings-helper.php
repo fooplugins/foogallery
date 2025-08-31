@@ -403,7 +403,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings_Helper' ) ) {
 					<?php foreach ( $this->gallery_templates as $template ) {
 						$selected_class = ( $this->current_gallery_template === $template['slug'] ) ? 'selected' : '';
 						
-						// Get template icon - you can map these to your layout icons
+						// Get template icon
 						$template_icon = $this->get_template_icon( $template['slug'] );
 						
 						$preview_css = '';
@@ -461,15 +461,17 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings_Helper' ) ) {
 		 */
 		private function get_template_icon( $template_slug ) {
 			$icon_mapping = apply_filters( 'foogallery_template_icons', array(
-				'default'           => 'flaticon-grid',
-				'masonry'          => 'flaticon-masonry',
-				'image_viewer'     => 'flaticon-image-viewer',
-				'thumbnail'        => 'flaticon-thumbnail-grid',
-				'justified'        => 'flaticon-justified',
-				'portfolio'        => 'flaticon-portfolio',
-				'slider'           => 'flaticon-slider',
-				'carousel'         => 'flaticon-carousel',
-				// Add more mappings as needed
+				'default'                       => 'flaticon-responsive-grid',
+				'carousel'                      => 'flaticon-carousel-slider',
+				'image-viewer'                  => 'flaticon-image-viewer',
+				'justified'                     => 'flaticon-justified-gallery',
+				'masonry'                       => 'flaticon-masonry-layout',
+				'simple-portfolio'              => 'flaticon-portfolio-grid',
+				'thumbnail'              		=> 'flaticon-single-image',
+				'product'               		=> 'flaticon-product-grid',
+				'polaroid_new'                  => 'flaticon-polaroid-stack',
+				'foogridpro'                    => 'flaticon-advanced-grid',
+				'slider'                    	=> 'flaticon-image-slider',
 			));
 			
 			return isset( $icon_mapping[ $template_slug ] ) ? $icon_mapping[ $template_slug ] : 'flaticon-grid';
