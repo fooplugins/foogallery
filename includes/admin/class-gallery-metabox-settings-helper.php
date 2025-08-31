@@ -387,5 +387,92 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings_Helper' ) ) {
             </span>
 			<?php
 		}
+
+		/**
+		 * Render the card-based gallery template selector (replaces the dropdown)
+		 *
+		 * @return void
+		 */
+		public function render_gallery_template_card_selector() {
+			?>
+			<div class="foogallery-template-card-selector">
+				<h3><?php _e('Choose Gallery Template', 'foogallery'); ?></h3>
+				<p class="description"><?php _e('Select the layout and style for your gallery:', 'foogallery'); ?></p>
+				
+				<div class="foogallery-template-cards-container">
+					<?php foreach ( $this->gallery_templates as $template ) {
+						$selected_class = ( $this->current_gallery_template === $template['slug'] ) ? 'selected' : '';
+						
+						// Get template icon - you can map these to your layout icons
+						$template_icon = $this->get_template_icon( $template['slug'] );
+						
+						$preview_css = '';
+						if ( isset( $template['preview_css'] ) ) {
+							if ( is_array( $template['preview_css'] ) ) {
+								$preview_css = implode( ',', $template['preview_css'] );
+							} else {
+								$preview_css = $template['preview_css'];
+							}
+						}
+						
+						$mandatory_classes = isset( $template['mandatory_classes'] ) ? $template['mandatory_classes'] : '';
+						?>
+						<div class="foogallery-template-card <?php echo $selected_class; ?>" 
+							data-template="<?php echo esc_attr( $template['slug'] ); ?>"
+							data-preview-css="<?php echo esc_attr( $preview_css ); ?>"
+							data-mandatory-classes="<?php echo esc_attr( $mandatory_classes ); ?>">
+							
+							<div class="foogallery-template-card-icon">
+								<i class="<?php echo esc_attr( $template_icon ); ?>"></i>
+							</div>
+							
+							<div class="foogallery-template-card-content">
+								<h4><?php echo esc_html( $template['name'] ); ?></h4>
+								<?php if ( isset( $template['description'] ) ) { ?>
+									<p><?php echo esc_html( $template['description'] ); ?></p>
+								<?php } ?>
+							</div>
+							
+							<div class="foogallery-template-card-selected">
+								<span class="dashicons dashicons-yes"></span>
+							</div>
+						</div>
+					<?php } ?>
+				</div>
+				
+				<!-- Keep the hidden select for form submission -->
+				<select id="FooGallerySettings_GalleryTemplate" name="<?php echo FOOGALLERY_META_TEMPLATE; ?>" style="display: none;">
+					<?php foreach ( $this->gallery_templates as $template ) {
+						$selected = ( $this->current_gallery_template === $template['slug'] ) ? 'selected' : '';
+						echo "<option {$selected} value=\"{$template['slug']}\">{$template['name']}</option>";
+					} ?>
+				</select>
+			</div>
+			<?php
+		}
+
+		
+		/**
+		 * Get icon class for gallery template
+		 * Map your template slugs to the layout icons from flaticon
+		 *
+		 * @param string $template_slug
+		 * @return string
+		 */
+		private function get_template_icon( $template_slug ) {
+			$icon_mapping = apply_filters( 'foogallery_template_icons', array(
+				'default'           => 'flaticon-grid',
+				'masonry'          => 'flaticon-masonry',
+				'image_viewer'     => 'flaticon-image-viewer',
+				'thumbnail'        => 'flaticon-thumbnail-grid',
+				'justified'        => 'flaticon-justified',
+				'portfolio'        => 'flaticon-portfolio',
+				'slider'           => 'flaticon-slider',
+				'carousel'         => 'flaticon-carousel',
+				// Add more mappings as needed
+			));
+			
+			return isset( $icon_mapping[ $template_slug ] ) ? $icon_mapping[ $template_slug ] : 'flaticon-grid';
+		}		
 	}
 }
