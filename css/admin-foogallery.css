@@ -645,8 +645,78 @@ button[data-balloon]{overflow:visible}[data-balloon]{position:relative}[data-bal
 }
 
 .foogallery_preview_container {
-	position: relative;
-	padding: 10px;
+    position: relative;
+    padding: 10px;
+}
+
+/* Header-based Viewport Controls */
+.foogallery-items-view-switch-container {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 10px 0;
+}
+
+.foogallery-viewport-selector {
+    display: flex;
+    gap: 4px;
+}
+
+.foogallery-viewport-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    border: 1px solid #ddd;
+    background: #f7f7f7;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.foogallery-viewport-btn:hover {
+    background: #e7e7e7;
+    border-color: #999;
+}
+
+.foogallery-viewport-btn.active {
+    background: #0073aa;
+    color: white;
+    border-color: #0073aa;
+}
+
+.foogallery-viewport-btn .dashicons {
+    width: 16px;
+    height: 16px;
+    font-size: 16px;
+    line-height: 1;
+}
+
+/* Preview Wrapper with Viewport Simulation */
+.foogallery-preview-wrapper {
+    transition: all 0.3s ease;
+    margin: 0 auto;
+    border: 1px solid #ddd;
+    background: #fff;
+    position: relative;
+    width: 100%;
+}
+
+.foogallery-preview-wrapper.viewport-desktop {
+    max-width: 100% !important;
+    box-shadow: none !important;
+}
+
+.foogallery-preview-wrapper.viewport-tablet {
+    max-width: 768px !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1) !important;
+}
+
+.foogallery-preview-wrapper.viewport-mobile {
+    max-width: 375px !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1) !important;
 }
 
 .foogallery-items-add {

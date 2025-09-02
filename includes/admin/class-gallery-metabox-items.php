@@ -55,6 +55,17 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Items' ) ) {
 					<a href="#manage" data-value="manage" data-container=".foogallery-items-view-manage" class="<?php echo $mode==='manage' ? 'current' : ''; ?>"><?php _e('Manage Items', 'foogallery'); ?></a>
 					<a href="#preview" data-value="preview" data-container=".foogallery-items-view-preview" class="<?php echo $mode==='preview' ? 'current' : ''; ?>"><?php _e('Gallery Preview', 'foogallery'); ?></a>
 				</div>
+				<div class="foogallery-viewport-selector">
+					<button type="button" class="foogallery-viewport-btn active" data-viewport="desktop" title="<?php _e('Desktop View', 'foogallery'); ?>">
+						<span class="dashicons dashicons-desktop"></span>
+					</button>
+					<button type="button" class="foogallery-viewport-btn" data-viewport="tablet" title="<?php _e('Tablet View', 'foogallery'); ?>">
+						<span class="dashicons dashicons-tablet"></span>
+					</button>
+					<button type="button" class="foogallery-viewport-btn" data-viewport="mobile" title="<?php _e('Mobile View', 'foogallery'); ?>">
+						<span class="dashicons dashicons-smartphone"></span>
+					</button>
+				</div>
 				<span id="foogallery_preview_spinner" class="spinner"></span>
 				<input type="hidden" id="foogallery_items_view_input" value="<?php echo $mode; ?>" name="<?php echo FOOGALLERY_META_SETTINGS . '[foogallery_items_view]'; ?>" />
 			</div>
@@ -72,15 +83,19 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Items' ) ) {
 				</div>
 			</div>
 			<div class="foogallery-items-view foogallery-items-view-preview <?php echo $mode==='preview' ? '' : 'hidden'; ?>">
-				<div class="foogallery_preview_container <?php echo $mode==='preview' ? '' : 'foogallery-preview-force-refresh'; ?>">
-					<?php
-					if ( $has_items && $mode==='preview' ) {
-						foogallery_render_gallery( $gallery->ID );
-					} else {
-						$this->render_empty_gallery_preview();
-					}
-					?>
+				<!-- Wrap existing preview container -->
+				<div class="foogallery-preview-wrapper viewport-desktop">
+					<div class="foogallery_preview_container <?php echo $mode==='preview' ? '' : 'foogallery-preview-force-refresh'; ?>">
+						<?php
+						if ( $has_items && $mode==='preview' ) {
+							foogallery_render_gallery( $gallery->ID );
+						} else {
+							$this->render_empty_gallery_preview();
+						}
+						?>
+					</div>
 				</div>
+                
 				<div style="clear: both"></div>
 				<?php wp_nonce_field( 'foogallery_preview', 'foogallery_preview', false ); ?>
 			</div>

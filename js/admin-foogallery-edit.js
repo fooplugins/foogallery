@@ -6,11 +6,68 @@ FooGallery.autoEnabled = false;
     FOOGALLERY.previous_post_id = 0;
     FOOGALLERY.attachments = [];
     FOOGALLERY.selected_attachment_id = 0;
-	FOOGALLERY.selected_gallery_template = '';
+    FOOGALLERY.selected_gallery_template = '';
 
-	// Used for selecting files from the media modal.
-	FOOGALLERY.current_media_selector_modal = false;
-	FOOGALLERY.current_media_selector_input = false;
+    // Used for selecting files from the media modal.
+    FOOGALLERY.current_media_selector_modal = false;
+    FOOGALLERY.current_media_selector_input = false;
+
+    // Viewport controller for responsive preview
+    FOOGALLERY.viewportController = {
+        currentViewport: 'desktop',
+        
+        init: function() {
+            this.bindEvents();
+            this.setViewport('desktop'); // Default to desktop
+        },
+        
+        bindEvents: function() {
+            var self = this;
+            
+            // Viewport button clicks
+			$('.foogallery-viewport-selector button').on('click', function(e) {
+            //$(document).on('click', '.foogallery-viewport-btn', function(e) {
+                e.preventDefault();
+                e.stopPropagation(); // Prevent event bubbling
+                var viewport = $(this).data('viewport');
+                self.setViewport(viewport);
+            });
+        },
+        
+        setViewport: function(viewport) {
+            if (!viewport) return;
+            
+            console.log('Setting viewport to:', viewport); // Debug
+            this.currentViewport = viewport;
+            
+            // Update button states
+            $('.foogallery-viewport-btn').removeClass('active');
+            $('.foogallery-viewport-btn[data-viewport="' + viewport + '"]').addClass('active');
+            
+            // Update preview wrapper classes
+            var $wrapper = $('.foogallery-preview-wrapper');
+            console.log('Found wrapper:', $wrapper.length); // Debug
+            
+            // If wrapper doesn't exist, create it by wrapping the preview container
+            if ($wrapper.length === 0) {
+                var $preview = $('.foogallery_preview_container');
+                if ($preview.length > 0) {
+                    $preview.wrap('<div class="foogallery-preview-wrapper viewport-desktop"></div>');
+                    $wrapper = $('.foogallery-preview-wrapper');
+                    console.log('Created wrapper around preview container'); // Debug
+                }
+            }
+            
+            if ($wrapper.length > 0) {
+                $wrapper.removeClass('viewport-desktop viewport-tablet viewport-mobile')
+                        .addClass('viewport-' + viewport);
+                
+                console.log('Applied class:', 'viewport-' + viewport); // Debug
+                console.log('Wrapper classes:', $wrapper.attr('class')); // Debug
+                console.log('Wrapper width:', $wrapper.width()); // Debug
+            }
+        }
+    };
 
     FOOGALLERY.calculateAttachmentIds = function() {
         var sorted = [];
@@ -297,6 +354,7 @@ FooGallery.autoEnabled = false;
 
 		$('.foogallery-items-view-switch-container').appendTo( $items_metabox_heading ).removeClass('hidden');
 
+		//Bind to the Manage / Preview buttons
 		$('.foogallery-items-view-switch-container a').on('click', function(e) {
 			e.stopPropagation();
 
@@ -309,6 +367,13 @@ FooGallery.autoEnabled = false;
 			//if the preview button is already selected, and we are clicking it again, then force a preview refresh
 			if ( currentSelector === nextSelector && value === 'preview' ) {
 				$('.foogallery_preview_container').addClass('foogallery-preview-force-refresh');
+			}
+
+			if ( value === 'preview' ) {
+				//show the viewport buttons
+				$('.foogallery-viewport-selector').show();
+			} else {
+				$('.foogallery-viewport-selector').hide();
 			}
 
 			//toggle the views
@@ -332,6 +397,8 @@ FooGallery.autoEnabled = false;
 				}
 			}
 		});
+
+		FOOGALLERY.viewportController.init();
 
 		$(function() {
 
@@ -968,6 +1035,15 @@ FooGallery.autoEnabled = false;
 			},
 		});
 	};
+
+	$(document).ready(function () {
+
+        FOOGALLERY.initAttachments();
+
+        FOOGALLERY.calculateHiddenAreas();
+
+        FOOGALLERY.galleryTemplateChanged(false);
+    });
 
 }(window.FOOGALLERY = window.FOOGALLERY || {}, jQuery));
 
