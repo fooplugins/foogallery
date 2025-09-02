@@ -183,6 +183,7 @@
 	padding:5px;
 	line-height: 0;
 	margin-bottom: 10px;
+	cursor: pointer;
 }
 
 .foogallery_template_field_id-lightbox_custom_button_theme .foogallery_metabox_field-htmlicon label,
