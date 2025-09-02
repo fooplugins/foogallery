@@ -218,7 +218,7 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 						'fg-loading-dots'    => array( 'label' => __( 'Dots', 'foogallery' ), 'html' => '<div class="foogallery-setting-loading_icon foogallery fg-loading-dots"><div class="fg-loading"><div class="fg-loader"></div></div></div>' ),
 						'fg-loading-partial' => array( 'label' => __( 'Partial', 'foogallery' ), 'html' => '<div class="foogallery-setting-loading_icon foogallery fg-loading-partial"><div class="fg-loading"><div class="fg-loader"></div></div></div>' ),
 						'fg-loading-pulse'   => array( 'label' => __( 'Pulse', 'foogallery' ), 'html' => '<div class="foogallery-setting-loading_icon foogallery fg-loading-pulse"><div class="fg-loading"><div class="fg-loader"></div></div></div>' ),
-						'fg-loading-trail'   => array( 'label' => __( 'Trail', 'foogallery' ), 'html' => '<div class="foogallery-setting-loading_icon foogallery fg-loading-trail"><div class="fg-loading"><div class="fg-loader"></div></div>' ),
+						'fg-loading-trail'   => array( 'label' => __( 'Trail', 'foogallery' ), 'html' => '<div class="foogallery-setting-loading_icon foogallery fg-loading-trail"><div class="fg-loading"><div class="fg-loader"></div></div></div>' ),
 					)
 					),
 					'row_data' => array(
@@ -234,7 +234,7 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 					'desc'     => __( 'The animation effect used to display the thumbnail, once it has loaded.', 'foogallery' ),
 					'section'  => __( 'Appearance', 'foogallery' ),
 					'default'  => 'fg-loaded-fade-in',
-					'type'     => 'select',
+					'type'     => 'radio',
 					'choices'  => apply_filters(
 						'foogallery_gallery_template_common_thumbnail_fields_loaded_effect_choices', array(
 							''                      => __( 'None', 'foogallery' ),
@@ -251,10 +251,11 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 						)
 					),
 					'row_data' => array(
-						'data-foogallery-change-selector' => 'select',
-                        'data-foogallery-value-selector'  => 'select option:selected',
+						'data-foogallery-change-selector' => 'input:radio',
+                        'data-foogallery-value-selector'  => 'input:checked',
 						'data-foogallery-preview'         => 'shortcode'
-					)
+					),
+					'class' => 'foogallery-radios-12em',
 				);
 				//endregion
 
@@ -399,10 +400,11 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 					'type'     => 'radio',
 					'choices'  => apply_filters(
 						'foogallery_gallery_template_common_thumbnail_fields_hover_effect_scale_choices', array(
-						''               => __( 'None', 'foogallery' ),
-						'fg-hover-scale' => __( 'Scaled', 'foogallery' ),
-						'fg-hover-zoomed' => __( 'Zoomed', 'foogallery' ),
-					)
+							''               => __( 'None', 'foogallery' ),
+							'fg-hover-scale' => __( 'Scaled', 'foogallery' ),
+							'fg-hover-zoomed' => __( 'Zoomed', 'foogallery' ),
+							'fg-hover-semi-zoomed' => __( 'Semi Zoomed', 'foogallery' ),
+						)
 					),
 					'desc'     => __( 'Apply a slight scaling effect when hovering over a thumbnail.', 'foogallery' ),
 					'row_data' => array(
