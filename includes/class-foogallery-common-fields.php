@@ -486,7 +486,7 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 							'fg-hover-circle-plus2'=> array( 'label' => __( 'Circle Plus 2', 'foogallery' ), 'html' => '<div class="foogallery-setting-caption_icon fg-hover-circle-plus2"></div>' ),
 							'fg-hover-eye'         => array( 'label' => __( 'Eye', 'foogallery' ), 'html' => '<div class="foogallery-setting-caption_icon fg-hover-eye"></div>' ),
 							'fg-hover-external'    => array( 'label' => __( 'External', 'foogallery' ), 'html' => '<div class="foogallery-setting-caption_icon fg-hover-external"></div>' ),
-							'fg-hover-square-plus' => array( 'label' => __( 'External', 'foogallery' ), 'html' => '<div class="foogallery-setting-caption_icon fg-hover-square-plus"></div>' ), 
+							'fg-hover-square-plus' => array( 'label' => __( 'Square Plus', 'foogallery' ), 'html' => '<div class="foogallery-setting-caption_icon fg-hover-square-plus"></div>' ), 
 						)
 					),
 					'row_data' => array(
