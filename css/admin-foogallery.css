@@ -654,37 +654,36 @@ button[data-balloon]{overflow:visible}[data-balloon]{position:relative}[data-bal
     display: flex;
     align-items: center;
     gap: 15px;
-    padding: 10px 0;
+    padding: 0;
 }
 
-.foogallery-viewport-selector {
+.foogallery-preview-actions {
     display: flex;
     gap: 4px;
 }
 
-.foogallery-viewport-btn {
+.foogallery-preview-actions button {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 32px;
-    height: 32px;
     padding: 0;
-    border: 1px solid #ddd;
-    background: #f7f7f7;
-    border-radius: 3px;
+    background: #fff;
+	border: none;
     cursor: pointer;
     transition: all 0.2s ease;
+	color: #ddd;
 }
 
-.foogallery-viewport-btn:hover {
-    background: #e7e7e7;
-    border-color: #999;
+.foogallery-preview-actions button:hover {
+    color: #aaa;
 }
 
-.foogallery-viewport-btn.active {
-    background: #0073aa;
-    color: white;
-    border-color: #0073aa;
+.foogallery-preview-actions button.foogallery-preview-refresh-btn {
+	color: #aaa;
+}
+
+.foogallery-preview-actions button.active {
+    color: #000;
 }
 
 .foogallery-viewport-btn .dashicons {
@@ -707,6 +706,7 @@ button[data-balloon]{overflow:visible}[data-balloon]{position:relative}[data-bal
 .foogallery-preview-wrapper.viewport-desktop {
     max-width: 100% !important;
     box-shadow: none !important;
+	border: none;
 }
 
 .foogallery-preview-wrapper.viewport-tablet {

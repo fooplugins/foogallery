@@ -13,7 +13,7 @@ FooGallery.autoEnabled = false;
     FOOGALLERY.current_media_selector_input = false;
 
     // Viewport controller for responsive preview
-    FOOGALLERY.viewportController = {
+    FOOGALLERY.previewActionsController = {
         currentViewport: 'desktop',
         
         init: function() {
@@ -23,21 +23,36 @@ FooGallery.autoEnabled = false;
         
         bindEvents: function() {
             var self = this;
+
+			// Refresh buttons click
+			$('.foogallery-preview-actions .foogallery-preview-refresh-btn').on('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation(); // Prevent event bubbling
+                FOOGALLERY.reloadGalleryPreview();
+            });
             
             // Viewport button clicks
-			$('.foogallery-viewport-selector button').on('click', function(e) {
-            //$(document).on('click', '.foogallery-viewport-btn', function(e) {
+			$('.foogallery-preview-actions .foogallery-viewport-btn').on('click', function(e) {
                 e.preventDefault();
                 e.stopPropagation(); // Prevent event bubbling
                 var viewport = $(this).data('viewport');
                 self.setViewport(viewport);
             });
+
+			var $currentButton = $('.foogallery-items-view-switch-container a.current'),
+				currentValue = $currentButton.data('value');
+
+			if ( currentValue === 'preview' ) {
+				//show the viewport buttons
+				$('.foogallery-preview-actions').show();
+			} else {
+				$('.foogallery-preview-actions').hide();
+			}
         },
         
         setViewport: function(viewport) {
             if (!viewport) return;
             
-            console.log('Setting viewport to:', viewport); // Debug
             this.currentViewport = viewport;
             
             // Update button states
@@ -46,7 +61,6 @@ FooGallery.autoEnabled = false;
             
             // Update preview wrapper classes
             var $wrapper = $('.foogallery-preview-wrapper');
-            console.log('Found wrapper:', $wrapper.length); // Debug
             
             // If wrapper doesn't exist, create it by wrapping the preview container
             if ($wrapper.length === 0) {
@@ -54,17 +68,12 @@ FooGallery.autoEnabled = false;
                 if ($preview.length > 0) {
                     $preview.wrap('<div class="foogallery-preview-wrapper viewport-desktop"></div>');
                     $wrapper = $('.foogallery-preview-wrapper');
-                    console.log('Created wrapper around preview container'); // Debug
                 }
             }
             
             if ($wrapper.length > 0) {
                 $wrapper.removeClass('viewport-desktop viewport-tablet viewport-mobile')
                         .addClass('viewport-' + viewport);
-                
-                console.log('Applied class:', 'viewport-' + viewport); // Debug
-                console.log('Wrapper classes:', $wrapper.attr('class')); // Debug
-                console.log('Wrapper width:', $wrapper.width()); // Debug
             }
         }
     };
@@ -371,9 +380,9 @@ FooGallery.autoEnabled = false;
 
 			if ( value === 'preview' ) {
 				//show the viewport buttons
-				$('.foogallery-viewport-selector').show();
+				$('.foogallery-preview-actions').show();
 			} else {
-				$('.foogallery-viewport-selector').hide();
+				$('.foogallery-preview-actions').hide();
 			}
 
 			//toggle the views
@@ -398,7 +407,7 @@ FooGallery.autoEnabled = false;
 			}
 		});
 
-		FOOGALLERY.viewportController.init();
+		FOOGALLERY.previewActionsController.init();
 
 		$(function() {
 

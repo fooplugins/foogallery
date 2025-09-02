@@ -55,7 +55,11 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Items' ) ) {
 					<a href="#manage" data-value="manage" data-container=".foogallery-items-view-manage" class="<?php echo $mode==='manage' ? 'current' : ''; ?>"><?php _e('Manage Items', 'foogallery'); ?></a>
 					<a href="#preview" data-value="preview" data-container=".foogallery-items-view-preview" class="<?php echo $mode==='preview' ? 'current' : ''; ?>"><?php _e('Gallery Preview', 'foogallery'); ?></a>
 				</div>
-				<div class="foogallery-viewport-selector">
+				<div class="foogallery-preview-actions">
+					<button type="button" class="foogallery-preview-refresh-btn" title="<?php _e('Refresh Preview', 'foogallery'); ?>">
+						<span class="dashicons dashicons-update"></span>
+					</button>
+					<span></span>
 					<button type="button" class="foogallery-viewport-btn active" data-viewport="desktop" title="<?php _e('Desktop View', 'foogallery'); ?>">
 						<span class="dashicons dashicons-desktop"></span>
 					</button>
