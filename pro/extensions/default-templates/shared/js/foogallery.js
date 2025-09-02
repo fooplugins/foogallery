@@ -5806,7 +5806,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 		regex: {
 			theme: /(?:\s|^)(fg-(?:light|dark|custom))(?:\s|$)/,
 			loadingIcon: /(?:\s|^)(fg-loading-(?:default|bars|dots|partial|pulse|trail))(?:\s|$)/,
-			hoverIcon: /(?:\s|^)(fg-hover-(?:zoom|zoom2|zoom3|plus|circle-plus|eye|external|tint))(?:\s|$)/,
+			hoverIcon: /(?:\s|^)(fg-hover-(?:zoom|zoom2|zoom3|zoom4|zoom5|plus|plus2|plus3|circle-plus|circle-plus2|square-plus|eye|external|tint))(?:\s|$)/,
 			videoIcon: /(?:\s|^)(fg-video-(?:default|1|2|3|4))(?:\s|$)/,
 			border: /(?:\s|^)(fg-border-(?:thin|medium|thick))(?:\s|$)/,
 			hoverColor: /(?:\s|^)(fg-hover-(?:colorize|grayscale))(?:\s|$)/,
@@ -11099,6 +11099,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
                 toggle: "fg-panel-area-toggle",
                 button: "fg-panel-area-button",
                 visible: "fg-panel-area-visible",
+                overlay: "fg-panel-area-overlay",
                 position: {
                     top: "fg-panel-area-top",
                     right: "fg-panel-area-right",
@@ -11274,10 +11275,12 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 
         press: function( name, pressed ){
             var self = this, button = self.get(name);
-            if ( self.panel.isSmallScreen && pressed && _is.string(button.groupName) ){
+            if ( pressed && _is.string(button.groupName) ){
                 self.each(function(btn){
                     if ( button !== btn && btn instanceof _.Panel.SideAreaButton && button.groupName === btn.groupName ){
-                        btn.area.toggle( false );
+                        if ( self.panel.isSmallScreen || btn.isTargetingSamePosition( button ) ) {
+                            btn.area.toggle( false );
+                        }
                     }
                 });
             }
@@ -11572,6 +11575,24 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
                     this.__autoHide = null;
                 }
             }
+        },
+        isTargetingSamePosition: function( button ) {
+            if ( button instanceof _.Panel.SideAreaButton ) {
+                const ov1 = this?.area?.opt?.overlay,
+                    ov2 = button?.area?.opt?.overlay;
+                // check if the overlay state is the same
+                if ( ov1 === ov2 ) {
+                    if ( ov1 === true ) {
+                        // all overlays are counted as the same position as they overlap
+                        return true;
+                    }
+                    // overlay state is the same so check the position
+                    const pos1 = this?.area?.opt?.position,
+                        pos2 = button?.area?.opt?.position;
+                    return _is.string( pos1 ) && _is.string( pos2 ) && pos1 === pos2;
+                }
+            }
+            return false;
         },
         resize: function(){
             var enabled = this.area.isEnabled(), supported = enabled && this.area.canLoad(this.area.currentMedia);
@@ -12146,12 +12167,14 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
                 icon: null,
                 label: null,
                 position: null,
+                overlay: false,
                 visible: true,
                 autoHide: false,
                 toggle: !!panel.opt.buttons[name]
             }, options), _obj.extend({
                 toggle: this.__cls(cls.toggle, name, true),
                 visible: this.__cls(cls.visible, name),
+                overlay: this.__cls(cls.overlay, name),
                 position: {
                     top: this.__cls(cls.position.top, name),
                     right: this.__cls(cls.position.right, name),
@@ -12162,7 +12185,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
             self.isVisible = self.opt.visible;
             self.allPositionClasses = Object.keys(self.cls.position).map(function (key) {
                 return self.cls.position[key];
-            }).join(" ");
+            }).join(" ") + " " + self.cls.overlay;
             self.button = self.registerButton();
         },
         registerButton: function(){
@@ -12172,12 +12195,6 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
         },
         doCreate: function(){
             if (this._super()){
-                if (this.opt.toggle){
-                    $('<button/>', {type: 'button'}).addClass(this.cls.toggle)
-                        .append(_icons.get("circle-close", this.panel.opt.icons))
-                        .on("click.foogallery", {self: this}, this.onToggleClick)
-                        .appendTo(this.$inner);
-                }
                 if (this.isEnabled()){
                     this.panel.$el.toggleClass(this.cls.visible, this.isVisible);
                     this.setPosition( this.opt.position );
@@ -12194,12 +12211,19 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
         },
         getPosition: function(){
             if (this.isEnabled()){
-                return this.cls.position[this.opt.position];
+                const position = this.cls.position[this.opt.position];
+                return this.opt.overlay ? position + " " + this.cls.overlay : position;
             }
             return null;
         },
-        setPosition: function( position ){
+        /**
+         *
+         * @param {string} position
+         * @param {?boolean} [overlay]
+         */
+        setPosition: function( position, overlay = null ){
             this.opt.position = this.cls.position.hasOwnProperty(position) ? position : null;
+            if (_is.boolean(overlay)) this.opt.overlay = overlay;
             if (_is.jq(this.panel.$el)){
                 this.panel.$el.removeClass(this.allPositionClasses).addClass(this.getPosition());
             }
@@ -12251,7 +12275,6 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
                 waitForUnload: false,
                 group: "overlay"
             }, panel.cls.info);
-            this.allPositionClasses += " " + this.cls.overlay;
         },
         doCreate: function(){
             var self = this;
@@ -12262,14 +12285,6 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
                 return true;
             }
             return false;
-        },
-        getPosition: function(){
-            var result = this._super();
-            return result != null && this.opt.overlay ? result + " " + this.cls.overlay : result;
-        },
-        setPosition: function( position, overlay ){
-            if (_is.boolean(overlay)) this.opt.overlay = overlay;
-            this._super( position );
         },
         canLoad: function(media){
             return this._super(media) && media.caption.canLoad();
@@ -12656,6 +12671,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
                 icon: "cart",
                 label: panel.il8n.buttons.cart,
                 position: panel.opt.cart,
+                overlay: panel.opt.cartOverlay,
                 visible: panel.opt.cartVisible,
                 autoHide: panel.opt.cartAutoHide,
                 waitForUnload: false,
@@ -16716,10 +16732,13 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 		// if this has already been done, don't do it again
 		if ( _.globalsMerged === true ) return;
 
+        if ( _is.object( window[ 'FooGallery_auto' ] ) ) {
+            _.auto( window[ 'FooGallery_auto' ] );
+        }
 		if ( _is.object( window[ 'FooGallery_il8n' ] ) ){
 			_.merge_il8n( window[ 'FooGallery_il8n' ] );
-			_.globalsMerged = true;
 		}
+        _.globalsMerged = true;
 	};
 
 	/**

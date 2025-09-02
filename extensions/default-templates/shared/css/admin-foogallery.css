@@ -21,17 +21,35 @@
 .foogallery-setting-caption_icon.fg-hover-zoom3 {
 	background-image: url('../img/icons.svg#zoom3-light');
 }
+.foogallery-setting-caption_icon.fg-hover-zoom4 {
+	background-image: url('../img/icons.svg#zoom4-light');
+}
+.foogallery-setting-caption_icon.fg-hover-zoom5 {
+	background-image: url('../img/icons.svg#zoom5-light');
+}
 .foogallery-setting-caption_icon.fg-hover-plus {
 	background-image: url('../img/icons.svg#plus-light');
 }
+.foogallery-setting-caption_icon.fg-hover-plus2 {
+	background-image: url('../img/icons.svg#plus2-light');
+}
+.foogallery-setting-caption_icon.fg-hover-plus4 {
+	background-image: url('../img/icons.svg#plus3-light');
+}
 .foogallery-setting-caption_icon.fg-hover-circle-plus {
 	background-image: url('../img/icons.svg#circle-plus-light');
+}
+.foogallery-setting-caption_icon.fg-hover-circle-plus2 {
+	background-image: url('../img/icons.svg#circle-plus2-light');
 }
 .foogallery-setting-caption_icon.fg-hover-eye {
 	background-image: url('../img/icons.svg#eye-light');
 }
 .foogallery-setting-caption_icon.fg-hover-external {
 	background-image: url('../img/icons.svg#external-light');
+}
+.foogallery-setting-caption_icon.fg-hover-square-plus {
+	background-image: url('../img/icons.svg#square-plus-light');
 }
 .foogallery-setting-video_overlay.fg-video-default {
 	background-image: url('../img/icons.svg#video-default-light');

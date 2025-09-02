@@ -17,6 +17,14 @@
         <path id="plus-def" d="M15.5 6h-5.5v-5.5c0-0.276-0.224-0.5-0.5-0.5h-3c-0.276 0-0.5 0.224-0.5 0.5v5.5h-5.5c-0.276 0-0.5 0.224-0.5 0.5v3c0 0.276 0.224 0.5 0.5 0.5h5.5v5.5c0 0.276 0.224 0.5 0.5 0.5h3c0.276 0 0.5-0.224 0.5-0.5v-5.5h5.5c0.276 0 0.5-0.224 0.5-0.5v-3c0-0.276-0.224-0.5-0.5-0.5z"/>
         <path id="eye-def" d="M5.998 8c0 1.104 0.896 2 2 2s2-0.896 2-2v-0.017c-0.214 0.217-0.507 0.35-0.833 0.35-0.644 0-1.167-0.523-1.167-1.167 0-0.463 0.273-0.867 0.663-1.053-0.207-0.073-0.43-0.113-0.663-0.113-1.103 0-2 0.897-2 2zM15.552 6.863c-1.24-1.577-4.26-4.197-7.55-4.197-3.293 0-6.316 2.62-7.557 4.197-0.28 0.36-0.433 0.75-0.443 1.137 0.010 0.387 0.163 0.777 0.443 1.137 1.24 1.577 4.26 4.197 7.553 4.197s6.313-2.62 7.553-4.197c0.283-0.36 0.437-0.75 0.447-1.137-0.010-0.387-0.163-0.777-0.447-1.137zM7.998 11.333c-1.84 0-3.333-1.493-3.333-3.333s1.493-3.333 3.333-3.333 3.333 1.493 3.333 3.333c-0 1.84-1.493 3.333-3.333 3.333z"/>
         <path id="external-def" d="M2 2v12h12v-4h2v5c0 0.552-0.448 1-1 1h-14c-0.552 0-1-0.448-1-1v-14c0-0.552 0.448-1 1-1h5v2h-4zM8 0h7c0.552 0 1 0.448 1 1v7l-3-3l-6 6l-2-2l6-6z"/>
+
+        <path id="plus2-def" d="M 4,7.5 7.4972259,7.4972259 7.5,4 h 1 V 7.5 H 12 v 1 H 8.5 V 12 h -1 V 8.5 H 4 Z"/>
+        <path id="plus3-def" d="M 1,7.5 7.4972259,7.4972259 7.5,1 h 1 V 7.5 H 15 v 1 H 8.5 V 15 h -1 V 8.5 H 1 Z"/>
+        <path id="square-plus-def" d="M 1.3125 0 C 0.59294254 0 0 0.59294254 0 1.3125 L 0 14.6875 C 0 15.407057 0.59294254 16 1.3125 16 L 14.6875 16 C 15.407057 16 16 15.407057 16 14.6875 L 16 1.3125 C 16 0.59294254 15.407057 0 14.6875 0 L 1.3125 0 z M 1.3125 0.875 L 14.6875 0.875 C 14.937443 0.875 15.125 1.0625575 15.125 1.3125 L 15.125 14.6875 C 15.125 14.937443 14.937443 15.125 14.6875 15.125 L 1.3125 15.125 C 1.0625575 15.125 0.875 14.937443 0.875 14.6875 L 0.875 1.3125 C 0.875 1.0625575 1.0625575 0.875 1.3125 0.875 z M 7.5 4 L 7.4980469 7.4980469 L 4 7.5 L 4 8.5 L 7.5 8.5 L 7.5 12 L 8.5 12 L 8.5 8.5 L 12 8.5 L 12 7.5 L 8.5 7.5 L 8.5 4 L 7.5 4 z"/>
+        <path id="circle-plus2-def" d="M 8 0 C 3.5876443 0 -1.1842379e-15 3.5876443 0 8 C 6.3074695e-16 12.412356 3.5876443 16 8 16 C 12.412356 16 16 12.412356 16 8 C 16 3.5876443 12.412356 2.9605947e-15 8 0 z M 8 1 C 11.871916 1 15 4.1280844 15 8 C 15 11.871916 11.871916 15 8 15 C 4.1280844 15 1 11.871916 1 8 C 1 4.1280844 4.1280844 1 8 1 z M 7.5 4 L 7.4980469 7.4980469 L 4 7.5 L 4 8.5 L 7.5 8.5 L 7.5 12 L 8.5 12 L 8.5 8.5 L 12 8.5 L 12 7.5 L 8.5 7.5 L 8.5 4 L 7.5 4 z"/>
+        <path id="zoom4-def" d="M 7 0 C 3.1399291 0 2.9605947e-15 3.1399291 0 7 C 9.5503457e-16 10.860071 3.1399291 14 7 14 C 8.7145306 14 10.283617 13.378456 11.501953 12.351562 L 15.150391 16 L 16 15.150391 L 12.351562 11.501953 C 13.378456 10.283617 14 8.7145306 14 7 C 14 3.1399291 10.860071 2.9605947e-15 7 0 z M 7 1 C 10.319631 1 13 3.6803692 13 7 C 13 10.319631 10.319631 13 7 13 C 3.6803692 13 1 10.319631 1 7 C 1 3.6803692 3.6803692 1 7 1 z M 6.5 4 L 6.5 6.5 L 4 6.5 L 4 7.5 L 6.5 7.5 L 6.5 10 L 7.5 10 L 7.5 7.5 L 10 7.5 L 10 6.5 L 7.5 6.5 L 7.5 4 L 6.5 4 z"/>
+        <path id="zoom5-def" d="M 7 0 C 3.1399291 0 0 3.1399291 0 7 C 0 10.860071 3.1399291 14 7 14 C 8.7145306 14 10.283617 13.378456 11.501953 12.351562 L 15.150391 16 L 16 15.150391 L 12.351562 11.501953 C 13.378456 10.283617 14 8.7145306 14 7 C 14 3.1399291 10.860071 0 7 0 z M 7 1 C 10.319631 1 13 3.6803692 13 7 C 13 10.319631 10.319631 13 7 13 C 3.6803692 13 1 10.319631 1 7 C 1 3.6803692 3.6803692 1 7 1 z"/>
+
         <path id="video-default-def" d="M0 8a8 8 0 0 0 16 0a8 8 0 0 0-16 0M6 5l5 3-5 3z" fill-rule="evenodd"/>
         <path id="video-1-def" d="M3 2l10 6-10 6z"/>
         <path id="video-2-def" d="M0 8C0 2 0 2 8 2C16 2 16 2 16 8C16 14 16 14 8 14C0 14 0 14 0 8zM6.5 5.5l4 2.5-4 2.5z" fill-rule="evenodd"/>
@@ -126,6 +134,75 @@
     <g id="cart-dark" class="icon dark">
         <use xlink:href="#cart-def"/>
     </g>
+
+
+    <!-- plus2 -->
+    <g id="plus2" class="icon">
+        <use xlink:href="#plus2-def"/>
+    </g>
+    <g id="plus2-light" class="icon light">
+        <use xlink:href="#plus2-def"/>
+    </g>
+    <g id="plus2-dark" class="icon dark">
+        <use xlink:href="#plus2-def"/>
+    </g>
+
+    <!-- plus3 -->
+    <g id="plus3" class="icon">
+        <use xlink:href="#plus3-def"/>
+    </g>
+    <g id="plus3-light" class="icon light">
+        <use xlink:href="#plus3-def"/>
+    </g>
+    <g id="plus3-dark" class="icon dark">
+        <use xlink:href="#plus3-def"/>
+    </g>
+
+    <!-- square-plus -->
+    <g id="square-plus" class="icon">
+        <use xlink:href="#square-plus-def"/>
+    </g>
+    <g id="square-plus-light" class="icon light">
+        <use xlink:href="#square-plus-def"/>
+    </g>
+    <g id="square-plus-dark" class="icon dark">
+        <use xlink:href="#square-plus-def"/>
+    </g>
+
+    <!-- circle-plus2 -->
+    <g id="circle-plus2" class="icon">
+        <use xlink:href="#circle-plus2-def"/>
+    </g>
+    <g id="circle-plus2-light" class="icon light">
+        <use xlink:href="#circle-plus2-def"/>
+    </g>
+    <g id="circle-plus2-dark" class="icon dark">
+        <use xlink:href="#circle-plus2-def"/>
+    </g>
+
+    <!-- zoom4 -->
+    <g id="zoom4" class="icon">
+        <use xlink:href="#zoom4-def"/>
+    </g>
+    <g id="zoom4-light" class="icon light">
+        <use xlink:href="#zoom4-def"/>
+    </g>
+    <g id="zoom4-dark" class="icon dark">
+        <use xlink:href="#zoom4-def"/>
+    </g>
+
+    <!-- zoom5 -->
+    <g id="zoom5" class="icon">
+        <use xlink:href="#zoom5-def"/>
+    </g>
+    <g id="zoom5-light" class="icon light">
+        <use xlink:href="#zoom5-def"/>
+    </g>
+    <g id="zoom5-dark" class="icon dark">
+        <use xlink:href="#zoom5-def"/>
+    </g>
+
+
 
     <!-- video-default -->
     <g id="video-default" class="icon">
