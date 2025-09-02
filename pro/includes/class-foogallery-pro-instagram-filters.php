@@ -46,7 +46,7 @@ if ( ! class_exists( 'FooGallery_Pro_Instagram_Filters' ) ) {
 				'title'    => __( 'Instagram Filter', 'foogallery' ),
 				'desc'     => __( 'Apply an Instagram Filter to the images in your gallery.', 'foogallery' ),
 				'section'  => __( 'Appearance', 'foogallery' ),
-				'type'     => 'select',
+				'type'     => 'radio',
 				'default'  => '',
 				'choices'  => apply_filters(
 					'foogallery_gallery_template_instagram_choices', array(
@@ -66,9 +66,11 @@ if ( ! class_exists( 'FooGallery_Pro_Instagram_Filters' ) ) {
 					)
 				),
 				'row_data' => array(
-					'data-foogallery-change-selector'       => 'select',
-					'data-foogallery-preview'               => 'shortcode'
-				)
+					'data-foogallery-change-selector' => 'input:radio',
+					'data-foogallery-value-selector'  => 'input:checked',
+					'data-foogallery-preview'         => 'shortcode'
+				),
+				'class' => 'foogallery-radios-12em',
 			);
 
 			return $fields;

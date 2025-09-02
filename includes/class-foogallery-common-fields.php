@@ -444,7 +444,7 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 					'title'    => __( 'Transition', 'foogallery' ),
 					'section'  => __( 'Hover Effects', 'foogallery' ),
 					'default'  => 'fg-hover-fade',
-					'type'     => 'select',
+					'type'     => 'radio',
 					'choices'  => apply_filters( 'foogallery_gallery_template_common_thumbnail_fields_hover_effect_transition_choices', array(
 						'fg-hover-instant'     => __( 'Instant', 'foogallery' ),
 						'fg-hover-fade'        => __( 'Fade', 'foogallery' ),
@@ -456,7 +456,8 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 					),
 					'desc'     => __( 'Choose what effect is used to show the caption when you hover over a thumbnail', 'foogallery' ),
 					'row_data' => array(
-						'data-foogallery-change-selector'       => 'select',
+						'data-foogallery-change-selector' 		=> 'input:radio',
+						'data-foogallery-value-selector'  		=> 'input:checked',
 						'data-foogallery-hidden'                => true,
 						'data-foogallery-show-when-field'       => 'hover_effect_type',
 						'data-foogallery-show-when-field-value' => 'normal',
