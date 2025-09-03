@@ -149,6 +149,7 @@ if ( !class_exists( 'FooGallery_Slider_Gallery_Template' ) ) {
 			$fields_to_remove[] = 'theme_custom_help';
 			$fields_to_remove[] = 'hover_effect_preset_size';
 			$fields_to_remove[] = 'hover_effect_caption_visibility';
+			$fields_to_remove[] = 'caption_visibility_no_hover_effect';
 			$fields_to_remove[] = 'captions_help';
 			$fields_to_remove[] = 'video_size_help';
 			$fields_to_remove[] = 'video_size';

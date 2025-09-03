@@ -185,7 +185,8 @@ if ( !class_exists( 'FooGallery_Simple_Portfolio_Gallery_Template' ) ) {
 
 				$index++;
 
-				if ( 'hover_effect_caption_visibility' === $field['id'] ) {
+				if ( 'hover_effect_caption_visibility' === $field['id'] 
+					|| 'caption_visibility_no_hover_effect' === $field['id'] ) {
 					$field['default'] = 'fg-caption-always';
 					$field['choices'] = array(
 						'fg-caption-always' => __( 'Always Visible', 'foogallery' ),

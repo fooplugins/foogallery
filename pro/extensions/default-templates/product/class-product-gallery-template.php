@@ -200,6 +200,7 @@ if ( !class_exists( 'FooGallery_Product_Gallery_Template' ) ) {
 		function field_defaults( $field_defaults ) {
 			return array(
 				'hover_effect_caption_visibility' => 'fg-caption-always',
+				'caption_visibility_no_hover_effect' => 'fg-caption-always',
 				'border_size' => 'fg-border-medium',
 				'rounded_corners' => 'fg-round-medium',
 				'loaded_effect' => 'fg-loaded-flip',
@@ -221,7 +222,8 @@ if ( !class_exists( 'FooGallery_Product_Gallery_Template' ) ) {
 			foreach ($fields as $key => &$field) {
 				if ( 'hover_effect_type' === $field['id'] ) {
 					unset( $field['choices']['preset'] );
-				} else if ( 'hover_effect_caption_visibility' === $field['id'] ) {
+				} else if ( 'hover_effect_caption_visibility' === $field['id'] 
+						|| 'caption_visibility_no_hover_effect' === $field['id'] ) {
 					$field['choices'] = array(
 						'fg-caption-always' => __( 'Always Visible', 'foogallery' ),
 					);

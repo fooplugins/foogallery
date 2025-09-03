@@ -333,11 +333,12 @@ if ( ! class_exists( 'FooGallery_Justified_Gallery_Template' ) ) {
 			foreach ( $fields as &$field ) {
 				if ( 'border_size' === $field['id'] ) {
 					$field['default'] = '';
-				} else if ( 'hover_effect_caption_visibility' == $field['id'] ) {
+				} else if ( 'hover_effect_caption_visibility' === $field['id'] 
+						|| 'caption_visibility_no_hover_effect' === $field['id'] ) {
 					$field['default'] = 'fg-caption-always';
-				} else if ( 'hover_effect_icon' == $field['id'] ) {
+				} else if ( 'hover_effect_icon' === $field['id'] ) {
 					$field['default'] = 'fg-hover-zoom2';
-				} else if ( 'caption_desc_source' == $field['id'] ) {
+				} else if ( 'caption_desc_source' === $field['id'] ) {
 					$field['default'] = 'none';
 				}
 			}

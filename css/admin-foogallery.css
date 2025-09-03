@@ -253,8 +253,8 @@
     padding: 10px;
     text-align: left;
     background-color: #F4F4FF;
-	box-shadow: 1px 1px 1px 2px #1E8CBA88;
-    -webkit-box-shadow: 1px 1px 1px 2px #1E8CBA88;
+	box-shadow: 0px 0px 2px #1E8CBA88;
+    -webkit-box-shadow: 0px 0px 2px #1E8CBA88;
     border-radius: 10px;
 	margin-bottom: 10px;
 }

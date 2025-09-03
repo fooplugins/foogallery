@@ -192,6 +192,7 @@ if ( !class_exists( 'FooGallery_Polaroid_Gallery_Template' ) ) {
                 'captions_type',
                 'hover_effect_preset',
                 'hover_effect_caption_visibility',
+				'caption_visibility_no_hover_effect',
                 'caption_desc_source',
                 'caption_desc_length',
 				'caption_desc_clamp',
@@ -217,7 +218,8 @@ if ( !class_exists( 'FooGallery_Polaroid_Gallery_Template' ) ) {
 						'data-foogallery-value-selector' => 'input:checked',
 						'data-foogallery-preview' => 'class'
 					);
-				} else if ( 'hover_effect_caption_visibility' === $field['id'] ) {
+				} else if ( 'hover_effect_caption_visibility' === $field['id'] 
+					|| 'caption_visibility_no_hover_effect' === $field['id'] ) {
 					$field['default'] = 'fg-caption-always';
 					$field['choices'] = array(
 						'fg-caption-always' => __( 'Always Visible', 'foogallery' ),
