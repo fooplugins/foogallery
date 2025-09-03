@@ -139,8 +139,8 @@ if ( ! class_exists( 'FooGallery_Pro_Advanced_Captions' ) ) {
 			        'default'  => '',
 					'class'    => 'foogallery-radios-stacked',
 			        'choices'  => array(
-				        ''       => __( 'Default (Captions will be built up from a title and description)', 'foogallery' ),
-				        'custom' => __( 'Custom (Captions will be built up using a custom caption template)', 'foogallery' ),
+				        ''       => __( 'Default (captions will be built up from a title and description)', 'foogallery' ),
+				        'custom' => __( 'Custom (captions will be built up using a custom caption template)', 'foogallery' ),
 			        ),
 			        'row_data' => array(
 				        'data-foogallery-change-selector' => 'input:radio',
