@@ -170,6 +170,8 @@ if ( function_exists( 'foogallery_fs' ) ) {
 
 				new FooGallery_Debug();
 
+				new FooGallery_Password_Protect();
+
 				$checker = new FooGallery_Version_Check();
 				$checker->wire_up_checker();
 

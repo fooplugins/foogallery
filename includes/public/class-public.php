@@ -15,7 +15,5 @@ if ( ! class_exists( 'FooGallery_Public' ) ) {
 			new FooGallery_RankMath_Seo_Sitemap_Support();
 			new FooGallery_All_In_One_Seo_Sitemap_Support();
 		}
-
 	}
-
 }

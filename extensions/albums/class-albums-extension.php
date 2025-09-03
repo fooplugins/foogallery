@@ -40,8 +40,6 @@ if ( ! class_exists( 'FooGallery_Albums_Extension' ) ) {
 			add_filter( 'foogallery_gallery_posttype_register_args', array( $this, 'override_gallery_posttype_register_args' ) );
 
 			add_filter( 'foogallery_allowed_post_types_for_attachment', array( $this, 'allow_albums' ) );
-
-			add_filter( 'the_password_form', array( $this, 'customize_album_password_form' ), 10, 1 );
 		}
 
 		/**
@@ -178,41 +176,6 @@ if ( ! class_exists( 'FooGallery_Albums_Extension' ) ) {
 
 
 			return $settings;
-		}
-
-		/**
-		 * Customize the password form when in album context
-		 *
-		 * @param string $output The default password form HTML
-		 * @return string Modified password form HTML
-		 */
-		public function customize_album_password_form( $output ) {
-			// Check if we're in album context
-			$current_gallery = foogallery_album_get_current_gallery();
-			
-			if ( !empty( $current_gallery ) ) {
-				// Get current URL for form action
-				$current_url = '';
-				if ( isset( $_SERVER['REQUEST_URI'] ) ) {
-					$current_url = esc_url_raw( $_SERVER['REQUEST_URI'] );
-				}
-				
-				// Replace the redirect_to hidden input value with current URL
-				$output = preg_replace(
-					'/<input type="hidden" name="redirect_to" value="[^"]*" \/>/',
-					'<input type="hidden" name="redirect_to" value="' . esc_attr( $current_url ) . '" />',
-					$output
-				);
-				
-				// Replace the default text with gallery-specific text
-				$output = str_replace(
-					'This content is password protected.',
-					'This gallery is password protected.',
-					$output
-				);
-			}
-			
-			return $output;
 		}
 
 		function uninstall() {
