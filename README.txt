@@ -109,7 +109,7 @@ There are 3 PRO plans available, that will work with any budget:
 	*   Numbered pagination - [demo](https://fooplugins.com/foogallery-wordpress-gallery-plugin/pagination/#numbered)
 	*   "Load More" pagination - [demo](https://fooplugins.com/foogallery-wordpress-gallery-plugin/pagination/#load-more)
 	*   Infinite scroll image gallery - [demo](https://fooplugins.com/foogallery-wordpress-gallery-plugin/pagination/#infinite-scroll)
-*	Advanced Custom Captions - [demo](hhttps://fooplugins.com/foogallery-wordpress-gallery-plugin/custom-captions/)
+*	Advanced Custom Captions - [demo](https://fooplugins.com/foogallery-wordpress-gallery-plugin/custom-captions/)
 *	EXIF metadata gallery - [demo](https://fooplugins.com/foogallery-wordpress-gallery-plugin/exif-data/)
 *   Bulk Copy Gallery Settings - [more info](https://fooplugins.com/bulk-copy-foogallery-pro/)
 *	Deeplinking support for pages and filters
