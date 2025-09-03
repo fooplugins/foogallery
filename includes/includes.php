@@ -85,3 +85,4 @@ require_once FOOGALLERY_PATH . 'includes/class-gallery-advanced-settings.php';
 require_once FOOGALLERY_PATH . 'includes/class-il8n.php';
 
 require_once FOOGALLERY_PATH . 'includes/class-foogallery-lightbox.php';
+require_once FOOGALLERY_PATH . 'includes/class-foogallery-password-protect.php';

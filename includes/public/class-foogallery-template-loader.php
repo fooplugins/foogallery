@@ -32,12 +32,14 @@ class FooGallery_Template_Loader {
 		if ( false === $current_foogallery ) {
 			//we could not find the gallery!
 			_e( 'The gallery was not found!', 'foogallery' );
+			$current_foogallery = null;
 			return;
 		}
 
-		//check if the gallery is password protected
+		// check if the gallery is password protected
 		if ( post_password_required( $current_foogallery->_post ) ) {
 			echo get_the_password_form( $current_foogallery->_post );
+			$current_foogallery = null;
 			return;
 		}
 
