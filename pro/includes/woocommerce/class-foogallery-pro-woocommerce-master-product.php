@@ -301,13 +301,22 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce_Master_Product' ) ) {
 		 * @return mixed
 		 */
 		public function adjust_attachment_link_data_attributes( $attr, $args, $foogallery_attachment ) {
-			$product_id = $this->get_master_product_id_from_current_gallery();
-			if ( $product_id > 0 ) {
-				// The data-attachment-id attribute does not work with master products, so we need to make sure it is data-id
-				if ( array_key_exists( 'data-attachment-id', $attr ) ) {
-					unset( $attr[ 'data-attachment-id' ] );
-					$attr[ 'data-id' ] = $foogallery_attachment->ID;
+			try {
+				$product_id = $this->get_master_product_id_from_current_gallery();
+				if ( $product_id > 0 ) {
+					// Get the validated global setting for item ID attribute
+					$item_id_attribute = $this->get_item_id_attribute_setting();
+					
+					// Only modify attributes if global setting requires data-id
+					if ( $item_id_attribute === 'data-id' && array_key_exists( 'data-attachment-id', $attr ) ) {
+						unset( $attr[ 'data-attachment-id' ] );
+						$attr[ 'data-id' ] = $foogallery_attachment->ID;
+					}
+					// Otherwise preserve existing attribute type (data-attachment-id)
 				}
+			} catch ( Exception $e ) {
+				error_log( 'FooGallery Master Product: Error adjusting attachment link data attributes: ' . $e->getMessage() );
+				// Return original attributes on error to ensure functionality continues
 			}
 
 			return $attr;
@@ -1099,6 +1108,28 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce_Master_Product' ) ) {
 
             $query['s'] = $query_vars['foogallery_master_product_search'];
             return $query;
+        }
+
+        /**
+         * Helper method to get the item ID attribute setting with validation
+         *
+         * @return string The validated item ID attribute ('data-attachment-id' or 'data-id')
+         */
+        private function get_item_id_attribute_setting() {
+            try {
+                $item_id_attribute = foogallery_get_setting( 'attachment_id_attribute', 'data-attachment-id' );
+                
+                // Validate setting value and fallback to default if invalid
+                if ( !in_array( $item_id_attribute, ['data-attachment-id', 'data-id'] ) ) {
+                    error_log( 'FooGallery Master Product: Invalid item_id_attribute setting value: ' . $item_id_attribute . '. Falling back to default.' );
+                    $item_id_attribute = 'data-attachment-id';
+                }
+                
+                return $item_id_attribute;
+            } catch ( Exception $e ) {
+                error_log( 'FooGallery Master Product: Error getting item ID attribute setting: ' . $e->getMessage() );
+                return 'data-attachment-id'; // Safe fallback
+            }
         }
 	}
 }
