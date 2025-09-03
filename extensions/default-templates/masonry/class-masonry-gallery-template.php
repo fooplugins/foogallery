@@ -358,7 +358,8 @@ if ( !class_exists( 'FooGallery_Masonry_Gallery_Template' ) ) {
         function add_masonry_fields( $fields, $template ) {
             //update specific fields
             foreach ($fields as &$field) {
-                if ( 'hover_effect_caption_visibility' === $field['id'] ) {
+                if ( 'hover_effect_caption_visibility' === $field['id'] 
+					|| 'caption_visibility_no_hover_effect' === $field['id'] ) {
                 	//add a new choice for captions to show below the thumbs
                     $field['choices']['fg-captions-bottom'] = __( 'Below Thumbnail', 'foogallery' );
 	                $field['default'] = 'fg-captions-bottom';
