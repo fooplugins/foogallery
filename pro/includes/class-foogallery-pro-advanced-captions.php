@@ -28,7 +28,7 @@ if ( ! class_exists( 'FooGallery_Pro_Advanced_Captions' ) ) {
 	        $postmeta_html = '';
 	        foreach ( $postmeta_fields as $key => $field ) {
 		        if ( '' === $postmeta_html ) {
-			        $postmeta_html = '<br /><br />' . __( 'The following custom attachment metadata fields were found:', 'foogallery' ) . '<br /><br />';
+			        $postmeta_html = '<br /><br />' . __( 'The following custom attachment metadata fields were found:', 'foogallery' ) . '<br />';
 		        }
 
 		        //check if we are dealing with ACF
@@ -84,8 +84,7 @@ if ( ! class_exists( 'FooGallery_Pro_Advanced_Captions' ) ) {
 	        }
 
 	        $help_html_default = apply_filters( 'foogallery_build_custom_captions_help-default',
-	            '<h3> ' . __('Custom Caption Help', 'foogallery') . '</h3>' .
-	            __('The custom caption template can use any HTML together with the following dynamic placeholders:', 'foogallery') . '<br /><br />' .
+	            __('The custom caption template can use any HTML together with the following dynamic placeholders:', 'foogallery') . '<br />' .
                 '<code>{{ID}}</code> - ' . __('Attachment ID', 'foogallery') . '<br />' .
                 '<code>{{title}}</code> - ' . __('Attachment title', 'foogallery') . '<br />' .
                 '<code>{{caption}}</code> - ' . __('Attachment caption', 'foogallery') . '<br />' .
@@ -201,6 +200,7 @@ if ( ! class_exists( 'FooGallery_Pro_Advanced_Captions' ) ) {
 
 		        $fields[] = array(
 			        'id'       => 'caption_custom_help',
+					'title'  => __('Custom Caption Help', 'foogallery'),
 			        'desc'     => $custom_caption_help_html,
 			        'section'  => __( 'Captions', 'foogallery' ),
 			        'type'     => 'help',
@@ -209,7 +209,8 @@ if ( ! class_exists( 'FooGallery_Pro_Advanced_Captions' ) ) {
 				        'data-foogallery-show-when-field'       => 'captions_type',
 				        'data-foogallery-show-when-field-value' => 'custom',
 				        'data-foogallery-preview'               => 'shortcode'
-			        )
+					),
+					'class' => 'foogallery-settings-line-height2'
 		        );
 	        }
 
@@ -241,6 +242,7 @@ if ( ! class_exists( 'FooGallery_Pro_Advanced_Captions' ) ) {
 
 	        $fields[] = array(
 		        'id'      => 'lightbox_caption_custom_template_help',
+				'title'  => __('Custom Caption Help', 'foogallery'),
 		        'desc'    => $custom_caption_help_html,
 		        'section' => $section,
 		        'subsection' => array( 'lightbox-captions' => __( 'Captions', 'foogallery' ) ),
@@ -253,7 +255,8 @@ if ( ! class_exists( 'FooGallery_Pro_Advanced_Captions' ) ) {
 			        'data-foogallery-change-selector'          => 'input:radio',
 			        'data-foogallery-preview'                  => 'shortcode',
 			        'data-foogallery-value-selector'           => 'input:checked',
-		        )
+				),
+				'class' => 'foogallery-settings-line-height2'
 	        );
 
             return $fields;

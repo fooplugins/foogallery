@@ -248,58 +248,47 @@
 
 .foogallery-help {
 	position: relative;
+    display: block;
+    line-height: 19px;
+    padding: 10px;
+    text-align: left;
+    background-color: #F4F4FF;
+	box-shadow: 1px 1px 1px 2px #1E8CBA88;
+    -webkit-box-shadow: 1px 1px 1px 2px #1E8CBA88;
+    border-radius: 10px;
+	margin-bottom: 10px;
+}
+
+.foogallery-help .dashicons {
+	color: #1E8CBA;
+}
+
+.foogallery-help h4 {
+	display: inline-block;
+	margin: 0;
+	color: #1E8CBA;
+}
+
+.foogallery-help p {
+	display: inline-block;
+	margin: 0;
+}
+
+.foogallery-help h4 + p {
 	display: block;
-	line-height: 19px;
-	padding: 11px 10px 11px 40px;
-	font-size: 14px;
-	text-align: left;
-	margin: 5px 0 0 2px;
-	background-color: #F4F4FF;
-	border-left: 4px solid #1e8cbe;
-	-webkit-box-shadow: 0 1px 1px 0 rgba(0, 0, 0, .1);
-	box-shadow: 0 1px 1px 0 rgba(0, 0, 0, .1);
+	margin: 5px 0 0 22px;
+}
+
+.foogallery-help p code {
+	font-size: 12px;
 }
 
 .rtl .foogallery-help {
-	padding: 11px 40px 11px 10px;
 	text-align: right;
-	border-left: none;
-	border-right: 4px solid #1e8cbe;
 }
 
-.foogallery-help:before {
-	content: "\f223";
-	font: 400 30px/1 dashicons !important;
-	speak: none;
-	color: #1e8cbe;
-	display: inline-block;
-	-webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale;
-	vertical-align: bottom;
-	position: absolute;
-	left: 5px;
-	margin-top: -15px;
-	top: 50%;
-	height: 1em;
-}
-
-.rtl .foogallery-help:before {
-	left: auto;
-	right: 5px;
-}
-
-#post-body.columns-2 #postbox-container-1 .foogallery-help {
-	padding-left: 11px;
-	margin-left: 5px;
-}
-
-.rtl #post-body.columns-2 #postbox-container-1 .foogallery-help {
-	padding-right: 11px;
-	margin-right: 5px;
-}
-
-#post-body.columns-2 #postbox-container-1 .foogallery-help:before {
-	content: '';
+.foogallery-settings-line-height2 .foogallery-help p {
+	line-height: 2;
 }
 
 tr.foogallery_template_field[data-foogallery-hidden] {
@@ -455,13 +444,11 @@ tr.foogallery_template_field[data-foogallery-invisible] {
 }
 
 .foogallery-metabox-settings th {
-	font-weight: normal;
+	font-weight: 500;
 	padding: 10px;
-	width: 200px;
-}
-
-.foogallery-metabox-settings tr {
-	border-bottom: solid 1px #EEE;
+	width: 180px;
+	text-align: right;
+	border-right: solid 1px #eee;
 }
 
 .foogallery-metabox-settings td {
@@ -484,6 +471,17 @@ tr.foogallery_template_field[data-foogallery-invisible] {
 
 .foogallery_metabox_field-checkboxlist input[type="checkbox"] {
 	margin: 0 0 10px 0;
+}
+
+.foogallery-metabox-settings .foogallery-settings-description {
+	color: #aaa;
+	font-style: italic;
+	margin: 0.7em 0 0 0;
+	font-size: 0.9em;
+}
+
+.foogallery-metabox-settings .foogallery_template_field_type-htmlicon .foogallery-settings-description {
+	margin: 0;
 }
 
 /** </gallery settings styling overrides> **/

@@ -234,7 +234,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 		 */
 		public function add_product_custom_caption_help( $html ) {
 			if ( self::is_woocommerce_activated() ) {
-				$html .= __('You can also use the follow product-specific placeholders, if the attachment is linked to a product:', 'foogallery') . '<br /><br />' .
+				$html .= __('You can also use the follow product-specific placeholders, if the attachment is linked to a product:', 'foogallery') . '<br />' .
 				         '<code>{{product.ID}}</code> - ' . __('Product ID', 'foogallery') . '<br />' .
 				         '<code>{{product.title}}</code> - ' . __('Product title', 'foogallery') . '<br />' .
 				         '<code>{{product.sku}}</code> - ' . __('Product SKU', 'foogallery') . '<br />' .

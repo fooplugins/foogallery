@@ -346,7 +346,13 @@ if ( ! class_exists( 'FooGallery_Pro_Bulk_Copy' ) ) {
                 });
             </script>
             <div>
-                <p class="foogallery-help"><?php _e('You can bulk copy the settings from this gallery to other galleries in a few easy steps. To get started, click the button below. Please be sure to save your gallery before you start the copy, as only the saved settings stored in the database will be copied across.', 'foogallery'); ?></p>
+                <div class="foogallery-help">
+                    <i class="dashicons dashicons-editor-help"></i>
+                    <h4><?php _e('What is Bulk Copy?', 'foogallery'); ?></h4>
+                    <p>
+                        <?php _e('You can bulk copy the settings from this gallery to other galleries in a few easy steps. To get started, click the button below. Please be sure to save your gallery before you start the copy, as only the saved settings stored in the database will be copied across.', 'foogallery'); ?>
+                    </p>
+                </div>
             </div>
             <br/>
             <div id="foogallery_bulk_copy_container">

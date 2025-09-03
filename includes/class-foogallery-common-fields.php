@@ -274,15 +274,24 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 
 				$fields[] = array(
 					'id'       => 'hover_effect_type',
-					'title'    => __( 'Effect Type', 'foogallery' ),
+					'title'    => __( 'Hover Effect Type', 'foogallery' ),
 					'section'  => __( 'Hover Effects', 'foogallery' ),
 					'default'  => 'normal',
 					'type'     => 'radio',
 					'choices'  => apply_filters(
 						'foogallery_gallery_template_common_thumbnail_fields_hover_effect_type_choices', array(
-							'none'   => __( 'None', 'foogallery' ),
-							'normal' => __( 'Normal', 'foogallery' ),
-							'preset' => __( 'Preset', 'foogallery' ),
+							'none'   => array(
+								'label' => __( 'None', 'foogallery' ),
+								'tooltip'  => __( 'No hover effect will be shown.', 'foogallery' )
+							),
+							'normal' => array(
+								'label' => __( 'Normal (icon + caption)', 'foogallery' ),
+								'tooltip'  => __( 'The standard hover effects with icons, captions, color, scaling & transitions', 'foogallery' )
+							),
+							'preset' =>array(
+								'label' => __( 'Preset', 'foogallery' ),
+								'tooltip'  => __( 'A preset provides a stylish, pre-defined look & feel for the effect when you hover over the thumbnails.', 'foogallery' )
+							)
 						)
 					),
 					'desc'     => __( 'What type of hover effect do you want to show for your thumbnails?', 'foogallery' ),
@@ -290,7 +299,8 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 						'data-foogallery-change-selector' => 'input:radio',
 						'data-foogallery-value-selector'  => 'input:checked',
 						'data-foogallery-preview'         => 'shortcode'
-					)
+					),
+					'class' => 'foogallery-radios-stacked'
 				);
 
 				$fields[] = array(
@@ -417,29 +427,6 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 				);
 
 				$fields[] = array(
-					'id'       => 'hover_effect_caption_visibility',
-					'title'    => __( 'Caption Visibility', 'foogallery' ),
-					'section'  => __( 'Hover Effects', 'foogallery' ),
-					'default'  => 'fg-caption-hover',
-					'type'     => 'radio',
-					'choices'  => apply_filters(
-						'foogallery_gallery_template_common_thumbnail_fields_hover_effect_caption_visibility_choices', array(
-						''                  => __( 'None', 'foogallery' ),
-						'fg-caption-hover'  => __( 'On Hover', 'foogallery' ),
-						'fg-caption-always' => __( 'Always Visible', 'foogallery' ),
-					)
-					),
-					'desc'     => __( 'Choose how the captions will be displayed.', 'foogallery' ),
-					'row_data' => array(
-						'data-foogallery-change-selector'       => 'input:radio',
-						'data-foogallery-hidden'                => true,
-						'data-foogallery-show-when-field'       => 'hover_effect_type',
-						'data-foogallery-show-when-field-value' => 'normal',
-						'data-foogallery-preview'               => 'shortcode'
-					)
-				);
-
-				$fields[] = array(
 					'id'       => 'hover_effect_transition',
 					'title'    => __( 'Transition', 'foogallery' ),
 					'section'  => __( 'Hover Effects', 'foogallery' ),
@@ -501,10 +488,26 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 
 				//region Caption Fields
 				$fields[] = array(
-					'id'      => 'captions_help',
-					'desc'    => __( 'You can change when captions are shown using the "Hover Effects -> Caption Visibility" setting.', 'foogallery' ),
-					'section' => __( 'Captions', 'foogallery' ),
-					'type'    => 'help'
+					'id'       => 'hover_effect_caption_visibility',
+					'title'    => __( 'Caption Visibility', 'foogallery' ),
+					'section'  => __( 'Captions', 'foogallery' ),
+					'default'  => 'fg-caption-hover',
+					'type'     => 'radio',
+					'choices'  => apply_filters(
+						'foogallery_gallery_template_common_thumbnail_fields_hover_effect_caption_visibility_choices', array(
+						''                  => __( 'None', 'foogallery' ),
+						'fg-caption-hover'  => __( 'On Hover', 'foogallery' ),
+						'fg-caption-always' => __( 'Always Visible', 'foogallery' ),
+					)
+					),
+					'desc'     => __( 'Choose how the captions will be displayed.', 'foogallery' ),
+					'row_data' => array(
+						'data-foogallery-change-selector'       => 'input:radio',
+						'data-foogallery-hidden'                => true,
+						'data-foogallery-show-when-field'       => 'hover_effect_type',
+						'data-foogallery-show-when-field-value' => 'normal',
+						'data-foogallery-preview'               => 'shortcode'
+					)
 				);
 
 				$settings_link = sprintf( '<a target="blank" href="%s">%s</a>', foogallery_admin_settings_url(), __( 'settings', 'foogallery' ) );

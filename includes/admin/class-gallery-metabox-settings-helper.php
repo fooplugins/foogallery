@@ -167,10 +167,13 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings_Helper' ) ) {
 						<?php if ( 'help' === $field_type ) { ?>
 							<td colspan="2">
 								<div class="foogallery-help">
+									<i class="dashicons dashicons-editor-help"></i>
 									<?php if ( array_key_exists( 'title', $field ) ) { ?>
-									<?php echo '<strong>' . $field['title'] . '</strong><br /><br />'; ?>
+									<?php echo '<h4>' . $field['title'] . '</h4>'; ?>
 									<?php } ?>
-									<?php echo $field['desc']; ?>
+									<?php if ( array_key_exists( 'desc', $field ) ) { ?>
+									<p><?php echo $field['desc']; ?></p>
+									<?php } ?>
 								</div>
 							</td>
 						<?php } else if ( 'promo' === $field_type ) { ?>
@@ -194,16 +197,16 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings_Helper' ) ) {
                             </td>
 						<?php } else { ?>
 							<th>
-								<label for="FooGallerySettings_<?php echo $template['slug'] . '_' . $field['id']; ?>"><?php echo $field['title']; ?></label>
+								<label data-setting="<?php echo esc_attr( $field['id'] ); ?>" for="FooGallerySettings_<?php echo $template['slug'] . '_' . $field['id']; ?>"><?php echo $field['title']; ?></label>
 								<?php if ( $is_promo ) { ?>
                                     <span data-balloon-length="large" data-balloon-pos="right" data-balloon="<?php echo esc_attr($field['promo']); ?>"><i class="dashicons dashicons-star-filled"></i></span>
-								<?php } ?>
-                                <?php if ( !empty( $field['desc'] ) ) { ?>
-									<span data-balloon-length="large" data-balloon-pos="right" data-balloon="<?php echo esc_attr($field['desc']); ?>"><i class="dashicons dashicons-editor-help"></i></span>
 								<?php } ?>
 							</th>
 							<td>
 								<?php do_action( 'foogallery_render_gallery_template_field', $field, $this->gallery, $template ); ?>
+								<?php if ( !empty( $field['desc'] ) ) { ?>
+									<p class="foogallery-settings-description"><?php echo esc_html($field['desc']); ?></p>
+								<?php } ?>
 							</td>
 						<?php } ?>
 					</tr>
