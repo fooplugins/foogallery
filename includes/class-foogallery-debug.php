@@ -129,6 +129,14 @@ if ( ! class_exists( 'FooGallery_Debug' ) ) {
 		 * @param WP_Post $post the current post being edited.
 		 */
 		public function render_upgrade_debug_metabox( $post ) {
+			?>
+			<div class="foogallery-help">
+				<i class="dashicons dashicons-editor-help"></i>
+				<h4><?php _e( 'Why am I seeing this?', 'foogallery' ); ?></h4>
+				<p><?php _e( 'This is a debugging tool that will output some information about the gallery being edited. This information is sometimes requested for support queries or used for developement purposes only.<br />To hide this, disable debugging under Settings -> Advanced.', 'foogallery' ); ?></p>
+			</div>
+			<?php
+			
 			$gallery = FooGallery::get( $post );
 
 			if ( ! $gallery->is_new() ) {

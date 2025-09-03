@@ -432,10 +432,13 @@ if ( ! class_exists( 'FooGallery_Pro_Gallery_Blueprints' ) ) {
                     });
                 });
             </script>
-            <div>
-                <p class="foogallery-help"><?php _e('Gallery Blueprints allow you to setup a blueprint for multiple galleries, so that when you update the single blueprint, all the galleries change at the same time. Think of a blueprint as a "template". Any gallery using a blueprint will not be able to set its own settings, as everything is inherited from the blueprint. This allows you to update settings once, and affect multiple galleries.', 'foogallery'); ?></p>
+            <div class="foogallery-help">
+				<i class="dashicons dashicons-editor-help"></i>
+				<h4><?php _e('What are Gallery Blueprints?', 'foogallery'); ?></h4>
+                <p>
+					<?php _e('Gallery Blueprints allows you to setup a blueprint for multiple galleries, so that when you update the single blueprint, all the galleries change at the same time. Think of a blueprint as a "template". Any gallery using a blueprint will not be able to set its own settings, and everything is inherited from the blueprint. This allows you to change settings once, and update multiple galleries.', 'foogallery'); ?>
+				</p>
             </div>
-            <br/>
             <div id="foogallery_gallery_blueprint_container">
                 <?php $this->render_gallery_blueprint_container( $post->ID ); ?>
             </div>
