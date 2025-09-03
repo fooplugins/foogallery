@@ -28,6 +28,9 @@ if ( ! class_exists( 'FooGallery_Default_Gallery_Template' ) ) {
 
 			// add a style block for the gallery based on the thumbnail width.
 			add_action( 'foogallery_loaded_template_before', array( $this, 'add_width_style_block' ), 10, 1 );
+
+			// set defaults for the gallery
+			add_filter( 'foogallery_override_gallery_template_fields-default', array( $this, 'set_default_fields' ), 10, 2 );
 			// @formatter:on
 		}
 
@@ -98,8 +101,8 @@ if ( ! class_exists( 'FooGallery_Default_Gallery_Template' ) ) {
 						'section'  => __( 'General', 'foogallery' ),
 						'type'     => 'thumb_size_no_crop',
 						'default'  => array(
-							'width'  => get_option( 'thumbnail_size_w' ),
-							'height' => get_option( 'thumbnail_size_h' ),
+							'width'  => 270,
+							'height' => 220,
 						),
 						'row_data' => array(
 							'data-foogallery-change-selector' => 'input',
@@ -232,5 +235,31 @@ if ( ! class_exists( 'FooGallery_Default_Gallery_Template' ) ) {
 
 			return $args;
 		}
+
+		/**
+         * Set default values for the gallery template
+         *
+         * @uses "foogallery_override_gallery_template_fields"
+         * @param $fields
+         * @param $template
+         *
+         * @return array
+         */
+        function set_default_fields( $fields, $template ) {
+            //update specific fields
+            foreach ($fields as &$field) {
+                if ( 'hover_effect_type' === $field['id'] ) {
+	                $field['default'] = 'preset';
+                } else if ( 'hover_effect_preset' === $field['id'] ) {
+	                $field['default'] = 'fg-preset fg-brad';
+                } else if ( 'border_size' === $field['id'] ) {
+	                $field['default'] = '';
+                } else if ( 'drop_shadow' === $field['id'] ) {
+	                $field['default'] = 'fg-shadow-medium';
+                }
+            }
+
+            return $fields;
+        }
 	}
 }
