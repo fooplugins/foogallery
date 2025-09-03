@@ -203,6 +203,7 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 				$filtering_fields[] = array(
 					'id'       => 'filtering_type',
 					'title'    => __( 'Filtering', 'foogallery' ),
+					'desc'     => __( 'What type of filtering do you want to use?', 'foogallery' ),
 					'section'  => __( 'Filtering', 'foogallery' ),
 					'subsection' => array( 'filtering-general' => __( 'General', 'foogallery' ) ),
 					'type'     => 'radio',
@@ -339,6 +340,7 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 
 				$filtering_fields[] = array(
 					'id'      => 'filtering_mode_help',
+					'title'   => __( 'Filtering Selection Mode Help', 'foogallery' ),
 					'desc'    => __( 'The default selection mode is Single, which allows you to choose a single filter at a time. You can also choose to filter by more than 1 filter by selecting Multiple. Multiple supports either a union (OR) or an intersect (AND) mode.', 'foogallery' ),
 					'section' => __( 'Filtering', 'foogallery' ),
 					'subsection' => array( 'filtering-general' => __( 'General', 'foogallery' ) ),

@@ -177,3 +177,7 @@
         .foogallery-datasource-modal-container-inner .spinner {
             float: left;
         }
+
+.foogallery_template_field .filtering-multi-table th {
+    text-align: left;
+}

@@ -432,6 +432,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce_Master_Product' ) ) {
 
 				$new_fields[] = array(
 					'id'      => 'ecommerce_master_product_info',
+					'title'   => __( 'Master Product Help', 'foogallery' ),
 					'desc'    => __( 'You can set a master product for the whole gallery, which will link that product to every item. You can still manually link items to individual products. All items that are not linked to a product will be linked to the master product.', 'foogallery' ),
 					'section' => __( 'Ecommerce', 'foogallery' ),
 					'subsection' => array( 'ecommerce-master-product' => __( 'Master Product', 'foogallery' ) ),

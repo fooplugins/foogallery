@@ -1108,8 +1108,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 					),
 				);
 
-                $ribbon_help_html = '<h3>' . __('Show Icons In Your Ribbons', 'foogallery') . '</h3>' .
-                    __( 'You can also show icons within your ribbons, by including the text "icon-star" or similar. Below are a list of icons that you might find useful for your shop:', 'foogallery' ) .
+                $ribbon_help_html = __( 'You can also show icons within your ribbons, by including the text "icon-star" or similar. Below are a list of icons that you might find useful for your shop:', 'foogallery' ) .
                     '<br /><br />' .
                     '<div><code>icon-star</code> : <i class="dashicons dashicons-star-filled"></i></div>' .
                     '<div><code>icon-money</code> : <i class="dashicons dashicons-money-alt"></i></div>' .
@@ -1124,6 +1123,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 
                 $new_fields[] = array(
 					'id'      => 'ecommerce_ribbon_help',
+					'title'   => __( 'Show Icons In Your Ribbons', 'foogallery' ),
 					'desc'    => $ribbon_help_html,
 					'section' => __( 'Ecommerce', 'foogallery' ),
 					'subsection' => array( 'ecommerce-ribbons' => __( 'Ribbons', 'foogallery' ) ),
