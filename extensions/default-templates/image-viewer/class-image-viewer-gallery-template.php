@@ -16,6 +16,7 @@ if ( !class_exists( 'FooGallery_Image_Viewer_Gallery_Template' ) ) {
 
 			//add extra fields to the templates
 			add_filter( 'foogallery_override_gallery_template_fields-image-viewer', array( $this, 'adjust_fields' ), 10, 2 );
+			add_filter( 'foogallery_override_gallery_template_fields_defaults-image-viewer', array( $this, 'field_defaults' ), 10, 1 );
 
 			add_filter( 'foogallery_gallery_templates_files', array( $this, 'register_myself' ) );
 
@@ -213,6 +214,26 @@ if ( !class_exists( 'FooGallery_Image_Viewer_Gallery_Template' ) ) {
 			}
 
 			return $fields;
+		}
+
+		/**
+		 * Return an array of field defaults for the template
+		 *
+		 * @param $field_defaults
+		 *
+		 * @return string[]
+		 */
+		function field_defaults( $field_defaults ) {
+			return array_merge( $field_defaults, array(
+				'hover_effect_caption_visibility' => 'fg-caption-always',
+				'caption_visibility_no_hover_effect' => 'fg-caption-always',
+				'drop_shadow' => 'fg-shadow-outline',
+				'hover_effect_icon' => 'fg-hover-plus3',
+				'hover_effect_scale' => 'fg-hover-semi-zoomed',
+				'inner_shadow' => 'fg-shadow-inset-large',
+				'rounded_corners' => 'fg-round-small',
+				'theme' => 'fg-light',
+			) );
 		}
 
 		/**
