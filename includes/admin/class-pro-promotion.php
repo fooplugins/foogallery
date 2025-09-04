@@ -791,6 +791,32 @@ if ( ! class_exists( 'FooGallery_Pro_Promotion' ) ) {
 				'paging_support'        => false,
 				'thumbnail_dimensions'  => false,
 				'filtering_support'     => false,
+				'class'                 => 'is-pro',
+				'icon' => '<svg viewBox="0 0 24 24">
+        <!-- top left -->
+        <g transform="rotate(-5 7 5)">
+          <rect x="2" y="2" width="8" height="5"/>
+          <rect x="2" y="7" width="8" height="2"/>
+        </g>
+      
+        <!-- top right -->
+        <g transform="rotate(4 17 5)">
+          <rect x="13" y="3" width="8" height="5"/>
+          <rect x="13" y="8" width="8" height="2"/>
+        </g>
+      
+        <!-- bottom left -->
+        <g transform="rotate(3 7 15)">
+          <rect x="3" y="12" width="8" height="5"/>
+          <rect x="3" y="17" width="8" height="2"/>
+        </g>
+      
+        <!-- bottom right -->
+        <g transform="rotate(-4 17 15)">
+          <rect x="14" y="13" width="8" height="5"/>
+          <rect x="14" y="18" width="8" height="2"/>
+        </g>
+      </svg>',
 				'fields'	  => array(
 					array(
 						'id'      => 'polaroid_promo',
@@ -816,6 +842,19 @@ if ( ! class_exists( 'FooGallery_Pro_Promotion' ) ) {
 				'paging_support'        => false,
 				'thumbnail_dimensions'  => false,
 				'filtering_support'     => false,
+				'class'                 => 'is-pro',
+				'icon' => '<svg viewBox="0 0 24 24">
+        <!-- Top row (3 small) -->
+        <rect x="3" y="3" width="6" height="5"/>
+        <rect x="9" y="3" width="6" height="5"/>
+        <rect x="15" y="3" width="6" height="5"/>
+        <!-- Middle row (1 large) -->
+        <rect x="3" y="8" width="18" height="8"/>
+        <!-- Bottom row (3 small) -->
+        <rect x="3" y="16" width="6" height="5"/>
+        <rect x="9" y="16" width="6" height="5"/>
+        <rect x="15" y="16" width="6" height="5"/>
+      </svg>',
 				'fields'	  => array(
 					array(
 						'id'      => 'grid_promo',
@@ -841,6 +880,15 @@ if ( ! class_exists( 'FooGallery_Pro_Promotion' ) ) {
 				'paging_support'        => false,
 				'thumbnail_dimensions'  => false,
 				'filtering_support'     => false,
+				'class'                 => 'is-pro',
+				'icon' => '<svg viewBox="0 0 24 24">
+        <!-- Left thumbs -->
+        <rect x="3" y="4" width="6" height="5"/>
+        <rect x="3" y="9" width="6" height="5"/>
+        <rect x="3" y="14" width="6" height="5"/>
+        <!-- Main image -->
+        <rect x="9" y="4" width="12" height="15"/>
+      </svg>',
 				'fields'	  => array(
 					array(
 						'id'      => 'slider_promo',
@@ -1032,6 +1080,18 @@ if ( ! class_exists( 'FooGallery_Pro_Promotion' ) ) {
 				'paging_support'        => false,
 				'thumbnail_dimensions'  => false,
 				'filtering_support'     => false,
+				'class'                 => 'is-pro',
+				'icon' => '<svg viewBox="0 0 24 24">
+        <!-- cart basket -->
+        <path d="M6 7h13l-2 7H8z"/>
+        
+        <!-- handle flipped inward -->
+        <path d="M6 7V4h-3"/>
+        
+        <!-- wheels -->
+        <circle cx="9" cy="18" r="1.5"/>
+        <circle cx="16" cy="18" r="1.5"/>
+      </svg>',
 				'fields'                => array(
 					array(
 						'id'            => 'product_promo',

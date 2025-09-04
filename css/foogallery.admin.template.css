@@ -22,6 +22,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    min-height: 90px;
 }
 
 .foogallery-template-card:hover {
@@ -67,4 +68,21 @@
 
 .foogallery-gallery-template-metabox-title.hidden {
     display: none !important;
+}
+
+.foogallery-template-card.is-pro::after {
+    content: "PRO";
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: #9D55E1; /* FooPlugins purple */
+    color: #fff;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 6px;
+    border-radius: 10px;
+    line-height: 1;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.15);
 }
