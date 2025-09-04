@@ -76,6 +76,16 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 			);
 
 			$settings[] = array(
+				'id'      => 'default_gallery_attachments',
+				'title'   => __( 'Default Gallery Items', 'foogallery' ),
+				'desc'    => __( 'The default attachments to use for new galleries. Provide a comma separated list of attachment IDs.', 'foogallery' ),
+				'default' => '' ,
+				'type'    => 'text',
+				'tab'     => 'general',
+				'section' => __( 'Gallery Defaults', 'foogallery' )
+			);
+
+			$settings[] = array(
 				'id'      => 'gallery_sorting',
 				'title'   => __( 'Default Gallery Sorting', 'foogallery' ),
 				'desc'    => __( 'The default attachment sorting to use for new galleries', 'foogallery' ),

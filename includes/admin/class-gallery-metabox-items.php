@@ -41,6 +41,14 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Items' ) ) {
 			//attempt to load default gallery settings from another gallery, as per FooGallery settings page
 			$gallery->load_default_settings_if_new();
 
+			//attempt to load default attachments from the settings page
+			if ( $gallery->is_new() ) {
+				$default_attachments = foogallery_get_setting( 'default_gallery_attachments' );
+				if ( !empty($default_attachments) ) {
+					$gallery->attachment_ids = explode( ',', $default_attachments );
+				}
+			}
+
 			$mode = $gallery->get_meta( 'foogallery_items_view', 'manage' );
 
 			if ( empty($mode) || $gallery->is_new() ) {
