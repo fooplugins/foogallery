@@ -56,7 +56,7 @@ if ( !class_exists( 'FooGallery_Simple_Portfolio_Gallery_Template' ) ) {
 		function add_template( $gallery_templates ) {
 			$gallery_templates[] = array(
                 'slug'        => self::template_id,
-                'name'        => __( 'Simple Portfolio', 'foogallery' ),
+                'name'        => __( 'Portfolio', 'foogallery' ),
 				'preview_support' => true,
 				'common_fields_support' => true,
                 'lazyload_support' => true,
@@ -65,6 +65,20 @@ if ( !class_exists( 'FooGallery_Simple_Portfolio_Gallery_Template' ) ) {
 				'thumbnail_dimensions' => true,
 				'filtering_support' => true,
                 'enqueue_core' => true,
+				'icon' => '<svg viewBox="0 0 24 24">
+        <!-- top row -->
+        <rect x="3" y="3" width="8" height="5"/>
+        <rect x="13" y="3" width="8" height="5"/>
+        <!-- captions -->
+        <rect x="3" y="8" width="8" height="2"/>
+        <rect x="13" y="8" width="8" height="2"/>
+        <!-- bottom row -->
+        <rect x="3" y="13" width="8" height="5"/>
+        <rect x="13" y="13" width="8" height="5"/>
+        <!-- captions -->
+        <rect x="3" y="18" width="8" height="2"/>
+        <rect x="13" y="18" width="8" height="2"/>
+      </svg>',
                 'fields'	  => array(
                     array(
                         'id'	  => 'help',

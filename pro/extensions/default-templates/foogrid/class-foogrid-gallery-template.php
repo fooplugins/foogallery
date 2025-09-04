@@ -185,6 +185,18 @@ if ( !class_exists( 'FooGallery_FooGrid_Gallery_Template' ) ) {
 				'embed_support' => true,
 				'panel_support' => true,
 				'enqueue_core' => true,
+				'icon' => '<svg viewBox="0 0 24 24">
+        <!-- Top row (3 small) -->
+        <rect x="3" y="3" width="6" height="5"/>
+        <rect x="9" y="3" width="6" height="5"/>
+        <rect x="15" y="3" width="6" height="5"/>
+        <!-- Middle row (1 large) -->
+        <rect x="3" y="8" width="18" height="8"/>
+        <!-- Bottom row (3 small) -->
+        <rect x="3" y="16" width="6" height="5"/>
+        <rect x="9" y="16" width="6" height="5"/>
+        <rect x="15" y="16" width="6" height="5"/>
+      </svg>',
 				'fields'	  => array(
 					array(
 						'id'      => 'thumbnail_size',

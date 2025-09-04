@@ -81,7 +81,7 @@ if ( ! class_exists( 'FooGallery_Default_Gallery_Template' ) ) {
 		function add_template( $gallery_templates ) {
 			$gallery_templates[] = array(
 				'slug'                  => self::TEMPLATE_ID,
-				'name'                  => __( 'Responsive Image Gallery', 'foogallery' ),
+				'name'                  => __( 'Responsive', 'foogallery' ),
 				'preview_support'       => true,
 				'common_fields_support' => true,
 				'paging_support'        => true,
@@ -90,6 +90,12 @@ if ( ! class_exists( 'FooGallery_Default_Gallery_Template' ) ) {
 				'thumbnail_dimensions'  => true,
 				'filtering_support'     => true,
 				'enqueue_core'          => true,
+				'icon'                  => '<svg viewBox="0 0 24 24">
+        <rect x="3" y="3" width="7" height="7"/>
+        <rect x="14" y="3" width="7" height="7"/>
+        <rect x="3" y="14" width="7" height="7"/>
+        <rect x="14" y="14" width="7" height="7"/>
+      </svg>',
 				'fields'                => array(
 					array(
 						'id'       => 'thumbnail_dimensions',

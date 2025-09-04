@@ -111,7 +111,7 @@ if ( !class_exists( 'FooGallery_Masonry_Gallery_Template' ) ) {
 		function add_template( $gallery_templates ) {
 			$gallery_templates[] = array(
                 'slug'        => self::template_id,
-                'name'        => __( 'Masonry Image Gallery', 'foogallery' ),
+                'name'        => __( 'Masonry', 'foogallery' ),
 				'preview_support' => true,
 				'common_fields_support' => true,
                 'lazyload_support' => true,
@@ -119,6 +119,13 @@ if ( !class_exists( 'FooGallery_Masonry_Gallery_Template' ) ) {
 				'mandatory_classes' => 'fg-masonry',
 				'thumbnail_dimensions' => true,
 				'filtering_support' => true,
+				'icon' => '<svg viewBox="0 0 24 24">
+        <rect x="3" y="3" width="6" height="10"/>
+        <rect x="9" y="3" width="6" height="6"/>
+        <rect x="15" y="3" width="6" height="14"/>
+        <rect x="3" y="13" width="6" height="7"/>
+        <rect x="9" y="9" width="6" height="13"/>
+      </svg>',
                 'fields'	  => array(
                     array(
                         'id'      => 'thumbnail_width',

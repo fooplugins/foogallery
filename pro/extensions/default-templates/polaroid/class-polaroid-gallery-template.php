@@ -89,6 +89,31 @@ if ( !class_exists( 'FooGallery_Polaroid_Gallery_Template' ) ) {
 				'thumbnail_dimensions' => true,
 				'filtering_support' => true,
                 'enqueue_core' => true,
+				'icon' => '<svg viewBox="0 0 24 24">
+        <!-- top left -->
+        <g transform="rotate(-5 7 5)">
+          <rect x="2" y="2" width="8" height="5"/>
+          <rect x="2" y="7" width="8" height="2"/>
+        </g>
+      
+        <!-- top right -->
+        <g transform="rotate(4 17 5)">
+          <rect x="13" y="3" width="8" height="5"/>
+          <rect x="13" y="8" width="8" height="2"/>
+        </g>
+      
+        <!-- bottom left -->
+        <g transform="rotate(3 7 15)">
+          <rect x="3" y="12" width="8" height="5"/>
+          <rect x="3" y="17" width="8" height="2"/>
+        </g>
+      
+        <!-- bottom right -->
+        <g transform="rotate(-4 17 15)">
+          <rect x="14" y="13" width="8" height="5"/>
+          <rect x="14" y="18" width="8" height="2"/>
+        </g>
+      </svg>',
                 'fields'	  => array(
                     array(
                         'id'      => 'thumbnail_dimensions',

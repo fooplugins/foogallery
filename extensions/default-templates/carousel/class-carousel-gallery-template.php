@@ -138,6 +138,19 @@ if ( ! class_exists( 'FooGallery_Carousel_Gallery_Template' ) ) {
 				'thumbnail_dimensions'  => true,
 				'filtering_support'     => true,
 				'enqueue_core'          => true,
+				'icon'                  => '<svg viewBox="0 0 24 24">
+        <!-- images -->
+        <rect x="6" y="5" width="4" height="8"/>
+        <rect x="10" y="5" width="4" height="8"/>
+        <rect x="14" y="5" width="4" height="8"/>
+        <!-- arrows (solid triangles) -->
+        <polygon points="2,9 4,7 4,11" />
+        <polygon points="22,9 20,7 20,11" />
+        <!-- dots (more spaced out) -->
+        <circle cx="8" cy="17" r="0.8"/>
+        <circle cx="12" cy="17" r="0.8"/>
+        <circle cx="16" cy="17" r="0.8"/>
+      </svg>',
 				'fields'                => array(
 					array(
 						'id'       => 'thumbnail_dimensions',

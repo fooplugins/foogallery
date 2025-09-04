@@ -86,6 +86,17 @@ if ( !class_exists( 'FooGallery_Product_Gallery_Template' ) ) {
 				'thumbnail_dimensions' => true,
 				'filtering_support' => true,
                 'enqueue_core' => true,
+				'icon' => '<svg viewBox="0 0 24 24">
+        <!-- cart basket -->
+        <path d="M6 7h13l-2 7H8z"/>
+        
+        <!-- handle flipped inward -->
+        <path d="M6 7V4h-3"/>
+        
+        <!-- wheels -->
+        <circle cx="9" cy="18" r="1.5"/>
+        <circle cx="16" cy="18" r="1.5"/>
+      </svg>',
                 'fields'	  => array(
 	                array(
 		                'id'	  => 'help',
