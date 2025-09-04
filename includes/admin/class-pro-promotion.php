@@ -1080,7 +1080,7 @@ if ( ! class_exists( 'FooGallery_Pro_Promotion' ) ) {
 				'paging_support'        => false,
 				'thumbnail_dimensions'  => false,
 				'filtering_support'     => false,
-				'class'                 => 'is-pro',
+				'class'                 => 'is-pro commerce',
 				'icon' => '<svg viewBox="0 0 24 24">
         <!-- cart basket -->
         <path d="M6 7h13l-2 7H8z"/>
