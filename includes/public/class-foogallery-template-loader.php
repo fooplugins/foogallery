@@ -148,7 +148,7 @@ class FooGallery_Template_Loader {
 				do_action( "foogallery_loaded_template-($current_foogallery_template)", $current_foogallery );
 			} else {
 				//we could not find a template!
-				_e( 'No gallery template found!', 'foogallery' );
+				_e( 'No gallery layout found!', 'foogallery' );
 			}
 		}
 

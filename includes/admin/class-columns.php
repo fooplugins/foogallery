@@ -21,7 +21,7 @@ if ( ! class_exists( 'FooGallery_Admin_Columns' ) ) {
 					array( 'icon' => '' ) +
 					array_slice( $columns, 1, null, true ) +
 					array(
-						FOOGALLERY_CPT_GALLERY . '_template' => __( 'Template', 'foogallery' ),
+						FOOGALLERY_CPT_GALLERY . '_template' => __( 'Layout', 'foogallery' ),
 						FOOGALLERY_CPT_GALLERY . '_count' => __( 'Media', 'foogallery' ),
 						FOOGALLERY_CPT_GALLERY . '_shortcode' => __( 'Shortcode', 'foogallery' ),
 						FOOGALLERY_CPT_GALLERY . '_usage' => __( 'Usage', 'foogallery' ),

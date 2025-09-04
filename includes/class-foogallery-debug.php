@@ -133,7 +133,7 @@ if ( ! class_exists( 'FooGallery_Debug' ) ) {
 			<div class="foogallery-help">
 				<i class="dashicons dashicons-editor-help"></i>
 				<h4><?php _e( 'Why am I seeing this?', 'foogallery' ); ?></h4>
-				<p><?php _e( 'This is a debugging tool that will output some information about the gallery being edited. This information is sometimes requested for support queries or used for developement purposes only.<br />To hide this, disable debugging under Settings -> Advanced.', 'foogallery' ); ?></p>
+				<p><?php _e( 'This is a debugging tool that will output some information about the gallery being edited. This information is sometimes requested for support queries or used for developement purposes only. To hide this, disable debugging under Settings -> Advanced.', 'foogallery' ); ?></p>
 			</div>
 			<?php
 			
@@ -155,6 +155,8 @@ if ( ! class_exists( 'FooGallery_Debug' ) ) {
 				<?php echo esc_html( $gallery->gallery_template ); ?>
 				<h3>Datasource</h3>
 				<?php echo esc_html( $gallery->datasource_name ); ?>
+				<h3>Attachments</h3>
+				<?php echo esc_html( $gallery->attachment_id_csv() ); ?>
 				<h3>Settings</h3>
 				<div style="width:100%; height: 300px; overflow: scroll">
 					<?php var_dump( $settings ); ?>

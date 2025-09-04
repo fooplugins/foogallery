@@ -306,7 +306,7 @@ if ( ! class_exists( 'FooGallery_Admin_Album_MetaBoxes' ) ) {
 				<tbody>
 				<tr class="foogallery_template_field foogallery_template_field_selector">
 					<th>
-						<label for="FooGallerySettings_AlbumTemplate"><?php _e( 'Album Template', 'foogallery' ); ?></label>
+						<label for="FooGallerySettings_AlbumTemplate"><?php _e( 'Album Layout', 'foogallery' ); ?></label>
 					</th>
 					<td>
 						<select id="FooGallerySettings_AlbumTemplate" name="<?php echo FOOGALLERY_ALBUM_META_TEMPLATE; ?>">
@@ -318,7 +318,7 @@ if ( ! class_exists( 'FooGallery_Admin_Album_MetaBoxes' ) ) {
 							?>
 						</select>
 						<br />
-						<small><?php _e( 'The album template that will be used when the album is output to the frontend.', 'foogallery' ); ?></small>
+						<small><?php _e( 'The album layout that will be used when the album is output to the frontend.', 'foogallery' ); ?></small>
 					</td>
 				</tr>
 				<?php
@@ -555,7 +555,7 @@ if ( ! class_exists( 'FooGallery_Admin_Album_MetaBoxes' ) ) {
 				),
 
 				'gallery_template' => array(
-					'label' => __( 'Gallery Template', 'foogallery' ),
+					'label' => __( 'Gallery Layout', 'foogallery' ),
 					'input' => 'html',
 					'html'  => '<strong>' . $gallery->gallery_template_name() . '</strong>',
 				),

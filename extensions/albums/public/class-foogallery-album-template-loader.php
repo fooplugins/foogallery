@@ -88,7 +88,7 @@ class FooGallery_Album_Template_Loader {
 
 			} else {
 				//we could not find a template!
-				_e( 'No album template found!', 'foogallery' );
+				_e( 'No album layout found!', 'foogallery' );
 			}
 		}
 	}
