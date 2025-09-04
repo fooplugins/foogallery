@@ -19,7 +19,7 @@ if ( !class_exists( 'FooGallery_Product_Gallery_Template' ) ) {
 			add_filter( 'foogallery_override_gallery_template_fields_defaults-product', array( $this, 'field_defaults' ), 10, 1 );
 			add_filter( 'foogallery_override_gallery_template_fields_hidden-product', array( $this, 'hidden_fields' ), 10, 1 );
 
-			//add the data options needed for polaroid
+			//add the data options needed for product gallery
 			add_filter( 'foogallery_build_container_data_options-product', array( $this, 'add_data_options' ), 10, 3 );
 
 			//override specific settings when saving the gallery

@@ -23,7 +23,6 @@
   - `thumbs/` - Thumbnail generation and management
 - `js/` - JavaScript files (admin and frontend)
 - `css/` - Stylesheets and responsive designs
-- `templates/` - Gallery display templates
 - `extensions/` - Bundled extensions (albums, default-templates, etc.)
 - `pro/` - Premium features (when available)
 - `freemius/` - Licensing and activation SDK
