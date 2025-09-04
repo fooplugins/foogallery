@@ -159,9 +159,6 @@ FooGallery.autoEnabled = false;
 			$settingsToShow.find('.foogallery-vertical-tab:first').click();
 		}
 
-		//include a preview CSS if possible
-		FOOGALLERY.includePreviewCss();
-
 		//trigger a change so custom template js can do something
 		FOOGALLERY.triggerTemplateChangedEvent();
 
@@ -438,11 +435,6 @@ FooGallery.autoEnabled = false;
 			});
 		});
 
-
-		$('#FooGallerySettings_GalleryTemplate').change(function() {
-			FOOGALLERY.galleryTemplateChanged(true);
-		});
-
 		//hook into settings fields changes
 		$('.foogallery-metabox-settings .foogallery_template_field[data-foogallery-change-selector]').each(function(index, item) {
 			var $fieldContainer = $(item),
@@ -466,20 +458,6 @@ FooGallery.autoEnabled = false;
 
 	FOOGALLERY.getSelectedTemplate = function() {
 		return $('#FooGallerySettings_GalleryTemplate').val();
-	};
-
-	FOOGALLERY.includePreviewCss = function() {
-		var selectedPreviewCss = $('#FooGallerySettings_GalleryTemplate').find(":selected").data('preview-css');
-
-		//remove any previously added preview css
-		$('link[data-foogallery-preview-css]').remove();
-
-		if ( selectedPreviewCss ) {
-			var splitPreviewCss = selectedPreviewCss.split(',');
-			for (var i = 0, l = splitPreviewCss.length; i < l; i++) {
-				$('head').append('<link data-foogallery-preview-css rel="stylesheet" href="' + splitPreviewCss[i] + '" type="text/css" />');
-			}
-		}
 	};
 
 	FOOGALLERY.triggerTemplateChangedEvent = function() {

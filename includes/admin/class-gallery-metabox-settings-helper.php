@@ -353,42 +353,5 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings_Helper' ) ) {
 
 			return 99;
 		}
-
-		/**
-		 * Render the hidden gallery template selector.
-		 *
-		 * @return void
-		 */
-		public function render_hidden_gallery_template_selector() {
-			?>
-			<span class="hidden foogallery-template-selector"> &mdash;
-				<select id="FooGallerySettings_GalleryTemplate" name="<?php echo FOOGALLERY_META_TEMPLATE; ?>">
-                    <?php
-					foreach ( $this->gallery_templates as $template ) {
-						$selected = ( $this->current_gallery_template === $template['slug'] ) ? 'selected' : '';
-
-						$preview_css = '';
-						if ( isset( $template['preview_css'] ) ) {
-							if ( is_array( $template['preview_css'] ) ) {
-								//dealing with an array of css files to include
-								$preview_css = implode( ',', $template['preview_css'] );
-							} else {
-								$preview_css = $template['preview_css'];
-							}
-						}
-						$preview_css = empty( $preview_css ) ? '' : ' data-preview-css="' . $preview_css . '" ';
-
-						$mandatory_classes = '';
-						if ( isset( $template['mandatory_classes'] ) ) {
-							$mandatory_classes = ' data-mandatory-classes="' . $template['mandatory_classes'] . '" ';
-						}
-
-						echo "<option {$selected}{$preview_css}{$mandatory_classes} value=\"{$template['slug']}\">{$template['name']}</option>";
-					}
-					?>
-                </select>
-            </span>
-			<?php
-		}
 	}
 }

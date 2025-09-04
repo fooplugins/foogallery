@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Gallery Layout Icons Preview</title>
+  <style>
+    body {
+      font-family: system-ui, sans-serif;
+      padding: 2rem;
+      background: #fafafa;
+      color: #333;
+    }
+    h1 {
+      margin-bottom: 1.5rem;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+      gap: 1.5rem;
+    }
+    .icon {
+      text-align: center;
+      padding: 1rem;
+      background: white;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    }
+    .icon svg {
+      display: block;
+      margin: 0 auto 0.5rem;
+      width: 48px;
+      height: 48px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 1;
+      background-color: #f00;
+    }
+    .label {
+      font-size: 0.9rem;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+  <h1>Gallery Layout Icons Preview</h1>
+  <div class="grid">
+
+    <div class="icon">
+      <!-- Default -->
+      <svg viewBox="0 0 24 24">
+        <rect x="3" y="3" width="7" height="7"/>
+        <rect x="14" y="3" width="7" height="7"/>
+        <rect x="3" y="14" width="7" height="7"/>
+        <rect x="14" y="14" width="7" height="7"/>
+      </svg>
+      <div class="label">Default</div>
+    </div>
+
+    <div class="icon">
+      <!-- Carousel -->
+      <svg viewBox="0 0 24 24">
+        <!-- images -->
+        <rect x="6" y="5" width="4" height="8"/>
+        <rect x="10" y="5" width="4" height="8"/>
+        <rect x="14" y="5" width="4" height="8"/>
+        <!-- arrows (solid triangles) -->
+        <polygon points="2,9 4,7 4,11" />
+        <polygon points="22,9 20,7 20,11" />
+        <!-- dots (more spaced out) -->
+        <circle cx="8" cy="17" r="0.8"/>
+        <circle cx="12" cy="17" r="0.8"/>
+        <circle cx="16" cy="17" r="0.8"/>
+      </svg>
+      <div class="label">Carousel</div>
+    </div>
+
+    <div class="icon">
+      <!-- Image Viewer -->
+      <svg viewBox="0 0 24 24">
+        <rect x="3" y="4" width="18" height="12"/>
+        <rect x="3" y="16" width="18" height="5"/>
+        <rect x="5" y="18" width="3" height="1"/>
+        <rect x="16" y="18" width="3" height="1"/>
+      </svg>
+      <div class="label">Image Viewer</div>
+    </div>
+
+    <div class="icon">
+      <!-- Justified -->
+      <svg viewBox="0 0 24 24">
+        <rect x="3" y="4" width="9" height="6"/>
+        <rect x="12" y="4" width="9" height="6"/>
+        <rect x="3" y="10" width="13" height="6"/>
+        <rect x="16" y="10" width="5" height="6"/>
+        <rect x="3" y="16" width="6" height="6"/>
+        <rect x="9" y="16" width="5" height="6"/>
+        <rect x="14" y="16" width="7" height="6"/>
+      </svg>
+      <div class="label">Justified</div>
+    </div>
+
+    <div class="icon">
+      <!-- Masonry -->
+      <svg viewBox="0 0 24 24">
+        <rect x="3" y="3" width="6" height="10"/>
+        <rect x="9" y="3" width="6" height="6"/>
+        <rect x="15" y="3" width="6" height="14"/>
+        <rect x="3" y="13" width="6" height="7"/>
+        <rect x="9" y="9" width="6" height="13"/>
+      </svg>
+      <div class="label">Masonry</div>
+    </div>
+
+    <div class="icon">
+      <!-- Portfolio -->
+      <svg viewBox="0 0 24 24">
+        <!-- top row -->
+        <rect x="3" y="3" width="8" height="5"/>
+        <rect x="13" y="3" width="8" height="5"/>
+        <!-- captions -->
+        <rect x="3" y="8" width="8" height="2"/>
+        <rect x="13" y="8" width="8" height="2"/>
+        <!-- bottom row -->
+        <rect x="3" y="13" width="8" height="5"/>
+        <rect x="13" y="13" width="8" height="5"/>
+        <!-- captions -->
+        <rect x="3" y="18" width="8" height="2"/>
+        <rect x="13" y="18" width="8" height="2"/>
+      </svg>
+      
+      <div class="label">Portfolio</div>
+    </div>
+
+    <div class="icon">
+      <!-- Single Thumbnail -->
+      <svg viewBox="0 0 24 24">
+        <rect x="3" y="5" width="18" height="14"/>
+        <polyline points="6,15 10,12 14,16 18,12"/>
+        <circle cx="9" cy="9" r="1.5"/>
+      </svg>
+      <div class="label">Single Thumbnail</div>
+    </div>
+
+    <div class="icon">
+      <!-- Product -->
+      <svg viewBox="0 0 24 24">
+        <!-- cart basket -->
+        <path d="M6 7h13l-2 7H8z"/>
+        
+        <!-- handle flipped inward -->
+        <path d="M6 7V4h-3"/>
+        
+        <!-- wheels -->
+        <circle cx="9" cy="18" r="1.5"/>
+        <circle cx="16" cy="18" r="1.5"/>
+      </svg>
+      <div class="label">Product</div>
+    </div>
+
+    <div class="icon">
+      <!-- Polaroid -->
+      <svg viewBox="0 0 24 24">
+        <!-- top left -->
+        <g transform="rotate(-5 7 5)">
+          <rect x="2" y="2" width="8" height="5"/>
+          <rect x="2" y="7" width="8" height="2"/>
+        </g>
+      
+        <!-- top right -->
+        <g transform="rotate(4 17 5)">
+          <rect x="13" y="3" width="8" height="5"/>
+          <rect x="13" y="8" width="8" height="2"/>
+        </g>
+      
+        <!-- bottom left -->
+        <g transform="rotate(3 7 15)">
+          <rect x="3" y="12" width="8" height="5"/>
+          <rect x="3" y="17" width="8" height="2"/>
+        </g>
+      
+        <!-- bottom right -->
+        <g transform="rotate(-4 17 15)">
+          <rect x="14" y="13" width="8" height="5"/>
+          <rect x="14" y="18" width="8" height="2"/>
+        </g>
+      </svg>
+      <div class="label">Polaroid</div>
+    </div>
+
+    <div class="icon">
+      <!-- GridPro -->
+      <svg viewBox="0 0 24 24">
+        <!-- Top row (3 small) -->
+        <rect x="3" y="3" width="6" height="5"/>
+        <rect x="9" y="3" width="6" height="5"/>
+        <rect x="15" y="3" width="6" height="5"/>
+        <!-- Middle row (1 large) -->
+        <rect x="3" y="8" width="18" height="8"/>
+        <!-- Bottom row (3 small) -->
+        <rect x="3" y="16" width="6" height="5"/>
+        <rect x="9" y="16" width="6" height="5"/>
+        <rect x="15" y="16" width="6" height="5"/>
+      </svg>
+      <div class="label">GridPro</div>
+    </div>
+
+    <div class="icon">
+      <!-- Slider -->
+      <svg viewBox="0 0 24 24">
+        <!-- Left thumbs -->
+        <rect x="3" y="4" width="6" height="5"/>
+        <rect x="3" y="9" width="6" height="5"/>
+        <rect x="3" y="14" width="6" height="5"/>
+        <!-- Main image -->
+        <rect x="9" y="4" width="12" height="15"/>
+      </svg>
+      <div class="label">Slider</div>
+    </div>
+
+  </div>
+</body>
+</html>

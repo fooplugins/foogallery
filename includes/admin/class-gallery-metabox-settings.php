@@ -37,21 +37,19 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings' ) ) {
 
 		public function render_gallery_settings_metabox( $post ) {
 			$gallery = foogallery_admin_get_current_gallery( $post );
-
+		
 			//attempt to load default gallery settings from another gallery, as per FooGallery settings page
 			$gallery->load_default_settings_if_new();
-
+		
 			$gallery = apply_filters( 'foogallery_render_gallery_settings_metabox', $gallery );
-
+		
 			if ( true === apply_filters( 'foogallery_should_render_gallery_settings_metabox', true, $gallery ) ) {
-
+		
 				$settings = new FooGallery_Admin_Gallery_MetaBox_Settings_Helper( $gallery );
-
-				$settings->render_hidden_gallery_template_selector();
-
+		
 				$settings->render_gallery_settings();
 			}
-
+		
 			do_action( 'foogallery_after_render_gallery_settings_metabox', $gallery );
 		}
 
@@ -60,23 +58,23 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings' ) ) {
          * @param $hook_suffix
          */
         function enqueue_assets( $hook_suffix ){
-            if( in_array( $hook_suffix, array( 'post.php', 'post-new.php' ) ) ) {
-                $screen = get_current_screen();
-
-                if ( is_object( $screen ) && FOOGALLERY_CPT_GALLERY == $screen->post_type ){
-
+			if( in_array( $hook_suffix, array( 'post.php', 'post-new.php' ) ) ) {
+				$screen = get_current_screen();
+		
+				if ( is_object( $screen ) && FOOGALLERY_CPT_GALLERY === $screen->post_type ){
+		
 					//spectrum needed for the colorpicker field
 					$url = FOOGALLERY_URL . 'lib/spectrum/spectrum.js';
 					wp_enqueue_script( 'foogallery-spectrum', $url, array('jquery'), FOOGALLERY_VERSION );
 					$url = FOOGALLERY_URL . 'lib/spectrum/spectrum.css';
 					wp_enqueue_style( 'foogallery-spectrum', $url, array(), FOOGALLERY_VERSION );
-
-                    // Register, enqueue scripts and styles here
-                    wp_enqueue_script( 'foogallery-admin-settings', FOOGALLERY_URL . 'js/foogallery.admin.min.js', array('jquery'), FOOGALLERY_VERSION );
-                    wp_enqueue_style( 'foogallery-admin-settings', FOOGALLERY_URL . 'css/foogallery.admin.min.css', array(), FOOGALLERY_VERSION );
-                }
-            }
-        }
+		
+					// Register, enqueue scripts and styles here
+					wp_enqueue_script( 'foogallery-admin-settings', FOOGALLERY_URL . 'js/foogallery.admin.min.js', array('jquery'), FOOGALLERY_VERSION );
+					wp_enqueue_style( 'foogallery-admin-settings', FOOGALLERY_URL . 'css/foogallery.admin.min.css', array(), FOOGALLERY_VERSION );
+				}
+			}
+		}
 
 		/**
 		 * Returns the section slug that can be used in the settings tabs

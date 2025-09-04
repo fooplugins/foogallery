@@ -93,7 +93,7 @@ if ( !class_exists( 'FooGallery_Thumbnail_Gallery_Template' ) ) {
 		function add_template( $gallery_templates ) {
 			$gallery_templates[] = array(
                 'slug'        => 'thumbnail',
-                'name'        => __( 'Single Thumbnail Gallery', 'foogallery' ),
+                'name'        => __( 'Single Thumbnail', 'foogallery' ),
 				'preview_support' => true,
 				'common_fields_support' => true,
                 'lazyload_support' => true,
@@ -101,6 +101,11 @@ if ( !class_exists( 'FooGallery_Thumbnail_Gallery_Template' ) ) {
 				'thumbnail_dimensions' => true,
                 'paging_support' => false,
                 'enqueue_core' => true,
+				'icon' => '<svg viewBox="0 0 24 24">
+        <rect x="3" y="5" width="18" height="14"/>
+        <polyline points="6,15 10,12 14,16 18,12"/>
+        <circle cx="9" cy="9" r="1.5"/>
+      </svg>',
                 'fields'	  => array(
                     array(
                         'id'	  => 'help',

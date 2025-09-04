@@ -86,7 +86,7 @@ if ( ! class_exists( 'FooGallery_Justified_Gallery_Template' ) ) {
 		public function add_template( $gallery_templates ) {
 			$gallery_templates[] = array(
 				'slug'                  => self::TEMPLATE_ID,
-				'name'                  => __( 'Justified Gallery', 'foogallery' ),
+				'name'                  => __( 'Justified', 'foogallery' ),
 				'preview_support'       => true,
 				'common_fields_support' => true,
 				'lazyload_support'      => true,
@@ -95,6 +95,15 @@ if ( ! class_exists( 'FooGallery_Justified_Gallery_Template' ) ) {
 				'thumbnail_dimensions'  => true,
 				'filtering_support'     => true,
 				'enqueue_core'          => true,
+				'icon' => '<svg viewBox="0 0 24 24">
+        <rect x="3" y="4" width="9" height="6"/>
+        <rect x="12" y="4" width="9" height="6"/>
+        <rect x="3" y="10" width="13" height="6"/>
+        <rect x="16" y="10" width="5" height="6"/>
+        <rect x="3" y="16" width="6" height="6"/>
+        <rect x="9" y="16" width="5" height="6"/>
+        <rect x="14" y="16" width="7" height="6"/>
+      </svg>',
 				'fields'                => array(
 					array(
 						'id'       => 'row_height',

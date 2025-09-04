@@ -85,6 +85,14 @@ if ( !class_exists( 'FooGallery_Slider_Gallery_Template' ) ) {
 				'embed_support' => true,
 				'panel_support' => true,
 				'enqueue_core' => true,
+				'icon' => '<svg viewBox="0 0 24 24">
+        <!-- Left thumbs -->
+        <rect x="3" y="4" width="6" height="5"/>
+        <rect x="3" y="9" width="6" height="5"/>
+        <rect x="3" y="14" width="6" height="5"/>
+        <!-- Main image -->
+        <rect x="9" y="4" width="12" height="15"/>
+      </svg>',
 				'fields'	  => array(
 					array(
 						'id'      => 'aspect-ratio',

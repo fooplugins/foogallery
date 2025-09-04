@@ -106,6 +106,12 @@ if ( !class_exists( 'FooGallery_Image_Viewer_Gallery_Template' ) ) {
 				'mandatory_classes' => 'fg-image-viewer',
 				'thumbnail_dimensions' => true,
 				'enqueue_core' => true,
+				'icon' => '<svg viewBox="0 0 24 24">
+        <rect x="3" y="4" width="18" height="12"/>
+        <rect x="3" y="16" width="18" height="5"/>
+        <rect x="5" y="18" width="3" height="1"/>
+        <rect x="16" y="18" width="3" height="1"/>
+      </svg>',
 				'fields'	  => array(
                     array(
                         'id'      => 'thumbnail-help',
