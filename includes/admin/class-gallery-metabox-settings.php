@@ -47,9 +47,6 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings' ) ) {
 		
 				$settings = new FooGallery_Admin_Gallery_MetaBox_Settings_Helper( $gallery );
 		
-				// Use the new card-based selector instead of hidden dropdown
-				$settings->render_gallery_template_card_selector();
-		
 				$settings->render_gallery_settings();
 			}
 		
@@ -64,7 +61,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings' ) ) {
 			if( in_array( $hook_suffix, array( 'post.php', 'post-new.php' ) ) ) {
 				$screen = get_current_screen();
 		
-				if ( is_object( $screen ) && FOOGALLERY_CPT_GALLERY == $screen->post_type ){
+				if ( is_object( $screen ) && FOOGALLERY_CPT_GALLERY === $screen->post_type ){
 		
 					//spectrum needed for the colorpicker field
 					$url = FOOGALLERY_URL . 'lib/spectrum/spectrum.js';
@@ -75,12 +72,6 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings' ) ) {
 					// Register, enqueue scripts and styles here
 					wp_enqueue_script( 'foogallery-admin-settings', FOOGALLERY_URL . 'js/foogallery.admin.min.js', array('jquery'), FOOGALLERY_VERSION );
 					wp_enqueue_style( 'foogallery-admin-settings', FOOGALLERY_URL . 'css/foogallery.admin.min.css', array(), FOOGALLERY_VERSION );
-					
-					// Add custom CSS for card selector
-					wp_add_inline_style( 'foogallery-admin-settings', $this->get_card_selector_css() );
-					
-					// Add custom JS for card selector functionality
-					wp_add_inline_script( 'foogallery-admin-settings', $this->get_card_selector_js() );
 				}
 			}
 		}
@@ -108,125 +99,6 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings' ) ) {
 					return 'paging';
 			}
 			return strtolower( $section );
-		}
-
-		/**
-		 * Get CSS for the card-based template selector
-		 *
-		 * @return string
-		 */
-		private function get_card_selector_css() {
-			return '
-				.foogallery-template-card-selector {
-					margin-bottom: 20px;
-					padding: 20px;
-					background: #fff;
-					border: 1px solid #ddd;
-					border-radius: 4px;
-				}
-				
-				.foogallery-template-cards-container {
-					display: flex;
-					flex-wrap: wrap;
-					gap: 15px;
-					margin-top: 15px;
-				}
-				
-				.foogallery-template-card {
-					position: relative;
-					width: 200px;
-					padding: 20px;
-					border: 2px solid #ddd;
-					border-radius: 8px;
-					cursor: pointer;
-					transition: all 0.3s ease;
-					background: #fff;
-					text-align: center;
-				}
-				
-				.foogallery-template-card:hover {
-					border-color: #0073aa;
-					box-shadow: 0 2px 8px rgba(0,115,170,0.2);
-				}
-				
-				.foogallery-template-card.selected {
-					border-color: #0073aa;
-					background: #f7fcfe;
-				}
-				
-				.foogallery-template-card-icon {
-					font-size: 48px;
-					color: #666;
-					margin-bottom: 15px;
-				}
-				
-				.foogallery-template-card.selected .foogallery-template-card-icon {
-					color: #0073aa;
-				}
-				
-				.foogallery-template-card-content h4 {
-					margin: 0 0 8px 0;
-					font-size: 16px;
-					font-weight: 600;
-				}
-				
-				.foogallery-template-card-content p {
-					margin: 0;
-					font-size: 14px;
-					color: #666;
-					line-height: 1.4;
-				}
-				
-				.foogallery-template-card-selected {
-					position: absolute;
-					top: 10px;
-					right: 10px;
-					display: none;
-				}
-				
-				.foogallery-template-card.selected .foogallery-template-card-selected {
-					display: block;
-				}
-				
-				.foogallery-template-card-selected .dashicons {
-					color: #0073aa;
-					font-size: 20px;
-				}
-			';
-		}
-
-		
-		/**
-		 * Get JavaScript for the card-based template selector
-		 *
-		 * @return string
-		 */
-		private function get_card_selector_js() {
-			return '
-				jQuery(document).ready(function($) {
-					// Handle template card selection
-					$(".foogallery-template-card").on("click", function() {
-						var $card = $(this);
-						var template = $card.data("template");
-						
-						// Update visual selection
-						$(".foogallery-template-card").removeClass("selected");
-						$card.addClass("selected");
-						
-						// Update hidden select
-						$("#FooGallerySettings_GalleryTemplate").val(template).trigger("change");
-						
-						// Hide all template settings containers
-						$(".foogallery-settings-container").hide();
-						
-						// Show selected template settings
-						$(".foogallery-settings-container-" + template).show();
-						
-						// Trigger any existing template change events
-						$(document).trigger("foogallery_template_changed", [template, $card]);
-					});
-				});
-			';
 		}
 
         /**

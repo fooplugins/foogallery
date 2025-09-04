@@ -1,0 +1,70 @@
+.foogallery-template-card-selector {
+    padding-top: 5px;
+}
+
+.foogallery-template-cards-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+    gap: 10px;
+}
+
+.foogallery-template-card {
+    position: relative;
+    padding: 10px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: #fff;
+    text-align: center;
+    box-shadow: 0 0 3px rgba(0,0,0,0.08);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.foogallery-template-card:hover {
+    border-color: #0073aa;
+    box-shadow: 0 0 8px rgba(0,115,170,0.2);
+}
+
+.foogallery-template-card.selected {
+    border-color: #0073aa;
+    background: #f7fcfe;
+    box-shadow: 0 0 5px rgba(0, 116, 170, 0.68);
+}
+
+.foogallery-template-card svg {
+    display: block;
+    width: 40px;
+    height: 40px;
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 1;
+    color: #000;
+    margin-bottom: 8px;
+    flex-shrink: 0;
+}
+
+.foogallery-template-card.selected svg {
+    color: #0073aa;
+}
+
+.foogallery-template-card h4 {
+    margin: 0 0 8px 0;
+    font-size: 13px;
+    font-weight: 500;
+    margin: 0;
+}
+
+.foogallery-gallery-template-metabox-message {
+    font-size: 0.8em;
+    color: #888;
+    font-style: italic;
+    font-weight: normal;
+}
+
+.foogallery-gallery-template-metabox-title.hidden {
+    display: none !important;
+}

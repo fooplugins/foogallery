@@ -58,6 +58,7 @@ if ( is_admin() ) {
 	require_once FOOGALLERY_PATH . 'includes/admin/class-gallery-metabox-items.php';
 	require_once FOOGALLERY_PATH . 'includes/admin/class-gallery-metabox-fields.php';
 	require_once FOOGALLERY_PATH . 'includes/admin/class-gallery-metabox-settings.php';
+	require_once FOOGALLERY_PATH . 'includes/admin/class-gallery-metabox-template.php';
 	require_once FOOGALLERY_PATH . 'includes/admin/class-gallery-metabox-settings-helper.php';
 	require_once FOOGALLERY_PATH . 'includes/admin/class-menu.php';
 	require_once FOOGALLERY_PATH . 'includes/admin/class-columns.php';
