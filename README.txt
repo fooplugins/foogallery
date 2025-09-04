@@ -14,7 +14,7 @@ Photo gallery plugin for WordPress — responsive image galleries with lightbox,
 
 = WordPress Gallery Plugin =
 
-FooGallery is a powerful and easy-to-use WordPress gallery plugin that lets you create stunning photo galleries, image viewers, Justified & Masonry grids, Carousels and image portfolios. With advanced customization options and beautiful pre-built templates, FooGallery is perfect for creating responsive image galleries with lightbox effects for any website.
+FooGallery is a powerful and easy-to-use WordPress gallery plugin that lets you create stunning photo galleries, image viewers, Justified & Masonry grids, Carousels and image portfolios. With advanced customization options and beautiful pre-built layouts, FooGallery is perfect for creating responsive image galleries with lightbox effects for any website.
 
 [Launch Your Own FooGallery Demo](https://app.instawp.io/launch?t=foogallery-free&d=v2)
 
@@ -29,7 +29,7 @@ FooGallery was built to be highly configurable and extendable for developers or 
 
 = WordPress Gallery Plugin Features =
 
-*	7 Beautiful Image Gallery templates
+*	7 Beautiful Image Gallery layouts
 	*	Responsive Image Gallery - [demo](https://fooplugins.com/foogallery-wordpress-gallery-plugin/responsive-image-gallery/)
 	*	Image Viewer Gallery - [demo](https://fooplugins.com/foogallery-wordpress-gallery-plugin/image-viewer-gallery/)
 	*	Masonry Gallery - [demo](https://fooplugins.com/foogallery-wordpress-gallery-plugin/masonry-gallery/)
@@ -63,7 +63,7 @@ FooGallery was built to be highly configurable and extendable for developers or 
 	*	All-in-one Stack album - [demo](https://fooplugins.com/foogallery-wordpress-gallery-plugin/wordpress-album-gallery/#all-in-one)
 *   Import / Export galleries between WP installs - [docs](https://fooplugins.com/documentation/foogallery/getting-started-foogallery/import-export/)
 *	Gutenberg ready (Gallery previews inside the new editor!)
-*	Live previews as you make changes!
+*	Live gallery previews as you make changes!
 *	Retina thumbnail support
 *	Gallery Widget
 *	Use built-in media library to manage images
@@ -73,6 +73,7 @@ FooGallery was built to be highly configurable and extendable for developers or 
 *	One-click gallery page creation
 *	FooGallery Migrator - easily migrate from your existing gallery solution
 *	Multisite Support
+*	Password protected galleries
 
 = PRO Gallery Features =
 
@@ -82,7 +83,7 @@ There are 3 PRO plans available, that will work with any budget:
 
 **PRO Starter Features**
 
-*   3 more beautiful PRO responsive gallery templates:
+*   3 more beautiful PRO responsive gallery layouts:
     *   Polaroid gallery template - [demo](https://fooplugins.com/foogallery-wordpress-gallery-plugin/polaroid-gallery/)
     *   Grid gallery template - [demo](https://fooplugins.com/foogallery-wordpress-gallery-plugin/grid-gallery/)
     *	Slider gallery template - [demo](https://fooplugins.com/foogallery-wordpress-gallery-plugin/slider-gallery/)
@@ -367,7 +368,7 @@ Please update in order for FooGallery to work in WP 5.5+!
 * Date Updated : 24 Nov 2024
 * Update : Freemius SDK update 2.9.0
 * Fix : Fixed bug with early translation PHP warnings in debug mode.
-* Fix : When in trial mode, do not load the promotion gallery templates.
+* Fix : When in trial mode, do not load the promotion gallery layouts.
 * Fix : Gallery creator permissions will now work with custom roles, like Shop Manager.
 [//]: # fs_premium_only_begin
 * New : [Expert Plan] Added new selection mode setting to taxonomy datasource to allow for AND or OR selections.

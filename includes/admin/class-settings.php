@@ -66,8 +66,8 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 
 			$settings[] = array(
 				'id'      => 'gallery_template',
-				'title'   => __( 'Default Gallery Template', 'foogallery' ),
-				'desc'    => __( 'The default gallery template to use for new galleries', 'foogallery' ),
+				'title'   => __( 'Default Gallery Layout', 'foogallery' ),
+				'desc'    => __( 'The default gallery layout to use for new galleries', 'foogallery' ),
 				'default' => foogallery_get_default( 'gallery_template' ) ,
 				'type'    => 'select',
 				'choices' => $gallery_templates_choices,
@@ -154,8 +154,8 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 
 			$settings[] = array(
 				'id'      => 'hide_gallery_template_help',
-				'title'   => __( 'Hide Gallery Template Help', 'foogallery' ),
-				'desc'    => __( 'Some gallery templates show helpful tips, which are useful for new users. You can choose to hide these tips.', 'foogallery' ),
+				'title'   => __( 'Hide Gallery Settings Help', 'foogallery' ),
+				'desc'    => __( 'Some gallery settings show helpful tips, which are useful for new users. You can choose to hide these tips.', 'foogallery' ),
 				'type'    => 'checkbox',
 				'tab'     => 'general',
 				'section' => __( 'Admin', 'foogallery' )
