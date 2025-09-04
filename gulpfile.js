@@ -42,6 +42,7 @@ function zip(){
         "!package*.json",
         "!./{node_modules,node_modules/**/*}",
         "!./{dist,dist/**/*}",
+        "!./{.nodeploy,.nodeploy/**/*}",
         '!./{vendor,vendor/**/*}',
         "!./{src,src/**/*}",
         '!./{gutenberg/src,gutenberg/src/**/*,gutenberg/config,gutenberg/config/**/*}',
