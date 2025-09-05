@@ -174,7 +174,7 @@
 	border-bottom: 1px solid #FFF;
 }
 .foogallery.fg-light-overlays .fg-caption {
-	background-color: rgba(255,255,255,0.8);
+	background-color: rgba(255,255,255,0.5);
 	color: #333;
 }
 .foogallery.fg-light-overlays .fg-caption a {
@@ -7191,6 +7191,9 @@ html.fg-panel-no-scroll body {
 .fg-simple_portfolio .fg-caption-title {
     white-space: normal;
     height: auto;
+}
+.fg-simple_portfolio .fg-caption-desc {
+    flex: unset;
 }
 .fg-simple_portfolio .fg-caption-desc,
 .fg-simple_portfolio .fg-caption-desc a {
