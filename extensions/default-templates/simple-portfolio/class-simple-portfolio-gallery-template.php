@@ -37,6 +37,9 @@ if ( !class_exists( 'FooGallery_Simple_Portfolio_Gallery_Template' ) ) {
 
 			//remove preset choices from simple portfolio
             add_filter( 'foogallery_override_gallery_template_fields-simple_portfolio', array( $this, 'remove_preset_choices_for_simple_portfolio' ), 10, 2 );
+
+			// Adjust the default settings for this layout
+			add_filter( 'foogallery_override_gallery_template_fields_defaults-simple_portfolio', array( $this, 'field_defaults' ), 10, 1 );
         }
 
 		/**
@@ -201,7 +204,6 @@ if ( !class_exists( 'FooGallery_Simple_Portfolio_Gallery_Template' ) ) {
 
 				if ( 'hover_effect_caption_visibility' === $field['id'] 
 					|| 'caption_visibility_no_hover_effect' === $field['id'] ) {
-					$field['default'] = 'fg-caption-always';
 					$field['choices'] = array(
 						'fg-caption-always' => __( 'Always Visible', 'foogallery' ),
 					);
@@ -216,7 +218,6 @@ if ( !class_exists( 'FooGallery_Simple_Portfolio_Gallery_Template' ) ) {
 						'data-foogallery-hidden' => true
 					);
 				} else if ( 'theme' === $field['id'] ) {
-					$field['default'] = 'fg-dark';
 					$field['choices'] = array(
 						'fg-light'  => __( 'Light', 'foogallery' ),
 						'fg-dark'   => __( 'Dark', 'foogallery' ),
@@ -410,5 +411,31 @@ if ( !class_exists( 'FooGallery_Simple_Portfolio_Gallery_Template' ) ) {
 
             return $fields;
         }
+
+		/**
+		 * Return an array of field defaults for the template
+		 *
+		 * @param $field_defaults
+		 *
+		 * @return string[]
+		 */
+		function field_defaults( $field_defaults ) {
+			return array_merge( $field_defaults, array(
+				'theme' => 'fg-dark',
+				'hover_effect_caption_visibility' => 'fg-caption-always',
+				'caption_visibility_no_hover_effect' => 'fg-caption-always',
+				'border_size' => 'fg-border-medium',
+				'rounded_corners' => '',
+				'drop_shadow' => '',
+				'inner_shadow' => '',
+				'loaded_effect' => 'fg-loaded-swing-down',
+				'hover_effect_icon' => 'fg-hover-plus3',
+				'hover_effect_scale' => '',
+				'hover_effect_transition' => 'fg-hover-slide-down',
+				'captions_limit_length' => 'clamp',
+				'caption_title_clamp' => '2',
+				'caption_desc_clamp' => '2',
+			) );
+		}
 	}
 }

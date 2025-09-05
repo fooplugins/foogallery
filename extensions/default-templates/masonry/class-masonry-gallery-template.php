@@ -40,6 +40,9 @@ if ( !class_exists( 'FooGallery_Masonry_Gallery_Template' ) ) {
 			add_action( 'foogallery_loaded_template_before', array( $this, 'add_style_block' ), 10, 1 );
 
 			add_filter( 'foogallery_build_class_attribute', array( $this, 'override_class_attributes' ), 99, 2 );
+
+			// Adjust the default settings for this layout
+			add_filter( 'foogallery_override_gallery_template_fields_defaults-masonry', array( $this, 'field_defaults' ), 10, 1 );
         }
 
 		/**
@@ -406,6 +409,30 @@ if ( !class_exists( 'FooGallery_Masonry_Gallery_Template' ) ) {
 			}
 
         	return $captions;
+		}
+
+		/**
+		 * Return an array of field defaults for the template
+		 *
+		 * @param $field_defaults
+		 *
+		 * @return string[]
+		 */
+		function field_defaults( $field_defaults ) {
+			return array_merge( $field_defaults, array(
+				'theme' => 'fg-light',
+				'hover_effect_caption_visibility' => 'fg-captions-bottom',
+				'caption_visibility_no_hover_effect' => 'fg-captions-bottom',
+				'border_size' => 'fg-border-medium',
+				'drop_shadow' => 'fg-shadow-outline',
+				'rounded_corners' => 'fg-round-small',
+				'inner_shadow' => '',
+				'hover_effect_icon' => 'fg-hover-zoom4',
+				'hover_effect_scale' => 'fg-hover-semi-zoomed',
+				'captions_limit_length' => 'clamp',
+				'caption_title_clamp' => '1',
+				'caption_desc_clamp' => '2',
+			) );
 		}
 	}
 }

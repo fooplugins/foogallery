@@ -108,7 +108,7 @@ if ( ! class_exists( 'FooGallery_Default_Gallery_Template' ) ) {
 						'type'     => 'thumb_size_no_crop',
 						'default'  => array(
 							'width'  => 270,
-							'height' => 220,
+							'height' => 230,
 						),
 						'row_data' => array(
 							'data-foogallery-change-selector' => 'input',
