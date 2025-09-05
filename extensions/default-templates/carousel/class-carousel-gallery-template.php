@@ -31,6 +31,9 @@ if ( ! class_exists( 'FooGallery_Carousel_Gallery_Template' ) ) {
 
 			// Adjust the default settings for this layout
 			add_filter( 'foogallery_override_gallery_template_fields_defaults-carousel', array( $this, 'field_defaults' ), 10, 1 );
+
+			// add a style block for the gallery based on the thumbnail width.
+			add_action( 'foogallery_loaded_template_before', array( $this, 'add_width_style_block' ), 10, 1 );
 			// @formatter:on
 		}
 
@@ -412,6 +415,33 @@ if ( ! class_exists( 'FooGallery_Carousel_Gallery_Template' ) ) {
 				'hover_effect_icon' => 'fg-hover-circle-plus2',
 				'hover_effect_scale' => 'fg-hover-semi-zoomed'
 			) );
+		}
+
+		/**
+		 * Add a style block based on the width thumbnail size
+		 *
+		 * @param $gallery FooGallery
+		 */
+		function add_width_style_block( $gallery ) {
+			if ( self::TEMPLATE_ID !== $gallery->gallery_template ) {
+				return;
+			}
+
+			$id         = $gallery->container_id();
+			$dimensions = foogallery_gallery_template_setting('thumbnail_dimensions');
+			if ( is_array( $dimensions ) && array_key_exists( 'width', $dimensions ) && intval( $dimensions['width'] ) > 0 ) {
+				$width      = intval( $dimensions['width'] );
+
+				// @formatter:off
+				?>
+<style type="text/css">
+	<?php echo '#' . $id; ?> .fg-image {
+        width: <?php echo $width; ?>px;
+    }
+</style>
+				<?php
+				// @formatter:on
+			}
 		}
 	}
 }
