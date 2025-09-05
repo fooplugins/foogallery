@@ -39,6 +39,9 @@ if ( !class_exists( 'FooGallery_Product_Gallery_Template' ) ) {
 
 			// Ensure we output the inline styling needed for a simple portfolio gallery template
 			add_filter( 'foogallery_is_simple_portfolio_gallery_template', array( $this, 'is_simple_portfolio_gallery_template' ), 10, 2 );
+
+			// add a style block for the gallery based on the field settings.
+			add_action( 'foogallery_template_style_block-product', array( $this, 'add_css' ), 10, 2 );
         }
 
 		/**
@@ -135,14 +138,14 @@ if ( !class_exists( 'FooGallery_Product_Gallery_Template' ) ) {
                     ),
                     array(
                         'id'      => 'gutter',
-                        'title'   => __( 'Gutter', 'foogallery' ),
-                        'desc'    => __( 'The spacing between each thumbnail in the gallery.', 'foogallery' ),
+                        'title'   => __( 'Thumbnail Gap', 'foogallery' ),
+                        'desc'    => __( 'The spacing or gap between each thumbnail in the gallery.', 'foogallery' ),
 						'section' => __( 'General', 'foogallery' ),
-                        'type'    => 'number',
-                        'class'   => 'small-text',
+                        'type'    => 'slider',
                         'default' => 20,
-                        'step'    => '1',
-                        'min'     => '0',
+                        'step'    => 1,
+                        'min'     => 0,
+						'max'     => 100,
 						'row_data'=> array(
 							'data-foogallery-change-selector' => 'input',
 							'data-foogallery-value-selector' => 'input',
@@ -350,6 +353,30 @@ if ( !class_exists( 'FooGallery_Product_Gallery_Template' ) ) {
 			}
 
 			return $classes;
+		}
+
+		/**
+		 * Add css to the page for the gallery
+		 *
+		 * @param $gallery FooGallery
+		 */
+		function add_css( $css, $gallery ) {
+			$id = $gallery->container_id();
+			$gutter = intval( foogallery_gallery_template_setting( 'gutter', 20 ) );
+			$alignment = foogallery_gallery_template_setting( 'align', 'center' );
+			if ( $alignment === 'left' ) {
+				$alignment = 'flex-start';
+			} else if ( $alignment === 'right' ) {
+				$alignment = 'flex-end';
+			}
+			$thumb_width = 250;
+			$thumbnail_dimensions = foogallery_gallery_template_setting( 'thumbnail_dimensions', array() );
+			if ( array_key_exists( 'width', $thumbnail_dimensions ) ) {
+				$thumb_width = intval( $thumbnail_dimensions['width'] );
+			}
+			$css[] = '#' . $id . '.fg-simple_portfolio { justify-content: ' . $alignment . '; }';
+			$css[] = '#' . $id . '.fg-simple_portfolio .fg-item { flex-basis: ' . $thumb_width . 'px; margin: ' . $gutter . 'px; }';
+			return $css;
 		}
 	}
 }

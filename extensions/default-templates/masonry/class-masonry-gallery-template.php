@@ -36,13 +36,13 @@ if ( !class_exists( 'FooGallery_Masonry_Gallery_Template' ) ) {
 			//remove the captions if the captions are below thumbs
 			add_filter( 'foogallery_build_attachment_html_caption', array( $this, 'remove_captions' ), 10, 3 );
 
-			//add a style block for the gallery based on the field settings
-			add_action( 'foogallery_loaded_template_before', array( $this, 'add_style_block' ), 10, 1 );
-
 			add_filter( 'foogallery_build_class_attribute', array( $this, 'override_class_attributes' ), 99, 2 );
 
 			// Adjust the default settings for this layout
 			add_filter( 'foogallery_override_gallery_template_fields_defaults-masonry', array( $this, 'field_defaults' ), 10, 1 );
+
+			// add a style block for the gallery based on the field settings.
+			add_action( 'foogallery_template_style_block-masonry', array( $this, 'add_css' ), 10, 2 );
         }
 
 		/**
@@ -60,39 +60,6 @@ if ( !class_exists( 'FooGallery_Masonry_Gallery_Template' ) ) {
 
 			return $classes;
 		}
-
-		/**
-		 * Add a style block based on the field settings
-		 *
-		 * @param $gallery FooGallery
-		 */
-		function add_style_block( $gallery ) {
-			if ( self::template_id !== $gallery->gallery_template ) {
-				return;
-			}
-
-			$id = $gallery->container_id();
-			$layout = foogallery_gallery_template_setting( 'layout', 'fixed' );
-
-			//get out early if the layout is not fixed
-			if ( 'fixed' !== $layout ) {
-				return;
-			}
-
-			$thumbnail_width = intval( foogallery_gallery_template_setting( 'thumbnail_width', 250 ) );
-			$gutter_width = intval( foogallery_gallery_template_setting( 'gutter_width', 10 ) );
-
-			?>
-			<style>
-                #<?php echo $id; ?>.fg-masonry .fg-item {
-                    width: <?php echo $thumbnail_width; ?>px;
-                    margin-right: <?php echo $gutter_width; ?>px;
-                    margin-bottom: <?php echo $gutter_width; ?>px;
-                }
-			</style>
-			<?php
-		}
-
 
 		/**
 		 * Register myself so that all associated JS and CSS files can be found and automatically included
@@ -145,6 +112,22 @@ if ( !class_exists( 'FooGallery_Masonry_Gallery_Template' ) ) {
 							'data-foogallery-preview' => 'shortcode'
 						)
                     ),
+					array(
+                        'id'      => 'gutter_width',
+                        'title'   => __( 'Thumbnail Gap', 'foogallery' ),
+                        'desc'    => __( 'The spacing or gap between your thumbnails.', 'foogallery' ),
+                        'section' => __( 'General', 'foogallery' ),
+                        'type'    => 'slider',
+                        'min'     => '0',
+                        'max'     => '100',
+                        'step'    => '1',
+                        'default' => 10,
+                        'row_data'=> array(
+							'data-foogallery-change-selector' => 'input',
+							'data-foogallery-value-selector' => 'input',
+							'data-foogallery-preview' => 'shortcode',
+                        )
+                    ),
                     array(
                         'id'      => 'layout',
                         'title'   => __( 'Masonry Layout', 'foogallery' ),
@@ -183,25 +166,7 @@ if ( !class_exists( 'FooGallery_Masonry_Gallery_Template' ) ) {
 		                    'data-foogallery-preview' => 'shortcode'
 	                    )
                     ),
-                    array(
-                        'id'      => 'gutter_width',
-                        'title'   => __( 'Gutter Width', 'foogallery' ),
-                        'desc'    => __( 'The spacing between your thumbnails. Only applicable when using a fixed layout!', 'foogallery' ),
-                        'section' => __( 'General', 'foogallery' ),
-                        'type'    => 'number',
-                        'class'   => 'small-text',
-                        'default' => 10,
-                        'step'    => '1',
-                        'min'     => '0',
-                        'row_data'=> array(
-                            'data-foogallery-hidden' => true,
-							'data-foogallery-change-selector' => 'input',
-							'data-foogallery-value-selector' => 'input',
-                            'data-foogallery-show-when-field' => 'layout',
-                            'data-foogallery-show-when-field-value' => 'fixed',
-							'data-foogallery-preview' => 'shortcode',
-                        )
-                    ),
+
                     array(
                         'id'      => 'gutter_percent',
                         'title'   => __( 'Gutter Size', 'foogallery' ),
@@ -433,6 +398,37 @@ if ( !class_exists( 'FooGallery_Masonry_Gallery_Template' ) ) {
 				'caption_title_clamp' => '1',
 				'caption_desc_clamp' => '2',
 			) );
+		}
+
+		/**
+		 * Add css to the page for the gallery
+		 *
+		 * @param $gallery FooGallery
+		 */
+		function add_css( $css, $gallery ) {
+
+			$id         = $gallery->container_id();
+			$layout = foogallery_gallery_template_setting( 'layout', 'fixed' );
+
+			//get out early if the layout is not fixed
+			if ( 'fixed' === $layout ) {
+				$thumbnail_width = intval( foogallery_gallery_template_setting( 'thumbnail_width', 250 ) );
+				$gutter_width = intval( foogallery_gallery_template_setting( 'gutter_width', 10 ) );
+				$css[] = '#' . $id . '.fg-masonry .fg-item { width: ' . $thumbnail_width . 'px; margin-right: ' . $gutter_width . 'px; margin-bottom: ' . $gutter_width . 'px; }';
+			} else {
+
+				$gutter_width = intval( foogallery_gallery_template_setting( 'gutter_width', 10 ) );
+				
+				$gutter_percent = foogallery_gallery_template_setting( 'gutter_percent', '' );
+				if ( 'fg-gutter-none' === $gutter_percent ) {
+					$gutter_width = 0;
+				} else if ( 'fg-gutter-large' === $gutter_percent ) {
+					$gutter_width = 20;
+				}
+				$css[] = '#' . $id . '.fg-masonry .fg-item { margin-right: ' . $gutter_width . 'px; margin-bottom: ' . $gutter_width . 'px; }';
+			}
+
+			return $css;
 		}
 	}
 }

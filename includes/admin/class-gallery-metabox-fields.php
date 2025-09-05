@@ -130,6 +130,14 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Fields' ) ) {
 					echo '<input class="small-text ' . $class . '" type="number" step="' . $step . '" min="' . $min .'" id="FooGallerySettings_' . $id . '" name="' . FOOGALLERY_META_SETTINGS . '[' . $id . ']" placeholder="' . $placeholder . '" value="' . esc_attr( $field['value'] ) . '" />';
 
 					break;
+					
+				case 'slider':
+					$min = isset($min) ? $min : 0;
+					$step = isset($step) ? $step : 1;
+					$mask = isset($mask) ? $mask : '{0}px';
+					echo '<range-input class="' . esc_attr( $class ) . '" step="' . esc_attr( $step ) . '" min="' . esc_attr( $min ) . '" max="' . esc_attr( $max ) . '" mask="' . esc_attr( $mask ) . '" id="FooGallerySettings_' . $id . '" name="' . FOOGALLERY_META_SETTINGS . '[' . $id . ']" value="' . esc_attr( $field['value'] ) . '" />';
+
+					break;
 
 				case 'checkboxlist':
 					$i = 0;

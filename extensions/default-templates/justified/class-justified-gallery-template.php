@@ -30,37 +30,7 @@ if ( ! class_exists( 'FooGallery_Justified_Gallery_Template' ) ) {
 			add_filter( 'foogallery_override_gallery_template_fields_defaults-justified', array( $this, 'field_defaults' ), 10, 1 );
 
 			// add a style block for the gallery based on the field settings.
-			add_action( 'foogallery_loaded_template_before', array( $this, 'add_style_block' ), 10, 1 );
-			// @formatter:on
-		}
-
-		/**
-		 * Add a style block based on the field settings
-		 *
-		 * @param $gallery FooGallery
-		 */
-		function add_style_block( $gallery ) {
-			if ( self::TEMPLATE_ID !== $gallery->gallery_template ) {
-				return;
-			}
-
-			$id         = $gallery->container_id();
-			$margins    = intval( foogallery_gallery_template_setting( 'margins', 2 ) );
-			$row_height = intval( foogallery_gallery_template_setting( 'row_height', 250 ) );
-
-			// @formatter:off
-			?>
-			<style>
-                #<?php echo $id; ?>.fg-justified .fg-item {
-                    margin-right: <?php echo $margins; ?>px;
-                    margin-bottom: <?php echo $margins; ?>px;
-                }
-
-                #<?php echo $id; ?>.fg-justified .fg-image {
-                    height: <?php echo $row_height; ?>px;
-                }
-			</style>
-			<?php
+			add_action( 'foogallery_template_style_block-justified', array( $this, 'add_css' ), 10, 2 );
 			// @formatter:on
 		}
 
@@ -346,6 +316,22 @@ if ( ! class_exists( 'FooGallery_Justified_Gallery_Template' ) ) {
 				'captions_limit_length' => 'clamp',
 				'caption_title_clamp' => '1'
 			) );
+		}
+
+		/**
+		 * Add css to the page for the gallery
+		 *
+		 * @param $gallery FooGallery
+		 */
+		function add_css( $css, $gallery ) {
+
+			$id         = $gallery->container_id();
+			$margins    = intval( foogallery_gallery_template_setting( 'margins', 2 ) );
+			$row_height = intval( foogallery_gallery_template_setting( 'row_height', 250 ) );
+			$css[] = '#' . $id . '.fg-justified .fg-item { margin-right: ' . $margins . 'px; margin-bottom: ' . $margins . 'px; }';
+			$css[] = '#' . $id . '.fg-justified .fg-image { height: ' . $row_height . 'px; }';
+
+			return $css;
 		}
 	}
 }

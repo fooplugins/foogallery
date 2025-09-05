@@ -32,14 +32,14 @@ if ( !class_exists( 'FooGallery_Simple_Portfolio_Gallery_Template' ) ) {
 
 			add_filter( 'foogallery_build_class_attribute', array( $this, 'override_class_attributes' ), 99, 2 );
 
-			//add a style block for the gallery based on the field settings for gutter, align and columnWidth
-			add_action( 'foogallery_loaded_template_before', array( $this, 'add_style_block' ), 10, 1 );
-
 			//remove preset choices from simple portfolio
             add_filter( 'foogallery_override_gallery_template_fields-simple_portfolio', array( $this, 'remove_preset_choices_for_simple_portfolio' ), 10, 2 );
 
 			// Adjust the default settings for this layout
 			add_filter( 'foogallery_override_gallery_template_fields_defaults-simple_portfolio', array( $this, 'field_defaults' ), 10, 1 );
+
+			// add a style block for the gallery based on the field settings.
+			add_action( 'foogallery_template_style_block-simple_portfolio', array( $this, 'add_css' ), 10, 2 );
         }
 
 		/**
@@ -122,14 +122,14 @@ if ( !class_exists( 'FooGallery_Simple_Portfolio_Gallery_Template' ) ) {
                     ),
                     array(
                         'id'      => 'gutter',
-                        'title'   => __( 'Gutter', 'foogallery' ),
-                        'desc'    => __( 'The spacing between each thumbnail in the gallery.', 'foogallery' ),
+                        'title'   => __( 'Thumbnail Gap', 'foogallery' ),
+                        'desc'    => __( 'The spacing or gap between each thumbnail in the gallery.', 'foogallery' ),
 						'section' => __( 'General', 'foogallery' ),
-                        'type'    => 'number',
-                        'class'   => 'small-text',
+                        'type'    => 'slider',
                         'default' => 5,
-                        'step'    => '1',
-                        'min'     => '0',
+                        'step'    => 1,
+                        'min'     => 0,
+                        'max'     => 100,
 						'row_data'=> array(
 							'data-foogallery-change-selector' => 'input',
 							'data-foogallery-value-selector' => 'input',
@@ -351,16 +351,11 @@ if ( !class_exists( 'FooGallery_Simple_Portfolio_Gallery_Template' ) ) {
 		}
 
 		/**
-		 * Add a style block based on the field settings
+		 * Add css to the page for the gallery
 		 *
 		 * @param $gallery FooGallery
 		 */
-		function add_style_block( $gallery ) {
-			//check if the template is a "Simple Portfolio" clone
-			if ( !$this->is_simple_portfolio_gallery_template( $gallery ) ) {
-				return;
-			}
-
+		function add_css( $css, $gallery ) {
 			$id = $gallery->container_id();
 			$gutter = intval( foogallery_gallery_template_setting( 'gutter', 5 ) );
 			$alignment = foogallery_gallery_template_setting( 'align', 'center' );
@@ -374,17 +369,9 @@ if ( !class_exists( 'FooGallery_Simple_Portfolio_Gallery_Template' ) ) {
 			if ( array_key_exists( 'width', $thumbnail_dimensions ) ) {
 				$thumb_width = intval( $thumbnail_dimensions['width'] );
 			}
-			?>
-			<style>
-                #<?php echo $id; ?>.fg-simple_portfolio {
-                    justify-content: <?php echo $alignment; ?>;
-                }
-                #<?php echo $id; ?>.fg-simple_portfolio .fg-item {
-                    flex-basis: <?php echo $thumb_width; ?>px;
-                    margin: <?php echo $gutter; ?>px;
-                }
-			</style>
-			<?php
+			$css[] = '#' . $id . '.fg-simple_portfolio { justify-content: ' . $alignment . '; }';
+			$css[] = '#' . $id . '.fg-simple_portfolio .fg-item { flex-basis: ' . $thumb_width . 'px; margin: ' . $gutter . 'px; }';
+			return $css;
 		}
 
 		/**

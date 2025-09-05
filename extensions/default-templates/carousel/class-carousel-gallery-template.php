@@ -32,8 +32,8 @@ if ( ! class_exists( 'FooGallery_Carousel_Gallery_Template' ) ) {
 			// Adjust the default settings for this layout
 			add_filter( 'foogallery_override_gallery_template_fields_defaults-carousel', array( $this, 'field_defaults' ), 10, 1 );
 
-			// add a style block for the gallery based on the thumbnail width.
-			add_action( 'foogallery_loaded_template_before', array( $this, 'add_width_style_block' ), 10, 1 );
+			// add a style block for the gallery
+			add_action( 'foogallery_template_style_block-carousel', array( $this, 'add_css' ), 10, 2 );
 			// @formatter:on
 		}
 
@@ -175,6 +175,18 @@ if ( ! class_exists( 'FooGallery_Carousel_Gallery_Template' ) ) {
 						)
 					),
 					array(
+						'id'       => 'gutter',
+						'title'    => __( 'Thumbnail Gap', 'foogallery' ),
+						'desc'     => __( 'The minimum gap or spacing to apply to thumbnails. Negative values create an overlap. ', 'foogallery' ),
+						'section'  => __( 'General', 'foogallery' ),
+						'default'  => array( 'min' => -40, 'max' => -20, 'units' => '%' ),
+						'type'     => 'carousel_gutter',
+						'row_data' => array(
+							'data-foogallery-change-selector' => ':input',
+							'data-foogallery-preview'         => 'shortcode'
+						)
+					),
+					array(
 						'id'       => 'maxItems',
 						'title'    => __( 'Max Items To Show', 'foogallery' ),
 						'desc'     => __( 'The total number of items displayed in the carousel. This should be an ODD number as the active item is the center and the remainder make up each side.', 'foogallery' ),
@@ -202,18 +214,6 @@ if ( ! class_exists( 'FooGallery_Carousel_Gallery_Template' ) ) {
 						),
 						'row_data' => array(
 							'data-foogallery-change-selector' => 'select',
-							'data-foogallery-preview'         => 'shortcode'
-						)
-					),
-					array(
-						'id'       => 'gutter',
-						'title'    => __( 'Gutters', 'foogallery' ),
-						'desc'     => __( 'The minimum gutter to apply to items. Negative values create an overlap. ', 'foogallery' ),
-						'section'  => __( 'General', 'foogallery' ),
-						'default'  => array( 'min' => -40, 'max' => -20, 'units' => '%' ),
-						'type'     => 'carousel_gutter',
-						'row_data' => array(
-							'data-foogallery-change-selector' => ':input',
 							'data-foogallery-preview'         => 'shortcode'
 						)
 					),
@@ -418,30 +418,20 @@ if ( ! class_exists( 'FooGallery_Carousel_Gallery_Template' ) ) {
 		}
 
 		/**
-		 * Add a style block based on the width thumbnail size
+		 * Add css to the page for the gallery
 		 *
 		 * @param $gallery FooGallery
 		 */
-		function add_width_style_block( $gallery ) {
-			if ( self::TEMPLATE_ID !== $gallery->gallery_template ) {
-				return;
-			}
+		function add_css( $css, $gallery ) {
 
 			$id         = $gallery->container_id();
 			$dimensions = foogallery_gallery_template_setting('thumbnail_dimensions');
 			if ( is_array( $dimensions ) && array_key_exists( 'width', $dimensions ) && intval( $dimensions['width'] ) > 0 ) {
-				$width      = intval( $dimensions['width'] );
-
-				// @formatter:off
-				?>
-<style type="text/css">
-	<?php echo '#' . $id; ?> .fg-image {
-        width: <?php echo $width; ?>px;
-    }
-</style>
-				<?php
-				// @formatter:on
+				$width = intval( $dimensions['width'] );
+				$css[] = '#' . $id . ' .fg-image { width: ' . $width . 'px; }';
 			}
+
+			return $css;
 		}
 	}
 }

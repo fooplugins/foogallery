@@ -26,8 +26,8 @@ if ( ! class_exists( 'FooGallery_Default_Gallery_Template' ) ) {
 			//build up the arguments needed for rendering this template
 			add_filter( 'foogallery_gallery_template_arguments-default', array( $this, 'build_gallery_template_arguments' ) );
 
-			// add a style block for the gallery based on the thumbnail width.
-			add_action( 'foogallery_loaded_template_before', array( $this, 'add_width_style_block' ), 10, 1 );
+			// add a style block for the gallery
+			add_action( 'foogallery_template_style_block-default', array( $this, 'add_css' ), 10, 2 );
 
 			// set defaults for the gallery
 			add_filter( 'foogallery_override_gallery_template_fields-default', array( $this, 'set_default_fields' ), 10, 2 );
@@ -35,30 +35,25 @@ if ( ! class_exists( 'FooGallery_Default_Gallery_Template' ) ) {
 		}
 
 		/**
-		 * Add a style block based on the width thumbnail size
+		 * Add css to the page for the gallery
 		 *
 		 * @param $gallery FooGallery
 		 */
-		function add_width_style_block( $gallery ) {
-			if ( self::TEMPLATE_ID !== $gallery->gallery_template ) {
-				return;
-			}
+		function add_css( $css, $gallery ) {
 
 			$id         = $gallery->container_id();
 			$dimensions = foogallery_gallery_template_setting('thumbnail_dimensions');
 			if ( is_array( $dimensions ) && array_key_exists( 'width', $dimensions ) && intval( $dimensions['width'] ) > 0 ) {
-				$width      = intval( $dimensions['width'] );
-
-				// @formatter:off
-				?>
-<style type="text/css">
-	<?php echo '#' . $id; ?> .fg-image {
-        width: <?php echo $width; ?>px;
-    }
-</style>
-				<?php
-				// @formatter:on
+				$width = intval( $dimensions['width'] );
+				$css[] = '#' . $id . ' .fg-image { width: ' . $width . 'px; }';
 			}
+
+			$spacing = foogallery_intval( foogallery_gallery_template_setting( 'spacing', '10' ) );
+			if ( $spacing > 0 ) {
+				$css[] = '#' . $id . ' { --fg-gutter: ' . $spacing . 'px; }';
+			}
+
+			return $css;
 		}
 
 		/**
@@ -148,19 +143,14 @@ if ( ! class_exists( 'FooGallery_Default_Gallery_Template' ) ) {
 					),
 					array(
 						'id'       => 'spacing',
-						'title'    => __( 'Spacing', 'foogallery' ),
+						'title'    => __( 'Thumbnail Gap', 'foogallery' ),
 						'desc'     => __( 'The spacing or gap between thumbnails in the gallery.', 'foogallery' ),
 						'section'  => __( 'General', 'foogallery' ),
-						'type'     => 'select',
-						'default'  => 'fg-gutter-10',
-						'choices'  => array(
-							'fg-gutter-0'  => __( 'none', 'foogallery' ),
-							'fg-gutter-5'  => __( '5 pixels', 'foogallery' ),
-							'fg-gutter-10' => __( '10 pixels', 'foogallery' ),
-							'fg-gutter-15' => __( '15 pixels', 'foogallery' ),
-							'fg-gutter-20' => __( '20 pixels', 'foogallery' ),
-							'fg-gutter-25' => __( '25 pixels', 'foogallery' ),
-						),
+						'type'     => 'slider',
+						'min'      => 0,
+						'max'      => 100,
+						'step'     => 1,
+						'default'  => '10',
 						'row_data' => array(
 							'data-foogallery-change-selector' => 'select',
 							'data-foogallery-preview'         => 'shortcode'

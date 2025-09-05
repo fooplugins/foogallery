@@ -63,37 +63,9 @@ if ( !class_exists( 'FooGallery_FooGrid_Gallery_Template' ) ) {
 
 			add_filter( 'foogallery_build_class_attribute', array( $this, 'append_classes' ), 10, 2 );
 
-			// add a style block for the gallery based on the thumbnail width.
-			//add_action( 'foogallery_loaded_template_before', array( $this, 'add_width_style_block' ), 10, 1 );
-			// TODO : test this!
+			// add a style block for the gallery
+			add_action( 'foogallery_template_style_block-foogridpro', array( $this, 'add_css' ), 10, 2 );
         }
-
-		/**
-		 * Add a style block based on the width thumbnail size
-		 *
-		 * @param $gallery FooGallery
-		 */
-		function add_width_style_block( $gallery ) {
-			if ( self::template_id !== $gallery->gallery_template ) {
-				return;
-			}
-
-			$id         = $gallery->container_id();
-			$dimensions = foogallery_gallery_template_setting('thumbnail_size');
-			if ( is_array( $dimensions ) && array_key_exists( 'width', $dimensions ) && intval( $dimensions['width'] ) > 0 ) {
-				$width      = intval( $dimensions['width'] );
-
-				// @formatter:off
-				?>
-<style type="text/css">
-	<?php echo '#' . $id; ?> .fg-image {
-        width: <?php echo $width; ?>px;
-    }
-</style>
-				<?php
-				// @formatter:on
-			}
-		}
 
 		/**
 		 * Alter a field
@@ -212,6 +184,21 @@ if ( !class_exists( 'FooGallery_FooGrid_Gallery_Template' ) ) {
 						'row_data'=> array(
 							'data-foogallery-change-selector' => 'input',
 							'data-foogallery-preview' => 'shortcode'
+						)
+					),
+					array(
+						'id'       => 'gutter',
+						'title'    => __( 'Gap', 'foogallery' ),
+						'desc'     => __( 'The spacing or gap between thumbnails in the gallery.', 'foogallery' ),
+						'section'  => __( 'General', 'foogallery' ),
+						'type'     => 'slider',
+						'min'      => 0,
+						'max'      => 100,
+						'step'     => 1,
+						'default'  => '10',
+						'row_data' => array(
+							'data-foogallery-change-selector' => 'select',
+							'data-foogallery-preview'         => 'shortcode'
 						)
 					),
 					array(
@@ -510,6 +497,28 @@ if ( !class_exists( 'FooGallery_FooGrid_Gallery_Template' ) ) {
 			}
 
 			return $classes;
+		}
+
+				/**
+		 * Add css to the page for the gallery
+		 *
+		 * @param $gallery FooGallery
+		 */
+		function add_css( $css, $gallery ) {
+
+			$id         = $gallery->container_id();
+			$dimensions = foogallery_gallery_template_setting('thumbnail_dimensions');
+			if ( is_array( $dimensions ) && array_key_exists( 'width', $dimensions ) && intval( $dimensions['width'] ) > 0 ) {
+				$width = intval( $dimensions['width'] );
+				$css[] = '#' . $id . ' .fg-image { width: ' . $width . 'px; }';
+			}
+
+			$gutter = foogallery_intval( foogallery_gallery_template_setting( 'gutter', '10' ) );
+			if ( $gutter > 0 ) {
+				$css[] = '#' . $id . ' { --fg-gutter: ' . $gutter . 'px; }';
+			}
+
+			return $css;
 		}
 	}
 }

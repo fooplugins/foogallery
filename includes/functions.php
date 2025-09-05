@@ -2426,3 +2426,25 @@ function foogallery_format_caption_text( $text ) {
 
 	return $text;
 }
+
+/**
+ * Safely convert a value to an int.
+ *
+ * @param $value
+ * @param int $default
+ *
+ * @return int
+ */
+function foogallery_intval( $value, $default = 0 ) {
+	// Already a plain number
+	if ( is_numeric( $value ) ) {
+		return (int) $value;
+	}
+
+	// Backwards compat: extract int
+	if ( preg_match( '/\d+$/', $value, $matches ) ) {
+		return (int) $matches[0];
+	}
+
+	return $default;
+}

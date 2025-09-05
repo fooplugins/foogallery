@@ -133,6 +133,7 @@ class FooGallery_Template_Loader {
 				//finally include the actual php template!
 				if ( $template_location ) {
 					do_action( 'foogallery_loaded_template_before', $current_foogallery );
+					$this->add_style_block( $current_foogallery, $current_foogallery_template );
 					$this->load_gallery_template( $current_foogallery, $template_location['path'] );
 					do_action( 'foogallery_loaded_template_after', $current_foogallery );
 				}
@@ -309,5 +310,26 @@ class FooGallery_Template_Loader {
 		}
 
 		return $args[ $key ];
+	}
+
+	/**
+	 * Add a style block just before the gallery based on the template
+	 *
+	 * @param $gallery FooGallery
+	 * @param $template string
+	 */
+	function add_style_block( $gallery, $template ) {
+		$css = array();
+		$css = apply_filters( "foogallery_template_style_block-{$template}", $css, $gallery );
+
+		if ( !empty( $css ) ) {
+			// @formatter:off
+			?>
+<style type="text/css">
+<?php echo implode( "\n", $css ); ?>
+</style>
+			<?php
+			// @formatter:on
+		}
 	}
 }
