@@ -224,7 +224,10 @@ FooGallery.autoEnabled = false;
 			foogallery_id = $('#post_ID').val();
 
         if ($shortcodeFields.length) {
-			data = $shortcodeFields.find(':input, range-input').serializeArray();
+			data = $shortcodeFields.find(':input').serializeArray();
+			$shortcodeFields.find('range-input:not(:disabled)').each(function() {
+				data.push({name: $(this).attr('name'), value: $(this).val()});
+			});
         }
 
         //clear any items just in case

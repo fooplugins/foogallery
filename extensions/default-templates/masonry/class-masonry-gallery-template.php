@@ -99,7 +99,7 @@ if ( !class_exists( 'FooGallery_Masonry_Gallery_Template' ) ) {
                 'fields'	  => array(
                     array(
                         'id'      => 'thumbnail_width',
-                        'title'   => __( 'Thumb Width', 'foogallery' ),
+                        'title'   => __( 'Thumbnail Width', 'foogallery' ),
                         'desc'    => __( 'Choose the width of your thumbnails. Thumbnails will be generated on the fly and cached once generated', 'foogallery' ),
                         'section' => __( 'General', 'foogallery' ),
                         'type'    => 'number',
@@ -141,6 +141,7 @@ if ( !class_exists( 'FooGallery_Masonry_Gallery_Template' ) ) {
                             'col3'   => __( '3 Columns', 'foogallery' ),
                             'col2'   => __( '2 Columns', 'foogallery' ),
                         ),
+						'class' => 'foogallery-radios-stacked',
                         'default' => 'fixed',
                         'row_data'=> array(
                             'data-foogallery-change-selector' => 'input:radio',
