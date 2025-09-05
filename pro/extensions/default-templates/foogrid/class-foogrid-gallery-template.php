@@ -188,7 +188,7 @@ if ( !class_exists( 'FooGallery_FooGrid_Gallery_Template' ) ) {
 					),
 					array(
 						'id'       => 'gutter',
-						'title'    => __( 'Gap', 'foogallery' ),
+						'title'    => __( 'Thumbnail Gap', 'foogallery' ),
 						'desc'     => __( 'The spacing or gap between thumbnails in the gallery.', 'foogallery' ),
 						'section'  => __( 'General', 'foogallery' ),
 						'type'     => 'slider',
@@ -197,7 +197,7 @@ if ( !class_exists( 'FooGallery_FooGrid_Gallery_Template' ) ) {
 						'step'     => 1,
 						'default'  => '10',
 						'row_data' => array(
-							'data-foogallery-change-selector' => 'select',
+							'data-foogallery-change-selector' => 'range-input',
 							'data-foogallery-preview'         => 'shortcode'
 						)
 					),

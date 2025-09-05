@@ -118,13 +118,12 @@ if ( !class_exists( 'FooGallery_Masonry_Gallery_Template' ) ) {
                         'desc'    => __( 'The spacing or gap between your thumbnails.', 'foogallery' ),
                         'section' => __( 'General', 'foogallery' ),
                         'type'    => 'slider',
-                        'min'     => '0',
-                        'max'     => '100',
-                        'step'    => '1',
+                        'min'     => 0,
+                        'max'     => 100,
+                        'step'    => 1,
                         'default' => 10,
                         'row_data'=> array(
-							'data-foogallery-change-selector' => 'input',
-							'data-foogallery-value-selector' => 'input',
+							'data-foogallery-change-selector' => 'range-input',
 							'data-foogallery-preview' => 'shortcode',
                         )
                     ),

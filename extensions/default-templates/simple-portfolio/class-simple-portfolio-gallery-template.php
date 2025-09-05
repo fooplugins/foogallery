@@ -131,8 +131,7 @@ if ( !class_exists( 'FooGallery_Simple_Portfolio_Gallery_Template' ) ) {
                         'min'     => 0,
                         'max'     => 100,
 						'row_data'=> array(
-							'data-foogallery-change-selector' => 'input',
-							'data-foogallery-value-selector' => 'input',
+							'data-foogallery-change-selector' => 'range-input',
 							'data-foogallery-preview' => 'shortcode',
 						)
                     ),

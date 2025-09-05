@@ -152,7 +152,7 @@ if ( ! class_exists( 'FooGallery_Default_Gallery_Template' ) ) {
 						'step'     => 1,
 						'default'  => '10',
 						'row_data' => array(
-							'data-foogallery-change-selector' => 'select',
+							'data-foogallery-change-selector' => 'range-input',
 							'data-foogallery-preview'         => 'shortcode'
 						)
 					),

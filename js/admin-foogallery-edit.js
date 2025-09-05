@@ -133,12 +133,12 @@ FooGallery.autoEnabled = false;
 		//hide all template fields
 		$settingsToHide.hide()
 			.removeClass('foogallery-settings-container-active')
-			.find(':input').attr('disabled', true);
+			.find(':input, range-input').attr('disabled', true);
 
 		//show all fields for the selected template only
 		$settingsToShow.show()
 			.addClass('foogallery-settings-container-active')
-			.find(':input').removeAttr('disabled');
+			.find(':input, range-input').removeAttr('disabled');
 
 		if (currentTab) {
 			currentTab = currentTab.replace( previousSelectedTemplate, selectedTemplate );
@@ -224,7 +224,7 @@ FooGallery.autoEnabled = false;
 			foogallery_id = $('#post_ID').val();
 
         if ($shortcodeFields.length) {
-			data = $shortcodeFields.find(' :input').serializeArray();
+			data = $shortcodeFields.find(':input, range-input').serializeArray();
         }
 
         //clear any items just in case
@@ -281,7 +281,7 @@ FooGallery.autoEnabled = false;
 		//hide any fields that need to be hidden initially
 		$('.foogallery-settings-container-active .foogallery_template_field[data-foogallery-hidden]').hide()
 			.addClass('foogallery_template_field_template_hidden')
-			.find(':input').attr('disabled', true);
+			.find(':input, range-input').attr('disabled', true);
 
 		$('.foogallery-settings-container-active .foogallery_template_field[data-foogallery-show-when-field]').each(function(index, item) {
 			var $item = $(item),
@@ -331,7 +331,7 @@ FooGallery.autoEnabled = false;
 			if (showField) {
 				$item.show()
 					.removeClass('foogallery_template_field_template_hidden')
-					.find(':input').removeAttr('disabled')
+					.find(':input, range-input').removeAttr('disabled')
 					.end().find('.colorpicker').spectrum("enable");
 			}
 		});
@@ -440,7 +440,7 @@ FooGallery.autoEnabled = false;
 			var $fieldContainer = $(item),
 				selector = $fieldContainer.data('foogallery-change-selector');
 
-            $fieldContainer.find(selector).change(function() {
+            $fieldContainer.find(selector).on('change', function() {
                 if ( $fieldContainer.data('foogallery-preview') && $fieldContainer.data('foogallery-preview').indexOf('shortcode') !== -1 ) {
                     FOOGALLERY.reloadGalleryPreview();
                 } else {
