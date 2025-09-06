@@ -64,6 +64,7 @@ if ( is_admin() ) {
 	require_once FOOGALLERY_PATH . 'includes/admin/class-columns.php';
 	require_once FOOGALLERY_PATH . 'includes/admin/class-attachment-fields.php';
 	require_once FOOGALLERY_PATH . 'includes/admin/class-admin-notices.php';
+	require_once FOOGALLERY_PATH . 'includes/admin/class-admin-notice-custom-css.php';
 	require_once FOOGALLERY_PATH . 'includes/admin/class-gallery-datasources.php';
 	require_once FOOGALLERY_PATH . 'includes/admin/class-pro-promotion.php';
 	require_once FOOGALLERY_PATH . 'includes/admin/class-demo-content.php';

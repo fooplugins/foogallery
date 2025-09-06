@@ -32,6 +32,7 @@ define( 'FOOGALLERY_OPTION_THUMB_TEST', 'foogallery-thumb-test' );
 define( 'FOOGALLERY_OPTION_CUSTOM_ASSETS', 'foogallery-custom-assets' );
 define( 'FOOGALLERY_OPTION_DEMO_CONTENT_ATTACHMENTS', 'foogallery_demo_content_attachments' );
 define( 'FOOGALLERY_OPTION_DEMO_CONTENT_GALLERIES', 'foogallery_demo_content_galleries' );
+define( 'FOOGALLERY_OPTION_CUSTOM_CSS', 'foogallery-custom-css-update' );
 
 define( 'FOOGALLERY_ADMIN_MENU_HELP_SLUG', 'foogallery-help' );
 define( 'FOOGALLERY_ADMIN_MENU_SETTINGS_SLUG', 'foogallery-settings' );

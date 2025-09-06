@@ -12,16 +12,10 @@ if ( ! class_exists( 'FooGallery_Admin_Notices' ) ) {
 			add_action( 'admin_notices', array( $this, 'display_rating_notice' ) );
 
 			add_action( 'foogallery_thumbnail_generation_test', array( $this, 'save_test_results' ) );
-			add_action( 'wp_ajax_foogallery_admin_rating_notice_dismiss', array(
-				$this,
-				'admin_rating_notice_dismiss',
-			) );
+			add_action( 'wp_ajax_foogallery_admin_rating_notice_dismiss', array( $this, 'admin_rating_notice_dismiss' ) );
 
 			add_action( 'admin_notices', array( $this, 'display_foobar_notice' ) );
-			add_action( 'wp_ajax_foogallery_admin_foobar_notice_dismiss', array(
-				$this,
-				'admin_foobar_notice_dismiss',
-			) );
+			add_action( 'wp_ajax_foogallery_admin_foobar_notice_dismiss', array( $this, 'admin_foobar_notice_dismiss' ) );
 		}
 
 		function should_run_tests() {
