@@ -420,6 +420,80 @@ return array(
 			),
 		),
 	), //Demo : Simple Portfolio : Variation
+	array(
+		'key'         => 'thumbnail',
+		'post_title'  => 'Demo : Single Thumbnail',
+		'post_status' => 'publish',
+		'post_type'   => FOOGALLERY_CPT_GALLERY,
+		'items'       => array( 'demo9', 'demo4', 'demo3', 'demo2', 'demo1', 'demo5', 'demo6', 'demo7', 'demo8', 'demo9', 'demo10' ),
+		'meta_input'  => array(
+			FOOGALLERY_META_TEMPLATE => 'thumbnail',
+			FOOGALLERY_META_SETTINGS => array(
+				'foogallery_items_view'         => 'preview',
+
+				//General
+				'thumbnail_thumbnail_dimensions'  => array(
+					'width'  => '350',
+					'height' => '250',
+				),
+				'thumbnail_layout'                => 'fixed',
+				'thumbnail_thumbnail_link'        => 'image',
+				'thumbnail_lightbox'              => 'foogallery',
+				'thumbnail_align'                 => 'fg-center',
+				'thumbnail_gutter_width'          => '10',
+
+				//Appearance
+				'thumbnail_theme'                 => 'fg-light',              // options : 'fg-light', 'fg-dark', 'fg-custom'
+				'thumbnail_border_size'           => 'fg-border-medium',      // options : '', 'fg-border-thin', 'fg-border-medium', 'fg-border-thick'
+				'thumbnail_rounded_corners'       => 'fg-round-small',        // options : '', 'fg-round-small', 'fg-round-medium', 'fg-round-large', 'fg-round-full'
+				'thumbnail_drop_shadow'           => 'fg-shadow-outline',     // options : '', 'fg-shadow-outline', 'fg-shadow-small', 'fg-shadow-medium', 'fg-shadow-large'
+				'thumbnail_inner_shadow'          => 'fg-shadow-inset-medium',// options : '', 'fg-shadow-inset-small', 'fg-shadow-inset-medium', 'fg-shadow-inset-large'
+				'thumbnail_loading_icon'          => 'fg-loading-default',    // options : '', 'fg-loading-default', 'fg-loading-bars', 'fg-loading-dots', 'fg-loading-partial', 'fg-loading-pulse', 'fg-loading-trail',
+
+				'thumbnail_loaded_effect'         => 'fg-loaded-fade-in',     // options : 'fg-loaded-fade-in', 'fg-loaded-scale-up'
+				'thumbnail_instagram'             => '',
+
+				//Captions
+				'thumbnail_captions_type'         => '',
+				'thumbnail_caption_title_source'  => '',
+				'thumbnail_caption_desc_source'   => '',
+				'thumbnail_captions_limit_length' => 'clamp',
+				'thumbnail_caption_title_clamp'   => '1',
+				'thumbnail_caption_desc_clamp'    => '2',
+				'thumbnail_caption_alignment'     => 'fg-c-c',
+				'thumbnail_caption_title'         => '{{gallery-title}}',
+				'thumbnail_caption_description'   => '{{gallery-count}} Images',
+				
+
+				//Hover Effects
+				'thumbnail_hover_effect_caption_visibility' => 'fg-caption-always', // options : '', 'fg-caption-hover', 'fg-caption-always', 'fg-captions-bottom'
+				'thumbnail_hover_effect_color'              => '',                   // options : '', 'fg-hover-colorize', 'fg-hover-grayscale
+				'thumbnail_hover_effect_icon'               => 'fg-hover-zoom4',      // options : 'fg-hover-zoom', 'fg-hover-zoom2', 'fg-hover-zoom3', 'fg-hover-plus', 'fg-hover-circle-plus', 'fg-hover-eye', 'fg-hover-external'
+				'thumbnail_hover_effect_preset'             => '',
+				'thumbnail_hover_effect_scale'              => 'fg-hover-semi-zoomed',    // options : '', 'fg-hover-scale', 'fg-hover-zoomed'
+				'thumbnail_hover_effect_transition'         => 'fg-hover-fade',      // options : 'fg-hover-instant', 'fg-hover-fade', 'fg-hover-slide-up', 'fg-hover-slide-down', 'fg-hover-slide-left', 'fg-hover-slide-right', 'fg-hover-push'
+				'thumbnail_hover_effect_type'               => 'normal',             // options : 'none', 'normal', 'preset'
+				'thumbnail_caption_invert_color'            => '',                   // options : '', 'fg-light-overlays', 'fg-transparent-overlays'
+
+				//Filtering
+				'thumbnail_filtering_type' => '',
+
+				//Paging
+				'thumbnail_paging_type' => '',
+
+				//Advanced
+				'thumbnail_state' => 'no',
+				'thumbnail_custom_settings' => '',
+				'thumbnail_lazyload' => '',
+
+				//Video
+				'thumbnail_video_autoplay'    => 'yes',
+				'thumbnail_video_hover_icon'  => 'fg-video-default',
+				'thumbnail_video_size'        => '640x360',
+				'thumbnail_video_sticky_icon' => '',
+			),
+		),
+	), //Demo : Single Thumbnail
     array(
         'key'         => 'carousel',
         'post_title'  => 'Demo : Carousel',
