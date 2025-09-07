@@ -116,7 +116,8 @@ if ( !class_exists( 'FooGallery_Thumbnail_Gallery_Template' ) ) {
                         'type'	  => 'html',
                         'section' => __( 'General', 'foogallery' ),
                         'help'	  => true,
-                        'desc'	  => __( 'This gallery template only shows a single thumbnail, but the true power shines through when the thumbnail is clicked, because then the lightbox takes over and the user can view all the images in the gallery.', 'foogallery' ),
+						'title'   => __( 'Single Thumbnail Layout', 'foogallery' ),
+                        'desc'	  => __( 'This gallery layout only shows a single thumbnail, but the true power shines through when the thumbnail is clicked, because then the lightbox takes over and the user can view all the images in the gallery.', 'foogallery' ),
                     ),
                     array(
                         'id'      => 'thumbnail_dimensions',
@@ -154,14 +155,14 @@ if ( !class_exists( 'FooGallery_Thumbnail_Gallery_Template' ) ) {
                     ),
 					array(
                         'id'      => 'show_as_stack',
-                        'title'   => __( 'Show As Pile', 'foogallery' ),
+                        'title'   => __( 'Stacked Effect', 'foogallery' ),
                         'section' => __( 'General', 'foogallery' ),
-                        'default' => '',
+                        'default' => 'fg-stacked',
                         'type'    => 'radio',
-                        'desc'	  => __( 'Show the thumbnails as a pile or stack of images.', 'foogallery' ),
+                        'desc'	  => __( 'Show the thumbnails as a stack or pile of images.', 'foogallery' ),
                         'choices' => array(
-                            '' => __( 'No', 'foogallery' ),
-                            'fg-stacked' => __( 'Show Pile', 'foogallery' )
+                            '' => __( 'None', 'foogallery' ),
+                            'fg-stacked' => __( 'Stacked', 'foogallery' )
                         ),
                         'row_data'=> array(
 	                        'data-foogallery-change-selector' => 'input',
@@ -250,8 +251,6 @@ if ( !class_exists( 'FooGallery_Thumbnail_Gallery_Template' ) ) {
 				)
 			);
 
-
-
 			$field_index = foogallery_admin_fields_find_index_of_field( $fields, 'caption_alignment' );
 
 			array_splice( $fields, $field_index + 1, 0, $new_fields );
@@ -311,7 +310,7 @@ if ( !class_exists( 'FooGallery_Thumbnail_Gallery_Template' ) ) {
 				'hover_effect_caption_visibility' => 'fg-caption-always',
 				'caption_visibility_no_hover_effect' => 'fg-caption-always',
 				'border_size' => 'fg-border-medium',
-				'drop_shadow' => 'fg-shadow-outline',
+				'drop_shadow' => 'fg-shadow-small',
 				'rounded_corners' => 'fg-round-small',
 				'inner_shadow' => 'fg-shadow-inset-medium',
 				'hover_effect_type' => 'normal',
@@ -319,6 +318,9 @@ if ( !class_exists( 'FooGallery_Thumbnail_Gallery_Template' ) ) {
 				'hover_effect_icon' => 'fg-hover-zoom4',
 				'caption_title' => '{{gallery-title}}',
 				'caption_description' => '{{gallery-count}} Images',
+				'caption_alignment' => 'fg-c-c',
+				'show_as_stack' => 'fg-stacked',
+				'loaded_effect' => ''
 			) );
 		}
 	}
