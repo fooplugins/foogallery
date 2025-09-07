@@ -279,6 +279,8 @@ if ( !class_exists( 'Foo_Plugin_Settings_v2_2' ) ) {
 
 			$options = get_option( $this->plugin_slug );
 
+			$has_options = $options !== false;
+
 			if ( function_exists( 'is_multisite' ) && is_multisite() ) {
 				// If we are in the network settings, use site options directly.
 				if ( is_network_admin() ) {
@@ -294,8 +296,6 @@ if ( !class_exists( 'Foo_Plugin_Settings_v2_2' ) ) {
             if ( $options === '' ) {
                 $options = array();
             }
-
-			$has_options = $options !== false;
 
 			if ( !isset( $options[$id]) && $type != 'checkbox' ) {
 				$options[$id] = $default;

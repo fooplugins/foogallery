@@ -111,6 +111,8 @@ if ( function_exists( 'foogallery_fs' ) ) {
 				// init FooPluginBase.
 				$this->init( FOOGALLERY_FILE, FOOGALLERY_SLUG, FOOGALLERY_VERSION, 'FooGallery' );
 
+				add_filter( 'foogallery_default_options', 'foogallery_get_default_options' );
+
 				// load text domain.
 				add_action( 'init', array( $this, 'load_plugin_textdomain' ) );
 

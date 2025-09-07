@@ -137,7 +137,13 @@ function foogallery_gallery_shortcode_tag() {
  * @return string Key value on success, false on failure.
  */
 function foogallery_get_default( $key, $default = false ) {
+	$defaults = foogallery_get_default_options();
 
+	// Return the key specified.
+	return isset( $defaults[ $key ] ) ? $defaults[ $key ] : $default;
+}
+
+function foogallery_get_default_options() {
 	$defaults = array(
 		'gallery_template'           => 'default',
 		'gallery_permalinks_enabled' => false,
@@ -146,14 +152,15 @@ function foogallery_get_default( $key, $default = false ) {
 		'thumb_jpeg_quality'         => '90',
 		'gallery_sorting'            => '',
 		'datasource'                 => 'media_library',
-        'advanced_attachment_modal'  => 'on'
+        'advanced_attachment_modal'  => 'on',
+		'hide_editor_button'         => 'on',
+		'enable_custom_ready'        => 'on'
 	);
 
 	// A handy filter to override the defaults.
 	$defaults = apply_filters( 'foogallery_defaults', $defaults );
 
-	// Return the key specified.
-	return isset( $defaults[ $key ] ) ? $defaults[ $key ] : $default;
+	return $defaults;
 }
 
 /**
