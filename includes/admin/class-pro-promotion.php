@@ -820,8 +820,8 @@ if ( ! class_exists( 'FooGallery_Pro_Promotion' ) ) {
 				'fields'	  => array(
 					array(
 						'id'      => 'polaroid_promo',
-						'title'   => __( 'Polaroid PRO Gallery Template', 'foogallery' ),
-						'desc'    => __( 'Available in all PRO plans, the Polaroid PRO gallery template is a fun take on the simple portfolio gallery. Image thumbnails are framed as Polaroid photos which are staggered on the page.', 'foogallery' ) . '<br />' .
+						'title'   => __( 'Polaroid PRO Gallery Layout', 'foogallery' ),
+						'desc'    => __( 'Available in all PRO plans, the Polaroid PRO gallery layout is a fun take on the simple portfolio gallery. Image thumbnails are framed as Polaroid photos which are staggered on the page.', 'foogallery' ) . '<br />' .
 						             '<img src="https://assets.fooplugins.com/foogallery/foogallery-polaroid-gallery.jpg" />' .
 						             '<br /><br />' . $this->build_promo_trial_html( 'polaroid', __( 'PRO Starter', 'foogallery' )  ) . '<br /><br />',
 						'section' => __( 'General', 'foogallery' ),
@@ -858,8 +858,8 @@ if ( ! class_exists( 'FooGallery_Pro_Promotion' ) ) {
 				'fields'	  => array(
 					array(
 						'id'      => 'grid_promo',
-						'title'   => __( 'Grid PRO Gallery Template', 'foogallery' ),
-						'desc'    => __( 'Available in all PRO plans, the Grid PRO gallery template creates a stylish grid gallery that allows you to "preview" each image, similar to how Google Image Search works.', 'foogallery' ) . '<br /><br />' .
+						'title'   => __( 'Grid PRO Gallery Layout', 'foogallery' ),
+						'desc'    => __( 'Available in all PRO plans, the Grid PRO gallery layout creates a stylish grid gallery that allows you to "preview" each image, similar to how Google Image Search works.', 'foogallery' ) . '<br /><br />' .
 						             '<img src="https://assets.fooplugins.com/foogallery/foogallery-grid-gallery.jpg" />' .
 						             '<br /><br />' . $this->build_promo_trial_html( 'grid', __( 'PRO Starter', 'foogallery' )  ) . '<br /><br />',
 						'section' => __( 'General', 'foogallery' ),
@@ -892,8 +892,8 @@ if ( ! class_exists( 'FooGallery_Pro_Promotion' ) ) {
 				'fields'	  => array(
 					array(
 						'id'      => 'slider_promo',
-						'title'   => __( 'Slider PRO Gallery Template', 'foogallery' ),
-						'desc'    => __( 'Available in all PRO plans, the Slider PRO gallery template creates an amazing slider gallery in either a horizontal or a vertical layout.', 'foogallery' ) . '<br /><br />' .
+						'title'   => __( 'Slider PRO Gallery Layout', 'foogallery' ),
+						'desc'    => __( 'Available in all PRO plans, the Slider PRO gallery layout creates an amazing slider gallery in either a horizontal or a vertical layout.', 'foogallery' ) . '<br /><br />' .
 						             '<img src="https://assets.fooplugins.com/foogallery/foogallery-slider-gallery-vertical.jpg" /><br /><br />' .
 						             '<img src="https://assets.fooplugins.com/foogallery/foogallery-slider-gallery-horizontal.jpg" /><br /><br />' .
 						             $this->build_promo_trial_html( 'slider', __( 'PRO Starter', 'foogallery' ) ) . '<br /><br />',
@@ -1095,8 +1095,8 @@ if ( ! class_exists( 'FooGallery_Pro_Promotion' ) ) {
 				'fields'                => array(
 					array(
 						'id'            => 'product_promo',
-						'title'         => __( 'Product Gallery Template', 'foogallery' ),
-						'desc'          => __( 'Only available in the Commerce PRO plan, the Product Gallery template works out of the box with the WooCommerce Product Datasource, making it very easy for you to start selling your photographs online.', 'foogallery' ) .
+						'title'         => __( 'Product Gallery Layout', 'foogallery' ),
+						'desc'          => __( 'Only available in the Commerce PRO plan, the Product Gallery layout works out of the box with the WooCommerce Product Datasource, making it very easy for you to start selling your photographs online.', 'foogallery' ) .
 						                   '<br />' . '<img src="https://assets.fooplugins.com/foogallery/foogallery-product-gallery.png" />' .
 						                   '<br /><br />' . $this->build_promo_trial_html( 'product-gallery', __( 'PRO Commerce', 'foogallery' ) ) . '<br /><br />',
 						'section'       => __( 'General', 'foogallery' ),
