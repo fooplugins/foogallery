@@ -71,7 +71,7 @@ if ( !class_exists( 'FooGallery_Image_Viewer_Gallery_Template' ) ) {
 		 */
 		function add_template( $gallery_templates ) {
 
-			$gallery_templates[] = array(
+			$gallery_templates[self::TEMPLATE_ID] = array(
 				'slug'        => self::TEMPLATE_ID,
 				'name'        => __( 'Image Viewer', 'foogallery' ),
 				'preview_support' => true,

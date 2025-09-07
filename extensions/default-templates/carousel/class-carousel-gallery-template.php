@@ -133,7 +133,7 @@ if ( ! class_exists( 'FooGallery_Carousel_Gallery_Template' ) ) {
 		 * @return array
 		 */
 		function add_template( $gallery_templates ) {
-			$gallery_templates[] = array(
+			$gallery_templates[self::TEMPLATE_ID] = array(
 				'slug'                  => self::TEMPLATE_ID,
 				'name'                  => __( 'Carousel', 'foogallery' ),
 				'preview_support'       => true,

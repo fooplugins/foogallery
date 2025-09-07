@@ -91,8 +91,8 @@ if ( !class_exists( 'FooGallery_Thumbnail_Gallery_Template' ) ) {
 		 * @return array
 		 */
 		function add_template( $gallery_templates ) {
-			$gallery_templates[] = array(
-                'slug'        => 'thumbnail',
+			$gallery_templates[self::template_id] = array(
+                'slug'        => self::template_id,
                 'name'        => __( 'Single Thumbnail', 'foogallery' ),
 				'preview_support' => true,
 				'common_fields_support' => true,
@@ -200,6 +200,7 @@ if ( !class_exists( 'FooGallery_Thumbnail_Gallery_Template' ) ) {
 
 			$new_fields[] = array(
 				'id'      => 'caption_override_help',
+				'title'   => __( 'Caption Override Help', 'foogallery' ),
 				'desc'    => __( 'You can include dynamic placeholders in the override title and description, eg. <code>{{gallery-count}}</code> and <code>{{gallery-title}}</code>.', 'foogallery' ),
 				'section' => __( 'Captions', 'foogallery' ),
 				'type'    => 'help'
@@ -230,7 +231,7 @@ if ( !class_exists( 'FooGallery_Thumbnail_Gallery_Template' ) ) {
 
 
 
-			$field_index = foogallery_admin_fields_find_index_of_field( $fields, 'captions_help' );
+			$field_index = foogallery_admin_fields_find_index_of_field( $fields, 'caption_alignment' );
 
 			array_splice( $fields, $field_index + 1, 0, $new_fields );
 

@@ -55,7 +55,7 @@ if ( ! class_exists( 'FooGallery_Justified_Gallery_Template' ) ) {
 		 * @return array
 		 */
 		public function add_template( $gallery_templates ) {
-			$gallery_templates[] = array(
+			$gallery_templates[self::TEMPLATE_ID] = array(
 				'slug'                  => self::TEMPLATE_ID,
 				'name'                  => __( 'Justified', 'foogallery' ),
 				'preview_support'       => true,

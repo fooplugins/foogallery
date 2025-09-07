@@ -78,7 +78,7 @@ if ( !class_exists( 'FooGallery_Product_Gallery_Template' ) ) {
 		 * @return array
 		 */
 		function add_template( $gallery_templates ) {
-			$gallery_templates[] = array(
+			$gallery_templates[self::template_id] = array(
                 'slug'        => self::template_id,
                 'name'        => __( 'Product Gallery', 'foogallery' ),
 				'preview_support' => true,

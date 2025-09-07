@@ -3,6 +3,10 @@
 if ( !class_exists( 'FooGallery_Slider_Gallery_Template' ) ) {
 
 	class FooGallery_Slider_Gallery_Template {
+
+
+		const template_id = 'slider';
+
 		/**
 		 * Wire up everything we need to run the extension
 		 */
@@ -42,7 +46,7 @@ if ( !class_exists( 'FooGallery_Slider_Gallery_Template' ) ) {
 			global $current_foogallery_arguments;
 			global $current_foogallery_template;
 
-			if ( isset( $current_foogallery ) && isset( $current_foogallery_template ) && $current_foogallery_template === 'slider' ) {
+			if ( isset( $current_foogallery ) && isset( $current_foogallery_template ) && $current_foogallery_template === self::template_id ) {
 				return 'override';
 			}
 
@@ -57,7 +61,7 @@ if ( !class_exists( 'FooGallery_Slider_Gallery_Template' ) ) {
 		 * @return string
 		 */
 		function add_section_icons( $section_slug ) {
-			if ( 'slider' === $section_slug ) {
+			if ( self::template_id === $section_slug ) {
 				return 'dashicons-align-left';
 			}
 
@@ -72,8 +76,8 @@ if ( !class_exists( 'FooGallery_Slider_Gallery_Template' ) ) {
 		 */
 		function add_template( $gallery_templates ) {
 
-			$gallery_templates[] = array(
-				'slug'        => 'slider',
+			$gallery_templates[self::template_id] = array(
+				'slug'        => self::template_id,
 				'name'        => __( 'Slider PRO', 'foogallery'),
 				'preview_support' => true,
 				'common_fields_support' => true,
@@ -397,7 +401,7 @@ if ( !class_exists( 'FooGallery_Slider_Gallery_Template' ) ) {
 		 * @return array
 		 */
 		function adjust_classes( $classes, $gallery ) {
-			if ( 'slider' === $gallery->gallery_template ) {
+			if ( self::template_id === $gallery->gallery_template ) {
 
 				//remove unneeded classes
 				if ( ( $key = array_search( 'slider', $classes ) ) !== false ) {

@@ -145,7 +145,7 @@ if ( !class_exists( 'FooGallery_FooGrid_Gallery_Template' ) ) {
 		 */
 		function add_template( $gallery_templates ) {
 
-			$gallery_templates[] = array(
+			$gallery_templates[self::template_id] = array(
 				'slug'        => self::template_id,
 				'name'        => __( 'Grid PRO', 'foogallery'),
                 'preview_support' => true,
