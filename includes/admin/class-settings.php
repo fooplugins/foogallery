@@ -194,6 +194,7 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 				'id'      => 'hide_editor_button',
 				'title'   => __( 'Hide Classic Editor Button', 'foogallery' ),
 				'desc'    => sprintf( __( 'If enabled, this will hide the "Add %s" button in the Classic editor.', 'foogallery' ), foogallery_plugin_name() ),
+				'default' => 'on',
 				'type'    => 'checkbox',
 				'tab'     => 'general',
 				'section' => __( 'Admin', 'foogallery' )
@@ -206,6 +207,16 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 				'type'    => 'checkbox',
 				'default' => 'on',
 				'tab'     => 'general',
+				'section' => __( 'Admin', 'foogallery' )
+			);
+
+			$settings[] = array(
+				'id'    => 'limit_gallery_selector_block_editor',
+				'type'  => 'text',
+				'title' => __( 'Limit Galleries (Block Editor)', 'foogallery' ),
+				'desc'  => __( 'Limit the number of galleries that are returned in the block editor when choosing a gallery.', 'foogallery' ),
+				'tab'   => 'general',
+				'class' => 'foogallery_settings_short_text',
 				'section' => __( 'Admin', 'foogallery' )
 			);
 
@@ -549,12 +560,11 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 			}
 
 			$settings[] = array(
-				'id'    => 'limit_gallery_selector_block_editor',
-				'type'  => 'text',
-				'title' => __( 'Limit Galleries (Block Editor)', 'foogallery' ),
-				'desc'  => __( 'Limit the number of galleries that are returned in the block editor when choosing a gallery.', 'foogallery' ),
-				'tab'   => 'advanced',
-				'class' => 'foogallery_settings_short_text'
+				'id'    => 'enable_trial_mode',
+				'title' => __( 'Enable Admin Trial Mode', 'foogallery' ),
+				'desc'  => __( 'Enables trial mode in the admin, which will highlight features that are only available in the Pro version.', 'foogallery' ),
+				'type'  => 'checkbox',
+				'tab'   => 'advanced'
 			);
 
 			//endregion Advanced Tab
