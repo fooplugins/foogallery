@@ -43,3 +43,16 @@ tr.foogallery_settings_radio td input[type="radio"] {
 tr.foogallery_settings_radio td input[type="radio"] + label {
 	vertical-align: text-top;
 }
+
+#foogallery-settings-main .nav-container {
+	padding: 10px;
+}
+
+#foogallery-settings-main .nav-container h3 {
+    padding: 5px 0;
+}
+
+#foogallery-settings-main .nav-container .form-table {
+	margin-top: 0;
+	margin-left: 5px;
+}
