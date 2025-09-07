@@ -37,6 +37,7 @@ if ( ! class_exists( 'FooGallery_Admin' ) ) {
 
 			// include PRO promotion.
 			new FooGallery_Pro_Promotion();
+			new FooGallery_Trial_Mode();
 		}
 
 		function init() {

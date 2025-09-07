@@ -72,6 +72,8 @@ if ( is_admin() ) {
 	// Admin gallery modal new
 	require_once FOOGALLERY_PATH . 'includes/admin/class-gallery-attachment-modal.php';
 
+	require_once FOOGALLERY_PATH . 'includes/admin/class-trial-mode.php';
+
 } else {
 	// Only front-end includes.
 	require_once FOOGALLERY_PATH . 'includes/public/class-public.php';
