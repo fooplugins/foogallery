@@ -561,7 +561,7 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 
 			$settings[] = array(
 				'id'    => 'enable_trial_mode',
-				'title' => __( 'Enable Admin Trial Mode', 'foogallery' ),
+				'title' => __( 'Admin Trial Mode', 'foogallery' ),
 				'desc'  => __( 'Enables trial mode in the admin, which will highlight features that are only available in the Pro version.', 'foogallery' ),
 				'type'  => 'checkbox',
 				'tab'   => 'advanced'

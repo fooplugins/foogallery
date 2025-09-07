@@ -28,6 +28,7 @@ $foogallery_single_thumbnail_attributes = foogallery_build_container_attributes_
 //  and the other will be the default hidden ones, so that they show up in the lightbox.
 $attachments_not_hidden = array();
 $attachments_hidden = array();
+$always_hide = false;
 
 foreach ( foogallery_current_gallery_attachments_for_rendering() as $attachment ) {
     // We can skip the featured attachment.
@@ -35,10 +36,15 @@ foreach ( foogallery_current_gallery_attachments_for_rendering() as $attachment 
         continue;
     }
 
-    if ( 'fg-stacked' === $show_as_stack ) {
+    if ( !$always_hide && 'fg-stacked' === $show_as_stack ) {
         $attachments_not_hidden[] = $attachment;
     } else {
         $attachments_hidden[] = $attachment;
+    }
+
+    // If only want to not hide 2 attachments, then set always_hide to true.
+    if ( count( $attachments_not_hidden ) >= 2 ) {
+        $always_hide = true;
     }
 }
 
