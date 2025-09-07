@@ -23,8 +23,8 @@ if ( ! class_exists( 'FooGallery_Admin_Notice_CustomCSS' ) ) {
             // ajax handler to dismiss the notice
 			add_action( 'wp_ajax_foogallery_admin_notice_dismiss-' . $this->notice_id, array( $this, 'dismiss_notice' ) );
             // clear the saved data if a gallery is saved, or settings are updated
-            add_action( 'foogallery_after_save_gallery', array( $this, 'clear_saved_data' ) );
-            add_action( 'update_option_foogallery', array( $this, 'after_settings_updated_clear_saved_data' ), 10, 3 );
+            add_action( 'foogallery_after_save_gallery', array( $this, 'determine_and_save_option' ) );
+            add_action( 'update_option_foogallery', array( $this, 'after_settings_updated' ), 10, 3 );
             // override the settings
             add_filter( 'foogallery_admin_settings_override', array( $this, 'override_settings' ) );
             //render the custom css settings
@@ -36,9 +36,9 @@ if ( ! class_exists( 'FooGallery_Admin_Notice_CustomCSS' ) ) {
          * Override the settings
          */
         function override_settings( $settings ) {
-            $option = get_option( $this->option_name );
+            $option = $this->get_option();
 
-            if ( is_array( $option ) && count( $option ) > 0 ) {
+            if ( count( $option['galleries'] ) > 0 || $option['setting'] ) {
 
                 $index = foogallery_admin_fields_find_index_of_field( $settings['settings'], 'custom_js' );
 
@@ -60,8 +60,8 @@ if ( ! class_exists( 'FooGallery_Admin_Notice_CustomCSS' ) ) {
 		 * Render any custom setting types to the settings page
 		 */
 		function render_settings( $args ) {
-			if ('custom_css_update' === $args['type'] ) { 
-                $option = get_option( $this->option_name );
+			if ( 'custom_css_update' === $args['type'] ) { 
+                $option = $this->get_option();
 
                 if ( is_array( $option ) && count( $option ) > 0 ) {
                     $galleries = $option['galleries'];
@@ -84,7 +84,10 @@ if ( ! class_exists( 'FooGallery_Admin_Notice_CustomCSS' ) ) {
             }
 		}
 
-        function after_settings_updated_clear_saved_data( $old_value, $value, $option ) {
+        /**
+         * Clear the saved data after settings are updated.
+         */
+        function after_settings_updated( $old_value, $value, $option ) {
             if ( !is_admin() ) {
 				return;
 			}
@@ -93,15 +96,7 @@ if ( ! class_exists( 'FooGallery_Admin_Notice_CustomCSS' ) ) {
 				return;
 			}
 
-            $this->clear_saved_data();
-        }
-
-        /**
-         * Clear the saved data if a gallery is saved. 
-         * This ensures that the notice is only shown if the user has custom CSS that meets the requirements.
-         */
-        function clear_saved_data() {
-            delete_option( $this->option_name );
+            $this->determine_and_save_option();
         }
 
         /**
@@ -136,46 +131,42 @@ if ( ! class_exists( 'FooGallery_Admin_Notice_CustomCSS' ) ) {
          * Display the inner HTML of the admin notice.
          */
         function display_notice_inner_html() {
-            $option = get_option( $this->option_name );
+            $option = $this->get_option();
             $url = foogallery_admin_settings_url() . '#custom_assets';
             $link = '<a href="'. $url . '">' . __( 'FooGallery Settings', 'foogallery' ) . '</a>';
-            if ( is_array( $option ) && count( $option ) > 0 ) { 
-            ?>
-            <h3><?php _e( 'FooGallery - Custom CSS Update Required', 'foogallery' ); ?></h3>
-            <?php
-                $galleries = $option['galleries'];
-                if ( count( $galleries ) > 0 ) {
-                    ?>
-                    <p><?php printf( __( 'We found outdated custom CSS in %s galleries that needs to be updated.', 'foogallery' ), count( $galleries ) ); ?></p>
-                    <?php
-                }
-                if ( $option['setting'] ) {
-                    ?>
-                    <p><?php printf( __( 'You have outdated custom CSS saved in settings that needs to be updated.', 'foogallery' ) ); ?></p>
-                    <?php
-                }
-            ?>
-            <p><?php printf( __( 'You will need to update your custom CSS! Visit %s to see what needs updating', 'foogallery' ), $link ); ?></p>
-            <?php
-            }
+            if ( is_array( $option ) && count( $option ) > 0 ) { ?>
+                <h3><?php _e( 'FooGallery - Custom CSS Update Required', 'foogallery' ); ?></h3>
+                <?php
+                    $galleries = $option['galleries'];
+                    if ( count( $galleries ) > 0 ) {
+                        ?>
+                        <p><?php printf( __( 'We found outdated custom CSS in %s galleries that needs to be updated.', 'foogallery' ), count( $galleries ) ); ?></p>
+                        <?php
+                    }
+                    if ( $option['setting'] ) {
+                        ?>
+                        <p><?php printf( __( 'You have outdated custom CSS saved in settings that needs to be updated.', 'foogallery' ) ); ?></p>
+                        <?php
+                    }
+                ?>
+                <p><?php printf( __( 'You will need to update your custom CSS! Visit %s to see what needs updating', 'foogallery' ), $link ); ?></p>
+            <?php }
         }
 
+        /**
+         * Determine if the notice should be shown.
+         */
         function should_show_notice() {
-			$option = get_option( $this->option_name );
+			$option = $this->get_option( true );
 
-			if ( $option === false ) {
-				// we have never checked CSS, so determine it.
-				$this->determine_and_save_option();
-				$option = get_option( $this->option_name );
-			}
-
-            if ( $option === false ) {
-                // It is still false for some reason, so rather be safe and not show.
+            if ( !is_array( $option ) ) {
                 return false;
-            } else if ( 'clear' === $option ) {
+            }
+
+            if ( count( $option['galleries'] ) === 0 && !$option['setting'] ) {
                 // we have previously checked and the results were clear.
 				return false;
-			} else if ( 'hide' === $option ) {
+			} else if ( $option['hide'] ) {
                 // the user has hidden the notice. Never show!
 				return false;
 			}
@@ -185,11 +176,49 @@ if ( ! class_exists( 'FooGallery_Admin_Notice_CustomCSS' ) ) {
 		}
 
         /**
+         * Get the option.
+         */
+        function get_option( $determine = false ) {
+            $option = get_option( $this->option_name );
+
+            // If false, then the option doesn't exist.
+            if ( $option === false ) {
+                if ( $determine ) {
+                    $this->determine_and_save_option();
+                    $option = get_option( $this->option_name );
+                }
+            }
+
+            if ( !is_array( $option ) ) {
+                // Malformed.
+                $option = array(
+                    'galleries' => array(),
+                    'setting' => false,
+                    'hide' => false
+                );
+            }
+
+            return $option;
+        }
+
+        /**
+         * Get the hidden state of the option.
+         */
+        function get_option_hidden() {
+            $option = get_option( $this->option_name );
+
+            return isset( $option['hide'] ) ? $option['hide'] : false;
+        }
+
+        /**
          * Ajax handler to dismiss the notice.
          */
         function dismiss_notice() {
             if ( check_admin_referer( 'foogallery_admin_notice_dismiss-' . $this->notice_id ) ) {
-                update_option( $this->option_name, 'hide', false );
+                // Just update the hide flag.
+                $option = $this->get_option();
+                $option['hide'] = true;
+                update_option( $this->option_name, $option, false );
             }
         }
 
@@ -197,13 +226,13 @@ if ( ! class_exists( 'FooGallery_Admin_Notice_CustomCSS' ) ) {
          * Determine and save the option.
          */ 
         function determine_and_save_option() {
-            
-            $galleries = foogallery_get_all_galleries();
-
-            $option = array(
+            $option = $option = array(
                 'galleries' => array(),
-                'setting' => false
+                'setting' => false,
+                'hide' => $this->get_option_hidden()
             );
+
+            $galleries = foogallery_get_all_galleries();
 
             $galleries_with_css = array();
             $custom_css_setting_contains = false;
@@ -226,13 +255,9 @@ if ( ! class_exists( 'FooGallery_Admin_Notice_CustomCSS' ) ) {
                 }
             }
 
-            if ( count( $galleries_with_css ) > 0  || $custom_css_setting_contains ) {
-                $option['galleries'] = $galleries_with_css;
-                $option['setting'] = $custom_css_setting_contains;
-                update_option( $this->option_name, $option, false );
-            } else {
-                update_option( $this->option_name, 'clear', false );
-            }
+            $option['galleries'] = $galleries_with_css;
+            $option['setting'] = $custom_css_setting_contains;
+            update_option( $this->option_name, $option, false );
         }
 
         /**
