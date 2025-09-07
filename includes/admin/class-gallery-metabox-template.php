@@ -51,11 +51,13 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Template' ) ) {
 					<?php foreach ( $gallery_templates as $template ) {
 						$selected_class = ( $current_gallery_template === $template['slug'] ) ? 'selected' : '';
 						$extra_class = $template['class'] ?? '';
+						$extra_html = $template['html'] ?? '';
 						?>
 						<div class="foogallery-template-card <?php echo $selected_class; ?> <?php echo $extra_class; ?>" 
 							data-template="<?php echo esc_attr( $template['slug'] ); ?>">
 							<?php echo $template['icon']; ?>
 							<h4><?php echo esc_html( $template['name'] ); ?></h4>
+							<?php echo $extra_html; ?>
 						</div>
 					<?php } ?>
 				</div>
