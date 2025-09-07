@@ -1,3 +1,22 @@
+:root {
+    --foogallery-color-wp-primary: #2271b1;
+	--foogallery-color-pro-starter: #1E8CBA;
+	--foogallery-color-pro-expert: #31be4d;
+	--foogallery-color-pro-commerce: #B0459D;
+
+	/* 50% transparent colors */
+	--foogallery-color-wp-primary-50: rgba(from var(--foogallery-color-wp-primary) R G B / 50%);
+	--foogallery-color-pro-starter-50: rgba(from var(--foogallery-color-pro-starter) R G B / 50%);
+	--foogallery-color-pro-expert-50: rgba(from var(--foogallery-color-pro-expert) R G B / 50%);
+	--foogallery-color-pro-commerce-50: rgba(from var(--foogallery-color-pro-commerce) R G B / 50%);
+
+	/* Fully transparent colors - used for animations like pulse */
+	--foogallery-color-wp-primary-0: rgba(from var(--foogallery-color-wp-primary) R G B / 0%);
+	--foogallery-color-pro-starter-0: rgba(from var(--foogallery-color-pro-starter) R G B / 0%);
+	--foogallery-color-pro-expert-0: rgba(from var(--foogallery-color-pro-expert) R G B / 0%);
+	--foogallery-color-pro-commerce-0: rgba(from var(--foogallery-color-pro-commerce) R G B / 0%);
+}
+
 .foogallery-attachments-list .add-attachment {
     background: #ddd;
 	border: #888 1px dashed;
@@ -132,6 +151,7 @@
 .foogallery_template_field textarea {
 	min-width: 500px;
 	min-height: 100px;
+	width: 100%;
 }
 
 .foogallery_template_field.foogallery_template_field_type-help {
@@ -208,6 +228,10 @@
 .foogallery_metabox_field-thumb_size input[type="number"] {
 	margin-right: 10px;
 	margin-left: 10px;
+}
+
+.foogallery_template_field_type-text input[type="text"] {
+	width: 100%;
 }
 
 .foogallery_template_field_type-text input.small-text {
