@@ -425,7 +425,7 @@ return array(
 		'post_title'  => 'Demo : Single Thumbnail',
 		'post_status' => 'publish',
 		'post_type'   => FOOGALLERY_CPT_GALLERY,
-		'items'       => array( 'demo9', 'demo4', 'demo3', 'demo2', 'demo1', 'demo5', 'demo6', 'demo7', 'demo8', 'demo9', 'demo10' ),
+		'items'       => array( 'demo10', 'demo4', 'demo3', 'demo2', 'demo1', 'demo5', 'demo6', 'demo7', 'demo8', 'demo9' ),
 		'meta_input'  => array(
 			FOOGALLERY_META_TEMPLATE => 'thumbnail',
 			FOOGALLERY_META_SETTINGS => array(
@@ -436,21 +436,20 @@ return array(
 					'width'  => '350',
 					'height' => '250',
 				),
-				'thumbnail_layout'                => 'fixed',
+				'thumbnail_show_as_stack'         => 'fg-stacked',
 				'thumbnail_thumbnail_link'        => 'image',
 				'thumbnail_lightbox'              => 'foogallery',
 				'thumbnail_align'                 => 'fg-center',
-				'thumbnail_gutter_width'          => '10',
 
 				//Appearance
 				'thumbnail_theme'                 => 'fg-light',              // options : 'fg-light', 'fg-dark', 'fg-custom'
 				'thumbnail_border_size'           => 'fg-border-medium',      // options : '', 'fg-border-thin', 'fg-border-medium', 'fg-border-thick'
 				'thumbnail_rounded_corners'       => 'fg-round-small',        // options : '', 'fg-round-small', 'fg-round-medium', 'fg-round-large', 'fg-round-full'
-				'thumbnail_drop_shadow'           => 'fg-shadow-outline',     // options : '', 'fg-shadow-outline', 'fg-shadow-small', 'fg-shadow-medium', 'fg-shadow-large'
+				'thumbnail_drop_shadow'           => 'fg-shadow-small',       // options : '', 'fg-shadow-outline', 'fg-shadow-small', 'fg-shadow-medium', 'fg-shadow-large'
 				'thumbnail_inner_shadow'          => 'fg-shadow-inset-medium',// options : '', 'fg-shadow-inset-small', 'fg-shadow-inset-medium', 'fg-shadow-inset-large'
 				'thumbnail_loading_icon'          => 'fg-loading-default',    // options : '', 'fg-loading-default', 'fg-loading-bars', 'fg-loading-dots', 'fg-loading-partial', 'fg-loading-pulse', 'fg-loading-trail',
 
-				'thumbnail_loaded_effect'         => 'fg-loaded-fade-in',     // options : 'fg-loaded-fade-in', 'fg-loaded-scale-up'
+				'thumbnail_loaded_effect'         => '',     			      // options : 'fg-loaded-fade-in', 'fg-loaded-scale-up'
 				'thumbnail_instagram'             => '',
 
 				//Captions
