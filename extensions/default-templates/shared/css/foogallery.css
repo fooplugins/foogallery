@@ -5480,6 +5480,72 @@ html.fg-panel-no-scroll body {
 .foogallery.fg-thumbnail .fg-st-hidden {
 	display: none;
 }
+
+.foogallery.fg-thumbnail.fg-stacked,
+.foogallery.fg-thumbnail.fg-stacked.fg-center {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    grid-template-rows: auto;
+}
+.foogallery.fg-thumbnail.fg-stacked .fg-item,
+.foogallery.fg-thumbnail.fg-stacked.fg-center .fg-item {
+    grid-column: 2 / 3;
+    grid-row: 1 / 2;
+    z-index: unset;
+}
+.foogallery.fg-thumbnail.fg-stacked .fg-item:nth-child(1) {
+    order: 1;
+}
+.foogallery.fg-thumbnail.fg-stacked .fg-item:nth-child(2) {
+    order: 2;
+    transform: rotate(3deg);
+}
+.foogallery.fg-thumbnail.fg-stacked .fg-item:nth-child(3) {
+    order: 3;
+    transform: rotate(-3deg);
+}
+.foogallery.fg-thumbnail.fg-stacked .fg-item:nth-child(4) {
+    order: 4;
+    transform: rotate(1deg);
+}
+.foogallery.fg-thumbnail.fg-stacked .fg-item:nth-child(5) {
+    order: 5;
+    transform: rotate(-2deg);
+}
+.foogallery.fg-thumbnail.fg-stacked:is(.fg-loaded-fade-in,.fg-loaded-slide-up,.fg-loaded-slide-down,.fg-loaded-slide-left,.fg-loaded-slide-right,.fg-loaded-scale-up,.fg-loaded-swing-down,.fg-loaded-drop,.fg-loaded-fly,.fg-loaded-flip) .fg-item.fg-loaded:not(:first-child),
+.foogallery.fg-thumbnail.fg-stacked:is(.fg-loaded-fade-in,.fg-loaded-slide-up,.fg-loaded-slide-down,.fg-loaded-slide-left,.fg-loaded-slide-right,.fg-loaded-scale-up,.fg-loaded-swing-down,.fg-loaded-drop,.fg-loaded-fly,.fg-loaded-flip) .fg-item.fg-loaded:not(:first-child) .fg-item-inner {
+    transition-property: opacity,visibility;
+}
+
+.foogallery.fg-thumbnail.fg-stacked.fg-left {
+    grid-template-columns: auto 1fr;
+}
+.foogallery.fg-thumbnail.fg-stacked.fg-left .fg-item {
+    grid-column: 1 / 2;
+}
+
+.foogallery.fg-thumbnail.fg-stacked.fg-right {
+    grid-template-columns: 1fr auto;
+}
+.foogallery.fg-thumbnail.fg-stacked.fg-right .fg-item {
+    grid-column: 2 / 3;
+}
+
+.foogallery.fg-thumbnail.fg-stacked.fg-float-left,
+.foogallery.fg-thumbnail.fg-stacked.fg-float-right {
+    display: inline-grid;
+    grid-template-columns: auto;
+}
+.foogallery.fg-thumbnail.fg-stacked.fg-float-left .fg-item,
+.foogallery.fg-thumbnail.fg-stacked.fg-float-right .fg-item {
+    grid-column: 1 / 2;
+}
+.foogallery.fg-thumbnail.fg-stacked.fg-float-left {
+    float: left;
+}
+.foogallery.fg-thumbnail.fg-stacked.fg-float-right {
+    float: right;
+}
 .foogallery-stack-album {
     text-align: center;
     overflow: hidden;

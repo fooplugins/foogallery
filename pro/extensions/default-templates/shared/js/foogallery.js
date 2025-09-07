@@ -14951,7 +14951,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 					pushOrReplace: "replace",
 					theme: "fg-light",
 					type: "default",
-					size: 1,
+					size: $(element).hasClass((options.cls.stacked)) ? 3 : 1,
 					position: "none",
 					scrollToTop: false
 				}
@@ -14959,8 +14959,11 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 		}
 	});
 
-	_.template.register("thumbnail", _.ThumbnailTemplate, null, {
-		container: "foogallery fg-thumbnail"
+	_.template.register("thumbnail", _.ThumbnailTemplate, {
+        template: {}
+    }, {
+		container: "foogallery fg-thumbnail",
+        stacked: "fg-stacked"
 	});
 
 })(
