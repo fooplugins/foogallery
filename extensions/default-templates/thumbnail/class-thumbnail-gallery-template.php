@@ -27,7 +27,11 @@ if ( !class_exists( 'FooGallery_Thumbnail_Gallery_Template' ) ) {
 			//build up the arguments needed for rendering this template
 			add_filter( 'foogallery_gallery_template_arguments-thumbnail', array( $this, 'build_gallery_template_arguments' ) );
 
+			// Add specific caption fields
 			add_filter( 'foogallery_override_gallery_template_fields-thumbnail', array( $this, 'add_caption_fields' ), 999, 2 );
+
+			// Adjust the default settings for this layout
+			add_filter( 'foogallery_override_gallery_template_fields_defaults-thumbnail', array( $this, 'field_defaults' ), 10, 1 );
         }
 
 		/**
@@ -121,8 +125,8 @@ if ( !class_exists( 'FooGallery_Thumbnail_Gallery_Template' ) ) {
                         'section' => __( 'General', 'foogallery' ),
                         'type'    => 'thumb_size_no_crop',
                         'default' => array(
-                            'width' => 250,
-                            'height' => 200
+                            'width' => 350,
+                            'height' => 250
                         ),
 						'row_data'=> array(
 							'data-foogallery-change-selector' => 'input',
@@ -147,6 +151,23 @@ if ( !class_exists( 'FooGallery_Thumbnail_Gallery_Template' ) ) {
 							'data-foogallery-change-selector' => 'select',
 							'data-foogallery-preview' => 'shortcode'
 						)
+                    ),
+					array(
+                        'id'      => 'show_as_stack',
+                        'title'   => __( 'Show As Pile', 'foogallery' ),
+                        'section' => __( 'General', 'foogallery' ),
+                        'default' => '',
+                        'type'    => 'radio',
+                        'desc'	  => __( 'Show the thumbnails as a pile or stack of images.', 'foogallery' ),
+                        'choices' => array(
+                            '' => __( 'No', 'foogallery' ),
+                            'fg-stacked' => __( 'Show Pile', 'foogallery' )
+                        ),
+                        'row_data'=> array(
+	                        'data-foogallery-change-selector' => 'input',
+	                        'data-foogallery-preview' => 'shortcode',
+	                        'data-foogallery-value-selector' => 'input:checked',
+                        )
                     ),
                     array(
                         'id'      => 'link_custom_url',
@@ -275,6 +296,30 @@ if ( !class_exists( 'FooGallery_Thumbnail_Gallery_Template' ) ) {
 			    $dimensions['crop'] = true;
             }
 			return $dimensions;
+		}
+
+		/**
+		 * Return an array of field defaults for the template
+		 *
+		 * @param $field_defaults
+		 *
+		 * @return string[]
+		 */
+		function field_defaults( $field_defaults ) {
+			return array_merge( $field_defaults, array(
+				'theme' => 'fg-light',
+				'hover_effect_caption_visibility' => 'fg-caption-always',
+				'caption_visibility_no_hover_effect' => 'fg-caption-always',
+				'border_size' => 'fg-border-medium',
+				'drop_shadow' => 'fg-shadow-outline',
+				'rounded_corners' => 'fg-round-small',
+				'inner_shadow' => 'fg-shadow-inset-medium',
+				'hover_effect_type' => 'normal',
+				'hover_effect_scale' => 'fg-hover-semi-zoomed',
+				'hover_effect_icon' => 'fg-hover-zoom4',
+				'caption_title' => '{{gallery-title}}',
+				'caption_description' => '{{gallery-count}} Images',
+			) );
 		}
 	}
 }
