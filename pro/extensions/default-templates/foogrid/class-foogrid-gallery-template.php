@@ -65,6 +65,9 @@ if ( !class_exists( 'FooGallery_FooGrid_Gallery_Template' ) ) {
 
 			// add a style block for the gallery
 			add_action( 'foogallery_template_style_block-foogridpro', array( $this, 'add_css' ), 10, 2 );
+
+			// Adjust the default settings for this layout
+			add_filter( 'foogallery_override_gallery_template_fields_defaults-foogridpro', array( $this, 'field_defaults' ), 10, 1 );
         }
 
 		/**
@@ -177,8 +180,8 @@ if ( !class_exists( 'FooGallery_FooGrid_Gallery_Template' ) ) {
 						'desc'    => __('Choose the size of your thumbs.', 'foogallery'),
 						'type'    => 'thumb_size',
 						'default' => array(
-							'width' => 320,
-							'height' => 180,
+							'width' => 150,
+							'height' => 150,
 							'crop' => true
 						),
 						'row_data'=> array(
@@ -519,6 +522,34 @@ if ( !class_exists( 'FooGallery_FooGrid_Gallery_Template' ) ) {
 			}
 
 			return $css;
+		}
+
+		/**
+		 * Return an array of field defaults for the template
+		 *
+		 * @param $field_defaults
+		 *
+		 * @return string[]
+		 */
+		function field_defaults( $field_defaults ) {
+			return array_merge( $field_defaults, array(
+				'theme' => 'fg-light',
+				'hover_effect_caption_visibility' => 'fg-caption-hover',
+				'border_size' => '',
+				'drop_shadow' => 'fg-shadow-outline',
+				'rounded_corners' => '',
+				'inner_shadow' => '',
+				'hover_effect_type' => 'normal',
+				'hover_effect_scale' => '',
+				'hover_effect_icon' => 'fg-hover-plus2',
+				'caption_alignment' => 'fg-c-c',
+				'caption_desc_source' => 'none',
+				'loaded_effect' => '',
+				'lightbox_button_theme' => 'custom',
+				'lightbox_custom_button_theme' => 'fg-button-light',
+				'lightbox_fit_media' => 'yes',
+				'lightbox_show_caption_button' => 'no',
+			) );
 		}
 	}
 }

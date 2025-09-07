@@ -106,7 +106,8 @@ if ( !class_exists( 'FooGallery_Product_Gallery_Template' ) ) {
 		                'section' => __( 'General', 'foogallery' ),
 		                'type'	  => 'html',
 		                'help'	  => true,
-		                'desc'	  => __( 'The Product Gallery template works best with the WooCommerce Products datasource. It is the same as the Simple Portfolio template, but with different defaults to make your life easier.', 'foogallery' ),
+						'title'	  => __( 'Product Gallery layout', 'foogallery' ),
+		                'desc'	  => __( 'The Product Gallery layout works best with the WooCommerce Products datasource. It is the same as the Simple Portfolio template, but with different defaults to make your life easier.', 'foogallery' ),
 	                ),
                     array(
                         'id'      => 'thumbnail_dimensions',

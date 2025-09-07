@@ -39,6 +39,9 @@ if ( !class_exists( 'FooGallery_Slider_Gallery_Template' ) ) {
 			add_filter( 'foogallery_gallery_settings_metabox_section_icon', array( $this, 'add_section_icons' ) );
 
 			//add_filter( 'foogallery_gallery_template_setting-lightbox_caption_override', array( $this, 'override_lightbox_caption_override' ) );
+
+			// Adjust the default settings for this layout
+			add_filter( 'foogallery_override_gallery_template_fields_defaults-slider', array( $this, 'field_defaults' ), 10, 1 );
 		}
 
 		function override_lightbox_caption_override( $value ) {
@@ -431,6 +434,28 @@ if ( !class_exists( 'FooGallery_Slider_Gallery_Template' ) ) {
 			}
 
 			return $classes;
+		}
+
+		/**
+		 * Return an array of field defaults for the template
+		 *
+		 * @param $field_defaults
+		 *
+		 * @return string[]
+		 */
+		function field_defaults( $field_defaults ) {
+			return array_merge( $field_defaults, array(
+				'theme' => 'fg-light',
+				'hover_effect_caption_visibility' => 'fg-caption-hover',
+				'hover_effect_type' => 'normal',
+				'hover_effect_scale' => '',
+				'hover_effect_icon' => 'fg-hover-plus2',
+				'caption_alignment' => 'fg-c-c',
+				'lightbox_button_theme' => 'custom',
+				'lightbox_custom_button_theme' => 'fg-button-light',
+				'lightbox_fit_media' => 'yes',
+				'lightbox_show_caption_button' => 'no',
+			) );
 		}
 	}
 }

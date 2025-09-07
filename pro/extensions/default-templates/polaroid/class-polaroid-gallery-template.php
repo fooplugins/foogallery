@@ -46,6 +46,9 @@ if ( !class_exists( 'FooGallery_Polaroid_Gallery_Template' ) ) {
 
 			// add a style block for the gallery based on the field settings.
 			add_action( 'foogallery_template_style_block-polaroid_new', array( $this, 'add_css' ), 10, 2 );
+
+			// Adjust the default settings for this layout
+			add_filter( 'foogallery_override_gallery_template_fields_defaults-polaroid_new', array( $this, 'field_defaults' ), 10, 1 );
         }
 
 		/**
@@ -417,6 +420,26 @@ if ( !class_exists( 'FooGallery_Polaroid_Gallery_Template' ) ) {
 			$css[] = '#' . $id . '.fg-simple_portfolio { justify-content: ' . $alignment . '; }';
 			$css[] = '#' . $id . '.fg-simple_portfolio .fg-item { flex-basis: ' . $thumb_width . 'px; margin: ' . $gutter . 'px; }';
 			return $css;
+		}
+
+		/**
+		 * Return an array of field defaults for the template
+		 *
+		 * @param $field_defaults
+		 *
+		 * @return string[]
+		 */
+		function field_defaults( $field_defaults ) {
+			return array_merge( $field_defaults, array(
+				'theme' => 'fg-light',
+				'hover_effect_caption_visibility' => 'fg-caption-always',
+				'caption_visibility_no_hover_effect' => 'fg-caption-always',
+				'border_size' => 'fg-border-medium',
+				'drop_shadow' => 'fg-shadow-small',
+				'hover_effect_type' => 'normal',
+				'hover_effect_scale' => '',
+				'hover_effect_icon' => 'fg-hover-plus2'
+			) );
 		}
 	}
 }
