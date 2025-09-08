@@ -451,6 +451,17 @@ span.fgah-plan-commerce {
     transition: background-color .1s ease-in-out;
 }
 
+    .foogallery-admin-help-button .dashicons {
+        margin-left: 5px;
+        width: 10px;
+        height: 10px;
+        font-size: 15px;
+    }
+
+    .foogallery-admin-help-button:hover {
+        background-color: #184eff;
+    }
+
 .foogallery-admin-help-button-active {
     background-color: #1897ff;
 }

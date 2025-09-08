@@ -47,7 +47,7 @@ function foogallery_admin_help_demo_item( $seed, $width, $height, $title, $desc,
 		<a href="#foogallery-admin-help-demo-4" class="foogallery-admin-help-demo foogallery-admin-help-button"><?php _e( 'Justified', 'foogallery' ); ?></a>
 		<a href="#foogallery-admin-help-demo-5" class="foogallery-admin-help-demo foogallery-admin-help-button"><?php _e( 'Simple Portfolio', 'foogallery' ); ?></a>
 		<a href="#foogallery-admin-help-demo-6" class="foogallery-admin-help-demo foogallery-admin-help-button"><?php _e( 'Carousel', 'foogallery' ); ?></a>
-		<a href="<?php echo esc_url( foogallery_admin_url( 'https://fooplugins.com/foogallery-wordpress-gallery-plugin/demos/', 'help' ) ); ?>" target="_blank" class="foogallery-admin-help-button"><?php _e( 'More Demos', 'foogallery' ); ?></a>
+		<a href="<?php echo esc_url( foogallery_admin_url( 'https://fooplugins.com/foogallery-wordpress-gallery-plugin/demos/', 'help' ) ); ?>" target="_blank" class="foogallery-admin-help-button"><?php _e( 'More Demos', 'foogallery' ); ?><i class="dashicons dashicons-external"></i></a>
 	</header>
 
 	<div id="foogallery-admin-help-demo-1" class="foogallery-admin-help-demo-content">
@@ -56,17 +56,17 @@ function foogallery_admin_help_demo_item( $seed, $width, $height, $title, $desc,
 			<p><?php _e( 'Our default responsive gallery template. You have full control over the image border, captions and hover effects. This demo has a thin white border with a small gutter. An icon and the captions are shown on hover. There is also a dark tint and zoom hover effect.', 'foogallery' );?></p>
 		</header>
 
-		<div id="foogallery-gallery-0" class="foogallery fg-default fg-center fg-hover-zoomed fg-gutter-10 fg-m-col2 fg-loading-default fg-loaded-fade-in fg-light fg-border-thin fg-shadow-outline fg-shadow-inset-small fg-caption-hover fg-hover-fade fg-hover-zoom"
+		<div id="foogallery-gallery-0" class="foogallery fg-default fg-center fg-hover-zoomed-semi fg-gutter-10 fg-m-col2 fg-loading-default fg-loaded-fade-in fg-light fg-shadow-inset-small fg-caption-hover fg-hover-fade fg-hover-zoom4"
 		     data-foogallery="{&quot;lazy&quot;:true}">
 
-			<?php foogallery_admin_help_demo_item( '001', 150, 150, 'Lorem Ipsum'        , 'Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae', '#default_demo' ); ?>
-			<?php foogallery_admin_help_demo_item( '016', 150, 150, 'Dolor Sit Amet'     , 'Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula.', '#default_demo' ); ?>
-			<?php foogallery_admin_help_demo_item( '003', 150, 150, 'Nulla Quis Lorem'   , 'Quisque velit nisi, pretium ut lacinia in, elementum id enim. Quisque velit nisi.', '#default_demo' ); ?>
-			<?php foogallery_admin_help_demo_item( '009', 150, 150, 'Quisque ut Libero'  , 'Pellentesque in ipsum id orci porta dapibus. Curabitur arcu erat.', '#default_demo' ); ?>
-			<?php foogallery_admin_help_demo_item( '005', 150, 150, 'Velit Nisi'         , 'Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui.', '#default_demo' ); ?>
-			<?php foogallery_admin_help_demo_item( '006', 150, 150, 'Vivamus Magna'      , 'Praesent sapien massa, convallis a pellentesque nec, egestas non nisi.', '#default_demo' ); ?>
-			<?php foogallery_admin_help_demo_item( '014', 150, 150, 'Lacinia Eget'       , 'Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem.', '#default_demo' ); ?>
-			<?php foogallery_admin_help_demo_item( '012', 150, 150, 'Consectetur Sed'    , 'Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula.', '#default_demo' ); ?>
+			<?php foogallery_admin_help_demo_item( '001', 250, 150, 'Lorem Ipsum'        , '', '#default_demo' ); ?>
+			<?php foogallery_admin_help_demo_item( '016', 250, 150, 'Dolor Sit Amet'     , 'Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula.', '#default_demo' ); ?>
+			<?php foogallery_admin_help_demo_item( '003', 250, 150, 'Nulla Quis Lorem'   , 'Quisque velit nisi, pretium ut lacinia in, elementum id enim. Quisque velit nisi.', '#default_demo' ); ?>
+			<?php foogallery_admin_help_demo_item( '009', 250, 150, 'Quisque ut Libero'  , 'Pellentesque in ipsum id orci porta dapibus. Curabitur arcu erat.', '#default_demo' ); ?>
+			<?php foogallery_admin_help_demo_item( '005', 250, 150, 'Velit Nisi'         , 'Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui.', '#default_demo' ); ?>
+			<?php foogallery_admin_help_demo_item( '006', 250, 150, 'Vivamus Magna'      , 'Praesent sapien massa, convallis a pellentesque nec, egestas non nisi.', '#default_demo' ); ?>
+			<?php foogallery_admin_help_demo_item( '014', 250, 150, 'Lacinia Eget'       , 'Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem.', '#default_demo' ); ?>
+			<?php foogallery_admin_help_demo_item( '012', 250, 150, 'Consectetur Sed'    , 'Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula.', '#default_demo' ); ?>
 
 		</div>
 	</div>

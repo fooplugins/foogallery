@@ -1,5 +1,5 @@
 <?php
-$migrator_url = wp_nonce_url(
+$migrator_install_url = wp_nonce_url(
     add_query_arg(
         array(
             'action' => 'install-plugin',
@@ -11,6 +11,7 @@ $migrator_url = wp_nonce_url(
 );
 
 $migrator_link = sprintf( '<a href="%s" target="_blank">%s</a>', 'https://wordpress.org/plugins/foogallery-migrate/', __( 'Find out more!', 'foogallery' ) );
+$migrator_admin_url = foogallery_admin_url_for_page( 'foogallery-migrate' );
 
 ?>
 <div id="help_section" class="foogallery-admin-help-section">
@@ -18,13 +19,14 @@ $migrator_link = sprintf( '<a href="%s" target="_blank">%s</a>', 'https://wordpr
 		<header>
 			<h3><?php printf( __(  'Thank you for choosing %s!', 'foogallery' ), foogallery_plugin_name() );?></h3>
 			<p><?php _e( 'Better galleries for WordPress, that are faster, more flexible and beautiful!', 'foogallery' ); ?></p>
+            <a href="#create" class="foogallery-admin-help-button"><?php _e( 'Getting Started', 'foogallery' ); ?></a>
+            <a href="#demos" class="foogallery-admin-help-button"><?php _e( 'Create Demos', 'foogallery' ); ?></a>
+            <a href="#migrator" class="foogallery-admin-help-button"><?php _e( 'Migrate', 'foogallery' ); ?></a>
+            <a target="_blank" class="foogallery-admin-help-button foogallery-admin-help-button-active" href="<?php echo esc_url ( $plugin_url ); ?>"><?php echo __( 'Visit our Homepage', 'foogallery' ); ?><i class="dashicons dashicons-external"></i></a>
 		</header>
-		<footer>
-			<a class="foogallery-admin-help-button-cta" target="_blank" href="<?php echo esc_url ( $plugin_url ); ?>"><?php echo sprintf( __( 'Visit the %s Homepage', 'foogallery' ), $plugin_name ); ?></a>
-		</footer>
 	</section>
 
-    <section class="fgah-feature">
+    <section class="fgah-feature" id="migrator">
         <header>
             <h3><?php _e(  'Are you migrating from another gallery plugin?', 'foogallery' ); ?></h3>
             <p>
@@ -33,11 +35,15 @@ $migrator_link = sprintf( '<a href="%s" target="_blank">%s</a>', 'https://wordpr
             </p>
         </header>
         <footer>
-            <a class="foogallery-admin-help-button-cta" target="_blank" href="<?php echo esc_url ( $migrator_url ); ?>"><?php echo sprintf( __( 'Install our migrator!', 'foogallery' ), $plugin_name ); ?></a>
+            <?php if ( class_exists( 'FooPlugins\FooGalleryMigrate\Init' ) ) { ?>
+                <a class="foogallery-admin-help-button-cta" target="_blank" href="<?php echo esc_url ( $migrator_admin_url ); ?>"><?php echo sprintf( __( 'Run the migrator!', 'foogallery' ), $plugin_name ); ?></a>
+            <?php } else { ?>
+                <a class="foogallery-admin-help-button-cta" target="_blank" href="<?php echo esc_url ( $migrator_install_url ); ?>"><?php echo sprintf( __( 'Install our migrator!', 'foogallery' ), $plugin_name ); ?></a>
+            <?php } ?>
         </footer>
     </section>
 
-    <section class="fgah-feature foogallery-admin-help-create-demos">
+    <section class="fgah-feature foogallery-admin-help-create-demos" id="demos">
         <header class="fgah-create-demos">
             <h3><?php _e( 'Demo Galleries', 'foogallery' );?></h3>
             <p><?php _e( 'It\'s always best to see what is possible by looking at the real thing. If you want to get started really quickly without any hassle, then we can import some demo galleries for you. This will create a number of pre-defined galleries which you can easily edit and make your own.', 'foogallery' ); ?></p>
@@ -63,19 +69,19 @@ $migrator_link = sprintf( '<a href="%s" target="_blank">%s</a>', 'https://wordpr
         </footer>
     </section>
 
-	<section class="fgah-feature">
+	<section class="fgah-feature" id="create">
         <header>
-            <h3><?php _e( 'Create Your First Gallery', 'foogallery' );?></h3>
+            <h3><?php _e( 'Getting Started : Create Your First Gallery', 'foogallery' );?></h3>
             <p><?php _e( 'It couldn\'t be any easier:', 'foogallery' ); ?></p>
         </header>
         <div>
             <figure>
-                <img width="650" height="552" src="<?php echo esc_url( 'https://assets.fooplugins.com/foogallery/plugin/foogallery-admin-help-create.png' ); ?>" alt="Create a gallery" />
+                <img width="650" height="552" src="<?php echo esc_url( 'https://assets.fooplugins.com/foogallery/plugin/admin/help-getting-started.jpg' ); ?>" alt="Create a gallery" />
             </figure>
             <ol>
-                <li><?php _e( 'Enter a title', 'foogallery' );?></li>
-                <li><?php _e( 'Add images to your gallery', 'foogallery' );?></li>
+                <li><?php _e( 'Enter a gallery title', 'foogallery' );?></li>
                 <li><?php _e( 'Choose a gallery layout', 'foogallery' );?></li>
+                <li><?php _e( 'Add images to your gallery', 'foogallery' );?></li>
                 <li><?php _e( 'Customize settings', 'foogallery' );?></li>
                 <li><?php _e( 'Publish!', 'foogallery' );?></li>
             </ol>

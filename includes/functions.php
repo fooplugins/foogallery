@@ -187,7 +187,7 @@ function foogallery_admin_add_gallery_url() {
  * @return string The Url to the FooGallery help page in admin
  */
 function foogallery_admin_help_url() {
-	return admin_url( add_query_arg( array( 'page' => FOOGALLERY_ADMIN_MENU_HELP_SLUG ), foogallery_admin_menu_parent_slug() ) );
+	return foogallery_admin_url_for_page( FOOGALLERY_ADMIN_MENU_HELP_SLUG );
 }
 
 /**
@@ -196,7 +196,7 @@ function foogallery_admin_help_url() {
  * @return string The Url to the FooGallery settings page in admin
  */
 function foogallery_admin_settings_url() {
-	return admin_url( add_query_arg( array( 'page' => FOOGALLERY_ADMIN_MENU_SETTINGS_SLUG ), foogallery_admin_menu_parent_slug() ) );
+	return foogallery_admin_url_for_page( FOOGALLERY_ADMIN_MENU_SETTINGS_SLUG );
 }
 
 /**
@@ -205,7 +205,7 @@ function foogallery_admin_settings_url() {
  * @return string The Url to the FooGallery extensions page in admin
  */
 function foogallery_admin_extensions_url() {
-	return foogallery_admin_extensions_url();
+	return '';
 }
 
 /**
@@ -214,7 +214,7 @@ function foogallery_admin_extensions_url() {
  * @return string The Url to the FooGallery extensions page in admin
  */
 function foogallery_admin_features_url() {
-    return admin_url( add_query_arg( array( 'page' => FOOGALLERY_ADMIN_MENU_FEATURES_SLUG ), foogallery_admin_menu_parent_slug() ) );
+    return foogallery_admin_url_for_page( FOOGALLERY_ADMIN_MENU_FEATURES_SLUG );
 }
 
 /**
@@ -223,7 +223,7 @@ function foogallery_admin_features_url() {
  * @return string The Url to the FooGallery system info page in admin
  */
 function foogallery_admin_systeminfo_url() {
-	return admin_url( add_query_arg( array( 'page' => FOOGALLERY_ADMIN_MENU_SYSTEMINFO_SLUG ), foogallery_admin_menu_parent_slug() ) );
+	return foogallery_admin_url_for_page( FOOGALLERY_ADMIN_MENU_SYSTEMINFO_SLUG );
 }
 
 /**
@@ -232,7 +232,7 @@ function foogallery_admin_systeminfo_url() {
  * @return string The Url to the FooGallery pricing page in admin
  */
 function foogallery_admin_pricing_url() {
-	return admin_url( add_query_arg( array( 'page' => FOOGALLERY_ADMIN_MENU_PRICING_SLUG ), foogallery_admin_menu_parent_slug() ) );
+	return foogallery_admin_url_for_page( FOOGALLERY_ADMIN_MENU_PRICING_SLUG );
 }
 
 /**
@@ -242,6 +242,17 @@ function foogallery_admin_pricing_url() {
  */
 function foogallery_admin_freetrial_url() {
 	return add_query_arg( 'trial', 'true', foogallery_admin_pricing_url() );
+}
+
+/**
+ * Returns the FooGallery Url within the admin for a specific page
+ *
+ * @param string $admin_page The page to get the Url for
+ *
+ * @return string The Url to the FooGallery system info page in admin
+ */
+function foogallery_admin_url_for_page( $admin_page ) {
+	return admin_url( add_query_arg( array( 'page' => $admin_page ), foogallery_admin_menu_parent_slug() ) );
 }
 
 /**
