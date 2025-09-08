@@ -164,8 +164,17 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 
 			$settings[] = array(
 				'id'      => 'hide_gallery_template_help',
-				'title'   => __( 'Hide Gallery Settings Help', 'foogallery' ),
+				'title'   => __( 'Hide Gallery Settings Tips', 'foogallery' ),
 				'desc'    => __( 'Some gallery settings show helpful tips, which are useful for new users. You can choose to hide these tips.', 'foogallery' ),
+				'type'    => 'checkbox',
+				'tab'     => 'general',
+				'section' => __( 'Admin', 'foogallery' )
+			);
+
+			$settings[] = array(
+				'id'      => 'minimize_gallery_settings_help',
+				'title'   => __( 'Minimize Gallery Settings Help Text', 'foogallery' ),
+				'desc'    => __( 'By default, help text is displayed under each gallery setting. You can choose to minimize this and rather show a help icon that opens the help text in a tooltip.', 'foogallery' ),
 				'type'    => 'checkbox',
 				'tab'     => 'general',
 				'section' => __( 'Admin', 'foogallery' )

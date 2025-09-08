@@ -510,6 +510,10 @@ tr.foogallery_template_field[data-foogallery-invisible] {
 	margin: 0;
 }
 
+.foogallery-metabox-settings .foogallery-settings-help {
+	color: #aaa;
+}
+
 /** </gallery settings styling overrides> **/
 
 /* <Gallery Settings Radio Fields> */

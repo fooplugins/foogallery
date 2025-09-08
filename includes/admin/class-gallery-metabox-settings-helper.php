@@ -141,6 +141,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings_Helper' ) ) {
 		 * @return void
 		 */
 		private function render_gallery_template_settings_tab_contents_fields( $template, $section ) {
+			$minimize_gallery_settings_help = foogallery_get_setting( 'minimize_gallery_settings_help', false ) === 'on';
 			?>
 			<table class="foogallery-metabox-settings">
 				<tbody>
@@ -201,10 +202,13 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings_Helper' ) ) {
 								<?php if ( $is_promo ) { ?>
                                     <span data-balloon-length="large" data-balloon-pos="right" data-balloon="<?php echo esc_attr($field['promo']); ?>"><i class="dashicons dashicons-star-filled"></i></span>
 								<?php } ?>
+								<?php if ( !empty( $field['desc'] ) && $minimize_gallery_settings_help ) { ?>
+									<span class="foogallery-settings-help" data-balloon-length="large" data-balloon-pos="right" data-balloon="<?php echo esc_attr($field['desc']); ?>"><i class="dashicons dashicons-editor-help"></i></span>
+								<?php } ?>
 							</th>
 							<td>
 								<?php do_action( 'foogallery_render_gallery_template_field', $field, $this->gallery, $template ); ?>
-								<?php if ( !empty( $field['desc'] ) ) { ?>
+								<?php if ( !empty( $field['desc'] ) && !$minimize_gallery_settings_help ) { ?>
 									<p class="foogallery-settings-description"><?php echo esc_html($field['desc']); ?></p>
 								<?php } ?>
 							</td>
