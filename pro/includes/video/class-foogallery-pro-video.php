@@ -82,6 +82,12 @@ if ( ! class_exists( 'FooGallery_Pro_Video' ) ) {
 	
 					//override the file_type in attachment modal
 					add_filter( 'foogallery_attachment_modal_info_file_type', array( $this, 'override_attachment_modal_file_type' ) );
+
+					// Attachment modal actions:
+					add_action( 'foogallery_attachment_modal_tabs_view', array( $this, 'attachment_modal_display_tab' ), 10 );
+					add_action( 'foogallery_attachment_modal_tab_content', array( $this, 'attachment_modal_display_tab_content' ), 10, 1 );
+					add_action( 'foogallery_attachment_save_data', array( $this, 'attachment_modal_save_data' ), 10, 2 );
+					add_filter( 'foogallery_attachment_modal_data', array( $this, 'attachment_modal_data' ), 20, 4 );
 				}
 			}
 		}
@@ -314,7 +320,17 @@ if ( ! class_exists( 'FooGallery_Pro_Video' ) ) {
 				//set the video flag
 				$foogallery_attachment->is_video = true;
 
-				//set the video data object
+				//set the video data object.
+				// this data is in the format:
+				// array( 
+				//	"type" => "video", 
+				//	"provider" => "youtube", 
+				//	"id" => "JBEci22Ct74",
+				//	"url" => "https://www.youtube.com/embed/JBEci22Ct74",
+				//  "title" => "Video title",
+				//	"description" => "Video description",
+				//	"thumbnail" => "https://www.youtube.com/thumbnail/JBEci22Ct74",
+				//);
 				$foogallery_attachment->video_data = get_post_meta( $foogallery_attachment->ID, FOOGALLERY_VIDEO_POST_META, true );
 
 				//check if we have no video data and set flag
@@ -627,6 +643,144 @@ if ( ! class_exists( 'FooGallery_Pro_Video' ) ) {
 				wp_send_json_success( __('Saved successfully.', 'foogallery' ) );
 			}
 			die();
+		}
+
+		        /**
+         * Image modal Commerce tab title
+         */
+        public function attachment_modal_display_tab() { ?>
+            <div class="foogallery-img-modal-tab-wrapper" data-tab_id="foogallery-panel-video">
+                <input type="radio" name="tabset" id="foogallery-tab-video" aria-controls="foogallery-panel-video">
+                <label for="foogallery-tab-video"><?php _e('Video', 'foogallery'); ?></label>
+            </div>
+        <?php }
+
+        /**
+         * Image modal Video tab content
+		 * 
+		 * @param array $modal_data
+		 * 
+         */
+
+		//	"type" => "video", 
+		//	"provider" => "youtube", 
+		//	"id" => "JBEci22Ct74",
+		//	"url" => "https://www.youtube.com/embed/JBEci22Ct74",
+		//  "title" => "Video title",
+		//	"description" => "Video description",
+		//	"thumbnail" => "https://www.youtube.com/thumbnail/JBEci22Ct74",
+        public function attachment_modal_display_tab_content( $modal_data ) {
+			if ( is_array( $modal_data ) && !empty ( $modal_data ) ) {
+
+				if ( $modal_data['img_id'] > 0 ) { ?>
+					<section id="foogallery-panel-video" class="tab-panel">
+						<div class="settings">
+							<span class="setting has-description" data-setting="video_url">
+								<label for="attachment-details-video-url" class="name"><?php esc_html_e( 'Video URL', 'foogallery'); ?></label>
+								<input type="text" name="foogallery[video_url]" id="attachment-details-video-url" value="<?php echo esc_attr( $modal_data['video_url'] ); ?>">
+							</span>
+							<p class="description">
+                                <?php esc_html_e( 'The URL of the video. If this is provided then this image will be shown as a video in the gallery.', 'foogallery' ); ?>
+                            </p>
+
+							<span class="setting has-description" data-setting="video_provider">
+								<label for="attachment-details-video-provider" class="name"><?php esc_html_e('Video Provider', 'foogallery'); ?></label>
+								<input type="text" name="foogallery[video_provider]" id="attachment-details-video-provider" value="<?php echo esc_attr( $modal_data['video_provider'] ); ?>">
+							</span>
+							<p class="description">
+                                <?php esc_html_e( 'The provider of the video (YouTube, Vimeo, etc.). This is optional.', 'foogallery' ); ?>
+                            </p>
+
+							<span class="setting has-description" data-setting="video_type">
+								<label for="attachment-details-video-type" class="name"><?php esc_html_e('Override Video Type', 'foogallery'); ?></label>
+								<input type="text" name="foogallery[video_type]" id="attachment-details-video-type" value="<?php echo esc_attr( $modal_data['video_type'] ); ?>">
+							</span>
+							<p class="description">
+                                <?php esc_html_e( 'The type of the video embed. This is optional.', 'foogallery' ); ?>
+                            </p>
+
+							<span class="setting has-description" data-setting="video_id">
+								<label for="attachment-details-video-id" class="name"><?php esc_html_e('Video ID', 'foogallery'); ?></label>
+								<input type="text" name="foogallery[video_id]" id="attachment-details-video-id" value="<?php echo esc_attr( $modal_data['video_id'] ); ?>">
+							</span>
+							<p class="description">
+                                <?php esc_html_e( 'The ID of the video from the video provider or used for embeds. This is optional.', 'foogallery' ); ?>
+                            </p>
+						</div>
+					</section>
+					<?php
+				}
+			}
+        }
+
+        /**
+         * Save EXIF tab data content
+         *
+         * @param $img_id int attachment id to update data
+         *
+         * @param $foogallery array of form post data
+         *
+         */
+        public function attachment_modal_save_data( $img_id, $foogallery ) {
+			if ( is_array( $foogallery ) && !empty( $foogallery ) ) {
+				$video_data = array();
+
+				foreach( $foogallery as $key => $val ) {
+					if ( $key === 'video_id' && !empty( $val ) ) {
+						$video_data['id'] = $val;
+					}
+					else if ( $key === 'video_provider' && !empty( $val ) ) {
+						$video_data['provider'] = $val;
+					}
+					else if ( $key === 'video_type' && !empty( $val ) ) {
+						$video_data['type'] = $val;
+					}
+					else if ( $key === 'video_url' && !empty( $val ) ) {
+						$video_data['url'] = $val;
+					}
+				}
+
+				if ( !empty( $video_data ) ) {
+					update_post_meta( $img_id, FOOGALLERY_VIDEO_POST_META, $video_data );
+				}
+			}
+        }
+
+
+		/**
+		 * Image modal more tab data update
+		 */
+		public function attachment_modal_data( $modal_data, $data, $attachment_id, $gallery_id ) {
+            if ( $attachment_id > 0 ) {
+				$video_data = get_post_meta( $attachment_id, FOOGALLERY_VIDEO_POST_META, true );
+				if ( is_array( $video_data ) ) {
+					if ( !isset( $video_data['id'] ) ) {
+						$video_data['id'] = '';
+					}
+					if ( !isset( $video_data['provider'] ) ) {
+						$video_data['provider'] = '';
+					}
+					if ( !isset( $video_data['type'] ) ) {
+						$video_data['type'] = '';
+					}
+					if ( !isset( $video_data['url'] ) ) {
+						$video_data['url'] = '';
+					}
+				} else {
+					$video_data = array(
+						'id' => '',
+						'provider' => '',
+						'type' => '',
+						'url' => '',
+					);
+				}
+
+				$modal_data['video_id'] = $video_data['id'];
+				$modal_data['video_provider'] = $video_data['provider'];
+				$modal_data['video_type'] = $video_data['type'];
+				$modal_data['video_url'] = $video_data['url'];
+            }
+			return $modal_data;
 		}
 	}
 }

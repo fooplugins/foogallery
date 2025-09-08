@@ -199,7 +199,11 @@ if ( ! class_exists( 'FooGallery_Pro_Video_Legacy' ) ) {
 		function foogallery_is_attachment_video_legacy( $is_video, $foogallery_attachment ) {
 			$video_info = get_post_meta( $foogallery_attachment->ID, FOOGALLERY_VIDEO_POST_META, true );
 
-			return isset( $video_info ) && isset( $video_info['id'] );
+			if ( isset( $video_info ) && is_array( $video_info ) ) {
+				return isset( $video_info['id'] ) || isset( $video_info['url'] );
+			}
+
+			return false;
 		}
 
 		/**

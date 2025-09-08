@@ -68,7 +68,7 @@ if ( ! class_exists( "FooGallery_Pro_Video_Import" ) ) {
 			);
 
 			foreach ( $videos as $video ) {
-				//set the default type to "video"
+				//set the default type to "embed"
 				$video["type"] = 'embed';
 
 				if ( in_array( $video['provider'], $video_types ) ) {

@@ -154,6 +154,10 @@ function foogallery_get_video_url_from_attachment( $attachment ) {
 
 	$url = $attachment->custom_url;
 
+	if ( empty( $url ) && isset( $attachment->video_data ) && isset( $attachment->video_data['url'] ) ) {
+		$url = $attachment->video_data['url'];
+	}
+
 	//append autoplay querystring
 	$autoplay = foogallery_gallery_template_setting( 'video_autoplay', 'yes' );
 	if ( 'yes' === $autoplay ) {
