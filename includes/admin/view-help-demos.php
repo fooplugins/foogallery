@@ -59,14 +59,14 @@ function foogallery_admin_help_demo_item( $seed, $width, $height, $title, $desc,
 		<div id="foogallery-gallery-0" class="foogallery fg-default fg-center fg-hover-zoomed-semi fg-gutter-10 fg-m-col2 fg-loading-default fg-loaded-fade-in fg-light fg-shadow-inset-small fg-caption-hover fg-hover-fade fg-hover-zoom4"
 		     data-foogallery="{&quot;lazy&quot;:true}">
 
-			<?php foogallery_admin_help_demo_item( '001', 250, 150, 'Lorem Ipsum'        , '', '#default_demo' ); ?>
-			<?php foogallery_admin_help_demo_item( '016', 250, 150, 'Dolor Sit Amet'     , 'Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula.', '#default_demo' ); ?>
-			<?php foogallery_admin_help_demo_item( '003', 250, 150, 'Nulla Quis Lorem'   , 'Quisque velit nisi, pretium ut lacinia in, elementum id enim. Quisque velit nisi.', '#default_demo' ); ?>
-			<?php foogallery_admin_help_demo_item( '009', 250, 150, 'Quisque ut Libero'  , 'Pellentesque in ipsum id orci porta dapibus. Curabitur arcu erat.', '#default_demo' ); ?>
-			<?php foogallery_admin_help_demo_item( '005', 250, 150, 'Velit Nisi'         , 'Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui.', '#default_demo' ); ?>
-			<?php foogallery_admin_help_demo_item( '006', 250, 150, 'Vivamus Magna'      , 'Praesent sapien massa, convallis a pellentesque nec, egestas non nisi.', '#default_demo' ); ?>
-			<?php foogallery_admin_help_demo_item( '014', 250, 150, 'Lacinia Eget'       , 'Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem.', '#default_demo' ); ?>
-			<?php foogallery_admin_help_demo_item( '012', 250, 150, 'Consectetur Sed'    , 'Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula.', '#default_demo' ); ?>
+			<?php foogallery_admin_help_demo_item( '001', 250, 200, 'Lorem Ipsum'        , '', '#default_demo' ); ?>
+			<?php foogallery_admin_help_demo_item( '016', 250, 200, 'Dolor Sit Amet'     , 'Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula.', '#default_demo' ); ?>
+			<?php foogallery_admin_help_demo_item( '003', 250, 200, 'Nulla Quis Lorem'   , 'Quisque velit nisi, pretium ut lacinia in, elementum id enim. Quisque velit nisi.', '#default_demo' ); ?>
+			<?php foogallery_admin_help_demo_item( '009', 250, 200, 'Quisque ut Libero'  , 'Pellentesque in ipsum id orci porta dapibus. Curabitur arcu erat.', '#default_demo' ); ?>
+			<?php foogallery_admin_help_demo_item( '005', 250, 200, 'Velit Nisi'         , 'Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui.', '#default_demo' ); ?>
+			<?php foogallery_admin_help_demo_item( '006', 250, 200, 'Vivamus Magna'      , 'Praesent sapien massa, convallis a pellentesque nec, egestas non nisi.', '#default_demo' ); ?>
+			<?php foogallery_admin_help_demo_item( '014', 250, 200, 'Lacinia Eget'       , 'Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem.', '#default_demo' ); ?>
+			<?php foogallery_admin_help_demo_item( '012', 250, 200, 'Consectetur Sed'    , 'Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula.', '#default_demo' ); ?>
 
 		</div>
 	</div>
