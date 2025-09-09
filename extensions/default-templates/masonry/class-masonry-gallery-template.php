@@ -409,24 +409,22 @@ if ( !class_exists( 'FooGallery_Masonry_Gallery_Template' ) ) {
 
 			$id         = $gallery->container_id();
 			$layout = foogallery_gallery_template_setting( 'layout', 'fixed' );
+			$gutter_width = intval( foogallery_gallery_template_setting( 'gutter_width', 10 ) );
 
 			//get out early if the layout is not fixed
 			if ( 'fixed' === $layout ) {
 				$thumbnail_width = intval( foogallery_gallery_template_setting( 'thumbnail_width', 250 ) );
-				$gutter_width = intval( foogallery_gallery_template_setting( 'gutter_width', 10 ) );
-				$css[] = '#' . $id . '.fg-masonry .fg-item { width: ' . $thumbnail_width . 'px; margin-right: ' . $gutter_width . 'px; margin-bottom: ' . $gutter_width . 'px; }';
+				$css[] = '#' . $id . '.fg-masonry .fg-item { width: ' . $thumbnail_width . 'px; }';
 			} else {
-
-				$gutter_width = intval( foogallery_gallery_template_setting( 'gutter_width', 10 ) );
-				
 				$gutter_percent = foogallery_gallery_template_setting( 'gutter_percent', '' );
 				if ( 'fg-gutter-none' === $gutter_percent ) {
 					$gutter_width = 0;
 				} else if ( 'fg-gutter-large' === $gutter_percent ) {
 					$gutter_width = 20;
 				}
-				$css[] = '#' . $id . '.fg-masonry .fg-item { margin-right: ' . $gutter_width . 'px; margin-bottom: ' . $gutter_width . 'px; }';
 			}
+
+			$css[] = '#' . $id . '.fg-masonry { --fg-gutter: ' . $gutter_width . 'px; }';
 
 			return $css;
 		}

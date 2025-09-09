@@ -49,7 +49,7 @@ if ( ! class_exists( 'FooGallery_Default_Gallery_Template' ) ) {
 			}
 
 			$spacing = foogallery_intval( foogallery_gallery_template_setting( 'spacing', '10' ) );
-			if ( $spacing > 0 ) {
+			if ( $spacing >= 0 ) {
 				$css[] = '#' . $id . ' { --fg-gutter: ' . $spacing . 'px; }';
 			}
 

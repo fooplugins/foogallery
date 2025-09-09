@@ -368,8 +368,8 @@ if ( !class_exists( 'FooGallery_Simple_Portfolio_Gallery_Template' ) ) {
 			if ( array_key_exists( 'width', $thumbnail_dimensions ) ) {
 				$thumb_width = intval( $thumbnail_dimensions['width'] );
 			}
-			$css[] = '#' . $id . '.fg-simple_portfolio { justify-content: ' . $alignment . '; }';
-			$css[] = '#' . $id . '.fg-simple_portfolio .fg-item { flex-basis: ' . $thumb_width . 'px; margin: ' . $gutter . 'px; }';
+			$css[] = '#' . $id . '.fg-simple_portfolio { justify-content: ' . $alignment . '; --fg-gutter: ' . $gutter . 'px; }';
+			$css[] = '#' . $id . '.fg-simple_portfolio .fg-item { flex-basis: ' . $thumb_width . 'px; }';
 			return $css;
 		}
 
