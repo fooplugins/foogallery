@@ -2466,3 +2466,10 @@ function foogallery_intval( $value, $default = 0 ) {
 
 	return $default;
 }
+
+/**
+ * Returns true if we are currently showing a glalery preview.
+ */
+function foogallery_is_preview() {
+	return isset( $GLOBALS['foogallery_gallery_preview'] ) && $GLOBALS['foogallery_gallery_preview'];
+}

@@ -437,8 +437,11 @@ if ( ! class_exists( 'FooGallery_Pro_Video' ) ) {
 			$has_video = false;
 
 			if ( isset( $current_foogallery ) ) {
+
+				$loop_attachments = $current_foogallery->is_dynamic() || foogallery_is_preview();
+
 				//if it is a dynamic gallery, then loop through all attachments and see if there are videos
-				if ( $current_foogallery->is_dynamic() ) {
+				if ( $loop_attachments ) {
 					foreach ( $current_foogallery->attachments() as $attachment ) {
 						if ( isset ( $attachment->is_video ) ) {
 						    if ( $attachment->is_video ) {
