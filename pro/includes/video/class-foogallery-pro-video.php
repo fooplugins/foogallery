@@ -225,15 +225,15 @@ if ( ! class_exists( 'FooGallery_Pro_Video' ) ) {
 				'section'  => __( 'Video', 'foogallery' ),
 				'title'    => __( 'Video Hover Icon', 'foogallery' ),
 				'type'     => 'htmlicon',
-				'default'  => 'fg-video-default',
+				'default'  => 'fg-video-1',
 				'choices'  => apply_filters(
 					'foogallery_gallery_template_video_hover_icon_choices', array(
 						''                 => array( 'label' => __( 'None', 'foogallery' ), 'html' => '<div class="foogallery-setting-video_overlay"></div>' ),
-						'fg-video-default' => array( 'label' => __( 'Default Icon', 'foogallery' ), 'html' => '<div class="foogallery-setting-video_overlay fg-video-default"></div>' ),
-						'fg-video-1'       => array( 'label' => __( 'Icon 1', 'foogallery' ), 'html' => '<div class="foogallery-setting-video_overlay fg-video-1"></div>' ),
-						'fg-video-2'       => array( 'label' => __( 'Icon 2', 'foogallery' ), 'html' => '<div class="foogallery-setting-video_overlay fg-video-2"></div>' ),
-						'fg-video-3'       => array( 'label' => __( 'Icon 3', 'foogallery' ), 'html' => '<div class="foogallery-setting-video_overlay fg-video-3"></div>' ),
-						'fg-video-4'       => array( 'label' => __( 'Icon 4', 'foogallery' ), 'html' => '<div class="foogallery-setting-video_overlay fg-video-4"></div>' ),
+						'fg-video-default' => array( 'label' => __( 'Video Icon 1', 'foogallery' ), 'html' => '<div class="foogallery-setting-video_overlay fg-video-default"></div>' ),
+						'fg-video-1'       => array( 'label' => __( 'Video Icon 2', 'foogallery' ), 'html' => '<div class="foogallery-setting-video_overlay fg-video-1"></div>' ),
+						'fg-video-2'       => array( 'label' => __( 'Video Icon 3', 'foogallery' ), 'html' => '<div class="foogallery-setting-video_overlay fg-video-2"></div>' ),
+						'fg-video-3'       => array( 'label' => __( 'Video Icon 4', 'foogallery' ), 'html' => '<div class="foogallery-setting-video_overlay fg-video-3"></div>' ),
+						'fg-video-4'       => array( 'label' => __( 'Video Icon 5', 'foogallery' ), 'html' => '<div class="foogallery-setting-video_overlay fg-video-4"></div>' ),
 					)
 				),
 				'row_data' => array(
@@ -247,7 +247,7 @@ if ( ! class_exists( 'FooGallery_Pro_Video' ) ) {
 				'title'    => __( 'Sticky Video Icon', 'foogallery' ),
 				'desc'     => __( 'Always show the video icon for videos in the gallery, and not only when you hover.', 'foogallery' ),
 				'type'     => 'radio',
-				'default'  => '',
+				'default'  => 'fg-video-sticky',
 				'choices'  => array(
 					'fg-video-sticky' => __( 'Yes', 'foogallery' ),
 					''                => __( 'No', 'foogallery' ),
@@ -272,7 +272,7 @@ if ( ! class_exists( 'FooGallery_Pro_Video' ) ) {
 				'title'   => __( 'Lightbox Video Size', 'foogallery' ),
 				'desc'    => __( 'The default video size when opening videos in the lightbox.', 'foogallery' ),
 				'type'    => 'select',
-				'default' => '640x360',
+				'default' => '1920x1080',
 				'choices' => array(
 					'640x360'   => __( '640 x 360', 'foogallery' ),
 					'854x480'   => __( '854 x 480', 'foogallery' ),
@@ -283,6 +283,10 @@ if ( ! class_exists( 'FooGallery_Pro_Video' ) ) {
 					'1600x900'  => __( '1600 x 900', 'foogallery' ),
 					'1920x1080' => __( '1920 x 1080 (Full HD)', 'foogallery' ),
 				),
+				'row_data' => array(
+					'data-foogallery-change-selector' => 'input:radio',
+					'data-foogallery-preview'         => 'shortcode'
+				)
 			);
 
 			$video_fields[] = array(
@@ -296,6 +300,10 @@ if ( ! class_exists( 'FooGallery_Pro_Video' ) ) {
 					'yes' => __( 'Yes', 'foogallery' ),
 					'no'  => __( 'No', 'foogallery' ),
 				),
+				'row_data' => array(
+					'data-foogallery-change-selector' => 'input:radio',
+					'data-foogallery-preview'         => 'shortcode'
+				)
 			);
 
 			//find the index of the Advanced section
