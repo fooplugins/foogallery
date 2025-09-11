@@ -225,12 +225,13 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 				$filtering_fields[] = array(
 					'id'      => 'filtering_theme',
 					'title'   => __( 'Theme', 'foogallery' ),
-					'desc'    => __( 'The theme used for filtering.', 'foogallery' ),
+					'desc'    => __( 'The theme used for filtering. Default will use the gallery theme.', 'foogallery' ),
 					'section' => __( 'Filtering', 'foogallery' ),
 					'subsection' => array( 'filtering-general' => __( 'General', 'foogallery' ) ),
 					'type'    => 'radio',
-					'default' => 'fg-light',
+					'default' => '',
 					'choices' => apply_filters( 'foogallery_gallery_template_filtering_theme_choices', array(
+						''          => __( 'Default', 'foogallery' ),
 						'fg-light'  => __( 'Light', 'foogallery' ),
 						'fg-dark'   => __( 'Dark', 'foogallery' ),
 						'fg-custom' => __( 'Custom', 'foogallery' ),
@@ -717,9 +718,13 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 					$filtering_options = array(
 						'type'     => 'tags',
 						'position' => foogallery_gallery_template_setting( 'filtering_position', 'top' ),
-						'theme'    => foogallery_gallery_template_setting( 'filtering_theme', 'fg-light' ),
 						'noAll'    => $filtering_hideall,
 					);
+
+					$theme = foogallery_gallery_template_setting( 'filtering_theme', '' );
+					if ( '' !== $theme ) {
+						$filtering_options['theme'] = $theme;
+					}
 
 					if ( $filtering_hideall ) {
 						$filtering_options['autoSelected'] = foogallery_gallery_template_setting( 'filtering_autoSelected', '' ) === 'true';
