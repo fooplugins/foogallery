@@ -256,18 +256,10 @@ body {
     padding-right: 32px;
     padding-left: 0;
 }
-
-.fgah-feature > div > ol {
-
-}
 .fgah-feature > div > ol > li {
     list-style-type: decimal;
     margin: 0 2em;
     padding: 0;
-}
-
-.fgah-feature > div > dl {
-
 }
 .fgah-feature > div > dl > dt {
     font-size: large;
