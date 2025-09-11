@@ -1523,7 +1523,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 		}
 
         /**
-         * Image modal EXIF tab title
+         * Image modal Commerce tab title
          */
         public function attachment_modal_display_tab() { ?>
             <div class="foogallery-img-modal-tab-wrapper" data-tab_id="foogallery-panel-commerce">
@@ -1533,7 +1533,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
         <?php }
 
         /**
-         * Image modal EXIF tab content
+         * Image modal Commerce tab content
          */
         public function attachment_modal_display_tab_content( $modal_data ) {
 			if ( is_array( $modal_data ) && !empty ( $modal_data ) ) {
