@@ -688,10 +688,27 @@ if ( ! class_exists( 'FooGallery_Pro_Video' ) ) {
 						<div class="settings">
 							<span class="setting has-description" data-setting="video_url">
 								<label for="attachment-details-video-url" class="name"><?php esc_html_e( 'Video URL', 'foogallery'); ?></label>
-								<input type="text" name="foogallery[video_url]" id="attachment-details-video-url" value="<?php echo esc_attr( $modal_data['video_url'] ); ?>">
+								<div class="setting-with-buttons">
+									<input type="text" name="foogallery[video_url]" id="attachment-details-video-url" value="<?php echo esc_attr( $modal_data['video_url'] ); ?>">
+                                    <div>
+                                        <button type="button" class="button button-primary button-small foogallery-media-selector-choose"
+                                            data-input="#attachment-details-video-url"
+                                            data-modal-title="<?php esc_attr_e( 'Select Self Hosted Video', 'foogallery' ); ?>"
+                                            data-modal-button="<?php esc_attr_e( 'Select Video', 'foogallery' ); ?>"
+                                            data-modal-multiple="no"><?php esc_attr_e( 'Choose', 'foogallery' ); ?>
+                                        </button>
+                                        <button type="button" class="button button-secondary button-small foogallery-media-selector-clear"
+                                            data-input="#attachment-details-video-url"><?php esc_html_e( 'Clear', 'foogallery' ); ?>
+                                        </button>
+                                    </div>
+                                </div>
+								
 							</span>
+							
 							<p class="description">
-                                <?php esc_html_e( 'The URL of the video. If this is provided then this image will be shown as a video in the gallery.', 'foogallery' ); ?>
+                                <?php esc_html_e( 'The URL of the video. This can be a YouTube, Vimeo, or a self-hosted video.', 'foogallery' ); ?><br/>
+								<?php esc_html_e( 'To link to a self hosted video, click on choose to select the video from the media library.', 'foogallery' ); ?><br/>
+								<?php esc_html_e( 'If a Video URL is provided then this image will be shown as a video in the gallery.', 'foogallery' ); ?>
                             </p>
 
 							<span class="setting has-description" data-setting="video_provider">
@@ -729,14 +746,14 @@ if ( ! class_exists( 'FooGallery_Pro_Video' ) ) {
          *
          * @param $img_id int attachment id to update data
          *
-         * @param $foogallery array of form post data
+         * @param $form_data array of form post data
          *
          */
-        public function attachment_modal_save_data( $img_id, $foogallery ) {
-			if ( is_array( $foogallery ) && !empty( $foogallery ) ) {
+        public function attachment_modal_save_data( $img_id, $form_data ) {
+			if ( is_array( $form_data ) && !empty( $form_data ) ) {
 				$video_data = array();
 
-				foreach( $foogallery as $key => $val ) {
+				foreach( $form_data as $key => $val ) {
 					if ( $key === 'video_id' && !empty( $val ) ) {
 						$video_data['id'] = $val;
 					}
@@ -753,6 +770,8 @@ if ( ! class_exists( 'FooGallery_Pro_Video' ) ) {
 
 				if ( !empty( $video_data ) ) {
 					update_post_meta( $img_id, FOOGALLERY_VIDEO_POST_META, $video_data );
+				} else {
+					delete_post_meta( $img_id, FOOGALLERY_VIDEO_POST_META );
 				}
 			}
         }

@@ -9,7 +9,7 @@ FooGallery.autoEnabled = false;
     FOOGALLERY.selected_gallery_template = '';
 
     // Used for selecting files from the media modal.
-    FOOGALLERY.current_media_selector_modal = false;
+    FOOGALLERY.current_media_selector_modals = false;
     FOOGALLERY.current_media_selector_input = false;
 
     // Viewport controller for responsive preview
@@ -756,29 +756,34 @@ FooGallery.autoEnabled = false;
 				return;
 			}
 
-			// If the media frame already exists, reopen it.
-			if ( FOOGALLERY.current_media_selector_modal ) {
-				FOOGALLERY.current_media_selector_modal.open();
+			var
+			modalTitle = $el.data('modal-title') ? $el.data( 'modal-title' ) : 'Choose Image',
+			modalButton = $el.data('modal-button') ? $el.data( 'modal-button' ) : 'Select Image',
+			modalMultiple = $el.data('modal-multiple' ) ? $el.data( 'modal-multiple' ) === 'yes' : true;
+			states = [
+				// Main states.
+				new wp.media.controller.Library( {
+					library: wp.media.query(),
+					multiple: modalMultiple,
+					title: modalTitle,
+					priority: 20,
+					filterable: 'uploaded',
+				} ),
+			];
+
+			// keep an array of modals, based off the modal title
+
+			//first check if modals have been initialized
+			FOOGALLERY.current_media_selector_modals = FOOGALLERY.current_media_selector_modals || {};
+
+			// Check if we have a modal for this title
+			if ( FOOGALLERY.current_media_selector_modals[modalTitle] ) {
+				FOOGALLERY.current_media_selector_modals[modalTitle].open();
 				return;
 			}
 
-			var
-				modalTitle = $el.data('modal-title') ? $el.data( 'modal-title' ) : 'Choose Image',
-				modalButton = $el.data('modal-button') ? $el.data( 'modal-button' ) : 'Select Image',
-				modalMultiple = $el.data('modal-multiple' ) ? $el.data( 'modal-multiple' ) === 'yes' : true;
-				states = [
-					// Main states.
-					new wp.media.controller.Library( {
-						library: wp.media.query(),
-						multiple: modalMultiple,
-						title: modalTitle,
-						priority: 20,
-						filterable: 'uploaded',
-					} ),
-				];
-
 			// Create the media frame.
-			FOOGALLERY.current_media_selector_modal = wp.media.frames.downloadable_file = wp.media(
+			FOOGALLERY.current_media_selector_modals[modalTitle] = wp.media.frames.downloadable_file = wp.media(
 				{
 					// Set the title of the modal.
 					title: modalTitle,
@@ -794,9 +799,9 @@ FooGallery.autoEnabled = false;
 			);
 
 			// When an image is selected, run a callback.
-			FOOGALLERY.current_media_selector_modal.on( 'select', function () {
+			FOOGALLERY.current_media_selector_modals[modalTitle].on( 'select', function () {
 				var file_path = '',
-					selection = FOOGALLERY.current_media_selector_modal.state().get( 'selection' );
+					selection = FOOGALLERY.current_media_selector_modals[modalTitle].state().get( 'selection' );
 
 				selection.map( function ( attachment ) {
 					attachment = attachment.toJSON();
@@ -809,7 +814,7 @@ FooGallery.autoEnabled = false;
 			} );
 
 			// Finally, open the modal.
-			FOOGALLERY.current_media_selector_modal.open();
+			FOOGALLERY.current_media_selector_modals[modalTitle].open();
 		});
 
 		$(document).on('click', '.foogallery-media-selector-clear', function(e){
