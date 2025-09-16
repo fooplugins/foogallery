@@ -111,6 +111,42 @@ $show_demos = apply_filters( 'foogallery_admin_help_show_demos', true );
 
 		$.foogallery_import_data.init();
 
+		$.foogallery_import_pro_data = {
+			init : function() {
+				<?php if ( foogallery_is_pro() ) { ?>
+				$(".foogallery-admin-help-import-pro-demos").click( function(e) {
+					e.preventDefault();
+
+					var $this = $(this),
+						data = {
+							'action': 'foogallery_admin_import_pro_demos',
+							'_wpnonce': $this.data( 'nonce' ),
+							'_wp_http_referer': encodeURIComponent( $( 'input[name="_wp_http_referer"]' ).val() )
+						};
+
+					$this.prop('disable', true).addClass("foogallery-admin-help-loading");
+					$('.fgah-create-pro-demos-text').html( $this.data('working') );
+
+					$.ajax({
+						type: 'POST',
+						url: ajaxurl,
+						data: data,
+						cache: false,
+						success: function( html ) {
+							$('.fgah-demo-result').html( html );
+							$('.fgah-create-demos').hide();
+							$('.fgah-created-demos').show();
+						}
+					}).always(function(){
+						$this.removeClass("foogallery-admin-help-loading").prop('disable', false);
+					});
+				} );
+				<?php } ?>
+			}
+		};
+
+		$.foogallery_import_pro_data.init();
+
 		$.foogallery_demos = {
 			init : function() {
 				$(".foogallery-admin-help-demo").click( function(e) {
