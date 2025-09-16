@@ -6,7 +6,7 @@ return array(
 		'post_title'  => 'Demo : Grid PRO',
 		'post_status' => 'publish',
 		'post_type'   => FOOGALLERY_CPT_GALLERY,
-		'items'       => array( 'pixabay1', 'pixabay2', 'pixabay3', 'pixabay4', 'pixabay5', 'pixabay6', 'pixabay7', 'pixabay8', 'pixabay9', 'pixabay10', 'pixabay11', 'pixabay12' ),
+		'items'       => array( 'demo1', 'demo2', 'demo3', 'demo4', 'demo5', 'demo6' ),
 		'meta_input'  => array(
 			FOOGALLERY_META_TEMPLATE => 'foogridpro',
 			FOOGALLERY_META_SETTINGS => array(
@@ -76,7 +76,7 @@ return array(
 		'post_title'  => 'Demo : Slider PRO',
 		'post_status' => 'publish',
 		'post_type'   => FOOGALLERY_CPT_GALLERY,
-		'items'       => array( 'pixabay1', 'pixabay2', 'pixabay3', 'pixabay4', 'pixabay5', 'pixabay6', 'pixabay7', 'pixabay8', 'pixabay9', 'pixabay10', 'pixabay11', 'pixabay12' ),
+		'items'       => array( 'demo1', 'demo2', 'demo3', 'demo4', 'demo5', 'demo6' ),
 		'meta_input'  => array(
 			FOOGALLERY_META_TEMPLATE => 'slider',
 			FOOGALLERY_META_SETTINGS => array(
@@ -148,7 +148,7 @@ return array(
 		'post_title'  => 'Demo : Polaroid PRO',
 		'post_status' => 'publish',
 		'post_type'   => FOOGALLERY_CPT_GALLERY,
-		'items'       => array( 'pixabay1', 'pixabay2', 'pixabay3', 'pixabay4', 'pixabay5', 'pixabay6', 'pixabay7', 'pixabay8', 'pixabay9', 'pixabay10', 'pixabay11', 'pixabay12' ),
+		'items'       => array( 'demo1', 'demo2', 'demo3', 'demo4', 'demo5', 'demo6' ),
 		'meta_input'  => array(
 			FOOGALLERY_META_TEMPLATE => 'polaroid_new',
 			FOOGALLERY_META_SETTINGS => array(
@@ -218,7 +218,7 @@ return array(
 		'post_title'  => 'Demo : Hover Effect Presets Showcase',
 		'post_status' => 'publish',
 		'post_type'   => FOOGALLERY_CPT_GALLERY,
-		'items'       => array( 'pixabay1', 'pixabay2', 'pixabay3', 'pixabay4', 'pixabay5', 'pixabay6', 'pixabay7', 'pixabay8', 'pixabay9', 'pixabay10', 'pixabay11', 'pixabay12' ),
+		'items'       => array( 'demo1', 'demo2', 'demo3', 'demo4', 'demo5', 'demo6' ),
 		'meta_input'  => array(
 			FOOGALLERY_META_TEMPLATE => 'default',
 			FOOGALLERY_META_SETTINGS => array(
@@ -288,7 +288,7 @@ return array(
 		'post_title'  => 'Demo : Instagram Filters Showcase',
 		'post_status' => 'publish',
 		'post_type'   => FOOGALLERY_CPT_GALLERY,
-		'items'       => array( 'pixabay1', 'pixabay2', 'pixabay3', 'pixabay4', 'pixabay5', 'pixabay6', 'pixabay7', 'pixabay8', 'pixabay9', 'pixabay10', 'pixabay11', 'pixabay12' ),
+		'items'       => array( 'demo1', 'demo2', 'demo3', 'demo4', 'demo5', 'demo6' ),
 		'meta_input'  => array(
 			FOOGALLERY_META_TEMPLATE => 'default',
 			FOOGALLERY_META_SETTINGS => array(
