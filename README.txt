@@ -4,7 +4,7 @@ Donate link: https://fooplugins.com
 Tags: gallery, image gallery, photo gallery, responsive gallery, wordpress gallery plugin
 Requires at least: 5.3
 Tested up to: 6.8
-Stable tag: 2.4.34
+Stable tag: 2.5.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -315,8 +315,17 @@ Please update in order for FooGallery to work in WP 5.5+!
 == Changelog ==
 
 = 2.5.0 =
-* Date Updated : 19 Aug 2025
+* Date Updated : 15 Sept 2025
+* New : Added layout selector in gallery edit page. (MAJOR IMPROVEMENT!!)
+* New : Added more hover effect icons.
+* New : Added a default hover effect preset in free version.
+[//]: # fs_premium_only_begin
+* New : Added style options for tag filters.
+[//]: # fs_premium_only_end
+* Update : improvements to the gallery edit page styling.
+* Update : Updated all gallery layout defaults to use more modern look and feel.
 * Update : FooGallery client side 2.1.6
+* Update : Freemius SDK update 2.12.2
 
 = 2.4.35 =
 * Date Updated : 07 Aug 2025
