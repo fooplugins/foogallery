@@ -69,7 +69,9 @@ if ( ! class_exists( 'FooGallery_Pro' ) ) {
 			new FooGallery_Pro_Hover_Presets();
 			new FooGallery_Pro_Default_Templates();
 			new FooGallery_Pro_Instagram_Filters();
-			new FooGallery_Pro_Demos();
+			if ( is_admin() ) {
+				new FooGallery_Pro_Demos();
+			}
 
 			if ( foogallery_fs()->is_plan_or_trial( 'pro' ) ) {
 				new FooGallery_Pro_Advanced_Gallery_Settings();

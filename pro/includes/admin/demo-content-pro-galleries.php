@@ -6,68 +6,68 @@ return array(
 		'post_title'  => 'Demo : Grid PRO',
 		'post_status' => 'publish',
 		'post_type'   => FOOGALLERY_CPT_GALLERY,
-		'items'       => array( 'demo1', 'demo2', 'demo3', 'demo4', 'demo5', 'demo6' ),
+		'items'       => array( 'demo1', 'demo3', 'demo5', 'demo7', 'demo9', 'demo4' ),
 		'meta_input'  => array(
 			FOOGALLERY_META_TEMPLATE => 'foogridpro',
 			FOOGALLERY_META_SETTINGS => array(
 				'foogallery_items_view'         => 'preview',
 
 				//General
-				'foogrid_thumbnail_dimensions'  => array(
+				'foogridpro_thumbnail_dimensions'  => array(
 					'width'  => '300',
 					'height' => '200',
 				),
-				'foogrid_thumbnail_link'        => 'image',
-				'foogrid_lightbox'              => 'foogallery',
-				'foogrid_spacing'               => 'fg-gutter-10',
-				'foogrid_alignment'             => 'fg-center',
-				'foogrid_layout'                => 'fixed',
-				'foogrid_columns'               => '3',
+				'foogridpro_thumbnail_link'        => 'image',
+				'foogridpro_lightbox'              => 'foogallery',
+				'foogridpro_spacing'               => 'fg-gutter-10',
+				'foogridpro_alignment'             => 'fg-center',
+				'foogridpro_layout'                => 'fixed',
+				'foogridpro_columns'               => 'foogrid-cols-3',
 
 				//Appearance
-				'foogrid_theme'                 => 'fg-light',
-				'foogrid_border_size'           => 'fg-border-thin',
-				'foogrid_rounded_corners'       => 'fg-round-small',
-				'foogrid_drop_shadow'           => 'fg-shadow-small',
-				'foogrid_inner_shadow'          => '',
-				'foogrid_loading_icon'          => 'fg-loading-default',
+				'foogridpro_theme'                 => 'fg-light',
+				'foogridpro_border_size'           => 'fg-border-thin',
+				'foogridpro_rounded_corners'       => 'fg-round-small',
+				'foogridpro_drop_shadow'           => 'fg-shadow-small',
+				'foogridpro_inner_shadow'          => '',
+				'foogridpro_loading_icon'          => 'fg-loading-default',
 
-				'foogrid_loaded_effect'         => 'fg-loaded-fade-in',
-				'foogrid_instagram'             => '',
+				'foogridpro_loaded_effect'         => 'fg-loaded-fade-in',
+				'foogridpro_instagram'             => '',
 
 				//Captions
-				'foogrid_captions_type'         => 'fg-captions-bottom',
-				'foogrid_caption_title_source'  => 'title',
-				'foogrid_caption_desc_source'   => 'desc',
-				'foogrid_captions_limit_length' => 'yes',
-				'foogrid_caption_alignment'     => 'fg-c-c',
+				'foogridpro_captions_type'         => 'fg-captions-bottom',
+				'foogridpro_caption_title_source'  => 'title',
+				'foogridpro_caption_desc_source'   => 'desc',
+				'foogridpro_captions_limit_length' => 'yes',
+				'foogridpro_caption_alignment'     => 'fg-c-c',
 
 				//Hover Effects
-				'foogrid_hover_effect_caption_visibility' => 'fg-caption-hover',
-				'foogrid_hover_effect_color'              => 'fg-hover-colorize',
-				'foogrid_hover_effect_icon'               => 'fg-hover-zoom',
-				'foogrid_hover_effect_preset'             => 'fg-custom',
-				'foogrid_hover_effect_scale'              => 'fg-hover-zoomed',
-				'foogrid_hover_effect_transition'         => 'fg-hover-fade',
-				'foogrid_hover_effect_type'               => 'normal',
-				'foogrid_caption_invert_color'            => 'fg-light-overlays',
+				'foogridpro_hover_effect_caption_visibility' => 'fg-caption-hover',
+				'foogridpro_hover_effect_color'              => 'fg-hover-colorize',
+				'foogridpro_hover_effect_icon'               => 'fg-hover-zoom',
+				'foogridpro_hover_effect_preset'             => 'fg-custom',
+				'foogridpro_hover_effect_scale'              => 'fg-hover-zoomed',
+				'foogridpro_hover_effect_transition'         => 'fg-hover-fade',
+				'foogridpro_hover_effect_type'               => 'normal',
+				'foogridpro_caption_invert_color'            => 'fg-light-overlays',
 
 				//Filtering
-				'foogrid_filtering_type' => 'tags',
+				'foogridpro_filtering_type' => 'tags',
 
 				//Paging
-				'foogrid_paging_type' => 'load_more',
+				'foogridpro_paging_type' => 'load_more',
 
 				//Advanced
-				'foogrid_state' => 'no',
-				'foogrid_custom_settings' => '',
-				'foogrid_lazyload' => 'yes',
+				'foogridpro_state' => 'no',
+				'foogridpro_custom_settings' => '',
+				'foogridpro_lazyload' => 'yes',
 
 				//Video
-				'foogrid_video_autoplay'    => 'yes',
-				'foogrid_video_hover_icon'  => 'fg-video-default',
-				'foogrid_video_size'        => '640x360',
-				'foogrid_video_sticky_icon' => '',
+				'foogridpro_video_autoplay'    => 'yes',
+				'foogridpro_video_hover_icon'  => 'fg-video-default',
+				'foogridpro_video_size'        => '640x360',
+				'foogridpro_video_sticky_icon' => '',
 			),
 		),
 	), //Demo : Grid PRO
@@ -76,7 +76,7 @@ return array(
 		'post_title'  => 'Demo : Slider PRO',
 		'post_status' => 'publish',
 		'post_type'   => FOOGALLERY_CPT_GALLERY,
-		'items'       => array( 'demo1', 'demo2', 'demo3', 'demo4', 'demo5', 'demo6' ),
+		'items'       => array( 'demo2', 'demo4', 'demo6', 'demo8', 'demo10', 'demo7' , 'demo5' ),
 		'meta_input'  => array(
 			FOOGALLERY_META_TEMPLATE => 'slider',
 			FOOGALLERY_META_SETTINGS => array(
@@ -148,68 +148,68 @@ return array(
 		'post_title'  => 'Demo : Polaroid PRO',
 		'post_status' => 'publish',
 		'post_type'   => FOOGALLERY_CPT_GALLERY,
-		'items'       => array( 'demo1', 'demo2', 'demo3', 'demo4', 'demo5', 'demo6' ),
+		'items'       => array( 'demo3', 'demo9', 'demo6', 'demo2', 'demo10', 'demo7' , 'demo8' , 'demo4'),
 		'meta_input'  => array(
 			FOOGALLERY_META_TEMPLATE => 'polaroid_new',
 			FOOGALLERY_META_SETTINGS => array(
 				'foogallery_items_view'         => 'preview',
 
 				//General
-				'polaroid_thumbnail_dimensions'  => array(
+				'polaroid_new_thumbnail_dimensions'  => array(
 					'width'  => '250',
 					'height' => '300',
 				),
-				'polaroid_thumbnail_link'        => 'image',
-				'polaroid_lightbox'              => 'foogallery',
-				'polaroid_spacing'               => 'fg-gutter-20',
-				'polaroid_alignment'             => 'fg-center',
-				'polaroid_layout'                => 'fixed',
-				'polaroid_columns'               => '4',
+				'polaroid_new_thumbnail_link'        => 'image',
+				'polaroid_new_lightbox'              => 'foogallery',
+				'polaroid_new_spacing'               => 'fg-gutter-20',
+				'polaroid_new_alignment'             => 'fg-center',
+				'polaroid_new_layout'                => 'fixed',
+				'polaroid_new_columns'               => '',
 
 				//Appearance
-				'polaroid_theme'                 => 'fg-light',
-				'polaroid_border_size'           => '',
-				'polaroid_rounded_corners'       => '',
-				'polaroid_drop_shadow'           => 'fg-shadow-large',
-				'polaroid_inner_shadow'          => 'fg-shadow-inset-small',
-				'polaroid_loading_icon'          => 'fg-loading-default',
+				'polaroid_new_theme'                 => 'fg-light',
+				'polaroid_new_border_size'           => '',
+				'polaroid_new_rounded_corners'       => '',
+				'polaroid_new_drop_shadow'           => 'fg-shadow-large',
+				'polaroid_new_inner_shadow'          => 'fg-shadow-inset-small',
+				'polaroid_new_loading_icon'          => 'fg-loading-default',
 
-				'polaroid_loaded_effect'         => 'fg-loaded-swing-down',
-				'polaroid_instagram'             => '',
+				'polaroid_new_loaded_effect'         => 'fg-loaded-swing-down',
+				'polaroid_new_instagram'             => '',
 
 				//Captions
-				'polaroid_captions_type'         => 'fg-captions-bottom',
-				'polaroid_caption_title_source'  => 'title',
-				'polaroid_caption_desc_source'   => 'desc',
-				'polaroid_captions_limit_length' => 'yes',
-				'polaroid_caption_alignment'     => 'fg-c-c',
+				'polaroid_new_captions_type'         => 'fg-captions-bottom',
+				'polaroid_new_caption_title_source'  => 'title',
+				'polaroid_new_caption_desc_source'   => 'desc',
+				'polaroid_new_captions_limit_length' => 'yes',
+				'polaroid_new_caption_alignment'     => 'fg-c-c',
 
 				//Hover Effects
-				'polaroid_hover_effect_caption_visibility' => 'fg-caption-hover',
-				'polaroid_hover_effect_color'              => '',
-				'polaroid_hover_effect_icon'               => 'fg-hover-zoom2',
-				'polaroid_hover_effect_preset'             => 'fg-custom',
-				'polaroid_hover_effect_scale'              => 'fg-hover-zoomed',
-				'polaroid_hover_effect_transition'         => 'fg-hover-slide-up',
-				'polaroid_hover_effect_type'               => 'normal',
-				'polaroid_caption_invert_color'            => '',
+				'polaroid_new_hover_effect_caption_visibility' => 'fg-caption-hover',
+				'polaroid_new_hover_effect_color'              => '',
+				'polaroid_new_hover_effect_icon'               => 'fg-hover-zoom2',
+				'polaroid_new_hover_effect_preset'             => 'fg-custom',
+				'polaroid_new_hover_effect_scale'              => 'fg-hover-zoomed',
+				'polaroid_new_hover_effect_transition'         => 'fg-hover-slide-up',
+				'polaroid_new_hover_effect_type'               => 'normal',
+				'polaroid_new_caption_invert_color'            => '',
 
 				//Filtering
-				'polaroid_filtering_type' => 'tags',
+				'polaroid_new_filtering_type' => 'tags',
 
 				//Paging
-				'polaroid_paging_type' => 'load_more',
+				'polaroid_new_paging_type' => 'load_more',
 
 				//Advanced
-				'polaroid_state' => 'no',
-				'polaroid_custom_settings' => '',
-				'polaroid_lazyload' => 'yes',
+				'polaroid_new_state' => 'no',
+				'polaroid_new_custom_settings' => '',
+				'polaroid_new_lazyload' => 'yes',
 
 				//Video
-				'polaroid_video_autoplay'    => 'yes',
-				'polaroid_video_hover_icon'  => 'fg-video-default',
-				'polaroid_video_size'        => '250x300',
-				'polaroid_video_sticky_icon' => '',
+				'polaroid_new_video_autoplay'    => 'yes',
+				'polaroid_new_video_hover_icon'  => 'fg-video-default',
+				'polaroid_new_video_size'        => '250x300',
+				'polaroid_new_video_sticky_icon' => '',
 			),
 		),
 	), //Demo : Polaroid PRO
@@ -218,7 +218,7 @@ return array(
 		'post_title'  => 'Demo : Hover Effect Presets Showcase',
 		'post_status' => 'publish',
 		'post_type'   => FOOGALLERY_CPT_GALLERY,
-		'items'       => array( 'demo1', 'demo2', 'demo3', 'demo4', 'demo5', 'demo6' ),
+		'items'       => array( 'demo4', 'demo9', 'demo8', 'demo7', 'demo6', 'demo3' , 'demo2' , 'demo1' ),
 		'meta_input'  => array(
 			FOOGALLERY_META_TEMPLATE => 'default',
 			FOOGALLERY_META_SETTINGS => array(
@@ -288,7 +288,7 @@ return array(
 		'post_title'  => 'Demo : Instagram Filters Showcase',
 		'post_status' => 'publish',
 		'post_type'   => FOOGALLERY_CPT_GALLERY,
-		'items'       => array( 'demo1', 'demo2', 'demo3', 'demo4', 'demo5', 'demo6' ),
+		'items'       => array( 'demo5', 'demo6', 'demo7', 'demo8', 'demo9', 'demo10' , 'demo3' , 'demo2' , 'demo1' , 'demo4'),
 		'meta_input'  => array(
 			FOOGALLERY_META_TEMPLATE => 'default',
 			FOOGALLERY_META_SETTINGS => array(
