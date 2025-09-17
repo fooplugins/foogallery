@@ -56,6 +56,15 @@ $migrator_admin_url = foogallery_admin_url_for_page( 'foogallery-migrate' );
 	            <span class="fgah-create-demos-text" style="position: relative;"><?php _e( 'Create Demo Galleries *', 'foogallery' ); ?></span>
             </button>
 
+            <?php if ( foogallery_is_pro() ) : ?>
+                <button class="foogallery-admin-help-button-cta foogallery-admin-help-import-pro-demos"
+                        data-working="<?php _e( 'Please wait...', 'foogallery' ); ?>"
+                        data-nonce="<?php echo esc_attr( wp_create_nonce( 'foogallery_admin_import_pro_demos' ) ); ?>">
+                    <span class="progress"></span>
+                    <span class="fgah-create-pro-demos-text" style="position: relative;"><?php _e( 'Create PRO Demo Galleries *', 'foogallery' ); ?></span>
+                </button>
+            <?php endif; ?>
+
             <small><?php _e( '* Sample images will be imported into your media library', 'foogallery' ); ?></small>
         </footer>
 
