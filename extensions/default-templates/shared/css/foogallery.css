@@ -4808,6 +4808,7 @@ html.fg-panel-no-scroll body {
 	border-style: solid;
 	border-width: 0;
 	border-bottom-width: 4px;
+    border-radius: inherit;
 	z-index: 5;
 }
 .fg-image-viewer .fiv-inner .fiv-inner-container .fg-item .fg-thumb,
