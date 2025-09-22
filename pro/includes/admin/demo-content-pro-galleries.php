@@ -13,16 +13,16 @@ return array(
 				'foogallery_items_view'         => 'preview',
 
 				//General
-				'foogridpro_thumbnail_dimensions'  => array(
+				'foogridpro_thumbnail_size'  => array(
 					'width'  => '300',
 					'height' => '200',
 				),
 				'foogridpro_thumbnail_link'        => 'image',
 				'foogridpro_lightbox'              => 'foogallery',
-				'foogridpro_spacing'               => 'fg-gutter-10',
+				'foogridpro_gutter'                => '10',
 				'foogridpro_alignment'             => 'fg-center',
 				'foogridpro_layout'                => 'fixed',
-				'foogridpro_columns'               => 'foogrid-cols-3',
+				'foogridpro_columns'               => 'foogrid-cols-6',
 
 				//Appearance
 				'foogridpro_theme'                 => 'fg-light',
@@ -156,12 +156,13 @@ return array(
 
 				//General
 				'polaroid_new_thumbnail_dimensions'  => array(
-					'width'  => '250',
-					'height' => '300',
+					'width' => 250,
+					'height' => 200,
+					'crop' => true,
 				),
 				'polaroid_new_thumbnail_link'        => 'image',
 				'polaroid_new_lightbox'              => 'foogallery',
-				'polaroid_new_spacing'               => 'fg-gutter-20',
+				'polaroid_new_gutter'                => '20',
 				'polaroid_new_alignment'             => 'fg-center',
 				'polaroid_new_layout'                => 'fixed',
 				'polaroid_new_columns'               => '',
@@ -178,19 +179,14 @@ return array(
 				'polaroid_new_instagram'             => '',
 
 				//Captions
-				'polaroid_new_captions_type'         => 'fg-captions-bottom',
 				'polaroid_new_caption_title_source'  => 'title',
 				'polaroid_new_caption_desc_source'   => 'desc',
 				'polaroid_new_captions_limit_length' => 'yes',
 				'polaroid_new_caption_alignment'     => 'fg-c-c',
 
 				//Hover Effects
-				'polaroid_new_hover_effect_caption_visibility' => 'fg-caption-hover',
-				'polaroid_new_hover_effect_color'              => '',
 				'polaroid_new_hover_effect_icon'               => 'fg-hover-zoom2',
-				'polaroid_new_hover_effect_preset'             => 'fg-custom',
 				'polaroid_new_hover_effect_scale'              => 'fg-hover-zoomed',
-				'polaroid_new_hover_effect_transition'         => 'fg-hover-slide-up',
 				'polaroid_new_hover_effect_type'               => 'normal',
 				'polaroid_new_caption_invert_color'            => '',
 
@@ -211,6 +207,7 @@ return array(
 				'polaroid_new_video_size'        => '250x300',
 				'polaroid_new_video_sticky_icon' => '',
 			),
+			FOOGALLERY_META_NOTICE => '<strong><i class="dashicons dashicons-star-filled"></i>This is a PRO demo gallery!</strong> It showcases the following PRO features: <ul class="ul-disc"><li>Hover Effects</li><li>Filtering</li><li>Paging</li><li>Video</li></ul>',
 		),
 	), //Demo : Polaroid PRO
 	array(

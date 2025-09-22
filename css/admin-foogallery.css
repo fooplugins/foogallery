@@ -1171,3 +1171,11 @@ button[data-balloon]{overflow:visible}[data-balloon]{position:relative}[data-bal
 	left: 5px;
 	height: 1em;
 }
+
+.foogallery-gallery-notice .dashicons {
+	color: #00d0ff;
+}
+
+.foogallery-gallery-notice ul {
+	margin-top: 0;
+}

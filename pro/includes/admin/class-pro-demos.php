@@ -6,6 +6,99 @@ if ( ! class_exists( 'FooGallery_Pro_Demos' ) ) {
 
 		function __construct() {
 			add_action( 'wp_ajax_foogallery_admin_import_pro_demos', array( $this, 'create_pro_demo_galleries' ) );
+			add_action( 'edit_form_after_title', array( $this, 'maybe_render_gallery_notice' ) );
+			add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_gallery_notice_assets' ) );
+			add_action( 'wp_ajax_foogallery_dismiss_gallery_notice', array( $this, 'ajax_dismiss_gallery_notice' ) );
+		}
+
+		/**
+		 * Render the gallery notice when the post meta is available.
+		 *
+		 * @param WP_Post $post The current post object.
+		 */
+		function maybe_render_gallery_notice( $post ) {
+			if ( empty( $post ) || FOOGALLERY_CPT_GALLERY !== $post->post_type ) {
+				return;
+			}
+
+			$notice = get_post_meta( $post->ID, '_foogallery_notice', true );
+
+			if ( empty( $notice ) ) {
+				return;
+			}
+
+			$nonce  = wp_create_nonce( 'foogallery_dismiss_gallery_notice' );
+			$markup = wpautop( wp_kses_post( $notice ) );
+
+			printf(
+				'<div class="%1$s" data-post-id="%2$d" data-nonce="%3$s">%4$s</div>',
+				esc_attr( 'notice notice-info is-dismissible foogallery-gallery-notice' ),
+				absint( $post->ID ),
+				esc_attr( $nonce ),
+				$markup
+			);
+		}
+
+		/**
+		 * Enqueue inline assets so the notice can be dismissed via AJAX.
+		 *
+		 * @param string $hook The current admin page hook.
+		 */
+		function enqueue_gallery_notice_assets( $hook ) {
+			if ( wp_doing_ajax() ) {
+				return;
+			}
+
+			$screen = function_exists( 'get_current_screen' ) ? get_current_screen() : null;
+
+			if ( empty( $screen ) || 'post' !== $screen->base || FOOGALLERY_CPT_GALLERY !== $screen->post_type ) {
+				return;
+			}
+
+			wp_enqueue_script( 'jquery' );
+
+			$script = <<<'JS'
+jQuery(function($){
+	$(document).on('click', '.foogallery-gallery-notice .notice-dismiss', function(){
+		var $notice = $(this).closest('.foogallery-gallery-notice');
+		var postId = $notice.data('postId');
+		var nonce = $notice.data('nonce');
+
+		if (!postId || !nonce) {
+			return;
+		}
+
+		$.post(ajaxurl, {
+			action: 'foogallery_dismiss_gallery_notice',
+			post_id: postId,
+			nonce: nonce
+		});
+	});
+});
+JS;
+
+			wp_add_inline_script( 'jquery', $script );
+		}
+
+		/**
+		 * Handle AJAX requests to dismiss the gallery notice.
+		 */
+		function ajax_dismiss_gallery_notice() {
+			$post_id = isset( $_POST['post_id'] ) ? absint( $_POST['post_id'] ) : 0;
+
+			check_ajax_referer( 'foogallery_dismiss_gallery_notice', 'nonce' );
+
+			if ( ! $post_id || FOOGALLERY_CPT_GALLERY !== get_post_type( $post_id ) ) {
+				wp_send_json_error();
+			}
+
+			if ( ! current_user_can( 'edit_post', $post_id ) ) {
+				wp_send_json_error();
+			}
+
+			delete_post_meta( $post_id, '_foogallery_notice' );
+
+			wp_send_json_success();
 		}
 
 		/**

@@ -33,7 +33,7 @@ if ( ! class_exists( 'FooGallery_PostTypes' ) ) {
             add_filter( 'bulk_post_updated_messages', array( $this, 'update_bulk_messages' ), 10, 2 );
 
             //clear capabilities after option update.
-            add_action( 'update_option_foogallery', array( $this, 'clear_capabilities' ), 10, 3 );
+            add_action( 'update_option_foogallery', array( $this, 'clear_capabilities' ), 10, 3 );      
         }
 
         /**
