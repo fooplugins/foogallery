@@ -295,9 +295,83 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 				);
 
 				$filtering_fields[] = array(
+					'id'       => 'filtering_style',
+					'title'    => __( 'Style', 'foogallery' ),
+					'desc'     => __( 'The style of the filters.', 'foogallery' ),
+					'section'  => __( 'Filtering', 'foogallery' ),
+					'subsection' => array( 'filtering-general' => __( 'General', 'foogallery' ) ),
+					'type'     => 'radio',
+					'default'  => '',
+					'choices'  => apply_filters( 'foogallery_gallery_template_filtering_style_choices', array(
+						''    => __( 'Default', 'foogallery' ),
+						'button' => __( 'Button', 'foogallery' ),
+						'button-block'   => __( 'Button Block', 'foogallery' ),
+						'pill'   => __( 'Pill', 'foogallery' ),
+						'pill-block'   => __( 'Pill Block', 'foogallery' ),
+						'dropdown'   => __( 'Dropdown', 'foogallery' ),
+						'dropdown-block'   => __( 'Dropdown Block', 'foogallery' ),
+					) ),
+					'row_data' => array(
+						'data-foogallery-hidden'                   => true,
+						'data-foogallery-show-when-field-operator' => '!==',
+						'data-foogallery-show-when-field'          => 'filtering_type',
+						'data-foogallery-show-when-field-value'    => '',
+						'data-foogallery-change-selector'          => 'input',
+						'data-foogallery-preview'                  => 'shortcode'
+					),
+					'class' => 'foogallery-radios-8em',
+				);
+
+				$filtering_fields[] = array(
+					'id'       => 'filtering_alignment',
+					'title'    => __( 'Alignment', 'foogallery' ),
+					'desc'     => __( 'The alignment of the filters.', 'foogallery' ),
+					'section'  => __( 'Filtering', 'foogallery' ),
+					'subsection' => array( 'filtering-general' => __( 'General', 'foogallery' ) ),
+					'type'     => 'radio',
+					'default'  => '',
+					'choices'  => apply_filters( 'foogallery_gallery_template_filtering_alignment_choices', array(
+						'left' => __( 'Left', 'foogallery' ),
+						'center'   => __( 'Center', 'foogallery' ),
+						'right'   => __( 'Right', 'foogallery' )
+					) ),
+					'row_data' => array(
+						'data-foogallery-hidden'                   => true,
+						'data-foogallery-show-when-field-operator' => '!==',
+						'data-foogallery-show-when-field'          => 'filtering_type',
+						'data-foogallery-show-when-field-value'    => '',
+						'data-foogallery-change-selector'          => 'input',
+						'data-foogallery-preview'                  => 'shortcode'
+					)
+				);
+
+				$filtering_fields[] = array(
+					'id'       => 'filtering_collapse',
+					'title'    => __( 'Collapse', 'foogallery' ),
+					'desc'     => __( 'Whether or not to collapse the filters into a dropdown on smaller devices.', 'foogallery' ),
+					'section'  => __( 'Filtering', 'foogallery' ),
+					'subsection' => array( 'filtering-general' => __( 'General', 'foogallery' ) ),
+					'type'     => 'radio',
+					'default'  => 'true',
+					'choices'  => array(
+						'false'  => __( 'Do Nothing', 'foogallery' ),
+						'true' => __( 'Collapse', 'foogallery' ),
+					),
+					'row_data' => array(
+						'data-foogallery-hidden'                   => true,
+						'data-foogallery-show-when-field-operator' => '!==',
+						'data-foogallery-show-when-field'          => 'filtering_type',
+						'data-foogallery-show-when-field-value'    => '',
+						'data-foogallery-change-selector'          => 'input',
+						'data-foogallery-value-selector'           => 'input:checked',
+						'data-foogallery-preview'                  => 'shortcode'
+					)
+				);
+
+				$filtering_fields[] = array(
 					'id'       => 'filtering_hideall',
-					'title'    => __( 'Hide "All" Button', 'foogallery' ),
-					'desc'     => __( 'You can choose to hide the default "All" Button.', 'foogallery' ),
+					'title'    => __( 'Hide "All" Option', 'foogallery' ),
+					'desc'     => __( 'You can choose to hide the default "All" filter option.', 'foogallery' ),
 					'section'  => __( 'Filtering', 'foogallery' ),
 					'subsection' => array( 'filtering-general' => __( 'General', 'foogallery' ) ),
 					'type'     => 'radio',
@@ -676,8 +750,10 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 						'below-center' => __( 'Below Center', 'foogallery' ),
 						'below-right'  => __( 'Below Right', 'foogallery' ),
 						'below-left'   => __( 'Below Left', 'foogallery' ),
-						'before'   => __( 'Before Tags/Categories', 'foogallery' ),
-						'after'   => __( 'After Tags/Categories', 'foogallery' ),
+						'before'   => __( 'Before Filter', 'foogallery' ),
+						'after'   => __( 'After Filter', 'foogallery' ),
+						'before-merged' => __( 'Before Filter &amp; Merged', 'foogallery' ),
+						'after-merged' => __( 'After Filter &amp; Merged', 'foogallery' ),
 					),
 					'row_data' => array(
 						'data-foogallery-hidden'                   => true,
@@ -724,6 +800,21 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 					$theme = foogallery_gallery_template_setting( 'filtering_theme', '' );
 					if ( '' !== $theme ) {
 						$filtering_options['theme'] = $theme;
+					}
+
+					$style = foogallery_gallery_template_setting( 'filtering_style', '' );
+					if ( '' !== $style ) {
+						$filtering_options['style'] = $style;
+					}
+
+					$alignment = foogallery_gallery_template_setting( 'filtering_alignment', '' );
+					if ( '' !== $alignment ) {
+						$filtering_options['align'] = $alignment;
+					}
+
+					$collapse = foogallery_gallery_template_setting( 'filtering_collapse', '' );
+					if ( '' !== $collapse ) {
+						$filtering_options['collapse'] = $collapse === 'true';
 					}
 
 					if ( $filtering_hideall ) {
