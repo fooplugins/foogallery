@@ -909,14 +909,16 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 					}
 
 					// Multi-level
-					$filtering_multi_override = foogallery_gallery_template_setting( 'filtering_multi_override', '' );
+					if ( 'multi' === $filtering_mode ) {
+						$filtering_multi_override = foogallery_gallery_template_setting( 'filtering_multi_override', '' );
 
-					if ( !empty( $filtering_multi_override ) ) {
-						$filtering_multi_override_array = @json_decode( wp_unslash( $filtering_multi_override ), true );
+						if ( !empty( $filtering_multi_override ) ) {
+							$filtering_multi_override_array = @json_decode( wp_unslash( $filtering_multi_override ), true );
 
-						if ( isset( $filtering_multi_override_array ) ) {
-							$filtering_options['tags'] = $filtering_multi_override_array;
-							$filtering_options['sortBy'] = 'none';
+							if ( isset( $filtering_multi_override_array ) ) {
+								$filtering_options['tags'] = $filtering_multi_override_array;
+								$filtering_options['sortBy'] = 'none';
+							}
 						}
 					}
 				}
@@ -1176,7 +1178,7 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 			echo '<div class="foogallery-multi-filtering-modal-content-inner">';
 
 			if ( !empty( $attachments ) ) {
-				$attachment_ids = array_filter( array_map( 'absint', (array) $attachments ) );
+				$attachment_ids = array_filter( array_map( 'absint', explode( ',', $attachments ) ) );
 				$terms = wp_get_object_terms( $attachment_ids, $taxonomy );
 			}
 
