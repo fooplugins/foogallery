@@ -22,7 +22,6 @@ require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-datasource-med
 require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-datasource-folders.php';
 require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-datasource-lightroom.php';
 require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-wplr-support.php';
-require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-instagram-helper.php';
 require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-datasource-realmedialibrary.php';
 require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-datasource-post-query.php';
 require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-advanced-captions.php';
