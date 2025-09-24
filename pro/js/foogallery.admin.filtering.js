@@ -70,6 +70,10 @@ FooGallery.utils.ready(function ($) {
 		foogallery_multi_filtering_modal_load_content();
 	});
 
+	$('.foogallery-multi-filtering-modal-wrapper').on('click', '.foogallery-multi-filtering-modal-load-all', function (e) {
+		foogallery_multi_filtering_modal_load_content();
+	});
+
 	//select a term for a level
 	$('.foogallery-multi-filtering-modal-container').on('click', '.foogallery-multi-filtering-select-term', function(e) {
 		e.preventDefault();
@@ -121,9 +125,12 @@ FooGallery.utils.ready(function ($) {
 	function foogallery_multi_filtering_modal_load_content() {
 		var $content = $('.foogallery-multi-filtering-modal-container'),
 			$wrapper = $('.foogallery-multi-filtering-modal-wrapper')
+			loadAll = $('.foogallery-multi-filtering-modal-load-all').is(':checked'),
+			attachments = loadAll ? null : $('#foogallery_attachments').val(),
 			data = {
 				action: 'foogallery_multi_filtering_content',
 				foogallery_id: $wrapper.data('foogalleryid'),
+				attachments: attachments,
 				nonce: $wrapper.data('nonce'),
 				levels: JSON.parse( $('.filtering-multi-input:enabled').val() || '{}' )
 			};

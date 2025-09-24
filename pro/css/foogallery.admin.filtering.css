@@ -181,3 +181,7 @@
 .foogallery_template_field .filtering-multi-table th {
     text-align: left;
 }
+
+.foogallery-multi-filtering-modal-title label {
+    vertical-align: unset;
+}

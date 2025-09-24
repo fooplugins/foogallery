@@ -209,10 +209,9 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 					'type'     => 'radio',
 					'default'  => '',
 					'choices'  => apply_filters('foogallery_gallery_template_filtering_type_choices', array(
-							''        => __( 'None', 'foogallery' ),
-							'simple' => __( 'Simple', 'foogallery' ),
-							'advanced'    => __( 'Advanced', 'foogallery' ),
-							'multi'    => __( 'Multi-level', 'foogallery' )
+							''        => __( 'Disabled', 'foogallery' ),
+							'simple' => __( 'Enabled', 'foogallery' ),
+							'multi' => __( 'Multi-Level', 'foogallery' )
 						)
 					),
 					'row_data' => array(
@@ -418,13 +417,15 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 					'title'   => __( 'Filtering Selection Mode Help', 'foogallery' ),
 					'desc'    => __( 'The default selection mode is Single, which allows you to choose a single filter at a time. You can also choose to filter by more than 1 filter by selecting Multiple. Multiple supports either a union (OR) or an intersect (AND) mode.', 'foogallery' ),
 					'section' => __( 'Filtering', 'foogallery' ),
-					'subsection' => array( 'filtering-general' => __( 'General', 'foogallery' ) ),
+					'subsection' => array( 'filtering-advanced' => __( 'Advanced', 'foogallery' ) ),
 					'type'    => 'help',
 					'row_data' => array(
-						'data-foogallery-hidden' => true,
+						'data-foogallery-hidden'                   => true,
+						'data-foogallery-show-when-field-operator' => '!==',
 						'data-foogallery-show-when-field'          => 'filtering_type',
-						'data-foogallery-show-when-field-operator' => 'regex',
-						'data-foogallery-show-when-field-value'    => 'advanced|multi',
+						'data-foogallery-show-when-field-value'    => '',
+						'data-foogallery-change-selector'          => 'input',
+						'data-foogallery-preview'                  => 'shortcode'
 					)
 				);
 
@@ -433,7 +434,7 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 					'title'    => __( 'Selection Mode', 'foogallery' ),
 					'desc'     => __( 'The selection mode to use when filtering.', 'foogallery' ),
 					'section'  => __( 'Filtering', 'foogallery' ),
-					'subsection' => array( 'filtering-general' => __( 'General', 'foogallery' ) ),
+					'subsection' => array( 'filtering-advanced' => __( 'Advanced', 'foogallery' ) ),
 					'type'     => 'radio',
 					'default'  => 'single',
 					'choices'  => apply_filters (
@@ -445,9 +446,43 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 					),
 					'row_data' => array(
 						'data-foogallery-hidden'                   => true,
+						'data-foogallery-show-when-field-operator' => '!==',
 						'data-foogallery-show-when-field'          => 'filtering_type',
-						'data-foogallery-show-when-field-operator' => 'regex',
-						'data-foogallery-show-when-field-value'    => 'advanced|multi',
+						'data-foogallery-show-when-field-value'    => '',
+						'data-foogallery-change-selector'          => 'input',
+						'data-foogallery-preview'                  => 'shortcode'
+					)
+				);
+
+				$filtering_fields[] = array(
+					'id'      => 'filtering_multi_help',
+					'title'   => __( 'What is Multi-Level Filtering?', 'foogallery' ),
+					'desc'    => __( 'You can setup multiple levels of filters, where each level will filter the next level. This should be used in advanced scenarios where you need to filter by multiple levels of data.', 'foogallery' ),
+					'section' => __( 'Filtering', 'foogallery' ),
+					'subsection' => array( 'filtering-multi' => __( 'Multi-Level', 'foogallery' ) ),
+					'type'    => 'help',
+					'row_data' => array(
+						'data-foogallery-hidden'                   => true,
+						'data-foogallery-show-when-field-operator' => '===',
+						'data-foogallery-show-when-field'          => 'filtering_type',
+						'data-foogallery-show-when-field-value'    => 'multi',
+						'data-foogallery-change-selector'          => 'input',
+						'data-foogallery-preview'                  => 'shortcode'
+					)
+				);
+
+				$filtering_fields[] = array(
+					'id'      => 'filtering_multi_help_disabled',
+					'title'   => __( 'Multi-Level Filtering Disabled', 'foogallery' ),
+					'desc'    => __( 'Set Filtering under the General tab to "Multi-Level" to enable this feature.', 'foogallery' ),
+					'section' => __( 'Filtering', 'foogallery' ),
+					'subsection' => array( 'filtering-multi' => __( 'Multi-Level', 'foogallery' ) ),
+					'type'    => 'help',
+					'row_data' => array(
+						'data-foogallery-hidden'                   => true,
+						'data-foogallery-show-when-field-operator' => '!==',
+						'data-foogallery-show-when-field'          => 'filtering_type',
+						'data-foogallery-show-when-field-value'    => 'multi',
 						'data-foogallery-change-selector'          => 'input',
 						'data-foogallery-preview'                  => 'shortcode'
 					)
@@ -458,7 +493,7 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 					'title'    => __( 'Levels', 'foogallery' ),
 					'desc'     => __( 'The filtering levels that will be used for the gallery.', 'foogallery' ),
 					'section'  => __( 'Filtering', 'foogallery' ),
-					'subsection' => array( 'filtering-general' => __( 'General', 'foogallery' ) ),
+					'subsection' => array( 'filtering-multi' => __( 'Multi-Level', 'foogallery' ) ),
 					'type'     => 'filtering_multi',
 					'default'  => '',
 					'row_data' => array(
@@ -473,22 +508,22 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 
 				$filtering_fields[] = array(
 					'id'       => 'filtering_min',
-					'title'    => __( 'Minimum', 'foogallery' ),
+					'title'    => __( 'Minimum Count', 'foogallery' ),
 					'desc'     => __( 'The minimum count before a filter is shown, 0 = disabled and all are shown.', 'foogallery' ),
 					'section'  => __( 'Filtering', 'foogallery' ),
-					'subsection' => array( 'filtering-general' => __( 'General', 'foogallery' ) ),
+					'subsection' => array( 'filtering-advanced' => __( 'Advanced', 'foogallery' ) ),
 					'type'     => 'number',
 					'class'    => 'small-text',
 					'default'  => 0,
 					'step'     => '1',
 					'min'      => '0',
 					'row_data' => array(
-						'data-foogallery-change-selector'          => 'input',
-						'data-foogallery-preview'                  => 'shortcode',
 						'data-foogallery-hidden'                   => true,
+						'data-foogallery-show-when-field-operator' => '!==',
 						'data-foogallery-show-when-field'          => 'filtering_type',
-						'data-foogallery-show-when-field-operator' => 'regex',
-						'data-foogallery-show-when-field-value'    => 'advanced|multi',
+						'data-foogallery-show-when-field-value'    => '',
+						'data-foogallery-change-selector'          => 'input',
+						'data-foogallery-preview'                  => 'shortcode'
 					)
 				);
 
@@ -504,12 +539,12 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 					'step'     => '1',
 					'min'      => '0',
 					'row_data' => array(
-						'data-foogallery-change-selector'          => 'input',
-						'data-foogallery-preview'                  => 'shortcode',
 						'data-foogallery-hidden'                   => true,
+						'data-foogallery-show-when-field-operator' => '!==',
 						'data-foogallery-show-when-field'          => 'filtering_type',
-						'data-foogallery-show-when-field-operator' => 'regex',
-						'data-foogallery-show-when-field-value'    => 'advanced|multi',
+						'data-foogallery-show-when-field-value'    => '',
+						'data-foogallery-change-selector'          => 'input',
+						'data-foogallery-preview'                  => 'shortcode'
 					)
 				);
 
@@ -518,22 +553,22 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 					'title'    => __( 'Show Count', 'foogallery' ),
 					'desc'     => __( 'Whether or not to show the counts within each filter.', 'foogallery' ),
 					'section'  => __( 'Filtering', 'foogallery' ),
-					'subsection' => array( 'filtering-general' => __( 'General', 'foogallery' ) ),
+					'subsection' => array( 'filtering-advanced' => __( 'Advanced', 'foogallery' ) ),
 					'type'     => 'radio',
 					'default'  => '',
 					'choices'  => apply_filters(
-						'foogallery_gallery_template_filtering_show_count_choices', array(
-						''     => __( 'No', 'foogallery' ),
-						'true' => __( 'Yes', 'foogallery' ),
-					)
+							'foogallery_gallery_template_filtering_show_count_choices', array(
+							''     => __( 'No', 'foogallery' ),
+							'true' => __( 'Yes', 'foogallery' ),
+						)
 					),
 					'row_data' => array(
-						'data-foogallery-change-selector'          => 'input',
-						'data-foogallery-preview'                  => 'shortcode',
 						'data-foogallery-hidden'                   => true,
+						'data-foogallery-show-when-field-operator' => '!==',
 						'data-foogallery-show-when-field'          => 'filtering_type',
-						'data-foogallery-show-when-field-operator' => '===',
-						'data-foogallery-show-when-field-value'    => 'advanced',
+						'data-foogallery-show-when-field-value'    => '',
+						'data-foogallery-change-selector'          => 'input',
+						'data-foogallery-preview'                  => 'shortcode'
 					)
 				);
 
@@ -542,23 +577,22 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 					'title'    => __( 'Adjust Size', 'foogallery' ),
 					'desc'     => __( 'Whether or not to adjust the size of each filter depending on the count.', 'foogallery' ),
 					'section'  => __( 'Filtering', 'foogallery' ),
-					'subsection' => array( 'filtering-general' => __( 'General', 'foogallery' ) ),
+					'subsection' => array( 'filtering-advanced' => __( 'Advanced', 'foogallery' ) ),
 					'type'     => 'radio',
 					'default'  => 'no',
 					'choices'  => apply_filters(
-						'foogallery_gallery_template_filtering_adjust_size_choices', array(
-						'no'  => __( 'No', 'foogallery' ),
-						'yes' => __( 'Yes', 'foogallery' ),
-					)
+							'foogallery_gallery_template_filtering_adjust_size_choices', array(
+							'no'  => __( 'No', 'foogallery' ),
+							'yes' => __( 'Yes', 'foogallery' ),
+						)
 					),
 					'row_data' => array(
-						'data-foogallery-change-selector'          => 'input',
-						'data-foogallery-value-selector'           => 'input:checked',
-						'data-foogallery-preview'                  => 'shortcode',
 						'data-foogallery-hidden'                   => true,
+						'data-foogallery-show-when-field-operator' => '!==',
 						'data-foogallery-show-when-field'          => 'filtering_type',
-						'data-foogallery-show-when-field-operator' => '===',
-						'data-foogallery-show-when-field-value'    => 'advanced',
+						'data-foogallery-show-when-field-value'    => '',
+						'data-foogallery-change-selector'          => 'input',
+						'data-foogallery-preview'                  => 'shortcode'
 					)
 				);
 
@@ -567,7 +601,7 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 					'title'    => __( 'Smallest Size', 'foogallery' ),
 					'desc'     => __( 'The smallest possible font size to use, when Adjust Size is used.', 'foogallery' ),
 					'section'  => __( 'Filtering', 'foogallery' ),
-					'subsection' => array( 'filtering-general' => __( 'General', 'foogallery' ) ),
+					'subsection' => array( 'filtering-advanced' => __( 'Advanced', 'foogallery' ) ),
 					'type'     => 'number',
 					'class'    => 'small-text',
 					'default'  => 12,
@@ -588,7 +622,7 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 					'title'    => __( 'Largest Size', 'foogallery' ),
 					'desc'     => __( 'The largest possible font size to use, when Adjust Size is used.', 'foogallery' ),
 					'section'  => __( 'Filtering', 'foogallery' ),
-					'subsection' => array( 'filtering-general' => __( 'General', 'foogallery' ) ),
+					'subsection' => array( 'filtering-advanced' => __( 'Advanced', 'foogallery' ) ),
 					'type'     => 'number',
 					'class'    => 'small-text',
 					'default'  => 16,
@@ -609,23 +643,22 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 					'title'    => __( 'Adjust Opacity', 'foogallery' ),
 					'desc'     => __( 'Whether or not to adjust the opacity of each filter depending on the count.', 'foogallery' ),
 					'section'  => __( 'Filtering', 'foogallery' ),
-					'subsection' => array( 'filtering-general' => __( 'General', 'foogallery' ) ),
+					'subsection' => array( 'filtering-advanced' => __( 'Advanced', 'foogallery' ) ),
 					'type'     => 'radio',
 					'default'  => 'no',
 					'choices'  => apply_filters(
 						'foogallery_gallery_template_filtering_adjust_opacity_choices', array(
-						'no'  => __( 'No', 'foogallery' ),
-						'yes' => __( 'Yes', 'foogallery' ),
-					)
+							'no'  => __( 'No', 'foogallery' ),
+							'yes' => __( 'Yes', 'foogallery' ),
+						)
 					),
 					'row_data' => array(
-						'data-foogallery-change-selector'          => 'input',
-						'data-foogallery-value-selector'           => 'input:checked',
-						'data-foogallery-preview'                  => 'shortcode',
 						'data-foogallery-hidden'                   => true,
+						'data-foogallery-show-when-field-operator' => '!==',
 						'data-foogallery-show-when-field'          => 'filtering_type',
-						'data-foogallery-show-when-field-operator' => '===',
-						'data-foogallery-show-when-field-value'    => 'advanced',
+						'data-foogallery-show-when-field-value'    => '',
+						'data-foogallery-change-selector'          => 'input',
+						'data-foogallery-preview'                  => 'shortcode'
 					)
 				);
 
@@ -634,7 +667,7 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 					'title'    => __( 'Lightest Opacity', 'foogallery' ),
 					'desc'     => __( 'The lightest or most transparent opacity to use, when Adjust Opacity is used.', 'foogallery' ),
 					'section'  => __( 'Filtering', 'foogallery' ),
-					'subsection' => array( 'filtering-general' => __( 'General', 'foogallery' ) ),
+					'subsection' => array( 'filtering-advanced' => __( 'Advanced', 'foogallery' ) ),
 					'type'     => 'number',
 					'class'    => 'small-text',
 					'default'  => 0.5,
@@ -655,7 +688,7 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 					'title'    => __( 'Darkest Opacity', 'foogallery' ),
 					'desc'     => __( 'The darkest or most opaque opacity to use, when Adjust Opacity is used.', 'foogallery' ),
 					'section'  => __( 'Filtering', 'foogallery' ),
-					'subsection' => array( 'filtering-general' => __( 'General', 'foogallery' ) ),
+					'subsection' => array( 'filtering-advanced' => __( 'Advanced', 'foogallery' ) ),
 					'type'     => 'number',
 					'class'    => 'small-text',
 					'default'  => '1',
@@ -674,7 +707,7 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 				$filtering_fields[] = array(
 					'id'       => 'filtering_sort',
 					'title'    => __( 'Sort Mode', 'foogallery' ),
-					'desc'     => __( 'How do you want to sort your filters? Default is by the filter name.', 'foogallery' ),
+					'desc'     => __( 'How do you want to sort your filters? Default is alphabetical order.', 'foogallery' ),
 					'section'  => __( 'Filtering', 'foogallery' ),
 					'subsection' => array( 'filtering-general' => __( 'General', 'foogallery' ) ),
 					'type'     => 'radio',
@@ -690,9 +723,9 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 					),
 					'row_data' => array(
 						'data-foogallery-hidden'                   => true,
-						'data-foogallery-show-when-field-operator' => '===',
+						'data-foogallery-show-when-field-operator' => '!==',
 						'data-foogallery-show-when-field'          => 'filtering_type',
-						'data-foogallery-show-when-field-value'    => 'advanced',
+						'data-foogallery-show-when-field-value'    => '',
 						'data-foogallery-change-selector'          => 'input',
 						'data-foogallery-preview'                  => 'shortcode'
 					)
@@ -703,16 +736,16 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 					'title'    => __( 'Override', 'foogallery' ),
 					'desc'     => __( 'You can override which filters are shown, by providing a comma-separated list. Leave blank for them to be auto-generated.', 'foogallery' ),
 					'section'  => __( 'Filtering', 'foogallery' ),
-					'subsection' => array( 'filtering-general' => __( 'General', 'foogallery' ) ),
+					'subsection' => array( 'filtering-advanced' => __( 'Advanced', 'foogallery' ) ),
 					'type'     => 'text',
 					'default'  => '',
 					'row_data' => array(
-						'data-foogallery-change-selector'          => 'input',
-						'data-foogallery-preview'                  => 'shortcode',
 						'data-foogallery-hidden'                   => true,
+						'data-foogallery-show-when-field-operator' => '!==',
 						'data-foogallery-show-when-field'          => 'filtering_type',
-						'data-foogallery-show-when-field-operator' => '===',
-						'data-foogallery-show-when-field-value'    => 'advanced',
+						'data-foogallery-show-when-field-value'    => '',
+						'data-foogallery-change-selector'          => 'input',
+						'data-foogallery-preview'                  => 'shortcode'
 					)
 				);
 
@@ -825,74 +858,76 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 						$filtering_options['taxonomy'] = $filtering_source;
 					}
 
-					$filtering_search = foogallery_gallery_template_setting( 'filtering_search' ) !== '';
-					if ( $filtering_search ) {
-						$filtering_options['search'] = true;
-						$filtering_options['searchPosition'] = foogallery_gallery_template_setting( 'filtering_search_position', 'above-center' );
+					$filtering_limit = intval( foogallery_gallery_template_setting( 'filtering_limit', '0' ) );
+					if ( $filtering_limit > 0 ) {
+						$filtering_options['limit'] = $filtering_limit;
 					}
 
-					if ( 'advanced' === $filtering ) {
-
-						$filtering_options['mode'         ] = foogallery_gallery_template_setting( 'filtering_mode', 'single' );
-						$filtering_options['min'          ] = intval( foogallery_gallery_template_setting( 'filtering_min', '0' ) );
-						$filtering_options['limit'        ] = intval( foogallery_gallery_template_setting( 'filtering_limit', '0' ) );
-						$filtering_options['showCount'    ] = foogallery_gallery_template_setting( 'filtering_show_count', '' ) === 'true';
-
-						$filtering_adjust_size    = foogallery_gallery_template_setting( 'filtering_adjust_size', 'no' ) === 'yes';
-						if ( $filtering_adjust_size ) {
-							$filtering_options['adjustSize'] = $filtering_adjust_size;
-							$filtering_options['smallest'] = intval( foogallery_gallery_template_setting( 'filtering_adjust_size_smallest', '12' ) );
-							$filtering_options['largest']  = intval( foogallery_gallery_template_setting( 'filtering_adjust_size_largest', '16' ) );
-						}
-
-						$filtering_adjust_opacity = foogallery_gallery_template_setting( 'filtering_adjust_opacity', 'no' ) === 'yes';
-						if ( $filtering_adjust_opacity ) {
-							$filtering_options['adjustOpacity'] = $filtering_adjust_opacity;
-							$filtering_options['lightest'] = foogallery_gallery_template_setting( 'filtering_adjust_opacity_lightest', '0.5' );
-							$filtering_options['darkest']  = foogallery_gallery_template_setting( 'filtering_adjust_opacity_darkest', '1' );
-						}
-
-						$filtering_sort = foogallery_gallery_template_setting( 'filtering_sort', 'value' );
-						if ( 'value' !== $filtering_sort ) {
-							if ( foo_contains( $filtering_sort, '_inverse' ) ) {
-								$filtering_sort = str_replace( '_inverse', '', $filtering_sort );
-								$filtering_options['sortInvert'] = true;
-							}
-							$filtering_options['sortBy'] = trim( $filtering_sort );
-						}
-
-						$filtering_override = foogallery_gallery_template_setting( 'filtering_override', '' );
-						if ( !empty( $filtering_override ) ) {
-							$filtering_options['tags'] = explode( ',', $filtering_override );
-							$filtering_options['tags'] = array_filter( array_map( 'trim', $filtering_options['tags'] ) ) ;
-						}
-					} else if ( 'multi' === $filtering ) {
-
-						$filtering_multi_override = foogallery_gallery_template_setting( 'filtering_multi_override', '' );
-
-						if ( !empty( $filtering_multi_override ) ) {
-							$filtering_multi_override_array = @json_decode( wp_unslash( $filtering_multi_override ), true );
-
-							if ( isset( $filtering_multi_override_array ) ) {
-								$filtering_options['tags'] = $filtering_multi_override_array;
-								$filtering_options['sortBy'] = 'none';
-							}
-						}
-
-						$filtering_options['mode'     ] = foogallery_gallery_template_setting( 'filtering_mode', 'single' );
-						$filtering_options['min'      ] = intval( foogallery_gallery_template_setting( 'filtering_min', '0' ) );
-						$filtering_options['limit'    ] = intval( foogallery_gallery_template_setting( 'filtering_limit', '0' ) );
+					//Now add the advnaced settings
+					$filtering_mode = foogallery_gallery_template_setting( 'filtering_mode', 'single' );
+					if ( 'single' !== $filtering_mode ) {
+						$filtering_options['mode'] = $filtering_mode;
 					}
-				} else {
 
-					$filtering_search = foogallery_gallery_template_setting( 'filtering_search' ) !== '';
-					if ( $filtering_search ) {
-						$filtering_options = array(
-							'type'           => 'tags',
-							'search'         => true,
-							'searchPosition' => foogallery_gallery_template_setting( 'filtering_search_position', 'above-center' ),
-						);
+					$filtering_min = intval( foogallery_gallery_template_setting( 'filtering_min', '0' ) );
+					if ( $filtering_min > 0 ) {
+						$filtering_options['min'] = $filtering_min;
 					}
+
+					$filtering_show_count = foogallery_gallery_template_setting( 'filtering_show_count', '' ) === 'true';
+					if ( $filtering_show_count ) {
+						$filtering_options['showCount'] = $filtering_show_count;
+					}
+
+					$filtering_adjust_size    = foogallery_gallery_template_setting( 'filtering_adjust_size', 'no' ) === 'yes';
+					if ( $filtering_adjust_size ) {
+						$filtering_options['adjustSize'] = $filtering_adjust_size;
+						$filtering_options['smallest'] = intval( foogallery_gallery_template_setting( 'filtering_adjust_size_smallest', '12' ) );
+						$filtering_options['largest']  = intval( foogallery_gallery_template_setting( 'filtering_adjust_size_largest', '16' ) );
+					}
+
+					$filtering_adjust_opacity = foogallery_gallery_template_setting( 'filtering_adjust_opacity', 'no' ) === 'yes';
+					if ( $filtering_adjust_opacity ) {
+						$filtering_options['adjustOpacity'] = $filtering_adjust_opacity;
+						$filtering_options['lightest'] = foogallery_gallery_template_setting( 'filtering_adjust_opacity_lightest', '0.5' );
+						$filtering_options['darkest']  = foogallery_gallery_template_setting( 'filtering_adjust_opacity_darkest', '1' );
+					}
+
+					$filtering_sort = foogallery_gallery_template_setting( 'filtering_sort', 'value' );
+					if ( 'value' !== $filtering_sort ) {
+						if ( foo_contains( $filtering_sort, '_inverse' ) ) {
+							$filtering_sort = str_replace( '_inverse', '', $filtering_sort );
+							$filtering_options['sortInvert'] = true;
+						}
+						$filtering_options['sortBy'] = trim( $filtering_sort );
+					}
+
+					$filtering_override = foogallery_gallery_template_setting( 'filtering_override', '' );
+					if ( !empty( $filtering_override ) ) {
+						$filtering_options['tags'] = explode( ',', $filtering_override );
+						$filtering_options['tags'] = array_filter( array_map( 'trim', $filtering_options['tags'] ) ) ;
+					}
+
+					// Multi-level
+					$filtering_multi_override = foogallery_gallery_template_setting( 'filtering_multi_override', '' );
+
+					if ( !empty( $filtering_multi_override ) ) {
+						$filtering_multi_override_array = @json_decode( wp_unslash( $filtering_multi_override ), true );
+
+						if ( isset( $filtering_multi_override_array ) ) {
+							$filtering_options['tags'] = $filtering_multi_override_array;
+							$filtering_options['sortBy'] = 'none';
+						}
+					}
+				}
+
+				// Lastly, handle search
+				$filtering_search = foogallery_gallery_template_setting( 'filtering_search' ) !== '';
+
+				if ( $filtering_search ) {
+					$filtering_options['type'] = 'tags';
+					$filtering_options['search'] = true;
+					$filtering_options['searchPosition'] = foogallery_gallery_template_setting( 'filtering_search_position', 'above-center' );
 				}
 
 				if ( $filtering_options !== false ) {
@@ -1102,6 +1137,9 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 							<div class="foogallery-multi-filtering-modal-title">
 								<h1><?php _e('Multi-level Filtering Builder', 'foogallery'); ?></h1>
 								<a class="foogallery-multi-filtering-modal-reload button" href="#"><span style="padding-top: 4px;" class="dashicons dashicons-update"></span> <?php _e('Reload', 'foogallery'); ?></a>
+								<label for="foogallery-multi-filtering-modal-load-all"><?php _e('Load All', 'foogallery'); ?></label>
+									<input type="checkbox" id="foogallery-multi-filtering-modal-load-all" class="foogallery-multi-filtering-modal-load-all" value="1" />
+								</label>
 							</div>
 							<div class="foogallery-multi-filtering-modal-container not-loaded">
 								<div class="spinner is-active"></div>
@@ -1129,16 +1167,26 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 		/**
 		 * Render the attachment container
 		 *
+		 * @param $taxonomy
+		 * @param $levels
 		 * @param $foogallery_id
 		 * @param $attachments
 		 */
-		public function render_content( $taxonomy, $levels ) {
+		public function render_content( $taxonomy, $levels, $foogallery_id, $attachments ) {
 			echo '<div class="foogallery-multi-filtering-modal-content-inner">';
 
-			$terms = get_terms( array(
-				'taxonomy' => $taxonomy,
-				'hide_empty' => false,
-			) );
+			if ( !empty( $attachments ) ) {
+				$attachment_ids = array_filter( array_map( 'absint', (array) $attachments ) );
+				$terms = wp_get_object_terms( $attachment_ids, $taxonomy );
+			}
+
+			if ( empty( $terms ) ) {
+				//Always make sure we have some terms.
+				$terms = get_terms( array(
+					'taxonomy' => $taxonomy,
+					'hide_empty' => false,
+				) );
+			}
 
 			$this->render_content_level( 0, array(), $terms, 'foogallery-multi-filtering-modal-content-level-template' );
 
@@ -1227,6 +1275,7 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 				$foogallery_id = intval( safe_get_from_request( 'foogallery_id' ) );
 				$taxonomy = safe_get_from_request( 'taxonomy' );
 				$levels = safe_get_from_request( 'levels' );
+				$attachments = safe_get_from_request( 'attachments' );
 
 				if ( empty( $taxonomy ) ) {
 					//select the taxonomy that is chosen for the gallery
@@ -1251,7 +1300,7 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 				}
 
 				echo '<div class="foogallery-multi-filtering-modal-content">';
-				$this->render_content( $taxonomy, $levels );
+				$this->render_content( $taxonomy, $levels, $foogallery_id, $attachments );
 				echo '</div>';
 
 				echo '<div class="foogallery-multi-filtering-modal-sidebar">';
