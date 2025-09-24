@@ -218,7 +218,6 @@ if ( !class_exists( 'FooGallery_Polaroid_Gallery_Template' ) ) {
 			$field_ids_to_remove = array(
                 'captions_help',
                 'hover_effect_help',
-                'hover_effect_scale',
                 'captions_type',
                 'hover_effect_preset',
                 'hover_effect_caption_visibility',
@@ -261,6 +260,8 @@ if ( !class_exists( 'FooGallery_Polaroid_Gallery_Template' ) ) {
 					);
 				} else if ( 'hover_effect_type' == $field['id'] ) {
 					unset( $field['choices']['preset'] );
+				} else if ( 'hover_effect_scale' == $field['id'] ) {
+					unset( $field['choices']['fg-hover-scale'] );
 				}
 			}
 
