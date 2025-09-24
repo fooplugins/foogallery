@@ -53,7 +53,10 @@ function zip(){
         "!webpack*.js",
         "!./{gulpfile.js,gulpfile.js/**/*}",
         '!README.md',
-        '!Gruntfile.js'
+        '!Gruntfile.js',
+        "!./{.nodeploy,.nodeploy/**/*}",
+        '!AGENTS.md',
+        '!WORDPRESS.md'
     ])
         .pipe(gulpZip(`${pkg.name}.v${pkg.version}.zip`))
         .pipe(gulp.dest("./dist"));
