@@ -3481,6 +3481,16 @@ div.fg-ribbon-7 > span {
         justify-content: center;
         align-items: stretch;
     }
+
+    .fg-tags-left .fg-tag-list {
+        justify-content: flex-start;
+    }
+    .fg-tags-center .fg-tag-list {
+        justify-content: center;
+    }
+    .fg-tags-right .fg-tag-list {
+        justify-content: flex-end;
+    }
 }
 
 .fg-tag-list {
@@ -3593,7 +3603,7 @@ div.fg-ribbon-7 > span {
     transition-property: color, opacity, border-color, background-color;
 }
 
-.fg-tag-dropdown-select {
+.fg-tag-dropdown-wrap .fg-tag-dropdown .fg-tag-dropdown-select {
     appearance: none;
     display: inline-flex;
     height: 100%;
@@ -3612,6 +3622,10 @@ div.fg-ribbon-7 > span {
     line-height: inherit;
     outline: none;
     box-shadow: none;
+    border-radius: 0;
+    min-height: unset;
+    max-width: unset;
+    vertical-align: unset;
 }
 
 .fg-tag-dropdown-icon {
@@ -3963,6 +3977,11 @@ div.fg-ribbon-7 > span {
 }
 @media (min-width: 600px) {
     /* Search Merged */
+    .fg-style-button-block:is(.fg-tags-left,.fg-tags-center,.fg-tags-right) .fg-tag-list {
+        justify-content: flex-start;
+        width: fit-content;
+    }
+
     .fg-style-button-block:is(.fg-search-after-merged,.fg-search-before-merged):not(.fg-has-wrapped) {
         gap: 0;
     }
@@ -4284,6 +4303,11 @@ div.fg-ribbon-7 > span {
 }
 @media (min-width: 600px) {
     /* Search Merged */
+    .fg-style-pill-block:is(.fg-tags-left,.fg-tags-center,.fg-tags-right) .fg-tag-list {
+        justify-content: flex-start;
+        width: fit-content;
+    }
+
     .fg-style-pill-block:is(.fg-search-after-merged,.fg-search-before-merged):not(.fg-has-wrapped) {
         gap: 0;
     }
@@ -8218,6 +8242,136 @@ html.fg-panel-no-scroll body {
 .foogallery.fg-image-viewer.fg-light.fg-shadow-large .fiv-inner,
 .foogallery.fg-image-viewer.fg-dark.fg-shadow-large .fiv-inner {
 	box-shadow: 0 1px 16px 0 rgba(0, 0, 0, 0.5);
+}
+.fg-image-viewer.fg-overlay-controls .fg-item-inner,
+.fg-image-viewer.fg-overlay-controls .fiv-inner .fiv-inner-container { background-color: transparent; }
+
+.fg-image-viewer.fg-overlay-controls .fiv-inner .fiv-ctrls {
+    border: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 6;
+    background: none;
+    pointer-events: none;
+}
+.fg-image-viewer.fg-overlay-controls .fiv-inner .fiv-ctrls .fiv-prev,
+.fg-image-viewer.fg-overlay-controls .fiv-inner .fiv-ctrls .fiv-next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    border-radius: 50%;
+    min-width: unset;
+    width: 40px;
+    height: 40px;
+    pointer-events: auto;
+    opacity: 0.3;
+    transition: opacity .3s ease;
+}
+.fg-image-viewer.fg-overlay-controls .fiv-inner .fiv-ctrls .fiv-prev {
+    left: 20px;
+}
+.fg-image-viewer.fg-overlay-controls .fiv-inner .fiv-ctrls .fiv-next {
+    right: 20px;
+}
+.fg-image-viewer.fg-overlay-controls .fiv-inner:hover .fiv-ctrls .fiv-prev,
+.fg-image-viewer.fg-overlay-controls .fiv-inner:hover .fiv-ctrls .fiv-next {
+    opacity: 0.6;
+}
+.fg-image-viewer.fg-overlay-controls .fiv-inner .fiv-ctrls .fiv-prev:hover,
+.fg-image-viewer.fg-overlay-controls .fiv-inner .fiv-ctrls .fiv-next:hover {
+    opacity: 1;
+}
+
+.fg-image-viewer.fg-overlay-controls .fiv-inner .fiv-ctrls .fiv-prev:before,
+.fg-image-viewer.fg-overlay-controls .fiv-inner .fiv-ctrls .fiv-next:before {
+    content: '\279C';
+    width: 100%;
+    height: 100%;
+    transform: translateY(0);
+    line-height: 40px;
+}
+.fg-image-viewer.fg-overlay-controls .fiv-inner .fiv-ctrls .fiv-prev:before {
+    transform: rotate(180deg);
+}
+.fg-image-viewer.fg-overlay-controls .fiv-inner .fiv-ctrls .fiv-prev span,
+.fg-image-viewer.fg-overlay-controls .fiv-inner .fiv-ctrls .fiv-next span {
+    display: none;
+}
+
+.fg-image-viewer.fg-overlay-controls .fiv-inner .fiv-ctrls .fiv-count {
+    display: none;
+}
+
+/* Border Sizes */
+.fg-image-viewer.fg-overlay-controls:not(.fg-border-thin,.fg-border-medium,.fg-border-thick) .fiv-inner .fiv-inner-container {
+    border: none;
+}
+.fg-image-viewer.fg-overlay-controls.fg-border-thin .fiv-inner .fiv-ctrls {
+    top: 4px;
+    left: 4px;
+    width: calc(100% - 8px);
+    height: calc(100% - 8px);
+}
+.fg-image-viewer.fg-overlay-controls.fg-border-medium .fiv-inner .fiv-ctrls {
+    top: 8px;
+    left: 8px;
+    width: calc(100% - 16px);
+    height: calc(100% - 16px);
+}
+.fg-image-viewer.fg-overlay-controls.fg-border-thick .fiv-inner .fiv-ctrls {
+    top: 16px;
+    left: 16px;
+    width: calc(100% - 32px);
+    height: calc(100% - 32px);
+}
+
+/* Border Radius */
+.foogallery.fg-image-viewer.fg-overlay-controls.fg-round-small .fg-item,
+.foogallery.fg-image-viewer.fg-overlay-controls.fg-round-small .fg-item-inner,
+.foogallery.fg-image-viewer.fg-overlay-controls.fg-round-small .fiv-inner {
+    border-radius: 5px;
+}
+.foogallery.fg-image-viewer.fg-overlay-controls.fg-round-medium .fg-item,
+.foogallery.fg-image-viewer.fg-overlay-controls.fg-round-medium .fg-item-inner,
+.foogallery.fg-image-viewer.fg-overlay-controls.fg-round-medium .fiv-inner {
+    border-radius: 10px;
+}
+.foogallery.fg-image-viewer.fg-overlay-controls.fg-round-large .fg-item,
+.foogallery.fg-image-viewer.fg-overlay-controls.fg-round-large .fg-item-inner,
+.foogallery.fg-image-viewer.fg-overlay-controls.fg-round-large .fiv-inner {
+    border-radius: 15px;
+}
+
+/* Paging Overrides */
+.fg-image-viewer.fg-overlay-controls .fg-paging-container {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    line-height: 1;
+}
+.fg-image-viewer.fg-overlay-controls.fg-dots-left .fg-paging-container {
+    text-align: left;
+}
+.fg-image-viewer.fg-overlay-controls.fg-dots-center .fg-paging-container {
+    text-align: center;
+}
+.fg-image-viewer.fg-overlay-controls.fg-dots-right .fg-paging-container {
+    text-align: right;
+}
+.fg-image-viewer.fg-overlay-controls .fg-paging-container .fg-dots {
+    pointer-events: auto;
+    opacity: 0.3;
+    transition: opacity .3s ease;
+}
+.fg-image-viewer.fg-overlay-controls .fiv-inner:hover .fg-paging-container .fg-dots {
+    opacity: 0.6;
+}
+.fg-image-viewer.fg-overlay-controls .fiv-inner .fg-paging-container .fg-dots:hover {
+    opacity: 1;
 }
 .foogallery.fg-thumbnail,
 .foogallery.fg-thumbnail.fg-center {

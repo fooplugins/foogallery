@@ -12464,17 +12464,38 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 
 	_.ImageViewerTemplate = _.Template.extend({
 		construct: function (options, element) {
-			var self = this;
-			self._super(_obj.extend({}, options, {
-				paging: {
-					pushOrReplace: "replace",
-					theme: "fg-light",
-					type: "default",
-					size: 1,
-					position: "none",
-					scrollToTop: false
-				}
-			}), element);
+			var self = this,
+                overlay = element.hasClass('fg-overlay-controls');
+            if ( overlay && _.paging?.contains('dots') ) {
+                var reg = _.paging.registered['dots'];
+                options = _obj.extend({
+                    cls: {
+                        paging: reg.cls
+                    },
+                    il8n: {
+                        paging: reg.il8n
+                    }
+                }, options, {
+                    paging: {
+                        pushOrReplace: "replace",
+                        type: "dots",
+                        size: 1,
+                        position: "bottom",
+                        scrollToTop: false
+                    }
+                })
+            } else {
+                options = _obj.extend({}, options, {
+                    paging: {
+                        pushOrReplace: "replace",
+                        type: "default",
+                        size: 1,
+                        position: "none",
+                        scrollToTop: false
+                    }
+                });
+            }
+			self._super(options, element);
 			/**
 			 * @summary The jQuery object containing the inner element that wraps all items.
 			 * @memberof FooGallery.ImageViewerTemplate#
@@ -13771,7 +13792,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
             self.cleanup( self.sel.activeItem, self.cls.activeItem );
 
             el.classList.add( self.cls.activeItem );
-            el.style.setProperty("transition-duration", self.opt.speed + "ms" );
+            el.style.setProperty("transition-duration", ( self._firstLayout ? 0 : self.opt.speed ) + "ms" );
             el.style.setProperty( "z-index", layout.zIndex );
             el.style.removeProperty( "transform" );
 
