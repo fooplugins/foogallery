@@ -1105,8 +1105,10 @@ if ( ! class_exists( 'FooGallery_Lightbox' ) ) {
 			//only add the lightbox data attribute for the templates where a panel is used and not a lightbox
 			if ( $template && !array_key_exists( 'panel_support', $template ) ) {
 
+				$thumbnail_link = foogallery_gallery_template_setting( 'thumbnail_link', '' );
+
 				//check if lightbox set to foogallery
-				if ( 'foogallery' === foogallery_gallery_template_setting( 'lightbox', '' ) ) {
+				if ( 'foogallery' === foogallery_gallery_template_setting( 'lightbox', '' ) && 'none' !== $thumbnail_link ) {
 
 					$encoded_options = foogallery_json_encode( $this->get_options_from_settings() );
 
