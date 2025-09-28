@@ -1,0 +1,44 @@
+.foogallery-setting-spotlight-arrow_icon {
+    display: inline-block;
+    position: relative;
+    width: 32px;
+    height: 32px;
+    margin: 0;
+    background: transparent no-repeat center center;
+    background-size: 32px 32px;
+    vertical-align: middle;
+}
+
+.foogallery-setting-spotlight-arrow_icon::before {
+    content: '\279C';
+    font-size: 2em;
+    line-height: 32px;
+    padding-left: 3px;
+}
+
+.foogallery-setting-spotlight-arrow_icon.fg-nav-icon-square::before {
+    content: '\2B95';
+}
+
+.foogallery-setting-spotlight-arrow_icon.fg-nav-icon-dashed::before {
+    content: '\21E2';
+}
+
+.foogallery-setting-spotlight-arrow_icon.fg-nav-icon-arrowhead::before {
+    content: '\25BA';
+    padding-left: 5px;
+}
+
+.foogallery-setting-spotlight-arrow_icon.fg-nav-icon-svg::before {
+    content: '';
+    padding: 0;
+}
+
+.foogallery-setting-spotlight-arrow_icon.fg-nav-icon-svg {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
