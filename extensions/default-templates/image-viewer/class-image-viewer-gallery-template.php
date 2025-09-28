@@ -311,7 +311,7 @@ if ( !class_exists( 'FooGallery_Image_Viewer_Gallery_Template' ) ) {
 		function add_css( $css, $gallery ) {
 
 			$id         = $gallery->container_id();
-			$dimensions = foogallery_gallery_template_setting('thumbnail_dimensions');
+			$dimensions = foogallery_gallery_template_setting('thumbnail_size');
 			if ( is_array( $dimensions ) && array_key_exists( 'width', $dimensions ) && intval( $dimensions['width'] ) > 0 ) {
 				$width = intval( $dimensions['width'] );
 				$css[] = '#' . $id . ' .fg-image { width: ' . $width . 'px; }';
