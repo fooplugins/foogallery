@@ -192,10 +192,11 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 					'type'     => 'radio',
 					'default'  => '',
 					'choices'  => array(
-						''                       => __( 'None', 'foogallery' ),
-						'fg-shadow-inset-small'  => __( 'Small', 'foogallery' ),
-						'fg-shadow-inset-medium' => __( 'Medium', 'foogallery' ),
-						'fg-shadow-inset-large'  => __( 'Large', 'foogallery' ),
+						''                        => __( 'None', 'foogallery' ),
+						'fg-shadow-inset-outline' => __( 'Outline', 'foogallery' ),
+						'fg-shadow-inset-small'   => __( 'Small', 'foogallery' ),
+						'fg-shadow-inset-medium'  => __( 'Medium', 'foogallery' ),
+						'fg-shadow-inset-large'   => __( 'Large', 'foogallery' ),
 					),
 					'row_data' => array(
 						'data-foogallery-change-selector' => 'input:radio',
