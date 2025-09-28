@@ -12480,7 +12480,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
                         pushOrReplace: "replace",
                         type: "dots",
                         size: 1,
-                        position: "bottom",
+                        position: element.hasClass('fg-dots-none') ? "none" : "bottom",
                         scrollToTop: false
                     }
                 })

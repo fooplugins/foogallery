@@ -297,10 +297,10 @@
 	z-index: 7;
 }
 .foogallery.fg-light.fg-shadow-inset-outline .fg-thumb:after {
-    box-shadow: inset 0 1px 4px 0 #ddd;
+    box-shadow: inset 0 0 0 1px #ddd;
 }
 .foogallery.fg-dark.fg-shadow-inset-outline .fg-thumb:after {
-    box-shadow: inset 0 1px 4px 0 #222;
+    box-shadow: inset 0 0 0 1px #222;
 }
 .foogallery.fg-light.fg-shadow-inset-small .fg-thumb:after,
 .foogallery.fg-dark.fg-shadow-inset-small .fg-thumb:after {
@@ -4805,6 +4805,7 @@ html.fg-panel-no-scroll body {
 .fiv-inner .fiv-inner-container {
 	position: relative;
 	max-width: 100%;
+    border-color: transparent;
 	border-style: solid;
 	border-width: 0;
 	border-bottom-width: 4px;
@@ -5133,9 +5134,6 @@ html.fg-panel-no-scroll body {
 .foogallery.fg-image-viewer.fg-dark.fg-shadow-large .fiv-inner {
 	box-shadow: 0 1px 16px 0 rgba(0, 0, 0, 0.5);
 }
-.fg-image-viewer.fg-overlay-controls .fg-item-inner,
-.fg-image-viewer.fg-overlay-controls .fiv-inner .fiv-inner-container { background-color: transparent; }
-
 .fg-image-viewer.fg-overlay-controls .fiv-inner .fiv-ctrls {
     border: none;
     position: absolute;
@@ -5196,43 +5194,44 @@ html.fg-panel-no-scroll body {
 }
 
 /* Border Sizes */
+.fg-image-viewer.fg-overlay-controls:not(.fg-border-thin,.fg-border-medium,.fg-border-thick) .fg-item-inner,
+.fg-image-viewer.fg-overlay-controls:not(.fg-border-thin,.fg-border-medium,.fg-border-thick) .fiv-inner .fiv-inner-container { background-color: transparent; }
+
+.fg-image-viewer.fg-overlay-controls { --border-width: 0px; }
+.fg-image-viewer.fg-overlay-controls.fg-border-thin { --border-width: 4px; }
+.fg-image-viewer.fg-overlay-controls.fg-border-medium { --border-width: 8px; }
+.fg-image-viewer.fg-overlay-controls.fg-border-thick { --border-width: 16px; }
+
 .fg-image-viewer.fg-overlay-controls:not(.fg-border-thin,.fg-border-medium,.fg-border-thick) .fiv-inner .fiv-inner-container {
     border: none;
 }
-.fg-image-viewer.fg-overlay-controls.fg-border-thin .fiv-inner .fiv-ctrls {
-    top: 4px;
-    left: 4px;
-    width: calc(100% - 8px);
-    height: calc(100% - 8px);
-}
-.fg-image-viewer.fg-overlay-controls.fg-border-medium .fiv-inner .fiv-ctrls {
-    top: 8px;
-    left: 8px;
-    width: calc(100% - 16px);
-    height: calc(100% - 16px);
-}
+.fg-image-viewer.fg-overlay-controls.fg-border-thin .fiv-inner .fiv-ctrls,
+.fg-image-viewer.fg-overlay-controls.fg-border-medium .fiv-inner .fiv-ctrls,
 .fg-image-viewer.fg-overlay-controls.fg-border-thick .fiv-inner .fiv-ctrls {
-    top: 16px;
-    left: 16px;
-    width: calc(100% - 32px);
-    height: calc(100% - 32px);
+    top: var(--border-width);
+    left: var(--border-width);
+    width: calc(100% - calc(var(--border-width) * 2));
+    height: calc(100% - calc(var(--border-width) * 2));
 }
 
 /* Border Radius */
+.fg-image-viewer.fg-overlay-controls { --border-radius: 0px; }
+.fg-image-viewer.fg-overlay-controls.fg-round-small { --border-radius: 5px; }
+.fg-image-viewer.fg-overlay-controls.fg-round-medium { --border-radius: 10px; }
+.fg-image-viewer.fg-overlay-controls.fg-round-large { --border-radius: 15px; }
+
+.foogallery.fg-image-viewer.fg-overlay-controls.fg-round-small .fiv-inner,
+.foogallery.fg-image-viewer.fg-overlay-controls.fg-round-medium .fiv-inner,
+.foogallery.fg-image-viewer.fg-overlay-controls.fg-round-large .fiv-inner {
+    border-radius: var(--border-radius);
+}
 .foogallery.fg-image-viewer.fg-overlay-controls.fg-round-small .fg-item,
 .foogallery.fg-image-viewer.fg-overlay-controls.fg-round-small .fg-item-inner,
-.foogallery.fg-image-viewer.fg-overlay-controls.fg-round-small .fiv-inner {
-    border-radius: 5px;
-}
 .foogallery.fg-image-viewer.fg-overlay-controls.fg-round-medium .fg-item,
 .foogallery.fg-image-viewer.fg-overlay-controls.fg-round-medium .fg-item-inner,
-.foogallery.fg-image-viewer.fg-overlay-controls.fg-round-medium .fiv-inner {
-    border-radius: 10px;
-}
 .foogallery.fg-image-viewer.fg-overlay-controls.fg-round-large .fg-item,
-.foogallery.fg-image-viewer.fg-overlay-controls.fg-round-large .fg-item-inner,
-.foogallery.fg-image-viewer.fg-overlay-controls.fg-round-large .fiv-inner {
-    border-radius: 15px;
+.foogallery.fg-image-viewer.fg-overlay-controls.fg-round-large .fg-item-inner {
+    border-radius: max(0px, calc(var(--border-radius) - var(--border-width)));
 }
 
 /* Paging Overrides */
