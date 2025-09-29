@@ -376,7 +376,8 @@ if ( !class_exists( 'FooGallery_Spotlight_Gallery_Template' ) ) {
 			} else if ( 'fg-nav-icon-dashed' === $arrow_icon ) {
 				$css[] = '#' . $id . ' .fiv-ctrls .fiv-next::before, #' . $id . ' .fiv-ctrls .fiv-prev::before { content: "\21E2"; }';
 			} else if ( 'fg-nav-icon-arrowhead' === $arrow_icon ) {
-				$css[] = '#' . $id . ' .fiv-ctrls .fiv-next::before, #' . $id . ' .fiv-ctrls .fiv-prev::before { content: "\25BA"; }';
+				$css[] = '#' . $id . ' .fiv-ctrls .fiv-next::before { content: "\25BA"; padding-left: 2px; }';
+				$css[] = '#' . $id . ' .fiv-ctrls .fiv-prev::before { content: "\25BA"; transform: rotate(180deg) translateX(2px); }';
 			}
 
 			$background_color = foogallery_gallery_template_setting( 'background_color', '' );
