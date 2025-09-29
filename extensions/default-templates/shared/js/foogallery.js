@@ -12544,8 +12544,9 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 			 * @type {FooGallery.ImageViewerTemplate~CSSSelectors}
 			 */
 			self.on({
+                "loaded-item error-item": self.onFirstItemReady,
 				"pre-init": self.onPreInit,
-				"init": self.onInit,
+                "init": self.onInit,
 				"destroy": self.onDestroy,
 				"append-item": self.onAppendItem,
 				"after-page-change": self.onAfterPageChange,
@@ -12571,9 +12572,13 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 			var self = this;
 			self.$el.find(self.sel.inner).remove();
 		},
+        onFirstItemReady: function(event) {
+            this.$el.removeClass("fg-not-ready");
+        },
 
 		onPreInit: function(event){
 			var self = this;
+            self.$el.addClass("fg-not-ready");
 			self.$inner = self.$el.find(self.sel.innerContainer);
 			self.$current = self.$el.find(self.sel.countCurrent);
 			self.$total = self.$el.find(self.sel.countTotal);
