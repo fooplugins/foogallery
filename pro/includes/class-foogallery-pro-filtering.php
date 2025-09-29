@@ -222,6 +222,41 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 				);
 
 				$filtering_fields[] = array(
+					'id'      => 'filtering_multi_help',
+					'title'   => __( 'What is Multi-Level Filtering?', 'foogallery' ),
+					'desc'    => __( 'You can setup multiple levels of filters, where each level will filter the next level. This should be used in advanced scenarios where you need to filter by multiple levels of data.', 'foogallery' ),
+					'section' => __( 'Filtering', 'foogallery' ),
+					'subsection' => array( 'filtering-general' => __( 'General', 'foogallery' ) ),
+					'type'    => 'help',
+					'row_data' => array(
+						'data-foogallery-hidden'                   => true,
+						'data-foogallery-show-when-field-operator' => '===',
+						'data-foogallery-show-when-field'          => 'filtering_type',
+						'data-foogallery-show-when-field-value'    => 'multi',
+						'data-foogallery-change-selector'          => 'input',
+						'data-foogallery-preview'                  => 'shortcode'
+					)
+				);
+
+				$filtering_fields[] = array(
+					'id'       => 'filtering_multi_override',
+					'title'    => __( 'Levels', 'foogallery' ),
+					'desc'     => __( 'The filtering levels that will be used for the gallery.', 'foogallery' ),
+					'section'  => __( 'Filtering', 'foogallery' ),
+					'subsection' => array( 'filtering-general' => __( 'General', 'foogallery' ) ),
+					'type'     => 'filtering_multi',
+					'default'  => '',
+					'row_data' => array(
+						'data-foogallery-hidden'                   => true,
+						'data-foogallery-show-when-field-operator' => '===',
+						'data-foogallery-show-when-field'          => 'filtering_type',
+						'data-foogallery-show-when-field-value'    => 'multi',
+						'data-foogallery-change-selector'          => 'input',
+						'data-foogallery-preview'                  => 'shortcode'
+					)
+				);
+
+				$filtering_fields[] = array(
 					'id'      => 'filtering_theme',
 					'title'   => __( 'Theme', 'foogallery' ),
 					'desc'    => __( 'The theme used for filtering. Default will use the gallery theme.', 'foogallery' ),
@@ -412,10 +447,13 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 					)
 				);
 
+				$mode_help = __( 'The default selection mode is Single, which allows you to choose a single filter at a time. You can also choose to filter by more than 1 filter by selecting Multiple. Multiple supports either a union (OR) or an intersect (AND) mode.', 'foogallery' );
+				$mode_help .= '<br>' . __( 'Please Note : the Muliple (OR) and Muliple (AND) modes do not support the dropdown styles!', 'foogallery' );
+
 				$filtering_fields[] = array(
 					'id'      => 'filtering_mode_help',
 					'title'   => __( 'Filtering Selection Mode Help', 'foogallery' ),
-					'desc'    => __( 'The default selection mode is Single, which allows you to choose a single filter at a time. You can also choose to filter by more than 1 filter by selecting Multiple. Multiple supports either a union (OR) or an intersect (AND) mode.', 'foogallery' ),
+					'desc'    => $mode_help,
 					'section' => __( 'Filtering', 'foogallery' ),
 					'subsection' => array( 'filtering-advanced' => __( 'Advanced', 'foogallery' ) ),
 					'type'    => 'help',
@@ -449,58 +487,6 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 						'data-foogallery-show-when-field-operator' => '!==',
 						'data-foogallery-show-when-field'          => 'filtering_type',
 						'data-foogallery-show-when-field-value'    => '',
-						'data-foogallery-change-selector'          => 'input',
-						'data-foogallery-preview'                  => 'shortcode'
-					)
-				);
-
-				$filtering_fields[] = array(
-					'id'      => 'filtering_multi_help',
-					'title'   => __( 'What is Multi-Level Filtering?', 'foogallery' ),
-					'desc'    => __( 'You can setup multiple levels of filters, where each level will filter the next level. This should be used in advanced scenarios where you need to filter by multiple levels of data.', 'foogallery' ),
-					'section' => __( 'Filtering', 'foogallery' ),
-					'subsection' => array( 'filtering-multi' => __( 'Multi-Level', 'foogallery' ) ),
-					'type'    => 'help',
-					'row_data' => array(
-						'data-foogallery-hidden'                   => true,
-						'data-foogallery-show-when-field-operator' => '===',
-						'data-foogallery-show-when-field'          => 'filtering_type',
-						'data-foogallery-show-when-field-value'    => 'multi',
-						'data-foogallery-change-selector'          => 'input',
-						'data-foogallery-preview'                  => 'shortcode'
-					)
-				);
-
-				$filtering_fields[] = array(
-					'id'      => 'filtering_multi_help_disabled',
-					'title'   => __( 'Multi-Level Filtering Disabled', 'foogallery' ),
-					'desc'    => __( 'Set Filtering under the General tab to "Multi-Level" to enable this feature.', 'foogallery' ),
-					'section' => __( 'Filtering', 'foogallery' ),
-					'subsection' => array( 'filtering-multi' => __( 'Multi-Level', 'foogallery' ) ),
-					'type'    => 'help',
-					'row_data' => array(
-						'data-foogallery-hidden'                   => true,
-						'data-foogallery-show-when-field-operator' => '!==',
-						'data-foogallery-show-when-field'          => 'filtering_type',
-						'data-foogallery-show-when-field-value'    => 'multi',
-						'data-foogallery-change-selector'          => 'input',
-						'data-foogallery-preview'                  => 'shortcode'
-					)
-				);
-
-				$filtering_fields[] = array(
-					'id'       => 'filtering_multi_override',
-					'title'    => __( 'Levels', 'foogallery' ),
-					'desc'     => __( 'The filtering levels that will be used for the gallery.', 'foogallery' ),
-					'section'  => __( 'Filtering', 'foogallery' ),
-					'subsection' => array( 'filtering-multi' => __( 'Multi-Level', 'foogallery' ) ),
-					'type'     => 'filtering_multi',
-					'default'  => '',
-					'row_data' => array(
-						'data-foogallery-hidden'                   => true,
-						'data-foogallery-show-when-field-operator' => '===',
-						'data-foogallery-show-when-field'          => 'filtering_type',
-						'data-foogallery-show-when-field-value'    => 'multi',
 						'data-foogallery-change-selector'          => 'input',
 						'data-foogallery-preview'                  => 'shortcode'
 					)
@@ -568,7 +554,8 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 						'data-foogallery-show-when-field'          => 'filtering_type',
 						'data-foogallery-show-when-field-value'    => '',
 						'data-foogallery-change-selector'          => 'input',
-						'data-foogallery-preview'                  => 'shortcode'
+						'data-foogallery-preview'                  => 'shortcode',
+						'data-foogallery-value-selector'           => 'input:checked',
 					)
 				);
 
@@ -592,7 +579,8 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 						'data-foogallery-show-when-field'          => 'filtering_type',
 						'data-foogallery-show-when-field-value'    => '',
 						'data-foogallery-change-selector'          => 'input',
-						'data-foogallery-preview'                  => 'shortcode'
+						'data-foogallery-preview'                  => 'shortcode',
+						'data-foogallery-value-selector'           => 'input:checked',
 					)
 				);
 
@@ -658,7 +646,8 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 						'data-foogallery-show-when-field'          => 'filtering_type',
 						'data-foogallery-show-when-field-value'    => '',
 						'data-foogallery-change-selector'          => 'input',
-						'data-foogallery-preview'                  => 'shortcode'
+						'data-foogallery-preview'                  => 'shortcode',
+						'data-foogallery-value-selector'           => 'input:checked',
 					)
 				);
 
@@ -733,7 +722,7 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 
 				$filtering_fields[] = array(
 					'id'       => 'filtering_override',
-					'title'    => __( 'Override', 'foogallery' ),
+					'title'    => __( 'Filter Override', 'foogallery' ),
 					'desc'     => __( 'You can override which filters are shown, by providing a comma-separated list. Leave blank for them to be auto-generated.', 'foogallery' ),
 					'section'  => __( 'Filtering', 'foogallery' ),
 					'subsection' => array( 'filtering-advanced' => __( 'Advanced', 'foogallery' ) ),
