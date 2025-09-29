@@ -77,16 +77,17 @@ FooGallery was built to be highly configurable and extendable for developers or 
 
 = PRO Gallery Features =
 
-There are 3 PRO plans available, that will work with any budget:
+There are 4 PRO plans available, that will work with any budget:
 
 [PRO Starter](https://fooplugins.com/foogallery-wordpress-gallery-plugin/#pro-starter-features) | [PRO Expert](https://fooplugins.com/foogallery-wordpress-gallery-plugin/#pro-expert-features) | [PRO Commerce](https://fooplugins.com/foogallery-wordpress-gallery-plugin/#pro-commerce-features)
 
 **PRO Starter Features**
 
-*   3 more beautiful PRO responsive gallery layouts:
+*   4 more beautiful PRO responsive gallery layouts:
     *   Polaroid gallery template - [demo](https://fooplugins.com/foogallery-wordpress-gallery-plugin/polaroid-gallery/)
     *   Grid gallery template - [demo](https://fooplugins.com/foogallery-wordpress-gallery-plugin/grid-gallery/)
     *	Slider gallery template - [demo](https://fooplugins.com/foogallery-wordpress-gallery-plugin/slider-gallery/)
+    *   Spotlight gallery template - [demo](https://fooplugins.com/foogallery-wordpress-gallery-plugin/spotlight-gallery/)
 *   11 beautiful hover effect presets - [demo](https://fooplugins.com/foogallery-wordpress-gallery-plugin/hover-presets/)
 *   12 CSS thumbnail filters (Instagram) - [demo](https://fooplugins.com/foogallery-wordpress-gallery-plugin/filter-effects/)
 
@@ -314,13 +315,14 @@ Please update in order for FooGallery to work in WP 5.5+!
 
 == Changelog ==
 
-= 2.5.1 =
-* Date Updated : 15 Sept 2025
+= 2.5.2 =
+* Date Updated : 28 Sept 2025
 * New : Added layout selector in gallery edit page. (MAJOR IMPROVEMENT!!)
 * New : Added more hover effect icons.
 * New : Added a default hover effect preset in free version.
 [//]: # fs_premium_only_begin
-* New : Added style options for tag filters.
+* New : [Expert Plan] Added style options for tag filters.
+* New : [Starter Plan] Added spotlight gallery layout.
 [//]: # fs_premium_only_end
 * Update : improvements to the gallery edit page styling.
 * Update : Updated all gallery layout defaults to use more modern look and feel.

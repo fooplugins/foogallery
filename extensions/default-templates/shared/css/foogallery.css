@@ -5251,8 +5251,11 @@ html.fg-panel-no-scroll body {
 .fg-image-viewer.fg-overlay-controls.fg-round-large { --border-radius: 15px; }
 
 .foogallery.fg-image-viewer.fg-overlay-controls.fg-round-small .fiv-inner,
+.foogallery.fg-image-viewer.fg-overlay-controls.fg-round-small .fiv-inner-container,
 .foogallery.fg-image-viewer.fg-overlay-controls.fg-round-medium .fiv-inner,
-.foogallery.fg-image-viewer.fg-overlay-controls.fg-round-large .fiv-inner {
+.foogallery.fg-image-viewer.fg-overlay-controls.fg-round-medium .fiv-inner-container,
+.foogallery.fg-image-viewer.fg-overlay-controls.fg-round-large .fiv-inner,
+.foogallery.fg-image-viewer.fg-overlay-controls.fg-round-large .fiv-inner-container {
     border-radius: var(--border-radius);
 }
 .foogallery.fg-image-viewer.fg-overlay-controls.fg-round-small .fg-item,
