@@ -769,16 +769,15 @@ button[data-balloon]{overflow:visible}[data-balloon]{position:relative}[data-bal
 	padding-right: 0;
 }
 
-.foogallery_preview_container.loading:after {
-	content: '';
-	position: absolute;
-	top: 0;
-	left: 0;
-	right: 0;
-	bottom: 0;
-	background: #fff;
-	opacity: 0.8;
-	z-index: 159900;
+.foogallery_preview_container .foogallery {
+	visibility: visible;
+	opacity: 1;
+	transition: visibility 0.3s ease, opacity 0.3s ease;
+}
+
+.foogallery_preview_container.loading .foogallery {
+	/* visibility: hidden; */
+	opacity: 0.5;
 }
 
 .fs-submenu-item.foogallery {
