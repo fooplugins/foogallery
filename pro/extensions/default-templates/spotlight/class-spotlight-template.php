@@ -178,6 +178,18 @@ if ( !class_exists( 'FooGallery_Spotlight_Gallery_Template' ) ) {
 							'data-foogallery-preview'         => 'shortcode'
 						)
 					),
+					array(
+						'id'      => 'background_color',
+						'title'   => __( 'Background Color', 'foogallery' ),
+						'desc'	  => __( 'Choose a background color for the gallery.', 'foogallery '),
+						'section'  => __( 'General', 'foogallery' ),
+						'type'    => 'colorpicker',
+						'default' => '',
+						'opacity' => true,
+						'row_data' => array(
+							'data-foogallery-preview'               => 'shortcode'
+						)
+					)
 				),
 			);
 
@@ -365,6 +377,11 @@ if ( !class_exists( 'FooGallery_Spotlight_Gallery_Template' ) ) {
 				$css[] = '#' . $id . ' .fiv-ctrls .fiv-next::before, #' . $id . ' .fiv-ctrls .fiv-prev::before { content: "\21E2"; }';
 			} else if ( 'fg-nav-icon-arrowhead' === $arrow_icon ) {
 				$css[] = '#' . $id . ' .fiv-ctrls .fiv-next::before, #' . $id . ' .fiv-ctrls .fiv-prev::before { content: "\25BA"; }';
+			}
+
+			$background_color = foogallery_gallery_template_setting( 'background_color', '' );
+			if ( !empty( $background_color ) ) {
+				$css[] = '#' . $id . '.foogallery .fg-item { background-color: ' . $background_color . '; }';
 			}
 
 			return $css;
